@@ -114,6 +114,7 @@ public: // methods related to dynamic tensor
    *       Once _enable_dynamic_shape_inferer is set to @c false it cannot be changed to @c true
    *       only with calling enableDynamicShapeInferer(). So initializing it to @c true is
    *       necessary.
+   * @todo This is a quick fix. Adding this will increase time for run(). Find way to optimize.
    */
   void initRunning() { _enable_dynamic_shape_inferer = true; }
 
