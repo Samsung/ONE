@@ -759,7 +759,7 @@ void propagate_concat_quantparam(luci::CircleConcatenation *concat, loco::DataTy
         throw std::runtime_error("Unsupported data type for constant input of concatenation Op");
 
       const auto concat_qparam = concat->quantparam();
-      if(concat_qparam == nullptr)
+      if (concat_qparam == nullptr)
         throw std::runtime_error("quantparam of concat is not found during propagation");
 
       assert(concat_qparam->scale.size() == 1);
