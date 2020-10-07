@@ -34,20 +34,21 @@ template <nnfw::cker::BinaryArithmeticOpType arithmetic_type, typename T>
 void eval(const IPortableTensor *lhs, const IPortableTensor *rhs, IPortableTensor *output,
           nnfw::cker::BinaryArithmeticOpParam op_params)
 {
-  const bool need_broadcast =
-      nnfw::cker::ProcessBroadcastShapes(getTensorShape(lhs), getTensorShape(rhs), &op_params);
+  const auto lhsShape = getTensorShape(lhs);
+  const auto rhsShape = getTensorShape(rhs);
+  const bool need_broadcast = nnfw::cker::ProcessBroadcastShapes(lhsShape, rhsShape, &op_params);
   if (need_broadcast)
   {
     nnfw::cker::BroadcastBinaryArithmeticOp<arithmetic_type>(
-        op_params, getTensorShape(lhs), reinterpret_cast<const T *>(lhs->buffer()),
-        getTensorShape(rhs), reinterpret_cast<const T *>(rhs->buffer()), getTensorShape(output),
+        op_params, lhsShape, reinterpret_cast<const T *>(lhs->buffer()), rhsShape,
+        reinterpret_cast<const T *>(rhs->buffer()), getTensorShape(output),
         reinterpret_cast<T *>(output->buffer()));
     return;
   }
 
   nnfw::cker::BinaryArithmeticOp<arithmetic_type>(
-      op_params, getTensorShape(lhs), reinterpret_cast<const T *>(lhs->buffer()),
-      getTensorShape(rhs), reinterpret_cast<const T *>(rhs->buffer()), getTensorShape(output),
+      op_params, lhsShape, reinterpret_cast<const T *>(lhs->buffer()), rhsShape,
+      reinterpret_cast<const T *>(rhs->buffer()), getTensorShape(output),
       reinterpret_cast<T *>(output->buffer()));
 }
 
