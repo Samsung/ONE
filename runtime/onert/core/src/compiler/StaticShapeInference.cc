@@ -840,7 +840,7 @@ void StaticShapeInferer::visit(const ir::operation::Split &op)
   const auto &axis = _operands.at(axis_idx);
 
   auto outputs = op.getOutputs();
-  if (input.info().isDynamic() || !axis.isConstant())
+  if (!axis.isConstant())
   {
     for (auto output_idx : outputs)
     {
@@ -881,13 +881,6 @@ void StaticShapeInferer::visit(const ir::operation::Squeeze &op)
 
   const auto output_idx = op.getOutputs().at(0);
   ir::Operand &output = _operands.at(output_idx);
-
-  if (input.info().isDynamic())
-  {
-    output.info().setDynamic();
-    _return_has_dynamic_tensor = true;
-    return;
-  }
 
   // Squeeze output shpae
   ir::Shape new_shape = shape_inference::inferSqueezeShape(input.info().shape(), op.param());
@@ -973,7 +966,7 @@ void StaticShapeInferer::visit(const ir::operation::Transpose &op)
   // get mutable output operand
   const auto output_idx = op.getOutputs().at(0);
   auto &output = _operands.at(output_idx);
-  if ((!perm.isConstant() && !is_regular_transpose) || input.info().isDynamic())
+  if (!perm.isConstant() && !is_regular_transpose)
   {
     output.info().setDynamic();
     _return_has_dynamic_tensor = true;
