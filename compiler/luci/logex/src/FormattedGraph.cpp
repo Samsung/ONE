@@ -299,6 +299,7 @@ private:
   IMPLEMENT(luci::CircleTopKV2)
   IMPLEMENT(luci::CircleTranspose)
   IMPLEMENT(luci::CircleTransposeConv)
+  IMPLEMENT(luci::CircleUnidirectionalSequenceLSTM)
   IMPLEMENT(luci::CircleUnique)
   IMPLEMENT(luci::CircleUnpack)
   IMPLEMENT(luci::CircleWhere)
@@ -988,6 +989,54 @@ bool summary_node(const locop::SymbolTable *tbl, const luci::CircleTransposeConv
   s.args().append("bias", tbl->lookup(node->bias()));
   s.args().append("stride(h,w)", to_str(node->stride()));
   s.args().append("padding", to_str(node->padding()));
+  s.state(locop::NodeSummary::State::Complete);
+  return true;
+}
+
+bool summary_node(const locop::SymbolTable *tbl, const luci::CircleUnidirectionalSequenceLSTM *node,
+                  locop::NodeSummary &s)
+{
+  s.args().append("input", tbl->lookup(node->input()));
+
+  s.args().append("input_to_input_weights", tbl->lookup(node->input_to_input_weights()));
+  s.args().append("input_to_forget_weights", tbl->lookup(node->input_to_forget_weights()));
+  s.args().append("input_to_cell_weights", tbl->lookup(node->input_to_cell_weights()));
+  s.args().append("input_to_output_weights", tbl->lookup(node->input_to_output_weights()));
+
+  s.args().append("recurrent_to_input_weights", tbl->lookup(node->recurrent_to_input_weights()));
+  s.args().append("recurrent_to_forget_weights", tbl->lookup(node->recurrent_to_forget_weights()));
+  s.args().append("recurrent_to_cell_weights", tbl->lookup(node->recurrent_to_cell_weights()));
+  s.args().append("recurrent_to_output_weights", tbl->lookup(node->recurrent_to_output_weights()));
+
+  s.args().append("cell_to_input_weights", tbl->lookup(node->cell_to_input_weights()));
+  s.args().append("cell_to_forget_weights", tbl->lookup(node->cell_to_forget_weights()));
+  s.args().append("cell_to_output_weights", tbl->lookup(node->cell_to_output_weights()));
+
+  s.args().append("input_gate_bias", tbl->lookup(node->input_gate_bias()));
+  s.args().append("forget_gate_bias", tbl->lookup(node->forget_gate_bias()));
+  s.args().append("cell_gate_bias", tbl->lookup(node->cell_gate_bias()));
+  s.args().append("output_gate_bias", tbl->lookup(node->output_gate_bias()));
+
+  s.args().append("projection_weights", tbl->lookup(node->projection_weights()));
+  s.args().append("projection_bias", tbl->lookup(node->projection_bias()));
+
+  s.args().append("activation_state", tbl->lookup(node->activation_state()));
+  s.args().append("cell_state", tbl->lookup(node->cell_state()));
+
+  s.args().append("input_layer_norm_coefficients",
+                  tbl->lookup(node->input_layer_norm_coefficients()));
+  s.args().append("forget_layer_norm_coefficients",
+                  tbl->lookup(node->forget_layer_norm_coefficients()));
+  s.args().append("cell_layer_norm_coefficients",
+                  tbl->lookup(node->cell_layer_norm_coefficients()));
+  s.args().append("output_layer_norm_coefficients",
+                  tbl->lookup(node->output_layer_norm_coefficients()));
+
+  s.args().append("cell_clip", to_str(node->cell_clip()));
+  s.args().append("proj_clip", to_str(node->proj_clip()));
+  s.args().append("time_major", to_str(node->time_major()));
+  s.args().append("asymmetric_quantize_inputs", to_str(node->asymmetric_quantize_inputs()));
+
   s.state(locop::NodeSummary::State::Complete);
   return true;
 }
@@ -1693,6 +1742,12 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleTranspose *node,
 }
 
 bool CircleNodeSummaryBuilder::summary(const luci::CircleTransposeConv *node,
+                                       locop::NodeSummary &s) const
+{
+  return summary_node(tbl(), node, s);
+}
+
+bool CircleNodeSummaryBuilder::summary(const luci::CircleUnidirectionalSequenceLSTM *node,
                                        locop::NodeSummary &s) const
 {
   return summary_node(tbl(), node, s);
