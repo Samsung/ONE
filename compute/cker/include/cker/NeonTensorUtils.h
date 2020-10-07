@@ -43,6 +43,8 @@ namespace cker
 namespace
 {
 
+constexpr int kFloatValuesPerNeonVector = 4;
+
 // TODO(ahentz): Clean up.
 using int8 = std::int8_t;
 using uint8 = std::uint8_t;
@@ -50,6 +52,11 @@ using int16 = std::int16_t;
 using uint16 = std::uint16_t;
 using int32 = std::int32_t;
 using uint32 = std::uint32_t;
+
+template <int PerNeonSize> inline int RoundDownVectors(int size)
+{
+  return size & ~(PerNeonSize - 1);
+}
 
 // Allocates, at least, size bytes of uninitialized storage whose alignment is
 // specified by alignment. The size parameter must be an integral multiple of
@@ -80,7 +87,7 @@ inline int32_t AccumulateNeonLane(const int32x4_t lane)
 // At the moment it's only implemented on Linux ARM64. Consider syncing again
 // with ruy in the future to share improvements.
 #if defined __linux__ && defined __aarch64__
-bool DetectDotprodByLinuxAuxvMethod()
+inline bool DetectDotprodByLinuxAuxvMethod()
 {
   // This is the value of HWCAP_ASIMDDP in sufficiently recent Linux headers,
   // however we need to support building against older headers for the time
@@ -90,7 +97,7 @@ bool DetectDotprodByLinuxAuxvMethod()
 }
 #endif
 
-bool DetectArmNeonDotprod()
+inline bool DetectArmNeonDotprod()
 {
 #if defined __linux__ && defined __aarch64__
   return DetectDotprodByLinuxAuxvMethod();
@@ -99,7 +106,7 @@ bool DetectArmNeonDotprod()
   return false;
 }
 
-bool HasSdotInstruction()
+inline bool HasSdotInstruction()
 {
   static const bool has_dotprod = DetectArmNeonDotprod();
   return has_dotprod;
@@ -118,8 +125,8 @@ bool HasSdotInstruction()
 //     e0 e1 e2 e3 f0 f1 f2 f3 ...
 // Once the data is interleaved, each 16-byte read from the vectors pointer
 // contains 4 bytes from each of 4 vectors.
-const int8_t *ShuffleVectors(const int8_t *vectors, const int n_batch, const int m_cols,
-                             void **shuffled_vectors_free)
+inline const int8_t *ShuffleVectors(const int8_t *vectors, const int n_batch, const int m_cols,
+                                    void **shuffled_vectors_free)
 {
   const int kWeightsPerUint32 = 4;
 
@@ -450,7 +457,7 @@ static void DotprodMatrixBatchFourVectorMultiplyAccumulate(
 //
 // We don't use this kernel when n_batch = 1 because the baseline kernel
 // is fine for that case.
-void DotprodMatrixBatchPaddedFourVectorMultiplyAccumulate(
+inline void DotprodMatrixBatchPaddedFourVectorMultiplyAccumulate(
     const int8_t *__restrict__ matrix, const int m_rows, const int m_cols, const int8_t *vectors,
     const float *scaling_factors, int n_batch, float *__restrict__ result,
     const float *per_channel_scale, const int32_t *input_offset, int32_t *row_sums)
@@ -525,11 +532,9 @@ void DotprodMatrixBatchPaddedFourVectorMultiplyAccumulate(
   free(padded_scaling_factors_free);
 }
 
-void DotprodMatrixBatchPaddedFourVectorMultiplyAccumulate(const int8_t *__restrict__ matrix,
-                                                          const int m_rows, const int m_cols,
-                                                          const int8_t *vectors,
-                                                          const float *scaling_factors, int n_batch,
-                                                          float *__restrict__ result)
+inline void DotprodMatrixBatchPaddedFourVectorMultiplyAccumulate(
+    const int8_t *__restrict__ matrix, const int m_rows, const int m_cols, const int8_t *vectors,
+    const float *scaling_factors, int n_batch, float *__restrict__ result)
 {
   DotprodMatrixBatchPaddedFourVectorMultiplyAccumulate(
       matrix, m_rows, m_cols, vectors, scaling_factors, n_batch, result,
@@ -538,7 +543,29 @@ void DotprodMatrixBatchPaddedFourVectorMultiplyAccumulate(const int8_t *__restri
 }
 #endif // __aarch64__
 
-bool NeonIsZeroVector(const float *vector, int v_size)
+inline void NeonCwiseClipping(float *vector, const int v_size, const float clipping_value)
+{
+  const float32x4_t clipping_value_f32x4 = vmovq_n_f32(clipping_value);
+  const float32x4_t neg_clipping_value_f32x4 = vmovq_n_f32(-clipping_value);
+
+  int i = 0;
+  for (; i <= v_size - kFloatValuesPerNeonVector; i += kFloatValuesPerNeonVector)
+  {
+    // Load from memory to vector.
+    float32x4_t v_f32x4 = vld1q_f32(vector + i);
+    // Clip between clipping_value and -clipping_value.
+    v_f32x4 = vminq_f32(clipping_value_f32x4, v_f32x4);
+    v_f32x4 = vmaxq_f32(neg_clipping_value_f32x4, v_f32x4);
+    // Save to output.
+    vst1q_f32(vector + i, v_f32x4);
+  }
+  for (; i < v_size; i++)
+  {
+    vector[i] = std::max(std::min(clipping_value, vector[i]), -clipping_value);
+  }
+}
+
+inline bool NeonIsZeroVector(const float *vector, int v_size)
 {
   // If v_size is not divisible by kFloatWeightsPerNeonLane, we cannot
   // use the main vectorized loop, and we need to process sequentially.
@@ -569,9 +596,10 @@ bool NeonIsZeroVector(const float *vector, int v_size)
   return true;
 }
 
-void NeonCpuBackendGemm(const int8_t *input, const int32_t *bias,
-                        const int8_t *input_to_gate_weights, int32_t n_batch, int32_t n_input,
-                        int32_t n_output, int32_t, int32_t *scratch, ruy::Context *ruy_context)
+inline void NeonCpuBackendGemm(const int8_t *input, const int32_t *bias,
+                               const int8_t *input_to_gate_weights, int32_t n_batch,
+                               int32_t n_input, int32_t n_output, int32_t, int32_t *scratch,
+                               ruy::Context *ruy_context)
 {
   MatrixParams<int8_t> lhs_params;
   lhs_params.order = Order::kRowMajor;
@@ -610,8 +638,33 @@ void NeonCpuBackendGemm(const int8_t *input, const int32_t *bias,
   ruy::Mul(ruy_lhs, ruy_rhs, ruy_mul_params, ruy_context, &ruy_dst);
 }
 
-void NeonSymmetricQuantizeFloats(const float *values, const int size, int8_t *quantized_values,
-                                 float *min, float *max, float *scaling_factor)
+inline void NeonSub1Vector(const float *vector, int v_size, float *result)
+{
+  // If v_size is not divisible by the vector size, then we need to process the
+  // final few elements sequentially. postamble_start shows the start index
+  // where this should happen.
+  const int postamble_start = RoundDownVectors<kFloatValuesPerNeonVector>(v_size);
+
+  float32x4_t one_f32x4 = vmovq_n_f32(1.0);
+  int v = 0;
+  for (; v < postamble_start; v += kFloatValuesPerNeonVector)
+  {
+    // Load 4 float values from the current pointers of the input column and
+    // subtract from 1.
+    float32x4_t v_f32x4 = vld1q_f32(vector + v);
+    float32x4_t result_f32x4 = vsubq_f32(one_f32x4, v_f32x4);
+    // Save to output.
+    vst1q_f32(result + v, result_f32x4);
+  }
+  for (; v < v_size; v++)
+  {
+    result[v] = 1.0f - vector[v];
+  }
+}
+
+inline void NeonSymmetricQuantizeFloats(const float *values, const int size,
+                                        int8_t *quantized_values, float *min, float *max,
+                                        float *scaling_factor)
 {
   // TODO(raziel): vectorize min/max calculation.
   auto minmax = std::minmax_element(values, values + size);
@@ -688,10 +741,11 @@ void NeonSymmetricQuantizeFloats(const float *values, const int size, int8_t *qu
   }
 }
 
-void NeonMatrixBatchVectorMultiplyAccumulate(const int8_t *__restrict__ matrix, const int m_rows,
-                                             const int m_cols, const int8_t *__restrict__ vectors,
-                                             const float *scaling_factors, int n_batch,
-                                             float *__restrict__ result, int result_stride)
+inline void NeonMatrixBatchVectorMultiplyAccumulate(const int8_t *__restrict__ matrix,
+                                                    const int m_rows, const int m_cols,
+                                                    const int8_t *__restrict__ vectors,
+                                                    const float *scaling_factors, int n_batch,
+                                                    float *__restrict__ result, int result_stride)
 {
 #ifdef __aarch64__
   if (HasSdotInstruction() && m_cols % 16 == 0 && m_rows % 2 == 0 && m_rows >= n_batch)
@@ -829,9 +883,9 @@ void NeonMatrixBatchVectorMultiplyAccumulate(const int8_t *__restrict__ matrix, 
   free(aligned_vec_free);
 }
 
-void NeonMatrixBatchVectorMultiplyAccumulate(const float *matrix, int m_rows, int m_cols,
-                                             const float *vector, int n_batch, float *result,
-                                             int result_stride)
+inline void NeonMatrixBatchVectorMultiplyAccumulate(const float *matrix, int m_rows, int m_cols,
+                                                    const float *vector, int n_batch, float *result,
+                                                    int result_stride)
 {
   // If v_size is not divisible by kWeightsPerNeonLane, we cannot use the main
   // vectorized loop, and we need to process sequentially. postamble_start shows
@@ -870,11 +924,12 @@ void NeonMatrixBatchVectorMultiplyAccumulate(const float *matrix, int m_rows, in
   }
 }
 
-void NeonMatrixBatchVectorMultiplyAccumulate(const int8_t *__restrict__ matrix, const int m_rows,
-                                             const int m_cols, const int8_t *__restrict__ vectors,
-                                             const float *scaling_factors, int n_batch,
-                                             int32_t *scratch, float *__restrict__ result,
-                                             int result_stride, ruy::Context *ruy_context)
+inline void NeonMatrixBatchVectorMultiplyAccumulate(const int8_t *__restrict__ matrix,
+                                                    const int m_rows, const int m_cols,
+                                                    const int8_t *__restrict__ vectors,
+                                                    const float *scaling_factors, int n_batch,
+                                                    int32_t *scratch, float *__restrict__ result,
+                                                    int result_stride, ruy::Context *ruy_context)
 {
   if (m_rows % 4 == 0 && result_stride == 1)
   {
