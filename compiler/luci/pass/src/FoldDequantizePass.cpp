@@ -48,7 +48,7 @@ luci::CircleConst *dequantized_const_node(luci::CircleConst *const_node)
 {
   if (const_node->quantparam() == nullptr)
   {
-    throw std::runtime_error("Given constant node cannot be dequantized");
+    throw std::runtime_error("Given constant node has no quantization parameter");
   }
 
   auto g = const_node->graph();
