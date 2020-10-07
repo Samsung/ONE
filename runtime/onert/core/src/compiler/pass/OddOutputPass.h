@@ -54,9 +54,17 @@ namespace pass
  * ((#0 Input0)) -> [#0 Permute] -> ((#1 Output0))
  * ```
  *
- * Case 2 : Two or more same outputs
+ * Case 2 : Two or more duplicated outputs
  *
- * This case is not yet implemented.
+ * Do the same with Case 1, but between two outputs of the same tensor index.
+ *
+ * e.g.)
+ *
+ * ```
+ * ((#0 Input0)) -> [#0 Some Operation] -> ((#1 Output0 and also Output1))
+ * becomes
+ * ((#0 Input0)) -> [#0 Some Operation] -> ((#1 Output0)) [#1 Permute] -> ((#2 Output1))
+ * ```
  *
  */
 class OddOutputPass : public Pass
@@ -69,6 +77,9 @@ public:
 
 public:
   void run() override;
+
+private:
+  ir::OperandIndex insertPermute(ir::OperandIndex input);
 };
 
 } // namespace pass

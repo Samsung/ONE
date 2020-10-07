@@ -63,6 +63,9 @@ void PermutationEliminationPass::visit(const ir::operation::Permute &node)
     auto permute_output = node.getOutputs().at(0);
     if (_graph.getInputs().contains(permute_input) && _graph.getOutputs().contains(permute_output))
       return;
+    // Likewise, if copying between outputs to outputs, keep it.
+    if (_graph.getOutputs().contains(permute_input) && _graph.getOutputs().contains(permute_output))
+      return;
 
     // Exceptional case : When the output operand is a model output
     // In this case we keep the output and remove the input
