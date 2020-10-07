@@ -103,7 +103,7 @@ void Graph::initializeUseDef()
 {
   operations().iterate([&](const OperationIndex &index, const Operation &node) -> void {
     auto outputs = node.getOutputs();
-    for (auto output : outputs)
+    for (auto output : outputs | ir::Remove::UNDEFINED)
     {
       operands().at(output).setDef(index);
     }
