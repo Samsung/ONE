@@ -31,7 +31,7 @@ void LSTM::accept(OperationVisitor &v) const { v.visit(*this); }
 
 LSTM::LSTM(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs,
            const Param &param)
-    : Operation{OperandConstraint::createExact(23u), inputs, outputs}, _param{param}
+    : Operation{OperandConstraint::createInRange(20u, 24u), inputs, outputs}, _param{param}
 {
 }
 
