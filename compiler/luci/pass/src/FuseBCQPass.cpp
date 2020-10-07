@@ -70,6 +70,9 @@ public:
       auto prefix = f.first;
       luci::CircleNode *node = f.second;
 
+      if (!is_valid_prefix(prefix))
+        continue;
+
       // Fuse Gather to BCQGather
       if (auto gather = dynamic_cast<luci::CircleGather *>(node))
       {
@@ -267,12 +270,13 @@ private:
 
   bool is_bcqinfo_valid()
   {
+    LOGGER(l);
+
     for (auto n : _do_w_x)
     {
       // do_w_x should be BOOL type
       if (n.second->dtype() != loco::DataType::BOOL)
       {
-        LOGGER(l);
         WARN(l) << "FuseBCQPass : do_w_x has wrong type" << std::endl;
         return false;
       }
@@ -283,7 +287,6 @@ private:
       // alpha should be FLOAT32 type
       if (n.second->dtype() != loco::DataType::FLOAT32)
       {
-        LOGGER(l);
         WARN(l) << "FuseBCQPass : alpha has wrong type" << std::endl;
         return false;
       }
@@ -294,7 +297,6 @@ private:
       // packed_binary_code should be INT32 type
       if (n.second->dtype() != loco::DataType::S32)
       {
-        LOGGER(l);
         WARN(l) << "FuseBCQPass : packed_binary_code has wrong type" << std::endl;
         return false;
       }
@@ -305,7 +307,6 @@ private:
       // number_of_clusters should be INT32 type
       if (n.second->dtype() != loco::DataType::S32)
       {
-        LOGGER(l);
         WARN(l) << "FuseBCQPass : number_of_clusters has wrong type" << std::endl;
         return false;
       }
@@ -316,7 +317,6 @@ private:
       // size_of_clusters should be INT32 type
       if (n.second->dtype() != loco::DataType::S32)
       {
-        LOGGER(l);
         WARN(l) << "FuseBCQPass : size_of_clusters has wrong type" << std::endl;
         return false;
       }
@@ -327,10 +327,54 @@ private:
       // qbits_of_clusters should be INT32 type
       if (n.second->dtype() != loco::DataType::S32)
       {
-        LOGGER(l);
         WARN(l) << "FuseBCQPass : qbits_of_clusters has wrong type" << std::endl;
         return false;
       }
+    }
+
+    // As dequant_weight is not used for fusing, skip validation.
+
+    return true;
+  }
+
+  bool is_valid_prefix(int32_t prefix)
+  {
+    LOGGER(l);
+
+    if (_do_w_x.find(prefix) == _do_w_x.end())
+    {
+      WARN(l) << "do_w_x is not found" << std::endl;
+      return false;
+    }
+
+    if (_alpha.find(prefix) == _alpha.end())
+    {
+      WARN(l) << "alpha is not found" << std::endl;
+      return false;
+    }
+
+    if (_packed_binary_code.find(prefix) == _packed_binary_code.end())
+    {
+      WARN(l) << "packed_binary_code is not found" << std::endl;
+      return false;
+    }
+
+    if (_number_of_clusters.find(prefix) == _number_of_clusters.end())
+    {
+      WARN(l) << "number_of_clusters is not found" << std::endl;
+      return false;
+    }
+
+    if (_size_of_clusters.find(prefix) == _size_of_clusters.end())
+    {
+      WARN(l) << "size_of_clusters is not found" << std::endl;
+      return false;
+    }
+
+    if (_qbits_of_clusters.find(prefix) == _qbits_of_clusters.end())
+    {
+      WARN(l) << "qbits_of_clusters is not found" << std::endl;
+      return false;
     }
 
     // As dequant_weight is not used for fusing, skip validation.
