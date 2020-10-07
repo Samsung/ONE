@@ -323,39 +323,15 @@ void ShapeValidator::visit(const ir::operation::SpaceToDepth &node)
 
 void ShapeValidator::visit(const ir::operation::ElementwiseActivation &node) { checkUnaryOp(node); }
 
-void ShapeValidator::visit(const ir::operation::ElementwiseBinary &node)
+void ShapeValidator::visit(const ir::operation::ElementwiseBinary &)
 {
-  const auto output_index{node.getOutputs().at(0)};
-  const auto lhs_index{node.getInputs().at(ir::operation::ElementwiseBinary::Input::LHS)};
-  const auto rhs_index{node.getInputs().at(ir::operation::ElementwiseBinary::Input::RHS)};
-
-  OP_REQUIRES(_ctx.at(lhs_index).typeInfo().type() == _ctx.at(rhs_index).typeInfo().type());
-  OP_REQUIRES(_ctx.at(lhs_index).typeInfo().type() == _ctx.at(output_index).typeInfo().type());
+  // TODO Shape validation of ElementwiseBinary
 }
 
 void ShapeValidator::visit(const ir::operation::ElementwiseUnary &node)
 {
   const auto output_index{node.getOutputs().at(0)};
   const auto input_index{node.getInputs().at(ir::operation::ElementwiseUnary::Input::INPUT)};
-
-  OP_REQUIRES(node.getInputs().size() == 1);
-  OP_REQUIRES(node.getOutputs().size() == 1);
-
-  // Check if I/O types match
-  if (node.param().op_type == ir::operation::ElementwiseUnary::Type::DEQUANTIZE)
-  {
-    OP_REQUIRES(_ctx.at(input_index).typeInfo().type() == ir::DataType::QUANT_UINT8_ASYMM);
-    OP_REQUIRES(_ctx.at(output_index).typeInfo().type() == ir::DataType::FLOAT32);
-  }
-  else if (node.param().op_type == ir::operation::ElementwiseUnary::Type::QUANTIZE)
-  {
-    OP_REQUIRES(_ctx.at(input_index).typeInfo().type() == ir::DataType::FLOAT32);
-    OP_REQUIRES(_ctx.at(output_index).typeInfo().type() == ir::DataType::QUANT_UINT8_ASYMM);
-  }
-  else if (node.param().op_type != ir::operation::ElementwiseUnary::Type::CAST)
-  {
-    OP_REQUIRES(_ctx.at(output_index).typeInfo().type() == _ctx.at(input_index).typeInfo().type());
-  }
 
   if (_ctx.at(output_index).info().isDynamic())
     return;
@@ -376,8 +352,6 @@ void ShapeValidator::visit(const ir::operation::EmbeddingLookup &node)
   // Verify operand here, not at SimpleEmbeddingLookup::configure() to avoid acl's modifying
   // TensorShape sometimes(Issue: https://github.sec.samsung.net/STAR/nnfw/issues/729)
   {
-    OP_REQUIRES(lookups_obj.typeInfo().type() == ir::DataType::INT32);
-
     if (_ctx.at(output_index).info().isDynamic())
       return;
 
@@ -401,12 +375,7 @@ void ShapeValidator::visit(const ir::operation::EmbeddingLookup &node)
 
 void ShapeValidator::visit(const ir::operation::ExpandDims &node)
 {
-  const auto output_index{node.getOutputs().at(0)};
-  const auto input_index{node.getInputs().at(ir::operation::ExpandDims::Input::INPUT)};
   const auto axis_index{node.getInputs().at(ir::operation::ExpandDims::Input::AXIS)};
-
-  OP_REQUIRES(_ctx.at(output_index).typeInfo().type() == _ctx.at(input_index).typeInfo().type());
-  OP_REQUIRES(_ctx.at(axis_index).typeInfo().type() == ir::DataType::INT32);
 
   if (_ctx.at(axis_index).info().isDynamic())
     return;
@@ -416,22 +385,14 @@ void ShapeValidator::visit(const ir::operation::ExpandDims &node)
 void ShapeValidator::visit(const ir::operation::HashtableLookup &node)
 {
   const auto output_index{node.getOutputs().at(ir::operation::HashtableLookup::Output::OUTPUT)};
-  const auto hits_index{node.getOutputs().at(ir::operation::HashtableLookup::Output::HITS)};
-
   const auto lookups_index{node.getInputs().at(ir::operation::HashtableLookup::Input::LOOKUPS)};
   const auto keys_index{node.getInputs().at(ir::operation::HashtableLookup::Input::KEYS)};
   const auto values_index{node.getInputs().at(ir::operation::HashtableLookup::Input::VALUES)};
 
   const auto &output_obj = _ctx.at(output_index);
-  const auto &hits_obj = _ctx.at(hits_index);
-
   const auto &lookups_obj = _ctx.at(lookups_index);
   const auto &keys_obj = _ctx.at(keys_index);
   const auto &values_obj = _ctx.at(values_index);
-
-  OP_REQUIRES(lookups_obj.typeInfo().type() == ir::DataType::INT32);
-  OP_REQUIRES(keys_obj.typeInfo().type() == ir::DataType::INT32);
-  OP_REQUIRES(hits_obj.typeInfo().type() == ir::DataType::QUANT_UINT8_ASYMM);
 
   if (_ctx.at(output_index).info().isDynamic())
     return;
@@ -832,15 +793,6 @@ void ShapeValidator::visit(const ir::operation::StridedSlice &node)
 {
   const auto output_index{node.getOutputs().at(0)};
   const auto input_index{node.getInputs().at(ir::operation::StridedSlice::Input::INPUT)};
-  const auto starts_index{node.getInputs().at(ir::operation::StridedSlice::Input::STARTS)};
-  const auto ends_index{node.getInputs().at(ir::operation::StridedSlice::Input::ENDS)};
-  const auto strides_index{node.getInputs().at(ir::operation::StridedSlice::Input::STRIDES)};
-
-  UNUSED_RELEASE(starts_index);
-  UNUSED_RELEASE(ends_index);
-  UNUSED_RELEASE(strides_index);
-
-  OP_REQUIRES(_ctx.at(output_index).typeInfo().type() == _ctx.at(input_index).typeInfo().type());
 
   if (_ctx.at(output_index).info().isDynamic())
     return;
@@ -902,10 +854,6 @@ void ShapeValidator::visit(const ir::operation::Reverse &node)
 {
   const auto output_index{node.getOutputs().at(0)};
   const auto input_index{node.getInputs().at(ir::operation::Reverse::Input::INPUT)};
-  const auto axis_index{node.getInputs().at(ir::operation::Reverse::Input::AXIS)};
-
-  OP_REQUIRES(_ctx.at(axis_index).typeInfo().type() == ir::DataType::INT32);
-  OP_REQUIRES(_ctx.at(output_index).typeInfo().type() == _ctx.at(input_index).typeInfo().type());
 
   if (_ctx.at(output_index).info().isDynamic())
     return;
@@ -930,10 +878,6 @@ void ShapeValidator::visit(const ir::operation::SquaredDifference &node)
   const auto output_index{node.getOutputs().at(0)};
   const auto lhs_index{node.getInputs().at(ir::operation::SquaredDifference::Input::LHS)};
   const auto rhs_index{node.getInputs().at(ir::operation::SquaredDifference::Input::RHS)};
-
-  // Check for Type equivalence
-  OP_REQUIRES(_ctx.at(output_index).typeInfo().type() == _ctx.at(lhs_index).typeInfo().type());
-  OP_REQUIRES(_ctx.at(lhs_index).typeInfo().type() == _ctx.at(rhs_index).typeInfo().type());
 
   // Check for dimension constraints
   if (_ctx.at(output_index).info().isDynamic())
