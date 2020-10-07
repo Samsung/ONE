@@ -59,6 +59,13 @@ struct ITensorRegistry
    * @return false if not supported
    */
   virtual bool setMigrantTensor(const ir::OperandIndex &, IPortableTensor *) { return false; }
+  /**
+   * @brief Get the tensor that is associated with the given index
+   *
+   * @param[in] index Index of the tensor to be returned
+   * @return true if such entry exists otherwise false
+   */
+  virtual bool exist(const ir::OperandIndex &) const = 0;
 };
 
 } // namespace backend
@@ -129,6 +136,11 @@ public:
     if (itr != _migrant.end())
       throw std::runtime_error{"Tried to set a native tensor but a migrant tensor already exists."};
     _native[ind] = std::move(tensor);
+  }
+
+  bool exist(const ir::OperandIndex &index) const override
+  {
+    return _native.find(index) != _native.end() || _migrant.find(index) != _migrant.end();
   }
 
   const ir::OperandIndexMap<std::unique_ptr<T_Tensor>> &native_tensors() { return _native; }

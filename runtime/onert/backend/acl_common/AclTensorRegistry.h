@@ -40,6 +40,8 @@ public:
 
   ITensor *getNativeITensor(const ir::OperandIndex &ind) override { return getITensor(ind); }
 
+  bool exist(const ir::OperandIndex &ind) const override { return _tensor_mgr->at(ind) != nullptr; }
+
   auto getAclTensor(const ir::OperandIndex &ind) { return _tensor_mgr->at(ind).get(); }
 
 private:

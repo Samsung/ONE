@@ -115,6 +115,8 @@ public:
     _native_user_tensors[ind] = std::move(tensor);
   }
 
+  bool exist(const ir::OperandIndex &ind) const override { return _base_reg->exist(ind); }
+
   const ir::OperandIndexMap<std::unique_ptr<UserTensor>> &native_user_tensors()
   {
     return _native_user_tensors;
