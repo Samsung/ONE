@@ -138,6 +138,34 @@ void DynamicShapeInferer::visit(const ir::operation::BatchMatMul &op)
   output->applyShape(new_shape);
 }
 
+void DynamicShapeInferer::visit(const ir::operation::BCQFullyConnected &op)
+{
+  const auto input_idx{op.getInputs().at(ir::operation::BCQFullyConnected::Input::INPUT)};
+  const auto &input = _tensor_registry->getITensor(input_idx);
+
+  const auto cluster_idx{
+      op.getInputs().at(ir::operation::BCQFullyConnected::Input::WEIGHTS_CLUSTERS)};
+  const auto &cluster = _tensor_registry->getITensor(cluster_idx);
+
+  if (!input->is_dynamic())
+    return;
+
+  auto input_shape = input->getShape();
+  auto cluster_shape = cluster->getShape();
+
+  auto cluster_buf = reinterpret_cast<const int32_t *>(cluster->buffer());
+  assert(cluster_buf);
+
+  ir::Shape new_shape =
+      shape_inference::inferBCQFullyConnectedShape(input_shape, cluster_shape, cluster_buf);
+
+  auto output_ind = op.getOutputs().at(0);
+  auto output = _tensor_registry->getITensor(output_ind);
+
+  output->applyShape(new_shape);
+  assert(output->buffer() != nullptr);
+}
+
 void DynamicShapeInferer::visit(const ir::operation::BinaryArithmetic &op)
 {
   handleBinaryArithmeticOp(op, op.getInputs().at(ir::operation::BinaryArithmetic::Input::LHS),

@@ -392,6 +392,22 @@ ir::Shape inferFullyConnectedShape(const ir::Shape &in_shape, const ir::Shape &k
   return {ir::Shape({static_cast<int32_t>(batch_size), num_units})};
 }
 
+ir::Shape inferBCQFullyConnectedShape(const ir::Shape &in_shape, const ir::Shape &cluster_shape,
+                                      const int32_t *cluster_buf)
+{
+  assert(cluster_shape.rank() == 2);
+  assert(cluster_shape.dim(1) == 2);
+
+  const auto input_size = in_shape.dim(1);
+  auto output_size = 0;
+  for (int idx = 0; idx < cluster_shape.dim(0); idx++)
+  {
+    output_size += cluster_buf[idx * 2 + 1];
+  }
+
+  return {ir::Shape({output_size, input_size})};
+}
+
 ir::Shape inferGatherShape(const ir::Shape &input_shape, const ir::Shape &indices_shape, int axis,
                            int rank)
 {
