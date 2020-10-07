@@ -23,6 +23,8 @@ if [ $? -ne 4 ]; then
   exit 2
 fi
 
+DRIVER_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
 # usage
 Usage()
 {
@@ -40,7 +42,6 @@ Usage()
 }
 
 # version
-DRIVER_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 Version()
 {
   if [ -x "$DRIVER_PATH/one-version" ]; then
