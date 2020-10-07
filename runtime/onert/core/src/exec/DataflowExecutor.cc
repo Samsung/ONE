@@ -159,6 +159,8 @@ void DataflowExecutor::executeImpl()
 
     _subject.notifyJobBegin(this, op_seq, backend);
 
+    job->fn_seq()->initRunning();
+
     // check if FunctionSequence needs to handle dynamic tensor
     bool handle_dynamic_tensor = op_seq->has_dynamic_tensor() || dynamic_input_exists;
     job->fn_seq()->enableDynamicShapeInferer(handle_dynamic_tensor);

@@ -107,6 +107,16 @@ public: // methods related to dynamic tensor
     _enable_dynamic_shape_inferer = _enable_dynamic_shape_inferer && enable;
   }
 
+  /**
+   * @brief Call this function to initialize vars before running
+   * @note When we run a model with static tensor input and then run with dynamic tensor input,
+   *       _enable_dynamic_shape_inferer is set to @c false at first run.
+   *       Once _enable_dynamic_shape_inferer is set to @c false it cannot be changed to @c true
+   *       only with calling enableDynamicShapeInferer(). So initializing it to @c true is
+   *       necessary.
+   */
+  void initRunning() { _enable_dynamic_shape_inferer = true; }
+
 protected:
   std::vector<std::unique_ptr<IFunction>> _functions;
 

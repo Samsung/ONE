@@ -51,8 +51,10 @@ void LinearExecutor::executeImpl()
     _subject.notifyJobBegin(this, op_seq, backend);
 
     auto &fn_seq = code.fn_seq;
-    bool handle_dynamic_tensor = op_seq->has_dynamic_tensor() || hasDynamicInput();
 
+    fn_seq->initRunning();
+
+    bool handle_dynamic_tensor = op_seq->has_dynamic_tensor() || hasDynamicInput();
     fn_seq->enableDynamicShapeInferer(handle_dynamic_tensor);
     fn_seq->run();
 
