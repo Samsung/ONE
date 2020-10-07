@@ -85,6 +85,7 @@ private:
   void visit(const ir::operation::Gather &op) override;
   void visit(const ir::operation::If &op) override;
   void visit(const ir::operation::L2Normalization &op) override;
+  void visit(const ir::operation::LSTM &op) override;
   void visit(const ir::operation::MatrixBandPart &op) override;
   void visit(const ir::operation::OneHot &op) override;
   void visit(const ir::operation::Pack &op) override;

@@ -449,6 +449,98 @@ void StaticShapeInferer::visit(const ir::operation::L2Normalization &op)
   handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::L2Normalization::Input::INPUT));
 }
 
+void StaticShapeInferer::visit(const ir::operation::LSTM &op)
+{
+  const auto output_index{op.getOutputs().at(ir::operation::LSTM::Output::OUTPUT)};
+  auto &output = _operands.at(output_index);
+
+  const auto output_state_out_index{
+      op.getOutputs().at(ir::operation::LSTM::Output::OUTPUT_STATE_OUT)};
+
+  const auto cell_state_out_index{op.getOutputs().at(ir::operation::LSTM::Output::CELL_STATE_OUT)};
+
+  const auto scratch_buffer_index{op.getOutputs().at(ir::operation::LSTM::Output::SCRATCH_BUFFER)};
+
+  if (output.info().isDynamic() || (_operands.exist(output_state_out_index) &&
+                                    _operands.at(output_state_out_index).info().isDynamic()) ||
+      (_operands.exist(cell_state_out_index) &&
+       _operands.at(cell_state_out_index).info().isDynamic()) ||
+      (_operands.exist(scratch_buffer_index) &&
+       _operands.at(scratch_buffer_index).info().isDynamic()))
+    return;
+
+  const auto input_index{op.getInputs().at(ir::operation::LSTM::Input::INPUT)};
+  const auto &input = _operands.at(input_index);
+
+  const auto input_to_output_weights_index{
+      op.getInputs().at(ir::operation::LSTM::Input::INPUT_TO_OUTPUT_WEIGHTS)};
+  const auto &input_to_output_weights = _operands.at(input_to_output_weights_index);
+
+  const auto recurrent_to_output_weights_index{
+      op.getInputs().at(ir::operation::LSTM::Input::RECURRENT_TO_OUTPUT_WEIGHTS)};
+  const auto &recurrent_to_output_weights = _operands.at(recurrent_to_output_weights_index);
+
+  // re-sizing outputs
+  const int n_batch = (input.shape().rank() == 3 && op.param().time_major) ? input.shape().dim(1)
+                                                                           : input.shape().dim(0);
+  const int n_cell = input_to_output_weights.shape().dim(0);
+  const int n_output = recurrent_to_output_weights.shape().dim(1);
+  if (input.shape().rank() == 3)
+  {
+    if (op.param().time_major)
+      output.info().shape(ir::Shape{input.shape().dim(0), n_batch, n_output});
+    else
+      output.info().shape(ir::Shape{n_batch, input.shape().dim(1), n_output});
+  }
+  else
+  {
+    assert(input.shape().rank() == 2);
+    output.info().shape(ir::Shape{n_batch, n_output});
+  }
+
+  if (_operands.exist(output_state_out_index))
+  {
+    auto &output_state_out = _operands.at(output_state_out_index);
+    output_state_out.info().shape(ir::Shape{n_batch, n_output});
+  }
+
+  if (_operands.exist(cell_state_out_index))
+  {
+    auto &cell_state_out = _operands.at(cell_state_out_index);
+    cell_state_out.info().shape(ir::Shape{n_batch, n_cell});
+  }
+
+  if (_operands.exist(scratch_buffer_index))
+  {
+    auto &scratch_buffer = _operands.at(scratch_buffer_index);
+
+    const auto input_to_input_weights_index{
+        op.getInputs().at(ir::operation::LSTM::Input::INPUT_TO_INPUT_WEIGHTS)};
+    const auto recurrent_to_input_weights_index{
+        op.getInputs().at(ir::operation::LSTM::Input::RECURRENT_TO_INPUT_WEIGHTS)};
+
+    bool has_input_to_input_weights =
+        _operands.at(input_to_input_weights_index).shape().dim(0) != 0 &&
+        _operands.at(input_to_input_weights_index).shape().dim(1) != 0;
+    bool has_recurrent_to_input_weights =
+        _operands.at(recurrent_to_input_weights_index).shape().dim(0) != 0 &&
+        _operands.at(recurrent_to_input_weights_index).shape().dim(1) != 0;
+
+    // NOTE The cell_to_input_weights do not exist in non-peephole although regular LSTM(non-CIFG).
+    // true: no CIFG
+    // false: CIFG
+    bool has_cifg_param = has_input_to_input_weights && has_recurrent_to_input_weights;
+    if (has_cifg_param)
+    {
+      scratch_buffer.info().shape(ir::Shape{n_batch, n_cell * 4});
+    }
+    else
+    {
+      scratch_buffer.info().shape(ir::Shape{n_batch, n_cell * 3});
+    }
+  }
+}
+
 void StaticShapeInferer::visit(const ir::operation::MatrixBandPart &op)
 {
   handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::MatrixBandPart::Input::INPUT));
