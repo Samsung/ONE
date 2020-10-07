@@ -34,7 +34,8 @@ namespace compiler
 static uint32_t getOperationsFlattenedIOSize(const ir::Graph &graph, const ir::Operation &node)
 {
   uint32_t size = 0;
-  for (const auto &ind : (node.getInputs() | ir::Remove::UNDEFINED) + node.getOutputs())
+  for (const auto &ind :
+       (node.getInputs() | ir::Remove::UNDEFINED) + (node.getOutputs() | ir::Remove::UNDEFINED))
   {
     size += graph.operands().at(ind).info().total_size();
   }
@@ -371,7 +372,7 @@ int64_t HEScheduler::DFSChildrenMaxRank(const ir::OperationIndex &index)
 {
   const auto &node = _graph->operations().at(index);
   int64_t max_child_rank = 0;
-  for (const auto &output : node.getOutputs())
+  for (const auto &output : node.getOutputs() | ir::Remove::UNDEFINED)
   {
     const auto &operand = _graph->operands().at(output);
     const bool quant = operand.typeInfo().type() == ir::DataType::QUANT_UINT8_ASYMM;

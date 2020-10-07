@@ -212,7 +212,7 @@ void PermutationOperationPass::changeToKeepLayout(const Operation &node)
       }
     }
 
-    for (const auto &output : node.getOutputs() | Remove::DUPLICATED)
+    for (const auto &output : node.getOutputs() | Remove::DUPLICATED | Remove::UNDEFINED)
     {
       auto lower_info = _lowered_graph.getLowerInfo(output);
       lower_info->removeDefPermuteFactor(removed_factor);
