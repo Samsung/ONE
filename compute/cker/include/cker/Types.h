@@ -34,6 +34,8 @@ enum class FusedActivationFunctionType
   kRelu6 = 1,
   kRelu1 = 2,
   kRelu = 3,
+  kTanh = 4,
+  kSigmoid = 6,
 };
 enum class PaddingType
 {
@@ -266,6 +268,27 @@ struct L2NormParams
 {
   // uint8 inference params.
   int32_t input_zero_point;
+};
+
+enum LSTMKernelType
+{
+  kTfLiteLSTMFullKernel = 0,
+  kTfLiteLSTMBasicKernel
+};
+
+struct LSTMParams
+{
+  // Parameters for LSTM version 1.
+  FusedActivationFunctionType activation{FusedActivationFunctionType::kNone};
+  float cell_clip;
+  float proj_clip;
+
+  // Parameters for LSTM version 2.
+  // kTfLiteLSTMBasicKernel is only supported in version 2 or above.
+  LSTMKernelType kernel_type;
+
+  // Parameters for LSTM version 4.
+  bool asymmetric_quantize_inputs;
 };
 
 struct GatherParams

@@ -63,6 +63,7 @@ public:
   void visit(const ir::operation::ElementwiseBinary &) override;
   void visit(const ir::operation::ElementwiseUnary &) override;
   void visit(const ir::operation::ExpandDims &) override;
+  void visit(const ir::operation::LSTM &) override;
   void visit(const ir::operation::Pad &) override;
   void visit(const ir::operation::Pack &) override;
   void visit(const ir::operation::Unpack &) override;
