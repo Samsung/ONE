@@ -24,7 +24,7 @@ if [ $? -ne 4 ]; then
 fi
 
 # usage
-function Usage()
+Usage()
 {
   echo "Usage: ./$(basename ${BASH_SOURCE[0]}) -c one-build.cfg [OPTIONS_TO_OVERWRITE]"
   echo ""
@@ -41,7 +41,7 @@ function Usage()
 
 # version
 DRIVER_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-function Version()
+Version()
 {
   if [ -x "$DRIVER_PATH/one-version" ]; then
     $DRIVER_PATH/one-version one-build
