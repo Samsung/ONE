@@ -1599,6 +1599,14 @@ void KernelGenerator::visit(const ir::operation::Reverse &node)
   auto ifm_tensor = _tensor_reg->getAclTensor(ifm_index);
   auto axis_tensor = _tensor_reg->getAclTensor(axis_index);
 
+  // WORKAROUND: acl-cl backend only allow U32 type for axis
+  //             ConstantInitializer will resolve S32 type to U32 type
+  if (_ctx.at(axis_index).isConstant() &&
+      (axis_tensor->handle()->info()->data_type() == arm_compute::DataType::S32))
+  {
+    axis_tensor->handle()->info()->set_data_type(arm_compute::DataType::U32);
+  }
+
   auto fn = acl_common::generateLayer<arm_compute::CLReverse>(
       ifm_tensor->handle(), ofm_tensor->handle(), axis_tensor->handle());
 

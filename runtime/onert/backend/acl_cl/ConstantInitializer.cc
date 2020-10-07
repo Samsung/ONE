@@ -119,7 +119,8 @@ void ConstantInitializer::visit(const ir::operation::Reverse &node)
 
   if (axis_obj.isConstant())
   {
-    _init_map[axis_index] = [&](const ir::Operand &operand, backend::ITensor &obj) {
+    _init_map[axis_index] = [ifm_rank, frontend_layout, backend_layout](const ir::Operand &operand,
+                                                                        backend::ITensor &obj) {
       assert(operand.data());
 
       const auto axis_value = *(reinterpret_cast<const int32_t *>(operand.data()->base()));
