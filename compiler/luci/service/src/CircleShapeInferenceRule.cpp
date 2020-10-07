@@ -1616,7 +1616,7 @@ loco::NodeShape infer_unidirectionalsequencelstm(const luci::CircleUnidirectiona
   auto rank = input_shape.rank();
   loco::TensorShape output_shape;
   output_shape.rank(rank);
-  for (int32_t i = 0; i < rank - 1; i++)
+  for (uint32_t i = 0; i < rank - 1; i++)
   {
     output_shape.dim(i) = input_shape.dim(i);
   }
