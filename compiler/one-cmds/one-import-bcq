@@ -186,29 +186,25 @@ trap show_err_onexit ERR
 
 # Generate BCQ information metadata
 # If model has no BCQ information or invalid information, pb file is not changed.
-echo "${DRIVER_PATH}/generate_bcq_metadata" \
---input_path "${INPUT_PATH}" \
---output_path "${TMPDIR}/${MODEL_NAME}_withmeta.pb" \
---output_arrays "${OUTPUT_ARRAYS}" > "${OUTPUT_PATH}.log"
-echo " " >> "${OUTPUT_PATH}.log"
+METAGEN_SCRIPT="${DRIVER_PATH}/generate_bcq_metadata "
+METAGEN_SCRIPT+="--input_path ${INPUT_PATH} "
+METAGEN_SCRIPT+="--output_path ${TMPDIR}/${MODEL_NAME}_withmeta.pb "
+METAGEN_SCRIPT+="--output_arrays ${OUTPUT_ARRAYS} "
 
-"${DRIVER_PATH}/generate_bcq_metadata" \
---input_path "${INPUT_PATH}" \
---output_path "${TMPDIR}/${MODEL_NAME}_withmeta.pb" \
---output_arrays "${OUTPUT_ARRAYS}"
+echo ${METAGEN_SCRIPT} > "${OUTPUT_PATH}.log"
+echo "" >> "${OUTPUT_PATH}.log"
+$METAGEN_SCRIPT >> "${OUTPUT_PATH}.log" 2>&1
 
 # Generate BCQ information nodes as output_arrays
 # If model has no BCQ information, output_arrays would be empty.
-echo "${DRIVER_PATH}/generate_bcq_output_arrays" \
---input_path "${TMPDIR}/${MODEL_NAME}_withmeta.pb" \
---metadata_path "${TMPDIR}/${MODEL_NAME}_metadata_arrays.txt" \
---output_arrays_path "${TMPDIR}/${MODEL_NAME}_output_arrays.txt" > "${OUTPUT_PATH}.log"
-echo " " >> "${OUTPUT_PATH}.log"
+OUTARR_GEN_SCRIPT="${DRIVER_PATH}/generate_bcq_output_arrays "
+OUTARR_GEN_SCRIPT+="--input_path ${TMPDIR}/${MODEL_NAME}_withmeta.pb "
+OUTARR_GEN_SCRIPT+="--metadata_path ${TMPDIR}/${MODEL_NAME}_metadata_arrays.txt "
+OUTARR_GEN_SCRIPT+="--output_arrays_path ${TMPDIR}/${MODEL_NAME}_output_arrays.txt "
 
-"${DRIVER_PATH}/generate_bcq_output_arrays" \
---input_path "${TMPDIR}/${MODEL_NAME}_withmeta.pb" \
---metadata_path "${TMPDIR}/${MODEL_NAME}_metadata_arrays.txt" \
---output_arrays_path "${TMPDIR}/${MODEL_NAME}_output_arrays.txt"
+echo ${OUTARR_GEN_SCRIPT} > "${OUTPUT_PATH}.log"
+echo "" >> "${OUTPUT_PATH}.log"
+$OUTARR_GEN_SCRIPT >> "${OUTPUT_PATH}.log" 2>&1
 
 # generate tflite file
 CONVERT_SCRIPT="python ${DRIVER_PATH}/tf2tfliteV2.py ${TF_INTERFACE} "
