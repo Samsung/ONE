@@ -267,8 +267,6 @@ private:
 
   bool is_bcqinfo_valid()
   {
-    std::set<int32_t> ref_prefix_set;
-
     for (auto n : _do_w_x)
     {
       // do_w_x should be BOOL type
@@ -278,9 +276,6 @@ private:
         WARN(l) << "FuseBCQPass : do_w_x has wrong type" << std::endl;
         return false;
       }
-
-      // Generate reference prefix set
-      ref_prefix_set.insert(n.first);
     }
 
     for (auto n : _alpha)
@@ -290,13 +285,6 @@ private:
       {
         LOGGER(l);
         WARN(l) << "FuseBCQPass : alpha has wrong type" << std::endl;
-        return false;
-      }
-
-      if (ref_prefix_set.find(n.first) == ref_prefix_set.end())
-      {
-        LOGGER(l);
-        WARN(l) << "FuseBCQPass : Invalid prefix is found" << std::endl;
         return false;
       }
     }
@@ -310,13 +298,6 @@ private:
         WARN(l) << "FuseBCQPass : packed_binary_code has wrong type" << std::endl;
         return false;
       }
-
-      if (ref_prefix_set.find(n.first) == ref_prefix_set.end())
-      {
-        LOGGER(l);
-        WARN(l) << "FuseBCQPass : Invalid prefix is found" << std::endl;
-        return false;
-      }
     }
 
     for (auto n : _number_of_clusters)
@@ -326,13 +307,6 @@ private:
       {
         LOGGER(l);
         WARN(l) << "FuseBCQPass : number_of_clusters has wrong type" << std::endl;
-        return false;
-      }
-
-      if (ref_prefix_set.find(n.first) == ref_prefix_set.end())
-      {
-        LOGGER(l);
-        WARN(l) << "FuseBCQPass : Invalid prefix is found" << std::endl;
         return false;
       }
     }
@@ -346,13 +320,6 @@ private:
         WARN(l) << "FuseBCQPass : size_of_clusters has wrong type" << std::endl;
         return false;
       }
-
-      if (ref_prefix_set.find(n.first) == ref_prefix_set.end())
-      {
-        LOGGER(l);
-        WARN(l) << "FuseBCQPass : Invalid prefix is found" << std::endl;
-        return false;
-      }
     }
 
     for (auto n : _qbits_of_clusters)
@@ -362,23 +329,6 @@ private:
       {
         LOGGER(l);
         WARN(l) << "FuseBCQPass : qbits_of_clusters has wrong type" << std::endl;
-        return false;
-      }
-
-      if (ref_prefix_set.find(n.first) == ref_prefix_set.end())
-      {
-        LOGGER(l);
-        WARN(l) << "FuseBCQPass : Invalid prefix is found" << std::endl;
-        return false;
-      }
-    }
-
-    for (auto n : _fusable_op)
-    {
-      if (ref_prefix_set.find(n.first) == ref_prefix_set.end())
-      {
-        LOGGER(l);
-        WARN(l) << "FuseBCQPass : Invalid prefix is found" << std::endl;
         return false;
       }
     }
