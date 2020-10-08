@@ -116,3 +116,65 @@ TEST_F(GenModelTest, TensorBothInputOutputCrossed)
 
   SUCCEED();
 }
+
+TEST_F(GenModelTest, OneTensor_TwoOutputs)
+{
+  CircleGen cgen;
+  int lhs = cgen.addTensor({{2}, circle::TensorType::TensorType_FLOAT32});
+  int rhs = cgen.addTensor({{2}, circle::TensorType::TensorType_FLOAT32});
+  int out = cgen.addTensor({{2}, circle::TensorType::TensorType_FLOAT32});
+  cgen.addOperatorAdd({{lhs, rhs}, {out}}, circle::ActivationFunctionType_NONE);
+  cgen.setInputsAndOutputs({lhs, rhs}, {out, out}); // Same tensors are used twice as output
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->addTestCase(uniformTCD<float>({{1, 1}, {2, 2}}, {{3, 3}, {3, 3}}));
+  _context->addTestCase(uniformTCD<float>({{2, 4}, {7, 4}}, {{9, 8}, {9, 8}}));
+  _context->setBackends({"acl_cl", "acl_neon", "cpu"});
+
+  SUCCEED();
+}
+
+TEST_F(GenModelTest, OneTensor_ThreeOutputs)
+{
+  CircleGen cgen;
+  int lhs = cgen.addTensor({{1}, circle::TensorType::TensorType_FLOAT32});
+  int rhs = cgen.addTensor({{1}, circle::TensorType::TensorType_FLOAT32});
+  int out = cgen.addTensor({{1}, circle::TensorType::TensorType_FLOAT32});
+  cgen.addOperatorAdd({{lhs, rhs}, {out}}, circle::ActivationFunctionType_NONE);
+  cgen.setInputsAndOutputs({lhs, rhs}, {out, out, out}); // Same tensors are used 3 times as output
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->addTestCase(uniformTCD<float>({{1}, {2}}, {{3}, {3}, {3}}));
+  _context->addTestCase(uniformTCD<float>({{2}, {7}}, {{9}, {9}, {9}}));
+  _context->setBackends({"acl_cl", "acl_neon", "cpu"});
+
+  SUCCEED();
+}
+
+TEST_F(GenModelTest, OneTensor_InputAndTwoOutputs)
+{
+  CircleGen cgen;
+  int t = cgen.addTensor({{2}, circle::TensorType::TensorType_FLOAT32});
+  cgen.setInputsAndOutputs({t}, {t, t}); // Same tensor is an input and 2 outputs
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->addTestCase(uniformTCD<float>({{1, 1}}, {{1, 1}, {1, 1}}));
+  _context->addTestCase(uniformTCD<float>({{2, 4}}, {{2, 4}, {2, 4}}));
+  _context->setBackends({"acl_cl", "acl_neon", "cpu"});
+
+  SUCCEED();
+}
+
+TEST_F(GenModelTest, OneTensor_ConstAndThreeOutputs)
+{
+  CircleGen cgen;
+  uint32_t const_buf = cgen.addBuffer(std::vector<float>{2, 5});
+  int t = cgen.addTensor({{2}, circle::TensorType_FLOAT32, const_buf});
+  cgen.setInputsAndOutputs({}, {t, t, t}); // A const tensor is 3 outputs
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->addTestCase(uniformTCD<float>({}, {{2, 5}, {2, 5}, {2, 5}}));
+  _context->setBackends({"acl_cl", "acl_neon", "cpu"});
+
+  SUCCEED();
+}
