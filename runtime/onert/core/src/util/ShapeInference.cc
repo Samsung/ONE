@@ -265,19 +265,19 @@ ir::Shape inferBatchMatMulShape(const ir::Shape &lhs_shape, const ir::Shape &rhs
   return output_shape;
 }
 
-ir::Shape inferBroadcastToShape(const ir::Shape wshape, const int32_t *shape_buffer)
+ir::Shape inferBroadcastToShape(const ir::Shape shp_shape, const int32_t *shape_buf)
 {
-  const int num_elements = wshape.num_elements();
+  const int num_elements = shp_shape.num_elements();
 
   assert(num_elements != 0);
-  assert(shape_buffer);
+  assert(shape_buf);
 
   ir::Shape new_shape(num_elements);
 
   for (int i = 0; i < num_elements; ++i)
   {
-    assert(shape_buffer[i] != 0); // It shouldn't be 0.
-    new_shape.dim(i) = shape_buffer[i];
+    assert(shape_buf[i] != 0); // It shouldn't be 0.
+    new_shape.dim(i) = shape_buf[i];
   }
 
   return new_shape;
@@ -366,13 +366,13 @@ ir::Shape inferExpandDimsShape(const ir::Shape &in_shape, int32_t axis)
   return out_shape;
 }
 
-ir::Shape inferFillShape(const ir::Shape &in_shape, const int32_t *buffer)
+ir::Shape inferFillShape(const ir::Shape &in_shape, const int32_t *in_buf)
 {
   ir::Shape out_shape(in_shape.dim(0));
 
   for (int out_x = 0; out_x < out_shape.rank(); ++out_x)
   {
-    out_shape.dim(out_x) = buffer[out_x];
+    out_shape.dim(out_x) = in_buf[out_x];
   }
 
   return out_shape;
@@ -655,7 +655,8 @@ ir::Shape inferSelectShape(const ir::Shape &input_cond_shape, const ir::Shape &i
   return new_shape;
 }
 
-ir::Shape inferSliceShape(const ir::Shape &input_shape, const int32_t *begins, const int32_t *sizes)
+ir::Shape inferSliceShape(const ir::Shape &input_shape, const int32_t *begins_buf,
+                          const int32_t *sizes_buf)
 {
   const uint32_t rank = input_shape.rank();
   ir::Shape out_shape(rank);
@@ -665,12 +666,12 @@ ir::Shape inferSliceShape(const ir::Shape &input_shape, const int32_t *begins, c
     const auto input_dim = input_shape.dim(idx);
 
     // begin is zero-based
-    auto begin = begins[idx];
+    auto begin = begins_buf[idx];
     if (begin < 0)
       throw std::runtime_error("shape inference Slice: Invalid begin.");
 
     // size is one-based
-    auto size = sizes[idx];
+    auto size = sizes_buf[idx];
     if (size < -1)
       throw std::runtime_error("shape inference Slice: Invalid size.");
 
@@ -690,8 +691,8 @@ ir::Shape inferSliceShape(const ir::Shape &input_shape, const int32_t *begins, c
 }
 
 ir::Shape inferSpaceToBatchNDShape(const ir::Shape &input_shape, const ir::Shape &block_shape_shape,
-                                   const ir::Shape &padding_shape, const int32_t *block_shape_data,
-                                   const int32_t *padding_data)
+                                   const ir::Shape &padding_shape, const int32_t *block_shape_buf,
+                                   const int32_t *padding_buf)
 {
   const uint32_t rank = input_shape.rank();
   ir::Shape out_shape(rank);
@@ -719,14 +720,14 @@ ir::Shape inferSpaceToBatchNDShape(const ir::Shape &input_shape, const ir::Shape
   for (int dim = 0; dim < kSpatialDimensionNum; ++dim)
   {
     int final_dim_size =
-        (input_shape.dim(dim + 1) + padding_data[dim * 2] + padding_data[dim * 2 + 1]);
+        (input_shape.dim(dim + 1) + padding_buf[dim * 2] + padding_buf[dim * 2 + 1]);
 
-    assert(final_dim_size % block_shape_data[dim] == 0);
+    assert(final_dim_size % block_shape_buf[dim] == 0);
 
-    out_shape.dim(dim + 1) = final_dim_size / block_shape_data[dim];
+    out_shape.dim(dim + 1) = final_dim_size / block_shape_buf[dim];
   }
 
-  const int output_batch_size = input_shape.dim(0) * block_shape_data[0] * block_shape_data[1];
+  const int output_batch_size = input_shape.dim(0) * block_shape_buf[0] * block_shape_buf[1];
   const int output_channel_size = input_shape.dim(3);
 
   out_shape.dim(0) = output_batch_size;
@@ -990,7 +991,7 @@ ir::Shape inferStridedSliceShape(const ir::Shape &input_shape, const StridedSlic
   return out_shape;
 }
 
-ir::Shape inferTileShape(const ir::Shape &in_shape, const int32_t *multiplier,
+ir::Shape inferTileShape(const ir::Shape &in_shape, const int32_t *multiplier_buf,
                          const int32_t multiplier_size)
 {
   if (multiplier_size != in_shape.rank())
@@ -1003,13 +1004,13 @@ ir::Shape inferTileShape(const ir::Shape &in_shape, const int32_t *multiplier,
 
   for (int i = 0; i < in_shape.rank(); ++i)
   {
-    assert(multiplier[i]); // multiplier[i] shuld not be 0.
-    new_Shape.dim(i) = in_shape.dim(i) * multiplier[i];
+    assert(multiplier_buf[i]); // multiplier_buf[i] shuld not be 0.
+    new_Shape.dim(i) = in_shape.dim(i) * multiplier_buf[i];
   }
   return new_Shape;
 }
 
-ir::Shape inferTransposeShape(const ir::Shape &in_shape, const int32_t *perm,
+ir::Shape inferTransposeShape(const ir::Shape &in_shape, const int32_t *perm_buf,
                               const int32_t perm_size)
 {
   const auto rank = in_shape.rank();
@@ -1019,7 +1020,7 @@ ir::Shape inferTransposeShape(const ir::Shape &in_shape, const int32_t *perm,
                              std::to_string(perm_size));
   }
 
-  const int32_t *perm_data = perm;
+  const int32_t *perm_data = perm_buf;
   std::vector<int32_t> regular_perm_vec;
   if (perm_size == 0)
   {
