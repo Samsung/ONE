@@ -267,9 +267,10 @@ inline void StridedSlice(const StridedSliceParams &op_params, const Shape &unext
   int st_count = op_params.strides_count;
   for (int idx = 0; idx < st_count - 1; idx++)
   {
+    const int axis_size = unextended_input_shape.Dims(idx);
     const int start = StartForAxis(op_params, unextended_input_shape, idx);
-    const int stop = StopForAxis(op_params, unextended_input_shape, 0, start);
-    if (start != 0 || stop != 0)
+    const int stop = StopForAxis(op_params, unextended_input_shape, idx, start);
+    if ((axis_size != 1) && (start != 0 || stop != 0))
     {
       optimize = false;
       break;
