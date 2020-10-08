@@ -38,24 +38,7 @@ void OddOutputPass::run()
   {
     if (_graph.getInputs().contains(ind))
     {
-      auto &obj = _graph.operands().at(ind);
-
-      auto permute_output_ind = _graph.addOperand(obj.shape(), obj.typeInfo());
-      auto &permute_output_obj = _graph.operands().at(permute_output_ind);
-
-      using ir::operation::Permute;
-      auto permute_obj = std::make_unique<Permute>(ind, permute_output_ind, Permute::Type::COPY);
-      auto permute_ind = _graph.operations().push(std::move(permute_obj));
-
-      permute_output_obj.setDef(permute_ind);
-      obj.insertUse(permute_ind);
-
-      VERBOSE(OddOutputPass) << "Permute Op inserted for a constant output, node index : "
-                             << permute_ind << std::endl;
-      VERBOSE(OddOutputPass) << "  - Input (original) Operand : " << ind << std::endl;
-      VERBOSE(OddOutputPass) << "  - Output(inserted) Operand : " << permute_output_ind
-                             << std::endl;
-
+      auto permute_output_ind = insertPermute(ind);
       // Update the output to be newly added operand
       _graph.getOutputs().replace(ind, permute_output_ind);
     }
