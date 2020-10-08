@@ -17,6 +17,8 @@
 
 #include "kernels/TestUtils.h"
 
+#include <stdexcept>
+
 namespace luci_interpreter
 {
 namespace kernels
@@ -36,8 +38,20 @@ Tensor makeOutputTensor(DataType element_type, float scale, int32_t zero_point)
 
 std::vector<float> dequantizeTensorData(const Tensor &tensor)
 {
-  assert(tensor.element_type() == DataType::U8);
-  return dequantize(extractTensorData<uint8_t>(tensor), tensor.scale(), tensor.zero_point());
+  if (tensor.element_type() == DataType::U8)
+  {
+    return dequantize(extractTensorData<uint8_t>(tensor), tensor.scale(), tensor.zero_point());
+  }
+  else if (tensor.element_type() == DataType::S16)
+  {
+    // S16 quantization is symmetric, so zero point should be zero.
+    assert(tensor.zero_point() == 0);
+    return dequantize(extractTensorData<int16_t>(tensor), tensor.scale(), 0);
+  }
+  else
+  {
+    throw std::runtime_error("Unsupported type.");
+  }
 }
 
 Matcher<std::vector<float>> FloatArrayNear(const std::vector<float> &values, float max_abs_error)
