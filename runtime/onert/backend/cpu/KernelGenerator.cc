@@ -232,12 +232,10 @@ void KernelGenerator::visit(const ir::OpSequence &op_seq)
     dyn_ctx->op_seq = &op_seq;
     dyn_ctx->operations = &_operations_ctx;
     dyn_ctx->dynamic_shape_inferer = std::move(dyn_shape_inferer);
-    dyn_ctx->tensor_registry = _tensor_reg;
     dyn_ctx->dynamic_tensor_manager = _tensor_builder->dynamicTensorManager();
 
     _return_fn_seq->dynamic_tensor_ctx(dyn_ctx);
   }
-  _return_fn_seq->enableDynamicShapeInferer(true);
 
   _current_op_seq_layout = op_seq.getLayout();
   for (const auto &operation_idx : op_seq.operations())
