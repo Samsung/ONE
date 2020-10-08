@@ -428,3 +428,59 @@ TEST(ShapeInference, BCQFullyConnected)
   ASSERT_EQ(infered_out_shape.dim(0), 30);
   ASSERT_EQ(infered_out_shape.dim(1), 1);
 }
+
+TEST(ShapeInference, Gather)
+{
+  auto check = [&](Shape &input, Shape &indices, Shape &expected, int32_t axis) {
+    int rank = input.rank();
+    auto actual = onert::shape_inference::inferGatherShape(input, indices, axis, rank);
+
+    for (int32_t dim = 0; dim < expected.rank(); dim++)
+      ASSERT_EQ(actual.dim(dim), expected.dim(dim));
+  };
+
+  // check for 2-D, 3-D, axis 0
+  {
+    Shape input{3, 4};
+    Shape indices{1, 1, 2};
+    int32_t axis = 0;
+    Shape expected{1, 1, 2, 4};
+    check(input, indices, expected, axis);
+  }
+
+  // check for 2-D, 3-D, axis 1
+  {
+    Shape input{3, 4};
+    Shape indices{1, 2, 1};
+    int32_t axis = 1;
+    Shape expected{3, 1, 2, 1};
+    check(input, indices, expected, axis);
+  }
+
+  // check for 3-D, 2-D, axis 0
+  {
+    Shape input{2, 3, 4};
+    Shape indices{1, 2};
+    int32_t axis = 0;
+    Shape expected{1, 2, 3, 4};
+    check(input, indices, expected, axis);
+  }
+
+  // check for 3-D, 2-D, axis 2
+  {
+    Shape input{2, 3, 4};
+    Shape indices{2, 1};
+    int32_t axis = 2;
+    Shape expected{2, 3, 2, 1};
+    check(input, indices, expected, axis);
+  }
+
+  // check for 4D, axis 0
+  {
+    Shape input{1, 2, 3, 4};
+    Shape indices{2};
+    int32_t axis = 0;
+    Shape expected{2, 2, 3, 4};
+    check(input, indices, expected, axis);
+  }
+}
