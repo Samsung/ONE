@@ -166,6 +166,13 @@ void DynamicShapeInferer::visit(const ir::operation::BCQFullyConnected &op)
   assert(output->buffer() != nullptr);
 }
 
+void DynamicShapeInferer::visit(const ir::operation::BCQGather &)
+{
+  // const auto indices_idx{op.getInputs().at(ir::operation::BCQGather::Input::INDICES)};
+  // const auto &indices = _tensor_registry->getITensor(indices_idx);
+  // TODO
+}
+
 void DynamicShapeInferer::visit(const ir::operation::BinaryArithmetic &op)
 {
   handleBinaryArithmeticOp(op, op.getInputs().at(ir::operation::BinaryArithmetic::Input::LHS),

@@ -416,24 +416,13 @@ TEST(ShapeInference, neg_Transpose)
   }
 }
 
-TEST(ShapeInference, BCQFullyConnected)
-{
-  Shape in_shape{512, 1};
-  Shape cluster_shape{3, 2};
-  std::vector<int> cluster = {1, 10, 2, 10, 3, 10};
-  auto infered_out_shape =
-      onert::shape_inference::inferBCQFullyConnectedShape(in_shape, cluster_shape, cluster.data());
-
-  ASSERT_EQ(infered_out_shape.rank(), 2);
-  ASSERT_EQ(infered_out_shape.dim(0), 30);
-  ASSERT_EQ(infered_out_shape.dim(1), 1);
-}
-
 TEST(ShapeInference, Gather)
 {
   auto check = [&](Shape &input, Shape &indices, Shape &expected, int32_t axis) {
     int rank = input.rank();
     auto actual = onert::shape_inference::inferGatherShape(input, indices, axis, rank);
+
+    ASSERT_EQ(actual.rank(), expected.rank());
 
     for (int32_t dim = 0; dim < expected.rank(); dim++)
       ASSERT_EQ(actual.dim(dim), expected.dim(dim));
@@ -482,5 +471,73 @@ TEST(ShapeInference, Gather)
     int32_t axis = 0;
     Shape expected{2, 2, 3, 4};
     check(input, indices, expected, axis);
+  }
+}
+
+TEST(ShapeInference, BCQFullyConnected)
+{
+  auto check = [&](Shape &in_shape, Shape &cluster_shape, std::vector<int> cluster,
+                   Shape &expected) {
+    auto actual = onert::shape_inference::inferBCQFullyConnectedShape(in_shape, cluster_shape,
+                                                                      cluster.data());
+    ASSERT_EQ(actual.rank(), expected.rank());
+
+    for (int32_t dim = 0; dim < expected.rank(); dim++)
+      ASSERT_EQ(actual.dim(dim), expected.dim(dim));
+  };
+
+  {
+    Shape in_shape{10, 1};
+    Shape cluster_shape{3, 2};
+    std::vector<int> cluster = {1, 10, 2, 10, 3, 10};
+
+    Shape expected{30, 1};
+    check(in_shape, cluster_shape, cluster, expected);
+  }
+
+  {
+    Shape in_shape{1, 1};
+    Shape cluster_shape{1, 2};
+    std::vector<int> cluster = {3, 50};
+
+    Shape expected{50, 1};
+    check(in_shape, cluster_shape, cluster, expected);
+  }
+}
+
+TEST(ShapeInference, BCQGather)
+{
+  auto check = [&](Shape &indices_shape, Shape &cluster_shape, std::vector<int> cluster,
+                   int hidden_size, int axis, int rank, Shape &expected) {
+    auto actual = onert::shape_inference::inferBCQGatherShape(
+        indices_shape, cluster_shape, cluster.data(), hidden_size, axis, rank);
+    ASSERT_EQ(actual.rank(), expected.rank());
+
+    for (int32_t dim = 0; dim < expected.rank(); dim++)
+      ASSERT_EQ(actual.dim(dim), expected.dim(dim));
+  };
+
+  {
+    Shape indices_shape{5, 1};
+    Shape cluster_shape{3, 2};
+    std::vector<int> cluster = {1, 10, 2, 10, 3, 10};
+    int hidden_size = 10;
+    int axis = 1;
+    int rank = 2;
+
+    Shape expected{5, 1, 10};
+    check(indices_shape, cluster_shape, cluster, hidden_size, axis, rank, expected);
+  }
+
+  {
+    Shape indices_shape{5, 1};
+    Shape cluster_shape{3, 2};
+    std::vector<int> cluster = {1, 10, 2, 10, 3, 10};
+    int hidden_size = 10;
+    int axis = 1;
+    int rank = 2;
+
+    Shape expected{30, 5, 1};
+    check(indices_shape, cluster_shape, cluster, hidden_size, axis, rank, expected);
   }
 }
