@@ -24,6 +24,8 @@ usage()
   echo "Usage: one-optimize"
   echo "    --version       Show version information and exit"
   echo "    --all           Enable all optimization algorithms"
+  echo "    --fold_dequantize"
+  echo "                    Enable FoldDequantize Pass"
   echo "    --fuse_bcq      Enable FuseBCQ Pass"
   echo "    --fuse_instnorm Enable FuseInstanceNormalization Pass"
   echo "    --resolve_customop_add"
@@ -44,6 +46,7 @@ version()
 }
 
 OPTIMIZE_all=0
+OPTIMIZE_fold_dequantize=0
 OPTIMIZE_fuse_bcq=0
 OPTIMIZE_fuse_instnorm=0
 OPTIMIZE_resolve_customop_add=0
@@ -64,6 +67,10 @@ while [ "$#" -ne 0 ]; do
       ;;
     '--all')
       OPTIMIZE_all=1
+      shift
+      ;;
+    '--fold_dequantize')
+      OPTIMIZE_fold_dequantize=1
       shift
       ;;
     '--fuse_bcq')
@@ -112,6 +119,9 @@ OPTIMIZE_OPTIONS=""
 
 if [ $OPTIMIZE_all == 1 ]; then
   OPTIMIZE_OPTIONS+="--all "
+fi
+if [ $OPTIMIZE_fold_dequantize == 1 ]; then
+  OPTIMIZE_OPTIONS+="--fold_dequantize "
 fi
 if [ $OPTIMIZE_fuse_bcq == 1 ]; then
   OPTIMIZE_OPTIONS+="--fuse_bcq "
