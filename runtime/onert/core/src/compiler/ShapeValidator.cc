@@ -315,8 +315,7 @@ void ShapeValidator::visit(const ir::operation::SpaceToDepth &node)
   // All assertions as per NNAPI specification.
   OP_REQUIRES(_ctx.at(ifm_index).shape().rank() == 4);
   OP_REQUIRES(_ctx.at(ofm_index).shape().rank() == 4);
-  OP_REQUIRES((block_size >= 1) && (input_shape.H % block_size == 0) &&
-              (input_shape.W % block_size == 0));
+  OP_REQUIRES((input_shape.H % block_size == 0) && (input_shape.W % block_size == 0));
   OP_REQUIRES(input_shape.N == output_shape.N);
   OP_REQUIRES(input_shape.C * block_size * block_size == output_shape.C);
 }
@@ -411,10 +410,6 @@ void ShapeValidator::visit(const ir::operation::HashtableLookup &node)
 
 void ShapeValidator::visit(const ir::operation::TransposeConv &node)
 {
-  // param check
-  OP_REQUIRES((node.param().padding.type == ir::PaddingType::SAME) ||
-              (node.param().padding.type == ir::PaddingType::VALID));
-
   // shape check
   const auto ofm_index{node.getOutputs().at(0)};
   if (_ctx.at(ofm_index).info().isDynamic())
@@ -464,10 +459,7 @@ void ShapeValidator::visit(const ir::operation::Gather &node)
 
 void ShapeValidator::visit(const ir::operation::DepthToSpace &node)
 {
-  // param check
   int32_t block_size = node.param().block_size;
-
-  OP_REQUIRES(block_size > 0);
 
   // shape check
   const auto output_index{node.getOutputs().at(0)};
@@ -494,11 +486,7 @@ void ShapeValidator::visit(const ir::operation::DepthToSpace &node)
 
 void ShapeValidator::visit(const ir::operation::Pack &node)
 {
-  // param check
-  const auto num{node.param().num};
   const auto axis{node.param().axis};
-  OP_REQUIRES(num == static_cast<int32_t>(node.getInputs().size()));
-
   const auto output_index{node.getOutputs().at(0)};
   if (_ctx.at(output_index).info().isDynamic())
     return;
@@ -738,10 +726,7 @@ void ShapeValidator::visit(const ir::operation::L2Normalization &node)
 
 void ShapeValidator::visit(const ir::operation::Unpack &node)
 {
-  const auto num{node.param().num};
-  OP_REQUIRES(num == static_cast<int32_t>(node.getOutputs().size()));
   const auto axis{node.param().axis};
-
   const auto output_index{node.getInputs().at(0)};
   if (_ctx.at(output_index).info().isDynamic())
     return;
@@ -814,10 +799,7 @@ void ShapeValidator::visit(const ir::operation::Split &node)
   auto axis = *reinterpret_cast<const int32_t *>(_ctx.at(axis_index).data()->base());
   axis = axis < 0 ? axis + input_rank : axis;
 
-  OP_REQUIRES(num_splits > 0 && num_splits <= 0xFFFF);
   OP_REQUIRES(axis >= 0 && axis < input_rank);
-  OP_REQUIRES(node.getOutputs().size() == static_cast<uint32_t>(num_splits));
-
   OP_REQUIRES(_ctx.at(input_index).shape().dim(axis) % num_splits == 0);
 }
 
@@ -843,11 +825,6 @@ void ShapeValidator::visit(const ir::operation::ResizeBilinear &node)
   }
   OP_REQUIRES(_ctx.at(input_index).shape().rank() == 4);
   OP_REQUIRES(_ctx.at(output_index).shape().rank() == 4);
-
-  auto align_corners = node.param().align_corners;
-  auto half_pixel_centers = node.param().half_pixel_centers;
-
-  OP_REQUIRES(!align_corners || !half_pixel_centers);
 }
 
 void ShapeValidator::visit(const ir::operation::Reverse &node)
@@ -865,11 +842,9 @@ void ShapeValidator::visit(const ir::operation::If &)
   // TODO Add to validate with subgraphs
 }
 
-void ShapeValidator::visit(const ir::operation::While &node)
+void ShapeValidator::visit(const ir::operation::While &)
 {
   // This validator does not check shape. So checking isDynamic() is skipped.
-
-  OP_REQUIRES(node.getInputs().size() == node.getOutputs().size());
   // TODO Add to validate with subgraphs
 }
 

@@ -72,6 +72,13 @@ void OperationValidator::visit(const ir::operation::Comparison &node)
   OP_REQUIRES(_ctx.at(output_index).typeInfo().type() == ir::DataType::BOOL8);
 }
 
+void OperationValidator::visit(const ir::operation::DepthToSpace &node)
+{
+  int32_t block_size = node.param().block_size;
+
+  OP_REQUIRES(block_size > 0);
+}
+
 void OperationValidator::visit(const ir::operation::ElementwiseActivation &node)
 {
   const auto output_index{node.getOutputs().at(0)};
@@ -141,11 +148,26 @@ void OperationValidator::visit(const ir::operation::HashtableLookup &node)
   OP_REQUIRES(_ctx.at(hits_index).typeInfo().type() == ir::DataType::QUANT_UINT8_ASYMM);
 }
 
+void OperationValidator::visit(const ir::operation::Pack &node)
+{
+  const auto num{node.param().num};
+
+  OP_REQUIRES(num == static_cast<int32_t>(node.getInputs().size()));
+}
+
 void OperationValidator::visit(const ir::operation::Pad &node)
 {
   const auto pad_index{node.getInputs().at(ir::operation::Pad::Input::PAD)};
 
   OP_REQUIRES(_ctx.at(pad_index).typeInfo().type() == ir::DataType::INT32);
+}
+
+void OperationValidator::visit(const ir::operation::ResizeBilinear &node)
+{
+  auto align_corners = node.param().align_corners;
+  auto half_pixel_centers = node.param().half_pixel_centers;
+
+  OP_REQUIRES(!align_corners || !half_pixel_centers);
 }
 
 void OperationValidator::visit(const ir::operation::Reverse &node)
@@ -169,6 +191,20 @@ void OperationValidator::visit(const ir::operation::SpaceToBatchND &node)
   OP_REQUIRES(_ctx.at(paddings_index).isConstant());
 }
 
+void OperationValidator::visit(const ir::operation::SpaceToDepth &node)
+{
+  const auto block_size = node.param().block_size;
+  OP_REQUIRES(block_size >= 1);
+}
+
+void OperationValidator::visit(const ir::operation::Split &node)
+{
+  const auto num_splits = node.param().num_splits;
+
+  OP_REQUIRES(num_splits > 0 && num_splits <= 0xFFFF);
+  OP_REQUIRES(node.getOutputs().size() == static_cast<uint32_t>(num_splits));
+}
+
 void OperationValidator::visit(const ir::operation::SquaredDifference &node)
 {
   const auto output_index{node.getOutputs().at(0)};
@@ -185,6 +221,23 @@ void OperationValidator::visit(const ir::operation::StridedSlice &node)
   const auto input_index{node.getInputs().at(ir::operation::StridedSlice::Input::INPUT)};
 
   OP_REQUIRES(_ctx.at(output_index).typeInfo().type() == _ctx.at(input_index).typeInfo().type());
+}
+
+void OperationValidator::visit(const ir::operation::TransposeConv &node)
+{
+  OP_REQUIRES((node.param().padding.type == ir::PaddingType::SAME) ||
+              (node.param().padding.type == ir::PaddingType::VALID));
+}
+
+void OperationValidator::visit(const ir::operation::Unpack &node)
+{
+  const auto num{node.param().num};
+  OP_REQUIRES(num == static_cast<int32_t>(node.getOutputs().size()));
+}
+
+void OperationValidator::visit(const ir::operation::While &node)
+{
+  OP_REQUIRES(node.getInputs().size() == node.getOutputs().size());
 }
 
 } // namespace compiler
