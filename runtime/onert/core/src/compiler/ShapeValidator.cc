@@ -164,7 +164,7 @@ void ShapeValidator::visit(const ir::operation::Permute &node)
 
 void ShapeValidator::visit(const ir::operation::Reduce &node)
 {
-  VERBOSE(Permute) << "Configure " + node.name() + " operation" << std::endl;
+  VERBOSE(Reduce) << "Configure " + node.name() + " operation" << std::endl;
 
   const auto output_index{node.getOutputs().at(0)};
   if (_ctx.at(output_index).info().isDynamic())
