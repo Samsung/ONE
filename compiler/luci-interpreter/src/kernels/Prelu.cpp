@@ -15,6 +15,8 @@
  */
 
 #include "kernels/Prelu.h"
+
+#include "kernels/BinaryOpCommon.h"
 #include "kernels/Utils.h"
 
 #include <tensorflow/lite/kernels/internal/reference/reference_ops.h>
@@ -37,8 +39,13 @@ void Prelu::configure()
   LUCI_INTERPRETER_CHECK(input()->element_type() == output()->element_type());
   LUCI_INTERPRETER_CHECK(alpha()->element_type() == output()->element_type());
 
-  if (input()->element_type() == DataType::U8)
+  if (input()->element_type() == DataType::U8 || input()->element_type() == DataType::S16)
   {
+    if (input()->element_type() == DataType::S16)
+    {
+      LUCI_INTERPRETER_CHECK(input()->zero_point() == 0 && alpha()->zero_point() == 0 &&
+                             output()->zero_point() == 0);
+    }
     double alpha_multiplier = input()->scale() * alpha()->scale() / output()->scale();
     quantizeMultiplier(alpha_multiplier, &_output_multiplier_alpha, &_output_shift_alpha);
     double identity_multiplier = input()->scale() / output()->scale();
@@ -56,6 +63,9 @@ void Prelu::execute() const
       break;
     case DataType::U8:
       evalQuantized();
+      break;
+    case DataType::S16:
+      evalQuantizedS16();
       break;
     default:
       throw std::runtime_error("Unsupported type.");
@@ -116,6 +126,27 @@ void Prelu::evalQuantized() const
                                           getTensorData<uint8_t>(alpha()), getTensorShape(output()),
                                           getTensorData<uint8_t>(output()));
   }
+}
+
+void Prelu::evalQuantizedS16() const
+{
+  constexpr int32_t quantized_min = std::numeric_limits<int16_t>::min();
+  constexpr int32_t quantized_max = std::numeric_limits<int16_t>::max();
+
+  auto fn = [this, quantized_min, quantized_max](int16_t input_val, int16_t alpha_val) {
+    const int32_t output_val =
+        input_val >= 0
+            ? tflite::MultiplyByQuantizedMultiplier(input_val, _output_multiplier_identity,
+                                                    _output_shift_identity)
+            : tflite::MultiplyByQuantizedMultiplier(input_val * alpha_val, _output_multiplier_alpha,
+                                                    _output_shift_alpha);
+    const int32_t clamped_output = std::min(quantized_max, std::max(quantized_min, output_val));
+    return static_cast<int16_t>(clamped_output);
+  };
+
+  BinaryOpBroadcastSlow(getTensorShape(input()), getTensorData<int16_t>(input()),
+                        getTensorShape(alpha()), getTensorData<int16_t>(alpha()),
+                        getTensorShape(output()), getTensorData<int16_t>(output()), fn);
 }
 
 } // namespace kernels
