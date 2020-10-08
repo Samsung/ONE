@@ -104,7 +104,7 @@ set(SOURCES
     Unpack.cpp)
 
 list(APPEND SOURCES
-    BinaryOpUtils.h
+    BinaryOpCommon.h
     Utils.h
     Utils.cpp
     ${TensorFlowSource_DIR}/tensorflow/lite/kernels/internal/quantization_util.cc)
