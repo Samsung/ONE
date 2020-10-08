@@ -60,6 +60,8 @@ GeneratedTests.einsum_ex_float_matmul_4x4_4_2
 GeneratedTests.equal_dynamic_float_nnfw
 GeneratedTests.exp_
 GeneratedTests.exp_dynamic_nnfw
+GeneratedTests.expand_dims_dynamic_nnfw_1
+GeneratedTests.expand_dims_dynamic_nnfw_2
 GeneratedTests.fill_ex_1D_float
 GeneratedTests.fill_ex_4D_float
 GeneratedTests.fill_ex_dynamic_nnfw
@@ -94,6 +96,7 @@ GeneratedTests.logical_not_1D_nnfw
 GeneratedTests.logical_not_4D_nnfw
 GeneratedTests.logical_not_dynamic_nnfw
 GeneratedTests.logical_or_broadcast
+GeneratedTests.logical_or_dynamic_nnfw
 GeneratedTests.logistic_dynamic_nnfw
 GeneratedTests.lsh_projection
 GeneratedTests.lsh_projection_2
