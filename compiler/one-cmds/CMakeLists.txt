@@ -1,4 +1,6 @@
 set(ONE_COMMAND_FILES
+    one-build
+    one-build.cfg
     one-import
     one-import-bcq
     one-import-tf
