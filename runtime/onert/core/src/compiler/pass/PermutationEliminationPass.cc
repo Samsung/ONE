@@ -58,6 +58,11 @@ void PermutationEliminationPass::visit(const ir::operation::Permute &node)
     auto permute_input = node.getInputs().at(0);
     if (_graph.operands().at(permute_input).isConstant())
       return;
+    // If the input is a model input, we cannot remove it since our API lets users to set different
+    // buffers for inputs and outputs even though one tensor is both at the same time.
+    auto permute_output = node.getOutputs().at(0);
+    if (_graph.getInputs().contains(permute_input) && _graph.getOutputs().contains(permute_output))
+      return;
 
     // Exceptional case : When the output operand is a model output
     // In this case we keep the output and remove the input

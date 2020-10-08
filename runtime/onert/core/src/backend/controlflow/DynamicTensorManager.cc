@@ -58,6 +58,11 @@ void DynamicTensorManager::deallocInput(ir::OperationIndex op_ind)
       continue;
 
     _dynamic_mem_mgr->deallocate(tensor);
+
+    auto *cpu_tensor = dynamic_cast<cpu_common::Tensor *>(tensor);
+    assert(cpu_tensor);
+    cpu_tensor->resetBuffer();
+
     VERBOSE(DynamicTensorManager) << "Deallocating a tensor " << (void *)tensor
                                   << " (input of op_ind: " << op_ind.value() << ")" << std::endl;
   }

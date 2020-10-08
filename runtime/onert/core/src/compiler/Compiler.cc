@@ -29,6 +29,7 @@
 #include "compiler/HEScheduler.h"
 #include "compiler/StaticShapeInference.h"
 #include "compiler/pass/ConstantOutputPass.h"
+#include "compiler/pass/OddOutputPass.h"
 #include "compiler/pass/PassRunner.h"
 #include "exec/ExecTime.h"
 #include "ir/operation/LowerInfo.h"
@@ -167,7 +168,10 @@ std::shared_ptr<exec::ExecutorMap> Compiler::compile(void)
 
   _subgraphs->iterate([&](const ir::SubgraphIndex &, ir::Graph &subg) {
     // Mandatory passes
-    pass::PassRunner{}.append(std::make_unique<pass::ConstantOutputPass>(subg)).run();
+    pass::PassRunner{}
+        .append(std::make_unique<pass::ConstantOutputPass>(subg))
+        .append(std::make_unique<pass::OddOutputPass>(subg))
+        .run();
   });
 
   /***************************************************
