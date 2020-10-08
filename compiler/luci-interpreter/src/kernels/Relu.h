@@ -38,6 +38,7 @@ public:
 private:
   void evalFloat() const;
   void evalQuantized() const;
+  void evalQuantizedS16() const;
 
 private:
   int32_t _output_multiplier{0};

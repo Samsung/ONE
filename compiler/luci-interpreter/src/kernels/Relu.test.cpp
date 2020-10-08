@@ -106,6 +106,28 @@ TEST(ReluTest, Uint8Requantized)
   EXPECT_THAT(dequantizeTensorData(output_tensor), FloatArrayNear({0, 0, 2, 4, 3, 0, 7, 1}));
 }
 
+TEST(ReluTest, SInt16)
+{
+  std::vector<float> input_data{
+      0, -6, 2, 4, //
+      3, -2, 7, 1, //
+  };
+  std::vector<float> ref_output_data{
+      0, 0, 2, 4, //
+      3, 0, 7, 1, //
+  };
+
+  Tensor input_tensor = makeInputTensor<DataType::S16>({1, 2, 4, 1}, 0.5, 0, input_data);
+  Tensor output_tensor = makeOutputTensor(DataType::S16, 0.25, 0);
+
+  Relu kernel(&input_tensor, &output_tensor);
+  kernel.configure();
+  kernel.execute();
+
+  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({1, 2, 4, 1}));
+  EXPECT_THAT(dequantizeTensorData(output_tensor), FloatArrayNear(ref_output_data));
+}
+
 TEST(ReluTest, Input_Output_Type_NEG)
 {
   Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({1}, {1.f});
