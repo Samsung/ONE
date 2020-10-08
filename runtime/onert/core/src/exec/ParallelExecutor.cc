@@ -132,6 +132,8 @@ void ParallelExecutor::executeImpl()
       notify(job_index);
     };
 
+    job->fn_seq()->initRunning();
+
     // dynamic tensor setting
     bool handle_dynamic_tensor = op_seq->has_dynamic_tensor() || dynamic_input_exists;
     job->fn_seq()->enableDynamicShapeInferer(handle_dynamic_tensor);
