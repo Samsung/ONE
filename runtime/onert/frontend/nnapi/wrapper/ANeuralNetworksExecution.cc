@@ -98,6 +98,17 @@ bool ANeuralNetworksExecution::compareShape(const ANeuralNetworksOperandType *ty
   return operand_shape == shape_from_type;
 }
 
+bool ANeuralNetworksExecution::IsOptionalInput(const onert::ir::OperandIndex index) noexcept
+{
+  const auto &operand_shape = _execution->primary_subgraph().operands().at(index).shape();
+  for (int32_t i = 0; i < operand_shape.rank(); ++i)
+  {
+    if (operand_shape.dim(i) != 0)
+      return false;
+  }
+  return true;
+}
+
 bool ANeuralNetworksExecution::hasUnspecifiedDims(const onert::ir::OperandIndex index) noexcept
 {
   const auto operand_shape = _execution->primary_subgraph().operands().at(index).shape();
@@ -137,6 +148,45 @@ bool ANeuralNetworksExecution::setInput(uint32_t index, const ANeuralNetworksOpe
     // model.
     // TODO Set layout of model
     _execution->setInput(input_index, type_info, shape, buffer, length, onert::ir::Layout::NHWC);
+  }
+  catch (const std::exception &e)
+  {
+    VERBOSE(EXCEPTION) << e.what() << std::endl;
+
+    return false;
+  }
+
+  return true;
+}
+
+bool ANeuralNetworksExecution::setOptionalInput(uint32_t index,
+                                                const ANeuralNetworksOperandType *type,
+                                                const void *buffer, size_t length) noexcept
+{
+  assert(type == nullptr);
+  assert(buffer == nullptr);
+  assert(length == 0);
+  try
+  {
+    onert::ir::IOIndex input_index{index};
+    const auto operand_index = getInputOperandIndex(index);
+
+    const auto type_info = _execution->primary_subgraph().operands().at(operand_index).typeInfo();
+    const auto shape = (type != nullptr)
+                           ? NNAPIConvert::getShape(type)
+                           : _execution->primary_subgraph().operands().at(operand_index).shape();
+
+    // ANeuralNetworksExecution::setInput() uses only shape information
+    ANeuralNetworksOperandType optional_input_type;
+    optional_input_type.dimensionCount = shape.rank();
+    std::vector<uint32_t> dims(optional_input_type.dimensionCount);
+    for (uint32_t i = 0; i < optional_input_type.dimensionCount; ++i)
+    {
+      dims.at(i) = shape.dim(i);
+    }
+    optional_input_type.dimensions = dims.data();
+
+    return setInput(index, &optional_input_type, buffer, length);
   }
   catch (const std::exception &e)
   {
