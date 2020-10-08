@@ -42,6 +42,7 @@ public:
 private:
   void evalFloat() const;
   void evalQuantized() const;
+  void evalSInt16() const;
 
 private:
   std::unique_ptr<Tensor> _temp_index;

@@ -151,6 +151,29 @@ TEST(MeanTest, Uint8NotKeepDims)
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
 }
 
+TEST(MeanTest, SInt16KeepDims4D)
+{
+  std::vector<float> input_data = {1.0,  2.0,  3.0,  4.0,  5.0,  6.0,  7.0,  8.0,
+                                   9.0,  10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0,
+                                   17.0, 18.0, 19.0, 20.0, 21.0, 22.0, 23.0, 24.0};
+  std::vector<int32_t> axes_data{1, 2};
+  std::vector<float> ref_output_data{6, 7, 18, 19};
+
+  Tensor input_tensor = makeInputTensor<DataType::S16>({2, 2, 3, 2}, 24.0 / 32767, 0, input_data);
+  Tensor axes_tensor = makeInputTensor<DataType::S32>({2}, axes_data);
+  Tensor output_tensor = makeOutputTensor(DataType::S16, 19.0 / 32767, 0);
+
+  ReducerParams params{};
+  params.keep_dims = true;
+
+  Mean kernel(&input_tensor, &axes_tensor, &output_tensor, params);
+  kernel.configure();
+  kernel.execute();
+
+  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({2, 1, 1, 2}));
+  EXPECT_THAT(dequantizeTensorData(output_tensor), FloatArrayNear(ref_output_data));
+}
+
 } // namespace
 } // namespace kernels
 } // namespace luci_interpreter
