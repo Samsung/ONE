@@ -175,7 +175,7 @@ void Mean::execute() const
       evalQuantized();
       break;
     case DataType::S16:
-      evalSInt16();
+      evalQuantizedS16();
       break;
     default:
       throw std::runtime_error("Unsupported type.");
@@ -253,7 +253,7 @@ void Mean::evalQuantized() const
   }
 }
 
-void Mean::evalSInt16() const
+void Mean::evalQuantizedS16() const
 {
   const auto *input_data = getTensorData<int16_t>(input());
   auto *output_data = getTensorData<int16_t>(output());

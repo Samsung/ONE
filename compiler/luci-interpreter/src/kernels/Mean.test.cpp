@@ -159,9 +159,9 @@ TEST(MeanTest, SInt16KeepDims4D)
   std::vector<int32_t> axes_data{1, 2};
   std::vector<float> ref_output_data{6, 7, 18, 19};
 
-  Tensor input_tensor = makeInputTensor<DataType::S16>({2, 2, 3, 2}, 24.0 / 32767, 0, input_data);
+  Tensor input_tensor = makeInputTensor<DataType::S16>({2, 2, 3, 2}, 0.25, 0, input_data);
   Tensor axes_tensor = makeInputTensor<DataType::S32>({2}, axes_data);
-  Tensor output_tensor = makeOutputTensor(DataType::S16, 19.0 / 32767, 0);
+  Tensor output_tensor = makeOutputTensor(DataType::S16, 0.2, 0);
 
   ReducerParams params{};
   params.keep_dims = true;
