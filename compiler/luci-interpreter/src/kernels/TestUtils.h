@@ -89,12 +89,26 @@ template <typename T>
 std::vector<T> quantize(const std::vector<float> &data, float scale, int32_t zero_point)
 {
   static_assert(std::is_integral<T>::value, "Integral type expected.");
+
+  float q_min{}, q_max{};
+  if (std::is_signed<T>::value)
+  {
+    // For now, assume that signed type implies signed symmetric quantization.
+    assert(zero_point == 0);
+    q_min = -std::numeric_limits<T>::max();
+    q_max = std::numeric_limits<T>::max();
+  }
+  else
+  {
+    q_min = 0;
+    q_max = std::numeric_limits<T>::max();
+  }
+
   std::vector<T> q;
   for (const auto &f : data)
   {
-    q.push_back(static_cast<T>(std::max<float>(
-        std::numeric_limits<T>::lowest(),
-        std::min<float>(std::numeric_limits<T>::max(), std::round(zero_point + (f / scale))))));
+    q.push_back(static_cast<T>(
+        std::max<float>(q_min, std::min<float>(q_max, std::round(zero_point + (f / scale))))));
   }
   return q;
 }
@@ -111,6 +125,7 @@ std::vector<float> dequantize(const std::vector<T> &data, float scale, int32_t z
   return f;
 }
 
+// NOTE Returns scale and zero point for _asymmetric_ range (both signed and unsigned).
 template <typename T> std::pair<float, int32_t> quantizationParams(float f_min, float f_max)
 {
   static_assert(std::is_integral<T>::value, "Integral type expected.");

@@ -39,6 +39,7 @@ public:
 private:
   void evalFloat() const;
   void evalQuantized() const;
+  void evalSInt16() const;
 
 private:
   int32_t _padding_height{};
