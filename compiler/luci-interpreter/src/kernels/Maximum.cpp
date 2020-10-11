@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright 2018 The TensorFlow Authors. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +19,14 @@
 
 #include "kernels/Utils.h"
 
+#include <tensorflow/lite/kernels/maximum_minimum.cc>
+
+#include <tensorflow/lite/kernels/internal/optimized/optimized_ops.h>
+
+#include <tensorflow/lite/kernels/internal/reference/reference_ops.h>
+
+#include <tensorflow/lite/kernels/internal/reference/maximum_minimum.h>
+
 namespace luci_interpreter
 {
 namespace kernels
@@ -32,7 +41,7 @@ void Maximum::configure()
 {
   LUCI_INTERPRETER_CHECK(input1()->element_type() == input2()->element_type())
   LUCI_INTERPRETER_CHECK(input1()->element_type() == output()->element_type())
-  output()->resize(input1()->shape());
+  output()->resize(calculateShapeForBroadcast(input1()->shape(), input2()->shape()));
 }
 
 void Maximum::execute() const
@@ -52,13 +61,20 @@ void Maximum::execute() const
 
 void Maximum::evalFloat() const
 {
-  const int size = tflite::MatchingFlatSize(getTensorShape(input1()), getTensorShape(output()));
-  float *output_data = getTensorData<float>(output());
-  const float *input_data1 = getTensorData<float>(input1());
-  const float *input_data2 = getTensorData<float>(input2());
-  for (int i = 0; i < size; ++i)
+  const bool need_broadcast = input1()->shape() != input2()->shape();
+
+  if (need_broadcast)
   {
-    output_data[i] = std::max(input_data1[i], input_data2[i]);
+    tflite::reference_ops::MaximumMinimumBroadcastSlow(
+        getTensorShape(input1()), getTensorData<float>(input1()), getTensorShape(input2()),
+        getTensorData<float>(input2()), getTensorShape(output()), getTensorData<float>(output()),
+        tflite::ops::builtin::maximum_minimum::MaximumOp());
+  }
+  else
+  {
+    tflite::reference_ops::Maximum(getTensorShape(input1()), getTensorData<float>(input1()),
+                                   getTensorShape(input2()), getTensorData<float>(input2()),
+                                   getTensorShape(output()), getTensorData<float>(output()));
   }
 }
 
@@ -68,9 +84,20 @@ void Maximum::evalQuantized() const
   uint8_t *output_data = getTensorData<uint8_t>(output());
   const uint8_t *input_data1 = getTensorData<uint8_t>(input1());
   const uint8_t *input_data2 = getTensorData<uint8_t>(input2());
-  for (int i = 0; i < size; ++i)
+  const bool need_broadcast = input1()->shape() != input2()->shape();
+
+  if (need_broadcast)
   {
-    output_data[i] = std::max(input_data1[i], input_data2[i]);
+    tflite::reference_ops::MaximumMinimumBroadcastSlow(
+        getTensorShape(input1()), getTensorData<uint8_t>(input1()), getTensorShape(input2()),
+        getTensorData<uint8_t>(input2()), getTensorShape(output()),
+        getTensorData<uint8_t>(output()), tflite::ops::builtin::maximum_minimum::MaximumOp());
+  }
+  else
+  {
+    tflite::reference_ops::Maximum(getTensorShape(input1()), getTensorData<uint8_t>(input1()),
+                                   getTensorShape(input2()), getTensorData<uint8_t>(input2()),
+                                   getTensorShape(output()), getTensorData<uint8_t>(output()));
   }
 }
 
