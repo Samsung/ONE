@@ -423,7 +423,8 @@ ir::Shape inferBCQFullyConnectedShape(const ir::Shape &in_shape, const ir::Shape
 }
 
 ir::Shape inferBCQGatherShape(const ir::Shape &indices_shape, const ir::Shape &cluster_shape,
-                              const int32_t *cluster_buf, int hidden_size, int axis, int rank)
+                              const int32_t *cluster_buf, int rank,
+                              const ir::operation::BCQGather::Param &param)
 {
   ir::Shape out_shape;
   ir::Shape in_original_shape;
@@ -431,11 +432,14 @@ ir::Shape inferBCQGatherShape(const ir::Shape &indices_shape, const ir::Shape &c
   assert(cluster_shape.rank() == 2);
   assert(cluster_shape.dim(1) == 2);
 
+  auto hidden_size = param.input_hidden_size;
+  auto axis = param.axis;
+
   in_original_shape.append(hidden_size);
   in_original_shape.append(bcq::getOutputSize(cluster_shape, cluster_buf));
 
   const int indices_rank = indices_shape.rank();
-  for (int idx = 0; idx < rank; ++idx)
+  for (uint32_t idx = 0; idx < rank; ++idx)
   {
     if (idx == axis)
     {

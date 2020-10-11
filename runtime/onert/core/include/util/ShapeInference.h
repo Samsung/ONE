@@ -51,7 +51,8 @@ ir::Shape inferBCQFullyConnectedShape(const ir::Shape &in_shape, const ir::Shape
                                       const int32_t *cluster_buf);
 
 ir::Shape inferBCQGatherShape(const ir::Shape &indices_shape, const ir::Shape &cluster_shape,
-                              const int32_t *cluster_buf, int hidden_size, int axis, int rank);
+                              const int32_t *cluster_buf, int rank,
+                              const ir::operation::BCQGather::Param &param);
 
 ir::Shape inferBroadcastToShape(const ir::Shape shp_shape, const int32_t *shp_buf);
 

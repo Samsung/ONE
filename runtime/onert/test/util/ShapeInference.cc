@@ -509,8 +509,9 @@ TEST(ShapeInference, BCQGather)
 {
   auto check = [&](Shape &indices_shape, Shape &cluster_shape, std::vector<int> cluster,
                    int hidden_size, int axis, int rank, Shape &expected) {
-    auto actual = onert::shape_inference::inferBCQGatherShape(
-        indices_shape, cluster_shape, cluster.data(), hidden_size, axis, rank);
+    operation::BCQGather::Param param{hidden_size, axis};
+    auto actual = onert::shape_inference::inferBCQGatherShape(indices_shape, cluster_shape,
+                                                              cluster.data(), rank, param);
     ASSERT_EQ(actual.rank(), expected.rank());
 
     for (int32_t dim = 0; dim < expected.rank(); dim++)
