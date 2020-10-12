@@ -90,6 +90,14 @@ Status validate_arguments(const ITensorInfo *indices, const ITensorInfo *depth,
 
   return Status{};
 }
+
+template <typename U, typename Enable = void> bool isOnValue(U) { return true; }
+
+template <typename U, std::enable_if_t<std::is_integral<U>::value, int> = 0>
+bool isOnValue(U index, U depth)
+{
+  return index >= 0 && index < depth;
+}
 } // namespace
 
 NEOneHotKernel::NEOneHotKernel()
@@ -115,11 +123,14 @@ void NEOneHotKernel::onehot_0_axis(const Window &window, const ThreadInfo &info)
                     _output->info()->dimension(0) * _output->info()->element_size(), off_value);
         Coordinates indices_id(id);
         indices_id.remove(0);
-        const auto new_index = *(reinterpret_cast<U *>(_indices->ptr_to_element(indices_id)));
-        Coordinates onehot_id(id);
-        onehot_id.set(0, new_index);
-        std::copy_n(_on_value->buffer(), _output->info()->element_size(),
-                    _output->ptr_to_element(onehot_id));
+        const U new_index = *(reinterpret_cast<U *>(_indices->ptr_to_element(indices_id)));
+        if (isOnValue(new_index, *(reinterpret_cast<U *>(_depth->buffer()))))
+        {
+          Coordinates onehot_id(id);
+          onehot_id.set(0, new_index);
+          std::copy_n(_on_value->buffer(), _output->info()->element_size(),
+                      _output->ptr_to_element(onehot_id));
+        }
       },
       output_it);
 }
@@ -137,11 +148,14 @@ inline void NEOneHotKernel::onehot_n_axis(const Window &window, const ThreadInfo
                         indices_id.remove(_axis);
                         const U new_index =
                             *(reinterpret_cast<U *>(_indices->ptr_to_element(indices_id)));
-                        Coordinates onehot_id(id);
-                        onehot_id.set(_axis, new_index);
-                        std::copy_n(static_cast<U>(id[_axis]) == new_index ? _on_value->buffer()
-                                                                           : _off_value->buffer(),
-                                    _output->info()->element_size(), output_it.ptr());
+                        if (isOnValue(new_index, *(reinterpret_cast<U *>(_depth->buffer()))))
+                        {
+                          Coordinates onehot_id(id);
+                          onehot_id.set(_axis, new_index);
+                          std::copy_n(static_cast<U>(id[_axis]) == new_index ? _on_value->buffer()
+                                                                             : _off_value->buffer(),
+                                      _output->info()->element_size(), output_it.ptr());
+                        }
                       },
                       output_it);
 }
