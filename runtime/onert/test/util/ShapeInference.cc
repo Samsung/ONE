@@ -416,15 +416,129 @@ TEST(ShapeInference, neg_Transpose)
   }
 }
 
+TEST(ShapeInference, Gather)
+{
+  auto check = [&](Shape &input, Shape &indices, Shape &expected, int32_t axis) {
+    int rank = input.rank();
+    auto actual = onert::shape_inference::inferGatherShape(input, indices, axis, rank);
+
+    ASSERT_EQ(actual.rank(), expected.rank());
+
+    for (int32_t dim = 0; dim < expected.rank(); dim++)
+      ASSERT_EQ(actual.dim(dim), expected.dim(dim));
+  };
+
+  // check for 2-D, 3-D, axis 0
+  {
+    Shape input{3, 4};
+    Shape indices{1, 1, 2};
+    int32_t axis = 0;
+    Shape expected{1, 1, 2, 4};
+    check(input, indices, expected, axis);
+  }
+
+  // check for 2-D, 3-D, axis 1
+  {
+    Shape input{3, 4};
+    Shape indices{1, 2, 1};
+    int32_t axis = 1;
+    Shape expected{3, 1, 2, 1};
+    check(input, indices, expected, axis);
+  }
+
+  // check for 3-D, 2-D, axis 0
+  {
+    Shape input{2, 3, 4};
+    Shape indices{1, 2};
+    int32_t axis = 0;
+    Shape expected{1, 2, 3, 4};
+    check(input, indices, expected, axis);
+  }
+
+  // check for 3-D, 2-D, axis 2
+  {
+    Shape input{2, 3, 4};
+    Shape indices{2, 1};
+    int32_t axis = 2;
+    Shape expected{2, 3, 2, 1};
+    check(input, indices, expected, axis);
+  }
+
+  // check for 4D, axis 0
+  {
+    Shape input{1, 2, 3, 4};
+    Shape indices{2};
+    int32_t axis = 0;
+    Shape expected{2, 2, 3, 4};
+    check(input, indices, expected, axis);
+  }
+}
+
 TEST(ShapeInference, BCQFullyConnected)
 {
-  Shape in_shape{512, 1};
-  Shape cluster_shape{3, 2};
-  std::vector<int> cluster = {1, 10, 2, 10, 3, 10};
-  auto infered_out_shape =
-      onert::shape_inference::inferBCQFullyConnectedShape(in_shape, cluster_shape, cluster.data());
+  auto check = [&](Shape &in_shape, Shape &cluster_shape, std::vector<int> cluster,
+                   Shape &expected) {
+    auto actual = onert::shape_inference::inferBCQFullyConnectedShape(in_shape, cluster_shape,
+                                                                      cluster.data());
+    ASSERT_EQ(actual.rank(), expected.rank());
 
-  ASSERT_EQ(infered_out_shape.rank(), 2);
-  ASSERT_EQ(infered_out_shape.dim(0), 30);
-  ASSERT_EQ(infered_out_shape.dim(1), 1);
+    for (int32_t dim = 0; dim < expected.rank(); dim++)
+      ASSERT_EQ(actual.dim(dim), expected.dim(dim));
+  };
+
+  {
+    Shape in_shape{10, 1};
+    Shape cluster_shape{3, 2};
+    std::vector<int> cluster = {1, 10, 2, 10, 3, 10};
+
+    Shape expected{30, 1};
+    check(in_shape, cluster_shape, cluster, expected);
+  }
+
+  {
+    Shape in_shape{1, 1};
+    Shape cluster_shape{1, 2};
+    std::vector<int> cluster = {3, 50};
+
+    Shape expected{50, 1};
+    check(in_shape, cluster_shape, cluster, expected);
+  }
+}
+
+TEST(ShapeInference, BCQGather)
+{
+  auto check = [&](Shape &indices_shape, Shape &cluster_shape, std::vector<int> cluster,
+                   uint32_t hidden_size, uint32_t axis, int rank, Shape &expected) {
+    operation::BCQGather::Param param{hidden_size, axis};
+    auto actual = onert::shape_inference::inferBCQGatherShape(indices_shape, cluster_shape,
+                                                              cluster.data(), rank, param);
+    ASSERT_EQ(actual.rank(), expected.rank());
+
+    for (int32_t dim = 0; dim < expected.rank(); dim++)
+      ASSERT_EQ(actual.dim(dim), expected.dim(dim));
+  };
+
+  {
+    Shape indices_shape{5, 1};
+    Shape cluster_shape{3, 2};
+    std::vector<int> cluster = {1, 10, 2, 10, 3, 10};
+    uint32_t hidden_size = 10;
+    uint32_t axis = 0;
+    int rank = 2;
+
+    Shape expected{5, 1, 10};
+    check(indices_shape, cluster_shape, cluster, hidden_size, axis, rank, expected);
+  }
+
+  {
+    Shape indices_shape{5, 1};
+    Shape cluster_shape{3, 2};
+    std::vector<int> cluster = {1, 10, 2, 10, 3, 10};
+    uint32_t hidden_size = 10;
+    uint32_t axis = 1;
+    int rank = 2;
+
+    Shape expected{30, 5, 1};
+    check(indices_shape, cluster_shape, cluster, hidden_size, axis, rank, expected);
+  }
 }
