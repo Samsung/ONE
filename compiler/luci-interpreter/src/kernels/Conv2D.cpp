@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright 2019 The TensorFlow Authors. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,7 +45,11 @@ void Conv2D::configure()
   // (3) | uint8 uint8  int32 uint8  | quantized
   // (4) | int8  int8   int32 int8   | quantized per channel
   //
-  // We only support (1) and (3) for now.
+  // We only support (1) and (3) for now, and additionally the following:
+  //     | input filter bias  output |
+  // ----+---------------------------+
+  // (5) | int16 int16  int64 int16  |
+  //
   if (input()->element_type() == DataType::FLOAT32 && filter()->element_type() == DataType::FLOAT32)
   {
     LUCI_INTERPRETER_CHECK(bias() == nullptr || bias()->element_type() == DataType::FLOAT32);
@@ -52,6 +57,10 @@ void Conv2D::configure()
   else if (input()->element_type() == DataType::U8 && filter()->element_type() == DataType::U8)
   {
     LUCI_INTERPRETER_CHECK(bias() == nullptr || bias()->element_type() == DataType::S32);
+  }
+  else if (input()->element_type() == DataType::S16 && filter()->element_type() == DataType::S16)
+  {
+    LUCI_INTERPRETER_CHECK(bias() == nullptr || bias()->element_type() == DataType::S64);
   }
   else
   {
@@ -94,7 +103,8 @@ void Conv2D::configure()
       _params.dilation_height_factor != 1 || _params.dilation_width_factor != 1;
   const bool need_non_dilated_im2col = _params.stride_height != 1 || _params.stride_width != 1 ||
                                        filter_height != 1 || filter_width != 1;
-  const bool need_im2col = need_dilated_im2col || need_non_dilated_im2col;
+  const bool need_im2col =
+      input()->element_type() != DataType::S16 && (need_dilated_im2col || need_non_dilated_im2col);
   if (need_im2col)
   {
     const int input_depth = input_shape.dim(3);
@@ -118,6 +128,9 @@ void Conv2D::execute() const
       throw std::runtime_error("Unsupported type.");
     case DataType::U8:
       evalQuantized();
+      break;
+    case DataType::S16:
+      evalQuantizedS16();
       break;
     default:
       throw std::runtime_error("Unsupported type.");
@@ -188,6 +201,91 @@ void Conv2D::evalQuantized() const
       getTensorData<uint8_t>(filter()), getTensorShape(bias()), getTensorData<int32_t>(bias()),
       getTensorShape(output()), getTensorData<uint8_t>(output()), getTensorShape(_im2col.get()),
       getTensorData<uint8_t>(_im2col.get()), gemmlowp_context.get());
+}
+
+void Conv2D::evalQuantizedS16() const
+{
+  const auto *input_data = getTensorData<int16_t>(input());
+  const auto *filter_data = getTensorData<int16_t>(filter());
+  const auto *bias_data = getTensorData<int64_t>(bias());
+  auto *output_data = getTensorData<int16_t>(output());
+
+  const Shape &input_shape = input()->shape();
+  const Shape &filter_shape = filter()->shape();
+  const Shape &output_shape = output()->shape();
+
+  const int32_t batches = input_shape.dim(0);
+  const int32_t input_height = input_shape.dim(1);
+  const int32_t input_width = input_shape.dim(2);
+  const int32_t input_depth = input_shape.dim(3);
+  const int32_t output_depth = filter_shape.dim(0);
+  const int32_t filter_height = filter_shape.dim(1);
+  const int32_t filter_width = filter_shape.dim(2);
+  const int32_t output_height = output_shape.dim(1);
+  const int32_t output_width = output_shape.dim(2);
+
+  const int32_t stride_height = _params.stride_height;
+  const int32_t stride_width = _params.stride_width;
+  const int32_t dilation_height_factor = _params.dilation_height_factor;
+  const int32_t dilation_width_factor = _params.dilation_width_factor;
+
+  int32_t activation_min{};
+  int32_t activation_max{};
+  calculateActivationRangeQuantized(_params.activation, output(), &activation_min, &activation_max);
+
+  const double effective_output_scale =
+      getQuantizedConvolutionMultipler(input()->scale(), filter()->scale(), output()->scale());
+
+  int32_t output_multiplier{};
+  int output_shift{};
+  quantizeMultiplier(effective_output_scale, &output_multiplier, &output_shift);
+
+  for (int32_t batch = 0; batch < batches; ++batch)
+  {
+    for (int32_t out_y = 0; out_y < output_height; ++out_y)
+    {
+      for (int32_t out_x = 0; out_x < output_width; ++out_x)
+      {
+        for (int32_t out_c = 0; out_c < output_depth; ++out_c)
+        {
+          const int32_t in_y_origin = out_y * stride_height - _padding_height;
+          const int32_t in_x_origin = out_x * stride_width - _padding_width;
+          int64_t acc = 0;
+          for (int32_t filter_y = 0; filter_y < filter_height; ++filter_y)
+          {
+            for (int32_t filter_x = 0; filter_x < filter_width; ++filter_x)
+            {
+              const int32_t in_y = in_y_origin + dilation_height_factor * filter_y;
+              const int32_t in_x = in_x_origin + dilation_width_factor * filter_x;
+              if ((in_y >= 0 && in_y < input_height) && (in_x >= 0 && in_x < input_width))
+              {
+                for (int32_t in_c = 0; in_c < input_depth; ++in_c)
+                {
+                  const int16_t input_val =
+                      input_data[calcOffset(input_shape, batch, in_y, in_x, in_c)];
+                  const int16_t filter_val =
+                      filter_data[calcOffset(filter_shape, out_c, filter_y, filter_x, in_c)];
+                  acc += static_cast<int64_t>(input_val) * static_cast<int64_t>(filter_val);
+                }
+              }
+            }
+          }
+          if (bias_data)
+          {
+            acc += bias_data[out_c];
+          }
+
+          int32_t scaled_acc =
+              tflite::MultiplyByQuantizedMultiplier(acc, output_multiplier, output_shift);
+
+          scaled_acc = std::max(scaled_acc, activation_min);
+          scaled_acc = std::min(scaled_acc, activation_max);
+
+          output_data[calcOffset(output_shape, batch, out_y, out_x, out_c)] = scaled_acc;
+        }
+      }
+    }
+  }
 }
 
 } // namespace kernels
