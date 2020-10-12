@@ -142,3 +142,37 @@ TEST_F(RegressionTest, github_11748)
 
   NNFW_ENSURE_SUCCESS(nnfw_close_session(session));
 }
+
+TEST_F(RegressionTest, github_4585)
+{
+  // A single tensor which is an input and an output at the same time
+  CircleGen cgen;
+  int t = cgen.addTensor({{1, 1}, circle::TensorType::TensorType_FLOAT32});
+  cgen.setInputsAndOutputs({t}, {t});
+  auto cbuf = cgen.finish();
+
+  nnfw_session *session = nullptr;
+  NNFW_ENSURE_SUCCESS(nnfw_create_session(&session));
+  NNFW_ENSURE_SUCCESS(nnfw_load_circle_from_buffer(session, cbuf.buffer(), cbuf.size()));
+  // To test when there is no backends loaded for the session
+  NNFW_ENSURE_SUCCESS(nnfw_set_available_backends(session, "cpu"));
+  NNFW_ENSURE_SUCCESS(nnfw_prepare(session));
+
+  // Change input tensorinfo (Make dynamic shape inference happen)
+  nnfw_tensorinfo ti_new = {NNFW_TYPE_TENSOR_FLOAT32, 2, {1, 2}};
+  NNFW_ENSURE_SUCCESS(nnfw_set_input_tensorinfo(session, 0, &ti_new));
+
+  std::vector<float> in_buf{1, 1};
+  std::vector<float> out_buf{-1, -1};
+
+  NNFW_ENSURE_SUCCESS(
+      nnfw_set_input(session, 0, ti_new.dtype, in_buf.data(), in_buf.size() * sizeof(float)));
+  NNFW_ENSURE_SUCCESS(
+      nnfw_set_output(session, 0, ti_new.dtype, out_buf.data(), out_buf.size() * sizeof(float)));
+
+  NNFW_ENSURE_SUCCESS(nnfw_run(session));
+
+  ASSERT_EQ(in_buf, out_buf);
+
+  NNFW_ENSURE_SUCCESS(nnfw_close_session(session));
+}
