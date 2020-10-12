@@ -19,13 +19,7 @@
 
 #include "kernels/Utils.h"
 
-#include <tensorflow/lite/kernels/maximum_minimum.cc>
-
-#include <tensorflow/lite/kernels/internal/optimized/optimized_ops.h>
-
-#include <tensorflow/lite/kernels/internal/reference/reference_ops.h>
-
-#include <tensorflow/lite/kernels/internal/reference/maximum_minimum.h>
+#include "kernels/BinaryOpCommon.h"
 
 namespace luci_interpreter
 {
@@ -61,44 +55,18 @@ void Maximum::execute() const
 
 void Maximum::evalFloat() const
 {
-  const bool need_broadcast = input1()->shape() != input2()->shape();
-
-  if (need_broadcast)
-  {
-    tflite::reference_ops::MaximumMinimumBroadcastSlow(
-        getTensorShape(input1()), getTensorData<float>(input1()), getTensorShape(input2()),
-        getTensorData<float>(input2()), getTensorShape(output()), getTensorData<float>(output()),
-        tflite::ops::builtin::maximum_minimum::MaximumOp());
-  }
-  else
-  {
-    tflite::reference_ops::Maximum(getTensorShape(input1()), getTensorData<float>(input1()),
-                                   getTensorShape(input2()), getTensorData<float>(input2()),
-                                   getTensorShape(output()), getTensorData<float>(output()));
-  }
+  BinaryOpBroadcastSlow(getTensorShape(input1()), getTensorData<float>(input1()),
+                        getTensorShape(input2()), getTensorData<float>(input2()),
+                        getTensorShape(output()), getTensorData<float>(output()),
+                        [](float x, float y) { return std::max(x, y); });
 }
 
 void Maximum::evalQuantized() const
 {
-  const int size = tflite::MatchingFlatSize(getTensorShape(input1()), getTensorShape(output()));
-  uint8_t *output_data = getTensorData<uint8_t>(output());
-  const uint8_t *input_data1 = getTensorData<uint8_t>(input1());
-  const uint8_t *input_data2 = getTensorData<uint8_t>(input2());
-  const bool need_broadcast = input1()->shape() != input2()->shape();
-
-  if (need_broadcast)
-  {
-    tflite::reference_ops::MaximumMinimumBroadcastSlow(
-        getTensorShape(input1()), getTensorData<uint8_t>(input1()), getTensorShape(input2()),
-        getTensorData<uint8_t>(input2()), getTensorShape(output()),
-        getTensorData<uint8_t>(output()), tflite::ops::builtin::maximum_minimum::MaximumOp());
-  }
-  else
-  {
-    tflite::reference_ops::Maximum(getTensorShape(input1()), getTensorData<uint8_t>(input1()),
-                                   getTensorShape(input2()), getTensorData<uint8_t>(input2()),
-                                   getTensorShape(output()), getTensorData<uint8_t>(output()));
-  }
+  BinaryOpBroadcastSlow(getTensorShape(input1()), getTensorData<uint8_t>(input1()),
+                        getTensorShape(input2()), getTensorData<uint8_t>(input2()),
+                        getTensorShape(output()), getTensorData<uint8_t>(output()),
+                        [](uint8_t x, uint8_t y) { return std::max(x, y); });
 }
 
 } // namespace kernels

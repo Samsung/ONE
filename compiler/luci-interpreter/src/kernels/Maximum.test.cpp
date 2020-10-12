@@ -27,11 +27,7 @@ namespace
 
 using namespace testing;
 
-float GetTolerance(float min, float max)
-{
-  float kQuantizedStep = (max - min) / 255.0;
-  return kQuantizedStep;
-}
+float GetTolerance(float min, float max) { return (max - min) / 255.0; }
 
 TEST(MaximumTest, Float)
 {
@@ -47,8 +43,7 @@ TEST(MaximumTest, Float)
   kernel.execute();
 
   std::vector<float> ref_output_data{1.0, 0.0, 1.0, 12.0, -2.0, -1.43};
-  EXPECT_THAT(extractTensorData<float>(output_tensor),
-              ElementsAreArray(ArrayFloatNear(ref_output_data)));
+  EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(ref_output_data));
 }
 
 TEST(MaximumTest, Uint8)
