@@ -131,3 +131,65 @@ TEST_F(GenModelTest, OneOp_While_TwoInputs)
 
   SUCCEED();
 }
+
+class WhileWrongSubgraphIndex : public GenModelTest,
+                                public ::testing::WithParamInterface<std::pair<int, int>>
+{
+};
+
+TEST_P(WhileWrongSubgraphIndex, neg_Test)
+{
+  // These values must be less than 0 or greater than 2
+  int cond_subg = GetParam().first;
+  int body_subg = GetParam().second;
+
+  // When While operation's subgraph index is invalid
+
+  CircleGen cgen;
+
+  // constant buffers
+  std::vector<float> incr_data{10};
+  uint32_t incr_buf = cgen.addBuffer(incr_data);
+
+  // primary subgraph
+  {
+    int x_in = cgen.addTensor({{1}, circle::TensorType_FLOAT32});
+    int x_out = cgen.addTensor({{1}, circle::TensorType_FLOAT32});
+    int end_in = cgen.addTensor({{1}, circle::TensorType_FLOAT32});
+    int end_out = cgen.addTensor({{1}, circle::TensorType_FLOAT32});
+    cgen.addOperatorWhile({{x_in, end_in}, {x_out, end_out}}, cond_subg, body_subg);
+    cgen.setInputsAndOutputs({x_in, end_in}, {x_out});
+  }
+
+  // cond subgraph
+  {
+    cgen.nextSubgraph();
+    int x = cgen.addTensor({{1}, circle::TensorType_FLOAT32});
+    int end = cgen.addTensor({{1}, circle::TensorType_FLOAT32});
+    int result = cgen.addTensor({{1}, circle::TensorType_BOOL});
+    cgen.addOperatorLess({{x, end}, {result}});
+    cgen.setInputsAndOutputs({x, end}, {result});
+  }
+
+  // body subgraph
+  {
+    cgen.nextSubgraph();
+    int x_in = cgen.addTensor({{1}, circle::TensorType_FLOAT32});
+    int incr = cgen.addTensor({{1}, circle::TensorType_FLOAT32, incr_buf});
+    int x_out = cgen.addTensor({{1}, circle::TensorType_FLOAT32});
+    int end = cgen.addTensor({{1}, circle::TensorType_FLOAT32});
+    cgen.addOperatorAdd({{x_in, incr}, {x_out}}, circle::ActivationFunctionType_NONE);
+    cgen.setInputsAndOutputs({x_in, end}, {x_out, end});
+  }
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->setBackends({"cpu"});
+  _context->expectFailModelLoad();
+
+  SUCCEED();
+}
+
+INSTANTIATE_TEST_CASE_P(GenModelTest, WhileWrongSubgraphIndex,
+                        ::testing::Values(std::make_pair(99, 2), std::make_pair(-1, 2),
+                                          std::make_pair(1, 99), std::make_pair(1, -99),
+                                          std::make_pair(-99, 99)));
