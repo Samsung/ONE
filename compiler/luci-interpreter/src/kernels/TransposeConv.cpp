@@ -40,7 +40,8 @@ void TransposeConv::configure()
   assert(output_shape()->shape().num_dims() == 1);
   assert(input()->shape().num_dims() == 4);
   assert(filter()->shape().num_dims() == 4);
-  assert(input()->element_type() == DataType::FLOAT32 || input()->element_type() == DataType::U8);
+  assert(input()->element_type() == DataType::FLOAT32 || input()->element_type() == DataType::U8 ||
+         input()->element_type() == DataType::S16);
   assert(input()->element_type() == output()->element_type());
   assert(input()->shape().dim(3) == filter()->shape().dim(3));
 
@@ -66,10 +67,12 @@ void TransposeConv::configure()
   _padding_width =
       computePadding(params().stride_width, 1, output_width, filter_width, unused_output_width);
 
-  if (input()->element_type() == DataType::U8)
+  if (input()->element_type() == DataType::U8 || input()->element_type() == DataType::S16)
   {
+    DataType scratch_data_type =
+        input()->element_type() == DataType::S16 ? DataType::S64 : DataType::S32;
     _scratch_tensor =
-        std::make_unique<Tensor>(DataType::S32, output()->shape(), AffineQuantization{}, "");
+        std::make_unique<Tensor>(scratch_data_type, output()->shape(), AffineQuantization{}, "");
     const double input_product_scale = input()->scale() * filter()->scale();
     assert(input_product_scale >= 0);
     const double real_multiplier = input_product_scale / output()->scale();
@@ -86,6 +89,9 @@ void TransposeConv::execute() const
       break;
     case DataType::U8:
       evalQuantized();
+      break;
+    case DataType::S16:
+      evalQuantizedS16();
       break;
     default:
       throw std::runtime_error("Unsupported type.");
@@ -133,6 +139,94 @@ void TransposeConv::evalQuantized() const
                                        getTensorShape(output()), getTensorData<uint8>(output()), //
                                        tflite::RuntimeShape(), nullptr,                          //
                                        getTensorData<int32_t>(_scratch_tensor.get()));
+}
+
+void TransposeConv::evalQuantizedS16() const
+{
+  const auto *input_data = getTensorData<int16_t>(input());
+  const auto *filter_data = getTensorData<int16_t>(filter());
+  const auto *bias_data = getTensorData<int64_t>(bias());
+  auto *output_data = getTensorData<int16_t>(output());
+  auto *scratch_data = getTensorData<int64_t>(_scratch_tensor.get());
+
+  const Shape &input_shape = input()->shape();
+  const Shape &filter_shape = filter()->shape();
+  const Shape &output_shape = output()->shape();
+
+  const int32_t batches = input_shape.dim(0);
+  const int32_t input_height = input_shape.dim(1);
+  const int32_t input_width = input_shape.dim(2);
+  const int32_t input_depth = input_shape.dim(3);
+  const int32_t output_depth = filter_shape.dim(0);
+  const int32_t filter_height = filter_shape.dim(1);
+  const int32_t filter_width = filter_shape.dim(2);
+  const int32_t output_height = output_shape.dim(1);
+  const int32_t output_width = output_shape.dim(2);
+
+  const int32_t stride_height = _params.stride_height;
+  const int32_t stride_width = _params.stride_width;
+
+  int32_t activation_min{};
+  int32_t activation_max{};
+  calculateActivationRangeQuantized(Activation::NONE, output(), &activation_min, &activation_max);
+
+  std::memset(scratch_data, 0, _scratch_tensor->shape().num_elements() * sizeof(int64_t));
+
+  for (int32_t batch = 0; batch < batches; ++batch)
+  {
+    for (int32_t in_y = 0; in_y < input_height; ++in_y)
+    {
+      for (int32_t in_x = 0; in_x < input_width; ++in_x)
+      {
+        for (int32_t in_c = 0; in_c < input_depth; ++in_c)
+        {
+          const int32_t out_y_origin = in_y * stride_height - _padding_height;
+          const int32_t out_x_origin = in_x * stride_width - _padding_width;
+          for (int32_t filter_y = 0; filter_y < filter_height; ++filter_y)
+          {
+            for (int32_t filter_x = 0; filter_x < filter_width; ++filter_x)
+            {
+              const int32_t out_x = out_x_origin + filter_x;
+              const int32_t out_y = out_y_origin + filter_y;
+              if ((out_y >= 0 && out_y < output_height) && (out_x >= 0 && out_x < output_width))
+              {
+                for (int32_t out_c = 0; out_c < output_depth; ++out_c)
+                {
+                  const int16_t input_val =
+                      input_data[calcOffset(input_shape, batch, in_y, in_x, in_c)];
+                  const int16_t filter_val =
+                      filter_data[calcOffset(filter_shape, out_c, filter_y, filter_x, in_c)];
+                  scratch_data[calcOffset(output_shape, batch, out_y, out_x, out_c)] +=
+                      static_cast<int64_t>(input_val) * static_cast<int64_t>(filter_val);
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    for (int32_t out_y = 0; out_y < output_height; ++out_y)
+    {
+      for (int32_t out_x = 0; out_x < output_width; ++out_x)
+      {
+        for (int32_t out_c = 0; out_c < output_depth; ++out_c)
+        {
+          int64_t acc = scratch_data[calcOffset(output_shape, batch, out_y, out_x, out_c)];
+          if (bias_data)
+          {
+            acc += bias_data[out_c];
+          }
+          int32_t scaled_acc =
+              tflite::MultiplyByQuantizedMultiplier(acc, _output_multiplier, _output_shift);
+
+          scaled_acc = std::max(scaled_acc, activation_min);
+          scaled_acc = std::min(scaled_acc, activation_max);
+
+          output_data[calcOffset(output_shape, batch, out_y, out_x, out_c)] = scaled_acc;
+        }
+      }
+    }
+  }
 }
 
 } // namespace kernels

@@ -43,6 +43,7 @@ public:
 private:
   void evalFloat() const;
   void evalQuantized() const;
+  void evalQuantizedS16() const;
 
 private:
   std::unique_ptr<Tensor> _scratch_tensor;

@@ -154,6 +154,40 @@ TEST(TransposeConvTest, UInt8)
   EXPECT_THAT(dequantizeTensorData(output_tensor), FloatArrayNear(ref_output_data));
 }
 
+TEST(TransposeConvTest, SInt16)
+{
+  std::vector<float> input_data{1, 2, 3, 4};
+  std::vector<float> filter_data{1, 3, 5, 7, 9, 11, 13, 15, 17, 2, 4, 6, 8, 10, 12, 14, 16, 18};
+  std::vector<float> bias_data{3, 4};
+  std::vector<int32_t> output_shape_data{1, 5, 5, 2};
+  std::vector<float> ref_output_data{
+      4,  6,  6,  8,  10,  14,  9,  12, 13, 16, //
+      10, 12, 12, 14, 28,  32,  21, 24, 25, 28, //
+      19, 24, 27, 32, 65,  76,  45, 52, 57, 64, //
+      24, 28, 30, 34, 64,  72,  39, 44, 47, 52, //
+      42, 46, 48, 52, 106, 114, 63, 68, 71, 76, //
+  };
+
+  Tensor input_tensor = makeInputTensor<DataType::S16>({1, 2, 2, 1}, 0.25, 0, input_data);
+  Tensor filter_tensor = makeInputTensor<DataType::S16>({2, 3, 3, 1}, 0.2, 0, filter_data);
+  Tensor bias_tensor = makeInputTensor<DataType::S64>({2}, 0.25 * 0.2, 0, bias_data);
+  Tensor output_shape_tensor = makeInputTensor<DataType::S32>({4}, output_shape_data);
+  Tensor output_tensor = makeOutputTensor(DataType::S16, 0.5, 0);
+
+  TransposeConvParams params{};
+  params.padding = Padding::VALID;
+  params.stride_height = 2;
+  params.stride_width = 2;
+
+  TransposeConv kernel(&output_shape_tensor, &filter_tensor, &input_tensor, &bias_tensor,
+                       &output_tensor, params);
+  kernel.configure();
+  kernel.execute();
+
+  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(output_shape_data));
+  EXPECT_THAT(dequantizeTensorData(output_tensor), FloatArrayNear(ref_output_data));
+}
+
 } // namespace
 } // namespace kernels
 } // namespace luci_interpreter
