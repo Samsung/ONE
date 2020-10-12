@@ -46,17 +46,25 @@ public:
   void visit(const ir::operation::BatchMatMul &node) override;
   void visit(const ir::operation::BatchToSpaceND &node) override;
   void visit(const ir::operation::Comparison &node) override;
+  void visit(const ir::operation::DepthToSpace &node) override;
   void visit(const ir::operation::ElementwiseActivation &node) override;
   void visit(const ir::operation::ElementwiseBinary &node) override;
   void visit(const ir::operation::ElementwiseUnary &node) override;
-  void visit(const ir::operation::ExpandDims &node) override;
   void visit(const ir::operation::EmbeddingLookup &node) override;
+  void visit(const ir::operation::ExpandDims &node) override;
   void visit(const ir::operation::HashtableLookup &node) override;
+  void visit(const ir::operation::Pack &node) override;
   void visit(const ir::operation::Pad &node) override;
+  void visit(const ir::operation::ResizeBilinear &node) override;
   void visit(const ir::operation::Reverse &node) override;
   void visit(const ir::operation::SpaceToBatchND &node) override;
+  void visit(const ir::operation::SpaceToDepth &node) override;
+  void visit(const ir::operation::Split &node) override;
   void visit(const ir::operation::SquaredDifference &node) override;
   void visit(const ir::operation::StridedSlice &node) override;
+  void visit(const ir::operation::TransposeConv &node) override;
+  void visit(const ir::operation::Unpack &node) override;
+  void visit(const ir::operation::While &node) override;
 
 private:
   // TODO Remove _ctx field
