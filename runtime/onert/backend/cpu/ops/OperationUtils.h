@@ -95,13 +95,16 @@ inline nnfw::cker::Shape getTensorShape(const IPortableTensor *tensor)
   if (tensor == nullptr)
     return nnfw::cker::Shape();
 
+  const ir::Shape &shape = tensor->get_info().shape();
+
   assert(tensor->layout() == ir::Layout::NHWC);
-  auto rank = tensor->num_dimensions();
+
+  auto rank = shape.rank();
   nnfw::cker::Shape ret(rank);
   auto data = ret.DimsData();
-  for (uint32_t i = 0; i < rank; ++i)
+  for (int i = 0; i < rank; ++i)
   {
-    data[i] = tensor->dimension(i);
+    data[i] = shape.dim(i);
   }
   return ret;
 }

@@ -39,7 +39,7 @@ class UserTensor : public IPortableTensor
 {
 public:
   UserTensor(const ir::OperandInfo &info, ir::Layout layout, uint8_t *buffer, size_t size)
-      : _info{info}, _layout{layout}, _buffer{buffer}, _size{size}, _dynamic{false}
+      : IPortableTensor{info}, _layout{layout}, _buffer{buffer}, _size{size}, _dynamic{false}
   {
   }
 
@@ -72,7 +72,6 @@ public:
   bool applyShape(const ir::Shape &) override;
 
 private:
-  ir::OperandInfo _info;
   ir::Layout _layout;
   uint8_t *_buffer;
   size_t _size;

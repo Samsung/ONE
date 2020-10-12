@@ -18,6 +18,7 @@
 #define __ONERT_BACKEND_I_PORTABLE_TENSOR_H__
 
 #include "backend/ITensor.h"
+#include "ir/OperandInfo.h"
 #include "ir/Sparsity.h"
 
 namespace onert
@@ -37,12 +38,18 @@ namespace backend
 class IPortableTensor : public ITensor
 {
 public:
+  IPortableTensor(const ir::OperandInfo &info) : _info(info) {}
+
   virtual ~IPortableTensor();
   virtual const ir::Sparsity *sparsity() const { return nullptr; }
+  const ir::OperandInfo &get_info() const { return _info; }
 
 public:
   bool has_padding() const final { return false; }
   void access(const std::function<void(ITensor &tensor)> &fn) final { fn(*this); }
+
+protected:
+  ir::OperandInfo _info;
 };
 
 } // namespace backend
