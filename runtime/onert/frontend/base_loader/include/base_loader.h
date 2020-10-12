@@ -157,6 +157,14 @@ private:
   void loadSpaceToDepth(const Operator *op, ir::Graph &subg);
   void loadLeakyRelu(const Operator *op, ir::Graph &subg);
 
+  void verifySubgraphIndex(int subg_index)
+  {
+    const auto num_subgraphs = _model->subgraphs()->size();
+    if (subg_index < 0 || subg_index >= static_cast<int32_t>(num_subgraphs))
+      throw std::runtime_error{std::string{"Invalid subgraph index - "} +
+                               std::to_string(subg_index)};
+  }
+
 protected:
   // Base address for mapped region for loading (if needed)
   uint8_t *_base;
@@ -1186,12 +1194,16 @@ void BaseLoader<LoaderDomain>::loadOneHot(const Operator *op, ir::Graph &subg)
 template <typename LoaderDomain>
 void BaseLoader<LoaderDomain>::loadIf(const Operator *op, ir::Graph &subg)
 {
-  ir::operation::If::Param param;
   const auto *options = op->builtin_options_as_IfOptions();
-  const uint32_t then_index = options->then_subgraph_index();
-  const uint32_t else_index = options->else_subgraph_index();
-  param.then_subg_index = ir::SubgraphIndex{then_index};
-  param.else_subg_index = ir::SubgraphIndex{else_index};
+  const int32_t then_index = options->then_subgraph_index();
+  const int32_t else_index = options->else_subgraph_index();
+
+  verifySubgraphIndex(then_index);
+  verifySubgraphIndex(else_index);
+
+  ir::operation::If::Param param;
+  param.then_subg_index = ir::SubgraphIndex{static_cast<uint32_t>(then_index)};
+  param.else_subg_index = ir::SubgraphIndex{static_cast<uint32_t>(else_index)};
 
   loadOperationTo<ir::operation::If>(op, subg, param);
 }
@@ -1199,12 +1211,16 @@ void BaseLoader<LoaderDomain>::loadIf(const Operator *op, ir::Graph &subg)
 template <typename LoaderDomain>
 void BaseLoader<LoaderDomain>::loadWhile(const Operator *op, ir::Graph &subg)
 {
-  ir::operation::While::Param param;
   const auto *options = op->builtin_options_as_WhileOptions();
-  const uint32_t cond_index = options->cond_subgraph_index();
-  const uint32_t body_index = options->body_subgraph_index();
-  param.cond_subg_index = ir::SubgraphIndex{cond_index};
-  param.body_subg_index = ir::SubgraphIndex{body_index};
+  const int32_t cond_index = options->cond_subgraph_index();
+  const int32_t body_index = options->body_subgraph_index();
+
+  verifySubgraphIndex(cond_index);
+  verifySubgraphIndex(body_index);
+
+  ir::operation::While::Param param;
+  param.cond_subg_index = ir::SubgraphIndex{static_cast<uint32_t>(cond_index)};
+  param.body_subg_index = ir::SubgraphIndex{static_cast<uint32_t>(body_index)};
 
   loadOperationTo<ir::operation::While>(op, subg, param);
 }
