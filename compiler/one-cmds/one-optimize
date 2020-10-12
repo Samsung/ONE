@@ -49,6 +49,7 @@ version()
 
 OPTIMIZE_all=0
 OPTIMIZE_fold_dequantize=0
+OPTIMIZE_fuse_add_with_tconv=0
 OPTIMIZE_fuse_bcq=0
 OPTIMIZE_fuse_instnorm=0
 OPTIMIZE_resolve_customop_add=0
