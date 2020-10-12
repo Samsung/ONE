@@ -165,6 +165,21 @@ TEST_F(GenModelTest, OneTensor_InputAndTwoOutputs)
   SUCCEED();
 }
 
+TEST_F(GenModelTest, OneTensor_InputAndTwoOutputsUsed)
+{
+  CircleGen cgen;
+  int t = cgen.addTensor({{2}, circle::TensorType::TensorType_FLOAT32});
+  int o = cgen.addTensor({{2}, circle::TensorType::TensorType_FLOAT32});
+  cgen.addOperatorNeg({{t}, {o}});
+  cgen.setInputsAndOutputs({t}, {t, t, o}); // Same tensor is an input and 2 outputs
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->addTestCase(uniformTCD<float>({{1, 1}}, {{1, 1}, {1, 1}, {-1, -1}}));
+  _context->setBackends({"acl_cl", "acl_neon", "cpu"});
+
+  SUCCEED();
+}
+
 TEST_F(GenModelTest, OneTensor_ConstAndThreeOutputs)
 {
   CircleGen cgen;
