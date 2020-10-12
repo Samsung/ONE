@@ -264,6 +264,14 @@ uint32_t CircleGen::addOperatorIf(const OperatorParams &params, uint32_t then_su
                                 circle::BuiltinOptions_IfOptions, options);
 }
 
+uint32_t CircleGen::addOperatorInstanceNorm(const OperatorParams &params, float epsilon,
+                                            circle::ActivationFunctionType actfn)
+{
+  auto options = circle::CreateInstanceNormOptions(_fbb, epsilon, actfn).Union();
+  return addOperatorWithOptions(params, circle::BuiltinOperator_INSTANCE_NORM,
+                                circle::BuiltinOptions_InstanceNormOptions, options);
+}
+
 uint32_t CircleGen::addOperatorTranspose(const OperatorParams &params)
 {
   auto options = circle::CreateTransposeOptions(_fbb).Union();
