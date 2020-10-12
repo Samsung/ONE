@@ -146,6 +146,7 @@ void DynamicShapeInferer::visit(const ir::operation::BCQFullyConnected &op)
   const auto cluster_idx{
       op.getInputs().at(ir::operation::BCQFullyConnected::Input::WEIGHTS_CLUSTERS)};
   const auto &cluster = _tensor_registry->getITensor(cluster_idx);
+  assert(cluster->is_constant());
 
   if (!input->is_dynamic())
     return;
@@ -158,6 +159,39 @@ void DynamicShapeInferer::visit(const ir::operation::BCQFullyConnected &op)
 
   ir::Shape new_shape =
       shape_inference::inferBCQFullyConnectedShape(input_shape, cluster_shape, cluster_buf);
+
+  auto output_ind = op.getOutputs().at(0);
+  auto output = _tensor_registry->getITensor(output_ind);
+
+  output->applyShape(new_shape);
+  assert(output->buffer() != nullptr);
+}
+
+void DynamicShapeInferer::visit(const ir::operation::BCQGather &op)
+{
+  const auto indices_idx{op.getInputs().at(ir::operation::BCQGather::Input::INDICES)};
+  const auto &indices = _tensor_registry->getITensor(indices_idx);
+
+  const auto input_binary_idx{op.getInputs().at(ir::operation::BCQGather::Input::INDICES)};
+  const auto &input_binary = _tensor_registry->getITensor(input_binary_idx);
+  assert(!input_binary->is_dynamic());
+
+  const auto cluster_idx{op.getInputs().at(ir::operation::BCQGather::Input::INPUT_CLUSTERS)};
+  const auto &cluster = _tensor_registry->getITensor(cluster_idx);
+  assert(cluster->is_constant());
+
+  if (!indices->is_dynamic())
+    return;
+
+  auto indices_shape = indices->getShape();
+  auto cluster_shape = cluster->getShape();
+  auto rank = input_binary->getShape().rank();
+
+  auto cluster_buf = reinterpret_cast<const int32_t *>(cluster->buffer());
+  assert(cluster_buf);
+
+  ir::Shape new_shape = shape_inference::inferBCQGatherShape(indices_shape, cluster_shape,
+                                                             cluster_buf, rank, op.param());
 
   auto output_ind = op.getOutputs().at(0);
   auto output = _tensor_registry->getITensor(output_ind);

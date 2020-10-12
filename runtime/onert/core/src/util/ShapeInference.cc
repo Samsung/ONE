@@ -73,6 +73,19 @@ ir::Shape broadcastShapes(const ir::Shape &lhs_shape, const ir::Shape &rhs_shape
 
 } // namespace
 
+namespace bcq
+{
+inline int getOutputSize(const ir::Shape &cluster_shape, const int32_t *cluster_buf)
+{
+  int size = 0;
+  for (int idx = 0; idx < cluster_shape.dim(0); idx++)
+  {
+    size += cluster_buf[idx * 2 + 1];
+  }
+  return size;
+}
+} // namespace bcq
+
 //
 // Shape inference
 //
@@ -265,19 +278,24 @@ ir::Shape inferBatchMatMulShape(const ir::Shape &lhs_shape, const ir::Shape &rhs
   return output_shape;
 }
 
-ir::Shape inferBroadcastToShape(const ir::Shape shp_shape, const int32_t *shape_buf)
+/*
+ * shp_shape : SHAPE input tensor's shape
+ * shp_buf : SHAPE input tensor's buffer
+ */
+ir::Shape inferBroadcastToShape(const ir::Shape shp_shape, const int32_t *shp_buf)
 {
+
   const int num_elements = shp_shape.num_elements();
 
   assert(num_elements != 0);
-  assert(shape_buf);
+  assert(shp_buf);
 
   ir::Shape new_shape(num_elements);
 
   for (int i = 0; i < num_elements; ++i)
   {
-    assert(shape_buf[i] != 0); // It shouldn't be 0.
-    new_shape.dim(i) = shape_buf[i];
+    assert(shp_buf[i] != 0); // It shouldn't be 0.
+    new_shape.dim(i) = shp_buf[i];
   }
 
   return new_shape;
@@ -399,20 +417,53 @@ ir::Shape inferBCQFullyConnectedShape(const ir::Shape &in_shape, const ir::Shape
   assert(cluster_shape.dim(1) == 2);
 
   const auto input_size = in_shape.dim(1);
-  auto output_size = 0;
-  for (int idx = 0; idx < cluster_shape.dim(0); idx++)
-  {
-    output_size += cluster_buf[idx * 2 + 1];
-  }
+  const auto output_size = bcq::getOutputSize(cluster_shape, cluster_buf);
 
   return {ir::Shape({output_size, input_size})};
+}
+
+ir::Shape inferBCQGatherShape(const ir::Shape &indices_shape, const ir::Shape &cluster_shape,
+                              const int32_t *cluster_buf, int rank,
+                              const ir::operation::BCQGather::Param &param)
+{
+  ir::Shape out_shape;
+  ir::Shape in_original_shape;
+
+  assert(cluster_shape.rank() == 2);
+  assert(cluster_shape.dim(1) == 2);
+
+  auto hidden_size = param.input_hidden_size;
+  auto axis = param.axis;
+
+  in_original_shape.append(bcq::getOutputSize(cluster_shape, cluster_buf));
+  in_original_shape.append(hidden_size);
+
+  const int indices_rank = indices_shape.rank();
+  for (int idx = 0; idx < rank; ++idx)
+  {
+    if (idx == (int)axis)
+    {
+      for (int indices_idx = 0; indices_idx < indices_rank; indices_idx++)
+      {
+        out_shape.append(indices_shape.dim(indices_idx));
+      }
+    }
+    else
+    {
+      out_shape.append(in_original_shape.dim(idx));
+    }
+  }
+
+  return out_shape;
 }
 
 ir::Shape inferGatherShape(const ir::Shape &input_shape, const ir::Shape &indices_shape, int axis,
                            int rank)
 {
   ir::Shape out_shape;
+
   const int indices_rank = indices_shape.rank();
+
   for (int idx = 0; idx < rank; ++idx)
   {
     if (idx == axis)
