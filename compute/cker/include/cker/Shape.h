@@ -136,6 +136,21 @@ public:
     std::memcpy(dst_dims, dims_data, dimensions_count * sizeof(int32_t));
   }
 
+  inline void ReplaceWith(const Shape &other)
+  {
+    ReplaceWith(other.DimensionsCount(), other.DimsData());
+  }
+
+  inline void ReplaceWith(Shape &&other)
+  {
+    Resize(0);
+    std::swap(_size, other._size);
+    if (_size <= kMaxSmallSize)
+      std::copy(other._dims, other._dims + kMaxSmallSize, _dims);
+    else
+      _dims_pointer = other._dims_pointer;
+  }
+
   template <typename T> inline void BuildFrom(const T &src_iterable)
   {
     const int dimensions_count = std::distance(src_iterable.begin(), src_iterable.end());
