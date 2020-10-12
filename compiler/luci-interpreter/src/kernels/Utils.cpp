@@ -89,20 +89,23 @@ static void calculateActivationRangeQuantizedImpl(Activation activation, int32_t
 void calculateActivationRangeQuantized(Activation activation, const Tensor *output,
                                        int32_t *activation_min, int32_t *activation_max)
 {
+  // For now, assume that signed type implies signed symmetric quantization.
   int32_t qmin{};
   int32_t qmax{};
   switch (output->element_type())
   {
     case DataType::U8:
-      qmin = std::numeric_limits<uint8_t>::min();
+      qmin = 0;
       qmax = std::numeric_limits<uint8_t>::max();
       break;
     case DataType::S8:
-      qmin = std::numeric_limits<int8_t>::min();
+      assert(output->zero_point() == 0);
+      qmin = -std::numeric_limits<int8_t>::max();
       qmax = std::numeric_limits<int8_t>::max();
       break;
     case DataType::S16:
-      qmin = std::numeric_limits<int16_t>::min();
+      assert(output->zero_point() == 0);
+      qmin = -std::numeric_limits<int16_t>::max();
       qmax = std::numeric_limits<int16_t>::max();
       break;
     default:
