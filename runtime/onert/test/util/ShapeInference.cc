@@ -508,7 +508,7 @@ TEST(ShapeInference, BCQFullyConnected)
 TEST(ShapeInference, BCQGather)
 {
   auto check = [&](Shape &indices_shape, Shape &cluster_shape, std::vector<int> cluster,
-                   int hidden_size, int axis, int rank, Shape &expected) {
+                   uint32_t hidden_size, uint32_t axis, int rank, Shape &expected) {
     operation::BCQGather::Param param{hidden_size, axis};
     auto actual = onert::shape_inference::inferBCQGatherShape(indices_shape, cluster_shape,
                                                               cluster.data(), rank, param);
@@ -522,8 +522,8 @@ TEST(ShapeInference, BCQGather)
     Shape indices_shape{5, 1};
     Shape cluster_shape{3, 2};
     std::vector<int> cluster = {1, 10, 2, 10, 3, 10};
-    int hidden_size = 10;
-    int axis = 1;
+    uint32_t hidden_size = 10;
+    uint32_t axis = 0;
     int rank = 2;
 
     Shape expected{5, 1, 10};
@@ -534,8 +534,8 @@ TEST(ShapeInference, BCQGather)
     Shape indices_shape{5, 1};
     Shape cluster_shape{3, 2};
     std::vector<int> cluster = {1, 10, 2, 10, 3, 10};
-    int hidden_size = 10;
-    int axis = 1;
+    uint32_t hidden_size = 10;
+    uint32_t axis = 1;
     int rank = 2;
 
     Shape expected{30, 5, 1};

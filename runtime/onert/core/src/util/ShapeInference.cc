@@ -439,9 +439,9 @@ ir::Shape inferBCQGatherShape(const ir::Shape &indices_shape, const ir::Shape &c
   in_original_shape.append(bcq::getOutputSize(cluster_shape, cluster_buf));
 
   const int indices_rank = indices_shape.rank();
-  for (uint32_t idx = 0; idx < rank; ++idx)
+  for (int idx = 0; idx < rank; ++idx)
   {
-    if (idx == axis)
+    if (idx == (int)axis)
     {
       for (int indices_idx = 0; indices_idx < indices_rank; indices_idx++)
       {
