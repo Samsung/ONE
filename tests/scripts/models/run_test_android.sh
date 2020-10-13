@@ -123,14 +123,13 @@ run_tests()
             continue
         fi
 
-        TEST_CACHE_PATH=$CACHE_ROOT_PATH/$TEST_NAME
-        MODELFILE=$TEST_CACHE_PATH/$MODELFILE_NAME
+        MODELFILE=$CACHE_ROOT_PATH/$MODELFILE_NAME
 
         # Find model file for downloaded by zip
         if [ "${MODELFILE_NAME##*.}" = "zip" ]; then
             __PWD=$(pwd)
-            cd $TEST_CACHE_PATH
-            MODELFILE=$TEST_CACHE_PATH/$(ls *.tflite)
+            cd $CACHE_ROOT_PATH
+            MODELFILE=$CACHE_ROOT_PATH/$(ls ${MODELFILE_NAME%.zip}/*.tflite)
             cd $__PWD
         fi
 
