@@ -1340,30 +1340,41 @@ void KernelGenerator::visit(const ir::operation::LSTM &node)
   // has_input_to_input_weights && has_recurrent_to_input_weights: no CIFG
   // !(has_input_to_input_weights && has_recurrent_to_input_weights): CIFG
   // NOTE The cell_to_input_weights does not exist in non-peephole although regular LSTM(non-CIFG).
-  bool has_input_to_input_weights = _ctx.at(input_to_input_weights_index).shape().dim(0) != 0 &&
-                                    _ctx.at(input_to_input_weights_index).shape().dim(1) != 0;
+  bool has_input_to_input_weights = _ctx.exist(input_to_input_weights_index) &&
+                                    (_ctx.at(input_to_input_weights_index).shape().dim(0) != 0 &&
+                                     _ctx.at(input_to_input_weights_index).shape().dim(1) != 0);
   bool has_recurrent_to_input_weights =
-      _ctx.at(recurrent_to_input_weights_index).shape().dim(0) != 0 &&
-      _ctx.at(recurrent_to_input_weights_index).shape().dim(1) != 0;
+      _ctx.exist(recurrent_to_input_weights_index) &&
+      (_ctx.at(recurrent_to_input_weights_index).shape().dim(0) != 0 &&
+       _ctx.at(recurrent_to_input_weights_index).shape().dim(1) != 0);
 
   // NOTE The cell_to_forget_weights and the cell_to_output_weights exist in peephole.
   // But the cell_to_input_weights does not exist in regular CIFG although peephole.
   // has_cell_to_forget_weights && has_cell_to_output_weights: peephole
   // !(has_cell_to_forget_weights && has_cell_to_output_weights): no peephole
-  bool has_cell_to_forget_weights = _ctx.at(cell_to_forget_weights_index).shape().dim(0) != 0;
-  bool has_cell_to_output_weights = _ctx.at(cell_to_output_weights_index).shape().dim(0) != 0;
+  bool has_cell_to_forget_weights = _ctx.exist(cell_to_forget_weights_index) &&
+                                    _ctx.at(cell_to_forget_weights_index).shape().dim(0) != 0;
+  bool has_cell_to_output_weights = _ctx.exist(cell_to_output_weights_index) &&
+                                    _ctx.at(cell_to_output_weights_index).shape().dim(0) != 0;
 
-  bool has_input_gate_bias = _ctx.at(input_gate_bias_index).shape().dim(0);
+  bool has_input_gate_bias =
+      _ctx.exist(input_gate_bias_index) && _ctx.at(input_gate_bias_index).shape().dim(0);
 
-  bool has_projection_weights = _ctx.at(projection_weights_index).shape().dim(0) != 0 &&
-                                _ctx.at(projection_weights_index).shape().dim(1) != 0;
-  bool has_projection_bias = _ctx.at(projection_bias_index).shape().dim(0);
+  bool has_projection_weights = _ctx.exist(projection_weights_index) &&
+                                (_ctx.at(projection_weights_index).shape().dim(0) != 0 &&
+                                 _ctx.at(projection_weights_index).shape().dim(1) != 0);
+  bool has_projection_bias =
+      _ctx.exist(projection_bias_index) && _ctx.at(projection_bias_index).shape().dim(0);
 
   auto scratch_buffer_tensor = _ctx.exist(scratch_buffer_index)
                                    ? _tensor_reg->getPortableTensor(scratch_buffer_index)
                                    : nullptr; // optional
-  auto output_state_out_tensor = _tensor_reg->getPortableTensor(output_state_out_index);
-  auto cell_state_out_tensor = _tensor_reg->getPortableTensor(cell_state_out_index);
+  auto output_state_out_tensor = _ctx.exist(output_state_out_index)
+                                     ? _tensor_reg->getPortableTensor(output_state_out_index)
+                                     : nullptr; // optional
+  auto cell_state_out_tensor = _ctx.exist(cell_state_out_index)
+                                   ? _tensor_reg->getPortableTensor(cell_state_out_index)
+                                   : nullptr; // optional
   auto output_tensor = _tensor_reg->getPortableTensor(output_index);
 
   auto input_tensor = _tensor_reg->getPortableTensor(input_index);
@@ -1453,7 +1464,9 @@ void KernelGenerator::visit(const ir::operation::LSTM &node)
       projection_bias_tensor, output_state_in_tensor, cell_state_in_tensor, node.param(),
       /*forward_sequence=*/true, time_major,
       /*output_offset=*/0, scratch_buffer_tensor, output_state_out_tensor, cell_state_out_tensor,
-      output_tensor);
+      output_tensor,
+      !_ctx.at(output_state_in_index).info().isVariable() /* means empty buffer on frontend now */,
+      !_ctx.at(cell_state_in_index).info().isVariable());
 
   _return_fn = std::move(fn);
 }

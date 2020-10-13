@@ -156,6 +156,7 @@ private:
   void loadLogSoftmax(const Operator *op, ir::Graph &subg);
   void loadSpaceToDepth(const Operator *op, ir::Graph &subg);
   void loadLeakyRelu(const Operator *op, ir::Graph &subg);
+  void loadUnidirectionalSequenceLSTM(const Operator *op, ir::Graph &subg);
 
 protected:
   // Base address for mapped region for loading (if needed)
@@ -1256,6 +1257,42 @@ void BaseLoader<LoaderDomain>::loadLeakyRelu(const Operator *op, ir::Graph &subg
 }
 
 template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadUnidirectionalSequenceLSTM(const Operator *op, ir::Graph &subg)
+{
+  ir::operation::LSTM::Param param;
+  const auto *options = op->builtin_options_as_UnidirectionalSequenceLSTMOptions();
+  param.activation = convertActivation(options->fused_activation_function());
+  param.cell_threshold = options->cell_clip();
+  param.projection_threshold = options->proj_clip();
+  param.time_major = options->time_major();
+  // The asymmetric_quantize_inputs option is unused yet
+
+  ir::OperandIndexSequence inputs;
+  for (const std::int32_t idx : *op->inputs())
+  {
+    inputs.append(tensorIdxToOperandIdx(idx));
+  }
+
+  ir::OperandIndexSequence outputs;
+  // loader doesn't support optional output tensor yet
+  if (op->outputs()->size() != 1)
+  {
+    auto builtin_code = _model->operator_codes()->Get(op->opcode_index())->builtin_code();
+    throw std::runtime_error(std::string("loader doesn't support optional output tensor yet for ")
+                                 .append(EnumNameBuiltinOperator(builtin_code)));
+  }
+  for (size_t i = 0; i < ir::operation::LSTM::Output::OUTPUT; ++i)
+  {
+    // Add optional outputs
+    outputs.append(ir::OperandIndex());
+  }
+  outputs.append(tensorIdxToOperandIdx(op->outputs()->Get(0)));
+
+  std::unique_ptr<ir::operation::LSTM> new_op(new ir::operation::LSTM(inputs, outputs, param));
+  subg.addOperation(std::move(new_op));
+}
+
+template <typename LoaderDomain>
 void BaseLoader<LoaderDomain>::loadOperation(const Operator *op, ir::Graph &subg)
 {
   const auto builtin_op = _model->operator_codes()->Get(op->opcode_index())->builtin_code();
@@ -1498,6 +1535,9 @@ void BaseLoader<LoaderDomain>::loadOperation(const Operator *op, ir::Graph &subg
       return;
     case BuiltinOperator::BuiltinOperator_RANK:
       loadOperationTo<ir::operation::Rank>(op, subg);
+      return;
+    case BuiltinOperator::BuiltinOperator_UNIDIRECTIONAL_SEQUENCE_LSTM:
+      loadUnidirectionalSequenceLSTM(op, subg);
       return;
     default:
       throw std::runtime_error(

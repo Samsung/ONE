@@ -72,6 +72,7 @@ public:
     switch (op)
     {
       case BuiltinOperator::BuiltinOperator_FULLY_CONNECTED:
+      case BuiltinOperator::BuiltinOperator_UNIDIRECTIONAL_SEQUENCE_LSTM:
         return true;
       default:
         return false;
