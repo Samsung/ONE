@@ -38,8 +38,7 @@ public:
   void execute() const override;
 
 private:
-  void evalFloat() const;
-  void evalQuantized() const;
+  template <typename T> inline void evalMaximum() const;
 };
 
 } // namespace kernels

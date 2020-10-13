@@ -43,30 +43,22 @@ void Maximum::execute() const
   switch (input1()->element_type())
   {
     case DataType::FLOAT32:
-      evalFloat();
+      evalMaximum<float>();
       break;
     case DataType::U8:
-      evalQuantized();
+      evalMaximum<uint8_t>();
       break;
     default:
       throw std::runtime_error("Unsupported type.");
   }
 }
 
-void Maximum::evalFloat() const
+template <typename T> inline void Maximum::evalMaximum() const
 {
-  BinaryOpBroadcastSlow(getTensorShape(input1()), getTensorData<float>(input1()),
-                        getTensorShape(input2()), getTensorData<float>(input2()),
-                        getTensorShape(output()), getTensorData<float>(output()),
-                        [](float x, float y) { return std::max(x, y); });
-}
-
-void Maximum::evalQuantized() const
-{
-  BinaryOpBroadcastSlow(getTensorShape(input1()), getTensorData<uint8_t>(input1()),
-                        getTensorShape(input2()), getTensorData<uint8_t>(input2()),
-                        getTensorShape(output()), getTensorData<uint8_t>(output()),
-                        [](uint8_t x, uint8_t y) { return std::max(x, y); });
+  BinaryOpBroadcastSlow(getTensorShape(input1()), getTensorData<T>(input1()),
+                        getTensorShape(input2()), getTensorData<T>(input2()),
+                        getTensorShape(output()), getTensorData<T>(output()),
+                        [](T x, T y) { return std::max(x, y); });
 }
 
 } // namespace kernels

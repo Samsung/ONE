@@ -65,6 +65,7 @@ public:
   std::unique_ptr<Kernel> visit(const luci::CircleLogistic *node) override;
   std::unique_ptr<Kernel> visit(const luci::CircleLogSoftmax *node) override;
   std::unique_ptr<Kernel> visit(const luci::CircleInput *node) override;
+  std::unique_ptr<Kernel> visit(const luci::CircleMaximum *node) override;
   std::unique_ptr<Kernel> visit(const luci::CircleMaxPool2D *node) override;
   std::unique_ptr<Kernel> visit(const luci::CircleMean *node) override;
   std::unique_ptr<Kernel> visit(const luci::CircleMul *node) override;

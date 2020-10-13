@@ -27,8 +27,6 @@ namespace
 
 using namespace testing;
 
-float GetTolerance(float min, float max) { return (max - min) / 255.0; }
-
 TEST(MaximumTest, Float)
 {
   Shape input_shape{3, 1, 2};
