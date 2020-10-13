@@ -56,6 +56,8 @@ set(SOURCES
     MaxPool2D.cpp
     Mean.h
     Mean.cpp
+    Minimum.h
+    Minimum.cpp
     Mul.h
     Mul.cpp
     NotEqual.h
@@ -152,6 +154,7 @@ set(TEST_SOURCES
     Maximum.test.cpp
     MaxPool2D.test.cpp
     Mean.test.cpp
+    Minimum.test.cpp
     Mul.test.cpp
     NotEqual.test.cpp
     Pad.test.cpp

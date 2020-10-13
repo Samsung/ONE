@@ -43,6 +43,7 @@
 #include "kernels/Maximum.h"
 #include "kernels/MaxPool2D.h"
 #include "kernels/Mean.h"
+#include "kernels/Minimum.h"
 #include "kernels/Mul.h"
 #include "kernels/NotEqual.h"
 #include "kernels/Pad.h"
@@ -506,6 +507,17 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleMean *node)
   params.keep_dims = node->keep_dims();
 
   return std::make_unique<kernels::Mean>(input, axes, output, params);
+}
+
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleMinimum *node)
+{
+  assert(node->arity() == 2);
+
+  const Tensor *input1 = getInputTensor(node->x());
+  const Tensor *input2 = getInputTensor(node->y());
+  Tensor *output = getOutputTensor(node);
+
+  return std::make_unique<kernels::Minimum>(input1, input2, output);
 }
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleMul *node)
