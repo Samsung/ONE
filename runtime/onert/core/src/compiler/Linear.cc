@@ -148,6 +148,9 @@ void Linear::planTensors(const compiler::LoweredGraph &lowered_graph,
     tensor_builder->notifyFirstUse(ind);
   }
 
+  const auto io_tensors =
+      (graph.getInputs() + graph.getOutputs()) | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED;
+
   // At each operation,
   // 1. Scan DEF of outputs. If the DEF, allocate it
   // 2. Scan USE of inputs. Decrease the USE and deallocate if the USE is 0
@@ -188,7 +191,8 @@ void Linear::planTensors(const compiler::LoweredGraph &lowered_graph,
             auto &tensor_registry = lowered_graph.backend_contexts().at(backend)->tensor_registry;
             auto *tensor = tensor_registry->getITensor(ind);
             assert(tensor);
-            dyn_tensor_manager->planDealloc(op_idx, tensor);
+            if (!io_tensors.contains(ind)) // I/O tensors cannot be deallocated
+              dyn_tensor_manager->planDealloc(op_idx, tensor);
           }
         }
       }
