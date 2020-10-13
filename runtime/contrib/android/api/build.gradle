@@ -33,6 +33,8 @@ android {
                 def onert_ext_lib
                 if (project.hasProperty('onertExtLib'))
                     onert_ext_lib = project.onertExtLib
+                else
+                    onert_ext_lib = ""
 
                 arguments "ONERT_API_INC_DIR=$onert_header_dir",
                           "ONERT_PREBUILT_LIB_DIR=$onert_lib_dir",
