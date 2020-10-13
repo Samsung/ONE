@@ -73,6 +73,7 @@ public:
 
 public:
   void accept(OperationVisitor &v) const override;
+  std::string name() const override;
   OpCode opcode() const final { return OpCode::LSTM; }
 
 public:

@@ -35,6 +35,14 @@ LSTM::LSTM(const OperandIndexSequence &inputs, const OperandIndexSequence &outpu
 {
 }
 
+std::string LSTM::name() const
+{
+  if (getOutputs().at(Output::SCRATCH_BUFFER).undefined())
+    return std::string{"UnidirectionalSequenceLSTM"};
+  else
+    return Operation::name();
+}
+
 } // namespace operation
 } // namespace ir
 } // namespace onert
