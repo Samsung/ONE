@@ -111,8 +111,6 @@ void ShapeValidator::visit(const ir::operation::Comparison &)
 
 void ShapeValidator::visit(const ir::operation::Softmax &node)
 {
-  VERBOSE(Softmax) << "Configure SOFTMAX operation" << std::endl;
-
   const auto output_index{node.getOutputs().at(0)};
   if (_ctx.at(output_index).info().isDynamic())
     return;
@@ -151,8 +149,6 @@ void ShapeValidator::visit(const ir::operation::Pool2D &node)
 
 void ShapeValidator::visit(const ir::operation::Permute &node)
 {
-  VERBOSE(Permute) << "Configure Permute operation" << std::endl;
-
   const auto output_index{node.getOutputs().at(0)};
   if (_ctx.at(output_index).info().isDynamic())
     return;
@@ -164,8 +160,6 @@ void ShapeValidator::visit(const ir::operation::Permute &node)
 
 void ShapeValidator::visit(const ir::operation::Reduce &node)
 {
-  VERBOSE(Permute) << "Configure " + node.name() + " operation" << std::endl;
-
   const auto output_index{node.getOutputs().at(0)};
   if (_ctx.at(output_index).info().isDynamic())
     return;
@@ -940,8 +934,6 @@ void ShapeValidator::visit(const ir::operation::MatrixBandPart &node)
 
 void ShapeValidator::visit(const ir::operation::LogSoftmax &node)
 {
-  VERBOSE(LogSoftmax) << "Configure LOGSOFTMAX operation" << std::endl;
-
   const auto output_index{node.getOutputs().at(0)};
   if (_ctx.at(output_index).info().isDynamic())
     return;
