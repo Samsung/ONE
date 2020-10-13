@@ -43,6 +43,7 @@
 #include <kernels/Maximum.h>
 #include <kernels/MaxPool2D.h>
 #include <kernels/Mean.h>
+#include <kernels/Minimum.h>
 #include <kernels/Mul.h>
 #include <kernels/NotEqual.h>
 #include <kernels/Pad.h>
@@ -644,6 +645,23 @@ TEST_F(KernelBuilderTest, Mean)
   checkTensor(kernel->axes(), axes);
   checkTensor(kernel->output(), op);
   EXPECT_THAT(kernel->params().keep_dims, Eq(op->keep_dims()));
+}
+
+TEST_F(KernelBuilderTest, Minimum)
+{
+  auto *input1 = createInputNode();
+  auto *input2 = createInputNode();
+
+  auto *op = createNode<luci::CircleMinimum>();
+  op->x(input1);
+  op->y(input2);
+
+  auto kernel = buildKernel<kernels::Minimum>(op);
+  ASSERT_THAT(kernel, NotNull());
+
+  checkTensor(kernel->input1(), input1);
+  checkTensor(kernel->input2(), input2);
+  checkTensor(kernel->output(), op);
 }
 
 TEST_F(KernelBuilderTest, Mul)
