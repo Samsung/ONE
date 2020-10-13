@@ -51,6 +51,7 @@ class TensorPrinter(object):
             print_str = "Tensor {0:4}".format(self.tensor.tensor_idx)
         else:
             buffer_idx = self.tensor.tf_tensor.Buffer()
+            buffer_str = "Empty" if buffer_idx == 0 else str(buffer_idx)
             isEmpty = "Filled"
             if (self.tensor.tf_buffer.DataLength() == 0):
                 isEmpty = " Empty"
@@ -63,8 +64,8 @@ class TensorPrinter(object):
 
             memory_size = ConvertBytesToHuman(self.tensor.memory_size)
 
-            print_str = "Tensor {0:4} : buffer {1:4} | {2} | {3:7} | Memory {4:6} | Shape {5} ({6})".format(
-                self.tensor.tensor_idx, buffer_idx, isEmpty, type_name, memory_size,
+            print_str = "Tensor {0:4} : buffer {1:5} | {2} | {3:7} | Memory {4:6} | Shape {5} ({6})".format(
+                self.tensor.tensor_idx, buffer_str, isEmpty, type_name, memory_size,
                 shape_str, shape_name)
         print(depth_str + print_str)
 
