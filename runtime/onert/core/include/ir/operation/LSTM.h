@@ -26,6 +26,7 @@ namespace ir
 namespace operation
 {
 
+// This operation supports only unidirectional sequence lstm
 class LSTM : public Operation
 {
 public:
@@ -51,6 +52,10 @@ public:
     PROJECTION_BIAS = 17,
     OUTPUT_STATE_IN = 18,
     CELL_STATE_IN = 19,
+    INPUT_LAYER_NORMALIZATION_WEIGHTS = 20,
+    FORGET_LAYER_NORMALIZATION_WEIGHTS = 21,
+    CELL_LAYER_NORMALIZATION_WEIGHTS = 22,
+    OUTPUT_LAYER_NORMALIZATION_WEIGHTS = 23,
   };
 
   enum Output
@@ -66,6 +71,7 @@ public:
     Activation activation;
     float cell_threshold;
     float projection_threshold;
+    bool time_major;
   };
 
 public:

@@ -606,22 +606,25 @@ void ShapeValidator::visit(const ir::operation::LSTM &node)
       node.getInputs().at(ir::operation::LSTM::Input::OUTPUT_STATE_IN)};
   const auto cell_state_in_index{node.getInputs().at(ir::operation::LSTM::Input::CELL_STATE_IN)};
 
-  OP_REQUIRES(_ctx.at(scratch_buffer_index).shape().rank() == 2 &&
-              _ctx.at(output_state_out_index).shape().rank() == 2 &&
-              _ctx.at(cell_state_out_index).shape().rank() == 2 &&
-              _ctx.at(output_index).shape().rank() == 2 &&
-              _ctx.at(input_index).shape().rank() == 2 &&
-              _ctx.at(input_to_input_weights_index).shape().rank() == 2 &&
-              _ctx.at(input_to_forget_weights_index).shape().rank() == 2 &&
-              _ctx.at(input_to_cell_weights_index).shape().rank() == 2 &&
-              _ctx.at(input_to_output_weights_index).shape().rank() == 2 &&
-              _ctx.at(recurrent_to_input_weights_index).shape().rank() == 2 &&
-              _ctx.at(recurrent_to_forget_weights_index).shape().rank() == 2 &&
-              _ctx.at(recurrent_to_cell_weights_index).shape().rank() == 2 &&
-              _ctx.at(recurrent_to_output_weights_index).shape().rank() == 2 &&
-              _ctx.at(projection_weights_index).shape().rank() == 2 &&
-              _ctx.at(output_state_in_index).shape().rank() == 2 &&
-              _ctx.at(cell_state_in_index).shape().rank() == 2);
+  OP_REQUIRES(_ctx.at(input_index).shape().rank() == _ctx.at(output_index).shape().rank());
+  for (int i = 0; i < _ctx.at(input_index).shape().rank() - 1; ++i)
+  {
+    OP_REQUIRES(_ctx.at(input_index).shape().dim(i) == _ctx.at(output_index).shape().dim(i));
+  }
+  OP_REQUIRES(
+      (_ctx.at(output_index).shape().rank() == 2 || _ctx.at(output_index).shape().rank() == 3) &&
+      (_ctx.at(input_index).shape().rank() == 2 || _ctx.at(input_index).shape().rank() == 3) &&
+      _ctx.at(input_to_input_weights_index).shape().rank() == 2 &&
+      _ctx.at(input_to_forget_weights_index).shape().rank() == 2 &&
+      _ctx.at(input_to_cell_weights_index).shape().rank() == 2 &&
+      _ctx.at(input_to_output_weights_index).shape().rank() == 2 &&
+      _ctx.at(recurrent_to_input_weights_index).shape().rank() == 2 &&
+      _ctx.at(recurrent_to_forget_weights_index).shape().rank() == 2 &&
+      _ctx.at(recurrent_to_cell_weights_index).shape().rank() == 2 &&
+      _ctx.at(recurrent_to_output_weights_index).shape().rank() == 2 &&
+      _ctx.at(projection_weights_index).shape().rank() == 2 &&
+      _ctx.at(output_state_in_index).shape().rank() == 2 &&
+      _ctx.at(cell_state_in_index).shape().rank() == 2);
 
   OP_REQUIRES(_ctx.at(cell_to_input_weights_index).shape().rank() == 1 &&
               _ctx.at(cell_to_forget_weights_index).shape().rank() == 1 &&
@@ -677,22 +680,19 @@ void ShapeValidator::visit(const ir::operation::LSTM &node)
   // NOTE The projection weights may have data but the projection bias may not.
   bool has_projection_param = has_projection_weights;
 
-  const auto batch_size = _ctx.at(input_index).shape().dim(0);
+  const auto batch_size = (_ctx.at(input_index).shape().rank() == 3 && node.param().time_major)
+                              ? _ctx.at(input_index).shape().dim(1)
+                              : _ctx.at(input_index).shape().dim(0);
   OP_REQUIRES(batch_size == _ctx.at(output_state_in_index).shape().dim(0) &&
-              batch_size == _ctx.at(cell_state_in_index).shape().dim(0) &&
-              batch_size == _ctx.at(scratch_buffer_index).shape().dim(0) &&
-              batch_size == _ctx.at(output_state_out_index).shape().dim(0) &&
-              batch_size == _ctx.at(cell_state_out_index).shape().dim(0) &&
-              batch_size == _ctx.at(output_index).shape().dim(0));
+              batch_size == _ctx.at(cell_state_in_index).shape().dim(0));
 
-  const auto input_size = _ctx.at(input_index).shape().dim(1);
+  const auto input_size = _ctx.at(input_index).shape().dim(_ctx.at(input_index).shape().rank() - 1);
   OP_REQUIRES(input_size == _ctx.at(input_to_forget_weights_index).shape().dim(1) &&
               input_size == _ctx.at(input_to_cell_weights_index).shape().dim(1) &&
               input_size == _ctx.at(input_to_output_weights_index).shape().dim(1));
 
-  const auto num_units = _ctx.at(cell_state_out_index).shape().dim(1);
-  OP_REQUIRES(num_units == _ctx.at(input_to_forget_weights_index).shape().dim(0) &&
-              num_units == _ctx.at(input_to_cell_weights_index).shape().dim(0) &&
+  const auto num_units = _ctx.at(input_to_output_weights_index).shape().dim(0);
+  OP_REQUIRES(num_units == _ctx.at(input_to_cell_weights_index).shape().dim(0) &&
               num_units == _ctx.at(input_to_output_weights_index).shape().dim(0) &&
               num_units == _ctx.at(recurrent_to_forget_weights_index).shape().dim(0) &&
               num_units == _ctx.at(recurrent_to_cell_weights_index).shape().dim(0) &&
@@ -700,16 +700,14 @@ void ShapeValidator::visit(const ir::operation::LSTM &node)
               num_units == _ctx.at(forget_gate_bias_index).shape().dim(0) &&
               num_units == _ctx.at(cell_bias_index).shape().dim(0) &&
               num_units == _ctx.at(output_gate_bias_index).shape().dim(0) &&
-              num_units == _ctx.at(cell_state_in_index).shape().dim(1) &&
-              (((num_units * 3) == _ctx.at(scratch_buffer_index).shape().dim(1)) ||
-               ((num_units * 4) == _ctx.at(scratch_buffer_index).shape().dim(1))));
+              num_units == _ctx.at(cell_state_in_index).shape().dim(1));
 
-  const auto output_size = _ctx.at(output_index).shape().dim(1);
+  const auto output_size =
+      _ctx.at(output_index).shape().dim(_ctx.at(output_index).shape().rank() - 1);
   OP_REQUIRES(output_size == _ctx.at(recurrent_to_forget_weights_index).shape().dim(1) &&
               output_size == _ctx.at(recurrent_to_cell_weights_index).shape().dim(1) &&
               output_size == _ctx.at(recurrent_to_output_weights_index).shape().dim(1) &&
-              output_size == _ctx.at(output_state_in_index).shape().dim(1) &&
-              output_size == _ctx.at(output_state_out_index).shape().dim(1));
+              output_size == _ctx.at(output_state_in_index).shape().dim(1));
 
   if (has_cifg_param)
   {
@@ -727,11 +725,13 @@ void ShapeValidator::visit(const ir::operation::LSTM &node)
       // NOTE The cell_to_input_weights exist only in case of non-CIFG and peephole.
       OP_REQUIRES(has_peephole_param);
     }
-    OP_REQUIRES(_ctx.at(scratch_buffer_index).shape().dim(1) == num_units * 4);
+    if (_ctx.exist(scratch_buffer_index))
+      OP_REQUIRES(_ctx.at(scratch_buffer_index).shape().dim(1) == num_units * 4);
   }
   else
   {
-    OP_REQUIRES(_ctx.at(scratch_buffer_index).shape().dim(1) == num_units * 3);
+    if (_ctx.exist(scratch_buffer_index))
+      OP_REQUIRES(_ctx.at(scratch_buffer_index).shape().dim(1) == num_units * 3);
   }
 
   if (has_peephole_param)
@@ -750,6 +750,26 @@ void ShapeValidator::visit(const ir::operation::LSTM &node)
     {
       OP_REQUIRES(output_size == _ctx.at(projection_bias_index).shape().dim(0));
     }
+  }
+
+  if (_ctx.exist(scratch_buffer_index))
+  {
+    OP_REQUIRES(_ctx.at(scratch_buffer_index).shape().rank() == 2);
+    OP_REQUIRES(batch_size == _ctx.at(scratch_buffer_index).shape().dim(0));
+  }
+
+  if (_ctx.exist(output_state_out_index))
+  {
+    OP_REQUIRES(_ctx.at(output_state_out_index).shape().rank() == 2);
+    OP_REQUIRES(batch_size == _ctx.at(output_state_out_index).shape().dim(0));
+    OP_REQUIRES(output_size == _ctx.at(output_state_out_index).shape().dim(1));
+  }
+
+  if (_ctx.exist(cell_state_out_index))
+  {
+    OP_REQUIRES(_ctx.at(cell_state_out_index).shape().rank() == 2);
+    OP_REQUIRES(batch_size == _ctx.at(cell_state_out_index).shape().dim(0));
+    OP_REQUIRES(num_units == _ctx.at(cell_state_out_index).shape().dim(1));
   }
 }
 
