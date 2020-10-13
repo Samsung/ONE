@@ -40,6 +40,7 @@
 #include "kernels/LocalResponseNormalization.h"
 #include "kernels/Logistic.h"
 #include "kernels/LogSoftmax.h"
+#include "kernels/Maximum.h"
 #include "kernels/MaxPool2D.h"
 #include "kernels/Mean.h"
 #include "kernels/Mul.h"
@@ -462,6 +463,17 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleLogSoftmax *node)
   Tensor *output = getOutputTensor(node);
 
   return std::make_unique<kernels::LogSoftmax>(input, output);
+}
+
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleMaximum *node)
+{
+  assert(node->arity() == 2);
+
+  const Tensor *input1 = getInputTensor(node->x());
+  const Tensor *input2 = getInputTensor(node->y());
+  Tensor *output = getOutputTensor(node);
+
+  return std::make_unique<kernels::Maximum>(input1, input2, output);
 }
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleMaxPool2D *node)

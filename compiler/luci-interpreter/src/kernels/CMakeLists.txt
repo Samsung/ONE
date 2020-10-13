@@ -50,6 +50,8 @@ set(SOURCES
     Logistic.cpp
     LogSoftmax.h
     LogSoftmax.cpp
+    Maximum.h
+    Maximum.cpp
     MaxPool2D.h
     MaxPool2D.cpp
     Mean.h
@@ -147,6 +149,7 @@ set(TEST_SOURCES
     LocalResponseNormalization.test.cpp
     Logistic.test.cpp
     LogSoftmax.test.cpp
+    Maximum.test.cpp
     MaxPool2D.test.cpp
     Mean.test.cpp
     Mul.test.cpp

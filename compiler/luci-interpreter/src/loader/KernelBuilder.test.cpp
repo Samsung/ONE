@@ -40,6 +40,7 @@
 #include <kernels/LocalResponseNormalization.h>
 #include <kernels/Logistic.h>
 #include <kernels/LogSoftmax.h>
+#include <kernels/Maximum.h>
 #include <kernels/MaxPool2D.h>
 #include <kernels/Mean.h>
 #include <kernels/Mul.h>
@@ -578,6 +579,23 @@ TEST_F(KernelBuilderTest, LogSoftmax)
   ASSERT_THAT(kernel, NotNull());
 
   checkTensor(kernel->input(), input);
+  checkTensor(kernel->output(), op);
+}
+
+TEST_F(KernelBuilderTest, Maximum)
+{
+  auto *input1 = createInputNode();
+  auto *input2 = createInputNode();
+
+  auto *op = createNode<luci::CircleMaximum>();
+  op->x(input1);
+  op->y(input2);
+
+  auto kernel = buildKernel<kernels::Maximum>(op);
+  ASSERT_THAT(kernel, NotNull());
+
+  checkTensor(kernel->input1(), input1);
+  checkTensor(kernel->input2(), input2);
   checkTensor(kernel->output(), op);
 }
 
