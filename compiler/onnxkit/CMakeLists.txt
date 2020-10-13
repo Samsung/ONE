@@ -1,5 +1,5 @@
 nnas_find_package(Protobuf QUIET)
-nnas_find_package(ONNXSource EXACT 1.4.1 QUIET)
+nnas_find_package(ONNXSource EXACT 1.6.0 QUIET)
 
 if(NOT Protobuf_FOUND)
   return()
