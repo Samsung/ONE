@@ -203,6 +203,32 @@ void StaticShapeInferer::visit(const ir::operation::BCQFullyConnected &op)
   output.info().shape(new_shape);
 }
 
+void StaticShapeInferer::visit(const ir::operation::BCQGather &op)
+{
+  const auto indices_idx{op.getInputs().at(ir::operation::BCQGather::Input::INDICES)};
+  const auto &indices = _operands.at(indices_idx);
+
+  const auto input_binary_idx{op.getInputs().at(ir::operation::BCQGather::Input::INPUT_BINARY)};
+  const auto &input_binary = _operands.at(input_binary_idx);
+
+  const auto cluster_idx{op.getInputs().at(ir::operation::BCQGather::Input::INPUT_CLUSTERS)};
+  const auto &cluster = _operands.at(cluster_idx);
+
+  const auto output_idx = op.getOutputs().at(0);
+  ir::Operand &output = _operands.at(output_idx);
+
+  auto cluster_buf = reinterpret_cast<const int32_t *>(cluster.data()->base());
+  assert(cluster_buf);
+
+  auto rank = input_binary.shape().rank();
+
+  // re-sizing output shape
+  ir::Shape new_shape = shape_inference::inferBCQGatherShape(
+      indices.info().shape(), cluster.info().shape(), cluster_buf, rank, op.param());
+
+  output.info().shape(new_shape);
+}
+
 void StaticShapeInferer::visit(const ir::operation::BinaryArithmetic &op)
 {
   handleBinaryArithmeticOp(op, op.getInputs().at(ir::operation::BinaryArithmetic::Input::LHS),
