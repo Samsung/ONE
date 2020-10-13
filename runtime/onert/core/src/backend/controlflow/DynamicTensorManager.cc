@@ -17,6 +17,7 @@
 #include "DynamicTensorManager.h"
 
 #include "util/logging.h"
+#include "misc/polymorphic_downcast.h"
 
 namespace onert
 {
@@ -59,8 +60,7 @@ void DynamicTensorManager::deallocInput(ir::OperationIndex op_ind)
 
     _dynamic_mem_mgr->deallocate(tensor);
 
-    auto *cpu_tensor = dynamic_cast<cpu_common::Tensor *>(tensor);
-    assert(cpu_tensor);
+    auto *cpu_tensor = nnfw::misc::polymorphic_downcast<cpu_common::Tensor *>(tensor);
     cpu_tensor->resetBuffer();
 
     VERBOSE(DynamicTensorManager) << "Deallocating a tensor " << (void *)tensor
