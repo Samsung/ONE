@@ -32,8 +32,12 @@ Relu::Relu(const Tensor *input, Tensor *output) : Kernel({input}, {output}) {}
 void Relu::configure()
 {
   LUCI_INTERPRETER_CHECK(input()->element_type() == output()->element_type());
+  if (input()->element_type() == DataType::S16)
+  {
+    LUCI_INTERPRETER_CHECK(input()->zero_point() == 0 && output()->zero_point() == 0);
+  }
 
-  if (input()->element_type() == DataType::U8)
+  if (input()->element_type() == DataType::U8 || input()->element_type() == DataType::S16)
   {
     double multiplier = input()->scale() / output()->scale();
     quantizeMultiplier(multiplier, &_output_multiplier, &_output_shift);
@@ -50,6 +54,9 @@ void Relu::execute() const
       break;
     case DataType::U8:
       evalQuantized();
+      break;
+    case DataType::S16:
+      evalQuantizedS16();
       break;
     default:
       throw std::runtime_error("Unsupported type.");
@@ -80,6 +87,27 @@ void Relu::evalQuantized() const
 
   tflite::optimized_ops::ReluX(params, getTensorShape(input()), getTensorData<uint8_t>(input()),
                                getTensorShape(output()), getTensorData<uint8_t>(output()));
+}
+
+void Relu::evalQuantizedS16() const
+{
+  const auto *input_data = getTensorData<int16_t>(input());
+  auto *output_data = getTensorData<int16_t>(output());
+
+  constexpr int32_t output_min = 0;
+  constexpr int32_t output_max = std::numeric_limits<int16_t>::max();
+
+  const int32_t num_elements = input()->shape().num_elements();
+
+  for (int32_t i = 0; i < num_elements; ++i)
+  {
+    const int32_t input_val = input_data[i];
+    int32_t output_val =
+        tflite::MultiplyByQuantizedMultiplier(input_val, _output_multiplier, _output_shift);
+    output_val = std::max(output_val, output_min);
+    output_val = std::min(output_val, output_max);
+    output_data[i] = static_cast<int16_t>(output_val);
+  }
 }
 
 } // namespace kernels
