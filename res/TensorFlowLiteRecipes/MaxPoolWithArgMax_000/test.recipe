@@ -1,0 +1,33 @@
+operand {
+  name: "ifm"
+  type: FLOAT32
+  shape { dim: 1 dim: 18 dim: 18 dim: 1 }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 1 dim: 9 dim: 9 dim: 1 }
+}
+operand {
+  name: "argmax"
+  type: INT64
+  shape { dim: 1 dim: 9 dim: 9 dim: 1 }
+}
+operation {
+  type: "MaxPoolWithArgMax"
+  input: "ifm"
+  output: "ofm"
+  output: "argmax"
+  max_pool_with_argmax_options {
+    padding: SAME
+    filter_width: 1
+    filter_height: 1
+    stride_w: 2
+    stride_h: 2
+    activation: NONE
+    output_type: INT64
+  }
+}
+input: "ifm"
+output: "ofm"
+output: "argmax"
