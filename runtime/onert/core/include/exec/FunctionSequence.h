@@ -79,7 +79,6 @@ public: // methods related to dynamic tensor
     const ir::OpSequence *op_seq = nullptr;
     const ir::Operations *operations = nullptr;
     std::shared_ptr<exec::DynamicShapeInferer> dynamic_shape_inferer = nullptr;
-    std::shared_ptr<backend::ITensorRegistry> tensor_registry = nullptr;
     backend::IDynamicTensorManager *dynamic_tensor_manager = nullptr;
   };
 
@@ -104,25 +103,25 @@ public: // methods related to dynamic tensor
    */
   void enableDynamicShapeInferer(bool enable)
   {
-    _enable_dynamic_shape_inferer = _enable_dynamic_shape_inferer && enable;
+    _enable_dynamic_shape_inferer = _enable_dynamic_shape_inferer || enable;
   }
 
   /**
    * @brief Call this function to initialize vars before running
    * @note When we run a model with static tensor input and then run with dynamic tensor input,
    *       _enable_dynamic_shape_inferer is set to @c false at first run.
-   *       Once _enable_dynamic_shape_inferer is set to @c false it cannot be changed to @c true
-   *       only with calling enableDynamicShapeInferer(). So initializing it to @c true is
+   *       Once _enable_dynamic_shape_inferer is set to @c true it cannot be changed to @c false
+   *       only with calling enableDynamicShapeInferer(). So initializing it to @c false is
    *       necessary.
    * @todo This is a quick fix. Adding this will increase time for run(). Find way to optimize.
    */
-  void initRunning() { _enable_dynamic_shape_inferer = true; }
+  void initRunning() { _enable_dynamic_shape_inferer = false; }
 
 protected:
   std::vector<std::unique_ptr<IFunction>> _functions;
 
 protected:
-  bool _enable_dynamic_shape_inferer = true;
+  bool _enable_dynamic_shape_inferer = false;
 
   std::shared_ptr<DynamicTensorCtx> _dynamic_tensor_ctx = nullptr;
 };

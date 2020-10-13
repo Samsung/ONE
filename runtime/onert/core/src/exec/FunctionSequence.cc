@@ -28,9 +28,11 @@ namespace exec
 
 void FunctionSequence::run()
 {
-  // TODO Find out when `_enable_dynamic_shape_inferer` is true but `_dynamic_tensor_ctx` is false
   if (_enable_dynamic_shape_inferer && _dynamic_tensor_ctx)
   {
+    // acl_cl and acl_neon backend don't support dynamic shape.
+    // _dynamic_tensor_ctx is always nullptr for acl_cl and acl_neon
+    // Thus, those two bakends cannot reach here.
     if (_dynamic_tensor_ctx->op_seq->size() != _functions.size())
       throw std::runtime_error("operation and functions should be mapped one by one");
 
@@ -61,11 +63,6 @@ void FunctionSequence::run()
   {
     for (const auto &function : _functions)
     {
-      auto *sub_func_seq = dynamic_cast<FunctionSequence *>(function.get());
-      if (sub_func_seq != nullptr)
-      {
-        sub_func_seq->enableDynamicShapeInferer(false);
-      }
       function->run();
     }
   }
