@@ -104,6 +104,60 @@ void ShapeValidator::visit(const ir::operation::BatchToSpaceND &node)
   OP_REQUIRES(input_shape.C == output_shape.C);
 }
 
+void ShapeValidator::visit(const ir::operation::BCQFullyConnected &node)
+{
+  const auto ofm_index{node.getOutputs().at(0)};
+  if (_ctx.at(ofm_index).info().isDynamic())
+    return;
+
+  const auto ifm_index{node.getInputs().at(ir::operation::BCQFullyConnected::Input::INPUT)};
+  const auto weight_scales_index{
+      node.getInputs().at(ir::operation::BCQFullyConnected::Input::WEIGHTS_SCALES)};
+  const auto weight_binary_index{
+      node.getInputs().at(ir::operation::BCQFullyConnected::Input::WEIGHTS_BINARY)};
+  const auto weight_cluster_index{
+      node.getInputs().at(ir::operation::BCQFullyConnected::Input::WEIGHTS_CLUSTERS)};
+  // const auto bias_index{node.getInputs().at(ir::operation::BCQFullyConnected::Input::BIAS)};
+
+  OP_REQUIRES(_ctx.at(ifm_index).shape().rank() == 2);
+  OP_REQUIRES(_ctx.at(ofm_index).shape().rank() == 2);
+  OP_REQUIRES(_ctx.at(weight_scales_index).shape().rank() == 1);
+  OP_REQUIRES(_ctx.at(weight_binary_index).shape().rank() == 2);
+  OP_REQUIRES(_ctx.at(weight_cluster_index).shape().rank() == 2);
+
+  OP_REQUIRES(_ctx.at(ifm_index).shape().dim(1) == _ctx.at(ofm_index).shape().dim(1));
+
+  OP_REQUIRES(_ctx.at(weight_cluster_index).shape().dim(0) > 0);
+  OP_REQUIRES(_ctx.at(weight_cluster_index).shape().dim(1) == 2);
+
+  // more shape validation will be done inside kernel.
+
+  // TODO Check bias dimension (can be null tensor)
+}
+
+void ShapeValidator::visit(const ir::operation::BCQGather &node)
+{
+  const auto ofm_index{node.getOutputs().at(0)};
+  if (_ctx.at(ofm_index).info().isDynamic())
+    return;
+
+  const auto indices_index{node.getInputs().at(ir::operation::BCQGather::Input::INDICES)};
+  const auto input_binary_index{node.getInputs().at(ir::operation::BCQGather::Input::INPUT_BINARY)};
+  const auto input_scales_index{node.getInputs().at(ir::operation::BCQGather::Input::INPUT_SCALES)};
+  const auto input_clusters_index{
+      node.getInputs().at(ir::operation::BCQGather::Input::INPUT_CLUSTERS)};
+
+  OP_REQUIRES(_ctx.at(indices_index).shape().rank() <= 2); // TODO : support rank up to 4 or more
+  OP_REQUIRES(_ctx.at(input_binary_index).shape().rank() == 2);
+  OP_REQUIRES(_ctx.at(input_scales_index).shape().rank() == 1);
+  OP_REQUIRES(_ctx.at(input_clusters_index).shape().rank() == 2);
+
+  OP_REQUIRES(_ctx.at(input_clusters_index).shape().dim(0) > 0);
+  OP_REQUIRES(_ctx.at(input_clusters_index).shape().dim(1) == 2);
+
+  // more shape validation will be done inside kernel.
+}
+
 void ShapeValidator::visit(const ir::operation::Comparison &)
 {
   // TODO Shape validation of comparison
