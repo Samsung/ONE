@@ -103,6 +103,7 @@ TEST(MulTest, SInt16)
     Tensor input2_tensor =
         makeInputTensor<DataType::S16>(test_shapes[i], 1.0 / 32767, 0, input2_data);
     Tensor output_tensor = makeOutputTensor(DataType::S16, 4.0 / 32767, 0);
+    const float tolerance = output_tensor.scale() * 2;
 
     MulParams params{};
     params.activation = Activation::RELU;
@@ -114,7 +115,7 @@ TEST(MulTest, SInt16)
     EXPECT_THAT(extractTensorShape(output_tensor),
                 ::testing::ElementsAreArray(ref_output_shapes[i]))
         << "With shape number " << i;
-    EXPECT_THAT(dequantizeTensorData(output_tensor), FloatArrayNear(ref_outputs[i], 0.001))
+    EXPECT_THAT(dequantizeTensorData(output_tensor), FloatArrayNear(ref_outputs[i], tolerance))
         << "With shape number " << i;
   }
   // Re-run with exchanged inputs and different scales.
@@ -124,6 +125,7 @@ TEST(MulTest, SInt16)
         makeInputTensor<DataType::S16>(test_shapes[i], 2.0 / 32767, 0, input2_data);
     Tensor input2_tensor = makeInputTensor<DataType::S16>(base_shape, 4.0 / 32767, 0, input1_data);
     Tensor output_tensor = makeOutputTensor(DataType::S16, 3.0 / 32767, 0);
+    const float tolerance = output_tensor.scale() * 2;
 
     MulParams params{};
     params.activation = Activation::RELU;
@@ -135,7 +137,7 @@ TEST(MulTest, SInt16)
     EXPECT_THAT(extractTensorShape(output_tensor),
                 ::testing::ElementsAreArray(ref_output_shapes[i]))
         << "With shape number " << i;
-    EXPECT_THAT(dequantizeTensorData(output_tensor), FloatArrayNear(ref_outputs[i], 0.001))
+    EXPECT_THAT(dequantizeTensorData(output_tensor), FloatArrayNear(ref_outputs[i], tolerance))
         << "With shape number " << i;
   }
 }

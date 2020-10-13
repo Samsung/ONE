@@ -37,6 +37,7 @@ Mul::Mul(const Tensor *input1, const Tensor *input2, Tensor *output, const MulPa
 void Mul::configure()
 {
   LUCI_INTERPRETER_CHECK(input1()->element_type() == input2()->element_type());
+  LUCI_INTERPRETER_CHECK(output()->element_type() == input1()->element_type());
   if (input1()->element_type() == DataType::S16)
   {
     LUCI_INTERPRETER_CHECK(input1()->zero_point() == 0 && input2()->zero_point() == 0 &&
