@@ -174,7 +174,6 @@ void DynamicShapeInferer::visit(const ir::operation::BCQGather &op)
 
   const auto input_binary_idx{op.getInputs().at(ir::operation::BCQGather::Input::INDICES)};
   const auto &input_binary = _tensor_registry->getITensor(input_binary_idx);
-  assert(!input_binary->is_dynamic());
 
   const auto cluster_idx{op.getInputs().at(ir::operation::BCQGather::Input::INPUT_CLUSTERS)};
   const auto &cluster = _tensor_registry->getITensor(cluster_idx);
