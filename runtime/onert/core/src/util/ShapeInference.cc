@@ -569,7 +569,7 @@ ir::Shape inferResizeBilinearShape(const ir::Shape &in_shape, const int32_t outp
     throw std::runtime_error{"ResizeBilinear: size value must be positive value, output_height = " +
                              std::to_string(output_height)};
   }
-  if (output_height < 0)
+  if (output_width < 0)
   {
     throw std::runtime_error{"ResizeBilinear: size value must be positive value, output_width = " +
                              std::to_string(output_height)};
