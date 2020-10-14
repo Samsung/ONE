@@ -17,6 +17,8 @@
 #ifndef __ONERT_BACKEND_CPU_OPS_REDUCESUMLAYER_H__
 #define __ONERT_BACKEND_CPU_OPS_REDUCESUMLAYER_H__
 
+#include "cker/neon/neon_check.h"
+
 #include <backend/IPortableTensor.h>
 
 #include <exec/IFunction.h>
@@ -65,6 +67,9 @@ private:
   const IPortableTensor *_input;
   const IPortableTensor *_axes;
   IPortableTensor *_output;
+#ifdef USE_NEON
+  ReduceType _reduceType;
+#endif // NEON
 
   std::unique_ptr<nnfw::cker::Reduce> _reduce_kernel;
   std::function<void(const IPortableTensor *input, IPortableTensor *output,
