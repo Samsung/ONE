@@ -68,13 +68,9 @@ def _dump_operators(onnx_model):
 def _dump_initializers(onnx_model):
     print("[Initializers] ------------------------")
     for initializer in onnx_model.graph.initializer:
-        dims = []
-        idx = 0
-        for d in initializer.dims:
-            dims.append(d)
         init_name = '"{}"'.format(initializer.name)
         dtstr = _data_type_str(initializer.data_type)
-        print('{:<15} {} {}'.format(init_name, dtstr, dims))
+        print('{:<15} {} {}'.format(init_name, dtstr, initializer.dims))
 
     print("")
 
