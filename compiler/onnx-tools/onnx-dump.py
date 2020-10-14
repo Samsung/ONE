@@ -104,9 +104,7 @@ def _dump_inputoutputs(onnx_model):
         io_name = '"{}"'.format(mod_input.name)
         dtstr = _data_type_str(mod_input.type.tensor_type.elem_type)
         shape = mod_input.type.tensor_type.shape
-        input_shape = []
-        for dim in shape.dim:
-            input_shape.append(dim.dim_value)
+        input_shape = [dim.dim_value for dim in shape.dim]
         print('    I: {:<15} {} {}'.format(io_name, dtstr, input_shape))
 
     for mod_output in onnx_model.graph.output:
