@@ -218,15 +218,26 @@ def GenerateTensor(new_builder, selected_tensor, used_buffers_dic):
     if quantization != None:
         new_quantization = GenerateQuantization(new_builder, quantization)
 
+    # Create IsVariable
+    is_variable = selected_tensor.IsVariable()
+
+    # Create Sparsity
+    sparsity = selected_tensor.Sparsity()
+
     # Create tensor
     tflite.Tensor.TensorStart(new_builder)
     tflite.Tensor.TensorAddShape(new_builder, new_shape)
     tflite.Tensor.TensorAddType(new_builder, tensor_type)
-    tflite.Tensor.TensorAddBuffer(new_builder, new_buffer_idx)
+    if (new_buffer_idx != 0):
+        tflite.Tensor.TensorAddBuffer(new_builder, new_buffer_idx)
     if name_string != "":
         tflite.Tensor.TensorAddName(new_builder, new_name)
     if quantization != None:
         tflite.Tensor.TensorAddQuantization(new_builder, new_quantization)
+    tflite.Tensor.TensorAddIsVariable(new_builder, is_variable)
+
+    if sparsity != None:
+        tflite.Tensor.TensorAddSparsity(new_builder, sparsity)
 
     return tflite.Tensor.TensorEnd(new_builder)
 
@@ -871,7 +882,6 @@ def GenerateBuiltinOption(new_builder, selected_builtin_option, builtin_option_t
     # FillOptions: not supported
     # BidirectionalSequenceLSTMOptions: not supported
     # BidirectionalSequenceRNNOptions: not supported
-    # UnidirectionalSequenceLSTMOptions: not supported
     # FloorModOptions: not supported
     # RangeOptions: not supported
     # ResizeNearestNeighborOptions: not supported
@@ -900,6 +910,31 @@ def GenerateBuiltinOption(new_builder, selected_builtin_option, builtin_option_t
 
         tflite.SquaredDifferenceOptions.SquaredDifferenceOptionsStart(new_builder)
         return tflite.SquaredDifferenceOptions.SquaredDifferenceOptionsEnd(new_builder)
+
+    # UnidirectionalSequenceLSTMOptions
+    import tflite.UnidirectionalSequenceLSTMOptions
+    if builtin_option_type == tflite.BuiltinOptions.BuiltinOptions(
+    ).UnidirectionalSequenceLSTMOptions:
+
+        unidirectional_sequence_lstm_option = tflite.UnidirectionalSequenceLSTMOptions.UnidirectionalSequenceLSTMOptions(
+        )
+        unidirectional_sequence_lstm_option.Init(selected_builtin_option.Bytes,
+                                                 selected_builtin_option.Pos)
+
+        tflite.UnidirectionalSequenceLSTMOptions.UnidirectionalSequenceLSTMOptionsStart(
+            new_builder)
+        tflite.UnidirectionalSequenceLSTMOptions.UnidirectionalSequenceLSTMOptionsAddFusedActivationFunction(
+            new_builder, unidirectional_sequence_lstm_option.FusedActivationFunction())
+        tflite.UnidirectionalSequenceLSTMOptions.UnidirectionalSequenceLSTMOptionsAddCellClip(
+            new_builder, unidirectional_sequence_lstm_option.CellClip())
+        tflite.UnidirectionalSequenceLSTMOptions.UnidirectionalSequenceLSTMOptionsAddProjClip(
+            new_builder, unidirectional_sequence_lstm_option.ProjClip())
+        tflite.UnidirectionalSequenceLSTMOptions.UnidirectionalSequenceLSTMOptionsAddTimeMajor(
+            new_builder, unidirectional_sequence_lstm_option.TimeMajor())
+        tflite.UnidirectionalSequenceLSTMOptions.UnidirectionalSequenceLSTMOptionsAddAsymmetricQuantizeInputs(
+            new_builder, unidirectional_sequence_lstm_option.AsymmetricQuantizeInputs())
+        return tflite.UnidirectionalSequenceLSTMOptions.UnidirectionalSequenceLSTMOptionsEnd(
+            new_builder)
 
     # MirrorPadOptions: not supported
     # AbsOptions: not supported
@@ -1267,7 +1302,8 @@ def main(args):
     for used_tensor in used_tensors:
         # key and value is same in prepare phase
         buf_idx = (sample_subgraph.Tensors(used_tensor)).Buffer()
-        used_buffers.append(buf_idx)
+        if buf_idx != 0:
+            used_buffers.append(buf_idx)
 
     # Append buffers of tensors of child subgraphs
     for subgraph_idx in used_subgraphs_list:
@@ -1275,7 +1311,8 @@ def main(args):
             continue
         for tensor_idx in range(sample_model.Subgraphs(subgraph_idx).TensorsLength()):
             tensor = sample_model.Subgraphs(subgraph_idx).Tensors(tensor_idx)
-            used_buffers.append(tensor.Buffer())
+            if tensor.Buffer() != 0:
+                used_buffers.append(tensor.Buffer())
 
     used_buffers.sort()
 
@@ -1296,6 +1333,8 @@ def main(args):
     # Assign new index for buffer
     used_buffers_dic = {}
 
+    # Tensor has empty buffer if buffer index is 0.
+    used_buffers_dic[0] = 0
     for new_buffer_idx in range(len(used_buffers)):
         sample_buffer_idx = used_buffers[new_buffer_idx]
         used_buffers_dic[sample_buffer_idx] = new_buffer_idx
@@ -1315,7 +1354,7 @@ def main(args):
             if input_tensor_idx in new_input_tensors:
                 matched_buffer_idx = sample_subgraph.Tensors(input_tensor_idx).Buffer()
                 matched_buffer = sample_model.Buffers(matched_buffer_idx)
-                if matched_buffer.DataLength() != 0:
+                if matched_buffer_idx == 0 or matched_buffer.DataLength() != 0:
                     new_input_tensors.remove(input_tensor_idx)
 
         for output_idx in range(operator.OutputsLength()):
