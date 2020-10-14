@@ -30,6 +30,7 @@ void FunctionSequence::run()
 {
   if (_enable_dynamic_shape_inferer && _dynamic_tensor_ctx)
   {
+    VERBOSE(FunctionSequence) << "run with DYNAMIC shape inferer" << std::endl;
     // acl_cl and acl_neon backend don't support dynamic shape.
     // _dynamic_tensor_ctx is always nullptr for acl_cl and acl_neon
     // Thus, those two bakends cannot reach here.
@@ -61,6 +62,7 @@ void FunctionSequence::run()
   }
   else
   {
+    VERBOSE(FunctionSequence) << "run with STATUC shape inferer" << std::endl;
     for (const auto &function : _functions)
     {
       function->run();
