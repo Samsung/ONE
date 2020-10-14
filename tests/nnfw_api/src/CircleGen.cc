@@ -225,6 +225,13 @@ uint32_t CircleGen::addOperatorResizeNearestNeighbor(const OperatorParams &param
                                 circle::BuiltinOptions_ResizeNearestNeighborOptions, options);
 }
 
+uint32_t CircleGen::addOperatorReverseV2(const OperatorParams &params)
+{
+  auto options = circle::CreateReverseV2Options(_fbb).Union();
+  return addOperatorWithOptions(params, circle::BuiltinOperator_REVERSE_V2,
+                                circle::BuiltinOptions_ReverseV2Options, options);
+}
+
 uint32_t CircleGen::addOperatorSplit(const OperatorParams &params, int32_t num_split)
 {
   auto options = circle::CreateSplitOptions(_fbb, num_split).Union();
