@@ -1,3 +1,4 @@
-add_subdirectories()
+add_library(nnfw_lib_nnapi INTERFACE)
 
-add_library(nnfw_lib_nnapi ALIAS nnfw_lib_nnapi_1_2)
+target_include_directories(nnfw_lib_nnapi INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/include)
+target_link_libraries(nnfw_lib_nnapi INTERFACE nnfw-nnapi-header)
