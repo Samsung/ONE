@@ -25,7 +25,13 @@ namespace luci
 
 bool CircleMaxPoolWithArgMaxGraphBuilder::validate(const ValidateArgs &args) const
 {
-  if (args.op.inputs.size() != 1)
+  const auto &inputs = args.op.inputs;
+  const auto &outputs = args.op.outputs;
+
+  if (inputs.size() != 1)
+    return false;
+
+  if (outputs.size() != 2)
     return false;
 
   return true;
@@ -45,8 +51,14 @@ void CircleMaxPoolWithArgMaxGraphBuilder::build(const circle::OperatorT &op,
   auto tensors_ptr = context->reader()->tensors_ptr();
   assert(tensors_ptr != nullptr);
 
+  std::vector<CircleNode *> input_nodes;
+  for (const int32_t input_tensor_index : inputs)
+  {
+    input_nodes.push_back(context->nodefinder()->node(input_tensor_index));
+  }
   auto *node = graph->nodes()->create<CircleMaxPoolWithArgMax>();
-  node->input(inputs.at(0));
+
+  node->input(input_nodes[0]);
   
   const auto *options = op.builtin_options.AsMaxPoolWithArgMaxOptions();
 
@@ -56,9 +68,36 @@ void CircleMaxPoolWithArgMaxGraphBuilder::build(const circle::OperatorT &op,
   node->filter()->w(options->filter_width);
   node->filter()->h(options->filter_height);
 
-  assert(outputs.size() > 0);
+  assert(outputs.size() == 2);
+  {
+    // Let's use name of output 0 as MaxPoolWithArgMax name
+    const circle::TensorT &output_tensor = *tensors[outputs[0]];
+    node->name(tensor_name(output_tensor));
+    node->op_version(opcodes[op.opcode_index].get()->version);
 
+    // NOTE We don't set quantization for MaxPoolWithArgMax itself but to virtual outputs
+  }
   
+  // Create virtual outputs of NonMaxSuppressionV4
+  for (size_t n = 0; n < outputs.size(); ++n)
+  {
+    const circle::TensorT &output_tensor = *tensors[outputs[n]];
+
+    auto *nodeout = graph->nodes()->create<CircleMaxPoolWithArgMaxOut>();
+    copy_tensor_attributes(output_tensor, nodeout);
+
+    // mark shape_status
+    if (tensors_ptr->Get(outputs[n])->shape() == nullptr)
+      nodeout->shape_status(ShapeStatus::NOSHAPE);
+    else
+      nodeout->shape_status(ShapeStatus::VALID);
+
+    nodeout->input(node);
+    nodeout->index(n);
+
+    context->nodefinder()->enroll(outputs[n], nodeout);
+  }
+
 }
 
 } // namespace luci

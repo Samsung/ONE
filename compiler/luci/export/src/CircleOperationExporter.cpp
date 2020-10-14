@@ -253,6 +253,46 @@ void export_node(ExportContext &ctx, luci::CircleIf *node)
   ctx.gd._operators.push_back(op_offset);
 }
 
+void export_node(ExportContext &ctx, luci::CircleMaxPoolWithArgMax *node)
+{
+  auto mpwam_outs = loco::succs(node);
+  assert(mpwam_outs.size() == 2);
+
+  uint32_t op_idx = ctx.md.registerBuiltinOpcode(circle::BuiltinOperator_MAX_POOL_WITH_ARG_MAX,
+                                                 node->op_version());
+
+  std::vector<int32_t> inputs_vec{get_tensor_index(node->input())};
+  std::vector<int32_t> outputs_vec;
+
+  for (uint32_t idx = 0; idx < mpwam_outs.size(); ++idx)
+  {
+    // store in order of index
+    bool found = false;
+    for (auto out : mpwam_outs)
+    {
+      auto mpwam_out = loco::must_cast<luci::CircleMaxPoolWithArgMaxOut *>(out);
+      if (mpwam_out->index() == static_cast<int32_t>(idx))
+      {
+        outputs_vec.push_back(get_tensor_index(mpwam_out));
+        found = true;
+        break;
+      }
+    }
+    if (!found)
+    {
+      INTERNAL_EXN("Invalid MaxPoolWithArgMax output");
+    }
+  }
+
+  auto inputs = ctx.builder.CreateVector(inputs_vec);
+  auto outputs = ctx.builder.CreateVector(outputs_vec);
+  auto options = CreateMaxPoolWithArgMaxOptions(ctx.builder);
+  auto op_offset =
+      CreateOperator(ctx.builder, op_idx, inputs, outputs,
+                     circle::BuiltinOptions_MaxPoolWithArgMaxOptions, options.Union());
+  ctx.gd._operators.push_back(op_offset);
+}
+
 void export_node(ExportContext &ctx, luci::CircleNonMaxSuppressionV4 *node)
 {
   auto nms_outs = loco::succs(node);
@@ -664,6 +704,7 @@ public:
   void visit(luci::CircleMatrixSetDiag *) final;
   void visit(luci::CircleMaximum *) final;
   void visit(luci::CircleMaxPool2D *) final;
+  void visit(luci::CircleMaxPoolWithArgMax *) final;
   void visit(luci::CircleMean *) final;
   void visit(luci::CircleMinimum *) final;
   void visit(luci::CircleMirrorPad *) final;
@@ -745,6 +786,7 @@ public:
   void visit(luci::CircleUniqueOut *) final {}
   void visit(luci::CircleUnpackOut *) final {}
   void visit(luci::CircleWhileOut *) final {}
+  void visit(luci::CircleMaxPoolWithArgMaxOut *) final {}
 
 private:
   /**
@@ -1058,6 +1100,8 @@ void OperationExporter::visit(luci::CircleMaxPool2D *node)
 {
   export_pool_2d<luci::CircleMaxPool2D>(_ctx, node, circle::BuiltinOperator_MAX_POOL_2D);
 }
+
+void OperationExporter::visit(luci::CircleMaxPoolWithArgMax *node) { export_node(_ctx, node); }
 
 void OperationExporter::visit(luci::CircleMean *node)
 {

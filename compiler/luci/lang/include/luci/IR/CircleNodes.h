@@ -145,6 +145,7 @@
 #include "Nodes/CircleSplitVOut.h"
 #include "Nodes/CircleTopKV2Out.h"
 #include "Nodes/CircleWhileOut.h"
+#include "Nodes/CircleMaxPoolWithArgMaxOut.h"
 
 #include <loco/IR/Graph.h>
 

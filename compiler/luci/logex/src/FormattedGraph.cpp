@@ -322,6 +322,7 @@ private:
   IMPLEMENT(luci::CircleUniqueOut)
   IMPLEMENT(luci::CircleUnpackOut)
   IMPLEMENT(luci::CircleWhileOut)
+  IMPLEMENT(luci::CircleMaxPoolWithArgMaxOut)
 #undef IMPLEMENT
 };
 
@@ -1848,6 +1849,12 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleWhileOut *node,
                                        locop::NodeSummary &s) const
 {
   return summary_node(tbl(), node, s);
+}
+
+bool CircleNodeSummaryBuilder::summary(const luci::CircleMaxPoolWithArgMaxOut *node,
+                                       locop::NodeSummary &s) const
+{
+  return use_input(tbl(), node, s);
 }
 
 bool CircleNodeSummaryBuilder::summary(const luci::CircleInput *, locop::NodeSummary &s) const

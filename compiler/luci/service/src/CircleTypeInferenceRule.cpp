@@ -240,6 +240,11 @@ struct TypeInferenceAlgorithm final : public luci::CircleNodeVisitor<loco::DataT
     return loco::dtype_get(node->value());
   }
 
+ loco::DataType visit(const luci::CircleMaxPoolWithArgMax *node) final
+  {
+    return loco::dtype_get(node->input());
+  }
+
   loco::DataType visit(const luci::CircleMean *node) final
   {
     return loco::dtype_get(node->input());
@@ -651,6 +656,23 @@ struct TypeInferenceAlgorithm final : public luci::CircleNodeVisitor<loco::DataT
   loco::DataType visit(const luci::CircleUnpackOut *node) final
   {
     return loco::dtype_get(node->input());
+  }
+
+  loco::DataType visit(const luci::CircleMaxPoolWithArgMaxOut *node) final
+  { 
+    if (node->index() == 0)
+    {
+      return loco::dtype_get(node->input());
+    }
+    assert(node->index() == 1);
+
+    auto max_pool_with_arg_max = dynamic_cast<const luci::CircleMaxPoolWithArgMax *>(node->input());
+
+    auto output_type = max_pool_with_arg_max->output_type();
+   
+    assert(output_type == loco::DataType::S32 || output_type == loco::DataType::S64);
+
+    return output_type;
   }
 
   loco::DataType visit(const luci::CircleWhileOut *node) final

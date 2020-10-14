@@ -27,7 +27,6 @@ class CircleMaxPoolWithArgMaxGraphBuilder : public GraphBuilderBase
 public:
   bool validate(const ValidateArgs &args) const final;
 
-private:
   void build(const circle::OperatorT &op, GraphBuilderContext *context) const final;
 };
 

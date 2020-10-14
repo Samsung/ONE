@@ -1808,6 +1808,48 @@ loco::NodeShape infer_non_max_suppression_v5_out(const luci::CircleNonMaxSuppres
   return loco::TensorShape{max_output_size_value};
 }
 
+loco::NodeShape infer_max_pool_with_arg_max_out(const luci::CircleMaxPoolWithArgMaxOut *node)
+{
+  auto mpwam = dynamic_cast<const luci::CircleMaxPoolWithArgMax *>(node->input());
+  if (mpwam == nullptr)
+    INTERNAL_EXN("CircleMaxPoolWithArgMax IR is not configured correctly");
+
+  auto ifm_shape = loco::shape_get(mpwam).template as<loco::TensorShape>();
+  assert(ifm_shape.rank() == 4);
+
+  uint32_t input_height = ifm_shape.dim(1).value();
+  uint32_t input_width = ifm_shape.dim(2).value();
+  uint32_t stride_height = mpwam->stride()->h();
+  uint32_t stride_width = mpwam->stride()->w();
+  uint32_t window_height = mpwam->filter()->h();
+  uint32_t window_width = mpwam->filter()->w();
+
+  uint32_t output_height = 0;
+  uint32_t output_width = 0;
+
+  if (mpwam->padding() == luci::Padding::VALID)
+  {
+    output_height = (input_height + stride_height - window_height) / stride_height;
+    output_width = (input_width + stride_width - window_width) / stride_width;
+  }
+  else if (mpwam->padding() == luci::Padding::SAME)
+  {
+    output_height = (input_height + stride_height - 1) / stride_height;
+    output_width = (input_width + stride_width - 1) / stride_width;
+  }
+  else
+    LUCI_ASSERT(false, "Wrong padding type");
+
+  loco::TensorShape ofm_shape;
+  ofm_shape.rank(4);
+  ofm_shape.dim(0) = ifm_shape.dim(0);
+  ofm_shape.dim(1) = output_height;
+  ofm_shape.dim(2) = output_width;
+  ofm_shape.dim(3) = ifm_shape.dim(3);
+
+  return loco::NodeShape{ofm_shape};
+}
+
 loco::NodeShape infer_split_out(const luci::CircleSplitOut *node)
 {
   const loco::DataType S32 = loco::DataType::S32;
@@ -2471,6 +2513,11 @@ public:
   loco::NodeShape visit(const luci::CircleUnpackOut *node) final { return infer_unpack_out(node); }
 
   loco::NodeShape visit(const luci::CircleWhileOut *node) final { return infer_while_out(node); }
+
+  loco::NodeShape visit(const luci::CircleMaxPoolWithArgMaxOut *node) final
+  {
+    return infer_max_pool_with_arg_max_out(node);
+  }
 };
 
 } // namespace
