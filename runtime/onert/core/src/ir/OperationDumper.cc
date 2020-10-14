@@ -199,6 +199,7 @@ void OperationDumper::visit(const LocalResponseNormalization &node) { dumpUnaryI
 
 void OperationDumper::visit(const LSTM &node)
 {
+  VERBOSE(LIR) << "* " << node.name() << std::endl;
   VERBOSE(LIR)
       << "  - Inputs : Input(" << node.getInputs().at(LSTM::Input::INPUT)
       << ") Input To Input Weights(" << node.getInputs().at(LSTM::Input::INPUT_TO_INPUT_WEIGHTS)
