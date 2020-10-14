@@ -359,6 +359,7 @@ enum BuiltinOperator : ubyte {
   DENSIFY = 124,
   SEGMENT_SUM = 125,
   BATCH_MATMUL = 126,
+  MAX_POOL_WITH_ARGMAX = 127,
   BCQ_GATHER = 252,
   BCQ_FULLY_CONNECTED = 253,
   INSTANCE_NORM = 254,
@@ -467,6 +468,7 @@ union BuiltinOptions {
   DensifyOptions,
   SegmentSumOptions,
   BatchMatMulOptions,
+  MaxPoolWithArgMaxOptions = 251,
   BCQGatherOptions = 252,
   BCQFullyConnectedOptions = 253,
   InstanceNormOptions = 254,
@@ -1001,6 +1003,16 @@ table BCQFullyConnectedOptions {
 table InstanceNormOptions {
   epsilon:float;
   fused_activation_function:ActivationFunctionType;
+}
+
+table MaxPoolWithArgMaxOptions {
+  padding:Padding;
+  stride_w:int;
+  stride_h:int;
+  filter_width:int;
+  filter_height:int;
+  fused_activation_function:ActivationFunctionType;
+  output_type:TensorType;
 }
 
 // An OperatorCode can be an enum value (BuiltinOperator) if the operator is a
