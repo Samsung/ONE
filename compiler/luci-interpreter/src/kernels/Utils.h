@@ -71,6 +71,11 @@ inline int32_t computeOutputSize(Padding padding, int32_t image_size, int32_t fi
   }
 }
 
+inline int32_t calcOffset(const Shape &shape, int32_t d0, int32_t d1, int32_t d2, int32_t d3)
+{
+  return ((d0 * shape.dim(1) + d1) * shape.dim(2) + d2) * shape.dim(3) + d3;
+}
+
 void calculateActivationRange(Activation activation, float *activation_min, float *activation_max);
 
 void calculateActivationRangeQuantized(Activation activation, const Tensor *output,

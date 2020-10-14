@@ -130,8 +130,13 @@ Mean::Mean(const Tensor *input, const Tensor *axes, Tensor *output, const Reduce
 
 void Mean::configure()
 {
-  assert(input()->element_type() == output()->element_type());
-  assert(axes()->element_type() == DataType::S32);
+  LUCI_INTERPRETER_CHECK(input()->element_type() == output()->element_type());
+  LUCI_INTERPRETER_CHECK(axes()->element_type() == DataType::S32);
+  if (input()->element_type() == DataType::S16)
+  {
+    LUCI_INTERPRETER_CHECK(input()->zero_point() == 0 && output()->zero_point() == 0);
+  }
+
   const Shape &input_shape = input()->shape();
   int input_num_dims = input_shape.num_dims();
 
@@ -168,6 +173,9 @@ void Mean::execute() const
       break;
     case DataType::U8:
       evalQuantized();
+      break;
+    case DataType::S16:
+      evalQuantizedS16();
       break;
     default:
       throw std::runtime_error("Unsupported type.");
@@ -242,6 +250,75 @@ void Mean::evalQuantized() const
         _params.keep_dims, getTensorData<int>(_temp_index.get()),
         getTensorData<int>(_resolved_axes.get()), getTensorData<int>(_temp_sum.get()),
         /*compute_sum=*/false);
+  }
+}
+
+void Mean::evalQuantizedS16() const
+{
+  const auto *input_data = getTensorData<int16_t>(input());
+  auto *output_data = getTensorData<int16_t>(output());
+
+  const Shape &input_shape = input()->shape();
+  const Shape &output_shape = output()->shape();
+
+  const auto *axes_data = getTensorData<int32_t>(axes());
+  const int num_axes = axes()->shape().num_elements();
+
+  constexpr int32_t output_min = -std::numeric_limits<int16_t>::max();
+  constexpr int32_t output_max = std::numeric_limits<int16_t>::max();
+
+  // Defer to specialized implementation for 4D Mean across axes 1 & 2.
+  if (_params.keep_dims && input_shape.num_dims() == 4 && num_axes == 2 &&
+      ((axes_data[0] == 1 && axes_data[1] == 2) || (axes_data[0] == 2 && axes_data[1] == 1)))
+  {
+    const int32_t batches = input_shape.dim(0);
+    const int32_t input_height = input_shape.dim(1);
+    const int32_t input_width = input_shape.dim(2);
+    const int32_t depth = input_shape.dim(3);
+    assert(output_shape.num_dims() == 4);
+    assert(output_shape.dim(0) == batches);
+    assert(output_shape.dim(1) == 1);
+    assert(output_shape.dim(2) == 1);
+    assert(output_shape.dim(3) == depth);
+
+    const double real_multiplier =
+        static_cast<double>(input()->scale()) / static_cast<double>(output()->scale());
+
+    int32_t output_multiplier{};
+    int output_shift{};
+    quantizeMultiplier(real_multiplier, &output_multiplier, &output_shift);
+
+    const int32_t num_elements_in_axes = input_height * input_width;
+
+    for (int32_t batch = 0; batch < batches; ++batch)
+    {
+      for (int32_t c = 0; c < depth; ++c)
+      {
+        int32_t acc = 0;
+        for (int32_t in_y = 0; in_y < input_height; ++in_y)
+        {
+          for (int32_t in_x = 0; in_x < input_width; ++in_x)
+          {
+            acc += input_data[calcOffset(input_shape, batch, in_y, in_x, c)];
+          }
+        }
+        int32_t scaled_acc =
+            tflite::MultiplyByQuantizedMultiplier(acc, output_multiplier, output_shift);
+        // Divide by the number of elements rounding to the nearest integer.
+        scaled_acc = scaled_acc > 0
+                         ? (scaled_acc + num_elements_in_axes / 2) / num_elements_in_axes
+                         : (scaled_acc - num_elements_in_axes / 2) / num_elements_in_axes;
+
+        scaled_acc = std::max(scaled_acc, output_min);
+        scaled_acc = std::min(scaled_acc, output_max);
+
+        output_data[calcOffset(output_shape, batch, 0, 0, c)] = scaled_acc;
+      }
+    }
+  }
+  else
+  {
+    throw std::runtime_error("Unsupported configuration.");
   }
 }
 
