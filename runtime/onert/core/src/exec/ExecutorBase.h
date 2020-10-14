@@ -20,9 +20,7 @@
 #include <mutex>
 
 #include "IPermuteFunction.h"
-#include "Source.h"
 #include "exec/ExecutionObservers.h"
-#include "Sink.h"
 #include "ShapeConverter.h"
 #include "exec/IExecutor.h"
 #include "compiler/LoweredGraph.h"
