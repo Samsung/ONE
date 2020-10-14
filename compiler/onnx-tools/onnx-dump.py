@@ -16,7 +16,6 @@
 
 import onnx
 import os
-import subprocess
 import sys
 
 from onnx import AttributeProto, TensorProto
