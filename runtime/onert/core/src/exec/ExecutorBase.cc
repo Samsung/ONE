@@ -113,7 +113,8 @@ void ExecutorBase::execute(const IODescription &desc)
   {
     // TODO Remove dynamic_cast
     auto *tensor = dynamic_cast<backend::controlflow::UserTensor *>(_input_tensors[i]);
-    assert(tensor);
+    if (tensor == nullptr)
+      throw std::runtime_error{"Cannot access input " + std::to_string(i) + " tensor"};
     auto input_shape = desc.dynamic_input_shapes.find(ir::IOIndex{i});
     if (input_shape != desc.dynamic_input_shapes.end())
     {
@@ -133,7 +134,8 @@ void ExecutorBase::execute(const IODescription &desc)
   {
     // TODO Remove dynamic_cast
     auto *tensor = dynamic_cast<backend::controlflow::UserTensor *>(_output_tensors[i]);
-    assert(tensor);
+    if (tensor == nullptr)
+      throw std::runtime_error{"Cannot access output " + std::to_string(i) + " tensor"};
     tensor->set_dynamic(); // It can't be resized but shape could change
     if (desc.outputs[i] == nullptr)
       throw std::runtime_error{"Output " + std::to_string(i) + "'s buffer is not set."};
