@@ -1302,6 +1302,9 @@ OperationFactory::OperationFactory()
     }
     param.cell_threshold = operands.at(OperandIndex{init_param.inputs[21]}).asScalar<float>();
     param.projection_threshold = operands.at(OperandIndex{init_param.inputs[22]}).asScalar<float>();
+    // This is initialization to prevent warning or error by static code analyzer. LSTM operation
+    // does not need time_major
+    param.time_major = false;
 
     return new operation::LSTM{inputs, outputs, param};
   };
