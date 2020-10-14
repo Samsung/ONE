@@ -244,6 +244,7 @@ private:
   IMPLEMENT(luci::CircleMatrixSetDiag)
   IMPLEMENT(luci::CircleMaximum)
   IMPLEMENT(luci::CircleMaxPool2D)
+  IMPLEMENT(luci::CircleMaxPoolWithArgMax)
   IMPLEMENT(luci::CircleMean)
   IMPLEMENT(luci::CircleMinimum)
   IMPLEMENT(luci::CircleMirrorPad)
@@ -647,6 +648,17 @@ bool summary_node(const locop::SymbolTable *tbl, const luci::CircleMaxPool2D *no
   s.args().append("stride(h,w)", to_str(node->stride()));
   s.args().append("padding", to_str(node->padding()));
   s.args().append("fused", to_str(node->fusedActivationFunction()));
+  s.state(locop::NodeSummary::State::Complete);
+  return true;
+}
+
+bool summary_node(const locop::SymbolTable *tbl, const luci::CircleMaxPoolWithArgMax *node,
+                  locop::NodeSummary &s)
+{
+  s.args().append("input", tbl->lookup(node->input()));
+  s.args().append("filter(h,w)", to_str(node->filter()));
+  s.args().append("stride(h,w)", to_str(node->stride()));
+  s.args().append("padding", to_str(node->padding()));
   s.state(locop::NodeSummary::State::Complete);
   return true;
 }
@@ -1444,6 +1456,12 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleMaximum *node, locop::N
 }
 
 bool CircleNodeSummaryBuilder::summary(const luci::CircleMaxPool2D *node,
+                                       locop::NodeSummary &s) const
+{
+  return summary_node(tbl(), node, s);
+}
+
+bool CircleNodeSummaryBuilder::summary(const luci::CircleMaxPoolWithArgMax *node,
                                        locop::NodeSummary &s) const
 {
   return summary_node(tbl(), node, s);
