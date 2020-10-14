@@ -17,6 +17,7 @@
 
 #include "kernels/Add.h"
 
+#include "kernels/BinaryOpCommon.h"
 #include "kernels/Utils.h"
 
 #include <tensorflow/lite/kernels/internal/reference/add.h>
@@ -36,10 +37,13 @@ Add::Add(const Tensor *input1, const Tensor *input2, Tensor *output, const AddPa
 
 void Add::configure()
 {
-  if (input1()->element_type() != input2()->element_type())
+  LUCI_INTERPRETER_CHECK(input1()->element_type() == input2()->element_type());
+  if (input1()->element_type() == DataType::S16)
   {
-    throw std::runtime_error("Input Tensor Data Type Mismatch.");
+    LUCI_INTERPRETER_CHECK(input1()->zero_point() == 0 && input2()->zero_point() == 0 &&
+                           output()->zero_point() == 0);
   }
+
   output()->resize(calculateShapeForBroadcast(input1()->shape(), input2()->shape()));
 }
 
@@ -52,6 +56,9 @@ void Add::execute() const
       break;
     case DataType::U8:
       evalQuantized();
+      break;
+    case DataType::S16:
+      evalQuantizedS16();
       break;
     default:
       throw std::runtime_error("Unsupported type.");
@@ -138,6 +145,50 @@ void Add::evalQuantized() const
                                getTensorShape(input2()), getTensorData<uint8_t>(input2()),
                                getTensorShape(output()), getTensorData<uint8_t>(output()));
   }
+}
+
+void Add::evalQuantizedS16() const
+{
+  const auto input1_scale = static_cast<double>(input1()->scale());
+  const auto input2_scale = static_cast<double>(input2()->scale());
+  const auto output_scale = static_cast<double>(output()->scale());
+
+  constexpr int left_shift = 12;
+  const double twice_max_input_scale = 2 * std::max(input1_scale, input2_scale);
+  const double real_input1_multiplier = input1_scale / twice_max_input_scale;
+  const double real_input2_multiplier = input2_scale / twice_max_input_scale;
+  const double real_output_multiplier = twice_max_input_scale / ((1 << left_shift) * output_scale);
+
+  int32_t input1_multiplier{}, input2_multiplier{}, output_multiplier{};
+  int input1_shift{}, input2_shift{}, output_shift{};
+  quantizeMultiplierSmallerThanOneExp(real_input1_multiplier, &input1_multiplier, &input1_shift);
+  quantizeMultiplierSmallerThanOneExp(real_input2_multiplier, &input2_multiplier, &input2_shift);
+  quantizeMultiplierSmallerThanOneExp(real_output_multiplier, &output_multiplier, &output_shift);
+
+  int32_t activation_min{};
+  int32_t activation_max{};
+  calculateActivationRangeQuantized(_params.activation, output(), &activation_min, &activation_max);
+
+  auto fn = [input1_multiplier, input1_shift, //
+             input2_multiplier, input2_shift, //
+             output_multiplier, output_shift, //
+             activation_min, activation_max](int16_t input1_val, int16_t input2_val) {
+    const int32_t shifted_input1_val = static_cast<int32_t>(input1_val) << left_shift;
+    const int32_t shifted_input2_val = static_cast<int32_t>(input2_val) << left_shift;
+    const int32_t scaled_input1_val = tflite::MultiplyByQuantizedMultiplierSmallerThanOneExp(
+        shifted_input1_val, input1_multiplier, input1_shift);
+    const int32_t scaled_input2_val = tflite::MultiplyByQuantizedMultiplierSmallerThanOneExp(
+        shifted_input2_val, input2_multiplier, input2_shift);
+    const int32_t raw_sum = scaled_input1_val + scaled_input2_val;
+    const int32_t raw_output = tflite::MultiplyByQuantizedMultiplierSmallerThanOneExp(
+        raw_sum, output_multiplier, output_shift);
+    const int32_t clamped_output = std::min(activation_max, std::max(activation_min, raw_output));
+    return static_cast<int16_t>(clamped_output);
+  };
+
+  BinaryOpBroadcastSlow(getTensorShape(input1()), getTensorData<int16_t>(input1()),
+                        getTensorShape(input2()), getTensorData<int16_t>(input2()),
+                        getTensorShape(output()), getTensorData<int16_t>(output()), fn);
 }
 
 } // namespace kernels
