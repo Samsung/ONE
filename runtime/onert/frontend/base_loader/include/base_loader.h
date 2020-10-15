@@ -95,7 +95,6 @@ protected:
   ir::Activation convertActivation(ActivationFunctionType type);
   ir::DataType tensorTypeToDataType(TensorType type);
   ir::OperandIndex tensorIdxToOperandIdx(int32_t tensorIdx);
-  void deallocateMmappedArea(uint8_t *ptr, size_t size);
 
   // Create operands form tflite::Tensor
   ir::OperandIndex loadOperand(const Tensor *tensor, ir::Graph &subg);
@@ -212,8 +211,7 @@ void BaseLoader<LoaderDomain>::BaseLoader::loadFromFile(const char *file_path)
   _verifier = std::make_unique<Verifier>(reinterpret_cast<const std::uint8_t *>(_base), size);
 
   loadModel();
-  if (_use_mmaped_data)
-    munmap(_base, size);
+  munmap(_base, size);
 
   close(_fd);
 }
@@ -275,30 +273,6 @@ template <typename LoaderDomain>
 ir::OperandIndex BaseLoader<LoaderDomain>::BaseLoader::tensorIdxToOperandIdx(int32_t tensorIdx)
 {
   return isOptionalInputTensor(tensorIdx) ? ir::OperandIndex() : _tensor_to_operand[tensorIdx];
-}
-
-template <typename LoaderDomain>
-void BaseLoader<LoaderDomain>::BaseLoader::deallocateMmappedArea(uint8_t *ptr, size_t size)
-{
-  // Calculate offset from base address of mapped region
-  ptrdiff_t unaligned_offset_start = ptr - _base;
-  ptrdiff_t unaligned_offset_end = unaligned_offset_start + size;
-
-  // Calculated aligned offset from base address of mapped region
-  // munmap accepts memory address which is a multiple of the pagesize
-  ptrdiff_t aligned_offset_start =
-      ((unaligned_offset_start + (_pagesize - 1)) / _pagesize) * _pagesize;
-  ptrdiff_t aligned_offset_end = (unaligned_offset_end / _pagesize) * _pagesize;
-
-  ptrdiff_t area_size = aligned_offset_end - aligned_offset_start;
-  if (area_size > 0)
-  {
-    // Unmap mapped region for CachedData
-    if (munmap(_base + aligned_offset_start, area_size) == -1)
-    {
-      VERBOSE(BASE_LOADER) << "munmap failed" << std::endl;
-    }
-  }
 }
 
 /* Copy is copied from tensorflow lite */
@@ -477,7 +451,7 @@ ir::OperandIndex BaseLoader<LoaderDomain>::loadOperand(const Tensor *tensor, ir:
     {
       data_obj = std::make_unique<ir::ExternalData>(data->data(), data->size());
     }
-    else if (_use_mmaped_data) // Model is loaded(mmap'd) from a file
+    else // Model is loaded(mmap'd) from a file
     {
       size_t data_size = data->size();
       ptrdiff_t unaligned_offset_start = data->data() - _base;
@@ -488,13 +462,19 @@ ir::OperandIndex BaseLoader<LoaderDomain>::loadOperand(const Tensor *tensor, ir:
       ptrdiff_t aligned_offset_start = (unaligned_offset_start / _pagesize) * _pagesize;
       size_t mmap_size = offset_end - aligned_offset_start;
 
-      data_obj = std::make_unique<ir::MMapedData>(_fd, aligned_offset_start, mmap_size,
-                                                  unaligned_offset_start, data_size);
-    }
-    else
-    {
-      data_obj = std::make_unique<ir::CachedData>(data->data(), data->size());
-      deallocateMmappedArea(const_cast<uint8_t *>(data->data()), data->size());
+      if (_use_mmaped_data)
+      {
+        data_obj = std::make_unique<ir::MMapedData>(_fd, aligned_offset_start, mmap_size,
+                                                    unaligned_offset_start, data_size);
+      }
+      else
+      {
+        size_t offset = unaligned_offset_start - aligned_offset_start;
+        uint8_t *mmap_base = static_cast<uint8_t *>(
+            mmap(NULL, mmap_size, PROT_READ, MAP_PRIVATE, _fd, aligned_offset_start));
+        data_obj = std::make_unique<ir::CachedData>(mmap_base + offset, data_size);
+        munmap(mmap_base, mmap_size);
+      }
     }
     subg.setOperandValue(operand_index, std::move(data_obj));
   }
