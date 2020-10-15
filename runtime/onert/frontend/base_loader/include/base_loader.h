@@ -493,9 +493,14 @@ ir::OperandIndex BaseLoader<LoaderDomain>::loadOperand(const Tensor *tensor, ir:
 
   _tensor_names.emplace(operand_index, tensor->name()->str());
 
-  // Variablie
+  // Variable
   if (tensor->is_variable())
-    throw std::runtime_error("Variable tensor not supported!");
+  {
+    if (data != nullptr)
+      throw std::runtime_error("Variable tensor with buffer is not supported!");
+
+    subg.operands().at(operand_index).info().setAsVariable();
+  }
 
   return operand_index;
 }
