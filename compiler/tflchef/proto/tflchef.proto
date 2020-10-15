@@ -498,7 +498,9 @@ message MaxPoolWithArgMaxOptions {
   optional Padding padding = 1 [default = VALID];
   optional int32 stride_w = 2 [default = 1];
   optional int32 stride_h = 3 [default = 1];
-  optional TensorType output_type = 4 [default = INT64];
+  optional int32 filter_width = 4 [default = 1];
+  optional int32 filter_height = 5 [ default = 1];
+  optional TensorType output_type = 6 [default = INT64];
 }
 
 message Operation {

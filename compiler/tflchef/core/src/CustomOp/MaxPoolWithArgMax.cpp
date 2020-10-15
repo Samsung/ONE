@@ -31,24 +31,16 @@ MaxPoolWithArgMaxChef::custom_value(flatbuffers::FlatBufferBuilder &fbb) const
 
   assert(operation.type() == "MaxPoolWithArgMax");
 
-  /**
-   * REGISTER_OP("MaxPoolWithArgMax")
-    .Input("input: T")
-    .Output("output: T")
-    .Output("argmax: Targmax")
-    .Attr("ksize: list(int) >= 4")
-    .Attr("strides: list(int) >= 4")
-    .Attr(GetPaddingAttrString())
-   */
-
   auto flex_buffers = std::make_unique<flexbuffers::Builder>();
   size_t map_start = flex_buffers->StartMap();
 
   // TODO Support more data types
-  flex_buffers->Int("ksize", tflite::TensorType_FLOAT32);
+  flex_buffers->Int("filter_width", operation.max_pool_with_argmax_options().filter_width());
+  flex_buffers->Int("filter_height", operation.max_pool_with_argmax_options().filter_height());
   flex_buffers->Int("stride_w", operation.max_pool_with_argmax_options().stride_w());
   flex_buffers->Int("stride_h", operation.max_pool_with_argmax_options().stride_h());
-  flex_buffers->Int("padding", tflite::TensorType_INT64);
+  flex_buffers->Int("padding", operation.max_pool_with_argmax_options().padding());
+  flex_buffers->Int("output_type", operation.max_pool_with_argmax_options().output_type());
 
   flex_buffers->EndMap(map_start);
   flex_buffers->Finish();
@@ -57,7 +49,8 @@ MaxPoolWithArgMaxChef::custom_value(flatbuffers::FlatBufferBuilder &fbb) const
   return circle_custom_options;
 }
 
-std::unique_ptr<OpChef> MaxPoolWithArgMaxChefFactory::create(const tflchef::Operation *operation) const
+std::unique_ptr<OpChef>
+MaxPoolWithArgMaxChefFactory::create(const tflchef::Operation *operation) const
 {
   return std::unique_ptr<OpChef>{new MaxPoolWithArgMaxChef{operation}};
 }

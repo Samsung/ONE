@@ -28,10 +28,19 @@ bool CircleMaxPoolWithArgMaxGraphBuilder::validate(const ValidateArgs &args) con
   const auto &inputs = args.op.inputs;
   const auto &outputs = args.op.outputs;
 
+  const auto *options = args.op.builtin_options.AsMaxPoolWithArgMaxOptions();
+
   if (inputs.size() != 1)
     return false;
 
   if (outputs.size() != 2)
+    return false;
+
+  const auto &tensors = args.reader.tensors();
+  if (tensors.at(inputs.at(0))->type != tensors.at(outputs[0])->type)
+    return false;
+
+  if (options->output_type != tensors.at(outputs[1])->type)
     return false;
 
   return true;
@@ -59,7 +68,7 @@ void CircleMaxPoolWithArgMaxGraphBuilder::build(const circle::OperatorT &op,
   auto *node = graph->nodes()->create<CircleMaxPoolWithArgMax>();
 
   node->input(input_nodes[0]);
-  
+
   const auto *options = op.builtin_options.AsMaxPoolWithArgMaxOptions();
 
   node->padding(luci_padding(options->padding));
@@ -67,6 +76,7 @@ void CircleMaxPoolWithArgMaxGraphBuilder::build(const circle::OperatorT &op,
   node->stride()->h(options->stride_h);
   node->filter()->w(options->filter_width);
   node->filter()->h(options->filter_height);
+  node->output_type(luci_datatype(options->output_type));
 
   assert(outputs.size() == 2);
   {
@@ -77,7 +87,7 @@ void CircleMaxPoolWithArgMaxGraphBuilder::build(const circle::OperatorT &op,
 
     // NOTE We don't set quantization for MaxPoolWithArgMax itself but to virtual outputs
   }
-  
+
   // Create virtual outputs of NonMaxSuppressionV4
   for (size_t n = 0; n < outputs.size(); ++n)
   {
@@ -97,7 +107,6 @@ void CircleMaxPoolWithArgMaxGraphBuilder::build(const circle::OperatorT &op,
 
     context->nodefinder()->enroll(outputs[n], nodeout);
   }
-
 }
 
 } // namespace luci

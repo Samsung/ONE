@@ -660,6 +660,7 @@ bool summary_node(const locop::SymbolTable *tbl, const luci::CircleMaxPoolWithAr
   s.args().append("filter(h,w)", to_str(node->filter()));
   s.args().append("stride(h,w)", to_str(node->stride()));
   s.args().append("padding", to_str(node->padding()));
+  s.args().append("output_type", to_str(node->output_type()));
   s.state(locop::NodeSummary::State::Complete);
   return true;
 }

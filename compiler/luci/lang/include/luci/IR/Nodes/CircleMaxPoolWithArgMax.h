@@ -32,7 +32,8 @@ namespace luci
 /**
  * @brief MAX_POOL_WITH_ARGMAX in Circle
  */
-class CircleMaxPoolWithArgMax final : public FixedArityNode<1, CircleNodeImpl<CircleOpcode::MAX_POOL_WITH_ARG_MAX>>
+class CircleMaxPoolWithArgMax final
+    : public FixedArityNode<1, CircleNodeImpl<CircleOpcode::MAX_POOL_WITH_ARG_MAX>>
 {
 public:
   loco::Node *input(void) const { return at(0)->node(); }
@@ -51,7 +52,7 @@ public:
   void output_type(loco::DataType ot) { _output_type = ot; }
 
 private:
-  Padding _padding;
+  Padding _padding{Padding::UNDEFINED};
   Stride _stride;
   Filter _filter;
   loco::DataType _output_type{loco::DataType::S64};

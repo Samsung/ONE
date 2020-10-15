@@ -10,7 +10,7 @@ operand {
 }
 operand {
   name: "argmax"
-  type: INT64
+  type: INT32
   shape { dim: 1 dim: 9 dim: 9 dim: 1 }
 }
 operation {
@@ -20,11 +20,11 @@ operation {
   output: "argmax"
   max_pool_with_argmax_options {
     padding: SAME
-    filter_width: 1
-    filter_height: 1
+    filter_width: 4
+    filter_height: 4
     stride_w: 2
     stride_h: 2
-    output_type: INT64
+    output_type: INT32
   }
 }
 input: "ifm"

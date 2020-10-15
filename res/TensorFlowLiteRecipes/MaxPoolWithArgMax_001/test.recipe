@@ -6,12 +6,12 @@ operand {
 operand {
   name: "ofm"
   type: FLOAT32
-  shape { dim: 1 dim: 9 dim: 9 dim: 1 }
+  shape { dim: 1 dim: 8 dim: 8 dim: 1 }
 }
 operand {
   name: "argmax"
   type: INT64
-  shape { dim: 1 dim: 9 dim: 9 dim: 1 }
+  shape { dim: 1 dim: 8 dim: 8 dim: 1 }
 }
 operation {
   type: "MaxPoolWithArgMax"
@@ -19,9 +19,9 @@ operation {
   output: "ofm"
   output: "argmax"
   max_pool_with_argmax_options {
-    padding: SAME
-    filter_width: 1
-    filter_height: 1
+    padding: VALID
+    filter_width: 4
+    filter_height: 4
     stride_w: 2
     stride_h: 2
     output_type: INT64
