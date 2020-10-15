@@ -122,6 +122,10 @@ convertActivationType(const ir::Activation activation)
       return nnfw::cker::FusedActivationFunctionType::kRelu1;
     case ir::Activation::RELU6:
       return nnfw::cker::FusedActivationFunctionType::kRelu6;
+    case ir::Activation::TANH:
+      return nnfw::cker::FusedActivationFunctionType::kTanh;
+    case ir::Activation::SIGMOID:
+      return nnfw::cker::FusedActivationFunctionType::kSigmoid;
     default:
       throw std::runtime_error{"CPU backend: Cannot convert activation type"};
   }

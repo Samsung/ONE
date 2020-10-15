@@ -45,6 +45,10 @@ public:
         return a < 0.f ? 0.f : a;
       case FusedActivationFunctionType::kRelu6:
         return std::max(0.f, std::min(a, 6.f));
+      case FusedActivationFunctionType::kTanh:
+        return std::tanh(a);
+      case FusedActivationFunctionType::kSigmoid:
+        return 1.0f / (1.0f + std::exp(-a));
       default:
         // TODO(aselle): More informative fatal error!
         exit(1);
@@ -55,8 +59,17 @@ private:
   FusedActivationFunctionType act_;
 };
 
-void PortableVectorBatchVectorAssign(const float *vector, int v_size, int n_batch,
-                                     float *batch_vector)
+template <typename T>
+void PortableCwiseClipping(T *vector, const int v_size, const T clipping_value)
+{
+  for (int i = 0; i < v_size; i++)
+  {
+    vector[i] = std::max(std::min(clipping_value, vector[i]), static_cast<T>(-clipping_value));
+  }
+}
+
+inline void PortableVectorBatchVectorAssign(const float *vector, int v_size, int n_batch,
+                                            float *batch_vector)
 {
   for (int b = 0; b < n_batch; b++)
   {
@@ -64,7 +77,20 @@ void PortableVectorBatchVectorAssign(const float *vector, int v_size, int n_batc
   }
 }
 
-bool PortableIsZeroVector(const float *vector, int v_size)
+inline void PortableVectorBatchVectorAdd(const float *vector, int v_size, int n_batch,
+                                         float *batch_vector)
+{
+  for (int b = 0; b < n_batch; b++)
+  {
+    for (int i = 0; i < v_size; ++i)
+    {
+      batch_vector[i] += vector[i];
+    }
+    batch_vector += v_size;
+  }
+}
+
+inline bool PortableIsZeroVector(const float *vector, int v_size)
 {
   for (int i = 0; i < v_size; ++i)
   {
@@ -74,8 +100,8 @@ bool PortableIsZeroVector(const float *vector, int v_size)
   return true;
 }
 
-void PortableApplyActivationToVector(const float *vector, int v_size,
-                                     FusedActivationFunctionType activation, float *result)
+inline void PortableApplyActivationToVector(const float *vector, int v_size,
+                                            FusedActivationFunctionType activation, float *result)
 {
   auto activation_func = ActivationFunctor(activation);
   for (int v = 0; v < v_size; v++)
@@ -84,8 +110,17 @@ void PortableApplyActivationToVector(const float *vector, int v_size,
   }
 }
 
-void PortableSymmetricQuantizeFloats(const float *values, const int size, int8_t *quantized_values,
-                                     float *min_value, float *max_value, float *scaling_factor)
+inline void PortableSub1Vector(const float *vector, int v_size, float *result)
+{
+  for (int v = 0; v < v_size; v++)
+  {
+    *result++ = 1.0f - *vector++;
+  }
+}
+
+inline void PortableSymmetricQuantizeFloats(const float *values, const int size,
+                                            int8_t *quantized_values, float *min_value,
+                                            float *max_value, float *scaling_factor)
 {
   auto minmax = std::minmax_element(values, values + size);
   *min_value = *minmax.first;
@@ -109,11 +144,12 @@ void PortableSymmetricQuantizeFloats(const float *values, const int size, int8_t
   }
 }
 
-void PortableMatrixBatchVectorMultiplyAccumulate(const int8_t *__restrict__ matrix,
-                                                 const int m_rows, const int m_cols,
-                                                 const int8_t *__restrict__ vectors,
-                                                 const float *scaling_factors, int n_batch,
-                                                 float *__restrict__ result, int result_stride)
+inline void PortableMatrixBatchVectorMultiplyAccumulate(const int8_t *__restrict__ matrix,
+                                                        const int m_rows, const int m_cols,
+                                                        const int8_t *__restrict__ vectors,
+                                                        const float *scaling_factors, int n_batch,
+                                                        float *__restrict__ result,
+                                                        int result_stride)
 {
   int batch, row, col;
   for (batch = 0; batch < n_batch; ++batch, vectors += m_cols)
@@ -138,20 +174,20 @@ void PortableMatrixBatchVectorMultiplyAccumulate(const int8_t *__restrict__ matr
   }   // for batch
 }
 
-void PortableMatrixBatchVectorMultiplyAccumulate(const int8_t *__restrict__ matrix,
-                                                 const int m_rows, const int m_cols,
-                                                 const int8_t *__restrict__ vector,
-                                                 const float *scaling_factors, int n_batch,
-                                                 int32_t *, float *__restrict__ result,
-                                                 int result_stride, ruy::Context *)
+inline void PortableMatrixBatchVectorMultiplyAccumulate(const int8_t *__restrict__ matrix,
+                                                        const int m_rows, const int m_cols,
+                                                        const int8_t *__restrict__ vector,
+                                                        const float *scaling_factors, int n_batch,
+                                                        int32_t *, float *__restrict__ result,
+                                                        int result_stride, ruy::Context *)
 {
   PortableMatrixBatchVectorMultiplyAccumulate(matrix, m_rows, m_cols, vector, scaling_factors,
                                               n_batch, result, result_stride);
 }
 
-void PortableMatrixBatchVectorMultiplyAccumulate(const float *matrix, int m_rows, int m_cols,
-                                                 const float *vector, int n_batch, float *result,
-                                                 int result_stride)
+inline void PortableMatrixBatchVectorMultiplyAccumulate(const float *matrix, int m_rows, int m_cols,
+                                                        const float *vector, int n_batch,
+                                                        float *result, int result_stride)
 {
   float *result_in_batch = result;
   for (int b = 0; b < n_batch; b++)
@@ -171,7 +207,36 @@ void PortableMatrixBatchVectorMultiplyAccumulate(const float *matrix, int m_rows
   }
 }
 
-void PortableZeroVector(float *vector, int v_size) { std::fill_n(vector, v_size, 0); }
+inline void PortableMeanStddevNormalization(const float *input_vector, float *output_vector,
+                                            int v_size, int n_batch)
+{
+  for (int batch = 0; batch < n_batch; ++batch)
+  {
+    float sum = 0.0f;
+    for (int i = 0; i < v_size; ++i)
+    {
+      sum += input_vector[i];
+    }
+    const float mean = sum / v_size;
+    float sum_diff_sq = 0.0f;
+    for (int i = 0; i < v_size; ++i)
+    {
+      const float diff = input_vector[i] - mean;
+      sum_diff_sq += diff * diff;
+    }
+    const float variance = sum_diff_sq / v_size;
+    constexpr float kNormalizationConstant = 1e-8f;
+    const float stddev_inv = 1.0f / std::sqrt(variance + kNormalizationConstant);
+    for (int i = 0; i < v_size; ++i)
+    {
+      output_vector[i] = (input_vector[i] - mean) * stddev_inv;
+    }
+    input_vector += v_size;
+    output_vector += v_size;
+  }
+}
+
+inline void PortableZeroVector(float *vector, int v_size) { std::fill_n(vector, v_size, 0); }
 
 } // namespace cker
 } // namespace nnfw
