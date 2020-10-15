@@ -1478,6 +1478,9 @@ void BaseLoader<LoaderDomain>::loadOperation(const Operator *op, ir::Graph &subg
     case BuiltinOperator::BuiltinOperator_QUANTIZE:
       loadElementwiseUnary(op, subg, ir::operation::ElementwiseUnary::Type::QUANTIZE);
       return;
+    case BuiltinOperator::BuiltinOperator_DEQUANTIZE:
+      loadElementwiseUnary(op, subg, ir::operation::ElementwiseUnary::Type::DEQUANTIZE);
+      return;
     case BuiltinOperator::BuiltinOperator_SPACE_TO_DEPTH:
       loadSpaceToDepth(op, subg);
       return;

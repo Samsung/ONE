@@ -17,7 +17,6 @@ GeneratedTests.depth_to_space_float_2
 GeneratedTests.depth_to_space_float_3
 GeneratedTests.depth_to_space_quant8_1
 GeneratedTests.depth_to_space_quant8_2
-GeneratedTests.dequantize
 GeneratedTests.embedding_lookup
 GeneratedTests.embedding_lookup_2d_nnfw
 GeneratedTests.embedding_lookup_4d_nnfw
