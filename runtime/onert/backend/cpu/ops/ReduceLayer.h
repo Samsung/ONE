@@ -49,6 +49,7 @@ enum class ReduceType
   kMin,
   kAny,
   kAll,
+  kInvalid // For debug and initialize
 };
 
 class ReduceLayer : public ::onert::exec::IFunction
@@ -67,14 +68,13 @@ private:
   const IPortableTensor *_input;
   const IPortableTensor *_axes;
   IPortableTensor *_output;
-#ifdef USE_NEON
-  ReduceType _reduceType;
-#endif // NEON
 
   std::unique_ptr<nnfw::cker::Reduce> _reduce_kernel;
   std::function<void(const IPortableTensor *input, IPortableTensor *output,
                      const std::vector<int> &axes)>
       _kernel;
+
+  ReduceType _reduceType;
 };
 
 } // namespace ops
