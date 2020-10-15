@@ -379,8 +379,22 @@ void LoweredGraph::manipulateLowerInfo(
     }
   }
 
-  // Set LowerInfo for each operand from the operand::LowerInfo holder
-  _graph.operands().iterate([&](const ir::OperandIndex &index, ir::Operand &) {
+  // 1. Add def of variable operand
+  // 2. Set LowerInfo for each operand from the operand::LowerInfo holder
+  _graph.operands().iterate([&](const ir::OperandIndex &index, ir::Operand &operand) {
+    // Some inputs of an operation could be non-constant, but not existed in graph inputs/outputs
+    // and not undefined operand. Those inputs must have exist as a Tensor. For example,
+    // UnidirectionalSequenceLSTM operation could have state inputs such as it.
+    if (operand.info().isVariable())
+    {
+      // The variable operand with buffer is not supported yet
+      assert(operand.data() == nullptr);
+      assert(operand.getUses().size() == 1 && !operand.getDef().valid());
+      auto &lowered_info = operands_lower_info[index];
+      assert(lowered_info->def_factors().empty());
+      lowered_info->addDefPermuteFactor(lowered_info->use_factors().getOnlyElement());
+    }
+
     setLowerInfo(index, std::move(operands_lower_info[index]));
   });
 }
