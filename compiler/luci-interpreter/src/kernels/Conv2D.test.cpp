@@ -169,6 +169,52 @@ TEST(Conv2DTest, Uint8)
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
 }
 
+TEST(Conv2DTest, SInt16)
+{
+  Shape input_shape{1, 4, 3, 2};
+  Shape filter_shape{2, 2, 2, 2};
+  Shape bias_shape{2};
+  std::vector<int32_t> ref_output_shape{1, 2, 2, 2};
+
+  std::vector<float> input_data{
+      1,  2,  3,  4,  5,  6,  // row = 0
+      7,  8,  9,  10, 11, 12, // row = 1
+      13, 14, 15, 16, 17, 18, // row = 2
+      19, 20, 21, 22, 23, 24, // row = 3
+  };
+  std::vector<float> filter_data{
+      1,  2,  -3, -4, // out = 0, row = 0
+      -5, 6,  -7, 8,  // out = 1, row = 0
+      4,  -2, 3,  -1, // out = 0, row = 1
+      -8, -6, 7,  5,  // out = 1, row = 1
+  };
+  std::vector<float> bias_data{1, 2};
+  std::vector<float> ref_output_data{
+      11, 16, 7, 20, // row = 0
+      0,  40, 0, 44, // row = 1
+  };
+
+  Tensor input_tensor = makeInputTensor<DataType::S16>(input_shape, 0.25, 0, input_data);
+  Tensor filter_tensor = makeInputTensor<DataType::S16>(filter_shape, 0.2, 0, filter_data);
+  Tensor bias_tensor = makeInputTensor<DataType::S64>(bias_shape, 0.25 * 0.2, 0, bias_data);
+  Tensor output_tensor = makeOutputTensor(DataType::S16, 0.5, 0);
+
+  Conv2DParams params{};
+  params.padding = Padding::VALID;
+  params.stride_height = 2;
+  params.stride_width = 1;
+  params.dilation_height_factor = 1;
+  params.dilation_width_factor = 1;
+  params.activation = Activation::RELU;
+
+  Conv2D kernel(&input_tensor, &filter_tensor, &bias_tensor, &output_tensor, params);
+  kernel.configure();
+  kernel.execute();
+
+  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
+  EXPECT_THAT(dequantizeTensorData(output_tensor), FloatArrayNear(ref_output_data));
+}
+
 TEST(Conv2DTest, Unsupported_Type_Configure_NEG)
 {
   Shape input_shape{1, 4, 3, 2};
