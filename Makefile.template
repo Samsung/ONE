@@ -163,7 +163,7 @@ acl_tar_internal: $(BUILD_FOLDER)
 
 install_internal_acl:
 # Workaround to install acl for test (ignore error when there is no file to copy)
-	cp $(OVERLAY_FOLDER)/lib/libarm_compute* $(INSTALL_ALIAS)/lib || true
+	cp $(OVERLAY_FOLDER)/lib/libarm_compute*.so $(INSTALL_ALIAS)/lib || true
 
 build_test_suite: install_internal install_internal_acl
 	@echo "packaging test suite"
