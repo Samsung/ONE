@@ -98,6 +98,7 @@ protected:
 
   // Create operands form tflite::Tensor
   ir::OperandIndex loadOperand(const Tensor *tensor, ir::Graph &subg);
+  void loadSparsity(const Tensor *tensor, const ir::Shape &shape, ir::TypeInfo &typeInfo);
   void loadOperationIO(const Operator *op, ir::OperandIndexSequence &inputs,
                        ir::OperandIndexSequence &outputs);
   // Create operations from Operator
@@ -348,6 +349,62 @@ ir::OperandIndex BaseLoader<LoaderDomain>::loadOperand(const Tensor *tensor, ir:
   // Create TypeInfo
   ir::TypeInfo type_info(data_type, scale, zero_point);
   // Sparsity
+  loadSparsity(tensor, shape, type_info);
+
+  // Create operand
+  const auto operand_index = subg.addOperand(shape, type_info);
+
+  // Constant tensors are indicated by non-empty data.
+  const auto *data = _model->buffers()->Get(tensor->buffer())->data();
+  if (data != nullptr)
+  {
+    using std::ptrdiff_t;
+    std::unique_ptr<ir::Data> data_obj;
+    if (_fd == -1) // Model is from memory
+    {
+      data_obj = std::make_unique<ir::ExternalData>(data->data(), data->size());
+    }
+    else // Model is loaded(mmap'd) from a file
+    {
+      size_t data_size = data->size();
+      ptrdiff_t unaligned_offset_start = data->data() - _base;
+      ptrdiff_t offset_end = unaligned_offset_start + data_size;
+
+      // Calculated aligned offset from base address of mapped region
+      // munmap accepts memory address which is a multiple of the pagesize
+      ptrdiff_t aligned_offset_start = (unaligned_offset_start / _pagesize) * _pagesize;
+      size_t mmap_size = offset_end - aligned_offset_start;
+
+      if (_use_mmaped_data)
+      {
+        data_obj = std::make_unique<ir::MMapedData>(_fd, aligned_offset_start, mmap_size,
+                                                    unaligned_offset_start, data_size);
+      }
+      else
+      {
+        size_t offset = unaligned_offset_start - aligned_offset_start;
+        uint8_t *mmap_base = static_cast<uint8_t *>(
+            mmap(NULL, mmap_size, PROT_READ, MAP_PRIVATE, _fd, aligned_offset_start));
+        data_obj = std::make_unique<ir::CachedData>(mmap_base + offset, data_size);
+        munmap(mmap_base, mmap_size);
+      }
+    }
+    subg.setOperandValue(operand_index, std::move(data_obj));
+  }
+
+  _tensor_names.emplace(operand_index, tensor->name()->str());
+
+  // Variablie
+  if (tensor->is_variable())
+    throw std::runtime_error("Variable tensor not supported!");
+
+  return operand_index;
+}
+
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadSparsity(const Tensor *tensor, const ir::Shape &shape,
+                                            ir::TypeInfo &typeInfo)
+{
   auto src_sparsity = tensor->sparsity();
   if (src_sparsity != nullptr)
   {
@@ -435,57 +492,9 @@ ir::OperandIndex BaseLoader<LoaderDomain>::loadOperand(const Tensor *tensor, ir:
         throw std::runtime_error("block dimension must be DENSE.");
       block_size.push_back(block_metadata->dense_size());
     }
-    type_info.sparsity(std::make_shared<ir::Sparsity>(std::move(w1_segments), std::move(w1_indices),
-                                                      std::move(block_size)));
+    typeInfo.sparsity(std::make_shared<ir::Sparsity>(std::move(w1_segments), std::move(w1_indices),
+                                                     std::move(block_size)));
   }
-  // Create operand
-  const auto operand_index = subg.addOperand(shape, type_info);
-
-  // Constant tensors are indicated by non-empty data.
-  const auto *data = _model->buffers()->Get(tensor->buffer())->data();
-  if (data != nullptr)
-  {
-    using std::ptrdiff_t;
-    std::unique_ptr<ir::Data> data_obj;
-    if (_fd == -1) // Model is from memory
-    {
-      data_obj = std::make_unique<ir::ExternalData>(data->data(), data->size());
-    }
-    else // Model is loaded(mmap'd) from a file
-    {
-      size_t data_size = data->size();
-      ptrdiff_t unaligned_offset_start = data->data() - _base;
-      ptrdiff_t offset_end = unaligned_offset_start + data_size;
-
-      // Calculated aligned offset from base address of mapped region
-      // munmap accepts memory address which is a multiple of the pagesize
-      ptrdiff_t aligned_offset_start = (unaligned_offset_start / _pagesize) * _pagesize;
-      size_t mmap_size = offset_end - aligned_offset_start;
-
-      if (_use_mmaped_data)
-      {
-        data_obj = std::make_unique<ir::MMapedData>(_fd, aligned_offset_start, mmap_size,
-                                                    unaligned_offset_start, data_size);
-      }
-      else
-      {
-        size_t offset = unaligned_offset_start - aligned_offset_start;
-        uint8_t *mmap_base = static_cast<uint8_t *>(
-            mmap(NULL, mmap_size, PROT_READ, MAP_PRIVATE, _fd, aligned_offset_start));
-        data_obj = std::make_unique<ir::CachedData>(mmap_base + offset, data_size);
-        munmap(mmap_base, mmap_size);
-      }
-    }
-    subg.setOperandValue(operand_index, std::move(data_obj));
-  }
-
-  _tensor_names.emplace(operand_index, tensor->name()->str());
-
-  // Variablie
-  if (tensor->is_variable())
-    throw std::runtime_error("Variable tensor not supported!");
-
-  return operand_index;
 }
 
 template <typename LoaderDomain>
