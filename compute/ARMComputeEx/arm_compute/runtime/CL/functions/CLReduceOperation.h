@@ -48,7 +48,7 @@
 #define __ARM_COMPUTE_CLREDUCEOPERATION_H__
 
 #include "arm_compute/core/CL/kernels/CLReduceOperationKernel.h"
-#include "arm_compute/core/TypesEx.h"
+#include "arm_compute/core/Types.h"
 #include "arm_compute/runtime/MemoryGroup.h"
 #include "arm_compute/runtime/CL/CLTensor.h"
 #include "arm_compute/runtime/CL/CLTensorAllocator.h"
@@ -82,7 +82,7 @@ public:
    * @return N/A
    */
   void configure(ICLTensor *input, ICLTensor *output, const std::set<uint32_t> &axis,
-                 bool keep_dims, ReduceOperation op);
+                 bool keep_dims, ReductionOperation op);
 
   /**
    * @brief Static function to check if given info will lead to a valid configuration of @ref
@@ -96,7 +96,8 @@ public:
    * @return a status
    */
   static Status validate(const ITensorInfo *input, const ITensorInfo *output,
-                         const std::set<uint32_t> &axis, bool keep_dims, const ReduceOperation &op);
+                         const std::set<uint32_t> &axis, bool keep_dims,
+                         const ReductionOperation &op);
 
   /**
    * @brief Run the OpenCL kernel for this operation

@@ -84,7 +84,7 @@ ir::Layout asRuntimeLayout(::arm_compute::DataLayout data_layout);
 ir::DataType asRuntimeDataType(::arm_compute::DataType data_type);
 
 arm_compute::PoolingType convertPoolType(ir::operation::Pool2D::PoolType pool_type_ir);
-arm_compute::ReduceOperation convertReduceType(ir::operation::Reduce::ReduceType reduce_type_ir);
+arm_compute::ReductionOperation convertReduceType(ir::operation::Reduce::ReduceType reduce_type_ir);
 
 arm_compute::PixelValue asPixelValue(const ir::Operand &operand);
 
