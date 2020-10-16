@@ -53,16 +53,9 @@ GeneratedTests.logical_not
 GeneratedTests.lsh_projection
 GeneratedTests.lsh_projection_2
 GeneratedTests.lsh_projection_weights_as_inputs
-GeneratedTests.lstm
 GeneratedTests.lstm2
 GeneratedTests.lstm2_state
 GeneratedTests.lstm2_state2
-GeneratedTests.lstm3
-GeneratedTests.lstm3_state
-GeneratedTests.lstm3_state2
-GeneratedTests.lstm3_state3
-GeneratedTests.lstm_state
-GeneratedTests.lstm_state2
 GeneratedTests.maximum_broadcast_quant8
 GeneratedTests.maximum_overflow
 GeneratedTests.maximum_simple_quant8
