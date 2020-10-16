@@ -43,6 +43,10 @@ uint32_t cal_offset(loco::TensorShape &dimension, uint32_t *indices);
 
 void propagate_concat_quantparam(luci::CircleConcatenation *concat, loco::DataType quant_type);
 
+bool is_weights(CircleNode *node);
+
+bool is_quantized(const CircleNode *node);
+
 } // namespace luci
 
 #endif // __LUCI_QUANTIZATION_UTILS_H__
