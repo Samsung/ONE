@@ -19,11 +19,13 @@
 #define __NNFW_CKER_FULLY_CONNECTED_H__
 
 #include <ruy/context.h>
+#include "cker/operation/FullyConnectedDense16x1.h"
 #include "cker/operation/FullyConnectedSparse16x1.h"
 #include "cker/Shape.h"
 #include "cker/Types.h"
 #include "cker/Utils.h"
 #include "cker/TensorUtils.h"
+#include "cker/neon/neon_check.h"
 
 namespace nnfw
 {

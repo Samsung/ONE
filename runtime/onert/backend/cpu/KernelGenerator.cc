@@ -446,6 +446,7 @@ void KernelGenerator::visit(const ir::operation::FullyConnected &node)
   const auto weight_index{node.getInputs().at(FullyConnected::Input::WEIGHT)};
   const auto bias_index{node.getInputs().at(FullyConnected::Input::BIAS)};
   const auto activation = node.param().activation;
+  const auto weights_format = node.param().weights_format;
 
   auto output_tensor = _tensor_reg->getPortableTensor(output_index);
   auto input_tensor = _tensor_reg->getPortableTensor(input_index);
@@ -454,7 +455,7 @@ void KernelGenerator::visit(const ir::operation::FullyConnected &node)
 
   auto fn = std::make_unique<ops::FullyConnectedLayer>();
 
-  fn->configure(input_tensor, weight_tensor, bias_tensor, activation, output_tensor,
+  fn->configure(input_tensor, weight_tensor, bias_tensor, activation, weights_format, output_tensor,
                 _external_context);
 
   _return_fn = std::move(fn);
