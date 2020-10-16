@@ -314,6 +314,7 @@ private:
   IMPLEMENT(luci::CircleInput)
   IMPLEMENT(luci::CircleOutput)
   IMPLEMENT(luci::CircleIfOut)
+  IMPLEMENT(luci::CircleMaxPoolWithArgMaxOut)
   IMPLEMENT(luci::CircleNonMaxSuppressionV4Out)
   IMPLEMENT(luci::CircleNonMaxSuppressionV5Out)
   IMPLEMENT(luci::CircleSplitOut)
@@ -322,7 +323,6 @@ private:
   IMPLEMENT(luci::CircleUniqueOut)
   IMPLEMENT(luci::CircleUnpackOut)
   IMPLEMENT(luci::CircleWhileOut)
-  IMPLEMENT(luci::CircleMaxPoolWithArgMaxOut)
 #undef IMPLEMENT
 };
 
