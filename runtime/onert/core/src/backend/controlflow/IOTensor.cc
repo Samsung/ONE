@@ -38,7 +38,7 @@ IOTensor::IOTensor(IPortableTensor *tensor)
 }
 */
 
-void IOTensor::setTensor(ITensor *tensor)
+void IOTensor::setTensor(IPortableTensor *tensor)
 {
   assert(tensor);
   assert(tensor != this);

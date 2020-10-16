@@ -17,7 +17,7 @@
 #ifndef __ONERT_BACKEND_CONTROLFLOW_KERNEL_WHILE_LAYER_H__
 #define __ONERT_BACKEND_CONTROLFLOW_KERNEL_WHILE_LAYER_H__
 
-#include <backend/ITensor.h>
+#include <backend/IPortableTensor.h>
 #include <exec/IExecutor.h>
 #include <exec/IFunction.h>
 #include <ir/OperandIndexSequence.h>
@@ -37,8 +37,8 @@ namespace kernel
 class WhileLayer : public ::onert::exec::IFunction
 {
 public:
-  WhileLayer(const std::vector<backend::ITensor *> input_tensors,
-             const std::vector<backend::ITensor *> output_tensors,
+  WhileLayer(const std::vector<backend::IPortableTensor *> input_tensors,
+             const std::vector<backend::IPortableTensor *> output_tensors,
              const ir::SubgraphIndex &cond_subg_index, const ir::SubgraphIndex &body_subg_index,
              exec::ExecutorMap *executor_map, cpu_common::DynamicMemoryManager *dyn_memory_manager);
 
@@ -48,8 +48,8 @@ public:
 private:
   const ir::SubgraphIndex _cond_subg_index;
   const ir::SubgraphIndex _body_subg_index;
-  const std::vector<backend::ITensor *> _input_tensors;
-  const std::vector<backend::ITensor *> _output_tensors;
+  const std::vector<backend::IPortableTensor *> _input_tensors;
+  const std::vector<backend::IPortableTensor *> _output_tensors;
   exec::ExecutorMap *_executor_map;
   cpu_common::DynamicMemoryManager *_dyn_memory_manager; // For generating temp tensors
 };

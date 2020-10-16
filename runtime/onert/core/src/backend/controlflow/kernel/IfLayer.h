@@ -17,7 +17,7 @@
 #ifndef __ONERT_BACKEND_CONTROLFLOW_KERNEL_IF_LAYER_H__
 #define __ONERT_BACKEND_CONTROLFLOW_KERNEL_IF_LAYER_H__
 
-#include <backend/ITensor.h>
+#include <backend/IPortableTensor.h>
 #include <exec/IExecutor.h>
 
 namespace onert
@@ -32,8 +32,9 @@ namespace kernel
 class IfLayer : public ::onert::exec::IFunction
 {
 public:
-  IfLayer(backend::ITensor *cond_tensor, const std::vector<backend::ITensor *> input_tensors,
-          const std::vector<backend::ITensor *> output_tensors,
+  IfLayer(backend::IPortableTensor *cond_tensor,
+          const std::vector<backend::IPortableTensor *> input_tensors,
+          const std::vector<backend::IPortableTensor *> output_tensors,
           const ir::OperandIndexSequence &output_indices, const ir::Graph &graph,
           const ir::SubgraphIndex &then_subg_index, const ir::SubgraphIndex &else_subg_index,
           exec::ExecutorMap *executor_map);
@@ -42,9 +43,9 @@ public:
   void run() override;
 
 private:
-  backend::ITensor *_cond_tensor;
-  const std::vector<backend::ITensor *> _input_tensors;
-  const std::vector<backend::ITensor *> _output_tensors;
+  backend::IPortableTensor *_cond_tensor;
+  const std::vector<backend::IPortableTensor *> _input_tensors;
+  const std::vector<backend::IPortableTensor *> _output_tensors;
   const ir::OperandIndexSequence &_output_indices;
   const ir::Graph &_graph;
   const ir::SubgraphIndex _then_subg_index;

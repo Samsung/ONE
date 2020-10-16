@@ -62,8 +62,8 @@ public:
    * @param src_tensor Tensor list that will be copied to input tensors of this
    * @param pre_fn The permutation function that copy from src_tensor to input tensors of this
    */
-  void execute(const std::vector<backend::ITensor *> &src_tensors,
-               const std::vector<backend::ITensor *> &dst_tensors);
+  void execute(const std::vector<backend::IPortableTensor *> &src_tensors,
+               const std::vector<backend::IPortableTensor *> &dst_tensors);
 
   void execute(const IODescription &desc) final;
 

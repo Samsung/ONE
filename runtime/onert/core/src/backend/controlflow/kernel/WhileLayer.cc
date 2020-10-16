@@ -31,8 +31,8 @@ namespace controlflow
 namespace kernel
 {
 
-WhileLayer::WhileLayer(const std::vector<backend::ITensor *> input_tensors,
-                       const std::vector<backend::ITensor *> output_tensors,
+WhileLayer::WhileLayer(const std::vector<backend::IPortableTensor *> input_tensors,
+                       const std::vector<backend::IPortableTensor *> output_tensors,
                        const ir::SubgraphIndex &cond_subg_index,
                        const ir::SubgraphIndex &body_subg_index, exec::ExecutorMap *executor_map,
                        cpu_common::DynamicMemoryManager *dyn_memory_manager)
@@ -77,17 +77,19 @@ void WhileLayer::run()
     return ret;
   };
 
+  std::vector<ITensor *> op_inputs(_input_tensors.begin(), _input_tensors.end());
+  std::vector<ITensor *> op_outputs(_output_tensors.begin(), _output_tensors.end());
   // Copying body inputs to outputs when the loop body is never executed
   if (!getResultCond(cond_output_tensor))
   {
-    PermuteLayer copy_body_inputs_to_op_outputs{_input_tensors, _output_tensors};
+    PermuteLayer copy_body_inputs_to_op_outputs{op_inputs, op_outputs};
     copy_body_inputs_to_op_outputs.run();
     // return;
   }
 
   // Need some temp tensors to hold the body subgraph output
   std::vector<std::unique_ptr<Tensor>> temp_outputs_o;
-  std::vector<ITensor *> temp_outputs;
+  std::vector<IPortableTensor *> temp_outputs;
   for (auto io_tensor : body_exec->getOutputTensors())
   {
     auto tensor = std::make_unique<Tensor>(io_tensor->orig_info(), io_tensor->orig_layout(),
@@ -98,9 +100,8 @@ void WhileLayer::run()
     temp_outputs_o.push_back(std::move(tensor));
   }
 
-  std::vector<ITensor *> body_outputs(body_exec->getOutputTensors().begin(),
-                                      body_exec->getOutputTensors().end());
-  PermuteLayer copy_body_outputs_to_op_outputs{body_outputs, _output_tensors};
+  std::vector<ITensor *> body_outputs(temp_outputs.begin(), temp_outputs.end());
+  PermuteLayer copy_body_outputs_to_op_outputs{body_outputs, op_outputs};
 
   const auto body_execute_with_op_inputs = [&]() {
     VERBOSE(While) << "Call to $" << _body_subg_index << " (body)" << std::endl;

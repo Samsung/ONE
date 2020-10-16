@@ -76,18 +76,17 @@ void KernelGenerator::visit(const ir::operation::If &node)
   const auto then_subg_index = node.param().then_subg_index;
   const auto else_subg_index = node.param().else_subg_index;
 
-  std::vector<backend::ITensor *> input_tensors;
+  std::vector<backend::IPortableTensor *> input_tensors;
   for (const auto input_index : node.getInputs())
   {
-    auto input_tensor = getTensor(input_index);
-
+    auto input_tensor = getPortableTensor(input_index);
     input_tensors.emplace_back(input_tensor);
   }
 
-  std::vector<backend::ITensor *> output_tensors;
+  std::vector<backend::IPortableTensor *> output_tensors;
   for (const auto output_index : node.getOutputs())
   {
-    auto output_tensor = getTensor(output_index);
+    auto output_tensor = getPortableTensor(output_index);
     output_tensors.emplace_back(output_tensor);
   }
 
@@ -122,18 +121,18 @@ void KernelGenerator::visit(const ir::operation::While &node)
 
   // This op does not support input as a constant, because controlflow backend does not have
   // TensorBuilder
-  std::vector<backend::ITensor *> input_tensors;
+  std::vector<backend::IPortableTensor *> input_tensors;
   for (const auto input_index : node.getInputs())
   {
-    auto input_tensor = getTensor(input_index);
+    auto input_tensor = getPortableTensor(input_index);
     VERBOSE(WhileKernelgen) << input_index << " : " << input_tensor->getShape() << std::endl;
     input_tensors.emplace_back(input_tensor);
   }
 
-  std::vector<backend::ITensor *> output_tensors;
+  std::vector<backend::IPortableTensor *> output_tensors;
   for (const auto output_index : node.getOutputs())
   {
-    auto output_tensor = getTensor(output_index);
+    auto output_tensor = getPortableTensor(output_index);
     output_tensors.emplace_back(output_tensor);
   }
 
@@ -148,7 +147,15 @@ void KernelGenerator::visit(const ir::operation::While &node)
 
 backend::ITensor *KernelGenerator::getTensor(const ir::OperandIndex &index)
 {
-  backend::ITensor *ret = _tensor_registries.getITensor(index);
+  // get Tensor from all tensor registries (for Permute op)
+  auto ret = _tensor_registries.getITensor(index);
+  assert(ret != nullptr);
+  return ret;
+}
+
+backend::IPortableTensor *KernelGenerator::getPortableTensor(const ir::OperandIndex &index)
+{
+  auto ret = _tensor_reg->getPortableTensor(index);
   assert(ret != nullptr);
   return ret;
 }

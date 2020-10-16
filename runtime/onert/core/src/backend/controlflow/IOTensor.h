@@ -45,7 +45,7 @@ public:
   // IOTensor(IPortableTensor *tensor);
 
 public:
-  void setTensor(ITensor *tensor);
+  void setTensor(IPortableTensor *tensor);
   void setUserTensor(uint8_t *buffer, size_t size);
   ir::OperandInfo orig_info() const { return _orig_info; }
   ir::Layout orig_layout() const { return _orig_layout; }
@@ -84,8 +84,7 @@ private:
   const ir::OperandInfo _orig_info;
   const ir::Layout _orig_layout;
   bool _is_dynamic{false};
-  // XXX This should be IPortableTensor
-  ITensor *_tensor{nullptr};                //< The actual tensor that is indirected
+  IPortableTensor *_tensor{nullptr};        //< The actual tensor that is indirected
   std::unique_ptr<UserTensor> _user_tensor; //< If it is a user tensor, it is managed by this object
 };
 

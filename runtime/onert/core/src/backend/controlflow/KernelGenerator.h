@@ -57,6 +57,7 @@ public:
 
 private:
   backend::ITensor *getTensor(const ir::OperandIndex &index);
+  backend::IPortableTensor *getPortableTensor(const ir::OperandIndex &index);
 
 private:
   const ir::Graph &_graph;

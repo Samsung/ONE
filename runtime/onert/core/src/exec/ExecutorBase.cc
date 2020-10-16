@@ -45,8 +45,8 @@ ExecutorBase::ExecutorBase(std::unique_ptr<compiler::LoweredGraph> &&lowered_gra
   build_tensor_list(_graph.getOutputs(), _output_tensors);
 }
 
-void ExecutorBase::execute(const std::vector<backend::ITensor *> &src_tensors,
-                           const std::vector<backend::ITensor *> &dst_tensors)
+void ExecutorBase::execute(const std::vector<backend::IPortableTensor *> &src_tensors,
+                           const std::vector<backend::IPortableTensor *> &dst_tensors)
 {
   // For thread-safe, use mutex
   // TODO: if all used backends on this executor are thread-safe,

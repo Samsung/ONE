@@ -30,8 +30,9 @@ namespace controlflow
 namespace kernel
 {
 
-IfLayer::IfLayer(backend::ITensor *cond_tensor, const std::vector<backend::ITensor *> input_tensors,
-                 const std::vector<backend::ITensor *> output_tensors,
+IfLayer::IfLayer(backend::IPortableTensor *cond_tensor,
+                 const std::vector<backend::IPortableTensor *> input_tensors,
+                 const std::vector<backend::IPortableTensor *> output_tensors,
                  const ir::OperandIndexSequence &output_indices, const ir::Graph &graph,
                  const ir::SubgraphIndex &then_subg_index, const ir::SubgraphIndex &else_subg_index,
                  exec::ExecutorMap *executor_map)
@@ -53,7 +54,7 @@ void IfLayer::run()
   // // // Copy _input_tensors -> else subg's inputs if false
   // // // Run else subg
   // // // Copy outputs of else subg -> _output_tensors
-  auto getResultCond = [](backend::ITensor *tensor) -> bool {
+  auto getResultCond = [](backend::IPortableTensor *tensor) -> bool {
     bool ret = false;
     tensor->access([&](ITensor &tensor) { ret = *reinterpret_cast<bool *>(tensor.buffer()); });
     return ret;
