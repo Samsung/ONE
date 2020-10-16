@@ -135,7 +135,10 @@ inline void CalculateLstmGateFloat(const float *input, const float *input_to_gat
 void UpdateLstmCellFloat(int n_batch, int n_cell, float *cell_state, const float *input_gate,
                          float *forget_gate, const float *cell_gate, bool use_cifg, float clip)
 {
-  VectorVectorCwiseProduct(forget_gate, cell_state, n_batch * n_cell, cell_state);
+  // Define variable for 4th argument to avoid warning
+  // Compiler warning: passing argument 4 to restrict-qualified parameter aliases with argument 2
+  const float *cwise_product_rhs = cell_state;
+  VectorVectorCwiseProduct(forget_gate, cwise_product_rhs, n_batch * n_cell, cell_state);
 
   if (use_cifg)
   {
@@ -183,7 +186,11 @@ void CalculateLstmOutputFloat(int n_batch, int n_cell, int n_output, const float
                               const float proj_clip, float *output_state, float *scratch)
 {
   ApplyActivationToVector(cell_state, n_batch * n_cell, activation, scratch);
-  VectorVectorCwiseProduct(output_gate, scratch, n_batch * n_cell, scratch);
+
+  // Define variable for 4th argument to avoid warning
+  // Compiler warning: passing argument 4 to restrict-qualified parameter aliases with argument 2
+  const float *cwise_product_rhs = scratch;
+  VectorVectorCwiseProduct(output_gate, cwise_product_rhs, n_batch * n_cell, scratch);
 
   const bool use_projection = (projection_weights != nullptr);
   const bool use_projection_bias = (projection_bias != nullptr);
