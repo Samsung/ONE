@@ -196,6 +196,10 @@ void CircleOptimizer::quantize(loco::Graph *g) const
       throw std::runtime_error("Unsupported granularity. List of supported granularity: " +
                                to_string(fakeq_supported_granularity));
 
+    if (str_to_granularity(granularity) == QuantizationGranularity::LayerWise &&
+        str_to_dtype(output_dtype) != loco::DataType::U8)
+      throw std::runtime_error("Layer-wise quantization only supports uint8 dtype.");
+
     // Clear existing quantparams before doing fake quantization
     for (auto node : loco::active_nodes(loco::output_nodes(g)))
     {
@@ -231,6 +235,10 @@ void CircleOptimizer::quantize(loco::Graph *g) const
     if (!in_array(to_lower_case(granularity), qwmm_supported_granularity))
       throw std::runtime_error("Unsupported granularity. List of supported granularity: " +
                                to_string(qwmm_supported_granularity));
+
+    if (str_to_granularity(granularity) == QuantizationGranularity::LayerWise &&
+        str_to_dtype(output_dtype) != loco::DataType::U8)
+      throw std::runtime_error("Layer-wise quantization only supports uint8 dtype.");
 
     luci::QuantizeWithMinMaxPass quantizer(str_to_dtype(input_dtype), str_to_dtype(output_dtype),
                                            str_to_granularity(granularity));
