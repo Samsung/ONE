@@ -43,6 +43,7 @@ public:
   void operator()();
 
 public:
+  void visit(const ir::operation::AddN &node) override;
   void visit(const ir::operation::BatchMatMul &node) override;
   void visit(const ir::operation::BatchToSpaceND &node) override;
   void visit(const ir::operation::BinaryArithmetic &node) override;

@@ -16,6 +16,7 @@
 
 // This file has no ifdef guard intentionally
 
+#include "ir/operation/AddN.h"
 #include "ir/operation/BatchToSpaceND.h"
 #include "ir/operation/BinaryArithmetic.h"
 #include "ir/operation/BroadcastTo.h"

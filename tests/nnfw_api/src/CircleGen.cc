@@ -93,6 +93,13 @@ uint32_t CircleGen::addOperatorAdd(const OperatorParams &params,
                                 circle::BuiltinOptions_AddOptions, options);
 }
 
+uint32_t CircleGen::addOperatorAddN(const OperatorParams &params)
+{
+  auto options = circle::CreateAddNOptions(_fbb).Union();
+  return addOperatorWithOptions(params, circle::BuiltinOperator_ADD_N,
+                                circle::BuiltinOptions_AddNOptions, options);
+}
+
 uint32_t CircleGen::addOperatorArgMax(const OperatorParams &params, circle::TensorType output_type)
 {
   auto options = circle::CreateArgMaxOptions(_fbb, output_type).Union();
