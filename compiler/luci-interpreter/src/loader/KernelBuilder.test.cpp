@@ -29,6 +29,7 @@
 #include <kernels/Floor.h>
 #include <kernels/FloorDiv.h>
 #include <kernels/Equal.h>
+#include <kernels/Exp.h>
 #include <kernels/FullyConnected.h>
 #include <kernels/Greater.h>
 #include <kernels/GreaterEqual.h>
@@ -377,6 +378,20 @@ TEST_F(KernelBuilderTest, Equal)
 
   checkTensor(kernel->x(), x_input);
   checkTensor(kernel->y(), y_input);
+  checkTensor(kernel->output(), op);
+}
+
+TEST_F(KernelBuilderTest, Exp)
+{
+  auto *input = createInputNode();
+
+  auto *op = createNode<luci::CircleExp>();
+  op->x(input);
+
+  auto kernel = buildKernel<kernels::Exp>(op);
+  ASSERT_THAT(kernel, NotNull());
+
+  checkTensor(kernel->input(), input);
   checkTensor(kernel->output(), op);
 }
 

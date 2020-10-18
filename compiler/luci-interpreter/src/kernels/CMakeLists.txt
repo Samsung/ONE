@@ -20,6 +20,8 @@ set(SOURCES
     Div.cpp
     Elu.h
     Elu.cpp
+    Exp.h
+    Exp.cpp
     Floor.h
     Floor.cpp
     FloorDiv.h
@@ -136,6 +138,7 @@ set(TEST_SOURCES
     DepthwiseConv2D.test.cpp
     Div.test.cpp
     Elu.test.cpp
+    Exp.test.cpp
     Floor.test.cpp
     FloorDiv.test.cpp
     Equal.test.cpp
