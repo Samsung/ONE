@@ -222,7 +222,12 @@ AclTensorManager<T_ITensor, T_Tensor, T_SubTensor>::at(const ir::OperandIndex &i
   }
   else
   {
-    return _ind_to_mgr.at(ind).subtensors().at(ind);
+    auto subtensors = _ind_to_mgr.at(ind).subtensors();
+    auto itr = subtensors.find(ind);
+    if (itr == subtensors.end())
+      return nullptr;
+    else
+      return itr->second;
   }
 }
 
