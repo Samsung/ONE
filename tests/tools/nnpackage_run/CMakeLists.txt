@@ -32,7 +32,6 @@ endif(HDF5_FOUND)
 target_include_directories(nnpackage_run PRIVATE src)
 target_include_directories(nnpackage_run PRIVATE ${Boost_INCLUDE_DIRS})
 
-target_link_libraries(nnpackage_run tflite_loader)
 target_link_libraries(nnpackage_run nnfw_lib_tflite jsoncpp)
 target_link_libraries(nnpackage_run nnfw-dev)
 target_link_libraries(nnpackage_run ${Boost_PROGRAM_OPTIONS_LIBRARY})
