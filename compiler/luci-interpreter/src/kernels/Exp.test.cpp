@@ -38,10 +38,12 @@ TEST(ExpTest, Float)
   kernel.configure();
   kernel.execute();
 
+  std::vector<int32_t> ref_output_shape{1, 1, 7};
   std::vector<float> ref_output_data{std::exp(0.0f),   std::exp(1.0f),    std::exp(-1.0f),
                                      std::exp(100.0f), std::exp(-100.0f), std::exp(0.01f),
                                      std::exp(-0.01f)};
   EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(ref_output_data));
+  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
 }
 
 } // namespace

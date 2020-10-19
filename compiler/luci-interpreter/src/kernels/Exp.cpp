@@ -31,6 +31,7 @@ Exp::Exp(const Tensor *input, Tensor *output) : Kernel({input}, {output}) {}
 void Exp::configure()
 {
   LUCI_INTERPRETER_CHECK(input()->element_type() == output()->element_type());
+  output()->resize(input()->shape());
 }
 
 void Exp::execute() const
