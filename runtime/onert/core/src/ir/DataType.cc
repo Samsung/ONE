@@ -41,11 +41,14 @@ size_t sizeOfDataType(DataType data_type)
     case DataType::UINT8:
       return sizeof(uint8_t);
     case DataType::QUANT_INT8_SYMM:
+    case DataType::QUANT_INT8_ASYMM:
       return sizeof(int8_t);
     case DataType::FLOAT16:
       return sizeof(float16);
     case DataType::INT64:
       return sizeof(int64_t);
+    case DataType::QUANT_INT16_ASYMM:
+      return sizeof(int16_t);
     default:
       throw std::runtime_error{"Unsupported type size"};
   }
