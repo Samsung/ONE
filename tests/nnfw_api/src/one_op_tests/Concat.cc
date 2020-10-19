@@ -135,74 +135,62 @@ TEST_F(GenModelTest, OneOp_Concat_Subtensor_4D)
   SUCCEED();
 }
 
-TEST_F(GenModelTest, OneOp_Concat_Subtensor_2D)
+TEST_F(GenModelTest, neg_OneOp_Concat_InvalidAxis)
 {
   CircleGen cgen;
-  int in1 = cgen.addTensor({{1, 4}, circle::TensorType::TensorType_FLOAT32});
-  int in2 = cgen.addTensor({{1, 2}, circle::TensorType::TensorType_FLOAT32});
-  std::vector<int32_t> axis_data{1};
-  uint32_t axis_buf = cgen.addBuffer(axis_data);
-  int axis = cgen.addTensor({{1}, circle::TensorType::TensorType_INT32, axis_buf});
 
-  int s_out1 = cgen.addTensor({{1, 1}, circle::TensorType::TensorType_FLOAT32});
-  int s_out2 = cgen.addTensor({{1, 1}, circle::TensorType::TensorType_FLOAT32});
-  int s_out3 = cgen.addTensor({{1, 1}, circle::TensorType::TensorType_FLOAT32});
-  int s_out4 = cgen.addTensor({{1, 1}, circle::TensorType::TensorType_FLOAT32});
+  int input1 = cgen.addTensor({{2, 3}, circle::TensorType::TensorType_FLOAT32});
+  int input2 = cgen.addTensor({{2, 3}, circle::TensorType::TensorType_FLOAT32});
+  int output = cgen.addTensor({{4, 3}, circle::TensorType::TensorType_FLOAT32});
+  int axis = 2;
 
-  int c_out1 = cgen.addTensor({{1, 2}, circle::TensorType::TensorType_FLOAT32});
-  int c_out2 = cgen.addTensor({{1, 2}, circle::TensorType::TensorType_FLOAT32});
-  int c_out3 = cgen.addTensor({{1, 2}, circle::TensorType::TensorType_FLOAT32});
-
-  int a_out1 = cgen.addTensor({{1, 2}, circle::TensorType::TensorType_FLOAT32});
-  int a_out2 = cgen.addTensor({{1, 2}, circle::TensorType::TensorType_FLOAT32});
-  int a_out3 = cgen.addTensor({{1, 2}, circle::TensorType::TensorType_FLOAT32});
-
-  int final_out = cgen.addTensor({{1, 7}, circle::TensorType::TensorType_FLOAT32});
-
-  cgen.addOperatorSplit({{axis, in1}, {s_out1, s_out2, s_out3, s_out4}}, 4);
-
-  cgen.addOperatorConcatenation({{s_out1, s_out2}, {c_out1}}, 1,
-                                circle::ActivationFunctionType::ActivationFunctionType_NONE);
-  cgen.addOperatorConcatenation({{s_out1, s_out3}, {c_out2}}, 1,
-                                circle::ActivationFunctionType::ActivationFunctionType_NONE);
-  cgen.addOperatorConcatenation({{s_out1, s_out4}, {c_out3}}, 1,
-                                circle::ActivationFunctionType::ActivationFunctionType_NONE);
-
-  cgen.addOperatorAdd({{c_out1, in2}, {a_out1}},
-                      circle::ActivationFunctionType::ActivationFunctionType_NONE);
-  cgen.addOperatorAdd({{c_out2, in2}, {a_out2}},
-                      circle::ActivationFunctionType::ActivationFunctionType_NONE);
-  cgen.addOperatorAdd({{c_out3, in2}, {a_out3}},
-                      circle::ActivationFunctionType::ActivationFunctionType_NONE);
-
-  cgen.addOperatorConcatenation({{s_out1, a_out1, a_out2, a_out3}, {final_out}}, 1,
-                                circle::ActivationFunctionType::ActivationFunctionType_NONE);
-
-  cgen.setInputsAndOutputs({in1, in2}, {s_out1, s_out2, s_out3, s_out4, c_out1, c_out2, c_out3,
-                                        a_out1, a_out2, a_out3, final_out});
+  cgen.addOperatorConcatenation({{input1, input2}, {output}}, axis,
+                                circle::ActivationFunctionType_NONE);
+  cgen.setInputsAndOutputs({input1, input2}, {output});
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
-  _context->addTestCase(uniformTCD<float>(
-      {
-          // inputs
-          {1, 2, 3, 4}, // in1
-          {0, 0}        // in2
-      },
-      {
-          // outputs
-          {1},                  // s_out1
-          {2},                  // s_out2
-          {3},                  // s_out3
-          {4},                  // s_out4
-          {1, 2},               // c_out1
-          {1, 3},               // c_out2
-          {1, 4},               // c_out3
-          {1, 2},               // a_out1
-          {1, 3},               // a_out2
-          {1, 4},               // a_out3
-          {1, 1, 2, 1, 3, 1, 4} // final_out
-      }));
-  _context->setBackends({"acl_cl"});
+  _context->setBackends({"cpu"});
+  _context->expectFailCompile();
+
+  SUCCEED();
+}
+
+TEST_F(GenModelTest, neg_OneOp_Concat_InvalidRank)
+{
+  CircleGen cgen;
+
+  int input1 = cgen.addTensor({{2, 3}, circle::TensorType::TensorType_FLOAT32});
+  int input2 = cgen.addTensor({{1, 2, 3}, circle::TensorType::TensorType_FLOAT32});
+  int output = cgen.addTensor({{1, 2, 3}, circle::TensorType::TensorType_FLOAT32});
+  int axis = 0;
+
+  cgen.addOperatorConcatenation({{input1, input2}, {output}}, axis,
+                                circle::ActivationFunctionType_NONE);
+  cgen.setInputsAndOutputs({input1, input2}, {output});
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->setBackends({"cpu"});
+  _context->expectFailCompile();
+
+  SUCCEED();
+}
+
+TEST_F(GenModelTest, neg_OneOp_Concat_InvalidDimension)
+{
+  CircleGen cgen;
+
+  int input1 = cgen.addTensor({{2, 3}, circle::TensorType::TensorType_FLOAT32});
+  int input2 = cgen.addTensor({{3, 2}, circle::TensorType::TensorType_FLOAT32});
+  int output = cgen.addTensor({{4, 3}, circle::TensorType::TensorType_FLOAT32});
+  int axis = 0;
+
+  cgen.addOperatorConcatenation({{input1, input2}, {output}}, axis,
+                                circle::ActivationFunctionType_NONE);
+  cgen.setInputsAndOutputs({input1, input2}, {output});
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->setBackends({"cpu"});
+  _context->expectFailCompile();
 
   SUCCEED();
 }
