@@ -19,6 +19,7 @@
 #include "core/RuntimeModule.h"
 
 #include <algorithm>
+#include <unordered_map>
 
 namespace luci_interpreter
 {
@@ -48,10 +49,37 @@ void RuntimeGraph::addKernel(std::unique_ptr<Kernel> &&kernel)
 {
   assert(kernel != nullptr);
   _kernels.push_back(std::move(kernel));
+  _tensor_dealloc_plan.clear();
+}
+
+void RuntimeGraph::prepareDeallocPlan() const
+{
+  // For every tensor which is an output of some kernel find the last kernel which uses it.
+  std::unordered_map<const Tensor *, size_t> dealloc_index;
+  for (size_t index = 0; index < _kernels.size(); ++index)
+  {
+    const auto &kernel = _kernels[index];
+    for (const Tensor *tensor : kernel->getOutputTensors())
+    {
+      assert(dealloc_index.count(tensor) == 0);
+      dealloc_index[tensor] = index;
+    }
+    for (const Tensor *tensor : kernel->getInputTensors())
+      if (dealloc_index.count(tensor) > 0)
+        dealloc_index[tensor] = index;
+  }
+  for (const Tensor *tensor : getOutputTensors())
+    dealloc_index.erase(tensor);
+  _tensor_dealloc_plan.assign(_kernels.size(), std::vector<Tensor *>());
+  for (const auto &item : dealloc_index)
+    _tensor_dealloc_plan[item.second].push_back(const_cast<Tensor *>(item.first));
 }
 
 void RuntimeGraph::execute() const
 {
+  if (_tensor_dealloc_plan.empty())
+    prepareDeallocPlan();
+
   EventNotifier *event_notifier = _owning_module->getEventNotifier();
 
   // Notify the observers that the input tensors have changed.
@@ -63,8 +91,9 @@ void RuntimeGraph::execute() const
     }
   }
 
-  for (const auto &kernel : _kernels)
+  for (size_t index = 0; index < _kernels.size(); ++index)
   {
+    const auto &kernel = _kernels[index];
     if (event_notifier != nullptr)
     {
       event_notifier->preOperatorExecute(kernel.get());
@@ -87,6 +116,10 @@ void RuntimeGraph::execute() const
         event_notifier->postTensorWrite(tensor);
       }
     }
+
+    // Deallocate tensors which are not to be used any more in this run
+    for (Tensor *tensor : _tensor_dealloc_plan[index])
+      tensor->deallocate();
   }
 }
 

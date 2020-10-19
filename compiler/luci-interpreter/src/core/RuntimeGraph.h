@@ -46,6 +46,9 @@ public:
   void execute() const;
 
 private:
+  // Build tensor deallocation plan
+  void prepareDeallocPlan() const;
+
   RuntimeModule *_owning_module;
   std::vector<std::unique_ptr<Tensor>> _tensors;
   std::vector<Tensor *> _input_tensors;
@@ -53,6 +56,8 @@ private:
 
   // Kernels in execution order.
   std::vector<std::unique_ptr<Kernel>> _kernels;
+  // Tensors that are not used anymore after given op
+  mutable std::vector<std::vector<Tensor *>> _tensor_dealloc_plan;
 };
 
 } // namespace luci_interpreter
