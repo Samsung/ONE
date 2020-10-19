@@ -106,7 +106,8 @@ void OperationValidator::visit(const ir::operation::ElementwiseUnary &node)
   // Check if I/O types match
   if (node.param().op_type == ir::operation::ElementwiseUnary::Type::DEQUANTIZE)
   {
-    OP_REQUIRES(_ctx.at(input_index).typeInfo().type() == ir::DataType::QUANT_UINT8_ASYMM);
+    OP_REQUIRES((_ctx.at(input_index).typeInfo().type() == ir::DataType::QUANT_UINT8_ASYMM) ||
+                (_ctx.at(input_index).typeInfo().type() == ir::DataType::QUANT_INT8_SYMM));
     OP_REQUIRES(_ctx.at(output_index).typeInfo().type() == ir::DataType::FLOAT32);
   }
   else if (node.param().op_type == ir::operation::ElementwiseUnary::Type::QUANTIZE)

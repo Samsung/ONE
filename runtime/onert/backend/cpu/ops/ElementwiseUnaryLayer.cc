@@ -119,6 +119,13 @@ void cosFloat32(const IPortableTensor *input, IPortableTensor *output)
                   getTensorShape(output), reinterpret_cast<float *>(output->buffer()));
 }
 
+void dequantizeInt8(const IPortableTensor *input, IPortableTensor *output)
+{
+  nnfw::cker::Dequantize(getTensorShape(input), reinterpret_cast<const int8_t *>(input->buffer()),
+                         getTensorShape(output), reinterpret_cast<float *>(output->buffer()),
+                         input->data_scale(), input->data_offset());
+}
+
 void dequantizeUint8(const IPortableTensor *input, IPortableTensor *output)
 {
   nnfw::cker::Dequantize(getTensorShape(input), reinterpret_cast<const uint8_t *>(input->buffer()),
@@ -231,6 +238,10 @@ void ElementwiseUnaryLayer::configure(const IPortableTensor *input, IPortableTen
       if ((input->data_type() == OperandType::QUANT_UINT8_ASYMM))
       {
         _kernel = dequantizeUint8;
+      }
+      else if ((input->data_type() == OperandType::QUANT_INT8_SYMM))
+      {
+        _kernel = dequantizeInt8;
       }
       else
       {

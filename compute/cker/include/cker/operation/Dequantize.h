@@ -77,6 +77,41 @@ inline void Dequantize(const Shape &input_shape, const uint8_t *input_data,
   }
 }
 
+inline void Dequantize(const Shape &input_shape, const int8_t *input_data,
+                       const Shape &output_shape, float *output_data, const float scale,
+                       const int32_t zero_point)
+{
+  const int flat_size = MatchingFlatSize(input_shape, output_shape);
+
+  int i = 0;
+#ifdef USE_NEON
+  const float32x4_t scale_dup = vdupq_n_f32(static_cast<float>(scale));
+  const float32x4_t zero_times_scale_dup = vdupq_n_f32(static_cast<float>(-zero_point * scale));
+  for (; i <= flat_size - 8; i += 8)
+  {
+    const int8x8_t input_s8 = vld1_s8(input_data + i);
+    const int16x8_t input_s16 = vmovl_s8(input_s8);
+    const int16x4_t input_s16_low = vget_low_s16(input_s16);
+    const int16x4_t input_s16_high = vget_high_s16(input_s16);
+    const int32x4_t val_low = vmovl_s16(input_s16_low);
+    const int32x4_t val_high = vmovl_s16(input_s16_high);
+
+    float32x4_t result_low, result_high;
+    ScaleWithNewZeroPoint(val_low, scale_dup, zero_times_scale_dup, &result_low);
+    ScaleWithNewZeroPoint(val_high, scale_dup, zero_times_scale_dup, &result_high);
+
+    vst1q_f32(output_data + i, result_low);
+    vst1q_f32(output_data + i + 4, result_high);
+  }
+#endif // NEON
+  for (; i < flat_size; ++i)
+  {
+    const int32_t val = input_data[i];
+    const float result = static_cast<float>(scale * (val - zero_point));
+    output_data[i] = result;
+  }
+}
+
 } // namespace cker
 } // namespace nnfw
 
