@@ -56,8 +56,13 @@ template <nnfw::cker::BinaryArithmeticOpType arithmetic_type, typename T> struct
 
   void operator()(const IPortableTensor *lhs, const IPortableTensor *rhs, IPortableTensor *output)
   {
+    // Assume dynamic tensors never become static and static ones never change shape since
+    // configure()
     if (output->is_dynamic())
       updateCache(lhs, rhs, output);
+    else
+      assert(_lhs_shape == getTensorShape(lhs) && _rhs_shape == getTensorShape(rhs) &&
+             _output_shape == getTensorShape(output));
     auto lhs_buffer = reinterpret_cast<const T *>(lhs->buffer());
     auto rhs_buffer = reinterpret_cast<const T *>(rhs->buffer());
     auto output_buffer = reinterpret_cast<T *>(output->buffer());
