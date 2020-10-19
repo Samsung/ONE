@@ -95,10 +95,10 @@ protected:
   ir::Activation convertActivation(ActivationFunctionType type);
   ir::DataType tensorTypeToDataType(TensorType type);
   ir::OperandIndex tensorIdxToOperandIdx(int32_t tensorIdx);
-  void deallocateMmappedArea(uint8_t *ptr, size_t size);
 
   // Create operands form tflite::Tensor
   ir::OperandIndex loadOperand(const Tensor *tensor, ir::Graph &subg);
+  void loadSparsity(const Tensor *tensor, const ir::Shape &shape, ir::TypeInfo &typeInfo);
   void loadOperationIO(const Operator *op, ir::OperandIndexSequence &inputs,
                        ir::OperandIndexSequence &outputs);
   // Create operations from Operator
@@ -157,6 +157,14 @@ private:
   void loadSpaceToDepth(const Operator *op, ir::Graph &subg);
   void loadLeakyRelu(const Operator *op, ir::Graph &subg);
 
+  void verifySubgraphIndex(int subg_index)
+  {
+    const auto num_subgraphs = _model->subgraphs()->size();
+    if (subg_index < 0 || subg_index >= static_cast<int32_t>(num_subgraphs))
+      throw std::runtime_error{std::string{"Invalid subgraph index - "} +
+                               std::to_string(subg_index)};
+  }
+
 protected:
   // Base address for mapped region for loading (if needed)
   uint8_t *_base;
@@ -204,8 +212,7 @@ void BaseLoader<LoaderDomain>::BaseLoader::loadFromFile(const char *file_path)
   _verifier = std::make_unique<Verifier>(reinterpret_cast<const std::uint8_t *>(_base), size);
 
   loadModel();
-  if (_use_mmaped_data)
-    munmap(_base, size);
+  munmap(_base, size);
 
   close(_fd);
 }
@@ -267,30 +274,6 @@ template <typename LoaderDomain>
 ir::OperandIndex BaseLoader<LoaderDomain>::BaseLoader::tensorIdxToOperandIdx(int32_t tensorIdx)
 {
   return isOptionalInputTensor(tensorIdx) ? ir::OperandIndex() : _tensor_to_operand[tensorIdx];
-}
-
-template <typename LoaderDomain>
-void BaseLoader<LoaderDomain>::BaseLoader::deallocateMmappedArea(uint8_t *ptr, size_t size)
-{
-  // Calculate offset from base address of mapped region
-  ptrdiff_t unaligned_offset_start = ptr - _base;
-  ptrdiff_t unaligned_offset_end = unaligned_offset_start + size;
-
-  // Calculated aligned offset from base address of mapped region
-  // munmap accepts memory address which is a multiple of the pagesize
-  ptrdiff_t aligned_offset_start =
-      ((unaligned_offset_start + (_pagesize - 1)) / _pagesize) * _pagesize;
-  ptrdiff_t aligned_offset_end = (unaligned_offset_end / _pagesize) * _pagesize;
-
-  ptrdiff_t area_size = aligned_offset_end - aligned_offset_start;
-  if (area_size > 0)
-  {
-    // Unmap mapped region for CachedData
-    if (munmap(_base + aligned_offset_start, area_size) == -1)
-    {
-      VERBOSE(BASE_LOADER) << "munmap failed" << std::endl;
-    }
-  }
 }
 
 /* Copy is copied from tensorflow lite */
@@ -366,6 +349,67 @@ ir::OperandIndex BaseLoader<LoaderDomain>::loadOperand(const Tensor *tensor, ir:
   // Create TypeInfo
   ir::TypeInfo type_info(data_type, scale, zero_point);
   // Sparsity
+  loadSparsity(tensor, shape, type_info);
+
+  // Create operand
+  const auto operand_index = subg.addOperand(shape, type_info);
+
+  // Constant tensors are indicated by non-empty data.
+  const auto *data = _model->buffers()->Get(tensor->buffer())->data();
+  if (data != nullptr)
+  {
+    using std::ptrdiff_t;
+    std::unique_ptr<ir::Data> data_obj;
+    if (_fd == -1) // Model is from memory
+    {
+      data_obj = std::make_unique<ir::ExternalData>(data->data(), data->size());
+    }
+    else // Model is loaded(mmap'd) from a file
+    {
+      size_t data_size = data->size();
+      ptrdiff_t unaligned_offset_start = data->data() - _base;
+      ptrdiff_t offset_end = unaligned_offset_start + data_size;
+
+      // Calculated aligned offset from base address of mapped region
+      // munmap accepts memory address which is a multiple of the pagesize
+      ptrdiff_t aligned_offset_start = (unaligned_offset_start / _pagesize) * _pagesize;
+      size_t mmap_size = offset_end - aligned_offset_start;
+
+      if (_use_mmaped_data)
+      {
+        data_obj = std::make_unique<ir::MMapedData>(_fd, aligned_offset_start, mmap_size,
+                                                    unaligned_offset_start, data_size);
+      }
+      else
+      {
+        size_t offset = unaligned_offset_start - aligned_offset_start;
+        uint8_t *mmap_base = static_cast<uint8_t *>(
+            mmap(NULL, mmap_size, PROT_READ, MAP_PRIVATE, _fd, aligned_offset_start));
+        data_obj = std::make_unique<ir::CachedData>(mmap_base + offset, data_size);
+        munmap(mmap_base, mmap_size);
+      }
+    }
+    subg.setOperandValue(operand_index, std::move(data_obj));
+  }
+
+  _tensor_names.emplace(operand_index, tensor->name()->str());
+
+  // Variable
+  if (tensor->is_variable())
+  {
+    if (data != nullptr)
+      throw std::runtime_error("Variable tensor with buffer is not supported!");
+
+    subg.operands().at(operand_index).info().setAsVariable();
+  }
+
+  return operand_index;
+}
+
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadSparsity(const Tensor *tensor, const ir::Shape &shape,
+                                            ir::TypeInfo &typeInfo)
+{
   auto src_sparsity = tensor->sparsity();
   if (src_sparsity != nullptr)
   {
@@ -453,51 +497,9 @@ ir::OperandIndex BaseLoader<LoaderDomain>::loadOperand(const Tensor *tensor, ir:
         throw std::runtime_error("block dimension must be DENSE.");
       block_size.push_back(block_metadata->dense_size());
     }
-    type_info.sparsity(std::make_shared<ir::Sparsity>(std::move(w1_segments), std::move(w1_indices),
-                                                      std::move(block_size)));
+    typeInfo.sparsity(std::make_shared<ir::Sparsity>(std::move(w1_segments), std::move(w1_indices),
+                                                     std::move(block_size)));
   }
-  // Create operand
-  const auto operand_index = subg.addOperand(shape, type_info);
-
-  // Constant tensors are indicated by non-empty data.
-  const auto *data = _model->buffers()->Get(tensor->buffer())->data();
-  if (data != nullptr)
-  {
-    using std::ptrdiff_t;
-    std::unique_ptr<ir::Data> data_obj;
-    if (_fd == -1) // Model is from memory
-    {
-      data_obj = std::make_unique<ir::ExternalData>(data->data(), data->size());
-    }
-    else if (_use_mmaped_data) // Model is loaded(mmap'd) from a file
-    {
-      size_t data_size = data->size();
-      ptrdiff_t unaligned_offset_start = data->data() - _base;
-      ptrdiff_t offset_end = unaligned_offset_start + data_size;
-
-      // Calculated aligned offset from base address of mapped region
-      // munmap accepts memory address which is a multiple of the pagesize
-      ptrdiff_t aligned_offset_start = (unaligned_offset_start / _pagesize) * _pagesize;
-      size_t mmap_size = offset_end - aligned_offset_start;
-
-      data_obj = std::make_unique<ir::MMapedData>(_fd, aligned_offset_start, mmap_size,
-                                                  unaligned_offset_start, data_size);
-    }
-    else
-    {
-      data_obj = std::make_unique<ir::CachedData>(data->data(), data->size());
-      deallocateMmappedArea(const_cast<uint8_t *>(data->data()), data->size());
-    }
-    subg.setOperandValue(operand_index, std::move(data_obj));
-  }
-
-  _tensor_names.emplace(operand_index, tensor->name()->str());
-
-  // Variablie
-  if (tensor->is_variable())
-    throw std::runtime_error("Variable tensor not supported!");
-
-  return operand_index;
 }
 
 template <typename LoaderDomain>
@@ -532,10 +534,17 @@ void BaseLoader<LoaderDomain>::loadStridesAndPaddings(Param &param, const Option
   param.stride.vertical = options->stride_h();
   param.stride.horizontal = options->stride_w();
   // Paddings
-  if (options->padding() == Padding::Padding_SAME)
-    param.padding.type = ir::PaddingType::SAME;
-  if (options->padding() == Padding::Padding_VALID)
-    param.padding.type = ir::PaddingType::VALID;
+  switch (options->padding())
+  {
+    case Padding::Padding_SAME:
+      param.padding.type = ir::PaddingType::SAME;
+      break;
+    case Padding::Padding_VALID:
+      param.padding.type = ir::PaddingType::VALID;
+      break;
+    default:
+      throw std::runtime_error{"Invalid padding type"};
+  }
   // param paddings indexes unused
 }
 
@@ -544,9 +553,13 @@ template <typename Param>
 void BaseLoader<LoaderDomain>::loadPool2DOptions(Param &param, const Pool2DOptions *options)
 {
   // Strides and Paddings
+  if (options->stride_h() <= 0 || options->stride_w() <= 0)
+    throw std::runtime_error{"Invalid stride vertical or horizontal - both must be bigger than 0"};
   loadStridesAndPaddings(param, options);
   // Filter width and height
   // Strides
+  if (options->filter_width() <= 0 || options->filter_height() <= 0)
+    throw std::runtime_error{"Invalid filter width or height - both must be bigger than 0"};
   param.kw = options->filter_width();
   param.kh = options->filter_height();
   // Activation
@@ -1175,12 +1188,16 @@ void BaseLoader<LoaderDomain>::loadOneHot(const Operator *op, ir::Graph &subg)
 template <typename LoaderDomain>
 void BaseLoader<LoaderDomain>::loadIf(const Operator *op, ir::Graph &subg)
 {
-  ir::operation::If::Param param;
   const auto *options = op->builtin_options_as_IfOptions();
-  const uint32_t then_index = options->then_subgraph_index();
-  const uint32_t else_index = options->else_subgraph_index();
-  param.then_subg_index = ir::SubgraphIndex{then_index};
-  param.else_subg_index = ir::SubgraphIndex{else_index};
+  const int32_t then_index = options->then_subgraph_index();
+  const int32_t else_index = options->else_subgraph_index();
+
+  verifySubgraphIndex(then_index);
+  verifySubgraphIndex(else_index);
+
+  ir::operation::If::Param param;
+  param.then_subg_index = ir::SubgraphIndex{static_cast<uint32_t>(then_index)};
+  param.else_subg_index = ir::SubgraphIndex{static_cast<uint32_t>(else_index)};
 
   loadOperationTo<ir::operation::If>(op, subg, param);
 }
@@ -1188,12 +1205,16 @@ void BaseLoader<LoaderDomain>::loadIf(const Operator *op, ir::Graph &subg)
 template <typename LoaderDomain>
 void BaseLoader<LoaderDomain>::loadWhile(const Operator *op, ir::Graph &subg)
 {
-  ir::operation::While::Param param;
   const auto *options = op->builtin_options_as_WhileOptions();
-  const uint32_t cond_index = options->cond_subgraph_index();
-  const uint32_t body_index = options->body_subgraph_index();
-  param.cond_subg_index = ir::SubgraphIndex{cond_index};
-  param.body_subg_index = ir::SubgraphIndex{body_index};
+  const int32_t cond_index = options->cond_subgraph_index();
+  const int32_t body_index = options->body_subgraph_index();
+
+  verifySubgraphIndex(cond_index);
+  verifySubgraphIndex(body_index);
+
+  ir::operation::While::Param param;
+  param.cond_subg_index = ir::SubgraphIndex{static_cast<uint32_t>(cond_index)};
+  param.body_subg_index = ir::SubgraphIndex{static_cast<uint32_t>(body_index)};
 
   loadOperationTo<ir::operation::While>(op, subg, param);
 }
@@ -1470,6 +1491,9 @@ void BaseLoader<LoaderDomain>::loadOperation(const Operator *op, ir::Graph &subg
       return;
     case BuiltinOperator::BuiltinOperator_QUANTIZE:
       loadElementwiseUnary(op, subg, ir::operation::ElementwiseUnary::Type::QUANTIZE);
+      return;
+    case BuiltinOperator::BuiltinOperator_DEQUANTIZE:
+      loadElementwiseUnary(op, subg, ir::operation::ElementwiseUnary::Type::DEQUANTIZE);
       return;
     case BuiltinOperator::BuiltinOperator_SPACE_TO_DEPTH:
       loadSpaceToDepth(op, subg);

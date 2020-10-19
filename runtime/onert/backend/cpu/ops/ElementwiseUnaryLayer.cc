@@ -18,6 +18,7 @@
 
 #include "OperationUtils.h"
 
+#include <cker/operation/Dequantize.h>
 #include <cker/operation/Elementwise.h>
 #include <cker/operation/Erf.h>
 #include <cker/operation/Exp.h>
@@ -116,6 +117,13 @@ void cosFloat32(const IPortableTensor *input, IPortableTensor *output)
 {
   nnfw::cker::Cos(getTensorShape(input), reinterpret_cast<const float *>(input->buffer()),
                   getTensorShape(output), reinterpret_cast<float *>(output->buffer()));
+}
+
+void dequantizeUint8(const IPortableTensor *input, IPortableTensor *output)
+{
+  nnfw::cker::Dequantize(getTensorShape(input), reinterpret_cast<const uint8_t *>(input->buffer()),
+                         getTensorShape(output), reinterpret_cast<float *>(output->buffer()),
+                         input->data_scale(), input->data_offset());
 }
 
 void expFloat32(const IPortableTensor *input, IPortableTensor *output)
@@ -217,6 +225,16 @@ void ElementwiseUnaryLayer::configure(const IPortableTensor *input, IPortableTen
       else
       {
         throw std::runtime_error{"Cos: Unsupported data type"};
+      }
+      break;
+    case ElementwiseUnaryType::kDequantize:
+      if ((input->data_type() == OperandType::QUANT_UINT8_ASYMM))
+      {
+        _kernel = dequantizeUint8;
+      }
+      else
+      {
+        throw std::runtime_error{"Dequantize: Unsupported data type"};
       }
       break;
     case ElementwiseUnaryType::kExp:

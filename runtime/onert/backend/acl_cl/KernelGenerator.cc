@@ -1381,6 +1381,10 @@ void KernelGenerator::visit(const ir::operation::Split &node)
   const auto axis_index{node.getInputs().at(ir::operation::Split::Input::AXIS)};
 
   assert(node.param().num_splits == static_cast<int>(node.getOutputs().size()));
+  if (!_ctx.at(axis_index).isConstant())
+  {
+    throw std::runtime_error("Non-constant axis_index NYI for acl_cl backend");
+  }
 
   const auto ifm_rank = _ctx.at(ifm_index).shape().rank();
   std::vector<ir::OperandIndex> output_indexes;
@@ -1581,6 +1585,30 @@ void KernelGenerator::visit(const ir::operation::ConvertFp16ToFp32 &node)
 
   auto fn = acl_common::generateLayer<arm_compute::CLDepthConvertLayer>(
       ifm_tensor->handle(), ofm_tensor->handle(), ::arm_compute::ConvertPolicy::SATURATE, 0);
+
+  _return_fn = asAclFunction(std::move(fn));
+}
+
+void KernelGenerator::visit(const ir::operation::Reverse &node)
+{
+  const auto ofm_index{node.getOutputs().at(0)};
+  const auto ifm_index{node.getInputs().at(ir::operation::Reverse::Input::INPUT)};
+  const auto axis_index{node.getInputs().at(ir::operation::Reverse::Input::AXIS)};
+
+  auto ofm_tensor = _tensor_reg->getAclTensor(ofm_index);
+  auto ifm_tensor = _tensor_reg->getAclTensor(ifm_index);
+  auto axis_tensor = _tensor_reg->getAclTensor(axis_index);
+
+  // WORKAROUND: acl-cl backend only allow U32 type for axis
+  //             ConstantInitializer will resolve S32 type to U32 type
+  if (_ctx.at(axis_index).isConstant() &&
+      (axis_tensor->handle()->info()->data_type() == arm_compute::DataType::S32))
+  {
+    axis_tensor->handle()->info()->set_data_type(arm_compute::DataType::U32);
+  }
+
+  auto fn = acl_common::generateLayer<arm_compute::CLReverse>(
+      ifm_tensor->handle(), ofm_tensor->handle(), axis_tensor->handle());
 
   _return_fn = asAclFunction(std::move(fn));
 }

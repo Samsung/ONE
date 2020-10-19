@@ -748,6 +748,7 @@ OpPrinterRegistry::OpPrinterRegistry()
   _op_map[circle::BuiltinOperator_CONV_2D] = make_unique<Conv2DPrinter>();
   _op_map[circle::BuiltinOperator_DEPTH_TO_SPACE] = make_unique<DepthToSpacePrinter>();
   _op_map[circle::BuiltinOperator_DEPTHWISE_CONV_2D] = make_unique<DepthwiseConv2DPrinter>();
+  // There is no Option for DEQUANTIZE
   _op_map[circle::BuiltinOperator_DIV] = make_unique<DivPrinter>();
   // There is no Option for FLOOR
   // There is no Option for FLOOR_MOD

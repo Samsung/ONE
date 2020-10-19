@@ -43,3 +43,9 @@ foreach(ONE_DOCUMENT IN ITEMS ${ONE_DOCUMENT_FILES})
   install(FILES ${ONE_DOCUMENT} DESTINATION doc)
 
 endforeach(ONE_DOCUMENT)
+
+if(NOT ENABLE_TEST)
+  return()
+endif(NOT ENABLE_TEST)
+
+add_subdirectory(tests)

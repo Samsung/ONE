@@ -133,6 +133,7 @@ void CLOneHotKernel::configure_common(const ICLTensor *indices, const ICLTensor 
   build_opts.add_option("-DDATA_TYPE=" + get_cl_unsigned_type_from_element_size(
                                              data_size_from_type(on_value->info()->data_type())));
   build_opts.add_option("-DAXIS=" + support::cpp11::to_string(actual_axis));
+  build_opts.add_option("-DDEPTH=" + support::cpp11::to_string(depth));
   build_opts.add_option("-DOUTPUT_DIM_Z=" +
                         support::cpp11::to_string(output->info()->dimension(2)));
   // Create kernel

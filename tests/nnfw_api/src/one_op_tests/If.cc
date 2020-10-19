@@ -74,3 +74,59 @@ TEST_F(GenModelTest, OneOp_If)
 
   SUCCEED();
 }
+
+class IfWrongSubgraphIndex : public GenModelTest,
+                             public ::testing::WithParamInterface<std::pair<int, int>>
+{
+};
+
+TEST_P(IfWrongSubgraphIndex, neg_Test)
+{
+  // These values must be less than 0 or greater than 2
+  int then_subg = GetParam().first;
+  int else_subg = GetParam().second;
+
+  // When If operation's subgraph index is invalid
+
+  CircleGen cgen;
+
+  // constant buffers
+  std::vector<float> then_data{-100};
+  uint32_t then_buf = cgen.addBuffer(then_data);
+  std::vector<float> else_data{100};
+  uint32_t else_buf = cgen.addBuffer(else_data);
+
+  // primary subgraph
+  {
+    int x = cgen.addTensor({{1}, circle::TensorType_BOOL});
+    int ret = cgen.addTensor({{1}, circle::TensorType_FLOAT32});
+    cgen.addOperatorIf({{x}, {ret}}, then_subg, else_subg);
+
+    cgen.setInputsAndOutputs({x}, {ret});
+  }
+
+  // then subgraph
+  {
+    cgen.nextSubgraph();
+    int ret = cgen.addTensor({{1}, circle::TensorType_FLOAT32, then_buf});
+    cgen.setInputsAndOutputs({}, {ret});
+  }
+
+  // else subgraph
+  {
+    cgen.nextSubgraph();
+    int ret = cgen.addTensor({{1}, circle::TensorType_FLOAT32, else_buf});
+    cgen.setInputsAndOutputs({}, {ret});
+  }
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->setBackends({"cpu"});
+  _context->expectFailModelLoad();
+
+  SUCCEED();
+}
+
+INSTANTIATE_TEST_CASE_P(GenModelTest, IfWrongSubgraphIndex,
+                        ::testing::Values(std::make_pair(99, 2), std::make_pair(-1, 2),
+                                          std::make_pair(1, 99), std::make_pair(1, -99),
+                                          std::make_pair(-99, 99)));

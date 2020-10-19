@@ -148,9 +148,13 @@ void Linear::planTensors(const compiler::LoweredGraph &lowered_graph,
     tensor_builder->notifyFirstUse(ind);
   }
 
+  const auto io_tensors =
+      (graph.getInputs() + graph.getOutputs()) | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED;
+
   // At each operation,
   // 1. Scan DEF of outputs. If the DEF, allocate it
-  // 2. Scan USE of inputs. Decrease the USE and deallocate if the USE is 0
+  // 2. Scan DEF of inputs. If variable tensor, allocate it
+  // 3. Scan USE of inputs. Decrease the USE and deallocate if the USE is 0
   VERBOSE(LINEAR) << "TENSORS" << std::endl;
   for (const auto op_seq_ind : order)
   {
@@ -164,6 +168,25 @@ void Linear::planTensors(const compiler::LoweredGraph &lowered_graph,
         if (def_map[ind])
         {
           def_map[ind] = 0;
+          tensor_builder_map[ind]->notifyFirstUse(ind);
+        }
+      }
+
+      // Scan variable tensors
+      // This tensor has features like constant. But OperandInfo and LowerInfo treat them as
+      // non-constant because of less memory usage by memory planning in here
+      for (const auto &ind : graph.operations().at(op_idx).getInputs() | ir::Remove::DUPLICATED |
+                                 ir::Remove::UNDEFINED)
+      {
+        const auto &operand = graph.operands().at(ind);
+        if (operand.info().isVariable())
+        {
+          // The variable tensor with buffer is not supported yet
+          assert(operand.data() == nullptr);
+          assert(operand.getUses().size() == 1 && !operand.getDef().valid());
+          assert(lowered_graph.getLowerInfo(ind)->def_factors().size() == 1 &&
+                 lowered_graph.getLowerInfo(ind)->use_factors().size() == 1);
+          assert(uses_map[ind] == 1 && def_map[ind] == 0);
           tensor_builder_map[ind]->notifyFirstUse(ind);
         }
       }
@@ -188,7 +211,8 @@ void Linear::planTensors(const compiler::LoweredGraph &lowered_graph,
             auto &tensor_registry = lowered_graph.backend_contexts().at(backend)->tensor_registry;
             auto *tensor = tensor_registry->getITensor(ind);
             assert(tensor);
-            dyn_tensor_manager->planDealloc(op_idx, tensor);
+            if (!io_tensors.contains(ind)) // I/O tensors cannot be deallocated
+              dyn_tensor_manager->planDealloc(op_idx, tensor);
           }
         }
       }

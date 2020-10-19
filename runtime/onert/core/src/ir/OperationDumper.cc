@@ -40,7 +40,7 @@ void dumpUnaryInputOp(const Operation &node, const std::string &adding_input = "
 void dumpBinaryInputOp(const Operation &node, const std::string &adding_input = "")
 {
   VERBOSE(LIR) << "* " << node.name() << std::endl;
-  VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(0) << ", " << node.getInputs().at(0)
+  VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(0) << ", " << node.getInputs().at(1)
                << ") " << adding_input << std::endl;
   VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
 }
@@ -80,6 +80,20 @@ void OperationDumper::visit(const BatchToSpaceND &node)
       "BlockSize(" +
       std::to_string(node.getInputs().at(BatchToSpaceND::Input::BLOCK_SIZE).value()) + ")";
   dumpUnaryInputOp(node, block_size);
+}
+
+void OperationDumper::visit(const BCQFullyConnected &node)
+{
+  VERBOSE(LIR) << "* " << node.name() << std::endl;
+  VERBOSE(LIR) << "  - Inputs : IFM(" << node.getInputs().at(BCQFullyConnected::Input::INPUT)
+               << ") WeightsBinary("
+               << node.getInputs().at(BCQFullyConnected::Input::WEIGHTS_BINARY)
+               << ") WeightsScales("
+               << node.getInputs().at(BCQFullyConnected::Input::WEIGHTS_SCALES)
+               << ") WeightsClusters("
+               << node.getInputs().at(BCQFullyConnected::Input::WEIGHTS_CLUSTERS) << ") Bias("
+               << node.getInputs().at(BCQFullyConnected::Input::BIAS) << ")" << std::endl;
+  VERBOSE(LIR) << "  - Output : OFM(" << node.getOutputs().at(0) << ")" << std::endl;
 }
 
 void OperationDumper::visit(const BinaryArithmetic &node) { dumpBinaryInputOp(node); }
@@ -185,6 +199,7 @@ void OperationDumper::visit(const LocalResponseNormalization &node) { dumpUnaryI
 
 void OperationDumper::visit(const LSTM &node)
 {
+  VERBOSE(LIR) << "* " << node.name() << std::endl;
   VERBOSE(LIR)
       << "  - Inputs : Input(" << node.getInputs().at(LSTM::Input::INPUT)
       << ") Input To Input Weights(" << node.getInputs().at(LSTM::Input::INPUT_TO_INPUT_WEIGHTS)
@@ -209,12 +224,24 @@ void OperationDumper::visit(const LSTM &node)
       << node.getInputs().at(LSTM::Input::PROJECTION_WEIGHTS) << ") Projection Bias("
       << node.getInputs().at(LSTM::Input::PROJECTION_BIAS) << ") Output State In("
       << node.getInputs().at(LSTM::Input::OUTPUT_STATE_IN) << ") Cell State In("
-      << node.getInputs().at(LSTM::Input::CELL_STATE_IN) << ")" << std::endl;
+      << node.getInputs().at(LSTM::Input::CELL_STATE_IN);
+  if (node.getInputs().size() == 24)
+  {
+    VERBOSE(LIR) << ") Input Layer Normalization Weights("
+                 << node.getInputs().at(LSTM::Input::INPUT_LAYER_NORMALIZATION_WEIGHTS)
+                 << ") Forget Layer Normalization Weights("
+                 << node.getInputs().at(LSTM::Input::FORGET_LAYER_NORMALIZATION_WEIGHTS)
+                 << ") Cell Layer Normalization Weights("
+                 << node.getInputs().at(LSTM::Input::CELL_LAYER_NORMALIZATION_WEIGHTS)
+                 << ") Ouput Layer Normalization Weights("
+                 << node.getInputs().at(LSTM::Input::OUTPUT_LAYER_NORMALIZATION_WEIGHTS);
+  }
+  VERBOSE(LIR) << ")" << std::endl;
   VERBOSE(LIR) << "  - Output : Scratch Buffer("
                << node.getOutputs().at(LSTM::Output::SCRATCH_BUFFER) << ") Output State Out("
-               << node.getInputs().at(LSTM::Output::OUTPUT_STATE_OUT) << ") Cell State Out("
-               << node.getInputs().at(LSTM::Output::CELL_STATE_OUT) << ") Output("
-               << node.getInputs().at(LSTM::Output::OUTPUT) << ")" << std::endl;
+               << node.getOutputs().at(LSTM::Output::OUTPUT_STATE_OUT) << ") Cell State Out("
+               << node.getOutputs().at(LSTM::Output::CELL_STATE_OUT) << ") Output("
+               << node.getOutputs().at(LSTM::Output::OUTPUT) << ")" << std::endl;
 }
 
 void OperationDumper::visit(const Pack &node) { dumpPackingOp(node); }

@@ -18,6 +18,7 @@
 
 #include "OperationUtils.h"
 
+#include "cker/neon/neon_check.h"
 #include <cker/operation/Reduce.h>
 
 namespace onert
@@ -158,7 +159,7 @@ void evalSumQuantized(const IPortableTensor *input, IPortableTensor *output,
 
 ReduceLayer::ReduceLayer()
     : _input(nullptr), _axes(nullptr), _output(nullptr), _reduce_kernel(new nnfw::cker::Reduce()),
-      _kernel()
+      _kernel(), _reduceType(ReduceType::kInvalid)
 {
   // DO NOTHING
 }
@@ -171,8 +172,9 @@ void ReduceLayer::configure(const IPortableTensor *input, const IPortableTensor 
   _input = input;
   _axes = axes;
   _output = output;
+  _reduceType = reduceType;
 
-  switch (reduceType)
+  switch (_reduceType)
   {
     case ReduceType::kSum:
       if (_input->data_type() == OperandType::QUANT_UINT8_ASYMM)
@@ -199,13 +201,23 @@ void ReduceLayer::configure(const IPortableTensor *input, const IPortableTensor 
       _kernel = generateKernelGeneric(_input, keep_dims, *_reduce_kernel, ReduceType::kAll);
       break;
     default:
-      throw std::runtime_error{"ReduceSum: Unsupported reduce type"};
+      throw std::runtime_error{"Reduce: Unsupported reduce type"};
   }
 }
 
 void ReduceLayer::run()
 {
   const auto axes = getReducerAxes(_axes);
+#ifdef USE_NEON
+  int32_t rank = _input->num_dimensions();
+  if (_input->data_type() == ir::DataType::FLOAT32 && _reduceType == ReduceType::kSum &&
+      axes.size() == 1 && (axes[0] == -1 || axes[0] == rank - 1))
+  {
+    OptimizedReduceSum(reinterpret_cast<const float *>(_input->buffer()), getTensorShape(_input),
+                       reinterpret_cast<float *>(_output->buffer()));
+    return;
+  }
+#endif // NEON
   _kernel(_input, _output, axes);
 }
 

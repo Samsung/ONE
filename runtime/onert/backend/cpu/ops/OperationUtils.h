@@ -95,27 +95,18 @@ inline nnfw::cker::Shape getTensorShape(const IPortableTensor *tensor)
   if (tensor == nullptr)
     return nnfw::cker::Shape();
 
-  assert(tensor->layout() == ir::Layout::NHWC);
-  constexpr int kMaxSmallSize = 8;
-  int32_t raw_shape_small[kMaxSmallSize];
-  std::vector<int32_t> raw_shape_vec;
-  auto rank = tensor->num_dimensions();
-  int32_t *data = nullptr;
-  if (rank > kMaxSmallSize)
-  {
-    raw_shape_vec.resize(rank);
-    data = raw_shape_vec.data();
-  }
-  else
-  {
-    data = raw_shape_small;
-  }
+  const ir::Shape &shape = tensor->get_info().shape();
 
-  for (uint32_t i = 0; i < rank; ++i)
+  assert(tensor->layout() == ir::Layout::NHWC);
+
+  auto rank = shape.rank();
+  nnfw::cker::Shape ret(rank);
+  auto data = ret.DimsData();
+  for (int i = 0; i < rank; ++i)
   {
-    data[i] = tensor->dimension(i);
+    data[i] = shape.dim(i);
   }
-  return nnfw::cker::Shape(rank, data);
+  return ret;
 }
 
 inline nnfw::cker::FusedActivationFunctionType
@@ -131,6 +122,10 @@ convertActivationType(const ir::Activation activation)
       return nnfw::cker::FusedActivationFunctionType::kRelu1;
     case ir::Activation::RELU6:
       return nnfw::cker::FusedActivationFunctionType::kRelu6;
+    case ir::Activation::TANH:
+      return nnfw::cker::FusedActivationFunctionType::kTanh;
+    case ir::Activation::SIGMOID:
+      return nnfw::cker::FusedActivationFunctionType::kSigmoid;
     default:
       throw std::runtime_error{"CPU backend: Cannot convert activation type"};
   }

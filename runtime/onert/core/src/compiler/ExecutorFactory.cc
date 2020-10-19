@@ -156,7 +156,8 @@ void ExecutorFactory::runTensorRegistration(compiler::LoweredGraph *lowered_grap
       for (const auto op_idx : op_seq)
       {
         const auto &op = lowered_graph->graph().operations().at(op_idx);
-        for (const auto &index : (op.getInputs() | ir::Remove::UNDEFINED) + op.getOutputs())
+        for (const auto &index :
+             (op.getInputs() | ir::Remove::UNDEFINED) + (op.getOutputs() | ir::Remove::UNDEFINED))
         {
           if (!tensor_builder->isRegistered(index) && !model_io.contains(index))
           {

@@ -87,6 +87,63 @@ circle::MirrorPadMode to_circle_mirrorpadmode(luci::MirrorPadMode mode)
   }
 }
 
+circle::DimensionType to_circle_dimensiontype(luci::DimensionType type)
+{
+  switch (type)
+  {
+    case luci::DimensionType::DENSE:
+      return circle::DimensionType_DENSE;
+    case luci::DimensionType::SPARSE_CSR:
+      return circle::DimensionType_SPARSE_CSR;
+    default:
+      INTERNAL_EXN_V("trying to convert unsupported luci::DimensionType", oops::to_uint32(type));
+  }
+}
+
+flatbuffers::Offset<void> to_circle_sparse_index_vector(flatbuffers::FlatBufferBuilder &fb,
+                                                        const SparseIndexVector &sparse_idx_vec)
+{
+  auto type = sparse_idx_vec.type();
+  switch (type)
+  {
+    case luci::SparseIndexVectorType::NONE:
+      return flatbuffers::Offset<void>();
+    case luci::SparseIndexVectorType::I32:
+    {
+      return circle::CreateInt32VectorDirect(fb, sparse_idx_vec.as_int32_vector()).Union();
+    }
+    case luci::SparseIndexVectorType::U16:
+    {
+      return circle::CreateUint16VectorDirect(fb, sparse_idx_vec.as_uint16_vector()).Union();
+    }
+    case luci::SparseIndexVectorType::U8:
+    {
+      return circle::CreateUint8VectorDirect(fb, sparse_idx_vec.as_uint8_vector()).Union();
+    }
+    default:
+      INTERNAL_EXN_V("trying to convert unsupported luci::SparseIndexVectorType",
+                     oops::to_uint32(type));
+  }
+}
+
+circle::SparseIndexVector to_circle_sparse_index_vector_type(luci::SparseIndexVectorType type)
+{
+  switch (type)
+  {
+    case luci::SparseIndexVectorType::NONE:
+      return circle::SparseIndexVector_NONE;
+    case luci::SparseIndexVectorType::I32:
+      return circle::SparseIndexVector_Int32Vector;
+    case luci::SparseIndexVectorType::U16:
+      return circle::SparseIndexVector_Uint16Vector;
+    case luci::SparseIndexVectorType::U8:
+      return circle::SparseIndexVector_Uint8Vector;
+    default:
+      INTERNAL_EXN_V("trying to convert unsupported luci::SparseIndexVectorType",
+                     oops::to_uint32(type));
+  }
+}
+
 } // namespace luci
 
 namespace luci

@@ -523,11 +523,11 @@ TEST(TensorBroadcastTest, mapping)
 {
   loco::TensorBroadcast tensor_broadcast_node;
 
-  ASSERT_EQ(false, tensor_broadcast_node.mapping()->defined(0));
+  ASSERT_FALSE(tensor_broadcast_node.mapping()->defined(0));
 
   tensor_broadcast_node.mapping()->dim(0) = 3;
 
-  ASSERT_EQ(true, tensor_broadcast_node.mapping()->defined(0));
+  ASSERT_TRUE(tensor_broadcast_node.mapping()->defined(0));
   ASSERT_EQ(3, tensor_broadcast_node.mapping()->dim(0));
 }
 

@@ -78,6 +78,34 @@ TEST(LogSoftmaxTest, Uint8)
               ::testing::ElementsAreArray({189, 93, 221, 253, 142, 63, 255, 111}));
 }
 
+TEST(LogSoftmaxTest, InvalidInputOutputType_NEG)
+{
+  std::vector<float> input_data{
+      0, -6, 2,  4, //
+      3, -2, 10, 1, //
+  };
+  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({2, 4}, input_data);
+  Tensor output_tensor = makeOutputTensor(DataType::U8, 16. / 256, 255);
+
+  LogSoftmax kernel(&input_tensor, &output_tensor);
+  EXPECT_ANY_THROW(kernel.configure());
+}
+
+TEST(LogSoftmaxTest, InvalidOutputQuantParam_NEG)
+{
+  std::pair<float, int32_t> quant_param = quantizationParams<uint8_t>(-10, 10);
+  std::vector<float> input_data{
+      0, -6, 2,  4, //
+      3, -2, 10, 1, //
+  };
+  Tensor input_tensor =
+      makeInputTensor<DataType::U8>({2, 4}, quant_param.first, quant_param.second, input_data);
+  Tensor output_tensor = makeOutputTensor(DataType::U8, 20. / 256, 255);
+
+  LogSoftmax kernel(&input_tensor, &output_tensor);
+  EXPECT_ANY_THROW(kernel.configure());
+}
+
 } // namespace
 } // namespace kernels
 } // namespace luci_interpreter

@@ -48,7 +48,7 @@
 #define __ARM_COMPUTE_CLREDUCEOPERATIONKERNEL_H__
 
 #include "arm_compute/core/CL/ICLKernel.h"
-#include "arm_compute/core/TypesEx.h"
+#include "arm_compute/core/Types.h"
 
 namespace arm_compute
 {
@@ -95,7 +95,7 @@ public:
    * @return N/A
    */
   void configure(const ICLTensor *input, ICLTensor *output, const uint32_t axis,
-                 ReduceOperation op);
+                 ReductionOperation op);
 
   /**
    * @brief Static function to check if given info will lead to a valid configuration of @ref
@@ -108,7 +108,7 @@ public:
    * @return a status
    */
   static Status validate(const ITensorInfo *input, const ITensorInfo *output, const uint32_t axis,
-                         ReduceOperation op);
+                         ReductionOperation op);
 
   /*
    * @brief Run CLReduceOperationKernel op

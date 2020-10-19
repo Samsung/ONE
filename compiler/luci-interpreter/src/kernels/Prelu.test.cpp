@@ -164,6 +164,52 @@ TEST(PreluTest, Uint8Broadcast)
               ::testing::ElementsAreArray(ref_quant_output_data));
 }
 
+TEST(PreluTest, SInt16Simple)
+{
+  std::vector<float> input_data{-0.8f, 0.2f, 0.9f, 0.7f, 0.1f, -0.4f};
+  std::vector<float> alpha_data{0.5f, 0.5f, 0.5f, 0.25f, 1.0f, 0.25f};
+  std::vector<float> ref_output_data{-0.4f, 0.2f, 0.9f, 0.7f, 0.1f, -0.1f};
+
+  Tensor input_tensor = makeInputTensor<DataType::S16>({1, 2, 3, 1}, 0.1, 0, input_data);
+  Tensor alpha_tensor = makeInputTensor<DataType::S16>({1, 2, 3, 1}, 0.1, 0, alpha_data);
+  Tensor output_tensor = makeOutputTensor(DataType::S16, 0.1, 0);
+
+  Prelu kernel(&input_tensor, &alpha_tensor, &output_tensor);
+  kernel.configure();
+  kernel.execute();
+
+  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({1, 2, 3, 1}));
+  EXPECT_THAT(dequantizeTensorData(output_tensor), FloatArrayNear(ref_output_data));
+}
+
+TEST(PreluTest, SInt16Broadcast)
+{
+  std::vector<float> input_data{
+      0.0f,   0.0f,   0.0f,   // Row 1, Column 1
+      0.5f,   0.5f,   0.5f,   // Row 1, Column 2
+      -1.0f,  -1.0f,  -1.0f,  // Row 2, Column 1
+      -0.25f, -0.25f, -0.25f, // Row 2, Column 2
+  };
+  std::vector<float> alpha_data{0.0f, 0.5f, -0.5f};
+  std::vector<float> ref_output_data{
+      0.0f, 0.0f,    0.0f,  // Row 1, Column 1
+      0.5f, 0.5f,    0.5f,  // Row 1, Column 2
+      0.0f, -0.5f,   0.5f,  // Row 2, Column 1
+      0.0f, -0.125f, 0.125f // Row 2, Column 2
+  };
+
+  Tensor input_tensor = makeInputTensor<DataType::S16>({1, 2, 2, 3}, 0.01, 0, input_data);
+  Tensor alpha_tensor = makeInputTensor<DataType::S16>({1, 1, 3}, 0.1, 0, alpha_data);
+  Tensor output_tensor = makeOutputTensor(DataType::S16, 0.001, 0);
+
+  Prelu kernel(&input_tensor, &alpha_tensor, &output_tensor);
+  kernel.configure();
+  kernel.execute();
+
+  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({1, 2, 2, 3}));
+  EXPECT_THAT(dequantizeTensorData(output_tensor), FloatArrayNear(ref_output_data));
+}
+
 TEST(PreluTest, Input_Output_Type_NEG)
 {
   Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({1}, {1.f});

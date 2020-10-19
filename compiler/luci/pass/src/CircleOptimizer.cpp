@@ -16,6 +16,8 @@
 
 #include "luci/CircleOptimizer.h"
 
+#include "luci/Pass/FoldDequantizePass.h"
+#include "luci/Pass/FuseAddWithTConvPass.h"
 #include "luci/Pass/FuseBatchNormWithTConv.h"
 #include "luci/Pass/FuseBCQPass.h"
 #include "luci/Pass/FuseInstanceNormPass.h"
@@ -25,6 +27,7 @@
 #include "luci/Pass/RequantizePass.h"
 #include "luci/Pass/QuantizeWithMinMaxPass.h"
 #include "luci/Pass/QuantizeDequantizeWeightsPass.h"
+#include "luci/Pass/SparsifyTensorPass.h"
 // TODO add more passes
 
 #include "luci/Pass/ShapeInferencePass.h"
@@ -40,9 +43,24 @@
 #include <logo/Phase.h>
 
 #include <memory>
+#include <sstream>
 
 namespace
 {
+
+std::vector<int> parseIntFromCommadelimitedStr(std::string str)
+{
+  std::vector<int> ret;
+  std::istringstream is(str);
+  for (uint32_t i; is >> i;)
+  {
+    assert(i != ',');
+    ret.push_back(i);
+    if (is.peek() == ',')
+      is.ignore();
+  }
+  return ret;
+}
 
 using namespace luci;
 
@@ -132,6 +150,14 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   {
     phase.emplace_back(std::make_unique<FuseBatchNormWithTConvPass>());
   }
+  if (_options->query(Options::Algorithm::FuseAddWithTConv))
+  {
+    phase.emplace_back(std::make_unique<FuseAddWithTConvPass>());
+  }
+  if (_options->query(Options::Algorithm::FoldDequantize))
+  {
+    phase.emplace_back(std::make_unique<luci::FoldDequantizePass>());
+  }
 
   // Shape inference is needed for added nodes doing above transformations
   phase.emplace_back(std::make_unique<luci::ShapeInferencePass>());
@@ -151,7 +177,7 @@ void CircleOptimizer::quantize(loco::Graph *g) const
   if (_options->query(Options::Algorithm::QuantizeDequantizeWeights))
   {
     static const std::vector<std::string> fakeq_supported_input_dtype{"float32"};
-    static const std::vector<std::string> fakeq_supported_output_dtype{"uint8"};
+    static const std::vector<std::string> fakeq_supported_output_dtype{"uint8", "int16"};
     static const std::vector<std::string> fakeq_supported_granularity{"layer", "channel"};
 
     auto input_dtype = _options->param(Options::AlgorithmParameters::Quantize_input_dtype);
@@ -170,6 +196,10 @@ void CircleOptimizer::quantize(loco::Graph *g) const
       throw std::runtime_error("Unsupported granularity. List of supported granularity: " +
                                to_string(fakeq_supported_granularity));
 
+    if (str_to_granularity(granularity) == QuantizationGranularity::LayerWise &&
+        str_to_dtype(output_dtype) != loco::DataType::U8)
+      throw std::runtime_error("Layer-wise quantization only supports uint8 dtype.");
+
     // Clear existing quantparams before doing fake quantization
     for (auto node : loco::active_nodes(loco::output_nodes(g)))
     {
@@ -187,7 +217,7 @@ void CircleOptimizer::quantize(loco::Graph *g) const
   if (_options->query(Options::Algorithm::QuantizeWithMinMax))
   {
     static const std::vector<std::string> qwmm_supported_input_dtype{"float32"};
-    static const std::vector<std::string> qwmm_supported_output_dtype{"uint8"};
+    static const std::vector<std::string> qwmm_supported_output_dtype{"uint8", "int16"};
     static const std::vector<std::string> qwmm_supported_granularity{"layer", "channel"};
 
     auto input_dtype = _options->param(Options::AlgorithmParameters::Quantize_input_dtype);
@@ -205,6 +235,10 @@ void CircleOptimizer::quantize(loco::Graph *g) const
     if (!in_array(to_lower_case(granularity), qwmm_supported_granularity))
       throw std::runtime_error("Unsupported granularity. List of supported granularity: " +
                                to_string(qwmm_supported_granularity));
+
+    if (str_to_granularity(granularity) == QuantizationGranularity::LayerWise &&
+        str_to_dtype(output_dtype) != loco::DataType::U8)
+      throw std::runtime_error("Layer-wise quantization only supports uint8 dtype.");
 
     luci::QuantizeWithMinMaxPass quantizer(str_to_dtype(input_dtype), str_to_dtype(output_dtype),
                                            str_to_granularity(granularity));
@@ -242,6 +276,43 @@ void CircleOptimizer::quantize(loco::Graph *g) const
   logo::PhaseRunner<logo::PhaseStrategy::Saturate> phase_runner{g};
   phase_runner.attach(&prog);
   phase_runner.run(phase);
+}
+
+void CircleOptimizer::sparsify(loco::Graph *g) const
+{
+  if (_options->query(Options::Algorithm::SparsifyTensorPass))
+  {
+    std::string tensor_name = _options->param(Options::AlgorithmParameters::Sparsify_tensor_name);
+    std::string str_tarversal_order =
+        _options->param(Options::AlgorithmParameters::Sparsify_traversal_order);
+    std::string str_format = _options->param(Options::AlgorithmParameters::Sparsify_format);
+    std::string str_block_size = _options->param(Options::AlgorithmParameters::Sparsify_block_size);
+    std::string str_block_map = _options->param(Options::AlgorithmParameters::Sparsify_block_map);
+
+    // traversal order
+    std::vector<int32_t> traversal_order = parseIntFromCommadelimitedStr(str_tarversal_order);
+    // format
+    std::vector<DimensionType> format;
+    std::istringstream is(str_format);
+    for (char c; is >> c;)
+    {
+      assert(c != ',');
+      if (c == 'd')
+        format.push_back(DimensionType::DENSE);
+      else if (c == 's')
+        format.push_back(DimensionType::SPARSE_CSR);
+      if (is.peek() == ',')
+        is.ignore();
+    }
+    // block size
+    std::vector<int32_t> block_size = parseIntFromCommadelimitedStr(str_block_size);
+    // block map
+    std::vector<int32_t> block_map = parseIntFromCommadelimitedStr(str_block_map);
+
+    luci::SparsifyTensorPass sparsifier{tensor_name, traversal_order, format, block_size,
+                                        block_map};
+    sparsifier.run(g);
+  }
 }
 
 } // namespace luci

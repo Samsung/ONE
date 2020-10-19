@@ -73,6 +73,19 @@ ir::Shape broadcastShapes(const ir::Shape &lhs_shape, const ir::Shape &rhs_shape
 
 } // namespace
 
+namespace bcq
+{
+inline int getOutputSize(const ir::Shape &cluster_shape, const int32_t *cluster_buf)
+{
+  int size = 0;
+  for (int idx = 0; idx < cluster_shape.dim(0); idx++)
+  {
+    size += cluster_buf[idx * 2 + 1];
+  }
+  return size;
+}
+} // namespace bcq
+
 //
 // Shape inference
 //
@@ -265,19 +278,24 @@ ir::Shape inferBatchMatMulShape(const ir::Shape &lhs_shape, const ir::Shape &rhs
   return output_shape;
 }
 
-ir::Shape inferBroadcastToShape(const ir::Shape wshape, const int32_t *shape_buffer)
+/*
+ * shp_shape : SHAPE input tensor's shape
+ * shp_buf : SHAPE input tensor's buffer
+ */
+ir::Shape inferBroadcastToShape(const ir::Shape shp_shape, const int32_t *shp_buf)
 {
-  const int num_elements = wshape.num_elements();
+
+  const int num_elements = shp_shape.num_elements();
 
   assert(num_elements != 0);
-  assert(shape_buffer);
+  assert(shp_buf);
 
   ir::Shape new_shape(num_elements);
 
   for (int i = 0; i < num_elements; ++i)
   {
-    assert(shape_buffer[i] != 0); // It shouldn't be 0.
-    new_shape.dim(i) = shape_buffer[i];
+    assert(shp_buf[i] != 0); // It shouldn't be 0.
+    new_shape.dim(i) = shp_buf[i];
   }
 
   return new_shape;
@@ -311,6 +329,9 @@ ir::Shape inferConcatShape(const Shapes &in_shapes, const ir::operation::Concat:
 ir::Shape inferConv2DShape(const ir::Shape &in_shape, const ir::Shape &ker_shape,
                            const ir::operation::Conv2D::Param &param, ir::Layout layout)
 {
+  if (param.stride.horizontal == 0 || param.stride.vertical == 0)
+    throw std::runtime_error{"Conv2D: stride values must be positive"};
+
   auto ifm_shape = in_shape.asFeature(layout);
 
   // Kernel format is [depth_out, kernel_height, kernel_width, depth_in]
@@ -327,6 +348,9 @@ ir::Shape inferDepthwiseConv2DShape(const ir::Shape &in_shape, const ir::Shape &
                                     const ir::operation::DepthwiseConv2D::Param &param,
                                     ir::Layout layout)
 {
+  if (param.stride.horizontal == 0 || param.stride.vertical == 0)
+    throw std::runtime_error{"DepthwiseConv2D: stride values must be positive"};
+
   assert(layout == ir::Layout::NHWC);
   auto ifm_shape = in_shape.asFeature(layout);
 
@@ -360,13 +384,13 @@ ir::Shape inferExpandDimsShape(const ir::Shape &in_shape, int32_t axis)
   return out_shape;
 }
 
-ir::Shape inferFillShape(const ir::Shape &in_shape, const int32_t *buffer)
+ir::Shape inferFillShape(const ir::Shape &in_shape, const int32_t *in_buf)
 {
   ir::Shape out_shape(in_shape.dim(0));
 
   for (int out_x = 0; out_x < out_shape.rank(); ++out_x)
   {
-    out_shape.dim(out_x) = buffer[out_x];
+    out_shape.dim(out_x) = in_buf[out_x];
   }
 
   return out_shape;
@@ -386,11 +410,60 @@ ir::Shape inferFullyConnectedShape(const ir::Shape &in_shape, const ir::Shape &k
   return {ir::Shape({static_cast<int32_t>(batch_size), num_units})};
 }
 
+ir::Shape inferBCQFullyConnectedShape(const ir::Shape &in_shape, const ir::Shape &cluster_shape,
+                                      const int32_t *cluster_buf)
+{
+  assert(cluster_shape.rank() == 2);
+  assert(cluster_shape.dim(1) == 2);
+
+  const auto input_size = in_shape.dim(1);
+  const auto output_size = bcq::getOutputSize(cluster_shape, cluster_buf);
+
+  return {ir::Shape({output_size, input_size})};
+}
+
+ir::Shape inferBCQGatherShape(const ir::Shape &indices_shape, const ir::Shape &cluster_shape,
+                              const int32_t *cluster_buf, int rank,
+                              const ir::operation::BCQGather::Param &param)
+{
+  ir::Shape out_shape;
+  ir::Shape in_original_shape;
+
+  assert(cluster_shape.rank() == 2);
+  assert(cluster_shape.dim(1) == 2);
+
+  auto hidden_size = param.input_hidden_size;
+  auto axis = param.axis;
+
+  in_original_shape.append(bcq::getOutputSize(cluster_shape, cluster_buf));
+  in_original_shape.append(hidden_size);
+
+  const int indices_rank = indices_shape.rank();
+  for (int idx = 0; idx < rank; ++idx)
+  {
+    if (idx == (int)axis)
+    {
+      for (int indices_idx = 0; indices_idx < indices_rank; indices_idx++)
+      {
+        out_shape.append(indices_shape.dim(indices_idx));
+      }
+    }
+    else
+    {
+      out_shape.append(in_original_shape.dim(idx));
+    }
+  }
+
+  return out_shape;
+}
+
 ir::Shape inferGatherShape(const ir::Shape &input_shape, const ir::Shape &indices_shape, int axis,
                            int rank)
 {
   ir::Shape out_shape;
+
   const int indices_rank = indices_shape.rank();
+
   for (int idx = 0; idx < rank; ++idx)
   {
     if (idx == axis)
@@ -476,6 +549,9 @@ ir::Shape inferPadShape(const ir::Shape &in_shape, const int32_t *pad_buf, const
 ir::Shape inferPoolShape(const ir::Shape &in_shape, const ir::operation::Pool2D::Param &param,
                          const ir::Layout layout)
 {
+  if (param.stride.horizontal == 0 || param.stride.vertical == 0)
+    throw std::runtime_error{"Pool2D: stride values must be positive"};
+
   assert(layout == ir::Layout::NHWC);
   auto ifm_shape = in_shape.asFeature(layout);
   const auto out_h_w = calcConvLikeHeightAndWidth(ifm_shape.H, ifm_shape.W, param.kh, param.kw,
@@ -493,10 +569,10 @@ ir::Shape inferResizeBilinearShape(const ir::Shape &in_shape, const int32_t outp
     throw std::runtime_error{"ResizeBilinear: size value must be positive value, output_height = " +
                              std::to_string(output_height)};
   }
-  if (output_height < 0)
+  if (output_width < 0)
   {
     throw std::runtime_error{"ResizeBilinear: size value must be positive value, output_width = " +
-                             std::to_string(output_height)};
+                             std::to_string(output_width)};
   }
 
   ir::Shape ret(in_shape.rank());
@@ -630,7 +706,8 @@ ir::Shape inferSelectShape(const ir::Shape &input_cond_shape, const ir::Shape &i
   return new_shape;
 }
 
-ir::Shape inferSliceShape(const ir::Shape &input_shape, const int32_t *begins, const int32_t *sizes)
+ir::Shape inferSliceShape(const ir::Shape &input_shape, const int32_t *begins_buf,
+                          const int32_t *sizes_buf)
 {
   const uint32_t rank = input_shape.rank();
   ir::Shape out_shape(rank);
@@ -640,12 +717,12 @@ ir::Shape inferSliceShape(const ir::Shape &input_shape, const int32_t *begins, c
     const auto input_dim = input_shape.dim(idx);
 
     // begin is zero-based
-    auto begin = begins[idx];
+    auto begin = begins_buf[idx];
     if (begin < 0)
       throw std::runtime_error("shape inference Slice: Invalid begin.");
 
     // size is one-based
-    auto size = sizes[idx];
+    auto size = sizes_buf[idx];
     if (size < -1)
       throw std::runtime_error("shape inference Slice: Invalid size.");
 
@@ -665,8 +742,8 @@ ir::Shape inferSliceShape(const ir::Shape &input_shape, const int32_t *begins, c
 }
 
 ir::Shape inferSpaceToBatchNDShape(const ir::Shape &input_shape, const ir::Shape &block_shape_shape,
-                                   const ir::Shape &padding_shape, const int32_t *block_shape_data,
-                                   const int32_t *padding_data)
+                                   const ir::Shape &padding_shape, const int32_t *block_shape_buf,
+                                   const int32_t *padding_buf)
 {
   const uint32_t rank = input_shape.rank();
   ir::Shape out_shape(rank);
@@ -694,14 +771,14 @@ ir::Shape inferSpaceToBatchNDShape(const ir::Shape &input_shape, const ir::Shape
   for (int dim = 0; dim < kSpatialDimensionNum; ++dim)
   {
     int final_dim_size =
-        (input_shape.dim(dim + 1) + padding_data[dim * 2] + padding_data[dim * 2 + 1]);
+        (input_shape.dim(dim + 1) + padding_buf[dim * 2] + padding_buf[dim * 2 + 1]);
 
-    assert(final_dim_size % block_shape_data[dim] == 0);
+    assert(final_dim_size % block_shape_buf[dim] == 0);
 
-    out_shape.dim(dim + 1) = final_dim_size / block_shape_data[dim];
+    out_shape.dim(dim + 1) = final_dim_size / block_shape_buf[dim];
   }
 
-  const int output_batch_size = input_shape.dim(0) * block_shape_data[0] * block_shape_data[1];
+  const int output_batch_size = input_shape.dim(0) * block_shape_buf[0] * block_shape_buf[1];
   const int output_channel_size = input_shape.dim(3);
 
   out_shape.dim(0) = output_batch_size;
@@ -965,7 +1042,7 @@ ir::Shape inferStridedSliceShape(const ir::Shape &input_shape, const StridedSlic
   return out_shape;
 }
 
-ir::Shape inferTileShape(const ir::Shape &in_shape, const int32_t *multiplier,
+ir::Shape inferTileShape(const ir::Shape &in_shape, const int32_t *multiplier_buf,
                          const int32_t multiplier_size)
 {
   if (multiplier_size != in_shape.rank())
@@ -978,13 +1055,13 @@ ir::Shape inferTileShape(const ir::Shape &in_shape, const int32_t *multiplier,
 
   for (int i = 0; i < in_shape.rank(); ++i)
   {
-    assert(multiplier[i]); // multiplier[i] shuld not be 0.
-    new_Shape.dim(i) = in_shape.dim(i) * multiplier[i];
+    assert(multiplier_buf[i]); // multiplier_buf[i] shuld not be 0.
+    new_Shape.dim(i) = in_shape.dim(i) * multiplier_buf[i];
   }
   return new_Shape;
 }
 
-ir::Shape inferTransposeShape(const ir::Shape &in_shape, const int32_t *perm,
+ir::Shape inferTransposeShape(const ir::Shape &in_shape, const int32_t *perm_buf,
                               const int32_t perm_size)
 {
   const auto rank = in_shape.rank();
@@ -994,7 +1071,7 @@ ir::Shape inferTransposeShape(const ir::Shape &in_shape, const int32_t *perm,
                              std::to_string(perm_size));
   }
 
-  const int32_t *perm_data = perm;
+  const int32_t *perm_data = perm_buf;
   std::vector<int32_t> regular_perm_vec;
   if (perm_size == 0)
   {

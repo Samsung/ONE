@@ -24,6 +24,52 @@
 namespace luci
 {
 
+bool is_quantized(const CircleNode *node)
+{
+  return node->quantparam() != nullptr &&
+         (node->dtype() == loco::DataType::U8 ||  // activation, weight (uint8 quant)
+          node->dtype() == loco::DataType::S16 || // activation, weight (int16 quant)
+          node->dtype() == loco::DataType::S32 || // bias (uint8 quant)
+          node->dtype() == loco::DataType::S64);  // bias (int16 quant)
+}
+
+// Check if node is weights of conv2d, depthwise_conv2d, or fully_connected layer
+bool is_weights(CircleNode *node)
+{
+  auto circle_const = dynamic_cast<CircleConst *>(node);
+  if (circle_const == nullptr)
+    return false;
+
+  auto succs = loco::succs(node);
+
+  // Node is weights if it is the weights of all of its successors
+  for (auto out : succs)
+  {
+    bool is_weights = false;
+
+    auto conv = dynamic_cast<CircleConv2D *>(out);
+    if (conv != nullptr && conv->filter() == circle_const)
+      is_weights = true;
+
+    auto dw_conv = dynamic_cast<CircleDepthwiseConv2D *>(out);
+    if (dw_conv != nullptr && dw_conv->filter() == circle_const)
+      is_weights = true;
+
+    auto t_conv = dynamic_cast<CircleTransposeConv *>(out);
+    if (t_conv != nullptr && t_conv->filter() == circle_const && circle_const->rank() == 4)
+      is_weights = true;
+
+    auto fc = dynamic_cast<CircleFullyConnected *>(out);
+    if (fc != nullptr && fc->weights() == circle_const)
+      is_weights = true;
+
+    if (!is_weights)
+      return false;
+  }
+
+  return true;
+}
+
 uint8_t fp32_to_uint8_cast(float f)
 {
   assert(std::numeric_limits<uint8_t>::min() <= f);
@@ -58,6 +104,36 @@ void asymmetric_wquant_with_minmax_per_layer(CircleConst *node, float min, float
   for (uint32_t i = 0; i < size; ++i)
   {
     node->at<loco::DataType::U8>(i) = std::min(kMaxScale, std::max(kMinScale, quantized_values[i]));
+  }
+}
+
+// Per-layer quantization of weights (const tensor) using given min/max values
+void symmetric_wquant_with_minmax_per_layer(CircleConst *node, float min, float max,
+                                            float &scaling_factor, int64_t &zp, float &nudged_min,
+                                            float &nudged_max)
+{
+  const int32_t kMaxScale = std::numeric_limits<int16_t>::max();
+  const int32_t kMinScale = -kMaxScale;
+
+  uint32_t size = node->size<loco::DataType::FLOAT32>();
+  compute_sym_scale_zp(min, max, scaling_factor, zp, nudged_min, nudged_max);
+  const float scaling_factor_inv = 1.0 / scaling_factor;
+  std::vector<int32_t> quantized_values(size);
+  for (uint32_t i = 0; i < size; ++i)
+  {
+    // clipping
+    auto data = node->at<loco::DataType::FLOAT32>(i);
+    data = data < nudged_min ? nudged_min : data;
+    data = data > nudged_max ? nudged_max : data;
+    quantized_values[i] = static_cast<int32_t>(std::round(data * scaling_factor_inv));
+  }
+
+  node->dtype(loco::DataType::S16);      // change the type of tensor
+  node->size<loco::DataType::S16>(size); // resize tensor
+  for (uint32_t i = 0; i < size; ++i)
+  {
+    node->at<loco::DataType::S16>(i) =
+        std::min(kMaxScale, std::max(kMinScale, quantized_values[i]));
   }
 }
 
@@ -153,8 +229,28 @@ void compute_asym_scale_zp(float min, float max, float &scaling_factor, int64_t 
 bool get_channel_dim_index(CircleConst *node, loco::TensorShape &dimension, int &channel_dim_index)
 {
   auto succs = loco::succs(node);
-  if (succs.size() != 1) // assume weights is used by only one node
-    return false;
+
+  // opcode is initialized to CIRCLEINPUT, because
+  // CIRCLEINPUT should never be the successor of any node
+  // (this is checked w/ the assert in the loop body)
+  luci::CircleOpcode opcode = luci::CircleOpcode::CIRCLEINPUT;
+  for (auto out : succs)
+  {
+    const auto circle_node = static_cast<CircleNode *>(out);
+    assert(circle_node->opcode() != luci::CircleOpcode::CIRCLEINPUT);
+
+    if (opcode == luci::CircleOpcode::CIRCLEINPUT)
+    {
+      opcode = circle_node->opcode();
+    }
+    else
+    {
+      // Node is used by multiple layers with different opcodes
+      // We do not care such cases
+      if (opcode != circle_node->opcode())
+        return false;
+    }
+  }
 
   for (auto out : succs)
   {

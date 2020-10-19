@@ -44,7 +44,7 @@ template <typename T> void TransposeLayer::transpose()
   if (_perm->dimension(0) == 0) // This means _perm is (n-1...0)
   {
     const auto begin = param.perm;
-    const auto end = param.perm + _input->num_dimensions() - 1;
+    const auto end = param.perm + _input->num_dimensions();
     std::iota(begin, end, 0);
     std::reverse(begin, end);
   }

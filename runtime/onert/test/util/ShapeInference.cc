@@ -34,7 +34,7 @@ TEST(ShapeInference, Elementwise)
   ASSERT_EQ(infered_out_shape.dim(3), 3);
 }
 
-TEST(ShapeInference, IncorrectElementwise)
+TEST(ShapeInference, neg_Elementwise)
 {
   Shape lhs_shape{1, 299, 299, 3};
   Shape rhs_shape{5, 3};
@@ -123,6 +123,18 @@ TEST(ShapeInference, Pool2DNodeExplicit)
   ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).C, 20);
 }
 
+TEST(ShapeInference, neg_Pool2DNode_InvalidStride)
+{
+  Shape in_shape{10, 6, 12, 20};
+  Stride stride{0, 7};
+  Padding padding{PaddingType::SAME};
+
+  operation::Pool2D::Param avg_pool_param{
+      operation::Pool2D::PoolType::AVG, 3, 6, stride, padding, Activation::NONE};
+  ASSERT_THROW(onert::shape_inference::inferPoolShape(in_shape, avg_pool_param),
+               std::runtime_error);
+}
+
 TEST(ShapeInference, Conv2D)
 {
   Shape in_shape{10, 6, 12, 20};
@@ -159,6 +171,17 @@ TEST(ShapeInference, Conv2D)
   ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).C, 30);
 }
 
+TEST(ShapeInference, neg_Conv2D_InvalidStride)
+{
+  Shape in_shape{10, 6, 12, 20};
+  Shape ker_shape{30, 3, 6, 20};
+
+  operation::Conv2D::Param param{Stride{0, 0}, Padding{PaddingType::VALID}, Activation::NONE,
+                                 Dilation{1, 1}};
+  ASSERT_THROW(onert::shape_inference::inferConv2DShape(in_shape, ker_shape, param),
+               std::runtime_error);
+}
+
 TEST(ShapeInference, DepthwiseConv2D)
 {
   Shape in_shape{10, 6, 12, 20};
@@ -193,6 +216,17 @@ TEST(ShapeInference, DepthwiseConv2D)
   ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).H, 3);
   ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).W, 2);
   ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).C, 60);
+}
+
+TEST(ShapeInference, neg_DepthwiseConv2D_InvalidSride)
+{
+  Shape in_shape{10, 6, 12, 20};
+  Shape ker_shape{1, 3, 6, 60};
+
+  operation::DepthwiseConv2D::Param param{Stride{3, 0}, Padding{PaddingType::VALID}, 3,
+                                          Activation::NONE};
+  ASSERT_THROW(onert::shape_inference::inferDepthwiseConv2DShape(in_shape, ker_shape, param),
+               std::runtime_error);
 }
 
 TEST(ShapeInference, Concat)
@@ -379,5 +413,132 @@ TEST(ShapeInference, neg_Transpose)
     // int32_t rank = 3;
     ASSERT_THROW(onert::shape_inference::inferTransposeShape(in_shape, perm.data(), perm.size()),
                  std::runtime_error);
+  }
+}
+
+TEST(ShapeInference, Gather)
+{
+  auto check = [&](Shape &input, Shape &indices, Shape &expected, int32_t axis) {
+    int rank = input.rank();
+    auto actual = onert::shape_inference::inferGatherShape(input, indices, axis, rank);
+
+    ASSERT_EQ(actual.rank(), expected.rank());
+
+    for (int32_t dim = 0; dim < expected.rank(); dim++)
+      ASSERT_EQ(actual.dim(dim), expected.dim(dim));
+  };
+
+  // check for 2-D, 3-D, axis 0
+  {
+    Shape input{3, 4};
+    Shape indices{1, 1, 2};
+    int32_t axis = 0;
+    Shape expected{1, 1, 2, 4};
+    check(input, indices, expected, axis);
+  }
+
+  // check for 2-D, 3-D, axis 1
+  {
+    Shape input{3, 4};
+    Shape indices{1, 2, 1};
+    int32_t axis = 1;
+    Shape expected{3, 1, 2, 1};
+    check(input, indices, expected, axis);
+  }
+
+  // check for 3-D, 2-D, axis 0
+  {
+    Shape input{2, 3, 4};
+    Shape indices{1, 2};
+    int32_t axis = 0;
+    Shape expected{1, 2, 3, 4};
+    check(input, indices, expected, axis);
+  }
+
+  // check for 3-D, 2-D, axis 2
+  {
+    Shape input{2, 3, 4};
+    Shape indices{2, 1};
+    int32_t axis = 2;
+    Shape expected{2, 3, 2, 1};
+    check(input, indices, expected, axis);
+  }
+
+  // check for 4D, axis 0
+  {
+    Shape input{1, 2, 3, 4};
+    Shape indices{2};
+    int32_t axis = 0;
+    Shape expected{2, 2, 3, 4};
+    check(input, indices, expected, axis);
+  }
+}
+
+TEST(ShapeInference, BCQFullyConnected)
+{
+  auto check = [&](Shape &in_shape, Shape &cluster_shape, std::vector<int> cluster,
+                   Shape &expected) {
+    auto actual = onert::shape_inference::inferBCQFullyConnectedShape(in_shape, cluster_shape,
+                                                                      cluster.data());
+    ASSERT_EQ(actual.rank(), expected.rank());
+
+    for (int32_t dim = 0; dim < expected.rank(); dim++)
+      ASSERT_EQ(actual.dim(dim), expected.dim(dim));
+  };
+
+  {
+    Shape in_shape{10, 1};
+    Shape cluster_shape{3, 2};
+    std::vector<int> cluster = {1, 10, 2, 10, 3, 10};
+
+    Shape expected{30, 1};
+    check(in_shape, cluster_shape, cluster, expected);
+  }
+
+  {
+    Shape in_shape{1, 1};
+    Shape cluster_shape{1, 2};
+    std::vector<int> cluster = {3, 50};
+
+    Shape expected{50, 1};
+    check(in_shape, cluster_shape, cluster, expected);
+  }
+}
+
+TEST(ShapeInference, BCQGather)
+{
+  auto check = [&](Shape &indices_shape, Shape &cluster_shape, std::vector<int> cluster,
+                   uint32_t hidden_size, uint32_t axis, int rank, Shape &expected) {
+    operation::BCQGather::Param param{hidden_size, axis};
+    auto actual = onert::shape_inference::inferBCQGatherShape(indices_shape, cluster_shape,
+                                                              cluster.data(), rank, param);
+    ASSERT_EQ(actual.rank(), expected.rank());
+
+    for (int32_t dim = 0; dim < expected.rank(); dim++)
+      ASSERT_EQ(actual.dim(dim), expected.dim(dim));
+  };
+
+  {
+    Shape indices_shape{5, 1};
+    Shape cluster_shape{3, 2};
+    std::vector<int> cluster = {1, 10, 2, 10, 3, 10};
+    uint32_t hidden_size = 10;
+    uint32_t axis = 0;
+    int rank = 2;
+
+    Shape expected{5, 1, 10};
+    check(indices_shape, cluster_shape, cluster, hidden_size, axis, rank, expected);
+  }
+
+  {
+    Shape indices_shape{5, 1};
+    Shape cluster_shape{3, 2};
+    std::vector<int> cluster = {1, 10, 2, 10, 3, 10};
+    uint32_t hidden_size = 10;
+    uint32_t axis = 1;
+    int rank = 2;
+
+    Shape expected{30, 5, 1};
+    check(indices_shape, cluster_shape, cluster, hidden_size, axis, rank, expected);
   }
 }

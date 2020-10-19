@@ -182,6 +182,53 @@ void StaticShapeInferer::visit(const ir::operation::BatchMatMul &op)
   output.info().shape(new_shape);
 }
 
+void StaticShapeInferer::visit(const ir::operation::BCQFullyConnected &op)
+{
+  const auto input_idx{op.getInputs().at(ir::operation::BCQFullyConnected::Input::INPUT)};
+  const auto &input = _operands.at(input_idx);
+
+  const auto cluster_idx{
+      op.getInputs().at(ir::operation::BCQFullyConnected::Input::WEIGHTS_CLUSTERS)};
+  const auto &cluster = _operands.at(cluster_idx);
+
+  const auto output_idx = op.getOutputs().at(0);
+  ir::Operand &output = _operands.at(output_idx);
+
+  auto cluster_buf = reinterpret_cast<const int32_t *>(cluster.data()->base());
+  assert(cluster_buf);
+
+  // re-sizing output shape
+  ir::Shape new_shape = shape_inference::inferBCQFullyConnectedShape(
+      input.info().shape(), cluster.info().shape(), cluster_buf);
+  output.info().shape(new_shape);
+}
+
+void StaticShapeInferer::visit(const ir::operation::BCQGather &op)
+{
+  const auto indices_idx{op.getInputs().at(ir::operation::BCQGather::Input::INDICES)};
+  const auto &indices = _operands.at(indices_idx);
+
+  const auto input_binary_idx{op.getInputs().at(ir::operation::BCQGather::Input::INPUT_BINARY)};
+  const auto &input_binary = _operands.at(input_binary_idx);
+
+  const auto cluster_idx{op.getInputs().at(ir::operation::BCQGather::Input::INPUT_CLUSTERS)};
+  const auto &cluster = _operands.at(cluster_idx);
+
+  const auto output_idx = op.getOutputs().at(0);
+  ir::Operand &output = _operands.at(output_idx);
+
+  auto cluster_buf = reinterpret_cast<const int32_t *>(cluster.data()->base());
+  assert(cluster_buf);
+
+  auto rank = input_binary.shape().rank();
+
+  // re-sizing output shape
+  ir::Shape new_shape = shape_inference::inferBCQGatherShape(
+      indices.info().shape(), cluster.info().shape(), cluster_buf, rank, op.param());
+
+  output.info().shape(new_shape);
+}
+
 void StaticShapeInferer::visit(const ir::operation::BinaryArithmetic &op)
 {
   handleBinaryArithmeticOp(op, op.getInputs().at(ir::operation::BinaryArithmetic::Input::LHS),
@@ -447,6 +494,98 @@ void StaticShapeInferer::visit(const ir::operation::If &op)
 void StaticShapeInferer::visit(const ir::operation::L2Normalization &op)
 {
   handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::L2Normalization::Input::INPUT));
+}
+
+void StaticShapeInferer::visit(const ir::operation::LSTM &op)
+{
+  const auto output_index{op.getOutputs().at(ir::operation::LSTM::Output::OUTPUT)};
+  auto &output = _operands.at(output_index);
+
+  const auto output_state_out_index{
+      op.getOutputs().at(ir::operation::LSTM::Output::OUTPUT_STATE_OUT)};
+
+  const auto cell_state_out_index{op.getOutputs().at(ir::operation::LSTM::Output::CELL_STATE_OUT)};
+
+  const auto scratch_buffer_index{op.getOutputs().at(ir::operation::LSTM::Output::SCRATCH_BUFFER)};
+
+  if (output.info().isDynamic() || (_operands.exist(output_state_out_index) &&
+                                    _operands.at(output_state_out_index).info().isDynamic()) ||
+      (_operands.exist(cell_state_out_index) &&
+       _operands.at(cell_state_out_index).info().isDynamic()) ||
+      (_operands.exist(scratch_buffer_index) &&
+       _operands.at(scratch_buffer_index).info().isDynamic()))
+    return;
+
+  const auto input_index{op.getInputs().at(ir::operation::LSTM::Input::INPUT)};
+  const auto &input = _operands.at(input_index);
+
+  const auto input_to_output_weights_index{
+      op.getInputs().at(ir::operation::LSTM::Input::INPUT_TO_OUTPUT_WEIGHTS)};
+  const auto &input_to_output_weights = _operands.at(input_to_output_weights_index);
+
+  const auto recurrent_to_output_weights_index{
+      op.getInputs().at(ir::operation::LSTM::Input::RECURRENT_TO_OUTPUT_WEIGHTS)};
+  const auto &recurrent_to_output_weights = _operands.at(recurrent_to_output_weights_index);
+
+  // re-sizing outputs
+  const int n_batch = (input.shape().rank() == 3 && op.param().time_major) ? input.shape().dim(1)
+                                                                           : input.shape().dim(0);
+  const int n_cell = input_to_output_weights.shape().dim(0);
+  const int n_output = recurrent_to_output_weights.shape().dim(1);
+  if (input.shape().rank() == 3)
+  {
+    if (op.param().time_major)
+      output.info().shape(ir::Shape{input.shape().dim(0), n_batch, n_output});
+    else
+      output.info().shape(ir::Shape{n_batch, input.shape().dim(1), n_output});
+  }
+  else
+  {
+    assert(input.shape().rank() == 2);
+    output.info().shape(ir::Shape{n_batch, n_output});
+  }
+
+  if (_operands.exist(output_state_out_index))
+  {
+    auto &output_state_out = _operands.at(output_state_out_index);
+    output_state_out.info().shape(ir::Shape{n_batch, n_output});
+  }
+
+  if (_operands.exist(cell_state_out_index))
+  {
+    auto &cell_state_out = _operands.at(cell_state_out_index);
+    cell_state_out.info().shape(ir::Shape{n_batch, n_cell});
+  }
+
+  if (_operands.exist(scratch_buffer_index))
+  {
+    auto &scratch_buffer = _operands.at(scratch_buffer_index);
+
+    const auto input_to_input_weights_index{
+        op.getInputs().at(ir::operation::LSTM::Input::INPUT_TO_INPUT_WEIGHTS)};
+    const auto recurrent_to_input_weights_index{
+        op.getInputs().at(ir::operation::LSTM::Input::RECURRENT_TO_INPUT_WEIGHTS)};
+
+    bool has_input_to_input_weights =
+        _operands.at(input_to_input_weights_index).shape().dim(0) != 0 &&
+        _operands.at(input_to_input_weights_index).shape().dim(1) != 0;
+    bool has_recurrent_to_input_weights =
+        _operands.at(recurrent_to_input_weights_index).shape().dim(0) != 0 &&
+        _operands.at(recurrent_to_input_weights_index).shape().dim(1) != 0;
+
+    // NOTE The cell_to_input_weights do not exist in non-peephole although regular LSTM(non-CIFG).
+    // true: no CIFG
+    // false: CIFG
+    bool has_cifg_param = has_input_to_input_weights && has_recurrent_to_input_weights;
+    if (has_cifg_param)
+    {
+      scratch_buffer.info().shape(ir::Shape{n_batch, n_cell * 4});
+    }
+    else
+    {
+      scratch_buffer.info().shape(ir::Shape{n_batch, n_cell * 3});
+    }
+  }
 }
 
 void StaticShapeInferer::visit(const ir::operation::MatrixBandPart &op)
@@ -840,7 +979,7 @@ void StaticShapeInferer::visit(const ir::operation::Split &op)
   const auto &axis = _operands.at(axis_idx);
 
   auto outputs = op.getOutputs();
-  if (input.info().isDynamic() || !axis.isConstant())
+  if (!axis.isConstant())
   {
     for (auto output_idx : outputs)
     {
@@ -881,13 +1020,6 @@ void StaticShapeInferer::visit(const ir::operation::Squeeze &op)
 
   const auto output_idx = op.getOutputs().at(0);
   ir::Operand &output = _operands.at(output_idx);
-
-  if (input.info().isDynamic())
-  {
-    output.info().setDynamic();
-    _return_has_dynamic_tensor = true;
-    return;
-  }
 
   // Squeeze output shpae
   ir::Shape new_shape = shape_inference::inferSqueezeShape(input.info().shape(), op.param());
@@ -973,7 +1105,7 @@ void StaticShapeInferer::visit(const ir::operation::Transpose &op)
   // get mutable output operand
   const auto output_idx = op.getOutputs().at(0);
   auto &output = _operands.at(output_idx);
-  if ((!perm.isConstant() && !is_regular_transpose) || input.info().isDynamic())
+  if (!perm.isConstant() && !is_regular_transpose)
   {
     output.info().setDynamic();
     _return_has_dynamic_tensor = true;

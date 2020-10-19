@@ -40,7 +40,7 @@ public:
 public:
   Tensor(const ir::OperandInfo &info, const ir::Layout layout,
          DynamicMemoryManager *dynamic_mem_mgr)
-      : _info(info), _layout(layout), _buffer(nullptr), _num_references(0),
+      : IPortableTensor(info), _layout(layout), _buffer(nullptr), _num_references(0),
         _dynamic_mem_mgr(dynamic_mem_mgr), _allocator(nullptr)
   {
     // DO NOTHING
@@ -97,7 +97,7 @@ public:
    *       W : dimension(2)
    *       C : dimension(3)
    */
-  size_t dimension(size_t index) const override { return _info.shape().dim(index); }
+  size_t dimension(size_t index) const final override { return _info.shape().dim(index); }
   size_t num_dimensions() const override { return _info.shape().rank(); }
   size_t total_size() const override { return _info.total_size(); }
   size_t calcOffset(const ir::Coordinates &coords) const override;
@@ -162,7 +162,6 @@ public:
   void setShape(const ir::Shape &new_shape) override;
 
 protected:
-  ir::OperandInfo _info;
   ir::Layout _layout;
   uint8_t *_buffer;
   int32_t _num_references;

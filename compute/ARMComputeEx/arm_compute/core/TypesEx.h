@@ -51,15 +51,6 @@ enum class ArgOperation
   MIN,
 };
 
-/** Available reduce operations */
-enum class ReduceOperation
-{
-  MAX,  /**< Max */
-  MEAN, /**< Mean */
-  SUM,  /**< Sum */
-  MIN,  /**< Min */
-};
-
 /** Available binary logical operations */
 enum class BinaryLogicalOperation
 {

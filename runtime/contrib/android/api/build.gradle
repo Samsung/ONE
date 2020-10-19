@@ -8,11 +8,39 @@ android {
         minSdkVersion 26
         targetSdkVersion 29
         versionCode 1
-        versionName "1.10.0"
+        versionName "1.11.0"
 
         externalNativeBuild {
             ndkBuild {
-                arguments "ONERT_API_INC_DIR=${project.projectDir}/../../../onert/api/include"
+                def onert_header_dir
+                if (project.hasProperty('onertHeaderDir'))
+                    onert_header_dir = project.onertHeaderDir
+                else
+                    onert_header_dir = "${project.projectDir}/../../../onert/api/include"
+
+                def onert_lib_dir
+                if (project.hasProperty('onertLibDir'))
+                    onert_lib_dir = project.onertLibDir
+                else
+                    onert_lib_dir = "${project.projectDir}/../../../../Product/out/lib"
+
+                def onert_contains_acl
+                if (project.hasProperty('onertContainsAcl'))
+                    onert_contains_acl = 1
+                else
+                    onert_contains_acl = 0
+
+                def onert_ext_lib
+                if (project.hasProperty('onertExtLib'))
+                    onert_ext_lib = project.onertExtLib
+                else
+                    onert_ext_lib = ""
+
+                arguments "ONERT_API_INC_DIR=$onert_header_dir",
+                          "ONERT_PREBUILT_LIB_DIR=$onert_lib_dir",
+                          "ONERT_CONTAINS_ACL=$onert_contains_acl",
+                          "ONERT_EXT_PREBUILT_LIB=$onert_ext_lib"
+
                 abiFilters 'arm64-v8a'
             }
         }

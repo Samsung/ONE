@@ -110,56 +110,64 @@ void RecordMinMax::initialize(const std::string &input_model_path)
 void RecordMinMax::profileData(const std::string &mode, const std::string &input_data_path,
                                float min_percentile, float max_percentile)
 {
-  HDF5Importer importer(input_data_path);
-  importer.importGroup();
-
-  bool is_raw_data = importer.isRawData();
-
-  const auto num_records = importer.numRecords();
-  if (num_records == 0)
-    throw std::runtime_error("The input data file does not contain any record.");
-
-  const auto input_nodes = loco::input_nodes(_module->graph());
-  const auto num_inputs = input_nodes.size();
-
-  for (int32_t record_idx = 0; record_idx < num_records; record_idx++)
+  try
   {
-    if (num_inputs != importer.numInputs(record_idx))
-      throw std::runtime_error("Wrong number of inputs.");
+    HDF5Importer importer(input_data_path);
+    importer.importGroup();
 
-    if (record_idx % 100 == 0)
-      std::cout << "Recording " << record_idx << "'th data" << std::endl;
+    bool is_raw_data = importer.isRawData();
 
-    for (int32_t input_idx = 0; input_idx < num_inputs; input_idx++)
+    const auto num_records = importer.numRecords();
+    if (num_records == 0)
+      throw std::runtime_error("The input data file does not contain any record.");
+
+    const auto input_nodes = loco::input_nodes(_module->graph());
+    const auto num_inputs = input_nodes.size();
+
+    for (int32_t record_idx = 0; record_idx < num_records; record_idx++)
     {
-      const auto *input_node = loco::must_cast<const luci::CircleInput *>(input_nodes[input_idx]);
-      assert(input_node->index() == input_idx);
-      std::vector<char> input_data(getTensorSize(input_node));
+      if (num_inputs != importer.numInputs(record_idx))
+        throw std::runtime_error("Wrong number of inputs.");
 
-      if (!is_raw_data)
+      if (record_idx % 100 == 0)
+        std::cout << "Recording " << record_idx << "'th data" << std::endl;
+
+      for (int32_t input_idx = 0; input_idx < num_inputs; input_idx++)
       {
-        DataType dtype;
-        Shape shape(input_node->rank());
-        importer.readTensor(record_idx, input_idx, &dtype, &shape, input_data.data());
+        const auto *input_node = loco::must_cast<const luci::CircleInput *>(input_nodes[input_idx]);
+        assert(input_node->index() == input_idx);
+        std::vector<char> input_data(getTensorSize(input_node));
 
-        // Check the type and the shape of the input data is valid
-        verifyTypeShape(input_node, dtype, shape);
-      }
-      else
-      {
-        // Skip type/shape check for raw data
-        importer.readTensor(record_idx, input_idx, input_data.data());
+        if (!is_raw_data)
+        {
+          DataType dtype;
+          Shape shape(input_node->rank());
+          importer.readTensor(record_idx, input_idx, &dtype, &shape, input_data.data());
+
+          // Check the type and the shape of the input data is valid
+          verifyTypeShape(input_node, dtype, shape);
+        }
+        else
+        {
+          // Skip type/shape check for raw data
+          importer.readTensor(record_idx, input_idx, input_data.data());
+        }
+
+        // TODO: Input data is copied twice (file -> buffer (input_data) -> interpreter inputs)
+        //       We can redcue the copy by directly writing data from file to interpreter inputs
+        _interpreter->writeInputTensor(input_node, input_data.data(), input_data.size());
       }
 
-      // TODO: Input data is copied twice (file -> buffer (input_data) -> interpreter inputs)
-      //       We can redcue the copy by directly writing data from file to interpreter inputs
-      _interpreter->writeInputTensor(input_node, input_data.data(), input_data.size());
+      _interpreter->interpret();
     }
 
-    _interpreter->interpret();
+    std::cout << "Recording finished. Number of recorded data: " << num_records << std::endl;
   }
-
-  std::cout << "Recording finished. Number of recorded data: " << num_records << std::endl;
+  catch (const H5::Exception &e)
+  {
+    H5::Exception::printErrorStack();
+    throw std::runtime_error("HDF5 error occurred.");
+  }
 
   auto minmax_map = _observer->minMaxData()->getMap();
   for (auto iter = minmax_map->begin(); iter != minmax_map->end(); ++iter)

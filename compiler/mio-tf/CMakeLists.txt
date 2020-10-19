@@ -1,6 +1,6 @@
 nnas_find_package(Protobuf QUIET)
 # TensorFlowSource package is used to use ~.proto files
-nnas_find_package(TensorFlowSource EXACT 1.12 QUIET)
+nnas_find_package(TensorFlowSource EXACT 2.3 QUIET)
 
 if(NOT Protobuf_FOUND)
   return()

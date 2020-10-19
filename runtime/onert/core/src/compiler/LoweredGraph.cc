@@ -274,7 +274,7 @@ void LoweredGraph::makeOpSequences(
           auto &&lower_info = operands_lower_info.at(operand);
           lower_info->addUsePermuteFactor(ir::operand::PermuteFactor{backend, backend_layout});
         }
-        for (auto operand : node.getOutputs())
+        for (auto operand : node.getOutputs() | ir::Remove::UNDEFINED)
         {
           auto &&lower_info = operands_lower_info.at(operand);
           lower_info->addDefPermuteFactor(ir::operand::PermuteFactor{backend, backend_layout});
@@ -338,7 +338,7 @@ void LoweredGraph::manipulateLowerInfo(
       assert(lower_info->def_factors().empty());
       lower_info->addDefPermuteFactor(factor);
     }
-    for (auto index : _graph.getOutputs())
+    for (auto index : _graph.getOutputs() | ir::Remove::UNDEFINED)
     {
       auto &&lower_info = operands_lower_info.at(index);
       lower_info->addUsePermuteFactor(factor);
@@ -366,7 +366,7 @@ void LoweredGraph::manipulateLowerInfo(
       }
     }
   }
-  for (auto index : _graph.getOutputs())
+  for (auto index : _graph.getOutputs() | ir::Remove::UNDEFINED)
   {
     auto &&lower_info = operands_lower_info.at(index);
     if (lower_info->def_factors().size() == 0)
@@ -379,8 +379,22 @@ void LoweredGraph::manipulateLowerInfo(
     }
   }
 
-  // Set LowerInfo for each operand from the operand::LowerInfo holder
-  _graph.operands().iterate([&](const ir::OperandIndex &index, ir::Operand &) {
+  // 1. Add def of variable operand
+  // 2. Set LowerInfo for each operand from the operand::LowerInfo holder
+  _graph.operands().iterate([&](const ir::OperandIndex &index, ir::Operand &operand) {
+    // Some inputs of an operation could be non-constant, but not existed in graph inputs/outputs
+    // and not undefined operand. Those inputs must have exist as a Tensor. For example,
+    // UnidirectionalSequenceLSTM operation could have state inputs such as it.
+    if (operand.info().isVariable())
+    {
+      // The variable operand with buffer is not supported yet
+      assert(operand.data() == nullptr);
+      assert(operand.getUses().size() == 1 && !operand.getDef().valid());
+      auto &lowered_info = operands_lower_info[index];
+      assert(lowered_info->def_factors().empty());
+      lowered_info->addDefPermuteFactor(lowered_info->use_factors().getOnlyElement());
+    }
+
     setLowerInfo(index, std::move(operands_lower_info[index]));
   });
 }
@@ -494,7 +508,7 @@ bool LoweredGraph::mergeable(const ir::OpSequenceIndex &op_seq_index,
     branched_set.clear();
 
     // Check for branching down
-    for (const auto &output : node.getOutputs() | ir::Remove::DUPLICATED)
+    for (const auto &output : node.getOutputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED)
     {
       // TODO Fix this workaround for the case of model outputs that are used by another operation
       //      This is needed since the branching is decided by operation, but for model outputs,
@@ -542,7 +556,7 @@ bool LoweredGraph::mergeable(const ir::OpSequenceIndex &op_seq_index,
       }
 
       // node's input == op_seq's output?
-      for (const auto output : n.getOutputs())
+      for (const auto output : n.getOutputs() | ir::Remove::UNDEFINED)
       {
         if (node_inputs.contains(output))
         {

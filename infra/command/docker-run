@@ -1,10 +1,19 @@
 #!/bin/bash
 
 import "docker.configuration"
+USER_MODE=0
+
+if [[ $1 == '--user' ]]; then
+  DOCKER_RUN_OPTS+=" -u $(stat -c "%u" $NNAS_PROJECT_PATH):$(stat -c "%g" $NNAS_PROJECT_PATH)"
+  USER_MODE=1
+  shift
+fi
 
 docker run ${DOCKER_RUN_OPTS} ${DOCKER_ENV_VARS} ${DOCKER_VOLUMES} ${DOCKER_IMAGE_NAME} "$@"
 EXITCODE=$?
 
-docker_cleanup
+if [ $USER_MODE -eq 0 ]; then
+  docker_cleanup
+fi
 
 exit ${EXITCODE}

@@ -430,6 +430,7 @@ template <typename T> void cook_graph(const T &graph, CookParams &cp)
     tensor_builder.add_type(as_tflite_tensortype(operand.type()));
     tensor_builder.add_buffer(buffer_index);
     tensor_builder.add_name(name);
+    tensor_builder.add_is_variable(operand.is_variable());
     if (operand.has_quant())
       tensor_builder.add_quantization(quant_index);
     tensor_builder.add_sparsity(sparsity_index);

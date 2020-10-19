@@ -182,6 +182,10 @@ H5::PredType hdf5_dtype_cast(const circle::TensorType &circle_type)
     {
       return H5::PredType::NATIVE_UINT8;
     }
+    case circle::TensorType_INT16:
+    {
+      return H5::PredType::NATIVE_INT16;
+    }
     case circle::TensorType_INT32:
     {
       return H5::PredType::NATIVE_INT32;

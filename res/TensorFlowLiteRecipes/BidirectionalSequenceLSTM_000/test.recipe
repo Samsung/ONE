@@ -1,0 +1,361 @@
+operand {
+  name: "ifm"
+  type: FLOAT32
+  shape { dim: 3 dim: 1 dim: 2 }
+}
+operand {
+  name: "fw_input_to_input_weights"
+  type: FLOAT32
+  shape { dim: 4 dim: 2 }
+}
+operand {
+  name: "fw_input_to_forget_weights"
+  type: FLOAT32
+  shape { dim: 4 dim: 2 }
+}
+operand {
+  name: "fw_input_to_cell_weights"
+  type: FLOAT32
+  shape { dim: 4 dim: 2 }
+}
+operand {
+  name: "fw_input_to_output_weights"
+  type: FLOAT32
+  shape { dim: 4 dim: 2 }
+}
+operand {
+  name: "fw_recurrent_to_input_weights"
+  type: FLOAT32
+  shape { dim: 4 dim: 4 }
+}
+operand {
+  name: "fw_recurrent_to_forget_weights"
+  type: FLOAT32
+  shape { dim: 4 dim: 4 }
+}
+operand {
+  name: "fw_recurrent_to_cell_weights"
+  type: FLOAT32
+  shape { dim: 4 dim: 4 }
+}
+operand {
+  name: "fw_recurrent_to_output_weights"
+  type: FLOAT32
+  shape { dim: 4 dim: 4 }
+}
+operand {
+  name: "fw_cell_to_input_weights"
+  type: FLOAT32
+  shape { dim: 4 }
+}
+operand {
+  name: "fw_cell_to_forget_weights"
+  type: FLOAT32
+  shape { dim: 4 }
+}
+operand {
+  name: "fw_cell_to_output_weights"
+  type: FLOAT32
+  shape { dim: 4 }
+}
+operand {
+  name: "fw_input_gate_bias"
+  type: FLOAT32
+  shape { dim: 4 }
+}
+operand {
+  name: "fw_forget_gate_bias"
+  type: FLOAT32
+  shape { dim: 4 }
+}
+operand {
+  name: "fw_cell_gate_bias"
+  type: FLOAT32
+  shape { dim: 4 }
+}
+operand {
+  name: "fw_output_gate_bias"
+  type: FLOAT32
+  shape { dim: 4 }
+}
+operand {
+  name: "fw_projection_weight"
+  type: FLOAT32
+  shape { dim: 4 dim: 4 }
+}
+operand {
+  name: "fw_projection_bias"
+  type: FLOAT32
+  shape { dim: 4 }
+}
+operand {
+  name: "bw_input_to_input_weights"
+  type: FLOAT32
+  shape { dim: 4 dim: 2 }
+}
+operand {
+  name: "bw_input_to_forget_weights"
+  type: FLOAT32
+  shape { dim: 4 dim: 2 }
+}
+operand {
+  name: "bw_input_to_cell_weights"
+  type: FLOAT32
+  shape { dim: 4 dim: 2 }
+}
+operand {
+  name: "bw_input_to_output_weights"
+  type: FLOAT32
+  shape { dim: 4 dim: 2 }
+}
+operand {
+  name: "bw_recurrent_to_input_weights"
+  type: FLOAT32
+  shape { dim: 4 dim: 4 }
+}
+operand {
+  name: "bw_recurrent_to_forget_weights"
+  type: FLOAT32
+  shape { dim: 4 dim: 4 }
+}
+operand {
+  name: "bw_recurrent_to_cell_weights"
+  type: FLOAT32
+  shape { dim: 4 dim: 4 }
+}
+operand {
+  name: "bw_recurrent_to_output_weights"
+  type: FLOAT32
+  shape { dim: 4 dim: 4 }
+}
+operand {
+  name: "bw_cell_to_input_weights"
+  type: FLOAT32
+  shape { dim: 4 }
+}
+operand {
+  name: "bw_cell_to_forget_weights"
+  type: FLOAT32
+  shape { dim: 4 }
+}
+operand {
+  name: "bw_cell_to_output_weights"
+  type: FLOAT32
+  shape { dim: 4 }
+}
+operand {
+  name: "bw_input_gate_bias"
+  type: FLOAT32
+  shape { dim: 4 }
+}
+operand {
+  name: "bw_forget_gate_bias"
+  type: FLOAT32
+  shape { dim: 4 }
+}
+operand {
+  name: "bw_cell_gate_bias"
+  type: FLOAT32
+  shape { dim: 4 }
+}
+operand {
+  name: "bw_output_gate_bias"
+  type: FLOAT32
+  shape { dim: 4 }
+}
+operand {
+  name: "bw_projection_weight"
+  type: FLOAT32
+  shape { dim: 4 dim: 4 }
+}
+operand {
+  name: "bw_projection_bias"
+  type: FLOAT32
+  shape { dim: 4 }
+}
+operand {
+  name: "fw_activation_state"
+  type: FLOAT32
+  shape { dim: 1 dim: 4 }
+}
+operand {
+  name: "fw_cell_state"
+  type: FLOAT32
+  shape { dim: 1 dim: 4 }
+}
+operand {
+  name: "bw_activation_state"
+  type: FLOAT32
+  shape { dim: 1 dim: 4 }
+}
+operand {
+  name: "bw_cell_state"
+  type: FLOAT32
+  shape { dim: 1 dim: 4 }
+}
+operand {
+  name: "aux_input"
+  type: FLOAT32
+  shape { dim: 3 dim: 1 dim: 2 }
+}
+operand {
+  name: "fw_aux_input_to_input_weights"
+  type: FLOAT32
+  shape {dim: 4 dim: 2}
+}
+operand {
+  name: "fw_aux_input_to_forget_weights"
+  type: FLOAT32
+  shape {dim: 4 dim: 2}
+}
+operand {
+  name: "fw_aux_input_to_cell_weights"
+  type: FLOAT32
+  shape {dim: 4 dim: 2}
+}
+operand {
+  name: "fw_aux_input_to_output_weights"
+  type: FLOAT32
+  shape {dim: 4 dim: 2}
+}
+operand {
+  name: "bw_aux_input_to_input_weights"
+  type: FLOAT32
+  shape {dim: 4 dim: 2}
+}
+operand {
+  name: "bw_aux_input_to_forget_weights"
+  type: FLOAT32
+  shape {dim: 4 dim: 2}
+}
+operand {
+  name: "bw_aux_input_to_cell_weights"
+  type: FLOAT32
+  shape {dim: 4 dim: 2}
+}
+operand {
+  name: "bw_aux_input_to_output_weights"
+  type: FLOAT32
+  shape {dim: 4 dim: 2}
+}
+operand {
+  name: "fw_ofm"
+  type: FLOAT32
+  shape { dim: 3 dim: 1 dim: 4 }
+}
+operand {
+  name: "bw_ofm"
+  type: FLOAT32
+  shape { dim: 3 dim: 1 dim: 4 }
+}
+operation {
+  type: "BidirectionalSequenceLSTM"
+  bidirectional_sequence_lstm_options {
+    activation: NONE
+    cell_clip: 0.0
+    proj_clip: 0.0
+    merge_outputs: false
+    time_major: false
+    asymmetric_quantize_inputs: false
+  }
+  input: "ifm"
+  input: "fw_input_to_input_weights"
+  input: "fw_input_to_forget_weights"
+  input: "fw_input_to_cell_weights"
+  input: "fw_input_to_output_weights"
+  input: "fw_recurrent_to_input_weights"
+  input: "fw_recurrent_to_forget_weights"
+  input: "fw_recurrent_to_cell_weights"
+  input: "fw_recurrent_to_output_weights"
+  input: "fw_cell_to_input_weights"
+  input: "fw_cell_to_forget_weights"
+  input: "fw_cell_to_output_weights"
+  input: "fw_input_gate_bias"
+  input: "fw_forget_gate_bias"
+  input: "fw_cell_gate_bias"
+  input: "fw_output_gate_bias"
+  input: "fw_projection_weight"
+  input: "fw_projection_bias"
+  input: "bw_input_to_input_weights"
+  input: "bw_input_to_forget_weights"
+  input: "bw_input_to_cell_weights"
+  input: "bw_input_to_output_weights"
+  input: "bw_recurrent_to_input_weights"
+  input: "bw_recurrent_to_forget_weights"
+  input: "bw_recurrent_to_cell_weights"
+  input: "bw_recurrent_to_output_weights"
+  input: "bw_cell_to_input_weights"
+  input: "bw_cell_to_forget_weights"
+  input: "bw_cell_to_output_weights"
+  input: "bw_input_gate_bias"
+  input: "bw_forget_gate_bias"
+  input: "bw_cell_gate_bias"
+  input: "bw_output_gate_bias"
+  input: "bw_projection_weight"
+  input: "bw_projection_bias"
+  input: "fw_activation_state"
+  input: "fw_cell_state"
+  input: "bw_activation_state"
+  input: "bw_cell_state"
+  input: "aux_input"
+  input: "fw_aux_input_to_input_weights"
+  input: "fw_aux_input_to_forget_weights"
+  input: "fw_aux_input_to_cell_weights"
+  input: "fw_aux_input_to_output_weights"
+  input: "bw_aux_input_to_input_weights"
+  input: "bw_aux_input_to_forget_weights"
+  input: "bw_aux_input_to_cell_weights"
+  input: "bw_aux_input_to_output_weights"
+  output: "fw_ofm"
+  output: "bw_ofm"
+}
+input: "ifm"
+input: "fw_input_to_input_weights"
+input: "fw_input_to_forget_weights"
+input: "fw_input_to_cell_weights"
+input: "fw_input_to_output_weights"
+input: "fw_recurrent_to_input_weights"
+input: "fw_recurrent_to_forget_weights"
+input: "fw_recurrent_to_cell_weights"
+input: "fw_recurrent_to_output_weights"
+input: "fw_cell_to_input_weights"
+input: "fw_cell_to_forget_weights"
+input: "fw_cell_to_output_weights"
+input: "fw_input_gate_bias"
+input: "fw_forget_gate_bias"
+input: "fw_cell_gate_bias"
+input: "fw_output_gate_bias"
+input: "fw_projection_weight"
+input: "fw_projection_bias"
+input: "bw_input_to_input_weights"
+input: "bw_input_to_forget_weights"
+input: "bw_input_to_cell_weights"
+input: "bw_input_to_output_weights"
+input: "bw_recurrent_to_input_weights"
+input: "bw_recurrent_to_forget_weights"
+input: "bw_recurrent_to_cell_weights"
+input: "bw_recurrent_to_output_weights"
+input: "bw_cell_to_input_weights"
+input: "bw_cell_to_forget_weights"
+input: "bw_cell_to_output_weights"
+input: "bw_input_gate_bias"
+input: "bw_forget_gate_bias"
+input: "bw_cell_gate_bias"
+input: "bw_output_gate_bias"
+input: "bw_projection_weight"
+input: "bw_projection_bias"
+input: "fw_activation_state"
+input: "fw_cell_state"
+input: "bw_activation_state"
+input: "bw_cell_state"
+input: "aux_input"
+input: "fw_aux_input_to_input_weights"
+input: "fw_aux_input_to_forget_weights"
+input: "fw_aux_input_to_cell_weights"
+input: "fw_aux_input_to_output_weights"
+input: "bw_aux_input_to_input_weights"
+input: "bw_aux_input_to_forget_weights"
+input: "bw_aux_input_to_cell_weights"
+input: "bw_aux_input_to_output_weights"
+output: "fw_ofm"
+output: "bw_ofm"

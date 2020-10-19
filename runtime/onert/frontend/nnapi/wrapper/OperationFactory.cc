@@ -1302,6 +1302,105 @@ OperationFactory::OperationFactory()
     }
     param.cell_threshold = operands.at(OperandIndex{init_param.inputs[21]}).asScalar<float>();
     param.projection_threshold = operands.at(OperandIndex{init_param.inputs[22]}).asScalar<float>();
+    // This is initialization to prevent warning or error by static code analyzer. LSTM operation
+    // does not need time_major
+    param.time_major = false;
+
+    return new operation::LSTM{inputs, outputs, param};
+  };
+
+  _map[ANEURALNETWORKS_UNIDIRECTIONAL_SEQUENCE_LSTM] = [](const OperationFactory::Param &init_param,
+                                                          Operands &operands) {
+    assert((init_param.input_count >= 24 || init_param.input_count <= 28) &&
+           (init_param.output_count >= 1 && init_param.output_count <= 3));
+
+    // Each input should be interpreted as follows:
+    //
+    // 0 -> Input Tensor Index
+    // 1 -> Input to Input Tensor Index
+    // 2 -> Input to Forget Tensor Index
+    // 3 -> Input to Cell Tensor Index
+    // 4 -> Input to Output Tensor Index
+    // 5 -> Recurrent to Input Weights Tensor Index
+    // 6 -> Recurrent to Forget Weights Tensor Index
+    // 7 -> Recurrent to Cell Weights Tensor Index
+    // 8 -> Recurrent to Output Weights Tensor Index
+    // 9 -> Cell to Input Weights Tensor Index
+    // 10 -> Cell to Forget Weights Tensor Index
+    // 11 -> Cell to Output Weights Tensor Index
+    // 12 -> Input Gate Bias Tensor Index
+    // 13 -> Forget Gate Bias Tensor Index
+    // 14 -> Cell Bias Tensor Index
+    // 15 -> Output Gate Bias Tensor Index
+    // 16 -> Projection Weights Tensor Index
+    // 17 -> Projection Bias Tensor Index
+    // 18 -> Output State In Tensor Index
+    // 19 -> Cell State In Tensor Index
+    assert(init_param.input_count - 3 > 20);
+    OperandIndexSequence inputs;
+    for (uint32_t n = 0; n < 20; ++n)
+    {
+      inputs.append(OperandIndex{init_param.inputs[n]});
+    }
+
+    // 24 -> Input Layer Normalization Weights Tensor Index
+    // 25 -> Forget Layer Normalization Weights Tensor Index
+    // 26 -> Cell Layer Normalization Weights Tensor Index
+    // 27 -> Output Layer Normalization Weights Tensor Index
+    if (init_param.input_count > 24)
+    {
+      for (uint32_t n = 24; n < 28; ++n)
+      {
+        if (init_param.input_count > n)
+        {
+          inputs.append(OperandIndex{init_param.inputs[n]});
+        }
+      }
+    }
+
+    // Each output should be interpreted as follows:
+    //
+    // 0 -> Output Tensor Index -> 3
+    // 1 -> Output State Out Tensor Index
+    // 2 -> Cell State Out Tensor Index
+    const OperandIndex scratch_buffer_index;
+    OperandIndex output_state_index =
+        init_param.output_count >= 2 ? OperandIndex{init_param.outputs[1]} : OperandIndex();
+    OperandIndex cell_state_index =
+        init_param.output_count >= 3 ? OperandIndex{init_param.outputs[2]} : OperandIndex();
+    const OperandIndex output_index = OperandIndex{init_param.outputs[0]};
+    OperandIndexSequence outputs{scratch_buffer_index, output_state_index, cell_state_index,
+                                 output_index};
+
+    operation::LSTM::Param param;
+    const auto activation_index = OperandIndex{init_param.inputs[20]};
+    switch (operands.at(activation_index).asScalar<int32_t>())
+    {
+      case 0:
+        param.activation = Activation::NONE;
+        break;
+      case 1:
+        param.activation = Activation::RELU;
+        break;
+      case 2:
+        param.activation = Activation::RELU1;
+        break;
+      case 3:
+        param.activation = Activation::RELU6;
+        break;
+      case 4:
+        param.activation = Activation::TANH;
+        break;
+      case 6:
+        param.activation = Activation::SIGMOID;
+        break;
+      default:
+        throw std::runtime_error("Unsupported activation type");
+        break;
+    }
+    param.cell_threshold = operands.at(OperandIndex{init_param.inputs[21]}).asScalar<float>();
+    param.projection_threshold = operands.at(OperandIndex{init_param.inputs[22]}).asScalar<float>();
+    param.time_major = operands.at(OperandIndex{init_param.inputs[23]}).asScalar<bool>();
 
     return new operation::LSTM{inputs, outputs, param};
   };

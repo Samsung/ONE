@@ -1,6 +1,6 @@
 Name:    nnfw
 Summary: nnfw
-Version: 1.10.0
+Version: 1.11.0
 Release: 1
 Group:   Development
 License: Apache-2.0 and MIT and BSD-2-Clause
@@ -118,7 +118,7 @@ tar -xf %{SOURCE1005} -C ./externals
 tar -xf %{SOURCE1006} -C ./externals
 
 %build
-%ifarch arm armv7l aarch64
+%ifarch arm armv7l aarch64 x86_64
 # runtime build
 %{build_env} ./nnfw configure %{build_options} %{extra_option}
 %{build_env} ./nnfw build -j4
@@ -139,7 +139,7 @@ tar -zcf test-suite.tar.gz infra/scripts
 %endif # arm armv7l aarch64
 
 %install
-%ifarch arm armv7l aarch64
+%ifarch arm armv7l aarch64 x86_64
 
 mkdir -p %{buildroot}%{_libdir}
 mkdir -p %{buildroot}%{_bindir}
@@ -183,14 +183,14 @@ install -m 0644 ./tests/scripts/build_path.txt %{buildroot}%{test_install_dir}/t
 %files
 %manifest %{name}.manifest
 %defattr(-,root,root,-)
-%ifarch arm armv7l aarch64
+%ifarch arm armv7l aarch64 x86_64
 %{_libdir}/*.so
 %endif
 
 %files devel
 %manifest %{name}.manifest
 %defattr(-,root,root,-)
-%ifarch arm armv7l aarch64
+%ifarch arm armv7l aarch64 x86_64
 %dir %{_includedir}/nnfw
 %{_includedir}/nnfw/*
 %{_libdir}/pkgconfig/nnfw.pc
@@ -199,13 +199,13 @@ install -m 0644 ./tests/scripts/build_path.txt %{buildroot}%{test_install_dir}/t
 %files plugin-devel
 %manifest %{name}.manifest
 %defattr(-,root,root,-)
-%ifarch arm armv7l aarch64
+%ifarch arm armv7l aarch64 x86_64
 %dir %{_includedir}/onert
 %{_includedir}/onert/*
 %{_libdir}/pkgconfig/nnfw-plugin.pc
 %endif
 
-%ifarch arm armv7l aarch64
+%ifarch arm armv7l aarch64 x86_64
 %files minimal-app
 %manifest %{name}.manifest
 %defattr(-,root,root,-)
@@ -216,7 +216,7 @@ install -m 0644 ./tests/scripts/build_path.txt %{buildroot}%{test_install_dir}/t
 %files test
 %manifest %{name}.manifest
 %defattr(-,root,root,-)
-%ifarch arm armv7l aarch64
+%ifarch arm armv7l aarch64 x86_64
 %dir %{test_install_home}
 %{test_install_home}/*
 %endif # arm armv7l aarch64

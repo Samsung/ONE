@@ -55,7 +55,7 @@ NEReduceOperation::NEReduceOperation(std::shared_ptr<IMemoryManager> memory_mana
 }
 
 Status NEReduceOperation::validate(const ITensorInfo *input, const Coordinates &reduction_axis,
-                                   bool keep_dims, const ITensorInfo *output, ReduceOperation op)
+                                   bool keep_dims, const ITensorInfo *output, ReductionOperation op)
 {
   ARM_COMPUTE_UNUSED(keep_dims);
   ARM_COMPUTE_UNUSED(op);
@@ -102,7 +102,7 @@ Status NEReduceOperation::validate(const ITensorInfo *input, const Coordinates &
 }
 
 void NEReduceOperation::configure(ITensor *input, const Coordinates &reduction_axis, bool keep_dims,
-                                  ITensor *output, ReduceOperation op)
+                                  ITensor *output, ReductionOperation op)
 {
   ARM_COMPUTE_ERROR_ON_NULLPTR(input);
 

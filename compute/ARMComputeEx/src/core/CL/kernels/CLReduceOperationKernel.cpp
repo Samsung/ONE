@@ -63,7 +63,7 @@ const TensorShape inferOutputShape(const TensorShape &input_shape, const uint32_
 namespace
 {
 Status validate_arguments(const ITensorInfo *input, const ITensorInfo *output, const uint32_t axis,
-                          ReduceOperation op)
+                          ReductionOperation op)
 {
   ARM_COMPUTE_RETURN_ERROR_ON_NULLPTR(input, output);
 
@@ -74,7 +74,7 @@ Status validate_arguments(const ITensorInfo *input, const ITensorInfo *output, c
 
   ARM_COMPUTE_RETURN_ERROR_ON_DATA_TYPE_CHANNEL_NOT_IN(input, 1, DataType::QASYMM8, DataType::F16,
                                                        DataType::F32, DataType::S32);
-  if (op == ReduceOperation::SUM)
+  if (op == ReductionOperation::SUM)
   {
     ARM_COMPUTE_RETURN_ERROR_ON_MSG(input->data_type() == DataType::QASYMM8,
                                     "Not support QASYMM8, yet");
@@ -98,7 +98,7 @@ Status validate_arguments(const ITensorInfo *input, const ITensorInfo *output, c
 CLReduceOperationKernel::CLReduceOperationKernel() : _input(nullptr), _output(nullptr), _axis() {}
 
 void CLReduceOperationKernel::configure(const ICLTensor *input, ICLTensor *output,
-                                        const uint32_t axis, ReduceOperation op)
+                                        const uint32_t axis, ReductionOperation op)
 {
   ARM_COMPUTE_ERROR_ON_NULLPTR(input, output);
 
@@ -114,22 +114,22 @@ void CLReduceOperationKernel::configure(const ICLTensor *input, ICLTensor *outpu
   // Construct kernel name
   std::string kernel_name;
   int op_code = 0;
-  if (op == ReduceOperation::MAX)
+  if (op == ReductionOperation::MAX)
   {
     kernel_name = "reduce_min_max";
     op_code = 1;
   }
-  else if (op == ReduceOperation::MIN)
+  else if (op == ReductionOperation::MIN)
   {
     kernel_name = "reduce_min_max";
     op_code = 2;
   }
-  else if (op == ReduceOperation::SUM)
+  else if (op == ReductionOperation::SUM)
   {
     kernel_name = "reduce_sum_mean";
     op_code = 3;
   }
-  else if (op == ReduceOperation::MEAN)
+  else if (op == ReductionOperation::MEAN_SUM)
   {
     kernel_name = "reduce_sum_mean";
     op_code = 4;
@@ -158,7 +158,7 @@ void CLReduceOperationKernel::configure(const ICLTensor *input, ICLTensor *outpu
 }
 
 Status CLReduceOperationKernel::validate(const ITensorInfo *input, const ITensorInfo *output,
-                                         const uint32_t axis, ReduceOperation op)
+                                         const uint32_t axis, ReductionOperation op)
 {
   ARM_COMPUTE_ERROR_ON_NULLPTR(input, output);
   ARM_COMPUTE_RETURN_ON_ERROR(validate_arguments(input, output, axis, op));

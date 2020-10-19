@@ -53,7 +53,7 @@ void PostDfsIterator<is_const>::iterate(GraphRef graph, const IterFn &fn) const
       return;
     visited[index] = true;
 
-    for (const auto output : node.getOutputs() | Remove::DUPLICATED)
+    for (const auto output : node.getOutputs() | Remove::DUPLICATED | Remove::UNDEFINED)
     {
       const auto &operand = graph.operands().at(output);
       for (const auto &use : operand.getUses())
@@ -86,7 +86,7 @@ void PostDfsIterator<is_const>::iterateOpSeqs(LoweredGraphRef lowered_graph,
       return;
     visited[index] = true;
 
-    for (const auto output : op_seq.getOutputs() | Remove::DUPLICATED)
+    for (const auto output : op_seq.getOutputs() | Remove::DUPLICATED | Remove::UNDEFINED)
     {
       const auto &operand = lowered_graph.graph().operands().at(output);
       for (const auto &use : operand.getUses())

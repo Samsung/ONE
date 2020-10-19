@@ -33,11 +33,19 @@ void asymmetric_wquant_with_minmax_per_layer(CircleConst *node, float min, float
                                              float &scaling_factor, int64_t &zp, float &nudged_min,
                                              float &nudged_max);
 
+void symmetric_wquant_with_minmax_per_layer(CircleConst *node, float min, float max,
+                                            float &scaling_factor, int64_t &zp, float &nudged_min,
+                                            float &nudged_max);
+
 bool get_channel_dim_index(CircleConst *node, loco::TensorShape &dimension, int &channel_dim_index);
 
 uint32_t cal_offset(loco::TensorShape &dimension, uint32_t *indices);
 
-void propagate_concat_quantparam(luci::CircleConcatenation *concat);
+void propagate_concat_quantparam(luci::CircleConcatenation *concat, loco::DataType quant_type);
+
+bool is_weights(CircleNode *node);
+
+bool is_quantized(const CircleNode *node);
 
 } // namespace luci
 

@@ -66,8 +66,9 @@ public:
    * @param[in] alloc_type  When the thesor needs memory allocation
    */
   OperandInfo(const Shape &shape, const TypeInfo &typeInfo, MemAllocType alloc_type,
-              bool is_const = false)
-      : _shape(shape), _typeInfo(typeInfo), _alloc_type(alloc_type), _const(is_const)
+              bool is_const = false, bool is_variable = false)
+      : _shape(shape), _typeInfo(typeInfo), _alloc_type(alloc_type), _const(is_const),
+        _variable(is_variable)
   {
     // DO NOTHING
   }
@@ -117,12 +118,21 @@ public:
 
   MemAllocType memAllocType() const { return _alloc_type; }
   void setAsConstant() { _const = true; }
+  void setAsNonConst() { _const = false; }
   bool isConstant() const
   {
     // Impossible case: constant and dynamic operand
     assert(!(isDynamic() && _const));
     return _const;
   }
+  void setAsVariable()
+  {
+    // Impossible case: constant or dynamic operand
+    // The variable operand with buffer is not supported yet
+    assert(!(isDynamic() || _const));
+    _variable = true;
+  }
+  bool isVariable() const { return _variable; }
   bool isDynamic() const { return _alloc_type == MemAllocType::DYNAMIC; }
   void setDynamic() { _alloc_type = MemAllocType::DYNAMIC; }
 
@@ -132,6 +142,7 @@ private:
 
   MemAllocType _alloc_type;
   bool _const;
+  bool _variable;
 };
 
 } // namespace ir

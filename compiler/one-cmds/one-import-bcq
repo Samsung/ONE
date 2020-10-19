@@ -168,6 +168,10 @@ if [ -e ${VIRTUALENV_LINUX} ]; then
   source ${VIRTUALENV_LINUX}
 elif [ -e ${VIRTUALENV_WINDOWS} ]; then
   source ${VIRTUALENV_WINDOWS}
+else
+  echo "Error: Virtual environment not found. Please run 'one-prepare-venv' command."
+  echo "If encounter any problems, please follow provided document in 'doc' folder."
+  exit 255
 fi
 
 # remove previous log
@@ -180,35 +184,42 @@ show_err_onexit()
 
 trap show_err_onexit ERR
 
-# generate temporary preserved pb file
-echo "${DRIVER_PATH}/preserve_bcq_info" --input_path ${INPUT_PATH} \
---output_path "${TMPDIR}/${MODEL_NAME}_preserved.pb"  > "${OUTPUT_PATH}.log"
-echo " " >> "${OUTPUT_PATH}.log"
+# Generate BCQ information metadata
+# If model has no BCQ information or invalid information, pb file is not changed.
+METAGEN_SCRIPT="${DRIVER_PATH}/generate_bcq_metadata "
+METAGEN_SCRIPT+="--input_path ${INPUT_PATH} "
+METAGEN_SCRIPT+="--output_path ${TMPDIR}/${MODEL_NAME}_withmeta.pb "
+METAGEN_SCRIPT+="--output_arrays ${OUTPUT_ARRAYS} "
 
-"${DRIVER_PATH}/preserve_bcq_info" --input_path ${INPUT_PATH} \
---output_path "${TMPDIR}/${MODEL_NAME}_preserved.pb" >> "${OUTPUT_PATH}.log" 2>&1
+echo ${METAGEN_SCRIPT} > "${OUTPUT_PATH}.log"
+echo "" >> "${OUTPUT_PATH}.log"
+$METAGEN_SCRIPT >> "${OUTPUT_PATH}.log" 2>&1
 
-# generate output_arrays automatically
-echo "${DRIVER_PATH}/generate_bcq_output_arrays" \
---input_path "${TMPDIR}/${MODEL_NAME}_preserved.pb" \
---output_path "${TMPDIR}/${MODEL_NAME}_output_arrays.txt" > "${OUTPUT_PATH}.log"
-echo " " >> "${OUTPUT_PATH}.log"
+# Generate BCQ information nodes as output_arrays
+# If model has no BCQ information, output_arrays would be empty.
+OUTARR_GEN_SCRIPT="${DRIVER_PATH}/generate_bcq_output_arrays "
+OUTARR_GEN_SCRIPT+="--input_path ${TMPDIR}/${MODEL_NAME}_withmeta.pb "
+OUTARR_GEN_SCRIPT+="--metadata_path ${TMPDIR}/${MODEL_NAME}_metadata_arrays.txt "
+OUTARR_GEN_SCRIPT+="--output_arrays_path ${TMPDIR}/${MODEL_NAME}_output_arrays.txt "
 
-"${DRIVER_PATH}/generate_bcq_output_arrays" \
---input_path "${TMPDIR}/${MODEL_NAME}_preserved.pb" \
---output_path "${TMPDIR}/${MODEL_NAME}_output_arrays.txt" >> "${OUTPUT_PATH}.log" 2>&1
+echo ${OUTARR_GEN_SCRIPT} >> "${OUTPUT_PATH}.log"
+echo "" >> "${OUTPUT_PATH}.log"
+$OUTARR_GEN_SCRIPT >> "${OUTPUT_PATH}.log" 2>&1
 
-# generate temporary tflite file
+# generate tflite file
 CONVERT_SCRIPT="python ${DRIVER_PATH}/tf2tfliteV2.py ${TF_INTERFACE} "
-CONVERT_SCRIPT+="--input_path ${TMPDIR}/${MODEL_NAME}_preserved.pb "
+CONVERT_SCRIPT+="--input_path ${TMPDIR}/${MODEL_NAME}_withmeta.pb "
 CONVERT_SCRIPT+="--input_arrays ${INPUT_ARRAYS} "
 CONVERT_SCRIPT+="--output_path ${TMPDIR}/${MODEL_NAME}.tflite "
-CONVERT_SCRIPT+="--output_arrays ${OUTPUT_ARRAYS}$(cat ${TMPDIR}/${MODEL_NAME}_output_arrays.txt) "
+CONVERT_SCRIPT+="--output_arrays "
+CONVERT_SCRIPT+="$(cat ${TMPDIR}/${MODEL_NAME}_metadata_arrays.txt)"
+CONVERT_SCRIPT+="${OUTPUT_ARRAYS}"
+CONVERT_SCRIPT+="$(cat ${TMPDIR}/${MODEL_NAME}_output_arrays.txt) "
 if [ ! -z ${INPUT_SHAPES} ]; then
   CONVERT_SCRIPT+="--input_shapes ${INPUT_SHAPES} "
 fi
 
-echo ${CONVERT_SCRIPT} > "${OUTPUT_PATH}.log"
+echo ${CONVERT_SCRIPT} >> "${OUTPUT_PATH}.log"
 $CONVERT_SCRIPT >> "${OUTPUT_PATH}.log" 2>&1
 
 # convert .tflite to .circle

@@ -16,10 +16,22 @@ set(SOURCES
     DepthToSpace.cpp
     DepthwiseConv2D.h
     DepthwiseConv2D.cpp
+    Div.h
+    Div.cpp
     Elu.h
     Elu.cpp
+    Floor.h
+    Floor.cpp
+    FloorDiv.h
+    FloorDiv.cpp
+    Equal.h
+    Equal.cpp
     FullyConnected.h
     FullyConnected.cpp
+    Greater.h
+    Greater.cpp
+    GreaterEqual.h
+    GreaterEqual.cpp
     If.h
     If.cpp
     L2Normalize.h
@@ -28,20 +40,32 @@ set(SOURCES
     L2Pool2D.cpp
     LeakyRelu.h
     LeakyRelu.cpp
+    Less.h
+    Less.cpp
+    LessEqual.h
+    LessEqual.cpp
     LocalResponseNormalization.h
     LocalResponseNormalization.cpp
     Logistic.h
     Logistic.cpp
     LogSoftmax.h
     LogSoftmax.cpp
+    Maximum.h
+    Maximum.cpp
     MaxPool2D.h
     MaxPool2D.cpp
     Mean.h
     Mean.cpp
+    Minimum.h
+    Minimum.cpp
     Mul.h
     Mul.cpp
+    NotEqual.h
+    NotEqual.cpp
     Pad.h
     Pad.cpp
+    Pow.h
+    Pow.cpp
     Prelu.h
     Prelu.cpp
     Relu.h
@@ -72,6 +96,8 @@ set(SOURCES
     Sqrt.cpp
     Squeeze.h
     Squeeze.cpp
+    Sub.h
+    Sub.cpp
     Tanh.h
     Tanh.cpp
     Transpose.h
@@ -81,7 +107,11 @@ set(SOURCES
     Unpack.h
     Unpack.cpp)
 
-list(APPEND SOURCES Utils.h Utils.cpp ${TensorFlowSource_DIR}/tensorflow/lite/kernels/internal/quantization_util.cc)
+list(APPEND SOURCES
+    BinaryOpCommon.h
+    Utils.h
+    Utils.cpp
+    ${TensorFlowSource_DIR}/tensorflow/lite/kernels/internal/quantization_util.cc)
 
 add_library(luci_interpreter_kernels STATIC ${SOURCES})
 set_target_properties(luci_interpreter_kernels PROPERTIES POSITION_INDEPENDENT_CODE ON)
@@ -104,19 +134,31 @@ set(TEST_SOURCES
     Conv2D.test.cpp
     DepthToSpace.test.cpp
     DepthwiseConv2D.test.cpp
+    Div.test.cpp
     Elu.test.cpp
+    Floor.test.cpp
+    FloorDiv.test.cpp
+    Equal.test.cpp
     FullyConnected.test.cpp
+    Greater.test.cpp
+    GreaterEqual.test.cpp
     If.test.cpp
     L2Normalize.test.cpp
     L2Pool2D.test.cpp
     LeakyRelu.test.cpp
+    Less.test.cpp
+    LessEqual.test.cpp
     LocalResponseNormalization.test.cpp
     Logistic.test.cpp
     LogSoftmax.test.cpp
+    Maximum.test.cpp
     MaxPool2D.test.cpp
     Mean.test.cpp
+    Minimum.test.cpp
     Mul.test.cpp
+    NotEqual.test.cpp
     Pad.test.cpp
+    Pow.test.cpp
     Prelu.test.cpp
     Relu.test.cpp
     Relu6.test.cpp
@@ -132,6 +174,7 @@ set(TEST_SOURCES
     StridedSlice.test.cpp
     Sqrt.test.cpp
     Squeeze.test.cpp
+    Sub.test.cpp
     Tanh.test.cpp
     Transpose.test.cpp
     TransposeConv.test.cpp

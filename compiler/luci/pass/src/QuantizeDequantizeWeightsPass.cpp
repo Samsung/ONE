@@ -303,45 +303,6 @@ void asymmetric_wdequant_with_minmax_per_layer(CircleConst *node, float scaling_
   }
 }
 
-bool is_quantized(const CircleNode *node)
-{
-  return node->dtype() == loco::DataType::U8 ||  // activation, weight
-         node->dtype() == loco::DataType::S16 || // activation, weight
-         node->dtype() == loco::DataType::S32;   // bias
-}
-
-// Check if node is weights of conv2d, transepose_conv2d, depthwise_conv2d, or fully_connected layer
-bool is_weights(CircleNode *node)
-{
-  auto circle_const = dynamic_cast<CircleConst *>(node);
-  if (circle_const == nullptr)
-    return false;
-
-  auto succs = loco::succs(node);
-  if (succs.size() != 1) // assume weights is used by only one node
-    return false;
-
-  for (auto out : succs)
-  {
-    auto conv = dynamic_cast<CircleConv2D *>(out);
-    if (conv != nullptr && conv->filter() == circle_const && circle_const->rank() == 4)
-      return true;
-
-    auto dw_conv = dynamic_cast<CircleDepthwiseConv2D *>(out);
-    if (dw_conv != nullptr && dw_conv->filter() == circle_const && circle_const->rank() == 4)
-      return true;
-
-    auto tw_conv = dynamic_cast<CircleTransposeConv *>(out);
-    if (tw_conv != nullptr && tw_conv->filter() == circle_const && circle_const->rank() == 4)
-      return true;
-
-    auto fc = dynamic_cast<CircleFullyConnected *>(out);
-    if (fc != nullptr && fc->weights() == circle_const && circle_const->rank() == 2)
-      return true;
-  }
-  return false;
-}
-
 /**
  * @brief QuantizeDequantizeWeights quantizes and dequantizes tensors for weights
  * @details Find min/max values on the fly, quantize the model, and dequantize the model

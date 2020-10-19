@@ -246,9 +246,8 @@ inline void BinaryArithmeticOp(const BinaryArithmeticOpParam &params, const Shap
                      output_data);
       break;
     case nnfw::cker::BinaryArithmeticOpType::DIV:
-      reference::BinaryArithmeticOp<float>(params, input1_shape, input1_data, input2_shape,
-                                           input2_data, output_shape, output_data,
-                                           GetBinaryArtithmeticFn<op_type, float>());
+      optimized::Div(params, input1_shape, input1_data, input2_shape, input2_data, output_shape,
+                     output_data);
       break;
     default:
       assert(false);
@@ -312,7 +311,13 @@ inline void BroadcastBinaryArithmeticOp(BinaryArithmeticOpParam &params, const S
                                       output_shape, output_data);
       break;
     case nnfw::cker::BinaryArithmeticOpType::SUB:
+      optimized::BroadcastSubDispatch(params, input1_shape, input1_data, input2_shape, input2_data,
+                                      output_shape, output_data);
+      break;
     case nnfw::cker::BinaryArithmeticOpType::DIV:
+      optimized::BroadcastDivDispatch(params, input1_shape, input1_data, input2_shape, input2_data,
+                                      output_shape, output_data);
+      break;
     case nnfw::cker::BinaryArithmeticOpType::POW:
       reference::BroadcastBinaryArithmeticOpSlow<float>(
           params, input1_shape, input1_data, input2_shape, input2_data, output_shape, output_data,

@@ -31,8 +31,16 @@ void LSTM::accept(OperationVisitor &v) const { v.visit(*this); }
 
 LSTM::LSTM(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs,
            const Param &param)
-    : Operation{OperandConstraint::createExact(23u), inputs, outputs}, _param{param}
+    : Operation{OperandConstraint::createInRange(20u, 24u), inputs, outputs}, _param{param}
 {
+}
+
+std::string LSTM::name() const
+{
+  if (getOutputs().at(Output::SCRATCH_BUFFER).undefined())
+    return std::string{"UnidirectionalSequenceLSTM"};
+  else
+    return Operation::name();
 }
 
 } // namespace operation

@@ -37,7 +37,7 @@ This will convert Tensorflow model file (.pb) to our circle model file with appl
 To execute this command, original Tensorflow model file must include BCQ information.
 
 This command invokes following scripts internally.
-- preserve_bcq_info : Prevent BCQ information vanishing problem
+- generate_bcq_metadata : Generate BCQ metadata in the model
 - generate_bcq_info : Designate BCQ information nodes as model output automatically
 - tf2tfliteV2 : Convert Tensorflow model to tflite model
 - tflite2circle : Convert Tensorflow Lite model to circle model
@@ -81,6 +81,8 @@ one-optimize
 one-optimize provides network or operator transformation shown below.
 
 Current transformation options are
+- fold_dequantize : This removes Dequantize operation which can be folded
+- fuse_add_with_tconv: This fuses Add operator with the preceding TConv operator if possible
 - fuse_bcq: This enables Binary-Coded-bases Quantized DNNs
    - read https://arxiv.org/abs/2005.09904 for detailed information
 - fuse_instnorm: This will convert instance normalization related operators to

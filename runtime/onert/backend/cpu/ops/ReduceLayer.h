@@ -17,6 +17,8 @@
 #ifndef __ONERT_BACKEND_CPU_OPS_REDUCESUMLAYER_H__
 #define __ONERT_BACKEND_CPU_OPS_REDUCESUMLAYER_H__
 
+#include "cker/neon/neon_check.h"
+
 #include <backend/IPortableTensor.h>
 
 #include <exec/IFunction.h>
@@ -47,6 +49,7 @@ enum class ReduceType
   kMin,
   kAny,
   kAll,
+  kInvalid // For debug and initialize
 };
 
 class ReduceLayer : public ::onert::exec::IFunction
@@ -70,6 +73,8 @@ private:
   std::function<void(const IPortableTensor *input, IPortableTensor *output,
                      const std::vector<int> &axes)>
       _kernel;
+
+  ReduceType _reduceType;
 };
 
 } // namespace ops

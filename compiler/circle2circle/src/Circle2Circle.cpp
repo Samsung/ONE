@@ -60,6 +60,18 @@ int entry(int argc, char **argv)
   arser.add_argument("--all").nargs(0).required(false).default_value(false).help(
       "Enable all optimize options");
 
+  arser.add_argument("--fold_dequantize")
+      .nargs(0)
+      .required(false)
+      .default_value(false)
+      .help("This will fold dequantize op");
+
+  arser.add_argument("--fuse_add_with_tconv")
+      .nargs(0)
+      .required(false)
+      .default_value(false)
+      .help("This will fuse Add operator to Transposed Convolution operator");
+
   arser.add_argument("--fuse_batchnorm_with_tconv")
       .nargs(0)
       .required(false)
@@ -111,6 +123,41 @@ int entry(int argc, char **argv)
   arser.add_argument("input").nargs(1).type(arser::DataType::STR).help("Input circle model");
   arser.add_argument("output").nargs(1).type(arser::DataType::STR).help("Output circle model");
 
+  // sparsification argument
+  arser.add_argument("--sparsify_tensor")
+      .nargs(1)
+      .type(arser::DataType::STR)
+      .required(false)
+      .help("Tensor name that you want to sparsify");
+
+  arser.add_argument("--sparsify_traversal_order")
+      .nargs(1)
+      .type(arser::DataType::STR)
+      .required(false)
+      .default_value("0,1,2,3")
+      .help("Traversal order of dimensions. Default value: 0,1,2,3");
+
+  arser.add_argument("--sparsify_format")
+      .nargs(1)
+      .type(arser::DataType::STR)
+      .required(false)
+      .default_value("d,s")
+      .help("Format of each dimension. 'd' stands for dense, 's' stands for sparse(CSR). Default "
+            "value: d,s");
+
+  arser.add_argument("--sparsify_block_size")
+      .nargs(1)
+      .type(arser::DataType::STR)
+      .required(false)
+      .help("Size of each block dimension");
+
+  arser.add_argument("--sparsify_block_map")
+      .nargs(1)
+      .type(arser::DataType::STR)
+      .required(false)
+      .default_value("0,1")
+      .help("Map from block dimension to the original tensor dimension. Default value: 0,1");
+
   try
   {
     arser.parse(argc, argv);
@@ -130,6 +177,10 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::ResolveCustomOpBatchMatMul);
     options->enable(Algorithms::ResolveCustomOpMatMul);
   }
+  if (arser.get<bool>("--fold_dequantize"))
+    options->enable(Algorithms::FoldDequantize);
+  if (arser.get<bool>("--fuse_add_with_tconv"))
+    options->enable(Algorithms::FuseAddWithTConv);
   if (arser.get<bool>("--fuse_batchnorm_with_tconv"))
     options->enable(Algorithms::FuseBatchNormWithTConv);
   if (arser.get<bool>("--fuse_bcq"))
@@ -150,6 +201,27 @@ int entry(int argc, char **argv)
 
   std::string input_path = arser.get<std::string>("input");
   std::string output_path = arser.get<std::string>("output");
+
+  if (arser["--sparsify_tensor"])
+  {
+    options->enable(Algorithms::SparsifyTensorPass);
+    options->param(AlgorithmParameters::Sparsify_tensor_name,
+                   arser.get<std::string>("--sparsify_tensor"));
+    options->param(AlgorithmParameters::Sparsify_traversal_order,
+                   arser.get<std::string>("--sparsify_traversal_order"));
+    options->param(AlgorithmParameters::Sparsify_format,
+                   arser.get<std::string>("--sparsify_format"));
+    if (arser["--sparsify_block_size"])
+      options->param(AlgorithmParameters::Sparsify_block_size,
+                     arser.get<std::string>("--sparsify_block_size"));
+    else
+    {
+      std::cerr << "ERROR: Block size not provided" << std::endl;
+      return 255;
+    }
+    options->param(AlgorithmParameters::Sparsify_block_map,
+                   arser.get<std::string>("--sparsify_block_map"));
+  }
 
   // Load model from the file
   foder::FileLoader file_loader{input_path};
@@ -189,6 +261,7 @@ int entry(int argc, char **argv)
 
     // call luci optimizations
     optimizer.optimize(graph);
+    optimizer.sparsify(graph);
 
     if (!luci::validate(graph))
     {

@@ -138,6 +138,67 @@ void DynamicShapeInferer::visit(const ir::operation::BatchMatMul &op)
   output->applyShape(new_shape);
 }
 
+void DynamicShapeInferer::visit(const ir::operation::BCQFullyConnected &op)
+{
+  const auto input_idx{op.getInputs().at(ir::operation::BCQFullyConnected::Input::INPUT)};
+  const auto &input = _tensor_registry->getITensor(input_idx);
+
+  const auto cluster_idx{
+      op.getInputs().at(ir::operation::BCQFullyConnected::Input::WEIGHTS_CLUSTERS)};
+  const auto &cluster = _tensor_registry->getITensor(cluster_idx);
+  assert(cluster->is_constant());
+
+  if (!input->is_dynamic())
+    return;
+
+  auto input_shape = input->getShape();
+  auto cluster_shape = cluster->getShape();
+
+  auto cluster_buf = reinterpret_cast<const int32_t *>(cluster->buffer());
+  assert(cluster_buf);
+
+  ir::Shape new_shape =
+      shape_inference::inferBCQFullyConnectedShape(input_shape, cluster_shape, cluster_buf);
+
+  auto output_ind = op.getOutputs().at(0);
+  auto output = _tensor_registry->getITensor(output_ind);
+
+  output->applyShape(new_shape);
+  assert(output->buffer() != nullptr);
+}
+
+void DynamicShapeInferer::visit(const ir::operation::BCQGather &op)
+{
+  const auto indices_idx{op.getInputs().at(ir::operation::BCQGather::Input::INDICES)};
+  const auto &indices = _tensor_registry->getITensor(indices_idx);
+
+  const auto input_binary_idx{op.getInputs().at(ir::operation::BCQGather::Input::INDICES)};
+  const auto &input_binary = _tensor_registry->getITensor(input_binary_idx);
+
+  const auto cluster_idx{op.getInputs().at(ir::operation::BCQGather::Input::INPUT_CLUSTERS)};
+  const auto &cluster = _tensor_registry->getITensor(cluster_idx);
+  assert(cluster->is_constant());
+
+  if (!indices->is_dynamic())
+    return;
+
+  auto indices_shape = indices->getShape();
+  auto cluster_shape = cluster->getShape();
+  auto rank = input_binary->getShape().rank();
+
+  auto cluster_buf = reinterpret_cast<const int32_t *>(cluster->buffer());
+  assert(cluster_buf);
+
+  ir::Shape new_shape = shape_inference::inferBCQGatherShape(indices_shape, cluster_shape,
+                                                             cluster_buf, rank, op.param());
+
+  auto output_ind = op.getOutputs().at(0);
+  auto output = _tensor_registry->getITensor(output_ind);
+
+  output->applyShape(new_shape);
+  assert(output->buffer() != nullptr);
+}
+
 void DynamicShapeInferer::visit(const ir::operation::BinaryArithmetic &op)
 {
   handleBinaryArithmeticOp(op, op.getInputs().at(ir::operation::BinaryArithmetic::Input::LHS),
@@ -417,6 +478,109 @@ void DynamicShapeInferer::visit(const ir::operation::Gather &op)
 void DynamicShapeInferer::visit(const ir::operation::L2Normalization &op)
 {
   handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::L2Normalization::INPUT));
+}
+
+void DynamicShapeInferer::visit(const ir::operation::LSTM &op)
+{
+  const auto output_index{op.getOutputs().at(ir::operation::LSTM::Output::OUTPUT)};
+  auto output = _tensor_registry->getITensor(output_index);
+
+  const auto output_state_out_index{
+      op.getOutputs().at(ir::operation::LSTM::Output::OUTPUT_STATE_OUT)};
+
+  const auto cell_state_out_index{op.getOutputs().at(ir::operation::LSTM::Output::CELL_STATE_OUT)};
+
+  const auto scratch_buffer_index{op.getOutputs().at(ir::operation::LSTM::Output::SCRATCH_BUFFER)};
+
+  if (!output->is_dynamic() &&
+      !(_tensor_registry->getITensor(output_state_out_index) != nullptr &&
+        _tensor_registry->getITensor(output_state_out_index)->is_dynamic()) &&
+      !(_tensor_registry->getITensor(cell_state_out_index) != nullptr &&
+        _tensor_registry->getITensor(cell_state_out_index)->is_dynamic()) &&
+      !(_tensor_registry->getITensor(scratch_buffer_index) != nullptr &&
+        _tensor_registry->getITensor(cell_state_out_index)->is_dynamic()))
+    return;
+
+  const auto input_index{op.getInputs().at(ir::operation::LSTM::Input::INPUT)};
+  const auto input = _tensor_registry->getITensor(input_index);
+  const auto input_shape = input->getShape();
+
+  const auto input_to_output_weights_index{
+      op.getInputs().at(ir::operation::LSTM::Input::INPUT_TO_OUTPUT_WEIGHTS)};
+  const auto input_to_output_weights = _tensor_registry->getITensor(input_to_output_weights_index);
+  const auto input_to_output_weights_shape = input_to_output_weights->getShape();
+
+  const auto recurrent_to_output_weights_index{
+      op.getInputs().at(ir::operation::LSTM::Input::RECURRENT_TO_OUTPUT_WEIGHTS)};
+  const auto recurrent_to_output_weights =
+      _tensor_registry->getITensor(recurrent_to_output_weights_index);
+  const auto recurrent_to_output_weights_shape = recurrent_to_output_weights->getShape();
+
+  // re-sizing outputs
+  const int n_batch =
+      (input_shape.rank() == 3 && op.param().time_major) ? input_shape.dim(1) : input_shape.dim(0);
+  const int n_cell = input_to_output_weights_shape.dim(0);
+  const int n_output = recurrent_to_output_weights_shape.dim(1);
+  if (input_shape.rank() == 3)
+  {
+    if (op.param().time_major)
+      output->applyShape(ir::Shape{input_shape.dim(0), n_batch, n_output});
+    else
+      output->applyShape(ir::Shape{n_batch, input_shape.dim(1), n_output});
+  }
+  else
+  {
+    assert(input_shape.rank() == 2);
+    output->applyShape(ir::Shape{n_batch, n_output});
+  }
+  assert(output->buffer() != nullptr);
+
+  auto output_state_out = _tensor_registry->getITensor(output_state_out_index);
+  if (output_state_out != nullptr)
+  {
+    output_state_out->applyShape(ir::Shape{n_batch, n_output});
+    assert(output_state_out->buffer() != nullptr);
+  }
+
+  auto cell_state_out = _tensor_registry->getITensor(cell_state_out_index);
+  if (cell_state_out != nullptr)
+  {
+    cell_state_out->applyShape(ir::Shape{n_batch, n_cell});
+    assert(cell_state_out->buffer() != nullptr);
+  }
+
+  auto scratch_buffer = _tensor_registry->getITensor(scratch_buffer_index);
+  if (scratch_buffer != nullptr)
+  {
+    const auto input_to_input_weights_index{
+        op.getInputs().at(ir::operation::LSTM::Input::INPUT_TO_INPUT_WEIGHTS)};
+    const auto recurrent_to_input_weights_index{
+        op.getInputs().at(ir::operation::LSTM::Input::RECURRENT_TO_INPUT_WEIGHTS)};
+
+    const auto input_to_input_weights_shape =
+        _tensor_registry->getITensor(input_to_input_weights_index)->getShape();
+    bool has_input_to_input_weights =
+        input_to_input_weights_shape.dim(0) != 0 && input_to_input_weights_shape.dim(1) != 0;
+
+    const auto recurrent_to_input_weights_shape =
+        _tensor_registry->getITensor(recurrent_to_input_weights_index)->getShape();
+    bool has_recurrent_to_input_weights = recurrent_to_input_weights_shape.dim(0) != 0 &&
+                                          recurrent_to_input_weights_shape.dim(1) != 0;
+
+    // NOTE The cell_to_input_weights do not exist in non-peephole although regular LSTM(non-CIFG).
+    // true: no CIFG
+    // false: CIFG
+    bool has_cifg_param = has_input_to_input_weights && has_recurrent_to_input_weights;
+    if (has_cifg_param)
+    {
+      scratch_buffer->applyShape(ir::Shape{n_batch, n_cell * 4});
+    }
+    else
+    {
+      scratch_buffer->applyShape(ir::Shape{n_batch, n_cell * 3});
+    }
+    assert(scratch_buffer->buffer() != nullptr);
+  }
 }
 
 void DynamicShapeInferer::visit(const ir::operation::MatrixBandPart &op)

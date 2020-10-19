@@ -63,6 +63,9 @@ public:
   luci::CircleQuantParam *quantparam(void) const { return _quantparam; }
   void quantparam(luci::CircleQuantParam *qp) { _quantparam = qp; }
 
+  luci::SparsityParam *sparsityparam(void) const { return _sparsityparam; }
+  void sparsityparam(luci::SparsityParam *sp) { _sparsityparam = sp; }
+
 private:
   std::string _name;
 
@@ -72,6 +75,7 @@ private:
 
   luci::CircleConst *_content = nullptr;
   luci::CircleQuantParam *_quantparam = nullptr;
+  luci::SparsityParam *_sparsityparam = nullptr;
 };
 
 using CircleTensorContext = std::vector<CircleTensoInfo>;
@@ -109,6 +113,7 @@ void allocateCircleTensorInfo(CircleNode *node, CircleTensorContext &ctx)
 
   tensor_info.content(dynamic_cast<luci::CircleConst *>(node));
   tensor_info.quantparam(node->quantparam());
+  tensor_info.sparsityparam(node->sparsityparam());
 
   set_tensor_index(node, tensor_index);
 
@@ -265,6 +270,8 @@ flatbuffers::Offset<circle::Buffer> encodeOpBuffer(FlatBufferBuilder &builder, l
   {
     case loco::DataType::FLOAT32:
       return encodeOpBufferByDType<loco::DataType::FLOAT32>(builder, c);
+    case loco::DataType::S8:
+      return encodeOpBufferByDType<loco::DataType::S8>(builder, c);
     case loco::DataType::S16:
       return encodeOpBufferByDType<loco::DataType::S16>(builder, c);
     case loco::DataType::S32:
@@ -308,6 +315,34 @@ encodeQuantizationParameters(FlatBufferBuilder &builder, luci::CircleQuantParam 
                                               0, quantparam->quantized_dimension);
 }
 
+flatbuffers::Offset<circle::SparsityParameters>
+encodeSparsityParameters(FlatBufferBuilder &builder, luci::SparsityParam *sparsityparam)
+{
+  if (sparsityparam == nullptr)
+    return 0;
+
+  std::vector<flatbuffers::Offset<circle::DimensionMetadata>> dim_metadata_vec;
+  auto luci_dim_metadata = sparsityparam->dim_metadata;
+  for (auto it : luci_dim_metadata)
+  {
+    // array_segments
+    auto circle_array_segments = to_circle_sparse_index_vector(builder, it.array_segments());
+    auto circle_array_segments_type =
+        to_circle_sparse_index_vector_type(it.array_segments().type());
+
+    // array_indices
+    auto circle_array_indices = to_circle_sparse_index_vector(builder, it.array_indices());
+    auto circle_array_indices_type = to_circle_sparse_index_vector_type(it.array_indices().type());
+    auto dim_metadata = circle::CreateDimensionMetadata(
+        builder, to_circle_dimensiontype(it.format()), it.dense_size(), circle_array_segments_type,
+        circle_array_segments, circle_array_indices_type, circle_array_indices);
+    dim_metadata_vec.emplace_back(dim_metadata);
+  }
+
+  return circle::CreateSparsityParametersDirect(builder, &sparsityparam->traversal_order,
+                                                &sparsityparam->block_map, &dim_metadata_vec);
+}
+
 void exportOpDefinedTensor(const CircleTensoInfo &info, FlatBufferBuilder &builder,
                            SerializedModelData &md, SerializedGraphData &gd)
 {
@@ -322,12 +357,14 @@ void exportOpDefinedTensor(const CircleTensoInfo &info, FlatBufferBuilder &build
 
   auto quantparam = encodeQuantizationParameters(builder, info.quantparam());
 
+  auto sparsityparam = encodeSparsityParameters(builder, info.sparsityparam());
+
   auto buffer_id = static_cast<uint32_t>(md._buffers.size());
   md._buffers.push_back(buffer);
 
   auto name_offset = builder.CreateString(info.name());
   auto tensor_offset = CreateTensor(builder, shape_offset, info.dtype(), buffer_id, name_offset,
-                                    quantparam, /*is_variable*/ false);
+                                    quantparam, /*is_variable*/ false, sparsityparam);
   gd._tensors.push_back(tensor_offset);
 }
 

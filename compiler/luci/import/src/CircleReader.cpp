@@ -164,19 +164,31 @@ DimensionType luci_dim_type(const circle::DimensionType dim_type)
   }
 }
 
-SparseIndexVectorType
-luci_sparse_index_vector_type(const circle::SparseIndexVector index_vector_type)
+SparseIndexVector
+luci_sparse_index_vector(const circle::SparseIndexVectorUnion &sparse_index_vector)
 {
-  switch (index_vector_type)
+  switch (sparse_index_vector.type)
   {
     case circle::SparseIndexVector_NONE:
-      return SparseIndexVectorType::NONE;
+      return SparseIndexVector{SparseIndexVectorType::NONE, nullptr};
     case circle::SparseIndexVector_Int32Vector:
-      return SparseIndexVectorType::I32;
+    {
+      const auto const_vec_ptr =
+          static_cast<const void *>(&(sparse_index_vector.AsInt32Vector()->values));
+      return SparseIndexVector{SparseIndexVectorType::I32, const_vec_ptr};
+    }
     case circle::SparseIndexVector_Uint16Vector:
-      return SparseIndexVectorType::U16;
+    {
+      const auto const_vec_ptr =
+          static_cast<const void *>(&(sparse_index_vector.AsUint16Vector()->values));
+      return SparseIndexVector{SparseIndexVectorType::U16, const_vec_ptr};
+    }
     case circle::SparseIndexVector_Uint8Vector:
-      return SparseIndexVectorType::U8;
+    {
+      const auto const_vec_ptr =
+          static_cast<const void *>(&(sparse_index_vector.AsUint8Vector()->values));
+      return SparseIndexVector{SparseIndexVectorType::U8, const_vec_ptr};
+    }
     default:
       throw std::runtime_error("Invalid SparseIndexVector type");
   }
@@ -221,10 +233,9 @@ std::unique_ptr<SparsityParam> luci_sparsityparam(const circle::SparsityParamete
   sparsityparam->block_map = block_map;
   for (const auto &dm : dim_metadata)
   {
-    sparsityparam->dim_metadata.emplace_back(
-        luci_dim_type(dm->format), dm->dense_size,
-        luci_sparse_index_vector_type(dm->array_segments.type), dm->array_segments.value,
-        luci_sparse_index_vector_type(dm->array_indices.type), dm->array_indices.value);
+    sparsityparam->dim_metadata.emplace_back(luci_dim_type(dm->format), dm->dense_size,
+                                             luci_sparse_index_vector(dm->array_segments),
+                                             luci_sparse_index_vector(dm->array_indices));
   }
 
   return sparsityparam;

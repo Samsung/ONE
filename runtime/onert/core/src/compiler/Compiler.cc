@@ -19,6 +19,7 @@
 #include "ParamChecker.h"
 #include "ExecutorFactory.h"
 #include "OperationValidator.h"
+#include "ShapeValidator.h"
 #include "Fp32ToFp16Converter.h"
 
 #include <backend/controlflow/Config.h>
@@ -27,8 +28,12 @@
 #include "compiler/ManualScheduler.h"
 #include "compiler/HEScheduler.h"
 #include "compiler/StaticShapeInference.h"
+#include "compiler/pass/ConstantOutputPass.h"
+#include "compiler/pass/OddOutputPass.h"
+#include "compiler/pass/PassRunner.h"
 #include "exec/ExecTime.h"
 #include "ir/operation/LowerInfo.h"
+#include "ir/verifier/Verifier.h"
 #include "dumper/dot/DotDumper.h"
 #include "compiler/Linear.h"
 #include "interp/InterpExecutor.h"
@@ -132,6 +137,8 @@ std::shared_ptr<exec::ExecutorMap> Compiler::compile(void)
         backend::controlflow::Config::ID;
     _options.manual_scheduler_options.opcode_to_backend[ir::OpCode::While] =
         backend::controlflow::Config::ID;
+    _options.manual_scheduler_options.opcode_to_backend[ir::OpCode::Permute] =
+        backend::controlflow::Config::ID;
   }
 
   // FIXME This is a workaround for bcq operations, should remove it
@@ -159,9 +166,23 @@ std::shared_ptr<exec::ExecutorMap> Compiler::compile(void)
     VERBOSE(Compiler) << std::noboolalpha;
   }
 
+  _subgraphs->iterate([&](const ir::SubgraphIndex &, ir::Graph &subg) {
+    // Mandatory passes
+    pass::PassRunner{}
+        .append(std::make_unique<pass::ConstantOutputPass>(subg))
+        .append(std::make_unique<pass::OddOutputPass>(subg))
+        .run();
+  });
+
   /***************************************************
    * Prepare compilation phase
    ***************************************************/
+
+  // Check shape independent operation feature
+  // - Operand type
+  // - Shape independent parameter
+  _subgraphs->iterate(
+      [](const onert::ir::SubgraphIndex &, const ir::Graph &subg) { OperationValidator{subg}(); });
 
   auto executors = std::make_shared<exec::ExecutorMap>();
 
@@ -229,16 +250,22 @@ std::shared_ptr<exec::ExecutorMap> Compiler::compile(void)
     inferer.dump();
   }
 
-  /*************************************************************
-   *  Backend independent analysis & optimization phase finished
-   *************************************************************/
-
-  // operation validation
+  // Shape validation
+  // TODO Move shape independent feature check from ShapeValidator to OperationValidator
+  // TODO Move ShapeValidator into shape inference
+  //      - Check input tensor shape validation
+  //      - Check parameter value validation which valid value is depend on input tensor shape
+  //      - Output tensor shape validation check is needless because
+  //        static/dynamic shape inferer will make valid output shape
   for (auto &pair : lowered_subgs)
   {
     auto &lowered_subg = pair.second;
-    compiler::OperationValidator{lowered_subg->graph()}();
+    compiler::ShapeValidator{lowered_subg->graph()}();
   }
+
+  /*************************************************************
+   *  Backend independent analysis & optimization phase finished
+   *************************************************************/
 
   executors = std::make_shared<exec::ExecutorMap>();
   for (auto &pair : lowered_subgs)

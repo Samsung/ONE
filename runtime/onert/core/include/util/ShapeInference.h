@@ -47,7 +47,14 @@ ir::Shape inferArgMaxShape(const ir::Shape &input_shape, int axis, int rank);
 ir::Shape inferBatchMatMulShape(const ir::Shape &lhs_shape, const ir::Shape &rhs_shape,
                                 const ir::operation::BatchMatMul::Param &param);
 
-ir::Shape inferBroadcastToShape(const ir::Shape wshape, const int32_t *shape_buffer);
+ir::Shape inferBCQFullyConnectedShape(const ir::Shape &in_shape, const ir::Shape &cluster_shape,
+                                      const int32_t *cluster_buf);
+
+ir::Shape inferBCQGatherShape(const ir::Shape &indices_shape, const ir::Shape &cluster_shape,
+                              const int32_t *cluster_buf, int rank,
+                              const ir::operation::BCQGather::Param &param);
+
+ir::Shape inferBroadcastToShape(const ir::Shape shp_shape, const int32_t *shp_buf);
 
 ir::Shape inferConcatShape(const Shapes &in_shapes, const ir::operation::Concat::Param &param);
 
@@ -63,7 +70,7 @@ ir::Shape inferEltwiseShape(const ir::Shape &lhs_shape, const ir::Shape &rhs_sha
 
 ir::Shape inferExpandDimsShape(const ir::Shape &in_shape, int32_t axis);
 
-ir::Shape inferFillShape(const ir::Shape &in_shape, const int32_t *buf);
+ir::Shape inferFillShape(const ir::Shape &in_shape, const int32_t *in_buf);
 
 ir::Shape inferFullyConnectedShape(const ir::Shape &in_shape, const ir::Shape &ker_shape);
 
@@ -97,12 +104,12 @@ ir::Shape inferResizeBilinearShape(const ir::Shape &in_shape, const int32_t outp
 ir::Shape inferSelectShape(const ir::Shape &input_cond_shape, const ir::Shape &input_true_shape,
                            const ir::Shape &input_false_shape);
 
-ir::Shape inferSliceShape(const ir::Shape &input_shape, const int32_t *begins,
-                          const int32_t *sizes);
+ir::Shape inferSliceShape(const ir::Shape &input_shape, const int32_t *begins_buf,
+                          const int32_t *sizes_buf);
 
 ir::Shape inferSpaceToBatchNDShape(const ir::Shape &input_shape, const ir::Shape &block_shape_shape,
-                                   const ir::Shape &padding_shape, const int32_t *block_shape_data,
-                                   const int32_t *padding_data);
+                                   const ir::Shape &padding_shape, const int32_t *block_shape_buf,
+                                   const int32_t *padding_buf);
 
 ir::Shape inferSplitShape(const ir::Shape input_shape, int axis_value, int num_splits);
 
@@ -132,10 +139,11 @@ StridedSliceParams buildStridedSliceParams(const T *begin, const T *end, const T
 ir::Shape inferStridedSliceShape(const ir::Shape &input_shape, const StridedSliceParams &op_params,
                                  uint32_t rank);
 
-ir::Shape inferTileShape(const ir::Shape &in_shape, const int32_t *multiplier,
+ir::Shape inferTileShape(const ir::Shape &in_shape, const int32_t *multiplier_buf,
                          const int32_t multiplier_size);
 
-ir::Shape inferTransposeShape(const ir::Shape &in_shape, const int32_t *perm, const int32_t rank);
+ir::Shape inferTransposeShape(const ir::Shape &in_shape, const int32_t *perm_buf,
+                              const int32_t rank);
 
 ir::Shape inferUnpackShape(const ir::Shape &input_shape, int axis, int rank);
 

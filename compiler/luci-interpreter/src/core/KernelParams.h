@@ -72,6 +72,11 @@ struct DepthwiseConv2DParams
   Activation activation;
 };
 
+struct DivParams
+{
+  Activation activation;
+};
+
 struct FullyConnectedParams
 {
   Activation activation;
@@ -125,6 +130,11 @@ struct ResizeNearestNeighborParams
 {
   bool align_corners;
   bool half_pixel_centers;
+};
+
+struct SubParams
+{
+  Activation activation;
 };
 
 struct SpaceToDepthParams

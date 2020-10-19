@@ -33,6 +33,7 @@ public:
 public:
   void visit(const operation::ArgMax &) override;
   void visit(const operation::BatchToSpaceND &node) override;
+  void visit(const operation::BCQFullyConnected &node) override;
   void visit(const operation::BinaryArithmetic &node) override;
   void visit(const operation::BroadcastTo &) override;
   void visit(const operation::Comparison &) override;

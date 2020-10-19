@@ -45,5 +45,54 @@ TEST(Verifier, dag_checker)
 
   onert::ir::verifier::DAGChecker verifier;
 
-  ASSERT_EQ(verifier.verify(graph), true);
+  ASSERT_TRUE(verifier.verify(graph));
+}
+
+TEST(Verifier, neg_edge_consistency_checker_1)
+{
+  onert::ir::Graph graph;
+
+  onert::ir::Shape shape{3};
+  onert::ir::TypeInfo type{onert::ir::DataType::INT32};
+
+  auto operand1 = graph.addOperand(shape, type);
+  auto operand2 = graph.addOperand(shape, type);
+
+  graph.addInput(operand1);
+  graph.addOutput(operand2);
+
+  auto mock_op = std::make_unique<Mock>(IndexSet{operand1}, IndexSet{operand2});
+  auto op_ind = graph.addOperation(std::move(mock_op));
+
+  graph.finishBuilding();
+
+  graph.operands().at(operand1).removeUse(op_ind); // Manipulate the operand alone
+
+  onert::ir::verifier::EdgeConsistencyChecker verifier;
+  ASSERT_FALSE(verifier.verify(graph));
+}
+
+TEST(Verifier, neg_edge_consistency_checker_2)
+{
+  onert::ir::Graph graph;
+
+  onert::ir::Shape shape{3};
+  onert::ir::TypeInfo type{onert::ir::DataType::INT32};
+
+  auto operand1 = graph.addOperand(shape, type);
+  auto operand2 = graph.addOperand(shape, type);
+
+  graph.addInput(operand1);
+  graph.addOutput(operand2);
+
+  auto mock_op = std::make_unique<Mock>(IndexSet{operand1}, IndexSet{operand2});
+  auto mock_op_ptr = mock_op.get();
+  auto op_ind = graph.addOperation(std::move(mock_op));
+
+  graph.finishBuilding();
+
+  mock_op_ptr->setInputs({operand2}); // Manipulate the operation alone
+
+  onert::ir::verifier::EdgeConsistencyChecker verifier;
+  ASSERT_FALSE(verifier.verify(graph));
 }

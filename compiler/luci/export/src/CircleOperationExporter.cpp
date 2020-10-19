@@ -632,6 +632,7 @@ public:
   void visit(luci::CircleCustom *) final;
   void visit(luci::CircleDepthToSpace *) final;
   void visit(luci::CircleDepthwiseConv2D *) final;
+  void visit(luci::CircleDequantize *) final;
   void visit(luci::CircleDiv *) final;
   void visit(luci::CircleElu *) final;
   void visit(luci::CircleEqual *) final;
@@ -718,6 +719,7 @@ public:
   void visit(luci::CircleTopKV2 *) final;
   void visit(luci::CircleTranspose *) final;
   void visit(luci::CircleTransposeConv *) final;
+  void visit(luci::CircleUnidirectionalSequenceLSTM *) final;
   void visit(luci::CircleUnique *) final;
   void visit(luci::CircleUnpack *) final;
   void visit(luci::CircleWhere *) final;
@@ -864,6 +866,11 @@ void OperationExporter::visit(luci::CircleDepthwiseConv2D *node)
                                              to_circle_actfunc(node->fusedActivationFunction()),
                                              node->dilation()->w(), node->dilation()->h())
                     .Union());
+}
+
+void OperationExporter::visit(luci::CircleDequantize *node)
+{
+  export_simple(node, circle::BuiltinOperator_DEQUANTIZE);
 }
 
 void OperationExporter::visit(luci::CircleDiv *node)
@@ -1368,6 +1375,17 @@ void OperationExporter::visit(luci::CircleTransposeConv *node)
                 circle::BuiltinOptions_TransposeConvOptions,
                 CreateTransposeConvOptions(_ctx.builder, getOpPadding(node->padding()),
                                            node->stride()->w(), node->stride()->h())
+                    .Union());
+}
+
+void OperationExporter::visit(luci::CircleUnidirectionalSequenceLSTM *node)
+{
+  export_simple(node, circle::BuiltinOperator_UNIDIRECTIONAL_SEQUENCE_LSTM,
+                circle::BuiltinOptions_UnidirectionalSequenceLSTMOptions,
+                CreateUnidirectionalSequenceLSTMOptions(
+                    _ctx.builder, to_circle_actfunc(node->fusedActivationFunction()),
+                    node->cell_clip(), node->proj_clip(), node->time_major(),
+                    node->asymmetric_quantize_inputs())
                     .Union());
 }
 

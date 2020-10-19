@@ -88,8 +88,7 @@ def _get_parser():
         "-I",
         "--input_arrays",
         type=str,
-        help="Names of the input arrays, comma-separated.",
-        required=True)
+        help="Names of the input arrays, comma-separated.")
     parser.add_argument(
         "-s",
         "--input_shapes",
@@ -101,8 +100,7 @@ def _get_parser():
         "-O",
         "--output_arrays",
         type=str,
-        help="Names of the output arrays, comma-separated.",
-        required=True)
+        help="Names of the output arrays, comma-separated.")
 
     # Set default value
     parser.set_defaults(model_format="graph_def")
@@ -146,6 +144,10 @@ def _parse_array(arrays, type_fn=str):
 
 def _v1_convert(flags):
     if flags.model_format == "graph_def":
+        if not flags.input_arrays:
+            raise ValueError("--input_arrays must be provided")
+        if not flags.output_arrays:
+            raise ValueError("--output_arrays must be provided")
         input_shapes = None
         if flags.input_shapes:
             input_arrays = _parse_array(flags.input_arrays)
@@ -174,6 +176,10 @@ def _v1_convert(flags):
 
 def _v2_convert(flags):
     if flags.model_format == "graph_def":
+        if not flags.input_arrays:
+            raise ValueError("--input_arrays must be provided")
+        if not flags.output_arrays:
+            raise ValueError("--output_arrays must be provided")
         file_content = open(flags.input_path, 'rb').read()
         try:
             graph_def = tf.compat.v1.GraphDef()

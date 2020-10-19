@@ -1,0 +1,119 @@
+operand {
+  name: "filter"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 3
+    dim: 3
+    dim: 2
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+}
+operand {
+  name: "Addition"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 4
+    dim: 4
+    dim: 1
+  }
+  quant {
+    quantized_dimension: 0
+  }
+}
+operand {
+  name: "Addition_add_param"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 4
+    dim: 4
+    dim: 1
+  }
+  filler {
+    tag: "explicit"
+    arg: "1" arg: "2" arg: "3" arg: "4"
+    arg: "-1" arg: "-2" arg: "-3" arg: "-4"
+    arg: "1" arg: "2" arg: "3" arg: "4"
+    arg: "-1" arg: "-2" arg: "-3" arg: "-4"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+}
+operand {
+  name: "Hole"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 2
+    dim: 2
+    dim: 2
+  }
+  quant {
+    min: 0
+    max: 255
+    quantized_dimension: 0
+  }
+}
+operand {
+  name: "conv2d_transpose"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 4
+    dim: 4
+    dim: 1
+  }
+  quant {
+    quantized_dimension: 0
+  }
+}
+operand {
+  name: "input_size"
+  type: INT32
+  shape {
+    dim: 4
+  }
+  filler {
+    tag: "explicit"
+    arg: "1"
+    arg: "4"
+    arg: "4"
+    arg: "1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+}
+operation {
+  type: "TransposeConv"
+  input: "input_size"
+  input: "filter"
+  input: "Hole"
+  output: "conv2d_transpose"
+  transpose_conv_options {
+    padding: VALID
+    stride_w: 1
+    stride_h: 1
+  }
+}
+operation {
+  type: "Add"
+  input: "conv2d_transpose"
+  input: "Addition_add_param"
+  output: "Addition"
+  add_options {
+    activation: NONE
+  }
+}
+input: "Hole"
+output: "Addition"

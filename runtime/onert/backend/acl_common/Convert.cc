@@ -324,16 +324,16 @@ arm_compute::PoolingType convertPoolType(ir::operation::Pool2D::PoolType pool_ty
   }
 }
 
-arm_compute::ReduceOperation convertReduceType(ir::operation::Reduce::ReduceType reduce_type_ir)
+arm_compute::ReductionOperation convertReduceType(ir::operation::Reduce::ReduceType reduce_type_ir)
 {
   switch (reduce_type_ir)
   {
     case ir::operation::Reduce::ReduceType::MAX:
-      return arm_compute::ReduceOperation::MAX;
+      return arm_compute::ReductionOperation::MAX;
     case ir::operation::Reduce::ReduceType::MIN:
-      return arm_compute::ReduceOperation::MIN;
+      return arm_compute::ReductionOperation::MIN;
     case ir::operation::Reduce::ReduceType::SUM:
-      return arm_compute::ReduceOperation::SUM;
+      return arm_compute::ReductionOperation::SUM;
     default:
       throw std::runtime_error("convertReduceType: Not supported operation yet");
   }

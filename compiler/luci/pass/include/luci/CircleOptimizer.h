@@ -32,6 +32,7 @@ public:
   {
     enum Algorithm
     {
+      FuseAddWithTConv,
       FuseBatchNormWithTConv,
       FuseBCQ,
       FuseInstanceNorm,
@@ -41,13 +42,23 @@ public:
       QuantizeDequantizeWeights,
       QuantizeWithMinMax,
       Requantize,
+      FoldDequantize,
+      SparsifyTensorPass,
     };
 
     enum AlgorithmParameters
     {
+      // quantize
       Quantize_input_dtype,
       Quantize_output_dtype,
-      Quantize_granularity // layer-wise or channel-wise
+      Quantize_granularity, // layer-wise or channel-wise
+
+      // sparsify
+      Sparsify_tensor_name,
+      Sparsify_traversal_order,
+      Sparsify_format,
+      Sparsify_block_size,
+      Sparsify_block_map,
     };
 
     virtual ~Options() = default;
@@ -66,6 +77,8 @@ public:
   void optimize(loco::Graph *) const;
 
   void quantize(loco::Graph *) const;
+
+  void sparsify(loco::Graph *) const;
 
 private:
   std::unique_ptr<Options> _options;

@@ -31,3 +31,18 @@ TEST_F(GenModelTest, OneOp_LeakyRelu)
 
   SUCCEED();
 }
+
+TEST_F(GenModelTest, neg_OneOp_LeakyRelu_InvalidType)
+{
+  CircleGen cgen;
+  int in = cgen.addTensor({{2, 3}, circle::TensorType::TensorType_UINT8});
+  int out = cgen.addTensor({{2, 3}, circle::TensorType::TensorType_FLOAT32});
+  cgen.addOperatorLeakyRelu({{in}, {out}}, 0.5);
+  cgen.setInputsAndOutputs({in}, {out});
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->setBackends({"acl_cl", "acl_neon"});
+  _context->expectFailCompile();
+
+  SUCCEED();
+}

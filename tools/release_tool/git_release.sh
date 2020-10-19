@@ -5,7 +5,7 @@
 getopt --test > /dev/null
 if [ $? -ne 4 ]; then
   echo "[ERROR] Your system doesn't have enhanced getopt"
-  echo 2
+  exit 2
 fi
 
 function Usage()

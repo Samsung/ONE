@@ -58,12 +58,10 @@ void KernelGenerator::visit(const ir::OpSequence &op_seq)
     dyn_ctx->op_seq = &op_seq;
     dyn_ctx->operations = &_graph.operations();
     dyn_ctx->dynamic_shape_inferer = std::move(dyn_shape_inferer);
-    dyn_ctx->tensor_registry = _tensor_reg;
     dyn_ctx->dynamic_tensor_manager = _dyn_tensor_manager;
 
     _return_fn_seq->dynamic_tensor_ctx(dyn_ctx);
   }
-  _return_fn_seq->enableDynamicShapeInferer(true);
 
   for (const auto &op_idx : op_seq.operations())
   {

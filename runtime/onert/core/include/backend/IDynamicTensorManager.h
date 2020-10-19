@@ -52,12 +52,6 @@ public:
    * @note  This will work after calling planDealloc
    */
   virtual void deallocInput(ir::OperationIndex op_ind) = 0;
-
-  /**
-   * @brief Deallocate an output tensor if the tensor is a dynamic tensor
-   * @note  This will work after calling planDealloc
-   */
-  virtual void deallocSubgraphOutput(ir::OperandIndex ind) = 0;
 };
 
 } // namespace backend

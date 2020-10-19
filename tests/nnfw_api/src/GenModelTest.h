@@ -165,14 +165,14 @@ public:
    *
    * @return bool test is defined to fail on model load
    */
-  bool expected_expected_fail_model_load() const { return _expected_fail_model_load; }
+  bool expected_fail_model_load() const { return _expected_fail_model_load; }
 
   /**
    * @brief Return test is defined to fail on compile
    *
    * @return bool test is defined to fail on compile
    */
-  bool expected_expected_fail_compile() const { return _expected_fail_compile; }
+  bool expected_fail_compile() const { return _expected_fail_compile; }
 
   /**
    * @brief Set the output buffer size of specified output tensor
@@ -266,7 +266,7 @@ protected:
       auto &cbuf = _context->cbuf();
       auto model_load_result =
           nnfw_load_circle_from_buffer(_so.session, cbuf.buffer(), cbuf.size());
-      if (_context->expected_expected_fail_model_load())
+      if (_context->expected_fail_model_load())
       {
         ASSERT_NE(model_load_result, NNFW_STATUS_NO_ERROR);
         std::cerr << "Failed model loading as expected." << std::endl;
@@ -276,7 +276,7 @@ protected:
       NNFW_ENSURE_SUCCESS(model_load_result);
       NNFW_ENSURE_SUCCESS(nnfw_set_available_backends(_so.session, backend.data()));
 
-      if (_context->expected_expected_fail_compile())
+      if (_context->expected_fail_compile())
       {
         ASSERT_EQ(nnfw_prepare(_so.session), NNFW_STATUS_ERROR);
 
@@ -371,14 +371,13 @@ protected:
           switch (ti.dtype)
           {
             case NNFW_TYPE_TENSOR_BOOL:
-              // TODO Check if this comparison is correct
-              compareBuffersExact<bool>(ref_output, output);
+              compareBuffersExactBool(ref_output, output, i);
               break;
             case NNFW_TYPE_TENSOR_UINT8:
-              compareBuffersExact<uint8_t>(ref_output, output);
+              compareBuffersExact<uint8_t>(ref_output, output, i);
               break;
             case NNFW_TYPE_TENSOR_INT32:
-              compareBuffersExact<int32_t>(ref_output, output);
+              compareBuffersExact<int32_t>(ref_output, output, i);
               break;
             case NNFW_TYPE_TENSOR_FLOAT32:
               // TODO better way for handling FP error?
@@ -386,11 +385,11 @@ protected:
               {
                 float refval = reinterpret_cast<const float *>(ref_output.data())[e];
                 float val = reinterpret_cast<const float *>(output.data())[e];
-                EXPECT_NEAR(refval, val, 0.001) << "e == " << e;
+                EXPECT_NEAR(refval, val, 0.001) << "Output #" << i << ", Element Index : " << e;
               }
               break;
             case NNFW_TYPE_TENSOR_INT64:
-              compareBuffersExact<int64_t>(ref_output, output);
+              compareBuffersExact<int64_t>(ref_output, output, i);
               break;
             case NNFW_TYPE_TENSOR_QUANT8_ASYMM:
               throw std::runtime_error{"NYI : comparison of tensors of QUANT8_ASYMM"};
@@ -407,13 +406,27 @@ protected:
 
 private:
   template <typename T>
-  void compareBuffersExact(const std::vector<uint8_t> &ref_buf, const std::vector<uint8_t> &act_buf)
+  void compareBuffersExact(const std::vector<uint8_t> &ref_buf, const std::vector<uint8_t> &act_buf,
+                           uint32_t index)
   {
     for (uint32_t e = 0; e < ref_buf.size() / sizeof(T); e++)
     {
-      float ref = reinterpret_cast<const T *>(ref_buf.data())[e];
-      float act = reinterpret_cast<const T *>(act_buf.data())[e];
-      EXPECT_EQ(ref, act) << "index == " << e;
+      T ref = reinterpret_cast<const T *>(ref_buf.data())[e];
+      T act = reinterpret_cast<const T *>(act_buf.data())[e];
+      EXPECT_EQ(ref, act) << "Output #" << index << ", Element Index : " << e;
+    }
+  }
+
+  void compareBuffersExactBool(const std::vector<uint8_t> &ref_buf,
+                               const std::vector<uint8_t> &act_buf, uint32_t index)
+  {
+    for (uint32_t e = 0; e < ref_buf.size() / sizeof(uint8_t); e++)
+    {
+      uint8_t ref_raw = reinterpret_cast<const uint8_t *>(ref_buf.data())[e];
+      bool ref = (ref_raw != 0 ? true : false);
+      uint8_t act_raw = reinterpret_cast<const uint8_t *>(act_buf.data())[e];
+      bool act = (act_raw != 0 ? true : false);
+      EXPECT_EQ(ref, act) << "Output #" << index << ", Element Index : " << e;
     }
   }
 

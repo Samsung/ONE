@@ -110,6 +110,7 @@ std::unique_ptr<ModelRecipe> generate_recipe(const tflite::Model *model)
 
     operand->set_name(tensor_name(tensor));
     operand->set_type(as_tflchef_type(tensor->type()));
+    operand->set_is_variable(tensor->is_variable());
 
     if (tensor->shape())
     {

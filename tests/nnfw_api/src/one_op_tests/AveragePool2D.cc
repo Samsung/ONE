@@ -47,3 +47,78 @@ TEST_F(GenModelTest, neg_OneOp_AvgPool2D)
 
   SUCCEED();
 }
+
+TEST_F(GenModelTest, neg_OneOp_AvgPool2D_InvalidPaddingType)
+{
+  CircleGen cgen;
+  int in = cgen.addTensor({{2, 2, 1}, circle::TensorType::TensorType_FLOAT32});
+  int out = cgen.addTensor({{1, 1, 1}, circle::TensorType::TensorType_FLOAT32});
+  cgen.addOperatorAveragePool2D({{in}, {out}}, static_cast<circle::Padding>(99), 2, 2, 2, 2,
+                                circle::ActivationFunctionType_NONE);
+  cgen.setInputsAndOutputs({in}, {out});
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->expectFailModelLoad();
+
+  SUCCEED();
+}
+
+TEST_F(GenModelTest, neg_OneOp_AvgPool2D_InvalidFilterSize_1)
+{
+  CircleGen cgen;
+  int in = cgen.addTensor({{2, 2, 1}, circle::TensorType::TensorType_FLOAT32});
+  int out = cgen.addTensor({{1, 1, 1}, circle::TensorType::TensorType_FLOAT32});
+  cgen.addOperatorAveragePool2D({{in}, {out}}, circle::Padding_SAME, 2, 2, -1, 2,
+                                circle::ActivationFunctionType_NONE);
+  cgen.setInputsAndOutputs({in}, {out});
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->expectFailModelLoad();
+
+  SUCCEED();
+}
+
+TEST_F(GenModelTest, neg_OneOp_AvgPool2D_InvalidFilterSize_2)
+{
+  CircleGen cgen;
+  int in = cgen.addTensor({{2, 2, 1}, circle::TensorType::TensorType_FLOAT32});
+  int out = cgen.addTensor({{1, 1, 1}, circle::TensorType::TensorType_FLOAT32});
+  cgen.addOperatorAveragePool2D({{in}, {out}}, circle::Padding_SAME, 2, 2, 2, 0,
+                                circle::ActivationFunctionType_NONE);
+  cgen.setInputsAndOutputs({in}, {out});
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->expectFailModelLoad();
+
+  SUCCEED();
+}
+
+TEST_F(GenModelTest, neg_OneOp_AvgPool2D_InvalidStrides_1)
+{
+  CircleGen cgen;
+  int in = cgen.addTensor({{2, 2, 1}, circle::TensorType::TensorType_FLOAT32});
+  int out = cgen.addTensor({{1, 1, 1}, circle::TensorType::TensorType_FLOAT32});
+  cgen.addOperatorAveragePool2D({{in}, {out}}, circle::Padding_SAME, 0, 2, 2, 2,
+                                circle::ActivationFunctionType_NONE);
+  cgen.setInputsAndOutputs({in}, {out});
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->expectFailModelLoad();
+
+  SUCCEED();
+}
+
+TEST_F(GenModelTest, neg_OneOp_AvgPool2D_InvalidStrides_2)
+{
+  CircleGen cgen;
+  int in = cgen.addTensor({{2, 2, 1}, circle::TensorType::TensorType_FLOAT32});
+  int out = cgen.addTensor({{1, 1, 1}, circle::TensorType::TensorType_FLOAT32});
+  cgen.addOperatorAveragePool2D({{in}, {out}}, circle::Padding_SAME, 1, -100, 2, 2,
+                                circle::ActivationFunctionType_NONE);
+  cgen.setInputsAndOutputs({in}, {out});
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->expectFailModelLoad();
+
+  SUCCEED();
+}

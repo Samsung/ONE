@@ -40,7 +40,6 @@
 
 #include "arm_compute/runtime/CL/functions/CLReduceOperation.h"
 
-#include "arm_compute/core/CL/kernels/CLReduceOperationKernel.h"
 #include "arm_compute/core/TensorShape.h"
 #include "arm_compute/runtime/CL/CLScheduler.h"
 
@@ -54,7 +53,7 @@ CLReduceOperation::CLReduceOperation(std::shared_ptr<IMemoryManager> memory_mana
 
 Status CLReduceOperation::validate(const ITensorInfo *input, const ITensorInfo *output,
                                    const std::set<uint32_t> &axis, bool keep_dims,
-                                   const ReduceOperation &op)
+                                   const ReductionOperation &op)
 {
   const size_t num_of_kernels = axis.size();
   const size_t num_of_interm_tensors = num_of_kernels - (keep_dims ? 1 : 0);
@@ -106,7 +105,7 @@ Status CLReduceOperation::validate(const ITensorInfo *input, const ITensorInfo *
 
 void CLReduceOperation::configure(ICLTensor *input, ICLTensor *output,
                                   const std::set<uint32_t> &axis, bool keep_dims,
-                                  ReduceOperation op)
+                                  ReductionOperation op)
 {
   ARM_COMPUTE_ERROR_THROW_ON(validate(input->info(), output->info(), axis, keep_dims, op));
 
@@ -137,7 +136,7 @@ void CLReduceOperation::configure(ICLTensor *input, ICLTensor *output,
   }
   tensors.emplace_back(output);
 
-  // Apply ReduceOperation on all kernels
+  // Apply ReductionOperation on all kernels
   TensorShape shape{input->info()->tensor_shape()};
   auto it = axis.begin();
   for (size_t i = 0; i < num_of_kernels; ++i, ++it)

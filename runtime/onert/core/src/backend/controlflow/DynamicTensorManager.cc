@@ -17,6 +17,7 @@
 #include "DynamicTensorManager.h"
 
 #include "util/logging.h"
+#include "misc/polymorphic_downcast.h"
 
 namespace onert
 {
@@ -58,19 +59,13 @@ void DynamicTensorManager::deallocInput(ir::OperationIndex op_ind)
       continue;
 
     _dynamic_mem_mgr->deallocate(tensor);
+
+    auto *cpu_tensor = nnfw::misc::polymorphic_downcast<cpu_common::Tensor *>(tensor);
+    cpu_tensor->resetBuffer();
+
     VERBOSE(DynamicTensorManager) << "Deallocating a tensor " << (void *)tensor
                                   << " (input of op_ind: " << op_ind.value() << ")" << std::endl;
   }
-}
-
-void DynamicTensorManager::deallocSubgraphOutput(ir::OperandIndex output_ind)
-{
-  if (!_tensors->getNativeTensor(output_ind)->is_dynamic())
-    return;
-
-  _dynamic_mem_mgr->deallocate(getRawITensor(output_ind));
-  VERBOSE(DynamicTensorManager) << "Deallocating #" << output_ind.value()
-                                << " (output of a subgraph)" << std::endl;
 }
 
 const ITensor *DynamicTensorManager::getRawITensor(ir::OperandIndex ind)

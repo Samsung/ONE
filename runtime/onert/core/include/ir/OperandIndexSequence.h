@@ -82,6 +82,8 @@ public:
 public:
   std::vector<OperandIndex>::const_iterator begin(void) const { return _vec.begin(); }
   std::vector<OperandIndex>::const_iterator end(void) const { return _vec.end(); }
+  std::vector<OperandIndex>::iterator begin(void) { return _vec.begin(); }
+  std::vector<OperandIndex>::iterator end(void) { return _vec.end(); }
 
 private:
   std::vector<OperandIndex> _vec;

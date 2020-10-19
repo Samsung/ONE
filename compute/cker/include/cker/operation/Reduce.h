@@ -21,6 +21,7 @@
 #include "cker/Shape.h"
 #include "cker/Types.h"
 #include "cker/Utils.h"
+#include "cker/neon/neon_check.h"
 
 namespace nnfw
 {
@@ -30,6 +31,74 @@ namespace cker
 // A generic reduce method that can be used for reduce_sum, reduce_mean, etc.
 // This method iterates through input data and reduce elements along the
 // dimensions given in axis.
+
+#ifdef USE_NEON
+inline void OptimizedReduceSum(const float *input_data, const Shape &input_shape,
+                               float *output_data)
+{
+  const auto input_dims = input_shape.DimsData();
+  const auto input_num_dims = input_shape.DimensionsCount();
+
+  int input_size = 1;
+  int reduce_size = 0;
+  for (int idx = 0; idx < input_num_dims - 1; idx++)
+  {
+    input_size *= input_dims[idx];
+  }
+  reduce_size = input_dims[input_num_dims - 1];
+  for (int idx = 0; idx < input_size; idx++)
+  {
+    int r_idx = 0;
+    float tmp_data[4] = {
+        0,
+    };
+    float32x4_t tmp_data_32x4 = vld1q_f32(tmp_data);
+    for (; r_idx <= reduce_size - 32; r_idx += 32)
+    {
+      float32x4_t a10 = vld1q_f32(input_data + r_idx);
+      float32x4_t a11 = vld1q_f32(input_data + r_idx + 4);
+      float32x4_t a12 = vld1q_f32(input_data + r_idx + 8);
+      float32x4_t a13 = vld1q_f32(input_data + r_idx + 12);
+      float32x4_t a20 = vld1q_f32(input_data + r_idx + 16);
+      float32x4_t a21 = vld1q_f32(input_data + r_idx + 20);
+      float32x4_t a22 = vld1q_f32(input_data + r_idx + 24);
+      float32x4_t a23 = vld1q_f32(input_data + r_idx + 28);
+
+      float32x4_t x0 = vaddq_f32(a10, a20);
+      float32x4_t x1 = vaddq_f32(a11, a21);
+      float32x4_t x2 = vaddq_f32(a12, a22);
+      float32x4_t x3 = vaddq_f32(a13, a23);
+
+      float32x4_t y0 = vaddq_f32(x0, x1);
+      float32x4_t y1 = vaddq_f32(x2, x3);
+      float32x4_t y2 = vaddq_f32(y0, y1);
+      tmp_data_32x4 = vaddq_f32(tmp_data_32x4, y2);
+    }
+    for (; r_idx <= reduce_size - 8; r_idx += 8)
+    {
+      float32x4_t a1 = vld1q_f32(input_data + r_idx);
+      float32x4_t a2 = vld1q_f32(input_data + r_idx + 4);
+      float32x4_t x = vaddq_f32(a1, a2);
+      tmp_data_32x4 = vaddq_f32(tmp_data_32x4, x);
+    }
+    vst1q_f32(tmp_data, tmp_data_32x4);
+    output_data[idx] = tmp_data[0] + tmp_data[1] + tmp_data[2] + tmp_data[3];
+
+    for (; r_idx < reduce_size; r_idx++)
+    {
+      if (r_idx == 0)
+      {
+        output_data[idx] = input_data[idx * reduce_size];
+      }
+      else
+      {
+        output_data[idx] += input_data[idx * reduce_size + r_idx];
+      }
+    }
+  }
+}
+#endif // NEON
+
 template <typename In, typename Out>
 inline bool ReduceImpl(const In *input_data, const Shape &input_shape, const Shape &,
                        const int *axis, const int num_axis, int *input_iter,
@@ -39,6 +108,32 @@ inline bool ReduceImpl(const In *input_data, const Shape &input_shape, const Sha
   const auto input_num_dims = input_shape.DimensionsCount();
 
   // Reset input iterator.
+  if (num_axis == 1 && axis[0] == input_num_dims - 1)
+  {
+    int input_size = 1;
+    int reduce_size = 0;
+    for (int idx = 0; idx < input_num_dims - 1; idx++)
+    {
+      input_size *= input_dims[idx];
+    }
+    reduce_size = input_dims[input_num_dims - 1];
+    for (int idx = 0; idx < input_size; idx++)
+    {
+      for (int r_idx = 0; r_idx < reduce_size; r_idx++)
+      {
+        if (r_idx == 0)
+        {
+          output_data[idx] = input_data[idx * reduce_size];
+        }
+        else
+        {
+          output_data[idx] = reducer(output_data[idx], input_data[idx * reduce_size + r_idx]);
+        }
+      }
+    }
+    return true;
+  }
+
   for (int idx = 0; idx < input_num_dims; ++idx)
   {
     input_iter[idx] = 0;

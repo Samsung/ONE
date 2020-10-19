@@ -45,6 +45,7 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   CIRCLE_NODE(COS, CircleCosGraphBuilder);                                                 // 108
   CIRCLE_NODE(DEPTH_TO_SPACE, CircleDepthToSpaceGraphBuilder);                             // 5
   CIRCLE_NODE(DEPTHWISE_CONV_2D, CircleDepthwiseConv2DGraphBuilder);                       // 4
+  CIRCLE_NODE(DEQUANTIZE, CircleDequantizeGraphBuilder);                                   // 6
   CIRCLE_NODE(DIV, CircleDivGraphBuilder);                                                 // 42
   CIRCLE_NODE(ELU, CircleEluGraphBuilder);                                                 // 111
   CIRCLE_NODE(EQUAL, CircleEqualGraphBuilder);                                             // 71
@@ -132,6 +133,7 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   CIRCLE_NODE(TOPK_V2, CircleTopKV2GraphBuilder);                                          // 48
   CIRCLE_NODE(TRANSPOSE, CircleTransposeGraphBuilder);                                     // 39
   CIRCLE_NODE(TRANSPOSE_CONV, CircleTransposeConvGraphBuilder);                            // 67
+  CIRCLE_NODE(UNIDIRECTIONAL_SEQUENCE_LSTM, CircleUnidirectionalSequenceLSTMGraphBuilder); // 44
   CIRCLE_NODE(UNIQUE, CircleUniqueGraphBuilder);                                           // 103
   CIRCLE_NODE(UNPACK, CircleUnpackGraphBuilder);                                           // 88
   CIRCLE_NODE(WHERE, CircleWhereGraphBuilder);                                             // 109
@@ -140,7 +142,6 @@ GraphBuilderRegistry::GraphBuilderRegistry()
 
 #undef CIRCLE_NODE
 
-  // BuiltinOperator_DEQUANTIZE = 6,
   // BuiltinOperator_EMBEDDING_LOOKUP = 7,
   // BuiltinOperator_HASHTABLE_LOOKUP = 10,
   // BuiltinOperator_LSH_PROJECTION = 15,
@@ -152,7 +153,6 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   // BuiltinOperator_CALL = 31,
   // BuiltinOperator_EMBEDDING_LOOKUP_SPARSE = 33,
   // BuiltinOperator_UNIDIRECTIONAL_SEQUENCE_RNN = 35,
-  // BuiltinOperator_UNIDIRECTIONAL_SEQUENCE_LSTM = 44,
   // BuiltinOperator_BIDIRECTIONAL_SEQUENCE_RNN = 46,
   // BuiltinOperator_DELEGATE = 51,
   // BuiltinOperator_BIDIRECTIONAL_SEQUENCE_LSTM = 52,

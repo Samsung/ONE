@@ -44,9 +44,9 @@
 #include "arm_compute/runtime/IFunction.h"
 
 #include "arm_compute/core/NEON/kernels/NEFillBorderKernel.h"
-#include "arm_compute/core/TypesEx.h"
+#include "arm_compute/core/Types.h"
 #include "arm_compute/runtime/MemoryGroup.h"
-#include "arm_compute/runtime/NEON/functions/NEReductionOperationEx.h"
+#include "arm_compute/runtime/NEON/functions/NEReductionOperation.h"
 #include "arm_compute/runtime/NEON/functions/NEReshapeLayer.h"
 #include "arm_compute/runtime/Tensor.h"
 
@@ -71,7 +71,7 @@ public:
    * @param[in]  op             Reduce operation to perform.
    */
   void configure(ITensor *input, const Coordinates &reduction_axis, bool keep_dims, ITensor *output,
-                 ReduceOperation op);
+                 ReductionOperation op);
 
   /** Static function to check if given info will lead to a valid configuration of @ref
    * NEReduceOperation
@@ -85,14 +85,14 @@ public:
    * @return A status
    */
   static Status validate(const ITensorInfo *input, const Coordinates &reduction_axis,
-                         bool keep_dims, const ITensorInfo *output, ReduceOperation op);
+                         bool keep_dims, const ITensorInfo *output, ReductionOperation op);
 
   // Inherited methods overridden:
   void run() override;
 
 private:
   MemoryGroup _memory_group;
-  std::vector<NEReductionOperationEx> _reduction_kernels;
+  std::vector<NEReductionOperation> _reduction_kernels;
   std::vector<Tensor> _reduced_outs;
   NEReshapeLayer _reshape;
   unsigned int _reduction_ops;

@@ -51,7 +51,7 @@ bool DAGChecker::verify(const Graph &graph) const noexcept
     visited[index] = true;
     on_stack[index] = true;
 
-    for (auto output : node.getOutputs() | Remove::DUPLICATED)
+    for (auto output : node.getOutputs() | Remove::DUPLICATED | Remove::UNDEFINED)
     {
       const auto &operand = graph.operands().at(output);
       for (const auto &use : operand.getUses())
@@ -99,7 +99,7 @@ bool EdgeConsistencyChecker::verify(const Graph &graph) const noexcept
         errors += 1;
       }
     }
-    for (auto operand_index : node.getOutputs())
+    for (auto operand_index : node.getOutputs() | ir::Remove::UNDEFINED)
     {
       try
       {

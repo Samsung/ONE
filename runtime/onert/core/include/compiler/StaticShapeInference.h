@@ -70,6 +70,8 @@ private:
   // TODO Define visitors for operations. List them in alphabetic order.
   void visit(const ir::operation::ArgMax &op) override;
   void visit(const ir::operation::BatchMatMul &op) override;
+  void visit(const ir::operation::BCQFullyConnected &op) override;
+  void visit(const ir::operation::BCQGather &op) override;
   void visit(const ir::operation::BinaryArithmetic &op) override;
   void visit(const ir::operation::BroadcastTo &op) override;
   void visit(const ir::operation::Comparison &op) override;
@@ -85,6 +87,7 @@ private:
   void visit(const ir::operation::Gather &op) override;
   void visit(const ir::operation::If &op) override;
   void visit(const ir::operation::L2Normalization &op) override;
+  void visit(const ir::operation::LSTM &op) override;
   void visit(const ir::operation::MatrixBandPart &op) override;
   void visit(const ir::operation::OneHot &op) override;
   void visit(const ir::operation::Pack &op) override;
