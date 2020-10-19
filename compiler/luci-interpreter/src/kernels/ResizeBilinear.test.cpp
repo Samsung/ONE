@@ -103,6 +103,7 @@ TYPED_TEST(ResizeBilinearTest, SimpleTest)
                        10, 14, 16, //
                    },
                    false, false);
+  SUCCEED();
 }
 
 TEST(ResizeBilinearTest, HalfPixelCenterFloatTest)
@@ -124,6 +125,7 @@ TEST(ResizeBilinearTest, HalfPixelCenterFloatTest)
                    3, 3.5, 4, //
                },
                false, true);
+  SUCCEED();
 }
 
 TEST(ResizeBilinearTest, HalfPixelCenterUint8Test)
@@ -145,6 +147,7 @@ TEST(ResizeBilinearTest, HalfPixelCenterUint8Test)
                      12, 14, 16, //
                  },
                  false, true);
+  SUCCEED();
 }
 
 TEST(ResizeBilinearTest, InputShapeInvalid_NEG)
