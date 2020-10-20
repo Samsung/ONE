@@ -31,6 +31,7 @@ inline size_t sizeOfNnfwType(NNFW_TYPE type)
     case NNFW_TYPE_TENSOR_BOOL:
     case NNFW_TYPE_TENSOR_UINT8:
     case NNFW_TYPE_TENSOR_QUANT8_ASYMM:
+    case NNFW_TYPE_TENSOR_QUANT8_ASYMM_SIGNED:
       return 1;
     case NNFW_TYPE_TENSOR_FLOAT32:
     case NNFW_TYPE_TENSOR_INT32:

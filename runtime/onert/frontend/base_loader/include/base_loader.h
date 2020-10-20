@@ -262,7 +262,7 @@ ir::DataType BaseLoader<LoaderDomain>::BaseLoader::tensorTypeToDataType(const Te
     case TensorType::TensorType_UINT8:
       return ir::DataType::QUANT_UINT8_ASYMM;
     case TensorType::TensorType_INT8:
-      return ir::DataType::QUANT_INT8_SYMM;
+      return ir::DataType::QUANT_INT8_ASYMM;
     case TensorType::TensorType_INT64:
       return ir::DataType::INT64;
     default:
@@ -693,7 +693,8 @@ void BaseLoader<LoaderDomain>::loadFC(const Operator *op, ir::Graph &subg)
   auto &weights_operand =
       subg.operands().at(fc->getInputs().at(ir::operation::FullyConnected::WEIGHT));
   if (input_operand.typeInfo().type() == ir::DataType::FLOAT32 &&
-      weights_operand.typeInfo().type() == ir::DataType::QUANT_UINT8_ASYMM)
+      ((weights_operand.typeInfo().type() == ir::DataType::QUANT_UINT8_ASYMM) ||
+       weights_operand.typeInfo().type() == ir::DataType::QUANT_INT8_ASYMM))
   {
     weights_operand.type(ir::DataType::QUANT_INT8_SYMM);
   }

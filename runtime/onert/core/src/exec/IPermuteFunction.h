@@ -80,6 +80,7 @@ public:
           case ir::DataType::UINT8:
             permute<uint8_t>(src_tensor, dst_tensor, rank);
             break;
+          case ir::DataType::QUANT_INT8_ASYMM:
           case ir::DataType::QUANT_INT8_SYMM:
             permute<int8_t>(src_tensor, dst_tensor, rank);
             break;
@@ -204,6 +205,7 @@ private:
       case ir::DataType::QUANT_UINT8_ASYMM:
       case ir::DataType::UINT8:
         return typeid(uint8_t);
+      case ir::DataType::QUANT_INT8_ASYMM:
       case ir::DataType::QUANT_INT8_SYMM:
         return typeid(int8_t);
       default:

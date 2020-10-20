@@ -70,7 +70,7 @@ typedef enum {
   /** A tensor of 32 bit signed integer */
   NNFW_TYPE_TENSOR_INT32 = 1,
   /**
-   * A tensor of 8 bit integers that represent real numbers.
+   * A tensor of 8 bit unsigned integers that represent real numbers.
    *
    * real_value = (integer_value - zeroPoint) * scale.
    */
@@ -83,6 +83,13 @@ typedef enum {
 
   /** A tensor of 64 bit signed integer */
   NNFW_TYPE_TENSOR_INT64 = 5,
+
+  /**
+   * A tensor of 8 bit signed integers that represent real numbers.
+   *
+   * real_value = (integer_value - zeroPoint) * scale.
+   */
+  NNFW_TYPE_TENSOR_QUANT8_ASYMM_SIGNED = 6,
 
 } NNFW_TYPE;
 
