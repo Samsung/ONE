@@ -39,17 +39,3 @@ The expected output should include
  (1) scale, zero point of activations
  (2) scale, zero point, values of weights
  (3) scale, values (weights) of bias
-
-### Golden data
-
-Golden data was generated as follows.
-
-(1) Generate random h5 input for a target model (using gen_h5_random_inputs.py in `record-minmax-conversion-test`)
-
-(2) Run `dalgona` with the target model, input data, and analysis code named GenGoldenWeights.py for uint8 (GenGoldenWeightsSym.py for int16) (https://github.com/Samsung/ONE/pull/3501)
-
-(3) Do fake quantization using circle-quantizer
-
-(4) Run `dalgona` with the fake-quantized model, input data, and analysis code named GenGoldenActBias.py for uint8 (GenGoldenActBiasSym.py for int16) (https://github.com/Samsung/ONE/pull/3501)
-
-(5) Edit generated data for some operators (concat: scale propagation, mean: axis data)
