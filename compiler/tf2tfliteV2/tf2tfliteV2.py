@@ -18,6 +18,7 @@
 import tensorflow as tf
 import argparse
 import sys
+import tempfile
 
 from google.protobuf.message import DecodeError
 from google.protobuf import text_format as _text_format
@@ -142,6 +143,22 @@ def _parse_array(arrays, type_fn=str):
     return list(map(type_fn, arrays.split(",")))
 
 
+def _v1_convert_keras(model_path):
+    model = tf.keras.models.load_model(model_path)
+    try_saved_model = False
+    for l in model.layers:
+        if l.name in ["lstm", "simple_rnn", "gru"]:
+            try_saved_model = True
+            break
+    if try_saved_model:
+        tmpd = tempfile.TemporaryDirectory().name
+        model.save(tmpd)
+        converter = tf.compat.v1.lite.TFLiteConverter.from_saved_model(tmpd)
+    else:
+        converter = tf.compat.v1.lite.TFLiteConverter.from_keras_model_file(model_path)
+    return converter
+
+
 def _v1_convert(flags):
     if flags.model_format == "graph_def":
         if not flags.input_arrays:
@@ -165,13 +182,28 @@ def _v1_convert(flags):
         converter = tf.compat.v1.lite.TFLiteConverter.from_saved_model(flags.input_path)
 
     if flags.model_format == "keras_model":
-        converter = tf.compat.v1.lite.TFLiteConverter.from_keras_model_file(
-            flags.input_path)
+        converter = _v1_convert_keras(flags.input_path)
 
     converter.allow_custom_ops = True
 
     tflite_model = converter.convert()
     open(flags.output_path, "wb").write(tflite_model)
+
+
+def _v2_convert_keras(model_path):
+    model = tf.keras.models.load_model(model_path)
+    try_saved_model = False
+    for l in model.layers:
+        if l.name in ["lstm", "simple_rnn", "gru"]:
+            try_saved_model = True
+            break
+    if try_saved_model:
+        tmpd = tempfile.TemporaryDirectory().name
+        model.save(tmpd)
+        converter = tf.lite.TFLiteConverter.from_saved_model(tmpd)
+    else:
+        converter = tf.lite.TFLiteConverter.from_keras_model(model)
+    return converter
 
 
 def _v2_convert(flags):
@@ -206,8 +238,7 @@ def _v2_convert(flags):
         converter = tf.lite.TFLiteConverter.from_saved_model(flags.input_path)
 
     if flags.model_format == "keras_model":
-        keras_model = tf.keras.models.load_model(flags.input_path)
-        converter = tf.lite.TFLiteConverter.from_keras_model(keras_model)
+        converter = _v2_convert_keras(flags.input_path)
 
     converter.allow_custom_ops = True
     converter.experimental_new_converter = True
