@@ -39,7 +39,7 @@ TEST_F(GenModelTest, OneOp_Concat_ShareSubTensor)
   _context->addTestCase(uniformTCD<float>(
       {{1, 3, 2, 4}, {5, 4, 7, 4}},
       {{0, 0, 0, 0, 0, 6, 7, 0, 0, 9, 8, 0, 0, 0, 0, 0}, {5, 6, 4, 7, 7, 9, 4, 8}}));
-  _context->setBackends({"acl_cl", "acl_neon"});
+  _context->setBackends({"acl_cl", "acl_neon", "cpu"});
 
   SUCCEED();
 }
@@ -59,7 +59,7 @@ TEST_F(GenModelTest, OneOp_Concat)
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
   _context->addTestCase(uniformTCD<float>({{1, 2, 3, 4, 5, 6}, {7, 8, 9, 10, 11, 12}},
                                           {{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12}}));
-  _context->setBackends({"cpu;acl_cl"});
+  _context->setBackends({"acl_cl", "acl_neon", "cpu"});
 
   SUCCEED();
 }
@@ -132,7 +132,7 @@ TEST_F(GenModelTest, OneOp_Concat_Subtensor_4D)
           {1, 2, 3,  4,  5,  1,  2,  3, 4, 5, 6, 7, 8,  9,  10, 1,  2, 3,
            4, 5, 11, 12, 13, 14, 15, 1, 2, 3, 4, 5, 16, 17, 18, 19, 20} // final_out
       }));
-  _context->setBackends({"acl_cl"});
+  _context->setBackends({"acl_cl", "acl_neon", "cpu"});
 
   SUCCEED();
 }
@@ -171,7 +171,7 @@ TEST_F(GenModelTest, neg_OneOp_Concat_InvalidRank)
   cgen.setInputsAndOutputs({input1, input2}, {output});
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
-  _context->setBackends({"cpu"});
+  _context->setBackends({"acl_cl", "acl_neon", "cpu"});
   _context->expectFailCompile();
 
   SUCCEED();
@@ -191,7 +191,7 @@ TEST_F(GenModelTest, neg_OneOp_Concat_InvalidDimension)
   cgen.setInputsAndOutputs({input1, input2}, {output});
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
-  _context->setBackends({"cpu"});
+  _context->setBackends({"acl_cl", "acl_neon", "cpu"});
   _context->expectFailCompile();
 
   SUCCEED();
