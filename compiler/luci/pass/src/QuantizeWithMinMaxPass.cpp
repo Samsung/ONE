@@ -248,12 +248,9 @@ void int16_quant_bias_per_tensor(CircleConst *node, float input_scale,
 
   node->dtype(loco::DataType::S64);      // change the type of tensor
   node->size<loco::DataType::S64>(size); // resize tensor
-  const int64_t kMinScale = std::numeric_limits<int64_t>::lowest();
-  const int64_t kMaxScale = std::numeric_limits<int64_t>::max();
   for (uint32_t i = 0; i < size; ++i)
   {
-    node->at<loco::DataType::S64>(i) =
-        std::min(kMaxScale, std::max(kMinScale, quantized_values[i]));
+    node->at<loco::DataType::S64>(i) = quantized_values[i];
   }
 }
 
