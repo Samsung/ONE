@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "compiler/StaticShapeInference.h"
+#include "compiler/StaticShapeInferer.h"
 #include "util/ShapeInference.h"
 #include "util/logging.h"
 

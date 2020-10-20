@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "exec/DynamicShapeInference.h"
+#include "exec/DynamicShapeInferer.h"
 #include "util/ShapeInference.h"
 #include <assert.h>
 
