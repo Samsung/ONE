@@ -99,8 +99,8 @@ void setAddOrSubQuant8Params(const IPortableTensor *lhs, const IPortableTensor *
   op_params.input1_offset = -lhs->data_offset();
   op_params.input2_offset = -rhs->data_offset();
   op_params.output_offset = output->data_offset();
-  assert((op_params.input1_offset >= 0) && (op_params.input1_offset <= 255));
-  assert((op_params.input2_offset >= 0) && (op_params.input2_offset <= 255));
+  assert((op_params.input1_offset <= 0) && (op_params.input1_offset >= -255));
+  assert((op_params.input2_offset <= 0) && (op_params.input2_offset >= -255));
   assert((op_params.output_offset >= 0) && (op_params.output_offset <= 255));
 
   // Compute normalized scale for _lhs and _rhs values,
