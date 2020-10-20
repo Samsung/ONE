@@ -16,3 +16,4 @@ Runtime
   ./executors.md
   ./backend-api.md
   ./heterogeneous-execution.md
+  ./controlflow-operations.md
