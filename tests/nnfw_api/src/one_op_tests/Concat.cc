@@ -40,6 +40,8 @@ TEST_F(GenModelTest, OneOp_Concat_ShareSubTensor)
       {{1, 3, 2, 4}, {5, 4, 7, 4}},
       {{0, 0, 0, 0, 0, 6, 7, 0, 0, 9, 8, 0, 0, 0, 0, 0}, {5, 6, 4, 7, 7, 9, 4, 8}}));
   _context->setBackends({"acl_cl", "acl_neon"});
+
+  SUCCEED();
 }
 
 TEST_F(GenModelTest, OneOp_Concat)
