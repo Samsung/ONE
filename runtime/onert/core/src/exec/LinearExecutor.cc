@@ -40,7 +40,6 @@ char *seq_to_label(const onert::ir::OpSequence *op_seq, const onert::ir::Operati
 void LinearExecutor::executeImpl()
 {
   _subject.notifyModelBegin(this);
-  int idx = 0;
   for (auto &&code : _code)
   {
     const auto op_seq = code.op_seq;
@@ -52,10 +51,10 @@ void LinearExecutor::executeImpl()
     _subject.notifyJobBegin(this, op_seq, backend);
 
     auto &fn_seq = code.fn_seq;
+
     fn_seq->initRunning();
 
     bool handle_dynamic_tensor = op_seq->has_dynamic_tensor() || hasDynamicInput();
-    VERBOSE_F() << "FUNCTION SEQ RUNNING " << idx++ << std::endl;
     fn_seq->enableDynamicShapeInferer(handle_dynamic_tensor);
     fn_seq->run();
 

@@ -35,7 +35,6 @@ public:
   IfLayer(backend::IPortableTensor *cond_tensor,
           const std::vector<backend::IPortableTensor *> input_tensors,
           const std::vector<backend::IPortableTensor *> output_tensors,
-          const ir::OperandIndexSequence &output_indices, const ir::Graph &graph,
           const ir::SubgraphIndex &then_subg_index, const ir::SubgraphIndex &else_subg_index,
           exec::ExecutorMap *executor_map);
 
@@ -46,8 +45,6 @@ private:
   backend::IPortableTensor *_cond_tensor;
   const std::vector<backend::IPortableTensor *> _input_tensors;
   const std::vector<backend::IPortableTensor *> _output_tensors;
-  const ir::OperandIndexSequence &_output_indices;
-  const ir::Graph &_graph;
   const ir::SubgraphIndex _then_subg_index;
   const ir::SubgraphIndex _else_subg_index;
   exec::ExecutorMap *_executor_map;
