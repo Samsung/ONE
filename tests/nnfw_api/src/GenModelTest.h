@@ -374,6 +374,7 @@ protected:
               compareBuffersExactBool(ref_output, output, i);
               break;
             case NNFW_TYPE_TENSOR_UINT8:
+            case NNFW_TYPE_TENSOR_QUANT8_ASYMM:
               compareBuffersExact<uint8_t>(ref_output, output, i);
               break;
             case NNFW_TYPE_TENSOR_INT32:
@@ -391,8 +392,6 @@ protected:
             case NNFW_TYPE_TENSOR_INT64:
               compareBuffersExact<int64_t>(ref_output, output, i);
               break;
-            case NNFW_TYPE_TENSOR_QUANT8_ASYMM:
-              throw std::runtime_error{"NYI : comparison of tensors of QUANT8_ASYMM"};
             default:
               throw std::runtime_error{"Invalid tensor type"};
           }

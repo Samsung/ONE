@@ -45,6 +45,7 @@ public:
 public:
   void visit(const ir::operation::BatchMatMul &node) override;
   void visit(const ir::operation::BatchToSpaceND &node) override;
+  void visit(const ir::operation::BinaryArithmetic &node) override;
   void visit(const ir::operation::Comparison &node) override;
   void visit(const ir::operation::DepthToSpace &node) override;
   void visit(const ir::operation::ElementwiseActivation &node) override;
