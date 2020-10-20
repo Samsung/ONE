@@ -122,3 +122,71 @@ TEST_F(ValidationTestAddModelLoaded, neg_input_output_tensorindex)
   ASSERT_EQ(nnfw_output_tensorindex(_session, "X_input", &out_ind), NNFW_STATUS_ERROR);
   ASSERT_EQ(out_ind, 100);
 }
+
+TEST_F(ValidationTestAddModelLoaded, experimental_input_tensorindex)
+{
+  uint32_t ind = 999;
+  NNFW_ENSURE_SUCCESS(nnfw_input_tensorindex(_session, "X_input", &ind));
+  ASSERT_EQ(ind, 0);
+}
+
+TEST_F(ValidationTestAddModelLoaded, neg_experimental_input_tensorindex_name_null)
+{
+  uint32_t ind = 999;
+  ASSERT_EQ(nnfw_input_tensorindex(_session, nullptr, &ind), NNFW_STATUS_UNEXPECTED_NULL);
+  ASSERT_EQ(ind, 999);
+}
+
+TEST_F(ValidationTestAddModelLoaded, neg_experimental_input_tensorindex_index_null)
+{
+  ASSERT_EQ(nnfw_input_tensorindex(_session, "X_input", nullptr), NNFW_STATUS_UNEXPECTED_NULL);
+}
+
+TEST_F(ValidationTestAddModelLoaded, neg_experimental_input_name_too_long)
+{
+  std::string long_name(1024, 'x'); // Too long
+  uint32_t ind = 999;
+  ASSERT_EQ(nnfw_output_tensorindex(_session, long_name.c_str(), &ind), NNFW_STATUS_ERROR);
+  ASSERT_EQ(ind, 999);
+}
+
+TEST_F(ValidationTestAddModelLoaded, neg_experimental_input_no_such_name)
+{
+  uint32_t ind = 999;
+  ASSERT_EQ(nnfw_output_tensorindex(_session, "NO_SUCH_TENSOR_NAME", &ind), NNFW_STATUS_ERROR);
+  ASSERT_EQ(ind, 999);
+}
+
+TEST_F(ValidationTestAddModelLoaded, experimental_output_tensorindex)
+{
+  uint32_t ind = 999;
+  NNFW_ENSURE_SUCCESS(nnfw_output_tensorindex(_session, "ADD_TOP", &ind));
+  ASSERT_EQ(ind, 0);
+}
+
+TEST_F(ValidationTestAddModelLoaded, neg_experimental_output_tensorindex_name_null)
+{
+  uint32_t ind = 999;
+  ASSERT_EQ(nnfw_output_tensorindex(_session, nullptr, &ind), NNFW_STATUS_UNEXPECTED_NULL);
+  ASSERT_EQ(ind, 999);
+}
+
+TEST_F(ValidationTestAddModelLoaded, neg_experimental_output_tensorindex_index_null)
+{
+  ASSERT_EQ(nnfw_output_tensorindex(_session, "ADD_TOP", nullptr), NNFW_STATUS_UNEXPECTED_NULL);
+}
+
+TEST_F(ValidationTestAddModelLoaded, neg_experimental_output_name_too_long)
+{
+  std::string long_name(1024, 'x'); // Too long
+  uint32_t ind = 999;
+  ASSERT_EQ(nnfw_output_tensorindex(_session, long_name.c_str(), &ind), NNFW_STATUS_ERROR);
+  ASSERT_EQ(ind, 999);
+}
+
+TEST_F(ValidationTestAddModelLoaded, neg_experimental_output_no_such_name)
+{
+  uint32_t ind = 999;
+  ASSERT_EQ(nnfw_output_tensorindex(_session, "NO_SUCH_TENSOR_NAME", &ind), NNFW_STATUS_ERROR);
+  ASSERT_EQ(ind, 999);
+}
