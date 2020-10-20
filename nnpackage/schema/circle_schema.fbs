@@ -468,7 +468,7 @@ union BuiltinOptions {
   DensifyOptions,
   SegmentSumOptions,
   BatchMatMulOptions,
-  MaxPoolWithArgMaxOptions,
+  MaxPoolWithArgMaxOptions = 251,
   BCQGatherOptions = 252,
   BCQFullyConnectedOptions = 253,
   InstanceNormOptions = 254,
