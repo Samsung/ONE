@@ -96,6 +96,8 @@ void TransposeConv::execute() const
     default:
       throw std::runtime_error("Unsupported type.");
   }
+  if (!!_scratch_tensor)
+    _scratch_tensor->deallocate();
 }
 
 void TransposeConv::evalFloat() const
