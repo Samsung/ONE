@@ -61,6 +61,16 @@ void OperationValidator::visit(const ir::operation::BatchToSpaceND &node)
   OP_REQUIRES(_ctx.at(block_size_index).isConstant());
 }
 
+void OperationValidator::visit(const ir::operation::BinaryArithmetic &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto lhs_index{node.getInputs().at(ir::operation::BinaryArithmetic::Input::LHS)};
+  const auto rhs_index{node.getInputs().at(ir::operation::BinaryArithmetic::Input::RHS)};
+
+  OP_REQUIRES(_ctx.at(lhs_index).typeInfo().type() == _ctx.at(rhs_index).typeInfo().type());
+  OP_REQUIRES(_ctx.at(lhs_index).typeInfo().type() == _ctx.at(output_index).typeInfo().type());
+}
+
 void OperationValidator::visit(const ir::operation::Comparison &node)
 {
   const auto output_index{node.getOutputs().at(0)};
