@@ -49,6 +49,8 @@ H5::PredType hdf5_dtype_cast(const loco::DataType loco_dtype)
       return H5::PredType::NATIVE_INT64;
     case loco::DataType::FLOAT32:
       return H5::PredType::NATIVE_FLOAT;
+    case loco::DataType::BOOL:
+      return H5::PredType::NATIVE_HBOOL;
     default:
       throw std::runtime_error("NYI data type.");
   }
