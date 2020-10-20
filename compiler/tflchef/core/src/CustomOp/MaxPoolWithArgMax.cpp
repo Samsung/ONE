@@ -40,6 +40,7 @@ MaxPoolWithArgMaxChef::custom_value(flatbuffers::FlatBufferBuilder &fbb) const
   flex_buffers->Int("stride_w", operation.max_pool_with_argmax_options().stride_w());
   flex_buffers->Int("stride_h", operation.max_pool_with_argmax_options().stride_h());
   flex_buffers->Int("padding", operation.max_pool_with_argmax_options().padding());
+  flex_buffers->Int("activation", operation.max_pool_with_argmax_options().activation());
   flex_buffers->Int("output_type", operation.max_pool_with_argmax_options().output_type());
 
   flex_buffers->EndMap(map_start);

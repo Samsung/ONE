@@ -1011,6 +1011,7 @@ table MaxPoolWithArgMaxOptions {
   stride_h:int;
   filter_width:int;
   filter_height:int;
+  fused_activation_function:ActivationFunctionType;
   output_type : TensorType;
 }
 

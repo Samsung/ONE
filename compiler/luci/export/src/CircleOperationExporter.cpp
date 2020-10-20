@@ -286,7 +286,14 @@ void export_node(ExportContext &ctx, luci::CircleMaxPoolWithArgMax *node)
 
   auto inputs = ctx.builder.CreateVector(inputs_vec);
   auto outputs = ctx.builder.CreateVector(outputs_vec);
-  auto options = CreateMaxPoolWithArgMaxOptions(ctx.builder);
+
+  circle::Padding padding = getOpPadding(node->padding());
+
+  auto options = CreateMaxPoolWithArgMaxOptions(
+      ctx.builder, padding, node->stride()->w(), node->stride()->h(), node->filter()->w(),
+      node->filter()->h(), to_circle_actfunc(node->fusedActivationFunction()),
+      to_circle_tensortype(node->output_type()));
+
   auto op_offset = CreateOperator(ctx.builder, op_idx, inputs, outputs,
                                   circle::BuiltinOptions_MaxPoolWithArgMaxOptions, options.Union());
   ctx.gd._operators.push_back(op_offset);

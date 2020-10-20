@@ -34,6 +34,7 @@ TEST(CircleMaxPoolWithArgMaxTest, constructor_P)
   ASSERT_EQ(1, maxpoolwithargmax_node.filter()->w());
   ASSERT_EQ(1, maxpoolwithargmax_node.stride()->h());
   ASSERT_EQ(1, maxpoolwithargmax_node.stride()->w());
+  ASSERT_EQ(luci::FusedActFunc::UNDEFINED, maxpoolwithargmax_node.fusedActivationFunction());
 }
 
 TEST(CircleMaxPoolWithArgMaxTest, input_NEG)
@@ -55,6 +56,9 @@ TEST(CircleMaxPoolWithArgMaxTest, input_NEG)
   ASSERT_NE(1, maxpoolwithargmax_node.filter()->w());
   ASSERT_NE(1, maxpoolwithargmax_node.stride()->h());
   ASSERT_NE(1, maxpoolwithargmax_node.stride()->w());
+
+  maxpoolwithargmax_node.fusedActivationFunction(luci::FusedActFunc::RELU);
+  ASSERT_NE(luci::FusedActFunc::UNDEFINED, maxpoolwithargmax_node.fusedActivationFunction());
 }
 
 TEST(CircleMaxPoolWithArgMaxTest, arity_NEG)

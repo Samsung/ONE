@@ -33,7 +33,8 @@ namespace luci
  * @brief MAX_POOL_WITH_ARGMAX in Circle
  */
 class CircleMaxPoolWithArgMax final
-    : public FixedArityNode<1, CircleNodeImpl<CircleOpcode::MAX_POOL_WITH_ARG_MAX>>
+    : public FixedArityNode<1, CircleNodeImpl<CircleOpcode::MAX_POOL_WITH_ARG_MAX>>,
+      public LuciNodeMixin<LuciNodeTrait::FusedActFunc>
 {
 public:
   loco::Node *input(void) const { return at(0)->node(); }

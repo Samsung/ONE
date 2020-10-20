@@ -76,6 +76,7 @@ void CircleMaxPoolWithArgMaxGraphBuilder::build(const circle::OperatorT &op,
   node->stride()->h(options->stride_h);
   node->filter()->w(options->filter_width);
   node->filter()->h(options->filter_height);
+  node->fusedActivationFunction(luci_actfunc(options->fused_activation_function));
   node->output_type(luci_datatype(options->output_type));
 
   assert(outputs.size() == 2);

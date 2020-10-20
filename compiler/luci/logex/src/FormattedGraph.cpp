@@ -656,10 +656,13 @@ bool summary_node(const locop::SymbolTable *tbl, const luci::CircleMaxPool2D *no
 bool summary_node(const locop::SymbolTable *tbl, const luci::CircleMaxPoolWithArgMax *node,
                   locop::NodeSummary &s)
 {
+  assert(node->fusedActivationFunction() != luci::FusedActFunc::UNDEFINED);
+
   s.args().append("input", tbl->lookup(node->input()));
   s.args().append("filter(h,w)", to_str(node->filter()));
   s.args().append("stride(h,w)", to_str(node->stride()));
   s.args().append("padding", to_str(node->padding()));
+  s.args().append("fused_activation_function", to_str(node->fusedActivationFunction()));
   s.args().append("output_type", to_str(node->output_type()));
   s.state(locop::NodeSummary::State::Complete);
   return true;
