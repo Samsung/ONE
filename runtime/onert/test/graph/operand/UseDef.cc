@@ -31,7 +31,7 @@ using Mock = onert_test::ir::SimpleMock;
 
 } // namespace
 
-TEST(graph_operand_usedef, neg_usedef_test)
+TEST(ir_Operand, neg_usedef)
 {
   onert::ir::Graph graph;
   onert::ir::verifier::DAGChecker verifier;

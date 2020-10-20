@@ -226,7 +226,7 @@ TEST_F(InterpExecutorTest, create_simple)
   ASSERT_NE(_executors->at(onert::ir::SubgraphIndex{0}), nullptr);
 }
 
-TEST_F(InterpExecutorTest, setInput)
+TEST_F(InterpExecutorTest, neg_setInput)
 {
   CreateSimpleModel();
   createExecution();
@@ -241,7 +241,7 @@ TEST_F(InterpExecutorTest, setInput)
   EXPECT_NO_THROW(_execution->setInput(input1, reinterpret_cast<const void *>(input1_buffer), 16));
 }
 
-TEST_F(InterpExecutorTest, setOutput)
+TEST_F(InterpExecutorTest, neg_setOutput)
 {
   CreateSimpleModel();
   createExecution();
@@ -258,7 +258,7 @@ TEST_F(InterpExecutorTest, setOutput)
   EXPECT_NO_THROW(_execution->setOutput(output, reinterpret_cast<void *>(output_buffer), 16));
 }
 
-TEST_F(InterpExecutorTest, setInputForUnspecifiedDimensions)
+TEST_F(InterpExecutorTest, neg_setInputForUnspecifiedDimensions)
 {
   CreateUnspecifiedDimensionsModel();
   createExecution();
@@ -279,7 +279,7 @@ TEST_F(InterpExecutorTest, setInputForUnspecifiedDimensions)
                                        reinterpret_cast<const void *>(input1_buffer), 16));
 }
 
-TEST_F(InterpExecutorTest, setOutputForUnspecifiedDimensions)
+TEST_F(InterpExecutorTest, neg_setOutputForUnspecifiedDimensions)
 {
   CreateUnspecifiedDimensionsModel();
   createExecution();

@@ -23,11 +23,19 @@ using onert::ir::Operation;
 using onert::ir::OperationIndex;
 using onert::ir::Operations;
 
-TEST(graph_operation_Set, operation_test)
+TEST(ir_Operations, basic)
 {
   Operations ops;
   ops.push(std::unique_ptr<Operation>(new onert_test::ir::SimpleMock({1, 2, 3, 4}, {5, 6, 7})));
   OperationIndex idx{0u};
   ASSERT_EQ(ops.at(idx).getInputs().size(), 4);
   ASSERT_EQ(ops.at(idx).getOutputs().size(), 3);
+}
+
+TEST(ir_Operations, neg_at)
+{
+  Operations ops;
+  ops.push(std::unique_ptr<Operation>(new onert_test::ir::SimpleMock({1, 2, 3, 4}, {5, 6, 7})));
+  OperationIndex idx{99u};
+  EXPECT_THROW(ops.at(idx), std::out_of_range);
 }
