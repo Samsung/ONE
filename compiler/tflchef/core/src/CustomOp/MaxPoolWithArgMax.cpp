@@ -1,6 +1,5 @@
 /*
  * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
- * Copyright 2015 The TensorFlow Authors. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,7 +33,6 @@ MaxPoolWithArgMaxChef::custom_value(flatbuffers::FlatBufferBuilder &fbb) const
   auto flex_buffers = std::make_unique<flexbuffers::Builder>();
   size_t map_start = flex_buffers->StartMap();
 
-  // TODO Support more data types
   flex_buffers->Int("filter_width", operation.max_pool_with_argmax_options().filter_width());
   flex_buffers->Int("filter_height", operation.max_pool_with_argmax_options().filter_height());
   flex_buffers->Int("stride_w", operation.max_pool_with_argmax_options().stride_w());
