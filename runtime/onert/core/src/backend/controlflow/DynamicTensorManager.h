@@ -20,11 +20,7 @@
 #include "TensorRegistry.h"
 #include "Tensor.h"
 
-#include <backend/IDynamicTensorManager.h>
-#include <backend/cpu_common/MemoryManager.h>
-#include <ir/OperandInfo.h>
-#include <ir/Operation.h>
-#include <ir/Index.h>
+#include <backend/cpu_common/DynamicTensorManager.h>
 
 namespace onert
 {
@@ -33,40 +29,7 @@ namespace backend
 namespace controlflow
 {
 
-/**
- * @brief Class to manage dynamic tensor and its memory
- */
-class DynamicTensorManager : public backend::IDynamicTensorManager
-{
-public:
-  DynamicTensorManager(const std::shared_ptr<TensorRegistry> &tensors);
-
-  virtual ~DynamicTensorManager() = default;
-
-  void buildTensor(const ir::OperandIndex &ind, const ir::OperandInfo &tensor_info,
-                   ir::Layout backend_layout);
-
-  void planDealloc(ir::OperationIndex op_ind, backend::ITensor *tensor) override;
-  void deallocInput(ir::OperationIndex op_ind) override;
-
-  std::shared_ptr<cpu_common::DynamicMemoryManager> dynamic_mem_mgr() { return _dynamic_mem_mgr; }
-
-private:
-  const ITensor *getRawITensor(ir::OperandIndex ind);
-
-private:
-  /**
-   * @brief Memory manager for dynamic tensor.
-   * @todo  DynamicMemoryManager is not optimized. Optimized one is needed
-   */
-  std::shared_ptr<cpu_common::DynamicMemoryManager> _dynamic_mem_mgr;
-  const std::shared_ptr<TensorRegistry> _tensors;
-
-  // contains list of dynamic tensor, which can be deallocated after running operation
-  // note: this map could contain static tensor too. Careful use is required.
-  std::unordered_map<ir::OperationIndex, std::unordered_set<backend::ITensor *>>
-      _dealloc_tensor_map;
-};
+using DynamicTensorManager = cpu_common::DynamicTensorManager;
 
 } // namespace controlflow
 } // namespace backend
