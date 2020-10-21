@@ -77,7 +77,7 @@ bool StaticShapeInferer::checkDynamicInput(const ir::Operation &op)
 
 void StaticShapeInferer::setDynamicOutput(const ir::Operation &op)
 {
-  for (auto output_idx : op.getOutputs())
+  for (auto output_idx : op.getOutputs() | ir::Remove::UNDEFINED)
   {
     _operands.at(output_idx).info().setDynamic();
   }
