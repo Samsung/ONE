@@ -226,6 +226,34 @@ void quant_bias_per_channel(CircleConst *node, float input_scale, std::vector<fl
   }
 }
 
+void int16_quant_bias_per_tensor(CircleConst *node, float input_scale,
+                                 std::vector<float> &weight_scale,
+                                 std::vector<float> &scaling_factor)
+{
+  uint32_t size = node->size<loco::DataType::FLOAT32>();
+  std::vector<int64_t> quantized_values(size);
+
+  auto abs_compare = [](float x, float y) { return std::abs(x) < std::abs(y); };
+  const float weight_scale_max =
+      *std::max_element(weight_scale.begin(), weight_scale.end(), abs_compare);
+  assert(weight_scale_max >= 0);
+  scaling_factor[0] = input_scale * weight_scale_max;
+
+  for (uint32_t i = 0; i < size; ++i)
+  {
+    double scaling_factor_inv = (scaling_factor[0] == 0) ? 0 : 1.0 / scaling_factor[0];
+    quantized_values[i] =
+        static_cast<int64_t>(std::round(node->at<loco::DataType::FLOAT32>(i) * scaling_factor_inv));
+  }
+
+  node->dtype(loco::DataType::S64);      // change the type of tensor
+  node->size<loco::DataType::S64>(size); // resize tensor
+  for (uint32_t i = 0; i < size; ++i)
+  {
+    node->at<loco::DataType::S64>(i) = quantized_values[i];
+  }
+}
+
 bool has_min_max(const CircleNode *node)
 {
   return node->quantparam() && !node->quantparam()->min.empty() && !node->quantparam()->max.empty();
@@ -465,7 +493,22 @@ struct QuantizeBias final : public luci::CircleNodeMutableVisitor<bool>
       std::vector<float> scaling_factor(size);
       std::vector<int64_t> zp(size);
 
-      quant_bias_per_channel(circle_const, input_scale, weight_scale, scaling_factor, zp);
+      if (output_type == loco::DataType::U8)
+      {
+        quant_bias_per_channel(circle_const, input_scale, weight_scale, scaling_factor, zp);
+      }
+      else if (output_type == loco::DataType::S16)
+      {
+        // Bias is quantized per-tensor in int16 quantization
+        scaling_factor.resize(1);
+        zp.resize(1);
+        zp[0] = 0;
+        int16_quant_bias_per_tensor(circle_const, input_scale, weight_scale, scaling_factor);
+      }
+      else
+      {
+        throw std::runtime_error("Unsupported quantization type.");
+      }
 
       auto quantparam = std::make_unique<CircleQuantParam>();
       quantparam->scale = scaling_factor;
@@ -762,15 +805,11 @@ bool QuantizeWithMinMaxPass::run(loco::Graph *g)
   }
 
   // Quantize bias
-  // (For int16 quantization, bias is not quantized)
-  if (_output_dtype == loco::DataType::U8)
+  for (auto node : loco::active_nodes(loco::output_nodes(g)))
   {
-    for (auto node : loco::active_nodes(loco::output_nodes(g)))
-    {
-      QuantizeBias qb(_input_dtype, _output_dtype, _granularity);
-      auto circle_node = loco::must_cast<luci::CircleNode *>(node);
-      circle_node->accept(&qb);
-    }
+    QuantizeBias qb(_input_dtype, _output_dtype, _granularity);
+    auto circle_node = loco::must_cast<luci::CircleNode *>(node);
+    circle_node->accept(&qb);
   }
 
   // Quantize const inputs other than weights and bias
