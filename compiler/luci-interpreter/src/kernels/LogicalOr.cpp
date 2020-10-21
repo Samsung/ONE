@@ -26,8 +26,6 @@ namespace luci_interpreter
 namespace kernels
 {
 
-bool func(bool x, bool y) { return x || y; }
-
 LogicalOr::LogicalOr(const Tensor *input1, const Tensor *input2, Tensor *output)
     : Kernel({input1, input2}, {output})
 {
@@ -42,6 +40,7 @@ void LogicalOr::configure()
 
 void LogicalOr::execute() const
 {
+  auto func = [](bool x, bool y) { return x || y; };
   if (haveSameShape(input1(), input2()))
   {
     tflite::reference_ops::BinaryFunction<bool, bool, bool>(
