@@ -132,6 +132,8 @@ template <typename T> T *getTensorData(Tensor *tensor)
   return tensor != nullptr ? tensor->data<T>() : nullptr;
 }
 
+bool haveSameShape(const Tensor *tensor1, const Tensor *tensor2);
+
 // A list of tensors in a format that can be used by kernels like split and
 // concatenation.
 template <typename T, bool is_const> class VectorOfTensors
