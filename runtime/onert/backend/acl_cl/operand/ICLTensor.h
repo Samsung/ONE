@@ -38,6 +38,9 @@ public:
 
 public:
   void access(const std::function<void(ITensor &tensor)> &fn) final;
+  bool needMemoryMap() const final { return true; }
+  void enqueueWriteBuffer(const void *ptr, bool blocking = true) final;
+  void enqueueReadBuffer(void *ptr, bool blocking = true) final;
 
 private:
   void map(cl::CommandQueue &q, bool blocking = true) { return handle()->map(q, blocking); }
