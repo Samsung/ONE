@@ -22,4 +22,4 @@
   - CPU backend: FullyConnected for Float32 16x1 Block Sparsity
 
 ### Optimization
-  - Speed up for ReduceSum, StrideSlice in CPU backend
+  - Speed up for ReduceSum, StrideSlice and BinaryArithmetic in CPU backend
