@@ -854,19 +854,9 @@ void ShapeValidator::visit(const ir::operation::Pad &node)
   OP_REQUIRES(_ctx.at(input_index).shape().rank() == _ctx.at(output_index).shape().rank());
 }
 
-void ShapeValidator::visit(const ir::operation::Select &node)
+void ShapeValidator::visit(const ir::operation::Select &)
 {
-  const auto output_index{node.getOutputs().at(0)};
-  // This validator does not check shape. So checking isDynamic() is skipped.
-
-  const auto condition_index{node.getInputs().at(ir::operation::Select::Input::CONDITION)};
-  const auto input_true_index{node.getInputs().at(ir::operation::Select::Input::INPUT_TRUE)};
-  const auto input_false_index{node.getInputs().at(ir::operation::Select::Input::INPUT_FALSE)};
-  UNUSED_RELEASE(output_index);
-  UNUSED_RELEASE(input_true_index);
-  UNUSED_RELEASE(input_false_index);
-
-  OP_REQUIRES(_ctx.at(condition_index).typeInfo().type() == ir::DataType::BOOL8);
+  // TODO Shape validation of select
 }
 
 void ShapeValidator::visit(const ir::operation::StridedSlice &node)
