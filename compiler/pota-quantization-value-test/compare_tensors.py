@@ -69,7 +69,13 @@ def compare_quantization(tensor, tensor_name, expect_dir):
         if key == "weights":
             expected_weights = np.array(json_load["weights"])
             input_weights = tensor["weights"][:]
-            if np.allclose(input_weights, expected_weights, rtol=0, atol=1) == False:
+            abs_tolerance = 1
+            # We use higher tolerance for int64 data (bias of int16-quantized model)
+            if tensor["weights"].dtype == 'int64':
+                abs_tolerance = 2
+
+            if np.allclose(
+                    input_weights, expected_weights, rtol=0, atol=abs_tolerance) == False:
                 print("Quantized weights of " + tensor_name + " (" + str(input_weights) +
                       ") do not match with expected value (" + str(expected_weights) +
                       ").")
