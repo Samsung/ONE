@@ -1,0 +1,28 @@
+operand {
+  name: "ifm1"
+  type: UINT8
+  shape { dim: 1 dim: 4 dim: 4 dim: 3 }
+  quant { min: -1 max: 1 scale: 0.0078431373 zero_point: 128 }
+}
+operand {
+  name: "ifm2"
+  type: UINT8
+  shape { dim: 1 dim: 4 dim: 4 dim: 3 }
+  quant { min: -1 max: 1 scale: 0.0078431373 zero_point: 128 }
+}
+operand {
+  name: "ofm"
+  type: BOOL
+  shape { dim: 1 dim: 4 dim: 4 dim: 3 }
+}
+operation {
+  type: "Equal"
+  equal_options {
+  }
+  input: "ifm1"
+  input: "ifm2"
+  output: "ofm"
+}
+input: "ifm1"
+input: "ifm2"
+output: "ofm"
