@@ -71,7 +71,7 @@
 #include <memory>
 #include <util/Utils.h>
 #include <util/logging.h>
-#include <exec/DynamicShapeInference.h>
+#include <exec/DynamicShapeInferer.h>
 
 #include <stdexcept>
 

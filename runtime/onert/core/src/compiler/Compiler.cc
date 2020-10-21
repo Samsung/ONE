@@ -27,7 +27,7 @@
 #include "compiler/IScheduler.h"
 #include "compiler/ManualScheduler.h"
 #include "compiler/HEScheduler.h"
-#include "compiler/StaticShapeInference.h"
+#include "compiler/StaticShapeInferer.h"
 #include "compiler/pass/ConstantOutputPass.h"
 #include "compiler/pass/OddOutputPass.h"
 #include "compiler/pass/PassRunner.h"
