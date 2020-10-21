@@ -18,7 +18,7 @@
 
 #include "ir/Operands.h"
 
-TEST(graph_operand_Set, neg_set_test)
+TEST(ir_Operands, neg_set_test)
 {
   onert::ir::Operands set;
 

@@ -32,7 +32,7 @@ TEST(ObjectManager, emplace)
   ASSERT_EQ(man.at(index), 100);
 }
 
-TEST(ObjectManager, remove_1)
+TEST(ObjectManager, neg_remove_1)
 {
   util::ObjectManager<Index, int> man;
 
@@ -44,7 +44,7 @@ TEST(ObjectManager, remove_1)
   ASSERT_FALSE(man.exist(index));
 }
 
-TEST(ObjectManager, remove_2)
+TEST(ObjectManager, neg_remove_2)
 {
   util::ObjectManager<Index, int> man;
 
