@@ -13,3 +13,13 @@
 - Support `int16` quantization in `one-quantize`
 - Test scripts are added for basic testing of one-cmds command line tools
 - Bug fixes for one-cmds command line tools
+
+
+## ONE Runtime
+
+### Runtime backend operation support
+  - ACL-CL backend: OneHot
+  - CPU backend: FullyConnected for Float32 16x1 Block Sparsity
+
+### Optimization
+  - Speed up for ReduceSum, StrideSlice and BinaryArithmetic in CPU backend
