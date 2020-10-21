@@ -209,6 +209,23 @@ uint32_t CircleGen::addOperatorRank(const OperatorParams &params)
                                 circle::BuiltinOptions_RankOptions, options);
 }
 
+uint32_t CircleGen::addOperatorReduce(const OperatorParams &params,
+                                      circle::BuiltinOperator reduce_op, bool keep_dims)
+{
+  switch (reduce_op)
+  {
+    case circle::BuiltinOperator_REDUCE_ANY:
+    case circle::BuiltinOperator_REDUCE_MIN:
+    case circle::BuiltinOperator_REDUCE_MAX:
+    case circle::BuiltinOperator_REDUCE_PROD:
+      break;
+    default:
+      throw std::runtime_error{"Wrong reduce op"};
+  }
+  auto options = circle::CreateReducerOptions(_fbb, keep_dims).Union();
+  return addOperatorWithOptions(params, reduce_op, circle::BuiltinOptions_ReducerOptions, options);
+}
+
 uint32_t CircleGen::addOperatorReshape(const OperatorParams &params, const Shape &new_shape)
 {
   auto options = circle::CreateReshapeOptionsDirect(_fbb, &new_shape).Union();
