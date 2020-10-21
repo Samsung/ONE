@@ -27,7 +27,7 @@
 
 namespace onert
 {
-namespace compiler
+namespace ir
 {
 
 OperationValidator::OperationValidator(const ir::Graph &graph)

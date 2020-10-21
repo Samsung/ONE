@@ -68,7 +68,7 @@ TEST_F(GenModelTest, neg_OneOp_Select_InputType)
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
   _context->setBackends({"cpu"});
-  _context->expectFailCompile();
+  _context->expectFailModelLoad();
 
   SUCCEED();
 }
@@ -87,7 +87,7 @@ TEST_F(GenModelTest, neg_OneOp_Select_CondType)
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
   _context->setBackends({"cpu"});
-  _context->expectFailCompile();
+  _context->expectFailModelLoad();
 
   SUCCEED();
 }
