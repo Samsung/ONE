@@ -45,6 +45,8 @@ uint32_t CircleGen::addTensor(const TensorParams &params)
 
 uint32_t CircleGen::addTensor(const TensorParams &params, float scale, int64_t zero_point)
 {
+  // TensorType_INT8: scale >= 0, zero_point: [-128, 127]
+  // TensorType_UINT8: scale >= 0, zero_point: [0, 255]
   uint32_t ind = curSubgCtx().tensors.size();
   curSubgCtx().tensors.emplace_back(buildTensor(params, scale, zero_point));
   return ind;
