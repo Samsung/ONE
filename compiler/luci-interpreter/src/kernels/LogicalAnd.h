@@ -44,4 +44,4 @@ private:
 } // namespace kernels
 } // namespace luci_interpreter
 
-#endif // LUCI_INTERPRETER_KERNELS_MAXIMUM_H
+#endif // LUCI_INTERPRETER_KERNELS_LOGICALAND_H
