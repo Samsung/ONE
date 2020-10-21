@@ -41,29 +41,29 @@ ADB_CMD="adb -s $SERIAL "
 $ADB_CMD root on
 $ADB_CMD shell mount -o rw,remount /
 
-$ADB_CMD shell rm -rf /data/local/tmp
-$ADB_CMD shell mkdir -p /data/local/tmp/report
-$ADB_CMD push $ROOT_PATH/tests /data/local/tmp/.
-$ADB_CMD push $ROOT_PATH/Product/aarch64-android.release/out /data/local/tmp/Product/.
+$ADB_CMD shell rm -rf /data/local/tmp/onert_android
+$ADB_CMD shell mkdir -p /data/local/tmp/onert_android/report
+$ADB_CMD push $ROOT_PATH/tests /data/local/tmp/onert_android/.
+$ADB_CMD push $ROOT_PATH/Product/aarch64-android.release/out /data/local/tmp/onert_android/Product/.
 
-$ADB_CMD shell LD_LIBRARY_PATH=/data/local/tmp/Product/lib sh /data/local/tmp/tests/scripts/models/run_test_android.sh \
-                                                        --driverbin=/data/local/tmp/Product/bin/tflite_loader_test_tool \
-                                                        --reportdir=/data/local/tmp/report \
+$ADB_CMD shell LD_LIBRARY_PATH=/data/local/tmp/onert_android/Product/lib sh /data/local/tmp/onert_android/tests/scripts/models/run_test_android.sh \
+                                                        --driverbin=/data/local/tmp/onert_android/Product/bin/tflite_loader_test_tool \
+                                                        --reportdir=/data/local/tmp/onert_android/report \
                                                         --tapname=tflite_loader
-$ADB_CMD shell LD_LIBRARY_PATH=/data/local/tmp/Product/lib sh /data/local/tmp/tests/scripts/models/run_test_android.sh \
-                                                        --driverbin=/data/local/tmp/Product/bin/nnapi_test \
-                                                        --reportdir=/data/local/tmp/report \
+$ADB_CMD shell LD_LIBRARY_PATH=/data/local/tmp/onert_android/Product/lib sh /data/local/tmp/onert_android/tests/scripts/models/run_test_android.sh \
+                                                        --driverbin=/data/local/tmp/onert_android/Product/bin/nnapi_test \
+                                                        --reportdir=/data/local/tmp/onert_android/report \
                                                         --tapname=nnapi_test
-$ADB_CMD shell LD_LIBRARY_PATH=/data/local/tmp/Product/lib USE_NNAPI=1 sh /data/local/tmp/tests/scripts/models/run_test_android.sh \
-                                                        --driverbin=/data/local/tmp/Product/bin/tflite_run \
-                                                        --reportdir=/data/local/tmp/report \
+$ADB_CMD shell LD_LIBRARY_PATH=/data/local/tmp/onert_android/Product/lib USE_NNAPI=1 sh /data/local/tmp/onert_android/tests/scripts/models/run_test_android.sh \
+                                                        --driverbin=/data/local/tmp/onert_android/Product/bin/tflite_run \
+                                                        --reportdir=/data/local/tmp/onert_android/report \
                                                         --tapname=tflite_run
 
 # This is test for profiling.
-# $ADB_CMD shell mkdir -p /data/local/tmp/report/benchmark
-# $ADB_CMD shell 'cd /data/local/tmp && LD_LIBRARY_PATH=/data/local/tmp/Product/lib sh /data/local/tmp/tests/scripts/test_scheduler_with_profiling_android.sh'
+# $ADB_CMD shell mkdir -p /data/local/tmp/onert_android/report/benchmark
+# $ADB_CMD shell 'cd /data/local/tmp/onert_android && LD_LIBRARY_PATH=/data/local/tmp/onert_android/Product/lib sh /data/local/tmp/onert_android/tests/scripts/test_scheduler_with_profiling_android.sh'
 
 mkdir -p $ROOT_PATH/report
 rm -rf $ROOT_PATH/report/android
 
-$ADB_CMD pull /data/local/tmp/report $ROOT_PATH/report/android
+$ADB_CMD pull /data/local/tmp/onert_android/report $ROOT_PATH/report/android
