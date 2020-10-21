@@ -41,7 +41,6 @@ TEST(LogicalOrTest, Basic)
   EXPECT_THAT(extractTensorData<bool>(output_tensor),
               ::testing::ElementsAre(true, false, true, true));
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAre(1, 1, 1, 4));
-  SUCCEED();
 }
 
 TEST(LogicalOrTest, Broadcast)
@@ -58,7 +57,6 @@ TEST(LogicalOrTest, Broadcast)
   EXPECT_THAT(extractTensorData<bool>(output_tensor),
               ::testing::ElementsAre(true, false, false, true));
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAre(1, 1, 1, 4));
-  SUCCEED();
 }
 
 TEST(LogicalOrTest, MismatchInputType_NEG)
