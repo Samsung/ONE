@@ -17,6 +17,7 @@
 #include "ICLTensor.h"
 
 #include <arm_compute/runtime/CL/CLScheduler.h>
+#include <arm_compute/core/CL/OpenCL.h>
 
 namespace onert
 {
@@ -38,6 +39,20 @@ void ICLTensor::access(const std::function<void(ITensor &tensor)> &fn)
   map(queue);
   fn(*this);
   unmap(queue);
+}
+
+void ICLTensor::enqueueWriteBuffer(const void *ptr)
+{
+  auto &queue = ::arm_compute::CLScheduler::get().queue();
+  queue.enqueueWriteBuffer(handle()->cl_buffer(), CL_FALSE /* blocking */, 0, info()->total_size(),
+                           ptr);
+}
+
+void ICLTensor::enqueueReadBuffer(void *ptr)
+{
+  auto &queue = ::arm_compute::CLScheduler::get().queue();
+  queue.enqueueReadBuffer(handle()->cl_buffer(), CL_TRUE /* blocking */, 0, info()->total_size(),
+                          ptr);
 }
 } // namespace operand
 } // namespace acl_cl

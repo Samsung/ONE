@@ -38,6 +38,9 @@ public:
 
 public:
   void access(const std::function<void(ITensor &tensor)> &fn) final;
+  bool hasClBuffer() const final { return true; }
+  void enqueueWriteBuffer(const void *ptr) final;
+  void enqueueReadBuffer(void *ptr) final;
 
 private:
   void map(cl::CommandQueue &q, bool blocking = true) { return handle()->map(q, blocking); }

@@ -53,6 +53,8 @@ private:
   void appendPermuteTasks(const ITensor *src_tensor, ITensor *dst_tensor,
                           const ir::Shape &loop_shape, size_t size);
 
+  void runPermuteTasks(backend::ITensor *src, uint8_t *dst_buffer);
+
   struct PermuteWorkerTask : ruy::Task
   {
     using Strides = ir::Coordinates;

@@ -36,17 +36,17 @@ namespace nchw
 template <typename T> class Reader : public feature::Reader<T>
 {
 public:
-  // Construct for buffer of model inputs
-  Reader(const ir::FeatureShape &shape, const T *ptr, size_t len)
-      : _shape{shape}, _ptr{reinterpret_cast<const uint8_t *>(ptr)}, _len{len}
+  using Strides = ir::FeatureShape;
+  // Construct for buffer and strides
+  Reader(const ir::FeatureShape &shape, const Strides &strides, const T *ptr, size_t len)
+      : _shape{shape}, _strides{strides}, _ptr{reinterpret_cast<const uint8_t *>(ptr)}, _len{len}
   {
-    assert(shape.N * shape.C * shape.H * shape.W * sizeof(T) == len);
-
-    // No padding
-    _strides.W = sizeof(T);
-    _strides.H = shape.W * sizeof(T);
-    _strides.C = shape.W * shape.H * sizeof(T);
-    _strides.N = shape.W * shape.H * shape.C * sizeof(T);
+    UNUSED_RELEASE(len); // Workaround for unused variable in release mode
+    assert(len == static_cast<size_t>(strides.N != 0
+                                          ? shape.N * strides.N
+                                          : strides.C != 0 ? shape.C * strides.C
+                                                           : strides.H != 0 ? shape.H * strides.H
+                                                                            : shape.W * strides.W));
   }
 
   // Construct for backend tensor
@@ -104,7 +104,6 @@ private:
 private:
   // TODO Remove _shape
   ir::FeatureShape _shape;
-  using Strides = ir::FeatureShape;
   Strides _strides;
   const uint8_t *_ptr;
   size_t _len;

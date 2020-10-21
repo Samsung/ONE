@@ -38,8 +38,10 @@ namespace nhwc
 template <typename T> class View final : public Reader<T>
 {
 public:
-  // Construct for buffer of model inputs
-  View(const ir::FeatureShape &shape, T *ptr, size_t len) : Reader<T>{shape, ptr, len}
+  using Strides = typename Reader<T>::Strides;
+  // Construct for buffer and strides
+  View(const ir::FeatureShape &shape, const Strides &strides, T *ptr, size_t len)
+      : Reader<T>{shape, strides, ptr, len}
   {
     // DO NOTHING
   }

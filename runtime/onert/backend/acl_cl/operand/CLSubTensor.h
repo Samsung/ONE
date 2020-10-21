@@ -48,6 +48,7 @@ public:
 public:
   // This method is used to prevent the use of memcpy for SubTensor
   bool has_padding() const override { return true; }
+  bool is_subtensor() const final { return true; }
 
 private:
   std::shared_ptr<arm_compute::CLSubTensor> _cl_sub_tensor;

@@ -103,6 +103,17 @@ public:
    * @note  Higer dimension will be placed on front.
    */
   virtual ir::Shape getShape() const;
+
+  virtual bool is_subtensor() const { return false; }
+  virtual bool hasClBuffer() const { return false; }
+  virtual void enqueueWriteBuffer(const void *)
+  {
+    throw std::runtime_error("This backend does not support enqueueWriteBuffer");
+  }
+  virtual void enqueueReadBuffer(void *)
+  {
+    throw std::runtime_error("This backend does not support enqueueReadBuffer");
+  }
 };
 
 } // namespace backend
