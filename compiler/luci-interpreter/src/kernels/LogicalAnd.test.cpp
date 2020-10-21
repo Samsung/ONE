@@ -38,7 +38,8 @@ TEST(LogicalAndTest, Basic)
   kernel.configure();
   kernel.execute();
 
-  EXPECT_THAT(extractTensorData<bool>(output_tensor), ::testing::ElementsAre(true, false, false, false));
+  EXPECT_THAT(extractTensorData<bool>(output_tensor),
+              ::testing::ElementsAre(true, false, false, false));
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAre(1, 1, 1, 4));
 }
 
@@ -52,7 +53,8 @@ TEST(LogicalAndTest, Broadcast)
   kernel.configure();
   kernel.execute();
 
-  EXPECT_THAT(extractTensorData<bool>(output_tensor), ::testing::ElementsAre(true, false, false, true));
+  EXPECT_THAT(extractTensorData<bool>(output_tensor),
+              ::testing::ElementsAre(true, false, false, true));
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAre(1, 1, 1, 4));
 }
 
