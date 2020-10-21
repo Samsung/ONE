@@ -52,6 +52,7 @@ void IConstantInitializer::registerCopyInitializer(const ir::OperandIndex &index
       _init_map[index] = copyInit<uint8_t>;
       break;
     case DataType::QUANT_INT8_SYMM:
+    case DataType::QUANT_INT8_ASYMM:
       _init_map[index] = copyInit<int8_t>;
       break;
     case DataType::FLOAT16:
@@ -94,6 +95,7 @@ void IConstantInitializer::registerPermuteInitializer(const ir::OperandIndex &in
       _init_map[index] = std::bind(permuteInit<uint8_t>, _1, _2, _current_op_seq_layout);
       break;
     case DataType::QUANT_INT8_SYMM:
+    case DataType::QUANT_INT8_ASYMM:
       _init_map[index] = std::bind(permuteInit<int8_t>, _1, _2, _current_op_seq_layout);
       break;
     case DataType::FLOAT16:

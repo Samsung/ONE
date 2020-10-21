@@ -239,7 +239,8 @@ void ElementwiseUnaryLayer::configure(const IPortableTensor *input, IPortableTen
       {
         _kernel = dequantizeUint8;
       }
-      else if ((input->data_type() == OperandType::QUANT_INT8_SYMM))
+      else if ((input->data_type() == OperandType::QUANT_INT8_ASYMM) ||
+               (input->data_type() == OperandType::QUANT_INT8_SYMM))
       {
         _kernel = dequantizeInt8;
       }
