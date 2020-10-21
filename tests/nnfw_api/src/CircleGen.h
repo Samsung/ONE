@@ -164,6 +164,8 @@ public:
                                      bool half_pixel_centers = false);
   uint32_t addOperatorResizeNearestNeighbor(const OperatorParams &params);
   uint32_t addOperatorReverseV2(const OperatorParams &params);
+  uint32_t addOperatorSelect(const OperatorParams &params);
+  uint32_t addOperatorSelectV2(const OperatorParams &params);
   uint32_t addOperatorSplit(const OperatorParams &params, int32_t num_split);
   uint32_t addOperatorStridedSlice(const OperatorParams &params, int32_t begin_mask = 0,
                                    int32_t end_mask = 0, int32_t ellipsis_mask = 0,

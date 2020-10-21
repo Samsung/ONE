@@ -198,6 +198,17 @@ void OperationValidator::visit(const ir::operation::SpaceToDepth &node)
   OP_REQUIRES(block_size >= 1);
 }
 
+void OperationValidator::visit(const ir::operation::Select &node)
+{
+  const auto condition_index{node.getInputs().at(ir::operation::Select::Input::CONDITION)};
+  const auto input_true_index{node.getInputs().at(ir::operation::Select::Input::INPUT_TRUE)};
+  const auto input_false_index{node.getInputs().at(ir::operation::Select::Input::INPUT_FALSE)};
+
+  OP_REQUIRES(_ctx.at(condition_index).typeInfo().type() == ir::DataType::BOOL8);
+  OP_REQUIRES(_ctx.at(input_true_index).typeInfo().type() ==
+              _ctx.at(input_false_index).typeInfo().type());
+}
+
 void OperationValidator::visit(const ir::operation::Split &node)
 {
   const auto num_splits = node.param().num_splits;

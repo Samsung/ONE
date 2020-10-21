@@ -232,6 +232,20 @@ uint32_t CircleGen::addOperatorReverseV2(const OperatorParams &params)
                                 circle::BuiltinOptions_ReverseV2Options, options);
 }
 
+uint32_t CircleGen::addOperatorSelect(const OperatorParams &params)
+{
+  auto options = circle::CreateSelectOptions(_fbb).Union();
+  return addOperatorWithOptions(params, circle::BuiltinOperator_SELECT,
+                                circle::BuiltinOptions_SelectOptions, options);
+}
+
+uint32_t CircleGen::addOperatorSelectV2(const OperatorParams &params)
+{
+  auto options = circle::CreateSelectV2Options(_fbb).Union();
+  return addOperatorWithOptions(params, circle::BuiltinOperator_SELECT_V2,
+                                circle::BuiltinOptions_SelectV2Options, options);
+}
+
 uint32_t CircleGen::addOperatorSplit(const OperatorParams &params, int32_t num_split)
 {
   auto options = circle::CreateSplitOptions(_fbb, num_split).Union();
