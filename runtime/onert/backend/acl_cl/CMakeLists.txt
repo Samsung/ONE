@@ -16,4 +16,7 @@ target_link_libraries(${LIB_ONERT_BACKEND_ACL_CL} PRIVATE nnfw_coverage)
 
 set_target_properties(${LIB_ONERT_BACKEND_ACL_CL} PROPERTIES OUTPUT_NAME backend_acl_cl)
 
+add_custom_command(TARGET onert_backend_acl_cl POST_BUILD
+                   COMMAND ${CMAKE_STRIP} "--strip-unneeded" $<TARGET_FILE_NAME:onert_backend_acl_cl>)
+
 install(TARGETS ${LIB_ONERT_BACKEND_ACL_CL} DESTINATION lib)

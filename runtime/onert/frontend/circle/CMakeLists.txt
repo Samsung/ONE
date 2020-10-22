@@ -12,4 +12,7 @@ target_link_libraries(circle_loader PRIVATE onert_core)
 target_link_libraries(circle_loader PRIVATE base_loader nnfw_common nnfw_coverage)
 target_link_libraries(circle_loader PRIVATE circle_schema)
 
+add_custom_command(TARGET circle_loader POST_BUILD
+                   COMMAND ${CMAKE_STRIP} "--strip-unneeded" $<TARGET_FILE_NAME:circle_loader>)
+
 install(TARGETS circle_loader DESTINATION lib)
