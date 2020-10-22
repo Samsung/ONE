@@ -492,28 +492,26 @@ NNFW_STATUS nnfw_session::apply_tensorinfo(uint32_t index, nnfw_tensorinfo ti)
     }
   }
 
-  auto ind = primary_subgraph()->getInputs().at(index);
-  auto &input = primary_subgraph()->operands().at(ind);
-
   onert::ir::Shape new_shape(ti.rank);
   for (int32_t i = 0; i < ti.rank; i++)
     new_shape.dim(i) = ti.dims[i];
-
-  // if passed shape is same with the shape of model, do nothing
-  if (input.info().shape() == new_shape)
-    return NNFW_STATUS_NO_ERROR;
 
   if (!isStatePreparedOrFinishedRun())
   {
     // In this case, if we apply input shape in primary_subgraph, it will propagate after
     // compilation and excution
-
+    auto ind = primary_subgraph()->getInputs().at(index);
+    auto &input = primary_subgraph()->operands().at(ind);
     // overwrite input shape with the shape from ti
     input.info().shape(new_shape);
   }
   else // when called after nnfw_session::prepare()
   {
-    _execution->changeInputShape(onert::ir::IOIndex(index), new_shape);
+    // If the passed shape is the same as before, do nothing. This will prevent activating dynamic
+    // shape inference when not yet active and new shape is still the same as the prepared model
+    // shape.
+    if (_execution->getInputShape(onert::ir::IOIndex{index}) != new_shape)
+      _execution->changeInputShape(onert::ir::IOIndex(index), new_shape);
   }
 
   return NNFW_STATUS_NO_ERROR;
