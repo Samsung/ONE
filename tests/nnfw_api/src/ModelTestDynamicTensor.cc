@@ -73,7 +73,7 @@ auto build_dynamic_Reshape()
   int out = cgen.addTensor({{}, f32}); // scalar, meaning output shape is unspecified
 
   CircleGen::Shape empty_new_shape;
-  cgen.addOperatorReshape({{input, new_shape}, {out}}, empty_new_shape);
+  cgen.addOperatorReshape({{input, new_shape}, {out}}, &empty_new_shape);
   cgen.setInputsAndOutputs({new_shape}, {out});
   auto cbuf = cgen.finish();
   return cbuf;

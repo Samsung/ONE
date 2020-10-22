@@ -226,9 +226,9 @@ uint32_t CircleGen::addOperatorReduce(const OperatorParams &params,
   return addOperatorWithOptions(params, reduce_op, circle::BuiltinOptions_ReducerOptions, options);
 }
 
-uint32_t CircleGen::addOperatorReshape(const OperatorParams &params, const Shape &new_shape)
+uint32_t CircleGen::addOperatorReshape(const OperatorParams &params, const Shape *new_shape)
 {
-  auto options = circle::CreateReshapeOptionsDirect(_fbb, &new_shape).Union();
+  auto options = circle::CreateReshapeOptionsDirect(_fbb, new_shape).Union();
   return addOperatorWithOptions(params, circle::BuiltinOperator_RESHAPE,
                                 circle::BuiltinOptions_ReshapeOptions, options);
 }
