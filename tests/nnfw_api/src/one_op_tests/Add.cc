@@ -56,9 +56,9 @@ TEST_F(GenModelTest, OneOp_Add_VarToVar)
 TEST_F(GenModelTest, OneOp_Add_VarToVarUint8)
 {
   CircleGen cgen;
-  int lhs = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_UINT8}, -0.1, 1);
-  int rhs = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_UINT8}, -0.1, 2);
-  int out = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_UINT8}, -0.1, 4);
+  int lhs = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_UINT8}, 0.1, 1);
+  int rhs = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_UINT8}, 0.1, 2);
+  int out = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_UINT8}, 0.1, 4);
   cgen.addOperatorAdd({{lhs, rhs}, {out}}, circle::ActivationFunctionType_NONE);
   cgen.setInputsAndOutputs({lhs, rhs}, {out});
 
@@ -88,7 +88,7 @@ TEST_F(GenModelTest, neg_OneOp_Add_InvalidType)
 {
   CircleGen cgen;
   int lhs = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_FLOAT32});
-  int rhs = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_UINT8}, -0.1, 2);
+  int rhs = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_UINT8}, 0.1, 2);
   int out = cgen.addTensor({{1, 2, 3, 1}, circle::TensorType::TensorType_FLOAT32});
   cgen.addOperatorAdd({{lhs, rhs}, {out}}, circle::ActivationFunctionType_NONE);
   cgen.setInputsAndOutputs({lhs, rhs}, {out});

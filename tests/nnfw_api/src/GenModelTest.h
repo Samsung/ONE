@@ -378,6 +378,9 @@ protected:
             case NNFW_TYPE_TENSOR_QUANT8_ASYMM:
               compareBuffersExact<uint8_t>(ref_output, output, i);
               break;
+            case NNFW_TYPE_TENSOR_QUANT8_ASYMM_SIGNED:
+              compareBuffersExact<int8_t>(ref_output, output, i);
+              break;
             case NNFW_TYPE_TENSOR_INT32:
               compareBuffersExact<int32_t>(ref_output, output, i);
               break;
