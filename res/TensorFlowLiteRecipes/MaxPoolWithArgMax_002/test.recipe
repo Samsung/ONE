@@ -26,6 +26,7 @@ operation {
     stride_h: 2
     activation: NONE
     output_type: INT64
+    include_batch_in_index: false
   }
 }
 input: "ifm"
