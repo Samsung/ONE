@@ -71,20 +71,16 @@ void ExecutorBase::execute(const std::vector<backend::IPortableTensor *> &src_te
     input_tensor->setTensor(src_tensor);
   }
 
-  // XXX Workaround!
-  if (!dst_tensors.empty())
+  assert(dst_tensors.size() == _graph.getOutputs().size());
+  assert(dst_tensors.size() == _output_tensors.size());
+  for (uint32_t n = 0; n < dst_tensors.size(); ++n)
   {
-    assert(dst_tensors.size() == _graph.getOutputs().size());
-    assert(dst_tensors.size() == _output_tensors.size());
-    for (uint32_t n = 0; n < dst_tensors.size(); ++n)
-    {
-      const auto dst_tensor = dst_tensors[n];
-      // assert(dst_tensor->buffer() != nullptr);
-      auto output_tensor = _output_tensors[n];
-      assert(output_tensor != nullptr);
-      VERBOSE_F() << "XXXXXXXXXX Output " << n << std::endl;
-      output_tensor->setTensor(dst_tensor);
-    }
+    const auto dst_tensor = dst_tensors[n];
+    // assert(dst_tensor->buffer() != nullptr);
+    auto output_tensor = _output_tensors[n];
+    assert(output_tensor != nullptr);
+    VERBOSE_F() << "XXXXXXXXXX Output " << n << std::endl;
+    output_tensor->setTensor(dst_tensor);
   }
 
   executeImpl();

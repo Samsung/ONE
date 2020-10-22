@@ -61,14 +61,20 @@ void WhileLayer::run()
   auto body_exec = nnfw::misc::polymorphic_downcast<exec::ExecutorBase *>(
       _executor_map->at(_body_subg_index).get());
 
+  // Need a temp tensor to hold the cond subgraph output
   assert(cond_exec->getOutputTensors().size() == 1);
-  auto &cond_output_tensor = cond_exec->getOutputTensors().at(0);
-  auto cond_output_tensor_size = std::max(cond_output_tensor->total_size(), static_cast<size_t>(1));
-  auto cond_buf = std::unique_ptr<uint8_t[]>{new uint8_t(cond_output_tensor_size)};
+  auto cond_output_tensor = [&]() {
+    auto cond_output = cond_exec->getOutputTensors().at(0);
+    auto tensor = std::make_unique<Tensor>(cond_output->orig_info(), cond_output->orig_layout(),
+                                           _dyn_memory_manager);
+    tensor->set_dynamic();
+    tensor->setBuffer(_dyn_memory_manager->allocate(tensor.get(), tensor->total_size()));
+    return tensor;
+  }();
 
-  cond_output_tensor->setUserTensor(cond_buf.get(), cond_output_tensor_size);
   VERBOSE(While) << "Call to $" << _cond_subg_index << " (cond)" << std::endl;
-  cond_exec->execute(_input_tensors, {}); // XXX output tensor is processed above
+  cond_exec->execute(_input_tensors,
+                     {cond_output_tensor.get()}); // XXX output tensor is processed above
   VERBOSE(While) << "Return from $" << _cond_subg_index << std::endl;
 
   auto getResultCond = [](backend::ITensor *tensor) -> bool {
@@ -80,7 +86,7 @@ void WhileLayer::run()
   std::vector<ITensor *> op_inputs(_input_tensors.begin(), _input_tensors.end());
   std::vector<ITensor *> op_outputs(_output_tensors.begin(), _output_tensors.end());
   // Copying body inputs to outputs when the loop body is never executed
-  if (!getResultCond(cond_output_tensor))
+  if (!getResultCond(cond_output_tensor.get()))
   {
     PermuteLayer copy_body_inputs_to_op_outputs{op_inputs, op_outputs};
     copy_body_inputs_to_op_outputs.run();
@@ -117,14 +123,13 @@ void WhileLayer::run()
 
   std::function<void()> body_execute = body_execute_with_op_inputs;
   const auto cond_execute = [&]() {
-    cond_output_tensor->setUserTensor(cond_buf.get(), cond_output_tensor_size);
     VERBOSE(While) << "Call to $" << _cond_subg_index << " (cond)" << std::endl;
-    cond_exec->execute(_output_tensors, {});
+    cond_exec->execute(_output_tensors, {cond_output_tensor.get()});
     VERBOSE(While) << "Return from $" << _cond_subg_index << std::endl;
   };
 
   // Loop while Cond subgraph's output is true
-  while (getResultCond(cond_output_tensor))
+  while (getResultCond(cond_output_tensor.get()))
   {
     body_execute();
     copy_body_outputs_to_op_outputs.run();
@@ -133,6 +138,7 @@ void WhileLayer::run()
   }
 
   // Clean-up the temp tensors
+  _dyn_memory_manager->deallocate(cond_output_tensor.get());
   for (auto tensor : temp_outputs)
   {
     _dyn_memory_manager->deallocate(tensor);
