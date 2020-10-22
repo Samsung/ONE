@@ -32,6 +32,15 @@ Execution::Execution(const std::shared_ptr<ExecutorMap> &executors) : _executors
   _io_desc.outputs.resize(primary_subg.getOutputs().size());
 }
 
+void Execution::assertAsyncInactive()
+{
+  assert(!_exec_thread || !_exec_thread->joinable());
+  if (_exec_thread && _exec_thread->joinable())
+    waitFinish();
+}
+
+Execution::~Execution() { assertAsyncInactive(); }
+
 void Execution::changeInputShape(const ir::IOIndex &index, const ir::Shape &new_shape)
 {
   // This will be used later to set input tensor dynamic
@@ -129,30 +138,48 @@ void Execution::setOutputLayout(const ir::IOIndex &index, ir::Layout layout)
 
 void Execution::execute()
 {
+  assertAsyncInactive();
+
   VERBOSE(Execution) << "Start execution" << std::endl;
 
   primary_executor()->execute(_io_desc);
-  finished = true;
+  _finished = true;
 
   VERBOSE(Execution) << "Execution finished" << std::endl;
 }
 
+void Execution::executeAsync()
+{
+  VERBOSE(Execution) << "Start asynchroneous execution" << std::endl;
+
+  primary_executor()->execute(_io_desc);
+  _finished = true;
+
+  VERBOSE(Execution) << "Asynchroneous execution finished" << std::endl;
+}
+
 void Execution::startExecute()
 {
+  assertAsyncInactive();
+
   VERBOSE(Execution) << "Create asynchronous execution thread" << std::endl;
 
-  _exec_thread = std::make_unique<std::thread>(&Execution::execute, this);
+  _finished = false;
+  _exec_thread = std::make_unique<std::thread>(&Execution::executeAsync, this);
 }
 
 void Execution::waitFinish()
 {
+  if (!_exec_thread || !_exec_thread->joinable())
+  {
+    assert(_exec_thread && _exec_thread->joinable());
+    return;
+  }
+
   VERBOSE(Execution) << "Wait to finish execution" << std::endl;
 
   _exec_thread->join();
-  finished = true;
 }
-
-bool Execution::isFinished(void) const { return finished; }
 
 ir::Shape Execution::getInputShape(ir::IOIndex ind) const
 {

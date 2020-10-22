@@ -25,6 +25,7 @@
 #include "exec/IExecutor.h"
 #include "IODescription.h"
 
+#include <atomic>
 #include <thread>
 
 namespace onert
@@ -45,6 +46,8 @@ public:
    * @param[in] executor  Model executor
    */
   Execution(const std::shared_ptr<ExecutorMap> &executors);
+
+  ~Execution();
 
 public:
   /**
@@ -137,12 +140,15 @@ public:
    * @brief   Check execution is finished
    * @return  @c true if execution is finished, otherwise @c false
    */
-  bool isFinished(void) const;
+  bool isFinished(void) const { return _finished; }
 
   ir::Shape getInputShape(ir::IOIndex ind) const;
   ir::Shape getOutputShape(ir::IOIndex ind) const;
 
 private:
+  void executeAsync();
+  void assertAsyncInactive();
+
   const std::unique_ptr<IExecutor> &primary_executor() const
   {
     return _executors->at(ir::SubgraphIndex{0});
@@ -153,7 +159,7 @@ private:
   const std::shared_ptr<ExecutorMap> _executors;
   IODescription _io_desc;
   std::unique_ptr<std::thread> _exec_thread;
-  bool finished{false};
+  std::atomic<bool> _finished{false};
 };
 
 } // namespace exec
