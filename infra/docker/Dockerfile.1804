@@ -30,12 +30,18 @@ RUN apt-get update && apt-get -qqy install libboost-all-dev libgflags-dev libgoo
 RUN apt-get update && apt-get -qqy install libprotobuf-dev protobuf-compiler
 
 # Additonal tools
-RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get -qqy install doxygen graphviz wget unzip clang-format-3.9 python3 python3-pip python3-venv hdf5-tools pylint
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get -qqy install doxygen graphviz wget zip unzip clang-format-3.9 python3 python3-pip python3-venv hdf5-tools pylint
 RUN pip3 install --upgrade pip
 RUN pip3 install yapf==0.22.0 numpy
 
 # Install google test (source)
 RUN apt-get update && apt-get -qqy install libgtest-dev
+
+# Install build tool gcc version 8.x and set alternative link (c++17 support)
+RUN apt-get update && apt-get -qqy install g++-8 g++-8-arm-linux-gnueabihf g++-8-aarch64-linux-gnu
+RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 80 --slave /usr/bin/g++ g++ /usr/bin/g++-8
+RUN update-alternatives --install /usr/bin/arm-linux-gnueabihf-gcc arm-linux-gnueabihf-gcc /usr/bin/arm-linux-gnueabihf-gcc-8 80 --slave /usr/bin/arm-linux-gnueabihf-g++ arm-linux-gnueabihf-g++ /usr/bin/arm-linux-gnueabihf-g++-8
+RUN update-alternatives --install /usr/bin/aarch64-linux-gnu-gcc aarch64-linux-gnu-gcc /usr/bin/aarch64-linux-gnu-gcc-8 80 --slave /usr/bin/aarch64-linux-gnu-g++ aarch64-linux-gnu-g++ /usr/bin/aarch64-linux-gnu-g++-8
 
 # Build and install google test static libraries
 WORKDIR /root/gtest
