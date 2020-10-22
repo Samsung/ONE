@@ -29,6 +29,7 @@
 #include "ops/ElementwiseUnaryLayer.h"
 #include "ops/ExpandDimsLayer.h"
 #include "ops/FillLayer.h"
+#include "ops/FloorLayer.h"
 #include "ops/FullyConnectedLayer.h"
 #include "ops/GatherLayer.h"
 #include "ops/LSTMLayer.h"
@@ -406,6 +407,21 @@ void KernelGenerator::visit(const ir::operation::Fill &node)
   auto fn = std::make_unique<ops::FillLayer>();
 
   fn->configure(input_tensor, value_tensor, output_tensor);
+
+  _return_fn = std::move(fn);
+}
+
+void KernelGenerator::visit(const ir::operation::Floor &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(ir::operation::Floor::Input::INPUT)};
+
+  auto output_tensor = _tensor_reg->getPortableTensor(output_index);
+  auto input_tensor = _tensor_reg->getPortableTensor(input_index);
+
+  auto fn = std::make_unique<ops::FloorLayer>();
+
+  fn->configure(input_tensor, output_tensor);
 
   _return_fn = std::move(fn);
 }

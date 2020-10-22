@@ -132,11 +132,24 @@ uint32_t CircleGen::addOperatorEqual(const OperatorParams &params)
                                 circle::BuiltinOptions_EqualOptions, options);
 }
 
+uint32_t CircleGen::addOperatorFloor(const OperatorParams &params)
+{
+  return addOperatorWithOptions(params, circle::BuiltinOperator_FLOOR,
+                                circle::BuiltinOptions_NONE, 0);
+}
+
 uint32_t CircleGen::addOperatorFullyConnected(const OperatorParams &params)
 {
   auto options = circle::CreateFullyConnectedOptions(_fbb).Union();
   return addOperatorWithOptions(params, circle::BuiltinOperator_FULLY_CONNECTED,
                                 circle::BuiltinOptions_FullyConnectedOptions, options);
+}
+
+uint32_t CircleGen::addOperatorFill(const OperatorParams &params)
+{
+  auto options = circle::CreateFillOptions(_fbb).Union();
+  return addOperatorWithOptions(params, circle::BuiltinOperator_FILL,
+                                circle::BuiltinOptions_FillOptions, options);
 }
 
 uint32_t CircleGen::addOperatorL2Normalization(const OperatorParams &params)

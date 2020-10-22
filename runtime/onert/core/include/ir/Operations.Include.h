@@ -24,6 +24,7 @@
 #include "ir/operation/Concat.h"
 #include "ir/operation/Reshape.h"
 #include "ir/operation/Fill.h"
+#include "ir/operation/Floor.h"
 #include "ir/operation/FullyConnected.h"
 #include "ir/operation/Softmax.h"
 #include "ir/operation/Transpose.h"

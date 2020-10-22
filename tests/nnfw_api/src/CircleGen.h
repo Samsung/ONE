@@ -146,6 +146,8 @@ public:
                                     circle::ActivationFunctionType actfn);
   uint32_t addOperatorCos(const OperatorParams &params);
   uint32_t addOperatorEqual(const OperatorParams &params);
+  uint32_t addOperatorFill(const OperatorParams &params);
+  uint32_t addOperatorFloor(const OperatorParams &params);
   uint32_t addOperatorFullyConnected(const OperatorParams &params);
   uint32_t addOperatorIf(const OperatorParams &params, uint32_t then_subg, uint32_t else_subg);
   uint32_t addOperatorInstanceNorm(const OperatorParams &params, float epsilon,

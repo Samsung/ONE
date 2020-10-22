@@ -1328,6 +1328,9 @@ void BaseLoader<LoaderDomain>::loadOperation(const Operator *op, ir::Graph &subg
     case BuiltinOperator::BuiltinOperator_CONCATENATION:
       loadConcatenation(op, subg);
       return;
+    case BuiltinOperator::BuiltinOperator_FLOOR:
+      loadOperationTo<ir::operation::Floor>(op, subg);
+      return;
     case BuiltinOperator::BuiltinOperator_FULLY_CONNECTED:
       loadFC(op, subg);
       return;

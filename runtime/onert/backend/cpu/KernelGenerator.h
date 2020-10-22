@@ -50,6 +50,7 @@ public:
   void visit(const ir::operation::DepthwiseConv2D &) override;
   void visit(const ir::operation::Concat &) override;
   void visit(const ir::operation::Fill &) override;
+  void visit(const ir::operation::Floor &) override;
   void visit(const ir::operation::FullyConnected &) override;
   void visit(const ir::operation::Reshape &) override;
   void visit(const ir::operation::Squeeze &) override;
