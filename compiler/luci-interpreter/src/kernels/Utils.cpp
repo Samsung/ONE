@@ -181,15 +181,5 @@ Shape calculateShapeForBroadcast(const Shape &input1_shape, const Shape &input2_
   return output_shape;
 }
 
-bool haveSameShape(const Tensor *tensor1, const Tensor *tensor2)
-{
-  if (tensor1->shape().num_dims() != tensor2->shape().num_dims())
-    return false;
-  for (int i = 0; i < tensor1->shape().num_dims(); i++)
-    if (tensor1->shape().dim(i) != tensor2->shape().dim(i))
-      return false;
-  return true;
-}
-
 } // namespace kernels
 } // namespace luci_interpreter

@@ -18,6 +18,7 @@
 #include "kernels/LogicalOr.h"
 
 #include "kernels/Utils.h"
+#include "kernels/BinaryOpCommon.h"
 
 #include <tensorflow/lite/kernels/internal/reference/reference_ops.h>
 
@@ -40,21 +41,10 @@ void LogicalOr::configure()
 
 void LogicalOr::execute() const
 {
-  auto func = [](bool x, bool y) { return x || y; };
-  if (haveSameShape(input1(), input2()))
-  {
-    tflite::reference_ops::BinaryFunction<bool, bool, bool>(
-        getTensorShape(input1()), getTensorData<bool>(input1()), getTensorShape(input2()),
-        getTensorData<bool>(input2()), getTensorShape(output()), getTensorData<bool>(output()),
-        func);
-  }
-  else
-  {
-    tflite::reference_ops::BroadcastBinaryFunction4DSlow<bool, bool, bool>(
-        getTensorShape(input1()), getTensorData<bool>(input1()), getTensorShape(input2()),
-        getTensorData<bool>(input2()), getTensorShape(output()), getTensorData<bool>(output()),
-        func);
-  }
+  BinaryOpBroadcastSlow(getTensorShape(input1()), getTensorData<bool>(input1()),
+                        getTensorShape(input2()), getTensorData<bool>(input2()),
+                        getTensorShape(output()), getTensorData<bool>(output()),
+                        [](bool x, bool y) { return x || y; });
 }
 
 } // namespace kernels
