@@ -33,7 +33,7 @@
   {                                                                    \
     if (result != NNFW_STATUS_NO_ERROR)                                \
       throw std::runtime_error("returning error on calling nnfw api"); \
-  } while (false);
+  } while (false)
 
 template <class CPP_TYPE> struct nnfw_type;
 
