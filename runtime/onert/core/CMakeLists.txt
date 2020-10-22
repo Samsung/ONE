@@ -14,8 +14,10 @@ target_link_libraries(onert_core PRIVATE dl ${LIB_PTHREAD})
 target_link_libraries(onert_core PRIVATE jsoncpp)
 target_link_libraries(onert_core INTERFACE ruy_instrumentation)
 
-add_custom_command(TARGET onert_core POST_BUILD
-                   COMMAND ${CMAKE_STRIP} "--strip-unneeded" $<TARGET_FILE_NAME:onert_core>)
+if(CMAKE_BUILD_TYPE STREQUAL "release")
+  add_custom_command(TARGET onert_core POST_BUILD
+                     COMMAND ${CMAKE_STRIP} "--strip-unneeded" $<TARGET_FILE_NAME:onert_core>)
+endif()
 
 # NOTE Below line is added to remove warning for android build
 #      It will be removed after android build uses gold linker
