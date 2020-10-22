@@ -68,7 +68,7 @@ uint8_t *MemoryManager::getBuffer(const ir::OperandIndex &ind) const
 {
   assert(_mem_planner->memory_plans().find(ind) != _mem_planner->memory_plans().end());
   const auto &mem_blk = _mem_planner->memory_plans().at(ind);
-  return _mem_alloc->base() + mem_blk.offset;
+  return mem_blk.size == 0 ? nullptr : _mem_alloc->base() + mem_blk.offset;
 }
 
 std::shared_ptr<cpu_common::Allocator> DynamicMemoryManager::allocate(const ITensor *tensor,

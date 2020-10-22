@@ -142,8 +142,11 @@ void DotDumper::dump(const std::string &tag)
     for (auto output : op.getOutputs())
     {
       using onert::dumper::dot::Operand;
-      auto &output_node = operand_nodes.at(output);
-      node->addOutEdge(output_node.get());
+      if (!output.undefined())
+      {
+        auto &output_node = operand_nodes.at(output);
+        node->addOutEdge(output_node.get());
+      }
     }
 
     operation_nodes.emplace(index, std::move(node));

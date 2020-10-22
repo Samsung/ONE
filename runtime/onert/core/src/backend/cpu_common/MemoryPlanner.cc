@@ -119,8 +119,6 @@ WICPlanner::WICPlanner()
 
 void WICPlanner::claim(const ir::OperandIndex &ind, size_t size)
 {
-  assert(size != 0);
-
   _operands.emplace(size, ind);
   _interference_graph[ind].insert(_interference_graph[ind].end(), _live_operands.cbegin(),
                                   _live_operands.cend());

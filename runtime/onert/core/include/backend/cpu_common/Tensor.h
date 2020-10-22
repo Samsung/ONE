@@ -111,14 +111,7 @@ public:
   bool applyShape(const ir::Shape &new_shape) override;
   const ir::Sparsity *sparsity() const override { return _info.typeInfo().sparsity(); }
 
-  virtual void increase_ref()
-  {
-    assert(is_dynamic() ||
-           // when not dynamic
-           (_buffer != nullptr));
-
-    ++_num_references;
-  }
+  virtual void increase_ref() { ++_num_references; }
 
   virtual void decrease_ref()
   {

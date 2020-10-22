@@ -124,7 +124,7 @@ LoweredGraph::LoweredGraph(const ir::Graph &graph, const CompilerOptions &option
       .run();
 
   // Optimization passes
-  pass::PassRunner{}.append(std::make_unique<pass::PermutationEliminationPass>(*this)).run();
+  // pass::PassRunner{}.append(std::make_unique<pass::PermutationEliminationPass>(*this)).run();
 
   VERBOSE(OpSequences) << "Dump after permutation insertion" << std::endl;
   dumpOpSequences(_op_seqs, _graph.operations());
