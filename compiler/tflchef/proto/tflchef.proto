@@ -502,6 +502,7 @@ message MaxPoolWithArgMaxOptions {
   optional int32 filter_height = 5 [ default = 1];
   optional Activation activation = 6 [default = NONE];
   optional TensorType output_type = 7 [default = INT64];
+  optional bool include_batch_in_index = 8 [default = false];
 }
 
 message Operation {

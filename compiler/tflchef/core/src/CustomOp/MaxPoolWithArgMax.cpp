@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright 2015 The TensorFlow Authors. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,6 +31,24 @@ MaxPoolWithArgMaxChef::custom_value(flatbuffers::FlatBufferBuilder &fbb) const
 
   assert(operation.type() == "MaxPoolWithArgMax");
 
+  /**
+   * REGISTER_OP("MaxPoolWithArgmax")
+    .Attr("ksize: list(int) >= 4")
+    .Attr("strides: list(int) >= 4")
+    .Attr("Targmax: {int32, int64} = DT_INT64")
+    .Attr(GetPaddingAttrString())
+    .Attr("include_batch_in_index: bool = false")
+    .Input("input: T")
+    .Output("output: T")
+    .Output("argmax: Targmax")
+    .Attr("T: realnumbertype")
+    .SetShapeFn([](InferenceContext* c) {
+      TF_RETURN_IF_ERROR(shape_inference::MaxPoolShape(c));
+      c->set_output(1, c->output(0));
+      return Status::OK();
+    });
+   */
+
   auto flex_buffers = std::make_unique<flexbuffers::Builder>();
   size_t map_start = flex_buffers->StartMap();
 
@@ -40,6 +59,8 @@ MaxPoolWithArgMaxChef::custom_value(flatbuffers::FlatBufferBuilder &fbb) const
   flex_buffers->Int("padding", operation.max_pool_with_argmax_options().padding());
   flex_buffers->Int("activation", operation.max_pool_with_argmax_options().activation());
   flex_buffers->Int("output_type", operation.max_pool_with_argmax_options().output_type());
+  flex_buffers->Bool("include_batch_in_index",
+                     operation.max_pool_with_argmax_options().include_batch_in_index());
 
   flex_buffers->EndMap(map_start);
   flex_buffers->Finish();
