@@ -42,7 +42,7 @@ TEST_F(GenModelTest, neg_OneOp_LeakyRelu_InvalidType)
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
   _context->setBackends({"acl_cl", "acl_neon"});
-  _context->expectFailCompile();
+  _context->expectFailModelLoad();
 
   SUCCEED();
 }

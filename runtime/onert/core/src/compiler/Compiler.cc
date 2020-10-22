@@ -18,7 +18,6 @@
 
 #include "ParamChecker.h"
 #include "ExecutorFactory.h"
-#include "OperationValidator.h"
 #include "ShapeValidator.h"
 #include "Fp32ToFp16Converter.h"
 
@@ -177,13 +176,6 @@ std::shared_ptr<exec::ExecutorMap> Compiler::compile(void)
   /***************************************************
    * Prepare compilation phase
    ***************************************************/
-
-  // Check shape independent operation feature
-  // - Operand type
-  // - Shape independent parameter
-  _subgraphs->iterate(
-      [](const onert::ir::SubgraphIndex &, const ir::Graph &subg) { OperationValidator{subg}(); });
-
   auto executors = std::make_shared<exec::ExecutorMap>();
 
   // Compilable check

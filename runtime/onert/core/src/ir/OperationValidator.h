@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_COMPILER_OPERATION_VALIDATOR_H__
-#define __ONERT_COMPILER_OPERATION_VALIDATOR_H__
+#ifndef __ONERT_IR_OPERATION_VALIDATOR_H__
+#define __ONERT_IR_OPERATION_VALIDATOR_H__
 
 #include "ir/OperationVisitor.h"
 
@@ -30,7 +30,7 @@ class Operands;
 
 namespace onert
 {
-namespace compiler
+namespace ir
 {
 
 class OperationValidator : public ir::OperationVisitor
@@ -74,7 +74,7 @@ private:
   const ir::Operands &_ctx;
 };
 
-} // namespace compiler
+} // namespace ir
 } // namespace onert
 
-#endif // __ONERT_COMPILER_OPERATION_VALIDATOR_H__
+#endif // __ONERT_IR_OPERATION_VALIDATOR_H__

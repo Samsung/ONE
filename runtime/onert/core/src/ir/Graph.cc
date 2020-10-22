@@ -16,6 +16,8 @@
 
 #include "ir/Graph.h"
 
+#include "OperationValidator.h"
+
 #include <algorithm>
 #include <bitset>
 #include <sstream>
@@ -97,6 +99,11 @@ void Graph::finishBuilding(void)
     assert(verifier::DAGChecker().verify(*this));
     assert(verifier::EdgeConsistencyChecker().verify(*this));
   }
+
+  // Check shape independent operation feature
+  // - Operand type
+  // - Shape independent parameter
+  OperationValidator{*this}();
 }
 
 void Graph::initializeUseDef()
