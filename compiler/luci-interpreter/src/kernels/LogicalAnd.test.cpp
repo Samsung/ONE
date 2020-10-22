@@ -58,6 +58,26 @@ TEST(LogicalAndTest, Broadcast)
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAre(1, 1, 1, 4));
 }
 
+TEST(LogicalAndTest, MismatchInputType_NEG)
+{
+  Tensor input1_tensor = makeInputTensor<DataType::S32>({1, 1, 1, 4}, {1, 0, 0, 1});
+  Tensor input2_tensor = makeInputTensor<DataType::BOOL>({1, 1, 1, 1}, {false});
+  Tensor output_tensor = makeOutputTensor(DataType::S32);
+
+  LogicalAnd kernel(&input1_tensor, &input2_tensor, &output_tensor);
+  EXPECT_ANY_THROW(kernel.configure());
+}
+
+TEST(LogicalAndTest, InputTypeInvalid_NEG)
+{
+  Tensor input1_tensor = makeInputTensor<DataType::S32>({1, 1, 1, 4}, {1, 0, 0, 1});
+  Tensor input2_tensor = makeInputTensor<DataType::S32>({1, 1, 1, 1}, {0});
+  Tensor output_tensor = makeOutputTensor(DataType::BOOL);
+
+  LogicalAnd kernel(&input1_tensor, &input2_tensor, &output_tensor);
+  EXPECT_ANY_THROW(kernel.configure());
+}
+
 } // namespace
 } // namespace kernels
 } // namespace luci_interpreter
