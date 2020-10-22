@@ -59,5 +59,6 @@ export OP_BACKEND_Conv2D="cpu"
 export OP_BACKEND_MaxPool2D="acl_cl"
 export OP_BACKEND_AvgPool2D="acl_neon"
 export ACL_LAYOUT="NCHW"
+export RUY_THREADS=4
 NNAPIGTest "acl_cl;acl_neon;cpu" "Product/out/unittest/nnapi_gtest.skip.${TEST_ARCH}-${TEST_OS}.union" "report/mixed"
 TFLiteModelVerification "acl_cl;acl_neon;cpu" "${TESTLIST_PREFIX}.intersect.txt" "report/mixed"
