@@ -242,7 +242,7 @@ kernelGenFullyConnected(const ir::operation::FullyConnected &node, const ir::Ope
   const auto output_size =
       operands.at(output_index).shape().dim(operands.at(output_index).shape().rank() - 1);
   UNUSED_RELEASE(output_size);
-  assert(operands.at(bias_index).shape().dim(0) == output_size);
+  assert(bias_index.undefined() || operands.at(bias_index).shape().dim(0) == output_size);
   assert(operands.at(weight_index).shape().dim(0) == output_size);
   const auto batch_size =
       operands.at(output_index).shape().dim(operands.at(output_index).shape().rank() - 2);
@@ -273,7 +273,7 @@ kernelGenFullyConnected(const ir::operation::FullyConnected &node, const ir::Ope
   auto output_tensor = tensor_reg->getAclTensor(output_index);
   const auto input_tensor = tensor_reg->getAclTensor(input_index);
   const auto weight_tensor = tensor_reg->getAclTensor(weight_index);
-  const auto bias_tensor = tensor_reg->getAclTensor(bias_index);
+  const auto bias_tensor = bias_index.undefined() ? nullptr : tensor_reg->getAclTensor(bias_index);
   const auto frontend_layout = layout;
   const auto acl_layout = output_tensor->handle()->info()->data_layout();
 
@@ -286,7 +286,8 @@ kernelGenFullyConnected(const ir::operation::FullyConnected &node, const ir::Ope
 
   auto fn = generateLayer<T_ACLLayer>(
       tensor_builder->acl_tensor_manager()->internal_buffer_manager(), input_tensor->handle(),
-      weight_tensor->handle(), bias_tensor->handle(), output_tensor->handle(), needs_reshape,
+      weight_tensor->handle(), bias_tensor != nullptr ? bias_tensor->handle() : nullptr,
+      output_tensor->handle(), needs_reshape,
       asTensorShape(reshape, frontend_layout, asRuntimeLayout(acl_layout)), kernel_type);
 
   return std::make_unique<T_FunctionWrapper>(std::move(fn));

@@ -35,8 +35,11 @@ void AclConstantInitializer::copyInputInitialize(const ir::Operation &node, uint
   assert(node.getInputs().size() > index);
 
   const auto &input_index = node.getInputs().at(index);
-  const auto &input_obj = _operands.at(input_index);
-  registerCopyInitializer(input_index, input_obj);
+  if (input_index.valid())
+  {
+    const auto &input_obj = _operands.at(input_index);
+    registerCopyInitializer(input_index, input_obj);
+  }
 }
 
 void AclConstantInitializer::permuteInputInitialize(const ir::Operation &node, uint32_t index)
