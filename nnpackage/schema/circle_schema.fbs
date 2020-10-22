@@ -1013,6 +1013,7 @@ table MaxPoolWithArgMaxOptions {
   filter_height:int;
   fused_activation_function:ActivationFunctionType;
   output_type:TensorType;
+  include_batch_in_index:bool;
 }
 
 // An OperatorCode can be an enum value (BuiltinOperator) if the operator is a
