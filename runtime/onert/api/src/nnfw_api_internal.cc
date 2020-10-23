@@ -779,7 +779,9 @@ NNFW_STATUS nnfw_session::get_config(const char *key, char *value, size_t value_
     return true;
   };
 
-  if (key == onert::util::config::BACKENDS)
+  const std::string skey = key;
+
+  if (skey == onert::util::config::BACKENDS)
   {
     if (options.backend_list.size() == 0)
       return NNFW_STATUS_NO_ERROR; // no setting backend is not an error of get_config_str()
@@ -791,7 +793,7 @@ NNFW_STATUS nnfw_session::get_config(const char *key, char *value, size_t value_
 
     strncpy(value, str.c_str(), value_size);
   }
-  else if (key == onert::util::config::EXECUTOR)
+  else if (skey == onert::util::config::EXECUTOR)
   {
     if (!check_boundary(value_size, options.executor))
       return NNFW_STATUS_ERROR;
