@@ -388,7 +388,7 @@ bool has_same_values(luci::CircleConst *lhs, luci::CircleConst *rhs)
   return true;
 }
 
-uint32_t optimized_buffer_id(FlatBufferBuilder &builder, SerializedModelData &md,
+uint32_t get_buffer_id(FlatBufferBuilder &builder, SerializedModelData &md,
                              luci::CircleConst *node)
 {
   if (node != nullptr)
@@ -431,7 +431,7 @@ void exportOpDefinedTensor(const CircleTensoInfo &info, FlatBufferBuilder &build
 
   auto sparsityparam = encodeSparsityParameters(builder, info.sparsityparam());
 
-  auto buffer_id = optimized_buffer_id(builder, md, info.content());
+  auto buffer_id = get_buffer_id(builder, md, info.content());
 
   auto name_offset = builder.CreateString(info.name());
   auto tensor_offset = CreateTensor(builder, shape_offset, info.dtype(), buffer_id, name_offset,
