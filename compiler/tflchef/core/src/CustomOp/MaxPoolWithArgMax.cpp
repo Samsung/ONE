@@ -52,13 +52,22 @@ MaxPoolWithArgMaxChef::custom_value(flatbuffers::FlatBufferBuilder &fbb) const
   auto flex_buffers = std::make_unique<flexbuffers::Builder>();
   size_t map_start = flex_buffers->StartMap();
 
-  flex_buffers->Int("filter_width", operation.max_pool_with_argmax_options().filter_width());
-  flex_buffers->Int("filter_height", operation.max_pool_with_argmax_options().filter_height());
-  flex_buffers->Int("stride_w", operation.max_pool_with_argmax_options().stride_w());
-  flex_buffers->Int("stride_h", operation.max_pool_with_argmax_options().stride_h());
-  flex_buffers->Int("padding", operation.max_pool_with_argmax_options().padding());
-  flex_buffers->Int("activation", operation.max_pool_with_argmax_options().activation());
-  flex_buffers->Int("output_type", operation.max_pool_with_argmax_options().output_type());
+  auto start = flex_buffers->StartVector("ksize");
+  flex_buffers->Add(1);
+  flex_buffers->Add(operation.max_pool_with_argmax_options().filter_width());
+  flex_buffers->Add(operation.max_pool_with_argmax_options().filter_height());
+  flex_buffers->Add(1);
+  flex_buffers->EndVector(start, /*typed=*/true, /*fixed=*/false);
+  start = flex_buffers->StartVector("strides");
+  flex_buffers->Add(1);
+  flex_buffers->Add(operation.max_pool_with_argmax_options().stride_w());
+  flex_buffers->Add(operation.max_pool_with_argmax_options().stride_h());
+  flex_buffers->Add(1);
+  flex_buffers->EndVector(start, /*typed=*/true, /*fixed=*/false);
+  std::string padding = operation.max_pool_with_argmax_options().padding() ? "VALID":"SAME";
+  flex_buffers->String("padding", padding);
+  flex_buffers->Bool("include_batch_in_index",
+                     operation.max_pool_with_argmax_options().include_batch_in_index());
   flex_buffers->Bool("include_batch_in_index",
                      operation.max_pool_with_argmax_options().include_batch_in_index());
 
