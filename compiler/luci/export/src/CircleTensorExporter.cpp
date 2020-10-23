@@ -343,6 +343,82 @@ encodeSparsityParameters(FlatBufferBuilder &builder, luci::SparsityParam *sparsi
                                                 &sparsityparam->block_map, &dim_metadata_vec);
 }
 
+bool has_same_values(luci::CircleConst *lhs, luci::CircleConst *rhs)
+{
+  if (lhs->dtype() != rhs->dtype())
+    return false;
+
+  if (lhs->rank() != rhs->rank())
+    return false;
+
+  for (uint32_t i = 0; i < lhs->rank(); ++i)
+    if (!(lhs->dim(i) == rhs->dim(i)))
+      return false;
+
+  switch (lhs->dtype())
+  {
+    case loco::DataType::FLOAT32:
+      for (uint32_t i = 0; i < lhs->size<loco::DataType::FLOAT32>(); ++i)
+        if (lhs->at<loco::DataType::FLOAT32>(i) != rhs->at<loco::DataType::FLOAT32>(i))
+          return false;
+      break;
+
+    case loco::DataType::S32:
+      for (uint32_t i = 0; i < lhs->size<loco::DataType::S32>(); ++i)
+        if (lhs->at<loco::DataType::S32>(i) != rhs->at<loco::DataType::S32>(i))
+          return false;
+      break;
+
+    case loco::DataType::S64:
+      for (uint32_t i = 0; i < lhs->size<loco::DataType::S64>(); ++i)
+        if (lhs->at<loco::DataType::S64>(i) != rhs->at<loco::DataType::S64>(i))
+          return false;
+      break;
+
+    case loco::DataType::BOOL:
+      for (uint32_t i = 0; i < lhs->size<loco::DataType::BOOL>(); ++i)
+        if (lhs->at<loco::DataType::BOOL>(i) != rhs->at<loco::DataType::BOOL>(i))
+          return false;
+      break;
+
+    default:
+      return false;
+  }
+
+  return true;
+}
+
+uint32_t optimized_buffer_id(FlatBufferBuilder &builder, SerializedModelData &md,
+                             luci::CircleConst *node)
+{
+  if (node != nullptr)
+  {
+    // When buffer with same values is found, use the buffer id.
+    for (auto key_value : md._cached_buffer_id)
+    {
+      if (has_same_values(key_value.first, node))
+        return key_value.second;
+    }
+
+    // When buffer with same values is not found, generate new buffer
+    auto buffer = encodeOpBuffer(builder, node);
+
+    auto buffer_id = static_cast<uint32_t>(md._buffers.size());
+    md._buffers.push_back(buffer);
+
+    // Cache the newly generated buffer id
+    md._cached_buffer_id.insert({node, buffer_id});
+
+    return buffer_id;
+  }
+  else
+  {
+    // When there is no CircleConst, the operation do not use buffer.
+    // So return buffer id as 0 which means empty buffer in circle schema.
+    return 0;
+  }
+}
+
 void exportOpDefinedTensor(const CircleTensoInfo &info, FlatBufferBuilder &builder,
                            SerializedModelData &md, SerializedGraphData &gd)
 {
@@ -351,16 +427,11 @@ void exportOpDefinedTensor(const CircleTensoInfo &info, FlatBufferBuilder &build
   if (info.shape_status() == ShapeStatus::VALID)
     shape_offset = encodeShape(builder, info.shape());
 
-  // encode and register output tensor buffer
-  auto buffer =
-      info.content() == nullptr ? encodeOpBuffer(builder) : encodeOpBuffer(builder, info.content());
-
   auto quantparam = encodeQuantizationParameters(builder, info.quantparam());
 
   auto sparsityparam = encodeSparsityParameters(builder, info.sparsityparam());
 
-  auto buffer_id = static_cast<uint32_t>(md._buffers.size());
-  md._buffers.push_back(buffer);
+  auto buffer_id = optimized_buffer_id(builder, md, info.content());
 
   auto name_offset = builder.CreateString(info.name());
   auto tensor_offset = CreateTensor(builder, shape_offset, info.dtype(), buffer_id, name_offset,
