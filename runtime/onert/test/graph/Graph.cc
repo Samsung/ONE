@@ -17,6 +17,8 @@
 #include <gtest/gtest.h>
 
 #include "ir/Graph.h"
+#include "ir/operation/BinaryArithmetic.h"
+#include "ir/verifier/Verifier.h"
 
 TEST(Graph, neg_inputs_and_outputs)
 {
@@ -51,4 +53,98 @@ TEST(Graph, neg_inputs_and_outputs)
   ASSERT_EQ(graph.getOutputs().at(io_index2), 12);
 
   EXPECT_THROW(graph.getOutputs().at(onert::ir::IOIndex{3}), std::out_of_range);
+}
+
+using namespace onert::ir;
+
+OperationIndex addAddOperation(Graph &graph, const OperandIndexSequence inputs,
+                               const OperandIndexSequence outputs)
+{
+  // Add "ADD" operation
+  operation::BinaryArithmetic::Param param;
+  param.arithmetic_type = operation::BinaryArithmetic::ArithmeticType::ADD;
+  param.activation = Activation::NONE;
+  return graph.addOperation(std::make_unique<operation::BinaryArithmetic>(inputs, outputs, param));
+}
+
+TEST(Graph, OneOpGraphFinish)
+{
+  // Simple Graph with just one Add operation
+
+  Graph graph;
+
+  // Add tensors
+  Shape shape{1, 2, 2, 1};
+  TypeInfo type{DataType::FLOAT32};
+  auto lhs = graph.addOperand(shape, type);
+  auto rhs = graph.addOperand(shape, type);
+  auto res = graph.addOperand(shape, type);
+
+  addAddOperation(graph, {lhs, rhs}, {res});
+
+  // Set model inputs/outputs
+  graph.addInput(lhs);
+  graph.addInput(rhs);
+  graph.addOutput(res);
+
+  graph.finishBuilding();
+
+  SUCCEED();
+}
+
+TEST(Graph, neg_InvalidGraphFinish_BadInput)
+{
+  Graph graph;
+
+  // Add tensors
+  Shape shape{1, 2, 2, 1};
+  TypeInfo type{DataType::FLOAT32};
+  auto in = graph.addOperand(shape, type);
+  auto out = graph.addOperand(shape, type);
+
+  // Set model inputs/outputs
+  graph.addInput(in);
+  graph.addOutput(out);
+  graph.addInput(OperandIndex{89}); // Non-exisiting operand!
+
+  EXPECT_ANY_THROW(graph.finishBuilding());
+}
+
+TEST(Graph, neg_InvalidGraphFinish_BadOutput)
+{
+  Graph graph;
+
+  // Add tensors
+  Shape shape{1, 2, 2, 1};
+  TypeInfo type{DataType::FLOAT32};
+  auto in = graph.addOperand(shape, type);
+  auto out = graph.addOperand(shape, type);
+
+  // Set model inputs/outputs
+  graph.addInput(in);
+  graph.addOutput(out);
+  graph.addOutput(OperandIndex{12}); // Non-exisiting operand!
+
+  EXPECT_ANY_THROW(graph.finishBuilding());
+}
+
+TEST(Graph, neg_InvalidGraphFinish_BadInputOutputForOp)
+{
+  Graph graph;
+
+  // Add tensors
+  Shape shape{1, 2, 2, 1};
+  TypeInfo type{DataType::FLOAT32};
+  auto lhs = graph.addOperand(shape, type);
+  auto rhs = graph.addOperand(shape, type);
+  auto res = graph.addOperand(shape, type);
+
+  addAddOperation(graph, {lhs, OperandIndex{99}}, {res});
+
+  // Set model inputs/outputs
+  graph.addInput(lhs);
+  graph.addInput(rhs);
+  graph.addOutput(res);
+
+  EXPECT_ANY_THROW(graph.finishBuilding());
 }

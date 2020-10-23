@@ -122,10 +122,10 @@ TEST_F(GenModelTest, neg_OneOp_Add_InvalidShapeConst)
   std::vector<float> rhs_data{5, 4, 0, 7, 4, 0};
   uint32_t rhs_buf = cgen.addBuffer(rhs_data);
   int lhs = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_FLOAT32});
-  int rhs = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_FLOAT32, rhs_buf});
+  int rhs = cgen.addTensor({{1, 2, 3, 1}, circle::TensorType::TensorType_FLOAT32, rhs_buf});
   int out = cgen.addTensor({{1, 2, 3, 1}, circle::TensorType::TensorType_FLOAT32});
   cgen.addOperatorAdd({{lhs, rhs}, {out}}, circle::ActivationFunctionType_NONE);
-  cgen.setInputsAndOutputs({lhs, rhs}, {out});
+  cgen.setInputsAndOutputs({lhs}, {out});
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
   _context->setBackends({"acl_cl", "acl_neon", "cpu"});

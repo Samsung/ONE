@@ -61,6 +61,15 @@ public:
   bool verify(const Graph &graph) const noexcept override;
 };
 
+/**
+ * @brief Check model input and output operands are really exist in the graph
+ */
+class InputOutputChecker : public IVerifier
+{
+public:
+  bool verify(const Graph &graph) const noexcept override;
+};
+
 } // namespace verifier
 } // namespace ir
 } // namespace onert
