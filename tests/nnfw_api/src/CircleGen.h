@@ -171,6 +171,8 @@ public:
                                      bool half_pixel_centers = false);
   uint32_t addOperatorResizeNearestNeighbor(const OperatorParams &params);
   uint32_t addOperatorReverseV2(const OperatorParams &params);
+  uint32_t addOperatorShape(const OperatorParams &params,
+                            circle::TensorType type = circle::TensorType::TensorType_INT32);
   uint32_t addOperatorSelect(const OperatorParams &params);
   uint32_t addOperatorSelectV2(const OperatorParams &params);
   uint32_t addOperatorSplit(const OperatorParams &params, int32_t num_split);

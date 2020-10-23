@@ -58,12 +58,14 @@ public:
   void visit(const ir::operation::Pad &node) override;
   void visit(const ir::operation::ResizeBilinear &node) override;
   void visit(const ir::operation::Reverse &node) override;
+  void visit(const ir::operation::Shape &node) override;
   void visit(const ir::operation::Select &node) override;
   void visit(const ir::operation::SpaceToBatchND &node) override;
   void visit(const ir::operation::SpaceToDepth &node) override;
   void visit(const ir::operation::Split &node) override;
   void visit(const ir::operation::SquaredDifference &node) override;
   void visit(const ir::operation::StridedSlice &node) override;
+  void visit(const ir::operation::Rank &node) override;
   void visit(const ir::operation::TransposeConv &node) override;
   void visit(const ir::operation::Unpack &node) override;
   void visit(const ir::operation::While &node) override;
