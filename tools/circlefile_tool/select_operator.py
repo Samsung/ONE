@@ -941,11 +941,9 @@ def GenerateBuiltinOption(new_builder, selected_builtin_option, builtin_option_t
         bcqfc_option.Init(selected_builtin_option.Bytes, selected_builtin_option.Pos)
 
         tflite.BCQFullyConnectedOptions.BCQFullyConnectedOptionsStart(new_builder)
-        tflite.BCQFullyConnectedOptions.BCQFullyConnectedOptionsAddWeightsHiddenSize(new_builder, weightsHiddenSize)(
-            new_builder, used_subgraphs_dic[while_option.BodySubgraphIndex()])
-        tflite.WhileOptions.WhileOptionsAddCondSubgraphIndex(
-            new_builder, used_subgraphs_dic[while_option.CondSubgraphIndex()])
-        return tflite.WhileOptions.WhileOptionsEnd(new_builder)
+        tflite.BCQFullyConnectedOptions.BCQFullyConnectedOptionsAddWeightsHiddenSize(new_builder, bcqfc_option.WeightsHiddenSize())
+        tflite.BCQFullyConnectedOptions.BCQFullyConnectedOptionsAddFusedActivationFunction(new_builder, bcqfc_option.FusedActivationFunction())
+        return tflite.BCQFullyConnectedOptions.BCQFullyConnectedOptionsEnd(new_builder)
 
 
 
