@@ -945,7 +945,17 @@ def GenerateBuiltinOption(new_builder, selected_builtin_option, builtin_option_t
         tflite.BCQFullyConnectedOptions.BCQFullyConnectedOptionsAddFusedActivationFunction(new_builder, bcqfc_option.FusedActivationFunction())
         return tflite.BCQFullyConnectedOptions.BCQFullyConnectedOptionsEnd(new_builder)
 
+    # BCQGatherOptions
+    import tflite.BCQGatherOptions
+    if builtin_option_type == tflite.BuiltinOptions.BuiltinOptions().BCQGatherOptions:
 
+        bcqgather_option = tflite.BCQGatherOptions.BCQGatherOptions()
+        bcqgather_option.Init(selected_builtin_option.Bytes, selected_builtin_option.Pos)
+
+        tflite.BCQGatherOptions.BCQGatherOptionsStart(new_builder)
+        tflite.BCQGatherOptions.BCQGatherOptionsAddAxis(new_builder, bcqgather_option.Axis())
+        tflite.BCQGatherOptions.BCQGatherOptionsAddInputHiddenSize(new_builder, bcqgather_option.InputHiddenSize())
+        return tflite.BCQGatherOptions.BCQGatherOptionsEnd(new_builder)
 
     # Cannot handle builtin option type yet
     print("Cannot handle BuiltinOptions {} yet. See BuiltinOptions.py for op name".format(
