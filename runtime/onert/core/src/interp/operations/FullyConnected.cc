@@ -84,8 +84,6 @@ void invoke(const ITensor *ifm_tensor, const ITensor *ker_tensor, const ITensor 
   // Calculate
   nnfw::cker::FullyConnectedParams cker_param;
   cker_param.activation = convertActivationType(param.activation);
-  calculateActivationRange(param.activation, &cker_param.float_activation_min,
-                           &cker_param.float_activation_max);
   const auto cker_ifm_shape = convertShape(ifm_tensor->tensorInfo().shape());
   const auto cker_ker_shape = convertShape(ker_tensor->tensorInfo().shape());
   const auto cker_bias_shape = convertShape(bias_tensor->tensorInfo().shape());
