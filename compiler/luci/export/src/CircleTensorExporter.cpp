@@ -388,8 +388,7 @@ bool has_same_values(luci::CircleConst *lhs, luci::CircleConst *rhs)
   return true;
 }
 
-uint32_t get_buffer_id(FlatBufferBuilder &builder, SerializedModelData &md,
-                             luci::CircleConst *node)
+uint32_t get_buffer_id(FlatBufferBuilder &builder, SerializedModelData &md, luci::CircleConst *node)
 {
   if (node != nullptr)
   {
