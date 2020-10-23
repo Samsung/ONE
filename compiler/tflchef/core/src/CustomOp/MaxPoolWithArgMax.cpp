@@ -64,10 +64,13 @@ MaxPoolWithArgMaxChef::custom_value(flatbuffers::FlatBufferBuilder &fbb) const
   flex_buffers->Add(operation.max_pool_with_argmax_options().stride_h());
   flex_buffers->Add(1);
   flex_buffers->EndVector(start, /*typed=*/true, /*fixed=*/false);
-  std::string padding = operation.max_pool_with_argmax_options().padding() ? "VALID":"SAME";
+  std::string padding = operation.max_pool_with_argmax_options().padding() ? "VALID" : "SAME";
   flex_buffers->String("padding", padding);
-  flex_buffers->Bool("include_batch_in_index",
-                     operation.max_pool_with_argmax_options().include_batch_in_index());
+  auto output_type = operation.max_pool_with_argmax_options().output_type();
+  assert(output_type == tflchef::TensorType::INT32 || output_type == tflchef::TensorType::INT64);
+  std::string ot = (output_type == tflchef::TensorType::INT32) ? "INT32" : "INT64";
+  flex_buffers->String("output_type", ot);
+
   flex_buffers->Bool("include_batch_in_index",
                      operation.max_pool_with_argmax_options().include_batch_in_index());
 
