@@ -106,7 +106,6 @@ TEST(PowTest, Input_Output_Type_NEG)
   EXPECT_ANY_THROW(kernel.configure());
 }
 
-
 TEST(PowTest, Invalid_Input_Type_NEG)
 {
   Tensor input1_tensor = makeInputTensor<DataType::S64>({1}, {1});
