@@ -97,6 +97,52 @@ TEST(TanhTest, Uint8)
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
 }
 
+TEST(TanhTest, InputTypeInvalid_NEG)
+{
+  std::vector<int64_t> input_data{
+      0,  -6, 2, 4, //
+      -4, -2, 8, 1, //
+      0,  -6, 2, 4, //
+      -4, -2, 8, 1, //
+      0,  -6, 2, 4, //
+      -4, -2, 8, 1, //
+      0,  -6, 2, 4, //
+      -4, -2, 8, 1, //
+      0,  -6, 2, 4, //
+      -4, -2, 8, 1, //
+      0,  -6, 2, 4, //
+      -4, -2, 8, 1, //
+  };
+  Tensor input_tensor = makeInputTensor<DataType::S64>({2, 6, 4, 1}, input_data);
+  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
+
+  Tanh kernel(&input_tensor, &output_tensor);
+  EXPECT_ANY_THROW(kernel.configure());
+}
+
+TEST(TanhTest, InputOutputMismatch_NEG)
+{
+  std::vector<float> input_data{
+      0,  -6, 2, 4, //
+      -4, -2, 8, 1, //
+      0,  -6, 2, 4, //
+      -4, -2, 8, 1, //
+      0,  -6, 2, 4, //
+      -4, -2, 8, 1, //
+      0,  -6, 2, 4, //
+      -4, -2, 8, 1, //
+      0,  -6, 2, 4, //
+      -4, -2, 8, 1, //
+      0,  -6, 2, 4, //
+      -4, -2, 8, 1, //
+  };
+  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({2, 6, 4, 1}, input_data);
+  Tensor output_tensor = makeOutputTensor(DataType::U8);
+
+  Tanh kernel(&input_tensor, &output_tensor);
+  EXPECT_ANY_THROW(kernel.configure());
+}
+
 } // namespace
 } // namespace kernels
 } // namespace luci_interpreter

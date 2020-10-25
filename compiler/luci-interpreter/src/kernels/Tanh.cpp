@@ -29,7 +29,7 @@ Tanh::Tanh(const Tensor *input, Tensor *output) : Kernel({input}, {output}) {}
 
 void Tanh::configure()
 {
-  assert(input()->element_type() == output()->element_type());
+  LUCI_INTERPRETER_CHECK(input()->element_type() == output()->element_type());
   if (input()->element_type() == DataType::U8)
   {
     populateLookupTable();
