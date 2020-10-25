@@ -46,6 +46,8 @@ set(SOURCES
     LessEqual.cpp
     LocalResponseNormalization.h
     LocalResponseNormalization.cpp
+    LogicalNot.h
+    LogicalNot.cpp
     Logistic.h
     Logistic.cpp
     LogSoftmax.h
@@ -149,6 +151,7 @@ set(TEST_SOURCES
     Less.test.cpp
     LessEqual.test.cpp
     LocalResponseNormalization.test.cpp
+    LogicalNot.test.cpp
     Logistic.test.cpp
     LogSoftmax.test.cpp
     Maximum.test.cpp

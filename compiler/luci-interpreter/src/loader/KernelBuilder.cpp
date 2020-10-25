@@ -38,6 +38,7 @@
 #include "kernels/Less.h"
 #include "kernels/LessEqual.h"
 #include "kernels/LocalResponseNormalization.h"
+#include "kernels/LogicalNot.h"
 #include "kernels/Logistic.h"
 #include "kernels/LogSoftmax.h"
 #include "kernels/Maximum.h"
@@ -444,6 +445,16 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleLocalResponseNorm
   params.beta = node->beta();
 
   return std::make_unique<kernels::LocalResponseNormalization>(input, output, params);
+}
+
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleLogicalNot *node)
+{
+  assert(node->arity() == 1);
+
+  const Tensor *input = getInputTensor(node->x());
+  Tensor *output = getOutputTensor(node);
+
+  return std::make_unique<kernels::LogicalNot>(input, output);
 }
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleLogistic *node)

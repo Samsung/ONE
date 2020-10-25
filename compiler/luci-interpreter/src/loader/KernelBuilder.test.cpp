@@ -38,6 +38,7 @@
 #include <kernels/Less.h>
 #include <kernels/LessEqual.h>
 #include <kernels/LocalResponseNormalization.h>
+#include <kernels/LogicalNot.h>
 #include <kernels/Logistic.h>
 #include <kernels/LogSoftmax.h>
 #include <kernels/Maximum.h>
@@ -553,6 +554,20 @@ TEST_F(KernelBuilderTest, LocalResponseNormalization)
   EXPECT_THAT(kernel->params().bias, Eq(op->bias()));
   EXPECT_THAT(kernel->params().alpha, Eq(op->alpha()));
   EXPECT_THAT(kernel->params().beta, Eq(op->beta()));
+}
+
+TEST_F(KernelBuilderTest, LogicalNot)
+{
+  auto *input = createInputNode();
+
+  auto *op = createNode<luci::CircleLogicalNot>();
+  op->x(input);
+
+  auto kernel = buildKernel<kernels::LogicalNot>(op);
+  ASSERT_THAT(kernel, NotNull());
+
+  checkTensor(kernel->input(), input);
+  checkTensor(kernel->output(), op);
 }
 
 TEST_F(KernelBuilderTest, Logistic)
