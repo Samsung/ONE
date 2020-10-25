@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env python
 
 # Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
 #
@@ -14,51 +14,85 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-DRIVER_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+import argparse
+import os
+import subprocess
+import sys
 
-function Usage()
-{
-  echo "Usage: one-import [FRAMEWORK] ..."
-  echo "Available FRAMEWORK drivers:"
-  framework_exist=0
-  for file in "$DRIVER_PATH"/one-import-*;
-  do
-    framework_driver=$(basename $file)
-    framework=${framework_driver:11} # 11 is length of "one-import-"
-    echo "  $framework"
-    framework_exist=1
-  done
-  if [ $framework_exist == 0 ]; then
-    echo "  (There is no available import drivers)"
-  fi
+import one_utils as _utils
 
-  exit 255
-}
 
-function version()
-{
-  $DRIVER_PATH/one-version one-import-tf
-  exit 255
-}
+def _get_parser():
+    parser = argparse.ArgumentParser(
+        description='command line tool to convert various format to circle', formatter_class=argparse.RawTextHelpFormatter)
 
-# Get command from command-line
-FRAMEWORK=$1
-if [[ -z ${FRAMEWORK} ]]; then
-  Usage
-fi
-shift
+    # configuration file
+    parser.add_argument(
+        '-C',
+        '--config',
+        type=str,
+        help='run with configuation file')
+    
+    # driver
+    parser.add_argument('driver', type=str, help='driver name to run (supported: tf, tflite, bcq)')
 
-if [ ${FRAMEWORK} = "--version" ]; then
-  version
-fi
+    # version
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    one_version_path = os.path.join(dir_path, 'one-version')
+    version = subprocess.check_output([one_version_path]).decode('utf-8')
+    version_str = '\n'.join(['one-import version {}'.format(version), \
+    'Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved', \
+    'Licensed under the Apache License, Version 2.0', \
+    'https://github.com/Samsung/ONE'])
+    parser.add_argument('-v', '--version', action='version', version=version_str)
 
-FRAMEWORK_DRIVER="one-import-$FRAMEWORK"
+    return parser
 
-FRAMEWORK_DRIVER_CMD="${DRIVER_PATH}/${FRAMEWORK_DRIVER}"
 
-if [[ ! -f "${FRAMEWORK_DRIVER_CMD}" ]]; then
-  echo "ERROR: '${FRAMEWORK_DRIVER}' is not supported"
-  Usage
-fi
+def _verify_arg(parser, args):
+    """verify given arguments"""
+    pass
+    # TODO verify arguments
 
-"${FRAMEWORK_DRIVER_CMD}" "$@"
+
+def _parse_arg(parser):
+    args, unknown_args = parser.parse_known_args()
+
+    return args, unknown_args
+
+
+def _get_driver_name(driver_name):
+    return {
+        'bcq': 'one-import-bcq',
+        'tf': 'one-import-tf',
+        'tflite': 'one-import-tflite'
+    }[driver_name]
+
+
+def _convert(args, unknown_args):
+    # get directory path
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    # make cmd
+    cmd = ['python', os.path.join(dir_path, _get_driver_name(args.driver))]
+    if _utils._is_valid_attr(args, 'config'):
+        cmd.append('--config')
+        cmd.append(os.path.expanduser(args.config))
+    return_code = subprocess.call(cmd + unknown_args)
+    if return_code != 0:
+        sys.exit(return_code)
+
+
+def main():
+    # parse arguments
+    parser = _get_parser()
+    args, unknown_args = _parse_arg(parser)
+
+    # verify arguments
+    _verify_arg(parser, args)
+
+    # convert
+    _convert(args, unknown_args)
+
+
+if __name__ == '__main__':
+    main()

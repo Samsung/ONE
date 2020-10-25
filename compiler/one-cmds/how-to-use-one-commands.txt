@@ -20,6 +20,16 @@ Compilation flow for NPU
 4) one-codegen will compile to binary codes.
 
 
+Prerequisite
+------------
+
+Before you use one commands, please prepare a python environment with TensorFlow installed.
+You can use `one-prepare-venv`(ubuntu) script where it automatically installs python3 virtual
+environment with Tensorflow-cpu.
+
+If you have prepared Python as a virtual environment, don't forget to activate it.
+
+
 one-import
 -----------
 

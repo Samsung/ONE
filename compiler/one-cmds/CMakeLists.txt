@@ -1,4 +1,6 @@
 set(ONE_COMMAND_FILES
+    one-build
+    one-build.cfg
     one-import
     one-import-bcq
     one-import-tf
@@ -8,6 +10,7 @@ set(ONE_COMMAND_FILES
     one-pack
     one-codegen
     one-prepare-venv
+    one_utils.py
 )
 
 foreach(ONE_COMMAND IN ITEMS ${ONE_COMMAND_FILES})
