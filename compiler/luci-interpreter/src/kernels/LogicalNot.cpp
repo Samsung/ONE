@@ -25,10 +25,7 @@ namespace luci_interpreter
 namespace kernels
 {
 
-LogicalNot::LogicalNot(const Tensor *input, Tensor *output)
-    : Kernel({input}, {output})
-{
-}
+LogicalNot::LogicalNot(const Tensor *input, Tensor *output) : Kernel({input}, {output}) {}
 
 void LogicalNot::configure()
 {
