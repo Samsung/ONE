@@ -8,11 +8,11 @@ endmacro(require_package)
 
 require_package(Abseil)
 require_package(Protobuf)
-require_package(EigenSource-fd6845384b86)
+require_package(EigenSource)
 require_package(GoogleDoubleConversion)
 require_package(GoogleNSync)
-require_package(TensorFlowSource EXACT 1.12)
-require_package(TensorFlowProtoText EXACT 1.12)
+require_package(TensorFlowSource EXACT 1.13.1)
+require_package(TensorFlowProtoText EXACT 1.13.1)
 
 message(STATUS "Build tfgraph-xform: TRUE")
 
@@ -61,6 +61,7 @@ Source_Add(core/platform/tracing.cc)
 Source_Add(core/platform/setround.cc)
 Source_Add(core/platform/denormal.cc)
 Source_Add(core/platform/protobuf_util.cc)
+Source_Add(core/platform/platform_strings.cc)
 
 Source_Add(core/platform/default/mutex.cc)
 Source_Add(core/platform/default/logging.cc)
@@ -139,6 +140,7 @@ Source_Add(core/framework/op_def_util.cc)
 Source_Add(core/framework/node_def_util.cc)
 Source_Add(core/framework/kernel_def_builder.cc)
 Source_Add(core/framework/kernel_def_util.cc)
+Source_Add(core/framework/ops_util.cc)
 
 Source_Add(core/common_runtime/device.cc)
 Source_Add(core/common_runtime/device_mgr.cc)
@@ -165,7 +167,6 @@ Source_Add(core/ops/image_ops.cc)
 Source_Add(core/ops/nn_ops.cc)
 
 # TensorFlow - OpKernel Implementations
-Source_Add(core/kernels/ops_util.cc)
 Source_Add(core/kernels/cwise_ops_common.cc)
 Source_Add(core/kernels/cwise_op_add_1.cc)
 Source_Add(core/kernels/cwise_op_sub.cc)
