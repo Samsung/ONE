@@ -55,7 +55,7 @@ void ProfileObserver::handleEnd(IExecutor *exec, const ir::OpSequence *op_seq,
                       ir::DataType::QUANT_UINT8_ASYMM;
 
   uint32_t size = 0;
-  for (const auto &ind : node.getInputs() + node.getOutputs())
+  for (const auto &ind : (node.getInputs() + node.getOutputs()) | ir::Remove::UNDEFINED)
   {
     size += exec->graph().operands().at(ind).info().total_size();
   }
