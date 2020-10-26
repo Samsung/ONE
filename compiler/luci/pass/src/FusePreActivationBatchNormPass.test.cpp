@@ -189,6 +189,40 @@ TEST(FusePreActivationBatchNorm, swap_mul_add)
   EXPECT_EQ(g.pred_add, g.add->x());
 }
 
+TEST(FusePreActivationBatchNorm, swap_mul_add_NEG)
+{
+  SimpleGraph g;
+  std::vector<luci::CircleMul *> mul_list;
+  std::vector<luci::CircleAdd *> add_list;
+
+  // Add does not have fused activation
+  g.add->fusedActivationFunction(luci::FusedActFunc::NONE);
+  EXPECT_FALSE(luci::swap_mul_add(g.add, mul_list, add_list));
+  EXPECT_EQ(0, mul_list.size());
+  EXPECT_EQ(0, add_list.size());
+  g.add->fusedActivationFunction(luci::FusedActFunc::RELU);
+
+  // Add is element-wise
+  g.add_beta->shape({1, 12, 12, 64});
+  EXPECT_FALSE(luci::swap_mul_add(g.add, mul_list, add_list));
+  EXPECT_EQ(0, mul_list.size());
+  EXPECT_EQ(0, add_list.size());
+  g.add_beta->shape({64});
+
+  // Mul is element-wise
+  g.mul_gamma->shape({1, 12, 12, 64});
+  EXPECT_FALSE(luci::swap_mul_add(g.add, mul_list, add_list));
+  EXPECT_EQ(0, mul_list.size());
+  EXPECT_EQ(0, add_list.size());
+  g.mul_gamma->shape({64});
+
+  // Negative gamma
+  g.mul_gamma->at<loco::DataType::FLOAT32>(0) = -10;
+  EXPECT_FALSE(luci::swap_mul_add(g.add, mul_list, add_list));
+  EXPECT_EQ(0, mul_list.size());
+  EXPECT_EQ(0, add_list.size());
+}
+
 TEST(FusePreActivationBatchNorm, fuse_mul_with_conv)
 {
   SimpleGraph g;
@@ -212,6 +246,21 @@ TEST(FusePreActivationBatchNorm, fuse_mul_with_conv)
 
   auto relu = static_cast<luci::CircleRelu *>(g.conv->input());
   EXPECT_EQ(g.add, relu->features());
+}
+
+TEST(FusePreActivationBatchNorm, fuse_mul_with_conv_NEG)
+{
+  SimpleGraph g;
+  std::vector<luci::CircleMul *> mul_list;
+  std::vector<luci::CircleAdd *> add_list;
+
+  EXPECT_TRUE(luci::swap_mul_add(g.add, mul_list, add_list));
+
+  // Non-conv layer uses the output of relu
+  auto relu = static_cast<luci::CircleRelu *>(g.conv->input());
+  auto fc = g.g.nodes()->create<luci::CircleFullyConnected>();
+  fc->input(relu);
+  EXPECT_FALSE(luci::fuse_mul_with_conv(g.mul));
 }
 
 TEST(FusePreActivationBatchNorm, fuse_add_with_conv)
@@ -247,6 +296,26 @@ TEST(FusePreActivationBatchNorm, fuse_add_with_conv)
   }
 }
 
+TEST(FusePreActivationBatchNorm, fuse_add_with_conv_NEG)
+{
+  SimpleGraph g;
+  int channel_size = 64;
+  std::vector<luci::CircleMul *> mul_list;
+  std::vector<luci::CircleAdd *> add_list;
+  std::vector<luci::CircleSub *> sub_list;
+
+  EXPECT_TRUE(luci::swap_mul_add(g.add, mul_list, add_list));
+  EXPECT_TRUE(luci::fuse_mul_with_conv(g.mul));
+
+  // No conv layer to fuse add
+  auto fc1 = g.g.nodes()->create<luci::CircleFullyConnected>();
+  auto fc2 = g.g.nodes()->create<luci::CircleFullyConnected>();
+  g.pred_add->x(fc1);
+  g.pred_add->y(fc2);
+  EXPECT_FALSE(luci::fuse_add_with_conv(g.add, sub_list));
+  EXPECT_EQ(0, sub_list.size());
+}
+
 TEST(FusePreActivationBatchNorm, fuse_sub_with_conv)
 {
   SimpleGraph g;
@@ -268,4 +337,32 @@ TEST(FusePreActivationBatchNorm, fuse_sub_with_conv)
 
   EXPECT_EQ(g.pred_add, g.succ_add->x());
   EXPECT_EQ(g.conv, g.succ_add->y());
+}
+
+TEST(FusePreActivationBatchNorm, fuse_sub_with_conv_NEG)
+{
+  SimpleGraph g;
+  int channel_size = 64;
+  std::vector<luci::CircleMul *> mul_list;
+  std::vector<luci::CircleAdd *> add_list;
+  std::vector<luci::CircleSub *> sub_list;
+
+  EXPECT_TRUE(luci::swap_mul_add(g.add, mul_list, add_list));
+  EXPECT_TRUE(luci::fuse_mul_with_conv(g.mul));
+  EXPECT_TRUE(luci::fuse_add_with_conv(g.add, sub_list));
+
+  // No suitable pattern (relu was inserted between add and conv)
+  auto relu = g.g.nodes()->create<luci::CircleRelu>();
+  relu->features(g.conv);
+  g.succ_add->y(relu);
+  EXPECT_FALSE(luci::fuse_sub_with_conv(sub_list[0]));
+  g.succ_add->y(g.conv);
+  relu->drop();
+
+  // No suitable pattern (add was replaced with mul)
+  auto mul = g.g.nodes()->create<luci::CircleMul>();
+  mul->x(sub_list[0]);
+  mul->y(g.conv);
+  g.succ_add->drop();
+  EXPECT_FALSE(luci::fuse_sub_with_conv(sub_list[0]));
 }
