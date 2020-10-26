@@ -70,6 +70,13 @@ public:
   void visit(const ir::operation::While &node) override;
 
 private:
+  ir::DataType operandType(const ir::OperandIndex &idx);
+  bool isConstant(const ir::OperandIndex &idx);
+  bool isSameType(const ir::OperandIndex &idx1, const ir::OperandIndex &idx2);
+  bool isValidType(const ir::OperandIndex &idx, const ir::DataType &type);
+  bool isValidType(const ir::OperandIndex &idx, std::initializer_list<ir::DataType> valid_types);
+
+private:
   // TODO Remove _ctx field
   const ir::Graph &_graph;
   const ir::Operands &_ctx;
