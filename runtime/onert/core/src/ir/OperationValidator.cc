@@ -43,6 +43,17 @@ void OperationValidator::operator()()
       [&](const ir::OperationIndex &, const ir::Operation &node) { node.accept(*this); });
 }
 
+void OperationValidator::visit(const ir::operation::AddN &node)
+{
+  int size = node.getInputs().size();
+  for (int i = 0; i < size; i++)
+  {
+    const auto input_index(node.getInputs().at(i));
+    OP_REQUIRES(_ctx.at(input_index).typeInfo().type() == ir::DataType::FLOAT32 ||
+                _ctx.at(input_index).typeInfo().type() == ir::DataType::INT32);
+  }
+}
+
 void OperationValidator::visit(const ir::operation::BatchMatMul &node)
 {
   const auto lhs_index(node.getInputs().at(ir::operation::BatchMatMul::Input::LHS));

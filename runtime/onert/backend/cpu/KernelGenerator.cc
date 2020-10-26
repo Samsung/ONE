@@ -16,6 +16,7 @@
 
 #include "KernelGenerator.h"
 
+#include "ops/AddNLayer.h"
 #include "ops/ArgMinMaxLayer.h"
 #include "ops/BatchToSpaceNDLayer.h"
 #include "ops/BinaryArithmeticLayer.h"
@@ -217,6 +218,30 @@ KernelGenerator::KernelGenerator(
       _current_op_seq_layout(ir::Layout::UNKNOWN), _external_context(external_context)
 {
   // DO NOTHING
+}
+
+void KernelGenerator::visit(const ir::operation::AddN &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+
+  int size = node.getInputs().size();
+  const IPortableTensor **input_tensors =
+      (const IPortableTensor **)malloc(sizeof(IPortableTensor *) * size);
+
+  for (int i = 0; i < size; i++)
+  {
+    const auto input_index{node.getInputs().at(i)};
+    auto input_tensor = _tensor_reg->getPortableTensor(input_index);
+    input_tensors[i] = input_tensor;
+  }
+
+  auto output_tensor = _tensor_reg->getPortableTensor(output_index);
+
+  auto fn = std::make_unique<ops::AddNLayer>();
+
+  fn->configure(input_tensors, size, output_tensor);
+
+  _return_fn = std::move(fn);
 }
 
 void KernelGenerator::visit(const ir::OpSequence &op_seq)
