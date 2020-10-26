@@ -103,7 +103,7 @@ void DynamicShapeInferer::visit(const ir::operation::ArgMax &op)
   auto output_ind = op.getOutputs().at(0);
   auto output = _tensor_registry->getITensor(output_ind);
 
-  if (!input->is_dynamic())
+  if (!input->is_dynamic() && !output->is_dynamic())
     return;
 
   auto input_shape = input->getShape();
