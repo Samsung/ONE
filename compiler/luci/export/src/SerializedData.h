@@ -19,9 +19,12 @@
 
 #include <mio/circle/schema_generated.h>
 
+#include <luci/IR/CircleNodes.h>
+
 #include <vector>
 
 #include <unordered_map>
+#include <map>
 
 namespace luci
 {
@@ -83,6 +86,9 @@ struct SerializedModelData final
 
   std::unordered_map<OpCode, uint32_t> _operator_codes;
   std::vector<flatbuffers::Offset<circle::Buffer>> _buffers;
+
+  // This is used for removing buffers with same values
+  std::map<luci::CircleConst *, uint32_t> _cached_buffer_id;
 
   /**
    * @brief if opcode is not registered in table of opcodes add it
