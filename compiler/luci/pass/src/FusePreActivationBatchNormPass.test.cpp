@@ -31,8 +31,9 @@ namespace
  *
  *  BEFORE
  *
- *          [Conv]  W + bias
- *            |
+ *   [Conv] W + bias
+ *        \     [Conv]
+ *         \     /
  *          [Add]
  *         /    \
  *        /    [Mul]   gamma
@@ -45,8 +46,9 @@ namespace
  *
  *  AFTER
  *
- *          [Conv]  W + (bias + beta/gamma)
- *            |
+ *   [Conv] W + (bias + beta/gamma)
+ *        \     [Conv]
+ *         \     /
  *          [Add]
  *         /    \
  *       |     [Relu]
@@ -64,6 +66,7 @@ public:
     pred_conv = g.nodes()->create<luci::CircleConv2D>();
     pred_conv_filter = g.nodes()->create<luci::CircleConst>();
     pred_conv_bias = g.nodes()->create<luci::CircleConst>();
+    pred_conv2 = g.nodes()->create<luci::CircleConv2D>();
     pred_add = g.nodes()->create<luci::CircleAdd>();
     mul = g.nodes()->create<luci::CircleMul>();
     mul_gamma = g.nodes()->create<luci::CircleConst>();
@@ -77,6 +80,7 @@ public:
     pred_conv->dtype(loco::DataType::FLOAT32);
     pred_conv_filter->dtype(loco::DataType::FLOAT32);
     pred_conv_bias->dtype(loco::DataType::FLOAT32);
+    pred_conv2->dtype(loco::DataType::FLOAT32);
     pred_add->dtype(loco::DataType::FLOAT32);
     mul->dtype(loco::DataType::FLOAT32);
     mul_gamma->dtype(loco::DataType::FLOAT32);
@@ -91,6 +95,7 @@ public:
     pred_conv->shape({1, 12, 12, 64});
     pred_conv_filter->shape({64, 1, 1, 64});
     pred_conv_bias->shape({64});
+    pred_conv2->shape({1, 12, 12, 64});
     pred_add->shape({1, 12, 12, 64});
     mul->shape({1, 12, 12, 64});
     mul_gamma->shape({64});
@@ -104,6 +109,7 @@ public:
     pred_conv->filter(pred_conv_filter);
     pred_conv->bias(pred_conv_bias);
     pred_add->x(pred_conv);
+    pred_add->y(pred_conv2);
     mul->x(pred_add);
     mul->y(mul_gamma);
     add->x(mul);
@@ -139,6 +145,7 @@ public:
   luci::CircleConv2D *pred_conv;
   luci::CircleConst *pred_conv_filter;
   luci::CircleConst *pred_conv_bias;
+  luci::CircleConv2D *pred_conv2;
   luci::CircleAdd *pred_add;
   luci::CircleMul *mul;
   luci::CircleConst *mul_gamma;
