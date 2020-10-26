@@ -1,0 +1,264 @@
+/*
+ * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+#include "FusePreActivationBatchNormPassInternal.h"
+
+#include <luci/IR/CircleNodes.h>
+
+#include <math.h>
+#include <vector>
+
+#include <gtest/gtest.h>
+
+namespace
+{
+
+/**
+ *  Simple graph for test
+ *
+ *  BEFORE
+ *
+ *          [Conv]  W + bias
+ *            |
+ *          [Add]
+ *         /    \
+ *        /    [Mul]   gamma
+ *       |       |
+ *       |   [Add+Relu]   beta
+ *       |       |
+ *       |     [Conv]   W + bias
+ *        \     /
+ *         [Add]
+ *
+ *  AFTER
+ *
+ *          [Conv]  W + (bias + beta/gamma)
+ *            |
+ *          [Add]
+ *         /    \
+ *       |     [Relu]
+ *       |       |
+ *       |     [Conv]  (gamma * W) + (bias - beta/gamma)
+ *        \     /
+ *         [Add]
+ *
+ */
+class SimpleGraph
+{
+public:
+  SimpleGraph()
+  {
+    pred_conv = g.nodes()->create<luci::CircleConv2D>();
+    pred_conv_filter = g.nodes()->create<luci::CircleConst>();
+    pred_conv_bias = g.nodes()->create<luci::CircleConst>();
+    pred_add = g.nodes()->create<luci::CircleAdd>();
+    mul = g.nodes()->create<luci::CircleMul>();
+    mul_gamma = g.nodes()->create<luci::CircleConst>();
+    add = g.nodes()->create<luci::CircleAdd>();
+    add_beta = g.nodes()->create<luci::CircleConst>();
+    conv = g.nodes()->create<luci::CircleConv2D>();
+    conv_filter = g.nodes()->create<luci::CircleConst>();
+    conv_bias = g.nodes()->create<luci::CircleConst>();
+    succ_add = g.nodes()->create<luci::CircleAdd>();
+
+    pred_conv->dtype(loco::DataType::FLOAT32);
+    pred_conv_filter->dtype(loco::DataType::FLOAT32);
+    pred_conv_bias->dtype(loco::DataType::FLOAT32);
+    pred_add->dtype(loco::DataType::FLOAT32);
+    mul->dtype(loco::DataType::FLOAT32);
+    mul_gamma->dtype(loco::DataType::FLOAT32);
+    add->dtype(loco::DataType::FLOAT32);
+    add->fusedActivationFunction(luci::FusedActFunc::RELU);
+    add_beta->dtype(loco::DataType::FLOAT32);
+    conv->dtype(loco::DataType::FLOAT32);
+    conv_filter->dtype(loco::DataType::FLOAT32);
+    conv_bias->dtype(loco::DataType::FLOAT32);
+    succ_add->dtype(loco::DataType::FLOAT32);
+
+    pred_conv->shape({1, 12, 12, 64});
+    pred_conv_filter->shape({64, 1, 1, 64});
+    pred_conv_bias->shape({64});
+    pred_add->shape({1, 12, 12, 64});
+    mul->shape({1, 12, 12, 64});
+    mul_gamma->shape({64});
+    add->shape({1, 12, 12, 64});
+    add_beta->shape({64});
+    conv->shape({1, 12, 12, 64});
+    conv_filter->shape({64, 1, 1, 64});
+    conv_bias->shape({64});
+    succ_add->shape({1, 12, 12, 64});
+
+    pred_conv->filter(pred_conv_filter);
+    pred_conv->bias(pred_conv_bias);
+    pred_add->x(pred_conv);
+    mul->x(pred_add);
+    mul->y(mul_gamma);
+    add->x(mul);
+    add->y(add_beta);
+    conv->input(add);
+    conv->filter(conv_filter);
+    conv->bias(conv_bias);
+    succ_add->x(pred_add);
+    succ_add->y(conv);
+
+    uint32_t channel_size = 64;
+    uint32_t out_size = 64;
+    add_beta->size<loco::DataType::FLOAT32>(channel_size);
+    mul_gamma->size<loco::DataType::FLOAT32>(channel_size);
+    conv_filter->size<loco::DataType::FLOAT32>(channel_size * out_size);
+    conv_bias->size<loco::DataType::FLOAT32>(out_size);
+    pred_conv_bias->size<loco::DataType::FLOAT32>(channel_size);
+    for (uint32_t i = 0; i < channel_size; i++)
+    {
+      add_beta->at<loco::DataType::FLOAT32>(i) = i;
+      mul_gamma->at<loco::DataType::FLOAT32>(i) = i;
+      pred_conv_bias->at<loco::DataType::FLOAT32>(i) = i;
+      conv_bias->at<loco::DataType::FLOAT32>(i) = i;
+      for (uint32_t j = 0; j < out_size; j++)
+      {
+        conv_filter->at<loco::DataType::FLOAT32>(i * out_size + j) = i * out_size + j;
+      }
+    }
+  }
+
+public:
+  loco::Graph g;
+  luci::CircleConv2D *pred_conv;
+  luci::CircleConst *pred_conv_filter;
+  luci::CircleConst *pred_conv_bias;
+  luci::CircleAdd *pred_add;
+  luci::CircleMul *mul;
+  luci::CircleConst *mul_gamma;
+  luci::CircleAdd *add;
+  luci::CircleConst *add_beta;
+  luci::CircleConv2D *conv;
+  luci::CircleConst *conv_filter;
+  luci::CircleConst *conv_bias;
+  luci::CircleAdd *succ_add;
+};
+
+} // namespace
+
+TEST(FusePreActivationBatchNorm, swap_mul_add)
+{
+  SimpleGraph g;
+  int channel_size = 64;
+  std::vector<luci::CircleMul *> mul_list;
+  std::vector<luci::CircleAdd *> add_list;
+
+  EXPECT_TRUE(luci::swap_mul_add(g.add, mul_list, add_list));
+  EXPECT_EQ(1, mul_list.size());
+  EXPECT_EQ(1, add_list.size());
+  EXPECT_EQ(g.mul, mul_list[0]);
+  EXPECT_EQ(g.add, add_list[0]);
+
+  for (uint32_t i = 0; i < channel_size; ++i)
+  {
+    float beta = g.add_beta->at<loco::DataType::FLOAT32>(i);
+    float gamma = g.mul_gamma->at<loco::DataType::FLOAT32>(i);
+    EXPECT_FLOAT_EQ(1.0, beta);
+    EXPECT_FLOAT_EQ(i, gamma);
+  }
+
+  auto relu = static_cast<luci::CircleRelu *>(g.conv->input());
+  EXPECT_TRUE(relu != nullptr);
+
+  EXPECT_EQ(g.mul, relu->features());
+  EXPECT_EQ(g.add, g.mul->x());
+  EXPECT_EQ(luci::FusedActFunc::NONE, g.add->fusedActivationFunction());
+  EXPECT_EQ(g.pred_add, g.add->x());
+}
+
+TEST(FusePreActivationBatchNorm, fuse_mul_with_conv)
+{
+  SimpleGraph g;
+  int channel_size = 64;
+  int out_size = 64;
+  std::vector<luci::CircleMul *> mul_list;
+  std::vector<luci::CircleAdd *> add_list;
+
+  EXPECT_TRUE(luci::swap_mul_add(g.add, mul_list, add_list));
+
+  EXPECT_TRUE(luci::fuse_mul_with_conv(g.mul));
+  for (uint32_t o = 0; o < out_size; o++)
+  {
+    for (uint32_t c = 0; c < channel_size; c++)
+    {
+      auto val = g.conv_filter->at<loco::DataType::FLOAT32>(o * channel_size + c);
+      auto gamma = g.mul_gamma->at<loco::DataType::FLOAT32>(c);
+      EXPECT_FLOAT_EQ((o * channel_size + c) * gamma, val);
+    }
+  }
+
+  auto relu = static_cast<luci::CircleRelu *>(g.conv->input());
+  EXPECT_EQ(g.add, relu->features());
+}
+
+TEST(FusePreActivationBatchNorm, fuse_add_with_conv)
+{
+  SimpleGraph g;
+  int channel_size = 64;
+  std::vector<luci::CircleMul *> mul_list;
+  std::vector<luci::CircleAdd *> add_list;
+  std::vector<luci::CircleSub *> sub_list;
+
+  EXPECT_TRUE(luci::swap_mul_add(g.add, mul_list, add_list));
+  EXPECT_TRUE(luci::fuse_mul_with_conv(g.mul));
+  EXPECT_TRUE(luci::fuse_add_with_conv(g.add, sub_list));
+
+  for (uint32_t c = 0; c < channel_size; c++)
+  {
+    auto bias = g.pred_conv_bias->at<loco::DataType::FLOAT32>(c);
+    EXPECT_FLOAT_EQ(c + 1.0, bias);
+  }
+
+  auto relu = static_cast<luci::CircleRelu *>(g.conv->input());
+  EXPECT_EQ(relu, g.conv->input());
+  EXPECT_EQ(g.pred_add, relu->features());
+  EXPECT_EQ(g.pred_conv, g.pred_add->x());
+
+  auto sub = static_cast<luci::CircleSub *>(sub_list[0]);
+  EXPECT_EQ(sub, g.succ_add->x());
+  EXPECT_EQ(g.pred_add, sub->x());
+  for (uint32_t c = 0; c < channel_size; c++)
+  {
+    auto beta = static_cast<luci::CircleConst *>(sub->y());
+    EXPECT_FLOAT_EQ(1.0, beta->at<loco::DataType::FLOAT32>(c));
+  }
+}
+
+TEST(FusePreActivationBatchNorm, fuse_sub_with_conv)
+{
+  SimpleGraph g;
+  int channel_size = 64;
+  std::vector<luci::CircleMul *> mul_list;
+  std::vector<luci::CircleAdd *> add_list;
+  std::vector<luci::CircleSub *> sub_list;
+
+  EXPECT_TRUE(luci::swap_mul_add(g.add, mul_list, add_list));
+  EXPECT_TRUE(luci::fuse_mul_with_conv(g.mul));
+  EXPECT_TRUE(luci::fuse_add_with_conv(g.add, sub_list));
+  EXPECT_TRUE(luci::fuse_sub_with_conv(sub_list[0]));
+
+  for (uint32_t c = 0; c < channel_size; c++)
+  {
+    auto bias = g.conv_bias->at<loco::DataType::FLOAT32>(c);
+    EXPECT_FLOAT_EQ(c - 1.0, bias);
+  }
+
+  EXPECT_EQ(g.pred_add, g.succ_add->x());
+  EXPECT_EQ(g.conv, g.succ_add->y());
+}
