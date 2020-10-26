@@ -155,6 +155,13 @@ uint32_t CircleGen::addOperatorFullyConnected(const OperatorParams &params)
                                 circle::BuiltinOptions_FullyConnectedOptions, options);
 }
 
+uint32_t CircleGen::addOperatorFill(const OperatorParams &params)
+{
+  auto options = circle::CreateFillOptions(_fbb).Union();
+  return addOperatorWithOptions(params, circle::BuiltinOperator_FILL,
+                                circle::BuiltinOptions_FillOptions, options);
+}
+
 uint32_t CircleGen::addOperatorL2Normalization(const OperatorParams &params)
 {
   auto options = circle::CreateL2NormOptions(_fbb).Union();
