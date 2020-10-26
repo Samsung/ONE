@@ -30,26 +30,24 @@ namespace onert
 namespace ir
 {
 
-OperationValidator::OperationValidator(const Graph &graph) : _graph{graph}, _ctx{graph.operands()}
+OperationValidator::OperationValidator(const Graph &graph)
+    : _operations{graph.operations()}, _operands{graph.operands()}
 {
 }
 
 void OperationValidator::operator()()
 {
-  assert(_graph.subgraphs() == nullptr);
-
-  _graph.operations().iterate(
-      [&](const OperationIndex &, const Operation &node) { node.accept(*this); });
+  _operations.iterate([&](const OperationIndex &, const Operation &node) { node.accept(*this); });
 }
 
 DataType OperationValidator::operandType(const OperandIndex &idx)
 {
-  return _graph.operands().at(idx).typeInfo().type();
+  return _operands.at(idx).typeInfo().type();
 }
 
 bool OperationValidator::isConstant(const OperandIndex &idx)
 {
-  return _graph.operands().at(idx).isConstant();
+  return _operands.at(idx).isConstant();
 }
 
 bool OperationValidator::isSameType(const OperandIndex &idx1, const OperandIndex &idx2)

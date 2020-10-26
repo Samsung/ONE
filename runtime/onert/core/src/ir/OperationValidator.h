@@ -79,9 +79,8 @@ private:
   bool isValidType(const OperandIndex &idx, std::initializer_list<DataType> valid_types);
 
 private:
-  // TODO Remove _ctx field
-  const Graph &_graph;
-  const Operands &_ctx;
+  const Operations &_operations;
+  const Operands &_operands;
 };
 
 } // namespace ir
