@@ -117,7 +117,7 @@ TEST(TanhTest, InputTypeInvalid_NEG)
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   Tanh kernel(&input_tensor, &output_tensor);
-  EXPECT_ANY_THROW(kernel.configure());
+  EXPECT_ANY_THROW(kernel.execute());
 }
 
 TEST(TanhTest, InputOutputMismatch_NEG)
