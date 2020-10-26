@@ -219,6 +219,13 @@ void OperationValidator::visit(const ir::operation::Pad &node)
   OP_REQUIRES(isValidType(pad_index, ir::DataType::INT32));
 }
 
+void OperationValidator::visit(const ir::operation::Rank &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+
+  OP_REQUIRES(_ctx.at(output_index).typeInfo().type() == ir::DataType::INT32);
+}
+
 void OperationValidator::visit(const ir::operation::ResizeBilinear &node)
 {
   auto align_corners = node.param().align_corners;
@@ -235,6 +242,15 @@ void OperationValidator::visit(const ir::operation::Reverse &node)
 
   OP_REQUIRES(isValidType(axis_index, ir::DataType::INT32));
   OP_REQUIRES(isSameType(output_index, input_index));
+}
+
+void OperationValidator::visit(const ir::operation::Shape &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+
+  OP_REQUIRES((_ctx.at(output_index).typeInfo().type() == ir::DataType::UINT32) ||
+              (_ctx.at(output_index).typeInfo().type() == ir::DataType::INT32) ||
+              (_ctx.at(output_index).typeInfo().type() == ir::DataType::INT64));
 }
 
 void OperationValidator::visit(const ir::operation::SpaceToBatchND &node)

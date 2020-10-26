@@ -265,6 +265,13 @@ uint32_t CircleGen::addOperatorReverseV2(const OperatorParams &params)
                                 circle::BuiltinOptions_ReverseV2Options, options);
 }
 
+uint32_t CircleGen::addOperatorShape(const OperatorParams &params, circle::TensorType type)
+{
+  auto options = circle::CreateShapeOptions(_fbb, type).Union();
+  return addOperatorWithOptions(params, circle::BuiltinOperator_SHAPE,
+                                circle::BuiltinOptions_RankOptions, options);
+}
+
 uint32_t CircleGen::addOperatorSelect(const OperatorParams &params)
 {
   auto options = circle::CreateSelectOptions(_fbb).Union();

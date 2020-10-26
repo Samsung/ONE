@@ -17,49 +17,51 @@
 #include "GenModelTest.h"
 
 // WORKAROUND Handle int32_t type input/output
-TEST_F(GenModelTest, OneOp_Rank)
+TEST_F(GenModelTest, OneOp_Shape)
 {
   CircleGen cgen;
   int in = cgen.addTensor({{1, 3, 3, 2}, circle::TensorType::TensorType_FLOAT32});
-  int out = cgen.addTensor({{1}, circle::TensorType::TensorType_INT32});
+  int out = cgen.addTensor({{4}, circle::TensorType::TensorType_INT32});
 
-  cgen.addOperatorRank({{in}, {out}});
+  cgen.addOperatorShape({{in}, {out}}, circle::TensorType::TensorType_INT32);
   cgen.setInputsAndOutputs({in}, {out});
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
   TestCaseData tcd;
   tcd.addInput(std::vector<float>{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18});
-  tcd.addOutput(std::vector<int32_t>{4});
+  tcd.addOutput(std::vector<int32_t>{1, 3, 3, 2});
   _context->addTestCase(tcd);
   _context->setBackends({"cpu"});
 
   SUCCEED();
 }
 
-TEST_F(GenModelTest, OneOp_Rank_Int32)
+TEST_F(GenModelTest, OneOp_Shape_Int64)
 {
   CircleGen cgen;
-  int in = cgen.addTensor({{1, 3, 3, 2}, circle::TensorType::TensorType_INT32});
-  int out = cgen.addTensor({{1}, circle::TensorType::TensorType_INT32});
+  int in = cgen.addTensor({{1, 3, 3, 2}, circle::TensorType::TensorType_FLOAT32});
+  int out = cgen.addTensor({{1}, circle::TensorType::TensorType_INT64});
 
   // TODO handle many type in addTestCase
-  cgen.addOperatorRank({{in}, {out}});
+  cgen.addOperatorShape({{in}, {out}}, circle::TensorType::TensorType_INT64);
   cgen.setInputsAndOutputs({in}, {out});
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
-  _context->addTestCase(uniformTCD<int32_t>(
-      {{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18}}, {{4}}));
+  TestCaseData tcd;
+  tcd.addInput(std::vector<float>{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18});
+  tcd.addOutput(std::vector<int64_t>{1, 3, 3, 2});
+  _context->addTestCase(tcd);
   _context->setBackends({"cpu"});
 
   SUCCEED();
 }
 
-TEST_F(GenModelTest, neg_OneOp_Rank_OutType)
+TEST_F(GenModelTest, neg_OneOp_Shape_OutType)
 {
   CircleGen cgen;
   int in = cgen.addTensor({{1, 3, 3, 2}, circle::TensorType::TensorType_INT32});
   int out = cgen.addTensor({{1}, circle::TensorType::TensorType_UINT8});
 
   // TODO handle many type in addTestCase
-  cgen.addOperatorRank({{in}, {out}});
+  cgen.addOperatorShape({{in}, {out}});
   cgen.setInputsAndOutputs({in}, {out});
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
   _context->expectFailModelLoad();

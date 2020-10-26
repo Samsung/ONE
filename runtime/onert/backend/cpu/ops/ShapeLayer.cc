@@ -40,7 +40,13 @@ template <typename T> void GetRawShape(const IPortableTensor *input, T *output_d
   }
 }
 
-void ShapeLayer::shape()
+void ShapeLayer::configure(const IPortableTensor *input, IPortableTensor *output)
+{
+  _input = input;
+  _output = output;
+}
+
+void ShapeLayer::run()
 {
   if (_output->data_type() == OperandType::UINT32)
   {
@@ -50,28 +56,13 @@ void ShapeLayer::shape()
   {
     GetRawShape(_input, reinterpret_cast<int32_t *>(_output->buffer()));
   }
+  else if (_output->data_type() == OperandType::INT64)
+  {
+    GetRawShape(_input, reinterpret_cast<int64_t *>(_output->buffer()));
+  }
   else
   {
     throw std::runtime_error{"NYI : not supported output type for ShapeLayer"};
-  }
-}
-
-void ShapeLayer::configure(const IPortableTensor *input, IPortableTensor *output)
-{
-  _input = input;
-  _output = output;
-}
-
-void ShapeLayer::run()
-{
-  if (_input->data_type() == OperandType::FLOAT32 || _input->data_type() == OperandType::INT32 ||
-      _input->data_type() == OperandType::QUANT_UINT8_ASYMM)
-  {
-    shape();
-  }
-  else
-  {
-    throw std::runtime_error{"Shape : unsupported data type"};
   }
 }
 
