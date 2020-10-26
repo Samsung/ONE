@@ -86,21 +86,21 @@ TEST(PowTest, IntPow)
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(base_shape));
 }
 
-TEST(PowTest, Input_Type_Mismatch_NEG)
-{
-  Tensor input1_tensor = makeInputTensor<DataType::FLOAT32>({1}, {1.0f});
-  Tensor input2_tensor = makeInputTensor<DataType::S32>({1}, {4});
-  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
-
-  Pow kernel(&input1_tensor, &input2_tensor, &output_tensor);
-  EXPECT_ANY_THROW(kernel.configure());
-}
-
 TEST(PowTest, Input_Output_Type_NEG)
 {
   Tensor input1_tensor = makeInputTensor<DataType::FLOAT32>({1}, {1.0f});
   Tensor input2_tensor = makeInputTensor<DataType::FLOAT32>({1}, {1.0f});
   Tensor output_tensor = makeOutputTensor(DataType::BOOL);
+
+  Pow kernel(&input1_tensor, &input2_tensor, &output_tensor);
+  EXPECT_ANY_THROW(kernel.configure());
+}
+
+TEST(PowTest, Input_Type_Mismatch_NEG)
+{
+  Tensor input1_tensor = makeInputTensor<DataType::FLOAT32>({1}, {1.0f});
+  Tensor input2_tensor = makeInputTensor<DataType::S32>({1}, {4});
+  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   Pow kernel(&input1_tensor, &input2_tensor, &output_tensor);
   EXPECT_ANY_THROW(kernel.configure());
