@@ -66,6 +66,12 @@ int entry(int argc, char **argv)
       .default_value(false)
       .help("This will fold dequantize op");
 
+  arser.add_argument("--fuse_activation_function")
+      .nargs(0)
+      .required(false)
+      .default_value(false)
+      .help("This will fuse Activation function to a preceding operator");
+
   arser.add_argument("--fuse_add_with_tconv")
       .nargs(0)
       .required(false)
@@ -187,6 +193,8 @@ int entry(int argc, char **argv)
   }
   if (arser.get<bool>("--fold_dequantize"))
     options->enable(Algorithms::FoldDequantize);
+  if (arser.get<bool>("--fuse_activation_function"))
+    options->enable(Algorithms::FuseActivationFunction);
   if (arser.get<bool>("--fuse_add_with_tconv"))
     options->enable(Algorithms::FuseAddWithTConv);
   if (arser.get<bool>("--fuse_batchnorm_with_tconv"))

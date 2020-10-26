@@ -46,6 +46,7 @@ public:
       SparsifyTensorPass,
       FusePreActivationBatchNorm,
       MakeBatchNormGammaPositive,
+      FuseActivationFunction,
     };
 
     enum AlgorithmParameters
