@@ -66,8 +66,9 @@ inline void Rsqrt(const Shape &input_shape, const float *input_data, const Shape
   }
 }
 
-inline void Neg(const Shape &input_shape, const float *input_data, const Shape &output_shape,
-                float *output_data)
+template <typename T>
+inline void Neg(const Shape &input_shape, const T *input_data, const Shape &output_shape,
+                T *output_data)
 {
   const int size = MatchingFlatSize(input_shape, output_shape);
   for (int i = 0; i < size; i++)
