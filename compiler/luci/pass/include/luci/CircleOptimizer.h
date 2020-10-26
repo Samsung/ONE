@@ -44,6 +44,7 @@ public:
       Requantize,
       FoldDequantize,
       SparsifyTensorPass,
+      FusePreActivationBatchNorm,
     };
 
     enum AlgorithmParameters
