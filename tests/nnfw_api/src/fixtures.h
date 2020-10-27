@@ -20,6 +20,7 @@
 #include <array>
 #include <gtest/gtest.h>
 #include <nnfw_experimental.h>
+#include <nnfw_internal.h>
 
 #include "NNPackages.h"
 
