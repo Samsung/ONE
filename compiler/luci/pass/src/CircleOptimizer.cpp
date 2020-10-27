@@ -16,6 +16,7 @@
 
 #include "luci/CircleOptimizer.h"
 
+#include "luci/Pass/MakeBatchNormGammaPositivePass.h"
 #include "luci/Pass/FoldDequantizePass.h"
 #include "luci/Pass/FuseAddWithTConvPass.h"
 #include "luci/Pass/FuseBatchNormWithTConv.h"
@@ -162,6 +163,10 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   if (_options->query(Options::Algorithm::FusePreActivationBatchNorm))
   {
     phase.emplace_back(std::make_unique<luci::FusePreActivationBatchNormPass>());
+  }
+  if (_options->query(Options::Algorithm::MakeBatchNormGammaPositive))
+  {
+    phase.emplace_back(std::make_unique<luci::MakeBatchNormGammaPositivePass>());
   }
 
   // Shape inference is needed for added nodes doing above transformations

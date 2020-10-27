@@ -90,6 +90,12 @@ int entry(int argc, char **argv)
       .default_value(false)
       .help("This will fuse operators to InstanceNorm operator");
 
+  arser.add_argument("--make_batchnorm_gamma_positive")
+      .nargs(0)
+      .required(false)
+      .default_value(false)
+      .help("This will make negative gamma of BatchNorm into a small positive value (1e-10)");
+
   arser.add_argument("--resolve_customop_add")
       .nargs(0)
       .required(false)
@@ -187,6 +193,8 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::FuseBCQ);
   if (arser.get<bool>("--fuse_instnorm"))
     options->enable(Algorithms::FuseInstanceNorm);
+  if (arser.get<bool>("--make_batchnorm_gamma_positive"))
+    options->enable(Algorithms::MakeBatchNormGammaPositive);
   if (arser.get<bool>("--resolve_customop_add"))
     options->enable(Algorithms::ResolveCustomOpAdd);
   if (arser.get<bool>("--resolve_customop_batchmatmul"))

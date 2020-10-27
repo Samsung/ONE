@@ -45,6 +45,7 @@ public:
       FoldDequantize,
       SparsifyTensorPass,
       FusePreActivationBatchNorm,
+      MakeBatchNormGammaPositive,
     };
 
     enum AlgorithmParameters
