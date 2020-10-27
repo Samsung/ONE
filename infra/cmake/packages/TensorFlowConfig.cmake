@@ -1,5 +1,5 @@
 set(TENSORFLOW_PREFIX "/usr" CACHE PATH "The location of pre-installed TensorFlow library")
-set(TENSORFLOW_VERSION_REQUIRED "1.12.0")
+set(TENSORFLOW_VERSION_REQUIRED "2.3.0")
 
 # TODO Build TensorFlow from the (downloaded) source
 
