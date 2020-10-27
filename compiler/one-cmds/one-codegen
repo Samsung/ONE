@@ -1,4 +1,8 @@
-#!/usr/bin/env python
+#!/usr/bin/env bash
+''''export SCRIPT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"                  # '''
+''''export PY_PATH=${SCRIPT_PATH}/venv/bin/python                                       # '''
+''''test -f ${PY_PATH} && exec ${PY_PATH} "$0" "$@"                                     # '''
+''''echo "Error: Virtual environment not found. Please run 'one-prepare-venv' command." # '''
 
 # Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
 #
@@ -20,7 +24,18 @@ import subprocess
 import sys
 import tempfile
 
-import one_utils as _utils
+import utils as _utils
+
+
+def _get_backends_list():
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    files = [f for f in os.listdir(dir_path) if os.path.isfile(os.path.join(dir_path, f))]
+    backends_list = []
+    for cand in files:
+        if cand.endswith('-compile'):
+            # 8 : length of '-compile'
+            backends_list.append(cand[:-8])
+    return backends_list
 
 
 def _get_parser():
@@ -28,7 +43,15 @@ def _get_parser():
 
     _utils._add_default_arg(parser)
 
-    parser.add_argument('-b', '--backend', type=str, help='backend name to use')
+    # get backend list in the directory
+    backends_list = _get_backends_list()
+    if not backends_list:
+        backends_list_message = '(There is no available backend drivers)'
+    else:
+        backends_list_message = '(available backend drivers: ' + '.'.join(
+            backends_list) + ')'
+    backend_help_message = 'backend name to use ' + backends_list_message
+    parser.add_argument('-b', '--backend', type=str, help=backend_help_message)
 
     return parser
 
@@ -58,7 +81,7 @@ def main():
     args, unknown_args = _parse_arg(parser)
 
     # parse configuration file
-    _utils._parse_cfg(args)
+    _utils._parse_cfg(args, 'one-codegen')
 
     # verify arguments
     _verify_arg(parser, args)

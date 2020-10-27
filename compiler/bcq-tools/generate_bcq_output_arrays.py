@@ -233,7 +233,7 @@ def print_bcqinfo_output_arrays_v1(flags):
                 f_arrays.write("," + prefix + "/bcqinfo_qbits_of_clusters")
                 f_arrays.write("," + fuseop)
                 if has_dequant_weight:
-                    f_arrays.write("," + prefix + "/bcqinfo_1dequant_weight")
+                    f_arrays.write("," + prefix + "/bcqinfo_dequant_weight")
 
 
 def print_bcq_output_arrays(flags):

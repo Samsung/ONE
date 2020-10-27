@@ -39,7 +39,7 @@ def _is_valid_attr(args, attr):
     return hasattr(args, attr) and getattr(args, attr)
 
 
-def _parse_cfg(args):
+def _parse_cfg(args, driver_name):
     """parse configuration file. If the option is directly given to the command line,
        the option is processed prior to the configuration file."""
     if _is_valid_attr(args, 'config'):
@@ -52,11 +52,12 @@ def _parse_cfg(args):
             for key in config[args.section]:
                 if not _is_valid_attr(args, key):
                     setattr(args, key, config[args.section][key])
-        # if section is not given, only one section is required
+        # if section is not given, section name is same with its driver name
         else:
-            if len(config.sections()) != 1:
-                raise AssertionError('configuration file must have only one section')
-            secton_to_run = config.sections()[0]
+            if not config.has_section(driver_name):
+                raise AssertionError('configuration file must have ' + driver_name +
+                                     'section')
+            secton_to_run = driver_name
             for key in config[secton_to_run]:
                 if not _is_valid_attr(args, key):
                     setattr(args, key, config[secton_to_run][key])
@@ -64,7 +65,7 @@ def _parse_cfg(args):
 
 def _make_tf2tfliteV2_cmd(args, driver_path, input_path, output_path):
     """make a command for running tf2tfliteV2.py"""
-    cmd = ['python', os.path.expanduser(driver_path)]
+    cmd = [sys.executable, os.path.expanduser(driver_path)]
     # model_format
     if _is_valid_attr(args, 'model_format'):
         cmd.append(getattr(args, 'model_format'))

@@ -1,4 +1,8 @@
-#!/usr/bin/env python
+#!/usr/bin/env bash
+''''export SCRIPT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"                  # '''
+''''export PY_PATH=${SCRIPT_PATH}/venv/bin/python                                       # '''
+''''test -f ${PY_PATH} && exec ${PY_PATH} "$0" "$@"                                     # '''
+''''echo "Error: Virtual environment not found. Please run 'one-prepare-venv' command." # '''
 
 # Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
 #
@@ -20,7 +24,7 @@ import subprocess
 import sys
 import tempfile
 
-import one_utils as _utils
+import utils as _utils
 
 
 def _get_parser():
@@ -123,7 +127,7 @@ def main():
     args = _parse_arg(parser)
 
     # parse configuration file
-    _utils._parse_cfg(args)
+    _utils._parse_cfg(args, 'one-optimize')
 
     # verify arguments
     _verify_arg(parser, args)

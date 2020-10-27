@@ -1,4 +1,8 @@
-#!/usr/bin/env python
+#!/usr/bin/env bash
+''''export SCRIPT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"                  # '''
+''''export PY_PATH=${SCRIPT_PATH}/venv/bin/python                                       # '''
+''''test -f ${PY_PATH} && exec ${PY_PATH} "$0" "$@"                                     # '''
+''''echo "Error: Virtual environment not found. Please run 'one-prepare-venv' command." # '''
 
 # Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
 #
@@ -20,7 +24,7 @@ import os
 import subprocess
 import sys
 
-import one_utils as _utils
+import utils as _utils
 
 
 def _get_parser():
@@ -66,26 +70,29 @@ def _parse_cfg(args):
 
 
 def _is_available_driver(config, driver_name):
-    return config.has_option('driver-to-run', driver_name) and config.getboolean('driver-to-run', driver_name)
+    return config.has_option('one-build', driver_name) and config.getboolean(
+        'one-build', driver_name)
 
 
 def _verify_cfg(driver_list, config):
-    if not config.has_section('driver-to-run'):
-        raise AssertionError('driver-to-run section is required in configuraion file')
+    if not config.has_section('one-build'):
+        raise AssertionError('one-build section is required in configuraion file')
 
     import_driver_cnt = 0
     if _is_available_driver(config, 'one-import-tf'):
-        import_driver_cnt+=1
+        import_driver_cnt += 1
     if _is_available_driver(config, 'one-import-tflite'):
-        import_driver_cnt+=1
+        import_driver_cnt += 1
     if _is_available_driver(config, 'one-import-bcq'):
-        import_driver_cnt+=1
+        import_driver_cnt += 1
     if import_driver_cnt > 1:
         raise AssertionError('only one import-* driver can be executed')
 
 
 def main():
     # parse arguments
+    # since the configuration file path is required first,
+    # parsing of the configuration file proceeds after this.
     parser = _get_parser()
     args = _parse_arg(parser)
 
@@ -96,7 +103,10 @@ def main():
     config = _parse_cfg(args)
 
     # verify configuration file
-    drivers = ['one-import-tf', 'one-import-tflite', 'one-import-bcq', 'one-optimize', 'one-quantize', 'one-pack', 'one-codegen']
+    drivers = [
+        'one-import-tf', 'one-import-tflite', 'one-import-bcq', 'one-optimize',
+        'one-quantize', 'one-pack', 'one-codegen'
+    ]
     _verify_cfg(drivers, config)
 
     # get sections to run
@@ -108,8 +118,7 @@ def main():
     # run
     dir_path = os.path.dirname(os.path.realpath(__file__))
     for section in section_to_run:
-        driver_path = os.path.join(dir_path,
-                                   _get_driver_name(section))
+        driver_path = os.path.join(dir_path, _get_driver_name(section))
         cmd = [driver_path, '--config', getattr(args, 'config'), '--section', section]
         with subprocess.Popen(
                 cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, bufsize=1) as p:

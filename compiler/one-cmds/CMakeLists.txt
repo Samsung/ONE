@@ -1,6 +1,5 @@
 set(ONE_COMMAND_FILES
     one-build
-    one-build.cfg
     one-import
     one-import-bcq
     one-import-tf
@@ -10,7 +9,6 @@ set(ONE_COMMAND_FILES
     one-pack
     one-codegen
     one-prepare-venv
-    one_utils.py
 )
 
 foreach(ONE_COMMAND IN ITEMS ${ONE_COMMAND_FILES})
@@ -35,6 +33,34 @@ foreach(ONE_COMMAND IN ITEMS ${ONE_COMMAND_FILES})
           DESTINATION bin)
           
 endforeach(ONE_COMMAND)
+
+set(ONE_UTILITIY_FIELS
+    one-build.template.cfg
+    utils.py
+)
+
+foreach(ONE_UTILITIY IN ITEMS ${ONE_UTILITIY_FIELS})
+
+  set(ONE_UTILITY_FILE ${ONE_UTILITIY})
+  set(ONE_UTILITY_SRC "${CMAKE_CURRENT_SOURCE_DIR}/${ONE_UTILITY_FILE}")
+  set(ONE_UTILITY_BIN "${CMAKE_CURRENT_BINARY_DIR}/${ONE_UTILITY_FILE}")
+  set(ONE_UTILITY_TARGET "${ONE_UTILITIY}_target")
+
+  add_custom_command(OUTPUT ${ONE_UTILITY_BIN}
+    COMMAND ${CMAKE_COMMAND} -E copy "${ONE_UTILITY_SRC}" "${ONE_UTILITY_BIN}"
+    DEPENDS ${ONE_UTILITY_SRC}
+    COMMENT "Generate ${ONE_UTILITY_BIN}"
+  )
+
+  add_custom_target(${ONE_UTILITY_TARGET} ALL DEPENDS ${ONE_UTILITY_BIN})
+
+  install(FILES ${ONE_UTILITIY}
+          PERMISSIONS OWNER_WRITE OWNER_READ
+                      GROUP_READ
+                      WORLD_READ
+          DESTINATION bin)
+
+endforeach(ONE_UTILITIY)
 
 set(ONE_DOCUMENT_FILES
     how-to-use-one-commands.txt

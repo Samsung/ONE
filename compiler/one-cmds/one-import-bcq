@@ -1,4 +1,8 @@
-#!/usr/bin/env python
+#!/usr/bin/env bash
+''''export SCRIPT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"                  # '''
+''''export PY_PATH=${SCRIPT_PATH}/venv/bin/python                                       # '''
+''''test -f ${PY_PATH} && exec ${PY_PATH} "$0" "$@"                                     # '''
+''''echo "Error: Virtual environment not found. Please run 'one-prepare-venv' command." # '''
 
 # Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
 #
@@ -20,7 +24,7 @@ import subprocess
 import sys
 import tempfile
 
-import one_utils as _utils
+import utils as _utils
 import generate_bcq_output_arrays as _bcq_info_gen
 
 
@@ -103,7 +107,7 @@ def _parse_arg(parser):
 
 def _make_generate_bcq_metadata_cmd(args, driver_path, output_path):
     """make a command for running generate_bcq_metadata"""
-    cmd = ['python', driver_path]
+    cmd = [sys.executable, driver_path]
     # input_path
     if _utils._is_valid_attr(args, 'input_path'):
         cmd.append('--input_path')
@@ -206,7 +210,7 @@ def main():
     args = _parse_arg(parser)
 
     # parse configuration file
-    _utils._parse_cfg(args)
+    _utils._parse_cfg(args, 'one-import-bcq')
 
     # verify arguments
     _verify_arg(parser, args)
