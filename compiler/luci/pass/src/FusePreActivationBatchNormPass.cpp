@@ -41,23 +41,21 @@ bool is_non_negative(const luci::CircleConst *node)
 bool is_batchnorm_mul(const luci::CircleMul *mul, luci::CircleNode *&pred_node,
                       luci::CircleConst *&gamma)
 {
-  auto x = loco::must_cast<luci::CircleNode *>(mul->x());
-  auto y = loco::must_cast<luci::CircleNode *>(mul->y());
+  auto x = dynamic_cast<luci::CircleConst *>(mul->x());
+  auto y = dynamic_cast<luci::CircleConst *>(mul->y());
 
   luci::CircleNode *pred = nullptr;
   luci::CircleConst *constant = nullptr;
 
-  if (x->opcode() == luci::CircleOpcode::CIRCLECONST &&
-      y->opcode() != luci::CircleOpcode::CIRCLECONST)
+  if (x != nullptr && y == nullptr)
   {
-    pred = y;
-    constant = loco::must_cast<luci::CircleConst *>(x);
+    pred = loco::must_cast<luci::CircleNode *>(mul->y());
+    constant = x;
   }
-  else if (x->opcode() != luci::CircleOpcode::CIRCLECONST &&
-           y->opcode() == luci::CircleOpcode::CIRCLECONST)
+  else if (x == nullptr && y != nullptr)
   {
-    pred = x;
-    constant = loco::must_cast<luci::CircleConst *>(y);
+    pred = loco::must_cast<luci::CircleNode *>(mul->x());
+    constant = y;
   }
   else
   {
@@ -125,12 +123,11 @@ namespace luci
  *  Swap MUL/ADD if they are from batch normalization
  *
  *  BEFORE
- *
  *           [Mul]  gamma
  *             |
  *        [Add + Relu]  beta
- *  AFTER
  *
+ *  AFTER
  *           [Add]  beta/gamma
  *             |
  *           [Mul]  gamma
@@ -155,7 +152,7 @@ bool swap_mul_add(luci::CircleAdd *add, std::vector<luci::CircleMul *> &mul_list
     return false;
 
   if (beta->dtype() != loco::DataType::FLOAT32 || gamma->dtype() != loco::DataType::FLOAT32)
-    throw std::runtime_error("FusePreActivationBatchNormPass only supports fp32 model");
+    throw std::runtime_error("FusePreActivationBatchNormPass only supports Float32 model");
 
   if (!is_non_negative(gamma))
     return false;
