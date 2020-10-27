@@ -172,6 +172,8 @@ const luci::CircleConv2D *get_forward_conv2d(const luci::CircleNode *node, uint3
 
 void update_conv_weights_with_gamma(const luci::CircleConv2D *conv, const luci::CircleConst *gamma)
 {
+  assert(conv != nullptr);
+  assert(gamma != nullptr);
   auto filter = loco::must_cast<luci::CircleConst *>(conv->filter());
 
   uint32_t filter_out_dim = filter->dim(0).value();
