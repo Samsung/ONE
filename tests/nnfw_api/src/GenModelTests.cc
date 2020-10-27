@@ -283,7 +283,7 @@ TEST_F(GenModelTest, neg_Reshape_without_shape_param)
   CircleGen::Shape wrong_new_shape_val{2, 3};
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
   auto tc = uniformTCD<int32_t>({{1, 2, 3, 4}, wrong_new_shape_val}, {{1, 2, 3, 4}});
-  tc.expect_error_on_run(true);
+  tc.expectFailRun();
   _context->addTestCase(tc);
   _context->setBackends({"cpu" /* "acl_cl", "acl_neon" does not support dynamic tensor */});
 

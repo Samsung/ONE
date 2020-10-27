@@ -14,37 +14,30 @@
  * limitations under the License.
  */
 
-#include "RankLayer.h"
+#ifndef __ONERT_IR_OPERATION_ADDN_H__
+#define __ONERT_IR_OPERATION_ADDN_H__
 
-#include "OperationUtils.h"
+#include "ir/Operation.h"
 
 namespace onert
 {
-namespace backend
+namespace ir
 {
-namespace cpu
-{
-namespace ops
+namespace operation
 {
 
-RankLayer::RankLayer() : _input(nullptr), _output(nullptr)
+class AddN : public Operation
 {
-  // DO NOTHING
-}
+public:
+  AddN(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs);
 
-void RankLayer::configure(const IPortableTensor *input, IPortableTensor *output)
-{
-  _input = input;
-  _output = output;
-}
+public:
+  void accept(OperationVisitor &v) const override;
+  OpCode opcode() const final { return OpCode::AddN; }
+};
 
-void RankLayer::run()
-{
-  int32_t *output_data = reinterpret_cast<int32_t *>(_output->buffer());
-  output_data[0] = _input->num_dimensions();
-}
-
-} // namespace ops
-} // namespace cpu
-} // namespace backend
+} // namespace operation
+} // namespace ir
 } // namespace onert
+
+#endif // __ONERT_IR_OPERATION_ADDN_H__

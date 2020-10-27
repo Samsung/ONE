@@ -75,6 +75,73 @@ TEST_F(GenModelTest, OneOp_While)
   SUCCEED();
 }
 
+TEST_F(GenModelTest, OneOp_While_github_4783)
+{
+  // The model looks just like the below pseudocode
+  //
+  // function model(x, data)
+  // {
+  //   // `data` does not do anything but passed to while's cond and body subgraphs
+  //   // to measure copy overhead between subgraphs
+  //   while (x < 100.0)
+  //   {
+  //     x = x + 1.0;
+  //   }
+  //   return (x, data)
+  // }
+
+  const int kElems = 4;
+  const std::vector<int32_t> shape{kElems};
+
+  CircleGen cgen;
+  uint32_t incr_buf = cgen.addBuffer(std::vector<float>{1});
+  uint32_t incr_data_buf = cgen.addBuffer(std::vector<float>(kElems, 1));
+  uint32_t end_buf = cgen.addBuffer(std::vector<float>{100});
+
+  // primary subgraph
+  {
+    int x_in = cgen.addTensor({{1}, circle::TensorType_FLOAT32});
+    int d_in = cgen.addTensor({shape, circle::TensorType_FLOAT32});
+    int x_out = cgen.addTensor({{1}, circle::TensorType_FLOAT32});
+    int d_out = cgen.addTensor({shape, circle::TensorType_FLOAT32});
+    cgen.addOperatorWhile({{x_in, d_in}, {x_out, d_out}}, 1, 2);
+    cgen.setInputsAndOutputs({x_in, d_in}, {x_out, d_out});
+  }
+
+  // cond subgraph
+  {
+    cgen.nextSubgraph();
+    int x = cgen.addTensor({{1}, circle::TensorType_FLOAT32});
+    int d = cgen.addTensor({shape, circle::TensorType_FLOAT32});
+    int end = cgen.addTensor({{1}, circle::TensorType_FLOAT32, end_buf});
+    int result = cgen.addTensor({{1}, circle::TensorType_BOOL});
+    cgen.addOperatorLess({{x, end}, {result}});
+    cgen.setInputsAndOutputs({x, d}, {result});
+  }
+
+  // body subgraph
+  {
+    cgen.nextSubgraph();
+    int x_in = cgen.addTensor({{1}, circle::TensorType_FLOAT32});
+    int incr = cgen.addTensor({{1}, circle::TensorType_FLOAT32, incr_buf});
+    int x_out = cgen.addTensor({{1}, circle::TensorType_FLOAT32});
+    int d_in = cgen.addTensor({shape, circle::TensorType_FLOAT32});
+    int incr_d = cgen.addTensor({shape, circle::TensorType_FLOAT32, incr_data_buf});
+    int d_out = cgen.addTensor({shape, circle::TensorType_FLOAT32});
+    cgen.addOperatorAdd({{x_in, incr}, {x_out}}, circle::ActivationFunctionType_NONE);
+    cgen.addOperatorAdd({{d_in, incr_d}, {d_out}}, circle::ActivationFunctionType_NONE);
+    cgen.setInputsAndOutputs({x_in, d_in}, {x_out, d_out});
+  }
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  std::vector<float> tc_data_in(kElems, 9);
+  std::vector<float> tc_data_out(kElems, 109);
+  _context->addTestCase(uniformTCD<float>({{0}, tc_data_in}, {{100}, tc_data_out}));
+  _context->setBackends({"cpu"});
+
+  SUCCEED();
+}
+
 TEST_F(GenModelTest, OneOp_While_TwoInputs)
 {
   // The model looks just like the below pseudocode

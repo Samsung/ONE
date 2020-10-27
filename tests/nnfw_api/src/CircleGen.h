@@ -136,6 +136,7 @@ public:
   // ===== Add Operator methods begin (SORTED IN ALPHABETICAL ORDER) =====
 
   uint32_t addOperatorAdd(const OperatorParams &params, circle::ActivationFunctionType actfn);
+  uint32_t addOperatorAddN(const OperatorParams &params);
   uint32_t addOperatorArgMax(const OperatorParams &params,
                              circle::TensorType output_type = circle::TensorType::TensorType_INT32);
   uint32_t addOperatorAveragePool2D(const OperatorParams &params, circle::Padding padding,
@@ -147,6 +148,7 @@ public:
                                     circle::ActivationFunctionType actfn);
   uint32_t addOperatorCos(const OperatorParams &params);
   uint32_t addOperatorEqual(const OperatorParams &params);
+  uint32_t addOperatorFill(const OperatorParams &params);
   uint32_t addOperatorFullyConnected(const OperatorParams &params);
   uint32_t addOperatorIf(const OperatorParams &params, uint32_t then_subg, uint32_t else_subg);
   uint32_t addOperatorInstanceNorm(const OperatorParams &params, float epsilon,
@@ -171,6 +173,8 @@ public:
                                      bool half_pixel_centers = false);
   uint32_t addOperatorResizeNearestNeighbor(const OperatorParams &params);
   uint32_t addOperatorReverseV2(const OperatorParams &params);
+  uint32_t addOperatorShape(const OperatorParams &params,
+                            circle::TensorType type = circle::TensorType::TensorType_INT32);
   uint32_t addOperatorSelect(const OperatorParams &params);
   uint32_t addOperatorSelectV2(const OperatorParams &params);
   uint32_t addOperatorSplit(const OperatorParams &params, int32_t num_split);

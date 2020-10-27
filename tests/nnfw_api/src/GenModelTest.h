@@ -80,11 +80,10 @@ struct TestCaseData
   template <typename T> void addOutput(const std::vector<T> &data) { addData(outputs, data); }
 
   /**
-   * @brief Set @c True if @c NNFW_STATUS_ERROR is expected after calling @c nnfw_run() with
-   *        this test case; set @c False otherwise.
+   * @brief Call this when @c nnfw_run() for this test case is expected to be failed
    */
-  void expect_error_on_run(bool expect_error_on_run) { _expect_error_on_run = expect_error_on_run; }
-  bool expect_error_on_run() const { return _expect_error_on_run; }
+  void expectFailRun() { _expected_fail_run = true; }
+  bool expected_fail_run() const { return _expected_fail_run; }
 
 private:
   template <typename T>
@@ -96,7 +95,7 @@ private:
     std::memcpy(dest.back().data(), data.data(), size);
   }
 
-  bool _expect_error_on_run = false;
+  bool _expected_fail_run = false;
 };
 
 template <>
@@ -350,7 +349,7 @@ protected:
           memcpy(_so.inputs[i].data(), ref_inputs[i].data(), ref_inputs[i].size());
         }
 
-        if (test_case.expect_error_on_run())
+        if (test_case.expected_fail_run())
         {
           ASSERT_EQ(nnfw_run(_so.session), NNFW_STATUS_ERROR);
           continue;

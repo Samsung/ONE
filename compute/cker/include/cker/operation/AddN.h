@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright 2017 The TensorFlow Authors. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,37 +15,32 @@
  * limitations under the License.
  */
 
-#include "RankLayer.h"
+#ifndef __NNFW_CKER_ADDN_H__
+#define __NNFW_CKER_ADDN_H__
 
-#include "OperationUtils.h"
+#include "cker/Shape.h"
 
-namespace onert
+namespace nnfw
 {
-namespace backend
-{
-namespace cpu
-{
-namespace ops
+namespace cker
 {
 
-RankLayer::RankLayer() : _input(nullptr), _output(nullptr)
+template <typename T>
+void AddN(const Shape &input_shape, const size_t num_inputs, const T **input_data, T *output_data)
 {
-  // DO NOTHING
+  const size_t size = input_shape.FlatSize();
+  for (size_t i = 0; i < size; ++i)
+  {
+    T x = 0;
+    for (size_t j = 0; j < num_inputs; ++j)
+    {
+      x += input_data[j][i];
+    }
+    output_data[i] = x;
+  }
 }
 
-void RankLayer::configure(const IPortableTensor *input, IPortableTensor *output)
-{
-  _input = input;
-  _output = output;
-}
+} // namespace cker
+} // namespace nnfw
 
-void RankLayer::run()
-{
-  int32_t *output_data = reinterpret_cast<int32_t *>(_output->buffer());
-  output_data[0] = _input->num_dimensions();
-}
-
-} // namespace ops
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+#endif // __NNFW_CKER_ADDN_H__

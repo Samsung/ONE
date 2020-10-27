@@ -1305,6 +1305,9 @@ void BaseLoader<LoaderDomain>::loadOperation(const Operator *op, ir::Graph &subg
 
   switch (builtin_op)
   {
+    case BuiltinOperator::BuiltinOperator_ADD_N:
+      loadOperationTo<ir::operation::AddN>(op, subg);
+      return;
     case BuiltinOperator::BuiltinOperator_CONV_2D:
       loadConv2D(op, subg);
       return;

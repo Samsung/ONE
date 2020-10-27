@@ -93,6 +93,13 @@ uint32_t CircleGen::addOperatorAdd(const OperatorParams &params,
                                 circle::BuiltinOptions_AddOptions, options);
 }
 
+uint32_t CircleGen::addOperatorAddN(const OperatorParams &params)
+{
+  auto options = circle::CreateAddNOptions(_fbb).Union();
+  return addOperatorWithOptions(params, circle::BuiltinOperator_ADD_N,
+                                circle::BuiltinOptions_AddNOptions, options);
+}
+
 uint32_t CircleGen::addOperatorArgMax(const OperatorParams &params, circle::TensorType output_type)
 {
   auto options = circle::CreateArgMaxOptions(_fbb, output_type).Union();
@@ -146,6 +153,13 @@ uint32_t CircleGen::addOperatorFullyConnected(const OperatorParams &params)
   auto options = circle::CreateFullyConnectedOptions(_fbb).Union();
   return addOperatorWithOptions(params, circle::BuiltinOperator_FULLY_CONNECTED,
                                 circle::BuiltinOptions_FullyConnectedOptions, options);
+}
+
+uint32_t CircleGen::addOperatorFill(const OperatorParams &params)
+{
+  auto options = circle::CreateFillOptions(_fbb).Union();
+  return addOperatorWithOptions(params, circle::BuiltinOperator_FILL,
+                                circle::BuiltinOptions_FillOptions, options);
 }
 
 uint32_t CircleGen::addOperatorL2Normalization(const OperatorParams &params)
@@ -256,6 +270,13 @@ uint32_t CircleGen::addOperatorReverseV2(const OperatorParams &params)
   auto options = circle::CreateReverseV2Options(_fbb).Union();
   return addOperatorWithOptions(params, circle::BuiltinOperator_REVERSE_V2,
                                 circle::BuiltinOptions_ReverseV2Options, options);
+}
+
+uint32_t CircleGen::addOperatorShape(const OperatorParams &params, circle::TensorType type)
+{
+  auto options = circle::CreateShapeOptions(_fbb, type).Union();
+  return addOperatorWithOptions(params, circle::BuiltinOperator_SHAPE,
+                                circle::BuiltinOptions_RankOptions, options);
 }
 
 uint32_t CircleGen::addOperatorSelect(const OperatorParams &params)

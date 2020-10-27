@@ -14,9 +14,12 @@
  * limitations under the License.
  */
 
-#include "RankLayer.h"
+#ifndef __ONERT_BACKEND_CPU_OPS_ADDNLAYER_H__
+#define __ONERT_BACKEND_CPU_OPS_ADDNLAYER_H__
 
-#include "OperationUtils.h"
+#include <backend/IPortableTensor.h>
+
+#include <exec/IFunction.h>
 
 namespace onert
 {
@@ -27,24 +30,25 @@ namespace cpu
 namespace ops
 {
 
-RankLayer::RankLayer() : _input(nullptr), _output(nullptr)
+class AddNLayer : public ::onert::exec::IFunction
 {
-  // DO NOTHING
-}
+public:
+  AddNLayer() : _inputs(nullptr), _num_inputs(0), _output(nullptr) {}
 
-void RankLayer::configure(const IPortableTensor *input, IPortableTensor *output)
-{
-  _input = input;
-  _output = output;
-}
+public:
+  void configure(const IPortableTensor **inputs, size_t num_inputs, IPortableTensor *output);
 
-void RankLayer::run()
-{
-  int32_t *output_data = reinterpret_cast<int32_t *>(_output->buffer());
-  output_data[0] = _input->num_dimensions();
-}
+  void run() override;
+
+private:
+  const IPortableTensor **_inputs;
+  size_t _num_inputs;
+  IPortableTensor *_output;
+};
 
 } // namespace ops
 } // namespace cpu
 } // namespace backend
 } // namespace onert
+
+#endif // __ONERT_BACKEND_CPU_OPS_ADDNLAYER_H__

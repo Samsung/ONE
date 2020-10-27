@@ -14,37 +14,26 @@
  * limitations under the License.
  */
 
-#include "RankLayer.h"
+#include "ir/operation/AddN.h"
 
-#include "OperationUtils.h"
+#include <cassert>
+
+#include "ir/OperationVisitor.h"
 
 namespace onert
 {
-namespace backend
+namespace ir
 {
-namespace cpu
-{
-namespace ops
+namespace operation
 {
 
-RankLayer::RankLayer() : _input(nullptr), _output(nullptr)
+void AddN::accept(OperationVisitor &v) const { v.visit(*this); }
+
+AddN::AddN(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs)
+    : Operation{OperandConstraint::createExact(inputs.size()), inputs, outputs}
 {
-  // DO NOTHING
 }
 
-void RankLayer::configure(const IPortableTensor *input, IPortableTensor *output)
-{
-  _input = input;
-  _output = output;
-}
-
-void RankLayer::run()
-{
-  int32_t *output_data = reinterpret_cast<int32_t *>(_output->buffer());
-  output_data[0] = _input->num_dimensions();
-}
-
-} // namespace ops
-} // namespace cpu
-} // namespace backend
+} // namespace operation
+} // namespace ir
 } // namespace onert

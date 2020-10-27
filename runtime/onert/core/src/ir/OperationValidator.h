@@ -33,45 +33,54 @@ namespace onert
 namespace ir
 {
 
-class OperationValidator : public ir::OperationVisitor
+class OperationValidator : public OperationVisitor
 {
 public:
   OperationValidator(void) = delete;
-  OperationValidator(const ir::Graph &graph);
+  OperationValidator(const Graph &graph);
 
 public:
   void operator()();
 
 public:
-  void visit(const ir::operation::BatchMatMul &node) override;
-  void visit(const ir::operation::BatchToSpaceND &node) override;
-  void visit(const ir::operation::BinaryArithmetic &node) override;
-  void visit(const ir::operation::Comparison &node) override;
-  void visit(const ir::operation::DepthToSpace &node) override;
-  void visit(const ir::operation::ElementwiseActivation &node) override;
-  void visit(const ir::operation::ElementwiseBinary &node) override;
-  void visit(const ir::operation::ElementwiseUnary &node) override;
-  void visit(const ir::operation::EmbeddingLookup &node) override;
-  void visit(const ir::operation::ExpandDims &node) override;
-  void visit(const ir::operation::HashtableLookup &node) override;
-  void visit(const ir::operation::Pack &node) override;
-  void visit(const ir::operation::Pad &node) override;
-  void visit(const ir::operation::ResizeBilinear &node) override;
-  void visit(const ir::operation::Reverse &node) override;
-  void visit(const ir::operation::Select &node) override;
-  void visit(const ir::operation::SpaceToBatchND &node) override;
-  void visit(const ir::operation::SpaceToDepth &node) override;
-  void visit(const ir::operation::Split &node) override;
-  void visit(const ir::operation::SquaredDifference &node) override;
-  void visit(const ir::operation::StridedSlice &node) override;
-  void visit(const ir::operation::TransposeConv &node) override;
-  void visit(const ir::operation::Unpack &node) override;
-  void visit(const ir::operation::While &node) override;
+  void visit(const operation::AddN &node) override;
+  void visit(const operation::BatchMatMul &node) override;
+  void visit(const operation::BatchToSpaceND &node) override;
+  void visit(const operation::BinaryArithmetic &node) override;
+  void visit(const operation::Comparison &node) override;
+  void visit(const operation::DepthToSpace &node) override;
+  void visit(const operation::ElementwiseActivation &node) override;
+  void visit(const operation::ElementwiseBinary &node) override;
+  void visit(const operation::ElementwiseUnary &node) override;
+  void visit(const operation::EmbeddingLookup &node) override;
+  void visit(const operation::ExpandDims &node) override;
+  void visit(const operation::HashtableLookup &node) override;
+  void visit(const operation::Pack &node) override;
+  void visit(const operation::Pad &node) override;
+  void visit(const operation::Rank &node) override;
+  void visit(const operation::ResizeBilinear &node) override;
+  void visit(const operation::Reverse &node) override;
+  void visit(const operation::Select &node) override;
+  void visit(const operation::Shape &node) override;
+  void visit(const operation::SpaceToBatchND &node) override;
+  void visit(const operation::SpaceToDepth &node) override;
+  void visit(const operation::Split &node) override;
+  void visit(const operation::SquaredDifference &node) override;
+  void visit(const operation::StridedSlice &node) override;
+  void visit(const operation::TransposeConv &node) override;
+  void visit(const operation::Unpack &node) override;
+  void visit(const operation::While &node) override;
 
 private:
-  // TODO Remove _ctx field
-  const ir::Graph &_graph;
-  const ir::Operands &_ctx;
+  DataType operandType(const OperandIndex &idx);
+  bool isConstant(const OperandIndex &idx);
+  bool isSameType(const OperandIndex &idx1, const OperandIndex &idx2);
+  bool isValidType(const OperandIndex &idx, const DataType &type);
+  bool isValidType(const OperandIndex &idx, std::initializer_list<DataType> valid_types);
+
+private:
+  const Operations &_operations;
+  const Operands &_operands;
 };
 
 } // namespace ir

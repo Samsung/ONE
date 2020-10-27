@@ -34,6 +34,7 @@ Pow::Pow(const Tensor *input1, const Tensor *input2, Tensor *output)
 void Pow::configure()
 {
   LUCI_INTERPRETER_CHECK(input1()->element_type() == input2()->element_type());
+  LUCI_INTERPRETER_CHECK(input1()->element_type() == output()->element_type());
 
   output()->resize(calculateShapeForBroadcast(input1()->shape(), input2()->shape()));
 }
