@@ -114,14 +114,13 @@ bool is_batchnorm_add(const luci::CircleAdd *add, luci::CircleMul *&mul, luci::C
   return true;
 }
 
-luci::CircleConv2D *get_forward_conv2d(luci::CircleNode *node, uint32_t channel_size)
+const luci::CircleConv2D *get_forward_conv2d(const luci::CircleNode *node, uint32_t channel_size)
 {
   auto opcode = node->opcode();
   if (opcode == luci::CircleOpcode::CONV_2D)
   {
-    auto conv = loco::must_cast<luci::CircleConv2D *>(node);
+    auto conv = loco::must_cast<const luci::CircleConv2D *>(node);
     auto filter = dynamic_cast<luci::CircleConst *>(conv->filter());
-
     if (filter == nullptr)
       return nullptr;
 
@@ -141,7 +140,7 @@ luci::CircleConv2D *get_forward_conv2d(luci::CircleNode *node, uint32_t channel_
   // This is for handling the last part of ResNetV2
   else if (opcode == luci::CircleOpcode::MEAN)
   {
-    auto mean = loco::must_cast<luci::CircleMean *>(node);
+    auto mean = loco::must_cast<const luci::CircleMean *>(node);
     auto axis = mean->reduction_indices();
     auto axis_const = dynamic_cast<luci::CircleConst *>(axis);
     if (not axis_const)
