@@ -2,7 +2,8 @@ import tensorflow as tf
 from tensorflow import keras
 
 model = keras.Sequential()
-model.add(keras.layers.SimpleRNN(2, input_shape=(4,4,)))
+shape = (4, 4)
+model.add(keras.layers.SimpleRNN(2, input_shape=shape))
 
 # Note that this code will generate pb model only with TF 1.x.x
 #
