@@ -34,17 +34,17 @@ foreach(ONE_COMMAND IN ITEMS ${ONE_COMMAND_FILES})
           
 endforeach(ONE_COMMAND)
 
-set(ONE_UTILITIY_FIELS
+set(ONE_UTILITY_FIELS
     one-build.template.cfg
     utils.py
 )
 
-foreach(ONE_UTILITIY IN ITEMS ${ONE_UTILITIY_FIELS})
+foreach(ONE_UTILITY IN ITEMS ${ONE_UTILITY_FIELS})
 
-  set(ONE_UTILITY_FILE ${ONE_UTILITIY})
+  set(ONE_UTILITY_FILE ${ONE_UTILITY})
   set(ONE_UTILITY_SRC "${CMAKE_CURRENT_SOURCE_DIR}/${ONE_UTILITY_FILE}")
   set(ONE_UTILITY_BIN "${CMAKE_CURRENT_BINARY_DIR}/${ONE_UTILITY_FILE}")
-  set(ONE_UTILITY_TARGET "${ONE_UTILITIY}_target")
+  set(ONE_UTILITY_TARGET "${ONE_UTILITY}_target")
 
   add_custom_command(OUTPUT ${ONE_UTILITY_BIN}
     COMMAND ${CMAKE_COMMAND} -E copy "${ONE_UTILITY_SRC}" "${ONE_UTILITY_BIN}"
@@ -54,13 +54,13 @@ foreach(ONE_UTILITIY IN ITEMS ${ONE_UTILITIY_FIELS})
 
   add_custom_target(${ONE_UTILITY_TARGET} ALL DEPENDS ${ONE_UTILITY_BIN})
 
-  install(FILES ${ONE_UTILITIY}
+  install(FILES ${ONE_UTILITY}
           PERMISSIONS OWNER_WRITE OWNER_READ
                       GROUP_READ
                       WORLD_READ
           DESTINATION bin)
 
-endforeach(ONE_UTILITIY)
+endforeach(ONE_UTILITY)
 
 set(ONE_DOCUMENT_FILES
     how-to-use-one-commands.txt
