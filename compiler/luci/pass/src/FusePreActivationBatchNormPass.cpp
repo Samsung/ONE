@@ -114,10 +114,156 @@ bool is_batchnorm_add(const luci::CircleAdd *add, luci::CircleMul *&mul, luci::C
   return true;
 }
 
+luci::CircleConv2D *get_forward_conv2d(luci::CircleNode *node, uint32_t channel_size)
+{
+  auto opcode = node->opcode();
+  if (opcode == luci::CircleOpcode::CONV_2D)
+  {
+    auto conv = loco::must_cast<luci::CircleConv2D *>(node);
+    auto filter = dynamic_cast<luci::CircleConst *>(conv->filter());
+
+    if (filter == nullptr)
+      return nullptr;
+
+    if (filter->rank() != 4)
+      return nullptr;
+
+    if (filter->dim(3).value() != channel_size)
+      return nullptr;
+
+    if (loco::succs(filter).size() != 1)
+      return nullptr;
+
+    return conv;
+  }
+  // MUL can be fused with CONV across MEAN
+  // i.e., MUL-MEAN-CONV -> MEAN-CONV
+  // This is for handling the last part of ResNetV2
+  else if (opcode == luci::CircleOpcode::MEAN)
+  {
+    auto mean = loco::must_cast<luci::CircleMean *>(node);
+    auto axis = mean->reduction_indices();
+    auto axis_const = dynamic_cast<luci::CircleConst *>(axis);
+    if (not axis_const)
+      return nullptr;
+
+    assert(axis_const->dtype() == loco::DataType::S32);
+    auto axis_size = axis_const->size<loco::DataType::S32>();
+    for (uint32_t i = 0; i < axis_size; ++i)
+    {
+      // Reduction axis must not be the channel index
+      // Assumption: Layout is channel-last
+      if (axis_const->at<loco::DataType::S32>(i) == static_cast<int32_t>(node->rank() - 1))
+        return nullptr;
+    }
+
+    auto succ = loco::succs(node);
+    if (succ.size() != 1)
+      return nullptr;
+
+    auto succ_node = loco::must_cast<luci::CircleNode *>(*succ.begin());
+
+    return get_forward_conv2d(succ_node, channel_size);
+  }
+  else
+  {
+    return nullptr;
+  }
+}
+
+void update_conv_weights_with_gamma(const luci::CircleConv2D *conv, const luci::CircleConst *gamma)
+{
+  auto filter = loco::must_cast<luci::CircleConst *>(conv->filter());
+
+  uint32_t filter_out_dim = filter->dim(0).value();
+  uint32_t filter_height_dim = filter->dim(1).value();
+  uint32_t filter_width_dim = filter->dim(2).value();
+  uint32_t filter_in_dim = filter->dim(3).value();
+  for (uint32_t o = 0; o < filter_out_dim; o++)
+  {
+    for (uint32_t h = 0; h < filter_height_dim; h++)
+    {
+      for (uint32_t w = 0; w < filter_width_dim; w++)
+      {
+        for (uint32_t i = 0; i < filter_in_dim; i++)
+        {
+          uint32_t offset = o * filter_height_dim * filter_width_dim * filter_in_dim +
+                            h * filter_width_dim * filter_in_dim + w * filter_in_dim + i;
+          filter->at<loco::DataType::FLOAT32>(offset) *= gamma->at<loco::DataType::FLOAT32>(i);
+        }
+      }
+    }
+  }
+}
+
 } // namespace
 
 namespace luci
 {
+
+/**
+ *  Fuse MUL with the next CONV
+ *
+ *  BEFORE
+ *
+ *           [Mul]  gamma
+ *             |
+ *           [Relu]
+ *            /  \
+ *     W1 [Conv]  [Conv] W2
+ *
+ *  AFTER
+ *
+ *                [Relu]
+ *                 /  \
+ *   gamma X W1 [Conv]  [Conv] gamma X W2
+ */
+bool fuse_mul_with_conv(luci::CircleMul *mul)
+{
+  luci::CircleNode *pred_node = nullptr;
+  luci::CircleConst *gamma = nullptr;
+
+  if (!is_batchnorm_mul(mul, pred_node, gamma))
+    return false;
+
+  auto mul_succ = loco::succs(mul);
+  assert(mul_succ.size() == 1);
+
+  auto relu = dynamic_cast<luci::CircleRelu *>(*mul_succ.begin());
+  assert(relu != nullptr);
+
+  auto channel_size = gamma->dim(0).value();
+
+  bool fusable = true;
+  auto relu_succ = loco::succs(relu);
+  for (auto s : relu_succ)
+  {
+    auto conv = get_forward_conv2d(loco::must_cast<luci::CircleNode *>(s), channel_size);
+    if (conv == nullptr)
+      fusable = false;
+  }
+
+  if (fusable)
+  {
+    for (auto s : relu_succ)
+    {
+      // Find the next CONV
+      auto conv = get_forward_conv2d(loco::must_cast<luci::CircleNode *>(s), channel_size);
+
+      // Update CONV weights
+      update_conv_weights_with_gamma(conv, gamma);
+    }
+
+    loco::replace(mul).with(pred_node);
+    relu->features(pred_node);
+
+    mul->drop();
+
+    return true;
+  }
+
+  return false;
+}
 
 /**
  *  Swap MUL/ADD if they are from batch normalization
@@ -229,6 +375,11 @@ bool FusePreActivationBatchNormPass::run(loco::Graph *g)
     return false;
 
   // Step 2. Fuse MUL with the next CONV
+  for (auto const &mul : _mul_list)
+  {
+    if (fuse_mul_with_conv(mul))
+      INFO(l) << "[FusePreActivationBatchNorm] Fused MUL: " << mul->name() << std::endl;
+  }
 
   // Step 3. Fuse ADD with the preceding CONV and insert SUB
 
