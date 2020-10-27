@@ -123,3 +123,9 @@ TEST_F(ValidationTestSingleSession, neg_experimental_output_tensorindex_session_
   ASSERT_EQ(nnfw_output_tensorindex(nullptr, "ADD_TOP", &ind), NNFW_STATUS_UNEXPECTED_NULL);
   ASSERT_EQ(ind, 999);
 }
+
+TEST_F(ValidationTestSingleSession, neg_internal_set_config)
+{
+  ASSERT_EQ(nnfw_set_config(nullptr, "TRACE_FILEPATH", ""), NNFW_STATUS_UNEXPECTED_NULL);
+  ASSERT_EQ(nnfw_set_config(nullptr, "GRAPH_DOT_DUMP", "0"), NNFW_STATUS_UNEXPECTED_NULL);
+}

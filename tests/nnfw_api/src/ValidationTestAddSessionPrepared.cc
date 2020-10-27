@@ -191,4 +191,11 @@ TEST_F(ValidationTestAddSessionPrepared, neg_run_without_set_output)
   ASSERT_EQ(nnfw_run(_session), NNFW_STATUS_ERROR);
 }
 
+TEST_F(ValidationTestAddSessionPrepared, neg_internal_set_config)
+{
+  // All arguments are valid, but the session state is wrong
+  ASSERT_EQ(nnfw_set_config(_session, "TRACE_FILEPATH", ""), NNFW_STATUS_INVALID_STATE);
+  ASSERT_EQ(nnfw_set_config(_session, "GRAPH_DOT_DUMP", "0"), NNFW_STATUS_INVALID_STATE);
+}
+
 // TODO Validation check when "nnfw_run" is called without input & output tensor setting

@@ -118,3 +118,10 @@ TEST_F(ValidationTestSessionCreated, neg_output_tensorinfo)
   // model is not loaded and tensor_info is null
   ASSERT_EQ(nnfw_output_tensorinfo(_session, 0, nullptr), NNFW_STATUS_INVALID_STATE);
 }
+
+TEST_F(ValidationTestSessionCreated, neg_internal_set_config)
+{
+  // All arguments are valid, but the session state is wrong
+  ASSERT_EQ(nnfw_set_config(_session, "TRACE_FILEPATH", ""), NNFW_STATUS_INVALID_STATE);
+  ASSERT_EQ(nnfw_set_config(_session, "GRAPH_DOT_DUMP", "0"), NNFW_STATUS_INVALID_STATE);
+}
