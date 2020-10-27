@@ -573,7 +573,7 @@ TEST_F(KernelBuilderTest, LogicalAnd)
   checkTensor(kernel->input2(), input2);
   checkTensor(kernel->output(), op);
 }
-  
+
 TEST_F(KernelBuilderTest, LogicalNot)
 {
   auto *input = createInputNode();
