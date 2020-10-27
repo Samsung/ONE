@@ -119,9 +119,12 @@ void Linear::planTensors(const compiler::LoweredGraph &lowered_graph,
     tensor_builder_map[ind] = tensor_builder;
   });
 
+  const auto io_tensors =
+      (graph.getInputs() + graph.getOutputs()) | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED;
+
   // If a tensor is model output, increase the use of the tensor.
   // This aim is same to above one.
-  for (const auto &ind : graph.getOutputs() | ir::Remove::DUPLICATED)
+  for (const auto &ind : io_tensors)
   {
     uses_map[ind]++;
   }
@@ -147,9 +150,6 @@ void Linear::planTensors(const compiler::LoweredGraph &lowered_graph,
       continue;
     tensor_builder->notifyFirstUse(ind);
   }
-
-  const auto io_tensors =
-      (graph.getInputs() + graph.getOutputs()) | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED;
 
   // At each operation,
   // 1. Scan DEF of outputs. If the DEF, allocate it
@@ -220,7 +220,7 @@ void Linear::planTensors(const compiler::LoweredGraph &lowered_graph,
   }
 
   // Dispose and validate
-  for (const auto &ind : graph.getOutputs() | ir::Remove::DUPLICATED)
+  for (const auto &ind : io_tensors)
   {
     --uses_map[ind];
     if (uses_map[ind] == 0) // To prevent notifyLastUse from being called twice
