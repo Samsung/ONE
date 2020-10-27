@@ -66,6 +66,7 @@
 #include "Nodes/CircleMatrixSetDiag.h"
 #include "Nodes/CircleMaximum.h"
 #include "Nodes/CircleMaxPool2D.h"
+#include "Nodes/CircleMaxPoolWithArgMax.h"
 #include "Nodes/CircleMean.h"
 #include "Nodes/CircleMinimum.h"
 #include "Nodes/CircleMirrorPad.h"
@@ -144,6 +145,7 @@
 #include "Nodes/CircleSplitVOut.h"
 #include "Nodes/CircleTopKV2Out.h"
 #include "Nodes/CircleWhileOut.h"
+#include "Nodes/CircleMaxPoolWithArgMaxOut.h"
 
 #include <loco/IR/Graph.h>
 
