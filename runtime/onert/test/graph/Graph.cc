@@ -18,7 +18,7 @@
 
 #include "ir/Graph.h"
 
-TEST(Graph, inputs_and_outputs)
+TEST(Graph, neg_inputs_and_outputs)
 {
   onert::ir::Graph graph;
 
@@ -49,4 +49,6 @@ TEST(Graph, inputs_and_outputs)
   ASSERT_EQ(graph.getOutputs().at(io_index0), 10);
   ASSERT_EQ(graph.getOutputs().at(io_index1), 11);
   ASSERT_EQ(graph.getOutputs().at(io_index2), 12);
+
+  EXPECT_THROW(graph.getOutputs().at(onert::ir::IOIndex{3}), std::out_of_range);
 }

@@ -18,12 +18,21 @@
 
 #include <util/ConfigSource.h>
 
+#define NNFW_RETURN_ERROR_IF_NULL(p)      \
+  do                                      \
+  {                                       \
+    if ((p) == NULL)                      \
+      return NNFW_STATUS_UNEXPECTED_NULL; \
+  } while (0)
+
 NNFW_STATUS nnfw_set_config(nnfw_session *session, const char *key, const char *value)
 {
+  NNFW_RETURN_ERROR_IF_NULL(session);
   return session->set_config(key, value);
 }
 
 NNFW_STATUS nnfw_get_config(nnfw_session *session, const char *key, char *value, size_t value_size)
 {
+  NNFW_RETURN_ERROR_IF_NULL(session);
   return session->get_config(key, value, value_size);
 }

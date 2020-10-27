@@ -34,15 +34,29 @@ namespace
 {
 template <typename T>
 T *getOptionalOutputBuffer(onert::backend::IPortableTensor *tensor, std::vector<uint8_t> *temp_vec,
-                           int total_size)
+                           size_t total_size)
 {
   if (tensor == nullptr)
   {
     temp_vec->reserve(total_size);
     return reinterpret_cast<T *>(temp_vec->data());
   }
+  else
+  {
+    assert(tensor->total_size() == total_size);
+    return reinterpret_cast<T *>(tensor->buffer());
+  }
+}
 
-  return reinterpret_cast<T *>(tensor->buffer());
+inline void initializeStateBuffer(const onert::backend::IPortableTensor *tensor_in, void *buffer,
+                                  bool needs_memcpy)
+{
+  assert(tensor_in != nullptr);
+  assert(buffer != nullptr);
+  if (needs_memcpy)
+    memcpy(buffer, tensor_in->buffer(), tensor_in->total_size());
+  else
+    memset(buffer, 0, tensor_in->total_size());
 }
 }
 
@@ -59,7 +73,8 @@ LSTMLayer::LSTMLayer()
       _projection_weights(nullptr), _projection_bias(nullptr), _output_state_in(nullptr),
       _cell_state_in(nullptr), _scratch_buffer(nullptr), _output_state(nullptr),
       _cell_state(nullptr), _output(nullptr), _scratch_vec(), _output_state_vec(),
-      _cell_state_vec(), _params(), _forward_sequence(true), _time_major(true), _output_offset(0)
+      _cell_state_vec(), _params(), _forward_sequence(true), _time_major(true), _output_offset(0),
+      _has_output_state_data(false), _has_cell_state_data(false)
 {
   // DO NOTHING
 }
@@ -80,7 +95,6 @@ void LSTMLayer::LSTMFloat()
   }
   const int n_input = _input->dimension(_input->num_dimensions() - 1);
   const int aux_input_size = 0;
-  ;
 
   // n_cell and n_output will be the same size when there is no projection.
   const int n_cell = _input_to_output_weights->dimension(0);
@@ -92,11 +106,12 @@ void LSTMLayer::LSTMFloat()
 
   // Optional outputs
   float *output_state_buf = getOptionalOutputBuffer<float>(_output_state, &_output_state_vec,
-                                                           n_batch * n_output * sizeof(float));
-  float *cell_state_buf = getOptionalOutputBuffer<float>(_cell_state, &_cell_state_vec,
-                                                         n_batch * n_cell * sizeof(float));
-  memcpy(output_state_buf, _output_state_in->buffer(), _output_state_in->total_size());
-  memcpy(cell_state_buf, _cell_state_in->buffer(), _cell_state_in->total_size());
+                                                           _output_state_in->total_size());
+  float *cell_state_buf =
+      getOptionalOutputBuffer<float>(_cell_state, &_cell_state_vec, _cell_state_in->total_size());
+
+  initializeStateBuffer(_output_state_in, output_state_buf, _has_output_state_data);
+  initializeStateBuffer(_cell_state_in, cell_state_buf, _has_cell_state_data);
 
   // Index the scratch buffers pointers to the global scratch buffer.
   float *scratch_buffer_buf = getOptionalOutputBuffer<float>(
@@ -289,7 +304,8 @@ void LSTMLayer::configure(
     const IPortableTensor *projection_bias, const IPortableTensor *output_state_in,
     const IPortableTensor *cell_state_in, const ir::operation::LSTM::Param &params,
     bool forward_sequence, bool time_major, int output_offset, IPortableTensor *scratch_buffer,
-    IPortableTensor *output_state, IPortableTensor *cell_state, IPortableTensor *output)
+    IPortableTensor *output_state, IPortableTensor *cell_state, IPortableTensor *output,
+    bool has_output_state_data, bool has_cell_state_data)
 {
   _input = input;
   _input_to_input_weights = input_to_input_weights;
@@ -326,6 +342,8 @@ void LSTMLayer::configure(
   _output_state = output_state;
   _cell_state = cell_state;
   _output = output;
+  _has_output_state_data = has_output_state_data;
+  _has_cell_state_data = has_cell_state_data;
 }
 
 void LSTMLayer::run()

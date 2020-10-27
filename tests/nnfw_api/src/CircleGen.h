@@ -127,6 +127,7 @@ public:
   }
   uint32_t addBuffer(const uint8_t *buf, size_t size);
   uint32_t addTensor(const TensorParams &params);
+  uint32_t addTensor(const TensorParams &params, float scale, int64_t zero_point);
   uint32_t addTensor(const TensorParams &params, const SparsityParams &sp);
   void setInputsAndOutputs(const std::vector<int> &inputs, const std::vector<int> &outputs);
   uint32_t nextSubgraph();
@@ -135,6 +136,7 @@ public:
   // ===== Add Operator methods begin (SORTED IN ALPHABETICAL ORDER) =====
 
   uint32_t addOperatorAdd(const OperatorParams &params, circle::ActivationFunctionType actfn);
+  uint32_t addOperatorAddN(const OperatorParams &params);
   uint32_t addOperatorArgMax(const OperatorParams &params,
                              circle::TensorType output_type = circle::TensorType::TensorType_INT32);
   uint32_t addOperatorAveragePool2D(const OperatorParams &params, circle::Padding padding,
@@ -146,6 +148,7 @@ public:
                                     circle::ActivationFunctionType actfn);
   uint32_t addOperatorCos(const OperatorParams &params);
   uint32_t addOperatorEqual(const OperatorParams &params);
+  uint32_t addOperatorFill(const OperatorParams &params);
   uint32_t addOperatorFullyConnected(const OperatorParams &params);
   uint32_t addOperatorIf(const OperatorParams &params, uint32_t then_subg, uint32_t else_subg);
   uint32_t addOperatorInstanceNorm(const OperatorParams &params, float epsilon,
@@ -159,11 +162,21 @@ public:
   uint32_t addOperatorPad(const OperatorParams &params);
   uint32_t addOperatorPadV2(const OperatorParams &params);
   uint32_t addOperatorRank(const OperatorParams &params);
-  uint32_t addOperatorReshape(const OperatorParams &params, const Shape &new_shape);
+  uint32_t addOperatorReduce(const OperatorParams &params, circle::BuiltinOperator reduce_op,
+                             bool keep_dims);
+  /**
+   * @brief Create circle Reshape op
+   *        the second param new_shape can be optional just like circle::CreateReshapeOptionsDirect
+   */
+  uint32_t addOperatorReshape(const OperatorParams &params, const Shape *new_shape = nullptr);
   uint32_t addOperatorResizeBilinear(const OperatorParams &params, bool align_corners = false,
                                      bool half_pixel_centers = false);
   uint32_t addOperatorResizeNearestNeighbor(const OperatorParams &params);
   uint32_t addOperatorReverseV2(const OperatorParams &params);
+  uint32_t addOperatorShape(const OperatorParams &params,
+                            circle::TensorType type = circle::TensorType::TensorType_INT32);
+  uint32_t addOperatorSelect(const OperatorParams &params);
+  uint32_t addOperatorSelectV2(const OperatorParams &params);
   uint32_t addOperatorSplit(const OperatorParams &params, int32_t num_split);
   uint32_t addOperatorStridedSlice(const OperatorParams &params, int32_t begin_mask = 0,
                                    int32_t end_mask = 0, int32_t ellipsis_mask = 0,
@@ -182,6 +195,8 @@ private:
   uint32_t addOperatorCode(circle::BuiltinOperator opcode);
   flatbuffers::Offset<circle::Buffer> buildBuffer(const uint8_t *buf, size_t size);
   flatbuffers::Offset<circle::Tensor> buildTensor(const TensorParams &params);
+  flatbuffers::Offset<circle::Tensor> buildTensor(const TensorParams &params, float scale,
+                                                  int64_t zero_point);
   flatbuffers::Offset<circle::SparsityParameters> buildSparsityParameters(const SparsityParams &sp);
   flatbuffers::Offset<circle::Tensor> buildTensor(const TensorParams &params,
                                                   const SparsityParams &sp);

@@ -21,7 +21,7 @@
 using onert::ir::Layout;
 using onert::ir::LayoutSet;
 
-TEST(graph_operand_LayoutSet, neg_add_remove)
+TEST(ir_LayoutSet, neg_add_remove)
 {
   LayoutSet set{Layout::NCHW};
   set.remove(Layout::NHWC);
@@ -36,7 +36,7 @@ TEST(graph_operand_LayoutSet, neg_add_remove)
   ASSERT_EQ(set.size(), 0);
 }
 
-TEST(graph_operand_LayoutSet, set_operators)
+TEST(ir_LayoutSet, set_operators)
 {
   LayoutSet set1{Layout::NCHW};
   LayoutSet set2{Layout::NHWC};

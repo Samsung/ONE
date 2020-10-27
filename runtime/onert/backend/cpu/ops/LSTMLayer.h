@@ -75,7 +75,7 @@ public:
                  const ir::operation::LSTM::Param &params, bool forward_sequence, bool time_major,
                  int32_t output_offset, IPortableTensor *scratch_buffer,
                  IPortableTensor *output_state, IPortableTensor *cell_state,
-                 IPortableTensor *output);
+                 IPortableTensor *output, bool has_output_state_data, bool has_cell_state_data);
 
   void run() override;
 
@@ -120,6 +120,8 @@ private:
   bool _forward_sequence;
   bool _time_major;
   int32_t _output_offset;
+  bool _has_output_state_data;
+  bool _has_cell_state_data;
 };
 
 } // namespace ops

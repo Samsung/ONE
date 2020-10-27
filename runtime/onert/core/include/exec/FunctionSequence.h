@@ -23,7 +23,7 @@
 #include <functional>
 
 #include "exec/IFunction.h"
-#include "exec/DynamicShapeInference.h"
+#include "exec/DynamicShapeInferer.h"
 #include "ir/Operations.h"
 #include "backend/ITensorRegistry.h"
 #include "backend/IDynamicTensorManager.h"

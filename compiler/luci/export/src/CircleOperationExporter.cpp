@@ -623,6 +623,7 @@ public:
   void visit(luci::CircleAveragePool2D *) final;
   void visit(luci::CircleBatchMatMul *) final;
   void visit(luci::CircleBatchToSpaceND *) final;
+  void visit(luci::CircleBidirectionalSequenceLSTM *) final;
   void visit(luci::CircleCast *) final;
   void visit(luci::CircleCeil *) final;
   void visit(luci::CircleConcatenation *) final;
@@ -735,6 +736,7 @@ public:
   void visit(luci::CircleOutputDummy *) final {}
   void visit(luci::CircleOutputExclude *) final {}
   // Virtual for multiple-outputs
+  void visit(luci::CircleBidirectionalSequenceLSTMOut *) final {}
   void visit(luci::CircleCustomOut *) final {}
   void visit(luci::CircleIfOut *) final {}
   void visit(luci::CircleNonMaxSuppressionV4Out *) final {}
@@ -814,6 +816,54 @@ void OperationExporter::visit(luci::CircleBatchMatMul *node)
                 circle::BuiltinOptions_BatchMatMulOptions,
                 CreateBatchMatMulOptions(_ctx.builder, node->adj_x(), node->adj_y()).Union());
 }
+
+void OperationExporter::visit(luci::CircleBidirectionalSequenceLSTM *node)
+{
+  // export_simple(node, circle::BuiltinOperator_BIDIRECTIONAL_SEQUENCE_LSTM,
+  //               circle::BuiltinOptions_BidirectionalSequenceLSTMOptions,
+  //               CreateBidirectionalSequenceLSTMOptions(
+  //                   _ctx.builder, to_circle_actfunc(node->fusedActivationFunction()),
+  //                   node->cell_clip(), node->proj_clip(), node->merge_outputs(), node->time_major(),
+  //                   node->asymmetric_quantize_inputs())
+  //                   .Union());
+  auto bidi_lstm_outs = loco::succs(node);
+  assert(int32_t(bidi_lstm_outs.size()) == 2);
+  uint32_t op_idx =
+      _ctx.md.registerBuiltinOpcode(circle::BuiltinOperator_BIDIRECTIONAL_SEQUENCE_LSTM, node->op_version());
+
+  std::vector<int32_t> inputs_vec{get_tensor_index(node->input())};
+  std::vector<int32_t> outputs_vec;
+
+  for (int32_t index = 0; index < 2; index++)
+  {
+    // store in order of index
+    bool found = false;
+    for (auto out : bidi_lstm_outs)
+    {
+      auto bidi_lstm_out = loco::must_cast<luci::CircleBidirectionalSequenceLSTMOut *>(out);
+      if (bidi_lstm_out->index() == index)
+      {
+        outputs_vec.push_back(get_tensor_index(bidi_lstm_out));
+        found = true;
+        break;
+      }
+    }
+    if (!found)
+    {
+      INTERNAL_EXN("Invalid BidirectionalSequenceLSTM output");
+    }
+  }
+
+  auto inputs = _ctx.builder.CreateVector(inputs_vec);
+  auto outputs = _ctx.builder.CreateVector(outputs_vec);
+  auto options = CreateBidirectionalSequenceLSTMOptions(_ctx.builder, to_circle_actfunc(node->fusedActivationFunction()),
+                     node->cell_clip(), node->proj_clip(), node->merge_outputs(), node->time_major(),
+                     node->asymmetric_quantize_inputs());
+  auto op_offset = CreateOperator(_ctx.builder, op_idx, inputs, outputs,
+                                  circle::BuiltinOptions_BidirectionalSequenceLSTMOptions, options.Union());
+  _ctx.gd._operators.push_back(op_offset);
+}
+
 
 void OperationExporter::visit(luci::CircleCast *node) { export_node(_ctx, node); }
 

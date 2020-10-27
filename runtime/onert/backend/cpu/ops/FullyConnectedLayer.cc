@@ -42,12 +42,7 @@ FullyConnectedLayer::~FullyConnectedLayer() = default;
 
 void FullyConnectedLayer::fullyConnectedFloat32()
 {
-  float output_activation_min = 0, output_activation_max = 0;
-  CalculateActivationRange(_activation, &output_activation_min, &output_activation_max);
-
   nnfw::cker::FullyConnectedParams op_params;
-  op_params.float_activation_min = output_activation_min;
-  op_params.float_activation_max = output_activation_max;
   op_params.activation = convertActivationType(_activation);
 
   nnfw::cker::FullyConnected(
@@ -150,12 +145,7 @@ void FullyConnectedLayer::fullyConnectedHybrid()
 
 void FullyConnectedLayer::fullyConnectedSparseWeight()
 {
-  float output_activation_min = 0, output_activation_max = 0;
-  CalculateActivationRange(_activation, &output_activation_min, &output_activation_max);
-
   nnfw::cker::FullyConnectedParams op_params;
-  op_params.float_activation_min = output_activation_min;
-  op_params.float_activation_max = output_activation_max;
   op_params.activation = convertActivationType(_activation);
 
   const uint16_t *w1_segments = _weights->sparsity()->w1_segments();

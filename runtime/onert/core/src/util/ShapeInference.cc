@@ -190,11 +190,12 @@ ir::Shape inferReduceShape(const ir::Shape &input_shape, const std::vector<int> 
     for (int i = 0; i < num_axis; ++i)
     {
       int current = axes[i];
+      if (!(-input_num_dims <= current && current < input_num_dims))
+        throw std::runtime_error{"Invalid dim value " + std::to_string(current)};
       if (current < 0)
       {
         current += input_num_dims;
       }
-      assert(0 <= current && current < input_num_dims);
       for (int j = 0; j < i; ++j)
       {
         int previous = axes[j];

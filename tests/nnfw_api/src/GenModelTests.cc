@@ -193,3 +193,99 @@ TEST_F(GenModelTest, OneTensor_ConstAndThreeOutputs)
 
   SUCCEED();
 }
+
+TEST_F(GenModelTest, Reshape_with_shape_param_as_const)
+{
+  CircleGen cgen;
+  auto i32 = circle::TensorType::TensorType_INT32;
+
+  int input = cgen.addTensor({{4}, i32});
+
+  std::vector<int32_t> new_shape_data{2, 2}; // const of value [2, 2]
+  uint32_t new_shape_buf = cgen.addBuffer(new_shape_data);
+  int new_shape = cgen.addTensor({{2}, i32, new_shape_buf});
+
+  int out = cgen.addTensor({{2, 2}, i32});
+
+  // reshape with new_shape param
+  cgen.addOperatorReshape({{input, new_shape}, {out}}, &new_shape_data);
+  cgen.setInputsAndOutputs({input}, {out});
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->addTestCase(uniformTCD<int32_t>({{1, 2, 3, 4}}, {{1, 2, 3, 4}}));
+  _context->setBackends({"acl_cl", "acl_neon", "cpu"});
+
+  SUCCEED();
+}
+
+TEST_F(GenModelTest, neg_Reshape_with_shape_param_as_const)
+{
+  // We will ses if Reshape with shape param can generate error during compilation if param is wrong
+  CircleGen cgen;
+  auto i32 = circle::TensorType::TensorType_INT32;
+
+  int input = cgen.addTensor({{4}, i32});
+
+  std::vector<int32_t> wrong_new_shape_data{2, 3}; // not match with input shape
+  uint32_t new_shape_buf = cgen.addBuffer(wrong_new_shape_data);
+  int new_shape = cgen.addTensor({{2}, i32, new_shape_buf});
+
+  int out = cgen.addTensor({{2, 2}, i32});
+
+  cgen.addOperatorReshape({{input, new_shape}, {out}}, &wrong_new_shape_data);
+  cgen.setInputsAndOutputs({input}, {out});
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->addTestCase(uniformTCD<int32_t>({{1, 2, 3, 4}}, {{1, 2, 3, 4}}));
+  _context->setBackends({"acl_cl", "acl_neon", "cpu"});
+
+  _context->expectFailCompile();
+
+  SUCCEED();
+}
+
+TEST_F(GenModelTest, Reshape_without_shape_param)
+{
+  CircleGen cgen;
+  auto i32 = circle::TensorType::TensorType_INT32;
+
+  int input = cgen.addTensor({{4}, i32});
+  int new_shape = cgen.addTensor({{2}, i32}); // reshape to 2D tensor
+  int out = cgen.addTensor({{}, i32}); // exact shape is not unknown since ouput is dynamic tensor
+
+  // reshape with new_shape param
+  cgen.addOperatorReshape({{input, new_shape}, {out}} /* no new_shape param */);
+  cgen.setInputsAndOutputs({input, new_shape}, {out});
+
+  CircleGen::Shape new_shape_val{2, 2};
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->addTestCase(uniformTCD<int32_t>({{1, 2, 3, 4}, new_shape_val}, {{1, 2, 3, 4}}));
+  _context->output_sizes(0, sizeof(i32) * 4);
+  _context->setBackends({"cpu" /* "acl_cl", "acl_neon" does not support dynamic tensor */});
+
+  SUCCEED();
+}
+
+TEST_F(GenModelTest, neg_Reshape_without_shape_param)
+{
+  // We will ses if Reshape without shape param can generate error whiile running
+  CircleGen cgen;
+  auto i32 = circle::TensorType::TensorType_INT32;
+
+  int input = cgen.addTensor({{4}, i32});
+  int new_shape = cgen.addTensor({{2}, i32}); // reshape to 2D tensor
+  int out = cgen.addTensor({{}, i32}); // exact shape is not unknown since ouput is dynamic tensor
+
+  // reshape with new_shape param
+  cgen.addOperatorReshape({{input, new_shape}, {out}} /* no new_shape param */);
+  cgen.setInputsAndOutputs({input, new_shape}, {out});
+
+  CircleGen::Shape wrong_new_shape_val{2, 3};
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  auto tc = uniformTCD<int32_t>({{1, 2, 3, 4}, wrong_new_shape_val}, {{1, 2, 3, 4}});
+  tc.expectFailRun();
+  _context->addTestCase(tc);
+  _context->setBackends({"cpu" /* "acl_cl", "acl_neon" does not support dynamic tensor */});
+
+  SUCCEED();
+}

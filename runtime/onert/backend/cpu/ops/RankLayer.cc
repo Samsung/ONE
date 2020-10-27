@@ -40,15 +40,8 @@ void RankLayer::configure(const IPortableTensor *input, IPortableTensor *output)
 
 void RankLayer::run()
 {
-  if (_input->data_type() == OperandType::FLOAT32 || _input->data_type() == OperandType::INT32)
-  {
-    int32_t *output_data = reinterpret_cast<int32_t *>(_output->buffer());
-    output_data[0] = _input->num_dimensions();
-  }
-  else
-  {
-    throw std::runtime_error{"Rank : unsupported data type"};
-  }
+  int32_t *output_data = reinterpret_cast<int32_t *>(_output->buffer());
+  output_data[0] = _input->num_dimensions();
 }
 
 } // namespace ops

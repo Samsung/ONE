@@ -19,6 +19,7 @@
 #endif
 
 // Internal Name
+OP(AddN)
 OP(BatchToSpaceND)
 OP(BinaryArithmetic)
 OP(BroadcastTo)

@@ -179,12 +179,12 @@ void Dumper::visit(const Select &node)
 5. Add code for shape inference
 - ONE runtime tries to calculate shapes and allocate memory during compilation time. For some calculations of output shapes that cannot be done during compilation time, ONE runtime will calculate shapes and allocate memory during execution time.
 - Calculation of shapes during compilation time is called _static shape inference_ and calculation of shapes during execution time is called _dynamic shape inference_.
-- [`StaticShapeInference.h`](`/runtime/onert/compiler/StaticShapeInference.h`)
+- [`StaticShapeInferer.h`](`/runtime/onert/compiler/StaticShapeInferer.h`)
 
 ```CPP
   void visit(const ir::operation::Select &op) override;
 ```
-- [`StaticShapeInference.cc`](/runtime/onert/core/src/compiler/StaticShapeInference.cc)
+- [`StaticShapeInferer.cc`](/runtime/onert/core/src/compiler/StaticShapeInferer.cc)
 ```CPP
 void StaticShapeInferer::visit(const ir::operation::Select &op)
 {

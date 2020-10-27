@@ -31,6 +31,7 @@ inline size_t sizeOfNnfwType(NNFW_TYPE type)
     case NNFW_TYPE_TENSOR_BOOL:
     case NNFW_TYPE_TENSOR_UINT8:
     case NNFW_TYPE_TENSOR_QUANT8_ASYMM:
+    case NNFW_TYPE_TENSOR_QUANT8_ASYMM_SIGNED:
       return 1;
     case NNFW_TYPE_TENSOR_FLOAT32:
     case NNFW_TYPE_TENSOR_INT32:
@@ -79,11 +80,10 @@ struct TestCaseData
   template <typename T> void addOutput(const std::vector<T> &data) { addData(outputs, data); }
 
   /**
-   * @brief Set @c True if @c NNFW_STATUS_ERROR is expected after calling @c nnfw_run() with
-   *        this test case; set @c False otherwise.
+   * @brief Call this when @c nnfw_run() for this test case is expected to be failed
    */
-  void expect_error_on_run(bool expect_error_on_run) { _expect_error_on_run = expect_error_on_run; }
-  bool expect_error_on_run() const { return _expect_error_on_run; }
+  void expectFailRun() { _expected_fail_run = true; }
+  bool expected_fail_run() const { return _expected_fail_run; }
 
 private:
   template <typename T>
@@ -95,7 +95,7 @@ private:
     std::memcpy(dest.back().data(), data.data(), size);
   }
 
-  bool _expect_error_on_run = false;
+  bool _expected_fail_run = false;
 };
 
 template <>
@@ -349,7 +349,7 @@ protected:
           memcpy(_so.inputs[i].data(), ref_inputs[i].data(), ref_inputs[i].size());
         }
 
-        if (test_case.expect_error_on_run())
+        if (test_case.expected_fail_run())
         {
           ASSERT_EQ(nnfw_run(_so.session), NNFW_STATUS_ERROR);
           continue;
@@ -374,7 +374,11 @@ protected:
               compareBuffersExactBool(ref_output, output, i);
               break;
             case NNFW_TYPE_TENSOR_UINT8:
+            case NNFW_TYPE_TENSOR_QUANT8_ASYMM:
               compareBuffersExact<uint8_t>(ref_output, output, i);
+              break;
+            case NNFW_TYPE_TENSOR_QUANT8_ASYMM_SIGNED:
+              compareBuffersExact<int8_t>(ref_output, output, i);
               break;
             case NNFW_TYPE_TENSOR_INT32:
               compareBuffersExact<int32_t>(ref_output, output, i);
@@ -391,8 +395,6 @@ protected:
             case NNFW_TYPE_TENSOR_INT64:
               compareBuffersExact<int64_t>(ref_output, output, i);
               break;
-            case NNFW_TYPE_TENSOR_QUANT8_ASYMM:
-              throw std::runtime_error{"NYI : comparison of tensors of QUANT8_ASYMM"};
             default:
               throw std::runtime_error{"Invalid tensor type"};
           }

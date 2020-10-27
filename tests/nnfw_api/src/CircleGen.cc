@@ -43,6 +43,15 @@ uint32_t CircleGen::addTensor(const TensorParams &params)
   return ind;
 }
 
+uint32_t CircleGen::addTensor(const TensorParams &params, float scale, int64_t zero_point)
+{
+  // TensorType_INT8: scale >= 0, zero_point: [-128, 127]
+  // TensorType_UINT8: scale >= 0, zero_point: [0, 255]
+  uint32_t ind = curSubgCtx().tensors.size();
+  curSubgCtx().tensors.emplace_back(buildTensor(params, scale, zero_point));
+  return ind;
+}
+
 uint32_t CircleGen::addTensor(const TensorParams &params, const SparsityParams &sp)
 {
   uint32_t ind = curSubgCtx().tensors.size();
@@ -82,6 +91,13 @@ uint32_t CircleGen::addOperatorAdd(const OperatorParams &params,
   auto options = circle::CreateAddOptions(_fbb, actfn).Union();
   return addOperatorWithOptions(params, circle::BuiltinOperator_ADD,
                                 circle::BuiltinOptions_AddOptions, options);
+}
+
+uint32_t CircleGen::addOperatorAddN(const OperatorParams &params)
+{
+  auto options = circle::CreateAddNOptions(_fbb).Union();
+  return addOperatorWithOptions(params, circle::BuiltinOperator_ADD_N,
+                                circle::BuiltinOptions_AddNOptions, options);
 }
 
 uint32_t CircleGen::addOperatorArgMax(const OperatorParams &params, circle::TensorType output_type)
@@ -137,6 +153,13 @@ uint32_t CircleGen::addOperatorFullyConnected(const OperatorParams &params)
   auto options = circle::CreateFullyConnectedOptions(_fbb).Union();
   return addOperatorWithOptions(params, circle::BuiltinOperator_FULLY_CONNECTED,
                                 circle::BuiltinOptions_FullyConnectedOptions, options);
+}
+
+uint32_t CircleGen::addOperatorFill(const OperatorParams &params)
+{
+  auto options = circle::CreateFillOptions(_fbb).Union();
+  return addOperatorWithOptions(params, circle::BuiltinOperator_FILL,
+                                circle::BuiltinOptions_FillOptions, options);
 }
 
 uint32_t CircleGen::addOperatorL2Normalization(const OperatorParams &params)
@@ -202,9 +225,26 @@ uint32_t CircleGen::addOperatorRank(const OperatorParams &params)
                                 circle::BuiltinOptions_RankOptions, options);
 }
 
-uint32_t CircleGen::addOperatorReshape(const OperatorParams &params, const Shape &new_shape)
+uint32_t CircleGen::addOperatorReduce(const OperatorParams &params,
+                                      circle::BuiltinOperator reduce_op, bool keep_dims)
 {
-  auto options = circle::CreateReshapeOptionsDirect(_fbb, &new_shape).Union();
+  switch (reduce_op)
+  {
+    case circle::BuiltinOperator_REDUCE_ANY:
+    case circle::BuiltinOperator_REDUCE_MIN:
+    case circle::BuiltinOperator_REDUCE_MAX:
+    case circle::BuiltinOperator_REDUCE_PROD:
+      break;
+    default:
+      throw std::runtime_error{"Wrong reduce op"};
+  }
+  auto options = circle::CreateReducerOptions(_fbb, keep_dims).Union();
+  return addOperatorWithOptions(params, reduce_op, circle::BuiltinOptions_ReducerOptions, options);
+}
+
+uint32_t CircleGen::addOperatorReshape(const OperatorParams &params, const Shape *new_shape)
+{
+  auto options = circle::CreateReshapeOptionsDirect(_fbb, new_shape).Union();
   return addOperatorWithOptions(params, circle::BuiltinOperator_RESHAPE,
                                 circle::BuiltinOptions_ReshapeOptions, options);
 }
@@ -230,6 +270,27 @@ uint32_t CircleGen::addOperatorReverseV2(const OperatorParams &params)
   auto options = circle::CreateReverseV2Options(_fbb).Union();
   return addOperatorWithOptions(params, circle::BuiltinOperator_REVERSE_V2,
                                 circle::BuiltinOptions_ReverseV2Options, options);
+}
+
+uint32_t CircleGen::addOperatorShape(const OperatorParams &params, circle::TensorType type)
+{
+  auto options = circle::CreateShapeOptions(_fbb, type).Union();
+  return addOperatorWithOptions(params, circle::BuiltinOperator_SHAPE,
+                                circle::BuiltinOptions_RankOptions, options);
+}
+
+uint32_t CircleGen::addOperatorSelect(const OperatorParams &params)
+{
+  auto options = circle::CreateSelectOptions(_fbb).Union();
+  return addOperatorWithOptions(params, circle::BuiltinOperator_SELECT,
+                                circle::BuiltinOptions_SelectOptions, options);
+}
+
+uint32_t CircleGen::addOperatorSelectV2(const OperatorParams &params)
+{
+  auto options = circle::CreateSelectV2Options(_fbb).Union();
+  return addOperatorWithOptions(params, circle::BuiltinOperator_SELECT_V2,
+                                circle::BuiltinOptions_SelectV2Options, options);
 }
 
 uint32_t CircleGen::addOperatorSplit(const OperatorParams &params, int32_t num_split)
@@ -334,6 +395,19 @@ flatbuffers::Offset<circle::Tensor> CircleGen::buildTensor(const TensorParams &p
   return circle::CreateTensor(_fbb, shape, params.tensor_type, params.buffer, name,
                               0 /* QuantParam */, false /* is_variable */, 0 /* sparsity */,
                               0 /* shape_signature */);
+}
+
+flatbuffers::Offset<circle::Tensor> CircleGen::buildTensor(const TensorParams &params, float scale,
+                                                           int64_t zero_point)
+{
+  auto shape = _fbb.CreateVector(params.shape);
+  auto name = _fbb.CreateString(params.name);
+  std::vector<float> scale_vector = {scale};
+  std::vector<int64_t> zero_point_vector = {zero_point};
+  auto quantization = circle::CreateQuantizationParametersDirect(_fbb, nullptr, nullptr,
+                                                                 &scale_vector, &zero_point_vector);
+  return circle::CreateTensor(_fbb, shape, params.tensor_type, params.buffer, name, quantization,
+                              false /* is_variable */, 0 /* sparsity */, 0 /* shape_signature */);
 }
 
 flatbuffers::Offset<circle::SparsityParameters>

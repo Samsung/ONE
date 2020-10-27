@@ -21,7 +21,7 @@
 using onert::ir::OperandIndex;
 using onert::ir::OperandIndexSequence;
 
-TEST(graph_OperandIndexSequence, neg_append)
+TEST(ir_OperandIndexSequence, neg_append)
 {
   OperandIndexSequence iset{0, 2, 4, 8};
 

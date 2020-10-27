@@ -29,7 +29,7 @@
 using Index = onert::ir::IOIndex;
 using IndexSet = onert::ir::OperandIndexSequence;
 
-TEST(graph_operation_setIO, operation_setIO_conv)
+TEST(ir_Operation_setIO, operation_setIO_conv)
 {
   onert::ir::Graph graph;
 
@@ -62,7 +62,7 @@ TEST(graph_operation_setIO, operation_setIO_conv)
   ASSERT_EQ(conv->getInputs().at(Index{0}).value(), 8);
 }
 
-TEST(graph_operation_setIO, neg_operation_setIO_concat)
+TEST(ir_Operation_setIO, neg_operation_setIO_concat)
 {
   onert::ir::Graph graph;
 

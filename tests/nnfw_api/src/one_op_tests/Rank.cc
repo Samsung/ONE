@@ -51,3 +51,18 @@ TEST_F(GenModelTest, OneOp_Rank_Int32)
 
   SUCCEED();
 }
+
+TEST_F(GenModelTest, neg_OneOp_Rank_OutType)
+{
+  CircleGen cgen;
+  int in = cgen.addTensor({{1, 3, 3, 2}, circle::TensorType::TensorType_INT32});
+  int out = cgen.addTensor({{1}, circle::TensorType::TensorType_UINT8});
+
+  // TODO handle many type in addTestCase
+  cgen.addOperatorRank({{in}, {out}});
+  cgen.setInputsAndOutputs({in}, {out});
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->expectFailModelLoad();
+
+  SUCCEED();
+}

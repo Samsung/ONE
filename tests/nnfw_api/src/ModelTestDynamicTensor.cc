@@ -73,7 +73,7 @@ auto build_dynamic_Reshape()
   int out = cgen.addTensor({{}, f32}); // scalar, meaning output shape is unspecified
 
   CircleGen::Shape empty_new_shape;
-  cgen.addOperatorReshape({{input, new_shape}, {out}}, empty_new_shape);
+  cgen.addOperatorReshape({{input, new_shape}, {out}}, &empty_new_shape);
   cgen.setInputsAndOutputs({new_shape}, {out});
   auto cbuf = cgen.finish();
   return cbuf;
@@ -111,7 +111,7 @@ TEST_F(GenModelTest, neg_reshape_from_2x3_to_wrong_3x3)
     TestCaseData tcd;
     tcd.addInput(wrong_shape);
     tcd.addOutput(expected);
-    tcd.expect_error_on_run(true);
+    tcd.expectFailRun();
 
     _context->addTestCase(tcd);
     _context->setBackends({"cpu"}); // Currently, dynamic tensor runs on "cpu" only
@@ -151,21 +151,22 @@ TEST_F(GenModelTest, neg_reshape_multiple_executions)
   std::vector<int> new_shape;
   std::vector<float> expected = {-1.5, -1.0, -0.5, 0.5, 1.0, 1.5};
 
-  auto add_tcd = [&](const decltype(new_shape) &&new_shape, bool expect_error_on_run) {
+  auto add_tcd = [&](const decltype(new_shape) &&new_shape, bool expect_fail_on_run) {
     TestCaseData tcd;
     tcd.addInput(new_shape);
     tcd.addOutput(expected);
-    tcd.expect_error_on_run(expect_error_on_run);
+    if (expect_fail_on_run)
+      tcd.expectFailRun();
     _context->addTestCase(tcd);
   };
 
   _context = std::make_unique<GenModelTestContext>(build_dynamic_Reshape());
   {
-    bool EXPECT_ERROR_ON_RUN = true;
-    bool EXPECT_SUCCESS_ON_RUN = !EXPECT_ERROR_ON_RUN;
+    bool EXPECT_FAIL_ON_RUN = true;
+    bool EXPECT_SUCCESS_ON_RUN = !EXPECT_FAIL_ON_RUN;
 
     add_tcd({3, 2}, EXPECT_SUCCESS_ON_RUN);
-    add_tcd({1, 100}, EXPECT_ERROR_ON_RUN); // 1th tcd. wrong shape
+    add_tcd({1, 100}, EXPECT_FAIL_ON_RUN); // 1th tcd. wrong shape
     add_tcd({6, 1}, EXPECT_SUCCESS_ON_RUN);
 
     _context->setBackends({"cpu"}); // Currently, dynamic tensor runs on "cpu" only

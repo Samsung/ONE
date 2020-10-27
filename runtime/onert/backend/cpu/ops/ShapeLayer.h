@@ -36,8 +36,6 @@ public:
   ShapeLayer();
 
 public:
-  void shape();
-
   void configure(const IPortableTensor *input, IPortableTensor *output);
 
   void run() override;

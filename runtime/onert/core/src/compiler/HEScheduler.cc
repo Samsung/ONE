@@ -66,7 +66,7 @@ static bool isWorkaroundSkip(const ir::Graph &, const backend::Backend *, const 
 static bool isMergeable(const ir::Graph &graph, const ir::Operation &node)
 {
   size_t prev_op_cnt = 0;
-  for (const auto &input : node.getInputs())
+  for (const auto &input : node.getInputs() | ir::Remove::UNDEFINED)
   {
     // only valid_inputs
     const auto &operand = graph.operands().at(input);
@@ -564,7 +564,7 @@ int64_t HEScheduler::predMaxEFT(const backend::Backend *backend, const ir::Opera
                                 std::multimap<int64_t, int64_t> &transfer_st_exec_time)
 {
   int64_t max_pred_eft = 0;
-  for (const auto &input_operand_idx : node.getInputs())
+  for (const auto &input_operand_idx : node.getInputs() | ir::Remove::UNDEFINED)
   {
     const auto &input_operand = _graph->operands().at(input_operand_idx);
     const bool quant = input_operand.typeInfo().type() == ir::DataType::QUANT_UINT8_ASYMM;

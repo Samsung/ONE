@@ -1691,7 +1691,49 @@ loco::NodeShape infer_bcq_gather(const luci::CircleBCQGather *node)
   return loco::NodeShape{output_shape};
 }
 
+loco::NodeShape infer_bidirectionalsequencelstm(const luci::CircleBidirectionalSequenceLSTM *node)
+{
+  auto input_shape = loco::shape_get(node->input()).as<loco::TensorShape>();
+  assert(input_shape.rank() == 3);
+
+  loco::TensorShape shape_output;
+  shape_output = own_shape(node);
+
+  return loco::NodeShape{shape_output};
+}
+
 // Virtual
+loco::NodeShape infer_bidirectionalsequencelstmOut(const luci::CircleBidirectionalSequenceLSTMOut *node)
+{
+  // assert(node->index() == 1);
+  auto bidi_lstm = loco::must_cast<luci::CircleBidirectionalSequenceLSTM *>(node->input());
+  auto bidi_lstm_shape = loco::shape_get(bidi_lstm->input()).as<loco::TensorShape>();
+
+  assert(bidi_lstm_shape.rank() == 3);
+
+  auto input_shape = loco::shape_get(bidi_lstm->input()).as<loco::TensorShape>();
+  auto fw_recurrent_to_output_weights =
+      loco::shape_get(bidi_lstm->fw_recurrent_to_output_weights()).as<loco::TensorShape>();
+  auto rank = input_shape.rank();
+  loco::TensorShape output_shape;
+  output_shape.rank(rank);
+  for (uint32_t i = 0; i < rank - 1; i++)
+  {
+    output_shape.dim(i) = input_shape.dim(i);
+  }
+  if (bidi_lstm->merge_outputs() == true)
+  {
+    auto bw_recurrent_to_output_weights =
+        loco::shape_get(bidi_lstm->bw_recurrent_to_output_weights()).as<loco::TensorShape>();
+    output_shape.dim(rank - 1).set(fw_recurrent_to_output_weights.dim(1).value() + bw_recurrent_to_output_weights.dim(1).value());
+  }
+  else
+  {
+    output_shape.dim(rank - 1) = fw_recurrent_to_output_weights.dim(1);
+  }  
+  return loco::NodeShape{output_shape};
+}
+
 loco::NodeShape infer_input(const luci::CircleInput *node)
 {
   loco::TensorShape shape;
@@ -2034,6 +2076,11 @@ public:
   loco::NodeShape visit(const luci::CircleBatchToSpaceND *node) final
   {
     return infer_batch_to_space_nd(node);
+  }
+
+  loco::NodeShape visit(const luci::CircleBidirectionalSequenceLSTM *node) final
+  {
+     return infer_bidirectionalsequencelstm(node);
   }
 
   loco::NodeShape visit(const luci::CircleCast *node) final { return use_x(node); }
@@ -2435,6 +2482,11 @@ public:
   }
 
   // Virtual
+  loco::NodeShape visit(const luci::CircleBidirectionalSequenceLSTMOut *node) final
+  {
+     return infer_bidirectionalsequencelstmOut(node);
+  }
+
   loco::NodeShape visit(const luci::CircleInput *node) final { return infer_input(node); }
 
   loco::NodeShape visit(const luci::CircleOutput *node) final { return infer_output(node); }

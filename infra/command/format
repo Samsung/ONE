@@ -202,7 +202,7 @@ function check_python_files() {
   done
 
   if [[ ${#FILES_TO_CHECK_PYTHON} -ne 0 ]]; then
-    yapf -i --style='{based_on_style: pep8, column_limit: 90}' ${FILES_TO_CHECK_PYTHON[@]}
+    yapf -i ${FILES_TO_CHECK_PYTHON[@]}
     EXIT_CODE=$?
     if [[ ${EXIT_CODE} -ne 0 ]]; then
       INVALID_EXIT=${EXIT_CODE}

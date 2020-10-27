@@ -46,6 +46,8 @@ public:
 public:
   void setLayout(ir::Layout layout) { _current_op_layout = layout; }
 
+  void setUsePadding() { usePadding = true; }
+
   void visit(const ir::operation::Concat &node) override
   {
     //  If operator is concat, fill subsumption info
@@ -58,6 +60,12 @@ public:
     const auto rank = _graph.operands().at(output_index).shape().rank();
     int32_t axis = axis_raw < 0 ? (axis_raw + rank) : axis_raw;
     assert(rank > axis);
+
+    // Concat elimination when axis is last dimension is not supported
+    // https://github.com/Samsung/ONE/issues/4407
+    // TODO Enable if backend don't use padding
+    if ((axis == rank - 1) && usePadding)
+      return;
 
     for (const auto &ind : inputs)
     {
@@ -102,6 +110,7 @@ private:
   const ir::Graph &_graph;
   std::unordered_map<ir::OperandIndex, ParentInfo> _parent_map;
   ir::Layout _current_op_layout{ir::Layout::UNKNOWN};
+  bool usePadding{false};
 };
 
 } // namespace acl_common

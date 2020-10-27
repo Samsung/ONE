@@ -196,47 +196,47 @@ operand {
 operand {
   name: "aux_input"
   type: FLOAT32
-  shape { dim: 3 dim: 1 dim: 2 }
+  shape { }
 }
 operand {
   name: "fw_aux_input_to_input_weights"
   type: FLOAT32
-  shape {dim: 4 dim: 2}
+  shape { }
 }
 operand {
   name: "fw_aux_input_to_forget_weights"
   type: FLOAT32
-  shape {dim: 4 dim: 2}
+  shape { }
 }
 operand {
   name: "fw_aux_input_to_cell_weights"
   type: FLOAT32
-  shape {dim: 4 dim: 2}
+  shape { }
 }
 operand {
   name: "fw_aux_input_to_output_weights"
   type: FLOAT32
-  shape {dim: 4 dim: 2}
+  shape { }
 }
 operand {
   name: "bw_aux_input_to_input_weights"
   type: FLOAT32
-  shape {dim: 4 dim: 2}
+  shape {}
 }
 operand {
   name: "bw_aux_input_to_forget_weights"
   type: FLOAT32
-  shape {dim: 4 dim: 2}
+  shape { }
 }
 operand {
   name: "bw_aux_input_to_cell_weights"
   type: FLOAT32
-  shape {dim: 4 dim: 2}
+  shape { }
 }
 operand {
   name: "bw_aux_input_to_output_weights"
   type: FLOAT32
-  shape {dim: 4 dim: 2}
+  shape { }
 }
 operand {
   name: "fw_ofm"

@@ -58,6 +58,12 @@ void FillLayer::run()
                                   getTensorShape(_output),
                                   reinterpret_cast<int32_t *>(_output->buffer()));
       break;
+    case OperandType::INT64:
+      nnfw::cker::Fill<int64_t *>(getTensorShape(_input), reinterpret_cast<int *>(_input->buffer()),
+                                  reinterpret_cast<int64_t *>(_value->buffer()),
+                                  getTensorShape(_output),
+                                  reinterpret_cast<int64_t *>(_output->buffer()));
+      break;
     case OperandType::UINT32:
       nnfw::cker::Fill<uint32_t *>(
           getTensorShape(_input), reinterpret_cast<int *>(_input->buffer()),

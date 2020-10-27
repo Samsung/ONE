@@ -25,6 +25,7 @@
 #include "Nodes/CircleAveragePool2D.h"
 #include "Nodes/CircleBatchMatMul.h"
 #include "Nodes/CircleBatchToSpaceND.h"
+#include "Nodes/CircleBidirectionalSequenceLSTM.h"
 #include "Nodes/CircleCast.h"
 #include "Nodes/CircleCeil.h"
 #include "Nodes/CircleConcatenation.h"
@@ -132,6 +133,7 @@
 #include "Nodes/CircleBCQGather.h"
 #include "Nodes/CircleInstanceNorm.h"
 // Virtual nodes
+#include "Nodes/CircleBidirectionalSequenceLSTMOut.h"
 #include "Nodes/CircleInput.h"
 #include "Nodes/CircleOutput.h"
 #include "Nodes/CircleCustomOut.h"

@@ -205,6 +205,7 @@ private:
   IMPLEMENT(luci::CircleAveragePool2D)
   IMPLEMENT(luci::CircleBatchMatMul)
   IMPLEMENT(luci::CircleBatchToSpaceND)
+  IMPLEMENT(luci::CircleBidirectionalSequenceLSTM)
   IMPLEMENT(luci::CircleCast)
   IMPLEMENT(luci::CircleCeil)
   IMPLEMENT(luci::CircleConcatenation)
@@ -432,6 +433,82 @@ bool summary_node(const locop::SymbolTable *tbl, const luci::CircleBatchToSpaceN
   s.state(locop::NodeSummary::State::Complete);
   return true;
 }
+
+bool summary_node(const locop::SymbolTable *tbl, const luci::CircleBidirectionalSequenceLSTM *node,
+                  locop::NodeSummary &s)
+{
+  s.args().append("input", tbl->lookup(node->input()));
+
+  s.args().append("fw_input_to_input_weights", tbl->lookup(node->fw_input_to_input_weights()));
+  s.args().append("fw_input_to_forget_weights", tbl->lookup(node->fw_input_to_forget_weights()));
+  s.args().append("fw_input_to_cell_weights", tbl->lookup(node->fw_input_to_cell_weights()));
+  s.args().append("fw_input_to_output_weights", tbl->lookup(node->fw_input_to_output_weights()));
+
+  s.args().append("fw_recurrent_to_input_weights", tbl->lookup(node->fw_recurrent_to_input_weights()));
+  s.args().append("fw_recurrent_to_forget_weights", tbl->lookup(node->fw_recurrent_to_forget_weights()));
+  s.args().append("fw_recurrent_to_cell_weights", tbl->lookup(node->fw_recurrent_to_cell_weights()));
+  s.args().append("fw_recurrent_to_output_weights", tbl->lookup(node->fw_recurrent_to_output_weights()));
+
+  s.args().append("fw_cell_to_input_weights", tbl->lookup(node->fw_cell_to_input_weights()));
+  s.args().append("fw_cell_to_forget_weights", tbl->lookup(node->fw_cell_to_forget_weights()));
+  s.args().append("fw_cell_to_output_weights", tbl->lookup(node->fw_cell_to_output_weights()));
+
+  s.args().append("fw_input_gate_bias", tbl->lookup(node->fw_input_gate_bias()));
+  s.args().append("fw_forget_gate_bias", tbl->lookup(node->fw_forget_gate_bias()));
+  s.args().append("fw_cell_gate_bias", tbl->lookup(node->fw_cell_gate_bias()));
+  s.args().append("fw_output_gate_bias", tbl->lookup(node->fw_output_gate_bias()));
+
+  s.args().append("fw_projection_weights", tbl->lookup(node->fw_projection_weights()));
+  s.args().append("fw_projection_bias", tbl->lookup(node->fw_projection_bias()));
+
+  s.args().append("bw_input_to_input_weights", tbl->lookup(node->bw_input_to_input_weights()));
+  s.args().append("bw_input_to_forget_weights", tbl->lookup(node->bw_input_to_forget_weights()));
+  s.args().append("bw_input_to_cell_weights", tbl->lookup(node->bw_input_to_cell_weights()));
+  s.args().append("bw_input_to_output_weights", tbl->lookup(node->bw_input_to_output_weights()));
+
+  s.args().append("bw_recurrent_to_input_weights", tbl->lookup(node->bw_recurrent_to_input_weights()));
+  s.args().append("bw_recurrent_to_forget_weights", tbl->lookup(node->bw_recurrent_to_forget_weights()));
+  s.args().append("bw_recurrent_to_cell_weights", tbl->lookup(node->bw_recurrent_to_cell_weights()));
+  s.args().append("bw_recurrent_to_output_weights", tbl->lookup(node->bw_recurrent_to_output_weights()));
+
+  s.args().append("bw_cell_to_input_weights", tbl->lookup(node->bw_cell_to_input_weights()));
+  s.args().append("bw_cell_to_forget_weights", tbl->lookup(node->bw_cell_to_forget_weights()));
+  s.args().append("bw_cell_to_output_weights", tbl->lookup(node->bw_cell_to_output_weights()));
+
+  s.args().append("bw_input_gate_bias", tbl->lookup(node->bw_input_gate_bias()));
+  s.args().append("bw_forget_gate_bias", tbl->lookup(node->bw_forget_gate_bias()));
+  s.args().append("bw_cell_gate_bias", tbl->lookup(node->bw_cell_gate_bias()));
+  s.args().append("bw_output_gate_bias", tbl->lookup(node->bw_output_gate_bias()));
+
+  s.args().append("bw_projection_weights", tbl->lookup(node->bw_projection_weights()));
+  s.args().append("bw_projection_bias", tbl->lookup(node->bw_projection_bias()));
+
+
+  s.args().append("fw_activation_state", tbl->lookup(node->fw_activation_state()));
+  s.args().append("fw_cell_state", tbl->lookup(node->fw_cell_state()));
+  s.args().append("bw_activation_state", tbl->lookup(node->bw_activation_state()));
+  s.args().append("bw_cell_state", tbl->lookup(node->bw_cell_state()));
+
+  s.args().append("auxillary_input", tbl->lookup(node->auxillary_input()));
+  s.args().append("fw_auxillary_input_to_input_weights", tbl->lookup(node->fw_auxillary_input_to_input_weights()));
+  s.args().append("fw_auxillary_input_to_forget_weights", tbl->lookup(node->fw_auxillary_input_to_forget_weights()));
+  s.args().append("fw_auxillary_input_to_cell_weights", tbl->lookup(node->fw_auxillary_input_to_cell_weights()));
+  s.args().append("fw_auxillary_input_to_output_weights", tbl->lookup(node->fw_auxillary_input_to_output_weights()));
+  s.args().append("bw_auxillary_input_to_input_weights", tbl->lookup(node->bw_auxillary_input_to_input_weights()));
+  s.args().append("bw_auxillary_input_to_forget_weights", tbl->lookup(node->bw_auxillary_input_to_forget_weights()));
+  s.args().append("bw_auxillary_input_to_cell_weights", tbl->lookup(node->bw_auxillary_input_to_cell_weights()));
+  s.args().append("bw_auxillary_input_to_output_weights", tbl->lookup(node->bw_auxillary_input_to_output_weights()));
+
+  s.args().append("cell_clip", to_str(node->cell_clip()));
+  s.args().append("proj_clip", to_str(node->proj_clip()));
+  s.args().append("merge_outputs", to_str(node->merge_outputs()));
+  s.args().append("time_major", to_str(node->time_major()));
+  s.args().append("asymmetric_quantize_inputs", to_str(node->asymmetric_quantize_inputs()));
+
+  s.state(locop::NodeSummary::State::Complete);
+  return true;
+}
+
 
 bool summary_node(const locop::SymbolTable *tbl, const luci::CircleCast *node,
                   locop::NodeSummary &s)
@@ -1226,6 +1303,12 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleBatchMatMul *node,
 }
 
 bool CircleNodeSummaryBuilder::summary(const luci::CircleBatchToSpaceND *node,
+                                       locop::NodeSummary &s) const
+{
+  return summary_node(tbl(), node, s);
+}
+
+bool CircleNodeSummaryBuilder::summary(const luci::CircleBidirectionalSequenceLSTM *node,
                                        locop::NodeSummary &s) const
 {
   return summary_node(tbl(), node, s);
