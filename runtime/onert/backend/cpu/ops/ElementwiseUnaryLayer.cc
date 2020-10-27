@@ -157,10 +157,10 @@ void logicalNot(const IPortableTensor *input, IPortableTensor *output)
                          getTensorShape(output), reinterpret_cast<bool *>(output->buffer()));
 }
 
-void negFloat32(const IPortableTensor *input, IPortableTensor *output)
+template <typename T> void neg(const IPortableTensor *input, IPortableTensor *output)
 {
-  nnfw::cker::Neg(getTensorShape(input), reinterpret_cast<const float *>(input->buffer()),
-                  getTensorShape(output), reinterpret_cast<float *>(output->buffer()));
+  nnfw::cker::Neg<T>(getTensorShape(input), reinterpret_cast<const T *>(input->buffer()),
+                     getTensorShape(output), reinterpret_cast<T *>(output->buffer()));
 }
 
 template <typename InputT, typename OutputT>
@@ -292,7 +292,15 @@ void ElementwiseUnaryLayer::configure(const IPortableTensor *input, IPortableTen
     case ElementwiseUnaryType::kNeg:
       if ((input->data_type() == OperandType::FLOAT32))
       {
-        _kernel = negFloat32;
+        _kernel = neg<float>;
+      }
+      else if ((input->data_type() == OperandType::INT64))
+      {
+        _kernel = neg<int64_t>;
+      }
+      else if ((input->data_type() == OperandType::INT32))
+      {
+        _kernel = neg<int32_t>;
       }
       else
       {
