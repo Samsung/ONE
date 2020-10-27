@@ -64,16 +64,14 @@ MaxPoolWithArgMaxChef::custom_value(flatbuffers::FlatBufferBuilder &fbb) const
   flex_buffers->Add(operation.max_pool_with_argmax_options().stride_h());
   flex_buffers->Add(1);
   flex_buffers->EndVector(start, /*typed=*/true, /*fixed=*/false);
+  auto output_type = operation.max_pool_with_argmax_options().output_type();
+  assert(output_type == tflite::TensorType_INT64 || output_type == tflite::TensorType_INT32);
+  flex_buffers->Int("Targmax", output_type);
   std::string padding = operation.max_pool_with_argmax_options().padding() ? "VALID" : "SAME";
   flex_buffers->String("padding", padding);
-  auto output_type = operation.max_pool_with_argmax_options().output_type();
-  assert(output_type == tflchef::TensorType::INT32 || output_type == tflchef::TensorType::INT64);
-  int32_t ot = (output_type == tflchef::TensorType::INT32) ? 0 : 1;
-  flex_buffers->Int("Targmax", ot);
-
   flex_buffers->Bool("include_batch_in_index",
                      operation.max_pool_with_argmax_options().include_batch_in_index());
-
+  flex_buffers->Int("T", tflite::TensorType_FLOAT32);
   flex_buffers->EndMap(map_start);
   flex_buffers->Finish();
 
