@@ -2,6 +2,7 @@
 
 # Gather test scripts
 file(GLOB TESTITEMS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "./*.test")
+file(GLOB CONFIGITEMS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "./*.cfg")
 
 # Create a script to run the tests at installation folder
 set(DRIVER_SCRIPT "${CMAKE_CURRENT_BINARY_DIR}/runtestall.sh")
@@ -28,6 +29,11 @@ foreach(TESTITEM IN ITEMS ${TESTITEMS})
   install(FILES ${TESTITEM} DESTINATION test)
 
 endforeach(TESTITEM)
+
+foreach(CONFIGITEM IN ITEMS ${CONFIGITEMS})
+  get_filename_component(ITEM_PREFIX ${CONFIGITEM} NAME_WE)
+  install(FILES ${CONFIGITEM} DESTINATION test)
+endforeach(CONFIGITEM)
 
 file(APPEND "${DRIVER_SCRIPT}" "popd> /dev/null")
 
