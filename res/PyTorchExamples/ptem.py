@@ -23,6 +23,9 @@ import tensorflow as tf
 import importlib
 import argparse
 
+print("PyTorch version=", torch.__version__)
+print("ONNX version=", onnx.__version__)
+print("ONNX-TF version=", onnx_tf.__version__)
 print("TF version=", tf.__version__)
 
 parser = argparse.ArgumentParser(description='Process PyTorch python examples')
