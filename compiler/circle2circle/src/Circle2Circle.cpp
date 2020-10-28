@@ -98,6 +98,12 @@ int entry(int argc, char **argv)
             "that this pass can change the execution result of the model. So, use it only when the "
             "impact is known to be acceptable.");
 
+  arser.add_argument("--fuse_preactivation_batchnorm")
+      .nargs(0)
+      .required(false)
+      .default_value(false)
+      .help("This will fuse BatchNorm operators of pre-activations to Convolution operator");
+
   arser.add_argument("--resolve_customop_add")
       .nargs(0)
       .required(false)
@@ -197,6 +203,8 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::FuseInstanceNorm);
   if (arser.get<bool>("--make_batchnorm_gamma_positive"))
     options->enable(Algorithms::MakeBatchNormGammaPositive);
+  if (arser.get<bool>("--fuse_preactivation_batchnorm"))
+    options->enable(Algorithms::FusePreActivationBatchNorm);
   if (arser.get<bool>("--resolve_customop_add"))
     options->enable(Algorithms::ResolveCustomOpAdd);
   if (arser.get<bool>("--resolve_customop_batchmatmul"))
