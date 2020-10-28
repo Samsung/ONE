@@ -87,13 +87,13 @@ final class NativeSessionWrapper implements AutoCloseable {
     TensorInfo getInputTensorInfo(int index) {
         InternalTensorInfo info = new InternalTensorInfo();
         nativeGetInputTensorInfo(_handle, index, info);
-        return Helper.newTensorInfo(info);
+        return newTensorInfo(info);
     }
 
     TensorInfo getOutputTensorInfo(int index) {
         InternalTensorInfo info = new InternalTensorInfo();
         nativeGetOutputTensorInfo(_handle, index, info);
-        return Helper.newTensorInfo(info);
+        return newTensorInfo(info);
     }
 
     @Override
@@ -120,6 +120,13 @@ final class NativeSessionWrapper implements AutoCloseable {
         int rank;
         int[] shape;
     };
+
+    static TensorInfo newTensorInfo(NativeSessionWrapper.InternalTensorInfo info) {
+        TensorInfo.Type type = Helper.convertOneRTTensorType(info.type);
+        int rank = info.rank;
+        int[] shape = info.shape;
+        return new TensorInfo(type, rank, shape);
+    }
 
     // onert-native-api
     private native long nativeCreateSession();

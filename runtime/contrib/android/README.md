@@ -25,7 +25,7 @@ export ANDROID_HOME=$HOME/Android/Sdk
 
 after building `onert`
 ```
-ONE/runtime/contrib/android $ ./gradlew build
+ONE/runtime/contrib/android $ bash ./gradlew build # or bash ./gradlew assemble
 ...
 
 ONE/runtime/contrib/android$ find . -name "*.aar"
@@ -70,7 +70,13 @@ session.close();
 
 ## How to add jni api
 ```
-ONE/runtime/contrib/android $ ./update_jni_header.sh
+ONE/runtime/contrib/android $ bash ./update_jni_header.sh
 ```
 
 and then follow code of `onert-native-api.h` on `onert-native-api.cpp`
+
+## How to run tests
+
+```
+ONE/runtime/contrib/android $ bash gradlew connectedAndroidTest
+```

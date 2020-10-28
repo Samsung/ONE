@@ -117,12 +117,4 @@ final class Helper {
         }
         return ret;
     }
-
-    static TensorInfo newTensorInfo(NativeSessionWrapper.InternalTensorInfo info) {
-        TensorInfo.Type type = Helper.convertOneRTTensorType(info.type);
-        int rank = info.rank;
-        int[] shape = info.shape;
-        return new TensorInfo(type, rank, shape);
-    }
-
 }
