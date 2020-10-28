@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-''''export SCRIPT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"  # '''
-''''export PY_PATH=${SCRIPT_PATH}/venv/bin/python                       # '''
-''''test -f ${PY_PATH} && exec ${PY_PATH} "$0" "$@"                     # '''
-''''which python3 > /dev/null 2>&1 && exec python3 "$0" "$@"            # '''
-''''exec echo "ERROR: cannot find python"                               # '''
+''''export SCRIPT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"                  # '''
+''''export PY_PATH=${SCRIPT_PATH}/venv/bin/python                                       # '''
+''''test -f ${PY_PATH} && exec ${PY_PATH} "$0" "$@"                                     # '''
+''''echo "Error: Virtual environment not found. Please run 'one-prepare-venv' command." # '''
+''''exit 255                                                                            # '''
 
 # Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
 #
