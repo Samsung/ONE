@@ -32,9 +32,10 @@ namespace controlflow
 {
 
 KernelGenerator::KernelGenerator(const ir::Graph &graph, IDynamicTensorManager *dyn_tensor_manager,
-                                 const std::shared_ptr<TensorRegistry> &tensor_reg)
+                                 const std::shared_ptr<TensorRegistry> &tensor_reg,
+                                 const std::shared_ptr<ExternalContext> &external_context)
     : _graph{graph}, _dyn_tensor_manager{dyn_tensor_manager}, _tensor_reg{tensor_reg},
-      _tensor_registries{}, _executor_map{nullptr}
+      _tensor_registries{}, _executor_map{nullptr}, _external_context{external_context}
 {
   UNUSED_RELEASE(_graph);
   UNUSED_RELEASE(_tensor_registries);
@@ -97,7 +98,7 @@ void KernelGenerator::visit(const ir::operation::If &node)
   input_tensors.erase(input_tensors.begin());
   auto fn = std::make_unique<::onert::backend::controlflow::kernel::IfLayer>(
       cond_tensor, input_tensors, output_tensors, node.getOutputs(), _graph, then_subg_index,
-      else_subg_index, _executor_map);
+      else_subg_index, _executor_map, _external_context);
 
   _return_fn = std::move(fn);
 }
@@ -111,7 +112,8 @@ void KernelGenerator::visit(const ir::operation::Permute &node)
   std::vector<ITensor *> output_tensors{getTensor(output_index)};
   std::vector<ITensor *> input_tensors{getTensor(input_index)};
 
-  auto fn = std::make_unique<kernel::PermuteLayer>(input_tensors, output_tensors);
+  auto fn =
+      std::make_unique<kernel::PermuteLayer>(input_tensors, output_tensors, _external_context);
   _return_fn = std::move(fn);
 }
 
@@ -141,7 +143,7 @@ void KernelGenerator::visit(const ir::operation::While &node)
   // creating executor recusively
   auto fn = std::make_unique<::onert::backend::controlflow::kernel::WhileLayer>(
       input_tensors, output_tensors, node.getOutputs(), _graph, cond_subg_index, body_subg_index,
-      _executor_map);
+      _executor_map, _external_context);
 
   _return_fn = std::move(fn);
 }

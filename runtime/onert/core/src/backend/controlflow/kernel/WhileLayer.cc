@@ -34,10 +34,12 @@ WhileLayer::WhileLayer(const std::vector<backend::ITensor *> input_tensors,
                        const std::vector<backend::ITensor *> output_tensors,
                        const ir::OperandIndexSequence &output_indices, const ir::Graph &graph,
                        const ir::SubgraphIndex &cond_subg_index,
-                       const ir::SubgraphIndex &body_subg_index, exec::ExecutorMap *executor_map)
+                       const ir::SubgraphIndex &body_subg_index, exec::ExecutorMap *executor_map,
+                       const std::shared_ptr<ExternalContext> &external_context)
     : _cond_subg_index{cond_subg_index}, _body_subg_index{body_subg_index},
       _output_indices{output_indices}, _graph{graph}, _input_tensors{input_tensors},
-      _output_tensors{output_tensors}, _executor_map{executor_map}
+      _output_tensors{output_tensors}, _executor_map{executor_map},
+      _external_context{external_context}
 {
   // At this point, executor_map may not have executors of cond subg and body subg
 }
@@ -81,7 +83,7 @@ void WhileLayer::run()
     }
   }
   const auto permute_op_input_to_cond_input =
-      std::make_shared<PermuteLayer>(input_tensors, cond_input_tensors);
+      std::make_shared<PermuteLayer>(input_tensors, cond_input_tensors, _external_context);
 
   // Add only used tensors among outputs of while operation
   assert(_output_indices.size() == _input_tensors.size());
@@ -99,7 +101,7 @@ void WhileLayer::run()
     }
   }
   const auto permute_op_input_to_op_output =
-      std::make_shared<PermuteLayer>(input_tensors, output_tensors);
+      std::make_shared<PermuteLayer>(input_tensors, output_tensors, _external_context);
 
   // Add all tensors with unused tensors in body subgraph because unused input tensors will be
   // copied output tensors in body subgraph
@@ -107,7 +109,7 @@ void WhileLayer::run()
   input_tensors = _input_tensors;
   body_input_tensors = body_exec->getInputTensors();
   const auto permute_op_input_to_body_input =
-      std::make_shared<PermuteLayer>(input_tensors, body_input_tensors);
+      std::make_shared<PermuteLayer>(input_tensors, body_input_tensors, _external_context);
 
   // Add only used tensors in cond subgraph
   assert(cond_graph.getInputs().size() == body_exec->getOutputTensors().size());
@@ -124,7 +126,7 @@ void WhileLayer::run()
     }
   }
   const auto permute_body_output_to_cond_input =
-      std::make_shared<PermuteLayer>(body_output_tensors, cond_input_tensors);
+      std::make_shared<PermuteLayer>(body_output_tensors, cond_input_tensors, _external_context);
 
   // Add only used tensors in body subgraph
   assert(body_graph.getInputs().size() == body_exec->getOutputTensors().size());
@@ -143,7 +145,7 @@ void WhileLayer::run()
     }
   }
   const auto permute_body_output_to_body_input =
-      std::make_shared<PermuteLayer>(body_output_tensors, body_input_tensors);
+      std::make_shared<PermuteLayer>(body_output_tensors, body_input_tensors, _external_context);
 
   // Add only used tensors among outputs of while operation
   assert(_output_indices.size() == body_exec->getOutputTensors().size());
@@ -161,7 +163,7 @@ void WhileLayer::run()
     }
   }
   const auto permute_body_output_to_op_output =
-      std::make_shared<PermuteLayer>(body_output_tensors, output_tensors);
+      std::make_shared<PermuteLayer>(body_output_tensors, output_tensors, _external_context);
 
   // Remove copying of unused tensor
   permute_op_input_to_cond_input->prepare();

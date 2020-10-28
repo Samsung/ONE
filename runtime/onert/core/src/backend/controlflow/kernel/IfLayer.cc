@@ -34,10 +34,12 @@ IfLayer::IfLayer(backend::ITensor *cond_tensor, const std::vector<backend::ITens
                  const std::vector<backend::ITensor *> output_tensors,
                  const ir::OperandIndexSequence &output_indices, const ir::Graph &graph,
                  const ir::SubgraphIndex &then_subg_index, const ir::SubgraphIndex &else_subg_index,
-                 exec::ExecutorMap *executor_map)
+                 exec::ExecutorMap *executor_map,
+                 const std::shared_ptr<ExternalContext> &external_context)
     : _cond_tensor{cond_tensor}, _input_tensors{input_tensors}, _output_tensors{output_tensors},
       _output_indices{output_indices}, _graph{graph}, _then_subg_index{then_subg_index},
-      _else_subg_index{else_subg_index}, _executor_map{executor_map}
+      _else_subg_index{else_subg_index}, _executor_map{executor_map},
+      _external_context{external_context}
 {
   // At this point, executor_map may not have executors of then subg and else subg
 }
@@ -92,7 +94,7 @@ void IfLayer::run()
     }
   }
   const auto permute_op_input_to_subg_input =
-      std::make_shared<PermuteLayer>(src_tensors, dst_tensors);
+      std::make_shared<PermuteLayer>(src_tensors, dst_tensors, _external_context);
 
   // Add tensors used as output of operation or contained in outputs of operation
   src_tensors.clear();
@@ -110,7 +112,7 @@ void IfLayer::run()
     }
   }
   const auto permute_subg_output_to_op_output =
-      std::make_shared<PermuteLayer>(src_tensors, dst_tensors);
+      std::make_shared<PermuteLayer>(src_tensors, dst_tensors, _external_context);
 
   // Remove copying of unused tensor
   permute_op_input_to_subg_input->prepare();

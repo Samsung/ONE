@@ -22,6 +22,7 @@
 #include <exec/IFunction.h>
 #include <ir/OperandIndexSequence.h>
 #include <ir/Graph.h>
+#include "../ExternalContext.h"
 
 namespace onert
 {
@@ -39,7 +40,8 @@ public:
              const std::vector<backend::ITensor *> output_tensors,
              const ir::OperandIndexSequence &output_indices, const ir::Graph &graph,
              const ir::SubgraphIndex &cond_subg_index, const ir::SubgraphIndex &body_subg_index,
-             exec::ExecutorMap *executor_map);
+             exec::ExecutorMap *executor_map,
+             const std::shared_ptr<ExternalContext> &external_context);
 
 public:
   void run() override;
@@ -52,6 +54,7 @@ private:
   const std::vector<backend::ITensor *> _input_tensors;
   const std::vector<backend::ITensor *> _output_tensors;
   exec::ExecutorMap *_executor_map;
+  const std::shared_ptr<ExternalContext> _external_context;
 };
 
 } // namespace kernel
