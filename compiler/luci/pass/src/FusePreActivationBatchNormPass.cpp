@@ -197,10 +197,221 @@ void update_conv_weights_with_gamma(const luci::CircleConv2D *conv, const luci::
   }
 }
 
+// Find CONV_2D that can be fused with ADD
+luci::CircleConv2D *get_backward_conv2d(luci::CircleNode *node, uint32_t channel_size)
+{
+  // Stop searching when meeting a node used by multiple nodes
+  if (loco::succs(node).size() != 1)
+    return nullptr;
+
+  auto opcode = node->opcode();
+  if (opcode == luci::CircleOpcode::CONV_2D)
+  {
+    auto conv = loco::must_cast<luci::CircleConv2D *>(node);
+    auto filter = dynamic_cast<luci::CircleConst *>(conv->filter());
+
+    if (filter == nullptr)
+      return nullptr;
+
+    if (filter->rank() != 4)
+      return nullptr;
+
+    if (filter->dim(0).value() != channel_size)
+      return nullptr;
+
+    if (loco::succs(filter).size() != 1)
+      return nullptr;
+
+    return conv;
+  }
+  else if (opcode == luci::CircleOpcode::MAX_POOL_2D || opcode == luci::CircleOpcode::PAD ||
+           opcode == luci::CircleOpcode::ADD)
+  {
+    auto preds = loco::preds(node);
+    for (auto pred : preds)
+    {
+      auto pred_conv = get_backward_conv2d(loco::must_cast<luci::CircleNode *>(pred), channel_size);
+      if (pred_conv != nullptr)
+        return pred_conv;
+    }
+    return nullptr;
+  }
+  else
+  {
+    return nullptr;
+  }
+}
+
+bool update_conv_bias_with_beta(luci::CircleConv2D *conv, const luci::CircleConst *beta,
+                                bool add_beta)
+{
+  assert(beta->rank() == 1);
+  auto size = beta->dim(0).value();
+  auto bias = dynamic_cast<luci::CircleConst *>(conv->bias());
+
+  if (bias == nullptr)
+  {
+    bias = conv->graph()->nodes()->create<luci::CircleConst>();
+    bias->dtype(loco::DataType::FLOAT32);
+    bias->rank(1);
+    bias->dim(0).set(size);
+    bias->size<loco::DataType::FLOAT32>(size);
+    conv->bias(bias);
+  }
+  else
+  {
+    if (bias->rank() != 1)
+      return false;
+
+    if (loco::succs(bias).size() != 1)
+      return false;
+
+    if (size != bias->dim(0).value())
+      return false;
+  }
+
+  for (uint32_t i = 0; i < size; i++)
+  {
+    if (add_beta)
+      bias->at<loco::DataType::FLOAT32>(i) += beta->at<loco::DataType::FLOAT32>(i);
+    else
+      bias->at<loco::DataType::FLOAT32>(i) -= beta->at<loco::DataType::FLOAT32>(i);
+  }
+  return true;
+}
+
+luci::CircleSub *insert_sub(luci::CircleNode *pred, luci::CircleConst *beta)
+{
+  auto sub = pred->graph()->nodes()->create<luci::CircleSub>();
+  sub->dtype(loco::DataType::FLOAT32);
+  sub->rank(pred->rank());
+  for (uint32_t i = 0; i < sub->rank(); i++)
+  {
+    sub->dim(i).set(pred->dim(i).value());
+  }
+  sub->fusedActivationFunction(luci::FusedActFunc::NONE);
+
+  loco::replace(pred).with(sub);
+
+  sub->x(pred);
+  sub->y(beta);
+
+  return sub;
+}
+
 } // namespace
 
 namespace luci
 {
+
+/**
+ *  Fuse ADD with the preceding CONV
+ *
+ *  BEFORE
+ *
+ *        [Conv]  bias
+ *           |
+ *     [Passable Op] (None, Max pool, Pad, etc)
+ *           |
+ *         [Add]  beta
+ *
+ *  AFTER
+ *
+ *        [Conv]  bias + beta
+ *           |
+ *     [Passable Op]
+ *
+ *  A special case where SUB is newly inserted
+ *
+ *  BEFORE
+ *
+ *              [Conv]  bias
+ *           \   /
+ *           [Add]
+ *           /   \
+ *              [Add]  beta
+ *
+ *  AFTER
+ *
+ *              [Conv]  bias + beta
+ *           \   /
+ *           [Add]
+ *           /   \
+ *   beta [Sub]
+ */
+bool fuse_add_with_conv(luci::CircleAdd *add, std::vector<luci::CircleSub *> &sub_list)
+{
+  auto x = dynamic_cast<luci::CircleConst *>(add->x());
+  auto y = dynamic_cast<luci::CircleConst *>(add->y());
+
+  luci::CircleNode *pred = nullptr;
+  luci::CircleConst *beta = nullptr;
+
+  if (x != nullptr && y == nullptr)
+  {
+    pred = loco::must_cast<luci::CircleNode *>(add->y());
+    beta = x;
+  }
+  else if (x == nullptr && y != nullptr)
+  {
+    pred = loco::must_cast<luci::CircleNode *>(add->x());
+    beta = y;
+  }
+  else
+  {
+    return false;
+  }
+
+  assert(beta->rank() == 1);
+
+  auto channel_size = beta->dim(0).value();
+  auto conv = get_backward_conv2d(pred, channel_size);
+
+  if (conv != nullptr)
+  {
+    if (!update_conv_bias_with_beta(conv, beta, true))
+      return false;
+
+    loco::replace(add).with(pred);
+    add->drop();
+
+    return true;
+  }
+  // A special case shown at the residual blocks of ResNetV2
+  // TODO: Handle this with get_backward_conv2d
+  else if (pred->opcode() == luci::CircleOpcode::ADD)
+  {
+    auto preds_of_pred = loco::preds(pred);
+    for (auto pred_of_pred : preds_of_pred)
+    {
+      conv = get_backward_conv2d(loco::must_cast<luci::CircleNode *>(pred_of_pred), channel_size);
+      if (conv != nullptr)
+        break;
+    }
+
+    if (conv == nullptr)
+      return false;
+
+    if (!update_conv_bias_with_beta(conv, beta, true))
+      return false;
+
+    auto relu = *loco::succs(add).begin();
+    auto relu_node = loco::must_cast<luci::CircleRelu *>(relu);
+    assert(relu_node != nullptr);
+
+    loco::replace(add).with(pred);
+
+    add->drop();
+
+    sub_list.push_back(insert_sub(pred, beta));
+
+    relu_node->features(pred);
+
+    return true;
+  }
+
+  return false;
+}
 
 /**
  *  Fuse MUL with the next CONV
@@ -383,6 +594,13 @@ bool FusePreActivationBatchNormPass::run(loco::Graph *g)
   }
 
   // Step 3. Fuse ADD with the preceding CONV and insert SUB
+  for (auto const &add : _add_list)
+  {
+    if (fuse_add_with_conv(add, _sub_list))
+      INFO(l) << "[FusePreActivationBatchNorm] Fused ADD: " << add->name() << std::endl;
+  }
+
+  INFO(l) << "[FusePreActivationBatchNorm] " << _sub_list.size() << " SUB were added." << std::endl;
 
   // Step 4. Fuse SUB to CONV (SUB -> ADD <- CONV pattern)
 
