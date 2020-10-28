@@ -127,6 +127,20 @@ bool EdgeConsistencyChecker::verify(const Graph &graph) const noexcept
   return errors == 0;
 }
 
+bool InputOutputChecker::verify(const Graph &graph) const noexcept
+{
+  for (auto operand_ind :
+       (graph.getInputs() + graph.getOutputs()) | Remove::DUPLICATED | Remove::UNDEFINED)
+  {
+    if (!graph.operands().exist(operand_ind))
+    {
+      VERBOSE(InputOutputChecker) << "Input or Output tensor " << operand_ind << " does not exist.";
+      return false;
+    }
+  }
+  return true;
+}
+
 } // namespace verifier
 } // namespace ir
 } // namespace onert
