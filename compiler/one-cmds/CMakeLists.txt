@@ -1,4 +1,5 @@
 set(ONE_COMMAND_FILES
+    one-build
     one-import
     one-import-bcq
     one-import-tf
@@ -34,6 +35,7 @@ foreach(ONE_COMMAND IN ITEMS ${ONE_COMMAND_FILES})
 endforeach(ONE_COMMAND)
 
 set(ONE_UTILITY_FILES
+    one-build.template.cfg
     utils.py
 )
 

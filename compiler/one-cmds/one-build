@@ -1,0 +1,134 @@
+#!/usr/bin/env bash
+''''export SCRIPT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"                  # '''
+''''export PY_PATH=${SCRIPT_PATH}/venv/bin/python                                       # '''
+''''test -f ${PY_PATH} && exec ${PY_PATH} "$0" "$@"                                     # '''
+''''echo "Error: Virtual environment not found. Please run 'one-prepare-venv' command." # '''
+
+# Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import argparse
+import configparser
+import os
+import subprocess
+import sys
+
+import utils as _utils
+
+
+def _get_parser():
+    parser = argparse.ArgumentParser(
+        description='command line tool to run ONE drivers in customized order')
+
+    _utils._add_default_arg(parser)
+
+    return parser
+
+
+def _parse_arg(parser):
+    args = parser.parse_args()
+    # print version
+    if args.version:
+        _utils._print_version_and_exit(__file__)
+
+    return args
+
+
+def _verify_arg(parser, args):
+    """verify given arguments"""
+    # check if required arguments is given
+    if not _utils._is_valid_attr(args, 'config'):
+        parser.error('-C/--config argument is required')
+
+
+def _get_driver_name(driver_name):
+    return {
+        'one-import-bcq': 'one-import-bcq',
+        'one-import-tf': 'one-import-tf',
+        'one-import-tflite': 'one-import-tflite',
+        'one-optimize': 'one-optimize',
+        'one-pack': 'one-pack',
+        'one-codegen': 'one-codegen'
+    }[driver_name]
+
+
+def _parse_cfg(args):
+    config = configparser.ConfigParser()
+    parsed = config.read(os.path.expanduser(getattr(args, 'config')))
+    if not parsed:
+        raise AssertionError('not found given configuration file')
+    return config
+
+
+def _is_available_driver(config, driver_name):
+    return config.has_option('one-build', driver_name) and config.getboolean(
+        'one-build', driver_name)
+
+
+def _verify_cfg(driver_list, config):
+    if not config.has_section('one-build'):
+        raise AssertionError('\'one-build\' section is required in configuraion file')
+
+    import_driver_cnt = 0
+    if _is_available_driver(config, 'one-import-tf'):
+        import_driver_cnt += 1
+    if _is_available_driver(config, 'one-import-tflite'):
+        import_driver_cnt += 1
+    if _is_available_driver(config, 'one-import-bcq'):
+        import_driver_cnt += 1
+    if import_driver_cnt > 1:
+        raise AssertionError('only one import-* driver can be executed')
+
+
+def main():
+    # parse arguments
+    # since the configuration file path is required first,
+    # parsing of the configuration file proceeds after this.
+    parser = _get_parser()
+    args = _parse_arg(parser)
+
+    # verify arguments
+    _verify_arg(parser, args)
+
+    # parse configuration file
+    config = _parse_cfg(args)
+
+    # verify configuration file
+    drivers = [
+        'one-import-tf', 'one-import-tflite', 'one-import-bcq', 'one-optimize',
+        'one-quantize', 'one-pack', 'one-codegen'
+    ]
+    _verify_cfg(drivers, config)
+
+    # get sections to run
+    section_to_run = []
+    for d in drivers:
+        if _is_available_driver(config, d):
+            section_to_run.append(d)
+
+    # run
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    for section in section_to_run:
+        driver_path = os.path.join(dir_path, _get_driver_name(section))
+        cmd = [driver_path, '--config', getattr(args, 'config'), '--section', section]
+        with subprocess.Popen(
+                cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, bufsize=1) as p:
+            for line in p.stdout:
+                sys.stdout.buffer.write(line)
+        if p.returncode != 0:
+            sys.exit(p.returncode)
+
+
+if __name__ == '__main__':
+    main()
