@@ -33,9 +33,9 @@ public:
     _shape_signature = shape_signature;
   }
 
-  const std::vector<int32_t> as_vector() const { return _shape_signature; }
+  const std::vector<int32_t> &as_vector() const { return _shape_signature; }
 
-  const int32_t &dim(uint32_t d) const { return _shape_signature.at(d); }
+  int32_t dim(uint32_t d) { return _shape_signature.at(d); }
   int32_t &dim(uint32_t d) { return _shape_signature.at(d); }
 
   uint32_t rank(void) const { return _shape_signature.size(); }
