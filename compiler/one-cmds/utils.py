@@ -48,15 +48,16 @@ def _parse_cfg(args, driver_name):
         # if section is given, verify given section
         if _is_valid_attr(args, 'section'):
             if not config.has_section(args.section):
-                raise KeyError('Not found given section name')
+                raise AssertionError('configuration file must have \'' + driver_name +
+                                     '\' section')
             for key in config[args.section]:
                 if not _is_valid_attr(args, key):
                     setattr(args, key, config[args.section][key])
         # if section is not given, section name is same with its driver name
         else:
             if not config.has_section(driver_name):
-                raise AssertionError('configuration file must have ' + driver_name +
-                                     'section')
+                raise AssertionError('configuration file must have \'' + driver_name +
+                                     '\' section')
             secton_to_run = driver_name
             for key in config[secton_to_run]:
                 if not _is_valid_attr(args, key):
