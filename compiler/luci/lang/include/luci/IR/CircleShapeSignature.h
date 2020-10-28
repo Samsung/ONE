@@ -39,6 +39,7 @@ public:
   int32_t &dim(uint32_t d) { return _shape_signature.at(d); }
 
   uint32_t rank(void) const { return _shape_signature.size(); }
+  void rank(uint32_t rank) { _shape_signature.resize(rank); }
 
 private:
   std::vector<int32_t> _shape_signature{};
