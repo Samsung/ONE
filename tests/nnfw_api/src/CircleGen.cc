@@ -162,6 +162,12 @@ uint32_t CircleGen::addOperatorFill(const OperatorParams &params)
                                 circle::BuiltinOptions_FillOptions, options);
 }
 
+uint32_t CircleGen::addOperatorFloor(const OperatorParams &params)
+{
+  return addOperatorWithOptions(params, circle::BuiltinOperator_FLOOR, circle::BuiltinOptions_NONE,
+                                0);
+}
+
 uint32_t CircleGen::addOperatorL2Normalization(const OperatorParams &params)
 {
   auto options = circle::CreateL2NormOptions(_fbb).Union();

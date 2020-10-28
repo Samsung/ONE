@@ -151,6 +151,8 @@ ops::ElementwiseUnaryType convertElementwiseUnaryType(ir::operation::Elementwise
       return ops::ElementwiseUnaryType::kErf;
     case ir::operation::ElementwiseUnary::Type::EXP:
       return ops::ElementwiseUnaryType::kExp;
+    case ir::operation::ElementwiseUnary::Type::FLOOR:
+      return ops::ElementwiseUnaryType::kFloor;
     case ir::operation::ElementwiseUnary::Type::LOG:
       return ops::ElementwiseUnaryType::kLog;
     case ir::operation::ElementwiseUnary::Type::LOGICAL_NOT:

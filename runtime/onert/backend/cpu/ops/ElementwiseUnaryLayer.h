@@ -38,6 +38,7 @@ enum class ElementwiseUnaryType
   kDequantize,
   kErf,
   kExp,
+  kFloor,
   kLog,
   kLogicalNot,
   kNeg,
