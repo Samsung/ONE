@@ -1,5 +1,5 @@
 nncc_find_resource(TensorFlowTests)
-nnas_find_package(TensorFlow QUIET)
+nnas_find_package(TensorFlow EXACT 1.13 QUIET)
 
 if(NOT TensorFlow_FOUND)
   return()
