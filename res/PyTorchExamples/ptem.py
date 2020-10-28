@@ -17,8 +17,13 @@
 # PyTorch Example manager
 
 import torch
+import onnx
+import onnx_tf
+import tensorflow as tf
 import importlib
 import argparse
+
+print("TF version=", tf.__version__)
 
 parser = argparse.ArgumentParser(description='Process PyTorch python examples')
 
@@ -31,5 +36,22 @@ for example in args.examples:
     torch.save(module._model_, example + ".pth")
     print("Generate '" + example + ".pth' - Done")
 
-    torch.onnx.export(module._model_, module._dummy_, example + ".onnx")
+    torch.onnx.export(module._model_, module._dummy_, example + ".onnx", verbose=True)
     print("Generate '" + example + ".onnx' - Done")
+
+    onnx_model = onnx.load(example + ".onnx")
+    onnx.checker.check_model(onnx_model)
+
+    tf_prep = onnx_tf.backend.prepare(onnx_model)
+    tf_prep.export_graph(path = example + ".TF")
+    print("Generate '" + example + " TF' - Done")
+
+    # for testing...
+    converter = tf.lite.TFLiteConverter.from_saved_model(example + ".TF")
+    converter.allow_custom_ops = True
+    converter.experimental_new_converter = True
+    converter.target_spec.supported_ops = [tf.lite.OpsSet.TFLITE_BUILTINS]
+
+    tflite_model = converter.convert()
+    open(example + ".tflite", "wb").write(tflite_model)
+    print("Generate '" + example + ".tflite' - Done")
