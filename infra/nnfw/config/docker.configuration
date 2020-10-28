@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DOCKER_IMAGE_NAME=${DOCKER_IMAGE_NAME:-nnfw/nnas}
+DOCKER_IMAGE_NAME=${DOCKER_IMAGE_NAME:-nnfw/one-devtools}
 echo "Using docker image ${DOCKER_IMAGE_NAME}"
 
 if [ -z "`docker images ${DOCKER_IMAGE_NAME}`" ]; then
