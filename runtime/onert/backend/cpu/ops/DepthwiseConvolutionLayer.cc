@@ -43,8 +43,8 @@ void DepthwiseConvolutionLayer::convFloat32()
   nnfw::cker::DepthwiseConvParams op_params;
   op_params.stride_width = _strideWidth;
   op_params.stride_height = _strideHeight;
-  op_params.dilation_width_factor = 1;
-  op_params.dilation_height_factor = 1;
+  op_params.dilation_width_factor = _dilationWidth;
+  op_params.dilation_height_factor = _dilationHeight;
   op_params.padding_values.width = _paddingLeft;
   op_params.padding_values.height = _paddingTop;
   op_params.depth_multiplier = _multiplier;
@@ -74,8 +74,8 @@ void DepthwiseConvolutionLayer::convQuant8()
   nnfw::cker::DepthwiseConvParams op_params;
   op_params.stride_width = _strideWidth;
   op_params.stride_height = _strideHeight;
-  op_params.dilation_width_factor = 1;
-  op_params.dilation_height_factor = 1;
+  op_params.dilation_width_factor = _dilationWidth;
+  op_params.dilation_height_factor = _dilationHeight;
   op_params.padding_values.width = _paddingLeft;
   op_params.padding_values.height = _paddingTop;
   op_params.depth_multiplier = _multiplier;
@@ -94,13 +94,12 @@ void DepthwiseConvolutionLayer::convQuant8()
       getTensorShape(_output), reinterpret_cast<uint8_t *>(_output->buffer()));
 }
 
-void DepthwiseConvolutionLayer::configure(const IPortableTensor *input,
-                                          const IPortableTensor *kernel,
-                                          const IPortableTensor *bias, const uint32_t paddingLeft,
-                                          const uint32_t paddingRight, const uint32_t paddingTop,
-                                          const uint32_t paddingBottom, const uint32_t strideWidth,
-                                          const uint32_t strideHeight, const uint32_t multiplier,
-                                          const ir::Activation activation, IPortableTensor *output)
+void DepthwiseConvolutionLayer::configure(
+    const IPortableTensor *input, const IPortableTensor *kernel, const IPortableTensor *bias,
+    const uint32_t paddingLeft, const uint32_t paddingRight, const uint32_t paddingTop,
+    const uint32_t paddingBottom, const uint32_t strideWidth, const uint32_t strideHeight,
+    const uint32_t multiplier, const uint32_t dilationWidth, const uint32_t dilationHeight,
+    const ir::Activation activation, IPortableTensor *output)
 {
   _input = input;
   _kernel = kernel;
@@ -112,6 +111,8 @@ void DepthwiseConvolutionLayer::configure(const IPortableTensor *input,
   _strideWidth = strideWidth;
   _strideHeight = strideHeight;
   _multiplier = multiplier;
+  _dilationWidth = dilationWidth;
+  _dilationHeight = dilationHeight;
   _activation = activation;
   _output = output;
 }

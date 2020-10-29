@@ -129,6 +129,18 @@ void OperationValidator::visit(const operation::DepthToSpace &node)
   OP_REQUIRES(block_size > 0);
 }
 
+void OperationValidator::visit(const operation::DepthwiseConv2D &node)
+{
+  const auto input_index{node.getInputs().at(operation::DepthwiseConv2D::Input::INPUT)};
+  const auto output_index{node.getOutputs().at(0)};
+
+  uint32_t stride_horizontal = node.param().stride.horizontal;
+  uint32_t stride_vertical = node.param().stride.vertical;
+
+  OP_REQUIRES((stride_horizontal > 0) && (stride_vertical > 0));
+  OP_REQUIRES(isSameType(input_index, output_index));
+}
+
 void OperationValidator::visit(const operation::ElementwiseActivation &node)
 {
   const auto output_index{node.getOutputs().at(0)};

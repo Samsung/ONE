@@ -201,6 +201,8 @@ void KernelGenerator::visit(const ir::operation::DepthwiseConv2D &node)
                                             ker_width, ker_height);
   const auto multiplier = node.param().multiplier;
   const auto activation = node.param().activation;
+  const auto dilation = acl_common::asDilation(node.param().dilation.width_factor,
+                                               node.param().dilation.height_factor);
 
   auto ofm_tensor = _tensor_reg->getAclTensor(ofm_index);
   auto ifm_tensor = _tensor_reg->getAclTensor(ifm_index);
@@ -213,7 +215,7 @@ void KernelGenerator::visit(const ir::operation::DepthwiseConv2D &node)
   {
     auto fn = acl_common::generateLayer<arm_compute::CLDepthwiseConvolutionLayer>(
         ifm_tensor->handle(), ker_tensor->handle(), bias_tensor->handle(), ofm_tensor->handle(),
-        conv_info, multiplier, act_info);
+        conv_info, multiplier, act_info, dilation);
 
     _return_fn = asAclFunction(std::move(fn));
   }

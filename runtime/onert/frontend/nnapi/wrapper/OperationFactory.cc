@@ -420,6 +420,10 @@ OperationFactory::OperationFactory()
           NNAPIConvert::getFusedActivation(operands.at(activation_index).asScalar<FuseCode>());
     }
 
+    // TODO set dilation
+    param.dilation.width_factor = 1;
+    param.dilation.height_factor = 1;
+
     return new operation::DepthwiseConv2D{inputs, outputs, param};
   };
 
