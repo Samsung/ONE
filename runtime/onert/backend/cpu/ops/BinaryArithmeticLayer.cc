@@ -30,31 +30,59 @@ namespace ops
 namespace
 {
 
-template <nnfw::cker::BinaryArithmeticOpType arithmetic_type, typename T>
-void eval(const IPortableTensor *lhs, const IPortableTensor *rhs, IPortableTensor *output,
-          nnfw::cker::BinaryArithmeticOpParam op_params)
+template <nnfw::cker::BinaryArithmeticOpType arithmetic_type, typename T> struct Eval
 {
-  const auto lhs_shape = getTensorShape(lhs);
-  const auto rhs_shape = getTensorShape(rhs);
-  const bool need_broadcast = nnfw::cker::ProcessBroadcastShapes(lhs_shape, rhs_shape, &op_params);
-  if (need_broadcast)
+  nnfw::cker::Shape _lhs_shape;
+  nnfw::cker::Shape _rhs_shape;
+  nnfw::cker::Shape _output_shape;
+  nnfw::cker::BinaryArithmeticOpParam _op_params;
+  bool _need_broadcast;
+
+  Eval(const IPortableTensor *lhs, const IPortableTensor *rhs, IPortableTensor *output,
+       nnfw::cker::BinaryArithmeticOpParam op_params)
+      : _op_params(std::move(op_params))
   {
-    nnfw::cker::BroadcastBinaryArithmeticOp<arithmetic_type>(
-        op_params, lhs_shape, reinterpret_cast<const T *>(lhs->buffer()), rhs_shape,
-        reinterpret_cast<const T *>(rhs->buffer()), getTensorShape(output),
-        reinterpret_cast<T *>(output->buffer()));
-    return;
+    if (!output->is_dynamic())
+      updateCache(lhs, rhs, output);
   }
 
-  nnfw::cker::BinaryArithmeticOp<arithmetic_type>(
-      op_params, lhs_shape, reinterpret_cast<const T *>(lhs->buffer()), rhs_shape,
-      reinterpret_cast<const T *>(rhs->buffer()), getTensorShape(output),
-      reinterpret_cast<T *>(output->buffer()));
-}
+  void updateCache(const IPortableTensor *lhs, const IPortableTensor *rhs, IPortableTensor *output)
+  {
+    _lhs_shape.ReplaceWith(getTensorShape(lhs));
+    _rhs_shape.ReplaceWith(getTensorShape(rhs));
+    _output_shape.ReplaceWith(getTensorShape(output));
+    _need_broadcast = nnfw::cker::ProcessBroadcastShapes(_lhs_shape, _rhs_shape, &_op_params);
+  }
+
+  void operator()(const IPortableTensor *lhs, const IPortableTensor *rhs, IPortableTensor *output)
+  {
+    // Assume dynamic tensors never become static and static ones never change shape since
+    // configure()
+    if (output->is_dynamic())
+      updateCache(lhs, rhs, output);
+    else
+      assert(_lhs_shape == getTensorShape(lhs) && _rhs_shape == getTensorShape(rhs) &&
+             _output_shape == getTensorShape(output));
+    auto lhs_buffer = reinterpret_cast<const T *>(lhs->buffer());
+    auto rhs_buffer = reinterpret_cast<const T *>(rhs->buffer());
+    auto output_buffer = reinterpret_cast<T *>(output->buffer());
+    if (_need_broadcast)
+    {
+      nnfw::cker::BroadcastBinaryArithmeticOp<arithmetic_type>(
+          _op_params, _lhs_shape, lhs_buffer, _rhs_shape, rhs_buffer, _output_shape, output_buffer);
+    }
+    else
+    {
+      nnfw::cker::BinaryArithmeticOp<arithmetic_type>(
+          _op_params, _lhs_shape, lhs_buffer, _rhs_shape, rhs_buffer, _output_shape, output_buffer);
+    }
+  }
+};
 
 template <nnfw::cker::BinaryArithmeticOpType arithmetic_type>
 std::function<void(const IPortableTensor *, const IPortableTensor *, IPortableTensor *)>
-generateKernelGeneric(const IPortableTensor *lhs, const ir::Activation activation,
+generateKernelGeneric(const IPortableTensor *lhs, const IPortableTensor *rhs,
+                      IPortableTensor *output, const ir::Activation activation,
                       nnfw::cker::BinaryArithmeticOpParam op_params)
 {
   switch (lhs->data_type())
@@ -65,8 +93,7 @@ generateKernelGeneric(const IPortableTensor *lhs, const ir::Activation activatio
       CalculateActivationRange(activation, &output_activation_min, &output_activation_max);
       op_params.float_activation_max = output_activation_max;
       op_params.float_activation_min = output_activation_min;
-      return std::bind(&eval<arithmetic_type, float>, std::placeholders::_1, std::placeholders::_2,
-                       std::placeholders::_3, op_params);
+      return Eval<arithmetic_type, float>(lhs, rhs, output, op_params);
       break;
     }
     case OperandType::INT32:
@@ -75,8 +102,7 @@ generateKernelGeneric(const IPortableTensor *lhs, const ir::Activation activatio
       CalculateActivationRange(activation, &output_activation_min, &output_activation_max);
       op_params.quantized_activation_max = output_activation_max;
       op_params.quantized_activation_min = output_activation_min;
-      return std::bind(eval<arithmetic_type, int32_t>, std::placeholders::_1, std::placeholders::_2,
-                       std::placeholders::_3, op_params);
+      return Eval<arithmetic_type, int32_t>(lhs, rhs, output, op_params);
       break;
     }
     default:
@@ -157,14 +183,13 @@ void BinaryArithmeticLayer::configure(const IPortableTensor *lhs, const IPortabl
       if (_lhs->data_type() == OperandType::QUANT_UINT8_ASYMM)
       {
         setAddOrSubQuant8Params(_lhs, _rhs, _output, activation, &op_params);
-        _kernel = std::bind(&eval<nnfw::cker::BinaryArithmeticOpType::ADD, uint8_t>,
-                            std::placeholders::_1, std::placeholders::_2, std::placeholders::_3,
-                            op_params);
+        _kernel =
+            Eval<nnfw::cker::BinaryArithmeticOpType::ADD, uint8_t>(_lhs, _rhs, _output, op_params);
       }
       else
       {
-        _kernel = generateKernelGeneric<nnfw::cker::BinaryArithmeticOpType::ADD>(_lhs, activation,
-                                                                                 op_params);
+        _kernel = generateKernelGeneric<nnfw::cker::BinaryArithmeticOpType::ADD>(
+            _lhs, _rhs, _output, activation, op_params);
       }
       break;
     case ArithmeticType::kSub:
@@ -172,14 +197,13 @@ void BinaryArithmeticLayer::configure(const IPortableTensor *lhs, const IPortabl
       {
         setAddOrSubQuant8Params(_lhs, _rhs, _output, activation, &op_params);
         op_params.input2_multiplier *= -1;
-        _kernel = std::bind(&eval<nnfw::cker::BinaryArithmeticOpType::SUB, uint8_t>,
-                            std::placeholders::_1, std::placeholders::_2, std::placeholders::_3,
-                            op_params);
+        _kernel =
+            Eval<nnfw::cker::BinaryArithmeticOpType::SUB, uint8_t>(_lhs, _rhs, _output, op_params);
       }
       else
       {
-        _kernel = generateKernelGeneric<nnfw::cker::BinaryArithmeticOpType::SUB>(_lhs, activation,
-                                                                                 op_params);
+        _kernel = generateKernelGeneric<nnfw::cker::BinaryArithmeticOpType::SUB>(
+            _lhs, _rhs, _output, activation, op_params);
       }
       break;
     case ArithmeticType::kMul:
@@ -187,14 +211,13 @@ void BinaryArithmeticLayer::configure(const IPortableTensor *lhs, const IPortabl
       {
         nnfw::cker::BinaryArithmeticOpParam op_params;
         setMulQuant8Params(_lhs, _rhs, _output, activation, &op_params);
-        _kernel = std::bind(&eval<nnfw::cker::BinaryArithmeticOpType::MUL, uint8_t>,
-                            std::placeholders::_1, std::placeholders::_2, std::placeholders::_3,
-                            op_params);
+        _kernel =
+            Eval<nnfw::cker::BinaryArithmeticOpType::MUL, uint8_t>(_lhs, _rhs, _output, op_params);
       }
       else
       {
-        _kernel = generateKernelGeneric<nnfw::cker::BinaryArithmeticOpType::MUL>(_lhs, activation,
-                                                                                 op_params);
+        _kernel = generateKernelGeneric<nnfw::cker::BinaryArithmeticOpType::MUL>(
+            _lhs, _rhs, _output, activation, op_params);
       }
       break;
     case ArithmeticType::kDiv:
@@ -209,8 +232,8 @@ void BinaryArithmeticLayer::configure(const IPortableTensor *lhs, const IPortabl
       }
       else
       {
-        _kernel = generateKernelGeneric<nnfw::cker::BinaryArithmeticOpType::DIV>(_lhs, activation,
-                                                                                 op_params);
+        _kernel = generateKernelGeneric<nnfw::cker::BinaryArithmeticOpType::DIV>(
+            _lhs, _rhs, _output, activation, op_params);
       }
       break;
     default:

@@ -27,6 +27,7 @@
 //              `BATCH_MATMUL` operator, `FLOAT64` tensor type,
 //              `asymmetric_quantize_inputs` for several operator options
 // Version 0.2: BCQ_GATHER and BCQ_FULLY_CONNECTED are added.
+// Version 0.3: SHUFFLED16x1FLOAT32 is added.
 
 namespace circle;
 
@@ -564,6 +565,7 @@ table BidirectionalSequenceRNNOptions {
 enum FullyConnectedOptionsWeightsFormat: byte {
   DEFAULT = 0,
   SHUFFLED4x16INT8 = 1,
+  SHUFFLED16x1FLOAT32 = 127
 }
 
 // An implementation of TensorFlow fully_connected (a.k.a Dense) layer.

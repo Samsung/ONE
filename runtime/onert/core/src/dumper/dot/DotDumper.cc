@@ -139,7 +139,7 @@ void DotDumper::dump(const std::string &tag)
       input_node->addOutEdge(node.get());
     }
 
-    for (auto output : op.getOutputs())
+    for (auto output : op.getOutputs() | ir::Remove::UNDEFINED)
     {
       using onert::dumper::dot::Operand;
       auto &output_node = operand_nodes.at(output);

@@ -26,6 +26,7 @@
 #include <kernels/DepthwiseConv2D.h>
 #include <kernels/Div.h>
 #include <kernels/Elu.h>
+#include <kernels/Exp.h>
 #include <kernels/Floor.h>
 #include <kernels/FloorDiv.h>
 #include <kernels/Equal.h>
@@ -40,6 +41,7 @@
 #include <kernels/LocalResponseNormalization.h>
 #include <kernels/LogicalAnd.h>
 #include <kernels/LogicalNot.h>
+#include <kernels/LogicalOr.h>
 #include <kernels/Logistic.h>
 #include <kernels/LogSoftmax.h>
 #include <kernels/Maximum.h>
@@ -334,6 +336,20 @@ TEST_F(KernelBuilderTest, Elu)
   checkTensor(kernel->output(), op);
 }
 
+TEST_F(KernelBuilderTest, Exp)
+{
+  auto *input = createInputNode();
+
+  auto *op = createNode<luci::CircleExp>();
+  op->x(input);
+
+  auto kernel = buildKernel<kernels::Exp>(op);
+  ASSERT_THAT(kernel, NotNull());
+
+  checkTensor(kernel->input(), input);
+  checkTensor(kernel->output(), op);
+}
+
 TEST_F(KernelBuilderTest, Floor)
 {
   auto *input = createInputNode();
@@ -585,6 +601,23 @@ TEST_F(KernelBuilderTest, LogicalNot)
   ASSERT_THAT(kernel, NotNull());
 
   checkTensor(kernel->input(), input);
+  checkTensor(kernel->output(), op);
+}
+
+TEST_F(KernelBuilderTest, LogicalOr)
+{
+  auto *input1 = createInputNode();
+  auto *input2 = createInputNode();
+
+  auto *op = createNode<luci::CircleLogicalOr>();
+  op->x(input1);
+  op->y(input2);
+
+  auto kernel = buildKernel<kernels::LogicalOr>(op);
+  ASSERT_THAT(kernel, NotNull());
+
+  checkTensor(kernel->input1(), input1);
+  checkTensor(kernel->input2(), input2);
   checkTensor(kernel->output(), op);
 }
 

@@ -1,4 +1,9 @@
-#!/bin/bash
+#!/usr/bin/env bash
+''''export SCRIPT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"                  # '''
+''''export PY_PATH=${SCRIPT_PATH}/venv/bin/python                                       # '''
+''''test -f ${PY_PATH} && exec ${PY_PATH} "$0" "$@"                                     # '''
+''''echo "Error: Virtual environment not found. Please run 'one-prepare-venv' command." # '''
+''''exit 255                                                                            # '''
 
 # Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
 #
@@ -14,53 +19,93 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-DRIVER_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+import argparse
+import os
+import subprocess
+import sys
+import tempfile
 
-function Usage()
-{
-  echo "Usage: one-codegen [BACKEND] ..."
-  echo "Available BACKEND drivers:"
-  backend_exist=0
-  for file in `find $DRIVER_PATH -name *-compile -type f`;
-  do
-    backend_driver=$(basename $file)
-    sub_length=8
-    driver_length=$(expr ${#backend_driver} - ${sub_length})
-    backend=${backend_driver:0:${driver_length}} # 8 is length of "-compile"
-    echo "  $backend"
-    backend_exist=1
-  done
-  if [ $backend_exist == 0 ]; then
-    echo "  (There is no available backend drivers)"
-  fi
+import utils as _utils
 
-  exit 255
-}
 
-function version()
-{
-  $DRIVER_PATH/one-version one-codegen
-  exit 255
-}
+def _get_backends_list():
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    files = [f for f in os.listdir(dir_path) if os.path.isfile(os.path.join(dir_path, f))]
+    backends_list = []
+    for cand in files:
+        if cand.endswith('-compile'):
+            # 8 : length of '-compile'
+            backends_list.append(cand[:-8])
+    return backends_list
 
-# Get command from command-line
-BACKEND=$1
-if [[ -z ${BACKEND} ]]; then
-  Usage
-fi
-shift
 
-if [[ "${BACKEND}" == "--version" ]]; then
-  version
-fi
+def _get_parser():
+    parser = argparse.ArgumentParser(description='command line tool for code generation')
 
-BACKEND_DRIVER="${BACKEND}-compile"
+    _utils._add_default_arg(parser)
 
-BACKEND_DRIVER_CMD="${DRIVER_PATH}/${BACKEND_DRIVER}"
+    # get backend list in the directory
+    backends_list = _get_backends_list()
+    if not backends_list:
+        backends_list_message = '(There is no available backend drivers)'
+    else:
+        backends_list_message = '(available backend drivers: ' + '.'.join(
+            backends_list) + ')'
+    backend_help_message = 'backend name to use ' + backends_list_message
+    parser.add_argument('-b', '--backend', type=str, help=backend_help_message)
 
-if [[ ! -f "${BACKEND_DRIVER_CMD}" ]]; then
-  echo "ERROR: '${BACKEND_DRIVER}' is not supported"
-  Usage
-fi
+    return parser
 
-"${BACKEND_DRIVER_CMD}" "$@"
+
+def _verify_arg(parser, args):
+    """verify given arguments"""
+    # check if required arguments is given
+    missing = []
+    if not _utils._is_valid_attr(args, 'backend'):
+        missing.append('-b/--backend')
+    if len(missing):
+        parser.error('the following arguments are required: ' + ' '.join(missing))
+
+
+def _parse_arg(parser):
+    args, unknown_args = parser.parse_known_args()
+    # print version
+    if args.version:
+        _utils._print_version_and_exit(__file__)
+
+    return args, unknown_args
+
+
+def main():
+    # parse arguments
+    parser = _get_parser()
+    args, unknown_args = _parse_arg(parser)
+
+    # parse configuration file
+    _utils._parse_cfg(args, 'one-codegen')
+
+    # verify arguments
+    _verify_arg(parser, args)
+
+    # get file path to log
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    logfile_path = os.path.realpath(args.output_path) + '.log'
+
+    with open(logfile_path, 'wb') as f:
+        # make a command to run given backend driver
+        codegen_path = os.path.join(dir_path, getattr(args, 'backend') + '-compile')
+        codegen_cmd = [codegen_path] + unknown_args
+
+        f.write((' '.join(codegen_cmd) + '\n').encode())
+
+        # run backend driver
+        with subprocess.Popen(
+                codegen_cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                bufsize=1) as p:
+            for line in p.stdout:
+                sys.stdout.buffer.write(line)
+                f.write(line)
+
+
+if __name__ == '__main__':
+    main()

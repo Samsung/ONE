@@ -25,6 +25,7 @@
 #include "kernels/DepthwiseConv2D.h"
 #include "kernels/Div.h"
 #include "kernels/Elu.h"
+#include "kernels/Exp.h"
 #include "kernels/Floor.h"
 #include "kernels/FloorDiv.h"
 #include "kernels/Equal.h"
@@ -40,6 +41,7 @@
 #include "kernels/LocalResponseNormalization.h"
 #include "kernels/LogicalAnd.h"
 #include "kernels/LogicalNot.h"
+#include "kernels/LogicalOr.h"
 #include "kernels/Logistic.h"
 #include "kernels/LogSoftmax.h"
 #include "kernels/Maximum.h"
@@ -273,6 +275,16 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleElu *node)
   return std::make_unique<kernels::Elu>(input, output);
 }
 
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleExp *node)
+{
+  assert(node->arity() == 1);
+
+  const Tensor *input = getInputTensor(node->x());
+  Tensor *output = getOutputTensor(node);
+
+  return std::make_unique<kernels::Exp>(input, output);
+}
+
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleFloor *node)
 {
   assert(node->arity() == 1);
@@ -467,6 +479,17 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleLogicalNot *node)
   Tensor *output = getOutputTensor(node);
 
   return std::make_unique<kernels::LogicalNot>(input, output);
+}
+
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleLogicalOr *node)
+{
+  assert(node->arity() == 2);
+
+  const Tensor *input1 = getInputTensor(node->x());
+  const Tensor *input2 = getInputTensor(node->y());
+  Tensor *output = getOutputTensor(node);
+
+  return std::make_unique<kernels::LogicalOr>(input1, input2, output);
 }
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleLogistic *node)
