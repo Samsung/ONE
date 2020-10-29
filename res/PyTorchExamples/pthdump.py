@@ -19,6 +19,8 @@
 import torch
 import argparse
 
+print("PyTorch version=", torch.__version__)
+
 parser = argparse.ArgumentParser(description='Dump pth file')
 
 parser.add_argument('files', metavar='FILES', nargs='+')
