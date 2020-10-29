@@ -299,10 +299,80 @@ luci::CircleSub *insert_sub(luci::CircleNode *pred, luci::CircleConst *beta)
   return sub;
 }
 
+luci::CircleAdd *get_forward_add(luci::CircleNode *node)
+{
+  auto opcode = node->opcode();
+  if (opcode == luci::CircleOpcode::ADD)
+  {
+    auto add = loco::must_cast<luci::CircleAdd *>(node);
+    return add;
+  }
+  else if (opcode == luci::CircleOpcode::MAX_POOL_2D)
+  {
+    auto succ = loco::succs(node);
+    if (succ.size() != 1)
+      return nullptr;
+
+    auto succ_node = loco::must_cast<luci::CircleNode *>(*succ.begin());
+    return get_forward_add(succ_node);
+  }
+
+  return nullptr;
+}
+
 } // namespace
 
 namespace luci
 {
+
+/**
+ *  Fuse SUB with CONV
+ *
+ *  BEFORE
+ *
+ *     beta [Sub]
+ *            |
+ *      [Passable Op]   [Conv] bias
+ *                 \   /
+ *                 [Add]
+ *
+ *  AFTER
+ *
+ *      [Passable Op]   [Conv] bias - beta
+ *                 \   /
+ *                 [Add]
+ */
+bool fuse_sub_with_conv(luci::CircleSub *sub)
+{
+  luci::CircleAdd *add = nullptr;
+  luci::CircleConv2D *conv = nullptr;
+  auto succs = loco::succs(sub);
+  if (succs.size() != 1)
+    return false;
+
+  add = get_forward_add(loco::must_cast<luci::CircleNode *>(*succs.begin()));
+  if (add == nullptr)
+    return false;
+
+  conv = dynamic_cast<luci::CircleConv2D *>(add->x());
+  if (conv == nullptr)
+    conv = dynamic_cast<luci::CircleConv2D *>(add->y());
+
+  if (conv == nullptr)
+    return false;
+
+  auto beta = loco::must_cast<luci::CircleConst *>(sub->y());
+  assert(beta != nullptr);
+  if (!update_conv_bias_with_beta(conv, beta, false))
+    return false;
+
+  auto pred = sub->x();
+  loco::replace(sub).with(pred);
+
+  sub->drop();
+
+  return true;
+}
 
 /**
  *  Fuse ADD with the preceding CONV
@@ -603,6 +673,11 @@ bool FusePreActivationBatchNormPass::run(loco::Graph *g)
   INFO(l) << "[FusePreActivationBatchNorm] " << _sub_list.size() << " SUB were added." << std::endl;
 
   // Step 4. Fuse SUB to CONV (SUB -> ADD <- CONV pattern)
+  for (auto const &sub : _sub_list)
+  {
+    if (fuse_sub_with_conv(sub))
+      INFO(l) << "[FusePreActivationBatchNorm] Fused SUB: " << sub->name() << std::endl;
+  }
 
   return changed;
 }
