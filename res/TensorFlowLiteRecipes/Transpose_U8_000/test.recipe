@@ -1,0 +1,29 @@
+operand {
+  name: "ifm"
+  type: UINT8
+  shape { dim: 3 dim: 8 dim: 1 }
+  quant { min: 0 max: 255 scale: 1.0 zero_point: 0 }
+}
+operand {
+  name: "perm"
+  type: INT32
+  shape { dim: 3 }
+  filler { tag: "explicit" arg: "1" arg: "2" arg: "0" }
+}
+operand {
+  name: "ofm"
+  type: UINT8
+  shape { dim: 8 dim: 1 dim: 3 }
+  quant { min: 0 max: 255 scale: 1.0 zero_point: 0 }
+}
+
+operation {
+  type: "Transpose"
+  transpose_options {
+  }
+  input: "ifm"
+  input: "perm"
+  output: "ofm"
+}
+input: "ifm"
+output: "ofm"
