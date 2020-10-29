@@ -30,8 +30,13 @@ class RuntimeModule;
 
 class RuntimeGraph
 {
+private:
+  class TensorAllocPlan;
+  friend class TensorAllocPlan;
+
 public:
-  explicit RuntimeGraph(RuntimeModule *owning_module) : _owning_module(owning_module) {}
+  explicit RuntimeGraph(RuntimeModule *owning_module);
+  ~RuntimeGraph();
 
   Tensor *addTensor(std::unique_ptr<Tensor> &&tensor);
 
@@ -46,9 +51,6 @@ public:
   void execute() const;
 
 private:
-  // Build tensor deallocation plan
-  void prepareDeallocPlan() const;
-
   RuntimeModule *_owning_module;
   std::vector<std::unique_ptr<Tensor>> _tensors;
   std::vector<Tensor *> _input_tensors;
@@ -57,7 +59,7 @@ private:
   // Kernels in execution order.
   std::vector<std::unique_ptr<Kernel>> _kernels;
   // Tensors that are not used anymore after given op
-  mutable std::vector<std::vector<Tensor *>> _tensor_dealloc_plan;
+  std::unique_ptr<TensorAllocPlan> _tensor_alloc_plan;
 };
 
 } // namespace luci_interpreter
