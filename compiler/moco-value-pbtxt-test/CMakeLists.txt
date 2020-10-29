@@ -77,11 +77,10 @@ foreach(PREFIX IN ITEMS ${TESTCASES})
 
 endforeach(PREFIX)
 
-nnas_find_package(TensorFlow EXACT 1.13 QUIET)
-if(NOT TensorFlow_FOUND)
-  message(STATUS "moco: Skip adding test as TensorFlow is not found")
+if(NOT TARGET nnkit_tf_backend)
+  message(STATUS "moco: Skip adding test as nnkit_tf_backend is not defined")
   return()
-endif(NOT TensorFlow_FOUND)
+endif(NOT TARGET nnkit_tf_backend)
 
 ##
 ## Copy runall.sh
