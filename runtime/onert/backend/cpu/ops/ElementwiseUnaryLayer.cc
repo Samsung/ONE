@@ -145,6 +145,12 @@ void erfFloat32(const IPortableTensor *input, IPortableTensor *output)
                   getTensorShape(output), reinterpret_cast<float *>(output->buffer()));
 }
 
+void floorFloat32(const IPortableTensor *input, IPortableTensor *output)
+{
+  nnfw::cker::Floor(getTensorShape(input), reinterpret_cast<const float *>(input->buffer()),
+                    getTensorShape(output), reinterpret_cast<float *>(output->buffer()));
+}
+
 void logFloat32(const IPortableTensor *input, IPortableTensor *output)
 {
   nnfw::cker::Log(getTensorShape(input), reinterpret_cast<const float *>(input->buffer()),
@@ -267,6 +273,16 @@ void ElementwiseUnaryLayer::configure(const IPortableTensor *input, IPortableTen
       else
       {
         throw std::runtime_error{"Exp: Unsupported data type"};
+      }
+      break;
+    case ElementwiseUnaryType::kFloor:
+      if ((input->data_type() == OperandType::FLOAT32))
+      {
+        _kernel = floorFloat32;
+      }
+      else
+      {
+        throw std::runtime_error{"Floor: Unsupported data type"};
       }
       break;
     case ElementwiseUnaryType::kLog:

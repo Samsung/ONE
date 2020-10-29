@@ -166,6 +166,11 @@ void OperationValidator::visit(const operation::ElementwiseUnary &node)
     OP_REQUIRES(isValidType(input_index, DataType::FLOAT32));
     OP_REQUIRES(isValidType(output_index, DataType::QUANT_UINT8_ASYMM));
   }
+  else if (node.param().op_type == operation::ElementwiseUnary::Type::FLOOR)
+  {
+    OP_REQUIRES(isValidType(input_index, DataType::FLOAT32));
+    OP_REQUIRES(isSameType(output_index, input_index));
+  }
   else if (node.param().op_type != operation::ElementwiseUnary::Type::CAST)
   {
     OP_REQUIRES(isSameType(output_index, input_index));
