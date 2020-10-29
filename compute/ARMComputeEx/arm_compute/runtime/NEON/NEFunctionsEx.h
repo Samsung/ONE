@@ -16,7 +16,6 @@
 #ifndef __ARM_COMPUTE_NEFUNCTIONSEX_H__
 #define __ARM_COMPUTE_NEFUNCTIONSEX_H__
 
-#include <arm_compute/runtime/NEON/functions/NEActivationLayerEx.h>
 #include <arm_compute/runtime/NEON/functions/NEBinaryLogicalOperation.h>
 #include <arm_compute/runtime/NEON/functions/NECastBool.h>
 #include <arm_compute/runtime/NEON/functions/NEEmbeddingLookup.h>
