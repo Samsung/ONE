@@ -1,4 +1,9 @@
-#!/bin/bash
+#!/usr/bin/env bash
+''''export SCRIPT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"                  # '''
+''''export PY_PATH=${SCRIPT_PATH}/venv/bin/python                                       # '''
+''''test -f ${PY_PATH} && exec ${PY_PATH} "$0" "$@"                                     # '''
+''''echo "Error: Virtual environment not found. Please run 'one-prepare-venv' command." # '''
+''''exit 255                                                                            # '''
 
 # Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
 #
@@ -14,155 +19,123 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-set -e
+import argparse
+import os
+import subprocess
+import sys
+import tempfile
 
-DRIVER_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+import utils as _utils
 
-usage()
-{
-  echo "Optimize circle model."
-  echo "Usage: one-optimize"
-  echo "    --version       Show version information and exit"
-  echo "    --all           Enable all optimization algorithms"
-  echo "    --fold_dequantize"
-  echo "                    Enable FoldDequantize Pass"
-  echo "    --fuse_add_with_tconv"
-  echo "                    Enable FuseAddWithTConv Pass"
-  echo "    --fuse_bcq      Enable FuseBCQ Pass"
-  echo "    --fuse_instnorm Enable FuseInstanceNormalization Pass"
-  echo "    --resolve_customop_add"
-  echo "                    Enable ResolveCustomOpAddPass Pass"
-  echo "    --resolve_customop_batchmatmul"
-  echo "                    Enable ResolveCustomOpBatchMatMulPass Pass"
-  echo "    --resolve_customop_matmul"
-  echo "                    Enable ResolveCustomOpMatMulPass Pass"
-  echo "    --input_path <path/to/input/circle>"
-  echo "    --output_path <path/to/output/circle>"
-  exit 255
-}
 
-version()
-{
-  $DRIVER_PATH/one-version one-optimize
-  exit 255
-}
+def _get_parser():
+    parser = argparse.ArgumentParser(
+        description='command line tool to optimize circle model')
 
-OPTIMIZE_all=0
-OPTIMIZE_fold_dequantize=0
-OPTIMIZE_fuse_add_with_tconv=0
-OPTIMIZE_fuse_bcq=0
-OPTIMIZE_fuse_instnorm=0
-OPTIMIZE_resolve_customop_add=0
-OPTIMIZE_resolve_customop_batchmatmul=0
-OPTIMIZE_resolve_customop_matmul=0
+    _utils._add_default_arg(parser)
 
-# Parse command-line arguments
-#
-while [ "$#" -ne 0 ]; do
-  CUR="$1"
+    ## circle2circle arguments
+    circle2circle_group = parser.add_argument_group('arguments for optimization')
 
-  case $CUR in
-    '--help')
-      usage
-      ;;
-    '--version')
-      version
-      ;;
-    '--all')
-      OPTIMIZE_all=1
-      shift
-      ;;
-    '--fold_dequantize')
-      OPTIMIZE_fold_dequantize=1
-      shift
-      ;;
-    '--fuse_add_with_tconv')
-      OPTIMIZE_fuse_add_with_tconv=1
-      shift
-      ;;
-    '--fuse_bcq')
-      OPTIMIZE_fuse_bcq=1
-      shift
-      ;;
-    '--fuse_instnorm')
-      OPTIMIZE_fuse_instnorm=1
-      shift
-      ;;
-    '--resolve_customop_add')
-      OPTIMIZE_resolve_customop_add=1
-      shift
-      ;;
-    '--resolve_customop_batchmatmul')
-      OPTIMIZE_resolve_customop_batchmatmul=1
-      shift
-      ;;
-    '--resolve_customop_matmul')
-      OPTIMIZE_resolve_customop_matmul=1
-      shift
-      ;;
+    # input and output path.
+    circle2circle_group.add_argument(
+        '-i', '--input_path', type=str, help='full filepath of the input file')
+    circle2circle_group.add_argument(
+        '-o', '--output_path', type=str, help='full filepath of the output file')
 
-    '--input_path')
-      export INPUT_PATH="$2"
-      shift 2
-      ;;
-    '--output_path')
-      export OUTPUT_PATH="$2"
-      shift 2
-      ;;
-    *)
-      echo "Unknown parameter: ${CUR}"
-      shift
-      ;;
-  esac
-done
+    # optimization pass
+    circle2circle_group.add_argument(
+        '--all', action='store_true', help='enable all optimization pass')
+    circle2circle_group.add_argument(
+        '--fold_dequantize', action='store_true', help='fold Dequantize op')
+    circle2circle_group.add_argument(
+        '--fuse_add_with_tconv', action='store_true', help='fuse Add op to Transposed')
+    circle2circle_group.add_argument(
+        '--fuse_batchnorm_with_tconv',
+        action='store_true',
+        help='fuse BatchNorm op to Transposed Convolution op')
+    circle2circle_group.add_argument(
+        '--fuse_bcq', action='store_true', help='apply Binary Coded Quantization')
+    circle2circle_group.add_argument(
+        '--fuse_instnorm', action='store_true', help='fuse ops to InstanceNorm operator')
+    circle2circle_group.add_argument(
+        '--resolve_customop_add',
+        action='store_true',
+        help='convert Custom(Add) op to Add op')
+    circle2circle_group.add_argument(
+        '--resolve_customop_batchmatmul',
+        action='store_true',
+        help='convert Custom(BatchMatmul) op to BatchMatmul op')
+    circle2circle_group.add_argument(
+        '--resolve_customop_matmul',
+        action='store_true',
+        help='convert Custom(Matmul) op to Matmul op')
 
-if [ -z ${INPUT_PATH} ] || [ ! -e ${INPUT_PATH} ]; then
-  echo "Error: input model not found"
-  echo ""
-  usage
-fi
+    return parser
 
-OPTIMIZE_OPTIONS=""
 
-if [ $OPTIMIZE_all == 1 ]; then
-  OPTIMIZE_OPTIONS+="--all "
-fi
-if [ $OPTIMIZE_fold_dequantize == 1 ]; then
-  OPTIMIZE_OPTIONS+="--fold_dequantize "
-fi
-if [ $OPTIMIZE_fuse_add_with_tconv == 1 ]; then
-  OPTIMIZE_OPTIONS+="--fuse_add_with_tconv "
-fi
-if [ $OPTIMIZE_fuse_bcq == 1 ]; then
-  OPTIMIZE_OPTIONS+="--fuse_bcq "
-fi
-if [ $OPTIMIZE_fuse_instnorm == 1 ]; then
-  OPTIMIZE_OPTIONS+="--fuse_instnorm "
-fi
-if [ $OPTIMIZE_resolve_customop_add == 1 ]; then
-  OPTIMIZE_OPTIONS+="--resolve_customop_add "
-fi
-if [ $OPTIMIZE_resolve_customop_batchmatmul == 1 ]; then
-  OPTIMIZE_OPTIONS+="--resolve_customop_batchmatmul "
-fi
-if [ $OPTIMIZE_resolve_customop_matmul == 1 ]; then
-  OPTIMIZE_OPTIONS+="--resolve_customop_matmul "
-fi
+def _verify_arg(parser, args):
+    """verify given arguments"""
+    # check if required arguments is given
+    missing = []
+    if not _utils._is_valid_attr(args, 'input_path'):
+        missing.append('-i/--input_path')
+    if not _utils._is_valid_attr(args, 'output_path'):
+        missing.append('-o/--output_path')
+    if len(missing):
+        parser.error('the following arguments are required: ' + ' '.join(missing))
 
-# remove previous log
-rm -rf "${OUTPUT_PATH}.log"
 
-show_err_onexit()
-{
-  cat "${OUTPUT_PATH}.log"
-}
+def _parse_arg(parser):
+    args = parser.parse_args()
+    # print version
+    if args.version:
+        _utils._print_version_and_exit(__file__)
 
-trap show_err_onexit ERR
+    return args
 
-# NOTE do not wrap ${OPTIMIZE_OPTIONS} with ""
-# optimize circle
-echo "${DRIVER_PATH}/circle2circle" ${OPTIMIZE_OPTIONS} \
-"${INPUT_PATH}" "${OUTPUT_PATH}" > "${OUTPUT_PATH}.log"
 
-"${DRIVER_PATH}/circle2circle" ${OPTIMIZE_OPTIONS} \
-"${INPUT_PATH}" "${OUTPUT_PATH}" >> "${OUTPUT_PATH}.log" 2>&1
+def _optimize(args):
+    # get file path to log
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    logfile_path = os.path.realpath(args.output_path) + '.log'
+
+    with open(logfile_path, 'wb') as f:
+        # make a command to optimize circle model
+        circle2circle_path = os.path.join(dir_path, 'circle2circle')
+        circle2circle_cmd = _utils._make_circle2circle_cmd(args, circle2circle_path,
+                                                           getattr(args, 'input_path'),
+                                                           getattr(args, 'output_path'))
+
+        f.write((' '.join(circle2circle_cmd) + '\n').encode())
+
+        # optimize
+        with subprocess.Popen(
+                circle2circle_cmd,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
+                bufsize=1) as p:
+            for line in p.stdout:
+                sys.stdout.buffer.write(line)
+                f.write(line)
+        if p.returncode != 0:
+            sys.exit(p.returncode)
+
+
+def main():
+    # parse arguments
+    parser = _get_parser()
+    args = _parse_arg(parser)
+
+    # parse configuration file
+    _utils._parse_cfg(args, 'one-optimize')
+
+    # verify arguments
+    _verify_arg(parser, args)
+
+    # optimize
+    _optimize(args)
+
+
+if __name__ == '__main__':
+    main()
