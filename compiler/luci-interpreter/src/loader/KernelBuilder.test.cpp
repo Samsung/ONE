@@ -26,6 +26,7 @@
 #include <kernels/DepthwiseConv2D.h>
 #include <kernels/Div.h>
 #include <kernels/Elu.h>
+#include <kernels/Exp.h>
 #include <kernels/Floor.h>
 #include <kernels/FloorDiv.h>
 #include <kernels/Equal.h>
@@ -327,6 +328,20 @@ TEST_F(KernelBuilderTest, Elu)
   op->features(input);
 
   auto kernel = buildKernel<kernels::Elu>(op);
+  ASSERT_THAT(kernel, NotNull());
+
+  checkTensor(kernel->input(), input);
+  checkTensor(kernel->output(), op);
+}
+
+TEST_F(KernelBuilderTest, Exp)
+{
+  auto *input = createInputNode();
+
+  auto *op = createNode<luci::CircleExp>();
+  op->x(input);
+
+  auto kernel = buildKernel<kernels::Exp>(op);
   ASSERT_THAT(kernel, NotNull());
 
   checkTensor(kernel->input(), input);
