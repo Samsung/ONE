@@ -25,18 +25,24 @@ namespace luci_interpreter
 Tensor::Tensor(DataType element_type, Shape shape, AffineQuantization quantization,
                std::string name)
     : _element_type(element_type), _shape(std::move(shape)), _quantization(std::move(quantization)),
-      _name(std::move(name))
+      _name(std::move(name)), _data_allocated(false)
 {
 }
 
 void Tensor::allocate()
 {
+  deallocate();
   const size_t element_size = getDataTypeSize(_element_type);
   const int32_t num_elements = _shape.num_elements();
   _data = std::make_unique<uint8_t[]>(num_elements * element_size);
+  _data_allocated = true;
 }
 
-void Tensor::deallocate() { _data = nullptr; }
+void Tensor::deallocate()
+{
+  _data_allocated = false;
+  _data.reset();
+}
 
 void Tensor::readData(void *data_ptr, size_t data_size) const
 {

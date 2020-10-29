@@ -118,13 +118,13 @@ public:
 
   template <typename T> const T *data() const
   {
-    assert(!!_data);
+    assert(_data_allocated);
     return reinterpret_cast<const T *>(_data.get());
   }
 
   template <typename T> T *data()
   {
-    if (!_data)
+    if (!_data_allocated)
       allocate();
     return reinterpret_cast<T *>(_data.get());
   }
@@ -143,6 +143,7 @@ private:
   AffineQuantization _quantization;
   std::unique_ptr<uint8_t[]> _data;
   std::string _name;
+  bool _data_allocated;
 };
 
 } // namespace luci_interpreter
