@@ -109,7 +109,7 @@ def _optimize(args):
 
         f.write((' '.join(circle2circle_cmd) + '\n').encode())
 
-        # convert tflite to circle
+        # optimize
         with subprocess.Popen(
                 circle2circle_cmd,
                 stdout=subprocess.PIPE,
