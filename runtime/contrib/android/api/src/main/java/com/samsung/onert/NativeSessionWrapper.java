@@ -16,10 +16,14 @@ final class NativeSessionWrapper implements AutoCloseable {
 
     static
     {
+        Log.d(TAG, String.format("%s] System.loadLibrary %s ", "static NativeSessionWrapper", LIB_NAME));
         System.loadLibrary(LIB_NAME);
+        Log.d(TAG, String.format("%s] System.loadLibrary %s is done ", "static NativeSessionWrapper", LIB_NAME));
     }
 
     static final String DEFAULT_BACKENDS = "cpu";
+
+
 
     NativeSessionWrapper(@NonNull String nnpkg_path) {
         this(nnpkg_path, DEFAULT_BACKENDS);
@@ -27,6 +31,7 @@ final class NativeSessionWrapper implements AutoCloseable {
 
     NativeSessionWrapper(@NonNull String nnpkg_path, @NonNull String backends) {
         _handle = nativeCreateSession();
+        Log.d(TAG, String.format("%s] _handle: %d", "NativeSessionWrapper", _handle));
         nativeLoadModelFromFile(_handle, nnpkg_path);
         _backends = backends;
     }
