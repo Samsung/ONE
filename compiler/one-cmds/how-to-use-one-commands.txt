@@ -25,8 +25,8 @@ common features
 
 [configuration file]
 
-You can run one-commands with configuration file as well as command line parameters. The con-
-figuration file should be written with the options the one-commands need to run.
+You can run one-commands with configuration file as well as command line parameters. The
+configuration file should be written with the options the one-commands need to run.
 
 ```
 # configuration_file.cfg
@@ -45,21 +45,23 @@ You can see a template file for how to write a configuration file in `one-build.
 [options to write]
 
 Sometimes you want to change certain options without touching the configuration file. If you
-pass the option directly to the command line, the option is processed prior to the configura-
-tion file. A list of options can be found in each driver's help message with `-h` option.
+pass the option directly to the command line, the option is processed prior to the configuration
+file. A list of options can be found in each driver's help message with `-h` option.
 
-e.g. $ ./one-import tf -C my-conf.cfg -i path/to/overwrite.pb
+e.g.
+```
+$ ./one-import tf -C my-conf.cfg -i path/to/overwrite.pb
+```
 
 
 one-build
 ---------
 
 one-build is an integrated driver that can execute one-commands at once. It's nice to run each
-driver individually, but sometimes you'll want to put together the most frequently used comman-
-ds and run them all at once. You can do this with one-build and its configuration file.
+driver individually, but sometimes you'll want to put together the most frequently used commands
+and run them all at once. You can do this with one-build and its configuration file.
 
-For one-build, the configuration file needs 'one-build' section that consists of list of dri-
-ver.
+For one-build, the configuration file needs 'one-build' section that consists of list of driver.
 
 ```
 # one-build.template.cfg
