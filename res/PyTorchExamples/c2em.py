@@ -34,30 +34,29 @@ parser.add_argument('examples', metavar='EXAMPLES', nargs='+')
 
 args = parser.parse_args()
 
+output_folder = "./output/"
+
 for example in args.examples:
     module = importlib.import_module("c2examples." + example)
 
     onnx_model = c2f.caffe2_net_to_onnx_model(
-        module._model_._net,
-        module._model_init_._net,
-        module._value_info_
-    )
+        module._model_._net, module._model_init_._net, module._value_info_)
     onnx.checker.check_model(onnx_model)
-    onnx.save(onnx_model, example + ".onnx")
+    onnx.save(onnx_model, output_folder + example + ".onnx")
 
-    onnx_model = onnx.load(example + ".onnx")
+    onnx_model = onnx.load(output_folder + example + ".onnx")
     onnx.checker.check_model(onnx_model)
 
     tf_prep = onnx_tf.backend.prepare(onnx_model)
-    tf_prep.export_graph(path = example + ".TF")
+    tf_prep.export_graph(path=output_folder + example + ".TF")
     print("Generate '" + example + " TF' - Done")
 
     # for testing...
-    converter = tf.lite.TFLiteConverter.from_saved_model(example + ".TF")
+    converter = tf.lite.TFLiteConverter.from_saved_model(output_folder + example + ".TF")
     converter.allow_custom_ops = True
     converter.experimental_new_converter = True
     converter.target_spec.supported_ops = [tf.lite.OpsSet.TFLITE_BUILTINS]
 
     tflite_model = converter.convert()
-    open(example + ".tflite", "wb").write(tflite_model)
+    open(output_folder + example + ".tflite", "wb").write(tflite_model)
     print("Generate '" + example + ".tflite' - Done")

@@ -1,5 +1,2 @@
-*.pth
-*.onnx
-*.TF
-*.tflite
+output/
 __pycache__

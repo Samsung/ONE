@@ -23,6 +23,8 @@ import tensorflow as tf
 import importlib
 import argparse
 
+from pathlib import Path
+
 print("PyTorch version=", torch.__version__)
 print("ONNX version=", onnx.__version__)
 print("ONNX-TF version=", onnx_tf.__version__)
@@ -34,27 +36,35 @@ parser.add_argument('examples', metavar='EXAMPLES', nargs='+')
 
 args = parser.parse_args()
 
+output_folder = "./output/"
+
+Path(output_folder).mkdir(parents=True, exist_ok=True)
+
 for example in args.examples:
+    # load example code
     module = importlib.import_module("examples." + example)
-    torch.save(module._model_, example + ".pth")
+
+    # save .pth
+    torch.save(module._model_, output_folder + example + ".pth")
     print("Generate '" + example + ".pth' - Done")
 
-    torch.onnx.export(module._model_, module._dummy_, example + ".onnx", verbose=True)
+    torch.onnx.export(
+        module._model_, module._dummy_, output_folder + example + ".onnx", verbose=True)
     print("Generate '" + example + ".onnx' - Done")
 
-    onnx_model = onnx.load(example + ".onnx")
+    onnx_model = onnx.load(output_folder + example + ".onnx")
     onnx.checker.check_model(onnx_model)
 
     tf_prep = onnx_tf.backend.prepare(onnx_model)
-    tf_prep.export_graph(path = example + ".TF")
+    tf_prep.export_graph(path=output_folder + example + ".TF")
     print("Generate '" + example + " TF' - Done")
 
     # for testing...
-    converter = tf.lite.TFLiteConverter.from_saved_model(example + ".TF")
+    converter = tf.lite.TFLiteConverter.from_saved_model(output_folder + example + ".TF")
     converter.allow_custom_ops = True
     converter.experimental_new_converter = True
     converter.target_spec.supported_ops = [tf.lite.OpsSet.TFLITE_BUILTINS]
 
     tflite_model = converter.convert()
-    open(example + ".tflite", "wb").write(tflite_model)
+    open(output_folder + example + ".tflite", "wb").write(tflite_model)
     print("Generate '" + example + ".tflite' - Done")
