@@ -166,7 +166,7 @@ TEST(SparsifierTest, BlockDenseSparse_2)
   EXPECT_EQ(expected_data, data);
 }
 
-TEST(SparsifierTest, WrongTraversalOrderRank_neg)
+TEST(SparsifierTest, WrongTraversalOrderRank_NEG)
 {
   const std::vector<int32_t> dense_tensor_data = {0,  4, 8,  1,  5, 9,  2,  6, 10, 3,  7, 11,
                                                   12, 0, 20, 13, 0, 21, 14, 0, 22, 15, 0, 23};
@@ -180,7 +180,7 @@ TEST(SparsifierTest, WrongTraversalOrderRank_neg)
   EXPECT_THROW(sparsifier.DenseToSparse(dense_tensor_data.data()), std::out_of_range);
 }
 
-TEST(SparsifierTest, WrongFormatRank_neg)
+TEST(SparsifierTest, WrongFormatRank_NEG)
 {
   const std::vector<int32_t> dense_tensor_data = {0,  4, 8,  1,  5, 9,  2,  6, 10, 3,  7, 11,
                                                   12, 0, 20, 13, 0, 21, 14, 0, 22, 15, 0, 23};
