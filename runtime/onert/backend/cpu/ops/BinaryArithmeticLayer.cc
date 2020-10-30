@@ -40,7 +40,7 @@ template <nnfw::cker::BinaryArithmeticOpType arithmetic_type, typename T> struct
 
   Eval(const IPortableTensor *lhs, const IPortableTensor *rhs, IPortableTensor *output,
        nnfw::cker::BinaryArithmeticOpParam op_params)
-      : _op_params(std::move(op_params))
+      : _op_params(std::move(op_params)), _need_broadcast(false)
   {
     if (!output->is_dynamic())
       updateCache(lhs, rhs, output);
