@@ -615,16 +615,18 @@ protected:
 
   void run_WITHOUT_set_input_tensorinfo(const std::vector<int32_t> &cast_input,
                                         const std::vector<int32_t> &reshape_shape_input,
+                                        const nnfw_tensorinfo &expected_ti,
                                         const std::vector<float> &expected,
                                         std::vector<float> &actual)
   {
     setInputOutput(_session, cast_input, reshape_shape_input, actual);
     NNFW_ENSURE_SUCCESS(nnfw_run(_session));
-    verifyOutput(_session, reshape_shape_input, expected, actual);
+    verifyOutput(_session, expected_ti, expected, actual);
   }
 
   void run_WITH_set_input_tensorinfo(int32_t new_dim_0, const std::vector<int32_t> &cast_input,
                                      const std::vector<int32_t> &reshape_shape_input,
+                                     const nnfw_tensorinfo &expected_ti,
                                      const std::vector<float> &expected, std::vector<float> &actual)
   {
     nnfw_tensorinfo t_in;
@@ -635,7 +637,7 @@ protected:
 
     setInputOutput(_session, cast_input, reshape_shape_input, actual);
     NNFW_ENSURE_SUCCESS(nnfw_run(_session));
-    verifyOutput(_session, reshape_shape_input, expected, actual);
+    verifyOutput(_session, expected_ti, expected, actual);
   }
 
 private:
@@ -676,17 +678,20 @@ TEST_F(CombinationTest1, combination_of_set_input_tensorinfo_and_nnfw_run)
     cast_in_buf = {10};
     reshape_shape_in_buf = {1, 4};
     expected = {10, 11, 12, 13};
-    run_WITHOUT_set_input_tensorinfo(cast_in_buf, reshape_shape_in_buf, expected, actual);
+    run_WITHOUT_set_input_tensorinfo(cast_in_buf, reshape_shape_in_buf,
+                                     {NNFW_TYPE_TENSOR_FLOAT32, 2, {1, 4}}, expected, actual);
 
     // change to the default shape [1] of #0, this treats 0# dynamic
     int32_t new_dim_0 = 1;
     cast_in_buf = {10};
     reshape_shape_in_buf = {1, 4};
     expected = {10, 11, 12, 13};
-    run_WITH_set_input_tensorinfo(new_dim_0, cast_in_buf, reshape_shape_in_buf, expected, actual);
+    run_WITH_set_input_tensorinfo(new_dim_0, cast_in_buf, reshape_shape_in_buf,
+                                  {NNFW_TYPE_TENSOR_FLOAT32, 2, {1, 4}}, expected, actual);
 
     // no change. Use previous shape
-    run_WITHOUT_set_input_tensorinfo(cast_in_buf, reshape_shape_in_buf, expected, actual);
+    run_WITHOUT_set_input_tensorinfo(cast_in_buf, reshape_shape_in_buf,
+                                     {NNFW_TYPE_TENSOR_FLOAT32, 2, {1, 4}}, expected, actual);
 
     NNFW_ENSURE_SUCCESS(nnfw_close_session(session));
   }
@@ -701,17 +706,20 @@ TEST_F(CombinationTest1, combination_of_set_input_tensorinfo_and_nnfw_run)
     cast_in_buf = {10};
     reshape_shape_in_buf = {1, 4};
     expected = {10, 11, 12, 13};
-    run_WITHOUT_set_input_tensorinfo(cast_in_buf, reshape_shape_in_buf, expected, actual);
+    run_WITHOUT_set_input_tensorinfo(cast_in_buf, reshape_shape_in_buf,
+                                     {NNFW_TYPE_TENSOR_FLOAT32, 2, {1, 4}}, expected, actual);
 
     // change shape of #0 to [2], this treats 0# dynamic
     int32_t new_dim_0 = 2;
     cast_in_buf = {10, 20};
     reshape_shape_in_buf = {2, 2};
     expected = {10, 21, 12, 23};
-    run_WITH_set_input_tensorinfo(new_dim_0, cast_in_buf, reshape_shape_in_buf, expected, actual);
+    run_WITH_set_input_tensorinfo(new_dim_0, cast_in_buf, reshape_shape_in_buf,
+                                  {NNFW_TYPE_TENSOR_FLOAT32, 2, {2, 2}}, expected, actual);
 
     // no change. Use previous shape
-    run_WITH_set_input_tensorinfo(new_dim_0, cast_in_buf, reshape_shape_in_buf, expected, actual);
+    run_WITH_set_input_tensorinfo(new_dim_0, cast_in_buf, reshape_shape_in_buf,
+                                  {NNFW_TYPE_TENSOR_FLOAT32, 2, {2, 2}}, expected, actual);
 
     NNFW_ENSURE_SUCCESS(nnfw_close_session(session));
   }
@@ -726,21 +734,24 @@ TEST_F(CombinationTest1, combination_of_set_input_tensorinfo_and_nnfw_run)
     cast_in_buf = {10};
     reshape_shape_in_buf = {1, 4};
     expected = {10, 11, 12, 13};
-    run_WITHOUT_set_input_tensorinfo(cast_in_buf, reshape_shape_in_buf, expected, actual);
+    run_WITHOUT_set_input_tensorinfo(cast_in_buf, reshape_shape_in_buf,
+                                     {NNFW_TYPE_TENSOR_FLOAT32, 2, {1, 4}}, expected, actual);
 
     // change shape of #0 to [2], this treats 0# dynamic
     int32_t new_dim_0 = 2;
     cast_in_buf = {10, 20};
     reshape_shape_in_buf = {2, 2};
     expected = {10, 21, 12, 23};
-    run_WITH_set_input_tensorinfo(new_dim_0, cast_in_buf, reshape_shape_in_buf, expected, actual);
+    run_WITH_set_input_tensorinfo(new_dim_0, cast_in_buf, reshape_shape_in_buf,
+                                  {NNFW_TYPE_TENSOR_FLOAT32, 2, {2, 2}}, expected, actual);
 
     // change #0 to shape [1]
     new_dim_0 = 1;
     cast_in_buf = {100};
     reshape_shape_in_buf = {1, 4};
     expected = {100, 101, 102, 103};
-    run_WITH_set_input_tensorinfo(new_dim_0, cast_in_buf, reshape_shape_in_buf, expected, actual);
+    run_WITH_set_input_tensorinfo(new_dim_0, cast_in_buf, reshape_shape_in_buf,
+                                  {NNFW_TYPE_TENSOR_FLOAT32, 2, {1, 4}}, expected, actual);
 
     NNFW_ENSURE_SUCCESS(nnfw_close_session(session));
   }
@@ -772,7 +783,8 @@ TEST_F(CombinationTest1, neg_combination_of_set_input_tensorinfo_and_nnfw_run)
   cast_in_buf = {10, 20, 30, 40};
   reshape_shape_in_buf = {1, 4};
   expected = {10, 21, 32, 43};
-  run_WITH_set_input_tensorinfo(4, cast_in_buf, reshape_shape_in_buf, expected, actual);
+  run_WITH_set_input_tensorinfo(4, cast_in_buf, reshape_shape_in_buf,
+                                {NNFW_TYPE_TENSOR_FLOAT32, 2, {1, 4}}, expected, actual);
   setInputOutput(session, cast_in_buf, reshape_shape_in_buf, actual);
   NNFW_ENSURE_SUCCESS(nnfw_run(session));
 
