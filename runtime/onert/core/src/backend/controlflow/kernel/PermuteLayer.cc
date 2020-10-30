@@ -166,6 +166,19 @@ void PermuteLayer::appendPermuteTasks(const ITensor *src_tensor, ITensor *dst_te
   _tasks_map[src_tensor] = std::move(tasks);
 }
 
+void PermuteLayer::runPermuteTasks(backend::ITensor *src, uint8_t *dst_buffer)
+{
+  assert(src->getShape().num_elements() * ir::sizeOfDataType(src->data_type()) <=
+         src->total_size());
+  std::vector<PermuteWorkerTask> &tasks = _tasks_map.at(src);
+  for (size_t i = 0; i < tasks.size(); ++i)
+  {
+    tasks.at(i).setBuffers(src->buffer(), dst_buffer);
+  }
+  assert(tasks.size() >= 1);
+  _external_context->ruy_context()->mutable_thread_pool()->Execute(tasks.size(), tasks.data());
+}
+
 void PermuteLayer::run()
 {
   assert(_src_tensors.size() == _dst_tensors.size());
@@ -217,36 +230,55 @@ void PermuteLayer::run()
     auto src = *src_it;
     auto dst = *dst_it;
 
-    if (src != dst)
+    if (src->total_size() == 0)
     {
-      // Conditions to run permutation with multithreading
-      // 1. The tasks for multithreathing was created
-      // 2. The tasks's size > 1
-      // 3. Both tensors are not dynamic
-      if (_tasks_map.find(src) == _tasks_map.end() || _tasks_map.at(src).size() == 1 ||
-          src->is_dynamic() || dst->is_dynamic())
+      assert(dst->total_size() == 0);
+    }
+    else
+    {
+      if (src != dst)
       {
-        permute(src, dst, src->num_dimensions());
-      }
-      else
-      {
-        auto fn = [&](backend::ITensor &) {
-          dst->access([&](backend::ITensor &) {
-            assert(src->getShape().num_elements() * ir::sizeOfDataType(src->data_type()) <=
-                   src->total_size());
-            assert(src->getShape().num_elements() * ir::sizeOfDataType(src->data_type()) <=
-                   dst->total_size());
-            std::vector<PermuteWorkerTask> &tasks = _tasks_map.at(src);
-            for (size_t i = 0; i < tasks.size(); ++i)
-            {
-              tasks.at(i).setBuffers(src->buffer(), dst->buffer());
-            }
-            assert(tasks.size() >= 1);
-            _external_context->ruy_context()->mutable_thread_pool()->Execute(tasks.size(),
-                                                                             tasks.data());
-          });
-        };
-        src->access(fn);
+        // Conditions to run permutation with multithreading
+        // 1. The tasks for multithreathing was created
+        // 2. The tasks's size > 1
+        // 3. Both tensors are not dynamic
+        if (_tasks_map.find(src) == _tasks_map.end() || _tasks_map.at(src).size() == 1 ||
+            src->is_dynamic() || dst->is_dynamic())
+        {
+          permute(src, dst, src->num_dimensions());
+        }
+        // If dst is subtensor, we have to use clEnqueueMapBuffer instead of clEnqueueWirteBuffer
+        else if (dst->needMemoryMap() && !dst->is_subtensor())
+        {
+          if (!src->has_padding() && !dst->has_padding() && src->layout() == dst->layout())
+          {
+            // This is more effective than multi-threading
+            src->access([&](backend::ITensor &) { dst->enqueueWriteBuffer(src->buffer(), false); });
+          }
+          else
+          {
+            // TODO Optimize this block in case of that padding size of dst is big.
+            _buffers_map[dst].reserve(dst->total_size());
+            auto dst_buffer = _buffers_map[dst].data();
+
+            src->access([&](backend::ITensor &) { runPermuteTasks(src, dst_buffer); });
+            dst->enqueueWriteBuffer(dst_buffer, false);
+          }
+        }
+        else if (src->needMemoryMap() && !src->is_subtensor() && !src->has_padding() &&
+                 !dst->has_padding() && src->layout() == dst->layout())
+        {
+          // This is more effective than multi-threading
+          assert(!dst->needMemoryMap());
+          dst->access([&](backend::ITensor &) { src->enqueueReadBuffer(dst->buffer(), true); });
+        }
+        else
+        {
+          auto fn = [&](backend::ITensor &) {
+            dst->access([&](backend::ITensor &) { runPermuteTasks(src, dst->buffer()); });
+          };
+          src->access(fn);
+        }
       }
     }
     src_it++;
