@@ -1,20 +1,21 @@
 # PyTorch examples
 
-Python example to produce PyTorch and ONNX files
+Python example to convert PyTorch/Caffe to ONNX/TF/tflite models
 
-## Prerequisite
+## Package versions
 
 - Python 3.X
 - PyTorch 1.7
 - ONNX 1.7.0
 - ONNX-TensorFlow 1.6.0
+- TensorFlow 2.3.0
 
 ## Directory Layout
 
 ```
-c2em.py <- Caffe2 Example Manager
-tpem.py <- PyThorch Example Manager
-pthdump.py <- .pth file dumper
+c2em.py     <- Caffe2 Example Manager
+tpem.py     <- PyThorch Example Manager
+pthdump.py  <- .pth file dumper
 examples/
   [EXAMPLE NAME]/
     __init__.py
