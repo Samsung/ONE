@@ -22,31 +22,89 @@
 #include "CircleGen.h"
 #include "GenModelTest.h"
 
-void set_input_output(nnfw_session *session, const std::vector<float> &input,
-                      std::vector<float> &actual_output)
-{
-  ASSERT_EQ(nnfw_set_input(session, 0, NNFW_TYPE_TENSOR_FLOAT32, input.data(),
-                           sizeof(float) * input.size()),
-            NNFW_STATUS_NO_ERROR);
+// This macro can be used instead of using NNFW_ENSURE_SUCCESS especially with negative test.
+// E.g., setInputOutput() is written with this macro and the following check is available to check
+// if there's any error while setting input or output:
+//
+//  EXPECT_ANY_THROW(setInputOutput(...));
+//
+#define THROW_WHEN_NNFW_ERROR(result)                                  \
+  do                                                                   \
+  {                                                                    \
+    if (result != NNFW_STATUS_NO_ERROR)                                \
+      throw std::runtime_error("returning error on calling nnfw api"); \
+  } while (false)
 
-  ASSERT_EQ(nnfw_set_output(session, 0, NNFW_TYPE_TENSOR_FLOAT32, actual_output.data(),
-                            sizeof(float) * actual_output.size()),
-            NNFW_STATUS_NO_ERROR);
+template <class CPP_TYPE> struct nnfw_type;
+
+template <> struct nnfw_type<float>
+{
+  static const NNFW_TYPE dtype = NNFW_TYPE_TENSOR_FLOAT32;
+};
+
+template <> struct nnfw_type<int32_t>
+{
+  static const NNFW_TYPE dtype = NNFW_TYPE_TENSOR_INT32;
+};
+
+// TODO Add more struct nnfw_type for other types when needed
+
+template <class T_INPUT, class T_OUT>
+void setInputOutput(nnfw_session *session, const std::vector<T_INPUT> &input,
+                    std::vector<T_OUT> &actual_output)
+{
+  NNFW_STATUS result;
+  result = nnfw_set_input(session, 0, nnfw_type<T_INPUT>::dtype, input.data(),
+                          sizeof(T_INPUT) * input.size());
+  THROW_WHEN_NNFW_ERROR(result);
+
+  result = nnfw_set_output(session, 0, nnfw_type<T_OUT>::dtype, actual_output.data(),
+                           sizeof(T_OUT) * actual_output.size());
+  THROW_WHEN_NNFW_ERROR(result);
 }
 
-void set_input_output(nnfw_session *session, const std::vector<float> &input0,
-                      const std::vector<float> &input1, std::vector<float> &actual_output)
+template <class T_INPUT0, class T_INPUT1, class T_OUT>
+void setInputOutput(nnfw_session *session, const std::vector<T_INPUT0> &input0,
+                    const std::vector<T_INPUT1> &input1, std::vector<T_OUT> &actual_output)
 {
-  ASSERT_EQ(nnfw_set_input(session, 0, NNFW_TYPE_TENSOR_FLOAT32, input0.data(),
-                           sizeof(float) * input0.size()),
-            NNFW_STATUS_NO_ERROR);
-  ASSERT_EQ(nnfw_set_input(session, 1, NNFW_TYPE_TENSOR_FLOAT32, input1.data(),
-                           sizeof(float) * input1.size()),
-            NNFW_STATUS_NO_ERROR);
+  NNFW_STATUS result;
+  result = nnfw_set_input(session, 0, nnfw_type<T_INPUT0>::dtype, input0.data(),
+                          sizeof(T_INPUT0) * input0.size());
+  THROW_WHEN_NNFW_ERROR(result);
 
-  ASSERT_EQ(nnfw_set_output(session, 0, NNFW_TYPE_TENSOR_FLOAT32, actual_output.data(),
-                            sizeof(float) * actual_output.size()),
-            NNFW_STATUS_NO_ERROR);
+  result = nnfw_set_input(session, 1, nnfw_type<T_INPUT1>::dtype, input1.data(),
+                          sizeof(T_INPUT1) * input1.size());
+  THROW_WHEN_NNFW_ERROR(result);
+
+  result = nnfw_set_output(session, 0, nnfw_type<T_OUT>::dtype, actual_output.data(),
+                           sizeof(T_OUT) * actual_output.size());
+  THROW_WHEN_NNFW_ERROR(result);
+}
+
+template <class T_OUTPUT>
+void verifyOutput(nnfw_session *session, const nnfw_tensorinfo expected_ti,
+                  const std::vector<T_OUTPUT> &expected, const std::vector<T_OUTPUT> &actual)
+{
+  uint32_t output_num = -1;
+  nnfw_tensorinfo t_out;
+  NNFW_ENSURE_SUCCESS(nnfw_output_size(session, &output_num));
+  NNFW_ENSURE_SUCCESS(nnfw_output_tensorinfo(session, 0, &t_out));
+
+  ASSERT_EQ(output_num, 1);
+
+  // nnfw_tensorinfo of output
+  tensorInfoEqual(t_out, expected_ti);
+
+  // value of output
+  ASSERT_EQ(expected.size(), actual.size());
+  for (int i = 0; i < expected.size(); i++)
+  {
+    bool is_output_float = std::is_same<T_OUTPUT, float>::value;
+    if (is_output_float)
+      ASSERT_FLOAT_EQ(expected[i], actual[i]);
+    else
+      ASSERT_EQ(expected[i], actual[i]);
+  }
 }
 
 /**
@@ -230,15 +288,13 @@ TEST(TestDynamicTensor, concat_unknown_dim_input0_to_2x3)
   NNFW_ENSURE_SUCCESS(nnfw_set_input_tensorinfo(session, 0, &ti));
   NNFW_ENSURE_SUCCESS(nnfw_prepare(session));
 
-  set_input_output(session, input0, input1, actual_output);
+  setInputOutput(session, input0, input1, actual_output);
 
   // Do inference
   NNFW_STATUS res = nnfw_run(session);
   NNFW_ENSURE_SUCCESS(res);
 
-  // output value check
-  for (int i = 0; i < expected.size(); ++i)
-    ASSERT_EQ(expected[i], actual_output[i]);
+  verifyOutput(session, {NNFW_TYPE_TENSOR_FLOAT32, 2, {3, 3}}, expected, actual_output);
 }
 
 /**
@@ -335,15 +391,13 @@ TEST(TestDynamicTensor, set_input_tensorinfo_after_compilation_add)
 
   NNFW_ENSURE_SUCCESS(nnfw_set_input_tensorinfo(session, 0, &input0_ti));
 
-  set_input_output(session, input0, input1, actual_output);
+  setInputOutput(session, input0, input1, actual_output);
 
   // Do inference
   NNFW_STATUS res = nnfw_run(session);
   NNFW_ENSURE_SUCCESS(res);
 
-  // output value check
-  for (int i = 0; i < expected_output.size(); ++i)
-    ASSERT_EQ(expected_output[i], actual_output[i]);
+  verifyOutput(session, {NNFW_TYPE_TENSOR_FLOAT32, 3, {2, 3, 3}}, expected_output, actual_output);
 }
 
 /**
@@ -421,15 +475,14 @@ TEST(TestDynamicTensor, set_input_tensorinfo_after_compilation_neg)
     ASSERT_TRUE(tensorInfoEqual(input0_ti, ti));
   }
 
-  set_input_output(session, input0, actual_output);
+  setInputOutput(session, input0, actual_output);
 
   // Do inference
   NNFW_STATUS res = nnfw_run(session);
   NNFW_ENSURE_SUCCESS(res);
 
   // output value check
-  for (int i = 0; i < expected_output.size(); ++i)
-    ASSERT_EQ(expected_output[i], actual_output[i]);
+  verifyOutput(session, {NNFW_TYPE_TENSOR_FLOAT32, 2, {20, 50}}, expected_output, actual_output);
 }
 
 using TestWhileDynamicModelLoaded = ValidationTestModelLoaded<NNPackages::WHILE_DYNAMIC>;
@@ -449,17 +502,13 @@ TEST_F(TestWhileDynamicModelLoaded, run_verify)
   nnfw_tensorinfo ti = {NNFW_TYPE_TENSOR_FLOAT32, 3, {1, 28, 28}};
   NNFW_ENSURE_SUCCESS(nnfw_set_input_tensorinfo(_session, 0, &ti));
 
-  set_input_output(_session, while_dynamic_input0, actual_output0);
+  setInputOutput(_session, while_dynamic_input0, actual_output0);
 
   NNFW_ENSURE_SUCCESS(nnfw_run(_session));
 
-  nnfw_tensorinfo ti_output0_expected = {NNFW_TYPE_TENSOR_FLOAT32, 2, {1, 10}};
-  NNFW_ENSURE_SUCCESS(nnfw_output_tensorinfo(_session, 0, &ti));
-  ASSERT_TRUE(tensorInfoEqual(ti, ti_output0_expected));
-
-  // output value check
-  for (int i = 0; i < actual_output0.size(); ++i)
-    ASSERT_FLOAT_EQ(while_dynamic_output0[i], actual_output0[i]);
+  // output check
+  verifyOutput(_session, {NNFW_TYPE_TENSOR_FLOAT32, 2, {1, 10}}, while_dynamic_output0,
+               actual_output0);
 }
 
 TEST_F(TestWhileDynamicModelLoaded, neg_run_verify)
@@ -473,7 +522,7 @@ TEST_F(TestWhileDynamicModelLoaded, neg_run_verify)
   // Insufficient size of output (10 or more is sufficient)
   std::vector<float> actual_output0(9);
 
-  set_input_output(_session, while_dynamic_input0, actual_output0);
+  setInputOutput(_session, while_dynamic_input0, actual_output0);
 
   ASSERT_EQ(nnfw_run(_session), NNFW_STATUS_INSUFFICIENT_OUTPUT_SIZE);
 }
@@ -500,7 +549,7 @@ TEST_F(TestIfDynamicModelLoaded, run_verify)
   }
 
   std::vector<float> actual_output0(10);
-  set_input_output(_session, if_dynamic_input0, actual_output0);
+  setInputOutput(_session, if_dynamic_input0, actual_output0);
 
   NNFW_ENSURE_SUCCESS(nnfw_run(_session));
 
