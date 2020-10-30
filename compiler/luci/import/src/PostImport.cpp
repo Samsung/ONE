@@ -231,18 +231,38 @@ public:
 
       auto cond_graph_input = cond_graph_inputs->at(cond_in->index());
       auto body_graph_input = body_graph_inputs->at(body_in->index());
-      if ((cond_in->rank() != body_in->rank()))
+      if (!(*cond_graph_input->shape() == *body_graph_input->shape()))
       {
-        INTERNAL_EXN_V("CircleWhile COND input and BODY input shape mismatch ", idx);
-      }
-      if (cond_in->rank() > 0 && body_in->rank() > 0)
-      {
-        if (!(*cond_graph_input->shape() == *body_graph_input->shape()))
+        bool is_valid = true;
+
+        if (cond_graph_input->shape()->rank() != body_graph_input->shape()->rank())
+          is_valid = false;
+
+        if (cond_in->shape_signature().rank() == 0 && body_in->shape_signature().rank() == 0)
+          is_valid = false;
+
+        if (is_valid)
         {
-          INTERNAL_EXN_V("CircleWhile COND input and BODY input shape mismatch ", idx);
+          for (uint32_t i = 0; i < body_graph_input->shape()->rank(); ++i)
+          {
+            if (cond_graph_input->shape()->dim(i).value() !=
+                body_graph_input->shape()->dim(i).value())
+            {
+              if ((cond_in->shape_signature().rank() != 0 &&
+                   cond_in->shape_signature().dim(i) == -1) ||
+                  (body_in->shape_signature().rank() != 0 &&
+                   body_in->shape_signature().dim(i) == -1))
+                continue;
+
+              is_valid = false;
+            }
+          }
         }
+
+        if (!is_valid)
+          INTERNAL_EXN_V("CircleWhile COND input and BODY input shape mismatch ", idx);
       }
-      if (cond_in->dtype() != body_in->dtype())
+      if (cond_graph_input->dtype() != body_graph_input->dtype())
       {
         INTERNAL_EXN_V("CircleWhile COND input and BODY input type mismatch ", idx);
       }
@@ -257,18 +277,38 @@ public:
 
       auto cond_graph_input = cond_graph_inputs->at(cond_in->index());
       auto body_graph_output = body_graph_outputs->at(body_out->index());
-      if ((cond_in->rank() != body_out->rank()))
+      if (!(*cond_graph_input->shape() == *body_graph_output->shape()))
       {
-        INTERNAL_EXN_V("CircleWhile COND input and BODY output shape mismatch ", idx);
-      }
-      if (cond_in->rank() > 0 && body_out->rank() > 0)
-      {
-        if (!(*cond_graph_input->shape() == *body_graph_output->shape()))
+        bool is_valid = true;
+
+        if (cond_graph_input->shape()->rank() != body_graph_output->shape()->rank())
+          is_valid = false;
+
+        if (cond_in->shape_signature().rank() == 0 && body_out->shape_signature().rank() == 0)
+          is_valid = false;
+
+        if (is_valid)
         {
-          INTERNAL_EXN_V("CircleWhile COND input and BODY output shape mismatch ", idx);
+          for (uint32_t i = 0; i < body_graph_output->shape()->rank(); ++i)
+          {
+            if (cond_graph_input->shape()->dim(i).value() !=
+                body_graph_output->shape()->dim(i).value())
+            {
+              if ((cond_in->shape_signature().rank() != 0 &&
+                   cond_in->shape_signature().dim(i) == -1) ||
+                  (body_out->shape_signature().rank() != 0 &&
+                   body_out->shape_signature().dim(i) == -1))
+                continue;
+
+              is_valid = false;
+            }
+          }
         }
+
+        if (!is_valid)
+          INTERNAL_EXN_V("CircleWhile COND input and BODY output shape mismatch ", idx);
       }
-      if (cond_in->dtype() != body_out->dtype())
+      if (cond_graph_input->dtype() != body_graph_output->dtype())
       {
         INTERNAL_EXN_V("CircleWhile COND input and BODY output type mismatch ", idx);
       }

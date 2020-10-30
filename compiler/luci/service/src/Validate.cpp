@@ -88,10 +88,27 @@ bool validate_shape_dtype(loco::Graph *g)
     assert(go_tensor_shape);
     if (!(co_tensor_shape == *go_tensor_shape))
     {
-      INFO(l) << "[luci] Shape for output #" << out_index << " not same " << std::endl;
-      INFO(l) << "[luci]    " << circle_node->name() << " " << co_tensor_shape << " vs "
-              << *go_tensor_shape << std::endl;
-      return false;
+      bool res = true;
+
+      if (co_tensor_shape.rank() == go_tensor_shape->rank())
+      {
+        for (uint32_t i = 0; i < co_tensor_shape.rank(); ++i)
+        {
+          if (co_tensor_shape.dim(i).value() != go_tensor_shape->dim(i).value() &&
+              circle_node->shape_signature().dim(i) != -1)
+            res = false;
+        }
+      }
+      else
+        res = false;
+
+      if (res == false)
+      {
+        INFO(l) << "[luci] Shape for output #" << out_index << " not same " << std::endl;
+        INFO(l) << "[luci]    " << circle_node->name() << " " << co_tensor_shape << " vs "
+                << *go_tensor_shape << std::endl;
+        return false;
+      }
     }
 
     // check if data type match
