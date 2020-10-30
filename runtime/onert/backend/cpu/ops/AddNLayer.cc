@@ -42,22 +42,22 @@ void AddNLayer::run()
 {
   if (_output->data_type() == ir::DataType::INT32)
   {
-    const int32_t **inputs = (const int32_t **)malloc(sizeof(int32_t *) * _num_inputs);
+    std::vector<const int32_t *> input_buffers(_num_inputs);
     for (size_t i = 0; i < _num_inputs; i++)
     {
-      inputs[i] = reinterpret_cast<int32_t *>(_inputs[i]->buffer());
+      input_buffers[i] = reinterpret_cast<int32_t *>(_inputs[i]->buffer());
     }
-    AddN(getTensorShape(_inputs[0]), _num_inputs, reinterpret_cast<const int32_t **>(inputs),
+    AddN(getTensorShape(_inputs[0]), _num_inputs, input_buffers.data(),
          reinterpret_cast<int32_t *>(_output->buffer()));
   }
   else if (_output->data_type() == ir::DataType::FLOAT32)
   {
-    const float **inputs = (const float **)malloc(sizeof(float *) * _num_inputs);
+    std::vector<const float *> input_buffers(_num_inputs);
     for (size_t i = 0; i < _num_inputs; i++)
     {
-      inputs[i] = reinterpret_cast<float *>(_inputs[i]->buffer());
+      input_buffers[i] = reinterpret_cast<float *>(_inputs[i]->buffer());
     }
-    AddN(getTensorShape(_inputs[0]), _num_inputs, reinterpret_cast<const float **>(inputs),
+    AddN(getTensorShape(_inputs[0]), _num_inputs, input_buffers.data(),
          reinterpret_cast<float *>(_output->buffer()));
   }
   else
