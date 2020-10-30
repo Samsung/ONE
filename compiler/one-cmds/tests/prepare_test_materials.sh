@@ -49,7 +49,7 @@ if [[ ! -s "bcq.pb" ]]; then
     unzip bcq.pb.zip
 fi
 
-# prepare 'inception_v3.circle' file used for quantizatio test
+# prepare 'inception_v3.circle' file used for quantization test
 inputfile="./inception_v3.pb"
 outputfile="./inception_v3.circle"
 
