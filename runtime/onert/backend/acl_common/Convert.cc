@@ -360,6 +360,14 @@ arm_compute::PixelValue asPixelValue(const ir::Operand &operand)
   }
 }
 
+arm_compute::Size2D asDilation(uint32_t dilation_width, uint32_t dilation_height)
+{
+  assert(dilation_width != 0);
+  assert(dilation_height != 0);
+
+  return arm_compute::Size2D(dilation_width, dilation_height);
+}
+
 } // namespace acl_common
 } // namespace backend
 } // namespace onert

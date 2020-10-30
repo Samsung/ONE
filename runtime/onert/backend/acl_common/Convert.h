@@ -87,6 +87,7 @@ arm_compute::PoolingType convertPoolType(ir::operation::Pool2D::PoolType pool_ty
 arm_compute::ReductionOperation convertReduceType(ir::operation::Reduce::ReduceType reduce_type_ir);
 
 arm_compute::PixelValue asPixelValue(const ir::Operand &operand);
+arm_compute::Size2D asDilation(uint32_t dilation_width, uint32_t dilation_height);
 
 } // namespace acl_common
 } // namespace backend

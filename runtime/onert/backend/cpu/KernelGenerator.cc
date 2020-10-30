@@ -359,6 +359,8 @@ void KernelGenerator::visit(const ir::operation::DepthwiseConv2D &node)
                                             ker_width, ker_height);
   const auto multiplier = node.param().multiplier;
   const auto activation = node.param().activation;
+  const auto dilation_width = node.param().dilation.width_factor;
+  const auto dilation_height = node.param().dilation.height_factor;
 
   auto ofm_tensor = _tensor_reg->getPortableTensor(ofm_index);
   auto ifm_tensor = _tensor_reg->getPortableTensor(ifm_index);
@@ -368,8 +370,8 @@ void KernelGenerator::visit(const ir::operation::DepthwiseConv2D &node)
   auto fn = std::make_unique<ops::DepthwiseConvolutionLayer>();
 
   fn->configure(ifm_tensor, ker_tensor, bias_tensor, padding.left, padding.right, padding.top,
-                padding.bottom, stride.horizontal, stride.vertical, multiplier, activation,
-                ofm_tensor);
+                padding.bottom, stride.horizontal, stride.vertical, multiplier, dilation_width,
+                dilation_height, activation, ofm_tensor);
 
   _return_fn = std::move(fn);
 }

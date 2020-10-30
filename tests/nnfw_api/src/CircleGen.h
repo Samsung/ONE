@@ -146,6 +146,10 @@ public:
                            circle::TensorType output_type);
   uint32_t addOperatorConcatenation(const OperatorParams &params, int axis,
                                     circle::ActivationFunctionType actfn);
+  uint32_t addOperatorDepthwiseConv2D(const OperatorParams &params, circle::Padding padding,
+                                      int stride_w, int stride_h, int depth_multiplier,
+                                      circle::ActivationFunctionType actfn, int dilation_w = 1,
+                                      int dilation_h = 1);
   uint32_t addOperatorCos(const OperatorParams &params);
   uint32_t addOperatorEqual(const OperatorParams &params);
   uint32_t addOperatorFill(const OperatorParams &params);

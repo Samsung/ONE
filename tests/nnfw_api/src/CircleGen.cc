@@ -141,6 +141,20 @@ uint32_t CircleGen::addOperatorCos(const OperatorParams &params)
                                 circle::BuiltinOptions_CosOptions, options);
 }
 
+uint32_t CircleGen::addOperatorDepthwiseConv2D(const OperatorParams &params,
+                                               circle::Padding padding, int stride_w, int stride_h,
+                                               int depth_multiplier,
+                                               circle::ActivationFunctionType actfn, int dilation_w,
+                                               int dilation_h)
+{
+  auto options =
+      circle::CreateDepthwiseConv2DOptions(_fbb, padding, stride_w, stride_h, depth_multiplier,
+                                           actfn, dilation_w, dilation_h)
+          .Union();
+  return addOperatorWithOptions(params, circle::BuiltinOperator_DEPTHWISE_CONV_2D,
+                                circle::BuiltinOptions_DepthwiseConv2DOptions, options);
+}
+
 uint32_t CircleGen::addOperatorEqual(const OperatorParams &params)
 {
   auto options = circle::CreateEqualOptions(_fbb).Union();

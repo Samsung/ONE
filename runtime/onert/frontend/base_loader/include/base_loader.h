@@ -607,6 +607,8 @@ void BaseLoader<LoaderDomain>::loadDepthwiseConv2D(const Operator *op, ir::Graph
   loadStridesAndPaddings(param, options);
   param.multiplier = options->depth_multiplier();
   // Dilation h/w factor unused
+  param.dilation.width_factor = options->dilation_w_factor();
+  param.dilation.height_factor = options->dilation_h_factor();
 
   loadOperationTo<ir::operation::DepthwiseConv2D>(op, subg, param);
 }
