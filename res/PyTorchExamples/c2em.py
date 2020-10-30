@@ -39,8 +39,8 @@ output_folder = "./output/"
 for example in args.examples:
     module = importlib.import_module("c2examples." + example)
 
-    onnx_model = c2f.caffe2_net_to_onnx_model(
-        module._model_._net, module._model_init_._net, module._value_info_)
+    onnx_model = c2f.caffe2_net_to_onnx_model(module._model_._net,
+                                              module._model_init_._net, module._dummy_)
     onnx.checker.check_model(onnx_model)
     onnx.save(onnx_model, output_folder + example + ".onnx")
 
