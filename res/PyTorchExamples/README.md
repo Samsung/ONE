@@ -6,7 +6,7 @@ Python example to convert PyTorch to ONNX/TF/tflite models
 
 - Python 3.X
 - torch==1.7.0
-- onnx=1.7.0
+- onnx==1.7.0
 - onnx-tf==1.6.0 (see note)
 - tensorflow-cpu==2.3.0
 - tensorflow-addons
