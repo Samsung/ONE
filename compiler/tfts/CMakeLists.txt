@@ -1,9 +1,8 @@
 nncc_find_resource(TensorFlowTests)
-nnas_find_package(TensorFlow QUIET)
 
-if(NOT TensorFlow_FOUND)
+if(NOT TARGET nnkit_tf_backend)
   return()
-endif(NOT TensorFlow_FOUND)
+endif(NOT TARGET nnkit_tf_backend)
 
 if(NOT TARGET tfkit)
   return()
