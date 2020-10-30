@@ -61,7 +61,7 @@ LoweredGraph::LoweredGraph(const ir::Graph &graph, const CompilerOptions &option
     // we should change it back(throw if backend is not loaded) later.
     if (!backend)
     {
-      VERBOSE(LoweredGraph) << "Cannot load backend - " << backend_str;
+      VERBOSE(LoweredGraph) << "Cannot load backend - " << backend_str << std::endl;
       continue;
     }
 
@@ -459,7 +459,7 @@ void LoweredGraph::dumpLowerInfo()
   {
     if (!e.second.empty())
     {
-      VERBOSE(Lower) << e.second;
+      VERBOSE(Lower) << e.second << std::endl;
     }
   }
 }
