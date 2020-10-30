@@ -1,6 +1,6 @@
 set(BCQ_TOOLS_FILES
-    generate_bcq_metadata
-    generate_bcq_output_arrays
+    generate_bcq_metadata.py
+    generate_bcq_output_arrays.py
 )
 
 foreach(BCQ_TOOLS IN ITEMS ${BCQ_TOOLS_FILES})
