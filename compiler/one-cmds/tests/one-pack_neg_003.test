@@ -21,7 +21,7 @@ filename="${filename_ext%.*}"
 
 trap_err_onexit()
 {
-  if grep -q "output path not set" "${filename}.log"; then
+  if grep -q "the following arguments are required: -o/--output_path" "${filename}.log"; then
     echo "${filename_ext} SUCCESS"
     exit 0
   fi
@@ -39,7 +39,7 @@ touch ./sample.circle
 
 # run test
 one-pack \
--i ./sample.circle > ${filename}.log
+-i ./sample.circle > "${filename}.log" 2>&1
 
 echo "${filename_ext} FAILED"
 exit 255
