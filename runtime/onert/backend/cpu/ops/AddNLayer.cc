@@ -30,10 +30,10 @@ namespace cpu
 namespace ops
 {
 
-void AddNLayer::configure(const IPortableTensor **inputs, size_t num_inputs,
+void AddNLayer::configure(std::vector<const IPortableTensor *> &&inputs, size_t num_inputs,
                           IPortableTensor *output)
 {
-  _inputs = inputs;
+  _inputs = std::move(inputs);
   _num_inputs = num_inputs;
   _output = output;
 }
