@@ -320,21 +320,9 @@ void KernelGenerator::visit(const ir::operation::ElementwiseActivation &node)
   const ::arm_compute::ActivationLayerInfo act_info = acl_common::asActivationLayerInfo(
       node.param().op_type, node.param().alpha, node.param().beta);
 
-  std::unique_ptr<arm_compute::IFunction> fn;
-  if (node.param().op_type == ir::operation::ElementwiseActivation::Type::LOGISTIC)
-  {
-    // NOTE NEActivationLayer can generate produce erroneous results. it were caused by
-    // 'vexpq_f32()'.
-    // The neon function returns a value outside of the limit of representation in float as 'NaN'
-    // instead of 'INF', and then the result of this op will be errors due to the 'NaN'.
-    fn = acl_common::generateLayer<arm_compute::NEActivationLayerEx>(
-        ifm_tensor->handle(), ofm_tensor->handle(), act_info);
-  }
-  else
-  {
-    fn = acl_common::generateLayer<arm_compute::NEActivationLayer>(ifm_tensor->handle(),
-                                                                   ofm_tensor->handle(), act_info);
-  }
+  std::unique_ptr<arm_compute::IFunction> fn =
+      acl_common::generateLayer<arm_compute::NEActivationLayer>(ifm_tensor->handle(),
+                                                                ofm_tensor->handle(), act_info);
 
   _return_fn = asAclFunction(std::move(fn));
 }
