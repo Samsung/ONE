@@ -672,6 +672,7 @@ void quantize_const_inputs(luci::CircleNode *node, loco::DataType output_type)
     case luci::CircleOpcode::EQUAL:
     case luci::CircleOpcode::GREATER:
     case luci::CircleOpcode::GREATER_EQUAL:
+    case luci::CircleOpcode::INSTANCE_NORM:
     case luci::CircleOpcode::LESS:
     case luci::CircleOpcode::LESS_EQUAL:
     case luci::CircleOpcode::MAXIMUM:
