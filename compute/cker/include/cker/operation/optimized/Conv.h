@@ -184,11 +184,9 @@ inline void Conv(const ConvParams &params, const Shape &input_shape, const float
   const int dilation_height_factor = params.dilation_height_factor;
   const float output_activation_min = params.float_activation_min;
   const float output_activation_max = params.float_activation_max;
-  // TFLITE_DCHECK_EQ(input_shape.DimensionsCount(), 4);
-  // TFLITE_DCHECK_EQ(filter_shape.DimensionsCount(), 4);
-  // TFLITE_DCHECK_EQ(output_shape.DimensionsCount(), 4);
-
-  // ruy::profiler::ScopeLabel label("Conv");
+  assert(input_shape.DimensionsCount() == 4);
+  assert(filter_shape.DimensionsCount() == 4);
+  assert(output_shape.DimensionsCount() == 4);
 
   // NB: the float 0.0f value is represented by all zero bytes.
   const uint8_t float_zero_byte = 0x00;
@@ -208,7 +206,7 @@ inline void Conv(const ConvParams &params, const Shape &input_shape, const float
   }
   else if (need_im2col)
   {
-    // TFLITE_DCHECK(im2col_data);
+    assert(im2col_data);
     Im2col(params, filter_height, filter_width, float_zero_byte, input_shape, input_data,
            im2col_shape, im2col_data);
     gemm_input_data = im2col_data;
@@ -218,7 +216,7 @@ inline void Conv(const ConvParams &params, const Shape &input_shape, const float
   {
     // TODO(aselle): We need to make sure to not send im2col if it is not
     // needed.
-    // TFLITE_DCHECK(!im2col_data);
+    assert(!im2col_data);
     gemm_input_data = input_data;
     gemm_input_shape = &input_shape;
   }
@@ -260,9 +258,6 @@ inline void Conv(const ConvParams &params, const Shape &input_shape, const float
   ruy_support::MakeRuyMulParams(gemm_params, &ruy_mul_params);
 
   ruy::Mul(ruy_lhs, ruy_rhs, ruy_mul_params, ruy_context, &ruy_dst);
-
-  // cpu_backend_gemm::Gemm(lhs_params, filter_data, rhs_params, gemm_input_data, dst_params,
-  //  output_data, gemm_params, cpu_backend_context);
 }
 
 } // namespace optimized

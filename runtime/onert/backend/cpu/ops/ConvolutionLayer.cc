@@ -185,20 +185,6 @@ void ConvolutionLayer::prepare()
   {
     kernel.prepareQuant(getTensorShape(_input), getTensorShape(_kernel), getTensorShape(_output),
                         _strideWidth, _strideHeight);
-
-    // bool is_transposed = false;
-    // kernel.prepare(getTensorShape(_kernel), reinterpret_cast<const float *>(_kernel->buffer()),
-    //                getPaddingType(_paddingType), is_transposed, _dilationWidthFactor,
-    //                _dilationHeightFactor);
-
-    // Decrease reference of _kernel(weights) only when _kernel is constant
-    // if (is_transposed)
-    // {
-    //   auto kernel_tensor = dynamic_cast<const Tensor *>(_kernel);
-    //   if (kernel_tensor)
-    //     // TODO Remove const_cast
-    //     const_cast<Tensor *>(kernel_tensor)->decrease_ref();
-    // }
   }
   else if (_input->data_type() == OperandType::QUANT_UINT8_ASYMM && _kernel->is_constant() &&
            !_input->is_dynamic() && !_output->is_dynamic())

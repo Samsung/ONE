@@ -96,7 +96,7 @@ public:
     int im2col_size = _need_im2col ? _im2col_shape.FlatSize() : 1;
 
     // Use heap if size is larger than 8MB
-    if (im2col_size > 32 * 1024 * 1024)
+    if (im2col_size > 2 * 1024 * 1024)
     {
       std::unique_ptr<float[]> im2col_data = std::make_unique<float[]>(im2col_size);
       optimized::Conv(params, input_shape, input_data, filter_shape, filter_data, bias_shape,
@@ -111,29 +111,6 @@ public:
                       ruy_context);
     }
   }
-
-  /*
-  if (usableMultiThreaded(params.padding_type, params.dilation_width_factor,
-                          params.dilation_height_factor))
-  {
-    bool transposed_in_execution = false;
-    if (!_prepared)
-    {
-      // This means that filter is not constant
-      // TODO Apply optimized kernel if multithreaded kernel is slower than optimized kernel by
-      // transposing filter data
-      transposeFilter(filter_shape, filter_data, transposed_in_execution);
-    }
-    multithreaded::Conv(params, input_shape, input_data, filter_shape, &_modified_filter_data[0],
-                        bias_shape, bias_data, output_shape, output_data);
-  }
-  else
-  {
-    // TODO Support optimized kernel
-    reference::Conv(params, input_shape, input_data, filter_shape, filter_data, bias_shape,
-                    bias_data, output_shape, output_data);
-  }
-  */
 
   void operator()(const ConvParams &params, const Shape &input_shape, const uint8_t *input_data,
                   const Shape &filter_shape, const uint8_t *filter_data, const Shape &bias_shape,
