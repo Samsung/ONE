@@ -18,10 +18,12 @@
 #ifndef __NNFW_CKER_TYPES_H__
 #define __NNFW_CKER_TYPES_H__
 
+#include <cassert>
 #include <cstdint>
 #include <type_traits>
 #include <limits>
 #include <string>
+#include "Shape.h"
 
 namespace nnfw
 {

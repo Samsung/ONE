@@ -18,6 +18,7 @@
 #define __ONERT_BACKEND_CPU_OPS_CONVOLUTIONLAYER_H__
 
 #include <backend/IPortableTensor.h>
+#include "../ExternalContext.h"
 #include "OperationUtils.h"
 
 #include <exec/IFunction.h>
@@ -58,7 +59,7 @@ public:
                  const uint32_t paddingBottom, const uint32_t strideWidth,
                  const uint32_t strideHeight, const uint32_t dilationWidthFactor,
                  const uint32_t dilationHeightFactor, const ir::Activation activation,
-                 IPortableTensor *output);
+                 IPortableTensor *output, const std::shared_ptr<ExternalContext> &external_context);
 
   void run() override;
 
@@ -86,6 +87,8 @@ private:
   std::unique_ptr<nnfw::cker::Conv> _conv_kernel;
 
   bool _prepare;
+
+  std::shared_ptr<ExternalContext> _external_context;
 };
 
 } // namespace ops
