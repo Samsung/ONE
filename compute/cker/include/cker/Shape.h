@@ -172,7 +172,6 @@ public:
     for (int i = 0; i < _size; i++)
     {
       const int dim = dims_data[i];
-      assert(dim >= 1);
       buffer_size *= dim;
     }
     return buffer_size;
