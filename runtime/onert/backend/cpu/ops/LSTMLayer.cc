@@ -60,25 +60,6 @@ inline void initializeStateBuffer(const onert::backend::IPortableTensor *tensor_
 }
 }
 
-LSTMLayer::LSTMLayer()
-    : _input(nullptr), _input_to_input_weights(nullptr), _input_to_forget_weights(nullptr),
-      _input_to_cell_weights(nullptr), _input_to_output_weights(nullptr),
-      _recurrent_to_input_weights(nullptr), _recurrent_to_forget_weights(nullptr),
-      _recurrent_to_cell_weights(nullptr), _recurrent_to_output_weights(nullptr),
-      _cell_to_input_weights(nullptr), _cell_to_forget_weights(nullptr),
-      _cell_to_output_weights(nullptr), _input_layer_norm_coefficients(nullptr),
-      _forget_layer_norm_coefficients(nullptr), _cell_layer_norm_coefficients(nullptr),
-      _output_layer_norm_coefficients(nullptr), _input_gate_bias(nullptr),
-      _forget_gate_bias(nullptr), _cell_gate_bias(nullptr), _output_gate_bias(nullptr),
-      _projection_weights(nullptr), _projection_bias(nullptr), _output_state_in(nullptr),
-      _cell_state_in(nullptr), _scratch_buffer(nullptr), _output_state(nullptr),
-      _cell_state(nullptr), _output(nullptr), _scratch_vec(), _output_state_vec(),
-      _cell_state_vec(), _params(), _forward_sequence(true), _time_major(true), _output_offset(0),
-      _has_output_state_data(false), _has_cell_state_data(false)
-{
-  // DO NOTHING
-}
-
 void LSTMLayer::LSTMFloat()
 {
   assert(_input->num_dimensions() >= 2 && _input->num_dimensions() <= 3);

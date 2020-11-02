@@ -27,14 +27,6 @@ namespace cpu
 namespace ops
 {
 
-DepthwiseConvolutionLayer::DepthwiseConvolutionLayer()
-    : _input(nullptr), _kernel(nullptr), _bias(nullptr), _output(nullptr), _paddingLeft(0),
-      _paddingTop(0), _paddingRight(0), _paddingBottom(0), _strideWidth(0), _strideHeight(0),
-      _multiplier(0), _activation(ir::Activation::NONE)
-{
-  // DO NOTHING
-}
-
 void DepthwiseConvolutionLayer::convFloat32()
 {
   float output_activation_min = 0, output_activation_max = 0;

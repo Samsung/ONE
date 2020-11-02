@@ -44,7 +44,7 @@ namespace ops
 class LSTMLayer : public ::onert::exec::IFunction
 {
 public:
-  LSTMLayer();
+  LSTMLayer() = default;
 
 public:
   void LSTMFloat();
@@ -80,48 +80,48 @@ public:
   void run() override;
 
 private:
-  const IPortableTensor *_input;
-  const IPortableTensor *_input_to_input_weights;
-  const IPortableTensor *_input_to_forget_weights;
-  const IPortableTensor *_input_to_cell_weights;
-  const IPortableTensor *_input_to_output_weights;
-  const IPortableTensor *_recurrent_to_input_weights;
-  const IPortableTensor *_recurrent_to_forget_weights;
-  const IPortableTensor *_recurrent_to_cell_weights;
-  const IPortableTensor *_recurrent_to_output_weights;
-  const IPortableTensor *_cell_to_input_weights;
-  const IPortableTensor *_cell_to_forget_weights;
-  const IPortableTensor *_cell_to_output_weights;
-  const IPortableTensor *_input_layer_norm_coefficients;
-  const IPortableTensor *_forget_layer_norm_coefficients;
-  const IPortableTensor *_cell_layer_norm_coefficients;
-  const IPortableTensor *_output_layer_norm_coefficients;
-  const IPortableTensor *_aux_input;
-  const IPortableTensor *_aux_input_to_input_weights;
-  const IPortableTensor *_aux_input_to_forget_weights;
-  const IPortableTensor *_aux_input_to_cell_weights;
-  const IPortableTensor *_aux_input_to_output_weights;
-  const IPortableTensor *_input_gate_bias;
-  const IPortableTensor *_forget_gate_bias;
-  const IPortableTensor *_cell_gate_bias;
-  const IPortableTensor *_output_gate_bias;
-  const IPortableTensor *_projection_weights;
-  const IPortableTensor *_projection_bias;
-  const IPortableTensor *_output_state_in;
-  const IPortableTensor *_cell_state_in;
-  IPortableTensor *_scratch_buffer;
-  IPortableTensor *_output_state;
-  IPortableTensor *_cell_state;
-  IPortableTensor *_output;
-  std::vector<uint8_t> _scratch_vec;
-  std::vector<uint8_t> _output_state_vec;
-  std::vector<uint8_t> _cell_state_vec;
-  ir::operation::LSTM::Param _params;
-  bool _forward_sequence;
-  bool _time_major;
-  int32_t _output_offset;
-  bool _has_output_state_data;
-  bool _has_cell_state_data;
+  const IPortableTensor *_input{nullptr};
+  const IPortableTensor *_input_to_input_weights{nullptr};
+  const IPortableTensor *_input_to_forget_weights{nullptr};
+  const IPortableTensor *_input_to_cell_weights{nullptr};
+  const IPortableTensor *_input_to_output_weights{nullptr};
+  const IPortableTensor *_recurrent_to_input_weights{nullptr};
+  const IPortableTensor *_recurrent_to_forget_weights{nullptr};
+  const IPortableTensor *_recurrent_to_cell_weights{nullptr};
+  const IPortableTensor *_recurrent_to_output_weights{nullptr};
+  const IPortableTensor *_cell_to_input_weights{nullptr};
+  const IPortableTensor *_cell_to_forget_weights{nullptr};
+  const IPortableTensor *_cell_to_output_weights{nullptr};
+  const IPortableTensor *_input_layer_norm_coefficients{nullptr};
+  const IPortableTensor *_forget_layer_norm_coefficients{nullptr};
+  const IPortableTensor *_cell_layer_norm_coefficients{nullptr};
+  const IPortableTensor *_output_layer_norm_coefficients{nullptr};
+  const IPortableTensor *_aux_input{nullptr};
+  const IPortableTensor *_aux_input_to_input_weights{nullptr};
+  const IPortableTensor *_aux_input_to_forget_weights{nullptr};
+  const IPortableTensor *_aux_input_to_cell_weights{nullptr};
+  const IPortableTensor *_aux_input_to_output_weights{nullptr};
+  const IPortableTensor *_input_gate_bias{nullptr};
+  const IPortableTensor *_forget_gate_bias{nullptr};
+  const IPortableTensor *_cell_gate_bias{nullptr};
+  const IPortableTensor *_output_gate_bias{nullptr};
+  const IPortableTensor *_projection_weights{nullptr};
+  const IPortableTensor *_projection_bias{nullptr};
+  const IPortableTensor *_output_state_in{nullptr};
+  const IPortableTensor *_cell_state_in{nullptr};
+  IPortableTensor *_scratch_buffer{nullptr};
+  IPortableTensor *_output_state{nullptr};
+  IPortableTensor *_cell_state{nullptr};
+  IPortableTensor *_output{nullptr};
+  std::vector<uint8_t> _scratch_vec{};
+  std::vector<uint8_t> _output_state_vec{};
+  std::vector<uint8_t> _cell_state_vec{};
+  ir::operation::LSTM::Param _params{};
+  bool _forward_sequence{true};
+  bool _time_major{true};
+  int32_t _output_offset{0};
+  bool _has_output_state_data{false};
+  bool _has_cell_state_data{false};
 };
 
 } // namespace ops
