@@ -238,6 +238,24 @@ bool is_instance_mean_v1(luci::CircleMean *mean)
   return mean->keep_dims();
 }
 
+/// @return true  When node has the shape of 1D channel_size
+bool is_1D_float32_const(const luci::CircleConst *node, uint32_t channel_size)
+{
+  if (node->rank() != 1)
+    return false;
+
+  if (node->dim(0).value() != channel_size)
+    return false;
+
+  if (node->dtype() != loco::DataType::FLOAT32)
+    return false;
+
+  if (node->size<loco::DataType::FLOAT32>() != channel_size)
+    return false;
+
+  return true;
+}
+
 // Helper to fuse Instance Norm
 namespace
 {
@@ -335,7 +353,8 @@ public:
   enum PatternVersion
   {
     Version_0,
-    Version_1
+    Version_1,
+    Version_2,
   };
 
   InstanceNormPattern(luci::CircleAdd *candidate, PatternVersion pv)
@@ -348,6 +367,8 @@ public:
 public:
   bool matched();
   bool matched() const { return _matched; }
+
+  PatternVersion version() const { return _pv; }
 
 public:
   // Context
@@ -368,6 +389,8 @@ public:
   luci::CircleConst *const_as_beta = nullptr;
   luci::CircleSub *sub = nullptr;
   luci::CircleAdd *add_as_terminal = nullptr;
+  luci::CirclePow *pow = nullptr;
+  luci::CircleDiv *div = nullptr;
 
 private:
   bool _matched = false;
@@ -384,6 +407,66 @@ bool InstanceNormPattern::matched()
     return false;
 
   // Check order is DFS
+
+  // Version 2 is quite different from Version 0 and 1.
+  // So it is handled in the separate if statement
+  if (_pv == PatternVersion::Version_2)
+  {
+    CHECK_OR_FALSE(fill(&mul_gamma, &const_as_beta).with_commutative_args_of(add_as_terminal));
+    CHECK_OR_FALSE(fill(&div, &const_as_gamma).with_commutative_args_of(mul_gamma));
+
+    sub = dynamic_cast<luci::CircleSub *>(div->x());
+    CHECK_OR_FALSE(sub);
+
+    ifm = sub->x();
+    CHECK_OR_FALSE(ifm);
+
+    luci::CircleNode *ifm_node = loco::must_cast<luci::CircleNode *>(ifm);
+    CHECK_OR_FALSE(ifm_node->rank() == 4);
+    uint32_t ifm_channel_depth = ifm_node->dim(3).value();
+
+    mean_of_ifm = dynamic_cast<luci::CircleMean *>(sub->y());
+    CHECK_OR_FALSE(mean_of_ifm);
+
+    CHECK_OR_FALSE(ifm == mean_of_ifm->input());
+
+    pow = dynamic_cast<luci::CirclePow *>(div->y());
+    CHECK_OR_FALSE(pow);
+
+    add_as_variance = dynamic_cast<luci::CircleAdd *>(pow->x());
+    CHECK_OR_FALSE(add_as_variance);
+
+    luci::CircleConst *zero_point_five = dynamic_cast<luci::CircleConst *>(pow->y());
+    CHECK_OR_FALSE(zero_point_five);
+    CHECK_OR_FALSE(zero_point_five->dtype() == loco::DataType::FLOAT32);
+    // TODO Support regarding broadcast
+    CHECK_OR_FALSE(zero_point_five->size<loco::DataType::FLOAT32>() == 1);
+    CHECK_OR_FALSE(zero_point_five->at<loco::DataType::FLOAT32>(0) == 0.5);
+
+    CHECK_OR_FALSE(
+        fill(&mean_as_variance, &const_as_epsilon).with_commutative_args_of(add_as_variance));
+    CHECK_OR_FALSE(const_as_epsilon->dtype() == loco::DataType::FLOAT32);
+    // TODO Support regarding broadcast
+    CHECK_OR_FALSE(const_as_epsilon->size<loco::DataType::FLOAT32>() == 1);
+
+    CHECK_OR_FALSE(is_instance_mean_v0(mean_as_variance));
+
+    sqdiff = dynamic_cast<luci::CircleSquaredDifference *>(mean_as_variance->input());
+    CHECK_OR_FALSE(sqdiff);
+
+    loco::Node *ifm_should_be = nullptr;
+    luci::CircleMean *mean_of_ifm_should_be = nullptr;
+    CHECK_OR_FALSE(fill(&ifm_should_be, &mean_of_ifm_should_be).with_commutative_args_of(sqdiff));
+    CHECK_OR_FALSE(ifm == ifm_should_be);
+    CHECK_OR_FALSE(mean_of_ifm == mean_of_ifm_should_be);
+
+    // Check for channel size
+    CHECK_OR_FALSE(is_1D_float32_const(const_as_gamma, ifm_channel_depth));
+    CHECK_OR_FALSE(is_1D_float32_const(const_as_beta, ifm_channel_depth));
+
+    _matched = true;
+    return true;
+  }
 
   if (_pv == PatternVersion::Version_0)
   {
@@ -515,6 +598,23 @@ void fuse_instance_norm(const InstanceNormPattern &p)
 
   auto graph = p.add_as_terminal->graph();
 
+  // Special case for version 2 (no need to reshape)
+  if (p.version() == InstanceNormPattern::Version_2)
+  {
+    // Make Instance Norm to replace
+    auto instance_norm = graph->nodes()->create<luci::CircleInstanceNorm>();
+    instance_norm->input(p.ifm);
+    instance_norm->gamma(p.const_as_gamma);
+    instance_norm->beta(p.const_as_beta);
+    float epsilon = p.const_as_epsilon->at<loco::DataType::FLOAT32>(0);
+    instance_norm->epsilon(epsilon);
+    instance_norm->fusedActivationFunction(p.add_as_terminal->fusedActivationFunction());
+
+    replace(p.add_as_terminal).with(instance_norm);
+
+    return;
+  }
+
   // Make reshape for gamma & beta
   auto reshape_gamma = graph->nodes()->create<luci::CircleReshape>();
   auto reshape_beta = graph->nodes()->create<luci::CircleReshape>();
@@ -563,6 +663,14 @@ bool FuseInstanceNormPass::run(loco::Graph *g)
       if (not add)
         continue;
       pv = InstanceNormPattern::PatternVersion::Version_0;
+
+      auto x = loco::must_cast<luci::CircleNode *>(add->x());
+      auto y = loco::must_cast<luci::CircleNode *>(add->y());
+      if ((x->opcode() == luci::CircleOpcode::MUL &&
+           y->opcode() == luci::CircleOpcode::CIRCLECONST) ||
+          (x->opcode() == luci::CircleOpcode::CIRCLECONST &&
+           y->opcode() == luci::CircleOpcode::MUL))
+        pv = InstanceNormPattern::PatternVersion::Version_2;
     }
     else
     {
