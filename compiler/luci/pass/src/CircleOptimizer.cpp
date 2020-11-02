@@ -17,6 +17,7 @@
 #include "luci/CircleOptimizer.h"
 
 #include "luci/Pass/FoldDequantizePass.h"
+#include "luci/Pass/FuseActivationFunctionPass.h"
 #include "luci/Pass/FuseAddWithTConvPass.h"
 #include "luci/Pass/FuseBatchNormWithTConv.h"
 #include "luci/Pass/FuseBCQPass.h"
@@ -155,6 +156,10 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   if (_options->query(Options::Algorithm::FuseAddWithTConv))
   {
     phase.emplace_back(std::make_unique<FuseAddWithTConvPass>());
+  }
+  if (_options->query(Options::Algorithm::FuseActivationFunction))
+  {
+    phase.emplace_back(std::make_unique<FuseActivationFunctionPass>());
   }
   if (_options->query(Options::Algorithm::FoldDequantize))
   {
