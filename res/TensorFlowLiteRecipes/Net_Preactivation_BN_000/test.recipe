@@ -2,10 +2,10 @@ operand {
   name: "Hole"
   type: FLOAT32
   shape {
-    dim: 64
-    dim: 12
-    dim: 12
-    dim: 64
+    dim: 16
+    dim: 4
+    dim: 4
+    dim: 16
   }
   filler {
     tag: "gaussian"
@@ -17,10 +17,10 @@ operand {
   name: "Weights1"
   type: FLOAT32
   shape {
-    dim: 64
+    dim: 16
     dim: 1
     dim: 1
-    dim: 64
+    dim: 16
   }
   filler {
     tag: "gaussian"
@@ -32,7 +32,7 @@ operand {
   name: "Bias1"
   type: FLOAT32
   shape {
-    dim: 64
+    dim: 16
   }
   filler {
     tag: "gaussian"
@@ -44,17 +44,17 @@ operand {
   name: "Conv1"
   type: FLOAT32
   shape {
-    dim: 64
-    dim: 12
-    dim: 12
-    dim: 64
+    dim: 16
+    dim: 4
+    dim: 4
+    dim: 16
   }
 }
 operand {
   name: "Gamma"
   type: FLOAT32
   shape {
-    dim: 64
+    dim: 16
   }
   filler {
     tag: "explicit"
@@ -65,17 +65,17 @@ operand {
   name: "Mul"
   type: FLOAT32
   shape {
-    dim: 64
-    dim: 12
-    dim: 12
-    dim: 64
+    dim: 16
+    dim: 4
+    dim: 4
+    dim: 16
   }
 }
 operand {
   name: "Beta"
   type: FLOAT32
   shape {
-    dim: 64
+    dim: 16
   }
   filler {
     tag: "gaussian"
@@ -87,20 +87,20 @@ operand {
   name: "Add"
   type: FLOAT32
   shape {
-    dim: 64
-    dim: 12
-    dim: 12
-    dim: 64
+    dim: 16
+    dim: 4
+    dim: 4
+    dim: 16
   }
 }
 operand {
   name: "Weights2"
   type: FLOAT32
   shape {
-    dim: 64
+    dim: 16
     dim: 1
     dim: 1
-    dim: 64
+    dim: 16
   }
   filler {
     tag: "gaussian"
@@ -112,7 +112,7 @@ operand {
   name: "Bias2"
   type: FLOAT32
   shape {
-    dim: 64
+    dim: 16
   }
   filler {
     tag: "gaussian"
@@ -124,10 +124,10 @@ operand {
   name: "Conv2"
   type: FLOAT32
   shape {
-    dim: 64
-    dim: 12
-    dim: 12
-    dim: 64
+    dim: 16
+    dim: 4
+    dim: 4
+    dim: 16
   }
 }
 operation {
