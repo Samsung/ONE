@@ -459,7 +459,7 @@ void LoweredGraph::dumpLowerInfo()
   {
     if (!e.second.empty())
     {
-      VERBOSE(Lower) << e.second << std::endl;
+      VERBOSE(Lower) << e.second;
     }
   }
 }
