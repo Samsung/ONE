@@ -10,6 +10,7 @@
 
 ## TFLITE RECIPE
 
+Add(Net_Preactivation_BN_000 PASS fuse_preactivation_batchnorm)
 Add(Net_TConv_Add_000 PASS fuse_add_with_tconv)
 Add(Net_TConv_Add_001 PASS fuse_add_with_tconv)
 Add(Net_TConv_Add_002 PASS fuse_add_with_tconv)
