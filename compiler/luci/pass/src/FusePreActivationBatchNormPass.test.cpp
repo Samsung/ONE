@@ -92,19 +92,19 @@ public:
     conv_bias->dtype(loco::DataType::FLOAT32);
     succ_add->dtype(loco::DataType::FLOAT32);
 
-    pred_conv->shape({1, 12, 12, 64});
-    pred_conv_filter->shape({64, 1, 1, 64});
-    pred_conv_bias->shape({64});
-    pred_conv2->shape({1, 12, 12, 64});
-    pred_add->shape({1, 12, 12, 64});
-    mul->shape({1, 12, 12, 64});
-    mul_gamma->shape({64});
-    add->shape({1, 12, 12, 64});
-    add_beta->shape({64});
-    conv->shape({1, 12, 12, 64});
-    conv_filter->shape({64, 1, 1, 64});
-    conv_bias->shape({64});
-    succ_add->shape({1, 12, 12, 64});
+    pred_conv->shape({1, 4, 4, 16});
+    pred_conv_filter->shape({16, 1, 1, 16});
+    pred_conv_bias->shape({16});
+    pred_conv2->shape({1, 4, 4, 16});
+    pred_add->shape({1, 4, 4, 16});
+    mul->shape({1, 4, 4, 16});
+    mul_gamma->shape({16});
+    add->shape({1, 4, 4, 16});
+    add_beta->shape({16});
+    conv->shape({1, 4, 4, 16});
+    conv_filter->shape({16, 1, 1, 16});
+    conv_bias->shape({16});
+    succ_add->shape({1, 4, 4, 16});
 
     pred_conv->filter(pred_conv_filter);
     pred_conv->bias(pred_conv_bias);
@@ -120,8 +120,8 @@ public:
     succ_add->x(pred_add);
     succ_add->y(conv);
 
-    uint32_t channel_size = 64;
-    uint32_t out_size = 64;
+    uint32_t channel_size = 16;
+    uint32_t out_size = 16;
     add_beta->size<loco::DataType::FLOAT32>(channel_size);
     mul_gamma->size<loco::DataType::FLOAT32>(channel_size);
     conv_filter->size<loco::DataType::FLOAT32>(channel_size * out_size);
@@ -162,7 +162,7 @@ public:
 TEST(FusePreActivationBatchNorm, swap_mul_add)
 {
   SimpleGraph g;
-  int channel_size = 64;
+  int channel_size = 16;
   std::vector<luci::CircleMul *> mul_list;
   std::vector<luci::CircleAdd *> add_list;
 
@@ -203,18 +203,18 @@ TEST(FusePreActivationBatchNorm, swap_mul_add_NEG)
   g.add->fusedActivationFunction(luci::FusedActFunc::RELU);
 
   // Add is element-wise
-  g.add_beta->shape({1, 12, 12, 64});
+  g.add_beta->shape({1, 4, 4, 16});
   EXPECT_FALSE(luci::swap_mul_add(g.add, mul_list, add_list));
   EXPECT_EQ(0, mul_list.size());
   EXPECT_EQ(0, add_list.size());
-  g.add_beta->shape({64});
+  g.add_beta->shape({16});
 
   // Mul is element-wise
-  g.mul_gamma->shape({1, 12, 12, 64});
+  g.mul_gamma->shape({1, 4, 4, 16});
   EXPECT_FALSE(luci::swap_mul_add(g.add, mul_list, add_list));
   EXPECT_EQ(0, mul_list.size());
   EXPECT_EQ(0, add_list.size());
-  g.mul_gamma->shape({64});
+  g.mul_gamma->shape({16});
 
   // Negative gamma
   g.mul_gamma->at<loco::DataType::FLOAT32>(0) = -10;
@@ -226,8 +226,8 @@ TEST(FusePreActivationBatchNorm, swap_mul_add_NEG)
 TEST(FusePreActivationBatchNorm, fuse_mul_with_conv)
 {
   SimpleGraph g;
-  int channel_size = 64;
-  int out_size = 64;
+  int channel_size = 16;
+  int out_size = 16;
   std::vector<luci::CircleMul *> mul_list;
   std::vector<luci::CircleAdd *> add_list;
 
@@ -266,7 +266,7 @@ TEST(FusePreActivationBatchNorm, fuse_mul_with_conv_NEG)
 TEST(FusePreActivationBatchNorm, fuse_add_with_conv)
 {
   SimpleGraph g;
-  int channel_size = 64;
+  int channel_size = 16;
   std::vector<luci::CircleMul *> mul_list;
   std::vector<luci::CircleAdd *> add_list;
   std::vector<luci::CircleSub *> sub_list;
@@ -299,7 +299,7 @@ TEST(FusePreActivationBatchNorm, fuse_add_with_conv)
 TEST(FusePreActivationBatchNorm, fuse_add_with_conv_NEG)
 {
   SimpleGraph g;
-  int channel_size = 64;
+  int channel_size = 16;
   std::vector<luci::CircleMul *> mul_list;
   std::vector<luci::CircleAdd *> add_list;
   std::vector<luci::CircleSub *> sub_list;
@@ -319,7 +319,7 @@ TEST(FusePreActivationBatchNorm, fuse_add_with_conv_NEG)
 TEST(FusePreActivationBatchNorm, fuse_sub_with_conv)
 {
   SimpleGraph g;
-  int channel_size = 64;
+  int channel_size = 16;
   std::vector<luci::CircleMul *> mul_list;
   std::vector<luci::CircleAdd *> add_list;
   std::vector<luci::CircleSub *> sub_list;
@@ -342,7 +342,7 @@ TEST(FusePreActivationBatchNorm, fuse_sub_with_conv)
 TEST(FusePreActivationBatchNorm, fuse_sub_with_conv_NEG)
 {
   SimpleGraph g;
-  int channel_size = 64;
+  int channel_size = 16;
   std::vector<luci::CircleMul *> mul_list;
   std::vector<luci::CircleAdd *> add_list;
   std::vector<luci::CircleSub *> sub_list;
