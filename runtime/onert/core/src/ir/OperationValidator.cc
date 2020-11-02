@@ -136,8 +136,11 @@ void OperationValidator::visit(const operation::DepthwiseConv2D &node)
 
   uint32_t stride_horizontal = node.param().stride.horizontal;
   uint32_t stride_vertical = node.param().stride.vertical;
+  uint32_t dilation_width = node.param().dilation.width_factor;
+  uint32_t dilation_height = node.param().dilation.height_factor;
 
   OP_REQUIRES((stride_horizontal > 0) && (stride_vertical > 0));
+  OP_REQUIRES((dilation_width > 0) && (dilation_height > 0));
   OP_REQUIRES(isSameType(input_index, output_index));
 }
 

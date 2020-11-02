@@ -197,12 +197,12 @@ void KernelGenerator::visit(const ir::operation::DepthwiseConv2D &node)
   const auto ker_width = ker_shape.dim(2);
 
   const auto stride = node.param().stride;
-  const auto padding = ir::calculatePadding(node.param().padding, ifm_shape, ofm_shape, stride,
-                                            ker_width, ker_height);
+  const auto dilation = node.param().dilation;
+  const auto padding =
+      ir::calculatePadding(node.param().padding, ifm_shape, ofm_shape, stride, ker_width,
+                           ker_height, dilation.width_factor, dilation.height_factor);
   const auto multiplier = node.param().multiplier;
   const auto activation = node.param().activation;
-  const auto dilation = acl_common::asDilation(node.param().dilation.width_factor,
-                                               node.param().dilation.height_factor);
 
   auto ofm_tensor = _tensor_reg->getAclTensor(ofm_index);
   auto ifm_tensor = _tensor_reg->getAclTensor(ifm_index);
@@ -211,14 +211,13 @@ void KernelGenerator::visit(const ir::operation::DepthwiseConv2D &node)
 
   const auto conv_info = acl_common::asPadStrideInfo(padding, stride);
   const auto act_info = acl_common::asActivationLayerInfo(activation);
+  const auto dilation_info = acl_common::asDilation(dilation.width_factor, dilation.height_factor);
 
-  {
-    auto fn = acl_common::generateLayer<arm_compute::CLDepthwiseConvolutionLayer>(
-        ifm_tensor->handle(), ker_tensor->handle(), bias_tensor->handle(), ofm_tensor->handle(),
-        conv_info, multiplier, act_info, dilation);
+  auto fn = acl_common::generateLayer<arm_compute::CLDepthwiseConvolutionLayer>(
+      ifm_tensor->handle(), ker_tensor->handle(), bias_tensor->handle(), ofm_tensor->handle(),
+      conv_info, multiplier, act_info, dilation_info);
 
-    _return_fn = asAclFunction(std::move(fn));
-  }
+  _return_fn = asAclFunction(std::move(fn));
 }
 
 void KernelGenerator::visit(const ir::operation::Concat &node)

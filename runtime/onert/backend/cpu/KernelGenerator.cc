@@ -355,12 +355,12 @@ void KernelGenerator::visit(const ir::operation::DepthwiseConv2D &node)
   const auto &ker_shape = _ctx.at(ker_index).shape();
   const auto ker_height = ker_shape.dim(1);
   const auto ker_width = ker_shape.dim(2);
-  const auto padding = ir::calculatePadding(node.param().padding, ifm_shape, ofm_shape, stride,
-                                            ker_width, ker_height);
-  const auto multiplier = node.param().multiplier;
-  const auto activation = node.param().activation;
   const auto dilation_width = node.param().dilation.width_factor;
   const auto dilation_height = node.param().dilation.height_factor;
+  const auto padding = ir::calculatePadding(node.param().padding, ifm_shape, ofm_shape, stride,
+                                            ker_width, ker_height, dilation_width, dilation_height);
+  const auto multiplier = node.param().multiplier;
+  const auto activation = node.param().activation;
 
   auto ofm_tensor = _tensor_reg->getPortableTensor(ofm_index);
   auto ifm_tensor = _tensor_reg->getPortableTensor(ifm_index);
