@@ -502,6 +502,9 @@ void KernelGenerator::visit(const ir::operation::FullyConnected &node)
   const auto output_index{node.getOutputs().at(0)};
   auto output_tensor = _tensor_reg->getAclTensor(output_index);
   const auto activation = node.param().activation;
+  if (node.param().weights_format == ir::FullyConnectedWeightsFormat::Shuffled16x1Float32)
+    throw std::runtime_error(
+        "KernelGenerator(acl_neon): FullyConnected 16x1Float32 weights is not supported.");
 
   auto fn = acl_common::kernelGenFullyConnected<acl_common::AclFunction, ::arm_compute::ITensor,
                                                 ::arm_compute::NEFullyConnectedReshapingLayer>(

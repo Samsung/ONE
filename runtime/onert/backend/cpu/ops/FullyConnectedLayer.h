@@ -55,8 +55,11 @@ public:
 
   void fullyConnectedSparseWeight();
 
+  void fullyConnected16x1Float32();
+
   void configure(const IPortableTensor *input, const IPortableTensor *weights,
-                 const IPortableTensor *bias, ir::Activation activation, IPortableTensor *output,
+                 const IPortableTensor *bias, ir::Activation activation,
+                 ir::FullyConnectedWeightsFormat weights_format, IPortableTensor *output,
                  const std::shared_ptr<ExternalContext> &external_context);
 
   void run() override;
@@ -74,7 +77,8 @@ private:
 
   std::shared_ptr<ExternalContext> _external_context;
 
-  bool _is_hybrid;
+  bool _is_hybrid : 1;
+  bool _is_shuffled16x1float32 : 1;
 
 #ifdef USE_RUY_GEMV
   uint8_t *_cached_weights = nullptr; // weights to be cached and a key

@@ -491,6 +491,7 @@ OperationFactory::OperationFactory()
     const auto activation_index = OperandIndex{init_param.inputs[3]};
     param.activation =
         NNAPIConvert::getFusedActivation(operands.at(activation_index).asScalar<FuseCode>());
+    param.weights_format = FullyConnectedWeightsFormat::Default;
 
     return new operation::FullyConnected{inputs, outputs, param};
   };
