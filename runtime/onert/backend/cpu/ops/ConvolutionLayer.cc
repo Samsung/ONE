@@ -183,14 +183,14 @@ void ConvolutionLayer::prepare()
   nnfw::cker::Conv &kernel = *_conv_kernel;
   if (_input->data_type() == OperandType::FLOAT32 && _kernel->is_constant())
   {
-    kernel.prepareQuant(getTensorShape(_input), getTensorShape(_kernel), getTensorShape(_output),
-                        _strideWidth, _strideHeight);
+    kernel.prepare(getTensorShape(_input), getTensorShape(_kernel), getTensorShape(_output),
+                   _strideWidth, _strideHeight, _dilationWidthFactor, _dilationHeightFactor);
   }
   else if (_input->data_type() == OperandType::QUANT_UINT8_ASYMM && _kernel->is_constant() &&
            !_input->is_dynamic() && !_output->is_dynamic())
   {
-    kernel.prepareQuant(getTensorShape(_input), getTensorShape(_kernel), getTensorShape(_output),
-                        _strideWidth, _strideHeight);
+    kernel.prepare(getTensorShape(_input), getTensorShape(_kernel), getTensorShape(_output),
+                   _strideWidth, _strideHeight, _dilationWidthFactor, _dilationHeightFactor);
   }
   _prepare = true;
 }

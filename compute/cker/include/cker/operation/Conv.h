@@ -71,12 +71,14 @@ public:
     }
   }
 
-  void prepareQuant(const Shape &input_shape, const Shape &kernel_shape, const Shape &output_shape,
-                    uint32_t stride_width, uint32_t stride_height)
+  void prepare(const Shape &input_shape, const Shape &kernel_shape, const Shape &output_shape,
+               uint32_t stride_width, uint32_t stride_height, uint32_t dilation_width_factor,
+               uint32_t dilation_height_factor)
   {
     if (!_prepared)
     {
-      IsRequiredIm2col(input_shape, kernel_shape, output_shape, stride_width, stride_height);
+      IsRequiredIm2col(input_shape, kernel_shape, output_shape, stride_width, stride_height,
+                       dilation_width_factor, dilation_height_factor);
       _prepared = true;
     }
   }
@@ -90,10 +92,12 @@ public:
     {
       // This means that input or output are dynamic or filter is not constant
       IsRequiredIm2col(input_shape, filter_shape, output_shape, params.stride_width,
-                       params.stride_height);
+                       params.stride_height, params.dilation_width_factor,
+                       params.dilation_height_factor);
+      _prepared = true;
     }
 
-    int im2col_size = _need_im2col ? _im2col_shape.FlatSize() : 1;
+    int im2col_size = _need_im2col ? _im2col_shape.FlatSize() : 0;
 
     // Use heap if size is larger than 8MB
     if (im2col_size > 2 * 1024 * 1024)
@@ -103,12 +107,17 @@ public:
                       bias_data, output_shape, output_data, _im2col_shape, im2col_data.get(),
                       ruy_context);
     }
-    else
+    else if (im2col_size != 0)
     {
       float im2col_data[im2col_size];
       optimized::Conv(params, input_shape, input_data, filter_shape, filter_data, bias_shape,
                       bias_data, output_shape, output_data, _im2col_shape, im2col_data,
                       ruy_context);
+    }
+    else
+    {
+      optimized::Conv(params, input_shape, input_data, filter_shape, filter_data, bias_shape,
+                      bias_data, output_shape, output_data, _im2col_shape, nullptr, ruy_context);
     }
   }
 
@@ -120,7 +129,8 @@ public:
     {
       // This means that input or output are dynamic or filter is not constant
       IsRequiredIm2col(input_shape, filter_shape, output_shape, params.stride_width,
-                       params.stride_height);
+                       params.stride_height, params.dilation_width_factor,
+                       params.dilation_height_factor);
     }
 
     int im2col_size = _need_im2col ? _im2col_shape.FlatSize() : 1;
@@ -159,10 +169,15 @@ private:
   }
 
   void IsRequiredIm2col(const Shape &input_shape, const Shape &kernel_shape,
-                        const Shape &output_shape, uint32_t stride_width, uint32_t stride_height)
+                        const Shape &output_shape, uint32_t stride_width, uint32_t stride_height,
+                        uint32_t dilation_width_factor, uint32_t dilation_height_factor)
   {
-    _need_im2col = stride_width != 1 || stride_height != 1 || kernel_shape.Dims(1) != 1 ||
-                   kernel_shape.Dims(2) != 1;
+    const bool need_dilated_im2col = dilation_width_factor != 1 || dilation_height_factor != 1;
+    const bool need_non_dilated_im2col = stride_width != 1 || stride_height != 1 ||
+                                         kernel_shape.Dims(2) != 1 || kernel_shape.Dims(1) != 1;
+
+    _need_im2col = need_dilated_im2col || need_non_dilated_im2col;
+
     if (_need_im2col)
     {
       _im2col_shape.SetDim(0, output_shape.Dims(0));
