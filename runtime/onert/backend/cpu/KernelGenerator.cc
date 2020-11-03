@@ -226,8 +226,6 @@ void KernelGenerator::visit(const ir::operation::AddN &node)
 {
   const auto output_index{node.getOutputs().at(0)};
 
-  int size = node.getInputs().size();
-
   std::vector<const IPortableTensor *> input_tensors;
   for (auto &input_idx : node.getInputs())
     input_tensors.emplace_back(_tensor_reg->getPortableTensor(input_idx));
@@ -236,7 +234,7 @@ void KernelGenerator::visit(const ir::operation::AddN &node)
 
   auto fn = std::make_unique<ops::AddNLayer>();
 
-  fn->configure(std::move(input_tensors), size, output_tensor);
+  fn->configure(std::move(input_tensors), output_tensor);
 
   _return_fn = std::move(fn);
 }
