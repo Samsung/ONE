@@ -172,7 +172,7 @@ struct ComparisonParams
 struct BinaryArithmeticOpParam
 {
   // Shape dependent / common to data / op types.
-  BroadcastableOpCategory broadcast_category;
+  BroadcastableOpCategory broadcast_category{BroadcastableOpCategory::kNone};
   // uint8 inference params.
   int32_t input1_offset;
   int32_t input2_offset;
