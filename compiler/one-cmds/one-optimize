@@ -57,6 +57,12 @@ def _get_parser():
     circle2circle_group.add_argument(
         '--fuse_bcq', action='store_true', help='apply Binary Coded Quantization')
     circle2circle_group.add_argument(
+        '--fuse_preactivation_batchnorm', action='store_true', help='fuse BatchNorm operators of pre-activations to Convolution operator')
+    circle2circle_group.add_argument(
+        '--make_batchnorm_gamma_positive', action='store_true', help='make negative gamma of BatchNorm into a small positive value (1e-10). Note that this pass can change the execution result of the model. So, use it only when the impact is known to be acceptable.')
+    circle2circle_group.add_argument(
+        '--fuse_activation_function', action='store_true', help='fuse Activation function to a preceding operator')
+    circle2circle_group.add_argument(
         '--fuse_instnorm', action='store_true', help='fuse ops to InstanceNorm operator')
     circle2circle_group.add_argument(
         '--resolve_customop_add',
