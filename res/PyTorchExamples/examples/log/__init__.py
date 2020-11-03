@@ -10,6 +10,7 @@ class net_log(nn.Module):
     def forward(self, input):
         return torch.log(input)
 
+
 _model_ = net_log()
 
 # dummy input for onnx generation
