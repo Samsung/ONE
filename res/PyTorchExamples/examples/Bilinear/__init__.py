@@ -16,3 +16,5 @@ _model_ = net_Bilinear()
 
 # dummy input for onnx generation
 _dummy_ = [torch.randn(128, 20), torch.randn(128, 30)]
+
+# Note: this model has problem when exporting to ONNX
