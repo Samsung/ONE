@@ -117,11 +117,23 @@ void Graph::initializeUseDef()
     auto outputs = node.getOutputs();
     for (auto output : outputs | ir::Remove::UNDEFINED)
     {
+      if (node.name() == "Reshape")
+      {
+        operands().at(output).setReshape((unsigned int)1 << 31);
+      }
       operands().at(output).setDef(index);
     }
 
+    bool add_reshape = false;
+
     for (auto input : node.getInputs() | ir::Remove::UNDEFINED)
     {
+      if (node.name() == "Reshape" && !add_reshape)
+      {
+        operands().at(input).setReshape(((unsigned int)1 << 30) | node.getOutputs().at(0).value());
+
+        add_reshape = true;
+      }
       operands().at(input).insertUse(index);
     }
   });

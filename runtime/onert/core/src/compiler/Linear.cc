@@ -71,6 +71,7 @@ void Linear::planTensors(const compiler::LoweredGraph &lowered_graph,
   ir::OperandIndexMap<uint32_t> uses_map;
   ir::OperandIndexMap<uint32_t> def_map;
   ir::OperandIndexSequence constants;
+  ir::OperandIndexSequence reshapes;
 
   // Prepare scanning
   graph.operands().iterate([&](const ir::OperandIndex &ind, const ir::Operand &obj) {
@@ -104,6 +105,12 @@ void Linear::planTensors(const compiler::LoweredGraph &lowered_graph,
       constants.append(ind);
     }
 
+    unsigned int is_reshape = obj.isReshape();
+    if (is_reshape & (unsigned int)1 << 30)
+    {
+      reshapes.append(ind);
+    }
+
     auto factor = lower_info->def_factors().getOnlyElement();
     auto backend = factor.backend();
     auto tensor_builder = lowered_graph.backend_contexts().at(backend)->tensor_builder;
@@ -115,7 +122,6 @@ void Linear::planTensors(const compiler::LoweredGraph &lowered_graph,
       // TODO Change tensor info to have permuted shape
       tensor_builder->registerTensorInfo(ind, info, backend_layout);
     }
-
     tensor_builder_map[ind] = tensor_builder;
   });
 
@@ -199,6 +205,17 @@ void Linear::planTensors(const compiler::LoweredGraph &lowered_graph,
         uses_map[ind]--;
         if (uses_map[ind] == 0)
         {
+          bool in_reshape = false;
+          for (const auto &re_ind : reshapes)
+          {
+            if (ind == re_ind)
+            {
+              in_reshape = true;
+              break;
+            }
+          }
+          if (in_reshape)
+            continue;
           // plan for deallocation of static tensornode
           tensor_builder_map[ind]->notifyLastUse(ind);
 
@@ -218,7 +235,6 @@ void Linear::planTensors(const compiler::LoweredGraph &lowered_graph,
       }
     }
   }
-
   // Dispose and validate
   for (const auto &ind : io_tensors)
   {
@@ -232,6 +248,14 @@ void Linear::planTensors(const compiler::LoweredGraph &lowered_graph,
   for (const auto &ind : constants)
   {
     --uses_map[ind];
+    if (uses_map[ind] == 0) // To prevent notifyLastUse from being called twice
+    {
+      tensor_builder_map[ind]->notifyLastUse(ind);
+    }
+  }
+
+  for (const auto &ind : reshapes)
+  {
     if (uses_map[ind] == 0) // To prevent notifyLastUse from being called twice
     {
       tensor_builder_map[ind]->notifyLastUse(ind);

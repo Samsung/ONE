@@ -46,6 +46,9 @@ public:
                    const std::vector<ir::OpSequenceIndex> &order);
   static void planTensors(const compiler::LoweredGraph &lowered_graph,
                           const std::vector<ir::OpSequenceIndex> &order);
+
+public:
+  ir::OperandIndexMap<bool> _is_reshape;
 };
 
 } // namespace compiler

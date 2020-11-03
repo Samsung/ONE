@@ -39,7 +39,6 @@ void TensorBuilder::registerTensorInfo(const ir::OperandIndex &ind, const ir::Op
                                        ir::Layout layout)
 {
   _tensor_info_map.emplace(ind, info);
-
   // CPU backend supports only one layout as NHWC
   assert(layout == ir::Layout::NHWC);
   if (info.isDynamic())
@@ -48,7 +47,7 @@ void TensorBuilder::registerTensorInfo(const ir::OperandIndex &ind, const ir::Op
   }
   else
   {
-    _static_tensor_mgr->buildTensor(ind, info, layout, info.isConstant());
+    _static_tensor_mgr->buildTensor(ind, info, layout, info.isConstant(), info.isReshape());
   }
 }
 
@@ -56,7 +55,6 @@ void TensorBuilder::notifyFirstUse(const ir::OperandIndex &ind)
 {
   assert(_tensor_info_map.find(ind) != _tensor_info_map.end());
   const auto tensor_info = _tensor_info_map.at(ind);
-
   if (!_tensor_reg->getNativeTensor(ind)->is_dynamic())
   {
     const auto size = tensor_info.total_size();

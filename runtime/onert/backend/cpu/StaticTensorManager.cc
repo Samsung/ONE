@@ -42,10 +42,25 @@ void StaticTensorManager::allocateNonconsts(void)
   {
     const auto &ind = pair.first;
     auto tensor = pair.second.get();
-    if (!_as_constants[ind] && !tensor->is_dynamic())
+    if (!_as_reshape[ind] && !_as_constants[ind] && !tensor->is_dynamic())
     {
       auto *buffer = _nonconst_mgr->getBuffer(ind);
       tensor->setBuffer(buffer);
+
+      if (_as_out_reshape[ind] != 0)
+      {
+        for (auto &pair2 : _tensors->native_tensors())
+        {
+          const auto &ind2 = pair2.first;
+          auto tensor2 = pair2.second.get();
+          if (ind2.value() == _as_out_reshape[ind] && !_as_constants[ind2] &&
+              !tensor2->is_dynamic())
+          {
+            tensor2->setBuffer(buffer);
+            break;
+          }
+        }
+      }
 
       VERBOSE(CPU_StaticTensorManager) << "TENSOR(#" << ind.value()
                                        << "): " << static_cast<void *>(buffer) << std::endl;
@@ -57,7 +72,7 @@ void StaticTensorManager::deallocateNonconsts(void) { _nonconst_mgr->deallocate(
 
 void StaticTensorManager::buildTensor(const ir::OperandIndex &ind,
                                       const ir::OperandInfo &tensor_info, ir::Layout backend_layout,
-                                      bool as_const)
+                                      bool as_const, unsigned int as_reshape)
 {
   assert(!_tensors->getITensor(ind));
   if (as_const)
@@ -72,6 +87,13 @@ void StaticTensorManager::buildTensor(const ir::OperandIndex &ind,
     _tensors->setNativeTensor(ind, std::move(tensor));
   }
   _as_constants[ind] = as_const;
+  if (as_reshape & ((unsigned char)1 << 31))
+    _as_reshape[ind] = true;
+
+  if (as_reshape & ((unsigned char)1 << 30))
+  {
+    _as_out_reshape[ind] = as_reshape ^ (1 << 30);
+  }
 }
 
 void StaticTensorManager::claimPlan(const ir::OperandIndex &ind, uint32_t size)
@@ -81,7 +103,7 @@ void StaticTensorManager::claimPlan(const ir::OperandIndex &ind, uint32_t size)
   // This method is called only when a tensor has proper shape
   assert(!_tensors->getITensor(ind)->is_dynamic());
 
-  if (!_as_constants[ind])
+  if (!_as_constants[ind] && !_as_reshape[ind])
     _nonconst_mgr->claimPlan(ind, size);
 }
 
@@ -92,7 +114,7 @@ void StaticTensorManager::releasePlan(const ir::OperandIndex &ind)
   // This method is called only when a tensor has proper shape
   assert(!_tensors->getITensor(ind)->is_dynamic());
 
-  if (!_as_constants[ind])
+  if (!_as_constants[ind] && !_as_reshape[ind])
     _nonconst_mgr->releasePlan(ind);
 }
 

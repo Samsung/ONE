@@ -66,9 +66,9 @@ public:
    * @param[in] alloc_type  When the thesor needs memory allocation
    */
   OperandInfo(const Shape &shape, const TypeInfo &typeInfo, MemAllocType alloc_type,
-              bool is_const = false, bool is_variable = false)
+              bool is_const = false, unsigned int is_reshape = 0, bool is_variable = false)
       : _shape(shape), _typeInfo(typeInfo), _alloc_type(alloc_type), _const(is_const),
-        _variable(is_variable)
+        _reshape(is_reshape), _variable(is_variable)
   {
     // DO NOTHING
   }
@@ -118,6 +118,7 @@ public:
 
   MemAllocType memAllocType() const { return _alloc_type; }
   void setAsConstant() { _const = true; }
+  void setAsReshape(unsigned int mod) { _reshape = mod; }
   void setAsNonConst() { _const = false; }
   bool isConstant() const
   {
@@ -125,6 +126,7 @@ public:
     assert(!(isDynamic() && _const));
     return _const;
   }
+  unsigned int isReshape() const { return _reshape; }
   void setAsVariable()
   {
     // Impossible case: constant or dynamic operand
@@ -142,6 +144,7 @@ private:
 
   MemAllocType _alloc_type;
   bool _const;
+  unsigned int _reshape;
   bool _variable;
 };
 

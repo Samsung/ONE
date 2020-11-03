@@ -43,7 +43,7 @@ public:
   void deallocateNonconsts(void);
 
   void buildTensor(const ir::OperandIndex &ind, const ir::OperandInfo &tensor_info,
-                   ir::Layout backend_layout, bool as_const);
+                   ir::Layout backend_layout, bool as_const, unsigned int as_reshape);
 
   void claimPlan(const ir::OperandIndex &ind, uint32_t size);
   void releasePlan(const ir::OperandIndex &ind);
@@ -54,6 +54,8 @@ private:
   std::unique_ptr<cpu_common::MemoryManager> _nonconst_mgr;
   const std::shared_ptr<cpu_common::TensorRegistry> _tensors;
   ir::OperandIndexMap<bool> _as_constants;
+  ir::OperandIndexMap<bool> _as_reshape;
+  ir::OperandIndexMap<unsigned int> _as_out_reshape;
   cpu_common::DynamicTensorManager *_dynamic_tensor_manager;
 };
 

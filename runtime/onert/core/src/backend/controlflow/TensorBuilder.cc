@@ -42,7 +42,6 @@ void TensorBuilder::registerTensorInfo(const ir::OperandIndex &ind, const ir::Op
   _tensor_info_map.emplace(ind, info);
 
   _tensor_layout_map.insert({ind, backend_layout});
-
   if (info.isDynamic())
   {
     _dynamic_tensor_mgr->buildTensor(ind, info, _tensor_layout_map[ind]);

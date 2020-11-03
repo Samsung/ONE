@@ -65,6 +65,7 @@ public:
     _data = std::move(data);
     _info.setAsConstant();
   }
+  void setReshape(unsigned int mod) { _info.setAsReshape(mod); }
   const Data *data(void) const { return _data.get(); }
 
   void releaseData(void) { _data.reset(); }
@@ -77,6 +78,7 @@ public:
    */
   bool isConstant(void) const { return _info.isConstant(); }
 
+  unsigned int isReshape(void) const { return _info.isReshape(); }
 public:
   template <typename T, typename... Args> void data(Args &&... args)
   {

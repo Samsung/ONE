@@ -32,6 +32,10 @@ ReshapeLayer::ReshapeLayer() : _input(nullptr), _shape(nullptr), _output(nullptr
 
 void ReshapeLayer::reshapeGeneric()
 {
+  if (_input->buffer() == _output->buffer())
+  {
+    return;
+  }
   size_t count = _input->total_size();
   memcpy(_output->buffer(), _input->buffer(), count);
 }

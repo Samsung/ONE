@@ -128,6 +128,7 @@ void WICPlanner::claim(const ir::OperandIndex &ind, size_t size)
   {
     _interference_graph[live_operand].emplace_back(ind);
   }
+
   _live_operands.emplace(ind);
 
   VERBOSE(WIC_PLANNER) << "claim(#" << ind.value() << "): [" << size << "sz]" << std::endl;

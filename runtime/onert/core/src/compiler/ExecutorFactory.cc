@@ -35,6 +35,7 @@
 #include "backend/controlflow/KernelGenerator.h"
 #include "backend/controlflow/UserTensor.h"
 #include "backend/controlflow/TensorBuilder.h"
+
 #include <memory>
 
 namespace onert
@@ -176,7 +177,7 @@ void ExecutorFactory::runTensorRegistration(compiler::LoweredGraph *lowered_grap
             const auto backend_layout = operand_lower_info.layout();
             ir::OperandInfo backend_info{permuteShape(obj.shape(), frontend_layout, backend_layout),
                                          obj.typeInfo(), obj.info().memAllocType(),
-                                         obj.isConstant()};
+                                         obj.isConstant(), obj.isReshape()};
             tensor_builder->registerTensorInfo(index, backend_info, backend_layout);
           }
         }
@@ -438,6 +439,8 @@ exec::IExecutor *ExecutorFactory::createDataflowExecutor(
   {
     tensor_builder->allocate();
   }
+
+  // reshape output shared data
 
   for (auto &pair : backend_contexts)
   {
