@@ -97,6 +97,7 @@ tcgenerate(Neg_000)
 tcgenerate(Net_Dangle_001)
 tcgenerate(Net_InstanceNorm_001)
 tcgenerate(Net_InstanceNorm_002)
+tcgenerate(Net_InstanceNorm_003)
 tcgenerate(Net_ZeroDim_001) # luci-interpreter doesn't support zero dim
 tcgenerate(NotEqual_000)
 tcgenerate(OneHot_000)
