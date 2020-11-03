@@ -5,7 +5,6 @@ function Usage()
   echo "Usage: $0 $(basename ${BASH_SOURCE[0]}) [OPTIONS]"
   echo ""
   echo "Options:"
-  echo "      --extension               dockerfile extension in infra/docker (will be deprecated)"
   echo "      --codename                ubuntu codename, default image name is nnfw/one-devtools:[codename]"
   echo "Options can use as docker build option:"
   docker build --help
@@ -28,16 +27,6 @@ do
       Usage
       exit 1
       ;;
-    --extension)
-      if [[ $2 == "1804" ]]; then
-        UBUNTU_CODENAME="bionic"
-      else
-        echo "Invalid extension"
-        exit 1
-      fi
-      shift
-      shift
-      ;;
     --codename)
       UBUNTU_CODENAME=$2
       DOCKER_TAG=$2
@@ -45,8 +34,7 @@ do
       ;;
     -t|--tag)
       DOCKER_IMAGE_NAME="$2"
-      shift
-      shift
+      shift 2
       ;;
     *)
       DOCKER_BUILD_ARGS+=(${1})
