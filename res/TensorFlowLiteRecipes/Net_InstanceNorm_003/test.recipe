@@ -1,0 +1,253 @@
+operand {
+  name: "Input"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 8
+    dim: 6
+    dim: 12
+  }
+}
+operand {
+  name: "Div"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 8
+    dim: 6
+    dim: 12
+  }
+}
+operand {
+  name: "Beta"
+  type: FLOAT32
+  shape {
+    dim: 12
+  }
+  filler {
+    tag: "explicit"
+    arg: "1.9714"
+    arg: "1.4517"
+    arg: "1.20315"
+    arg: "0.287979"
+    arg: "0.161815"
+    arg: "-0.281398"
+    arg: "2.70276"
+    arg: "-0.166962"
+    arg: "0.266389"
+    arg: "0.890943"
+    arg: "-0.279833"
+    arg: "1.82808"
+  }
+}
+operand {
+  name: "Gamma"
+  type: FLOAT32
+  shape {
+    dim: 12
+  }
+  filler {
+    tag: "explicit"
+    arg: "0.574708"
+    arg: "0.387735"
+    arg: "0.8995"
+    arg: "0.484296"
+    arg: "2.35851"
+    arg: "1.06661"
+    arg: "0.343602"
+    arg: "2.27583"
+    arg: "1.14559"
+    arg: "0.690169"
+    arg: "1.2044"
+    arg: "0.350952"
+  }
+}
+operand {
+  name: "Pow"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+    dim: 1
+    dim: 12
+  }
+}
+operand {
+  name: "Add_as_terminal"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 8
+    dim: 6
+    dim: 12
+  }
+}
+operand {
+  name: "Epsilon"
+  type: FLOAT32
+  shape {
+  }
+  filler {
+    tag: "explicit"
+    arg: "0.001"
+  }
+}
+operand {
+  name: "Zero_point_five"
+  type: FLOAT32
+  shape {
+  }
+  filler {
+    tag: "explicit"
+    arg: "0.5"
+  }
+}
+operand {
+  name: "Mul_gamma"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 8
+    dim: 6
+    dim: 12
+  }
+}
+operand {
+  name: "Sub"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 8
+    dim: 6
+    dim: 12
+  }
+}
+operand {
+  name: "SquaredDifference"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 8
+    dim: 6
+    dim: 12
+  }
+}
+operand {
+  name: "Mean_of_ifm"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+    dim: 1
+    dim: 12
+  }
+}
+operand {
+  name: "Reduction_indices"
+  type: INT32
+  shape {
+    dim: 2
+  }
+  filler {
+    tag: "explicit"
+    arg: "1"
+    arg: "2"
+  }
+}
+operand {
+  name: "Mean_as_variance"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+    dim: 1
+    dim: 12
+  }
+}
+operand {
+  name: "Add_as_variance"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+    dim: 1
+    dim: 12
+  }
+}
+operation {
+  type: "Mean"
+  input: "Input"
+  input: "Reduction_indices"
+  output: "Mean_of_ifm"
+  mean_options {
+    keep_dims: true
+  }
+}
+operation {
+  type: "SquaredDifference"
+  input: "Input"
+  input: "Mean_of_ifm"
+  output: "SquaredDifference"
+}
+operation {
+  type: "Mean"
+  input: "SquaredDifference"
+  input: "Reduction_indices"
+  output: "Mean_as_variance"
+  mean_options {
+    keep_dims: true
+  }
+}
+operation {
+  type: "Add"
+  input: "Mean_as_variance"
+  input: "Epsilon"
+  output: "Add_as_variance"
+  add_options {
+    activation: NONE
+  }
+}
+operation {
+  type: "Pow"
+  input: "Add_as_variance"
+  input: "Zero_point_five"
+  output: "Pow"
+}
+operation {
+  type: "Sub"
+  input: "Input"
+  input: "Mean_of_ifm"
+  output: "Sub"
+  sub_options {
+    activation: NONE
+  }
+}
+operation {
+  type: "Div"
+  input: "Sub"
+  input: "Pow"
+  output: "Div"
+  div_options {
+    activation: NONE
+  }
+}
+operation {
+  type: "Mul"
+  input: "Div"
+  input: "Gamma"
+  output: "Mul_gamma"
+  mul_options {
+    activation: NONE
+  }
+}
+operation {
+  type: "Add"
+  input: "Mul_gamma"
+  input: "Beta"
+  output: "Add_as_terminal"
+  add_options {
+    activation: RELU
+  }
+}
+input: "Input"
+output: "Add_as_terminal"
