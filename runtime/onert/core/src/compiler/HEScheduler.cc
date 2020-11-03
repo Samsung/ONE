@@ -26,12 +26,12 @@
 #include <cmath>
 #include <chrono>
 
-namespace onert
+namespace
 {
 
-namespace compiler
-{
-static uint32_t getOperationsFlattenedIOSize(const ir::Graph &graph, const ir::Operation &node)
+using namespace onert;
+
+uint32_t getOperationsFlattenedIOSize(const ir::Graph &graph, const ir::Operation &node)
 {
   uint32_t size = 0;
   for (const auto &ind :
@@ -42,7 +42,7 @@ static uint32_t getOperationsFlattenedIOSize(const ir::Graph &graph, const ir::O
   return size;
 }
 
-static bool isQuant(const ir::Graph &graph, const ir::Operation &node)
+bool isQuant(const ir::Graph &graph, const ir::Operation &node)
 {
   for (const auto &input : node.getInputs() | ir::Remove::UNDEFINED)
   {
@@ -55,15 +55,14 @@ static bool isQuant(const ir::Graph &graph, const ir::Operation &node)
   return false;
 }
 
-static bool isWorkaroundSkip(const ir::Graph &, const backend::Backend *, const ir::Operation &,
-                             bool)
+bool isWorkaroundSkip(const ir::Graph &, const backend::Backend *, const ir::Operation &, bool)
 {
   // Now, there is no workaround
   return false;
 }
 
 // if a node can be merged into op_seq
-static bool isMergeable(const ir::Graph &graph, const ir::Operation &node)
+bool isMergeable(const ir::Graph &graph, const ir::Operation &node)
 {
   size_t prev_op_cnt = 0;
   for (const auto &input : node.getInputs() | ir::Remove::UNDEFINED)
@@ -85,6 +84,14 @@ static bool isMergeable(const ir::Graph &graph, const ir::Operation &node)
   }
   return true;
 }
+
+} // namespace
+
+namespace onert
+{
+
+namespace compiler
+{
 
 void HEScheduler::scheduleShufflingBackends()
 {
