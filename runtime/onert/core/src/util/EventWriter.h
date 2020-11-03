@@ -45,6 +45,8 @@ public:
   SNPEWriter(const std::string &filepath) : EventFormatWriter(filepath)
   { /* empty */
   }
+  ~SNPEWriter() {}
+
   void flush(const std::vector<std::unique_ptr<EventRecorder>> &) override;
 };
 
@@ -54,6 +56,8 @@ public:
   ChromeTracingWriter(const std::string &filepath) : EventFormatWriter(filepath)
   { /* empty */
   }
+  ~ChromeTracingWriter() {}
+
   void flush(const std::vector<std::unique_ptr<EventRecorder>> &) override;
 
 private:
@@ -66,11 +70,12 @@ public:
   MDTableWriter(const std::string &filepath) : EventFormatWriter(filepath)
   { /* empty */
   }
-  void flush(const std::vector<std::unique_ptr<EventRecorder>> &) override;
+  ~MDTableWriter() {}
 
-private:
-  void flushOneRecord(const EventRecorder &);
+  void flush(const std::vector<std::unique_ptr<EventRecorder>> &) override;
 };
+
+#include <mutex>
 
 class EventWriter
 {

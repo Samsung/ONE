@@ -21,11 +21,62 @@
 #include <cassert>
 #include <utility>
 
+/**
+ * @brief Version of SNPE format
+ * In version 1
+ * - There is no "version" field in Json
+ * - Only one subgraph is supported
+ * - Operation name is a form of "$3 ADD"
+ *
+ * In version 2,
+ * - "version" : "2" was added in Json
+ * - Multiple session and multiple subgraphs are supported
+ * - When there is only one session, operation name is a form of "$2 subgraph $3 ADD",
+ *   meaning ADD op whose operation index 3 in a subgraph whose index is 2
+ * - When there are two or more sessions, operation name is a form of
+ *   "$1 session $2 subgraph $3 ADD", meaning ADD op whose operation index 3
+ *   in a subgraph whose index is 2, which was run in 1st session.
+ */
+#define SNPE_JSON_SCHEMA_VERSION "2"
+
+namespace
+{
+
+class LabelMaker : public DurationEventVisitor
+{
+  std::string visit(const SubgDurationEvent &) const override { return "Graph"; }
+
+  std::string visit(const OpDurationEvent &evt) const override
+  {
+    std::string subg_label("$" + std::to_string(evt.subg_index) + " subgraph");
+    std::string op_label("$" + std::to_string(evt.op_index) + " " + evt.op_name);
+
+    // Note : At this moment, there is only one thread running for EventWriter
+    if (evt.tracing_ctx->hasMultipleSessions())
+    {
+      std::string session_label("$" + std::to_string(evt.session_index) + " session");
+      return session_label + " " + subg_label + " " + op_label;
+    }
+    else
+    {
+      // When there is only one session, do not include session info
+      // Refer to https://github.sec.samsung.net/STAR/nnfw/issues/11436#issuecomment-930332
+      return subg_label + " " + op_label;
+    }
+  }
+};
+
+class BackendMaker : public DurationEventVisitor
+{
+  std::string visit(const SubgDurationEvent &) const override { return "runtime"; }
+
+  std::string visit(const OpDurationEvent &evt) const override { return evt.backend; }
+};
+
+} // namespace
+
 void SNPEWriter::flush(const std::vector<std::unique_ptr<EventRecorder>> &recorders)
 {
-  Json::Value root;
-  auto &exec_data = root["Execution_Data"] = Json::Value{Json::objectValue};
-
   struct Stat
   {
     uint64_t sum = 0;
@@ -41,6 +92,11 @@ void SNPEWriter::flush(const std::vector<std::unique_ptr<EventRecorder>> &record
       min = std::min(min, val);
     }
   };
+
+  Json::Value root;
+  root["version"] = SNPE_JSON_SCHEMA_VERSION;
+
+  auto &exec_data = root["Execution_Data"] = Json::Value{Json::objectValue};
 
   // Memory
   {
@@ -69,6 +125,9 @@ void SNPEWriter::flush(const std::vector<std::unique_ptr<EventRecorder>> &record
 
   // Operation Execution Time
   {
+    LabelMaker label_maker;
+    BackendMaker backend_maker;
+
     // NOTE This assumes _duration_events is sorted by "ts" ascending
 
     // 2D keys : stats[tid][name]
@@ -78,16 +137,19 @@ void SNPEWriter::flush(const std::vector<std::unique_ptr<EventRecorder>> &record
     {
       for (auto &evt : recorder->duration_events())
       {
-        auto &stat = stats[evt.tid][evt.name];
-        auto &begin_ts = begin_timestamps[evt.tid][evt.name];
-        uint64_t timestamp = std::stoull(evt.ts);
-        if (evt.ph == "B")
+        std::string evt_name = evt->accept(label_maker);
+        std::string evt_tid = evt->accept(backend_maker);
+
+        auto &stat = stats[evt_tid][evt_name];
+        auto &begin_ts = begin_timestamps[evt_tid][evt_name];
+        uint64_t timestamp = std::stoull(evt->ts);
+        if (evt->ph == "B")
         {
           if (begin_ts != 0)
             throw std::runtime_error{"Invalid Data"};
           begin_ts = timestamp;
         }
-        else if (evt.ph == "E")
+        else if (evt->ph == "E")
         {
           if (begin_ts == 0 || timestamp < begin_ts)
             throw std::runtime_error{"Invalid Data"};
@@ -95,7 +157,7 @@ void SNPEWriter::flush(const std::vector<std::unique_ptr<EventRecorder>> &record
           begin_ts = 0;
         }
         else
-          throw std::runtime_error{"Invalid Data - invalid value for \"ph\" : \"" + evt.ph + "\""};
+          throw std::runtime_error{"Invalid Data - invalid value for \"ph\" : \"" + evt->ph + "\""};
       }
     }
 

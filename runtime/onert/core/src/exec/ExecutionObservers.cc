@@ -24,7 +24,6 @@
 #include "misc/polymorphic_downcast.h"
 #include "ir/OpSequence.h"
 #include "util/EventWriter.h"
-#include "util/Utils.h"
 
 namespace
 {
@@ -125,9 +124,6 @@ TracingObserver::TracingObserver(const std::string &filepath, const ir::Graph &g
   : _recorder{std::make_unique<EventRecorder>()}, _collector{_recorder.get()}, _graph{graph},
     _tracing_ctx{tracing_ctx}
 {
-  // TODO Remove below after using _tracing_ctx
-  UNUSED_RELEASE(_tracing_ctx);
-
   _event_writer = EventWriter::get(filepath);
   _event_writer->startToUse();
 }
@@ -146,61 +142,44 @@ TracingObserver::~TracingObserver()
 
 void TracingObserver::handleSubgraphBegin(ir::SubgraphIndex subg_ind)
 {
-  // TODO Write subg_ind into profling result
-  UNUSED_RELEASE(subg_ind);
-  _collector.onEvent(EventCollector::Event{EventCollector::Edge::BEGIN, "runtime", "Graph"});
+  _collector.onEvent(
+    EventCollector::SubgEvent{_tracing_ctx, EventCollector::Edge::BEGIN, subg_ind.value()});
 }
 
 void TracingObserver::handleJobBegin(IExecutor *, ir::SubgraphIndex subg_ind,
                                      const ir::OpSequence *op_seq, const backend::Backend *backend)
 {
-  // TODO Write subg_ind into profling result
-  UNUSED_RELEASE(subg_ind);
+  if (op_seq->size() == 0)
+    throw std::runtime_error{"Empty OpSequence"};
+  const auto &first_op_idx = op_seq->operations().at(0);
 
   std::string backend_id = backend->config()->id();
-
-  auto ev = EventCollector::Event{EventCollector::Edge::BEGIN, backend_id,
-                                  opSequenceTag(op_seq, _graph.operations())};
+  auto ev = EventCollector::OpEvent{
+    _tracing_ctx,  EventCollector::Edge::BEGIN, subg_ind.value(),
+    backend_id,    first_op_idx.value(),        _graph.operations().at(first_op_idx).name(),
+    op_seq->size()};
   // add shape of inputs
   setUserData(_graph, op_seq, ev.userData);
-
   _collector.onEvent(ev);
 }
 
 void TracingObserver::handleJobEnd(IExecutor *, ir::SubgraphIndex subg_ind,
                                    const ir::OpSequence *op_seq, const backend::Backend *backend)
 {
-  // TODO Write subg_ind into profling result
-  UNUSED_RELEASE(subg_ind);
+  if (op_seq->size() == 0)
+    throw std::runtime_error{"Empty OpSequence"};
+  const auto &first_op_idx = op_seq->operations().at(0);
 
   std::string backend_id = backend->config()->id();
-  _collector.onEvent(EventCollector::Event{EventCollector::Edge::END, backend_id,
-                                           opSequenceTag(op_seq, _graph.operations())});
+  _collector.onEvent(EventCollector::OpEvent{
+    _tracing_ctx, EventCollector::Edge::END, subg_ind.value(), backend_id, first_op_idx.value(),
+    _graph.operations().at(first_op_idx).name(), op_seq->size()});
 }
 
 void TracingObserver::handleSubgraphEnd(ir::SubgraphIndex subg_ind)
 {
-  // TODO Write subg_ind into profling result
-  UNUSED_RELEASE(subg_ind);
-
-  _collector.onEvent(EventCollector::Event{EventCollector::Edge::END, "runtime", "Graph"});
-}
-
-std::string TracingObserver::opSequenceTag(const ir::OpSequence *op_seq,
-                                           const ir::Operations &operations)
-{
-  if (op_seq->size() == 0)
-    return "Empty OpSequence";
-
-  const auto &first_op_idx = op_seq->operations().at(0);
-  const auto &first_op_node = operations.at(first_op_idx);
-  std::string tag = "$" + std::to_string(first_op_idx.value());
-  tag += " " + first_op_node.name();
-  if (op_seq->size() > 1)
-  {
-    tag += " (+" + std::to_string(op_seq->size() - 1) + ")";
-  }
-  return tag;
+  _collector.onEvent(
+    EventCollector::SubgEvent{_tracing_ctx, EventCollector::Edge::END, subg_ind.value()});
 }
 
 } // namespace exec

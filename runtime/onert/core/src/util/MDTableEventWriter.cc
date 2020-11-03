@@ -117,6 +117,8 @@ struct OpSeq : public MDContent
 struct Graph : public MDContent
 {
   std::set<OpSeq, OpSeq::OpSeqCmp> opseqs;
+  std::string session_index;
+  std::string subgraph_index;
 
   void setOpSeqs(const std::map<std::string, OpSeq> &name_to_opseq)
   {
@@ -178,9 +180,22 @@ struct Graph : public MDContent
   }
 };
 
+class LabelMaker : public DurationEventVisitor
+{
+  std::string visit(const SubgDurationEvent &) const override { return "Subgraph"; }
+
+  std::string visit(const OpDurationEvent &evt) const override
+  {
+    std::string subg_label("$" + std::to_string(evt.subg_index) + " subgraph");
+    std::string op_label("$" + std::to_string(evt.op_index) + " " + evt.op_name);
+
+    return subg_label + " " + op_label;
+  }
+};
+
 struct MDTableBuilder
 {
-  MDTableBuilder(const std::vector<DurationEvent> &duration_events,
+  MDTableBuilder(const std::vector<std::unique_ptr<DurationEvent>> &duration_events,
                  const std::vector<CounterEvent> &counter_events)
     : _duration_events(duration_events), _counter_events(counter_events)
   {
@@ -223,18 +238,20 @@ struct MDTableBuilder
       std::map<std::string, OpSeq> name_to_opseq;
       for (size_t i = begin_idx + 1; i < end_idx; ++i)
       {
-        const auto &evt = _duration_events[i];
-        assert(evt.name.compare("Graph") != 0);
+        const auto &evt = *_duration_events[i];
+        const std::string evt_name = evt.accept(label_maker);
+        assert(evt_name.compare("Subgraph") != 0);
         assert(evt.ph.compare("B") == 0 || evt.ph.compare("E") == 0);
         if (evt.ph.compare("B") == 0)
         {
-          assert(name_to_opseq.find(evt.name) == name_to_opseq.end());
-          name_to_opseq.insert({evt.name, makeOpSeq(evt)});
+          assert(name_to_opseq.find(evt_name) == name_to_opseq.end());
+          auto &op_evt = nnfw::misc::polymorphic_downcast<const OpDurationEvent &>(evt);
+          name_to_opseq.insert({evt_name, makeOpSeq(op_evt)});
         }
         else
         {
-          assert(name_to_opseq.find(evt.name) != name_to_opseq.end());
-          auto &opseq = name_to_opseq.at(evt.name);
+          assert(name_to_opseq.find(evt_name) != name_to_opseq.end());
+          auto &opseq = name_to_opseq.at(evt_name);
           updateOpSeq(opseq, evt);
         }
       }
@@ -250,8 +267,9 @@ struct MDTableBuilder
     std::vector<std::pair<size_t, size_t>> graph_idx_list; // pair<begin_idx, end_idx>
     for (size_t i = 0, begin_idx = 0; i < _duration_events.size(); ++i)
     {
-      const auto &evt = _duration_events.at(i);
-      if (evt.name.compare("Graph") == 0)
+      const auto &evt = *_duration_events.at(i);
+      const std::string &evt_name = evt.accept(label_maker);
+      if (evt_name.compare("Subgraph") == 0)
       {
         if (evt.ph.compare("B") == 0)
           begin_idx = i;
@@ -262,12 +280,13 @@ struct MDTableBuilder
     return graph_idx_list;
   }
 
-  OpSeq makeOpSeq(const DurationEvent &evt)
+  OpSeq makeOpSeq(const OpDurationEvent &evt)
   {
     OpSeq opseq;
-    opseq.name = evt.name;
+    const std::string &evt_name = evt.accept(label_maker);
+    opseq.name = evt_name;
     opseq.begin_ts = std::stoull(evt.ts);
-    opseq.backend = evt.tid;
+    opseq.backend = evt.backend;
 #ifdef DEBUG
     opseq.updateRss(_ts_to_values.at(opseq.begin_ts).first);
     opseq.updateMinflt(_ts_to_values.at(opseq.begin_ts).second);
@@ -294,10 +313,19 @@ struct MDTableBuilder
                   const std::map<std::string, OpSeq> &name_to_opseq)
   {
     Graph graph;
-    graph.name = "Graph";
-    graph.begin_ts = std::stoull(_duration_events[begin_idx].ts);
-    graph.end_ts = std::stoull(_duration_events[end_idx].ts);
+    graph.name = "Subgraph";
+    graph.begin_ts = std::stoull(_duration_events[begin_idx]->ts);
+    graph.end_ts = std::stoull(_duration_events[end_idx]->ts);
     graph.setOpSeqs(name_to_opseq);
+
+    for (auto &arg : _duration_events[end_idx]->args)
+    {
+      if (arg.first == "session")
+        graph.session_index = arg.second;
+      if (arg.first == "subgraph")
+        graph.subgraph_index = arg.second;
+    }
+
 #ifdef DEBUG
     graph.updateRss(_ts_to_values.at(graph.begin_ts).first);
     graph.updateMinflt(_ts_to_values.at(graph.begin_ts).second);
@@ -315,13 +343,17 @@ struct MDTableBuilder
     // Write contents
     for (size_t i = 0; i < _graphs.size(); ++i)
     {
-      os << "# Graph " << i << "\n";
+      auto &graph = _graphs.at(i);
+      os << "# Session: " << graph.session_index << ", Subgraph: " << graph.subgraph_index
+         << ", Running count: " << i << "\n";
       _graphs.at(i).write(os);
     }
   }
 
-  const std::vector<DurationEvent> &_duration_events;
+  const std::vector<std::unique_ptr<DurationEvent>> &_duration_events;
   const std::vector<CounterEvent> &_counter_events;
+
+  LabelMaker label_maker;
   // timestamp to std::pair<maxrss, minflt>
   std::unordered_map<uint64_t, std::pair<uint32_t, uint32_t>> _ts_to_values;
   std::vector<Graph> _graphs;

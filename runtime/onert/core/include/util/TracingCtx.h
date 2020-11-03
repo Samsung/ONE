@@ -64,6 +64,13 @@ public:
   uint32_t getSessionId() const { return _session_id; }
 
   /**
+   * @brief Return true if more than 1 session exist
+   *
+   * @note  This method is NOT thread-safe. Call this in thread-safe situation.
+   */
+  bool hasMultipleSessions() const { return _next_session_id > 1; }
+
+  /**
    * @brief Set subgraph index of a graph
    */
   void setSubgraphIndex(const ir::Graph *g, uint32_t index) { _subgraph_indices.emplace(g, index); }
@@ -78,14 +85,14 @@ private:
   {
     std::unique_lock<std::mutex> lock{_session_id_mutex};
 
-    static uint32_t next_session_id = 0;
-    _session_id = next_session_id++;
+    _session_id = _next_session_id++;
   }
 
 private:
   std::unordered_map<const ir::Graph *, ir::SubgraphIndex> _subgraph_indices;
   uint32_t _session_id;
   static std::mutex _session_id_mutex;
+  static uint32_t _next_session_id;
 };
 
 } // namespace util
