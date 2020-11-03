@@ -33,6 +33,7 @@
 #include "kernels/Greater.h"
 #include "kernels/GreaterEqual.h"
 #include "kernels/If.h"
+#include "kernels/InstanceNorm.h"
 #include "kernels/L2Normalize.h"
 #include "kernels/L2Pool2D.h"
 #include "kernels/LeakyRelu.h"
@@ -372,6 +373,23 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleIf *node)
 
   return std::make_unique<kernels::If>(cond, std::move(inputs), std::move(outputs), then_graph,
                                        else_graph);
+}
+
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleInstanceNorm *node)
+{
+  assert(node->arity() == 3);
+
+  const Tensor *input = getInputTensor(node->input());
+  const Tensor *gamma = getInputTensor(node->gamma());
+  const Tensor *beta = getInputTensor(node->beta());
+
+  Tensor *output = getOutputTensor(node);
+
+  InstanceNormParams params{};
+  params.epsilon = node->epsilon();
+  params.activation = node->fusedActivationFunction();
+
+  return std::make_unique<kernels::InstanceNorm>(input, gamma, beta, output, params);
 }
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleInput *)

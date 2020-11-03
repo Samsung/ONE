@@ -33,6 +33,7 @@
 #include <kernels/FullyConnected.h>
 #include <kernels/Greater.h>
 #include <kernels/GreaterEqual.h>
+#include <kernels/InstanceNorm.h>
 #include <kernels/L2Normalize.h>
 #include <kernels/L2Pool2D.h>
 #include <kernels/LeakyRelu.h>
@@ -452,6 +453,31 @@ TEST_F(KernelBuilderTest, GreaterEqual)
   checkTensor(kernel->x(), x_input);
   checkTensor(kernel->y(), y_input);
   checkTensor(kernel->output(), op);
+}
+
+TEST_F(KernelBuilderTest, InstanceNorm)
+{
+  auto *input = createInputNode();
+  auto *gamma = createInputNode();
+  auto *beta = createInputNode();
+
+  auto *op = createNode<luci::CircleInstanceNorm>();
+  op->input(input);
+  op->gamma(gamma);
+  op->beta(beta);
+
+  op->epsilon(1e-05);
+  op->fusedActivationFunction(luci::FusedActFunc::RELU);
+
+  auto kernel = buildKernel<kernels::InstanceNorm>(op);
+  ASSERT_THAT(kernel, NotNull());
+
+  checkTensor(kernel->input(), input);
+  checkTensor(kernel->gamma(), gamma);
+  checkTensor(kernel->beta(), beta);
+  checkTensor(kernel->output(), op);
+  EXPECT_THAT(kernel->params().epsilon, Eq(op->epsilon()));
+  EXPECT_THAT(kernel->params().activation, Eq(op->fusedActivationFunction()));
 }
 
 TEST_F(KernelBuilderTest, L2Normalize)
