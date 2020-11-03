@@ -38,18 +38,55 @@ class DurationEventBuilder
 public:
   DurationEventBuilder(const std::string &ts) : _ts{ts} {}
 
-  DurationEvent build(const EventCollector::Event &evt_collected, const std::string &ph) const
+  std::unique_ptr<SubgDurationEvent> build(const EventCollector::SubgEvent &evt_collected,
+                                           const std::string &ph) const
   {
-    DurationEvent evt;
+    auto dur_evt = std::make_unique<SubgDurationEvent>();
 
-    evt.name = evt_collected.label;
-    evt.tid = evt_collected.backend;
-    evt.ph = ph;
-    evt.ts = _ts;
+    // The following will be set by a child of EventsWriter:
+    // dur_evt.name, dur_evt.tid
+    dur_evt->ph = ph;
+    dur_evt->ts = _ts;
+    dur_evt->tracing_ctx = evt_collected.tracing_ctx;
 
-    evt.args = evt_collected.userData;
+    dur_evt->session_index = evt_collected.session_index;
+    dur_evt->subg_index = evt_collected.subg_index;
 
-    return evt;
+    dur_evt->args = evt_collected.userData;
+    {
+      dur_evt->args.emplace_back("session", std::to_string(evt_collected.session_index));
+      dur_evt->args.emplace_back("subgraph", std::to_string(evt_collected.subg_index));
+    }
+
+    return dur_evt;
+  }
+
+  std::unique_ptr<OpSeqDurationEvent> build(const EventCollector::OpSeqEvent &evt_collected,
+                                            const std::string &ph) const
+  {
+    auto dur_evt = std::make_unique<OpSeqDurationEvent>();
+
+    // The following will be set by a child of EventsWriter:
+    // dur_evt.name, dur_evt.tid
+    dur_evt->ph = ph;
+    dur_evt->ts = _ts;
+    dur_evt->tracing_ctx = evt_collected.tracing_ctx;
+
+    dur_evt->session_index = evt_collected.session_index;
+    dur_evt->subg_index = evt_collected.subg_index;
+
+    dur_evt->backend = evt_collected.backend;
+    dur_evt->op_index = evt_collected.op_index;
+    dur_evt->op_name = evt_collected.op_name;
+    dur_evt->op_seq_size = evt_collected.op_seq_size;
+
+    dur_evt->args = evt_collected.userData;
+    {
+      dur_evt->args.emplace_back("session", std::to_string(evt_collected.session_index));
+      dur_evt->args.emplace_back("subgraph", std::to_string(evt_collected.subg_index));
+    }
+
+    return dur_evt;
   }
 
 private:
@@ -88,19 +125,26 @@ inline void emit_rusage(EventRecorder *rec, const std::string &ts)
 
 } // namespace
 
-void EventCollector::onEvent(const Event &event)
+template <typename EventT> void EventCollector::onEvent(const EventT &event)
 {
   auto ts = timestamp();
+
+  DurationEventBuilder builder(ts);
 
   switch (event.edge)
   {
     case Edge::BEGIN:
-      _rec->emit(DurationEventBuilder(ts).build(event, "B"));
+    {
+      auto duration_evt = builder.build(event, "B");
+      _rec->emit(std::move(duration_evt));
       break;
-
+    }
     case Edge::END:
-      _rec->emit(DurationEventBuilder(ts).build(event, "E"));
+    {
+      auto duration_evt = builder.build(event, "E");
+      _rec->emit(std::move(duration_evt));
       break;
+    }
   }
 
 // TODO: Add resurece measurement(e.g. RSS)
@@ -109,3 +153,7 @@ void EventCollector::onEvent(const Event &event)
   emit_rusage(_rec, ts);
 #endif
 }
+
+// template instantiation
+template void EventCollector::onEvent<EventCollector::SubgEvent>(const SubgEvent &event);
+template void EventCollector::onEvent<EventCollector::OpSeqEvent>(const OpSeqEvent &event);
