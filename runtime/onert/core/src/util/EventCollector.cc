@@ -93,11 +93,11 @@ void EventCollector::onEvent(const Event &event)
   switch (event.edge)
   {
     case Edge::BEGIN:
-      _rec->emit(DurationEventBuilder(ts).build(event.backend, event.label, "B"));
+      _rec->emit(DurationEventBuilder(ts).build(event.category, event.label, "B"));
       break;
 
     case Edge::END:
-      _rec->emit(DurationEventBuilder(ts).build(event.backend, event.label, "E"));
+      _rec->emit(DurationEventBuilder(ts).build(event.category, event.label, "E"));
       break;
   }
 

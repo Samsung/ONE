@@ -313,7 +313,7 @@ struct MDTableBuilder
       for (size_t i = begin_idx + 1; i < end_idx; ++i)
       {
         const auto &evt = _duration_events[i];
-        assert(evt.name.compare("Graph") != 0);
+        assert(evt.name.compare("Subgraph") != 0);
         assert(evt.ph.compare("B") == 0 || evt.ph.compare("E") == 0);
         if (evt.ph.compare("B") == 0)
         {
@@ -340,7 +340,7 @@ struct MDTableBuilder
     for (size_t i = 0, begin_idx = 0; i < _duration_events.size(); ++i)
     {
       const auto &evt = _duration_events.at(i);
-      if (evt.name.compare("Graph") == 0)
+      if (evt.name.compare("Subgraph") == 0)
       {
         if (evt.ph.compare("B") == 0)
           begin_idx = i;
@@ -383,7 +383,7 @@ struct MDTableBuilder
                   const std::map<std::string, OpSeq> &name_to_opseq)
   {
     Graph graph;
-    graph.name = "Graph";
+    graph.name = "Subgraph";
     graph.begin_ts = std::stoull(_duration_events[begin_idx].ts);
     graph.end_ts = std::stoull(_duration_events[end_idx].ts);
     graph.setOpSeqs(name_to_opseq);

@@ -31,7 +31,7 @@ public:
   struct Event
   {
     Edge edge;
-    std::string backend;
+    std::string category;
     std::string label;
   };
 

@@ -17,12 +17,39 @@
 #include "exec/ExecutionObservers.h"
 
 #include <string>
+#include <sstream>
 
 #include "util/logging.h"
 #include "exec/IExecutor.h"
 #include "misc/polymorphic_downcast.h"
 #include "ir/OpSequence.h"
 #include "util/EventWriter.h"
+
+namespace
+{
+
+void setHexId(const void *src, std::string &hex_id)
+{
+  // use address of src as hexadecimal ID
+  std::stringstream ss;
+  ss << std::hex << src;
+  hex_id.assign(ss.str());
+}
+
+// category is shown as a row in Chrome Tracing
+std::string getSubgraphCatetory(const onert::exec::IExecutor *executor)
+{
+  std::string hex_id;
+  setHexId(executor, hex_id);
+  return "Subgraph(" + hex_id + ")";
+}
+
+std::string getOpCatetory(const onert::exec::IExecutor *executor, const std::string &backend_id)
+{
+  return getSubgraphCatetory(executor) + ": " + backend_id;
+}
+
+} // namespace
 
 namespace onert
 {
@@ -87,30 +114,32 @@ ChromeTracingObserver::~ChromeTracingObserver()
   }
 }
 
-void ChromeTracingObserver::handleBegin(IExecutor *)
+void ChromeTracingObserver::handleBegin(IExecutor *executor)
 {
-  _collector.onEvent(EventCollector::Event{EventCollector::Edge::BEGIN, "runtime", "Graph"});
+  std::string category(getSubgraphCatetory(executor));
+  _collector.onEvent(EventCollector::Event{EventCollector::Edge::BEGIN, category, "Subgraph"});
 }
 
-void ChromeTracingObserver::handleBegin(IExecutor *, const ir::OpSequence *op_seq,
+void ChromeTracingObserver::handleBegin(IExecutor *executor, const ir::OpSequence *op_seq,
                                         const backend::Backend *backend)
 {
-  std::string backend_id = backend->config()->id();
-  _collector.onEvent(EventCollector::Event{EventCollector::Edge::BEGIN, backend_id,
+  std::string category(getOpCatetory(executor, backend->config()->id()));
+  _collector.onEvent(EventCollector::Event{EventCollector::Edge::BEGIN, category,
                                            opSequenceTag(op_seq, _graph.operations())});
 }
 
-void ChromeTracingObserver::handleEnd(IExecutor *, const ir::OpSequence *op_seq,
+void ChromeTracingObserver::handleEnd(IExecutor *executor, const ir::OpSequence *op_seq,
                                       const backend::Backend *backend)
 {
-  std::string backend_id = backend->config()->id();
-  _collector.onEvent(EventCollector::Event{EventCollector::Edge::END, backend_id,
+  std::string category(getOpCatetory(executor, backend->config()->id()));
+  _collector.onEvent(EventCollector::Event{EventCollector::Edge::END, category,
                                            opSequenceTag(op_seq, _graph.operations())});
 }
 
-void ChromeTracingObserver::handleEnd(IExecutor *)
+void ChromeTracingObserver::handleEnd(IExecutor *executor)
 {
-  _collector.onEvent(EventCollector::Event{EventCollector::Edge::END, "runtime", "Graph"});
+  std::string category(getSubgraphCatetory(executor));
+  _collector.onEvent(EventCollector::Event{EventCollector::Edge::END, category, "Subgraph"});
 }
 
 std::string ChromeTracingObserver::opSequenceTag(const ir::OpSequence *op_seq,
