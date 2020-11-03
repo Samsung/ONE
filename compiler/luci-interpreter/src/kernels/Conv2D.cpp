@@ -203,6 +203,50 @@ void Conv2D::evalQuantized() const
       getTensorData<uint8_t>(_im2col.get()), gemmlowp_context.get());
 }
 
+// Helper wrapper to hide broadcast logic
+template <typename T>
+class BroadcastableWrapper
+{
+public:
+  BroadcastableWrapper(const std::vector<T> &v) : _v(v), _stride(v.size() == 1 ? 0: 1) {}
+
+  T operator[](int idx) { return _v[idx*_stride]; }
+private:
+  const std::vector<T> &_v;
+  int _stride;
+};
+
+struct ChannelQuantMultipliers
+{
+  int shift;
+  int32_t multiplier;
+  ChannelQuantMultipliers() = default;
+};
+
+std::vector<double> getQuantizedConvolutionMultiplers(float input_scale, const std::vector<float> &filter_scale, float output_scale)
+{
+  std::vector<double> effective_output_scales;
+  size_t n = filter_scale.size();
+  effective_output_scales.reserve(n);
+  for (size_t i = 0; i < n; ++i)
+  {
+    effective_output_scales.push_back(
+        getQuantizedConvolutionMultipler(input_scale, filter_scale[i], output_scale));
+  }
+  return effective_output_scales;
+}
+
+std::vector<ChannelQuantMultipliers> quantizeMultipliers(const std::vector<double> &effective_scale)
+{
+  size_t n = effective_scale.size();
+  std::vector<ChannelQuantMultipliers> params(n);
+  for (int i = 0; i < n; ++i)
+  {
+    quantizeMultiplier(effective_scale[i], &params[i].multiplier, &params[i].shift);
+  }
+  return params;
+}
+
 void Conv2D::evalQuantizedS16() const
 {
   const auto *input_data = getTensorData<int16_t>(input());
@@ -233,12 +277,10 @@ void Conv2D::evalQuantizedS16() const
   int32_t activation_max{};
   calculateActivationRangeQuantized(_params.activation, output(), &activation_min, &activation_max);
 
-  const double effective_output_scale =
-      getQuantizedConvolutionMultipler(input()->scale(), filter()->scale(), output()->scale());
+  const std::vector<double> effective_output_scale = getQuantizedConvolutionMultiplers(input()->scale(), filter()->scales(), output()->scale());
 
-  int32_t output_multiplier{};
-  int output_shift{};
-  quantizeMultiplier(effective_output_scale, &output_multiplier, &output_shift);
+  const std::vector<ChannelQuantMultipliers> multipliers_raw = quantizeMultipliers(effective_output_scale);
+  BroadcastableWrapper<ChannelQuantMultipliers> multipliers(multipliers_raw);
 
   for (int32_t batch = 0; batch < batches; ++batch)
   {
@@ -276,7 +318,7 @@ void Conv2D::evalQuantizedS16() const
           }
 
           int32_t scaled_acc =
-              tflite::MultiplyByQuantizedMultiplier(acc, output_multiplier, output_shift);
+              tflite::MultiplyByQuantizedMultiplier(acc, multipliers[out_c].multiplier, multipliers[out_c].shift);
 
           scaled_acc = std::max(scaled_acc, activation_min);
           scaled_acc = std::min(scaled_acc, activation_max);
