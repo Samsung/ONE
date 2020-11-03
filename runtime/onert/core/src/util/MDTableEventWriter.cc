@@ -16,8 +16,6 @@
 
 #include "util/EventWriter.h"
 
-#include <misc/polymorphic_downcast.h>
-
 #include <sstream>
 #include <vector>
 #include <unordered_map>
@@ -180,18 +178,13 @@ struct Graph : public MDContent
   }
 };
 
-class LabelMaker : public DurationEventVisitor
+std::string getLabel(const OpSeqDurationEvent &evt)
 {
-  std::string visit(const SubgDurationEvent &) const override { return "Subgraph"; }
+  std::string subg_label("$" + std::to_string(evt.subg_index) + " subgraph");
+  std::string op_label("$" + std::to_string(evt.op_index) + " " + evt.op_name);
 
-  std::string visit(const OpDurationEvent &evt) const override
-  {
-    std::string subg_label("$" + std::to_string(evt.subg_index) + " subgraph");
-    std::string op_label("$" + std::to_string(evt.op_index) + " " + evt.op_name);
-
-    return subg_label + " " + op_label;
-  }
-};
+  return subg_label + " " + op_label;
+}
 
 struct MDTableBuilder
 {
@@ -238,21 +231,20 @@ struct MDTableBuilder
       std::map<std::string, OpSeq> name_to_opseq;
       for (size_t i = begin_idx + 1; i < end_idx; ++i)
       {
-        const auto &evt = *_duration_events[i];
-        const std::string evt_name = evt.accept(label_maker);
-        assert(evt_name.compare("Subgraph") != 0);
-        assert(evt.ph.compare("B") == 0 || evt.ph.compare("E") == 0);
-        if (evt.ph.compare("B") == 0)
+        const auto *evt = dynamic_cast<const OpSeqDurationEvent *>(_duration_events[i].get());
+        assert(evt != nullptr);
+        const std::string evt_name = getLabel(*evt);
+        assert(evt->ph.compare("B") == 0 || evt->ph.compare("E") == 0);
+        if (evt->ph.compare("B") == 0)
         {
           assert(name_to_opseq.find(evt_name) == name_to_opseq.end());
-          auto &op_evt = nnfw::misc::polymorphic_downcast<const OpDurationEvent &>(evt);
-          name_to_opseq.insert({evt_name, makeOpSeq(op_evt)});
+          name_to_opseq.insert({evt_name, makeOpSeq(*evt)});
         }
         else
         {
           assert(name_to_opseq.find(evt_name) != name_to_opseq.end());
           auto &opseq = name_to_opseq.at(evt_name);
-          updateOpSeq(opseq, evt);
+          updateOpSeq(opseq, *evt);
         }
       }
 
@@ -267,23 +259,22 @@ struct MDTableBuilder
     std::vector<std::pair<size_t, size_t>> graph_idx_list; // pair<begin_idx, end_idx>
     for (size_t i = 0, begin_idx = 0; i < _duration_events.size(); ++i)
     {
-      const auto &evt = *_duration_events.at(i);
-      const std::string &evt_name = evt.accept(label_maker);
-      if (evt_name.compare("Subgraph") == 0)
-      {
-        if (evt.ph.compare("B") == 0)
-          begin_idx = i;
-        else
-          graph_idx_list.emplace_back(begin_idx, i);
-      }
+      const auto subg_evt = dynamic_cast<const SubgDurationEvent *>(_duration_events.at(i).get());
+      if (subg_evt == nullptr)
+        continue;
+
+      if (subg_evt->ph.compare("B") == 0)
+        begin_idx = i;
+      else
+        graph_idx_list.emplace_back(begin_idx, i);
     }
     return graph_idx_list;
   }
 
-  OpSeq makeOpSeq(const OpDurationEvent &evt)
+  OpSeq makeOpSeq(const OpSeqDurationEvent &evt)
   {
     OpSeq opseq;
-    const std::string &evt_name = evt.accept(label_maker);
+    const std::string &evt_name = getLabel(evt);
     opseq.name = evt_name;
     opseq.begin_ts = std::stoull(evt.ts);
     opseq.backend = evt.backend;
@@ -353,7 +344,6 @@ struct MDTableBuilder
   const std::vector<std::unique_ptr<DurationEvent>> &_duration_events;
   const std::vector<CounterEvent> &_counter_events;
 
-  LabelMaker label_maker;
   // timestamp to std::pair<maxrss, minflt>
   std::unordered_map<uint64_t, std::pair<uint32_t, uint32_t>> _ts_to_values;
   std::vector<Graph> _graphs;

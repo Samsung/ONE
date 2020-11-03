@@ -25,24 +25,6 @@
 
 #include <vector>
 
-struct SubgDurationEvent;
-struct OpDurationEvent;
-
-class DurationEventVisitor
-{
-public:
-  virtual ~DurationEventVisitor() = default;
-
-  virtual std::string visit(const SubgDurationEvent &) const
-  {
-    throw std::runtime_error("Please implement");
-  }
-  virtual std::string visit(const OpDurationEvent &) const
-  {
-    throw std::runtime_error("Please implement");
-  }
-};
-
 // refer to https://docs.google.com/document/d/1CvAClvFfyA5R-PhYUmn5OOQtYMH4h6I0nSsKchNAySU/edit#
 struct Event
 {
@@ -60,26 +42,21 @@ struct DurationEvent : public Event
   uint32_t session_index;
   uint32_t subg_index;
 
-  virtual std::string accept(DurationEventVisitor &visitor) const = 0;
-
 protected:
   DurationEvent() = default;
 };
 
 struct SubgDurationEvent : public DurationEvent
-{
-  std::string accept(DurationEventVisitor &visitor) const override { return visitor.visit(*this); }
+{ /* same with DurationEvent */
 };
 
-struct OpDurationEvent : public DurationEvent
+struct OpSeqDurationEvent : public DurationEvent
 {
   // Note: DurationEvent's name and tid will be set by EventWriter
   std::string backend;
   uint32_t op_index;
   std::string op_name;
   uint32_t op_seq_size; // if this event is for an operation sequence of multiple operations
-
-  std::string accept(DurationEventVisitor &visitor) const override { return visitor.visit(*this); }
 };
 
 struct CounterEvent : public Event
@@ -104,7 +81,6 @@ public:
   void emit(const CounterEvent &evt);
 
 public:
-  bool empty() { return _duration_events.empty() && _counter_events.empty(); }
   const std::vector<std::unique_ptr<DurationEvent>> &duration_events() const
   {
     return _duration_events;

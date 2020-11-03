@@ -132,7 +132,7 @@ std::string getSubgLabel(const DurationEvent &evt)
   return "$" + std::to_string(evt.subg_index) + " subg";
 }
 
-std::string getOpLabel(const OpDurationEvent &evt)
+std::string getOpLabel(const OpSeqDurationEvent &evt)
 {
   if (evt.op_seq_size > 1)
     return "$" + std::to_string(evt.op_index) + " " + evt.op_name + " (" +
@@ -141,25 +141,29 @@ std::string getOpLabel(const OpDurationEvent &evt)
     return "$" + std::to_string(evt.op_index) + " " + evt.op_name;
 }
 
-class LabelMaker : public DurationEventVisitor
+std::string getLabel(const DurationEvent &evt)
 {
-  std::string visit(const SubgDurationEvent &evt) const override { return getSubgLabel(evt); }
+  if (auto evt_ptr = dynamic_cast<const OpSeqDurationEvent *>(&evt))
+  {
+    return getOpLabel(*evt_ptr);
+  }
+  else // SubgDurationEvent
+  {
+    return getSubgLabel(evt);
+  }
+}
 
-  std::string visit(const OpDurationEvent &evt) const override { return getOpLabel(evt); }
-};
-
-class TidMaker : public DurationEventVisitor
+std::string getTid(const DurationEvent &evt)
 {
-  std::string visit(const SubgDurationEvent &evt) const override
+  if (auto evt_ptr = dynamic_cast<const OpSeqDurationEvent *>(&evt))
+  {
+    return getSessionLabel(*evt_ptr) + ", " + getSubgLabel(*evt_ptr) + ", " + evt_ptr->backend;
+  }
+  else // SubgDurationEvent
   {
     return getSessionLabel(evt) + ", " + getSubgLabel(evt);
   }
-
-  std::string visit(const OpDurationEvent &evt) const override
-  {
-    return getSessionLabel(evt) + ", " + getSubgLabel(evt) + ", " + evt.backend;
-  }
-};
+}
 
 } // namespace
 
@@ -180,13 +184,10 @@ void ChromeTracingWriter::flush(const std::vector<std::unique_ptr<EventRecorder>
 
 void ChromeTracingWriter::flushOneRecord(const EventRecorder &recorder)
 {
-  LabelMaker label_maker;
-  TidMaker tid_maker;
-
   for (auto &evt : recorder.duration_events())
   {
-    const std::string name = evt->accept(label_maker);
-    const std::string tid = evt->accept(tid_maker);
+    const std::string name = getLabel(*evt);
+    const std::string tid = getTid(*evt);
 
     _os << "    " << object(*evt, name, tid) << ",\n";
   }

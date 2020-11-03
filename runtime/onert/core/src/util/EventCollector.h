@@ -62,9 +62,6 @@ public:
     // user-defined data: pairs of (key, value)
     std::vector<std::pair<std::string, std::string>> userData;
 
-    virtual std::unique_ptr<DurationEvent> accept(const EventVisitor &,
-                                                  const std::string &) const = 0;
-
   protected:
     Event(const onert::util::TracingCtx *a_tracing_ctx, Edge a_edge, uint32_t a_subg_index)
       : tracing_ctx(a_tracing_ctx), edge(a_edge), session_index(tracing_ctx->getSessionId()),
@@ -82,36 +79,24 @@ public:
       : Event(a_tracing_ctx, a_edge, a_subg_index)
     { /* empty */
     }
-
-    std::unique_ptr<DurationEvent> accept(const EventVisitor &v,
-                                          const std::string &ph) const override
-    {
-      return v.visit(*this, ph);
-    }
   };
 
-  struct OpEvent : public Event
+  struct OpSeqEvent : public Event
   {
     std::string backend;
     uint32_t op_index;
     std::string op_name;
     uint32_t op_seq_size; // if this event is for an operation sequence of multiple operations
 
-    OpEvent(const onert::util::TracingCtx *a_tracing_ctx, Edge a_edge, uint32_t a_subg_index,
-            const std::string a_backend, uint32_t a_op_index, const std::string a_op_name,
-            uint32_t a_op_seq_size)
+    OpSeqEvent(const onert::util::TracingCtx *a_tracing_ctx, Edge a_edge, uint32_t a_subg_index,
+               const std::string a_backend, uint32_t a_op_index, const std::string a_op_name,
+               uint32_t a_op_seq_size)
       : Event(a_tracing_ctx, a_edge, a_subg_index)
     {
       backend.assign(a_backend);
       op_index = a_op_index;
       op_name.assign(a_op_name);
       op_seq_size = a_op_seq_size;
-    }
-
-    std::unique_ptr<DurationEvent> accept(const EventVisitor &v,
-                                          const std::string &ph) const override
-    {
-      return v.visit(*this, ph);
     }
   };
 
@@ -122,7 +107,7 @@ public:
   }
 
 public:
-  void onEvent(const Event &event);
+  template <typename EventT> void onEvent(const EventT &event);
 
 protected:
   EventRecorder *_rec;

@@ -154,7 +154,7 @@ void TracingObserver::handleJobBegin(IExecutor *, ir::SubgraphIndex subg_ind,
   const auto &first_op_idx = op_seq->operations().at(0);
 
   std::string backend_id = backend->config()->id();
-  auto ev = EventCollector::OpEvent{
+  auto ev = EventCollector::OpSeqEvent{
     _tracing_ctx,  EventCollector::Edge::BEGIN, subg_ind.value(),
     backend_id,    first_op_idx.value(),        _graph.operations().at(first_op_idx).name(),
     op_seq->size()};
@@ -171,7 +171,7 @@ void TracingObserver::handleJobEnd(IExecutor *, ir::SubgraphIndex subg_ind,
   const auto &first_op_idx = op_seq->operations().at(0);
 
   std::string backend_id = backend->config()->id();
-  _collector.onEvent(EventCollector::OpEvent{
+  _collector.onEvent(EventCollector::OpSeqEvent{
     _tracing_ctx, EventCollector::Edge::END, subg_ind.value(), backend_id, first_op_idx.value(),
     _graph.operations().at(first_op_idx).name(), op_seq->size()});
 }

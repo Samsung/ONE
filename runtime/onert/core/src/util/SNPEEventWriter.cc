@@ -42,19 +42,17 @@
 namespace
 {
 
-class LabelMaker : public DurationEventVisitor
+std::string getLabel(const DurationEvent &evt)
 {
-  std::string visit(const SubgDurationEvent &) const override { return "Graph"; }
-
-  std::string visit(const OpDurationEvent &evt) const override
+  if (auto evt_ptr = dynamic_cast<const OpSeqDurationEvent *>(&evt))
   {
-    std::string subg_label("$" + std::to_string(evt.subg_index) + " subgraph");
-    std::string op_label("$" + std::to_string(evt.op_index) + " " + evt.op_name);
+    std::string subg_label("$" + std::to_string(evt_ptr->subg_index) + " subgraph");
+    std::string op_label("$" + std::to_string(evt_ptr->op_index) + " " + evt_ptr->op_name);
 
     // Note : At this moment, there is only one thread running for EventWriter
-    if (evt.tracing_ctx->hasMultipleSessions())
+    if (evt_ptr->tracing_ctx->hasMultipleSessions())
     {
-      std::string session_label("$" + std::to_string(evt.session_index) + " session");
+      std::string session_label("$" + std::to_string(evt_ptr->session_index) + " session");
       return session_label + " " + subg_label + " " + op_label;
     }
     else
@@ -64,14 +62,17 @@ class LabelMaker : public DurationEventVisitor
       return subg_label + " " + op_label;
     }
   }
-};
+  else // SubgEvent
+    return "Graph";
+}
 
-class BackendMaker : public DurationEventVisitor
+std::string getBackend(const DurationEvent &evt)
 {
-  std::string visit(const SubgDurationEvent &) const override { return "runtime"; }
-
-  std::string visit(const OpDurationEvent &evt) const override { return evt.backend; }
-};
+  if (auto evt_ptr = dynamic_cast<const OpSeqDurationEvent *>(&evt))
+    return evt_ptr->backend;
+  else // SubbEvent
+    return "runtime";
+}
 
 } // namespace
 
@@ -125,9 +126,6 @@ void SNPEWriter::flush(const std::vector<std::unique_ptr<EventRecorder>> &record
 
   // Operation Execution Time
   {
-    LabelMaker label_maker;
-    BackendMaker backend_maker;
-
     // NOTE This assumes _duration_events is sorted by "ts" ascending
 
     // 2D keys : stats[tid][name]
@@ -137,8 +135,8 @@ void SNPEWriter::flush(const std::vector<std::unique_ptr<EventRecorder>> &record
     {
       for (auto &evt : recorder->duration_events())
       {
-        std::string evt_name = evt->accept(label_maker);
-        std::string evt_tid = evt->accept(backend_maker);
+        std::string evt_name = getLabel(*evt);
+        std::string evt_tid = getBackend(*evt);
 
         auto &stat = stats[evt_tid][evt_name];
         auto &begin_ts = begin_timestamps[evt_tid][evt_name];

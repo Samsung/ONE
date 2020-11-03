@@ -38,8 +38,8 @@ class DurationEventBuilder : public EventCollector::EventVisitor
 public:
   DurationEventBuilder(const std::string &ts) : _ts{ts} {}
 
-  std::unique_ptr<DurationEvent> visit(const EventCollector::SubgEvent &evt_collected,
-                                       const std::string &ph) const override
+  std::unique_ptr<SubgDurationEvent> build(const EventCollector::SubgEvent &evt_collected,
+                                           const std::string &ph) const
   {
     auto dur_evt = std::make_unique<SubgDurationEvent>();
 
@@ -61,10 +61,10 @@ public:
     return dur_evt;
   }
 
-  std::unique_ptr<DurationEvent> visit(const EventCollector::OpEvent &evt_collected,
-                                       const std::string &ph) const override
+  std::unique_ptr<OpSeqDurationEvent> build(const EventCollector::OpSeqEvent &evt_collected,
+                                            const std::string &ph) const
   {
-    auto dur_evt = std::make_unique<OpDurationEvent>();
+    auto dur_evt = std::make_unique<OpSeqDurationEvent>();
 
     // The following will be set by a child of EventsWriter:
     // dur_evt.name, dur_evt.tid
@@ -125,7 +125,7 @@ inline void emit_rusage(EventRecorder *rec, const std::string &ts)
 
 } // namespace
 
-void EventCollector::onEvent(const Event &event)
+template <typename EventT> void EventCollector::onEvent(const EventT &event)
 {
   auto ts = timestamp();
 
@@ -135,13 +135,13 @@ void EventCollector::onEvent(const Event &event)
   {
     case Edge::BEGIN:
     {
-      auto duration_evt = event.accept(builder, "B");
+      auto duration_evt = builder.build(event, "B");
       _rec->emit(std::move(duration_evt));
       break;
     }
     case Edge::END:
     {
-      auto duration_evt = event.accept(builder, "E");
+      auto duration_evt = builder.build(event, "E");
       _rec->emit(std::move(duration_evt));
       break;
     }
@@ -153,3 +153,7 @@ void EventCollector::onEvent(const Event &event)
   emit_rusage(_rec, ts);
 #endif
 }
+
+// template instantiation
+template void EventCollector::onEvent<EventCollector::SubgEvent>(const SubgEvent &event);
+template void EventCollector::onEvent<EventCollector::OpSeqEvent>(const OpSeqEvent &event);
