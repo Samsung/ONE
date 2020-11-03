@@ -217,7 +217,7 @@ void LSTMLayer::LSTMFloat()
         float *output_gate_scratch_ptr = output_gate_scratch + b * n_cell;
 
         LstmStepFloat(
-            input_ptr, reinterpret_cast<float *>(_input_to_input_weights->buffer()),
+            input_ptr, input_to_input_weights_ptr,
             reinterpret_cast<float *>(_input_to_forget_weights->buffer()),
             reinterpret_cast<float *>(_input_to_cell_weights->buffer()),
             reinterpret_cast<float *>(_input_to_output_weights->buffer()), aux_input_ptr,
