@@ -58,7 +58,8 @@ Tensor makeInputTensor(const Shape &shape, float scale, int32_t zero_point,
 {
   using NativeT = typename DataTypeImpl<DT>::Type;
   Tensor tensor(DT, shape, {{scale}, {zero_point}}, "");
-  std::vector<NativeT> quantized_data = quantize<NativeT>(data.data(), data.size(), scale, zero_point);
+  std::vector<NativeT> quantized_data =
+      quantize<NativeT>(data.data(), data.size(), scale, zero_point);
   tensor.writeData(quantized_data.data(), quantized_data.size() * sizeof(NativeT));
   return tensor;
 }
@@ -74,8 +75,9 @@ Tensor makeInputTensor(const Shape &shape, float scale, int32_t zero_point,
  * @return created tensor
  */
 template <DataType DT>
-Tensor makeInputTensor(const Shape &shape, const std::vector<float> &scales, const std::vector<int32_t> &zero_points,
-                       int quantized_dimension, const std::vector<float> &data)
+Tensor makeInputTensor(const Shape &shape, const std::vector<float> &scales,
+                       const std::vector<int32_t> &zero_points, int quantized_dimension,
+                       const std::vector<float> &data)
 {
   using NativeT = typename DataTypeImpl<DT>::Type;
   assert(quantized_dimension < shape.num_dims());
@@ -107,7 +109,8 @@ Tensor makeInputTensor(const Shape &shape, const std::vector<float> &scales, con
       size_t offset = inner_dims_size * (quant_dim_size * outer_it + channel);
       std::vector<NativeT> part_quantized_data =
           quantize<NativeT>(data.data() + offset, inner_dims_size, scale, zero_point);
-      quantized_data.insert(quantized_data.end(), part_quantized_data.begin(), part_quantized_data.end());
+      quantized_data.insert(quantized_data.end(), part_quantized_data.begin(),
+                            part_quantized_data.end());
     }
   assert(quantized_data.size() == shape.num_elements());
   tensor.writeData(quantized_data.data(), quantized_data.size() * sizeof(NativeT));

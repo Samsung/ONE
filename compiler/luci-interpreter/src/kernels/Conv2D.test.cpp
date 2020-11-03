@@ -229,16 +229,16 @@ TEST(Conv2DTest, SInt16_CWQ_weights)
       7, 8, // row = 1, col 1
   };
   std::vector<float> filter_data{
-      4,  -3, // out = 0
-      1, -3,  // out = 1
-      5,  -3, // out = 2
+      4, -3, // out = 0
+      1, -3, // out = 1
+      5, -3, // out = 2
   };
   std::vector<float> bias_data{1, 10, 5};
   std::vector<float> ref_output_data{
-      0, 5, 4,   // row 0, col 0
-      1, 1, 8,   // row 0, col 1
-      3, 0, 12,  // row 1, col 0
-      5, 0, 16,  // row 1, col 1
+      0, 5, 4,  // row 0, col 0
+      1, 1, 8,  // row 0, col 1
+      3, 0, 12, // row 1, col 0
+      5, 0, 16, // row 1, col 1
   };
 
   float input_scale = 0.25f;

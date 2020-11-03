@@ -46,7 +46,7 @@ std::vector<float> dequantizeTensorData(const Tensor &tensor)
   else if (tensor.element_type() == DataType::S16)
   {
     // S16 quantization is symmetric, so zero point should be zero.
-    for (auto zp:tensor.zero_points())
+    for (auto zp : tensor.zero_points())
     {
       (void)zp;
       assert(zp == 0);
@@ -85,7 +85,8 @@ std::vector<float> dequantizeTensorData(const Tensor &tensor)
         size_t offset = inner_dims_size * (quant_dim_size * outer_it + channel);
         std::vector<float> part_dequantized_data =
             dequantize(data.data() + offset, inner_dims_size, scale, 0);
-        dequantized_data.insert(dequantized_data.end(), part_dequantized_data.begin(), part_dequantized_data.end());
+        dequantized_data.insert(dequantized_data.end(), part_dequantized_data.begin(),
+                                part_dequantized_data.end());
       }
     return dequantized_data;
   }

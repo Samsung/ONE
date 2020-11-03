@@ -204,13 +204,12 @@ void Conv2D::evalQuantized() const
 }
 
 // Helper wrapper to hide broadcast logic
-template <typename T>
-class BroadcastableWrapper
+template <typename T> class BroadcastableWrapper
 {
 public:
-  BroadcastableWrapper(const std::vector<T> &v) : _v(v), _stride(v.size() == 1 ? 0: 1) {}
+  BroadcastableWrapper(const std::vector<T> &v) : _v(v), _stride(v.size() == 1 ? 0 : 1) {}
 
-  T operator[](int idx) { return _v[idx*_stride]; }
+  T operator[](int idx) { return _v[idx * _stride]; }
 private:
   const std::vector<T> &_v;
   int _stride;
@@ -223,7 +222,9 @@ struct ChannelQuantMultipliers
   ChannelQuantMultipliers() = default;
 };
 
-std::vector<double> getQuantizedConvolutionMultiplers(float input_scale, const std::vector<float> &filter_scale, float output_scale)
+std::vector<double> getQuantizedConvolutionMultiplers(float input_scale,
+                                                      const std::vector<float> &filter_scale,
+                                                      float output_scale)
 {
   std::vector<double> effective_output_scales;
   size_t n = filter_scale.size();
@@ -277,9 +278,11 @@ void Conv2D::evalQuantizedS16() const
   int32_t activation_max{};
   calculateActivationRangeQuantized(_params.activation, output(), &activation_min, &activation_max);
 
-  const std::vector<double> effective_output_scale = getQuantizedConvolutionMultiplers(input()->scale(), filter()->scales(), output()->scale());
+  const std::vector<double> effective_output_scale =
+      getQuantizedConvolutionMultiplers(input()->scale(), filter()->scales(), output()->scale());
 
-  const std::vector<ChannelQuantMultipliers> multipliers_raw = quantizeMultipliers(effective_output_scale);
+  const std::vector<ChannelQuantMultipliers> multipliers_raw =
+      quantizeMultipliers(effective_output_scale);
   BroadcastableWrapper<ChannelQuantMultipliers> multipliers(multipliers_raw);
 
   for (int32_t batch = 0; batch < batches; ++batch)
@@ -317,8 +320,8 @@ void Conv2D::evalQuantizedS16() const
             acc += bias_data[out_c];
           }
 
-          int32_t scaled_acc =
-              tflite::MultiplyByQuantizedMultiplier(acc, multipliers[out_c].multiplier, multipliers[out_c].shift);
+          int32_t scaled_acc = tflite::MultiplyByQuantizedMultiplier(
+              acc, multipliers[out_c].multiplier, multipliers[out_c].shift);
 
           scaled_acc = std::max(scaled_acc, activation_min);
           scaled_acc = std::min(scaled_acc, activation_max);
