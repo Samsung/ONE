@@ -30,34 +30,33 @@ namespace cpu
 namespace ops
 {
 
-void AddNLayer::configure(const IPortableTensor **inputs, size_t num_inputs,
-                          IPortableTensor *output)
+void AddNLayer::configure(std::vector<const IPortableTensor *> &&inputs, IPortableTensor *output)
 {
-  _inputs = inputs;
-  _num_inputs = num_inputs;
+  _inputs = std::move(inputs);
   _output = output;
 }
 
 void AddNLayer::run()
 {
+  size_t input_size = _inputs.size();
   if (_output->data_type() == ir::DataType::INT32)
   {
-    std::vector<const int32_t *> input_buffers(_num_inputs);
-    for (size_t i = 0; i < _num_inputs; i++)
+    std::vector<const int32_t *> input_buffers(input_size);
+    for (size_t i = 0; i < input_size; i++)
     {
       input_buffers[i] = reinterpret_cast<int32_t *>(_inputs[i]->buffer());
     }
-    AddN(getTensorShape(_inputs[0]), _num_inputs, input_buffers.data(),
+    AddN(getTensorShape(_inputs[0]), input_size, input_buffers.data(),
          reinterpret_cast<int32_t *>(_output->buffer()));
   }
   else if (_output->data_type() == ir::DataType::FLOAT32)
   {
-    std::vector<const float *> input_buffers(_num_inputs);
-    for (size_t i = 0; i < _num_inputs; i++)
+    std::vector<const float *> input_buffers(input_size);
+    for (size_t i = 0; i < input_size; i++)
     {
       input_buffers[i] = reinterpret_cast<float *>(_inputs[i]->buffer());
     }
-    AddN(getTensorShape(_inputs[0]), _num_inputs, input_buffers.data(),
+    AddN(getTensorShape(_inputs[0]), input_size, input_buffers.data(),
          reinterpret_cast<float *>(_output->buffer()));
   }
   else
