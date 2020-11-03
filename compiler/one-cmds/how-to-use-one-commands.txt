@@ -156,6 +156,11 @@ Current transformation options are
 - fuse_instnorm: This will convert instance normalization related operators to
   one InstanceNormalization operator that our onert provides for faster
   execution.
+- fuse_preactivation_batchnorm: This fuses batch normalization operators of pre-activations to Conv operators.
+- fuse_activation_function: This fuses Activation function to a preceding operator.
+- make_batchnorm_gamma_positive: This makes negative gamma of batch normalization into a small positive value (1e-10).
+  Note that this pass can change the execution result of the model.
+  So, use it only when the impact is known to be acceptable.
 - resolve_customop_add: This will convert Custom(Add) to normal Add operator
 - resolve_customop_batchmatmul: This will convert Custom(BatchMatMul) to
   normal BatchMatMul operator
