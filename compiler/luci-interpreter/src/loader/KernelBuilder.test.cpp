@@ -40,6 +40,7 @@
 #include <kernels/LessEqual.h>
 #include <kernels/LocalResponseNormalization.h>
 #include <kernels/LogicalAnd.h>
+#include <kernels/LogicalNot.h>
 #include <kernels/LogicalOr.h>
 #include <kernels/Logistic.h>
 #include <kernels/LogSoftmax.h>
@@ -586,6 +587,20 @@ TEST_F(KernelBuilderTest, LogicalAnd)
 
   checkTensor(kernel->input1(), input1);
   checkTensor(kernel->input2(), input2);
+  checkTensor(kernel->output(), op);
+}
+
+TEST_F(KernelBuilderTest, LogicalNot)
+{
+  auto *input = createInputNode();
+
+  auto *op = createNode<luci::CircleLogicalNot>();
+  op->x(input);
+
+  auto kernel = buildKernel<kernels::LogicalNot>(op);
+  ASSERT_THAT(kernel, NotNull());
+
+  checkTensor(kernel->input(), input);
   checkTensor(kernel->output(), op);
 }
 

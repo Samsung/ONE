@@ -40,6 +40,7 @@
 #include "kernels/LessEqual.h"
 #include "kernels/LocalResponseNormalization.h"
 #include "kernels/LogicalAnd.h"
+#include "kernels/LogicalNot.h"
 #include "kernels/LogicalOr.h"
 #include "kernels/Logistic.h"
 #include "kernels/LogSoftmax.h"
@@ -468,6 +469,16 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleLogicalAnd *node)
   Tensor *output = getOutputTensor(node);
 
   return std::make_unique<kernels::LogicalAnd>(input1, input2, output);
+}
+
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleLogicalNot *node)
+{
+  assert(node->arity() == 1);
+
+  const Tensor *input = getInputTensor(node->x());
+  Tensor *output = getOutputTensor(node);
+
+  return std::make_unique<kernels::LogicalNot>(input, output);
 }
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleLogicalOr *node)
