@@ -174,23 +174,23 @@ struct BinaryArithmeticOpParam
   // Shape dependent / common to data / op types.
   BroadcastableOpCategory broadcast_category{BroadcastableOpCategory::kNone};
   // uint8 inference params.
-  int32_t input1_offset;
-  int32_t input2_offset;
-  int32_t output_offset;
-  int32_t output_multiplier;
-  int32_t output_shift;
+  int32_t input1_offset = 0;
+  int32_t input2_offset = 0;
+  int32_t output_offset = 0;
+  int32_t output_multiplier = 0;
+  int32_t output_shift = 0;
   // Add / Sub, not Mul, uint8 inference params.
-  int32_t left_shift;
-  int32_t input1_multiplier;
-  int32_t input1_shift;
-  int32_t input2_multiplier;
-  int32_t input2_shift;
+  int32_t left_shift = 0;
+  int32_t input1_multiplier = 0;
+  int32_t input1_shift = 0;
+  int32_t input2_multiplier = 0;
+  int32_t input2_shift = 0;
   // uint8, etc, activation params.
-  int32_t quantized_activation_min;
-  int32_t quantized_activation_max;
+  int32_t quantized_activation_min = 0;
+  int32_t quantized_activation_max = 0;
   // float activation params.
-  float float_activation_min;
-  float float_activation_max;
+  float float_activation_min = 0;
+  float float_activation_max = 0;
 
   // Processed output dimensions.
   // Let input "a" be the one that broadcasts in the faster-changing dimension.
