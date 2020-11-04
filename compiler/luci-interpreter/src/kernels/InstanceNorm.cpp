@@ -36,8 +36,8 @@ void InstanceNorm::configure()
 {
   LUCI_INTERPRETER_CHECK(input()->shape().num_dims() == 4);
   LUCI_INTERPRETER_CHECK(input()->element_type() == output()->element_type());
-  LUCI_INTERPRETER_CHECK(gamma()->element_type() == DataType::FLOAT32);
-  LUCI_INTERPRETER_CHECK(beta()->element_type() == DataType::FLOAT32);
+  LUCI_INTERPRETER_CHECK(gamma()->element_type() == input()->element_type());
+  LUCI_INTERPRETER_CHECK(beta()->element_type() == input()->element_type());
   output()->resize(input()->shape());
 }
 
@@ -60,7 +60,7 @@ void InstanceNorm::evalFloat() const
   auto input_shape = getTensorShape(input());
   auto output_shape = getTensorShape(output());
   const int32_t batches = tflite::MatchingDim(input_shape, 0, output_shape, 0);
-  const int32_t heights = tflite::MatchingDim(input_shape, 1, output_shape, 2);
+  const int32_t heights = tflite::MatchingDim(input_shape, 1, output_shape, 1);
   const int32_t widths = tflite::MatchingDim(input_shape, 2, output_shape, 2);
   const int32_t channels = tflite::MatchingDim(input_shape, 3, output_shape, 3);
   const float *input_data = getTensorData<float>(input());
