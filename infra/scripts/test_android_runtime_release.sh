@@ -5,6 +5,11 @@
 CURRENT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_PATH="$CURRENT_PATH/../../"
 
+TEST_ARCH=$(uname -m | tr '[:upper:]' '[:lower:]')
+TEST_OS="android"
+TEST_PLATFORM="$TEST_ARCH-$TEST_OS"
+EXECUTORS=("Linear" "Dataflow" "Parallel")
+
 # Model download server setting
 if [[ -z "${MODELFILE_SERVER}" ]]; then
   echo "[ERROR] Model file server is not set"
@@ -14,12 +19,14 @@ else
   echo "Model Server: ${MODELFILE_SERVER}"
 fi
 
+apt-get update && apt-get install -y curl
+
 BACKENDS=( "acl_neon" "cpu" "acl_cl" )
 
-$ROOT_PATH/Product/out/test/models/run_test.sh --download=on --run=off
-$ROOT_PATH/Product/out/test/models/run_test.sh --download=on --run=off \
-  --configdir=$ROOT_PATH/Product/out/test/models/nnfw_api_gtest \
-  --cachedir=$ROOT_PATH/Product/out/unittest_standalone/nnfw_api_gtest_models
+$ROOT_PATH/tests/scripts/models/run_test.sh --download=on --run=off
+$ROOT_PATH/Product/aarch64-android.release/out/test/models/run_test.sh --download=on --run=off \
+  --configdir=$ROOT_PATH/Product/aarch64-android.release/out/test/models/nnfw_api_gtest \
+  --cachedir=$ROOT_PATH/Product/aarch64-android.release/out/unittest_standalone/nnfw_api_gtest_models
 
 N=`adb devices 2>/dev/null | wc -l`
 
@@ -54,19 +61,24 @@ $ADB_CMD shell LD_LIBRARY_PATH=/data/local/tmp/onert_android/Product/lib BACKEND
                                                         --tapname=tflite_loader.tap
 for BACKEND in "${BACKENDS[@]}";
 do
-$ADB_CMD shell LD_LIBRARY_PATH=/data/local/tmp/onert_android/Product/lib BACKEND=$BACKEND sh /data/local/tmp/onert_android/tests/scripts/models/run_test_android.sh \
+for EXECUTOR in "${EXECUTORS[@]}";
+do
+MODELLIST=$(cat "${ROOT_PATH}/Product/aarch64-android.release/out/test/list/frameworktest_list.${TEST_ARCH}.${BACKEND}.txt")
+# $ADB_CMD shell LD_LIBRARY_PATH=/data/local/tmp/onert_android/Product/lib EXECUTOR=$EXECUTOR BACKEND=$BACKEND sh /data/local/tmp/onert_android/tests/scripts/models/run_test_android.sh \
+#                                                         --driverbin=/data/local/tmp/onert_android/Product/unittest/nnapi_gtest \
+#                                                         --reportdir=/data/local/tmp/onert_android/report \
+#                                                         --tapname=nnapi_gtest_$BACKEND_$EXECUTOR.tap
+$ADB_CMD shell LD_LIBRARY_PATH=/data/local/tmp/onert_android/Product/lib EXECUTOR=$EXECUTOR BACKEND=$BACKEND sh /data/local/tmp/onert_android/tests/scripts/models/run_test_android.sh \
                                                         --driverbin=/data/local/tmp/onert_android/Product/bin/nnapi_test \
                                                         --reportdir=/data/local/tmp/onert_android/report \
-                                                        --tapname=nnapi_test_$BACKEND.tap
-$ADB_CMD shell LD_LIBRARY_PATH=/data/local/tmp/onert_android/Product/lib BACKEND=$BACKEND sh /data/local/tmp/onert_android/tests/scripts/models/run_test_android.sh \
-                                                        --driverbin=/data/local/tmp/onert_android/Product/unittest/nnapi_gtest \
-                                                        --reportdir=/data/local/tmp/onert_android/report \
-                                                        --tapname=nnapi_gtest_$BACKEND.tap
+                                                        --tapname=nnapi_test_$BACKEND_$EXECUTOR.tap
 done
+done
+MODELLIST=$(cat "${ROOT_PATH}/Product/aarch64-android.release/out/test/list/frameworktest_list.noarch.interp.txt")
 $ADB_CMD shell LD_LIBRARY_PATH=/data/local/tmp/onert_android/Product/lib BACKEND="" DISABLE_COMPILE=1 sh /data/local/tmp/onert_android/tests/scripts/models/run_test_android.sh \
                                                         --driverbin=/data/local/tmp/onert_android/Product/bin/nnapi_test \
                                                         --reportdir=/data/local/tmp/onert_android/report \
-                                                        --tapname=nnapi_test_interp.tap
+                                                        --tapname=nnapi_test_interp.tap ${MODELLIST:-}
 $ADB_CMD shell LD_LIBRARY_PATH=/data/local/tmp/onert_android/Product/lib USE_NNAPI=1 sh /data/local/tmp/onert_android/tests/scripts/models/run_test_android.sh \
                                                         --driverbin=/data/local/tmp/onert_android/Product/bin/tflite_run \
                                                         --reportdir=/data/local/tmp/onert_android/report \
