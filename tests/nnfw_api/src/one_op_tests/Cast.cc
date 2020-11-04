@@ -33,10 +33,8 @@ TEST_F(GenModelTest, OneOp_Cast_Int32ToFloat32)
   CircleGen cgen = genSimpleCastModel(circle::TensorType_INT32, circle::TensorType_FLOAT32);
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
-  TestCaseData tcd;
-  tcd.addInput(std::vector<int32_t>{1, 2, 3, 4});
-  tcd.addOutput(std::vector<float>{1, 2, 3, 4});
-  _context->addTestCase(tcd);
+  _context->addTestCase(
+      TestCaseData{}.addInput<int32_t>({1, 2, 3, 4}).addOutput<float>({1, 2, 3, 4}));
   _context->setBackends({"acl_cl", "acl_neon", "cpu"});
 
   SUCCEED();
@@ -47,10 +45,8 @@ TEST_F(GenModelTest, OneOp_Cast_Float32ToInt32)
   CircleGen cgen = genSimpleCastModel(circle::TensorType_FLOAT32, circle::TensorType_INT32);
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
-  TestCaseData tcd;
-  tcd.addInput(std::vector<float>{1, 2, 3, 4});
-  tcd.addOutput(std::vector<int32_t>{1, 2, 3, 4});
-  _context->addTestCase(tcd);
+  _context->addTestCase(
+      TestCaseData{}.addInput<float>({1, 2, 3, 4}).addOutput<int32_t>({1, 2, 3, 4}));
   _context->setBackends({"acl_cl", "acl_neon", "cpu"});
 
   SUCCEED();
@@ -61,10 +57,8 @@ TEST_F(GenModelTest, OneOp_Cast_BoolToFloat32)
   CircleGen cgen = genSimpleCastModel(circle::TensorType_BOOL, circle::TensorType_FLOAT32);
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
-  TestCaseData tcd;
-  tcd.addInput(std::vector<bool>{true, false, true, true});
-  tcd.addOutput(std::vector<float>{1, 0, 1, 1});
-  _context->addTestCase(tcd);
+  _context->addTestCase(
+      TestCaseData{}.addInput<bool>({true, false, true, true}).addOutput<float>({1, 0, 1, 1}));
   _context->setBackends({"acl_cl", "acl_neon", "cpu"});
 
   SUCCEED();
@@ -75,10 +69,9 @@ TEST_F(GenModelTest, OneOp_Cast_BoolToUInt8)
   CircleGen cgen = genSimpleCastModel(circle::TensorType_BOOL, circle::TensorType_UINT8);
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
-  TestCaseData tcd;
-  tcd.addInput(std::vector<bool>{true, false, true, true});
-  tcd.addOutput(std::vector<uint8_t>{1, 0, 1, 1});
-  _context->addTestCase(tcd);
+  _context->addTestCase(TestCaseData{}
+                            .addInput<bool>({true, false, true, true})
+                            .addOutput(std::vector<uint8_t>{1, 0, 1, 1}));
   _context->setBackends({"acl_cl", "acl_neon", "cpu"});
 
   SUCCEED();
@@ -89,10 +82,8 @@ TEST_F(GenModelTest, OneOp_Cast_BoolToInt32)
   CircleGen cgen = genSimpleCastModel(circle::TensorType_BOOL, circle::TensorType_INT32);
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
-  TestCaseData tcd;
-  tcd.addInput(std::vector<bool>{true, false, true, true});
-  tcd.addOutput(std::vector<int32_t>{1, 0, 1, 1});
-  _context->addTestCase(tcd);
+  _context->addTestCase(
+      TestCaseData{}.addInput<bool>({true, false, true, true}).addOutput<int32_t>({1, 0, 1, 1}));
   _context->setBackends({"acl_cl", "acl_neon", "cpu"});
 
   SUCCEED();

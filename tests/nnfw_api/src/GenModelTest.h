@@ -69,7 +69,11 @@ struct TestCaseData
    * @tparam T Data type
    * @param data vector data array
    */
-  template <typename T> void addInput(const std::vector<T> &data) { addData(inputs, data); }
+  template <typename T> TestCaseData &addInput(const std::vector<T> &data)
+  {
+    addData(inputs, data);
+    return *this;
+  }
 
   /**
    * @brief Append vector data to inputs
@@ -77,12 +81,20 @@ struct TestCaseData
    * @tparam T Data type
    * @param data vector data array
    */
-  template <typename T> void addOutput(const std::vector<T> &data) { addData(outputs, data); }
+  template <typename T> TestCaseData &addOutput(const std::vector<T> &data)
+  {
+    addData(outputs, data);
+    return *this;
+  }
 
   /**
    * @brief Call this when @c nnfw_run() for this test case is expected to be failed
    */
-  void expectFailRun() { _expected_fail_run = true; }
+  TestCaseData &expectFailRun()
+  {
+    _expected_fail_run = true;
+    return *this;
+  }
   bool expected_fail_run() const { return _expected_fail_run; }
 
 private:

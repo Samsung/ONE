@@ -60,11 +60,10 @@ TEST_F(GenModelTest, OneOp_Transpose_PermsToVar)
   cgen.setInputsAndOutputs({in, perms}, {out});
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
-  TestCaseData tcd;
-  tcd.addInput(std::vector<float>{1, 2, 3, 4, 5, 6});
-  tcd.addInput(std::vector<int32_t>{0, 2, 1, 3});
-  tcd.addOutput(std::vector<float>{1, 4, 2, 5, 3, 6});
-  _context->addTestCase(tcd);
+  _context->addTestCase(TestCaseData{}
+                            .addInput<float>({1, 2, 3, 4, 5, 6})
+                            .addInput<int32_t>({0, 2, 1, 3})
+                            .addOutput<float>({1, 4, 2, 5, 3, 6}));
   _context->setBackends({"cpu"});
 
   SUCCEED();
@@ -80,11 +79,10 @@ TEST_F(GenModelTest, OneOp_Transpose_RegularTranspose)
   cgen.setInputsAndOutputs({in, perms}, {out});
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
-  TestCaseData tcd;
-  tcd.addInput(std::vector<float>{1, 2, 3, 4, 5, 6});
-  tcd.addInput(std::vector<int32_t>{});
-  tcd.addOutput(std::vector<float>{1, 4, 2, 5, 3, 6});
-  _context->addTestCase(tcd);
+  _context->addTestCase(TestCaseData{}
+                            .addInput<float>({1, 2, 3, 4, 5, 6})
+                            .addInput<int32_t>({})
+                            .addOutput<float>({1, 4, 2, 5, 3, 6}));
   _context->setBackends({"acl_cl", "acl_neon", "cpu"});
 
   SUCCEED();

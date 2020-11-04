@@ -28,12 +28,9 @@ TEST_F(GenModelTest, OneOp_Fill_Int32)
   cgen.addOperatorFill({{in, value}, {out}});
   cgen.setInputsAndOutputs({in}, {out});
 
-  TestCaseData tcd;
-  tcd.addInput(std::vector<int32_t>{2, 3});
-  tcd.addOutput(std::vector<int32_t>{13, 13, 13, 13, 13, 13});
-
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
-  _context->addTestCase(tcd);
+  _context->addTestCase(
+      TestCaseData{}.addInput<int32_t>({2, 3}).addOutput<int32_t>({13, 13, 13, 13, 13, 13}));
   _context->setBackends({"cpu"});
 
   SUCCEED();
@@ -51,12 +48,9 @@ TEST_F(GenModelTest, OneOp_Fill_Int64)
   cgen.addOperatorFill({{in, value}, {out}});
   cgen.setInputsAndOutputs({in}, {out});
 
-  TestCaseData tcd;
-  tcd.addInput(std::vector<int32_t>{2, 3});
-  tcd.addOutput(std::vector<int64_t>{13, 13, 13, 13, 13, 13});
-
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
-  _context->addTestCase(tcd);
+  _context->addTestCase(
+      TestCaseData{}.addInput<int32_t>({2, 3}).addOutput<int64_t>({13, 13, 13, 13, 13, 13}));
   _context->setBackends({"cpu"});
 
   SUCCEED();
@@ -74,12 +68,9 @@ TEST_F(GenModelTest, OneOp_Fill_Float32)
   cgen.addOperatorFill({{in, value}, {out}});
   cgen.setInputsAndOutputs({in}, {out});
 
-  TestCaseData tcd;
-  tcd.addInput(std::vector<int32_t>{2, 3});
-  tcd.addOutput(std::vector<float>{1.3, 1.3, 1.3, 1.3, 1.3, 1.3});
-
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
-  _context->addTestCase(tcd);
+  _context->addTestCase(
+      TestCaseData{}.addInput<int32_t>({2, 3}).addOutput<float>({1.3, 1.3, 1.3, 1.3, 1.3, 1.3}));
   _context->setBackends({"cpu"});
 
   SUCCEED();
@@ -94,12 +85,9 @@ TEST_F(GenModelTest, neg_OneOp_Fill_Int32_oneoperand)
   cgen.addOperatorFill({{in}, {out}});
   cgen.setInputsAndOutputs({in}, {out});
 
-  TestCaseData tcd;
-  tcd.addInput(std::vector<int32_t>{2, 3});
-  tcd.addOutput(std::vector<int32_t>{13, 13, 13, 13, 13, 13});
-
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
-  _context->addTestCase(tcd);
+  _context->addTestCase(
+      TestCaseData{}.addInput<int32_t>({2, 3}).addOutput<int32_t>({13, 13, 13, 13, 13, 13}));
   _context->setBackends({"cpu"});
   _context->expectFailModelLoad();
 
@@ -115,12 +103,9 @@ TEST_F(GenModelTest, neg_OneOp_Fill_Int64_oneoperand)
   cgen.addOperatorFill({{in}, {out}});
   cgen.setInputsAndOutputs({in}, {out});
 
-  TestCaseData tcd;
-  tcd.addInput(std::vector<int32_t>{2, 3});
-  tcd.addOutput(std::vector<int64_t>{13, 13, 13, 13, 13, 13});
-
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
-  _context->addTestCase(tcd);
+  _context->addTestCase(
+      TestCaseData{}.addInput<int32_t>({2, 3}).addOutput<int64_t>({13, 13, 13, 13, 13, 13}));
   _context->setBackends({"cpu"});
   _context->expectFailModelLoad();
 
@@ -136,12 +121,9 @@ TEST_F(GenModelTest, neg_OneOp_Fill_Float32_oneoperand)
   cgen.addOperatorFill({{in}, {out}});
   cgen.setInputsAndOutputs({in}, {out});
 
-  TestCaseData tcd;
-  tcd.addInput(std::vector<int32_t>{2, 3});
-  tcd.addOutput(std::vector<float>{1.3, 1.3, 1.3, 1.3, 1.3, 1.3});
-
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
-  _context->addTestCase(tcd);
+  _context->addTestCase(
+      TestCaseData{}.addInput<int32_t>({2, 3}).addOutput<float>({1.3, 1.3, 1.3, 1.3, 1.3, 1.3}));
   _context->setBackends({"cpu"});
   _context->expectFailModelLoad();
 
