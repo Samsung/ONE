@@ -99,8 +99,14 @@ public:
 
     int im2col_size = _need_im2col ? _im2col_shape.FlatSize() : 0;
 
+    // Comes from interpreter
+    if (!ruy_context)
+    {
+      reference::Conv(params, input_shape, input_data, filter_shape, filter_data, bias_shape,
+                      bias_data, output_shape, output_data);
+    }
     // Use heap if size is larger than 8MB
-    if (im2col_size > 2 * 1024 * 1024)
+    else if (im2col_size > 2 * 1024 * 1024)
     {
       std::unique_ptr<float[]> im2col_data = std::make_unique<float[]>(im2col_size);
       optimized::Conv(params, input_shape, input_data, filter_shape, filter_data, bias_shape,
