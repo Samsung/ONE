@@ -37,16 +37,16 @@ void setHexId(const void *src, std::string &hex_id)
 }
 
 // category is shown as a row in Chrome Tracing
-std::string getSubgraphCatetory(const onert::exec::IExecutor *executor)
+std::string getSubgraphCategory(const onert::exec::IExecutor *executor)
 {
   std::string hex_id;
   setHexId(executor, hex_id);
   return "Subgraph(" + hex_id + ")";
 }
 
-std::string getOpCatetory(const onert::exec::IExecutor *executor, const std::string &backend_id)
+std::string getOpCategory(const onert::exec::IExecutor *executor, const std::string &backend_id)
 {
-  return getSubgraphCatetory(executor) + ": " + backend_id;
+  return getSubgraphCategory(executor) + ": " + backend_id;
 }
 
 } // namespace
@@ -116,14 +116,14 @@ ChromeTracingObserver::~ChromeTracingObserver()
 
 void ChromeTracingObserver::handleBegin(IExecutor *executor)
 {
-  std::string category(getSubgraphCatetory(executor));
+  std::string category(getSubgraphCategory(executor));
   _collector.onEvent(EventCollector::Event{EventCollector::Edge::BEGIN, category, "Subgraph"});
 }
 
 void ChromeTracingObserver::handleBegin(IExecutor *executor, const ir::OpSequence *op_seq,
                                         const backend::Backend *backend)
 {
-  std::string category(getOpCatetory(executor, backend->config()->id()));
+  std::string category(getOpCategory(executor, backend->config()->id()));
   _collector.onEvent(EventCollector::Event{EventCollector::Edge::BEGIN, category,
                                            opSequenceTag(op_seq, _graph.operations())});
 }
@@ -131,14 +131,14 @@ void ChromeTracingObserver::handleBegin(IExecutor *executor, const ir::OpSequenc
 void ChromeTracingObserver::handleEnd(IExecutor *executor, const ir::OpSequence *op_seq,
                                       const backend::Backend *backend)
 {
-  std::string category(getOpCatetory(executor, backend->config()->id()));
+  std::string category(getOpCategory(executor, backend->config()->id()));
   _collector.onEvent(EventCollector::Event{EventCollector::Edge::END, category,
                                            opSequenceTag(op_seq, _graph.operations())});
 }
 
 void ChromeTracingObserver::handleEnd(IExecutor *executor)
 {
-  std::string category(getSubgraphCatetory(executor));
+  std::string category(getSubgraphCategory(executor));
   _collector.onEvent(EventCollector::Event{EventCollector::Edge::END, category, "Subgraph"});
 }
 
