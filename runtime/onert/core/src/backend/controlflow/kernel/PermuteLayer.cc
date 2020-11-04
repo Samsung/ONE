@@ -55,7 +55,10 @@ void PermuteLayer::optimize()
     {
       auto src = *src_it;
       auto dst = *dst_it;
-      assert(underlying_type(src->data_type()) == underlying_type(dst->data_type()));
+
+      if (underlying_type(src->data_type()) != underlying_type(dst->data_type()))
+        throw std::runtime_error("data type does not match");
+
       const auto permute_type = [&]() -> PermuteType {
         if (src->num_dimensions() == 4 && src->layout() == ir::Layout::NHWC &&
             dst->layout() == ir::Layout::NCHW)
