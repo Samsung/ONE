@@ -241,7 +241,7 @@ std::vector<ChannelQuantMultipliers> quantizeMultipliers(const std::vector<doubl
 {
   size_t n = effective_scale.size();
   std::vector<ChannelQuantMultipliers> params(n);
-  for (int i = 0; i < n; ++i)
+  for (size_t i = 0; i < n; ++i)
   {
     quantizeMultiplier(effective_scale[i], &params[i].multiplier, &params[i].shift);
   }
