@@ -83,7 +83,7 @@ template <nnfw::cker::BinaryArithmeticOpType arithmetic_type>
 std::function<void(const IPortableTensor *, const IPortableTensor *, IPortableTensor *)>
 generateKernelGeneric(const IPortableTensor *lhs, const IPortableTensor *rhs,
                       IPortableTensor *output, const ir::Activation activation,
-                      nnfw::cker::BinaryArithmeticOpParam op_params)
+                      nnfw::cker::BinaryArithmeticOpParam &op_params)
 {
   switch (lhs->data_type())
   {
