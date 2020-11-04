@@ -144,10 +144,7 @@ TEST_F(GenModelTest, dynamic_reshape_from_2x3_to_3x2)
 
   _context = std::make_unique<GenModelTestContext>(build_dynamic_Reshape());
   {
-    TestCaseData tcd;
-    tcd.addInput(new_shape);
-    tcd.addOutput(expected);
-    _context->addTestCase(tcd);
+    _context->addTestCase(TestCaseData{}.addInput(new_shape).addOutput(expected));
     _context->setBackends({"cpu"}); // Currently, dynamic tensor runs on "cpu" only
     _context->output_sizes(0, sizeof(float) * expected.size());
   }
@@ -166,12 +163,8 @@ TEST_F(GenModelTest, neg_reshape_from_2x3_to_wrong_3x3)
 
   _context = std::make_unique<GenModelTestContext>(build_dynamic_Reshape());
   {
-    TestCaseData tcd;
-    tcd.addInput(wrong_shape);
-    tcd.addOutput(expected);
-    tcd.expectFailRun();
 
-    _context->addTestCase(tcd);
+    _context->addTestCase(TestCaseData{}.addInput(wrong_shape).addOutput(expected).expectFailRun());
     _context->setBackends({"cpu"}); // Currently, dynamic tensor runs on "cpu" only
     _context->output_sizes(0, sizeof(float) * expected.size());
   }
@@ -184,18 +177,11 @@ TEST_F(GenModelTest, reshape_multiple_executions)
   std::vector<int> new_shape;
   std::vector<float> expected = {-1.5, -1.0, -0.5, 0.5, 1.0, 1.5};
 
-  auto add_tcd = [&](const decltype(new_shape) &&new_shape) {
-    TestCaseData tcd;
-    tcd.addInput(new_shape);
-    tcd.addOutput(expected);
-    _context->addTestCase(tcd);
-  };
-
   _context = std::make_unique<GenModelTestContext>(build_dynamic_Reshape());
   {
-    add_tcd({3, 2});
-    add_tcd({1, 6});
-    add_tcd({6, 1});
+    _context->addTestCase(TestCaseData{}.addInput<int>({3, 2}).addOutput(expected));
+    _context->addTestCase(TestCaseData{}.addInput<int>({1, 6}).addOutput(expected));
+    _context->addTestCase(TestCaseData{}.addInput<int>({6, 1}).addOutput(expected));
 
     _context->setBackends({"cpu"}); // Currently, dynamic tensor runs on "cpu" only
     _context->output_sizes(0, sizeof(float) * expected.size());
@@ -211,8 +197,7 @@ TEST_F(GenModelTest, neg_reshape_multiple_executions)
 
   auto add_tcd = [&](const decltype(new_shape) &&new_shape, bool expect_fail_on_run) {
     TestCaseData tcd;
-    tcd.addInput(new_shape);
-    tcd.addOutput(expected);
+    tcd.addInput(new_shape).addOutput(expected);
     if (expect_fail_on_run)
       tcd.expectFailRun();
     _context->addTestCase(tcd);

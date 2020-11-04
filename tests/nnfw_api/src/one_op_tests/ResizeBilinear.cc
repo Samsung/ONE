@@ -47,10 +47,9 @@ TEST_F(GenModelTest, OneOp_ResizeBilinear_SizeToVar)
   cgen.setInputsAndOutputs({in, size}, {out});
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
-  TestCaseData tcd;
-  tcd.addInput(std::vector<int32_t>{3, 3});
-  tcd.addInput(std::vector<float>{1, 1, 2, 2});
-  tcd.addOutput(std::vector<float>{1, 1, 1, 1.666666667, 1.666666667, 1.666666667, 2, 2, 2});
+  // FIXME enable a test case the below is not a valid test case
+  //_context->addTestCase(TestCaseData{}.addInput<int32_t>({3, 3}).addInput<float>({1, 1, 2,
+  // 2}).addOutput<float>({1, 1, 1, 1.666666667, 1.666666667, 1.666666667, 2, 2, 2}));
   _context->setBackends({"cpu"});
 
   SUCCEED();

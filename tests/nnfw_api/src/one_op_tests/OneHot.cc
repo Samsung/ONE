@@ -35,11 +35,10 @@ TEST_F(GenModelTest, OneOp_OneHot_OffValueToConst)
   cgen.setInputsAndOutputs({indices, on_value}, {out});
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
-  TestCaseData tcd;
-  tcd.addInput(std::vector<int32_t>{1, 2, 0, 2});
-  tcd.addInput(std::vector<float>{1});
-  tcd.addOutput(std::vector<float>{0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 1});
-  _context->addTestCase(tcd);
+  _context->addTestCase(TestCaseData{}
+                            .addInput<int32_t>({1, 2, 0, 2})
+                            .addInput<float>({1})
+                            .addOutput<float>({0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 1}));
   _context->setBackends({"acl_cl", "acl_neon", "cpu"});
 
   SUCCEED();
@@ -60,12 +59,11 @@ TEST_F(GenModelTest, OneOp_OneHot_OffValueToNotZero)
   cgen.setInputsAndOutputs({indices, on_value, off_value}, {out});
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
-  TestCaseData tcd;
-  tcd.addInput(std::vector<int32_t>{1, 2, 0, 2});
-  tcd.addInput(std::vector<float>{1});
-  tcd.addInput(std::vector<float>{-1});
-  tcd.addOutput(std::vector<float>{-1, -1, 1, -1, -1, 1, 1, -1, -1, -1, -1, 1});
-  _context->addTestCase(tcd);
+  _context->addTestCase(TestCaseData{}
+                            .addInput<int32_t>({1, 2, 0, 2})
+                            .addInput<float>({1})
+                            .addInput<float>({-1})
+                            .addOutput<float>({-1, -1, 1, -1, -1, 1, 1, -1, -1, -1, -1, 1}));
   _context->setBackends({"acl_cl", "acl_neon", "cpu"});
 
   SUCCEED();
@@ -88,11 +86,10 @@ TEST_F(GenModelTest, OneOp_OneHot_IndicesValueToNeg_OffValueToConst)
   cgen.setInputsAndOutputs({indices, on_value}, {out});
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
-  TestCaseData tcd;
-  tcd.addInput(std::vector<int32_t>{1, 2, 0, -1});
-  tcd.addInput(std::vector<float>{1});
-  tcd.addOutput(std::vector<float>{0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0});
-  _context->addTestCase(tcd);
+  _context->addTestCase(TestCaseData{}
+                            .addInput<int32_t>({1, 2, 0, -1})
+                            .addInput<float>({1})
+                            .addOutput<float>({0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0}));
   _context->setBackends({"acl_cl", "acl_neon", "cpu"});
 
   SUCCEED();
@@ -113,12 +110,11 @@ TEST_F(GenModelTest, OneOp_OneHot_IndicesValueToNeg_OffValueToVar)
   cgen.setInputsAndOutputs({indices, on_value, off_value}, {out});
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
-  TestCaseData tcd;
-  tcd.addInput(std::vector<int32_t>{1, 2, 0, -1});
-  tcd.addInput(std::vector<float>{1});
-  tcd.addInput(std::vector<float>{0});
-  tcd.addOutput(std::vector<float>{0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0});
-  _context->addTestCase(tcd);
+  _context->addTestCase(TestCaseData{}
+                            .addInput<int32_t>({1, 2, 0, -1})
+                            .addInput<float>({1})
+                            .addInput<float>({0})
+                            .addOutput<float>({0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0}));
   _context->setBackends({"acl_cl", "acl_neon", "cpu"});
 
   SUCCEED();

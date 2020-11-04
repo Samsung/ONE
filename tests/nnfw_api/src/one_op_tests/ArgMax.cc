@@ -31,10 +31,7 @@ TEST_F(GenModelTest, OneOp_ArgMax_AxisToConst)
   cgen.setInputsAndOutputs({in}, {out});
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
-  TestCaseData tcd;
-  tcd.addInput(std::vector<float>{1, 4, 2, 3});
-  tcd.addOutput(std::vector<int32_t>{1, 0});
-  _context->addTestCase(tcd);
+  _context->addTestCase(TestCaseData{}.addInput<float>({1, 4, 2, 3}).addOutput<int32_t>({1, 0}));
   _context->setBackends({"acl_cl", "acl_neon", "cpu"});
 
   SUCCEED();
@@ -53,10 +50,7 @@ TEST_F(GenModelTest, OneOp_ArgMax_Int64_AxisToConst)
   cgen.setInputsAndOutputs({in}, {out});
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
-  TestCaseData tcd;
-  tcd.addInput(std::vector<float>{1, 4, 2, 3});
-  tcd.addOutput(std::vector<int64_t>{1, 0});
-  _context->addTestCase(tcd);
+  _context->addTestCase(TestCaseData{}.addInput<float>({1, 4, 2, 3}).addOutput<int64_t>({1, 0}));
   _context->setBackends({"acl_cl"});
 
   SUCCEED();
@@ -73,11 +67,10 @@ TEST_F(GenModelTest, OneOp_ArgMax_AxisToVar)
   cgen.setInputsAndOutputs({in, axis}, {out});
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
-  TestCaseData tcd;
-  tcd.addInput(std::vector<float>{1, 4, 2, 3});
-  tcd.addInput(std::vector<int32_t>{-3});
-  tcd.addOutput(std::vector<int32_t>{1, 0});
-  _context->addTestCase(tcd);
+  _context->addTestCase(TestCaseData{}
+                            .addInput<float>({1, 4, 2, 3})
+                            .addInput<int32_t>({-3})
+                            .addOutput<int32_t>({1, 0}));
   _context->setBackends({"cpu"});
 
   SUCCEED();
