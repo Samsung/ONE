@@ -31,11 +31,11 @@ function CheckTestPrepared()
 {
   # Model download server setting
   if [[ -z "${MODELFILE_SERVER}" ]]; then
-    echo "[WARNING] Model file server is not set"
-    echo "          Try to use pre-downloaed model"
+    echo "Model file server is not set. Try to use default setting."
   else
     echo "Model Server: ${MODELFILE_SERVER}"
   fi
+  $INSTALL_PATH/test/onert-test prepare-model
 }
 
 # $1: (required) backend

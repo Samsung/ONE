@@ -85,6 +85,7 @@ else
 fi
 
 $INSTALL_DIR/test/models/run_test.sh --driverbin=$TEST_DRIVER \
+    --download=off --run=on \
     --reportdir=$REPORT_DIR \
     --tapname=$TAP_NAME \
     ${MODELLIST:-} > $REPORT_DIR/verification_test.log 2>&1

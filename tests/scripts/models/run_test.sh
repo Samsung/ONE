@@ -96,7 +96,7 @@ do
             TAP_NAME=${i#*=}
             ;;
         --download=*)
-            DOWNLOAD_MODE=${i#*=}
+            DOWNLOAD_MODEL=${i#*=}
             ;;
         --md5=*)
             MD5_CHECK=${i#*=}
