@@ -118,6 +118,7 @@ void Conv2D::configure()
     catch (std::bad_alloc &ba)
     {
       // Failed memory allocation
+      _im2col = nullptr;
     }
   }
 }
