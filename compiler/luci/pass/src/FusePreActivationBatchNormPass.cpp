@@ -451,13 +451,10 @@ bool fuse_add_with_conv(luci::CircleAdd *add, std::vector<luci::CircleSub *> &su
   // TODO: Handle this with get_backward_conv2d
   else if (pred->opcode() == luci::CircleOpcode::ADD)
   {
-    auto preds_of_pred = loco::preds(pred);
-    for (auto pred_of_pred : preds_of_pred)
-    {
-      conv = get_backward_conv2d(loco::must_cast<luci::CircleNode *>(pred_of_pred), channel_size);
-      if (conv != nullptr)
-        break;
-    }
+    auto pred_add = loco::must_cast<luci::CircleAdd *>(pred);
+    conv = get_backward_conv2d(loco::must_cast<luci::CircleNode *>(pred_add->y()), channel_size);
+    if (conv == nullptr)
+      conv = get_backward_conv2d(loco::must_cast<luci::CircleNode *>(pred_add->x()), channel_size);
 
     if (conv == nullptr)
       return false;
