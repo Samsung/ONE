@@ -16,7 +16,12 @@ include("cmake/buildtool/config/config_linux.cmake")
 set(FLAGS_COMMON ${FLAGS_COMMON}
     "-mtune=cortex-a8"
     "-mfloat-abi=softfp"
-    "-mfpu=neon-vfpv4"
     "-funsafe-math-optimizations"
     "-ftree-vectorize"
     )
+
+if(VFPV3_BUILD)
+    set(FLAGS_COMMON ${FLAGS_COMMON} "-mfpu=neon-vfpv3")
+else(VFPV3_BUILD)
+    set(FLAGS_COMMON ${FLAGS_COMMON} "-mfpu=neon-vfpv4")
+endif(VFPV3_BUILD)

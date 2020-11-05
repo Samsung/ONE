@@ -18,6 +18,7 @@ Source2002: nnfw-plugin.pc.in
 
 %{!?build_type:     %define build_type      Release}
 %{!?coverage_build: %define coverage_build  0}
+%{!?vfpv3_build:    %define vfpv3_build     0}
 %{!?test_build:     %define test_build      0}
 %{!?extra_option:   %define extra_option    %{nil}}
 %if %{coverage_build} == 1
@@ -87,10 +88,16 @@ NNFW test rpm. It does not depends on nnfw rpm since it contains nnfw runtime.
 %define target_arch aarch64
 %endif
 
+%if %{vfpv3_build} == 1
+%define vfpv3_option on
+%else
+%define vfpv3_option off
+%endif
+
 %define install_dir %{_prefix}
 %define install_path %{buildroot}%{install_dir}
 %define build_env NNFW_WORKSPACE=build
-%define build_options -DCMAKE_BUILD_TYPE=%{build_type} -DTARGET_ARCH=%{target_arch} -DTARGET_OS=tizen -DENABLE_TEST=off -DBUILD_MINIMAL_SAMPLE=on
+%define build_options -DCMAKE_BUILD_TYPE=%{build_type} -DTARGET_ARCH=%{target_arch} -DTARGET_OS=tizen -DENABLE_TEST=off -DBUILD_MINIMAL_SAMPLE=on -DVFPV3_BUILD=%{vfpv3_option}
 
 # Set option for test build (and coverage test build)
 %define test_install_home /opt/usr/nnfw-test
@@ -104,7 +111,7 @@ NNFW test rpm. It does not depends on nnfw rpm since it contains nnfw runtime.
 %define test_build_type Debug
 %endif
 %define test_build_env NNFW_INSTALL_PREFIX=%{test_install_path} NNFW_WORKSPACE=build_for_test
-%define test_build_options %{coverage_option} -DCMAKE_BUILD_TYPE=%{test_build_type} -DTARGET_ARCH=%{target_arch} -DTARGET_OS=tizen -DENVVAR_ONERT_CONFIG=ON
+%define test_build_options %{coverage_option} -DCMAKE_BUILD_TYPE=%{test_build_type} -DTARGET_ARCH=%{target_arch} -DTARGET_OS=tizen -DENVVAR_ONERT_CONFIG=ON -DVFPV3_BUILD=%{vfpv3_option}
 
 %prep
 %setup -q
