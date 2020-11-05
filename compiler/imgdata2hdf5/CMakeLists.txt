@@ -10,4 +10,8 @@ add_custom_command(OUTPUT ${imgdata2hdf5_BIN}
 
 add_custom_target(imgdata2hdf5 ALL DEPENDS ${imgdata2hdf5_BIN})
 
-install(FILES ${imgdata2hdf5_BIN} DESTINATION bin)
+install(FILES ${imgdata2hdf5_BIN}
+        PERMISSIONS OWNER_WRITE OWNER_READ OWNER_EXECUTE
+                    GROUP_READ GROUP_EXECUTE
+                    WORLD_READ WORLD_EXECUTE
+        DESTINATION bin)
