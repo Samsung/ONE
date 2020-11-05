@@ -152,21 +152,21 @@ public:
 
 public:
   loco::Graph g;
-  luci::CircleConv2D *pred_conv;
-  luci::CircleConst *pred_conv_filter;
-  luci::CircleConst *pred_conv_bias;
-  luci::CircleConv2D *pred_conv2;
-  luci::CircleConst *pred_conv2_filter;
-  luci::CircleConst *pred_conv2_bias;
-  luci::CircleAdd *pred_add;
-  luci::CircleMul *mul;
-  luci::CircleConst *mul_gamma;
-  luci::CircleAdd *add;
-  luci::CircleConst *add_beta;
-  luci::CircleConv2D *conv;
-  luci::CircleConst *conv_filter;
-  luci::CircleConst *conv_bias;
-  luci::CircleAdd *succ_add;
+  luci::CircleConv2D *pred_conv = nullptr;
+  luci::CircleConst *pred_conv_filter = nullptr;
+  luci::CircleConst *pred_conv_bias = nullptr;
+  luci::CircleConv2D *pred_conv2 = nullptr;
+  luci::CircleConst *pred_conv2_filter = nullptr;
+  luci::CircleConst *pred_conv2_bias = nullptr;
+  luci::CircleAdd *pred_add = nullptr;
+  luci::CircleMul *mul = nullptr;
+  luci::CircleConst *mul_gamma = nullptr;
+  luci::CircleAdd *add = nullptr;
+  luci::CircleConst *add_beta = nullptr;
+  luci::CircleConv2D *conv = nullptr;
+  luci::CircleConst *conv_filter = nullptr;
+  luci::CircleConst *conv_bias = nullptr;
+  luci::CircleAdd *succ_add = nullptr;
 };
 
 } // namespace
