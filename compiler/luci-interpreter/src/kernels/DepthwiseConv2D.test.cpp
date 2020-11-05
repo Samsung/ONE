@@ -174,21 +174,21 @@ TEST(DepthwiseConv2DTest, SInt16_CWQ_weights)
   std::vector<int32_t> ref_output_shape{1, 2, 1, output_channels};
 
   std::vector<float> input_data{
-    1,  2,  7,  8,  //
-    3,  4,  9,  10, //
-    5,  6,  11, 12, //
-    13, 14, 15, 16, //
+      1,  2,  7,  8,  //
+      3,  4,  9,  10, //
+      5,  6,  11, 12, //
+      13, 14, 15, 16, //
   };
   std::vector<float> filter_data{
-    1,  2,   3,   4,   //
-    -9, 10,  -11, 12,  //
-    5,  6,   7,   8,   //
-    13, -14, 15,  -16, //
+      1,  2,   3,   4,   //
+      -9, 10,  -11, 12,  //
+      5,  6,   7,   8,   //
+      13, -14, 15,  -16, //
   };
   std::vector<float> bias_data{1, 2, 3, 4};
   std::vector<float> ref_output_data{
-    71,  0, 99,  0,  //
-    167, 0, 227, 28, //
+      71,  0, 99,  0,  //
+      167, 0, 227, 28, //
   };
 
   float input_scale = 0.25;
@@ -198,7 +198,8 @@ TEST(DepthwiseConv2DTest, SInt16_CWQ_weights)
     bias_scales.push_back(filter_scales[i] * input_scale);
   std::vector<int32_t> zerop(4, 0);
   Tensor input_tensor = makeInputTensor<DataType::S16>(input_shape, input_scale, 0, input_data);
-  Tensor filter_tensor = makeInputTensor<DataType::S16>(filter_shape, filter_scales, zerop, 3, filter_data);
+  Tensor filter_tensor =
+      makeInputTensor<DataType::S16>(filter_shape, filter_scales, zerop, 3, filter_data);
   Tensor bias_tensor = makeInputTensor<DataType::S64>(bias_shape, bias_scales, zerop, 0, bias_data);
   Tensor output_tensor = makeOutputTensor(DataType::S16, 0.5, 0);
 

@@ -109,8 +109,8 @@ inline double getQuantizedConvolutionMultipler(float input_scale, float filter_s
 }
 
 inline std::vector<double> getQuantizedConvolutionMultiplers(float input_scale,
-                                                      const std::vector<float> &filter_scale,
-                                                      float output_scale)
+                                                             const std::vector<float> &filter_scale,
+                                                             float output_scale)
 {
   std::vector<double> effective_output_scales;
   size_t n = filter_scale.size();
@@ -118,7 +118,7 @@ inline std::vector<double> getQuantizedConvolutionMultiplers(float input_scale,
   for (size_t i = 0; i < n; ++i)
   {
     effective_output_scales.push_back(
-      getQuantizedConvolutionMultipler(input_scale, filter_scale[i], output_scale));
+        getQuantizedConvolutionMultipler(input_scale, filter_scale[i], output_scale));
   }
   return effective_output_scales;
 }
@@ -130,7 +130,8 @@ struct ChannelQuantMultipliers
   ChannelQuantMultipliers() = default;
 };
 
-inline std::vector<ChannelQuantMultipliers> quantizeMultipliers(const std::vector<double> &effective_scale)
+inline std::vector<ChannelQuantMultipliers>
+quantizeMultipliers(const std::vector<double> &effective_scale)
 {
   size_t n = effective_scale.size();
   std::vector<ChannelQuantMultipliers> params(n);
