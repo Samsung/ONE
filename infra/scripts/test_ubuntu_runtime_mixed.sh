@@ -17,7 +17,6 @@ pushd ${ROOT_PATH} > /dev/null
 echo ""
 echo "==== Run standalone unittest begin ===="
 echo ""
-Product/out/test/onert-test prepare-model --model=nnpackage
 Product/out/test/onert-test unittest --unittestdir=Product/out/unittest_standalone
 echo ""
 echo "==== Run standalone unittest end ===="
