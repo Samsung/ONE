@@ -67,6 +67,8 @@ public:
     pred_conv_filter = g.nodes()->create<luci::CircleConst>();
     pred_conv_bias = g.nodes()->create<luci::CircleConst>();
     pred_conv2 = g.nodes()->create<luci::CircleConv2D>();
+    pred_conv2_filter = g.nodes()->create<luci::CircleConst>();
+    pred_conv2_bias = g.nodes()->create<luci::CircleConst>();
     pred_add = g.nodes()->create<luci::CircleAdd>();
     mul = g.nodes()->create<luci::CircleMul>();
     mul_gamma = g.nodes()->create<luci::CircleConst>();
@@ -81,6 +83,8 @@ public:
     pred_conv_filter->dtype(loco::DataType::FLOAT32);
     pred_conv_bias->dtype(loco::DataType::FLOAT32);
     pred_conv2->dtype(loco::DataType::FLOAT32);
+    pred_conv2_filter->dtype(loco::DataType::FLOAT32);
+    pred_conv2_bias->dtype(loco::DataType::FLOAT32);
     pred_add->dtype(loco::DataType::FLOAT32);
     mul->dtype(loco::DataType::FLOAT32);
     mul_gamma->dtype(loco::DataType::FLOAT32);
@@ -96,6 +100,8 @@ public:
     pred_conv_filter->shape({16, 1, 1, 16});
     pred_conv_bias->shape({16});
     pred_conv2->shape({1, 4, 4, 16});
+    pred_conv2_filter->shape({16, 1, 1, 16});
+    pred_conv2_bias->shape({16});
     pred_add->shape({1, 4, 4, 16});
     mul->shape({1, 4, 4, 16});
     mul_gamma->shape({16});
@@ -108,6 +114,8 @@ public:
 
     pred_conv->filter(pred_conv_filter);
     pred_conv->bias(pred_conv_bias);
+    pred_conv2->filter(pred_conv2_filter);
+    pred_conv2->bias(pred_conv2_bias);
     pred_add->x(pred_conv);
     pred_add->y(pred_conv2);
     mul->x(pred_add);
@@ -127,11 +135,13 @@ public:
     conv_filter->size<loco::DataType::FLOAT32>(channel_size * out_size);
     conv_bias->size<loco::DataType::FLOAT32>(out_size);
     pred_conv_bias->size<loco::DataType::FLOAT32>(channel_size);
+    pred_conv2_bias->size<loco::DataType::FLOAT32>(channel_size);
     for (uint32_t i = 0; i < channel_size; i++)
     {
       add_beta->at<loco::DataType::FLOAT32>(i) = i;
       mul_gamma->at<loco::DataType::FLOAT32>(i) = i;
       pred_conv_bias->at<loco::DataType::FLOAT32>(i) = i;
+      pred_conv2_bias->at<loco::DataType::FLOAT32>(i) = i;
       conv_bias->at<loco::DataType::FLOAT32>(i) = i;
       for (uint32_t j = 0; j < out_size; j++)
       {
@@ -146,6 +156,8 @@ public:
   luci::CircleConst *pred_conv_filter;
   luci::CircleConst *pred_conv_bias;
   luci::CircleConv2D *pred_conv2;
+  luci::CircleConst *pred_conv2_filter;
+  luci::CircleConst *pred_conv2_bias;
   luci::CircleAdd *pred_add;
   luci::CircleMul *mul;
   luci::CircleConst *mul_gamma;
@@ -277,7 +289,7 @@ TEST(FusePreActivationBatchNorm, fuse_add_with_conv)
 
   for (uint32_t c = 0; c < channel_size; c++)
   {
-    auto bias = g.pred_conv_bias->at<loco::DataType::FLOAT32>(c);
+    auto bias = g.pred_conv2_bias->at<loco::DataType::FLOAT32>(c);
     EXPECT_FLOAT_EQ(c + 1.0, bias);
   }
 
@@ -285,6 +297,7 @@ TEST(FusePreActivationBatchNorm, fuse_add_with_conv)
   EXPECT_EQ(relu, g.conv->input());
   EXPECT_EQ(g.pred_add, relu->features());
   EXPECT_EQ(g.pred_conv, g.pred_add->x());
+  EXPECT_EQ(g.pred_conv2, g.pred_add->y());
 
   auto sub = static_cast<luci::CircleSub *>(sub_list[0]);
   EXPECT_EQ(sub, g.succ_add->x());
