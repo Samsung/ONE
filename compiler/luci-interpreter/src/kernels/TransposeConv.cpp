@@ -79,7 +79,8 @@ void TransposeConv::configure()
         input()->element_type() == DataType::S16 ? DataType::S64 : DataType::S32;
     _scratch_tensor =
         std::make_unique<Tensor>(scratch_data_type, output()->shape(), AffineQuantization{}, "");
-    const std::vector<double> real_multipliers = getQuantizedConvolutionMultiplers(input()->scale(), filter()->scales(), output()->scale());
+    const std::vector<double> real_multipliers =
+        getQuantizedConvolutionMultiplers(input()->scale(), filter()->scales(), output()->scale());
 
     *_quant_multipliers = quantizeMultipliers(real_multipliers);
   }
@@ -221,8 +222,8 @@ void TransposeConv::evalQuantizedS16() const
           {
             acc += bias_data[out_c];
           }
-          int32_t scaled_acc =
-              tflite::MultiplyByQuantizedMultiplier(acc, output_multipliers[out_c].multiplier, output_multipliers[out_c].shift);
+          int32_t scaled_acc = tflite::MultiplyByQuantizedMultiplier(
+              acc, output_multipliers[out_c].multiplier, output_multipliers[out_c].shift);
 
           scaled_acc = std::max(scaled_acc, activation_min);
           scaled_acc = std::min(scaled_acc, activation_max);

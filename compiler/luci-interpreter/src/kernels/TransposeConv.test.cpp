@@ -201,21 +201,22 @@ TEST(TransposeConvTest, SInt16_CWQ_weights)
   std::vector<float> bias_data{3, 4};
 
   std::vector<float> ref_output_data{
-    4,  6,  6,  8,  10,  14,  9,  12, 13, 16, //
-    10, 12, 12, 14, 28,  32,  21, 24, 25, 28, //
-    19, 24, 27, 32, 65,  76,  45, 52, 57, 64, //
-    24, 28, 30, 34, 64,  72,  39, 44, 47, 52, //
-    42, 46, 48, 52, 106, 114, 63, 68, 71, 76, //
+      4,  6,  6,  8,  10,  14,  9,  12, 13, 16, //
+      10, 12, 12, 14, 28,  32,  21, 24, 25, 28, //
+      19, 24, 27, 32, 65,  76,  45, 52, 57, 64, //
+      24, 28, 30, 34, 64,  72,  39, 44, 47, 52, //
+      42, 46, 48, 52, 106, 114, 63, 68, 71, 76, //
   };
 
   const float input_scale = 0.25;
   const float output_scale = 0.5;
   const std::vector<float> filter_scales{0.2f, 0.5f};
-  std::vector<float> bias_scales{filter_scales[0]*input_scale, filter_scales[1]*input_scale};
+  std::vector<float> bias_scales{filter_scales[0] * input_scale, filter_scales[1] * input_scale};
   const std::vector<int32_t> zerop(2, 0);
 
   Tensor input_tensor = makeInputTensor<DataType::S16>(input_shape, input_scale, 0, input_data);
-  Tensor filter_tensor = makeInputTensor<DataType::S16>(filter_shape, filter_scales, zerop, 0, filter_data);
+  Tensor filter_tensor =
+      makeInputTensor<DataType::S16>(filter_shape, filter_scales, zerop, 0, filter_data);
   Tensor bias_tensor = makeInputTensor<DataType::S64>(bias_shape, bias_scales, zerop, 0, bias_data);
   Tensor output_shape_tensor = makeInputTensor<DataType::S32>({4}, output_shape_data);
   Tensor output_tensor = makeOutputTensor(DataType::S16, output_scale, 0);
