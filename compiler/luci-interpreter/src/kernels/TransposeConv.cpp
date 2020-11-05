@@ -31,8 +31,14 @@ namespace kernels
 
 TransposeConv::TransposeConv(const Tensor *output_shape, const Tensor *filter, const Tensor *input,
                              const Tensor *bias, Tensor *output, const TransposeConvParams &params)
-    : KernelWithParams<TransposeConvParams>({output_shape, filter, input, bias}, {output}, params)
+    : KernelWithParams<TransposeConvParams>({output_shape, filter, input, bias}, {output}, params),
+      _quant_multipliers(new std::vector<ChannelQuantMultipliers>())
 {
+}
+
+TransposeConv::~TransposeConv()
+{
+  // Declared here to delete unique_ptr properly
 }
 
 void TransposeConv::configure()
@@ -73,10 +79,9 @@ void TransposeConv::configure()
         input()->element_type() == DataType::S16 ? DataType::S64 : DataType::S32;
     _scratch_tensor =
         std::make_unique<Tensor>(scratch_data_type, output()->shape(), AffineQuantization{}, "");
-    const double input_product_scale = input()->scale() * filter()->scale();
-    assert(input_product_scale >= 0);
-    const double real_multiplier = input_product_scale / output()->scale();
-    quantizeMultiplier(real_multiplier, &_output_multiplier, &_output_shift);
+    const std::vector<double> real_multipliers = getQuantizedConvolutionMultiplers(input()->scale(), filter()->scales(), output()->scale());
+
+    *_quant_multipliers = quantizeMultipliers(real_multipliers);
   }
 }
 
@@ -106,7 +111,6 @@ void TransposeConv::evalFloat() const
   op_params.padding_values.width = _padding_width;
   op_params.stride_height = params().stride_height;
   op_params.stride_width = params().stride_width;
-  op_params.output_multiplier = _output_multiplier;
   tflite::reference_ops::TransposeConv(op_params,                                                //
                                        getTensorShape(input()), getTensorData<float>(input()),   //
                                        getTensorShape(filter()), getTensorData<float>(filter()), //
@@ -127,8 +131,8 @@ void TransposeConv::evalQuantized() const
   op_params.input_offset = -input()->zero_point();    // Note the '-'.
   op_params.weights_offset = -filter()->zero_point(); // Note the '-'.
   op_params.output_offset = output()->zero_point();
-  op_params.output_multiplier = _output_multiplier;
-  op_params.output_shift = _output_shift;
+  op_params.output_multiplier = (*_quant_multipliers)[0].multiplier;
+  op_params.output_shift = (*_quant_multipliers)[0].shift;
   op_params.quantized_activation_min = std::numeric_limits<uint8_t>::min();
   op_params.quantized_activation_max = std::numeric_limits<uint8_t>::max();
 
@@ -172,6 +176,7 @@ void TransposeConv::evalQuantizedS16() const
 
   std::memset(scratch_data, 0, _scratch_tensor->shape().num_elements() * sizeof(int64_t));
 
+  BroadcastableWrapper<ChannelQuantMultipliers> output_multipliers(*_quant_multipliers);
   for (int32_t batch = 0; batch < batches; ++batch)
   {
     for (int32_t in_y = 0; in_y < input_height; ++in_y)
@@ -217,7 +222,7 @@ void TransposeConv::evalQuantizedS16() const
             acc += bias_data[out_c];
           }
           int32_t scaled_acc =
-              tflite::MultiplyByQuantizedMultiplier(acc, _output_multiplier, _output_shift);
+              tflite::MultiplyByQuantizedMultiplier(acc, output_multipliers[out_c].multiplier, output_multipliers[out_c].shift);
 
           scaled_acc = std::max(scaled_acc, activation_min);
           scaled_acc = std::min(scaled_acc, activation_max);

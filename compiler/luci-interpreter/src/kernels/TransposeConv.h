@@ -20,16 +20,22 @@
 #include "core/Kernel.h"
 #include "core/KernelParams.h"
 
+#include <memory>
+
 namespace luci_interpreter
 {
 namespace kernels
 {
+
+class ChannelQuantMultipliers;
 
 class TransposeConv : public KernelWithParams<TransposeConvParams>
 {
 public:
   TransposeConv(const Tensor *output_shape, const Tensor *filter, const Tensor *input,
                 const Tensor *bias, Tensor *output, const TransposeConvParams &params);
+
+  ~TransposeConv();
 
   const Tensor *output_shape() const { return _inputs[0]; }
   const Tensor *filter() const { return _inputs[1]; }
@@ -52,8 +58,7 @@ private:
   int32_t _padding_width{};
   // The scaling factor from input to output (aka the 'real multiplier') can
   // be represented as a fixed point multiplier plus a left shift.
-  int32_t _output_multiplier = 0;
-  int _output_shift = 0;
+  std::unique_ptr<std::vector<ChannelQuantMultipliers>> _quant_multipliers;
 };
 
 } // namespace kernels
