@@ -72,7 +72,7 @@ def compare_quantization(tensor, tensor_name, expect_dir):
             abs_tolerance = 1
             # We use higher tolerance for int64 data (bias of int16-quantized model)
             if tensor["weights"].dtype == 'int64':
-                abs_tolerance = 2
+                abs_tolerance = 5
 
             if np.allclose(
                     input_weights, expected_weights, rtol=0, atol=abs_tolerance) == False:
