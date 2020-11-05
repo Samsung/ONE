@@ -342,7 +342,6 @@ protected:
           _so.outputs[ind].resize(size);
         }
 
-        ASSERT_GT(_so.outputs[ind].size(), 0) << "Please make sure TC output is non-empty.";
         ASSERT_EQ(nnfw_set_output(_so.session, ind, ti.dtype, _so.outputs[ind].data(),
                                   _so.outputs[ind].size()),
                   NNFW_STATUS_NO_ERROR);
