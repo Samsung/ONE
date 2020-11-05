@@ -215,6 +215,62 @@ TEST(Conv2DTest, SInt16)
   EXPECT_THAT(dequantizeTensorData(output_tensor), FloatArrayNear(ref_output_data));
 }
 
+TEST(Conv2DTest, SInt16_CWQ_weights)
+{
+  Shape input_shape{1, 2, 2, 2};  // Batch x H x W x C
+  Shape filter_shape{3, 1, 1, 2}; // Out channels x H x W x In Channels
+  Shape bias_shape{3};
+  std::vector<int32_t> ref_output_shape{1, 2, 2, 3};
+
+  std::vector<float> input_data{
+      1, 2, // row = 0, col 0
+      3, 4, // row = 0, col 1
+      5, 6, // row = 1, col 0
+      7, 8, // row = 1, col 1
+  };
+  std::vector<float> filter_data{
+      4, -3, // out = 0
+      1, -3, // out = 1
+      5, -3, // out = 2
+  };
+  std::vector<float> bias_data{1, 10, 5};
+  std::vector<float> ref_output_data{
+      0, 5, 4,  // row 0, col 0
+      1, 1, 8,  // row 0, col 1
+      3, 0, 12, // row 1, col 0
+      5, 0, 16, // row 1, col 1
+  };
+
+  float input_scale = 0.25f;
+  float output_scale = 0.05f;
+  std::vector<float> filter_scales = {0.25f, 0.2f, 0.1f};
+  std::vector<float> bias_scales;
+  for (int i = 0; i < filter_scales.size(); ++i)
+    bias_scales.push_back(filter_scales[i] * input_scale);
+  std::vector<int32_t> zerop = {0, 0, 0};
+
+  Tensor input_tensor = makeInputTensor<DataType::S16>(input_shape, input_scale, 0, input_data);
+  Tensor filter_tensor =
+      makeInputTensor<DataType::S16>(filter_shape, filter_scales, zerop, 0, filter_data);
+  Tensor bias_tensor = makeInputTensor<DataType::S64>(bias_shape, bias_scales, zerop, 0, bias_data);
+  Tensor output_tensor = makeOutputTensor(DataType::S16, output_scale, 0);
+
+  Conv2DParams params{};
+  params.padding = Padding::VALID;
+  params.stride_height = 1;
+  params.stride_width = 1;
+  params.dilation_height_factor = 1;
+  params.dilation_width_factor = 1;
+  params.activation = Activation::RELU;
+
+  Conv2D kernel(&input_tensor, &filter_tensor, &bias_tensor, &output_tensor, params);
+  kernel.configure();
+  kernel.execute();
+
+  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
+  EXPECT_THAT(dequantizeTensorData(output_tensor), FloatArrayNear(ref_output_data));
+}
+
 TEST(Conv2DTest, Unsupported_Type_Configure_NEG)
 {
   Shape input_shape{1, 4, 3, 2};

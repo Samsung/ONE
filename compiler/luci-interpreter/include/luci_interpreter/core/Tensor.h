@@ -101,7 +101,7 @@ public:
     return _quantization.scale[0];
   }
 
-  float zero_point() const
+  int32_t zero_point() const
   {
     assert(_quantization.zero_point.size() == 1);
     return _quantization.zero_point[0];

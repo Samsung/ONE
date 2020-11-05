@@ -135,6 +135,7 @@ void GraphLoader::loadTensors()
     if (node->quantparam() != nullptr)
     {
       const luci::CircleQuantParam *params = node->quantparam();
+      assert(params->scale.size() == params->zerop.size());
       quantization.scale.assign(params->scale.cbegin(), params->scale.cend());
       quantization.zero_point.assign(params->zerop.cbegin(), params->zerop.cend());
       quantization.quantized_dimension = params->quantized_dimension;

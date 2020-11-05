@@ -40,13 +40,55 @@ std::vector<float> dequantizeTensorData(const Tensor &tensor)
 {
   if (tensor.element_type() == DataType::U8)
   {
-    return dequantize(extractTensorData<uint8_t>(tensor), tensor.scale(), tensor.zero_point());
+    std::vector<uint8_t> data = extractTensorData<uint8_t>(tensor);
+    return dequantize(data.data(), data.size(), tensor.scale(), tensor.zero_point());
   }
   else if (tensor.element_type() == DataType::S16)
   {
     // S16 quantization is symmetric, so zero point should be zero.
-    assert(tensor.zero_point() == 0);
-    return dequantize(extractTensorData<int16_t>(tensor), tensor.scale(), 0);
+    for (auto zp : tensor.zero_points())
+    {
+      (void)zp;
+      assert(zp == 0);
+    }
+
+    std::vector<int16_t> data = extractTensorData<int16_t>(tensor);
+    if (tensor.scales().size() == 1)
+    {
+      return dequantize(data.data(), data.size(), tensor.scale(), 0);
+    }
+
+    // quantize_dimension breaks shape into two parts:
+    // inner dimensions that contains continuous data with one quantization type
+    // outer dimensions that contains other dimensions
+    const Shape shape = tensor.shape();
+    const int32_t quantized_dimension = tensor.quantized_dimension();
+    assert(quantized_dimension < shape.num_dims());
+    size_t outer_dims_size = 1;
+    size_t quant_dim_size = shape.dim(quantized_dimension);
+    size_t inner_dims_size = 1;
+    assert(quant_dim_size == tensor.scales().size());
+
+    for (int i = 0; i < quantized_dimension; ++i)
+      outer_dims_size *= shape.dim(i);
+    for (int i = quantized_dimension + 1; i < shape.num_dims(); ++i)
+      inner_dims_size *= shape.dim(i);
+
+    assert(shape.num_elements() == outer_dims_size * quant_dim_size * inner_dims_size);
+
+    std::vector<float> dequantized_data;
+    dequantized_data.reserve(shape.num_elements());
+    for (size_t outer_it = 0; outer_it < outer_dims_size; ++outer_it)
+      for (size_t channel = 0; channel < quant_dim_size; ++channel)
+      {
+        float scale = tensor.scales()[channel];
+        size_t offset = inner_dims_size * (quant_dim_size * outer_it + channel);
+        std::vector<float> part_dequantized_data =
+            dequantize(data.data() + offset, inner_dims_size, scale, 0);
+        dequantized_data.insert(dequantized_data.end(), part_dequantized_data.begin(),
+                                part_dequantized_data.end());
+      }
+    return dequantized_data;
   }
   else
   {
