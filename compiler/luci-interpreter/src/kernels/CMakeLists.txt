@@ -36,6 +36,8 @@ set(SOURCES
     GreaterEqual.cpp
     If.h
     If.cpp
+    InstanceNorm.h
+    InstanceNorm.cpp
     L2Normalize.h
     L2Normalize.cpp
     L2Pool2D.h
@@ -152,6 +154,7 @@ set(TEST_SOURCES
     Greater.test.cpp
     GreaterEqual.test.cpp
     If.test.cpp
+    InstanceNorm.test.cpp
     L2Normalize.test.cpp
     L2Pool2D.test.cpp
     LeakyRelu.test.cpp

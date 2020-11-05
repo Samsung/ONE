@@ -82,6 +82,12 @@ struct FullyConnectedParams
   Activation activation;
 };
 
+struct InstanceNormParams
+{
+  float epsilon;
+  Activation activation;
+};
+
 struct L2NormParams
 {
   Activation activation;
