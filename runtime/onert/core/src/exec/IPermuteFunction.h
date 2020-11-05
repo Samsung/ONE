@@ -38,6 +38,36 @@ namespace onert
 namespace exec
 {
 
+inline void UpdateOffsets(::onert::backend::ITensor *src, ::onert::backend::ITensor *dst,
+                          const ::onert::ir::Shape &loop_shape, std::vector<size_t> &src_offsets,
+                          std::vector<size_t> &dst_offsets)
+{
+  ShapeLoop(loop_shape, [&](const onert::ir::Coordinates &coords) {
+    src_offsets.emplace_back(src->calcOffset(coords));
+    dst_offsets.emplace_back(dst->calcOffset(coords));
+  });
+}
+
+inline void CopyStatic(const uint8_t *src_buffer, uint8_t *dst_buffer,
+                       const std::vector<size_t> &src_offsets,
+                       const std::vector<size_t> &dst_offsets, size_t copy_len)
+{
+  assert(src_offsets.size() == dst_offsets.size());
+  for (size_t i = 0; i < src_offsets.size(); ++i)
+  {
+    memcpy(dst_buffer + dst_offsets.at(i), src_buffer + src_offsets.at(i), copy_len);
+  }
+}
+
+inline void CopyDynamic(const ::onert::backend::ITensor *src, const ::onert::backend::ITensor *dst,
+                        uint8_t *dst_buffer, const ::onert::ir::Shape &loop_shape, size_t copy_len)
+{
+  ShapeLoop(loop_shape, [&](const onert::ir::Coordinates &coords) {
+    // Copy src tensor's data to dst_buffer with calculated offset of dst tensor
+    memcpy(dst_buffer + dst->calcOffset(coords), src->buffer() + src->calcOffset(coords), copy_len);
+  });
+}
+
 class IPermuteFunction : public IFunction
 {
 protected:
@@ -53,19 +83,25 @@ public:
   {
     // TODO Optimization : Make control does not reach here? when (_src_tensors.size() == 0)
     assert(_src_tensors.size() == _dst_tensors.size());
-    auto src_it = _src_tensors.begin();
-    auto dst_it = _dst_tensors.begin();
-    while (src_it != _src_tensors.end())
+    if (_src_tensors_offsets.size() == 0)
     {
-      auto src_tensor = *src_it;
-      auto dst_tensor = *dst_it;
+      _src_tensors_offsets.resize(_src_tensors.size());
+      _dst_tensors_offsets.resize(_dst_tensors.size());
+    }
+    assert(_src_tensors.size() == _src_tensors_offsets.size());
+    assert(_src_tensors_offsets.size() == _dst_tensors_offsets.size());
+
+    for (size_t i = 0; i < _src_tensors.size(); ++i)
+    {
+      auto src_tensor = _src_tensors.at(i);
+      auto dst_tensor = _dst_tensors.at(i);
+      auto &src_offsets = _src_tensors_offsets.at(i);
+      auto &dst_offsets = _dst_tensors_offsets.at(i);
       if (src_tensor != dst_tensor)
       {
         const auto rank = src_tensor->num_dimensions();
-        permute(src_tensor, dst_tensor, rank);
+        permute(src_tensor, dst_tensor, rank, src_offsets, dst_offsets);
       }
-      src_it++;
-      dst_it++;
     }
   }
 
@@ -74,7 +110,8 @@ public:
   virtual void optimize() = 0;
 
 protected:
-  void permute(backend::ITensor *src_tensor, backend::ITensor *dst_tensor, size_t rank)
+  void permute(backend::ITensor *src_tensor, backend::ITensor *dst_tensor, size_t rank,
+               std::vector<size_t> &src_offsets, std::vector<size_t> &dst_offsets)
   {
     if (src_tensor->total_size() == 0)
     {
@@ -87,25 +124,25 @@ protected:
     switch (src_tensor->data_type())
     {
       case ir::DataType::FLOAT32:
-        permute<float>(src_tensor, dst_tensor, rank);
+        permute<float>(src_tensor, dst_tensor, rank, src_offsets, dst_offsets);
         break;
       case ir::DataType::INT32:
-        permute<int32_t>(src_tensor, dst_tensor, rank);
+        permute<int32_t>(src_tensor, dst_tensor, rank, src_offsets, dst_offsets);
         break;
       case ir::DataType::UINT32:
-        permute<uint32_t>(src_tensor, dst_tensor, rank);
+        permute<uint32_t>(src_tensor, dst_tensor, rank, src_offsets, dst_offsets);
         break;
       case ir::DataType::BOOL8:
       case ir::DataType::QUANT_UINT8_ASYMM:
       case ir::DataType::UINT8:
-        permute<uint8_t>(src_tensor, dst_tensor, rank);
+        permute<uint8_t>(src_tensor, dst_tensor, rank, src_offsets, dst_offsets);
         break;
       case ir::DataType::QUANT_INT8_ASYMM:
       case ir::DataType::QUANT_INT8_SYMM:
-        permute<int8_t>(src_tensor, dst_tensor, rank);
+        permute<int8_t>(src_tensor, dst_tensor, rank, src_offsets, dst_offsets);
         break;
       case ir::DataType::INT64:
-        permute<int64_t>(src_tensor, dst_tensor, rank);
+        permute<int64_t>(src_tensor, dst_tensor, rank, src_offsets, dst_offsets);
         break;
       default:
         throw std::runtime_error("IPermuteFunction: Not supported data type");
@@ -115,7 +152,9 @@ protected:
 
 private:
   // TODO make src const by proving const access()
-  template <class T> void permute(backend::ITensor *src, backend::ITensor *dst, size_t rank)
+  template <class T>
+  void permute(backend::ITensor *src, backend::ITensor *dst, size_t rank,
+               std::vector<size_t> &src_offsets, std::vector<size_t> &dst_offsets)
   {
     assert(src->total_size() != 0 && dst->total_size() != 0);
     // If dst is subtensor, we have to use clEnqueueMapBuffer instead of clEnqueueWirteBuffer
@@ -134,8 +173,9 @@ private:
         // TODO Optimize this block in case of that padding size of dst is big.
         _buffers_map[dst].reserve(dst->total_size());
         auto dst_buffer = _buffers_map[dst].data();
-        src->access(
-            [&](backend::ITensor &) { permute<T>(src, dst, rank, dst_buffer, dst->total_size()); });
+        src->access([&](backend::ITensor &) {
+          permute<T>(src, dst, rank, dst_buffer, dst->total_size(), src_offsets, dst_offsets);
+        });
         dst->enqueueWriteBuffer(dst_buffer, false);
       }
     }
@@ -149,7 +189,7 @@ private:
     {
       auto fn = [&](backend::ITensor &) {
         dst->access([&](backend::ITensor &) {
-          permute<T>(src, dst, rank, dst->buffer(), dst->total_size());
+          permute<T>(src, dst, rank, dst->buffer(), dst->total_size(), src_offsets, dst_offsets);
         });
       };
       src->access(fn);
@@ -158,10 +198,11 @@ private:
 
   template <class T>
   void permute(backend::ITensor *src, backend::ITensor *dst, size_t rank, uint8_t *dst_buffer,
-               size_t dst_size)
+               size_t dst_size, std::vector<size_t> &src_offsets, std::vector<size_t> &dst_offsets)
   {
     assert(dst_buffer != nullptr);
     assert(dst_size == dst->total_size());
+
     const auto permute_type = [&]() -> PermuteType {
       if (src->layout() == ir::Layout::NHWC && dst->layout() == ir::Layout::NCHW)
       {
@@ -247,11 +288,27 @@ private:
       const auto copy_axis = loop_shape.rank() - 1;
       const auto copy_len = loop_shape.dim(copy_axis) * sizeof(T);
       loop_shape.dim(copy_axis) = 1;
-      ShapeLoop(loop_shape, [&](const onert::ir::Coordinates &coords) {
-        // Copy src tensor's data to dst_buffer with calculated offset of dst tensor
-        memcpy(dst_buffer + dst->calcOffset(coords), src->buffer() + src->calcOffset(coords),
-               copy_len);
-      });
+
+      if (src->is_dynamic())
+      {
+        assert(dst->is_dynamic());
+        CopyDynamic(src, dst, dst_buffer, loop_shape, copy_len);
+      }
+      else
+      {
+        // TODO Uncomment the assertion below
+        // assert(!dst->is_dynamic() || dst is output of graph);
+        if (src_offsets.size() == 0)
+        {
+          assert(dst_offsets.size() == 0);
+
+          auto loop_shape = src->getShape();
+          const auto copy_axis = loop_shape.rank() - 1;
+          loop_shape.dim(copy_axis) = 1;
+          UpdateOffsets(src, dst, loop_shape, src_offsets, dst_offsets);
+        }
+        CopyStatic(src->buffer(), dst_buffer, src_offsets, dst_offsets, copy_len);
+      }
     }
   }
 
@@ -286,6 +343,8 @@ protected:
 protected:
   std::vector<backend::ITensor *> _src_tensors;
   std::vector<backend::ITensor *> _dst_tensors;
+  std::vector<std::vector<size_t>> _src_tensors_offsets;
+  std::vector<std::vector<size_t>> _dst_tensors_offsets;
   std::unordered_map<const backend::ITensor *, std::vector<uint8_t>> _buffers_map;
 };
 
