@@ -110,8 +110,15 @@ void Conv2D::configure()
     const int input_depth = input_shape.dim(3);
     Shape im2col_shape{batches, output_height, output_width,
                        input_depth * filter_height * filter_width};
-    _im2col =
-        std::make_unique<Tensor>(input()->element_type(), im2col_shape, AffineQuantization{}, "");
+    try
+    {
+      _im2col =
+          std::make_unique<Tensor>(input()->element_type(), im2col_shape, AffineQuantization{}, "");
+    }
+    catch (std::bad_alloc &ba)
+    {
+      // Failed memory allocation
+    }
   }
 }
 
@@ -153,11 +160,17 @@ void Conv2D::evalFloat() const
   params.float_activation_min = activation_min;
   params.float_activation_max = activation_max;
 
-  tflite::optimized_ops::Conv(params, getTensorShape(input()), getTensorData<float>(input()),
-                              getTensorShape(filter()), getTensorData<float>(filter()),
-                              getTensorShape(bias()), getTensorData<float>(bias()),
-                              getTensorShape(output()), getTensorData<float>(output()),
-                              getTensorShape(_im2col.get()), getTensorData<float>(_im2col.get()));
+  if (_im2col)
+    tflite::optimized_ops::Conv(params, getTensorShape(input()), getTensorData<float>(input()),
+                                getTensorShape(filter()), getTensorData<float>(filter()),
+                                getTensorShape(bias()), getTensorData<float>(bias()),
+                                getTensorShape(output()), getTensorData<float>(output()),
+                                getTensorShape(_im2col.get()), getTensorData<float>(_im2col.get()));
+  else
+    tflite::reference_ops::Conv(
+        params, getTensorShape(input()), getTensorData<float>(input()), getTensorShape(filter()),
+        getTensorData<float>(filter()), getTensorShape(bias()), getTensorData<float>(bias()),
+        getTensorShape(output()), getTensorData<float>(output()), tflite::RuntimeShape(), nullptr);
 }
 
 void Conv2D::evalQuantized() const
