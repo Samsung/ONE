@@ -5,7 +5,7 @@
 CURRENT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_PATH="$CURRENT_PATH/../../"
 
-TEST_ARCH=$(uname -m | tr '[:upper:]' '[:lower:]')
+TEST_ARCH="aarch64"
 TEST_OS="android"
 TEST_PLATFORM="$TEST_ARCH-$TEST_OS"
 EXECUTORS=("Linear" "Dataflow" "Parallel")
@@ -55,37 +55,40 @@ $ADB_CMD shell mkdir -p /data/local/tmp/onert_android/report
 $ADB_CMD push $ROOT_PATH/tests /data/local/tmp/onert_android/.
 $ADB_CMD push $ROOT_PATH/Product/aarch64-android.release/out /data/local/tmp/onert_android/Product/.
 
-$ADB_CMD shell LD_LIBRARY_PATH=/data/local/tmp/onert_android/Product/lib BACKEND=acl_cl sh /data/local/tmp/onert_android/tests/scripts/models/run_test_android.sh \
+
+TESTLIST=$(cat "${ROOT_PATH}/Product/aarch64-android.release/out/test/list/tflite_loader_list.${TEST_ARCH}.txt")
+$ADB_CMD shell LD_LIBRARY_PATH=/data/local/tmp/onert_android/Product/lib BACKENDS=acl_cl sh /data/local/tmp/onert_android/tests/scripts/models/run_test_android.sh \
                                                         --driverbin=/data/local/tmp/onert_android/Product/bin/tflite_loader_test_tool \
                                                         --reportdir=/data/local/tmp/onert_android/report \
-                                                        --tapname=tflite_loader.tap
+                                                        --tapname=tflite_loader.tap ${TESTLIST:-}
 for BACKEND in "${BACKENDS[@]}";
 do
-for EXECUTOR in "${EXECUTORS[@]}";
-do
-MODELLIST=$(cat "${ROOT_PATH}/Product/aarch64-android.release/out/test/list/frameworktest_list.${TEST_ARCH}.${BACKEND}.txt")
-# $ADB_CMD shell LD_LIBRARY_PATH=/data/local/tmp/onert_android/Product/lib EXECUTOR=$EXECUTOR BACKEND=$BACKEND sh /data/local/tmp/onert_android/tests/scripts/models/run_test_android.sh \
-#                                                         --driverbin=/data/local/tmp/onert_android/Product/unittest/nnapi_gtest \
-#                                                         --reportdir=/data/local/tmp/onert_android/report \
-#                                                         --tapname=nnapi_gtest_$BACKEND_$EXECUTOR.tap
-$ADB_CMD shell LD_LIBRARY_PATH=/data/local/tmp/onert_android/Product/lib EXECUTOR=$EXECUTOR BACKEND=$BACKEND sh /data/local/tmp/onert_android/tests/scripts/models/run_test_android.sh \
-                                                        --driverbin=/data/local/tmp/onert_android/Product/bin/nnapi_test \
-                                                        --reportdir=/data/local/tmp/onert_android/report \
-                                                        --tapname=nnapi_test_$BACKEND_$EXECUTOR.tap
+  for EXECUTOR in "${EXECUTORS[@]}";
+  do
+    MODELLIST=$(cat "${ROOT_PATH}/Product/aarch64-android.release/out/test/list/frameworktest_list.${TEST_ARCH}.${BACKEND}.txt")
+    # $ADB_CMD shell LD_LIBRARY_PATH=/data/local/tmp/onert_android/Product/lib EXECUTOR=$EXECUTOR BACKENDS=$BACKEND sh /data/local/tmp/onert_android/tests/scripts/models/run_test_android.sh \
+    #                                                         --driverbin=/data/local/tmp/onert_android/Product/unittest/nnapi_gtest \
+    #                                                         --reportdir=/data/local/tmp/onert_android/report \
+    #                                                         --tapname=nnapi_gtest_$BACKEND_$EXECUTOR.tap
+    $ADB_CMD shell LD_LIBRARY_PATH=/data/local/tmp/onert_android/Product/lib EXECUTOR=$EXECUTOR BACKENDS=$BACKEND sh /data/local/tmp/onert_android/tests/scripts/models/run_test_android.sh \
+                                                            --driverbin=/data/local/tmp/onert_android/Product/bin/nnapi_test \
+                                                            --reportdir=/data/local/tmp/onert_android/report \
+                                                            --tapname=nnapi_test_${BACKEND}_${EXECUTOR}.tap ${MODELLIST:-}
+  done
 done
-done
+
 for EXECUTOR in "${EXECUTORS[@]}";
 do
 MODELLIST=$(cat "${ROOT_PATH}/Product/aarch64-android.release/out/test/list/frameworktest_list.noarch.interp.txt")
-$ADB_CMD shell LD_LIBRARY_PATH=/data/local/tmp/onert_android/Product/lib EXECUTOR=$EXECUTOR BACKEND="" DISABLE_COMPILE=1 sh /data/local/tmp/onert_android/tests/scripts/models/run_test_android.sh \
+$ADB_CMD shell LD_LIBRARY_PATH=/data/local/tmp/onert_android/Product/lib EXECUTOR=$EXECUTOR BACKENDS="" DISABLE_COMPILE=1 sh /data/local/tmp/onert_android/tests/scripts/models/run_test_android.sh \
                                                         --driverbin=/data/local/tmp/onert_android/Product/bin/nnapi_test \
                                                         --reportdir=/data/local/tmp/onert_android/report \
                                                         --tapname=nnapi_test_interp_$EXECUTOR.tap ${MODELLIST:-}
 done
-$ADB_CMD shell LD_LIBRARY_PATH=/data/local/tmp/onert_android/Product/lib USE_NNAPI=1 sh /data/local/tmp/onert_android/tests/scripts/models/run_test_android.sh \
-                                                        --driverbin=/data/local/tmp/onert_android/Product/bin/tflite_run \
-                                                        --reportdir=/data/local/tmp/onert_android/report \
-                                                        --tapname=tflite_run.tap
+# $ADB_CMD shell LD_LIBRARY_PATH=/data/local/tmp/onert_android/Product/lib USE_NNAPI=1 sh /data/local/tmp/onert_android/tests/scripts/models/run_test_android.sh \
+#                                                         --driverbin=/data/local/tmp/onert_android/Product/bin/tflite_run \
+#                                                         --reportdir=/data/local/tmp/onert_android/report \
+#                                                         --tapname=tflite_run.tap
 
 # This is test for profiling.
 # $ADB_CMD shell mkdir -p /data/local/tmp/onert_android/report/benchmark
