@@ -26,7 +26,7 @@ parser.add_argument(
     "--data_list",
     type=str,
     help=
-    "Path to the text file which lists the absolute paths of the raw image data files to be converted.",
+    "Path to the text file which lists the absolute paths of the raw data files to be converted.",
     required=True)
 parser.add_argument(
     "-o", "--output_path", type=str, help="Path to the output hdf5 file.", required=True)
@@ -59,17 +59,17 @@ with open(data_list, 'r') as f:
 
 # Input files
 num_converted = 0
-for imgdata in datalist:
-    with open(imgdata, 'rb') as f:
+for rawdata in datalist:
+    with open(rawdata, 'rb') as f:
         sample = group.create_group(str(num_converted))
         num_converted += 1
-        filename = os.path.basename(imgdata)
+        filename = os.path.basename(rawdata)
         sample.attrs['desc'] = filename
         raw_data = bytearray(f.read())
-        # The target model is DNN for handling an input image
+        # The target model is DNN for handling an input data
         sample.create_dataset('0', data=raw_data)
 
 h5_file.close()
 
-print("Raw image data have been packaged to " + output_path)
+print("Raw data have been packaged to " + output_path)
 print("Number of packaged data: " + str(num_converted))
