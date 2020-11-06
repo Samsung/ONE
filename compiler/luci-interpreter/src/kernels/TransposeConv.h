@@ -20,8 +20,6 @@
 #include "core/Kernel.h"
 #include "core/KernelParams.h"
 
-#include <memory>
-
 namespace luci_interpreter
 {
 namespace kernels
@@ -58,7 +56,7 @@ private:
   int32_t _padding_width{};
   // The scaling factor from input to output (aka the 'real multiplier') can
   // be represented as a fixed point multiplier plus a left shift.
-  std::unique_ptr<std::vector<ChannelQuantMultipliers>> _quant_multipliers;
+  std::vector<ChannelQuantMultipliers> _quant_multipliers;
 };
 
 } // namespace kernels

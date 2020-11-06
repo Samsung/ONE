@@ -31,14 +31,13 @@ namespace kernels
 
 TransposeConv::TransposeConv(const Tensor *output_shape, const Tensor *filter, const Tensor *input,
                              const Tensor *bias, Tensor *output, const TransposeConvParams &params)
-    : KernelWithParams<TransposeConvParams>({output_shape, filter, input, bias}, {output}, params),
-      _quant_multipliers(new std::vector<ChannelQuantMultipliers>())
+    : KernelWithParams<TransposeConvParams>({output_shape, filter, input, bias}, {output}, params)
 {
 }
 
 TransposeConv::~TransposeConv()
 {
-  // Declared here to delete unique_ptr properly
+  // Define destructor here, to delete vector of qunatized multipliers properly
 }
 
 void TransposeConv::configure()
@@ -82,7 +81,7 @@ void TransposeConv::configure()
     const std::vector<double> real_multipliers =
         getQuantizedConvolutionMultiplers(input()->scale(), filter()->scales(), output()->scale());
 
-    *_quant_multipliers = quantizeMultipliers(real_multipliers);
+    _quant_multipliers = quantizeMultipliers(real_multipliers);
   }
 }
 
@@ -132,8 +131,8 @@ void TransposeConv::evalQuantized() const
   op_params.input_offset = -input()->zero_point();    // Note the '-'.
   op_params.weights_offset = -filter()->zero_point(); // Note the '-'.
   op_params.output_offset = output()->zero_point();
-  op_params.output_multiplier = (*_quant_multipliers)[0].multiplier;
-  op_params.output_shift = (*_quant_multipliers)[0].shift;
+  op_params.output_multiplier = _quant_multipliers[0].multiplier;
+  op_params.output_shift = _quant_multipliers[0].shift;
   op_params.quantized_activation_min = std::numeric_limits<uint8_t>::min();
   op_params.quantized_activation_max = std::numeric_limits<uint8_t>::max();
 
@@ -177,7 +176,7 @@ void TransposeConv::evalQuantizedS16() const
 
   std::memset(scratch_data, 0, _scratch_tensor->shape().num_elements() * sizeof(int64_t));
 
-  BroadcastableWrapper<ChannelQuantMultipliers> output_multipliers(*_quant_multipliers);
+  BroadcastableWrapper<ChannelQuantMultipliers> output_multipliers(_quant_multipliers);
   for (int32_t batch = 0; batch < batches; ++batch)
   {
     for (int32_t in_y = 0; in_y < input_height; ++in_y)
