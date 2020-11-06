@@ -155,6 +155,7 @@ void RuntimeGraph::execute() const
     // TODO The `configure` method should only be called if the outputs of an operator need to be
     //  resized.
     kernel->configure();
+// TODO decide where to allocate memory, and uncomment/remove this if
 #if 0
     _tensor_alloc_plan->allocate(
         index); // Preallocate outputs in advance instead of relying on automatic allocation
