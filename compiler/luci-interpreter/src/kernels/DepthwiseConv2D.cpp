@@ -208,12 +208,13 @@ void DepthwiseConv2D::evalQuantizedS16() const
   const int32_t dilation_width_factor = _params.dilation_width_factor;
   const int32_t depth_multiplier = _params.depth_multiplier;
 
-  const double effective_output_scale =
-      getQuantizedConvolutionMultipler(input()->scale(), filter()->scale(), output()->scale());
+  const std::vector<double> effective_output_scales =
+      getQuantizedConvolutionMultiplers(input()->scale(), filter()->scales(), output()->scale());
 
-  int32_t output_multiplier{};
-  int output_shift{};
-  quantizeMultiplier(effective_output_scale, &output_multiplier, &output_shift);
+  std::vector<ChannelQuantMultipliers> quant_multipliers_raw =
+      quantizeMultipliers(effective_output_scales);
+
+  BroadcastableWrapper<ChannelQuantMultipliers> quant_multipliers(quant_multipliers_raw);
 
   int32_t activation_min{};
   int32_t activation_max{};
@@ -254,6 +255,8 @@ void DepthwiseConv2D::evalQuantizedS16() const
               acc += bias_data[out_c];
             }
 
+            int32_t output_multiplier = quant_multipliers[out_c].multiplier;
+            int output_shift = quant_multipliers[out_c].shift;
             int32_t scaled_acc =
                 tflite::MultiplyByQuantizedMultiplier(acc, output_multiplier, output_shift);
 
