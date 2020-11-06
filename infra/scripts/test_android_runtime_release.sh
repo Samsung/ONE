@@ -44,6 +44,7 @@ echo "$DEVICE_LIST" | tail -n"$NUM_DEV"
 if [ -z "$SERIAL" ]; then
     SERIAL=`echo "$DEVICE_LIST" | tail -n1 | awk '{print $1}'`
 fi
+echo $SERIAL
 ADB_CMD="adb -s $SERIAL "
 
 # root on, remount as rw
@@ -61,8 +62,12 @@ $ADB_CMD shell LD_LIBRARY_PATH=/data/local/tmp/onert_android/Product/lib BACKEND
                                                         --driverbin=/data/local/tmp/onert_android/Product/bin/tflite_loader_test_tool \
                                                         --reportdir=/data/local/tmp/onert_android/report \
                                                         --tapname=tflite_loader.tap ${TESTLIST:-}
+UNION_MODELLIST_PREFIX="${ROOT_PATH}/Product/aarch64-android.release/out/test/list/frameworktest_list.${TEST_ARCH}"
+sort $UNION_MODELLIST_PREFIX.${BACKENDS[0]}.txt > $UNION_MODELLIST_PREFIX.intersect.txt
 for BACKEND in "${BACKENDS[@]}";
 do
+  comm -12 <(sort $UNION_MODELLIST_PREFIX.intersect.txt) <(sort $UNION_MODELLIST_PREFIX.$BACKEND.txt) > $UNION_MODELLIST_PREFIX.intersect.next.txt
+  mv $UNION_MODELLIST_PREFIX.intersect.next.txt $UNION_MODELLIST_PREFIX.intersect.txt
   for EXECUTOR in "${EXECUTORS[@]}";
   do
     MODELLIST=$(cat "${ROOT_PATH}/Product/aarch64-android.release/out/test/list/frameworktest_list.${TEST_ARCH}.${BACKEND}.txt")
@@ -77,13 +82,22 @@ do
   done
 done
 
+MODELLIST_INTERP=$(cat "${ROOT_PATH}/Product/aarch64-android.release/out/test/list/frameworktest_list.noarch.interp.txt")
 for EXECUTOR in "${EXECUTORS[@]}";
 do
-MODELLIST=$(cat "${ROOT_PATH}/Product/aarch64-android.release/out/test/list/frameworktest_list.noarch.interp.txt")
 $ADB_CMD shell LD_LIBRARY_PATH=/data/local/tmp/onert_android/Product/lib EXECUTOR=$EXECUTOR BACKENDS="" DISABLE_COMPILE=1 sh /data/local/tmp/onert_android/tests/scripts/models/run_test_android.sh \
                                                         --driverbin=/data/local/tmp/onert_android/Product/bin/nnapi_test \
                                                         --reportdir=/data/local/tmp/onert_android/report \
-                                                        --tapname=nnapi_test_interp_$EXECUTOR.tap ${MODELLIST:-}
+                                                        --tapname=nnapi_test_interp_$EXECUTOR.tap ${MODELLIST_INTERP:-}
+done
+
+MODELLIST=$(cat "${UNION_MODELLIST_PREFIX}.intersect.txt")
+for EXECUTOR in "${EXECUTORS[@]}";
+do
+$ADB_CMD shell LD_LIBRARY_PATH=/data/local/tmp/onert_android/Product/lib OP_BACKEND_Conv2D="cpu" OP_BACKEND_MaxPool2D="acl_cl" OP_BACKEND_AvgPool2D="acl_neon" ACL_LAYOUT="NCHW" EXECUTOR=$EXECUTOR BACKENDS="acl_cl\;acl_neon\;cpu" sh /data/local/tmp/onert_android/tests/scripts/models/run_test_android.sh \
+                                                        --driverbin=/data/local/tmp/onert_android/Product/bin/nnapi_test \
+                                                        --reportdir=/data/local/tmp/onert_android/report \
+                                                        --tapname=nnapi_test_mixed_$EXECUTOR.tap ${MODELLIST:-}
 done
 # $ADB_CMD shell LD_LIBRARY_PATH=/data/local/tmp/onert_android/Product/lib USE_NNAPI=1 sh /data/local/tmp/onert_android/tests/scripts/models/run_test_android.sh \
 #                                                         --driverbin=/data/local/tmp/onert_android/Product/bin/tflite_run \
