@@ -112,7 +112,7 @@ void invoke(const ITensor *ifm_tensor, const ITensor *ker_tensor, const ITensor 
 
   nnfw::cker::Conv conv_kernel;
   conv_kernel(cker_param, cker_ifm_shape, ifm_ptr, cker_ker_shape, ker_ptr, cker_bias_shape,
-              bias_ptr, cker_ofm_shape, ofm_ptr, nullptr);
+              bias_ptr, cker_ofm_shape, ofm_ptr);
 }
 
 void invokeConv2D(const ExecEnv *env, const ir::Operation &node)

@@ -85,6 +85,33 @@ public:
 
   void operator()(const ConvParams &params, const Shape &input_shape, const float *input_data,
                   const Shape &filter_shape, const float *filter_data, const Shape &bias_shape,
+                  const float *bias_data, const Shape &output_shape, float *output_data)
+  {
+    if (usableMultiThreaded(params.padding_type, params.dilation_width_factor,
+                            params.dilation_height_factor))
+    {
+      bool transposed_in_execution = false;
+      if (!_prepared)
+      {
+        // This means that filter is not constant
+        // TODO Apply optimized kernel if multithreaded kernel is slower than optimized kernel by
+        // transposing filter data
+        transposeFilter(filter_shape, filter_data, transposed_in_execution);
+      }
+      multithreaded::Conv(params, input_shape, input_data, filter_shape, &_modified_filter_data[0],
+                          bias_shape, bias_data, output_shape, output_data);
+    }
+    else
+    {
+      // TODO Support optimized kernel
+      reference::Conv(params, input_shape, input_data, filter_shape, filter_data, bias_shape,
+                      bias_data, output_shape, output_data);
+    }
+  }
+
+  // Using ruy library
+  void operator()(const ConvParams &params, const Shape &input_shape, const float *input_data,
+                  const Shape &filter_shape, const float *filter_data, const Shape &bias_shape,
                   const float *bias_data, const Shape &output_shape, float *output_data,
                   ruy::Context *ruy_context)
   {

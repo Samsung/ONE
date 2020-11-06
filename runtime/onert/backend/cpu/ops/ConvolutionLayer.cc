@@ -60,8 +60,7 @@ void ConvolutionLayer::convFloat32()
   kernel(op_params, getTensorShape(_input), reinterpret_cast<const float *>(_input->buffer()),
          getTensorShape(_kernel), reinterpret_cast<const float *>(_kernel->buffer()),
          getTensorShape(_bias), reinterpret_cast<const float *>(_bias->buffer()),
-         getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()),
-         _external_context->ruy_context());
+         getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()));
 }
 
 void ConvolutionLayer::convQuant8()
@@ -108,8 +107,7 @@ void ConvolutionLayer::configure(const IPortableTensor *input, const IPortableTe
                                  const uint32_t strideWidth, const uint32_t strideHeight,
                                  const uint32_t dilationWidthFactor,
                                  const uint32_t dilationHeightFactor,
-                                 const ir::Activation activation, IPortableTensor *output,
-                                 const std::shared_ptr<ExternalContext> &external_context)
+                                 const ir::Activation activation, IPortableTensor *output)
 {
   _input = input;
   _kernel = kernel;
@@ -125,7 +123,6 @@ void ConvolutionLayer::configure(const IPortableTensor *input, const IPortableTe
   _dilationHeightFactor = dilationHeightFactor;
   _activation = activation;
   _output = output;
-  _external_context = external_context;
 }
 
 void ConvolutionLayer::run()
@@ -183,8 +180,19 @@ void ConvolutionLayer::prepare()
   nnfw::cker::Conv &kernel = *_conv_kernel;
   if (_input->data_type() == OperandType::FLOAT32 && _kernel->is_constant())
   {
-    kernel.prepare(getTensorShape(_input), getTensorShape(_kernel), getTensorShape(_output),
-                   _strideWidth, _strideHeight, _dilationWidthFactor, _dilationHeightFactor);
+    bool is_transposed = false;
+    kernel.prepare(getTensorShape(_kernel), reinterpret_cast<const float *>(_kernel->buffer()),
+                   getPaddingType(_paddingType), is_transposed, _dilationWidthFactor,
+                   _dilationHeightFactor);
+
+    // Decrease reference of _kernel(weights) only when _kernel is constant
+    if (is_transposed)
+    {
+      auto kernel_tensor = dynamic_cast<const Tensor *>(_kernel);
+      if (kernel_tensor)
+        // TODO Remove const_cast
+        const_cast<Tensor *>(kernel_tensor)->decrease_ref();
+    }
   }
   else if (_input->data_type() == OperandType::QUANT_UINT8_ASYMM && _kernel->is_constant() &&
            !_input->is_dynamic() && !_output->is_dynamic())

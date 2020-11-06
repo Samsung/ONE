@@ -316,7 +316,7 @@ void KernelGenerator::visit(const ir::operation::Conv2D &node)
     fn->configure(ifm_tensor, ker_tensor, bias_tensor, param_padding.type, param_padding.param.left,
                   param_padding.param.right, param_padding.param.top, param_padding.param.bottom,
                   stride.horizontal, stride.vertical, dilation.width_factor, dilation.height_factor,
-                  activation, ofm_tensor, _external_context);
+                  activation, ofm_tensor);
 
     _return_fn = std::move(fn);
     return;
@@ -334,8 +334,7 @@ void KernelGenerator::visit(const ir::operation::Conv2D &node)
 
   fn->configure(ifm_tensor, ker_tensor, bias_tensor, param_padding.type, padding.left,
                 padding.right, padding.top, padding.bottom, stride.horizontal, stride.vertical,
-                dilation.width_factor, dilation.height_factor, activation, ofm_tensor,
-                _external_context);
+                dilation.width_factor, dilation.height_factor, activation, ofm_tensor);
 
   _return_fn = std::move(fn);
 }
