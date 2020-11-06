@@ -20,56 +20,96 @@ import argparse
 import glob
 import os
 
-parser = argparse.ArgumentParser()
-parser.add_argument(
-    "-l",
-    "--data_list",
-    type=str,
-    help=
-    "Path to the text file which lists the absolute paths of the raw data files to be converted.",
-    required=True)
-parser.add_argument(
-    "-o", "--output_path", type=str, help="Path to the output hdf5 file.", required=True)
 
-args = parser.parse_args()
-data_list = args.data_list
-output_path = args.output_path
+def get_parser():
+    """Create and return given the argument parser"""
+    parser = argparse.ArgumentParser(
+        description='command line tool to convert raw data files to hdf5 file')
+    parser.add_argument(
+        "-l",
+        "--data_list",
+        type=str,
+        help=
+        "Path to the text file which lists the absolute paths of the raw data files to be converted.",
+        required=True)
+    parser.add_argument(
+        "-o",
+        "--output_path",
+        type=str,
+        help="Path to the output hdf5 file.",
+        required=True)
+    return parser
 
-# Create h5 file
-h5_file = h5.File(output_path, 'w')
-group = h5_file.create_group("value")
-# We assume the raw input data have the correct type/shape for the corresponding model
-# If this flag is set in the hdf5 file, record-minmax will skip type/shape check
-group.attrs['rawData'] = '1'
 
-if os.path.isfile(data_list) == False:
-    raise SystemExit("No such file. " + data_list)
+def verify_args(parser, args):
+    """Verify the given arguments"""
 
-# Data list
-datalist = []
-with open(data_list, 'r') as f:
-    lines = f.readlines()
-    for line in lines:
-        if line.strip():
-            filename = line.rstrip()
-            if os.path.isfile(filename):
-                datalist.append(filename)
-            else:
-                raise SystemExit("No such file. " + filename)
+    def is_valid_attr(args, attr):
+        return hasattr(args, attr) and getattr(args, attr)
 
-# Input files
-num_converted = 0
-for rawdata in datalist:
-    with open(rawdata, 'rb') as f:
-        sample = group.create_group(str(num_converted))
-        num_converted += 1
-        filename = os.path.basename(rawdata)
-        sample.attrs['desc'] = filename
-        raw_data = bytearray(f.read())
-        # The target model is DNN for handling an input data
-        sample.create_dataset('0', data=raw_data)
+    # check if required arguments is given
+    missing = []
+    if not is_valid_attr(args, 'data_list'):
+        missing.append('-l/--data_list')
+    if not is_valid_attr(args, 'output_path'):
+        missing.append('-o/--output_path')
+    if len(missing):
+        parser.error('the following arguments are required: ' + ' '.join(missing))
 
-h5_file.close()
 
-print("Raw data have been packaged to " + output_path)
-print("Number of packaged data: " + str(num_converted))
+def create_hdf5(data_list, output_path):
+    """Create the hdf5 file using raw data files listed in data_list"""
+    h5_file = h5.File(output_path, 'w')
+    group = h5_file.create_group("value")
+    # We assume the raw input data have the correct type/shape for the corresponding model
+    # If this flag is set in the hdf5 file, record-minmax will skip type/shape check
+    group.attrs['rawData'] = '1'
+
+    if os.path.isfile(data_list) == False:
+        raise SystemExit("No such file. " + data_list)
+
+    # Data list
+    datalist = []
+    with open(data_list, 'r') as f:
+        lines = f.readlines()
+        for line in lines:
+            if line.strip():
+                filename = line.rstrip()
+                if os.path.isfile(filename):
+                    datalist.append(filename)
+                else:
+                    raise SystemExit("No such file. " + filename)
+
+    # Input files
+    num_converted = 0
+    for rawdata in datalist:
+        with open(rawdata, 'rb') as f:
+            sample = group.create_group(str(num_converted))
+            num_converted += 1
+            filename = os.path.basename(rawdata)
+            sample.attrs['desc'] = filename
+            raw_data = bytearray(f.read())
+            # The target model is DNN for handling an input data
+            sample.create_dataset('0', data=raw_data)
+
+    h5_file.close()
+
+    print("Raw data have been packaged to " + output_path)
+    print("Number of packaged data: " + str(num_converted))
+
+
+def main():
+    parser = get_parser()
+
+    args = parser.parse_args()
+
+    verify_args(parser, args)
+
+    create_hdf5(args.data_list, args.output_path)
+
+
+if __name__ == '__main__':
+    try:
+        main()
+    except UnicodeDecodeError:
+        raise SystemExit("UnicodeDecode Error. data_list may not be the text file.")
