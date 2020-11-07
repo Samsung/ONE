@@ -196,17 +196,17 @@ void Prelu::evalQuantizedS16() const
       const int flat_size = tflite::MatchingElementsSize(input_shape, alpha_shape, output_shape);
       int quantized_dim = alpha()->quantized_dimension();
 
-      size_t outer_dims_size = 1;
+      int32_t outer_dims_size = 1;
       for (int i = 0; i < quantized_dim; ++i)
         outer_dims_size *= input_shape.Dims(i);
-      size_t quant_dim_size = alpha_shape.Dims(alpha()->quantized_dimension());
-      size_t inner_dims_size = flat_size / outer_dims_size / quant_dim_size;
+      int32_t quant_dim_size = alpha_shape.Dims(alpha()->quantized_dimension());
+      int32_t inner_dims_size = flat_size / outer_dims_size / quant_dim_size;
 
-      for (int outer_dims = 0; outer_dims < outer_dims_size; ++outer_dims)
-        for (int quant_channel = 0; quant_channel < quant_dim_size; ++quant_channel)
+      for (int32_t outer_dims = 0; outer_dims < outer_dims_size; ++outer_dims)
+        for (int32_t quant_channel = 0; quant_channel < quant_dim_size; ++quant_channel)
         {
           const ChannelQuantMultipliers &neg_mult = _alpha_multipliers[quant_channel];
-          for (int inner_dims = 0; inner_dims < inner_dims_size; ++inner_dims)
+          for (int32_t inner_dims = 0; inner_dims < inner_dims_size; ++inner_dims)
           {
             size_t offset =
                 inner_dims + (quant_channel + outer_dims * quant_dim_size) * inner_dims_size;
