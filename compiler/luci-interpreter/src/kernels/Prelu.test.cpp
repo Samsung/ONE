@@ -191,7 +191,8 @@ TEST(PreluTest, SInt16_CWQ_Simple)
   std::vector<float> alpha_scales{0.25f, 0.05f};
   std::vector<int32_t> zerop{0, 0};
   Tensor input_tensor = makeInputTensor<DataType::S16>({1, 1, 3, 2}, 0.1, 0, input_data);
-  Tensor alpha_tensor = makeInputTensor<DataType::S16>({1, 1, 3, 2}, alpha_scales, zerop, 3, alpha_data);
+  Tensor alpha_tensor =
+      makeInputTensor<DataType::S16>({1, 1, 3, 2}, alpha_scales, zerop, 3, alpha_data);
   Tensor output_tensor = makeOutputTensor(DataType::S16, 0.1, 0);
 
   Prelu kernel(&input_tensor, &alpha_tensor, &output_tensor);
@@ -233,23 +234,24 @@ TEST(PreluTest, SInt16_Broadcast)
 TEST(PreluTest, SInt16_CWQ_Broadcast1)
 {
   std::vector<float> input_data{
-    0.0f,   0.0f,   0.0f,   // Row 1, Column 1
-    0.5f,   0.5f,   0.5f,   // Row 1, Column 2
-    -1.0f,  -1.0f,  -1.0f,  // Row 2, Column 1
-    -0.25f, -0.25f, -0.25f, // Row 2, Column 2
+      0.0f,   0.0f,   0.0f,   // Row 1, Column 1
+      0.5f,   0.5f,   0.5f,   // Row 1, Column 2
+      -1.0f,  -1.0f,  -1.0f,  // Row 2, Column 1
+      -0.25f, -0.25f, -0.25f, // Row 2, Column 2
   };
   std::vector<float> alpha_data{0.0f, 0.5f, -0.5f};
   std::vector<float> ref_output_data{
-    0.0f, 0.0f,    0.0f,  // Row 1, Column 1
-    0.5f, 0.5f,    0.5f,  // Row 1, Column 2
-    0.0f, -0.5f,   0.5f,  // Row 2, Column 1
-    0.0f, -0.125f, 0.125f // Row 2, Column 2
+      0.0f, 0.0f,    0.0f,  // Row 1, Column 1
+      0.5f, 0.5f,    0.5f,  // Row 1, Column 2
+      0.0f, -0.5f,   0.5f,  // Row 2, Column 1
+      0.0f, -0.125f, 0.125f // Row 2, Column 2
   };
 
   std::vector<float> alpha_scales{1.f, 0.05f, 0.1f};
   std::vector<int32_t> zerop{0, 0, 0};
   Tensor input_tensor = makeInputTensor<DataType::S16>({1, 2, 2, 3}, 0.01, 0, input_data);
-  Tensor alpha_tensor = makeInputTensor<DataType::S16>({1, 1, 3}, alpha_scales, zerop, 2, alpha_data);
+  Tensor alpha_tensor =
+      makeInputTensor<DataType::S16>({1, 1, 3}, alpha_scales, zerop, 2, alpha_data);
   Tensor output_tensor = makeOutputTensor(DataType::S16, 0.001, 0);
 
   Prelu kernel(&input_tensor, &alpha_tensor, &output_tensor);
@@ -263,23 +265,24 @@ TEST(PreluTest, SInt16_CWQ_Broadcast1)
 TEST(PreluTest, SInt16_CWQ_Broadcast2)
 {
   std::vector<float> input_data{
-    -2.0f,   -3.0f,   0.0f, // Row 1, Column 1
-    0.5f,   0.5f,   0.5f,   // Row 1, Column 2
-    -1.0f,  -1.0f,  -1.0f,  // Row 2, Column 1
-    -0.25f, -0.25f, -0.5f,  // Row 2, Column 2
+      -2.0f,  -3.0f,  0.0f,  // Row 1, Column 1
+      0.5f,   0.5f,   0.5f,  // Row 1, Column 2
+      -1.0f,  -1.0f,  -1.0f, // Row 2, Column 1
+      -0.25f, -0.25f, -0.5f, // Row 2, Column 2
   };
   std::vector<float> alpha_data{1.0f, 0.2f, 0.1f, 0.0f, 0.5f, 0.75f};
   std::vector<float> ref_output_data{
-    -2.0f, -0.6f,    0.0f,  // Row 1, Column 1
-    0.5f, 0.5f,    0.5f,    // Row 1, Column 2
-    0.0f, -0.5f,   -0.75f,  // Row 2, Column 1
-    0.0f, -0.125f, -0.375   // Row 2, Column 2
+      -2.0f, -0.6f,   0.0f,   // Row 1, Column 1
+      0.5f,  0.5f,    0.5f,   // Row 1, Column 2
+      0.0f,  -0.5f,   -0.75f, // Row 2, Column 1
+      0.0f,  -0.125f, -0.375  // Row 2, Column 2
   };
 
   std::vector<float> alpha_scales{0.05f, 0.01f};
   std::vector<int32_t> zerop{0, 0};
   Tensor input_tensor = makeInputTensor<DataType::S16>({1, 2, 2, 3}, 0.01, 0, input_data);
-  Tensor alpha_tensor = makeInputTensor<DataType::S16>({2, 1, 3}, alpha_scales, zerop, 0, alpha_data);
+  Tensor alpha_tensor =
+      makeInputTensor<DataType::S16>({2, 1, 3}, alpha_scales, zerop, 0, alpha_data);
   Tensor output_tensor = makeOutputTensor(DataType::S16, 0.001, 0);
 
   Prelu kernel(&input_tensor, &alpha_tensor, &output_tensor);

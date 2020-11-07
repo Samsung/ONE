@@ -148,18 +148,17 @@ void Prelu::evalQuantized() const
 }
 
 static inline int16_t evalElemS16Prelu(int16_t input_val, int16_t alpha_val,
-                                   const ChannelQuantMultipliers &identity_mult,
-                                   const ChannelQuantMultipliers &alpha_mult)
+                                       const ChannelQuantMultipliers &identity_mult,
+                                       const ChannelQuantMultipliers &alpha_mult)
 {
   constexpr int32_t quantized_min = std::numeric_limits<int16_t>::min();
   constexpr int32_t quantized_max = std::numeric_limits<int16_t>::max();
 
   const int32_t output_val =
-    input_val >= 0 ? tflite::MultiplyByQuantizedMultiplier(input_val, identity_mult.multiplier,
-                                                           identity_mult.shift)
-                   : tflite::MultiplyByQuantizedMultiplier(input_val * alpha_val,
-                                                           alpha_mult.multiplier,
-                                                           alpha_mult.shift);
+      input_val >= 0 ? tflite::MultiplyByQuantizedMultiplier(input_val, identity_mult.multiplier,
+                                                             identity_mult.shift)
+                     : tflite::MultiplyByQuantizedMultiplier(
+                           input_val * alpha_val, alpha_mult.multiplier, alpha_mult.shift);
   const int32_t clamped_output = std::min(quantized_max, std::max(quantized_min, output_val));
   return clamped_output;
 }
@@ -194,8 +193,7 @@ void Prelu::evalQuantizedS16() const
 
     if (input_shape == alpha_shape)
     {
-      const int flat_size = tflite::MatchingElementsSize(
-          input_shape, alpha_shape, output_shape);
+      const int flat_size = tflite::MatchingElementsSize(input_shape, alpha_shape, output_shape);
       int quantized_dim = alpha()->quantized_dimension();
 
       size_t outer_dims_size = 1;
@@ -226,10 +224,8 @@ void Prelu::evalQuantizedS16() const
       tflite::NdArrayDesc<N> desc1{};
       tflite::NdArrayDesc<N> desc2{};
       tflite::NdArrayDesc<N> output_desc{};
-      tflite::NdArrayDescsForElementwiseBroadcast(input_shape, alpha_shape,
-                                                  &desc1, &desc2);
-      tflite::CopyDimsToDesc(tflite::RuntimeShape::ExtendedShape(N, output_shape),
-                             &output_desc);
+      tflite::NdArrayDescsForElementwiseBroadcast(input_shape, alpha_shape, &desc1, &desc2);
+      tflite::CopyDimsToDesc(tflite::RuntimeShape::ExtendedShape(N, output_shape), &output_desc);
 
       const int quantized_dim = alpha()->quantized_dimension() + N - alpha()->shape().num_dims();
 
@@ -237,14 +233,11 @@ void Prelu::evalQuantizedS16() const
         const ChannelQuantMultipliers &neg_mult = _alpha_multipliers[indexes[quantized_dim]];
         output_data[SubscriptToIndex(output_desc, indexes)] =
             evalElemS16Prelu(input_data[SubscriptToIndex(desc1, indexes)],
-               alpha_data[SubscriptToIndex(desc2, indexes)],
-               pos_mult,
-               neg_mult);
+                             alpha_data[SubscriptToIndex(desc2, indexes)], pos_mult, neg_mult);
       };
       tflite::NDOpsHelper<N>(output_desc, fn);
     }
   }
-
 }
 
 } // namespace kernels
