@@ -143,6 +143,8 @@ void Conv2D::execute() const
     default:
       throw std::runtime_error("Unsupported type.");
   }
+  if (!!_im2col)
+    _im2col->deallocate();
 }
 
 void Conv2D::evalFloat() const
