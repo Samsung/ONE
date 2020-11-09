@@ -16,10 +16,6 @@
 
 #include "OperationUtils.h"
 
-#include <algorithm>
-#include <cassert>
-#include <cmath>
-
 namespace onert
 {
 namespace backend

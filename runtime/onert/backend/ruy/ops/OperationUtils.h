@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __NNFW_SUPPORT_NNAPI_OPERATION_UTILS_H__
-#define __NNFW_SUPPORT_NNAPI_OPERATION_UTILS_H__
+#ifndef __ONERT_BACKEND_RUY_OPS_OPERATION_UTILS_H__
+#define __ONERT_BACKEND_RUY_OPS_OPERATION_UTILS_H__
 
 #include <backend/IPortableTensor.h>
 
@@ -24,11 +24,9 @@
 #include <iostream>
 #include <ir/DataType.h>
 #include <ir/InternalType.h>
-#include <ir/Operand.h>
 #include <ir/Padding.h>
 
 #include <limits>
-#include <vector>
 
 using OperandType = onert::ir::DataType;
 
@@ -101,4 +99,4 @@ nnfw::cker::PaddingType getPaddingType(ir::PaddingType ir_padding_type);
 } // namespace backend
 } // namespace onert
 
-#endif // __NNFW_SUPPORT_NNAPI_OPERATION_UTILS_H__
+#endif // __ONERT_BACKEND_RUY_OPS_OPERATION_UTILS_H__
