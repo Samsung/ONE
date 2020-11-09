@@ -195,6 +195,14 @@ function check_python_files() {
     if [[ ${f} == *.py ]]; then
       FILES_TO_CHECK_PYTHON+=("${f}")
     fi
+    # Exceptional case: one-cmds don't have '.py' extension
+    if [[ ${f} == compiler/one-cmds/* ]]; then
+      # Ignore non-python source (cmake, etc)
+      # Ignore shell script: one-prepare-venv
+      if [[ ${f} != compiler/one-cmds/*.* ]] && [[ ${f} != compiler/one-cmds/one-prepare-venv ]]; then
+        FILES_TO_CHECK_PYTHON+=("${f}")
+      fi
+    fi
   done
   for s in ${DIRECTORIES_NOT_TO_BE_TESTED[@]}; do
     skip=${s#'.'/}/
