@@ -6,6 +6,10 @@
 set -eo pipefail
 source "$(dirname "${BASH_SOURCE[0]}")/common.sh"
 
+pushd $ROOT_PATH > /dev/null
+
+tar -zxf ${ARCHIVE_PATH}/coverage-suite.tar.gz -C ./
+
 CheckTestPrepared
 
 NNAS_WORKSPACE=${NNAS_WORKSPACE:-build}
@@ -13,10 +17,6 @@ if [[ -z "${ARCHIVE_PATH}" ]]; then
   ARCHIVE_PATH=${NNAS_WORKSPACE}/archive
   echo "Default archive directory including nncc package and resources: ${ARCHIVE_PATH}"
 fi
-
-pushd $ROOT_PATH > /dev/null
-
-tar -zxf ${ARCHIVE_PATH}/coverage-suite.tar.gz -C ./
 
 if [[ ! -e $ROOT_PATH/tests/scripts/build_path_depth.txt ]]; then
   echo "Cannot find prefix strip file"
