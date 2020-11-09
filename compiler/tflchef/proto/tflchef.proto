@@ -37,6 +37,10 @@ message TensorShape {
   repeated uint32 dim = 3;
 }
 
+message ShapeSignature {
+  repeated int32 dim = 1;
+}
+
 message TensorFiller {
   optional string tag = 1;
   repeated string arg = 2;
@@ -81,6 +85,7 @@ message Operand {
   optional TensorQuantization quant = 5;
   optional TensorSparsity sparsity = 6;
   optional bool is_variable = 7 [default = false];
+  optional ShapeSignature shape_signature = 8;
 }
 
 // This enum value corresponds to Padding in TensorFlow Lite schema

@@ -423,6 +423,13 @@ template <typename T> void cook_graph(const T &graph, CookParams &cp)
                                                         block_map, dim_metadata);
     }
 
+    flatbuffers::Offset<flatbuffers::Vector<int32_t>> shape_signature;
+    if (operand.has_shape_signature())
+    {
+      auto signature = as_dims(operand.shape_signature());
+      shape_signature = flatbuffer_builder->CreateVector(signature);
+    }
+
     // Create Tensor
     tflite::TensorBuilder tensor_builder{*flatbuffer_builder};
 
@@ -434,6 +441,8 @@ template <typename T> void cook_graph(const T &graph, CookParams &cp)
     if (operand.has_quant())
       tensor_builder.add_quantization(quant_index);
     tensor_builder.add_sparsity(sparsity_index);
+    if (operand.has_shape_signature())
+      tensor_builder.add_shape_signature(shape_signature);
 
     // Append!
     tensor_vec.emplace_back(tensor_builder.Finish());
