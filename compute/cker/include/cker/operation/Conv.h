@@ -72,11 +72,13 @@ public:
   }
 
   void prepareQuant(const Shape &input_shape, const Shape &kernel_shape, const Shape &output_shape,
-                    uint32_t stride_width, uint32_t stride_height)
+                    uint32_t stride_width, uint32_t stride_height, uint32_t dilation_width_factor,
+                    uint32_t dilation_height_factor)
   {
     if (!_prepared)
     {
-      IsRequiredIm2col(input_shape, kernel_shape, output_shape, stride_width, stride_height);
+      IsRequiredIm2col(input_shape, kernel_shape, output_shape, stride_width, stride_height,
+                       dilation_width_factor, dilation_height_factor);
       _prepared = true;
     }
   }
@@ -115,7 +117,8 @@ public:
     {
       // This means that input or output are dynamic or filter is not constant
       IsRequiredIm2col(input_shape, filter_shape, output_shape, params.stride_width,
-                       params.stride_height);
+                       params.stride_height, params.dilation_width_factor,
+                       params.dilation_height_factor);
     }
 
     int im2col_size = _need_im2col ? _im2col_shape.FlatSize() : 1;
@@ -154,10 +157,15 @@ private:
   }
 
   void IsRequiredIm2col(const Shape &input_shape, const Shape &kernel_shape,
-                        const Shape &output_shape, uint32_t stride_width, uint32_t stride_height)
+                        const Shape &output_shape, uint32_t stride_width, uint32_t stride_height,
+                        uint32_t dilation_width_factor, uint32_t dilation_height_factor)
   {
-    _need_im2col = stride_width != 1 || stride_height != 1 || kernel_shape.Dims(1) != 1 ||
-                   kernel_shape.Dims(2) != 1;
+    const bool need_dilated_im2col = dilation_width_factor != 1 || dilation_height_factor != 1;
+    const bool need_non_dilated_im2col = stride_width != 1 || stride_height != 1 ||
+                                         kernel_shape.Dims(1) != 1 || kernel_shape.Dims(2) != 1;
+
+    _need_im2col = need_dilated_im2col || need_non_dilated_im2col;
+
     if (_need_im2col)
     {
       _im2col_shape.SetDim(0, output_shape.Dims(0));
