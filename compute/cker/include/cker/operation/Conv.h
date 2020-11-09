@@ -109,7 +109,7 @@ public:
     }
   }
 
-  // Using ruy library
+  // Use RUY library
   void operator()(const ConvParams &params, const Shape &input_shape, const float *input_data,
                   const Shape &filter_shape, const float *filter_data, const Shape &bias_shape,
                   const float *bias_data, const Shape &output_shape, float *output_data,

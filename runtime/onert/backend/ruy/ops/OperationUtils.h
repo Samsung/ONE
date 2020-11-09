@@ -60,13 +60,6 @@ inline nnfw::cker::Shape getTensorShape(const IPortableTensor *tensor)
   return ret;
 }
 
-void QuantizeMultiplier(double double_multiplier, int32_t *quantized_multiplier, int *shift);
-
-void GetQuantizedConvolutionMultiplier(const IPortableTensor *inputDescr,
-                                       const IPortableTensor *filterDescr,
-                                       const IPortableTensor *biasDescr,
-                                       const IPortableTensor *outputDescr, double *multiplier);
-
 template <typename T>
 void CalculateActivationRange(ir::Activation activation, T *activation_min, T *activation_max)
 {
@@ -100,9 +93,6 @@ void CalculateActivationRange(ir::Activation activation, T *activation_min, T *a
     std::cout << "Unsupported fused activation function." << std::endl;
   }
 }
-
-void CalculateActivationRangeUint8(ir::Activation activation, const IPortableTensor *output,
-                                   int32_t *act_min, int32_t *act_max);
 
 nnfw::cker::PaddingType getPaddingType(ir::PaddingType ir_padding_type);
 
