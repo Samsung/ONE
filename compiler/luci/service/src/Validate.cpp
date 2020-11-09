@@ -123,6 +123,28 @@ bool validate_shape_dtype(loco::Graph *g)
   return true;
 }
 
+bool validate_shape_signature(loco::Graph *g)
+{
+  for (auto node : loco::postorder_traversal(loco::output_nodes(g)))
+  {
+    auto circle_node = loco::must_cast<luci::CircleNode *>(node);
+    const auto shape_signature = circle_node->shape_signature();
+
+    if (shape_signature.rank() == 0)
+      continue;
+
+    if (circle_node->rank() != shape_signature.rank())
+      return false;
+
+    for (uint32_t i = 0; i < shape_signature.rank(); ++i)
+      if (shape_signature.dim(i) != -1 &&
+          shape_signature.dim(i) != (int32_t)(circle_node->dim(i).value()))
+        return false;
+  }
+
+  return true;
+}
+
 } // namespace
 
 namespace luci
@@ -134,6 +156,9 @@ bool validate(loco::Graph *g)
     return false;
 
   if (!validate_shape_dtype(g))
+    return false;
+
+  if (!validate_shape_signature(g))
     return false;
 
   // TODO add more validation

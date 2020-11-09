@@ -69,7 +69,7 @@ struct CircleNode : public loco::Node,
   ShapeStatus shape_status(void) const { return _shape_status; }
   void shape_status(ShapeStatus ss) { _shape_status = ss; }
 
-  ShapeSignature shape_signature(void) const { return _shape_signature; }
+  const ShapeSignature &shape_signature(void) const { return _shape_signature; }
   void shape_signature(ShapeSignature ss) { _shape_signature = ss; }
 
   int32_t op_version(void) const { return _op_version; }
