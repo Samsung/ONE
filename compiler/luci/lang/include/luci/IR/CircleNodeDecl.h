@@ -62,7 +62,7 @@ struct CircleNode : public loco::Node,
     _sparsityparam = std::move(sparsityparam);
   }
 
-  ShapeSignature shape_signature(void) const { return _shape_signature; }
+  const ShapeSignature &shape_signature(void) const { return _shape_signature; }
   void shape_signature(ShapeSignature ss) { _shape_signature = ss; }
 
   ShapeStatus shape_status(void) const { return _shape_status; }
