@@ -180,6 +180,7 @@ tcgenerate(ZerosLike_000)
 
 ## CircleRecipes
 tcgenerate(BCQFullyConnected_000)
+tcgenerate(BCQFullyConnected_000_dynamic)
 tcgenerate(BCQFullyConnected_001)
 tcgenerate(BCQGather_000)
 tcgenerate(CircleBatchMatMul_000)
