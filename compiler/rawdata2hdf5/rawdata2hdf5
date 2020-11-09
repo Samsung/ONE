@@ -24,7 +24,6 @@ import numpy as np
 import argparse
 import glob
 import os
-import sys
 
 
 def get_parser():
@@ -105,21 +104,13 @@ def create_hdf5(data_list, output_path):
 
 
 def main():
-    try:
-        parser = get_parser()
-        args = parser.parse_args()
-        verify_args(parser, args)
-        create_hdf5(args.data_list, args.output_path)
-        return 0
+    parser = get_parser()
 
-    except UnicodeDecodeError:
-        print("UnicodeDecode Error. data_list may not be the text file.")
-        return 1
+    args = parser.parse_args()
 
-    except Exception as e:
-        print(e)
-        return 1
+    verify_args(parser, args)
 
+    create_hdf5(args.data_list, args.output_path)
 
 if __name__ == '__main__':
-    sys.exit(main())
+    main()
