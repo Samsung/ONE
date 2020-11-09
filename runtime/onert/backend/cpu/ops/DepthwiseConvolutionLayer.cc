@@ -47,7 +47,8 @@ void DepthwiseConvolutionLayer::convFloat32()
       op_params, getTensorShape(_input), reinterpret_cast<const float *>(_input->buffer()),
       getTensorShape(_kernel), reinterpret_cast<const float *>(_kernel->buffer()),
       getTensorShape(_bias), reinterpret_cast<const float *>(_bias->buffer()),
-      getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()));
+      getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()),
+      _external_context->ruy_context());
 }
 
 void DepthwiseConvolutionLayer::convQuant8()
@@ -91,7 +92,8 @@ void DepthwiseConvolutionLayer::configure(
     const uint32_t paddingLeft, const uint32_t paddingRight, const uint32_t paddingTop,
     const uint32_t paddingBottom, const uint32_t strideWidth, const uint32_t strideHeight,
     const uint32_t multiplier, const uint32_t dilationWidth, const uint32_t dilationHeight,
-    const ir::Activation activation, IPortableTensor *output)
+    const ir::Activation activation, IPortableTensor *output,
+    const std::shared_ptr<ExternalContext> &external_context)
 {
   _input = input;
   _kernel = kernel;
@@ -107,6 +109,7 @@ void DepthwiseConvolutionLayer::configure(
   _dilationHeight = dilationHeight;
   _activation = activation;
   _output = output;
+  _external_context = external_context;
 }
 
 void DepthwiseConvolutionLayer::run()
