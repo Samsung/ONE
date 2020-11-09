@@ -31,12 +31,6 @@ if [[ ! -s "while_3.pbtxt" ]]; then
     unzip while_3.zip
 fi
 
-if [[ ! -s "inception_v3_test_data.h5" ]]; then
-    rm -rf inception_v3_test_data.zip
-    wget https://github.com/Samsung/ONE/files/5139370/inception_v3_test_data.zip
-    unzip inception_v3_test_data.zip
-fi
-
 if [[ ! -s "mobilenet_test_data.h5" ]]; then
     rm -rf mobilenet_test_data.zip
     wget https://github.com/Samsung/ONE/files/5139460/mobilenet_test_data.zip
@@ -47,6 +41,51 @@ if [[ ! -s "bcq.pb" ]]; then
     rm -rf bcq.pb.zip
     wget https://github.com/Samsung/ONE/files/5153842/bcq.pb.zip
     unzip bcq.pb.zip
+fi
+
+if [[ ! -s "img_files" ]]; then
+    rm -rf img_files
+    wget https://github.com/Samsung/ONE/files/5499172/img_files.zip
+    unzip img_files.zip
+fi
+
+# prepare preprocessing script and raw data files for quantization test
+if [[ ! -s "preprocess.py" ]]; then
+    rm -f preprocess.py
+    cat > preprocess.py << EOF
+import os, shutil, PIL.Image, numpy as np
+
+input_dir = 'img_files'
+output_dir = 'raw_files'
+list_file = 'datalist.txt'
+
+if os.path.exists(output_dir):
+    shutil.rmtree(output_dir, ignore_errors=True)
+os.makedirs(output_dir)
+
+for (root, _, files) in os.walk(input_dir):
+    datalist = open(list_file, 'w')
+    for f in files:
+        image = PIL.Image.open(root + '/' + f)
+        img = np.array(image.resize((299,299), PIL.Image.ANTIALIAS)).astype(np.float32)
+        img = ((img / 255) - 0.5) * 2.0
+        output_file = output_dir + '/' + f.replace('jpg', 'data')
+        img.tofile(output_file)
+        datalist.writelines(os.path.abspath(output_file) + '\n')
+    datalist.close()
+EOF
+fi
+
+if [ ! -s "raw_files" ] && [ ! -s "datalist.txt" ]; then
+    rm -rf raw_files
+    rm -rf datalist.txt
+    ../bin/python preprocess.py
+fi
+
+if [[ ! -s "inception_v3_test_data.h5" ]]; then
+  ../bin/python ../bin/rawdata2hdf5 \
+  --data_list datalist.txt \
+  --output_path inception_v3_test_data.h5
 fi
 
 # prepare 'inception_v3.circle' file used for quantization test
