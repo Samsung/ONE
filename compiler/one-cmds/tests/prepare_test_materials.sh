@@ -49,37 +49,10 @@ if [[ ! -s "img_files" ]]; then
     unzip img_files.zip
 fi
 
-# prepare preprocessing script and raw data files for quantization test
-if [[ ! -s "preprocess.py" ]]; then
-    rm -f preprocess.py
-    cat > preprocess.py << EOF
-import os, shutil, PIL.Image, numpy as np
-
-input_dir = 'img_files'
-output_dir = 'raw_files'
-list_file = 'datalist.txt'
-
-if os.path.exists(output_dir):
-    shutil.rmtree(output_dir, ignore_errors=True)
-os.makedirs(output_dir)
-
-for (root, _, files) in os.walk(input_dir):
-    datalist = open(list_file, 'w')
-    for f in files:
-        image = PIL.Image.open(root + '/' + f)
-        img = np.array(image.resize((299,299), PIL.Image.ANTIALIAS)).astype(np.float32)
-        img = ((img / 255) - 0.5) * 2.0
-        output_file = output_dir + '/' + f.replace('jpg', 'data')
-        img.tofile(output_file)
-        datalist.writelines(os.path.abspath(output_file) + '\n')
-    datalist.close()
-EOF
-fi
-
 if [ ! -s "raw_files" ] && [ ! -s "datalist.txt" ]; then
     rm -rf raw_files
     rm -rf datalist.txt
-    ../bin/python preprocess.py
+    ../bin/python preprocess_images.py
 fi
 
 if [[ ! -s "inception_v3_test_data.h5" ]]; then
