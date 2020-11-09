@@ -1,4 +1,9 @@
-#!/usr/bin/env python3
+#!/usr/bin/env bash
+''''export SCRIPT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"                  # '''
+''''export PY_PATH=${SCRIPT_PATH}/venv/bin/python                                       # '''
+''''test -f ${PY_PATH} && exec ${PY_PATH} "$0" "$@"                                     # '''
+''''echo "Error: Virtual environment not found. Please run 'one-prepare-venv' command." # '''
+''''exit 255                                                                            # '''
 
 # Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
 #
@@ -19,6 +24,7 @@ import numpy as np
 import argparse
 import glob
 import os
+import sys
 
 
 def get_parser():
@@ -66,7 +72,7 @@ def create_hdf5(data_list, output_path):
     group.attrs['rawData'] = '1'
 
     if os.path.isfile(data_list) == False:
-        raise SystemExit("No such file. " + data_list)
+        raise Exception("No such file. " + data_list)
 
     # Data list
     datalist = []
@@ -78,7 +84,7 @@ def create_hdf5(data_list, output_path):
                 if os.path.isfile(filename):
                     datalist.append(filename)
                 else:
-                    raise SystemExit("No such file. " + filename)
+                    raise Exception("No such file. " + filename)
 
     # Input files
     num_converted = 0
@@ -89,7 +95,7 @@ def create_hdf5(data_list, output_path):
             filename = os.path.basename(rawdata)
             sample.attrs['desc'] = filename
             raw_data = bytearray(f.read())
-            # The target model is DNN for handling an input data
+            # The target model is DNN with one input data
             sample.create_dataset('0', data=raw_data)
 
     h5_file.close()
@@ -99,17 +105,21 @@ def create_hdf5(data_list, output_path):
 
 
 def main():
-    parser = get_parser()
+    try:
+        parser = get_parser()
+        args = parser.parse_args()
+        verify_args(parser, args)
+        create_hdf5(args.data_list, args.output_path)
+        return 0
 
-    args = parser.parse_args()
+    except UnicodeDecodeError:
+        print("UnicodeDecode Error. data_list may not be the text file.")
+        return 1
 
-    verify_args(parser, args)
-
-    create_hdf5(args.data_list, args.output_path)
+    except Exception as e:
+        print(e)
+        return 1
 
 
 if __name__ == '__main__':
-    try:
-        main()
-    except UnicodeDecodeError:
-        raise SystemExit("UnicodeDecode Error. data_list may not be the text file.")
+    sys.exit(main())
