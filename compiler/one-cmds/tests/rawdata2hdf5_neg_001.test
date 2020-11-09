@@ -41,7 +41,7 @@ echo "non-existing-file.data" >> ${inputfile}
 # run test
 rawdata2hdf5 \
 --data_list ${inputfile} \
---output_path ${outputfile} > ${filename}.log
+--output_path ${outputfile} > ${filename}.log 2>&1
 
 echo "${filename_ext} FAILED"
 exit 255

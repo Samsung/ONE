@@ -19,7 +19,7 @@ filename="${filename_ext%.*}"
 
 trap_err_onexit()
 {
-  if grep -q "UnicodeDecode Error" "${filename}.log"; then
+  if grep -q "UnicodeDecodeError" "${filename}.log"; then
     echo "${filename_ext} SUCCESS"
     exit 0
   fi
@@ -36,7 +36,7 @@ outputfile="./output_testdata.h5"
 # run test
 rawdata2hdf5 \
 --data_list ${inputfile} \
---output_path ${outputfile} > ${filename}.log
+--output_path ${outputfile} > ${filename}.log 2>&1
 
 echo "${filename_ext} FAILED"
 exit 255
