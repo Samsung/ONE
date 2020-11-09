@@ -52,6 +52,8 @@ python -m pip --default-timeout=1000 --trusted-host pypi.org --trusted-host file
   install -U pip==20.2.1 setuptools==49.3.0
 python -m pip --default-timeout=1000 --trusted-host pypi.org --trusted-host files.pythonhost.org \
   install tensorflow-cpu==2.3.0
+python -m pip --default-timeout=1000 --trusted-host pypi.org --trusted-host files.pythonhost.org \
+  install Pillow==6.2.2
 
 # Create python symoblic link
 rm -f ${DRIVER_PATH}/python

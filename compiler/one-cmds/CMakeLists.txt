@@ -65,6 +65,7 @@ endforeach(ONE_UTILITY)
 set(ONE_DOCUMENT_FILES
     how-to-use-one-commands.txt
     how-to-prepare-virtualenv.txt
+    how-to-create-hdf5-dataset.txt
 )
 
 foreach(ONE_DOCUMENT IN ITEMS ${ONE_DOCUMENT_FILES})
