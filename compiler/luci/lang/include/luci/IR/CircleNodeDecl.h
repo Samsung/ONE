@@ -20,6 +20,7 @@
 #include <loco/IR/Dialect.h>
 #include <loco/IR/Node.h>
 #include <loco/IR/NodeMixins.h>
+#include <luci/IR/CircleShapeSignature.h>
 #include <luci/IR/PropertyShapeStatus.h>
 
 #include "CircleOpcode.h"
@@ -61,6 +62,9 @@ struct CircleNode : public loco::Node,
     _sparsityparam = std::move(sparsityparam);
   }
 
+  ShapeSignature shape_signature(void) const { return _shape_signature; }
+  void shape_signature(ShapeSignature ss) { _shape_signature = ss; }
+
   ShapeStatus shape_status(void) const { return _shape_status; }
   void shape_status(ShapeStatus ss) { _shape_status = ss; }
 
@@ -71,6 +75,7 @@ private:
   NodeName _name;
   std::unique_ptr<CircleQuantParam> _quantparam;
   std::unique_ptr<SparsityParam> _sparsityparam;
+  ShapeSignature _shape_signature;
   ShapeStatus _shape_status{ShapeStatus::UNDEFINED};
   int32_t _op_version = 1;
 };
