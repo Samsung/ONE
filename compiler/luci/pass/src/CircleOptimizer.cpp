@@ -40,6 +40,7 @@
 // logo passes
 #include <logo/RemoveDeadNodeWithQueryPass.h>
 
+#include "LuciPhase.h"
 #include "ProgressReporter.h"
 #include "CircleOptimizerUtils.h"
 
@@ -125,6 +126,21 @@ CircleOptimizer::Options *CircleOptimizer::options(void)
   return _options.get();
 }
 
+void CircleOptimizer::optimize(luci::Module *m) const
+{
+  luci::Phase phase;
+
+  if (_options->query(Options::Algorithm::FuseBCQ))
+  {
+    phase.emplace_back(std::make_unique<luci::FuseBCQPass>());
+  }
+
+  ModuleProgressReporter prog(m, logo::PhaseStrategy::Saturate);
+  PhaseRunner<logo::PhaseStrategy::Saturate> phase_runner{m};
+  phase_runner.attach(&prog);
+  phase_runner.run(phase);
+}
+
 void CircleOptimizer::optimize(loco::Graph *g) const
 {
   logo::Phase phase;
@@ -145,10 +161,6 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   if (_options->query(Options::Algorithm::FuseInstanceNorm))
   {
     phase.emplace_back(std::make_unique<FuseInstanceNormPass>());
-  }
-  if (_options->query(Options::Algorithm::FuseBCQ))
-  {
-    phase.emplace_back(std::make_unique<FuseBCQPass>());
   }
   if (_options->query(Options::Algorithm::FuseBatchNormWithTConv))
   {

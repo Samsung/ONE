@@ -82,3 +82,50 @@ void ProgressReporter::notify(const logo::PhaseEventInfo<logo::PhaseEvent::PassE
 }
 
 } // namespace luci
+
+namespace luci
+{
+
+void ModuleProgressReporter::notify(const logo::PhaseEventInfo<logo::PhaseEvent::PhaseBegin> *)
+{
+  LOGGER(prime);
+
+  INFO(prime) << "==============================================================";
+  INFO(prime) << "ModulePhaseRunner<" << to_str(strategy()) << ">";
+  INFO(prime) << "Initial graphs";
+  for (size_t i = 0; i < module()->size(); ++i)
+  {
+    INFO(prime) << "graphs #" << i;
+    INFO(prime) << luci::fmt(module()->graph(i));
+  }
+}
+
+void ModuleProgressReporter::notify(const logo::PhaseEventInfo<logo::PhaseEvent::PhaseEnd> *)
+{
+  LOGGER(prime);
+
+  INFO(prime) << "ModulePhaseRunner<" << to_str(strategy()) << "> - done";
+}
+
+void ModuleProgressReporter::notify(const logo::PhaseEventInfo<logo::PhaseEvent::PassBegin> *info)
+{
+  LOGGER(prime);
+
+  INFO(prime) << "--------------------------------------------------------------";
+  INFO(prime) << "Before " << logo::pass_name(info->pass());
+}
+
+void ModuleProgressReporter::notify(const logo::PhaseEventInfo<logo::PhaseEvent::PassEnd> *info)
+{
+  LOGGER(prime);
+
+  INFO(prime) << "After " << logo::pass_name(info->pass())
+              << " (changed: " << to_char(info->changed()) << ")";
+  for (size_t i = 0; i < module()->size(); ++i)
+  {
+    INFO(prime) << "graphs #" << i;
+    INFO(prime) << luci::fmt(module()->graph(i));
+  }
+}
+
+} // namespace luci

@@ -14,27 +14,29 @@
  * limitations under the License.
  */
 
-#ifndef __LUCI_FUSE_BCQ_PASS_H__
-#define __LUCI_FUSE_BCQ_PASS_H__
+#ifndef __LUCI_PASS_H__
+#define __LUCI_PASS_H__
 
+#include <loco.h>
 #include <logo/Pass.h>
+
 #include <luci/IR/Module.h>
-#include <luci/LuciPass.h>
 
 namespace luci
 {
 
-/**
- * @brief  Class to fuse certain pattern of subgraph into CircleBCQFullyConnected or CircleBCQGather
- *
- */
-struct FuseBCQPass final : public Pass
+class Pass : public logo::Pass
 {
-  const char *name(void) const { return "luci::FuseBCQPass"; }
-
-  bool run(luci::Module *);
+public:
+  /**
+   * @brief  Run the pass
+   *
+   * @return false if there was nothing changed
+   */
+  virtual bool run(loco::Graph *graph) { return false; }
+  virtual bool run(luci::Module *module) = 0;
 };
 
 } // namespace luci
 
-#endif // __LUCI_FUSE_BCQ_PASS_H__
+#endif // __LUCI_PASS_H__

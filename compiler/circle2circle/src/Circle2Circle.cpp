@@ -290,11 +290,14 @@ int entry(int argc, char **argv)
   luci::Importer importer;
   auto module = importer.importModule(circle_model);
 
+  // call luci optimizations for module
+  optimizer.optimize(module.get());
+
   for (size_t idx = 0; idx < module->size(); ++idx)
   {
     auto graph = module->graph(idx);
 
-    // call luci optimizations
+    // call luci optimizations for graph
     optimizer.optimize(graph);
     optimizer.sparsify(graph);
 
