@@ -52,6 +52,7 @@ $ADB_CMD root on
 $ADB_CMD shell mount -o rw,remount /
 
 $ADB_CMD shell rm -rf /data/local/tmp/onert_android
+$ADB_CMD shell rm -rf /data/local/tmp/TestCompilationCaching*
 $ADB_CMD shell mkdir -p /data/local/tmp/onert_android/report
 $ADB_CMD push $ROOT_PATH/tests /data/local/tmp/onert_android/.
 $ADB_CMD push $ROOT_PATH/Product/aarch64-android.release/out /data/local/tmp/onert_android/Product/.
@@ -71,10 +72,10 @@ do
   for EXECUTOR in "${EXECUTORS[@]}";
   do
     MODELLIST=$(cat "${ROOT_PATH}/Product/aarch64-android.release/out/test/list/frameworktest_list.${TEST_ARCH}.${BACKEND}.txt")
-    # $ADB_CMD shell LD_LIBRARY_PATH=/data/local/tmp/onert_android/Product/lib EXECUTOR=$EXECUTOR BACKENDS=$BACKEND sh /data/local/tmp/onert_android/tests/scripts/models/run_test_android.sh \
-    #                                                         --driverbin=/data/local/tmp/onert_android/Product/unittest/nnapi_gtest \
-    #                                                         --reportdir=/data/local/tmp/onert_android/report \
-    #                                                         --tapname=nnapi_gtest_$BACKEND_$EXECUTOR.tap
+    SKIPLIST=$(grep -v '#' "${ROOT_PATH}/Product/aarch64-android.release/out/unittest/nnapi_gtest.skip.${TEST_PLATFORM}.${BACKEND}" | tr '\n' ':')
+    $ADB_CMD shell LD_LIBRARY_PATH=/data/local/tmp/onert_android/Product/lib EXECUTOR=$EXECUTOR BACKENDS=$BACKEND /data/local/tmp/onert_android/Product/unittest/nnapi_gtest \
+                                                            --gtest_output=xml:/data/local/tmp/onert_android/report/nnapi_gtest_${BACKEND}_${EXECUTOR}.xml \
+                                                            --gtest_filter=-${SKIPLIST}
     $ADB_CMD shell LD_LIBRARY_PATH=/data/local/tmp/onert_android/Product/lib EXECUTOR=$EXECUTOR BACKENDS=$BACKEND sh /data/local/tmp/onert_android/tests/scripts/models/run_test_android.sh \
                                                             --driverbin=/data/local/tmp/onert_android/Product/bin/nnapi_test \
                                                             --reportdir=/data/local/tmp/onert_android/report \
@@ -83,8 +84,12 @@ do
 done
 
 MODELLIST_INTERP=$(cat "${ROOT_PATH}/Product/aarch64-android.release/out/test/list/frameworktest_list.noarch.interp.txt")
+SKIPLIST_INTERP=$(grep -v '#' "${ROOT_PATH}/Product/aarch64-android.release/out/unittest/nnapi_gtest.skip.noarch.interp" | tr '\n' ':')
 for EXECUTOR in "${EXECUTORS[@]}";
 do
+$ADB_CMD shell LD_LIBRARY_PATH=/data/local/tmp/onert_android/Product/lib EXECUTOR=$EXECUTOR BACKENDS=$BACKEND /data/local/tmp/onert_android/Product/unittest/nnapi_gtest \
+                                                            --gtest_output=xml:/data/local/tmp/onert_android/report/nnapi_gtest_interp_$EXECUTOR.xml \
+                                                            --gtest_filter=-$SKIPLIST_INTERP
 $ADB_CMD shell LD_LIBRARY_PATH=/data/local/tmp/onert_android/Product/lib EXECUTOR=$EXECUTOR BACKENDS="" DISABLE_COMPILE=1 sh /data/local/tmp/onert_android/tests/scripts/models/run_test_android.sh \
                                                         --driverbin=/data/local/tmp/onert_android/Product/bin/nnapi_test \
                                                         --reportdir=/data/local/tmp/onert_android/report \
@@ -94,6 +99,9 @@ done
 MODELLIST=$(cat "${UNION_MODELLIST_PREFIX}.intersect.txt")
 for EXECUTOR in "${EXECUTORS[@]}";
 do
+# $ADB_CMD shell LD_LIBRARY_PATH=/data/local/tmp/onert_android/Product/lib EXECUTOR=$EXECUTOR BACKENDS=$BACKEND /data/local/tmp/onert_android/Product/unittest/nnapi_gtest \
+#                                                             --gtest_output=xml:/data/local/tmp/onert_android/report/nnapi_gtest_${BACKEND}_${EXECUTOR}.xml \
+#                                                             --gtest_filter=-${SKIPLIST}
 $ADB_CMD shell LD_LIBRARY_PATH=/data/local/tmp/onert_android/Product/lib OP_BACKEND_Conv2D="cpu" OP_BACKEND_MaxPool2D="acl_cl" OP_BACKEND_AvgPool2D="acl_neon" ACL_LAYOUT="NCHW" EXECUTOR=$EXECUTOR BACKENDS="acl_cl\;acl_neon\;cpu" sh /data/local/tmp/onert_android/tests/scripts/models/run_test_android.sh \
                                                         --driverbin=/data/local/tmp/onert_android/Product/bin/nnapi_test \
                                                         --reportdir=/data/local/tmp/onert_android/report \
