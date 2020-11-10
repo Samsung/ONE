@@ -25,10 +25,11 @@ os.makedirs(output_dir)
 for (root, _, files) in os.walk(input_dir):
     datalist = open(list_file, 'w')
     for f in files:
-        image = PIL.Image.open(root + '/' + f)
-        img = np.array(image.resize((299, 299), PIL.Image.ANTIALIAS)).astype(np.float32)
-        img = ((img / 255) - 0.5) * 2.0
-        output_file = output_dir + '/' + f.replace('jpg', 'data')
-        img.tofile(output_file)
-        datalist.writelines(os.path.abspath(output_file) + '\n')
+        with PIL.Image.open(root + '/' + f) as image:
+            img = np.array(image.resize((299, 299),
+                                        PIL.Image.ANTIALIAS)).astype(np.float32)
+            img = ((img / 255) - 0.5) * 2.0
+            output_file = output_dir + '/' + f.replace('jpg', 'data')
+            img.tofile(output_file)
+            datalist.writelines(os.path.abspath(output_file) + '\n')
     datalist.close()
