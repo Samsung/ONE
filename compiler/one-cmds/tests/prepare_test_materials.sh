@@ -44,14 +44,12 @@ if [[ ! -s "bcq.pb" ]]; then
 fi
 
 if [[ ! -s "img_files" ]]; then
-    rm -rf img_files
+    rm -rf img_files.zip
     wget https://github.com/Samsung/ONE/files/5499172/img_files.zip
     unzip img_files.zip
 fi
 
-if [ ! -s "raw_files" ] && [ ! -s "datalist.txt" ]; then
-    rm -rf raw_files
-    rm -rf datalist.txt
+if [ ! -d "raw_files" ] || [ ! -s "datalist.txt" ]; then
     ../bin/venv/bin/python preprocess_images.py
 fi
 
