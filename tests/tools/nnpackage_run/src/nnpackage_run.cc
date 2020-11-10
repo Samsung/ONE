@@ -131,6 +131,25 @@ int main(const int argc, char **argv)
         // to fill dtype
         NNPR_ENSURE_STATUS(nnfw_input_tensorinfo(session, ind, &ti));
 
+        bool set_input = false;
+        if (ti.rank != shape.size())
+        {
+          set_input = true;
+        }
+        else
+        {
+          for (int i = 0; i < ti.rank; i++)
+          {
+            if (ti.dims[i] != shape.at(i))
+            {
+              set_input = true;
+              break;
+            }
+          }
+        }
+        if (!set_input)
+          continue;
+
         ti.rank = shape.size();
         for (int i = 0; i < ti.rank; i++)
           ti.dims[i] = shape.at(i);
