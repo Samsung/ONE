@@ -12,9 +12,13 @@ import static com.google.common.truth.Truth.*;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;
+import java.io.File;
+import java.net.URISyntaxException;
+import java.net.URL;
 
 import android.Manifest;
 import android.os.Environment;
+import android.util.Log;
 
 @RunWith(AndroidJUnit4.class)
 @SmallTest
@@ -24,7 +28,7 @@ public class TestSession {
 
     @Before
     public void setUp() {
-        assertThat(TestCommon.exist(TestCommon.getNnpkgPath())).isTrue();
+        assertThat(TestCommon.exist(getNnpkgPath())).isTrue();
     }
     
     @After
@@ -33,30 +37,31 @@ public class TestSession {
 
     @Test
     public void test_Session_p() {
-        Session session = new Session(TestCommon.getNnpkgPath(), "cpu");
+        Session session = new Session(getNnpkgPath(), "cpu");
         assertThat(session).isNotNull();
     }
 
     @Test
     public void test_prepare_p() {
         Session session = newSession();
-        assertThat(session.prepare()).isTrue();
+        assertThat(session.prepare()).isTrue(); // TODO: This cannot be solved
     }
 
+    /*
     @Test
     public void test_setInputs_p() {
-        //Session session = newSession();
-        //assertThat(session.prepare()).isTrue();
-        //Tensor[] inputs = newTestInputTensor();
-        //session.setInputs(inputs);
-        //int input_size = session.getInputSize();
-        //assertThat(input_size).isEqualTo(inputs.length);
-        //for (int i = 0; i < input_size; ++i) {
-        //    TensorInfo info = session.getInputTensorInfo(i);
-        //    assertThat(inputs[i].shape()).asList().
-        //        containsExactlyElementsIn(Arrays.stream(info.shape).boxed().collect(Collectors.toList())).
-        //        inOrder();
-        //}
+        Session session = newSession();
+        assertThat(session.prepare()).isTrue();
+        Tensor[] inputs = newTestInputTensor();
+        session.setInputs(inputs);
+        int input_size = session.getInputSize();
+        assertThat(input_size).isEqualTo(inputs.length);
+        for (int i = 0; i < input_size; ++i) {
+            TensorInfo info = session.getInputTensorInfo(i);
+            assertThat(inputs[i].shape()).asList().
+                containsExactlyElementsIn(Arrays.stream(info.shape).boxed().collect(Collectors.toList())).
+                inOrder();
+        }
     }
 
     @Test
@@ -86,9 +91,10 @@ public class TestSession {
     @Test
     public void test_getOutputTensorInfo_p() {
     }
+    */
 
     private Session newSession() {
-        Session session = new Session(TestCommon.getNnpkgPath(), "cpu");
+        Session session = new Session(getNnpkgPath(), "cpu");
         return session;
     }
 
@@ -108,8 +114,12 @@ public class TestSession {
         return new Tensor[]{t};
     }
 
-    private GrantPermissionRule grantPermissions() {
+    public GrantPermissionRule grantPermissions() {
         return GrantPermissionRule.grant(Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE);
+    }
+
+    private String getNnpkgPath() {
+        return "/sdcard/nnpkg/convolution_test";
     }
 }
