@@ -271,6 +271,16 @@ std::unique_ptr<ModelRecipe> generate_recipe(const tflite::Model *model)
         }
       }
     }
+
+    auto shape_signature = tensor->shape_signature();
+    if (shape_signature != nullptr)
+    {
+      tflchef::ShapeSignature *chef_shape_signature = operand->mutable_shape_signature();
+      for (uint32_t i = 0; i < shape_signature->size(); ++i)
+      {
+        chef_shape_signature->add_dim(shape_signature->Get(i));
+      }
+    }
   }
 
   // add all operators
