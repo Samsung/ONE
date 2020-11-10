@@ -31,12 +31,6 @@ if [[ ! -s "while_3.pbtxt" ]]; then
     unzip while_3.zip
 fi
 
-if [[ ! -s "inception_v3_test_data.h5" ]]; then
-    rm -rf inception_v3_test_data.zip
-    wget https://github.com/Samsung/ONE/files/5139370/inception_v3_test_data.zip
-    unzip inception_v3_test_data.zip
-fi
-
 if [[ ! -s "mobilenet_test_data.h5" ]]; then
     rm -rf mobilenet_test_data.zip
     wget https://github.com/Samsung/ONE/files/5139460/mobilenet_test_data.zip
@@ -47,6 +41,24 @@ if [[ ! -s "bcq.pb" ]]; then
     rm -rf bcq.pb.zip
     wget https://github.com/Samsung/ONE/files/5153842/bcq.pb.zip
     unzip bcq.pb.zip
+fi
+
+if [[ ! -s "img_files" ]]; then
+    rm -rf img_files
+    wget https://github.com/Samsung/ONE/files/5499172/img_files.zip
+    unzip img_files.zip
+fi
+
+if [ ! -s "raw_files" ] && [ ! -s "datalist.txt" ]; then
+    rm -rf raw_files
+    rm -rf datalist.txt
+    ../bin/python preprocess_images.py
+fi
+
+if [[ ! -s "inception_v3_test_data.h5" ]]; then
+  ../bin/python ../bin/rawdata2hdf5 \
+  --data_list datalist.txt \
+  --output_path inception_v3_test_data.h5
 fi
 
 # prepare 'inception_v3.circle' file used for quantization test
