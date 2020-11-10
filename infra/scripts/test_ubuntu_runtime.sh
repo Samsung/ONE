@@ -3,8 +3,8 @@
 set -eo pipefail
 source "$(dirname "${BASH_SOURCE[0]}")/common.sh"
 
+: ${TEST_ARCH:=$(uname -m | tr '[:upper:]' '[:lower:]')}
 BACKEND="cpu"
-TEST_ARCH=$(uname -m | tr '[:upper:]' '[:lower:]')
 TEST_OS="linux"
 TEST_PLATFORM="$TEST_ARCH-$TEST_OS"
 TFLITE_LOADER="0"
