@@ -87,7 +87,7 @@ Tensor makeInputTensor(const Shape &shape, const std::vector<float> &scales,
   // inner dimensions that contains continuous data with one quantization type
   // outer dimensions that contains other dimensions
   size_t outer_dims_size = 1;
-  size_t quant_dim_size = shape.dim(quantized_dimension);
+  size_t quant_dim_size = static_cast<size_t>(shape.dim(quantized_dimension));
   size_t inner_dims_size = 1;
   assert(quant_dim_size == scales.size());
   assert(quant_dim_size == zero_points.size());
