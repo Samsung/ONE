@@ -6,7 +6,7 @@ source "$(dirname "${BASH_SOURCE[0]}")/common.sh"
 CheckTestPrepared
 
 # TODO Get argument for mix configuration
-TEST_ARCH=$(uname -m | tr '[:upper:]' '[:lower:]')
+: ${TEST_ARCH:=$(uname -m | tr '[:upper:]' '[:lower:]')}
 TEST_OS="linux"
 
 # nnfw_api_gtest
