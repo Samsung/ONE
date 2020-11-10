@@ -508,8 +508,7 @@ bool fuse_mul_with_conv(luci::CircleMul *mul)
   auto mul_succ = loco::succs(mul);
   assert(mul_succ.size() == 1);
 
-  auto relu = dynamic_cast<luci::CircleRelu *>(*mul_succ.begin());
-  assert(relu != nullptr);
+  auto relu = loco::must_cast<luci::CircleRelu *>(*mul_succ.begin());
 
   auto channel_size = gamma->dim(0).value();
 
