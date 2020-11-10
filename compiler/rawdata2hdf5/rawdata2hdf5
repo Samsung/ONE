@@ -71,7 +71,7 @@ def create_hdf5(data_list, output_path):
     group.attrs['rawData'] = '1'
 
     if os.path.isfile(data_list) == False:
-        raise Exception("No such file. " + data_list)
+        raise FileNotFoundError("No such file. " + data_list)
 
     # Data list
     datalist = []
