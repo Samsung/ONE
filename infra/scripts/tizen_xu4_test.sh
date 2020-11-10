@@ -160,11 +160,11 @@ if [ $RUN_TEST = "0" ]; then
 fi
 
 if [ -z "${GCOV_DIR}" ]; then
-  ${SDB_CMD} shell /bin/bash -c "IGNORE_MD5=1 ${TEST_ROOT}/infra/scripts/test_ubuntu_runtime.sh --backend acl_cl --tflite-loader"
-  ${SDB_CMD} shell /bin/bash -c "IGNORE_MD5=1 ${TEST_ROOT}/infra/scripts/test_ubuntu_runtime.sh --backend acl_neon"
-  ${SDB_CMD} shell /bin/bash -c "IGNORE_MD5=1 ${TEST_ROOT}/infra/scripts/test_ubuntu_runtime.sh --backend cpu"
-  ${SDB_CMD} shell /bin/bash -c "IGNORE_MD5=1 ${TEST_ROOT}/infra/scripts/test_ubuntu_runtime_mixed.sh"
-  ${SDB_CMD} shell /bin/bash -c "IGNORE_MD5=1 ${TEST_ROOT}/infra/scripts/test_ubuntu_runtime.sh --interp"
+  ${SDB_CMD} shell /bin/bash -c "IGNORE_MD5=1 TEST_ARCH=armv7l ${TEST_ROOT}/infra/scripts/test_ubuntu_runtime.sh --backend acl_cl --tflite-loader"
+  ${SDB_CMD} shell /bin/bash -c "IGNORE_MD5=1 TEST_ARCH=armv7l ${TEST_ROOT}/infra/scripts/test_ubuntu_runtime.sh --backend acl_neon"
+  ${SDB_CMD} shell /bin/bash -c "IGNORE_MD5=1 TEST_ARCH=armv7l ${TEST_ROOT}/infra/scripts/test_ubuntu_runtime.sh --backend cpu"
+  ${SDB_CMD} shell /bin/bash -c "IGNORE_MD5=1 TEST_ARCH=armv7l ${TEST_ROOT}/infra/scripts/test_ubuntu_runtime_mixed.sh"
+  ${SDB_CMD} shell /bin/bash -c "IGNORE_MD5=1 TEST_ARCH=armv7l ${TEST_ROOT}/infra/scripts/test_ubuntu_runtime.sh --interp"
 else
   mkdir -p ${GCOV_DIR}
   rm -rf ${GCOV_DIR}/*
@@ -176,11 +176,11 @@ else
   GCOV_DATA_PATH="/opt/usr/nnfw-gcov"
 
   # TODO For coverage check, we run acl_cl and mixed test
-  ${SDB_CMD} shell /bin/bash -c "GCOV_PREFIX_STRIP=${GCOV_PREFIX_STRIP} IGNORE_MD5=1 ${TEST_ROOT}/infra/scripts/test_ubuntu_runtime.sh --backend acl_cl --tflite-loader"
-  ${SDB_CMD} shell /bin/bash -c "GCOV_PREFIX_STRIP=${GCOV_PREFIX_STRIP} IGNORE_MD5=1 ${TEST_ROOT}/infra/scripts/test_ubuntu_runtime.sh --backend acl_neon"
-  ${SDB_CMD} shell /bin/bash -c "GCOV_PREFIX_STRIP=${GCOV_PREFIX_STRIP} IGNORE_MD5=1 ${TEST_ROOT}/infra/scripts/test_ubuntu_runtime.sh --backend cpu"
-  ${SDB_CMD} shell /bin/bash -c "GCOV_PREFIX_STRIP=${GCOV_PREFIX_STRIP} IGNORE_MD5=1 ${TEST_ROOT}/infra/scripts/test_ubuntu_runtime_mixed.sh"
-  ${SDB_CMD} shell /bin/bash -c "GCOV_PREFIX_STRIP=${GCOV_PREFIX_STRIP} IGNORE_MD5=1 ${TEST_ROOT}/infra/scripts/test_ubuntu_runtime.sh --interp"
+  ${SDB_CMD} shell /bin/bash -c "GCOV_PREFIX_STRIP=${GCOV_PREFIX_STRIP} IGNORE_MD5=1 TEST_ARCH=armv7l ${TEST_ROOT}/infra/scripts/test_ubuntu_runtime.sh --backend acl_cl --tflite-loader"
+  ${SDB_CMD} shell /bin/bash -c "GCOV_PREFIX_STRIP=${GCOV_PREFIX_STRIP} IGNORE_MD5=1 TEST_ARCH=armv7l ${TEST_ROOT}/infra/scripts/test_ubuntu_runtime.sh --backend acl_neon"
+  ${SDB_CMD} shell /bin/bash -c "GCOV_PREFIX_STRIP=${GCOV_PREFIX_STRIP} IGNORE_MD5=1 TEST_ARCH=armv7l ${TEST_ROOT}/infra/scripts/test_ubuntu_runtime.sh --backend cpu"
+  ${SDB_CMD} shell /bin/bash -c "GCOV_PREFIX_STRIP=${GCOV_PREFIX_STRIP} IGNORE_MD5=1 TEST_ARCH=armv7l ${TEST_ROOT}/infra/scripts/test_ubuntu_runtime_mixed.sh"
+  ${SDB_CMD} shell /bin/bash -c "GCOV_PREFIX_STRIP=${GCOV_PREFIX_STRIP} IGNORE_MD5=1 TEST_ARCH=armv7l ${TEST_ROOT}/infra/scripts/test_ubuntu_runtime.sh --interp"
 
   # More test to check coverage
   ${SDB_CMD} shell "rm -rf ${GCOV_DATA_PATH} && mkdir -p ${GCOV_DATA_PATH}"
