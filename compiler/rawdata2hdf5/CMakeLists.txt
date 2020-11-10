@@ -1,4 +1,4 @@
-set(rawdata2hdf5_FILE "rawdata2hdf5.py")
+set(rawdata2hdf5_FILE "rawdata2hdf5")
 set(rawdata2hdf5_SRC "${CMAKE_CURRENT_SOURCE_DIR}/${rawdata2hdf5_FILE}")
 set(rawdata2hdf5_BIN "${CMAKE_CURRENT_BINARY_DIR}/${rawdata2hdf5_FILE}")
 

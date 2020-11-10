@@ -9,7 +9,7 @@ _rawdata2hdf5_ is a tool to convert raw data (assumed to be pre-processed) to an
 
 ## Example
 ```
-python rawdata2hdf5.py \
+./rawdata2hdf5 \
 > --data_list=tmp/data/datalist.txt
 > --output_path=tmp/data/data.h5
 ```
