@@ -52,11 +52,11 @@ fi
 if [ ! -s "raw_files" ] && [ ! -s "datalist.txt" ]; then
     rm -rf raw_files
     rm -rf datalist.txt
-    ../bin/python preprocess_images.py
+    ../bin/venv/bin/python preprocess_images.py
 fi
 
 if [[ ! -s "inception_v3_test_data.h5" ]]; then
-  ../bin/python ../bin/rawdata2hdf5 \
+  ../bin/venv/bin/python ../bin/rawdata2hdf5 \
   --data_list datalist.txt \
   --output_path inception_v3_test_data.h5
 fi
