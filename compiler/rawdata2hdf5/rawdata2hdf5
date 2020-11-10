@@ -83,7 +83,7 @@ def create_hdf5(data_list, output_path):
                 if os.path.isfile(filename):
                     datalist.append(filename)
                 else:
-                    raise Exception("No such file. " + filename)
+                    raise FileNotFoundError("No such file. " + filename)
 
     # Input files
     num_converted = 0
