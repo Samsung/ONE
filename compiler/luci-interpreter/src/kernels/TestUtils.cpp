@@ -65,7 +65,7 @@ std::vector<float> dequantizeTensorData(const Tensor &tensor)
     const int32_t quantized_dimension = tensor.quantized_dimension();
     assert(quantized_dimension < shape.num_dims());
     size_t outer_dims_size = 1;
-    size_t quant_dim_size = shape.dim(quantized_dimension);
+    size_t quant_dim_size = static_cast<size_t>(shape.dim(quantized_dimension));
     size_t inner_dims_size = 1;
     assert(quant_dim_size == tensor.scales().size());
 
