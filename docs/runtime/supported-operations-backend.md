@@ -1,6 +1,6 @@
 # Supported Operations and backend
 
-As of 2020-10-14
+As of 2020-11-10
 
 ### Raw-data format (float32, int32, boolean, etc)
 
@@ -8,6 +8,7 @@ Operation | CPU | ACL-CL | ACL-NEON
 -- | -- | -- | --
 Abs | O | O | O
 Add | O | O | O
+AddN | O |   |
 ArgMax | O | O | O
 ArgMin | O |   |
 AvgPool2D | O | O | O
@@ -26,7 +27,7 @@ Equal | O | O | O
 Exp | O | O | O
 ExpandDims | O |   |
 Fill | O |   |
-Floor |   | O | O
+Floor | O | O | O
 FullyConnected | O | O | O
 Gather | O | O | O
 Greater | O | O | O
@@ -99,6 +100,7 @@ TopKV2 |   |   | O
 Transpose | O | O | O
 TransposeConv |   | O | O
 Unpack(Unstack) | O | O | O
+UniDirectionalSequenceLSTM | O |   |
 While | O |   |
 ZerosLike | O |   |
 
@@ -117,7 +119,7 @@ Conv2D | O | O | O
 Custom | O |   |
 DepthToSpace |   | O | O
 DepthwiseConv2D | O | O | O
-Dequantize |   | O | O
+Dequantize | O | O | O
 EmbeddingLookup |   | O | O
 Equal | O | O | O
 ExpandDims | O |   |
@@ -142,6 +144,7 @@ Pack |   | O | O
 Pad | O | O | O
 PadV2 | O | O | O
 PReLU |   | O | O
+Rank | O |   |
 ReduceMax(Max) |   | O |
 ReduceMin(Min) |   | O |
 ReduceSum(Sum) | O | O |
@@ -164,3 +167,9 @@ Tile | O |   |
 Transpose | O | O | O
 TransposeConv |   | O | O
 Unpack(Unstack) |   | O | O
+
+### Quantization format (int8)
+
+Dequantize | O |   |
+Rank | O |   |
+Shape | O |   |
