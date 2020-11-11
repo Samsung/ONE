@@ -1,0 +1,45 @@
+operand {
+  name: "ifm"
+  type: FLOAT32
+  shape { dim: 1 dim: 8 dim: 6 dim: 12 }
+  shape_signature { dim: -1 dim: 8 dim: 6 dim: 12 }
+}
+operand {
+  name: "gamma"
+  type: FLOAT32
+  shape { dim: 12 }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "1.0"
+  }
+}
+operand {
+  name: "beta"
+  type: FLOAT32
+  shape { dim: 12 }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "1.0"
+  }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 1 dim: 8 dim: 6 dim: 12 }
+  shape_signature { dim: -1 dim: 8 dim: 6 dim: 12 }
+}
+operation {
+  type: "InstanceNorm"
+  input: "ifm"
+  input: "gamma"
+  input: "beta"
+  output: "ofm"
+  instance_norm_options {
+    epsilon: 0.00001
+    activation: NONE
+  }
+}
+input: "ifm"
+output: "ofm"
