@@ -63,6 +63,20 @@ if [[ ! -s "inception_v3_test_data.h5" ]]; then
   --output_path inception_v3_test_data.h5
 fi
 
+if [[ ! -d "test_saved_model" ]]; then
+    rm -rf test_saved_model.zip
+    wget https://github.com/Samsung/ONE/files/5516226/test_saved_model.zip
+    unzip test_saved_model.zip
+    # https://github.com/Samsung/ONE/issues/4268#issuecomment-724578237
+fi
+
+if [[ ! -s "test_keras_model.h5" ]]; then
+    rm -rf test_keras_model.zip
+    wget https://github.com/Samsung/ONE/files/5520777/test_keras_model.zip
+    unzip test_keras_model.zip
+    # https://github.com/Samsung/ONE/issues/4268#issuecomment-725025805
+fi
+
 # prepare 'inception_v3.circle' file used for quantization test
 inputfile="./inception_v3.pb"
 outputfile="./inception_v3.circle"
