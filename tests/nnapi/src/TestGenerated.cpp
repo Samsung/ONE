@@ -256,8 +256,11 @@ void GeneratedTests::SetUp() {
     mOldComputeMode = Execution::setComputeMode(GetParam());
 #endif
     // Fix for onert: Fix file path for linux
+#ifndef __ANDROID__
     char cacheDirTemp[] = "/tmp/TestCompilationCachingXXXXXX";
-    //char cacheDirTemp[] = "/data/local/tmp/TestCompilationCachingXXXXXX";
+#else
+    char cacheDirTemp[] = "/data/local/tmp/TestCompilationCachingXXXXXX";
+#endif
     char* cacheDir = mkdtemp(cacheDirTemp);
     ASSERT_NE(cacheDir, nullptr);
     mCacheDir = cacheDir;

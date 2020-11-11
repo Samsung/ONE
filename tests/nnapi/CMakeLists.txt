@@ -7,6 +7,11 @@ if (NOT BUILD_ONERT)
   return()
 endif(NOT BUILD_ONERT)
 
+if (ANDROID_BOOST_ROOT)
+  set(BOOST_ROOT ${ANDROID_BOOST_ROOT})
+endif (ANDROID_BOOST_ROOT)
+
+nnfw_find_package(Boost REQUIRED)
 nnfw_find_package(GTest)
 
 
@@ -46,6 +51,7 @@ endif(GENERATE_RUNTIME_NNAPI_TESTS)
 set(RUNTIME_NNAPI_TEST_SRC_INC ${CMAKE_CURRENT_SOURCE_DIR}/include
                                ${CMAKE_CURRENT_SOURCE_DIR}/src)
 target_include_directories(${RUNTIME_NNAPI_TEST} PRIVATE ${RUNTIME_NNAPI_TEST_SRC_INC})
+target_include_directories(${RUNTIME_NNAPI_TEST} PRIVATE ${Boost_INCLUDE_DIRS})
 
 # Define NNTEST_ONLY_PUBLIC_API to avoid android dependency
 target_compile_definitions(${RUNTIME_NNAPI_TEST} PRIVATE NNTEST_ONLY_PUBLIC_API)
