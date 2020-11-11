@@ -17,12 +17,14 @@
 #ifndef __ONERT_BACKEND_CONTROLFLOW_KERNEL_WHILE_LAYER_H__
 #define __ONERT_BACKEND_CONTROLFLOW_KERNEL_WHILE_LAYER_H__
 
-#include <backend/ITensor.h>
+#include <backend/IPortableTensor.h>
 #include <exec/IExecutor.h>
 #include <exec/IFunction.h>
 #include <ir/OperandIndexSequence.h>
 #include <ir/Graph.h>
 #include "../ExternalContext.h"
+
+#include "backend/cpu_common/MemoryManager.h"
 
 namespace onert
 {
@@ -36,11 +38,10 @@ namespace kernel
 class WhileLayer : public ::onert::exec::IFunction
 {
 public:
-  WhileLayer(const std::vector<backend::ITensor *> input_tensors,
-             const std::vector<backend::ITensor *> output_tensors,
-             const ir::OperandIndexSequence &output_indices, const ir::Graph &graph,
+  WhileLayer(const std::vector<backend::IPortableTensor *> input_tensors,
+             const std::vector<backend::IPortableTensor *> output_tensors,
              const ir::SubgraphIndex &cond_subg_index, const ir::SubgraphIndex &body_subg_index,
-             exec::ExecutorMap *executor_map,
+             exec::ExecutorMap *executor_map, cpu_common::DynamicMemoryManager *dyn_memory_manager,
              const std::shared_ptr<ExternalContext> &external_context);
 
 public:
@@ -49,11 +50,10 @@ public:
 private:
   const ir::SubgraphIndex _cond_subg_index;
   const ir::SubgraphIndex _body_subg_index;
-  const ir::OperandIndexSequence &_output_indices;
-  const ir::Graph &_graph;
-  const std::vector<backend::ITensor *> _input_tensors;
-  const std::vector<backend::ITensor *> _output_tensors;
+  const std::vector<backend::IPortableTensor *> _input_tensors;
+  const std::vector<backend::IPortableTensor *> _output_tensors;
   exec::ExecutorMap *_executor_map;
+  cpu_common::DynamicMemoryManager *_dyn_memory_manager; // For generating temp tensors
   const std::shared_ptr<ExternalContext> _external_context;
 };
 

@@ -20,7 +20,7 @@
 #include "backend/cpu_common/TensorRegistry.h"
 #include "backend/ITensorRegistry.h"
 #include "Tensor.h"
-#include "UserTensor.h"
+#include "IOTensor.h"
 #include <assert.h>
 
 namespace onert
@@ -36,7 +36,7 @@ namespace controlflow
  * This class contains three types of tensors. Two native tensors(tensors that are managed by this
  * backend) and the other is migrant tensor.
  *
- * - NativeUserTensor - @c UserTensor managed by this backend, buffer is user-given
+ * - NativeIOTensor - @c UserTensor managed by this backend, buffer is user-given
  * - NativeOwnTensor  - @c cpu_common::Tensor managed by this backend ( in @c _base_reg )
  * - MigrantTensor    - @c IPortableTensor managed by other backends ( in @c _base_reg )
  *
@@ -53,7 +53,7 @@ public:
     auto base_tensor = _base_reg->getITensor(ind);
     if (base_tensor)
       return base_tensor;
-    return getNativeUserTensor(ind);
+    return getNativeIOTensor(ind);
   }
 
   ITensor *getNativeITensor(const ir::OperandIndex &ind) override
@@ -61,7 +61,7 @@ public:
     auto base_tensor = _base_reg->getNativeITensor(ind);
     if (base_tensor)
       return base_tensor;
-    return getNativeUserTensor(ind);
+    return getNativeIOTensor(ind);
   }
 
   IPortableTensor *getPortableTensor(const ir::OperandIndex &ind)
@@ -69,7 +69,7 @@ public:
     auto base_tensor = _base_reg->getPortableTensor(ind);
     if (base_tensor)
       return base_tensor;
-    return getNativeUserTensor(ind);
+    return getNativeIOTensor(ind);
   }
 
   IPortableTensor *getNativeTensor(const ir::OperandIndex &ind)
@@ -77,7 +77,7 @@ public:
     auto base_tensor = _base_reg->getNativeTensor(ind);
     if (base_tensor)
       return base_tensor;
-    return getNativeUserTensor(ind);
+    return getNativeIOTensor(ind);
   }
 
   Tensor *getNativeOwnTensor(const ir::OperandIndex &ind)
@@ -85,10 +85,10 @@ public:
     return _base_reg->getNativeTensor(ind);
   }
 
-  UserTensor *getNativeUserTensor(const ir::OperandIndex &ind)
+  IOTensor *getNativeIOTensor(const ir::OperandIndex &ind)
   {
-    auto tensor = _native_user_tensors.find(ind);
-    if (tensor != _native_user_tensors.end())
+    auto tensor = _native_io_tensors.find(ind);
+    if (tensor != _native_io_tensors.end())
       return tensor->second.get();
     return nullptr;
   }
@@ -108,22 +108,22 @@ public:
     _base_reg->setNativeTensor(ind, std::move(tensor));
   }
 
-  void setNativeUserTensor(ir::OperandIndex ind, std::unique_ptr<UserTensor> &&tensor)
+  void setNativeIOTensor(ir::OperandIndex ind, std::unique_ptr<IOTensor> &&tensor)
   {
     assert(tensor);
     assert(!getITensor(ind)); // For the ind, tensor is not registered yet
-    _native_user_tensors[ind] = std::move(tensor);
+    _native_io_tensors[ind] = std::move(tensor);
   }
 
-  const ir::OperandIndexMap<std::unique_ptr<UserTensor>> &native_user_tensors()
+  const ir::OperandIndexMap<std::unique_ptr<IOTensor>> &native_io_tensors()
   {
-    return _native_user_tensors;
+    return _native_io_tensors;
   }
   std::shared_ptr<cpu_common::TensorRegistry> base_reg() { return _base_reg; }
 
 private:
   std::shared_ptr<cpu_common::TensorRegistry> _base_reg;
-  ir::OperandIndexMap<std::unique_ptr<UserTensor>> _native_user_tensors;
+  ir::OperandIndexMap<std::unique_ptr<IOTensor>> _native_io_tensors;
 };
 
 } // namespace controlflow

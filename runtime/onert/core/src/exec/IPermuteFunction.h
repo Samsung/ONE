@@ -120,7 +120,8 @@ protected:
     }
 
     assert(src_tensor != dst_tensor);
-    assert(underlying_type(src_tensor->data_type()) == underlying_type(dst_tensor->data_type()));
+    if (underlying_type(src_tensor->data_type()) != underlying_type(dst_tensor->data_type()))
+      throw std::runtime_error("data type does not match");
     switch (src_tensor->data_type())
     {
       case ir::DataType::FLOAT32:

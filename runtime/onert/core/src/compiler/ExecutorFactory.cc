@@ -65,6 +65,40 @@ private:
   std::shared_ptr<backend::IConfig> _config;
 };
 
+void initializeModelIOTensors(compiler::LoweredGraph &lowered_graph,
+                              const ir::OperandIndexSequence &indices)
+{
+  // TODO Store controlflow backend in BackendContext
+  std::shared_ptr<backend::controlflow::TensorBuilder> cf_tensor_builder;
+  std::shared_ptr<backend::controlflow::TensorRegistry> cf_tensor_reg;
+  for (const auto &e : lowered_graph.backend_contexts())
+  {
+    auto backend = e.first;
+    auto &context = e.second;
+    if (backend->config()->id() == backend::controlflow::Config::ID)
+    {
+      cf_tensor_builder =
+          std::dynamic_pointer_cast<backend::controlflow::TensorBuilder>(context->tensor_builder);
+      cf_tensor_reg =
+          std::dynamic_pointer_cast<backend::controlflow::TensorRegistry>(context->tensor_registry);
+    }
+  }
+  assert(cf_tensor_builder);
+  assert(cf_tensor_reg);
+
+  for (auto ind : indices)
+  {
+    const auto &operand = lowered_graph.graph().operands().at(ind);
+    auto tensor = std::make_unique<backend::controlflow::IOTensor>(
+        operand.info(),
+        ir::Layout::NHWC /* FIXME find op_seq for this operand and use frontend_layout */
+        );
+
+    // Add tensor to controlflow TensorRegistry.
+    cf_tensor_reg->setNativeIOTensor(ind, std::move(tensor));
+  }
+}
+
 } // namespace
 } // namespace onert
 
@@ -178,46 +212,6 @@ void ExecutorFactory::runTensorRegistration(compiler::LoweredGraph *lowered_grap
   }
 }
 
-std::vector<backend::ITensor *>
-ExecutorFactory::initializeModelIOTensors(compiler::LoweredGraph &lowered_graph,
-                                          const ir::OperandIndexSequence &indices)
-{
-  std::vector<backend::ITensor *> ret;
-
-  // TODO Store controlflow backend in BackendContext
-  std::shared_ptr<backend::controlflow::TensorBuilder> cf_tensor_builder;
-  std::shared_ptr<backend::controlflow::TensorRegistry> cf_tensor_reg;
-  for (const auto &e : lowered_graph.backend_contexts())
-  {
-    auto backend = e.first;
-    auto &context = e.second;
-    if (backend->config()->id() == backend::controlflow::Config::ID)
-    {
-      cf_tensor_builder =
-          std::dynamic_pointer_cast<backend::controlflow::TensorBuilder>(context->tensor_builder);
-      cf_tensor_reg =
-          std::dynamic_pointer_cast<backend::controlflow::TensorRegistry>(context->tensor_registry);
-    }
-  }
-  assert(cf_tensor_builder);
-  assert(cf_tensor_reg);
-
-  for (auto ind : indices)
-  {
-    const auto &operand = lowered_graph.graph().operands().at(ind);
-    auto tensor = std::make_unique<backend::controlflow::UserTensor>(
-        operand.info(),
-        ir::Layout::NHWC /* FIXME find op_seq for this operand and use frontend_layout */
-        );
-
-    // Add tensor to controlflow TensorRegistry.
-    cf_tensor_reg->setNativeUserTensor(ind, std::move(tensor));
-    auto *itensor = cf_tensor_reg->getITensor(ind);
-    ret.push_back(itensor);
-  }
-  return ret;
-}
-
 void ExecutorFactory::prepareMigrantTensors(compiler::LoweredGraph &lowered_graph)
 {
   TensorRegistries tensor_regs{lowered_graph.backend_contexts(), true};
@@ -278,13 +272,9 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lo
   auto order = Linear::linearize(*lowered_graph);
   runTensorRegistration(lowered_graph.get(), order);
 
-  std::vector<backend::ITensor *> input_tensors;
-  std::vector<backend::ITensor *> output_tensors;
-  if (options.is_primary_subgraph)
-  {
-    input_tensors = initializeModelIOTensors(*lowered_graph, lowered_graph->graph().getInputs());
-    output_tensors = initializeModelIOTensors(*lowered_graph, lowered_graph->graph().getOutputs());
-  }
+  initializeModelIOTensors(
+      *lowered_graph, (lowered_graph->graph().getInputs() + lowered_graph->graph().getOutputs()) |
+                          ir::Remove::DUPLICATED | ir::Remove::UNDEFINED);
 
   Linear::dump(*lowered_graph, order);
   Linear::planTensors(*lowered_graph, order);
@@ -356,8 +346,7 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lo
   }
 
   auto exec =
-      new exec::LinearExecutor{std::move(lowered_graph), input_tensors, output_tensors, tensor_regs,
-                               std::move(code_map),      order};
+      new exec::LinearExecutor{std::move(lowered_graph), tensor_regs, std::move(code_map), order};
 
   if (!options.trace_filepath.empty())
   {
@@ -380,13 +369,9 @@ exec::IExecutor *ExecutorFactory::createDataflowExecutor(
   auto order = Linear::linearize(*lowered_graph);
   runTensorRegistration(lowered_graph.get(), order);
 
-  std::vector<backend::ITensor *> input_tensors;
-  std::vector<backend::ITensor *> output_tensors;
-  if (options.is_primary_subgraph)
-  {
-    input_tensors = initializeModelIOTensors(*lowered_graph, lowered_graph->graph().getInputs());
-    output_tensors = initializeModelIOTensors(*lowered_graph, lowered_graph->graph().getOutputs());
-  }
+  initializeModelIOTensors(
+      *lowered_graph, (lowered_graph->graph().getInputs() + lowered_graph->graph().getOutputs()) |
+                          ir::Remove::DUPLICATED | ir::Remove::UNDEFINED);
 
   TensorBuilders tensor_builders{lowered_graph->backend_contexts(), true};
   TensorRegistries tensor_regs{lowered_graph->backend_contexts(), true};
@@ -464,13 +449,12 @@ exec::IExecutor *ExecutorFactory::createDataflowExecutor(
   exec::ExecutorBase *exec = nullptr;
   if (parallel)
   {
-    exec = new exec::ParallelExecutor{std::move(lowered_graph), input_tensors, output_tensors,
-                                      tensor_regs, std::move(code_map)};
+    exec = new exec::ParallelExecutor{std::move(lowered_graph), tensor_regs, std::move(code_map)};
   }
   else
   {
-    auto dataflow_exec = new exec::DataflowExecutor{
-        std::move(lowered_graph), input_tensors, output_tensors, tensor_regs, std::move(code_map)};
+    auto dataflow_exec =
+        new exec::DataflowExecutor{std::move(lowered_graph), tensor_regs, std::move(code_map)};
     if (options.he_profiling_mode)
     {
       std::vector<const backend::Backend *> backends;

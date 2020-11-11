@@ -31,7 +31,7 @@ namespace backend
 namespace controlflow
 {
 
-KernelGenerator::KernelGenerator(const ir::Graph &graph, IDynamicTensorManager *dyn_tensor_manager,
+KernelGenerator::KernelGenerator(const ir::Graph &graph, DynamicTensorManager *dyn_tensor_manager,
                                  const std::shared_ptr<TensorRegistry> &tensor_reg,
                                  const std::shared_ptr<ExternalContext> &external_context)
     : _graph{graph}, _dyn_tensor_manager{dyn_tensor_manager}, _tensor_reg{tensor_reg},
@@ -77,18 +77,17 @@ void KernelGenerator::visit(const ir::operation::If &node)
   const auto then_subg_index = node.param().then_subg_index;
   const auto else_subg_index = node.param().else_subg_index;
 
-  std::vector<backend::ITensor *> input_tensors;
+  std::vector<backend::IPortableTensor *> input_tensors;
   for (const auto input_index : node.getInputs())
   {
-    auto input_tensor = getTensor(input_index);
-
+    auto input_tensor = getPortableTensor(input_index);
     input_tensors.emplace_back(input_tensor);
   }
 
-  std::vector<backend::ITensor *> output_tensors;
+  std::vector<backend::IPortableTensor *> output_tensors;
   for (const auto output_index : node.getOutputs())
   {
-    auto output_tensor = getTensor(output_index);
+    auto output_tensor = getPortableTensor(output_index);
     output_tensors.emplace_back(output_tensor);
   }
 
@@ -97,8 +96,8 @@ void KernelGenerator::visit(const ir::operation::If &node)
   const auto cond_tensor = input_tensors.front();
   input_tensors.erase(input_tensors.begin());
   auto fn = std::make_unique<::onert::backend::controlflow::kernel::IfLayer>(
-      cond_tensor, input_tensors, output_tensors, node.getOutputs(), _graph, then_subg_index,
-      else_subg_index, _executor_map, _external_context);
+      cond_tensor, input_tensors, output_tensors, then_subg_index, else_subg_index, _executor_map,
+      _external_context);
 
   _return_fn = std::move(fn);
 }
@@ -124,33 +123,40 @@ void KernelGenerator::visit(const ir::operation::While &node)
 
   // This op does not support input as a constant, because controlflow backend does not have
   // TensorBuilder
-  std::vector<backend::ITensor *> input_tensors;
+  std::vector<backend::IPortableTensor *> input_tensors;
   for (const auto input_index : node.getInputs())
   {
-    auto input_tensor = getTensor(input_index);
-
+    auto input_tensor = getPortableTensor(input_index);
     input_tensors.emplace_back(input_tensor);
   }
 
-  std::vector<backend::ITensor *> output_tensors;
+  std::vector<backend::IPortableTensor *> output_tensors;
   for (const auto output_index : node.getOutputs())
   {
-    auto output_tensor = getTensor(output_index);
+    auto output_tensor = getPortableTensor(output_index);
     output_tensors.emplace_back(output_tensor);
   }
 
   // WhileLayer just set ExecutorMap instead of cond and body executor to avoid complexity of
   // creating executor recusively
   auto fn = std::make_unique<::onert::backend::controlflow::kernel::WhileLayer>(
-      input_tensors, output_tensors, node.getOutputs(), _graph, cond_subg_index, body_subg_index,
-      _executor_map, _external_context);
+      input_tensors, output_tensors, cond_subg_index, body_subg_index, _executor_map,
+      _dyn_tensor_manager->dynamic_mem_mgr().get(), _external_context);
 
   _return_fn = std::move(fn);
 }
 
 backend::ITensor *KernelGenerator::getTensor(const ir::OperandIndex &index)
 {
-  backend::ITensor *ret = _tensor_registries.getITensor(index);
+  // get Tensor from all tensor registries (for Permute op)
+  auto ret = _tensor_registries.getITensor(index);
+  assert(ret != nullptr);
+  return ret;
+}
+
+backend::IPortableTensor *KernelGenerator::getPortableTensor(const ir::OperandIndex &index)
+{
+  auto ret = _tensor_reg->getPortableTensor(index);
   assert(ret != nullptr);
   return ret;
 }
