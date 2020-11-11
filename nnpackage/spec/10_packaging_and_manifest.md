@@ -18,11 +18,13 @@ For `model` and `custom_op`, see [20_model_and_operators.md](20_model_and_operat
 nnpackage
 ├── custom_op
 ├── metadata
-│   └── MANIFEST
+│   ├── MANIFEST
+│   └── config.cfg
 └── mymodel.model
 ```
 
 - `mymodel.model` is a model file that has computation graph and weights.
+- `config.cfg` is a configuration file that has parameters to configure onert.
 - `metadata` is a directory that contains all metadata including `MANIFEST`.
 - `MANIFEST` is a collection of attributes about this package.
 - `custom_op` is a directory that contains implementation objects.
@@ -61,6 +63,11 @@ For detail, see [semantic versioning 2.0.0](https://semver.org/)
 
 `patch-version` is the patch version of `nnpackage`.
 
+#### configs
+
+`configs` is an array of configuration file names placed in `metadata` folder. This can be empty or
+attribute itself can be omitted. As of now we only support only one item.
+
 #### models
 
 `models` is an array of path to model files, which is relative path from top level directory of this package.
@@ -84,9 +91,24 @@ Here is an example of `MANIFEST`.
 ```
 {
     "major-version" : "1",
-    "minor-version" : "0",
+    "minor-version" : "1",
     "patch-version" : "0",
+    "configs"     : [ "model.cfg" ],
     "models"      : [ "mymodel.model", "yourmodel.model" ],
     "model-types" : [ "tflite", "circle" ]
 }
 ```
+
+## 5. Configuration file
+
+Configuration file for is a human readable plain text file having one `key=value` in each line.
+- `#` is used as comment and will be ignored afterwards.
+- all leading and trailing white spaces will be ignored in both `key` and `value`.
+
+For example
+```
+BACKENDS=cpu
+ EXCUTOR=Linear # some comment
+```
+
+Refer `runtime/onert/core/include/util/Config.lst` file for more information of `key`.
