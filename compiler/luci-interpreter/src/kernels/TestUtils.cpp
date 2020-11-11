@@ -65,7 +65,7 @@ std::vector<float> dequantizeTensorData(const Tensor &tensor)
     const int32_t quantized_dimension = tensor.quantized_dimension();
     assert(quantized_dimension < shape.num_dims());
     size_t outer_dims_size = 1;
-    size_t quant_dim_size = static_cast<size_t>(shape.dim(quantized_dimension));
+    int32_t quant_dim_size = shape.dim(quantized_dimension);
     size_t inner_dims_size = 1;
     assert(quant_dim_size == tensor.scales().size());
 
@@ -79,7 +79,7 @@ std::vector<float> dequantizeTensorData(const Tensor &tensor)
     std::vector<float> dequantized_data;
     dequantized_data.reserve(shape.num_elements());
     for (size_t outer_it = 0; outer_it < outer_dims_size; ++outer_it)
-      for (size_t channel = 0; channel < quant_dim_size; ++channel)
+      for (int32_t channel = 0; channel < quant_dim_size; ++channel)
       {
         float scale = tensor.scales()[channel];
         size_t offset = inner_dims_size * (quant_dim_size * outer_it + channel);
