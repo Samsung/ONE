@@ -8,7 +8,7 @@
 ### Changes 
 - `one-build` command added as representative command
 - one-cmds are now revised to python script and supports configuration file as input parameters
-- added `rawdata2hdf5` tool to prepare quantization data
+- added `rawdata2hdf5` tool to help creating input datasets for calibration
 - added more optimization passes in `one-optimize`; `fuse_preactivation_batchnorm`, `make_batchnorm_gamma_positive` and `fuse_activation_function`
 
 ## ONE Runtime
