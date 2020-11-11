@@ -14,7 +14,7 @@ Use `install_rootfs.sh` script to prepare Root File System. You should have `sud
 $ sudo ./tools/cross/install_rootfs.sh arm
 ```
 - supports `arm`(default) and `aarch` architecutre for now
-- supports `xenial`(default) `trusty`, `bionic`, and `focal` release
+- supports `bionic`(default), `trusty`, `xenial` and `focal` release
 
 To see the options,
 ```
@@ -63,20 +63,33 @@ for `http`, `https` and `ftp` protocol.
 
 We recommend you have g++ >= 6 installed on your system because NN generated tests require it.
 
-- On Ubuntu 16.04 or older, follow the next steps:
+### Ubuntu 18.04 LTS
+
+On Ubuntu 18.04 LTS, you can install using `apt-get`.
+
+Choose g++ version whatever you prefer: 7 (default), 6 or 8.
+
+```
+$ sudo apt-get install g++-{6,7,8}-arm-linux-gnueabihf
+```
+
+If you select specific version, update symbolic link for build toolchain
+
+```
+$ update-alternatives --install /usr/bin/arm-linux-gnueabihf-gcc arm-linux-gnueabihf-gcc /usr/bin/arm-linux-gnueabihf-gcc-8 80 \
+    --slave /usr/bin/arm-linux-gnueabihf-g++ arm-linux-gnueabihf-g++ /usr/bin/arm-linux-gnueabihf-g++-8 \
+    --slave /usr/bin/arm-linux-gnueabihf-gcov arm-linux-gnueabihf-gcov /usr/bin/arm-linux-gnueabihf-gcov-8
+```
+
+### Ubuntu 16.04 LTS
+
+On Ubuntu 16.04 or older, follow the next steps:
 
 ```
 $ cd ~/your/path
 $ wget https://releases.linaro.org/components/toolchain/binaries/7.2-2017.11/arm-linux-gnueabihf/gcc-linaro-7.2.1-2017.11-x86_64_arm-linux-gnueabihf.tar.xz
 $ tar xvf gcc-linaro-7.2.1-2017.11-x86_64_arm-linux-gnueabihf.tar.xz
 $ echo 'export PATH=~/your/path/gcc-linaro-7.2.1-2017.11-x86_64_arm-linux-gnueabihf/bin:$PATH' >> ~/.bashrc
-```
-
-- On Ubuntu 18.04 LTS, you can install using `apt-get`.
-Choose g++ version whatever you prefer: 6, 7, 8 or 9.
-
-```
-$ sudo apt-get install g++-{6,7,8,9}-arm-linux-gnueabihf
 ```
 
 Make sure you get `libstdc++.so` updated on your target with your new toolchain's corresponding one.
@@ -96,7 +109,7 @@ Mostly you only need once of ACL build.
 
 ACL will be automatically installed in `externals/acl` when you build runtime without any changes.
 
-You can check ACL source information in `cmake/packages/ARMComputeSourceConfig.cmake`
+You can check ACL source information in `infra/cmake/packages/ARMComputeSourceConfig.cmake`
 
 ## Cross build for ARM
 
