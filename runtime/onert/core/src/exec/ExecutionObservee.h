@@ -39,8 +39,8 @@ public:
    * @param observer Observer to be added
    */
   void add(std::unique_ptr<IExecutionObserver> observer);
-  void notifyModelBegin(IExecutor *executor);
-  void notifyModelEnd(IExecutor *executor);
+  void notifySubgraphBegin(IExecutor *executor);
+  void notifySubgraphEnd(IExecutor *executor);
   void notifyJobBegin(IExecutor *executor, const ir::OpSequence *op_seq,
                       const backend::Backend *backend);
   void notifyJobEnd(IExecutor *executor, const ir::OpSequence *op_seq,

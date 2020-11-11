@@ -26,19 +26,19 @@ void ExecutionObservee::add(std::unique_ptr<IExecutionObserver> observer)
   _observers.emplace_back(std::move(observer));
 }
 
-void ExecutionObservee::notifyModelBegin(IExecutor *executor)
+void ExecutionObservee::notifySubgraphBegin(IExecutor *executor)
 {
   for (auto &o : _observers)
   {
-    o->handleBegin(executor);
+    o->handleSubgraphBegin(executor);
   }
 }
 
-void ExecutionObservee::notifyModelEnd(IExecutor *executor)
+void ExecutionObservee::notifySubgraphEnd(IExecutor *executor)
 {
   for (auto &o : _observers)
   {
-    o->handleEnd(executor);
+    o->handleSubgraphEnd(executor);
   }
 }
 
@@ -47,7 +47,7 @@ void ExecutionObservee::notifyJobBegin(IExecutor *executor, const ir::OpSequence
 {
   for (auto &o : _observers)
   {
-    o->handleBegin(executor, op_seq, backend);
+    o->handleJobBegin(executor, op_seq, backend);
   }
 }
 
@@ -56,7 +56,7 @@ void ExecutionObservee::notifyJobEnd(IExecutor *executor, const ir::OpSequence *
 {
   for (auto &o : _observers)
   {
-    o->handleEnd(executor, op_seq, backend);
+    o->handleJobEnd(executor, op_seq, backend);
   }
 }
 
