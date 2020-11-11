@@ -5,6 +5,7 @@
 CURRENT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_PATH="$CURRENT_PATH/../../"
 
+: ${DEVICE:="none"}
 TEST_ARCH="aarch64"
 TEST_OS="android"
 TEST_PLATFORM="$TEST_ARCH-$TEST_OS"
@@ -116,7 +117,8 @@ done
 # $ADB_CMD shell mkdir -p /data/local/tmp/onert_android/report/benchmark
 # $ADB_CMD shell 'cd /data/local/tmp/onert_android && LD_LIBRARY_PATH=/data/local/tmp/onert_android/Product/lib sh /data/local/tmp/onert_android/tests/scripts/test_scheduler_with_profiling_android.sh'
 
+rm -rf $ROOT_PATH/report
 mkdir -p $ROOT_PATH/report
-rm -rf $ROOT_PATH/report/android
 
-$ADB_CMD pull /data/local/tmp/onert_android/report $ROOT_PATH/report/android
+
+$ADB_CMD pull /data/local/tmp/onert_android/report $ROOT_PATH/report/$DEVICE
