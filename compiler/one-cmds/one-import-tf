@@ -42,17 +42,19 @@ def _get_parser():
     converter_version.add_argument(
         '--v1',
         action='store_const',
-        dest='converter_version',
+        dest='converter_version_cmd',
         const='--v1',
         help='use TensorFlow Lite Converter 1.x')
     converter_version.add_argument(
         '--v2',
         action='store_const',
-        dest='converter_version',
+        dest='converter_version_cmd',
         const='--v2',
         help='use TensorFlow Lite Converter 2.x')
 
-    converter_version.set_defaults(converter_version='--v1')
+    #converter_version.set_defaults(converter_version='--v1')
+
+    parser.add_argument('--converter_version', type=str, help=argparse.SUPPRESS)
 
     # input model format
     model_format_arg = tf2tfliteV2_group.add_mutually_exclusive_group()
