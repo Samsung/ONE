@@ -253,12 +253,10 @@ flatbuffers::Offset<Vector<int32_t>> encodeShape(FlatBufferBuilder &builder,
 flatbuffers::Offset<Vector<int32_t>> encodeShapeSignature(FlatBufferBuilder &builder,
                                                           const ShapeSignature &shape_signature)
 {
-  return builder.CreateVector(shape_signature.as_vector());
-}
+  // When shape signature is empty, return 0 which means empty buffer in circle schema.
+  if (shape_signature.rank() == 0)
+    return 0;
 
-flatbuffers::Offset<Vector<int32_t>> encodeShapeSignature(FlatBufferBuilder &builder,
-                                                          const ShapeSignature &shape_signature)
-{
   return builder.CreateVector(shape_signature.as_vector());
 }
 

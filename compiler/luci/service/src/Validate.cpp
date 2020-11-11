@@ -133,13 +133,26 @@ bool validate_shape_signature(loco::Graph *g)
     if (shape_signature.rank() == 0)
       continue;
 
+    // Rank of shape and shape signature should be same
     if (circle_node->rank() != shape_signature.rank())
       return false;
 
+    bool has_unknown = false;
+
+    // If shape siganture is not -1, dimension value should be same
     for (uint32_t i = 0; i < shape_signature.rank(); ++i)
+    {
       if (shape_signature.dim(i) != -1 &&
           shape_signature.dim(i) != (int32_t)(circle_node->dim(i).value()))
         return false;
+      
+      if (shape_signature.dim(i) == -1)
+        has_unknown = true;
+    }
+
+    // Shape signature should have at least one -1 value.
+    if (!has_unknown)
+      return false;
   }
 
   return true;
@@ -160,8 +173,6 @@ bool validate(loco::Graph *g)
 
   if (!validate_shape_signature(g))
     return false;
-
-  // TODO add more validation
 
   return true;
 }
