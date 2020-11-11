@@ -71,8 +71,12 @@ def _make_tf2tfliteV2_cmd(args, driver_path, input_path, output_path):
     if _is_valid_attr(args, 'model_format'):
         cmd.append(getattr(args, 'model_format'))
     # converter version
-    if _is_valid_attr(args, 'converter_version'):
-        cmd.append(getattr(args, 'converter_version'))
+    if _is_valid_attr(args, 'converter_version_cmd'):
+        cmd.append(getattr(args, 'converter_version_cmd'))
+    elif _is_valid_attr(args, 'converter_version'):
+        cmd.append('--' + getattr(args, 'converter_version'))
+    else:
+        cmd.append('--v1')  # default value
     # input_path
     if _is_valid_attr(args, 'input_path'):
         cmd.append('--input_path')

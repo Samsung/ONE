@@ -53,7 +53,7 @@ def _get_parser():
         const='--v2',
         help='use TensorFlow Lite Converter 2.x')
 
-    converter_version.set_defaults(converter_version='--v1')
+    parser.add_argument('--converter_version', type=str, help=argparse.SUPPRESS)
 
     # input and output path.
     tf2tfliteV2_group.add_argument(
