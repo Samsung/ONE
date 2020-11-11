@@ -40,8 +40,11 @@
 #define MAX_PATH_LENGTH 1024
 #define MAX_TENSOR_NAME_LENGTH 64
 
+namespace
+{
+
 // Is null-terminating in length ?
-static bool null_terminating(const char *str, uint32_t length)
+bool null_terminating(const char *str, uint32_t length)
 {
   for (uint32_t i = 0; i < length; i++)
   {
@@ -53,7 +56,7 @@ static bool null_terminating(const char *str, uint32_t length)
   return false;
 }
 
-static onert::ir::Layout convertLayout(NNFW_LAYOUT layout)
+onert::ir::Layout convertLayout(NNFW_LAYOUT layout)
 {
   if (layout == NNFW_LAYOUT_CHANNELS_LAST)
   {
@@ -91,6 +94,8 @@ NNFW_STATUS getTensorIndexImpl(const onert::ir::Graph &graph, const char *tensor
     return NNFW_STATUS_NO_ERROR;
   }
 }
+
+} // namespace
 
 nnfw_session::nnfw_session()
     : _subgraphs{nullptr}, _execution{nullptr},
