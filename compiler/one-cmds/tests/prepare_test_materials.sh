@@ -26,6 +26,8 @@ if [[ ! -s "inception_v3.pb" ]]; then
 fi
 
 if [[ ! -s "while_3.pbtxt" ]]; then
+    # if (old) while_3.zip exist, (new) download file maybe renamed as 'while_3 (1).pbtxt'
+    # this may cause unintended behaviour so delete existing file
     rm -rf while_3.zip
     wget https://github.com/Samsung/ONE/files/5095630/while_3.zip
     unzip while_3.zip
@@ -61,6 +63,20 @@ if [[ ! -s "inception_v3_test_data.h5" ]]; then
   ../bin/venv/bin/python ../bin/rawdata2hdf5 \
   --data_list datalist.txt \
   --output_path inception_v3_test_data.h5
+fi
+
+if [[ ! -d "test_saved_model" ]]; then
+    rm -rf test_saved_model.zip
+    wget https://github.com/Samsung/ONE/files/5516226/test_saved_model.zip
+    unzip test_saved_model.zip
+    # https://github.com/Samsung/ONE/issues/4268#issuecomment-724578237
+fi
+
+if [[ ! -s "test_keras_model.h5" ]]; then
+    rm -rf test_keras_model.zip
+    wget https://github.com/Samsung/ONE/files/5520777/test_keras_model.zip
+    unzip test_keras_model.zip
+    # https://github.com/Samsung/ONE/issues/4268#issuecomment-725025805
 fi
 
 # prepare 'inception_v3.circle' file used for quantization test
