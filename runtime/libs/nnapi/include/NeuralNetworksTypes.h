@@ -135,19 +135,23 @@ typedef int (*ANeuralNetworksCompilation_createForDevices_fn)(
 typedef int (*ANeuralNetworksCompilation_setCaching_fn)(ANeuralNetworksCompilation *compilation,
                                                         const char *cacheDir, const uint8_t *token);
 
+#if __ANDROID_API__ >= 30
 typedef int (*ANeuralNetworksCompilation_setTimeout_fn)(ANeuralNetworksCompilation *compilation,
                                                         uint64_t duration);
 
 typedef int (*ANeuralNetworksCompilation_setPriority_fn)(ANeuralNetworksCompilation *compilation,
                                                          int priority);
+#endif // __ANDROID_API__ >= 30
 
 typedef int (*ANeuralNetworksExecution_compute_fn)(ANeuralNetworksExecution *execution);
 
+#if __ANDROID_API__ >= 30
 typedef int (*ANeuralNetworksExecution_setTimeout_fn)(ANeuralNetworksExecution *execution,
                                                       uint64_t duration);
 
 typedef int (*ANeuralNetworksExecution_setLoopTimeout_fn)(ANeuralNetworksExecution *execution,
                                                           uint64_t duration);
+#endif // __ANDROID_API__ >= 30
 
 typedef int (*ANeuralNetworksExecution_getOutputOperandRank_fn)(ANeuralNetworksExecution *execution,
                                                                 int32_t index, uint32_t *rank);
@@ -172,6 +176,7 @@ typedef int (*ANeuralNetworksExecution_setMeasureTiming_fn)(ANeuralNetworksExecu
 typedef int (*ANeuralNetworksExecution_getDuration_fn)(const ANeuralNetworksExecution *execution,
                                                        int32_t durationCode, uint64_t *duration);
 
+#if __ANDROID_API__ >= 30
 typedef int (*ANeuralNetworksDevice_getExtensionSupport_fn)(const ANeuralNetworksDevice *device,
                                                             const char *extensionName,
                                                             bool *isExtensionSupported);
@@ -212,5 +217,5 @@ typedef int (*ANeuralNetworksMemory_createFromDesc_fn)(const ANeuralNetworksMemo
 
 typedef int (*ANeuralNetworksMemory_copy_fn)(const ANeuralNetworksMemory *src,
                                              const ANeuralNetworksMemory *dst);
-
+#endif // __ANDROID_API__ >= 30
 #endif // __NEURAL_NETWORKS_TYPES_H__
