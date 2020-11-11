@@ -21,7 +21,7 @@ ARG UBUNTU_MIRROR
 RUN apt-get update && apt-get -qqy install software-properties-common
 
 # Build tool
-RUN apt-get update && apt-get -qqy install build-essential cmake scons git lcov g++-arm-linux-gnueabihf g++-aarch64-linux-gnu
+RUN apt-get update && apt-get -qqy install build-essential cmake scons git g++-arm-linux-gnueabihf g++-aarch64-linux-gnu
 
 # Install extra dependencies (Caffe, nnkit)
 RUN apt-get update && apt-get -qqy install libboost-all-dev libgflags-dev libgoogle-glog-dev libatlas-base-dev libhdf5-dev
@@ -39,9 +39,19 @@ RUN apt-get update && apt-get -qqy install libgtest-dev
 
 # Install build tool gcc version 8.x and set alternative link (c++17 support)
 RUN apt-get update && apt-get -qqy install g++-8 g++-8-arm-linux-gnueabihf g++-8-aarch64-linux-gnu
-RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 80 --slave /usr/bin/g++ g++ /usr/bin/g++-8
-RUN update-alternatives --install /usr/bin/arm-linux-gnueabihf-gcc arm-linux-gnueabihf-gcc /usr/bin/arm-linux-gnueabihf-gcc-8 80 --slave /usr/bin/arm-linux-gnueabihf-g++ arm-linux-gnueabihf-g++ /usr/bin/arm-linux-gnueabihf-g++-8
-RUN update-alternatives --install /usr/bin/aarch64-linux-gnu-gcc aarch64-linux-gnu-gcc /usr/bin/aarch64-linux-gnu-gcc-8 80 --slave /usr/bin/aarch64-linux-gnu-g++ aarch64-linux-gnu-g++ /usr/bin/aarch64-linux-gnu-g++-8
+RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 80 \
+    --slave /usr/bin/g++ g++ /usr/bin/g++-8 \
+    --slave /usr/bin/gcov gcov /usr/bin/gcov-8
+RUN update-alternatives --install /usr/bin/arm-linux-gnueabihf-gcc arm-linux-gnueabihf-gcc /usr/bin/arm-linux-gnueabihf-gcc-8 80 \
+    --slave /usr/bin/arm-linux-gnueabihf-g++ arm-linux-gnueabihf-g++ /usr/bin/arm-linux-gnueabihf-g++-8 \
+    --slave /usr/bin/arm-linux-gnueabihf-gcov arm-linux-gnueabihf-gcov /usr/bin/arm-linux-gnueabihf-gcov-8
+RUN update-alternatives --install /usr/bin/aarch64-linux-gnu-gcc aarch64-linux-gnu-gcc /usr/bin/aarch64-linux-gnu-gcc-8 80 \
+    --slave /usr/bin/aarch64-linux-gnu-g++ aarch64-linux-gnu-g++ /usr/bin/aarch64-linux-gnu-g++-8 \
+    --slave /usr/bin/aarch64-linux-gnu-gcov aarch64-linux-gnu-gcov /usr/bin/aarch64-linux-gnu-gcov-8
+
+# Install lcov 1.13-4 for gcc-8 support (installed lcov 1.13-3 can't support gcc-8)
+RUN wget http://launchpadlibrarian.net/370213541/lcov_1.13-4_all.deb
+RUN dpkg -i lcov_1.13-4_all.deb
 
 # Build and install google test static libraries
 WORKDIR /root/gtest
