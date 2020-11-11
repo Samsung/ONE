@@ -80,8 +80,6 @@ def _get_parser():
         type=str,
         help='names of the output arrays, comma-separated')
 
-    tf2tfliteV2_group.set_defaults(model_format='--graph_def')
-
     return parser
 
 

@@ -68,8 +68,12 @@ def _make_tf2tfliteV2_cmd(args, driver_path, input_path, output_path):
     """make a command for running tf2tfliteV2.py"""
     cmd = [sys.executable, os.path.expanduser(driver_path)]
     # model_format
-    if _is_valid_attr(args, 'model_format'):
-        cmd.append(getattr(args, 'model_format'))
+    if _is_valid_attr(args, 'model_format_cmd'):
+        cmd.append(getattr(args, 'model_format_cmd'))
+    elif _is_valid_attr(args, 'model_format'):
+        cmd.append('--' + getattr(args, 'model_format'))
+    else:
+        cmd.append('--graph_def')  # default value
     # converter version
     if _is_valid_attr(args, 'converter_version'):
         cmd.append(getattr(args, 'converter_version'))

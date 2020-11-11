@@ -59,21 +59,23 @@ def _get_parser():
     model_format_arg.add_argument(
         '--graph_def',
         action='store_const',
-        dest='model_format',
+        dest='model_format_cmd',
         const='--graph_def',
         help='use graph def file(default)')
     model_format_arg.add_argument(
         '--saved_model',
         action='store_const',
-        dest='model_format',
+        dest='model_format_cmd',
         const='--saved_model',
         help='use saved model')
     model_format_arg.add_argument(
         '--keras_model',
         action='store_const',
-        dest='model_format',
+        dest='model_format_cmd',
         const='--keras_model',
         help='use keras model')
+
+    parser.add_argument('--model_format', type=str, help=argparse.SUPPRESS)
 
     # input and output path.
     tf2tfliteV2_group.add_argument(
@@ -99,8 +101,6 @@ def _get_parser():
         '--output_arrays',
         type=str,
         help='names of the output arrays, comma-separated')
-
-    tf2tfliteV2_group.set_defaults(model_format='--graph_def')
 
     return parser
 
