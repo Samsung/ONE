@@ -106,6 +106,55 @@ bool validate_shape_dtype(loco::Graph *g)
   return true;
 }
 
+bool validate_shape_signature(loco::Graph *g)
+{
+  LOGGER(l);
+
+  for (auto node : loco::postorder_traversal(loco::output_nodes(g)))
+  {
+    auto circle_node = loco::must_cast<luci::CircleNode *>(node);
+    const auto shape_signature = circle_node->shape_signature();
+
+    if (shape_signature.rank() == 0)
+      continue;
+
+    // Rank of shape and shape signature should be same
+    if (circle_node->rank() != shape_signature.rank())
+    {
+      INFO(l) << "[luci] Rank of shape signature for " << circle_node->name() << " do not match"
+              << std::endl;
+      return false;
+    }
+
+    bool has_unknown = false;
+
+    // If shape siganture is not -1, dimension value should be same
+    for (uint32_t d = 0; d < shape_signature.rank(); ++d)
+    {
+      if (shape_signature.dim(d) != -1 &&
+          shape_signature.dim(d) != (int32_t)(circle_node->dim(d).value()))
+      {
+        INFO(l) << "[luci] Dimension " << d << "of shape signature for " << circle_node->name()
+                << " do not match" << std::endl;
+        return false;
+      }
+
+      if (shape_signature.dim(d) == -1)
+        has_unknown = true;
+    }
+
+    // Shape signature should have at least one -1 value.
+    if (!has_unknown)
+    {
+      INFO(l) << "[luci] Shape signature in " << circle_node->name()
+              << " do not have unknown dimension" << std::endl;
+      return false;
+    }
+  }
+
+  return true;
+}
+
 } // namespace
 
 namespace luci
@@ -117,6 +166,9 @@ bool validate(loco::Graph *g)
     return false;
 
   if (!validate_shape_dtype(g))
+    return false;
+
+  if (!validate_shape_signature(g))
     return false;
 
   // TODO add more validation
