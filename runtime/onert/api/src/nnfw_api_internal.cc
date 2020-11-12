@@ -19,6 +19,7 @@
 #include "compiler/Compiler.h"
 #include "util/ConfigSource.h"
 #include "util/Exceptions.h"
+#include "util/logging.h"
 #include "exec/Execution.h"
 #include "circle_loader.h"
 #include "tflite_loader.h"
@@ -93,6 +94,64 @@ NNFW_STATUS getTensorIndexImpl(const onert::ir::Graph &graph, const char *tensor
     *index = ind_found.value();
     return NNFW_STATUS_NO_ERROR;
   }
+}
+
+std::string trim(const std::string &value)
+{
+  std::string whitespace = " \t";
+  auto begin = value.find_first_not_of(whitespace);
+  if (begin == std::string::npos)
+    return ""; // no content
+
+  auto end = value.find_last_not_of(whitespace);
+  auto range = end - begin + 1;
+  return value.substr(begin, range);
+}
+
+using CfgKeyValues = std::unordered_map<std::string, std::string>;
+
+bool loadConfigure(const std::string cfgfile, CfgKeyValues &keyValues)
+{
+  std::ifstream ifs(cfgfile);
+  if (ifs.is_open())
+  {
+    std::string line;
+    while (std::getline(ifs, line))
+    {
+      auto cmtpos = line.find('#');
+      if (cmtpos != std::string::npos)
+      {
+        line = line.substr(0, cmtpos);
+      }
+      std::istringstream isline(line);
+      std::string key;
+      if (std::getline(isline, key, '='))
+      {
+        std::string value;
+        if (std::getline(isline, value))
+        {
+          key = trim(key);
+          keyValues[key] = trim(value);
+        }
+      }
+    }
+    ifs.close();
+    return true;
+  }
+  return false;
+}
+
+void setConfigKeyValues(const CfgKeyValues &keyValues)
+{
+  auto configsrc = std::make_unique<onert::util::GeneralConfigSource>();
+
+  for (auto it = keyValues.begin(); it != keyValues.end(); ++it)
+  {
+    VERBOSE(NNPKG_CONFIGS) << "(" << it->first << ") = (" << it->second << ")" << std::endl;
+    configsrc->set(it->first, it->second);
+  }
+
+  onert::util::config_source_ext(std::move(configsrc));
 }
 
 } // namespace
@@ -171,6 +230,18 @@ NNFW_STATUS nnfw_session::load_model_from_file(const char *package_dir)
     mfs >> root;
     const Json::Value &models = root["models"];
     const Json::Value &model_types = root["model-types"];
+    const Json::Value &configs = root["configs"];
+
+    if (!configs.empty() && !configs[0].empty())
+    {
+      auto filepath = package_dir + std::string("/metadata/") + configs[0].asCString();
+
+      CfgKeyValues keyValues;
+      if (loadConfigure(filepath, keyValues))
+      {
+        setConfigKeyValues(keyValues);
+      }
+    }
 
     auto model_file_path = package_dir + std::string("/") + models[0].asString(); // first model
     auto model_type = model_types[0].asString(); // first model's type
