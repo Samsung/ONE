@@ -29,7 +29,6 @@
 #include <string>
 #include <vector>
 #include <dirent.h>
-#include <util/ConfigSource.h>
 #include <misc/string_helpers.h>
 
 /*
