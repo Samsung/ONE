@@ -364,7 +364,7 @@ void KernelGenerator::visit(const ir::operation::DepthwiseConv2D &node)
 
   fn->configure(ifm_tensor, ker_tensor, bias_tensor, padding.left, padding.right, padding.top,
                 padding.bottom, stride.horizontal, stride.vertical, multiplier, dilation_width,
-                dilation_height, activation, ofm_tensor);
+                dilation_height, activation, ofm_tensor, _external_context);
 
   _return_fn = std::move(fn);
 }

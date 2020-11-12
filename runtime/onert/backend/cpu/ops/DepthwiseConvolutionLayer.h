@@ -19,6 +19,7 @@
 
 #include <backend/IPortableTensor.h>
 #include "OperationUtils.h"
+#include "../ExternalContext.h"
 
 #include <exec/IFunction.h>
 
@@ -47,7 +48,7 @@ public:
                  const uint32_t paddingBottom, const uint32_t strideW, const uint32_t strideH,
                  const uint32_t multiplier, const uint32_t dilationWidth,
                  const uint32_t dilationHeight, const ir::Activation activation,
-                 IPortableTensor *output);
+                 IPortableTensor *output, const std::shared_ptr<ExternalContext> &external_context);
 
   void run() override;
 
@@ -71,6 +72,8 @@ private:
   uint32_t _dilationHeight{1};
 
   ir::Activation _activation{ir::Activation::NONE};
+
+  std::shared_ptr<ExternalContext> _external_context;
 };
 
 } // namespace ops
