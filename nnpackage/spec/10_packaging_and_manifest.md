@@ -101,7 +101,7 @@ Here is an example of `MANIFEST`.
 
 ## 5. Configuration file
 
-Configuration file for is a human readable plain text file having one `key=value` in each line.
+Configuration file is a human readable plain text file having one `key=value` in each line.
 - `#` is used as comment and will be ignored afterwards.
 - all leading and trailing white spaces will be ignored in both `key` and `value`.
 
