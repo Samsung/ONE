@@ -134,6 +134,18 @@ uint32_t CircleGen::addOperatorConcatenation(const OperatorParams &params, int a
                                 circle::BuiltinOptions_ConcatenationOptions, options);
 }
 
+uint32_t CircleGen::addOperatorConv2D(const OperatorParams &params, circle::Padding padding,
+                                      int stride_w, int stride_h,
+                                      circle::ActivationFunctionType actfn, int dilation_w,
+                                      int dilation_h)
+{
+  auto options =
+      circle::CreateConv2DOptions(_fbb, padding, stride_w, stride_h, actfn, dilation_w, dilation_h)
+          .Union();
+  return addOperatorWithOptions(params, circle::BuiltinOperator_CONV_2D,
+                                circle::BuiltinOptions_Conv2DOptions, options);
+}
+
 uint32_t CircleGen::addOperatorCos(const OperatorParams &params)
 {
   auto options = circle::CreateCosOptions(_fbb).Union();

@@ -48,6 +48,7 @@ public:
   void visit(const operation::BatchToSpaceND &node) override;
   void visit(const operation::BinaryArithmetic &node) override;
   void visit(const operation::Comparison &node) override;
+  void visit(const operation::Conv2D &node) override;
   void visit(const operation::DepthToSpace &node) override;
   void visit(const operation::DepthwiseConv2D &node) override;
   void visit(const operation::ElementwiseActivation &node) override;
