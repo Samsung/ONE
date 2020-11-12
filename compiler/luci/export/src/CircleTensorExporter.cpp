@@ -234,20 +234,10 @@ namespace
 {
 
 flatbuffers::Offset<Vector<int32_t>> encodeShape(FlatBufferBuilder &builder,
-                                                 const ShapeDescription &shape,
-                                                 const ShapeSignature &shape_signature)
+                                                 const ShapeDescription &shape)
 {
   assert(shape._rank_known && "unknown number of dimensions is not supported");
-  assert(shape_signature.rank() == 0 || shape_signature.rank() == shape._dims.size());
-
-  std::vector<int32_t> export_shape{shape._dims};
-  for (uint32_t i = 0; i < shape_signature.rank(); ++i)
-  {
-    if (shape_signature.dim(i) == -1)
-      export_shape[i] = 1;
-  }
-
-  return builder.CreateVector(export_shape);
+  return builder.CreateVector(shape._dims);
 }
 
 flatbuffers::Offset<Vector<int32_t>> encodeShapeSignature(FlatBufferBuilder &builder,
@@ -450,7 +440,7 @@ void exportOpDefinedTensor(const CircleTensoInfo &info, FlatBufferBuilder &build
   // Create and register output tensor shape
   flatbuffers::Offset<Vector<int32_t>> shape_offset;
   if (info.shape_status() == ShapeStatus::VALID)
-    shape_offset = encodeShape(builder, info.shape(), info.shape_signature());
+    shape_offset = encodeShape(builder, info.shape());
 
   auto quantparam = encodeQuantizationParameters(builder, info.quantparam());
 
