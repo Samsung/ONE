@@ -29,7 +29,9 @@
 // This file tests all the validations done by the Neural Networks API.
 namespace {
 
+#ifndef PATH_MAX
 #define PATH_MAX 256
+#endif
 
 static int shmem_num = 0;
 static int shmem_create_region(size_t size)
