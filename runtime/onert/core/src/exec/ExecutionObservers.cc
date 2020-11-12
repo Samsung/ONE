@@ -30,8 +30,8 @@ namespace onert
 namespace exec
 {
 
-void ProfileObserver::handleBegin(onert::exec::IExecutor *, const ir::OpSequence *,
-                                  const onert::backend::Backend *backend)
+void ProfileObserver::handleJobBegin(onert::exec::IExecutor *, const ir::OpSequence *,
+                                     const onert::backend::Backend *backend)
 {
   _timer = backend->config()->timer();
   if (_timer == nullptr)
@@ -39,8 +39,8 @@ void ProfileObserver::handleBegin(onert::exec::IExecutor *, const ir::OpSequence
   _timer->handleBegin();
 }
 
-void ProfileObserver::handleEnd(IExecutor *exec, const ir::OpSequence *op_seq,
-                                const backend::Backend *backend)
+void ProfileObserver::handleJobEnd(IExecutor *exec, const ir::OpSequence *op_seq,
+                                   const backend::Backend *backend)
 {
   _timer->handleEnd();
   const auto timer_res = _timer->getTime();
@@ -87,28 +87,28 @@ ChromeTracingObserver::~ChromeTracingObserver()
   }
 }
 
-void ChromeTracingObserver::handleBegin(IExecutor *)
+void ChromeTracingObserver::handleSubgraphBegin(IExecutor *)
 {
   _collector.onEvent(EventCollector::Event{EventCollector::Edge::BEGIN, "runtime", "Graph"});
 }
 
-void ChromeTracingObserver::handleBegin(IExecutor *, const ir::OpSequence *op_seq,
-                                        const backend::Backend *backend)
+void ChromeTracingObserver::handleJobBegin(IExecutor *, const ir::OpSequence *op_seq,
+                                           const backend::Backend *backend)
 {
   std::string backend_id = backend->config()->id();
   _collector.onEvent(EventCollector::Event{EventCollector::Edge::BEGIN, backend_id,
                                            opSequenceTag(op_seq, _graph.operations())});
 }
 
-void ChromeTracingObserver::handleEnd(IExecutor *, const ir::OpSequence *op_seq,
-                                      const backend::Backend *backend)
+void ChromeTracingObserver::handleJobEnd(IExecutor *, const ir::OpSequence *op_seq,
+                                         const backend::Backend *backend)
 {
   std::string backend_id = backend->config()->id();
   _collector.onEvent(EventCollector::Event{EventCollector::Edge::END, backend_id,
                                            opSequenceTag(op_seq, _graph.operations())});
 }
 
-void ChromeTracingObserver::handleEnd(IExecutor *)
+void ChromeTracingObserver::handleSubgraphEnd(IExecutor *)
 {
   _collector.onEvent(EventCollector::Event{EventCollector::Edge::END, "runtime", "Graph"});
 }

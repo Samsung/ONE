@@ -143,7 +143,7 @@ void DataflowExecutor::executeImpl()
   }
   assert(!_ready_jobs.empty()); // Cannot begin if there is no initial jobs
 
-  _subject.notifyModelBegin(this);
+  _subject.notifySubgraphBegin(this);
 
   while (!_ready_jobs.empty())
   {
@@ -173,7 +173,7 @@ void DataflowExecutor::executeImpl()
   }
   assert(noWaitingJobs());
 
-  _subject.notifyModelEnd(this);
+  _subject.notifySubgraphEnd(this);
 
   // Reset input info for the next execution
   _input_info = _initial_input_info;

@@ -100,7 +100,7 @@ void ParallelExecutor::executeImpl()
 
   VERBOSE(ParallelExecutor) << "INITIAL JOBS : " << _ready_jobs.size() << std::endl;
 
-  _subject.notifyModelBegin(this);
+  _subject.notifySubgraphBegin(this);
   while (true)
   {
     std::unique_lock<std::mutex> lock{_mu_jobs};
@@ -146,7 +146,7 @@ void ParallelExecutor::executeImpl()
 
   // Wait for all the jobs done
   _scheduler->finish();
-  _subject.notifyModelEnd(this);
+  _subject.notifySubgraphEnd(this);
 
   // Reset input info for the next execution
   _input_info = _initial_input_info;

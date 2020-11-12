@@ -39,7 +39,7 @@ char *seq_to_label(const onert::ir::OpSequence *op_seq, const onert::ir::Operati
 
 void LinearExecutor::executeImpl()
 {
-  _subject.notifyModelBegin(this);
+  _subject.notifySubgraphBegin(this);
   for (auto &&code : _code)
   {
     const auto op_seq = code.op_seq;
@@ -60,7 +60,7 @@ void LinearExecutor::executeImpl()
 
     _subject.notifyJobEnd(this, op_seq, backend);
   }
-  _subject.notifyModelEnd(this);
+  _subject.notifySubgraphEnd(this);
 }
 
 } // namespace exec
