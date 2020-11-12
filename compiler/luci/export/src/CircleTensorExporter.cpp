@@ -243,6 +243,9 @@ flatbuffers::Offset<Vector<int32_t>> encodeShape(FlatBufferBuilder &builder,
 flatbuffers::Offset<Vector<int32_t>> encodeShapeSignature(FlatBufferBuilder &builder,
                                                           const ShapeSignature &shape_signature)
 {
+  if (shape_signature.rank() == 0)
+    return 0;
+
   return builder.CreateVector(shape_signature.as_vector());
 }
 
