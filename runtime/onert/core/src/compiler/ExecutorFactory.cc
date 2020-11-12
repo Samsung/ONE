@@ -306,27 +306,33 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lo
 
   prepareMigrantTensors(*lowered_graph);
 
-  ExecutionBuilder builder;
-
-  // Generate kernels
-  lowered_graph->iterateTopolOpSeqs([&](const ir::OpSequenceIndex &op_seq_index,
-                                        const ir::OpSequence &op_seq) {
-    auto lower_info = lowered_graph->getLowerInfo(op_seq_index);
-    auto kernel_gen = lowered_graph->backend_contexts().at(lower_info->backend())->kernel_gen;
-    // Set TensorBuilderSet and ExecutorMap to kernel_gen of control flow
+  // Give some runtime objects to controlflow KernelGenerator
+  for (auto &pair : backend_contexts)
+  {
+    auto kernel_gen = pair.second->kernel_gen;
     auto cf_kernel_gen = dynamic_cast<backend::controlflow::KernelGenerator *>(kernel_gen.get());
     if (cf_kernel_gen != nullptr)
     {
       cf_kernel_gen->setTensorRegistries(tensor_regs);
       cf_kernel_gen->setExecutorMap(executor_map);
+      break;
     }
-    auto fn_seq = kernel_gen->generate(op_seq);
-    if (options.he_profiling_mode)
-    {
-      fn_seq->wrap<SyncFunction>(lower_info->backend()->config());
-    }
-    builder.append(op_seq_index, {&op_seq, lower_info, std::move(fn_seq)});
-  });
+  }
+
+  ExecutionBuilder builder;
+
+  // Generate kernels
+  lowered_graph->iterateTopolOpSeqs(
+      [&](const ir::OpSequenceIndex &op_seq_index, const ir::OpSequence &op_seq) {
+        auto lower_info = lowered_graph->getLowerInfo(op_seq_index);
+        auto kernel_gen = lowered_graph->backend_contexts().at(lower_info->backend())->kernel_gen;
+        auto fn_seq = kernel_gen->generate(op_seq);
+        if (options.he_profiling_mode)
+        {
+          fn_seq->wrap<SyncFunction>(lower_info->backend()->config());
+        }
+        builder.append(op_seq_index, {&op_seq, lower_info, std::move(fn_seq)});
+      });
 
   for (auto &tensor_builder : tensor_builders)
   {
