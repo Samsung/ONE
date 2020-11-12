@@ -49,9 +49,15 @@ RUN update-alternatives --install /usr/bin/aarch64-linux-gnu-gcc aarch64-linux-g
     --slave /usr/bin/aarch64-linux-gnu-g++ aarch64-linux-gnu-g++ /usr/bin/aarch64-linux-gnu-g++-8 \
     --slave /usr/bin/aarch64-linux-gnu-gcov aarch64-linux-gnu-gcov /usr/bin/aarch64-linux-gnu-gcov-8
 
-# Install lcov 1.13-4 for gcc-8 support (installed lcov 1.13-3 can't support gcc-8)
-RUN wget http://launchpadlibrarian.net/370213541/lcov_1.13-4_all.deb
-RUN dpkg -i lcov_1.13-4_all.deb
+# Install lcov 1.14-2 for gcc-8 support
+#   Default version lcov 1.13-3 can't support gcc-8
+#   lcov 1.13-4 with gcc-8 have bug: reports no coverage for class declaration
+WORKDIR /root/lcov
+RUN wget http://archive.ubuntu.com/ubuntu/pool/universe/l/lcov/lcov_1.14-2_all.deb
+RUN apt-get update && apt-get -qqy install libperlio-gzip-perl libjson-perl
+RUN dpkg -i lcov_1.14-2_all.deb
+WORKDIR /root
+RUN rm -rf /root/lcov
 
 # Build and install google test static libraries
 WORKDIR /root/gtest
