@@ -49,8 +49,7 @@ class AclTensorBuilder : public ITensorBuilder
 public:
   using T_AclTensorManager = AclTensorManager<T_ITensor, T_Tensor, T_SubTensor>;
 
-  AclTensorBuilder(const ir::Operands &operands, T_AclTensorManager *tensor_mgr,
-                   const std::shared_ptr<AclTensorRegistry<T_AclTensorManager>> &tensor_reg);
+  AclTensorBuilder(const ir::Operands &operands, T_AclTensorManager *tensor_mgr);
 
   /**
    * @brief     Register tensor information to allocate on ACL-CL backend
@@ -105,7 +104,6 @@ private:
   ir::OperandIndexMap<size_t> _uses_count_map;
 
   std::unique_ptr<T_AclTensorManager> _tensor_mgr;
-  std::shared_ptr<AclTensorRegistry<T_AclTensorManager>> _tensor_reg;
 
   // for linear executor
   std::vector<std::pair<UsesType, ir::OperandIndex>> _lifetime_seq;
@@ -133,10 +131,9 @@ namespace acl_common
 {
 
 template <typename T_ITensor, typename T_Tensor, typename T_SubTensor>
-AclTensorBuilder<T_ITensor, T_Tensor, T_SubTensor>::AclTensorBuilder(
-    const ir::Operands &operands, T_AclTensorManager *tensor_mgr,
-    const std::shared_ptr<AclTensorRegistry<T_AclTensorManager>> &tensor_reg)
-    : _operands{operands}, _tensor_mgr{tensor_mgr}, _tensor_reg{tensor_reg}
+AclTensorBuilder<T_ITensor, T_Tensor, T_SubTensor>::AclTensorBuilder(const ir::Operands &operands,
+                                                                     T_AclTensorManager *tensor_mgr)
+    : _operands{operands}, _tensor_mgr{tensor_mgr}
 {
   assert(_tensor_mgr);
 }
