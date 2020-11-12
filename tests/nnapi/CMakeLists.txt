@@ -7,6 +7,11 @@ if (NOT BUILD_ONERT)
   return()
 endif(NOT BUILD_ONERT)
 
+# GCC Compiler under 6.2 is not support this test build
+if (CMAKE_COMPILER_IS_GNUCC AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 6.2)
+  return()
+endif()
+
 if (ANDROID_BOOST_ROOT)
   set(BOOST_ROOT ${ANDROID_BOOST_ROOT})
 endif (ANDROID_BOOST_ROOT)
