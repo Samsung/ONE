@@ -171,6 +171,8 @@ bool validate(loco::Graph *g)
   if (!validate_shape_signature(g))
     return false;
 
+  // TODO add more validation
+
   return true;
 }
 
