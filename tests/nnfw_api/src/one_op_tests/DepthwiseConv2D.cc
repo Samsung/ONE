@@ -34,7 +34,7 @@ TEST_F(GenModelTest, OneOp_DepthwiseConv2D)
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
   _context->addTestCase(uniformTCD<float>({{1, 2, 7, 8, 3, 4, 9, 10, 5, 6, 11, 12}},
                                           {{71, -34, 99, -20, 91, -26, 127, -4}}));
-  _context->setBackends({"acl_cl", "acl_neon", "cpu"});
+  _context->setBackends({"acl_cl", "acl_neon", "cpu", "xnnpack"});
 
   SUCCEED();
 }
@@ -60,7 +60,7 @@ TEST_F(GenModelTest, OneOp_DepthwiseConv2D_Dilation)
                                               0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                                           }},
                                           {{13, 14, 0, 0, 0, 0, 11, 12, 5, 6, 0, 0, 0, 0, 3, 4}}));
-  _context->setBackends({"acl_cl", "acl_neon", "cpu"});
+  _context->setBackends({"acl_cl", "acl_neon", "cpu", "xnnpack"});
 
   SUCCEED();
 }
@@ -84,7 +84,7 @@ TEST_F(GenModelTest, OneOp_DepthwiseConv2D_Dilation_N_Stride)
   _context->addTestCase(uniformTCD<float>({{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0,
                                             0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}},
                                           {{4, 0, 3, 0, 0, 0, 2, 0, 1}}));
-  _context->setBackends({"acl_cl", "acl_neon", "cpu"});
+  _context->setBackends({"acl_cl", "acl_neon", "cpu", "xnnpack"});
 
   SUCCEED();
 }
@@ -224,7 +224,7 @@ TEST_P(DepthwiseConv2DVariation, Test)
       param.stride, param.input_depth, param.depth_multiplier));
   std::vector<uint8_t> ref_input(input64.begin(), input64.begin() + param.input_depth * 4);
   _context->addTestCase(uniformTCD<uint8_t>({ref_input}, {param.ref_output}));
-  _context->setBackends({"acl_cl", "acl_neon", "cpu"});
+  _context->setBackends({"acl_cl", "acl_neon", "cpu", "xnnpack"});
 
   SUCCEED();
 }
@@ -270,7 +270,7 @@ TEST_F(GenModelTest, neg_OneOp_DepthwiseConv2D_InvalidPaddingType)
   _context = std::make_unique<GenModelTestContext>(genNegTestDepthwiseConv2DModel(
       static_cast<circle::Padding>(99), 1, 1, 1, circle::ActivationFunctionType_NONE));
   _context->expectFailModelLoad();
-  _context->setBackends({"acl_cl", "acl_neon", "cpu"});
+  _context->setBackends({"acl_cl", "acl_neon", "cpu", "xnnpack"});
 
   SUCCEED();
 }

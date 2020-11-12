@@ -35,7 +35,7 @@ TEST_F(GenModelTest, OneOp_Conv2D)
   _context->addTestCase(uniformTCD<float>(
       {{4, 0, -5, 1, 0, 4, -1, 1, -1, -3, 3, -2, -4, 1, -2, 2, 4, -4, 2, 2, 0, 4, -1, -2, 4}},
       {{47, -4, -25, 9, 10, 10, -13, 11, -14, -26, -12, 26, 20, 40, 1, 3, 11, 4}}));
-  _context->setBackends({"acl_cl", "acl_neon", "cpu", "ruy"});
+  _context->setBackends({"acl_cl", "acl_neon", "cpu", "ruy", "xnnpack"});
 
   SUCCEED();
 }
@@ -59,11 +59,8 @@ TEST_F(GenModelTest, OneOp_Conv2D_Stride)
   _context->addTestCase(uniformTCD<float>(
       {{4, 0, -5, 1, 0, 4, -1, 1, -1, -3, 3, -2, -4, 1, -2, 2, 4, -4, 2, 2, 0, 4, -1, -2, 4}},
       {{22, 27, -10, -2, 5, -8, 7, 3, -14, -26, -10, 18, 4, -13, -28, 9, 14, 1}}));
-  _context->setBackends({"acl_cl", "acl_neon", "cpu", "ruy"});
-
-  SUCCEED();
+  _context->setBackends({"acl_cl", "acl_neon", "cpu", "ruy", "xnnpack"});
 }
-
 TEST_F(GenModelTest, OneOp_Conv2D_Dilation)
 {
   CircleGen cgen;
@@ -83,7 +80,7 @@ TEST_F(GenModelTest, OneOp_Conv2D_Dilation)
   _context->addTestCase(uniformTCD<float>(
       {{4, 0, -5, 1, 0, 4, -1, 1, -1, -3, 3, -2, -4, 1, -2, 2, 4, -4, 2, 2, 0, 4, -1, -2, 4}},
       {{-52, 7}}));
-  _context->setBackends({"cpu", "ruy"});
+  _context->setBackends({"cpu", "ruy", "xnnpack"});
 
   SUCCEED();
 }
