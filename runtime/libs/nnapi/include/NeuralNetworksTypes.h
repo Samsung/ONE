@@ -176,7 +176,6 @@ typedef int (*ANeuralNetworksExecution_setMeasureTiming_fn)(ANeuralNetworksExecu
 typedef int (*ANeuralNetworksExecution_getDuration_fn)(const ANeuralNetworksExecution *execution,
                                                        int32_t durationCode, uint64_t *duration);
 
-#if __ANDROID_API__ >= 30
 typedef int (*ANeuralNetworksDevice_getExtensionSupport_fn)(const ANeuralNetworksDevice *device,
                                                             const char *extensionName,
                                                             bool *isExtensionSupported);
@@ -194,6 +193,7 @@ typedef int (*ANeuralNetworksModel_setOperandExtensionData_fn)(ANeuralNetworksMo
                                                                int32_t index, const void *data,
                                                                size_t length);
 
+#if __ANDROID_API__ >= 30
 typedef int (*ANeuralNetworksMemoryDesc_create_fn)(ANeuralNetworksMemoryDesc **desc);
 
 typedef void (*ANeuralNetworksMemoryDesc_free_fn)(ANeuralNetworksMemoryDesc *desc);
