@@ -86,28 +86,22 @@ done
 
 MODELLIST_INTERP=$(cat "${ROOT_PATH}/Product/aarch64-android.release/out/test/list/frameworktest_list.noarch.interp.txt")
 SKIPLIST_INTERP=$(grep -v '#' "${ROOT_PATH}/Product/aarch64-android.release/out/unittest/nnapi_gtest.skip.noarch.interp" | tr '\n' ':')
-for EXECUTOR in "${EXECUTORS[@]}";
-do
-$ADB_CMD shell LD_LIBRARY_PATH=/data/local/tmp/onert_android/Product/lib EXECUTOR=$EXECUTOR BACKENDS=$BACKEND /data/local/tmp/onert_android/Product/unittest/nnapi_gtest \
-                                                            --gtest_output=xml:/data/local/tmp/onert_android/report/nnapi_gtest_interp_$EXECUTOR.xml \
+$ADB_CMD shell LD_LIBRARY_PATH=/data/local/tmp/onert_android/Product/lib EXECUTOR=Interpreter BACKENDS=$BACKEND /data/local/tmp/onert_android/Product/unittest/nnapi_gtest \
+                                                            --gtest_output=xml:/data/local/tmp/onert_android/report/nnapi_gtest_interp_Interpreter.xml \
                                                             --gtest_filter=-$SKIPLIST_INTERP
-$ADB_CMD shell LD_LIBRARY_PATH=/data/local/tmp/onert_android/Product/lib EXECUTOR=$EXECUTOR BACKENDS="" DISABLE_COMPILE=1 sh /data/local/tmp/onert_android/tests/scripts/models/run_test_android.sh \
+$ADB_CMD shell LD_LIBRARY_PATH=/data/local/tmp/onert_android/Product/lib EXECUTOR=Interpreter BACKENDS="" DISABLE_COMPILE=1 sh /data/local/tmp/onert_android/tests/scripts/models/run_test_android.sh \
                                                         --driverbin=/data/local/tmp/onert_android/Product/bin/nnapi_test \
                                                         --reportdir=/data/local/tmp/onert_android/report \
-                                                        --tapname=nnapi_test_interp_$EXECUTOR.tap ${MODELLIST_INTERP:-}
-done
+                                                        --tapname=nnapi_test_interp_Interpreter.tap ${MODELLIST_INTERP:-}
 
 MODELLIST=$(cat "${UNION_MODELLIST_PREFIX}.intersect.txt")
-for EXECUTOR in "${EXECUTORS[@]}";
-do
-# $ADB_CMD shell LD_LIBRARY_PATH=/data/local/tmp/onert_android/Product/lib EXECUTOR=$EXECUTOR BACKENDS=$BACKEND /data/local/tmp/onert_android/Product/unittest/nnapi_gtest \
-#                                                             --gtest_output=xml:/data/local/tmp/onert_android/report/nnapi_gtest_${BACKEND}_${EXECUTOR}.xml \
+# $ADB_CMD shell LD_LIBRARY_PATH=/data/local/tmp/onert_android/Product/lib OP_BACKEND_Conv2D="cpu" OP_BACKEND_MaxPool2D="acl_cl" OP_BACKEND_AvgPool2D="acl_neon" ACL_LAYOUT="NCHW" BACKENDS="acl_cl\;acl_neon\;cpu" /data/local/tmp/onert_android/Product/unittest/nnapi_gtest \
+#                                                             --gtest_output=xml:/data/local/tmp/onert_android/report/nnapi_gtest_mixed.xml \
 #                                                             --gtest_filter=-${SKIPLIST}
-$ADB_CMD shell LD_LIBRARY_PATH=/data/local/tmp/onert_android/Product/lib OP_BACKEND_Conv2D="cpu" OP_BACKEND_MaxPool2D="acl_cl" OP_BACKEND_AvgPool2D="acl_neon" ACL_LAYOUT="NCHW" EXECUTOR=$EXECUTOR BACKENDS="acl_cl\;acl_neon\;cpu" sh /data/local/tmp/onert_android/tests/scripts/models/run_test_android.sh \
+$ADB_CMD shell LD_LIBRARY_PATH=/data/local/tmp/onert_android/Product/lib OP_BACKEND_Conv2D="cpu" OP_BACKEND_MaxPool2D="acl_cl" OP_BACKEND_AvgPool2D="acl_neon" ACL_LAYOUT="NCHW" BACKENDS="acl_cl\;acl_neon\;cpu" sh /data/local/tmp/onert_android/tests/scripts/models/run_test_android.sh \
                                                         --driverbin=/data/local/tmp/onert_android/Product/bin/nnapi_test \
                                                         --reportdir=/data/local/tmp/onert_android/report \
-                                                        --tapname=nnapi_test_mixed_$EXECUTOR.tap ${MODELLIST:-}
-done
+                                                        --tapname=nnapi_test_mixed.tap ${MODELLIST:-}
 # $ADB_CMD shell LD_LIBRARY_PATH=/data/local/tmp/onert_android/Product/lib USE_NNAPI=1 sh /data/local/tmp/onert_android/tests/scripts/models/run_test_android.sh \
 #                                                         --driverbin=/data/local/tmp/onert_android/Product/bin/tflite_run \
 #                                                         --reportdir=/data/local/tmp/onert_android/report \
