@@ -271,6 +271,8 @@ TEST_F(GenModelTest, neg_OneOp_DepthwiseConv2D_InvalidPaddingType)
       static_cast<circle::Padding>(99), 1, 1, 1, circle::ActivationFunctionType_NONE));
   _context->expectFailModelLoad();
   _context->setBackends({"acl_cl", "acl_neon", "cpu"});
+
+  SUCCEED();
 }
 
 // TODO add other invalid operation tests like above
