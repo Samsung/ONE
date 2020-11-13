@@ -132,12 +132,10 @@ std::shared_ptr<exec::ExecutorMap> Compiler::compile(void)
 {
   // Set control flow backend for control flow operators
   {
-    _options.manual_scheduler_options.opcode_to_backend[ir::OpCode::If] =
-        backend::controlflow::Config::ID;
-    _options.manual_scheduler_options.opcode_to_backend[ir::OpCode::While] =
-        backend::controlflow::Config::ID;
-    _options.manual_scheduler_options.opcode_to_backend[ir::OpCode::Permute] =
-        backend::controlflow::Config::ID;
+    auto &cfid = backend::controlflow::Config::ID;
+    _options.manual_scheduler_options.opcode_to_backend[ir::OpCode::If] = cfid;
+    _options.manual_scheduler_options.opcode_to_backend[ir::OpCode::While] = cfid;
+    _options.manual_scheduler_options.opcode_to_backend[ir::OpCode::Permute] = cfid;
   }
 
   // FIXME This is a workaround for bcq operations, should remove it
