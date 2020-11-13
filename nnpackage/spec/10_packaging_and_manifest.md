@@ -108,6 +108,7 @@ Configuration file is a human readable plain text file having one `key=value` in
 For example
 ```
 BACKENDS=cpu
+# leading/trailing space is ignored
  EXCUTOR=Linear # some comment
 ```
 
