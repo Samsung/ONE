@@ -165,7 +165,7 @@ void setOperationsExecutionTime(const std::vector<const Backend *> &backends,
     for (auto &backend : backends)
       setOperationExecTime(et, backend, op_names[i], false, op_sizes[i], exec_time);
   }
-  et.uploadOperationsExecTime();
+  et.storeOperationsExecTime();
 }
 
 // Set permute time from one backend to another. This method is needed since ExecutionTime has only
@@ -195,7 +195,7 @@ void setPermutationsExecutionTime(const std::vector<const Backend *> &backends,
       setPermutationTime(et, backend, other_backend, false, operand_size, exec_time);
     }
   }
-  et.uploadOperationsExecTime();
+  et.storeOperationsExecTime();
 }
 
 //
@@ -392,7 +392,7 @@ TEST_P(SchedulerTestWithExecutorParam, straight_graph_known_exec_time)
     setOperationExecTime(et, _cpu_backend, "Add", false, OPERATION_SIZE, 1);
     setOperationExecTime(et, _gpu_backend, "Sub", false, OPERATION_SIZE, 1);
     setOperationExecTime(et, _npu_backend, "Mul", false, OPERATION_SIZE, 1);
-    et.uploadOperationsExecTime();
+    et.storeOperationsExecTime();
 
     // Test scheduler
     auto backend_contexts = buildBackendContexts(*graph);
@@ -451,7 +451,7 @@ TEST_P(SchedulerTestWithExecutorParam, branched_graph_known_exec_time)
     setOperationExecTime(et, _npu_backend, "FullyConnected", false, OPERATION_SIZE, NPU_ET);
     setOperationExecTime(et, _gpu_backend, "Mul", false, OPERATION_SIZE, NPU_ET + 1000);
     setOperationExecTime(et, _gpu_backend, "FullyConnected", false, OPERATION_SIZE, NPU_ET + 1000);
-    et.uploadOperationsExecTime();
+    et.storeOperationsExecTime();
 
     // Test scheduler
     auto backend_contexts = buildBackendContexts(*graph);
@@ -486,7 +486,7 @@ TEST_P(SchedulerTestWithExecutorParam, branched_graph_known_exec_time)
      * branching or scheduler assigns another backend to a node*/
     setOperationExecTime(et, _gpu_backend, "Mul", false, OPERATION_SIZE, NPU_ET * 3 + 1);
     setOperationExecTime(et, _gpu_backend, "FullyConnected", false, OPERATION_SIZE, NPU_ET * 3 + 1);
-    et.uploadOperationsExecTime();
+    et.storeOperationsExecTime();
 
     // Test scheduler
     auto backend_contexts = buildBackendContexts(*graph);
@@ -537,7 +537,7 @@ TEST_F(SchedulerTest, branched_graph_profiling_mode)
     setOperationExecTime(et, _gpu_backend, "Add", false, OPERATION_SIZE, ET);
     setOperationExecTime(et, _gpu_backend, "Mul", false, OPERATION_SIZE, ET + 1);
     setOperationExecTime(et, _gpu_backend, "Sub", false, OPERATION_SIZE, ET);
-    et.uploadOperationsExecTime();
+    et.storeOperationsExecTime();
 
     // Test scheduler
     auto backend_contexts = buildBackendContexts(*graph);
@@ -560,7 +560,7 @@ TEST_F(SchedulerTest, branched_graph_profiling_mode)
     setOperationExecTime(et, _cpu_backend, "Sub", false, OPERATION_SIZE, ET);
     setOperationExecTime(et, _npu_backend, "Mul", false, OPERATION_SIZE, ET + 1);
     setOperationExecTime(et, _gpu_backend, "FullyConnected", false, OPERATION_SIZE, ET);
-    et.uploadOperationsExecTime();
+    et.storeOperationsExecTime();
 
     // Test scheduler
     auto backend_contexts = buildBackendContexts(*graph);
