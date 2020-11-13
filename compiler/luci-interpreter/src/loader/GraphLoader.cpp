@@ -57,8 +57,12 @@ const void *getNodeData(const luci::CircleConst *node, size_t *data_size)
       return getNodeDataImpl<DataType::U8>(node, data_size);
     case DataType::FLOAT32:
       return getNodeDataImpl<DataType::FLOAT32>(node, data_size);
+    case DataType::S16:
+      return getNodeDataImpl<DataType::S16>(node, data_size);
     case DataType::S32:
       return getNodeDataImpl<DataType::S32>(node, data_size);
+    case DataType::S64:
+      return getNodeDataImpl<DataType::S64>(node, data_size);
     default:
       throw std::runtime_error("Unsupported type.");
   }
