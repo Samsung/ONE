@@ -72,7 +72,7 @@ mkdir -p "$outdir"/"$name"/metadata
 
 if [ ! -z "$config_src" ] && [ -s "$config_src" ]; then
   config=$(basename "$config_src")
-  cp $config_src "$outdir"/"$name"/metadata/"$config"
+  cp "$config_src" "$outdir/$name/metadata/$config"
 fi
 
 cat > "$outdir"/"$name"/metadata/MANIFEST <<-EOF
