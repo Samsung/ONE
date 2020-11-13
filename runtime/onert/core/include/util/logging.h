@@ -64,4 +64,11 @@ static Context &ctx = Context::get();
   if (::onert::util::logging::ctx.enabled()) \
   std::cout << "[" << __func__ << "] "
 
+#define WHEN_LOG_ENABLED(METHOD)             \
+  if (::onert::util::logging::ctx.enabled()) \
+    do                                       \
+    {                                        \
+      METHOD;                                \
+  } while (0)
+
 #endif // __ONERT_UTIL_LOGGING_H__
