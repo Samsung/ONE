@@ -41,6 +41,30 @@
 #include "ir/OperationDumper.h"
 #include "misc/string_helpers.h"
 
+namespace
+{
+
+using namespace onert;
+
+std::string getOpBackends(std::unordered_map<ir::OpCode, std::string> &opcode_to_backend)
+{
+  std::unordered_map<ir::OpCode, std::string>::iterator it;
+  std::string opbackends;
+
+  for (it = opcode_to_backend.begin(); it != opcode_to_backend.end(); ++it)
+  {
+    if (!opbackends.empty())
+      opbackends = opbackends + ", ";
+
+    auto opcode = it->first;
+    const std::string opname = ir::toString(opcode);
+    opbackends += opname + "=" + it->second;
+  }
+  return opbackends;
+}
+
+} // namespace
+
 namespace onert
 {
 
@@ -155,7 +179,11 @@ std::shared_ptr<exec::ExecutorMap> Compiler::compile(void)
     VERBOSE(Compiler) << "graph_dump_level         : " << _options.graph_dump_level << std::endl;
     VERBOSE(Compiler) << "op_seq_max_node          : " << _options.op_seq_max_node << std::endl;
     VERBOSE(Compiler) << "executor                 : " << _options.executor << std::endl;
-    VERBOSE(Compiler) << "manual_scheduler_options : (Too many things to print)" << std::endl;
+    VERBOSE(Compiler) << "manual backend_for_all   : "
+                      << _options.manual_scheduler_options.backend_for_all << std::endl;
+    VERBOSE(Compiler) << "manual_scheduler_options : "
+                      << getOpBackends(_options.manual_scheduler_options.opcode_to_backend)
+                      << std::endl;
     VERBOSE(Compiler) << "he_scheduler             : " << _options.he_scheduler << std::endl;
     VERBOSE(Compiler) << "he_profiling_mode        : " << _options.he_profiling_mode << std::endl;
     VERBOSE(Compiler) << "disable_compile          : " << _options.disable_compile << std::endl;
