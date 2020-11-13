@@ -46,6 +46,8 @@ private:
   std::vector<int32_t> _shape_signature{};
 };
 
+bool operator==(const ShapeSignature &lhs, const ShapeSignature &rhs);
+
 } // namespace luci
 
 #endif // __LUCI_IR_SHAPE_SIGNATURE_H__
