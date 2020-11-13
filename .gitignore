@@ -41,6 +41,3 @@
 
 # Makefile
 /Makefile
-
-#Prebuilt-lib for android
-/prebuilt
