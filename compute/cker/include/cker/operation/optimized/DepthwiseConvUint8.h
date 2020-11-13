@@ -1255,7 +1255,7 @@ template <> struct QuantizedDepthwiseConvKernel<true, 1, 16>
     {
       uint8_t input_u8 = *input_ptr;
       input_ptr += input_ptr_increment;
-      int16_t input = static_cast<int16_t>(input_u8 + input_offset);
+      int16_t input = static_cast<int16_t>(input_u8) + input_offset;
       // Load the accumulators from acc_buffer
       int32x4_t acc[4];
       for (int i = 0; i < 4; i++)
@@ -1304,7 +1304,7 @@ template <> struct QuantizedDepthwiseConvKernel<true, 1, 32>
     {
       uint8_t input_u8 = *input_ptr;
       input_ptr += input_ptr_increment;
-      int16_t input = static_cast<int16_t>(input_u8 + input_offset);
+      int16_t input = static_cast<int16_t>(input_u8) + input_offset;
       // Load the accumulators from acc_buffer
       int32x4_t acc_0 = vld1q_s32(acc_buffer_ptr + 4 * 0);
       int32x4_t acc_1 = vld1q_s32(acc_buffer_ptr + 4 * 1);
@@ -1365,7 +1365,7 @@ template <> struct QuantizedDepthwiseConvKernel<true, 1, 20>
     {
       uint8_t input_u8 = *input_ptr;
       input_ptr += input_ptr_increment;
-      int16_t input = static_cast<int16_t>(input_u8 + input_offset);
+      int16_t input = static_cast<int16_t>(input_u8) + input_offset;
       // Load the accumulators from acc_buffer
       int32x4_t acc_0 = vld1q_s32(acc_buffer_ptr + 4 * 0);
       int32x4_t acc_1 = vld1q_s32(acc_buffer_ptr + 4 * 1);
@@ -1406,7 +1406,7 @@ template <> struct QuantizedDepthwiseConvKernel<true, 1, 8>
     {
       uint8_t input_u8 = *input_ptr;
       input_ptr += input_ptr_increment;
-      int16_t input = static_cast<int16_t>(input_u8 + input_offset);
+      int16_t input = static_cast<int16_t>(input_u8) + input_offset;
       // Load the accumulators from acc_buffer
       int32x4_t acc[2];
       for (int i = 0; i < 2; i++)
