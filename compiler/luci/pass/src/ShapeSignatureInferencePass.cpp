@@ -21,23 +21,6 @@
 
 #include <loco.h>
 
-namespace
-{
-
-bool is_same_signature(luci::ShapeSignature lhs, luci::ShapeSignature rhs)
-{
-  if (lhs.rank() != rhs.rank())
-    return false;
-
-  for (uint32_t i = 0; i < lhs.rank(); ++i)
-    if (lhs.dim(i) != rhs.dim(i))
-      return false;
-
-  return true;
-}
-
-} // namespace
-
 namespace luci
 {
 
@@ -53,7 +36,7 @@ bool ShapeSignatureInferencePass::run(loco::Graph *g)
     auto circle_node = loco::must_cast<luci::CircleNode *>(node);
     if (signature_inference_rule.infer(circle_node, shape_signature))
     {
-      if (!is_same_signature(circle_node->shape_signature(), shape_signature))
+      if (!(circle_node->shape_signature() == shape_signature))
       {
         circle_node->shape_signature(shape_signature);
         changed = true;
