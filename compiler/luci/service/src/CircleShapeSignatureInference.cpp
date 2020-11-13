@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "luci/Service/CircleShapeSignatureInferenceRule.h"
+#include "luci/Service/CircleShapeSignatureInference.h"
 
 #include <luci/Log.h>
 
@@ -39,14 +39,16 @@ std::ostream &operator<<(std::ostream &os, const luci::ShapeSignature &shape_sig
 namespace luci
 {
 
-bool CircleShapeSignatureInferenceRule::infer(const luci::CircleNode *circle_node,
-                                              ShapeSignature &shape_signature) const
+namespace ssinf
+{
+
+bool Rule::infer(const luci::CircleNode *circle_node, ShapeSignature &shape_signature) const
 {
   LOGGER(l);
 
   // There is nothing to check before ShapeSignatureInference.
 
-  ShapeSignatureInferenceAlgorithm alg;
+  Algorithm alg;
 
   shape_signature = circle_node->accept(&alg);
 
@@ -56,5 +58,7 @@ bool CircleShapeSignatureInferenceRule::infer(const luci::CircleNode *circle_nod
 
   return true;
 }
+
+} // namespace ssinf
 
 } // namespace luci
