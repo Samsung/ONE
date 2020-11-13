@@ -66,8 +66,9 @@ static Context &ctx = Context::get();
 
 #define WHEN_LOG_ENABLED(METHOD)             \
   if (::onert::util::logging::ctx.enabled()) \
-  {                                          \
-    METHOD                                   \
-  }
+    do                                       \
+    {                                        \
+      METHOD;                                \
+  } while (0)
 
 #endif // __ONERT_UTIL_LOGGING_H__
