@@ -100,7 +100,7 @@ std::unique_ptr<BackendResolver> ManualScheduler::schedule(const ir::Graph &grap
   }
 
   // Dump final assignment
-  WHENLOGENABLED(backend_resolver->iterate(
+  WHEN_LOG_ENABLED(backend_resolver->iterate(
       [&](const ir::OperationIndex &index, const backend::Backend &backend) {
         VERBOSE(ManualScheduler) << "backend for operation #" << index.value() << ": "
                                  << backend.config()->id() << std::endl;
