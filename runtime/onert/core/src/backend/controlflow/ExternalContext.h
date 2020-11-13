@@ -17,7 +17,6 @@
 #ifndef __ONERT_BACKEND_CONTROLFLOW_EXTERNAL_CONTEXT_H__
 #define __ONERT_BACKEND_CONTROLFLOW_EXTERNAL_CONTEXT_H__
 
-#include <backend/IExternalContext.h>
 #include <util/ConfigSource.h>
 
 #include <ruy/context.h>
@@ -38,7 +37,7 @@ namespace controlflow
 {
 
 // TODO Unify this with cpu::ExternalContext
-class ExternalContext : public IExternalContext
+class ExternalContext
 {
 public:
   ExternalContext() : _ruy_context(std::make_unique<ruy::Context>())
