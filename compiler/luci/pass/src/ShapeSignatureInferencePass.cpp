@@ -17,7 +17,7 @@
 #include "luci/Pass/ShapeSignatureInferencePass.h"
 
 #include <luci/IR/CircleShapeSignature.h>
-#include <luci/Service/CircleShapeSignatureInferenceRule.h>
+#include <luci/Service/CircleShapeSignatureInference.h>
 
 #include <loco.h>
 
@@ -43,7 +43,7 @@ namespace luci
 
 bool ShapeSignatureInferencePass::run(loco::Graph *g)
 {
-  luci::CircleShapeSignatureInferenceRule circle_rule;
+  luci::ssinf::Rule signature_rule;
   bool changed = false;
 
   for (auto node : loco::postorder_traversal(loco::output_nodes(g)))
@@ -51,7 +51,7 @@ bool ShapeSignatureInferencePass::run(loco::Graph *g)
     luci::ShapeSignature shape_signature;
 
     auto circle_node = loco::must_cast<luci::CircleNode *>(node);
-    if (circle_rule.infer(circle_node, shape_signature))
+    if (signature_rule.infer(circle_node, shape_signature))
     {
       if (!is_same_signature(circle_node->shape_signature(), shape_signature))
       {

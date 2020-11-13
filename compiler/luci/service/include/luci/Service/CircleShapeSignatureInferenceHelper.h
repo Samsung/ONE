@@ -14,33 +14,23 @@
  * limitations under the License.
  */
 
-#include <luci/Service/CircleShapeSignatureInference.h>
-//#include <luci/Service/CircleShapeInferenceRule.h>
-//#include <luci/Service/CircleTypeInferenceRule.h>
+#ifndef __LUCI_CIRCLE_SHAPE_SIGNATURE_INFERENCE_HELPER_H__
+#define __LUCI_CIRCLE_SHAPE_SIGNATURE_INFERENCE_HELPER_H__
+
+#include <luci/IR/CircleNodes.h>
+#include <luci/IR/CircleNodeVisitor.h>
+#include <luci/IR/CircleShapeSignature.h>
 
 namespace luci
 {
 
-ShapeSignature ssinf::Algorithm::visit(const luci::CircleRelu *node)
+namespace ssinf // Namespace for Shape Signature Inference
 {
-  return ssinf::signature_of_input(node, 0);
-}
 
-/*
- * How about moving other luci/Service as following example?
- *
+ShapeSignature signature_of_input(const luci::CircleNode *node, uint32_t index);
 
-loco::NodeShape ShapeInferenceAlgorithm::visit(const luci::CircleRelu *node)
-{
-  auto x_shape = loco::shape_get(node->features()).template as<loco::TensorShape>();
-  return loco::NodeShape{x_shape};
-}
-
-loco::DataType TypeInferenceAlgorithm::visit(const luci::CircleRelu *node)
-{
-  return loco::dtype_get(node->features());
-}
-
-*/
+} // namespace ssinf
 
 } // namespace luci
+
+#endif // __LUCI_CIRCLE_SHAPE_SIGNATURE_INFERENCE_HELPER_H__

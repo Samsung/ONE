@@ -14,22 +14,26 @@
  * limitations under the License.
  */
 
-#ifndef __LUCI_CIRCLE_SHAPE_SIGNATURE_INFERENCE_RULE_H__
-#define __LUCI_CIRCLE_SHAPE_SIGNATURE_INFERENCE_RULE_H__
+#ifndef __LUCI_CIRCLE_SHAPE_SIGNATURE_INFERENCE_H__
+#define __LUCI_CIRCLE_SHAPE_SIGNATURE_INFERENCE_H__
 
 #include <luci/IR/CircleNodes.h>
 #include <luci/IR/CircleNodeVisitor.h>
 #include <luci/IR/CircleShapeSignature.h>
+#include <luci/Service/CircleShapeSignatureInferenceHelper.h>
 
 namespace luci
 {
 
-struct CircleShapeSignatureInferenceRule
+namespace ssinf // Namespace for Shape Signature Inference
+{
+
+struct Rule
 {
   bool infer(const luci::CircleNode *, ShapeSignature &) const;
 };
 
-class ShapeSignatureInferenceAlgorithm final : public luci::CircleNodeVisitor<ShapeSignature>
+class Algorithm final : public luci::CircleNodeVisitor<ShapeSignature>
 {
 public:
   // TODO Remove this when visit function is implemented for all the operations.
@@ -167,6 +171,8 @@ public:
   // ShapeSignature visit(const luci::CircleUnpackOut *node) final;
   // ShapeSignature visit(const luci::CircleWhileOut *node) final;
 };
+
+} // namespace ssinf
 
 } // namespace luci
 

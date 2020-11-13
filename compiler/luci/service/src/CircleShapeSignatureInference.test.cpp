@@ -15,7 +15,7 @@
  */
 
 #include "TestGraph.h"
-#include "luci/Service/CircleShapeSignatureInferenceRule.h"
+#include "luci/Service/CircleShapeSignatureInference.h"
 
 #include <luci/IR/CircleNodes.h>
 
@@ -44,7 +44,7 @@ bool is_same_signature(luci::ShapeSignature s1, luci::ShapeSignature s2)
 
 bool shape_signature_pass(loco::Graph *g)
 {
-  luci::CircleShapeSignatureInferenceRule circle_rule;
+  luci::ssinf::Rule signature_rule;
   bool changed = false;
 
   for (auto node : loco::postorder_traversal(loco::output_nodes(g)))
@@ -52,7 +52,7 @@ bool shape_signature_pass(loco::Graph *g)
     luci::ShapeSignature shape_signature;
 
     auto circle_node = loco::must_cast<luci::CircleNode *>(node);
-    if (circle_rule.infer(circle_node, shape_signature))
+    if (signature_rule.infer(circle_node, shape_signature))
     {
       if (!is_same_signature(circle_node->shape_signature(), shape_signature))
       {
@@ -67,7 +67,7 @@ bool shape_signature_pass(loco::Graph *g)
 
 } // namespace
 
-TEST(CircleShapeSignatureInferenceRuleTest, relu_000)
+TEST(CircleShapeSignatureInferenceTest, relu_000)
 {
   // Create a simple network
   luci::test::TestGraph graph;
