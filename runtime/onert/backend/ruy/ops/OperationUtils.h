@@ -19,8 +19,8 @@
 
 #include <backend/IPortableTensor.h>
 
-#include <cker/Shape.h>
-#include <cker/Types.h>
+#include <ruy/Shape.h>
+#include <ruy/Types.h>
 #include <iostream>
 #include <ir/DataType.h>
 #include <ir/InternalType.h>
@@ -39,17 +39,17 @@ namespace ruy
 namespace ops
 {
 
-inline nnfw::cker::Shape getTensorShape(const IPortableTensor *tensor)
+inline nnfw::ruy::Shape getTensorShape(const IPortableTensor *tensor)
 {
   if (tensor == nullptr)
-    return nnfw::cker::Shape();
+    return nnfw::ruy::Shape();
 
   const ir::Shape &shape = tensor->get_info().shape();
 
   assert(tensor->layout() == ir::Layout::NHWC);
 
   auto rank = shape.rank();
-  nnfw::cker::Shape ret(rank);
+  nnfw::ruy::Shape ret(rank);
   auto data = ret.DimsData();
   for (int i = 0; i < rank; ++i)
   {
@@ -92,7 +92,7 @@ void CalculateActivationRange(ir::Activation activation, T *activation_min, T *a
   }
 }
 
-nnfw::cker::PaddingType getPaddingType(ir::PaddingType ir_padding_type);
+nnfw::ruy::PaddingType getPaddingType(ir::PaddingType ir_padding_type);
 
 } // namespace ops
 } // namespace ruy

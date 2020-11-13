@@ -109,51 +109,6 @@ public:
     }
   }
 
-  // Use RUY library
-  void operator()(const ConvParams &params, const Shape &input_shape, const float *input_data,
-                  const Shape &filter_shape, const float *filter_data, const Shape &bias_shape,
-                  const float *bias_data, const Shape &output_shape, float *output_data,
-                  ruy::Context *ruy_context)
-  {
-    if (!_prepared)
-    {
-      // This means that input or output are dynamic or filter is not constant
-      IsRequiredIm2col(input_shape, filter_shape, output_shape, params.stride_width,
-                       params.stride_height, params.dilation_width_factor,
-                       params.dilation_height_factor);
-      _prepared = true;
-    }
-
-    int im2col_size = _need_im2col ? _im2col_shape.FlatSize() : 0;
-
-    // Comes from interpreter
-    if (!ruy_context)
-    {
-      reference::Conv(params, input_shape, input_data, filter_shape, filter_data, bias_shape,
-                      bias_data, output_shape, output_data);
-    }
-    // Use heap if size is larger than 8MB
-    else if (im2col_size > 2 * 1024 * 1024)
-    {
-      std::unique_ptr<float[]> im2col_data = std::make_unique<float[]>(im2col_size);
-      optimized::Conv(params, input_shape, input_data, filter_shape, filter_data, bias_shape,
-                      bias_data, output_shape, output_data, _im2col_shape, im2col_data.get(),
-                      ruy_context);
-    }
-    else if (im2col_size != 0)
-    {
-      float im2col_data[im2col_size];
-      optimized::Conv(params, input_shape, input_data, filter_shape, filter_data, bias_shape,
-                      bias_data, output_shape, output_data, _im2col_shape, im2col_data,
-                      ruy_context);
-    }
-    else
-    {
-      optimized::Conv(params, input_shape, input_data, filter_shape, filter_data, bias_shape,
-                      bias_data, output_shape, output_data, _im2col_shape, nullptr, ruy_context);
-    }
-  }
-
   void operator()(const ConvParams &params, const Shape &input_shape, const uint8_t *input_data,
                   const Shape &filter_shape, const uint8_t *filter_data, const Shape &bias_shape,
                   const int32_t *bias_data, const Shape &output_shape, uint8_t *output_data)

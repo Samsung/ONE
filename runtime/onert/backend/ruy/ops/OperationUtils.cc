@@ -25,16 +25,16 @@ namespace ruy
 namespace ops
 {
 
-nnfw::cker::PaddingType getPaddingType(ir::PaddingType ir_padding_type)
+nnfw::ruy::PaddingType getPaddingType(ir::PaddingType ir_padding_type)
 {
   switch (ir_padding_type)
   {
     case ir::PaddingType::EXPLICIT:
-      return nnfw::cker::PaddingType::kNone;
+      return nnfw::ruy::PaddingType::kNone;
     case ir::PaddingType::SAME:
-      return nnfw::cker::PaddingType::kSame;
+      return nnfw::ruy::PaddingType::kSame;
     case ir::PaddingType::VALID:
-      return nnfw::cker::PaddingType::kValid;
+      return nnfw::ruy::PaddingType::kValid;
     default:
       throw std::runtime_error("Wrong padding type.");
       break;

@@ -27,13 +27,10 @@
 #include "cker/operation/Common.h"
 #include "cker/Shape.h"
 #include "cker/Types.h"
-#include "cker/ruy/RuySupport.h"
 
 #include <public/gemmlowp.h>
 #include <public/map.h>
 #include <fixedpoint/fixedpoint.h>
-#include <ruy/ruy.h>
-#include <ruy/context.h>
 
 #include <vector>
 #include <tuple>
@@ -170,94 +167,6 @@ inline void Conv(const ConvParams &params, const Shape &input_shape, const uint8
   gemmlowp::GemmWithOutputPipeline<uint8_t, uint8_t, gemmlowp::L8R8WithLhsNonzeroBitDepthParams>(
       gemm_context, filter_matrix, input_matrix, &output_matrix, filter_offset, input_offset,
       output_pipeline);
-}
-
-inline void Conv(const ConvParams &params, const Shape &input_shape, const float *input_data,
-                 const Shape &filter_shape, const float *filter_data, const Shape &bias_shape,
-                 const float *bias_data, const Shape &output_shape, float *output_data,
-                 const Shape &im2col_shape, float *im2col_data, ruy::Context *ruy_context)
-{
-  (void)(bias_shape);
-  const int stride_width = params.stride_width;
-  const int stride_height = params.stride_height;
-  const int dilation_width_factor = params.dilation_width_factor;
-  const int dilation_height_factor = params.dilation_height_factor;
-  const float output_activation_min = params.float_activation_min;
-  const float output_activation_max = params.float_activation_max;
-  assert(input_shape.DimensionsCount() == 4);
-  assert(filter_shape.DimensionsCount() == 4);
-  assert(output_shape.DimensionsCount() == 4);
-
-  // NB: the float 0.0f value is represented by all zero bytes.
-  const uint8_t float_zero_byte = 0x00;
-  const float *gemm_input_data = nullptr;
-  const Shape *gemm_input_shape = nullptr;
-  const int filter_width = filter_shape.Dims(2);
-  const int filter_height = filter_shape.Dims(1);
-  const bool need_dilated_im2col = dilation_width_factor != 1 || dilation_height_factor != 1;
-  const bool need_im2col =
-      stride_width != 1 || stride_height != 1 || filter_width != 1 || filter_height != 1;
-  if (need_dilated_im2col)
-  {
-    DilatedIm2col(params, float_zero_byte, input_shape, input_data, filter_shape, output_shape,
-                  im2col_data);
-    gemm_input_data = im2col_data;
-    gemm_input_shape = &im2col_shape;
-  }
-  else if (need_im2col)
-  {
-    assert(im2col_data);
-    Im2col(params, filter_height, filter_width, float_zero_byte, input_shape, input_data,
-           im2col_shape, im2col_data);
-    gemm_input_data = im2col_data;
-    gemm_input_shape = &im2col_shape;
-  }
-  else
-  {
-    // TODO(aselle): We need to make sure to not send im2col if it is not
-    // needed.
-    assert(!im2col_data);
-    gemm_input_data = input_data;
-    gemm_input_shape = &input_shape;
-  }
-
-  const int gemm_input_dims = gemm_input_shape->DimensionsCount();
-  int m = FlatSizeSkipDim(*gemm_input_shape, gemm_input_dims - 1);
-  int n = output_shape.Dims(3);
-  int k = gemm_input_shape->Dims(gemm_input_dims - 1);
-
-  // When an optimized CBLAS implementation is not available, fall back
-  // to using cpu_backend_gemm.
-  MatrixParams<float> lhs_params;
-  lhs_params.order = Order::kRowMajor;
-  lhs_params.rows = n;
-  lhs_params.cols = k;
-  MatrixParams<float> rhs_params;
-  rhs_params.order = Order::kColMajor;
-  rhs_params.rows = k;
-  rhs_params.cols = m;
-  MatrixParams<float> dst_params;
-  dst_params.order = Order::kColMajor;
-  dst_params.rows = n;
-  dst_params.cols = m;
-  GemmParams<float, float> gemm_params;
-  gemm_params.bias = bias_data;
-  gemm_params.clamp_min = output_activation_min;
-  gemm_params.clamp_max = output_activation_max;
-
-  // Below code is from tflite::cpu_backend_gemm::detail::GemmImplUsingRuy
-  ruy::Matrix<float> ruy_lhs;
-  ruy::Matrix<float> ruy_rhs;
-  ruy::Matrix<float> ruy_dst;
-  // Note that cache is always enabled for input and weight tensors
-  ruy_support::MakeRuyMatrix(lhs_params, filter_data, &ruy_lhs, true);
-  ruy_support::MakeRuyMatrix(rhs_params, gemm_input_data, &ruy_rhs, true);
-  ruy_support::MakeRuyMatrix(dst_params, output_data, &ruy_dst);
-
-  ruy::BasicSpec<float, float> ruy_mul_params;
-  ruy_support::MakeRuyMulParams(gemm_params, &ruy_mul_params);
-
-  ruy::Mul(ruy_lhs, ruy_rhs, ruy_mul_params, ruy_context, &ruy_dst);
 }
 
 } // namespace optimized

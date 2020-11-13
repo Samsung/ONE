@@ -18,7 +18,6 @@
 
 #include "../Tensor.h"
 #include "ir/Padding.h"
-#include <cker/operation/Conv.h>
 
 namespace onert
 {
@@ -33,7 +32,7 @@ ConvolutionLayer::ConvolutionLayer()
       _paddingType(ir::PaddingType::EXPLICIT), _paddingLeft(0), _paddingTop(0), _paddingRight(0),
       _paddingBottom(0), _strideWidth(0), _strideHeight(0), _dilationWidthFactor(1),
       _dilationHeightFactor(1), _activation(ir::Activation::NONE),
-      _conv_kernel(new nnfw::cker::Conv()), _prepare(false)
+      _conv_kernel(new nnfw::ruy::Conv()), _prepare(false)
 {
   // DO NOTHING
 }
@@ -45,7 +44,7 @@ void ConvolutionLayer::convFloat32()
   float output_activation_min = 0, output_activation_max = 0;
   CalculateActivationRange(_activation, &output_activation_min, &output_activation_max);
 
-  nnfw::cker::ConvParams op_params;
+  nnfw::ruy::ConvParams op_params;
   op_params.padding_type = getPaddingType(_paddingType);
   op_params.padding_values.width = _paddingLeft;
   op_params.padding_values.height = _paddingTop;
@@ -56,7 +55,7 @@ void ConvolutionLayer::convFloat32()
   op_params.float_activation_min = output_activation_min;
   op_params.float_activation_max = output_activation_max;
 
-  nnfw::cker::Conv &kernel = *_conv_kernel;
+  nnfw::ruy::Conv &kernel = *_conv_kernel;
   kernel(op_params, getTensorShape(_input), reinterpret_cast<const float *>(_input->buffer()),
          getTensorShape(_kernel), reinterpret_cast<const float *>(_kernel->buffer()),
          getTensorShape(_bias), reinterpret_cast<const float *>(_bias->buffer()),
@@ -139,7 +138,7 @@ void ConvolutionLayer::prepare()
   if (_prepare)
     return;
 
-  nnfw::cker::Conv &kernel = *_conv_kernel;
+  nnfw::ruy::Conv &kernel = *_conv_kernel;
   if (_input->data_type() == OperandType::FLOAT32 && _kernel->is_constant())
   {
     kernel.prepare(getTensorShape(_input), getTensorShape(_kernel), getTensorShape(_output),

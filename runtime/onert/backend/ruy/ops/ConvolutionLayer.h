@@ -21,6 +21,7 @@
 #include "../ExternalContext.h"
 #include "OperationUtils.h"
 
+#include <ruy/operation/Conv.h>
 #include <exec/IFunction.h>
 #include <functional>
 #include <memory>
@@ -84,7 +85,7 @@ private:
 
   ir::Activation _activation;
 
-  std::unique_ptr<nnfw::cker::Conv> _conv_kernel;
+  std::unique_ptr<nnfw::ruy::Conv> _conv_kernel;
 
   bool _prepare;
 
