@@ -30,7 +30,6 @@
 #include "backend/IKernelGenerator.h"
 #include "backend/IOptimizer.h"
 #include "backend/IPortableTensor.h"
-#include "backend/ITensorRegister.h"
 #include "backend/controlflow/Config.h"
 #include "backend/controlflow/KernelGenerator.h"
 #include "backend/controlflow/UserTensor.h"
@@ -141,16 +140,10 @@ void ExecutorFactory::runTensorRegistration(compiler::LoweredGraph *lowered_grap
   {
     const auto &op_seq = lowered_graph->op_seqs().at(index);
     const auto backend = lowered_graph->getLowerInfo(index)->backend();
-    const auto tensor_register = lowered_graph->backend_contexts().at(backend)->tensor_register;
     auto tensor_builder = lowered_graph->backend_contexts().at(backend)->tensor_builder;
     auto model_io = lowered_graph->graph().getInputs() + lowered_graph->graph().getOutputs();
 
-    if (tensor_register)
-    {
-      // Custom registration
-      tensor_register->registerTensors(op_seq, lowered_graph->getLowerInfo());
-    }
-    else
+    // TODO nit: Remove indentation
     {
       // Default registration
       for (const auto op_idx : op_seq)

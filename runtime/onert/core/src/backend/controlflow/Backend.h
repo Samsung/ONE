@@ -72,7 +72,6 @@ public:
     context->constant_initializer = std::make_shared<ConstantInitializer>(operands, tr);
     context->kernel_gen = std::make_shared<KernelGenerator>(graph, tb->dynamicTensorManager(), tr,
                                                             context->external_context());
-    context->tensor_register = nullptr;
     context->optimizer = nullptr;
     return context;
   }
