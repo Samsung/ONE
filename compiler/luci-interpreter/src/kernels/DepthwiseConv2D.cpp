@@ -111,7 +111,17 @@ void DepthwiseConv2D::execute() const
       }
       throw std::runtime_error("Unsupported type.");
     case DataType::U8:
-      evalQuantized();
+      if (filter()->scales().size() == 1)
+      {
+        evalQuantized();
+      }
+      else if (filter()->scales().size() > 1)
+      {
+        LUCI_INTERPRETER_CHECK(filter()->shape().num_dims() == 4);
+        LUCI_INTERPRETER_CHECK(filter()->scales().size() ==
+                               static_cast<size_t>(filter()->shape().dim(3)));
+        evalQuantizedPerChannel();
+      }
       break;
     case DataType::S16:
       evalQuantizedS16();
@@ -142,6 +152,97 @@ void DepthwiseConv2D::evalFloat() const
       params, getTensorShape(input()), getTensorData<float>(input()), getTensorShape(filter()),
       getTensorData<float>(filter()), getTensorShape(bias()), getTensorData<float>(bias()),
       getTensorShape(output()), getTensorData<float>(output()));
+}
+
+void DepthwiseConv2D::evalQuantizedPerChannel() const
+{
+  const auto *input_data = getTensorData<uint8_t>(input());
+  const auto *filter_data = getTensorData<uint8_t>(filter());
+  const auto *bias_data = getTensorData<int32_t>(bias());
+  auto *output_data = getTensorData<uint8_t>(output());
+
+  const Shape &input_shape = input()->shape();
+  const Shape &filter_shape = filter()->shape();
+  const Shape &output_shape = output()->shape();
+
+  const int32_t batches = input_shape.dim(0);
+  const int32_t input_height = input_shape.dim(1);
+  const int32_t input_width = input_shape.dim(2);
+  const int32_t input_depth = input_shape.dim(3);
+  const int32_t filter_height = filter_shape.dim(1);
+  const int32_t filter_width = filter_shape.dim(2);
+  const int32_t output_height = output_shape.dim(1);
+  const int32_t output_width = output_shape.dim(2);
+
+  const int32_t stride_height = _params.stride_height;
+  const int32_t stride_width = _params.stride_width;
+  const int32_t dilation_height_factor = _params.dilation_height_factor;
+  const int32_t dilation_width_factor = _params.dilation_width_factor;
+  const int32_t depth_multiplier = _params.depth_multiplier;
+
+  int32_t activation_min{};
+  int32_t activation_max{};
+  calculateActivationRangeQuantized(_params.activation, output(), &activation_min, &activation_max);
+
+  const std::vector<double> effective_output_scales =
+      getQuantizedConvolutionMultiplers(input()->scale(), filter()->scales(), output()->scale());
+
+  std::vector<ChannelQuantMultipliers> quant_multipliers_raw =
+      quantizeMultipliers(effective_output_scales);
+  BroadcastableWrapper<ChannelQuantMultipliers> quant_multipliers(quant_multipliers_raw);
+
+  for (int batch = 0; batch < batches; ++batch)
+  {
+    for (int out_y = 0; out_y < output_height; ++out_y)
+    {
+      for (int out_x = 0; out_x < output_width; ++out_x)
+      {
+        for (int in_channel = 0; in_channel < input_depth; ++in_channel)
+        {
+          for (int m = 0; m < depth_multiplier; ++m)
+          {
+            const int output_channel = m + in_channel * depth_multiplier;
+            const int in_x_origin = (out_x * stride_width) - _padding_width;
+            const int in_y_origin = (out_y * stride_height) - _padding_height;
+            int32 acc = 0;
+            for (int filter_y = 0; filter_y < filter_height; ++filter_y)
+            {
+              for (int filter_x = 0; filter_x < filter_width; ++filter_x)
+              {
+                const int in_x = in_x_origin + dilation_width_factor * filter_x;
+                const int in_y = in_y_origin + dilation_height_factor * filter_y;
+                // Zero padding by omitting the areas outside the image.
+                const bool is_point_inside_image =
+                    (in_x >= 0) && (in_x < input_width) && (in_y >= 0) && (in_y < input_height);
+                if (is_point_inside_image)
+                {
+                  int32 input_val =
+                      input_data[calcOffset(input_shape, batch, in_y, in_x, in_channel)];
+                  int32 filter_val =
+                      filter_data[calcOffset(filter_shape, 0, filter_y, filter_x, output_channel)];
+                  acc += (filter_val - filter()->zero_points()[output_channel]) *
+                         (input_val - input()->zero_point());
+                }
+              }
+            }
+            if (bias_data)
+            {
+              acc += bias_data[output_channel];
+            }
+            int32_t output_multiplier = quant_multipliers[output_channel].multiplier;
+            int output_shift = quant_multipliers[output_channel].shift;
+            int32_t scaled_acc =
+                tflite::MultiplyByQuantizedMultiplier(acc, output_multiplier, output_shift);
+            scaled_acc += output()->zero_point();
+            scaled_acc = std::max(scaled_acc, activation_min);
+            scaled_acc = std::min(scaled_acc, activation_max);
+            output_data[calcOffset(output_shape, batch, out_y, out_x, output_channel)] =
+                static_cast<uint8_t>(scaled_acc);
+          }
+        }
+      }
+    }
+  }
 }
 
 void DepthwiseConv2D::evalQuantized() const
