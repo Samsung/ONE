@@ -135,7 +135,17 @@ void Conv2D::execute() const
       }
       throw std::runtime_error("Unsupported type.");
     case DataType::U8:
-      evalQuantized();
+      if (filter()->scales().size() == 1)
+      {
+        evalQuantized();
+      }
+      else if (filter()->scales().size() > 1)
+      {
+        LUCI_INTERPRETER_CHECK(filter()->shape().num_dims() == 4);
+        LUCI_INTERPRETER_CHECK(filter()->scales().size() ==
+                               static_cast<size_t>(filter()->shape().dim(0)));
+        evalQuantizedPerChannel();
+      }
       break;
     case DataType::S16:
       evalQuantizedS16();
@@ -217,6 +227,92 @@ void Conv2D::evalQuantized() const
       getTensorData<uint8_t>(filter()), getTensorShape(bias()), getTensorData<int32_t>(bias()),
       getTensorShape(output()), getTensorData<uint8_t>(output()), getTensorShape(_im2col.get()),
       getTensorData<uint8_t>(_im2col.get()), gemmlowp_context.get());
+}
+
+void Conv2D::evalQuantizedPerChannel() const
+{
+  const auto *input_data = getTensorData<uint8_t>(input());
+  const auto *filter_data = getTensorData<uint8_t>(filter());
+  const auto *bias_data = getTensorData<int32_t>(bias());
+  auto *output_data = getTensorData<uint8_t>(output());
+
+  const Shape &input_shape = input()->shape();
+  const Shape &filter_shape = filter()->shape();
+  const Shape &output_shape = output()->shape();
+
+  const int32_t batches = input_shape.dim(0);
+  const int32_t input_height = input_shape.dim(1);
+  const int32_t input_width = input_shape.dim(2);
+  const int32_t input_depth = input_shape.dim(3);
+  const int32_t output_depth = filter_shape.dim(0);
+  const int32_t filter_height = filter_shape.dim(1);
+  const int32_t filter_width = filter_shape.dim(2);
+  const int32_t output_height = output_shape.dim(1);
+  const int32_t output_width = output_shape.dim(2);
+
+  const int32_t stride_height = _params.stride_height;
+  const int32_t stride_width = _params.stride_width;
+  const int32_t dilation_height_factor = _params.dilation_height_factor;
+  const int32_t dilation_width_factor = _params.dilation_width_factor;
+
+  int32_t activation_min{};
+  int32_t activation_max{};
+  calculateActivationRangeQuantized(_params.activation, output(), &activation_min, &activation_max);
+
+  const std::vector<double> effective_output_scale =
+      getQuantizedConvolutionMultiplers(input()->scale(), filter()->scales(), output()->scale());
+
+  const std::vector<ChannelQuantMultipliers> multipliers_raw =
+      quantizeMultipliers(effective_output_scale);
+  BroadcastableWrapper<ChannelQuantMultipliers> quant_multipliers(multipliers_raw);
+
+  for (int32_t batch = 0; batch < batches; ++batch)
+  {
+    for (int32_t out_y = 0; out_y < output_height; ++out_y)
+    {
+      for (int32_t out_x = 0; out_x < output_width; ++out_x)
+      {
+        for (int32_t out_c = 0; out_c < output_depth; ++out_c)
+        {
+          const int32_t in_y_origin = out_y * stride_height - _padding_height;
+          const int32_t in_x_origin = out_x * stride_width - _padding_width;
+          int32_t acc = 0;
+          for (int32_t filter_y = 0; filter_y < filter_height; ++filter_y)
+          {
+            for (int32_t filter_x = 0; filter_x < filter_width; ++filter_x)
+            {
+              const int32_t in_y = in_y_origin + dilation_height_factor * filter_y;
+              const int32_t in_x = in_x_origin + dilation_width_factor * filter_x;
+              if ((in_y >= 0 && in_y < input_height) && (in_x >= 0 && in_x < input_width))
+              {
+                for (int32_t in_c = 0; in_c < input_depth; ++in_c)
+                {
+                  const uint8_t input_val =
+                      input_data[calcOffset(input_shape, batch, in_y, in_x, in_c)];
+                  const uint8_t filter_val =
+                      filter_data[calcOffset(filter_shape, out_c, filter_y, filter_x, in_c)];
+                  acc += static_cast<int32_t>(input_val - input()->zero_point()) *
+                         static_cast<int32_t>(filter_val - filter()->zero_points()[out_c]);
+                }
+              }
+            }
+          }
+          if (bias_data)
+          {
+            acc += bias_data[out_c];
+          }
+
+          int32_t scaled_acc = tflite::MultiplyByQuantizedMultiplier(
+              acc, quant_multipliers[out_c].multiplier, quant_multipliers[out_c].shift);
+
+          scaled_acc += output()->zero_point();
+          scaled_acc = std::max(scaled_acc, activation_min);
+          scaled_acc = std::min(scaled_acc, activation_max);
+          output_data[calcOffset(output_shape, batch, out_y, out_x, out_c)] = scaled_acc;
+        }
+      }
+    }
+  }
 }
 
 void Conv2D::evalQuantizedS16() const
