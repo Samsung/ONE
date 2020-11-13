@@ -54,7 +54,7 @@ public:
   void handleJobBegin(IExecutor *, const ir::OpSequence *, const backend::Backend *) override;
   void handleJobEnd(IExecutor *, const ir::OpSequence *, const backend::Backend *) override;
 
-  void handleSubgraphEnd(IExecutor *) override { _et->uploadOperationsExecTime(); }
+  void handleSubgraphEnd(IExecutor *) override { _et->storeOperationsExecTime(); }
 
 private:
   std::unique_ptr<util::ITimer> _timer;
