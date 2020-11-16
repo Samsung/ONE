@@ -1,3 +1,5 @@
+return()
+
 # Unsupported architecture
 nnfw_find_package(ARMCompute QUIET)
 if(NOT ARMCompute_FOUND)

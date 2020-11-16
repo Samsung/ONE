@@ -247,44 +247,22 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lo
 
   initializeBackendContext(lowered_graph.get());
 
-  // linearize
+  TensorBuilders tensor_builders{lowered_graph->backend_contexts(), true};
+  TensorRegistries tensor_regs{lowered_graph->backend_contexts(), true};
+
   assert(!lowered_graph->graph().isBuildingPhase());
-
-  /*************************************************
-   * Backend dependent analysis & optimization phase
-   *************************************************/
-
-  for (auto &pair : backend_contexts)
-  {
-    auto &optimizer = pair.second->optimizer;
-    if (optimizer)
-      optimizer->optimize();
-  }
-
-  /**********************************************************
-   * Backend dependent analysis & optimization phase finished
-   **********************************************************/
-
-  /***********************
-   * Code generation phase
-   ***********************/
-
-  auto order = Linear::linearize(*lowered_graph);
-  runTensorRegistration(lowered_graph.get(), order);
 
   initializeSubgraphIOTensors(
       *lowered_graph, (lowered_graph->graph().getInputs() + lowered_graph->graph().getOutputs()) |
                           ir::Remove::DUPLICATED | ir::Remove::UNDEFINED);
 
+  // linearize
+  auto order = Linear::linearize(*lowered_graph);
   Linear::dump(*lowered_graph, order);
-  Linear::planTensors(*lowered_graph, order);
 
-  TensorBuilders tensor_builders{lowered_graph->backend_contexts(), true};
-  TensorRegistries tensor_regs{lowered_graph->backend_contexts(), true};
-
-  for (auto &tensor_builder : tensor_builders)
+  for (auto &pair : backend_contexts)
   {
-    tensor_builder->prepare();
+    pair.second->tensorGen(order, lowered_graph->op_seqs(), *lowered_graph->getLowerInfo());
   }
 
   prepareMigrantTensors(*lowered_graph);
@@ -302,9 +280,10 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lo
     }
   }
 
+  prepareMigrantTensors(*lowered_graph);
+
   ExecutionBuilder builder;
 
-  // Generate kernels
   lowered_graph->iterateTopolOpSeqs(
       [&](const ir::OpSequenceIndex &op_seq_index, const ir::OpSequence &op_seq) {
         auto lower_info = lowered_graph->getLowerInfo(op_seq_index);

@@ -19,6 +19,8 @@
 
 #include <memory>
 #include "ir/Graph.h"
+#include "ir/LowerInfoMap.h"
+#include "exec/FunctionSequence.h"
 
 namespace onert
 {
@@ -66,6 +68,9 @@ public:
   const ir::Graph *graph() const { return _graph; }
   const std::vector<OperationInfo> &operation_list() { return _operation_list; }
   const std::vector<ir::OperandIndex> &operand_list() { return _operand_list; }
+
+  virtual ITensorRegistry *tensorGen(const std::vector<onert::ir::OpSequenceIndex> &, const ir::OpSequences &, const ir::LowerInfoMap &) { return nullptr; }
+  virtual std::vector<std::pair<ir::OpSequenceIndex, exec::FunctionSequence>> kernelGen() { return {}; }
 
 private:
   const Backend *_backend{nullptr};
