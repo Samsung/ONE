@@ -1513,6 +1513,10 @@ void BaseLoader<LoaderDomain>::loadOperation(const Operator *op, ir::Graph &subg
     case BuiltinOperator::BuiltinOperator_LOGICAL_NOT:
       loadElementwiseUnary(op, subg, ir::operation::ElementwiseUnary::Type::LOGICAL_NOT);
       return;
+    case BuiltinOperator::BuiltinOperator_LOGICAL_AND:
+      loadElementwiseBinary(op, subg,
+                            ir::operation::ElementwiseBinary::ElementwiseBinaryType::LOGICAL_AND);
+      return;
     case BuiltinOperator::BuiltinOperator_LOGICAL_OR:
       loadElementwiseBinary(op, subg,
                             ir::operation::ElementwiseBinary::ElementwiseBinaryType::LOGICAL_OR);
