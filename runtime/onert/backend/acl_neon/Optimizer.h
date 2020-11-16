@@ -18,7 +18,7 @@
 #define __ONERT_BACKEND_ACL_NEON_OPTIMIZER_H__
 
 #include <backend/IOptimizer.h>
-#include <backend/BackendContext.h>
+#include "BackendContext.h"
 #include "TensorBuilder.h"
 
 namespace onert

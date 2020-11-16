@@ -42,7 +42,17 @@ public:
   {
   }
 
+  ITensorRegistry *genTensors(const std::vector<onert::ir::OpSequenceIndex> &order,
+                              const ir::OpSequences &op_seqs,
+                              const ir::LowerInfoMap &lower_info) override;
+  FunctionMap genKernels(const std::vector<onert::ir::OpSequenceIndex> &order,
+                         const ir::OpSequences &op_seqs) override;
+
   std::shared_ptr<ExternalContext> external_context() { return _external_context; }
+
+private:
+  void planTensors(const std::vector<onert::ir::OpSequenceIndex> &order,
+                   const ir::OpSequences &op_seqs, const ir::LowerInfoMap &lower_info);
 
 private:
   // NOTE ruy context has a thread pool, and when multiple ruy contexts are created,

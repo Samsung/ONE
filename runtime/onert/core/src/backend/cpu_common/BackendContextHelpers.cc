@@ -14,34 +14,4 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_ACL_CL_OPTIMIZER_H__
-#define __ONERT_BACKEND_ACL_CL_OPTIMIZER_H__
-
-#include <backend/IOptimizer.h>
-#include "BackendContext.h"
-#include "TensorBuilder.h"
-
-namespace onert
-{
-namespace backend
-{
-namespace acl_cl
-{
-
-class Optimizer : public IOptimizer
-{
-public:
-  Optimizer(BackendContext *context);
-
-  void optimize() override;
-
-private:
-  BackendContext *_context;
-  std::shared_ptr<TensorBuilder> _tensor_builder;
-};
-
-} // namespace acl_cl
-} // namespace backend
-} // namespace onert
-
-#endif // __ONERT_BACKEND_ACL_CL_OPTIMIZER_H__
+#include "backend/cpu_common/BackendContextHelpers.h"

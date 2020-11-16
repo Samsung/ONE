@@ -20,6 +20,7 @@
 #include <memory>
 #include <backend/Backend.h>
 
+#include "BackendContext.h"
 #include "Config.h"
 #include "ConstantInitializer.h"
 #include "KernelGenerator.h"
@@ -41,13 +42,13 @@ public:
 
   std::shared_ptr<IConfig> config() const override { return _config; }
 
-  std::unique_ptr<BackendContext> newContext(const ir::Graph &graph,
-                                             const std::shared_ptr<custom::IKernelBuilder> &,
-                                             bool is_linear_executor) const override
+  std::unique_ptr<backend::BackendContext>
+  newContext(const ir::Graph &graph, const std::shared_ptr<custom::IKernelBuilder> &,
+             bool is_linear_executor) const override
   {
     const auto &operands = graph.operands();
     const auto &operations = graph.operations();
-    auto context = std::make_unique<BackendContext>(this, &graph);
+    auto context = std::make_unique<acl_cl::BackendContext>(this, &graph);
     auto tm = createTensorManager(is_linear_executor);
     auto tr = std::make_shared<acl_common::AclTensorRegistry<TensorManager>>(tm);
     auto tb = std::make_shared<TensorBuilder>(operands, tm);
