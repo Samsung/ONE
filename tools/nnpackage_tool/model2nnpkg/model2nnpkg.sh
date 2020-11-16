@@ -80,7 +80,7 @@ cat > "$outdir"/"$name"/metadata/MANIFEST <<-EOF
   "major-version" : "1",
   "minor-version" : "1",
   "patch-version" : "0",
-  "configs      : [ "$config" ],
+  "configs"     : [ "$config" ],
   "models"      : [ "$modelfile" ],
   "model-types" : [ "$extension" ]
 }
