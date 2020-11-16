@@ -24,12 +24,15 @@
 namespace luci
 {
 
-struct CircleShapeSignatureInferenceRule
+namespace ssinf // namespace for Shape Signature Inference
+{
+
+struct Rule
 {
   bool infer(const luci::CircleNode *, ShapeSignature &) const;
 };
 
-class ShapeSignatureInferenceAlgorithm final : public luci::CircleNodeVisitor<ShapeSignature>
+class Algorithm final : public luci::CircleNodeVisitor<ShapeSignature>
 {
 public:
   // TODO Remove this when visit function is implemented for all the operations.
@@ -167,6 +170,8 @@ public:
   // ShapeSignature visit(const luci::CircleUnpackOut *node) final;
   // ShapeSignature visit(const luci::CircleWhileOut *node) final;
 };
+
+} // namespace ssinf
 
 } // namespace luci
 
