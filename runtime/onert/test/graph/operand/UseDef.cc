@@ -33,7 +33,7 @@ using Mock = onert_test::ir::SimpleMock;
 
 TEST(ir_Operand, neg_usedef)
 {
-  onert::ir::Graph graph;
+  onert::ir::Graph graph{0};
   onert::ir::verifier::DAGChecker verifier;
 
   onert::ir::Shape shape(3);

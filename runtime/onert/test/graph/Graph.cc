@@ -22,7 +22,7 @@
 
 TEST(Graph, neg_inputs_and_outputs)
 {
-  onert::ir::Graph graph;
+  onert::ir::Graph graph{0};
 
   onert::ir::OperandIndex index0{0u};
   onert::ir::OperandIndex index1{1u};
@@ -71,7 +71,7 @@ TEST(Graph, OneOpGraphFinish)
 {
   // Simple Graph with just one Add operation
 
-  Graph graph;
+  Graph graph{0};
 
   // Add tensors
   Shape shape{1, 2, 2, 1};
@@ -94,7 +94,7 @@ TEST(Graph, OneOpGraphFinish)
 
 TEST(Graph, neg_InvalidGraphFinish_BadInput)
 {
-  Graph graph;
+  Graph graph{0};
 
   // Add tensors
   Shape shape{1, 2, 2, 1};
@@ -112,7 +112,7 @@ TEST(Graph, neg_InvalidGraphFinish_BadInput)
 
 TEST(Graph, neg_InvalidGraphFinish_BadOutput)
 {
-  Graph graph;
+  Graph graph{0};
 
   // Add tensors
   Shape shape{1, 2, 2, 1};
@@ -130,7 +130,7 @@ TEST(Graph, neg_InvalidGraphFinish_BadOutput)
 
 TEST(Graph, neg_InvalidGraphFinish_BadInputOutputForOp)
 {
-  Graph graph;
+  Graph graph{0};
 
   // Add tensors
   Shape shape{1, 2, 2, 1};

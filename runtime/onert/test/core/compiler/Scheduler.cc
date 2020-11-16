@@ -217,7 +217,7 @@ OperationIndex create(std::shared_ptr<Graph> graph, Types &&... args)
 // Create straight graph: Add->Sub->Mul
 std::shared_ptr<Graph> createStraightGraph()
 {
-  auto graph = std::make_shared<Graph>();
+  auto graph = std::make_shared<Graph>(0);
   const TypeInfo float_op(DataType::FLOAT32);
 
   // Create add node
@@ -254,7 +254,7 @@ std::shared_ptr<Graph> createStraightGraph()
  */
 std::shared_ptr<Graph> createBranchedGraph()
 {
-  auto graph = std::make_shared<Graph>();
+  auto graph = std::make_shared<Graph>(0);
   const TypeInfo float_op(DataType::FLOAT32);
 
   // Create add node

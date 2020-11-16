@@ -110,7 +110,7 @@ protected:
   template <typename Param> void loadPool2DOptions(Param &param, const Pool2DOptions *options);
 
 private:
-  virtual std::unique_ptr<ir::Graph> loadSubgraph(const SubGraph *subg) = 0;
+  virtual std::unique_ptr<ir::Graph> loadSubgraph(const SubGraph *subg, uint32_t index) = 0;
   // Operations
   template <typename OpIR, typename... Args>
   const OpIR *loadOperationTo(const Operator *op, ir::Graph &subg, Args &&... args);
@@ -1577,7 +1577,7 @@ template <typename LoaderDomain> void BaseLoader<LoaderDomain>::loadModel()
   auto subgraphs = std::make_unique<ir::Subgraphs>();
   for (uint32_t subgraph_index = 0; subgraph_index < domain_subgraphs->size(); ++subgraph_index)
   {
-    auto subg = loadSubgraph((*_model->subgraphs())[subgraph_index]);
+    auto subg = loadSubgraph((*_model->subgraphs())[subgraph_index], subgraph_index);
     subgraphs->push(ir::SubgraphIndex{subgraph_index}, std::move(subg));
   }
   _subgraphs = std::move(subgraphs);

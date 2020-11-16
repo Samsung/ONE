@@ -29,7 +29,8 @@
 ANeuralNetworksModel::ANeuralNetworksModel() noexcept
     : _optional_operands{}, _operand_usages{}, _allowFloat32toFloat16{false}
 {
-  _graph = std::make_shared<onert::ir::Graph>();
+  uint32_t primary_subgraph_index = 0;
+  _graph = std::make_shared<onert::ir::Graph>(primary_subgraph_index);
 }
 
 bool ANeuralNetworksModel::addOperand(const ANeuralNetworksOperandType *type) noexcept

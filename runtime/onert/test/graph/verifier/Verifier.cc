@@ -28,7 +28,7 @@ using Mock = onert_test::ir::SimpleMock;
 
 TEST(Verifier, dag_checker)
 {
-  onert::ir::Graph graph;
+  onert::ir::Graph graph{0};
 
   onert::ir::Shape shape{3};
   onert::ir::TypeInfo type{onert::ir::DataType::INT32};
@@ -50,7 +50,7 @@ TEST(Verifier, dag_checker)
 
 TEST(Verifier, neg_edge_consistency_checker_1)
 {
-  onert::ir::Graph graph;
+  onert::ir::Graph graph{0};
 
   onert::ir::Shape shape{3};
   onert::ir::TypeInfo type{onert::ir::DataType::INT32};
@@ -74,7 +74,7 @@ TEST(Verifier, neg_edge_consistency_checker_1)
 
 TEST(Verifier, neg_edge_consistency_checker_2)
 {
-  onert::ir::Graph graph;
+  onert::ir::Graph graph{0};
 
   onert::ir::Shape shape{3};
   onert::ir::TypeInfo type{onert::ir::DataType::INT32};

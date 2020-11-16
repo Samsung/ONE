@@ -93,9 +93,10 @@ public:
   }
 
 private:
-  std::unique_ptr<ir::Graph> loadSubgraph(const circle::SubGraph *circle_subg) override
+  std::unique_ptr<ir::Graph> loadSubgraph(const circle::SubGraph *circle_subg,
+                                          uint32_t index) override
   {
-    auto subg = std::make_unique<ir::Graph>();
+    auto subg = std::make_unique<ir::Graph>(index);
     // Load tensors
     _tensor_to_operand.resize(circle_subg->tensors()->size());
     for (flatbuffers::uoffset_t i = 0; i < circle_subg->tensors()->size(); ++i)

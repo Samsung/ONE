@@ -31,7 +31,7 @@ using IndexSet = onert::ir::OperandIndexSequence;
 
 TEST(ir_Operation_setIO, operation_setIO_conv)
 {
-  onert::ir::Graph graph;
+  onert::ir::Graph graph{0};
 
   onert::ir::Shape shape{3};
   onert::ir::TypeInfo type{onert::ir::DataType::INT32};
@@ -64,7 +64,7 @@ TEST(ir_Operation_setIO, operation_setIO_conv)
 
 TEST(ir_Operation_setIO, neg_operation_setIO_concat)
 {
-  onert::ir::Graph graph;
+  onert::ir::Graph graph{0};
 
   onert::ir::Shape shape{3};
 

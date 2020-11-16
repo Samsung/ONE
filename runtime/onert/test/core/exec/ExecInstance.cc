@@ -40,7 +40,7 @@ public:
     // result2 <= (result1 + rhs2)
     // lhs, rhs1, rh2, result1, result2 shape: {1, 2, 2, 1}
     // activation: none (constant)
-    graph = std::make_shared<Graph>();
+    graph = std::make_shared<Graph>(0);
     // 1st add operands (result1 <= lhs + rhs1)
     Shape shape{1, 2, 2, 1};
     TypeInfo type{DataType::FLOAT32};

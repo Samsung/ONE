@@ -36,7 +36,7 @@ namespace onert
 namespace ir
 {
 
-Graph::Graph() = default;
+Graph::Graph(uint32_t subg_index) : _subg_index(subg_index) { /* empty */}
 
 Graph::~Graph(void) = default;
 

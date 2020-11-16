@@ -42,7 +42,7 @@ protected:
     // model output: add result
     // lhs, rhs, result shape: {1, 2, 2, 1}
     // activation: none (constant)
-    _graph = std::make_unique<Graph>();
+    _graph = std::make_unique<Graph>(0);
 
     // Add operands
 
@@ -92,7 +92,7 @@ protected:
     // result2 <= (result1 + rhs2)
     // lhs, rhs1, rh2, result1, result2 shape: {1, 2, 2, 1}
     // activation: none (constant)
-    _graph = std::make_unique<Graph>();
+    _graph = std::make_unique<Graph>(0);
 
     // 1st add operands (result1 <= lhs + rhs1)
 
@@ -154,7 +154,7 @@ protected:
     // model output: add result
     // lhs, rhs, result shape: {1, unknown, 2, 1}
     // activation: none (constant)
-    _graph = std::make_unique<Graph>();
+    _graph = std::make_unique<Graph>(0);
 
     // Add operands
 
@@ -213,7 +213,7 @@ protected:
 
 TEST_F(InterpExecutorTest, create_empty)
 {
-  Graph graph;
+  Graph graph{0};
   graph.finishBuilding();
   auto executor = std::make_unique<InterpExecutor>(graph);
   ASSERT_NE(executor, nullptr);

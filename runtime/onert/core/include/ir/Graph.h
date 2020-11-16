@@ -52,7 +52,13 @@ private:
   };
 
 public:
-  Graph(void);
+  /**
+   * @brief Construct a new ir::Graph object
+   *
+   * @param subg_index Subgraph index from tflite or circle subgraph
+   *                   Pass 0 if a model has only 1 subgraph. (0 means primary subgraph)
+   */
+  Graph(uint32_t subg_index);
   ~Graph(void);
 
   // Graph Building
@@ -103,6 +109,11 @@ public:
   const std::shared_ptr<Subgraphs> &subgraphs() const { return _subgraphs; }
   std::shared_ptr<Subgraphs> &subgraphs() { return _subgraphs; }
   Layout layout() const { return _layout; }
+  SubgraphIndex subg_index() const
+  {
+    assert(!_subg_index.undefined());
+    return _subg_index;
+  }
 
 private:
   Phase _phase{Phase::BUILDING};
@@ -116,6 +127,9 @@ private:
   std::shared_ptr<Subgraphs> _subgraphs;
   // TFLite and circle's default layout is NHWC;
   Layout _layout{Layout::NHWC};
+
+  // subgraph index of this subgraph in a model
+  SubgraphIndex _subg_index;
 };
 
 } // namespace ir
