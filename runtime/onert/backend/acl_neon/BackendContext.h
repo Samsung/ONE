@@ -14,17 +14,16 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_RUY_BACKEND_CONTEXT_H__
-#define __ONERT_BACKEND_RUY_BACKEND_CONTEXT_H__
+#ifndef __ONERT_BACKEND_ACL_NEON_BACKEND_CONTEXT_H__
+#define __ONERT_BACKEND_ACL_NEON_BACKEND_CONTEXT_H__
 
 #include <backend/BackendContext.h>
-#include "ExternalContext.h"
 
 namespace onert
 {
 namespace backend
 {
-namespace ruy
+namespace acl_neon
 {
 
 class BackendContext : public onert::backend::BackendContext
@@ -37,33 +36,24 @@ public:
                  std::shared_ptr<IKernelGenerator> kernel_gen = nullptr,
                  std::shared_ptr<IOptimizer> optimizer = nullptr)
       : onert::backend::BackendContext(backend, graph, tensor_registry, tensor_builder,
-                                       constant_initializer, kernel_gen, optimizer),
-        _external_context(new ExternalContext)
+                                       constant_initializer, kernel_gen, optimizer)
   {
   }
 
   ITensorRegistry *tensorGen(const std::vector<onert::ir::OpSequenceIndex> &order,
                              const ir::OpSequences &op_seqs,
                              const ir::LowerInfoMap &lower_info) override;
-
   std::vector<std::pair<ir::OpSequenceIndex, std::unique_ptr<exec::FunctionSequence>>>
-  kernelGen(const std::vector<ir::OpSequenceIndex> &order, const ir::OpSequences &op_seqs) override;
-
-  std::shared_ptr<ExternalContext> external_context() { return _external_context; }
+  kernelGen(const std::vector<onert::ir::OpSequenceIndex> &order,
+            const ir::OpSequences &op_seqs) override;
 
 private:
   void planTensors(const std::vector<onert::ir::OpSequenceIndex> &order,
                    const ir::OpSequences &op_seqs, const ir::LowerInfoMap &lower_info);
-
-private:
-  // NOTE ruy context has a thread pool, and when multiple ruy contexts are created,
-  //      the thread pool is also created in duplicate
-  // TODO Create one ruy context for session
-  std::shared_ptr<ExternalContext> _external_context;
 };
 
-} // namespace ruy
+} // namespace acl_neon
 } // namespace backend
 } // namespace onert
 
-#endif // __ONERT_BACKEND_RUY_BACKEND_CONTEXT_H__
+#endif // __ONERT_BACKEND_ACL_NEON_BACKEND_CONTEXT_H__
