@@ -21,6 +21,7 @@
 #include "luci/IR/CircleOpcode.h"
 
 #include "luci/IR/AttrFusedActFunc.h"
+#include "luci/IR/AttrWeightsFormat.h"
 #include "luci/IR/LuciNodeMixins.h"
 
 namespace luci
@@ -43,6 +44,13 @@ public:
 
   loco::Node *bias(void) const override { return at(2)->node(); }
   void bias(loco::Node *node) override { at(2)->node(node); }
+
+public:
+  WeightsFormat weights_format(void) const { return _weights_format; }
+  void weights_format(WeightsFormat weights_format) { _weights_format = weights_format; }
+
+private:
+  WeightsFormat _weights_format{WeightsFormat::DEFAULT};
 };
 
 } // namespace luci

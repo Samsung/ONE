@@ -128,6 +128,12 @@ int entry(int argc, char **argv)
       .default_value(false)
       .help("This will convert Custom(Matmul) to Matmul operator");
 
+  arser.add_argument("--shuffle_weight_to_16x1float32")
+      .nargs(0)
+      .required(false)
+      .default_value(false)
+      .help("This will convert weight format of FullyConnected to SHUFFLED16x1FLOAT32");
+
   arser.add_argument("--mute_warnings")
       .nargs(0)
       .required(false)
@@ -219,6 +225,8 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::ResolveCustomOpBatchMatMul);
   if (arser.get<bool>("--resolve_customop_matmul"))
     options->enable(Algorithms::ResolveCustomOpMatMul);
+  if (arser.get<bool>("--shuffle_weight_to_16x1float32"))
+    options->enable(Algorithms::ShuffleWeightTo16x1Float32);
 
   if (arser.get<bool>("--mute_warnings"))
     settings->set(luci::UserSettings::Key::MuteWarnings, true);

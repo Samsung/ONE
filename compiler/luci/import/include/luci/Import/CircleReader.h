@@ -21,6 +21,7 @@
 
 #include <luci/IR/AttrFusedActFunc.h>
 #include <luci/IR/AttrPadding.h>
+#include <luci/IR/AttrWeightsFormat.h>
 #include <luci/IR/CircleNode.h>
 #include <luci/IR/CircleQuantParam.h>
 #include <luci/IR/CircleShapeSignature.h>
@@ -46,6 +47,7 @@ loco::DataType luci_datatype(circle::TensorType type);
 FusedActFunc luci_actfunc(const circle::ActivationFunctionType type);
 Padding luci_padding(const circle::Padding padding);
 MirrorPadMode luci_mirrorpad_mode(const circle::MirrorPadMode mode);
+WeightsFormat luci_weights_format(const circle::FullyConnectedOptionsWeightsFormat weights_format);
 std::unique_ptr<CircleQuantParam>
 luci_quantparam(const circle::QuantizationParametersT *quantization);
 
