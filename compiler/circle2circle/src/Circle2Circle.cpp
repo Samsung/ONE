@@ -110,6 +110,12 @@ int entry(int argc, char **argv)
       .default_value(false)
       .help("This will fuse BatchNorm operators of pre-activations to Convolution operator");
 
+  arser.add_argument("--remove_duplicate_transpose")
+      .nargs(0)
+      .required(false)
+      .default_value(false)
+      .help("This will remove duplicate Transpose operator which is not effect on model result");
+
   arser.add_argument("--resolve_customop_add")
       .nargs(0)
       .required(false)
@@ -213,6 +219,8 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::MakeBatchNormGammaPositive);
   if (arser.get<bool>("--fuse_preactivation_batchnorm"))
     options->enable(Algorithms::FusePreActivationBatchNorm);
+  if (arser.get<bool>("--remove_duplicate_transpose"))
+    options->enable(Algorithms::RemoveDuplicateTranspose);
   if (arser.get<bool>("--resolve_customop_add"))
     options->enable(Algorithms::ResolveCustomOpAdd);
   if (arser.get<bool>("--resolve_customop_batchmatmul"))
