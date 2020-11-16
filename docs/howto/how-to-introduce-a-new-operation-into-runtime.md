@@ -24,7 +24,6 @@ onert support the operation.
       - [acl_cl](#acl_cl-1)
       - [acl_neon](#acl_neon-1)
       - [cpu](#cpu-1)
-    - [TensorRegister (in some cases)](#tensorregister-in-some-cases)
     - [ConstantInitializer (in some cases)](#constantinitializer-in-some-cases)
       - [cpu](#cpu-2)
   - [Samples (to be updated)](#samples-to-be-updated)
@@ -449,22 +448,10 @@ void KernelGenerator::visit(const ir::operation::Select &node)
 }
 ```
 
-### TensorRegister (in some cases)
-
-This component registers tensors. Most tensors will be automatically registered internally. There
-are some exceptions, however, where additional implementations are required. It is the case when a
-tensor is treated unusually in its backend.
-
-The kernel of some operation has weights in `HWIO` as layout(data format) in case of that input's
-layout is `NHWC`. And, for `NCHW`, weights is `OIHW`. But TFLite model has weigths, `OHWI` for
-`NHWC` and `OIHW` for `NCHW`. Therefore, to register the appropriate tensor on the backend, you have
-to implement it additionally.
-
 ### ConstantInitializer (in some cases)
 
 This component registers function initializing constant tensors and initialize constant tensor
-layer. This is similar to TensorRegister. Most tensors will be automatically registered internally.
-And there are some exceptions.
+layer. Most tensors will be automatically registered internally. And there are some exceptions.
 
 #### cpu
 
