@@ -330,9 +330,7 @@ void LoweredGraph::manipulateLowerInfo(
 {
   const auto controlflow_backend = BackendManager::get().getControlflow();
 
-  // TODO Rather than handling primary graph specially,
-  //      let the permute inserted and remove it later
-  if (true)
+  // TODO Remove indentation
   {
     // TODO Rather than using NHWC Get frontend layout of this node from IR
     auto factor = ir::operand::PermuteFactor{controlflow_backend, ir::Layout::NHWC};
@@ -346,28 +344,6 @@ void LoweredGraph::manipulateLowerInfo(
     {
       auto &&lower_info = operands_lower_info.at(index);
       lower_info->addUsePermuteFactor(factor);
-    }
-  }
-  else
-  {
-    for (auto index : _graph.getInputs() | ir::Remove::UNDEFINED)
-    {
-      auto &&lower_info = operands_lower_info.at(index);
-      if (!(lower_info->def_factors().size() == 0 && lower_info->use_factors().size() == 0))
-      {
-        // In case of not that Graph's input is not used in any operation and not the graph's
-        // output.
-        // In other words, it is not unused input in Graph.
-        lower_info->addDefPermuteFactor(*lower_info->use_factors().begin());
-      }
-      else
-      {
-        // In case of that an operand is Graph's input and not input or output of any operation
-        lower_info->addDefPermuteFactor(ir::operand::PermuteFactor{
-            controlflow_backend,
-            ir::Layout::NHWC // TODO Get frontend layout of this node from IR
-        });
-      }
     }
   }
   for (auto index : _graph.getOutputs() | ir::Remove::UNDEFINED)

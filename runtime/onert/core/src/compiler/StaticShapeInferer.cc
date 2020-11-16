@@ -1192,9 +1192,6 @@ void StaticShapeInferer::visit(const ir::operation::While &op)
     }
   }
 
-  body_graph.operands().iterate([](const onert::ir::OperandIndex &idx, onert::ir::Operand &) {
-    VERBOSE(BODY_GRAPH) << idx << std::endl;
-  });
   // re-sizing input shapes of body subgraph
   const auto &body_inputs = body_graph.getInputs();
   assert(cond_inputs.size() == body_inputs.size());

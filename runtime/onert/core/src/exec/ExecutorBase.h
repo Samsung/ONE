@@ -57,13 +57,15 @@ public:
   const ir::Graph &graph() final { return _graph; }
 
   /**
-   * @brief Execute without IODescription
+   * @brief Execute with given input/output tensors
    *
-   * @param src_tensor Tensor list that will be copied to input tensors of this
-   * @param pre_fn The permutation function that copy from src_tensor to input tensors of this
+   * For non-primary subgraphs, input and output tensors must be given.
+   *
+   * @param inputs tensors that are passed as inputs
+   * @param outputs tensors that are passed as outputs
    */
-  void execute(const std::vector<backend::IPortableTensor *> &src_tensors,
-               const std::vector<backend::IPortableTensor *> &dst_tensors);
+  void execute(const std::vector<backend::IPortableTensor *> &inputs,
+               const std::vector<backend::IPortableTensor *> &outputs);
 
   void execute(const IODescription &desc) final;
 

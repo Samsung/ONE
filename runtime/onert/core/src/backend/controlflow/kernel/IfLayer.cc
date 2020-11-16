@@ -47,13 +47,14 @@ void IfLayer::run()
 {
   // Check condition
   // // If true
-  // // // Copy _input_tensors -> then subg's inputs
-  // // // Run then subg
-  // // // Copy outputs of then subg -> _output_tensors
+  // // // Set _input_tensors -> then-subg's inputs
+  // // // Set outputs of then-subg -> _output_tensors
+  // // // Run then-subg
   // // Else
-  // // // Copy _input_tensors -> else subg's inputs if false
-  // // // Run else subg
-  // // // Copy outputs of else subg -> _output_tensors
+  // // // Set _input_tensors -> else-subg's inputs
+  // // // Set outputs of else-subg -> _output_tensors
+  // // // Run else-subg
+
   auto getResultCond = [](backend::IPortableTensor *tensor) -> bool {
     bool ret = false;
     tensor->access([&](ITensor &tensor) { ret = *reinterpret_cast<bool *>(tensor.buffer()); });
@@ -75,9 +76,7 @@ void IfLayer::run()
         _executor_map->at(_else_subg_index).get());
   }
 
-  // Copy & run
   subg_exec->execute(_input_tensors, _output_tensors);
-  // permute_subg_output_to_op_output->run();
   VERBOSE(If) << "Return from $" << (cond_result ? _then_subg_index : _else_subg_index)
               << std::endl;
 }

@@ -44,8 +44,8 @@ ExecutorBase::ExecutorBase(std::unique_ptr<compiler::LoweredGraph> &&lowered_gra
   build_tensor_list(_graph.getOutputs(), _output_tensors);
 }
 
-void ExecutorBase::execute(const std::vector<backend::IPortableTensor *> &src_tensors,
-                           const std::vector<backend::IPortableTensor *> &dst_tensors)
+void ExecutorBase::execute(const std::vector<backend::IPortableTensor *> &inputs,
+                           const std::vector<backend::IPortableTensor *> &outputs)
 {
   // For thread-safe, use mutex
   // TODO: if all used backends on this executor are thread-safe,
@@ -53,30 +53,36 @@ void ExecutorBase::execute(const std::vector<backend::IPortableTensor *> &src_te
   // Deadlock occurs when an Executor is called recursively.
   std::lock_guard<std::mutex> lock(_mutex);
 
-  assert(src_tensors.size() == _graph.getInputs().size());
-  assert(src_tensors.size() == _input_tensors.size());
-  for (uint32_t n = 0; n < src_tensors.size(); ++n)
+  assert(inputs.size() == _graph.getInputs().size());
+  assert(inputs.size() == _input_tensors.size());
+  for (uint32_t n = 0; n < inputs.size(); ++n)
   {
-    // when user changes input shape, the input tensor is dynamic and its memory is not allocated.
-    // This code find the info to allocate dynamic tensor, and allocate memory based on the source
-    // tensor's shape set by caller.
-    const auto src_tensor = src_tensors[n];
-    assert(src_tensor->buffer() != nullptr);
+    const auto input = inputs[n];
+    assert(input->buffer() != nullptr);
     auto input_tensor = _input_tensors[n];
     assert(input_tensor != nullptr);
-    input_tensor->set_dynamic();
-    input_tensor->setTensor(src_tensor);
+    if (input != nullptr)
+    {
+      const auto orig_input_shape = input_tensor->orig_info().shape();
+      const auto changed_input_shape =
+          convertShape(input->getShape(), input->layout(), input_tensor->orig_layout());
+      if (orig_input_shape != changed_input_shape)
+      {
+        input_tensor->set_dynamic();
+      }
+    }
+    input_tensor->setTensor(input);
   }
 
-  assert(dst_tensors.size() == _graph.getOutputs().size());
-  assert(dst_tensors.size() == _output_tensors.size());
-  for (uint32_t n = 0; n < dst_tensors.size(); ++n)
+  assert(outputs.size() == _graph.getOutputs().size());
+  assert(outputs.size() == _output_tensors.size());
+  for (uint32_t n = 0; n < outputs.size(); ++n)
   {
-    const auto dst_tensor = dst_tensors[n];
+    const auto output = outputs[n];
     // assert(dst_tensor->buffer() != nullptr);
     auto output_tensor = _output_tensors[n];
     assert(output_tensor != nullptr);
-    output_tensor->setTensor(dst_tensor);
+    output_tensor->setTensor(output);
   }
 
   executeImpl();

@@ -36,9 +36,10 @@ namespace controlflow
  * This class contains three types of tensors. Two native tensors(tensors that are managed by this
  * backend) and the other is migrant tensor.
  *
- * - NativeIOTensor - @c UserTensor managed by this backend, buffer is user-given
- * - NativeOwnTensor  - @c cpu_common::Tensor managed by this backend ( in @c _base_reg )
- * - MigrantTensor    - @c IPortableTensor managed by other backends ( in @c _base_reg )
+ * - NativeIOTensor  - @c IOTensor managed by this backend ( in @c _base_reg )
+ *     - NOTE The tensor it actually points to can be from another backend
+ * - NativeOwnTensor - @c cpu_common::Tensor managed by this backend ( in @c _base_reg )
+ * - MigrantTensor   - @c IPortableTensor managed by other backends
  *
  * @note @c _base_reg is used in implementation to reuse @c cpu_common::StaticTensorManager
  *

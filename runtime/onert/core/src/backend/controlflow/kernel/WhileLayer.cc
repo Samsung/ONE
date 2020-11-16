@@ -73,8 +73,7 @@ void WhileLayer::run()
   }();
 
   VERBOSE(While) << "Call to $" << _cond_subg_index << " (cond)" << std::endl;
-  cond_exec->execute(_input_tensors,
-                     {cond_output_tensor.get()}); // XXX output tensor is processed above
+  cond_exec->execute(_input_tensors, {cond_output_tensor.get()});
   VERBOSE(While) << "Return from $" << _cond_subg_index << std::endl;
 
   auto getResultCond = [](backend::ITensor *tensor) -> bool {
@@ -90,7 +89,7 @@ void WhileLayer::run()
   {
     PermuteLayer copy_body_inputs_to_op_outputs{op_inputs, op_outputs, _external_context};
     copy_body_inputs_to_op_outputs.run();
-    // return;
+    return;
   }
 
   // Need some temp tensors to hold the body subgraph output
