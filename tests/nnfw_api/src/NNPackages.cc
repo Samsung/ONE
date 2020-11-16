@@ -43,7 +43,7 @@ void NNPackages::init(const char *argv0)
   char raw_dir[1024];
   char cwd[1024];
   strncpy(raw_dir, argv0, sizeof(raw_dir) - 1);
-  char* dir_path = dirname(raw_dir);
+  char *dir_path = dirname(raw_dir);
   if (dir_path[0] == '/')
   {
     // If it is an absolute path, just use it
