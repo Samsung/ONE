@@ -21,6 +21,39 @@
 
 #include <string>
 #include <ostream>
+#include <unordered_map>
+
+class EventFormatWriter
+{
+public:
+  EventFormatWriter(const EventRecorder &recorder) : _recorder(recorder) { /* empty */}
+  virtual void writeToFile(std::ostream &os) = 0;
+  virtual ~EventFormatWriter() { /* empty */}
+
+protected:
+  const EventRecorder &_recorder;
+};
+
+class SNPEWriter : public EventFormatWriter
+{
+public:
+  SNPEWriter(const EventRecorder &recorder) : EventFormatWriter(recorder) { /* empty */}
+  void writeToFile(std::ostream &os) override;
+};
+
+class ChromeTracingWriter : public EventFormatWriter
+{
+public:
+  ChromeTracingWriter(const EventRecorder &recorder) : EventFormatWriter(recorder) { /* empty */}
+  void writeToFile(std::ostream &os) override;
+};
+
+class MDTableWriter : public EventFormatWriter
+{
+public:
+  MDTableWriter(const EventRecorder &recorder) : EventFormatWriter(recorder) { /* empty */}
+  void writeToFile(std::ostream &os) override;
+};
 
 class EventWriter
 {
@@ -33,19 +66,19 @@ public:
   };
 
 public:
-  EventWriter(const EventRecorder &recorder);
+  EventWriter(const EventRecorder &recorder)
+  {
+    _actual_writers[WriteFormat::SNPE_BENCHMARK] = std::make_unique<SNPEWriter>(recorder);
+    _actual_writers[WriteFormat::CHROME_TRACING] = std::make_unique<ChromeTracingWriter>(recorder);
+    _actual_writers[WriteFormat::MD_TABLE] = std::make_unique<MDTableWriter>(recorder);
+  }
 
 public:
   void writeToFiles(const std::string &base_filepath);
   void writeToFile(const std::string &filepath, WriteFormat write_format);
 
 private:
-  void writeSNPEBenchmark(std::ostream &os);
-  void writeChromeTrace(std::ostream &os);
-  void writeMDTable(std::ostream &os);
-
-private:
-  const EventRecorder &_recorder;
+  std::unordered_map<WriteFormat, std::unique_ptr<EventFormatWriter>> _actual_writers;
 };
 
 #endif // __ONERT_UTIL_EVENT_WRITER_H__

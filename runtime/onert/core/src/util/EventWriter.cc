@@ -418,11 +418,6 @@ struct MDTableBuilder
 
 } // namespace
 
-EventWriter::EventWriter(const EventRecorder &recorder) : _recorder(recorder)
-{
-  // DO NOTHING
-}
-
 void EventWriter::writeToFiles(const std::string &base_filepath)
 {
   // Note. According to an internal issue, let snpe json as just file name not '.snpe.json'
@@ -434,24 +429,10 @@ void EventWriter::writeToFiles(const std::string &base_filepath)
 void EventWriter::writeToFile(const std::string &filepath, WriteFormat write_format)
 {
   std::ofstream os{filepath, std::ofstream::out};
-  switch (write_format)
-  {
-    case WriteFormat::CHROME_TRACING:
-      writeChromeTrace(os);
-      break;
-    case WriteFormat::SNPE_BENCHMARK:
-      writeSNPEBenchmark(os);
-      break;
-    case WriteFormat::MD_TABLE:
-      writeMDTable(os);
-      break;
-    default:
-      assert(!"Invalid value");
-      break;
-  }
+  _actual_writers.at(write_format)->writeToFile(os);
 }
 
-void EventWriter::writeSNPEBenchmark(std::ostream &os)
+void SNPEWriter::writeToFile(std::ostream &os)
 {
   Json::Value root;
   auto &exec_data = root["Execution_Data"] = Json::Value{Json::objectValue};
@@ -548,7 +529,7 @@ void EventWriter::writeSNPEBenchmark(std::ostream &os)
   os << root;
 }
 
-void EventWriter::writeChromeTrace(std::ostream &os)
+void ChromeTracingWriter::writeToFile(std::ostream &os)
 {
   os << "{\n";
   os << "  " << quote("traceEvents") << ": [\n";
@@ -568,7 +549,7 @@ void EventWriter::writeChromeTrace(std::ostream &os)
   os << "}\n";
 }
 
-void EventWriter::writeMDTable(std::ostream &os)
+void MDTableWriter::writeToFile(std::ostream &os)
 {
   MDTableBuilder(_recorder.duration_events(), _recorder.counter_events()).build().write(os);
 }
