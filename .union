@@ -1,0 +1,6 @@
+GeneratedTests.*weights_as_inputs*
+GeneratedTests.logical_or_broadcast_4D_2D_nnfw
+GeneratedTests.mean
+GeneratedTests.add_broadcast_4D_2D_after_nops_float_nnfw
+GeneratedTests.argmax_*
+GeneratedTests.squeeze_relaxed

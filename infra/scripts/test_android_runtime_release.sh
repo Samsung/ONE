@@ -59,23 +59,19 @@ $ADB_CMD shell mkdir -p $ANDROID_REPORT_DIR
 $ADB_CMD push $ROOT_PATH/tests $ANDROID_WORKDIR/.
 $ADB_CMD push $ROOT_PATH/Product/aarch64-android.release/out $ANDROID_WORKDIR/Product/.
 
-# TFloader Testing
-TESTLIST=$(cat "${ROOT_PATH}/Product/aarch64-android.release/out/test/list/tflite_loader_list.${TEST_ARCH}.txt")
-$ADB_CMD shell LD_LIBRARY_PATH=$ANDROID_WORKDIR/Product/lib BACKENDS=acl_cl sh $ANDROID_WORKDIR/tests/scripts/models/run_test_android.sh \
-                                                        --driverbin=$ANDROID_WORKDIR/Product/bin/tflite_loader_test_tool \
-                                                        --reportdir=$ANDROID_REPORT_DIR \
-                                                        --tapname=tflite_loader.tap ${TESTLIST:-}
-# Union SkipList and testing List Creation
-UNION_MODELLIST_PREFIX="${ROOT_PATH}/Product/aarch64-android.release/out/test/list/frameworktest_list.${TEST_ARCH}"
-UNION_SKIPLIST_PREFIX="${ROOT_PATH}/Product/aarch64-android.release/out/unittest/nnapi_gtest.skip.${TEST_PLATFORM}"
-sort $UNION_MODELLIST_PREFIX.${BACKENDS[0]}.txt > $UNION_MODELLIST_PREFIX.intersect.txt
-sort $UNION_SKIPLIST_PREFIX.${BACKENDS[0]} > $UNION_SKIPLIST_PREFIX.union
-for BACKEND in "${BACKENDS[@]:1}"; do
-  comm -12 <(sort $UNION_MODELLIST_PREFIX.intersect.txt) <(sort $UNION_MODELLIST_PREFIX.$BACKEND.txt) > $UNION_MODELLIST_PREFIX.intersect.next.txt
-  comm <(sort $UNION_SKIPLIST_PREFIX.union) <(sort $UNION_SKIPLIST_PREFIX.$BACKEND) | tr -d "[:blank:]" > $UNION_SKIPLIST_PREFIX.union.next
-  mv $UNION_MODELLIST_PREFIX.intersect.next.txt $UNION_MODELLIST_PREFIX.intersect.txt
-  mv $UNION_SKIPLIST_PREFIX.union.next $UNION_SKIPLIST_PREFIX.union
-done
+# Intersection of framework test list files
+UNION_MODELLIST_PREFIX="${ROOT_PATH}/Product/aarch64-android.release/out/test/list/frameworktest_list.${TEST_ARCH}."
+UNION_MODELLISTS=( "${BACKENDS[@]/#/$UNION_MODELLIST_PREFIX}" )
+UNION_MODELLISTS=( "${UNION_MODELLISTS[@]/%/.txt}" )
+
+cat "${UNION_MODELLISTS[@]}" | sort | uniq -c | awk "{if(\$1==${#UNION_MODELLISTS[@]}){print \$2}}" > "${UNION_MODELLIST_PREFIX}intersect.txt"
+
+# Union of skip list files
+UNION_SKIPLIST_PREFIX="${ROOT_PATH}/Product/aarch64-android.release/out/unittest/nnapi_gtest.skip.${TEST_PLATFORM}."
+UNION_SKIPLISTS=( "${BACKENDS[@]/#/$UNION_SKIPLIST_PREFIX}" )
+
+sort -u "${UNION_SKIPLISTS[@]}" > "${UNION_SKIPLIST_PREFIX}union"
+
 # Fail on NCHW layout (acl_cl, acl_neon)
 # TODO Fix bug
 echo "GeneratedTests.*weights_as_inputs*" >> $UNION_SKIPLIST_PREFIX.union
@@ -84,6 +80,13 @@ echo "GeneratedTests.mean" >> $UNION_SKIPLIST_PREFIX.union
 echo "GeneratedTests.add_broadcast_4D_2D_after_nops_float_nnfw" >> $UNION_SKIPLIST_PREFIX.union
 echo "GeneratedTests.argmax_*" >> $UNION_SKIPLIST_PREFIX.union
 echo "GeneratedTests.squeeze_relaxed" >> $UNION_SKIPLIST_PREFIX.union
+
+# TFloader Testing
+TESTLIST=$(cat "${ROOT_PATH}/Product/aarch64-android.release/out/test/list/tflite_loader_list.${TEST_ARCH}.txt")
+$ADB_CMD shell LD_LIBRARY_PATH=$ANDROID_WORKDIR/Product/lib BACKENDS=acl_cl sh $ANDROID_WORKDIR/tests/scripts/models/run_test_android.sh \
+                                                        --driverbin=$ANDROID_WORKDIR/Product/bin/tflite_loader_test_tool \
+                                                        --reportdir=$ANDROID_REPORT_DIR \
+                                                        --tapname=tflite_loader.tap ${TESTLIST:-}
 
 # Testing Each BACKEND with EXECUTOR Combination
 for BACKEND in "${BACKENDS[@]}"; do
@@ -112,8 +115,8 @@ $ADB_CMD shell LD_LIBRARY_PATH=$ANDROID_WORKDIR/Product/lib EXECUTOR=Interpreter
                                                         --tapname=nnapi_test_interp_Interpreter.tap ${MODELLIST_INTERP:-}
 
 # Testing Mixed Backend
-MODELLIST_UNION=$(cat "${UNION_MODELLIST_PREFIX}.intersect.txt")
-SKIPLIST_UNION=$(grep -v '#' "$UNION_SKIPLIST_PREFIX.union" | tr '\n' ':')
+MODELLIST_UNION=$(cat "${UNION_MODELLIST_PREFIX}intersect.txt")
+SKIPLIST_UNION=$(grep -v '#' "${UNION_SKIPLIST_PREFIX}union" | tr '\n' ':')
 $ADB_CMD shell LD_LIBRARY_PATH=$ANDROID_WORKDIR/Product/lib OP_BACKEND_Conv2D="cpu" OP_BACKEND_MaxPool2D="acl_cl" OP_BACKEND_AvgPool2D="acl_neon" ACL_LAYOUT="NCHW" BACKENDS="acl_cl\;acl_neon\;cpu" $ANDROID_WORKDIR/Product/unittest/nnapi_gtest \
                                                             --gtest_output=xml:$ANDROID_REPORT_DIR/nnapi_gtest_mixed.xml \
                                                             --gtest_filter=-${SKIPLIST_UNION}
@@ -128,10 +131,6 @@ for TEST_BIN in `find ${ROOT_PATH}/Product/aarch64-android.release/out/unittest_
                   LD_LIBRARY_PATH=$ANDROID_WORKDIR/Product/lib ./$(basename $TEST_BIN) \
                   --gtest_output=xml:$ANDROID_REPORT_DIR/$(basename $TEST_BIN).xml"
 done
-
-# This is test for profiling.
-# $ADB_CMD shell mkdir -p $ANDROID_REPORT_DIR/benchmark
-# $ADB_CMD shell 'cd $ANDROID_WORKDIR && LD_LIBRARY_PATH=$ANDROID_WORKDIR/Product/lib sh $ANDROID_WORKDIR/tests/scripts/test_scheduler_with_profiling_android.sh'
 
 rm -rf $ROOT_PATH/report
 mkdir -p $ROOT_PATH/report
