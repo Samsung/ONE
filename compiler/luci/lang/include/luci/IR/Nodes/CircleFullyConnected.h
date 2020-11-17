@@ -21,7 +21,6 @@
 #include "luci/IR/CircleOpcode.h"
 
 #include "luci/IR/AttrFusedActFunc.h"
-#include "luci/IR/AttrWeightsFormat.h"
 #include "luci/IR/LuciNodeMixins.h"
 
 namespace luci
@@ -35,6 +34,16 @@ class CircleFullyConnected final
       public LuciNodeMixin<LuciNodeTrait::FusedActFunc>,
       public LuciNodeMixin<LuciNodeTrait::Bias>
 {
+public:
+  enum class WeightsFormat
+  {
+    UNDEFINED, // This is not defined by Circle. This was added to prevent programming error.
+
+    DEFAULT,
+    SHUFFLED4x16INT8,
+    SHUFFLED16x1FLOAT32,
+  };
+
 public:
   loco::Node *input(void) const { return at(0)->node(); }
   void input(loco::Node *node) { at(0)->node(node); }

@@ -27,7 +27,7 @@ namespace
 bool satisfy_precondition(luci::CircleFullyConnected *fc)
 {
   // check if it's already been shuffled
-  if (fc->weights_format() != luci::WeightsFormat::DEFAULT)
+  if (fc->weights_format() != luci::CircleFullyConnected::WeightsFormat::DEFAULT)
     return false;
 
   // check if its data type is FLOAT32
@@ -129,7 +129,7 @@ bool ShuffleWeightTo16x1Float32Pass::run(loco::Graph *g)
     for (const auto fc : fc_vec)
     {
       fc->weights(new_weights);
-      fc->weights_format(luci::WeightsFormat::SHUFFLED16x1FLOAT32);
+      fc->weights_format(luci::CircleFullyConnected::WeightsFormat::SHUFFLED16x1FLOAT32);
     }
   }
 

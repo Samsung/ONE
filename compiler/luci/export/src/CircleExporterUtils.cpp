@@ -87,15 +87,16 @@ circle::MirrorPadMode to_circle_mirrorpadmode(luci::MirrorPadMode mode)
   }
 }
 
-circle::FullyConnectedOptionsWeightsFormat to_circle_weightsformat(luci::WeightsFormat format)
+circle::FullyConnectedOptionsWeightsFormat
+to_circle_weightsformat(luci::CircleFullyConnected::WeightsFormat format)
 {
   switch (format)
   {
-    case luci::WeightsFormat::DEFAULT:
+    case luci::CircleFullyConnected::WeightsFormat::DEFAULT:
       return circle::FullyConnectedOptionsWeightsFormat_DEFAULT;
-    case luci::WeightsFormat::SHUFFLED4x16INT8:
+    case luci::CircleFullyConnected::WeightsFormat::SHUFFLED4x16INT8:
       return circle::FullyConnectedOptionsWeightsFormat_SHUFFLED4x16INT8;
-    case luci::WeightsFormat::SHUFFLED16x1FLOAT32:
+    case luci::CircleFullyConnected::WeightsFormat::SHUFFLED16x1FLOAT32:
       return circle::FullyConnectedOptionsWeightsFormat_SHUFFLED16x1FLOAT32;
     default:
       INTERNAL_EXN_V("trying to convert unsupported luci::WeightsFormat", oops::to_uint32(format));

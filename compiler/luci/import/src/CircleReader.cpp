@@ -151,19 +151,20 @@ MirrorPadMode luci_mirrorpad_mode(const circle::MirrorPadMode mode)
   return MirrorPadMode::UNDEFINED;
 }
 
-WeightsFormat luci_weights_format(const circle::FullyConnectedOptionsWeightsFormat weights_format)
+luci::CircleFullyConnected::WeightsFormat
+luci_weights_format(const circle::FullyConnectedOptionsWeightsFormat weights_format)
 {
   switch (weights_format)
   {
     case circle::FullyConnectedOptionsWeightsFormat_DEFAULT:
-      return WeightsFormat::DEFAULT;
+      return luci::CircleFullyConnected::WeightsFormat::DEFAULT;
     case circle::FullyConnectedOptionsWeightsFormat_SHUFFLED4x16INT8:
-      return WeightsFormat::SHUFFLED4x16INT8;
+      return luci::CircleFullyConnected::WeightsFormat::SHUFFLED4x16INT8;
     case circle::FullyConnectedOptionsWeightsFormat_SHUFFLED16x1FLOAT32:
-      return WeightsFormat::SHUFFLED16x1FLOAT32;
+      return luci::CircleFullyConnected::WeightsFormat::SHUFFLED16x1FLOAT32;
   }
   assert(false);
-  return WeightsFormat::UNDEFINED;
+  return luci::CircleFullyConnected::WeightsFormat::UNDEFINED;
 }
 
 DimensionType luci_dim_type(const circle::DimensionType dim_type)
