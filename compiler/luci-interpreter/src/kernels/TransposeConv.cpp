@@ -93,7 +93,17 @@ void TransposeConv::execute() const
       evalFloat();
       break;
     case DataType::U8:
-      evalQuantized();
+      if (filter()->scales().size() == 1)
+      {
+        evalQuantized();
+      }
+      else if (filter()->scales().size() > 1)
+      {
+        LUCI_INTERPRETER_CHECK(filter()->shape().num_dims() == 4);
+        LUCI_INTERPRETER_CHECK(filter()->scales().size() ==
+                               static_cast<size_t>(filter()->shape().dim(0)));
+        evalQuantizedPerChannel();
+      }
       break;
     case DataType::S16:
       evalQuantizedS16();
@@ -145,6 +155,98 @@ void TransposeConv::evalQuantized() const
                                        getTensorShape(output()), getTensorData<uint8>(output()), //
                                        tflite::RuntimeShape(), nullptr,                          //
                                        getTensorData<int32_t>(_scratch_tensor.get()));
+}
+
+void TransposeConv::evalQuantizedPerChannel() const
+{
+  const auto *input_data = getTensorData<uint8_t>(input());
+  const auto *filter_data = getTensorData<uint8_t>(filter());
+  const auto *bias_data = getTensorData<int32_t>(bias());
+  auto *output_data = getTensorData<uint8_t>(output());
+  auto *scratch_data = getTensorData<int32_t>(_scratch_tensor.get());
+
+  const Shape &input_shape = input()->shape();
+  const Shape &filter_shape = filter()->shape();
+  const Shape &output_shape = output()->shape();
+
+  const int32_t batches = input_shape.dim(0);
+  const int32_t input_height = input_shape.dim(1);
+  const int32_t input_width = input_shape.dim(2);
+  const int32_t input_depth = input_shape.dim(3);
+  const int32_t output_depth = filter_shape.dim(0);
+  const int32_t filter_height = filter_shape.dim(1);
+  const int32_t filter_width = filter_shape.dim(2);
+  const int32_t output_height = output_shape.dim(1);
+  const int32_t output_width = output_shape.dim(2);
+
+  const int32_t stride_height = _params.stride_height;
+  const int32_t stride_width = _params.stride_width;
+
+  int32_t activation_min{};
+  int32_t activation_max{};
+  calculateActivationRangeQuantized(Activation::NONE, output(), &activation_min, &activation_max);
+
+  std::memset(scratch_data, 0, _scratch_tensor->shape().num_elements() * sizeof(int32_t));
+
+  BroadcastableWrapper<ChannelQuantMultipliers> output_multipliers(_quant_multipliers);
+  for (int32_t batch = 0; batch < batches; ++batch)
+  {
+    for (int32_t in_y = 0; in_y < input_height; ++in_y)
+    {
+      for (int32_t in_x = 0; in_x < input_width; ++in_x)
+      {
+        for (int32_t in_c = 0; in_c < input_depth; ++in_c)
+        {
+          const int32_t out_y_origin = in_y * stride_height - _padding_height;
+          const int32_t out_x_origin = in_x * stride_width - _padding_width;
+          for (int32_t filter_y = 0; filter_y < filter_height; ++filter_y)
+          {
+            for (int32_t filter_x = 0; filter_x < filter_width; ++filter_x)
+            {
+              const int32_t out_x = out_x_origin + filter_x;
+              const int32_t out_y = out_y_origin + filter_y;
+              if ((out_y >= 0 && out_y < output_height) && (out_x >= 0 && out_x < output_width))
+              {
+                for (int32_t out_c = 0; out_c < output_depth; ++out_c)
+                {
+                  const uint8_t input_val =
+                      input_data[calcOffset(input_shape, batch, in_y, in_x, in_c)];
+                  const uint8_t filter_val =
+                      filter_data[calcOffset(filter_shape, out_c, filter_y, filter_x, in_c)];
+                  scratch_data[calcOffset(output_shape, batch, out_y, out_x, out_c)] +=
+                      static_cast<int32_t>(input_val - input()->zero_point()) *
+                      static_cast<int32_t>(filter_val - filter()->zero_points()[out_c]);
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    for (int32_t out_y = 0; out_y < output_height; ++out_y)
+    {
+      for (int32_t out_x = 0; out_x < output_width; ++out_x)
+      {
+        for (int32_t out_c = 0; out_c < output_depth; ++out_c)
+        {
+          int32_t acc = scratch_data[calcOffset(output_shape, batch, out_y, out_x, out_c)];
+          if (bias_data)
+          {
+            acc += bias_data[out_c];
+          }
+
+          int32_t scaled_acc = tflite::MultiplyByQuantizedMultiplier(
+              acc, output_multipliers[out_c].multiplier, output_multipliers[out_c].shift);
+
+          scaled_acc += output()->zero_point();
+          scaled_acc = std::max(scaled_acc, activation_min);
+          scaled_acc = std::min(scaled_acc, activation_max);
+
+          output_data[calcOffset(output_shape, batch, out_y, out_x, out_c)] = scaled_acc;
+        }
+      }
+    }
+  }
 }
 
 void TransposeConv::evalQuantizedS16() const

@@ -47,6 +47,7 @@ public:
 private:
   void evalFloat() const;
   void evalQuantized() const;
+  void evalQuantizedPerChannel() const;
   void evalQuantizedS16() const;
 
 private:
