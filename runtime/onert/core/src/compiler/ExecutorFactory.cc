@@ -65,8 +65,8 @@ private:
   std::shared_ptr<backend::IConfig> _config;
 };
 
-void initializeModelIOTensors(compiler::LoweredGraph &lowered_graph,
-                              const ir::OperandIndexSequence &indices)
+void initializeSubgraphIOTensors(compiler::LoweredGraph &lowered_graph,
+                                 const ir::OperandIndexSequence &indices)
 {
   // TODO Store controlflow backend in BackendContext
   std::shared_ptr<backend::controlflow::TensorBuilder> cf_tensor_builder;
@@ -272,7 +272,7 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lo
   auto order = Linear::linearize(*lowered_graph);
   runTensorRegistration(lowered_graph.get(), order);
 
-  initializeModelIOTensors(
+  initializeSubgraphIOTensors(
       *lowered_graph, (lowered_graph->graph().getInputs() + lowered_graph->graph().getOutputs()) |
                           ir::Remove::DUPLICATED | ir::Remove::UNDEFINED);
 
@@ -369,7 +369,7 @@ exec::IExecutor *ExecutorFactory::createDataflowExecutor(
   auto order = Linear::linearize(*lowered_graph);
   runTensorRegistration(lowered_graph.get(), order);
 
-  initializeModelIOTensors(
+  initializeSubgraphIOTensors(
       *lowered_graph, (lowered_graph->graph().getInputs() + lowered_graph->graph().getOutputs()) |
                           ir::Remove::DUPLICATED | ir::Remove::UNDEFINED);
 
