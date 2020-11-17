@@ -132,7 +132,8 @@ int entry(int argc, char **argv)
       .nargs(0)
       .required(false)
       .default_value(false)
-      .help("This will convert weight format of FullyConnected to SHUFFLED16x1FLOAT32");
+      .help("This will convert weight format of FullyConnected to SHUFFLED16x1FLOAT32. Note that "
+            "it only converts weights whose row is a multiple of 16");
 
   arser.add_argument("--mute_warnings")
       .nargs(0)
