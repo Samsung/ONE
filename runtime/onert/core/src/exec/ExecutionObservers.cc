@@ -70,12 +70,12 @@ void ProfileObserver::handleJobEnd(IExecutor *exec, const ir::OpSequence *op_seq
   }
 };
 
-ChromeTracingObserver::ChromeTracingObserver(const std::string &filepath, const ir::Graph &graph)
+TracingObserver::TracingObserver(const std::string &filepath, const ir::Graph &graph)
     : _base_filepath(filepath), _recorder{}, _collector{&_recorder}, _graph{graph}
 {
 }
 
-ChromeTracingObserver::~ChromeTracingObserver()
+TracingObserver::~TracingObserver()
 {
   try
   {
@@ -83,38 +83,38 @@ ChromeTracingObserver::~ChromeTracingObserver()
   }
   catch (const std::exception &e)
   {
-    std::cerr << "E: Fail to record event in ChromeTracingObserver: " << e.what() << std::endl;
+    std::cerr << "E: Fail to record event in TracingObserver: " << e.what() << std::endl;
   }
 }
 
-void ChromeTracingObserver::handleSubgraphBegin(IExecutor *)
+void TracingObserver::handleSubgraphBegin(IExecutor *)
 {
   _collector.onEvent(EventCollector::Event{EventCollector::Edge::BEGIN, "runtime", "Graph"});
 }
 
-void ChromeTracingObserver::handleJobBegin(IExecutor *, const ir::OpSequence *op_seq,
-                                           const backend::Backend *backend)
+void TracingObserver::handleJobBegin(IExecutor *, const ir::OpSequence *op_seq,
+                                     const backend::Backend *backend)
 {
   std::string backend_id = backend->config()->id();
   _collector.onEvent(EventCollector::Event{EventCollector::Edge::BEGIN, backend_id,
                                            opSequenceTag(op_seq, _graph.operations())});
 }
 
-void ChromeTracingObserver::handleJobEnd(IExecutor *, const ir::OpSequence *op_seq,
-                                         const backend::Backend *backend)
+void TracingObserver::handleJobEnd(IExecutor *, const ir::OpSequence *op_seq,
+                                   const backend::Backend *backend)
 {
   std::string backend_id = backend->config()->id();
   _collector.onEvent(EventCollector::Event{EventCollector::Edge::END, backend_id,
                                            opSequenceTag(op_seq, _graph.operations())});
 }
 
-void ChromeTracingObserver::handleSubgraphEnd(IExecutor *)
+void TracingObserver::handleSubgraphEnd(IExecutor *)
 {
   _collector.onEvent(EventCollector::Event{EventCollector::Edge::END, "runtime", "Graph"});
 }
 
-std::string ChromeTracingObserver::opSequenceTag(const ir::OpSequence *op_seq,
-                                                 const ir::Operations &operations)
+std::string TracingObserver::opSequenceTag(const ir::OpSequence *op_seq,
+                                           const ir::Operations &operations)
 {
   if (op_seq->size() == 0)
     return "Empty OpSequence";
