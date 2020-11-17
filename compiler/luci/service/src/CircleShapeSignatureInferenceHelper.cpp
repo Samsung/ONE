@@ -22,7 +22,7 @@ namespace luci
 namespace ssinf
 {
 
-ShapeSignature signature_of_input(const luci::CircleNode *node, uint32_t index)
+ShapeSignature signature_of_arg(const luci::CircleNode *node, uint32_t index)
 {
   auto circle_input = loco::must_cast<luci::CircleNode *>(node->arg(index));
   return circle_input->shape_signature();

@@ -26,7 +26,7 @@ namespace luci
 namespace ssinf // Namespace for Shape Signature Inference
 {
 
-ShapeSignature signature_of_input(const luci::CircleNode *node, uint32_t index);
+ShapeSignature signature_of_arg(const luci::CircleNode *node, uint32_t index);
 
 } // namespace ssinf
 
