@@ -930,7 +930,8 @@ void OperationExporter::visit(luci::CircleFullyConnected *node)
 {
   export_simple(
       node, circle::BuiltinOperator_FULLY_CONNECTED, circle::BuiltinOptions_FullyConnectedOptions,
-      CreateFullyConnectedOptions(_ctx.builder, to_circle_actfunc(node->fusedActivationFunction()))
+      CreateFullyConnectedOptions(_ctx.builder, to_circle_actfunc(node->fusedActivationFunction()),
+                                  to_circle_weightsformat(node->weights_format()))
           .Union());
 }
 

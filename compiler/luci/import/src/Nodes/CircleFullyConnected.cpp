@@ -53,12 +53,7 @@ CircleNode *CircleFullyConnectedGraphBuilder::build_node(const circle::OperatorT
 
   const auto *options = op.builtin_options.AsFullyConnectedOptions();
   node->fusedActivationFunction(luci_actfunc(options->fused_activation_function));
-  if (options->weights_format != circle::FullyConnectedOptionsWeightsFormat_DEFAULT)
-  {
-    throw oops::UserExn(
-        "Unsupported weights format",
-        circle::EnumNameFullyConnectedOptionsWeightsFormat(options->weights_format));
-  }
+  node->weights_format(luci_weights_format(options->weights_format));
 
   return node;
 }
