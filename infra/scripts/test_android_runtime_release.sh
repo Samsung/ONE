@@ -25,8 +25,6 @@ fi
 
 apt-get update && apt-get install -y curl
 
-
-
 # Download Model
 $ROOT_PATH/tests/scripts/models/run_test.sh --download=on --run=off
 $ROOT_PATH/Product/aarch64-android.release/out/test/models/run_test.sh --download=on --run=off \
@@ -61,13 +59,13 @@ $ADB_CMD shell mkdir -p $ANDROID_REPORT_DIR
 $ADB_CMD push $ROOT_PATH/tests $ANDROID_WORKDIR/.
 $ADB_CMD push $ROOT_PATH/Product/aarch64-android.release/out $ANDROID_WORKDIR/Product/.
 
-#TFloader Testing
+# TFloader Testing
 TESTLIST=$(cat "${ROOT_PATH}/Product/aarch64-android.release/out/test/list/tflite_loader_list.${TEST_ARCH}.txt")
 $ADB_CMD shell LD_LIBRARY_PATH=$ANDROID_WORKDIR/Product/lib BACKENDS=acl_cl sh $ANDROID_WORKDIR/tests/scripts/models/run_test_android.sh \
                                                         --driverbin=$ANDROID_WORKDIR/Product/bin/tflite_loader_test_tool \
                                                         --reportdir=$ANDROID_REPORT_DIR \
                                                         --tapname=tflite_loader.tap ${TESTLIST:-}
-#Union SkipList and testing List Creation
+# Union SkipList and testing List Creation
 UNION_MODELLIST_PREFIX="${ROOT_PATH}/Product/aarch64-android.release/out/test/list/frameworktest_list.${TEST_ARCH}"
 UNION_SKIPLIST_PREFIX="${ROOT_PATH}/Product/aarch64-android.release/out/unittest/nnapi_gtest.skip.${TEST_PLATFORM}"
 sort $UNION_MODELLIST_PREFIX.${BACKENDS[0]}.txt > $UNION_MODELLIST_PREFIX.intersect.txt
