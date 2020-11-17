@@ -162,9 +162,9 @@ luci_weights_format(const circle::FullyConnectedOptionsWeightsFormat weights_for
       return luci::CircleFullyConnected::WeightsFormat::SHUFFLED4x16INT8;
     case circle::FullyConnectedOptionsWeightsFormat_SHUFFLED16x1FLOAT32:
       return luci::CircleFullyConnected::WeightsFormat::SHUFFLED16x1FLOAT32;
+    default:
+      throw std::runtime_error("Invalid FullyConnectedOptionsWeightsFormat");
   }
-  assert(false);
-  return luci::CircleFullyConnected::WeightsFormat::UNDEFINED;
 }
 
 DimensionType luci_dim_type(const circle::DimensionType dim_type)
