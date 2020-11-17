@@ -46,6 +46,8 @@ loco::DataType luci_datatype(circle::TensorType type);
 FusedActFunc luci_actfunc(const circle::ActivationFunctionType type);
 Padding luci_padding(const circle::Padding padding);
 MirrorPadMode luci_mirrorpad_mode(const circle::MirrorPadMode mode);
+luci::CircleFullyConnected::WeightsFormat
+luci_weights_format(const circle::FullyConnectedOptionsWeightsFormat weights_format);
 std::unique_ptr<CircleQuantParam>
 luci_quantparam(const circle::QuantizationParametersT *quantization);
 
