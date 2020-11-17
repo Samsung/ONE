@@ -35,6 +35,16 @@ class CircleFullyConnected final
       public LuciNodeMixin<LuciNodeTrait::Bias>
 {
 public:
+  enum class WeightsFormat
+  {
+    UNDEFINED, // This is not defined by Circle. This was added to prevent programming error.
+
+    DEFAULT,
+    SHUFFLED4x16INT8,
+    SHUFFLED16x1FLOAT32,
+  };
+
+public:
   loco::Node *input(void) const { return at(0)->node(); }
   void input(loco::Node *node) { at(0)->node(node); }
 
@@ -43,6 +53,13 @@ public:
 
   loco::Node *bias(void) const override { return at(2)->node(); }
   void bias(loco::Node *node) override { at(2)->node(node); }
+
+public:
+  WeightsFormat weights_format(void) const { return _weights_format; }
+  void weights_format(WeightsFormat weights_format) { _weights_format = weights_format; }
+
+private:
+  WeightsFormat _weights_format{WeightsFormat::DEFAULT};
 };
 
 } // namespace luci
