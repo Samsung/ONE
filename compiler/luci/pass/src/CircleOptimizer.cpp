@@ -31,6 +31,7 @@
 #include "luci/Pass/QuantizeWithMinMaxPass.h"
 #include "luci/Pass/QuantizeDequantizeWeightsPass.h"
 #include "luci/Pass/SparsifyTensorPass.h"
+#include "luci/Pass/ShuffleWeightTo16x1Float32Pass.h"
 // TODO add more passes
 
 #include "luci/Pass/ShapeInferencePass.h"
@@ -172,6 +173,10 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   if (_options->query(Options::Algorithm::MakeBatchNormGammaPositive))
   {
     phase.emplace_back(std::make_unique<luci::MakeBatchNormGammaPositivePass>());
+  }
+  if (_options->query(Options::Algorithm::ShuffleWeightTo16x1Float32))
+  {
+    phase.emplace_back(std::make_unique<luci::ShuffleWeightTo16x1Float32Pass>());
   }
 
   // Shape inference is needed for added nodes doing above transformations

@@ -47,6 +47,7 @@ public:
       FusePreActivationBatchNorm,
       MakeBatchNormGammaPositive,
       FuseActivationFunction,
+      ShuffleWeightTo16x1Float32,
     };
 
     enum AlgorithmParameters
