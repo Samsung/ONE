@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-#ifndef __LUCI_CIRCLE_SHAPE_SIGNATURE_INFERENCE_RULE_H__
-#define __LUCI_CIRCLE_SHAPE_SIGNATURE_INFERENCE_RULE_H__
+#ifndef __LUCI_CIRCLE_SHAPE_SIGNATURE_INFERENCE_H__
+#define __LUCI_CIRCLE_SHAPE_SIGNATURE_INFERENCE_H__
 
 #include <luci/IR/CircleNodes.h>
 #include <luci/IR/CircleNodeVisitor.h>
 #include <luci/IR/CircleShapeSignature.h>
+#include <luci/Service/CircleShapeSignatureInferenceHelper.h>
 
 namespace luci
 {
@@ -155,8 +156,8 @@ public:
   // ShapeSignature visit(const luci::CircleInstanceNorm *node) final;
 
   // Virtual
-  // ShapeSignature visit(const luci::CircleInput *node) final;
-  // ShapeSignature visit(const luci::CircleOutput *node) final;
+  ShapeSignature visit(const luci::CircleInput *node) final;
+  ShapeSignature visit(const luci::CircleOutput *node) final;
   // ShapeSignature visit(const luci::CircleOutputDummy *node) final;
   // ShapeSignature visit(const luci::CircleOutputExclude *node) final;
   // ShapeSignature visit(const luci::CircleCustomOut *node) final;
@@ -175,4 +176,4 @@ public:
 
 } // namespace luci
 
-#endif // __LUCI_CIRCLE_SHAPE_SIGNATURE_INFERENCE_RULE_H__
+#endif // __LUCI_CIRCLE_SHAPE_SIGNATURE_INFERENCE_H__
