@@ -18,14 +18,18 @@
  * @file  IExecutor.h
  * @brief This file defines interface of Executor
  */
-#ifndef __ONERT_EXEC_I_EXECUTOR_H_
-#define __ONERT_EXEC_I_EXECUTOR_H_
+#ifndef __ONERT_EXEC_I_EXECUTOR_H__
+#define __ONERT_EXEC_I_EXECUTOR_H__
 
 #include "ir/Graph.h"
 #include "IFunction.h"
 #include "IODescription.h"
+#include "ir/Index.h"
 #include "ir/OperationIndexMap.h"
-#include "backend/IDynamicTensorManager.h"
+
+#include <cstdint>
+#include <memory>
+#include <unordered_map>
 
 namespace onert
 {
@@ -72,4 +76,4 @@ using ExecutorMap = std::unordered_map<ir::SubgraphIndex, std::unique_ptr<IExecu
 } // namespace exec
 } // namespace onert
 
-#endif // __ONERT_EXEC_I_EXECUTOR_H_
+#endif // __ONERT_EXEC_I_EXECUTOR_H__
