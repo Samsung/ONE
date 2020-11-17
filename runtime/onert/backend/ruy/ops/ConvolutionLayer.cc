@@ -147,8 +147,6 @@ void ConvolutionLayer::prepare()
   _prepare = true;
 }
 
-#undef ANDROID_NN_CONV_PARAMETERS
-
 } // namespace ops
 } // namespace ruy
 } // namespace backend
