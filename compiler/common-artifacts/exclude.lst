@@ -92,6 +92,7 @@ tcgenerate(ReduceProd_001)
 tcgenerate(ReduceProd_002)
 tcgenerate(ReduceProd_003)
 tcgenerate(ReLUN1To1_000)
+tcgenerate(ReLUN1To1_dynamic_000)
 tcgenerate(Reshape_003) # luci-interpreter doesn't support reshape without built-in option
 tcgenerate(ReverseSequence_000)
 tcgenerate(ReverseV2_000)
