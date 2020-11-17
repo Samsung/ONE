@@ -108,9 +108,9 @@ public:
   // ShapeSignature visit(const luci::CircleReduceMax *node) final;
   // ShapeSignature visit(const luci::CircleReduceMin *node) final;
   // ShapeSignature visit(const luci::CircleReduceProd *node) final;
-  // ShapeSignature visit(const luci::CircleRelu *node) final;
-  // ShapeSignature visit(const luci::CircleRelu6 *node) final;
-  // ShapeSignature visit(const luci::CircleReluN1To1 *node) final;
+  ShapeSignature visit(const luci::CircleRelu *node) final;
+  ShapeSignature visit(const luci::CircleRelu6 *node) final;
+  ShapeSignature visit(const luci::CircleReluN1To1 *node) final;
   // ShapeSignature visit(const luci::CircleReshape *node) final;
   // ShapeSignature visit(const luci::CircleResizeBilinear *node) final;
   // ShapeSignature visit(const luci::CircleResizeNearestNeighbor *node) final;
