@@ -124,6 +124,8 @@ convertElementwiseBinaryType(ir::operation::ElementwiseBinary::ElementwiseBinary
 {
   switch (type_ir)
   {
+    case ir::operation::ElementwiseBinary::ElementwiseBinaryType::LOGICAL_AND:
+      return ops::ElementwiseBinaryType::kLogicalAnd;
     case ir::operation::ElementwiseBinary::ElementwiseBinaryType::LOGICAL_OR:
       return ops::ElementwiseBinaryType::kLogicalOr;
     case ir::operation::ElementwiseBinary::ElementwiseBinaryType::MAX:
