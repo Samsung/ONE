@@ -130,6 +130,7 @@ void CircleOptimizer::optimize(luci::Module *m) const
 {
   luci::Phase phase;
 
+  // phase.emplace_back(std::make_unique<luci::ShapeSignatureInferencePass>());
   if (_options->query(Options::Algorithm::FuseBCQ))
   {
     phase.emplace_back(std::make_unique<luci::FuseBCQPass>());
