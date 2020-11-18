@@ -16,11 +16,52 @@
 
 #include "luci/Pass/FuseBCQPass.h"
 
+#include <loco.h>
+
 #include <luci/IR/CircleNodes.h>
 #include <luci/Log.h>
 
 #include <cassert>
 #include <set>
+
+namespace
+{
+
+bool is_same_const(luci::CircleConst *weight, luci::CircleConst *fuseop, bool do_w_x)
+{
+  if (weight->dtype() != loco::DataType::FLOAT32)
+    return false;
+
+  if (weight->rank() != 2)
+    return false;
+
+  if (do_w_x)
+  {
+    if (!(weight->dim(0) == fuseop->dim(0) && weight->dim(1) == fuseop->dim(1)))
+      return false;
+
+    for (uint32_t i = 0; i < weight->size<loco::DataType::FLOAT32>(); ++i)
+      if (weight->at<loco::DataType::FLOAT32>(i) != fuseop->at<loco::DataType::FLOAT32>(i))
+        return false;
+  }
+  else
+  {
+    auto dim0 = weight->dim(0).value();
+    auto dim1 = weight->dim(1).value();
+
+    if (!(weight->dim(0) == fuseop->dim(1) && weight->dim(1) == fuseop->dim(0)))
+      return false;
+
+    for (uint32_t i = 0; i < dim0; ++i)
+      for (uint32_t j = 0; j < dim1; ++j)
+        if (weight->at<loco::DataType::FLOAT32>(i * dim1 + j) !=
+            fuseop->at<loco::DataType::FLOAT32>(j * dim0 + i))
+          return false;
+  }
+
+  return true;
+}
+}
 
 namespace
 {
@@ -38,11 +79,9 @@ public:
   }
 
 public:
-  bool fuseBCQ(loco::Graph *g)
+  void register_bcq_info(loco::Graph *g)
   {
-
-    const auto output_nodes = loco::output_nodes(g);
-    for (auto node : output_nodes)
+    for (auto node : loco::output_nodes(g))
     {
       auto output_node = loco::must_cast<luci::CircleOutput *>(node);
 
@@ -61,28 +100,27 @@ public:
         add_BCQ_info_node(prefix, metadata_type, circle_node);
       }
     }
+  }
 
-    if (!is_bcqinfo_valid())
-      return false;
+  bool fuseBCQ(loco::Graph *g)
+  {
+    bool changed = false;
 
-    for (auto f : _fusable_op)
+    for (auto node : loco::postorder_traversal(loco::output_nodes(g)))
     {
-      auto prefix = f.first;
-      luci::CircleNode *node = f.second;
-
-      if (!is_valid_prefix(prefix))
-        continue;
-
       // Fuse Gather to BCQGather
       if (auto gather = dynamic_cast<luci::CircleGather *>(node))
       {
         if (auto params = dynamic_cast<luci::CircleConst *>(gather->params()))
         {
+          auto prefix = get_prefix_of_const(params);
+          if (prefix == -1 || !is_valid_prefix(prefix))
+            continue;
           auto bcq_gather = g->nodes()->create<luci::CircleBCQGather>();
 
           bcq_gather->op_version(1);
-          bcq_gather->input_scales(_alpha[prefix]);
-          bcq_gather->input_binary(_packed_binary_code[prefix]);
+          bcq_gather->input_scales(alpha(g, prefix));
+          bcq_gather->input_binary(packed_binary_code(g, prefix));
           bcq_gather->indices(gather->indices());
           bcq_gather->input_clusters(packed_clusters(g, prefix));
 
@@ -118,20 +156,7 @@ public:
             loco::replace(gather).with(output_transpose);
           }
 
-          return true;
-        }
-      }
-
-      // Einsum is unpacked to FullyConnected, Pack and Reshape
-      if (auto reshape = dynamic_cast<luci::CircleReshape *>(node))
-      {
-        node = dynamic_cast<luci::CircleNode *>(reshape->tensor());
-      }
-      if (auto pack = dynamic_cast<luci::CirclePack *>(node))
-      {
-        if (pack->values_count() == 1 && pack->rank() == 3)
-        {
-          node = dynamic_cast<luci::CircleNode *>(pack->values(0));
+          changed = true;
         }
       }
 
@@ -140,11 +165,14 @@ public:
       {
         if (auto weights = dynamic_cast<luci::CircleConst *>(fully_connected->weights()))
         {
+          auto prefix = get_prefix_of_const(weights);
+          if (prefix == -1 || !is_valid_prefix(prefix))
+            continue;
           auto bcq_fc = g->nodes()->create<luci::CircleBCQFullyConnected>();
 
           bcq_fc->op_version(1);
-          bcq_fc->weights_scales(_alpha[prefix]);
-          bcq_fc->weights_binary(_packed_binary_code[prefix]);
+          bcq_fc->weights_scales(alpha(g, prefix));
+          bcq_fc->weights_binary(packed_binary_code(g, prefix));
           bcq_fc->bias(fully_connected->bias());
           bcq_fc->weights_clusters(packed_clusters(g, prefix));
           bcq_fc->fusedActivationFunction(fully_connected->fusedActivationFunction());
@@ -181,6 +209,7 @@ public:
           // If x_w formation, we should insert Transpose in front and back of BCQFullyConnected
           if (_do_w_x[prefix]->at<loco::DataType::BOOL>(0))
           {
+            assert(false);
             bcq_fc->weights_hidden_size(weights->dim(0).value());
             bcq_fc->input(bcq_input);
             loco::replace(fully_connected).with(bcq_fc);
@@ -211,16 +240,47 @@ public:
             loco::replace(fully_connected).with(output_transpose);
           }
 
-          return true;
+          changed = true;
         }
-        else
+        else if (auto weights_as_input =
+                     dynamic_cast<luci::CircleConst *>(fully_connected->input()))
         {
-          // TODO Is there any case that input() is constant, instead of weights()?
+          auto prefix = get_prefix_of_const(weights_as_input);
+          if (prefix == -1 || !is_valid_prefix(prefix))
+            continue;
+
+          auto perm = g->nodes()->create<luci::CircleConst>();
+          perm->dtype(loco::DataType::S32);
+          perm->size<loco::DataType::S32>(2);
+          perm->rank(1);
+          perm->dim(0) = 2;
+          perm->at<loco::DataType::S32>(0) = 1;
+          perm->at<loco::DataType::S32>(1) = 0;
+          perm->shape_status(luci::ShapeStatus::VALID);
+
+          auto input_transpose = g->nodes()->create<luci::CircleTranspose>();
+          input_transpose->a(fully_connected->weights());
+          input_transpose->perm(perm);
+
+          auto bcq_fc = g->nodes()->create<luci::CircleBCQFullyConnected>();
+
+          bcq_fc->op_version(1);
+          bcq_fc->weights_scales(alpha(g, prefix));
+          bcq_fc->weights_binary(packed_binary_code(g, prefix));
+          bcq_fc->bias(fully_connected->bias());
+          bcq_fc->weights_clusters(packed_clusters(g, prefix));
+          bcq_fc->fusedActivationFunction(fully_connected->fusedActivationFunction());
+
+          bcq_fc->weights_hidden_size(weights_as_input->dim(1).value());
+          bcq_fc->input(input_transpose);
+          loco::replace(fully_connected).with(bcq_fc);
+
+          changed = true;
         }
       }
     }
 
-    return false;
+    return changed;
   }
 
 private:
@@ -266,6 +326,19 @@ private:
       _qbits_of_clusters[prefix] = const_node;
     else
       _dequant_weight[prefix] = const_node;
+  }
+
+  int32_t get_prefix_of_const(luci::CircleConst *node)
+  {
+    for (auto n : _fusable_op)
+    {
+      auto prefix = n.first;
+      auto fuseop = loco::must_cast<luci::CircleConst *>(n.second);
+      if (is_same_const(node, fuseop, _do_w_x[prefix]->at<loco::DataType::BOOL>(0)))
+        return prefix;
+    }
+
+    return -1;
   }
 
   bool is_bcqinfo_valid()
@@ -383,6 +456,38 @@ private:
   }
 
 private:
+  luci::CircleConst *alpha(loco::Graph *graph, int32_t prefix)
+  {
+    auto new_alpha = graph->nodes()->create<luci::CircleConst>();
+
+    new_alpha->dtype(loco::DataType::FLOAT32);
+    new_alpha->size<loco::DataType::FLOAT32>(_alpha[prefix]->size<loco::DataType::FLOAT32>());
+    new_alpha->rank(1);
+    new_alpha->dim(0) = _alpha[prefix]->dim(0);
+    for (uint32_t i = 0; i < _alpha[prefix]->size<loco::DataType::FLOAT32>(); ++i)
+      new_alpha->at<loco::DataType::FLOAT32>(i) = _alpha[prefix]->at<loco::DataType::FLOAT32>(i);
+    new_alpha->shape_status(luci::ShapeStatus::VALID);
+
+    return new_alpha;
+  }
+
+  luci::CircleConst *packed_binary_code(loco::Graph *graph, int32_t prefix)
+  {
+    auto new_beta = graph->nodes()->create<luci::CircleConst>();
+
+    new_beta->dtype(loco::DataType::S32);
+    new_beta->size<loco::DataType::S32>(_packed_binary_code[prefix]->size<loco::DataType::S32>());
+    new_beta->rank(2);
+    new_beta->dim(0) = _packed_binary_code[prefix]->dim(0);
+    new_beta->dim(1) = _packed_binary_code[prefix]->dim(1);
+    for (uint32_t i = 0; i < _packed_binary_code[prefix]->size<loco::DataType::S32>(); ++i)
+      new_beta->at<loco::DataType::S32>(i) =
+          _packed_binary_code[prefix]->at<loco::DataType::S32>(i);
+    new_beta->shape_status(luci::ShapeStatus::VALID);
+
+    return new_beta;
+  }
+
   luci::CircleConst *packed_clusters(loco::Graph *graph, int32_t prefix)
   {
     auto qbits_of_clusters = _qbits_of_clusters[prefix];
@@ -428,15 +533,17 @@ private:
 namespace luci
 {
 
-bool FuseBCQPass::run(loco::Graph *g)
+bool FuseBCQPass::run(luci::Module *m)
 {
   bool changed = false;
 
   const int32_t start_magicnum = -2e9 + 27;
   const int32_t end_magicnum = 2e9 - 27;
 
+  loco::Graph *main_graph = m->graph(0);
+
   luci::CircleConst *metadata_node = nullptr;
-  for (auto node : loco::output_nodes(g))
+  for (auto node : loco::output_nodes(main_graph))
   {
     auto output_node = loco::must_cast<luci::CircleOutput *>(node);
 
@@ -474,8 +581,11 @@ bool FuseBCQPass::run(loco::Graph *g)
       const auto bundle_cnt = metadata_node->at<loco::DataType::S32>(3);
 
       BCQFuser<1> fuser{original_output_cnt, bundle_cnt};
-      if (fuser.fuseBCQ(g))
-        changed = true;
+      fuser.register_bcq_info(main_graph);
+
+      for (size_t g = 0; g < m->size(); ++g)
+        if (fuser.fuseBCQ(m->graph(g)))
+          changed = true;
     }
     else
     {
@@ -486,12 +596,12 @@ bool FuseBCQPass::run(loco::Graph *g)
     // Remove all of BCQ information nodes iff there is no change
     if (changed == false)
     {
-      for (auto node : loco::output_nodes(g))
+      for (auto node : loco::output_nodes(main_graph))
       {
         auto output_node = loco::must_cast<luci::CircleOutput *>(node);
         if (output_node->index() == 0 || (int)output_node->index() > original_output_cnt)
         {
-          auto noOp = g->nodes()->create<luci::CircleOutputExclude>();
+          auto noOp = main_graph->nodes()->create<luci::CircleOutputExclude>();
           noOp->dtype(loco::DataType::FLOAT32); // TODO Remove this setting
           output_node->from(noOp);
           changed = true;
