@@ -17,23 +17,24 @@
 #ifndef __ONERT_EXEC_EXECUTOR_BASE_H__
 #define __ONERT_EXEC_EXECUTOR_BASE_H__
 
-#include <mutex>
-
 #include "IPermuteFunction.h"
-#include "exec/ExecutionObservers.h"
-#include "ShapeConverter.h"
 #include "exec/IExecutor.h"
-#include "compiler/LoweredGraph.h"
-#include "ir/LowerInfoMap.h"
-#include "backend/IConfig.h"
-#include "backend/Backend.h"
 #include "exec/ExecTime.h"
-#include "exec/IFunction.h"
-#include "backend/IDynamicTensorManager.h"
-#include "backend/ITensorManager.h"
 #include "exec/ExecutionObservee.h"
+#include "exec/IFunction.h"
+#include "exec/IODescription.h"
+#include "ir/Graph.h"
+#include "ir/Index.h"
+#include "ir/LowerInfoMap.h"
+#include "ir/OperationIndexMap.h"
+#include "compiler/LoweredGraph.h"
 #include "compiler/TensorRegistries.h"
-#include <list>
+#include "backend/ITensor.h"
+
+#include <cstdint>
+#include <memory>
+#include <mutex>
+#include <vector>
 
 namespace onert
 {

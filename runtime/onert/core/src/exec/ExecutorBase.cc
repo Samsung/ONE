@@ -15,10 +15,9 @@
  */
 
 #include "ExecutorBase.h"
+#include "ShapeConverter.h"
 
-#include "backend/ITensor.h"
 #include "backend/controlflow/UserTensor.h"
-#include "backend/cpu_common/Tensor.h"
 #include "util/logging.h"
 
 namespace onert
