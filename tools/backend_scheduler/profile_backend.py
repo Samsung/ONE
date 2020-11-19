@@ -10,22 +10,15 @@ def main(args):
     root_path = dirname(dirname(dirname(script_path)))
     os.chdir(root_path)
 
-    # kernel_conf_list = []
-    # with open("backend_conf.txt") as f:
-    #     kernel_conf_list = [line.strip() for line in f.readlines()]
-    # print(kernel_conf_list)
-
     backend_list = ["cpu", "ruy"]
 
     if (isdir('./Product/armv7l-linux.release')):
-        # for index, kernel_conf in enumerate(kernel_conf_list):
         for index, backend in enumerate(backend_list):
-            trace_name = "{}_{}".format(basename(dirname(args.nnpackage_dir)), str(index))
+            trace_name = "{}_{}".format(basename(dirname(args.nnpackage_dir)), backend)
             command = "TRACE_FILEPATH={}/traces/{}".format(dirname(script_path),
                                                            trace_name)
             command += " OP_BACKEND_Conv2D={}".format(backend)
-            # command += " OP_BACKEND_MAP=\'" + kernel_conf + "\'"
-            command += " BACKENDS='cpu;ruy'"
+            command += " BACKENDS='{}'".format(';'.join(backend_list))
             command += " OP_SEQ_MAX_NODE=1"
             command += " ./Product/armv7l-linux.release/out/bin/nnpackage_run"
             command += " --nnpackage {}".format(dirname(args.nnpackage_dir))
