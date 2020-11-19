@@ -60,7 +60,10 @@ TEST_F(GenModelTest, OneOp_Conv2D_Stride)
       {{4, 0, -5, 1, 0, 4, -1, 1, -1, -3, 3, -2, -4, 1, -2, 2, 4, -4, 2, 2, 0, 4, -1, -2, 4}},
       {{22, 27, -10, -2, 5, -8, 7, 3, -14, -26, -10, 18, 4, -13, -28, 9, 14, 1}}));
   _context->setBackends({"acl_cl", "acl_neon", "cpu", "ruy", "xnnpack"});
+
+  SUCCEED();
 }
+
 TEST_F(GenModelTest, OneOp_Conv2D_Dilation)
 {
   CircleGen cgen;

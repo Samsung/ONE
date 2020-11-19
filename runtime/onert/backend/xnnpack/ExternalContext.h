@@ -20,11 +20,6 @@
 #include <memory>
 #include <xnnpack.h>
 
-namespace
-{
-const int kDefaultNumThreadpoolThreads = 1;
-}
-
 namespace onert
 {
 namespace backend

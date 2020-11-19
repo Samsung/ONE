@@ -23,6 +23,11 @@
 
 #include "ExternalContext.h"
 
+namespace
+{
+const int kDefaultNumThreadpoolThreads = 1;
+}
+
 namespace onert
 {
 namespace backend
@@ -45,7 +50,7 @@ public:
   {
     int num_threads = util::getConfigInt(util::config::XNNPACK_THREADS);
     if (num_threads < 1)
-      num_threads = 1; // default num of threads
+      num_threads = kDefaultNumThreadpoolThreads; // default num of threads
     _external_context.reset(new ExternalContext(static_cast<size_t>(num_threads)));
   }
 

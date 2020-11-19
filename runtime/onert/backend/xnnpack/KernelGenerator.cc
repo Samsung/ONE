@@ -60,6 +60,7 @@ void KernelGenerator::visit(const ir::OpSequence &op_seq)
     node.accept(*this);
     _return_fn_seq->append(releaseFunction());
 
+// TODO Enable this
 // xnnpack cannot do this at kernel generation
 #if 0
     for (const auto &ind : (node.getInputs() | ir::Remove::UNDEFINED) + node.getOutputs())

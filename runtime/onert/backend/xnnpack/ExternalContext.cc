@@ -18,8 +18,6 @@
 
 #include <cassert>
 
-//#include <pthreadpool.h>
-
 namespace onert
 {
 namespace backend
