@@ -33,8 +33,8 @@ public:
    *
    * @return false if there was nothing changed
    */
-  virtual bool run(loco::Graph *graph) { return false; }
-  virtual bool run(luci::Module *module) = 0;
+  virtual bool run(loco::Graph *) { return false; }
+  virtual bool run(luci::Module *) = 0;
 };
 
 } // namespace luci
