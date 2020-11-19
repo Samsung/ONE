@@ -27,7 +27,7 @@
 namespace
 {
 
-bool is_same_const(luci::CircleConst *weight, luci::CircleConst *fuseop, bool do_w_x)
+bool is_fusable_const(luci::CircleConst *weight, luci::CircleConst *fuseop, bool do_w_x)
 {
   if (weight->dtype() != loco::DataType::FLOAT32)
     return false;
@@ -35,33 +35,63 @@ bool is_same_const(luci::CircleConst *weight, luci::CircleConst *fuseop, bool do
   if (weight->rank() != 2)
     return false;
 
-  if (do_w_x)
-  {
-    if (!(weight->dim(0) == fuseop->dim(0) && weight->dim(1) == fuseop->dim(1)))
-      return false;
+  if (weight->size<loco::DataType::FLOAT32>() != fuseop->size<loco::DataType::FLOAT32>())
+    return false;
 
-    for (uint32_t i = 0; i < weight->size<loco::DataType::FLOAT32>(); ++i)
-      if (weight->at<loco::DataType::FLOAT32>(i) != fuseop->at<loco::DataType::FLOAT32>(i))
+  auto w_dim0 = weight->dim(0).value();
+  auto w_dim1 = weight->dim(1).value();
+
+  if (fuseop->rank() == 2)
+  {
+    if(do_w_x)
+    {
+      // Check if [dim0, dim1] --> [dim0, dim1]
+
+      if(!(weight->dim(0) == fuseop->dim(0) && weight->dim(1) == fuseop->dim(1)))
         return false;
-  }
-  else
-  {
-    auto dim0 = weight->dim(0).value();
-    auto dim1 = weight->dim(1).value();
 
-    if (!(weight->dim(0) == fuseop->dim(1) && weight->dim(1) == fuseop->dim(0)))
-      return false;
-
-    for (uint32_t i = 0; i < dim0; ++i)
-      for (uint32_t j = 0; j < dim1; ++j)
-        if (weight->at<loco::DataType::FLOAT32>(i * dim1 + j) !=
-            fuseop->at<loco::DataType::FLOAT32>(j * dim0 + i))
+      for(uint32_t i=0;i<weight->size<loco::DataType::FLOAT32>();++i)
+        if(weight->at<loco::DataType::FLOAT32>(i) != fuseop->at<loco::DataType::FLOAT32>(i))
           return false;
+    }
+    else
+    {
+      // Check if [dim0, dim1] --> [dim1, dim0]
+
+      if(!(weight->dim(0) == fuseop->dim(1) && weight->dim(1) == fuseop->dim(0)))
+        return false;
+
+      for(uint32_t i=0;i<w_dim0;++i)
+        for(uint32_t j=0;j<w_dim1;++j)
+          if(weight->at<loco::DataType::FLOAT32>(i*w_dim1 + j) != fuseop->at<loco::DataType::FLOAT32>(j*w_dim0 + i))
+            return false;
+    }
+
+    return true;
+  }
+  else if (fuseop->rank() == 3)
+  {
+    auto f_dim0 = fuseop->dim(0).value();
+    auto f_dim1 = fuseop->dim(1).value();
+    auto f_dim2 = fuseop->dim(2).value();
+
+    // Check if [dim0, dim1, dim2] --> [dim2, dim0 * dim1] or
+    //          [dim0, dim1, dim2] --> [dim1 * dim2, dim0]
+    if((w_dim0 == f_dim1 * f_dim2 && w_dim1 == f_dim0) || (w_dim0 == e && w_dim1 == f_dim0 * f_dim1))
+    {
+      for(uint32_t i=0;i<w_dim0;++i)
+        for(uint32_t j=0;j<w_dim1;++j)
+          if(weight->at<loco::DataType::FLOAT32>(i*w_dim1 + j) != fuseop->at<loco::DataType::FLOAT32>(j*w_dim0 + i))
+            return false;
+      
+      return true;
+    }
   }
 
-  return true;
+  return false;
 }
-}
+
+} // namespace
 
 namespace
 {
@@ -168,6 +198,9 @@ public:
           auto prefix = get_prefix_of_const(weights);
           if (prefix == -1 || !is_valid_prefix(prefix))
             continue;
+          
+          assert(_do_w_x[prefix]->at<loco::DataType::BOOL>(0) == false);
+
           auto bcq_fc = g->nodes()->create<luci::CircleBCQFullyConnected>();
 
           bcq_fc->op_version(1);
@@ -206,39 +239,28 @@ public:
             bcq_input = reshape;
           }
 
-          // If x_w formation, we should insert Transpose in front and back of BCQFullyConnected
-          if (_do_w_x[prefix]->at<loco::DataType::BOOL>(0))
-          {
-            assert(false);
-            bcq_fc->weights_hidden_size(weights->dim(0).value());
-            bcq_fc->input(bcq_input);
-            loco::replace(fully_connected).with(bcq_fc);
-          }
-          else
-          {
-            bcq_fc->weights_hidden_size(weights->dim(1).value());
+          bcq_fc->weights_hidden_size(weights->dim(1).value());
 
-            auto perm = g->nodes()->create<luci::CircleConst>();
-            perm->dtype(loco::DataType::S32);
-            perm->size<loco::DataType::S32>(2);
-            perm->rank(1);
-            perm->dim(0) = 2;
-            perm->at<loco::DataType::S32>(0) = 1;
-            perm->at<loco::DataType::S32>(1) = 0;
-            perm->shape_status(luci::ShapeStatus::VALID);
+          auto perm = g->nodes()->create<luci::CircleConst>();
+          perm->dtype(loco::DataType::S32);
+          perm->size<loco::DataType::S32>(2);
+          perm->rank(1);
+          perm->dim(0) = 2;
+          perm->at<loco::DataType::S32>(0) = 1;
+          perm->at<loco::DataType::S32>(1) = 0;
+          perm->shape_status(luci::ShapeStatus::VALID);
 
-            auto input_transpose = g->nodes()->create<luci::CircleTranspose>();
-            input_transpose->a(bcq_input);
-            input_transpose->perm(perm);
+          auto input_transpose = g->nodes()->create<luci::CircleTranspose>();
+          input_transpose->a(bcq_input);
+          input_transpose->perm(perm);
 
-            bcq_fc->input(input_transpose);
+          bcq_fc->input(input_transpose);
 
-            auto output_transpose = g->nodes()->create<luci::CircleTranspose>();
-            output_transpose->a(bcq_fc);
-            output_transpose->perm(perm);
+          auto output_transpose = g->nodes()->create<luci::CircleTranspose>();
+          output_transpose->a(bcq_fc);
+          output_transpose->perm(perm);
 
-            loco::replace(fully_connected).with(output_transpose);
-          }
+          loco::replace(fully_connected).with(output_transpose);
 
           changed = true;
         }
@@ -248,6 +270,8 @@ public:
           auto prefix = get_prefix_of_const(weights_as_input);
           if (prefix == -1 || !is_valid_prefix(prefix))
             continue;
+          
+          assert(_do_w_x[prefix]->at<loco::DataType::BOOL>(0) == true);
 
           auto perm = g->nodes()->create<luci::CircleConst>();
           perm->dtype(loco::DataType::S32);
@@ -263,6 +287,8 @@ public:
           input_transpose->perm(perm);
 
           auto bcq_fc = g->nodes()->create<luci::CircleBCQFullyConnected>();
+
+          assert(dynamic_cast<luci::CircleOutputExclude *>(fully_connected->bias()) != nullptr);
 
           bcq_fc->op_version(1);
           bcq_fc->weights_scales(alpha(g, prefix));
@@ -334,7 +360,7 @@ private:
     {
       auto prefix = n.first;
       auto fuseop = loco::must_cast<luci::CircleConst *>(n.second);
-      if (is_same_const(node, fuseop, _do_w_x[prefix]->at<loco::DataType::BOOL>(0)))
+      if (is_fusable_const(node, fuseop, _do_w_x[prefix]->at<loco::DataType::BOOL>(0)))
         return prefix;
     }
 
