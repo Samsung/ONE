@@ -50,8 +50,6 @@ public:
    * @param code_map OpSequence and its code map
    */
   DataflowExecutor(std::unique_ptr<compiler::LoweredGraph> lowered_graph,
-                   const std::vector<backend::ITensor *> &input_tensors,
-                   const std::vector<backend::ITensor *> &output_tensors,
                    const compiler::TensorRegistries &tensor_regs, compiler::CodeMap &&code_map);
 
   void executeImpl() override;

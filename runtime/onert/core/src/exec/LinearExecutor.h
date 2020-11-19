@@ -47,11 +47,9 @@ public:
    * @param code_map OpSequence and its code map
    */
   LinearExecutor(std::unique_ptr<compiler::LoweredGraph> lowered_graph,
-                 const std::vector<backend::ITensor *> &input_tensors,
-                 const std::vector<backend::ITensor *> &output_tensors,
                  const compiler::TensorRegistries &tensor_regs, compiler::CodeMap &&code_map,
                  const std::vector<ir::OpSequenceIndex> &order)
-      : ExecutorBase{std::move(lowered_graph), input_tensors, output_tensors, tensor_regs}
+      : ExecutorBase{std::move(lowered_graph), tensor_regs}
   {
     for (auto index : order)
     {

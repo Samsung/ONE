@@ -126,7 +126,11 @@ LoweredGraph::LoweredGraph(const ir::Graph &graph, const CompilerOptions &option
   // Optimization passes
   pass::PassRunner{}.append(std::make_unique<pass::PermutationEliminationPass>(*this)).run();
 
-  VERBOSE(OpSequences) << "Dump after permutation insertion" << std::endl;
+  VERBOSE(LoweredGraph) << "Dump after permutation insertion" << std::endl;
+  for (auto operand : _graph.getInputs())
+    VERBOSE(LoweredGraph) << "Graph Input : " << operand << std::endl;
+  for (auto operand : _graph.getOutputs())
+    VERBOSE(LoweredGraph) << "Graph Output : " << operand << std::endl;
   dumpOpSequences(_op_seqs, _graph.operations());
 
   // Graph verifications
@@ -322,14 +326,11 @@ void LoweredGraph::makeOpSequences(
 }
 
 void LoweredGraph::manipulateLowerInfo(
-    ir::OperandIndexMap<std::unique_ptr<ir::operand::LowerInfo>> &operands_lower_info,
-    bool is_primary)
+    ir::OperandIndexMap<std::unique_ptr<ir::operand::LowerInfo>> &operands_lower_info, bool)
 {
   const auto controlflow_backend = BackendManager::get().getControlflow();
 
-  // TODO Rather than handling primary graph specially,
-  //      let the permute inserted and remove it later
-  if (is_primary)
+  // TODO Remove indentation
   {
     // TODO Rather than using NHWC Get frontend layout of this node from IR
     auto factor = ir::operand::PermuteFactor{controlflow_backend, ir::Layout::NHWC};
@@ -343,28 +344,6 @@ void LoweredGraph::manipulateLowerInfo(
     {
       auto &&lower_info = operands_lower_info.at(index);
       lower_info->addUsePermuteFactor(factor);
-    }
-  }
-  else
-  {
-    for (auto index : _graph.getInputs() | ir::Remove::UNDEFINED)
-    {
-      auto &&lower_info = operands_lower_info.at(index);
-      if (!(lower_info->def_factors().size() == 0 && lower_info->use_factors().size() == 0))
-      {
-        // In case of not that Graph's input is not used in any operation and not the graph's
-        // output.
-        // In other words, it is not unused input in Graph.
-        lower_info->addDefPermuteFactor(*lower_info->use_factors().begin());
-      }
-      else
-      {
-        // In case of that an operand is Graph's input and not input or output of any operation
-        lower_info->addDefPermuteFactor(ir::operand::PermuteFactor{
-            controlflow_backend,
-            ir::Layout::NHWC // TODO Get frontend layout of this node from IR
-        });
-      }
     }
   }
   for (auto index : _graph.getOutputs() | ir::Remove::UNDEFINED)

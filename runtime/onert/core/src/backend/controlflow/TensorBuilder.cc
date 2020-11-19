@@ -102,7 +102,7 @@ void TensorBuilder::allocate()
   //      This is because CPU kernels require `ITensor`s to be allocated before Kernel Generation.
 }
 
-IDynamicTensorManager *TensorBuilder::dynamicTensorManager(void)
+DynamicTensorManager *TensorBuilder::dynamicTensorManager(void)
 {
   return _dynamic_tensor_mgr.get();
 }

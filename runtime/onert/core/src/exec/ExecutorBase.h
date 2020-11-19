@@ -29,7 +29,7 @@
 #include "ir/OperationIndexMap.h"
 #include "compiler/LoweredGraph.h"
 #include "compiler/TensorRegistries.h"
-#include "backend/ITensor.h"
+#include "backend/controlflow/IOTensor.h"
 
 #include <cstdint>
 #include <memory>
@@ -50,8 +50,6 @@ public:
    * @param tensor_builders Tensor builders that are currently used
    */
   ExecutorBase(std::unique_ptr<compiler::LoweredGraph> &&lowered_graph,
-               const std::vector<backend::ITensor *> &input_tensors,
-               const std::vector<backend::ITensor *> &output_tensors,
                const compiler::TensorRegistries &tensor_regs);
 
   virtual ~ExecutorBase() = default;
@@ -59,13 +57,15 @@ public:
   const ir::Graph &graph() final { return _graph; }
 
   /**
-   * @brief Execute without IODescription
+   * @brief Execute with given input/output tensors
    *
-   * @param src_tensor Tensor list that will be copied to input tensors of this
-   * @param pre_fn The permutation function that copy from src_tensor to input tensors of this
+   * For non-primary subgraphs, input and output tensors must be given.
+   *
+   * @param inputs tensors that are passed as inputs
+   * @param outputs tensors that are passed as outputs
    */
-  void execute(const std::vector<backend::ITensor *> &src_tensors,
-               const std::shared_ptr<IPermuteFunction> &pre_fn);
+  void execute(const std::vector<backend::IPortableTensor *> &inputs,
+               const std::vector<backend::IPortableTensor *> &outputs);
 
   void execute(const IODescription &desc) final;
 
@@ -79,9 +79,15 @@ public:
 
   void addObserver(std::unique_ptr<IExecutionObserver> ref) { _subject.add(std::move(ref)); };
 
-  const std::vector<backend::ITensor *> &getInputTensors() const { return _input_tensors; }
+  const std::vector<backend::controlflow::IOTensor *> &getInputTensors() const
+  {
+    return _input_tensors;
+  }
 
-  const std::vector<backend::ITensor *> &getOutputTensors() const { return _output_tensors; }
+  const std::vector<backend::controlflow::IOTensor *> &getOutputTensors() const
+  {
+    return _output_tensors;
+  }
 
 protected:
   /**
@@ -94,8 +100,8 @@ protected:
   std::shared_ptr<ir::OperationIndexMap<int64_t>> _indexed_ranks;
   std::unique_ptr<compiler::LoweredGraph> _lowered_graph;
   const ir::Graph &_graph;
-  std::vector<backend::ITensor *> _input_tensors;
-  std::vector<backend::ITensor *> _output_tensors;
+  std::vector<backend::controlflow::IOTensor *> _input_tensors;
+  std::vector<backend::controlflow::IOTensor *> _output_tensors;
   std::mutex _mutex;
 
 private:
