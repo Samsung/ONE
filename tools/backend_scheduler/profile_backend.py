@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 import os
-from os.path import dirname, basename, isdir, realpath
+from os.path import dirname, basename, isdir, realpath, normpath
 import argparse
 
 
@@ -14,14 +14,16 @@ def main(args):
 
     if (isdir('./Product/armv7l-linux.release')):
         for index, backend in enumerate(backend_list):
-            trace_name = "{}_{}".format(basename(dirname(args.nnpackage_dir)), backend)
+            trace_name = "{}_{}_{}".format("armv7l",
+                                           basename(normpath(args.nnpackage_dir)),
+                                           backend)
             command = "TRACE_FILEPATH={}/traces/{}".format(dirname(script_path),
                                                            trace_name)
             command += " OP_BACKEND_Conv2D={}".format(backend)
             command += " BACKENDS='{}'".format(';'.join(backend_list))
             command += " OP_SEQ_MAX_NODE=1"
             command += " ./Product/armv7l-linux.release/out/bin/nnpackage_run"
-            command += " --nnpackage {}".format(dirname(args.nnpackage_dir))
+            command += " --nnpackage {}".format(normpath(args.nnpackage_dir))
             command += " -w5 -r50"
             print(command)
             os.system(command)
