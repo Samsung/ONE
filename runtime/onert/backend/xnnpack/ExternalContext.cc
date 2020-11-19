@@ -26,7 +26,7 @@ namespace xnnpack
 {
 
 ExternalContext::ExternalContext(size_t num_threads)
-    : _threadpool(pthreadpool_create(num_threads), pthreadpool_destroy), _num_threads(num_threads)
+    : _threadpool(pthreadpool_create(num_threads), pthreadpool_destroy)
 {
   assert(_threadpool);
 }

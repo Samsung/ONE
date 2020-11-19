@@ -37,7 +37,6 @@ public:
 
 private:
   std::unique_ptr<pthreadpool, decltype(&pthreadpool_destroy)> _threadpool;
-  const size_t _num_threads;
 };
 
 } // namespace xnnpack
