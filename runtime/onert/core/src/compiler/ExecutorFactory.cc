@@ -362,7 +362,7 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lo
   if (!options.trace_filepath.empty())
   {
     std::unique_ptr<exec::IExecutionObserver> ctp =
-        std::make_unique<exec::ChromeTracingObserver>(options.trace_filepath, exec->graph());
+        std::make_unique<exec::TracingObserver>(options.trace_filepath, exec->graph());
     exec->addObserver(std::move(ctp));
   }
 
@@ -489,7 +489,7 @@ exec::IExecutor *ExecutorFactory::createDataflowExecutor(
   if (!options.trace_filepath.empty())
   {
     std::unique_ptr<exec::IExecutionObserver> ctp =
-        std::make_unique<exec::ChromeTracingObserver>(options.trace_filepath, exec->graph());
+        std::make_unique<exec::TracingObserver>(options.trace_filepath, exec->graph());
     exec->addObserver(std::move(ctp));
   }
 

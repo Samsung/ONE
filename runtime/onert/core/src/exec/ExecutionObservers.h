@@ -62,11 +62,11 @@ private:
   const ir::Graph &_graph;
 };
 
-class ChromeTracingObserver : public IExecutionObserver
+class TracingObserver : public IExecutionObserver
 {
 public:
-  ChromeTracingObserver(const std::string &filepath, const ir::Graph &graph);
-  ~ChromeTracingObserver();
+  TracingObserver(const std::string &filepath, const ir::Graph &graph);
+  ~TracingObserver();
   void handleSubgraphBegin(IExecutor *) override;
   void handleJobBegin(IExecutor *, const ir::OpSequence *, const backend::Backend *) override;
   void handleJobEnd(IExecutor *, const ir::OpSequence *, const backend::Backend *) override;
