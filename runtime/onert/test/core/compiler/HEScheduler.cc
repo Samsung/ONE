@@ -304,7 +304,7 @@ std::shared_ptr<Graph> createBranchedGraph()
 //
 
 // SetUp/TearDown methods runs before/after each test and performs actions common for each test
-class SchedulerTest : public ::testing::Test
+class HESchedulerTest : public ::testing::Test
 {
 protected:
   void SetUp() override
@@ -359,8 +359,8 @@ protected:
   std::string _original_profiling_mode;
 };
 
-class SchedulerTestWithExecutorParam : public SchedulerTest,
-                                       public testing::WithParamInterface<std::string>
+class HESchedulerTestWithExecutorParam : public HESchedulerTest,
+                                         public testing::WithParamInterface<std::string>
 {
 };
 
@@ -369,7 +369,7 @@ class SchedulerTestWithExecutorParam : public SchedulerTest,
 //
 
 // Test scheduler behavior for straight graph with known execution time of all nodes and permutes.
-TEST_P(SchedulerTestWithExecutorParam, straight_graph_known_exec_time)
+TEST_P(HESchedulerTestWithExecutorParam, straight_graph_known_exec_time)
 {
   setExecutor(GetParam());
 
@@ -422,7 +422,7 @@ TEST_P(SchedulerTestWithExecutorParam, straight_graph_known_exec_time)
 }
 
 // Test scheduler behavior for branched graph with known execution time of all nodes and permutes
-TEST_P(SchedulerTestWithExecutorParam, branched_graph_known_exec_time)
+TEST_P(HESchedulerTestWithExecutorParam, branched_graph_known_exec_time)
 {
   const int64_t NPU_ET = 5000;
   setExecutor(GetParam());
@@ -504,11 +504,11 @@ TEST_P(SchedulerTestWithExecutorParam, branched_graph_known_exec_time)
 
 // SchedulerTestWithExecutorParam tests are parameterized with executor name and runs three times -
 // one time for each executor
-INSTANTIATE_TEST_CASE_P(AllExecutors, SchedulerTestWithExecutorParam,
+INSTANTIATE_TEST_CASE_P(AllExecutors, HESchedulerTestWithExecutorParam,
                         testing::Values(LINEAR, DATAFLOW, PARALLEL));
 
 // Test scheduler behavior for branched graph and enabled profiling mode
-TEST_F(SchedulerTest, branched_graph_profiling_mode)
+TEST_F(HESchedulerTest, branched_graph_profiling_mode)
 {
   const int ET = 1e5;
 
