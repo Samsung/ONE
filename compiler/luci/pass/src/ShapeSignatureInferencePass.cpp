@@ -28,7 +28,7 @@ bool ShapeSignatureInferencePass::run(luci::Module *m)
 {
   bool changed = false;
 
-  for (size_t g = 0;g < m->size();++g)
+  for (size_t g = 0; g < m->size(); ++g)
   {
     changed = changed || run(m->graph(g));
   }

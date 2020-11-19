@@ -43,27 +43,28 @@ bool is_fusable_const(luci::CircleConst *weight, luci::CircleConst *fuseop, bool
 
   if (fuseop->rank() == 2)
   {
-    if(do_w_x)
+    if (do_w_x)
     {
       // Check if [dim0, dim1] --> [dim0, dim1]
 
-      if(!(weight->dim(0) == fuseop->dim(0) && weight->dim(1) == fuseop->dim(1)))
+      if (!(weight->dim(0) == fuseop->dim(0) && weight->dim(1) == fuseop->dim(1)))
         return false;
 
-      for(uint32_t i=0;i<weight->size<loco::DataType::FLOAT32>();++i)
-        if(weight->at<loco::DataType::FLOAT32>(i) != fuseop->at<loco::DataType::FLOAT32>(i))
+      for (uint32_t i = 0; i < weight->size<loco::DataType::FLOAT32>(); ++i)
+        if (weight->at<loco::DataType::FLOAT32>(i) != fuseop->at<loco::DataType::FLOAT32>(i))
           return false;
     }
     else
     {
       // Check if [dim0, dim1] --> [dim1, dim0]
 
-      if(!(weight->dim(0) == fuseop->dim(1) && weight->dim(1) == fuseop->dim(0)))
+      if (!(weight->dim(0) == fuseop->dim(1) && weight->dim(1) == fuseop->dim(0)))
         return false;
 
-      for(uint32_t i=0;i<w_dim0;++i)
-        for(uint32_t j=0;j<w_dim1;++j)
-          if(weight->at<loco::DataType::FLOAT32>(i*w_dim1 + j) != fuseop->at<loco::DataType::FLOAT32>(j*w_dim0 + i))
+      for (uint32_t i = 0; i < w_dim0; ++i)
+        for (uint32_t j = 0; j < w_dim1; ++j)
+          if (weight->at<loco::DataType::FLOAT32>(i * w_dim1 + j) !=
+              fuseop->at<loco::DataType::FLOAT32>(j * w_dim0 + i))
             return false;
     }
 
@@ -77,13 +78,15 @@ bool is_fusable_const(luci::CircleConst *weight, luci::CircleConst *fuseop, bool
 
     // Check if [dim0, dim1, dim2] --> [dim2, dim0 * dim1] or
     //          [dim0, dim1, dim2] --> [dim1 * dim2, dim0]
-    if((w_dim0 == f_dim1 * f_dim2 && w_dim1 == f_dim0) || (w_dim0 == e && w_dim1 == f_dim0 * f_dim1))
+    if ((w_dim0 == f_dim1 * f_dim2 && w_dim1 == f_dim0) ||
+        (w_dim0 == e && w_dim1 == f_dim0 * f_dim1))
     {
-      for(uint32_t i=0;i<w_dim0;++i)
-        for(uint32_t j=0;j<w_dim1;++j)
-          if(weight->at<loco::DataType::FLOAT32>(i*w_dim1 + j) != fuseop->at<loco::DataType::FLOAT32>(j*w_dim0 + i))
+      for (uint32_t i = 0; i < w_dim0; ++i)
+        for (uint32_t j = 0; j < w_dim1; ++j)
+          if (weight->at<loco::DataType::FLOAT32>(i * w_dim1 + j) !=
+              fuseop->at<loco::DataType::FLOAT32>(j * w_dim0 + i))
             return false;
-      
+
       return true;
     }
   }
@@ -198,7 +201,7 @@ public:
           auto prefix = get_prefix_of_const(weights);
           if (prefix == -1 || !is_valid_prefix(prefix))
             continue;
-          
+
           assert(_do_w_x[prefix]->at<loco::DataType::BOOL>(0) == false);
 
           auto bcq_fc = g->nodes()->create<luci::CircleBCQFullyConnected>();
@@ -270,7 +273,7 @@ public:
           auto prefix = get_prefix_of_const(weights_as_input);
           if (prefix == -1 || !is_valid_prefix(prefix))
             continue;
-          
+
           assert(_do_w_x[prefix]->at<loco::DataType::BOOL>(0) == true);
 
           auto perm = g->nodes()->create<luci::CircleConst>();
