@@ -114,7 +114,7 @@ int entry(int argc, char **argv)
       .nargs(0)
       .required(false)
       .default_value(false)
-      .help("This will remove duplicate Transpose operator which is not effect on model result");
+      .help("This will fuse or remove subsequent Transpose operators");
 
   arser.add_argument("--resolve_customop_add")
       .nargs(0)

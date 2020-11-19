@@ -1,6 +1,5 @@
 /*
  * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
- * Copyright 2019 The TensorFlow Authors. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,6 +14,7 @@
  */
 
 #include "luci/Pass/RemoveDuplicateTransposePass.h"
+#include "RemoveDuplicateTransposePassInternal.h"
 
 #include <luci/IR/CircleNodes.h>
 #include <luci/IR/CircleOpcode.h>
@@ -22,17 +22,16 @@
 namespace luci
 {
 
-bool check_perm(luci::CircleConst *pred_perm, luci::CircleConst *main_perm)
+// Check Combination of first permutation and second permutation is [0, 1, 2,...., n]
+bool check_perm(const luci::CircleConst *pred_perm, const luci::CircleConst *main_perm)
 {
   assert(pred_perm->rank() == 1);
   assert(main_perm->rank() == 1);
   assert(main_perm->size<loco::DataType::S32>() == pred_perm->size<loco::DataType::S32>());
-  int32_t idx = 0;
-  for (uint32_t i = 0; i < pred_perm->size<loco::DataType::S32>(); i++)
+  for (int32_t i = 0; i < static_cast<int32_t>(pred_perm->size<loco::DataType::S32>()); i++)
   {
-    if (pred_perm->at<loco::DataType::S32>(main_perm->at<loco::DataType::S32>(i)) != idx)
+    if (pred_perm->at<loco::DataType::S32>(main_perm->at<loco::DataType::S32>(i)) != i)
       return false;
-    idx = idx + 1;
   }
   return true;
 }
@@ -43,17 +42,21 @@ bool remove_duplicate_transpose_function(luci::CircleNode *node)
     return false;
 
   auto pred_node = static_cast<luci::CircleNode *>(node->arg(0));
-  auto pred_perm = dynamic_cast<luci::CircleConst *>(node->arg(1));
   if (pred_node->opcode() != luci::CircleOpcode::TRANSPOSE)
     return false;
 
-  auto main_node = static_cast<luci::CircleNode *>(pred_node->arg(0));
-  auto main_perm = dynamic_cast<luci::CircleConst *>(pred_node->arg(1));
-
-  if (pred_perm == nullptr || main_perm == nullptr)
+  auto pred_perm = dynamic_cast<luci::CircleConst *>(node->arg(1));
+  if (pred_perm == nullptr)
     return false;
+
+  auto main_node = static_cast<luci::CircleNode *>(pred_node->arg(0));
   if (loco::succs(pred_node).size() != 1)
     return false;
+
+  auto main_perm = dynamic_cast<luci::CircleConst *>(pred_node->arg(1));
+  if (main_perm == nullptr)
+    return false;
+
   if (check_perm(pred_perm, main_perm))
   {
     replace(node).with(main_node);
@@ -61,15 +64,25 @@ bool remove_duplicate_transpose_function(luci::CircleNode *node)
   }
   else
   {
-    std::vector<int32_t> tmp;
+    auto g = main_perm->graph();
+    auto new_const_node = g->nodes()->create<luci::CircleConst>();
+
+    new_const_node->dtype(loco::DataType::S32);
+    new_const_node->rank(main_perm->rank());
+    uint32_t dim_size = 1;
+    for (uint32_t i = 0; i < new_const_node->rank(); ++i)
+    {
+      new_const_node->dim(i) = main_perm->dim(i);
+      dim_size *= main_perm->dim(i).value();
+    }
+    new_const_node->size<loco::DataType::S32>(dim_size);
+    new_const_node->shape_status(luci::ShapeStatus::VALID);
     for (uint32_t i = 0; i < main_perm->size<loco::DataType::S32>(); i++)
     {
-      tmp.push_back(pred_perm->at<loco::DataType::S32>(main_perm->at<loco::DataType::S32>(i)));
+      new_const_node->at<loco::DataType::S32>(i) =
+          pred_perm->at<loco::DataType::S32>(main_perm->at<loco::DataType::S32>(i));
     }
-    for (uint32_t i = 0; i < main_perm->size<loco::DataType::S32>(); i++)
-    {
-      main_perm->at<loco::DataType::S32>(i) = tmp.at(i);
-    }
+    replace(main_perm).with(new_const_node);
     replace(node).with(pred_node);
   }
   node->drop();
@@ -78,19 +91,22 @@ bool remove_duplicate_transpose_function(luci::CircleNode *node)
 
 /**
  *  BEFORE
- *
- *                         |
- *                 [CircleTranspose]
- *                         |
- *                 [CircleTranspose]
- *                         |
+ *         |
+ *   [CircleInput]    [CircleConst]
+ *           \              /
+ *           [CircleTranspose]  [CircleConst]
+ *                   \               /
+ *                   [CircleTranspose]
+ *                           |
  *
  *  AFTER
  *      <Optional Case>
  *
- *             |                      |
- *     [CircleTranspose]     OR       |   Remove Both
- *             |                      |
+ *          |                 |               |
+ *    [CircleInput]     [CircleConst]         |
+ *           \               /           or   |  [Remove all]
+ *           [CircleTranspose]                |
+ *                   |                        |
  *
  */
 bool RemoveDuplicateTransposePass::run(loco::Graph *g)
