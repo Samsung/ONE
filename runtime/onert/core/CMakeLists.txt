@@ -3,6 +3,7 @@ file(GLOB_RECURSE TESTS "*.test.cc")
 list(REMOVE_ITEM SOURCES ${TESTS})
 
 nnfw_find_package(Ruy REQUIRED)
+nnfw_find_package(Xnnpack REQUIRED)
 
 add_library(onert_core SHARED ${SOURCES})
 set_target_properties(onert_core PROPERTIES POSITION_INDEPENDENT_CODE ON)
@@ -15,6 +16,7 @@ target_link_libraries(onert_core PRIVATE nnfw_coverage)
 target_link_libraries(onert_core PRIVATE dl ${LIB_PTHREAD})
 target_link_libraries(onert_core PRIVATE jsoncpp)
 target_link_libraries(onert_core PRIVATE ruy)
+target_link_libraries(onert_core PRIVATE XNNPACK)
 target_link_libraries(onert_core INTERFACE ruy_instrumentation)
 
 if(CMAKE_BUILD_TYPE_LC STREQUAL "release")
