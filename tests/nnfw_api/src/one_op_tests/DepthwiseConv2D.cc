@@ -224,7 +224,7 @@ TEST_P(DepthwiseConv2DVariation, Test)
       param.stride, param.input_depth, param.depth_multiplier));
   std::vector<uint8_t> ref_input(input64.begin(), input64.begin() + param.input_depth * 4);
   _context->addTestCase(uniformTCD<uint8_t>({ref_input}, {param.ref_output}));
-  _context->setBackends({"acl_cl", "acl_neon", "cpu", "xnnpack"});
+  _context->setBackends({"acl_cl", "acl_neon", "cpu"});
 
   SUCCEED();
 }
