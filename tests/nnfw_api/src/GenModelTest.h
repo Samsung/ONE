@@ -290,7 +290,7 @@ protected:
 
       if (_context->expected_fail_compile())
       {
-        ASSERT_EQ(nnfw_prepare(_so.session), NNFW_STATUS_ERROR);
+        ASSERT_NE(nnfw_prepare(_so.session), NNFW_STATUS_NO_ERROR);
 
         NNFW_ENSURE_SUCCESS(nnfw_close_session(_so.session));
         continue;
@@ -362,7 +362,7 @@ protected:
 
         if (test_case.expected_fail_run())
         {
-          ASSERT_EQ(nnfw_run(_so.session), NNFW_STATUS_ERROR);
+          ASSERT_NE(nnfw_run(_so.session), NNFW_STATUS_NO_ERROR);
           continue;
         }
 
