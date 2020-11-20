@@ -224,7 +224,7 @@ public:
         _backends.push_back(backend);
       }
 #endif
-      if (backend == "cpu")
+      if (backend == "cpu" || backend == "ruy")
       {
         _backends.push_back(backend);
       }
