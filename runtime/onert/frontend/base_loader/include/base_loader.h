@@ -21,6 +21,7 @@
 #include "ir/Graph.h"
 #include "ir/Shape.h"
 #include "ir/Operations.Include.h"
+#include "util/GraphIndexMap.h"
 
 #include "flatbuffers/flexbuffers.h"
 
@@ -1585,6 +1586,9 @@ template <typename LoaderDomain> void BaseLoader<LoaderDomain>::loadModel()
   for (uint32_t subgraph_index = 0; subgraph_index < domain_subgraphs->size(); ++subgraph_index)
   {
     auto subg = loadSubgraph((*_model->subgraphs())[subgraph_index]);
+
+    onert::util::GraphIndexMap::get().setIndex(subg.get(), subgraph_index);
+
     subgraphs->push(ir::SubgraphIndex{subgraph_index}, std::move(subg));
   }
   _subgraphs = std::move(subgraphs);

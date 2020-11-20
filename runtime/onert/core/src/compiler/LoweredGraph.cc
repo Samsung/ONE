@@ -32,6 +32,7 @@
 #include "compiler/BackendResolver.h"
 #include "compiler/ManualScheduler.h"
 #include "compiler/HEScheduler.h"
+#include "util/GraphIndexMap.h"
 
 namespace onert
 {
@@ -40,6 +41,8 @@ namespace compiler
 
 LoweredGraph::LoweredGraph(const ir::Graph &graph, const CompilerOptions &options) : _graph{graph}
 {
+  util::GraphIndexMap::get().copyIndex(&graph, &_graph);
+
   bool linear_executor = (options.executor == "Linear");
 
   // Build backend contexts
