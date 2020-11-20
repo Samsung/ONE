@@ -37,7 +37,7 @@ namespace compiler
 {
 
 ShapeValidator::ShapeValidator(const ir::Graph &graph)
-    : _graph{graph}, _ctx{graph.operands()}, _current_op_seq_layout{ir::Layout::UNKNOWN}
+    : _graph{graph}, _ctx{graph.operands()}, _current_layout{ir::Layout::UNKNOWN}
 {
 }
 
@@ -59,7 +59,7 @@ void ShapeValidator::operator()()
   // creating Compiler
   assert(_graph.subgraphs() == nullptr);
 
-  _current_op_seq_layout = _graph.layout();
+  _current_layout = _graph.layout();
 
   _graph.operations().iterate(
       [&](const ir::OperationIndex &, const ir::Operation &node) { node.accept(*this); });
@@ -90,7 +90,7 @@ void ShapeValidator::visit(const ir::operation::BatchToSpaceND &node)
   const auto block_size_index{
       node.getInputs().at(ir::operation::BatchToSpaceND::Input::BLOCK_SIZE)};
 
-  const auto frontend_layout = _current_op_seq_layout;
+  const auto frontend_layout = _current_layout;
   const auto input_shape = _ctx.at(ifm_index).shape().asFeature(frontend_layout);
   const auto output_shape = _ctx.at(ofm_index).shape().asFeature(frontend_layout);
 
@@ -330,7 +330,7 @@ void ShapeValidator::visit(const ir::operation::SpaceToBatchND &node)
       node.getInputs().at(ir::operation::SpaceToBatchND::Input::BLOCK_SIZE)};
   const auto paddings_index{node.getInputs().at(ir::operation::SpaceToBatchND::Input::PADDINGS)};
 
-  const auto frontend_layout = _current_op_seq_layout;
+  const auto frontend_layout = _current_layout;
   const auto input_shape = _ctx.at(ifm_index).shape().asFeature(frontend_layout);
   const auto output_shape = _ctx.at(ofm_index).shape().asFeature(frontend_layout);
 
@@ -355,7 +355,7 @@ void ShapeValidator::visit(const ir::operation::SpaceToDepth &node)
 
   const auto ifm_index{node.getInputs().at(ir::operation::SpaceToDepth::Input::INPUT)};
 
-  const auto frontend_layout = _current_op_seq_layout;
+  const auto frontend_layout = _current_layout;
   const auto input_shape = _ctx.at(ifm_index).shape().asFeature(frontend_layout);
   const auto output_shape = _ctx.at(ofm_index).shape().asFeature(frontend_layout);
   const auto block_size = node.param().block_size;
@@ -471,7 +471,7 @@ void ShapeValidator::visit(const ir::operation::TransposeConv &node)
   OP_REQUIRES(_ctx.at(ofm_index).shape().rank() == _ctx.at(ifm_index).shape().rank());
   OP_REQUIRES(_ctx.at(ofm_index).shape().rank() == _ctx.at(ker_index).shape().rank());
 
-  const auto frontend_layout = _current_op_seq_layout;
+  const auto frontend_layout = _current_layout;
   const auto ofm_shape = _ctx.at(ofm_index).shape().asFeature(frontend_layout);
   const auto ifm_shape = _ctx.at(ifm_index).shape().asFeature(frontend_layout);
   // The kernel has only IHWO layout on frontend
@@ -516,7 +516,7 @@ void ShapeValidator::visit(const ir::operation::DepthToSpace &node)
 
   const auto input_index{node.getInputs().at(ir::operation::DepthToSpace::Input::INPUT)};
 
-  const auto frontend_layout = _current_op_seq_layout;
+  const auto frontend_layout = _current_layout;
   const auto output_shape = _ctx.at(output_index).shape().asFeature(frontend_layout);
   const auto input_shape = _ctx.at(input_index).shape().asFeature(frontend_layout);
 

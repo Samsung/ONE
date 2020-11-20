@@ -42,7 +42,7 @@ KernelGenerator::KernelGenerator(
     const std::shared_ptr<ExternalContext> &external_context)
     : _ctx(operands_ctx), _operations_ctx{operations_ctx}, _tensor_builder(tensor_builder),
       _tensor_reg{tensor_reg}, _kernel_builder(kernel_builder),
-      _current_op_seq_layout(ir::Layout::UNKNOWN), _external_context(external_context)
+      _current_layout(ir::Layout::UNKNOWN), _external_context(external_context)
 {
   // DO NOTHING
 }
@@ -68,7 +68,7 @@ void KernelGenerator::visit(const ir::OpSequence &op_seq)
     _return_fn_seq->dynamic_tensor_ctx(dyn_ctx);
   }
 
-  _current_op_seq_layout = op_seq.getLayout();
+  _current_layout = op_seq.getLayout();
   for (const auto &operation_idx : op_seq.operations())
   {
     const auto &node = _operations_ctx.at(operation_idx);
@@ -122,8 +122,8 @@ void KernelGenerator::visit(const ir::operation::Conv2D &node)
     _return_fn = std::move(fn);
     return;
   }
-  const auto ifm_shape = _ctx.at(ifm_index).shape().asFeature(_current_op_seq_layout);
-  const auto ofm_shape = _ctx.at(ofm_index).shape().asFeature(_current_op_seq_layout);
+  const auto ifm_shape = _ctx.at(ifm_index).shape().asFeature(_current_layout);
+  const auto ofm_shape = _ctx.at(ofm_index).shape().asFeature(_current_layout);
   // Kernel format is [depth_out, kernel_height, kernel_width, depth_in].
   const auto &ker_shape = _ctx.at(ker_index).shape();
   const auto ker_height = ker_shape.dim(1);
