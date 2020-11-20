@@ -383,6 +383,12 @@ uint32_t CircleGen::addOperatorTranspose(const OperatorParams &params)
                                 circle::BuiltinOptions_TransposeOptions, options);
 }
 
+uint32_t CircleGen::addOperatorSqrt(const OperatorParams &params)
+{
+  return addOperatorWithOptions(params, circle::BuiltinOperator_SQRT, circle::BuiltinOptions_NONE,
+                                0);
+}
+
 uint32_t CircleGen::addOperatorSquare(const OperatorParams &params)
 {
   auto options = circle::CreateSquareOptions(_fbb).Union();

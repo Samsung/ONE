@@ -46,6 +46,7 @@ enum class ElementwiseUnaryType
   kRound,
   kRSqrt,
   kSin,
+  kSqrt,
   kSquare,
   kZerosLike
 };

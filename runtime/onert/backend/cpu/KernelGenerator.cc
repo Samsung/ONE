@@ -169,6 +169,8 @@ ops::ElementwiseUnaryType convertElementwiseUnaryType(ir::operation::Elementwise
       return ops::ElementwiseUnaryType::kRSqrt;
     case ir::operation::ElementwiseUnary::Type::SIN:
       return ops::ElementwiseUnaryType::kSin;
+    case ir::operation::ElementwiseUnary::Type::SQRT:
+      return ops::ElementwiseUnaryType::kSqrt;
     case ir::operation::ElementwiseUnary::Type::SQUARE:
       return ops::ElementwiseUnaryType::kSquare;
     case ir::operation::ElementwiseUnary::Type::ZEROS_LIKE:
