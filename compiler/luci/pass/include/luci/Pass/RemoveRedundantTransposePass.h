@@ -14,20 +14,24 @@
  * limitations under the License.
  */
 
-#ifndef __LUCI_CIRCLE_REMOVE_DUPLICATE_TRANSPOSE_PASS_H__
-#define __LUCI_CIRCLE_REMOVE_DUPLICATE_TRANSPOSE_PASS_H__
+#ifndef __LUCI_REMOVE_REDUNDANT_TRANSPOSE_H__
+#define __LUCI_REMOVE_REDUNDANT_TRANSPOSE_H__
 
-#include <luci/IR/CircleNodes.h>
+#include <logo/Pass.h>
 
 namespace luci
 {
 
-/// @return true if Combination of two Const permutation is [0, 1, 2, ...., n]'
-bool check_perm(const luci::CircleConst *pred_perm, const luci::CircleConst *main_perm);
+/**
+ * @brief
+ */
+struct RemoveRedundantTransposePass final : public logo::Pass
+{
+  const char *name(void) const final { return "luci::REMOVE_REDUNDANT_TRANSPOSE"; }
 
-/// @return true if Duplicated Transpose is fused or removed'
-bool remove_duplicate_transpose_function(luci::CircleNode *node);
+  bool run(loco::Graph *g) final;
+};
 
 } // namespace luci
 
-#endif // __LUCI_CIRCLE_REMOVE_DUPLICATE_TRANSPOSE_PASS_H__
+#endif // __LUCI_REMOVE_REDUNDANT_TRANSPOSE_H__

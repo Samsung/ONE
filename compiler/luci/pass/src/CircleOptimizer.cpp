@@ -24,7 +24,7 @@
 #include "luci/Pass/FuseInstanceNormPass.h"
 #include "luci/Pass/FusePreActivationBatchNormPass.h"
 #include "luci/Pass/MakeBatchNormGammaPositivePass.h"
-#include "luci/Pass/RemoveDuplicateTransposePass.h"
+#include "luci/Pass/RemoveRedundantTransposePass.h"
 #include "luci/Pass/ResolveCustomOpAddPass.h"
 #include "luci/Pass/ResolveCustomOpBatchMatMulPass.h"
 #include "luci/Pass/ResolveCustomOpMatMulPass.h"
@@ -181,7 +181,7 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   }
   if (_options->query(Options::Algorithm::RemoveDuplicateTranspose))
   {
-    phase.emplace_back(std::make_unique<luci::RemoveDuplicateTransposePass>());
+    phase.emplace_back(std::make_unique<luci::RemoveRedundantTransposePass>());
   }
 
   // Shape inference is needed for added nodes doing above transformations

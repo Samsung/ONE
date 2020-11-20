@@ -13,8 +13,7 @@
  * limitations under the License.
  */
 
-#include "luci/Pass/RemoveDuplicateTransposePass.h"
-#include "RemoveDuplicateTransposePassInternal.h"
+#include "luci/Pass/RemoveRedundantTransposePass.h"
 
 #include <luci/IR/CircleNodes.h>
 #include <luci/IR/CircleOpcode.h>
@@ -36,7 +35,7 @@ bool check_perm(const luci::CircleConst *pred_perm, const luci::CircleConst *mai
   return true;
 }
 
-bool remove_duplicate_transpose_function(luci::CircleNode *node)
+bool remove_consecutive_transpose_function(luci::CircleNode *node)
 {
   if (node->opcode() != luci::CircleOpcode::TRANSPOSE)
     return false;
@@ -44,19 +43,18 @@ bool remove_duplicate_transpose_function(luci::CircleNode *node)
   auto pred_node = static_cast<luci::CircleNode *>(node->arg(0));
   if (pred_node->opcode() != luci::CircleOpcode::TRANSPOSE)
     return false;
+  if (loco::succs(pred_node).size() != 1)
+    return false;
 
   auto pred_perm = dynamic_cast<luci::CircleConst *>(node->arg(1));
   if (pred_perm == nullptr)
-    return false;
-
-  auto main_node = static_cast<luci::CircleNode *>(pred_node->arg(0));
-  if (loco::succs(pred_node).size() != 1)
     return false;
 
   auto main_perm = dynamic_cast<luci::CircleConst *>(pred_node->arg(1));
   if (main_perm == nullptr)
     return false;
 
+  auto main_node = static_cast<luci::CircleNode *>(pred_node->arg(0));
   if (check_perm(pred_perm, main_perm))
   {
     replace(node).with(main_node);
@@ -109,13 +107,13 @@ bool remove_duplicate_transpose_function(luci::CircleNode *node)
  *                   |                        |
  *
  */
-bool RemoveDuplicateTransposePass::run(loco::Graph *g)
+bool RemoveRedundantTransposePass::run(loco::Graph *g)
 {
   bool changed = false;
   for (auto node : loco::active_nodes(loco::output_nodes(g)))
   {
     auto circle_node = static_cast<luci::CircleNode *>(node);
-    if (remove_duplicate_transpose_function(circle_node))
+    if (remove_consecutive_transpose_function(circle_node))
     {
       changed = true;
       break;
