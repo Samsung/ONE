@@ -57,7 +57,7 @@ std::string ElementwiseUnary::name() const
       {ElementwiseUnaryType::RSQRT, std::string{"RSqrt"}},
       {ElementwiseUnaryType::SIN, std::string{"Sin"}},
       {ElementwiseUnaryType::SQRT, std::string{"Sqrt"}},
-      {ElementwiseUnaryType::SQURE, std::string{"Squre"}},
+      {ElementwiseUnaryType::SQUARE, std::string{"Square"}},
       {ElementwiseUnaryType::ZEROS_LIKE, std::string{"ZerosLike"}}};
   return name_map.at(_param.op_type);
 }

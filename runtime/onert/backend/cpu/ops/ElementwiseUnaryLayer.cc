@@ -195,6 +195,12 @@ void sinFloat32(const IPortableTensor *input, IPortableTensor *output)
                   getTensorShape(output), reinterpret_cast<float *>(output->buffer()));
 }
 
+void squareFloat32(const IPortableTensor *input, IPortableTensor *output)
+{
+  nnfw::cker::Square(getTensorShape(input), reinterpret_cast<const float *>(input->buffer()),
+                     getTensorShape(output), reinterpret_cast<float *>(output->buffer()));
+}
+
 template <typename T> void zerosLikeFloat32(const IPortableTensor *input, IPortableTensor *output)
 {
   if (!HaveSameShapes(input, output))
@@ -361,6 +367,16 @@ void ElementwiseUnaryLayer::configure(const IPortableTensor *input, IPortableTen
       else
       {
         throw std::runtime_error{"Sin: Unsupported  data type"};
+      }
+      break;
+    case ElementwiseUnaryType::kSquare:
+      if ((input->data_type() == OperandType::FLOAT32))
+      {
+        _kernel = squareFloat32;
+      }
+      else
+      {
+        throw std::runtime_error{"Square: Unsupported  data type"};
       }
       break;
     case ElementwiseUnaryType::kZerosLike:
