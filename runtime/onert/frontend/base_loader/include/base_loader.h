@@ -1383,6 +1383,9 @@ void BaseLoader<LoaderDomain>::loadOperation(const Operator *op, ir::Graph &subg
     case BuiltinOperator::BuiltinOperator_SQRT:
       loadElementwiseUnary(op, subg, ir::operation::ElementwiseUnary::Type::SQRT);
       return;
+    case BuiltinOperator::BuiltinOperator_SQUARE:
+      loadElementwiseUnary(op, subg, ir::operation::ElementwiseUnary::Type::SQUARE);
+      return;
     case BuiltinOperator::BuiltinOperator_SQUARED_DIFFERENCE:
       loadOperationTo<ir::operation::SquaredDifference>(op, subg);
       return;

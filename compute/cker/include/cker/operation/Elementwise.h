@@ -98,6 +98,17 @@ inline void Floor(const Shape &input_shape, const float *input_data, const Shape
   }
 }
 
+inline void Square(const Shape &input_shape, const float *input_data, const Shape &output_shape,
+                   float *output_data)
+{
+  const int flat_size = MatchingFlatSize(input_shape, output_shape);
+
+  for (int i = 0; i < flat_size; i++)
+  {
+    output_data[i] = input_data[i] * input_data[i];
+  }
+}
+
 } // namespace cker
 } // namespace nnfw
 
