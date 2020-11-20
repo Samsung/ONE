@@ -35,10 +35,10 @@ public:
    */
 
   // Run module pass and return false if there was nothing changed
-  virtual bool run(luci::Module *module) = 0;
+  virtual bool run(luci::Module *) = 0;
 
   // Run graph pass and return false if there was nothing changed
-  virtual bool run(loco::Graph *graph) { return false; }
+  virtual bool run(loco::Graph *) { return false; }
 };
 
 } // namespace luci
