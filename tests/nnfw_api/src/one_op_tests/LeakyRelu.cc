@@ -27,7 +27,7 @@ TEST_F(GenModelTest, OneOp_LeakyRelu)
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
   _context->addTestCase(
       uniformTCD<float>({{0, 1.0, 3.0, 1.0, -1.0, -2.0f}}, {{0, 1.0, 3.0, 1.0, -0.5, -1.0}}));
-  _context->setBackends({"acl_cl", "acl_neon"});
+  _context->setBackends({"cpu", "acl_cl", "acl_neon"});
 
   SUCCEED();
 }
@@ -41,7 +41,7 @@ TEST_F(GenModelTest, neg_OneOp_LeakyRelu_InvalidType)
   cgen.setInputsAndOutputs({in}, {out});
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
-  _context->setBackends({"acl_cl", "acl_neon"});
+  _context->setBackends({"cpu", "acl_cl", "acl_neon"});
   _context->expectFailModelLoad();
 
   SUCCEED();

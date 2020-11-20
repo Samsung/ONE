@@ -389,6 +389,11 @@ struct SpaceToDepthParams
   int32_t block_size;
 };
 
+struct LeakyReluParams
+{
+  float alpha;
+};
+
 enum class Order
 {
   kColMajor,
