@@ -56,18 +56,10 @@ public:
 
   const ir::Graph &graph() final { return _graph; }
 
-  /**
-   * @brief Execute with given input/output tensors
-   *
-   * For non-primary subgraphs, input and output tensors must be given.
-   *
-   * @param inputs tensors that are passed as inputs
-   * @param outputs tensors that are passed as outputs
-   */
-  void execute(const std::vector<backend::IPortableTensor *> &inputs,
-               const std::vector<backend::IPortableTensor *> &outputs);
-
   void execute(const IODescription &desc) final;
+
+  void execute(const std::vector<backend::IPortableTensor *> &inputs,
+               const std::vector<backend::IPortableTensor *> &outputs) override;
 
   // Used only in Dataflow and Parallel Executors
   void setIndexedRanks(std::shared_ptr<ir::OperationIndexMap<int64_t>> ranks) final
@@ -79,12 +71,7 @@ public:
 
   void addObserver(std::unique_ptr<IExecutionObserver> ref) { _subject.add(std::move(ref)); };
 
-  const std::vector<backend::controlflow::IOTensor *> &getInputTensors() const
-  {
-    return _input_tensors;
-  }
-
-  const std::vector<backend::controlflow::IOTensor *> &getOutputTensors() const
+  const std::vector<backend::controlflow::IOTensor *> &getOutputTensors() const override
   {
     return _output_tensors;
   }

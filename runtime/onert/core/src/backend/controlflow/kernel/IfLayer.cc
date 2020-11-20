@@ -18,7 +18,6 @@
 
 #include <backend/ITensor.h>
 #include "exec/ExecutorBase.h"
-#include <misc/polymorphic_downcast.h>
 #include "PermuteLayer.h"
 
 namespace onert
@@ -61,19 +60,17 @@ void IfLayer::run()
     return ret;
   };
 
-  exec::ExecutorBase *subg_exec = nullptr;
+  exec::IExecutor *subg_exec = nullptr;
   bool cond_result = getResultCond(_cond_tensor);
   if (cond_result)
   {
     VERBOSE(If) << "Call to $" << _then_subg_index << " (then)" << std::endl;
-    subg_exec = nnfw::misc::polymorphic_downcast<exec::ExecutorBase *>(
-        _executor_map->at(_then_subg_index).get());
+    subg_exec = _executor_map->at(_then_subg_index).get();
   }
   else
   {
     VERBOSE(If) << "Call to $" << _else_subg_index << " (else)" << std::endl;
-    subg_exec = nnfw::misc::polymorphic_downcast<exec::ExecutorBase *>(
-        _executor_map->at(_else_subg_index).get());
+    subg_exec = _executor_map->at(_else_subg_index).get();
   }
 
   subg_exec->execute(_input_tensors, _output_tensors);
