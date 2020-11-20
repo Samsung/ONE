@@ -69,8 +69,16 @@ public:
   const std::vector<OperationInfo> &operation_list() { return _operation_list; }
   const std::vector<ir::OperandIndex> &operand_list() { return _operand_list; }
 
-  virtual ITensorRegistry *tensorGen(const std::vector<onert::ir::OpSequenceIndex> &, const ir::OpSequences &, const ir::LowerInfoMap &) { return nullptr; }
-  virtual std::vector<std::pair<ir::OpSequenceIndex, exec::FunctionSequence>> kernelGen() { return {}; }
+  virtual ITensorRegistry *tensorGen(const std::vector<onert::ir::OpSequenceIndex> &,
+                                     const ir::OpSequences &, const ir::LowerInfoMap &)
+  {
+    return nullptr;
+  }
+  virtual std::vector<std::pair<ir::OpSequenceIndex, std::unique_ptr<exec::FunctionSequence>>>
+  kernelGen(const std::vector<onert::ir::OpSequenceIndex> &, const ir::OpSequences &)
+  {
+    return {};
+  }
 
 private:
   const Backend *_backend{nullptr};

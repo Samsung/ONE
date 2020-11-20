@@ -42,6 +42,9 @@ public:
   {
   }
 
+  std::vector<std::pair<ir::OpSequenceIndex, std::unique_ptr<exec::FunctionSequence>>>
+  kernelGen(const std::vector<ir::OpSequenceIndex> &order, const ir::OpSequences &op_seqs) override;
+
   std::shared_ptr<ExternalContext> external_context() { return _external_context; }
 
 private:

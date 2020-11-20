@@ -280,49 +280,67 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lo
     }
   }
 
-  prepareMigrantTensors(*lowered_graph);
-
   ExecutionBuilder builder;
 
-  lowered_graph->iterateTopolOpSeqs(
-      [&](const ir::OpSequenceIndex &op_seq_index, const ir::OpSequence &op_seq) {
-        auto lower_info = lowered_graph->getLowerInfo(op_seq_index);
-        auto kernel_gen = lowered_graph->backend_contexts().at(lower_info->backend())->kernel_gen;
-        auto fn_seq = kernel_gen->generate(op_seq);
-        if (options.he_profiling_mode)
-        {
-          fn_seq->wrap<SyncFunction>(lower_info->backend()->config());
-        }
-        builder.append(op_seq_index, {&op_seq, lower_info, std::move(fn_seq)});
+  /*
+    lowered_graph->iterateTopolOpSeqs(
+        [&](const ir::OpSequenceIndex &op_seq_index, const ir::OpSequence &op_seq) {
+          auto lower_info = lowered_graph->getLowerInfo(op_seq_index);
+          auto kernel_gen = lowered_graph->backend_contexts().at(lower_info->backend())->kernel_gen;
+          auto fn_seq = kernel_gen->generate(op_seq);
+          if (options.he_profiling_mode)
+          {
+            fn_seq->wrap<SyncFunction>(lower_info->backend()->config());
+          }
+          builder.append(op_seq_index, {&op_seq, lower_info, std::move(fn_seq)});
+        });
+
+    for (auto &tensor_builder : tensor_builders)
+    {
+      tensor_builder->allocate();
+    }
+
+    for (auto &pair : backend_contexts)
+    {
+      pair.second->initConsts();
+    }
+
+    lowered_graph->graph().operands().iterate(
+        [](const ir::OperandIndex &, ir::Operand &obj) { obj.releaseData(); });
+
+    auto code_map = builder.releaseCodeMap();
+
+    for (auto &it : code_map)
+    {
+      auto op_seq_index = it.first;
+      auto &fn_seq = it.second.fn_seq;
+
+      fn_seq->iterate([&](exec::IFunction &ifunc) {
+        ifunc.prepare();
+        auto backend = lowered_graph->getLowerInfo(op_seq_index)->backend();
+        auto tensor_builder = lowered_graph->backend_contexts().at(backend)->tensor_builder;
+        tensor_builder->postFunctionPrepare();
       });
+    }
+    */
 
-  for (auto &tensor_builder : tensor_builders)
-  {
-    tensor_builder->allocate();
-  }
-
+  // Generate kernels
   for (auto &pair : backend_contexts)
   {
-    pair.second->initConsts();
+    auto codes = pair.second->kernelGen(order, lowered_graph->op_seqs());
+    for (auto &pair : codes)
+    {
+      auto &op_seq_ind = pair.first;
+      auto &fn_seq = pair.second;
+      auto &op_seq = lowered_graph->op_seqs().at(op_seq_ind);
+      auto lower_info = lowered_graph->getLowerInfo(op_seq_ind);
+      if (options.he_profiling_mode)
+        fn_seq->wrap<SyncFunction>(lower_info->backend()->config());
+      builder.append(op_seq_ind, {&op_seq, lower_info, std::move(fn_seq)});
+    }
   }
-
-  lowered_graph->graph().operands().iterate(
-      [](const ir::OperandIndex &, ir::Operand &obj) { obj.releaseData(); });
 
   auto code_map = builder.releaseCodeMap();
-
-  for (auto &it : code_map)
-  {
-    auto op_seq_index = it.first;
-    auto &fn_seq = it.second.fn_seq;
-
-    fn_seq->iterate([&](exec::IFunction &ifunc) {
-      ifunc.prepare();
-      auto backend = lowered_graph->getLowerInfo(op_seq_index)->backend();
-      auto tensor_builder = lowered_graph->backend_contexts().at(backend)->tensor_builder;
-      tensor_builder->postFunctionPrepare();
-    });
-  }
 
   auto exec =
       new exec::LinearExecutor{std::move(lowered_graph), tensor_regs, std::move(code_map), order};
