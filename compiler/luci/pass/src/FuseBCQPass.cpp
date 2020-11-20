@@ -38,11 +38,9 @@ public:
   }
 
 public:
-  bool fuseBCQ(loco::Graph *g)
+  void register_bcq_info(loco::Graph *g)
   {
-
-    const auto output_nodes = loco::output_nodes(g);
-    for (auto node : output_nodes)
+    for (auto node : loco::output_nodes(g))
     {
       auto output_node = loco::must_cast<luci::CircleOutput *>(node);
 
@@ -61,7 +59,10 @@ public:
         add_BCQ_info_node(prefix, metadata_type, circle_node);
       }
     }
+  }
 
+  bool fuseBCQ(loco::Graph *g)
+  {
     if (!is_bcqinfo_valid())
       return false;
 
@@ -81,8 +82,8 @@ public:
           auto bcq_gather = g->nodes()->create<luci::CircleBCQGather>();
 
           bcq_gather->op_version(1);
-          bcq_gather->input_scales(_alpha[prefix]);
-          bcq_gather->input_binary(_packed_binary_code[prefix]);
+          bcq_gather->input_scales(alpha(g, prefix));
+          bcq_gather->input_binary(packed_binary_code(g, prefix));
           bcq_gather->indices(gather->indices());
           bcq_gather->input_clusters(packed_clusters(g, prefix));
 
@@ -143,8 +144,8 @@ public:
           auto bcq_fc = g->nodes()->create<luci::CircleBCQFullyConnected>();
 
           bcq_fc->op_version(1);
-          bcq_fc->weights_scales(_alpha[prefix]);
-          bcq_fc->weights_binary(_packed_binary_code[prefix]);
+          bcq_fc->weights_scales(alpha(g, prefix));
+          bcq_fc->weights_binary(packed_binary_code(g, prefix));
           bcq_fc->bias(fully_connected->bias());
           bcq_fc->weights_clusters(packed_clusters(g, prefix));
           bcq_fc->fusedActivationFunction(fully_connected->fusedActivationFunction());
@@ -383,6 +384,38 @@ private:
   }
 
 private:
+  luci::CircleConst *alpha(loco::Graph *graph, int32_t prefix)
+  {
+    auto new_alpha = graph->nodes()->create<luci::CircleConst>();
+
+    new_alpha->dtype(loco::DataType::FLOAT32);
+    new_alpha->size<loco::DataType::FLOAT32>(_alpha[prefix]->size<loco::DataType::FLOAT32>());
+    new_alpha->rank(1);
+    new_alpha->dim(0) = _alpha[prefix]->dim(0);
+    for (uint32_t i = 0; i < _alpha[prefix]->size<loco::DataType::FLOAT32>(); ++i)
+      new_alpha->at<loco::DataType::FLOAT32>(i) = _alpha[prefix]->at<loco::DataType::FLOAT32>(i);
+    new_alpha->shape_status(luci::ShapeStatus::VALID);
+
+    return new_alpha;
+  }
+
+  luci::CircleConst *packed_binary_code(loco::Graph *graph, int32_t prefix)
+  {
+    auto new_beta = graph->nodes()->create<luci::CircleConst>();
+
+    new_beta->dtype(loco::DataType::S32);
+    new_beta->size<loco::DataType::S32>(_packed_binary_code[prefix]->size<loco::DataType::S32>());
+    new_beta->rank(2);
+    new_beta->dim(0) = _packed_binary_code[prefix]->dim(0);
+    new_beta->dim(1) = _packed_binary_code[prefix]->dim(1);
+    for (uint32_t i = 0; i < _packed_binary_code[prefix]->size<loco::DataType::S32>(); ++i)
+      new_beta->at<loco::DataType::S32>(i) =
+          _packed_binary_code[prefix]->at<loco::DataType::S32>(i);
+    new_beta->shape_status(luci::ShapeStatus::VALID);
+
+    return new_beta;
+  }
+
   luci::CircleConst *packed_clusters(loco::Graph *graph, int32_t prefix)
   {
     auto qbits_of_clusters = _qbits_of_clusters[prefix];
@@ -435,6 +468,8 @@ bool FuseBCQPass::run(loco::Graph *g)
   const int32_t start_magicnum = -2e9 + 27;
   const int32_t end_magicnum = 2e9 - 27;
 
+  loco::Graph *main_graph = g;
+
   luci::CircleConst *metadata_node = nullptr;
   for (auto node : loco::output_nodes(g))
   {
@@ -474,6 +509,8 @@ bool FuseBCQPass::run(loco::Graph *g)
       const auto bundle_cnt = metadata_node->at<loco::DataType::S32>(3);
 
       BCQFuser<1> fuser{original_output_cnt, bundle_cnt};
+      fuser.register_bcq_info(main_graph);
+
       if (fuser.fuseBCQ(g))
         changed = true;
     }
@@ -486,12 +523,12 @@ bool FuseBCQPass::run(loco::Graph *g)
     // Remove all of BCQ information nodes iff there is no change
     if (changed == false)
     {
-      for (auto node : loco::output_nodes(g))
+      for (auto node : loco::output_nodes(main_graph))
       {
         auto output_node = loco::must_cast<luci::CircleOutput *>(node);
         if (output_node->index() == 0 || (int)output_node->index() > original_output_cnt)
         {
-          auto noOp = g->nodes()->create<luci::CircleOutputExclude>();
+          auto noOp = main_graph->nodes()->create<luci::CircleOutputExclude>();
           noOp->dtype(loco::DataType::FLOAT32); // TODO Remove this setting
           output_node->from(noOp);
           changed = true;
