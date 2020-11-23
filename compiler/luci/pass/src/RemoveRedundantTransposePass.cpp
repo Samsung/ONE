@@ -21,7 +21,7 @@
 namespace luci
 {
 
-/// @breif Return true if first_prem[second_prem[i]] == i
+/// @brief Return true if first_prem[second_prem[i]] == i
 bool check_perm(const luci::CircleConst *first_perm, const luci::CircleConst *second_perm)
 {
   assert(first_perm->rank() == 1);
