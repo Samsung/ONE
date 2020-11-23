@@ -67,7 +67,7 @@ void BatchMatMulLayer::configure(const IPortableTensor *lhs, const IPortableTens
 
 void BatchMatMulLayer::run()
 {
-  if (_lhs->data_type() == OperandType::FLOAT32)
+  if ((_lhs->data_type() == OperandType::FLOAT32) && (_rhs->data_type() == OperandType::FLOAT32))
   {
     batchMatMulFloat32();
   }
