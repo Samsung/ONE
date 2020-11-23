@@ -7,12 +7,12 @@
  */
 
 /**
- * @breif absolute path to installation directory of *nnc* project
+ * @brief absolute path to installation directory of *nnc* project
  */
 #define NNC_ROOT_PATH "@NNC_INSTALL_PATH@"
 
 /**
- * @breif absolute path to directory contains libraries
+ * @brief absolute path to directory contains libraries
  */
 #define NNC_LIB_PATH "@NNC_INSTALL_LIB_PATH@"
 
