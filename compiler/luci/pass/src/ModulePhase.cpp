@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "LuciPhase.h"
+#include "ModulePhase.h"
 
 namespace luci
 {
