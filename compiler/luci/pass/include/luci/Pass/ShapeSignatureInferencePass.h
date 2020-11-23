@@ -19,7 +19,7 @@
 
 #include <loco.h>
 
-#include <logo/Pass.h>
+#include <luci/ModulePass.h>
 
 namespace luci
 {
@@ -27,13 +27,14 @@ namespace luci
 /**
  * @brief Pass to infer shape_signature of nodes
  */
-class ShapeSignatureInferencePass : public logo::Pass
+class ShapeSignatureInferencePass : public luci::Pass
 {
 public:
   virtual const char *name(void) const { return "luci::ShapeSignatureInferencePass"; }
 
 public:
-  bool run(loco::Graph *graph);
+  bool run(luci::Module *m);
+  bool run(loco::Graph *g);
 };
 
 } // namespace luci

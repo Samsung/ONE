@@ -24,6 +24,19 @@
 namespace luci
 {
 
+bool ShapeSignatureInferencePass::run(luci::Module *m)
+{
+  bool changed = false;
+
+  for (size_t g = 0; g < m->size(); ++g)
+  {
+    if (run(m->graph(g)))
+      changed = true;
+  }
+
+  return changed;
+}
+
 bool ShapeSignatureInferencePass::run(loco::Graph *g)
 {
   luci::ssinf::Rule signature_inference_rule;
