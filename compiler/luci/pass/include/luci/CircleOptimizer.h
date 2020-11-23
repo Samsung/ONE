@@ -48,7 +48,7 @@ public:
       MakeBatchNormGammaPositive,
       FuseActivationFunction,
       ShuffleWeightTo16x1Float32,
-      RemoveDuplicateTranspose,
+      RemoveRedundantTranspose,
     };
 
     enum AlgorithmParameters

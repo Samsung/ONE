@@ -21,15 +21,15 @@
 namespace luci
 {
 
-// Check Combination of first permutation and second permutation is [0, 1, 2,...., n]
-bool check_perm(const luci::CircleConst *pred_perm, const luci::CircleConst *main_perm)
+/// @breif Return true if first_prem[second_prem[i]] == i
+bool check_perm(const luci::CircleConst *first_perm, const luci::CircleConst *second_perm)
 {
-  assert(pred_perm->rank() == 1);
-  assert(main_perm->rank() == 1);
-  assert(main_perm->size<loco::DataType::S32>() == pred_perm->size<loco::DataType::S32>());
-  for (int32_t i = 0; i < static_cast<int32_t>(pred_perm->size<loco::DataType::S32>()); i++)
+  assert(first_perm->rank() == 1);
+  assert(second_perm->rank() == 1);
+  assert(second_perm->size<loco::DataType::S32>() == first_perm->size<loco::DataType::S32>());
+  for (int32_t i = 0; i < static_cast<int32_t>(first_perm->size<loco::DataType::S32>()); i++)
   {
-    if (pred_perm->at<loco::DataType::S32>(main_perm->at<loco::DataType::S32>(i)) != i)
+    if (first_perm->at<loco::DataType::S32>(second_perm->at<loco::DataType::S32>(i)) != i)
       return false;
   }
   return true;

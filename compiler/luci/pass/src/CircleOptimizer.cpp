@@ -179,7 +179,7 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   {
     phase.emplace_back(std::make_unique<luci::ShuffleWeightTo16x1Float32Pass>());
   }
-  if (_options->query(Options::Algorithm::RemoveDuplicateTranspose))
+  if (_options->query(Options::Algorithm::RemoveRedundantTranspose))
   {
     phase.emplace_back(std::make_unique<luci::RemoveRedundantTransposePass>());
   }
