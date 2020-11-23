@@ -34,7 +34,7 @@ class BackendManager
 public:
   using backend_create_t = backend::Backend *(*)();
   using backend_destroy_t = void (*)(backend::Backend *);
-  using dlhandle_destroy_t = void (*)(void *);
+  using dlhandle_destroy_t = std::function<void(void *)>;
 
   static BackendManager &get();
 

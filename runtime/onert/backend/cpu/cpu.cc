@@ -16,18 +16,9 @@
 
 #include "Backend.h"
 
-#include <util/logging.h>
-
 extern "C" {
-onert::backend::Backend *onert_backend_create()
-{
-  VERBOSE(onert_backend_create) << "'cpu' loaded\n";
-  return new onert::backend::cpu::Backend;
-}
 
-void onert_backend_destroy(onert::backend::Backend *backend)
-{
-  VERBOSE(onert_backend_create) << "'cpu' unloaded\n";
-  delete backend;
-}
+onert::backend::Backend *onert_backend_create() { return new onert::backend::cpu::Backend; }
+
+void onert_backend_destroy(onert::backend::Backend *backend) { delete backend; }
 }
