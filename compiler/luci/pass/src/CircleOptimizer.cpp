@@ -130,7 +130,7 @@ void CircleOptimizer::optimize(luci::Module *m) const
 {
   luci::Phase phase;
 
-  // Paases will be inserted here
+  // Passes will be inserted here
 
   ModuleProgressReporter prog(m, logo::PhaseStrategy::Restart);
   PhaseRunner<logo::PhaseStrategy::Restart> phase_runner{m};
