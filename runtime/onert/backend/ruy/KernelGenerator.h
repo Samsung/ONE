@@ -54,7 +54,7 @@ private:
   std::shared_ptr<TensorBuilder> _tensor_builder;
   std::shared_ptr<cpu_common::TensorRegistry> _tensor_reg;
   std::shared_ptr<backend::custom::IKernelBuilder> _kernel_builder;
-  ir::Layout _current_op_seq_layout;
+  ir::Layout _current_layout;
   const std::shared_ptr<ExternalContext> _external_context;
 };
 
