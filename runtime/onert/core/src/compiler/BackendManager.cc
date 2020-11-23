@@ -76,29 +76,34 @@ void BackendManager::loadBackend(const std::string &backend)
 
     if (handle == nullptr)
     {
-      VERBOSE_F() << "Failed to load backend '" << backend << "' - " << dlerror() << std::endl;
+      VERBOSE(BackendManager) << "Failed to load backend '" << backend << "' - " << dlerror()
+                              << "\n";
       return;
     }
 
-    VERBOSE_F() << "Successfully loaded '" << backend << "' - " << backend_so << "\n";
+    VERBOSE(BackendManager) << "Successfully loaded '" << backend << "'(" << backend_so << ")\n";
 
     {
       // load object creator function
       auto backend_create = (backend_create_t)dlsym(handle, "onert_backend_create");
       if (backend_create == nullptr)
       {
-        fprintf(stderr, "BackendManager: unable to open function onert_backend_create : %s\n",
+        // TODO replace `fprintf` with `VERBOSE`
+        fprintf(stderr, "BackendManager: unable to find function `onert_backend_create` : %s\n",
                 dlerror());
-        abort();
+        dlclose(handle);
+        return;
       }
 
       // load object creator function
       auto backend_destroy = (backend_destroy_t)dlsym(handle, "onert_backend_destroy");
       if (backend_destroy == nullptr)
       {
-        fprintf(stderr, "BackendManager: unable to open function onert_backend_destroy : %s\n",
+        // TODO replace `fprintf` with `VERBOSE`
+        fprintf(stderr, "BackendManager: unable to find `function onert_backend_destroy` : %s\n",
                 dlerror());
-        abort();
+        dlclose(handle);
+        return;
       }
 
       auto backend_object =
@@ -106,8 +111,9 @@ void BackendManager::loadBackend(const std::string &backend)
       bool initialized = backend_object->config()->initialize(); // Call initialize here?
       if (!initialized)
       {
-        VERBOSE_F() << backend.c_str() << " backend initialization failed. Don't use this backend"
-                    << std::endl;
+        VERBOSE(BackendManager) << backend.c_str()
+                                << " backend initialization failed. Don't use this backend"
+                                << std::endl;
         dlclose(handle);
         return;
       }
@@ -115,9 +121,25 @@ void BackendManager::loadBackend(const std::string &backend)
     }
 
     // Save backend handle (avoid warning by handle lost without dlclose())
-    auto u_handle = std::unique_ptr<void, dlhandle_destroy_t>{handle, [](void *h) { dlclose(h); }};
-    _handle_map.emplace(backend, std::move(u_handle));
-  }
+
+    // NOTE This is a workaround for clang-format3.9 (seems like it does not understand
+    //      "by-copy capture with an initializer"
+    // clang-format off
+    auto u_handle = std::unique_ptr<void, dlhandle_destroy_t>{
+        handle, [id = backend, filename = backend_so](void *h) {
+          if (dlclose(h) == 0)
+          {
+            VERBOSE(BackendManager) << "Successfully unloaded '" << id << "'(" << filename << ")\n";
+          }
+          else
+          {
+            VERBOSE(BackendManager)
+                << "Failed to unload backend '" << id << "'- " << dlerror() << "\n";
+          }
+        }};
+// clang-format on
+_handle_map.emplace(backend, std::move(u_handle));
+}
 }
 
 backend::Backend *BackendManager::get(const std::string &key)
