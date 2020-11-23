@@ -61,7 +61,7 @@ bool copy_qparam(luci::CircleNode *src, luci::CircleNode *dst)
 namespace luci
 {
 
-bool PropagateQuantParam::visit(luci::CircleNode *node) { return false; }
+bool PropagateQuantParam::visit(luci::CircleNode *) { return false; }
 
 bool PropagateQuantParam::visit(luci::CircleReshape *node)
 {

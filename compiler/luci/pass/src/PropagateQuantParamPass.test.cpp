@@ -97,7 +97,7 @@ TEST(PropagateQuantParam, wrong_op_neg)
 
   luci::PropagateQuantParam pqp;
   auto circle_node = loco::must_cast<luci::CircleNode *>(g.conv);
-  EXPECT_ANY_THROW(circle_node->accept(&pqp));
+  EXPECT_FALSE(circle_node->accept(&pqp));
 }
 
 TEST(PropagateQuantParam, same_qparam_neg)
