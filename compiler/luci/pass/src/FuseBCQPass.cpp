@@ -25,6 +25,85 @@
 namespace
 {
 
+bool is_fusable_const(luci::CircleConst *before, luci::CircleConst *after, bool do_w_x)
+{
+  if (after->dtype() != loco::DataType::FLOAT32)
+    return false;
+
+  if (after->rank() != 2)
+    return false;
+
+  if (after->size<loco::DataType::FLOAT32>() != before->size<loco::DataType::FLOAT32>())
+    return false;
+
+  auto after_dim0 = after->dim(0).value();
+  auto after_dim1 = after->dim(1).value();
+
+  if (before->rank() == 2)
+  {
+    if (do_w_x)
+    {
+      // Check for [dim0, dim1] --> [dim0, dim1]
+      if (!(after->dim(0) == before->dim(0) && after->dim(1) == before->dim(1)))
+        return false;
+
+      for (uint32_t i = 0; i < after->size<loco::DataType::FLOAT32>(); ++i)
+        if (after->at<loco::DataType::FLOAT32>(i) != before->at<loco::DataType::FLOAT32>(i))
+          return false;
+    }
+    else
+    {
+      // Check for [dim0, dim1] --> [dim1, dim0]
+      if (!(after->dim(0) == before->dim(1) && after->dim(1) == before->dim(0)))
+        return false;
+
+      for (uint32_t i = 0; i < after_dim0; ++i)
+        for (uint32_t j = 0; j < after_dim1; ++j)
+          if (after->at<loco::DataType::FLOAT32>(i * after_dim1 + j) !=
+              before->at<loco::DataType::FLOAT32>(j * after_dim0 + i))
+            return false;
+    }
+
+    return true;
+  }
+  else if (before->rank() == 3)
+  {
+    if (do_w_x)
+    {
+      // This case is not found yet.
+      return false;
+    }
+    else
+    {
+      // When Einsum op is converted to FullyConnected, original rank can be 3.
+      auto before_dim0 = before->dim(0).value();
+      auto before_dim1 = before->dim(1).value();
+      auto before_dim2 = before->dim(2).value();
+
+      // Check if [dim0, dim1, dim2] --> [dim2, dim0 * dim1] or
+      //          [dim0, dim1, dim2] --> [dim1 * dim2, dim0]
+      if ((after_dim0 == before_dim1 * before_dim2 && after_dim1 == before_dim0) ||
+          (after_dim0 == e && after_dim1 == before_dim0 * before_dim1))
+      {
+        for (uint32_t i = 0; i < after_dim0; ++i)
+          for (uint32_t j = 0; j < after_dim1; ++j)
+            if (after->at<loco::DataType::FLOAT32>(i * after_dim1 + j) !=
+                before->at<loco::DataType::FLOAT32>(j * after_dim0 + i))
+              return false;
+      }
+    }
+
+    return true;
+  }
+
+  return false;
+}
+
+} // namespace
+
+namespace
+{
+
 // V means the version of BCQ.
 template <int32_t V> class BCQFuser;
 
@@ -66,19 +145,17 @@ public:
     if (!is_bcqinfo_valid())
       return false;
 
-    for (auto f : _fusable_op)
+    for (auto node : loco::postorder_traversal(loco::output_nodes(g)))
     {
-      auto prefix = f.first;
-      luci::CircleNode *node = f.second;
-
-      if (!is_valid_prefix(prefix))
-        continue;
-
       // Fuse Gather to BCQGather
       if (auto gather = dynamic_cast<luci::CircleGather *>(node))
       {
         if (auto params = dynamic_cast<luci::CircleConst *>(gather->params()))
         {
+          auto prefix = get_prefix_of_const(params);
+          if (prefix == -1 || !is_valid_prefix(prefix))
+            continue;
+
           auto bcq_gather = g->nodes()->create<luci::CircleBCQGather>();
 
           bcq_gather->op_version(1);
@@ -141,6 +218,10 @@ public:
       {
         if (auto weights = dynamic_cast<luci::CircleConst *>(fully_connected->weights()))
         {
+          auto prefix = get_prefix_of_const(weights);
+          if (prefix == -1 || !is_valid_prefix(prefix))
+            continue;
+
           auto bcq_fc = g->nodes()->create<luci::CircleBCQFullyConnected>();
 
           bcq_fc->op_version(1);
@@ -267,6 +348,19 @@ private:
       _qbits_of_clusters[prefix] = const_node;
     else
       _dequant_weight[prefix] = const_node;
+  }
+
+  int32_t get_prefix_of_const(luci::CircleConst *w_after)
+  {
+    for (auto n : _fusable_op)
+    {
+      auto prefix = n.first;
+      auto w_before = loco::must_cast<luci::CircleConst *>(n.second);
+      if (is_fusable_const(w_before, w_after, _do_w_x[prefix]->at<loco::DataType::BOOL>(0)))
+        return prefix;
+    }
+
+    return -1;
   }
 
   bool is_bcqinfo_valid()
