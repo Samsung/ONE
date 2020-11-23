@@ -39,6 +39,13 @@ DataType NNAPIConvert::getDataType(OperandCode type)
     case ANEURALNETWORKS_BOOL:
     case ANEURALNETWORKS_TENSOR_BOOL8:
       return DataType::BOOL8;
+    case ANEURALNETWORKS_TENSOR_FLOAT16:
+    case ANEURALNETWORKS_FLOAT16:
+      return DataType::FLOAT16;
+    case ANEURALNETWORKS_TENSOR_QUANT8_SYMM_PER_CHANNEL:
+      return DataType::QUANT_INT8_SYMM_PER_CHANNEL;
+    case ANEURALNETWORKS_TENSOR_QUANT8_ASYMM_SIGNED:
+      return DataType::QUANT_INT8_ASYMM;
     default:
       throw std::runtime_error("Unsupported type");
   }
