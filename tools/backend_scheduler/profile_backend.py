@@ -14,11 +14,10 @@ def main(args):
 
     if (isdir('./Product/armv7l-linux.release')):
         for index, backend in enumerate(backend_list):
-            trace_name = "{}_{}_{}".format("armv7l",
-                                           basename(normpath(args.nnpackage_dir)),
-                                           backend)
-            command = "TRACE_FILEPATH={}/traces/{}".format(dirname(script_path),
-                                                           trace_name)
+            trace_name = "{}_{}_{}".format("armv7l", basename(
+                normpath(args.nnpackage_dir)), backend)
+            command = "TRACE_FILEPATH={}/traces/{}".format(
+                dirname(script_path), trace_name)
             command += " OP_BACKEND_Conv2D={}".format(backend)
             command += " BACKENDS='{}'".format(';'.join(backend_list))
             command += " OP_SEQ_MAX_NODE=1"
