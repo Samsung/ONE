@@ -28,6 +28,7 @@ struct PropagateQuantParam final : public luci::CircleNodeMutableVisitor<bool>
 {
   PropagateQuantParam() {}
 
+  bool visit(luci::CircleNode *node);
   bool visit(luci::CircleReshape *node);
   // TODO : Add more Ops (e.g., Transpose)
 };

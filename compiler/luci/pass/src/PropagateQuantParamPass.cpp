@@ -44,6 +44,7 @@ bool copy_qparam(luci::CircleQuantParam *src, luci::CircleQuantParam *dst)
 
 bool copy_qparam(luci::CircleNode *src, luci::CircleNode *dst)
 {
+  // Skip nodes that do not have quantparams
   auto src_qparam = src->quantparam();
   if (not src_qparam)
     return false;
@@ -60,6 +61,8 @@ bool copy_qparam(luci::CircleNode *src, luci::CircleNode *dst)
 namespace luci
 {
 
+bool PropagateQuantParam::visit(luci::CircleNode *node) { return false; }
+
 bool PropagateQuantParam::visit(luci::CircleReshape *node)
 {
   auto input = node->tensor();
@@ -73,14 +76,10 @@ bool PropagateQuantParam::visit(luci::CircleReshape *node)
 bool PropagateQuantParamPass::run(loco::Graph *g)
 {
   bool changed = false;
+  LOGGER(l);
   for (auto node : loco::active_nodes(loco::output_nodes(g)))
   {
-    LOGGER(l);
     auto circle_node = loco::must_cast<luci::CircleNode *>(node);
-    auto opcode = circle_node->opcode();
-    if (opcode != luci::CircleOpcode::RESHAPE)
-      continue;
-
     INFO(l) << "PropagateQuantParamPass visit node: " << circle_node->name() << std::endl;
 
     PropagateQuantParam pqp;
