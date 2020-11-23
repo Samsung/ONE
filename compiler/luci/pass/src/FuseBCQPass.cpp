@@ -427,6 +427,16 @@ private:
       }
     }
 
+    for (auto n : _fusable_op)
+    {
+      // fusable_op should be FLOAT32 type
+      if (n.second->dtype() != loco::DataType::FLOAT32)
+      {
+        WARN(l) << "FuseBCQPass : fusable_op has wrong type" << std::endl;
+        return false;
+      }
+    }
+
     // As dequant_weight is not used for fusing, skip validation.
 
     return true;
@@ -469,6 +479,12 @@ private:
     if (_qbits_of_clusters.find(prefix) == _qbits_of_clusters.end())
     {
       WARN(l) << "qbits_of_clusters is not found" << std::endl;
+      return false;
+    }
+
+    if (_fusable_op.find(prefix) == _qbits_of_clusters.end())
+    {
+      WARN(l) << "fusable_op is not found" << std::endl;
       return false;
     }
 
