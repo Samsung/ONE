@@ -29,7 +29,7 @@ __UbuntuPackages="build-essential"
 # other development supports
 __UbuntuPackages+=" ocl-icd-opencl-dev"
 __UbuntuPackages+=" libhdf5-dev"
-__UbuntuBoostPackages=" llibboost-all-dev"
+__UbuntuBoostPackages=" libboost-all-dev"
 
 # symlinks fixer
 __UbuntuPackages+=" symlinks"
