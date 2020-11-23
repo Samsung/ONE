@@ -18,6 +18,7 @@
 
 #include "OperationUtils.h"
 
+#include <cker/operation/LeakyReLU.h>
 #include <cker/operation/Logistic.h>
 #include <cker/operation/ReLU.h>
 #include <cker/operation/ReLU6.h>
@@ -158,6 +159,21 @@ void ElementwiseActivationLayer::configure(const IPortableTensor *input, IPortab
       else
       {
         throw std::runtime_error{"ElementwiseActivationLayer(Logistic): unsupported data type"};
+      }
+      break;
+    case ElementwiseActivationType::kLeakyReLU:
+      if (_input->data_type() == OperandType::FLOAT32)
+      {
+        _kernel = [alpha](const IPortableTensor *input, IPortableTensor *output) {
+          nnfw::cker::LeakyReLU(nnfw::cker::LeakyReluParams{alpha}, getTensorShape(input),
+                                reinterpret_cast<const float *>(input->buffer()),
+                                getTensorShape(output),
+                                reinterpret_cast<float *>(output->buffer()));
+        };
+      }
+      else
+      {
+        throw std::runtime_error{"ElementwiseActivationLayer(LeakyReLU): unsupported data type"};
       }
       break;
     default:

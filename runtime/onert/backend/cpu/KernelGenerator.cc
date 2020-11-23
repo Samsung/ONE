@@ -114,6 +114,8 @@ convertElementwiseActivationType(ir::operation::ElementwiseActivation::Type type
       return ops::ElementwiseActivationType::kReLU;
     case ir::operation::ElementwiseActivation::Type::TANH:
       return ops::ElementwiseActivationType::kTanh;
+    case ir::operation::ElementwiseActivation::Type::LEAKY_RELU:
+      return ops::ElementwiseActivationType::kLeakyReLU;
     default:
       throw std::runtime_error("cpu KernelGenerator : Not supported operation yet");
   }
