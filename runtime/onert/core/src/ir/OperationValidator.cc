@@ -84,6 +84,18 @@ void OperationValidator::visit(const operation::AddN &node)
   }
 }
 
+void OperationValidator::visit(const operation::ArgMax &node)
+{
+  const auto input_index(node.getInputs().at(operation::ArgMax::Input::INPUT));
+  const auto output_index(node.getOutputs().at(0));
+  const auto output_type = node.param().output_type;
+
+  OP_REQUIRES(isValidType(input_index, {DataType::FLOAT32, DataType::INT32, DataType::UINT8,
+                                        DataType::QUANT_UINT8_ASYMM, DataType::QUANT_INT8_ASYMM}));
+  OP_REQUIRES(isValidType(output_index, {DataType::INT32, DataType::INT64}));
+  OP_REQUIRES(isValidType(output_index, output_type));
+}
+
 void OperationValidator::visit(const operation::BatchMatMul &node)
 {
   const auto lhs_index(node.getInputs().at(operation::BatchMatMul::Input::LHS));
