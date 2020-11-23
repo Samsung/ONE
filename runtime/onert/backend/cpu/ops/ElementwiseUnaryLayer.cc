@@ -195,6 +195,12 @@ void sinFloat32(const IPortableTensor *input, IPortableTensor *output)
                   getTensorShape(output), reinterpret_cast<float *>(output->buffer()));
 }
 
+void sqrtFloat32(const IPortableTensor *input, IPortableTensor *output)
+{
+  nnfw::cker::Sqrt(getTensorShape(input), reinterpret_cast<const float *>(input->buffer()),
+                   getTensorShape(output), reinterpret_cast<float *>(output->buffer()));
+}
+
 void squareFloat32(const IPortableTensor *input, IPortableTensor *output)
 {
   nnfw::cker::Square(getTensorShape(input), reinterpret_cast<const float *>(input->buffer()),
@@ -367,6 +373,16 @@ void ElementwiseUnaryLayer::configure(const IPortableTensor *input, IPortableTen
       else
       {
         throw std::runtime_error{"Sin: Unsupported  data type"};
+      }
+      break;
+    case ElementwiseUnaryType::kSqrt:
+      if ((input->data_type() == OperandType::FLOAT32))
+      {
+        _kernel = sqrtFloat32;
+      }
+      else
+      {
+        throw std::runtime_error{"Sqrt: Unsupported  data type"};
       }
       break;
     case ElementwiseUnaryType::kSquare:
