@@ -19,6 +19,8 @@
 
 #include <loco.h>
 
+#include <luci/IR/Module.h>
+
 #include <string>
 #include <vector>
 
@@ -78,6 +80,8 @@ public:
   Options *options(void);
 
 public:
+  void optimize(luci::Module *) const;
+
   void optimize(loco::Graph *) const;
 
   void quantize(loco::Graph *) const;
