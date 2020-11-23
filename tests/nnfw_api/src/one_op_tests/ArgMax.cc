@@ -132,13 +132,31 @@ TEST_F(GenModelTest, neg_OneOp_ArgMax_InType)
   SUCCEED();
 }
 
+TEST_F(GenModelTest, neg_OneOp_ArgMax_AxisType)
+{
+  CircleGen cgen;
+  const auto output_type = circle::TensorType::TensorType_FLOAT32;
+  std::vector<float> axis_data{4};
+  uint32_t axis_buf = cgen.addBuffer(axis_data);
+  int axis = cgen.addTensor({{1}, circle::TensorType::TensorType_FLOAT32, axis_buf});
+  int in = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_FLOAT32});
+  int out = cgen.addTensor({{1, 2, 1}, output_type});
+  cgen.addOperatorArgMax({{in, axis}, {out}}, output_type);
+  cgen.setInputsAndOutputs({in}, {out});
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->expectFailModelLoad();
+
+  SUCCEED();
+}
+
 TEST_F(GenModelTest, neg_OneOp_ArgMax_OutType)
 {
   CircleGen cgen;
   const auto output_type = circle::TensorType::TensorType_FLOAT32;
   std::vector<int32_t> axis_data{4};
   uint32_t axis_buf = cgen.addBuffer(axis_data);
-  int axis = cgen.addTensor({{1}, circle::TensorType::TensorType_FLOAT32, axis_buf});
+  int axis = cgen.addTensor({{1}, circle::TensorType::TensorType_INT32, axis_buf});
   int in = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_FLOAT32});
   int out = cgen.addTensor({{1, 2, 1}, output_type});
   cgen.addOperatorArgMax({{in, axis}, {out}}, output_type);
@@ -154,13 +172,12 @@ TEST_F(GenModelTest, neg_OneOp_ArgMax_paramType)
 {
   CircleGen cgen;
   const auto output_type = circle::TensorType::TensorType_INT32;
-  const auto output_param_type = circle::TensorType::TensorType_INT64;
   std::vector<int32_t> axis_data{4};
   uint32_t axis_buf = cgen.addBuffer(axis_data);
-  int axis = cgen.addTensor({{1}, circle::TensorType::TensorType_FLOAT32, axis_buf});
+  int axis = cgen.addTensor({{1}, circle::TensorType::TensorType_INT32, axis_buf});
   int in = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_FLOAT32});
   int out = cgen.addTensor({{1, 2, 1}, output_type});
-  cgen.addOperatorArgMax({{in, axis}, {out}}, output_param_type);
+  cgen.addOperatorArgMax({{in, axis}, {out}}, circle::TensorType::TensorType_INT64);
   cgen.setInputsAndOutputs({in}, {out});
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
