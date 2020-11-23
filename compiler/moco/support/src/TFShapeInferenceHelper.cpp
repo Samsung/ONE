@@ -66,7 +66,7 @@ private:
 };
 
 /**
- * @breif  Expand shape x and y to same rank by align right and filling with 1
+ * @brief  Expand shape x and y to same rank by align right and filling with 1
  */
 void expand_rank(loco::TensorShape &x, loco::TensorShape &y)
 {
@@ -86,7 +86,7 @@ void expand_rank(loco::TensorShape &x, loco::TensorShape &y)
 }
 
 /**
- * @breif  Returns shape of expanded dimension of input x and y having same rank
+ * @brief  Returns shape of expanded dimension of input x and y having same rank
  */
 loco::TensorShape expand_dimension(const loco::TensorShape &x, const loco::TensorShape &y)
 {
