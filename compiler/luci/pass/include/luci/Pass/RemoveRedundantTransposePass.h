@@ -27,7 +27,7 @@ namespace luci
  */
 struct RemoveRedundantTransposePass final : public logo::Pass
 {
-  const char *name(void) const final { return "luci::REMOVE_REDUNDANT_TRANSPOSE"; }
+  const char *name(void) const final { return "luci::RemoveRedundantTransposePass"; }
 
   bool run(loco::Graph *g) final;
 };
