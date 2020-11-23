@@ -17,7 +17,7 @@
 #ifndef __MODULE_PHASE_H__
 #define __MODULE_PHASE_H__
 
-#include <luci/LuciPass.h>
+#include <luci/ModulePass.h>
 
 #include <logo/Phase.h>
 

@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __LUCI_PASS_H__
-#define __LUCI_PASS_H__
+#ifndef __MODULE_PASS_H__
+#define __MODULE_PASS_H__
 
 #include <loco.h>
 #include <logo/Pass.h>
@@ -28,19 +28,10 @@ namespace luci
 class Pass : public logo::Pass
 {
 public:
-  /**
-   * @brief  Run the pass
-   *
-   * @return false if there was nothing changed.
-   */
-
   // Run module pass and return false if there was nothing changed
   virtual bool run(luci::Module *) = 0;
-
-  // Run graph pass and return false if there was nothing changed
-  virtual bool run(loco::Graph *) { return false; }
 };
 
 } // namespace luci
 
-#endif // __LUCI_PASS_H__
+#endif // __MODULE_PASS_H__
