@@ -33,6 +33,17 @@
 
 namespace onert
 {
+namespace backend
+{
+class IPortableTensor;
+namespace controlflow
+{
+class IOTensor;
+}
+}
+}
+namespace onert
+{
 namespace exec
 {
 class IExecutionObserver;
@@ -64,11 +75,29 @@ struct IExecutor
   virtual void setIndexedRanks(std::shared_ptr<ir::OperationIndexMap<int64_t>>) = 0;
 
   /**
-   * @brief     Start execution
+   * @brief     Execute with user-given input/output description (for primary subgraph)
    * @param[in] desc Input and output description
    * @note      This method should be thread-safe
    */
   virtual void execute(const IODescription &desc) = 0;
+
+  /**
+   * @brief Execute with given input/output tensors
+   *
+   * For non-primary subgraphs, input and output tensors must be given.
+   *
+   * @param[in] inputs tensors that are passed as inputs
+   * @param[in] outputs tensors that are passed as outputs
+   */
+  virtual void execute(const std::vector<backend::IPortableTensor *> &inputs,
+                       const std::vector<backend::IPortableTensor *> &outputs) = 0;
+
+  /**
+   * @brief Get output tensor objects
+   *
+   * @return Vector of @c IOTensor
+   */
+  virtual const std::vector<backend::controlflow::IOTensor *> &getOutputTensors() const = 0;
 };
 
 using ExecutorMap = std::unordered_map<ir::SubgraphIndex, std::unique_ptr<IExecutor>>;

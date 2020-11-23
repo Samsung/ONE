@@ -58,6 +58,15 @@ public:
    * @note   It should be called after setting input and output buffer
    */
   void execute(const exec::IODescription &desc) final;
+  void execute(const std::vector<backend::IPortableTensor *> &,
+               const std::vector<backend::IPortableTensor *> &) final
+  {
+    throw new std::runtime_error{"Interpreter does not support subgraph calls(control flow ops)"};
+  }
+  const std::vector<backend::controlflow::IOTensor *> &getOutputTensors() const final
+  {
+    throw new std::runtime_error{"Interpreter does not support this function."};
+  }
 
 private:
   const ir::Graph &_graph;
