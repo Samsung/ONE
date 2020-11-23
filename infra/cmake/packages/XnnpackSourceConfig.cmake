@@ -14,15 +14,6 @@ function(_XnnpackSource_import)
     DIRNAME XNNPACK
     URL ${XNNPACK_URL})
 
-  # To support xnnpack in cmake < 3.10
-  execute_process(
-    COMMAND patch -p1 --forward --ignore-whitespace
-    WORKING_DIRECTORY ${XNNPACK_SOURCE_DIR}
-    INPUT_FILE "${CMAKE_CURRENT_LIST_DIR}/xnnpack.patch"
-    OUTPUT_VARIABLE OUTPUT
-    RESULT_VARIABLE RESULT
-  )
-
   set(XnnpackSource_DIR ${XNNPACK_SOURCE_DIR} PARENT_SCOPE)
   set(XnnpackSource_FOUND TRUE PARENT_SCOPE)
 endfunction(_XnnpackSource_import)

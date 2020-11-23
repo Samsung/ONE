@@ -224,7 +224,7 @@ public:
         _backends.push_back(backend);
       }
 #endif
-      if (backend == "cpu" || backend == "ruy")
+      if (backend == "cpu" || backend == "ruy" || backend == "xnnpack")
       {
         _backends.push_back(backend);
       }
