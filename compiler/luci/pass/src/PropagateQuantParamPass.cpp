@@ -15,9 +15,9 @@
  */
 
 #include "luci/Pass/PropagateQuantParamPass.h"
-#include "PropagateQuantParamPassInternal.h"
 
 #include <luci/IR/CircleNodes.h>
+#include <luci/IR/CircleNodeVisitor.h>
 #include <luci/Log.h>
 
 #include <iostream>
@@ -56,22 +56,30 @@ bool copy_qparam(luci::CircleNode *src, luci::CircleNode *dst)
   return copy_qparam(src_qparam, dst_qparam);
 }
 
+//  Visitor to propagate quantization parameters
+struct PropagateQuantParam final : public luci::CircleNodeMutableVisitor<bool>
+{
+  PropagateQuantParam() {}
+
+  bool visit(luci::CircleNode *) { return false; }
+
+  bool visit(luci::CircleReshape *node)
+  {
+    auto input = node->tensor();
+    if (loco::succs(input).size() != 1)
+      return false;
+
+    auto input_node = loco::must_cast<luci::CircleNode *>(input);
+    return copy_qparam(node, input_node);
+  }
+
+  // TODO : Add more Ops (e.g., Transpose)
+};
+
 } // namespace
 
 namespace luci
 {
-
-bool PropagateQuantParam::visit(luci::CircleNode *) { return false; }
-
-bool PropagateQuantParam::visit(luci::CircleReshape *node)
-{
-  auto input = node->tensor();
-  if (loco::succs(input).size() != 1)
-    return false;
-
-  auto input_node = loco::must_cast<luci::CircleNode *>(input);
-  return copy_qparam(node, input_node);
-}
 
 bool PropagateQuantParamPass::run(loco::Graph *g)
 {

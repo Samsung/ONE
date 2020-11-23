@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "PropagateQuantParamPassInternal.h"
+#include "luci/Pass/PropagateQuantParamPass.h"
 
 #include <luci/IR/CircleNodes.h>
 
@@ -55,19 +55,27 @@ class SimpleGraph
 public:
   SimpleGraph()
   {
+    input = g.nodes()->create<luci::CircleInput>();
     conv = g.nodes()->create<luci::CircleConv2D>();
     reshape = g.nodes()->create<luci::CircleReshape>();
     output = g.nodes()->create<luci::CircleOutput>();
 
+    auto graph_input = g.inputs()->create();
+    input->index(graph_input->index());
+    auto graph_output = g.outputs()->create();
+    output->index(graph_output->index());
+
     addQuantParam(conv, {0.1, 0.2, 0.3}, {0, 10, 20});
     addQuantParam(reshape, {0.2, 0.4, 0.6}, {-10, 0, 10});
 
+    conv->input(input);
     reshape->tensor(conv);
     output->from(reshape);
   }
 
 public:
   loco::Graph g;
+  luci::CircleInput *input;
   luci::CircleConv2D *conv;
   luci::CircleReshape *reshape;
   luci::CircleOutput *output;
@@ -79,9 +87,9 @@ TEST(PropagateQuantParam, simple)
 {
   SimpleGraph g;
 
-  luci::PropagateQuantParam pqp;
-  auto circle_node = loco::must_cast<luci::CircleNode *>(g.reshape);
-  EXPECT_TRUE(circle_node->accept(&pqp));
+  luci::PropagateQuantParamPass pass;
+  while (pass.run(&g.g))
+    ;
 
   EXPECT_FLOAT_EQ(0.2, g.conv->quantparam()->scale[0]);
   EXPECT_FLOAT_EQ(0.4, g.conv->quantparam()->scale[1]);
@@ -91,26 +99,20 @@ TEST(PropagateQuantParam, simple)
   EXPECT_EQ(10, g.conv->quantparam()->zerop[2]);
 }
 
-TEST(PropagateQuantParam, wrong_op_neg)
+TEST(PropagateQuantParam, wrong_op_NEG)
 {
   SimpleGraph g;
+  g.output->from(g.conv);
+  g.reshape->drop();
 
-  luci::PropagateQuantParam pqp;
-  auto circle_node = loco::must_cast<luci::CircleNode *>(g.conv);
-  EXPECT_FALSE(circle_node->accept(&pqp));
-}
+  luci::PropagateQuantParamPass pass;
+  while (pass.run(&g.g))
+    ;
 
-TEST(PropagateQuantParam, same_qparam_neg)
-{
-  SimpleGraph g;
-  g.conv->quantparam()->scale[0] = 0.2;
-  g.conv->quantparam()->scale[1] = 0.4;
-  g.conv->quantparam()->scale[2] = 0.6;
-  g.conv->quantparam()->zerop[0] = -10;
-  g.conv->quantparam()->zerop[1] = 0;
-  g.conv->quantparam()->zerop[2] = 10;
-
-  luci::PropagateQuantParam pqp;
-  auto circle_node = loco::must_cast<luci::CircleNode *>(g.reshape);
-  EXPECT_FALSE(circle_node->accept(&pqp));
+  EXPECT_FLOAT_EQ(0.1, g.conv->quantparam()->scale[0]);
+  EXPECT_FLOAT_EQ(0.2, g.conv->quantparam()->scale[1]);
+  EXPECT_FLOAT_EQ(0.3, g.conv->quantparam()->scale[2]);
+  EXPECT_EQ(0, g.conv->quantparam()->zerop[0]);
+  EXPECT_EQ(10, g.conv->quantparam()->zerop[1]);
+  EXPECT_EQ(20, g.conv->quantparam()->zerop[2]);
 }
