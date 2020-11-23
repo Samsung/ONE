@@ -83,7 +83,7 @@ bool is_fusable_const(luci::CircleConst *before, luci::CircleConst *after, bool 
       // Check if [dim0, dim1, dim2] --> [dim2, dim0 * dim1] or
       //          [dim0, dim1, dim2] --> [dim1 * dim2, dim0]
       if ((after_dim0 == before_dim1 * before_dim2 && after_dim1 == before_dim0) ||
-          (after_dim0 == e && after_dim1 == before_dim0 * before_dim1))
+          (after_dim0 == before_dim2 && after_dim1 == before_dim0 * before_dim1))
       {
         for (uint32_t i = 0; i < after_dim0; ++i)
           for (uint32_t j = 0; j < after_dim1; ++j)
@@ -482,7 +482,7 @@ private:
       return false;
     }
 
-    if (_fusable_op.find(prefix) == _qbits_of_clusters.end())
+    if (_fusable_op.find(prefix) == _fusable_op.end())
     {
       WARN(l) << "fusable_op is not found" << std::endl;
       return false;
