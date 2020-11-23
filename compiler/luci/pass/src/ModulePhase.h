@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __LUCI_PHASE_H__
-#define __LUCI_PHASE_H__
+#ifndef __MODULE_PHASE_H__
+#define __MODULE_PHASE_H__
 
 #include <luci/LuciPass.h>
 
@@ -64,4 +64,4 @@ private:
 
 } // namespace luci
 
-#endif // __LUCI_PHASE_H__
+#endif // __MODULE_PHASE_H__
