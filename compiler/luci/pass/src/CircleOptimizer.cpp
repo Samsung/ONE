@@ -40,6 +40,7 @@
 // logo passes
 #include <logo/RemoveDeadNodeWithQueryPass.h>
 
+#include "ModulePhase.h"
 #include "ProgressReporter.h"
 #include "CircleOptimizerUtils.h"
 
@@ -123,6 +124,18 @@ CircleOptimizer::Options *CircleOptimizer::options(void)
   }
 
   return _options.get();
+}
+
+void CircleOptimizer::optimize(luci::Module *m) const
+{
+  luci::Phase phase;
+
+  // Passes will be inserted here
+
+  ModuleProgressReporter prog(m, logo::PhaseStrategy::Restart);
+  PhaseRunner<logo::PhaseStrategy::Restart> phase_runner{m};
+  phase_runner.attach(&prog);
+  phase_runner.run(phase);
 }
 
 void CircleOptimizer::optimize(loco::Graph *g) const
