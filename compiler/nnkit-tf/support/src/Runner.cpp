@@ -308,7 +308,7 @@ void Runner::run()
                 0,       // Target operations, number of targets.
                 nullptr, // Run metadata.
                 _status  // Output status.
-                );
+  );
 
   if (TF_GetCode(_status) != TF_OK)
     throw std::runtime_error(TF_Message(_status));

@@ -231,31 +231,35 @@ int main(const int argc, char **argv)
     // only warmup.
     if (verbose == 0)
     {
-      phases.run("WARMUP",
-                 [&](const benchmark::Phase &, uint32_t) { NNPR_ENSURE_STATUS(nnfw_run(session)); },
-                 args.getWarmupRuns());
-      phases.run("EXECUTE",
-                 [&](const benchmark::Phase &, uint32_t) { NNPR_ENSURE_STATUS(nnfw_run(session)); },
-                 args.getNumRuns(), true);
+      phases.run(
+          "WARMUP",
+          [&](const benchmark::Phase &, uint32_t) { NNPR_ENSURE_STATUS(nnfw_run(session)); },
+          args.getWarmupRuns());
+      phases.run(
+          "EXECUTE",
+          [&](const benchmark::Phase &, uint32_t) { NNPR_ENSURE_STATUS(nnfw_run(session)); },
+          args.getNumRuns(), true);
     }
     else
     {
-      phases.run("WARMUP",
-                 [&](const benchmark::Phase &, uint32_t) { NNPR_ENSURE_STATUS(nnfw_run(session)); },
-                 [&](const benchmark::Phase &phase, uint32_t nth) {
-                   std::cout << "... "
-                             << "warmup " << nth + 1 << " takes " << phase.time[nth] / 1e3 << " ms"
-                             << std::endl;
-                 },
-                 args.getWarmupRuns());
-      phases.run("EXECUTE",
-                 [&](const benchmark::Phase &, uint32_t) { NNPR_ENSURE_STATUS(nnfw_run(session)); },
-                 [&](const benchmark::Phase &phase, uint32_t nth) {
-                   std::cout << "... "
-                             << "run " << nth + 1 << " takes " << phase.time[nth] / 1e3 << " ms"
-                             << std::endl;
-                 },
-                 args.getNumRuns(), true);
+      phases.run(
+          "WARMUP",
+          [&](const benchmark::Phase &, uint32_t) { NNPR_ENSURE_STATUS(nnfw_run(session)); },
+          [&](const benchmark::Phase &phase, uint32_t nth) {
+            std::cout << "... "
+                      << "warmup " << nth + 1 << " takes " << phase.time[nth] / 1e3 << " ms"
+                      << std::endl;
+          },
+          args.getWarmupRuns());
+      phases.run(
+          "EXECUTE",
+          [&](const benchmark::Phase &, uint32_t) { NNPR_ENSURE_STATUS(nnfw_run(session)); },
+          [&](const benchmark::Phase &phase, uint32_t nth) {
+            std::cout << "... "
+                      << "run " << nth + 1 << " takes " << phase.time[nth] / 1e3 << " ms"
+                      << std::endl;
+          },
+          args.getNumRuns(), true);
     }
 
 #if defined(ONERT_HAVE_HDF5) && ONERT_HAVE_HDF5 == 1

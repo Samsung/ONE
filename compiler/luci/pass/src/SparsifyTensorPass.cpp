@@ -70,10 +70,10 @@ template <loco::DataType DT> void SparsifyTensorPass::sparsify_tensor(luci::Circ
     {
       sparsityparam->dim_metadata.emplace_back(
           DimensionType::SPARSE_CSR, /* dense size */ 0,
-          /* array_segments */ SparseIndexVector{SparseIndexVectorType::U16,
-                                                 dim_metadata.at(idx * 2)},
-          /* array_indices */ SparseIndexVector{SparseIndexVectorType::U16,
-                                                dim_metadata.at(idx * 2 + 1)});
+          /* array_segments */
+          SparseIndexVector{SparseIndexVectorType::U16, dim_metadata.at(idx * 2)},
+          /* array_indices */
+          SparseIndexVector{SparseIndexVectorType::U16, dim_metadata.at(idx * 2 + 1)});
     }
   }
   for (uint32_t i = 0; i < _block_size.size(); i++)

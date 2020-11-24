@@ -223,8 +223,8 @@ KernelGenerator::KernelGenerator(
     const std::shared_ptr<cpu_common::TensorRegistry> &tensor_reg,
     const std::shared_ptr<backend::custom::IKernelBuilder> &kernel_builder,
     const std::shared_ptr<ExternalContext> &external_context)
-    : _ctx(operands_ctx), _operations_ctx{operations_ctx}, _tensor_builder(tensor_builder),
-      _tensor_reg{tensor_reg}, _kernel_builder(kernel_builder),
+    : _ctx(operands_ctx), _operations_ctx{operations_ctx},
+      _tensor_builder(tensor_builder), _tensor_reg{tensor_reg}, _kernel_builder(kernel_builder),
       _current_layout(ir::Layout::UNKNOWN), _external_context(external_context)
 {
   // DO NOTHING

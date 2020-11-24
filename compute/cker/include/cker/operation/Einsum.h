@@ -483,8 +483,8 @@ private:
       if (inputs[i].shape.DimensionsCount() + 1 < (int32_t)labels->size())
       {
         throw std::runtime_error{"Expected input " + std::to_string(i) + " to have rank at least " +
-                                 std::to_string(labels->size() - 1) + " but got: " +
-                                 std::to_string(inputs[i].shape.DimensionsCount())};
+                                 std::to_string(labels->size() - 1) +
+                                 " but got: " + std::to_string(inputs[i].shape.DimensionsCount())};
       }
       int ellipsis_axis = -1;
       const int num_bcast_dims = inputs[i].shape.DimensionsCount() - labels->size() + 1;

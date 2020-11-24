@@ -69,8 +69,8 @@ private:
 };
 
 /**
-* @brief Class to store context to build IR from onnx
-*/
+ * @brief Class to store context to build IR from onnx
+ */
 class GraphBuilderContext
 {
 public:

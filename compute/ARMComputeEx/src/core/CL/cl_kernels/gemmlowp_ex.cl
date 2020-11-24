@@ -117,7 +117,7 @@ __kernel void gemmlowp_mm_midgard_ex(IMAGE_DECLARATION(src0), IMAGE_DECLARATION(
                                      ,
                                      uint dst_cross_plane_pad
 #endif // REINTERPRET_OUTPUT_AS_3D
-                                     )
+)
 {
   int idx = get_global_id(0) * NUM_ELEMS_PROCESSED_PER_THREAD_X;
 

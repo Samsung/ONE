@@ -550,10 +550,10 @@ inline void BroadcastAddDispatch(const BinaryArithmeticOpParam &params, const Sh
   {
     auto implFuncs = getBinaryOpWithActivationImplFloat<BinaryOpFuncAddFloat>(params);
 
-    BinaryBroadcastFiveFold(params, params.broadcast_category ==
-                                        BroadcastableOpCategory::kSecondInputBroadcastsFast,
-                            input1_shape, input1_data, input2_shape, input2_data, output_shape,
-                            output_data, implFuncs.first, implFuncs.second);
+    BinaryBroadcastFiveFold(
+        params, params.broadcast_category == BroadcastableOpCategory::kSecondInputBroadcastsFast,
+        input1_shape, input1_data, input2_shape, input2_data, output_shape, output_data,
+        implFuncs.first, implFuncs.second);
   }
 }
 
@@ -744,10 +744,10 @@ inline void BroadcastMulDispatch(const BinaryArithmeticOpParam &params, const Sh
     return;
   }
   auto implFuncs = getBinaryOpWithActivationImplFloat<BinaryOpFuncMulFloat>(params);
-  BinaryBroadcastFiveFold(params, params.broadcast_category ==
-                                      BroadcastableOpCategory::kSecondInputBroadcastsFast,
-                          input1_shape, input1_data, input2_shape, input2_data, output_shape,
-                          output_data, implFuncs.first, implFuncs.second);
+  BinaryBroadcastFiveFold(
+      params, params.broadcast_category == BroadcastableOpCategory::kSecondInputBroadcastsFast,
+      input1_shape, input1_data, input2_shape, input2_data, output_shape, output_data,
+      implFuncs.first, implFuncs.second);
 }
 
 inline void Div(const BinaryArithmeticOpParam &params, const Shape &input1_shape,

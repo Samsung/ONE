@@ -92,7 +92,7 @@ void initializeSubgraphIOTensors(compiler::LoweredGraph &lowered_graph,
     auto tensor = std::make_unique<backend::controlflow::IOTensor>(
         operand.info(),
         ir::Layout::NHWC /* FIXME find op_seq for this operand and use frontend_layout */
-        );
+    );
 
     // Add tensor to controlflow TensorRegistry.
     cf_tensor_reg->setNativeIOTensor(ind, std::move(tensor));

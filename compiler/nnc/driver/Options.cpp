@@ -35,7 +35,7 @@ Option<bool> caffeFrontend(optname("--caffe"), overview("treat input file as Caf
 #else
                            showopt(false)
 #endif // NNC_FRONTEND_CAFFE_ENABLED
-                               );
+);
 Option<bool> onnxFrontend(optname("--onnx"), overview("treat input file as ONNX model"), false,
                           optional(true), optvalues(""), nullptr, separators(""),
 #ifdef NNC_FRONTEND_ONNX_ENABLED
@@ -43,7 +43,7 @@ Option<bool> onnxFrontend(optname("--onnx"), overview("treat input file as ONNX 
 #else
                           showopt(false)
 #endif // NNC_FRONTEND_ONNX_ENABLED
-                              );
+);
 
 Option<bool> caffe2Frontend(optname("--caffe2"),
                             overview("treat input file as Caffe2 model (predict_net.pb)"), false,
@@ -83,7 +83,7 @@ Option<bool> tflFrontend(optname("--tflite"),
 #else
                          showopt(false)
 #endif // NNC_FRONTEND_TFLITE_ENABLED
-                             );
+);
 Option<std::string>
     target(optname("--target"),
            overview("select target language to emit for given architecture."

@@ -85,9 +85,9 @@ bool EdgeConsistencyChecker::verify(const Graph &graph) const noexcept
         bool operand_has_use = operand.getUses().contains(index);
         if (!operand_has_use)
         {
-          VERBOSE(EdgeConsistencyChecker) << "[ERROR] EDGE MISMATCH : Missing USE edge - Operand "
-                                          << operand_index << " to Operation " << index
-                                          << std::endl;
+          VERBOSE(EdgeConsistencyChecker)
+              << "[ERROR] EDGE MISMATCH : Missing USE edge - Operand " << operand_index
+              << " to Operation " << index << std::endl;
           errors += 1;
         }
       }
@@ -106,9 +106,9 @@ bool EdgeConsistencyChecker::verify(const Graph &graph) const noexcept
         auto &operand = graph.operands().at(operand_index);
         if (operand.getDef() != index)
         {
-          VERBOSE(EdgeConsistencyChecker) << "[ERROR] EDGE MISMATCH : Missing DEF edge - Operand"
-                                          << operand_index << " to Operation " << index
-                                          << std::endl;
+          VERBOSE(EdgeConsistencyChecker)
+              << "[ERROR] EDGE MISMATCH : Missing DEF edge - Operand" << operand_index
+              << " to Operation " << index << std::endl;
           errors += 1;
         }
       }

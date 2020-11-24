@@ -508,8 +508,9 @@ void StaticShapeInferer::visit(const ir::operation::LSTM &op)
 
   const auto scratch_buffer_index{op.getOutputs().at(ir::operation::LSTM::Output::SCRATCH_BUFFER)};
 
-  if (output.info().isDynamic() || (_operands.exist(output_state_out_index) &&
-                                    _operands.at(output_state_out_index).info().isDynamic()) ||
+  if (output.info().isDynamic() ||
+      (_operands.exist(output_state_out_index) &&
+       _operands.at(output_state_out_index).info().isDynamic()) ||
       (_operands.exist(cell_state_out_index) &&
        _operands.at(cell_state_out_index).info().isDynamic()) ||
       (_operands.exist(scratch_buffer_index) &&

@@ -54,8 +54,8 @@ public:
       : _is_supported{}, _backends_avail_time{}, _ops_eft{},
         _op_to_rank{std::make_shared<ir::OperationIndexMap<int64_t>>()},
         _is_profiling_mode{options.he_profiling_mode},
-        _is_linear_exec{options.executor == "Linear"},
-        _is_parallel_exec{options.executor == "Parallel"}
+        _is_linear_exec{options.executor == "Linear"}, _is_parallel_exec{options.executor ==
+                                                                         "Parallel"}
   {
     for (auto &entry : backend_contexts)
     {

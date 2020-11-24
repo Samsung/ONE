@@ -149,6 +149,7 @@ public:
   BroadcastableWrapper(const std::vector<T> &v) : _v(v), _stride(v.size() == 1 ? 0 : 1) {}
 
   T operator[](int idx) { return _v[idx * _stride]; }
+
 private:
   const std::vector<T> &_v;
   int _stride;

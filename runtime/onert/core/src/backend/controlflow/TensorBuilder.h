@@ -56,7 +56,9 @@ public:
 
   void prepare(void) override;
   void allocate() override;
-  void postFunctionPrepare() override { /* DO NOTHING */}
+  void postFunctionPrepare() override
+  { /* DO NOTHING */
+  }
 
   DynamicTensorManager *dynamicTensorManager(void) override;
 

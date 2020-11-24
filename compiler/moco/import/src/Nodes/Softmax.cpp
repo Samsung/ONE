@@ -27,8 +27,8 @@ namespace
 using namespace moco;
 
 /**
-* @brief GraphUpdate for Softmax node
-*/
+ * @brief GraphUpdate for Softmax node
+ */
 class SoftmaxGraphUpdate final : public GraphUpdate
 {
 public:

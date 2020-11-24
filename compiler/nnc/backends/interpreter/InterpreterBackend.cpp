@@ -117,9 +117,9 @@ static TensorVariant readTensorFromFile(const std::string &filename, const Tenso
   int64_t file_size = end - begin;
 
   if (static_cast<std::size_t>(file_size) != input_data_size)
-    throw std::runtime_error("File \"" + filename + "\" has incorrect size: " +
-                             std::to_string(file_size) + "(expected: " +
-                             std::to_string(input_data_size) + ").");
+    throw std::runtime_error("File \"" + filename +
+                             "\" has incorrect size: " + std::to_string(file_size) +
+                             "(expected: " + std::to_string(input_data_size) + ").");
 
   std::unique_ptr<char[]> data(new char[input_data_size]);
   stream.read(data.get(), input_data_size);

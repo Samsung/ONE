@@ -37,7 +37,9 @@ class CircleAveragePool2D final
       public LuciNodeMixin<LuciNodeTrait::FusedActFunc>
 {
 public:
-  CircleAveragePool2D() : _padding(Padding::UNDEFINED) { /* empty */}
+  CircleAveragePool2D() : _padding(Padding::UNDEFINED)
+  { /* empty */
+  }
 
 public:
   loco::Node *value(void) const { return at(0)->node(); }

@@ -1048,9 +1048,9 @@ ir::Shape inferTileShape(const ir::Shape &in_shape, const int32_t *multiplier_bu
 {
   if (multiplier_size != in_shape.rank())
   {
-    throw std::runtime_error("inferTileShape failed, input rank: " +
-                             std::to_string(in_shape.rank()) + ", bad multipliers size: " +
-                             std::to_string(multiplier_size) + "");
+    throw std::runtime_error(
+        "inferTileShape failed, input rank: " + std::to_string(in_shape.rank()) +
+        ", bad multipliers size: " + std::to_string(multiplier_size) + "");
   }
   ir::Shape new_Shape(in_shape.rank());
 

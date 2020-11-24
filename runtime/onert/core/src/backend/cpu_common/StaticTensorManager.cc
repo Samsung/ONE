@@ -45,9 +45,9 @@ void StaticTensorManager::allocateConsts(void)
       auto mem_alloc = _const_mgr->allocate(_tensors->getITensor(ind), tensor->total_size());
       tensor->setBuffer(mem_alloc);
       auto buffer = mem_alloc->base();
-      VERBOSE(CPU_COMMON_StaticTensorManager) << "CONSTANT TENSOR(#" << ind.value()
-                                              << "): " << static_cast<void *>(buffer)
-                                              << "size : " << tensor->total_size() << std::endl;
+      VERBOSE(CPU_COMMON_StaticTensorManager)
+          << "CONSTANT TENSOR(#" << ind.value() << "): " << static_cast<void *>(buffer)
+          << "size : " << tensor->total_size() << std::endl;
     }
   }
 }
@@ -65,8 +65,8 @@ void StaticTensorManager::allocateNonconsts(void)
       auto *buffer = _nonconst_mgr->getBuffer(ind);
       tensor->setBuffer(buffer);
 
-      VERBOSE(CPU_COMMON_StaticTensorManager) << "TENSOR(#" << ind.value()
-                                              << "): " << static_cast<void *>(buffer) << std::endl;
+      VERBOSE(CPU_COMMON_StaticTensorManager)
+          << "TENSOR(#" << ind.value() << "): " << static_cast<void *>(buffer) << std::endl;
     }
   }
 }

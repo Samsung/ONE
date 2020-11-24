@@ -26,9 +26,13 @@
 class EventFormatWriter
 {
 public:
-  EventFormatWriter(const EventRecorder &recorder) : _recorder(recorder) { /* empty */}
+  EventFormatWriter(const EventRecorder &recorder) : _recorder(recorder)
+  { /* empty */
+  }
   virtual void writeToFile(std::ostream &os) = 0;
-  virtual ~EventFormatWriter() { /* empty */}
+  virtual ~EventFormatWriter()
+  { /* empty */
+  }
 
 protected:
   const EventRecorder &_recorder;
@@ -37,21 +41,27 @@ protected:
 class SNPEWriter : public EventFormatWriter
 {
 public:
-  SNPEWriter(const EventRecorder &recorder) : EventFormatWriter(recorder) { /* empty */}
+  SNPEWriter(const EventRecorder &recorder) : EventFormatWriter(recorder)
+  { /* empty */
+  }
   void writeToFile(std::ostream &os) override;
 };
 
 class ChromeTracingWriter : public EventFormatWriter
 {
 public:
-  ChromeTracingWriter(const EventRecorder &recorder) : EventFormatWriter(recorder) { /* empty */}
+  ChromeTracingWriter(const EventRecorder &recorder) : EventFormatWriter(recorder)
+  { /* empty */
+  }
   void writeToFile(std::ostream &os) override;
 };
 
 class MDTableWriter : public EventFormatWriter
 {
 public:
-  MDTableWriter(const EventRecorder &recorder) : EventFormatWriter(recorder) { /* empty */}
+  MDTableWriter(const EventRecorder &recorder) : EventFormatWriter(recorder)
+  { /* empty */
+  }
   void writeToFile(std::ostream &os) override;
 };
 

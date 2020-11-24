@@ -81,7 +81,6 @@ void CLFullyConnectedReshapingLayer::configure(const arm_compute::ICLTensor *inp
     {
       throw std::runtime_error("CLFullyConnectedReshapingLayer: Unsupported kernel type");
     }
-
   }();
 
   if (_needs_reshape)

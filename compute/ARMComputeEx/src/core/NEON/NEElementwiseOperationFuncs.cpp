@@ -88,26 +88,26 @@ void elementwise_op_templ(
     Iterator non_broadcast_input(non_broadcast_tensor, non_broadcast_win);
     Iterator output(out, win);
 
-    execute_window_loop(win,
-                        [&](const Coordinates &) {
-                          auto output_ptr = reinterpret_cast<OutputScalarType *>(output.ptr());
-                          const auto non_broadcast_input_ptr =
-                              reinterpret_cast<const InputScalarType *>(non_broadcast_input.ptr());
-                          const InputScalarType broadcast_value =
-                              *reinterpret_cast<const InputScalarType *>(broadcast_input.ptr());
+    execute_window_loop(
+        win,
+        [&](const Coordinates &) {
+          auto output_ptr = reinterpret_cast<OutputScalarType *>(output.ptr());
+          const auto non_broadcast_input_ptr =
+              reinterpret_cast<const InputScalarType *>(non_broadcast_input.ptr());
+          const InputScalarType broadcast_value =
+              *reinterpret_cast<const InputScalarType *>(broadcast_input.ptr());
 
-                          int x = (*broadcast_func)(window_start_x, window_end_x, window_step_x,
-                                                    non_broadcast_input_ptr, broadcast_value,
-                                                    output_ptr, !is_broadcast_input_2);
-                          for (; x < window_end_x; ++x)
-                          {
-                            const auto a = *(non_broadcast_input_ptr + x);
-                            *(output_ptr + x) =
-                                (*scalar_func)(!is_broadcast_input_2 ? broadcast_value : a,
+          int x = (*broadcast_func)(window_start_x, window_end_x, window_step_x,
+                                    non_broadcast_input_ptr, broadcast_value, output_ptr,
+                                    !is_broadcast_input_2);
+          for (; x < window_end_x; ++x)
+          {
+            const auto a = *(non_broadcast_input_ptr + x);
+            *(output_ptr + x) = (*scalar_func)(!is_broadcast_input_2 ? broadcast_value : a,
                                                !is_broadcast_input_2 ? a : broadcast_value);
-                          }
-                        },
-                        broadcast_input, non_broadcast_input, output);
+          }
+        },
+        broadcast_input, non_broadcast_input, output);
   }
   else
   {
@@ -119,24 +119,23 @@ void elementwise_op_templ(
     Iterator input2(in2, input2_win);
     Iterator output(out, win);
 
-    execute_window_loop(win,
-                        [&](const Coordinates &) {
-                          auto output_ptr = reinterpret_cast<OutputScalarType *>(output.ptr());
-                          const auto input1_ptr =
-                              reinterpret_cast<const InputScalarType *>(input1.ptr());
-                          const auto input2_ptr =
-                              reinterpret_cast<const InputScalarType *>(input2.ptr());
+    execute_window_loop(
+        win,
+        [&](const Coordinates &) {
+          auto output_ptr = reinterpret_cast<OutputScalarType *>(output.ptr());
+          const auto input1_ptr = reinterpret_cast<const InputScalarType *>(input1.ptr());
+          const auto input2_ptr = reinterpret_cast<const InputScalarType *>(input2.ptr());
 
-                          int x = (*neon_func)(window_start_x, window_end_x, window_step_x,
-                                               input1_ptr, input2_ptr, output_ptr);
-                          for (; x < window_end_x; ++x)
-                          {
-                            const auto a = *(input1_ptr + x);
-                            const auto b = *(input2_ptr + x);
-                            *(output_ptr + x) = (*scalar_func)(a, b);
-                          }
-                        },
-                        input1, input2, output);
+          int x = (*neon_func)(window_start_x, window_end_x, window_step_x, input1_ptr, input2_ptr,
+                               output_ptr);
+          for (; x < window_end_x; ++x)
+          {
+            const auto a = *(input1_ptr + x);
+            const auto b = *(input2_ptr + x);
+            *(output_ptr + x) = (*scalar_func)(a, b);
+          }
+        },
+        input1, input2, output);
   }
 }
 

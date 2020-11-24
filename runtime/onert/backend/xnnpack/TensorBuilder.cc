@@ -28,8 +28,8 @@ namespace xnnpack
 {
 
 TensorBuilder::TensorBuilder(const std::shared_ptr<cpu_common::TensorRegistry> &tensor_reg)
-    : _tensor_reg{tensor_reg},
-      _static_tensor_mgr{new cpu_common::StaticTensorManager(_tensor_reg, nullptr)}
+    : _tensor_reg{tensor_reg}, _static_tensor_mgr{
+                                   new cpu_common::StaticTensorManager(_tensor_reg, nullptr)}
 {
   /* empty */
 }
