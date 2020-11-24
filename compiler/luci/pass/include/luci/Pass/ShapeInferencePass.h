@@ -34,7 +34,7 @@ public:
 
 public:
   bool run(luci::Module *m);
-  bool run(loco::Graph *g);
+  bool run(loco::Graph *graph);
 };
 
 } // namespace luci
