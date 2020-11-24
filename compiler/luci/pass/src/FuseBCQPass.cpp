@@ -200,19 +200,6 @@ public:
         }
       }
 
-      // Einsum is unpacked to FullyConnected, Pack and Reshape
-      if (auto reshape = dynamic_cast<luci::CircleReshape *>(node))
-      {
-        node = dynamic_cast<luci::CircleNode *>(reshape->tensor());
-      }
-      if (auto pack = dynamic_cast<luci::CirclePack *>(node))
-      {
-        if (pack->values_count() == 1 && pack->rank() == 3)
-        {
-          node = dynamic_cast<luci::CircleNode *>(pack->values(0));
-        }
-      }
-
       // Fuse FullyConnected to BCQFullyConnected
       if (auto fully_connected = dynamic_cast<luci::CircleFullyConnected *>(node))
       {
@@ -261,43 +248,69 @@ public:
           }
 
           // If x_w formation, we should insert Transpose in front and back of BCQFullyConnected
-          if (_do_w_x[prefix]->at<loco::DataType::BOOL>(0))
-          {
-            bcq_fc->weights_hidden_size(weights->dim(0).value());
-            bcq_fc->input(bcq_input);
-            loco::replace(fully_connected).with(bcq_fc);
-          }
-          else
-          {
-            bcq_fc->weights_hidden_size(weights->dim(1).value());
+          bcq_fc->weights_hidden_size(weights->dim(1).value());
 
-            auto perm = g->nodes()->create<luci::CircleConst>();
-            perm->dtype(loco::DataType::S32);
-            perm->size<loco::DataType::S32>(2);
-            perm->rank(1);
-            perm->dim(0) = 2;
-            perm->at<loco::DataType::S32>(0) = 1;
-            perm->at<loco::DataType::S32>(1) = 0;
-            perm->shape_status(luci::ShapeStatus::VALID);
+          auto perm = g->nodes()->create<luci::CircleConst>();
+          perm->dtype(loco::DataType::S32);
+          perm->size<loco::DataType::S32>(2);
+          perm->rank(1);
+          perm->dim(0) = 2;
+          perm->at<loco::DataType::S32>(0) = 1;
+          perm->at<loco::DataType::S32>(1) = 0;
+          perm->shape_status(luci::ShapeStatus::VALID);
 
-            auto input_transpose = g->nodes()->create<luci::CircleTranspose>();
-            input_transpose->a(bcq_input);
-            input_transpose->perm(perm);
+          auto input_transpose = g->nodes()->create<luci::CircleTranspose>();
+          input_transpose->a(bcq_input);
+          input_transpose->perm(perm);
 
-            bcq_fc->input(input_transpose);
+          bcq_fc->input(input_transpose);
 
-            auto output_transpose = g->nodes()->create<luci::CircleTranspose>();
-            output_transpose->a(bcq_fc);
-            output_transpose->perm(perm);
+          auto output_transpose = g->nodes()->create<luci::CircleTranspose>();
+          output_transpose->a(bcq_fc);
+          output_transpose->perm(perm);
 
-            loco::replace(fully_connected).with(output_transpose);
-          }
+          loco::replace(fully_connected).with(output_transpose);
 
           return true;
         }
-        else
+        else if (auto weights_as_input =
+                     dynamic_cast<luci::CircleConst *>(fully_connected->input()))
         {
-          // TODO Is there any case that input() is constant, instead of weights()?
+          auto prefix = get_prefix_of_const(weights_as_input);
+          if (prefix == -1 || !is_valid_prefix(prefix))
+            continue;
+
+          assert(_do_w_x[prefix]->at<loco::DataType::BOOL>(0) == true);
+
+          auto perm = g->nodes()->create<luci::CircleConst>();
+          perm->dtype(loco::DataType::S32);
+          perm->size<loco::DataType::S32>(2);
+          perm->rank(1);
+          perm->dim(0) = 2;
+          perm->at<loco::DataType::S32>(0) = 1;
+          perm->at<loco::DataType::S32>(1) = 0;
+          perm->shape_status(luci::ShapeStatus::VALID);
+
+          auto input_transpose = g->nodes()->create<luci::CircleTranspose>();
+          input_transpose->a(fully_connected->weights());
+          input_transpose->perm(perm);
+
+          auto bcq_fc = g->nodes()->create<luci::CircleBCQFullyConnected>();
+
+          assert(dynamic_cast<luci::CircleOutputExclude *>(fully_connected->bias()) != nullptr);
+
+          bcq_fc->op_version(1);
+          bcq_fc->weights_scales(alpha(g, prefix));
+          bcq_fc->weights_binary(packed_binary_code(g, prefix));
+          bcq_fc->bias(fully_connected->bias());
+          bcq_fc->weights_clusters(packed_clusters(g, prefix));
+          bcq_fc->fusedActivationFunction(fully_connected->fusedActivationFunction());
+
+          bcq_fc->weights_hidden_size(weights_as_input->dim(1).value());
+          bcq_fc->input(input_transpose);
+          loco::replace(fully_connected).with(bcq_fc);
+
+          return true;
         }
       }
     }
