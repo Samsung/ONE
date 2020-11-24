@@ -69,77 +69,73 @@ void BackendManager::loadBackend(const std::string &backend)
     return;
   }
 
-  // TODO Remove indentation
-  {
-    const std::string backend_so = "libbackend_" + backend + SHARED_LIB_EXT;
-    void *handle = dlopen(backend_so.c_str(), RTLD_LAZY | RTLD_LOCAL);
+  const std::string backend_so = "libbackend_" + backend + SHARED_LIB_EXT;
+  void *handle = dlopen(backend_so.c_str(), RTLD_LAZY | RTLD_LOCAL);
 
-    if (handle == nullptr)
+  if (handle == nullptr)
+  {
+    VERBOSE(BackendManager) << "Failed to load backend '" << backend << "' - " << dlerror() << "\n";
+    return;
+  }
+
+  VERBOSE(BackendManager) << "Successfully loaded '" << backend << "'(" << backend_so << ")\n";
+
+  {
+    // load object creator function
+    auto backend_create = (backend_create_t)dlsym(handle, "onert_backend_create");
+    if (backend_create == nullptr)
     {
-      VERBOSE(BackendManager) << "Failed to load backend '" << backend << "' - " << dlerror()
-                              << "\n";
+      // TODO replace `fprintf` with `VERBOSE`
+      fprintf(stderr, "BackendManager: unable to find function `onert_backend_create` : %s\n",
+              dlerror());
+      dlclose(handle);
       return;
     }
 
-    VERBOSE(BackendManager) << "Successfully loaded '" << backend << "'(" << backend_so << ")\n";
-
+    // load object creator function
+    auto backend_destroy = (backend_destroy_t)dlsym(handle, "onert_backend_destroy");
+    if (backend_destroy == nullptr)
     {
-      // load object creator function
-      auto backend_create = (backend_create_t)dlsym(handle, "onert_backend_create");
-      if (backend_create == nullptr)
-      {
-        // TODO replace `fprintf` with `VERBOSE`
-        fprintf(stderr, "BackendManager: unable to find function `onert_backend_create` : %s\n",
-                dlerror());
-        dlclose(handle);
-        return;
-      }
-
-      // load object creator function
-      auto backend_destroy = (backend_destroy_t)dlsym(handle, "onert_backend_destroy");
-      if (backend_destroy == nullptr)
-      {
-        // TODO replace `fprintf` with `VERBOSE`
-        fprintf(stderr, "BackendManager: unable to find `function onert_backend_destroy` : %s\n",
-                dlerror());
-        dlclose(handle);
-        return;
-      }
-
-      auto backend_object =
-          std::unique_ptr<backend::Backend, backend_destroy_t>(backend_create(), backend_destroy);
-      bool initialized = backend_object->config()->initialize(); // Call initialize here?
-      if (!initialized)
-      {
-        VERBOSE(BackendManager) << backend.c_str()
-                                << " backend initialization failed. Don't use this backend"
-                                << std::endl;
-        dlclose(handle);
-        return;
-      }
-      _gen_map.emplace(backend_object->config()->id(), std::move(backend_object));
+      // TODO replace `fprintf` with `VERBOSE`
+      fprintf(stderr, "BackendManager: unable to find `function onert_backend_destroy` : %s\n",
+              dlerror());
+      dlclose(handle);
+      return;
     }
 
-    // Save backend handle (avoid warning by handle lost without dlclose())
+    auto backend_object =
+        std::unique_ptr<backend::Backend, backend_destroy_t>(backend_create(), backend_destroy);
+    bool initialized = backend_object->config()->initialize(); // Call initialize here?
+    if (!initialized)
+    {
+      VERBOSE(BackendManager) << backend.c_str()
+                              << " backend initialization failed. Don't use this backend"
+                              << std::endl;
+      dlclose(handle);
+      return;
+    }
+    _gen_map.emplace(backend_object->config()->id(), std::move(backend_object));
+  }
 
-    // NOTE This is a workaround for clang-format3.9 (seems like it does not understand
-    //      "by-copy capture with an initializer"
-    // clang-format off
-    auto u_handle = std::unique_ptr<void, dlhandle_destroy_t>{
-        handle, [id = backend, filename = backend_so](void *h) {
-          if (dlclose(h) == 0)
-          {
-            VERBOSE(BackendManager) << "Successfully unloaded '" << id << "'(" << filename << ")\n";
-          }
-          else
-          {
-            VERBOSE(BackendManager)
-                << "Failed to unload backend '" << id << "'- " << dlerror() << "\n";
-          }
-        }};
+  // Save backend handle (avoid warning by handle lost without dlclose())
+
+  // NOTE This is a workaround for clang-format3.9 (seems like it does not understand
+  //      "by-copy capture with an initializer"
+  // clang-format off
+  auto u_handle = std::unique_ptr<void, dlhandle_destroy_t>{
+      handle, [id = backend, filename = backend_so](void *h) {
+        if (dlclose(h) == 0)
+        {
+          VERBOSE(BackendManager) << "Successfully unloaded '" << id << "'(" << filename << ")\n";
+        }
+        else
+        {
+          VERBOSE(BackendManager)
+              << "Failed to unload backend '" << id << "'- " << dlerror() << "\n";
+        }
+      }};
 // clang-format on
 _handle_map.emplace(backend, std::move(u_handle));
-}
 }
 
 backend::Backend *BackendManager::get(const std::string &key)
