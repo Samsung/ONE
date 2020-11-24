@@ -664,7 +664,7 @@ bool FuseBCQPass::run(luci::Module *m)
   return changed;
 }
 
-bool FuseBCQPass::run(loco::Graph *g)
+bool FuseBCQPass::run(loco::Graph *)
 {
   // Do nothing for graph
   return false;

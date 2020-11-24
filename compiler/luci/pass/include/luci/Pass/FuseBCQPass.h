@@ -31,7 +31,7 @@ struct FuseBCQPass final : public luci::Pass
   const char *name(void) const final { return "luci::FuseBCQPass"; }
 
   bool run(luci::Module *m) final;
-  bool run(loco::Graph *g) final;
+  bool run(loco::Graph *) final;
 };
 
 } // namespace luci
