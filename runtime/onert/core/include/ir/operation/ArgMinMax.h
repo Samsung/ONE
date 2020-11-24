@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_IR_OPERATION_ARG_MAX_H__
-#define __ONERT_IR_OPERATION_ARG_MAX_H__
+#ifndef __ONERT_IR_OPERATION_ARG_MIN_MAX_H__
+#define __ONERT_IR_OPERATION_ARG_MIN_MAX_H__
 
 #include "ir/Operation.h"
 
@@ -26,7 +26,7 @@ namespace ir
 namespace operation
 {
 
-class ArgMax : public Operation
+class ArgMinMax : public Operation
 {
 public:
   enum Input
@@ -38,15 +38,16 @@ public:
   struct Param
   {
     DataType output_type;
+    bool is_arg_max = true;
   };
 
 public:
-  ArgMax(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs,
-         const Param &param);
+  ArgMinMax(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs,
+            const Param &param);
 
 public:
   void accept(OperationVisitor &v) const override;
-  OpCode opcode() const final { return OpCode::ArgMax; }
+  OpCode opcode() const final { return OpCode::ArgMinMax; }
 
 public:
   const Param &param() const { return _param; }
@@ -59,4 +60,4 @@ private:
 } // namespace ir
 } // namespace onert
 
-#endif // __ONERT_IR_OPERATION_ARG_MAX_H__
+#endif // __ONERT_IR_OPERATION_ARG_MIN_MAX_H__

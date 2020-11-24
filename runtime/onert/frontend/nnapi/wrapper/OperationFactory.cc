@@ -1519,11 +1519,11 @@ OperationFactory::OperationFactory()
     //  1 -> Axis Tensor Index
     OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
 
-    operation::ArgMax::Param param;
+    operation::ArgMinMax::Param param;
     // NNAPI ARGMAX output type is always int32
     param.output_type = DataType::INT32;
 
-    return new operation::ArgMax{inputs, outputs, param};
+    return new operation::ArgMinMax{inputs, outputs, param};
   };
 
   // ANEURALNETWORKS_ARGMAX_EX is deprecated

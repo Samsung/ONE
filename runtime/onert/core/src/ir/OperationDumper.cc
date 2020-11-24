@@ -72,7 +72,14 @@ OperationDumper::OperationDumper(const std::string &start_msg)
   VERBOSE(LIR) << start_msg << std::endl;
 }
 
-void OperationDumper::visit(const ArgMax &node) { dumpBinaryInputOp(node); }
+void OperationDumper::visit(const ArgMinMax &node)
+{
+  std::string min_max = node.param().is_arg_max ? "(Max)" : "(Min)";
+  VERBOSE(LIR) << "* " << node.name() << min_max << std::endl;
+  VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(ArgMinMax::INPUT) << ") Axis("
+               << node.getInputs().at(ArgMinMax::AXIS) << ") " << std::endl;
+  VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
+}
 
 void OperationDumper::visit(const BatchToSpaceND &node)
 {

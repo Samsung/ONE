@@ -39,7 +39,7 @@ public:
                   const std::shared_ptr<acl_common::AclTensorRegistry<TensorManager>> &_tensor_reg);
 
   void visit(const ir::OpSequence &) override;
-  void visit(const ir::operation::ArgMax &) override;
+  void visit(const ir::operation::ArgMinMax &) override;
   void visit(const ir::operation::BatchToSpaceND &) override;
   void visit(const ir::operation::BinaryArithmetic &) override;
   void visit(const ir::operation::Conv2D &) override;

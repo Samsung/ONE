@@ -1012,11 +1012,11 @@ void KernelGenerator::visit(const ir::operation::Reverse &node)
   _return_fn = std::move(fn);
 }
 
-void KernelGenerator::visit(const ir::operation::ArgMax &node)
+void KernelGenerator::visit(const ir::operation::ArgMinMax &node)
 {
   const auto output_index{node.getOutputs().at(0)};
-  const auto input_index{node.getInputs().at(ir::operation::ArgMax::INPUT)};
-  const auto axis_index{node.getInputs().at(ir::operation::ArgMax::AXIS)};
+  const auto input_index{node.getInputs().at(ir::operation::ArgMinMax::INPUT)};
+  const auto axis_index{node.getInputs().at(ir::operation::ArgMinMax::AXIS)};
 
   auto output_tensor = _tensor_reg->getPortableTensor(output_index);
   auto input_tensor = _tensor_reg->getPortableTensor(input_index);

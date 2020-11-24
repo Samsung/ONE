@@ -78,7 +78,7 @@ public:
   void visit(const ir::operation::Shape &) override;
   void visit(const ir::operation::ResizeBilinear &node) override;
   void visit(const ir::operation::Reverse &) override;
-  void visit(const ir::operation::ArgMax &) override;
+  void visit(const ir::operation::ArgMinMax &) override;
   void visit(const ir::operation::Pool2D &) override;
   void visit(const ir::operation::Pow &) override;
   void visit(const ir::operation::SquaredDifference &) override;
