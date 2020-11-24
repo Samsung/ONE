@@ -55,7 +55,7 @@
 #include "ir/operation/SquaredDifference.h"
 #include "ir/operation/TopKV2.h"
 #include "ir/operation/Gather.h"
-#include "ir/operation/ArgMax.h"
+#include "ir/operation/ArgMinMax.h"
 #include "ir/operation/LocalResponseNormalization.h"
 #include "ir/operation/DepthToSpace.h"
 #include "ir/operation/Pack.h"

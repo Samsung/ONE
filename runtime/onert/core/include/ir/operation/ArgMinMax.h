@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
-#include "ir/operation/ArgMax.h"
+#ifndef __ONERT_IR_OPERATION_ARG_MIN_MAX_H__
+#define __ONERT_IR_OPERATION_ARG_MIN_MAX_H__
 
-#include <cassert>
-
-#include "ir/OperationVisitor.h"
+#include "ir/Operation.h"
 
 namespace onert
 {
@@ -27,14 +26,38 @@ namespace ir
 namespace operation
 {
 
-void ArgMax::accept(OperationVisitor &v) const { v.visit(*this); }
-
-ArgMax::ArgMax(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs,
-               const Param &param)
-    : Operation{OperandConstraint::createExact(2u), inputs, outputs}, _param{param}
+class ArgMinMax : public Operation
 {
-}
+public:
+  enum Input
+  {
+    INPUT = 0,
+    AXIS = 1
+  };
+
+  struct Param
+  {
+    DataType output_type;
+    bool is_arg_max;
+  };
+
+public:
+  ArgMinMax(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs,
+            const Param &param);
+
+public:
+  void accept(OperationVisitor &v) const override;
+  OpCode opcode() const final { return OpCode::ArgMinMax; }
+
+public:
+  const Param &param() const { return _param; }
+
+private:
+  Param _param;
+};
 
 } // namespace operation
 } // namespace ir
 } // namespace onert
+
+#endif // __ONERT_IR_OPERATION_ARG_MIN_MAX_H__

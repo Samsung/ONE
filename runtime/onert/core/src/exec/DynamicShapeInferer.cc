@@ -92,12 +92,12 @@ void DynamicShapeInferer::handleSimpleUnaryOp(const ir::Operation &op,
   assert(output->buffer() != nullptr);
 }
 
-void DynamicShapeInferer::visit(const ir::operation::ArgMax &op)
+void DynamicShapeInferer::visit(const ir::operation::ArgMinMax &op)
 {
-  const auto input_idx{op.getInputs().at(ir::operation::ArgMax::Input::INPUT)};
+  const auto input_idx{op.getInputs().at(ir::operation::ArgMinMax::Input::INPUT)};
   const auto input = _tensor_registry->getITensor(input_idx);
 
-  const auto axis_idx{op.getInputs().at(ir::operation::ArgMax::Input::AXIS)};
+  const auto axis_idx{op.getInputs().at(ir::operation::ArgMinMax::Input::AXIS)};
   const auto axis = _tensor_registry->getITensor(axis_idx);
 
   auto output_ind = op.getOutputs().at(0);
@@ -111,7 +111,7 @@ void DynamicShapeInferer::visit(const ir::operation::ArgMax &op)
   const auto rank = input_shape.rank();
   axis_value = axis_value < 0 ? axis_value + rank : axis_value;
 
-  ir::Shape new_shape = shape_inference::inferArgMaxShape(input_shape, axis_value, rank);
+  ir::Shape new_shape = shape_inference::inferArgMinMaxShape(input_shape, axis_value, rank);
 
   output->applyShape(new_shape);
   assert(output->buffer() != nullptr);

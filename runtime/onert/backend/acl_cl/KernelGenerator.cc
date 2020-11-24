@@ -1305,11 +1305,11 @@ void KernelGenerator::visit(const ir::operation::Gather &node)
   _return_fn = asAclFunction(std::move(fn));
 }
 
-void KernelGenerator::visit(const ir::operation::ArgMax &node)
+void KernelGenerator::visit(const ir::operation::ArgMinMax &node)
 {
   const auto ofm_index{node.getOutputs().at(0)};
-  const auto ifm_index{node.getInputs().at(ir::operation::ArgMax::Input::INPUT)};
-  const auto axis_index{node.getInputs().at(ir::operation::ArgMax::Input::AXIS)};
+  const auto ifm_index{node.getInputs().at(ir::operation::ArgMinMax::Input::INPUT)};
+  const auto axis_index{node.getInputs().at(ir::operation::ArgMinMax::Input::AXIS)};
 
   auto ifm_shape = _ctx.at(ifm_index).shape();
   auto ofm_shape = _ctx.at(ofm_index).shape();
@@ -1330,10 +1330,11 @@ void KernelGenerator::visit(const ir::operation::ArgMax &node)
 
   auto acl_axis =
       acl_common::ToARMComputeAxis(ifm_rank, axis_value, frontend_layout, backend_layout).value();
+  const auto is_arg_max = node.param().is_arg_max ? arm_compute::ReductionOperation::ARG_IDX_MAX
+                                                  : arm_compute::ReductionOperation::ARG_IDX_MIN;
 
   auto fn = acl_common::generateLayer<arm_compute::CLArgMinMaxLayerEx>(
-      ifm_tensor->handle(), acl_axis, ofm_tensor->handle(),
-      ::arm_compute::ReductionOperation::ARG_IDX_MAX);
+      ifm_tensor->handle(), acl_axis, ofm_tensor->handle(), is_arg_max);
 
   _return_fn = asAclFunction(std::move(fn));
 }

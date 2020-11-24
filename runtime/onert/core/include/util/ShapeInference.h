@@ -42,7 +42,7 @@ using Shapes = std::vector<ir::Shape>;
 
 // Define shape calculation for operations. List them in alphabetic order.
 
-ir::Shape inferArgMaxShape(const ir::Shape &input_shape, int axis, int rank);
+ir::Shape inferArgMinMaxShape(const ir::Shape &input_shape, int axis, int rank);
 
 ir::Shape inferBatchMatMulShape(const ir::Shape &lhs_shape, const ir::Shape &rhs_shape,
                                 const ir::operation::BatchMatMul::Param &param);
