@@ -70,11 +70,11 @@ void KernelGenerator::visit(const ir::OpSequence &op_seq)
   }
 }
 
-void KernelGenerator::visit(const ir::operation::ArgMax &node)
+void KernelGenerator::visit(const ir::operation::ArgMinMax &node)
 {
   const auto ofm_index{node.getOutputs().at(0)};
-  const auto ifm_index{node.getInputs().at(ir::operation::ArgMax::Input::INPUT)};
-  const auto axis_index{node.getInputs().at(ir::operation::ArgMax::Input::AXIS)};
+  const auto ifm_index{node.getInputs().at(ir::operation::ArgMinMax::Input::INPUT)};
+  const auto axis_index{node.getInputs().at(ir::operation::ArgMinMax::Input::AXIS)};
 
   const auto ifm_rank = _ctx.at(ifm_index).shape().rank();
 

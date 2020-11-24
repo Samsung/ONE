@@ -76,7 +76,7 @@ public:
   void visit(const ir::operation::SquaredDifference &) override;
   void visit(const ir::operation::TopKV2 &) override;
   void visit(const ir::operation::Gather &) override;
-  void visit(const ir::operation::ArgMax &) override;
+  void visit(const ir::operation::ArgMinMax &) override;
   void visit(const ir::operation::LocalResponseNormalization &) override;
   void visit(const ir::operation::DepthToSpace &) override;
   void visit(const ir::operation::Split &) override;

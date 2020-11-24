@@ -14,10 +14,7 @@
  * limitations under the License.
  */
 
-#include "ir/operation/ArgMax.h"
-
-#include <cassert>
-
+#include "ir/operation/ArgMinMax.h"
 #include "ir/OperationVisitor.h"
 
 namespace onert
@@ -27,10 +24,10 @@ namespace ir
 namespace operation
 {
 
-void ArgMax::accept(OperationVisitor &v) const { v.visit(*this); }
+void ArgMinMax::accept(OperationVisitor &v) const { v.visit(*this); }
 
-ArgMax::ArgMax(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs,
-               const Param &param)
+ArgMinMax::ArgMinMax(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs,
+                     const Param &param)
     : Operation{OperandConstraint::createExact(2u), inputs, outputs}, _param{param}
 {
 }

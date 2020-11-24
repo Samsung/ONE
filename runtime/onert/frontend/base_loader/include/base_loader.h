@@ -1226,7 +1226,7 @@ void BaseLoader<LoaderDomain>::loadWhile(const Operator *op, ir::Graph &subg)
 template <typename LoaderDomain>
 void BaseLoader<LoaderDomain>::loadArgMax(const Operator *op, ir::Graph &subg)
 {
-  ir::operation::ArgMax::Param param;
+  ir::operation::ArgMinMax::Param param;
   const auto output_type = op->builtin_options_as_ArgMaxOptions()->output_type();
   switch (output_type)
   {
@@ -1237,9 +1237,9 @@ void BaseLoader<LoaderDomain>::loadArgMax(const Operator *op, ir::Graph &subg)
     default:
       throw std::runtime_error("ArgMax: `output_type` must be either int32 or int64.");
   }
-  auto am = loadOperationTo<ir::operation::ArgMax>(op, subg, param);
+  auto am = loadOperationTo<ir::operation::ArgMinMax>(op, subg, param);
 
-  auto &axisOperand = subg.operands().at(am->getInputs().at(ir::operation::ArgMax::Input::AXIS));
+  auto &axisOperand = subg.operands().at(am->getInputs().at(ir::operation::ArgMinMax::Input::AXIS));
   if (!(axisOperand.operandSize() == 4 && (axisOperand.typeInfo().type() == ir::DataType::INT32 ||
                                            axisOperand.typeInfo().type() == ir::DataType::INT64)))
     throw std::runtime_error("ArgMax: `axis` with an int32 or int64 element is only supported.");

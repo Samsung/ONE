@@ -92,12 +92,12 @@ void DynamicShapeInferer::handleSimpleUnaryOp(const ir::Operation &op,
   assert(output->buffer() != nullptr);
 }
 
-void DynamicShapeInferer::visit(const ir::operation::ArgMax &op)
+void DynamicShapeInferer::visit(const ir::operation::ArgMinMax &op)
 {
-  const auto input_idx{op.getInputs().at(ir::operation::ArgMax::Input::INPUT)};
+  const auto input_idx{op.getInputs().at(ir::operation::ArgMinMax::Input::INPUT)};
   const auto input = _tensor_registry->getITensor(input_idx);
 
-  const auto axis_idx{op.getInputs().at(ir::operation::ArgMax::Input::AXIS)};
+  const auto axis_idx{op.getInputs().at(ir::operation::ArgMinMax::Input::AXIS)};
   const auto axis = _tensor_registry->getITensor(axis_idx);
 
   auto output_ind = op.getOutputs().at(0);
