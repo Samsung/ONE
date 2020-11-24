@@ -24,6 +24,7 @@
 #include "luci/Pass/FuseInstanceNormPass.h"
 #include "luci/Pass/FusePreActivationBatchNormPass.h"
 #include "luci/Pass/MakeBatchNormGammaPositivePass.h"
+#include "luci/Pass/PropagateQuantParamPass.h"
 #include "luci/Pass/ResolveCustomOpAddPass.h"
 #include "luci/Pass/ResolveCustomOpBatchMatMulPass.h"
 #include "luci/Pass/ResolveCustomOpMatMulPass.h"
@@ -276,6 +277,20 @@ void CircleOptimizer::quantize(loco::Graph *g) const
     luci::QuantizeWithMinMaxPass quantizer(str_to_dtype(input_dtype), str_to_dtype(output_dtype),
                                            str_to_granularity(granularity));
     quantizer.run(g);
+
+    // Post-quantization optimizations
+    logo::Phase phase;
+
+    phase.emplace_back(std::make_unique<luci::PropagateQuantParamPass>());
+
+    phase.emplace_back(std::make_unique<luci::ShapeInferencePass>());
+    phase.emplace_back(std::make_unique<luci::TypeInferencePass>());
+    phase.emplace_back(std::make_unique<logo::RemoveDeadNodeWithQueryPass>());
+
+    ProgressReporter prog(g, logo::PhaseStrategy::Saturate);
+    logo::PhaseRunner<logo::PhaseStrategy::Saturate> phase_runner{g};
+    phase_runner.attach(&prog);
+    phase_runner.run(phase);
   }
 
   // Requantize
