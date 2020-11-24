@@ -51,7 +51,7 @@ public:
   // ShapeSignature visit(const luci::CircleCeil *node) final;
   // ShapeSignature visit(const luci::CircleConcatenation *node) final;
   // ShapeSignature visit(const luci::CircleConst *node) final;
-  // ShapeSignature visit(const luci::CircleConv2D *node) final;
+  ShapeSignature visit(const luci::CircleConv2D *node) final;
   // ShapeSignature visit(const luci::CircleCos *node) final;
   // ShapeSignature visit(const luci::CircleCustom *node) final;
   // ShapeSignature visit(const luci::CircleDepthToSpace *node) final;
