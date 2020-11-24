@@ -84,10 +84,10 @@ void OperationValidator::visit(const operation::AddN &node)
   }
 }
 
-void OperationValidator::visit(const operation::ArgMax &node)
+void OperationValidator::visit(const operation::ArgMinMax &node)
 {
-  const auto input_index(node.getInputs().at(operation::ArgMax::Input::INPUT));
-  const auto axis_index(node.getInputs().at(operation::ArgMax::Input::AXIS));
+  const auto input_index(node.getInputs().at(operation::ArgMinMax::Input::INPUT));
+  const auto axis_index(node.getInputs().at(operation::ArgMinMax::Input::AXIS));
   const auto output_index(node.getOutputs().at(0));
   const auto output_type = node.param().output_type;
 
