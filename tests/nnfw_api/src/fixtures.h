@@ -23,6 +23,7 @@
 #include <nnfw_internal.h>
 
 #include "NNPackages.h"
+#include "CircleGen.h"
 
 #define NNFW_ENSURE_SUCCESS(EXPR) ASSERT_EQ((EXPR), NNFW_STATUS_NO_ERROR)
 
@@ -68,6 +69,7 @@ protected:
   {
     ValidationTestSingleSession::SetUp();
     ASSERT_EQ(nnfw_create_session(&_session), NNFW_STATUS_NO_ERROR);
+    ASSERT_NE(_session, nullptr);
   }
 
   void TearDown() override
@@ -77,16 +79,36 @@ protected:
   }
 };
 
+inline CircleBuffer genAddModel()
+{
+  CircleGen cgen;
+  std::vector<float> rhs_data{2};
+  uint32_t rhs_buf = cgen.addBuffer(rhs_data);
+  int lhs = cgen.addTensor({{1}, circle::TensorType::TensorType_FLOAT32, 0, "X_input"});
+  int rhs = cgen.addTensor({{1}, circle::TensorType::TensorType_FLOAT32, rhs_buf, "y_var"});
+  int out = cgen.addTensor({{1}, circle::TensorType::TensorType_FLOAT32, 0, "ADD_TOP"});
+  cgen.addOperatorAdd({{lhs, rhs}, {out}}, circle::ActivationFunctionType_NONE);
+  cgen.setInputsAndOutputs({lhs}, {out});
+  return cgen.finish();
+}
+
 template <int PackageNo> class ValidationTestModelLoaded : public ValidationTestSessionCreated
 {
 protected:
   void SetUp() override
   {
     ValidationTestSessionCreated::SetUp();
-    ASSERT_EQ(nnfw_load_model_from_file(_session,
-                                        NNPackages::get().getModelAbsolutePath(PackageNo).c_str()),
-              NNFW_STATUS_NO_ERROR);
-    ASSERT_NE(_session, nullptr);
+    if (PackageNo == NNPackages::ADD)
+    {
+      auto cbuf = genAddModel();
+      NNFW_ENSURE_SUCCESS(nnfw_load_circle_from_buffer(_session, cbuf.buffer(), cbuf.size()));
+    }
+    else
+    {
+      // TODO Eventually, downloaded model tests are removed.
+      NNFW_ENSURE_SUCCESS(nnfw_load_model_from_file(
+          _session, NNPackages::get().getModelAbsolutePath(PackageNo).c_str()));
+    }
   }
 
   void TearDown() override { ValidationTestSessionCreated::TearDown(); }
@@ -156,11 +178,12 @@ protected:
   {
     ValidationTest::SetUp();
 
-    auto model_path = NNPackages::get().getModelAbsolutePath(NNPackages::ADD);
     for (auto &obj : _objects)
     {
       ASSERT_EQ(nnfw_create_session(&obj.session), NNFW_STATUS_NO_ERROR);
-      ASSERT_EQ(nnfw_load_model_from_file(obj.session, model_path.c_str()), NNFW_STATUS_NO_ERROR);
+
+      auto cbuf = genAddModel();
+      NNFW_ENSURE_SUCCESS(nnfw_load_circle_from_buffer(obj.session, cbuf.buffer(), cbuf.size()));
       ASSERT_EQ(nnfw_prepare(obj.session), NNFW_STATUS_NO_ERROR);
 
       uint32_t num_inputs;

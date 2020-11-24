@@ -21,6 +21,7 @@
 #include "fixtures.h"
 #include "CircleGen.h"
 #include "GenModelTest.h"
+#include "NNPackages.h"
 
 // This macro can be used instead of using NNFW_ENSURE_SUCCESS especially with negative test.
 // E.g., setInputOutput() is written with this macro and the following check is available to check
