@@ -59,7 +59,7 @@ bool copy_qparam(luci::CircleNode *src, luci::CircleNode *dst)
 //  Visitor to propagate quantization parameters
 struct PropagateQuantParam final : public luci::CircleNodeMutableVisitor<bool>
 {
-  PropagateQuantParam() {}
+  PropagateQuantParam() = default;
 
   bool visit(luci::CircleNode *) { return false; }
 
