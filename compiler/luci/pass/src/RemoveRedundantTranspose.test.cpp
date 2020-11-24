@@ -21,6 +21,8 @@
 
 #include <gtest/gtest.h>
 
+namespace
+{
 void setValue(luci::CircleConst *node, const std::vector<int> &v)
 {
   node->dtype(loco::DataType::S32);
@@ -37,7 +39,7 @@ void setValue(luci::CircleConst *node, const std::vector<int> &v)
  *  Type1
  *  BEFORE
  *         |
- *   [CircleInput]    [CircleConst]
+ *   [CircleNode]     [CircleConst]
  *           \              /
  *           [CircleTranspose]  [CircleConst]
  *                   \              /
@@ -46,7 +48,7 @@ void setValue(luci::CircleConst *node, const std::vector<int> &v)
  *
  *  AFTER
  *         |
- *   [CircleInput]
+ *   [CircleNode]
  *         |   Remove Both
  *
  * --------------------------------------------
@@ -54,7 +56,7 @@ void setValue(luci::CircleConst *node, const std::vector<int> &v)
  *  Type2
  *  BEFORE
  *         |
- *   [CircleInput]    [CircleConst]
+ *   [CircleNode]     [CircleConst]
  *           \              /
  *           [CircleTranspose]  [CircleConst]
  *                   \               /
@@ -63,7 +65,7 @@ void setValue(luci::CircleConst *node, const std::vector<int> &v)
  *
  *  AFTER
  *          |                 |
- *    [CircleInput]     [CircleConst]
+ *    [CircleNode]      [CircleConst]
  *           \               /
  *           [CircleTranspose]
  *                   |
@@ -103,6 +105,7 @@ void create_redundunt_transpose(loco::Graph *g, const std::vector<int32_t> &perm
   auto graph_output = g->outputs()->create();
   output->index(graph_output->index());
 }
+} // namespace
 
 TEST(RemoveRedundantTransposePass, remove_consecutive_transpose_function_type1)
 {

@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,12 +17,11 @@
 #include "luci/Pass/RemoveRedundantTransposePass.h"
 
 #include <luci/IR/CircleNodes.h>
-#include <luci/IR/CircleOpcode.h>
 
-namespace luci
+namespace
 {
 
-/// @brief Return true if first_prem[second_prem[i]] == i
+/// @brief Return true if first_perm[second_perm[i]] == i
 bool check_perm(const luci::CircleConst *first_perm, const luci::CircleConst *second_perm)
 {
   assert(first_perm->rank() == 1);
@@ -37,24 +37,24 @@ bool check_perm(const luci::CircleConst *first_perm, const luci::CircleConst *se
 
 bool remove_consecutive_transpose_function(luci::CircleNode *node)
 {
-  if (node->opcode() != luci::CircleOpcode::TRANSPOSE)
+  auto target_node = dynamic_cast<luci::CircleTranspose *>(node);
+  if (target_node == nullptr)
     return false;
-
-  auto pred_node = static_cast<luci::CircleNode *>(node->arg(0));
-  if (pred_node->opcode() != luci::CircleOpcode::TRANSPOSE)
+  auto pred_node = dynamic_cast<luci::CircleTranspose *>(target_node->a());
+  if (pred_node == nullptr)
     return false;
   if (loco::succs(pred_node).size() != 1)
     return false;
 
-  auto pred_perm = dynamic_cast<luci::CircleConst *>(node->arg(1));
+  auto pred_perm = dynamic_cast<luci::CircleConst *>(target_node->perm());
   if (pred_perm == nullptr)
     return false;
 
-  auto main_perm = dynamic_cast<luci::CircleConst *>(pred_node->arg(1));
+  auto main_perm = dynamic_cast<luci::CircleConst *>(pred_node->perm());
   if (main_perm == nullptr)
     return false;
 
-  auto main_node = static_cast<luci::CircleNode *>(pred_node->arg(0));
+  auto main_node = loco::must_cast<luci::CircleNode *>(pred_node->a());
   if (check_perm(pred_perm, main_perm))
   {
     replace(node).with(main_node);
@@ -66,45 +66,49 @@ bool remove_consecutive_transpose_function(luci::CircleNode *node)
     auto new_const_node = g->nodes()->create<luci::CircleConst>();
 
     new_const_node->dtype(loco::DataType::S32);
-    new_const_node->rank(main_perm->rank());
-    uint32_t dim_size = 1;
-    for (uint32_t i = 0; i < new_const_node->rank(); ++i)
-    {
-      new_const_node->dim(i) = main_perm->dim(i);
-      dim_size *= main_perm->dim(i).value();
-    }
-    new_const_node->size<loco::DataType::S32>(dim_size);
+    new_const_node->rank(1);
+    new_const_node->dim(0) = main_perm->dim(0);
+    new_const_node->size<loco::DataType::S32>(main_perm->dim(0).value());
     new_const_node->shape_status(luci::ShapeStatus::VALID);
     for (uint32_t i = 0; i < main_perm->size<loco::DataType::S32>(); i++)
     {
       new_const_node->at<loco::DataType::S32>(i) =
           pred_perm->at<loco::DataType::S32>(main_perm->at<loco::DataType::S32>(i));
     }
-    replace(main_perm).with(new_const_node);
+    pred_node->perm(new_const_node);
     replace(node).with(pred_node);
   }
   node->drop();
   return true;
 }
 
+} // namespace
+
+namespace luci
+{
 /**
  *  BEFORE
  *         |
- *   [CircleInput]    [CircleConst]
- *           \              /
- *           [CircleTranspose]  [CircleConst]
- *                   \               /
- *                   [CircleTranspose]
- *                           |
+ *   [CircleNode]     [CircleConst]
+ *    (main_node)      (main_perm)
+ *         \               /
+ *         [CircleTranspose]  [CircleConst]
+ *            (pred_node)      (pred_perm)
+ *                 \               /
+ *                 [CircleTranspose]
+ *                   (target_node)
+ *                         |
  *
  *  AFTER
  *      <Optional Case>
  *
- *          |                 |               |
- *    [CircleInput]     [CircleConst]         |
- *           \               /           or   |  [Remove all]
- *           [CircleTranspose]                |
- *                   |                        |
+ *          |                 |                   |
+ *    [CircleNode]      [CircleConst]             |
+ *     (main_node)     (new_const_node)           |
+ *           \               /           or  [CircleNode]
+ *           [CircleTranspose]                (main_node)
+ *              (pred_node)                       |
+ *                   |                            |
  *
  */
 bool RemoveRedundantTransposePass::run(loco::Graph *g)
@@ -112,7 +116,7 @@ bool RemoveRedundantTransposePass::run(loco::Graph *g)
   bool changed = false;
   for (auto node : loco::active_nodes(loco::output_nodes(g)))
   {
-    auto circle_node = static_cast<luci::CircleNode *>(node);
+    auto circle_node = loco::must_cast<luci::CircleNode *>(node);
     if (remove_consecutive_transpose_function(circle_node))
     {
       changed = true;
