@@ -56,7 +56,7 @@ void NEFullyConnectedReshapingLayer::configure(const arm_compute::ITensor *input
       assert(kernel_type == KernelType::PREPROCESSED_WEIGHTS);
 
       bool is_hybrid = input->info()->data_type() == DataType::F32 &&
-                       (weights->info()->data_type() == DataType::S8 ||
+                       (weights->info()->data_type() == DataType::QSYMM8 ||
                         weights->info()->data_type() == DataType::QASYMM8_SIGNED);
 
       if (is_hybrid)
