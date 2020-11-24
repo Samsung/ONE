@@ -44,7 +44,7 @@ public:
 
 public:
   void visit(const operation::AddN &node) override;
-  void visit(const operation::ArgMax &node) override;
+  void visit(const operation::ArgMinMax &node) override;
   void visit(const operation::BatchMatMul &node) override;
   void visit(const operation::BatchToSpaceND &node) override;
   void visit(const operation::BinaryArithmetic &node) override;
