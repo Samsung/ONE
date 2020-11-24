@@ -26,6 +26,19 @@
 namespace luci
 {
 
+bool TypeInferencePass::run(luci::Module *m)
+{
+  bool changed = false;
+
+  for (size_t g = 0; g < m->size(); ++g)
+  {
+    if (run(m->graph(g)))
+      changed = true;
+  }
+
+  return changed;
+}
+
 bool TypeInferencePass::run(loco::Graph *g)
 {
   loco::CanonicalTypeInferenceRule canonical_rule;

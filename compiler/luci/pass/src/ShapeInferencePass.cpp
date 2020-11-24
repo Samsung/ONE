@@ -28,6 +28,19 @@
 namespace luci
 {
 
+bool ShapeInferencePass::run(luci::Module *m)
+{
+  bool changed = false;
+
+  for (size_t g = 0; g < m->size(); ++g)
+  {
+    if (run(m->graph(g)))
+      changed = true;
+  }
+
+  return changed;
+}
+
 bool ShapeInferencePass::run(loco::Graph *g)
 {
   loco::CanonicalShapeInferenceRule canonical_rule;
