@@ -17,7 +17,7 @@
 #ifndef __LUCI_FUSE_BCQ_PASS_H__
 #define __LUCI_FUSE_BCQ_PASS_H__
 
-#include <logo/Pass.h>
+#include <luci/ModulePass.h>
 
 namespace luci
 {
@@ -26,10 +26,11 @@ namespace luci
  * @brief  Class to fuse certain pattern of subgraph into CircleBCQFullyConnected or CircleBCQGather
  *
  */
-struct FuseBCQPass final : public logo::Pass
+struct FuseBCQPass final : public luci::Pass
 {
   const char *name(void) const final { return "luci::FuseBCQPass"; }
 
+  bool run(luci::Module *m) final;
   bool run(loco::Graph *g) final;
 };
 
