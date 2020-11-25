@@ -23,6 +23,7 @@
 
 namespace
 {
+
 void setValue(luci::CircleConst *node, const std::vector<int> &v)
 {
   node->dtype(loco::DataType::S32);
@@ -71,7 +72,6 @@ void setValue(luci::CircleConst *node, const std::vector<int> &v)
  *                   |
  *
  */
-
 void create_redundunt_transpose(loco::Graph *g, const std::vector<int32_t> &perm1,
                                 const std::vector<int32_t> &perm2)
 {
@@ -81,7 +81,7 @@ void create_redundunt_transpose(loco::Graph *g, const std::vector<int32_t> &perm
   auto graph_input = g->inputs()->create();
   input->index(graph_input->index());
 
-  // create perm1
+  // Create perm1
   auto perm1_node = g->nodes()->create<luci::CircleConst>();
   setValue(perm1_node, perm1);
 
@@ -90,7 +90,7 @@ void create_redundunt_transpose(loco::Graph *g, const std::vector<int32_t> &perm
   transpose1->a(input);
   transpose1->perm(perm1_node);
 
-  // create perm2
+  // Create perm2
   auto perm2_node = g->nodes()->create<luci::CircleConst>();
   setValue(perm2_node, perm2);
 
@@ -99,12 +99,13 @@ void create_redundunt_transpose(loco::Graph *g, const std::vector<int32_t> &perm
   transpose2->a(transpose1);
   transpose2->perm(perm2_node);
 
-  // output
+  // Output
   auto output = g->nodes()->create<luci::CircleOutput>();
   output->from(transpose2);
   auto graph_output = g->outputs()->create();
   output->index(graph_output->index());
 }
+
 } // namespace
 
 TEST(RemoveRedundantTransposePass, remove_consecutive_transpose_function_type1)
@@ -124,7 +125,7 @@ TEST(RemoveRedundantTransposePass, remove_consecutive_transpose_function_type1)
     transpose_node = trans;
     break;
   }
-  // No Transpose node is in Graph.
+  // No transpose node is in graph.
   ASSERT_EQ(nullptr, transpose_node);
 }
 
@@ -145,7 +146,7 @@ TEST(RemoveRedundantTransposePass, remove_consecutive_transpose_function_type2)
     transpose_node = trans;
     break;
   }
-  // Just One Transpose node, with updated perm constant.
+  // Just one transpose node, with updated perm constant.
   ASSERT_NE(nullptr, transpose_node);
   auto perm = loco::must_cast<luci::CircleConst *>(transpose_node->perm());
   ASSERT_EQ(1, perm->at<loco::DataType::S32>(0));
