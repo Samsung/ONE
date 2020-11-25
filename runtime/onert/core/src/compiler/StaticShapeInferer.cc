@@ -166,7 +166,8 @@ void StaticShapeInferer::visit(const ir::operation::ArgMinMax &op)
   axis_value = axis_value < 0 ? axis_value + rank : axis_value;
 
   // re-sizing output shape
-  ir::Shape new_shape = shape_inference::inferArgMaxShape(input.info().shape(), axis_value, rank);
+  ir::Shape new_shape =
+      shape_inference::inferArgMinMaxShape(input.info().shape(), axis_value, rank);
   output.info().shape(new_shape);
 }
 
