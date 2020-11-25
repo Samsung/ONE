@@ -3,22 +3,11 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Release
-=======
+1.0
+===
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
-  ./1.0/index
-  ./1.1/index
-  ./1.2/index
-  ./1.3/index
-  ./1.4/index
-  ./1.5/index
-  ./1.6/index
-  ./1.7/index
-  ./1.8/index
-  ./1.9/index
-  ./1.10/index
-  ./1.11/index
+  ./release-note-1.6.0.md
