@@ -75,7 +75,6 @@ CompilerOptions fetchCompilerOptionsFromGlobalConfig(const ir::Subgraphs &subgs)
 {
   CompilerOptions options;
   options.backend_list = nnfw::misc::split(util::getConfigString(util::config::BACKENDS), ';');
-  options.is_primary_subgraph = false;
   options.trace_filepath = util::getConfigString(util::config::TRACE_FILEPATH);
   options.graph_dump_level = util::getConfigInt(util::config::GRAPH_DOT_DUMP);
   options.op_seq_max_node = util::getConfigInt(util::config::OP_SEQ_MAX_NODE);
@@ -228,7 +227,6 @@ std::shared_ptr<exec::ExecutorMap> Compiler::compile(void)
   // Lower: Assign backend
   std::unordered_map<ir::SubgraphIndex, std::unique_ptr<compiler::LoweredGraph>> lowered_subgs;
   _subgraphs->iterate([&](const ir::SubgraphIndex &index, ir::Graph &subg) {
-    _options.is_primary_subgraph = (index == ir::SubgraphIndex{0});
     onert::dumper::dot::DotDumper dot_dumper(subg, dump_level);
     dot_dumper.dump(nnfw::misc::str("before_lower_subg-", index.value()));
 
@@ -299,8 +297,6 @@ std::shared_ptr<exec::ExecutorMap> Compiler::compile(void)
     const auto &subg_index = pair.first;
     auto &lowered_subg = pair.second;
     auto indexed_ranks = lowered_subg->indexed_ranks();
-
-    _options.is_primary_subgraph = (subg_index == ir::SubgraphIndex{0});
 
     ir::OperationDumper dumper("Executor generation of Subgraph " +
                                std::to_string(subg_index.value()));

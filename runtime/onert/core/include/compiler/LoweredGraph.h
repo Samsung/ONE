@@ -67,8 +67,7 @@ private:
                   const compiler::BackendResolver &backend_resolver);
 
   void manipulateLowerInfo(
-      ir::OperandIndexMap<std::unique_ptr<ir::operand::LowerInfo>> &operands_lower_info,
-      bool is_primary);
+      ir::OperandIndexMap<std::unique_ptr<ir::operand::LowerInfo>> &operands_lower_info);
   void dumpLowerInfo();
   bool mergeable(const ir::OpSequenceIndex &op_seq_index, const ir::OperationIndex &node_index,
                  ir::Layout layout, const compiler::BackendResolver &backend_resolver);
