@@ -224,10 +224,16 @@ public:
         _backends.push_back(backend);
       }
 #endif
-      if (backend == "cpu" || backend == "ruy" || backend == "xnnpack")
+      if (backend == "cpu" || backend == "ruy")
       {
         _backends.push_back(backend);
       }
+#ifdef TEST_XNNPACK_BACKEND
+      if (backend == "xnnpack")
+      {
+        _backends.push_back(backend);
+      }
+#endif
     }
   }
 
