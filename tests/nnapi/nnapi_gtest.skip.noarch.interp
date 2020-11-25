@@ -23,6 +23,12 @@ GeneratedTests.argmax_neg_axis_float_nnfw
 GeneratedTests.argmax_neg_axis_int32_nnfw
 GeneratedTests.argmax_quant8_neg_axis_nnfw
 GeneratedTests.argmax_quant8_nnfw
+GeneratedTests.argmin_1
+GeneratedTests.argmin_1_quant8
+GeneratedTests.argmin_2
+GeneratedTests.argmin_2_quant8
+GeneratedTests.argmin_3
+GeneratedTests.argmin_3_quant8
 GeneratedTests.avg_pool_quant8_1
 GeneratedTests.avg_pool_quant8_2
 GeneratedTests.avg_pool_quant8_3

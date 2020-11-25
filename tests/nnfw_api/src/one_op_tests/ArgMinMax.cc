@@ -37,6 +37,25 @@ TEST_F(GenModelTest, OneOp_ArgMax_AxisToConst)
   SUCCEED();
 }
 
+TEST_F(GenModelTest, OneOp_ArgMin_AxisToConst)
+{
+  CircleGen cgen;
+  const auto output_type = circle::TensorType::TensorType_INT32;
+  std::vector<int32_t> axis_data{1};
+  uint32_t axis_buf = cgen.addBuffer(axis_data);
+  int axis = cgen.addTensor({{1}, circle::TensorType::TensorType_INT32, axis_buf});
+  int in = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_FLOAT32});
+  int out = cgen.addTensor({{1, 2, 1}, output_type});
+  cgen.addOperatorArgMin({{in, axis}, {out}}, output_type);
+  cgen.setInputsAndOutputs({in}, {out});
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->addTestCase(TestCaseData{}.addInput<float>({1, 4, 2, 3}).addOutput<int32_t>({0, 1}));
+  _context->setBackends({"acl_cl", "acl_neon", "cpu"});
+
+  SUCCEED();
+}
+
 TEST_F(GenModelTest, OneOp_ArgMax_Int64_AxisToConst)
 {
   CircleGen cgen;

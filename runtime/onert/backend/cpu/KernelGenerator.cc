@@ -1024,7 +1024,7 @@ void KernelGenerator::visit(const ir::operation::ArgMinMax &node)
 
   auto fn = std::make_unique<ops::ArgMinMaxLayer>();
 
-  fn->configure(input_tensor, output_tensor, axis_tensor, /* is_arg_max */ true);
+  fn->configure(input_tensor, output_tensor, axis_tensor, node.param().is_arg_max);
 
   _return_fn = std::move(fn);
 }
