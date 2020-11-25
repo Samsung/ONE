@@ -91,10 +91,11 @@ void KernelGenerator::visit(const ir::operation::ArgMinMax &node)
   assert(axis_value >= 0 && axis_value < ifm_rank);
   const auto fixed_axis =
       acl_common::ToARMComputeAxis(ifm_rank, axis_value, frontend_layout, backend_layout).value();
+  auto reduce_type = node.param().is_arg_max ? ::arm_compute::ReductionOperation::ARG_IDX_MAX
+                                             : ::arm_compute::ReductionOperation::ARG_IDX_MIN;
 
   auto fn = acl_common::generateLayer<arm_compute::NEArgMinMaxLayer>(
-      ifm_tensor->handle(), fixed_axis, ofm_tensor->handle(),
-      arm_compute::ReductionOperation::ARG_IDX_MAX);
+      ifm_tensor->handle(), fixed_axis, ofm_tensor->handle(), reduce_type);
 
   _return_fn = asAclFunction(std::move(fn));
 }
