@@ -11,7 +11,8 @@ def main(args):
     root_path = dirname(dirname(dirname(script_path)))
     os.chdir(root_path)
 
-    backend_list = ["cpu", "ruy"]
+    backend_list = ["cpu", "ruy", "xnnpack"]
+    # backend_list = ["cpu", "ruy"]
 
     op_time = {}
     for trace_file in os.listdir('./tools/backend_scheduler/traces'):
@@ -48,11 +49,17 @@ def main(args):
         if op_type != 'Conv2D':
             continue
 
+        print("----- Operation {} -----".format(op_index))
         op_infer_time = 0
         for backend in backend_list:
             backend_time = value[backend]
 
+            print("{}[{}]".format(backend, backend_time))
+
             if op_infer_time == 0 or backend_time < op_infer_time:
+                # if op_index in backend_mapping:
+                # print("{}[{}] < {}[{}]".format(backend_mapping[op_index], op_infer_time, backend, backend_time))
+
                 op_infer_time = backend_time
                 backend_mapping[op_index] = backend
 

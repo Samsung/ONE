@@ -10,7 +10,7 @@ def main(args):
     root_path = dirname(dirname(dirname(script_path)))
     os.chdir(root_path)
 
-    backend_list = ["cpu", "ruy"]
+    backend_list = ["cpu", "ruy", "xnnpack"]
 
     if (isdir('./Product/armv7l-linux.release')):
         for index, backend in enumerate(backend_list):
@@ -18,6 +18,7 @@ def main(args):
                 normpath(args.nnpackage_dir)), backend)
             command = "TRACE_FILEPATH={}/traces/{}".format(
                 dirname(script_path), trace_name)
+            command += " XNNPACK_THREADS=4"
             command += " OP_BACKEND_Conv2D={}".format(backend)
             command += " BACKENDS='{}'".format(';'.join(backend_list))
             command += " OP_SEQ_MAX_NODE=1"
