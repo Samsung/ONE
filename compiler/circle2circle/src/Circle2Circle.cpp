@@ -141,6 +141,12 @@ int entry(int argc, char **argv)
       .help("This will convert weight format of FullyConnected to SHUFFLED16x1FLOAT32. Note that "
             "it only converts weights whose row is a multiple of 16");
 
+  arser.add_argument("--substitute_pack_to_reshape")
+      .nargs(0)
+      .required(false)
+      .default_value(false)
+      .help("This will convert single input Pack to Reshape");
+
   arser.add_argument("--mute_warnings")
       .nargs(0)
       .required(false)
@@ -210,6 +216,7 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::ResolveCustomOpBatchMatMul);
     options->enable(Algorithms::ResolveCustomOpMatMul);
     options->enable(Algorithms::RemoveRedundantTranspose);
+    options->enable(Algorithms::SubstitutePackToReshape);
   }
   if (arser.get<bool>("--fold_dequantize"))
     options->enable(Algorithms::FoldDequantize);
@@ -237,7 +244,8 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::ResolveCustomOpMatMul);
   if (arser.get<bool>("--shuffle_weight_to_16x1float32"))
     options->enable(Algorithms::ShuffleWeightTo16x1Float32);
-
+  if (arser.get<bool>("--substitute_pack_to_reshape"))
+    options->enable(Algorithms::SubstitutePackToReshape);
   if (arser.get<bool>("--mute_warnings"))
     settings->set(luci::UserSettings::Key::MuteWarnings, true);
   if (arser.get<bool>("--disable_validation"))

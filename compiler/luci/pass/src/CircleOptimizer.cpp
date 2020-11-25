@@ -34,6 +34,7 @@
 #include "luci/Pass/QuantizeDequantizeWeightsPass.h"
 #include "luci/Pass/SparsifyTensorPass.h"
 #include "luci/Pass/ShuffleWeightTo16x1Float32Pass.h"
+#include "luci/Pass/SubstitutePackToReshapePass.h"
 // TODO add more passes
 
 #include "luci/Pass/ShapeInferencePass.h"
@@ -208,6 +209,10 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   if (_options->query(Options::Algorithm::RemoveRedundantTranspose))
   {
     phase.emplace_back(std::make_unique<luci::RemoveRedundantTransposePass>());
+  }
+  if (_options->query(Options::Algorithm::SubstitutePackToReshape))
+  {
+    phase.emplace_back(std::make_unique<luci::SubstitutePackToReshapePass>());
   }
   /* TRANSFORM DECLARATION END */
 
