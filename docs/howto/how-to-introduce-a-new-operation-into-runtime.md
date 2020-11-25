@@ -419,32 +419,21 @@ void visit(const ir::operation::Select &) override;
 ```cpp
 void KernelGenerator::visit(const ir::operation::Select &node)
 {
-  const auto output_index{node.getOutputs().at(ir::operation::Select::Output::OUTPUT)};
-  const auto cond_index{node.getInputs().at(ir::operation::Select::Input::COND)};
-  const auto input1_index{node.getInputs().at(ir::operation::Select::Input::INPUT1)};
-  const auto input2_index{node.getInputs().at(ir::operation::Select::Input::INPUT2)};
+  const auto output_index{node.getOutputs().at(0)};
+  const auto condition_index{node.getInputs().at(ir::operation::Select::Input::CONDITION)};
+  const auto true_index{node.getInputs().at(ir::operation::Select::Input::INPUT_TRUE)};
+  const auto false_index{node.getInputs().at(ir::operation::Select::Input::INPUT_FALSE)};
 
-  const auto output_backend_descr = ::onert::backend::cpu::kernel::getTensorDescriptor(
-      _ctx.at(output_index), _current_op_seq_layout);
-  const auto cond_backend_descr = ::onert::backend::cpu::kernel::getTensorDescriptor(
-      _ctx.at(cond_index), _current_op_seq_layout);
-  const auto input1_backend_descr = ::onert::backend::cpu::kernel::getTensorDescriptor(
-      _ctx.at(input1_index), _current_op_seq_layout);
-  const auto input2_backend_descr = ::onert::backend::cpu::kernel::getTensorDescriptor(
-      _ctx.at(input2_index), _current_op_seq_layout);
+  auto output_tensor = _tensor_reg->getPortableTensor(output_index);
+  auto condition_tensor = _tensor_reg->getPortableTensor(condition_index);
+  auto true_tensor = _tensor_reg->getPortableTensor(true_index);
+  auto false_tensor = _tensor_reg->getPortableTensor(false_index);
 
-  auto output_alloc = _tensor_builder->at(output_index).get();
-  auto cond_alloc = _tensor_builder->at(cond_index).get();
-  auto input1_alloc = _tensor_builder->at(input1_index).get();
-  auto input2_alloc = _tensor_builder->at(input2_index).get();
+  auto fn = std::make_unique<ops::SelectLayer>();
 
-  auto fn = std::make_unique<::onert::backend::cpu::kernel::SelectLayer>();
+  fn->configure(condition_tensor, true_tensor, false_tensor, output_tensor);
 
-  fn->configure(cond_alloc->buffer(), cond_backend_descr, input1_alloc->buffer(),
-                input1_backend_descr, input2_alloc->buffer(), input2_backend_descr,
-                output_alloc->buffer(), output_backend_descr);
-
-  _execution_builder->append(std::move(fn));
+  _return_fn = std::move(fn);
 }
 ```
 
