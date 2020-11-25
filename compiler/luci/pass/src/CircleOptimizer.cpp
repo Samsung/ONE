@@ -132,7 +132,14 @@ void CircleOptimizer::optimize(luci::Module *m) const
 {
   luci::Phase phase;
 
-  // Passes will be inserted here
+  phase.emplace_back(std::make_unique<luci::ShapeInferencePass>());
+  phase.emplace_back(std::make_unique<luci::ShapeSignatureInferencePass>());
+  phase.emplace_back(std::make_unique<luci::TypeInferencePass>());
+
+  if (_options->query(Options::Algorithm::FuseBCQ))
+  {
+    phase.emplace_back(std::make_unique<FuseBCQPass>());
+  }
 
   ModuleProgressReporter prog(m, logo::PhaseStrategy::Restart);
   PhaseRunner<logo::PhaseStrategy::Restart> phase_runner{m};
@@ -160,10 +167,6 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   if (_options->query(Options::Algorithm::FuseInstanceNorm))
   {
     phase.emplace_back(std::make_unique<FuseInstanceNormPass>());
-  }
-  if (_options->query(Options::Algorithm::FuseBCQ))
-  {
-    phase.emplace_back(std::make_unique<FuseBCQPass>());
   }
   if (_options->query(Options::Algorithm::FuseBatchNormWithTConv))
   {
