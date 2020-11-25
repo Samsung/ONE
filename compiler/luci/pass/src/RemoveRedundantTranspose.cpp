@@ -58,7 +58,6 @@ bool remove_consecutive_transpose_function(luci::CircleNode *node)
   if (check_perm(pred_perm, main_perm))
   {
     replace(node).with(main_node);
-    pred_node->drop();
   }
   else
   {
@@ -78,7 +77,6 @@ bool remove_consecutive_transpose_function(luci::CircleNode *node)
     pred_node->perm(new_const_node);
     replace(node).with(pred_node);
   }
-  node->drop();
   return true;
 }
 
