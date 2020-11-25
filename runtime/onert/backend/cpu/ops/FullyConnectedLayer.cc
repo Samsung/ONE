@@ -33,7 +33,7 @@ namespace ops
 FullyConnectedLayer::FullyConnectedLayer()
     : _input(nullptr), _weights(nullptr), _bias(nullptr), _output(nullptr),
       _activation(ir::Activation::NONE), _temp_arena(new nnfw::cker::FCTempArena()),
-      _external_context(nullptr), _is_hybrid(false)
+      _external_context(nullptr), _is_hybrid(false), _is_shuffled16x1float32(false)
 {
   // DO NOTHING
 }
@@ -174,8 +174,28 @@ void FullyConnectedLayer::fullyConnectedSparseWeight()
     throw std::runtime_error{"FullyConnected: unsupported sparsity"};
 }
 
+void FullyConnectedLayer::fullyConnected16x1Float32()
+{
+#if defined(__aarch64__) && defined(USE_NEON)
+  float output_activation_min = 0, output_activation_max = 0;
+  CalculateActivationRange(_activation, &output_activation_min, &output_activation_max);
+
+  nnfw::cker::FullyConnectedParams op_params;
+  op_params.activation = convertActivationType(_activation);
+
+  nnfw::cker::FullyConnected16x1Float32(
+      op_params, getTensorShape(_input), reinterpret_cast<const float *>(_input->buffer()),
+      getTensorShape(_weights), reinterpret_cast<const float *>(_weights->buffer()),
+      getTensorShape(_bias), reinterpret_cast<const float *>(_bias ? _bias->buffer() : nullptr),
+      getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()));
+#else
+  throw std::runtime_error{"FullyConnected: Shuffled16x1Float32 weights_format is not supported."};
+#endif
+}
+
 void FullyConnectedLayer::configure(const IPortableTensor *input, const IPortableTensor *weights,
                                     const IPortableTensor *bias, ir::Activation activation,
+                                    ir::FullyConnectedWeightsFormat weights_format,
                                     IPortableTensor *output,
                                     const std::shared_ptr<ExternalContext> &external_context)
 {
@@ -186,6 +206,14 @@ void FullyConnectedLayer::configure(const IPortableTensor *input, const IPortabl
   _output = output;
   _is_hybrid = input->data_type() == OperandType::FLOAT32 &&
                weights->data_type() == OperandType::QUANT_INT8_SYMM;
+  _is_shuffled16x1float32 = weights_format == ir::FullyConnectedWeightsFormat::Shuffled16x1Float32;
+#if !defined(__aarch64__) || !defined(USE_NEON)
+  if (_is_shuffled16x1float32)
+  {
+    throw std::runtime_error{
+        "FullyConnected: Shuffled16x1Float32 weights_format is not supported."};
+  }
+#endif
   _external_context = external_context;
 }
 
@@ -201,7 +229,7 @@ void FullyConnectedLayer::run()
   }
   else if (_input->data_type() == OperandType::FLOAT32)
   {
-    fullyConnectedFloat32();
+    _is_shuffled16x1float32 ? fullyConnected16x1Float32() : fullyConnectedFloat32();
   }
   else if (_input->data_type() == OperandType::QUANT_UINT8_ASYMM)
   {

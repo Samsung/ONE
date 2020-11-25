@@ -76,7 +76,7 @@ public:
   void visit(const ir::operation::SquaredDifference &) override;
   void visit(const ir::operation::TopKV2 &) override;
   void visit(const ir::operation::Gather &) override;
-  void visit(const ir::operation::ArgMax &) override;
+  void visit(const ir::operation::ArgMinMax &) override;
   void visit(const ir::operation::LocalResponseNormalization &) override;
   void visit(const ir::operation::DepthToSpace &) override;
   void visit(const ir::operation::Split &) override;
@@ -92,7 +92,7 @@ private:
   const ir::Operations &_operations_ctx;
   std::shared_ptr<TensorBuilder> _tensor_builder;
   std::shared_ptr<acl_common::AclTensorRegistry<TensorManager>> _tensor_reg;
-  ir::Layout _current_op_seq_layout;
+  ir::Layout _current_layout;
 };
 
 } // namespace acl_cl

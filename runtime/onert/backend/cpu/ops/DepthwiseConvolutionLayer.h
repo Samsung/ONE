@@ -19,6 +19,7 @@
 
 #include <backend/IPortableTensor.h>
 #include "OperationUtils.h"
+#include "../ExternalContext.h"
 
 #include <exec/IFunction.h>
 
@@ -34,7 +35,7 @@ namespace ops
 class DepthwiseConvolutionLayer : public ::onert::exec::IFunction
 {
 public:
-  DepthwiseConvolutionLayer();
+  DepthwiseConvolutionLayer() = default;
 
 public:
   void convFloat32();
@@ -45,28 +46,34 @@ public:
                  const IPortableTensor *bias, const uint32_t paddingLeft,
                  const uint32_t paddingRight, const uint32_t paddingTop,
                  const uint32_t paddingBottom, const uint32_t strideW, const uint32_t strideH,
-                 const uint32_t multiplier, const ir::Activation activation,
-                 IPortableTensor *output);
+                 const uint32_t multiplier, const uint32_t dilationWidth,
+                 const uint32_t dilationHeight, const ir::Activation activation,
+                 IPortableTensor *output, const std::shared_ptr<ExternalContext> &external_context);
 
   void run() override;
 
 private:
-  const IPortableTensor *_input;
-  const IPortableTensor *_kernel;
-  const IPortableTensor *_bias;
-  IPortableTensor *_output;
+  const IPortableTensor *_input{nullptr};
+  const IPortableTensor *_kernel{nullptr};
+  const IPortableTensor *_bias{nullptr};
+  IPortableTensor *_output{nullptr};
 
-  uint32_t _paddingLeft;
-  uint32_t _paddingTop;
-  uint32_t _paddingRight;
-  uint32_t _paddingBottom;
+  uint32_t _paddingLeft{0};
+  uint32_t _paddingTop{0};
+  uint32_t _paddingRight{0};
+  uint32_t _paddingBottom{0};
 
-  uint32_t _strideWidth;
-  uint32_t _strideHeight;
+  uint32_t _strideWidth{0};
+  uint32_t _strideHeight{0};
 
-  uint32_t _multiplier;
+  uint32_t _multiplier{0};
 
-  ir::Activation _activation;
+  uint32_t _dilationWidth{1};
+  uint32_t _dilationHeight{1};
+
+  ir::Activation _activation{ir::Activation::NONE};
+
+  std::shared_ptr<ExternalContext> _external_context;
 };
 
 } // namespace ops

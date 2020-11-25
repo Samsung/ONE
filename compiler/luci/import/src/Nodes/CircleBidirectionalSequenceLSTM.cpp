@@ -52,8 +52,8 @@ CircleNode *CircleBidirectionalSequenceLSTMGraphBuilder::build_node(
   node->fw_forget_gate_bias(inputs.at(13));
   node->fw_cell_gate_bias(inputs.at(14));
   node->fw_output_gate_bias(inputs.at(15));
-  node->fw_projection_weights(inputs.at(16)); // Optional
-  node->fw_projection_bias(inputs.at(17));    // Optional
+  node->fw_projection_weights(inputs.at(16));     // Optional
+  node->fw_projection_bias(inputs.at(17));        // Optional
   node->bw_input_to_input_weights(inputs.at(18)); // Optional
   node->bw_input_to_cell_weights(inputs.at(19));
   node->bw_input_to_forget_weights(inputs.at(20));
@@ -62,7 +62,7 @@ CircleNode *CircleBidirectionalSequenceLSTMGraphBuilder::build_node(
   node->bw_recurrent_to_cell_weights(inputs.at(23));
   node->bw_recurrent_to_forget_weights(inputs.at(24));
   node->bw_recurrent_to_output_weights(inputs.at(25));
-  node->bw_cell_to_input_weights(inputs.at(26));   // Optional
+  node->bw_cell_to_input_weights(inputs.at(26));  // Optional
   node->bw_cell_to_forget_weights(inputs.at(27)); // Optional
   node->bw_cell_to_output_weights(inputs.at(28)); // Optional
   node->bw_input_gate_bias(inputs.at(29));        // Optional
@@ -76,18 +76,18 @@ CircleNode *CircleBidirectionalSequenceLSTMGraphBuilder::build_node(
   node->bw_activation_state(inputs.at(37));
   node->bw_cell_state(inputs.at(38));
 
-  node->auxillary_input(inputs.at(39));  // Optional
-  node->fw_auxillary_input_to_input_weights(inputs.at(40));   // Optional
-  node->fw_auxillary_input_to_forget_weights(inputs.at(41));  // Optional
-  node->fw_auxillary_input_to_cell_weights(inputs.at(42));    // Optional
-  node->fw_auxillary_input_to_output_weights(inputs.at(43));  // Optional
-  node->bw_auxillary_input_to_input_weights(inputs.at(44));   // Optional
-  node->bw_auxillary_input_to_forget_weights(inputs.at(45));  // Optional
-  node->bw_auxillary_input_to_cell_weights(inputs.at(46));    // Optional
-  node->bw_auxillary_input_to_output_weights(inputs.at(47));  // Optional
+  node->auxillary_input(inputs.at(39));                      // Optional
+  node->fw_auxillary_input_to_input_weights(inputs.at(40));  // Optional
+  node->fw_auxillary_input_to_forget_weights(inputs.at(41)); // Optional
+  node->fw_auxillary_input_to_cell_weights(inputs.at(42));   // Optional
+  node->fw_auxillary_input_to_output_weights(inputs.at(43)); // Optional
+  node->bw_auxillary_input_to_input_weights(inputs.at(44));  // Optional
+  node->bw_auxillary_input_to_forget_weights(inputs.at(45)); // Optional
+  node->bw_auxillary_input_to_cell_weights(inputs.at(46));   // Optional
+  node->bw_auxillary_input_to_output_weights(inputs.at(47)); // Optional
 
-
-  const std::vector<int32_t> optionals = {1, 5, 9, 10, 11, 12, 16, 17, 18, 22, 26, 27, 28, 29, 33, 34, 39, 40, 41, 42, 43, 44, 45, 46, 47};
+  const std::vector<int32_t> optionals = {1,  5,  9,  10, 11, 12, 16, 17, 18, 22, 26, 27, 28,
+                                          29, 33, 34, 39, 40, 41, 42, 43, 44, 45, 46, 47};
   for (auto optional : optionals)
   {
     if (auto inp = dynamic_cast<luci::CircleOutputExclude *>(node->arg(optional)))
@@ -110,14 +110,13 @@ CircleNode *CircleBidirectionalSequenceLSTMGraphBuilder::build_node(
 }
 
 void CircleBidirectionalSequenceLSTMGraphBuilder::build(const circle::OperatorT &op,
-                                     GraphBuilderContext *context) const
+                                                        GraphBuilderContext *context) const
 {
   assert(context != nullptr);
 
   const std::vector<int32_t> &inputs = op.inputs;
   const std::vector<int32_t> &outputs = op.outputs;
   const auto &tensors = context->reader()->tensors();
-  const auto &opcodes = context->reader()->opcodes();
   auto tensors_ptr = context->reader()->tensors_ptr();
   assert(tensors_ptr != nullptr);
 
@@ -138,7 +137,8 @@ void CircleBidirectionalSequenceLSTMGraphBuilder::build(const circle::OperatorT 
   }
 
   // Create CircleBidirectionalSequenceLSTM
-  CircleNode *node = CircleBidirectionalSequenceLSTMGraphBuilder::build_node(op, input_nodes, context->graph());
+  CircleNode *node =
+      CircleBidirectionalSequenceLSTMGraphBuilder::build_node(op, input_nodes, context->graph());
 
   assert(int32_t(outputs.size()) == 2);
   // Let's use name of output 0 as BidirectionalSequenceLSTM name
@@ -164,6 +164,5 @@ void CircleBidirectionalSequenceLSTMGraphBuilder::build(const circle::OperatorT 
     context->nodefinder()->enroll(outputs[n], nodeout);
   }
 }
-
 
 } // namespace luci

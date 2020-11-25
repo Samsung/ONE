@@ -26,12 +26,14 @@
 #include <kernels/DepthwiseConv2D.h>
 #include <kernels/Div.h>
 #include <kernels/Elu.h>
+#include <kernels/Exp.h>
 #include <kernels/Floor.h>
 #include <kernels/FloorDiv.h>
 #include <kernels/Equal.h>
 #include <kernels/FullyConnected.h>
 #include <kernels/Greater.h>
 #include <kernels/GreaterEqual.h>
+#include <kernels/InstanceNorm.h>
 #include <kernels/L2Normalize.h>
 #include <kernels/L2Pool2D.h>
 #include <kernels/LeakyRelu.h>
@@ -39,6 +41,8 @@
 #include <kernels/LessEqual.h>
 #include <kernels/LocalResponseNormalization.h>
 #include <kernels/LogicalAnd.h>
+#include <kernels/LogicalNot.h>
+#include <kernels/LogicalOr.h>
 #include <kernels/Logistic.h>
 #include <kernels/LogSoftmax.h>
 #include <kernels/Maximum.h>
@@ -333,6 +337,20 @@ TEST_F(KernelBuilderTest, Elu)
   checkTensor(kernel->output(), op);
 }
 
+TEST_F(KernelBuilderTest, Exp)
+{
+  auto *input = createInputNode();
+
+  auto *op = createNode<luci::CircleExp>();
+  op->x(input);
+
+  auto kernel = buildKernel<kernels::Exp>(op);
+  ASSERT_THAT(kernel, NotNull());
+
+  checkTensor(kernel->input(), input);
+  checkTensor(kernel->output(), op);
+}
+
 TEST_F(KernelBuilderTest, Floor)
 {
   auto *input = createInputNode();
@@ -436,6 +454,31 @@ TEST_F(KernelBuilderTest, GreaterEqual)
   checkTensor(kernel->x(), x_input);
   checkTensor(kernel->y(), y_input);
   checkTensor(kernel->output(), op);
+}
+
+TEST_F(KernelBuilderTest, InstanceNorm)
+{
+  auto *input = createInputNode();
+  auto *gamma = createInputNode();
+  auto *beta = createInputNode();
+
+  auto *op = createNode<luci::CircleInstanceNorm>();
+  op->input(input);
+  op->gamma(gamma);
+  op->beta(beta);
+
+  op->epsilon(1e-05);
+  op->fusedActivationFunction(luci::FusedActFunc::RELU);
+
+  auto kernel = buildKernel<kernels::InstanceNorm>(op);
+  ASSERT_THAT(kernel, NotNull());
+
+  checkTensor(kernel->input(), input);
+  checkTensor(kernel->gamma(), gamma);
+  checkTensor(kernel->beta(), beta);
+  checkTensor(kernel->output(), op);
+  EXPECT_THAT(kernel->params().epsilon, Eq(op->epsilon()));
+  EXPECT_THAT(kernel->params().activation, Eq(op->fusedActivationFunction()));
 }
 
 TEST_F(KernelBuilderTest, L2Normalize)
@@ -566,6 +609,37 @@ TEST_F(KernelBuilderTest, LogicalAnd)
   op->y(input2);
 
   auto kernel = buildKernel<kernels::LogicalAnd>(op);
+  ASSERT_THAT(kernel, NotNull());
+
+  checkTensor(kernel->input1(), input1);
+  checkTensor(kernel->input2(), input2);
+  checkTensor(kernel->output(), op);
+}
+
+TEST_F(KernelBuilderTest, LogicalNot)
+{
+  auto *input = createInputNode();
+
+  auto *op = createNode<luci::CircleLogicalNot>();
+  op->x(input);
+
+  auto kernel = buildKernel<kernels::LogicalNot>(op);
+  ASSERT_THAT(kernel, NotNull());
+
+  checkTensor(kernel->input(), input);
+  checkTensor(kernel->output(), op);
+}
+
+TEST_F(KernelBuilderTest, LogicalOr)
+{
+  auto *input1 = createInputNode();
+  auto *input2 = createInputNode();
+
+  auto *op = createNode<luci::CircleLogicalOr>();
+  op->x(input1);
+  op->y(input2);
+
+  auto kernel = buildKernel<kernels::LogicalOr>(op);
   ASSERT_THAT(kernel, NotNull());
 
   checkTensor(kernel->input1(), input1);

@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __LUCI_IR_CIRCLEBIDIRECTIONALSEQUENCELSTM_H__
-#define __LUCI_IR_CIRCLEBIDIRECTIONALSEQUENCELSTM_H__
+#ifndef __LUCI_IR_CIRCLEBIDIRECTIONALSEQUENCE_LSTM_H__
+#define __LUCI_IR_CIRCLEBIDIRECTIONALSEQUENCE_LSTM_H__
 
 #include "luci/IR/CircleNodeDecl.h"
 #include "luci/IR/CircleOpcode.h"
@@ -169,4 +169,4 @@ private:
 
 } // namespace luci
 
-#endif // __LUCI_IR_CIRCLEBIDIRECTIONALSEQUENCELSTM_H__
+#endif // __LUCI_IR_CIRCLEBIDIRECTIONALSEQUENCE_LSTM_H__

@@ -28,6 +28,7 @@ public:
   bool validate(const ValidateArgs &args) const final;
 
   void build(const circle::OperatorT &op, GraphBuilderContext *context) const final;
+
 private:
   CircleNode *build_node(const circle::OperatorT &op, const std::vector<CircleNode *> &inputs,
                          loco::Graph *graph) const;

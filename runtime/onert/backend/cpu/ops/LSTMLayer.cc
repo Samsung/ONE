@@ -60,25 +60,6 @@ inline void initializeStateBuffer(const onert::backend::IPortableTensor *tensor_
 }
 }
 
-LSTMLayer::LSTMLayer()
-    : _input(nullptr), _input_to_input_weights(nullptr), _input_to_forget_weights(nullptr),
-      _input_to_cell_weights(nullptr), _input_to_output_weights(nullptr),
-      _recurrent_to_input_weights(nullptr), _recurrent_to_forget_weights(nullptr),
-      _recurrent_to_cell_weights(nullptr), _recurrent_to_output_weights(nullptr),
-      _cell_to_input_weights(nullptr), _cell_to_forget_weights(nullptr),
-      _cell_to_output_weights(nullptr), _input_layer_norm_coefficients(nullptr),
-      _forget_layer_norm_coefficients(nullptr), _cell_layer_norm_coefficients(nullptr),
-      _output_layer_norm_coefficients(nullptr), _input_gate_bias(nullptr),
-      _forget_gate_bias(nullptr), _cell_gate_bias(nullptr), _output_gate_bias(nullptr),
-      _projection_weights(nullptr), _projection_bias(nullptr), _output_state_in(nullptr),
-      _cell_state_in(nullptr), _scratch_buffer(nullptr), _output_state(nullptr),
-      _cell_state(nullptr), _output(nullptr), _scratch_vec(), _output_state_vec(),
-      _cell_state_vec(), _params(), _forward_sequence(true), _time_major(true), _output_offset(0),
-      _has_output_state_data(false), _has_cell_state_data(false)
-{
-  // DO NOTHING
-}
-
 void LSTMLayer::LSTMFloat()
 {
   assert(_input->num_dimensions() >= 2 && _input->num_dimensions() <= 3);
@@ -134,44 +115,24 @@ void LSTMLayer::LSTMFloat()
     output_gate_scratch = scratch_buffer_buf + 3 * n_cell * n_batch;
   }
 
+  auto optional_tensor_ptr = [](const IPortableTensor *tensor) {
+    // If tensor is not given or the tensor size is 0, consider it was not given
+    return (tensor && tensor->total_size() > 0) ? reinterpret_cast<float *>(tensor->buffer())
+                                                : nullptr;
+  };
   // Optional inputs
-  float *input_to_input_weights_ptr =
-      _input_to_input_weights ? reinterpret_cast<float *>(_input_to_input_weights->buffer())
-                              : nullptr;
-  float *recurrent_to_input_weights_ptr =
-      _recurrent_to_input_weights ? reinterpret_cast<float *>(_recurrent_to_input_weights->buffer())
-                                  : nullptr;
-  float *cell_to_input_weights_ptr =
-      _cell_to_input_weights ? reinterpret_cast<float *>(_cell_to_input_weights->buffer())
-                             : nullptr;
-  float *cell_to_forget_weights_ptr =
-      _cell_to_forget_weights ? reinterpret_cast<float *>(_cell_to_forget_weights->buffer())
-                              : nullptr;
-  float *cell_to_output_weights_ptr =
-      _cell_to_output_weights ? reinterpret_cast<float *>(_cell_to_output_weights->buffer())
-                              : nullptr;
-  float *input_gate_bias_ptr =
-      _input_gate_bias ? reinterpret_cast<float *>(_input_gate_bias->buffer()) : nullptr;
-  float *projection_weights_ptr =
-      _projection_weights ? reinterpret_cast<float *>(_projection_weights->buffer()) : nullptr;
-  float *projection_bias_ptr =
-      _projection_bias ? reinterpret_cast<float *>(_projection_bias->buffer()) : nullptr;
-  float *input_layer_norm_coefficients_ptr =
-      _input_layer_norm_coefficients
-          ? reinterpret_cast<float *>(_input_layer_norm_coefficients->buffer())
-          : nullptr;
-  float *forget_layer_norm_coefficients_ptr =
-      _forget_layer_norm_coefficients
-          ? reinterpret_cast<float *>(_forget_layer_norm_coefficients->buffer())
-          : nullptr;
-  float *cell_layer_norm_coefficients_ptr =
-      _cell_layer_norm_coefficients
-          ? reinterpret_cast<float *>(_cell_layer_norm_coefficients->buffer())
-          : nullptr;
-  float *output_layer_norm_coefficients_ptr =
-      _output_layer_norm_coefficients
-          ? reinterpret_cast<float *>(_output_layer_norm_coefficients->buffer())
-          : nullptr;
+  float *input_to_input_weights_ptr = optional_tensor_ptr(_input_to_input_weights);
+  float *recurrent_to_input_weights_ptr = optional_tensor_ptr(_recurrent_to_input_weights);
+  float *cell_to_input_weights_ptr = optional_tensor_ptr(_cell_to_input_weights);
+  float *cell_to_forget_weights_ptr = optional_tensor_ptr(_cell_to_forget_weights);
+  float *cell_to_output_weights_ptr = optional_tensor_ptr(_cell_to_output_weights);
+  float *input_gate_bias_ptr = optional_tensor_ptr(_input_gate_bias);
+  float *projection_weights_ptr = optional_tensor_ptr(_projection_weights);
+  float *projection_bias_ptr = optional_tensor_ptr(_projection_bias);
+  float *input_layer_norm_coefficients_ptr = optional_tensor_ptr(_input_layer_norm_coefficients);
+  float *forget_layer_norm_coefficients_ptr = optional_tensor_ptr(_forget_layer_norm_coefficients);
+  float *cell_layer_norm_coefficients_ptr = optional_tensor_ptr(_cell_layer_norm_coefficients);
+  float *output_layer_norm_coefficients_ptr = optional_tensor_ptr(_output_layer_norm_coefficients);
 
   // Copy out the LSTM specific params so they can be passed in the function.
   nnfw::cker::LSTMParams lstm_params;
@@ -256,7 +217,7 @@ void LSTMLayer::LSTMFloat()
         float *output_gate_scratch_ptr = output_gate_scratch + b * n_cell;
 
         LstmStepFloat(
-            input_ptr, reinterpret_cast<float *>(_input_to_input_weights->buffer()),
+            input_ptr, input_to_input_weights_ptr,
             reinterpret_cast<float *>(_input_to_forget_weights->buffer()),
             reinterpret_cast<float *>(_input_to_cell_weights->buffer()),
             reinterpret_cast<float *>(_input_to_output_weights->buffer()), aux_input_ptr,

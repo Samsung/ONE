@@ -57,7 +57,7 @@ void CLFullyConnectedReshapingLayer::configure(const arm_compute::ICLTensor *inp
     {
       bool is_hybrid = (input->info()->data_type() == DataType::F32 ||
                         input->info()->data_type() == DataType::F16) &&
-                       (weights->info()->data_type() == DataType::S8 ||
+                       (weights->info()->data_type() == DataType::QSYMM8 ||
                         weights->info()->data_type() == DataType::QASYMM8_SIGNED);
 
       if (is_hybrid)

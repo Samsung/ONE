@@ -29,27 +29,55 @@ if [[ ! -s "while_3.pbtxt" ]]; then
     rm -rf while_3.zip
     wget https://github.com/Samsung/ONE/files/5095630/while_3.zip
     unzip while_3.zip
-fi
-
-if [[ ! -s "inception_v3_test_data.h5" ]]; then
-    rm -rf inception_v3_test_data.zip
-    wget https://github.com/Samsung/ONE/files/5139370/inception_v3_test_data.zip
-    unzip inception_v3_test_data.zip
+    # https://github.com/Samsung/ONE/issues/4155#issuecomment-689320297
 fi
 
 if [[ ! -s "mobilenet_test_data.h5" ]]; then
     rm -rf mobilenet_test_data.zip
     wget https://github.com/Samsung/ONE/files/5139460/mobilenet_test_data.zip
     unzip mobilenet_test_data.zip
+    # https://github.com/Samsung/ONE/issues/4155#issuecomment-689321538
 fi
 
 if [[ ! -s "bcq.pb" ]]; then
     rm -rf bcq.pb.zip
     wget https://github.com/Samsung/ONE/files/5153842/bcq.pb.zip
     unzip bcq.pb.zip
+    # https://github.com/Samsung/ONE/issues/4155#issuecomment-689324597
 fi
 
-# prepare 'inception_v3.circle' file used for quantizatio test
+if [[ ! -s "img_files" ]]; then
+    rm -rf img_files.zip
+    wget https://github.com/Samsung/ONE/files/5499172/img_files.zip
+    unzip img_files.zip
+    # https://github.com/Samsung/ONE/issues/3213#issuecomment-722757499
+fi
+
+if [ ! -d "raw_files" ] || [ ! -s "datalist.txt" ]; then
+    ../bin/venv/bin/python preprocess_images.py
+fi
+
+if [[ ! -s "inception_v3_test_data.h5" ]]; then
+  ../bin/venv/bin/python ../bin/rawdata2hdf5 \
+  --data_list datalist.txt \
+  --output_path inception_v3_test_data.h5
+fi
+
+if [[ ! -d "test_saved_model" ]]; then
+    rm -rf test_saved_model.zip
+    wget https://github.com/Samsung/ONE/files/5516226/test_saved_model.zip
+    unzip test_saved_model.zip
+    # https://github.com/Samsung/ONE/issues/4268#issuecomment-724578237
+fi
+
+if [[ ! -s "test_keras_model.h5" ]]; then
+    rm -rf test_keras_model.zip
+    wget https://github.com/Samsung/ONE/files/5520777/test_keras_model.zip
+    unzip test_keras_model.zip
+    # https://github.com/Samsung/ONE/issues/4268#issuecomment-725025805
+fi
+
+# prepare 'inception_v3.circle' file used for quantization test
 inputfile="./inception_v3.pb"
 outputfile="./inception_v3.circle"
 

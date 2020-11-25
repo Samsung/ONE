@@ -62,7 +62,7 @@ TEST(ExecTime, roundtrip_ok)
     et.updateOperationExecTime(b, "op1", true, 100, 100);
     et.updateOperationExecTime(b, "op1", true, 200, 200);
     et.updateOperationExecTime(b, "op1", false, 100, 888);
-    et.uploadOperationsExecTime();
+    et.storeOperationsExecTime();
   }
   {
     ExecTime et(bs);
@@ -73,7 +73,7 @@ TEST(ExecTime, roundtrip_ok)
     ASSERT_EQ(time, 150);
     time = et.getOperationExecTime(b, "op1", false, 100);
     ASSERT_EQ(time, 888);
-    et.uploadOperationsExecTime();
+    et.storeOperationsExecTime();
   }
   // clean up
   EXPECT_EQ(remove("exec_time.json"), 0);
@@ -88,7 +88,7 @@ TEST(ExecTime, structure)
     ExecTime et(bs);
     et.updateOperationExecTime(b, "op1", true, 100, 100);
     et.updateOperationExecTime(b, "op1", true, 200, 200);
-    et.uploadOperationsExecTime();
+    et.storeOperationsExecTime();
   }
   {
     ExecTime et(bs);
@@ -97,7 +97,7 @@ TEST(ExecTime, structure)
     // Check interpolation
     time = et.getOperationExecTime(b, "op1", true, 200);
     ASSERT_EQ(time, 200);
-    et.uploadOperationsExecTime();
+    et.storeOperationsExecTime();
   }
   // clean up
   EXPECT_EQ(remove("exec_time.json"), 0);

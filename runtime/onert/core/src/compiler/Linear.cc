@@ -20,7 +20,6 @@
 
 #include "backend/IConfig.h"
 #include "backend/IConstantInitializer.h"
-#include "backend/ITensorRegister.h"
 #include "backend/Backend.h"
 #include "util/logging.h"
 

@@ -112,7 +112,7 @@ void ConstantInitializer::visit(const ir::operation::Reverse &node)
   const auto &axis_obj = _operands.at(axis_index);
 
   const auto ifm_rank = input_obj.shape().rank();
-  const auto frontend_layout = this->_current_op_seq_layout;
+  const auto frontend_layout = this->_current_layout;
 
   auto output_tensor = this->_tensor_reg->getITensor(output_index);
   const auto backend_layout = output_tensor->layout();

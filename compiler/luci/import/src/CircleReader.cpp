@@ -151,6 +151,22 @@ MirrorPadMode luci_mirrorpad_mode(const circle::MirrorPadMode mode)
   return MirrorPadMode::UNDEFINED;
 }
 
+luci::CircleFullyConnected::WeightsFormat
+luci_weights_format(const circle::FullyConnectedOptionsWeightsFormat weights_format)
+{
+  switch (weights_format)
+  {
+    case circle::FullyConnectedOptionsWeightsFormat_DEFAULT:
+      return luci::CircleFullyConnected::WeightsFormat::DEFAULT;
+    case circle::FullyConnectedOptionsWeightsFormat_SHUFFLED4x16INT8:
+      return luci::CircleFullyConnected::WeightsFormat::SHUFFLED4x16INT8;
+    case circle::FullyConnectedOptionsWeightsFormat_SHUFFLED16x1FLOAT32:
+      return luci::CircleFullyConnected::WeightsFormat::SHUFFLED16x1FLOAT32;
+    default:
+      throw std::runtime_error("Invalid FullyConnectedOptionsWeightsFormat");
+  }
+}
+
 DimensionType luci_dim_type(const circle::DimensionType dim_type)
 {
   switch (dim_type)
@@ -252,6 +268,8 @@ void copy_tensor_attributes(const circle::TensorT &tensor, CircleNode *node)
   {
     node->dim(r) = loco::Dimension(dims[r]);
   }
+
+  node->shape_signature(tensor.shape_signature);
 
   const auto *quantization = tensor.quantization.get();
   if (quantization != nullptr)

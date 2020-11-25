@@ -37,7 +37,7 @@ public:
 public:
   /// @brief The number of lines
   uint32_t lines(void) const { return _lines.size(); }
-  /// @breif The content of a specific line
+  /// @brief The content of a specific line
   const std::string &line(uint32_t n) const { return _lines.at(n); }
 
 private:

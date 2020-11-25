@@ -27,6 +27,7 @@ namespace util
 {
 
 void config_source(std::unique_ptr<IConfigSource> &&source);
+void config_source_ext(std::unique_ptr<IConfigSource> &&source);
 
 bool toBool(const std::string &val);
 int toInt(const std::string &val);

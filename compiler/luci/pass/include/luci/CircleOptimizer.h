@@ -19,6 +19,8 @@
 
 #include <loco.h>
 
+#include <luci/IR/Module.h>
+
 #include <string>
 #include <vector>
 
@@ -45,6 +47,9 @@ public:
       FoldDequantize,
       SparsifyTensorPass,
       FusePreActivationBatchNorm,
+      MakeBatchNormGammaPositive,
+      FuseActivationFunction,
+      ShuffleWeightTo16x1Float32,
     };
 
     enum AlgorithmParameters
@@ -75,6 +80,8 @@ public:
   Options *options(void);
 
 public:
+  void optimize(luci::Module *) const;
+
   void optimize(loco::Graph *) const;
 
   void quantize(loco::Graph *) const;

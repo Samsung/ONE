@@ -15,12 +15,7 @@ option(ENABLE_COVERAGE "Build for coverage test" OFF)
 option(BUILD_EXT_MULTITHREAD "Build external build using multi thread" ON)
 option(BUILD_ONERT "Build onert" ON)
 option(BUILD_LOGGING "Build logging runtime" ON)
-CMAKE_DEPENDENT_OPTION(BUILD_RUNTIME_NNAPI_TEST "Build Runtime NN API Generated Test"
-                       # Set BUILD_RUNTIME_NNAPI_TEST as ON
-                       #   if CMAKE_COMPILER_IS_GNUCC AND NOT CMAKE_CXX_COMPILER_VERSION VERSION_LESS 6.2
-                       ON "CMAKE_COMPILER_IS_GNUCC;NOT CMAKE_CXX_COMPILER_VERSION VERSION_LESS 6.2"
-                       # Otherwise set BUILD_RUNTIME_NNAPI_TEST as OFF
-                       OFF)
+option(BUILD_RUNTIME_NNAPI_TEST "Build Runtime NN API Generated Test" ON)
 option(BUILD_RUNTIME_NNFW_API_TEST "Build Runtime NNFW API Tests" ON)
 option(BUILD_TFLITE_RUN "Build tflite-run" ON)
 option(BUILD_TFLITE_VANILLA_RUN "Build tflite-vanilla-run" OFF)
@@ -78,6 +73,17 @@ option(BUILD_ARMCOMPUTE "Build ARM Compute from the downloaded source" ON)
 option(BUILD_RUY "Build ruy library from the downloaded source" ON)
 option(BUILD_CPUINFO "Build cpuinfo library from the downloaded source" ON)
 option(PROFILE_RUY "Enable ruy library profiling" OFF)
+option(DOWNLOAD_XNNPACK "Download xnnpack source" ON)
+option(BUILD_XNNPACK "Build xnnpack library from the downloaded source" ON)
+option(DOWNLOAD_PTHREADPOOL "Download pthreadpool source" ON)
+option(BUILD_PTHREADPOOL "Build pthreadpool library from the source" ON)
+option(DOWNLOAD_PSIMD "Download psimd source" ON)
+option(BUILD_PSIMD "Build psimd library from the source" ON)
+option(DOWNLOAD_FP16 "Download fp16 source" ON)
+option(BUILD_FP16 "Build fp16 library from the source" ON)
+option(DOWNLOAD_FXDIV "Download fxdiv source" ON)
+option(BUILD_FXDIV "Build fxdiv library from the source" ON)
+
 
 #
 ## Default sample build configuration

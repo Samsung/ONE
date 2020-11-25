@@ -41,6 +41,30 @@
 #include "ir/OperationDumper.h"
 #include "misc/string_helpers.h"
 
+namespace
+{
+
+using namespace onert;
+
+std::string getOpBackends(std::unordered_map<ir::OpCode, std::string> &opcode_to_backend)
+{
+  std::unordered_map<ir::OpCode, std::string>::iterator it;
+  std::string opbackends;
+
+  for (it = opcode_to_backend.begin(); it != opcode_to_backend.end(); ++it)
+  {
+    if (!opbackends.empty())
+      opbackends = opbackends + ", ";
+
+    auto opcode = it->first;
+    const std::string opname = ir::toString(opcode);
+    opbackends += opname + "=" + it->second;
+  }
+  return opbackends;
+}
+
+} // namespace
+
 namespace onert
 {
 
@@ -132,12 +156,10 @@ std::shared_ptr<exec::ExecutorMap> Compiler::compile(void)
 {
   // Set control flow backend for control flow operators
   {
-    _options.manual_scheduler_options.opcode_to_backend[ir::OpCode::If] =
-        backend::controlflow::Config::ID;
-    _options.manual_scheduler_options.opcode_to_backend[ir::OpCode::While] =
-        backend::controlflow::Config::ID;
-    _options.manual_scheduler_options.opcode_to_backend[ir::OpCode::Permute] =
-        backend::controlflow::Config::ID;
+    auto &cfid = backend::controlflow::Config::ID;
+    _options.manual_scheduler_options.opcode_to_backend[ir::OpCode::If] = cfid;
+    _options.manual_scheduler_options.opcode_to_backend[ir::OpCode::While] = cfid;
+    _options.manual_scheduler_options.opcode_to_backend[ir::OpCode::Permute] = cfid;
   }
 
   // FIXME This is a workaround for bcq operations, should remove it
@@ -157,7 +179,11 @@ std::shared_ptr<exec::ExecutorMap> Compiler::compile(void)
     VERBOSE(Compiler) << "graph_dump_level         : " << _options.graph_dump_level << std::endl;
     VERBOSE(Compiler) << "op_seq_max_node          : " << _options.op_seq_max_node << std::endl;
     VERBOSE(Compiler) << "executor                 : " << _options.executor << std::endl;
-    VERBOSE(Compiler) << "manual_scheduler_options : (Too many things to print)" << std::endl;
+    VERBOSE(Compiler) << "manual backend_for_all   : "
+                      << _options.manual_scheduler_options.backend_for_all << std::endl;
+    VERBOSE(Compiler) << "manual_scheduler_options : "
+                      << getOpBackends(_options.manual_scheduler_options.opcode_to_backend)
+                      << std::endl;
     VERBOSE(Compiler) << "he_scheduler             : " << _options.he_scheduler << std::endl;
     VERBOSE(Compiler) << "he_profiling_mode        : " << _options.he_profiling_mode << std::endl;
     VERBOSE(Compiler) << "disable_compile          : " << _options.disable_compile << std::endl;
@@ -230,6 +256,14 @@ std::shared_ptr<exec::ExecutorMap> Compiler::compile(void)
 
   _subgraphs.reset();
 
+  for (auto &pair : lowered_subgs)
+  {
+    const auto &subg_index = pair.first;
+    auto &lowered_subg = pair.second;
+    onert::dumper::dot::DotDumper dot_dumper_lowered(lowered_subg.get(), dump_level);
+    dot_dumper_lowered.dump("after_lower_subg-" + std::to_string(subg_index.value()));
+  }
+
   // Shape inference.
   {
     const auto primary_subg_idx = ir::SubgraphIndex{0};
@@ -268,10 +302,8 @@ std::shared_ptr<exec::ExecutorMap> Compiler::compile(void)
 
     _options.is_primary_subgraph = (subg_index == ir::SubgraphIndex{0});
 
-    onert::dumper::dot::DotDumper dot_dumper_lowered(lowered_subg.get(), dump_level);
-    dot_dumper_lowered.dump("after_lower_subg-" + std::to_string(subg_index.value()));
-
-    ir::OperationDumper dumper("START SUBGRAPH " + std::to_string(subg_index.value()));
+    ir::OperationDumper dumper("Executor generation of Subgraph " +
+                               std::to_string(subg_index.value()));
     lowered_subg->graph().operations().iterate(
         [&](const ir::OperationIndex &, const ir::Operation &op) { op.accept(dumper); });
     auto executor = std::unique_ptr<exec::IExecutor>{

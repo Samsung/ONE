@@ -26,11 +26,10 @@ TEST_F(GenModelTest, OneOp_Equal)
   cgen.setInputsAndOutputs({lhs, rhs}, {out});
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
-  TestCaseData tcd;
-  tcd.addInput(std::vector<float>{0.1, 0.3, 0.5, 0.7});
-  tcd.addInput(std::vector<float>{0.1, 0.2, 0.3, 0.4});
-  tcd.addOutput(std::vector<bool>{true, false, false, false});
-  _context->addTestCase(tcd);
+  _context->addTestCase(TestCaseData{}
+                            .addInput<float>({0.1, 0.3, 0.5, 0.7})
+                            .addInput<float>({0.1, 0.2, 0.3, 0.4})
+                            .addOutput<bool>({true, false, false, false}));
   _context->setBackends({"acl_cl", "acl_neon", "cpu"});
 
   SUCCEED();

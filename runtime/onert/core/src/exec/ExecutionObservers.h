@@ -33,13 +33,13 @@ class IExecutionObserver
 {
 public:
   /// @brief Invoked just before model (not individual operation) execution begins
-  virtual void handleBegin(IExecutor *) { return; }
+  virtual void handleSubgraphBegin(IExecutor *) { return; }
 
-  virtual void handleBegin(IExecutor *, const ir::OpSequence *, const backend::Backend *) = 0;
-  virtual void handleEnd(IExecutor *, const ir::OpSequence *, const backend::Backend *) = 0;
+  virtual void handleJobBegin(IExecutor *, const ir::OpSequence *, const backend::Backend *) = 0;
+  virtual void handleJobEnd(IExecutor *, const ir::OpSequence *, const backend::Backend *) = 0;
 
   /// @brief Invoked just after model (not individual operation) execution ends
-  virtual void handleEnd(IExecutor *) { return; }
+  virtual void handleSubgraphEnd(IExecutor *) { return; }
 
   virtual ~IExecutionObserver() = default;
 };
@@ -51,10 +51,10 @@ public:
       : _et(std::move(et)), _graph(graph)
   {
   }
-  void handleBegin(IExecutor *, const ir::OpSequence *, const backend::Backend *) override;
-  void handleEnd(IExecutor *, const ir::OpSequence *, const backend::Backend *) override;
+  void handleJobBegin(IExecutor *, const ir::OpSequence *, const backend::Backend *) override;
+  void handleJobEnd(IExecutor *, const ir::OpSequence *, const backend::Backend *) override;
 
-  void handleEnd(IExecutor *) override { _et->uploadOperationsExecTime(); }
+  void handleSubgraphEnd(IExecutor *) override { _et->storeOperationsExecTime(); }
 
 private:
   std::unique_ptr<util::ITimer> _timer;
@@ -62,15 +62,15 @@ private:
   const ir::Graph &_graph;
 };
 
-class ChromeTracingObserver : public IExecutionObserver
+class TracingObserver : public IExecutionObserver
 {
 public:
-  ChromeTracingObserver(const std::string &filepath, const ir::Graph &graph);
-  ~ChromeTracingObserver();
-  void handleBegin(IExecutor *) override;
-  void handleBegin(IExecutor *, const ir::OpSequence *, const backend::Backend *) override;
-  void handleEnd(IExecutor *, const ir::OpSequence *, const backend::Backend *) override;
-  void handleEnd(IExecutor *) override;
+  TracingObserver(const std::string &filepath, const ir::Graph &graph);
+  ~TracingObserver();
+  void handleSubgraphBegin(IExecutor *) override;
+  void handleJobBegin(IExecutor *, const ir::OpSequence *, const backend::Backend *) override;
+  void handleJobEnd(IExecutor *, const ir::OpSequence *, const backend::Backend *) override;
+  void handleSubgraphEnd(IExecutor *) override;
 
 private:
   static std::string opSequenceTag(const ir::OpSequence *op_seq, const ir::Operations &operations);

@@ -18,6 +18,7 @@
 
 #include "OperationUtils.h"
 
+#include <cker/operation/LogicalAnd.h>
 #include <cker/operation/LogicalOr.h>
 #include <cker/operation/MaxMin.h>
 
@@ -32,6 +33,25 @@ namespace ops
 
 namespace
 {
+template <typename T>
+void logicalAndGeneric(const IPortableTensor *lhs, const IPortableTensor *rhs,
+                       IPortableTensor *output)
+{
+  if (!HaveSameShapes(lhs, rhs))
+  {
+    nnfw::cker::LogicalAndBroadcast<T>(
+        getTensorShape(lhs), reinterpret_cast<const T *>(lhs->buffer()), getTensorShape(rhs),
+        reinterpret_cast<const T *>(rhs->buffer()), getTensorShape(output),
+        reinterpret_cast<T *>(output->buffer()));
+  }
+  else
+  {
+    nnfw::cker::LogicalAndElementwise<T>(
+        getTensorShape(lhs), reinterpret_cast<const T *>(lhs->buffer()),
+        reinterpret_cast<const T *>(rhs->buffer()), reinterpret_cast<T *>(output->buffer()));
+  }
+}
+
 template <typename T>
 void logicalOrGeneric(const IPortableTensor *lhs, const IPortableTensor *rhs,
                       IPortableTensor *output)
@@ -88,6 +108,16 @@ void ElementwiseBinaryLayer::configure(const IPortableTensor *lhs, const IPortab
 
   switch (op_type)
   {
+    case ElementwiseBinaryType::kLogicalAnd:
+      if ((_lhs->data_type() == OperandType::BOOL8) && (_rhs->data_type() == OperandType::BOOL8))
+      {
+        _kernel = logicalAndGeneric<bool>;
+      }
+      else
+      {
+        throw std::runtime_error{"LogicalOr: Unsupported data type"};
+      }
+      break;
     case ElementwiseBinaryType::kLogicalOr:
       if ((_lhs->data_type() == OperandType::BOOL8) && (_rhs->data_type() == OperandType::BOOL8))
       {

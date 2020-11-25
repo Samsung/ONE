@@ -35,16 +35,16 @@ Sparsifier<T>::Sparsifier(const std::vector<int32_t> &shape,
   _format.resize(shape.size() + block_map.size());
   for (int32_t i = 0; i < static_cast<int32_t>(shape.size()); i++)
   {
-    _format[i] = format[traversal_order[i]];
-    _dense_size *= shape[i];
+    _format.at(i) = format.at(traversal_order.at(i));
+    _dense_size *= shape.at(i);
     if (block_dim < static_cast<int32_t>(block_map.size()) && block_map[block_dim] == i)
     {
-      _blocked_shape[i] = shape[i] / block_size[block_dim];
+      _blocked_shape.at(i) = shape.at(i) / block_size.at(block_dim);
       block_dim++;
     }
     else
     {
-      _blocked_shape[i] = shape[i];
+      _blocked_shape.at(i) = shape.at(i);
     }
   }
 
@@ -65,37 +65,37 @@ template <typename T> void Sparsifier<T>::DenseToSparse(const T *src_data)
   {
     if (i < num_original_dims)
     {
-      expanded_shape[i] = _blocked_shape[i];
+      expanded_shape.at(i) = _blocked_shape.at(i);
     }
     else
     {
-      expanded_shape[i] = _block_size[i - num_original_dims];
+      expanded_shape.at(i) = _block_size.at(i - num_original_dims);
     }
   }
 
   std::vector<int> shape_offset(num_original_dims);
-  shape_offset[shape_offset.size() - 1] = 1;
+  shape_offset.at(shape_offset.size() - 1) = 1;
   for (int i = num_original_dims - 1; i > 0; --i)
   {
-    shape_offset[i - 1] = shape_offset[i] * _dense_shape[i];
+    shape_offset.at(i - 1) = shape_offset.at(i) * _dense_shape.at(i);
   }
 
   std::vector<int> expanded_shape_offset(num_expanded_dims);
   for (int i = 0; i < num_original_dims; ++i)
   {
-    expanded_shape_offset[i] = shape_offset[i];
+    expanded_shape_offset.at(i) = shape_offset.at(i);
   }
   for (int i = 0; i < num_block_dims; ++i)
   {
-    int mapped_dim = _block_map[i];
-    expanded_shape_offset[num_original_dims + i] = shape_offset[mapped_dim];
-    expanded_shape_offset[mapped_dim] *= _block_size[i];
+    int mapped_dim = _block_map.at(i);
+    expanded_shape_offset.at(num_original_dims + i) = shape_offset.at(mapped_dim);
+    expanded_shape_offset.at(mapped_dim) *= _block_size.at(i);
   }
 
   std::vector<int> dst_ordered_offset(num_expanded_dims);
   for (int i = 0; i < num_expanded_dims; ++i)
   {
-    dst_ordered_offset[i] = expanded_shape_offset[_traversal_order[i]];
+    dst_ordered_offset.at(i) = expanded_shape_offset.at(_traversal_order.at(i));
   }
 
   std::vector<bool> dst_dim_has_nonzeroes(num_expanded_dims);
@@ -106,17 +106,17 @@ template <typename T> void Sparsifier<T>::DenseToSparse(const T *src_data)
   int segment_count = 1;
   for (int i = num_expanded_dims - 1; i >= 0; --i)
   {
-    inner_compressed_dim[i] = most_recent_compressed_dim;
-    if (_format[i] == DimensionType::SPARSE_CSR)
+    inner_compressed_dim.at(i) = most_recent_compressed_dim;
+    if (_format.at(i) == DimensionType::SPARSE_CSR)
     {
       most_recent_compressed_dim = i;
-      num_segments_of_next_compressed_dim[i] = segment_count;
+      num_segments_of_next_compressed_dim.at(i) = segment_count;
       segment_count = 1;
     }
     else
     {
-      num_segments_of_next_compressed_dim[i] = -1;
-      segment_count *= expanded_shape[_traversal_order[i]];
+      num_segments_of_next_compressed_dim.at(i) = -1;
+      segment_count *= expanded_shape.at(_traversal_order.at(i));
     }
   }
 
@@ -125,17 +125,17 @@ template <typename T> void Sparsifier<T>::DenseToSparse(const T *src_data)
   dst_sparse_dims.reserve(num_expanded_dims);
   for (int i = 0; i < num_expanded_dims; ++i)
   {
-    _dim_metadata[i * 2].clear();
-    _dim_metadata[i * 2 + 1].clear();
-    if (_format[i] == DimensionType::DENSE)
+    _dim_metadata.at(i * 2).clear();
+    _dim_metadata.at(i * 2 + 1).clear();
+    if (_format.at(i) == DimensionType::DENSE)
     {
       // If dimension is dense, just store the shape.
-      _dim_metadata[i * 2].push_back(expanded_shape[_traversal_order[i]]);
+      _dim_metadata.at(i * 2).push_back(expanded_shape.at(_traversal_order.at(i)));
     }
     else
     {
-      _dim_metadata[i * 2].push_back(0); // Segment array always begins with 0.
-      dst_sparse_dims.push_back(i);      // Add dimension to the sparse list.
+      _dim_metadata.at(i * 2).push_back(0); // Segment array always begins with 0.
+      dst_sparse_dims.push_back(i);         // Add dimension to the sparse list.
     }
   }
 
@@ -157,16 +157,16 @@ template <typename T> void Sparsifier<T>::DenseToSparse(const T *src_data)
         // Mark all sparse dimensions that their current indices have nonzeroes.
         for (auto dst_dim : dst_sparse_dims)
         {
-          if (!dst_dim_has_nonzeroes[dst_dim])
+          if (!dst_dim_has_nonzeroes.at(dst_dim))
           {
             // Only add the index to the indices array if the current nonzero
             // is the first nonzero of the block.
-            _dim_metadata[2 * dst_dim + 1].push_back(coordinate[dst_dim]);
-            dst_dim_has_nonzeroes[dst_dim] = true;
+            _dim_metadata.at(2 * dst_dim + 1).push_back(coordinate.at(dst_dim));
+            dst_dim_has_nonzeroes.at(dst_dim) = true;
           }
         }
       }
-      else if (_format[num_expanded_dims - 1] == DimensionType::DENSE)
+      else if (_format.at(num_expanded_dims - 1) == DimensionType::DENSE)
       {
         _data.push_back(src_data[dense_tensor_idx]);
       }
@@ -174,23 +174,23 @@ template <typename T> void Sparsifier<T>::DenseToSparse(const T *src_data)
     }
     else
     {
-      int original_dim_idx = _traversal_order[dst_dim_idx];
-      int dim_size = expanded_shape[original_dim_idx];
-      if (dst_dim_has_nonzeroes[dst_dim_idx])
+      int original_dim_idx = _traversal_order.at(dst_dim_idx);
+      int dim_size = expanded_shape.at(original_dim_idx);
+      if (dst_dim_has_nonzeroes.at(dst_dim_idx))
       {
         // If the previous block has nonzeroes, reset the flag to false since
         // we have just moved to a new block.
-        dst_dim_has_nonzeroes[dst_dim_idx] = false;
+        dst_dim_has_nonzeroes.at(dst_dim_idx) = false;
       }
-      else if (_format[dst_dim_idx] == DimensionType::SPARSE_CSR)
+      else if (_format.at(dst_dim_idx) == DimensionType::SPARSE_CSR)
       {
         // This block is empty. Delete unnecessary values if compressed.
-        int next_compressed_dim = inner_compressed_dim[dst_dim_idx];
-        int erase_offset = _dim_metadata[2 * dst_dim_idx + 1].size() *
-                           num_segments_of_next_compressed_dim[dst_dim_idx];
+        int next_compressed_dim = inner_compressed_dim.at(dst_dim_idx);
+        int erase_offset = _dim_metadata.at(2 * dst_dim_idx + 1).size() *
+                           num_segments_of_next_compressed_dim.at(dst_dim_idx);
         if (next_compressed_dim >= 0)
         {
-          auto &segments = _dim_metadata[2 * inner_compressed_dim[dst_dim_idx]];
+          auto &segments = _dim_metadata.at(2 * inner_compressed_dim.at(dst_dim_idx));
           segments.erase(segments.begin() + 1 + erase_offset, segments.end());
         }
         else
@@ -198,22 +198,22 @@ template <typename T> void Sparsifier<T>::DenseToSparse(const T *src_data)
           _data.erase(_data.begin() + erase_offset, _data.end());
         }
       }
-      if (++coordinate[dst_dim_idx] < dim_size)
+      if (++coordinate.at(dst_dim_idx) < dim_size)
       {
         // The current dst_dim_idx is valid (not out of bound).
-        dense_tensor_idx += dst_ordered_offset[dst_dim_idx];
+        dense_tensor_idx += dst_ordered_offset.at(dst_dim_idx);
         ++dst_dim_idx;
       }
       else
       {
         // dst_dim_idx has reached its dim size. Update segment array and go
         // back to incrementing the previous dimension (dst_dim_idx - 1).
-        if (_format[dst_dim_idx] == DimensionType::SPARSE_CSR)
+        if (_format.at(dst_dim_idx) == DimensionType::SPARSE_CSR)
         {
-          _dim_metadata[2 * dst_dim_idx].push_back(_dim_metadata[2 * dst_dim_idx + 1].size());
+          _dim_metadata.at(2 * dst_dim_idx).push_back(_dim_metadata.at(2 * dst_dim_idx + 1).size());
         }
-        coordinate[dst_dim_idx] = -1;
-        dense_tensor_idx -= dst_ordered_offset[dst_dim_idx] * dim_size;
+        coordinate.at(dst_dim_idx) = -1;
+        dense_tensor_idx -= dst_ordered_offset.at(dst_dim_idx) * dim_size;
         --dst_dim_idx;
       }
     }

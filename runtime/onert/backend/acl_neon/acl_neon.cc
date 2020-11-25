@@ -14,20 +14,11 @@
  * limitations under the License.
  */
 
-#include <util/logging.h>
-
 #include "Backend.h"
 
 extern "C" {
-onert::backend::Backend *onert_backend_create()
-{
-  VERBOSE(onert_backend_create) << "'acl_neon' loaded\n";
-  return new onert::backend::acl_neon::Backend;
-}
 
-void onert_backend_destroy(onert::backend::Backend *backend)
-{
-  VERBOSE(onert_backend_create) << "'acl_neon' unloaded\n";
-  delete backend;
-}
+onert::backend::Backend *onert_backend_create() { return new onert::backend::acl_neon::Backend; }
+
+void onert_backend_destroy(onert::backend::Backend *backend) { delete backend; }
 }

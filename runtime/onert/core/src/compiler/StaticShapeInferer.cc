@@ -142,12 +142,12 @@ void StaticShapeInferer::dump()
   }
 }
 
-void StaticShapeInferer::visit(const ir::operation::ArgMax &op)
+void StaticShapeInferer::visit(const ir::operation::ArgMinMax &op)
 {
-  const auto input_idx{op.getInputs().at(ir::operation::ArgMax::Input::INPUT)};
+  const auto input_idx{op.getInputs().at(ir::operation::ArgMinMax::Input::INPUT)};
   const auto &input = _operands.at(input_idx);
 
-  const auto axis_idx{op.getInputs().at(ir::operation::ArgMax::Input::AXIS)};
+  const auto axis_idx{op.getInputs().at(ir::operation::ArgMinMax::Input::AXIS)};
   const auto &axis = _operands.at(axis_idx);
 
   // get mutable output operand

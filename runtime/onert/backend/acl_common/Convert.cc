@@ -109,11 +109,17 @@ namespace acl_common
     case ir::DataType::UINT8:
       return ::arm_compute::DataType::U8;
     case ir::DataType::QUANT_INT8_SYMM:
-      return ::arm_compute::DataType::S8;
+      return ::arm_compute::DataType::QSYMM8;
+    case ir::DataType::QUANT_INT8_ASYMM:
+      return ::arm_compute::DataType::QASYMM8_SIGNED;
     case ir::DataType::FLOAT16:
       return ::arm_compute::DataType::F16;
     case ir::DataType::INT64:
       return ::arm_compute::DataType::S64;
+    case ir::DataType::QUANT_INT16_ASYMM:
+      return ::arm_compute::DataType::QASYMM16;
+    case ir::DataType::QUANT_INT8_SYMM_PER_CHANNEL:
+      return ::arm_compute::DataType::QSYMM8_PER_CHANNEL;
     default:
       throw std::runtime_error("Not supported, yet");
       break;
@@ -358,6 +364,14 @@ arm_compute::PixelValue asPixelValue(const ir::Operand &operand)
     default:
       throw std::runtime_error("asPixelValue : Not supported datatype yet");
   }
+}
+
+arm_compute::Size2D asDilation(uint32_t dilation_width, uint32_t dilation_height)
+{
+  assert(dilation_width != 0);
+  assert(dilation_height != 0);
+
+  return arm_compute::Size2D(dilation_width, dilation_height);
 }
 
 } // namespace acl_common

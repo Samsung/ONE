@@ -57,7 +57,67 @@ TEST_F(GenModelTest, OneOp_FullyConnected)
   SUCCEED();
 }
 
-TEST_F(GenModelTest, OneOp_FullyConnected16x1)
+#if defined(__aarch64__)
+TEST_F(GenModelTest, OneOp_FullyConnectedShuffled16x1Float32)
+{
+  CircleGen cgen;
+  // clang-format off
+  std::vector<float> weight_data{ 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4,
+                                  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                  1, -1, 2, 1, 1, -1, 2, 1, 1, -1, 2, 1, 1, -1, 2, 1 };
+  std::vector<float> bias_data{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 };
+  // clang-format on
+  uint32_t weight_buf = cgen.addBuffer(weight_data);
+  uint32_t bias_buf = cgen.addBuffer(bias_data);
+  int input = cgen.addTensor({{1, 4}, circle::TensorType::TensorType_FLOAT32});
+  int weight = cgen.addTensor({{16, 4}, circle::TensorType::TensorType_FLOAT32, weight_buf});
+  int bias = cgen.addTensor({{16}, circle::TensorType::TensorType_FLOAT32, bias_buf});
+  int output = cgen.addTensor({{1, 16}, circle::TensorType::TensorType_FLOAT32});
+  cgen.addOperatorFullyConnected({{input, weight, bias}, {output}},
+                                 circle::FullyConnectedOptionsWeightsFormat_SHUFFLED16x1FLOAT32);
+  cgen.setInputsAndOutputs({input}, {output});
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->addTestCase(
+      uniformTCD<float>({{1, 3, 2, 1}}, {{2, 1, 5, 5, 2, 1, 5, 5, 2, 1, 5, 5, 2, 1, 5, 6}}));
+  _context->setBackends({"cpu"});
+
+  SUCCEED();
+}
+#endif
+
+// Failure is expected except for aarch64 and cpu backend
+TEST_F(GenModelTest, OneOp_neg_FullyConnectedShuffled16x1Float32)
+{
+  CircleGen cgen;
+  // clang-format off
+  std::vector<float> weight_data{ 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4,
+                                  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                  1, -1, 2, 1, 1, -1, 2, 1, 1, -1, 2, 1, 1, -1, 2, 1,
+                                  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+  std::vector<float> bias_data{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 };
+  // clang-format on
+  uint32_t weight_buf = cgen.addBuffer(weight_data);
+  uint32_t bias_buf = cgen.addBuffer(bias_data);
+  int input = cgen.addTensor({{1, 4}, circle::TensorType::TensorType_FLOAT32});
+  int weight = cgen.addTensor({{16, 4}, circle::TensorType::TensorType_FLOAT32, weight_buf});
+  int bias = cgen.addTensor({{16}, circle::TensorType::TensorType_FLOAT32, bias_buf});
+  int output = cgen.addTensor({{1, 16}, circle::TensorType::TensorType_FLOAT32});
+  cgen.addOperatorFullyConnected({{input, weight, bias}, {output}},
+                                 circle::FullyConnectedOptionsWeightsFormat_SHUFFLED16x1FLOAT32);
+  cgen.setInputsAndOutputs({input}, {output});
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  auto tc = uniformTCD<float>({{1, 3, 2, 1}}, {{2, 1, 5, 5, 2, 1, 5, 5, 2, 1, 5, 5, 2, 1, 5, 6}});
+  _context->addTestCase(tc);
+  _context->setBackends({"acl_neon", "acl_cl"});
+  _context->expectFailCompile();
+
+  SUCCEED();
+}
+
+TEST_F(GenModelTest, OneOp_FullyConnected16x1Sparse)
 {
   CircleGen cgen;
   // clang-format off

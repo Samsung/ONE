@@ -78,12 +78,9 @@ bool DataflowExecutor::noWaitingJobs()
 }
 
 DataflowExecutor::DataflowExecutor(std::unique_ptr<compiler::LoweredGraph> lowered_graph,
-                                   const std::vector<backend::ITensor *> &input_tensors,
-                                   const std::vector<backend::ITensor *> &output_tensors,
                                    const compiler::TensorRegistries &tensor_regs,
                                    compiler::CodeMap &&code_map)
-    : ExecutorBase{std::move(lowered_graph), input_tensors, output_tensors, tensor_regs},
-      _code_map{std::move(code_map)}
+    : ExecutorBase{std::move(lowered_graph), tensor_regs}, _code_map{std::move(code_map)}
 {
   VERBOSE(DataflowExecutor) << "Constructing Dataflow Executor" << std::endl;
 
@@ -143,7 +140,7 @@ void DataflowExecutor::executeImpl()
   }
   assert(!_ready_jobs.empty()); // Cannot begin if there is no initial jobs
 
-  _subject.notifyModelBegin(this);
+  _subject.notifySubgraphBegin(this);
 
   while (!_ready_jobs.empty())
   {
@@ -173,7 +170,7 @@ void DataflowExecutor::executeImpl()
   }
   assert(noWaitingJobs());
 
-  _subject.notifyModelEnd(this);
+  _subject.notifySubgraphEnd(this);
 
   // Reset input info for the next execution
   _input_info = _initial_input_info;

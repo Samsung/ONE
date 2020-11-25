@@ -819,17 +819,10 @@ void OperationExporter::visit(luci::CircleBatchMatMul *node)
 
 void OperationExporter::visit(luci::CircleBidirectionalSequenceLSTM *node)
 {
-  // export_simple(node, circle::BuiltinOperator_BIDIRECTIONAL_SEQUENCE_LSTM,
-  //               circle::BuiltinOptions_BidirectionalSequenceLSTMOptions,
-  //               CreateBidirectionalSequenceLSTMOptions(
-  //                   _ctx.builder, to_circle_actfunc(node->fusedActivationFunction()),
-  //                   node->cell_clip(), node->proj_clip(), node->merge_outputs(), node->time_major(),
-  //                   node->asymmetric_quantize_inputs())
-  //                   .Union());
   auto bidi_lstm_outs = loco::succs(node);
   assert(int32_t(bidi_lstm_outs.size()) == 2);
-  uint32_t op_idx =
-      _ctx.md.registerBuiltinOpcode(circle::BuiltinOperator_BIDIRECTIONAL_SEQUENCE_LSTM, node->op_version());
+  uint32_t op_idx = _ctx.md.registerBuiltinOpcode(
+      circle::BuiltinOperator_BIDIRECTIONAL_SEQUENCE_LSTM, node->op_version());
 
   std::vector<int32_t> inputs_vec{get_tensor_index(node->input())};
   std::vector<int32_t> outputs_vec;
@@ -856,14 +849,15 @@ void OperationExporter::visit(luci::CircleBidirectionalSequenceLSTM *node)
 
   auto inputs = _ctx.builder.CreateVector(inputs_vec);
   auto outputs = _ctx.builder.CreateVector(outputs_vec);
-  auto options = CreateBidirectionalSequenceLSTMOptions(_ctx.builder, to_circle_actfunc(node->fusedActivationFunction()),
-                     node->cell_clip(), node->proj_clip(), node->merge_outputs(), node->time_major(),
-                     node->asymmetric_quantize_inputs());
-  auto op_offset = CreateOperator(_ctx.builder, op_idx, inputs, outputs,
-                                  circle::BuiltinOptions_BidirectionalSequenceLSTMOptions, options.Union());
+  auto options = CreateBidirectionalSequenceLSTMOptions(
+      _ctx.builder, to_circle_actfunc(node->fusedActivationFunction()), node->cell_clip(),
+      node->proj_clip(), node->merge_outputs(), node->time_major(),
+      node->asymmetric_quantize_inputs());
+  auto op_offset =
+      CreateOperator(_ctx.builder, op_idx, inputs, outputs,
+                     circle::BuiltinOptions_BidirectionalSequenceLSTMOptions, options.Union());
   _ctx.gd._operators.push_back(op_offset);
 }
-
 
 void OperationExporter::visit(luci::CircleCast *node) { export_node(_ctx, node); }
 
@@ -980,7 +974,8 @@ void OperationExporter::visit(luci::CircleFullyConnected *node)
 {
   export_simple(
       node, circle::BuiltinOperator_FULLY_CONNECTED, circle::BuiltinOptions_FullyConnectedOptions,
-      CreateFullyConnectedOptions(_ctx.builder, to_circle_actfunc(node->fusedActivationFunction()))
+      CreateFullyConnectedOptions(_ctx.builder, to_circle_actfunc(node->fusedActivationFunction()),
+                                  to_circle_weightsformat(node->weights_format()))
           .Union());
 }
 

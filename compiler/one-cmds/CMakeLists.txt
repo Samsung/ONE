@@ -1,4 +1,5 @@
 set(ONE_COMMAND_FILES
+    one-build
     one-import
     one-import-bcq
     one-import-tf
@@ -33,9 +34,38 @@ foreach(ONE_COMMAND IN ITEMS ${ONE_COMMAND_FILES})
           
 endforeach(ONE_COMMAND)
 
+set(ONE_UTILITY_FILES
+    one-build.template.cfg
+    utils.py
+)
+
+foreach(ONE_UTILITY IN ITEMS ${ONE_UTILITY_FILES})
+
+  set(ONE_UTILITY_FILE ${ONE_UTILITY})
+  set(ONE_UTILITY_SRC "${CMAKE_CURRENT_SOURCE_DIR}/${ONE_UTILITY_FILE}")
+  set(ONE_UTILITY_BIN "${CMAKE_CURRENT_BINARY_DIR}/${ONE_UTILITY_FILE}")
+  set(ONE_UTILITY_TARGET "${ONE_UTILITY}_target")
+
+  add_custom_command(OUTPUT ${ONE_UTILITY_BIN}
+    COMMAND ${CMAKE_COMMAND} -E copy "${ONE_UTILITY_SRC}" "${ONE_UTILITY_BIN}"
+    DEPENDS ${ONE_UTILITY_SRC}
+    COMMENT "Generate ${ONE_UTILITY_BIN}"
+  )
+
+  add_custom_target(${ONE_UTILITY_TARGET} ALL DEPENDS ${ONE_UTILITY_BIN})
+
+  install(FILES ${ONE_UTILITY}
+          PERMISSIONS OWNER_WRITE OWNER_READ
+                      GROUP_READ
+                      WORLD_READ
+          DESTINATION bin)
+
+endforeach(ONE_UTILITY)
+
 set(ONE_DOCUMENT_FILES
     how-to-use-one-commands.txt
     how-to-prepare-virtualenv.txt
+    how-to-create-hdf5-dataset.txt
 )
 
 foreach(ONE_DOCUMENT IN ITEMS ${ONE_DOCUMENT_FILES})

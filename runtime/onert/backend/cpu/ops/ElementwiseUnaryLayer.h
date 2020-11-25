@@ -38,6 +38,7 @@ enum class ElementwiseUnaryType
   kDequantize,
   kErf,
   kExp,
+  kFloor,
   kLog,
   kLogicalNot,
   kNeg,
@@ -45,6 +46,8 @@ enum class ElementwiseUnaryType
   kRound,
   kRSqrt,
   kSin,
+  kSqrt,
+  kSquare,
   kZerosLike
 };
 

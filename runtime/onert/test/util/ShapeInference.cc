@@ -188,7 +188,7 @@ TEST(ShapeInference, DepthwiseConv2D)
   Shape ker_shape{1, 3, 6, 60};
 
   operation::DepthwiseConv2D::Param param{Stride{3, 7}, Padding{PaddingType::VALID}, 3,
-                                          Activation::NONE};
+                                          Activation::NONE, Dilation{1, 1}};
   auto infered_out_shape =
       onert::shape_inference::inferDepthwiseConv2DShape(in_shape, ker_shape, param);
 
@@ -199,7 +199,7 @@ TEST(ShapeInference, DepthwiseConv2D)
   ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).C, 60);
 
   param = operation::DepthwiseConv2D::Param{Stride{3, 7}, Padding{PaddingType::SAME}, 3,
-                                            Activation::NONE};
+                                            Activation::NONE, Dilation{1, 1}};
   infered_out_shape = onert::shape_inference::inferDepthwiseConv2DShape(in_shape, ker_shape, param);
 
   ASSERT_EQ(infered_out_shape.rank(), 4);
@@ -208,7 +208,8 @@ TEST(ShapeInference, DepthwiseConv2D)
   ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).W, 2);
   ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).C, 60);
 
-  param = operation::DepthwiseConv2D::Param{Stride{3, 7}, Padding{4, 3, 2, 1}, 3, Activation::NONE};
+  param = operation::DepthwiseConv2D::Param{Stride{3, 7}, Padding{4, 3, 2, 1}, 3, Activation::NONE,
+                                            Dilation{1, 1}};
   infered_out_shape = onert::shape_inference::inferDepthwiseConv2DShape(in_shape, ker_shape, param);
 
   ASSERT_EQ(infered_out_shape.rank(), 4);
@@ -224,7 +225,7 @@ TEST(ShapeInference, neg_DepthwiseConv2D_InvalidSride)
   Shape ker_shape{1, 3, 6, 60};
 
   operation::DepthwiseConv2D::Param param{Stride{3, 0}, Padding{PaddingType::VALID}, 3,
-                                          Activation::NONE};
+                                          Activation::NONE, Dilation{1, 1}};
   ASSERT_THROW(onert::shape_inference::inferDepthwiseConv2DShape(in_shape, ker_shape, param),
                std::runtime_error);
 }

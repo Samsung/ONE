@@ -26,10 +26,10 @@ TEST_F(GenModelTest, OneOp_Rank)
   cgen.addOperatorRank({{in}, {out}});
   cgen.setInputsAndOutputs({in}, {out});
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
-  TestCaseData tcd;
-  tcd.addInput(std::vector<float>{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18});
-  tcd.addOutput(std::vector<int32_t>{4});
-  _context->addTestCase(tcd);
+  _context->addTestCase(
+      TestCaseData{}
+          .addInput<float>({1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18})
+          .addOutput<int32_t>({4}));
   _context->setBackends({"cpu"});
 
   SUCCEED();

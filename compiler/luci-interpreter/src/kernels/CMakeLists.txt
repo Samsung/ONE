@@ -20,6 +20,8 @@ set(SOURCES
     Div.cpp
     Elu.h
     Elu.cpp
+    Exp.h
+    Exp.cpp
     Floor.h
     Floor.cpp
     FloorDiv.h
@@ -34,6 +36,8 @@ set(SOURCES
     GreaterEqual.cpp
     If.h
     If.cpp
+    InstanceNorm.h
+    InstanceNorm.cpp
     L2Normalize.h
     L2Normalize.cpp
     L2Pool2D.h
@@ -48,6 +52,10 @@ set(SOURCES
     LocalResponseNormalization.cpp
     LogicalAnd.h
     LogicalAnd.cpp
+    LogicalNot.h
+    LogicalNot.cpp
+    LogicalOr.h
+    LogicalOr.cpp
     Logistic.h
     Logistic.cpp
     LogSoftmax.h
@@ -138,6 +146,7 @@ set(TEST_SOURCES
     DepthwiseConv2D.test.cpp
     Div.test.cpp
     Elu.test.cpp
+    Exp.test.cpp
     Floor.test.cpp
     FloorDiv.test.cpp
     Equal.test.cpp
@@ -145,6 +154,7 @@ set(TEST_SOURCES
     Greater.test.cpp
     GreaterEqual.test.cpp
     If.test.cpp
+    InstanceNorm.test.cpp
     L2Normalize.test.cpp
     L2Pool2D.test.cpp
     LeakyRelu.test.cpp
@@ -152,6 +162,8 @@ set(TEST_SOURCES
     LessEqual.test.cpp
     LocalResponseNormalization.test.cpp
     LogicalAnd.test.cpp
+    LogicalNot.test.cpp
+    LogicalOr.test.cpp
     Logistic.test.cpp
     LogSoftmax.test.cpp
     Maximum.test.cpp

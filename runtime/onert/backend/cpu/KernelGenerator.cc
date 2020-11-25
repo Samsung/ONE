@@ -114,6 +114,8 @@ convertElementwiseActivationType(ir::operation::ElementwiseActivation::Type type
       return ops::ElementwiseActivationType::kReLU;
     case ir::operation::ElementwiseActivation::Type::TANH:
       return ops::ElementwiseActivationType::kTanh;
+    case ir::operation::ElementwiseActivation::Type::LEAKY_RELU:
+      return ops::ElementwiseActivationType::kLeakyReLU;
     default:
       throw std::runtime_error("cpu KernelGenerator : Not supported operation yet");
   }
@@ -124,6 +126,8 @@ convertElementwiseBinaryType(ir::operation::ElementwiseBinary::ElementwiseBinary
 {
   switch (type_ir)
   {
+    case ir::operation::ElementwiseBinary::ElementwiseBinaryType::LOGICAL_AND:
+      return ops::ElementwiseBinaryType::kLogicalAnd;
     case ir::operation::ElementwiseBinary::ElementwiseBinaryType::LOGICAL_OR:
       return ops::ElementwiseBinaryType::kLogicalOr;
     case ir::operation::ElementwiseBinary::ElementwiseBinaryType::MAX:
@@ -151,6 +155,8 @@ ops::ElementwiseUnaryType convertElementwiseUnaryType(ir::operation::Elementwise
       return ops::ElementwiseUnaryType::kErf;
     case ir::operation::ElementwiseUnary::Type::EXP:
       return ops::ElementwiseUnaryType::kExp;
+    case ir::operation::ElementwiseUnary::Type::FLOOR:
+      return ops::ElementwiseUnaryType::kFloor;
     case ir::operation::ElementwiseUnary::Type::LOG:
       return ops::ElementwiseUnaryType::kLog;
     case ir::operation::ElementwiseUnary::Type::LOGICAL_NOT:
@@ -165,6 +171,10 @@ ops::ElementwiseUnaryType convertElementwiseUnaryType(ir::operation::Elementwise
       return ops::ElementwiseUnaryType::kRSqrt;
     case ir::operation::ElementwiseUnary::Type::SIN:
       return ops::ElementwiseUnaryType::kSin;
+    case ir::operation::ElementwiseUnary::Type::SQRT:
+      return ops::ElementwiseUnaryType::kSqrt;
+    case ir::operation::ElementwiseUnary::Type::SQUARE:
+      return ops::ElementwiseUnaryType::kSquare;
     case ir::operation::ElementwiseUnary::Type::ZEROS_LIKE:
       return ops::ElementwiseUnaryType::kZerosLike;
     default:
@@ -215,7 +225,7 @@ KernelGenerator::KernelGenerator(
     const std::shared_ptr<ExternalContext> &external_context)
     : _ctx(operands_ctx), _operations_ctx{operations_ctx}, _tensor_builder(tensor_builder),
       _tensor_reg{tensor_reg}, _kernel_builder(kernel_builder),
-      _current_op_seq_layout(ir::Layout::UNKNOWN), _external_context(external_context)
+      _current_layout(ir::Layout::UNKNOWN), _external_context(external_context)
 {
   // DO NOTHING
 }
@@ -224,22 +234,15 @@ void KernelGenerator::visit(const ir::operation::AddN &node)
 {
   const auto output_index{node.getOutputs().at(0)};
 
-  int size = node.getInputs().size();
-  const IPortableTensor **input_tensors =
-      (const IPortableTensor **)malloc(sizeof(IPortableTensor *) * size);
-
-  for (int i = 0; i < size; i++)
-  {
-    const auto input_index{node.getInputs().at(i)};
-    auto input_tensor = _tensor_reg->getPortableTensor(input_index);
-    input_tensors[i] = input_tensor;
-  }
+  std::vector<const IPortableTensor *> input_tensors;
+  for (auto &input_idx : node.getInputs())
+    input_tensors.emplace_back(_tensor_reg->getPortableTensor(input_idx));
 
   auto output_tensor = _tensor_reg->getPortableTensor(output_index);
 
   auto fn = std::make_unique<ops::AddNLayer>();
 
-  fn->configure(input_tensors, size, output_tensor);
+  fn->configure(std::move(input_tensors), output_tensor);
 
   _return_fn = std::move(fn);
 }
@@ -265,7 +268,7 @@ void KernelGenerator::visit(const ir::OpSequence &op_seq)
     _return_fn_seq->dynamic_tensor_ctx(dyn_ctx);
   }
 
-  _current_op_seq_layout = op_seq.getLayout();
+  _current_layout = op_seq.getLayout();
   for (const auto &operation_idx : op_seq.operations())
   {
     const auto &node = _operations_ctx.at(operation_idx);
@@ -319,8 +322,8 @@ void KernelGenerator::visit(const ir::operation::Conv2D &node)
     _return_fn = std::move(fn);
     return;
   }
-  const auto ifm_shape = _ctx.at(ifm_index).shape().asFeature(_current_op_seq_layout);
-  const auto ofm_shape = _ctx.at(ofm_index).shape().asFeature(_current_op_seq_layout);
+  const auto ifm_shape = _ctx.at(ifm_index).shape().asFeature(_current_layout);
+  const auto ofm_shape = _ctx.at(ofm_index).shape().asFeature(_current_layout);
   // Kernel format is [depth_out, kernel_height, kernel_width, depth_in].
   const auto &ker_shape = _ctx.at(ker_index).shape();
   const auto ker_height = ker_shape.dim(1);
@@ -347,14 +350,16 @@ void KernelGenerator::visit(const ir::operation::DepthwiseConv2D &node)
   const auto bias_index{node.getInputs().at(DepthwiseConv2D::Input::BIAS)};
 
   const auto stride = node.param().stride;
-  const auto ifm_shape = _ctx.at(ifm_index).shape().asFeature(_current_op_seq_layout);
-  const auto ofm_shape = _ctx.at(ofm_index).shape().asFeature(_current_op_seq_layout);
+  const auto ifm_shape = _ctx.at(ifm_index).shape().asFeature(_current_layout);
+  const auto ofm_shape = _ctx.at(ofm_index).shape().asFeature(_current_layout);
   // Kernel format is [1, kernel_height, kernel_width, depth_out].
   const auto &ker_shape = _ctx.at(ker_index).shape();
   const auto ker_height = ker_shape.dim(1);
   const auto ker_width = ker_shape.dim(2);
+  const auto dilation_width = node.param().dilation.width_factor;
+  const auto dilation_height = node.param().dilation.height_factor;
   const auto padding = ir::calculatePadding(node.param().padding, ifm_shape, ofm_shape, stride,
-                                            ker_width, ker_height);
+                                            ker_width, ker_height, dilation_width, dilation_height);
   const auto multiplier = node.param().multiplier;
   const auto activation = node.param().activation;
 
@@ -366,8 +371,8 @@ void KernelGenerator::visit(const ir::operation::DepthwiseConv2D &node)
   auto fn = std::make_unique<ops::DepthwiseConvolutionLayer>();
 
   fn->configure(ifm_tensor, ker_tensor, bias_tensor, padding.left, padding.right, padding.top,
-                padding.bottom, stride.horizontal, stride.vertical, multiplier, activation,
-                ofm_tensor);
+                padding.bottom, stride.horizontal, stride.vertical, multiplier, dilation_width,
+                dilation_height, activation, ofm_tensor, _external_context);
 
   _return_fn = std::move(fn);
 }
@@ -377,7 +382,7 @@ void KernelGenerator::visit(const ir::operation::Concat &node)
   const auto ofm_index{node.getOutputs().at(0)};
 
   const auto rank = _ctx.at(ofm_index).shape().rank();
-  const auto axis = ops::getAxis(rank, node.param().axis, _current_op_seq_layout);
+  const auto axis = ops::getAxis(rank, node.param().axis, _current_layout);
 
   auto output_tensor = _tensor_reg->getPortableTensor(ofm_index);
 
@@ -444,6 +449,7 @@ void KernelGenerator::visit(const ir::operation::FullyConnected &node)
   const auto weight_index{node.getInputs().at(FullyConnected::Input::WEIGHT)};
   const auto bias_index{node.getInputs().at(FullyConnected::Input::BIAS)};
   const auto activation = node.param().activation;
+  const auto weights_format = node.param().weights_format;
 
   auto output_tensor = _tensor_reg->getPortableTensor(output_index);
   auto input_tensor = _tensor_reg->getPortableTensor(input_index);
@@ -452,7 +458,7 @@ void KernelGenerator::visit(const ir::operation::FullyConnected &node)
 
   auto fn = std::make_unique<ops::FullyConnectedLayer>();
 
-  fn->configure(input_tensor, weight_tensor, bias_tensor, activation, output_tensor,
+  fn->configure(input_tensor, weight_tensor, bias_tensor, activation, weights_format, output_tensor,
                 _external_context);
 
   _return_fn = std::move(fn);
@@ -578,7 +584,7 @@ void KernelGenerator::visit(const ir::operation::Gather &node)
   assert(backend_layout == indices_tensor->layout());
   const auto &input_shape = _ctx.at(input_index).shape();
   UNUSED_RELEASE(input_shape);
-  assert(input_shape.rank() < 4 || _current_op_seq_layout == backend_layout);
+  assert(input_shape.rank() < 4 || _current_layout == backend_layout);
 
   const auto axis_raw = node.param().axis;
   const auto axis_value = (axis_raw < 0 ? (input_shape.rank() + axis_raw) : axis_raw);
@@ -642,7 +648,7 @@ void KernelGenerator::visit(const ir::operation::Custom &node)
     for (auto &idx : opSeq)
     {
       const auto &operand = _ctx.at(idx);
-      // TODO make sure using `_current_op_seq_layout` is correct for custom operations
+      // TODO make sure using `_current_layout` is correct for custom operations
       types.emplace_back(custom::TypeInfo{operand.shape(), operand.typeInfo().type()});
       auto in_tensor = _tensor_reg->getPortableTensor(idx);
       tensors.emplace_back(in_tensor);
@@ -733,7 +739,7 @@ void KernelGenerator::visit(const ir::operation::Pack &node)
   const auto ofm_index{node.getOutputs().at(0)};
 
   const auto rank = _ctx.at(ofm_index).shape().rank();
-  const auto axis = ops::getAxis(rank, node.param().axis, _current_op_seq_layout);
+  const auto axis = ops::getAxis(rank, node.param().axis, _current_layout);
 
   assert(-rank <= axis && axis < rank);
 
@@ -755,7 +761,7 @@ void KernelGenerator::visit(const ir::operation::Unpack &node)
   const auto input_index{node.getInputs().at(0)};
 
   const auto rank = _ctx.at(input_index).shape().rank();
-  const auto axis = ops::getAxis(rank, node.param().axis, _current_op_seq_layout);
+  const auto axis = ops::getAxis(rank, node.param().axis, _current_layout);
 
   assert(rank == 0 || (-rank <= axis && axis < rank));
 
@@ -1006,11 +1012,11 @@ void KernelGenerator::visit(const ir::operation::Reverse &node)
   _return_fn = std::move(fn);
 }
 
-void KernelGenerator::visit(const ir::operation::ArgMax &node)
+void KernelGenerator::visit(const ir::operation::ArgMinMax &node)
 {
   const auto output_index{node.getOutputs().at(0)};
-  const auto input_index{node.getInputs().at(ir::operation::ArgMax::INPUT)};
-  const auto axis_index{node.getInputs().at(ir::operation::ArgMax::AXIS)};
+  const auto input_index{node.getInputs().at(ir::operation::ArgMinMax::INPUT)};
+  const auto axis_index{node.getInputs().at(ir::operation::ArgMinMax::AXIS)};
 
   auto output_tensor = _tensor_reg->getPortableTensor(output_index);
   auto input_tensor = _tensor_reg->getPortableTensor(input_index);
@@ -1031,8 +1037,8 @@ void KernelGenerator::visit(const ir::operation::Pool2D &node)
   const auto kh = node.param().kh;
   const auto kw = node.param().kw;
   const auto stride = node.param().stride;
-  const auto ifm_shape = _ctx.at(ifm_index).shape().asFeature(_current_op_seq_layout);
-  const auto ofm_shape = _ctx.at(ofm_index).shape().asFeature(_current_op_seq_layout);
+  const auto ifm_shape = _ctx.at(ifm_index).shape().asFeature(_current_layout);
+  const auto ofm_shape = _ctx.at(ofm_index).shape().asFeature(_current_layout);
   const auto padding =
       ir::calculatePadding(node.param().padding, ifm_shape, ofm_shape, stride, kw, kh);
   const auto activation = node.param().activation;

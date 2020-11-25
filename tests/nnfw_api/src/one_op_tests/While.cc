@@ -260,3 +260,54 @@ INSTANTIATE_TEST_CASE_P(GenModelTest, WhileWrongSubgraphIndex,
                         ::testing::Values(std::make_pair(99, 2), std::make_pair(-1, 2),
                                           std::make_pair(1, 99), std::make_pair(1, -99),
                                           std::make_pair(-99, 99)));
+
+// In this test, output of WHILE and body subgraph have different data types
+TEST_F(GenModelTest, neg_while_wrong_dtype)
+{
+  CircleGen cgen;
+  std::vector<float> incr_data{10};
+  uint32_t incr_buf = cgen.addBuffer(incr_data);
+  std::vector<float> end_data{100};
+  uint32_t end_buf = cgen.addBuffer(end_data);
+
+  // primary subgraph
+  {
+    int model_in = cgen.addTensor({{1}, circle::TensorType_FLOAT32});
+    int model_out = cgen.addTensor({{1}, circle::TensorType_FLOAT32});
+
+    cgen.addOperatorWhile({{model_in}, {model_out}}, 1, 2);
+    cgen.setInputsAndOutputs({model_in}, {model_out});
+  }
+
+  // cond subgraph
+  {
+    cgen.nextSubgraph();
+    int x = cgen.addTensor({{1}, circle::TensorType_FLOAT32});
+    int end = cgen.addTensor({{1}, circle::TensorType_FLOAT32, end_buf});
+    int result = cgen.addTensor({{1}, circle::TensorType_BOOL});
+    cgen.addOperatorLess({{x, end}, {result}});
+    cgen.setInputsAndOutputs({x}, {result});
+  }
+
+  // body subgraph
+  {
+    cgen.nextSubgraph();
+    int x_in = cgen.addTensor({{1}, circle::TensorType_FLOAT32});
+    int incr = cgen.addTensor({{1}, circle::TensorType_FLOAT32, incr_buf});
+    int x_out = cgen.addTensor({{1}, circle::TensorType_FLOAT32});
+    int cast_out = cgen.addTensor({{1}, circle::TensorType_INT32});
+    cgen.addOperatorAdd({{x_in, incr}, {x_out}}, circle::ActivationFunctionType_NONE);
+    cgen.addOperatorCast({{x_out}, {cast_out}}, circle::TensorType_FLOAT32,
+                         circle::TensorType_INT32);
+    cgen.setInputsAndOutputs({x_in}, {cast_out});
+    // output of this subgraph is INT32 but output of WHILE is FLOAT32
+  }
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  auto tc = uniformTCD<float>({{0}}, {{100}});
+  tc.expectFailRun();
+  _context->addTestCase(tc);
+  _context->setBackends({"cpu"});
+
+  SUCCEED();
+}

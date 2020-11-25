@@ -66,6 +66,12 @@ int entry(int argc, char **argv)
       .default_value(false)
       .help("This will fold dequantize op");
 
+  arser.add_argument("--fuse_activation_function")
+      .nargs(0)
+      .required(false)
+      .default_value(false)
+      .help("This will fuse Activation function to a preceding operator");
+
   arser.add_argument("--fuse_add_with_tconv")
       .nargs(0)
       .required(false)
@@ -90,6 +96,20 @@ int entry(int argc, char **argv)
       .default_value(false)
       .help("This will fuse operators to InstanceNorm operator");
 
+  arser.add_argument("--make_batchnorm_gamma_positive")
+      .nargs(0)
+      .required(false)
+      .default_value(false)
+      .help("This will make negative gamma of BatchNorm into a small positive value (1e-10). Note "
+            "that this pass can change the execution result of the model. So, use it only when the "
+            "impact is known to be acceptable.");
+
+  arser.add_argument("--fuse_preactivation_batchnorm")
+      .nargs(0)
+      .required(false)
+      .default_value(false)
+      .help("This will fuse BatchNorm operators of pre-activations to Convolution operator");
+
   arser.add_argument("--resolve_customop_add")
       .nargs(0)
       .required(false)
@@ -107,6 +127,13 @@ int entry(int argc, char **argv)
       .required(false)
       .default_value(false)
       .help("This will convert Custom(Matmul) to Matmul operator");
+
+  arser.add_argument("--shuffle_weight_to_16x1float32")
+      .nargs(0)
+      .required(false)
+      .default_value(false)
+      .help("This will convert weight format of FullyConnected to SHUFFLED16x1FLOAT32. Note that "
+            "it only converts weights whose row is a multiple of 16");
 
   arser.add_argument("--mute_warnings")
       .nargs(0)
@@ -179,6 +206,8 @@ int entry(int argc, char **argv)
   }
   if (arser.get<bool>("--fold_dequantize"))
     options->enable(Algorithms::FoldDequantize);
+  if (arser.get<bool>("--fuse_activation_function"))
+    options->enable(Algorithms::FuseActivationFunction);
   if (arser.get<bool>("--fuse_add_with_tconv"))
     options->enable(Algorithms::FuseAddWithTConv);
   if (arser.get<bool>("--fuse_batchnorm_with_tconv"))
@@ -187,12 +216,18 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::FuseBCQ);
   if (arser.get<bool>("--fuse_instnorm"))
     options->enable(Algorithms::FuseInstanceNorm);
+  if (arser.get<bool>("--make_batchnorm_gamma_positive"))
+    options->enable(Algorithms::MakeBatchNormGammaPositive);
+  if (arser.get<bool>("--fuse_preactivation_batchnorm"))
+    options->enable(Algorithms::FusePreActivationBatchNorm);
   if (arser.get<bool>("--resolve_customop_add"))
     options->enable(Algorithms::ResolveCustomOpAdd);
   if (arser.get<bool>("--resolve_customop_batchmatmul"))
     options->enable(Algorithms::ResolveCustomOpBatchMatMul);
   if (arser.get<bool>("--resolve_customop_matmul"))
     options->enable(Algorithms::ResolveCustomOpMatMul);
+  if (arser.get<bool>("--shuffle_weight_to_16x1float32"))
+    options->enable(Algorithms::ShuffleWeightTo16x1Float32);
 
   if (arser.get<bool>("--mute_warnings"))
     settings->set(luci::UserSettings::Key::MuteWarnings, true);
@@ -255,11 +290,14 @@ int entry(int argc, char **argv)
   luci::Importer importer;
   auto module = importer.importModule(circle_model);
 
+  // call luci optimizations for module
+  optimizer.optimize(module.get());
+
   for (size_t idx = 0; idx < module->size(); ++idx)
   {
     auto graph = module->graph(idx);
 
-    // call luci optimizations
+    // call luci optimizations for graph
     optimizer.optimize(graph);
     optimizer.sparsify(graph);
 

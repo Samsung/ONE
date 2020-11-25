@@ -34,7 +34,8 @@ enum class ElementwiseActivationType
 {
   kLogistic,
   kReLU,
-  kTanh
+  kTanh,
+  kLeakyReLU
 };
 
 class ElementwiseActivationLayer : public ::onert::exec::IFunction

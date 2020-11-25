@@ -29,13 +29,19 @@
 // This file tests all the validations done by the Neural Networks API.
 namespace {
 
+#ifndef PATH_MAX
 #define PATH_MAX 256
+#endif
 
 static int shmem_num = 0;
 static int shmem_create_region(size_t size)
 {
     char temp[PATH_MAX];
+#ifndef __ANDROID__
     snprintf(temp, sizeof(temp), "/tmp/nn-shmem-%d-%d-XXXXXXXXX", getpid(), shmem_num++);
+#else
+    snprintf(temp, sizeof(temp), "/data/local/tmp/nn-shmem-%d-%d-XXXXXXXXX", getpid(), shmem_num++);
+#endif
 
     // Set umask and recover after generate temporary file to avoid security issue
     mode_t umaskPrev = umask(S_IRUSR|S_IWUSR);

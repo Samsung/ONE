@@ -94,7 +94,7 @@ public:
   /**
    * @brief Update metrics file with new data.
    */
-  void uploadOperationsExecTime() const { _json.uploadOperationsExecTime(); }
+  void storeOperationsExecTime() const { _json.storeOperationsExecTime(); }
   static const int64_t NOT_FOUND = -1;
 
 private:

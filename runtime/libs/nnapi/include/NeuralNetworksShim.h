@@ -1218,7 +1218,7 @@ inline int ANeuralNetworksModel_setOperandExtensionData(ANeuralNetworksModel *mo
   LOAD_FUNCTION(ANeuralNetworksModel_setOperandExtensionData);
   EXECUTE_FUNCTION_RETURN(model, index, data, length);
 }
-
+#if __ANDROID_API__ >= 30
 /**
  * Create a {@link ANeuralNetworksMemoryDesc} with no properties.
  *
@@ -1548,7 +1548,7 @@ inline int ANeuralNetworksMemory_copy(const ANeuralNetworksMemory *src,
   LOAD_FUNCTION(ANeuralNetworksMemory_copy);
   EXECUTE_FUNCTION_RETURN(src, dst);
 }
-
+#endif // __ANDROID_API__ >= 30
 /**/
 
 #endif // __NEURAL_NETWORKS_SHIM_H__

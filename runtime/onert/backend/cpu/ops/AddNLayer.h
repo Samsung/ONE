@@ -33,16 +33,15 @@ namespace ops
 class AddNLayer : public ::onert::exec::IFunction
 {
 public:
-  AddNLayer() : _inputs(nullptr), _num_inputs(0), _output(nullptr) {}
+  AddNLayer() : _inputs(), _output(nullptr) {}
 
 public:
-  void configure(const IPortableTensor **inputs, size_t num_inputs, IPortableTensor *output);
+  void configure(std::vector<const IPortableTensor *> &&inputs, IPortableTensor *output);
 
   void run() override;
 
 private:
-  const IPortableTensor **_inputs;
-  size_t _num_inputs;
+  std::vector<const IPortableTensor *> _inputs;
   IPortableTensor *_output;
 };
 

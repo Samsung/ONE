@@ -31,7 +31,7 @@ public:
   OperationDumper(const std::string &start_msg);
 
 public:
-  void visit(const operation::ArgMax &) override;
+  void visit(const operation::ArgMinMax &) override;
   void visit(const operation::BatchToSpaceND &node) override;
   void visit(const operation::BCQFullyConnected &node) override;
   void visit(const operation::BinaryArithmetic &node) override;

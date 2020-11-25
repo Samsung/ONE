@@ -135,7 +135,7 @@ void JSON::printOperation(const std::map<uint32_t, int64_t> &operation_info,
   stream.seekp(-2, std::ofstream::end);
 }
 
-void JSON::uploadOperationsExecTime() const
+void JSON::storeOperationsExecTime() const
 {
   std::ofstream stream(_measurement_file);
   if (!stream.is_open())

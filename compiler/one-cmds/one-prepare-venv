@@ -20,14 +20,6 @@ DRIVER_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 VENV_ACTIVATE=${DRIVER_PATH}/venv/bin/activate
 
-if [ -f ${VENV_ACTIVATE} ]; then
-  echo "Virtual environment is already prepared."
-  exit 0
-fi
-
-# Install prerequisites
-python3 -m pip install --user -U virtualenv
-
 function error_no_ensurepip ()
 {
   echo "ERROR: python3 'ensurepip' module is not found."
@@ -38,10 +30,14 @@ function error_no_ensurepip ()
   echo "       You may need root privilege for this."
   exit 1
 }
-python3 -m ensurepip --version > /dev/null 2>&1 || error_no_ensurepip
 
-# Create python virtual enviornment
-python3 -m venv "${DRIVER_PATH}/venv"
+if [ ! -f ${VENV_ACTIVATE} ]; then
+  # Install prerequisites
+  python3 -m ensurepip --version > /dev/null 2>&1 || error_no_ensurepip
+  python3 -m pip install --user -U virtualenv
+  # Create python virtual enviornment
+  python3 -m venv "${DRIVER_PATH}/venv"
+fi
 
 # Install tensorflow
 source "${VENV_ACTIVATE}"
@@ -52,6 +48,8 @@ python -m pip --default-timeout=1000 --trusted-host pypi.org --trusted-host file
   install -U pip==20.2.1 setuptools==49.3.0
 python -m pip --default-timeout=1000 --trusted-host pypi.org --trusted-host files.pythonhost.org \
   install tensorflow-cpu==2.3.0
+python -m pip --default-timeout=1000 --trusted-host pypi.org --trusted-host files.pythonhost.org \
+  install Pillow==6.2.2
 
 # Create python symoblic link
 rm -f ${DRIVER_PATH}/python

@@ -1,0 +1,97 @@
+About
+-----
+
+Last update: 2020-11-06
+
+This document briefly explains how to create an input dataset for one-quantize.
+
+The input dataset of one-quantize has the form of hdf5.
+For users who are not familiar with hdf5, we provide a tool to convert raw data to hdf5.
+
+Workflow to generate input dataset (hdf5 file)
+1. Pre-process input data for the target model and save them as raw data files
+2. Package the raw data files into the hdf5 file using rawdata2hdf5
+
+Note: Users should prepare raw data which can be fed to the target model.
+This is because we don't know which pre-processing logic was used for the target model.
+
+rawdata2hdf5
+---------------
+
+rawdata2hdf5 is a tool to package raw data files into an hdf5 file,
+which is the format of input dataset for one-quantize.
+
+Usage:  rawdata2hdf5 --data_list <path/to/text/file> --output_path <path/to/output/file>
+
+Example
+---------------
+
+Let's make an input dataset for InceptionV3 model.
+
+1. Download sample images (You can use your own dataset)
+
+$ wget https://github.com/Samsung/ONE/files/5499172/img_files.zip
+$ unzip img_files.zip
+$ tree img_files
+img_files
+├── bald-eagle.jpg
+├── cow.jpg
+├── deer-in-wild.jpg
+├── fox.jpg
+├── ladybird.jpg
+├── orange-portocaliu.jpg
+├── pink-lotus.jpg
+├── red-church.jpg
+├── tomatoes.jpg
+└── young-dachshund.jpg
+
+2. Pre-process the images and save them as raw data files
+
+In this example, we use Pillow and numpy for simple pre-processing.
+
+$ pip install Pillow numpy
+
+Run the pre-processing logic for the target model.
+We provide a short python script that scales the image data from -1 to 1.
+(This is different from the original pre-processing of InceptionV3.
+Visit the below link to find the exact algorithm)
+https://github.com/tensorflow/models/blob/v2.3.0/research/slim/preprocessing/inception_preprocessing.py
+
+$ cat > preprocess.py << EOF
+import os, shutil, PIL.Image, numpy as np
+  
+input_dir = 'img_files'
+output_dir = 'raw_files'
+list_file = 'datalist.txt'
+
+if os.path.exists(output_dir):
+  shutil.rmtree(output_dir, ignore_errors=True)
+os.makedirs(output_dir)
+
+for (root, _, files) in os.walk(input_dir):
+  datalist = open(list_file, 'w')
+  for f in files:
+    with PIL.Image.open(root + '/' + f) as image:
+        img = np.array(image.resize((299, 299),
+                                    PIL.Image.ANTIALIAS)).astype(np.float32)
+        img = ((img / 255) - 0.5) * 2.0
+        output_file = output_dir + '/' + f.replace('jpg', 'data')
+        img.tofile(output_file)
+        datalist.writelines(os.path.abspath(output_file) + '\n')
+  datalist.close()
+EOF
+
+$ python preprocess.py
+
+After running preprocess.py, 'raw_files' and 'datalist.txt' will be created.
+raw_files: a directory where raw data files are saved
+datalist.txt: a text file that contains the list of raw data files.
+
+3. Run rawdata2hdf5 with datalist.txt
+
+$ rawdata2hdf5 --data_list datalist.txt --output_path dataset.h5
+
+The contents of the hdf5 file can be printed in the console using h5dump
+$ h5dump dataset.h5
+
+Now you can call one-quantize with dataset.h5.

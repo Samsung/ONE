@@ -39,7 +39,7 @@ public:
                   const std::shared_ptr<acl_common::AclTensorRegistry<TensorManager>> &_tensor_reg);
 
   void visit(const ir::OpSequence &) override;
-  void visit(const ir::operation::ArgMax &) override;
+  void visit(const ir::operation::ArgMinMax &) override;
   void visit(const ir::operation::BatchToSpaceND &) override;
   void visit(const ir::operation::BinaryArithmetic &) override;
   void visit(const ir::operation::Conv2D &) override;
@@ -86,7 +86,7 @@ private:
   const ir::Operations &_operations_ctx;
   std::shared_ptr<TensorBuilder> _tensor_builder;
   std::shared_ptr<acl_common::AclTensorRegistry<TensorManager>> _tensor_reg;
-  ir::Layout _current_op_seq_layout;
+  ir::Layout _current_layout;
 };
 
 } // namespace acl_neon

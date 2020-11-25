@@ -41,8 +41,12 @@ find_path(TFLITE_INCLUDE_DIR NAMES  tensorflow/lite/interpreter.h)
 find_library(TFLITE_LIB NAMES       tensorflow-lite)
 
 if(NOT TFLITE_INCLUDE_DIR)
-  set(TensorFlowLite_FOUND FALSE)
-  return()
+  # Tizen install TensorFlow Lite 1.13.1 headers in /usr/include/tensorflow1
+  find_path(TFLITE_INCLUDE_DIR NAMES tensorflow/lite/interpreter.h PATHS "/usr/include/tensorflow1")
+  if(NOT TFLITE_INCLUDE_DIR)
+    set(TensorFlowLite_FOUND FALSE)
+    return()
+  endif(NOT TFLITE_INCLUDE_DIR)
 endif(NOT TFLITE_INCLUDE_DIR)
 
 if(NOT TFLITE_LIB)

@@ -34,7 +34,8 @@ BidirectionalSequenceLSTMChef::value(flatbuffers::FlatBufferBuilder &fbb) const
   options_builder.add_time_major(operation.bidirectional_sequence_lstm_options().time_major());
   options_builder.add_asymmetric_quantize_inputs(
       operation.bidirectional_sequence_lstm_options().asymmetric_quantize_inputs());
-  options_builder.add_merge_outputs(operation.bidirectional_sequence_lstm_options().merge_outputs());
+  options_builder.add_merge_outputs(
+      operation.bidirectional_sequence_lstm_options().merge_outputs());
 
   return options_builder.Finish().Union();
 }

@@ -27,8 +27,6 @@ namespace cpu_common
 
 void BumpPlanner::claim(const ir::OperandIndex &ind, size_t size)
 {
-  assert(size != 0);
-
   Block blk{_capacity, size};
   _mem_plans[ind] = blk;
   _capacity += size;
@@ -59,8 +57,6 @@ void BumpPlanner::release(const ir::OperandIndex &ind)
 //    the previous claim_base_offset.
 void FirstFitPlanner::claim(const ir::OperandIndex &ind, size_t size)
 {
-  assert(size != 0);
-
   // Find the right position for claiming
   uint32_t next_offset = 0;
   for (auto &mem_claim : _claim_table)
@@ -119,8 +115,6 @@ WICPlanner::WICPlanner()
 
 void WICPlanner::claim(const ir::OperandIndex &ind, size_t size)
 {
-  assert(size != 0);
-
   _operands.emplace(size, ind);
   _interference_graph[ind].insert(_interference_graph[ind].end(), _live_operands.cbegin(),
                                   _live_operands.cend());

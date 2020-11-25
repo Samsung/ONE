@@ -82,7 +82,7 @@ function run_benchmark_test()
             $RUN_TEST_SH --driverbin=$BENCHMARK_DRIVER_BIN $MODEL > $LOG_FILE 2>&1
             RET=$?
             if [[ $RET -ne 0 ]]; then
-                echo "Profiling $MODEL aborted in run#$j... exit code: $RET"xX
+                echo "Profiling $MODEL aborted in run#$j... exit code: $RET"
                 exit $RET
             fi
             echo "finished"
@@ -131,7 +131,6 @@ function run_benchmark_test()
         mv "exec_time.json" $REPORT_MODEL_DIR
         # Save the dot graph
         mv "after_lower_subg-0.dot" $REPORT_MODEL_DIR/"after_lower_subg-0_linear.dot"
-        unset GRAPH_DOT_DUMP
 
 ##################################################################################
         # Turn off scheduler
@@ -140,15 +139,31 @@ function run_benchmark_test()
 
         # Run LinearExecutor on acl_cl without scheduler
         run_without_sched $RESULT_SCH_INT $REPORT_MODEL_DIR $MODEL "Linear" "acl_cl"
+        mv "after_lower_subg-0.dot" $REPORT_MODEL_DIR/"after_lower_subg-0_linear_acl_cl.dot"
 
         # Run LinearExecutor on acl_neon without scheduler
         run_without_sched $RESULT_SCH_INT $REPORT_MODEL_DIR $MODEL "Linear" "acl_neon"
+        mv "after_lower_subg-0.dot" $REPORT_MODEL_DIR/"after_lower_subg-0_linear_acl_neon.dot"
 
         # Run ParallelExecutor on acl_cl without scheduler
         run_without_sched $RESULT_SCH_INT $REPORT_MODEL_DIR $MODEL "Parallel" "acl_cl"
+        mv "after_lower_subg-0.dot" $REPORT_MODEL_DIR/"after_lower_subg-0_parallel_acl_cl.dot"
 
         # Run ParallelExecutor on acl_neon without scheduler
         run_without_sched $RESULT_SCH_INT $REPORT_MODEL_DIR $MODEL "Parallel" "acl_neon"
+        mv "after_lower_subg-0.dot" $REPORT_MODEL_DIR/"after_lower_subg-0_parallel_acl_neon.dot"
+
+        unset GRAPH_DOT_DUMP
+
+        if command -v dot;
+        then
+            dot -Tpng $REPORT_MODEL_DIR/"after_lower_subg-0_parallel.dot" -o $REPORT_MODEL_DIR/"parallel.png"
+            dot -Tpng $REPORT_MODEL_DIR/"after_lower_subg-0_linear.dot" -o $REPORT_MODEL_DIR/"linear.png"
+            dot -Tpng $REPORT_MODEL_DIR/"after_lower_subg-0_linear_acl_cl.dot" -o $REPORT_MODEL_DIR/"linear_acl_cl.png"
+            dot -Tpng $REPORT_MODEL_DIR/"after_lower_subg-0_linear_acl_neon.dot" -o $REPORT_MODEL_DIR/"linear_acl_neon.png"
+            dot -Tpng $REPORT_MODEL_DIR/"after_lower_subg-0_parallel_acl_cl.dot" -o $REPORT_MODEL_DIR/"paralle_acl_cl.png"
+            dot -Tpng $REPORT_MODEL_DIR/"after_lower_subg-0_parallel_acl_neon.dot" -o $REPORT_MODEL_DIR/"parallel_acl_neon.png"
+        fi
 
         if [[ $i -ne $(echo $BENCHMARK_MODEL_LIST | wc -w)-1 ]]; then
             echo ""
@@ -164,7 +179,6 @@ function run_benchmark_test()
     echo "============================================"
     unset COUNT
     unset USE_NNAPI
-
 }
 
 echo ""

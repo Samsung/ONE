@@ -134,11 +134,37 @@ uint32_t CircleGen::addOperatorConcatenation(const OperatorParams &params, int a
                                 circle::BuiltinOptions_ConcatenationOptions, options);
 }
 
+uint32_t CircleGen::addOperatorConv2D(const OperatorParams &params, circle::Padding padding,
+                                      int stride_w, int stride_h,
+                                      circle::ActivationFunctionType actfn, int dilation_w,
+                                      int dilation_h)
+{
+  auto options =
+      circle::CreateConv2DOptions(_fbb, padding, stride_w, stride_h, actfn, dilation_w, dilation_h)
+          .Union();
+  return addOperatorWithOptions(params, circle::BuiltinOperator_CONV_2D,
+                                circle::BuiltinOptions_Conv2DOptions, options);
+}
+
 uint32_t CircleGen::addOperatorCos(const OperatorParams &params)
 {
   auto options = circle::CreateCosOptions(_fbb).Union();
   return addOperatorWithOptions(params, circle::BuiltinOperator_COS,
                                 circle::BuiltinOptions_CosOptions, options);
+}
+
+uint32_t CircleGen::addOperatorDepthwiseConv2D(const OperatorParams &params,
+                                               circle::Padding padding, int stride_w, int stride_h,
+                                               int depth_multiplier,
+                                               circle::ActivationFunctionType actfn, int dilation_w,
+                                               int dilation_h)
+{
+  auto options =
+      circle::CreateDepthwiseConv2DOptions(_fbb, padding, stride_w, stride_h, depth_multiplier,
+                                           actfn, dilation_w, dilation_h)
+          .Union();
+  return addOperatorWithOptions(params, circle::BuiltinOperator_DEPTHWISE_CONV_2D,
+                                circle::BuiltinOptions_DepthwiseConv2DOptions, options);
 }
 
 uint32_t CircleGen::addOperatorEqual(const OperatorParams &params)
@@ -148,9 +174,13 @@ uint32_t CircleGen::addOperatorEqual(const OperatorParams &params)
                                 circle::BuiltinOptions_EqualOptions, options);
 }
 
-uint32_t CircleGen::addOperatorFullyConnected(const OperatorParams &params)
+uint32_t
+CircleGen::addOperatorFullyConnected(const OperatorParams &params,
+                                     circle::FullyConnectedOptionsWeightsFormat weights_format)
 {
-  auto options = circle::CreateFullyConnectedOptions(_fbb).Union();
+  auto options =
+      circle::CreateFullyConnectedOptions(_fbb, circle::ActivationFunctionType_NONE, weights_format)
+          .Union();
   return addOperatorWithOptions(params, circle::BuiltinOperator_FULLY_CONNECTED,
                                 circle::BuiltinOptions_FullyConnectedOptions, options);
 }
@@ -160,6 +190,12 @@ uint32_t CircleGen::addOperatorFill(const OperatorParams &params)
   auto options = circle::CreateFillOptions(_fbb).Union();
   return addOperatorWithOptions(params, circle::BuiltinOperator_FILL,
                                 circle::BuiltinOptions_FillOptions, options);
+}
+
+uint32_t CircleGen::addOperatorFloor(const OperatorParams &params)
+{
+  return addOperatorWithOptions(params, circle::BuiltinOperator_FLOOR, circle::BuiltinOptions_NONE,
+                                0);
 }
 
 uint32_t CircleGen::addOperatorL2Normalization(const OperatorParams &params)
@@ -345,6 +381,19 @@ uint32_t CircleGen::addOperatorTranspose(const OperatorParams &params)
   auto options = circle::CreateTransposeOptions(_fbb).Union();
   return addOperatorWithOptions(params, circle::BuiltinOperator_TRANSPOSE,
                                 circle::BuiltinOptions_TransposeOptions, options);
+}
+
+uint32_t CircleGen::addOperatorSqrt(const OperatorParams &params)
+{
+  return addOperatorWithOptions(params, circle::BuiltinOperator_SQRT, circle::BuiltinOptions_NONE,
+                                0);
+}
+
+uint32_t CircleGen::addOperatorSquare(const OperatorParams &params)
+{
+  auto options = circle::CreateSquareOptions(_fbb).Union();
+  return addOperatorWithOptions(params, circle::BuiltinOperator_SQUARE,
+                                circle::BuiltinOptions_SquareOptions, options);
 }
 
 // NOTE Please add addOperator functions ABOVE this lie

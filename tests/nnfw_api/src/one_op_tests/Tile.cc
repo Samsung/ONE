@@ -66,13 +66,12 @@ TEST_F(GenModelTest, OneOp_Tile_MulToVar)
   cgen.setInputsAndOutputs({in, multiplies}, {out});
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
-  TestCaseData tcd;
-  tcd.addInput(std::vector<float>{11, 12, 13, 21, 22, 23});
-  tcd.addInput(std::vector<int32_t>{2, 3, 1});
-  tcd.addOutput(std::vector<float>{11, 12, 13, 21, 22, 23, 11, 12, 13, 21, 22, 23,
-                                   11, 12, 13, 21, 22, 23, 11, 12, 13, 21, 22, 23,
-                                   11, 12, 13, 21, 22, 23, 11, 12, 13, 21, 22, 23});
-  _context->addTestCase(tcd);
+  _context->addTestCase(TestCaseData{}
+                            .addInput<float>({11, 12, 13, 21, 22, 23})
+                            .addInput<int32_t>({2, 3, 1})
+                            .addOutput<float>({11, 12, 13, 21, 22, 23, 11, 12, 13, 21, 22, 23,
+                                               11, 12, 13, 21, 22, 23, 11, 12, 13, 21, 22, 23,
+                                               11, 12, 13, 21, 22, 23, 11, 12, 13, 21, 22, 23}));
   _context->setBackends({"cpu"});
 
   SUCCEED();
@@ -88,11 +87,10 @@ TEST_F(GenModelTest, OneOp_Tile_VarMul)
   cgen.setInputsAndOutputs({in, mul}, {out});
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
-  TestCaseData tcd;
-  tcd.addInput(std::vector<float>{1, 2, 3, 4, 5, 6});
-  tcd.addInput(std::vector<int32_t>{1, 2});
-  tcd.addOutput(std::vector<float>{1, 2, 3, 1, 2, 3, 4, 5, 6, 4, 5, 6});
-  _context->addTestCase(tcd);
+  _context->addTestCase(TestCaseData{}
+                            .addInput<float>({1, 2, 3, 4, 5, 6})
+                            .addInput<int32_t>({1, 2})
+                            .addOutput<float>({1, 2, 3, 1, 2, 3, 4, 5, 6, 4, 5, 6}));
   _context->setBackends({"cpu"});
 
   SUCCEED();

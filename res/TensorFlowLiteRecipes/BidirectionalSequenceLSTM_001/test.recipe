@@ -1,0 +1,199 @@
+operand {
+  name: "ifm"
+  type: FLOAT32
+  shape { dim: 3 dim: 1 dim: 2 }
+}
+operand {
+  name: "fw_input_to_forget_weights"
+  type: FLOAT32
+  shape { dim: 4 dim: 2 }
+}
+operand {
+  name: "fw_input_to_cell_weights"
+  type: FLOAT32
+  shape { dim: 4 dim: 2 }
+}
+operand {
+  name: "fw_input_to_output_weights"
+  type: FLOAT32
+  shape { dim: 4 dim: 2 }
+}
+operand {
+  name: "fw_recurrent_to_input_weights"
+  type: FLOAT32
+  shape { dim: 4 dim: 4 }
+}
+operand {
+  name: "fw_recurrent_to_forget_weights"
+  type: FLOAT32
+  shape { dim: 4 dim: 4 }
+}
+operand {
+  name: "fw_recurrent_to_cell_weights"
+  type: FLOAT32
+  shape { dim: 4 dim: 4 }
+}
+operand {
+  name: "fw_recurrent_to_output_weights"
+  type: FLOAT32
+  shape { dim: 4 dim: 4 }
+}
+operand {
+  name: "fw_forget_gate_bias"
+  type: FLOAT32
+  shape { dim: 4 }
+}
+operand {
+  name: "fw_cell_gate_bias"
+  type: FLOAT32
+  shape { dim: 4 }
+}
+operand {
+  name: "fw_output_gate_bias"
+  type: FLOAT32
+  shape { dim: 4 }
+}
+operand {
+  name: "bw_input_to_forget_weights"
+  type: FLOAT32
+  shape { dim: 4 dim: 2 }
+}
+operand {
+  name: "bw_input_to_cell_weights"
+  type: FLOAT32
+  shape { dim: 4 dim: 2 }
+}
+operand {
+  name: "bw_input_to_output_weights"
+  type: FLOAT32
+  shape { dim: 4 dim: 2 }
+}
+operand {
+  name: "bw_recurrent_to_input_weights"
+  type: FLOAT32
+  shape { dim: 4 dim: 4 }
+}
+operand {
+  name: "bw_recurrent_to_forget_weights"
+  type: FLOAT32
+  shape { dim: 4 dim: 4 }
+}
+operand {
+  name: "bw_recurrent_to_cell_weights"
+  type: FLOAT32
+  shape { dim: 4 dim: 4 }
+}
+operand {
+  name: "bw_recurrent_to_output_weights"
+  type: FLOAT32
+  shape { dim: 4 dim: 4 }
+}
+operand {
+  name: "bw_forget_gate_bias"
+  type: FLOAT32
+  shape { dim: 4 }
+}
+operand {
+  name: "bw_cell_gate_bias"
+  type: FLOAT32
+  shape { dim: 4 }
+}
+operand {
+  name: "bw_output_gate_bias"
+  type: FLOAT32
+  shape { dim: 4 }
+}
+operand {
+  name: "fw_activation_state"
+  type: FLOAT32
+  shape { dim: 1 dim: 4 }
+}
+operand {
+  name: "fw_cell_state"
+  type: FLOAT32
+  shape { dim: 1 dim: 4 }
+}
+operand {
+  name: "bw_activation_state"
+  type: FLOAT32
+  shape { dim: 1 dim: 4 }
+}
+operand {
+  name: "bw_cell_state"
+  type: FLOAT32
+  shape { dim: 1 dim: 4 }
+}
+operand {
+  name: "fw_ofm"
+  type: FLOAT32
+  shape { dim: 3 dim: 1 dim: 4 }
+}
+operand {
+  name: "bw_ofm"
+  type: FLOAT32
+  shape { dim: 3 dim: 1 dim: 4 }
+}
+operation {
+  type: "BidirectionalSequenceLSTM"
+  bidirectional_sequence_lstm_options {
+    activation: NONE
+    cell_clip: 0.0
+    proj_clip: 0.0
+    merge_outputs: false
+    time_major: false
+    asymmetric_quantize_inputs: false
+  }
+  input: "ifm"
+  input: ""
+  input: "fw_input_to_forget_weights"
+  input: "fw_input_to_cell_weights"
+  input: "fw_input_to_output_weights"
+  input: "fw_recurrent_to_input_weights"
+  input: "fw_recurrent_to_forget_weights"
+  input: "fw_recurrent_to_cell_weights"
+  input: "fw_recurrent_to_output_weights"
+  input: ""
+  input: ""
+  input: ""
+  input: ""
+  input: "fw_forget_gate_bias"
+  input: "fw_cell_gate_bias"
+  input: "fw_output_gate_bias"
+  input: ""
+  input: ""
+  input: ""
+  input: "bw_input_to_forget_weights"
+  input: "bw_input_to_cell_weights"
+  input: "bw_input_to_output_weights"
+  input: "bw_recurrent_to_input_weights"
+  input: "bw_recurrent_to_forget_weights"
+  input: "bw_recurrent_to_cell_weights"
+  input: "bw_recurrent_to_output_weights"
+  input: ""
+  input: ""
+  input: ""
+  input: ""
+  input: "bw_forget_gate_bias"
+  input: "bw_cell_gate_bias"
+  input: "bw_output_gate_bias"
+  input: ""
+  input: ""
+  input: "fw_activation_state"
+  input: "fw_cell_state"
+  input: "bw_activation_state"
+  input: "bw_cell_state"
+  input: ""
+  input: ""
+  input: ""
+  input: ""
+  input: ""
+  input: ""
+  input: ""
+  input: ""
+  input: ""
+  output: "fw_ofm"
+  output: "bw_ofm"
+}
+input: "ifm"
+output: "fw_ofm"
+output: "bw_ofm"

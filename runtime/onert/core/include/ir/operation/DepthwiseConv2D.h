@@ -46,6 +46,7 @@ public:
     Padding padding;
     uint32_t multiplier;
     Activation activation;
+    Dilation dilation;
   };
 
 public:

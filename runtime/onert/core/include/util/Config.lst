@@ -20,7 +20,7 @@
 
 //     Name                    | Type         | Default
 CONFIG(GRAPH_DOT_DUMP          , int          , "0")
-CONFIG(BACKENDS                , std::string  , "cpu;acl_cl;acl_neon;bcq") // FIXME Remove bcq
+CONFIG(BACKENDS                , std::string  , "cpu;acl_cl;acl_neon;ruy;xnnpack;bcq") // FIXME Remove bcq
 CONFIG(OP_BACKEND_ALLOPS       , std::string  , "")
 CONFIG(OP_BACKEND_MAP          , std::string  , "")
 CONFIG(DISABLE_COMPILE         , bool         , "0")
@@ -35,6 +35,7 @@ CONFIG(OP_SEQ_MAX_NODE         , int          , "0")
 CONFIG(TRACE_FILEPATH          , std::string  , "")
 CONFIG(FP16_ENABLE             , bool         , "0")
 CONFIG(RUY_THREADS             , int          , "-1")
+CONFIG(XNNPACK_THREADS         , int          , "-1")
 CONFIG(USE_MMAPED_DATA         , bool         , "0")
 
 // Auto-generate all operations

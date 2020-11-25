@@ -96,7 +96,12 @@ void Graph::finishBuilding(void)
 
   // Call graph verifications for the MODEL phase
   {
-    assert(verifier::DAGChecker().verify(*this));
+    // Except for edge consistency, the user might have been given a bad model
+    // so here it throws an execption rather than assertion.
+    if (!verifier::InputOutputChecker().verify(*this))
+      throw std::runtime_error{"One of model input and output operands does not exist."};
+    if (!verifier::DAGChecker().verify(*this))
+      throw std::runtime_error{"The graph is cyclic."};
     assert(verifier::EdgeConsistencyChecker().verify(*this));
   }
 

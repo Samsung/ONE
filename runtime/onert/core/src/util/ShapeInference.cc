@@ -361,7 +361,7 @@ ir::Shape inferDepthwiseConv2DShape(const ir::Shape &in_shape, const ir::Shape &
   assert(kf_shape.N == 1);
 
   const auto out_h_w = calcConvLikeHeightAndWidth(ifm_shape.H, ifm_shape.W, kf_shape.H, kf_shape.W,
-                                                  param.padding, param.stride);
+                                                  param.padding, param.stride, param.dilation);
 
   return ir::Shape{ifm_shape.N, out_h_w.first, out_h_w.second, kf_shape.C};
 }

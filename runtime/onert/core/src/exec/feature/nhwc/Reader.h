@@ -37,18 +37,17 @@ namespace nhwc
 template <typename T> class Reader : public feature::Reader<T>
 {
 public:
-  // Construct for buffer of model inputs
-  Reader(const ir::FeatureShape &shape, const T *ptr, size_t len)
-      : _shape{shape}, _ptr{reinterpret_cast<const uint8_t *>(ptr)}, _len{len}
+  using Strides = ir::FeatureShape;
+  // Construct for buffer and strides
+  Reader(const ir::FeatureShape &shape, const Strides &strides, const T *ptr, size_t len)
+      : _shape{shape}, _strides{strides}, _ptr{reinterpret_cast<const uint8_t *>(ptr)}, _len{len}
   {
     UNUSED_RELEASE(len); // Workaround for unused variable in release mode
-    assert(shape.N * shape.C * shape.H * shape.W * sizeof(T) == len);
-
-    // No padding
-    _strides.C = sizeof(T);
-    _strides.W = shape.C * sizeof(T);
-    _strides.H = shape.C * shape.W * sizeof(T);
-    _strides.N = shape.C * shape.W * shape.H * sizeof(T);
+    assert(len == static_cast<size_t>(strides.N != 0
+                                          ? shape.N * strides.N
+                                          : strides.H != 0 ? shape.H * strides.H
+                                                           : strides.W != 0 ? shape.W * strides.W
+                                                                            : shape.C * strides.C));
   }
 
   // Construct for backend tensor
@@ -106,7 +105,6 @@ private:
 private:
   // TODO Remove _shape
   ir::FeatureShape _shape;
-  using Strides = ir::FeatureShape;
   Strides _strides;
   const uint8_t *_ptr;
   size_t _len;

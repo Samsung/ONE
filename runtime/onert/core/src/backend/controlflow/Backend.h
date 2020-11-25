@@ -17,6 +17,7 @@
 #ifndef __ONERT_BACKEND_CONTROLFLOW_BACKEND_H__
 #define __ONERT_BACKEND_CONTROLFLOW_BACKEND_H__
 
+#include "BackendContext.h"
 #include "Config.h"
 #include "ConstantInitializer.h"
 #include "KernelGenerator.h"
@@ -41,9 +42,9 @@ public:
 
   std::shared_ptr<IConfig> config() const override { return _config; }
 
-  std::unique_ptr<BackendContext> newContext(const ir::Graph &graph,
-                                             const std::shared_ptr<custom::IKernelBuilder> &,
-                                             bool) const override
+  std::unique_ptr<onert::backend::BackendContext>
+  newContext(const ir::Graph &graph, const std::shared_ptr<custom::IKernelBuilder> &,
+             bool) const override
   {
     const auto &operands = graph.operands();
     auto context = std::make_unique<BackendContext>(this, &graph);
@@ -69,8 +70,8 @@ public:
     context->tensor_registry = tr;
     context->tensor_builder = tb;
     context->constant_initializer = std::make_shared<ConstantInitializer>(operands, tr);
-    context->kernel_gen = std::make_shared<KernelGenerator>(graph, tb->dynamicTensorManager(), tr);
-    context->tensor_register = nullptr;
+    context->kernel_gen = std::make_shared<KernelGenerator>(graph, tb->dynamicTensorManager(), tr,
+                                                            context->external_context());
     context->optimizer = nullptr;
     return context;
   }

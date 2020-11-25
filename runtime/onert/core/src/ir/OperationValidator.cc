@@ -84,6 +84,20 @@ void OperationValidator::visit(const operation::AddN &node)
   }
 }
 
+void OperationValidator::visit(const operation::ArgMinMax &node)
+{
+  const auto input_index(node.getInputs().at(operation::ArgMinMax::Input::INPUT));
+  const auto axis_index(node.getInputs().at(operation::ArgMinMax::Input::AXIS));
+  const auto output_index(node.getOutputs().at(0));
+  const auto output_type = node.param().output_type;
+
+  OP_REQUIRES(isValidType(input_index, {DataType::FLOAT32, DataType::INT32, DataType::UINT8,
+                                        DataType::QUANT_UINT8_ASYMM, DataType::QUANT_INT8_ASYMM}));
+  OP_REQUIRES(isValidType(axis_index, {DataType::INT32, DataType::INT64}));
+  OP_REQUIRES(isValidType(output_index, {DataType::INT32, DataType::INT64}));
+  OP_REQUIRES(isValidType(output_index, output_type));
+}
+
 void OperationValidator::visit(const operation::BatchMatMul &node)
 {
   const auto lhs_index(node.getInputs().at(operation::BatchMatMul::Input::LHS));
@@ -122,11 +136,41 @@ void OperationValidator::visit(const operation::Comparison &node)
   OP_REQUIRES(isValidType(output_index, DataType::BOOL8));
 }
 
+void OperationValidator::visit(const operation::Conv2D &node)
+{
+  const auto input_index{node.getInputs().at(operation::Conv2D::Input::INPUT)};
+  const auto output_index{node.getOutputs().at(0)};
+
+  uint32_t stride_horizontal = node.param().stride.horizontal;
+  uint32_t stride_vertical = node.param().stride.vertical;
+  uint32_t dilation_width = node.param().dilation.width_factor;
+  uint32_t dilation_height = node.param().dilation.height_factor;
+
+  OP_REQUIRES((stride_horizontal > 0) && (stride_vertical > 0));
+  OP_REQUIRES((dilation_width > 0) && (dilation_height > 0));
+  OP_REQUIRES(isSameType(input_index, output_index));
+}
+
 void OperationValidator::visit(const operation::DepthToSpace &node)
 {
   int32_t block_size = node.param().block_size;
 
   OP_REQUIRES(block_size > 0);
+}
+
+void OperationValidator::visit(const operation::DepthwiseConv2D &node)
+{
+  const auto input_index{node.getInputs().at(operation::DepthwiseConv2D::Input::INPUT)};
+  const auto output_index{node.getOutputs().at(0)};
+
+  uint32_t stride_horizontal = node.param().stride.horizontal;
+  uint32_t stride_vertical = node.param().stride.vertical;
+  uint32_t dilation_width = node.param().dilation.width_factor;
+  uint32_t dilation_height = node.param().dilation.height_factor;
+
+  OP_REQUIRES((stride_horizontal > 0) && (stride_vertical > 0));
+  OP_REQUIRES((dilation_width > 0) && (dilation_height > 0));
+  OP_REQUIRES(isSameType(input_index, output_index));
 }
 
 void OperationValidator::visit(const operation::ElementwiseActivation &node)
@@ -165,6 +209,11 @@ void OperationValidator::visit(const operation::ElementwiseUnary &node)
   {
     OP_REQUIRES(isValidType(input_index, DataType::FLOAT32));
     OP_REQUIRES(isValidType(output_index, DataType::QUANT_UINT8_ASYMM));
+  }
+  else if (node.param().op_type == operation::ElementwiseUnary::Type::FLOOR)
+  {
+    OP_REQUIRES(isValidType(input_index, DataType::FLOAT32));
+    OP_REQUIRES(isSameType(output_index, input_index));
   }
   else if (node.param().op_type != operation::ElementwiseUnary::Type::CAST)
   {

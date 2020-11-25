@@ -2,6 +2,7 @@
 
 # Gather test scripts
 file(GLOB TESTITEMS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "./*.test")
+file(GLOB CONFIGITEMS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "./*.cfg")
 
 # Create a script to run the tests at installation folder
 set(DRIVER_SCRIPT "${CMAKE_CURRENT_BINARY_DIR}/runtestall.sh")
@@ -29,9 +30,15 @@ foreach(TESTITEM IN ITEMS ${TESTITEMS})
 
 endforeach(TESTITEM)
 
+foreach(CONFIGITEM IN ITEMS ${CONFIGITEMS})
+  get_filename_component(ITEM_PREFIX ${CONFIGITEM} NAME_WE)
+  install(FILES ${CONFIGITEM} DESTINATION test)
+endforeach(CONFIGITEM)
+
 file(APPEND "${DRIVER_SCRIPT}" "popd> /dev/null")
 
 set(PREPARE_TEST_MATERIALS_SH "${CMAKE_CURRENT_SOURCE_DIR}/prepare_test_materials.sh")
+set(PREPROCESS_IMAGES_PY "${CMAKE_CURRENT_SOURCE_DIR}/preprocess_images.py")
 
 install(FILES ${DRIVER_SCRIPT}
         PERMISSIONS OWNER_WRITE OWNER_READ OWNER_EXECUTE
@@ -43,6 +50,12 @@ install(FILES ${PREPARE_TEST_MATERIALS_SH}
         PERMISSIONS OWNER_WRITE OWNER_READ OWNER_EXECUTE
                     GROUP_READ GROUP_EXECUTE
                     WORLD_READ WORLD_EXECUTE
+        DESTINATION test)
+
+install(FILES ${PREPROCESS_IMAGES_PY}
+        PERMISSIONS OWNER_WRITE OWNER_READ
+                    GROUP_READ
+                    WORLD_READ
         DESTINATION test)
 
 install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/README.txt

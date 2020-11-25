@@ -1,0 +1,176 @@
+operand {
+  name: "Hole"
+  type: FLOAT32
+  shape {
+    dim: 16
+    dim: 4
+    dim: 4
+    dim: 16
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+}
+operand {
+  name: "Weights1"
+  type: FLOAT32
+  shape {
+    dim: 16
+    dim: 1
+    dim: 1
+    dim: 16
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+}
+operand {
+  name: "Bias1"
+  type: FLOAT32
+  shape {
+    dim: 16
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+}
+operand {
+  name: "Conv1"
+  type: FLOAT32
+  shape {
+    dim: 16
+    dim: 4
+    dim: 4
+    dim: 16
+  }
+}
+operand {
+  name: "Gamma"
+  type: FLOAT32
+  shape {
+    dim: 16
+  }
+  filler {
+    tag: "explicit"
+    arg: "1.0"
+  }
+}
+operand {
+  name: "Mul"
+  type: FLOAT32
+  shape {
+    dim: 16
+    dim: 4
+    dim: 4
+    dim: 16
+  }
+}
+operand {
+  name: "Beta"
+  type: FLOAT32
+  shape {
+    dim: 16
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+}
+operand {
+  name: "Add"
+  type: FLOAT32
+  shape {
+    dim: 16
+    dim: 4
+    dim: 4
+    dim: 16
+  }
+}
+operand {
+  name: "Weights2"
+  type: FLOAT32
+  shape {
+    dim: 16
+    dim: 1
+    dim: 1
+    dim: 16
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+}
+operand {
+  name: "Bias2"
+  type: FLOAT32
+  shape {
+    dim: 16
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+}
+operand {
+  name: "Conv2"
+  type: FLOAT32
+  shape {
+    dim: 16
+    dim: 4
+    dim: 4
+    dim: 16
+  }
+}
+operation {
+  type: "Conv2D"
+  conv2d_options {
+    padding: VALID
+    stride_w: 1
+    stride_h: 1
+  }
+  input: "Hole"
+  input: "Weights1"
+  input: "Bias1"
+  output: "Conv1"
+}
+operation {
+  type: "Mul"
+  input: "Conv1"
+  input: "Gamma"
+  output: "Mul"
+  mul_options {
+    activation: NONE
+  }
+}
+operation {
+  type: "Add"
+  input: "Mul"
+  input: "Beta"
+  output: "Add"
+  add_options {
+    activation: RELU
+  }
+}
+operation {
+  type: "Conv2D"
+  conv2d_options {
+    padding: VALID
+    stride_w: 1
+    stride_h: 1
+  }
+  input: "Add"
+  input: "Weights2"
+  input: "Bias2"
+  output: "Conv2"
+}
+input: "Hole"
+output: "Conv2"

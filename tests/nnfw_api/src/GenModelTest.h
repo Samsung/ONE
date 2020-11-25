@@ -69,7 +69,11 @@ struct TestCaseData
    * @tparam T Data type
    * @param data vector data array
    */
-  template <typename T> void addInput(const std::vector<T> &data) { addData(inputs, data); }
+  template <typename T> TestCaseData &addInput(const std::vector<T> &data)
+  {
+    addData(inputs, data);
+    return *this;
+  }
 
   /**
    * @brief Append vector data to inputs
@@ -77,12 +81,20 @@ struct TestCaseData
    * @tparam T Data type
    * @param data vector data array
    */
-  template <typename T> void addOutput(const std::vector<T> &data) { addData(outputs, data); }
+  template <typename T> TestCaseData &addOutput(const std::vector<T> &data)
+  {
+    addData(outputs, data);
+    return *this;
+  }
 
   /**
    * @brief Call this when @c nnfw_run() for this test case is expected to be failed
    */
-  void expectFailRun() { _expected_fail_run = true; }
+  TestCaseData &expectFailRun()
+  {
+    _expected_fail_run = true;
+    return *this;
+  }
   bool expected_fail_run() const { return _expected_fail_run; }
 
 private:
@@ -212,7 +224,7 @@ public:
         _backends.push_back(backend);
       }
 #endif
-      if (backend == "cpu")
+      if (backend == "cpu" || backend == "ruy" || backend == "xnnpack")
       {
         _backends.push_back(backend);
       }
@@ -278,7 +290,7 @@ protected:
 
       if (_context->expected_fail_compile())
       {
-        ASSERT_EQ(nnfw_prepare(_so.session), NNFW_STATUS_ERROR);
+        ASSERT_NE(nnfw_prepare(_so.session), NNFW_STATUS_NO_ERROR);
 
         NNFW_ENSURE_SUCCESS(nnfw_close_session(_so.session));
         continue;
@@ -330,7 +342,6 @@ protected:
           _so.outputs[ind].resize(size);
         }
 
-        ASSERT_GT(_so.outputs[ind].size(), 0) << "Please make sure TC output is non-empty.";
         ASSERT_EQ(nnfw_set_output(_so.session, ind, ti.dtype, _so.outputs[ind].data(),
                                   _so.outputs[ind].size()),
                   NNFW_STATUS_NO_ERROR);
@@ -351,7 +362,7 @@ protected:
 
         if (test_case.expected_fail_run())
         {
-          ASSERT_EQ(nnfw_run(_so.session), NNFW_STATUS_ERROR);
+          ASSERT_NE(nnfw_run(_so.session), NNFW_STATUS_NO_ERROR);
           continue;
         }
 

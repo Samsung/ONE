@@ -104,7 +104,7 @@ function profile_for_he_shed()
         $RUN_TEST_SH --driverbin=$BENCHMARK_DRIVER_BIN $MODEL > $LOG_FILE 2>&1
         RET=$?
         if [[ $RET -ne 0 ]]; then
-            echo "Profiling $MODEL aborted in run#$j... exit code: $RET"xX
+            echo "Profiling $MODEL aborted in run#$j... exit code: $RET"
             exit $RET
         fi
         echo "finished"

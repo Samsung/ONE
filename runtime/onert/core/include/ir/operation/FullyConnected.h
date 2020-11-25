@@ -42,6 +42,7 @@ public:
   struct Param
   {
     Activation activation;
+    FullyConnectedWeightsFormat weights_format;
   };
 
 public:

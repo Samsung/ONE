@@ -17,9 +17,12 @@
 #ifndef __ONERT_BACKEND_CONTROLFLOW_EXTERNAL_CONTEXT_H__
 #define __ONERT_BACKEND_CONTROLFLOW_EXTERNAL_CONTEXT_H__
 
-#include <backend/IExternalContext.h>
 #include <util/ConfigSource.h>
+
 #include <ruy/context.h>
+#include <ruy/context_get_ctx.h>
+#include <ruy/ctx.h>
+#include <ruy/tune.h>
 
 namespace
 {
@@ -34,12 +37,13 @@ namespace controlflow
 {
 
 // TODO Unify this with cpu::ExternalContext
-class ExternalContext : public IExternalContext
+class ExternalContext
 {
 public:
-  ExternalContext() : _ruy_context(nullptr)
+  ExternalContext() : _ruy_context(std::make_unique<ruy::Context>())
   {
-    // setMaxNumThreads(onert::util::getConfigInt(onert::util::config::RUY_THREADS));
+    setMaxNumThreads(onert::util::getConfigInt(onert::util::config::RUY_THREADS));
+    initPerThreadState();
   }
 
   void setMaxNumThreads(int max_num_threads)
@@ -50,6 +54,19 @@ public:
   }
 
   ruy::Context *ruy_context() const { return _ruy_context.get(); }
+
+private:
+  void initPerThreadState()
+  {
+    // Initialize per-thread state.
+    const int thread_count = _ruy_context->max_num_threads();
+    auto ctx = ruy::get_ctx(_ruy_context.get());
+    ctx->EnsureThreadSpecificResources(thread_count);
+    for (int i = 0; i < thread_count; i++)
+    {
+      ctx->GetThreadSpecificTuningResolver(i)->SetTuning(ctx->explicit_tuning());
+    }
+  }
 
 private:
   const std::unique_ptr<ruy::Context> _ruy_context;

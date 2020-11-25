@@ -19,6 +19,7 @@
 
 #include <luci/IR/CircleNodes.h>
 #include <luci/IR/CircleNodeVisitor.h>
+#include <luci/IR/CircleShapeSignature.h>
 #include <luci/Service/CircleTypeInference.h>
 #include <luci/Service/CircleShapeInference.h>
 #include <luci/Log.h>
@@ -53,6 +54,9 @@ public:
   const ShapeDescription &shape(void) const { return _shape; }
   void shape(const ShapeDescription &shape) { _shape = shape; }
 
+  const ShapeSignature &shape_signature(void) const { return _shape_signature; }
+  void shape_signature(const ShapeSignature &ss) { _shape_signature = ss; }
+
   luci::ShapeStatus shape_status(void) const { return _shape_status; }
   void shape_status(luci::ShapeStatus ss) { _shape_status = ss; }
 
@@ -71,6 +75,7 @@ private:
 
   circle::TensorType _dtype{circle::TensorType_FLOAT32};
   ShapeDescription _shape{};
+  ShapeSignature _shape_signature;
   luci::ShapeStatus _shape_status{luci::ShapeStatus::UNDEFINED};
 
   luci::CircleConst *_content = nullptr;
@@ -107,6 +112,7 @@ void allocateCircleTensorInfo(CircleNode *node, CircleTensorContext &ctx)
 
   tensor_info.name(tensor_name);
   tensor_info.dtype(to_circle_tensortype(luci::node_dtype(node)));
+  tensor_info.shape_signature(node->shape_signature());
   if (node->shape_status() == ShapeStatus::VALID)
     tensor_info.shape(to_shape_description(luci::node_shape(node)));
   tensor_info.shape_status(node->shape_status());
@@ -147,9 +153,21 @@ public:
   bool visit(luci::CircleUnpackOut *) final { return true; }
   bool visit(luci::CircleWhileOut *) final { return true; }
 
-  bool visit(luci::CircleBidirectionalSequenceLSTMOut *node) final 
-  { 
-    store_outputs(node, 1);
+  bool visit(luci::CircleBidirectionalSequenceLSTMOut *) final
+  {
+    return true;
+  }
+
+  bool visit(luci::CircleBidirectionalSequenceLSTM *node) final
+  {
+    if (node->merge_outputs())
+    {
+      store_outputs(node, 1);
+    }
+    else
+    {
+      store_outputs(node, 2);
+    }
     return true;
   }
 
@@ -238,6 +256,15 @@ flatbuffers::Offset<Vector<int32_t>> encodeShape(FlatBufferBuilder &builder,
 {
   assert(shape._rank_known && "unknown number of dimensions is not supported");
   return builder.CreateVector(shape._dims);
+}
+
+flatbuffers::Offset<Vector<int32_t>> encodeShapeSignature(FlatBufferBuilder &builder,
+                                                          const ShapeSignature &shape_signature)
+{
+  if (shape_signature.rank() == 0)
+    return 0;
+
+  return builder.CreateVector(shape_signature.as_vector());
 }
 
 flatbuffers::Offset<circle::Buffer> encodeOpBuffer(FlatBufferBuilder &builder)
@@ -436,11 +463,14 @@ void exportOpDefinedTensor(const CircleTensoInfo &info, FlatBufferBuilder &build
 
   auto sparsityparam = encodeSparsityParameters(builder, info.sparsityparam());
 
+  auto shape_signature_offset = encodeShapeSignature(builder, info.shape_signature());
+
   auto buffer_id = get_buffer_id(builder, md, info.content());
 
   auto name_offset = builder.CreateString(info.name());
-  auto tensor_offset = CreateTensor(builder, shape_offset, info.dtype(), buffer_id, name_offset,
-                                    quantparam, /*is_variable*/ false, sparsityparam);
+  auto tensor_offset =
+      CreateTensor(builder, shape_offset, info.dtype(), buffer_id, name_offset, quantparam,
+                   /*is_variable*/ false, sparsityparam, shape_signature_offset);
   gd._tensors.push_back(tensor_offset);
 }
 

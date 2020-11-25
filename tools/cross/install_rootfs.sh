@@ -5,7 +5,7 @@ usage()
 {
     echo "Usage: $0 [BuildArch] [LinuxCodeName] [--setproxy=IP] [--skipunmount]"
     echo "BuildArch can be: arm(default), aarch64 and armel"
-    echo "LinuxCodeName - optional, Code name for Linux, can be: xenial(default), trusty"
+    echo "LinuxCodeName - optional, Code name for Linux, can be: bionic(default), trusty, xenial, focal"
     echo "                          If BuildArch is armel, this can be tizen(default)"
     echo "--setproxy=IP - optional, IP is the proxy server IP address or url with portnumber"
     echo "                           default no proxy. Example: --setproxy=127.1.2.3:8080"
@@ -19,7 +19,7 @@ __UbuntuRepo="http://ports.ubuntu.com/"
 
 __BuildArch=arm
 __QemuArch=armhf
-__LinuxCodeName=xenial
+__LinuxCodeName=bionic
 __SkipUnmount=0
 __IsProxySet=0
 __Apt=""
@@ -29,7 +29,7 @@ __UbuntuPackages="build-essential"
 # other development supports
 __UbuntuPackages+=" ocl-icd-opencl-dev"
 __UbuntuPackages+=" libhdf5-dev"
-__UbuntuBoostPackages=" llibboost-all-dev"
+__UbuntuBoostPackages=" libboost-all-dev"
 
 # symlinks fixer
 __UbuntuPackages+=" symlinks"

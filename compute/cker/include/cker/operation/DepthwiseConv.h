@@ -22,143 +22,159 @@
 #include "cker/Types.h"
 #include "cker/Utils.h"
 #include "cker/neon/neon_check.h"
+#include "cker/operation/optimized/DepthwiseConvFloat.h"
 #include "cker/operation/optimized/DepthwiseConvUint8.h"
+#include "cker/CpuBackendThreadpool.h"
 
 namespace nnfw
 {
 namespace cker
 {
 
-inline void DepthwiseConv(const DepthwiseConvParams &params, const Shape &input_shape,
-                          const uint8_t *input_data, const Shape &filter_shape,
-                          const uint8_t *filter_data, const Shape &bias_shape,
-                          const int32_t *bias_data, const Shape &output_shape, uint8_t *output_data)
+// TODO(luwa): add multithread to per-channel depthwise_conv
+// DepthwiseConv can run with multi threads on the dim specified by thread_dim.
+// Each thread processes output elements on dim, thread_dim, in the range of
+// [thread_start, thread_end).
+// For example, assume thread_start = 2, thread_end = 6, and thread_dim = 1, it
+// means that it will calculate DepthwiseConv for output_data[:, 2:5, :, :].
+template <typename T, typename TS> struct DepthwiseConvWorkerTask : cpu_backend_threadpool::Task
 {
-  const int depth_multiplier = params.depth_multiplier;
-  const int32_t output_activation_min = params.quantized_activation_min;
-  const int32_t output_activation_max = params.quantized_activation_max;
-  const int dilation_width_factor = params.dilation_width_factor;
-  const int dilation_height_factor = params.dilation_height_factor;
-  assert(dilation_width_factor >= 1);
-  assert(dilation_height_factor >= 1);
-  UNUSED_RELEASE(dilation_width_factor);
-  UNUSED_RELEASE(dilation_height_factor);
-  assert(input_shape.DimensionsCount() == 4);
-  assert(filter_shape.DimensionsCount() == 4);
-  assert(output_shape.DimensionsCount() == 4);
-  assert(output_activation_min <= output_activation_max);
-  UNUSED_RELEASE(output_activation_min);
-  UNUSED_RELEASE(output_activation_max);
-  const int output_depth = MatchingDim(filter_shape, 3, output_shape, 3);
-  const int input_depth = input_shape.Dims(3);
-  assert(output_depth == input_depth * depth_multiplier);
-  assert(bias_shape.FlatSize() == output_depth);
-  UNUSED_RELEASE(input_depth);
-  UNUSED_RELEASE(output_depth);
-  UNUSED_RELEASE(depth_multiplier);
+  DepthwiseConvWorkerTask(const DepthwiseConvParams &params, const Shape &input_shape,
+                          const T *input_data, const Shape &filter_shape, const T *filter_data,
+                          const Shape &bias_shape, const TS *bias_data, const Shape &output_shape,
+                          T *output_data, int thread_start, int thread_end, int thread_dim)
+      : params_(params), input_shape_(input_shape), input_data_(input_data),
+        filter_shape_(filter_shape), filter_data_(filter_data), bias_shape_(bias_shape),
+        bias_data_(bias_data), output_shape_(output_shape), output_data_(output_data),
+        thread_start_(thread_start), thread_end_(thread_end), thread_dim_(thread_dim)
+  {
+  }
 
-// Enable for arm64 except for the Nvidia Linux 4 Tegra (L4T) running on
-// Jetson TX-2. This compiler does not support the offsetof() macro.
-#if defined(__aarch64__)
-//  TODO Use below codes
+  void Run() override
+  {
+    optimized::DepthwiseConvImpl(params_, input_shape_, input_data_, filter_shape_, filter_data_,
+                                 bias_shape_, bias_data_, output_shape_, output_data_,
+                                 thread_start_, thread_end_, thread_dim_);
+  }
 
-//  const int stride_width = params.stride_width;
-//  const int stride_height = params.stride_height;
-//  const int pad_width = params.padding_values.width;
-//  const int pad_height = params.padding_values.height;
-//  const int output_shift = params.output_shift;
-//
-//  // Call kernel optimized for depthwise convolutions using 3x3 filters if
-//  // parameters are supported.
-//  if (Fast3x3FilterKernelSupported(
-//          input_shape, filter_shape, stride_width, stride_height,
-//          dilation_width_factor, dilation_height_factor, pad_width, pad_height,
-//          depth_multiplier, output_shape, output_shift)) {
-//    DepthwiseConv3x3Filter(params, input_shape, input_data, filter_shape,
-//                           filter_data, bias_shape, bias_data, output_shape,
-//                           output_data);
-//    return;
-//  }
-#endif
+private:
+  const DepthwiseConvParams &params_;
+  const Shape &input_shape_;
+  const T *input_data_;
+  const Shape &filter_shape_;
+  const T *filter_data_;
+  const Shape &bias_shape_;
+  const TS *bias_data_;
+  const Shape &output_shape_;
+  T *output_data_;
+  // const CpuFlags& cpu_flags_;
+  int thread_start_;
+  int thread_end_;
+  int thread_dim_;
+};
 
-  optimized::DepthwiseConvGeneral(params, input_shape, input_data, filter_shape, filter_data,
-                                  bias_shape, bias_data, output_shape, output_data);
-}
-
-inline void DepthwiseConv(const DepthwiseConvParams &params, const Shape &input_shape,
-                          const float *input_data, const Shape &filter_shape,
-                          const float *filter_data, const Shape &bias_shape, const float *bias_data,
-                          const Shape &output_shape, float *output_data)
+inline int HowManyConvThreads(const Shape &output_shape, const Shape &filter_shape)
 {
-  const int stride_width = params.stride_width;
-  const int stride_height = params.stride_height;
-  const int dilation_width_factor = params.dilation_width_factor;
-  const int dilation_height_factor = params.dilation_height_factor;
-  const int pad_width = params.padding_values.width;
-  const int pad_height = params.padding_values.height;
-  const int depth_multiplier = params.depth_multiplier;
-  const float output_activation_min = params.float_activation_min;
-  const float output_activation_max = params.float_activation_max;
-  assert(input_shape.DimensionsCount() == 4);
-  assert(filter_shape.DimensionsCount() == 4);
-  assert(output_shape.DimensionsCount() == 4);
-
-  const int batches = MatchingDim(input_shape, 0, output_shape, 0);
-  const int output_depth = MatchingDim(filter_shape, 3, output_shape, 3);
-  const int input_height = input_shape.Dims(1);
-  const int input_width = input_shape.Dims(2);
-  const int input_depth = input_shape.Dims(3);
+  // How many scalar multiplications are needed to make it worth using one
+  // more thread
+  static constexpr int kMinMulPerThread = 1 << 13; // 8k
   const int filter_height = filter_shape.Dims(1);
   const int filter_width = filter_shape.Dims(2);
-  const int output_height = output_shape.Dims(1);
-  const int output_width = output_shape.Dims(2);
-  assert(output_depth == input_depth * depth_multiplier);
-  assert(bias_shape.FlatSize() == output_depth);
-  UNUSED_RELEASE(output_depth);
-  UNUSED_RELEASE(bias_shape);
+  const int num_muls = output_shape.FlatSize() * filter_height * filter_width;
+  // Try to avoid real runtime divisions if possible by dividing by a
+  // compile-time constant.
+  int thread_count = std::max(1, num_muls / kMinMulPerThread);
+  return thread_count;
+}
 
-  for (int b = 0; b < batches; ++b)
+inline bool MultithreadAlongBatches(int thread_count, int batches)
+{
+  assert(thread_count >= 2);
+  // If there are fewer batch entries than the number of threads we want to use,
+  // then better do intra-batch-entry multithreading.
+  if (batches < thread_count)
   {
-    for (int out_y = 0; out_y < output_height; ++out_y)
-    {
-      for (int out_x = 0; out_x < output_width; ++out_x)
-      {
-        for (int ic = 0; ic < input_depth; ++ic)
-        {
-          for (int m = 0; m < depth_multiplier; m++)
-          {
-            const int oc = m + ic * depth_multiplier;
-            const int in_x_origin = (out_x * stride_width) - pad_width;
-            const int in_y_origin = (out_y * stride_height) - pad_height;
-            float total = 0.f;
-            for (int filter_y = 0; filter_y < filter_height; ++filter_y)
-            {
-              for (int filter_x = 0; filter_x < filter_width; ++filter_x)
-              {
-                const int in_x = in_x_origin + dilation_width_factor * filter_x;
-                const int in_y = in_y_origin + dilation_height_factor * filter_y;
-                // If the location is outside the bounds of the input image,
-                // use zero as a default value.
-                if ((in_x >= 0) && (in_x < input_width) && (in_y >= 0) && (in_y < input_height))
-                {
-                  float input_value = input_data[Offset(input_shape, b, in_y, in_x, ic)];
-                  float filter_value = filter_data[Offset(filter_shape, 0, filter_y, filter_x, oc)];
-                  total += (input_value * filter_value);
-                }
-              }
-            }
-            float bias_value = 0.0f;
-            if (bias_data)
-            {
-              bias_value = bias_data[oc];
-            }
-            output_data[Offset(output_shape, b, out_y, out_x, oc)] = ActivationFunctionWithMinMax(
-                total + bias_value, output_activation_min, output_activation_max);
-          }
-        }
-      }
-    }
+    return false;
   }
+  // If there are at least 2 batch entries to be handed to each thread, then
+  // it's safe to proceed with batch-wise multithreading: each thread will have
+  // approximately equal number of batch entries to handle, so the load
+  // balancing will be reasonable, and the amount to which the load is not
+  // perfectly balanced will be offset by the inherent advantages of
+  // batch-wise multithreading (each thread is more efficient thanks to working
+  // on larger buffers with less boundary-handling overhead).
+  if (batches >= 2 * thread_count)
+  {
+    return true;
+  }
+  // In the limit case were there are at least 1 but not much more than 1
+  // batch entries per thread, it may be a good idea to do per-batch
+  // multithreading if the number of batch entries is a multiple of the number
+  // of threads, so that each thread will have the same number of batch entries
+  // to process.
+  return ((batches % thread_count) == 0);
+}
+
+template <typename T, typename TS>
+inline void DepthwiseConv(const DepthwiseConvParams &params, const Shape &input_shape,
+                          const T *input_data, const Shape &filter_shape, const T *filter_data,
+                          const Shape &bias_shape, const TS *bias_data, const Shape &output_shape,
+                          T *output_data, ruy::Context *ruy_context)
+{
+  assert(input_shape.DimensionsCount() == 4);
+  assert(filter_shape.DimensionsCount() == 4);
+  assert(output_shape.DimensionsCount() == 4);
+
+  int thread_count = HowManyConvThreads(output_shape, filter_shape);
+
+  // NOTE Borrow RuyContext to get max_num_threads setting
+  // TODO Define and use max_num_threads for CPU backend
+  const auto max_threads = (ruy_context == nullptr) ? 1 : ruy_context->max_num_threads();
+
+  thread_count = std::max(1, std::min(thread_count, max_threads));
+  // Cap the number of threads to 2 for float path to avoid regression in
+  // performance (b/132294857).
+  if (std::is_floating_point<T>::value)
+  {
+    thread_count = std::min(thread_count, 2);
+  }
+
+  const int output_batches = output_shape.Dims(0);
+  const int output_height = output_shape.Dims(1);
+
+  if (thread_count == 1)
+  {
+    optimized::DepthwiseConvImpl(params, input_shape, input_data, filter_shape, filter_data,
+                                 bias_shape, bias_data, output_shape, output_data, 0, output_height,
+                                 1);
+    return;
+  }
+
+  int thread_dim, thread_dim_size;
+  if (MultithreadAlongBatches(thread_count, output_batches))
+  {
+    thread_dim = 0;
+    thread_dim_size = output_batches;
+  }
+  else
+  {
+    thread_dim = 1;
+    thread_dim_size = output_height;
+  }
+
+  std::vector<DepthwiseConvWorkerTask<T, TS>> tasks;
+  // TODO(b/131746020) don't create new heap allocations every time.
+  // At least we make it a single heap allocation by using reserve().
+  tasks.reserve(thread_count);
+  int thread_start = 0;
+  for (int i = 0; i < thread_count; ++i)
+  {
+    int thread_end = thread_start + (thread_dim_size - thread_start) / (thread_count - i);
+    tasks.emplace_back(params, input_shape, input_data, filter_shape, filter_data, bias_shape,
+                       bias_data, output_shape, output_data, thread_start, thread_end, thread_dim);
+    thread_start = thread_end;
+  }
+  cpu_backend_threadpool::Execute(tasks.size(), tasks.data(), ruy_context);
 }
 
 } // namespace cker

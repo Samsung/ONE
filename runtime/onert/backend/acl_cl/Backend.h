@@ -50,12 +50,11 @@ public:
     auto context = std::make_unique<BackendContext>(this, &graph);
     auto tm = createTensorManager(is_linear_executor);
     auto tr = std::make_shared<acl_common::AclTensorRegistry<TensorManager>>(tm);
-    auto tb = std::make_shared<TensorBuilder>(operands, tm, tr);
+    auto tb = std::make_shared<TensorBuilder>(operands, tm);
     context->tensor_registry = tr;
     context->tensor_builder = tb;
     context->constant_initializer = std::make_shared<ConstantInitializer>(operands, tr);
     context->kernel_gen = std::make_shared<KernelGenerator>(operands, operations, tb, tr);
-    context->tensor_register = nullptr;
     context->optimizer = std::make_shared<Optimizer>(context.get());
     return context;
   }

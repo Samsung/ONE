@@ -289,3 +289,64 @@ TEST_F(GenModelTest, neg_Reshape_without_shape_param)
 
   SUCCEED();
 }
+
+// test to check model that has op->while->op
+TEST_F(GenModelTest, while_with_input_output)
+{
+  // The model looks just like the below pseudocode
+  //
+  //   x = cast(int to float)
+  //   while (x < 100.0)
+  //   {
+  //     x = x + 10.0;
+  //   }
+  //   x = cast(float to int)
+
+  CircleGen cgen;
+  std::vector<float> incr_data{10};
+  uint32_t incr_buf = cgen.addBuffer(incr_data);
+  std::vector<float> end_data{100};
+  uint32_t end_buf = cgen.addBuffer(end_data);
+
+  // primary subgraph
+  {
+    int model_in = cgen.addTensor({{1}, circle::TensorType_INT32});
+    int cast_out = cgen.addTensor({{1}, circle::TensorType_FLOAT32});
+    int while_out = cgen.addTensor({{1}, circle::TensorType_FLOAT32});
+    int model_out = cgen.addTensor({{1}, circle::TensorType_INT32});
+
+    cgen.addOperatorCast({{model_in}, {cast_out}}, circle::TensorType_INT32,
+                         circle::TensorType_FLOAT32);
+    cgen.addOperatorWhile({{cast_out}, {while_out}}, 1, 2);
+    cgen.addOperatorCast({{while_out}, {model_out}}, circle::TensorType_FLOAT32,
+                         circle::TensorType_INT32);
+
+    cgen.setInputsAndOutputs({model_in}, {model_out});
+  }
+
+  // cond subgraph
+  {
+    cgen.nextSubgraph();
+    int x = cgen.addTensor({{1}, circle::TensorType_FLOAT32});
+    int end = cgen.addTensor({{1}, circle::TensorType_FLOAT32, end_buf});
+    int result = cgen.addTensor({{1}, circle::TensorType_BOOL});
+    cgen.addOperatorLess({{x, end}, {result}});
+    cgen.setInputsAndOutputs({x}, {result});
+  }
+
+  // body subgraph
+  {
+    cgen.nextSubgraph();
+    int x_in = cgen.addTensor({{1}, circle::TensorType_FLOAT32});
+    int incr = cgen.addTensor({{1}, circle::TensorType_FLOAT32, incr_buf});
+    int x_out = cgen.addTensor({{1}, circle::TensorType_FLOAT32});
+    cgen.addOperatorAdd({{x_in, incr}, {x_out}}, circle::ActivationFunctionType_NONE);
+    cgen.setInputsAndOutputs({x_in}, {x_out});
+  }
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->addTestCase(uniformTCD<int>({{0}}, {{100}}));
+  _context->setBackends({"cpu"});
+
+  SUCCEED();
+}

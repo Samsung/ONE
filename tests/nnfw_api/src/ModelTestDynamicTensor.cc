@@ -21,32 +21,91 @@
 #include "fixtures.h"
 #include "CircleGen.h"
 #include "GenModelTest.h"
+#include "NNPackages.h"
 
-void set_input_output(nnfw_session *session, const std::vector<float> &input,
-                      std::vector<float> &actual_output)
+// This macro can be used instead of using NNFW_ENSURE_SUCCESS especially with negative test.
+// E.g., setInputOutput() is written with this macro and the following check is available to check
+// if there's any error while setting input or output:
+//
+//  EXPECT_ANY_THROW(setInputOutput(...));
+//
+#define THROW_WHEN_NNFW_ERROR(result)                                  \
+  do                                                                   \
+  {                                                                    \
+    if (result != NNFW_STATUS_NO_ERROR)                                \
+      throw std::runtime_error("returning error on calling nnfw api"); \
+  } while (false)
+
+template <class CPP_TYPE> struct nnfw_type;
+
+template <> struct nnfw_type<float>
 {
-  ASSERT_EQ(nnfw_set_input(session, 0, NNFW_TYPE_TENSOR_FLOAT32, input.data(),
-                           sizeof(float) * input.size()),
-            NNFW_STATUS_NO_ERROR);
+  static const NNFW_TYPE dtype = NNFW_TYPE_TENSOR_FLOAT32;
+};
 
-  ASSERT_EQ(nnfw_set_output(session, 0, NNFW_TYPE_TENSOR_FLOAT32, actual_output.data(),
-                            sizeof(float) * actual_output.size()),
-            NNFW_STATUS_NO_ERROR);
+template <> struct nnfw_type<int32_t>
+{
+  static const NNFW_TYPE dtype = NNFW_TYPE_TENSOR_INT32;
+};
+
+// TODO Add more struct nnfw_type for other types when needed
+
+template <class T_INPUT, class T_OUT>
+void setInputOutput(nnfw_session *session, const std::vector<T_INPUT> &input,
+                    std::vector<T_OUT> &actual_output)
+{
+  NNFW_STATUS result;
+  result = nnfw_set_input(session, 0, nnfw_type<T_INPUT>::dtype, input.data(),
+                          sizeof(T_INPUT) * input.size());
+  THROW_WHEN_NNFW_ERROR(result);
+
+  result = nnfw_set_output(session, 0, nnfw_type<T_OUT>::dtype, actual_output.data(),
+                           sizeof(T_OUT) * actual_output.size());
+  THROW_WHEN_NNFW_ERROR(result);
 }
 
-void set_input_output(nnfw_session *session, const std::vector<float> &input0,
-                      const std::vector<float> &input1, std::vector<float> &actual_output)
+template <class T_INPUT0, class T_INPUT1, class T_OUT>
+void setInputOutput(nnfw_session *session, const std::vector<T_INPUT0> &input0,
+                    const std::vector<T_INPUT1> &input1, std::vector<T_OUT> &actual_output)
 {
-  ASSERT_EQ(nnfw_set_input(session, 0, NNFW_TYPE_TENSOR_FLOAT32, input0.data(),
-                           sizeof(float) * input0.size()),
-            NNFW_STATUS_NO_ERROR);
-  ASSERT_EQ(nnfw_set_input(session, 1, NNFW_TYPE_TENSOR_FLOAT32, input1.data(),
-                           sizeof(float) * input1.size()),
-            NNFW_STATUS_NO_ERROR);
+  NNFW_STATUS result;
+  result = nnfw_set_input(session, 0, nnfw_type<T_INPUT0>::dtype, input0.data(),
+                          sizeof(T_INPUT0) * input0.size());
+  THROW_WHEN_NNFW_ERROR(result);
 
-  ASSERT_EQ(nnfw_set_output(session, 0, NNFW_TYPE_TENSOR_FLOAT32, actual_output.data(),
-                            sizeof(float) * actual_output.size()),
-            NNFW_STATUS_NO_ERROR);
+  result = nnfw_set_input(session, 1, nnfw_type<T_INPUT1>::dtype, input1.data(),
+                          sizeof(T_INPUT1) * input1.size());
+  THROW_WHEN_NNFW_ERROR(result);
+
+  result = nnfw_set_output(session, 0, nnfw_type<T_OUT>::dtype, actual_output.data(),
+                           sizeof(T_OUT) * actual_output.size());
+  THROW_WHEN_NNFW_ERROR(result);
+}
+
+template <class T_OUTPUT>
+void verifyOutput(nnfw_session *session, const nnfw_tensorinfo expected_ti,
+                  const std::vector<T_OUTPUT> &expected, const std::vector<T_OUTPUT> &actual)
+{
+  uint32_t output_num = -1;
+  nnfw_tensorinfo t_out;
+  NNFW_ENSURE_SUCCESS(nnfw_output_size(session, &output_num));
+  NNFW_ENSURE_SUCCESS(nnfw_output_tensorinfo(session, 0, &t_out));
+
+  ASSERT_EQ(output_num, 1);
+
+  // nnfw_tensorinfo of output
+  tensorInfoEqual(t_out, expected_ti);
+
+  // value of output
+  ASSERT_EQ(expected.size(), actual.size());
+  for (int i = 0; i < expected.size(); i++)
+  {
+    bool is_output_float = std::is_same<T_OUTPUT, float>::value;
+    if (is_output_float)
+      ASSERT_FLOAT_EQ(expected[i], actual[i]);
+    else
+      ASSERT_EQ(expected[i], actual[i]);
+  }
 }
 
 /**
@@ -86,10 +145,7 @@ TEST_F(GenModelTest, dynamic_reshape_from_2x3_to_3x2)
 
   _context = std::make_unique<GenModelTestContext>(build_dynamic_Reshape());
   {
-    TestCaseData tcd;
-    tcd.addInput(new_shape);
-    tcd.addOutput(expected);
-    _context->addTestCase(tcd);
+    _context->addTestCase(TestCaseData{}.addInput(new_shape).addOutput(expected));
     _context->setBackends({"cpu"}); // Currently, dynamic tensor runs on "cpu" only
     _context->output_sizes(0, sizeof(float) * expected.size());
   }
@@ -108,12 +164,8 @@ TEST_F(GenModelTest, neg_reshape_from_2x3_to_wrong_3x3)
 
   _context = std::make_unique<GenModelTestContext>(build_dynamic_Reshape());
   {
-    TestCaseData tcd;
-    tcd.addInput(wrong_shape);
-    tcd.addOutput(expected);
-    tcd.expectFailRun();
 
-    _context->addTestCase(tcd);
+    _context->addTestCase(TestCaseData{}.addInput(wrong_shape).addOutput(expected).expectFailRun());
     _context->setBackends({"cpu"}); // Currently, dynamic tensor runs on "cpu" only
     _context->output_sizes(0, sizeof(float) * expected.size());
   }
@@ -126,18 +178,11 @@ TEST_F(GenModelTest, reshape_multiple_executions)
   std::vector<int> new_shape;
   std::vector<float> expected = {-1.5, -1.0, -0.5, 0.5, 1.0, 1.5};
 
-  auto add_tcd = [&](const decltype(new_shape) &&new_shape) {
-    TestCaseData tcd;
-    tcd.addInput(new_shape);
-    tcd.addOutput(expected);
-    _context->addTestCase(tcd);
-  };
-
   _context = std::make_unique<GenModelTestContext>(build_dynamic_Reshape());
   {
-    add_tcd({3, 2});
-    add_tcd({1, 6});
-    add_tcd({6, 1});
+    _context->addTestCase(TestCaseData{}.addInput<int>({3, 2}).addOutput(expected));
+    _context->addTestCase(TestCaseData{}.addInput<int>({1, 6}).addOutput(expected));
+    _context->addTestCase(TestCaseData{}.addInput<int>({6, 1}).addOutput(expected));
 
     _context->setBackends({"cpu"}); // Currently, dynamic tensor runs on "cpu" only
     _context->output_sizes(0, sizeof(float) * expected.size());
@@ -153,8 +198,7 @@ TEST_F(GenModelTest, neg_reshape_multiple_executions)
 
   auto add_tcd = [&](const decltype(new_shape) &&new_shape, bool expect_fail_on_run) {
     TestCaseData tcd;
-    tcd.addInput(new_shape);
-    tcd.addOutput(expected);
+    tcd.addInput(new_shape).addOutput(expected);
     if (expect_fail_on_run)
       tcd.expectFailRun();
     _context->addTestCase(tcd);
@@ -230,15 +274,13 @@ TEST(TestDynamicTensor, concat_unknown_dim_input0_to_2x3)
   NNFW_ENSURE_SUCCESS(nnfw_set_input_tensorinfo(session, 0, &ti));
   NNFW_ENSURE_SUCCESS(nnfw_prepare(session));
 
-  set_input_output(session, input0, input1, actual_output);
+  setInputOutput(session, input0, input1, actual_output);
 
   // Do inference
   NNFW_STATUS res = nnfw_run(session);
   NNFW_ENSURE_SUCCESS(res);
 
-  // output value check
-  for (int i = 0; i < expected.size(); ++i)
-    ASSERT_EQ(expected[i], actual_output[i]);
+  verifyOutput(session, {NNFW_TYPE_TENSOR_FLOAT32, 2, {3, 3}}, expected, actual_output);
 }
 
 /**
@@ -335,15 +377,13 @@ TEST(TestDynamicTensor, set_input_tensorinfo_after_compilation_add)
 
   NNFW_ENSURE_SUCCESS(nnfw_set_input_tensorinfo(session, 0, &input0_ti));
 
-  set_input_output(session, input0, input1, actual_output);
+  setInputOutput(session, input0, input1, actual_output);
 
   // Do inference
   NNFW_STATUS res = nnfw_run(session);
   NNFW_ENSURE_SUCCESS(res);
 
-  // output value check
-  for (int i = 0; i < expected_output.size(); ++i)
-    ASSERT_EQ(expected_output[i], actual_output[i]);
+  verifyOutput(session, {NNFW_TYPE_TENSOR_FLOAT32, 3, {2, 3, 3}}, expected_output, actual_output);
 }
 
 /**
@@ -421,15 +461,14 @@ TEST(TestDynamicTensor, set_input_tensorinfo_after_compilation_neg)
     ASSERT_TRUE(tensorInfoEqual(input0_ti, ti));
   }
 
-  set_input_output(session, input0, actual_output);
+  setInputOutput(session, input0, actual_output);
 
   // Do inference
   NNFW_STATUS res = nnfw_run(session);
   NNFW_ENSURE_SUCCESS(res);
 
   // output value check
-  for (int i = 0; i < expected_output.size(); ++i)
-    ASSERT_EQ(expected_output[i], actual_output[i]);
+  verifyOutput(session, {NNFW_TYPE_TENSOR_FLOAT32, 2, {20, 50}}, expected_output, actual_output);
 }
 
 using TestWhileDynamicModelLoaded = ValidationTestModelLoaded<NNPackages::WHILE_DYNAMIC>;
@@ -449,17 +488,13 @@ TEST_F(TestWhileDynamicModelLoaded, run_verify)
   nnfw_tensorinfo ti = {NNFW_TYPE_TENSOR_FLOAT32, 3, {1, 28, 28}};
   NNFW_ENSURE_SUCCESS(nnfw_set_input_tensorinfo(_session, 0, &ti));
 
-  set_input_output(_session, while_dynamic_input0, actual_output0);
+  setInputOutput(_session, while_dynamic_input0, actual_output0);
 
   NNFW_ENSURE_SUCCESS(nnfw_run(_session));
 
-  nnfw_tensorinfo ti_output0_expected = {NNFW_TYPE_TENSOR_FLOAT32, 2, {1, 10}};
-  NNFW_ENSURE_SUCCESS(nnfw_output_tensorinfo(_session, 0, &ti));
-  ASSERT_TRUE(tensorInfoEqual(ti, ti_output0_expected));
-
-  // output value check
-  for (int i = 0; i < actual_output0.size(); ++i)
-    ASSERT_FLOAT_EQ(while_dynamic_output0[i], actual_output0[i]);
+  // output check
+  verifyOutput(_session, {NNFW_TYPE_TENSOR_FLOAT32, 2, {1, 10}}, while_dynamic_output0,
+               actual_output0);
 }
 
 TEST_F(TestWhileDynamicModelLoaded, neg_run_verify)
@@ -473,7 +508,7 @@ TEST_F(TestWhileDynamicModelLoaded, neg_run_verify)
   // Insufficient size of output (10 or more is sufficient)
   std::vector<float> actual_output0(9);
 
-  set_input_output(_session, while_dynamic_input0, actual_output0);
+  setInputOutput(_session, while_dynamic_input0, actual_output0);
 
   ASSERT_EQ(nnfw_run(_session), NNFW_STATUS_INSUFFICIENT_OUTPUT_SIZE);
 }
@@ -500,7 +535,7 @@ TEST_F(TestIfDynamicModelLoaded, run_verify)
   }
 
   std::vector<float> actual_output0(10);
-  set_input_output(_session, if_dynamic_input0, actual_output0);
+  setInputOutput(_session, if_dynamic_input0, actual_output0);
 
   NNFW_ENSURE_SUCCESS(nnfw_run(_session));
 
@@ -514,4 +549,447 @@ TEST_F(TestIfDynamicModelLoaded, run_verify)
   // Output value check
   for (int i = 0; i < actual_output0.size(); ++i)
     ASSERT_NEAR(if_dynamic_output0[i], actual_output0[i], 0.00001);
+}
+
+class CombinationTest1 : public ::testing::Test
+{
+protected:
+  void SetUp() override
+  {
+    CircleGen cgen;
+
+    // Creating a graph which has dynamic tensors after compilation.
+    // #3 and #4 are dynamic. This model was used to check if internal dynamic tensors could
+    // make any side-effect.
+    //
+    // #0 = input 0 of shape [1]
+    // #1 = input 1 of shape [2]
+    // #2 = cast(#0, int to float)
+    // #3 = reshape(const of shape [4] , #1)
+    // #4 = add(#2, #3)
+
+    constexpr circle::TensorType CIRCLE_DTYPE = circle::TensorType::TensorType_FLOAT32;
+
+    int cast_in = cgen.addTensor({{1}, circle::TensorType::TensorType_INT32});
+    int cast_out = cgen.addTensor({{1}, circle::TensorType::TensorType_FLOAT32});
+
+    cgen.addOperatorCast({{cast_in}, {cast_out}}, circle::TensorType::TensorType_INT32,
+                         circle::TensorType::TensorType_FLOAT32);
+
+    std::vector<float> reshape_in_data{0, 1, 2, 3}; // defining constant tensor
+    uint32_t reshape_in_buf = cgen.addBuffer(reshape_in_data);
+    int reshape_in = cgen.addTensor({{4}, CIRCLE_DTYPE, reshape_in_buf});
+    int reshape_shape_in = cgen.addTensor({{2}, circle::TensorType::TensorType_INT32});
+    int reshape_out = cgen.addTensor({{}, CIRCLE_DTYPE}); // dynamic tensor of shape {}
+
+    cgen.addOperatorReshape({{reshape_in, reshape_shape_in}, {reshape_out}});
+
+    int out = cgen.addTensor({{}, CIRCLE_DTYPE}); // dynamic tensor of shape {}
+    cgen.addOperatorAdd({{cast_out, reshape_out}, {out}}, circle::ActivationFunctionType_NONE);
+    cgen.setInputsAndOutputs({cast_in, reshape_shape_in}, {out});
+
+    _circle_buffer = cgen.finish();
+  }
+
+  void TearDown() override
+  { // DO NOTHING
+  }
+
+  void setSession(nnfw_session *session) { _session = session; }
+
+  CircleBuffer &getCircleBuffer() { return _circle_buffer; }
+
+  void run_WITHOUT_set_input_tensorinfo(const std::vector<int32_t> &cast_input,
+                                        const std::vector<int32_t> &reshape_shape_input,
+                                        const nnfw_tensorinfo &expected_ti,
+                                        const std::vector<float> &expected,
+                                        std::vector<float> &actual)
+  {
+    setInputOutput(_session, cast_input, reshape_shape_input, actual);
+    NNFW_ENSURE_SUCCESS(nnfw_run(_session));
+    verifyOutput(_session, expected_ti, expected, actual);
+  }
+
+  void run_WITH_set_input_tensorinfo(int32_t new_dim_0, const std::vector<int32_t> &cast_input,
+                                     const std::vector<int32_t> &reshape_shape_input,
+                                     const nnfw_tensorinfo &expected_ti,
+                                     const std::vector<float> &expected, std::vector<float> &actual)
+  {
+    nnfw_tensorinfo t_in;
+    t_in.dtype = NNFW_TYPE_TENSOR_INT32;
+    t_in.rank = 1;
+    t_in.dims[0] = new_dim_0;
+    NNFW_ENSURE_SUCCESS(nnfw_set_input_tensorinfo(_session, 0, &t_in));
+
+    setInputOutput(_session, cast_input, reshape_shape_input, actual);
+    NNFW_ENSURE_SUCCESS(nnfw_run(_session));
+    verifyOutput(_session, expected_ti, expected, actual);
+  }
+
+private:
+  nnfw_session *_session;
+  CircleBuffer _circle_buffer;
+};
+
+// test for https://github.com/Samsung/ONE/issues/4625
+TEST_F(CombinationTest1, combination_of_set_input_tensorinfo_and_nnfw_run)
+{
+  constexpr NNFW_TYPE NNFW_DTYPE = NNFW_TYPE_TENSOR_FLOAT32;
+  std::vector<int32_t> cast_in_buf;
+  std::vector<int32_t> reshape_shape_in_buf;
+  std::vector<float> actual(4), expected(4);
+
+  nnfw_session *session = nullptr;
+  auto &cbuf = getCircleBuffer();
+
+  auto create_prepare_session = [&](const CircleBuffer &cbuf) {
+    NNFW_ENSURE_SUCCESS(nnfw_create_session(&session));
+    NNFW_ENSURE_SUCCESS(nnfw_load_circle_from_buffer(session, cbuf.buffer(), cbuf.size()));
+    NNFW_ENSURE_SUCCESS(nnfw_set_available_backends(session, "cpu"));
+    NNFW_ENSURE_SUCCESS(nnfw_prepare(session));
+  };
+
+  // combinations of executions of static and dynamic tensors
+  // 1) no change on the shape of #0 -> change #0 to shape [1] -> no change. use previous shape
+  // 2) no change on the shape of #0 -> change #0 to shape [2] -> no change. use previous shape
+  // 3) no change on the shape of #0 -> change #0 to shape [2] -> change #0 to shape [1]
+
+  // 1) no change on the shape of #0 -> change #0 to shape [1] -> no input change
+  //       static                             dynamic                      dynamic
+  create_prepare_session(cbuf);
+  {
+    setSession(session);
+
+    // no change on the shape of #0
+    cast_in_buf = {10};
+    reshape_shape_in_buf = {1, 4};
+    expected = {10, 11, 12, 13};
+    run_WITHOUT_set_input_tensorinfo(cast_in_buf, reshape_shape_in_buf,
+                                     {NNFW_TYPE_TENSOR_FLOAT32, 2, {1, 4}}, expected, actual);
+
+    // change to the default shape [1] of #0, this treats 0# dynamic
+    int32_t new_dim_0 = 1;
+    cast_in_buf = {10};
+    reshape_shape_in_buf = {1, 4};
+    expected = {10, 11, 12, 13};
+    run_WITH_set_input_tensorinfo(new_dim_0, cast_in_buf, reshape_shape_in_buf,
+                                  {NNFW_TYPE_TENSOR_FLOAT32, 2, {1, 4}}, expected, actual);
+
+    // no change. Use previous shape
+    run_WITHOUT_set_input_tensorinfo(cast_in_buf, reshape_shape_in_buf,
+                                     {NNFW_TYPE_TENSOR_FLOAT32, 2, {1, 4}}, expected, actual);
+
+    NNFW_ENSURE_SUCCESS(nnfw_close_session(session));
+  }
+
+  // 2) no change on the shape of #0 -> change #0 to shape [2] -> no change(use previous shape)
+  //       static                             dynamic                      dynamic
+  create_prepare_session(cbuf);
+  {
+    setSession(session);
+
+    // no change on the shape of #0
+    cast_in_buf = {10};
+    reshape_shape_in_buf = {1, 4};
+    expected = {10, 11, 12, 13};
+    run_WITHOUT_set_input_tensorinfo(cast_in_buf, reshape_shape_in_buf,
+                                     {NNFW_TYPE_TENSOR_FLOAT32, 2, {1, 4}}, expected, actual);
+
+    // change shape of #0 to [2], this treats 0# dynamic
+    int32_t new_dim_0 = 2;
+    cast_in_buf = {10, 20};
+    reshape_shape_in_buf = {2, 2};
+    expected = {10, 21, 12, 23};
+    run_WITH_set_input_tensorinfo(new_dim_0, cast_in_buf, reshape_shape_in_buf,
+                                  {NNFW_TYPE_TENSOR_FLOAT32, 2, {2, 2}}, expected, actual);
+
+    // no change. Use previous shape
+    run_WITH_set_input_tensorinfo(new_dim_0, cast_in_buf, reshape_shape_in_buf,
+                                  {NNFW_TYPE_TENSOR_FLOAT32, 2, {2, 2}}, expected, actual);
+
+    NNFW_ENSURE_SUCCESS(nnfw_close_session(session));
+  }
+
+  // 3) no change on the shape of #0 -> change #0 to shape [2] -> change #0 to shape [1]
+  //       static                             dynamic                      dynamic
+  create_prepare_session(cbuf);
+  {
+    setSession(session);
+
+    // no change on the shape of #0
+    cast_in_buf = {10};
+    reshape_shape_in_buf = {1, 4};
+    expected = {10, 11, 12, 13};
+    run_WITHOUT_set_input_tensorinfo(cast_in_buf, reshape_shape_in_buf,
+                                     {NNFW_TYPE_TENSOR_FLOAT32, 2, {1, 4}}, expected, actual);
+
+    // change shape of #0 to [2], this treats 0# dynamic
+    int32_t new_dim_0 = 2;
+    cast_in_buf = {10, 20};
+    reshape_shape_in_buf = {2, 2};
+    expected = {10, 21, 12, 23};
+    run_WITH_set_input_tensorinfo(new_dim_0, cast_in_buf, reshape_shape_in_buf,
+                                  {NNFW_TYPE_TENSOR_FLOAT32, 2, {2, 2}}, expected, actual);
+
+    // change #0 to shape [1]
+    new_dim_0 = 1;
+    cast_in_buf = {100};
+    reshape_shape_in_buf = {1, 4};
+    expected = {100, 101, 102, 103};
+    run_WITH_set_input_tensorinfo(new_dim_0, cast_in_buf, reshape_shape_in_buf,
+                                  {NNFW_TYPE_TENSOR_FLOAT32, 2, {1, 4}}, expected, actual);
+
+    NNFW_ENSURE_SUCCESS(nnfw_close_session(session));
+  }
+}
+
+TEST_F(CombinationTest1, neg_combination_of_set_input_tensorinfo_and_nnfw_run)
+{
+  nnfw_session *session = nullptr;
+  auto &cbuf = getCircleBuffer();
+  NNFW_ENSURE_SUCCESS(nnfw_create_session(&session));
+  NNFW_ENSURE_SUCCESS(nnfw_load_circle_from_buffer(session, cbuf.buffer(), cbuf.size()));
+  NNFW_ENSURE_SUCCESS(nnfw_set_available_backends(session, "cpu"));
+  NNFW_ENSURE_SUCCESS(nnfw_prepare(session));
+
+  setSession(session);
+
+  std::vector<int32_t> cast_in_buf;
+  std::vector<int32_t> reshape_shape_in_buf;
+  std::vector<float> actual(4), expected(4);
+
+  // no change on the shape of #0
+  cast_in_buf = {10};
+  reshape_shape_in_buf = {1, 4};
+  expected = {10, 11, 12, 13};
+  setInputOutput(session, cast_in_buf, reshape_shape_in_buf, actual);
+  NNFW_ENSURE_SUCCESS(nnfw_run(session));
+
+  // change the shape of #0 to [4]
+  cast_in_buf = {10, 20, 30, 40};
+  reshape_shape_in_buf = {1, 4};
+  expected = {10, 21, 32, 43};
+  run_WITH_set_input_tensorinfo(4, cast_in_buf, reshape_shape_in_buf,
+                                {NNFW_TYPE_TENSOR_FLOAT32, 2, {1, 4}}, expected, actual);
+  setInputOutput(session, cast_in_buf, reshape_shape_in_buf, actual);
+  NNFW_ENSURE_SUCCESS(nnfw_run(session));
+
+  // run without changing #0 but caller thought that it is now shape [1]
+  cast_in_buf = {10};
+  reshape_shape_in_buf = {1, 4};
+  expected = {10, 11, 12, 13};
+  // This should throw an error
+  EXPECT_ANY_THROW(setInputOutput(session, cast_in_buf, reshape_shape_in_buf, actual));
+
+  NNFW_ENSURE_SUCCESS(nnfw_close_session(session));
+}
+
+// Class to test set_input_tensorinfo() against "two" inputs
+class CombinationTest2 : public ::testing::Test
+{
+protected:
+  void SetUp() override
+  {
+    CircleGen cgen;
+
+    // creating a graph with two inputs
+    //
+    // #0 = input 0 of shape [1]
+    // #1 = input 1 of shape [1]
+    // #2 = add(#0, #1)
+
+    constexpr circle::TensorType CIRCLE_DTYPE = circle::TensorType::TensorType_FLOAT32;
+
+    int in0 = cgen.addTensor({{1}, circle::TensorType::TensorType_INT32});
+    int in1 = cgen.addTensor({{1}, circle::TensorType::TensorType_INT32});
+    int out = cgen.addTensor({{1}, circle::TensorType::TensorType_INT32});
+
+    cgen.addOperatorAdd({{in0, in1}, {out}}, circle::ActivationFunctionType_NONE);
+    cgen.setInputsAndOutputs({in0, in1}, {out});
+
+    _circle_buffer = cgen.finish();
+  }
+
+  void TearDown() override
+  { // DO NOTHING
+  }
+
+  void setSession(nnfw_session *session) { _session = session; }
+
+  CircleBuffer &getCircleBuffer() { return _circle_buffer; }
+
+  void run_WITHOUT_set_input_tensorinfo(const std::vector<int32_t> &in0,
+                                        const std::vector<int32_t> &in1,
+                                        const nnfw_tensorinfo &expected_ti,
+                                        const std::vector<int32_t> &expected,
+                                        std::vector<int32_t> &actual)
+  {
+    setInputOutput(_session, in0, in1, actual);
+    NNFW_ENSURE_SUCCESS(nnfw_run(_session));
+    verifyOutput(_session, expected_ti, expected, actual);
+  }
+
+  // Pass -1 for t0_new_dim_0 (or t1_new_dim_0)
+  // if shape of tensor 0 (or tensor 1) does not changed from the shape in a model
+  void run_WITH_set_input_tensorinfo(int32_t t0_new_dim_0, int32_t t1_new_dim_0,
+                                     const std::vector<int32_t> &in0,
+                                     const std::vector<int32_t> &in1,
+                                     const nnfw_tensorinfo &expected_ti,
+                                     const std::vector<int32_t> &expected,
+                                     std::vector<int32_t> &actual)
+  {
+    if (t0_new_dim_0 >= 0)
+    {
+      nnfw_tensorinfo t_in;
+      t_in.dtype = NNFW_TYPE_TENSOR_INT32;
+      t_in.rank = 1;
+      t_in.dims[0] = t0_new_dim_0;
+      NNFW_ENSURE_SUCCESS(nnfw_set_input_tensorinfo(_session, 0, &t_in));
+    }
+
+    if (t1_new_dim_0 >= 0)
+    {
+      nnfw_tensorinfo t_in;
+      t_in.dtype = NNFW_TYPE_TENSOR_INT32;
+      t_in.rank = 1;
+      t_in.dims[0] = t1_new_dim_0;
+      NNFW_ENSURE_SUCCESS(nnfw_set_input_tensorinfo(_session, 1, &t_in));
+    }
+
+    setInputOutput(_session, in0, in1, actual);
+    NNFW_ENSURE_SUCCESS(nnfw_run(_session));
+    verifyOutput(_session, expected_ti, expected, actual);
+  }
+
+private:
+  nnfw_session *_session;
+  CircleBuffer _circle_buffer;
+};
+
+// test for https://github.com/Samsung/ONE/issues/4625
+TEST_F(CombinationTest2, combination_set_input_tensorinfo_for_two_inputs)
+{
+  nnfw_session *session = nullptr;
+
+  // combinations of executions of static and dynamic tensors for "two" inputs (#0, #1)
+  // 0. both input shapes are [1] (input shapes of the model are [1], [1])
+  // 1. change shape of #0 to [2]
+  // 2. change shape of #0 to [1], change shape of #1 to [2]
+  // 3. change shape of #0 to [2], (shape of #1 is still [2])
+  // 4. don't call set_input_tensorinfo (both are still [2] and [2])
+  // 5. change shape of #0 to [1], change shape of #1 to [1]
+  std::vector<int32_t> in0, in1;
+  std::vector<int32_t> actual, expected;
+  nnfw_tensorinfo expected_ti;
+
+  auto &cbuf = getCircleBuffer();
+
+  NNFW_ENSURE_SUCCESS(nnfw_create_session(&session));
+  NNFW_ENSURE_SUCCESS(nnfw_load_circle_from_buffer(session, cbuf.buffer(), cbuf.size()));
+  NNFW_ENSURE_SUCCESS(nnfw_set_available_backends(session, "cpu"));
+  NNFW_ENSURE_SUCCESS(nnfw_prepare(session));
+  setSession(session);
+
+  constexpr int32_t NO_CHANGE = -1;
+
+  // 0. both input shapes are [1]
+  in0 = {10};
+  in1 = {100};
+  expected = {110};
+  expected_ti = {NNFW_TYPE_TENSOR_INT32, 1, {1}};
+  actual.resize(1);
+  run_WITHOUT_set_input_tensorinfo(in0, in1, expected_ti, expected, actual);
+
+  // 1. change shape of #0 to [2]
+  int32_t new_dim_0 = 2;
+  int32_t new_dim_1 = NO_CHANGE;
+  in0 = {10, 20};
+  in1 = {100};
+  expected = {110, 120};
+  expected_ti = {NNFW_TYPE_TENSOR_INT32, 1, {2}};
+  actual.resize(2);
+  run_WITH_set_input_tensorinfo(new_dim_0, new_dim_1, in0, in1, expected_ti, expected, actual);
+
+  // 2. change shape of #0 to [1], change shape of #1 to [2]
+  new_dim_0 = 1;
+  new_dim_1 = 2;
+  in0 = {1000};
+  in1 = {10, 20};
+  expected = {1010, 1020};
+  expected_ti = {NNFW_TYPE_TENSOR_INT32, 1, {2}};
+  actual.resize(2);
+  run_WITH_set_input_tensorinfo(new_dim_0, new_dim_1, in0, in1, expected_ti, expected, actual);
+
+  // // 3. change shape of #0 to [2], (shape of #1 is still [2])
+  new_dim_0 = 2;
+  new_dim_1 = NO_CHANGE;
+  in0 = {10, 20};
+  in1 = {100, 200};
+  expected = {110, 220};
+  expected_ti = {NNFW_TYPE_TENSOR_INT32, 1, {2}};
+  actual.resize(2);
+  run_WITH_set_input_tensorinfo(new_dim_0, new_dim_1, in0, in1, expected_ti, expected, actual);
+
+  // // 4. don't call set_input_tensorinfo (both are still [2] and [2])
+  in0 = {11, 22};
+  in1 = {1000, 2000};
+  expected = {1011, 2022};
+  expected_ti = {NNFW_TYPE_TENSOR_INT32, 1, {2}};
+  actual.resize(2);
+  run_WITHOUT_set_input_tensorinfo(in0, in1, expected_ti, expected, actual);
+
+  // // 5. change shape of #0 to [1], change shape of #1 to [1]
+  new_dim_0 = 1;
+  new_dim_1 = 1;
+  in0 = {50};
+  in1 = {500};
+  expected = {550};
+  expected_ti = {NNFW_TYPE_TENSOR_INT32, 1, {1}};
+  actual.resize(1);
+  run_WITH_set_input_tensorinfo(new_dim_0, new_dim_1, in0, in1, expected_ti, expected, actual);
+
+  NNFW_ENSURE_SUCCESS(nnfw_close_session(session));
+}
+
+TEST_F(CombinationTest2, neg_combination_set_input_tensorinfo_for_two_inputs)
+{
+  nnfw_session *session = nullptr;
+
+  // change shape of #1 to [2]
+  // then, do not call nnfw_set_input_tensorinfo for #1
+  std::vector<int32_t> in0, in1;
+  std::vector<int32_t> expected_shape;
+  std::vector<int32_t> actual, expected;
+  nnfw_tensorinfo expected_ti;
+
+  auto &cbuf = getCircleBuffer();
+
+  NNFW_ENSURE_SUCCESS(nnfw_create_session(&session));
+  NNFW_ENSURE_SUCCESS(nnfw_load_circle_from_buffer(session, cbuf.buffer(), cbuf.size()));
+  NNFW_ENSURE_SUCCESS(nnfw_set_available_backends(session, "cpu"));
+  NNFW_ENSURE_SUCCESS(nnfw_prepare(session));
+  setSession(session);
+
+  constexpr int32_t NO_CHANGE = -1;
+
+  // change shape of #1 to [2]
+  int32_t new_dim_0 = NO_CHANGE;
+  int32_t new_dim_1 = 2;
+  in0 = {10};
+  in1 = {100, 200};
+  expected = {110, 210};
+  expected_ti = {NNFW_TYPE_TENSOR_INT32, 1, {2}};
+  actual.resize(2);
+  run_WITH_set_input_tensorinfo(new_dim_0, new_dim_1, in0, in1, expected_ti, expected, actual);
+
+  // then, do not call nnfw_set_input_tensorinfo for #1, thinking that
+  // #1 has now shape [1], which is wrong
+  in0 = {10};
+  in1 = {100};
+  expected = {110};                               // wrong
+  expected_ti = {NNFW_TYPE_TENSOR_INT32, 1, {1}}; // wrong
+  actual.resize(1);                               // wrong
+  EXPECT_ANY_THROW(run_WITHOUT_set_input_tensorinfo(in0, in1, expected_ti, expected, actual));
+
+  NNFW_ENSURE_SUCCESS(nnfw_close_session(session));
 }

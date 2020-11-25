@@ -132,5 +132,6 @@
 #include "CustomOp/BatchMatMulV2.h"
 #include "CustomOp/MatMul.h"
 #include "CustomOp/MatrixBandPart.h"
+#include "CustomOp/MaxPoolWithArgMax.h"
 
 #endif // __OP_CHEFS_H__

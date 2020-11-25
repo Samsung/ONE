@@ -25,7 +25,7 @@ namespace tflite2circle
 
 flatbuffers::Offset<circle::BidirectionalSequenceLSTMOptions>
 build_circle_BidirectionalSequenceLSTMOptions(flatbuffers::FlatBufferBuilder &fb,
-                                               const tflite::Operator *op);
+                                              const tflite::Operator *op);
 
 } // namespace tflite2circle
 

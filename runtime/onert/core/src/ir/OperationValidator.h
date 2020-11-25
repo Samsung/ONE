@@ -44,11 +44,14 @@ public:
 
 public:
   void visit(const operation::AddN &node) override;
+  void visit(const operation::ArgMinMax &node) override;
   void visit(const operation::BatchMatMul &node) override;
   void visit(const operation::BatchToSpaceND &node) override;
   void visit(const operation::BinaryArithmetic &node) override;
   void visit(const operation::Comparison &node) override;
+  void visit(const operation::Conv2D &node) override;
   void visit(const operation::DepthToSpace &node) override;
+  void visit(const operation::DepthwiseConv2D &node) override;
   void visit(const operation::ElementwiseActivation &node) override;
   void visit(const operation::ElementwiseBinary &node) override;
   void visit(const operation::ElementwiseUnary &node) override;

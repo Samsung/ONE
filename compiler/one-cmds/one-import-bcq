@@ -1,4 +1,9 @@
-#!/bin/bash
+#!/usr/bin/env bash
+''''export SCRIPT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"                  # '''
+''''export PY_PATH=${SCRIPT_PATH}/venv/bin/python                                       # '''
+''''test -f ${PY_PATH} && exec ${PY_PATH} "$0" "$@"                                     # '''
+''''echo "Error: Virtual environment not found. Please run 'one-prepare-venv' command." # '''
+''''exit 255                                                                            # '''
 
 # Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
 #
@@ -14,219 +19,204 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-set -e
+import argparse
+import os
+import subprocess
+import sys
+import tempfile
 
-DRIVER_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+import utils as _utils
+import generate_bcq_output_arrays as _bcq_info_gen
 
-usage()
-{
-  echo "Convert TensorFlow model with BCQ to circle."
-  echo "Usage: one-import-bcq"
-  echo "    --version Show version information and exit"
-  echo "    --input_path <path/to/tfmodel/with/BCQ>"
-  echo "    --output_path <path/to/circle>"
-  echo "    --input_arrays <names of the input arrays, comma-separated>"
-  echo "    --input_shapes <input shapes, colon-separated>"
-  echo "    --output_arrays <names of the output arrays, comma-separated>"
-  echo "    --v2 Use TensorFlow 2.x interface (default is 1.x interface)"
-  exit 255
-}
 
-version()
-{
-  $DRIVER_PATH/one-version one-import-bcq
-  exit 255
-}
+def _get_parser():
+    parser = argparse.ArgumentParser(
+        description='command line tool to convert TensorFlow with BCQ to circle')
 
-input_not_set()
-{
-  echo "Error: input_path not set"
-  echo ""
-  usage
-}
+    _utils._add_default_arg(parser)
 
-output_not_set()
-{
-  echo "Error: output_path not set"
-  echo ""
-  usage
-}
+    ## tf2tfliteV2 arguments
+    tf2tfliteV2_group = parser.add_argument_group('converter arguments')
 
-input_arrays_not_set()
-{
-  echo "Error: input_arrays not set"
-  echo ""
-  usage
-}
+    # converter version
+    converter_version = tf2tfliteV2_group.add_mutually_exclusive_group()
+    converter_version.add_argument(
+        '--v1',
+        action='store_const',
+        dest='converter_version',
+        const='--v1',
+        help='use TensorFlow Lite Converter 1.x')
+    converter_version.add_argument(
+        '--v2',
+        action='store_const',
+        dest='converter_version',
+        const='--v2',
+        help='use TensorFlow Lite Converter 2.x')
 
-input_shapes_not_set()
-{
-  echo "Error: input_shapes not set"
-  echo ""
-  usage
-}
+    parser.add_argument('--converter_version', type=str, help=argparse.SUPPRESS)
 
-output_arrays_not_set()
-{
-  echo "Error: output_arrays not set"
-  echo ""
-  usage
-}
+    # input and output path.
+    tf2tfliteV2_group.add_argument(
+        '-i', '--input_path', type=str, help='full filepath of the input file')
+    tf2tfliteV2_group.add_argument(
+        '-o', '--output_path', type=str, help='full filepath of the output file')
 
-TF_INTERFACE="--v1"
+    # input and output arrays.
+    tf2tfliteV2_group.add_argument(
+        '-I',
+        '--input_arrays',
+        type=str,
+        help='names of the input arrays, comma-separated')
+    tf2tfliteV2_group.add_argument(
+        '-s',
+        '--input_shapes',
+        type=str,
+        help=
+        'shapes corresponding to --input_arrays, colon-separated (ex:"1,4,4,3:1,20,20,3")'
+    )
+    tf2tfliteV2_group.add_argument(
+        '-O',
+        '--output_arrays',
+        type=str,
+        help='names of the output arrays, comma-separated')
 
-# Parse command-line arguments
-#
-while [ "$#" -ne 0 ]; do
-  CUR="$1"
+    return parser
 
-  case $CUR in
-    '--help')
-      usage
-      ;;
-    '--version')
-      version
-      ;;
-    '--input_path')
-      export INPUT_PATH="$2"
-      if [ $# -lt 2 ]; then
-        input_not_set
-      fi
-      shift 2
-      ;;
-    '--output_path')
-      export OUTPUT_PATH="$2"
-      if [ $# -lt 2 ]; then
-        output_not_set
-      fi
-      shift 2
-      ;;
-    '--input_arrays')
-      export INPUT_ARRAYS="$2"
-      if [ $# -lt 2 ]; then
-        input_arrays_not_set
-      fi
-      shift 2
-      ;;
-    '--input_shapes')
-      export INPUT_SHAPES="$2"
-      if [ $# -lt 2 ]; then
-        input_shapes_not_set
-      fi
-      shift 2
-      ;;
-    '--output_arrays')
-      export OUTPUT_ARRAYS="$2"
-      if [ $# -lt 2 ]; then
-        output_arrays_not_set
-      fi
-      shift 2
-      ;;
-    '--v2')
-      TF_INTERFACE="--v2"
-      shift
-      ;;
-    *)
-      echo "Unknown parameter: ${CUR}"
-      shift
-      ;;
-  esac
-done
 
-if [ -z ${INPUT_PATH} ] || [ ! -e ${INPUT_PATH} ]; then
-  echo "Error: input model not found"
-  echo ""
-  usage
-  exit 2
-fi
+def _verify_arg(parser, args):
+    """verify given arguments"""
+    # check if required arguments is given
+    missing = []
+    if not _utils._is_valid_attr(args, 'input_path'):
+        missing.append('-i/--input_path')
+    if not _utils._is_valid_attr(args, 'output_path'):
+        missing.append('-o/--output_path')
+    if len(missing):
+        parser.error('the following arguments are required: ' + ' '.join(missing))
 
-if [ -z ${INPUT_ARRAYS} ]; then
-  input_arrays_not_set
-fi
 
-# INPUT_SHAPES is optional
+def _parse_arg(parser):
+    args = parser.parse_args()
+    # print version
+    if args.version:
+        _utils._print_version_and_exit(__file__)
 
-if [ -z ${OUTPUT_PATH} ]; then
-  output_not_set
-fi
+    return args
 
-if [ -z ${OUTPUT_ARRAYS} ]; then
-  output_arrays_not_set
-fi
 
-FILE_BASE=$(basename ${OUTPUT_PATH})
-MODEL_NAME="${FILE_BASE%.*}"
+def _make_generate_bcq_metadata_cmd(args, driver_path, output_path):
+    """make a command for running generate_bcq_metadata"""
+    cmd = [sys.executable, driver_path]
+    # input_path
+    if _utils._is_valid_attr(args, 'input_path'):
+        cmd.append('--input_path')
+        cmd.append(os.path.expanduser(getattr(args, 'input_path')))
+    # output_path
+    if _utils._is_valid_attr(args, 'output_path'):
+        cmd.append('--output_path')
+        cmd.append(os.path.expanduser(output_path))
+    # output_arrays
+    if _utils._is_valid_attr(args, 'output_arrays'):
+        cmd.append('--output_arrays')
+        cmd.append(getattr(args, 'output_arrays'))
 
-TMPDIR=$(mktemp -d)
-trap "{ rm -rf $TMPDIR; }" EXIT
+    return cmd
 
-# activate python virtual environment
-VIRTUALENV_LINUX="${DRIVER_PATH}/venv/bin/activate"
-VIRTUALENV_WINDOWS="${DRIVER_PATH}/venv/Scripts/activate"
 
-if [ -e ${VIRTUALENV_LINUX} ]; then
-  source ${VIRTUALENV_LINUX}
-elif [ -e ${VIRTUALENV_WINDOWS} ]; then
-  source ${VIRTUALENV_WINDOWS}
-else
-  echo "Error: Virtual environment not found. Please run 'one-prepare-venv' command."
-  echo "If encounter any problems, please follow provided document in 'doc' folder."
-  exit 255
-fi
+def _convert(args):
+    # get file path to log
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    logfile_path = os.path.realpath(args.output_path) + '.log'
 
-# remove previous log
-rm -rf "${OUTPUT_PATH}.log"
+    with open(logfile_path, 'wb') as f, tempfile.TemporaryDirectory() as tmpdir:
+        # make a command to generate BCQ information metadata
+        generate_bcq_metadata_path = os.path.join(dir_path, 'generate_bcq_metadata.py')
+        generate_bcq_metadata_output_path = os.path.join(
+            tmpdir,
+            os.path.splitext(os.path.basename(args.input_path))[0] + '_withmeta.pb')
+        generate_bcq_metadata_cmd = _make_generate_bcq_metadata_cmd(
+            args, generate_bcq_metadata_path, generate_bcq_metadata_output_path)
 
-show_err_onexit()
-{
-  cat "${OUTPUT_PATH}.log"
-}
+        f.write((' '.join(generate_bcq_metadata_cmd) + '\n').encode())
 
-trap show_err_onexit ERR
+        # generate BCQ information metadata
+        with subprocess.Popen(
+                generate_bcq_metadata_cmd,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
+                bufsize=1) as p:
+            for line in p.stdout:
+                sys.stdout.buffer.write(line)
+                f.write(line)
+        if p.returncode != 0:
+            sys.exit(p.returncode)
 
-# Generate BCQ information metadata
-# If model has no BCQ information or invalid information, pb file is not changed.
-METAGEN_SCRIPT="${DRIVER_PATH}/generate_bcq_metadata "
-METAGEN_SCRIPT+="--input_path ${INPUT_PATH} "
-METAGEN_SCRIPT+="--output_path ${TMPDIR}/${MODEL_NAME}_withmeta.pb "
-METAGEN_SCRIPT+="--output_arrays ${OUTPUT_ARRAYS} "
+        # get output_arrays with BCQ
+        bcq_output_arrays = _bcq_info_gen.get_bcq_output_arrays(
+            generate_bcq_metadata_output_path, getattr(args, 'output_arrays'))
 
-echo ${METAGEN_SCRIPT} > "${OUTPUT_PATH}.log"
-echo "" >> "${OUTPUT_PATH}.log"
-$METAGEN_SCRIPT >> "${OUTPUT_PATH}.log" 2>&1
+        # make a command to convert from tf with BCQ to tflite
+        tf2tfliteV2_path = os.path.join(dir_path, 'tf2tfliteV2.py')
+        tf2tfliteV2_output_path = os.path.join(
+            tmpdir,
+            os.path.splitext(
+                os.path.basename(generate_bcq_metadata_output_path))[0]) + '.tflite'
+        tf2tfliteV2_cmd = _utils._make_tf2tfliteV2_cmd(args, tf2tfliteV2_path,
+                                                       generate_bcq_metadata_output_path,
+                                                       tf2tfliteV2_output_path)
+        try:
+            output_arrays_idx = tf2tfliteV2_cmd.index('--output_arrays')
+            tf2tfliteV2_cmd[output_arrays_idx + 1] = ','.join(bcq_output_arrays)
+        except ValueError:
+            pass
 
-# Generate BCQ information nodes as output_arrays
-# If model has no BCQ information, output_arrays would be empty.
-OUTARR_GEN_SCRIPT="${DRIVER_PATH}/generate_bcq_output_arrays "
-OUTARR_GEN_SCRIPT+="--input_path ${TMPDIR}/${MODEL_NAME}_withmeta.pb "
-OUTARR_GEN_SCRIPT+="--metadata_path ${TMPDIR}/${MODEL_NAME}_metadata_arrays.txt "
-OUTARR_GEN_SCRIPT+="--output_arrays_path ${TMPDIR}/${MODEL_NAME}_output_arrays.txt "
+        f.write((' '.join(tf2tfliteV2_cmd) + '\n').encode())
 
-echo ${OUTARR_GEN_SCRIPT} >> "${OUTPUT_PATH}.log"
-echo "" >> "${OUTPUT_PATH}.log"
-$OUTARR_GEN_SCRIPT >> "${OUTPUT_PATH}.log" 2>&1
+        # convert tf to tflite
+        with subprocess.Popen(
+                tf2tfliteV2_cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                bufsize=1) as p:
+            for line in p.stdout:
+                sys.stdout.buffer.write(line)
+                f.write(line)
+        if p.returncode != 0:
+            sys.exit(p.returncode)
 
-# generate tflite file
-CONVERT_SCRIPT="python ${DRIVER_PATH}/tf2tfliteV2.py ${TF_INTERFACE} "
-CONVERT_SCRIPT+="--input_path ${TMPDIR}/${MODEL_NAME}_withmeta.pb "
-CONVERT_SCRIPT+="--input_arrays ${INPUT_ARRAYS} "
-CONVERT_SCRIPT+="--output_path ${TMPDIR}/${MODEL_NAME}.tflite "
-CONVERT_SCRIPT+="--output_arrays "
-CONVERT_SCRIPT+="$(cat ${TMPDIR}/${MODEL_NAME}_metadata_arrays.txt)"
-CONVERT_SCRIPT+="${OUTPUT_ARRAYS}"
-CONVERT_SCRIPT+="$(cat ${TMPDIR}/${MODEL_NAME}_output_arrays.txt) "
-if [ ! -z ${INPUT_SHAPES} ]; then
-  CONVERT_SCRIPT+="--input_shapes ${INPUT_SHAPES} "
-fi
+        # make a command to convert from tflite to circle
+        tflite2circle_path = os.path.join(dir_path, 'tflite2circle')
+        tflite2circle_cmd = _utils._make_tflite2circle_cmd(tflite2circle_path,
+                                                           tf2tfliteV2_output_path,
+                                                           getattr(args, 'output_path'))
 
-echo ${CONVERT_SCRIPT} >> "${OUTPUT_PATH}.log"
-$CONVERT_SCRIPT >> "${OUTPUT_PATH}.log" 2>&1
+        f.write((' '.join(tflite2circle_cmd) + '\n').encode())
 
-# convert .tflite to .circle
-echo " " >> "${OUTPUT_PATH}.log"
-echo "${DRIVER_PATH}/tflite2circle" "${TMPDIR}/${MODEL_NAME}.tflite" \
-"${OUTPUT_PATH}" >> "${OUTPUT_PATH}.log"
-echo " " >> "${OUTPUT_PATH}.log"
+        # convert tflite to circle
+        with subprocess.Popen(
+                tflite2circle_cmd,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
+                bufsize=1) as p:
+            for line in p.stdout:
+                sys.stdout.buffer.write(line)
+                f.write(line)
+        if p.returncode != 0:
+            sys.exit(p.returncode)
 
-"${DRIVER_PATH}/tflite2circle" "${TMPDIR}/${MODEL_NAME}.tflite" \
-"${OUTPUT_PATH}" >> "${OUTPUT_PATH}.log" 2>&1
+
+def main():
+    # parse arguments
+    parser = _get_parser()
+    args = _parse_arg(parser)
+
+    # parse configuration file
+    _utils._parse_cfg(args, 'one-import-bcq')
+
+    # verify arguments
+    _verify_arg(parser, args)
+
+    # _convert
+    _convert(args)
+
+
+if __name__ == '__main__':
+    main()

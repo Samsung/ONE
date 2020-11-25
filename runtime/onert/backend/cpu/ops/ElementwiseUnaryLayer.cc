@@ -145,6 +145,12 @@ void erfFloat32(const IPortableTensor *input, IPortableTensor *output)
                   getTensorShape(output), reinterpret_cast<float *>(output->buffer()));
 }
 
+void floorFloat32(const IPortableTensor *input, IPortableTensor *output)
+{
+  nnfw::cker::Floor(getTensorShape(input), reinterpret_cast<const float *>(input->buffer()),
+                    getTensorShape(output), reinterpret_cast<float *>(output->buffer()));
+}
+
 void logFloat32(const IPortableTensor *input, IPortableTensor *output)
 {
   nnfw::cker::Log(getTensorShape(input), reinterpret_cast<const float *>(input->buffer()),
@@ -187,6 +193,18 @@ void sinFloat32(const IPortableTensor *input, IPortableTensor *output)
 {
   nnfw::cker::Sin(getTensorShape(input), reinterpret_cast<const float *>(input->buffer()),
                   getTensorShape(output), reinterpret_cast<float *>(output->buffer()));
+}
+
+void sqrtFloat32(const IPortableTensor *input, IPortableTensor *output)
+{
+  nnfw::cker::Sqrt(getTensorShape(input), reinterpret_cast<const float *>(input->buffer()),
+                   getTensorShape(output), reinterpret_cast<float *>(output->buffer()));
+}
+
+void squareFloat32(const IPortableTensor *input, IPortableTensor *output)
+{
+  nnfw::cker::Square(getTensorShape(input), reinterpret_cast<const float *>(input->buffer()),
+                     getTensorShape(output), reinterpret_cast<float *>(output->buffer()));
 }
 
 template <typename T> void zerosLikeFloat32(const IPortableTensor *input, IPortableTensor *output)
@@ -269,6 +287,16 @@ void ElementwiseUnaryLayer::configure(const IPortableTensor *input, IPortableTen
         throw std::runtime_error{"Exp: Unsupported data type"};
       }
       break;
+    case ElementwiseUnaryType::kFloor:
+      if ((input->data_type() == OperandType::FLOAT32))
+      {
+        _kernel = floorFloat32;
+      }
+      else
+      {
+        throw std::runtime_error{"Floor: Unsupported data type"};
+      }
+      break;
     case ElementwiseUnaryType::kLog:
       if ((input->data_type() == OperandType::FLOAT32))
       {
@@ -345,6 +373,26 @@ void ElementwiseUnaryLayer::configure(const IPortableTensor *input, IPortableTen
       else
       {
         throw std::runtime_error{"Sin: Unsupported  data type"};
+      }
+      break;
+    case ElementwiseUnaryType::kSqrt:
+      if ((input->data_type() == OperandType::FLOAT32))
+      {
+        _kernel = sqrtFloat32;
+      }
+      else
+      {
+        throw std::runtime_error{"Sqrt: Unsupported  data type"};
+      }
+      break;
+    case ElementwiseUnaryType::kSquare:
+      if ((input->data_type() == OperandType::FLOAT32))
+      {
+        _kernel = squareFloat32;
+      }
+      else
+      {
+        throw std::runtime_error{"Square: Unsupported  data type"};
       }
       break;
     case ElementwiseUnaryType::kZerosLike:

@@ -116,7 +116,7 @@ void invoke(const ITensor *ifm_tensor, const ITensor *ker_tensor, const ITensor 
   float *ofm_ptr = reinterpret_cast<float *>(ofm_tensor->buffer());
 
   nnfw::cker::DepthwiseConv(cker_param, cker_ifm_shape, ifm_ptr, cker_ker_shape, ker_ptr,
-                            cker_bias_shape, bias_ptr, cker_ofm_shape, ofm_ptr);
+                            cker_bias_shape, bias_ptr, cker_ofm_shape, ofm_ptr, nullptr);
 }
 
 void invokeDepthwiseConv(const ExecEnv *env, const ir::Operation &node)

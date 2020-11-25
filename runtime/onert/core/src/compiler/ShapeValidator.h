@@ -93,7 +93,7 @@ private:
   // TODO Remove _ctx field
   const ir::Graph &_graph;
   const ir::Operands &_ctx;
-  ir::Layout _current_op_seq_layout;
+  ir::Layout _current_layout;
 };
 
 } // namespace compiler

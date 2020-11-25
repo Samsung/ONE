@@ -92,12 +92,12 @@ void DynamicShapeInferer::handleSimpleUnaryOp(const ir::Operation &op,
   assert(output->buffer() != nullptr);
 }
 
-void DynamicShapeInferer::visit(const ir::operation::ArgMax &op)
+void DynamicShapeInferer::visit(const ir::operation::ArgMinMax &op)
 {
-  const auto input_idx{op.getInputs().at(ir::operation::ArgMax::Input::INPUT)};
+  const auto input_idx{op.getInputs().at(ir::operation::ArgMinMax::Input::INPUT)};
   const auto input = _tensor_registry->getITensor(input_idx);
 
-  const auto axis_idx{op.getInputs().at(ir::operation::ArgMax::Input::AXIS)};
+  const auto axis_idx{op.getInputs().at(ir::operation::ArgMinMax::Input::AXIS)};
   const auto axis = _tensor_registry->getITensor(axis_idx);
 
   auto output_ind = op.getOutputs().at(0);
@@ -172,7 +172,7 @@ void DynamicShapeInferer::visit(const ir::operation::BCQGather &op)
   const auto indices_idx{op.getInputs().at(ir::operation::BCQGather::Input::INDICES)};
   const auto &indices = _tensor_registry->getITensor(indices_idx);
 
-  const auto input_binary_idx{op.getInputs().at(ir::operation::BCQGather::Input::INDICES)};
+  const auto input_binary_idx{op.getInputs().at(ir::operation::BCQGather::Input::INPUT_BINARY)};
   const auto &input_binary = _tensor_registry->getITensor(input_binary_idx);
 
   const auto cluster_idx{op.getInputs().at(ir::operation::BCQGather::Input::INPUT_CLUSTERS)};

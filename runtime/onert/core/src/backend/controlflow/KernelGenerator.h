@@ -20,6 +20,7 @@
 #include <backend/IKernelGenerator.h>
 #include <backend/ITensorBuilder.h>
 #include <exec/IExecutor.h>
+#include "ExternalContext.h"
 #include <ir/Graph.h>
 #include "TensorBuilder.h"
 #include "compiler/TensorRegistries.h"
@@ -35,8 +36,9 @@ namespace controlflow
 class KernelGenerator : public IKernelGenerator
 {
 public:
-  KernelGenerator(const ir::Graph &graph, IDynamicTensorManager *dyn_tensor_manager,
-                  const std::shared_ptr<TensorRegistry> &tensor_reg);
+  KernelGenerator(const ir::Graph &graph, DynamicTensorManager *dyn_tensor_manager,
+                  const std::shared_ptr<TensorRegistry> &tensor_reg,
+                  const std::shared_ptr<ExternalContext> &external_context);
 
   void setTensorRegistries(const compiler::TensorRegistries &tensor_registries)
   {
@@ -57,13 +59,15 @@ public:
 
 private:
   backend::ITensor *getTensor(const ir::OperandIndex &index);
+  backend::IPortableTensor *getPortableTensor(const ir::OperandIndex &index);
 
 private:
   const ir::Graph &_graph;
-  IDynamicTensorManager *_dyn_tensor_manager;
+  DynamicTensorManager *_dyn_tensor_manager;
   std::shared_ptr<TensorRegistry> _tensor_reg;
   compiler::TensorRegistries _tensor_registries;
   exec::ExecutorMap *_executor_map;
+  const std::shared_ptr<ExternalContext> _external_context;
 };
 
 } // namespace controlflow

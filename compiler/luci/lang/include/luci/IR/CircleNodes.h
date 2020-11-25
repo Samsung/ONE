@@ -133,9 +133,9 @@
 #include "Nodes/CircleBCQGather.h"
 #include "Nodes/CircleInstanceNorm.h"
 // Virtual nodes
-#include "Nodes/CircleBidirectionalSequenceLSTMOut.h"
 #include "Nodes/CircleInput.h"
 #include "Nodes/CircleOutput.h"
+#include "Nodes/CircleBidirectionalSequenceLSTMOut.h"
 #include "Nodes/CircleCustomOut.h"
 #include "Nodes/CircleIfOut.h"
 #include "Nodes/CircleNonMaxSuppressionV4Out.h"

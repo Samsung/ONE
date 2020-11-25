@@ -101,11 +101,14 @@ public:
     return _quantization.scale[0];
   }
 
-  float zero_point() const
+  int32_t zero_point() const
   {
     assert(_quantization.zero_point.size() == 1);
     return _quantization.zero_point[0];
   }
+
+  void allocate();
+  void deallocate();
 
   const std::vector<float> &scales() const { return _quantization.scale; }
 
@@ -113,9 +116,18 @@ public:
 
   int32_t quantized_dimension() const { return _quantization.quantized_dimension; }
 
-  template <typename T> const T *data() const { return reinterpret_cast<const T *>(_data.get()); }
+  template <typename T> const T *data() const
+  {
+    assert(_data_allocated);
+    return reinterpret_cast<const T *>(_data.get());
+  }
 
-  template <typename T> T *data() { return reinterpret_cast<T *>(_data.get()); }
+  template <typename T> T *data()
+  {
+    if (!_data_allocated)
+      allocate();
+    return reinterpret_cast<T *>(_data.get());
+  }
 
   const std::string &name() const { return _name; }
 
@@ -131,6 +143,7 @@ private:
   AffineQuantization _quantization;
   std::unique_ptr<uint8_t[]> _data;
   std::string _name;
+  bool _data_allocated;
 };
 
 } // namespace luci_interpreter

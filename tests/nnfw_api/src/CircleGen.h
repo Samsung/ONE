@@ -146,10 +146,20 @@ public:
                            circle::TensorType output_type);
   uint32_t addOperatorConcatenation(const OperatorParams &params, int axis,
                                     circle::ActivationFunctionType actfn);
+  uint32_t addOperatorConv2D(const OperatorParams &params, circle::Padding padding, int stride_w,
+                             int stride_h, circle::ActivationFunctionType actfn, int dilation_w = 1,
+                             int dilation_h = 1);
   uint32_t addOperatorCos(const OperatorParams &params);
+  uint32_t addOperatorDepthwiseConv2D(const OperatorParams &params, circle::Padding padding,
+                                      int stride_w, int stride_h, int depth_multiplier,
+                                      circle::ActivationFunctionType actfn, int dilation_w = 1,
+                                      int dilation_h = 1);
   uint32_t addOperatorEqual(const OperatorParams &params);
   uint32_t addOperatorFill(const OperatorParams &params);
-  uint32_t addOperatorFullyConnected(const OperatorParams &params);
+  uint32_t addOperatorFloor(const OperatorParams &params);
+  uint32_t addOperatorFullyConnected(const OperatorParams &params,
+                                     circle::FullyConnectedOptionsWeightsFormat weights_format =
+                                         circle::FullyConnectedOptionsWeightsFormat_DEFAULT);
   uint32_t addOperatorIf(const OperatorParams &params, uint32_t then_subg, uint32_t else_subg);
   uint32_t addOperatorInstanceNorm(const OperatorParams &params, float epsilon,
                                    circle::ActivationFunctionType actfn);
@@ -178,6 +188,8 @@ public:
   uint32_t addOperatorSelect(const OperatorParams &params);
   uint32_t addOperatorSelectV2(const OperatorParams &params);
   uint32_t addOperatorSplit(const OperatorParams &params, int32_t num_split);
+  uint32_t addOperatorSqrt(const OperatorParams &params);
+  uint32_t addOperatorSquare(const OperatorParams &params);
   uint32_t addOperatorStridedSlice(const OperatorParams &params, int32_t begin_mask = 0,
                                    int32_t end_mask = 0, int32_t ellipsis_mask = 0,
                                    int32_t new_axis_mask = 0, int32_t shrink_axis_mask = 0);

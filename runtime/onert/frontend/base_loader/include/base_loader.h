@@ -151,7 +151,7 @@ private:
   void loadOneHot(const Operator *op, ir::Graph &subg);
   void loadIf(const Operator *op, ir::Graph &subg);
   void loadWhile(const Operator *op, ir::Graph &subg);
-  void loadArgMax(const Operator *op, ir::Graph &subg);
+  void loadArgMinMax(const Operator *op, ir::Graph &subg, bool is_argmax);
   void loadFusedBatchNorm(const Operator *op, ir::Graph &subg);
   void loadLogSoftmax(const Operator *op, ir::Graph &subg);
   void loadSpaceToDepth(const Operator *op, ir::Graph &subg);
@@ -255,16 +255,23 @@ ir::DataType BaseLoader<LoaderDomain>::BaseLoader::tensorTypeToDataType(const Te
   {
     case TensorType::TensorType_FLOAT32:
       return ir::DataType::FLOAT32;
+    case TensorType::TensorType_FLOAT16:
+      return ir::DataType::FLOAT16;
     case TensorType::TensorType_INT32:
       return ir::DataType::INT32;
-    case TensorType::TensorType_BOOL:
-      return ir::DataType::BOOL8;
     case TensorType::TensorType_UINT8:
       return ir::DataType::QUANT_UINT8_ASYMM;
-    case TensorType::TensorType_INT8:
-      return ir::DataType::QUANT_INT8_ASYMM;
     case TensorType::TensorType_INT64:
       return ir::DataType::INT64;
+    // case TensorType::TensorType_STRING:
+    case TensorType::TensorType_BOOL:
+      return ir::DataType::BOOL8;
+    case TensorType::TensorType_INT16:
+      return ir::DataType::QUANT_INT16_ASYMM;
+    // case TensorType::TensorType_COMPLEX64
+    case TensorType::TensorType_INT8:
+      return ir::DataType::QUANT_INT8_ASYMM;
+    // case TensorType::TensorType_FLOAT64
     default:
       throw std::runtime_error(
           std::string("Unsupported tensor type: ").append(EnumNameTensorType(type)));
@@ -607,6 +614,8 @@ void BaseLoader<LoaderDomain>::loadDepthwiseConv2D(const Operator *op, ir::Graph
   loadStridesAndPaddings(param, options);
   param.multiplier = options->depth_multiplier();
   // Dilation h/w factor unused
+  param.dilation.width_factor = options->dilation_w_factor();
+  param.dilation.height_factor = options->dilation_h_factor();
 
   loadOperationTo<ir::operation::DepthwiseConv2D>(op, subg, param);
 }
@@ -684,7 +693,7 @@ void BaseLoader<LoaderDomain>::loadFC(const Operator *op, ir::Graph &subg)
   const auto *options = op->builtin_options_as_FullyConnectedOptions();
 
   param.activation = convertActivation(options->fused_activation_function());
-  // weights_format unused
+  param.weights_format = static_cast<ir::FullyConnectedWeightsFormat>(options->weights_format());
 
   const auto fc = loadOperationTo<ir::operation::FullyConnected>(op, subg, param);
 
@@ -1222,25 +1231,15 @@ void BaseLoader<LoaderDomain>::loadWhile(const Operator *op, ir::Graph &subg)
 }
 
 template <typename LoaderDomain>
-void BaseLoader<LoaderDomain>::loadArgMax(const Operator *op, ir::Graph &subg)
+void BaseLoader<LoaderDomain>::loadArgMinMax(const Operator *op, ir::Graph &subg, bool is_argmax)
 {
-  ir::operation::ArgMax::Param param;
-  const auto output_type = op->builtin_options_as_ArgMaxOptions()->output_type();
-  switch (output_type)
-  {
-    case TensorType::TensorType_INT32:
-    case TensorType::TensorType_INT64:
-      param.output_type = tensorTypeToDataType(output_type);
-      break;
-    default:
-      throw std::runtime_error("ArgMax: `output_type` must be either int32 or int64.");
-  }
-  auto am = loadOperationTo<ir::operation::ArgMax>(op, subg, param);
+  ir::operation::ArgMinMax::Param param;
+  const auto output_type = is_argmax ? op->builtin_options_as_ArgMaxOptions()->output_type()
+                                     : op->builtin_options_as_ArgMinOptions()->output_type();
+  param.output_type = tensorTypeToDataType(output_type);
+  param.is_arg_max = is_argmax;
 
-  auto &axisOperand = subg.operands().at(am->getInputs().at(ir::operation::ArgMax::Input::AXIS));
-  if (!(axisOperand.operandSize() == 4 && (axisOperand.typeInfo().type() == ir::DataType::INT32 ||
-                                           axisOperand.typeInfo().type() == ir::DataType::INT64)))
-    throw std::runtime_error("ArgMax: `axis` with an int32 or int64 element is only supported.");
+  loadOperationTo<ir::operation::ArgMinMax>(op, subg, param);
 }
 
 template <typename LoaderDomain>
@@ -1332,6 +1331,9 @@ void BaseLoader<LoaderDomain>::loadOperation(const Operator *op, ir::Graph &subg
     case BuiltinOperator::BuiltinOperator_CONCATENATION:
       loadConcatenation(op, subg);
       return;
+    case BuiltinOperator::BuiltinOperator_FLOOR:
+      loadElementwiseUnary(op, subg, ir::operation::ElementwiseUnary::Type::FLOOR);
+      return;
     case BuiltinOperator::BuiltinOperator_FULLY_CONNECTED:
       loadFC(op, subg);
       return;
@@ -1377,6 +1379,9 @@ void BaseLoader<LoaderDomain>::loadOperation(const Operator *op, ir::Graph &subg
       return;
     case BuiltinOperator::BuiltinOperator_SQRT:
       loadElementwiseUnary(op, subg, ir::operation::ElementwiseUnary::Type::SQRT);
+      return;
+    case BuiltinOperator::BuiltinOperator_SQUARE:
+      loadElementwiseUnary(op, subg, ir::operation::ElementwiseUnary::Type::SQUARE);
       return;
     case BuiltinOperator::BuiltinOperator_SQUARED_DIFFERENCE:
       loadOperationTo<ir::operation::SquaredDifference>(op, subg);
@@ -1494,7 +1499,10 @@ void BaseLoader<LoaderDomain>::loadOperation(const Operator *op, ir::Graph &subg
       loadElementwiseUnary(op, subg, ir::operation::ElementwiseUnary::Type::NEG);
       return;
     case BuiltinOperator::BuiltinOperator_ARG_MAX:
-      loadArgMax(op, subg);
+      loadArgMinMax(op, subg, true);
+      return;
+    case BuiltinOperator::BuiltinOperator_ARG_MIN:
+      loadArgMinMax(op, subg, false);
       return;
     case BuiltinOperator::BuiltinOperator_LOG:
       loadElementwiseUnary(op, subg, ir::operation::ElementwiseUnary::Type::LOG);
@@ -1507,6 +1515,10 @@ void BaseLoader<LoaderDomain>::loadOperation(const Operator *op, ir::Graph &subg
       return;
     case BuiltinOperator::BuiltinOperator_LOGICAL_NOT:
       loadElementwiseUnary(op, subg, ir::operation::ElementwiseUnary::Type::LOGICAL_NOT);
+      return;
+    case BuiltinOperator::BuiltinOperator_LOGICAL_AND:
+      loadElementwiseBinary(op, subg,
+                            ir::operation::ElementwiseBinary::ElementwiseBinaryType::LOGICAL_AND);
       return;
     case BuiltinOperator::BuiltinOperator_LOGICAL_OR:
       loadElementwiseBinary(op, subg,

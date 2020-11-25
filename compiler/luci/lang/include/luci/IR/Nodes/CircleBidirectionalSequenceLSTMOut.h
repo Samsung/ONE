@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __LUCI_IR_CIRCLE_BIDIRECTIONAL_SEQUENCE_LSTMOUT_H__
-#define __LUCI_IR_CIRCLE_BIDIRECTIONAL_SEQUENCE_LSTMOUT_H__
+#ifndef __LUCI_IR_CIRCLE_BIDIRECTIONAL_SEQUENCE_LSTM_OUT_H__
+#define __LUCI_IR_CIRCLE_BIDIRECTIONAL_SEQUENCE_LSTM_OUT_H__
 
 #include "luci/IR/CircleNodeDecl.h"
 #include "luci/IR/CircleOpcode.h"
@@ -26,10 +26,10 @@ namespace luci
 {
 
 /**
- * @brief Virtual CIRCLEBIDIRECTIONAL_SEQUENCE_LSTMOUT in Circle
+ * @brief Virtual CIRCLEBIDIRECTIONAL_SEQUENCE_LSTM_OUT in Circle
  */
 class CircleBidirectionalSequenceLSTMOut final
-    : public FixedArityNode<1, CircleNodeImpl<CircleOpcode::CIRCLEBIDIRECTIONAL_SEQUENCE_LSTMOUT>>
+    : public FixedArityNode<1, CircleNodeImpl<CircleOpcode::CIRCLEBIDIRECTIONAL_SEQUENCE_LSTM_OUT>>
 {
 public:
   CircleBidirectionalSequenceLSTMOut() = default;
@@ -48,4 +48,4 @@ private:
 
 } // namespace luci
 
-#endif // __LUCI_IR_CIRCLE_BIDIRECTIONAL_SEQUENCE_LSTMOUT_H__
+#endif // __LUCI_IR_CIRCLE_BIDIRECTIONAL_SEQUENCE_LSTM_OUT_H__

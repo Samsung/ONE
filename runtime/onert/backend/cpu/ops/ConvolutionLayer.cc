@@ -198,12 +198,10 @@ void ConvolutionLayer::prepare()
            !_input->is_dynamic() && !_output->is_dynamic())
   {
     kernel.prepareQuant(getTensorShape(_input), getTensorShape(_kernel), getTensorShape(_output),
-                        _strideWidth, _strideHeight);
+                        _strideWidth, _strideHeight, _dilationWidthFactor, _dilationHeightFactor);
   }
   _prepare = true;
 }
-
-#undef ANDROID_NN_CONV_PARAMETERS
 
 } // namespace ops
 } // namespace cpu

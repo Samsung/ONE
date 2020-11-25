@@ -179,14 +179,14 @@ public:
 
 public:
   IConstantInitializer(const ir::Operands &operands)
-      : _operands{operands}, _current_op_seq_layout{ir::Layout::UNKNOWN}
+      : _operands{operands}, _current_layout{ir::Layout::UNKNOWN}
   {
   }
 
 public:
   using Initializer = std::function<void(const ir::Operand &, backend::ITensor &)>;
 
-  void setLayout(ir::Layout layout) { _current_op_seq_layout = layout; }
+  void setLayout(ir::Layout layout) { _current_layout = layout; }
 
 protected:
   virtual std::shared_ptr<ITensorRegistry> tensor_registry() const = 0;
@@ -221,7 +221,7 @@ public:
 protected:
   const ir::Operands &_operands;
   std::unordered_map<ir::OperandIndex, Initializer> _init_map;
-  ir::Layout _current_op_seq_layout; // TODO Rename this to _current_layout
+  ir::Layout _current_layout;
 };
 
 } // namespace backend

@@ -18,15 +18,30 @@
  * @file  IExecutor.h
  * @brief This file defines interface of Executor
  */
-#ifndef __ONERT_EXEC_I_EXECUTOR_H_
-#define __ONERT_EXEC_I_EXECUTOR_H_
+#ifndef __ONERT_EXEC_I_EXECUTOR_H__
+#define __ONERT_EXEC_I_EXECUTOR_H__
 
 #include "ir/Graph.h"
 #include "IFunction.h"
 #include "IODescription.h"
+#include "ir/Index.h"
 #include "ir/OperationIndexMap.h"
-#include "backend/IDynamicTensorManager.h"
 
+#include <cstdint>
+#include <memory>
+#include <unordered_map>
+
+namespace onert
+{
+namespace backend
+{
+class IPortableTensor;
+namespace controlflow
+{
+class IOTensor;
+}
+}
+}
 namespace onert
 {
 namespace exec
@@ -60,11 +75,29 @@ struct IExecutor
   virtual void setIndexedRanks(std::shared_ptr<ir::OperationIndexMap<int64_t>>) = 0;
 
   /**
-   * @brief     Start execution
+   * @brief     Execute with user-given input/output description (for primary subgraph)
    * @param[in] desc Input and output description
    * @note      This method should be thread-safe
    */
   virtual void execute(const IODescription &desc) = 0;
+
+  /**
+   * @brief Execute with given input/output tensors
+   *
+   * For non-primary subgraphs, input and output tensors must be given.
+   *
+   * @param[in] inputs tensors that are passed as inputs
+   * @param[in] outputs tensors that are passed as outputs
+   */
+  virtual void execute(const std::vector<backend::IPortableTensor *> &inputs,
+                       const std::vector<backend::IPortableTensor *> &outputs) = 0;
+
+  /**
+   * @brief Get output tensor objects
+   *
+   * @return Vector of @c IOTensor
+   */
+  virtual const std::vector<backend::controlflow::IOTensor *> &getOutputTensors() const = 0;
 };
 
 using ExecutorMap = std::unordered_map<ir::SubgraphIndex, std::unique_ptr<IExecutor>>;
@@ -72,4 +105,4 @@ using ExecutorMap = std::unordered_map<ir::SubgraphIndex, std::unique_ptr<IExecu
 } // namespace exec
 } // namespace onert
 
-#endif // __ONERT_EXEC_I_EXECUTOR_H_
+#endif // __ONERT_EXEC_I_EXECUTOR_H__

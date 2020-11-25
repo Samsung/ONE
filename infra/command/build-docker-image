@@ -5,15 +5,17 @@ function Usage()
   echo "Usage: $0 $(basename ${BASH_SOURCE[0]}) [OPTIONS]"
   echo ""
   echo "Options:"
-  echo "      --extension               dockerfile extension in infra/docker"
+  echo "      --codename                ubuntu codename, default image name is nnfw/one-devtools:[codename]"
   echo "Options can use as docker build option:"
   docker build --help
 }
 
-DOCKER_FILE_RPATH_BASE="infra/docker/Dockerfile"
+DOCKER_FILE_RPATH_BASE="infra/docker"
 DOCKER_BUILD_ARGS=()
-DOCKER_FILE_RPATH=${DOCKER_FILE_RPATH_BASE}
-DOCKER_IMAGE_NAME=${DOCKER_IMAGE_NAME:-nnfw/nnas}
+
+# Default setting
+UBUNTU_CODENAME="xenial"
+DOCKER_TAG="latest"
 
 while [[ $# -gt 0 ]]
 do
@@ -25,15 +27,14 @@ do
       Usage
       exit 1
       ;;
-    --extension)
-      DOCKER_FILE_RPATH="${DOCKER_FILE_RPATH_BASE}.$2"
-      shift
-      shift
+    --codename)
+      UBUNTU_CODENAME=$2
+      DOCKER_TAG=$2
+      shift 2
       ;;
     -t|--tag)
       DOCKER_IMAGE_NAME="$2"
-      shift
-      shift
+      shift 2
       ;;
     *)
       DOCKER_BUILD_ARGS+=(${1})
@@ -42,6 +43,8 @@ do
   esac
 done
 
+DOCKER_IMAGE_NAME=${DOCKER_IMAGE_NAME:-nnfw/one-devtools:$DOCKER_TAG}
+DOCKER_FILE_RPATH=$DOCKER_FILE_RPATH_BASE/$UBUNTU_CODENAME/Dockerfile
 DOCKER_BUILD_ARGS+=("-t ${DOCKER_IMAGE_NAME}")
 
 docker build --build-arg http_proxy="${http_proxy}" \

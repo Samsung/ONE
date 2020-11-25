@@ -28,7 +28,6 @@ namespace backend
 class Backend;
 class IConstantInitializer;
 class IKernelGenerator;
-class ITensorRegister;
 struct ITensorRegistry;
 struct ITensorBuilder;
 struct IOptimizer;
@@ -50,11 +49,10 @@ public:
                  std::shared_ptr<ITensorBuilder> tensor_builder = nullptr,
                  std::shared_ptr<IConstantInitializer> constant_initializer = nullptr,
                  std::shared_ptr<IKernelGenerator> kernel_gen = nullptr,
-                 std::shared_ptr<ITensorRegister> tensor_register = nullptr,
                  std::shared_ptr<IOptimizer> optimizer = nullptr)
       : _backend{backend}, _graph{graph}, tensor_registry{tensor_registry},
         tensor_builder{tensor_builder}, constant_initializer{constant_initializer},
-        kernel_gen{kernel_gen}, tensor_register{tensor_register}, optimizer{optimizer}
+        kernel_gen{kernel_gen}, optimizer{optimizer}
   {
   }
 
@@ -80,7 +78,6 @@ public:
   std::shared_ptr<ITensorBuilder> tensor_builder;
   std::shared_ptr<IConstantInitializer> constant_initializer;
   std::shared_ptr<IKernelGenerator> kernel_gen;
-  std::shared_ptr<ITensorRegister> tensor_register;
   std::shared_ptr<IOptimizer> optimizer;
 };
 

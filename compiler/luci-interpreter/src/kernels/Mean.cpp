@@ -180,6 +180,12 @@ void Mean::execute() const
     default:
       throw std::runtime_error("Unsupported type.");
   }
+  if (!!_temp_index)
+    _temp_index->deallocate();
+  if (!!_resolved_axes)
+    _resolved_axes->deallocate();
+  if (!!_temp_sum)
+    _temp_sum->deallocate();
 }
 
 void Mean::evalFloat() const

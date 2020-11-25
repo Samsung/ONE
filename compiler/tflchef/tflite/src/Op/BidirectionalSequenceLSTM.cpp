@@ -23,7 +23,7 @@ namespace tflchef
 {
 
 void TFliteOpBidirectionalSequenceLSTM::filler(const tflite::Operator *op, TFliteImport *import,
-                                                tflchef::ModelRecipe *model_recipe) const
+                                               tflchef::ModelRecipe *model_recipe) const
 {
   const std::vector<int32_t> &inputs = as_index_vector(op->inputs());
   assert(inputs.size() == 48);
@@ -42,7 +42,7 @@ void TFliteOpBidirectionalSequenceLSTM::filler(const tflite::Operator *op, TFlit
 
 tflchef::Operation *
 TFliteOpBidirectionalSequenceLSTM::build(const tflite::Operator *op, TFliteImport *import,
-                                          tflchef::ModelRecipe *model_recipe) const
+                                         tflchef::ModelRecipe *model_recipe) const
 {
   auto op_params = op->builtin_options_as_BidirectionalSequenceLSTMOptions();
   assert(op_params != nullptr);

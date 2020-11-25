@@ -49,6 +49,7 @@ public:
   std::unique_ptr<Kernel> visit(const luci::CircleDepthwiseConv2D *node) override;
   std::unique_ptr<Kernel> visit(const luci::CircleDiv *node) override;
   std::unique_ptr<Kernel> visit(const luci::CircleElu *node) override;
+  std::unique_ptr<Kernel> visit(const luci::CircleExp *node) override;
   std::unique_ptr<Kernel> visit(const luci::CircleFloor *node) override;
   std::unique_ptr<Kernel> visit(const luci::CircleFloorDiv *node) override;
   std::unique_ptr<Kernel> visit(const luci::CircleEqual *node) override;
@@ -56,6 +57,7 @@ public:
   std::unique_ptr<Kernel> visit(const luci::CircleGreater *node) override;
   std::unique_ptr<Kernel> visit(const luci::CircleGreaterEqual *node) override;
   std::unique_ptr<Kernel> visit(const luci::CircleIf *node) override;
+  std::unique_ptr<Kernel> visit(const luci::CircleInstanceNorm *node) override;
   std::unique_ptr<Kernel> visit(const luci::CircleL2Normalize *node) override;
   std::unique_ptr<Kernel> visit(const luci::CircleL2Pool2D *node) override;
   std::unique_ptr<Kernel> visit(const luci::CircleLeakyRelu *node) override;
@@ -63,6 +65,8 @@ public:
   std::unique_ptr<Kernel> visit(const luci::CircleLessEqual *node) override;
   std::unique_ptr<Kernel> visit(const luci::CircleLocalResponseNormalization *node) override;
   std::unique_ptr<Kernel> visit(const luci::CircleLogicalAnd *node) override;
+  std::unique_ptr<Kernel> visit(const luci::CircleLogicalNot *node) override;
+  std::unique_ptr<Kernel> visit(const luci::CircleLogicalOr *node) override;
   std::unique_ptr<Kernel> visit(const luci::CircleLogistic *node) override;
   std::unique_ptr<Kernel> visit(const luci::CircleLogSoftmax *node) override;
   std::unique_ptr<Kernel> visit(const luci::CircleInput *node) override;

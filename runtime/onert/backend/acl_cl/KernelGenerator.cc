@@ -49,7 +49,7 @@ KernelGenerator::KernelGenerator(
     const std::shared_ptr<TensorBuilder> &tensor_builder,
     const std::shared_ptr<acl_common::AclTensorRegistry<TensorManager>> &tensor_reg)
     : _ctx(operands_ctx), _operations_ctx(operations_ctx), _tensor_builder(tensor_builder),
-      _tensor_reg(tensor_reg), _current_op_seq_layout(ir::Layout::UNKNOWN)
+      _tensor_reg(tensor_reg), _current_layout(ir::Layout::UNKNOWN)
 {
   // DO NOTHING
 }
@@ -62,7 +62,7 @@ void KernelGenerator::visit(const ir::OpSequence &op_seq)
   _return_fn_seq = std::make_unique<exec::FunctionSequence>();
   _return_fn_seq->enableDynamicShapeInferer(false);
 
-  _current_op_seq_layout = op_seq.getLayout();
+  _current_layout = op_seq.getLayout();
   for (const auto &operation_idx : op_seq.operations())
   {
     const auto &node = _operations_ctx.at(operation_idx);
@@ -152,8 +152,8 @@ void KernelGenerator::visit(const ir::operation::Conv2D &node)
   const auto ker_index{node.getInputs().at(Conv2D::Input::KERNEL)};
   const auto bias_index{node.getInputs().at(Conv2D::Input::BIAS)};
 
-  const auto ifm_shape = _ctx.at(ifm_index).shape().asFeature(_current_op_seq_layout);
-  const auto ofm_shape = _ctx.at(ofm_index).shape().asFeature(_current_op_seq_layout);
+  const auto ifm_shape = _ctx.at(ifm_index).shape().asFeature(_current_layout);
+  const auto ofm_shape = _ctx.at(ofm_index).shape().asFeature(_current_layout);
   // Kernel format is [depth_out, kernel_height, kernel_width, depth_in].
   const auto &ker_shape = _ctx.at(ker_index).shape();
   const auto ker_height = ker_shape.dim(1);
@@ -189,16 +189,18 @@ void KernelGenerator::visit(const ir::operation::DepthwiseConv2D &node)
   const auto ker_index{node.getInputs().at(DepthwiseConv2D::Input::KERNEL)};
   const auto bias_index{node.getInputs().at(DepthwiseConv2D::Input::BIAS)};
 
-  const auto ifm_shape = _ctx.at(ifm_index).shape().asFeature(_current_op_seq_layout);
-  const auto ofm_shape = _ctx.at(ofm_index).shape().asFeature(_current_op_seq_layout);
+  const auto ifm_shape = _ctx.at(ifm_index).shape().asFeature(_current_layout);
+  const auto ofm_shape = _ctx.at(ofm_index).shape().asFeature(_current_layout);
   // Kernel format is [1, kernel_height, kernel_width, depth_out].
   const auto &ker_shape = _ctx.at(ker_index).shape();
   const auto ker_height = ker_shape.dim(1);
   const auto ker_width = ker_shape.dim(2);
 
   const auto stride = node.param().stride;
-  const auto padding = ir::calculatePadding(node.param().padding, ifm_shape, ofm_shape, stride,
-                                            ker_width, ker_height);
+  const auto dilation = node.param().dilation;
+  const auto padding =
+      ir::calculatePadding(node.param().padding, ifm_shape, ofm_shape, stride, ker_width,
+                           ker_height, dilation.width_factor, dilation.height_factor);
   const auto multiplier = node.param().multiplier;
   const auto activation = node.param().activation;
 
@@ -209,14 +211,13 @@ void KernelGenerator::visit(const ir::operation::DepthwiseConv2D &node)
 
   const auto conv_info = acl_common::asPadStrideInfo(padding, stride);
   const auto act_info = acl_common::asActivationLayerInfo(activation);
+  const auto dilation_info = acl_common::asDilation(dilation.width_factor, dilation.height_factor);
 
-  {
-    auto fn = acl_common::generateLayer<arm_compute::CLDepthwiseConvolutionLayer>(
-        ifm_tensor->handle(), ker_tensor->handle(), bias_tensor->handle(), ofm_tensor->handle(),
-        conv_info, multiplier, act_info);
+  auto fn = acl_common::generateLayer<arm_compute::CLDepthwiseConvolutionLayer>(
+      ifm_tensor->handle(), ker_tensor->handle(), bias_tensor->handle(), ofm_tensor->handle(),
+      conv_info, multiplier, act_info, dilation_info);
 
-    _return_fn = asAclFunction(std::move(fn));
-  }
+  _return_fn = asAclFunction(std::move(fn));
 }
 
 void KernelGenerator::visit(const ir::operation::Concat &node)
@@ -254,7 +255,7 @@ void KernelGenerator::visit(const ir::operation::Concat &node)
   else
   {
     const auto rank = _ctx.at(ofm_index).shape().rank();
-    const auto frontend_layout = _current_op_seq_layout;
+    const auto frontend_layout = _current_layout;
     const auto backend_layout = output_tensor->layout();
     const auto fixed_axis =
         acl_common::ToARMComputeAxis(rank, axis, frontend_layout, backend_layout).value();
@@ -270,10 +271,13 @@ void KernelGenerator::visit(const ir::operation::FullyConnected &node)
   const auto output_index{node.getOutputs().at(0)};
   auto output_tensor = _tensor_reg->getAclTensor(output_index);
   const auto activation = node.param().activation;
+  if (node.param().weights_format == ir::FullyConnectedWeightsFormat::Shuffled16x1Float32)
+    throw std::runtime_error(
+        "KernelGenerator(acl_cl): FullyConnected 16x1Float32 weights is not supported.");
 
   auto fn = acl_common::kernelGenFullyConnected<acl_common::AclFunction, ::arm_compute::ICLTensor,
                                                 ::arm_compute::CLFullyConnectedReshapingLayer>(
-      node, _ctx, _tensor_builder, _tensor_reg, _current_op_seq_layout);
+      node, _ctx, _tensor_builder, _tensor_reg, _current_layout);
   _return_fn = std::make_unique<exec::FunctionSequence>(
       std::move(fn), ActivationBuilder::generate(activation, output_tensor->handle()));
 }
@@ -292,7 +296,7 @@ void KernelGenerator::visit(const ir::operation::Reduce &node)
   // Convert to ACL axes taking into account negative values and possible duplicates.
   const auto &axes = _ctx.at(axes_index);
   const auto input_rank = _ctx.at(input_index).shape().rank();
-  const auto frontend_layout = _current_op_seq_layout;
+  const auto frontend_layout = _current_layout;
   const auto backend_layout = input_tensor->layout();
 
   std::unique_ptr<arm_compute::IFunction> fn;
@@ -325,7 +329,7 @@ void KernelGenerator::visit(const ir::operation::Reshape &node)
 
   // NOTE This operation must not be changed the layout from frontend to backend
   //      So, PermutationOperationPass makes layouts of frontend and backend the same.
-  const auto frontend_layout = _current_op_seq_layout;
+  const auto frontend_layout = _current_layout;
   const auto backend_layout = output_tensor->layout();
   assert((_ctx.at(input_index).shape().rank() < 4 && _ctx.at(output_index).shape().rank() < 4) ||
          frontend_layout == backend_layout);
@@ -384,7 +388,7 @@ void KernelGenerator::visit(const ir::operation::Slice &node)
 
   auto outputData_tensor = _tensor_reg->getAclTensor(output_index);
   auto inputData_tensor = _tensor_reg->getAclTensor(input_index);
-  const auto frontend_layout = _current_op_seq_layout;
+  const auto frontend_layout = _current_layout;
   const auto backend_layout = inputData_tensor->layout();
 
   // Set initializers for indices data such as order of inputData
@@ -451,7 +455,7 @@ void KernelGenerator::visit(const ir::operation::StridedSlice &node)
 
   auto outputData_tensor = _tensor_reg->getAclTensor(output_index);
   auto inputData_tensor = _tensor_reg->getAclTensor(input_index);
-  const auto frontend_layout = _current_op_seq_layout;
+  const auto frontend_layout = _current_layout;
   const auto backend_layout = inputData_tensor->layout();
 
   // Set initializers for indices data such as order of inputData
@@ -553,7 +557,7 @@ void KernelGenerator::visit(const ir::operation::Transpose &node)
 
   auto ofm_tensor = _tensor_reg->getAclTensor(ofm_idx);
   auto ifm_tensor = _tensor_reg->getAclTensor(ifm_idx);
-  const auto frontend_layout = _current_op_seq_layout;
+  const auto frontend_layout = _current_layout;
   const auto backend_layout = ifm_tensor->layout();
 
   const auto &perms = _ctx.at(perm_idx);
@@ -832,7 +836,7 @@ void KernelGenerator::visit(const ir::operation::OneHot &node)
   auto onvalue_tensor = _tensor_reg->getAclTensor(onvalue_idx);
 
   const size_t output_rank = _ctx.at(output_idx).shape().rank();
-  const auto frontend_layout = _current_op_seq_layout;
+  const auto frontend_layout = _current_layout;
   const auto backend_layout = output_tensor->layout();
   int32_t axis = node.param().axis == -1 ? output_rank - 1 : node.param().axis;
   axis = acl_common::ToARMComputeAxis(output_rank, axis, frontend_layout, backend_layout).value();
@@ -883,7 +887,7 @@ void KernelGenerator::visit(const ir::operation::Pack &node)
   for (const auto &input_index : input_indexes)
     inputs.emplace_back(_tensor_reg->getAclTensor(input_index)->handle());
 
-  const auto frontend_layout = _current_op_seq_layout;
+  const auto frontend_layout = _current_layout;
   const auto backend_layout = _tensor_reg->getAclTensor(output_index)->layout();
 
   if (axis < 0)
@@ -919,8 +923,7 @@ void KernelGenerator::visit(const ir::operation::Pack &node)
 void KernelGenerator::visit(const ir::operation::Pool2D &node)
 {
   auto raw_fn = acl_common::kernelGenPool2D<::arm_compute::CLPoolingLayer>(
-      node, _ctx, _tensor_reg, _current_op_seq_layout,
-      acl_common::convertPoolType(node.param().op_type));
+      node, _ctx, _tensor_reg, _current_layout, acl_common::convertPoolType(node.param().op_type));
 
   const auto ofm_index{node.getOutputs().at(0)};
   auto ofm_tensor = _tensor_reg->getAclTensor(ofm_index);
@@ -1165,9 +1168,9 @@ void KernelGenerator::visit(const ir::operation::TransposeConv &node)
   const auto ker_index{node.getInputs().at(ir::operation::TransposeConv::Input::KERNEL)};
   const auto ifm_index{node.getInputs().at(ir::operation::TransposeConv::Input::INPUT)};
 
-  const auto ofm_shape = _ctx.at(ofm_index).shape().asFeature(_current_op_seq_layout);
-  const auto ifm_shape = _ctx.at(ifm_index).shape().asFeature(_current_op_seq_layout);
-  const auto ker_shape = _ctx.at(ker_index).shape().asFeature(_current_op_seq_layout);
+  const auto ofm_shape = _ctx.at(ofm_index).shape().asFeature(_current_layout);
+  const auto ifm_shape = _ctx.at(ifm_index).shape().asFeature(_current_layout);
+  const auto ker_shape = _ctx.at(ker_index).shape().asFeature(_current_layout);
 
   const auto stride = node.param().stride;
 
@@ -1266,7 +1269,7 @@ void KernelGenerator::visit(const ir::operation::Gather &node)
   UNUSED_RELEASE(backend_layout);
   assert(backend_layout == ifm_tensor->layout());
   assert(backend_layout == indices_tensor->layout());
-  assert(ifm_rank < 4 || _current_op_seq_layout == backend_layout);
+  assert(ifm_rank < 4 || _current_layout == backend_layout);
 
   // input is n-D, indices k-D, output is (n + k - 1)-D
   size_t n = ifm_rank;
@@ -1302,11 +1305,11 @@ void KernelGenerator::visit(const ir::operation::Gather &node)
   _return_fn = asAclFunction(std::move(fn));
 }
 
-void KernelGenerator::visit(const ir::operation::ArgMax &node)
+void KernelGenerator::visit(const ir::operation::ArgMinMax &node)
 {
   const auto ofm_index{node.getOutputs().at(0)};
-  const auto ifm_index{node.getInputs().at(ir::operation::ArgMax::Input::INPUT)};
-  const auto axis_index{node.getInputs().at(ir::operation::ArgMax::Input::AXIS)};
+  const auto ifm_index{node.getInputs().at(ir::operation::ArgMinMax::Input::INPUT)};
+  const auto axis_index{node.getInputs().at(ir::operation::ArgMinMax::Input::AXIS)};
 
   auto ifm_shape = _ctx.at(ifm_index).shape();
   auto ofm_shape = _ctx.at(ofm_index).shape();
@@ -1316,7 +1319,7 @@ void KernelGenerator::visit(const ir::operation::ArgMax &node)
   auto ofm_tensor = _tensor_reg->getAclTensor(ofm_index);
   auto ifm_tensor = _tensor_reg->getAclTensor(ifm_index);
   const auto ifm_rank = _ctx.at(ifm_index).shape().rank();
-  auto frontend_layout = _current_op_seq_layout;
+  auto frontend_layout = _current_layout;
   auto backend_layout = ifm_tensor->layout();
 
   int axis_value = _ctx.at(axis_index).asScalar<int32_t>();
@@ -1396,7 +1399,7 @@ void KernelGenerator::visit(const ir::operation::Split &node)
   for (const auto &ofm_ind : output_indexes)
     output_tensors.emplace_back(_tensor_reg->getAclTensor(ofm_ind)->handle());
 
-  const auto frontend_layout = _current_op_seq_layout;
+  const auto frontend_layout = _current_layout;
   const auto backend_layout = ifm_tensor->layout();
   auto axis = _ctx.at(axis_index).asScalar<int32_t>();
   if (axis < 0)
@@ -1435,7 +1438,7 @@ void KernelGenerator::visit(const ir::operation::SplitV &node)
   {
     int32_t split_dim = split_dim_op.asScalar<int32_t>();
     uint32_t split_dim_revised = (split_dim < 0) ? (split_dim + ifm_rank) : split_dim;
-    const auto frontend_layout = _current_op_seq_layout;
+    const auto frontend_layout = _current_layout;
     const auto backend_layout = ifm_tensor->layout();
 
     if (ifm_tensor->num_dimensions() != ifm_tensor->info()->num_dimensions())
@@ -1479,7 +1482,7 @@ void KernelGenerator::visit(const ir::operation::Unpack &node)
   for (const auto &output_index : output_indexes)
     outputs.emplace_back(_tensor_reg->getAclTensor(output_index)->handle());
 
-  const auto frontend_layout = _current_op_seq_layout;
+  const auto frontend_layout = _current_layout;
   const auto backend_layout = _tensor_reg->getAclTensor(input_index)->layout();
   if (axis < 0)
     axis += input_rank;
@@ -1522,7 +1525,7 @@ void KernelGenerator::visit(const ir::operation::Pad &node)
   auto input = _tensor_reg->getAclTensor(input_index)->handle();
   auto output = _tensor_reg->getAclTensor(output_index)->handle();
 
-  const auto frontend_layout = _current_op_seq_layout;
+  const auto frontend_layout = _current_layout;
   const auto backend_layout = _tensor_reg->getAclTensor(input_index)->layout();
 
   ::arm_compute::PaddingList padding_list;

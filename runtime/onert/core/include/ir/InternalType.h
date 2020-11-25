@@ -46,6 +46,13 @@ struct Dilation
   uint32_t height_factor;
 };
 
+enum class FullyConnectedWeightsFormat
+{
+  Default = 0,
+  Shuffled4x16Int8 = 1,
+  Shuffled16x1Float32 = 127
+};
+
 } // namespace ir
 } // namespace onert
 

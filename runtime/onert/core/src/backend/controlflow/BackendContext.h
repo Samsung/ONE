@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_CPU_BACKEND_CONTEXT_H__
-#define __ONERT_BACKEND_CPU_BACKEND_CONTEXT_H__
+#ifndef __ONERT_BACKEND_CONTROLFLOW_BACKEND_CONTEXT_H__
+#define __ONERT_BACKEND_CONTROLFLOW_BACKEND_CONTEXT_H__
 
 #include <backend/BackendContext.h>
 #include "ExternalContext.h"
@@ -35,11 +35,9 @@ public:
                  std::shared_ptr<ITensorBuilder> tensor_builder = nullptr,
                  std::shared_ptr<IConstantInitializer> constant_initializer = nullptr,
                  std::shared_ptr<IKernelGenerator> kernel_gen = nullptr,
-                 std::shared_ptr<ITensorRegister> tensor_register = nullptr,
                  std::shared_ptr<IOptimizer> optimizer = nullptr)
       : onert::backend::BackendContext(backend, graph, tensor_registry, tensor_builder,
-                                       constant_initializer, kernel_gen, tensor_register,
-                                       optimizer),
+                                       constant_initializer, kernel_gen, optimizer),
         _external_context(std::make_shared<ExternalContext>())
   {
   }
@@ -57,4 +55,4 @@ private:
 } // namespace backend
 } // namespace onert
 
-#endif // __ONERT_BACKEND_CPU_BACKEND_CONTEXT_H__
+#endif // __ONERT_BACKEND_CONTROLFLOW_BACKEND_CONTEXT_H__

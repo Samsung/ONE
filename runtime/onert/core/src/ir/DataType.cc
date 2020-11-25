@@ -42,6 +42,7 @@ size_t sizeOfDataType(DataType data_type)
       return sizeof(uint8_t);
     case DataType::QUANT_INT8_SYMM:
     case DataType::QUANT_INT8_ASYMM:
+    case DataType::QUANT_INT8_SYMM_PER_CHANNEL:
       return sizeof(int8_t);
     case DataType::FLOAT16:
       return sizeof(float16);

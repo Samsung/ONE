@@ -64,7 +64,7 @@ namespace luci
 {
 
 /**
- * @breif Record the information of T/F Lite SubGraph and its mapping to loco
+ * @brief Record the information of T/F Lite SubGraph and its mapping to loco
  */
 struct SubGraphContext
 {

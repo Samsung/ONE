@@ -17,11 +17,14 @@
 #include "luci/CircleOptimizer.h"
 
 #include "luci/Pass/FoldDequantizePass.h"
+#include "luci/Pass/FuseActivationFunctionPass.h"
 #include "luci/Pass/FuseAddWithTConvPass.h"
 #include "luci/Pass/FuseBatchNormWithTConv.h"
 #include "luci/Pass/FuseBCQPass.h"
 #include "luci/Pass/FuseInstanceNormPass.h"
 #include "luci/Pass/FusePreActivationBatchNormPass.h"
+#include "luci/Pass/MakeBatchNormGammaPositivePass.h"
+#include "luci/Pass/PropagateQuantParamPass.h"
 #include "luci/Pass/ResolveCustomOpAddPass.h"
 #include "luci/Pass/ResolveCustomOpBatchMatMulPass.h"
 #include "luci/Pass/ResolveCustomOpMatMulPass.h"
@@ -29,6 +32,7 @@
 #include "luci/Pass/QuantizeWithMinMaxPass.h"
 #include "luci/Pass/QuantizeDequantizeWeightsPass.h"
 #include "luci/Pass/SparsifyTensorPass.h"
+#include "luci/Pass/ShuffleWeightTo16x1Float32Pass.h"
 // TODO add more passes
 
 #include "luci/Pass/ShapeInferencePass.h"
@@ -37,6 +41,7 @@
 // logo passes
 #include <logo/RemoveDeadNodeWithQueryPass.h>
 
+#include "ModulePhase.h"
 #include "ProgressReporter.h"
 #include "CircleOptimizerUtils.h"
 
@@ -122,6 +127,18 @@ CircleOptimizer::Options *CircleOptimizer::options(void)
   return _options.get();
 }
 
+void CircleOptimizer::optimize(luci::Module *m) const
+{
+  luci::Phase phase;
+
+  // Passes will be inserted here
+
+  ModuleProgressReporter prog(m, logo::PhaseStrategy::Restart);
+  PhaseRunner<logo::PhaseStrategy::Restart> phase_runner{m};
+  phase_runner.attach(&prog);
+  phase_runner.run(phase);
+}
+
 void CircleOptimizer::optimize(loco::Graph *g) const
 {
   logo::Phase phase;
@@ -155,6 +172,10 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   {
     phase.emplace_back(std::make_unique<FuseAddWithTConvPass>());
   }
+  if (_options->query(Options::Algorithm::FuseActivationFunction))
+  {
+    phase.emplace_back(std::make_unique<FuseActivationFunctionPass>());
+  }
   if (_options->query(Options::Algorithm::FoldDequantize))
   {
     phase.emplace_back(std::make_unique<luci::FoldDequantizePass>());
@@ -162,6 +183,14 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   if (_options->query(Options::Algorithm::FusePreActivationBatchNorm))
   {
     phase.emplace_back(std::make_unique<luci::FusePreActivationBatchNormPass>());
+  }
+  if (_options->query(Options::Algorithm::MakeBatchNormGammaPositive))
+  {
+    phase.emplace_back(std::make_unique<luci::MakeBatchNormGammaPositivePass>());
+  }
+  if (_options->query(Options::Algorithm::ShuffleWeightTo16x1Float32))
+  {
+    phase.emplace_back(std::make_unique<luci::ShuffleWeightTo16x1Float32Pass>());
   }
 
   // Shape inference is needed for added nodes doing above transformations
@@ -248,6 +277,20 @@ void CircleOptimizer::quantize(loco::Graph *g) const
     luci::QuantizeWithMinMaxPass quantizer(str_to_dtype(input_dtype), str_to_dtype(output_dtype),
                                            str_to_granularity(granularity));
     quantizer.run(g);
+
+    // Post-quantization optimizations
+    logo::Phase phase;
+
+    phase.emplace_back(std::make_unique<luci::PropagateQuantParamPass>());
+
+    phase.emplace_back(std::make_unique<luci::ShapeInferencePass>());
+    phase.emplace_back(std::make_unique<luci::TypeInferencePass>());
+    phase.emplace_back(std::make_unique<logo::RemoveDeadNodeWithQueryPass>());
+
+    ProgressReporter prog(g, logo::PhaseStrategy::Saturate);
+    logo::PhaseRunner<logo::PhaseStrategy::Saturate> phase_runner{g};
+    phase_runner.attach(&prog);
+    phase_runner.run(phase);
   }
 
   // Requantize

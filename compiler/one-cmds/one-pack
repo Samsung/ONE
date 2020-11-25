@@ -1,4 +1,9 @@
-#!/bin/bash
+#!/usr/bin/env bash
+''''export SCRIPT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"                  # '''
+''''export PY_PATH=${SCRIPT_PATH}/venv/bin/python                                       # '''
+''''test -f ${PY_PATH} && exec ${PY_PATH} "$0" "$@"                                     # '''
+''''echo "Error: Virtual environment not found. Please run 'one-prepare-venv' command." # '''
+''''exit 255                                                                            # '''
 
 # Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
 #
@@ -14,100 +19,102 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-set -e
+import argparse
+import os
+import subprocess
+import sys
+import tempfile
 
-DRIVER_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+import utils as _utils
 
-usage()
-{
-  echo "Package circle to nnpkg"
-  echo "Usage: one-pack"
-  echo "    -v, --version Show version information and exit"
-  echo "    -i <path/to/circle>"
-  echo "    -o <path/to/nnpackage/folder>"
-  exit 255
-}
 
-version()
-{
-  $DRIVER_PATH/one-version one-pack
-  exit 255
-}
+def _get_parser():
+    parser = argparse.ArgumentParser(
+        description='command line tool to package circle and metadata into nnpackage')
 
-input_not_set()
-{
-  echo "Error: input path not set"
-  echo ""
-  usage
-}
+    _utils._add_default_arg(parser)
 
-output_not_set()
-{
-  echo "Error: output path not set"
-  echo ""
-  usage
-}
+    ## model2nnpkg arguments
+    model2nnpkg_group = parser.add_argument_group('arguments for packaging')
 
-# Parse command-line arguments
-#
-while [ "$#" -ne 0 ]; do
-  CUR="$1"
+    # input and output path.
+    model2nnpkg_group.add_argument(
+        '-i', '--input_path', type=str, help='full filepath of the input file')
+    model2nnpkg_group.add_argument(
+        '-o', '--output_path', type=str, help='full filepath of the output file')
 
-  case $CUR in
-    '--help')
-      usage
-      ;;
-    '-v')
-      version
-      ;;
-    '--version')
-      version
-      ;;
-    '-i')
-      export INPUT_PATH="$2"
-      if [ $# -lt 2 ]; then
-        input_not_set
-      fi
-      shift 2
-      ;;
-    '-o')
-      export OUTPUT_PATH="$2"
-      if [ $# -lt 2 ]; then
-        output_not_set
-      fi
-      shift 2
-      ;;
-    *)
-      echo "Unknown parameter: ${CUR}"
-      shift
-      ;;
-  esac
-done
+    return parser
 
-if [ -z ${INPUT_PATH} ] || [ ! -e ${INPUT_PATH} ]; then
-  echo "Error: input model not found"
-  echo ""
-  usage
-fi
 
-if [ -z ${OUTPUT_PATH} ]; then
-  output_not_set
-fi
+def _verify_arg(parser, args):
+    """verify given arguments"""
+    # check if required arguments is given
+    missing = []
+    if not _utils._is_valid_attr(args, 'input_path'):
+        missing.append('-i/--input_path')
+    if not _utils._is_valid_attr(args, 'output_path'):
+        missing.append('-o/--output_path')
+    if len(missing):
+        parser.error('the following arguments are required: ' + ' '.join(missing))
 
-INPUT_FILE=$(basename "${INPUT_PATH}")
-LOG_FILE="${INPUT_FILE%.*}.pack.log"
 
-# remove previous log
-rm -rf "${LOG_FILE}"
+def _parse_arg(parser):
+    args = parser.parse_args()
+    # print version
+    if args.version:
+        _utils._print_version_and_exit(__file__)
 
-show_err_onexit()
-{
-  cat "${LOG_FILE}"
-}
+    return args
 
-trap show_err_onexit ERR
 
-# Package circle model file to nnpkg
-echo "${DRIVER_PATH}/model2nnpkg.sh" -o "${OUTPUT_PATH}" "${INPUT_PATH}" > "${LOG_FILE}"
+def _make_model2nnpkg_cmd(driver_path, input_path, output_path):
+    """make a command for running model2nnpkg"""
+    cmd = [os.path.expanduser(driver_path)]
+    cmd.append('-o')
+    cmd.append(os.path.expanduser(output_path))
+    cmd.append(os.path.expanduser(input_path))
+    return cmd
 
-"${DRIVER_PATH}/model2nnpkg.sh" -o "${OUTPUT_PATH}" "${INPUT_PATH}" >> "${LOG_FILE}" 2>&1
+
+def _pack(args):
+    # get file path to log
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    logfile_path = os.path.realpath(args.output_path) + '.log'
+
+    with open(logfile_path, 'wb') as f:
+        # make a command to package circle model and metadata into nnpackage
+        model2nnpkg_path = os.path.join(dir_path, 'model2nnpkg.sh')
+        model2nnpkg_cmd = _make_model2nnpkg_cmd(model2nnpkg_path,
+                                                getattr(args, 'input_path'),
+                                                getattr(args, 'output_path'))
+
+        f.write((' '.join(model2nnpkg_cmd) + '\n').encode())
+
+        # convert tflite to circle
+        with subprocess.Popen(
+                model2nnpkg_cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                bufsize=1) as p:
+            for line in p.stdout:
+                sys.stdout.buffer.write(line)
+                f.write(line)
+        if p.returncode != 0:
+            sys.exit(p.returncode)
+
+
+def main():
+    # parse arguments
+    parser = _get_parser()
+    args = _parse_arg(parser)
+
+    # parse configuration file
+    _utils._parse_cfg(args, 'one-pack')
+
+    # verify arguments
+    _verify_arg(parser, args)
+
+    # package
+    _pack(args)
+
+
+if __name__ == '__main__':
+    main()

@@ -226,24 +226,22 @@ void quant_bias_per_channel(CircleConst *node, float input_scale, std::vector<fl
   }
 }
 
-void int16_quant_bias_per_tensor(CircleConst *node, float input_scale,
-                                 std::vector<float> &weight_scale,
-                                 std::vector<float> &scaling_factor)
+void int16_quant_bias_per_channel(CircleConst *node, float input_scale,
+                                  std::vector<float> &weight_scale,
+                                  std::vector<float> &scaling_factor, std::vector<int64_t> &zp)
 {
+  float scaling_factor_inv{0};
+
   uint32_t size = node->size<loco::DataType::FLOAT32>();
   std::vector<int64_t> quantized_values(size);
 
-  auto abs_compare = [](float x, float y) { return std::abs(x) < std::abs(y); };
-  const float weight_scale_max =
-      *std::max_element(weight_scale.begin(), weight_scale.end(), abs_compare);
-  assert(weight_scale_max >= 0);
-  scaling_factor[0] = input_scale * weight_scale_max;
-
   for (uint32_t i = 0; i < size; ++i)
   {
-    double scaling_factor_inv = (scaling_factor[0] == 0) ? 0 : 1.0 / scaling_factor[0];
+    scaling_factor[i] = input_scale * weight_scale[i];
+    scaling_factor_inv = (scaling_factor[i] == 0) ? 0 : 1.0 / scaling_factor[i];
     quantized_values[i] =
         static_cast<int64_t>(std::round(node->at<loco::DataType::FLOAT32>(i) * scaling_factor_inv));
+    zp[i] = 0;
   }
 
   node->dtype(loco::DataType::S64);      // change the type of tensor
@@ -499,11 +497,7 @@ struct QuantizeBias final : public luci::CircleNodeMutableVisitor<bool>
       }
       else if (output_type == loco::DataType::S16)
       {
-        // Bias is quantized per-tensor in int16 quantization
-        scaling_factor.resize(1);
-        zp.resize(1);
-        zp[0] = 0;
-        int16_quant_bias_per_tensor(circle_const, input_scale, weight_scale, scaling_factor);
+        int16_quant_bias_per_channel(circle_const, input_scale, weight_scale, scaling_factor, zp);
       }
       else
       {
@@ -672,6 +666,7 @@ void quantize_const_inputs(luci::CircleNode *node, loco::DataType output_type)
     case luci::CircleOpcode::EQUAL:
     case luci::CircleOpcode::GREATER:
     case luci::CircleOpcode::GREATER_EQUAL:
+    case luci::CircleOpcode::INSTANCE_NORM:
     case luci::CircleOpcode::LESS:
     case luci::CircleOpcode::LESS_EQUAL:
     case luci::CircleOpcode::MAXIMUM:

@@ -31,15 +31,46 @@
 #include <typeinfo>
 #include "util/Utils.h"
 #include <vector>
+#include <unordered_map>
 
 namespace onert
 {
 namespace exec
 {
 
+inline void UpdateOffsets(::onert::backend::ITensor *src, ::onert::backend::ITensor *dst,
+                          const ::onert::ir::Shape &loop_shape, std::vector<size_t> &src_offsets,
+                          std::vector<size_t> &dst_offsets)
+{
+  ShapeLoop(loop_shape, [&](const onert::ir::Coordinates &coords) {
+    src_offsets.emplace_back(src->calcOffset(coords));
+    dst_offsets.emplace_back(dst->calcOffset(coords));
+  });
+}
+
+inline void CopyStatic(const uint8_t *src_buffer, uint8_t *dst_buffer,
+                       const std::vector<size_t> &src_offsets,
+                       const std::vector<size_t> &dst_offsets, size_t copy_len)
+{
+  assert(src_offsets.size() == dst_offsets.size());
+  for (size_t i = 0; i < src_offsets.size(); ++i)
+  {
+    memcpy(dst_buffer + dst_offsets.at(i), src_buffer + src_offsets.at(i), copy_len);
+  }
+}
+
+inline void CopyDynamic(const ::onert::backend::ITensor *src, const ::onert::backend::ITensor *dst,
+                        uint8_t *dst_buffer, const ::onert::ir::Shape &loop_shape, size_t copy_len)
+{
+  ShapeLoop(loop_shape, [&](const onert::ir::Coordinates &coords) {
+    // Copy src tensor's data to dst_buffer with calculated offset of dst tensor
+    memcpy(dst_buffer + dst->calcOffset(coords), src->buffer() + src->calcOffset(coords), copy_len);
+  });
+}
+
 class IPermuteFunction : public IFunction
 {
-private:
+protected:
   enum class PermuteType
   {
     NHWC_TO_NCHW,
@@ -52,48 +83,25 @@ public:
   {
     // TODO Optimization : Make control does not reach here? when (_src_tensors.size() == 0)
     assert(_src_tensors.size() == _dst_tensors.size());
-    auto src_it = _src_tensors.begin();
-    auto dst_it = _dst_tensors.begin();
-    while (src_it != _src_tensors.end())
+    if (_src_tensors_offsets.size() == 0)
     {
-      auto src_tensor = *src_it;
-      auto dst_tensor = *dst_it;
+      _src_tensors_offsets.resize(_src_tensors.size());
+      _dst_tensors_offsets.resize(_dst_tensors.size());
+    }
+    assert(_src_tensors.size() == _src_tensors_offsets.size());
+    assert(_src_tensors_offsets.size() == _dst_tensors_offsets.size());
+
+    for (size_t i = 0; i < _src_tensors.size(); ++i)
+    {
+      auto src_tensor = _src_tensors.at(i);
+      auto dst_tensor = _dst_tensors.at(i);
+      auto &src_offsets = _src_tensors_offsets.at(i);
+      auto &dst_offsets = _dst_tensors_offsets.at(i);
       if (src_tensor != dst_tensor)
       {
-        // TODO Change to permute in parallel
-        assert(underlying_type(src_tensor->data_type()) ==
-               underlying_type(dst_tensor->data_type()));
         const auto rank = src_tensor->num_dimensions();
-        switch (src_tensor->data_type())
-        {
-          case ir::DataType::FLOAT32:
-            permute<float>(src_tensor, dst_tensor, rank);
-            break;
-          case ir::DataType::INT32:
-            permute<int32_t>(src_tensor, dst_tensor, rank);
-            break;
-          case ir::DataType::UINT32:
-            permute<uint32_t>(src_tensor, dst_tensor, rank);
-            break;
-          case ir::DataType::BOOL8:
-          case ir::DataType::QUANT_UINT8_ASYMM:
-          case ir::DataType::UINT8:
-            permute<uint8_t>(src_tensor, dst_tensor, rank);
-            break;
-          case ir::DataType::QUANT_INT8_ASYMM:
-          case ir::DataType::QUANT_INT8_SYMM:
-            permute<int8_t>(src_tensor, dst_tensor, rank);
-            break;
-          case ir::DataType::INT64:
-            permute<int64_t>(src_tensor, dst_tensor, rank);
-            break;
-          default:
-            throw std::runtime_error("IPermuteFunction: Not supported data type");
-            break;
-        }
+        permute(src_tensor, dst_tensor, rank, src_offsets, dst_offsets);
       }
-      src_it++;
-      dst_it++;
     }
   }
 
@@ -101,10 +109,101 @@ public:
 
   virtual void optimize() = 0;
 
+protected:
+  void permute(backend::ITensor *src_tensor, backend::ITensor *dst_tensor, size_t rank,
+               std::vector<size_t> &src_offsets, std::vector<size_t> &dst_offsets)
+  {
+    if (src_tensor->total_size() == 0)
+    {
+      assert(dst_tensor->total_size() == 0);
+      return;
+    }
+
+    assert(src_tensor != dst_tensor);
+    if (underlying_type(src_tensor->data_type()) != underlying_type(dst_tensor->data_type()))
+      throw std::runtime_error("data type does not match");
+    switch (src_tensor->data_type())
+    {
+      case ir::DataType::FLOAT32:
+        permute<float>(src_tensor, dst_tensor, rank, src_offsets, dst_offsets);
+        break;
+      case ir::DataType::INT32:
+        permute<int32_t>(src_tensor, dst_tensor, rank, src_offsets, dst_offsets);
+        break;
+      case ir::DataType::UINT32:
+        permute<uint32_t>(src_tensor, dst_tensor, rank, src_offsets, dst_offsets);
+        break;
+      case ir::DataType::BOOL8:
+      case ir::DataType::QUANT_UINT8_ASYMM:
+      case ir::DataType::UINT8:
+        permute<uint8_t>(src_tensor, dst_tensor, rank, src_offsets, dst_offsets);
+        break;
+      case ir::DataType::QUANT_INT8_ASYMM:
+      case ir::DataType::QUANT_INT8_SYMM:
+        permute<int8_t>(src_tensor, dst_tensor, rank, src_offsets, dst_offsets);
+        break;
+      case ir::DataType::INT64:
+        permute<int64_t>(src_tensor, dst_tensor, rank, src_offsets, dst_offsets);
+        break;
+      default:
+        throw std::runtime_error("IPermuteFunction: Not supported data type");
+        break;
+    }
+  }
+
 private:
   // TODO make src const by proving const access()
-  template <class T> void permute(backend::ITensor *src, backend::ITensor *dst, size_t rank)
+  template <class T>
+  void permute(backend::ITensor *src, backend::ITensor *dst, size_t rank,
+               std::vector<size_t> &src_offsets, std::vector<size_t> &dst_offsets)
   {
+    assert(src->total_size() != 0 && dst->total_size() != 0);
+    // If dst is subtensor, we have to use clEnqueueMapBuffer instead of clEnqueueWirteBuffer
+    if (dst->needMemoryMap() && !dst->is_subtensor())
+    {
+      // A assertion to check mapping without calling map()
+      // Now there is no case where both src and dst have cl buffer.
+      assert(!src->needMemoryMap());
+
+      if (!src->has_padding() && !dst->has_padding() && src->layout() == dst->layout())
+      {
+        src->access([&](backend::ITensor &) { dst->enqueueWriteBuffer(src->buffer(), false); });
+      }
+      else
+      {
+        // TODO Optimize this block in case of that padding size of dst is big.
+        _buffers_map[dst].reserve(dst->total_size());
+        auto dst_buffer = _buffers_map[dst].data();
+        src->access([&](backend::ITensor &) {
+          permute<T>(src, dst, rank, dst_buffer, dst->total_size(), src_offsets, dst_offsets);
+        });
+        dst->enqueueWriteBuffer(dst_buffer, false);
+      }
+    }
+    else if (src->needMemoryMap() && !src->is_subtensor() && !src->has_padding() &&
+             !dst->has_padding() && src->layout() == dst->layout())
+    {
+      assert(!dst->needMemoryMap());
+      dst->access([&](backend::ITensor &) { src->enqueueReadBuffer(dst->buffer(), true); });
+    }
+    else
+    {
+      auto fn = [&](backend::ITensor &) {
+        dst->access([&](backend::ITensor &) {
+          permute<T>(src, dst, rank, dst->buffer(), dst->total_size(), src_offsets, dst_offsets);
+        });
+      };
+      src->access(fn);
+    }
+  }
+
+  template <class T>
+  void permute(backend::ITensor *src, backend::ITensor *dst, size_t rank, uint8_t *dst_buffer,
+               size_t dst_size, std::vector<size_t> &src_offsets, std::vector<size_t> &dst_offsets)
+  {
+    assert(dst_buffer != nullptr);
+    assert(dst_size == dst->total_size());
+
     const auto permute_type = [&]() -> PermuteType {
       if (src->layout() == ir::Layout::NHWC && dst->layout() == ir::Layout::NCHW)
       {
@@ -119,73 +218,102 @@ private:
         return PermuteType::COPY;
       }
     }();
-    auto fn = [&](backend::ITensor &src_tensor) {
-      dst->access([&](backend::ITensor &dst_tensor) {
-        if (rank == 4 && permute_type != PermuteType::COPY)
+    if (rank == 4 && permute_type != PermuteType::COPY)
+    {
+      switch (permute_type)
+      {
+        case PermuteType::NHWC_TO_NCHW:
         {
-          switch (permute_type)
-          {
-            case PermuteType::NHWC_TO_NCHW:
-            {
-              ir::FeatureShape shape;
-              shape.N = dst_tensor.dimension(0);
-              shape.C = dst_tensor.dimension(1);
-              shape.H = dst_tensor.dimension(2);
-              shape.W = dst_tensor.dimension(3);
-              const feature::nhwc::Reader<T> from(&src_tensor);
-              feature::nchw::View<T> into(&dst_tensor);
-              feature::iterate(shape)
-                  << [&](uint32_t batch, uint32_t ch, uint32_t row, uint32_t col) {
-                       const auto value = from.at(batch, row, col, ch);
-                       into.at(batch, ch, row, col) = value;
-                     };
-              break;
-            }
-            case PermuteType::NCHW_TO_NHWC:
-            {
-              ir::FeatureShape shape;
-              shape.N = src_tensor.dimension(0);
-              shape.C = src_tensor.dimension(1);
-              shape.H = src_tensor.dimension(2);
-              shape.W = src_tensor.dimension(3);
-              const feature::nchw::Reader<T> from(&src_tensor);
-              feature::nhwc::View<T> into(&dst_tensor);
-              feature::iterate(shape)
-                  << [&](uint32_t batch, uint32_t ch, uint32_t row, uint32_t col) {
-                       const auto value = from.at(batch, ch, row, col);
-                       into.at(batch, row, col, ch) = value;
-                     };
-              break;
-            }
-            default:
-            {
-              throw std::runtime_error("Unsupported Permutation");
-              break;
-            }
-          }
+          ir::FeatureShape shape;
+          shape.N = dst->dimension(0);
+          shape.C = dst->dimension(1);
+          shape.H = dst->dimension(2);
+          shape.W = dst->dimension(3);
+
+          typename feature::nchw::View<T>::Strides strides;
+          const auto start_offset = dst->calcOffset({0, 0, 0, 0});
+          strides.W = dst->dimension(3) == 1 ? 0 : dst->calcOffset({0, 0, 0, 1}) - start_offset;
+          strides.H = dst->dimension(2) == 1 ? 0 : dst->calcOffset({0, 0, 1, 0}) - start_offset;
+          strides.C = dst->dimension(1) == 1 ? 0 : dst->calcOffset({0, 1, 0, 0}) - start_offset;
+          strides.N = dst->dimension(0) == 1 ? 0 : dst->calcOffset({1, 0, 0, 0}) - start_offset;
+
+          const feature::nhwc::Reader<T> from(src);
+          feature::nchw::View<T> into(shape, strides,
+                                      reinterpret_cast<T *>(dst_buffer + start_offset), dst_size);
+          feature::iterate(shape) << [&](uint32_t batch, uint32_t ch, uint32_t row, uint32_t col) {
+            const auto value = from.at(batch, row, col, ch);
+            into.at(batch, ch, row, col) = value;
+          };
+          break;
         }
-        else if (!src_tensor.has_padding() && !dst_tensor.has_padding())
+        case PermuteType::NCHW_TO_NHWC:
         {
-          auto src_size = src_tensor.total_size();
-          assert(src_size <= dst_tensor.total_size());
-          memcpy(dst_tensor.buffer(), src_tensor.buffer(), src_size);
+          ir::FeatureShape shape;
+          shape.N = dst->dimension(0);
+          shape.H = dst->dimension(1);
+          shape.W = dst->dimension(2);
+          shape.C = dst->dimension(3);
+
+          typename feature::nhwc::View<T>::Strides strides;
+          const auto start_offset = dst->calcOffset({0, 0, 0, 0});
+          strides.C = dst->dimension(3) == 1 ? 0 : dst->calcOffset({0, 0, 0, 1}) - start_offset;
+          strides.W = dst->dimension(2) == 1 ? 0 : dst->calcOffset({0, 0, 1, 0}) - start_offset;
+          strides.H = dst->dimension(1) == 1 ? 0 : dst->calcOffset({0, 1, 0, 0}) - start_offset;
+          strides.N = dst->dimension(0) == 1 ? 0 : dst->calcOffset({1, 0, 0, 0}) - start_offset;
+
+          const feature::nchw::Reader<T> from(src);
+          feature::nhwc::View<T> into(shape, strides,
+                                      reinterpret_cast<T *>(dst_buffer + start_offset), dst_size);
+          feature::iterate(shape) << [&](uint32_t batch, uint32_t ch, uint32_t row, uint32_t col) {
+            const auto value = from.at(batch, ch, row, col);
+            into.at(batch, row, col, ch) = value;
+          };
+          break;
         }
-        else
+        default:
         {
-          auto loop_shape = src_tensor.getShape();
+          throw std::runtime_error("Unsupported Permutation");
+          break;
+        }
+      }
+    }
+    else if (!src->has_padding() && !dst->has_padding())
+    {
+      auto src_size = src->total_size();
+      assert(src_size <= dst->total_size());
+      memcpy(dst_buffer, src->buffer(), src_size);
+    }
+    else
+    {
+      auto loop_shape = src->getShape();
+      const auto copy_axis = loop_shape.rank() - 1;
+      const auto copy_len = loop_shape.dim(copy_axis) * sizeof(T);
+      loop_shape.dim(copy_axis) = 1;
+
+      if (src->is_dynamic())
+      {
+        assert(dst->is_dynamic());
+        CopyDynamic(src, dst, dst_buffer, loop_shape, copy_len);
+      }
+      else
+      {
+        // TODO Uncomment the assertion below
+        // assert(!dst->is_dynamic() || dst is output of graph);
+        if (src_offsets.size() == 0)
+        {
+          assert(dst_offsets.size() == 0);
+
+          auto loop_shape = src->getShape();
           const auto copy_axis = loop_shape.rank() - 1;
-          const auto copy_len = loop_shape.dim(copy_axis) * sizeof(T);
           loop_shape.dim(copy_axis) = 1;
-          ShapeLoop(loop_shape, [&](const onert::ir::Coordinates &coords) {
-            memcpy(dst_tensor.buffer() + dst_tensor.calcOffset(coords),
-                   src_tensor.buffer() + src_tensor.calcOffset(coords), copy_len);
-          });
+          UpdateOffsets(src, dst, loop_shape, src_offsets, dst_offsets);
         }
-      });
-    };
-    src->access(fn);
+        CopyStatic(src->buffer(), dst_buffer, src_offsets, dst_offsets, copy_len);
+      }
+    }
   }
 
+protected:
   // NOTE The typeid expression is lvalue expression which refers to an object with static storage
   //      duration, of the polymorphic type const std::type_info or of some type derived from it.
   //      So std::type_info is non-copyable
@@ -216,8 +344,9 @@ private:
 protected:
   std::vector<backend::ITensor *> _src_tensors;
   std::vector<backend::ITensor *> _dst_tensors;
-  // TODO Remove this member if it is possible
-  std::vector<size_t> _ranks;
+  std::vector<std::vector<size_t>> _src_tensors_offsets;
+  std::vector<std::vector<size_t>> _dst_tensors_offsets;
+  std::unordered_map<const backend::ITensor *, std::vector<uint8_t>> _buffers_map;
 };
 
 } // namespace exec

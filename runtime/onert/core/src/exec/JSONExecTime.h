@@ -54,18 +54,16 @@ public:
     loadOperationsExecTime();
   };
   /**
-   * @brief Update _operations_exec_time_file with new data.
+   * @brief Update _measurement_file with new data.
    */
-  void uploadOperationsExecTime() const;
+  void storeOperationsExecTime() const;
 
 private:
   ///@brief file containing measurements
   std::string _measurement_file;
   std::unordered_map<std::string, const backend::Backend *> _backends;
-  std::unordered_map<
-      const backend::Backend *,
-      std::unordered_map<std::string, std::unordered_map<bool, std::map<uint32_t, int64_t>>>>
-      &_measurements;
+  MeasurementData &_measurements;
+
   /**
    * @brief Helper function for inserting data to OperationExecTimes
    *
@@ -86,7 +84,7 @@ private:
   void printOperation(const std::map<uint32_t, int64_t> &operation_info,
                       std::ofstream &stream) const;
   /**
-   * @brief Parse and load operations_exec_time from _operations_exec_time_file.
+   * @brief Parse and load _measurements from _measurement_file.
    */
   void loadOperationsExecTime();
 };

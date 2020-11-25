@@ -33,7 +33,7 @@ namespace testing
 {
 
 template <typename T>
-std::vector<T> quantize(const std::vector<float> &data, float scale, int32_t zero_point);
+std::vector<T> quantize(const float *data, size_t num_elements, float scale, int32_t zero_point);
 
 template <DataType DT>
 Tensor makeInputTensor(const Shape &shape, const std::vector<typename DataTypeImpl<DT>::Type> &data)
@@ -43,13 +43,76 @@ Tensor makeInputTensor(const Shape &shape, const std::vector<typename DataTypeIm
   return tensor;
 }
 
+/**
+ * @brief Create layer-wise quantized tensor
+ * @tparam DT base integer data type, for example DataType::U8, DataType::S16, DataType::S64
+ * @param shape desired tensor shape
+ * @param scale scale of quantized number
+ * @param zero_point zero point of quantized number, should be 0 for signed datatypes
+ * @param data floating point data for quantization
+ * @return created tensor
+ */
 template <DataType DT>
 Tensor makeInputTensor(const Shape &shape, float scale, int32_t zero_point,
                        const std::vector<float> &data)
 {
   using NativeT = typename DataTypeImpl<DT>::Type;
   Tensor tensor(DT, shape, {{scale}, {zero_point}}, "");
-  std::vector<NativeT> quantized_data = quantize<NativeT>(data, scale, zero_point);
+  std::vector<NativeT> quantized_data =
+      quantize<NativeT>(data.data(), data.size(), scale, zero_point);
+  tensor.writeData(quantized_data.data(), quantized_data.size() * sizeof(NativeT));
+  return tensor;
+}
+
+/**
+ * @brief Create channel-wise quantized tensor
+ * @tparam DT base integer data type, for example DataType::U8, DataType::S16, DataType::S64
+ * @param shape desired tensor shape
+ * @param scales scales of quantized number
+ * @param zero_points zero points of quantized number, should be 0 for signed datatypes
+ * @param quantize_dimension dimension to apply quantization along. Usually channels/output channels
+ * @param data floating point data for quantization
+ * @return created tensor
+ */
+template <DataType DT>
+Tensor makeInputTensor(const Shape &shape, const std::vector<float> &scales,
+                       const std::vector<int32_t> &zero_points, int quantized_dimension,
+                       const std::vector<float> &data)
+{
+  using NativeT = typename DataTypeImpl<DT>::Type;
+  assert(quantized_dimension < shape.num_dims());
+  Tensor tensor(DT, shape, {scales, zero_points, quantized_dimension}, "");
+
+  // quantize_dimension breaks shape into two parts:
+  // inner dimensions that contains continuous data with one quantization type
+  // outer dimensions that contains other dimensions
+  size_t outer_dims_size = 1;
+  int32_t quant_dim_size = shape.dim(quantized_dimension);
+  size_t inner_dims_size = 1;
+  assert(quant_dim_size == scales.size());
+  assert(quant_dim_size == zero_points.size());
+
+  for (int i = 0; i < quantized_dimension; ++i)
+    outer_dims_size *= shape.dim(i);
+  for (int i = quantized_dimension + 1; i < shape.num_dims(); ++i)
+    inner_dims_size *= shape.dim(i);
+
+  assert(shape.num_elements() == outer_dims_size * quant_dim_size * inner_dims_size);
+
+  std::vector<NativeT> quantized_data;
+  quantized_data.reserve(shape.num_elements());
+  for (size_t outer_it = 0; outer_it < outer_dims_size; ++outer_it)
+    for (int32_t channel = 0; channel < quant_dim_size; ++channel)
+    {
+      int32_t zero_point = zero_points[channel];
+      float scale = scales[channel];
+      size_t offset = inner_dims_size * (quant_dim_size * outer_it + channel);
+      std::vector<NativeT> part_quantized_data =
+          quantize<NativeT>(data.data() + offset, inner_dims_size, scale, zero_point);
+      quantized_data.insert(quantized_data.end(), part_quantized_data.begin(),
+                            part_quantized_data.end());
+    }
+  assert(quantized_data.size() == shape.num_elements());
   tensor.writeData(quantized_data.data(), quantized_data.size() * sizeof(NativeT));
   return tensor;
 }
@@ -86,7 +149,7 @@ std::vector<float> dequantizeTensorData(const Tensor &tensor);
                                                       float max_abs_error = 1.0e-5f);
 
 template <typename T>
-std::vector<T> quantize(const std::vector<float> &data, float scale, int32_t zero_point)
+std::vector<T> quantize(const float *data, size_t num_elements, float scale, int32_t zero_point)
 {
   static_assert(std::is_integral<T>::value, "Integral type expected.");
 
@@ -105,8 +168,9 @@ std::vector<T> quantize(const std::vector<float> &data, float scale, int32_t zer
   }
 
   std::vector<T> q;
-  for (const auto &f : data)
+  for (size_t i = 0; i < num_elements; ++i)
   {
+    const auto &f = data[i];
     q.push_back(static_cast<T>(
         std::max<float>(q_min, std::min<float>(q_max, std::round(zero_point + (f / scale))))));
   }
@@ -114,12 +178,13 @@ std::vector<T> quantize(const std::vector<float> &data, float scale, int32_t zer
 }
 
 template <typename T>
-std::vector<float> dequantize(const std::vector<T> &data, float scale, int32_t zero_point)
+std::vector<float> dequantize(const T *data, size_t num_elements, float scale, int32_t zero_point)
 {
   static_assert(std::is_integral<T>::value, "Integral type expected.");
   std::vector<float> f;
-  for (const T &q : data)
+  for (size_t i = 0; i < num_elements; ++i)
   {
+    const T &q = data[i];
     f.push_back(scale * (q - zero_point));
   }
   return f;

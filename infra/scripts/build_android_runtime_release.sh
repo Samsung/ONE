@@ -18,4 +18,5 @@ fi
 
 export TARGET_OS=android
 export CROSS_BUILD=1
-make -f Makefile.template
+export BUILD_TYPE=release
+make -f Makefile.template install

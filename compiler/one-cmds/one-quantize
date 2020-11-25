@@ -1,4 +1,9 @@
-#!/bin/bash
+#!/usr/bin/env bash
+''''export SCRIPT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"                  # '''
+''''export PY_PATH=${SCRIPT_PATH}/venv/bin/python                                       # '''
+''''test -f ${PY_PATH} && exec ${PY_PATH} "$0" "$@"                                     # '''
+''''echo "Error: Virtual environment not found. Please run 'one-prepare-venv' command." # '''
+''''exit 255                                                                            # '''
 
 # Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
 #
@@ -14,250 +19,214 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-set -e
+import argparse
+import os
+import subprocess
+import sys
+import tempfile
 
-DRIVER_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+import utils as _utils
 
-usage()
-{
-  echo "Quantize circle model."
-  echo "Usage: one-quantize"
-  echo "    --version         Show version information and exit"
-  echo "    --input_dtype     Input data type (supported: float32, default=float32)"
-  echo "    --quantized_dtype Output quantized data type (supported: uint8, int16, default=uint8)"
-  echo "    --granularity     Quantize granularity (supported: layer, channel, default=layer)"
-  echo "    --min_percentile  Minimum percentile (0.0~100.0, default=1.0)"
-  echo "    --max_percentile  Maximum percentile (0.0~100.0, default=99.0)"
-  echo "    --mode            Record mode (supported: percentile/moving_average, default=percentile)"
-  echo "    --input_path <path/to/input/circle>"
-  echo "    --input_data <path/to/input/data>"
-  echo "    --output_path <path/to/output/circle>"
-  exit 255
-}
 
-version()
-{
-  $DRIVER_PATH/one-version one-quantize
-  exit 255
-}
+def _get_parser():
+    parser = argparse.ArgumentParser(
+        description='command line tool to quantize circle model')
 
-input_not_set()
-{
-  echo "Error: input_path not set"
-  echo ""
-  usage
-}
+    _utils._add_default_arg(parser)
 
-output_not_set()
-{
-  echo "Error: output_path not set"
-  echo ""
-  usage
-}
+    # input and output path.
+    parser.add_argument(
+        '-i', '--input_path', type=str, help='full filepath of the input file')
+    parser.add_argument(
+        '-d', '--input_data', type=str, help='full filepath of the input data file')
+    parser.add_argument(
+        '-o', '--output_path', type=str, help='full filepath of the output file')
 
-input_data_not_set()
-{
-  echo "Error: input_data not set"
-  echo ""
-  usage
-}
+    ## arguments for quantization
+    quantization_group = parser.add_argument_group('arguments for quantization')
 
-input_dtype_not_set()
-{
-  echo "Error: input_dtype not set"
-  echo ""
-  usage
-}
+    quantization_group.add_argument(
+        '--input_dtype',
+        type=str,
+        help='input data type (supported: float32, default=float32)')
+    quantization_group.add_argument(
+        '--quantized_dtype',
+        type=str,
+        help='output quantized data type (supported: uint8, int16, default=uint8)')
+    quantization_group.add_argument(
+        '--granularity',
+        type=str,
+        help='quantize granularity (supported: layer, channel, default=layer)')
+    quantization_group.add_argument(
+        '--min_percentile', type=str, help='minimum percentile (0.0~100.0, default=1.0)')
+    quantization_group.add_argument(
+        '--max_percentile', type=str, help='maximum percentile (0.0~100.0, default=99.0)')
+    quantization_group.add_argument(
+        '--mode',
+        type=str,
+        help='record mode (supported: percentile/moving_average, default=percentile)')
 
-quantized_dtype_not_set()
-{
-  echo "Error: quantized_dtype not set"
-  echo ""
-  usage
-}
+    # set default values
+    quantization_group.set_defaults(
+        input_dtype='float32',
+        quantized_dtype='uint8',
+        granularity='layer',
+        min_percentile='1.0',
+        max_percentile='99.0',
+        mode='percentile')
 
-granularity_not_set()
-{
-  echo "Error: granularity not set"
-  echo ""
-  usage
-}
+    return parser
 
-min_percentile_not_set()
-{
-  echo "Error: min_percentile not set"
-  echo ""
-  usage
-}
 
-max_percentile_not_set()
-{
-  echo "Error: max_percentile not set"
-  echo ""
-  usage
-}
+def _verify_arg(parser, args):
+    """verify given arguments"""
+    # check if required arguments is given
+    missing = []
+    if not _utils._is_valid_attr(args, 'input_path'):
+        missing.append('-i/--input_path')
+    if not _utils._is_valid_attr(args, 'input_data'):
+        missing.append('-d/--input_data')
+    if not _utils._is_valid_attr(args, 'output_path'):
+        missing.append('-o/--output_path')
+    if len(missing):
+        parser.error('the following arguments are required: ' + ' '.join(missing))
 
-mode_not_set()
-{
-  echo "Error: mode not set"
-  echo ""
-  usage
-}
 
-INPUT_DTYPE=float32
-QUANTIZED_DTYPE=uint8
-GRANULARITY=layer
-MIN_PERCENTILE=1
-MAX_PERCENTILE=99
-MODE=percentile
+def _parse_arg(parser):
+    args = parser.parse_args()
+    # print version
+    if args.version:
+        _utils._print_version_and_exit(__file__)
 
-# Parse command-line arguments
-#
-while [ "$#" -ne 0 ]; do
-  CUR="$1"
+    return args
 
-  case $CUR in
-    '--help')
-      usage
-      ;;
-    '--version')
-      version
-      ;;
 
-    '--input_dtype')
-      INPUT_DTYPE="$2"
-      if [ $# -lt 2 ]; then
-        input_dtype_not_set
-      fi
-      shift 2
-      ;;
-    '--quantized_dtype')
-      QUANTIZED_DTYPE="$2"
-      if [ $# -lt 2 ]; then
-        quantized_dtype_not_set
-      fi
-      shift 2
-      ;;
-    '--granularity')
-      GRANULARITY="$2"
-      if [ $# -lt 2 ]; then
-        granularity_not_set
-      fi
-      shift 2
-      ;;
-    '--min_percentile')
-      MIN_PERCENTILE="$2"
-      if [ $# -lt 2 ]; then
-        min_percentile_not_set
-      fi
-      shift 2
-      ;;
-    '--max_percentile')
-      MAX_PERCENTILE="$2"
-      if [ $# -lt 2 ]; then
-        max_percentile_not_set
-      fi
-      shift 2
-      ;;
-    '--mode')
-      MODE="$2"
-      if [ $# -lt 2 ]; then
-        mode_not_set
-      fi
-      shift 2
-      ;;
+def _quantize(args):
+    # get file path to log
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    logfile_path = os.path.realpath(args.output_path) + '.log'
 
-    '--input_path')
-      INPUT_PATH="$2"
-      if [ $# -lt 2 ]; then
-        input_not_set
-      fi
-      shift 2
-      ;;
-    '--input_data')
-      INPUT_DATA="$2"
-      if [ $# -lt 2 ]; then
-        input_data_not_set
-      fi
-      shift 2
-      ;;
-    '--output_path')
-      OUTPUT_PATH="$2"
-      if [ $# -lt 2 ]; then
-        output_not_set
-      fi
-      shift 2
-      ;;
+    with open(logfile_path, 'wb') as f, tempfile.TemporaryDirectory() as tmpdir:
+        # get driver path
+        circle_quantizer_path = os.path.join(dir_path, 'circle-quantizer')
+        record_minmax_path = os.path.join(dir_path, 'record-minmax')
 
-    *)
-      echo "Unknown parameter: ${CUR}"
-      shift
-      ;;
-  esac
-done
+        ## make a command to quantize and dequantize the weights of the model
+        circle_quantizer_cmd = [circle_quantizer_path]
+        # quantize_dequantize_weights
+        circle_quantizer_cmd.append('--quantize_dequantize_weights')
+        if _utils._is_valid_attr(args, 'input_dtype'):
+            circle_quantizer_cmd.append(getattr(args, 'input_dtype'))
+        if _utils._is_valid_attr(args, 'quantized_dtype'):
+            circle_quantizer_cmd.append(getattr(args, 'quantized_dtype'))
+        if _utils._is_valid_attr(args, 'granularity'):
+            circle_quantizer_cmd.append(getattr(args, 'granularity'))
+        # input and output path
+        if _utils._is_valid_attr(args, 'input_path'):
+            circle_quantizer_cmd.append(getattr(args, 'input_path'))
+        tmp_output_path_1 = os.path.join(
+            tmpdir,
+            os.path.splitext(os.path.basename(args.input_path))[0]) + '1.circle'
+        circle_quantizer_cmd.append(tmp_output_path_1)
 
-if [ -z ${INPUT_PATH} ] || [ ! -e ${INPUT_PATH} ]; then
-  echo "Error: input model not found"
-  echo ""
-  usage
-fi
-if [ -z ${INPUT_DATA} ] || [ ! -e ${INPUT_DATA} ]; then
-  echo "Error: input data not found"
-  echo ""
-  usage
-fi
-if [ -z ${OUTPUT_PATH} ]; then
-  output_not_set
-fi
+        f.write((' '.join(circle_quantizer_cmd) + '\n').encode())
 
-FILE_BASE=$(basename ${OUTPUT_PATH})
-MODEL_NAME="${FILE_BASE%.*}"
+        # run circle-quantizer
+        with subprocess.Popen(
+                circle_quantizer_cmd,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
+                bufsize=1) as p:
+            for line in p.stdout:
+                sys.stdout.buffer.write(line)
+                f.write(line)
+        if p.returncode != 0:
+            sys.exit(p.returncode)
 
-TMPDIR=$(mktemp -d)
-trap "{ rm -rf $TMPDIR; }" EXIT
+        ## make a command to record min-max value of each tensor while running the representative dataset
+        circle_record_minmax_cmd = [record_minmax_path]
+        # input and output path
+        circle_record_minmax_cmd.append('--input_model')
+        circle_record_minmax_cmd.append(tmp_output_path_1)
+        tmp_output_path_2 = os.path.join(
+            tmpdir,
+            os.path.splitext(os.path.basename(args.input_path))[0]) + '2.circle'
+        circle_record_minmax_cmd.append('--output_model')
+        circle_record_minmax_cmd.append(tmp_output_path_2)
+        # input data
+        if _utils._is_valid_attr(args, 'input_data'):
+            circle_record_minmax_cmd.append('--input_data')
+            circle_record_minmax_cmd.append(getattr(args, 'input_data'))
+        # min and max percentile
+        if _utils._is_valid_attr(args, 'min_percentile'):
+            circle_record_minmax_cmd.append('--min_percentile')
+            circle_record_minmax_cmd.append(getattr(args, 'min_percentile'))
+        if _utils._is_valid_attr(args, 'max_percentile'):
+            circle_record_minmax_cmd.append('--max_percentile')
+            circle_record_minmax_cmd.append(getattr(args, 'max_percentile'))
+        # mode
+        if _utils._is_valid_attr(args, 'mode'):
+            circle_record_minmax_cmd.append('--mode')
+            circle_record_minmax_cmd.append(getattr(args, 'mode'))
 
-# remove previous log
-rm -rf "${OUTPUT_PATH}.log"
+        f.write((' '.join(circle_record_minmax_cmd) + '\n').encode())
 
-show_err_onexit()
-{
-  cat "${OUTPUT_PATH}.log"
-}
+        # run record-minmax
+        with subprocess.Popen(
+                circle_record_minmax_cmd,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
+                bufsize=1) as p:
+            for line in p.stdout:
+                sys.stdout.buffer.write(line)
+                f.write(line)
+        if p.returncode != 0:
+            sys.exit(p.returncode)
 
-trap show_err_onexit ERR
+        ## make a second command to quantize the model using the embedded information
+        circle_quantizer_cmd = [circle_quantizer_path]
+        # quantize_dequantize_weights
+        circle_quantizer_cmd.append('--quantize_with_minmax')
+        if _utils._is_valid_attr(args, 'input_dtype'):
+            circle_quantizer_cmd.append(getattr(args, 'input_dtype'))
+        if _utils._is_valid_attr(args, 'quantized_dtype'):
+            circle_quantizer_cmd.append(getattr(args, 'quantized_dtype'))
+        if _utils._is_valid_attr(args, 'granularity'):
+            circle_quantizer_cmd.append(getattr(args, 'granularity'))
+        # input and output path
+        circle_quantizer_cmd.append(tmp_output_path_2)
+        if _utils._is_valid_attr(args, 'output_path'):
+            circle_quantizer_cmd.append(getattr(args, 'output_path'))
 
-# quantize circle
-echo "${DRIVER_PATH}/circle-quantizer" \
---quantize_dequantize_weights ${INPUT_DTYPE} ${QUANTIZED_DTYPE} ${GRANULARITY} \
-"${INPUT_PATH}" "${TMPDIR}/${MODEL_NAME}.1.circle" > "${OUTPUT_PATH}.log"
-echo " " >> "${OUTPUT_PATH}.log"
+        f.write((' '.join(circle_quantizer_cmd) + '\n').encode())
 
-"${DRIVER_PATH}/circle-quantizer" \
---quantize_dequantize_weights ${INPUT_DTYPE} ${QUANTIZED_DTYPE} ${GRANULARITY} \
-"${INPUT_PATH}" "${TMPDIR}/${MODEL_NAME}.1.circle" >> "${OUTPUT_PATH}.log" 2>&1
+        # run circle-quantizer
+        with subprocess.Popen(
+                circle_quantizer_cmd,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
+                bufsize=1) as p:
+            for line in p.stdout:
+                sys.stdout.buffer.write(line)
+                f.write(line)
+        if p.returncode != 0:
+            sys.exit(p.returncode)
 
-echo " " >> "${OUTPUT_PATH}.log"
-echo "${DRIVER_PATH}/record-minmax" \
---input_model "${TMPDIR}/${MODEL_NAME}.1.circle" \
---input_data "${INPUT_DATA}" \
---min_percentile ${MIN_PERCENTILE} --max_percentile ${MAX_PERCENTILE} \
---mode "${MODE}" \
---output_model "${TMPDIR}/${MODEL_NAME}.2.circle" >> "${OUTPUT_PATH}.log" 2>&1
-echo " " >> "${OUTPUT_PATH}.log"
 
-"${DRIVER_PATH}/record-minmax" \
---input_model "${TMPDIR}/${MODEL_NAME}.1.circle" \
---input_data "${INPUT_DATA}" \
---min_percentile ${MIN_PERCENTILE} --max_percentile ${MAX_PERCENTILE} \
---mode "${MODE}" \
---output_model "${TMPDIR}/${MODEL_NAME}.2.circle" >> "${OUTPUT_PATH}.log" 2>&1
+def main():
+    # parse arguments
+    parser = _get_parser()
+    args = _parse_arg(parser)
 
-echo " " >> "${OUTPUT_PATH}.log"
-echo "${DRIVER_PATH}/circle-quantizer" \
---quantize_with_minmax ${INPUT_DTYPE} ${QUANTIZED_DTYPE} ${GRANULARITY} \
-"${TMPDIR}/${MODEL_NAME}.2.circle" "${OUTPUT_PATH}" >> "${OUTPUT_PATH}.log" 2>&1
-echo " " >> "${OUTPUT_PATH}.log"
+    # parse configuration file
+    _utils._parse_cfg(args, 'one-quantize')
 
-"${DRIVER_PATH}/circle-quantizer" \
---quantize_with_minmax ${INPUT_DTYPE} ${QUANTIZED_DTYPE} ${GRANULARITY} \
-"${TMPDIR}/${MODEL_NAME}.2.circle" "${OUTPUT_PATH}" >> "${OUTPUT_PATH}.log" 2>&1
+    # verify arguments
+    _verify_arg(parser, args)
+
+    # quantize
+    _quantize(args)
+
+
+if __name__ == '__main__':
+    main()

@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_IR_OPERATION_ELEMENTWISEUNARY_H__
-#define __ONERT_IR_OPERATION_ELEMENTWISEUNARY_H__
+#ifndef __ONERT_IR_OPERATION_ELEMENTWISE_UNARY_H__
+#define __ONERT_IR_OPERATION_ELEMENTWISE_UNARY_H__
 
 #include "ir/Operation.h"
 
@@ -51,7 +51,7 @@ public:
     RSQRT,
     SIN,
     SQRT,
-    SQURE,
+    SQUARE,
     ZEROS_LIKE
   };
 
@@ -80,4 +80,4 @@ private:
 } // namespace ir
 } // namespace onert
 
-#endif // __ONERT_IR_OPERATION_ELEMENTWISEUNARY_H__
+#endif // __ONERT_IR_OPERATION_ELEMENTWISE_UNARY_H__
