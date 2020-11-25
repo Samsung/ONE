@@ -584,17 +584,17 @@ private:
 namespace luci
 {
 
-bool FuseBCQPass::run(loco::Graph *g)
+bool FuseBCQPass::run(luci::Module *m)
 {
   bool changed = false;
 
   const int32_t start_magicnum = -2e9 + 27;
   const int32_t end_magicnum = 2e9 - 27;
 
-  loco::Graph *main_graph = g;
+  loco::Graph *main_graph = m->graph(0);
 
   luci::CircleConst *metadata_node = nullptr;
-  for (auto node : loco::output_nodes(g))
+  for (auto node : loco::output_nodes(main_graph))
   {
     auto output_node = loco::must_cast<luci::CircleOutput *>(node);
 
@@ -634,8 +634,9 @@ bool FuseBCQPass::run(loco::Graph *g)
       BCQFuser<1> fuser{original_output_cnt, bundle_cnt};
       fuser.register_bcq_info(main_graph);
 
-      if (fuser.fuseBCQ(g))
-        changed = true;
+      for (size_t g = 0; g < m->size(); ++g)
+        if (fuser.fuseBCQ(m->graph(g)))
+          changed = true;
     }
     else
     {
@@ -661,6 +662,12 @@ bool FuseBCQPass::run(loco::Graph *g)
   }
 
   return changed;
+}
+
+bool FuseBCQPass::run(loco::Graph *)
+{
+  // Do nothing for graph
+  return false;
 }
 
 } // namespace luci
