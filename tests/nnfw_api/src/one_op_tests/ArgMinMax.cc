@@ -18,43 +18,80 @@
 
 #include <memory>
 
-TEST_F(GenModelTest, OneOp_ArgMax_AxisToConst)
+struct ArgMinMaxVariationParam
 {
+  TestCaseData tcd;
+  bool is_argmax = true;
+  circle::TensorType input_type = circle::TensorType::TensorType_FLOAT32;
+  float scale = 0.0f;
+  int64_t zero_point = 0;
+};
+
+class ArgMinMaxVariation : public GenModelTest,
+                           public ::testing::WithParamInterface<ArgMinMaxVariationParam>
+{
+};
+
+// Input shape: {1, 2, 2, 1}
+// Reduce axis: 1
+// Output shape: {1, 2, 1}
+// Output type: Int32
+TEST_P(ArgMinMaxVariation, Test)
+{
+  auto &param = GetParam();
+
   CircleGen cgen;
   const auto output_type = circle::TensorType::TensorType_INT32;
   std::vector<int32_t> axis_data{1};
   uint32_t axis_buf = cgen.addBuffer(axis_data);
   int axis = cgen.addTensor({{1}, circle::TensorType::TensorType_INT32, axis_buf});
-  int in = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_FLOAT32});
+  int in = cgen.addTensor({{1, 2, 2, 1}, param.input_type}, param.scale, param.zero_point);
   int out = cgen.addTensor({{1, 2, 1}, output_type});
-  cgen.addOperatorArgMax({{in, axis}, {out}}, output_type);
+  param.is_argmax ? cgen.addOperatorArgMax({{in, axis}, {out}}, output_type)
+                  : cgen.addOperatorArgMin({{in, axis}, {out}}, output_type);
   cgen.setInputsAndOutputs({in}, {out});
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
-  _context->addTestCase(TestCaseData{}.addInput<float>({1, 4, 2, 3}).addOutput<int32_t>({1, 0}));
+  _context->addTestCase(param.tcd);
   _context->setBackends({"acl_cl", "acl_neon", "cpu"});
 
   SUCCEED();
 }
 
-TEST_F(GenModelTest, OneOp_ArgMin_AxisToConst)
-{
-  CircleGen cgen;
-  const auto output_type = circle::TensorType::TensorType_INT32;
-  std::vector<int32_t> axis_data{1};
-  uint32_t axis_buf = cgen.addBuffer(axis_data);
-  int axis = cgen.addTensor({{1}, circle::TensorType::TensorType_INT32, axis_buf});
-  int in = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_FLOAT32});
-  int out = cgen.addTensor({{1, 2, 1}, output_type});
-  cgen.addOperatorArgMin({{in, axis}, {out}}, output_type);
-  cgen.setInputsAndOutputs({in}, {out});
-
-  _context = std::make_unique<GenModelTestContext>(cgen.finish());
-  _context->addTestCase(TestCaseData{}.addInput<float>({1, 4, 2, 3}).addOutput<int32_t>({0, 1}));
-  _context->setBackends({"acl_cl", "acl_neon", "cpu"});
-
-  SUCCEED();
-}
+// Test with different input type and value
+INSTANTIATE_TEST_CASE_P(
+    GenModelTest, ArgMinMaxVariation,
+    ::testing::Values(
+        // ArgMax, float input
+        ArgMinMaxVariationParam{
+            TestCaseData{}.addInput<float>({1, 4, 2, 3}).addOutput<int32_t>({1, 0}), true},
+        // ArgMax, int32 input
+        ArgMinMaxVariationParam{
+            TestCaseData{}.addInput<int32_t>({1, 4, 2, 3}).addOutput<int32_t>({1, 0}), true,
+            circle::TensorType::TensorType_INT32},
+        // ArgMax, uint8 input
+        ArgMinMaxVariationParam{
+            TestCaseData{}.addInput<uint8_t>({1, 4, 2, 3}).addOutput<int32_t>({1, 0}), true,
+            circle::TensorType::TensorType_UINT8, 1.0, 1},
+        // ArgMax, int8 input
+        ArgMinMaxVariationParam{
+            TestCaseData{}.addInput<int8_t>({1, 4, 2, 3}).addOutput<int32_t>({1, 0}), true,
+            circle::TensorType::TensorType_INT8, 1.0, 1},
+        // ArgMin, float input
+        ArgMinMaxVariationParam{
+            TestCaseData{}.addInput<float>({1, 4, 2, 3}).addOutput<int32_t>({0, 1}), false},
+        // ArgMin, int32 input
+        ArgMinMaxVariationParam{
+            TestCaseData{}.addInput<int32_t>({1, 4, 2, 3}).addOutput<int32_t>({0, 1}), false,
+            circle::TensorType::TensorType_INT32},
+        // ArgMin, uint8 input
+        ArgMinMaxVariationParam{
+            TestCaseData{}.addInput<uint8_t>({1, 4, 2, 3}).addOutput<int32_t>({0, 1}), false,
+            circle::TensorType::TensorType_UINT8, 1.0, 1},
+        // ArgMin, int8 input
+        ArgMinMaxVariationParam{
+            TestCaseData{}.addInput<int8_t>({1, 4, 2, 3}).addOutput<int32_t>({0, 1}), false,
+            circle::TensorType::TensorType_INT8, 1.0, 1}));
 
 TEST_F(GenModelTest, OneOp_ArgMax_Int64_AxisToConst)
 {

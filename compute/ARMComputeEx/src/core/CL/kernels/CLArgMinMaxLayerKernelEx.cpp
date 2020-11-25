@@ -63,7 +63,8 @@ Status validate_arguments(const ITensorInfo *input, const ITensorInfo *prev_outp
 {
   ARM_COMPUTE_RETURN_ERROR_ON_NULLPTR(input, output);
   ARM_COMPUTE_RETURN_ERROR_ON_F16_UNSUPPORTED(input);
-  ARM_COMPUTE_RETURN_ERROR_ON_DATA_TYPE_CHANNEL_NOT_IN(input, 1, DataType::QASYMM8, DataType::S32,
+  ARM_COMPUTE_RETURN_ERROR_ON_DATA_TYPE_CHANNEL_NOT_IN(input, 1, DataType::QASYMM8,
+                                                       DataType::QASYMM8_SIGNED, DataType::S32,
                                                        DataType::F16, DataType::F32);
   ARM_COMPUTE_RETURN_ERROR_ON_MSG(op != ReductionOperation::ARG_IDX_MAX &&
                                       op != ReductionOperation::ARG_IDX_MIN,

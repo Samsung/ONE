@@ -301,6 +301,8 @@ ir::DataType asRuntimeDataType(::arm_compute::DataType data_type)
       return ir::DataType::UINT32;
     case ::arm_compute::DataType::QASYMM8:
       return ir::DataType::QUANT_UINT8_ASYMM;
+    case ::arm_compute::DataType::QASYMM8_SIGNED:
+      return ir::DataType::QUANT_INT8_ASYMM;
     case ::arm_compute::DataType::U8:
       return ir::DataType::UINT8;
     case ::arm_compute::DataType::QSYMM8:
