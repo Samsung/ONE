@@ -1522,6 +1522,7 @@ OperationFactory::OperationFactory()
     operation::ArgMinMax::Param param;
     // NNAPI ARGMAX output type is always int32
     param.output_type = DataType::INT32;
+    param.is_arg_max = true;
 
     return new operation::ArgMinMax{inputs, outputs, param};
   };
@@ -1529,6 +1530,25 @@ OperationFactory::OperationFactory()
   // ANEURALNETWORKS_ARGMAX_EX is deprecated
   // TODO Remove ANEURALNETWORKS_ARGMAX_EX
   _map[ANEURALNETWORKS_ARGMAX_EX] = _map[ANEURALNETWORKS_ARGMAX];
+
+  _map[ANEURALNETWORKS_ARGMIN] = [](const OperationFactory::Param &init_param, Operands &) {
+    assert(init_param.input_count == 2 && init_param.output_count == 1);
+
+    OperandIndexSequence outputs{init_param.outputs[0]};
+
+    // Each input should be interpreted as follows:
+    //
+    //  0 -> Input Tensor Index
+    //  1 -> Axis Tensor Index
+    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
+
+    operation::ArgMinMax::Param param;
+    // NNAPI ARGMIN output type is always int32
+    param.output_type = DataType::INT32;
+    param.is_arg_max = false;
+
+    return new operation::ArgMinMax{inputs, outputs, param};
+  };
 
   _map[ANEURALNETWORKS_DEQUANTIZE] =
       getElementwiseUnaryGenerator(operation::ElementwiseUnary::Type::DEQUANTIZE);
