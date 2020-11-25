@@ -17,7 +17,6 @@ operand {
   name: "ofm"
   type: BOOL
   shape { dim: 1 dim: 1 dim: 1 }
-  shape_signature { dim: -1 dim: 1 dim: 1 }
 }
 operation {
   type: "ReduceAny"
