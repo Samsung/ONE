@@ -112,7 +112,7 @@ LoweredGraph::LoweredGraph(const ir::Graph &graph, const CompilerOptions &option
         .run();
 
     // Set LowerInfo for each operand from the operand::LowerInfo holder
-    manipulateLowerInfo(operands_lower_info, options.is_primary_subgraph);
+    manipulateLowerInfo(operands_lower_info);
 
     dumpLowerInfo();
   }
@@ -326,7 +326,7 @@ void LoweredGraph::makeOpSequences(
 }
 
 void LoweredGraph::manipulateLowerInfo(
-    ir::OperandIndexMap<std::unique_ptr<ir::operand::LowerInfo>> &operands_lower_info, bool)
+    ir::OperandIndexMap<std::unique_ptr<ir::operand::LowerInfo>> &operands_lower_info)
 {
   const auto controlflow_backend = BackendManager::get().getControlflow();
 
