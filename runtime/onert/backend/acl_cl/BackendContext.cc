@@ -32,7 +32,7 @@ namespace acl_cl
 {
 
 void BackendContext::planTensors(const std::vector<onert::ir::OpSequenceIndex> &order,
-                 const ir::OpSequences &op_seqs, const ir::LowerInfoMap &lower_info)
+                                 const ir::OpSequences &op_seqs, const ir::LowerInfoMap &lower_info)
 {
   ir::OperandIndexMap<uint32_t> uses_map;
   ir::OperandIndexMap<uint32_t> def_map;
@@ -49,7 +49,8 @@ void BackendContext::planTensors(const std::vector<onert::ir::OpSequenceIndex> &
     // Ignore unused tensor
     if (li->def_factors().size() == 0 && li->use_factors().size() == 0)
     {
-      VERBOSE(planTensors) << "Operand #" << ind.value() << " will not be used. no more process." << std::endl;
+      VERBOSE(planTensors) << "Operand #" << ind.value() << " will not be used. no more process."
+                           << std::endl;
       return;
     }
 
@@ -195,8 +196,7 @@ ITensorRegistry *BackendContext::tensorGen(const std::vector<onert::ir::OpSequen
           const auto frontend_layout = op_seq.getLayout();
           const auto backend_layout = operand_lower_info.layout();
           ir::OperandInfo backend_info{permuteShape(obj.shape(), frontend_layout, backend_layout),
-                                        obj.typeInfo(), obj.info().memAllocType(),
-                                        obj.isConstant()};
+                                       obj.typeInfo(), obj.info().memAllocType(), obj.isConstant()};
           tensor_builder->registerTensorInfo(index, backend_info, backend_layout);
         }
       }
@@ -211,8 +211,8 @@ ITensorRegistry *BackendContext::tensorGen(const std::vector<onert::ir::OpSequen
 }
 
 std::vector<std::pair<ir::OpSequenceIndex, std::unique_ptr<exec::FunctionSequence>>>
-BackendContext::kernelGen(const std::vector<onert::ir::OpSequenceIndex> & order,
-          const ir::OpSequences &op_seqs)
+BackendContext::kernelGen(const std::vector<onert::ir::OpSequenceIndex> &order,
+                          const ir::OpSequences &op_seqs)
 {
   std::vector<std::pair<ir::OpSequenceIndex, std::unique_ptr<exec::FunctionSequence>>> ret;
 

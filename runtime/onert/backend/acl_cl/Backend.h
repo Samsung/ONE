@@ -42,9 +42,9 @@ public:
 
   std::shared_ptr<IConfig> config() const override { return _config; }
 
-  std::unique_ptr<backend::BackendContext> newContext(const ir::Graph &graph,
-                                             const std::shared_ptr<custom::IKernelBuilder> &,
-                                             bool is_linear_executor) const override
+  std::unique_ptr<backend::BackendContext>
+  newContext(const ir::Graph &graph, const std::shared_ptr<custom::IKernelBuilder> &,
+             bool is_linear_executor) const override
   {
     const auto &operands = graph.operands();
     const auto &operations = graph.operations();

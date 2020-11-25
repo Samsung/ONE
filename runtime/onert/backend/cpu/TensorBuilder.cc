@@ -38,6 +38,7 @@ TensorBuilder::TensorBuilder(const std::shared_ptr<cpu_common::TensorRegistry> &
 void TensorBuilder::registerTensorInfo(const ir::OperandIndex &ind, const ir::OperandInfo &info,
                                        ir::Layout layout)
 {
+  VERBOSE_F() << ind << std::endl;
   _tensor_info_map.emplace(ind, info);
 
   // CPU backend supports only one layout as NHWC

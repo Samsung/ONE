@@ -18,6 +18,7 @@
 
 #include "TensorBuilder.h"
 #include "KernelGenerator.h"
+#include "Optimizer.h"
 #include "util/logging.h"
 #include "ir/Index.h"
 #include "ir/OperandIndexMap.h"
@@ -27,7 +28,7 @@ namespace onert
 {
 namespace backend
 {
-namespace cpu
+namespace acl_neon
 {
 
 void BackendContext::planTensors(const std::vector<onert::ir::OpSequenceIndex> &order,
@@ -48,8 +49,8 @@ void BackendContext::planTensors(const std::vector<onert::ir::OpSequenceIndex> &
     // Ignore unused tensor
     if (li->def_factors().size() == 0 && li->use_factors().size() == 0)
     {
-      VERBOSE(LINEAR) << "Operand #" << ind.value() << " will not be used. no more process."
-                      << std::endl;
+      VERBOSE(planTensors) << "Operand #" << ind.value() << " will not be used. no more process."
+                           << std::endl;
       return;
     }
 
@@ -75,6 +76,7 @@ void BackendContext::planTensors(const std::vector<onert::ir::OpSequenceIndex> &
   // If a tensor is a constant, increase the use of the tensor and allocate it first.
   // Increasing use count here makes the tensor never be deallocated, i.e it they will be
   // deallocated last.
+  VERBOSE(planTensors) << "TENSORS as CONSTANT" << std::endl;
   for (const auto &ind : constants)
   {
     uses_map[ind]++;
@@ -90,10 +92,9 @@ void BackendContext::planTensors(const std::vector<onert::ir::OpSequenceIndex> &
     const auto &op_seq = op_seqs.at(op_seq_ind);
     for (const auto &op_idx : op_seq.operations())
     {
-      auto op_inputs = graph()->operations().at(op_idx).getInputs() | ir::Remove::DUPLICATED |
-                       ir::Remove::UNDEFINED;
-      auto op_outputs = graph()->operations().at(op_idx).getOutputs() | ir::Remove::DUPLICATED |
-                        ir::Remove::UNDEFINED;
+      auto &op = graph()->operations().at(op_idx);
+      auto op_inputs = op.getInputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED;
+      auto op_outputs = op.getOutputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED;
 
       // Define outputs
       for (const auto &ind : op_outputs)
@@ -139,12 +140,6 @@ void BackendContext::planTensors(const std::vector<onert::ir::OpSequenceIndex> &
         {
           // plan for deallocation of static tensornode
           tensor_builder->notifyLastUse(ind);
-
-          // plan for deallocation of dynamic tensor
-          auto dyn_tensor_manager = tensor_builder->dynamicTensorManager();
-          auto *tensor = tensor_registry->getITensor(ind);
-          assert(tensor);
-          dyn_tensor_manager->planDealloc(op_idx, tensor);
         }
       }
     }
@@ -173,33 +168,41 @@ ITensorRegistry *BackendContext::tensorGen(const std::vector<onert::ir::OpSequen
                                            const ir::OpSequences &op_seqs,
                                            const ir::LowerInfoMap &lower_info)
 {
-  auto model_io = (graph()->getInputs() + graph()->getOutputs()) | ir::Remove::UNDEFINED |
-                  ir::Remove::DUPLICATED;
-  for (auto index : operand_list())
+  optimizer->optimize();
+
+  for (const auto op_seq_ind : order)
   {
-    if (model_io.contains(index))
-      continue;
-    const auto &obj = graph()->operands().at(index);
-    const auto frontend_layout = [&]() {
-      auto use_op_ind = *obj.getUses().begin(); // FIXME What if it has two or more uses?
-      for (auto &operation_info : operation_list())
+    const auto &op_seq = op_seqs.at(op_seq_ind);
+    auto model_io = (graph()->getInputs() + graph()->getOutputs()) | ir::Remove::UNDEFINED |
+                    ir::Remove::DUPLICATED;
+    for (const auto op_ind : op_seq)
+    {
+      const auto &op = graph()->operations().at(op_ind);
+      for (const auto &index : (op.getInputs() + op.getOutputs()) | ir::Remove::UNDEFINED)
       {
-        if (operation_info.index == use_op_ind)
-          return operation_info.layout;
+        if (!tensor_builder->isRegistered(index) && !model_io.contains(index))
+        {
+          const auto &operand_lower_info =
+              lower_info.operand.at(index)->def_factors().getOnlyElement();
+
+          // E.g., permute (CPU) -> tensor A -> MaxPool2D(acl_cl)
+          // op.getOutputs() of permute (CPU) returns tensor A
+          // but tensor A belongs to the backend of acl_cl.
+          // So, we have to make this tensor NOT registered for CPU.
+          if (operand_lower_info.backend() != backend())
+            continue;
+
+          const auto &obj = graph()->operands().at(index);
+          const auto frontend_layout = op_seq.getLayout();
+          const auto backend_layout = operand_lower_info.layout();
+          ir::OperandInfo backend_info{permuteShape(obj.shape(), frontend_layout, backend_layout),
+                                       obj.typeInfo(), obj.info().memAllocType(), obj.isConstant()};
+          tensor_builder->registerTensorInfo(index, backend_info, backend_layout);
+        }
       }
-      return ir::Layout::UNKNOWN;
-    }();
-    const auto &permute_factor = lower_info.operand.at(index)->def_factors().getOnlyElement();
-    if (permute_factor.backend() != backend())
-      continue;
-    const auto backend_layout = permute_factor.layout();
-    VERBOSE_F() << index << std::endl;
-    ir::OperandInfo backend_info{permuteShape(obj.shape(), frontend_layout, backend_layout),
-                                 obj.typeInfo(), obj.info().memAllocType(), obj.isConstant()};
-    tensor_builder->registerTensorInfo(index, backend_info, backend_layout);
+    }
   }
 
-  // PLAN TENSORS
   planTensors(order, op_seqs, lower_info);
 
   tensor_builder->prepare();
@@ -228,6 +231,7 @@ BackendContext::kernelGen(const std::vector<onert::ir::OpSequenceIndex> &order,
     ret.emplace_back(op_seq_ind, std::move(fn_seq));
   }
 
+  tensor_builder->allocate();
   initConsts();
 
   // NOTE For memory optimization, we want to free some operand data
@@ -238,12 +242,15 @@ BackendContext::kernelGen(const std::vector<onert::ir::OpSequenceIndex> &order,
   for (auto &it : ret)
   {
     auto &fn_seq = it.second;
-    fn_seq->iterate([&](exec::IFunction &ifunc) { ifunc.prepare(); });
+    fn_seq->iterate([&](exec::IFunction &ifunc) {
+      ifunc.prepare();
+      tensor_builder->postFunctionPrepare();
+    });
   }
 
   return ret;
 }
 
-} // namespace cpu
+} // namespace neon
 } // namespace backend
 } // namespace onert

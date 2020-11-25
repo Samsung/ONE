@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_ACL_CL_BACKEND_CONTEXT_H__
-#define __ONERT_BACKEND_ACL_CL_BACKEND_CONTEXT_H__
+#ifndef __ONERT_BACKEND_ACL_NEON_BACKEND_CONTEXT_H__
+#define __ONERT_BACKEND_ACL_NEON_BACKEND_CONTEXT_H__
 
 #include <backend/BackendContext.h>
 
@@ -23,7 +23,7 @@ namespace onert
 {
 namespace backend
 {
-namespace acl_cl
+namespace acl_neon
 {
 
 class BackendContext : public onert::backend::BackendContext
@@ -52,8 +52,8 @@ private:
                    const ir::OpSequences &op_seqs, const ir::LowerInfoMap &lower_info);
 };
 
-} // namespace acl_cl
+} // namespace acl_neon
 } // namespace backend
 } // namespace onert
 
-#endif // __ONERT_BACKEND_ACL_CL_BACKEND_CONTEXT_H__
+#endif // __ONERT_BACKEND_ACL_NEON_BACKEND_CONTEXT_H__
