@@ -51,7 +51,24 @@ TEST_F(GenModelTest, neg_OneOp_AddN_InvalidType)
   cgen.setInputsAndOutputs({in1, in2, in3}, {out});
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
-  _context->setBackends({"cpu"});
+  _context->expectFailModelLoad();
+
+  SUCCEED();
+}
+
+TEST_F(GenModelTest, neg_OneOp_AddN_TypeDiff)
+{
+  CircleGen cgen;
+
+  int in1 = cgen.addTensor({{8}, circle::TensorType::TensorType_FLOAT32});
+  int in2 = cgen.addTensor({{8}, circle::TensorType::TensorType_FLOAT32});
+  int in3 = cgen.addTensor({{8}, circle::TensorType::TensorType_FLOAT32});
+  int out = cgen.addTensor({{8}, circle::TensorType::TensorType_INT32});
+
+  cgen.addOperatorAddN({{in1, in2, in3}, {out}});
+  cgen.setInputsAndOutputs({in1, in2, in3}, {out});
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
   _context->expectFailModelLoad();
 
   SUCCEED();
