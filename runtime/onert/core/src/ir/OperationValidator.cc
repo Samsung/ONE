@@ -76,11 +76,14 @@ bool OperationValidator::isValidType(const OperandIndex &idx,
 
 void OperationValidator::visit(const operation::AddN &node)
 {
+  const auto output_index(node.getOutputs().at(0));
+
   int size = node.getInputs().size();
   for (int i = 0; i < size; i++)
   {
     const auto input_index(node.getInputs().at(i));
     OP_REQUIRES(isValidType(input_index, {DataType::FLOAT32, DataType::INT32}));
+    OP_REQUIRES(isSameType(input_index, output_index));
   }
 }
 
