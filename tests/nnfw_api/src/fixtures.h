@@ -229,4 +229,31 @@ protected:
   std::array<SessionObject, NUM_SESSIONS> _objects;
 };
 
+class ValidationTestTwoSessions : public ValidationTest
+{
+protected:
+  nnfw_session *_session1 = nullptr;
+  nnfw_session *_session2 = nullptr;
+};
+
+class ValidationTestTwoSessionsCreated : public ValidationTestTwoSessions
+{
+protected:
+  void SetUp() override
+  {
+    ValidationTestTwoSessions::SetUp();
+    ASSERT_EQ(nnfw_create_session(&_session1), NNFW_STATUS_NO_ERROR);
+    ASSERT_EQ(nnfw_create_session(&_session2), NNFW_STATUS_NO_ERROR);
+    ASSERT_NE(_session1, nullptr);
+    ASSERT_NE(_session2, nullptr);
+  }
+
+  void TearDown() override
+  {
+    ASSERT_EQ(nnfw_close_session(_session1), NNFW_STATUS_NO_ERROR);
+    ASSERT_EQ(nnfw_close_session(_session2), NNFW_STATUS_NO_ERROR);
+    ValidationTestTwoSessions::TearDown();
+  }
+};
+
 #endif // __NNFW_API_TEST_FIXTURES_H__
