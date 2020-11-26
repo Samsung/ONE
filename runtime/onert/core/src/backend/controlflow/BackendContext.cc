@@ -49,9 +49,12 @@ BackendContext::kernelGen(const std::vector<ir::OpSequenceIndex> &order,
   initConsts();
 
   // NOTE For memory optimization, we want to free some operand data
-  // TODO Fix it (remove const_cast)
-  const_cast<ir::Graph *>(graph())->operands().iterate(
-      [](const ir::OperandIndex &, ir::Operand &obj) { obj.releaseData(); });
+  for (auto ind : operand_list())
+  {
+    // TODO Remove const_cast
+    auto &obj = const_cast<ir::Graph *>(graph())->operands().at(ind);
+    obj.releaseData();
+  }
 
   for (auto &it : ret)
   {
