@@ -51,6 +51,7 @@ void create_substitute_pack_to_reshape(loco::Graph *g, const std::initializer_li
   auto input = g->nodes()->create<luci::CircleInput>();
   auto graph_input = g->inputs()->create();
   input->index(graph_input->index());
+  input->shape_status(luci::ShapeStatus::VALID);
   input->rank(shape.size());
   input->shape(shape);
 
@@ -78,15 +79,23 @@ TEST(SubstitutePackToReshapePass, simple_case)
   while (pass.run(graph.get()))
     ;
   luci::CircleReshape *reshape_node = nullptr;
+  luci::CirclePack *pack_node = nullptr;
   for (auto node : loco::active_nodes(loco::output_nodes(graph.get())))
   {
     auto reshape = dynamic_cast<luci::CircleReshape *>(node);
     if (not reshape)
+    {
+      auto pack = dynamic_cast<luci::CirclePack *>(node);
+      if(not pack)
+        continue;
+      pack_node = pack;
       continue;
+    }
     reshape_node = reshape;
     break;
   }
   ASSERT_NE(nullptr, reshape_node);
+  ASSERT_EQ(nullptr, pack_node);
   auto new_shape = loco::must_cast<luci::CircleConst *>(reshape_node->shape());
   ASSERT_EQ(1, new_shape->at<loco::DataType::S32>(0));
   ASSERT_EQ(1, new_shape->at<loco::DataType::S32>(1));

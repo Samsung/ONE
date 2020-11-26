@@ -29,6 +29,8 @@ bool substitute_pack_to_reshape(luci::CircleNode *node)
   if (target_node->values_count() != 1)
     return false;
   auto value_node = loco::must_cast<luci::CircleNode *>(target_node->values(0));
+  if (value_node->shape_status() != luci::ShapeStatus::VALID)
+    return false;
   uint32_t axis = static_cast<uint32_t>(target_node->axis());
   auto graph = target_node->graph();
   auto reshape_node = graph->nodes()->create<luci::CircleReshape>();
