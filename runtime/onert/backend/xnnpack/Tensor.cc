@@ -14,12 +14,7 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_XNNPACK_CONFIG_H__
-#define __ONERT_BACKEND_XNNPACK_CONFIG_H__
-
-#include <backend/IConfig.h>
-#include <memory>
-#include <util/ITimer.h>
+#include "Tensor.h"
 
 namespace onert
 {
@@ -28,24 +23,10 @@ namespace backend
 namespace xnnpack
 {
 
-class Config : public IConfig
-{
-public:
-  virtual ~Config();
-
-public:
-  std::string id() override { return "xnnpack"; }
-  bool initialize() override;
-  ir::Layout supportLayout(const ir::Operation &node, ir::Layout frontend_layout) override;
-  bool supportPermutation() override { return true; }
-  bool supportDynamicTensor() override { return true; }
-  bool supportFP16() override { return false; }
-
-  std::unique_ptr<util::ITimer> timer() override { return std::make_unique<util::CPUTimer>(); }
-};
+// `dynamic_cast` not working across library boundaries on NDK
+// With this as a key function, `dynamic_cast` works across dl
+ExternalTensor::~ExternalTensor() {}
 
 } // namespace xnnpack
 } // namespace backend
 } // namespace onert
-
-#endif // __ONERT_BACKEND_XNNPACK_CONFIG_H__

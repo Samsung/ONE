@@ -17,11 +17,14 @@
 #ifndef __ONERT_BACKEND_XNNPACK_TENSOR_BUILDER_H__
 #define __ONERT_BACKEND_XNNPACK_TENSOR_BUILDER_H__
 
-#include <backend/cpu_common/StaticTensorManager.h>
+#include <backend/cpu_common/DynamicTensorManager.h>
 #include <backend/cpu_common/TensorRegistry.h>
 
 #include <backend/ITensorBuilder.h>
 #include <ir/OperandIndexMap.h>
+
+#include "StaticTensorManager.h"
+#include "Tensor.h"
 
 #include <unordered_map>
 
@@ -31,12 +34,6 @@ namespace backend
 {
 namespace xnnpack
 {
-
-enum class UsesType
-{
-  FIRST,
-  LAST
-};
 
 class TensorBuilder : public ITensorBuilder
 {
@@ -59,14 +56,15 @@ public:
 
   void prepare(void) override;
   void allocate() override;
-  void postFunctionPrepare() override;
+  void postFunctionPrepare() override { /* DO NOTHING */}
+
+  IDynamicTensorManager *dynamicTensorManager(void) override { return _dynamic_tensor_mgr.get(); }
 
 private:
   const std::shared_ptr<cpu_common::TensorRegistry> _tensor_reg;
-  std::unique_ptr<cpu_common::StaticTensorManager> _static_tensor_mgr;
+  std::unique_ptr<cpu_common::DynamicTensorManager> _dynamic_tensor_mgr;
+  std::unique_ptr<StaticTensorManager> _static_tensor_mgr;
   ir::OperandIndexMap<ir::OperandInfo> _tensor_info_map;
-  ir::OperandIndexMap<ir::Layout> _tensor_layout_map;
-  std::vector<std::pair<UsesType, ir::OperandIndex>> _lifetime_seq;
 };
 
 } // namespace xnnpack
