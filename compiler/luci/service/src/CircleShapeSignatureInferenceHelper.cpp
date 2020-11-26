@@ -52,13 +52,8 @@ ShapeSignature reduced_signature(const loco::Node *node, const loco::Node *indic
   auto circle_indices = loco::must_cast<const luci::CircleNode *>(indices);
   auto input_signature = circle_node->shape_signature();
 
-  // If shape signature is empty, output is static.
-  if (input_signature.rank() == 0)
-    return output_signature;
-
-  auto reduction_indices = dynamic_cast<const luci::CircleConst *>(circle_indices);
-
   // When reduction_indices is not constant
+  auto reduction_indices = dynamic_cast<const luci::CircleConst *>(circle_indices);
   if (reduction_indices == nullptr)
   {
     if (keep_dims)
@@ -78,6 +73,10 @@ ShapeSignature reduced_signature(const loco::Node *node, const loco::Node *indic
 
     return output_signature;
   }
+
+  // If shape signature is empty, output is static.
+  if (input_signature.rank() == 0)
+    return output_signature;
 
   std::vector<int32_t> reduction_values;
   if (reduction_indices->dtype() == loco::DataType::S32)
