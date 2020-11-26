@@ -102,9 +102,17 @@ void OperationValidator::visit(const operation::BatchMatMul &node)
 {
   const auto lhs_index(node.getInputs().at(operation::BatchMatMul::Input::LHS));
   const auto rhs_index(node.getInputs().at(operation::BatchMatMul::Input::RHS));
+  const auto output_index(node.getOutputs().at(0));
 
   // Constant lhs and rhs is not implemented yet
   OP_REQUIRES(!isConstant(lhs_index) && !isConstant(rhs_index));
+
+  // Allow hybrid quantization (lhs: float / rhs: qint8 / out: float)
+  OP_REQUIRES(isValidType(lhs_index, {DataType::FLOAT32, DataType::QUANT_INT8_ASYMM}));
+  OP_REQUIRES(isSameType(lhs_index, rhs_index) ||
+              ((operandType(lhs_index) == DataType::FLOAT32) &&
+               (operandType(rhs_index) == DataType::QUANT_INT8_ASYMM)));
+  OP_REQUIRES(isSameType(lhs_index, output_index));
 }
 
 void OperationValidator::visit(const operation::BatchToSpaceND &node)
