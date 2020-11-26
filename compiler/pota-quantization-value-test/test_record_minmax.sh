@@ -9,11 +9,11 @@
 # work_dir : build directory of quantization-value-test (ex: build/compiler/quantization-value-test)
 
 SOURCE_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-GEN_SCRIPT_PATH="${SOURCE_PATH}/gen_h5_explicit_inputs.py"
 COMPARE_SCRIPT_PATH="${SOURCE_PATH}/compare_tensors.py"
 CONFIG_PATH="$1"; shift
 BIN_PATH=$(dirname "${CONFIG_PATH}")
 TEST_INPUT_PATH="${SOURCE_PATH}/test_inputs"
+GEN_SCRIPT_PATH="${BIN_PATH}/gen_h5_explicit_inputs.py"
 WORKDIR="$1"; shift
 
 source "${CONFIG_PATH}"
@@ -48,7 +48,7 @@ while [ "$1" != "" ]; do
     # Generate h5 input data
     source "${VIRTUALENV}/bin/activate"
     "${VIRTUALENV}/bin/python" "${GEN_SCRIPT_PATH}" \
-      --model "${WORKDIR}/${MODELNAME}.tflite" \
+      --model "${WORKDIR}/${MODELNAME}.circle" \
       --input "${TEST_INPUT_PATH}/${MODELNAME}/${GRANULARITY}/${DTYPE}" \
       --output "${TESTCASE_FILE}.input.h5"
 
