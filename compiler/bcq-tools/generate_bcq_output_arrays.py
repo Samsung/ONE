@@ -85,7 +85,7 @@ def get_bcqinfo_output_arrays_v1(input_path, output_arrays):
     ret_output_arrays = ['one_compiler/bcqinfo_one_metadata']
 
     # given node from user
-    ret_output_arrays.append(output_arrays)
+    ret_output_arrays.append += output_arrays.split(',')
 
     # all pairs of a constant node and related BCQ information nodes.
     for prefix in prefix_set:
@@ -110,7 +110,7 @@ def get_bcq_output_arrays(input_path, output_arrays):
     if model_version == 1:
         return get_bcqinfo_output_arrays_v1(input_path, output_arrays)
     elif model_version == -1:
-        return None
+        return output_arrays.split(',')
     else:
         err_msg = "BCQ version of the model(v{}) ".format(model_version)
         err_msg += "is higher than "
