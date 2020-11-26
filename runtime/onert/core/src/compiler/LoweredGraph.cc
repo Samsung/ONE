@@ -330,21 +330,18 @@ void LoweredGraph::manipulateLowerInfo(
 {
   const auto controlflow_backend = BackendManager::get().getControlflow();
 
-  // TODO Remove indentation
+  // TODO Rather than using NHWC Get frontend layout of this node from IR
+  auto factor = ir::operand::PermuteFactor{controlflow_backend, ir::Layout::NHWC};
+  for (auto index : _graph.getInputs() | ir::Remove::UNDEFINED)
   {
-    // TODO Rather than using NHWC Get frontend layout of this node from IR
-    auto factor = ir::operand::PermuteFactor{controlflow_backend, ir::Layout::NHWC};
-    for (auto index : _graph.getInputs() | ir::Remove::UNDEFINED)
-    {
-      auto &&lower_info = operands_lower_info.at(index);
-      assert(lower_info->def_factors().empty());
-      lower_info->addDefPermuteFactor(factor);
-    }
-    for (auto index : _graph.getOutputs() | ir::Remove::UNDEFINED)
-    {
-      auto &&lower_info = operands_lower_info.at(index);
-      lower_info->addUsePermuteFactor(factor);
-    }
+    auto &&lower_info = operands_lower_info.at(index);
+    assert(lower_info->def_factors().empty());
+    lower_info->addDefPermuteFactor(factor);
+  }
+  for (auto index : _graph.getOutputs() | ir::Remove::UNDEFINED)
+  {
+    auto &&lower_info = operands_lower_info.at(index);
+    lower_info->addUsePermuteFactor(factor);
   }
   for (auto index : _graph.getOutputs() | ir::Remove::UNDEFINED)
   {
