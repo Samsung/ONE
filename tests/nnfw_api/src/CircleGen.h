@@ -152,6 +152,7 @@ public:
                              int stride_h, circle::ActivationFunctionType actfn, int dilation_w = 1,
                              int dilation_h = 1);
   uint32_t addOperatorCos(const OperatorParams &params);
+  uint32_t addOperatorDepthToSpace(const OperatorParams &params, int32_t block_size);
   uint32_t addOperatorDepthwiseConv2D(const OperatorParams &params, circle::Padding padding,
                                       int stride_w, int stride_h, int depth_multiplier,
                                       circle::ActivationFunctionType actfn, int dilation_w = 1,

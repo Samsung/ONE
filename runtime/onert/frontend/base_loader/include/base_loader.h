@@ -124,6 +124,7 @@ private:
   void loadConcatenation(const Operator *op, ir::Graph &subg);
   void loadConv2D(const Operator *op, ir::Graph &subg);
   void loadCustom(const Operator *op, ir::Graph &subg);
+  void loadDepthToSpace(const Operator *op, ir::Graph &subg);
   void loadDepthwiseConv2D(const Operator *op, ir::Graph &subg);
   void loadEinsum(const Operator *op, ir::Graph &subg);
   void loadElementwiseActivation(const Operator *op, ir::Graph &subg,
@@ -732,6 +733,16 @@ void BaseLoader<LoaderDomain>::loadAddV2(const Operator *op, ir::Graph &subg)
   }
 
   loadOperationTo<ir::operation::BinaryArithmetic>(op, subg, param);
+}
+
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadDepthToSpace(const Operator *op, ir::Graph &subg)
+{
+  ir::operation::DepthToSpace::Param param;
+  const auto *options = op->builtin_options_as_DepthToSpaceOptions();
+  param.block_size = options->block_size();
+
+  loadOperationTo<ir::operation::DepthToSpace>(op, subg, param);
 }
 
 template <typename LoaderDomain>
@@ -1563,6 +1574,9 @@ void BaseLoader<LoaderDomain>::loadOperation(const Operator *op, ir::Graph &subg
       return;
     case BuiltinOperator::BuiltinOperator_UNIDIRECTIONAL_SEQUENCE_LSTM:
       loadUnidirectionalSequenceLSTM(op, subg);
+      return;
+    case BuiltinOperator::BuiltinOperator_DEPTH_TO_SPACE:
+      loadDepthToSpace(op, subg);
       return;
     default:
       throw std::runtime_error(

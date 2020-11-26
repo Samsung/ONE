@@ -161,7 +161,14 @@ void OperationValidator::visit(const operation::Conv2D &node)
 
 void OperationValidator::visit(const operation::DepthToSpace &node)
 {
+  const auto input_index{node.getInputs().at(operation::DepthToSpace::Input::INPUT)};
+  const auto output_index{node.getOutputs().at(0)};
+
   int32_t block_size = node.param().block_size;
+
+  OP_REQUIRES(isValidType(input_index, {DataType::FLOAT32, DataType::INT32, DataType::INT64,
+                                        DataType::QUANT_UINT8_ASYMM, DataType::QUANT_INT8_ASYMM}));
+  OP_REQUIRES(isSameType(input_index, output_index));
 
   OP_REQUIRES(block_size > 0);
 }
