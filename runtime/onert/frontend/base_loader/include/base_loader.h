@@ -114,23 +114,18 @@ private:
   // Operations
   template <typename OpIR, typename... Args>
   const OpIR *loadOperationTo(const Operator *op, ir::Graph &subg, Args &&... args);
-  void loadConv2D(const Operator *op, ir::Graph &subg);
-  void loadDepthwiseConv2D(const Operator *op, ir::Graph &subg);
-  void loadTransposeConv(const Operator *op, ir::Graph &subg);
-  void loadPool2D(const Operator *op, ir::Graph &subg, ir::operation::Pool2D::PoolType op_type);
-  void loadReshape(const Operator *op, ir::Graph &subg);
-  void loadSoftmax(const Operator *op, ir::Graph &subg);
-  void loadConcatenation(const Operator *op, ir::Graph &subg);
-  void loadFC(const Operator *op, ir::Graph &subg);
+
+  void loadAddV2(const Operator *op, ir::Graph &subg);
+  void loadArgMinMax(const Operator *op, ir::Graph &subg, bool is_argmax);
+  void loadBatchMatMul(const Operator *op, ir::Graph &subg);
   void loadBinaryArithmetic(const Operator *op, ir::Graph &subg,
                             ir::operation::BinaryArithmetic::ArithmeticType op_type);
-  void loadAddV2(const Operator *op, ir::Graph &subg);
-  void loadPack(const Operator *op, ir::Graph &subg);
-  void loadResizeBilinear(const Operator *op, ir::Graph &subg);
-  void loadResizeNearestNeighbor(const Operator *op, ir::Graph &subg);
-  void loadReduce(const Operator *op, ir::Graph &subg,
-                  ir::operation::Reduce::ReduceType reduce_type);
-  void loadReduceAll(const Operator *op, ir::Graph &subg);
+  void loadComparison(const Operator *op, ir::Graph &subg);
+  void loadConcatenation(const Operator *op, ir::Graph &subg);
+  void loadConv2D(const Operator *op, ir::Graph &subg);
+  void loadCustom(const Operator *op, ir::Graph &subg);
+  void loadDepthwiseConv2D(const Operator *op, ir::Graph &subg);
+  void loadEinsum(const Operator *op, ir::Graph &subg);
   void loadElementwiseActivation(const Operator *op, ir::Graph &subg,
                                  ir::operation::ElementwiseActivation::Type op_type,
                                  float alpha = 0.f, float beta = 0.f);
@@ -138,25 +133,31 @@ private:
                              ir::operation::ElementwiseBinary::ElementwiseBinaryType op_type);
   void loadElementwiseUnary(const Operator *op, ir::Graph &subg,
                             ir::operation::ElementwiseUnary::Type op_type);
+  void loadFC(const Operator *op, ir::Graph &subg);
+  void loadFusedBatchNorm(const Operator *op, ir::Graph &subg);
   void loadGather(const Operator *op, ir::Graph &subg);
-  void loadCustom(const Operator *op, ir::Graph &subg);
-  void loadBatchMatMul(const Operator *op, ir::Graph &subg);
-  void loadSqueeze(const Operator *op, ir::Graph &subg);
+  void loadIf(const Operator *op, ir::Graph &subg);
+  void loadLeakyRelu(const Operator *op, ir::Graph &subg);
+  void loadLogSoftmax(const Operator *op, ir::Graph &subg);
+  void loadOneHot(const Operator *op, ir::Graph &subg);
+  void loadPack(const Operator *op, ir::Graph &subg);
+  void loadPool2D(const Operator *op, ir::Graph &subg, ir::operation::Pool2D::PoolType op_type);
+  void loadReduce(const Operator *op, ir::Graph &subg,
+                  ir::operation::Reduce::ReduceType reduce_type);
+  void loadReduceAll(const Operator *op, ir::Graph &subg);
+  void loadReshape(const Operator *op, ir::Graph &subg);
+  void loadResizeBilinear(const Operator *op, ir::Graph &subg);
+  void loadResizeNearestNeighbor(const Operator *op, ir::Graph &subg);
+  void loadSoftmax(const Operator *op, ir::Graph &subg);
+  void loadSpaceToDepth(const Operator *op, ir::Graph &subg);
   void loadSplit(const Operator *op, ir::Graph &subg);
   void loadSplitV(const Operator *op, ir::Graph &subg);
+  void loadSqueeze(const Operator *op, ir::Graph &subg);
   void loadStridedSlice(const Operator *op, ir::Graph &subg);
-  void loadUnpack(const Operator *op, ir::Graph &subg);
-  void loadComparison(const Operator *op, ir::Graph &subg);
-  void loadEinsum(const Operator *op, ir::Graph &subg);
-  void loadOneHot(const Operator *op, ir::Graph &subg);
-  void loadIf(const Operator *op, ir::Graph &subg);
-  void loadWhile(const Operator *op, ir::Graph &subg);
-  void loadArgMinMax(const Operator *op, ir::Graph &subg, bool is_argmax);
-  void loadFusedBatchNorm(const Operator *op, ir::Graph &subg);
-  void loadLogSoftmax(const Operator *op, ir::Graph &subg);
-  void loadSpaceToDepth(const Operator *op, ir::Graph &subg);
-  void loadLeakyRelu(const Operator *op, ir::Graph &subg);
+  void loadTransposeConv(const Operator *op, ir::Graph &subg);
   void loadUnidirectionalSequenceLSTM(const Operator *op, ir::Graph &subg);
+  void loadUnpack(const Operator *op, ir::Graph &subg);
+  void loadWhile(const Operator *op, ir::Graph &subg);
 
   void verifySubgraphIndex(int subg_index)
   {
