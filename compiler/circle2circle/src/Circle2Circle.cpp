@@ -209,6 +209,7 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::ResolveCustomOpAdd);
     options->enable(Algorithms::ResolveCustomOpBatchMatMul);
     options->enable(Algorithms::ResolveCustomOpMatMul);
+    options->enable(Algorithms::RemoveRedundantTranspose);
   }
   if (arser.get<bool>("--fold_dequantize"))
     options->enable(Algorithms::FoldDequantize);
