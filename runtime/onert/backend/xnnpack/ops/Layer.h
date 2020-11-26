@@ -40,7 +40,7 @@ class Layer : public ::onert::exec::IFunction
 {
 public:
   Layer(const std::shared_ptr<ExternalContext> external_context)
-      : _kernel_op{nullptr}, _prepare{false}, _external_context{external_context}
+      : _kernel_op{nullptr}, _create{false}, _setup{false}, _external_context{external_context}
   {
     // DO NOTHING
   }
@@ -53,7 +53,8 @@ public:
 
 protected:
   xnn_operator_t _kernel_op;
-  bool _prepare;
+  bool _create;
+  bool _setup;
   const std::shared_ptr<ExternalContext> _external_context;
 };
 

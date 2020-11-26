@@ -70,6 +70,24 @@ void ConvolutionLayer::run()
 {
   prepare();
 
+  assert(_external_context && _external_context->getThreadPool());
+
+  if (!_setup)
+  {
+    uint32_t input_width = _input->getShape().dim(2);
+    uint32_t input_height = _input->getShape().dim(1);
+    uint32_t batch_size = _input->getShape().dim(0);
+    enum xnn_status status = xnn_setup_convolution2d_nhwc_f32(_kernel_op, batch_size, input_height, input_width,
+                                              reinterpret_cast<const float *>(_input->buffer()),
+                                              reinterpret_cast<float *>(_output->buffer()),
+                                              _external_context->getThreadPool());
+    if (status != xnn_status_success)
+    {
+      throw std::runtime_error{"failed to create FP32 Convolution operator"};
+    }
+    _setup = true;
+  }
+
   if (_input->data_type() == OperandType::FLOAT32)
   {
     enum xnn_status status = xnn_run_operator(_kernel_op, _external_context->getThreadPool());
@@ -86,7 +104,7 @@ void ConvolutionLayer::run()
 
 void ConvolutionLayer::prepare()
 {
-  if (_prepare)
+  if (_create)
     return;
 
   float output_activation_min = 0.f, output_activation_max = 0.f;
@@ -99,9 +117,6 @@ void ConvolutionLayer::prepare()
   uint32_t kernel_width = kernel_shape.dim(2);
   uint32_t output_channels = kernel_shape.dim(0);
   uint32_t input_channels = kernel_shape.dim(3);
-  uint32_t input_width = _input->getShape().dim(2);
-  uint32_t input_height = _input->getShape().dim(1);
-  uint32_t batch_size = _input->getShape().dim(0);
   assert(static_cast<uint32_t>(_input->getShape().dim(3)) == input_channels);
   assert(static_cast<uint32_t>(_output->getShape().dim(3)) == output_channels);
 
@@ -120,17 +135,7 @@ void ConvolutionLayer::prepare()
   }
   assert(_kernel_op != nullptr);
 
-  assert(_external_context && _external_context->getThreadPool());
-  status = xnn_setup_convolution2d_nhwc_f32(_kernel_op, batch_size, input_height, input_width,
-                                            reinterpret_cast<const float *>(_input->buffer()),
-                                            reinterpret_cast<float *>(_output->buffer()),
-                                            _external_context->getThreadPool());
-  if (status != xnn_status_success)
-  {
-    throw std::runtime_error{"failed to create FP32 Convolution operator"};
-  }
-
-  _prepare = true;
+  _create = true;
 }
 
 } // namespace ops
