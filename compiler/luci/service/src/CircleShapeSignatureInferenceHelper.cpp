@@ -71,7 +71,7 @@ ShapeSignature reduced_signature(const loco::Node *node, const loco::Node *indic
     else
     {
       // There is no way to inference for this case.
-      
+
       // This assert is just to find this case occurs at debug version.
       assert(false && "Cannot infer reduced_signature");
     }
