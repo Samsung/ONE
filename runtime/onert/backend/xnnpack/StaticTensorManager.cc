@@ -48,7 +48,7 @@ void StaticTensorManager::allocateNonconsts(void)
       tensor->setBuffer(buffer);
 
       VERBOSE(XNNPACK_StaticTensorManager) << "TENSOR(#" << ind.value()
-                                       << "): " << static_cast<void *>(buffer) << std::endl;
+                                           << "): " << static_cast<void *>(buffer) << std::endl;
     }
   }
 }

@@ -77,10 +77,10 @@ void ConvolutionLayer::run()
     uint32_t input_width = _input->getShape().dim(2);
     uint32_t input_height = _input->getShape().dim(1);
     uint32_t batch_size = _input->getShape().dim(0);
-    enum xnn_status status = xnn_setup_convolution2d_nhwc_f32(_kernel_op, batch_size, input_height, input_width,
-                                              reinterpret_cast<const float *>(_input->buffer()),
-                                              reinterpret_cast<float *>(_output->buffer()),
-                                              _external_context->getThreadPool());
+    enum xnn_status status = xnn_setup_convolution2d_nhwc_f32(
+        _kernel_op, batch_size, input_height, input_width,
+        reinterpret_cast<const float *>(_input->buffer()),
+        reinterpret_cast<float *>(_output->buffer()), _external_context->getThreadPool());
     if (status != xnn_status_success)
     {
       throw std::runtime_error{"failed to create FP32 Convolution operator"};
