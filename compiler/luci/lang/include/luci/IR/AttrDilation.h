@@ -27,15 +27,17 @@ class Dilation final
 public:
   Dilation() : _w(1), _h(1) {}
 
-  int32_t w() const { return _w; }
-  void w(int32_t w) { _w = w; }
+  uint32_t w() const { return _w; }
+  void w(uint32_t w) { _w = w; }
+  void w(int32_t w);
 
-  int32_t h() const { return _h; }
-  void h(int32_t h) { _h = h; }
+  uint32_t h() const { return _h; }
+  void h(uint32_t h) { _h = h; }
+  void h(int32_t h);
 
 private:
-  int32_t _w;
-  int32_t _h;
+  uint32_t _w;
+  uint32_t _h;
 };
 
 } // namespace luci
