@@ -69,24 +69,11 @@ void DepthwiseConvolutionLayer::configure(
 
 void DepthwiseConvolutionLayer::run()
 {
-  prepare();
-
   assert(_external_context && _external_context->getThreadPool());
-
   if (!_setup)
   {
-    uint32_t input_width = _input->getShape().dim(2);
-    uint32_t input_height = _input->getShape().dim(1);
-    uint32_t batch_size = _input->getShape().dim(0);
-    enum xnn_status status = xnn_setup_convolution2d_nhwc_f32(
-        _kernel_op, batch_size, input_height, input_width,
-        reinterpret_cast<const float *>(_input->buffer()),
-        reinterpret_cast<float *>(_output->buffer()), _external_context->getThreadPool());
-    if (status != xnn_status_success)
-    {
-      throw std::runtime_error{"failed to create FP32 DepthwiseConvolution operator"};
-    }
-    _setup = true;
+    _setup = setup();
+    assert(_setup);
   }
 
   if (_input->data_type() == OperandType::FLOAT32)
@@ -103,11 +90,9 @@ void DepthwiseConvolutionLayer::run()
   }
 }
 
-void DepthwiseConvolutionLayer::prepare()
+bool DepthwiseConvolutionLayer::create()
 {
-  if (_create)
-    return;
-
+  bool result = false;
   float output_activation_min = 0.f, output_activation_max = 0.f;
   CalculateActivationRange<float>(_activation, &output_activation_min, &output_activation_max);
 
@@ -135,8 +120,32 @@ void DepthwiseConvolutionLayer::prepare()
     throw std::runtime_error{"failed to create FP32 DepthwiseConvolution operator"};
   }
   assert(_kernel_op != nullptr);
+  result = true;
+  return result;
+}
 
-  _create = true;
+bool DepthwiseConvolutionLayer::setup()
+{
+  bool result = false;
+  if (_input->buffer() == nullptr || _output->buffer() == nullptr)
+  {
+    // it could be models's input or output
+    return result;
+  }
+
+  uint32_t input_width = _input->getShape().dim(2);
+  uint32_t input_height = _input->getShape().dim(1);
+  uint32_t batch_size = _input->getShape().dim(0);
+  enum xnn_status status = xnn_setup_convolution2d_nhwc_f32(
+      _kernel_op, batch_size, input_height, input_width,
+      reinterpret_cast<const float *>(_input->buffer()),
+      reinterpret_cast<float *>(_output->buffer()), _external_context->getThreadPool());
+  if (status != xnn_status_success)
+  {
+    throw std::runtime_error{"failed to create FP32 DepthwiseConvolution operator"};
+  }
+  result = true;
+  return result;
 }
 
 } // namespace ops

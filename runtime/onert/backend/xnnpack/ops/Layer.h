@@ -51,6 +51,20 @@ public:
       xnn_delete_operator(_kernel_op);
   }
 
+public:
+  void prepare() override
+  {
+    if (_create)
+      return;
+
+    _create = create();
+    assert(_create);
+
+    _setup = setup();
+  }
+  virtual bool create() = 0;
+  virtual bool setup() = 0;
+
 protected:
   xnn_operator_t _kernel_op;
   bool _create;
