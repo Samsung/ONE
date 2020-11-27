@@ -14,24 +14,14 @@
  * limitations under the License.
  */
 
-#ifndef __LUCI_CIRCLE_SHAPE_SIGNATURE_INFERENCE_HELPER_H__
-#define __LUCI_CIRCLE_SHAPE_SIGNATURE_INFERENCE_HELPER_H__
-
-#include <luci/IR/CircleNodes.h>
-#include <luci/IR/CircleShapeSignature.h>
+#include <luci/Service/CircleShapeSignatureInference.h>
 
 namespace luci
 {
 
-namespace ssinf // Namespace for Shape Signature Inference
+ShapeSignature ssinf::Algorithm::visit(const luci::CircleSum *node)
 {
-
-ShapeSignature reduced_signature(const loco::Node *node, const loco::Node *indices, bool keep_dims);
-
-ShapeSignature signature_of_arg(const luci::CircleNode *node, uint32_t index);
-
-} // namespace ssinf
+  return reduced_signature(node->input(), node->reduction_indices(), node->keep_dims());
+}
 
 } // namespace luci
-
-#endif // __LUCI_CIRCLE_SHAPE_SIGNATURE_INFERENCE_HELPER_H__

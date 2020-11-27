@@ -16,11 +16,131 @@
 
 #include "luci/Service/CircleShapeSignatureInferenceHelper.h"
 
+#include <loco.h>
+
+#include <luci/Log.h>
+
+#include <oops/InternalExn.h>
+
+namespace
+{
+
+luci::ShapeSignature clean_signature(const luci::ShapeSignature &signature)
+{
+  // If shape signature has at least one -1, it is not static.
+  for (uint32_t i = 0; i < signature.rank(); ++i)
+    if (signature.dim(i) == -1)
+      return signature;
+
+  // If all dimensions are static, return empty shape signature.
+  return luci::ShapeSignature();
+}
+
+} // namespace
+
 namespace luci
 {
 
 namespace ssinf
 {
+
+ShapeSignature reduced_signature(const loco::Node *node, const loco::Node *indices, bool keep_dims)
+{
+  ShapeSignature output_signature;
+
+  auto circle_node = loco::must_cast<const luci::CircleNode *>(node);
+  auto circle_indices = loco::must_cast<const luci::CircleNode *>(indices);
+  auto input_signature = circle_node->shape_signature();
+
+  // When reduction_indices is not constant
+  auto reduction_indices = dynamic_cast<const luci::CircleConst *>(circle_indices);
+  if (reduction_indices == nullptr)
+  {
+    if (keep_dims)
+    {
+      // If keep_dims is true, rank is not changed.
+      output_signature.rank(input_signature.rank());
+      for (uint32_t i = 0; i < output_signature.rank(); ++i)
+        output_signature.dim(i) = -1;
+    }
+    else
+    {
+      // There is no way to inference for this case.
+
+      // This assert is just to find this case occurs at debug version.
+      assert(false && "Cannot infer reduced_signature");
+    }
+
+    return output_signature;
+  }
+
+  // If shape signature is empty, output is static.
+  if (input_signature.rank() == 0)
+    return output_signature;
+
+  std::vector<int32_t> reduction_values;
+  if (reduction_indices->dtype() == loco::DataType::S32)
+  {
+    auto reduction_size = reduction_indices->size<loco::DataType::S32>();
+    for (uint32_t i = 0; i < reduction_size; ++i)
+    {
+      int32_t axis = reduction_indices->at<loco::DataType::S32>(i);
+      if (axis < 0)
+        axis += input_signature.rank();
+
+      if (!(0 <= axis && axis < static_cast<int32_t>(input_signature.rank())))
+        INTERNAL_EXN_V("Invalid reduction axis for REDUCER", oops::to_uint32(axis));
+
+      reduction_values.push_back(axis);
+    }
+  }
+  else if (reduction_indices->dtype() == loco::DataType::S64)
+  {
+    auto reduction_size = reduction_indices->size<loco::DataType::S64>();
+    for (uint32_t i = 0; i < reduction_size; ++i)
+    {
+      int32_t axis = static_cast<int32_t>(reduction_indices->at<loco::DataType::S64>(i));
+      if (axis < 0)
+        axis += input_signature.rank();
+
+      if (!(0 <= axis && axis < static_cast<int32_t>(input_signature.rank())))
+        INTERNAL_EXN_V("Invalid reduction axis for REDUCER", oops::to_uint32(axis));
+
+      reduction_values.push_back(axis);
+    }
+  }
+  else
+  {
+    INTERNAL_EXN("Wrong reduction axis type, Only INT32, INT64 supported.");
+  }
+
+  if (keep_dims)
+  {
+    output_signature.rank(input_signature.rank());
+    for (uint32_t i = 0; i < input_signature.rank(); ++i)
+      output_signature.dim(i) = input_signature.dim(i);
+    for (uint32_t i = 0; i < reduction_values.size(); ++i)
+      output_signature.dim(reduction_values.at(i)) = 1;
+  }
+  else
+  {
+    std::vector<bool> check_reduce(input_signature.rank(), false);
+    for (uint32_t i = 0; i < reduction_values.size(); ++i)
+      check_reduce.at(reduction_values.at(i)) = true;
+
+    uint32_t reduce_cnt = 0;
+    for (uint32_t i = 0; i < check_reduce.size(); ++i)
+      if (check_reduce.at(i))
+        ++reduce_cnt;
+
+    output_signature.rank(input_signature.rank() - reduce_cnt);
+    for (uint32_t i = 0, j = 0; i < check_reduce.size(); ++i)
+      if (check_reduce.at(i) == false)
+        output_signature.dim(j++) = input_signature.dim(i);
+  }
+
+  return clean_signature(output_signature);
+}
 
 ShapeSignature signature_of_arg(const luci::CircleNode *node, uint32_t index)
 {
