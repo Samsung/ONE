@@ -50,29 +50,25 @@ void DepthToSpaceLayer::configure(const IPortableTensor *input, const int32_t bl
 
 void DepthToSpaceLayer::run()
 {
-  if (_input->data_type() == OperandType::FLOAT32)
+  switch (_input->data_type())
   {
-    depthToSpace<float>();
-  }
-  else if (_input->data_type() == OperandType::INT32)
-  {
-    depthToSpace<int32_t>();
-  }
-  else if (_input->data_type() == OperandType::INT64)
-  {
-    depthToSpace<int64_t>();
-  }
-  else if (_input->data_type() == OperandType::QUANT_UINT8_ASYMM)
-  {
-    depthToSpace<uint8_t>();
-  }
-  else if (_input->data_type() == OperandType::QUANT_INT8_ASYMM)
-  {
-    depthToSpace<int8_t>();
-  }
-  else
-  {
-    throw std::runtime_error{"DepthToSpace: unsupported data type"};
+    case OperandType::FLOAT32:
+      depthToSpace<float>();
+      break;
+    case OperandType::INT32:
+      depthToSpace<int32_t>();
+      break;
+    case OperandType::INT64:
+      depthToSpace<int64_t>();
+      break;
+    case OperandType::QUANT_UINT8_ASYMM:
+      depthToSpace<uint8_t>();
+      break;
+    case OperandType::QUANT_INT8_ASYMM:
+      depthToSpace<int8_t>();
+      break;
+    default:
+      throw std::runtime_error{"DepthToSpace: unsupported data type"};
   }
 }
 
