@@ -62,7 +62,7 @@ void ModelAnalyzer::appendOperationToInference(Operation *op, const string &func
     {
       const auto &tensor_name = output.getName();
       const auto tensor_id =
-          tensor_name.empty() ? declareTemporaryTensor() : declarePersistentTensor(tensor_name);
+        tensor_name.empty() ? declareTemporaryTensor() : declarePersistentTensor(tensor_name);
       node_output_tensors.push_back(tensor_id);
     }
   }
@@ -82,7 +82,7 @@ void ModelAnalyzer::appendOperationToInference(Operation *op, const string &func
 
   std::copy(aux_args.begin(), aux_args.end(), std::back_inserter(node_input_tensors));
   unique_ptr<Action> operation_call(new CallFunction(
-      op, function_name, std::move(node_input_tensors), std::move(node_output_tensors)));
+    op, function_name, std::move(node_input_tensors), std::move(node_output_tensors)));
   _inferenceSequence.push_back(std::move(operation_call));
   _opToDescr[op] = _inferenceSequence.back().get();
 }

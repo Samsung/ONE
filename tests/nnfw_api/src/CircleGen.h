@@ -67,15 +67,15 @@ public:
     DimMetaData() = delete;
     DimMetaData(SparseDimensionType format, std::vector<uint16_t> array_segments,
                 std::vector<uint16_t> array_indices)
-        : _format{format},
-          _array_segments_type(SparseIndexVectorType::SparseIndexVector_Uint16Vector),
-          _array_indices_type(SparseIndexVectorType::SparseIndexVector_Uint16Vector)
+      : _format{format},
+        _array_segments_type(SparseIndexVectorType::SparseIndexVector_Uint16Vector),
+        _array_indices_type(SparseIndexVectorType::SparseIndexVector_Uint16Vector)
     {
       _array_segments.u16 = array_segments;
       _array_indices.u16 = array_indices;
     }
     DimMetaData(SparseDimensionType format, int32_t dense_size)
-        : _format{format}, _dense_size{dense_size}
+      : _format{format}, _dense_size{dense_size}
     {
     }
     SparseDimensionType _format{circle::DimensionType_DENSE};
@@ -162,7 +162,7 @@ public:
   uint32_t addOperatorFloor(const OperatorParams &params);
   uint32_t addOperatorFullyConnected(const OperatorParams &params,
                                      circle::FullyConnectedOptionsWeightsFormat weights_format =
-                                         circle::FullyConnectedOptionsWeightsFormat_DEFAULT);
+                                       circle::FullyConnectedOptionsWeightsFormat_DEFAULT);
   uint32_t addOperatorIf(const OperatorParams &params, uint32_t then_subg, uint32_t else_subg);
   uint32_t addOperatorInstanceNorm(const OperatorParams &params, float epsilon,
                                    circle::ActivationFunctionType actfn);

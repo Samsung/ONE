@@ -82,7 +82,7 @@ void DotDumper::dump(const std::string &tag)
     else
     {
       showing_cond =
-          !object.isConstant() || (_graph.getInputs() + _graph.getOutputs()).contains(index);
+        !object.isConstant() || (_graph.getInputs() + _graph.getOutputs()).contains(index);
     }
     if (showing_cond)
     {
@@ -156,7 +156,7 @@ void DotDumper::dump(const std::string &tag)
       const auto lower_info = _lowered_graph->getLowerInfo(index);
       auto fillcolor = backend_to_fillcolor(lower_info->backend());
       std::string label =
-          std::to_string(index.value()) + " [" + lower_info->backend()->config()->id() + "]";
+        std::to_string(index.value()) + " [" + lower_info->backend()->config()->id() + "]";
       DotSubgraphInfo subgraph_info{index, op_seq, shown_operand_set, _graph.operations()};
       subgraph_info.label(label);
       subgraph_info.fillcolor(fillcolor);

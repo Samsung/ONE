@@ -32,8 +32,8 @@ TEST_F(GenModelTest, OneOp_ReverseV2_3D)
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
   _context->setBackends({"acl_cl", "cpu"});
   _context->addTestCase(uniformTCD<float>(
-      {{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24}},
-      {{5, 6, 3, 4, 1, 2, 11, 12, 9, 10, 7, 8, 17, 18, 15, 16, 13, 14, 23, 24, 21, 22, 19, 20}}));
+    {{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24}},
+    {{5, 6, 3, 4, 1, 2, 11, 12, 9, 10, 7, 8, 17, 18, 15, 16, 13, 14, 23, 24, 21, 22, 19, 20}}));
 
   SUCCEED();
 }

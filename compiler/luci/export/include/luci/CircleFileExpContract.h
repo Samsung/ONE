@@ -33,7 +33,7 @@ struct CircleFileExpContract : public luci::CircleExporter::Contract
 {
 public:
   CircleFileExpContract(luci::Module *module, const std::string &filename)
-      : _module(module), _filepath(filename)
+    : _module(module), _filepath(filename)
   {
     // NOTHING TO DO
   }

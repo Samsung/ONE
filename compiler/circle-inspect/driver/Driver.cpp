@@ -29,11 +29,11 @@
 int entry(int argc, char **argv)
 {
   arser::Arser arser{
-      "circle-inspect allows users to retrieve various information from a Circle model file"};
+    "circle-inspect allows users to retrieve various information from a Circle model file"};
   arser.add_argument("--operators").nargs(0).help("Dump operators in circle file");
   arser.add_argument("--conv2d_weight")
-      .nargs(0)
-      .help("Dump Conv2D series weight operators in circle file");
+    .nargs(0)
+    .help("Dump Conv2D series weight operators in circle file");
   arser.add_argument("--op_version").nargs(0).help("Dump versions of the operators in circle file");
   arser.add_argument("circle").type(arser::DataType::STR).help("Circle file to inspect");
 

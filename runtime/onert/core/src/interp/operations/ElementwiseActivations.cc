@@ -118,7 +118,7 @@ template <ActivationType act_type> void invoke(const ExecEnv *env, const ir::Ope
     else
     {
       const auto &act_node =
-          nnfw::misc::polymorphic_downcast<const ir::operation::ElementwiseActivation &>(node);
+        nnfw::misc::polymorphic_downcast<const ir::operation::ElementwiseActivation &>(node);
       evalFloat<act_type>(input_start, out, elements, act_node.param().alpha,
                           act_node.param().beta);
     }
@@ -132,7 +132,7 @@ template <ActivationType act_type> void invoke(const ExecEnv *env, const ir::Ope
 void invokeElementwiseActivation(const ExecEnv *env, const ir::Operation &node)
 {
   const auto &act_node =
-      nnfw::misc::polymorphic_downcast<const ir::operation::ElementwiseActivation &>(node);
+    nnfw::misc::polymorphic_downcast<const ir::operation::ElementwiseActivation &>(node);
   switch (act_node.param().op_type)
   {
     case ir::operation::ElementwiseActivation::Type::LOGISTIC:

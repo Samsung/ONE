@@ -104,7 +104,7 @@ static void writeTensorToHDF5File(const TensorVariant &tensor, std::string tenso
 static TensorVariant readTensorFromFile(const std::string &filename, const TensorType &type)
 {
   const std::size_t input_data_size =
-      type.getShape().numElements() * getDataTypeSize(type.getElementType());
+    type.getShape().numElements() * getDataTypeSize(type.getElementType());
 
   std::ifstream stream(filename, std::ios::in | std::ios::binary);
   if (stream.fail())
@@ -130,7 +130,7 @@ static TensorVariant readTensorFromFile(const std::string &filename, const Tenso
 }
 
 InterpreterBackend::InterpreterBackend(std::string input_dir, std::string output_dir)
-    : _input_dir(std::move(input_dir)), _output_dir(std::move(output_dir))
+  : _input_dir(std::move(input_dir)), _output_dir(std::move(output_dir))
 {
 }
 

@@ -35,7 +35,7 @@ MemoryManager::MemoryManager() : _mem_planner{createMemoryPlanner()}
 }
 
 MemoryManager::MemoryManager(const std::string planner_id)
-    : _mem_planner{createMemoryPlanner(planner_id)}
+  : _mem_planner{createMemoryPlanner(planner_id)}
 {
   // DO NOTHING
 }

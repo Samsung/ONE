@@ -37,7 +37,7 @@ namespace compiler
 {
 
 ShapeValidator::ShapeValidator(const ir::Graph &graph)
-    : _graph{graph}, _ctx{graph.operands()}, _current_layout{ir::Layout::UNKNOWN}
+  : _graph{graph}, _ctx{graph.operands()}, _current_layout{ir::Layout::UNKNOWN}
 {
 }
 
@@ -62,7 +62,7 @@ void ShapeValidator::operator()()
   _current_layout = _graph.layout();
 
   _graph.operations().iterate(
-      [&](const ir::OperationIndex &, const ir::Operation &node) { node.accept(*this); });
+    [&](const ir::OperationIndex &, const ir::Operation &node) { node.accept(*this); });
 }
 
 void ShapeValidator::visit(const ir::operation::BatchMatMul &node)
@@ -88,7 +88,7 @@ void ShapeValidator::visit(const ir::operation::BatchToSpaceND &node)
 
   const auto ifm_index{node.getInputs().at(ir::operation::BatchToSpaceND::Input::INPUT)};
   const auto block_size_index{
-      node.getInputs().at(ir::operation::BatchToSpaceND::Input::BLOCK_SIZE)};
+    node.getInputs().at(ir::operation::BatchToSpaceND::Input::BLOCK_SIZE)};
 
   const auto frontend_layout = _current_layout;
   const auto input_shape = _ctx.at(ifm_index).shape().asFeature(frontend_layout);
@@ -112,11 +112,11 @@ void ShapeValidator::visit(const ir::operation::BCQFullyConnected &node)
 
   const auto ifm_index{node.getInputs().at(ir::operation::BCQFullyConnected::Input::INPUT)};
   const auto weight_scales_index{
-      node.getInputs().at(ir::operation::BCQFullyConnected::Input::WEIGHTS_SCALES)};
+    node.getInputs().at(ir::operation::BCQFullyConnected::Input::WEIGHTS_SCALES)};
   const auto weight_binary_index{
-      node.getInputs().at(ir::operation::BCQFullyConnected::Input::WEIGHTS_BINARY)};
+    node.getInputs().at(ir::operation::BCQFullyConnected::Input::WEIGHTS_BINARY)};
   const auto weight_cluster_index{
-      node.getInputs().at(ir::operation::BCQFullyConnected::Input::WEIGHTS_CLUSTERS)};
+    node.getInputs().at(ir::operation::BCQFullyConnected::Input::WEIGHTS_CLUSTERS)};
   // const auto bias_index{node.getInputs().at(ir::operation::BCQFullyConnected::Input::BIAS)};
 
   OP_REQUIRES(_ctx.at(ifm_index).shape().rank() == 2);
@@ -145,7 +145,7 @@ void ShapeValidator::visit(const ir::operation::BCQGather &node)
   const auto input_binary_index{node.getInputs().at(ir::operation::BCQGather::Input::INPUT_BINARY)};
   const auto input_scales_index{node.getInputs().at(ir::operation::BCQGather::Input::INPUT_SCALES)};
   const auto input_clusters_index{
-      node.getInputs().at(ir::operation::BCQGather::Input::INPUT_CLUSTERS)};
+    node.getInputs().at(ir::operation::BCQGather::Input::INPUT_CLUSTERS)};
 
   OP_REQUIRES(_ctx.at(indices_index).shape().rank() <= 2); // TODO : support rank up to 4 or more
   OP_REQUIRES(_ctx.at(input_binary_index).shape().rank() == 2);
@@ -248,13 +248,12 @@ void ShapeValidator::visit(const ir::operation::Reduce &node)
     {
       // Reducing C or
       // (Reducing H and C(input and output) == 1) or (Reducing W and C(input and output) == 1)
-      OP_REQUIRES((input_shape.dim(0) == output_shape.dim(0) &&
-                   input_shape.dim(1) == output_shape.dim(1) &&
-                   input_shape.dim(2) == output_shape.dim(2)) ||
-                  (input_shape.dim(0) == output_shape.dim(0) &&
-                   (input_shape.dim(1) == output_shape.dim(1) ||
-                    input_shape.dim(2) == output_shape.dim(1)) &&
-                   input_shape.dim(3) == 1 && output_shape.dim(2) == 1));
+      OP_REQUIRES(
+        (input_shape.dim(0) == output_shape.dim(0) && input_shape.dim(1) == output_shape.dim(1) &&
+         input_shape.dim(2) == output_shape.dim(2)) ||
+        (input_shape.dim(0) == output_shape.dim(0) &&
+         (input_shape.dim(1) == output_shape.dim(1) || input_shape.dim(2) == output_shape.dim(1)) &&
+         input_shape.dim(3) == 1 && output_shape.dim(2) == 1));
     }
   }
 }
@@ -285,12 +284,12 @@ void ShapeValidator::visit(const ir::operation::RNN &node)
     return;
 
   const auto hidden_state_out_index{
-      node.getOutputs().at(ir::operation::RNN::Output::HIDDEN_STATE_OUT)};
+    node.getOutputs().at(ir::operation::RNN::Output::HIDDEN_STATE_OUT)};
 
   const auto input_index{node.getInputs().at(ir::operation::RNN::Input::INPUT)};
   const auto weights_index{node.getInputs().at(ir::operation::RNN::Input::WEIGHTS)};
   const auto recurrent_weights_index{
-      node.getInputs().at(ir::operation::RNN::Input::RECURRENT_WEIGHTS)};
+    node.getInputs().at(ir::operation::RNN::Input::RECURRENT_WEIGHTS)};
   const auto bias_index{node.getInputs().at(ir::operation::RNN::Input::BIAS)};
   const auto hidden_state_in_index{node.getInputs().at(ir::operation::RNN::Input::HIDDEN_STATE_IN)};
 
@@ -327,7 +326,7 @@ void ShapeValidator::visit(const ir::operation::SpaceToBatchND &node)
 
   const auto ifm_index{node.getInputs().at(ir::operation::SpaceToBatchND::Input::INPUT)};
   const auto block_size_index{
-      node.getInputs().at(ir::operation::SpaceToBatchND::Input::BLOCK_SIZE)};
+    node.getInputs().at(ir::operation::SpaceToBatchND::Input::BLOCK_SIZE)};
   const auto paddings_index{node.getInputs().at(ir::operation::SpaceToBatchND::Input::PADDINGS)};
 
   const auto frontend_layout = _current_layout;
@@ -562,48 +561,48 @@ void ShapeValidator::visit(const ir::operation::LSTM &node)
     return;
 
   const auto scratch_buffer_index{
-      node.getOutputs().at(ir::operation::LSTM::Output::SCRATCH_BUFFER)}; // Optional
+    node.getOutputs().at(ir::operation::LSTM::Output::SCRATCH_BUFFER)}; // Optional
   const auto output_state_out_index{
-      node.getOutputs().at(ir::operation::LSTM::Output::OUTPUT_STATE_OUT)}; // Optional
+    node.getOutputs().at(ir::operation::LSTM::Output::OUTPUT_STATE_OUT)}; // Optional
   const auto cell_state_out_index{
-      node.getOutputs().at(ir::operation::LSTM::Output::CELL_STATE_OUT)}; // Optional
+    node.getOutputs().at(ir::operation::LSTM::Output::CELL_STATE_OUT)}; // Optional
 
   const auto input_index{node.getInputs().at(ir::operation::LSTM::Input::INPUT)};
   const auto input_to_input_weights_index{
-      node.getInputs().at(ir::operation::LSTM::Input::INPUT_TO_INPUT_WEIGHTS)}; // Optional
+    node.getInputs().at(ir::operation::LSTM::Input::INPUT_TO_INPUT_WEIGHTS)}; // Optional
   const auto input_to_forget_weights_index{
-      node.getInputs().at(ir::operation::LSTM::Input::INPUT_TO_FORGET_WEIGHTS)};
+    node.getInputs().at(ir::operation::LSTM::Input::INPUT_TO_FORGET_WEIGHTS)};
   const auto input_to_cell_weights_index{
-      node.getInputs().at(ir::operation::LSTM::Input::INPUT_TO_CELL_WEIGHTS)};
+    node.getInputs().at(ir::operation::LSTM::Input::INPUT_TO_CELL_WEIGHTS)};
   const auto input_to_output_weights_index{
-      node.getInputs().at(ir::operation::LSTM::Input::INPUT_TO_OUTPUT_WEIGHTS)};
+    node.getInputs().at(ir::operation::LSTM::Input::INPUT_TO_OUTPUT_WEIGHTS)};
   const auto recurrent_to_input_weights_index{
-      node.getInputs().at(ir::operation::LSTM::Input::RECURRENT_TO_INPUT_WEIGHTS)}; // Optional
+    node.getInputs().at(ir::operation::LSTM::Input::RECURRENT_TO_INPUT_WEIGHTS)}; // Optional
   const auto recurrent_to_forget_weights_index{
-      node.getInputs().at(ir::operation::LSTM::Input::RECURRENT_TO_FORGET_WEIGHTS)};
+    node.getInputs().at(ir::operation::LSTM::Input::RECURRENT_TO_FORGET_WEIGHTS)};
   const auto recurrent_to_cell_weights_index{
-      node.getInputs().at(ir::operation::LSTM::Input::RECURRENT_TO_CELL_WEIGHTS)};
+    node.getInputs().at(ir::operation::LSTM::Input::RECURRENT_TO_CELL_WEIGHTS)};
   const auto recurrent_to_output_weights_index{
-      node.getInputs().at(ir::operation::LSTM::Input::RECURRENT_TO_OUTPUT_WEIGHTS)};
+    node.getInputs().at(ir::operation::LSTM::Input::RECURRENT_TO_OUTPUT_WEIGHTS)};
   const auto cell_to_input_weights_index{
-      node.getInputs().at(ir::operation::LSTM::Input::CELL_TO_INPUT_WEIGHTS)}; // Optional
+    node.getInputs().at(ir::operation::LSTM::Input::CELL_TO_INPUT_WEIGHTS)}; // Optional
   const auto cell_to_forget_weights_index{
-      node.getInputs().at(ir::operation::LSTM::Input::CELL_TO_FORGET_WEIGHTS)}; // Optional
+    node.getInputs().at(ir::operation::LSTM::Input::CELL_TO_FORGET_WEIGHTS)}; // Optional
   const auto cell_to_output_weights_index{
-      node.getInputs().at(ir::operation::LSTM::Input::CELL_TO_OUTPUT_WEIGHTS)}; // Optional
+    node.getInputs().at(ir::operation::LSTM::Input::CELL_TO_OUTPUT_WEIGHTS)}; // Optional
   const auto input_gate_bias_index{
-      node.getInputs().at(ir::operation::LSTM::Input::INPUT_GATE_BIAS)}; // Optional
+    node.getInputs().at(ir::operation::LSTM::Input::INPUT_GATE_BIAS)}; // Optional
   const auto forget_gate_bias_index{
-      node.getInputs().at(ir::operation::LSTM::Input::FORGET_GATE_BIAS)};
+    node.getInputs().at(ir::operation::LSTM::Input::FORGET_GATE_BIAS)};
   const auto cell_bias_index{node.getInputs().at(ir::operation::LSTM::Input::CELL_BIAS)};
   const auto output_gate_bias_index{
-      node.getInputs().at(ir::operation::LSTM::Input::OUTPUT_GATE_BIAS)};
+    node.getInputs().at(ir::operation::LSTM::Input::OUTPUT_GATE_BIAS)};
   const auto projection_weights_index{
-      node.getInputs().at(ir::operation::LSTM::Input::PROJECTION_WEIGHTS)}; // Optional
+    node.getInputs().at(ir::operation::LSTM::Input::PROJECTION_WEIGHTS)}; // Optional
   const auto projection_bias_index{
-      node.getInputs().at(ir::operation::LSTM::Input::PROJECTION_BIAS)}; // Optional
+    node.getInputs().at(ir::operation::LSTM::Input::PROJECTION_BIAS)}; // Optional
   const auto output_state_in_index{
-      node.getInputs().at(ir::operation::LSTM::Input::OUTPUT_STATE_IN)};
+    node.getInputs().at(ir::operation::LSTM::Input::OUTPUT_STATE_IN)};
   const auto cell_state_in_index{node.getInputs().at(ir::operation::LSTM::Input::CELL_STATE_IN)};
 
   OP_REQUIRES(_ctx.at(input_index).shape().rank() == _ctx.at(output_index).shape().rank());
@@ -612,54 +611,54 @@ void ShapeValidator::visit(const ir::operation::LSTM &node)
     OP_REQUIRES(_ctx.at(input_index).shape().dim(i) == _ctx.at(output_index).shape().dim(i));
   }
   OP_REQUIRES(
-      (_ctx.at(output_index).shape().rank() == 2 || _ctx.at(output_index).shape().rank() == 3) &&
-      (_ctx.at(input_index).shape().rank() == 2 || _ctx.at(input_index).shape().rank() == 3) &&
-      (!_ctx.exist(input_to_input_weights_index) ||
-       _ctx.at(input_to_input_weights_index).shape().rank() == 2) &&
-      _ctx.at(input_to_forget_weights_index).shape().rank() == 2 &&
-      _ctx.at(input_to_cell_weights_index).shape().rank() == 2 &&
-      _ctx.at(input_to_output_weights_index).shape().rank() == 2 &&
-      (!_ctx.exist(recurrent_to_input_weights_index) ||
-       _ctx.at(recurrent_to_input_weights_index).shape().rank() == 2) &&
-      _ctx.at(recurrent_to_forget_weights_index).shape().rank() == 2 &&
-      _ctx.at(recurrent_to_cell_weights_index).shape().rank() == 2 &&
-      _ctx.at(recurrent_to_output_weights_index).shape().rank() == 2 &&
-      (!_ctx.exist(projection_weights_index) ||
-       _ctx.at(projection_weights_index).shape().rank() == 2) &&
-      _ctx.at(output_state_in_index).shape().rank() == 2 &&
-      _ctx.at(cell_state_in_index).shape().rank() == 2);
+    (_ctx.at(output_index).shape().rank() == 2 || _ctx.at(output_index).shape().rank() == 3) &&
+    (_ctx.at(input_index).shape().rank() == 2 || _ctx.at(input_index).shape().rank() == 3) &&
+    (!_ctx.exist(input_to_input_weights_index) ||
+     _ctx.at(input_to_input_weights_index).shape().rank() == 2) &&
+    _ctx.at(input_to_forget_weights_index).shape().rank() == 2 &&
+    _ctx.at(input_to_cell_weights_index).shape().rank() == 2 &&
+    _ctx.at(input_to_output_weights_index).shape().rank() == 2 &&
+    (!_ctx.exist(recurrent_to_input_weights_index) ||
+     _ctx.at(recurrent_to_input_weights_index).shape().rank() == 2) &&
+    _ctx.at(recurrent_to_forget_weights_index).shape().rank() == 2 &&
+    _ctx.at(recurrent_to_cell_weights_index).shape().rank() == 2 &&
+    _ctx.at(recurrent_to_output_weights_index).shape().rank() == 2 &&
+    (!_ctx.exist(projection_weights_index) ||
+     _ctx.at(projection_weights_index).shape().rank() == 2) &&
+    _ctx.at(output_state_in_index).shape().rank() == 2 &&
+    _ctx.at(cell_state_in_index).shape().rank() == 2);
 
   OP_REQUIRES(
-      (!_ctx.exist(cell_to_input_weights_index) ||
-       _ctx.at(cell_to_input_weights_index).shape().rank() == 1) &&
-      (!_ctx.exist(cell_to_forget_weights_index) ||
-       _ctx.at(cell_to_forget_weights_index).shape().rank() == 1) &&
-      (!_ctx.exist(cell_to_output_weights_index) ||
-       _ctx.at(cell_to_output_weights_index).shape().rank() == 1) &&
-      (!_ctx.exist(input_gate_bias_index) || _ctx.at(input_gate_bias_index).shape().rank() == 1) &&
-      _ctx.at(forget_gate_bias_index).shape().rank() == 1 &&
-      _ctx.at(cell_bias_index).shape().rank() == 1 &&
-      _ctx.at(output_gate_bias_index).shape().rank() == 1 &&
-      (!_ctx.exist(projection_bias_index) || _ctx.at(projection_bias_index).shape().rank() == 1));
+    (!_ctx.exist(cell_to_input_weights_index) ||
+     _ctx.at(cell_to_input_weights_index).shape().rank() == 1) &&
+    (!_ctx.exist(cell_to_forget_weights_index) ||
+     _ctx.at(cell_to_forget_weights_index).shape().rank() == 1) &&
+    (!_ctx.exist(cell_to_output_weights_index) ||
+     _ctx.at(cell_to_output_weights_index).shape().rank() == 1) &&
+    (!_ctx.exist(input_gate_bias_index) || _ctx.at(input_gate_bias_index).shape().rank() == 1) &&
+    _ctx.at(forget_gate_bias_index).shape().rank() == 1 &&
+    _ctx.at(cell_bias_index).shape().rank() == 1 &&
+    _ctx.at(output_gate_bias_index).shape().rank() == 1 &&
+    (!_ctx.exist(projection_bias_index) || _ctx.at(projection_bias_index).shape().rank() == 1));
 
   // CIFG assertion
   OP_REQUIRES(
-      ((!_ctx.exist(input_to_input_weights_index) ||
-        (_ctx.at(input_to_input_weights_index).shape().dim(0) == 0 &&
-         _ctx.at(input_to_input_weights_index).shape().dim(1) == 0)) &&
-       (!_ctx.exist(recurrent_to_input_weights_index) ||
-        (_ctx.at(recurrent_to_input_weights_index).shape().dim(0) == 0 &&
-         _ctx.at(recurrent_to_input_weights_index).shape().dim(1) == 0)) &&
-       (!_ctx.exist(input_gate_bias_index) || _ctx.at(input_gate_bias_index).shape().dim(0) == 0) &&
-       (!_ctx.exist(cell_to_input_weights_index) ||
-        _ctx.at(cell_to_input_weights_index).shape().dim(0) == 0)) ||
-      ((_ctx.exist(input_to_input_weights_index) &&
-        (_ctx.at(input_to_input_weights_index).shape().dim(0) != 0 &&
-         _ctx.at(input_to_input_weights_index).shape().dim(1) != 0)) &&
-       (_ctx.exist(recurrent_to_input_weights_index) &&
-        (_ctx.at(recurrent_to_input_weights_index).shape().dim(0) != 0 &&
-         _ctx.at(recurrent_to_input_weights_index).shape().dim(1) != 0)) &&
-       (_ctx.exist(input_gate_bias_index) && _ctx.at(input_gate_bias_index).shape().dim(0) != 0)));
+    ((!_ctx.exist(input_to_input_weights_index) ||
+      (_ctx.at(input_to_input_weights_index).shape().dim(0) == 0 &&
+       _ctx.at(input_to_input_weights_index).shape().dim(1) == 0)) &&
+     (!_ctx.exist(recurrent_to_input_weights_index) ||
+      (_ctx.at(recurrent_to_input_weights_index).shape().dim(0) == 0 &&
+       _ctx.at(recurrent_to_input_weights_index).shape().dim(1) == 0)) &&
+     (!_ctx.exist(input_gate_bias_index) || _ctx.at(input_gate_bias_index).shape().dim(0) == 0) &&
+     (!_ctx.exist(cell_to_input_weights_index) ||
+      _ctx.at(cell_to_input_weights_index).shape().dim(0) == 0)) ||
+    ((_ctx.exist(input_to_input_weights_index) &&
+      (_ctx.at(input_to_input_weights_index).shape().dim(0) != 0 &&
+       _ctx.at(input_to_input_weights_index).shape().dim(1) != 0)) &&
+     (_ctx.exist(recurrent_to_input_weights_index) &&
+      (_ctx.at(recurrent_to_input_weights_index).shape().dim(0) != 0 &&
+       _ctx.at(recurrent_to_input_weights_index).shape().dim(1) != 0)) &&
+     (_ctx.exist(input_gate_bias_index) && _ctx.at(input_gate_bias_index).shape().dim(0) != 0)));
 
   // Peephole assertion
   OP_REQUIRES(((!_ctx.exist(cell_to_forget_weights_index) ||
@@ -675,11 +674,11 @@ void ShapeValidator::visit(const ir::operation::LSTM &node)
                                     (_ctx.at(input_to_input_weights_index).shape().dim(0) != 0 &&
                                      _ctx.at(input_to_input_weights_index).shape().dim(1) != 0);
   bool has_recurrent_to_input_weights =
-      _ctx.exist(recurrent_to_input_weights_index) &&
-      (_ctx.at(recurrent_to_input_weights_index).shape().dim(0) != 0 &&
-       _ctx.at(recurrent_to_input_weights_index).shape().dim(1) != 0);
+    _ctx.exist(recurrent_to_input_weights_index) &&
+    (_ctx.at(recurrent_to_input_weights_index).shape().dim(0) != 0 &&
+     _ctx.at(recurrent_to_input_weights_index).shape().dim(1) != 0);
   bool has_input_gate_bias =
-      _ctx.exist(input_gate_bias_index) && _ctx.at(input_gate_bias_index).shape().dim(0) != 0;
+    _ctx.exist(input_gate_bias_index) && _ctx.at(input_gate_bias_index).shape().dim(0) != 0;
   bool has_cell_to_input_weights = _ctx.exist(cell_to_input_weights_index) &&
                                    _ctx.at(cell_to_input_weights_index).shape().dim(0) != 0;
   bool has_cell_to_forget_weights = _ctx.exist(cell_to_forget_weights_index) &&
@@ -690,7 +689,7 @@ void ShapeValidator::visit(const ir::operation::LSTM &node)
                                 (_ctx.at(projection_weights_index).shape().dim(0) != 0 &&
                                  _ctx.at(projection_weights_index).shape().dim(1) != 0);
   bool has_projection_bias =
-      _ctx.exist(projection_bias_index) && _ctx.at(projection_bias_index).shape().dim(0) != 0;
+    _ctx.exist(projection_bias_index) && _ctx.at(projection_bias_index).shape().dim(0) != 0;
 
   // NOTE The cell_to_input_weights do not exist in non-peephole although regular LSTM(non-CIFG).
   // true: no CIFG
@@ -706,8 +705,8 @@ void ShapeValidator::visit(const ir::operation::LSTM &node)
   bool has_projection_param = has_projection_weights;
 
   const auto batch_size = (_ctx.at(input_index).shape().rank() == 3 && node.param().time_major)
-                              ? _ctx.at(input_index).shape().dim(1)
-                              : _ctx.at(input_index).shape().dim(0);
+                            ? _ctx.at(input_index).shape().dim(1)
+                            : _ctx.at(input_index).shape().dim(0);
   OP_REQUIRES(batch_size == _ctx.at(output_state_in_index).shape().dim(0) &&
               batch_size == _ctx.at(cell_state_in_index).shape().dim(0));
 
@@ -728,7 +727,7 @@ void ShapeValidator::visit(const ir::operation::LSTM &node)
               num_units == _ctx.at(cell_state_in_index).shape().dim(1));
 
   const auto output_size =
-      _ctx.at(output_index).shape().dim(_ctx.at(output_index).shape().rank() - 1);
+    _ctx.at(output_index).shape().dim(_ctx.at(output_index).shape().rank() - 1);
   OP_REQUIRES(output_size == _ctx.at(recurrent_to_forget_weights_index).shape().dim(1) &&
               output_size == _ctx.at(recurrent_to_cell_weights_index).shape().dim(1) &&
               output_size == _ctx.at(recurrent_to_output_weights_index).shape().dim(1) &&
@@ -1010,9 +1009,9 @@ void ShapeValidator::visit(const ir::operation::MatrixBandPart &node)
   const auto output_index{node.getOutputs().at(0)};
   const auto input_index{node.getInputs().at(ir::operation::MatrixBandPart::Input::INPUT)};
   const auto num_lower_index{
-      node.getInputs().at(ir::operation::MatrixBandPart::Input::NUM_LOWER_DIAG)};
+    node.getInputs().at(ir::operation::MatrixBandPart::Input::NUM_LOWER_DIAG)};
   const auto num_upper_index{
-      node.getInputs().at(ir::operation::MatrixBandPart::Input::NUM_UPPER_DIAG)};
+    node.getInputs().at(ir::operation::MatrixBandPart::Input::NUM_UPPER_DIAG)};
 
   // Check for dimension constraints
   if (_ctx.at(output_index).info().isDynamic())

@@ -22,7 +22,7 @@ namespace ops
 {
 
 TransposeOp::TransposeOp(Output *arg, const std::vector<std::size_t> &axis_order)
-    : Operation(Type::transpose, {arg}), _axis_order(axis_order)
+  : Operation(Type::transpose, {arg}), _axis_order(axis_order)
 {
   assert(_axis_order.size() == static_cast<std::size_t>(getInputShape(0).rank()));
   inferOutputTypes();
@@ -34,7 +34,7 @@ void TransposeOp::inferOutputTypes()
   Shape output_shape(input_shape.rank());
   for (std::size_t i = 0; i < _axis_order.size(); ++i)
     output_shape.dim(static_cast<std::int64_t>(i)) =
-        input_shape.dim(static_cast<int32_t>(_axis_order.at(i)));
+      input_shape.dim(static_cast<int32_t>(_axis_order.at(i)));
 
   setOutputType(0, {getInput(0)->getElementType(), output_shape});
 }

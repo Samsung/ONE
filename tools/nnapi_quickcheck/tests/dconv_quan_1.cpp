@@ -109,7 +109,7 @@ TEST(NNAPI_Quickcheck_dconv_1, simple_test)
   // Configure Kernel Data
   const uint32_t kernel_size = KER_C * KER_H * KER_W;
   float kernel_data[kernel_size] = {
-      0.0f,
+    0.0f,
   };
 
   // Fill kernel data with random data
@@ -125,7 +125,7 @@ TEST(NNAPI_Quickcheck_dconv_1, simple_test)
   // Configure Bias Data
   const auto bias_size = KER_C;
   int32_t bias_data[bias_size] = {
-      0,
+    0,
   };
 
   // Fill bias data with random data
@@ -164,13 +164,13 @@ TEST(NNAPI_Quickcheck_dconv_1, simple_test)
 
     // NOTE kernel_data & bias_data should live longer than interpreter!
     interp.SetTensorParametersReadOnly(
-        2, kTfLiteUInt8 /* type */, "filter" /* name */, {1, KER_H, KER_W, KER_C} /* dims */,
-        quantization, reinterpret_cast<const char *>(kernel_data), kernel_size * sizeof(uint8_t));
+      2, kTfLiteUInt8 /* type */, "filter" /* name */, {1, KER_H, KER_W, KER_C} /* dims */,
+      quantization, reinterpret_cast<const char *>(kernel_data), kernel_size * sizeof(uint8_t));
 
     quantization.scale *= quantization.scale;
     interp.SetTensorParametersReadOnly(
-        3, kTfLiteInt32 /* type */, "bias" /* name */, {bias_size} /* dims */, quantization,
-        reinterpret_cast<const char *>(bias_data), bias_size * sizeof(int32_t));
+      3, kTfLiteInt32 /* type */, "bias" /* name */, {bias_size} /* dims */, quantization,
+      reinterpret_cast<const char *>(bias_data), bias_size * sizeof(int32_t));
 
     // Add Convolution Node
     //

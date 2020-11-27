@@ -737,7 +737,7 @@ OpPrinterRegistry::OpPrinterRegistry()
   _op_map[circle::BuiltinOperator_L2_POOL_2D] = make_unique<Pool2DPrinter>();
   _op_map[circle::BuiltinOperator_LEAKY_RELU] = make_unique<LeakyReluPrinter>();
   _op_map[circle::BuiltinOperator_LOCAL_RESPONSE_NORMALIZATION] =
-      make_unique<LocalResponseNormalizationPrinter>();
+    make_unique<LocalResponseNormalizationPrinter>();
   // There is no Option for LOG
   // There is no Option for LOGISTIC
   // There is no Option for LOG_SOFTMAX
@@ -761,7 +761,7 @@ OpPrinterRegistry::OpPrinterRegistry()
   _op_map[circle::BuiltinOperator_RESHAPE] = make_unique<ReshapePrinter>();
   _op_map[circle::BuiltinOperator_RESIZE_BILINEAR] = make_unique<ResizeBilinearPrinter>();
   _op_map[circle::BuiltinOperator_RESIZE_NEAREST_NEIGHBOR] =
-      make_unique<ResizeNearestNeighborPrinter>();
+    make_unique<ResizeNearestNeighborPrinter>();
   _op_map[circle::BuiltinOperator_REVERSE_SEQUENCE] = make_unique<ReverseSequencePrinter>();
   // There is no Option for ROUND
   // There is no Option for SELECT
@@ -782,7 +782,7 @@ OpPrinterRegistry::OpPrinterRegistry()
   _op_map[circle::BuiltinOperator_TRANSPOSE_CONV] = make_unique<TransposeConvPrinter>();
   // There is no Option for TOPK_V2
   _op_map[circle::BuiltinOperator_UNIDIRECTIONAL_SEQUENCE_LSTM] =
-      make_unique<UnidirectionalSequenceLSTMPrinter>();
+    make_unique<UnidirectionalSequenceLSTMPrinter>();
   _op_map[circle::BuiltinOperator_UNIQUE] = make_unique<UniquePrinter>();
   _op_map[circle::BuiltinOperator_WHILE] = make_unique<WhilePrinter>();
   _op_map[circle::BuiltinOperator_CUSTOM] = make_unique<CustomOpPrinter>();

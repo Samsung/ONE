@@ -219,14 +219,14 @@ ops::ReduceType convertReduceType(ir::operation::Reduce::ReduceType reduce_type_
 } // namespace
 
 KernelGenerator::KernelGenerator(
-    const ir::Operands &operands_ctx, const ir::Operations &operations_ctx,
-    const std::shared_ptr<TensorBuilder> &tensor_builder,
-    const std::shared_ptr<cpu_common::TensorRegistry> &tensor_reg,
-    const std::shared_ptr<backend::custom::IKernelBuilder> &kernel_builder,
-    const std::shared_ptr<ExternalContext> &external_context)
-    : _ctx(operands_ctx), _operations_ctx{operations_ctx},
-      _tensor_builder(tensor_builder), _tensor_reg{tensor_reg}, _kernel_builder(kernel_builder),
-      _current_layout(ir::Layout::UNKNOWN), _external_context(external_context)
+  const ir::Operands &operands_ctx, const ir::Operations &operations_ctx,
+  const std::shared_ptr<TensorBuilder> &tensor_builder,
+  const std::shared_ptr<cpu_common::TensorRegistry> &tensor_reg,
+  const std::shared_ptr<backend::custom::IKernelBuilder> &kernel_builder,
+  const std::shared_ptr<ExternalContext> &external_context)
+  : _ctx(operands_ctx), _operations_ctx{operations_ctx},
+    _tensor_builder(tensor_builder), _tensor_reg{tensor_reg}, _kernel_builder(kernel_builder),
+    _current_layout(ir::Layout::UNKNOWN), _external_context(external_context)
 {
   // DO NOTHING
 }
@@ -331,8 +331,8 @@ void KernelGenerator::visit(const ir::operation::Conv2D &node)
   const auto ker_width = ker_shape.dim(2);
 
   const auto padding =
-      ir::calculatePadding(param_padding, ifm_shape, ofm_shape, stride, ker_width, ker_height,
-                           dilation.width_factor, dilation.height_factor);
+    ir::calculatePadding(param_padding, ifm_shape, ofm_shape, stride, ker_width, ker_height,
+                         dilation.width_factor, dilation.height_factor);
 
   fn->configure(ifm_tensor, ker_tensor, bias_tensor, param_padding.type, padding.left,
                 padding.right, padding.top, padding.bottom, stride.horizontal, stride.vertical,
@@ -1041,7 +1041,7 @@ void KernelGenerator::visit(const ir::operation::Pool2D &node)
   const auto ifm_shape = _ctx.at(ifm_index).shape().asFeature(_current_layout);
   const auto ofm_shape = _ctx.at(ofm_index).shape().asFeature(_current_layout);
   const auto padding =
-      ir::calculatePadding(node.param().padding, ifm_shape, ofm_shape, stride, kw, kh);
+    ir::calculatePadding(node.param().padding, ifm_shape, ofm_shape, stride, kw, kh);
   const auto activation = node.param().activation;
 
   auto ofm_tensor = _tensor_reg->getPortableTensor(ofm_index);
@@ -1337,49 +1337,49 @@ void KernelGenerator::visit(const ir::operation::SplitV &node)
 void KernelGenerator::visit(const ir::operation::LSTM &node)
 {
   const auto scratch_buffer_index{
-      node.getOutputs().at(ir::operation::LSTM::Output::SCRATCH_BUFFER)};
+    node.getOutputs().at(ir::operation::LSTM::Output::SCRATCH_BUFFER)};
   const auto output_state_out_index{
-      node.getOutputs().at(ir::operation::LSTM::Output::OUTPUT_STATE_OUT)};
+    node.getOutputs().at(ir::operation::LSTM::Output::OUTPUT_STATE_OUT)};
   const auto cell_state_out_index{
-      node.getOutputs().at(ir::operation::LSTM::Output::CELL_STATE_OUT)};
+    node.getOutputs().at(ir::operation::LSTM::Output::CELL_STATE_OUT)};
   const auto output_index{node.getOutputs().at(ir::operation::LSTM::Output::OUTPUT)};
 
   const auto input_index{node.getInputs().at(ir::operation::LSTM::Input::INPUT)};
   const auto input_to_input_weights_index{
-      node.getInputs().at(ir::operation::LSTM::Input::INPUT_TO_INPUT_WEIGHTS)}; // optional
+    node.getInputs().at(ir::operation::LSTM::Input::INPUT_TO_INPUT_WEIGHTS)}; // optional
   const auto input_to_forget_weights_index{
-      node.getInputs().at(ir::operation::LSTM::Input::INPUT_TO_FORGET_WEIGHTS)};
+    node.getInputs().at(ir::operation::LSTM::Input::INPUT_TO_FORGET_WEIGHTS)};
   const auto input_to_cell_weights_index{
-      node.getInputs().at(ir::operation::LSTM::Input::INPUT_TO_CELL_WEIGHTS)};
+    node.getInputs().at(ir::operation::LSTM::Input::INPUT_TO_CELL_WEIGHTS)};
   const auto input_to_output_weights_index{
-      node.getInputs().at(ir::operation::LSTM::Input::INPUT_TO_OUTPUT_WEIGHTS)};
+    node.getInputs().at(ir::operation::LSTM::Input::INPUT_TO_OUTPUT_WEIGHTS)};
   const auto recurrent_to_input_weights_index{
-      node.getInputs().at(ir::operation::LSTM::Input::RECURRENT_TO_INPUT_WEIGHTS)}; // optional
+    node.getInputs().at(ir::operation::LSTM::Input::RECURRENT_TO_INPUT_WEIGHTS)}; // optional
   const auto recurrent_to_forget_weights_index{
-      node.getInputs().at(ir::operation::LSTM::Input::RECURRENT_TO_FORGET_WEIGHTS)};
+    node.getInputs().at(ir::operation::LSTM::Input::RECURRENT_TO_FORGET_WEIGHTS)};
   const auto recurrent_to_cell_weights_index{
-      node.getInputs().at(ir::operation::LSTM::Input::RECURRENT_TO_CELL_WEIGHTS)};
+    node.getInputs().at(ir::operation::LSTM::Input::RECURRENT_TO_CELL_WEIGHTS)};
   const auto recurrent_to_output_weights_index{
-      node.getInputs().at(ir::operation::LSTM::Input::RECURRENT_TO_OUTPUT_WEIGHTS)};
+    node.getInputs().at(ir::operation::LSTM::Input::RECURRENT_TO_OUTPUT_WEIGHTS)};
   const auto cell_to_input_weights_index{
-      node.getInputs().at(ir::operation::LSTM::Input::CELL_TO_INPUT_WEIGHTS)}; // optional
+    node.getInputs().at(ir::operation::LSTM::Input::CELL_TO_INPUT_WEIGHTS)}; // optional
   const auto cell_to_forget_weights_index{
-      node.getInputs().at(ir::operation::LSTM::Input::CELL_TO_FORGET_WEIGHTS)}; // optional
+    node.getInputs().at(ir::operation::LSTM::Input::CELL_TO_FORGET_WEIGHTS)}; // optional
   const auto cell_to_output_weights_index{
-      node.getInputs().at(ir::operation::LSTM::Input::CELL_TO_OUTPUT_WEIGHTS)}; // optional
+    node.getInputs().at(ir::operation::LSTM::Input::CELL_TO_OUTPUT_WEIGHTS)}; // optional
   const auto input_gate_bias_index{
-      node.getInputs().at(ir::operation::LSTM::Input::INPUT_GATE_BIAS)};
+    node.getInputs().at(ir::operation::LSTM::Input::INPUT_GATE_BIAS)};
   const auto forget_gate_bias_index{
-      node.getInputs().at(ir::operation::LSTM::Input::FORGET_GATE_BIAS)};
+    node.getInputs().at(ir::operation::LSTM::Input::FORGET_GATE_BIAS)};
   const auto cell_gate_bias_index{node.getInputs().at(ir::operation::LSTM::Input::CELL_BIAS)};
   const auto output_gate_bias_index{
-      node.getInputs().at(ir::operation::LSTM::Input::OUTPUT_GATE_BIAS)};
+    node.getInputs().at(ir::operation::LSTM::Input::OUTPUT_GATE_BIAS)};
   const auto projection_weights_index{
-      node.getInputs().at(ir::operation::LSTM::Input::PROJECTION_WEIGHTS)}; // optional
+    node.getInputs().at(ir::operation::LSTM::Input::PROJECTION_WEIGHTS)}; // optional
   const auto projection_bias_index{
-      node.getInputs().at(ir::operation::LSTM::Input::PROJECTION_BIAS)}; // optional
+    node.getInputs().at(ir::operation::LSTM::Input::PROJECTION_BIAS)}; // optional
   const auto output_state_in_index{
-      node.getInputs().at(ir::operation::LSTM::Input::OUTPUT_STATE_IN)};
+    node.getInputs().at(ir::operation::LSTM::Input::OUTPUT_STATE_IN)};
   const auto cell_state_in_index{node.getInputs().at(ir::operation::LSTM::Input::CELL_STATE_IN)};
   const auto time_major = node.param().time_major;
 
@@ -1391,9 +1391,9 @@ void KernelGenerator::visit(const ir::operation::LSTM &node)
                                     (_ctx.at(input_to_input_weights_index).shape().dim(0) != 0 &&
                                      _ctx.at(input_to_input_weights_index).shape().dim(1) != 0);
   bool has_recurrent_to_input_weights =
-      _ctx.exist(recurrent_to_input_weights_index) &&
-      (_ctx.at(recurrent_to_input_weights_index).shape().dim(0) != 0 &&
-       _ctx.at(recurrent_to_input_weights_index).shape().dim(1) != 0);
+    _ctx.exist(recurrent_to_input_weights_index) &&
+    (_ctx.at(recurrent_to_input_weights_index).shape().dim(0) != 0 &&
+     _ctx.at(recurrent_to_input_weights_index).shape().dim(1) != 0);
 
   // NOTE The cell_to_forget_weights and the cell_to_output_weights exist in peephole.
   // But the cell_to_input_weights does not exist in regular CIFG although peephole.
@@ -1405,56 +1405,56 @@ void KernelGenerator::visit(const ir::operation::LSTM &node)
                                     _ctx.at(cell_to_output_weights_index).shape().dim(0) != 0;
 
   bool has_input_gate_bias =
-      _ctx.exist(input_gate_bias_index) && _ctx.at(input_gate_bias_index).shape().dim(0);
+    _ctx.exist(input_gate_bias_index) && _ctx.at(input_gate_bias_index).shape().dim(0);
 
   bool has_projection_weights = _ctx.exist(projection_weights_index) &&
                                 (_ctx.at(projection_weights_index).shape().dim(0) != 0 &&
                                  _ctx.at(projection_weights_index).shape().dim(1) != 0);
   bool has_projection_bias =
-      _ctx.exist(projection_bias_index) && _ctx.at(projection_bias_index).shape().dim(0);
+    _ctx.exist(projection_bias_index) && _ctx.at(projection_bias_index).shape().dim(0);
 
   auto scratch_buffer_tensor = _ctx.exist(scratch_buffer_index)
-                                   ? _tensor_reg->getPortableTensor(scratch_buffer_index)
-                                   : nullptr; // optional
+                                 ? _tensor_reg->getPortableTensor(scratch_buffer_index)
+                                 : nullptr; // optional
   auto output_state_out_tensor = _ctx.exist(output_state_out_index)
-                                     ? _tensor_reg->getPortableTensor(output_state_out_index)
-                                     : nullptr; // optional
-  auto cell_state_out_tensor = _ctx.exist(cell_state_out_index)
-                                   ? _tensor_reg->getPortableTensor(cell_state_out_index)
+                                   ? _tensor_reg->getPortableTensor(output_state_out_index)
                                    : nullptr; // optional
+  auto cell_state_out_tensor = _ctx.exist(cell_state_out_index)
+                                 ? _tensor_reg->getPortableTensor(cell_state_out_index)
+                                 : nullptr; // optional
   auto output_tensor = _tensor_reg->getPortableTensor(output_index);
 
   auto input_tensor = _tensor_reg->getPortableTensor(input_index);
 
   auto input_to_input_weights_tensor =
-      has_input_to_input_weights ? _tensor_reg->getPortableTensor(input_to_input_weights_index)
-                                 : nullptr; // optional
+    has_input_to_input_weights ? _tensor_reg->getPortableTensor(input_to_input_weights_index)
+                               : nullptr; // optional
   auto input_to_forget_weights_tensor =
-      _tensor_reg->getPortableTensor(input_to_forget_weights_index);
+    _tensor_reg->getPortableTensor(input_to_forget_weights_index);
   auto input_to_cell_weights_tensor = _tensor_reg->getPortableTensor(input_to_cell_weights_index);
   auto input_to_output_weights_tensor =
-      _tensor_reg->getPortableTensor(input_to_output_weights_index);
+    _tensor_reg->getPortableTensor(input_to_output_weights_index);
   auto recurrent_to_input_weights_tensor =
-      has_recurrent_to_input_weights
-          ? _tensor_reg->getPortableTensor(recurrent_to_input_weights_index)
-          : nullptr; // optional
+    has_recurrent_to_input_weights
+      ? _tensor_reg->getPortableTensor(recurrent_to_input_weights_index)
+      : nullptr; // optional
   auto recurrent_to_forget_weights_tensor =
-      _tensor_reg->getPortableTensor(recurrent_to_forget_weights_index);
+    _tensor_reg->getPortableTensor(recurrent_to_forget_weights_index);
   auto recurrent_to_cell_weights_tensor =
-      _tensor_reg->getPortableTensor(recurrent_to_cell_weights_index);
+    _tensor_reg->getPortableTensor(recurrent_to_cell_weights_index);
   auto recurrent_to_output_weights_tensor =
-      _tensor_reg->getPortableTensor(recurrent_to_output_weights_index);
+    _tensor_reg->getPortableTensor(recurrent_to_output_weights_index);
 
   auto cell_to_input_weights_tensor = _tensor_reg->getPortableTensor(cell_to_input_weights_index);
   auto cell_to_forget_weights_tensor =
-      has_cell_to_forget_weights ? _tensor_reg->getPortableTensor(cell_to_forget_weights_index)
-                                 : nullptr; // optional
+    has_cell_to_forget_weights ? _tensor_reg->getPortableTensor(cell_to_forget_weights_index)
+                               : nullptr; // optional
   auto cell_to_output_weights_tensor =
-      has_cell_to_output_weights ? _tensor_reg->getPortableTensor(cell_to_output_weights_index)
-                                 : nullptr; // optional
+    has_cell_to_output_weights ? _tensor_reg->getPortableTensor(cell_to_output_weights_index)
+                               : nullptr; // optional
 
   auto input_gate_bias_tensor =
-      has_input_gate_bias ? _tensor_reg->getPortableTensor(input_gate_bias_index) : nullptr;
+    has_input_gate_bias ? _tensor_reg->getPortableTensor(input_gate_bias_index) : nullptr;
   auto forget_gate_bias_tensor = _tensor_reg->getPortableTensor(forget_gate_bias_index);
   auto cell_gate_bias_tensor = _tensor_reg->getPortableTensor(cell_gate_bias_index);
   auto output_gate_bias_tensor = _tensor_reg->getPortableTensor(output_gate_bias_index);
@@ -1462,11 +1462,11 @@ void KernelGenerator::visit(const ir::operation::LSTM &node)
   auto cell_state_in_tensor = _tensor_reg->getPortableTensor(cell_state_in_index);
 
   auto projection_weights_tensor = has_projection_weights
-                                       ? _tensor_reg->getPortableTensor(projection_weights_index)
-                                       : nullptr; // optional
+                                     ? _tensor_reg->getPortableTensor(projection_weights_index)
+                                     : nullptr; // optional
   auto projection_bias_tensor = has_projection_bias
-                                    ? _tensor_reg->getPortableTensor(projection_bias_index)
-                                    : nullptr; // optional
+                                  ? _tensor_reg->getPortableTensor(projection_bias_index)
+                                  : nullptr; // optional
 
   IPortableTensor *input_layer_norm_weights_tensor = nullptr;
   IPortableTensor *forget_layer_norm_weights_tensor = nullptr;
@@ -1475,45 +1475,45 @@ void KernelGenerator::visit(const ir::operation::LSTM &node)
   if (node.getInputs().size() == 24)
   {
     const auto input_layer_norm_weights_index{
-        node.getInputs().at(ir::operation::LSTM::Input::INPUT_LAYER_NORMALIZATION_WEIGHTS)};
+      node.getInputs().at(ir::operation::LSTM::Input::INPUT_LAYER_NORMALIZATION_WEIGHTS)};
     const auto forget_layer_norm_weights_index{
-        node.getInputs().at(ir::operation::LSTM::Input::FORGET_LAYER_NORMALIZATION_WEIGHTS)};
+      node.getInputs().at(ir::operation::LSTM::Input::FORGET_LAYER_NORMALIZATION_WEIGHTS)};
     const auto cell_layer_norm_weights_index{
-        node.getInputs().at(ir::operation::LSTM::Input::CELL_LAYER_NORMALIZATION_WEIGHTS)};
+      node.getInputs().at(ir::operation::LSTM::Input::CELL_LAYER_NORMALIZATION_WEIGHTS)};
     const auto output_layer_norm_weights_index{
-        node.getInputs().at(ir::operation::LSTM::Input::OUTPUT_LAYER_NORMALIZATION_WEIGHTS)};
+      node.getInputs().at(ir::operation::LSTM::Input::OUTPUT_LAYER_NORMALIZATION_WEIGHTS)};
 
     input_layer_norm_weights_tensor =
-        _tensor_reg->getPortableTensor(input_layer_norm_weights_index);
+      _tensor_reg->getPortableTensor(input_layer_norm_weights_index);
     forget_layer_norm_weights_tensor =
-        _tensor_reg->getPortableTensor(forget_layer_norm_weights_index);
+      _tensor_reg->getPortableTensor(forget_layer_norm_weights_index);
     cell_layer_norm_weights_tensor = _tensor_reg->getPortableTensor(cell_layer_norm_weights_index);
     output_layer_norm_weights_tensor =
-        _tensor_reg->getPortableTensor(output_layer_norm_weights_index);
+      _tensor_reg->getPortableTensor(output_layer_norm_weights_index);
   }
 
   auto fn = std::make_unique<ops::LSTMLayer>();
 
   fn->configure(
-      input_tensor, input_to_input_weights_tensor, input_to_forget_weights_tensor,
-      input_to_cell_weights_tensor, input_to_output_weights_tensor,
-      recurrent_to_input_weights_tensor, recurrent_to_forget_weights_tensor,
-      recurrent_to_cell_weights_tensor, recurrent_to_output_weights_tensor,
-      cell_to_input_weights_tensor, cell_to_forget_weights_tensor, cell_to_output_weights_tensor,
-      input_layer_norm_weights_tensor, forget_layer_norm_weights_tensor,
-      cell_layer_norm_weights_tensor, output_layer_norm_weights_tensor,
-      /*aux_input=*/nullptr,
-      /*aux_input_to_input_weights=*/nullptr,
-      /*aux_input_to_forget_weights=*/nullptr,
-      /*aux_input_to_cell_weights=*/nullptr,
-      /*aux_input_to_output_weights=*/nullptr, input_gate_bias_tensor, forget_gate_bias_tensor,
-      cell_gate_bias_tensor, output_gate_bias_tensor, projection_weights_tensor,
-      projection_bias_tensor, output_state_in_tensor, cell_state_in_tensor, node.param(),
-      /*forward_sequence=*/true, time_major,
-      /*output_offset=*/0, scratch_buffer_tensor, output_state_out_tensor, cell_state_out_tensor,
-      output_tensor,
-      !_ctx.at(output_state_in_index).info().isVariable() /* means empty buffer on frontend now */,
-      !_ctx.at(cell_state_in_index).info().isVariable());
+    input_tensor, input_to_input_weights_tensor, input_to_forget_weights_tensor,
+    input_to_cell_weights_tensor, input_to_output_weights_tensor, recurrent_to_input_weights_tensor,
+    recurrent_to_forget_weights_tensor, recurrent_to_cell_weights_tensor,
+    recurrent_to_output_weights_tensor, cell_to_input_weights_tensor, cell_to_forget_weights_tensor,
+    cell_to_output_weights_tensor, input_layer_norm_weights_tensor,
+    forget_layer_norm_weights_tensor, cell_layer_norm_weights_tensor,
+    output_layer_norm_weights_tensor,
+    /*aux_input=*/nullptr,
+    /*aux_input_to_input_weights=*/nullptr,
+    /*aux_input_to_forget_weights=*/nullptr,
+    /*aux_input_to_cell_weights=*/nullptr,
+    /*aux_input_to_output_weights=*/nullptr, input_gate_bias_tensor, forget_gate_bias_tensor,
+    cell_gate_bias_tensor, output_gate_bias_tensor, projection_weights_tensor,
+    projection_bias_tensor, output_state_in_tensor, cell_state_in_tensor, node.param(),
+    /*forward_sequence=*/true, time_major,
+    /*output_offset=*/0, scratch_buffer_tensor, output_state_out_tensor, cell_state_out_tensor,
+    output_tensor,
+    !_ctx.at(output_state_in_index).info().isVariable() /* means empty buffer on frontend now */,
+    !_ctx.at(cell_state_in_index).info().isVariable());
 
   _return_fn = std::move(fn);
 }

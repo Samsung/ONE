@@ -106,13 +106,13 @@ void AddImpl<uint8_t>::run(const TensorVariant &lhs, const TensorVariant &rhs, T
     const int32_t shifted_lhs_val = lhs_val * (1 << left_shift);
     const int32_t shifted_rhs_val = rhs_val * (1 << left_shift);
     const int32_t scaled_lhs_val =
-        MultiplyByQuantizedMultiplierSmallerThanOneExp(shifted_lhs_val, lhs_multiplier, lhs_shift);
+      MultiplyByQuantizedMultiplierSmallerThanOneExp(shifted_lhs_val, lhs_multiplier, lhs_shift);
     const int32_t scaled_rhs_val =
-        MultiplyByQuantizedMultiplierSmallerThanOneExp(shifted_rhs_val, rhs_multiplier, rhs_shift);
+      MultiplyByQuantizedMultiplierSmallerThanOneExp(shifted_rhs_val, rhs_multiplier, rhs_shift);
     const int32_t raw_sum = scaled_lhs_val + scaled_rhs_val;
     const int32_t raw_output =
-        MultiplyByQuantizedMultiplierSmallerThanOneExp(raw_sum, output_multiplier, output_shift) +
-        output_offset;
+      MultiplyByQuantizedMultiplierSmallerThanOneExp(raw_sum, output_multiplier, output_shift) +
+      output_offset;
     const int32_t clamped_output = std::min(output_max, std::max(output_min, raw_output));
     res_accessor.at(index) = static_cast<uint8_t>(clamped_output);
   }

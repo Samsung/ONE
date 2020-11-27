@@ -46,7 +46,7 @@ public:
   {
     const auto end_time = std::chrono::steady_clock::now();
     _timer_res =
-        std::chrono::duration_cast<std::chrono::microseconds>(end_time - _start_time).count();
+      std::chrono::duration_cast<std::chrono::microseconds>(end_time - _start_time).count();
   };
 
 private:

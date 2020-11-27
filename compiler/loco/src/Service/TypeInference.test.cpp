@@ -268,8 +268,8 @@ TEST(MultiDialectTypeInferenceRuleTest, test1)
   loco::MultiDialectTypeInferenceRule rules;
 
   rules.bind(TestDialect<loco::DataType::S8>::get(), &s8_rule)
-      .bind(TestDialect<loco::DataType::U8>::get(), &u8_rule)
-      .bind(loco::CanonicalDialect::get(), &canon_rule);
+    .bind(TestDialect<loco::DataType::U8>::get(), &u8_rule)
+    .bind(loco::CanonicalDialect::get(), &canon_rule);
 
   loco::apply(&rules).to(g.get());
 

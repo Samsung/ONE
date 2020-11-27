@@ -60,7 +60,7 @@ Status validate_mm(const ITensorInfo &input, const ITensorInfo &weights, const I
   ARM_COMPUTE_UNUSED(weights);
   ARM_COMPUTE_UNUSED(output);
   ARM_COMPUTE_RETURN_ON_ERROR(
-      CLGEMMLowpMatrixMultiplyCore::validate(&input, &weights, nullptr, &output));
+    CLGEMMLowpMatrixMultiplyCore::validate(&input, &weights, nullptr, &output));
 
   return Status{};
 }
@@ -80,12 +80,12 @@ Status CLFullyConnectedHybridLayerReshapeWeights::validate(const ITensorInfo *in
 }
 
 CLFullyConnectedHybridLayer::CLFullyConnectedHybridLayer(
-    std::shared_ptr<IMemoryManager> memory_manager)
-    : _memory_group(memory_manager), _reshape_weights_kernel(), _quant_input_kernel(),
-      _mm_gemmlowp(memory_manager), _multiply_scale_kernel(), _accumulate_biases_kernel(),
-      _reshape_weights_output(), _quantized_input(), _scale_factor(), _gemmlowp_output(),
-      _are_weights_reshaped(true), _accumulate_biases(false), _is_prepared(false),
-      _original_weights(nullptr)
+  std::shared_ptr<IMemoryManager> memory_manager)
+  : _memory_group(memory_manager), _reshape_weights_kernel(), _quant_input_kernel(),
+    _mm_gemmlowp(memory_manager), _multiply_scale_kernel(), _accumulate_biases_kernel(),
+    _reshape_weights_output(), _quantized_input(), _scale_factor(), _gemmlowp_output(),
+    _are_weights_reshaped(true), _accumulate_biases(false), _is_prepared(false),
+    _original_weights(nullptr)
 {
 }
 void CLFullyConnectedHybridLayer::configure_mm(const ICLTensor *input, const ICLTensor *weights,
@@ -107,8 +107,8 @@ void CLFullyConnectedHybridLayer::configure(const ICLTensor *input, const ICLTen
 
   // Perform validate step
   ARM_COMPUTE_ERROR_THROW_ON(CLFullyConnectedHybridLayer::validate(
-      input->info(), weights->info(), biases != nullptr ? biases->info() : nullptr, output->info(),
-      fc_info));
+    input->info(), weights->info(), biases != nullptr ? biases->info() : nullptr, output->info(),
+    fc_info));
 
   _are_weights_reshaped = fc_info.transpose_weights ? fc_info.are_weights_reshaped : true;
   _accumulate_biases = false;
@@ -140,10 +140,10 @@ void CLFullyConnectedHybridLayer::configure(const ICLTensor *input, const ICLTen
   bool is_fc_after_conv = false;
   if (is_batched_fc_layer)
   {
-    is_fc_after_conv = (TensorShape::num_max_dimensions >= 4) &&
-                       (std::equal(input->info()->tensor_shape().cbegin() + 3,
-                                   input->info()->tensor_shape().cend(),
-                                   output->info()->tensor_shape().cbegin() + 1));
+    is_fc_after_conv =
+      (TensorShape::num_max_dimensions >= 4) &&
+      (std::equal(input->info()->tensor_shape().cbegin() + 3, input->info()->tensor_shape().cend(),
+                  output->info()->tensor_shape().cbegin() + 1));
   }
   else
   {
@@ -158,28 +158,28 @@ void CLFullyConnectedHybridLayer::configure(const ICLTensor *input, const ICLTen
   {
     // Reshape the weights
     _reshape_weights_output.allocator()->init(
-        weights->info()->clone()->set_is_resizable(true).reset_padding().set_tensor_shape(
-            compute_transposed_shape(*weights->info())));
+      weights->info()->clone()->set_is_resizable(true).reset_padding().set_tensor_shape(
+        compute_transposed_shape(*weights->info())));
     _reshape_weights_kernel.configure(weights_to_use, &_reshape_weights_output);
     weights_to_use = &_reshape_weights_output;
   }
 
   // Extract scale factor
   _scale_factor.allocator()->init(
-      TensorInfo(TensorShape{output->info()->dimension(1)}, 1, input->info()->data_type()));
+    TensorInfo(TensorShape{output->info()->dimension(1)}, 1, input->info()->data_type()));
   _memory_group.manage(&_scale_factor);
   _scale_factor_kernel.configure(input, &_scale_factor);
 
   // Quantize input
   _quantized_input.allocator()->init(
-      input->info()->clone()->set_is_resizable(true).reset_padding().set_data_type(
-          DataType::QASYMM8_SIGNED));
+    input->info()->clone()->set_is_resizable(true).reset_padding().set_data_type(
+      DataType::QASYMM8_SIGNED));
   _memory_group.manage(&_quantized_input);
   _quant_input_kernel.configure(input, &_scale_factor, &_quantized_input);
 
   // GEMMLowp
   _gemmlowp_output.allocator()->init(
-      output->info()->clone()->set_is_resizable(true).reset_padding().set_data_type(DataType::S32));
+    output->info()->clone()->set_is_resizable(true).reset_padding().set_data_type(DataType::S32));
   _memory_group.manage(&_gemmlowp_output);
   configure_mm(&_quantized_input, weights_to_use, &_gemmlowp_output,
                fc_info.retain_internal_weights);
@@ -209,15 +209,15 @@ Status CLFullyConnectedHybridLayer::validate(const ITensorInfo *input, const ITe
   const GPUTarget gpu_target = CLScheduler::get().target();
 
   const ITensorInfo &reshaped_weights =
-      TensorInfo(weights->clone()->set_is_resizable(true).reset_padding().set_tensor_shape(
-          compute_transposed_shape(*weights)));
+    TensorInfo(weights->clone()->set_is_resizable(true).reset_padding().set_tensor_shape(
+      compute_transposed_shape(*weights)));
 
   // Configure accumulate biases kernel for non quantized asymmetric types
   if (biases != nullptr)
   {
     ARM_COMPUTE_RETURN_ERROR_ON_MISMATCHING_DATA_TYPES(input, biases);
     ARM_COMPUTE_RETURN_ON_ERROR(
-        CLGEMMMatrixAccumulateBiasesKernel::validate(output, biases, gpu_target));
+      CLGEMMMatrixAccumulateBiasesKernel::validate(output, biases, gpu_target));
   }
 
   // With the Fully Connected layer we can have 4 different cases:
@@ -247,33 +247,32 @@ Status CLFullyConnectedHybridLayer::validate(const ITensorInfo *input, const ITe
   {
     // Validate reshape weights kernel
     ARM_COMPUTE_RETURN_ON_ERROR(
-        CLFullyConnectedHybridLayerReshapeWeights::validate(weights_to_use, &reshaped_weights));
+      CLFullyConnectedHybridLayerReshapeWeights::validate(weights_to_use, &reshaped_weights));
     weights_to_use = &reshaped_weights;
   }
 
   // Validate Scale factor kernel
   const ITensorInfo &scale_factor =
-      TensorInfo(TensorShape{output->dimension(1)}, 1, input->data_type());
+    TensorInfo(TensorShape{output->dimension(1)}, 1, input->data_type());
   ARM_COMPUTE_RETURN_ON_ERROR(CLScaleFactorSymm8Kernel::validate(input, &scale_factor));
 
   // Validate quantization symm8 kernel
-  const ITensorInfo &quantized_input =
-      TensorInfo(input->clone()->set_is_resizable(true).reset_padding().set_data_type(
-          DataType::QASYMM8_SIGNED));
+  const ITensorInfo &quantized_input = TensorInfo(
+    input->clone()->set_is_resizable(true).reset_padding().set_data_type(DataType::QASYMM8_SIGNED));
   ARM_COMPUTE_RETURN_ON_ERROR(
-      CLQuantizationSymmetricKernel::validate(input, &scale_factor, &quantized_input));
+    CLQuantizationSymmetricKernel::validate(input, &scale_factor, &quantized_input));
 
   // Fully Connected layer after a Fully Connected Layer without batches
   ARM_COMPUTE_RETURN_ERROR_ON(input->dimension(0) != weights_to_use->dimension(1));
 
   // Validate matrix multiply kernel
   const ITensorInfo &gemmlowp_output = TensorInfo(
-      output->clone()->set_is_resizable(true).reset_padding().set_data_type(DataType::S32));
+    output->clone()->set_is_resizable(true).reset_padding().set_data_type(DataType::S32));
   ARM_COMPUTE_RETURN_ON_ERROR(validate_mm(quantized_input, *weights_to_use, gemmlowp_output));
 
   // Multiply scale
   ARM_COMPUTE_RETURN_ON_ERROR(
-      CLMultiplyScaleFactorKernel::validate(&gemmlowp_output, &scale_factor, output));
+    CLMultiplyScaleFactorKernel::validate(&gemmlowp_output, &scale_factor, output));
 
   return Status{};
 }

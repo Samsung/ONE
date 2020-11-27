@@ -55,7 +55,7 @@ void inferAutoPadding(const std::string &pad_type, const mir::Shape &input_shape
       // Assuming input has NCHW format.
       const std::int32_t residual = input_shape.dim(2 + i) % strides[i];
       const std::int32_t total_pad = std::max(
-          INT32_C(0), residual == 0 ? eff_window_size - strides[i] : eff_window_size - residual);
+        INT32_C(0), residual == 0 ? eff_window_size - strides[i] : eff_window_size - residual);
       if (pad_type == "SAME_UPPER")
       {
         padding_before[i] = total_pad / 2;

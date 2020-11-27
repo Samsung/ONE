@@ -57,7 +57,7 @@ public:
 
   ParsedTensor(const Kind kind, const std::string &name, const DataType &dtype,
                const std::vector<int32_t> &shape)
-      : _kind(kind), _dtype(dtype)
+    : _kind(kind), _dtype(dtype)
   {
     _tensor_name.assign(name);
 

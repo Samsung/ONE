@@ -83,8 +83,8 @@ int entry(int argc, char **argv)
   if (argc != 5)
   {
     std::cerr
-        << "Usage: " << argv[0]
-        << " <path/to/circle/model> <num_inputs> <path/to/input/prefix> <path/to/output/file>\n";
+      << "Usage: " << argv[0]
+      << " <path/to/circle/model> <num_inputs> <path/to/input/prefix> <path/to/output/file>\n";
     return EXIT_FAILURE;
   }
 

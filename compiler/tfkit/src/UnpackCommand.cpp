@@ -52,7 +52,7 @@ template <> void unpack<float>(tensorflow::TensorProto *input_tensor)
     input_tensor->clear_float_val();
 
     const float *tensor_content =
-        reinterpret_cast<const float *>(input_tensor->tensor_content().data());
+      reinterpret_cast<const float *>(input_tensor->tensor_content().data());
     for (int i = 0; i < input_flat_size; i++)
     {
       input_tensor->add_float_val(tensor_content[i]);
@@ -87,7 +87,7 @@ template <> void unpack<int32_t>(tensorflow::TensorProto *input_tensor)
     input_tensor->clear_int_val();
 
     const int32_t *tensor_content =
-        reinterpret_cast<const int32_t *>(input_tensor->tensor_content().data());
+      reinterpret_cast<const int32_t *>(input_tensor->tensor_content().data());
     for (int i = 0; i < input_flat_size; i++)
     {
       input_tensor->add_int_val(tensor_content[i]);
@@ -122,7 +122,7 @@ template <> void unpack<int8_t>(tensorflow::TensorProto *input_tensor)
     input_tensor->clear_int_val();
 
     const int8_t *tensor_content =
-        reinterpret_cast<const int8_t *>(input_tensor->tensor_content().data());
+      reinterpret_cast<const int8_t *>(input_tensor->tensor_content().data());
     for (int i = 0; i < input_flat_size; i++)
     {
       input_tensor->add_int_val(tensor_content[i]);
@@ -157,7 +157,7 @@ template <> void unpack<bool>(tensorflow::TensorProto *input_tensor)
     input_tensor->clear_bool_val();
 
     const bool *tensor_content =
-        reinterpret_cast<const bool *>(input_tensor->tensor_content().data());
+      reinterpret_cast<const bool *>(input_tensor->tensor_content().data());
     for (int i = 0; i < input_flat_size; i++)
     {
       input_tensor->add_bool_val(tensor_content[i]);

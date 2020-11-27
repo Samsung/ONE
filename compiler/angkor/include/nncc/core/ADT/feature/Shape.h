@@ -35,7 +35,7 @@ class Shape
 {
 public:
   Shape(uint32_t depth, uint32_t height, uint32_t width)
-      : _depth{depth}, _height{height}, _width{width}
+    : _depth{depth}, _height{height}, _width{width}
   {
     // DO NOTHING
   }

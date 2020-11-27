@@ -28,12 +28,12 @@ UnidirectionalSequenceLSTMChef::value(flatbuffers::FlatBufferBuilder &fbb) const
 
   tflite::UnidirectionalSequenceLSTMOptionsBuilder options_builder(fbb);
   options_builder.add_fused_activation_function(
-      as_tflite_activation(operation.unidirectional_sequence_lstm_options().activation()));
+    as_tflite_activation(operation.unidirectional_sequence_lstm_options().activation()));
   options_builder.add_cell_clip(operation.unidirectional_sequence_lstm_options().cell_clip());
   options_builder.add_proj_clip(operation.unidirectional_sequence_lstm_options().proj_clip());
   options_builder.add_time_major(operation.unidirectional_sequence_lstm_options().time_major());
   options_builder.add_asymmetric_quantize_inputs(
-      operation.unidirectional_sequence_lstm_options().asymmetric_quantize_inputs());
+    operation.unidirectional_sequence_lstm_options().asymmetric_quantize_inputs());
 
   return options_builder.Finish().Union();
 }

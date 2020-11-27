@@ -25,7 +25,7 @@ namespace operation
 void While::accept(OperationVisitor &v) const { v.visit(*this); }
 While::While(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs,
              const Param &param)
-    : Operation{OperandConstraint::createAny(), inputs, outputs}, _param{param}
+  : Operation{OperandConstraint::createAny(), inputs, outputs}, _param{param}
 {
 }
 } // namespace operation

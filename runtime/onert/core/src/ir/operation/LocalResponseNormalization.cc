@@ -32,7 +32,7 @@ void LocalResponseNormalization::accept(OperationVisitor &v) const { v.visit(*th
 LocalResponseNormalization::LocalResponseNormalization(const OperandIndexSequence &inputs,
                                                        const OperandIndexSequence &outputs,
                                                        const Param &param)
-    : Operation{OperandConstraint::createExact(1u), inputs, outputs}, _param{param}
+  : Operation{OperandConstraint::createExact(1u), inputs, outputs}, _param{param}
 {
 }
 

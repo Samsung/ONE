@@ -30,7 +30,7 @@ class AddNode final : public Node
 {
 public:
   AddNode(const std::shared_ptr<expr::Node> &lhs, const std::shared_ptr<expr::Node> &rhs)
-      : _lhs{lhs}, _rhs{rhs}
+    : _lhs{lhs}, _rhs{rhs}
   {
     // DO NOTHING
   }

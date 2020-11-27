@@ -109,7 +109,7 @@ template <class Distribution> struct FillPhiloxRandomTask<Distribution, true>
   {
     const int kGroupSize = Distribution::kResultElementCount;
     static const int kGeneratorSkipPerOutputGroup =
-        kGroupSize * kReservedSamplesPerOutput / PhiloxRandom::kResultElementCount;
+      kGroupSize * kReservedSamplesPerOutput / PhiloxRandom::kResultElementCount;
 
     int64_t offset = 0;
 

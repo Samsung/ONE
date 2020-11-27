@@ -51,7 +51,7 @@ public:
    * @warn  This approach may fail in case of graph with control flow
    */
   Session(loco::Graph *g, const std::vector<loco::Node *> &custom_outputs)
-      : _graph(g), _outputs(custom_outputs)
+    : _graph(g), _outputs(custom_outputs)
   {
     // DO NOTHING
   }

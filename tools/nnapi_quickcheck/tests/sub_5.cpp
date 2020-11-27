@@ -107,10 +107,10 @@ TEST(NNAPI_Quickcheck_sub_5, simple_test)
   const uint32_t left_size = LEFT_N * LEFT_C * LEFT_H * LEFT_W;
   const uint32_t right_size = RIGHT_N * RIGHT_C * RIGHT_H * RIGHT_W;
   float left_data[left_size] = {
-      0.0f,
+    0.0f,
   };
   float right_data[right_size] = {
-      0.0f,
+    0.0f,
   };
 
   // Fill left data with random data
@@ -146,10 +146,9 @@ TEST(NNAPI_Quickcheck_sub_5, simple_test)
                                         {OFM_N, OFM_H, OFM_W, OFM_C} /* dims */, quantization);
 
     // Configure input(s)
-    interp.SetTensorParametersReadOnly(1, kTfLiteFloat32 /* type */, "left" /* name */,
-                                       {LEFT_N, LEFT_H, LEFT_W, LEFT_C} /* dims */, quantization,
-                                       reinterpret_cast<const char *>(left_data),
-                                       left_size * sizeof(float));
+    interp.SetTensorParametersReadOnly(
+      1, kTfLiteFloat32 /* type */, "left" /* name */, {LEFT_N, LEFT_H, LEFT_W, LEFT_C} /* dims */,
+      quantization, reinterpret_cast<const char *>(left_data), left_size * sizeof(float));
 
     // Configure input(s)
     interp.SetTensorParametersReadOnly(2, kTfLiteFloat32 /* type */, "right" /* name */,

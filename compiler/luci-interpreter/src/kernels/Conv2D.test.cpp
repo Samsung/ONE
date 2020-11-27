@@ -32,16 +32,16 @@ TEST(Conv2DTest, Float)
   Shape filter_shape{2, 2, 2, 2};
   Shape bias_shape{2};
   std::vector<float> input_data{
-      1,  2,  3,  4,  5,  6,  // row = 0
-      7,  8,  9,  10, 11, 12, // row = 1
-      13, 14, 15, 16, 17, 18, // row = 2
-      19, 20, 21, 22, 23, 24, // row = 3
+    1,  2,  3,  4,  5,  6,  // row = 0
+    7,  8,  9,  10, 11, 12, // row = 1
+    13, 14, 15, 16, 17, 18, // row = 2
+    19, 20, 21, 22, 23, 24, // row = 3
   };
   std::vector<float> filter_data{
-      1,  2,  -3, -4, // out = 0, row = 0
-      -5, 6,  -7, 8,  // out = 1, row = 0
-      4,  -2, 3,  -1, // out = 0, row = 1
-      -8, -6, 7,  5,  // out = 1, row = 1
+    1,  2,  -3, -4, // out = 0, row = 0
+    -5, 6,  -7, 8,  // out = 1, row = 0
+    4,  -2, 3,  -1, // out = 0, row = 1
+    -8, -6, 7,  5,  // out = 1, row = 1
   };
   std::vector<float> bias_data{1, 2};
   Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
@@ -62,8 +62,8 @@ TEST(Conv2DTest, Float)
   kernel.execute();
 
   std::vector<float> ref_output_data{
-      11, 16, 7, 20, // row = 0
-      0,  40, 0, 44, // row = 1
+    11, 16, 7, 20, // row = 0
+    0,  40, 0, 44, // row = 1
   };
   std::vector<int32_t> ref_output_shape{1, 2, 2, 2};
   EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(ref_output_data));
@@ -76,17 +76,17 @@ TEST(Conv2DTest, FloatCheck)
   Shape filter_shape{3, 2, 2, 1};
   Shape bias_shape{3};
   std::vector<float> input_data{
-      // First batch
-      1, 1, 1, 1, // row = 1
-      2, 2, 2, 2, // row = 2
-      // Second batch
-      1, 2, 3, 4, // row = 1
-      1, 2, 3, 4, // row = 2
+    // First batch
+    1, 1, 1, 1, // row = 1
+    2, 2, 2, 2, // row = 2
+    // Second batch
+    1, 2, 3, 4, // row = 1
+    1, 2, 3, 4, // row = 2
   };
   std::vector<float> filter_data{
-      1,  2,  3,  4, // first 2x2 filter
-      -1, 1,  -1, 1, // second 2x2 filter
-      -1, -1, 1,  1, // third 2x2 filter
+    1,  2,  3,  4, // first 2x2 filter
+    -1, 1,  -1, 1, // second 2x2 filter
+    -1, -1, 1,  1, // third 2x2 filter
   };
   std::vector<float> bias_data{1, 2, 3};
   Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
@@ -107,10 +107,10 @@ TEST(Conv2DTest, FloatCheck)
   kernel.execute();
 
   std::vector<float> ref_output_data{
-      18, 2, 5, // first batch, left
-      18, 2, 5, // first batch, right
-      17, 4, 3, // second batch, left
-      37, 4, 3, // second batch, right
+    18, 2, 5, // first batch, left
+    18, 2, 5, // first batch, right
+    17, 4, 3, // second batch, left
+    37, 4, 3, // second batch, right
   };
   std::vector<int32_t> ref_output_shape{2, 1, 2, 3};
   EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(ref_output_data));
@@ -120,17 +120,17 @@ TEST(Conv2DTest, FloatCheck)
 TEST(Conv2DTest, Uint8)
 {
   std::vector<float> input_data{
-      // First batch
-      1, 1, 1, 1, // row = 1
-      2, 2, 2, 2, // row = 2
-                  // Second batch
-      1, 2, 3, 4, // row = 1
-      1, 2, 3, 4, // row = 2
+    // First batch
+    1, 1, 1, 1, // row = 1
+    2, 2, 2, 2, // row = 2
+                // Second batch
+    1, 2, 3, 4, // row = 1
+    1, 2, 3, 4, // row = 2
   };
   std::vector<float> filter_data{
-      1,  2,  3,  4, // first 2x2 filter
-      -1, 1,  -1, 1, // second 2x2 filter
-      -1, -1, 1,  1, // third 2x2 filter
+    1,  2,  3,  4, // first 2x2 filter
+    -1, 1,  -1, 1, // second 2x2 filter
+    -1, -1, 1,  1, // third 2x2 filter
   };
   std::vector<float> bias_data{1, 2, 3};
 
@@ -142,9 +142,9 @@ TEST(Conv2DTest, Uint8)
   Tensor filter_tensor = makeInputTensor<DataType::U8>({3, 2, 2, 1}, input_quant_param.first,
                                                        input_quant_param.second, filter_data);
   Tensor bias_tensor = makeInputTensor<DataType::S32>(
-      {3}, input_quant_param.first * input_quant_param.first, 0, bias_data);
+    {3}, input_quant_param.first * input_quant_param.first, 0, bias_data);
   Tensor output_tensor =
-      makeOutputTensor(DataType::U8, output_quant_param.first, output_quant_param.second);
+    makeOutputTensor(DataType::U8, output_quant_param.first, output_quant_param.second);
 
   Conv2DParams params{};
   params.padding = Padding::VALID;
@@ -159,10 +159,10 @@ TEST(Conv2DTest, Uint8)
   kernel.execute();
 
   std::vector<float> ref_output_data{
-      18, 2, 5, // first batch, left
-      18, 2, 5, // first batch, right
-      17, 4, 3, // second batch, left
-      37, 4, 3, // second batch, right
+    18, 2, 5, // first batch, left
+    18, 2, 5, // first batch, right
+    17, 4, 3, // second batch, left
+    37, 4, 3, // second batch, right
   };
   std::vector<int32_t> ref_output_shape{2, 1, 2, 3};
   EXPECT_THAT(dequantizeTensorData(output_tensor), FloatArrayNear(ref_output_data));
@@ -173,17 +173,17 @@ TEST(Conv2DTest, Uint8_CWQ)
 {
   const int output_channels = 3;
   std::vector<float> input_data{
-      // First batch
-      1, 1, 1, 1, // row = 1
-      2, 2, 2, 2, // row = 2
-                  // Second batch
-      1, 2, 3, 4, // row = 1
-      1, 2, 3, 4, // row = 2
+    // First batch
+    1, 1, 1, 1, // row = 1
+    2, 2, 2, 2, // row = 2
+                // Second batch
+    1, 2, 3, 4, // row = 1
+    1, 2, 3, 4, // row = 2
   };
   std::vector<float> filter_data{
-      1,  2,  3,  4, // first 2x2 filter
-      -1, 1,  -1, 1, // second 2x2 filter
-      -1, -1, 1,  1, // third 2x2 filter
+    1,  2,  3,  4, // first 2x2 filter
+    -1, 1,  -1, 1, // second 2x2 filter
+    -1, -1, 1,  1, // third 2x2 filter
   };
   std::vector<float> bias_data{1, 2, 3};
   Shape filter_shape{output_channels, 2, 2, 1};
@@ -212,11 +212,11 @@ TEST(Conv2DTest, Uint8_CWQ)
   Tensor input_tensor = makeInputTensor<DataType::U8>({2, 2, 4, 1}, input_quant_param.first,
                                                       input_quant_param.second, input_data);
   Tensor filter_tensor =
-      makeInputTensor<DataType::U8>(filter_shape, filter_scales, filter_zerops, 0, filter_data);
+    makeInputTensor<DataType::U8>(filter_shape, filter_scales, filter_zerops, 0, filter_data);
   Tensor bias_tensor =
-      makeInputTensor<DataType::S32>({output_channels}, bias_scales, zerop, 0, bias_data);
+    makeInputTensor<DataType::S32>({output_channels}, bias_scales, zerop, 0, bias_data);
   Tensor output_tensor =
-      makeOutputTensor(DataType::U8, output_quant_param.first, output_quant_param.second);
+    makeOutputTensor(DataType::U8, output_quant_param.first, output_quant_param.second);
 
   Conv2DParams params{};
   params.padding = Padding::VALID;
@@ -231,10 +231,10 @@ TEST(Conv2DTest, Uint8_CWQ)
   kernel.execute();
 
   std::vector<float> ref_output_data{
-      18, 2, 5, // first batch, left
-      18, 2, 5, // first batch, right
-      17, 4, 3, // second batch, left
-      37, 4, 3, // second batch, right
+    18, 2, 5, // first batch, left
+    18, 2, 5, // first batch, right
+    17, 4, 3, // second batch, left
+    37, 4, 3, // second batch, right
   };
   std::vector<int32_t> ref_output_shape{2, 1, 2, 3};
   EXPECT_THAT(dequantizeTensorData(output_tensor), FloatArrayNear(ref_output_data));
@@ -249,21 +249,21 @@ TEST(Conv2DTest, SInt16)
   std::vector<int32_t> ref_output_shape{1, 2, 2, 2};
 
   std::vector<float> input_data{
-      1,  2,  3,  4,  5,  6,  // row = 0
-      7,  8,  9,  10, 11, 12, // row = 1
-      13, 14, 15, 16, 17, 18, // row = 2
-      19, 20, 21, 22, 23, 24, // row = 3
+    1,  2,  3,  4,  5,  6,  // row = 0
+    7,  8,  9,  10, 11, 12, // row = 1
+    13, 14, 15, 16, 17, 18, // row = 2
+    19, 20, 21, 22, 23, 24, // row = 3
   };
   std::vector<float> filter_data{
-      1,  2,  -3, -4, // out = 0, row = 0
-      -5, 6,  -7, 8,  // out = 1, row = 0
-      4,  -2, 3,  -1, // out = 0, row = 1
-      -8, -6, 7,  5,  // out = 1, row = 1
+    1,  2,  -3, -4, // out = 0, row = 0
+    -5, 6,  -7, 8,  // out = 1, row = 0
+    4,  -2, 3,  -1, // out = 0, row = 1
+    -8, -6, 7,  5,  // out = 1, row = 1
   };
   std::vector<float> bias_data{1, 2};
   std::vector<float> ref_output_data{
-      11, 16, 7, 20, // row = 0
-      0,  40, 0, 44, // row = 1
+    11, 16, 7, 20, // row = 0
+    0,  40, 0, 44, // row = 1
   };
 
   Tensor input_tensor = makeInputTensor<DataType::S16>(input_shape, 0.25, 0, input_data);
@@ -295,22 +295,22 @@ TEST(Conv2DTest, SInt16_CWQ_weights)
   std::vector<int32_t> ref_output_shape{1, 2, 2, 3};
 
   std::vector<float> input_data{
-      1, 2, // row = 0, col 0
-      3, 4, // row = 0, col 1
-      5, 6, // row = 1, col 0
-      7, 8, // row = 1, col 1
+    1, 2, // row = 0, col 0
+    3, 4, // row = 0, col 1
+    5, 6, // row = 1, col 0
+    7, 8, // row = 1, col 1
   };
   std::vector<float> filter_data{
-      4, -3, // out = 0
-      1, -3, // out = 1
-      5, -3, // out = 2
+    4, -3, // out = 0
+    1, -3, // out = 1
+    5, -3, // out = 2
   };
   std::vector<float> bias_data{1, 10, 5};
   std::vector<float> ref_output_data{
-      0, 5, 4,  // row 0, col 0
-      1, 1, 8,  // row 0, col 1
-      3, 0, 12, // row 1, col 0
-      5, 0, 16, // row 1, col 1
+    0, 5, 4,  // row 0, col 0
+    1, 1, 8,  // row 0, col 1
+    3, 0, 12, // row 1, col 0
+    5, 0, 16, // row 1, col 1
   };
 
   float input_scale = 0.25f;
@@ -323,7 +323,7 @@ TEST(Conv2DTest, SInt16_CWQ_weights)
 
   Tensor input_tensor = makeInputTensor<DataType::S16>(input_shape, input_scale, 0, input_data);
   Tensor filter_tensor =
-      makeInputTensor<DataType::S16>(filter_shape, filter_scales, zerop, 0, filter_data);
+    makeInputTensor<DataType::S16>(filter_shape, filter_scales, zerop, 0, filter_data);
   Tensor bias_tensor = makeInputTensor<DataType::S64>(bias_shape, bias_scales, zerop, 0, bias_data);
   Tensor output_tensor = makeOutputTensor(DataType::S16, output_scale, 0);
 
@@ -349,16 +349,16 @@ TEST(Conv2DTest, Unsupported_Type_Configure_NEG)
   Shape filter_shape{2, 2, 2, 2};
   Shape bias_shape{2};
   std::vector<int32_t> input_data{
-      1,  2,  3,  4,  5,  6,  // row = 0
-      7,  8,  9,  10, 11, 12, // row = 1
-      13, 14, 15, 16, 17, 18, // row = 2
-      19, 20, 21, 22, 23, 24, // row = 3
+    1,  2,  3,  4,  5,  6,  // row = 0
+    7,  8,  9,  10, 11, 12, // row = 1
+    13, 14, 15, 16, 17, 18, // row = 2
+    19, 20, 21, 22, 23, 24, // row = 3
   };
   std::vector<float> filter_data{
-      1,  2,  -3, -4, // out = 0, row = 0
-      -5, 6,  -7, 8,  // out = 1, row = 0
-      4,  -2, 3,  -1, // out = 0, row = 1
-      -8, -6, 7,  5,  // out = 1, row = 1
+    1,  2,  -3, -4, // out = 0, row = 0
+    -5, 6,  -7, 8,  // out = 1, row = 0
+    4,  -2, 3,  -1, // out = 0, row = 1
+    -8, -6, 7,  5,  // out = 1, row = 1
   };
   std::vector<float> bias_data{1, 2};
   Tensor input_tensor = makeInputTensor<DataType::S32>(input_shape, input_data);
@@ -384,16 +384,16 @@ TEST(Conv2DTest, Invalid_Bias_Type_NEG)
   Shape filter_shape{2, 2, 2, 2};
   Shape bias_shape{2};
   std::vector<float> input_data{
-      1,  2,  3,  4,  5,  6,  // row = 0
-      7,  8,  9,  10, 11, 12, // row = 1
-      13, 14, 15, 16, 17, 18, // row = 2
-      19, 20, 21, 22, 23, 24, // row = 3
+    1,  2,  3,  4,  5,  6,  // row = 0
+    7,  8,  9,  10, 11, 12, // row = 1
+    13, 14, 15, 16, 17, 18, // row = 2
+    19, 20, 21, 22, 23, 24, // row = 3
   };
   std::vector<float> filter_data{
-      1,  2,  -3, -4, // out = 0, row = 0
-      -5, 6,  -7, 8,  // out = 1, row = 0
-      4,  -2, 3,  -1, // out = 0, row = 1
-      -8, -6, 7,  5,  // out = 1, row = 1
+    1,  2,  -3, -4, // out = 0, row = 0
+    -5, 6,  -7, 8,  // out = 1, row = 0
+    4,  -2, 3,  -1, // out = 0, row = 1
+    -8, -6, 7,  5,  // out = 1, row = 1
   };
   std::vector<uint8_t> bias_data{1, 2};
   Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
@@ -419,16 +419,16 @@ TEST(Conv2DTest, Invalid_Bias_Data_NEG)
   Shape filter_shape{2, 2, 2, 2};
   Shape bias_shape{3};
   std::vector<float> input_data{
-      1,  2,  3,  4,  5,  6,  // row = 0
-      7,  8,  9,  10, 11, 12, // row = 1
-      13, 14, 15, 16, 17, 18, // row = 2
-      19, 20, 21, 22, 23, 24, // row = 3
+    1,  2,  3,  4,  5,  6,  // row = 0
+    7,  8,  9,  10, 11, 12, // row = 1
+    13, 14, 15, 16, 17, 18, // row = 2
+    19, 20, 21, 22, 23, 24, // row = 3
   };
   std::vector<float> filter_data{
-      1,  2,  -3, -4, // out = 0, row = 0
-      -5, 6,  -7, 8,  // out = 1, row = 0
-      4,  -2, 3,  -1, // out = 0, row = 1
-      -8, -6, 7,  5,  // out = 1, row = 1
+    1,  2,  -3, -4, // out = 0, row = 0
+    -5, 6,  -7, 8,  // out = 1, row = 0
+    4,  -2, 3,  -1, // out = 0, row = 1
+    -8, -6, 7,  5,  // out = 1, row = 1
   };
   std::vector<float> bias_data{1, 2, 3};
   Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
@@ -454,16 +454,16 @@ TEST(Conv2DTest, Invalid_Input_Shape_NEG)
   Shape filter_shape{2, 2, 2, 2};
   Shape bias_shape{2};
   std::vector<float> input_data{
-      1,  2,  3,  4,  5,  6,  // row = 0
-      7,  8,  9,  10, 11, 12, // row = 1
-      13, 14, 15, 16, 17, 18, // row = 2
-      19, 20, 21, 22, 23, 24, // row = 3
+    1,  2,  3,  4,  5,  6,  // row = 0
+    7,  8,  9,  10, 11, 12, // row = 1
+    13, 14, 15, 16, 17, 18, // row = 2
+    19, 20, 21, 22, 23, 24, // row = 3
   };
   std::vector<float> filter_data{
-      1,  2,  -3, -4, // out = 0, row = 0
-      -5, 6,  -7, 8,  // out = 1, row = 0
-      4,  -2, 3,  -1, // out = 0, row = 1
-      -8, -6, 7,  5,  // out = 1, row = 1
+    1,  2,  -3, -4, // out = 0, row = 0
+    -5, 6,  -7, 8,  // out = 1, row = 0
+    4,  -2, 3,  -1, // out = 0, row = 1
+    -8, -6, 7,  5,  // out = 1, row = 1
   };
   std::vector<float> bias_data{1, 2};
   Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);

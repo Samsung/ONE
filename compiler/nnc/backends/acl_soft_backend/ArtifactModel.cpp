@@ -25,8 +25,8 @@ using namespace std;
 ArtifactFunctionCall::ArtifactFunctionCall(string func_name,
                                            list<shared_ptr<ArtifactExpr>> param_list,
                                            shared_ptr<ArtifactExpr> on, ArtifactCallType call_type)
-    : _funcName(std::move(func_name)), _callType(call_type), _on(std::move(on)),
-      _paramList(std::move(param_list))
+  : _funcName(std::move(func_name)), _callType(call_type), _on(std::move(on)),
+    _paramList(std::move(param_list))
 {
 }
 

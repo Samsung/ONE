@@ -82,7 +82,7 @@ inline void BiasAndClamp(float clamp_min, float clamp_max, int bias_size, const 
     for (; i < bias_size; i++)
     {
       array_ptr[i] =
-          ActivationFunctionWithMinMax(array_ptr[i] + bias_data[i], clamp_min, clamp_max);
+        ActivationFunctionWithMinMax(array_ptr[i] + bias_data[i], clamp_min, clamp_max);
     }
   }
 #else // not NEON
@@ -91,7 +91,7 @@ inline void BiasAndClamp(float clamp_min, float clamp_max, int bias_size, const 
     for (int i = 0; i < bias_size; i++)
     {
       array_data[array_offset + i] = ActivationFunctionWithMinMax(
-          array_data[array_offset + i] + bias_data[i], clamp_min, clamp_max);
+        array_data[array_offset + i] + bias_data[i], clamp_min, clamp_max);
     }
   }
 #endif

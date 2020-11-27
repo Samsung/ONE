@@ -51,11 +51,11 @@ void Check<uint8_t>(std::initializer_list<int32_t> input_shape,
                     std::initializer_list<float> output_data)
 {
   std::pair<float, int32_t> quant_param =
-      quantizationParams<uint8_t>(std::min(input_data) < 0 ? std::min(input_data) : 0.f,
-                                  std::max(input_data) > 0 ? std::max(input_data) : 0.f);
+    quantizationParams<uint8_t>(std::min(input_data) < 0 ? std::min(input_data) : 0.f,
+                                std::max(input_data) > 0 ? std::max(input_data) : 0.f);
 
   Tensor input_tensor =
-      makeInputTensor<DataType::U8>(input_shape, quant_param.first, quant_param.second, input_data);
+    makeInputTensor<DataType::U8>(input_shape, quant_param.first, quant_param.second, input_data);
   Tensor output_tensor = makeOutputTensor(DataType::U8, 1. / 128., 128);
 
   L2NormParams params{};

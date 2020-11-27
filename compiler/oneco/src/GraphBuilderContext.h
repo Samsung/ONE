@@ -75,7 +75,7 @@ class GraphBuilderContext
 {
 public:
   GraphBuilderContext(loco::Graph *g, SymbolTable *nodes, SymbolTable *input_names)
-      : _g(g), _nodes(nodes), _input_names(input_names)
+    : _g(g), _nodes(nodes), _input_names(input_names)
   {
     // DO NOTHING
   }

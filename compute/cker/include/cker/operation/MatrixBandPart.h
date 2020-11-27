@@ -43,11 +43,11 @@ void MatrixBandPart(const T num_lower_diags, const T num_upper_diags, const Shap
 
   if (!(num_lower_diags <= row_num))
     throw std::runtime_error(
-        "MatrixBandPart : num_lower must be negative or less or equal to number of rows");
+      "MatrixBandPart : num_lower must be negative or less or equal to number of rows");
 
   if (!(num_upper_diags <= col_num))
     throw std::runtime_error(
-        "MatrixBandPart : num_upper must be negative or less or equal to number of columns");
+      "MatrixBandPart : num_upper must be negative or less or equal to number of columns");
 
   std::fill(output_data, output_data + output_shape.FlatSize(), 0); // output matrix init
 
@@ -60,10 +60,10 @@ void MatrixBandPart(const T num_lower_diags, const T num_upper_diags, const Shap
       auto input = input_data + (batch * row_num * col_num + row * col_num);
 
       const T band_start =
-          num_lower_diags < 0 ? 0 : std::min(col_num, std::max(T{0}, row - num_lower_diags));
+        num_lower_diags < 0 ? 0 : std::min(col_num, std::max(T{0}, row - num_lower_diags));
       const T band_end = num_upper_diags < 0
-                             ? col_num
-                             : std::min(static_cast<T>(col_num), row + num_upper_diags + 1);
+                           ? col_num
+                           : std::min(static_cast<T>(col_num), row + num_upper_diags + 1);
 
       for (T band_idx = band_start; band_idx < band_end; band_idx++)
       {

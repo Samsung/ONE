@@ -80,7 +80,7 @@ static unique_ptr<ofstream> getStream(const string &path)
 }
 
 CPPCodeGenerator::CPPCodeGenerator(std::string output_dir, std::string artifact_name)
-    : _output_dir(std::move(output_dir)), _artifact_name(std::move(artifact_name))
+  : _output_dir(std::move(output_dir)), _artifact_name(std::move(artifact_name))
 {
 }
 

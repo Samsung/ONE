@@ -227,7 +227,7 @@ TEST(TFLExporterImplTest, Transpose_simple)
 
     auto bufs = (model->buffers());
     auto *perm_buf =
-        reinterpret_cast<const int32_t *>(bufs->Get(perm_tensor->buffer())->data()->data());
+      reinterpret_cast<const int32_t *>(bufs->Get(perm_tensor->buffer())->data()->data());
 
     ASSERT_EQ(1, perm_buf[0]);
     ASSERT_EQ(2, perm_buf[1]);
@@ -285,7 +285,7 @@ TEST(TFLExporterImplTest, Transpose_from_FilterEncode_FilterDecode)
 
     auto bufs = (model->buffers());
     auto *perm_buf =
-        reinterpret_cast<const int32_t *>(bufs->Get(perm_tensor->buffer())->data()->data());
+      reinterpret_cast<const int32_t *>(bufs->Get(perm_tensor->buffer())->data()->data());
     ASSERT_EQ(3, perm_buf[0]);
     ASSERT_EQ(0, perm_buf[1]);
     ASSERT_EQ(1, perm_buf[2]);

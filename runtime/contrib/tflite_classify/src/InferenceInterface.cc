@@ -20,7 +20,7 @@ using namespace tflite;
 using namespace tflite::ops::builtin;
 
 InferenceInterface::InferenceInterface(const std::string &model_file, const bool use_nnapi)
-    : _interpreter(nullptr), _model(nullptr), _sess(nullptr)
+  : _interpreter(nullptr), _model(nullptr), _sess(nullptr)
 {
   // Load model
   StderrReporter error_reporter;

@@ -71,7 +71,7 @@ template <typename U> void validate_indices(const ITensor *indices)
 } // namespace
 
 NEGatherKernelEx::NEGatherKernelEx()
-    : _input{}, _indices{}, _axis{}, _indices_rank{}, _output{}, _func{}
+  : _input{}, _indices{}, _axis{}, _indices_rank{}, _output{}, _func{}
 {
 }
 
@@ -85,36 +85,35 @@ inline void NEGatherKernelEx::gather_0_axis(const Window &window, const ThreadIn
 
   Iterator output_it(_output, window);
   execute_window_loop(
-      window,
-      [&](const Coordinates &id) {
-        Coordinates gather_id(id);
-        gather_id.collapse(_indices_rank);
+    window,
+    [&](const Coordinates &id) {
+      Coordinates gather_id(id);
+      gather_id.collapse(_indices_rank);
 
-        U new_index;
-        switch (_indices_rank)
-        {
-          case 1:
-            new_index = *(reinterpret_cast<U *>(_indices->ptr_to_element(Coordinates(id[0]))));
-            break;
-          case 2:
-            new_index =
-                *(reinterpret_cast<U *>(_indices->ptr_to_element(Coordinates(id[0], id[1]))));
-            break;
-          case 3:
-            new_index = *(
-                reinterpret_cast<U *>(_indices->ptr_to_element(Coordinates(id[0], id[1], id[2]))));
-            break;
-          default:
-            ARM_COMPUTE_ERROR("Wrong num of dimensions");
-            break;
-        }
+      U new_index;
+      switch (_indices_rank)
+      {
+        case 1:
+          new_index = *(reinterpret_cast<U *>(_indices->ptr_to_element(Coordinates(id[0]))));
+          break;
+        case 2:
+          new_index = *(reinterpret_cast<U *>(_indices->ptr_to_element(Coordinates(id[0], id[1]))));
+          break;
+        case 3:
+          new_index =
+            *(reinterpret_cast<U *>(_indices->ptr_to_element(Coordinates(id[0], id[1], id[2]))));
+          break;
+        default:
+          ARM_COMPUTE_ERROR("Wrong num of dimensions");
+          break;
+      }
 
-        gather_id.set(0, new_index);
+      gather_id.set(0, new_index);
 
-        std::copy_n(_input->ptr_to_element(gather_id), _output->info()->element_size(),
-                    output_it.ptr());
-      },
-      output_it);
+      std::copy_n(_input->ptr_to_element(gather_id), _output->info()->element_size(),
+                  output_it.ptr());
+    },
+    output_it);
 }
 
 template <typename U>
@@ -130,37 +129,36 @@ void NEGatherKernelEx::gather_n_axis(const Window &window, const ThreadInfo &inf
 
   Iterator output_it(_output, output_window);
   execute_window_loop(
-      output_window,
-      [&](const Coordinates &id) {
-        Coordinates gather_id(id);
-        gather_id.collapse(_indices_rank, _axis);
+    output_window,
+    [&](const Coordinates &id) {
+      Coordinates gather_id(id);
+      gather_id.collapse(_indices_rank, _axis);
 
-        U new_index;
-        switch (_indices_rank)
-        {
-          case 1:
-            new_index = *(reinterpret_cast<U *>(_indices->ptr_to_element(Coordinates(id[_axis]))));
-            break;
-          case 2:
-            new_index = *(reinterpret_cast<U *>(
-                _indices->ptr_to_element(Coordinates(id[_axis], id[_axis + 1]))));
-            break;
-          case 3:
-            new_index = *(reinterpret_cast<U *>(
-                _indices->ptr_to_element(Coordinates(id[_axis], id[_axis + 1], id[_axis + 2]))));
-            break;
-          default:
-            ARM_COMPUTE_ERROR("Wrong num of dimensions");
-            break;
-        }
+      U new_index;
+      switch (_indices_rank)
+      {
+        case 1:
+          new_index = *(reinterpret_cast<U *>(_indices->ptr_to_element(Coordinates(id[_axis]))));
+          break;
+        case 2:
+          new_index = *(
+            reinterpret_cast<U *>(_indices->ptr_to_element(Coordinates(id[_axis], id[_axis + 1]))));
+          break;
+        case 3:
+          new_index = *(reinterpret_cast<U *>(
+            _indices->ptr_to_element(Coordinates(id[_axis], id[_axis + 1], id[_axis + 2]))));
+          break;
+        default:
+          ARM_COMPUTE_ERROR("Wrong num of dimensions");
+          break;
+      }
 
-        gather_id.set(_axis, new_index);
+      gather_id.set(_axis, new_index);
 
-        std::copy_n(_input->ptr_to_element(gather_id),
-                    _input->info()->dimension(0) * _output->info()->element_size(),
-                    output_it.ptr());
-      },
-      output_it);
+      std::copy_n(_input->ptr_to_element(gather_id),
+                  _input->info()->dimension(0) * _output->info()->element_size(), output_it.ptr());
+    },
+    output_it);
 }
 
 void NEGatherKernelEx::configure(const ITensor *input, const ITensor *indices, ITensor *output,
@@ -170,8 +168,8 @@ void NEGatherKernelEx::configure(const ITensor *input, const ITensor *indices, I
   ARM_COMPUTE_ERROR_ON(indices->info()->num_dimensions() > 3);
   ARM_COMPUTE_ERROR_ON_DATA_TYPE_CHANNEL_NOT_IN(indices, 1, DataType::U32, DataType::S32);
   ARM_COMPUTE_ERROR_ON_DATA_TYPE_CHANNEL_NOT_IN(
-      input, 1, DataType::U8, DataType::S8, DataType::QASYMM8, DataType::U16, DataType::S16,
-      DataType::U32, DataType::S32, DataType::F16, DataType::F32);
+    input, 1, DataType::U8, DataType::S8, DataType::QASYMM8, DataType::U16, DataType::S16,
+    DataType::U32, DataType::S32, DataType::F16, DataType::F32);
 
   _input = input;
   _indices = indices;
@@ -217,7 +215,7 @@ void NEGatherKernelEx::configure(const ITensor *input, const ITensor *indices, I
   }
   // Output auto initialization if not yet initialized
   TensorShape output_shape = arm_compute::misc::shape_calculator::compute_gather_shape_ex(
-      input->info()->tensor_shape(), indices->info()->tensor_shape(), _axis);
+    input->info()->tensor_shape(), indices->info()->tensor_shape(), _axis);
   auto_init_if_empty(*output->info(), output_shape, 1, input->info()->data_type());
 
   // Create window
@@ -243,15 +241,15 @@ Status NEGatherKernelEx::validate(const ITensorInfo *input, const ITensorInfo *i
   ARM_COMPUTE_RETURN_ERROR_ON(0 > axis || axis >= static_cast<int32_t>(input->num_dimensions()));
   ARM_COMPUTE_RETURN_ERROR_ON_CPU_F16_UNSUPPORTED(input);
   ARM_COMPUTE_RETURN_ERROR_ON_DATA_TYPE_CHANNEL_NOT_IN(
-      input, 1, DataType::U8, DataType::S8, DataType::QASYMM8, DataType::U16, DataType::S16,
-      DataType::U32, DataType::S32, DataType::F16, DataType::F32);
+    input, 1, DataType::U8, DataType::S8, DataType::QASYMM8, DataType::U16, DataType::S16,
+    DataType::U32, DataType::S32, DataType::F16, DataType::F32);
 
   if (output->total_size() != 0)
   {
     ARM_COMPUTE_RETURN_ERROR_ON_MISMATCHING_DATA_TYPES(input, output);
     ARM_COMPUTE_RETURN_ERROR_ON_MISMATCHING_QUANTIZATION_INFO(input, output);
     TensorShape output_shape = arm_compute::misc::shape_calculator::compute_gather_shape_ex(
-        input->tensor_shape(), indices->tensor_shape(), axis);
+      input->tensor_shape(), indices->tensor_shape(), axis);
     ARM_COMPUTE_RETURN_ERROR_ON(output_shape.total_size() != output->tensor_shape().total_size());
   }
 

@@ -2155,9 +2155,8 @@ enum ActivationFunctionType
 inline const ActivationFunctionType (&EnumValuesActivationFunctionType())[6]
 {
   static const ActivationFunctionType values[] = {
-      ActivationFunctionType_NONE,         ActivationFunctionType_RELU,
-      ActivationFunctionType_RELU_N1_TO_1, ActivationFunctionType_RELU6,
-      ActivationFunctionType_TANH,         ActivationFunctionType_SIGN_BIT};
+    ActivationFunctionType_NONE,  ActivationFunctionType_RELU, ActivationFunctionType_RELU_N1_TO_1,
+    ActivationFunctionType_RELU6, ActivationFunctionType_TANH, ActivationFunctionType_SIGN_BIT};
   return values;
 }
 
@@ -2218,9 +2217,8 @@ enum FullyConnectedOptionsWeightsFormat
 inline const FullyConnectedOptionsWeightsFormat (&EnumValuesFullyConnectedOptionsWeightsFormat())[3]
 {
   static const FullyConnectedOptionsWeightsFormat values[] = {
-      FullyConnectedOptionsWeightsFormat_DEFAULT,
-      FullyConnectedOptionsWeightsFormat_SHUFFLED4x16INT8,
-      FullyConnectedOptionsWeightsFormat_SHUFFLED16x1FLOAT32};
+    FullyConnectedOptionsWeightsFormat_DEFAULT, FullyConnectedOptionsWeightsFormat_SHUFFLED4x16INT8,
+    FullyConnectedOptionsWeightsFormat_SHUFFLED16x1FLOAT32};
   return values;
 }
 
@@ -2478,8 +2476,8 @@ struct QuantizationParameters FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tab
   const circle::CustomQuantization *details_as_CustomQuantization() const
   {
     return details_type() == circle::QuantizationDetails_CustomQuantization
-               ? static_cast<const circle::CustomQuantization *>(details())
-               : nullptr;
+             ? static_cast<const circle::CustomQuantization *>(details())
+             : nullptr;
   }
   int32_t quantized_dimension() const { return GetField<int32_t>(VT_QUANTIZED_DIMENSION, 0); }
   bool Verify(flatbuffers::Verifier &verifier) const
@@ -2551,12 +2549,12 @@ struct QuantizationParametersBuilder
 };
 
 inline flatbuffers::Offset<QuantizationParameters> CreateQuantizationParameters(
-    flatbuffers::FlatBufferBuilder &_fbb, flatbuffers::Offset<flatbuffers::Vector<float>> min = 0,
-    flatbuffers::Offset<flatbuffers::Vector<float>> max = 0,
-    flatbuffers::Offset<flatbuffers::Vector<float>> scale = 0,
-    flatbuffers::Offset<flatbuffers::Vector<int64_t>> zero_point = 0,
-    circle::QuantizationDetails details_type = circle::QuantizationDetails_NONE,
-    flatbuffers::Offset<void> details = 0, int32_t quantized_dimension = 0)
+  flatbuffers::FlatBufferBuilder &_fbb, flatbuffers::Offset<flatbuffers::Vector<float>> min = 0,
+  flatbuffers::Offset<flatbuffers::Vector<float>> max = 0,
+  flatbuffers::Offset<flatbuffers::Vector<float>> scale = 0,
+  flatbuffers::Offset<flatbuffers::Vector<int64_t>> zero_point = 0,
+  circle::QuantizationDetails details_type = circle::QuantizationDetails_NONE,
+  flatbuffers::Offset<void> details = 0, int32_t quantized_dimension = 0)
 {
   QuantizationParametersBuilder builder_(_fbb);
   builder_.add_quantized_dimension(quantized_dimension);
@@ -2570,11 +2568,11 @@ inline flatbuffers::Offset<QuantizationParameters> CreateQuantizationParameters(
 }
 
 inline flatbuffers::Offset<QuantizationParameters> CreateQuantizationParametersDirect(
-    flatbuffers::FlatBufferBuilder &_fbb, const std::vector<float> *min = nullptr,
-    const std::vector<float> *max = nullptr, const std::vector<float> *scale = nullptr,
-    const std::vector<int64_t> *zero_point = nullptr,
-    circle::QuantizationDetails details_type = circle::QuantizationDetails_NONE,
-    flatbuffers::Offset<void> details = 0, int32_t quantized_dimension = 0)
+  flatbuffers::FlatBufferBuilder &_fbb, const std::vector<float> *min = nullptr,
+  const std::vector<float> *max = nullptr, const std::vector<float> *scale = nullptr,
+  const std::vector<int64_t> *zero_point = nullptr,
+  circle::QuantizationDetails details_type = circle::QuantizationDetails_NONE,
+  flatbuffers::Offset<void> details = 0, int32_t quantized_dimension = 0)
 {
   auto min__ = min ? _fbb.CreateVector<float>(*min) : 0;
   auto max__ = max ? _fbb.CreateVector<float>(*max) : 0;
@@ -2789,20 +2787,20 @@ struct DimensionMetadata FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
   const circle::Int32Vector *array_segments_as_Int32Vector() const
   {
     return array_segments_type() == circle::SparseIndexVector_Int32Vector
-               ? static_cast<const circle::Int32Vector *>(array_segments())
-               : nullptr;
+             ? static_cast<const circle::Int32Vector *>(array_segments())
+             : nullptr;
   }
   const circle::Uint16Vector *array_segments_as_Uint16Vector() const
   {
     return array_segments_type() == circle::SparseIndexVector_Uint16Vector
-               ? static_cast<const circle::Uint16Vector *>(array_segments())
-               : nullptr;
+             ? static_cast<const circle::Uint16Vector *>(array_segments())
+             : nullptr;
   }
   const circle::Uint8Vector *array_segments_as_Uint8Vector() const
   {
     return array_segments_type() == circle::SparseIndexVector_Uint8Vector
-               ? static_cast<const circle::Uint8Vector *>(array_segments())
-               : nullptr;
+             ? static_cast<const circle::Uint8Vector *>(array_segments())
+             : nullptr;
   }
   circle::SparseIndexVector array_indices_type() const
   {
@@ -2813,20 +2811,20 @@ struct DimensionMetadata FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
   const circle::Int32Vector *array_indices_as_Int32Vector() const
   {
     return array_indices_type() == circle::SparseIndexVector_Int32Vector
-               ? static_cast<const circle::Int32Vector *>(array_indices())
-               : nullptr;
+             ? static_cast<const circle::Int32Vector *>(array_indices())
+             : nullptr;
   }
   const circle::Uint16Vector *array_indices_as_Uint16Vector() const
   {
     return array_indices_type() == circle::SparseIndexVector_Uint16Vector
-               ? static_cast<const circle::Uint16Vector *>(array_indices())
-               : nullptr;
+             ? static_cast<const circle::Uint16Vector *>(array_indices())
+             : nullptr;
   }
   const circle::Uint8Vector *array_indices_as_Uint8Vector() const
   {
     return array_indices_type() == circle::SparseIndexVector_Uint8Vector
-               ? static_cast<const circle::Uint8Vector *>(array_indices())
-               : nullptr;
+             ? static_cast<const circle::Uint8Vector *>(array_indices())
+             : nullptr;
   }
   bool Verify(flatbuffers::Verifier &verifier) const
   {
@@ -2924,12 +2922,12 @@ struct DimensionMetadataBuilder
 };
 
 inline flatbuffers::Offset<DimensionMetadata> CreateDimensionMetadata(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    circle::DimensionType format = circle::DimensionType_DENSE, int32_t dense_size = 0,
-    circle::SparseIndexVector array_segments_type = circle::SparseIndexVector_NONE,
-    flatbuffers::Offset<void> array_segments = 0,
-    circle::SparseIndexVector array_indices_type = circle::SparseIndexVector_NONE,
-    flatbuffers::Offset<void> array_indices = 0)
+  flatbuffers::FlatBufferBuilder &_fbb, circle::DimensionType format = circle::DimensionType_DENSE,
+  int32_t dense_size = 0,
+  circle::SparseIndexVector array_segments_type = circle::SparseIndexVector_NONE,
+  flatbuffers::Offset<void> array_segments = 0,
+  circle::SparseIndexVector array_indices_type = circle::SparseIndexVector_NONE,
+  flatbuffers::Offset<void> array_indices = 0)
 {
   DimensionMetadataBuilder builder_(_fbb);
   builder_.add_array_indices(array_indices);
@@ -2961,7 +2959,7 @@ struct SparsityParameters FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
   const flatbuffers::Vector<flatbuffers::Offset<circle::DimensionMetadata>> *dim_metadata() const
   {
     return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<circle::DimensionMetadata>> *>(
-        VT_DIM_METADATA);
+      VT_DIM_METADATA);
   }
   bool Verify(flatbuffers::Verifier &verifier) const
   {
@@ -2987,8 +2985,8 @@ struct SparsityParametersBuilder
     fbb_.AddOffset(SparsityParameters::VT_BLOCK_MAP, block_map);
   }
   void add_dim_metadata(
-      flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<circle::DimensionMetadata>>>
-          dim_metadata)
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<circle::DimensionMetadata>>>
+      dim_metadata)
   {
     fbb_.AddOffset(SparsityParameters::VT_DIM_METADATA, dim_metadata);
   }
@@ -3006,11 +3004,11 @@ struct SparsityParametersBuilder
 };
 
 inline flatbuffers::Offset<SparsityParameters> CreateSparsityParameters(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Offset<flatbuffers::Vector<int32_t>> traversal_order = 0,
-    flatbuffers::Offset<flatbuffers::Vector<int32_t>> block_map = 0,
-    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<circle::DimensionMetadata>>>
-        dim_metadata = 0)
+  flatbuffers::FlatBufferBuilder &_fbb,
+  flatbuffers::Offset<flatbuffers::Vector<int32_t>> traversal_order = 0,
+  flatbuffers::Offset<flatbuffers::Vector<int32_t>> block_map = 0,
+  flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<circle::DimensionMetadata>>>
+    dim_metadata = 0)
 {
   SparsityParametersBuilder builder_(_fbb);
   builder_.add_dim_metadata(dim_metadata);
@@ -3020,16 +3018,15 @@ inline flatbuffers::Offset<SparsityParameters> CreateSparsityParameters(
 }
 
 inline flatbuffers::Offset<SparsityParameters> CreateSparsityParametersDirect(
-    flatbuffers::FlatBufferBuilder &_fbb, const std::vector<int32_t> *traversal_order = nullptr,
-    const std::vector<int32_t> *block_map = nullptr,
-    const std::vector<flatbuffers::Offset<circle::DimensionMetadata>> *dim_metadata = nullptr)
+  flatbuffers::FlatBufferBuilder &_fbb, const std::vector<int32_t> *traversal_order = nullptr,
+  const std::vector<int32_t> *block_map = nullptr,
+  const std::vector<flatbuffers::Offset<circle::DimensionMetadata>> *dim_metadata = nullptr)
 {
   auto traversal_order__ = traversal_order ? _fbb.CreateVector<int32_t>(*traversal_order) : 0;
   auto block_map__ = block_map ? _fbb.CreateVector<int32_t>(*block_map) : 0;
   auto dim_metadata__ =
-      dim_metadata
-          ? _fbb.CreateVector<flatbuffers::Offset<circle::DimensionMetadata>>(*dim_metadata)
-          : 0;
+    dim_metadata ? _fbb.CreateVector<flatbuffers::Offset<circle::DimensionMetadata>>(*dim_metadata)
+                 : 0;
   return circle::CreateSparsityParameters(_fbb, traversal_order__, block_map__, dim_metadata__);
 }
 
@@ -3155,12 +3152,11 @@ CreateTensor(flatbuffers::FlatBufferBuilder &_fbb,
 }
 
 inline flatbuffers::Offset<Tensor> CreateTensorDirect(
-    flatbuffers::FlatBufferBuilder &_fbb, const std::vector<int32_t> *shape = nullptr,
-    circle::TensorType type = circle::TensorType_FLOAT32, uint32_t buffer = 0,
-    const char *name = nullptr,
-    flatbuffers::Offset<circle::QuantizationParameters> quantization = 0, bool is_variable = false,
-    flatbuffers::Offset<circle::SparsityParameters> sparsity = 0,
-    const std::vector<int32_t> *shape_signature = nullptr)
+  flatbuffers::FlatBufferBuilder &_fbb, const std::vector<int32_t> *shape = nullptr,
+  circle::TensorType type = circle::TensorType_FLOAT32, uint32_t buffer = 0,
+  const char *name = nullptr, flatbuffers::Offset<circle::QuantizationParameters> quantization = 0,
+  bool is_variable = false, flatbuffers::Offset<circle::SparsityParameters> sparsity = 0,
+  const std::vector<int32_t> *shape_signature = nullptr)
 {
   auto shape__ = shape ? _fbb.CreateVector<int32_t>(*shape) : 0;
   auto name__ = name ? _fbb.CreateString(name) : 0;
@@ -3190,7 +3186,7 @@ struct Conv2DOptions FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
   circle::ActivationFunctionType fused_activation_function() const
   {
     return static_cast<circle::ActivationFunctionType>(
-        GetField<int8_t>(VT_FUSED_ACTIVATION_FUNCTION, 0));
+      GetField<int8_t>(VT_FUSED_ACTIVATION_FUNCTION, 0));
   }
   int32_t dilation_w_factor() const { return GetField<int32_t>(VT_DILATION_W_FACTOR, 1); }
   int32_t dilation_h_factor() const { return GetField<int32_t>(VT_DILATION_H_FACTOR, 1); }
@@ -3249,10 +3245,10 @@ struct Conv2DOptionsBuilder
 };
 
 inline flatbuffers::Offset<Conv2DOptions> CreateConv2DOptions(
-    flatbuffers::FlatBufferBuilder &_fbb, circle::Padding padding = circle::Padding_SAME,
-    int32_t stride_w = 0, int32_t stride_h = 0,
-    circle::ActivationFunctionType fused_activation_function = circle::ActivationFunctionType_NONE,
-    int32_t dilation_w_factor = 1, int32_t dilation_h_factor = 1)
+  flatbuffers::FlatBufferBuilder &_fbb, circle::Padding padding = circle::Padding_SAME,
+  int32_t stride_w = 0, int32_t stride_h = 0,
+  circle::ActivationFunctionType fused_activation_function = circle::ActivationFunctionType_NONE,
+  int32_t dilation_w_factor = 1, int32_t dilation_h_factor = 1)
 {
   Conv2DOptionsBuilder builder_(_fbb);
   builder_.add_dilation_h_factor(dilation_h_factor);
@@ -3287,7 +3283,7 @@ struct Pool2DOptions FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
   circle::ActivationFunctionType fused_activation_function() const
   {
     return static_cast<circle::ActivationFunctionType>(
-        GetField<int8_t>(VT_FUSED_ACTIVATION_FUNCTION, 0));
+      GetField<int8_t>(VT_FUSED_ACTIVATION_FUNCTION, 0));
   }
   bool Verify(flatbuffers::Verifier &verifier) const
   {
@@ -3344,9 +3340,9 @@ struct Pool2DOptionsBuilder
 };
 
 inline flatbuffers::Offset<Pool2DOptions> CreatePool2DOptions(
-    flatbuffers::FlatBufferBuilder &_fbb, circle::Padding padding = circle::Padding_SAME,
-    int32_t stride_w = 0, int32_t stride_h = 0, int32_t filter_width = 0, int32_t filter_height = 0,
-    circle::ActivationFunctionType fused_activation_function = circle::ActivationFunctionType_NONE)
+  flatbuffers::FlatBufferBuilder &_fbb, circle::Padding padding = circle::Padding_SAME,
+  int32_t stride_w = 0, int32_t stride_h = 0, int32_t filter_width = 0, int32_t filter_height = 0,
+  circle::ActivationFunctionType fused_activation_function = circle::ActivationFunctionType_NONE)
 {
   Pool2DOptionsBuilder builder_(_fbb);
   builder_.add_filter_height(filter_height);
@@ -3381,7 +3377,7 @@ struct DepthwiseConv2DOptions FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tab
   circle::ActivationFunctionType fused_activation_function() const
   {
     return static_cast<circle::ActivationFunctionType>(
-        GetField<int8_t>(VT_FUSED_ACTIVATION_FUNCTION, 0));
+      GetField<int8_t>(VT_FUSED_ACTIVATION_FUNCTION, 0));
   }
   int32_t dilation_w_factor() const { return GetField<int32_t>(VT_DILATION_W_FACTOR, 1); }
   int32_t dilation_h_factor() const { return GetField<int32_t>(VT_DILATION_H_FACTOR, 1); }
@@ -3445,10 +3441,10 @@ struct DepthwiseConv2DOptionsBuilder
 };
 
 inline flatbuffers::Offset<DepthwiseConv2DOptions> CreateDepthwiseConv2DOptions(
-    flatbuffers::FlatBufferBuilder &_fbb, circle::Padding padding = circle::Padding_SAME,
-    int32_t stride_w = 0, int32_t stride_h = 0, int32_t depth_multiplier = 0,
-    circle::ActivationFunctionType fused_activation_function = circle::ActivationFunctionType_NONE,
-    int32_t dilation_w_factor = 1, int32_t dilation_h_factor = 1)
+  flatbuffers::FlatBufferBuilder &_fbb, circle::Padding padding = circle::Padding_SAME,
+  int32_t stride_w = 0, int32_t stride_h = 0, int32_t depth_multiplier = 0,
+  circle::ActivationFunctionType fused_activation_function = circle::ActivationFunctionType_NONE,
+  int32_t dilation_w_factor = 1, int32_t dilation_h_factor = 1)
 {
   DepthwiseConv2DOptionsBuilder builder_(_fbb);
   builder_.add_dilation_h_factor(dilation_h_factor);
@@ -3499,12 +3495,12 @@ struct ConcatEmbeddingsOptionsBuilder
     fbb_.AddElement<int32_t>(ConcatEmbeddingsOptions::VT_NUM_CHANNELS, num_channels, 0);
   }
   void add_num_columns_per_channel(
-      flatbuffers::Offset<flatbuffers::Vector<int32_t>> num_columns_per_channel)
+    flatbuffers::Offset<flatbuffers::Vector<int32_t>> num_columns_per_channel)
   {
     fbb_.AddOffset(ConcatEmbeddingsOptions::VT_NUM_COLUMNS_PER_CHANNEL, num_columns_per_channel);
   }
   void add_embedding_dim_per_channel(
-      flatbuffers::Offset<flatbuffers::Vector<int32_t>> embedding_dim_per_channel)
+    flatbuffers::Offset<flatbuffers::Vector<int32_t>> embedding_dim_per_channel)
   {
     fbb_.AddOffset(ConcatEmbeddingsOptions::VT_EMBEDDING_DIM_PER_CHANNEL,
                    embedding_dim_per_channel);
@@ -3523,9 +3519,9 @@ struct ConcatEmbeddingsOptionsBuilder
 };
 
 inline flatbuffers::Offset<ConcatEmbeddingsOptions> CreateConcatEmbeddingsOptions(
-    flatbuffers::FlatBufferBuilder &_fbb, int32_t num_channels = 0,
-    flatbuffers::Offset<flatbuffers::Vector<int32_t>> num_columns_per_channel = 0,
-    flatbuffers::Offset<flatbuffers::Vector<int32_t>> embedding_dim_per_channel = 0)
+  flatbuffers::FlatBufferBuilder &_fbb, int32_t num_channels = 0,
+  flatbuffers::Offset<flatbuffers::Vector<int32_t>> num_columns_per_channel = 0,
+  flatbuffers::Offset<flatbuffers::Vector<int32_t>> embedding_dim_per_channel = 0)
 {
   ConcatEmbeddingsOptionsBuilder builder_(_fbb);
   builder_.add_embedding_dim_per_channel(embedding_dim_per_channel);
@@ -3540,9 +3536,9 @@ CreateConcatEmbeddingsOptionsDirect(flatbuffers::FlatBufferBuilder &_fbb, int32_
                                     const std::vector<int32_t> *embedding_dim_per_channel = nullptr)
 {
   auto num_columns_per_channel__ =
-      num_columns_per_channel ? _fbb.CreateVector<int32_t>(*num_columns_per_channel) : 0;
+    num_columns_per_channel ? _fbb.CreateVector<int32_t>(*num_columns_per_channel) : 0;
   auto embedding_dim_per_channel__ =
-      embedding_dim_per_channel ? _fbb.CreateVector<int32_t>(*embedding_dim_per_channel) : 0;
+    embedding_dim_per_channel ? _fbb.CreateVector<int32_t>(*embedding_dim_per_channel) : 0;
   return circle::CreateConcatEmbeddingsOptions(_fbb, num_channels, num_columns_per_channel__,
                                                embedding_dim_per_channel__);
 }
@@ -3609,7 +3605,7 @@ struct SVDFOptions FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
   circle::ActivationFunctionType fused_activation_function() const
   {
     return static_cast<circle::ActivationFunctionType>(
-        GetField<int8_t>(VT_FUSED_ACTIVATION_FUNCTION, 0));
+      GetField<int8_t>(VT_FUSED_ACTIVATION_FUNCTION, 0));
   }
   bool asymmetric_quantize_inputs() const
   {
@@ -3653,9 +3649,9 @@ struct SVDFOptionsBuilder
 };
 
 inline flatbuffers::Offset<SVDFOptions> CreateSVDFOptions(
-    flatbuffers::FlatBufferBuilder &_fbb, int32_t rank = 0,
-    circle::ActivationFunctionType fused_activation_function = circle::ActivationFunctionType_NONE,
-    bool asymmetric_quantize_inputs = false)
+  flatbuffers::FlatBufferBuilder &_fbb, int32_t rank = 0,
+  circle::ActivationFunctionType fused_activation_function = circle::ActivationFunctionType_NONE,
+  bool asymmetric_quantize_inputs = false)
 {
   SVDFOptionsBuilder builder_(_fbb);
   builder_.add_rank(rank);
@@ -3675,7 +3671,7 @@ struct RNNOptions FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
   circle::ActivationFunctionType fused_activation_function() const
   {
     return static_cast<circle::ActivationFunctionType>(
-        GetField<int8_t>(VT_FUSED_ACTIVATION_FUNCTION, 0));
+      GetField<int8_t>(VT_FUSED_ACTIVATION_FUNCTION, 0));
   }
   bool asymmetric_quantize_inputs() const
   {
@@ -3718,9 +3714,9 @@ struct RNNOptionsBuilder
 };
 
 inline flatbuffers::Offset<RNNOptions> CreateRNNOptions(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    circle::ActivationFunctionType fused_activation_function = circle::ActivationFunctionType_NONE,
-    bool asymmetric_quantize_inputs = false)
+  flatbuffers::FlatBufferBuilder &_fbb,
+  circle::ActivationFunctionType fused_activation_function = circle::ActivationFunctionType_NONE,
+  bool asymmetric_quantize_inputs = false)
 {
   RNNOptionsBuilder builder_(_fbb);
   builder_.add_asymmetric_quantize_inputs(asymmetric_quantize_inputs);
@@ -3741,7 +3737,7 @@ struct SequenceRNNOptions FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
   circle::ActivationFunctionType fused_activation_function() const
   {
     return static_cast<circle::ActivationFunctionType>(
-        GetField<int8_t>(VT_FUSED_ACTIVATION_FUNCTION, 0));
+      GetField<int8_t>(VT_FUSED_ACTIVATION_FUNCTION, 0));
   }
   bool asymmetric_quantize_inputs() const
   {
@@ -3789,9 +3785,9 @@ struct SequenceRNNOptionsBuilder
 };
 
 inline flatbuffers::Offset<SequenceRNNOptions> CreateSequenceRNNOptions(
-    flatbuffers::FlatBufferBuilder &_fbb, bool time_major = false,
-    circle::ActivationFunctionType fused_activation_function = circle::ActivationFunctionType_NONE,
-    bool asymmetric_quantize_inputs = false)
+  flatbuffers::FlatBufferBuilder &_fbb, bool time_major = false,
+  circle::ActivationFunctionType fused_activation_function = circle::ActivationFunctionType_NONE,
+  bool asymmetric_quantize_inputs = false)
 {
   SequenceRNNOptionsBuilder builder_(_fbb);
   builder_.add_asymmetric_quantize_inputs(asymmetric_quantize_inputs);
@@ -3814,7 +3810,7 @@ struct BidirectionalSequenceRNNOptions FLATBUFFERS_FINAL_CLASS : private flatbuf
   circle::ActivationFunctionType fused_activation_function() const
   {
     return static_cast<circle::ActivationFunctionType>(
-        GetField<int8_t>(VT_FUSED_ACTIVATION_FUNCTION, 0));
+      GetField<int8_t>(VT_FUSED_ACTIVATION_FUNCTION, 0));
   }
   bool merge_outputs() const { return GetField<uint8_t>(VT_MERGE_OUTPUTS, 0) != 0; }
   bool asymmetric_quantize_inputs() const
@@ -3869,9 +3865,9 @@ struct BidirectionalSequenceRNNOptionsBuilder
 };
 
 inline flatbuffers::Offset<BidirectionalSequenceRNNOptions> CreateBidirectionalSequenceRNNOptions(
-    flatbuffers::FlatBufferBuilder &_fbb, bool time_major = false,
-    circle::ActivationFunctionType fused_activation_function = circle::ActivationFunctionType_NONE,
-    bool merge_outputs = false, bool asymmetric_quantize_inputs = false)
+  flatbuffers::FlatBufferBuilder &_fbb, bool time_major = false,
+  circle::ActivationFunctionType fused_activation_function = circle::ActivationFunctionType_NONE,
+  bool merge_outputs = false, bool asymmetric_quantize_inputs = false)
 {
   BidirectionalSequenceRNNOptionsBuilder builder_(_fbb);
   builder_.add_asymmetric_quantize_inputs(asymmetric_quantize_inputs);
@@ -3894,12 +3890,12 @@ struct FullyConnectedOptions FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tabl
   circle::ActivationFunctionType fused_activation_function() const
   {
     return static_cast<circle::ActivationFunctionType>(
-        GetField<int8_t>(VT_FUSED_ACTIVATION_FUNCTION, 0));
+      GetField<int8_t>(VT_FUSED_ACTIVATION_FUNCTION, 0));
   }
   circle::FullyConnectedOptionsWeightsFormat weights_format() const
   {
     return static_cast<circle::FullyConnectedOptionsWeightsFormat>(
-        GetField<int8_t>(VT_WEIGHTS_FORMAT, 0));
+      GetField<int8_t>(VT_WEIGHTS_FORMAT, 0));
   }
   bool keep_num_dims() const { return GetField<uint8_t>(VT_KEEP_NUM_DIMS, 0) != 0; }
   bool asymmetric_quantize_inputs() const
@@ -3955,11 +3951,11 @@ struct FullyConnectedOptionsBuilder
 };
 
 inline flatbuffers::Offset<FullyConnectedOptions> CreateFullyConnectedOptions(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    circle::ActivationFunctionType fused_activation_function = circle::ActivationFunctionType_NONE,
-    circle::FullyConnectedOptionsWeightsFormat weights_format =
-        circle::FullyConnectedOptionsWeightsFormat_DEFAULT,
-    bool keep_num_dims = false, bool asymmetric_quantize_inputs = false)
+  flatbuffers::FlatBufferBuilder &_fbb,
+  circle::ActivationFunctionType fused_activation_function = circle::ActivationFunctionType_NONE,
+  circle::FullyConnectedOptionsWeightsFormat weights_format =
+    circle::FullyConnectedOptionsWeightsFormat_DEFAULT,
+  bool keep_num_dims = false, bool asymmetric_quantize_inputs = false)
 {
   FullyConnectedOptionsBuilder builder_(_fbb);
   builder_.add_asymmetric_quantize_inputs(asymmetric_quantize_inputs);
@@ -4023,7 +4019,7 @@ struct ConcatenationOptions FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
   circle::ActivationFunctionType fused_activation_function() const
   {
     return static_cast<circle::ActivationFunctionType>(
-        GetField<int8_t>(VT_FUSED_ACTIVATION_FUNCTION, 0));
+      GetField<int8_t>(VT_FUSED_ACTIVATION_FUNCTION, 0));
   }
   bool Verify(flatbuffers::Verifier &verifier) const
   {
@@ -4057,8 +4053,8 @@ struct ConcatenationOptionsBuilder
 };
 
 inline flatbuffers::Offset<ConcatenationOptions> CreateConcatenationOptions(
-    flatbuffers::FlatBufferBuilder &_fbb, int32_t axis = 0,
-    circle::ActivationFunctionType fused_activation_function = circle::ActivationFunctionType_NONE)
+  flatbuffers::FlatBufferBuilder &_fbb, int32_t axis = 0,
+  circle::ActivationFunctionType fused_activation_function = circle::ActivationFunctionType_NONE)
 {
   ConcatenationOptionsBuilder builder_(_fbb);
   builder_.add_axis(axis);
@@ -4076,7 +4072,7 @@ struct AddOptions FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
   circle::ActivationFunctionType fused_activation_function() const
   {
     return static_cast<circle::ActivationFunctionType>(
-        GetField<int8_t>(VT_FUSED_ACTIVATION_FUNCTION, 0));
+      GetField<int8_t>(VT_FUSED_ACTIVATION_FUNCTION, 0));
   }
   bool Verify(flatbuffers::Verifier &verifier) const
   {
@@ -4109,8 +4105,8 @@ struct AddOptionsBuilder
 };
 
 inline flatbuffers::Offset<AddOptions> CreateAddOptions(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    circle::ActivationFunctionType fused_activation_function = circle::ActivationFunctionType_NONE)
+  flatbuffers::FlatBufferBuilder &_fbb,
+  circle::ActivationFunctionType fused_activation_function = circle::ActivationFunctionType_NONE)
 {
   AddOptionsBuilder builder_(_fbb);
   builder_.add_fused_activation_function(fused_activation_function);
@@ -4127,7 +4123,7 @@ struct MulOptions FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
   circle::ActivationFunctionType fused_activation_function() const
   {
     return static_cast<circle::ActivationFunctionType>(
-        GetField<int8_t>(VT_FUSED_ACTIVATION_FUNCTION, 0));
+      GetField<int8_t>(VT_FUSED_ACTIVATION_FUNCTION, 0));
   }
   bool Verify(flatbuffers::Verifier &verifier) const
   {
@@ -4160,8 +4156,8 @@ struct MulOptionsBuilder
 };
 
 inline flatbuffers::Offset<MulOptions> CreateMulOptions(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    circle::ActivationFunctionType fused_activation_function = circle::ActivationFunctionType_NONE)
+  flatbuffers::FlatBufferBuilder &_fbb,
+  circle::ActivationFunctionType fused_activation_function = circle::ActivationFunctionType_NONE)
 {
   MulOptionsBuilder builder_(_fbb);
   builder_.add_fused_activation_function(fused_activation_function);
@@ -4178,7 +4174,7 @@ struct L2NormOptions FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
   circle::ActivationFunctionType fused_activation_function() const
   {
     return static_cast<circle::ActivationFunctionType>(
-        GetField<int8_t>(VT_FUSED_ACTIVATION_FUNCTION, 0));
+      GetField<int8_t>(VT_FUSED_ACTIVATION_FUNCTION, 0));
   }
   bool Verify(flatbuffers::Verifier &verifier) const
   {
@@ -4211,8 +4207,8 @@ struct L2NormOptionsBuilder
 };
 
 inline flatbuffers::Offset<L2NormOptions> CreateL2NormOptions(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    circle::ActivationFunctionType fused_activation_function = circle::ActivationFunctionType_NONE)
+  flatbuffers::FlatBufferBuilder &_fbb,
+  circle::ActivationFunctionType fused_activation_function = circle::ActivationFunctionType_NONE)
 {
   L2NormOptionsBuilder builder_(_fbb);
   builder_.add_fused_activation_function(fused_activation_function);
@@ -4263,7 +4259,7 @@ struct LocalResponseNormalizationOptionsBuilder
     fbb_.AddElement<float>(LocalResponseNormalizationOptions::VT_BETA, beta, 0.0f);
   }
   explicit LocalResponseNormalizationOptionsBuilder(flatbuffers::FlatBufferBuilder &_fbb)
-      : fbb_(_fbb)
+    : fbb_(_fbb)
   {
     start_ = fbb_.StartTable();
   }
@@ -4303,7 +4299,7 @@ struct LSTMOptions FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
   circle::ActivationFunctionType fused_activation_function() const
   {
     return static_cast<circle::ActivationFunctionType>(
-        GetField<int8_t>(VT_FUSED_ACTIVATION_FUNCTION, 0));
+      GetField<int8_t>(VT_FUSED_ACTIVATION_FUNCTION, 0));
   }
   float cell_clip() const { return GetField<float>(VT_CELL_CLIP, 0.0f); }
   float proj_clip() const { return GetField<float>(VT_PROJ_CLIP, 0.0f); }
@@ -4367,11 +4363,11 @@ struct LSTMOptionsBuilder
 };
 
 inline flatbuffers::Offset<LSTMOptions> CreateLSTMOptions(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    circle::ActivationFunctionType fused_activation_function = circle::ActivationFunctionType_NONE,
-    float cell_clip = 0.0f, float proj_clip = 0.0f,
-    circle::LSTMKernelType kernel_type = circle::LSTMKernelType_FULL,
-    bool asymmetric_quantize_inputs = false)
+  flatbuffers::FlatBufferBuilder &_fbb,
+  circle::ActivationFunctionType fused_activation_function = circle::ActivationFunctionType_NONE,
+  float cell_clip = 0.0f, float proj_clip = 0.0f,
+  circle::LSTMKernelType kernel_type = circle::LSTMKernelType_FULL,
+  bool asymmetric_quantize_inputs = false)
 {
   LSTMOptionsBuilder builder_(_fbb);
   builder_.add_proj_clip(proj_clip);
@@ -4396,7 +4392,7 @@ struct UnidirectionalSequenceLSTMOptions FLATBUFFERS_FINAL_CLASS : private flatb
   circle::ActivationFunctionType fused_activation_function() const
   {
     return static_cast<circle::ActivationFunctionType>(
-        GetField<int8_t>(VT_FUSED_ACTIVATION_FUNCTION, 0));
+      GetField<int8_t>(VT_FUSED_ACTIVATION_FUNCTION, 0));
   }
   float cell_clip() const { return GetField<float>(VT_CELL_CLIP, 0.0f); }
   float proj_clip() const { return GetField<float>(VT_PROJ_CLIP, 0.0f); }
@@ -4445,7 +4441,7 @@ struct UnidirectionalSequenceLSTMOptionsBuilder
                              static_cast<uint8_t>(asymmetric_quantize_inputs), 0);
   }
   explicit UnidirectionalSequenceLSTMOptionsBuilder(flatbuffers::FlatBufferBuilder &_fbb)
-      : fbb_(_fbb)
+    : fbb_(_fbb)
   {
     start_ = fbb_.StartTable();
   }
@@ -4461,10 +4457,10 @@ struct UnidirectionalSequenceLSTMOptionsBuilder
 
 inline flatbuffers::Offset<UnidirectionalSequenceLSTMOptions>
 CreateUnidirectionalSequenceLSTMOptions(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    circle::ActivationFunctionType fused_activation_function = circle::ActivationFunctionType_NONE,
-    float cell_clip = 0.0f, float proj_clip = 0.0f, bool time_major = false,
-    bool asymmetric_quantize_inputs = false)
+  flatbuffers::FlatBufferBuilder &_fbb,
+  circle::ActivationFunctionType fused_activation_function = circle::ActivationFunctionType_NONE,
+  float cell_clip = 0.0f, float proj_clip = 0.0f, bool time_major = false,
+  bool asymmetric_quantize_inputs = false)
 {
   UnidirectionalSequenceLSTMOptionsBuilder builder_(_fbb);
   builder_.add_proj_clip(proj_clip);
@@ -4490,7 +4486,7 @@ struct BidirectionalSequenceLSTMOptions FLATBUFFERS_FINAL_CLASS : private flatbu
   circle::ActivationFunctionType fused_activation_function() const
   {
     return static_cast<circle::ActivationFunctionType>(
-        GetField<int8_t>(VT_FUSED_ACTIVATION_FUNCTION, 0));
+      GetField<int8_t>(VT_FUSED_ACTIVATION_FUNCTION, 0));
   }
   float cell_clip() const { return GetField<float>(VT_CELL_CLIP, 0.0f); }
   float proj_clip() const { return GetField<float>(VT_PROJ_CLIP, 0.0f); }
@@ -4546,7 +4542,7 @@ struct BidirectionalSequenceLSTMOptionsBuilder
                              static_cast<uint8_t>(asymmetric_quantize_inputs), 0);
   }
   explicit BidirectionalSequenceLSTMOptionsBuilder(flatbuffers::FlatBufferBuilder &_fbb)
-      : fbb_(_fbb)
+    : fbb_(_fbb)
   {
     start_ = fbb_.StartTable();
   }
@@ -4561,10 +4557,10 @@ struct BidirectionalSequenceLSTMOptionsBuilder
 };
 
 inline flatbuffers::Offset<BidirectionalSequenceLSTMOptions> CreateBidirectionalSequenceLSTMOptions(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    circle::ActivationFunctionType fused_activation_function = circle::ActivationFunctionType_NONE,
-    float cell_clip = 0.0f, float proj_clip = 0.0f, bool merge_outputs = false,
-    bool time_major = true, bool asymmetric_quantize_inputs = false)
+  flatbuffers::FlatBufferBuilder &_fbb,
+  circle::ActivationFunctionType fused_activation_function = circle::ActivationFunctionType_NONE,
+  float cell_clip = 0.0f, float proj_clip = 0.0f, bool merge_outputs = false,
+  bool time_major = true, bool asymmetric_quantize_inputs = false)
 {
   BidirectionalSequenceLSTMOptionsBuilder builder_(_fbb);
   builder_.add_proj_clip(proj_clip);
@@ -5075,7 +5071,7 @@ struct SubOptions FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
   circle::ActivationFunctionType fused_activation_function() const
   {
     return static_cast<circle::ActivationFunctionType>(
-        GetField<int8_t>(VT_FUSED_ACTIVATION_FUNCTION, 0));
+      GetField<int8_t>(VT_FUSED_ACTIVATION_FUNCTION, 0));
   }
   bool Verify(flatbuffers::Verifier &verifier) const
   {
@@ -5108,8 +5104,8 @@ struct SubOptionsBuilder
 };
 
 inline flatbuffers::Offset<SubOptions> CreateSubOptions(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    circle::ActivationFunctionType fused_activation_function = circle::ActivationFunctionType_NONE)
+  flatbuffers::FlatBufferBuilder &_fbb,
+  circle::ActivationFunctionType fused_activation_function = circle::ActivationFunctionType_NONE)
 {
   SubOptionsBuilder builder_(_fbb);
   builder_.add_fused_activation_function(fused_activation_function);
@@ -5126,7 +5122,7 @@ struct DivOptions FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
   circle::ActivationFunctionType fused_activation_function() const
   {
     return static_cast<circle::ActivationFunctionType>(
-        GetField<int8_t>(VT_FUSED_ACTIVATION_FUNCTION, 0));
+      GetField<int8_t>(VT_FUSED_ACTIVATION_FUNCTION, 0));
   }
   bool Verify(flatbuffers::Verifier &verifier) const
   {
@@ -5159,8 +5155,8 @@ struct DivOptionsBuilder
 };
 
 inline flatbuffers::Offset<DivOptions> CreateDivOptions(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    circle::ActivationFunctionType fused_activation_function = circle::ActivationFunctionType_NONE)
+  flatbuffers::FlatBufferBuilder &_fbb,
+  circle::ActivationFunctionType fused_activation_function = circle::ActivationFunctionType_NONE)
 {
   DivOptionsBuilder builder_(_fbb);
   builder_.add_fused_activation_function(fused_activation_function);
@@ -7976,7 +7972,7 @@ struct BCQFullyConnectedOptions FLATBUFFERS_FINAL_CLASS : private flatbuffers::T
   circle::ActivationFunctionType fused_activation_function() const
   {
     return static_cast<circle::ActivationFunctionType>(
-        GetField<int8_t>(VT_FUSED_ACTIVATION_FUNCTION, 0));
+      GetField<int8_t>(VT_FUSED_ACTIVATION_FUNCTION, 0));
   }
   bool Verify(flatbuffers::Verifier &verifier) const
   {
@@ -8014,8 +8010,8 @@ struct BCQFullyConnectedOptionsBuilder
 };
 
 inline flatbuffers::Offset<BCQFullyConnectedOptions> CreateBCQFullyConnectedOptions(
-    flatbuffers::FlatBufferBuilder &_fbb, int32_t weights_hidden_size = 0,
-    circle::ActivationFunctionType fused_activation_function = circle::ActivationFunctionType_NONE)
+  flatbuffers::FlatBufferBuilder &_fbb, int32_t weights_hidden_size = 0,
+  circle::ActivationFunctionType fused_activation_function = circle::ActivationFunctionType_NONE)
 {
   BCQFullyConnectedOptionsBuilder builder_(_fbb);
   builder_.add_weights_hidden_size(weights_hidden_size);
@@ -8035,7 +8031,7 @@ struct InstanceNormOptions FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
   circle::ActivationFunctionType fused_activation_function() const
   {
     return static_cast<circle::ActivationFunctionType>(
-        GetField<int8_t>(VT_FUSED_ACTIVATION_FUNCTION, 0));
+      GetField<int8_t>(VT_FUSED_ACTIVATION_FUNCTION, 0));
   }
   bool Verify(flatbuffers::Verifier &verifier) const
   {
@@ -8072,8 +8068,8 @@ struct InstanceNormOptionsBuilder
 };
 
 inline flatbuffers::Offset<InstanceNormOptions> CreateInstanceNormOptions(
-    flatbuffers::FlatBufferBuilder &_fbb, float epsilon = 0.0f,
-    circle::ActivationFunctionType fused_activation_function = circle::ActivationFunctionType_NONE)
+  flatbuffers::FlatBufferBuilder &_fbb, float epsilon = 0.0f,
+  circle::ActivationFunctionType fused_activation_function = circle::ActivationFunctionType_NONE)
 {
   InstanceNormOptionsBuilder builder_(_fbb);
   builder_.add_epsilon(epsilon);
@@ -8191,632 +8187,632 @@ struct Operator FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
   const circle::Conv2DOptions *builtin_options_as_Conv2DOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_Conv2DOptions
-               ? static_cast<const circle::Conv2DOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::Conv2DOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::DepthwiseConv2DOptions *builtin_options_as_DepthwiseConv2DOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_DepthwiseConv2DOptions
-               ? static_cast<const circle::DepthwiseConv2DOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::DepthwiseConv2DOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::ConcatEmbeddingsOptions *builtin_options_as_ConcatEmbeddingsOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_ConcatEmbeddingsOptions
-               ? static_cast<const circle::ConcatEmbeddingsOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::ConcatEmbeddingsOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::LSHProjectionOptions *builtin_options_as_LSHProjectionOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_LSHProjectionOptions
-               ? static_cast<const circle::LSHProjectionOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::LSHProjectionOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::Pool2DOptions *builtin_options_as_Pool2DOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_Pool2DOptions
-               ? static_cast<const circle::Pool2DOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::Pool2DOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::SVDFOptions *builtin_options_as_SVDFOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_SVDFOptions
-               ? static_cast<const circle::SVDFOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::SVDFOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::RNNOptions *builtin_options_as_RNNOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_RNNOptions
-               ? static_cast<const circle::RNNOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::RNNOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::FullyConnectedOptions *builtin_options_as_FullyConnectedOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_FullyConnectedOptions
-               ? static_cast<const circle::FullyConnectedOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::FullyConnectedOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::SoftmaxOptions *builtin_options_as_SoftmaxOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_SoftmaxOptions
-               ? static_cast<const circle::SoftmaxOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::SoftmaxOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::ConcatenationOptions *builtin_options_as_ConcatenationOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_ConcatenationOptions
-               ? static_cast<const circle::ConcatenationOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::ConcatenationOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::AddOptions *builtin_options_as_AddOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_AddOptions
-               ? static_cast<const circle::AddOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::AddOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::L2NormOptions *builtin_options_as_L2NormOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_L2NormOptions
-               ? static_cast<const circle::L2NormOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::L2NormOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::LocalResponseNormalizationOptions *
   builtin_options_as_LocalResponseNormalizationOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_LocalResponseNormalizationOptions
-               ? static_cast<const circle::LocalResponseNormalizationOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::LocalResponseNormalizationOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::LSTMOptions *builtin_options_as_LSTMOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_LSTMOptions
-               ? static_cast<const circle::LSTMOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::LSTMOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::ResizeBilinearOptions *builtin_options_as_ResizeBilinearOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_ResizeBilinearOptions
-               ? static_cast<const circle::ResizeBilinearOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::ResizeBilinearOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::CallOptions *builtin_options_as_CallOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_CallOptions
-               ? static_cast<const circle::CallOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::CallOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::ReshapeOptions *builtin_options_as_ReshapeOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_ReshapeOptions
-               ? static_cast<const circle::ReshapeOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::ReshapeOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::SkipGramOptions *builtin_options_as_SkipGramOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_SkipGramOptions
-               ? static_cast<const circle::SkipGramOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::SkipGramOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::SpaceToDepthOptions *builtin_options_as_SpaceToDepthOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_SpaceToDepthOptions
-               ? static_cast<const circle::SpaceToDepthOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::SpaceToDepthOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::EmbeddingLookupSparseOptions *
   builtin_options_as_EmbeddingLookupSparseOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_EmbeddingLookupSparseOptions
-               ? static_cast<const circle::EmbeddingLookupSparseOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::EmbeddingLookupSparseOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::MulOptions *builtin_options_as_MulOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_MulOptions
-               ? static_cast<const circle::MulOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::MulOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::PadOptions *builtin_options_as_PadOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_PadOptions
-               ? static_cast<const circle::PadOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::PadOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::GatherOptions *builtin_options_as_GatherOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_GatherOptions
-               ? static_cast<const circle::GatherOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::GatherOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::BatchToSpaceNDOptions *builtin_options_as_BatchToSpaceNDOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_BatchToSpaceNDOptions
-               ? static_cast<const circle::BatchToSpaceNDOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::BatchToSpaceNDOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::SpaceToBatchNDOptions *builtin_options_as_SpaceToBatchNDOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_SpaceToBatchNDOptions
-               ? static_cast<const circle::SpaceToBatchNDOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::SpaceToBatchNDOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::TransposeOptions *builtin_options_as_TransposeOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_TransposeOptions
-               ? static_cast<const circle::TransposeOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::TransposeOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::ReducerOptions *builtin_options_as_ReducerOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_ReducerOptions
-               ? static_cast<const circle::ReducerOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::ReducerOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::SubOptions *builtin_options_as_SubOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_SubOptions
-               ? static_cast<const circle::SubOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::SubOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::DivOptions *builtin_options_as_DivOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_DivOptions
-               ? static_cast<const circle::DivOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::DivOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::SqueezeOptions *builtin_options_as_SqueezeOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_SqueezeOptions
-               ? static_cast<const circle::SqueezeOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::SqueezeOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::SequenceRNNOptions *builtin_options_as_SequenceRNNOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_SequenceRNNOptions
-               ? static_cast<const circle::SequenceRNNOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::SequenceRNNOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::StridedSliceOptions *builtin_options_as_StridedSliceOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_StridedSliceOptions
-               ? static_cast<const circle::StridedSliceOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::StridedSliceOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::ExpOptions *builtin_options_as_ExpOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_ExpOptions
-               ? static_cast<const circle::ExpOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::ExpOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::TopKV2Options *builtin_options_as_TopKV2Options() const
   {
     return builtin_options_type() == circle::BuiltinOptions_TopKV2Options
-               ? static_cast<const circle::TopKV2Options *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::TopKV2Options *>(builtin_options())
+             : nullptr;
   }
   const circle::SplitOptions *builtin_options_as_SplitOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_SplitOptions
-               ? static_cast<const circle::SplitOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::SplitOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::LogSoftmaxOptions *builtin_options_as_LogSoftmaxOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_LogSoftmaxOptions
-               ? static_cast<const circle::LogSoftmaxOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::LogSoftmaxOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::CastOptions *builtin_options_as_CastOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_CastOptions
-               ? static_cast<const circle::CastOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::CastOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::DequantizeOptions *builtin_options_as_DequantizeOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_DequantizeOptions
-               ? static_cast<const circle::DequantizeOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::DequantizeOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::MaximumMinimumOptions *builtin_options_as_MaximumMinimumOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_MaximumMinimumOptions
-               ? static_cast<const circle::MaximumMinimumOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::MaximumMinimumOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::ArgMaxOptions *builtin_options_as_ArgMaxOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_ArgMaxOptions
-               ? static_cast<const circle::ArgMaxOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::ArgMaxOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::LessOptions *builtin_options_as_LessOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_LessOptions
-               ? static_cast<const circle::LessOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::LessOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::NegOptions *builtin_options_as_NegOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_NegOptions
-               ? static_cast<const circle::NegOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::NegOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::PadV2Options *builtin_options_as_PadV2Options() const
   {
     return builtin_options_type() == circle::BuiltinOptions_PadV2Options
-               ? static_cast<const circle::PadV2Options *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::PadV2Options *>(builtin_options())
+             : nullptr;
   }
   const circle::GreaterOptions *builtin_options_as_GreaterOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_GreaterOptions
-               ? static_cast<const circle::GreaterOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::GreaterOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::GreaterEqualOptions *builtin_options_as_GreaterEqualOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_GreaterEqualOptions
-               ? static_cast<const circle::GreaterEqualOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::GreaterEqualOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::LessEqualOptions *builtin_options_as_LessEqualOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_LessEqualOptions
-               ? static_cast<const circle::LessEqualOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::LessEqualOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::SelectOptions *builtin_options_as_SelectOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_SelectOptions
-               ? static_cast<const circle::SelectOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::SelectOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::SliceOptions *builtin_options_as_SliceOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_SliceOptions
-               ? static_cast<const circle::SliceOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::SliceOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::TransposeConvOptions *builtin_options_as_TransposeConvOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_TransposeConvOptions
-               ? static_cast<const circle::TransposeConvOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::TransposeConvOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::SparseToDenseOptions *builtin_options_as_SparseToDenseOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_SparseToDenseOptions
-               ? static_cast<const circle::SparseToDenseOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::SparseToDenseOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::TileOptions *builtin_options_as_TileOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_TileOptions
-               ? static_cast<const circle::TileOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::TileOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::ExpandDimsOptions *builtin_options_as_ExpandDimsOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_ExpandDimsOptions
-               ? static_cast<const circle::ExpandDimsOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::ExpandDimsOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::EqualOptions *builtin_options_as_EqualOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_EqualOptions
-               ? static_cast<const circle::EqualOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::EqualOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::NotEqualOptions *builtin_options_as_NotEqualOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_NotEqualOptions
-               ? static_cast<const circle::NotEqualOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::NotEqualOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::ShapeOptions *builtin_options_as_ShapeOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_ShapeOptions
-               ? static_cast<const circle::ShapeOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::ShapeOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::PowOptions *builtin_options_as_PowOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_PowOptions
-               ? static_cast<const circle::PowOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::PowOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::ArgMinOptions *builtin_options_as_ArgMinOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_ArgMinOptions
-               ? static_cast<const circle::ArgMinOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::ArgMinOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::FakeQuantOptions *builtin_options_as_FakeQuantOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_FakeQuantOptions
-               ? static_cast<const circle::FakeQuantOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::FakeQuantOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::PackOptions *builtin_options_as_PackOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_PackOptions
-               ? static_cast<const circle::PackOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::PackOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::LogicalOrOptions *builtin_options_as_LogicalOrOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_LogicalOrOptions
-               ? static_cast<const circle::LogicalOrOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::LogicalOrOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::OneHotOptions *builtin_options_as_OneHotOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_OneHotOptions
-               ? static_cast<const circle::OneHotOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::OneHotOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::LogicalAndOptions *builtin_options_as_LogicalAndOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_LogicalAndOptions
-               ? static_cast<const circle::LogicalAndOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::LogicalAndOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::LogicalNotOptions *builtin_options_as_LogicalNotOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_LogicalNotOptions
-               ? static_cast<const circle::LogicalNotOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::LogicalNotOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::UnpackOptions *builtin_options_as_UnpackOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_UnpackOptions
-               ? static_cast<const circle::UnpackOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::UnpackOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::FloorDivOptions *builtin_options_as_FloorDivOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_FloorDivOptions
-               ? static_cast<const circle::FloorDivOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::FloorDivOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::SquareOptions *builtin_options_as_SquareOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_SquareOptions
-               ? static_cast<const circle::SquareOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::SquareOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::ZerosLikeOptions *builtin_options_as_ZerosLikeOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_ZerosLikeOptions
-               ? static_cast<const circle::ZerosLikeOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::ZerosLikeOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::FillOptions *builtin_options_as_FillOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_FillOptions
-               ? static_cast<const circle::FillOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::FillOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::BidirectionalSequenceLSTMOptions *
   builtin_options_as_BidirectionalSequenceLSTMOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_BidirectionalSequenceLSTMOptions
-               ? static_cast<const circle::BidirectionalSequenceLSTMOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::BidirectionalSequenceLSTMOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::BidirectionalSequenceRNNOptions *
   builtin_options_as_BidirectionalSequenceRNNOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_BidirectionalSequenceRNNOptions
-               ? static_cast<const circle::BidirectionalSequenceRNNOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::BidirectionalSequenceRNNOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::UnidirectionalSequenceLSTMOptions *
   builtin_options_as_UnidirectionalSequenceLSTMOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_UnidirectionalSequenceLSTMOptions
-               ? static_cast<const circle::UnidirectionalSequenceLSTMOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::UnidirectionalSequenceLSTMOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::FloorModOptions *builtin_options_as_FloorModOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_FloorModOptions
-               ? static_cast<const circle::FloorModOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::FloorModOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::RangeOptions *builtin_options_as_RangeOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_RangeOptions
-               ? static_cast<const circle::RangeOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::RangeOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::ResizeNearestNeighborOptions *
   builtin_options_as_ResizeNearestNeighborOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_ResizeNearestNeighborOptions
-               ? static_cast<const circle::ResizeNearestNeighborOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::ResizeNearestNeighborOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::LeakyReluOptions *builtin_options_as_LeakyReluOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_LeakyReluOptions
-               ? static_cast<const circle::LeakyReluOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::LeakyReluOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::SquaredDifferenceOptions *builtin_options_as_SquaredDifferenceOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_SquaredDifferenceOptions
-               ? static_cast<const circle::SquaredDifferenceOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::SquaredDifferenceOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::MirrorPadOptions *builtin_options_as_MirrorPadOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_MirrorPadOptions
-               ? static_cast<const circle::MirrorPadOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::MirrorPadOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::AbsOptions *builtin_options_as_AbsOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_AbsOptions
-               ? static_cast<const circle::AbsOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::AbsOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::SplitVOptions *builtin_options_as_SplitVOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_SplitVOptions
-               ? static_cast<const circle::SplitVOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::SplitVOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::UniqueOptions *builtin_options_as_UniqueOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_UniqueOptions
-               ? static_cast<const circle::UniqueOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::UniqueOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::ReverseV2Options *builtin_options_as_ReverseV2Options() const
   {
     return builtin_options_type() == circle::BuiltinOptions_ReverseV2Options
-               ? static_cast<const circle::ReverseV2Options *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::ReverseV2Options *>(builtin_options())
+             : nullptr;
   }
   const circle::AddNOptions *builtin_options_as_AddNOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_AddNOptions
-               ? static_cast<const circle::AddNOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::AddNOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::GatherNdOptions *builtin_options_as_GatherNdOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_GatherNdOptions
-               ? static_cast<const circle::GatherNdOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::GatherNdOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::CosOptions *builtin_options_as_CosOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_CosOptions
-               ? static_cast<const circle::CosOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::CosOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::WhereOptions *builtin_options_as_WhereOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_WhereOptions
-               ? static_cast<const circle::WhereOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::WhereOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::RankOptions *builtin_options_as_RankOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_RankOptions
-               ? static_cast<const circle::RankOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::RankOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::ReverseSequenceOptions *builtin_options_as_ReverseSequenceOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_ReverseSequenceOptions
-               ? static_cast<const circle::ReverseSequenceOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::ReverseSequenceOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::MatrixDiagOptions *builtin_options_as_MatrixDiagOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_MatrixDiagOptions
-               ? static_cast<const circle::MatrixDiagOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::MatrixDiagOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::QuantizeOptions *builtin_options_as_QuantizeOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_QuantizeOptions
-               ? static_cast<const circle::QuantizeOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::QuantizeOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::MatrixSetDiagOptions *builtin_options_as_MatrixSetDiagOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_MatrixSetDiagOptions
-               ? static_cast<const circle::MatrixSetDiagOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::MatrixSetDiagOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::HardSwishOptions *builtin_options_as_HardSwishOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_HardSwishOptions
-               ? static_cast<const circle::HardSwishOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::HardSwishOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::IfOptions *builtin_options_as_IfOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_IfOptions
-               ? static_cast<const circle::IfOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::IfOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::WhileOptions *builtin_options_as_WhileOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_WhileOptions
-               ? static_cast<const circle::WhileOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::WhileOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::DepthToSpaceOptions *builtin_options_as_DepthToSpaceOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_DepthToSpaceOptions
-               ? static_cast<const circle::DepthToSpaceOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::DepthToSpaceOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::NonMaxSuppressionV4Options *builtin_options_as_NonMaxSuppressionV4Options() const
   {
     return builtin_options_type() == circle::BuiltinOptions_NonMaxSuppressionV4Options
-               ? static_cast<const circle::NonMaxSuppressionV4Options *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::NonMaxSuppressionV4Options *>(builtin_options())
+             : nullptr;
   }
   const circle::NonMaxSuppressionV5Options *builtin_options_as_NonMaxSuppressionV5Options() const
   {
     return builtin_options_type() == circle::BuiltinOptions_NonMaxSuppressionV5Options
-               ? static_cast<const circle::NonMaxSuppressionV5Options *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::NonMaxSuppressionV5Options *>(builtin_options())
+             : nullptr;
   }
   const circle::ScatterNdOptions *builtin_options_as_ScatterNdOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_ScatterNdOptions
-               ? static_cast<const circle::ScatterNdOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::ScatterNdOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::SelectV2Options *builtin_options_as_SelectV2Options() const
   {
     return builtin_options_type() == circle::BuiltinOptions_SelectV2Options
-               ? static_cast<const circle::SelectV2Options *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::SelectV2Options *>(builtin_options())
+             : nullptr;
   }
   const circle::DensifyOptions *builtin_options_as_DensifyOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_DensifyOptions
-               ? static_cast<const circle::DensifyOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::DensifyOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::SegmentSumOptions *builtin_options_as_SegmentSumOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_SegmentSumOptions
-               ? static_cast<const circle::SegmentSumOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::SegmentSumOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::BatchMatMulOptions *builtin_options_as_BatchMatMulOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_BatchMatMulOptions
-               ? static_cast<const circle::BatchMatMulOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::BatchMatMulOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::BCQGatherOptions *builtin_options_as_BCQGatherOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_BCQGatherOptions
-               ? static_cast<const circle::BCQGatherOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::BCQGatherOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::BCQFullyConnectedOptions *builtin_options_as_BCQFullyConnectedOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_BCQFullyConnectedOptions
-               ? static_cast<const circle::BCQFullyConnectedOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::BCQFullyConnectedOptions *>(builtin_options())
+             : nullptr;
   }
   const circle::InstanceNormOptions *builtin_options_as_InstanceNormOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_InstanceNormOptions
-               ? static_cast<const circle::InstanceNormOptions *>(builtin_options())
-               : nullptr;
+             ? static_cast<const circle::InstanceNormOptions *>(builtin_options())
+             : nullptr;
   }
   const flatbuffers::Vector<uint8_t> *custom_options() const
   {
@@ -9558,7 +9554,7 @@ struct OperatorBuilder
                             static_cast<int8_t>(custom_options_format), 0);
   }
   void add_mutating_variable_inputs(
-      flatbuffers::Offset<flatbuffers::Vector<uint8_t>> mutating_variable_inputs)
+    flatbuffers::Offset<flatbuffers::Vector<uint8_t>> mutating_variable_inputs)
   {
     fbb_.AddOffset(Operator::VT_MUTATING_VARIABLE_INPUTS, mutating_variable_inputs);
   }
@@ -9580,15 +9576,15 @@ struct OperatorBuilder
 };
 
 inline flatbuffers::Offset<Operator> CreateOperator(
-    flatbuffers::FlatBufferBuilder &_fbb, uint32_t opcode_index = 0,
-    flatbuffers::Offset<flatbuffers::Vector<int32_t>> inputs = 0,
-    flatbuffers::Offset<flatbuffers::Vector<int32_t>> outputs = 0,
-    circle::BuiltinOptions builtin_options_type = circle::BuiltinOptions_NONE,
-    flatbuffers::Offset<void> builtin_options = 0,
-    flatbuffers::Offset<flatbuffers::Vector<uint8_t>> custom_options = 0,
-    circle::CustomOptionsFormat custom_options_format = circle::CustomOptionsFormat_FLEXBUFFERS,
-    flatbuffers::Offset<flatbuffers::Vector<uint8_t>> mutating_variable_inputs = 0,
-    flatbuffers::Offset<flatbuffers::Vector<int32_t>> intermediates = 0)
+  flatbuffers::FlatBufferBuilder &_fbb, uint32_t opcode_index = 0,
+  flatbuffers::Offset<flatbuffers::Vector<int32_t>> inputs = 0,
+  flatbuffers::Offset<flatbuffers::Vector<int32_t>> outputs = 0,
+  circle::BuiltinOptions builtin_options_type = circle::BuiltinOptions_NONE,
+  flatbuffers::Offset<void> builtin_options = 0,
+  flatbuffers::Offset<flatbuffers::Vector<uint8_t>> custom_options = 0,
+  circle::CustomOptionsFormat custom_options_format = circle::CustomOptionsFormat_FLEXBUFFERS,
+  flatbuffers::Offset<flatbuffers::Vector<uint8_t>> mutating_variable_inputs = 0,
+  flatbuffers::Offset<flatbuffers::Vector<int32_t>> intermediates = 0)
 {
   OperatorBuilder builder_(_fbb);
   builder_.add_intermediates(intermediates);
@@ -9604,20 +9600,20 @@ inline flatbuffers::Offset<Operator> CreateOperator(
 }
 
 inline flatbuffers::Offset<Operator> CreateOperatorDirect(
-    flatbuffers::FlatBufferBuilder &_fbb, uint32_t opcode_index = 0,
-    const std::vector<int32_t> *inputs = nullptr, const std::vector<int32_t> *outputs = nullptr,
-    circle::BuiltinOptions builtin_options_type = circle::BuiltinOptions_NONE,
-    flatbuffers::Offset<void> builtin_options = 0,
-    const std::vector<uint8_t> *custom_options = nullptr,
-    circle::CustomOptionsFormat custom_options_format = circle::CustomOptionsFormat_FLEXBUFFERS,
-    const std::vector<uint8_t> *mutating_variable_inputs = nullptr,
-    const std::vector<int32_t> *intermediates = nullptr)
+  flatbuffers::FlatBufferBuilder &_fbb, uint32_t opcode_index = 0,
+  const std::vector<int32_t> *inputs = nullptr, const std::vector<int32_t> *outputs = nullptr,
+  circle::BuiltinOptions builtin_options_type = circle::BuiltinOptions_NONE,
+  flatbuffers::Offset<void> builtin_options = 0,
+  const std::vector<uint8_t> *custom_options = nullptr,
+  circle::CustomOptionsFormat custom_options_format = circle::CustomOptionsFormat_FLEXBUFFERS,
+  const std::vector<uint8_t> *mutating_variable_inputs = nullptr,
+  const std::vector<int32_t> *intermediates = nullptr)
 {
   auto inputs__ = inputs ? _fbb.CreateVector<int32_t>(*inputs) : 0;
   auto outputs__ = outputs ? _fbb.CreateVector<int32_t>(*outputs) : 0;
   auto custom_options__ = custom_options ? _fbb.CreateVector<uint8_t>(*custom_options) : 0;
   auto mutating_variable_inputs__ =
-      mutating_variable_inputs ? _fbb.CreateVector<uint8_t>(*mutating_variable_inputs) : 0;
+    mutating_variable_inputs ? _fbb.CreateVector<uint8_t>(*mutating_variable_inputs) : 0;
   auto intermediates__ = intermediates ? _fbb.CreateVector<int32_t>(*intermediates) : 0;
   return circle::CreateOperator(_fbb, opcode_index, inputs__, outputs__, builtin_options_type,
                                 builtin_options, custom_options__, custom_options_format,
@@ -9651,7 +9647,7 @@ struct SubGraph FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
   const flatbuffers::Vector<flatbuffers::Offset<circle::Operator>> *operators() const
   {
     return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<circle::Operator>> *>(
-        VT_OPERATORS);
+      VT_OPERATORS);
   }
   const flatbuffers::String *name() const
   {
@@ -9693,7 +9689,7 @@ struct SubGraphBuilder
     fbb_.AddOffset(SubGraph::VT_OUTPUTS, outputs);
   }
   void add_operators(
-      flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<circle::Operator>>> operators)
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<circle::Operator>>> operators)
   {
     fbb_.AddOffset(SubGraph::VT_OPERATORS, operators);
   }
@@ -9719,13 +9715,13 @@ struct SubGraphBuilder
 };
 
 inline flatbuffers::Offset<SubGraph> CreateSubGraph(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<circle::Tensor>>> tensors = 0,
-    flatbuffers::Offset<flatbuffers::Vector<int32_t>> inputs = 0,
-    flatbuffers::Offset<flatbuffers::Vector<int32_t>> outputs = 0,
-    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<circle::Operator>>> operators = 0,
-    flatbuffers::Offset<flatbuffers::String> name = 0,
-    circle::DataFormat data_format = circle::DataFormat_CHANNELS_LAST)
+  flatbuffers::FlatBufferBuilder &_fbb,
+  flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<circle::Tensor>>> tensors = 0,
+  flatbuffers::Offset<flatbuffers::Vector<int32_t>> inputs = 0,
+  flatbuffers::Offset<flatbuffers::Vector<int32_t>> outputs = 0,
+  flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<circle::Operator>>> operators = 0,
+  flatbuffers::Offset<flatbuffers::String> name = 0,
+  circle::DataFormat data_format = circle::DataFormat_CHANNELS_LAST)
 {
   SubGraphBuilder builder_(_fbb);
   builder_.add_name(name);
@@ -9738,17 +9734,17 @@ inline flatbuffers::Offset<SubGraph> CreateSubGraph(
 }
 
 inline flatbuffers::Offset<SubGraph> CreateSubGraphDirect(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    const std::vector<flatbuffers::Offset<circle::Tensor>> *tensors = nullptr,
-    const std::vector<int32_t> *inputs = nullptr, const std::vector<int32_t> *outputs = nullptr,
-    const std::vector<flatbuffers::Offset<circle::Operator>> *operators = nullptr,
-    const char *name = nullptr, circle::DataFormat data_format = circle::DataFormat_CHANNELS_LAST)
+  flatbuffers::FlatBufferBuilder &_fbb,
+  const std::vector<flatbuffers::Offset<circle::Tensor>> *tensors = nullptr,
+  const std::vector<int32_t> *inputs = nullptr, const std::vector<int32_t> *outputs = nullptr,
+  const std::vector<flatbuffers::Offset<circle::Operator>> *operators = nullptr,
+  const char *name = nullptr, circle::DataFormat data_format = circle::DataFormat_CHANNELS_LAST)
 {
   auto tensors__ = tensors ? _fbb.CreateVector<flatbuffers::Offset<circle::Tensor>>(*tensors) : 0;
   auto inputs__ = inputs ? _fbb.CreateVector<int32_t>(*inputs) : 0;
   auto outputs__ = outputs ? _fbb.CreateVector<int32_t>(*outputs) : 0;
   auto operators__ =
-      operators ? _fbb.CreateVector<flatbuffers::Offset<circle::Operator>>(*operators) : 0;
+    operators ? _fbb.CreateVector<flatbuffers::Offset<circle::Operator>>(*operators) : 0;
   auto name__ = name ? _fbb.CreateString(name) : 0;
   return circle::CreateSubGraph(_fbb, tensors__, inputs__, outputs__, operators__, name__,
                                 data_format);
@@ -9893,12 +9889,12 @@ struct Model FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
   const flatbuffers::Vector<flatbuffers::Offset<circle::OperatorCode>> *operator_codes() const
   {
     return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<circle::OperatorCode>> *>(
-        VT_OPERATOR_CODES);
+      VT_OPERATOR_CODES);
   }
   const flatbuffers::Vector<flatbuffers::Offset<circle::SubGraph>> *subgraphs() const
   {
     return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<circle::SubGraph>> *>(
-        VT_SUBGRAPHS);
+      VT_SUBGRAPHS);
   }
   const flatbuffers::String *description() const
   {
@@ -9915,7 +9911,7 @@ struct Model FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
   const flatbuffers::Vector<flatbuffers::Offset<circle::Metadata>> *metadata() const
   {
     return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<circle::Metadata>> *>(
-        VT_METADATA);
+      VT_METADATA);
   }
   bool Verify(flatbuffers::Verifier &verifier) const
   {
@@ -9939,13 +9935,13 @@ struct ModelBuilder
   flatbuffers::uoffset_t start_;
   void add_version(uint32_t version) { fbb_.AddElement<uint32_t>(Model::VT_VERSION, version, 0); }
   void add_operator_codes(
-      flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<circle::OperatorCode>>>
-          operator_codes)
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<circle::OperatorCode>>>
+      operator_codes)
   {
     fbb_.AddOffset(Model::VT_OPERATOR_CODES, operator_codes);
   }
   void add_subgraphs(
-      flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<circle::SubGraph>>> subgraphs)
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<circle::SubGraph>>> subgraphs)
   {
     fbb_.AddOffset(Model::VT_SUBGRAPHS, subgraphs);
   }
@@ -9963,7 +9959,7 @@ struct ModelBuilder
     fbb_.AddOffset(Model::VT_METADATA_BUFFER, metadata_buffer);
   }
   void add_metadata(
-      flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<circle::Metadata>>> metadata)
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<circle::Metadata>>> metadata)
   {
     fbb_.AddOffset(Model::VT_METADATA, metadata);
   }
@@ -9981,14 +9977,14 @@ struct ModelBuilder
 };
 
 inline flatbuffers::Offset<Model> CreateModel(
-    flatbuffers::FlatBufferBuilder &_fbb, uint32_t version = 0,
-    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<circle::OperatorCode>>>
-        operator_codes = 0,
-    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<circle::SubGraph>>> subgraphs = 0,
-    flatbuffers::Offset<flatbuffers::String> description = 0,
-    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<circle::Buffer>>> buffers = 0,
-    flatbuffers::Offset<flatbuffers::Vector<int32_t>> metadata_buffer = 0,
-    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<circle::Metadata>>> metadata = 0)
+  flatbuffers::FlatBufferBuilder &_fbb, uint32_t version = 0,
+  flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<circle::OperatorCode>>>
+    operator_codes = 0,
+  flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<circle::SubGraph>>> subgraphs = 0,
+  flatbuffers::Offset<flatbuffers::String> description = 0,
+  flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<circle::Buffer>>> buffers = 0,
+  flatbuffers::Offset<flatbuffers::Vector<int32_t>> metadata_buffer = 0,
+  flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<circle::Metadata>>> metadata = 0)
 {
   ModelBuilder builder_(_fbb);
   builder_.add_metadata(metadata);
@@ -10002,24 +9998,24 @@ inline flatbuffers::Offset<Model> CreateModel(
 }
 
 inline flatbuffers::Offset<Model> CreateModelDirect(
-    flatbuffers::FlatBufferBuilder &_fbb, uint32_t version = 0,
-    const std::vector<flatbuffers::Offset<circle::OperatorCode>> *operator_codes = nullptr,
-    const std::vector<flatbuffers::Offset<circle::SubGraph>> *subgraphs = nullptr,
-    const char *description = nullptr,
-    const std::vector<flatbuffers::Offset<circle::Buffer>> *buffers = nullptr,
-    const std::vector<int32_t> *metadata_buffer = nullptr,
-    const std::vector<flatbuffers::Offset<circle::Metadata>> *metadata = nullptr)
+  flatbuffers::FlatBufferBuilder &_fbb, uint32_t version = 0,
+  const std::vector<flatbuffers::Offset<circle::OperatorCode>> *operator_codes = nullptr,
+  const std::vector<flatbuffers::Offset<circle::SubGraph>> *subgraphs = nullptr,
+  const char *description = nullptr,
+  const std::vector<flatbuffers::Offset<circle::Buffer>> *buffers = nullptr,
+  const std::vector<int32_t> *metadata_buffer = nullptr,
+  const std::vector<flatbuffers::Offset<circle::Metadata>> *metadata = nullptr)
 {
   auto operator_codes__ =
-      operator_codes ? _fbb.CreateVector<flatbuffers::Offset<circle::OperatorCode>>(*operator_codes)
-                     : 0;
+    operator_codes ? _fbb.CreateVector<flatbuffers::Offset<circle::OperatorCode>>(*operator_codes)
+                   : 0;
   auto subgraphs__ =
-      subgraphs ? _fbb.CreateVector<flatbuffers::Offset<circle::SubGraph>>(*subgraphs) : 0;
+    subgraphs ? _fbb.CreateVector<flatbuffers::Offset<circle::SubGraph>>(*subgraphs) : 0;
   auto description__ = description ? _fbb.CreateString(description) : 0;
   auto buffers__ = buffers ? _fbb.CreateVector<flatbuffers::Offset<circle::Buffer>>(*buffers) : 0;
   auto metadata_buffer__ = metadata_buffer ? _fbb.CreateVector<int32_t>(*metadata_buffer) : 0;
   auto metadata__ =
-      metadata ? _fbb.CreateVector<flatbuffers::Offset<circle::Metadata>>(*metadata) : 0;
+    metadata ? _fbb.CreateVector<flatbuffers::Offset<circle::Metadata>>(*metadata) : 0;
   return circle::CreateModel(_fbb, version, operator_codes__, subgraphs__, description__, buffers__,
                              metadata_buffer__, metadata__);
 }

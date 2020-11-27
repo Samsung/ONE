@@ -96,7 +96,7 @@ luci::CircleConst *shuffle_weight(luci::CircleFullyConnected *fc)
       for (uint32_t i = 0; i < MULTIPLE; i++)
       {
         new_weights->at<loco::DataType::FLOAT32>(index++) =
-            the_weights->at<loco::DataType::FLOAT32>((r * MULTIPLE + i) * cols + c);
+          the_weights->at<loco::DataType::FLOAT32>((r * MULTIPLE + i) * cols + c);
       }
     }
   }

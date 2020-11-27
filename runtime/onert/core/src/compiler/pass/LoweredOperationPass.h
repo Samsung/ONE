@@ -31,7 +31,7 @@ class LoweredOperationPass : public OperationPass
 {
 public:
   LoweredOperationPass(LoweredGraph &lowered_graph)
-      : OperationPass{lowered_graph.graph()}, _lowered_graph{lowered_graph}
+    : OperationPass{lowered_graph.graph()}, _lowered_graph{lowered_graph}
   {
     // DO NOTHING
   }

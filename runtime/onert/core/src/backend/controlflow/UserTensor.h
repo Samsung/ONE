@@ -39,7 +39,7 @@ class UserTensor : public IPortableTensor
 {
 public:
   UserTensor(const ir::OperandInfo &info, ir::Layout layout, uint8_t *buffer, size_t size)
-      : IPortableTensor{info}, _layout{layout}, _buffer{buffer}, _size{size}, _dynamic{false}
+    : IPortableTensor{info}, _layout{layout}, _buffer{buffer}, _size{size}, _dynamic{false}
   {
   }
 

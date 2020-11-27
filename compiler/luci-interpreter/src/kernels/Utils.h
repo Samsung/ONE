@@ -118,7 +118,7 @@ inline std::vector<double> getQuantizedConvolutionMultiplers(float input_scale,
   for (size_t i = 0; i < n; ++i)
   {
     effective_output_scales.push_back(
-        getQuantizedConvolutionMultipler(input_scale, filter_scale[i], output_scale));
+      getQuantizedConvolutionMultipler(input_scale, filter_scale[i], output_scale));
   }
   return effective_output_scales;
 }
@@ -237,7 +237,7 @@ public:
 
   // Build with the tensors in 'tensor_list'.
   explicit VectorOfQuantizedTensors(const std::vector<TensorT *> &tensor_list)
-      : VectorOfTensors<uint8_t, is_const>(tensor_list)
+    : VectorOfTensors<uint8_t, is_const>(tensor_list)
   {
     for (TensorT *tensor : tensor_list)
     {

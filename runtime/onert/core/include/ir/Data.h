@@ -75,10 +75,10 @@ class MMapedData final : public ExternalData
 public:
   MMapedData(int fd, const std::ptrdiff_t mmap_offset, const size_t mmap_size,
              const std::ptrdiff_t data_offset, const size_t data_size)
-      : ExternalData(nullptr, data_size),
-        _mmap_base(
-            static_cast<uint8_t *>(mmap(NULL, mmap_size, PROT_READ, MAP_PRIVATE, fd, mmap_offset))),
-        _mmap_size(mmap_size), _offset(data_offset - mmap_offset)
+    : ExternalData(nullptr, data_size),
+      _mmap_base(
+        static_cast<uint8_t *>(mmap(NULL, mmap_size, PROT_READ, MAP_PRIVATE, fd, mmap_offset))),
+      _mmap_size(mmap_size), _offset(data_offset - mmap_offset)
   {
     // DO NOTHING
   }

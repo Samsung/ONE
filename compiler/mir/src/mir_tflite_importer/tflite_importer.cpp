@@ -105,37 +105,37 @@ void TfliteImporter::import()
 }
 
 static const std::set<tflite::BuiltinOperator> supportedOperators = {
-    tflite::BuiltinOperator_ADD,
-    tflite::BuiltinOperator_AVERAGE_POOL_2D,
-    tflite::BuiltinOperator_CONCATENATION,
-    tflite::BuiltinOperator_CONV_2D,
-    tflite::BuiltinOperator_DEPTHWISE_CONV_2D,
-    tflite::BuiltinOperator_DIV,
-    tflite::BuiltinOperator_FULLY_CONNECTED,
-    tflite::BuiltinOperator_HARD_SWISH,
-    tflite::BuiltinOperator_LEAKY_RELU,
-    tflite::BuiltinOperator_LOGISTIC,
-    tflite::BuiltinOperator_MAX_POOL_2D,
-    tflite::BuiltinOperator_MAXIMUM,
-    tflite::BuiltinOperator_MEAN,
-    tflite::BuiltinOperator_MUL,
-    tflite::BuiltinOperator_PAD,
-    tflite::BuiltinOperator_RELU,
-    tflite::BuiltinOperator_RELU6,
-    tflite::BuiltinOperator_RESHAPE,
-    tflite::BuiltinOperator_RESIZE_NEAREST_NEIGHBOR,
-    tflite::BuiltinOperator_RSQRT,
-    tflite::BuiltinOperator_SHAPE,
-    tflite::BuiltinOperator_SLICE,
-    tflite::BuiltinOperator_SOFTMAX,
-    tflite::BuiltinOperator_SQRT,
-    tflite::BuiltinOperator_SQUARED_DIFFERENCE,
-    tflite::BuiltinOperator_SQUEEZE,
-    tflite::BuiltinOperator_STRIDED_SLICE,
-    tflite::BuiltinOperator_SUB,
-    tflite::BuiltinOperator_TANH,
-    tflite::BuiltinOperator_TRANSPOSE,
-    tflite::BuiltinOperator_TRANSPOSE_CONV,
+  tflite::BuiltinOperator_ADD,
+  tflite::BuiltinOperator_AVERAGE_POOL_2D,
+  tflite::BuiltinOperator_CONCATENATION,
+  tflite::BuiltinOperator_CONV_2D,
+  tflite::BuiltinOperator_DEPTHWISE_CONV_2D,
+  tflite::BuiltinOperator_DIV,
+  tflite::BuiltinOperator_FULLY_CONNECTED,
+  tflite::BuiltinOperator_HARD_SWISH,
+  tflite::BuiltinOperator_LEAKY_RELU,
+  tflite::BuiltinOperator_LOGISTIC,
+  tflite::BuiltinOperator_MAX_POOL_2D,
+  tflite::BuiltinOperator_MAXIMUM,
+  tflite::BuiltinOperator_MEAN,
+  tflite::BuiltinOperator_MUL,
+  tflite::BuiltinOperator_PAD,
+  tflite::BuiltinOperator_RELU,
+  tflite::BuiltinOperator_RELU6,
+  tflite::BuiltinOperator_RESHAPE,
+  tflite::BuiltinOperator_RESIZE_NEAREST_NEIGHBOR,
+  tflite::BuiltinOperator_RSQRT,
+  tflite::BuiltinOperator_SHAPE,
+  tflite::BuiltinOperator_SLICE,
+  tflite::BuiltinOperator_SOFTMAX,
+  tflite::BuiltinOperator_SQRT,
+  tflite::BuiltinOperator_SQUARED_DIFFERENCE,
+  tflite::BuiltinOperator_SQUEEZE,
+  tflite::BuiltinOperator_STRIDED_SLICE,
+  tflite::BuiltinOperator_SUB,
+  tflite::BuiltinOperator_TANH,
+  tflite::BuiltinOperator_TRANSPOSE,
+  tflite::BuiltinOperator_TRANSPOSE_CONV,
 };
 
 void TfliteImporter::collectUnsupportedOps()
@@ -268,8 +268,8 @@ void TfliteImporter::walkOperator(const tflite::SubGraphT *subgraph, const tflit
       outputs = _opCreator->convertConv2D(op->builtin_options.AsConv2DOptions(), inputs);
       break;
     case tflite::BuiltinOperator_DEPTHWISE_CONV_2D:
-      outputs = _opCreator->convertDepthwiseConv2D(op->builtin_options.AsDepthwiseConv2DOptions(),
-                                                   inputs);
+      outputs =
+        _opCreator->convertDepthwiseConv2D(op->builtin_options.AsDepthwiseConv2DOptions(), inputs);
       break;
     case tflite::BuiltinOperator_MAX_POOL_2D:
       outputs = _opCreator->convertMaxPool2D(op->builtin_options.AsPool2DOptions(), inputs);
@@ -279,21 +279,21 @@ void TfliteImporter::walkOperator(const tflite::SubGraphT *subgraph, const tflit
       break;
     case tflite::BuiltinOperator_CONCATENATION:
       outputs =
-          _opCreator->convertConcatenation(op->builtin_options.AsConcatenationOptions(), inputs);
+        _opCreator->convertConcatenation(op->builtin_options.AsConcatenationOptions(), inputs);
       break;
     case tflite::BuiltinOperator_RESHAPE:
       outputs = _opCreator->convertReshape(op->builtin_options.AsReshapeOptions(), inputs);
       break;
     case tflite::BuiltinOperator_RESIZE_NEAREST_NEIGHBOR:
       outputs = _opCreator->convertResizeNearestNeighbor(
-          op->builtin_options.AsResizeNearestNeighborOptions(), inputs);
+        op->builtin_options.AsResizeNearestNeighborOptions(), inputs);
       break;
     case tflite::BuiltinOperator_MEAN:
       outputs = _opCreator->convertMean(op->builtin_options.AsReducerOptions(), inputs);
       break;
     case tflite::BuiltinOperator_FULLY_CONNECTED:
       outputs =
-          _opCreator->convertFullyConnected(op->builtin_options.AsFullyConnectedOptions(), inputs);
+        _opCreator->convertFullyConnected(op->builtin_options.AsFullyConnectedOptions(), inputs);
       break;
     case tflite::BuiltinOperator_SOFTMAX:
       outputs = _opCreator->convertSoftmax(op->builtin_options.AsSoftmaxOptions(), inputs);
@@ -333,7 +333,7 @@ void TfliteImporter::walkOperator(const tflite::SubGraphT *subgraph, const tflit
       break;
     case tflite::BuiltinOperator_TRANSPOSE_CONV:
       outputs =
-          _opCreator->convertTransposeConv(op->builtin_options.AsTransposeConvOptions(), inputs);
+        _opCreator->convertTransposeConv(op->builtin_options.AsTransposeConvOptions(), inputs);
       break;
     case tflite::BuiltinOperator_PAD:
       outputs = _opCreator->convertPad(op->builtin_options.AsPadOptions(), inputs);
@@ -352,7 +352,7 @@ void TfliteImporter::walkOperator(const tflite::SubGraphT *subgraph, const tflit
       break;
     case tflite::BuiltinOperator_STRIDED_SLICE:
       outputs =
-          _opCreator->convertStridedSlice(op->builtin_options.AsStridedSliceOptions(), inputs);
+        _opCreator->convertStridedSlice(op->builtin_options.AsStridedSliceOptions(), inputs);
       break;
     case tflite::BuiltinOperator_LEAKY_RELU:
       outputs = _opCreator->convertLeakyReLU(op->builtin_options.AsLeakyReluOptions(), inputs);

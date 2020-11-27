@@ -31,7 +31,7 @@ void MatrixBandPart::accept(OperationVisitor &v) const { v.visit(*this); }
 
 MatrixBandPart::MatrixBandPart(const OperandIndexSequence &inputs,
                                const OperandIndexSequence &outputs)
-    : Operation{OperandConstraint::createExact(3u), inputs, outputs}
+  : Operation{OperandConstraint::createExact(3u), inputs, outputs}
 {
 }
 

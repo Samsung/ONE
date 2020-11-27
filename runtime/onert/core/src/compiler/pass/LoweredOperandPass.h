@@ -31,7 +31,7 @@ class LoweredOperandPass : public OperandPass
 {
 public:
   LoweredOperandPass(compiler::LoweredGraph &lowered_graph)
-      : OperandPass{lowered_graph.graph()}, _lowered_graph{lowered_graph}
+    : OperandPass{lowered_graph.graph()}, _lowered_graph{lowered_graph}
   {
     // DO NOTHING
   }

@@ -81,8 +81,8 @@ luci::CircleConst *dequantized_const_node(luci::CircleConst *const_node)
         qd = 0;
 
       new_const_node->at<loco::DataType::FLOAT32>(i) =
-          (float)(const_node->at<loco::DataType::S8>(i) - const_node->quantparam()->zerop.at(qd)) *
-          const_node->quantparam()->scale.at(qd);
+        (float)(const_node->at<loco::DataType::S8>(i) - const_node->quantparam()->zerop.at(qd)) *
+        const_node->quantparam()->scale.at(qd);
     }
   }
   else
@@ -94,9 +94,9 @@ luci::CircleConst *dequantized_const_node(luci::CircleConst *const_node)
         qd = 0;
 
       new_const_node->at<loco::DataType::FLOAT32>(i) =
-          (float)((int)const_node->at<loco::DataType::U8>(i) -
-                  const_node->quantparam()->zerop.at(qd)) *
-          const_node->quantparam()->scale.at(qd);
+        (float)((int)const_node->at<loco::DataType::U8>(i) -
+                const_node->quantparam()->zerop.at(qd)) *
+        const_node->quantparam()->scale.at(qd);
     }
   }
 

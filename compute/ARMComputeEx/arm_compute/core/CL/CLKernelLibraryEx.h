@@ -255,14 +255,14 @@ private:
   cl::Device _device;       /**< Underlying CL device. */
   std::string _kernel_path; /**< Path to the kernels folder. */
   mutable std::map<std::string, const Program>
-      _programs_map; /**< Map with all already loaded program data. */
+    _programs_map; /**< Map with all already loaded program data. */
   mutable std::map<std::string, cl::Program>
-      _built_programs_map; /**< Map with all already built program data. */
+    _built_programs_map; /**< Map with all already built program data. */
   static const std::map<std::string, std::string>
-      _kernel_program_map; /**< Map that associates kernel names with programs. */
+    _kernel_program_map; /**< Map that associates kernel names with programs. */
   static const std::map<std::string, std::string>
-      _program_source_map; /**< Contains sources for all programs.
-                                Used for compile-time kernel inclusion. >*/
+    _program_source_map; /**< Contains sources for all programs.
+                              Used for compile-time kernel inclusion. >*/
 };
 }
 #endif /* __ARM_COMPUTE_CLKERNELLIBRARY_EX_H__ */

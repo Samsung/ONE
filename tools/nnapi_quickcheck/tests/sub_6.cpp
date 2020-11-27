@@ -107,10 +107,10 @@ TEST(NNAPI_Quickcheck_sub_6, simple_test)
   const uint32_t left_size = LEFT_N * LEFT_C * LEFT_H * LEFT_W;
   const uint32_t right_size = RIGHT_N * RIGHT_C * RIGHT_H * RIGHT_W;
   float left_data[left_size] = {
-      0.0f,
+    0.0f,
   };
   float right_data[right_size] = {
-      0.0f,
+    0.0f,
   };
 
   // Fill left data with random data

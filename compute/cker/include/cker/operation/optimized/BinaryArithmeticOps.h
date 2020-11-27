@@ -130,12 +130,12 @@ inline int32_t quant8_sum(const BinaryArithmeticOpParam &params, const uint8_t i
   const int32_t shifted_input1_val = input1_val * (1 << params.left_shift);
   const int32_t shifted_input2_val = input2_val * (1 << params.left_shift);
   const int32_t scaled_input1_val = MultiplyByQuantizedMultiplierSmallerThanOneExp(
-      shifted_input1_val, params.input1_multiplier, params.input1_shift);
+    shifted_input1_val, params.input1_multiplier, params.input1_shift);
   const int32_t scaled_input2_val = MultiplyByQuantizedMultiplierSmallerThanOneExp(
-      shifted_input2_val, params.input2_multiplier, params.input2_shift);
+    shifted_input2_val, params.input2_multiplier, params.input2_shift);
   const int32_t raw_sum = scaled_input1_val + scaled_input2_val;
   const int32_t raw_output = MultiplyByQuantizedMultiplierSmallerThanOneExp(
-                                 raw_sum, params.output_multiplier, params.output_shift) +
+                               raw_sum, params.output_multiplier, params.output_shift) +
                              params.output_offset;
   const int32_t clamped_output = std::min(params.quantized_activation_max,
                                           std::max(params.quantized_activation_min, raw_output));
@@ -192,9 +192,9 @@ inline void AddElementwiseQuant8(int size, const BinaryArithmeticOpParam &params
     const int16x4_t s1_narrowed = vmovn_s32(s1);
     const int16x4_t s2_narrowed = vmovn_s32(s2);
     const int16x8_t s =
-        vaddq_s16(vcombine_s16(s1_narrowed, s2_narrowed), vdupq_n_s16(params.output_offset));
-    const uint8x8_t clamped = vmax_u8(output_activation_min_vector,
-                                      vmin_u8(output_activation_max_vector, vqmovun_s16(s)));
+      vaddq_s16(vcombine_s16(s1_narrowed, s2_narrowed), vdupq_n_s16(params.output_offset));
+    const uint8x8_t clamped =
+      vmax_u8(output_activation_min_vector, vmin_u8(output_activation_max_vector, vqmovun_s16(s)));
     vst1_u8(output_data + i, clamped);
   }
 #endif // NEON
@@ -205,12 +205,12 @@ inline void AddElementwiseQuant8(int size, const BinaryArithmeticOpParam &params
     const int32_t shifted_input1_val = input1_val * (1 << params.left_shift);
     const int32_t shifted_input2_val = input2_val * (1 << params.left_shift);
     const int32_t scaled_input1_val = MultiplyByQuantizedMultiplierSmallerThanOneExp(
-        shifted_input1_val, params.input1_multiplier, params.input1_shift);
+      shifted_input1_val, params.input1_multiplier, params.input1_shift);
     const int32_t scaled_input2_val = MultiplyByQuantizedMultiplierSmallerThanOneExp(
-        shifted_input2_val, params.input2_multiplier, params.input2_shift);
+      shifted_input2_val, params.input2_multiplier, params.input2_shift);
     const int32_t raw_sum = scaled_input1_val + scaled_input2_val;
     const int32_t raw_output = MultiplyByQuantizedMultiplierSmallerThanOneExp(
-                                   raw_sum, params.output_multiplier, params.output_shift) +
+                                 raw_sum, params.output_multiplier, params.output_shift) +
                                params.output_offset;
     const int32_t clamped_output = std::min(params.quantized_activation_max,
                                             std::max(params.quantized_activation_min, raw_output));
@@ -387,7 +387,7 @@ inline void BinaryOpElementwise(int size, const BinaryArithmeticOpParam &params,
     auto a2 = vld1q_f32(input2_data + i);
     auto x = OPERATOR::calculate(a1, a2); // vaddq
     auto x_clamped =
-        ACTIVATION::applyCeiling(ACTIVATION::applyFloor(x, activation_min), activation_max);
+      ACTIVATION::applyCeiling(ACTIVATION::applyFloor(x, activation_min), activation_max);
     vst1q_f32(output_data + i, x_clamped);
   }
 #endif // USE_NEON
@@ -395,7 +395,7 @@ inline void BinaryOpElementwise(int size, const BinaryArithmeticOpParam &params,
   {
     auto x = OPERATOR::calculate(input1_data[i], input2_data[i]);
     output_data[i] = ACTIVATION::applyCeiling(
-        ACTIVATION::applyFloor(x, params.float_activation_min), params.float_activation_max);
+      ACTIVATION::applyFloor(x, params.float_activation_min), params.float_activation_max);
   }
 }
 
@@ -441,7 +441,7 @@ inline void BinaryOpScalarBroadcast(int size, const BinaryArithmeticOpParam &par
     auto a2 = vld1q_f32(input2_data + i);
     auto x = OPERATOR::calculate(broadcast_value_dup, a2);
     auto x_clamped =
-        ACTIVATION::applyCeiling(ACTIVATION::applyFloor(x, activation_min), activation_max);
+      ACTIVATION::applyCeiling(ACTIVATION::applyFloor(x, activation_min), activation_max);
     vst1q_f32(output_data + i, x_clamped);
   }
 #endif // USE_NEON
@@ -449,13 +449,13 @@ inline void BinaryOpScalarBroadcast(int size, const BinaryArithmeticOpParam &par
   {
     auto x = OPERATOR::calculate(broadcast_value, input2_data[i]);
     output_data[i] = ACTIVATION::applyCeiling(
-        ACTIVATION::applyFloor(x, params.float_activation_min), params.float_activation_max);
+      ACTIVATION::applyFloor(x, params.float_activation_min), params.float_activation_max);
   }
 }
 
 using BinaryOpImplFloatFuncs =
-    std::pair<void (*)(int, const BinaryArithmeticOpParam &, const float *, const float *, float *),
-              void (*)(int, const BinaryArithmeticOpParam &, const float, const float *, float *)>;
+  std::pair<void (*)(int, const BinaryArithmeticOpParam &, const float *, const float *, float *),
+            void (*)(int, const BinaryArithmeticOpParam &, const float, const float *, float *)>;
 
 template <class FUNC>
 inline BinaryOpImplFloatFuncs
@@ -514,23 +514,22 @@ inline void BroadcastAddDispatchQuant8(const BinaryArithmeticOpParam &params,
   if (params.broadcast_category == BroadcastableOpCategory::kGenericBroadcast)
   {
     const std::function<uint8_t(const BinaryArithmeticOpParam &, const uint8_t &, const uint8_t &)>
-        fn = [](const BinaryArithmeticOpParam &params, const uint8_t &a,
-                const uint8_t &b) -> uint8_t {
+      fn =
+        [](const BinaryArithmeticOpParam &params, const uint8_t &a, const uint8_t &b) -> uint8_t {
       return static_cast<uint8_t>(quant8_sum(params, a, b));
     };
-    reference::BroadcastBinaryArithmeticOpSlowQuant8(params, input1_shape, input1_data,
-                                                     input2_shape, input2_data, output_shape,
-                                                     output_data, fn);
+    reference::BroadcastBinaryArithmeticOpSlowQuant8(
+      params, input1_shape, input1_data, input2_shape, input2_data, output_shape, output_data, fn);
   }
   else
   {
     BinaryBroadcastFiveFold(
-        params, params.broadcast_category == BroadcastableOpCategory::kSecondInputBroadcastsFast,
-        input1_shape, input1_data, input2_shape, input2_data, output_shape, output_data,
-        static_cast<void (*)(int, const BinaryArithmeticOpParam &, const uint8_t *, const uint8_t *,
-                             uint8_t *)>(AddElementwiseQuant8),
-        static_cast<void (*)(int, const BinaryArithmeticOpParam &, uint8_t, const uint8_t *,
-                             uint8_t *)>(AddScalarBroadcastQuant8));
+      params, params.broadcast_category == BroadcastableOpCategory::kSecondInputBroadcastsFast,
+      input1_shape, input1_data, input2_shape, input2_data, output_shape, output_data,
+      static_cast<void (*)(int, const BinaryArithmeticOpParam &, const uint8_t *, const uint8_t *,
+                           uint8_t *)>(AddElementwiseQuant8),
+      static_cast<void (*)(int, const BinaryArithmeticOpParam &, uint8_t, const uint8_t *,
+                           uint8_t *)>(AddScalarBroadcastQuant8));
   }
 }
 
@@ -542,7 +541,7 @@ inline void BroadcastAddDispatch(const BinaryArithmeticOpParam &params, const Sh
   if (params.broadcast_category == BroadcastableOpCategory::kGenericBroadcast)
   {
     const std::function<float(const float &, const float &)> fn =
-        [](const float &a, const float &b) -> float { return a + b; };
+      [](const float &a, const float &b) -> float { return a + b; };
     reference::BroadcastBinaryArithmeticOpSlow(params, input1_shape, input1_data, input2_shape,
                                                input2_data, output_shape, output_data, fn);
   }
@@ -551,9 +550,9 @@ inline void BroadcastAddDispatch(const BinaryArithmeticOpParam &params, const Sh
     auto implFuncs = getBinaryOpWithActivationImplFloat<BinaryOpFuncAddFloat>(params);
 
     BinaryBroadcastFiveFold(
-        params, params.broadcast_category == BroadcastableOpCategory::kSecondInputBroadcastsFast,
-        input1_shape, input1_data, input2_shape, input2_data, output_shape, output_data,
-        implFuncs.first, implFuncs.second);
+      params, params.broadcast_category == BroadcastableOpCategory::kSecondInputBroadcastsFast,
+      input1_shape, input1_data, input2_shape, input2_data, output_shape, output_data,
+      implFuncs.first, implFuncs.second);
   }
 }
 
@@ -580,14 +579,14 @@ inline void BroadcastSubDispatch(const BinaryArithmeticOpParam &params, const Sh
   else if (params.broadcast_category == BroadcastableOpCategory::kSecondInputBroadcastsFast)
   {
     auto implFuncs =
-        getBinaryOpWithActivationImplFloat<BinaryOpFuncSwapArgs<BinaryOpFuncSubFloat>>(params);
+      getBinaryOpWithActivationImplFloat<BinaryOpFuncSwapArgs<BinaryOpFuncSubFloat>>(params);
     BinaryBroadcastFiveFold(params, true, input1_shape, input1_data, input2_shape, input2_data,
                             output_shape, output_data, implFuncs.first, implFuncs.second);
   }
   else
   {
     const std::function<float(const float &, const float &)> fn =
-        [](const float &a, const float &b) -> float { return a - b; };
+      [](const float &a, const float &b) -> float { return a - b; };
     reference::BroadcastBinaryArithmeticOpSlow(params, input1_shape, input1_data, input2_shape,
                                                input2_data, output_shape, output_data, fn);
   }
@@ -599,11 +598,11 @@ inline int32_t quant8_mul(const BinaryArithmeticOpParam &params, const uint8_t i
   const int32_t input1_val = params.input1_offset + input1_data;
   const int32_t input2_val = params.input2_offset + input2_data;
   const int32_t unclamped_result =
-      params.output_offset + MultiplyByQuantizedMultiplier(input1_val * input2_val,
-                                                           params.output_multiplier,
-                                                           params.output_shift);
+    params.output_offset + MultiplyByQuantizedMultiplier(input1_val * input2_val,
+                                                         params.output_multiplier,
+                                                         params.output_shift);
   const int32_t clamped_output = std::min(
-      params.quantized_activation_max, std::max(params.quantized_activation_min, unclamped_result));
+    params.quantized_activation_max, std::max(params.quantized_activation_min, unclamped_result));
 
   return clamped_output;
 }
@@ -652,8 +651,8 @@ inline void MulElementwiseQuant8(int size, const BinaryArithmeticOpParam &params
     const auto p1_narrowed = vqmovn_s32(p1);
     const auto p2_narrowed = vqmovn_s32(p2);
     const auto p = vaddq_s16(vcombine_s16(p1_narrowed, p2_narrowed), output_offset_vector);
-    const auto clamped = vmax_u8(output_activation_min_vector,
-                                 vmin_u8(output_activation_max_vector, vqmovun_s16(p)));
+    const auto clamped =
+      vmax_u8(output_activation_min_vector, vmin_u8(output_activation_max_vector, vqmovun_s16(p)));
     vst1_u8(output_data + i, clamped);
   }
 #endif // NEON
@@ -663,12 +662,11 @@ inline void MulElementwiseQuant8(int size, const BinaryArithmeticOpParam &params
     const int32_t input1_val = params.input1_offset + input1_data[i];
     const int32_t input2_val = params.input2_offset + input2_data[i];
     const int32_t unclamped_result =
-        params.output_offset + MultiplyByQuantizedMultiplier(input1_val * input2_val,
-                                                             params.output_multiplier,
-                                                             params.output_shift);
-    const int32_t clamped_output =
-        std::min(params.quantized_activation_max,
-                 std::max(params.quantized_activation_min, unclamped_result));
+      params.output_offset + MultiplyByQuantizedMultiplier(input1_val * input2_val,
+                                                           params.output_multiplier,
+                                                           params.output_shift);
+    const int32_t clamped_output = std::min(
+      params.quantized_activation_max, std::max(params.quantized_activation_min, unclamped_result));
     output_data[i] = static_cast<uint8_t>(clamped_output);
   }
 }
@@ -711,22 +709,21 @@ inline void BroadcastMulDispatchQuant8(const BinaryArithmeticOpParam &params,
   if (params.broadcast_category == BroadcastableOpCategory::kGenericBroadcast)
   {
     const std::function<uint8_t(const BinaryArithmeticOpParam &, const uint8_t &, const uint8_t &)>
-        fn = [](const BinaryArithmeticOpParam &params, const uint8_t &a,
-                const uint8_t &b) -> uint8_t {
+      fn =
+        [](const BinaryArithmeticOpParam &params, const uint8_t &a, const uint8_t &b) -> uint8_t {
       return static_cast<uint8_t>(quant8_mul(params, a, b));
     };
-    reference::BroadcastBinaryArithmeticOpSlowQuant8(params, input1_shape, input1_data,
-                                                     input2_shape, input2_data, output_shape,
-                                                     output_data, fn);
+    reference::BroadcastBinaryArithmeticOpSlowQuant8(
+      params, input1_shape, input1_data, input2_shape, input2_data, output_shape, output_data, fn);
     return;
   }
   BinaryBroadcastFiveFold(
-      params, params.broadcast_category == BroadcastableOpCategory::kSecondInputBroadcastsFast,
-      input1_shape, input1_data, input2_shape, input2_data, output_shape, output_data,
-      static_cast<void (*)(int, const BinaryArithmeticOpParam &, const uint8_t *, const uint8_t *,
-                           uint8_t *)>(MulElementwiseQuant8),
-      static_cast<void (*)(int, const BinaryArithmeticOpParam &, uint8_t, const uint8_t *,
-                           uint8_t *)>(MulSimpleBroadcastQuant8));
+    params, params.broadcast_category == BroadcastableOpCategory::kSecondInputBroadcastsFast,
+    input1_shape, input1_data, input2_shape, input2_data, output_shape, output_data,
+    static_cast<void (*)(int, const BinaryArithmeticOpParam &, const uint8_t *, const uint8_t *,
+                         uint8_t *)>(MulElementwiseQuant8),
+    static_cast<void (*)(int, const BinaryArithmeticOpParam &, uint8_t, const uint8_t *,
+                         uint8_t *)>(MulSimpleBroadcastQuant8));
 }
 
 inline void BroadcastMulDispatch(const BinaryArithmeticOpParam &params, const Shape &input1_shape,
@@ -738,16 +735,16 @@ inline void BroadcastMulDispatch(const BinaryArithmeticOpParam &params, const Sh
   {
     // TODO: Use GetBinaryArithmeticFn
     const std::function<float(const float &, const float &)> fn =
-        [](const float &a, const float &b) -> float { return a * b; };
+      [](const float &a, const float &b) -> float { return a * b; };
     reference::BroadcastBinaryArithmeticOpSlow(params, input1_shape, input1_data, input2_shape,
                                                input2_data, output_shape, output_data, fn);
     return;
   }
   auto implFuncs = getBinaryOpWithActivationImplFloat<BinaryOpFuncMulFloat>(params);
   BinaryBroadcastFiveFold(
-      params, params.broadcast_category == BroadcastableOpCategory::kSecondInputBroadcastsFast,
-      input1_shape, input1_data, input2_shape, input2_data, output_shape, output_data,
-      implFuncs.first, implFuncs.second);
+    params, params.broadcast_category == BroadcastableOpCategory::kSecondInputBroadcastsFast,
+    input1_shape, input1_data, input2_shape, input2_data, output_shape, output_data,
+    implFuncs.first, implFuncs.second);
 }
 
 inline void Div(const BinaryArithmeticOpParam &params, const Shape &input1_shape,
@@ -760,7 +757,7 @@ inline void Div(const BinaryArithmeticOpParam &params, const Shape &input1_shape
   (*implFuncs.first)(flat_size, params, input1_data, input2_data, output_data);
 #else
   const std::function<float(const float &, const float &)> fn =
-      [](const float &a, const float &b) -> float { return a / b; };
+    [](const float &a, const float &b) -> float { return a / b; };
   reference::BinaryArithmeticOp(params, input1_shape, input1_data, input2_shape, input2_data,
                                 output_shape, output_data, fn);
 #endif // __aarch64__
@@ -781,7 +778,7 @@ inline void BroadcastDivDispatch(const BinaryArithmeticOpParam &params, const Sh
   else if (params.broadcast_category == BroadcastableOpCategory::kSecondInputBroadcastsFast)
   {
     auto implFuncs =
-        getBinaryOpWithActivationImplFloat<BinaryOpFuncSwapArgs<BinaryOpFuncDivFloat>>(params);
+      getBinaryOpWithActivationImplFloat<BinaryOpFuncSwapArgs<BinaryOpFuncDivFloat>>(params);
     BinaryBroadcastFiveFold(params, true, input1_shape, input1_data, input2_shape, input2_data,
                             output_shape, output_data, implFuncs.first, implFuncs.second);
   }
@@ -789,7 +786,7 @@ inline void BroadcastDivDispatch(const BinaryArithmeticOpParam &params, const Sh
 #endif // __aarch64__
   {
     const std::function<float(const float &, const float &)> fn =
-        [](const float &a, const float &b) -> float { return a / b; };
+      [](const float &a, const float &b) -> float { return a / b; };
     reference::BroadcastBinaryArithmeticOpSlow(params, input1_shape, input1_data, input2_shape,
                                                input2_data, output_shape, output_data, fn);
   }

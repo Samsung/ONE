@@ -56,7 +56,7 @@ void Check<uint8_t>(std::initializer_list<int32_t> input_shape,
   const float quantized_tolerance = getTolerance(-8, 127.f / 16.f, 255);
   std::pair<float, int32_t> quant_param = quantizationParams<uint8_t>(-8, 127.f / 16.f);
   Tensor input_tensor =
-      makeInputTensor<DataType::U8>(input_shape, quant_param.first, quant_param.second, input_data);
+    makeInputTensor<DataType::U8>(input_shape, quant_param.first, quant_param.second, input_data);
   Tensor output_tensor = makeOutputTensor(DataType::U8, quant_param.first, quant_param.second);
 
   LeakyReluParams params{};
@@ -84,13 +84,13 @@ TYPED_TEST(LeakReluTest, Simple)
   Check<TypeParam>(/*input_shape=*/{2, 3}, /*output_shape=*/{2, 3},
                    /*input_data=*/
                    {
-                       0.0f, 1.0f, 3.0f,   // Row 1
-                       1.0f, -1.0f, -2.0f, // Row 2
+                     0.0f, 1.0f, 3.0f,   // Row 1
+                     1.0f, -1.0f, -2.0f, // Row 2
                    },
                    /*output_data=*/
                    {
-                       0.0f, 1.0f, 3.0f,   // Row 1
-                       1.0f, -0.5f, -1.0f, // Row 2
+                     0.0f, 1.0f, 3.0f,   // Row 1
+                     1.0f, -0.5f, -1.0f, // Row 2
                    },
                    /*alpha=*/0.5f);
 
@@ -100,8 +100,8 @@ TYPED_TEST(LeakReluTest, Simple)
 TEST(LeakReluTest, IvalidInputOutputType_NEG)
 {
   Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({2, 3}, {
-                                                                       0.0f, 1.0f, 3.0f,   // Row 1
-                                                                       1.0f, -1.0f, -2.0f, // Row 2
+                                                                     0.0f, 1.0f, 3.0f,   // Row 1
+                                                                     1.0f, -1.0f, -2.0f, // Row 2
                                                                    });
   Tensor output_tensor = makeOutputTensor(DataType::U8);
 

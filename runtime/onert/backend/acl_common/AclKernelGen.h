@@ -34,14 +34,14 @@ void enableDimCorrection(IACLTensor *tensor)
 {
   size_t input_rank = tensor->num_dimensions();
   const_cast<arm_compute::TensorShape &>(tensor->info()->tensor_shape())
-      .set(input_rank - 1, tensor->info()->dimension(input_rank - 1), true);
+    .set(input_rank - 1, tensor->info()->dimension(input_rank - 1), true);
 }
 
 void disableDimCorrection(IACLTensor *tensor)
 {
   size_t input_rank = tensor->num_dimensions();
   const_cast<arm_compute::TensorShape &>(tensor->info()->tensor_shape())
-      .set(input_rank - 1, tensor->info()->dimension(input_rank - 1), false);
+    .set(input_rank - 1, tensor->info()->dimension(input_rank - 1), false);
 }
 
 template <typename Layer, typename... Args>
@@ -74,49 +74,49 @@ std::unique_ptr<exec::IFunction> kernelGenLSTM(const ir::operation::LSTM &node,
   // TODO Support dynamic rnn
   // TODO Fix subtle error in the case of non-CIFG, non-peephole and No Projection.
   const auto scratch_buffer_index{
-      node.getOutputs().at(ir::operation::LSTM::Output::SCRATCH_BUFFER)};
+    node.getOutputs().at(ir::operation::LSTM::Output::SCRATCH_BUFFER)};
   const auto output_state_out_index{
-      node.getOutputs().at(ir::operation::LSTM::Output::OUTPUT_STATE_OUT)};
+    node.getOutputs().at(ir::operation::LSTM::Output::OUTPUT_STATE_OUT)};
   const auto cell_state_out_index{
-      node.getOutputs().at(ir::operation::LSTM::Output::CELL_STATE_OUT)};
+    node.getOutputs().at(ir::operation::LSTM::Output::CELL_STATE_OUT)};
   const auto output_index{node.getOutputs().at(ir::operation::LSTM::Output::OUTPUT)};
 
   const auto input_index{node.getInputs().at(ir::operation::LSTM::Input::INPUT)};
   const auto input_to_input_weights_index{
-      node.getInputs().at(ir::operation::LSTM::Input::INPUT_TO_INPUT_WEIGHTS)}; // optional
+    node.getInputs().at(ir::operation::LSTM::Input::INPUT_TO_INPUT_WEIGHTS)}; // optional
   const auto input_to_forget_weights_index{
-      node.getInputs().at(ir::operation::LSTM::Input::INPUT_TO_FORGET_WEIGHTS)};
+    node.getInputs().at(ir::operation::LSTM::Input::INPUT_TO_FORGET_WEIGHTS)};
   const auto input_to_cell_weights_index{
-      node.getInputs().at(ir::operation::LSTM::Input::INPUT_TO_CELL_WEIGHTS)};
+    node.getInputs().at(ir::operation::LSTM::Input::INPUT_TO_CELL_WEIGHTS)};
   const auto input_to_output_weights_index{
-      node.getInputs().at(ir::operation::LSTM::Input::INPUT_TO_OUTPUT_WEIGHTS)};
+    node.getInputs().at(ir::operation::LSTM::Input::INPUT_TO_OUTPUT_WEIGHTS)};
   const auto recurrent_to_input_weights_index{
-      node.getInputs().at(ir::operation::LSTM::Input::RECURRENT_TO_INPUT_WEIGHTS)}; // optional
+    node.getInputs().at(ir::operation::LSTM::Input::RECURRENT_TO_INPUT_WEIGHTS)}; // optional
   const auto recurrent_to_forget_weights_index{
-      node.getInputs().at(ir::operation::LSTM::Input::RECURRENT_TO_FORGET_WEIGHTS)};
+    node.getInputs().at(ir::operation::LSTM::Input::RECURRENT_TO_FORGET_WEIGHTS)};
   const auto recurrent_to_cell_weights_index{
-      node.getInputs().at(ir::operation::LSTM::Input::RECURRENT_TO_CELL_WEIGHTS)};
+    node.getInputs().at(ir::operation::LSTM::Input::RECURRENT_TO_CELL_WEIGHTS)};
   const auto recurrent_to_output_weights_index{
-      node.getInputs().at(ir::operation::LSTM::Input::RECURRENT_TO_OUTPUT_WEIGHTS)};
+    node.getInputs().at(ir::operation::LSTM::Input::RECURRENT_TO_OUTPUT_WEIGHTS)};
   const auto cell_to_input_weights_index{
-      node.getInputs().at(ir::operation::LSTM::Input::CELL_TO_INPUT_WEIGHTS)}; // optional
+    node.getInputs().at(ir::operation::LSTM::Input::CELL_TO_INPUT_WEIGHTS)}; // optional
   const auto cell_to_forget_weights_index{
-      node.getInputs().at(ir::operation::LSTM::Input::CELL_TO_FORGET_WEIGHTS)}; // optional
+    node.getInputs().at(ir::operation::LSTM::Input::CELL_TO_FORGET_WEIGHTS)}; // optional
   const auto cell_to_output_weights_index{
-      node.getInputs().at(ir::operation::LSTM::Input::CELL_TO_OUTPUT_WEIGHTS)}; // optional
+    node.getInputs().at(ir::operation::LSTM::Input::CELL_TO_OUTPUT_WEIGHTS)}; // optional
   const auto input_gate_bias_index{
-      node.getInputs().at(ir::operation::LSTM::Input::INPUT_GATE_BIAS)};
+    node.getInputs().at(ir::operation::LSTM::Input::INPUT_GATE_BIAS)};
   const auto forget_gate_bias_index{
-      node.getInputs().at(ir::operation::LSTM::Input::FORGET_GATE_BIAS)};
+    node.getInputs().at(ir::operation::LSTM::Input::FORGET_GATE_BIAS)};
   const auto cell_bias_index{node.getInputs().at(ir::operation::LSTM::Input::CELL_BIAS)};
   const auto output_gate_bias_index{
-      node.getInputs().at(ir::operation::LSTM::Input::OUTPUT_GATE_BIAS)};
+    node.getInputs().at(ir::operation::LSTM::Input::OUTPUT_GATE_BIAS)};
   const auto projection_weights_index{
-      node.getInputs().at(ir::operation::LSTM::Input::PROJECTION_WEIGHTS)}; // optional
+    node.getInputs().at(ir::operation::LSTM::Input::PROJECTION_WEIGHTS)}; // optional
   const auto projection_bias_index{
-      node.getInputs().at(ir::operation::LSTM::Input::PROJECTION_BIAS)}; // optional
+    node.getInputs().at(ir::operation::LSTM::Input::PROJECTION_BIAS)}; // optional
   const auto output_state_in_index{
-      node.getInputs().at(ir::operation::LSTM::Input::OUTPUT_STATE_IN)};
+    node.getInputs().at(ir::operation::LSTM::Input::OUTPUT_STATE_IN)};
   const auto cell_state_in_index{node.getInputs().at(ir::operation::LSTM::Input::CELL_STATE_IN)};
   const auto cell_threshold = node.param().cell_threshold;
   const auto projection_threshold = node.param().projection_threshold;
@@ -124,8 +124,8 @@ std::unique_ptr<exec::IFunction> kernelGenLSTM(const ir::operation::LSTM &node,
   bool has_input_to_input_weights = operands.at(input_to_input_weights_index).shape().dim(0) != 0 &&
                                     operands.at(input_to_input_weights_index).shape().dim(1) != 0;
   bool has_recurrent_to_input_weights =
-      operands.at(recurrent_to_input_weights_index).shape().dim(0) != 0 &&
-      operands.at(recurrent_to_input_weights_index).shape().dim(1) != 0;
+    operands.at(recurrent_to_input_weights_index).shape().dim(0) != 0 &&
+    operands.at(recurrent_to_input_weights_index).shape().dim(1) != 0;
   bool has_cell_to_forget_weights = operands.at(cell_to_forget_weights_index).shape().dim(0) != 0;
   bool has_cell_to_output_weights = operands.at(cell_to_output_weights_index).shape().dim(0) != 0;
   bool has_projection_weights = operands.at(projection_weights_index).shape().dim(0) != 0 &&
@@ -163,10 +163,10 @@ std::unique_ptr<exec::IFunction> kernelGenLSTM(const ir::operation::LSTM &node,
   auto input_to_cell_weights_tensor = tensor_reg->getAclTensor(input_to_cell_weights_index);
   auto input_to_output_weights_tensor = tensor_reg->getAclTensor(input_to_output_weights_index);
   auto recurrent_to_forget_weights_tensor =
-      tensor_reg->getAclTensor(recurrent_to_forget_weights_index);
+    tensor_reg->getAclTensor(recurrent_to_forget_weights_index);
   auto recurrent_to_cell_weights_tensor = tensor_reg->getAclTensor(recurrent_to_cell_weights_index);
   auto recurrent_to_output_weights_tensor =
-      tensor_reg->getAclTensor(recurrent_to_output_weights_index);
+    tensor_reg->getAclTensor(recurrent_to_output_weights_index);
 
   auto forget_gate_bias_tensor = tensor_reg->getAclTensor(forget_gate_bias_index);
   auto cell_bias_tensor = tensor_reg->getAclTensor(cell_bias_index);
@@ -180,12 +180,12 @@ std::unique_ptr<exec::IFunction> kernelGenLSTM(const ir::operation::LSTM &node,
   if (has_cifg_param)
   {
     auto input_to_input_weights_tensor =
-        tensor_reg->getAclTensor(input_to_input_weights_index); // optional
+      tensor_reg->getAclTensor(input_to_input_weights_index); // optional
     auto recurrent_to_input_weights_tensor =
-        tensor_reg->getAclTensor(recurrent_to_input_weights_index); // optional
+      tensor_reg->getAclTensor(recurrent_to_input_weights_index); // optional
     auto cell_to_input_weights_handle =
-        has_peephole_param ? tensor_reg->getAclTensor(cell_to_input_weights_index)->handle()
-                           : nullptr; // optional (non-cifg && peephole)
+      has_peephole_param ? tensor_reg->getAclTensor(cell_to_input_weights_index)->handle()
+                         : nullptr; // optional (non-cifg && peephole)
     auto input_gate_bias_tensor = tensor_reg->getAclTensor(input_gate_bias_index); // optional
     lstm_params.set_cifg_params(input_to_input_weights_tensor->handle(),
                                 recurrent_to_input_weights_tensor->handle(),
@@ -194,9 +194,9 @@ std::unique_ptr<exec::IFunction> kernelGenLSTM(const ir::operation::LSTM &node,
   if (has_peephole_param)
   {
     auto cell_to_forget_weights_tensor =
-        tensor_reg->getAclTensor(cell_to_forget_weights_index); // optional
+      tensor_reg->getAclTensor(cell_to_forget_weights_index); // optional
     auto cell_to_output_weights_tensor =
-        tensor_reg->getAclTensor(cell_to_output_weights_index); // optional
+      tensor_reg->getAclTensor(cell_to_output_weights_index); // optional
     lstm_params.set_peephole_params(cell_to_forget_weights_tensor->handle(),
                                     cell_to_output_weights_tensor->handle());
   }
@@ -204,21 +204,20 @@ std::unique_ptr<exec::IFunction> kernelGenLSTM(const ir::operation::LSTM &node,
   {
     auto projection_weights_tensor = tensor_reg->getAclTensor(projection_weights_index); // optional
     auto projection_bias_handle = has_projection_bias
-                                      ? tensor_reg->getAclTensor(projection_bias_index)->handle()
-                                      : nullptr; // optional
+                                    ? tensor_reg->getAclTensor(projection_bias_index)->handle()
+                                    : nullptr; // optional
     lstm_params.set_projection_params(projection_weights_tensor->handle(), projection_bias_handle);
   }
 
   auto fn = generateLayer<T_ACLLayer>(
-      input_tensor->handle(), input_to_forget_weights_tensor->handle(),
-      input_to_cell_weights_tensor->handle(), input_to_output_weights_tensor->handle(),
-      recurrent_to_forget_weights_tensor->handle(), recurrent_to_cell_weights_tensor->handle(),
-      recurrent_to_output_weights_tensor->handle(), forget_gate_bias_tensor->handle(),
-      cell_bias_tensor->handle(), output_gate_bias_tensor->handle(),
-      output_state_in_tensor->handle(), cell_state_in_tensor->handle(),
-      scratch_buffer_tensor->handle(), output_state_out_tensor->handle(),
-      cell_state_out_tensor->handle(), output_tensor->handle(), lstm_params, act_info, cell_clip,
-      projection_clip);
+    input_tensor->handle(), input_to_forget_weights_tensor->handle(),
+    input_to_cell_weights_tensor->handle(), input_to_output_weights_tensor->handle(),
+    recurrent_to_forget_weights_tensor->handle(), recurrent_to_cell_weights_tensor->handle(),
+    recurrent_to_output_weights_tensor->handle(), forget_gate_bias_tensor->handle(),
+    cell_bias_tensor->handle(), output_gate_bias_tensor->handle(), output_state_in_tensor->handle(),
+    cell_state_in_tensor->handle(), scratch_buffer_tensor->handle(),
+    output_state_out_tensor->handle(), cell_state_out_tensor->handle(), output_tensor->handle(),
+    lstm_params, act_info, cell_clip, projection_clip);
 
   return std::make_unique<T_FunctionWrapper>(std::move(fn));
 }
@@ -240,14 +239,14 @@ kernelGenFullyConnected(const ir::operation::FullyConnected &node, const ir::Ope
   const auto input_rank = operands.at(input_index).shape().rank();
 
   const auto output_size =
-      operands.at(output_index).shape().dim(operands.at(output_index).shape().rank() - 1);
+    operands.at(output_index).shape().dim(operands.at(output_index).shape().rank() - 1);
   UNUSED_RELEASE(output_size);
   assert(bias_index.undefined() || operands.at(bias_index).shape().dim(0) == output_size);
   assert(operands.at(weight_index).shape().dim(0) == output_size);
   const auto batch_size =
-      operands.at(output_index).shape().dim(operands.at(output_index).shape().rank() - 2);
+    operands.at(output_index).shape().dim(operands.at(output_index).shape().rank() - 2);
   const auto input_size =
-      operands.at(weight_index).shape().dim(operands.at(weight_index).shape().rank() - 1);
+    operands.at(weight_index).shape().dim(operands.at(weight_index).shape().rank() - 1);
 
   // Check for reshaping input's shape into rank-2
   bool needs_reshape = false;
@@ -285,10 +284,10 @@ kernelGenFullyConnected(const ir::operation::FullyConnected &node, const ir::Ope
   }
 
   auto fn = generateLayer<T_ACLLayer>(
-      tensor_builder->acl_tensor_manager()->internal_buffer_manager(), input_tensor->handle(),
-      weight_tensor->handle(), bias_tensor != nullptr ? bias_tensor->handle() : nullptr,
-      output_tensor->handle(), needs_reshape,
-      asTensorShape(reshape, frontend_layout, asRuntimeLayout(acl_layout)), kernel_type);
+    tensor_builder->acl_tensor_manager()->internal_buffer_manager(), input_tensor->handle(),
+    weight_tensor->handle(), bias_tensor != nullptr ? bias_tensor->handle() : nullptr,
+    output_tensor->handle(), needs_reshape,
+    asTensorShape(reshape, frontend_layout, asRuntimeLayout(acl_layout)), kernel_type);
 
   return std::make_unique<T_FunctionWrapper>(std::move(fn));
 }
@@ -309,7 +308,7 @@ kernelGenPool2D(const T_PoolOp &node, const ir::Operands &operands,
   const auto kw = node.param().kw;
   const auto stride = node.param().stride;
   const auto padding =
-      ir::calculatePadding(node.param().padding, ifm_shape, ofm_shape, stride, kw, kh);
+    ir::calculatePadding(node.param().padding, ifm_shape, ofm_shape, stride, kw, kh);
 
   VERBOSE(Pool2DParam) << "IFM_H: " << ifm_shape.H << std::endl;
   VERBOSE(Pool2DParam) << "IFM_W: " << ifm_shape.W << std::endl;
@@ -328,8 +327,8 @@ kernelGenPool2D(const T_PoolOp &node, const ir::Operands &operands,
   auto ifm_tensor = tensor_reg->getAclTensor(ifm_index);
 
   ::arm_compute::PoolingLayerInfo info{
-      pooling_type, ::arm_compute::Size2D{kw, kh}, ifm_tensor->info()->data_layout(),
-      asPadStrideInfo(padding, stride), true /* exclude_padding */};
+    pooling_type, ::arm_compute::Size2D{kw, kh}, ifm_tensor->info()->data_layout(),
+    asPadStrideInfo(padding, stride), true /* exclude_padding */};
 
   auto fn = generateLayer<T_ACLLayer>(ifm_tensor->handle(), ofm_tensor->handle(), info);
 

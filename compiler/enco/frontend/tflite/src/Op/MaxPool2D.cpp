@@ -99,7 +99,7 @@ void MaxPool2DGraphBuilder::build(const tflite::Operator *op, GraphBuilderContex
   coco_maxpool2d->stride()->horizontal(params->stride_w());
 
   coco::Padding2D padding =
-      pool2D_padding(params, ifm_shape, params->filter_width(), params->filter_height());
+    pool2D_padding(params, ifm_shape, params->filter_width(), params->filter_height());
 
   coco_maxpool2d->pad()->top(padding.top());
   coco_maxpool2d->pad()->bottom(padding.bottom());

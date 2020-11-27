@@ -52,9 +52,9 @@ void convertUpsampleV1(const onnx::NodeProto &onnx_node, ConverterContext *conte
   scales_vector.at(3) = w_scale;
 
   auto result =
-      createOp<mir::ops::ResizeOp>(graph, inputs[0],
-                                   mir::ops::ResizeOp::ResizeMethod::nearestNeighbor, scales_vector)
-          ->getOutput(0);
+    createOp<mir::ops::ResizeOp>(graph, inputs[0],
+                                 mir::ops::ResizeOp::ResizeMethod::nearestNeighbor, scales_vector)
+      ->getOutput(0);
 
   context->setNodeOutputs(onnx_node, {result});
 }
@@ -74,7 +74,7 @@ void convertUpsampleV7(const onnx::NodeProto &onnx_node, ConverterContext *conte
 
   if (scales_attr->floats_size() != inputs[0]->getShape().rank())
     throw std::runtime_error(
-        "Number of elements of scales should be the same as the rank of input");
+      "Number of elements of scales should be the same as the rank of input");
 
   assert(inputs[0]->getShape().rank() == 4 && "Only rank 4 is supported");
   std::vector<float> scales_vector(4);
@@ -85,9 +85,9 @@ void convertUpsampleV7(const onnx::NodeProto &onnx_node, ConverterContext *conte
   scales_vector.at(3) = scales_attr->floats(3);
 
   auto result =
-      createOp<mir::ops::ResizeOp>(graph, inputs[0],
-                                   mir::ops::ResizeOp::ResizeMethod::nearestNeighbor, scales_vector)
-          ->getOutput(0);
+    createOp<mir::ops::ResizeOp>(graph, inputs[0],
+                                 mir::ops::ResizeOp::ResizeMethod::nearestNeighbor, scales_vector)
+      ->getOutput(0);
 
   context->setNodeOutputs(onnx_node, {result});
 }
@@ -117,9 +117,9 @@ void convertUpsampleV9(const onnx::NodeProto &onnx_node, ConverterContext *conte
     scales_vector[i] = scales_tensor.atOffset(i);
 
   auto result =
-      createOp<mir::ops::ResizeOp>(graph, inputs[0],
-                                   mir::ops::ResizeOp::ResizeMethod::nearestNeighbor, scales_vector)
-          ->getOutput(0);
+    createOp<mir::ops::ResizeOp>(graph, inputs[0],
+                                 mir::ops::ResizeOp::ResizeMethod::nearestNeighbor, scales_vector)
+      ->getOutput(0);
 
   context->setNodeOutputs(onnx_node, {result});
 }

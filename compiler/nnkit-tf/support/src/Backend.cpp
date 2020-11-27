@@ -50,7 +50,7 @@ Backend::Backend(const char *pb_path, const char *info_path) : _tf_runner(pb_pat
         angkor::TensorShape shape;
         if (!_tf_runner.getTensorShapeFromGraphDef(parsed_tensor, shape))
           throw oops::UserExn(
-              "Info you provided may be wrong or not enough. Please check the info file.");
+            "Info you provided may be wrong or not enough. Please check the info file.");
 
         parsed_tensor->mutable_shape().resize(shape.rank());
         for (int r = 0; r < shape.rank(); r++)

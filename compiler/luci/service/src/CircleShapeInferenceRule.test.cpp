@@ -42,7 +42,7 @@ bool shape_pass(loco::Graph *g)
   loco::MultiDialectShapeInferenceRule rules;
 
   rules.bind(loco::CanonicalDialect::get(), &canonical_rule)
-      .bind(luci::CircleDialect::get(), &circle_rule);
+    .bind(luci::CircleDialect::get(), &circle_rule);
 
   return loco::apply(&rules).to(g);
 }

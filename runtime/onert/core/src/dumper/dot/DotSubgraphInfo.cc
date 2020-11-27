@@ -28,7 +28,7 @@ namespace dot
 DotSubgraphInfo::DotSubgraphInfo(const ir::OpSequenceIndex &index, const ir::OpSequence &op_seq,
                                  const util::Set<ir::OperandIndex> &shown_operands,
                                  const ir::Operations &operations_ctx)
-    : _index{index}
+  : _index{index}
 {
   for (const auto &op_idx : op_seq.operations())
   {

@@ -125,7 +125,7 @@ static std::vector<std::int32_t> getWindowSize(const ::caffe2::OperatorDef &op,
 {
   int is_global_pooling = getSingleArgument(op, "global_pooling", 0);
   bool has_custom_kernel_size =
-      hasArgument(op.arg(), "kernel_h") || hasArgument(op.arg(), "kernel_w");
+    hasArgument(op.arg(), "kernel_h") || hasArgument(op.arg(), "kernel_w");
   bool has_custom_kernels_size = hasArgument(op.arg(), "kernels");
 
   int kernel_h(0), kernel_w(0);
@@ -192,7 +192,7 @@ static void checkConvLikeOp(const ::caffe2::OperatorDef &op)
 
   // Kernel size
   bool has_custom_kernel_size =
-      hasArgument(op.arg(), "kernel_h") || hasArgument(op.arg(), "kernel_w");
+    hasArgument(op.arg(), "kernel_h") || hasArgument(op.arg(), "kernel_w");
 
   if (has_custom_kernel_size && hasArgument(op.arg(), "kernel"))
     throw std::runtime_error("Custom kernel size can't be combined with overall kernel size");
@@ -200,7 +200,7 @@ static void checkConvLikeOp(const ::caffe2::OperatorDef &op)
   if (has_custom_kernel_size &&
       !(hasArgument(op.arg(), "kernel_h") && hasArgument(op.arg(), "kernel_w")))
     throw std::runtime_error(
-        "If one custom kernel size specified - all custom kernel sizes must be specified");
+      "If one custom kernel size specified - all custom kernel sizes must be specified");
 }
 
 static mir::TensorVariant createTensor(const OperatorDef &op)
@@ -355,7 +355,7 @@ Caffe2OpCreator::convertFC(const std::vector<mir::Operation::Output *> &inputs,
 
   auto reshape = createOp<ops::ReshapeOp>(inputs[0], shape)->getOutput(0);
   auto weights =
-      createOp<ops::TransposeOp>(inputs[1], std::vector<std::size_t>{1, 0})->getOutput(0);
+    createOp<ops::TransposeOp>(inputs[1], std::vector<std::size_t>{1, 0})->getOutput(0);
   auto result = createOp<ops::FullyConnectedOp>(reshape, weights)->getOutput(0);
   result = createOp<ops::AddOp>(result, inputs[2])->getOutput(0);
 
@@ -419,8 +419,8 @@ Caffe2OpCreator::convertResizeNearest(const std::vector<mir::Operation::Output *
   scales[2] = getSingleArgument(op, "height_scale", 1.0f);
   scales[3] = getSingleArgument(op, "width_scale", 1.0f);
   auto result =
-      createOp<ops::ResizeOp>(inputs[0], ops::ResizeOp::ResizeMethod::nearestNeighbor, scales)
-          ->getOutput(0);
+    createOp<ops::ResizeOp>(inputs[0], ops::ResizeOp::ResizeMethod::nearestNeighbor, scales)
+      ->getOutput(0);
   return {result};
 }
 
@@ -449,7 +449,7 @@ Caffe2OpCreator::convertSpatialBN(const std::vector<mir::Operation::Output *> &i
   // Sanity checks
   if (op.input_size() != 5)
     throw std::runtime_error(
-        "SpatialBN must have exactly 5 inputs ('sums' and 'sumsq' are not supported yet)");
+      "SpatialBN must have exactly 5 inputs ('sums' and 'sumsq' are not supported yet)");
   if (getSingleArgument(op, "is_test", 1) != 1)
     throw std::runtime_error("SpatialBN: only test mode supported");
 
@@ -461,7 +461,7 @@ Caffe2OpCreator::convertSpatialBN(const std::vector<mir::Operation::Output *> &i
   auto var_op = dynamic_cast<mir::ops::ConstantOp *>(inputs[4]->getNode());
   if (scale_op == nullptr || bias_op == nullptr || mean_op == nullptr || var_op == nullptr)
     throw std::runtime_error(
-        "SpatialBN: non-constant 'scale', 'bias', 'mean' and 'var' inputs are not supported yet.");
+      "SpatialBN: non-constant 'scale', 'bias', 'mean' and 'var' inputs are not supported yet.");
 
   const auto &scale_tensor = scale_op->getValue();
   const auto &bias_tensor = bias_op->getValue();

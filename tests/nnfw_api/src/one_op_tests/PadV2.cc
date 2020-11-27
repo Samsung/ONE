@@ -26,7 +26,7 @@ TEST_F(GenModelTest, OneOp_PadV2)
   std::vector<float> padding_value_data{3.0};
   uint32_t padding_value_buf = cgen.addBuffer(padding_value_data);
   int padding_value =
-      cgen.addTensor({{1}, circle::TensorType::TensorType_FLOAT32, padding_value_buf});
+    cgen.addTensor({{1}, circle::TensorType::TensorType_FLOAT32, padding_value_buf});
 
   int out = cgen.addTensor({{1, 4, 4, 1}, circle::TensorType::TensorType_FLOAT32});
 
@@ -35,7 +35,7 @@ TEST_F(GenModelTest, OneOp_PadV2)
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
   _context->addTestCase(
-      uniformTCD<float>({{1, 2, 3, 4}}, {{3, 3, 3, 3, 3, 1, 2, 3, 3, 3, 4, 3, 3, 3, 3, 3}}));
+    uniformTCD<float>({{1, 2, 3, 4}}, {{3, 3, 3, 3, 3, 1, 2, 3, 3, 3, 4, 3, 3, 3, 3, 3}}));
   _context->setBackends({"cpu"});
 
   SUCCEED();
@@ -51,7 +51,7 @@ TEST_F(GenModelTest, neg_OneOp_PadV2_InvalidPadRank)
   std::vector<float> padding_value_data{3.0};
   uint32_t padding_value_buf = cgen.addBuffer(padding_value_data);
   int padding_value =
-      cgen.addTensor({{1}, circle::TensorType::TensorType_FLOAT32, padding_value_buf});
+    cgen.addTensor({{1}, circle::TensorType::TensorType_FLOAT32, padding_value_buf});
 
   int out = cgen.addTensor({{1, 4, 4, 1}, circle::TensorType::TensorType_FLOAT32});
 
@@ -75,7 +75,7 @@ TEST_F(GenModelTest, neg_OneOp_PadV2_InvalidPadDim0)
   std::vector<float> padding_value_data{3.0};
   uint32_t padding_value_buf = cgen.addBuffer(padding_value_data);
   int padding_value =
-      cgen.addTensor({{1}, circle::TensorType::TensorType_FLOAT32, padding_value_buf});
+    cgen.addTensor({{1}, circle::TensorType::TensorType_FLOAT32, padding_value_buf});
 
   int out = cgen.addTensor({{1, 4, 4, 1}, circle::TensorType::TensorType_FLOAT32});
 
@@ -99,7 +99,7 @@ TEST_F(GenModelTest, neg_OneOp_PadV2_InvalidPadDim1)
   std::vector<float> padding_value_data{3.0};
   uint32_t padding_value_buf = cgen.addBuffer(padding_value_data);
   int padding_value =
-      cgen.addTensor({{1}, circle::TensorType::TensorType_FLOAT32, padding_value_buf});
+    cgen.addTensor({{1}, circle::TensorType::TensorType_FLOAT32, padding_value_buf});
 
   int out = cgen.addTensor({{2, 2, 2, 2}, circle::TensorType::TensorType_FLOAT32});
 

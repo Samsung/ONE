@@ -43,16 +43,16 @@ inline void Slice(const SliceParams &op_params, const Shape &input_shape,
                                                                      : start_b + op_params.size[0];
   const int start_h = begin_count < 3 ? 0 : op_params.begin[begin_count - 3];
   const int stop_h = (size_count < 3 || op_params.size[size_count - 3] == -1)
-                         ? input_shape.Dims(1)
-                         : start_h + op_params.size[size_count - 3];
+                       ? input_shape.Dims(1)
+                       : start_h + op_params.size[size_count - 3];
   const int start_w = begin_count < 2 ? 0 : op_params.begin[begin_count - 2];
   const int stop_w = (size_count < 2 || op_params.size[size_count - 2] == -1)
-                         ? input_shape.Dims(2)
-                         : start_w + op_params.size[size_count - 2];
+                       ? input_shape.Dims(2)
+                       : start_w + op_params.size[size_count - 2];
   const int start_d = begin_count < 1 ? 0 : op_params.begin[begin_count - 1];
   const int stop_d = (size_count < 1 || op_params.size[size_count - 1] == -1)
-                         ? input_shape.Dims(3)
-                         : start_d + op_params.size[size_count - 1];
+                       ? input_shape.Dims(3)
+                       : start_d + op_params.size[size_count - 1];
 
   for (int in_b = start_b; in_b < stop_b; ++in_b)
   {

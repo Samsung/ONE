@@ -148,7 +148,7 @@ get_circle_sparse_index_vector(flatbuffers::FlatBufferBuilder &fb, const void *v
     {
       const tflite::Int32Vector *i32_array = static_cast<const tflite::Int32Vector *>(v_array);
       auto values_vec_int32 =
-          std::vector<int32_t>{i32_array->values()->begin(), i32_array->values()->end()};
+        std::vector<int32_t>{i32_array->values()->begin(), i32_array->values()->end()};
       auto values_int32 = fb.CreateVector(values_vec_int32);
       circle::Int32VectorBuilder int32_vector_builder{fb};
       int32_vector_builder.add_values(values_int32);
@@ -158,7 +158,7 @@ get_circle_sparse_index_vector(flatbuffers::FlatBufferBuilder &fb, const void *v
     {
       const tflite::Uint16Vector *u16_array = static_cast<const tflite::Uint16Vector *>(v_array);
       auto values_vec_uint16 =
-          std::vector<uint16_t>{u16_array->values()->begin(), u16_array->values()->end()};
+        std::vector<uint16_t>{u16_array->values()->begin(), u16_array->values()->end()};
       auto values_uint16 = fb.CreateVector(values_vec_uint16);
       circle::Uint16VectorBuilder uint16_vector_builder{fb};
       uint16_vector_builder.add_values(values_uint16);
@@ -168,7 +168,7 @@ get_circle_sparse_index_vector(flatbuffers::FlatBufferBuilder &fb, const void *v
     {
       const tflite::Uint8Vector *u8_array = static_cast<const tflite::Uint8Vector *>(v_array);
       auto values_vec_uint8 =
-          std::vector<uint8_t>{u8_array->values()->begin(), u8_array->values()->end()};
+        std::vector<uint8_t>{u8_array->values()->begin(), u8_array->values()->end()};
       auto values_uint8 = fb.CreateVector(values_vec_uint8);
       circle::Uint8VectorBuilder uint8_vector_builder{fb};
       uint8_vector_builder.add_values(values_uint8);

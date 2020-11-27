@@ -56,7 +56,7 @@ struct MockBackendCPU : public Backend
   newContext(const Graph &, const std::shared_ptr<custom::IKernelBuilder> &, bool) const override
   {
     return std::unique_ptr<BackendContext>(
-        new BackendContext{this, nullptr, nullptr, nullptr, nullptr});
+      new BackendContext{this, nullptr, nullptr, nullptr, nullptr});
   }
 };
 
@@ -80,7 +80,7 @@ struct MockBackendGPU : public Backend
   newContext(const Graph &, const std::shared_ptr<custom::IKernelBuilder> &, bool) const override
   {
     return std::unique_ptr<BackendContext>(
-        new BackendContext{this, nullptr, nullptr, nullptr, nullptr});
+      new BackendContext{this, nullptr, nullptr, nullptr, nullptr});
   }
 };
 
@@ -104,7 +104,7 @@ struct MockBackendNPU : public Backend
   newContext(const Graph &, const std::shared_ptr<custom::IKernelBuilder> &, bool) const override
   {
     return std::unique_ptr<BackendContext>(
-        new BackendContext{this, nullptr, nullptr, nullptr, nullptr});
+      new BackendContext{this, nullptr, nullptr, nullptr, nullptr});
   }
 };
 
@@ -432,7 +432,7 @@ TEST_P(HESchedulerTestWithExecutorParam, branched_graph_known_exec_time)
   auto graph(createBranchedGraph());
   subgs.push(ir::SubgraphIndex{0}, graph);
   OperationIndex add_op_idx(0), mul1_op_idx(1), mul2_op_idx(2), fc1_op_idx(3), fc2_op_idx(4),
-      sub_op_idx(5);
+    sub_op_idx(5);
 
   // Set default execution and transfer time
   setPermutationsExecutionTime(_mock_backends, OPERAND_SIZE, 1000);
@@ -463,7 +463,7 @@ TEST_P(HESchedulerTestWithExecutorParam, branched_graph_known_exec_time)
     if (GetParam() == PARALLEL)
     {
       branch1_expected_backend =
-          br->getBackend(mul1_op_idx)->config()->id() == "npu" ? "npu" : "gpu";
+        br->getBackend(mul1_op_idx)->config()->id() == "npu" ? "npu" : "gpu";
       branch2_expected_backend = branch1_expected_backend == "npu" ? "gpu" : "npu";
     }
 
@@ -521,7 +521,7 @@ TEST_F(HESchedulerTest, branched_graph_profiling_mode)
   auto graph(createBranchedGraph());
   subgs.push(ir::SubgraphIndex{0}, graph);
   OperationIndex add_op_idx(0), mul1_op_idx(1), mul2_op_idx(2), fc1_op_idx(3), fc2_op_idx(4),
-      sub_op_idx(5);
+    sub_op_idx(5);
 
   // Test 1
   // Expected behaviour: scheduler assigns backends to nodes with unknown execution time

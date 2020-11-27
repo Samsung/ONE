@@ -23,7 +23,7 @@ class UnidirectionalSequenceLSTMChef final : public OpChef
 {
 public:
   explicit UnidirectionalSequenceLSTMChef(const tflchef::Operation *operation)
-      : _operation{operation}
+    : _operation{operation}
   {
     // DO NOTHING
   }

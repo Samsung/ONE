@@ -86,16 +86,16 @@ TEST_F(ReallocStub, should_work_as_malloc_when_incoming_ptr_is_equal_to_nullptr)
 
   ASSERT_TRUE(p);
   ASSERT_STREQ(
-      getContentOfFile("./realloc_interception_test.log").c_str(),
-      "On CPU - Peak heap usage: 1024 B, Total allocated: 1024 B, Total deallocated: 0 B\nOn "
-      "GPU - Peak mem usage: 0 B, Total allocated: 0 B, Total deallocated: 0 B\n");
+    getContentOfFile("./realloc_interception_test.log").c_str(),
+    "On CPU - Peak heap usage: 1024 B, Total allocated: 1024 B, Total deallocated: 0 B\nOn "
+    "GPU - Peak mem usage: 0 B, Total allocated: 0 B, Total deallocated: 0 B\n");
 
   free(p);
 }
 
 TEST_F(
-    ReallocStub,
-    should_not_influence_on_trace_results_even_if_orignal_function_return_any_not_null_ptr_when_incoming_size_is_zero_and_ptr_is_null)
+  ReallocStub,
+  should_not_influence_on_trace_results_even_if_orignal_function_return_any_not_null_ptr_when_incoming_size_is_zero_and_ptr_is_null)
 {
   void *p = realloc(nullptr, 0);
   free(p);

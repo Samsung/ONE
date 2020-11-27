@@ -54,7 +54,7 @@ std::unique_ptr<locomotiv::NodeData> matrix_encode(const loco::MatrixEncode *nod
 
   // Make HW buffer from MatrixShape
   Buffer<T> node_buf =
-      make_buffer<T, LexicalLayout>(Shape{node_shape.height().value(), node_shape.width().value()});
+    make_buffer<T, LexicalLayout>(Shape{node_shape.height().value(), node_shape.width().value()});
 
   // Copy buffer in an order arranged by encoder
   for (IndexEnumerator e{node_buf.shape()}; e.valid(); e.advance())

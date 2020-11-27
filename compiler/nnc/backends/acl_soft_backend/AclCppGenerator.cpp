@@ -30,7 +30,7 @@ using namespace std;
 namespace fs = boost::filesystem;
 
 AclCppCodeGenerator::AclCppCodeGenerator(string output_dir, string artifact_name)
-    : _output_dir(std::move(output_dir)), _artifact_name(std::move(artifact_name))
+  : _output_dir(std::move(output_dir)), _artifact_name(std::move(artifact_name))
 {
 }
 

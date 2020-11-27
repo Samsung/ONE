@@ -302,7 +302,7 @@ public:
     // output count is from input count, depth is from kernel 'CM' which is dim(2) * dim(3)
     auto output_feature_shape = input_feature_shape;
     output_feature_shape.depth() =
-        loco::Dimension(ker_tensor_shape.dim(2).value() * ker_tensor_shape.dim(3).value());
+      loco::Dimension(ker_tensor_shape.dim(2).value() * ker_tensor_shape.dim(3).value());
 
     auto output_plane_shape = infer_plane_shape(input_plane_shape);
 

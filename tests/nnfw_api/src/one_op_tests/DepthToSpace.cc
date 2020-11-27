@@ -30,27 +30,27 @@ class DepthToSpaceVariation : public GenModelTest,
 };
 
 INSTANTIATE_TEST_CASE_P(
-    GenModelTest, DepthToSpaceVariation,
-    ::testing::Values(
-        // Float
-        DepthToSpaceVariationParam{
-            uniformTCD<float>({{1, 2, 3, 4, 5, 6, 7, 8}}, {{1, 2, 5, 6, 3, 4, 7, 8}})},
-        // Int32
-        DepthToSpaceVariationParam{
-            uniformTCD<int32_t>({{1, 2, 3, 4, 5, 6, 7, 8}}, {{1, 2, 5, 6, 3, 4, 7, 8}}),
-            circle::TensorType::TensorType_INT32},
-        // Int64
-        DepthToSpaceVariationParam{
-            uniformTCD<int64_t>({{1, 2, 3, 4, 5, 6, 7, 8}}, {{1, 2, 5, 6, 3, 4, 7, 8}}),
-            circle::TensorType::TensorType_INT64},
-        // Uint8
-        DepthToSpaceVariationParam{
-            uniformTCD<uint8_t>({{1, 2, 3, 4, 5, 6, 7, 8}}, {{1, 2, 5, 6, 3, 4, 7, 8}}),
-            circle::TensorType::TensorType_UINT8, 1.0f, -2},
-        // Int8
-        DepthToSpaceVariationParam{
-            uniformTCD<int8_t>({{1, 2, 3, 4, 5, 6, 7, 8}}, {{1, 2, 5, 6, 3, 4, 7, 8}}),
-            circle::TensorType::TensorType_INT8, 1.0f, -2}));
+  GenModelTest, DepthToSpaceVariation,
+  ::testing::Values(
+    // Float
+    DepthToSpaceVariationParam{
+      uniformTCD<float>({{1, 2, 3, 4, 5, 6, 7, 8}}, {{1, 2, 5, 6, 3, 4, 7, 8}})},
+    // Int32
+    DepthToSpaceVariationParam{
+      uniformTCD<int32_t>({{1, 2, 3, 4, 5, 6, 7, 8}}, {{1, 2, 5, 6, 3, 4, 7, 8}}),
+      circle::TensorType::TensorType_INT32},
+    // Int64
+    DepthToSpaceVariationParam{
+      uniformTCD<int64_t>({{1, 2, 3, 4, 5, 6, 7, 8}}, {{1, 2, 5, 6, 3, 4, 7, 8}}),
+      circle::TensorType::TensorType_INT64},
+    // Uint8
+    DepthToSpaceVariationParam{
+      uniformTCD<uint8_t>({{1, 2, 3, 4, 5, 6, 7, 8}}, {{1, 2, 5, 6, 3, 4, 7, 8}}),
+      circle::TensorType::TensorType_UINT8, 1.0f, -2},
+    // Int8
+    DepthToSpaceVariationParam{
+      uniformTCD<int8_t>({{1, 2, 3, 4, 5, 6, 7, 8}}, {{1, 2, 5, 6, 3, 4, 7, 8}}),
+      circle::TensorType::TensorType_INT8, 1.0f, -2}));
 
 // Input shape: {1, 1, 2, 4}
 // Block size: 2

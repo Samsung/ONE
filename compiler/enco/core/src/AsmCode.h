@@ -27,7 +27,7 @@ class AsmCode
 {
 public:
   AsmCode(const std::string &filename, const std::string &varname)
-      : _filename{filename}, _varname{varname}
+    : _filename{filename}, _varname{varname}
   {
     // DO NOTHING
   }

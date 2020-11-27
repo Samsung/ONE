@@ -50,9 +50,9 @@ public:
                  std::shared_ptr<IConstantInitializer> constant_initializer = nullptr,
                  std::shared_ptr<IKernelGenerator> kernel_gen = nullptr,
                  std::shared_ptr<IOptimizer> optimizer = nullptr)
-      : _backend{backend}, _graph{graph}, tensor_registry{tensor_registry},
-        tensor_builder{tensor_builder}, constant_initializer{constant_initializer},
-        kernel_gen{kernel_gen}, optimizer{optimizer}
+    : _backend{backend}, _graph{graph}, tensor_registry{tensor_registry},
+      tensor_builder{tensor_builder}, constant_initializer{constant_initializer},
+      kernel_gen{kernel_gen}, optimizer{optimizer}
   {
   }
 

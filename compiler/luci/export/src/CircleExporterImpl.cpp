@@ -114,7 +114,7 @@ encodeOperatorCodes(FlatBufferBuilder &builder, std::unordered_map<luci::OpCode,
     else
     {
       operator_codes_vec[idx] =
-          CreateOperatorCode(builder, it.first.opcode, builder.CreateString(it.first.custom_code));
+        CreateOperatorCode(builder, it.first.opcode, builder.CreateString(it.first.custom_code));
     }
   }
 

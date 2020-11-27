@@ -43,7 +43,7 @@ public:
   void setMaxNumThreads(int max_num_threads)
   {
     const int target_num_threads =
-        max_num_threads > -1 ? max_num_threads : kDefaultNumThreadpoolThreads;
+      max_num_threads > -1 ? max_num_threads : kDefaultNumThreadpoolThreads;
     _ruy_context->set_max_num_threads(target_num_threads);
   }
 

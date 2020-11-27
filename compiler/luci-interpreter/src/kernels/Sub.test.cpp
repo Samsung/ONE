@@ -49,25 +49,25 @@ TEST(SubTest, Uint8)
   vector<float> test_data = {0.2f, 0.3f, -0.4f, 0.5f, 1.0f, 0.9f};
   vector<vector<int32_t>> output_shapes = {{2, 3, 3, 2}, {2, 3, 1, 2}, {2, 3, 3, 2}, {2, 3, 1, 2}};
   vector<vector<float>> output_data = {
-      {-0.5f, 2.0f,  0.1f,  1.8f,  -1.3f, 1.4f,  0.7f, 0.2f,  1.3f, 0.0f,  -0.1f, -0.4f,
-       0.6f,  -1.4f, 1.2f,  -1.6f, -0.2f, -2.0f, 1.0f, 2.5f,  1.6f, 2.3f,  0.2f,  1.9f,
-       -1.8f, -0.3f, -1.2f, -0.5f, -2.6f, -0.9f, 0.5f, -2.5f, 1.1f, -2.7f, -0.3f, -3.0f},
-      {-0.5f, 2.0f, 1.3f, 0.0f, -0.2f, -2.0f, 1.0f, 2.5f, -1.2f, -0.5f, -0.3f, -3.0f},
-      {-0.5f, 2.1f,  -0.6f, 2.0f,  0.1f,  2.7f,  0.7f, 0.3f,  0.6f,  0.2f,  1.3f,  0.9f,
-       0.6f,  -1.3f, 0.5f,  -1.4f, 1.2f,  -0.7f, 0.7f, 2.3f,  0.2f,  1.8f,  0.3f,  1.9f,
-       -2.1f, -0.5f, -2.6f, -1.0f, -2.5f, -0.9f, 0.2f, -2.7f, -0.3f, -3.0f, -0.2f, -3.0f},
-      {-0.5f, 2.1f, 0.6f, 0.2f, 1.2f, -0.7f, 0.7f, 2.3f, -2.6f, -1.0f, -0.2f, -3.0f}};
+    {-0.5f, 2.0f,  0.1f,  1.8f,  -1.3f, 1.4f,  0.7f, 0.2f,  1.3f, 0.0f,  -0.1f, -0.4f,
+     0.6f,  -1.4f, 1.2f,  -1.6f, -0.2f, -2.0f, 1.0f, 2.5f,  1.6f, 2.3f,  0.2f,  1.9f,
+     -1.8f, -0.3f, -1.2f, -0.5f, -2.6f, -0.9f, 0.5f, -2.5f, 1.1f, -2.7f, -0.3f, -3.0f},
+    {-0.5f, 2.0f, 1.3f, 0.0f, -0.2f, -2.0f, 1.0f, 2.5f, -1.2f, -0.5f, -0.3f, -3.0f},
+    {-0.5f, 2.1f,  -0.6f, 2.0f,  0.1f,  2.7f,  0.7f, 0.3f,  0.6f,  0.2f,  1.3f,  0.9f,
+     0.6f,  -1.3f, 0.5f,  -1.4f, 1.2f,  -0.7f, 0.7f, 2.3f,  0.2f,  1.8f,  0.3f,  1.9f,
+     -2.1f, -0.5f, -2.6f, -1.0f, -2.5f, -0.9f, 0.2f, -2.7f, -0.3f, -3.0f, -0.2f, -3.0f},
+    {-0.5f, 2.1f, 0.6f, 0.2f, 1.2f, -0.7f, 0.7f, 2.3f, -2.6f, -1.0f, -0.2f, -3.0f}};
 
   float kQuantizedTolerance = GetTolerance(-3.f, 3.f);
   pair<float, int32_t> quant_param = quantizationParams<uint8_t>(-3.f, 3.f);
   for (size_t i = 0; i < output_data.size(); ++i)
   {
     Tensor input1_tensor =
-        makeInputTensor<DataType::U8>(base_shape, quant_param.first, quant_param.second, base_data);
+      makeInputTensor<DataType::U8>(base_shape, quant_param.first, quant_param.second, base_data);
     Tensor input2_tensor = makeInputTensor<DataType::U8>(test_shapes[i], quant_param.first,
                                                          quant_param.second, test_data);
     Tensor output_tensor =
-        makeOutputTensor(getElementType<uint8_t>(), quant_param.first, quant_param.second);
+      makeOutputTensor(getElementType<uint8_t>(), quant_param.first, quant_param.second);
 
     SubParams params{};
     params.activation = Activation::NONE;
@@ -93,9 +93,9 @@ TEST(SubTest, Uint8)
     Tensor input1_tensor = makeInputTensor<DataType::U8>(test_shapes[i], quant_param.first,
                                                          quant_param.second, test_data);
     Tensor input2_tensor =
-        makeInputTensor<DataType::U8>(base_shape, quant_param.first, quant_param.second, base_data);
+      makeInputTensor<DataType::U8>(base_shape, quant_param.first, quant_param.second, base_data);
     Tensor output_tensor =
-        makeOutputTensor(getElementType<uint8_t>(), quant_param.first, quant_param.second);
+      makeOutputTensor(getElementType<uint8_t>(), quant_param.first, quant_param.second);
 
     SubParams params{};
     params.activation = Activation::NONE;
@@ -116,14 +116,14 @@ TEST(SubTest, Float)
   vector<Shape> test_shapes{{1, 1, 3, 2}, {1, 3, 1, 2}, {2, 1, 3, 1}, {2, 3, 1, 1}};
   vector<vector<int32_t>> output_shapes{{2, 3, 3, 2}, {2, 3, 1, 2}, {2, 3, 3, 2}, {2, 3, 1, 2}};
   vector<vector<float>> test_outputs = {
-      {0.0f, 2.0f, 0.1f, 1.8f, 0.0f, 1.4f, 0.7f, 0.2f, 1.3f, 0.0f, 0.0f, 0.0f,
-       0.6f, 0.0f, 1.2f, 0.0f, 0.0f, 0.0f, 1.0f, 2.5f, 1.6f, 2.3f, 0.2f, 1.9f,
-       0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.5f, 0.0f, 1.1f, 0.0f, 0.0f, 0.0f},
-      {0.0f, 2.0f, 1.3f, 0.0f, 0.0f, 0.0f, 1.0f, 2.5f, 0.0f, 0.0f, 0.0f, 0.0f},
-      {0.0f, 2.1f, 0.0f, 2.0f, 0.1f, 2.7f, 0.7f, 0.3f, 0.6f, 0.2f, 1.3f, 0.9f,
-       0.6f, 0.0f, 0.5f, 0.0f, 1.2f, 0.0f, 0.7f, 2.3f, 0.2f, 1.8f, 0.3f, 1.9f,
-       0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.2f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f},
-      {0.0f, 2.1f, 0.6f, 0.2f, 1.2f, 0.0f, 0.7f, 2.3f, 0.0f, 0.0f, 0.0f, 0.0f}};
+    {0.0f, 2.0f, 0.1f, 1.8f, 0.0f, 1.4f, 0.7f, 0.2f, 1.3f, 0.0f, 0.0f, 0.0f,
+     0.6f, 0.0f, 1.2f, 0.0f, 0.0f, 0.0f, 1.0f, 2.5f, 1.6f, 2.3f, 0.2f, 1.9f,
+     0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.5f, 0.0f, 1.1f, 0.0f, 0.0f, 0.0f},
+    {0.0f, 2.0f, 1.3f, 0.0f, 0.0f, 0.0f, 1.0f, 2.5f, 0.0f, 0.0f, 0.0f, 0.0f},
+    {0.0f, 2.1f, 0.0f, 2.0f, 0.1f, 2.7f, 0.7f, 0.3f, 0.6f, 0.2f, 1.3f, 0.9f,
+     0.6f, 0.0f, 0.5f, 0.0f, 1.2f, 0.0f, 0.7f, 2.3f, 0.2f, 1.8f, 0.3f, 1.9f,
+     0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.2f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f},
+    {0.0f, 2.1f, 0.6f, 0.2f, 1.2f, 0.0f, 0.7f, 2.3f, 0.0f, 0.0f, 0.0f, 0.0f}};
 
   vector<float> input1_data{-0.3f, 2.3f, 0.9f,  0.5f, 0.8f, -1.1f,
                             1.2f,  2.8f, -1.6f, 0.0f, 0.7f, -2.2f};
@@ -142,7 +142,7 @@ TEST(SubTest, Float)
     kernel.execute();
 
     EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(test_outputs[i], 0.0001f))
-        << "With shape number " << i;
+      << "With shape number " << i;
 
     EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(output_shapes[i]));
   }

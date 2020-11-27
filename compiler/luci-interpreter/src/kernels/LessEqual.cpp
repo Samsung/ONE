@@ -98,8 +98,8 @@ void LessEqual::evalQuantized() const
   if (op_params.is_broadcast)
   {
     tflite::reference_ops::Broadcast4DSlowLessEqualWithScaling(
-        op_params, getTensorShape(x()), x_data, getTensorShape(y()), y_data,
-        getTensorShape(output()), output_data);
+      op_params, getTensorShape(x()), x_data, getTensorShape(y()), y_data, getTensorShape(output()),
+      output_data);
   }
   else
   {

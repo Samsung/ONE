@@ -34,7 +34,7 @@ class Conv2DBackpropInputGraphUpdate final : public GraphUpdate
 {
 public:
   Conv2DBackpropInputGraphUpdate(TFConv2DBackpropInput *node, std::vector<TensorName> names)
-      : _node(node), _input_names(names)
+    : _node(node), _input_names(names)
   {
     // DO NOTHING
   }
@@ -132,7 +132,7 @@ void Conv2DBackpropInputGraphBuilder::build(const tensorflow::NodeDef &node,
 
   // update
   auto conv2d_backprop_update =
-      stdex::make_unique<Conv2DBackpropInputGraphUpdate>(conv2d_backprop, input_names);
+    stdex::make_unique<Conv2DBackpropInputGraphUpdate>(conv2d_backprop, input_names);
 
   updates->enroll(std::move(conv2d_backprop_update));
 }

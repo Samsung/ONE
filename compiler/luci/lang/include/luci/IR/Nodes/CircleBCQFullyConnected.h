@@ -30,9 +30,9 @@ namespace luci
  * @brief BCQ_FULLY_CONNECTED in Circle
  */
 class CircleBCQFullyConnected final
-    : public FixedArityNode<5, CircleNodeImpl<CircleOpcode::BCQ_FULLY_CONNECTED>>,
-      public LuciNodeMixin<LuciNodeTrait::FusedActFunc>,
-      public LuciNodeMixin<LuciNodeTrait::Bias>
+  : public FixedArityNode<5, CircleNodeImpl<CircleOpcode::BCQ_FULLY_CONNECTED>>,
+    public LuciNodeMixin<LuciNodeTrait::FusedActFunc>,
+    public LuciNodeMixin<LuciNodeTrait::Bias>
 {
 public:
   loco::Node *input(void) const { return at(0)->node(); }

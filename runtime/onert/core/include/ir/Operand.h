@@ -36,7 +36,7 @@ class Operand
 {
 public:
   explicit Operand(const Shape &shape, const TypeInfo &type)
-      : _info{shape, type, MemAllocType::STATIC}
+    : _info{shape, type, MemAllocType::STATIC}
   {
     // DO NOTHING
   }

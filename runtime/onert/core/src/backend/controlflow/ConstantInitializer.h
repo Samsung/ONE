@@ -34,7 +34,7 @@ class ConstantInitializer : public IConstantInitializer
 public:
   ConstantInitializer(const ir::Operands &operands,
                       const std::shared_ptr<ITensorRegistry> &tensor_reg)
-      : IConstantInitializer{operands}, _tensor_reg{tensor_reg}
+    : IConstantInitializer{operands}, _tensor_reg{tensor_reg}
   {
   }
 

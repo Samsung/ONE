@@ -52,19 +52,19 @@ uint64_t num_elements(const loco::NodeMixin<loco::NodeTrait::TensorShape> &shape
 bool skip(const loco::Node *node)
 {
   static std::set<uint32_t> skip_op = {
-      // TODO Current implementation works for 'Tensor' domain only. Support other domains such as
-      //      `Feature`, `Filter`, `Bias`, etc.
-      static_cast<uint32_t>(loco::CanonicalOpcode::FilterEncode),
-      static_cast<uint32_t>(loco::CanonicalOpcode::FeatureEncode),
-      static_cast<uint32_t>(loco::CanonicalOpcode::BiasEncode),
-      static_cast<uint32_t>(loco::CanonicalOpcode::DepthwiseFilterEncode),
+    // TODO Current implementation works for 'Tensor' domain only. Support other domains such as
+    //      `Feature`, `Filter`, `Bias`, etc.
+    static_cast<uint32_t>(loco::CanonicalOpcode::FilterEncode),
+    static_cast<uint32_t>(loco::CanonicalOpcode::FeatureEncode),
+    static_cast<uint32_t>(loco::CanonicalOpcode::BiasEncode),
+    static_cast<uint32_t>(loco::CanonicalOpcode::DepthwiseFilterEncode),
 
-      // We don't perform constant folding for Push
-      static_cast<uint32_t>(loco::CanonicalOpcode::Push),
+    // We don't perform constant folding for Push
+    static_cast<uint32_t>(loco::CanonicalOpcode::Push),
 
-      // TensorBroadcast is a good hint for optimization
-      // TODO Let this option be controlled by driver using logo
-      static_cast<uint32_t>(loco::CanonicalOpcode::TensorBroadcast),
+    // TensorBroadcast is a good hint for optimization
+    // TODO Let this option be controlled by driver using logo
+    static_cast<uint32_t>(loco::CanonicalOpcode::TensorBroadcast),
   };
 
   if (node->dialect() == loco::CanonicalDialect::get())

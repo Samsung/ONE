@@ -25,7 +25,7 @@ namespace kernels
 {
 
 Reverse::Reverse(const Tensor *input, const Tensor *axes, Tensor *output)
-    : Kernel({input, axes}, {output})
+  : Kernel({input, axes}, {output})
 {
 }
 
@@ -69,8 +69,8 @@ void Reverse::execute() const
       break;
     case DataType::U8:
       tflite::reference_ops::Reverse<uint8_t>(
-          axis_value, getTensorShape(input()), getTensorData<uint8_t>(input()),
-          getTensorShape(output()), getTensorData<uint8_t>(output()));
+        axis_value, getTensorShape(input()), getTensorData<uint8_t>(input()),
+        getTensorShape(output()), getTensorData<uint8_t>(output()));
       break;
     default:
       throw std::runtime_error("Unsupported output type");

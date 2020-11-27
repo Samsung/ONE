@@ -32,7 +32,7 @@ void Reduce::accept(OperationVisitor &v) const { v.visit(*this); }
 
 Reduce::Reduce(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs,
                const Param &param)
-    : Operation{OperandConstraint::createExact(2u), inputs, outputs}, _param{param}
+  : Operation{OperandConstraint::createExact(2u), inputs, outputs}, _param{param}
 {
 }
 
@@ -40,13 +40,13 @@ std::string Reduce::name() const
 {
   using ReduceType = onert::ir::operation::Reduce::ReduceType;
   static const std::unordered_map<ReduceType, std::string> name_map{
-      {ReduceType::ALL, std::string{toString(opcode())} + "All"},
-      {ReduceType::ANY, std::string{toString(opcode())} + "Any"},
-      {ReduceType::MAX, std::string{toString(opcode())} + "Max"},
-      {ReduceType::MEAN, std::string{toString(opcode())} + "Mean"},
-      {ReduceType::MIN, std::string{toString(opcode())} + "Min"},
-      {ReduceType::PROD, std::string{toString(opcode())} + "Prod"},
-      {ReduceType::SUM, std::string{toString(opcode())} + "SUM"}};
+    {ReduceType::ALL, std::string{toString(opcode())} + "All"},
+    {ReduceType::ANY, std::string{toString(opcode())} + "Any"},
+    {ReduceType::MAX, std::string{toString(opcode())} + "Max"},
+    {ReduceType::MEAN, std::string{toString(opcode())} + "Mean"},
+    {ReduceType::MIN, std::string{toString(opcode())} + "Min"},
+    {ReduceType::PROD, std::string{toString(opcode())} + "Prod"},
+    {ReduceType::SUM, std::string{toString(opcode())} + "SUM"}};
   return name_map.at(_param.reduce_type);
   //  return std::string(toString(opcode())) + reduce_type_str_map.at(_param.reduce_type);
 }

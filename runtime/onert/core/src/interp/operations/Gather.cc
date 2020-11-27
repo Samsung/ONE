@@ -71,7 +71,7 @@ void prepareGather(ExecEnv *env, const ir::Operation &node)
       input_tensor->tensorInfo().typeInfo() != output_tensor->tensorInfo().typeInfo())
   {
     throw std::runtime_error{
-        "Interp(Gather): Cannot handle different I/O QUANT_UINT8_ASYMM scale/offset"};
+      "Interp(Gather): Cannot handle different I/O QUANT_UINT8_ASYMM scale/offset"};
   }
 }
 

@@ -33,7 +33,7 @@ void ElementwiseActivation::accept(OperationVisitor &v) const { v.visit(*this); 
 ElementwiseActivation::ElementwiseActivation(const OperandIndexSequence &inputs,
                                              const OperandIndexSequence &outputs,
                                              const Param &param)
-    : Operation{OperandConstraint::createExact(1u), inputs, outputs}, _param{param}
+  : Operation{OperandConstraint::createExact(1u), inputs, outputs}, _param{param}
 {
   if (param.op_type == Type::LOGISTIC)
   {
@@ -59,11 +59,11 @@ std::string ElementwiseActivation::name() const
 {
   using ElementwiseActivationType = onert::ir::operation::ElementwiseActivation::Type;
   static const std::unordered_map<Type, std::string> name_map{
-      {ElementwiseActivationType::ELU, "ELU"},
-      {ElementwiseActivationType::LOGISTIC, "Logistic"},
-      {ElementwiseActivationType::RELU, "ReLU"},
-      {ElementwiseActivationType::TANH, "Tanh"},
-      {ElementwiseActivationType::LEAKY_RELU, "LeakyRelu"}};
+    {ElementwiseActivationType::ELU, "ELU"},
+    {ElementwiseActivationType::LOGISTIC, "Logistic"},
+    {ElementwiseActivationType::RELU, "ReLU"},
+    {ElementwiseActivationType::TANH, "Tanh"},
+    {ElementwiseActivationType::LEAKY_RELU, "LeakyRelu"}};
   return name_map.at(_param.op_type);
 }
 

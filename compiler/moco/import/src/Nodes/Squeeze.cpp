@@ -36,7 +36,7 @@ class SqueezeGraphUpdate final : public GraphUpdate
 {
 public:
   SqueezeGraphUpdate(TFSqueeze *node, const TensorName &&input_name)
-      : _node(node), _input_name(input_name)
+    : _node(node), _input_name(input_name)
   {
     // DO NOTHING
   }

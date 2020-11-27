@@ -42,8 +42,8 @@ bool TypeInferencePass::run(loco::Graph *graph)
   loco::MultiDialectTypeInferenceRule rules;
 
   rules.bind(loco::CanonicalDialect::get(), &canonical_rule)
-      .bind(TFDialect::get(), &tf_rule)
-      .bind(locoex::COpDialect::get(), &cop_rule);
+    .bind(TFDialect::get(), &tf_rule)
+    .bind(locoex::COpDialect::get(), &cop_rule);
 
   loco::apply(&rules).to(graph);
 

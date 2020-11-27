@@ -64,7 +64,7 @@ protected:
                                             const loco::Permutation<loco::Domain::Feature> &perm)
   {
     auto encoder = std::unique_ptr<loco::PermutingEncoder<loco::Domain::Feature>>(
-        new loco::PermutingEncoder<loco::Domain::Feature>);
+      new loco::PermutingEncoder<loco::Domain::Feature>);
 
     encoder->perm(perm);
 
@@ -80,7 +80,7 @@ protected:
                                             const loco::Permutation<loco::Domain::Feature> &perm)
   {
     auto decoder = std::unique_ptr<loco::PermutingDecoder<loco::Domain::Feature>>(
-        new loco::PermutingDecoder<loco::Domain::Feature>);
+      new loco::PermutingDecoder<loco::Domain::Feature>);
 
     decoder->perm(perm);
 

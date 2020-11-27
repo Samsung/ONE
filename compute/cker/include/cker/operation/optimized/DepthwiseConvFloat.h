@@ -949,7 +949,7 @@ void FloatDepthwiseConvAccumRow(int stride, int dilation_factor, int input_depth
       {
         out_x_loop_start_unclamped = (pad_width - dilation_factor * filter_x + stride - 1) / stride;
         out_x_loop_end_unclamped =
-            (pad_width + input_width - dilation_factor * filter_x + stride - 1) / stride;
+          (pad_width + input_width - dilation_factor * filter_x + stride - 1) / stride;
       }
     }
     else
@@ -967,8 +967,8 @@ void FloatDepthwiseConvAccumRow(int stride, int dilation_factor, int input_depth
     const float *input_ptr = input_data + in_x_origin * input_depth;
     const int num_output_pixels = out_x_loop_end - out_x_loop_start;
     FloatDepthwiseConvKernel<kAllowStrided, kFixedInputDepth, kFixedDepthMultiplier>::Run(
-        num_output_pixels, input_depth, depth_multiplier, input_ptr, input_ptr_increment,
-        filter_base_ptr, acc_buffer_ptr);
+      num_output_pixels, input_depth, depth_multiplier, input_ptr, input_ptr_increment,
+      filter_base_ptr, acc_buffer_ptr);
     filter_base_ptr += output_depth;
   }
 }
@@ -984,11 +984,11 @@ inline void FloatDepthwiseConvAccumRowGeneric(int stride, int dilation_factor, i
   const float *filter_base_ptr = filter_data;
   for (int filter_x = 0; filter_x < filter_width; ++filter_x)
   {
-    const int out_x_loop_start = std::max(
-        out_x_buffer_start, (pad_width - dilation_factor * filter_x + stride - 1) / stride);
+    const int out_x_loop_start =
+      std::max(out_x_buffer_start, (pad_width - dilation_factor * filter_x + stride - 1) / stride);
     const int out_x_loop_end =
-        std::min(out_x_buffer_end,
-                 (pad_width + input_width - dilation_factor * filter_x + stride - 1) / stride);
+      std::min(out_x_buffer_end,
+               (pad_width + input_width - dilation_factor * filter_x + stride - 1) / stride);
 
     float *acc_buffer_ptr = acc_buffer + (out_x_loop_start - out_x_buffer_start) * output_depth;
     const int in_x_origin = (out_x_loop_start * stride) - pad_width + dilation_factor * filter_x;
@@ -1085,7 +1085,7 @@ inline void DepthwiseConvImpl(const DepthwiseConvParams &params, const Shape &in
       depth_multiplier == FIXED_DEPTH_MULTIPLIER)                                                 \
   {                                                                                               \
     row_accum_func =                                                                              \
-        FloatDepthwiseConvAccumRow<ALLOW_STRIDED, FIXED_INPUT_DEPTH, FIXED_DEPTH_MULTIPLIER>;     \
+      FloatDepthwiseConvAccumRow<ALLOW_STRIDED, FIXED_INPUT_DEPTH, FIXED_DEPTH_MULTIPLIER>;       \
   }
 
 #ifdef USE_NEON
@@ -1167,15 +1167,15 @@ inline void DepthwiseConvImpl(const DepthwiseConvParams &params, const Shape &in
     {
       const int in_y_origin = (out_y * stride_height) - pad_height;
       const int filter_y_start =
-          std::max(0, (-in_y_origin + dilation_height_factor - 1) / dilation_height_factor);
+        std::max(0, (-in_y_origin + dilation_height_factor - 1) / dilation_height_factor);
       const int filter_y_end =
-          std::min(filter_height, (input_height - in_y_origin + dilation_height_factor - 1) /
-                                      dilation_height_factor);
+        std::min(filter_height, (input_height - in_y_origin + dilation_height_factor - 1) /
+                                  dilation_height_factor);
       for (int out_x_buffer_start = 0; out_x_buffer_start < output_width;
            out_x_buffer_start += kOutputPixelsInAccBuffer)
       {
         const int out_x_buffer_end =
-            std::min(output_width, out_x_buffer_start + kOutputPixelsInAccBuffer);
+          std::min(output_width, out_x_buffer_start + kOutputPixelsInAccBuffer);
         // We call a 'pixel' a group of activation that share all but the
         // 'depth'/'channel' coordinate. num_output_pixels is the number of
         // output pixels that we will accumulate in this loop iteration.

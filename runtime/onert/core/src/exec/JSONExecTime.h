@@ -37,15 +37,15 @@ namespace exec
  * _measurements[Backend*]["string"][bool][uint32_t] = int64_t
  */
 using MeasurementData = std::unordered_map<
-    const backend::Backend *,
-    std::unordered_map<std::string, std::unordered_map<bool, std::map<uint32_t, int64_t>>>>;
+  const backend::Backend *,
+  std::unordered_map<std::string, std::unordered_map<bool, std::map<uint32_t, int64_t>>>>;
 
 class JSON
 {
 public:
   explicit JSON(const std::vector<const backend::Backend *> &backends,
                 MeasurementData &measurements)
-      : _measurement_file("exec_time.json"), _backends(), _measurements(measurements)
+    : _measurement_file("exec_time.json"), _backends(), _measurements(measurements)
   {
     for (const auto b : backends)
     {

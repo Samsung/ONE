@@ -30,8 +30,8 @@ TEST_F(GenModelTest, OneOp_LogSoftmax)
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
   _context->setBackends({"cpu"});
   _context->addTestCase(uniformTCD<float>(
-      {{0, -6, 2, 4, 3, -2, 10, 1}},
-      {{-.00247565, -6.00247, -2.12692, -.126928, -.00671534, -5.00671, -.000123374, -9.00012}}));
+    {{0, -6, 2, 4, 3, -2, 10, 1}},
+    {{-.00247565, -6.00247, -2.12692, -.126928, -.00671534, -5.00671, -.000123374, -9.00012}}));
 
   SUCCEED();
 }

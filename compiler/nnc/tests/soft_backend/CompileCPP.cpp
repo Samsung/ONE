@@ -101,7 +101,7 @@ int main()
   string target_compiler = "g++ -Wall --std=c++11";
 
   string compiler_command =
-      target_compiler + " -I" + output_dir + " " + main_path + " " + code_path;
+    target_compiler + " -I" + output_dir + " " + main_path + " " + code_path;
 
   // call compiler
   int res = system(compiler_command.c_str());

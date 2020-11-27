@@ -48,7 +48,7 @@ class ProfileObserver : public IExecutionObserver
 {
 public:
   explicit ProfileObserver(std::shared_ptr<ExecTime> et, const ir::Graph &graph)
-      : _et(std::move(et)), _graph(graph)
+    : _et(std::move(et)), _graph(graph)
   {
   }
   void handleJobBegin(IExecutor *, const ir::OpSequence *, const backend::Backend *) override;

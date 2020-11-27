@@ -30,7 +30,7 @@ namespace kernels
 {
 
 MaxPool2D::MaxPool2D(const Tensor *input, Tensor *output, const Pool2DParams &params)
-    : KernelWithParams<Pool2DParams>({input}, {output}, params)
+  : KernelWithParams<Pool2DParams>({input}, {output}, params)
 {
 }
 
@@ -44,15 +44,15 @@ void MaxPool2D::configure()
   const int32_t input_width = input_shape.dim(2);
   const int32_t depth = input_shape.dim(3);
 
-  const int32_t output_height = computeOutputSize(_params.padding, input_height,
-                                                  _params.filter_height, _params.stride_height);
+  const int32_t output_height =
+    computeOutputSize(_params.padding, input_height, _params.filter_height, _params.stride_height);
   const int32_t output_width =
-      computeOutputSize(_params.padding, input_width, _params.filter_width, _params.stride_width);
+    computeOutputSize(_params.padding, input_width, _params.filter_width, _params.stride_width);
 
   _padding_height =
-      computePadding(_params.stride_height, 1, input_height, _params.filter_height, output_height);
+    computePadding(_params.stride_height, 1, input_height, _params.filter_height, output_height);
   _padding_width =
-      computePadding(_params.stride_width, 1, input_width, _params.filter_width, output_width);
+    computePadding(_params.stride_width, 1, input_width, _params.filter_width, output_width);
 
   output()->resize({batches, output_height, output_width, depth});
   if (input()->element_type() == DataType::U8)
@@ -142,8 +142,8 @@ void MaxPool2D::evalSInt16() const
   params.quantized_activation_max = activation_max;
 
   tflite::reference_integer_ops::MaxPool(
-      params, getTensorShape(input()), getTensorData<int16_t>(input()), //
-      getTensorShape(output()), getTensorData<int16_t>(output()));
+    params, getTensorShape(input()), getTensorData<int16_t>(input()), //
+    getTensorShape(output()), getTensorData<int16_t>(output()));
 }
 
 } // namespace kernels

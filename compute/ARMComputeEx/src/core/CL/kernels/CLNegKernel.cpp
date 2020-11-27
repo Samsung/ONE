@@ -80,9 +80,9 @@ void CLNegKernel::configure(const ICLTensor *input, ICLTensor *output)
   std::set<std::string> build_opts;
   build_opts.emplace(("-DDATA_TYPE=" + get_cl_type_from_data_type(input->info()->data_type())));
   build_opts.emplace(
-      ("-DVEC_SIZE=" + support::cpp11::to_string(num_elems_processed_per_iteration)));
+    ("-DVEC_SIZE=" + support::cpp11::to_string(num_elems_processed_per_iteration)));
   _kernel =
-      static_cast<cl::Kernel>(CLKernelLibraryEx::get().create_kernel("neg_tensor", build_opts));
+    static_cast<cl::Kernel>(CLKernelLibraryEx::get().create_kernel("neg_tensor", build_opts));
 
   // Configure window
   Window win = calculate_max_window(*input->info(), Steps(num_elems_processed_per_iteration));

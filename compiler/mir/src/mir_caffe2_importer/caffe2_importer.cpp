@@ -99,7 +99,7 @@ using mir::Shape;
 
 Caffe2Importer::Caffe2Importer(std::string predict_net, std::string init_net,
                                const std::vector<std::vector<int>> &input_shapes)
-    : _predictNet(std::move(predict_net)), _initNet(std::move(init_net))
+  : _predictNet(std::move(predict_net)), _initNet(std::move(init_net))
 {
   for (auto &shape : input_shapes)
     _inputShapes.emplace_back(shape);
@@ -308,25 +308,25 @@ void Caffe2Importer::setGraphOutputs()
 }
 
 const std::map<std::string, SupportedCaffe2OpType> Caffe2Importer::_operatorTypes = {
-    {"Add", SupportedCaffe2OpType::add},
-    {"AveragePool", SupportedCaffe2OpType::averagePool},
-    {"Conv", SupportedCaffe2OpType::conv},
-    {"Concat", SupportedCaffe2OpType::concat},
-    {"ConstantFill", SupportedCaffe2OpType::constantFill},
-    {"Dropout", SupportedCaffe2OpType::dropout},
-    {"FC", SupportedCaffe2OpType::FC},
-    {"GivenTensorFill", SupportedCaffe2OpType::givenTensorFill},
-    {"MaxPool", SupportedCaffe2OpType::maxPool},
-    {"Mul", SupportedCaffe2OpType::mul},
-    {"Relu", SupportedCaffe2OpType::relu},
-    {"ResizeNearest", SupportedCaffe2OpType::resizeNearest},
-    {"Sigmoid", SupportedCaffe2OpType::sigmoid},
-    {"Softmax", SupportedCaffe2OpType::softmax},
-    {"SpatialBN", SupportedCaffe2OpType::spatialBN},
-    {"Sum", SupportedCaffe2OpType::sum},
-    {"Clip", SupportedCaffe2OpType::clip},
-    {"Reshape", SupportedCaffe2OpType::reshape},
-    {"GivenTensorInt64Fill", SupportedCaffe2OpType::givenTensorInt64Fill},
+  {"Add", SupportedCaffe2OpType::add},
+  {"AveragePool", SupportedCaffe2OpType::averagePool},
+  {"Conv", SupportedCaffe2OpType::conv},
+  {"Concat", SupportedCaffe2OpType::concat},
+  {"ConstantFill", SupportedCaffe2OpType::constantFill},
+  {"Dropout", SupportedCaffe2OpType::dropout},
+  {"FC", SupportedCaffe2OpType::FC},
+  {"GivenTensorFill", SupportedCaffe2OpType::givenTensorFill},
+  {"MaxPool", SupportedCaffe2OpType::maxPool},
+  {"Mul", SupportedCaffe2OpType::mul},
+  {"Relu", SupportedCaffe2OpType::relu},
+  {"ResizeNearest", SupportedCaffe2OpType::resizeNearest},
+  {"Sigmoid", SupportedCaffe2OpType::sigmoid},
+  {"Softmax", SupportedCaffe2OpType::softmax},
+  {"SpatialBN", SupportedCaffe2OpType::spatialBN},
+  {"Sum", SupportedCaffe2OpType::sum},
+  {"Clip", SupportedCaffe2OpType::clip},
+  {"Reshape", SupportedCaffe2OpType::reshape},
+  {"GivenTensorInt64Fill", SupportedCaffe2OpType::givenTensorInt64Fill},
 };
 }
 

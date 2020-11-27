@@ -114,8 +114,8 @@ static void Init(const onert::ir::Operand &model_obj, onert::backend::ITensor &o
               {
                 for (auto l = 0; l < shape.dim(3); ++l)
                 {
-                  const auto coords = ::onert::ir::convertCoordinates({i, j, k, l}, frontend_layout,
-                                                                      tensor.layout());
+                  const auto coords =
+                    ::onert::ir::convertCoordinates({i, j, k, l}, frontend_layout, tensor.layout());
                   T *into = reinterpret_cast<T *>(tensor.buffer() + tensor.calcOffset(coords));
                   T value = *(base + i * height * width * copy_len + j * width * copy_len +
                               k * copy_len + l);
@@ -179,7 +179,7 @@ public:
 
 public:
   IConstantInitializer(const ir::Operands &operands)
-      : _operands{operands}, _current_layout{ir::Layout::UNKNOWN}
+    : _operands{operands}, _current_layout{ir::Layout::UNKNOWN}
   {
   }
 

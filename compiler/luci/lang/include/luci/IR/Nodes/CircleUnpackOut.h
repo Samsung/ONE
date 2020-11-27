@@ -29,7 +29,7 @@ namespace luci
  * @brief Virtual CIRCLEUNPACKOUT in Circle
  */
 class CircleUnpackOut final
-    : public FixedArityNode<1, CircleNodeImpl<CircleOpcode::CIRCLEUNPACKOUT>>
+  : public FixedArityNode<1, CircleNodeImpl<CircleOpcode::CIRCLEUNPACKOUT>>
 {
 public:
   CircleUnpackOut() = default;

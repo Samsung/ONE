@@ -29,8 +29,8 @@ namespace kernels
 {
 
 LocalResponseNormalization::LocalResponseNormalization(
-    const Tensor *input, Tensor *output, const LocalResponseNormalizationParams &params)
-    : KernelWithParams<LocalResponseNormalizationParams>({input}, {output}, params)
+  const Tensor *input, Tensor *output, const LocalResponseNormalizationParams &params)
+  : KernelWithParams<LocalResponseNormalizationParams>({input}, {output}, params)
 {
 }
 
@@ -53,8 +53,8 @@ void LocalResponseNormalization::execute() const
       op_params.alpha = params().alpha;
       op_params.beta = params().beta;
       tflite::optimized_ops::LocalResponseNormalization(
-          op_params, getTensorShape(input()), getTensorData<float>(input()),
-          getTensorShape(output()), getTensorData<float>(output()));
+        op_params, getTensorShape(input()), getTensorData<float>(input()), getTensorShape(output()),
+        getTensorData<float>(output()));
       break;
     default:
       throw std::runtime_error("Unsupported type.");

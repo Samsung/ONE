@@ -34,8 +34,8 @@ static std::vector<const Tensor *> joinInputs(const Tensor *cond,
 
 If::If(const Tensor *cond, const std::vector<const Tensor *> &inputs, std::vector<Tensor *> outputs,
        RuntimeGraph *then_graph, RuntimeGraph *else_graph)
-    : Kernel(joinInputs(cond, inputs), std::move(outputs)), _then_graph(then_graph),
-      _else_graph(else_graph)
+  : Kernel(joinInputs(cond, inputs), std::move(outputs)), _then_graph(then_graph),
+    _else_graph(else_graph)
 {
 }
 

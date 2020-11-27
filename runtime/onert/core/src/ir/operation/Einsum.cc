@@ -28,7 +28,7 @@ void Einsum::accept(OperationVisitor &v) const { v.visit(*this); }
 
 Einsum::Einsum(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs,
                const Param &param)
-    : Operation{OperandConstraint::createAtLeast(1u), inputs, outputs}, _param{param}
+  : Operation{OperandConstraint::createAtLeast(1u), inputs, outputs}, _param{param}
 {
 }
 

@@ -32,7 +32,7 @@ void Pool2D::accept(OperationVisitor &v) const { v.visit(*this); }
 
 Pool2D::Pool2D(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs,
                const Param &param)
-    : Operation{OperandConstraint::createExact(1u), inputs, outputs}, _param{param}
+  : Operation{OperandConstraint::createExact(1u), inputs, outputs}, _param{param}
 {
 }
 
@@ -40,9 +40,9 @@ std::string Pool2D::name() const
 {
   using PoolType = onert::ir::operation::Pool2D::PoolType;
   static const std::unordered_map<PoolType, std::string> name_map{
-      {PoolType::AVG, "Avg" + std::string{toString(opcode())}},
-      {PoolType::L2, "L2" + std::string{toString(opcode())}},
-      {PoolType::MAX, "Max" + std::string{toString(opcode())}}};
+    {PoolType::AVG, "Avg" + std::string{toString(opcode())}},
+    {PoolType::L2, "L2" + std::string{toString(opcode())}},
+    {PoolType::MAX, "Max" + std::string{toString(opcode())}}};
   return name_map.at(_param.op_type);
 }
 

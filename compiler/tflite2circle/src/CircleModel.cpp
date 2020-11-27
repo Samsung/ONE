@@ -126,13 +126,13 @@ Offset<SubGraphLink>::Offset(FlatBufBuilder &fb, const TFLFlatBufVec *tflite_fla
         flatbuffers::Offset<flatbuffers::Vector<int32_t>> traversal_order;
         flatbuffers::Offset<flatbuffers::Vector<int32_t>> block_map;
         flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<circle::DimensionMetadata>>>
-            dim_metadata;
+          dim_metadata;
 
         // traversal_order
         if (it->sparsity()->traversal_order())
         {
           auto traversal_order_vec = std::vector<int32_t>{
-              it->sparsity()->traversal_order()->begin(), it->sparsity()->traversal_order()->end()};
+            it->sparsity()->traversal_order()->begin(), it->sparsity()->traversal_order()->end()};
           traversal_order = fb->CreateVector(traversal_order_vec);
         }
 
@@ -152,16 +152,16 @@ Offset<SubGraphLink>::Offset(FlatBufBuilder &fb, const TFLFlatBufVec *tflite_fla
           // array_segments
           auto tflite_array_segments_type = it->array_segments_type();
           auto circle_array_segments =
-              get_circle_sparse_index_vector(*fb, it->array_segments(), tflite_array_segments_type);
+            get_circle_sparse_index_vector(*fb, it->array_segments(), tflite_array_segments_type);
           auto circle_array_segments_type =
-              get_circle_sparse_index_vector_type(tflite_array_segments_type);
+            get_circle_sparse_index_vector_type(tflite_array_segments_type);
 
           // array_indices
           auto tflite_array_indices_type = it->array_indices_type();
           auto circle_array_indices =
-              get_circle_sparse_index_vector(*fb, it->array_indices(), tflite_array_indices_type);
+            get_circle_sparse_index_vector(*fb, it->array_indices(), tflite_array_indices_type);
           auto circle_array_indices_type =
-              get_circle_sparse_index_vector_type(tflite_array_indices_type);
+            get_circle_sparse_index_vector_type(tflite_array_indices_type);
 
           auto circle_dim_metadata_builder = circle::DimensionMetadataBuilder{*fb};
 
@@ -184,7 +184,7 @@ Offset<SubGraphLink>::Offset(FlatBufBuilder &fb, const TFLFlatBufVec *tflite_fla
       if (it->shape_signature())
       {
         auto shape_signature_vec =
-            std::vector<int32_t>({it->shape_signature()->begin(), it->shape_signature()->end()});
+          std::vector<int32_t>({it->shape_signature()->begin(), it->shape_signature()->end()});
         shape_signature = fb->CreateVector(shape_signature_vec);
       }
 
@@ -297,7 +297,7 @@ Offset<OperatorCodeLink>::Offset(FlatBufBuilder &fb, const TFLFlatBufVec *tflite
 }
 
 CircleModel::CircleModel(FlatBufBuilder &fb, TFLModel &model)
-    : _version{0}, _description{fb->CreateString("nnpackage")}, _fb{fb}
+  : _version{0}, _description{fb->CreateString("nnpackage")}, _fb{fb}
 {
   const tflite::Model *tfl_model = model.load_model();
   // verify flatbuffers
@@ -309,11 +309,11 @@ CircleModel::CircleModel(FlatBufBuilder &fb, TFLModel &model)
   }
 
   _operator_codes_offset =
-      std::make_unique<Offset<OperatorCodeLink>>(fb, tfl_model->operator_codes());
+    std::make_unique<Offset<OperatorCodeLink>>(fb, tfl_model->operator_codes());
   _subGraphs_offset = std::make_unique<Offset<SubGraphLink>>(fb, tfl_model->subgraphs());
   _buffers_offset = std::make_unique<Offset<BufferLink>>(fb, tfl_model->buffers());
   _metadata_buffer_offset =
-      std::make_unique<Offset<MetaDataBufferLink>>(fb, tfl_model->metadata_buffer());
+    std::make_unique<Offset<MetaDataBufferLink>>(fb, tfl_model->metadata_buffer());
   model_build();
 }
 

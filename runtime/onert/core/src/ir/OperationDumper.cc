@@ -84,8 +84,8 @@ void OperationDumper::visit(const ArgMinMax &node)
 void OperationDumper::visit(const BatchToSpaceND &node)
 {
   std::string block_size =
-      "BlockSize(" +
-      std::to_string(node.getInputs().at(BatchToSpaceND::Input::BLOCK_SIZE).value()) + ")";
+    "BlockSize(" + std::to_string(node.getInputs().at(BatchToSpaceND::Input::BLOCK_SIZE).value()) +
+    ")";
   dumpUnaryInputOp(node, block_size);
 }
 
@@ -114,7 +114,7 @@ void OperationDumper::visit(const Concat &node) { dumpPackingOp(node); }
 void OperationDumper::visit(const Conv2D &node)
 {
   std::string padding_type =
-      node.param().padding.type == PaddingType::EXPLICIT ? "Explicit" : "Implicit";
+    node.param().padding.type == PaddingType::EXPLICIT ? "Explicit" : "Implicit";
   dumpConvOp(node, padding_type);
 }
 
@@ -127,7 +127,7 @@ void OperationDumper::visit(const DepthToSpace &node) { dumpUnaryInputOp(node); 
 void OperationDumper::visit(const DepthwiseConv2D &node)
 {
   std::string padding_type =
-      node.param().padding.type == PaddingType::EXPLICIT ? "Explicit" : "Implicit";
+    node.param().padding.type == PaddingType::EXPLICIT ? "Explicit" : "Implicit";
   dumpConvOp(node, padding_type);
 }
 
@@ -162,22 +162,22 @@ void OperationDumper::visit(const EmbeddingLookup &node)
 void OperationDumper::visit(const ExpandDims &node)
 {
   std::string axis =
-      "AXIS(" + std::to_string(node.getInputs().at(ExpandDims::Input::AXIS).value()) + ")";
+    "AXIS(" + std::to_string(node.getInputs().at(ExpandDims::Input::AXIS).value()) + ")";
   dumpUnaryInputOp(node, axis);
 }
 
 void OperationDumper::visit(const FullyConnected &node)
 {
   std::string inputs =
-      "Weight(" + std::to_string(node.getInputs().at(FullyConnected::Input::WEIGHT).value()) +
-      ") Bias(" + std::to_string(node.getInputs().at(FullyConnected::Input::BIAS).value()) + ")";
+    "Weight(" + std::to_string(node.getInputs().at(FullyConnected::Input::WEIGHT).value()) +
+    ") Bias(" + std::to_string(node.getInputs().at(FullyConnected::Input::BIAS).value()) + ")";
   dumpUnaryInputOp(node, inputs);
 }
 
 void OperationDumper::visit(const Gather &node)
 {
   std::string indices =
-      "Indices(" + std::to_string(node.getInputs().at(Gather::Input::INDICES).value()) + ")";
+    "Indices(" + std::to_string(node.getInputs().at(Gather::Input::INDICES).value()) + ")";
   dumpUnaryInputOp(node, indices);
 }
 
@@ -195,8 +195,8 @@ void OperationDumper::visit(const HashtableLookup &node)
 void OperationDumper::visit(const InstanceNorm &node)
 {
   std::string inputs =
-      "Gamma(" + std::to_string(node.getInputs().at(InstanceNorm::Input::GAMMA).value()) +
-      ") Beta(" + std::to_string(node.getInputs().at(InstanceNorm::Input::BETA).value()) + ")";
+    "Gamma(" + std::to_string(node.getInputs().at(InstanceNorm::Input::GAMMA).value()) + ") Beta(" +
+    std::to_string(node.getInputs().at(InstanceNorm::Input::BETA).value()) + ")";
   dumpUnaryInputOp(node, inputs);
 }
 
@@ -208,30 +208,29 @@ void OperationDumper::visit(const LSTM &node)
 {
   VERBOSE(LIR) << "* " << node.name() << std::endl;
   VERBOSE(LIR)
-      << "  - Inputs : Input(" << node.getInputs().at(LSTM::Input::INPUT)
-      << ") Input To Input Weights(" << node.getInputs().at(LSTM::Input::INPUT_TO_INPUT_WEIGHTS)
-      << ") Input To Forget Weights(" << node.getInputs().at(LSTM::Input::INPUT_TO_FORGET_WEIGHTS)
-      << ") Input To Cell Weights(" << node.getInputs().at(LSTM::Input::INPUT_TO_CELL_WEIGHTS)
-      << ") Input To Output Weights(" << node.getInputs().at(LSTM::Input::INPUT_TO_OUTPUT_WEIGHTS)
-      << ") Recurrent To Input Weights("
-      << node.getInputs().at(LSTM::Input::RECURRENT_TO_INPUT_WEIGHTS)
-      << ") Recurrent To Forget Weights("
-      << node.getInputs().at(LSTM::Input::RECURRENT_TO_FORGET_WEIGHTS)
-      << ") Recurrent To Cell Weights("
-      << node.getInputs().at(LSTM::Input::RECURRENT_TO_CELL_WEIGHTS)
-      << ") Recurrent To Output Weights("
-      << node.getInputs().at(LSTM::Input::RECURRENT_TO_OUTPUT_WEIGHTS) << ") Cell To Input Weights("
-      << node.getInputs().at(LSTM::Input::CELL_TO_INPUT_WEIGHTS) << ") Cell To Forget Weights("
-      << node.getInputs().at(LSTM::Input::CELL_TO_FORGET_WEIGHTS) << ") Cell To OUTPUT Weights("
-      << node.getInputs().at(LSTM::Input::CELL_TO_OUTPUT_WEIGHTS) << ") Input Gate Bias("
-      << node.getInputs().at(LSTM::Input::INPUT_GATE_BIAS) << ") Forget Gate Bias("
-      << node.getInputs().at(LSTM::Input::FORGET_GATE_BIAS) << ") Cell Bias("
-      << node.getInputs().at(LSTM::Input::CELL_BIAS) << ") Output Gate Bias("
-      << node.getInputs().at(LSTM::Input::OUTPUT_GATE_BIAS) << ") Projection Weights("
-      << node.getInputs().at(LSTM::Input::PROJECTION_WEIGHTS) << ") Projection Bias("
-      << node.getInputs().at(LSTM::Input::PROJECTION_BIAS) << ") Output State In("
-      << node.getInputs().at(LSTM::Input::OUTPUT_STATE_IN) << ") Cell State In("
-      << node.getInputs().at(LSTM::Input::CELL_STATE_IN);
+    << "  - Inputs : Input(" << node.getInputs().at(LSTM::Input::INPUT)
+    << ") Input To Input Weights(" << node.getInputs().at(LSTM::Input::INPUT_TO_INPUT_WEIGHTS)
+    << ") Input To Forget Weights(" << node.getInputs().at(LSTM::Input::INPUT_TO_FORGET_WEIGHTS)
+    << ") Input To Cell Weights(" << node.getInputs().at(LSTM::Input::INPUT_TO_CELL_WEIGHTS)
+    << ") Input To Output Weights(" << node.getInputs().at(LSTM::Input::INPUT_TO_OUTPUT_WEIGHTS)
+    << ") Recurrent To Input Weights("
+    << node.getInputs().at(LSTM::Input::RECURRENT_TO_INPUT_WEIGHTS)
+    << ") Recurrent To Forget Weights("
+    << node.getInputs().at(LSTM::Input::RECURRENT_TO_FORGET_WEIGHTS)
+    << ") Recurrent To Cell Weights(" << node.getInputs().at(LSTM::Input::RECURRENT_TO_CELL_WEIGHTS)
+    << ") Recurrent To Output Weights("
+    << node.getInputs().at(LSTM::Input::RECURRENT_TO_OUTPUT_WEIGHTS) << ") Cell To Input Weights("
+    << node.getInputs().at(LSTM::Input::CELL_TO_INPUT_WEIGHTS) << ") Cell To Forget Weights("
+    << node.getInputs().at(LSTM::Input::CELL_TO_FORGET_WEIGHTS) << ") Cell To OUTPUT Weights("
+    << node.getInputs().at(LSTM::Input::CELL_TO_OUTPUT_WEIGHTS) << ") Input Gate Bias("
+    << node.getInputs().at(LSTM::Input::INPUT_GATE_BIAS) << ") Forget Gate Bias("
+    << node.getInputs().at(LSTM::Input::FORGET_GATE_BIAS) << ") Cell Bias("
+    << node.getInputs().at(LSTM::Input::CELL_BIAS) << ") Output Gate Bias("
+    << node.getInputs().at(LSTM::Input::OUTPUT_GATE_BIAS) << ") Projection Weights("
+    << node.getInputs().at(LSTM::Input::PROJECTION_WEIGHTS) << ") Projection Bias("
+    << node.getInputs().at(LSTM::Input::PROJECTION_BIAS) << ") Output State In("
+    << node.getInputs().at(LSTM::Input::OUTPUT_STATE_IN) << ") Cell State In("
+    << node.getInputs().at(LSTM::Input::CELL_STATE_IN);
   if (node.getInputs().size() == 24)
   {
     VERBOSE(LIR) << ") Input Layer Normalization Weights("
@@ -283,7 +282,7 @@ void OperationDumper::visit(const Permute &node)
 void OperationDumper::visit(const Pool2D &node)
 {
   std::string padding_type =
-      node.param().padding.type == PaddingType::EXPLICIT ? "Explicit" : "Implicit";
+    node.param().padding.type == PaddingType::EXPLICIT ? "Explicit" : "Implicit";
   VERBOSE(LIR) << "* " << node.name() << "(" << padding_type << ")" << std::endl;
   VERBOSE(LIR) << "  - Inputs : IFM(" << node.getInputs().at(Pool2D::Input::INPUT) << ")"
                << std::endl;
@@ -295,7 +294,7 @@ void OperationDumper::visit(const Pow &node) { dumpBinaryInputOp(node); }
 void OperationDumper::visit(const PReLU &node)
 {
   std::string alpha =
-      "Alpha(" + std::to_string(node.getInputs().at(PReLU::Input::ALPHA).value()) + ")";
+    "Alpha(" + std::to_string(node.getInputs().at(PReLU::Input::ALPHA).value()) + ")";
   dumpUnaryInputOp(node, alpha);
 }
 
@@ -307,9 +306,9 @@ void OperationDumper::visit(const Reshape &node)
 {
   // optional param
   std::string shape =
-      node.getInputs().size() == 2
-          ? "Shape(" + std::to_string(node.getInputs().at(Reshape::Input::SHAPE).value()) + ")"
-          : "Shape(not provided)";
+    node.getInputs().size() == 2
+      ? "Shape(" + std::to_string(node.getInputs().at(Reshape::Input::SHAPE).value()) + ")"
+      : "Shape(not provided)";
   dumpUnaryInputOp(node, shape);
 }
 
@@ -348,7 +347,7 @@ void OperationDumper::visit(const ResizeNearestNeighbor &node)
 void OperationDumper::visit(const Reverse &node)
 {
   std::string axis =
-      "Axis(" + std::to_string(node.getInputs().at(Reverse::Input::AXIS).value()) + ")";
+    "Axis(" + std::to_string(node.getInputs().at(Reverse::Input::AXIS).value()) + ")";
   dumpUnaryInputOp(node, axis);
 }
 
@@ -391,10 +390,9 @@ void OperationDumper::visit(const Softmax &node) { dumpUnaryInputOp(node); }
 void OperationDumper::visit(const SpaceToBatchND &node)
 {
   std::string inputs =
-      "BlockSize(" +
-      std::to_string(node.getInputs().at(SpaceToBatchND::Input::BLOCK_SIZE).value()) +
-      ") Paddings(" + std::to_string(node.getInputs().at(SpaceToBatchND::Input::PADDINGS).value()) +
-      ")";
+    "BlockSize(" + std::to_string(node.getInputs().at(SpaceToBatchND::Input::BLOCK_SIZE).value()) +
+    ") Paddings(" + std::to_string(node.getInputs().at(SpaceToBatchND::Input::PADDINGS).value()) +
+    ")";
   dumpUnaryInputOp(node, inputs);
 }
 
@@ -422,7 +420,7 @@ void OperationDumper::visit(const StridedSlice &node) { dumpUnaryInputOp(node); 
 void OperationDumper::visit(const Tile &node)
 {
   std::string multiples =
-      "Multiples(" + std::to_string(node.getInputs().at(Tile::Input::MULTIPLES).value()) + ")";
+    "Multiples(" + std::to_string(node.getInputs().at(Tile::Input::MULTIPLES).value()) + ")";
   dumpUnaryInputOp(node, multiples);
 }
 
@@ -439,7 +437,7 @@ void OperationDumper::visit(const TopKV2 &node)
 void OperationDumper::visit(const TransposeConv &node)
 {
   std::string padding_type =
-      node.param().padding.type == PaddingType::EXPLICIT ? "Explicit" : "Implicit";
+    node.param().padding.type == PaddingType::EXPLICIT ? "Explicit" : "Implicit";
   VERBOSE(LIR) << "* TransposeConv(" << padding_type << ")" << std::endl;
   VERBOSE(LIR) << "  - Inputs : Output Shape("
                << node.getInputs().at(TransposeConv::Input::OUTPUT_SHAPE) << ") KERNEL("

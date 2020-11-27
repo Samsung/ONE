@@ -318,7 +318,7 @@ bool fuse_to_preceding(loco::Graph *graph, moco::TFMul *node)
     fused_node = fused_conv_node<FuseType::Conv2D, moco::TFConv2D>(graph, mulparam, conv2d);
   else if (auto dw_conv2d = dynamic_cast<moco::TFDepthwiseConv2dNative *>(precedingOp))
     fused_node = fused_conv_node<FuseType::DepthwiseConv2D, moco::TFDepthwiseConv2dNative>(
-        graph, mulparam, dw_conv2d);
+      graph, mulparam, dw_conv2d);
 
   // Not ready yet
   if (fused_node == nullptr)
@@ -515,7 +515,7 @@ bool FuseBinaryIntoPreceding::run(loco::Graph *graph)
         }
       }
       {
-          // TODO support Div
+        // TODO support Div
       }
 
       {

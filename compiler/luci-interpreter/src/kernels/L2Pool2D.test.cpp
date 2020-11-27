@@ -31,8 +31,8 @@ TEST(L2Pool2DTest, FloatNone)
 {
   Shape input_shape{1, 2, 4, 1};
   std::vector<float> input_data{
-      0, 6, 2,  4, //
-      3, 2, 10, 7, //
+    0, 6, 2,  4, //
+    3, 2, 10, 7, //
   };
   Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
@@ -58,8 +58,8 @@ TEST(L2Pool2DTest, FloatRelu)
 {
   Shape input_shape{1, 2, 4, 1};
   std::vector<float> input_data{
-      -1, -6, 2,  4, //
-      -3, -2, 10, 7, //
+    -1, -6, 2,  4, //
+    -3, -2, 10, 7, //
   };
   Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
@@ -85,8 +85,8 @@ TEST(L2Pool2DTest, FloatRelu1)
 {
   Shape input_shape{1, 2, 4, 1};
   std::vector<float> input_data{
-      -0.1, -0.6, 2,  4, //
-      -0.3, -0.2, 10, 7, //
+    -0.1, -0.6, 2,  4, //
+    -0.3, -0.2, 10, 7, //
   };
   Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
@@ -112,8 +112,8 @@ TEST(L2Pool2DTest, FloatRelu6)
 {
   Shape input_shape{1, 2, 4, 1};
   std::vector<float> input_data{
-      -0.1, -0.6, 2,  4, //
-      -0.3, -0.2, 10, 7, //
+    -0.1, -0.6, 2,  4, //
+    -0.3, -0.2, 10, 7, //
   };
   Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
@@ -139,8 +139,8 @@ TEST(L2Pool2DTest, FloatPaddingSame)
 {
   Shape input_shape{1, 2, 4, 1};
   std::vector<float> input_data{
-      0, 6, 2,  4, //
-      3, 2, 10, 7, //
+    0, 6, 2,  4, //
+    3, 2, 10, 7, //
   };
   Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
@@ -166,8 +166,8 @@ TEST(L2Pool2DTest, FloatPaddingSameStride)
 {
   Shape input_shape{1, 2, 4, 1};
   std::vector<float> input_data{
-      0, 6, 2,  4, //
-      3, 2, 10, 7, //
+    0, 6, 2,  4, //
+    3, 2, 10, 7, //
   };
   Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
@@ -193,8 +193,8 @@ TEST(L2Pool2DTest, FloatPaddingValidStride)
 {
   Shape input_shape{1, 2, 4, 1};
   std::vector<float> input_data{
-      0, 6, 2,  4, //
-      3, 2, 10, 7, //
+    0, 6, 2,  4, //
+    3, 2, 10, 7, //
   };
   Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
@@ -220,8 +220,8 @@ TEST(L2Pool2DTest, InvalidInputShape_NEG)
 {
   Shape input_shape{1, 2, 4};
   std::vector<float> input_data{
-      0, 6, 2,  4, //
-      3, 2, 10, 7, //
+    0, 6, 2,  4, //
+    3, 2, 10, 7, //
   };
   Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
@@ -242,8 +242,8 @@ TEST(L2Pool2DTest, InvalidInputOutputType_NEG)
 {
   Shape input_shape{1, 2, 4};
   std::vector<float> input_data{
-      0, 6, 2,  4, //
-      3, 2, 10, 7, //
+    0, 6, 2,  4, //
+    3, 2, 10, 7, //
   };
   Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
   Tensor output_tensor = makeOutputTensor(DataType::U8);

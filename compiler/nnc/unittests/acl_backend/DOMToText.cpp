@@ -148,9 +148,9 @@ TEST(acl_backend_dom_to_text, ArtifactUnaryExpr)
   const char *var_name = "id";
   shared_ptr<ArtifactId> var = AF::id(var_name);
   pair<ArtifactUnOp, const char *> test_cases[] = {
-      {ArtifactUnOp::preIncr, "++id"},   {ArtifactUnOp::preDecr, "--id"},
-      {ArtifactUnOp::heapNew, "new id"}, {ArtifactUnOp::heapFree, "delete id"},
-      {ArtifactUnOp::postIncr, "id++"},  {ArtifactUnOp::postDecr, "id--"}};
+    {ArtifactUnOp::preIncr, "++id"},   {ArtifactUnOp::preDecr, "--id"},
+    {ArtifactUnOp::heapNew, "new id"}, {ArtifactUnOp::heapFree, "delete id"},
+    {ArtifactUnOp::postIncr, "id++"},  {ArtifactUnOp::postDecr, "id--"}};
 
   for (auto test : test_cases)
   {
@@ -181,14 +181,14 @@ TEST(acl_backend_dom_to_text, ArtifactBinaryExpr)
   shared_ptr<ArtifactId> op2 = AF::id(op2_name);
 
   pair<ArtifactBinOp, const char *> test_cases[] = {
-      {ArtifactBinOp::eq, "a == b"},          {ArtifactBinOp::notEq, "a != b"},
-      {ArtifactBinOp::less, "a < b"},         {ArtifactBinOp::lessOrEq, "a <= b"},
-      {ArtifactBinOp::great, "a > b"},        {ArtifactBinOp::greatOrEq, "a >= b"},
-      {ArtifactBinOp::assign, "a = b"},       {ArtifactBinOp::plus, "a + b"},
-      {ArtifactBinOp::minus, "a - b"},        {ArtifactBinOp::mult, "a * b"},
-      {ArtifactBinOp::div, "a / b"},          {ArtifactBinOp::plusAssign, "a += b"},
-      {ArtifactBinOp::minusAssign, "a -= b"}, {ArtifactBinOp::multAssign, "a *= b"},
-      {ArtifactBinOp::divAssign, "a /= b"}};
+    {ArtifactBinOp::eq, "a == b"},          {ArtifactBinOp::notEq, "a != b"},
+    {ArtifactBinOp::less, "a < b"},         {ArtifactBinOp::lessOrEq, "a <= b"},
+    {ArtifactBinOp::great, "a > b"},        {ArtifactBinOp::greatOrEq, "a >= b"},
+    {ArtifactBinOp::assign, "a = b"},       {ArtifactBinOp::plus, "a + b"},
+    {ArtifactBinOp::minus, "a - b"},        {ArtifactBinOp::mult, "a * b"},
+    {ArtifactBinOp::div, "a / b"},          {ArtifactBinOp::plusAssign, "a += b"},
+    {ArtifactBinOp::minusAssign, "a -= b"}, {ArtifactBinOp::multAssign, "a *= b"},
+    {ArtifactBinOp::divAssign, "a /= b"}};
 
   for (auto test : test_cases)
   {
@@ -286,12 +286,12 @@ TEST(acl_backend_dom_to_text, ArtifactForLoop)
 
   shared_ptr<ArtifactVariable> iter = AF::var(var_type, var_name, {}, {AF::lit("0")});
   shared_ptr<ArtifactExpr> step =
-      AF::bin(ArtifactBinOp::plusAssign, AF::id(var_name), AF::lit("1"));
+    AF::bin(ArtifactBinOp::plusAssign, AF::id(var_name), AF::lit("1"));
   shared_ptr<ArtifactExpr> cond =
-      AF::bin(ArtifactBinOp::lessOrEq, AF::id(var_name), AF::lit("123"));
+    AF::bin(ArtifactBinOp::lessOrEq, AF::id(var_name), AF::lit("123"));
 
   shared_ptr<ArtifactBinaryExpr> expr =
-      AF::bin(ArtifactBinOp::plusAssign, AF::id("hello"), AF::id("world"));
+    AF::bin(ArtifactBinOp::plusAssign, AF::id("hello"), AF::id("world"));
 
   ArtifactForLoop loop(iter, cond, step);
 
@@ -308,10 +308,10 @@ TEST(acl_backend_dom_to_text, ArtifactIf)
   const char *var_name = "i";
 
   shared_ptr<ArtifactExpr> cond =
-      AF::bin(ArtifactBinOp::lessOrEq, AF::id(var_name), AF::lit("123"));
+    AF::bin(ArtifactBinOp::lessOrEq, AF::id(var_name), AF::lit("123"));
 
   shared_ptr<ArtifactBinaryExpr> expr =
-      AF::bin(ArtifactBinOp::plusAssign, AF::id("hello"), AF::id("world"));
+    AF::bin(ArtifactBinOp::plusAssign, AF::id("hello"), AF::id("world"));
 
   ArtifactIf if_stmt(cond);
 
@@ -415,7 +415,7 @@ static shared_ptr<ArtifactClassVariable> createClsVariable(ArtifactClass &cls, c
   list<shared_ptr<ArtifactExpr>> dims{dim1, dim2};
   list<shared_ptr<ArtifactExpr>> initializers{AF::lit("123")};
   shared_ptr<ArtifactClassVariable> var_decl =
-      cls.var(is_public, var_type, var_name, dims, initializers);
+    cls.var(is_public, var_type, var_name, dims, initializers);
   return var_decl;
 }
 
@@ -483,8 +483,8 @@ TEST(acl_backend_dom_to_text, ArtifactModule)
   const char *code_prefix = "#include \"module.h\"\n\n#include <list>\n\n#include \"bar.h\"\n\n";
   const char *code_suffix = "\nClass::Class() {\n}\n\n";
 
-  string ref_data = string(code_prefix) +
-                    string(AclArtifactUtilities, sizeof(AclArtifactUtilities)) + code_suffix;
+  string ref_data =
+    string(code_prefix) + string(AclArtifactUtilities, sizeof(AclArtifactUtilities)) + code_suffix;
   m.accept(&code_gen);
   ASSERT_EQ(code_out.str(), ref_data);
 

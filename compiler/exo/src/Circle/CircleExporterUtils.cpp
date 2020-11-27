@@ -78,13 +78,13 @@ circle::Padding getOpPadding(const loco::Padding2D *pad, const loco::Stride<2> *
   //
   // NOTE input and output 'feature' map are shape of NHWC
   bool same_padding_criterion_1 =
-      (static_cast<uint32_t>(ofm._dims[1]) == (ifm._dims[1] - 1) / stride->vertical() + 1) &&
-      (static_cast<uint32_t>(ofm._dims[2]) == (ifm._dims[2] - 1) / stride->horizontal() + 1);
+    (static_cast<uint32_t>(ofm._dims[1]) == (ifm._dims[1] - 1) / stride->vertical() + 1) &&
+    (static_cast<uint32_t>(ofm._dims[2]) == (ifm._dims[2] - 1) / stride->horizontal() + 1);
 
   // For same padding, rear padding is same or bigger than front padding by at most 1
   bool same_padding_criterion_2 =
-      (pad->top() <= pad->bottom()) && (pad->bottom() <= pad->top() + 1) &&
-      (pad->left() <= pad->right()) && (pad->right() <= pad->left() + 1);
+    (pad->top() <= pad->bottom()) && (pad->bottom() <= pad->top() + 1) &&
+    (pad->left() <= pad->right()) && (pad->right() <= pad->left() + 1);
 
   if (same_padding_criterion_1 && same_padding_criterion_2)
     return circle::Padding_SAME;

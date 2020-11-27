@@ -30,8 +30,8 @@ namespace luci
  * @brief UNIDIRECTIONAL_SEQUENCE_LSTM in Circle
  */
 class CircleUnidirectionalSequenceLSTM final
-    : public FixedArityNode<24, CircleNodeImpl<CircleOpcode::UNIDIRECTIONAL_SEQUENCE_LSTM>>,
-      public LuciNodeMixin<LuciNodeTrait::FusedActFunc>
+  : public FixedArityNode<24, CircleNodeImpl<CircleOpcode::UNIDIRECTIONAL_SEQUENCE_LSTM>>,
+    public LuciNodeMixin<LuciNodeTrait::FusedActFunc>
 {
 public:
   loco::Node *input(void) const { return at(0)->node(); }

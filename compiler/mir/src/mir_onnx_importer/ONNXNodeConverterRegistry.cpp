@@ -117,8 +117,8 @@ NodeConverterRegistry::ConverterFunc NodeConverterRegistry::lookup(const std::st
   const VersionMap &conv_map = it->second;
 
   auto res = std::lower_bound(
-      conv_map.crbegin(), conv_map.crend(), opset,
-      [](const VersionMap::value_type &pair, int64_t opset) { return pair.first > opset; });
+    conv_map.crbegin(), conv_map.crend(), opset,
+    [](const VersionMap::value_type &pair, int64_t opset) { return pair.first > opset; });
 
   if (res == conv_map.crend())
   {

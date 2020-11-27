@@ -51,8 +51,8 @@ public:
     auto operand_rhs2 = graph->addOperand(shape, type);
     auto operand_result2 = graph->addOperand(shape, type);
     graph->operands()
-        .at(operand_rhs2)
-        .data(std::make_unique<CachedData>(reinterpret_cast<const uint8_t *>(&rhs2_data), 16));
+      .at(operand_rhs2)
+      .data(std::make_unique<CachedData>(reinterpret_cast<const uint8_t *>(&rhs2_data), 16));
     // 2nd add operations (result2 <= result1 + rhs2)
     operation::BinaryArithmetic::Param param1;
     param1.arithmetic_type = operation::BinaryArithmetic::ArithmeticType::ADD;
@@ -60,14 +60,14 @@ public:
     auto input_set1 = OperandIndexSequence{operand_lhs, operand_rhs1};
     auto output_set1 = OperandIndexSequence{operand_result1};
     graph->addOperation(
-        std::make_unique<operation::BinaryArithmetic>(input_set1, output_set1, param1));
+      std::make_unique<operation::BinaryArithmetic>(input_set1, output_set1, param1));
     operation::BinaryArithmetic::Param param2;
     param2.arithmetic_type = operation::BinaryArithmetic::ArithmeticType::ADD;
     param2.activation = Activation::NONE;
     auto input_set2 = OperandIndexSequence{operand_result1, operand_rhs2};
     auto output_set2 = OperandIndexSequence{operand_result2};
     graph->addOperation(
-        std::make_unique<operation::BinaryArithmetic>(input_set2, output_set2, param2));
+      std::make_unique<operation::BinaryArithmetic>(input_set2, output_set2, param2));
     // Identify model inputs and outputs
     graph->addInput(operand_lhs);
     graph->addInput(operand_rhs1);
@@ -205,7 +205,7 @@ class Inference
 public:
   Inference(const float (&input1)[4], const float (&input2)[4], float (&output)[4],
             std::shared_ptr<onert::exec::ExecutorMap> &executors)
-      : _input1{input1}, _input2{input2}, _output{output}, _executors{executors}
+    : _input1{input1}, _input2{input2}, _output{output}, _executors{executors}
   {
     // DO NOTHING
   }

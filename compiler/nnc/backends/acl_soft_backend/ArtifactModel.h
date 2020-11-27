@@ -204,7 +204,7 @@ class ArtifactUnaryExpr : public ArtifactExpr
 {
 public:
   ArtifactUnaryExpr(ArtifactUnOp op, std::shared_ptr<ArtifactExpr> expr)
-      : _op(op), _expr(std::move(expr))
+    : _op(op), _expr(std::move(expr))
   {
   }
 
@@ -248,7 +248,7 @@ class ArtifactBinaryExpr : public ArtifactExpr
 public:
   ArtifactBinaryExpr(ArtifactBinOp op, std::shared_ptr<ArtifactExpr> left,
                      std::shared_ptr<ArtifactExpr> right)
-      : _op(op), _left(std::move(left)), _right(std::move(right))
+    : _op(op), _left(std::move(left)), _right(std::move(right))
   {
   }
 
@@ -271,7 +271,7 @@ class ArtifactIndex : public ArtifactExpr
 {
 public:
   ArtifactIndex(std::shared_ptr<ArtifactExpr> expr, std::shared_ptr<ArtifactExpr> ind)
-      : _expr(std::move(expr)), _ind(std::move(ind))
+    : _expr(std::move(expr)), _ind(std::move(ind))
   {
   }
 
@@ -328,8 +328,8 @@ public:
   ArtifactVariable(std::string type_name, std::string var_name,
                    std::list<std::shared_ptr<ArtifactExpr>> dimensions = {},
                    std::list<std::shared_ptr<ArtifactExpr>> initializers = {})
-      : _typeName(std::move(type_name)), _dimensions(std::move(dimensions)),
-        _initializers(std::move(initializers)), ArtifactNamed(std::move(var_name))
+    : _typeName(std::move(type_name)), _dimensions(std::move(dimensions)),
+      _initializers(std::move(initializers)), ArtifactNamed(std::move(var_name))
   {
   }
 
@@ -469,7 +469,7 @@ public:
   explicit ArtifactForLoop(std::shared_ptr<ArtifactVariable> init = nullptr,
                            std::shared_ptr<ArtifactExpr> cond = nullptr,
                            std::shared_ptr<ArtifactExpr> iter = nullptr)
-      : _init(std::move(init)), _cond(std::move(cond)), _iter(std::move(iter))
+    : _init(std::move(init)), _cond(std::move(cond)), _iter(std::move(iter))
   {
   }
 
@@ -527,7 +527,7 @@ public:
    */
   ArtifactFunction(std::string ret_type_name, const std::string &func_name,
                    std::list<std::shared_ptr<ArtifactVariable>> params = {})
-      : ArtifactNamed(func_name), _params(std::move(params)), _retTypeName(std::move(ret_type_name))
+    : ArtifactNamed(func_name), _params(std::move(params)), _retTypeName(std::move(ret_type_name))
   {
   }
 
@@ -568,7 +568,7 @@ public:
                         const std::string &var_name,
                         const std::list<std::shared_ptr<ArtifactExpr>> &dimensions = {},
                         const std::list<std::shared_ptr<ArtifactExpr>> &initializers = {})
-      : ArtifactClassMember(owner), ArtifactVariable(type_name, var_name, dimensions, initializers)
+    : ArtifactClassMember(owner), ArtifactVariable(type_name, var_name, dimensions, initializers)
   {
   }
 
@@ -584,7 +584,7 @@ public:
   ArtifactClassFunction(const ArtifactClass *owner, const std::string &ret_type_name,
                         const std::string &func_name,
                         const std::list<std::shared_ptr<ArtifactVariable>> &params = {})
-      : ArtifactClassMember(owner), ArtifactFunction(ret_type_name, func_name, params)
+    : ArtifactClassMember(owner), ArtifactFunction(ret_type_name, func_name, params)
   {
   }
 

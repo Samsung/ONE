@@ -140,8 +140,8 @@ bool ANeuralNetworksExecution::setInput(uint32_t index, const ANeuralNetworksOpe
 
     const auto type_info = _execution->primary_subgraph().operands().at(operand_index).typeInfo();
     const auto shape = (type != nullptr)
-                           ? NNAPIConvert::getShape(type)
-                           : _execution->primary_subgraph().operands().at(operand_index).shape();
+                         ? NNAPIConvert::getShape(type)
+                         : _execution->primary_subgraph().operands().at(operand_index).shape();
 
     // NOTE The nnapi does not provide setting io_layout and not support changing layout. In other
     // words, we can assume that io_layout from nnapi always is the same as layout of the used
@@ -173,8 +173,8 @@ bool ANeuralNetworksExecution::setOptionalInput(uint32_t index,
 
     const auto type_info = _execution->primary_subgraph().operands().at(operand_index).typeInfo();
     const auto shape = (type != nullptr)
-                           ? NNAPIConvert::getShape(type)
-                           : _execution->primary_subgraph().operands().at(operand_index).shape();
+                         ? NNAPIConvert::getShape(type)
+                         : _execution->primary_subgraph().operands().at(operand_index).shape();
 
     // ANeuralNetworksExecution::setInput() uses only shape information
     ANeuralNetworksOperandType optional_input_type;
@@ -208,8 +208,8 @@ bool ANeuralNetworksExecution::setOutput(uint32_t index, const ANeuralNetworksOp
 
     const auto type_info = _execution->primary_subgraph().operands().at(operand_index).typeInfo();
     const auto shape = (type != nullptr)
-                           ? NNAPIConvert::getShape(type)
-                           : _execution->primary_subgraph().operands().at(operand_index).shape();
+                         ? NNAPIConvert::getShape(type)
+                         : _execution->primary_subgraph().operands().at(operand_index).shape();
 
     // NOTE The nnapi does not provide setting io_layout and not support changing layout. In other
     // words, we can assume that io_layout from nnapi always is the same as layout of the used

@@ -65,7 +65,7 @@ Buffer<RET_T> calc_tr_conv2D(const loco::TransposedConv2D *tr_conv2d,
   locomotiv::validate(input_shape.rank() == 4, "ifm rank must be 4");
   locomotiv::validate(filter_shape.rank() == 4, "filter rank must be 4");
   locomotiv::validate(input_shape.dim(3) /* depth of input */ ==
-                          filter_shape.dim(3) /* depth of filter */,
+                        filter_shape.dim(3) /* depth of filter */,
                       "channel value mismatch");
 
   const uint32_t input_height = input_shape.dim(1);
@@ -86,9 +86,9 @@ Buffer<RET_T> calc_tr_conv2D(const loco::TransposedConv2D *tr_conv2d,
   // TODO Support dilations
 
   const uint32_t output_height =
-      compute_transposed_out_size(input_height, pad_top + pad_bottom, filter_height, stride_height);
+    compute_transposed_out_size(input_height, pad_top + pad_bottom, filter_height, stride_height);
   const uint32_t output_width =
-      compute_transposed_out_size(input_width, pad_left + pad_right, filter_width, stride_width);
+    compute_transposed_out_size(input_width, pad_left + pad_right, filter_width, stride_width);
 
   const uint32_t batches = input_shape.dim(0);
   const uint32_t input_depth = input_shape.dim(3);
@@ -131,9 +131,9 @@ Buffer<RET_T> calc_tr_conv2D(const loco::TransposedConv2D *tr_conv2d,
                 {
                   auto input_value = input_buf->at(Index({batch, in_y, in_x, in_channel}));
                   auto filter_value =
-                      filter_buf->at(Index({out_channel, filter_y, filter_x, in_channel}));
+                    filter_buf->at(Index({out_channel, filter_y, filter_x, in_channel}));
                   output_buf.at(Index({batch, (unsigned)out_y, (unsigned)out_x, out_channel})) +=
-                      input_value * filter_value;
+                    input_value * filter_value;
                 }
               }
             }

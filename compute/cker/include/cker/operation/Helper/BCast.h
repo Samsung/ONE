@@ -393,7 +393,7 @@ public:
 
   BCast(const Vec &x, const Vec &y, const bool fewer_dims_optimization = true,
         const bool return_flattened_batch_indices = false)
-      : BCastList<2>({x, y}, fewer_dims_optimization, return_flattened_batch_indices)
+    : BCastList<2>({x, y}, fewer_dims_optimization, return_flattened_batch_indices)
   {
   }
 

@@ -223,12 +223,11 @@ inline nonius::benchmark_registry &local_benchmark_registry()
 
 } // namespace
 
-#define NONIUS_LOCAL_BENCHMARK(name, ...)                                              \
-  namespace                                                                            \
-  {                                                                                    \
-  static ::nonius::benchmark_registrar                                                 \
-      NONIUS_DETAIL_UNIQUE_NAME(benchmark_registrar)(local_benchmark_registry(), name, \
-                                                     __VA_ARGS__);                     \
+#define NONIUS_LOCAL_BENCHMARK(name, ...)                                                          \
+  namespace                                                                                        \
+  {                                                                                                \
+  static ::nonius::benchmark_registrar                                                             \
+    NONIUS_DETAIL_UNIQUE_NAME(benchmark_registrar)(local_benchmark_registry(), name, __VA_ARGS__); \
   }
 
 NONIUS_LOCAL_BENCHMARK("NEDirectConvolutionLayer_NCHW", [](nonius::chronometer meter) {

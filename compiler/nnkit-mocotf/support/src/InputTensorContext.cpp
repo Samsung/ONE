@@ -37,7 +37,7 @@ void InputTensorContext::getMutableFloatTensor(uint32_t n,
 }
 
 void InputTensorContext::getConstFloatTensor(
-    uint32_t n, const nnkit::TensorContext::TypedReader<float> &f) const
+  uint32_t n, const nnkit::TensorContext::TypedReader<float> &f) const
 {
   auto buf = _buffers.at(n).get();
   f(*this, n, *buf);

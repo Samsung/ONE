@@ -89,7 +89,7 @@ struct NoOpDetector final : public loco::CanonicalNodeMutableVisitor<bool>
   bool visit(loco::FeatureEncode *node) final
   {
     auto encoder =
-        loco::must_cast<loco::PermutingEncoder<loco::Domain::Feature> *>(node->encoder());
+      loco::must_cast<loco::PermutingEncoder<loco::Domain::Feature> *>(node->encoder());
     auto perm = encoder->perm();
     return isNHWC(perm);
   }
@@ -97,7 +97,7 @@ struct NoOpDetector final : public loco::CanonicalNodeMutableVisitor<bool>
   bool visit(loco::FeatureDecode *node) final
   {
     auto decoder =
-        loco::must_cast<loco::PermutingDecoder<loco::Domain::Feature> *>(node->decoder());
+      loco::must_cast<loco::PermutingDecoder<loco::Domain::Feature> *>(node->decoder());
     auto perm = decoder->perm();
     return isNHWC(perm);
   }

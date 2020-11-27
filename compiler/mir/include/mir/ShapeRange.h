@@ -26,7 +26,7 @@ namespace mir
 {
 
 class ShapeIter
-    : public std::iterator<std::forward_iterator_tag, Index, std::size_t, Index *, Index &>
+  : public std::iterator<std::forward_iterator_tag, Index, std::size_t, Index *, Index &>
 {
 public:
   ShapeIter &operator++()

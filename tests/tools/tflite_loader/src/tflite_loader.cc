@@ -168,7 +168,7 @@ int main(const int argc, char **argv)
   try
   {
     test_graph =
-        onert::tflite_loader::loadModel(tflite_file.c_str())->at(onert::ir::SubgraphIndex{0});
+      onert::tflite_loader::loadModel(tflite_file.c_str())->at(onert::ir::SubgraphIndex{0});
   }
   catch (std::exception &e)
   {
@@ -217,7 +217,7 @@ int main(const int argc, char **argv)
       if (generate_data)
       {
         uint64_t sz =
-            test_graph->operands().at(test_graph->getInputs().at(i)).shape().num_elements();
+          test_graph->operands().at(test_graph->getInputs().at(i)).shape().num_elements();
         inputs[i] = randomData(randgen, sz);
       }
       else /* read_data */

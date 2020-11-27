@@ -48,7 +48,7 @@ LoweredGraph::LoweredGraph(const ir::Graph &graph, const CompilerOptions &option
   // Always create Controlflow backend context
   auto cf_backend = backend_manager.getControlflow();
   _backend_contexts.emplace(
-      cf_backend, cf_backend->newContext(_graph, _graph.getKernelBuilder(), linear_executor));
+    cf_backend, cf_backend->newContext(_graph, _graph.getKernelBuilder(), linear_executor));
 
   // Create contexts for other backends
   for (auto backend_str : options.backend_list)
@@ -66,7 +66,7 @@ LoweredGraph::LoweredGraph(const ir::Graph &graph, const CompilerOptions &option
     }
 
     _backend_contexts.emplace(
-        backend, backend->newContext(_graph, _graph.getKernelBuilder(), linear_executor));
+      backend, backend->newContext(_graph, _graph.getKernelBuilder(), linear_executor));
   }
   if (backend_manager.num_backends() == 0)
     throw std::runtime_error{"No available backends loaded."};
@@ -107,9 +107,9 @@ LoweredGraph::LoweredGraph(const ir::Graph &graph, const CompilerOptions &option
 
     // Mandatory passes
     pass::PassRunner{}
-        .append(std::make_unique<pass::ConstantInsertionPass>(*this))
-        .append(std::make_unique<pass::ConstantLoweringPass>(*this))
-        .run();
+      .append(std::make_unique<pass::ConstantInsertionPass>(*this))
+      .append(std::make_unique<pass::ConstantLoweringPass>(*this))
+      .run();
 
     // Set LowerInfo for each operand from the operand::LowerInfo holder
     manipulateLowerInfo(operands_lower_info);
@@ -119,9 +119,9 @@ LoweredGraph::LoweredGraph(const ir::Graph &graph, const CompilerOptions &option
 
   // Mandatory passes
   pass::PassRunner{}
-      .append(std::make_unique<pass::PermutationOperationPass>(*this))
-      .append(std::make_unique<pass::PermutationInsertionPass>(*this))
-      .run();
+    .append(std::make_unique<pass::PermutationOperationPass>(*this))
+    .append(std::make_unique<pass::PermutationInsertionPass>(*this))
+    .run();
 
   // Optimization passes
   pass::PassRunner{}.append(std::make_unique<pass::PermutationEliminationPass>(*this)).run();
@@ -198,14 +198,14 @@ void LoweredGraph::removeLowerInfo(const ir::OperandIndex &index)
 }
 
 void LoweredGraph::iterateTopolOpSeqs(
-    const std::function<void(const ir::OpSequenceIndex &, const ir::OpSequence &)> &fn) const
+  const std::function<void(const ir::OpSequenceIndex &, const ir::OpSequence &)> &fn) const
 {
   // Topological Sorting for ir::OpSequences
   std::vector<ir::OpSequenceIndex> topol_sorted;
   ir::PostDfsIterator<true>{}.iterateOpSeqs(
-      *this, [&](const ir::OpSequenceIndex &index, const ir::OpSequence &) {
-        topol_sorted.emplace_back(index);
-      });
+    *this, [&](const ir::OpSequenceIndex &index, const ir::OpSequence &) {
+      topol_sorted.emplace_back(index);
+    });
   std::reverse(topol_sorted.begin(), topol_sorted.end());
   for (const auto op_seq_idx : topol_sorted)
   {
@@ -215,14 +215,13 @@ void LoweredGraph::iterateTopolOpSeqs(
 }
 
 void LoweredGraph::iterateTopolOpSeqs(
-    const std::function<void(const ir::OpSequenceIndex &, ir::OpSequence &)> &fn)
+  const std::function<void(const ir::OpSequenceIndex &, ir::OpSequence &)> &fn)
 {
   // Topological Sorting for ir::OpSequences
   std::vector<ir::OpSequenceIndex> topol_sorted;
   ir::PostDfsIterator<false>{}.iterateOpSeqs(
-      *this, [&](const ir::OpSequenceIndex &index, ir::OpSequence &) {
-        topol_sorted.emplace_back(index);
-      });
+    *this,
+    [&](const ir::OpSequenceIndex &index, ir::OpSequence &) { topol_sorted.emplace_back(index); });
   std::reverse(topol_sorted.begin(), topol_sorted.end());
   for (const auto op_seq_idx : topol_sorted)
   {
@@ -249,8 +248,8 @@ ir::OpSequenceIndex LoweredGraph::appendFreshSingleOpSequence(const ir::Operatio
 }
 
 void LoweredGraph::makeOpSequences(
-    ir::OperandIndexMap<std::unique_ptr<ir::operand::LowerInfo>> &operands_lower_info,
-    const CompilerOptions &options, const BackendResolver &backend_resolver)
+  ir::OperandIndexMap<std::unique_ptr<ir::operand::LowerInfo>> &operands_lower_info,
+  const CompilerOptions &options, const BackendResolver &backend_resolver)
 {
   // if SUBG_MAX_NODE == 0, no limit on nodes of a op_seq
   const int op_seq_max_node = options.op_seq_max_node;
@@ -286,8 +285,8 @@ void LoweredGraph::makeOpSequences(
     }
 
     bool new_op_seq =
-        (op_seq == nullptr || (op_seq_max_node != 0 && op_seq->operations().size() >=
-                                                           static_cast<size_t>(op_seq_max_node)));
+      (op_seq == nullptr || (op_seq_max_node != 0 &&
+                             op_seq->operations().size() >= static_cast<size_t>(op_seq_max_node)));
 
     // for profiling each op_seq must contain just one node,
     // so that we can measure a node separately
@@ -326,7 +325,7 @@ void LoweredGraph::makeOpSequences(
 }
 
 void LoweredGraph::manipulateLowerInfo(
-    ir::OperandIndexMap<std::unique_ptr<ir::operand::LowerInfo>> &operands_lower_info)
+  ir::OperandIndexMap<std::unique_ptr<ir::operand::LowerInfo>> &operands_lower_info)
 {
   const auto controlflow_backend = BackendManager::get().getControlflow();
 
@@ -350,8 +349,8 @@ void LoweredGraph::manipulateLowerInfo(
     {
       // In case of that an operand is Graph's output and not input or output of any operation
       lower_info->addDefPermuteFactor(ir::operand::PermuteFactor{
-          controlflow_backend,
-          ir::Layout::NHWC // TODO Get frontend layout of this node from IR
+        controlflow_backend,
+        ir::Layout::NHWC // TODO Get frontend layout of this node from IR
       });
     }
   }
@@ -411,7 +410,7 @@ void LoweredGraph::dumpLowerInfo()
       const auto lower_info = getLowerInfo(index);
       const auto &shape = object.shape();
       std::string def_ops =
-          object.getDef().valid() ? std::to_string(object.getDef().value()) : "N/A";
+        object.getDef().valid() ? std::to_string(object.getDef().value()) : "N/A";
       std::string use_ops = operation_index_to_string(object.getUses());
       std::string def_layouts = factors_to_string(lower_info->def_factors());
       std::string use_layouts = factors_to_string(lower_info->use_factors());

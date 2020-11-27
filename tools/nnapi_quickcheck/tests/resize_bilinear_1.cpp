@@ -110,8 +110,8 @@ TEST(NNAPI_Quickcheck_resize_bilinear_1, simple_test)
 
     // Configure Size
     interp.SetTensorParametersReadOnly(
-        2, kTfLiteInt32 /* type */, "size" /* name */, {2} /* dims */, quantization,
-        reinterpret_cast<const char *>(size_data), 2 * sizeof(int32_t));
+      2, kTfLiteInt32 /* type */, "size" /* name */, {2} /* dims */, quantization,
+      reinterpret_cast<const char *>(size_data), 2 * sizeof(int32_t));
 
     // NOTE AddNodeWithParameters take the ownership of param, and deallocate it with free
     //      So, param should be allocated with malloc

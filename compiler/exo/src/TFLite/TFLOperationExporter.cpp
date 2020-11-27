@@ -233,7 +233,7 @@ void OperationExporter::visit(locoex::TFLFullyConnected *node)
   auto inputs = builder.CreateVector(inputs_vec);
   auto outputs = builder.CreateVector(outputs_vec);
   auto options =
-      CreateFullyConnectedOptions(builder, to_tflite_actfunc(node->fusedActivationFunction()));
+    CreateFullyConnectedOptions(builder, to_tflite_actfunc(node->fusedActivationFunction()));
 
   // Make FULLY_CONNECTED operator
   auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
@@ -373,8 +373,8 @@ void OperationExporter::visit(locoex::TFLTranspose *node)
   auto options = CreateTransposeOptions(builder);
 
   auto op_offset =
-      CreateOperator(builder, op_idx, inputs, outputs,
-                     tflite::BuiltinOptions::BuiltinOptions_TransposeOptions, options.Union());
+    CreateOperator(builder, op_idx, inputs, outputs,
+                   tflite::BuiltinOptions::BuiltinOptions_TransposeOptions, options.Union());
   gd._operators.push_back(op_offset);
 }
 
@@ -391,7 +391,7 @@ void OperationExporter::visit(locoex::TFLTransposeConv *node)
   auto outputs = builder.CreateVector(outputs_vec);
   tflite::Padding padding = getOpPadding(node->padding());
   auto options =
-      CreateTransposeConvOptions(builder, padding, node->stride()->w(), node->stride()->h());
+    CreateTransposeConvOptions(builder, padding, node->stride()->w(), node->stride()->h());
 
   // Make TRANSPOSE_CONV operator
   auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
@@ -403,7 +403,7 @@ template <class TFLPool2D>
 void OperationExporter::export_pool_2d(TFLPool2D *node, tflite::BuiltinOperator builtin_op)
 {
   EXO_ASSERT(builtin_op == tflite::BuiltinOperator_MAX_POOL_2D ||
-                 builtin_op == tflite::BuiltinOperator_AVERAGE_POOL_2D,
+               builtin_op == tflite::BuiltinOperator_AVERAGE_POOL_2D,
              "should be maxpool or avgpool");
   EXO_ASSERT(node->padding() != locoex::Padding::UNDEFINED, "Padding is not set");
 
@@ -464,10 +464,10 @@ void OperationExporter::visit(loco::MaxPool2D *node)
   auto inputs = builder.CreateVector(inputs_vec);
   auto outputs = builder.CreateVector(outputs_vec);
   tflite::Padding padding = getOpPadding(
-      node->pad(), node->stride(), ShapeInference::get(node->ifm()), ShapeInference::get(node));
-  auto options = CreatePool2DOptions(builder, padding, node->stride()->horizontal(),
-                                     node->stride()->vertical(), node->window()->horizontal(),
-                                     node->window()->vertical());
+    node->pad(), node->stride(), ShapeInference::get(node->ifm()), ShapeInference::get(node));
+  auto options =
+    CreatePool2DOptions(builder, padding, node->stride()->horizontal(), node->stride()->vertical(),
+                        node->window()->horizontal(), node->window()->vertical());
   auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
                                   tflite::BuiltinOptions_Pool2DOptions, options.Union());
   gd._operators.push_back(op_offset);
@@ -484,10 +484,10 @@ void OperationExporter::visit(loco::AvgPool2D *node)
   auto inputs = builder.CreateVector(inputs_vec);
   auto outputs = builder.CreateVector(outputs_vec);
   tflite::Padding padding = getOpPadding(
-      node->pad(), node->stride(), ShapeInference::get(node->ifm()), ShapeInference::get(node));
-  auto options = CreatePool2DOptions(builder, padding, node->stride()->horizontal(),
-                                     node->stride()->vertical(), node->window()->horizontal(),
-                                     node->window()->vertical());
+    node->pad(), node->stride(), ShapeInference::get(node->ifm()), ShapeInference::get(node));
+  auto options =
+    CreatePool2DOptions(builder, padding, node->stride()->horizontal(), node->stride()->vertical(),
+                        node->window()->horizontal(), node->window()->vertical());
   auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
                                   tflite::BuiltinOptions_Pool2DOptions, options.Union());
   gd._operators.push_back(op_offset);
@@ -510,7 +510,7 @@ void OperationExporter::visit(loco::Conv2D *node)
   std::vector<float> bias_vec_data(bias_vec_size); // initialized as zero vector
 
   auto bias_vec_offset =
-      builder.CreateVector(reinterpret_cast<uint8_t *>(bias_vec_data.data()), raw_bias_vec_size);
+    builder.CreateVector(reinterpret_cast<uint8_t *>(bias_vec_data.data()), raw_bias_vec_size);
 
   auto bias_buffer_offset = CreateBuffer(builder, bias_vec_offset);
 
@@ -522,7 +522,7 @@ void OperationExporter::visit(loco::Conv2D *node)
   auto name_offset = builder.CreateString("t_" + std::to_string(bias_tensor_id));
 
   auto bias_tensor_offset =
-      CreateTensor(builder, bias_vec_shape_offset, TensorType_FLOAT32, bias_buffer_id, name_offset);
+    CreateTensor(builder, bias_vec_shape_offset, TensorType_FLOAT32, bias_buffer_id, name_offset);
   gd._tensors.push_back(bias_tensor_offset);
 
   // Make input, output and options for operator
@@ -532,9 +532,9 @@ void OperationExporter::visit(loco::Conv2D *node)
   auto inputs = builder.CreateVector(inputs_vec);
   auto outputs = builder.CreateVector(outputs_vec);
   tflite::Padding padding = getOpPadding(
-      node->pad(), node->stride(), ShapeInference::get(node->ifm()), ShapeInference::get(node));
-  auto options = CreateConv2DOptions(builder, padding, node->stride()->horizontal(),
-                                     node->stride()->vertical());
+    node->pad(), node->stride(), ShapeInference::get(node->ifm()), ShapeInference::get(node));
+  auto options =
+    CreateConv2DOptions(builder, padding, node->stride()->horizontal(), node->stride()->vertical());
 
   // Make CONV_2D operator
   auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
@@ -564,7 +564,7 @@ void OperationExporter::visit(loco::TransposedConv2D *node)
   }
 
   auto outshape_vec_offset = builder.CreateVector(
-      reinterpret_cast<uint8_t *>(outshape_vec_data.data()), raw_outshape_vec_size);
+    reinterpret_cast<uint8_t *>(outshape_vec_data.data()), raw_outshape_vec_size);
 
   auto outshape_buffer_offset = CreateBuffer(builder, outshape_vec_offset);
 
@@ -613,7 +613,7 @@ void OperationExporter::visit(loco::DepthwiseConv2D *node)
   size_t raw_bias_vec_size = bias_vec_size * sizeof(int32_t);
   std::vector<float> bias_vec_data(bias_vec_size);
   auto bias_vec_offset =
-      builder.CreateVector(reinterpret_cast<uint8_t *>(bias_vec_data.data()), raw_bias_vec_size);
+    builder.CreateVector(reinterpret_cast<uint8_t *>(bias_vec_data.data()), raw_bias_vec_size);
 
   auto bias_buffer_offset = CreateBuffer(builder, bias_vec_offset);
 
@@ -625,7 +625,7 @@ void OperationExporter::visit(loco::DepthwiseConv2D *node)
   auto name_offset = builder.CreateString("t_" + std::to_string(bias_tensor_id));
 
   auto bias_tensor_offset =
-      CreateTensor(builder, bias_vec_shape_offset, TensorType_FLOAT32, bias_buffer_id, name_offset);
+    CreateTensor(builder, bias_vec_shape_offset, TensorType_FLOAT32, bias_buffer_id, name_offset);
   gd._tensors.push_back(bias_tensor_offset);
 
   std::vector<int32_t> inputs_vec{get_tensor_index(node->ifm()), get_tensor_index(node->ker()),
@@ -634,13 +634,13 @@ void OperationExporter::visit(loco::DepthwiseConv2D *node)
   auto inputs = builder.CreateVector(inputs_vec);
   auto outputs = builder.CreateVector(outputs_vec);
   tflite::Padding padding = getOpPadding(
-      node->pad(), node->stride(), ShapeInference::get(node->ifm()), ShapeInference::get(node));
+    node->pad(), node->stride(), ShapeInference::get(node->ifm()), ShapeInference::get(node));
 
   int32_t ifm_channel_size = ShapeInference::get(node->ifm())._dims[3];
   // multiplier = bias_vec_size(output_size)/ifm_channel_size
   auto options =
-      CreateDepthwiseConv2DOptions(builder, padding, node->stride()->horizontal(),
-                                   node->stride()->vertical(), bias_vec_size / ifm_channel_size);
+    CreateDepthwiseConv2DOptions(builder, padding, node->stride()->horizontal(),
+                                 node->stride()->vertical(), bias_vec_size / ifm_channel_size);
 
   auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
                                   tflite::BuiltinOptions_DepthwiseConv2DOptions, options.Union());
@@ -674,7 +674,7 @@ void OperationExporter::visit(loco::TensorReduce *node)
 
   size_t raw_axes_vec_size = axes_vec_size * sizeof(int32_t);
   auto axes_vec_offset =
-      builder.CreateVector(reinterpret_cast<uint8_t *>(axes_vec.data()), raw_axes_vec_size);
+    builder.CreateVector(reinterpret_cast<uint8_t *>(axes_vec.data()), raw_axes_vec_size);
 
   auto axes_buffer_offset = CreateBuffer(builder, axes_vec_offset);
 
@@ -686,7 +686,7 @@ void OperationExporter::visit(loco::TensorReduce *node)
   auto name_offset = builder.CreateString("t_" + std::to_string(axes_tensor_id));
 
   auto axes_tensor_offset =
-      CreateTensor(builder, axes_vec_shape_offset, TensorType_INT32, axes_buffer_id, name_offset);
+    CreateTensor(builder, axes_vec_shape_offset, TensorType_INT32, axes_buffer_id, name_offset);
   gd._tensors.push_back(axes_tensor_offset);
 
   std::vector<int32_t> inputs_vec{get_tensor_index(node->input()), axes_tensor_id};
@@ -749,7 +749,7 @@ void exportAsTranspose(loco::Node *node, FlatBufferBuilder &builder,
   constexpr size_t raw_perm_vec_size = perm_vec_size * sizeof(int32_t);
 
   auto perm_vec_offset =
-      builder.CreateVector(reinterpret_cast<uint8_t *>(perm_vec_data.data()), raw_perm_vec_size);
+    builder.CreateVector(reinterpret_cast<uint8_t *>(perm_vec_data.data()), raw_perm_vec_size);
 
   auto perm_buffer_offset = CreateBuffer(builder, perm_vec_offset);
 
@@ -761,7 +761,7 @@ void exportAsTranspose(loco::Node *node, FlatBufferBuilder &builder,
   auto name_offset = builder.CreateString("t_" + std::to_string(perm_tensor_id));
 
   auto perm_tensor_offset =
-      CreateTensor(builder, perm_vec_shape_offset, TensorType_INT32, perm_buffer_id, name_offset);
+    CreateTensor(builder, perm_vec_shape_offset, TensorType_INT32, perm_buffer_id, name_offset);
   gd._tensors.push_back(perm_tensor_offset);
 
   // Create permutation node
@@ -775,7 +775,7 @@ void exportAsTranspose(loco::Node *node, FlatBufferBuilder &builder,
   constexpr auto options_type = tflite::BuiltinOptions::BuiltinOptions_TransposeOptions;
 
   auto transpose_offset =
-      CreateOperator(builder, op_idx, inputs, outputs, options_type, options.Union());
+    CreateOperator(builder, op_idx, inputs, outputs, options_type, options.Union());
   gd._operators.push_back(transpose_offset);
 }
 
@@ -860,11 +860,11 @@ void exportAsReshape(loco::Node *node, FlatBufferBuilder &builder,
   //      but also by input.
 
   auto input_shape_shape_vec_offset =
-      builder.CreateVector(std::vector<int32_t>{(int32_t)new_shape_vec.size()});
+    builder.CreateVector(std::vector<int32_t>{(int32_t)new_shape_vec.size()});
 
   size_t input_shape_vec_size = new_shape_vec.size() * sizeof(int32_t);
   auto input_shape_input_vec_offset =
-      builder.CreateVector(reinterpret_cast<uint8_t *>(new_shape_vec.data()), input_shape_vec_size);
+    builder.CreateVector(reinterpret_cast<uint8_t *>(new_shape_vec.data()), input_shape_vec_size);
   auto input_shape_buffer_offset = CreateBuffer(builder, input_shape_input_vec_offset);
 
   const auto input_shape_buffer_id = static_cast<uint32_t>(gd._buffers.size());
@@ -873,7 +873,7 @@ void exportAsReshape(loco::Node *node, FlatBufferBuilder &builder,
   auto input_shape_tensor_id = static_cast<int32_t>(gd._tensors.size());
   auto name_offset = builder.CreateString("t_" + std::to_string(input_shape_tensor_id));
   auto input_shape_tensor_offset = CreateTensor(
-      builder, input_shape_shape_vec_offset, TensorType_INT32, input_shape_buffer_id, name_offset);
+    builder, input_shape_shape_vec_offset, TensorType_INT32, input_shape_buffer_id, name_offset);
   gd._tensors.push_back(input_shape_tensor_offset);
 
   uint32_t op_idx = gd.registerBuiltinOpcode(tflite::BuiltinOperator_RESHAPE);
@@ -1075,7 +1075,7 @@ void OperationExporter::visit(loco::TensorConstantPad *node)
   auto padding_shape_vec_ptr = builder.CreateVector(std::vector<int32_t>{padding_vec_size, 2});
   // create tensor
   auto padding_tensor_ptr =
-      CreateTensor(builder, padding_shape_vec_ptr, TensorType_INT32, padding_buffer_id);
+    CreateTensor(builder, padding_shape_vec_ptr, TensorType_INT32, padding_buffer_id);
   // get tensor id
   const auto padding_tensor_id = static_cast<int32_t>(gd._tensors.size());
 

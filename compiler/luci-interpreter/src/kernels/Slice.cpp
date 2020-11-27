@@ -29,7 +29,7 @@ namespace kernels
 const int max_dim = 4;
 
 Slice::Slice(const Tensor *input, const Tensor *begin, const Tensor *size, Tensor *output)
-    : Kernel({input, begin, size}, {output})
+  : Kernel({input, begin, size}, {output})
 {
 }
 

@@ -27,9 +27,9 @@ namespace operand
 
 NESubTensor::NESubTensor(INETensor *parent, const arm_compute::TensorShape &tensor_shape,
                          const arm_compute::Coordinates &coords, size_t rank, bool extend_parent)
-    : _ne_sub_tensor(std::make_shared<arm_compute::SubTensor>(parent->handle(), tensor_shape,
-                                                              coords, extend_parent)),
-      _rank{rank}
+  : _ne_sub_tensor(std::make_shared<arm_compute::SubTensor>(parent->handle(), tensor_shape, coords,
+                                                            extend_parent)),
+    _rank{rank}
 {
   // DO NOTHING
 }

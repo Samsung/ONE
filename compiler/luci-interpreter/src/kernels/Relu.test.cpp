@@ -30,13 +30,13 @@ using namespace testing;
 TEST(ReluTest, FloatSimple)
 {
   std::vector<float> input_data{
-      0.0f, 1.0f,  3.0f,  // Row 1
-      1.0f, -1.0f, -2.0f, // Row 2
+    0.0f, 1.0f,  3.0f,  // Row 1
+    1.0f, -1.0f, -2.0f, // Row 2
   };
 
   std::vector<float> ref_output_data{
-      0.0f, 1.0f, 3.0f, // Row 1
-      1.0f, 0.0f, 0.0f, // Row 2
+    0.0f, 1.0f, 3.0f, // Row 1
+    1.0f, 0.0f, 0.0f, // Row 2
   };
 
   Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({2, 3}, input_data);
@@ -54,16 +54,16 @@ TEST(ReluTest, FloatSimple)
 TEST(ReluTest, Uint8Quantized)
 {
   std::vector<float> input_data{
-      0, -6, 2, 4, //
-      3, -2, 7, 1, //
+    0, -6, 2, 4, //
+    3, -2, 7, 1, //
   };
   // Choose min / max in such a way that there are exactly 256 units to avoid rounding errors.
   const float f_min = (-128.0 / 128.0) * 8;
   const float f_max = (127.0 / 128.0) * 8;
 
   std::pair<float, int32_t> quant_param = quantizationParams<uint8_t>(f_min, f_max);
-  Tensor input_tensor = makeInputTensor<DataType::U8>({1, 2, 4, 1}, quant_param.first,
-                                                      quant_param.second, input_data);
+  Tensor input_tensor =
+    makeInputTensor<DataType::U8>({1, 2, 4, 1}, quant_param.first, quant_param.second, input_data);
   Tensor output_tensor = makeOutputTensor(DataType::U8, quant_param.first, quant_param.second);
 
   Relu kernel(&input_tensor, &output_tensor);
@@ -79,8 +79,8 @@ TEST(ReluTest, Uint8Quantized)
 TEST(ReluTest, Uint8Requantized)
 {
   std::vector<float> input_data{
-      0, -6, 2, 4, //
-      3, -2, 7, 1, //
+    0, -6, 2, 4, //
+    3, -2, 7, 1, //
   };
 
   // Choose min / max in such a way that there are exactly 256 units to avoid rounding errors.
@@ -90,8 +90,8 @@ TEST(ReluTest, Uint8Requantized)
   const float out_max = (255.0 / 256.0) * 8;
 
   std::pair<float, int32_t> quant_input = quantizationParams<uint8_t>(in_min, in_max);
-  Tensor input_tensor = makeInputTensor<DataType::U8>({1, 2, 4, 1}, quant_input.first,
-                                                      quant_input.second, input_data);
+  Tensor input_tensor =
+    makeInputTensor<DataType::U8>({1, 2, 4, 1}, quant_input.first, quant_input.second, input_data);
 
   std::pair<float, int32_t> quant_output = quantizationParams<uint8_t>(out_min, out_max);
   Tensor output_tensor = makeOutputTensor(DataType::U8, quant_output.first, quant_output.second);
@@ -109,12 +109,12 @@ TEST(ReluTest, Uint8Requantized)
 TEST(ReluTest, SInt16)
 {
   std::vector<float> input_data{
-      0, -6, 2, 4, //
-      3, -2, 7, 1, //
+    0, -6, 2, 4, //
+    3, -2, 7, 1, //
   };
   std::vector<float> ref_output_data{
-      0, 0, 2, 4, //
-      3, 0, 7, 1, //
+    0, 0, 2, 4, //
+    3, 0, 7, 1, //
   };
 
   Tensor input_tensor = makeInputTensor<DataType::S16>({1, 2, 4, 1}, 0.5, 0, input_data);

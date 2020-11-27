@@ -57,7 +57,7 @@ constexpr size_t NOT_HIT = 0xFFFFFFFF;
 } // namespace
 
 NEHashtableLookupKernel::NEHashtableLookupKernel()
-    : _lookups(nullptr), _keys(nullptr), _input(nullptr), _output(nullptr), _hits{nullptr}
+  : _lookups(nullptr), _keys(nullptr), _input(nullptr), _output(nullptr), _hits{nullptr}
 {
 }
 
@@ -66,7 +66,7 @@ void NEHashtableLookupKernel::configure(const ITensor *lookups, const ITensor *k
 {
   ARM_COMPUTE_ERROR_ON_NULLPTR(lookups, keys, input, output, hits);
   ARM_COMPUTE_ERROR_THROW_ON(
-      validate(lookups->info(), keys->info(), input->info(), output->info(), hits->info()));
+    validate(lookups->info(), keys->info(), input->info(), output->info(), hits->info()));
 
   _lookups = lookups;
   _keys = keys;
@@ -92,8 +92,8 @@ Status NEHashtableLookupKernel::validate(const ITensorInfo *lookups, const ITens
 {
   ARM_COMPUTE_ERROR_ON_NULLPTR(lookups, keys, input, output, hits);
   ARM_COMPUTE_ERROR_ON_DATA_TYPE_CHANNEL_NOT_IN(
-      input, 1, DataType::U8, DataType::S8, DataType::QASYMM8, DataType::U16, DataType::S16,
-      DataType::U32, DataType::S32, DataType::F16, DataType::F32);
+    input, 1, DataType::U8, DataType::S8, DataType::QASYMM8, DataType::U16, DataType::S16,
+    DataType::U32, DataType::S32, DataType::F16, DataType::F32);
   ARM_COMPUTE_ERROR_ON_DATA_TYPE_CHANNEL_NOT_IN(lookups, 1, DataType::S32);
   ARM_COMPUTE_ERROR_ON_DATA_TYPE_CHANNEL_NOT_IN(keys, 1, DataType::S32);
 
@@ -134,8 +134,8 @@ void NEHashtableLookupKernel::run(const Window &window, const ThreadInfo &info)
 
   const size_t lookup_dim = _output->info()->num_dimensions() - 1;
   const int const_0 = _output->info()->data_type() == DataType::QASYMM8
-                          ? _output->info()->quantization_info().uniform().offset
-                          : 0;
+                        ? _output->info()->quantization_info().uniform().offset
+                        : 0;
 
   std::unordered_map<int32_t, size_t> key_index_map;
   for (size_t n = 0; n < _keys->info()->dimension(0); ++n)
@@ -175,23 +175,23 @@ void NEHashtableLookupKernel::run(const Window &window, const ThreadInfo &info)
     Iterator output_it(_output, out_slice);
 
     execute_window_loop(
-        out_slice,
-        [&](const Coordinates &id) {
-          const auto lookup = lookup_indices.at(id[lookup_dim]);
-          if (lookup == NOT_HIT)
-          {
-            memset(output_it.ptr(), const_0,
-                   _output->info()->dimension(0) * _output->info()->element_size());
-          }
-          else
-          {
-            Coordinates input_id{id};
-            input_id.set(lookup_dim, lookup);
-            memcpy(output_it.ptr(), _input->ptr_to_element(input_id),
-                   _output->info()->dimension(0) * _output->info()->element_size());
-          }
-        },
-        output_it);
+      out_slice,
+      [&](const Coordinates &id) {
+        const auto lookup = lookup_indices.at(id[lookup_dim]);
+        if (lookup == NOT_HIT)
+        {
+          memset(output_it.ptr(), const_0,
+                 _output->info()->dimension(0) * _output->info()->element_size());
+        }
+        else
+        {
+          Coordinates input_id{id};
+          input_id.set(lookup_dim, lookup);
+          memcpy(output_it.ptr(), _input->ptr_to_element(input_id),
+                 _output->info()->dimension(0) * _output->info()->element_size());
+        }
+      },
+      output_it);
 
   } while (window.slide_window_slice_4D(out_slice));
 }

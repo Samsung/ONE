@@ -49,19 +49,19 @@ void convertConvTransposeV1(const onnx::NodeProto &onnx_node, ConverterContext *
   constexpr int num_spatial_dims = 2;
 
   const auto dilations =
-      getAttributeValue(onnx_node, "dilations", std::vector<std::int32_t>(num_spatial_dims, 1));
+    getAttributeValue(onnx_node, "dilations", std::vector<std::int32_t>(num_spatial_dims, 1));
   if (dilations.size() != num_spatial_dims)
     throw std::runtime_error("ConvTranspose: attribute 'dilations' has incorrect size.");
   if (!std::all_of(dilations.cbegin(), dilations.cend(), [](std::int32_t x) { return x == 1; }))
     throw std::runtime_error("ConvTranspose: attribute 'dilations' has unsupported value.");
 
   const auto strides =
-      getAttributeValue(onnx_node, "strides", std::vector<std::int32_t>(num_spatial_dims, 1));
+    getAttributeValue(onnx_node, "strides", std::vector<std::int32_t>(num_spatial_dims, 1));
   if (strides.size() != num_spatial_dims)
     throw std::runtime_error("ConvTranspose: attribute 'strides' has incorrect size.");
 
-  const auto output_padding = getAttributeValue(onnx_node, "output_padding",
-                                                std::vector<std::int32_t>(num_spatial_dims, 0));
+  const auto output_padding =
+    getAttributeValue(onnx_node, "output_padding", std::vector<std::int32_t>(num_spatial_dims, 0));
   if (output_padding.size() != num_spatial_dims)
     throw std::runtime_error("ConvTranspose: attribute 'output_padding' has incorrect size.");
   if (!std::all_of(output_padding.cbegin(), output_padding.cend(),
@@ -71,8 +71,8 @@ void convertConvTransposeV1(const onnx::NodeProto &onnx_node, ConverterContext *
   // Assuming kernel has IOHW format.
   assert(kernel->getShape().rank() == 4);
   const auto kernel_size = getAttributeValue(
-      onnx_node, "kernel_shape",
-      std::vector<std::int32_t>{kernel->getShape().dim(2), kernel->getShape().dim(3)});
+    onnx_node, "kernel_shape",
+    std::vector<std::int32_t>{kernel->getShape().dim(2), kernel->getShape().dim(3)});
   if (kernel_size.size() != num_spatial_dims)
     throw std::runtime_error("ConvTranspose: attribute 'kernel_shape' has incorrect size.");
 
@@ -92,14 +92,14 @@ void convertConvTransposeV1(const onnx::NodeProto &onnx_node, ConverterContext *
     attributes.strides = strides;
     attributes.data_format = mir::DataFormat::NCHW;
     attributes.padding_type = mir::ops::PaddingType::SameUpper;
-    result = createOp<mir::ops::DeConv2DOp>(graph, input, kernel, attributes, output_shape)
-                 ->getOutput(0);
+    result =
+      createOp<mir::ops::DeConv2DOp>(graph, input, kernel, attributes, output_shape)->getOutput(0);
   }
   else
   {
     // TODO This code was not tested.
     throw std::runtime_error(
-        "ConvTranspose: absence of attribute 'output_shape' is not supported.");
+      "ConvTranspose: absence of attribute 'output_shape' is not supported.");
     std::vector<std::int32_t> padding_before(num_spatial_dims, 0);
     std::vector<std::int32_t> padding_after(num_spatial_dims, 0);
     if (const auto *pads_attr = findAttribute(onnx_node, "pads"))
@@ -128,7 +128,7 @@ void convertConvTransposeV1(const onnx::NodeProto &onnx_node, ConverterContext *
   {
     auto bias = inputs[2];
     bias = createOp<mir::ops::ReshapeOp>(graph, bias, mir::Shape{1, bias->getShape().dim(0), 1, 1})
-               ->getOutput(0);
+             ->getOutput(0);
     result = createOp<mir::ops::AddOp>(graph, result, bias)->getOutput(0);
   }
 

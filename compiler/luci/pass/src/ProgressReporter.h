@@ -30,7 +30,7 @@ class ProgressReporter : public logo::PhaseEventListener
 {
 public:
   ProgressReporter(loco::Graph *graph, logo::PhaseStrategy strategy)
-      : _graph{graph}, _strategy{strategy}
+    : _graph{graph}, _strategy{strategy}
   {
     // DO NOTHING
   }
@@ -54,7 +54,7 @@ class ModuleProgressReporter : public logo::PhaseEventListener
 {
 public:
   ModuleProgressReporter(luci::Module *module, logo::PhaseStrategy strategy)
-      : _module{module}, _strategy{strategy}
+    : _module{module}, _strategy{strategy}
   {
     // DO NOTHING
   }

@@ -75,9 +75,9 @@ bool DepthwiseConv2DConverter::convert(loco::DepthwiseConv2D *origin)
     reshape->tensor(filter_dec);
 
     int32_t new_shape[4] = {
-        1, static_cast<int32_t>(filter_shape.height().value()),
-        static_cast<int32_t>(filter_shape.width().value()),
-        static_cast<int32_t>(filter_shape.depth().value() * filter_shape.multiplier().value())};
+      1, static_cast<int32_t>(filter_shape.height().value()),
+      static_cast<int32_t>(filter_shape.width().value()),
+      static_cast<int32_t>(filter_shape.depth().value() * filter_shape.multiplier().value())};
     locoex::set_new_shape(reshape, new_shape, 4);
 
     tfl_dw_conv2d->filter(reshape);

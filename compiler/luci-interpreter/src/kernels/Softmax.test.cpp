@@ -51,15 +51,15 @@ void Check<uint8_t>(std::initializer_list<int32_t> input_shape,
                     std::initializer_list<float> output_data)
 {
   std::pair<float, int32_t> input_quant_param =
-      quantizationParams<uint8_t>(std::min<float>(std::min<float>(input_data), 0.f),
-                                  std::max<float>(std::max<float>(input_data), 0.f));
+    quantizationParams<uint8_t>(std::min<float>(std::min<float>(input_data), 0.f),
+                                std::max<float>(std::max<float>(input_data), 0.f));
   std::pair<float, int32_t> output_quant_param =
-      quantizationParams<uint8_t>(std::min<float>(std::min<float>(output_data), 0.f),
-                                  std::max<float>(std::max<float>(output_data), 0.f));
+    quantizationParams<uint8_t>(std::min<float>(std::min<float>(output_data), 0.f),
+                                std::max<float>(std::max<float>(output_data), 0.f));
   Tensor input_tensor = makeInputTensor<DataType::U8>(input_shape, input_quant_param.first,
                                                       input_quant_param.second, input_data);
   Tensor output_tensor =
-      makeOutputTensor(DataType::U8, output_quant_param.first, output_quant_param.second);
+    makeOutputTensor(DataType::U8, output_quant_param.first, output_quant_param.second);
 
   SoftmaxParams params{};
   params.beta = 0.1;
@@ -84,16 +84,16 @@ TYPED_TEST(SoftmaxTest, Simple)
 {
   Check<TypeParam>({2, 1, 2, 3}, {2, 1, 2, 3},
                    {
-                       5, -9, 8,  //
-                       -7, 2, -4, //
-                       1, -2, 9,  //
-                       3, -6, -1, //
+                     5, -9, 8,  //
+                     -7, 2, -4, //
+                     1, -2, 9,  //
+                     3, -6, -1, //
                    },
                    {
-                       0.38514, 0.09497, 0.51989, //
-                       0.20792, 0.51141, 0.28067, //
-                       0.25212, 0.18678, 0.56110, //
-                       0.48149, 0.19576, 0.32275, //
+                     0.38514, 0.09497, 0.51989, //
+                     0.20792, 0.51141, 0.28067, //
+                     0.25212, 0.18678, 0.56110, //
+                     0.48149, 0.19576, 0.32275, //
                    });
 }
 

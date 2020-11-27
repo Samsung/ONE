@@ -25,7 +25,7 @@ namespace moco
 {
 
 class TFDepthwiseConv2dNative final
-    : public FixedArityNode<2, TFNodeImpl<TFOpcode::DepthwiseConv2dNative>>
+  : public FixedArityNode<2, TFNodeImpl<TFOpcode::DepthwiseConv2dNative>>
 {
 public:
   loco::Node *input(void) const { return at(0)->node(); }

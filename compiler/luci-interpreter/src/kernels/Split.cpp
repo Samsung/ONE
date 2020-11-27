@@ -26,7 +26,7 @@ namespace kernels
 {
 
 Split::Split(const Tensor *axis, const Tensor *input, std::vector<Tensor *> outputs)
-    : Kernel({axis, input}, std::move(outputs))
+  : Kernel({axis, input}, std::move(outputs))
 {
 }
 

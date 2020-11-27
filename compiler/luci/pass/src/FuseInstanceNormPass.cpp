@@ -477,7 +477,7 @@ bool InstanceNormPattern::matched()
     CHECK_OR_FALSE(zero_point_five->at<loco::DataType::FLOAT32>(0) == 0.5);
 
     CHECK_OR_FALSE(
-        fill(&mean_as_variance, &const_as_epsilon).with_commutative_args_of(add_as_variance));
+      fill(&mean_as_variance, &const_as_epsilon).with_commutative_args_of(add_as_variance));
     CHECK_OR_FALSE(const_as_epsilon->dtype() == loco::DataType::FLOAT32);
     // TODO Support regarding broadcast
     CHECK_OR_FALSE(const_as_epsilon->size<loco::DataType::FLOAT32>() == 1);
@@ -510,7 +510,7 @@ bool InstanceNormPattern::matched()
   {
     CHECK_OR_FALSE(fill(&mul_as_scaled_reshape, &sub).with_commutative_args_of(add_as_terminal));
     CHECK_OR_FALSE(
-        fill(&reshape_of_ifm, &mul_gamma).with_commutative_args_of(mul_as_scaled_reshape));
+      fill(&reshape_of_ifm, &mul_gamma).with_commutative_args_of(mul_as_scaled_reshape));
     ifm = reshape_of_ifm->tensor();
   }
 
@@ -536,7 +536,7 @@ bool InstanceNormPattern::matched()
   CHECK_OR_FALSE(add_as_variance);
 
   CHECK_OR_FALSE(
-      fill(&mean_as_variance, &const_as_epsilon).with_commutative_args_of(add_as_variance));
+    fill(&mean_as_variance, &const_as_epsilon).with_commutative_args_of(add_as_variance));
 
   CHECK_OR_FALSE(const_as_epsilon->dtype() == loco::DataType::FLOAT32);
   // TODO Support regarding broadcast
@@ -593,14 +593,14 @@ bool InstanceNormPattern::matched()
   if (_pv == PatternVersion::Version_0)
   {
     CHECK_OR_FALSE(fill(&mul_gamma_should_be, &mean_of_ifm_should_be)
-                       .with_commutative_args_of(mul_as_scaled_mean));
+                     .with_commutative_args_of(mul_as_scaled_mean));
     CHECK_OR_FALSE(mul_gamma == mul_gamma_should_be);
     CHECK_OR_FALSE(mean_of_ifm == mean_of_ifm_should_be);
   }
   if (_pv == PatternVersion::Version_1)
   {
     CHECK_OR_FALSE(fill(&mul_gamma_should_be, &mean_of_reshape_should_be)
-                       .with_commutative_args_of(mul_as_scaled_mean));
+                     .with_commutative_args_of(mul_as_scaled_mean));
     CHECK_OR_FALSE(mul_gamma == mul_gamma_should_be);
     CHECK_OR_FALSE(mean_of_reshape == mean_of_reshape_should_be);
   }

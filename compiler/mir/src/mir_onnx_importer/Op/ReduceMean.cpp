@@ -52,7 +52,7 @@ void convertReduceMeanV1(const onnx::NodeProto &onnx_node, ConverterContext *con
 
   mir::Graph *graph = context->getGraph();
   auto result =
-      createOp<mir::ops::ReduceMeanOp>(graph, inputs[0], reduce_dims, keep_dims)->getOutput(0);
+    createOp<mir::ops::ReduceMeanOp>(graph, inputs[0], reduce_dims, keep_dims)->getOutput(0);
 
   context->setNodeOutputs(onnx_node, {result});
 }

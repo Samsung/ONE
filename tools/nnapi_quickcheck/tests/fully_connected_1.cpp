@@ -95,7 +95,7 @@ TEST(NNAPI_Quickcheck_fully_connected_1, simple_test)
   // Configure Kernel Data
   const uint32_t kernel_size = KER_H * KER_W;
   float kernel_data[kernel_size] = {
-      0.0f,
+    0.0f,
   };
 
   // Fill kernel data with random data
@@ -111,7 +111,7 @@ TEST(NNAPI_Quickcheck_fully_connected_1, simple_test)
   // Configure Bias Data
   const auto bias_size = KER_H;
   float bias_data[bias_size] = {
-      0.0f,
+    0.0f,
   };
 
   // Fill bias data with random data
@@ -147,12 +147,12 @@ TEST(NNAPI_Quickcheck_fully_connected_1, simple_test)
 
     // NOTE kernel_data & bias_data should live longer than interpreter!
     interp.SetTensorParametersReadOnly(
-        2, kTfLiteFloat32 /* type */, "filter" /* name */, {KER_H, KER_W} /* dims */, quantization,
-        reinterpret_cast<const char *>(kernel_data), kernel_size * sizeof(float));
+      2, kTfLiteFloat32 /* type */, "filter" /* name */, {KER_H, KER_W} /* dims */, quantization,
+      reinterpret_cast<const char *>(kernel_data), kernel_size * sizeof(float));
 
     interp.SetTensorParametersReadOnly(
-        3, kTfLiteFloat32 /* type */, "bias" /* name */, {bias_size} /* dims */, quantization,
-        reinterpret_cast<const char *>(bias_data), bias_size * sizeof(float));
+      3, kTfLiteFloat32 /* type */, "bias" /* name */, {bias_size} /* dims */, quantization,
+      reinterpret_cast<const char *>(bias_data), bias_size * sizeof(float));
 
     // Add Fully Connected Node
     //

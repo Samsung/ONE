@@ -29,7 +29,7 @@ namespace luci
  * @brief SPARSE_TO_DENSE in Circle
  */
 class CircleSparseToDense final
-    : public FixedArityNode<4, CircleNodeImpl<CircleOpcode::SPARSE_TO_DENSE>>
+  : public FixedArityNode<4, CircleNodeImpl<CircleOpcode::SPARSE_TO_DENSE>>
 {
 public:
   loco::Node *indices(void) const { return at(0)->node(); }

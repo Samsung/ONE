@@ -30,9 +30,9 @@ TEST(MaxPool2DTest, Float)
 {
   Shape input_shape{1, 3, 5, 1};
   std::vector<float> input_data{
-      1,  -1, 0,  -2, 2,  //
-      -7, -6, -5, -4, -3, //
-      5,  4,  3,  6,  7,  //
+    1,  -1, 0,  -2, 2,  //
+    -7, -6, -5, -4, -3, //
+    5,  4,  3,  6,  7,  //
   };
   Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
@@ -50,8 +50,8 @@ TEST(MaxPool2DTest, Float)
   kernel.execute();
 
   std::vector<float> ref_output_data{
-      1, 2, //
-      5, 6, //
+    1, 2, //
+    5, 6, //
   };
   std::initializer_list<int32_t> ref_output_shape{1, 2, 2, 1};
   EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(ref_output_data));
@@ -62,11 +62,11 @@ TEST(MaxPool2DTest, Uint8)
 {
   std::pair<float, int32_t> quant_param = quantizationParams<uint8_t>(-15.9375, 15.9375);
   std::vector<float> input_data{
-      0,  -6, 12, 4, //
-      -3, -2, 10, 7, //
+    0,  -6, 12, 4, //
+    -3, -2, 10, 7, //
   };
-  Tensor input_tensor = makeInputTensor<DataType::U8>({1, 2, 4, 1}, quant_param.first,
-                                                      quant_param.second, input_data);
+  Tensor input_tensor =
+    makeInputTensor<DataType::U8>({1, 2, 4, 1}, quant_param.first, quant_param.second, input_data);
   Tensor output_tensor = makeOutputTensor(DataType::U8, quant_param.first, quant_param.second);
 
   Pool2DParams params{};
@@ -92,13 +92,13 @@ TEST(MaxPool2DTest, SInt16)
   Shape input_shape{1, 3, 5, 1};
   std::vector<int32_t> ref_output_shape{1, 2, 2, 1};
   std::vector<float> input_data{
-      1,  -1, 0,  -2, 2,  //
-      -7, -6, -5, -4, -3, //
-      5,  4,  3,  6,  7,  //
+    1,  -1, 0,  -2, 2,  //
+    -7, -6, -5, -4, -3, //
+    5,  4,  3,  6,  7,  //
   };
   std::vector<float> ref_output_data{
-      1, 2, //
-      5, 6, //
+    1, 2, //
+    5, 6, //
   };
 
   Tensor input_tensor = makeInputTensor<DataType::S16>(input_shape, 0.2, 0, input_data);

@@ -39,11 +39,11 @@ public:
 
 public:
   DotDumper(const ir::Graph &graph, Level level)
-      : _lowered_graph{nullptr}, _graph(graph), _level{level}
+    : _lowered_graph{nullptr}, _graph(graph), _level{level}
   {
   }
   DotDumper(const compiler::LoweredGraph *lowered_graph, Level level)
-      : _lowered_graph{lowered_graph}, _graph(_lowered_graph->graph()), _level{level}
+    : _lowered_graph{lowered_graph}, _graph(_lowered_graph->graph()), _level{level}
   {
   }
 

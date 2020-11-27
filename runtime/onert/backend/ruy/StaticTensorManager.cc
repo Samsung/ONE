@@ -28,8 +28,8 @@ namespace ruy
 
 StaticTensorManager::StaticTensorManager(const std::shared_ptr<cpu_common::TensorRegistry> &reg,
                                          cpu_common::DynamicTensorManager *dynamic_tensor_manager)
-    : _nonconst_mgr{new cpu_common::MemoryManager()}, _tensors{reg}, _dynamic_tensor_manager{
-                                                                         dynamic_tensor_manager}
+  : _nonconst_mgr{new cpu_common::MemoryManager()}, _tensors{reg}, _dynamic_tensor_manager{
+                                                                     dynamic_tensor_manager}
 {
   // DO NOTHING
 }
@@ -48,7 +48,7 @@ void StaticTensorManager::allocateNonconsts(void)
       tensor->setBuffer(buffer);
 
       VERBOSE(CPU_StaticTensorManager)
-          << "TENSOR(#" << ind.value() << "): " << static_cast<void *>(buffer) << std::endl;
+        << "TENSOR(#" << ind.value() << "): " << static_cast<void *>(buffer) << std::endl;
     }
   }
 }

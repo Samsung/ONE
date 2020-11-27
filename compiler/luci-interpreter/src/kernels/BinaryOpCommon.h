@@ -38,7 +38,7 @@ void BinaryOpBroadcastSlow(const tflite::RuntimeShape &unextended_input1_shape,
   if (unextended_input1_shape == unextended_input2_shape)
   {
     const int flat_size = tflite::MatchingElementsSize(
-        unextended_input1_shape, unextended_input2_shape, unextended_output_shape);
+      unextended_input1_shape, unextended_input2_shape, unextended_output_shape);
     for (int i = 0; i < flat_size; ++i)
     {
       output_data[i] = op(input1_data[i], input2_data[i]);
@@ -60,8 +60,8 @@ void BinaryOpBroadcastSlow(const tflite::RuntimeShape &unextended_input1_shape,
 
     auto fn = [&](int indexes[N]) {
       output_data[SubscriptToIndex(output_desc, indexes)] =
-          op(input1_data[SubscriptToIndex(desc1, indexes)],
-             input2_data[SubscriptToIndex(desc2, indexes)]);
+        op(input1_data[SubscriptToIndex(desc1, indexes)],
+           input2_data[SubscriptToIndex(desc2, indexes)]);
     };
     tflite::NDOpsHelper<N>(output_desc, fn);
   }

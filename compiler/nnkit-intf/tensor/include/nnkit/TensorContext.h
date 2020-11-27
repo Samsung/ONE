@@ -37,8 +37,8 @@ struct TensorContext
                                          const nncc::core::ADT::tensor::Reader<T> &)>;
 
   template <typename T>
-  using TypedAccessor = std::function<void(const TensorContext &, uint32_t n,
-                                           nncc::core::ADT::tensor::Accessor<T> &)>;
+  using TypedAccessor =
+    std::function<void(const TensorContext &, uint32_t n, nncc::core::ADT::tensor::Accessor<T> &)>;
 
   virtual ~TensorContext() = default;
 

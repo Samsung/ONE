@@ -53,7 +53,7 @@ TEST(TFLShapeInferenceRuleTest, minimal_with_TFLRelu)
   loco::MultiDialectShapeInferenceRule rules;
 
   rules.bind(loco::CanonicalDialect::get(), &canonical_rule)
-      .bind(locoex::TFLDialect::get(), &tfl_rule);
+    .bind(locoex::TFLDialect::get(), &tfl_rule);
 
   loco::apply(&rules).to(graph.g.get());
 
@@ -98,7 +98,7 @@ TEST(TFLShapeInferenceRuleTest, avgpool2d_valid)
   loco::MultiDialectShapeInferenceRule rules;
 
   rules.bind(loco::CanonicalDialect::get(), &canonical_rule)
-      .bind(locoex::TFLDialect::get(), &tfl_rule);
+    .bind(locoex::TFLDialect::get(), &tfl_rule);
 
   loco::apply(&rules).to(graph.g.get());
 
@@ -145,7 +145,7 @@ TEST(TFLShapeInferenceRuleTest, avgpool2d_same)
   loco::MultiDialectShapeInferenceRule rules;
 
   rules.bind(loco::CanonicalDialect::get(), &canonical_rule)
-      .bind(locoex::TFLDialect::get(), &tfl_rule);
+    .bind(locoex::TFLDialect::get(), &tfl_rule);
 
   loco::apply(&rules).to(graph.g.get());
 

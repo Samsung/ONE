@@ -101,7 +101,7 @@ void ConvolutionBuilder::build(const ::caffe::LayerParameter &layer,
 
   auto ker_dst = data->f32()->access(ker_obj);
   auto ker_src = kernel::OverlayFactory<float, kernel::NCHWLayout>::make(
-      ker_obj->shape(), ker_blob->mutable_data()->begin());
+    ker_obj->shape(), ker_blob->mutable_data()->begin());
 
   for (uint32_t n = 0; n < ker_obj->shape().count(); ++n)
   {

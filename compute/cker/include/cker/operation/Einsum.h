@@ -394,8 +394,8 @@ private:
     for (int label = 0; label < num_labels; ++label)
     {
       bool removed = (_output_label_counts[label] == 0);
-      bool unique = num_inputs == 1 || _input_label_counts[0][label] == 0 ||
-                    _input_label_counts[1][label] == 0;
+      bool unique =
+        num_inputs == 1 || _input_label_counts[0][label] == 0 || _input_label_counts[1][label] == 0;
       _label_types[label] = getDimensionType(removed, unique);
     }
   }
@@ -511,7 +511,7 @@ private:
     }
 
     std::vector<bool>::iterator it_input =
-        std::find(_input_has_ellipsis.begin(), _input_has_ellipsis.end(), true);
+      std::find(_input_has_ellipsis.begin(), _input_has_ellipsis.end(), true);
     if (it_input == _input_has_ellipsis.end() && !_output_has_ellipsis)
     {
       return;
@@ -645,11 +645,11 @@ private:
 
     // Reduce along the last axis (i.e axis 1) of the rank-2 Tensor.
     const int32_t output_size =
-        reshape[kBroadcasting] * reshape[kBatch] * reshape[kFree] * reshape[kContract];
+      reshape[kBroadcasting] * reshape[kBatch] * reshape[kFree] * reshape[kContract];
     functor::ReduceFunctor<Eigen::ThreadPoolDevice, Reducer>::Reduce(
-        device, output->shaped<T, 1>({output_size}),
-        input_deduped.shaped<T, 2>({output_size, reshape[kReduce]}), Eigen::array<Index, 1>({1}),
-        Reducer());
+      device, output->shaped<T, 1>({output_size}),
+      input_deduped.shaped<T, 2>({output_size, reshape[kReduce]}), Eigen::array<Index, 1>({1}),
+      Reducer());
   }
 
   bool shouldSwapFreeAndContract(const Labels &labels,
@@ -779,7 +779,7 @@ private:
     {
       const int32_t count = label_counts[label];
       const int current_axis =
-          should_inflate ? strided_shape_dims.size() : inflated_shape_dims.size();
+        should_inflate ? strided_shape_dims.size() : inflated_shape_dims.size();
       const int32_t dim = input.shape.Dims(current_axis);
       strided_shape_dims.push_back(dim);
       inflated_shape_dims.insert(inflated_shape_dims.end(), count, dim);
@@ -879,7 +879,7 @@ private:
     for (size_t i = 0; i < inputs.size(); ++i)
     {
       const int32_t free_axis =
-          inputs[i].shape.DimensionsCount() - (swap_free_and_contract[i] ? 1 : 2);
+        inputs[i].shape.DimensionsCount() - (swap_free_and_contract[i] ? 1 : 2);
       output_shape.SetDim(i + old_output_shape.DimensionsCount(), inputs[i].shape.Dims(free_axis));
     }
     bool adj_x = swap_free_and_contract[0];

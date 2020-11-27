@@ -49,10 +49,10 @@ TEST(CKer_Operation, Range)
     const float limit = 1;
     const float delta = -0.5;
     std::vector<float> expected = {
-        3,
-        2.5,
-        2,
-        1.5,
+      3,
+      2.5,
+      2,
+      1.5,
     };
     std::vector<float> actual(expected.size());
     nnfw::cker::Range<float>(&start, &limit, &delta, actual.data());

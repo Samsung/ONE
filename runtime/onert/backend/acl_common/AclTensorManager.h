@@ -97,9 +97,9 @@ namespace acl_common
 
 template <typename T_ITensor, typename T_Tensor, typename T_SubTensor>
 AclTensorManager<T_ITensor, T_Tensor, T_SubTensor>::AclTensorManager(
-    T_AclMemoryManager *const_mgr, T_AclMemoryManager *nonconst_mgr,
-    IInternalBufferManager *inter_mgr)
-    : _const_mgr{const_mgr}, _nonconst_mgr{nonconst_mgr}, _inter_mgr{inter_mgr}
+  T_AclMemoryManager *const_mgr, T_AclMemoryManager *nonconst_mgr,
+  IInternalBufferManager *inter_mgr)
+  : _const_mgr{const_mgr}, _nonconst_mgr{nonconst_mgr}, _inter_mgr{inter_mgr}
 {
   // DO NOTHING
 }
@@ -142,8 +142,8 @@ void AclTensorManager<T_ITensor, T_Tensor, T_SubTensor>::deallocateInternalBuffe
 
 template <typename T_ITensor, typename T_Tensor, typename T_SubTensor>
 void AclTensorManager<T_ITensor, T_Tensor, T_SubTensor>::buildTensor(
-    const ir::OperandIndex &ind, const ::arm_compute::TensorInfo &info, size_t rank, bool as_const,
-    size_t num_uses)
+  const ir::OperandIndex &ind, const ::arm_compute::TensorInfo &info, size_t rank, bool as_const,
+  size_t num_uses)
 {
   assert(_ind_to_mgr.find(ind) == _ind_to_mgr.end());
   if (as_const)
@@ -160,9 +160,9 @@ void AclTensorManager<T_ITensor, T_Tensor, T_SubTensor>::buildTensor(
 
 template <typename T_ITensor, typename T_Tensor, typename T_SubTensor>
 void AclTensorManager<T_ITensor, T_Tensor, T_SubTensor>::buildSubtensor(
-    const ir::OperandIndex &parent, const ir::OperandIndex &child,
-    const ::arm_compute::TensorShape &shape, const ::arm_compute::Coordinates &coordinates,
-    size_t rank, bool extent_parent)
+  const ir::OperandIndex &parent, const ir::OperandIndex &child,
+  const ::arm_compute::TensorShape &shape, const ::arm_compute::Coordinates &coordinates,
+  size_t rank, bool extent_parent)
 {
   assert(_ind_to_mgr.find(child) == _ind_to_mgr.end());
   std::shared_ptr<T_ITensor> parent_tensor = findTensorAsParent(parent);
@@ -261,7 +261,7 @@ AclTensorManager<T_ITensor, T_Tensor, T_SubTensor>::internal_buffer_manager(void
 
 template <typename T_ITensor, typename T_Tensor, typename T_SubTensor>
 void AclTensorManager<T_ITensor, T_Tensor, T_SubTensor>::iterate(
-    const std::function<void(const ir::OperandIndex &)> &fn)
+  const std::function<void(const ir::OperandIndex &)> &fn)
 {
   for (auto it : _nonconst_mgr->tensors())
     fn(it.first);

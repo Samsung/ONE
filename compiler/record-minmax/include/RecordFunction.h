@@ -53,7 +53,7 @@ float getNthPercentile(std::vector<float> &vector, float percentile)
 
   float percent_i = static_cast<float>(index) / static_cast<float>(copy.size() - 1);
   float fraction =
-      (percentile / 100.0 - percent_i) / ((index + 1.0) / (copy.size() - 1.0) - percent_i);
+    (percentile / 100.0 - percent_i) / ((index + 1.0) / (copy.size() - 1.0) - percent_i);
   float res = copy[index] + fraction * (copy[index + 1] - copy[index]);
   return res;
 }

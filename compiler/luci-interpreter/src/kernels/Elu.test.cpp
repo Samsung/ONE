@@ -43,25 +43,25 @@ void Check(std::initializer_list<int32_t> input_shape, std::initializer_list<int
 TEST(EluTest, SimpleElu)
 {
   Check(
-      /*input_shape=*/{1, 2, 4, 1}, /*output_shape=*/{1, 2, 4, 1},
-      /*input_data=*/
-      {
-          0, -6, 2, -4,    //
-          3, -2, 10, -0.1, //
-      },
-      /*output_data=*/
-      {
-          0.0, -0.997521, 2.0, -0.981684,   //
-          3.0, -0.864665, 10.0, -0.0951626, //
-      });
+    /*input_shape=*/{1, 2, 4, 1}, /*output_shape=*/{1, 2, 4, 1},
+    /*input_data=*/
+    {
+      0, -6, 2, -4,    //
+      3, -2, 10, -0.1, //
+    },
+    /*output_data=*/
+    {
+      0.0, -0.997521, 2.0, -0.981684,   //
+      3.0, -0.864665, 10.0, -0.0951626, //
+    });
 }
 
 TEST(EluTest, InOutTypeMismatch_NEG)
 {
   Shape input_shape{1, 2, 4, 1};
   std::vector<float> input_data{
-      0, -6, 2,  -4,   //
-      3, -2, 10, -0.1, //
+    0, -6, 2,  -4,   //
+    3, -2, 10, -0.1, //
   };
   Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
   Tensor output_tensor = makeOutputTensor(DataType::U8);

@@ -57,11 +57,11 @@ private:
 
     PermuteWorkerTask(const ITensor &src_tensor, ITensor &dst_tensor,
                       const ir::Coordinates &start_coords, const ir::Shape &loop_shape, size_t size)
-        : _src_buffer{src_tensor.buffer()}, _dst_buffer{dst_tensor.buffer()},
-          _src_start_offset{src_tensor.calcOffset(start_coords)},
-          _dst_start_offset{dst_tensor.calcOffset(start_coords)}, _src_strides{}, _dst_strides{},
-          _loop_shape{loop_shape}, _size{size}, _src_layout{src_tensor.layout()},
-          _dst_layout{dst_tensor.layout()}, _is_permutation{true}
+      : _src_buffer{src_tensor.buffer()}, _dst_buffer{dst_tensor.buffer()},
+        _src_start_offset{src_tensor.calcOffset(start_coords)},
+        _dst_start_offset{dst_tensor.calcOffset(start_coords)}, _src_strides{}, _dst_strides{},
+        _loop_shape{loop_shape}, _size{size}, _src_layout{src_tensor.layout()},
+        _dst_layout{dst_tensor.layout()}, _is_permutation{true}
     {
       // Set strides
       setStrides(src_tensor, &_src_strides);
@@ -72,9 +72,9 @@ private:
     // Constructor for a copy
     PermuteWorkerTask(const uint8_t *src_buffer, uint8_t *dst_buffer, uint32_t src_start_offset,
                       uint32_t dst_start_offset, size_t size)
-        : _src_buffer{src_buffer}, _dst_buffer{dst_buffer}, _src_start_offset{src_start_offset},
-          _dst_start_offset{dst_start_offset}, _src_strides{0}, _dst_strides{0},
-          _loop_shape{1}, _size{size}, _src_layout{}, _dst_layout{}, _is_permutation{false}
+      : _src_buffer{src_buffer}, _dst_buffer{dst_buffer}, _src_start_offset{src_start_offset},
+        _dst_start_offset{dst_start_offset}, _src_strides{0}, _dst_strides{0},
+        _loop_shape{1}, _size{size}, _src_layout{}, _dst_layout{}, _is_permutation{false}
     {
       // DO NOTHING
     }

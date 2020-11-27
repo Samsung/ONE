@@ -30,7 +30,7 @@ TEST(ADT_FEATURE_OVERLAY, ctor)
   const Shape shape{4, 6, 3};
 
   int data[4 * 6 * 3] = {
-      0,
+    0,
   };
   auto overlay = make_overlay<int, CHWLayout>(shape, data);
 
@@ -44,7 +44,7 @@ TEST(ADT_FEATURE_OVERLAY, read)
   const Shape shape{4, 6, 3};
 
   int data[4 * 6 * 3] = {
-      0,
+    0,
   };
   const auto overlay = make_overlay<int, CHWLayout>(shape, data);
 
@@ -60,7 +60,7 @@ TEST(ADT_FEATURE_OVERLAY, access)
   const Shape shape{4, 6, 3};
 
   int data[4 * 6 * 3] = {
-      0,
+    0,
   };
   auto overlay = make_overlay<int, CHWLayout>(shape, data);
 

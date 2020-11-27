@@ -41,7 +41,7 @@
 #include "helpers.h"
 
 #if defined(NUM_ELEMS_PROCESSED_PER_THREAD_X) && defined(NUM_ELEMS_PROCESSED_PER_THREAD_Y) && \
-    defined(COLS_A)
+  defined(COLS_A)
 #define VECTOR_CHAR VEC_DATA_TYPE(char, NUM_ELEMS_PROCESSED_PER_THREAD_X)
 #define VECTOR_INT VEC_DATA_TYPE(int, NUM_ELEMS_PROCESSED_PER_THREAD_X)
 #define VECTOR_FLOAT VEC_DATA_TYPE(float, NUM_ELEMS_PROCESSED_PER_THREAD_X)
@@ -208,9 +208,9 @@ __kernel void gemmlowp_mm_midgard_ex(IMAGE_DECLARATION(src0), IMAGE_DECLARATION(
 #endif // NUM_ELEMS_PROCESSED_PER_THREAD_Y > 4
     // Load values from matrix B
     VECTOR_CHAR b0 =
-        VLOAD(NUM_ELEMS_PROCESSED_PER_THREAD_X)(0, (__global char *)(src1_ptr + src_addr.s1));
+      VLOAD(NUM_ELEMS_PROCESSED_PER_THREAD_X)(0, (__global char *)(src1_ptr + src_addr.s1));
     VECTOR_CHAR b1 = VLOAD(NUM_ELEMS_PROCESSED_PER_THREAD_X)(
-        0, (__global char *)(src1_ptr + src_addr.s1 + src1_stride_y));
+      0, (__global char *)(src1_ptr + src_addr.s1 + src1_stride_y));
 
     // Accumulate
     acc0 += CONVERT(b0, VECTOR_INT) * (VECTOR_INT)a0.s0;
@@ -251,7 +251,7 @@ __kernel void gemmlowp_mm_midgard_ex(IMAGE_DECLARATION(src0), IMAGE_DECLARATION(
 #endif // NUM_ELEMS_PROCESSED_PER_THREAD_Y > 4
     // Load values from matrix B
     VECTOR_CHAR b0 =
-        VLOAD(NUM_ELEMS_PROCESSED_PER_THREAD_X)(0, (__global char *)(src1_ptr + src_addr.s1));
+      VLOAD(NUM_ELEMS_PROCESSED_PER_THREAD_X)(0, (__global char *)(src1_ptr + src_addr.s1));
 
     // Accumulate
     acc0 += CONVERT(b0, VECTOR_INT) * (VECTOR_INT)a0;

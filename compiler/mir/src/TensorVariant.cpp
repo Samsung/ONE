@@ -35,7 +35,7 @@ TensorVariant::TensorVariant(const TensorType &type) : _type(type), _strides(typ
 }
 
 TensorVariant::TensorVariant(DataType element_type, const Shape &shape)
-    : TensorVariant(TensorType(element_type, shape))
+  : TensorVariant(TensorType(element_type, shape))
 {
 }
 
@@ -46,7 +46,7 @@ TensorVariant::TensorVariant(const TensorType &type, const void *data) : TensorV
 }
 
 TensorVariant::TensorVariant(DataType element_type, const Shape &shape, const void *data)
-    : TensorVariant(TensorType(element_type, shape), data)
+  : TensorVariant(TensorType(element_type, shape), data)
 {
 }
 
@@ -57,8 +57,8 @@ TensorVariant::TensorVariant(DataType element_type, const Shape &shape, const vo
  * @param shape shape to broadcast to
  */
 TensorVariant::TensorVariant(const TensorVariant &t_old, const Shape &shape)
-    : _type(t_old.getType().getElementType(), shape), _data(t_old._data),
-      _strides(static_cast<size_t>(shape.rank())), _element_size(t_old._element_size)
+  : _type(t_old.getType().getElementType(), shape), _data(t_old._data),
+    _strides(static_cast<size_t>(shape.rank())), _element_size(t_old._element_size)
 {
   int axis_old = t_old.getShape().rank() - 1;
   for (int d = shape.rank() - 1; d >= 0; d--)

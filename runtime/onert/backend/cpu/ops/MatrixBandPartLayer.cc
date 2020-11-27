@@ -30,7 +30,7 @@ namespace ops
 {
 
 MatrixBandPartLayer::MatrixBandPartLayer()
-    : _input(nullptr), _num_lower_diag(nullptr), _num_upper_diag(nullptr), _output(nullptr)
+  : _input(nullptr), _num_lower_diag(nullptr), _num_upper_diag(nullptr), _output(nullptr)
 {
   // DO NOTHING
 }
@@ -40,18 +40,18 @@ void MatrixBandPartLayer::matrixBandPartFloat32()
   if (_num_lower_diag->data_type() == OperandType::INT64)
   {
     nnfw::cker::MatrixBandPart<int64_t>(
-        *reinterpret_cast<const int64_t *>(_num_lower_diag->buffer()),
-        *reinterpret_cast<const int64_t *>(_num_upper_diag->buffer()), getTensorShape(_input),
-        reinterpret_cast<const float *>(_input->buffer()), getTensorShape(_output),
-        reinterpret_cast<float *>(_output->buffer()));
+      *reinterpret_cast<const int64_t *>(_num_lower_diag->buffer()),
+      *reinterpret_cast<const int64_t *>(_num_upper_diag->buffer()), getTensorShape(_input),
+      reinterpret_cast<const float *>(_input->buffer()), getTensorShape(_output),
+      reinterpret_cast<float *>(_output->buffer()));
   }
   else
   {
     nnfw::cker::MatrixBandPart<int32_t>(
-        *reinterpret_cast<const int32_t *>(_num_lower_diag->buffer()),
-        *reinterpret_cast<const int32_t *>(_num_upper_diag->buffer()), getTensorShape(_input),
-        reinterpret_cast<const float *>(_input->buffer()), getTensorShape(_output),
-        reinterpret_cast<float *>(_output->buffer()));
+      *reinterpret_cast<const int32_t *>(_num_lower_diag->buffer()),
+      *reinterpret_cast<const int32_t *>(_num_upper_diag->buffer()), getTensorShape(_input),
+      reinterpret_cast<const float *>(_input->buffer()), getTensorShape(_output),
+      reinterpret_cast<float *>(_output->buffer()));
   }
 }
 

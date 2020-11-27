@@ -26,7 +26,7 @@ namespace compiler
 void ParamChecker::operator()()
 {
   _model->operations().iterate(
-      [&](const ir::OperationIndex &, const ir::Operation &node) { node.accept(*this); });
+    [&](const ir::OperationIndex &, const ir::Operation &node) { node.accept(*this); });
 }
 
 } // namespace compiler

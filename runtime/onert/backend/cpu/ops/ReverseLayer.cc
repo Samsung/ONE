@@ -46,8 +46,8 @@ void ReverseLayer::run()
   {
     case OperandType::FLOAT32:
       nnfw::cker::Reverse<float>(
-          axis, getTensorShape(_input), reinterpret_cast<const float *>(_input->buffer()),
-          getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()));
+        axis, getTensorShape(_input), reinterpret_cast<const float *>(_input->buffer()),
+        getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()));
       break;
     default:
       throw std::runtime_error{"Reverse: unsupported data type"};

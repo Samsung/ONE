@@ -28,21 +28,21 @@ namespace ops
 {
 
 DepthwiseConvolutionLayer::DepthwiseConvolutionLayer(
-    const std::shared_ptr<ExternalContext> external_context)
-    : Layer(external_context), _input(nullptr), _kernel(nullptr), _bias(nullptr), _output(nullptr),
-      _padding_type(ir::PaddingType::EXPLICIT), _padding_left(0), _padding_top(0),
-      _padding_right(0), _padding_bottom(0), _stride_width(0), _stride_height(0), _multiplier(1),
-      _dilation_width_factor(1), _dilation_height_factor(1), _activation(ir::Activation::NONE)
+  const std::shared_ptr<ExternalContext> external_context)
+  : Layer(external_context), _input(nullptr), _kernel(nullptr), _bias(nullptr), _output(nullptr),
+    _padding_type(ir::PaddingType::EXPLICIT), _padding_left(0), _padding_top(0), _padding_right(0),
+    _padding_bottom(0), _stride_width(0), _stride_height(0), _multiplier(1),
+    _dilation_width_factor(1), _dilation_height_factor(1), _activation(ir::Activation::NONE)
 {
   // DO NOTHING
 }
 
 void DepthwiseConvolutionLayer::configure(
-    const IPortableTensor *input, const IPortableTensor *kernel, const IPortableTensor *bias,
-    ir::PaddingType padding_type, const uint32_t padding_left, const uint32_t padding_right,
-    const uint32_t padding_top, const uint32_t padding_bottom, const uint32_t stride_width,
-    const uint32_t stride_height, const uint32_t multiplier, const uint32_t dilation_width_factor,
-    const uint32_t dilation_height_factor, const ir::Activation activation, IPortableTensor *output)
+  const IPortableTensor *input, const IPortableTensor *kernel, const IPortableTensor *bias,
+  ir::PaddingType padding_type, const uint32_t padding_left, const uint32_t padding_right,
+  const uint32_t padding_top, const uint32_t padding_bottom, const uint32_t stride_width,
+  const uint32_t stride_height, const uint32_t multiplier, const uint32_t dilation_width_factor,
+  const uint32_t dilation_height_factor, const ir::Activation activation, IPortableTensor *output)
 {
   _input = input;
   _kernel = kernel;
@@ -107,14 +107,13 @@ void DepthwiseConvolutionLayer::prepare()
   assert(output_channels == input_channels * _multiplier);
 
   enum xnn_status status = xnn_create_convolution2d_nhwc_f32(
-      _padding_top, _padding_right, _padding_bottom, _padding_left, kernel_height, kernel_width,
-      _stride_height, _stride_width, _dilation_height_factor, _dilation_width_factor,
-      input_channels /* groups */, 1 /* group_input_channels */,
-      _multiplier /* group_output_channels */, input_channels /* input_channel_stride */,
-      output_channels /* output_channel_stride */,
-      reinterpret_cast<const float *>(_kernel->buffer()),
-      reinterpret_cast<const float *>(_bias->buffer()), output_activation_min,
-      output_activation_max, XNN_FLAG_DEPTHWISE_CONVOLUTION, &_kernel_op);
+    _padding_top, _padding_right, _padding_bottom, _padding_left, kernel_height, kernel_width,
+    _stride_height, _stride_width, _dilation_height_factor, _dilation_width_factor,
+    input_channels /* groups */, 1 /* group_input_channels */,
+    _multiplier /* group_output_channels */, input_channels /* input_channel_stride */,
+    output_channels /* output_channel_stride */, reinterpret_cast<const float *>(_kernel->buffer()),
+    reinterpret_cast<const float *>(_bias->buffer()), output_activation_min, output_activation_max,
+    XNN_FLAG_DEPTHWISE_CONVOLUTION, &_kernel_op);
   if (status != xnn_status_success)
   {
     throw std::runtime_error{"failed to create FP32 DepthwiseConvolution operator"};

@@ -32,9 +32,9 @@ void ElementwiseUnary::accept(OperationVisitor &v) const { v.visit(*this); }
 
 ElementwiseUnary::ElementwiseUnary(const OperandIndexSequence &inputs,
                                    const OperandIndexSequence &outputs, const Param &param)
-    : Operation{OperandConstraint::createExact(1u), inputs, outputs,
-                OperandConstraint::createExact(1u)},
-      _param{param}
+  : Operation{OperandConstraint::createExact(1u), inputs, outputs,
+              OperandConstraint::createExact(1u)},
+    _param{param}
 {
 }
 
@@ -42,23 +42,23 @@ std::string ElementwiseUnary::name() const
 {
   using ElementwiseUnaryType = onert::ir::operation::ElementwiseUnary::Type;
   static const std::unordered_map<ElementwiseUnaryType, std::string> name_map{
-      {ElementwiseUnaryType::ABS, std::string{"Abs"}},
-      {ElementwiseUnaryType::CAST, std::string{"Cast"}},
-      {ElementwiseUnaryType::COS, std::string{"Cos"}},
-      {ElementwiseUnaryType::DEQUANTIZE, std::string{"Dequantize"}},
-      {ElementwiseUnaryType::ERF, std::string{"Erf"}},
-      {ElementwiseUnaryType::EXP, std::string{"Exp"}},
-      {ElementwiseUnaryType::FLOOR, std::string{"Floor"}},
-      {ElementwiseUnaryType::LOG, std::string{"Log"}},
-      {ElementwiseUnaryType::LOGICAL_NOT, std::string{"LogicalNot"}},
-      {ElementwiseUnaryType::NEG, std::string{"Neg"}},
-      {ElementwiseUnaryType::QUANTIZE, std::string{"Quantize"}},
-      {ElementwiseUnaryType::ROUND, std::string{"Round"}},
-      {ElementwiseUnaryType::RSQRT, std::string{"RSqrt"}},
-      {ElementwiseUnaryType::SIN, std::string{"Sin"}},
-      {ElementwiseUnaryType::SQRT, std::string{"Sqrt"}},
-      {ElementwiseUnaryType::SQUARE, std::string{"Square"}},
-      {ElementwiseUnaryType::ZEROS_LIKE, std::string{"ZerosLike"}}};
+    {ElementwiseUnaryType::ABS, std::string{"Abs"}},
+    {ElementwiseUnaryType::CAST, std::string{"Cast"}},
+    {ElementwiseUnaryType::COS, std::string{"Cos"}},
+    {ElementwiseUnaryType::DEQUANTIZE, std::string{"Dequantize"}},
+    {ElementwiseUnaryType::ERF, std::string{"Erf"}},
+    {ElementwiseUnaryType::EXP, std::string{"Exp"}},
+    {ElementwiseUnaryType::FLOOR, std::string{"Floor"}},
+    {ElementwiseUnaryType::LOG, std::string{"Log"}},
+    {ElementwiseUnaryType::LOGICAL_NOT, std::string{"LogicalNot"}},
+    {ElementwiseUnaryType::NEG, std::string{"Neg"}},
+    {ElementwiseUnaryType::QUANTIZE, std::string{"Quantize"}},
+    {ElementwiseUnaryType::ROUND, std::string{"Round"}},
+    {ElementwiseUnaryType::RSQRT, std::string{"RSqrt"}},
+    {ElementwiseUnaryType::SIN, std::string{"Sin"}},
+    {ElementwiseUnaryType::SQRT, std::string{"Sqrt"}},
+    {ElementwiseUnaryType::SQUARE, std::string{"Square"}},
+    {ElementwiseUnaryType::ZEROS_LIKE, std::string{"ZerosLike"}}};
   return name_map.at(_param.op_type);
 }
 

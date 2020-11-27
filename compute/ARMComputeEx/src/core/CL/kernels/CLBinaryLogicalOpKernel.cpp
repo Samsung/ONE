@@ -55,7 +55,7 @@ Status validate_parameters(const ITensorInfo *input1, const ITensorInfo *input2,
                            const ITensorInfo *output)
 {
   const TensorShape &out_shape =
-      TensorShape::broadcast_shape(input1->tensor_shape(), input2->tensor_shape());
+    TensorShape::broadcast_shape(input1->tensor_shape(), input2->tensor_shape());
 
   ARM_COMPUTE_RETURN_ERROR_ON_DATA_TYPE_CHANNEL_NOT_IN(input1, 1, DataType::U8, DataType::QASYMM8);
   ARM_COMPUTE_RETURN_ERROR_ON_DATA_TYPE_CHANNEL_NOT_IN(input2, 1, DataType::U8, DataType::QASYMM8);
@@ -68,15 +68,15 @@ Status validate_parameters(const ITensorInfo *input1, const ITensorInfo *input2,
     ARM_COMPUTE_RETURN_ERROR_ON_DATA_TYPE_CHANNEL_NOT_IN(output, 1, DataType::U8,
                                                          DataType::QASYMM8);
     ARM_COMPUTE_RETURN_ERROR_ON_MSG(
-        detail::have_different_dimensions(out_shape, output->tensor_shape(), 0),
-        "Wrong shape for output");
+      detail::have_different_dimensions(out_shape, output->tensor_shape(), 0),
+      "Wrong shape for output");
   }
   return Status{};
 }
 } // namespace
 
 CLBinaryLogicalOpKernel::CLBinaryLogicalOpKernel()
-    : _input1(nullptr), _input2(nullptr), _output(nullptr)
+  : _input1(nullptr), _input2(nullptr), _output(nullptr)
 {
 }
 
@@ -111,13 +111,13 @@ void CLBinaryLogicalOpKernel::configure(const ICLTensor *input1, const ICLTensor
 
   build_opts.emplace(("-DOP_CODE=" + support::cpp11::to_string(op_code)));
   build_opts.emplace(
-      ("-DVEC_SIZE=" + support::cpp11::to_string(num_elems_processed_per_iteration)));
+    ("-DVEC_SIZE=" + support::cpp11::to_string(num_elems_processed_per_iteration)));
 
   _kernel =
-      static_cast<cl::Kernel>(CLKernelLibraryEx::get().create_kernel(kernel_name, build_opts));
+    static_cast<cl::Kernel>(CLKernelLibraryEx::get().create_kernel(kernel_name, build_opts));
 
   const std::pair<TensorShape, ValidRegion> broadcast_pair =
-      ITensorInfo::broadcast_shape_and_valid_region(*input1->info(), *input2->info());
+    ITensorInfo::broadcast_shape_and_valid_region(*input1->info(), *input2->info());
 
   const ValidRegion &valid_region = broadcast_pair.second;
 
@@ -130,8 +130,8 @@ void CLBinaryLogicalOpKernel::configure(const ICLTensor *input1, const ICLTensor
   AccessWindowHorizontal output_access(output->info(), 0, num_elems_processed_per_iteration);
 
   update_window_and_padding(win_input1, input1_access) ||
-      update_window_and_padding(win_input2, input2_access) ||
-      update_window_and_padding(win, output_access);
+    update_window_and_padding(win_input2, input2_access) ||
+    update_window_and_padding(win, output_access);
 
   output_access.set_valid_region(win, valid_region);
 
@@ -151,7 +151,7 @@ void CLBinaryLogicalOpKernel::run(const Window &window, cl::CommandQueue &queue)
   if (std::min(in_shape1.total_size(), in_shape2.total_size()) > 1)
   {
     can_collapse =
-        (std::min(in_shape1.num_dimensions(), in_shape2.num_dimensions()) > Window::DimZ);
+      (std::min(in_shape1.num_dimensions(), in_shape2.num_dimensions()) > Window::DimZ);
     for (size_t d = Window::DimZ; can_collapse && (d < out_shape.num_dimensions()); d++)
     {
       can_collapse = (in_shape1[d] == in_shape2[d]);
@@ -160,13 +160,13 @@ void CLBinaryLogicalOpKernel::run(const Window &window, cl::CommandQueue &queue)
 
   bool has_collapsed = false;
   Window collapsed =
-      can_collapse ? window.collapse_if_possible(ICLKernel::window(), Window::DimZ, &has_collapsed)
-                   : window;
+    can_collapse ? window.collapse_if_possible(ICLKernel::window(), Window::DimZ, &has_collapsed)
+                 : window;
 
   const TensorShape &in_shape1_collapsed =
-      has_collapsed ? in_shape1.collapsed_from(Window::DimZ) : in_shape1;
+    has_collapsed ? in_shape1.collapsed_from(Window::DimZ) : in_shape1;
   const TensorShape &in_shape2_collapsed =
-      has_collapsed ? in_shape2.collapsed_from(Window::DimZ) : in_shape2;
+    has_collapsed ? in_shape2.collapsed_from(Window::DimZ) : in_shape2;
 
   Window slice = collapsed.first_slice_window_3D();
   Window slice_input1 = slice.broadcast_if_dimension_le_one(in_shape1_collapsed);
@@ -189,9 +189,9 @@ void CLBinaryLogicalOpKernel::run(const Window &window, cl::CommandQueue &queue)
 BorderSize CLBinaryLogicalOpKernel::border_size() const
 {
   const unsigned int replicateSize =
-      _output->info()->dimension(0) -
-      std::min(_input1->info()->dimension(0), _input2->info()->dimension(0));
+    _output->info()->dimension(0) -
+    std::min(_input1->info()->dimension(0), _input2->info()->dimension(0));
   const unsigned int border =
-      std::min<unsigned int>(num_elems_processed_per_iteration - 1U, replicateSize);
+    std::min<unsigned int>(num_elems_processed_per_iteration - 1U, replicateSize);
   return BorderSize(0, border, 0, 0);
 }

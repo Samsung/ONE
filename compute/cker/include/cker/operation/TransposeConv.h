@@ -90,11 +90,11 @@ inline void TransposeConv(const TransposeConvParams &params, const Shape &input_
                     (out_y < output_height))
                 {
                   float input_value =
-                      input_data[Offset(input_shape, batch, in_y, in_x, in_channel)];
-                  float filter_value = filter_data[Offset(filter_shape, out_channel, filter_y,
-                                                          filter_x, in_channel)];
+                    input_data[Offset(input_shape, batch, in_y, in_x, in_channel)];
+                  float filter_value =
+                    filter_data[Offset(filter_shape, out_channel, filter_y, filter_x, in_channel)];
                   output_data[Offset(output_shape, batch, out_y, out_x, out_channel)] +=
-                      input_value * filter_value;
+                    input_value * filter_value;
                 }
               }
             }

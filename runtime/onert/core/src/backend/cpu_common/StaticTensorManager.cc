@@ -28,8 +28,8 @@ namespace cpu_common
 
 StaticTensorManager::StaticTensorManager(const std::shared_ptr<TensorRegistry> &reg,
                                          DynamicMemoryManager *dynamic_mem_mgr)
-    : _const_mgr{new DynamicMemoryManager()}, _nonconst_mgr{new MemoryManager()}, _tensors{reg},
-      _dynamic_mem_mgr{dynamic_mem_mgr}
+  : _const_mgr{new DynamicMemoryManager()}, _nonconst_mgr{new MemoryManager()}, _tensors{reg},
+    _dynamic_mem_mgr{dynamic_mem_mgr}
 {
   // DO NOTHING
 }
@@ -46,8 +46,8 @@ void StaticTensorManager::allocateConsts(void)
       tensor->setBuffer(mem_alloc);
       auto buffer = mem_alloc->base();
       VERBOSE(CPU_COMMON_StaticTensorManager)
-          << "CONSTANT TENSOR(#" << ind.value() << "): " << static_cast<void *>(buffer)
-          << "size : " << tensor->total_size() << std::endl;
+        << "CONSTANT TENSOR(#" << ind.value() << "): " << static_cast<void *>(buffer)
+        << "size : " << tensor->total_size() << std::endl;
     }
   }
 }
@@ -66,7 +66,7 @@ void StaticTensorManager::allocateNonconsts(void)
       tensor->setBuffer(buffer);
 
       VERBOSE(CPU_COMMON_StaticTensorManager)
-          << "TENSOR(#" << ind.value() << "): " << static_cast<void *>(buffer) << std::endl;
+        << "TENSOR(#" << ind.value() << "): " << static_cast<void *>(buffer) << std::endl;
     }
   }
 }

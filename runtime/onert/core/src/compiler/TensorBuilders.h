@@ -41,8 +41,8 @@ public:
     {
       if (e.first->config()->id() == backend::controlflow::Config::ID)
       {
-        _cf_tensor_builder = std::dynamic_pointer_cast<backend::controlflow::TensorBuilder>(
-            e.second->tensor_builder);
+        _cf_tensor_builder =
+          std::dynamic_pointer_cast<backend::controlflow::TensorBuilder>(e.second->tensor_builder);
         if (include_controlflow)
           _tensor_builders.insert(e.second->tensor_builder);
       }

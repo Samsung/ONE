@@ -24,7 +24,7 @@ namespace operation
 {
 
 LowerInfo::LowerInfo(const backend::Backend *backend, Layout layout)
-    : _permute_factor{backend, layout}
+  : _permute_factor{backend, layout}
 {
   // DO NOTHING
 }

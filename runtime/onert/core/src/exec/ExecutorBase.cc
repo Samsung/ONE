@@ -28,7 +28,7 @@ namespace exec
 
 ExecutorBase::ExecutorBase(std::unique_ptr<compiler::LoweredGraph> &&lowered_graph,
                            const compiler::TensorRegistries &tensor_regs)
-    : _lowered_graph{std::move(lowered_graph)}, _graph{_lowered_graph->graph()}, _mutex()
+  : _lowered_graph{std::move(lowered_graph)}, _graph{_lowered_graph->graph()}, _mutex()
 {
   auto build_tensor_list = [&](const auto &ind_seq, auto &tensors) {
     assert(tensors.empty());
@@ -65,7 +65,7 @@ void ExecutorBase::execute(const std::vector<backend::IPortableTensor *> &inputs
     {
       const auto orig_input_shape = input_tensor->orig_info().shape();
       const auto changed_input_shape =
-          convertShape(input->getShape(), input->layout(), input_tensor->orig_layout());
+        convertShape(input->getShape(), input->layout(), input_tensor->orig_layout());
       if (orig_input_shape != changed_input_shape)
       {
         input_tensor->set_dynamic();
@@ -143,7 +143,7 @@ void ExecutorBase::execute(const IODescription &desc)
     // set shape of outputDesc to tensor shape since tensor can be dynamic
     const auto output_tensor_shape = _output_tensors[n]->getShape();
     output.info.shape(
-        convertShape(output_tensor_shape, _output_tensors[n]->layout(), output.layout));
+      convertShape(output_tensor_shape, _output_tensors[n]->layout(), output.layout));
   }
 }
 

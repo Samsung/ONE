@@ -40,8 +40,8 @@ public:
 public:
   Tensor(const ir::OperandInfo &info, const ir::Layout layout,
          DynamicMemoryManager *dynamic_mem_mgr)
-      : IPortableTensor(info), _layout(layout), _buffer(nullptr), _num_references(0),
-        _dynamic_mem_mgr(dynamic_mem_mgr), _allocator(nullptr)
+    : IPortableTensor(info), _layout(layout), _buffer(nullptr), _num_references(0),
+      _dynamic_mem_mgr(dynamic_mem_mgr), _allocator(nullptr)
   {
     // DO NOTHING
   }

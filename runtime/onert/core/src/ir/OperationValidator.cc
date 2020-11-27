@@ -31,7 +31,7 @@ namespace ir
 {
 
 OperationValidator::OperationValidator(const Graph &graph)
-    : _operations{graph.operations()}, _operands{graph.operands()}
+  : _operations{graph.operations()}, _operands{graph.operands()}
 {
 }
 

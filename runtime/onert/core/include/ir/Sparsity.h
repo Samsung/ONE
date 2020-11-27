@@ -35,7 +35,7 @@ public:
   Sparsity() = default;
   Sparsity(std::vector<uint16_t> &&w1_segments, std::vector<uint16_t> &&w1_indices,
            std::vector<int32_t> &&block_size)
-      : _w1_segments(w1_segments), _w1_indices(w1_indices), _block_size(block_size)
+    : _w1_segments(w1_segments), _w1_indices(w1_indices), _block_size(block_size)
   {
   }
 

@@ -116,11 +116,11 @@ TEST_F(RegressionTest, github_11748)
 
     uint8_t input_buf[new_dim * sizeof(float)];
     NNFW_ENSURE_SUCCESS(
-        nnfw_set_input(session, 0, t_input.dtype, &input_buf, new_dim * sizeof(float)));
+      nnfw_set_input(session, 0, t_input.dtype, &input_buf, new_dim * sizeof(float)));
 
     uint8_t output_buf[new_dim * sizeof(float)];
     NNFW_ENSURE_SUCCESS(
-        nnfw_set_output(session, 0, t_output.dtype, &output_buf, new_dim * sizeof(float)));
+      nnfw_set_output(session, 0, t_output.dtype, &output_buf, new_dim * sizeof(float)));
 
     NNFW_ENSURE_SUCCESS(nnfw_run(session));
 
@@ -134,9 +134,9 @@ TEST_F(RegressionTest, github_11748)
     // seems weird calling but anyway nnstreamer people case calls this again.
     // Anyways, runtime should work
     NNFW_ENSURE_SUCCESS(
-        nnfw_set_input(session, 0, t_input.dtype, &input_buf, new_dim * sizeof(float)));
+      nnfw_set_input(session, 0, t_input.dtype, &input_buf, new_dim * sizeof(float)));
     NNFW_ENSURE_SUCCESS(
-        nnfw_set_output(session, 0, t_output.dtype, &output_buf, new_dim * sizeof(float)));
+      nnfw_set_output(session, 0, t_output.dtype, &output_buf, new_dim * sizeof(float)));
     NNFW_ENSURE_SUCCESS(nnfw_run(session));
   }
 
@@ -166,9 +166,9 @@ TEST_F(RegressionTest, github_4585)
   std::vector<float> out_buf{-1, -1};
 
   NNFW_ENSURE_SUCCESS(
-      nnfw_set_input(session, 0, ti_new.dtype, in_buf.data(), in_buf.size() * sizeof(float)));
+    nnfw_set_input(session, 0, ti_new.dtype, in_buf.data(), in_buf.size() * sizeof(float)));
   NNFW_ENSURE_SUCCESS(
-      nnfw_set_output(session, 0, ti_new.dtype, out_buf.data(), out_buf.size() * sizeof(float)));
+    nnfw_set_output(session, 0, ti_new.dtype, out_buf.data(), out_buf.size() * sizeof(float)));
 
   NNFW_ENSURE_SUCCESS(nnfw_run(session));
 

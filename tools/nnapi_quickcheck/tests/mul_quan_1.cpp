@@ -108,7 +108,7 @@ TEST(NNAPI_Quickcheck_mul_1, simple_test)
 
     // Configure output
     float max_scale =
-        std::numeric_limits<uint8_t>::max(); // * input1_scale(1.0f) * input2_scale(1.0f)
+      std::numeric_limits<uint8_t>::max(); // * input1_scale(1.0f) * input2_scale(1.0f)
     quantization.scale = max_scale;
     interp.SetTensorParametersReadWrite(0, kTfLiteUInt8 /* type */, "output" /* name */,
                                         {OFM_1D, OFM_2D, OFM_3D} /* dims */, quantization);

@@ -50,7 +50,7 @@ void DepthwiseConv2DOp::inferOutputTypes()
     //   (in_size - kernel_size + 1 + stride - 1) / stride =
     //   (in_size - kernel_size) / stride + 1
     output_shape.dim(spatial_dim_index) =
-        (padded_input - kernel_shape.dim(i)) / _attributes.strides[i] + 1;
+      (padded_input - kernel_shape.dim(i)) / _attributes.strides[i] + 1;
   }
 
   setOutputType(0, {getInput(0)->getElementType(), output_shape});

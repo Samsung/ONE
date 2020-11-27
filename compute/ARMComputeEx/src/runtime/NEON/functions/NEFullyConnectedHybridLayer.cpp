@@ -58,7 +58,7 @@ namespace
 Status validate_mm(const ITensorInfo &input, const ITensorInfo &weights, const ITensorInfo &output)
 {
   ARM_COMPUTE_RETURN_ON_ERROR(
-      NEGEMMLowpMatrixMultiplyCore::validate(&input, &weights, nullptr, &output));
+    NEGEMMLowpMatrixMultiplyCore::validate(&input, &weights, nullptr, &output));
 
   return Status{};
 }
@@ -78,11 +78,11 @@ Status NEFullyConnectedHybridLayerReshapeWeights::validate(const ITensorInfo *in
 }
 
 NEFullyConnectedHybridLayer::NEFullyConnectedHybridLayer(
-    std::shared_ptr<IMemoryManager> memory_manager)
-    : _memory_group(std::move(memory_manager)), _reshape_weights_function(), _quant_input_kernel(),
-      _mm_gemmlowp(), _accumulate_biases_kernel(), _reshape_weights_output(), _quantized_input(),
-      _scale_factor(), _original_weights(nullptr), _are_weights_reshaped(false),
-      _accumulate_biases(false), _is_prepared(false)
+  std::shared_ptr<IMemoryManager> memory_manager)
+  : _memory_group(std::move(memory_manager)), _reshape_weights_function(), _quant_input_kernel(),
+    _mm_gemmlowp(), _accumulate_biases_kernel(), _reshape_weights_output(), _quantized_input(),
+    _scale_factor(), _original_weights(nullptr), _are_weights_reshaped(false),
+    _accumulate_biases(false), _is_prepared(false)
 {
 }
 
@@ -103,8 +103,8 @@ void NEFullyConnectedHybridLayer::configure(const ITensor *input, const ITensor 
 
   // Perform validate step
   ARM_COMPUTE_ERROR_THROW_ON(NEFullyConnectedHybridLayer::validate(
-      input->info(), weights->info(), biases != nullptr ? biases->info() : nullptr, output->info(),
-      fc_info));
+    input->info(), weights->info(), biases != nullptr ? biases->info() : nullptr, output->info(),
+    fc_info));
 
   _are_weights_reshaped = fc_info.transpose_weights ? fc_info.are_weights_reshaped : true;
   _accumulate_biases = false;
@@ -132,10 +132,10 @@ void NEFullyConnectedHybridLayer::configure(const ITensor *input, const ITensor 
   bool _is_fc_after_conv;
   if (is_batched_fc_layer)
   {
-    _is_fc_after_conv = (TensorShape::num_max_dimensions >= 4) &&
-                        (std::equal(input->info()->tensor_shape().cbegin() + 3,
-                                    input->info()->tensor_shape().cend(),
-                                    output->info()->tensor_shape().cbegin() + 1));
+    _is_fc_after_conv =
+      (TensorShape::num_max_dimensions >= 4) &&
+      (std::equal(input->info()->tensor_shape().cbegin() + 3, input->info()->tensor_shape().cend(),
+                  output->info()->tensor_shape().cbegin() + 1));
   }
   else
   {
@@ -150,23 +150,23 @@ void NEFullyConnectedHybridLayer::configure(const ITensor *input, const ITensor 
   {
     // Reshape the weights
     _reshape_weights_output.allocator()->init(
-        weights->info()->clone()->set_is_resizable(true).reset_padding().set_tensor_shape(
-            compute_transposed_shape(*weights->info())));
+      weights->info()->clone()->set_is_resizable(true).reset_padding().set_tensor_shape(
+        compute_transposed_shape(*weights->info())));
     _reshape_weights_function.configure(weights_to_use, &_reshape_weights_output);
     weights_to_use = &_reshape_weights_output;
   }
 
   // Quantize input
   _quantized_input.allocator()->init(
-      input->info()->clone()->set_is_resizable(true).reset_padding().set_data_type(
-          DataType::QASYMM8_SIGNED));
+    input->info()->clone()->set_is_resizable(true).reset_padding().set_data_type(
+      DataType::QASYMM8_SIGNED));
   _scale_factor.allocator()->init(
-      TensorInfo(TensorShape{output->info()->dimension(1)}, 1, DataType::F32));
+    TensorInfo(TensorShape{output->info()->dimension(1)}, 1, DataType::F32));
   _quant_input_kernel.configure(input, &_quantized_input, &_scale_factor);
 
   // GEMM
   _gemmlowp_output.allocator()->init(
-      output->info()->clone()->set_is_resizable(true).reset_padding().set_data_type(DataType::S32));
+    output->info()->clone()->set_is_resizable(true).reset_padding().set_data_type(DataType::S32));
   configure_mm(&_quantized_input, weights_to_use, &_gemmlowp_output);
 
   // Multiply scale
@@ -195,8 +195,8 @@ Status NEFullyConnectedHybridLayer::validate(const ITensorInfo *input, const ITe
   bool weights_reshaped = fc_info.transpose_weights ? fc_info.are_weights_reshaped : true;
 
   const ITensorInfo &reshaped_weights =
-      TensorInfo(weights->clone()->set_is_resizable(true).reset_padding().set_tensor_shape(
-          compute_transposed_shape(*weights)));
+    TensorInfo(weights->clone()->set_is_resizable(true).reset_padding().set_tensor_shape(
+      compute_transposed_shape(*weights)));
 
   // Configure accumulate biases kernel for non quantized asymmetric types
   if (biases != nullptr)
@@ -217,7 +217,7 @@ Status NEFullyConnectedHybridLayer::validate(const ITensorInfo *input, const ITe
   {
     // Validate reshape weights kernel
     ARM_COMPUTE_RETURN_ON_ERROR(
-        NEFullyConnectedHybridLayerReshapeWeights::validate(weights_to_use, &reshaped_weights));
+      NEFullyConnectedHybridLayerReshapeWeights::validate(weights_to_use, &reshaped_weights));
     weights_to_use = &reshaped_weights;
   }
 
@@ -225,20 +225,19 @@ Status NEFullyConnectedHybridLayer::validate(const ITensorInfo *input, const ITe
   ARM_COMPUTE_RETURN_ERROR_ON(input->dimension(0) != weights_to_use->dimension(1));
 
   // Validate quantization kernel
-  const ITensorInfo &quantized_input =
-      TensorInfo(input->clone()->set_is_resizable(true).reset_padding().set_data_type(
-          DataType::QASYMM8_SIGNED));
+  const ITensorInfo &quantized_input = TensorInfo(
+    input->clone()->set_is_resizable(true).reset_padding().set_data_type(DataType::QASYMM8_SIGNED));
   const ITensorInfo &scale_factor = TensorInfo(TensorShape{output->dimension(1)}, 1, DataType::F32);
   ARM_COMPUTE_RETURN_ON_ERROR(
-      NEQuantizationSymmetricKernel::validate(input, &quantized_input, &scale_factor));
+    NEQuantizationSymmetricKernel::validate(input, &quantized_input, &scale_factor));
 
   const ITensorInfo &gemmlowp_output = TensorInfo(
-      output->clone()->set_is_resizable(true).reset_padding().set_data_type(DataType::S32));
+    output->clone()->set_is_resizable(true).reset_padding().set_data_type(DataType::S32));
   // Validate matrix multiply kernel
   ARM_COMPUTE_RETURN_ON_ERROR(validate_mm(quantized_input, *weights_to_use, gemmlowp_output));
 
   ARM_COMPUTE_RETURN_ON_ERROR(NEMultiplyScaleFactorKernel::validate(
-      &gemmlowp_output, &scale_factor, output, weights->quantization_info().uniform().scale));
+    &gemmlowp_output, &scale_factor, output, weights->quantization_info().uniform().scale));
 
   return Status{};
 }

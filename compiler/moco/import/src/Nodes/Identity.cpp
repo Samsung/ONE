@@ -33,7 +33,7 @@ class TFIdentityGraphUpdate final : public GraphUpdate
 {
 public:
   TFIdentityGraphUpdate(TFIdentity *node, const std::vector<TensorName> &names)
-      : _node(node), _names(names)
+    : _node(node), _names(names)
   {
   }
 

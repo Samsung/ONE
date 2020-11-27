@@ -61,7 +61,7 @@ struct FeatureShape
    * @param[in]  width  The width value
    */
   FeatureShape(int32_t batch, int32_t depth, int32_t height, int32_t width)
-      : N{batch}, C{depth}, H{height}, W{width}
+    : N{batch}, C{depth}, H{height}, W{width}
   {
     // DO NOTHING
   }

@@ -109,9 +109,9 @@ void Conv2DImpl<T>::run(const TensorVariant &input, const TensorVariant &kernel,
                   if ((in_y >= 0 && in_y < input_height) && (in_x >= 0 && in_x < input_width))
                   {
                     const std::int32_t in_offset =
-                        calcOffset(input_shape, batch, in_y, in_x, in_group_offset + in_c);
-                    const std::int32_t kernel_offset = calcOffset(
-                        kernel_shape, out_group_offset + out_c, kernel_y, kernel_x, in_c);
+                      calcOffset(input_shape, batch, in_y, in_x, in_group_offset + in_c);
+                    const std::int32_t kernel_offset =
+                      calcOffset(kernel_shape, out_group_offset + out_c, kernel_y, kernel_x, in_c);
                     const T input_val = input_data[in_offset];
                     const T kernel_val = kernel_data[kernel_offset];
                     sum += kernel_val * input_val;
@@ -121,7 +121,7 @@ void Conv2DImpl<T>::run(const TensorVariant &input, const TensorVariant &kernel,
             }
 
             const std::int32_t out_offset =
-                calcOffset(output_shape, batch, out_y, out_x, out_group_offset + out_c);
+              calcOffset(output_shape, batch, out_y, out_x, out_group_offset + out_c);
             result_data[out_offset] = sum;
           }
         }

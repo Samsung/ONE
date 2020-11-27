@@ -80,7 +80,7 @@ void StopGradientGraphBuilder::build(const tensorflow::NodeDef &node,
 
   // Queue node input update
   auto tf_stopgradient_update =
-      stdex::make_unique<TFStopGradientGraphUpdate>(tf_stopgradient, TensorName(node.input(0)));
+    stdex::make_unique<TFStopGradientGraphUpdate>(tf_stopgradient, TensorName(node.input(0)));
   updates->enroll(std::move(tf_stopgradient_update));
 }
 

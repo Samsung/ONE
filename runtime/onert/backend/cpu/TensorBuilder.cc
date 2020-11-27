@@ -28,9 +28,8 @@ namespace cpu
 {
 
 TensorBuilder::TensorBuilder(const std::shared_ptr<cpu_common::TensorRegistry> &tensor_reg)
-    : _tensor_reg{tensor_reg}, _dynamic_tensor_mgr{new cpu_common::DynamicTensorManager(
-                                   _tensor_reg)},
-      _static_tensor_mgr{new StaticTensorManager(_tensor_reg, _dynamic_tensor_mgr.get())}
+  : _tensor_reg{tensor_reg}, _dynamic_tensor_mgr{new cpu_common::DynamicTensorManager(_tensor_reg)},
+    _static_tensor_mgr{new StaticTensorManager(_tensor_reg, _dynamic_tensor_mgr.get())}
 {
   /* empty */
 }

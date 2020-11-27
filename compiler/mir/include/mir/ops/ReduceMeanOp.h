@@ -29,7 +29,7 @@ class ReduceMeanOp : public ReduceOp
 {
 public:
   ReduceMeanOp(Output *arg, const std::vector<int> &reduction_dims, bool keep_dims)
-      : ReduceOp(Type::reduceMean, arg, reduction_dims, keep_dims)
+    : ReduceOp(Type::reduceMean, arg, reduction_dims, keep_dims)
   {
   }
 

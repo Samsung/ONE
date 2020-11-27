@@ -29,7 +29,7 @@ class PadOp : public Operation
 {
 public:
   PadOp(Output *arg, const PadOpAttributes &attributes)
-      : Operation(Type::pad, {arg}), _attributes(attributes)
+    : Operation(Type::pad, {arg}), _attributes(attributes)
   {
     assert(_attributes.padding_before.size() == _attributes.padding_after.size());
     inferOutputTypes();

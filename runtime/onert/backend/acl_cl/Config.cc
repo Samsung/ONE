@@ -42,7 +42,7 @@ bool Config::initialize()
   // NOTE CLKernelLibraryEx must use the same context as CLScheduler
   // It did not check whether another device is available.
   arm_compute::CLKernelLibraryEx::get().init(
-      "./cl_kernels/", arm_compute::CLScheduler::get().context(), cl::Device::getDefault());
+    "./cl_kernels/", arm_compute::CLScheduler::get().context(), cl::Device::getDefault());
 
   return true;
 }

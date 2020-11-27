@@ -31,7 +31,7 @@ namespace kernels
 
 Conv2D::Conv2D(const Tensor *input, const Tensor *filter, const Tensor *bias, Tensor *output,
                const Conv2DParams &params)
-    : KernelWithParams<Conv2DParams>({input, filter, bias}, {output}, params)
+  : KernelWithParams<Conv2DParams>({input, filter, bias}, {output}, params)
 {
 }
 
@@ -84,11 +84,11 @@ void Conv2D::configure()
                                                bias()->shape().dim(0) == output_depth));
 
   const int32_t output_height =
-      computeOutputSize(_params.padding, input_height, filter_height, _params.stride_height,
-                        _params.dilation_height_factor);
+    computeOutputSize(_params.padding, input_height, filter_height, _params.stride_height,
+                      _params.dilation_height_factor);
   const int32_t output_width =
-      computeOutputSize(_params.padding, input_width, filter_width, _params.stride_width,
-                        _params.dilation_width_factor);
+    computeOutputSize(_params.padding, input_width, filter_width, _params.stride_width,
+                      _params.dilation_width_factor);
 
   _padding_height = computePadding(_params.stride_height, _params.dilation_height_factor,
                                    input_height, filter_height, output_height);
@@ -100,11 +100,11 @@ void Conv2D::configure()
   // Allocate tensor for Im2Col, if needed.
   // The checks here should be aligned with the actual implementation.
   const bool need_dilated_im2col =
-      _params.dilation_height_factor != 1 || _params.dilation_width_factor != 1;
+    _params.dilation_height_factor != 1 || _params.dilation_width_factor != 1;
   const bool need_non_dilated_im2col = _params.stride_height != 1 || _params.stride_width != 1 ||
                                        filter_height != 1 || filter_width != 1;
   const bool need_im2col =
-      input()->element_type() != DataType::S16 && (need_dilated_im2col || need_non_dilated_im2col);
+    input()->element_type() != DataType::S16 && (need_dilated_im2col || need_non_dilated_im2col);
   if (need_im2col)
   {
     const int input_depth = input_shape.dim(3);
@@ -113,7 +113,7 @@ void Conv2D::configure()
     try
     {
       _im2col =
-          std::make_unique<Tensor>(input()->element_type(), im2col_shape, AffineQuantization{}, "");
+        std::make_unique<Tensor>(input()->element_type(), im2col_shape, AffineQuantization{}, "");
     }
     catch (std::bad_alloc &ba)
     {
@@ -181,9 +181,9 @@ void Conv2D::evalFloat() const
                                 getTensorShape(_im2col.get()), getTensorData<float>(_im2col.get()));
   else
     tflite::reference_ops::Conv(
-        params, getTensorShape(input()), getTensorData<float>(input()), getTensorShape(filter()),
-        getTensorData<float>(filter()), getTensorShape(bias()), getTensorData<float>(bias()),
-        getTensorShape(output()), getTensorData<float>(output()), tflite::RuntimeShape(), nullptr);
+      params, getTensorShape(input()), getTensorData<float>(input()), getTensorShape(filter()),
+      getTensorData<float>(filter()), getTensorShape(bias()), getTensorData<float>(bias()),
+      getTensorShape(output()), getTensorData<float>(output()), tflite::RuntimeShape(), nullptr);
 }
 
 void Conv2D::evalQuantized() const
@@ -223,10 +223,10 @@ void Conv2D::evalQuantized() const
   gemmlowp_context->set_max_num_threads(static_cast<int>(std::thread::hardware_concurrency()));
 
   tflite::optimized_ops::Conv(
-      params, getTensorShape(input()), getTensorData<uint8_t>(input()), getTensorShape(filter()),
-      getTensorData<uint8_t>(filter()), getTensorShape(bias()), getTensorData<int32_t>(bias()),
-      getTensorShape(output()), getTensorData<uint8_t>(output()), getTensorShape(_im2col.get()),
-      getTensorData<uint8_t>(_im2col.get()), gemmlowp_context.get());
+    params, getTensorShape(input()), getTensorData<uint8_t>(input()), getTensorShape(filter()),
+    getTensorData<uint8_t>(filter()), getTensorShape(bias()), getTensorData<int32_t>(bias()),
+    getTensorShape(output()), getTensorData<uint8_t>(output()), getTensorShape(_im2col.get()),
+    getTensorData<uint8_t>(_im2col.get()), gemmlowp_context.get());
 }
 
 void Conv2D::evalQuantizedPerChannel() const
@@ -260,10 +260,10 @@ void Conv2D::evalQuantizedPerChannel() const
   calculateActivationRangeQuantized(_params.activation, output(), &activation_min, &activation_max);
 
   const std::vector<double> effective_output_scale =
-      getQuantizedConvolutionMultiplers(input()->scale(), filter()->scales(), output()->scale());
+    getQuantizedConvolutionMultiplers(input()->scale(), filter()->scales(), output()->scale());
 
   const std::vector<ChannelQuantMultipliers> multipliers_raw =
-      quantizeMultipliers(effective_output_scale);
+    quantizeMultipliers(effective_output_scale);
   BroadcastableWrapper<ChannelQuantMultipliers> quant_multipliers(multipliers_raw);
 
   for (int32_t batch = 0; batch < batches; ++batch)
@@ -288,9 +288,9 @@ void Conv2D::evalQuantizedPerChannel() const
                 for (int32_t in_c = 0; in_c < input_depth; ++in_c)
                 {
                   const uint8_t input_val =
-                      input_data[calcOffset(input_shape, batch, in_y, in_x, in_c)];
+                    input_data[calcOffset(input_shape, batch, in_y, in_x, in_c)];
                   const uint8_t filter_val =
-                      filter_data[calcOffset(filter_shape, out_c, filter_y, filter_x, in_c)];
+                    filter_data[calcOffset(filter_shape, out_c, filter_y, filter_x, in_c)];
                   acc += static_cast<int32_t>(input_val - input()->zero_point()) *
                          static_cast<int32_t>(filter_val - filter()->zero_points()[out_c]);
                 }
@@ -303,7 +303,7 @@ void Conv2D::evalQuantizedPerChannel() const
           }
 
           int32_t scaled_acc = tflite::MultiplyByQuantizedMultiplier(
-              acc, quant_multipliers[out_c].multiplier, quant_multipliers[out_c].shift);
+            acc, quant_multipliers[out_c].multiplier, quant_multipliers[out_c].shift);
 
           scaled_acc += output()->zero_point();
           scaled_acc = std::max(scaled_acc, activation_min);
@@ -346,10 +346,10 @@ void Conv2D::evalQuantizedS16() const
   calculateActivationRangeQuantized(_params.activation, output(), &activation_min, &activation_max);
 
   const std::vector<double> effective_output_scale =
-      getQuantizedConvolutionMultiplers(input()->scale(), filter()->scales(), output()->scale());
+    getQuantizedConvolutionMultiplers(input()->scale(), filter()->scales(), output()->scale());
 
   const std::vector<ChannelQuantMultipliers> multipliers_raw =
-      quantizeMultipliers(effective_output_scale);
+    quantizeMultipliers(effective_output_scale);
   BroadcastableWrapper<ChannelQuantMultipliers> multipliers(multipliers_raw);
 
   for (int32_t batch = 0; batch < batches; ++batch)
@@ -374,9 +374,9 @@ void Conv2D::evalQuantizedS16() const
                 for (int32_t in_c = 0; in_c < input_depth; ++in_c)
                 {
                   const int16_t input_val =
-                      input_data[calcOffset(input_shape, batch, in_y, in_x, in_c)];
+                    input_data[calcOffset(input_shape, batch, in_y, in_x, in_c)];
                   const int16_t filter_val =
-                      filter_data[calcOffset(filter_shape, out_c, filter_y, filter_x, in_c)];
+                    filter_data[calcOffset(filter_shape, out_c, filter_y, filter_x, in_c)];
                   acc += static_cast<int64_t>(input_val) * static_cast<int64_t>(filter_val);
                 }
               }
@@ -388,7 +388,7 @@ void Conv2D::evalQuantizedS16() const
           }
 
           int32_t scaled_acc = tflite::MultiplyByQuantizedMultiplier(
-              acc, multipliers[out_c].multiplier, multipliers[out_c].shift);
+            acc, multipliers[out_c].multiplier, multipliers[out_c].shift);
 
           scaled_acc = std::max(scaled_acc, activation_min);
           scaled_acc = std::min(scaled_acc, activation_max);

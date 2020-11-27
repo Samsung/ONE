@@ -29,7 +29,7 @@ namespace luci
  * @brief Virtual NONMAXSUPPRESSIONV4OUT in Circle
  */
 class CircleNonMaxSuppressionV4Out final
-    : public FixedArityNode<1, CircleNodeImpl<CircleOpcode::CIRCLENONMAXSUPPRESSIONV4OUT>>
+  : public FixedArityNode<1, CircleNodeImpl<CircleOpcode::CIRCLENONMAXSUPPRESSIONV4OUT>>
 {
 public:
   CircleNonMaxSuppressionV4Out() = default;

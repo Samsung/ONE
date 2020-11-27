@@ -72,7 +72,7 @@ bool remove_consecutive_transpose_function(luci::CircleNode *node)
     for (uint32_t i = 0; i < main_perm->size<loco::DataType::S32>(); i++)
     {
       new_const_node->at<loco::DataType::S32>(i) =
-          pred_perm->at<loco::DataType::S32>(main_perm->at<loco::DataType::S32>(i));
+        pred_perm->at<loco::DataType::S32>(main_perm->at<loco::DataType::S32>(i));
     }
     pred_node->perm(new_const_node);
     replace(node).with(pred_node);

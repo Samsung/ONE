@@ -27,7 +27,7 @@ namespace kernels
 {
 
 Pow::Pow(const Tensor *input1, const Tensor *input2, Tensor *output)
-    : Kernel({input1, input2}, {output})
+  : Kernel({input1, input2}, {output})
 {
 }
 
@@ -59,7 +59,7 @@ template <typename T> void Pow::eval() const
   tflite::ArithmeticParams params{};
 
   const bool need_broadcast = tflite::reference_ops::ProcessBroadcastShapes(
-      getTensorShape(input1()), getTensorShape(input2()), &params);
+    getTensorShape(input1()), getTensorShape(input2()), &params);
 
   if (need_broadcast)
   {

@@ -94,9 +94,9 @@ TEST_F(ClReleaseMemObjectStub, must_log_deallocation_event_only_if_reference_cou
   clReleaseMemObject(mem);
   GlobalTrace.reset();
   ASSERT_STREQ(
-      getContentOfFile("./cl_release_mem_object_interception_test.log").c_str(),
-      "On CPU - Peak heap usage: 0 B, Total allocated: 0 B, Total deallocated: 0 B\nOn "
-      "GPU - Peak mem usage: 1024 B, Total allocated: 1024 B, Total deallocated: 1024 B\n");
+    getContentOfFile("./cl_release_mem_object_interception_test.log").c_str(),
+    "On CPU - Peak heap usage: 0 B, Total allocated: 0 B, Total deallocated: 0 B\nOn "
+    "GPU - Peak mem usage: 1024 B, Total allocated: 1024 B, Total deallocated: 1024 B\n");
 }
 
 TEST_F(ClReleaseMemObjectStub, must_not_log_deallocation_event_if_original_function_failed)

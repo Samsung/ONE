@@ -31,7 +31,7 @@ TEST(ADT_TENSOR_OVERLAY, ctor)
   const Shape shape{2, 3};
 
   int data[2 * 3] = {
-      0,
+    0,
   };
   auto view = make_overlay<int, LexicalLayout>(shape, data);
 
@@ -43,7 +43,7 @@ TEST(ADT_TENSOR_OVERLAY, read)
   const Shape shape{2, 3};
 
   int data[2 * 3] = {
-      0,
+    0,
   };
   const auto view = make_overlay<int, LexicalLayout>(shape, data);
 
@@ -61,7 +61,7 @@ TEST(ADT_TENSOR_OVERLAY, access)
   const Shape shape{2, 3};
 
   int data[2 * 3] = {
-      0,
+    0,
   };
   auto view = make_overlay<int, LexicalLayout>(shape, data);
 

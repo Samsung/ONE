@@ -117,7 +117,7 @@ inline void FullyConnected(const FullyConnectedParams &params, const Shape &inpu
   const int filter_dim_count = filter_shape.DimensionsCount();
   const int batches = FlatSizeSkipDim(output_shape, output_dim_count - 1);
   const int output_depth =
-      MatchingDim(filter_shape, filter_dim_count - 2, output_shape, output_dim_count - 1);
+    MatchingDim(filter_shape, filter_dim_count - 2, output_shape, output_dim_count - 1);
   const int accum_depth = filter_shape.Dims(filter_dim_count - 1);
   for (int b = 0; b < batches; ++b)
   {
@@ -229,7 +229,7 @@ inline void FullyConnectedSparseWeightRandom(const FullyConnectedParams &params,
   const int weights_dims_count = weights_shape.DimensionsCount();
   const int batches = FlatSizeSkipDim(output_shape, output_dims_count - 1);
   const int output_depth =
-      MatchingDim(weights_shape, weights_dims_count - 2, output_shape, output_dims_count - 1);
+    MatchingDim(weights_shape, weights_dims_count - 2, output_shape, output_dims_count - 1);
   const int accum_depth = weights_shape.Dims(weights_dims_count - 1);
 
   UNUSED_RELEASE(bias_shape);
@@ -249,7 +249,7 @@ inline void FullyConnectedSparseWeightRandom(const FullyConnectedParams &params,
       {
         int idx_1 = w1_indices[pw1];
         output_data[b * output_depth + idx_0] +=
-            weights_data[pw1] * input_data[b * accum_depth + idx_1];
+          weights_data[pw1] * input_data[b * accum_depth + idx_1];
       }
     }
   }

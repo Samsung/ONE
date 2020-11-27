@@ -39,17 +39,17 @@ namespace eigen_support
 // library.
 typedef Eigen::TensorMap<Eigen::Tensor<float, 2, Eigen::RowMajor, Eigen::DenseIndex>,
                          Eigen::Aligned>
-    EigenMatrix;
+  EigenMatrix;
 typedef Eigen::TensorMap<Eigen::Tensor<const float, 2, Eigen::RowMajor, Eigen::DenseIndex>,
                          Eigen::Aligned>
-    ConstEigenMatrix;
+  ConstEigenMatrix;
 
 typedef Eigen::TensorMap<Eigen::Tensor<float, 4, Eigen::RowMajor, Eigen::DenseIndex>,
                          Eigen::Aligned>
-    EigenTensor;
+  EigenTensor;
 typedef Eigen::TensorMap<Eigen::Tensor<const float, 4, Eigen::RowMajor, Eigen::DenseIndex>,
                          Eigen::Aligned>
-    ConstEigenTensor;
+  ConstEigenTensor;
 
 // Utility functions we need for the EigenTensor API.
 template <typename Device, typename T> struct MatMulConvFunctor

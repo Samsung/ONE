@@ -30,7 +30,7 @@ namespace operation
 void AddN::accept(OperationVisitor &v) const { v.visit(*this); }
 
 AddN::AddN(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs)
-    : Operation{OperandConstraint::createExact(inputs.size()), inputs, outputs}
+  : Operation{OperandConstraint::createExact(inputs.size()), inputs, outputs}
 {
 }
 

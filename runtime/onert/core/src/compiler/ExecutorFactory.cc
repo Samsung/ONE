@@ -46,7 +46,7 @@ class SyncFunction final : public exec::IFunction
 public:
   virtual ~SyncFunction() = default;
   SyncFunction(std::unique_ptr<exec::IFunction> fn, const std::shared_ptr<backend::IConfig> config)
-      : _fn{std::move(fn)}, _config{config}
+    : _fn{std::move(fn)}, _config{config}
   {
     assert(_fn);
     assert(_config);
@@ -78,9 +78,9 @@ void initializeSubgraphIOTensors(compiler::LoweredGraph &lowered_graph,
     if (backend->config()->id() == backend::controlflow::Config::ID)
     {
       cf_tensor_builder =
-          std::dynamic_pointer_cast<backend::controlflow::TensorBuilder>(context->tensor_builder);
+        std::dynamic_pointer_cast<backend::controlflow::TensorBuilder>(context->tensor_builder);
       cf_tensor_reg =
-          std::dynamic_pointer_cast<backend::controlflow::TensorRegistry>(context->tensor_registry);
+        std::dynamic_pointer_cast<backend::controlflow::TensorRegistry>(context->tensor_registry);
     }
   }
   assert(cf_tensor_builder);
@@ -90,8 +90,8 @@ void initializeSubgraphIOTensors(compiler::LoweredGraph &lowered_graph,
   {
     const auto &operand = lowered_graph.graph().operands().at(ind);
     auto tensor = std::make_unique<backend::controlflow::IOTensor>(
-        operand.info(),
-        ir::Layout::NHWC /* FIXME find op_seq for this operand and use frontend_layout */
+      operand.info(),
+      ir::Layout::NHWC /* FIXME find op_seq for this operand and use frontend_layout */
     );
 
     // Add tensor to controlflow TensorRegistry.
@@ -140,14 +140,14 @@ void ExecutorFactory::initializeBackendContext(compiler::LoweredGraph *lowered_g
 
   // Build lists for operations
   lowered_graph->op_seqs().iterate(
-      [&](const ir::OpSequenceIndex &op_seq_index, const ir::OpSequence &op_seq) {
-        auto &op_seq_li = lowered_graph->getLowerInfo()->op_seq;
-        auto backend = op_seq_li.at(op_seq_index)->backend();
-        for (auto &operation_idx : op_seq.operations())
-        {
-          backend_assets[backend].operation_list.emplace_back(operation_idx, op_seq.getLayout());
-        }
-      });
+    [&](const ir::OpSequenceIndex &op_seq_index, const ir::OpSequence &op_seq) {
+      auto &op_seq_li = lowered_graph->getLowerInfo()->op_seq;
+      auto backend = op_seq_li.at(op_seq_index)->backend();
+      for (auto &operation_idx : op_seq.operations())
+      {
+        backend_assets[backend].operation_list.emplace_back(operation_idx, op_seq.getLayout());
+      }
+    });
 
   // Build lists for operands
   lowered_graph->graph().operands().iterate([&](const ir::OperandIndex &ind, const ir::Operand &) {
@@ -189,7 +189,7 @@ void ExecutorFactory::runTensorRegistration(compiler::LoweredGraph *lowered_grap
           if (!tensor_builder->isRegistered(index) && !model_io.contains(index))
           {
             const auto &operand_lower_info =
-                lowered_graph->getLowerInfo(index)->def_factors().getOnlyElement();
+              lowered_graph->getLowerInfo(index)->def_factors().getOnlyElement();
 
             // E.g., permute (CPU) -> tensor A -> MaxPool2D(acl_cl)
             // op.getOutputs() of permute (CPU) returns tensor A
@@ -217,25 +217,25 @@ void ExecutorFactory::prepareMigrantTensors(compiler::LoweredGraph &lowered_grap
   TensorRegistries tensor_regs{lowered_graph.backend_contexts(), true};
 
   lowered_graph.op_seqs().iterate(
-      [&](const ir::OpSequenceIndex &op_seq_index, const ir::OpSequence &op_seq) {
-        auto lower_info = lowered_graph.getLowerInfo(op_seq_index);
-        auto &backend_ctx = lowered_graph.backend_contexts().at(lower_info->backend());
-        for (auto ind : (op_seq.getInputs() + op_seq.getOutputs()) | ir::Remove::DUPLICATED |
-                            ir::Remove::UNDEFINED)
+    [&](const ir::OpSequenceIndex &op_seq_index, const ir::OpSequence &op_seq) {
+      auto lower_info = lowered_graph.getLowerInfo(op_seq_index);
+      auto &backend_ctx = lowered_graph.backend_contexts().at(lower_info->backend());
+      for (auto ind : (op_seq.getInputs() + op_seq.getOutputs()) | ir::Remove::DUPLICATED |
+                        ir::Remove::UNDEFINED)
+      {
+        // If an OpSequence input/output tensor does not have a own tensor object,
+        // it must be using migrant tensors, so find the tensor from other tensor builders and
+        // set the tensor to this tensor builder if portable
+        if (!backend_ctx->tensor_registry->getITensor(ind))
         {
-          // If an OpSequence input/output tensor does not have a own tensor object,
-          // it must be using migrant tensors, so find the tensor from other tensor builders and
-          // set the tensor to this tensor builder if portable
-          if (!backend_ctx->tensor_registry->getITensor(ind))
-          {
-            auto tensor = tensor_regs.getITensor(ind);
-            assert(tensor); // The tensor must have been registered
-            auto ptensor = dynamic_cast<backend::IPortableTensor *>(tensor);
-            if (ptensor)
-              backend_ctx->tensor_registry->setMigrantTensor(ind, ptensor);
-          }
+          auto tensor = tensor_regs.getITensor(ind);
+          assert(tensor); // The tensor must have been registered
+          auto ptensor = dynamic_cast<backend::IPortableTensor *>(tensor);
+          if (ptensor)
+            backend_ctx->tensor_registry->setMigrantTensor(ind, ptensor);
         }
-      });
+      }
+    });
 }
 
 exec::IExecutor *
@@ -273,8 +273,8 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lo
   runTensorRegistration(lowered_graph.get(), order);
 
   initializeSubgraphIOTensors(
-      *lowered_graph, (lowered_graph->graph().getInputs() + lowered_graph->graph().getOutputs()) |
-                          ir::Remove::DUPLICATED | ir::Remove::UNDEFINED);
+    *lowered_graph, (lowered_graph->graph().getInputs() + lowered_graph->graph().getOutputs()) |
+                      ir::Remove::DUPLICATED | ir::Remove::UNDEFINED);
 
   Linear::dump(*lowered_graph, order);
   Linear::planTensors(*lowered_graph, order);
@@ -306,16 +306,16 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lo
 
   // Generate kernels
   lowered_graph->iterateTopolOpSeqs(
-      [&](const ir::OpSequenceIndex &op_seq_index, const ir::OpSequence &op_seq) {
-        auto lower_info = lowered_graph->getLowerInfo(op_seq_index);
-        auto kernel_gen = lowered_graph->backend_contexts().at(lower_info->backend())->kernel_gen;
-        auto fn_seq = kernel_gen->generate(op_seq);
-        if (options.he_profiling_mode)
-        {
-          fn_seq->wrap<SyncFunction>(lower_info->backend()->config());
-        }
-        builder.append(op_seq_index, {&op_seq, lower_info, std::move(fn_seq)});
-      });
+    [&](const ir::OpSequenceIndex &op_seq_index, const ir::OpSequence &op_seq) {
+      auto lower_info = lowered_graph->getLowerInfo(op_seq_index);
+      auto kernel_gen = lowered_graph->backend_contexts().at(lower_info->backend())->kernel_gen;
+      auto fn_seq = kernel_gen->generate(op_seq);
+      if (options.he_profiling_mode)
+      {
+        fn_seq->wrap<SyncFunction>(lower_info->backend()->config());
+      }
+      builder.append(op_seq_index, {&op_seq, lower_info, std::move(fn_seq)});
+    });
 
   for (auto &tensor_builder : tensor_builders)
   {
@@ -328,7 +328,7 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lo
   }
 
   lowered_graph->graph().operands().iterate(
-      [](const ir::OperandIndex &, ir::Operand &obj) { obj.releaseData(); });
+    [](const ir::OperandIndex &, ir::Operand &obj) { obj.releaseData(); });
 
   auto code_map = builder.releaseCodeMap();
 
@@ -346,12 +346,12 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lo
   }
 
   auto exec =
-      new exec::LinearExecutor{std::move(lowered_graph), tensor_regs, std::move(code_map), order};
+    new exec::LinearExecutor{std::move(lowered_graph), tensor_regs, std::move(code_map), order};
 
   if (!options.trace_filepath.empty())
   {
     std::unique_ptr<exec::IExecutionObserver> ctp =
-        std::make_unique<exec::TracingObserver>(options.trace_filepath, exec->graph());
+      std::make_unique<exec::TracingObserver>(options.trace_filepath, exec->graph());
     exec->addObserver(std::move(ctp));
   }
 
@@ -359,8 +359,8 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lo
 }
 
 exec::IExecutor *ExecutorFactory::createDataflowExecutor(
-    std::unique_ptr<compiler::LoweredGraph> lowered_graph, const compiler::CompilerOptions &options,
-    const std::shared_ptr<exec::ExecutorMap> &executor_map, bool parallel)
+  std::unique_ptr<compiler::LoweredGraph> lowered_graph, const compiler::CompilerOptions &options,
+  const std::shared_ptr<exec::ExecutorMap> &executor_map, bool parallel)
 {
   const auto &backend_contexts = lowered_graph->backend_contexts();
 
@@ -370,8 +370,8 @@ exec::IExecutor *ExecutorFactory::createDataflowExecutor(
   runTensorRegistration(lowered_graph.get(), order);
 
   initializeSubgraphIOTensors(
-      *lowered_graph, (lowered_graph->graph().getInputs() + lowered_graph->graph().getOutputs()) |
-                          ir::Remove::DUPLICATED | ir::Remove::UNDEFINED);
+    *lowered_graph, (lowered_graph->graph().getInputs() + lowered_graph->graph().getOutputs()) |
+                      ir::Remove::DUPLICATED | ir::Remove::UNDEFINED);
 
   TensorBuilders tensor_builders{lowered_graph->backend_contexts(), true};
   TensorRegistries tensor_regs{lowered_graph->backend_contexts(), true};
@@ -380,12 +380,12 @@ exec::IExecutor *ExecutorFactory::createDataflowExecutor(
   for (auto &tensor_builder : tensor_builders)
   {
     lowered_graph->graph().operands().iterate(
-        [&](const ir::OperandIndex &ind, const ir::Operand &) {
-          if (tensor_builder->isRegistered(ind))
-          {
-            tensor_builder->notifyFirstUse(ind);
-          }
-        });
+      [&](const ir::OperandIndex &ind, const ir::Operand &) {
+        if (tensor_builder->isRegistered(ind))
+        {
+          tensor_builder->notifyFirstUse(ind);
+        }
+      });
   }
 
   for (auto &tensor_builder : tensor_builders)
@@ -398,25 +398,25 @@ exec::IExecutor *ExecutorFactory::createDataflowExecutor(
   ExecutionBuilder builder;
 
   // Generate kernels
-  lowered_graph->iterateTopolOpSeqs([&](const ir::OpSequenceIndex &op_seq_index,
-                                        const ir::OpSequence &op_seq) {
-    auto lower_info = lowered_graph->getLowerInfo(op_seq_index);
-    auto kernel_gen = lowered_graph->backend_contexts().at(lower_info->backend())->kernel_gen;
-    // Set TensorBuilderSet and ExecutorMap to kernel_gen of control flow
-    auto cf_kernel_gen = dynamic_cast<backend::controlflow::KernelGenerator *>(kernel_gen.get());
-    if (cf_kernel_gen != nullptr)
-    {
-      assert(cf_kernel_gen != nullptr);
-      cf_kernel_gen->setTensorRegistries(tensor_regs);
-      cf_kernel_gen->setExecutorMap(executor_map);
-    }
-    auto fn_seq = kernel_gen->generate(op_seq);
-    if (options.he_profiling_mode)
-    {
-      fn_seq->wrap<SyncFunction>(lower_info->backend()->config());
-    }
-    builder.append(op_seq_index, {&op_seq, lower_info, std::move(fn_seq)});
-  });
+  lowered_graph->iterateTopolOpSeqs(
+    [&](const ir::OpSequenceIndex &op_seq_index, const ir::OpSequence &op_seq) {
+      auto lower_info = lowered_graph->getLowerInfo(op_seq_index);
+      auto kernel_gen = lowered_graph->backend_contexts().at(lower_info->backend())->kernel_gen;
+      // Set TensorBuilderSet and ExecutorMap to kernel_gen of control flow
+      auto cf_kernel_gen = dynamic_cast<backend::controlflow::KernelGenerator *>(kernel_gen.get());
+      if (cf_kernel_gen != nullptr)
+      {
+        assert(cf_kernel_gen != nullptr);
+        cf_kernel_gen->setTensorRegistries(tensor_regs);
+        cf_kernel_gen->setExecutorMap(executor_map);
+      }
+      auto fn_seq = kernel_gen->generate(op_seq);
+      if (options.he_profiling_mode)
+      {
+        fn_seq->wrap<SyncFunction>(lower_info->backend()->config());
+      }
+      builder.append(op_seq_index, {&op_seq, lower_info, std::move(fn_seq)});
+    });
 
   for (const auto &tensor_builder : tensor_builders)
   {
@@ -429,7 +429,7 @@ exec::IExecutor *ExecutorFactory::createDataflowExecutor(
   }
 
   lowered_graph->graph().operands().iterate(
-      [](const ir::OperandIndex &, ir::Operand &obj) { obj.releaseData(); });
+    [](const ir::OperandIndex &, ir::Operand &obj) { obj.releaseData(); });
 
   auto code_map = builder.releaseCodeMap();
 
@@ -454,7 +454,7 @@ exec::IExecutor *ExecutorFactory::createDataflowExecutor(
   else
   {
     auto dataflow_exec =
-        new exec::DataflowExecutor{std::move(lowered_graph), tensor_regs, std::move(code_map)};
+      new exec::DataflowExecutor{std::move(lowered_graph), tensor_regs, std::move(code_map)};
     if (options.he_profiling_mode)
     {
       std::vector<const backend::Backend *> backends;
@@ -464,7 +464,7 @@ exec::IExecutor *ExecutorFactory::createDataflowExecutor(
       }
       auto et = std::make_shared<exec::ExecTime>(backends);
       std::unique_ptr<exec::IExecutionObserver> obs =
-          std::make_unique<exec::ProfileObserver>(et, dataflow_exec->graph());
+        std::make_unique<exec::ProfileObserver>(et, dataflow_exec->graph());
       dataflow_exec->addObserver(std::move(obs));
     }
     exec = dataflow_exec;
@@ -473,7 +473,7 @@ exec::IExecutor *ExecutorFactory::createDataflowExecutor(
   if (!options.trace_filepath.empty())
   {
     std::unique_ptr<exec::IExecutionObserver> ctp =
-        std::make_unique<exec::TracingObserver>(options.trace_filepath, exec->graph());
+      std::make_unique<exec::TracingObserver>(options.trace_filepath, exec->graph());
     exec->addObserver(std::move(ctp));
   }
 

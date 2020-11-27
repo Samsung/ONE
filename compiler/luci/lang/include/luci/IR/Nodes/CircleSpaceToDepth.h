@@ -29,7 +29,7 @@ namespace luci
  * @brief SPACE_TO_DEPTH in Circle
  */
 class CircleSpaceToDepth final
-    : public FixedArityNode<1, CircleNodeImpl<CircleOpcode::SPACE_TO_DEPTH>>
+  : public FixedArityNode<1, CircleNodeImpl<CircleOpcode::SPACE_TO_DEPTH>>
 {
 public:
   loco::Node *input(void) const { return at(0)->node(); }

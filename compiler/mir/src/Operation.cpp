@@ -40,7 +40,7 @@ void Operation::Output::replaceAllUsesWith(mir::Operation::Output *new_def)
 }
 
 Operation::Operation(Type type, const std::vector<Output *> &inputs, std::size_t num_outputs)
-    : _type(type)
+  : _type(type)
 {
   for (std::size_t i = 0; i < inputs.size(); ++i)
   {

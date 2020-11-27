@@ -34,8 +34,8 @@ namespace luci
  *        'out' acutally means 'out' and 'in' of the this node.
  */
 class CircleTransposeConv final
-    : public FixedArityNode<4, CircleNodeImpl<CircleOpcode::TRANSPOSE_CONV>>,
-      public LuciNodeMixin<LuciNodeTrait::Bias>
+  : public FixedArityNode<4, CircleNodeImpl<CircleOpcode::TRANSPOSE_CONV>>,
+    public LuciNodeMixin<LuciNodeTrait::Bias>
 {
 public:
   loco::Node *inputSizes(void) const { return at(0)->node(); }

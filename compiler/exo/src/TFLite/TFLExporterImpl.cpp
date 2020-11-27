@@ -88,7 +88,7 @@ encodeOperatorCodes(FlatBufferBuilder &builder, std::unordered_map<OpCode, uint3
         INTERNAL_EXN("Cannot find code for custom op");
 
       operator_codes_vec[idx] =
-          CreateOperatorCode(builder, it.first.opcode, builder.CreateString(custom_code->second));
+        CreateOperatorCode(builder, it.first.opcode, builder.CreateString(custom_code->second));
     }
   }
   return builder.CreateVector(operator_codes_vec);
@@ -146,7 +146,7 @@ void TFLExporter::Impl::exportGraph(loco::Graph *graph)
 
   // encode operator codes
   auto operator_codes =
-      encodeOperatorCodes(_builder, gd._operator_codes, gd._custom_operator_codes);
+    encodeOperatorCodes(_builder, gd._operator_codes, gd._custom_operator_codes);
 
   // Subgraphs
   Offset<SubGraph> subgraph = exportSubgraph(gd);

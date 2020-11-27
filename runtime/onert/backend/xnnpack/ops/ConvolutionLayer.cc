@@ -27,10 +27,10 @@ namespace xnnpack
 namespace ops
 {
 ConvolutionLayer::ConvolutionLayer(const std::shared_ptr<ExternalContext> external_context)
-    : Layer(external_context), _input(nullptr), _kernel(nullptr), _bias(nullptr), _output(nullptr),
-      _padding_type(ir::PaddingType::EXPLICIT), _padding_left(0), _padding_top(0),
-      _padding_right(0), _padding_bottom(0), _stride_width(0), _stride_height(0),
-      _dilation_width_factor(1), _dilation_height_factor(1), _activation(ir::Activation::NONE)
+  : Layer(external_context), _input(nullptr), _kernel(nullptr), _bias(nullptr), _output(nullptr),
+    _padding_type(ir::PaddingType::EXPLICIT), _padding_left(0), _padding_top(0), _padding_right(0),
+    _padding_bottom(0), _stride_width(0), _stride_height(0), _dilation_width_factor(1),
+    _dilation_height_factor(1), _activation(ir::Activation::NONE)
 {
   // DO NOTHING
 }
@@ -106,14 +106,13 @@ void ConvolutionLayer::prepare()
   assert(static_cast<uint32_t>(_output->getShape().dim(3)) == output_channels);
 
   enum xnn_status status = xnn_create_convolution2d_nhwc_f32(
-      _padding_top, _padding_right, _padding_bottom, _padding_left, kernel_height, kernel_width,
-      _stride_height, _stride_width, _dilation_height_factor, _dilation_width_factor,
-      1 /* groups */, input_channels /* group_input_channels */,
-      output_channels /* group_output_channels */, input_channels /* input_channel_stride */,
-      output_channels /* output_channel_stride */,
-      reinterpret_cast<const float *>(_kernel->buffer()),
-      reinterpret_cast<const float *>(_bias->buffer()), output_activation_min,
-      output_activation_max, 0, &_kernel_op);
+    _padding_top, _padding_right, _padding_bottom, _padding_left, kernel_height, kernel_width,
+    _stride_height, _stride_width, _dilation_height_factor, _dilation_width_factor, 1 /* groups */,
+    input_channels /* group_input_channels */, output_channels /* group_output_channels */,
+    input_channels /* input_channel_stride */, output_channels /* output_channel_stride */,
+    reinterpret_cast<const float *>(_kernel->buffer()),
+    reinterpret_cast<const float *>(_bias->buffer()), output_activation_min, output_activation_max,
+    0, &_kernel_op);
   if (status != xnn_status_success)
   {
     throw std::runtime_error{"failed to create FP32 Convolution operator"};

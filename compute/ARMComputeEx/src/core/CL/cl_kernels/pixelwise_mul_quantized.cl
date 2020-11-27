@@ -138,7 +138,7 @@ __kernel void pixelwise_mul_qasymm8(TENSOR3D_DECLARATION(in1), TENSOR3D_DECLARAT
 
   // Multiply with a multiplier smaller than 1
   out_val =
-      ASYMM_MULT_BY_QUANT_MULTIPLIER_LESS_THAN_ONE(out_val, RESULT_MULT_INT, RESULT_SHIFT, 16);
+    ASYMM_MULT_BY_QUANT_MULTIPLIER_LESS_THAN_ONE(out_val, RESULT_MULT_INT, RESULT_SHIFT, 16);
   out_val += (VEC_DATA_TYPE(int, 16))(RESULT_OFFSET);
 
   VEC_DATA_TYPE(uchar, 16) res = CONVERT(out_val, VEC_DATA_TYPE(uchar, 16));

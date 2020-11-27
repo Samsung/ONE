@@ -52,7 +52,7 @@ void compareQuant8(const IPortableTensor *lhs, const IPortableTensor *rhs, IPort
   params.input1_offset = -lhs->data_offset();
   params.input2_offset = -rhs->data_offset();
   const double norm_max_scale =
-      2 * std::max(std::abs(lhs->data_scale()), std::abs(rhs->data_scale()));
+    2 * std::max(std::abs(lhs->data_scale()), std::abs(rhs->data_scale()));
   const double adjusted_lhs_scale = lhs->data_scale() / norm_max_scale;
   const double adjusted_rhs_scale = rhs->data_scale() / norm_max_scale;
   QuantizeMultiplierSmallerThanOneExp(adjusted_lhs_scale, &params.input1_multiplier,
@@ -61,19 +61,18 @@ void compareQuant8(const IPortableTensor *lhs, const IPortableTensor *rhs, IPort
                                       &params.input2_shift);
   params.is_broadcast = !HaveSameShapes(lhs, rhs);
 
-  using CompareFunction =
-      void (*)(ComparisonParams & params, const Shape &input1_shape, const T *input1_data,
-               const Shape &input2_shape, const T *input2_data, const Shape &output_shape,
-               bool *output_data);
+  using CompareFunction = void (*)(
+    ComparisonParams & params, const Shape &input1_shape, const T *input1_data,
+    const Shape &input2_shape, const T *input2_data, const Shape &output_shape, bool *output_data);
 
   static const CompareFunction broadcast_fns[] = {
-      Broadcast4DSlowEqualWithScaling,   Broadcast4DSlowNotEqualWithScaling,
-      Broadcast4DSlowGreaterWithScaling, Broadcast4DSlowGreaterEqualWithScaling,
-      Broadcast4DSlowLessWithScaling,    Broadcast4DSlowLessEqualWithScaling,
+    Broadcast4DSlowEqualWithScaling,   Broadcast4DSlowNotEqualWithScaling,
+    Broadcast4DSlowGreaterWithScaling, Broadcast4DSlowGreaterEqualWithScaling,
+    Broadcast4DSlowLessWithScaling,    Broadcast4DSlowLessEqualWithScaling,
   };
   static const CompareFunction non_broadcast_fns[] = {
-      EqualWithScaling,        NotEqualWithScaling, GreaterWithScaling,
-      GreaterEqualWithScaling, LessWithScaling,     LessEqualWithScaling,
+    EqualWithScaling,        NotEqualWithScaling, GreaterWithScaling,
+    GreaterEqualWithScaling, LessWithScaling,     LessEqualWithScaling,
   };
 
   static_assert(sizeof(broadcast_fns) == sizeof(non_broadcast_fns),
@@ -97,16 +96,16 @@ void compareScalar(const IPortableTensor *lhs, const IPortableTensor *rhs, IPort
   bool requires_broadcast = !HaveSameShapes(lhs, rhs);
 
   using CompareFunction =
-      void (*)(const Shape &input1_shape, const T *input1_data, const Shape &input2_shape,
-               const T *input2_data, const Shape &output_shape, bool *output_data);
+    void (*)(const Shape &input1_shape, const T *input1_data, const Shape &input2_shape,
+             const T *input2_data, const Shape &output_shape, bool *output_data);
 
   static const CompareFunction broadcast_fns[] = {
-      Broadcast4DSlowEqual,        Broadcast4DSlowNotEqual, Broadcast4DSlowGreater,
-      Broadcast4DSlowGreaterEqual, Broadcast4DSlowLess,     Broadcast4DSlowLessEqual,
+    Broadcast4DSlowEqual,        Broadcast4DSlowNotEqual, Broadcast4DSlowGreater,
+    Broadcast4DSlowGreaterEqual, Broadcast4DSlowLess,     Broadcast4DSlowLessEqual,
   };
   static const CompareFunction non_broadcast_fns[] = {
-      EqualNoScaling,        NotEqualNoScaling, GreaterNoScaling,
-      GreaterEqualNoScaling, LessNoScaling,     LessEqualNoScaling,
+    EqualNoScaling,        NotEqualNoScaling, GreaterNoScaling,
+    GreaterEqualNoScaling, LessNoScaling,     LessEqualNoScaling,
   };
 
   static_assert(sizeof(broadcast_fns) == sizeof(non_broadcast_fns),
@@ -126,8 +125,8 @@ void compareScalar(const IPortableTensor *lhs, const IPortableTensor *rhs, IPort
 } // namespace
 
 CompareLayer::CompareLayer()
-    : _lhs(nullptr), _rhs(nullptr), _output(nullptr),
-      _op_type(ir::operation::Comparison::ComparisonType::Equal)
+  : _lhs(nullptr), _rhs(nullptr), _output(nullptr),
+    _op_type(ir::operation::Comparison::ComparisonType::Equal)
 {
   // DO NOTHING
 }

@@ -238,7 +238,7 @@ class Arser
 {
 public:
   explicit Arser(const std::string &program_description = {})
-      : _program_description{program_description}
+    : _program_description{program_description}
   {
     add_argument("--help").help("Show help message and exit").nargs(0);
   }

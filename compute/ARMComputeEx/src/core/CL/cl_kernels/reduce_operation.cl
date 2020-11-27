@@ -100,14 +100,14 @@ __kernel void reduce_min_max(TENSOR4D_DECLARATION(input), TENSOR4D_DECLARATION(o
   Tensor4D out = CONVERT_TO_TENSOR4D_STRUCT(output, DEPTH_OUT);
 
   int indices[4] = {
-      get_global_id(0),
-      get_global_id(1),
-      get_global_id(2) % DEPTH_OUT,
-      get_global_id(2) / DEPTH_OUT,
+    get_global_id(0),
+    get_global_id(1),
+    get_global_id(2) % DEPTH_OUT,
+    get_global_id(2) / DEPTH_OUT,
   };
 
   DATA_TYPE value =
-      *((__global DATA_TYPE *)tensor4D_offset(&in, indices[0], indices[1], indices[2], indices[3]));
+    *((__global DATA_TYPE *)tensor4D_offset(&in, indices[0], indices[1], indices[2], indices[3]));
   for (int i = 1; i < dim; ++i)
   {
     indices[axis] = i;
@@ -188,18 +188,18 @@ __kernel void reduce_sum_mean(TENSOR4D_DECLARATION(input), TENSOR4D_DECLARATION(
   Tensor4D out = CONVERT_TO_TENSOR4D_STRUCT(output, DEPTH_OUT);
 
   int indices[4] = {
-      get_global_id(0),
-      get_global_id(1),
-      get_global_id(2) % DEPTH_OUT,
-      get_global_id(2) / DEPTH_OUT,
+    get_global_id(0),
+    get_global_id(1),
+    get_global_id(2) % DEPTH_OUT,
+    get_global_id(2) / DEPTH_OUT,
   };
 
   DATA_TYPE sum_value = (DATA_TYPE)0;
   for (int i = 0; i < dim; ++i)
   {
     indices[axis] = i;
-    sum_value += *(
-        (__global DATA_TYPE *)tensor4D_offset(&in, indices[0], indices[1], indices[2], indices[3]));
+    sum_value +=
+      *((__global DATA_TYPE *)tensor4D_offset(&in, indices[0], indices[1], indices[2], indices[3]));
   }
 
 #if OP_CODE == 3 // REDUCE_SUM

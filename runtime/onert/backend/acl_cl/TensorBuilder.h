@@ -30,7 +30,7 @@ namespace acl_cl
 {
 
 using TensorBuilder =
-    acl_common::AclTensorBuilder<operand::ICLTensor, operand::CLTensor, operand::CLSubTensor>;
+  acl_common::AclTensorBuilder<operand::ICLTensor, operand::CLTensor, operand::CLSubTensor>;
 
 } // namespace acl_cl
 } // namespace backend

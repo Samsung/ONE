@@ -250,7 +250,7 @@ void CircleOptimizer::quantize(loco::Graph *g) const
     }
 
     luci::QuantizeDequantizeWeightsPass fake_quantizer(
-        str_to_dtype(input_dtype), str_to_dtype(output_dtype), str_to_granularity(granularity));
+      str_to_dtype(input_dtype), str_to_dtype(output_dtype), str_to_granularity(granularity));
     fake_quantizer.run(g);
   }
 
@@ -339,7 +339,7 @@ void CircleOptimizer::sparsify(loco::Graph *g) const
   {
     std::string tensor_name = _options->param(Options::AlgorithmParameters::Sparsify_tensor_name);
     std::string str_tarversal_order =
-        _options->param(Options::AlgorithmParameters::Sparsify_traversal_order);
+      _options->param(Options::AlgorithmParameters::Sparsify_traversal_order);
     std::string str_format = _options->param(Options::AlgorithmParameters::Sparsify_format);
     std::string str_block_size = _options->param(Options::AlgorithmParameters::Sparsify_block_size);
     std::string str_block_map = _options->param(Options::AlgorithmParameters::Sparsify_block_map);

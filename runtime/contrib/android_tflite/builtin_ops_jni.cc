@@ -24,7 +24,7 @@ namespace tflite
 std::unique_ptr<OpResolver> CreateOpResolver()
 {
   return std::unique_ptr<::nnfw::tflite::BuiltinOpResolver>(
-      new ::nnfw::tflite::BuiltinOpResolver());
+    new ::nnfw::tflite::BuiltinOpResolver());
 }
 
 } // namespace tflite

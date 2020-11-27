@@ -79,7 +79,7 @@ void quant_const_values(luci::CircleConst *const_node, float scaling_factor, flo
       const_node->size<loco::DataType::S16>(size); // resize tensor
       for (uint32_t i = 0; i < size; ++i)
         const_node->at<loco::DataType::S16>(i) =
-            std::min(32767, std::max(-32767, quantized_values[i]));
+          std::min(32767, std::max(-32767, quantized_values[i]));
       break;
     default:
       throw std::runtime_error("Unsupported data type");
@@ -182,7 +182,7 @@ void asym_quant_bias_per_layer(CircleConst *node, float input_scale, float weigh
   for (uint32_t i = 0; i < size; ++i)
   {
     quantized_values[i] =
-        static_cast<int32_t>(std::round(node->at<loco::DataType::FLOAT32>(i) * scaling_factor_inv));
+      static_cast<int32_t>(std::round(node->at<loco::DataType::FLOAT32>(i) * scaling_factor_inv));
   }
 
   node->dtype(loco::DataType::S32);      // change the type of tensor
@@ -192,7 +192,7 @@ void asym_quant_bias_per_layer(CircleConst *node, float input_scale, float weigh
   for (uint32_t i = 0; i < size; ++i)
   {
     node->at<loco::DataType::S32>(i) =
-        std::min(kMaxScale, std::max(kMinScale, quantized_values[i]));
+      std::min(kMaxScale, std::max(kMinScale, quantized_values[i]));
   }
   *scaling_factor = scale;
   *zp = 0;
@@ -211,7 +211,7 @@ void quant_bias_per_channel(CircleConst *node, float input_scale, std::vector<fl
     scaling_factor[i] = input_scale * weight_scale[i];
     scaling_factor_inv = (scaling_factor[i] == 0) ? 0 : 1.0 / scaling_factor[i];
     quantized_values[i] =
-        static_cast<int32_t>(std::round(node->at<loco::DataType::FLOAT32>(i) * scaling_factor_inv));
+      static_cast<int32_t>(std::round(node->at<loco::DataType::FLOAT32>(i) * scaling_factor_inv));
     zp[i] = 0;
   }
 
@@ -222,7 +222,7 @@ void quant_bias_per_channel(CircleConst *node, float input_scale, std::vector<fl
   for (uint32_t i = 0; i < size; ++i)
   {
     node->at<loco::DataType::S32>(i) =
-        std::min(kMaxScale, std::max(kMinScale, quantized_values[i]));
+      std::min(kMaxScale, std::max(kMinScale, quantized_values[i]));
   }
 }
 
@@ -240,7 +240,7 @@ void int16_quant_bias_per_channel(CircleConst *node, float input_scale,
     scaling_factor[i] = input_scale * weight_scale[i];
     scaling_factor_inv = (scaling_factor[i] == 0) ? 0 : 1.0 / scaling_factor[i];
     quantized_values[i] =
-        static_cast<int64_t>(std::round(node->at<loco::DataType::FLOAT32>(i) * scaling_factor_inv));
+      static_cast<int64_t>(std::round(node->at<loco::DataType::FLOAT32>(i) * scaling_factor_inv));
     zp[i] = 0;
   }
 
@@ -271,7 +271,7 @@ void sym_wquant_per_channel(CircleConst *node, std::vector<float> &scaling_facto
   loco::TensorShape dimension;
   dimension.rank(4);
   uint32_t indices[4] = {
-      0,
+    0,
   };
 
   if (!get_channel_dim_index(node, dimension, channel_dim_index))
@@ -292,7 +292,7 @@ void sym_wquant_per_channel(CircleConst *node, std::vector<float> &scaling_facto
           const float scaling_factor_inv = 1.0 / scaling_factor[channel_idx];
           auto data = node->at<loco::DataType::FLOAT32>(cal_offset(dimension, indices));
           quantized_values[cal_offset(dimension, indices)] =
-              static_cast<int32_t>(std::round(data * scaling_factor_inv));
+            static_cast<int32_t>(std::round(data * scaling_factor_inv));
         }
       }
     }
@@ -303,7 +303,7 @@ void sym_wquant_per_channel(CircleConst *node, std::vector<float> &scaling_facto
   for (uint32_t i = 0; i < size; ++i)
   {
     node->at<loco::DataType::S16>(i) =
-        std::min(kMaxScale, std::max(kMinScale, quantized_values[i]));
+      std::min(kMaxScale, std::max(kMinScale, quantized_values[i]));
   }
 }
 
@@ -321,7 +321,7 @@ void asym_wquant_per_channel(CircleConst *node, std::vector<float> &min,
   loco::TensorShape dimension;
   dimension.rank(4);
   uint32_t indices[4] = {
-      0,
+    0,
   };
 
   if (!get_channel_dim_index(node, dimension, channel_dim_index))
@@ -342,7 +342,7 @@ void asym_wquant_per_channel(CircleConst *node, std::vector<float> &min,
           const float scaling_factor_inv = 1.0 / scaling_factor[channel_idx];
           auto data = node->at<loco::DataType::FLOAT32>(cal_offset(dimension, indices));
           quantized_values[cal_offset(dimension, indices)] =
-              static_cast<int32_t>(std::round((data - min[channel_idx]) * scaling_factor_inv));
+            static_cast<int32_t>(std::round((data - min[channel_idx]) * scaling_factor_inv));
         }
       }
     }
@@ -386,7 +386,7 @@ void asym_wquant_per_layer(CircleConst *node, float min, float scaling_factor)
 struct QuantizeActivation final : public luci::CircleNodeMutableVisitor<bool>
 {
   QuantizeActivation(loco::DataType input, loco::DataType output)
-      : input_type(input), output_type(output)
+    : input_type(input), output_type(output)
   {
   }
 
@@ -453,7 +453,7 @@ struct QuantizeActivation final : public luci::CircleNodeMutableVisitor<bool>
 struct QuantizeBias final : public luci::CircleNodeMutableVisitor<bool>
 {
   QuantizeBias(loco::DataType input, loco::DataType output, QuantizationGranularity gr)
-      : input_type(input), output_type(output), granularity(gr)
+    : input_type(input), output_type(output), granularity(gr)
   {
   }
 
@@ -539,7 +539,7 @@ struct QuantizeBias final : public luci::CircleNodeMutableVisitor<bool>
 struct QuantizeWeights final : public luci::CircleNodeMutableVisitor<bool>
 {
   QuantizeWeights(loco::DataType input, loco::DataType output, QuantizationGranularity gr)
-      : input_type(input), output_type(output), granularity(gr)
+    : input_type(input), output_type(output), granularity(gr)
   {
   }
 

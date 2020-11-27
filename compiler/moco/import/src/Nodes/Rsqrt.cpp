@@ -75,7 +75,7 @@ void RsqrtGraphBuilder::build(const tensorflow::NodeDef &node, GraphBuilderConte
 
   // Queue node input update
   auto tf_rsqrt_update =
-      stdex::make_unique<TFRsqrtGraphUpdate>(tf_rsqrt, TensorName(node.input(0)));
+    stdex::make_unique<TFRsqrtGraphUpdate>(tf_rsqrt, TensorName(node.input(0)));
   updates->enroll(std::move(tf_rsqrt_update));
 }
 

@@ -30,7 +30,7 @@ namespace acl_neon
 {
 
 using TensorBuilder =
-    acl_common::AclTensorBuilder<operand::INETensor, operand::NETensor, operand::NESubTensor>;
+  acl_common::AclTensorBuilder<operand::INETensor, operand::NETensor, operand::NESubTensor>;
 
 } // namespace acl_neon
 } // namespace backend

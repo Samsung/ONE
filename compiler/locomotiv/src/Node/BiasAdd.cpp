@@ -55,7 +55,7 @@ void execute_node(loco::BiasAdd<loco::Domain::Tensor> *bias_add)
 
   validate(input_data && bias_data, "Input not ready");
   validate(locomotiv::annot_domain(bias_add->value()) == loco::Domain::Tensor &&
-               locomotiv::annot_domain(bias_add->bias()) == loco::Domain::Bias,
+             locomotiv::annot_domain(bias_add->bias()) == loco::Domain::Bias,
            "Wrong input domain");
 
   std::unique_ptr<NodeData> bias_add_data = calc(input_data, bias_data, bias_add->axis());
@@ -74,7 +74,7 @@ void execute_node(loco::BiasAdd<loco::Domain::Feature> *bias_add)
 
   validate(input_data && bias_data, "Input not ready");
   validate(locomotiv::annot_domain(bias_add->value()) == loco::Domain::Feature &&
-               locomotiv::annot_domain(bias_add->bias()) == loco::Domain::Bias,
+             locomotiv::annot_domain(bias_add->bias()) == loco::Domain::Bias,
            "Wrong input domain");
 
   std::unique_ptr<NodeData> bias_add_data = calc(input_data, bias_data, 3);

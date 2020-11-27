@@ -31,7 +31,7 @@ void BCQFullyConnected::accept(OperationVisitor &v) const { v.visit(*this); }
 
 BCQFullyConnected::BCQFullyConnected(const OperandIndexSequence &inputs,
                                      const OperandIndexSequence &outputs, const Param &param)
-    : Operation{OperandConstraint::createExact(5u), inputs, outputs}, _param{param}
+  : Operation{OperandConstraint::createExact(5u), inputs, outputs}, _param{param}
 {
 }
 

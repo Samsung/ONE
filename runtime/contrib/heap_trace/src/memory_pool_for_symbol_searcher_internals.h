@@ -60,7 +60,7 @@ private:
   {
     uint8_t *ptr_to_the_free_space_after_allocation = _ptr_to_free_space_start + size;
     size_t size_of_reserved_space_after_allocation =
-        ptr_to_the_free_space_after_allocation - _buffer;
+      ptr_to_the_free_space_after_allocation - _buffer;
     if (size_of_reserved_space_after_allocation >= MAX_SIZE)
     {
       return false;

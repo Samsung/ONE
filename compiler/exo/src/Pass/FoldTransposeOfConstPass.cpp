@@ -124,7 +124,7 @@ void fold_transpose_of_const(locoex::TFLTranspose *transpose)
       index_orig.at(perm->at<S32>(axis)) = index_new.at(axis);
 
     const_new->at<FLOAT32>(l.offset(shape_new, index_new)) =
-        const_orig->at<FLOAT32>(l.offset(shape_orig, index_orig));
+      const_orig->at<FLOAT32>(l.offset(shape_orig, index_orig));
   }
 
   // replace

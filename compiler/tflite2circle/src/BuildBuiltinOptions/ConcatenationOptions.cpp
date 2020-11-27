@@ -30,7 +30,7 @@ build_circle_ConcatenationOptions(flatbuffers::FlatBufferBuilder &fb, const tfli
   circle::ConcatenationOptionsBuilder builtin_options_builder{fb};
   builtin_options_builder.add_axis(tflite_builtin_options->axis());
   builtin_options_builder.add_fused_activation_function(
-      get_circle_activation_function_type(tflite_builtin_options->fused_activation_function()));
+    get_circle_activation_function_type(tflite_builtin_options->fused_activation_function()));
   return builtin_options_builder.Finish();
 }
 

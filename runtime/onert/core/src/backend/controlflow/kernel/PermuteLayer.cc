@@ -32,7 +32,7 @@ namespace kernel
 PermuteLayer::PermuteLayer(const std::vector<ITensor *> &src_tensors,
                            const std::vector<ITensor *> &dst_tensors,
                            const std::shared_ptr<ExternalContext> &external_context)
-    : _external_context{external_context}, _tasks_map{}
+  : _external_context{external_context}, _tasks_map{}
 {
   assert(src_tensors.size() == dst_tensors.size());
   _src_tensors = src_tensors;
@@ -91,10 +91,10 @@ void PermuteLayer::optimize()
             if ((!src_tensor.has_padding() && !dst_tensor.has_padding()))
             {
               const auto num_elements = src_tensor.getShape().num_elements();
-              const int thread_count = _external_context->ruy_context()->max_num_threads() <
-                                               static_cast<int>(num_elements)
-                                           ? _external_context->ruy_context()->max_num_threads()
-                                           : num_elements;
+              const int thread_count =
+                _external_context->ruy_context()->max_num_threads() < static_cast<int>(num_elements)
+                  ? _external_context->ruy_context()->max_num_threads()
+                  : num_elements;
 
               std::vector<PermuteWorkerTask> tasks;
               auto start = 0;
@@ -149,14 +149,14 @@ void PermuteLayer::appendPermuteTasks(const ITensor *src_tensor, ITensor *dst_te
     for (size_t i = 1; i < src_tensor->num_dimensions() - 1; ++i)
     {
       distributed_dim =
-          src_tensor->dimension(distributed_dim) < src_tensor->dimension(i) ? i : distributed_dim;
+        src_tensor->dimension(distributed_dim) < src_tensor->dimension(i) ? i : distributed_dim;
     }
   }
   const auto distributed_dim_val = src_tensor->dimension(distributed_dim);
   const int thread_count =
-      _external_context->ruy_context()->max_num_threads() < static_cast<int>(distributed_dim_val)
-          ? _external_context->ruy_context()->max_num_threads()
-          : distributed_dim_val;
+    _external_context->ruy_context()->max_num_threads() < static_cast<int>(distributed_dim_val)
+      ? _external_context->ruy_context()->max_num_threads()
+      : distributed_dim_val;
   // NOTE Do not remove this assertion. It would cause performance degradation by new threads to be
   // created in the context's thread pool
   assert(thread_count <= _external_context->ruy_context()->max_num_threads());
@@ -213,13 +213,13 @@ void PermuteLayer::run()
 
       // set output shape and output buffer
       ir::Shape new_shape =
-          exec::convertShape(src_shape, src_tensor->layout(), dst_tensor->layout());
+        exec::convertShape(src_shape, src_tensor->layout(), dst_tensor->layout());
 
       try
       {
         if (!dst_tensor->applyShape(new_shape))
           throw std::runtime_error{
-              "Error: PermuteLayer: output's TensorManager does not support dynamic tensor"};
+            "Error: PermuteLayer: output's TensorManager does not support dynamic tensor"};
         assert(dst_tensor->buffer() != nullptr);
       }
       catch (const std::out_of_range &e)

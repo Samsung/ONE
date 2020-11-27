@@ -30,7 +30,7 @@ namespace kernels
 {
 
 Mul::Mul(const Tensor *input1, const Tensor *input2, Tensor *output, const MulParams &params)
-    : KernelWithParams<MulParams>({input1, input2}, {output}, params)
+  : KernelWithParams<MulParams>({input1, input2}, {output}, params)
 {
 }
 
@@ -73,13 +73,13 @@ void Mul::evalFloat() const
   params.float_activation_max = activation_max;
 
   const bool need_broadcast = tflite::reference_ops::ProcessBroadcastShapes(
-      getTensorShape(input1()), getTensorShape(input2()), &params);
+    getTensorShape(input1()), getTensorShape(input2()), &params);
 
   if (need_broadcast)
   {
     tflite::optimized_ops::BroadcastMul4DSlow(
-        params, getTensorShape(input1()), getTensorData<float>(input1()), getTensorShape(input2()),
-        getTensorData<float>(input2()), getTensorShape(output()), getTensorData<float>(output()));
+      params, getTensorShape(input1()), getTensorData<float>(input1()), getTensorShape(input2()),
+      getTensorData<float>(input2()), getTensorShape(output()), getTensorData<float>(output()));
   }
   else
   {

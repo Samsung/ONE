@@ -163,9 +163,9 @@ loco::Padding2D Padding2DInference::operator()(void)
     // 'tight fit' output. When output size (set by 'input sizes' node input) is
     // larger than tight fit, extra spaces filled with zero.
     auto tight_output_vertical = tight_output_for_valid_padding(
-        input().vertical.value(), stride().vertical(), window().vertical());
+      input().vertical.value(), stride().vertical(), window().vertical());
     auto tight_output_horizontal = tight_output_for_valid_padding(
-        input().horizontal.value(), stride().horizontal(), window().horizontal());
+      input().horizontal.value(), stride().horizontal(), window().horizontal());
 
     if (output().vertical.value() < tight_output_vertical or
         output().horizontal.value() < tight_output_horizontal)
@@ -191,8 +191,8 @@ loco::Padding2D Padding2DInference::operator()(void)
     auto whole_pad_vertical = padding_needed(input().vertical.value(), output().vertical.value(),
                                              stride().vertical(), window().vertical());
     auto whole_pad_horizontal =
-        padding_needed(input().horizontal.value(), output().horizontal.value(),
-                       stride().horizontal(), window().horizontal());
+      padding_needed(input().horizontal.value(), output().horizontal.value(), stride().horizontal(),
+                     window().horizontal());
 
     loco::Padding2D res;
 

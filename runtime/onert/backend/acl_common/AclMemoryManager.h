@@ -82,7 +82,7 @@ public:
                       bool extent_parent)
   {
     auto subtensor =
-        std::make_shared<T_SubTensor>(parent_tensor.get(), shape, coordinates, rank, extent_parent);
+      std::make_shared<T_SubTensor>(parent_tensor.get(), shape, coordinates, rank, extent_parent);
     _subtensors[child_ind] = subtensor;
   }
 

@@ -50,7 +50,7 @@
 using namespace arm_compute;
 
 NEEmbeddingLookupKernel::NEEmbeddingLookupKernel()
-    : _input(nullptr), _lookups(nullptr), _output(nullptr)
+  : _input(nullptr), _lookups(nullptr), _output(nullptr)
 {
 }
 
@@ -79,8 +79,8 @@ Status NEEmbeddingLookupKernel::validate(const arm_compute::ITensorInfo *input,
 {
   ARM_COMPUTE_ERROR_ON_NULLPTR(input, output, lookups);
   ARM_COMPUTE_ERROR_ON_DATA_TYPE_CHANNEL_NOT_IN(
-      input, 1, DataType::U8, DataType::S8, DataType::QASYMM8, DataType::U16, DataType::S16,
-      DataType::U32, DataType::S32, DataType::F16, DataType::F32);
+    input, 1, DataType::U8, DataType::S8, DataType::QASYMM8, DataType::U16, DataType::S16,
+    DataType::U32, DataType::S32, DataType::F16, DataType::F32);
   ARM_COMPUTE_ERROR_ON_DATA_TYPE_CHANNEL_NOT_IN(lookups, 1, DataType::S32);
 
   ARM_COMPUTE_ERROR_ON(input->num_dimensions() < 2 && input->num_dimensions() > 4);
@@ -120,16 +120,16 @@ void NEEmbeddingLookupKernel::run(const Window &window, const ThreadInfo &info)
     Iterator output_it(_output, out_slice);
 
     execute_window_loop(
-        out_slice,
-        [&](const Coordinates &id) {
-          const int32_t lookup =
-              *reinterpret_cast<int32_t *>(_lookups->ptr_to_element(Coordinates{id[lookup_dim]}));
-          Coordinates input_id{id};
-          input_id.set(lookup_dim, lookup);
-          memcpy(output_it.ptr(), _input->ptr_to_element(input_id),
-                 _output->info()->dimension(0) * _output->info()->element_size());
-        },
-        output_it);
+      out_slice,
+      [&](const Coordinates &id) {
+        const int32_t lookup =
+          *reinterpret_cast<int32_t *>(_lookups->ptr_to_element(Coordinates{id[lookup_dim]}));
+        Coordinates input_id{id};
+        input_id.set(lookup_dim, lookup);
+        memcpy(output_it.ptr(), _input->ptr_to_element(input_id),
+               _output->info()->dimension(0) * _output->info()->element_size());
+      },
+      output_it);
 
   } while (window.slide_window_slice_4D(out_slice));
 }

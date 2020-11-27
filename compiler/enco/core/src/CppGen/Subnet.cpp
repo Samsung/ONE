@@ -117,7 +117,7 @@ class ScalarOperandDecl final : public CodeFragment
 {
 public:
   ScalarOperandDecl(const std::string &model, const ann::DType &dtype)
-      : _model{model}, _dtype{dtype}
+    : _model{model}, _dtype{dtype}
   {
     // DO NOTHING
   }
@@ -150,7 +150,7 @@ class TensorOperandDecl final : public CodeFragment
 public:
   TensorOperandDecl(const std::string &model, const ann::DType &dtype,
                     const nncc::core::ADT::tensor::Shape &shape)
-      : _model{model}, _dtype{dtype}, _shape{shape}
+    : _model{model}, _dtype{dtype}, _shape{shape}
   {
     // DO NOTHING
   }
@@ -194,7 +194,7 @@ class WeightDecl final : public CodeFragment
 public:
   WeightDecl(const std::string &model, const ann::OperandID &id, const std::string &base,
              const std::string &size)
-      : _model{model}, _id{id}, _base{base}, _size{size}
+    : _model{model}, _id{id}, _base{base}, _size{size}
   {
     // DO NOTHING
   }

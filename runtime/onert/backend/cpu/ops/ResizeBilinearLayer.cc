@@ -28,8 +28,8 @@ namespace ops
 {
 
 ResizeBilinearLayer::ResizeBilinearLayer()
-    : _input(nullptr), _output(nullptr), _size(nullptr), _output_height(0), _output_width(0),
-      _align_corners(false), _half_pixel_centers(false)
+  : _input(nullptr), _output(nullptr), _size(nullptr), _output_height(0), _output_width(0),
+    _align_corners(false), _half_pixel_centers(false)
 {
   // DO NOTHING
 }
@@ -90,14 +90,14 @@ void ResizeBilinearLayer::run()
   {
     case OperandType::FLOAT32:
       nnfw::cker::ResizeBilinear(
-          params, getTensorShape(_input), reinterpret_cast<const float *>(_input->buffer()),
-          getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()));
+        params, getTensorShape(_input), reinterpret_cast<const float *>(_input->buffer()),
+        getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()));
       break;
 
     case OperandType::QUANT_UINT8_ASYMM:
       nnfw::cker::ResizeBilinear(
-          params, getTensorShape(_input), reinterpret_cast<const uint8_t *>(_input->buffer()),
-          getTensorShape(_output), reinterpret_cast<uint8_t *>(_output->buffer()));
+        params, getTensorShape(_input), reinterpret_cast<const uint8_t *>(_input->buffer()),
+        getTensorShape(_output), reinterpret_cast<uint8_t *>(_output->buffer()));
       break;
 
     case OperandType::UINT8:

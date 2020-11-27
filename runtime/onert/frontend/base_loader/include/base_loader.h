@@ -68,7 +68,7 @@ public:
    * @param graph reference on subgraphs
    */
   explicit BaseLoader(std::unique_ptr<ir::Subgraphs> &subgs)
-      : _base{nullptr}, _pagesize(getpagesize()), _fd(-1), _subgraphs(subgs), _model{nullptr}
+    : _base{nullptr}, _pagesize(getpagesize()), _fd(-1), _subgraphs(subgs), _model{nullptr}
   {
     _use_mmaped_data = util::getConfigBool(util::config::USE_MMAPED_DATA);
   }
@@ -276,7 +276,7 @@ ir::DataType BaseLoader<LoaderDomain>::BaseLoader::tensorTypeToDataType(const Te
     // case TensorType::TensorType_FLOAT64
     default:
       throw std::runtime_error(
-          std::string("Unsupported tensor type: ").append(EnumNameTensorType(type)));
+        std::string("Unsupported tensor type: ").append(EnumNameTensorType(type)));
   }
 }
 
@@ -394,7 +394,7 @@ ir::OperandIndex BaseLoader<LoaderDomain>::loadOperand(const Tensor *tensor, ir:
       {
         size_t offset = unaligned_offset_start - aligned_offset_start;
         uint8_t *mmap_base = static_cast<uint8_t *>(
-            mmap(NULL, mmap_size, PROT_READ, MAP_PRIVATE, _fd, aligned_offset_start));
+          mmap(NULL, mmap_size, PROT_READ, MAP_PRIVATE, _fd, aligned_offset_start));
         data_obj = std::make_unique<ir::CachedData>(mmap_base + offset, data_size);
         munmap(mmap_base, mmap_size);
       }
@@ -455,7 +455,7 @@ void BaseLoader<LoaderDomain>::loadSparsity(const Tensor *tensor, const ir::Shap
     bool block2D_sparsity = dim_metadata_size == 4 && block_rank == 2;
     if (dim_metadata_size != !random_sparsity && !block2D_sparsity)
       throw std::runtime_error(
-          "sparsity is supported only for 2D tensor with random or 16x1 block sparsity.");
+        "sparsity is supported only for 2D tensor with random or 16x1 block sparsity.");
 
     const auto *src_metadata = src_sparsity->dim_metadata()->Get(0);
     if (src_metadata->format() != DimensionType::DimensionType_DENSE)
@@ -523,8 +523,8 @@ void BaseLoader<LoaderDomain>::loadOperationIO(const Operator *op, ir::OperandIn
       auto builtin_code = _model->operator_codes()->Get(op->opcode_index())->builtin_code();
       if (isOptionalInputTensor(idx) && !allowOptionalInputTensor(builtin_code))
         throw std::runtime_error(
-            std::string("loader doesn't support optional input tensor yet for ")
-                .append(EnumNameBuiltinOperator(builtin_code)));
+          std::string("loader doesn't support optional input tensor yet for ")
+            .append(EnumNameBuiltinOperator(builtin_code)));
     };
     check_optional_input();
     inputs.append(tensorIdxToOperandIdx(idx));
@@ -700,9 +700,9 @@ void BaseLoader<LoaderDomain>::loadFC(const Operator *op, ir::Graph &subg)
   const auto fc = loadOperationTo<ir::operation::FullyConnected>(op, subg, param);
 
   const auto &input_operand =
-      subg.operands().at(fc->getInputs().at(ir::operation::FullyConnected::INPUT));
+    subg.operands().at(fc->getInputs().at(ir::operation::FullyConnected::INPUT));
   auto &weights_operand =
-      subg.operands().at(fc->getInputs().at(ir::operation::FullyConnected::WEIGHT));
+    subg.operands().at(fc->getInputs().at(ir::operation::FullyConnected::WEIGHT));
   if (input_operand.typeInfo().type() == ir::DataType::FLOAT32 &&
       ((weights_operand.typeInfo().type() == ir::DataType::QUANT_UINT8_ASYMM) ||
        weights_operand.typeInfo().type() == ir::DataType::QUANT_INT8_ASYMM))
@@ -728,7 +728,7 @@ void BaseLoader<LoaderDomain>::loadAddV2(const Operator *op, ir::Graph &subg)
     auto data_root = flexbuffers::GetRoot(custom_op_data, custom_op_data_size);
     auto attr_map = data_root.AsMap();
     const auto fused_activation_func = static_cast<typename LoaderDomain::ActivationFunctionType>(
-        attr_map["fused_activation_function"].AsInt8());
+      attr_map["fused_activation_function"].AsInt8());
     param.activation = convertActivation(fused_activation_func);
   }
 
@@ -747,7 +747,7 @@ void BaseLoader<LoaderDomain>::loadDepthToSpace(const Operator *op, ir::Graph &s
 
 template <typename LoaderDomain>
 void BaseLoader<LoaderDomain>::loadBinaryArithmetic(
-    const Operator *op, ir::Graph &subg, ir::operation::BinaryArithmetic::ArithmeticType op_type)
+  const Operator *op, ir::Graph &subg, ir::operation::BinaryArithmetic::ArithmeticType op_type)
 {
   ir::operation::BinaryArithmetic::Param param;
   param.arithmetic_type = op_type;
@@ -799,8 +799,8 @@ void BaseLoader<LoaderDomain>::loadPack(const Operator *op, ir::Graph &subg)
 
 template <typename LoaderDomain>
 void BaseLoader<LoaderDomain>::loadElementwiseActivation(
-    const Operator *op, ir::Graph &subg, ir::operation::ElementwiseActivation::Type op_type,
-    float alpha, float beta)
+  const Operator *op, ir::Graph &subg, ir::operation::ElementwiseActivation::Type op_type,
+  float alpha, float beta)
 {
   ir::operation::ElementwiseActivation::Param param;
   param.op_type = op_type;
@@ -863,8 +863,8 @@ void BaseLoader<LoaderDomain>::loadReduceAll(const Operator *op, ir::Graph &subg
 
 template <typename LoaderDomain>
 void BaseLoader<LoaderDomain>::loadElementwiseBinary(
-    const Operator *op, ir::Graph &subg,
-    ir::operation::ElementwiseBinary::ElementwiseBinaryType op_type)
+  const Operator *op, ir::Graph &subg,
+  ir::operation::ElementwiseBinary::ElementwiseBinaryType op_type)
 {
   ir::operation::ElementwiseBinary::Param param;
   param.op_type = op_type;
@@ -889,7 +889,7 @@ void BaseLoader<LoaderDomain>::loadElementwiseUnary(const Operator *op, ir::Grap
       }
     };
     qasymm8ToUint8(
-        subg.operands().at(eu->getInputs().at(ir::operation::ElementwiseUnary::Input::INPUT)));
+      subg.operands().at(eu->getInputs().at(ir::operation::ElementwiseUnary::Input::INPUT)));
     qasymm8ToUint8(subg.operands().at(eu->getOutputs().at(0)));
   }
 }
@@ -934,8 +934,8 @@ void BaseLoader<LoaderDomain>::loadBatchMatMul(const Operator *op, ir::Graph &su
       break;
     default:
       throw std::runtime_error(
-          std::string("Wrong loaded operation: ").append(EnumNameBuiltinOperator(builtin_op)) +
-          " as " + EnumNameBuiltinOperator(BuiltinOperator::BuiltinOperator_BATCH_MATMUL));
+        std::string("Wrong loaded operation: ").append(EnumNameBuiltinOperator(builtin_op)) +
+        " as " + EnumNameBuiltinOperator(BuiltinOperator::BuiltinOperator_BATCH_MATMUL));
   }
 
   loadOperationTo<ir::operation::BatchMatMul>(op, subg, param);
@@ -978,15 +978,15 @@ void BaseLoader<LoaderDomain>::loadCustom(const Operator *op, ir::Graph &subg)
 
   // Mapping from custom op name string to BuiltinOP enum
   std::map<std::string, BuiltinOP> builtin_map = {
-      {"AddV2", BuiltinOP::AddV2},
-      {"All", BuiltinOP::ReduceAll},
-      {"MatrixBandPart", BuiltinOP::MatrixBandPart},
-      {"BatchMatMulV2", BuiltinOP::BatchMatMul},
-      {"Einsum", BuiltinOP::Einsum},
-      {"FusedBatchNormV3", BuiltinOP::FusedBatchNorm},
-      {"BroadcastTo", BuiltinOP::BroadcastTo},
-      {"StatelessRandomUniform", BuiltinOP::StatelessRandomUniform},
-      {"Erf", BuiltinOP::Erf},
+    {"AddV2", BuiltinOP::AddV2},
+    {"All", BuiltinOP::ReduceAll},
+    {"MatrixBandPart", BuiltinOP::MatrixBandPart},
+    {"BatchMatMulV2", BuiltinOP::BatchMatMul},
+    {"Einsum", BuiltinOP::Einsum},
+    {"FusedBatchNormV3", BuiltinOP::FusedBatchNorm},
+    {"BroadcastTo", BuiltinOP::BroadcastTo},
+    {"StatelessRandomUniform", BuiltinOP::StatelessRandomUniform},
+    {"Erf", BuiltinOP::Erf},
   };
 
   try
@@ -1024,7 +1024,7 @@ void BaseLoader<LoaderDomain>::loadCustom(const Operator *op, ir::Graph &subg)
         break;
       default:
         throw std::runtime_error{
-            "Loader: Custom OP map is defined but operation loader function is not defined"};
+          "Loader: Custom OP map is defined but operation loader function is not defined"};
     }
 
     return;
@@ -1139,7 +1139,7 @@ void BaseLoader<LoaderDomain>::loadComparison(const Operator *op, ir::Graph &sub
       break;
     default:
       throw std::runtime_error(
-          std::string("Unsupported operation: ").append(EnumNameBuiltinOperator(builtin_op)));
+        std::string("Unsupported operation: ").append(EnumNameBuiltinOperator(builtin_op)));
   }
 
   loadOperationTo<ir::operation::Comparison>(op, subg, param);
@@ -1296,7 +1296,7 @@ void BaseLoader<LoaderDomain>::loadUnidirectionalSequenceLSTM(const Operator *op
   {
     auto builtin_code = _model->operator_codes()->Get(op->opcode_index())->builtin_code();
     throw std::runtime_error(std::string("loader doesn't support optional output tensor yet for ")
-                                 .append(EnumNameBuiltinOperator(builtin_code)));
+                               .append(EnumNameBuiltinOperator(builtin_code)));
   }
   for (size_t i = 0; i < ir::operation::LSTM::Output::OUTPUT; ++i)
   {
@@ -1580,7 +1580,7 @@ void BaseLoader<LoaderDomain>::loadOperation(const Operator *op, ir::Graph &subg
       return;
     default:
       throw std::runtime_error(
-          std::string("Unsupported operation: ").append(EnumNameBuiltinOperator(builtin_op)));
+        std::string("Unsupported operation: ").append(EnumNameBuiltinOperator(builtin_op)));
   }
 }
 

@@ -96,7 +96,7 @@ void asymmetric_wquant_with_minmax_per_layer(CircleConst *node, float min, float
     data = data < nudged_min ? nudged_min : data;
     data = data > nudged_max ? nudged_max : data;
     quantized_values[i] =
-        static_cast<int32_t>(std::round((data - nudged_min) * scaling_factor_inv));
+      static_cast<int32_t>(std::round((data - nudged_min) * scaling_factor_inv));
   }
 
   node->dtype(loco::DataType::U8);      // change the type of tensor
@@ -133,7 +133,7 @@ void symmetric_wquant_with_minmax_per_layer(CircleConst *node, float min, float 
   for (uint32_t i = 0; i < size; ++i)
   {
     node->at<loco::DataType::S16>(i) =
-        std::min(kMaxScale, std::max(kMinScale, quantized_values[i]));
+      std::min(kMaxScale, std::max(kMinScale, quantized_values[i]));
   }
 }
 
@@ -158,8 +158,8 @@ void compute_sym_scale_zp(float min, float max, float &scaling_factor, int64_t &
     scale_factor_from_max_side = rmax / qmax_double;
 
   scaling_factor = scale_factor_from_min_side > scale_factor_from_max_side
-                       ? scale_factor_from_min_side
-                       : scale_factor_from_max_side;
+                     ? scale_factor_from_min_side
+                     : scale_factor_from_max_side;
   zp = 0;
   nudged_min = static_cast<float>(qmin_double * scaling_factor);
   nudged_max = static_cast<float>(qmax_double * scaling_factor);
@@ -304,7 +304,7 @@ bool get_channel_dim_index(CircleConst *node, loco::TensorShape &dimension, int 
 uint32_t cal_offset(loco::TensorShape &dimension, uint32_t *indices)
 {
   return indices[0] * dimension.dim(1).value() * dimension.dim(2).value() *
-             dimension.dim(3).value() +
+           dimension.dim(3).value() +
          indices[1] * dimension.dim(2).value() * dimension.dim(3).value() +
          indices[2] * dimension.dim(3).value() + indices[3];
 }

@@ -54,123 +54,123 @@
 using namespace arm_compute;
 
 const std::map<std::string, std::string> CLKernelLibraryEx::_kernel_program_map = {
-    // ARMComputeEx kernels
-    {"arg_min_max_ex_x", "arg_min_max_ex.cl"},
-    {"arg_min_max_ex_y", "arg_min_max_ex.cl"},
-    {"arg_min_max_ex_z", "arg_min_max_ex.cl"},
-    {"arg_min_max_ex_w", "arg_min_max_ex.cl"},
-    {"binary_logical_op", "binary_logical_op.cl"},
-    {"cast_bool", "cast.cl"},
-    {"embedding_lookup", "embedding_lookup.cl"},
-    {"gather_ex", "gather_ex.cl"},
-    {"gather_ex_1d", "gather_ex.cl"},
-    {"gather_ex_1d_out", "gather_ex.cl"},
-    {"gemmlowp_mm_midgard_ex", "gemmlowp_ex.cl"},
-    {"hashtable_lookup", "hashtable_lookup.cl"},
-    {"instance_normalization_ex", "instance_normalization_ex.cl"},
-    {"multiply_scale_factor", "multiply_scale_factor.cl"},
-    {"neg_tensor", "neg_tensor.cl"},
-    {"one_hot", "one_hot.cl"},
-    {"one_hot_only_on_value", "one_hot.cl"},
-    {"quantization_symm8", "quantization_symm8.cl"},
-    {"reduce_min_max", "reduce_operation.cl"},
-    {"reduce_sum_mean", "reduce_operation.cl"},
-    {"topkv2_init", "topkv2.cl"},
-    {"topkv2_find_first_negative", "topkv2.cl"},
-    {"topkv2_reorder_negatives", "topkv2.cl"},
-    {"topkv2_store", "topkv2.cl"},
-    {"radixsort_histogram", "topkv2_radixsort.cl"},
-    {"radixsort_scanhistograms", "topkv2_radixsort.cl"},
-    {"radixsort_pastehistograms", "topkv2_radixsort.cl"},
-    {"radixsort_reorder", "topkv2_radixsort.cl"},
-    {"topkv2_quicksort", "topkv2_quicksort.cl"},
-    {"scale_factor_symm8", "scale_factor.cl"},
+  // ARMComputeEx kernels
+  {"arg_min_max_ex_x", "arg_min_max_ex.cl"},
+  {"arg_min_max_ex_y", "arg_min_max_ex.cl"},
+  {"arg_min_max_ex_z", "arg_min_max_ex.cl"},
+  {"arg_min_max_ex_w", "arg_min_max_ex.cl"},
+  {"binary_logical_op", "binary_logical_op.cl"},
+  {"cast_bool", "cast.cl"},
+  {"embedding_lookup", "embedding_lookup.cl"},
+  {"gather_ex", "gather_ex.cl"},
+  {"gather_ex_1d", "gather_ex.cl"},
+  {"gather_ex_1d_out", "gather_ex.cl"},
+  {"gemmlowp_mm_midgard_ex", "gemmlowp_ex.cl"},
+  {"hashtable_lookup", "hashtable_lookup.cl"},
+  {"instance_normalization_ex", "instance_normalization_ex.cl"},
+  {"multiply_scale_factor", "multiply_scale_factor.cl"},
+  {"neg_tensor", "neg_tensor.cl"},
+  {"one_hot", "one_hot.cl"},
+  {"one_hot_only_on_value", "one_hot.cl"},
+  {"quantization_symm8", "quantization_symm8.cl"},
+  {"reduce_min_max", "reduce_operation.cl"},
+  {"reduce_sum_mean", "reduce_operation.cl"},
+  {"topkv2_init", "topkv2.cl"},
+  {"topkv2_find_first_negative", "topkv2.cl"},
+  {"topkv2_reorder_negatives", "topkv2.cl"},
+  {"topkv2_store", "topkv2.cl"},
+  {"radixsort_histogram", "topkv2_radixsort.cl"},
+  {"radixsort_scanhistograms", "topkv2_radixsort.cl"},
+  {"radixsort_pastehistograms", "topkv2_radixsort.cl"},
+  {"radixsort_reorder", "topkv2_radixsort.cl"},
+  {"topkv2_quicksort", "topkv2_quicksort.cl"},
+  {"scale_factor_symm8", "scale_factor.cl"},
 };
 
 const std::map<std::string, std::string> CLKernelLibraryEx::_program_source_map = {
 #ifdef EMBEDDED_KERNELS
-    {
-        "arg_min_max_ex.cl",
+  {
+    "arg_min_max_ex.cl",
 #include "./cl_kernels/arg_min_max_ex.clembed"
-    },
-    {
-        "cast.cl",
+  },
+  {
+    "cast.cl",
 #include "./cl_kernels/cast.clembed"
-    },
-    {
-        "embedding_lookup.cl",
+  },
+  {
+    "embedding_lookup.cl",
 #include "./cl_kernels/embedding_lookup.clembed"
-    },
-    {
-        "gather_ex.cl",
+  },
+  {
+    "gather_ex.cl",
 #include "./cl_kernels/gather_ex.clembed"
-    },
-    {
-        "gemmlowp_ex.cl",
+  },
+  {
+    "gemmlowp_ex.cl",
 #include "./cl_kernels/gemmlowp_ex.clembed"
-    },
-    {
-        "hashtable_lookup.cl",
+  },
+  {
+    "hashtable_lookup.cl",
 #include "./cl_kernels/hashtable_lookup.clembed"
-    },
-    {
-        "helpers.h",
+  },
+  {
+    "helpers.h",
 #include "./cl_kernels/helpers.hembed"
-    },
-    {
-        "helpers_asymm.h",
+  },
+  {
+    "helpers_asymm.h",
 #include "./cl_kernels/helpers_asymm.hembed"
-    },
-    {
-        "instance_normalization_ex.cl",
+  },
+  {
+    "instance_normalization_ex.cl",
 #include "./cl_kernels/instance_normalization_ex.clembed"
-    },
-    {
-        "binary_logical_op.cl",
+  },
+  {
+    "binary_logical_op.cl",
 #include "./cl_kernels/binary_logical_op.clembed"
-    },
-    {
-        "multiply_scale_factor.cl",
+  },
+  {
+    "multiply_scale_factor.cl",
 #include "./cl_kernels/multiply_scale_factor.clembed"
-    },
-    {
-        "neg_tensor.cl",
+  },
+  {
+    "neg_tensor.cl",
 #include "./cl_kernels/neg_tensor.clembed"
-    },
-    {
-        "one_hot.cl",
+  },
+  {
+    "one_hot.cl",
 #include "./cl_kernels/one_hot.clembed"
-    },
-    {
-        "quantization_symm8.cl",
+  },
+  {
+    "quantization_symm8.cl",
 #include "./cl_kernels/quantization_symm8.clembed"
-    },
-    {
-        "reduce_operation.cl",
+  },
+  {
+    "reduce_operation.cl",
 #include "./cl_kernels/reduce_operation.clembed"
-    },
-    {
-        "scale_factor.cl",
+  },
+  {
+    "scale_factor.cl",
 #include "./cl_kernels/scale_factor.clembed"
-    },
-    {
-        "topkv2.cl",
+  },
+  {
+    "topkv2.cl",
 #include "./cl_kernels/topkv2.clembed"
-    },
-    {
-        "topkv2_radixsort.cl",
+  },
+  {
+    "topkv2_radixsort.cl",
 #include "./cl_kernels/topkv2_radixsort.clembed"
-    },
-    {
-        "topkv2_quicksort.cl",
+  },
+  {
+    "topkv2_quicksort.cl",
 #include "./cl_kernels/topkv2_quicksort.clembed"
-    },
+  },
 
 #endif /* EMBEDDED_KERNELS */
 };
 
 CLKernelLibraryEx::CLKernelLibraryEx()
-    : _context(), _device(), _kernel_path("."), _programs_map(), _built_programs_map()
+  : _context(), _device(), _kernel_path("."), _programs_map(), _built_programs_map()
 {
   opencl_is_available(); // Make sure the OpenCL symbols are initialised *before* the
                          // CLKernelLibraryEx is built
@@ -337,8 +337,8 @@ size_t CLKernelLibraryEx::max_local_workgroup_size(const cl::Kernel &kernel) con
 
   size_t err = kernel.getWorkGroupInfo(_device, CL_KERNEL_WORK_GROUP_SIZE, &result);
   ARM_COMPUTE_ERROR_ON_MSG(
-      err != 0,
-      "clGetKernelWorkGroupInfo failed to return the maximum workgroup size for the kernel");
+    err != 0,
+    "clGetKernelWorkGroupInfo failed to return the maximum workgroup size for the kernel");
   ARM_COMPUTE_UNUSED(err);
 
   return result;

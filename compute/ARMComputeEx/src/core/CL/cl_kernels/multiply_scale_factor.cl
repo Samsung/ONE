@@ -114,8 +114,8 @@ __kernel void multiply_scale_factor(IMAGE_DECLARATION(input), VECTOR_DECLARATION
   (val, 0, (__global DATA_TYPE *)output.ptr);
 #else  // !defined(VEC_SIZE) || !defined(LAST_ACCESSED_X)
   *((__global DATA_TYPE *)(output.ptr)) =
-      ((DATA_TYPE)(*((__global int *)(input.ptr)))) *
-      *(((__global DATA_TYPE *)(scale_ptr)) + get_global_id(1)) * (DATA_TYPE)(multiplier);
+    ((DATA_TYPE)(*((__global int *)(input.ptr)))) *
+    *(((__global DATA_TYPE *)(scale_ptr)) + get_global_id(1)) * (DATA_TYPE)(multiplier);
 #endif // defined(VEC_SIZE) && defined(LAST_ACCESSED_X)
 }
 

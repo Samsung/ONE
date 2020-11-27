@@ -184,9 +184,9 @@ enum class QuantizationFlavor
 // (only those that need perchannel quantization do).
 template <typename AccumScalar, typename DstScalar,
           QuantizationFlavor quantization_flavor =
-              std::is_floating_point<AccumScalar>::value
-                  ? QuantizationFlavor::kFloatingPoint
-                  : QuantizationFlavor::kIntegerWithUniformMultiplier>
+            std::is_floating_point<AccumScalar>::value
+              ? QuantizationFlavor::kFloatingPoint
+              : QuantizationFlavor::kIntegerWithUniformMultiplier>
 struct GemmParams
 {
   // Only for non-floating-point cases. The fixed-point part (i.e. the mantissa)
@@ -213,12 +213,12 @@ struct GemmParams
   const AccumScalar *bias = nullptr;
   // min clamp bound of destination values.
   DstScalar clamp_min = std::is_floating_point<DstScalar>::value
-                            ? -std::numeric_limits<DstScalar>::infinity()
-                            : std::numeric_limits<DstScalar>::lowest();
+                          ? -std::numeric_limits<DstScalar>::infinity()
+                          : std::numeric_limits<DstScalar>::lowest();
   // max clamp bound of destination values.
   DstScalar clamp_max = std::is_floating_point<DstScalar>::value
-                            ? std::numeric_limits<DstScalar>::infinity()
-                            : std::numeric_limits<DstScalar>::max();
+                          ? std::numeric_limits<DstScalar>::infinity()
+                          : std::numeric_limits<DstScalar>::max();
 };
 
 // Validates self-consistency of GemmParams.

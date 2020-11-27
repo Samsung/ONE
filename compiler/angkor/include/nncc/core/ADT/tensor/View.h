@@ -36,7 +36,7 @@ template <typename T> class View : public Reader<T>, public Accessor<T>
 {
 public:
   explicit View(const Shape &shape, const Layout &layout)
-      : _shape{shape}, _layout{std::move(layout)}
+    : _shape{shape}, _layout{std::move(layout)}
   {
     // DO NOTHING
   }

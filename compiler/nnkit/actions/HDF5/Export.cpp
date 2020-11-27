@@ -58,7 +58,7 @@ public:
         H5::DataSpace dataspace(rank, dims);
 
         auto dataset =
-            _value_grp.createDataSet(value_filename(n), H5::PredType::IEEE_F32BE, dataspace);
+          _value_grp.createDataSet(value_filename(n), H5::PredType::IEEE_F32BE, dataspace);
 
         float *data = new float[nncc::core::ADT::tensor::num_elements(shape)];
 
@@ -84,7 +84,7 @@ public:
           H5::StrType name_datatype(H5::PredType::C_S1, name.size());
 
           auto name_attr =
-              _name_grp.createAttribute(value_filename(n), name_datatype, name_dataspace);
+            _name_grp.createAttribute(value_filename(n), name_datatype, name_dataspace);
 
           name_attr.write(name_datatype, name);
         }

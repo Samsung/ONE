@@ -32,9 +32,9 @@ std::vector<ir::OpSequenceIndex> Linear::linearize(const compiler::LoweredGraph 
 {
   std::vector<ir::OpSequenceIndex> order;
   lowered_graph.iterateTopolOpSeqs(
-      [&](const ir::OpSequenceIndex &index, const ir::OpSequence &) -> void {
-        order.emplace_back(index);
-      });
+    [&](const ir::OpSequenceIndex &index, const ir::OpSequence &) -> void {
+      order.emplace_back(index);
+    });
   return order;
 }
 
@@ -119,7 +119,7 @@ void Linear::planTensors(const compiler::LoweredGraph &lowered_graph,
   });
 
   const auto io_tensors =
-      (graph.getInputs() + graph.getOutputs()) | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED;
+    (graph.getInputs() + graph.getOutputs()) | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED;
 
   // If a tensor is model output, increase the use of the tensor.
   // This aim is same to above one.
@@ -161,7 +161,7 @@ void Linear::planTensors(const compiler::LoweredGraph &lowered_graph,
     for (const auto &op_idx : op_seq.operations())
     {
       for (const auto &ind : graph.operations().at(op_idx).getOutputs() | ir::Remove::DUPLICATED |
-                                 ir::Remove::UNDEFINED)
+                               ir::Remove::UNDEFINED)
       {
         assert(def_map.find(ind) != def_map.end());
         if (def_map[ind])
@@ -175,7 +175,7 @@ void Linear::planTensors(const compiler::LoweredGraph &lowered_graph,
       // This tensor has features like constant. But OperandInfo and LowerInfo treat them as
       // non-constant because of less memory usage by memory planning in here
       for (const auto &ind : graph.operations().at(op_idx).getInputs() | ir::Remove::DUPLICATED |
-                                 ir::Remove::UNDEFINED)
+                               ir::Remove::UNDEFINED)
       {
         const auto &operand = graph.operands().at(ind);
         if (operand.info().isVariable())
@@ -191,7 +191,7 @@ void Linear::planTensors(const compiler::LoweredGraph &lowered_graph,
       }
 
       for (const auto &ind : graph.operations().at(op_idx).getInputs() | ir::Remove::DUPLICATED |
-                                 ir::Remove::UNDEFINED)
+                               ir::Remove::UNDEFINED)
       {
         assert(uses_map.find(ind) != uses_map.end());
         assert(uses_map[ind] > 0);
@@ -206,7 +206,7 @@ void Linear::planTensors(const compiler::LoweredGraph &lowered_graph,
           if (dyn_tensor_manager)
           {
             const auto *backend =
-                lowered_graph.getLowerInfo(ind)->def_factors().getOnlyElement().backend();
+              lowered_graph.getLowerInfo(ind)->def_factors().getOnlyElement().backend();
             auto &tensor_registry = lowered_graph.backend_contexts().at(backend)->tensor_registry;
             auto *tensor = tensor_registry->getITensor(ind);
             assert(tensor);
@@ -238,12 +238,12 @@ void Linear::planTensors(const compiler::LoweredGraph &lowered_graph,
   }
 
   assert(
-      std::all_of(uses_map.begin(), uses_map.end(),
-                  [](std::pair<const ir::OperandIndex, uint32_t> it) { return it.second == 0; }));
+    std::all_of(uses_map.begin(), uses_map.end(),
+                [](std::pair<const ir::OperandIndex, uint32_t> it) { return it.second == 0; }));
 
   assert(
-      std::all_of(def_map.begin(), def_map.end(),
-                  [](std::pair<const ir::OperandIndex, uint32_t> it) { return it.second == 0; }));
+    std::all_of(def_map.begin(), def_map.end(),
+                [](std::pair<const ir::OperandIndex, uint32_t> it) { return it.second == 0; }));
 }
 
 } // namespace compiler

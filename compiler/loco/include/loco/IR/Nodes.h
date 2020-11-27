@@ -49,7 +49,7 @@ class GraphOutput;
  * @brief Make a value visible to user
  */
 class Push /* to user */ final
-    : public CanonicalNodeDef<CanonicalOpcode::Push, FixedArity<1>::Mixin>
+  : public CanonicalNodeDef<CanonicalOpcode::Push, FixedArity<1>::Mixin>
 {
 public:
   Push() = default;
@@ -91,8 +91,8 @@ Push *push_node(Graph *g, const GraphOutputIndex &index);
  * @brief Create a value from user data
  */
 class Pull /* from user */ final
-    : public CanonicalNodeDef<CanonicalOpcode::Pull, FixedArity<0>::Mixin,
-                              With<NodeTrait::TensorShape>::Mixin>
+  : public CanonicalNodeDef<CanonicalOpcode::Pull, FixedArity<0>::Mixin,
+                            With<NodeTrait::TensorShape>::Mixin>
 {
 public:
   Pull() = default;
@@ -213,8 +213,8 @@ public:
  * }
  */
 class ConstGen final
-    : public CanonicalNodeDef<CanonicalOpcode::ConstGen, FixedArity<0>::Mixin,
-                              With<NodeTrait::DataType>::Mixin, With<NodeTrait::TensorShape>::Mixin>
+  : public CanonicalNodeDef<CanonicalOpcode::ConstGen, FixedArity<0>::Mixin,
+                            With<NodeTrait::DataType>::Mixin, With<NodeTrait::TensorShape>::Mixin>
 {
 public:
   ConstGen() = default;
@@ -376,7 +376,7 @@ private:
  * @brief Create a feature map from a tensor
  */
 class FeatureEncode final
-    : public CanonicalNodeDef<CanonicalOpcode::FeatureEncode, FixedArity<1>::Mixin>
+  : public CanonicalNodeDef<CanonicalOpcode::FeatureEncode, FixedArity<1>::Mixin>
 {
 public:
   Node *input(void) const { return at(0)->node(); }
@@ -395,7 +395,7 @@ private:
  * @brief Create a tensor from a feature map
  */
 class FeatureDecode final
-    : public CanonicalNodeDef<CanonicalOpcode::FeatureDecode, FixedArity<1>::Mixin>
+  : public CanonicalNodeDef<CanonicalOpcode::FeatureDecode, FixedArity<1>::Mixin>
 {
 public:
   Node *input(void) const { return at(0)->node(); }
@@ -414,7 +414,7 @@ private:
  * @brief Create a filter from a tensor
  */
 class FilterEncode final
-    : public CanonicalNodeDef<CanonicalOpcode::FilterEncode, FixedArity<1>::Mixin>
+  : public CanonicalNodeDef<CanonicalOpcode::FilterEncode, FixedArity<1>::Mixin>
 {
 public:
   Node *input(void) const { return at(0)->node(); }
@@ -433,7 +433,7 @@ private:
  * @brief Create a tensor from a filter
  */
 class FilterDecode final
-    : public CanonicalNodeDef<CanonicalOpcode::FilterDecode, FixedArity<1>::Mixin>
+  : public CanonicalNodeDef<CanonicalOpcode::FilterDecode, FixedArity<1>::Mixin>
 {
 public:
   Node *input(void) const { return at(0)->node(); }
@@ -452,7 +452,7 @@ private:
  * @brief Create a depthwise filter from a tensor
  */
 class DepthwiseFilterEncode final
-    : public CanonicalNodeDef<CanonicalOpcode::DepthwiseFilterEncode, FixedArity<1>::Mixin>
+  : public CanonicalNodeDef<CanonicalOpcode::DepthwiseFilterEncode, FixedArity<1>::Mixin>
 {
 public:
   Node *input(void) const { return at(0)->node(); }
@@ -471,7 +471,7 @@ private:
  * @brief Create a tensor from a depthwise filter
  */
 class DepthwiseFilterDecode final
-    : public CanonicalNodeDef<CanonicalOpcode::DepthwiseFilterDecode, FixedArity<1>::Mixin>
+  : public CanonicalNodeDef<CanonicalOpcode::DepthwiseFilterDecode, FixedArity<1>::Mixin>
 {
 public:
   Node *input(void) const { return at(0)->node(); }
@@ -512,8 +512,8 @@ template <ReshapeType RT> class Reshape;
  */
 template <>
 class Reshape<ReshapeType::Fixed> final
-    : public CanonicalNodeDef<CanonicalOpcode::FixedReshape, FixedArity<1>::Mixin,
-                              With<NodeTrait::TensorShape>::Mixin>
+  : public CanonicalNodeDef<CanonicalOpcode::FixedReshape, FixedArity<1>::Mixin,
+                            With<NodeTrait::TensorShape>::Mixin>
 {
 public:
   Node *input(void) const { return at(0)->node(); }
@@ -529,7 +529,7 @@ using FixedReshape = Reshape<ReshapeType::Fixed>;
  * concatenated along the given axis.
  */
 class TensorConcat final
-    : public CanonicalNodeDef<CanonicalOpcode::TensorConcat, FixedArity<2>::Mixin>
+  : public CanonicalNodeDef<CanonicalOpcode::TensorConcat, FixedArity<2>::Mixin>
 {
 public:
   Node *lhs(void) const { return at(0)->node(); }
@@ -578,7 +578,7 @@ private:
  * @brief Depthwise 2D Convolution
  */
 class DepthwiseConv2D final
-    : public CanonicalNodeDef<CanonicalOpcode::DepthwiseConv2D, FixedArity<2>::Mixin>
+  : public CanonicalNodeDef<CanonicalOpcode::DepthwiseConv2D, FixedArity<2>::Mixin>
 {
 public:
   Node *ifm(void) const { return at(0)->node(); }
@@ -616,7 +616,7 @@ enum class ReduceFunc
  * @note  All the reduce functions always keep dimensions
  */
 class TensorReduce final
-    : public CanonicalNodeDef<CanonicalOpcode::TensorReduce, FixedArity<1>::Mixin>
+  : public CanonicalNodeDef<CanonicalOpcode::TensorReduce, FixedArity<1>::Mixin>
 {
 public:
   Node *input(void) const { return at(0)->node(); }
@@ -684,7 +684,7 @@ private:
  * With this, output shape is uniquely determined by all inputs and attributes.
  */
 class TransposedConv2D final
-    : public CanonicalNodeDef<CanonicalOpcode::TransposedConv2D, FixedArity<2>::Mixin>
+  : public CanonicalNodeDef<CanonicalOpcode::TransposedConv2D, FixedArity<2>::Mixin>
 {
 public:
   Node *ifm(void) const { return at(0)->node(); }
@@ -718,7 +718,7 @@ template <Domain D> class Softmax;
  */
 template <>
 class Softmax<Domain::Tensor> final
-    : public CanonicalNodeDef<CanonicalOpcode::TensorSoftmax, FixedArity<1>::Mixin>
+  : public CanonicalNodeDef<CanonicalOpcode::TensorSoftmax, FixedArity<1>::Mixin>
 {
 public:
   Softmax() = default;
@@ -777,7 +777,7 @@ template <Domain D> class BiasAdd;
  */
 template <>
 class BiasAdd<Domain::Tensor> final
-    : public CanonicalNodeDef<CanonicalOpcode::TensorBiasAdd, FixedArity<2>::Mixin>
+  : public CanonicalNodeDef<CanonicalOpcode::TensorBiasAdd, FixedArity<2>::Mixin>
 {
 public:
   BiasAdd() = default;
@@ -813,7 +813,7 @@ using TensorBiasAdd = BiasAdd<Domain::Tensor>;
  */
 template <>
 class BiasAdd<Domain::Feature> final
-    : public CanonicalNodeDef<CanonicalOpcode::FeatureBiasAdd, FixedArity<2>::Mixin>
+  : public CanonicalNodeDef<CanonicalOpcode::FeatureBiasAdd, FixedArity<2>::Mixin>
 {
 public:
   BiasAdd() = default;
@@ -848,7 +848,7 @@ using FeatureBiasAdd = BiasAdd<Domain::Feature>;
  * [padding.front(0) + 1 + padding.back(0), padding.front(1) + 2 + padding.back(1)] = [4,9].
  */
 class TensorConstantPad final
-    : public CanonicalNodeDef<CanonicalOpcode::TensorConstantPad, FixedArity<2>::Mixin>
+  : public CanonicalNodeDef<CanonicalOpcode::TensorConstantPad, FixedArity<2>::Mixin>
 {
 public:
   Node *input(void) const { return at(0)->node(); }
@@ -951,7 +951,7 @@ public:
  * @brief Elementwise Sqrt of input
  */
 class EltwiseSqrt final
-    : public CanonicalNodeDef<CanonicalOpcode::EltwiseSqrt, FixedArity<1>::Mixin>
+  : public CanonicalNodeDef<CanonicalOpcode::EltwiseSqrt, FixedArity<1>::Mixin>
 {
 public:
   EltwiseSqrt() = default;
@@ -976,7 +976,7 @@ public:
  * TODO Explain the operation semantics
  */
 class TensorBroadcast final
-    : public CanonicalNodeDef<CanonicalOpcode::TensorBroadcast, FixedArity<1>::Mixin>
+  : public CanonicalNodeDef<CanonicalOpcode::TensorBroadcast, FixedArity<1>::Mixin>
 {
 public:
   TensorBroadcast() = default;
@@ -1014,7 +1014,7 @@ private:
  * MatrixEncode currently requires a rank-2 Tensor as its input.
  */
 class MatrixEncode final
-    : public CanonicalNodeDef<CanonicalOpcode::MatrixEncode, FixedArity<1>::Mixin>
+  : public CanonicalNodeDef<CanonicalOpcode::MatrixEncode, FixedArity<1>::Mixin>
 {
 public:
   MatrixEncode() = default;
@@ -1038,7 +1038,7 @@ private:
  * MatrixDecode currently requires a Matrix as its input.
  */
 class MatrixDecode final
-    : public CanonicalNodeDef<CanonicalOpcode::MatrixDecode, FixedArity<1>::Mixin>
+  : public CanonicalNodeDef<CanonicalOpcode::MatrixDecode, FixedArity<1>::Mixin>
 {
 public:
   MatrixDecode() = default;
@@ -1086,7 +1086,7 @@ public:
  * Input and output belong to tensor domain.
  */
 class TensorTranspose final
-    : public CanonicalNodeDef<CanonicalOpcode::TensorTranspose, FixedArity<1>::Mixin>
+  : public CanonicalNodeDef<CanonicalOpcode::TensorTranspose, FixedArity<1>::Mixin>
 {
 public:
   TensorTranspose() = default;

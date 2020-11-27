@@ -30,7 +30,7 @@ namespace kernels
 {
 
 Prelu::Prelu(const Tensor *input, const Tensor *alpha, Tensor *output)
-    : Kernel({input, alpha}, {output})
+  : Kernel({input, alpha}, {output})
 {
 }
 
@@ -84,9 +84,9 @@ void Prelu::evalFloat() const
   if (input()->shape() != alpha()->shape())
   {
     tflite::reference_ops::BroadcastBinaryFunction4DSlow<float, float, float>(
-        getTensorShape(input()), getTensorData<float>(input()), getTensorShape(alpha()),
-        getTensorData<float>(alpha()), getTensorShape(output()), getTensorData<float>(output()),
-        PreluFunc);
+      getTensorShape(input()), getTensorData<float>(input()), getTensorShape(alpha()),
+      getTensorData<float>(alpha()), getTensorShape(output()), getTensorData<float>(output()),
+      PreluFunc);
   }
   else
   {
@@ -115,16 +115,14 @@ void Prelu::evalQuantized() const
   if (input()->shape() != alpha()->shape())
   {
     tflite::reference_ops::BroadcastPrelu4DSlow(
-        op_params, getTensorShape(input()), getTensorData<uint8_t>(input()),
-        getTensorShape(alpha()), getTensorData<uint8_t>(alpha()), getTensorShape(output()),
-        getTensorData<uint8_t>(output()));
+      op_params, getTensorShape(input()), getTensorData<uint8_t>(input()), getTensorShape(alpha()),
+      getTensorData<uint8_t>(alpha()), getTensorShape(output()), getTensorData<uint8_t>(output()));
   }
   else
   {
-    tflite::reference_ops::Prelu<uint8_t>(op_params, getTensorShape(input()),
-                                          getTensorData<uint8_t>(input()), getTensorShape(alpha()),
-                                          getTensorData<uint8_t>(alpha()), getTensorShape(output()),
-                                          getTensorData<uint8_t>(output()));
+    tflite::reference_ops::Prelu<uint8_t>(
+      op_params, getTensorShape(input()), getTensorData<uint8_t>(input()), getTensorShape(alpha()),
+      getTensorData<uint8_t>(alpha()), getTensorShape(output()), getTensorData<uint8_t>(output()));
   }
 }
 
@@ -135,11 +133,10 @@ void Prelu::evalQuantizedS16() const
 
   auto fn = [this, quantized_min, quantized_max](int16_t input_val, int16_t alpha_val) {
     const int32_t output_val =
-        input_val >= 0
-            ? tflite::MultiplyByQuantizedMultiplier(input_val, _output_multiplier_identity,
-                                                    _output_shift_identity)
-            : tflite::MultiplyByQuantizedMultiplier(input_val * alpha_val, _output_multiplier_alpha,
-                                                    _output_shift_alpha);
+      input_val >= 0 ? tflite::MultiplyByQuantizedMultiplier(input_val, _output_multiplier_identity,
+                                                             _output_shift_identity)
+                     : tflite::MultiplyByQuantizedMultiplier(
+                         input_val * alpha_val, _output_multiplier_alpha, _output_shift_alpha);
     const int32_t clamped_output = std::min(quantized_max, std::max(quantized_min, output_val));
     return static_cast<int16_t>(clamped_output);
   };

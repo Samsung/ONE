@@ -242,9 +242,9 @@ private:
  * @brief DEPTHWISE_CONV_2D in TensorFlow Lite
  */
 class TFLDepthwiseConv2D final
-    : public FixedArityNode<3, TFLNodeImpl<TFLOpcode::DEPTHWISE_CONV_2D>>,
-      public TFLNodeMixin<TFLNodeTrait::FusedActFunc>,
-      public TFLNodeMixin<TFLNodeTrait::Bias>
+  : public FixedArityNode<3, TFLNodeImpl<TFLOpcode::DEPTHWISE_CONV_2D>>,
+    public TFLNodeMixin<TFLNodeTrait::FusedActFunc>,
+    public TFLNodeMixin<TFLNodeTrait::Bias>
 {
 public:
   loco::Node *input(void) const { return at(0)->node(); }
@@ -467,7 +467,7 @@ public:
 };
 
 class TFLSquaredDifference final
-    : public FixedArityNode<2, TFLNodeImpl<TFLOpcode::SQUARED_DIFFERENCE>>
+  : public FixedArityNode<2, TFLNodeImpl<TFLOpcode::SQUARED_DIFFERENCE>>
 {
 public:
   TFLSquaredDifference() = default;

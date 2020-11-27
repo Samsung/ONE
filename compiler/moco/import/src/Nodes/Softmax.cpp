@@ -33,7 +33,7 @@ class SoftmaxGraphUpdate final : public GraphUpdate
 {
 public:
   SoftmaxGraphUpdate(TFSoftmax *node, const TensorName &&input_name)
-      : _node(node), _input_name(input_name)
+    : _node(node), _input_name(input_name)
   {
     // DO NOTHING
   }

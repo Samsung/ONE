@@ -168,7 +168,7 @@ public:
 
   // Must have lo < hi
   UniformDistribution(int32_t lo, int32_t hi)
-      : lo_(lo), range_(static_cast<uint32_t>(hi) - static_cast<uint32_t>(lo))
+    : lo_(lo), range_(static_cast<uint32_t>(hi) - static_cast<uint32_t>(lo))
   {
   }
 
@@ -207,7 +207,7 @@ public:
 
   // Must have lo < hi
   UniformDistribution(int64_t lo, int64_t hi)
-      : lo_(lo), range_(static_cast<uint64_t>(hi) - static_cast<uint64_t>(lo))
+    : lo_(lo), range_(static_cast<uint64_t>(hi) - static_cast<uint64_t>(lo))
   {
   }
 
@@ -291,22 +291,22 @@ public:
 
 template <typename Generator>
 class UniformFullIntDistribution<Generator, int32_t>
-    : public UniformFullIntDistribution32<Generator, int32_t>
+  : public UniformFullIntDistribution32<Generator, int32_t>
 {
 };
 template <typename Generator>
 class UniformFullIntDistribution<Generator, uint32_t>
-    : public UniformFullIntDistribution32<Generator, uint32_t>
+  : public UniformFullIntDistribution32<Generator, uint32_t>
 {
 };
 template <typename Generator>
 class UniformFullIntDistribution<Generator, int64_t>
-    : public UniformFullIntDistribution64<Generator, int64_t>
+  : public UniformFullIntDistribution64<Generator, int64_t>
 {
 };
 template <typename Generator>
 class UniformFullIntDistribution<Generator, uint64_t>
-    : public UniformFullIntDistribution64<Generator, uint64_t>
+  : public UniformFullIntDistribution64<Generator, uint64_t>
 {
 };
 
@@ -324,7 +324,7 @@ public:
 
   PHILOX_DEVICE_INLINE
   explicit SingleSampleAdapter(Generator *gen)
-      : generator_(gen), used_result_index_(Generator::kResultElementCount)
+    : generator_(gen), used_result_index_(Generator::kResultElementCount)
   {
   }
 
@@ -615,8 +615,8 @@ class TruncatedNormalDistribution<SingleSampleGenerator, double>
 public:
   // The number of elements that will be returned.
   static constexpr int kResultElementCount = (SingleSampleGenerator::kNativeElementCount > 1)
-                                                 ? SingleSampleGenerator::kNativeElementCount / 2
-                                                 : 1;
+                                               ? SingleSampleGenerator::kNativeElementCount / 2
+                                               : 1;
   // Cost of generation of a single element (in cycles).
   static constexpr int kElementCost = 90;
   // Indicate that this distribution may take variable number of samples

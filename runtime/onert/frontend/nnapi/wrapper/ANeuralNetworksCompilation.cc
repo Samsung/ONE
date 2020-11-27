@@ -20,7 +20,7 @@
 
 // TODO Support multiple subgraphs
 ANeuralNetworksCompilation::ANeuralNetworksCompilation(const ANeuralNetworksModel *model) noexcept
-    : _subgraphs{model->getSubGraphs()}, _compiler{new onert::compiler::Compiler{_subgraphs}}
+  : _subgraphs{model->getSubGraphs()}, _compiler{new onert::compiler::Compiler{_subgraphs}}
 {
   if (model->allowedToFp16())
   {

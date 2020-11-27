@@ -31,7 +31,7 @@ class DerefNode final : public Node
 public:
   template <typename... Args>
   DerefNode(const DomainID &id, Args &&... indicies)
-      : _id{id}, _sub{std::forward<Args>(indicies)...}
+    : _id{id}, _sub{std::forward<Args>(indicies)...}
   {
     // DO NOTHING
   }

@@ -28,7 +28,7 @@ namespace ops
 {
 
 PadLayer::PadLayer()
-    : _input(nullptr), _output(nullptr), _padData(), _padRank(), _constantValueData()
+  : _input(nullptr), _output(nullptr), _padData(), _padRank(), _constantValueData()
 {
   // DO NOTHING
 }

@@ -40,7 +40,7 @@ public:
   };
 
   ResizeOp(Output *arg, ResizeMethod mode, const std::vector<float> &scales)
-      : Operation(Type::resizeIm, {arg}), _mode(mode), _scales(scales)
+    : Operation(Type::resizeIm, {arg}), _mode(mode), _scales(scales)
   {
     // Infer output shape based on given scales.
     auto &input_shape = getInputShape(0);
@@ -61,7 +61,7 @@ public:
   }
 
   ResizeOp(Output *arg, ResizeMethod mode, const Shape &output_shape)
-      : Operation(Type::resizeIm, {arg}), _mode(mode)
+    : Operation(Type::resizeIm, {arg}), _mode(mode)
   {
     // Calculate scales based on given shape.
     auto &input_shape = getInputShape(0);

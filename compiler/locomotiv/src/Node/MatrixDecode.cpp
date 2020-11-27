@@ -52,7 +52,7 @@ std::unique_ptr<locomotiv::NodeData> matrix_decode(const loco::MatrixDecode *nod
 
   // Make tensor buffer from TensorShape
   Buffer<T> node_buf =
-      make_buffer<T, LexicalLayout>(Shape{node_shape.dim(0).value(), node_shape.dim(1).value()});
+    make_buffer<T, LexicalLayout>(Shape{node_shape.dim(0).value(), node_shape.dim(1).value()});
 
   // Copy buffer in an order arranged by decoder
   for (IndexEnumerator e{node_buf.shape()}; e.valid(); e.advance())

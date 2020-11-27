@@ -30,7 +30,7 @@ TEST_F(GenModelTest, OneOp_Fill_Int32)
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
   _context->addTestCase(
-      TestCaseData{}.addInput<int32_t>({2, 3}).addOutput<int32_t>({13, 13, 13, 13, 13, 13}));
+    TestCaseData{}.addInput<int32_t>({2, 3}).addOutput<int32_t>({13, 13, 13, 13, 13, 13}));
   _context->setBackends({"cpu"});
 
   SUCCEED();
@@ -50,7 +50,7 @@ TEST_F(GenModelTest, OneOp_Fill_Int64)
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
   _context->addTestCase(
-      TestCaseData{}.addInput<int32_t>({2, 3}).addOutput<int64_t>({13, 13, 13, 13, 13, 13}));
+    TestCaseData{}.addInput<int32_t>({2, 3}).addOutput<int64_t>({13, 13, 13, 13, 13, 13}));
   _context->setBackends({"cpu"});
 
   SUCCEED();
@@ -70,7 +70,7 @@ TEST_F(GenModelTest, OneOp_Fill_Float32)
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
   _context->addTestCase(
-      TestCaseData{}.addInput<int32_t>({2, 3}).addOutput<float>({1.3, 1.3, 1.3, 1.3, 1.3, 1.3}));
+    TestCaseData{}.addInput<int32_t>({2, 3}).addOutput<float>({1.3, 1.3, 1.3, 1.3, 1.3, 1.3}));
   _context->setBackends({"cpu"});
 
   SUCCEED();
@@ -87,7 +87,7 @@ TEST_F(GenModelTest, neg_OneOp_Fill_Int32_oneoperand)
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
   _context->addTestCase(
-      TestCaseData{}.addInput<int32_t>({2, 3}).addOutput<int32_t>({13, 13, 13, 13, 13, 13}));
+    TestCaseData{}.addInput<int32_t>({2, 3}).addOutput<int32_t>({13, 13, 13, 13, 13, 13}));
   _context->setBackends({"cpu"});
   _context->expectFailModelLoad();
 
@@ -105,7 +105,7 @@ TEST_F(GenModelTest, neg_OneOp_Fill_Int64_oneoperand)
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
   _context->addTestCase(
-      TestCaseData{}.addInput<int32_t>({2, 3}).addOutput<int64_t>({13, 13, 13, 13, 13, 13}));
+    TestCaseData{}.addInput<int32_t>({2, 3}).addOutput<int64_t>({13, 13, 13, 13, 13, 13}));
   _context->setBackends({"cpu"});
   _context->expectFailModelLoad();
 
@@ -123,7 +123,7 @@ TEST_F(GenModelTest, neg_OneOp_Fill_Float32_oneoperand)
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
   _context->addTestCase(
-      TestCaseData{}.addInput<int32_t>({2, 3}).addOutput<float>({1.3, 1.3, 1.3, 1.3, 1.3, 1.3}));
+    TestCaseData{}.addInput<int32_t>({2, 3}).addOutput<float>({1.3, 1.3, 1.3, 1.3, 1.3, 1.3}));
   _context->setBackends({"cpu"});
   _context->expectFailModelLoad();
 

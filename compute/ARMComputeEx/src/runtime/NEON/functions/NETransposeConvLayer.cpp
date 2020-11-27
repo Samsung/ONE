@@ -51,9 +51,9 @@ namespace arm_compute
 {
 
 NETransposeConvLayer::NETransposeConvLayer(std::shared_ptr<IMemoryManager> memory_manager) // NOLINT
-    : _memory_group(std::move(memory_manager)), _conv_f(), _upsample_f(), _flip_weights(),
-      _scaled_output(), _weights_flipped(), _flip_axis(), _original_weights(nullptr),
-      _input(nullptr), _info(), _is_prepared(false)
+  : _memory_group(std::move(memory_manager)), _conv_f(), _upsample_f(), _flip_weights(),
+    _scaled_output(), _weights_flipped(), _flip_axis(), _original_weights(nullptr), _input(nullptr),
+    _info(), _is_prepared(false)
 {
 }
 
@@ -68,15 +68,15 @@ Status NETransposeConvLayer::validate(const ITensorInfo *input, const ITensorInf
   ARM_COMPUTE_RETURN_ERROR_ON_MISMATCHING_DATA_TYPES(weights, input);
   ARM_COMPUTE_RETURN_ERROR_ON_MISMATCHING_DATA_LAYOUT(weights, input);
   const unsigned int width_idx =
-      get_data_layout_dimension_index(weights->data_layout(), DataLayoutDimension::WIDTH);
+    get_data_layout_dimension_index(weights->data_layout(), DataLayoutDimension::WIDTH);
   const unsigned int height_idx =
-      get_data_layout_dimension_index(weights->data_layout(), DataLayoutDimension::HEIGHT);
+    get_data_layout_dimension_index(weights->data_layout(), DataLayoutDimension::HEIGHT);
   ARM_COMPUTE_RETURN_ERROR_ON(weights->dimension(width_idx) != weights->dimension(height_idx));
   ARM_COMPUTE_RETURN_ERROR_ON(weights->dimension(width_idx) < 1);
 
   auto out_dims = transposeconv_output_dimensions(
-      input->dimension(width_idx), input->dimension(height_idx), weights->dimension(width_idx),
-      weights->dimension(height_idx), info, invalid_right, invalid_bottom);
+    input->dimension(width_idx), input->dimension(height_idx), weights->dimension(width_idx),
+    weights->dimension(height_idx), info, invalid_right, invalid_bottom);
 
   ARM_COMPUTE_RETURN_ERROR_ON_MISMATCHING_DATA_TYPES(input, weights);
   if (bias != nullptr)
@@ -109,24 +109,24 @@ Status NETransposeConvLayer::validate(const ITensorInfo *input, const ITensorInf
   unsigned int pad_right = 0;
   unsigned int pad_top = 0;
   unsigned int pad_bottom = 0;
-  const TensorShape scale_out_shape = compute_transposeconv_upsampled_shape(
-      *input, *weights, info, out_dims, invalid_right, invalid_bottom, pad_left, pad_right, pad_top,
-      pad_bottom);
+  const TensorShape scale_out_shape =
+    compute_transposeconv_upsampled_shape(*input, *weights, info, out_dims, invalid_right,
+                                          invalid_bottom, pad_left, pad_right, pad_top, pad_bottom);
   TensorInfo scale_out_info(
-      input->clone()->set_is_resizable(true).reset_padding().set_tensor_shape(scale_out_shape));
+    input->clone()->set_is_resizable(true).reset_padding().set_tensor_shape(scale_out_shape));
   const PadStrideInfo conv_info(1, 1, 0, 0, 0, 0, DimensionRoundingType::CEIL);
 
   const unsigned int batches_idx =
-      get_data_layout_dimension_index(weights->data_layout(), DataLayoutDimension::BATCHES);
+    get_data_layout_dimension_index(weights->data_layout(), DataLayoutDimension::BATCHES);
   const unsigned int channel_idx =
-      get_data_layout_dimension_index(weights->data_layout(), DataLayoutDimension::CHANNEL);
+    get_data_layout_dimension_index(weights->data_layout(), DataLayoutDimension::CHANNEL);
   ARM_COMPUTE_RETURN_ERROR_ON(input->dimension(batches_idx) !=
                               scale_out_info.dimension(batches_idx));
   ARM_COMPUTE_RETURN_ERROR_ON(input->dimension(channel_idx) !=
                               scale_out_info.dimension(channel_idx));
 
-  ARM_COMPUTE_RETURN_ON_ERROR(NEConvolutionLayer::validate(&scale_out_info, weights, bias, output,
-                                                           conv_info, WeightsInfo()));
+  ARM_COMPUTE_RETURN_ON_ERROR(
+    NEConvolutionLayer::validate(&scale_out_info, weights, bias, output, conv_info, WeightsInfo()));
 
   return Status{};
 }
@@ -138,21 +138,21 @@ void NETransposeConvLayer::configure(ITensor *input, const ITensor *weights, con
   // Perform validation step
   ARM_COMPUTE_ERROR_ON_NULLPTR(input, weights, output);
   ARM_COMPUTE_ERROR_THROW_ON(NETransposeConvLayer::validate(
-      input->info(), weights->info(), (bias == nullptr) ? nullptr : bias->info(), output->info(),
-      info, invalid_right, invalid_bottom));
+    input->info(), weights->info(), (bias == nullptr) ? nullptr : bias->info(), output->info(),
+    info, invalid_right, invalid_bottom));
 
   const DataLayout data_layout = input->info()->data_layout();
   const unsigned int width_idx =
-      get_data_layout_dimension_index(data_layout, DataLayoutDimension::WIDTH);
+    get_data_layout_dimension_index(data_layout, DataLayoutDimension::WIDTH);
   const unsigned int height_idx =
-      get_data_layout_dimension_index(data_layout, DataLayoutDimension::HEIGHT);
+    get_data_layout_dimension_index(data_layout, DataLayoutDimension::HEIGHT);
   auto out_dims = transposeconv_output_dimensions(
-      input->info()->dimension(width_idx), input->info()->dimension(height_idx),
-      weights->info()->dimension(width_idx), weights->info()->dimension(height_idx), info,
-      invalid_right, invalid_bottom);
+    input->info()->dimension(width_idx), input->info()->dimension(height_idx),
+    weights->info()->dimension(width_idx), weights->info()->dimension(height_idx), info,
+    invalid_right, invalid_bottom);
 
   const TensorShape output_shape =
-      compute_transposeconv_output_shape(out_dims, *input->info(), *weights->info());
+    compute_transposeconv_output_shape(out_dims, *input->info(), *weights->info());
 
   _input = input;
   _original_weights = weights;
@@ -180,8 +180,8 @@ void NETransposeConvLayer::configure(ITensor *input, const ITensor *weights, con
   const PadStrideInfo conv_info(1, 1, 0, 0, 0, 0, DimensionRoundingType::CEIL);
 
   const TensorShape scale_out_shape = compute_transposeconv_upsampled_shape(
-      *input->info(), *weights->info(), info, out_dims, invalid_right, invalid_bottom, pad_left,
-      pad_right, pad_top, pad_bottom);
+    *input->info(), *weights->info(), info, out_dims, invalid_right, invalid_bottom, pad_left,
+    pad_right, pad_top, pad_bottom);
 
   const PadStrideInfo upsample_info(stride_x, stride_y, pad_left, pad_right, pad_top, pad_bottom,
                                     DimensionRoundingType::FLOOR);

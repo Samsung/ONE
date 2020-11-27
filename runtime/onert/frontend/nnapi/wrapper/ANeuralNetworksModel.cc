@@ -27,7 +27,7 @@
 // ANeuralNetworksModel
 //
 ANeuralNetworksModel::ANeuralNetworksModel() noexcept
-    : _optional_operands{}, _operand_usages{}, _allowFloat32toFloat16{false}
+  : _optional_operands{}, _operand_usages{}, _allowFloat32toFloat16{false}
 {
   _graph = std::make_shared<onert::ir::Graph>();
 }
@@ -72,12 +72,12 @@ bool ANeuralNetworksModel::setOperandValue(uint32_t index, const void *buffer, s
     if (copy)
     {
       _graph->operands().at(ind).data(
-          std::make_unique<CachedData>(reinterpret_cast<const uint8_t *>(buffer), length));
+        std::make_unique<CachedData>(reinterpret_cast<const uint8_t *>(buffer), length));
     }
     else
     {
       _graph->operands().at(ind).data(
-          std::make_unique<ExternalData>(reinterpret_cast<const uint8_t *>(buffer), length));
+        std::make_unique<ExternalData>(reinterpret_cast<const uint8_t *>(buffer), length));
     }
   }
   catch (const std::exception &e)
@@ -111,9 +111,9 @@ bool ANeuralNetworksModel::addOperation(ANeuralNetworksOperationType type, uint3
     if (type == ANEURALNETWORKS_FULLY_CONNECTED)
     {
       const auto &input_operand =
-          _graph->operands().at(node->getInputs().at(onert::ir::operation::FullyConnected::INPUT));
+        _graph->operands().at(node->getInputs().at(onert::ir::operation::FullyConnected::INPUT));
       auto &weights_operand =
-          _graph->operands().at(node->getInputs().at(onert::ir::operation::FullyConnected::WEIGHT));
+        _graph->operands().at(node->getInputs().at(onert::ir::operation::FullyConnected::WEIGHT));
       if (input_operand.typeInfo().type() == onert::ir::DataType::FLOAT32 &&
           weights_operand.typeInfo().type() == onert::ir::DataType::QUANT_UINT8_ASYMM)
       {

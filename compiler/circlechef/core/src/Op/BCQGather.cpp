@@ -24,7 +24,7 @@ flatbuffers::Offset<void> BCQGatherChef::value(flatbuffers::FlatBufferBuilder &f
 
   circle::BCQGatherOptionsBuilder bcq_gather_options_builder{fbb};
   bcq_gather_options_builder.add_input_hidden_size(
-      operation.bcq_gather_options().input_hidden_size());
+    operation.bcq_gather_options().input_hidden_size());
   bcq_gather_options_builder.add_axis(operation.bcq_gather_options().axis());
 
   return bcq_gather_options_builder.Finish().Union();

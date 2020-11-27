@@ -30,7 +30,7 @@ namespace tf
 {
 
 void OutputTensorContext::getConstFloatTensor(
-    uint32_t n, const nnkit::TensorContext::TypedReader<float> &f) const
+  uint32_t n, const nnkit::TensorContext::TypedReader<float> &f) const
 { // for output
   using nncc::core::ADT::tensor::LexicalLayout;
   using nncc::core::ADT::tensor::make_overlay;

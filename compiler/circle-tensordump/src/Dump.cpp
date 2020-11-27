@@ -253,7 +253,7 @@ void write_vector_data_to_hdf5(H5::H5File &file, std::string &group_name, std::s
     return;
   auto dataspace = std::make_unique<H5::DataSpace>(dims.size(), dims.data());
   auto dataset = std::make_unique<H5::DataSet>(
-      file.createDataSet(group_name + "/" + dataset_name, type, *dataspace));
+    file.createDataSet(group_name + "/" + dataset_name, type, *dataspace));
   dataset->write(data->data(), type);
 }
 
@@ -264,7 +264,7 @@ void write_scalar_data_to_hdf5(H5::H5File &file, std::string &group_name, std::s
 {
   auto dataspace = std::make_unique<H5::DataSpace>(H5S_SCALAR);
   auto dataset = std::make_unique<H5::DataSet>(
-      file.createDataSet(group_name + "/" + dataset_name, type, *dataspace));
+    file.createDataSet(group_name + "/" + dataset_name, type, *dataspace));
   dataset->write(&data, type);
 }
 
@@ -308,7 +308,7 @@ void DumpTensorsToHdf5::run(std::ostream &os, const circle::Model *model,
       // create a group for each tensor whose name is its tensor name
       std::string group_name = ::mangle(tensor->name()->c_str());
       std::unique_ptr<H5::Group> tensor_group =
-          std::make_unique<H5::Group>(file.createGroup(group_name));
+        std::make_unique<H5::Group>(file.createGroup(group_name));
 
       // write a buffer data
       uint32_t buff_idx = tensor->buffer();

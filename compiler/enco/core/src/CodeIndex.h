@@ -30,7 +30,7 @@ public:
 
 public:
   CodeIndex(const coco::BlockIndex &blk_ind, const coco::InstrIndex &ins_ind)
-      : _blk_ind{blk_ind}, _ins_ind{ins_ind}
+    : _blk_ind{blk_ind}, _ins_ind{ins_ind}
   {
   }
 

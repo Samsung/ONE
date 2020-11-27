@@ -66,9 +66,9 @@ void FillLayer::run()
       break;
     case OperandType::UINT32:
       nnfw::cker::Fill<uint32_t *>(
-          getTensorShape(_input), reinterpret_cast<int *>(_input->buffer()),
-          reinterpret_cast<uint32_t *>(_value->buffer()), getTensorShape(_output),
-          reinterpret_cast<uint32_t *>(_output->buffer()));
+        getTensorShape(_input), reinterpret_cast<int *>(_input->buffer()),
+        reinterpret_cast<uint32_t *>(_value->buffer()), getTensorShape(_output),
+        reinterpret_cast<uint32_t *>(_output->buffer()));
       break;
     default:
       throw std::runtime_error{"Fill: unsupported data type"};

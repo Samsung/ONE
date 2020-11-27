@@ -54,8 +54,8 @@ public:
     context->tensor_registry = tr;
     context->tensor_builder = tb;
     context->constant_initializer = std::make_shared<ConstantInitializer>(operands, tr);
-    context->kernel_gen = std::make_shared<KernelGenerator>(operands, operations, tb, tr,
-                                                            context->external_context());
+    context->kernel_gen =
+      std::make_shared<KernelGenerator>(operands, operations, tb, tr, context->external_context());
     context->optimizer = nullptr;
     return context;
   }

@@ -51,7 +51,7 @@ class GeneratedModelImpl final : public tflchef::GeneratedModel::Impl
 {
 public:
   GeneratedModelImpl(std::unique_ptr<flatbuffers::FlatBufferBuilder> &&builder)
-      : _builder{std::move(builder)}
+    : _builder{std::move(builder)}
   {
     // DO NOTHING
   }
@@ -399,21 +399,21 @@ template <typename T> void cook_graph(const T &graph, CookParams &cp)
       {
         // Create array segments
         auto tflite_array_segments =
-            as_tflite_sparse_index_vec(*flatbuffer_builder, dm.array_segments());
+          as_tflite_sparse_index_vec(*flatbuffer_builder, dm.array_segments());
 
         // Create array indices
         auto tflite_array_indices =
-            as_tflite_sparse_index_vec(*flatbuffer_builder, dm.array_indices());
+          as_tflite_sparse_index_vec(*flatbuffer_builder, dm.array_indices());
 
         auto tflite_dim_metadata_builder = tflite::DimensionMetadataBuilder{*flatbuffer_builder};
         tflite_dim_metadata_builder.add_format(as_tflite_dimensiontype(dm.format()));
         tflite_dim_metadata_builder.add_dense_size(dm.dense_size());
         tflite_dim_metadata_builder.add_array_segments(tflite_array_segments);
         tflite_dim_metadata_builder.add_array_segments_type(
-            as_tflite_sparse_idx_vec_type(dm.array_segments().type()));
+          as_tflite_sparse_idx_vec_type(dm.array_segments().type()));
         tflite_dim_metadata_builder.add_array_indices(tflite_array_indices);
         tflite_dim_metadata_builder.add_array_indices_type(
-            as_tflite_sparse_idx_vec_type(dm.array_indices().type()));
+          as_tflite_sparse_idx_vec_type(dm.array_indices().type()));
         auto tflite_dim_metadata = tflite_dim_metadata_builder.Finish();
         dim_metadata_vec.emplace_back(tflite_dim_metadata);
       }
@@ -538,7 +538,7 @@ GeneratedModel cook(const ::tflchef::ModelRecipe &model_recipe)
 // Initialize Data Chef Registry
 #define DATA_CHEF(TYPE, NAME, FACTORY_CLASS) \
   data_chef_registry(::tflchef::TYPE)        \
-      .add(#NAME, std::unique_ptr<FACTORY_CLASS>(new FACTORY_CLASS()));
+    .add(#NAME, std::unique_ptr<FACTORY_CLASS>(new FACTORY_CLASS()));
 #include <souschef/DataChef.def>
 #undef DATA_CHEF
 
@@ -546,7 +546,7 @@ GeneratedModel cook(const ::tflchef::ModelRecipe &model_recipe)
   // Create FlatBufferBuilder
   //
   auto flatbuffer_builder =
-      std::unique_ptr<flatbuffers::FlatBufferBuilder>(new flatbuffers::FlatBufferBuilder(1024));
+    std::unique_ptr<flatbuffers::FlatBufferBuilder>(new flatbuffers::FlatBufferBuilder(1024));
 
   // Operand-related
   std::vector<flatbuffers::Offset<::tflite::Buffer>> buffer_vec;
@@ -640,7 +640,7 @@ GeneratedModel cook(const ::tflchef::ModelRecipe &model_recipe)
 
   // Return "GenerateModel"
   return GeneratedModel{
-      std::unique_ptr<GeneratedModelImpl>(new GeneratedModelImpl(std::move(flatbuffer_builder)))};
+    std::unique_ptr<GeneratedModelImpl>(new GeneratedModelImpl(std::move(flatbuffer_builder)))};
 }
 
 } // namespace tflchef

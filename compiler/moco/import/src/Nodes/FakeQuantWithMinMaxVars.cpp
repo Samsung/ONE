@@ -39,7 +39,7 @@ class TFFakeQuantWithMinMaxVarsGraphUpdate final : public GraphUpdate
 public:
   TFFakeQuantWithMinMaxVarsGraphUpdate(TFFakeQuantWithMinMaxVars *node,
                                        std::vector<TensorName> names)
-      : _node(node), _names(names)
+    : _node(node), _names(names)
   {
   }
 
@@ -115,7 +115,7 @@ void FakeQuantWithMinMaxVarsGraphBuilder::build(const tensorflow::NodeDef &node,
 
   // Record ifm inputs to featureEncode_node
   auto tffakequant_update =
-      stdex::make_unique<TFFakeQuantWithMinMaxVarsGraphUpdate>(fakequant_node, input_names);
+    stdex::make_unique<TFFakeQuantWithMinMaxVarsGraphUpdate>(fakequant_node, input_names);
 
   updates->enroll(std::move(tffakequant_update));
 }

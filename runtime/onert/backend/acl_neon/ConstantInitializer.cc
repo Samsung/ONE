@@ -25,7 +25,7 @@ namespace acl_neon
 
 ConstantInitializer::ConstantInitializer(const ir::Operands &operands,
                                          const std::shared_ptr<ITensorRegistry> &tensor_reg)
-    : acl_common::AclConstantInitializer{operands, tensor_reg}
+  : acl_common::AclConstantInitializer{operands, tensor_reg}
 {
   // DO NOTHING
 }
@@ -72,11 +72,11 @@ void ConstantInitializer::visit(const ir::operation::SpaceToBatchND &node)
           {
             const int32_t value = base[i * 2 + j];
             int32_t *into = reinterpret_cast<int32_t *>(
-                // The coordinates of NETensor are different from the coordiantes of CLTensor in
-                // this operand.
-                // NEON : {j, reversed i}
-                // CL : {reversed i, j}
-                tensor.buffer() + tensor.calcOffset({j, shape.dim(0) - i - 1}));
+              // The coordinates of NETensor are different from the coordiantes of CLTensor in
+              // this operand.
+              // NEON : {j, reversed i}
+              // CL : {reversed i, j}
+              tensor.buffer() + tensor.calcOffset({j, shape.dim(0) - i - 1}));
             *into = value;
           }
         }

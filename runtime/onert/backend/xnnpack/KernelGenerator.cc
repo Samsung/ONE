@@ -39,9 +39,9 @@ KernelGenerator::KernelGenerator(const ir::Operands &operands_ctx,
                                  const std::shared_ptr<TensorBuilder> &tensor_builder,
                                  const std::shared_ptr<cpu_common::TensorRegistry> &tensor_reg,
                                  const std::shared_ptr<ExternalContext> &external_context)
-    : _ctx(operands_ctx), _operations_ctx{operations_ctx},
-      _tensor_builder(tensor_builder), _tensor_reg{tensor_reg},
-      _current_op_seq_layout(ir::Layout::UNKNOWN), _external_context(external_context)
+  : _ctx(operands_ctx), _operations_ctx{operations_ctx},
+    _tensor_builder(tensor_builder), _tensor_reg{tensor_reg},
+    _current_op_seq_layout(ir::Layout::UNKNOWN), _external_context(external_context)
 {
   // DO NOTHING
 }
@@ -109,8 +109,8 @@ void KernelGenerator::visit(const ir::operation::Conv2D &node)
   const auto ker_width = ker_shape.dim(2);
 
   const auto padding =
-      ir::calculatePadding(param_padding, ifm_shape, ofm_shape, stride, ker_width, ker_height,
-                           dilation.width_factor, dilation.height_factor);
+    ir::calculatePadding(param_padding, ifm_shape, ofm_shape, stride, ker_width, ker_height,
+                         dilation.width_factor, dilation.height_factor);
 
   fn->configure(ifm_tensor, ker_tensor, bias_tensor, param_padding.type, padding.left,
                 padding.right, padding.top, padding.bottom, stride.horizontal, stride.vertical,

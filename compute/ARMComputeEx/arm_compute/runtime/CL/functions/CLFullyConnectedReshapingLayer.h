@@ -43,8 +43,8 @@ public:
 
 public:
   CLFullyConnectedReshapingLayer(std::shared_ptr<IMemoryManager> memory_manager = nullptr)
-      : _input(nullptr), _weights(nullptr), _biases(nullptr), _output(nullptr), _cl_buffer{},
-        _memory_manager{memory_manager}, _cl_fc{nullptr}, _cl_reshape{}, _needs_reshape(false)
+    : _input(nullptr), _weights(nullptr), _biases(nullptr), _output(nullptr), _cl_buffer{},
+      _memory_manager{memory_manager}, _cl_fc{nullptr}, _cl_reshape{}, _needs_reshape(false)
   {
     // DO NOTHING
   }

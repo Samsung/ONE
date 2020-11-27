@@ -30,14 +30,14 @@ TEST(FloorTest, SimpleFloat)
 {
   std::initializer_list<int32_t> input_shape{1, 2, 4, 1};
   std::vector<float> input_data{
-      0.2, 8.6, 2.4,  4.3,  // Row 1
-      3,   7.1, 10.5, -0.9, // Row 2
+    0.2, 8.6, 2.4,  4.3,  // Row 1
+    3,   7.1, 10.5, -0.9, // Row 2
   };
 
   std::initializer_list<int32_t> ref_output_shape{1, 2, 4, 1};
   std::vector<float> ref_output_data{
-      0, 8, 2,  4,  // Row 1
-      3, 7, 10, -1, // Row 2
+    0, 8, 2,  4,  // Row 1
+    3, 7, 10, -1, // Row 2
   };
 
   Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);

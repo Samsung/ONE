@@ -60,7 +60,7 @@ template <> void pack<float>(tensorflow::TensorProto *input_tensor)
     }
 
     input_tensor->set_tensor_content(std::string(
-        reinterpret_cast<const char *>(tensor_content.data()), sizeof(float) * input_flat_size));
+      reinterpret_cast<const char *>(tensor_content.data()), sizeof(float) * input_flat_size));
 
     input_tensor->clear_float_val();
   }
@@ -99,7 +99,7 @@ template <> void pack<int32_t>(tensorflow::TensorProto *input_tensor)
     }
 
     input_tensor->set_tensor_content(std::string(
-        reinterpret_cast<const char *>(tensor_content.data()), sizeof(int32_t) * input_flat_size));
+      reinterpret_cast<const char *>(tensor_content.data()), sizeof(int32_t) * input_flat_size));
 
     input_tensor->clear_int_val();
   }

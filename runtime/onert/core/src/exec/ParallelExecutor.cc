@@ -31,7 +31,7 @@ class HookFunction : public IFunction
 public:
   HookFunction(IFunction *fn, const std::function<void()> &setup,
                const std::function<void()> &teardown)
-      : _fn{fn}, _setup{setup}, _teardown{teardown}
+    : _fn{fn}, _setup{setup}, _teardown{teardown}
   {
   }
 
@@ -62,7 +62,7 @@ void ParallelExecutor::notify(uint32_t finished_job_id)
 ParallelExecutor::ParallelExecutor(std::unique_ptr<compiler::LoweredGraph> lowered_graph,
                                    const compiler::TensorRegistries &tensor_regs,
                                    compiler::CodeMap &&code_map)
-    : DataflowExecutor{std::move(lowered_graph), tensor_regs, std::move(code_map)}
+  : DataflowExecutor{std::move(lowered_graph), tensor_regs, std::move(code_map)}
 {
   VERBOSE(ParallelExecutor) << "Constructing Parallel Executor" << std::endl;
 }

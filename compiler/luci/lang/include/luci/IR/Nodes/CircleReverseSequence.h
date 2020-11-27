@@ -29,7 +29,7 @@ namespace luci
  * @brief REVERSE_SEQUENCE in Circle
  */
 class CircleReverseSequence final
-    : public FixedArityNode<2, CircleNodeImpl<CircleOpcode::REVERSE_SEQUENCE>>
+  : public FixedArityNode<2, CircleNodeImpl<CircleOpcode::REVERSE_SEQUENCE>>
 {
 public:
   CircleReverseSequence() = default;

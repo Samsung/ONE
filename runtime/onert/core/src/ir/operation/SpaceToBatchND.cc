@@ -31,7 +31,7 @@ void SpaceToBatchND::accept(OperationVisitor &v) const { v.visit(*this); }
 
 SpaceToBatchND::SpaceToBatchND(const OperandIndexSequence &inputs,
                                const OperandIndexSequence &outputs)
-    : Operation{OperandConstraint::createExact(3u), inputs, outputs}
+  : Operation{OperandConstraint::createExact(3u), inputs, outputs}
 {
 }
 

@@ -26,9 +26,9 @@ flatbuffers::Offset<void> BCQFullyConnectedChef::value(flatbuffers::FlatBufferBu
 
   circle::BCQFullyConnectedOptionsBuilder bcq_fully_connected_options_builder{fbb};
   bcq_fully_connected_options_builder.add_weights_hidden_size(
-      operation.bcq_fully_connected_options().weights_hidden_size());
+    operation.bcq_fully_connected_options().weights_hidden_size());
   bcq_fully_connected_options_builder.add_fused_activation_function(
-      as_circle_activation(operation.bcq_fully_connected_options().activation()));
+    as_circle_activation(operation.bcq_fully_connected_options().activation()));
 
   return bcq_fully_connected_options_builder.Finish().Union();
 }

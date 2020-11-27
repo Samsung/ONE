@@ -68,7 +68,7 @@ node {
  *        Note that this convention is against loco canonical's convention.
  */
 class TFConv2DBackpropInput final
-    : public FixedArityNode<3, TFNodeImpl<TFOpcode::Conv2DBackpropInput>>
+  : public FixedArityNode<3, TFNodeImpl<TFOpcode::Conv2DBackpropInput>>
 {
 public:
   loco::Node *input_sizes(void) const { return at(0)->node(); }

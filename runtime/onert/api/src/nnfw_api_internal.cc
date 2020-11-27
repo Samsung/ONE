@@ -156,8 +156,8 @@ void setConfigKeyValues(const CfgKeyValues &keyValues)
 } // namespace
 
 nnfw_session::nnfw_session()
-    : _subgraphs{nullptr}, _execution{nullptr},
-      _kernel_registry{std::make_shared<onert::frontend::custom::KernelRegistry>()}
+  : _subgraphs{nullptr}, _execution{nullptr},
+    _kernel_registry{std::make_shared<onert::frontend::custom::KernelRegistry>()}
 {
   // DO NOTHING
 }
@@ -383,8 +383,8 @@ NNFW_STATUS nnfw_session::set_input(uint32_t index, NNFW_TYPE /*type*/, const vo
   if (!buffer && length != 0)
   {
     std::cerr
-        << "Error during nnfw_session::set_input : given buffer is NULL but the length is not 0"
-        << std::endl;
+      << "Error during nnfw_session::set_input : given buffer is NULL but the length is not 0"
+      << std::endl;
     return NNFW_STATUS_ERROR;
   }
 
@@ -412,8 +412,8 @@ NNFW_STATUS nnfw_session::set_output(uint32_t index, NNFW_TYPE /*type*/, void *b
   if (!buffer && length != 0)
   {
     std::cerr
-        << "Error during nnfw_session::set_output : given buffer is NULL but the length is not 0"
-        << std::endl;
+      << "Error during nnfw_session::set_output : given buffer is NULL but the length is not 0"
+      << std::endl;
     return NNFW_STATUS_ERROR;
   }
 

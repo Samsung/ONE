@@ -29,12 +29,12 @@ build_circle_UnidirectionalSequenceLSTMOptions(flatbuffers::FlatBufferBuilder &f
   auto tflite_builtin_options = op->builtin_options_as_UnidirectionalSequenceLSTMOptions();
   circle::UnidirectionalSequenceLSTMOptionsBuilder builtin_options_builder{fb};
   builtin_options_builder.add_fused_activation_function(
-      get_circle_activation_function_type(tflite_builtin_options->fused_activation_function()));
+    get_circle_activation_function_type(tflite_builtin_options->fused_activation_function()));
   builtin_options_builder.add_cell_clip(tflite_builtin_options->cell_clip());
   builtin_options_builder.add_proj_clip(tflite_builtin_options->proj_clip());
   builtin_options_builder.add_time_major(tflite_builtin_options->time_major());
   builtin_options_builder.add_asymmetric_quantize_inputs(
-      tflite_builtin_options->asymmetric_quantize_inputs());
+    tflite_builtin_options->asymmetric_quantize_inputs());
   return builtin_options_builder.Finish();
 }
 

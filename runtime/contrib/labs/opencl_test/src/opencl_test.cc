@@ -199,7 +199,7 @@ void checkContextMem()
   try
   {
     auto kernel_functor = cl::KernelFunctor<cl_int, cl::Buffer, cl::Buffer, cl_int, cl_int>(
-        gpu.program_, "memory_test"); // name should be same as cl function name
+      gpu.program_, "memory_test"); // name should be same as cl function name
 
     // create a queue per device and queue a kernel job
 
@@ -256,7 +256,7 @@ void printHelp()
   std::cout << "opencl information: \n\n";
   std::cout << "\t -h : help\n";
   std::cout
-      << "\t -g : print if memory map is shared among devices in GPU (in default platform)\n\n";
+    << "\t -g : print if memory map is shared among devices in GPU (in default platform)\n\n";
   std::cout << "\t -s : test for synchronized work by two devices in a GPU\n\n";
 }
 
@@ -270,7 +270,7 @@ void printHelp()
 int kernel_idx[MAX_DEVICE_NUM];
 unsigned char kernel_completed = 0x00; // bit 0 = 1 means kernel by device[0] was completed.
 unsigned char
-    kernel_completed_flag; // if comparing kernel_completed with this var, all kernels are completed
+  kernel_completed_flag; // if comparing kernel_completed with this var, all kernels are completed
 int device_num;
 std::mutex kernel_complete_handler_mutex;
 
@@ -319,7 +319,7 @@ void testSync()
   try
   {
     auto kernel_functor = cl::KernelFunctor<cl::Buffer, cl_int>(
-        gpu.program_, "test"); // name should be same as cl function name
+      gpu.program_, "test"); // name should be same as cl function name
 
     // variable init
     cl::Event ev[MAX_DEVICE_NUM];

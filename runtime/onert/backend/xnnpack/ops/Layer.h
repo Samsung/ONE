@@ -40,7 +40,7 @@ class Layer : public ::onert::exec::IFunction
 {
 public:
   Layer(const std::shared_ptr<ExternalContext> external_context)
-      : _kernel_op{nullptr}, _prepare{false}, _external_context{external_context}
+    : _kernel_op{nullptr}, _prepare{false}, _external_context{external_context}
   {
     // DO NOTHING
   }

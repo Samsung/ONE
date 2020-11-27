@@ -33,7 +33,7 @@ class TFSquaredDifferenceGraphUpdate final : public GraphUpdate
 {
 public:
   TFSquaredDifferenceGraphUpdate(TFSquaredDifference *node, std::vector<TensorName> names)
-      : _node(node), _names(names)
+    : _node(node), _names(names)
   {
   }
 
@@ -85,7 +85,7 @@ void SquaredDifferenceGraphBuilder::build(const tensorflow::NodeDef &node,
 
   // Queue node input update
   auto tf_sqrt_update =
-      stdex::make_unique<TFSquaredDifferenceGraphUpdate>(tf_sqdiff, add_input_names);
+    stdex::make_unique<TFSquaredDifferenceGraphUpdate>(tf_sqdiff, add_input_names);
   updates->enroll(std::move(tf_sqrt_update));
 }
 

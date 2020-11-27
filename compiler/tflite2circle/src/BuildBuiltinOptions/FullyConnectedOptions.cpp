@@ -29,14 +29,14 @@ build_circle_FullyConnectedOptions(flatbuffers::FlatBufferBuilder &fb, const tfl
   assert(tflite_builtin_options);
   circle::FullyConnectedOptionsBuilder builtin_options_builder{fb};
   builtin_options_builder.add_fused_activation_function(
-      get_circle_activation_function_type(tflite_builtin_options->fused_activation_function()));
+    get_circle_activation_function_type(tflite_builtin_options->fused_activation_function()));
   // Get FullyConnectedOptionsWeightsFormat
   auto tflite_weight_format = tflite_builtin_options->weights_format();
   if (tflite_weight_format == tflite::FullyConnectedOptionsWeightsFormat_DEFAULT)
     builtin_options_builder.add_weights_format(circle::FullyConnectedOptionsWeightsFormat_DEFAULT);
   else if (tflite_weight_format == tflite::FullyConnectedOptionsWeightsFormat_SHUFFLED4x16INT8)
     builtin_options_builder.add_weights_format(
-        circle::FullyConnectedOptionsWeightsFormat_SHUFFLED4x16INT8);
+      circle::FullyConnectedOptionsWeightsFormat_SHUFFLED4x16INT8);
   return builtin_options_builder.Finish();
 }
 

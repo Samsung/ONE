@@ -27,9 +27,9 @@ TEST_F(GenModelTest, OneOp_Equal)
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
   _context->addTestCase(TestCaseData{}
-                            .addInput<float>({0.1, 0.3, 0.5, 0.7})
-                            .addInput<float>({0.1, 0.2, 0.3, 0.4})
-                            .addOutput<bool>({true, false, false, false}));
+                          .addInput<float>({0.1, 0.3, 0.5, 0.7})
+                          .addInput<float>({0.1, 0.2, 0.3, 0.4})
+                          .addOutput<bool>({true, false, false, false}));
   _context->setBackends({"acl_cl", "acl_neon", "cpu"});
 
   SUCCEED();

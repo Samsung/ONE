@@ -25,7 +25,7 @@ namespace operation
 void Unpack::accept(OperationVisitor &v) const { v.visit(*this); }
 Unpack::Unpack(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs,
                const Param &param)
-    : Operation{OperandConstraint::createExact(1u), inputs, outputs}, _param{param}
+  : Operation{OperandConstraint::createExact(1u), inputs, outputs}, _param{param}
 {
 }
 } // namespace operation

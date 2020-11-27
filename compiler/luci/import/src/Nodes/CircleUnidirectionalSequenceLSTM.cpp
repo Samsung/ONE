@@ -32,7 +32,7 @@ bool CircleUnidirectionalSequenceLSTMGraphBuilder::validate(const ValidateArgs &
 }
 
 CircleNode *CircleUnidirectionalSequenceLSTMGraphBuilder::build_node(
-    const circle::OperatorT &op, const std::vector<CircleNode *> &inputs, loco::Graph *graph) const
+  const circle::OperatorT &op, const std::vector<CircleNode *> &inputs, loco::Graph *graph) const
 {
   auto *node = graph->nodes()->create<CircleUnidirectionalSequenceLSTM>();
   node->input(inputs.at(0));

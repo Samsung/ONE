@@ -54,8 +54,8 @@ std::unique_ptr<locomotiv::NodeData> filter_encode(const loco::FilterEncode *nod
 
   // Make NHWC buffer from FilterShape
   Buffer<T> node_buf =
-      make_buffer<T, LexicalLayout>(Shape{node_shape.count().value(), node_shape.height().value(),
-                                          node_shape.width().value(), node_shape.depth().value()});
+    make_buffer<T, LexicalLayout>(Shape{node_shape.count().value(), node_shape.height().value(),
+                                        node_shape.width().value(), node_shape.depth().value()});
 
   // Copy buffer in an order arranged by encoder
   for (IndexEnumerator e{node_buf.shape()}; e.valid(); e.advance())

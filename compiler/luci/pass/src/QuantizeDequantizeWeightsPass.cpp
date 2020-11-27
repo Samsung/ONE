@@ -36,7 +36,7 @@ void cal_minmax_per_channel(CircleConst *node, std::vector<float> &min, std::vec
   loco::TensorShape dimension;
   dimension.rank(4);
   uint32_t indices[4] = {
-      0,
+    0,
   };
   int channel_dim_index{0};
   int size{0};
@@ -97,7 +97,7 @@ void sym_wquant_per_channel(CircleConst *node, std::vector<float> &min, std::vec
   loco::TensorShape dimension;
   dimension.rank(4);
   uint32_t indices[4] = {
-      0,
+    0,
   };
   int channel_dim_index{0};
 
@@ -121,7 +121,7 @@ void sym_wquant_per_channel(CircleConst *node, std::vector<float> &min, std::vec
           data = data < nudged_min[channel_idx] ? nudged_min[channel_idx] : data;
           data = data > nudged_max[channel_idx] ? nudged_max[channel_idx] : data;
           quantized_values[cal_offset(dimension, indices)] =
-              static_cast<int32_t>(std::round(data * scaling_factor_inv));
+            static_cast<int32_t>(std::round(data * scaling_factor_inv));
         }
       }
     }
@@ -132,7 +132,7 @@ void sym_wquant_per_channel(CircleConst *node, std::vector<float> &min, std::vec
   for (uint32_t i = 0; i < size; ++i)
   {
     node->at<loco::DataType::S16>(i) =
-        std::min(kMaxScale, std::max(kMinScale, quantized_values[i]));
+      std::min(kMaxScale, std::max(kMinScale, quantized_values[i]));
   }
 }
 
@@ -145,7 +145,7 @@ void sym_wdequant_per_channel(CircleConst *node, std::vector<float> &scaling_fac
   loco::TensorShape dimension;
   dimension.rank(4);
   uint32_t indices[4] = {
-      0,
+    0,
   };
   int channel_dim_index{0};
 
@@ -166,7 +166,7 @@ void sym_wdequant_per_channel(CircleConst *node, std::vector<float> &scaling_fac
           int channel_idx = indices[channel_dim_index];
           auto data = node->at<loco::DataType::S16>(cal_offset(dimension, indices));
           dequantized_values[cal_offset(dimension, indices)] =
-              static_cast<float>(data) * scaling_factor[channel_idx];
+            static_cast<float>(data) * scaling_factor[channel_idx];
         }
       }
     }
@@ -201,7 +201,7 @@ void asymmetric_wquant_per_channel(CircleConst *node, std::vector<float> &min,
   loco::TensorShape dimension;
   dimension.rank(4);
   uint32_t indices[4] = {
-      0,
+    0,
   };
   int channel_dim_index{0};
 
@@ -224,8 +224,8 @@ void asymmetric_wquant_per_channel(CircleConst *node, std::vector<float> &min,
           auto data = node->at<loco::DataType::FLOAT32>(cal_offset(dimension, indices));
           data = data < nudged_min[channel_idx] ? nudged_min[channel_idx] : data;
           data = data > nudged_max[channel_idx] ? nudged_max[channel_idx] : data;
-          quantized_values[cal_offset(dimension, indices)] = static_cast<int32_t>(
-              std::round((data - nudged_min[channel_idx]) * scaling_factor_inv));
+          quantized_values[cal_offset(dimension, indices)] =
+            static_cast<int32_t>(std::round((data - nudged_min[channel_idx]) * scaling_factor_inv));
         }
       }
     }
@@ -249,7 +249,7 @@ void asymmetric_wdequant_per_channel(CircleConst *node, std::vector<float> &scal
   loco::TensorShape dimension;
   dimension.rank(4);
   uint32_t indices[4] = {
-      0,
+    0,
   };
   int channel_dim_index{0};
 
@@ -270,7 +270,7 @@ void asymmetric_wdequant_per_channel(CircleConst *node, std::vector<float> &scal
           int channel_idx = indices[channel_dim_index];
           auto data = node->at<loco::DataType::U8>(cal_offset(dimension, indices));
           dequantized_values[cal_offset(dimension, indices)] =
-              static_cast<float>(data) * scaling_factor[channel_idx] + nudged_min[channel_idx];
+            static_cast<float>(data) * scaling_factor[channel_idx] + nudged_min[channel_idx];
         }
       }
     }
@@ -311,7 +311,7 @@ struct QuantizeDequantizeWeights final : public luci::CircleNodeMutableVisitor<b
 {
   QuantizeDequantizeWeights(loco::DataType input, loco::DataType output,
                             QuantizationGranularity granularity)
-      : input_type(input), output_type(output), granularity(granularity)
+    : input_type(input), output_type(output), granularity(granularity)
   {
   }
 

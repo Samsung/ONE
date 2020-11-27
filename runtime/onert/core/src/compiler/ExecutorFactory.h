@@ -58,10 +58,10 @@ private:
 
 private:
   std::unordered_map<std::string, std::function<exec::IExecutor *(
-                                      std::unique_ptr<compiler::LoweredGraph>,
-                                      const compiler::CompilerOptions &options,
-                                      const std::shared_ptr<exec::ExecutorMap> &executor_map)>>
-      _map;
+                                    std::unique_ptr<compiler::LoweredGraph>,
+                                    const compiler::CompilerOptions &options,
+                                    const std::shared_ptr<exec::ExecutorMap> &executor_map)>>
+    _map;
 };
 
 } // namespace compiler

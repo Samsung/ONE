@@ -33,14 +33,14 @@ class DeConv2DOp : public Operation
 {
 public:
   DeConv2DOp(Output *input, Output *kernel, const Deconv2DOpAttributes &attributes)
-      : Operation(Type::deConv2D, {input, kernel}), _attributes(attributes)
+    : Operation(Type::deConv2D, {input, kernel}), _attributes(attributes)
   {
     inferOutputTypes();
   }
 
   DeConv2DOp(Output *input, Output *kernel, const Deconv2DOpAttributes &attributes,
              const Shape &output_shape)
-      : Operation(Type::deConv2D, {input, kernel}), _attributes(attributes)
+    : Operation(Type::deConv2D, {input, kernel}), _attributes(attributes)
   {
     assert(input->getElementType() == kernel->getElementType());
     setOutputType(0, {input->getElementType(), output_shape});

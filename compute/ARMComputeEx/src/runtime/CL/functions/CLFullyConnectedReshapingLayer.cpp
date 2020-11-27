@@ -41,7 +41,7 @@ void CLFullyConnectedReshapingLayer::configure(const arm_compute::ICLTensor *inp
     // reshape
     auto_init_if_empty(*_cl_buffer.info(),
                        _input->info()->clone()->set_tensor_shape(reshape).set_data_layout(
-                           _input->info()->data_layout()));
+                         _input->info()->data_layout()));
     _cl_reshape.configure(_input, &_cl_buffer);
     input_to_use = &_cl_buffer;
   }

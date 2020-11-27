@@ -51,11 +51,10 @@ public:
    * @param[in] backend_resolver backend resolver
    */
   HEScheduler(const backend::BackendContexts &backend_contexts, const CompilerOptions &options)
-      : _is_supported{}, _backends_avail_time{}, _ops_eft{},
-        _op_to_rank{std::make_shared<ir::OperationIndexMap<int64_t>>()},
-        _is_profiling_mode{options.he_profiling_mode},
-        _is_linear_exec{options.executor == "Linear"}, _is_parallel_exec{options.executor ==
-                                                                         "Parallel"}
+    : _is_supported{}, _backends_avail_time{}, _ops_eft{},
+      _op_to_rank{std::make_shared<ir::OperationIndexMap<int64_t>>()},
+      _is_profiling_mode{options.he_profiling_mode}, _is_linear_exec{options.executor == "Linear"},
+      _is_parallel_exec{options.executor == "Parallel"}
   {
     for (auto &entry : backend_contexts)
     {
@@ -67,9 +66,10 @@ public:
     _exec_time = std::make_unique<exec::ExecTime>(_all_backends);
 
     // Find cpu backend
-    auto cpu_backend_it = std::find_if(
-        _all_backends.begin(), _all_backends.end(),
-        [](const backend::Backend *backend) { return backend->config()->id() == "cpu"; });
+    auto cpu_backend_it =
+      std::find_if(_all_backends.begin(), _all_backends.end(), [](const backend::Backend *backend) {
+        return backend->config()->id() == "cpu";
+      });
     if (cpu_backend_it == _all_backends.end())
       throw std::runtime_error("HEScheduler could be used only if 'cpu' backend is available");
     _cpu_backend = *cpu_backend_it;

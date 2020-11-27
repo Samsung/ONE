@@ -44,9 +44,9 @@ public:
                  std::shared_ptr<IConstantInitializer> constant_initializer = nullptr,
                  std::shared_ptr<IKernelGenerator> kernel_gen = nullptr,
                  std::shared_ptr<IOptimizer> optimizer = nullptr)
-      : onert::backend::BackendContext(backend, graph, tensor_registry, tensor_builder,
-                                       constant_initializer, kernel_gen, optimizer),
-        _external_context(nullptr)
+    : onert::backend::BackendContext(backend, graph, tensor_registry, tensor_builder,
+                                     constant_initializer, kernel_gen, optimizer),
+      _external_context(nullptr)
   {
     int num_threads = util::getConfigInt(util::config::XNNPACK_THREADS);
     if (num_threads < 1)

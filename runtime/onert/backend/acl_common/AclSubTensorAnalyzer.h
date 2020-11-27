@@ -95,7 +95,7 @@ public:
       coordinate_info.set(axis, axis_point);
 
       _parent_map.emplace(
-          input_index, acl_common::ParentInfo{output_index, _current_op_layout, coordinate_info});
+        input_index, acl_common::ParentInfo{output_index, _current_op_layout, coordinate_info});
 
       axis_point += input_shape.dim(axis);
     }

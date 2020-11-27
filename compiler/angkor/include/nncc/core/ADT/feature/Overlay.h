@@ -34,7 +34,7 @@ template <typename T> class Overlay final : public View<T>
 {
 public:
   explicit Overlay(const Shape &shape, const Layout &layout, T *base)
-      : View<T>{shape, layout}, _base{base}
+    : View<T>{shape, layout}, _base{base}
   {
     // DO NOTHING
   }

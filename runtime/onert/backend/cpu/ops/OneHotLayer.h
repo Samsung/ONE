@@ -34,8 +34,8 @@ class OneHotLayer : public ::onert::exec::IFunction
 {
 public:
   OneHotLayer()
-      : _indices(nullptr), _depth(nullptr), _on_value(nullptr), _off_value(nullptr),
-        _output(nullptr), _axis(-1)
+    : _indices(nullptr), _depth(nullptr), _on_value(nullptr), _off_value(nullptr), _output(nullptr),
+      _axis(-1)
   {
     // DO NOTHING
   }

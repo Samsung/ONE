@@ -29,7 +29,7 @@ namespace luci
  * @brief MATRIX_SET_DIAG in Circle
  */
 class CircleMatrixSetDiag final
-    : public FixedArityNode<2, CircleNodeImpl<CircleOpcode::MATRIX_SET_DIAG>>
+  : public FixedArityNode<2, CircleNodeImpl<CircleOpcode::MATRIX_SET_DIAG>>
 {
 public:
   loco::Node *input(void) const { return at(0)->node(); }

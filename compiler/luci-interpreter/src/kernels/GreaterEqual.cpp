@@ -28,7 +28,7 @@ namespace kernels
 {
 
 GreaterEqual::GreaterEqual(const Tensor *x, const Tensor *y, Tensor *output)
-    : Kernel({x, y}, {output})
+  : Kernel({x, y}, {output})
 {
 }
 
@@ -101,8 +101,8 @@ void GreaterEqual::evalQuantized() const
   if (op_params.is_broadcast)
   {
     tflite::reference_ops::Broadcast4DSlowGreaterEqualWithScaling(
-        op_params, getTensorShape(x()), x_data, getTensorShape(y()), y_data,
-        getTensorShape(output()), output_data);
+      op_params, getTensorShape(x()), x_data, getTensorShape(y()), y_data, getTensorShape(output()),
+      output_data);
   }
   else
   {

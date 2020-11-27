@@ -123,8 +123,8 @@ CompilerOptions fetchCompilerOptionsFromGlobalConfig(const ir::Subgraphs &subgs)
       auto key = static_cast<uint32_t>(std::stoi(key_str));
 
       subgs.at(ir::SubgraphIndex{0})
-          ->operations()
-          .at(ir::OperationIndex{key}); // Check if exist, or this wil throw
+        ->operations()
+        .at(ir::OperationIndex{key}); // Check if exist, or this wil throw
       ms_options.index_to_backend.emplace(ir::OperationIndex{key}, val);
     }
   }
@@ -132,7 +132,7 @@ CompilerOptions fetchCompilerOptionsFromGlobalConfig(const ir::Subgraphs &subgs)
 }
 
 Compiler::Compiler(const std::shared_ptr<ir::Subgraphs> &subgs)
-    : _subgraphs{subgs}, _state{State::CREATED}
+  : _subgraphs{subgs}, _state{State::CREATED}
 {
   // Set default values for CompilerOptions
   // All these default values should not be fetched from Env, when we stop supporting Android NN
@@ -193,9 +193,9 @@ std::shared_ptr<exec::ExecutorMap> Compiler::compile(void)
   _subgraphs->iterate([&](const ir::SubgraphIndex &, ir::Graph &subg) {
     // Mandatory passes
     pass::PassRunner{}
-        .append(std::make_unique<pass::ConstantOutputPass>(subg))
-        .append(std::make_unique<pass::OddOutputPass>(subg))
-        .run();
+      .append(std::make_unique<pass::ConstantOutputPass>(subg))
+      .append(std::make_unique<pass::OddOutputPass>(subg))
+      .run();
   });
 
   /***************************************************
@@ -267,10 +267,10 @@ std::shared_ptr<exec::ExecutorMap> Compiler::compile(void)
     const auto primary_subg_idx = ir::SubgraphIndex{0};
     StaticShapeInferer inferer(primary_subg_idx, lowered_subgs);
     lowered_subgs.at(primary_subg_idx)
-        ->iterateTopolOpSeqs([&](const ir::OpSequenceIndex &, ir::OpSequence &op_seq) {
-          auto has_dynamic_tensor = inferer.infer(op_seq);
-          op_seq.has_dynamic_tensor(has_dynamic_tensor);
-        });
+      ->iterateTopolOpSeqs([&](const ir::OpSequenceIndex &, ir::OpSequence &op_seq) {
+        auto has_dynamic_tensor = inferer.infer(op_seq);
+        op_seq.has_dynamic_tensor(has_dynamic_tensor);
+      });
     inferer.dump();
   }
 
@@ -301,9 +301,9 @@ std::shared_ptr<exec::ExecutorMap> Compiler::compile(void)
     ir::OperationDumper dumper("Executor generation of Subgraph " +
                                std::to_string(subg_index.value()));
     lowered_subg->graph().operations().iterate(
-        [&](const ir::OperationIndex &, const ir::Operation &op) { op.accept(dumper); });
+      [&](const ir::OperationIndex &, const ir::Operation &op) { op.accept(dumper); });
     auto executor = std::unique_ptr<exec::IExecutor>{
-        ExecutorFactory::get().create(std::move(lowered_subg), _options, executors)};
+      ExecutorFactory::get().create(std::move(lowered_subg), _options, executors)};
     executor->setIndexedRanks(indexed_ranks);
     executors->insert(std::make_pair(subg_index, std::move(executor)));
   }

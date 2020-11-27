@@ -29,7 +29,7 @@ namespace luci
  * @brief Virtual CIRCLECUSTOMOUT in Circle
  */
 class CircleCustomOut final
-    : public FixedArityNode<1, CircleNodeImpl<CircleOpcode::CIRCLECUSTOMOUT>>
+  : public FixedArityNode<1, CircleNodeImpl<CircleOpcode::CIRCLECUSTOMOUT>>
 {
 public:
   CircleCustomOut() = default;

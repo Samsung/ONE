@@ -76,8 +76,8 @@ inline const onnx::AttributeProto *findAttribute(const onnx::NodeProto &node,
 {
   const auto &attributes = node.attribute();
   const auto it = std::find_if(
-      attributes.cbegin(), attributes.cend(),
-      [&name](const onnx::AttributeProto &attribute) { return attribute.name() == name; });
+    attributes.cbegin(), attributes.cend(),
+    [&name](const onnx::AttributeProto &attribute) { return attribute.name() == name; });
   if (it == attributes.cend())
     return nullptr;
   return &*it;

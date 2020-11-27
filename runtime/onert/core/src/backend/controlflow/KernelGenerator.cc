@@ -34,8 +34,8 @@ namespace controlflow
 KernelGenerator::KernelGenerator(const ir::Graph &graph, DynamicTensorManager *dyn_tensor_manager,
                                  const std::shared_ptr<TensorRegistry> &tensor_reg,
                                  const std::shared_ptr<ExternalContext> &external_context)
-    : _graph{graph}, _dyn_tensor_manager{dyn_tensor_manager}, _tensor_reg{tensor_reg},
-      _tensor_registries{}, _executor_map{nullptr}, _external_context{external_context}
+  : _graph{graph}, _dyn_tensor_manager{dyn_tensor_manager}, _tensor_reg{tensor_reg},
+    _tensor_registries{}, _executor_map{nullptr}, _external_context{external_context}
 {
   UNUSED_RELEASE(_graph);
   UNUSED_RELEASE(_tensor_registries);
@@ -49,7 +49,7 @@ void KernelGenerator::visit(const ir::OpSequence &op_seq)
   assert(_tensor_reg);
 
   auto dyn_shape_inferer =
-      std::make_unique<exec::DynamicShapeInferer>(_graph.operands(), _tensor_reg);
+    std::make_unique<exec::DynamicShapeInferer>(_graph.operands(), _tensor_reg);
 
   _return_fn_seq = std::make_unique<exec::FunctionSequence>();
 
@@ -96,8 +96,8 @@ void KernelGenerator::visit(const ir::operation::If &node)
   const auto cond_tensor = input_tensors.front();
   input_tensors.erase(input_tensors.begin());
   auto fn = std::make_unique<::onert::backend::controlflow::kernel::IfLayer>(
-      cond_tensor, input_tensors, output_tensors, then_subg_index, else_subg_index, _executor_map,
-      _external_context);
+    cond_tensor, input_tensors, output_tensors, then_subg_index, else_subg_index, _executor_map,
+    _external_context);
 
   _return_fn = std::move(fn);
 }
@@ -112,7 +112,7 @@ void KernelGenerator::visit(const ir::operation::Permute &node)
   std::vector<ITensor *> input_tensors{getTensor(input_index)};
 
   auto fn =
-      std::make_unique<kernel::PermuteLayer>(input_tensors, output_tensors, _external_context);
+    std::make_unique<kernel::PermuteLayer>(input_tensors, output_tensors, _external_context);
   _return_fn = std::move(fn);
 }
 
@@ -140,8 +140,8 @@ void KernelGenerator::visit(const ir::operation::While &node)
   // WhileLayer just set ExecutorMap instead of cond and body executor to avoid complexity of
   // creating executor recusively
   auto fn = std::make_unique<::onert::backend::controlflow::kernel::WhileLayer>(
-      input_tensors, output_tensors, cond_subg_index, body_subg_index, _executor_map,
-      _dyn_tensor_manager->dynamic_mem_mgr().get(), _external_context);
+    input_tensors, output_tensors, cond_subg_index, body_subg_index, _executor_map,
+    _dyn_tensor_manager->dynamic_mem_mgr().get(), _external_context);
 
   _return_fn = std::move(fn);
 }

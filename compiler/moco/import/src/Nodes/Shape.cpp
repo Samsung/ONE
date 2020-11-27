@@ -33,7 +33,7 @@ class ShapeGraphUpdate final : public GraphUpdate
 {
 public:
   ShapeGraphUpdate(TFShape *node, const TensorName &&input_name)
-      : _node(node), _input_name(input_name)
+    : _node(node), _input_name(input_name)
   {
     // DO NOTHING
   }

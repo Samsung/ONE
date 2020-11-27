@@ -36,7 +36,7 @@ class TensorContext final : public nnkit::TensorContext
 {
 public:
   TensorContext(const std::vector<std::unique_ptr<ParsedTensor>> &tensors, TensorDataMap &data_map)
-      : _tensors(tensors), _data_map(data_map)
+    : _tensors(tensors), _data_map(data_map)
   {
     // empty
   }
