@@ -62,7 +62,7 @@ private:
     return dynamic_cast<Derived *>(node);
   }
 
-// clang-format off
+  // clang-format off
   /**
    * @brief Calculate for one specified node and update its result as NodeData.
    *        Abort program when its ingredients are not ready or not supported.

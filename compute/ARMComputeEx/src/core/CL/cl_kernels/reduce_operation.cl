@@ -100,7 +100,9 @@ __kernel void reduce_min_max(TENSOR4D_DECLARATION(input), TENSOR4D_DECLARATION(o
   Tensor4D out = CONVERT_TO_TENSOR4D_STRUCT(output, DEPTH_OUT);
 
   int indices[4] = {
-      get_global_id(0), get_global_id(1), get_global_id(2) % DEPTH_OUT,
+      get_global_id(0),
+      get_global_id(1),
+      get_global_id(2) % DEPTH_OUT,
       get_global_id(2) / DEPTH_OUT,
   };
 
@@ -186,7 +188,9 @@ __kernel void reduce_sum_mean(TENSOR4D_DECLARATION(input), TENSOR4D_DECLARATION(
   Tensor4D out = CONVERT_TO_TENSOR4D_STRUCT(output, DEPTH_OUT);
 
   int indices[4] = {
-      get_global_id(0), get_global_id(1), get_global_id(2) % DEPTH_OUT,
+      get_global_id(0),
+      get_global_id(1),
+      get_global_id(2) % DEPTH_OUT,
       get_global_id(2) / DEPTH_OUT,
   };
 

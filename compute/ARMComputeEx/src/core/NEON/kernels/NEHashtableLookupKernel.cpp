@@ -174,24 +174,24 @@ void NEHashtableLookupKernel::run(const Window &window, const ThreadInfo &info)
   {
     Iterator output_it(_output, out_slice);
 
-    execute_window_loop(out_slice,
-                        [&](const Coordinates &id) {
-                          const auto lookup = lookup_indices.at(id[lookup_dim]);
-                          if (lookup == NOT_HIT)
-                          {
-                            memset(output_it.ptr(), const_0,
-                                   _output->info()->dimension(0) * _output->info()->element_size());
-                          }
-                          else
-                          {
-                            Coordinates input_id{id};
-                            input_id.set(lookup_dim, lookup);
-                            memcpy(output_it.ptr(), _input->ptr_to_element(input_id),
-                                   _output->info()->dimension(0) * _output->info()->element_size());
-                          }
-
-                        },
-                        output_it);
+    execute_window_loop(
+        out_slice,
+        [&](const Coordinates &id) {
+          const auto lookup = lookup_indices.at(id[lookup_dim]);
+          if (lookup == NOT_HIT)
+          {
+            memset(output_it.ptr(), const_0,
+                   _output->info()->dimension(0) * _output->info()->element_size());
+          }
+          else
+          {
+            Coordinates input_id{id};
+            input_id.set(lookup_dim, lookup);
+            memcpy(output_it.ptr(), _input->ptr_to_element(input_id),
+                   _output->info()->dimension(0) * _output->info()->element_size());
+          }
+        },
+        output_it);
 
   } while (window.slide_window_slice_4D(out_slice));
 }

@@ -26,7 +26,7 @@ namespace moco
 
 /**
  * @brief  Fuse TFAdd, TFMul to preceding TFConv2D or TFDepthWiseConv2D
-*/
+ */
 class FuseBinaryIntoPreceding : public logo::Pass
 {
 public:

@@ -134,8 +134,8 @@ void BackendManager::loadBackend(const std::string &backend)
               << "Failed to unload backend '" << id << "'- " << dlerror() << "\n";
         }
       }};
-// clang-format on
-_handle_map.emplace(backend, std::move(u_handle));
+  // clang-format on
+  _handle_map.emplace(backend, std::move(u_handle));
 }
 
 backend::Backend *BackendManager::get(const std::string &key)

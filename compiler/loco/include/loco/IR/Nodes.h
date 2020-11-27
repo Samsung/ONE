@@ -714,8 +714,8 @@ private:
 template <Domain D> class Softmax;
 
 /**
-* @brief Computes softmax activations for Tensor domain
-*/
+ * @brief Computes softmax activations for Tensor domain
+ */
 template <>
 class Softmax<Domain::Tensor> final
     : public CanonicalNodeDef<CanonicalOpcode::TensorSoftmax, FixedArity<1>::Mixin>

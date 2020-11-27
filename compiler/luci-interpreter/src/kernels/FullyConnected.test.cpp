@@ -98,10 +98,11 @@ TYPED_TEST(FullyConnectedTest, Simple)
                        3, 5, 2, 3, -3, -8,   // unit = 1
                        -3, 7, 4, 9, 0, -5,   // unit = 2
                    },
-                   {-1, -5, -8}, {
-                                     0, 0, 32,   // batch = 0
-                                     22, 11, 47, // batch = 1
-                                 });
+                   {-1, -5, -8},
+                   {
+                       0, 0, 32,   // batch = 0
+                       22, 11, 47, // batch = 1
+                   });
 }
 
 TEST(FullyConnectedTest, InvalidBiasType_NEG)

@@ -26,7 +26,8 @@
 extern "C" {
 #endif /*__cplusplus*/
 
-typedef enum {
+typedef enum
+{
   /** 32-bit signed integer. */
   INT32 = 1,
 

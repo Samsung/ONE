@@ -31,12 +31,13 @@ static unique_ptr<char[]> getTensorData(CLTensor &tensor)
   Iterator i(&tensor, window);
   char *ptr = &buf[0];
 
-  execute_window_loop(window,
-                      [&i, &ptr](const Coordinates &) {
-                        memcpy(ptr, i.ptr(), sizeof(float));
-                        ptr += sizeof(float);
-                      },
-                      i);
+  execute_window_loop(
+      window,
+      [&i, &ptr](const Coordinates &) {
+        memcpy(ptr, i.ptr(), sizeof(float));
+        ptr += sizeof(float);
+      },
+      i);
 
   tensor.unmap();
   return buf;
@@ -52,12 +53,13 @@ static void readTensor(CLTensor &tensor, H5::DataSet &dataset)
   Iterator i(&tensor, window);
   char *ptr = &buf[0];
 
-  execute_window_loop(window,
-                      [&i, &ptr](const Coordinates &) {
-                        memcpy(i.ptr(), ptr, sizeof(float));
-                        ptr += sizeof(float);
-                      },
-                      i);
+  execute_window_loop(
+      window,
+      [&i, &ptr](const Coordinates &) {
+        memcpy(i.ptr(), ptr, sizeof(float));
+        ptr += sizeof(float);
+      },
+      i);
 
   tensor.unmap();
 }

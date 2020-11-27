@@ -107,8 +107,9 @@ private:
     const TfLiteTensor *tensor = interp.tensor(id);
 
     _outfile << "# tensor name: " << tensor->name << std::endl;
-    _outfile << "# tflite::interpreter.tensor(" << id << ") -> "
-                                                         "tensor_value_gen["
+    _outfile << "# tflite::interpreter.tensor(" << id
+             << ") -> "
+                "tensor_value_gen["
              << log_index << "]" << std::endl;
 
     if (tensor->type == kTfLiteInt32)

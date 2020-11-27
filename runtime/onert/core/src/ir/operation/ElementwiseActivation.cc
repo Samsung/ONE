@@ -37,9 +37,10 @@ ElementwiseActivation::ElementwiseActivation(const OperandIndexSequence &inputs,
 {
   if (param.op_type == Type::LOGISTIC)
   {
-    assert(param.alpha == 0.0f && param.beta == 0.0f && "Logistic will be supported only as "
-                                                        "sigmoid function(L=1, k=1, x0=0). So, do "
-                                                        "not use alpha and beta");
+    assert(param.alpha == 0.0f && param.beta == 0.0f &&
+           "Logistic will be supported only as "
+           "sigmoid function(L=1, k=1, x0=0). So, do "
+           "not use alpha and beta");
   }
   else if (param.op_type == Type::RELU)
   {
@@ -47,9 +48,10 @@ ElementwiseActivation::ElementwiseActivation(const OperandIndexSequence &inputs,
   }
   else if (param.op_type == Type::TANH)
   {
-    assert(param.alpha == 1.0f && param.beta == 1.0f && "f(x) = alpha * tanh(beta * x), Tanh is "
-                                                        "supported only the values of alpha and "
-                                                        "beta are 1.f");
+    assert(param.alpha == 1.0f && param.beta == 1.0f &&
+           "f(x) = alpha * tanh(beta * x), Tanh is "
+           "supported only the values of alpha and "
+           "beta are 1.f");
   }
 }
 

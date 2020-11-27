@@ -68,34 +68,35 @@ public:
   const char *name() const override { return "NEOneHotKernel"; }
   /** Initialise the kernel's inputs and outputs
    *
- * @param[in]  indices   Indices tensor. Supported tensor rank: up to 3. Must be one of the
- * following types: U32/S32
- * @param[in]  depth     The tensor for depth of the one hot dimension. Supported tensor rank: up to
- * 3. Must be one of the following types: U32/S32
- * @param[in]  on_value  On value tensor. Supported tensor rank: only 1. Data type supported:
- * U8/S8/U16/S16/F16/U32/S32/F32
- * @param[in]  off_value Off value tensor. Supported tensor rank: only 1. Data type supported: Same
- * as @p on_value
- * @param[out] output    Destination tensor. Data type supported: Same as @p on_value
- * @param[in]  axis      (Optional) The axis to fill. Negative values wrap around. Defaults to -1.
- * The value must be in range [-indices.rank , indices.rank)
+   * @param[in]  indices   Indices tensor. Supported tensor rank: up to 3. Must be one of the
+   * following types: U32/S32
+   * @param[in]  depth     The tensor for depth of the one hot dimension. Supported tensor rank: up
+   * to
+   * 3. Must be one of the following types: U32/S32
+   * @param[in]  on_value  On value tensor. Supported tensor rank: only 1. Data type supported:
+   * U8/S8/U16/S16/F16/U32/S32/F32
+   * @param[in]  off_value Off value tensor. Supported tensor rank: only 1. Data type supported:
+   * Same as @p on_value
+   * @param[out] output    Destination tensor. Data type supported: Same as @p on_value
+   * @param[in]  axis      (Optional) The axis to fill. Negative values wrap around. Defaults to -1.
+   * The value must be in range [-indices.rank , indices.rank)
    */
   void configure(const ITensor *indices, const ITensor *depth, const ITensor *on_value,
                  const ITensor *off_value, ITensor *output, int axis = -1);
   /** Static function to check if given info will lead to a valid configuration of @ref
- * NEOneHotKernel
+   * NEOneHotKernel
    *
- * @param[in]  indices   Indices tensor info. Supported tensor rank: up to 3. Must be one of the
- * following types: U32/S32
- * @param[in]  depth     The tensor info for depth of the one hot dimension. Supported tensor rank:
- * up to 3. Must be one of the following types: U32/S32
- * @param[in]  on_value  On value tensor info. Supported tensor rank: only 1. Data type supported:
- * U8/S8/U16/S16/F16/U32/S32/F32
- * @param[in]  off_value Off value tensor info. Supported tensor rank: only 1. Data type supported:
- * Same as @p on_value
- * @param[out] output    Destination tensor info. Data type supported: Same as @p on_value
- * @param[in]  axis      (Optional) The axis to fill. Negative values wrap around. Defaults to -1.
- * The value must be in range [-indices.rank , indices.rank)
+   * @param[in]  indices   Indices tensor info. Supported tensor rank: up to 3. Must be one of the
+   * following types: U32/S32
+   * @param[in]  depth     The tensor info for depth of the one hot dimension. Supported tensor
+   * rank: up to 3. Must be one of the following types: U32/S32
+   * @param[in]  on_value  On value tensor info. Supported tensor rank: only 1. Data type supported:
+   * U8/S8/U16/S16/F16/U32/S32/F32
+   * @param[in]  off_value Off value tensor info. Supported tensor rank: only 1. Data type
+   * supported: Same as @p on_value
+   * @param[out] output    Destination tensor info. Data type supported: Same as @p on_value
+   * @param[in]  axis      (Optional) The axis to fill. Negative values wrap around. Defaults to -1.
+   * The value must be in range [-indices.rank , indices.rank)
    *
    * @return a status
    */

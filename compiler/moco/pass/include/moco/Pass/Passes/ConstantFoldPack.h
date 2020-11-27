@@ -28,7 +28,7 @@ namespace moco
 
 /**
  * @brief  Constant folder for Const + Pack -> Const
-*/
+ */
 class ConstantFoldPack : public logo::Pass
 {
 public:

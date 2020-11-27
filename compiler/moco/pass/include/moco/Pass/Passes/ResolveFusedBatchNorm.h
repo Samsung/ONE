@@ -26,7 +26,7 @@ namespace moco
 
 /**
  * @brief  Trasform TFFusedBatchNorm into TFAdd + TFRsqrt + TFMul + TFBatchNorm
-*/
+ */
 class ResolveFusedBatchNorm : public logo::Pass
 {
 public:

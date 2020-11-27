@@ -87,9 +87,8 @@ inline void BatchMatMul(const Shape &lhs_shape, const float *lhs_data, const Sha
       {
         const float *lhs_ptr2 = lhs_ptr1 + b2 * lhs_ext2;
         const float *rhs_ptr2 = rhs_ptr1 + b2 * rhs_ext2;
-        float *out_ptr =
-            output_data +
-            ((b0 * batch_dim1 * batch_dim2) + b1 * batch_dim2 + b2) * lhs_rows * rhs_cols;
+        float *out_ptr = output_data + ((b0 * batch_dim1 * batch_dim2) + b1 * batch_dim2 + b2) *
+                                           lhs_rows * rhs_cols;
         for (int j = 0; j < rhs_cols; ++j)
         {
           for (int i = 0; i < lhs_rows; ++i)

@@ -24,8 +24,8 @@ namespace onnx
 {
 
 /**
-  * @brief GraphBuilder for Identity(since version 1) node
-  */
+ * @brief GraphBuilder for Identity(since version 1) node
+ */
 class Identity_V1
 {
 public:
@@ -34,8 +34,8 @@ public:
 };
 
 /**
-  * @brief GraphBuilder for Identity node
-  */
+ * @brief GraphBuilder for Identity node
+ */
 class IdentityGraphBuilder : public GraphBuilder
 {
 public:

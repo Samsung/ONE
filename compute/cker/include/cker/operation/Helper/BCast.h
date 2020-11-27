@@ -22,7 +22,7 @@
  * ToDo : This file will be moved into upper folder when integrate with other
  *        custom operations.
  *        And It should merged with EinsumHelper's BCast.
-**/
+ **/
 
 #include "cker/Shape.h"
 #include "cker/eigen/EigenSupport.h"

@@ -23,8 +23,8 @@ namespace moco
 {
 
 /**
-* @brief GraphBuilder for Softmax node
-*/
+ * @brief GraphBuilder for Softmax node
+ */
 class SoftmaxGraphBuilder final : public GraphBuilder
 {
 public:

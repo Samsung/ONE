@@ -36,8 +36,9 @@ Java_com_samsung_testaclexec_ActivityMain_RunACLJNI(JNIEnv *env, jobject)
   TargetHint target_hint = TargetHint::OPENCL;
   bool autoinc = true;
 
-  graph << target_hint << Tensor(TensorInfo(TensorShape(3U, 3U, 1U, 1U), 1, DataType::F32),
-                                 std::unique_ptr<InputAccessor>(new InputAccessor(autoinc)))
+  graph << target_hint
+        << Tensor(TensorInfo(TensorShape(3U, 3U, 1U, 1U), 1, DataType::F32),
+                  std::unique_ptr<InputAccessor>(new InputAccessor(autoinc)))
         << arm_compute::graph::ConvolutionLayer(
                3U, 3U, 1U, std::unique_ptr<WeightAccessor>(new WeightAccessor(autoinc)),
                std::unique_ptr<BiasAccessor>(new BiasAccessor()),

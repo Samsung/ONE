@@ -12,7 +12,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
-*/
+ */
 
 #ifndef __ONERT_IR_SHAPE_H__
 #define __ONERT_IR_SHAPE_H__
@@ -139,10 +139,10 @@ inline bool operator!=(const Shape &lhs, const Shape &rhs) { return lhs.dims() !
 Shape permuteShape(const Shape &shape, Layout frontend_layout, Layout backend_layout);
 
 /**
-* @brief Find out if tha rank in this shape is "maybe" unspecified.
-*        Note that when rank == 0, shape could represent scalar or unspecified rank
-* \see https://developer.android.com/ndk/reference/struct/a-neural-networks-operand-type
-*/
+ * @brief Find out if tha rank in this shape is "maybe" unspecified.
+ *        Note that when rank == 0, shape could represent scalar or unspecified rank
+ * \see https://developer.android.com/ndk/reference/struct/a-neural-networks-operand-type
+ */
 inline bool rankMaybeUnspecified(const ir::Shape &shape) { return (shape.rank() == 0); }
 
 } // namespace ir

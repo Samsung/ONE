@@ -129,27 +129,28 @@ void NECastBoolKernel::run(const Window &window, const ThreadInfo &info)
     case DataType::S8:
     {
       /* Conversion U8 -> S8 */
-      execute_window_loop(win,
-                          [&](const Coordinates &) {
-                            const auto input_ptr = reinterpret_cast<const uint8_t *>(input.ptr());
-                            const auto output_ptr = reinterpret_cast<int8_t *>(output.ptr());
+      execute_window_loop(
+          win,
+          [&](const Coordinates &) {
+            const auto input_ptr = reinterpret_cast<const uint8_t *>(input.ptr());
+            const auto output_ptr = reinterpret_cast<int8_t *>(output.ptr());
 
-                            int x = window_start_x;
-                            for (; x <= (window_end_x - window_step_x); x += window_step_x)
-                            {
-                              const uint8x16_t texels_u8 = vld1q_u8(input_ptr + x);
+            int x = window_start_x;
+            for (; x <= (window_end_x - window_step_x); x += window_step_x)
+            {
+              const uint8x16_t texels_u8 = vld1q_u8(input_ptr + x);
 
-                              vst1q_s8(output_ptr + x, vreinterpretq_s8_u8(vandq_u8(
-                                                           texels_u8, vdupq_n_u8(true_val))));
-                            }
+              vst1q_s8(output_ptr + x,
+                       vreinterpretq_s8_u8(vandq_u8(texels_u8, vdupq_n_u8(true_val))));
+            }
 
-                            // Compute left-over elements
-                            for (; x < window_end_x; ++x)
-                            {
-                              *(output_ptr + x) = static_cast<int8_t>(*(input_ptr + x) & true_val);
-                            }
-                          },
-                          input, output);
+            // Compute left-over elements
+            for (; x < window_end_x; ++x)
+            {
+              *(output_ptr + x) = static_cast<int8_t>(*(input_ptr + x) & true_val);
+            }
+          },
+          input, output);
       break;
     }
     case DataType::S16:
@@ -285,26 +286,27 @@ void NECastBoolKernel::run(const Window &window, const ThreadInfo &info)
     case DataType::U8:
     {
       /* Conversion U8 -> S8 */
-      execute_window_loop(win,
-                          [&](const Coordinates &) {
-                            const auto input_ptr = reinterpret_cast<const uint8_t *>(input.ptr());
-                            const auto output_ptr = reinterpret_cast<uint8_t *>(output.ptr());
+      execute_window_loop(
+          win,
+          [&](const Coordinates &) {
+            const auto input_ptr = reinterpret_cast<const uint8_t *>(input.ptr());
+            const auto output_ptr = reinterpret_cast<uint8_t *>(output.ptr());
 
-                            int x = window_start_x;
-                            for (; x <= (window_end_x - window_step_x); x += window_step_x)
-                            {
-                              const uint8x16_t texels_u8 = vld1q_u8(input_ptr + x);
+            int x = window_start_x;
+            for (; x <= (window_end_x - window_step_x); x += window_step_x)
+            {
+              const uint8x16_t texels_u8 = vld1q_u8(input_ptr + x);
 
-                              vst1q_u8(output_ptr + x, vandq_u8(texels_u8, vdupq_n_u8(true_val)));
-                            }
+              vst1q_u8(output_ptr + x, vandq_u8(texels_u8, vdupq_n_u8(true_val)));
+            }
 
-                            // Compute left-over elements
-                            for (; x < window_end_x; ++x)
-                            {
-                              *(output_ptr + x) = static_cast<uint8_t>(*(input_ptr + x) & true_val);
-                            }
-                          },
-                          input, output);
+            // Compute left-over elements
+            for (; x < window_end_x; ++x)
+            {
+              *(output_ptr + x) = static_cast<uint8_t>(*(input_ptr + x) & true_val);
+            }
+          },
+          input, output);
       break;
     }
     case DataType::U16:

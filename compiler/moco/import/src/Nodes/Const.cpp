@@ -228,7 +228,7 @@ void ConstGraphBuilder::build(const tensorflow::NodeDef &node, GraphBuilderConte
       read_value_float32(const_node, num_elements, input_tensor);
       break;
 
-    // TODO support other types
+      // TODO support other types
 
     default:
       assert(false);

@@ -62,8 +62,12 @@ public:
     }
   }
 
-  virtual void startLifetime(const ir::OperandIndex &) { /* DO NOTHING */}
-  virtual void finishLifetime(const ir::OperandIndex &) { /* DO NOTHING */}
+  virtual void startLifetime(const ir::OperandIndex &)
+  { /* DO NOTHING */
+  }
+  virtual void finishLifetime(const ir::OperandIndex &)
+  { /* DO NOTHING */
+  }
 
   void buildTensor(const ir::OperandIndex &ind, const ::arm_compute::TensorInfo &info, size_t rank,
                    size_t num_uses)
