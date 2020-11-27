@@ -158,7 +158,7 @@ private:
   std::shared_ptr<onert::exec::Execution> _execution;
   std::shared_ptr<onert::frontend::custom::KernelRegistry> _kernel_registry;
 
-  std::shared_ptr<onert::util::TracingCtx> _tracing_ctx;
+  std::unique_ptr<onert::util::TracingCtx> _tracing_ctx;
 };
 
 #endif // __API_NNFW_API_INTERNAL_H__

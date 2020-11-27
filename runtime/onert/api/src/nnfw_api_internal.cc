@@ -172,10 +172,9 @@ void set_subgraph_indices(const onert::ir::Subgraphs *subgraphs,
 nnfw_session::nnfw_session()
     : _subgraphs{nullptr}, _execution{nullptr},
       _kernel_registry{std::make_shared<onert::frontend::custom::KernelRegistry>()},
-      _tracing_ctx{std::make_shared<onert::util::TracingCtx>()}
+      _tracing_ctx{std::make_unique<onert::util::TracingCtx>()}
 {
-  // TODO make _tracing_ctx null when no user option for profiling was given
-  _tracing_ctx->makeSessionId();
+  // DO NOTHING
 }
 
 nnfw_session::~nnfw_session() = default;

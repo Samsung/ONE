@@ -34,18 +34,19 @@ namespace util
 class TracingCtx
 {
 public:
-  // create and store unique session id managed by this class
-  void makeSessionId()
+  /**
+   * @brief Create and store unique session id managed by this class
+   *        Note that this constructor can be called by multiple sessions running in parallely.
+   */
+  TracingCtx()
   {
     std::unique_lock<std::mutex> lock{_session_id_mutex};
 
-    static uint32_t session_id = 0;
-    _session_id = session_id++;
-
-    lock.unlock();
+    static uint32_t next_session_id = 0;
+    _session_id = next_session_id++;
   }
 
-  uint32_t getSessionId() { return _session_id; }
+  uint32_t getSessionId() const { return _session_id; }
 
   /**
    * @brief Set subgraph index of a graph
@@ -53,23 +54,9 @@ public:
   void setSubgraphIndex(const ir::Graph *g, uint32_t index) { _subgraph_indices.emplace(g, index); }
 
   /**
-   * @brief Get subgraph index of a graph. If there is no such key (g),
-   *        ir::SubgraphIndex(0) will be returned.
+   * @brief Get subgraph index of a graph.
    */
-  ir::SubgraphIndex getSubgraphIndex(const ir::Graph *g) const
-  {
-    auto find = _subgraph_indices.find(g);
-
-    return find == _subgraph_indices.end() ? getDefaultSubgraphIndex() : find->second;
-  }
-
-  /**
-   * @brief Get the Default Subgraph Index object. Call this when there is no subgraph index
-   *        information or when TracingCtx object is nullptr
-   *
-   * @return const ir::SubgraphIndex
-   */
-  static const ir::SubgraphIndex getDefaultSubgraphIndex() { return ir::SubgraphIndex{0}; }
+  ir::SubgraphIndex getSubgraphIndex(const ir::Graph *g) const { return _subgraph_indices.at(g); }
 
 private:
   std::unordered_map<const ir::Graph *, ir::SubgraphIndex> _subgraph_indices;
