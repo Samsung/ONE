@@ -233,6 +233,13 @@ uint32_t CircleGen::addOperatorLogSoftmax(const OperatorParams &params)
                                 circle::BuiltinOptions_LogSoftmaxOptions, options);
 }
 
+uint32_t CircleGen::addOperatorMean(const OperatorParams &params, bool keep_dims)
+{
+  auto options = circle::CreateReducerOptions(_fbb, keep_dims).Union();
+  return addOperatorWithOptions(params, circle::BuiltinOperator_MEAN,
+                                circle::BuiltinOptions_ReducerOptions, options);
+}
+
 uint32_t CircleGen::addOperatorNeg(const OperatorParams &params)
 {
   auto options = circle::CreatePadOptions(_fbb).Union();

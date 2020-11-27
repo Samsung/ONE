@@ -169,6 +169,7 @@ public:
   uint32_t addOperatorLeakyRelu(const OperatorParams &params, float alpha);
   uint32_t addOperatorLess(const OperatorParams &params);
   uint32_t addOperatorLogSoftmax(const OperatorParams &params);
+  uint32_t addOperatorMean(const OperatorParams &params, bool keep_dims);
   uint32_t addOperatorNeg(const OperatorParams &params);
   uint32_t addOperatorOneHot(const OperatorParams &params, int32_t axis);
   uint32_t addOperatorPad(const OperatorParams &params);

@@ -231,6 +231,37 @@ void MeanQ8Asymm(const Shape &input_shape, const In *input_data, float input_sca
                           sum_reducer);
 }
 
+template <typename In, typename Out>
+void MeanAxis1And2(const Shape &input_shape, const In *input_data, const Shape &output_shape,
+                   Out *output_data)
+{
+  UNUSED_RELEASE(output_shape);
+  assert(input_shape.DimensionsCount() == 4);
+  assert(output_shape.DimensionsCount() == 4);
+
+  const int output_batch = output_shape.Dims(0);
+  const int output_depth = output_shape.Dims(3);
+
+  const int input_height = input_shape.Dims(1);
+  const int input_width = input_shape.Dims(2);
+
+  for (int out_b = 0; out_b < output_batch; ++out_b)
+  {
+    for (int out_d = 0; out_d < output_depth; ++out_d)
+    {
+      float value = 0;
+      for (int in_h = 0; in_h < input_height; ++in_h)
+      {
+        for (int in_w = 0; in_w < input_width; ++in_w)
+        {
+          value += input_data[Offset(input_shape, out_b, in_h, in_w, out_d)];
+        }
+      }
+      output_data[Offset(output_shape, out_b, 0, 0, out_d)] = value / (input_width * input_height);
+    }
+  }
+}
+
 } // namespace cker
 } // namespace nnfw
 
