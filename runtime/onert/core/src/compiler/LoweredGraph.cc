@@ -424,7 +424,9 @@ void LoweredGraph::dumpLowerInfo()
       sstream << "}" << std::endl;
       sstream << "  - Def Operations  : " << def_ops << std::endl;
       sstream << "  - Use Operations  : " << use_ops << std::endl;
-      sstream << "  - Data            : " << (object.data() ? (std::to_string(object.data()->size()) + " bytes") : "N/A") << std::endl;
+      sstream << "  - Data            : "
+              << (object.data() ? (std::to_string(object.data()->size()) + " bytes") : "N/A")
+              << std::endl;
       sstream << "  - Lower Info" << std::endl;
       sstream << "    - Def Backends    : " << def_layouts << std::endl;
       sstream << "    - Use Backends    : " << use_layouts << std::endl;

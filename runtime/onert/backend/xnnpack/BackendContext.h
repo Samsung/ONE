@@ -54,7 +54,18 @@ public:
     _external_context.reset(new ExternalContext(static_cast<size_t>(num_threads)));
   }
 
+  ITensorRegistry *tensorGen(const std::vector<onert::ir::OpSequenceIndex> &order,
+                             const ir::OpSequences &op_seqs,
+                             const ir::LowerInfoMap &lower_info) override;
+
+  std::vector<std::pair<ir::OpSequenceIndex, std::unique_ptr<exec::FunctionSequence>>>
+  kernelGen(const std::vector<ir::OpSequenceIndex> &order, const ir::OpSequences &op_seqs) override;
+
   std::shared_ptr<ExternalContext> external_context() { return _external_context; }
+
+private:
+  void planTensors(const std::vector<onert::ir::OpSequenceIndex> &order,
+                   const ir::OpSequences &op_seqs, const ir::LowerInfoMap &lower_info);
 
 private:
   std::shared_ptr<ExternalContext> _external_context;

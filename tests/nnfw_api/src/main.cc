@@ -31,7 +31,7 @@ int main(int argc, char **argv)
   }
   catch (std::runtime_error &e)
   {
-    std::cerr << "[WARNING] Test models are not loaded, so some tests will fail due to the models' absence" << std::endl;
+    std::cerr << "[WARNING] Test models are not loaded, so some tests will fail" << std::endl;
     std::cerr << e.what() << std::endl;
   }
 
