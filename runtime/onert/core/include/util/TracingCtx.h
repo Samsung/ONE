@@ -61,7 +61,8 @@ public:
 private:
   std::unordered_map<const ir::Graph *, ir::SubgraphIndex> _subgraph_indices;
   uint32_t _session_id;
-  std::mutex _session_id_mutex;
+
+  static std::mutex _session_id_mutex;
 };
 
 } // namespace util
