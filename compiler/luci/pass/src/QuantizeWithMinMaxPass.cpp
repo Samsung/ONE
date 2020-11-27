@@ -86,6 +86,99 @@ void quant_const_values(luci::CircleConst *const_node, float scaling_factor, flo
   }
 }
 
+// Quantize const per channel
+//
+// The last dimension of const is the same as the dimension of channel
+// And the rest of the const dimensions should be 1
+// So, a 'single value' is quantized per channel
+//
+// Quantization spec (f: fp value, q: quantized value)
+//
+// uint8
+//   Positive f: f = f * (q - 0) [q = 1, scale = f, zp = 0]
+//   Negative f: f = (-f) * (q - 1) [q = 0, scale = -f, zp = 1]
+//
+// int16
+//   Positive f: f = f * (q - 0) [q = 1, scale = f, zp = 0]
+//   Negative f: f = (-f) * (q - 0) [q = -1, scale = -f, zp = 0]
+void quant_const_per_channel(CircleConst *node, loco::DataType quant_type)
+{
+  assert(node->dtype() == loco::DataType::FLOAT32);
+  assert(node->rank() > 0);
+
+  for (uint32_t i = 0; i < node->rank() - 1; i++)
+  {
+    if (node->dim(i).value() != 1)
+      throw std::runtime_error("Non-channel demension of const node must be 1");
+  }
+
+  uint32_t size = node->size<loco::DataType::FLOAT32>();
+  assert(size == node->dim(node->rank() - 1).value());
+
+  auto quantparam = std::make_unique<CircleQuantParam>();
+  quantparam->quantized_dimension = node->rank() - 1;
+  std::vector<int32_t> quantized_data(size);
+
+  for (uint32_t i = 0; i < size; ++i)
+  {
+    auto data = node->at<loco::DataType::FLOAT32>(i);
+    if (quant_type == loco::DataType::U8)
+    {
+      if (data >= 0)
+      {
+        quantparam->scale.push_back(data);
+        quantparam->zerop.push_back(0);
+        quantized_data[i] = 1;
+      }
+      else
+      {
+        quantparam->scale.push_back(-data);
+        quantparam->zerop.push_back(1);
+        quantized_data[i] = 0;
+      }
+    }
+    else if (quant_type == loco::DataType::S16)
+    {
+      if (data >= 0)
+      {
+        quantparam->scale.push_back(data);
+        quantized_data[i] = 1;
+      }
+      else
+      {
+        quantparam->scale.push_back(-data);
+        quantized_data[i] = -1;
+      }
+      quantparam->zerop.push_back(0);
+    }
+  }
+  node->quantparam(std::move(quantparam));
+
+  switch (quant_type)
+  {
+    case loco::DataType::U8:
+      node->dtype(loco::DataType::U8);
+      node->size<loco::DataType::U8>(size);
+      for (uint32_t i = 0; i < size; ++i)
+      {
+        assert(quantized_data[i] == 0 || quantized_data[i] == 1);
+        node->at<loco::DataType::U8>(i) = quantized_data[i];
+      }
+      break;
+    case loco::DataType::S16:
+      node->dtype(loco::DataType::S16);
+      node->size<loco::DataType::S16>(size);
+      for (uint32_t i = 0; i < size; ++i)
+      {
+        assert(quantized_data[i] == -1 || quantized_data[i] == 1);
+        node->at<loco::DataType::S16>(i) = quantized_data[i];
+      }
+      break;
+    default:
+      throw std::runtime_error("Unsupported data type");
+  }
+}
+
 void quant_const(CircleConst *node, loco::DataType quant_type)
 {
   assert(node->dtype() == loco::DataType::FLOAT32);
@@ -612,10 +705,31 @@ struct QuantizeWeights final : public luci::CircleNodeMutableVisitor<bool>
   }
 };
 
+void quant_instnorm(luci::CircleInstanceNorm *node, loco::DataType output_type,
+                    QuantizationGranularity granularity)
+{
+  auto gamma = loco::must_cast<luci::CircleConst *>(node->gamma());
+  auto beta = loco::must_cast<luci::CircleConst *>(node->beta());
+  assert(gamma->dtype() == loco::DataType::FLOAT32);
+  assert(beta->dtype() == loco::DataType::FLOAT32);
+
+  if (granularity == QuantizationGranularity::LayerWise)
+  {
+    quant_const(gamma, output_type);
+    quant_const(beta, output_type);
+  }
+  else
+  {
+    quant_const_per_channel(gamma, output_type);
+    quant_const_per_channel(beta, output_type);
+  }
+}
+
 /**
  * @brief Quantize const input tensors using min/max of const values
  */
-void quantize_const_inputs(luci::CircleNode *node, loco::DataType output_type)
+void quantize_const_inputs(luci::CircleNode *node, loco::DataType output_type,
+                           QuantizationGranularity granularity)
 {
   auto opcode = node->opcode();
   auto arity = node->arity();
@@ -660,13 +774,16 @@ void quantize_const_inputs(luci::CircleNode *node, loco::DataType output_type)
         quant_const(const_node, output_type);
       break;
 
+    case luci::CircleOpcode::INSTANCE_NORM:
+      quant_instnorm(loco::must_cast<luci::CircleInstanceNorm *>(node), output_type, granularity);
+      break;
+
     case luci::CircleOpcode::ADD:
     case luci::CircleOpcode::ADD_N:
     case luci::CircleOpcode::DIV:
     case luci::CircleOpcode::EQUAL:
     case luci::CircleOpcode::GREATER:
     case luci::CircleOpcode::GREATER_EQUAL:
-    case luci::CircleOpcode::INSTANCE_NORM:
     case luci::CircleOpcode::LESS:
     case luci::CircleOpcode::LESS_EQUAL:
     case luci::CircleOpcode::MAXIMUM:
@@ -817,7 +934,7 @@ bool QuantizeWithMinMaxPass::run(loco::Graph *g)
   for (auto node : loco::active_nodes(loco::output_nodes(g)))
   {
     auto circle_node = loco::must_cast<luci::CircleNode *>(node);
-    quantize_const_inputs(circle_node, _output_dtype);
+    quantize_const_inputs(circle_node, _output_dtype, _granularity);
   }
 
   // Propagate quantization parameters of concat Op
