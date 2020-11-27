@@ -120,10 +120,10 @@ void OperationValidator::visit(const operation::BatchMatMul &node)
 
 void OperationValidator::visit(const operation::BatchToSpaceND &node)
 {
-  const auto block_size_index{node.getInputs().at(operation::BatchToSpaceND::Input::BLOCK_SIZE)};
+  const auto input_index{node.getInputs().at(operation::BatchToSpaceND::Input::INPUT)};
+  const auto output_index{node.getOutputs().at(0)};
 
-  // Non-constant block_size is not implemented yet
-  OP_REQUIRES(isConstant(block_size_index));
+  OP_REQUIRES(isSameType(input_index, output_index));
 }
 
 void OperationValidator::visit(const operation::BinaryArithmetic &node)

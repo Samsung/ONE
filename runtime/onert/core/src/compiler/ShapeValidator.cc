@@ -101,6 +101,14 @@ void ShapeValidator::visit(const ir::operation::BatchToSpaceND &node)
 
   OP_REQUIRES(_ctx.at(block_size_index).shape().dim(0) == 2);
 
+  if (node.getInputs().size() != 2)
+  {
+    const auto crops_index{node.getInputs().at(ir::operation::BatchToSpaceND::Input::CROPS_DATA)};
+    OP_REQUIRES(_ctx.at(crops_index).shape().rank() == 2);
+    OP_REQUIRES(_ctx.at(crops_index).shape().dim(0) == (_ctx.at(ifm_index).shape().rank() - 2));
+    OP_REQUIRES(_ctx.at(crops_index).shape().dim(1) == 2);
+  }
+
   OP_REQUIRES(input_shape.C == output_shape.C);
 }
 

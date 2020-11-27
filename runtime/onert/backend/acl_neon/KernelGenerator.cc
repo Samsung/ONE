@@ -107,6 +107,25 @@ void KernelGenerator::visit(const ir::operation::BatchToSpaceND &node)
   const auto block_size_index{
       node.getInputs().at(ir::operation::BatchToSpaceND::Input::BLOCK_SIZE)};
 
+  const auto NNApiInputs = 2;
+  if (node.getInputs().size() != NNApiInputs)
+  {
+    const auto crops_index{node.getInputs().at(ir::operation::BatchToSpaceND::Input::CROPS_DATA)};
+    if (!_ctx.at(crops_index).isConstant())
+    {
+      throw std::runtime_error("Non-constant crops NYI for acl_neon backend BatchToSpaceND");
+    }
+
+    auto crops = _ctx.at(crops_index).asVector<int32_t>();
+    for (auto crop : crops)
+    {
+      if (crop != 0)
+      {
+        throw std::runtime_error("Non-zero crops NYI for acl_neon backend BatchToSpaceND");
+      }
+    }
+  }
+
   auto ofm_tensor = _tensor_reg->getAclTensor(ofm_index);
   auto ifm_tensor = _tensor_reg->getAclTensor(ifm_index);
   auto block_size_tensor = _tensor_reg->getAclTensor(block_size_index);
