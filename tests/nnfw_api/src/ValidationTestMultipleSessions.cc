@@ -81,9 +81,6 @@ TEST_F(ValidationTestTwoSessionsCreated, two_sessions_run_simple_model)
 
   NNFW_ENSURE_SUCCESS(nnfw_await(_session1));
   NNFW_ENSURE_SUCCESS(nnfw_await(_session2));
-
-  NNFW_ENSURE_SUCCESS(nnfw_close_session(_session1));
-  NNFW_ENSURE_SUCCESS(nnfw_close_session(_session2));
 }
 
 // TODO Write two-session-test with large models run by threads
