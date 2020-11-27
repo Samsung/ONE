@@ -45,7 +45,8 @@ public:
 
   void run() override;
 
-  void prepare() override;
+  bool create() override;
+  bool setup() override;
 
 private:
   const IPortableTensor *_input;

@@ -19,8 +19,6 @@
 
 #include <backend/BackendContext.h>
 #include <util/ConfigSource.h>
-#include <util/logging.h>
-
 #include "ExternalContext.h"
 
 namespace

@@ -29,7 +29,8 @@ namespace xnnpack
 
 TensorBuilder::TensorBuilder(const std::shared_ptr<cpu_common::TensorRegistry> &tensor_reg)
     : _tensor_reg{tensor_reg},
-      _static_tensor_mgr{new cpu_common::StaticTensorManager(_tensor_reg, nullptr)}
+      _dynamic_tensor_mgr{new cpu_common::DynamicTensorManager(_tensor_reg)},
+      _static_tensor_mgr{new StaticTensorManager(_tensor_reg, _dynamic_tensor_mgr.get())}
 {
   /* empty */
 }
@@ -37,22 +38,38 @@ TensorBuilder::TensorBuilder(const std::shared_ptr<cpu_common::TensorRegistry> &
 void TensorBuilder::registerTensorInfo(const ir::OperandIndex &ind, const ir::OperandInfo &info,
                                        ir::Layout layout)
 {
-  assert(!info.isDynamic());
   _tensor_info_map.emplace(ind, info);
 
-  // TODO: supports not only one layout as NHWC
+  // XNNPACK backend supports only one layout as NHWC
   assert(layout == ir::Layout::NHWC);
-  _tensor_layout_map.insert({ind, layout});
+  if (info.isDynamic())
+  {
+    _dynamic_tensor_mgr->buildTensor(ind, info, layout);
+  }
+  else
+  {
+    _static_tensor_mgr->buildTensor(ind, info, layout, info.isConstant());
+  }
 }
 
 void TensorBuilder::notifyFirstUse(const ir::OperandIndex &ind)
 {
-  _lifetime_seq.emplace_back(UsesType::FIRST, ind);
+  assert(_tensor_info_map.find(ind) != _tensor_info_map.end());
+  const auto tensor_info = _tensor_info_map.at(ind);
+
+  if (!_tensor_reg->getNativeTensor(ind)->is_dynamic())
+  {
+    const auto size = tensor_info.total_size();
+    _static_tensor_mgr->claimPlan(ind, size);
+  }
 }
 
 void TensorBuilder::notifyLastUse(const ir::OperandIndex &ind)
 {
-  _lifetime_seq.emplace_back(UsesType::LAST, ind);
+  if (!_tensor_reg->getNativeTensor(ind)->is_dynamic())
+  {
+    _static_tensor_mgr->releasePlan(ind);
+  }
 }
 
 bool TensorBuilder::isRegistered(const ir::OperandIndex &ind) const
@@ -60,45 +77,12 @@ bool TensorBuilder::isRegistered(const ir::OperandIndex &ind) const
   return _tensor_info_map.find(ind) != _tensor_info_map.end();
 }
 
-void TensorBuilder::prepare()
-{
-  for (auto &entry : _tensor_info_map)
-  {
-    auto ind = entry.first;
-    const auto &info = entry.second;
-    const auto &layout = _tensor_layout_map[ind];
-    _static_tensor_mgr->buildTensor(ind, info, layout, info.isConstant());
-  }
-}
+void TensorBuilder::prepare(void) { _static_tensor_mgr->allocateNonconsts(); }
 
 void TensorBuilder::allocate()
 {
-  _static_tensor_mgr->allocateConsts();
-
-  for (const auto &entry : _lifetime_seq)
-  {
-    const auto &ind = entry.second;
-    if (entry.first == UsesType::FIRST)
-    {
-      assert(_tensor_info_map.find(ind) != _tensor_info_map.end());
-      const auto tensor_info = _tensor_info_map.at(ind);
-
-      assert(!_tensor_reg->getNativeTensor(ind)->is_dynamic());
-      const auto size = tensor_info.total_size();
-      _static_tensor_mgr->claimPlan(ind, size);
-    }
-    else
-    {
-      assert(!_tensor_reg->getNativeTensor(ind)->is_dynamic());
-      _static_tensor_mgr->releasePlan(ind);
-    }
-  }
-  _static_tensor_mgr->allocateNonconsts();
-}
-
-void TensorBuilder::postFunctionPrepare()
-{
-  // TODO: Release weights
+  // NOTE For now nothing to do. Allocation is done in prepare stage, which is not appropriate
+  //      This is because CPU kernels require `ITensor`s to be allocated before Kernel Generation.
 }
 
 } // namespace xnnpack

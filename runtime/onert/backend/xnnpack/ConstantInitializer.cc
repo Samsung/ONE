@@ -15,6 +15,7 @@
  */
 
 #include "ConstantInitializer.h"
+#include "Tensor.h"
 
 namespace onert
 {
@@ -28,6 +29,50 @@ ConstantInitializer::ConstantInitializer(const ir::Operands &operands,
     : IConstantInitializer{operands}, _tensor_reg{tensor_reg}
 {
   // DO NOTHING
+}
+
+void ConstantInitializer::registerDefaultInitializer(const ir::OperandIndex &index,
+                                                     const ir::Operand &obj)
+{
+  registerExternalInitializer(index, obj);
+}
+
+void ConstantInitializer::registerExternalInitializer(const ir::OperandIndex &index,
+                                                      const ir::Operand &obj)
+{
+  // For only CONSTANTS
+  // TODO Add to check if tensor has been allocated
+  if (!obj.isConstant())
+    return;
+
+  _init_map[index] = [](const onert::ir::Operand &model_obj, onert::backend::ITensor &itensor) {
+    auto data = model_obj.shareData();
+    assert(data && data->base());
+    ExternalTensor &tensor = dynamic_cast<ExternalTensor &>(itensor);
+    tensor.setData(data);
+  };
+}
+
+void ConstantInitializer::visit(const ir::operation::Conv2D &node)
+{
+  const auto &kernel_index = node.getInputs().at(ir::operation::Conv2D::KERNEL);
+  const auto &kernel_obj = _operands.at(kernel_index);
+  registerExternalInitializer(kernel_index, kernel_obj);
+
+  const auto &bias_index = node.getInputs().at(ir::operation::Conv2D::BIAS);
+  const auto &bias_obj = _operands.at(bias_index);
+  registerExternalInitializer(bias_index, bias_obj);
+}
+
+void ConstantInitializer::visit(const ir::operation::DepthwiseConv2D &node)
+{
+  const auto &kernel_index = node.getInputs().at(ir::operation::DepthwiseConv2D::KERNEL);
+  const auto &kernel_obj = _operands.at(kernel_index);
+  registerExternalInitializer(kernel_index, kernel_obj);
+
+  const auto &bias_index = node.getInputs().at(ir::operation::DepthwiseConv2D::BIAS);
+  const auto &bias_obj = _operands.at(bias_index);
+  registerExternalInitializer(bias_index, bias_obj);
 }
 
 } // namespace xnnpack
