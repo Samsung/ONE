@@ -55,6 +55,17 @@ bool OperationValidator::isSameType(const OperandIndex &idx1, const OperandIndex
   return operandType(idx1) == operandType(idx2);
 }
 
+bool OperationValidator::isSameQuantParam(const OperandIndex &idx1, const OperandIndex &idx2)
+{
+  if (_operands.at(idx1).typeInfo().scale() != _operands.at(idx2).typeInfo().scale())
+    return false;
+
+  if (_operands.at(idx1).typeInfo().offset() != _operands.at(idx2).typeInfo().offset())
+    return false;
+
+  return true;
+}
+
 bool OperationValidator::isValidType(const OperandIndex &idx, const DataType &type)
 {
   return operandType(idx) == type;
@@ -145,6 +156,22 @@ void OperationValidator::visit(const operation::Comparison &node)
 
   OP_REQUIRES(isSameType(lhs_index, rhs_index));
   OP_REQUIRES(isValidType(output_index, DataType::BOOL8));
+}
+
+void OperationValidator::visit(const operation::Concat &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+
+  for (auto input_index : node.getInputs())
+  {
+    OP_REQUIRES(isSameType(input_index, output_index));
+
+    // Int8 quantization requires same scale and zero point
+    if (isValidType(output_index, DataType::QUANT_INT8_ASYMM))
+    {
+      OP_REQUIRES(isSameQuantParam(input_index, output_index));
+    }
+  }
 }
 
 void OperationValidator::visit(const operation::Conv2D &node)
