@@ -108,8 +108,9 @@ void quant_const_per_channel(CircleConst *node, loco::DataType quant_type)
 
   for (uint32_t i = 0; i < node->rank() - 1; i++)
   {
+    // Caller should call this function when the below condition is satisfied
     if (node->dim(i).value() != 1)
-      throw std::runtime_error("Non-channel demension of const node must be 1");
+      throw std::runtime_error("Non-channel dimension of const node must be 1");
   }
 
   uint32_t size = node->size<loco::DataType::FLOAT32>();
@@ -718,11 +719,13 @@ void quant_instnorm(luci::CircleInstanceNorm *node, loco::DataType output_type,
     quant_const(gamma, output_type);
     quant_const(beta, output_type);
   }
-  else
+  else if (granularity == QuantizationGranularity::ChannelWise)
   {
     quant_const_per_channel(gamma, output_type);
     quant_const_per_channel(beta, output_type);
   }
+  else
+    throw std::runtime_error("Quantization granularity must be either 'layer' or 'channel'");
 }
 
 /**
