@@ -41,7 +41,7 @@ public:
   TensorBuilder(const std::shared_ptr<cpu_common::TensorRegistry> &tensor_reg);
 
   /**
-   * @brief     Register tensor information to allocate on CPU backend
+   * @brief     Register tensor information to allocate on XNNPACK backend
    * @param[in] ind    Operand index
    * @param[in] info   Operand information
    * @param[in] layout Operand data layout

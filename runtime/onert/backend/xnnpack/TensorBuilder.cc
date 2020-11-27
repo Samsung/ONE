@@ -40,7 +40,7 @@ void TensorBuilder::registerTensorInfo(const ir::OperandIndex &ind, const ir::Op
 {
   _tensor_info_map.emplace(ind, info);
 
-  // CPU backend supports only one layout as NHWC
+  // XNNPACK backend supports only one layout as NHWC
   assert(layout == ir::Layout::NHWC);
   if (info.isDynamic())
   {

@@ -92,7 +92,6 @@ void DepthwiseConvolutionLayer::run()
 
 bool DepthwiseConvolutionLayer::create()
 {
-  bool result = false;
   float output_activation_min = 0.f, output_activation_max = 0.f;
   CalculateActivationRange<float>(_activation, &output_activation_min, &output_activation_max);
 
@@ -120,17 +119,15 @@ bool DepthwiseConvolutionLayer::create()
     throw std::runtime_error{"failed to create FP32 DepthwiseConvolution operator"};
   }
   assert(_kernel_op != nullptr);
-  result = true;
-  return result;
+  return true;
 }
 
 bool DepthwiseConvolutionLayer::setup()
 {
-  bool result = false;
   if (_input->buffer() == nullptr || _output->buffer() == nullptr)
   {
     // it could be models's input or output
-    return result;
+    return false;
   }
 
   uint32_t input_width = _input->getShape().dim(2);
@@ -144,8 +141,7 @@ bool DepthwiseConvolutionLayer::setup()
   {
     throw std::runtime_error{"failed to create FP32 DepthwiseConvolution operator"};
   }
-  result = true;
-  return result;
+  return true;
 }
 
 } // namespace ops

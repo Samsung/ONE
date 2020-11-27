@@ -91,7 +91,6 @@ void ConvolutionLayer::run()
 
 bool ConvolutionLayer::create()
 {
-  bool result = false;
   float output_activation_min = 0.f, output_activation_max = 0.f;
   CalculateActivationRange<float>(_activation, &output_activation_min, &output_activation_max);
 
@@ -119,17 +118,15 @@ bool ConvolutionLayer::create()
     throw std::runtime_error{"failed to create FP32 Convolution operator"};
   }
   assert(_kernel_op != nullptr);
-  result = true;
-  return result;
+  return true;
 }
 
 bool ConvolutionLayer::setup()
 {
-  bool result = false;
   if (_input->buffer() == nullptr || _output->buffer() == nullptr)
   {
     // it could be models's input or output
-    return result;
+    return false;
   }
 
   uint32_t input_width = _input->getShape().dim(2);
@@ -143,8 +140,7 @@ bool ConvolutionLayer::setup()
   {
     throw std::runtime_error{"failed to create FP32 Convolution operator"};
   }
-  result = true;
-  return result;
+  return true;
 }
 
 } // namespace ops

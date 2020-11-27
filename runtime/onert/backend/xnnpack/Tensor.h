@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -55,7 +55,7 @@ public:
 public:
   /**
    * @brief     set Data to be shared from external so that this ExternalTensor will not be
-   *            allocated on CPU backend
+   *            allocated on XNNPACK backend
    * @param[in] data    data of Operand to be set
    */
   void setData(const std::shared_ptr<ir::Data> data)
