@@ -38,14 +38,16 @@ class DurationEventBuilder
 public:
   DurationEventBuilder(const std::string &ts) : _ts{ts} {}
 
-  DurationEvent build(const std::string &tid, const std::string &name, const std::string &ph) const
+  DurationEvent build(const EventCollector::Event &evt_collected, const std::string &ph) const
   {
     DurationEvent evt;
 
-    evt.name = name;
-    evt.tid = tid;
+    evt.name = evt_collected.label;
+    evt.tid = evt_collected.backend;
     evt.ph = ph;
     evt.ts = _ts;
+
+    evt.args = evt_collected.userData;
 
     return evt;
   }
@@ -93,11 +95,11 @@ void EventCollector::onEvent(const Event &event)
   switch (event.edge)
   {
     case Edge::BEGIN:
-      _rec->emit(DurationEventBuilder(ts).build(event.backend, event.label, "B"));
+      _rec->emit(DurationEventBuilder(ts).build(event, "B"));
       break;
 
     case Edge::END:
-      _rec->emit(DurationEventBuilder(ts).build(event.backend, event.label, "E"));
+      _rec->emit(DurationEventBuilder(ts).build(event, "E"));
       break;
   }
 

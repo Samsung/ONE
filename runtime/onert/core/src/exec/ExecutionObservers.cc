@@ -17,12 +17,61 @@
 #include "exec/ExecutionObservers.h"
 
 #include <string>
+#include <sstream>
 
 #include "util/logging.h"
 #include "exec/IExecutor.h"
 #include "misc/polymorphic_downcast.h"
 #include "ir/OpSequence.h"
 #include "util/EventWriter.h"
+
+namespace
+{
+
+void setUserData(const onert::ir::Graph &g, const onert::ir::OpSequence *op_seq,
+                 decltype(EventCollector::Event::userData) &data)
+{
+  if (op_seq->size() == 0)
+    return;
+
+  // From a tensor of shape [a, b, c], this will return a string "shape(a b c)".
+  // String like "[1, 2, 3]" looks better but this will be considered as a list in Json
+  // so text search (e.g., Ctrl-F in Chrome Tracing) could be difficult
+  auto build_shape_str = [&](onert::ir::OperandIndex operand_idx) {
+    std::string shape_str;
+    auto &shape = g.operands().at(operand_idx).info().shape();
+    for (int i = 0; i < shape.rank(); i++)
+    {
+      if (i == 0)
+        shape_str = "shape(" + std::to_string(shape.dim(i));
+      else
+        shape_str += " " + std::to_string(shape.dim(i));
+    }
+    shape_str += ")";
+
+    return shape_str;
+  };
+
+  const auto &first_op_idx = op_seq->operations().at(0);
+  const auto &first_op_node = g.operations().at(first_op_idx);
+
+  auto &inputs = first_op_node.getInputs();
+  auto size = inputs.size();
+  for (size_t i = 0; i < size; i++)
+  {
+    auto operand_idx = inputs.at(i);
+    if (operand_idx.undefined())
+      continue;
+
+    std::string key("input_shape_" + std::to_string(i));
+    std::string value = build_shape_str(operand_idx);
+    data.emplace_back(std::make_pair(key, value));
+  }
+
+  // add other userData as needed
+}
+
+} // namespace
 
 namespace onert
 {
@@ -96,8 +145,13 @@ void TracingObserver::handleJobBegin(IExecutor *, const ir::OpSequence *op_seq,
                                      const backend::Backend *backend)
 {
   std::string backend_id = backend->config()->id();
-  _collector.onEvent(EventCollector::Event{EventCollector::Edge::BEGIN, backend_id,
-                                           opSequenceTag(op_seq, _graph.operations())});
+
+  auto ev = EventCollector::Event{EventCollector::Edge::BEGIN, backend_id,
+                                  opSequenceTag(op_seq, _graph.operations())};
+  // add shape of inputs
+  setUserData(_graph, op_seq, ev.userData);
+
+  _collector.onEvent(ev);
 }
 
 void TracingObserver::handleJobEnd(IExecutor *, const ir::OpSequence *op_seq,
