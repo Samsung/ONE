@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+#ifndef __NNFW_API_TEST_GEN_MODEL_TEST_H__
+#define __NNFW_API_TEST_GEN_MODEL_TEST_H__
+
 #include <gtest/gtest.h>
 #include <nnfw_internal.h>
 
@@ -453,3 +456,5 @@ protected:
   SessionObjectGeneric _so;
   std::unique_ptr<GenModelTestContext> _context;
 };
+
+#endif // __NNFW_API_TEST_GEN_MODEL_TEST_H__
