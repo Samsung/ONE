@@ -32,9 +32,14 @@ void BackendContext::planTensors(const std::vector<onert::ir::OpSequenceIndex> &
   ir::OperandIndexMap<uint32_t> def_map;
   ir::OperandIndexSequence constants;
 
+  auto model_io = (graph()->getInputs() + graph()->getOutputs()) | ir::Remove::UNDEFINED |
+                  ir::Remove::DUPLICATED;
+
   // Prepare scanning
   for (auto ind : operand_list())
   {
+    if (model_io.contains(ind))
+      continue;
     const auto &obj = graph()->operands().at(ind);
     const auto &li = lower_info.operand.at(ind);
     if (li->def_factors().getOnlyElement().backend() != backend())
@@ -89,6 +94,8 @@ void BackendContext::planTensors(const std::vector<onert::ir::OpSequenceIndex> &
       // Define outputs
       for (const auto &ind : op_outputs)
       {
+        if (model_io.contains(ind))
+          continue;
         if (!tensor_builder->isRegistered(ind))
           continue;
         assert(def_map.find(ind) != def_map.end());
@@ -104,6 +111,8 @@ void BackendContext::planTensors(const std::vector<onert::ir::OpSequenceIndex> &
       // non-constant because of less memory usage by memory planning in here
       for (const auto &ind : op_inputs)
       {
+        if (model_io.contains(ind))
+          continue;
         if (!tensor_builder->isRegistered(ind))
           continue;
         const auto &operand = graph()->operands().at(ind);
@@ -121,6 +130,8 @@ void BackendContext::planTensors(const std::vector<onert::ir::OpSequenceIndex> &
 
       for (const auto &ind : op_inputs)
       {
+        if (model_io.contains(ind))
+          continue;
         if (!tensor_builder->isRegistered(ind))
           continue;
         assert(uses_map.find(ind) != uses_map.end());
@@ -172,6 +183,8 @@ ITensorRegistry *BackendContext::tensorGen(const std::vector<onert::ir::OpSequen
       continue;
     const auto &obj = graph()->operands().at(index);
     const auto frontend_layout = [&]() {
+      if (obj.getUses().size() == 0)
+        return ir::Layout::UNKNOWN;
       auto use_op_ind = *obj.getUses().begin(); // FIXME What if it has two or more uses?
       for (auto &operation_info : operation_list())
       {
