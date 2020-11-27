@@ -160,6 +160,13 @@ uint32_t CircleGen::addOperatorCos(const OperatorParams &params)
                                 circle::BuiltinOptions_CosOptions, options);
 }
 
+uint32_t CircleGen::addOperatorDepthToSpace(const OperatorParams &params, int32_t block_size)
+{
+  auto options = circle::CreateDepthToSpaceOptions(_fbb, block_size).Union();
+  return addOperatorWithOptions(params, circle::BuiltinOperator_DEPTH_TO_SPACE,
+                                circle::BuiltinOptions_DepthToSpaceOptions, options);
+}
+
 uint32_t CircleGen::addOperatorDepthwiseConv2D(const OperatorParams &params,
                                                circle::Padding padding, int stride_w, int stride_h,
                                                int depth_multiplier,

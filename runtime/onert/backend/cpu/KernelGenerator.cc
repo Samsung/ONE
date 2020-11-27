@@ -23,6 +23,7 @@
 #include "ops/CompareLayer.h"
 #include "ops/ConcatLayer.h"
 #include "ops/ConvolutionLayer.h"
+#include "ops/DepthToSpaceLayer.h"
 #include "ops/DepthwiseConvolutionLayer.h"
 #include "ops/EinsumLayer.h"
 #include "ops/ElementwiseActivationLayer.h"
@@ -1260,6 +1261,21 @@ void KernelGenerator::visit(const ir::operation::SpaceToBatchND &node)
 
   fn->configure(input_tensor, block_shape_tensor, padding_tensor, output_tensor);
 
+  _return_fn = std::move(fn);
+}
+
+void KernelGenerator::visit(const ir::operation::DepthToSpace &node)
+{
+  const auto input_index{node.getInputs().at(ir::operation::DepthToSpace::Input::INPUT)};
+  const auto output_index{node.getOutputs().at(0)};
+  auto block_size = node.param().block_size;
+
+  auto input_tensor = _tensor_reg->getPortableTensor(input_index);
+  auto output_tensor = _tensor_reg->getPortableTensor(output_index);
+
+  auto fn = std::make_unique<ops::DepthToSpaceLayer>();
+
+  fn->configure(input_tensor, block_size, output_tensor);
   _return_fn = std::move(fn);
 }
 
