@@ -177,10 +177,20 @@ ITensorRegistry *BackendContext::tensorGen(const std::vector<onert::ir::OpSequen
                     ir::Remove::DUPLICATED;
     for (const auto op_ind : op_seq)
     {
+      bool op_assigned = [&]() {
+        for (auto &op_info : operation_list())
+          if (op_info.index == op_ind)
+            return true;
+        return false;
+      }();
+      if (!op_assigned)
+        continue;
+
       const auto &op = graph()->operations().at(op_ind);
       for (const auto &index : (op.getInputs() + op.getOutputs()) | ir::Remove::UNDEFINED)
       {
-        if (!tensor_builder->isRegistered(index) && !model_io.contains(index))
+        if (!tensor_builder->isRegistered(index) && !model_io.contains(index) &&
+            find(operand_list().begin(), operand_list().end(), index) != operand_list().end())
         {
           const auto &operand_lower_info =
               lower_info.operand.at(index)->def_factors().getOnlyElement();
@@ -195,6 +205,8 @@ ITensorRegistry *BackendContext::tensorGen(const std::vector<onert::ir::OpSequen
           const auto &obj = graph()->operands().at(index);
           const auto frontend_layout = op_seq.getLayout();
           const auto backend_layout = operand_lower_info.layout();
+          VERBOSE(TENSOR_GEN) << " LAYOUT " << index << " : " << (int)frontend_layout << " "
+                              << (int)backend_layout << std::endl;
           ir::OperandInfo backend_info{permuteShape(obj.shape(), frontend_layout, backend_layout),
                                        obj.typeInfo(), obj.info().memAllocType(), obj.isConstant()};
           tensor_builder->registerTensorInfo(index, backend_info, backend_layout);

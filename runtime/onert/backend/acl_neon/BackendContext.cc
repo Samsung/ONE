@@ -177,10 +177,20 @@ ITensorRegistry *BackendContext::tensorGen(const std::vector<onert::ir::OpSequen
                     ir::Remove::DUPLICATED;
     for (const auto op_ind : op_seq)
     {
+      bool op_assigned = [&]() {
+        for (auto &op_info : operation_list())
+          if (op_info.index == op_ind)
+            return true;
+        return false;
+      }();
+      if (!op_assigned)
+        continue;
+
       const auto &op = graph()->operations().at(op_ind);
       for (const auto &index : (op.getInputs() + op.getOutputs()) | ir::Remove::UNDEFINED)
       {
-        if (!tensor_builder->isRegistered(index) && !model_io.contains(index))
+        if (!tensor_builder->isRegistered(index) && !model_io.contains(index) &&
+            find(operand_list().begin(), operand_list().end(), index) != operand_list().end())
         {
           const auto &operand_lower_info =
               lower_info.operand.at(index)->def_factors().getOnlyElement();

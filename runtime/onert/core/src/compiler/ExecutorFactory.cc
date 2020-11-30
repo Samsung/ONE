@@ -16,6 +16,7 @@
 
 #include "ExecutorFactory.h"
 
+#include <deque>
 #include <functional>
 #include "exec/ExecutionObservers.h"
 #include "exec/LinearExecutor.h"
@@ -324,8 +325,22 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lo
     }
     */
 
-  // Generate kernels
+  // Adjust the order of backends for the upcoming iteration
+  std::deque<std::pair<const backend::Backend *, backend::BackendContext *>> ordered_contexts;
   for (auto &pair : backend_contexts)
+  {
+    // NOTE controlflow backend must be processed lastly.
+    // This is because of Permute layer's specialty which is the only operation that could have
+    // different ITensor objects for the input and the output. And it requires all other backends'
+    // tensors are ready to use.
+    if (pair.first->config()->id() == "controlflow")
+      ordered_contexts.emplace_back(pair.first, pair.second.get());
+    else
+      ordered_contexts.emplace_front(pair.first, pair.second.get());
+  }
+
+  // Generate kernels
+  for (auto &pair : ordered_contexts)
   {
     auto codes = pair.second->kernelGen(order, lowered_graph->op_seqs());
     for (auto &pair : codes)
