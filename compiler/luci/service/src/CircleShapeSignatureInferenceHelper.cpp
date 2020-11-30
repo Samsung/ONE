@@ -142,7 +142,7 @@ ShapeSignature reduced_signature(const loco::Node *node, const loco::Node *indic
   return clean_signature(output_signature);
 }
 
-ShapeSignature signature_of_arg(const luci::CircleNode *node, uint32_t index)
+ShapeSignature input_arg_signature(const luci::CircleNode *node, uint32_t index)
 {
   auto circle_input = loco::must_cast<luci::CircleNode *>(node->arg(index));
   return circle_input->shape_signature();

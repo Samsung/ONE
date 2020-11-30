@@ -21,7 +21,7 @@ namespace luci
 
 ShapeSignature ssinf::Algorithm::visit(const luci::CircleReluN1To1 *node)
 {
-  return signature_of_arg(node, 0);
+  return input_arg_signature(node, 0);
 }
 
 } // namespace luci
