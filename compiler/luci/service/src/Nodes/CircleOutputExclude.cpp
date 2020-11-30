@@ -19,7 +19,7 @@
 namespace luci
 {
 
-ShapeSignature ssinf::Algorithm::visit(const luci::CircleOutputExclude *node)
+ShapeSignature ssinf::Algorithm::visit(const luci::CircleOutputExclude *)
 {
   return ShapeSignature();
 }

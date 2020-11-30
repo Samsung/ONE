@@ -19,9 +19,6 @@
 namespace luci
 {
 
-ShapeSignature ssinf::Algorithm::visit(const luci::CircleOutputDummy *node)
-{
-  return ShapeSignature();
-}
+ShapeSignature ssinf::Algorithm::visit(const luci::CircleOutputDummy *) { return ShapeSignature(); }
 
 } // namespace luci
