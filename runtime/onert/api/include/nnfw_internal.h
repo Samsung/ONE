@@ -35,4 +35,6 @@ NNFW_STATUS nnfw_get_config(nnfw_session *session, const char *key, char *value,
  */
 NNFW_STATUS nnfw_load_circle_from_buffer(nnfw_session *session, uint8_t *buffer, size_t size);
 
+NNFW_STATUS nnfw_load_model_from_modelfile(nnfw_session *session, const char *file_path);
+
 #endif // __NNFW_INTERNAL_H__

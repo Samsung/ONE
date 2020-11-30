@@ -132,6 +132,7 @@ public:
   NNFW_STATUS set_config(const char *key, const char *value);
   NNFW_STATUS get_config(const char *key, char *value, size_t value_size);
   NNFW_STATUS load_circle_from_buffer(uint8_t *buffer, size_t size);
+  NNFW_STATUS load_model_from_modelfile(const char *file_path);
 
   //
   // Experimental API
