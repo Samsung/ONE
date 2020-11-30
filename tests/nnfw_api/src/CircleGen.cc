@@ -181,6 +181,12 @@ uint32_t CircleGen::addOperatorDepthwiseConv2D(const OperatorParams &params,
                                 circle::BuiltinOptions_DepthwiseConv2DOptions, options);
 }
 
+uint32_t CircleGen::addOperatorElu(const OperatorParams &params)
+{
+  return addOperatorWithOptions(params, circle::BuiltinOperator_ELU, circle::BuiltinOptions_NONE,
+                                0);
+}
+
 uint32_t CircleGen::addOperatorEqual(const OperatorParams &params)
 {
   auto options = circle::CreateEqualOptions(_fbb).Union();
@@ -425,6 +431,9 @@ uint32_t CircleGen::addOperatorSquare(const OperatorParams &params)
 // 2. Change enum BuiltinOperator
 // 3. Change enum BuiltinOptions
 // 4. Change CreateXXXOptions accordingly
+//
+// If operator don't have option table, remove CreateXXXOptions call,
+// call addOperatorWithOptions with options_type = circle::BuiltinOptions_NONE and options = 0
 
 // ===== Add Operator methods end =====
 

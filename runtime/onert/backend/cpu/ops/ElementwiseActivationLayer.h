@@ -32,6 +32,7 @@ namespace ops
 
 enum class ElementwiseActivationType
 {
+  kElu,
   kLogistic,
   kReLU,
   kTanh,

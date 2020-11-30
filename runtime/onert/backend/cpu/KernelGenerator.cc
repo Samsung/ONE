@@ -109,6 +109,8 @@ convertElementwiseActivationType(ir::operation::ElementwiseActivation::Type type
 {
   switch (type_ir)
   {
+    case ir::operation::ElementwiseActivation::Type::ELU:
+      return ops::ElementwiseActivationType::kElu;
     case ir::operation::ElementwiseActivation::Type::LOGISTIC:
       return ops::ElementwiseActivationType::kLogistic;
     case ir::operation::ElementwiseActivation::Type::RELU:
