@@ -350,6 +350,12 @@ NNFW_STATUS nnfw_load_circle_from_buffer(nnfw_session *session, uint8_t *buffer,
   return session->load_circle_from_buffer(buffer, size);
 }
 
+NNFW_STATUS nnfw_load_model_from_modelfile(nnfw_session *session, const char *file_path)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return session->load_model_from_modelfile(file_path);
+}
+
 NNFW_STATUS nnfw_input_tensorindex(nnfw_session *session, const char *tensorname, uint32_t *index)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);

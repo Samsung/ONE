@@ -35,4 +35,13 @@ NNFW_STATUS nnfw_get_config(nnfw_session *session, const char *key, char *value,
  */
 NNFW_STATUS nnfw_load_circle_from_buffer(nnfw_session *session, uint8_t *buffer, size_t size);
 
+/**
+ * @brief Load a tflite/circle model from file.
+ *
+ * @param[in] session   session
+ * @param[in] file_path Path to model file. Model type(tflite/circle) is decided by file extension
+ * @return    NFNFW_STATUS
+ */
+NNFW_STATUS nnfw_load_model_from_modelfile(nnfw_session *session, const char *file_path);
+
 #endif // __NNFW_INTERNAL_H__
