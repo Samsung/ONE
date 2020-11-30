@@ -52,6 +52,7 @@ private:
   using TFliteBuffers_t = flatbuffers::Vector<flatbuffers::Offset<tflite::Buffer>>;
   using TFliteTensors_t = flatbuffers::Vector<flatbuffers::Offset<tflite::Tensor>>;
   using TFliteOperators_t = flatbuffers::Vector<flatbuffers::Offset<tflite::Operator>>;
+  using TFliteMetadata_t = flatbuffers::Vector<flatbuffers::Offset<tflite::Metadata>>;
 
 public:
   Reader(const tflite::Model *model);
@@ -67,6 +68,7 @@ public:
   const TFliteOperators_t *operators() { return _operators; }
   const std::vector<int32_t> &inputs() const { return _inputs; }
   const std::vector<int32_t> &outputs() const { return _outputs; }
+  const TFliteMetadata_t *metadata() const { return _metadata; }
 
   uint32_t num_subgraph() const { return _subgraphs->Length(); }
 
@@ -86,6 +88,7 @@ private:
   const TFliteBuffers_t *_buffers{nullptr};
   const TFliteTensors_t *_tensors{nullptr};
   const TFliteOperators_t *_operators{nullptr};
+  const TFliteMetadata_t *_metadata{nullptr};
 
   uint32_t _subgraph_index;
   std::string _subgraph_name;

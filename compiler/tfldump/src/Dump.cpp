@@ -349,6 +349,7 @@ void dump_model(std::ostream &os, const tflite::Model *model)
 
   auto opcodes = reader.opcodes();
   auto buffers = reader.buffers();
+  auto metadata = reader.metadata();
 
   // dump operator_codes
   os << "Operator Codes: [order] OpCodeName (OpCode Enum)" << std::endl;
@@ -379,6 +380,14 @@ void dump_model(std::ostream &os, const tflite::Model *model)
       dump_buffer(os, buff_data, size, 16);
     }
     os << std::endl;
+  }
+  os << std::endl;
+
+  // dump metadata
+  os << "metadata : B(index) name" << std::endl;
+  for (uint32_t i = 0; i < metadata->Length(); ++i)
+  {
+    os << "B(" << metadata->Get(i)->buffer() << ") " << metadata->Get(i)->name()->c_str();
   }
   os << std::endl;
 
