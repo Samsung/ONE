@@ -694,6 +694,7 @@ OpPrinterRegistry::OpPrinterRegistry()
   // There is no Option for LOGISTIC
   // There is no Option for LOG_SOFTMAX
   _op_map[tflite::BuiltinOperator_MAX_POOL_2D] = make_unique<Pool2DPrinter>();
+  _op_map[tflite::BuiltinOperator_MEAN] = make_unique<ReducerPrinter>();
   _op_map[tflite::BuiltinOperator_MIRROR_PAD] = make_unique<MirrorPadPrinter>();
   _op_map[tflite::BuiltinOperator_MUL] = make_unique<MulPrinter>();
   // There is no Option for NON_MAX_SUPPRESSION_V4
