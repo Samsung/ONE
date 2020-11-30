@@ -28,7 +28,7 @@ namespace ssinf // Namespace for Shape Signature Inference
 
 ShapeSignature reduced_signature(const loco::Node *node, const loco::Node *indices, bool keep_dims);
 
-ShapeSignature signature_of_arg(const luci::CircleNode *node, uint32_t index);
+ShapeSignature input_arg_signature(const luci::CircleNode *node, uint32_t index);
 
 } // namespace ssinf
 
