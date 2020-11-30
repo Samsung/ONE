@@ -28,6 +28,7 @@ namespace backend
 class Backend;
 class IConstantInitializer;
 class IKernelGenerator;
+class ITransformManager;
 struct ITensorRegistry;
 struct ITensorBuilder;
 struct IOptimizer;
@@ -49,10 +50,11 @@ public:
                  std::shared_ptr<ITensorBuilder> tensor_builder = nullptr,
                  std::shared_ptr<IConstantInitializer> constant_initializer = nullptr,
                  std::shared_ptr<IKernelGenerator> kernel_gen = nullptr,
-                 std::shared_ptr<IOptimizer> optimizer = nullptr)
+                 std::shared_ptr<IOptimizer> optimizer = nullptr,
+                 std::shared_ptr<ITransformManager> transform_manager = nullptr)
       : _backend{backend}, _graph{graph}, tensor_registry{tensor_registry},
         tensor_builder{tensor_builder}, constant_initializer{constant_initializer},
-        kernel_gen{kernel_gen}, optimizer{optimizer}
+        kernel_gen{kernel_gen}, optimizer{optimizer}, transform_manager{transform_manager}
   {
   }
 
@@ -79,6 +81,7 @@ public:
   std::shared_ptr<IConstantInitializer> constant_initializer;
   std::shared_ptr<IKernelGenerator> kernel_gen;
   std::shared_ptr<IOptimizer> optimizer;
+  std::shared_ptr<ITransformManager> transform_manager;
 };
 
 using BackendContexts = std::unordered_map<const Backend *, std::unique_ptr<BackendContext>>;

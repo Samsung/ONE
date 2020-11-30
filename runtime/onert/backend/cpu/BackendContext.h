@@ -35,9 +35,11 @@ public:
                  std::shared_ptr<ITensorBuilder> tensor_builder = nullptr,
                  std::shared_ptr<IConstantInitializer> constant_initializer = nullptr,
                  std::shared_ptr<IKernelGenerator> kernel_gen = nullptr,
-                 std::shared_ptr<IOptimizer> optimizer = nullptr)
+                 std::shared_ptr<IOptimizer> optimizer = nullptr,
+                 std::shared_ptr<ITransformManager> transform_manager = nullptr)
       : onert::backend::BackendContext(backend, graph, tensor_registry, tensor_builder,
-                                       constant_initializer, kernel_gen, optimizer),
+                                       constant_initializer, kernel_gen, optimizer,
+                                       transform_manager),
         _external_context(new ExternalContext)
   {
   }
