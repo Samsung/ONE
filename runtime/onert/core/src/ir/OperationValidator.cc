@@ -235,6 +235,13 @@ void OperationValidator::visit(const operation::ElementwiseBinary &node)
 
   OP_REQUIRES(isSameType(lhs_index, rhs_index));
   OP_REQUIRES(isSameType(lhs_index, output_index));
+
+  const auto op_type = node.param().op_type;
+  if (op_type == operation::ElementwiseBinary::ElementwiseBinaryType::LOGICAL_AND ||
+      op_type == operation::ElementwiseBinary::ElementwiseBinaryType::LOGICAL_OR)
+  {
+    OP_REQUIRES(isValidType(lhs_index, DataType::BOOL8));
+  }
 }
 
 void OperationValidator::visit(const operation::ElementwiseUnary &node)
