@@ -120,7 +120,7 @@ public:
    *
    * @return count of Subgraphs
    */
-  size_t count() { return _subgraphs.size(); }
+  size_t count() const { return _subgraphs.size(); }
 
   /**
    * @brief Return the primary subgraph

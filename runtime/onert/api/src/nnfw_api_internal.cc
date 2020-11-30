@@ -25,6 +25,8 @@
 #include "tflite_loader.h"
 #include "json/json.h"
 #include "ir/OpCode.h"
+#include "util/TracingCtx.h"
+
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -153,11 +155,24 @@ void setConfigKeyValues(const CfgKeyValues &keyValues)
   onert::util::config_source_ext(std::move(configsrc));
 }
 
+// fill graph and subgraph index map for profiling
+void set_subgraph_indices(const onert::ir::Subgraphs *subgraphs,
+                          onert::util::TracingCtx *tracing_ctx)
+{
+  assert(subgraphs);
+  assert(tracing_ctx);
+
+  auto count = subgraphs->count();
+  for (size_t i = 0; i < count; i++)
+    tracing_ctx->setSubgraphIndex(subgraphs->at(onert::ir::SubgraphIndex(i)).get(), i);
+}
+
 } // namespace
 
 nnfw_session::nnfw_session()
     : _subgraphs{nullptr}, _execution{nullptr},
-      _kernel_registry{std::make_shared<onert::frontend::custom::KernelRegistry>()}
+      _kernel_registry{std::make_shared<onert::frontend::custom::KernelRegistry>()},
+      _tracing_ctx{std::make_unique<onert::util::TracingCtx>()}
 {
   // DO NOTHING
 }
@@ -184,6 +199,8 @@ NNFW_STATUS nnfw_session::load_circle_from_buffer(uint8_t *buffer, size_t size)
     std::cerr << "Error during model loading : " << e.what() << std::endl;
     return NNFW_STATUS_ERROR;
   }
+
+  set_subgraph_indices(_subgraphs.get(), _tracing_ctx.get());
 
   _compiler = std::make_unique<onert::compiler::Compiler>(_subgraphs);
 
@@ -312,6 +329,8 @@ NNFW_STATUS nnfw_session::load_model_from_file(const char *package_dir)
     std::cerr << "Error during model loading : " << e.what() << std::endl;
     return NNFW_STATUS_ERROR;
   }
+
+  set_subgraph_indices(_subgraphs.get(), _tracing_ctx.get());
 
   _compiler = std::make_unique<onert::compiler::Compiler>(_subgraphs);
 
