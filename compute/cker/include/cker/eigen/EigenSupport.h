@@ -20,6 +20,7 @@
 
 //#if defined(CKER_OPTIMIZED_EIGEN)
 
+#include <util/ConfigSource.h>
 #include <Eigen/Core>
 #include <thread>
 #include "cker/eigen/eigen_spatial_convolutions.h"
@@ -90,8 +91,8 @@ struct EigenContext
 
   EigenContext()
   {
-    int num_threads = std::thread::hardware_concurrency();
-    if (num_threads == 0)
+    int num_threads = onert::util::getConfigInt(onert::util::config::EIGEN_THREADS);
+    if (num_threads == -1)
     {
       num_threads = default_num_threadpool_threads;
     }
