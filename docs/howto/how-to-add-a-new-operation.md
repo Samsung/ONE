@@ -6,4 +6,4 @@
 
 ## Runtime
 
-- [How to introduce a new operatoin into runtime](how-to-introduce-a-new-operation-into-runtime.md)
+- [How to introduce a new operation into runtime](how-to-introduce-a-new-operation-into-runtime.md)
