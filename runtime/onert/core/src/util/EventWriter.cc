@@ -89,6 +89,7 @@ void fill(Content &content, const Event &evt)
   content.flds.emplace_back("tid", evt.tid);
   content.flds.emplace_back("ph", evt.ph);
   content.flds.emplace_back("ts", evt.ts);
+  content.args = evt.args;
 }
 
 std::string object(const DurationEvent &evt)

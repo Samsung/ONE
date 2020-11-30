@@ -27,8 +27,9 @@ struct Event
 {
   std::string name;
   std::string tid;
-  std::string ph; /* REQUIRED */
-  std::string ts; /* REQUIRED */
+  std::string ph;                                        /* REQUIRED */
+  std::string ts;                                        /* REQUIRED */
+  std::vector<std::pair<std::string, std::string>> args; // user-defined data: pairs of (key, value)
 };
 
 struct DurationEvent : public Event

@@ -19,6 +19,10 @@
 
 #include "util/EventRecorder.h"
 
+#include <vector>
+#include <utility>
+#include <string>
+
 class EventCollector
 {
 public:
@@ -33,6 +37,14 @@ public:
     Edge edge;
     std::string backend;
     std::string label;
+
+    // user-defined data: pairs of (key, value)
+    std::vector<std::pair<std::string, std::string>> userData;
+
+    Event(Edge a_edge, const std::string &a_backend, const std::string &a_label)
+        : edge(a_edge), backend(a_backend), label(a_label)
+    { /* empty */
+    }
   };
 
 public:
