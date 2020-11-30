@@ -385,9 +385,9 @@ ir::Shape inferExpandDimsShape(const ir::Shape &in_shape, int32_t axis)
   return out_shape;
 }
 
-ir::Shape inferFillShape(const ir::Shape &in_shape, const int32_t *in_buf)
+ir::Shape inferFillShape(const ir::Shape &fill_shape, const int32_t *in_buf)
 {
-  ir::Shape out_shape(in_shape.dim(0));
+  ir::Shape out_shape(fill_shape.dim(0));
 
   for (int out_x = 0; out_x < out_shape.rank(); ++out_x)
   {

@@ -346,25 +346,25 @@ void StaticShapeInferer::visit(const ir::operation::ExpandDims &op)
 
 void StaticShapeInferer::visit(const ir::operation::Fill &op)
 {
-  const auto input_idx{op.getInputs().at(ir::operation::Fill::Input::INPUT)};
-  const auto &input = _operands.at(input_idx);
+  const auto shape_idx{op.getInputs().at(ir::operation::Fill::Input::SHAPE)};
+  const auto &shape = _operands.at(shape_idx);
   const auto output_idx = op.getOutputs().at(0);
   ir::Operand &output = _operands.at(output_idx);
 
-  if (!input.isConstant())
+  if (!shape.isConstant())
   {
     output.info().setDynamic();
     _return_has_dynamic_tensor = true;
     return;
   }
 
-  assert(input.typeInfo().type() == ir::DataType::INT32);
+  assert(shape.typeInfo().type() == ir::DataType::INT32);
 
-  auto input_buf = reinterpret_cast<const int32_t *>(input.data()->base());
-  assert(input_buf);
+  auto shape_buf = reinterpret_cast<const int32_t *>(shape.data()->base());
+  assert(shape_buf);
 
   // re-sizing output shape
-  ir::Shape new_shape = shape_inference::inferFillShape(input.info().shape(), input_buf);
+  ir::Shape new_shape = shape_inference::inferFillShape(shape.info().shape(), shape_buf);
   output.info().shape(new_shape);
 }
 

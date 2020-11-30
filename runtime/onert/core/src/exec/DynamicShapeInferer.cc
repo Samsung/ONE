@@ -402,19 +402,18 @@ void DynamicShapeInferer::visit(const ir::operation::Fill &op)
   // check if output is not dynamic
   auto output_ind = op.getOutputs().at(0);
   auto output = _tensor_registry->getITensor(output_ind);
-  auto input_ind = op.getInputs().at(ir::operation::Fill::Input::INPUT);
-  auto input = _tensor_registry->getITensor(input_ind);
-  ir::Shape input_shape = input->getShape();
+  auto shape_ind = op.getInputs().at(ir::operation::Fill::Input::SHAPE);
+  auto shape = _tensor_registry->getITensor(shape_ind);
 
-  if ((!input->is_dynamic()) && (!output->is_dynamic()))
+  if ((!shape->is_dynamic()) && (!output->is_dynamic()))
     return;
 
-  assert(input->data_type() == ir::DataType::INT32);
+  assert(shape->data_type() == ir::DataType::INT32);
 
-  auto input_buf = reinterpret_cast<const int32_t *>(input->buffer());
-  assert(input_buf);
+  auto shape_buf = reinterpret_cast<const int32_t *>(shape->buffer());
+  assert(shape_buf);
 
-  auto output_shape = shape_inference::inferFillShape(input_shape, input_buf);
+  auto output_shape = shape_inference::inferFillShape(shape->getShape(), shape_buf);
 
   output->applyShape(output_shape);
   assert(output->buffer() != nullptr);
