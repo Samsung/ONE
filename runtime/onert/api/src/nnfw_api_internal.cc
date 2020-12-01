@@ -367,7 +367,7 @@ NNFW_STATUS nnfw_session::prepare()
   {
     _subgraphs.reset();
     std::shared_ptr<onert::exec::ExecutorMap> executors = _compiler->compile();
-    _execution = std::make_shared<onert::exec::Execution>(executors);
+    _execution = std::make_unique<onert::exec::Execution>(executors);
   }
   catch (const std::exception &e)
   {

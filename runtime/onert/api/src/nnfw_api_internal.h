@@ -156,7 +156,7 @@ private:
   State _state{State::INITIALIZED};
   std::shared_ptr<onert::ir::Subgraphs> _subgraphs;
   std::unique_ptr<onert::compiler::Compiler> _compiler;
-  std::shared_ptr<onert::exec::Execution> _execution;
+  std::unique_ptr<onert::exec::Execution> _execution;
   std::shared_ptr<onert::frontend::custom::KernelRegistry> _kernel_registry;
 
   std::unique_ptr<onert::util::TracingCtx> _tracing_ctx;
