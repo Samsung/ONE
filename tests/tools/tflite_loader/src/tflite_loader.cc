@@ -27,13 +27,6 @@
 
 #include <iostream>
 #include <fstream>
-
-#include "compiler/Compiler.h"
-#include "exec/Execution.h"
-#include "ir/Graph.h"
-
-#include "tflite_loader.h"
-
 #include <memory>
 
 const int RUN_FAILED = 1;
@@ -81,82 +74,6 @@ std::vector<float> randomData(nnfw::misc::RandomGenerator &randgen, const uint64
     vec[i] = randgen.generate<float>();
   }
   return vec;
-}
-
-void executeGraph(const std::shared_ptr<onert::ir::Graph> &g,
-                  const std::vector<std::vector<float>> &inputs,
-                  std::vector<std::vector<float>> &outputs)
-{
-  auto subgs = std::make_shared<onert::ir::Subgraphs>();
-  subgs->push(onert::ir::SubgraphIndex{0}, g);
-  auto compiler = new onert::compiler::Compiler(subgs);
-  std::shared_ptr<onert::exec::ExecutorMap> executors;
-  // Compilation
-  try
-  {
-    executors = compiler->compile();
-  }
-  catch (const std::exception &e)
-  {
-    std::cerr << "[Execution] Can't compile model" << std::endl;
-    std::cerr << e.what() << std::endl;
-    exit(-1);
-  }
-
-  std::cout << "[Execution] Graph compiled!" << std::endl;
-
-  auto execution = std::make_shared<onert::exec::Execution>(executors);
-
-  // Setting IO
-  try
-  {
-    // Verify input shapes
-    auto num_inputs = inputs.size();
-    for (size_t i = 0; i < num_inputs; i++)
-    {
-      auto input_operand_idx = g->getInputs().at(i);
-      auto input_shape = g->operands().at(input_operand_idx).shape();
-      assert(inputs[i].size() == input_shape.num_elements());
-    }
-
-    // Set output shapes
-    auto num_outputs = g->getOutputs().size();
-    outputs.resize(num_outputs);
-    for (uint32_t i = 0; i < num_outputs; i++)
-    {
-      auto output_operand_idx = g->getOutputs().at(i);
-      auto output_shape = g->operands().at(output_operand_idx).shape();
-      outputs[i].resize(output_shape.num_elements());
-    }
-
-    for (size_t i = 0; i < num_inputs; i++)
-      execution->setInput(onert::ir::IOIndex(i), inputs[i].data(),
-                          inputs[i].size() * sizeof(float));
-    for (uint32_t i = 0; i < num_outputs; i++)
-      execution->setOutput(onert::ir::IOIndex(i), outputs[i].data(),
-                           outputs[i].size() * sizeof(float));
-  }
-  catch (const std::exception &e)
-  {
-    std::cerr << "[Execution] Can't set model IO" << std::endl;
-    std::cerr << e.what() << '\n';
-    exit(-1);
-  }
-
-  try
-  {
-    execution->execute();
-  }
-  catch (const std::exception &e)
-  {
-    std::cerr << "[Execution] Can't execute" << std::endl;
-    std::cerr << e.what() << '\n';
-    exit(-1);
-  }
-
-  std::cout << "[Execution] Done!" << std::endl;
-
-  delete compiler;
 }
 
 inline uint64_t num_elems(const nnfw_tensorinfo *ti)
