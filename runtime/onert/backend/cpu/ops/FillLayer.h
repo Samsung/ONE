@@ -35,13 +35,11 @@ class FillLayer : public ::onert::exec::IFunction
 public:
   FillLayer();
 
-  void configure(const IPortableTensor *input, const IPortableTensor *value,
-                 IPortableTensor *output);
+  void configure(const IPortableTensor *value, IPortableTensor *output);
 
   void run() override;
 
 private:
-  const IPortableTensor *_input;
   const IPortableTensor *_value;
   IPortableTensor *_output;
 };
