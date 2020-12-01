@@ -384,12 +384,15 @@ void dump_model(std::ostream &os, const tflite::Model *model)
   os << std::endl;
 
   // dump metadata
-  os << "metadata : B(index) name" << std::endl;
-  for (uint32_t i = 0; i < metadata->Length(); ++i)
+  if (metadata != nullptr)
   {
-    os << "B(" << metadata->Get(i)->buffer() << ") " << metadata->Get(i)->name()->c_str();
+    os << "metadata : B(index) name" << std::endl;
+    for (uint32_t i = 0; i < metadata->Length(); ++i)
+    {
+      os << "B(" << metadata->Get(i)->buffer() << ") " << metadata->Get(i)->name()->c_str();
+    }
+    os << std::endl;
   }
-  os << std::endl;
 
   for (uint32_t sg = 0; sg < num_subgraph; ++sg)
   {
