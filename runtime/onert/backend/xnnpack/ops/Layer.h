@@ -21,6 +21,7 @@
 #include <backend/IPortableTensor.h>
 #include "OperationUtils.h"
 #include "../ExternalContext.h"
+#include "../Tensor.h"
 
 #include <cassert>
 #include <memory>

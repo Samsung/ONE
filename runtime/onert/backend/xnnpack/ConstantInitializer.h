@@ -47,6 +47,7 @@ public:
 public:
   void visit(const ir::operation::Conv2D &) override;
   void visit(const ir::operation::DepthwiseConv2D &) override;
+  void visit(const ir::operation::FullyConnected &) override;
 
 private:
   std::shared_ptr<ITensorRegistry> tensor_registry() const override { return _tensor_reg; }
