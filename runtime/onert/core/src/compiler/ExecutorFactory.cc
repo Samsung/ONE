@@ -345,6 +345,7 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lo
     });
   }
 
+  // TODO pass tracing_ctx
   auto exec =
       new exec::LinearExecutor{std::move(lowered_graph), tensor_regs, std::move(code_map), order};
 
@@ -449,10 +450,12 @@ exec::IExecutor *ExecutorFactory::createDataflowExecutor(
   exec::ExecutorBase *exec = nullptr;
   if (parallel)
   {
+    // TODO pass tracing_ctx
     exec = new exec::ParallelExecutor{std::move(lowered_graph), tensor_regs, std::move(code_map)};
   }
   else
   {
+    // TODO pass tracing_ctx
     auto dataflow_exec =
         new exec::DataflowExecutor{std::move(lowered_graph), tensor_regs, std::move(code_map)};
     if (options.he_profiling_mode)

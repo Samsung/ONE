@@ -24,6 +24,7 @@
 
 #include "ir/Graph.h"
 #include "exec/IExecutor.h"
+#include "util/TracingCtx.h"
 
 namespace onert
 {
@@ -59,6 +60,8 @@ struct CompilerOptions
   bool he_profiling_mode; //< Whether HEScheduler profiling mode ON/OFF
   bool disable_compile;   //< Run with Interpreter if true, try compilation otherwise
   bool fp16_enable;       //< Whether fp16 mode ON/OFF
+
+  util::TracingCtx *tracing_ctx; //< Profiling information
 };
 
 CompilerOptions fetchCompilerOptionsFromGlobalConfig(const ir::Subgraphs &subgs);
@@ -72,8 +75,9 @@ public:
   /**
    * @brief     Construct a new Compiler object
    * @param[in] subgs All subgraphs of a model
+   * @param[in] tracing_ctx Profiling information
    */
-  Compiler(const std::shared_ptr<ir::Subgraphs> &subgs);
+  Compiler(const std::shared_ptr<ir::Subgraphs> &subgs, util::TracingCtx *tracing_ctx);
 
 public:
   /**

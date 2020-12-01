@@ -19,6 +19,7 @@
 
 #include "ir/Graph.h"
 #include "ir/Index.h"
+#include "ir/Subgraphs.h"
 
 #include <unordered_map>
 #include <mutex>
@@ -54,6 +55,18 @@ public:
   void setSubgraphIndex(const ir::Graph *g, uint32_t index) { _subgraph_indices.emplace(g, index); }
 
   /**
+   * @brief Set multiple subgraph indices
+   */
+  void setSubgraphIndices(const onert::ir::Subgraphs *subgraphs)
+  {
+    assert(subgraphs);
+
+    auto count = subgraphs->count();
+    for (size_t i = 0; i < count; i++)
+      setSubgraphIndex(subgraphs->at(onert::ir::SubgraphIndex(i)).get(), i);
+  }
+
+  /**
    * @brief Get subgraph index of a graph.
    */
   ir::SubgraphIndex getSubgraphIndex(const ir::Graph *g) const { return _subgraph_indices.at(g); }
@@ -61,7 +74,6 @@ public:
 private:
   std::unordered_map<const ir::Graph *, ir::SubgraphIndex> _subgraph_indices;
   uint32_t _session_id;
-
   static std::mutex _session_id_mutex;
 };
 

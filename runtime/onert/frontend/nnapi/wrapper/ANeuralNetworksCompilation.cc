@@ -20,12 +20,15 @@
 
 // TODO Support multiple subgraphs
 ANeuralNetworksCompilation::ANeuralNetworksCompilation(const ANeuralNetworksModel *model) noexcept
-    : _subgraphs{model->getSubGraphs()}, _compiler{new onert::compiler::Compiler{_subgraphs}}
+    : _subgraphs{model->getSubGraphs()}, _tracing_ctx{std::make_unique<onert::util::TracingCtx>()},
+      _compiler{new onert::compiler::Compiler{_subgraphs, _tracing_ctx.get()}}
 {
   if (model->allowedToFp16())
   {
     _compiler->enableToFp16();
   }
+
+  _tracing_ctx->setSubgraphIndices(_subgraphs.get());
 }
 
 bool ANeuralNetworksCompilation::finish() noexcept

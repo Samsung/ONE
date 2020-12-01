@@ -131,13 +131,15 @@ CompilerOptions fetchCompilerOptionsFromGlobalConfig(const ir::Subgraphs &subgs)
   return options;
 }
 
-Compiler::Compiler(const std::shared_ptr<ir::Subgraphs> &subgs)
+Compiler::Compiler(const std::shared_ptr<ir::Subgraphs> &subgs, util::TracingCtx *tracing_ctx)
     : _subgraphs{subgs}, _state{State::CREATED}
 {
   // Set default values for CompilerOptions
   // All these default values should not be fetched from Env, when we stop supporting Android NN
   // API.
   _options = fetchCompilerOptionsFromGlobalConfig(*subgs);
+
+  _options.tracing_ctx = tracing_ctx;
 }
 
 void Compiler::enableToFp16() { _options.fp16_enable = true; }

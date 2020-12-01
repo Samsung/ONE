@@ -155,18 +155,6 @@ void setConfigKeyValues(const CfgKeyValues &keyValues)
   onert::util::config_source_ext(std::move(configsrc));
 }
 
-// fill graph and subgraph index map for profiling
-void set_subgraph_indices(const onert::ir::Subgraphs *subgraphs,
-                          onert::util::TracingCtx *tracing_ctx)
-{
-  assert(subgraphs);
-  assert(tracing_ctx);
-
-  auto count = subgraphs->count();
-  for (size_t i = 0; i < count; i++)
-    tracing_ctx->setSubgraphIndex(subgraphs->at(onert::ir::SubgraphIndex(i)).get(), i);
-}
-
 } // namespace
 
 nnfw_session::nnfw_session()
@@ -200,9 +188,9 @@ NNFW_STATUS nnfw_session::load_circle_from_buffer(uint8_t *buffer, size_t size)
     return NNFW_STATUS_ERROR;
   }
 
-  set_subgraph_indices(_subgraphs.get(), _tracing_ctx.get());
+  _tracing_ctx->setSubgraphIndices(_subgraphs.get());
 
-  _compiler = std::make_unique<onert::compiler::Compiler>(_subgraphs);
+  _compiler = std::make_unique<onert::compiler::Compiler>(_subgraphs, _tracing_ctx.get());
 
   _state = State::MODEL_LOADED;
   return NNFW_STATUS_NO_ERROR;
@@ -250,7 +238,7 @@ NNFW_STATUS nnfw_session::load_model_from_modelfile(const char *model_file_path)
     return NNFW_STATUS_ERROR;
   }
 
-  _compiler = std::make_unique<onert::compiler::Compiler>(_subgraphs);
+  _compiler = std::make_unique<onert::compiler::Compiler>(_subgraphs, _tracing_ctx.get());
 
   _state = State::MODEL_LOADED;
   return NNFW_STATUS_NO_ERROR;
@@ -330,9 +318,9 @@ NNFW_STATUS nnfw_session::load_model_from_file(const char *package_dir)
     return NNFW_STATUS_ERROR;
   }
 
-  set_subgraph_indices(_subgraphs.get(), _tracing_ctx.get());
+  _tracing_ctx->setSubgraphIndices(_subgraphs.get());
 
-  _compiler = std::make_unique<onert::compiler::Compiler>(_subgraphs);
+  _compiler = std::make_unique<onert::compiler::Compiler>(_subgraphs, _tracing_ctx.get());
 
   _state = State::MODEL_LOADED;
   return NNFW_STATUS_NO_ERROR;
