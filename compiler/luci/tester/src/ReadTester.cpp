@@ -21,6 +21,9 @@
 #include <luci/Pass/ShapeInferencePass.h>
 #include <luci/Pass/TypeInferencePass.h>
 
+// These will be removed after refactoring is finished
+#include <luci/Pass/CopyLocoItemsToCirclePass.h>
+
 #include <iostream>
 #include <map>
 #include <string>
@@ -86,12 +89,20 @@ int entry(int argc, char **argv)
       return 255;
 
     {
+      // This will be replaced after refactoring is finished
       luci::ShapeInferencePass pass;
       while (pass.run(graph) == true)
         ;
     }
     {
+      // This will be replaced after refactoring is finished
       luci::TypeInferencePass pass;
+      while (pass.run(graph) == true)
+        ;
+    }
+    {
+      // This will be removed after refactoring is finished
+      luci::CopyLocoItemsToCirclePass pass;
       while (pass.run(graph) == true)
         ;
     }
