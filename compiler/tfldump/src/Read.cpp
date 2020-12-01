@@ -81,6 +81,7 @@ Reader::Reader(const tflite::Model *model)
   _version = model->version();
   _subgraphs = model->subgraphs();
   _buffers = model->buffers();
+  _metadata = model->metadata();
 
   auto opcodes = model->operator_codes();
   for (const ::tflite::OperatorCode *opcode : *opcodes)
