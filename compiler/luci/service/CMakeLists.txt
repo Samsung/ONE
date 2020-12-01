@@ -18,8 +18,3 @@ if(NOT ENABLE_TEST)
 endif(NOT ENABLE_TEST)
 
 nnas_find_package(GTest REQUIRED)
-
-GTest_AddTest(luci_service_test ${TESTS})
-target_include_directories(luci_service_test PRIVATE src)
-target_link_libraries(luci_service_test luci_service)
-target_link_libraries(luci_service_test oops)
