@@ -17,8 +17,14 @@
 #include "Optimize.h"
 #include "ProgressReporter.h"
 
-#include <luci/Pass/ShapeInferencePass.h>
 #include <luci/Pass/ShapeSignatureInferencePass.h>
+#include <luci/Pass/CircleShapeInferencePass.h>
+#include <luci/Pass/CircleTypeInferencePass.h>
+
+// These will be removed after refactoring is finished
+#include <luci/Pass/CheckCircleRulesPass.h>
+#include <luci/Pass/CopyLocoItemsToCirclePass.h>
+#include <luci/Pass/ShapeInferencePass.h>
 #include <luci/Pass/TypeInferencePass.h>
 
 #include <logo/Phase.h>
@@ -33,9 +39,20 @@ void optimize(loco::Graph *g)
   logo::Phase phase;
   {
     // prepare type and shape before optimization
+
+    // Following passes will be deprecated after refactoring is finished.
+    phase.emplace_back(std::make_unique<CopyLocoItemsToCirclePass>());
     phase.emplace_back(std::make_unique<TypeInferencePass>());
     phase.emplace_back(std::make_unique<ShapeInferencePass>());
+
+    // Following pass is for checking whether new circle rules are implemented correctly.
+    // It will be deprecated after all implementation is finished.
+    phase.emplace_back(std::make_unique<CheckCircleRulesPass>());
+
+    // Following passes are needed everytime when new nodes are created.
     phase.emplace_back(std::make_unique<ShapeSignatureInferencePass>());
+    phase.emplace_back(std::make_unique<CircleShapeInferencePass>());
+    phase.emplace_back(std::make_unique<CircleTypeInferencePass>());
 
     // TODO add more optimization passes (with a knob)
   }
