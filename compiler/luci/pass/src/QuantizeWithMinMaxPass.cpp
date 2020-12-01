@@ -728,6 +728,24 @@ void quant_instnorm(luci::CircleInstanceNorm *node, loco::DataType output_type,
     throw std::runtime_error("Quantization granularity must be either 'layer' or 'channel'");
 }
 
+void quant_prelu(luci::CirclePRelu *node, loco::DataType output_type,
+                 QuantizationGranularity granularity)
+{
+  auto alpha = loco::must_cast<luci::CircleConst *>(node->alpha());
+  assert(alpha->dtype() == loco::DataType::FLOAT32);
+
+  if (granularity == QuantizationGranularity::LayerWise)
+  {
+    quant_const(alpha, output_type);
+  }
+  else if (granularity == QuantizationGranularity::ChannelWise)
+  {
+    quant_const_per_channel(alpha, output_type);
+  }
+  else
+    throw std::runtime_error("Quantization granularity must be either 'layer' or 'channel'");
+}
+
 /**
  * @brief Quantize const input tensors using min/max of const values
  */
@@ -781,6 +799,10 @@ void quantize_const_inputs(luci::CircleNode *node, loco::DataType output_type,
       quant_instnorm(loco::must_cast<luci::CircleInstanceNorm *>(node), output_type, granularity);
       break;
 
+    case luci::CircleOpcode::PRELU:
+      quant_prelu(loco::must_cast<luci::CirclePRelu *>(node), output_type, granularity);
+      break;
+
     case luci::CircleOpcode::ADD:
     case luci::CircleOpcode::ADD_N:
     case luci::CircleOpcode::DIV:
@@ -793,7 +815,6 @@ void quantize_const_inputs(luci::CircleNode *node, loco::DataType output_type,
     case luci::CircleOpcode::MINIMUM:
     case luci::CircleOpcode::MUL:
     case luci::CircleOpcode::NOT_EQUAL:
-    case luci::CircleOpcode::PRELU:
     case luci::CircleOpcode::SUB:
       // Quantize all const inputs using their values
       for (uint32_t i = 0; i < arity; i++)
