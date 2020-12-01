@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_COMPILER_RUY_CONSTANT_INITIALIZER_H__
-#define __ONERT_COMPILER_RUY_CONSTANT_INITIALIZER_H__
+#ifndef __ONERT_BACKEND_RUY_CONSTANT_INITIALIZER_H__
+#define __ONERT_BACKEND_RUY_CONSTANT_INITIALIZER_H__
 
 #include "backend/cpu_common/TensorRegistry.h"
 
@@ -58,4 +58,4 @@ private:
 } // namespace backend
 } // namespace onert
 
-#endif // __ONERT_COMPILER_RUY_CONSTANT_INITIALIZER_H__
+#endif // __ONERT_BACKEND_RUY_CONSTANT_INITIALIZER_H__

@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_COMPILER_ACL_NEON_CONSTANT_INITIALIZER_H__
-#define __ONERT_COMPILER_ACL_NEON_CONSTANT_INITIALIZER_H__
+#ifndef __ONERT_BACKEND_ACL_NEON_CONSTANT_INITIALIZER_H__
+#define __ONERT_BACKEND_ACL_NEON_CONSTANT_INITIALIZER_H__
 
 #include "AclConstantInitializer.h"
 
@@ -41,4 +41,4 @@ public:
 } // namespace backend
 } // namespace onert
 
-#endif // __ONERT_COMPILER_ACL_NEON_CONSTANT_INITIALIZER_H__
+#endif // __ONERT_BACKEND_ACL_NEON_CONSTANT_INITIALIZER_H__
