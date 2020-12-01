@@ -63,7 +63,7 @@ TEST(ShuffleWeightTo16x1Float32PassTest, SimpleTest1)
   auto graph = loco::make_graph();
   create_fc_net(graph.get());
 
-  luci::CircleFullyConnected *fc_node;
+  luci::CircleFullyConnected *fc_node = nullptr;
   for (auto node : loco::active_nodes(loco::output_nodes(graph.get())))
   {
     auto fc = dynamic_cast<luci::CircleFullyConnected *>(node);
@@ -73,7 +73,7 @@ TEST(ShuffleWeightTo16x1Float32PassTest, SimpleTest1)
     fc_node = fc;
     break;
   }
-  assert(fc_node);
+  ASSERT_NE(fc_node, nullptr);
   auto weights = loco::must_cast<luci::CircleConst *>(fc_node->weights());
   // before
   ASSERT_EQ(0, weights->at<loco::DataType::FLOAT32>(0));
