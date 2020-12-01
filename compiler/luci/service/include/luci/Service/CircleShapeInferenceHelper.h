@@ -14,28 +14,28 @@
  * limitations under the License.
  */
 
-#include <luci/Service/CircleShapeInference.h>
-#include <luci/Service/CircleShapeSignatureInference.h>
-#include <luci/Service/CircleTypeInference.h>
+#ifndef __LUCI_CIRCLE_SHAPE_INFERENCE_HELPER_H__
+#define __LUCI_CIRCLE_SHAPE_INFERENCE_HELPER_H__
+
+#include <loco/IR/TensorShape.h>
+
+#include <luci/IR/CircleNodes.h>
+#include <luci/IR/CircleShapeSignature.h>
 
 namespace luci
 {
 
-loco::TensorShape sinf::Algorithm::visit(const luci::CircleReduceMin *node)
+namespace sinf // Namespace for Shape Inference
 {
-  return signature_to_shape(
-      ssinf::reduced_signature(node->input(), node->reduction_indices(), node->keep_dims()));
-}
 
-ShapeSignature ssinf::Algorithm::visit(const luci::CircleReduceMin *node)
-{
-  return clean_signature(
-      reduced_signature(node->input(), node->reduction_indices(), node->keep_dims()));
-}
+loco::TensorShape circle_shape(const luci::CircleNode *node);
 
-loco::DataType tinf::Algorithm::visit(const luci::CircleReduceMin *node)
-{
-  return input_arg_dtype(node, 0);
-}
+loco::TensorShape input_arg_shape(const luci::CircleNode *node, unsigned int index);
+
+loco::TensorShape signature_to_shape(const luci::ShapeSignature &signature);
+
+} // namespace sinf
 
 } // namespace luci
+
+#endif // __LUCI_CIRCLE_SHAPE_INFERENCE_HELPER_H__

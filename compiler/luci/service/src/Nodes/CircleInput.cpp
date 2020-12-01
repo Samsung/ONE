@@ -14,14 +14,23 @@
  * limitations under the License.
  */
 
+#include <luci/Service/CircleShapeInference.h>
 #include <luci/Service/CircleShapeSignatureInference.h>
+#include <luci/Service/CircleTypeInference.h>
 
 namespace luci
 {
+
+loco::TensorShape sinf::Algorithm::visit(const luci::CircleInput *node)
+{
+  return sinf::circle_shape(node);
+}
 
 ShapeSignature ssinf::Algorithm::visit(const luci::CircleInput *node)
 {
   return node->shape_signature();
 }
+
+loco::DataType tinf::Algorithm::visit(const luci::CircleInput *node) { return node->dtype(); }
 
 } // namespace luci

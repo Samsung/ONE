@@ -16,6 +16,8 @@
 
 #include "luci/Service/CircleTypeInference.h"
 
+#include <luci/Log.h>
+
 #include <loco.h>
 #include <loco/Service/TypeInference.h>
 
@@ -68,5 +70,58 @@ circle::TensorType TypeInference::get(loco::Node *node)
   assert(loco::dtype_known(node));
   return translateLocoTypeToCircle(loco::dtype_get(node));
 }
+
+} // namespace luci
+
+namespace
+{
+
+bool inputs_dtype_ready(const luci::CircleNode *node)
+{
+  assert(node != nullptr);
+
+  for (uint32_t arity = 0; arity < node->arity(); ++arity)
+  {
+    if (node->dtype() == loco::DataType::Unknown)
+      return false;
+  }
+  return true;
+}
+
+} // namespace
+
+namespace luci
+{
+
+namespace tinf
+{
+
+bool Rule::infer(const luci::CircleNode *circle_node, loco::DataType &dtype) const
+{
+  LOGGER(l);
+  VERBOSE(l, 1) << "[luci] dtype: " << circle_node->name();
+  VERBOSE(l, 1) << "   before: " << static_cast<int>(circle_node->dtype());
+
+  if (!inputs_dtype_ready(circle_node))
+  {
+    VERBOSE(l, 1) << " -> after: dtype of some inputs are not ready to be inferenced";
+    return false;
+  }
+
+  Algorithm alg;
+  dtype = circle_node->accept(&alg);
+
+  if (dtype == loco::DataType::Unknown)
+  {
+    VERBOSE(l, 1) << " -> after: inferred dtype is unknown";
+    return false;
+  }
+
+  VERBOSE(l, 1) << " -> after: " << static_cast<int>(dtype);
+
+  return true;
+}
+
+} // namespace tinf
 
 } // namespace luci
