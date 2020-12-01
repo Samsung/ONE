@@ -1364,6 +1364,9 @@ void BaseLoader<LoaderDomain>::loadOperation(const Operator *op, ir::Graph &subg
     case BuiltinOperator::BuiltinOperator_PACK:
       loadPack(op, subg);
       return;
+    case BuiltinOperator::BuiltinOperator_ELU:
+      loadElementwiseActivation(op, subg, ir::operation::ElementwiseActivation::Type::ELU);
+      return;
     case BuiltinOperator::BuiltinOperator_RELU:
       loadElementwiseActivation(op, subg, ir::operation::ElementwiseActivation::Type::RELU,
                                 ir::operation::ElementwiseActivation::infinity, 0.f);

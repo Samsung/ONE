@@ -225,6 +225,32 @@ void OperationValidator::visit(const operation::ElementwiseActivation &node)
 
   // Check if I/O types match
   OP_REQUIRES(isSameType(output_index, input_index));
+
+  switch (node.param().op_type)
+  {
+    case operation::ElementwiseActivation::Type::ELU:
+      OP_REQUIRES(isValidType(input_index, DataType::FLOAT32));
+      break;
+    case operation::ElementwiseActivation::Type::LEAKY_RELU:
+      OP_REQUIRES(
+          isValidType(input_index, {DataType::FLOAT32, DataType::QUANT_UINT8_ASYMM,
+                                    DataType::QUANT_INT8_ASYMM, DataType::QUANT_INT16_ASYMM}));
+      break;
+    case operation::ElementwiseActivation::Type::LOGISTIC:
+      OP_REQUIRES(
+          isValidType(input_index, {DataType::FLOAT32, DataType::QUANT_UINT8_ASYMM,
+                                    DataType::QUANT_INT8_ASYMM, DataType::QUANT_INT16_ASYMM}));
+      break;
+    case operation::ElementwiseActivation::Type::RELU:
+      OP_REQUIRES(isValidType(input_index, {DataType::FLOAT32, DataType::QUANT_UINT8_ASYMM,
+                                            DataType::QUANT_INT8_ASYMM}));
+      break;
+    case operation::ElementwiseActivation::Type::TANH:
+      OP_REQUIRES(
+          isValidType(input_index, {DataType::FLOAT32, DataType::QUANT_UINT8_ASYMM,
+                                    DataType::QUANT_INT8_ASYMM, DataType::QUANT_INT16_ASYMM}));
+      break;
+  }
 }
 
 void OperationValidator::visit(const operation::ElementwiseBinary &node)
