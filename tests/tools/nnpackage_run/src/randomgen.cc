@@ -66,7 +66,7 @@ void RandomGenerator::generate(std::vector<Allocation> &inputs)
         std::exit(-1);
     }
     NNPR_ENSURE_STATUS(
-        nnfw_set_input(session_, i, ti.dtype, inputs[i].data(), input_size_in_bytes));
+      nnfw_set_input(session_, i, ti.dtype, inputs[i].data(), input_size_in_bytes));
     NNPR_ENSURE_STATUS(nnfw_set_input_layout(session_, i, NNFW_LAYOUT_CHANNELS_LAST));
   }
 };
