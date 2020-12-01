@@ -29,15 +29,13 @@ namespace cpu
 namespace ops
 {
 
-FillLayer::FillLayer() : _input(nullptr), _value(nullptr), _output(nullptr)
+FillLayer::FillLayer() : _value(nullptr), _output(nullptr)
 {
   // DO NOTHING
 }
 
-void FillLayer::configure(const IPortableTensor *input, const IPortableTensor *value,
-                          IPortableTensor *output)
+void FillLayer::configure(const IPortableTensor *value, IPortableTensor *output)
 {
-  _input = input;
   _value = value;
   _output = output;
 }
@@ -47,28 +45,24 @@ void FillLayer::run()
   switch (_output->data_type())
   {
     case OperandType::FLOAT32:
-      nnfw::cker::Fill<float *>(getTensorShape(_input), reinterpret_cast<int *>(_input->buffer()),
-                                reinterpret_cast<float *>(_value->buffer()),
+      nnfw::cker::Fill<float *>(reinterpret_cast<float *>(_value->buffer()),
                                 getTensorShape(_output),
                                 reinterpret_cast<float *>(_output->buffer()));
       break;
     case OperandType::INT32:
-      nnfw::cker::Fill<int32_t *>(getTensorShape(_input), reinterpret_cast<int *>(_input->buffer()),
-                                  reinterpret_cast<int32_t *>(_value->buffer()),
+      nnfw::cker::Fill<int32_t *>(reinterpret_cast<int32_t *>(_value->buffer()),
                                   getTensorShape(_output),
                                   reinterpret_cast<int32_t *>(_output->buffer()));
       break;
     case OperandType::INT64:
-      nnfw::cker::Fill<int64_t *>(getTensorShape(_input), reinterpret_cast<int *>(_input->buffer()),
-                                  reinterpret_cast<int64_t *>(_value->buffer()),
+      nnfw::cker::Fill<int64_t *>(reinterpret_cast<int64_t *>(_value->buffer()),
                                   getTensorShape(_output),
                                   reinterpret_cast<int64_t *>(_output->buffer()));
       break;
     case OperandType::UINT32:
-      nnfw::cker::Fill<uint32_t *>(
-          getTensorShape(_input), reinterpret_cast<int *>(_input->buffer()),
-          reinterpret_cast<uint32_t *>(_value->buffer()), getTensorShape(_output),
-          reinterpret_cast<uint32_t *>(_output->buffer()));
+      nnfw::cker::Fill<uint32_t *>(reinterpret_cast<uint32_t *>(_value->buffer()),
+                                   getTensorShape(_output),
+                                   reinterpret_cast<uint32_t *>(_output->buffer()));
       break;
     default:
       throw std::runtime_error{"Fill: unsupported data type"};

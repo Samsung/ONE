@@ -358,13 +358,19 @@ void StaticShapeInferer::visit(const ir::operation::Fill &op)
     return;
   }
 
-  assert(shape.typeInfo().type() == ir::DataType::INT32);
+  const auto dims_type = shape.typeInfo().type();
+  assert(dims_type == ir::DataType::INT32 || dims_type == ir::DataType::INT64);
 
-  auto shape_buf = reinterpret_cast<const int32_t *>(shape.data()->base());
-  assert(shape_buf);
+  auto dims_buf = shape.data()->base();
+  assert(dims_buf);
 
-  // re-sizing output shape
-  ir::Shape new_shape = shape_inference::inferFillShape(shape.info().shape(), shape_buf);
+  const auto &dims_shape = shape.info().shape();
+  auto new_shape = ((dims_type == ir::DataType::INT32)
+                        ? shape_inference::inferFillShape<int32_t>(
+                              dims_shape, reinterpret_cast<const int32_t *>(dims_buf))
+                        : shape_inference::inferFillShape<int64_t>(
+                              dims_shape, reinterpret_cast<const int64_t *>(dims_buf)));
+
   output.info().shape(new_shape);
 }
 

@@ -70,7 +70,7 @@ ir::Shape inferEltwiseShape(const ir::Shape &lhs_shape, const ir::Shape &rhs_sha
 
 ir::Shape inferExpandDimsShape(const ir::Shape &in_shape, int32_t axis);
 
-ir::Shape inferFillShape(const ir::Shape &fill_shape, const int32_t *shape_buf);
+template <typename T> ir::Shape inferFillShape(const ir::Shape &fill_shape, const T *shape_buf);
 
 ir::Shape inferFullyConnectedShape(const ir::Shape &in_shape, const ir::Shape &ker_shape);
 

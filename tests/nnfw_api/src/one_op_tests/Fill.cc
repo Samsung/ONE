@@ -16,61 +16,78 @@
 
 #include "GenModelTest.h"
 
-TEST_F(GenModelTest, OneOp_Fill_Int32)
+struct FillVariationParam
 {
-  CircleGen cgen;
-  std::vector<int32_t> value_data{13};
-  uint32_t value_buf = cgen.addBuffer(value_data);
+  TestCaseData tcd;
+  const uint8_t *value_data = nullptr;
+  circle::TensorType data_type = circle::TensorType::TensorType_FLOAT32;
+};
 
-  int in = cgen.addTensor({{2}, circle::TensorType::TensorType_INT32});
-  int value = cgen.addTensor({{1}, circle::TensorType::TensorType_INT32, value_buf});
-  int out = cgen.addTensor({{2, 3}, circle::TensorType::TensorType_INT32});
-  cgen.addOperatorFill({{in, value}, {out}});
-  cgen.setInputsAndOutputs({in}, {out});
+class FillVariation : public GenModelTest, public ::testing::WithParamInterface<FillVariationParam>
+{
+};
+
+// value is constant
+TEST_P(FillVariation, Test)
+{
+  auto &param = GetParam();
+
+  CircleGen cgen;
+
+  size_t value_size =
+      (param.data_type == circle::TensorType::TensorType_INT64) ? sizeof(int64_t) : sizeof(int32_t);
+  uint32_t value_buf = cgen.addBuffer(param.value_data, value_size);
+
+  int dims = cgen.addTensor({{2}, circle::TensorType::TensorType_INT32});
+  int value = cgen.addTensor({{1}, param.data_type, value_buf});
+  int out = cgen.addTensor({{2, 3}, param.data_type});
+  cgen.addOperatorFill({{dims, value}, {out}});
+  cgen.setInputsAndOutputs({dims}, {out});
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
-  _context->addTestCase(
-      TestCaseData{}.addInput<int32_t>({2, 3}).addOutput<int32_t>({13, 13, 13, 13, 13, 13}));
+  _context->addTestCase(param.tcd);
   _context->setBackends({"cpu"});
 
   SUCCEED();
 }
 
-TEST_F(GenModelTest, OneOp_Fill_Int64)
-{
-  CircleGen cgen;
-  std::vector<int64_t> value_data{13};
-  uint32_t value_buf = cgen.addBuffer(value_data);
+const int32_t test_int32 = 13;
+const int64_t test_int64 = 1052;
+const float test_float = 5.2;
 
-  int in = cgen.addTensor({{2}, circle::TensorType::TensorType_INT32});
-  int value = cgen.addTensor({{1}, circle::TensorType::TensorType_INT64, value_buf});
-  int out = cgen.addTensor({{2, 3}, circle::TensorType::TensorType_INT64});
-  cgen.addOperatorFill({{in, value}, {out}});
-  cgen.setInputsAndOutputs({in}, {out});
+// Test with different value type
+INSTANTIATE_TEST_CASE_P(
+    GenModelTest, FillVariation,
+    ::testing::Values(
+        // float value
+        FillVariationParam{TestCaseData{}.addInput<int32_t>({2, 3}).addOutput<float>(
+                               {5.2, 5.2, 5.2, 5.2, 5.2, 5.2}),
+                           reinterpret_cast<const uint8_t *>(&test_float)},
+        // int32 value
+        FillVariationParam{
+            TestCaseData{}.addInput<int32_t>({2, 3}).addOutput<int32_t>({13, 13, 13, 13, 13, 13}),
+            reinterpret_cast<const uint8_t *>(&test_int32), circle::TensorType::TensorType_INT32},
+        // uint8 value
+        FillVariationParam{
+            TestCaseData{}.addInput<int32_t>({2, 3}).addOutput<int64_t>({1052, 1052, 1052, 1052,
+                                                                         1052, 1052}),
+            reinterpret_cast<const uint8_t *>(&test_int64), circle::TensorType::TensorType_INT64}));
 
-  _context = std::make_unique<GenModelTestContext>(cgen.finish());
-  _context->addTestCase(
-      TestCaseData{}.addInput<int32_t>({2, 3}).addOutput<int64_t>({13, 13, 13, 13, 13, 13}));
-  _context->setBackends({"cpu"});
-
-  SUCCEED();
-}
-
-TEST_F(GenModelTest, OneOp_Fill_Float32)
+TEST_F(GenModelTest, OneOp_Fill_Int64_Shape)
 {
   CircleGen cgen;
   std::vector<float> value_data{1.3};
   uint32_t value_buf = cgen.addBuffer(value_data);
 
-  int in = cgen.addTensor({{2}, circle::TensorType::TensorType_INT32});
+  int dims = cgen.addTensor({{2}, circle::TensorType::TensorType_INT64});
   int value = cgen.addTensor({{1}, circle::TensorType::TensorType_FLOAT32, value_buf});
   int out = cgen.addTensor({{2, 3}, circle::TensorType::TensorType_FLOAT32});
-  cgen.addOperatorFill({{in, value}, {out}});
-  cgen.setInputsAndOutputs({in}, {out});
+  cgen.addOperatorFill({{dims, value}, {out}});
+  cgen.setInputsAndOutputs({dims}, {out});
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
   _context->addTestCase(
-      TestCaseData{}.addInput<int32_t>({2, 3}).addOutput<float>({1.3, 1.3, 1.3, 1.3, 1.3, 1.3}));
+      TestCaseData{}.addInput<int64_t>({2, 3}).addOutput<float>({1.3, 1.3, 1.3, 1.3, 1.3, 1.3}));
   _context->setBackends({"cpu"});
 
   SUCCEED();
