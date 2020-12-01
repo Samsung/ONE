@@ -133,9 +133,10 @@ void CircleOptimizer::optimize(luci::Module *m) const
 {
   luci::Phase phase;
 
+  // Following passes are needed everytime when new nodes are created.
+  phase.emplace_back(std::make_unique<luci::TypeInferencePass>());
   phase.emplace_back(std::make_unique<luci::ShapeInferencePass>());
   phase.emplace_back(std::make_unique<luci::ShapeSignatureInferencePass>());
-  phase.emplace_back(std::make_unique<luci::TypeInferencePass>());
 
   if (_options->query(Options::Algorithm::FuseBCQ))
   {
@@ -153,6 +154,13 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   logo::Phase phase;
 
   /* TRANSFORM DECLARATION BEGIN */
+  phase.emplace_back(std::make_unique<logo::RemoveDeadNodeWithQueryPass>());
+
+  // Following passes are needed everytime when new nodes are created.
+  phase.emplace_back(std::make_unique<luci::TypeInferencePass>());
+  phase.emplace_back(std::make_unique<luci::ShapeInferencePass>());
+  phase.emplace_back(std::make_unique<luci::ShapeSignatureInferencePass>());
+
   if (_options->query(Options::Algorithm::ResolveCustomOpAdd))
   {
     phase.emplace_back(std::make_unique<luci::ResolveCustomOpAddPass>());
@@ -201,16 +209,10 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   {
     phase.emplace_back(std::make_unique<luci::RemoveRedundantTransposePass>());
   }
-
-  // Shape inference is needed for added nodes doing above transformations
-  phase.emplace_back(std::make_unique<luci::ShapeInferencePass>());
-  phase.emplace_back(std::make_unique<luci::ShapeSignatureInferencePass>());
-  phase.emplace_back(std::make_unique<luci::TypeInferencePass>());
-  phase.emplace_back(std::make_unique<logo::RemoveDeadNodeWithQueryPass>());
   /* TRANSFORM DECLARATION END */
 
-  ProgressReporter prog(g, logo::PhaseStrategy::Saturate);
-  logo::PhaseRunner<logo::PhaseStrategy::Saturate> phase_runner{g};
+  ProgressReporter prog(g, logo::PhaseStrategy::Restart);
+  logo::PhaseRunner<logo::PhaseStrategy::Restart> phase_runner{g};
   phase_runner.attach(&prog);
   phase_runner.run(phase);
 }
