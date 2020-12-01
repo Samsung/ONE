@@ -150,11 +150,10 @@ bool is_instance_mean_v0(luci::CircleMean *mean)
   //
   // CHECK 1) input is rank 4
   //
-  auto input = mean->input();
-  if (not loco::shape_known(input))
+  auto input = loco::must_cast<luci::CircleNode *>(mean->input());
+  if (input->shape_status() != luci::ShapeStatus::VALID)
     return false;
-  auto input_shape = loco::shape_get(input).as<loco::TensorShape>();
-  if (input_shape.rank() != 4)
+  if (input->rank() != 4)
     return false;
 
   //
@@ -195,11 +194,10 @@ bool is_instance_mean_v1(luci::CircleMean *mean)
   //
   // CHECK 1) input is rank 5 (NHWCX)
   //
-  auto input = mean->input();
-  if (not loco::shape_known(input))
+  auto input = loco::must_cast<luci::CircleNode *>(mean->input());
+  if (input->shape_status() != luci::ShapeStatus::VALID)
     return false;
-  auto input_shape = loco::shape_get(input).as<loco::TensorShape>();
-  if (input_shape.rank() != 5)
+  if (input->rank() != 5)
     return false;
 
   //
@@ -514,12 +512,10 @@ bool InstanceNormPattern::matched()
     ifm = reshape_of_ifm->tensor();
   }
 
-  CHECK_OR_FALSE(loco::shape_known(ifm));
-  auto ifm_shape = loco::shape_get(ifm);
-  CHECK_OR_FALSE(ifm_shape.domain() == loco::Domain::Tensor);
-  auto ifm_tensor_shape = ifm_shape.as<loco::TensorShape>();
-  CHECK_OR_FALSE(ifm_tensor_shape.rank() == 4);
-  uint32_t ifm_channel_depth = ifm_tensor_shape.dim(3).value();
+  auto ifm_circle = loco::must_cast<luci::CircleNode *>(ifm);
+  CHECK_OR_FALSE(ifm_circle->shape_status() == luci::ShapeStatus::VALID);
+  CHECK_OR_FALSE(ifm_circle->rank() == 4);
+  uint32_t ifm_channel_depth = ifm_circle->dim(3).value();
 
   CHECK_OR_FALSE(fill(&rsqrt, &const_as_gamma).with_commutative_args_of(mul_gamma));
 
@@ -652,8 +648,8 @@ void fuse_instance_norm(const InstanceNormPattern &p)
   auto reshape_gamma = graph->nodes()->create<luci::CircleReshape>();
   auto reshape_beta = graph->nodes()->create<luci::CircleReshape>();
   {
-    auto ifm_shape = loco::shape_get(p.ifm).as<loco::TensorShape>();
-    uint32_t ifm_channel_depth = ifm_shape.dim(3).value();
+    auto circle_ifm = loco::must_cast<luci::CircleNode *>(p.ifm);
+    uint32_t ifm_channel_depth = circle_ifm->dim(3).value();
 
     int32_t new_shape[1] = {static_cast<int32_t>(ifm_channel_depth)};
 
