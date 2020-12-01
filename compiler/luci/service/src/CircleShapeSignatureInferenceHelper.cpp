@@ -22,7 +22,10 @@
 
 #include <oops/InternalExn.h>
 
-namespace
+namespace luci
+{
+
+namespace ssinf
 {
 
 luci::ShapeSignature clean_signature(const luci::ShapeSignature &signature)
@@ -36,24 +39,23 @@ luci::ShapeSignature clean_signature(const luci::ShapeSignature &signature)
   return luci::ShapeSignature();
 }
 
-} // namespace
-
-namespace luci
-{
-
-namespace ssinf
-{
-
 ShapeSignature reduced_signature(const loco::Node *node, const loco::Node *indices, bool keep_dims)
 {
+  ShapeSignature input_signature;
   ShapeSignature output_signature;
 
   auto circle_node = loco::must_cast<const luci::CircleNode *>(node);
-  auto circle_indices = loco::must_cast<const luci::CircleNode *>(indices);
-  auto input_signature = circle_node->shape_signature();
+  if (circle_node->shape_signature().rank() > 0)
+    input_signature = circle_node->shape_signature();
+  else
+  {
+    input_signature.rank(circle_node->rank());
+    for (uint32_t i = 0; i < circle_node->rank(); ++i)
+      input_signature.dim(i) = circle_node->dim(i).value();
+  }
 
   // When reduction_indices is not constant
-  auto reduction_indices = dynamic_cast<const luci::CircleConst *>(circle_indices);
+  auto reduction_indices = dynamic_cast<const luci::CircleConst *>(indices);
   if (reduction_indices == nullptr)
   {
     if (keep_dims)
@@ -66,15 +68,13 @@ ShapeSignature reduced_signature(const loco::Node *node, const loco::Node *indic
     else
     {
       // There is no way to inference for this case.
-
-      // This assert is just to find this case occurs at debug version.
-      assert(false && "Cannot infer reduced_signature");
+      // Return empty signature.
     }
 
     return output_signature;
   }
 
-  // If shape signature is empty, output is static.
+  // If shape signature is empty, nothing to infer.
   if (input_signature.rank() == 0)
     return output_signature;
 
@@ -139,7 +139,7 @@ ShapeSignature reduced_signature(const loco::Node *node, const loco::Node *indic
         output_signature.dim(j++) = input_signature.dim(i);
   }
 
-  return clean_signature(output_signature);
+  return output_signature;
 }
 
 ShapeSignature input_arg_signature(const luci::CircleNode *node, uint32_t index)

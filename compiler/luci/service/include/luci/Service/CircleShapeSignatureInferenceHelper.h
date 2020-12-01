@@ -26,8 +26,13 @@ namespace luci
 namespace ssinf // Namespace for Shape Signature Inference
 {
 
+// Return empty signature if all of dimensions are known.
+ShapeSignature clean_signature(const luci::ShapeSignature &signature);
+
+// Return reduced input_signature with indices, which is reduction indices.
 ShapeSignature reduced_signature(const loco::Node *node, const loco::Node *indices, bool keep_dims);
 
+// Return signature of index-th argument of node.
 ShapeSignature input_arg_signature(const luci::CircleNode *node, uint32_t index);
 
 } // namespace ssinf
