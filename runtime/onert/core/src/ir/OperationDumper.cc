@@ -166,6 +166,14 @@ void OperationDumper::visit(const ExpandDims &node)
   dumpUnaryInputOp(node, axis);
 }
 
+void OperationDumper::visit(const Fill &node)
+{
+  VERBOSE(LIR) << "* " << node.name() << std::endl;
+  VERBOSE(LIR) << "  - Inputs : Shape(" << node.getInputs().at(Fill::Input::SHAPE) << ") Value("
+               << node.getInputs().at(Fill::Input::VALUE) << ")" << std::endl;
+  VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
+}
+
 void OperationDumper::visit(const FullyConnected &node)
 {
   std::string inputs =
