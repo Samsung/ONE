@@ -34,6 +34,9 @@ struct ITensorRegistry;
 struct ITensorBuilder;
 struct IOptimizer;
 
+using FunctionMap =
+    std::vector<std::pair<ir::OpSequenceIndex, std::unique_ptr<exec::FunctionSequence>>>;
+
 class BackendContext
 {
 public:
@@ -74,8 +77,8 @@ public:
   {
     return nullptr;
   }
-  virtual std::vector<std::pair<ir::OpSequenceIndex, std::unique_ptr<exec::FunctionSequence>>>
-  kernelGen(const std::vector<onert::ir::OpSequenceIndex> &, const ir::OpSequences &)
+  virtual FunctionMap kernelGen(const std::vector<onert::ir::OpSequenceIndex> &,
+                                const ir::OpSequences &)
   {
     return {};
   }

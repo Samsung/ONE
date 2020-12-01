@@ -202,19 +202,31 @@ ITensorRegistry *BackendContext::tensorGen(const std::vector<onert::ir::OpSequen
     tensor_builder->registerTensorInfo(index, backend_info, backend_layout);
   }
 
-  // PLAN TENSORS
-  planTensors(order, op_seqs, lower_info);
+  // TODO Get compiler options from compiler, and use it rather than getting it from Env
+  if (util::getConfigString(util::config::EXECUTOR) == "Linear")
+  {
+    planTensors(order, op_seqs, lower_info);
+  }
+  else
+  {
+    // For the executors that does not have fixed linear execution order:
+    // To make tensors never be deallocated, this is a workaround to use static memory planner
+    for (auto ind : operand_list())
+    {
+      if (tensor_builder->isRegistered(ind))
+        tensor_builder->notifyFirstUse(ind);
+    }
+  }
 
   tensor_builder->prepare();
 
   return tensor_registry.get();
 }
 
-std::vector<std::pair<ir::OpSequenceIndex, std::unique_ptr<exec::FunctionSequence>>>
-BackendContext::kernelGen(const std::vector<ir::OpSequenceIndex> &order,
-                          const ir::OpSequences &op_seqs)
+FunctionMap BackendContext::kernelGen(const std::vector<ir::OpSequenceIndex> &order,
+                                      const ir::OpSequences &op_seqs)
 {
-  std::vector<std::pair<ir::OpSequenceIndex, std::unique_ptr<exec::FunctionSequence>>> ret;
+  FunctionMap ret;
 
   for (auto op_seq_ind : order)
   {

@@ -45,9 +45,8 @@ public:
   ITensorRegistry *tensorGen(const std::vector<onert::ir::OpSequenceIndex> &order,
                              const ir::OpSequences &op_seqs,
                              const ir::LowerInfoMap &lower_info) override;
-  std::vector<std::pair<ir::OpSequenceIndex, std::unique_ptr<exec::FunctionSequence>>>
-  kernelGen(const std::vector<onert::ir::OpSequenceIndex> &order,
-            const ir::OpSequences &op_seqs) override;
+  FunctionMap kernelGen(const std::vector<onert::ir::OpSequenceIndex> &order,
+                        const ir::OpSequences &op_seqs) override;
 
   std::shared_ptr<ExternalContext> external_context() { return _external_context; }
 
