@@ -52,7 +52,6 @@ ShapeSignature reduced_signature(const loco::Node *node, const loco::Node *indic
   ShapeSignature output_signature;
 
   auto circle_node = loco::must_cast<const luci::CircleNode *>(node);
-
   if (circle_node->shape_signature().rank() > 0)
     input_signature = circle_node->shape_signature();
   else
@@ -61,6 +60,13 @@ ShapeSignature reduced_signature(const loco::Node *node, const loco::Node *indic
     for (uint32_t i = 0; i < circle_node->rank(); ++i)
       input_signature.dim(i) = circle_node->dim(i).value();
   }
+
+  // If input rank is 0, it means that one of following case is occurred.
+  // - Input is scalar : result is always scalar
+  // - Input shape signature is not inferenced : cannot infer output shape signauture
+  // Therefore, when input signature rank is 0, always return empty signature.
+  if (input_signature.rank() == 0)
+    return output_signature;
 
   // When reduction_indices is not constant
   auto reduction_indices = dynamic_cast<const luci::CircleConst *>(indices);
@@ -83,13 +89,6 @@ ShapeSignature reduced_signature(const loco::Node *node, const loco::Node *indic
 
     return output_signature;
   }
-
-  // If input rank is 0, it means that one of following case is occurred.
-  // - Input is scalar : result is always scalar
-  // - Input shape signature is not inferenced : cannot infer output shape signauture
-  // Therefore, when input signature rank is 0, always return empty signature.
-  if (input_signature.rank() == 0)
-    return output_signature;
 
   std::vector<int32_t> reduction_values;
   if (reduction_indices->dtype() == loco::DataType::S32)
