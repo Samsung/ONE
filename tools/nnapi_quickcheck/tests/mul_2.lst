@@ -1,9 +1,0 @@
-#ifndef INT_VALUE
-#error "INT_VALUE should be defined"
-#endif // INT_VALUE
-
-INT_VALUE(LEFT_D1, 5)
-INT_VALUE(LEFT_D2, 3)
-INT_VALUE(LEFT_D3, 12)
-
-INT_VALUE(RIGHT_D1, 12)

@@ -48,7 +48,6 @@ option(BUILD_MLAPSE "Build mlapse benchmark toolkit" OFF)
 #
 option(BUILD_KBENCHMARK "Build kernel benchmark tool" OFF)
 option(BUILD_OPENCL_TOOL "Build OpenCL tool" OFF)
-option(BUILD_NNAPI_QUICKCHECK "Build NN API Quickcheck tools" OFF)
 option(BUILD_TFLITE_ACCURACY "Build tflite accuracy tool" OFF)
 #
 # Default external libraries source download and build configuration
