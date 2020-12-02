@@ -26,6 +26,7 @@ luci::CircleConst *create_weights_from_gamma(luci::CircleConst *gamma)
   assert(gamma->rank() == 1);
   auto channel_size = gamma->dim(0).value();
 
+  // Channel-wise MUL is the same as DEPTHWISE_CONV2D with filter shape (1,1,1,channel_size)
   auto weights = gamma->graph()->nodes()->create<luci::CircleConst>();
   weights->dtype(loco::DataType::FLOAT32);
   weights->rank(4);
@@ -48,6 +49,7 @@ luci::CircleConst *create_bias_from_beta(luci::CircleConst *beta)
   assert(beta->rank() == 1);
   auto channel_size = beta->dim(0).value();
 
+  // Channel-wise ADD is the same as bias (shape = (channel_size)) of DEPTHWISE_CONV2D
   auto bias = beta->graph()->nodes()->create<luci::CircleConst>();
   bias->dtype(loco::DataType::FLOAT32);
   bias->rank(1);
@@ -168,8 +170,12 @@ bool replace_mul_add_with_dwconv(luci::CircleAdd *add)
   if (!is_batchnorm_mul(mul, pred_node, gamma))
     return false;
 
-  if (beta->dtype() != loco::DataType::FLOAT32 || gamma->dtype() != loco::DataType::FLOAT32)
-    throw std::runtime_error("ReplaceMulAddWithDepthwiseConvPass only supports Float32 model");
+  if (pred_node->rank() != 4)
+    return false;
+
+  if (pred_node->dtype() != loco::DataType::FLOAT32 || beta->dtype() != loco::DataType::FLOAT32 ||
+      gamma->dtype() != loco::DataType::FLOAT32)
+    return false;
 
   auto weights = create_weights_from_gamma(gamma);
   auto bias = create_bias_from_beta(beta);
