@@ -18,6 +18,9 @@
 #define __ONERT_BACKEND_CONTROLFLOW_BACKEND_CONTEXT_H__
 
 #include <backend/BackendContext.h>
+#include "TensorBuilder.h"
+#include "ConstantInitializer.h"
+#include "KernelGenerator.h"
 #include "ExternalContext.h"
 
 namespace onert
@@ -32,13 +35,12 @@ class BackendContext : public onert::backend::BackendContext
 public:
   BackendContext(const Backend *backend, const ir::Graph *graph,
                  std::shared_ptr<ITensorRegistry> tensor_registry = nullptr,
-                 std::shared_ptr<ITensorBuilder> tensor_builder = nullptr,
-                 std::shared_ptr<IConstantInitializer> constant_initializer = nullptr,
-                 std::shared_ptr<IKernelGenerator> kernel_gen = nullptr,
-                 std::shared_ptr<IOptimizer> optimizer = nullptr)
-      : onert::backend::BackendContext(backend, graph, tensor_registry, tensor_builder,
-                                       constant_initializer, kernel_gen, optimizer),
-        _external_context(std::make_shared<ExternalContext>())
+                 std::shared_ptr<TensorBuilder> tensor_builder = nullptr,
+                 std::shared_ptr<ConstantInitializer> constant_initializer = nullptr,
+                 std::shared_ptr<KernelGenerator> kernel_gen = nullptr)
+      : onert::backend::BackendContext(backend, graph, tensor_registry),
+        tensor_builder{tensor_builder}, constant_initializer{constant_initializer},
+        kernel_gen{kernel_gen}, _external_context(std::make_shared<ExternalContext>())
   {
   }
 
@@ -52,8 +54,14 @@ public:
   std::shared_ptr<ExternalContext> external_context() { return _external_context; }
 
 private:
+  void initConsts();
   void planTensors(const std::vector<onert::ir::OpSequenceIndex> &order,
                    const ir::OpSequences &op_seqs, const ir::LowerInfoMap &lower_info);
+
+public:
+  std::shared_ptr<TensorBuilder> tensor_builder;
+  std::shared_ptr<ConstantInitializer> constant_initializer;
+  std::shared_ptr<KernelGenerator> kernel_gen;
 
 private:
   // NOTE ruy context has a thread pool, and when multiple ruy contexts are created,

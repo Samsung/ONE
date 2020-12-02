@@ -25,7 +25,7 @@ namespace acl_common
 
 AclConstantInitializer::AclConstantInitializer(const ir::Operands &operands,
                                                const std::shared_ptr<ITensorRegistry> &tensor_reg)
-    : IConstantInitializer{operands}, _tensor_reg{tensor_reg}
+    : cpu_common::ConstantInitializerBase{operands}, _tensor_reg{tensor_reg}
 {
   // DO NOTHING
 }

@@ -14,14 +14,13 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_IKERNEL_GENERATOR_H__
-#define __ONERT_BACKEND_IKERNEL_GENERATOR_H__
+#ifndef __ONERT_BACKEND_CPU_COMMON_KERNEL_GENERATOR_BASE_H__
+#define __ONERT_BACKEND_CPU_COMMON_KERNEL_GENERATOR_BASE_H__
 
 #include <assert.h>
 #include <memory>
 #include <functional>
 
-#include "ITensorBuilder.h"
 #include "ir/OperationVisitor.h"
 #include "ir/OpSequence.h"
 #include <memory>
@@ -31,11 +30,13 @@ namespace onert
 {
 namespace backend
 {
+namespace cpu_common
+{
 
-class IKernelGenerator : public ir::OperationVisitor
+class KernelGeneratorBase : public ir::OperationVisitor
 {
 public:
-  virtual ~IKernelGenerator() = default;
+  virtual ~KernelGeneratorBase() = default;
 
   std::unique_ptr<exec::IFunction> releaseFunction()
   {
@@ -70,7 +71,8 @@ protected:
   std::unique_ptr<exec::FunctionSequence> _return_fn_seq; // TODO Extract this out
 };
 
+} // namespace cpu_common
 } // namespace backend
 } // namespace onert
 
-#endif // __ONERT_BACKEND_IKERNEL_GENERATOR_H__
+#endif // __ONERT_BACKEND_CPU_COMMON_KERNEL_GENERATOR_BASE_H__

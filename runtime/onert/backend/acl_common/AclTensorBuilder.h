@@ -21,7 +21,6 @@
 #include <queue>
 
 #include <arm_compute/core/Types.h>
-#include <backend/ITensorBuilder.h>
 #include "ir/OperandIndexMap.h"
 #include <ir/Operands.h>
 #include "AclTensorManager.h"
@@ -43,8 +42,7 @@ enum class UsesType
   LAST
 };
 
-template <typename T_ITensor, typename T_Tensor, typename T_SubTensor>
-class AclTensorBuilder : public ITensorBuilder
+template <typename T_ITensor, typename T_Tensor, typename T_SubTensor> class AclTensorBuilder
 {
 public:
   using T_AclTensorManager = AclTensorManager<T_ITensor, T_Tensor, T_SubTensor>;
@@ -58,16 +56,16 @@ public:
    * @param[in] layout Tensor data layout
    */
   void registerTensorInfo(const ir::OperandIndex &ind, const ir::OperandInfo &info,
-                          ir::Layout backend_layout) override;
+                          ir::Layout backend_layout);
 
-  void notifyFirstUse(const ir::OperandIndex &) override;
-  void notifyLastUse(const ir::OperandIndex &) override;
+  void notifyFirstUse(const ir::OperandIndex &);
+  void notifyLastUse(const ir::OperandIndex &);
 
-  bool isRegistered(const ir::OperandIndex &) const override;
+  bool isRegistered(const ir::OperandIndex &) const;
 
-  void prepare(void) override;
-  void allocate() override;
-  void postFunctionPrepare() override;
+  void prepare(void);
+  void allocate();
+  void postFunctionPrepare();
 
   T_AclTensorManager *acl_tensor_manager(void) { return _tensor_mgr.get(); }
 

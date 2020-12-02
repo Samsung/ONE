@@ -31,6 +31,26 @@ namespace backend
 namespace ruy
 {
 
+void BackendContext::initConsts()
+{
+  for (auto &op : operation_list())
+  {
+    constant_initializer->setLayout(op.layout);
+    graph()->operations().at(op.index).accept(*constant_initializer);
+  }
+
+  for (auto ind : operand_list())
+  {
+    const auto &obj = graph()->operands().at(ind);
+    if (obj.isConstant() && !constant_initializer->exist(ind))
+    {
+      constant_initializer->registerDefaultInitializer(ind, obj);
+    }
+  }
+
+  constant_initializer->run();
+}
+
 ITensorRegistry *BackendContext::genTensors(const std::vector<onert::ir::OpSequenceIndex> &order,
                                             const ir::OpSequences &op_seqs,
                                             const ir::LowerInfoMap &lower_info)

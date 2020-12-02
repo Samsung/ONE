@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "backend/IConstantInitializer.h"
+#include "backend/cpu_common/ConstantInitializerBase.h"
 
 #include <Half.h>
 
@@ -24,9 +24,11 @@ namespace onert
 {
 namespace backend
 {
+namespace cpu_common
+{
 
-void IConstantInitializer::registerCopyInitializer(const ir::OperandIndex &index,
-                                                   const ir::Operand &obj)
+void ConstantInitializerBase::registerCopyInitializer(const ir::OperandIndex &index,
+                                                      const ir::Operand &obj)
 {
   // For only CONSTANTS
   // TODO Add to check if tensor has been allocated
@@ -67,8 +69,8 @@ void IConstantInitializer::registerCopyInitializer(const ir::OperandIndex &index
   }
 }
 
-void IConstantInitializer::registerPermuteInitializer(const ir::OperandIndex &index,
-                                                      const ir::Operand &obj)
+void ConstantInitializerBase::registerPermuteInitializer(const ir::OperandIndex &index,
+                                                         const ir::Operand &obj)
 {
   // For only CONSTANTS
   // TODO Add to check if tensor has been allocated
@@ -110,5 +112,6 @@ void IConstantInitializer::registerPermuteInitializer(const ir::OperandIndex &in
   }
 }
 
+} // namespace cpu_common
 } // namespace backend
 } // namespace onert
