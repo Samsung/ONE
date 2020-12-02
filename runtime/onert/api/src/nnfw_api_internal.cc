@@ -160,7 +160,7 @@ void setConfigKeyValues(const CfgKeyValues &keyValues)
 nnfw_session::nnfw_session()
     : _subgraphs{nullptr}, _execution{nullptr},
       _kernel_registry{std::make_shared<onert::frontend::custom::KernelRegistry>()},
-      _tracing_ctx{std::make_unique<onert::util::TracingCtx>()}
+      _tracing_ctx{nullptr}
 {
   // DO NOTHING
 }
@@ -188,7 +188,7 @@ NNFW_STATUS nnfw_session::load_circle_from_buffer(uint8_t *buffer, size_t size)
     return NNFW_STATUS_ERROR;
   }
 
-  _tracing_ctx->setSubgraphIndices(_subgraphs.get());
+  _tracing_ctx = std::make_unique<onert::util::TracingCtx>(_subgraphs.get());
 
   _compiler = std::make_unique<onert::compiler::Compiler>(_subgraphs, _tracing_ctx.get());
 
@@ -318,7 +318,7 @@ NNFW_STATUS nnfw_session::load_model_from_file(const char *package_dir)
     return NNFW_STATUS_ERROR;
   }
 
-  _tracing_ctx->setSubgraphIndices(_subgraphs.get());
+  _tracing_ctx = std::make_unique<onert::util::TracingCtx>(_subgraphs.get());
 
   _compiler = std::make_unique<onert::compiler::Compiler>(_subgraphs, _tracing_ctx.get());
 
