@@ -17,7 +17,7 @@
 #ifndef __ONERT_BACKEND_ACL_CL_KERNEL_GENERATOR_H__
 #define __ONERT_BACKEND_ACL_CL_KERNEL_GENERATOR_H__
 
-#include <backend/IKernelGenerator.h>
+#include <backend/cpu_common/KernelGeneratorBase.h>
 
 #include "ir/Operands.h"
 #include "TensorBuilder.h"
@@ -31,7 +31,7 @@ namespace backend
 namespace acl_cl
 {
 
-class KernelGenerator : public IKernelGenerator
+class KernelGenerator : public cpu_common::KernelGeneratorBase
 {
 public:
   KernelGenerator(const ir::Operands &operands_ctx, const ir::Operations &operations_ctx,

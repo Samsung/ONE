@@ -20,7 +20,6 @@
 #include <backend/cpu_common/DynamicTensorManager.h>
 #include <backend/cpu_common/TensorRegistry.h>
 
-#include <backend/ITensorBuilder.h>
 #include <ir/OperandIndexMap.h>
 
 #include "StaticTensorManager.h"
@@ -35,7 +34,7 @@ namespace backend
 namespace ruy
 {
 
-class TensorBuilder : public ITensorBuilder
+class TensorBuilder
 {
 public:
   TensorBuilder(const std::shared_ptr<cpu_common::TensorRegistry> &tensor_reg);
@@ -47,18 +46,18 @@ public:
    * @param[in] layout Operand data layout
    */
   void registerTensorInfo(const ir::OperandIndex &ind, const ir::OperandInfo &info,
-                          ir::Layout backend_layout) override;
+                          ir::Layout backend_layout);
 
-  void notifyFirstUse(const ir::OperandIndex &) override;
-  void notifyLastUse(const ir::OperandIndex &) override;
+  void notifyFirstUse(const ir::OperandIndex &);
+  void notifyLastUse(const ir::OperandIndex &);
 
-  bool isRegistered(const ir::OperandIndex &) const override;
+  bool isRegistered(const ir::OperandIndex &) const;
 
-  void prepare(void) override;
-  void allocate() override;
-  void postFunctionPrepare() override { /* DO NOTHING */}
+  void prepare(void);
+  void allocate();
+  void postFunctionPrepare() { /* DO NOTHING */}
 
-  IDynamicTensorManager *dynamicTensorManager(void) override { return _dynamic_tensor_mgr.get(); }
+  IDynamicTensorManager *dynamicTensorManager(void) { return _dynamic_tensor_mgr.get(); }
 
 private:
   const std::shared_ptr<cpu_common::TensorRegistry> _tensor_reg;

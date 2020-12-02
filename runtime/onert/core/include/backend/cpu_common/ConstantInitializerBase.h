@@ -14,19 +14,19 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_ICONSTANT_INITIALIZER_H__
-#define __ONERT_BACKEND_ICONSTANT_INITIALIZER_H__
+#ifndef __ONERT_BACKEND_CPU_COMMON_CONSTANT_INITIALIZER_BASE_H__
+#define __ONERT_BACKEND_CPU_COMMON_CONSTANT_INITIALIZER_BASE_H__
 
 #include <unordered_map>
 #include <functional>
 
-#include "ITensorBuilder.h"
 #include "ir/Coordinates.h"
 #include "ir/Layout.h"
 #include "ir/Operand.h"
 #include "ir/Operands.h"
 #include "ir/OperationVisitor.h"
 #include "ir/OpSequence.h"
+#include "backend/ITensorRegistry.h"
 #include "util/logging.h"
 
 namespace
@@ -153,11 +153,13 @@ namespace onert
 {
 namespace backend
 {
+namespace cpu_common
+{
 
-class IConstantInitializer : public ir::OperationVisitor
+class ConstantInitializerBase : public ir::OperationVisitor
 {
 public:
-  virtual ~IConstantInitializer() = default;
+  virtual ~ConstantInitializerBase() = default;
 
 public:
   void run()
@@ -178,7 +180,7 @@ public:
   }
 
 public:
-  IConstantInitializer(const ir::Operands &operands)
+  ConstantInitializerBase(const ir::Operands &operands)
       : _operands{operands}, _current_layout{ir::Layout::UNKNOWN}
   {
   }
@@ -224,7 +226,8 @@ protected:
   ir::Layout _current_layout;
 };
 
+} // namespace cpu_common
 } // namespace backend
 } // namespace onert
 
-#endif // __ONERT_BACKEND_ICONSTANT_INITIALIZER_H__
+#endif // __ONERT_BACKEND_CPU_COMMON_CONSTANT_INITIALIZER_BASE_H__

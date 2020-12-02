@@ -22,7 +22,6 @@
 
 #include "ir/OpSequences.h"
 #include "ir/Index.h"
-#include "backend/ITensorBuilder.h"
 #include "compiler/LoweredGraph.h"
 
 namespace onert
@@ -44,8 +43,6 @@ public:
   static std::vector<ir::OpSequenceIndex> linearize(const compiler::LoweredGraph &lowered_graph);
   static void dump(const compiler::LoweredGraph &lowered_graph,
                    const std::vector<ir::OpSequenceIndex> &order);
-  static void planTensors(const compiler::LoweredGraph &lowered_graph,
-                          const std::vector<ir::OpSequenceIndex> &order);
 };
 
 } // namespace compiler
