@@ -51,6 +51,7 @@ public:
       FuseActivationFunction,
       ShuffleWeightTo16x1Float32,
       RemoveRedundantTranspose,
+      ReplaceMulAddWithDepthwiseConv,
     };
 
     enum AlgorithmParameters
