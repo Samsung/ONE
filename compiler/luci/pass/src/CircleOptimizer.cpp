@@ -42,6 +42,9 @@
 #include "luci/Pass/ShapeSignatureInferencePass.h"
 #include "luci/Pass/TypeInferencePass.h"
 
+// Following passes will be removed after refactoring is finished
+#include "luci/Pass/MigrateLegacyShapeDtypePass.h"
+
 // logo passes
 #include <logo/RemoveDeadNodeWithQueryPass.h>
 
@@ -135,6 +138,9 @@ void CircleOptimizer::optimize(luci::Module *m) const
 {
   luci::Phase phase;
 
+  // Following passes will be deprecated after refactoring is finished.
+  phase.emplace_back(std::make_unique<luci::MigrateLegacyShapeDtypePass>());
+
   // Following passes are needed everytime when other passes create new node or modify some nodes.
   phase.emplace_back(std::make_unique<luci::ShapeInferencePass>());
   phase.emplace_back(std::make_unique<luci::ShapeSignatureInferencePass>());
@@ -157,6 +163,9 @@ void CircleOptimizer::optimize(loco::Graph *g) const
 
   /* TRANSFORM DECLARATION BEGIN */
   phase.emplace_back(std::make_unique<logo::RemoveDeadNodeWithQueryPass>());
+
+  // Following passes will be deprecated after refactoring is finished.
+  phase.emplace_back(std::make_unique<luci::MigrateLegacyShapeDtypePass>());
 
   // Following passes are needed everytime when other passes create new node or modify some nodes.
   phase.emplace_back(std::make_unique<luci::TypeInferencePass>());
