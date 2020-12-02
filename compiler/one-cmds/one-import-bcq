@@ -44,13 +44,13 @@ def _get_parser():
         '--v1',
         action='store_const',
         dest='converter_version',
-        const='--v1',
+        const='v1',
         help='use TensorFlow Lite Converter 1.x')
     converter_version.add_argument(
         '--v2',
         action='store_const',
         dest='converter_version',
-        const='--v2',
+        const='v2',
         help='use TensorFlow Lite Converter 2.x')
 
     parser.add_argument('--converter_version', type=str, help=argparse.SUPPRESS)
