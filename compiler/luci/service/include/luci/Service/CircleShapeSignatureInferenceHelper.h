@@ -27,8 +27,8 @@ namespace ssinf // Namespace for Shape Signature Inference
 {
 
 // Return empty signature if all of dimensions are known.
-// If one of dimensions is unknown, return signature without change.
-ShapeSignature clean_signature(const luci::ShapeSignature &signature);
+// If at least one of dimensions is unknown, return signature without change.
+ShapeSignature legalized_signature(const luci::ShapeSignature &signature);
 
 // Return reduced input_signature with indices and keep_dims.
 //  - indices : reduction index

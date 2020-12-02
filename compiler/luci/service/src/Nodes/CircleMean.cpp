@@ -21,7 +21,7 @@ namespace luci
 
 ShapeSignature ssinf::Algorithm::visit(const luci::CircleMean *node)
 {
-  return clean_signature(
+  return legalized_signature(
       reduced_signature(node->input(), node->reduction_indices(), node->keep_dims()));
 }
 

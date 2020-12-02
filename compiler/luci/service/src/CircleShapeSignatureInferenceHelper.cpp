@@ -28,7 +28,7 @@ namespace luci
 namespace ssinf
 {
 
-luci::ShapeSignature clean_signature(const luci::ShapeSignature &signature)
+luci::ShapeSignature legalized_signature(const luci::ShapeSignature &signature)
 {
   // If shape signature has at least one -1, it is not static.
   for (uint32_t i = 0; i < signature.rank(); ++i)
@@ -146,7 +146,7 @@ ShapeSignature reduced_signature(const loco::Node *node, const loco::Node *indic
         output_signature.dim(j++) = input_signature.dim(i);
   }
 
-  return clean_signature(output_signature);
+  return output_signature;
 }
 
 ShapeSignature input_arg_signature(const luci::CircleNode *node, uint32_t index)
