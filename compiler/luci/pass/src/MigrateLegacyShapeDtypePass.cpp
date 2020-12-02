@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "luci/Pass/CopyLocoItemsToCirclePass.h"
+#include "luci/Pass/MigrateLegacyShapeDtypePass.h"
 
 #include <loco/Service/ShapeInference.h>
 #include <loco/Service/TypeInference.h>
@@ -43,7 +43,7 @@ bool has_same_shape(luci::CircleNode *node, loco::TensorShape shape)
 namespace luci
 {
 
-bool CopyLocoItemsToCirclePass::run(luci::Module *m)
+bool MigrateLegacyShapeDtypePass::run(luci::Module *m)
 {
   bool changed = false;
 
@@ -56,7 +56,7 @@ bool CopyLocoItemsToCirclePass::run(luci::Module *m)
   return changed;
 }
 
-bool CopyLocoItemsToCirclePass::run(loco::Graph *g)
+bool MigrateLegacyShapeDtypePass::run(loco::Graph *g)
 {
   bool changed = false;
 

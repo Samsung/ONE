@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __LUCI_COPY_LOCO_ITEMS_TO_CIRCLE_PASS_H__
-#define __LUCI_COPY_LOCO_ITEMS_TO_CIRCLE_PASS_H__
+#ifndef __LUCI_MIGRATE_LEGACY_SHAPE_DTYPE_PASS_H__
+#define __LUCI_MIGRATE_LEGACY_SHAPE_DTYPE_PASS_H__
 
 #include <loco.h>
 
@@ -29,10 +29,10 @@ namespace luci
  *
  * CAUTION : This pass will be removed after refactoring is finished
  */
-class CopyLocoItemsToCirclePass : public luci::Pass
+class MigrateLegacyShapeDtypePass : public luci::Pass
 {
 public:
-  virtual const char *name(void) const { return "luci::CopyLocoItemsToCirclePass"; }
+  virtual const char *name(void) const { return "luci::MigrateLegacyShapeDtypePass"; }
 
 public:
   bool run(luci::Module *m);
@@ -41,4 +41,4 @@ public:
 
 } // namespace luci
 
-#endif //__LUCI_COPY_LOCO_ITEMS_TO_CIRCLE_PASS_H__
+#endif //__LUCI_MIGRATE_LEGACY_SHAPE_DTYPE_PASS_H__
