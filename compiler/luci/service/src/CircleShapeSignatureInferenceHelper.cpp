@@ -46,14 +46,30 @@ namespace ssinf
 
 ShapeSignature reduced_signature(const loco::Node *node, const loco::Node *indices, bool keep_dims)
 {
+  LOGGER(l);
+
+  ShapeSignature input_signature;
   ShapeSignature output_signature;
 
   auto circle_node = loco::must_cast<const luci::CircleNode *>(node);
-  auto circle_indices = loco::must_cast<const luci::CircleNode *>(indices);
-  auto input_signature = circle_node->shape_signature();
+  if (circle_node->shape_signature().rank() > 0)
+    input_signature = circle_node->shape_signature();
+  else
+  {
+    input_signature.rank(circle_node->rank());
+    for (uint32_t i = 0; i < circle_node->rank(); ++i)
+      input_signature.dim(i) = circle_node->dim(i).value();
+  }
+
+  // If input rank is 0, it means that one of following case is occurred.
+  // - Input is scalar : result is always scalar
+  // - Input shape signature is not inferenced : cannot infer output shape signauture
+  // Therefore, when input signature rank is 0, always return empty signature.
+  if (input_signature.rank() == 0)
+    return output_signature;
 
   // When reduction_indices is not constant
-  auto reduction_indices = dynamic_cast<const luci::CircleConst *>(circle_indices);
+  auto reduction_indices = dynamic_cast<const luci::CircleConst *>(indices);
   if (reduction_indices == nullptr)
   {
     if (keep_dims)
@@ -66,17 +82,13 @@ ShapeSignature reduced_signature(const loco::Node *node, const loco::Node *indic
     else
     {
       // There is no way to inference for this case.
-
-      // This assert is just to find this case occurs at debug version.
-      assert(false && "Cannot infer reduced_signature");
+      // Do nothing to return empty signature.
+      INFO(l) << "[CircleShapeSignatureInferenceHelper] " << circle_node->name() << std::endl;
+      INFO(l) << " reduced_signature : cannot infer because of non-constant node" << std::endl;
     }
 
     return output_signature;
   }
-
-  // If shape signature is empty, output is static.
-  if (input_signature.rank() == 0)
-    return output_signature;
 
   std::vector<int32_t> reduction_values;
   if (reduction_indices->dtype() == loco::DataType::S32)
