@@ -110,6 +110,12 @@ int entry(int argc, char **argv)
       .default_value(false)
       .help("This will fuse BatchNorm operators of pre-activations to Convolution operator");
 
+  arser.add_argument("--remove_redundant_reshape")
+      .nargs(0)
+      .required(false)
+      .default_value(false)
+      .help("This will fuse or remove subsequent Reshape operators");
+
   arser.add_argument("--remove_redundant_transpose")
       .nargs(0)
       .required(false)
@@ -221,6 +227,7 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::ResolveCustomOpAdd);
     options->enable(Algorithms::ResolveCustomOpBatchMatMul);
     options->enable(Algorithms::ResolveCustomOpMatMul);
+    options->enable(Algorithms::RemoveRedundantReshape);
     options->enable(Algorithms::RemoveRedundantTranspose);
     options->enable(Algorithms::SubstitutePackToReshape);
   }
@@ -240,6 +247,8 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::MakeBatchNormGammaPositive);
   if (arser.get<bool>("--fuse_preactivation_batchnorm"))
     options->enable(Algorithms::FusePreActivationBatchNorm);
+  if (arser.get<bool>("--remove_redundant_reshape"))
+    options->enable(Algorithms::RemoveRedundantReshape);
   if (arser.get<bool>("--remove_redundant_transpose"))
     options->enable(Algorithms::RemoveRedundantTranspose);
   if (arser.get<bool>("--replace_cw_mul_add_with_depthwise_conv"))
