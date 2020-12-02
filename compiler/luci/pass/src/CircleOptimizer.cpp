@@ -26,6 +26,7 @@
 #include "luci/Pass/MakeBatchNormGammaPositivePass.h"
 #include "luci/Pass/PropagateQuantParamPass.h"
 #include "luci/Pass/RemoveRedundantTransposePass.h"
+#include "luci/Pass/ReplaceMulAddWithDepthwiseConvPass.h"
 #include "luci/Pass/ResolveCustomOpAddPass.h"
 #include "luci/Pass/ResolveCustomOpBatchMatMulPass.h"
 #include "luci/Pass/ResolveCustomOpMatMulPass.h"
@@ -209,6 +210,11 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   {
     phase.emplace_back(std::make_unique<luci::RemoveRedundantTransposePass>());
   }
+  if (_options->query(Options::Algorithm::ReplaceMulAddWithDepthwiseConv))
+  {
+    phase.emplace_back(std::make_unique<luci::ReplaceMulAddWithDepthwiseConvPass>());
+  }
+
   /* TRANSFORM DECLARATION END */
 
   ProgressReporter prog(g, logo::PhaseStrategy::Restart);
