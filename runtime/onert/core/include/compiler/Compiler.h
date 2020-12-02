@@ -48,7 +48,6 @@ struct CompilerOptions
 {
   // GENERAL OPTIONS
   std::vector<std::string> backend_list;
-  bool is_primary_subgraph; // TODO Remove this out of this struct as it is not user-given option
 
   // OPTIONS ONLY FOR DEBUGGING/PROFILING
   std::string trace_filepath; //< File path to save trace records
