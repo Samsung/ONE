@@ -52,6 +52,7 @@ public:
       ShuffleWeightTo16x1Float32,
       RemoveRedundantTranspose,
       ReplaceMulAddWithDepthwiseConv,
+      SubstitutePackToReshape,
     };
 
     enum AlgorithmParameters
