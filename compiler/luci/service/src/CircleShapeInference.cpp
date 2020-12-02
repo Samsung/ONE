@@ -20,7 +20,10 @@
 #include <loco.h>
 #include <loco/Service/ShapeInference.h>
 
+#include <luci/Log.h>
+
 #include <cassert>
+#include <iostream>
 
 namespace luci
 {
@@ -30,5 +33,64 @@ ShapeDescription ShapeInference::get(loco::Node *node)
   assert(loco::shape_known(node));
   return to_shape_description(loco::shape_get(node));
 }
+
+} // namespace luci
+
+namespace
+{
+
+std::ostream &operator<<(std::ostream &os, const loco::TensorShape &tensor_shape)
+{
+  os << "[";
+  for (uint32_t r = 0; r < tensor_shape.rank(); ++r)
+  {
+    if (r)
+      os << ",";
+    os << tensor_shape.dim(r).value();
+  }
+  os << "]";
+  return os;
+}
+
+bool inputs_shape_ready(const luci::CircleNode *node)
+{
+  for (uint32_t arity = 0; arity < node->arity(); ++arity)
+  {
+    auto node_input = loco::must_cast<luci::CircleNode *>(node->arg(arity));
+    if (node_input->shape_status() == luci::ShapeStatus::UNDEFINED)
+      return false;
+  }
+
+  return true;
+}
+
+} // namespace
+
+namespace luci
+{
+
+namespace sinf
+{
+
+bool Rule::infer(const luci::CircleNode *circle_node, loco::TensorShape &shape) const
+{
+  LOGGER(l);
+  VERBOSE(l, 1) << "[CircleShapeInference] " << circle_node->name();
+  VERBOSE(l, 1) << "  before: " << circle_shape(circle_node);
+
+  if (!inputs_shape_ready(circle_node))
+  {
+    VERBOSE(l, 1) << " after: Some inputs are not ready for inference";
+    return false;
+  }
+
+  Algorithm alg;
+  shape = circle_node->accept(&alg);
+  VERBOSE(l, 1) << " after: " << shape;
+
+  return true;
+}
+
+} // namespace ssinf
 
 } // namespace luci
