@@ -82,17 +82,10 @@ TEST(SubstitutePackToReshapePass, simple_case)
   luci::CirclePack *pack_node = nullptr;
   for (auto node : loco::active_nodes(loco::output_nodes(graph.get())))
   {
-    auto reshape = dynamic_cast<luci::CircleReshape *>(node);
-    if (not reshape)
-    {
-      auto pack = dynamic_cast<luci::CirclePack *>(node);
-      if (not pack)
-        continue;
+    if (auto reshape = dynamic_cast<luci::CircleReshape *>(node))
+      reshape_node = reshape;
+    else if (auto pack = dynamic_cast<luci::CirclePack *>(node))
       pack_node = pack;
-      continue;
-    }
-    reshape_node = reshape;
-    break;
   }
   ASSERT_NE(nullptr, reshape_node);
   ASSERT_EQ(nullptr, pack_node);
