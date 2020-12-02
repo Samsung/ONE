@@ -17,7 +17,7 @@
 #ifndef __ONERT_COMPILER_ACL_COMMON_ACLCONSTANT_INITIALIZER_H__
 #define __ONERT_COMPILER_ACL_COMMON_ACLCONSTANT_INITIALIZER_H__
 
-#include <backend/IConstantInitializer.h>
+#include <backend/cpu_common/ConstantInitializerBase.h>
 #include <ir/Operands.h>
 #include "AclTensorRegistry.h"
 
@@ -28,7 +28,7 @@ namespace backend
 namespace acl_common
 {
 
-class AclConstantInitializer : public IConstantInitializer
+class AclConstantInitializer : public cpu_common::ConstantInitializerBase
 {
 public:
   AclConstantInitializer(const ir::Operands &operands,

@@ -17,7 +17,6 @@
 #include "backend/BackendContext.h"
 
 #include "ir/Operation.h"
-#include "backend/IConstantInitializer.h"
 
 namespace onert
 {
@@ -29,26 +28,6 @@ void BackendContext::initialize(const std::vector<OperationInfo> &operation_list
 {
   _operation_list = operation_list;
   _operand_list = operand_list;
-}
-
-void BackendContext::initConsts()
-{
-  for (auto &op : _operation_list)
-  {
-    constant_initializer->setLayout(op.layout);
-    _graph->operations().at(op.index).accept(*constant_initializer);
-  }
-
-  for (auto ind : _operand_list)
-  {
-    const auto &obj = _graph->operands().at(ind);
-    if (obj.isConstant() && !constant_initializer->exist(ind))
-    {
-      constant_initializer->registerDefaultInitializer(ind, obj);
-    }
-  }
-
-  constant_initializer->run();
 }
 
 } // namespace backend

@@ -19,7 +19,7 @@
 
 #include "TensorRegistry.h"
 
-#include <backend/IConstantInitializer.h>
+#include <backend/cpu_common/ConstantInitializerBase.h>
 #include <ir/Operands.h>
 
 namespace onert
@@ -29,7 +29,7 @@ namespace backend
 namespace controlflow
 {
 
-class ConstantInitializer : public IConstantInitializer
+class ConstantInitializer : public cpu_common::ConstantInitializerBase
 {
 public:
   ConstantInitializer(const ir::Operands &operands,

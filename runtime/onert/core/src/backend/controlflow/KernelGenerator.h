@@ -17,12 +17,12 @@
 #ifndef __ONERT_BACKEND_CONTROLFLOW_KERNEL_GENERATOR_H__
 #define __ONERT_BACKEND_CONTROLFLOW_KERNEL_GENERATOR_H__
 
-#include <backend/IKernelGenerator.h>
 #include <exec/IExecutor.h>
 #include "ExternalContext.h"
 #include <ir/Graph.h>
 #include "TensorBuilder.h"
 #include "compiler/TensorRegistries.h"
+#include "backend/cpu_common/KernelGeneratorBase.h"
 #include "TensorRegistry.h"
 
 namespace onert
@@ -32,7 +32,7 @@ namespace backend
 namespace controlflow
 {
 
-class KernelGenerator : public IKernelGenerator
+class KernelGenerator : public cpu_common::KernelGeneratorBase
 {
 public:
   KernelGenerator(const ir::Graph &graph, DynamicTensorManager *dyn_tensor_manager,
@@ -48,8 +48,6 @@ public:
     // FIXME Using shared_ptr's raw pointer!
     _executor_map = executor_map.get();
   }
-
-  using IKernelGenerator::visit;
 
   void visit(const ir::OpSequence &) override;
   void visit(const ir::operation::If &) override;

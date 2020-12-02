@@ -217,13 +217,12 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lo
   // Give some runtime objects to controlflow KernelGenerator
   for (auto &pair : backend_contexts)
   {
-    auto kernel_gen = pair.second->kernel_gen;
-    auto cf_kernel_gen = dynamic_cast<backend::controlflow::KernelGenerator *>(kernel_gen.get());
-    if (cf_kernel_gen != nullptr)
+    auto cf_context = dynamic_cast<backend::controlflow::BackendContext *>(pair.second.get());
+    if (cf_context != nullptr)
     {
+      auto cf_kernel_gen = cf_context->kernel_gen;
       cf_kernel_gen->setTensorRegistries(tensor_regs);
       cf_kernel_gen->setExecutorMap(executor_map);
-      break;
     }
   }
 
@@ -306,10 +305,10 @@ exec::IExecutor *ExecutorFactory::createDataflowExecutor(
   // Give some runtime objects to controlflow KernelGenerator
   for (auto &pair : backend_contexts)
   {
-    auto kernel_gen = pair.second->kernel_gen;
-    auto cf_kernel_gen = dynamic_cast<backend::controlflow::KernelGenerator *>(kernel_gen.get());
-    if (cf_kernel_gen != nullptr)
+    auto cf_context = dynamic_cast<backend::controlflow::BackendContext *>(pair.second.get());
+    if (cf_context != nullptr)
     {
+      auto cf_kernel_gen = cf_context->kernel_gen;
       cf_kernel_gen->setTensorRegistries(tensor_regs);
       cf_kernel_gen->setExecutorMap(executor_map);
     }
