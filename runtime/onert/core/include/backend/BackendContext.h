@@ -64,8 +64,8 @@ public:
 
   const Backend *backend() const { return _backend; }
   const ir::Graph *graph() const { return _graph; }
-  const std::vector<OperationInfo> &operation_list() { return _operation_list; }
-  const std::vector<ir::OperandIndex> &operand_list() { return _operand_list; }
+  const std::vector<OperationInfo> &operation_list() const { return _operation_list; }
+  const std::vector<ir::OperandIndex> &operand_list() const { return _operand_list; }
 
 private:
   const Backend *_backend{nullptr};
