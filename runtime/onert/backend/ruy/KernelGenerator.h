@@ -47,6 +47,7 @@ public:
 
   void visit(const ir::OpSequence &) override;
   void visit(const ir::operation::Conv2D &) override;
+  void visit(const ir::operation::FullyConnected &) override;
 
 private:
   const ir::Operands &_ctx;
