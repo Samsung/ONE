@@ -22,7 +22,10 @@
 
 #include <oops/InternalExn.h>
 
-namespace
+namespace luci
+{
+
+namespace ssinf
 {
 
 luci::ShapeSignature clean_signature(const luci::ShapeSignature &signature)
@@ -35,14 +38,6 @@ luci::ShapeSignature clean_signature(const luci::ShapeSignature &signature)
   // If all dimensions are static, return empty shape signature.
   return luci::ShapeSignature();
 }
-
-} // namespace
-
-namespace luci
-{
-
-namespace ssinf
-{
 
 ShapeSignature reduced_signature(const loco::Node *node, const loco::Node *indices, bool keep_dims)
 {
