@@ -67,6 +67,9 @@ bool MigrateLegacyShapeDtypePass::run(loco::Graph *g)
     {
       auto loco_shape = loco::shape_get(node).as<loco::TensorShape>();
 
+      assert(circle_node->shape_signature().rank() == 0 ||
+             circle_node->shape_signature().rank() == loco_shape.rank());
+
       // When shape of loco is copied to circle node, ShapeSignature should be applied.
       loco::TensorShape new_shape;
       new_shape.rank(loco_shape.rank());
