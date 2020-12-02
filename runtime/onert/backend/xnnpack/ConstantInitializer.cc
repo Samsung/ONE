@@ -75,6 +75,20 @@ void ConstantInitializer::visit(const ir::operation::DepthwiseConv2D &node)
   registerExternalInitializer(bias_index, bias_obj);
 }
 
+void ConstantInitializer::visit(const ir::operation::FullyConnected &node)
+{
+  const auto &weight_index = node.getInputs().at(ir::operation::FullyConnected::WEIGHT);
+  const auto &weight_obj = _operands.at(weight_index);
+  registerExternalInitializer(weight_index, weight_obj);
+
+  const auto &bias_index = node.getInputs().at(ir::operation::FullyConnected::BIAS);
+  if (!bias_index.undefined())
+  {
+    const auto &bias_obj = _operands.at(bias_index);
+    registerExternalInitializer(bias_index, bias_obj);
+  }
+}
+
 } // namespace xnnpack
 } // namespace backend
 } // namespace onert
