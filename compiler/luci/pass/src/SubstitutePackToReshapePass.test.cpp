@@ -86,7 +86,7 @@ TEST(SubstitutePackToReshapePass, simple_case)
     if (not reshape)
     {
       auto pack = dynamic_cast<luci::CirclePack *>(node);
-      if(not pack)
+      if (not pack)
         continue;
       pack_node = pack;
       continue;

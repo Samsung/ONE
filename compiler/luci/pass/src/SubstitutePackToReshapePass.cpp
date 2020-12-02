@@ -56,6 +56,7 @@ bool substitute_pack_to_reshape(luci::CircleNode *node)
       const_node->at<loco::DataType::S32>(i) = value_node->dim(i - 1).value();
     }
   }
+  reshape_node->tensor(value_node);
   reshape_node->shape(const_node);
   replace(target_node).with(reshape_node);
   return true;
