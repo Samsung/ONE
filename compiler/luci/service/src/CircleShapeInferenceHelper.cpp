@@ -18,7 +18,6 @@
 
 namespace luci
 {
-
 namespace sinf
 {
 
@@ -32,5 +31,4 @@ loco::TensorShape circle_shape(const luci::CircleNode *node)
 }
 
 } // namespace sinf
-
 } // namespace luci

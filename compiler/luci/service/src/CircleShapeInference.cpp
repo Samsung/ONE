@@ -68,7 +68,6 @@ bool inputs_shape_ready(const luci::CircleNode *node)
 
 namespace luci
 {
-
 namespace sinf
 {
 
@@ -92,5 +91,4 @@ bool Rule::infer(const luci::CircleNode *circle_node, loco::TensorShape &shape) 
 }
 
 } // namespace ssinf
-
 } // namespace luci

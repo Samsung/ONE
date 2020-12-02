@@ -24,7 +24,6 @@
 
 namespace luci
 {
-
 namespace sinf // Namespace for Shape Inference
 {
 
@@ -32,7 +31,6 @@ namespace sinf // Namespace for Shape Inference
 loco::TensorShape circle_shape(const luci::CircleNode *node);
 
 } // namespace sinf
-
 } // namespace luci
 
 #endif // __LUCI_CIRCLE_SHAPE_INFERENCE_HELPER_H__
