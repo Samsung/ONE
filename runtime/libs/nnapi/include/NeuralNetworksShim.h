@@ -1130,7 +1130,7 @@ inline int ANeuralNetworksExecution_getDuration(const ANeuralNetworksExecution *
   LOAD_FUNCTION(ANeuralNetworksExecution_getDuration);
   EXECUTE_FUNCTION_RETURN(execution, durationCode, duration);
 }
-#if __ANDROID_API__ >= 30
+
 /**
  * Queries whether an extension is supported by the driver implementation of
  * the specified device.
