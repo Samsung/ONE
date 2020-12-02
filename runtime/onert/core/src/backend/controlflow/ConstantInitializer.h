@@ -33,10 +33,16 @@ class ConstantInitializer : public IConstantInitializer
 {
 public:
   ConstantInitializer(const ir::Operands &operands,
-                      const std::shared_ptr<ITensorRegistry> &tensor_reg)
-      : IConstantInitializer{operands}, _tensor_reg{tensor_reg}
-  {
-  }
+                      const std::shared_ptr<ITensorRegistry> &tensor_reg);
+
+public:
+  void registerDefaultInitializer(const ir::OperandIndex &index, const ir::Operand &obj) override;
+
+  // TODO: For now the only cpu backend supports constant tensor to use data from external
+  // If the other backend supports (to do this,
+  // ExternalTensor should be abstract such as IExternal, maybe),
+  // this can be an interface of IConstantInitializer
+  void registerExternalInitializer(const ir::OperandIndex &, const ir::Operand &);
 
 private:
   std::shared_ptr<ITensorRegistry> tensor_registry() const override { return _tensor_reg; }
