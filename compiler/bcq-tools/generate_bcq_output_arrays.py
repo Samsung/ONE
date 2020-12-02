@@ -85,7 +85,7 @@ def get_bcqinfo_output_arrays_v1(input_path, output_arrays):
     ret_output_arrays = ['one_compiler/bcqinfo_one_metadata']
 
     # given node from user
-    ret_output_arrays.append += output_arrays.split(',')
+    ret_output_arrays += output_arrays.split(',')
 
     # all pairs of a constant node and related BCQ information nodes.
     for prefix in prefix_set:
