@@ -12,7 +12,7 @@ def main(args):
     os.chdir(root_path)
 
     backend_list = ["cpu", "ruy", "xnnpack"]
-    # backend_list = ["cpu", "ruy"]
+    #  backend_list = ["cpu", "ruy"]
 
     op_time = {}
     for trace_file in os.listdir('./tools/backend_scheduler/traces'):
@@ -35,7 +35,7 @@ def main(args):
                 for op in backend_data:
                     op_index = int(op.split(' ')[0][1:])
                     op_type = op.split(' ')[1]
-                    time = int(backend_data[op]["Avg_Time"])
+                    time = int(backend_data[op]["Min_Time"])
                     if op_index not in op_time.keys():
                         op_time[op_index] = {backend: time}
                         op_time[op_index].update({"type": op_type})
@@ -50,7 +50,7 @@ def main(args):
     # Find fastest library for each operation
     for op_index, value in sorted(op_time.items()):
         op_type = value['type']
-        if op_type != 'Conv2D':
+        if op_type != 'Conv2D' and op_type != 'FullyConnected':
             continue
 
         print("----- Operation {} -----".format(op_index))
@@ -71,14 +71,38 @@ def main(args):
     # Find default backend for Conv2D
     default_backend = max(backend_count, key=backend_count.get)
 
+    # Create OP_BACKEND_MAP string
     backend_conf = ""
     for op_index, backend in sorted(backend_mapping.items()):
         if backend != default_backend:
             backend_conf += "{}={};".format(op_index, backend)
 
+    print("-------- Expected inference time ---------")
+    single_backend_time = 0
+    schedule_time = 0
+    for op_index, value in sorted(op_time.items()):
+        op_type = value['type']
+        if op_type != 'Conv2D' and op_type != 'FullyConnected':
+            single_backend_time += value["cpu"]
+            schedule_time += value["cpu"]
+            continue
+        else:
+            op_backend = backend_mapping[op_index]
+            single_backend_time += value[default_backend]
+            schedule_time += value[op_backend]
+            if (default_backend != op_backend):
+                print("[{}] {} -> {} : {:.2f} ms decrease".format(
+                    op_index, default_backend, op_backend,
+                    (value[default_backend] - value[op_backend]) / 1000))
+
+    print("{} backend : {:.2f} ms".format(default_backend, single_backend_time / 1000))
+    print("Mixed backend : {:.2f} ms".format(schedule_time / 1000))
+
     print("-------- Backend Scheduling --------")
-    print("OP_BACKEND_MAP='{}' OP_BACKEND_Conv2D={} BACKENDS='{}'".format(
-        backend_conf, default_backend, ';'.join(backend_list)))
+    print(
+        "OP_BACKEND_MAP='{}' OP_BACKEND_Conv2D={} BACKENDS='{}' EIGEN_THREADS={} RUY_THREADS={} XNNPACK_THREADS={}".
+        format(backend_conf, default_backend, ';'.join(backend_list), args.num_threads,
+               args.num_threads, args.num_threads))
 
 
 if __name__ == "__main__":
