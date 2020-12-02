@@ -19,6 +19,7 @@
 
 #include "ir/Graph.h"
 #include "ir/Index.h"
+#include "ir/Subgraphs.h"
 
 #include <unordered_map>
 #include <mutex>
@@ -37,13 +38,27 @@ public:
   /**
    * @brief Create and store unique session id managed by this class
    *        Note that this constructor can be called by multiple sessions running in parallely.
+   *        Use this constructor only when there is only one subgraph in a model.
    */
-  TracingCtx()
+  TracingCtx(const ir::Graph *primary_subgraph)
   {
-    std::unique_lock<std::mutex> lock{_session_id_mutex};
+    decideSessionID();
+    _subgraph_indices.emplace(primary_subgraph, 0);
+  }
 
-    static uint32_t next_session_id = 0;
-    _session_id = next_session_id++;
+  /**
+   * @brief Create and store unique session id managed by this class
+   *        Note that this constructor can be called by multiple sessions running in parallely.
+   */
+  TracingCtx(const onert::ir::Subgraphs *subgraphs)
+  {
+    assert(subgraphs);
+
+    decideSessionID();
+
+    auto count = subgraphs->count();
+    for (size_t i = 0; i < count; i++)
+      _subgraph_indices.emplace(subgraphs->at(onert::ir::SubgraphIndex(i)).get(), i);
   }
 
   uint32_t getSessionId() const { return _session_id; }
@@ -59,9 +74,17 @@ public:
   ir::SubgraphIndex getSubgraphIndex(const ir::Graph *g) const { return _subgraph_indices.at(g); }
 
 private:
+  void decideSessionID()
+  {
+    std::unique_lock<std::mutex> lock{_session_id_mutex};
+
+    static uint32_t next_session_id = 0;
+    _session_id = next_session_id++;
+  }
+
+private:
   std::unordered_map<const ir::Graph *, ir::SubgraphIndex> _subgraph_indices;
   uint32_t _session_id;
-
   static std::mutex _session_id_mutex;
 };
 

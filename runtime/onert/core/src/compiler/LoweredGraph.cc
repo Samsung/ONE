@@ -32,6 +32,7 @@
 #include "compiler/BackendResolver.h"
 #include "compiler/ManualScheduler.h"
 #include "compiler/HEScheduler.h"
+#include "util/TracingCtx.h"
 
 namespace onert
 {
@@ -40,6 +41,13 @@ namespace compiler
 
 LoweredGraph::LoweredGraph(const ir::Graph &graph, const CompilerOptions &options) : _graph{graph}
 {
+  // set tracing_ctx for copied graph
+  if (options.tracing_ctx)
+  {
+    auto subgraph_index = options.tracing_ctx->getSubgraphIndex(&graph);
+    options.tracing_ctx->setSubgraphIndex(&_graph, subgraph_index.value());
+  }
+
   bool linear_executor = (options.executor == "Linear");
 
   // Build backend contexts
