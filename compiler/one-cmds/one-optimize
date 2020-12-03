@@ -73,6 +73,10 @@ def _get_parser():
     circle2circle_group.add_argument(
         '--fuse_instnorm', action='store_true', help='fuse ops to InstanceNorm operator')
     circle2circle_group.add_argument(
+        '--replace_mul_add_with_depthwise_conv',
+        action='store_true',
+        help='replace channel-wise Mul/Add with DepthwiseConv2D')
+    circle2circle_group.add_argument(
         '--resolve_customop_add',
         action='store_true',
         help='convert Custom(Add) op to Add op')
