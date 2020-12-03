@@ -95,3 +95,20 @@ bool Tensor::applyShape(const ir::Shape &new_shape)
 } // namespace cpu_common
 } // namespace backend
 } // namespace onert
+
+// ExternalTensor
+
+namespace onert
+{
+namespace backend
+{
+namespace cpu_common
+{
+
+// `dynamic_cast` not working across library boundaries on NDK
+// With this as a key function, `dynamic_cast` works across dl
+ExternalTensor::~ExternalTensor() {}
+
+} // namespace cpu
+} // namespace backend
+} // namespace onert

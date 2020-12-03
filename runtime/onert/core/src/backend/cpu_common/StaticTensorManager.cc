@@ -17,6 +17,7 @@
 #include "backend/cpu_common/StaticTensorManager.h"
 
 #include "backend/cpu_common/DynamicTensorManager.h"
+#include "backend/cpu_common/Tensor.h"
 #include <util/logging.h>
 
 namespace onert
@@ -27,29 +28,11 @@ namespace cpu_common
 {
 
 StaticTensorManager::StaticTensorManager(const std::shared_ptr<TensorRegistry> &reg,
-                                         DynamicMemoryManager *dynamic_mem_mgr)
-    : _const_mgr{new DynamicMemoryManager()}, _nonconst_mgr{new MemoryManager()}, _tensors{reg},
-      _dynamic_mem_mgr{dynamic_mem_mgr}
+                                         DynamicTensorManager *dynamic_tensor_manager)
+    : _nonconst_mgr{new MemoryManager()}, _tensors{reg},
+      _dynamic_tensor_manager{dynamic_tensor_manager}
 {
   // DO NOTHING
-}
-
-void StaticTensorManager::allocateConsts(void)
-{
-  for (auto &pair : _tensors->native_tensors())
-  {
-    const auto &ind = pair.first;
-    auto tensor = pair.second.get();
-    if (_as_constants[ind])
-    {
-      auto mem_alloc = _const_mgr->allocate(_tensors->getITensor(ind), tensor->total_size());
-      tensor->setBuffer(mem_alloc);
-      auto buffer = mem_alloc->base();
-      VERBOSE(CPU_COMMON_StaticTensorManager) << "CONSTANT TENSOR(#" << ind.value()
-                                              << "): " << static_cast<void *>(buffer)
-                                              << "size : " << tensor->total_size() << std::endl;
-    }
-  }
 }
 
 void StaticTensorManager::allocateNonconsts(void)
@@ -65,13 +48,11 @@ void StaticTensorManager::allocateNonconsts(void)
       auto *buffer = _nonconst_mgr->getBuffer(ind);
       tensor->setBuffer(buffer);
 
-      VERBOSE(CPU_COMMON_StaticTensorManager) << "TENSOR(#" << ind.value()
-                                              << "): " << static_cast<void *>(buffer) << std::endl;
+      VERBOSE(CPU_StaticTensorManager) << "TENSOR(#" << ind.value()
+                                       << "): " << static_cast<void *>(buffer) << std::endl;
     }
   }
 }
-
-void StaticTensorManager::deallocateConsts(void) { _const_mgr->deallocate(); }
 
 void StaticTensorManager::deallocateNonconsts(void) { _nonconst_mgr->deallocate(); }
 
@@ -80,8 +61,17 @@ void StaticTensorManager::buildTensor(const ir::OperandIndex &ind,
                                       bool as_const)
 {
   assert(!_tensors->getNativeTensor(ind));
-  auto tensor = std::make_unique<Tensor>(tensor_info, backend_layout, _dynamic_mem_mgr);
-  _tensors->setNativeTensor(ind, std::move(tensor));
+  if (as_const)
+  {
+    auto tensor = std::make_unique<ExternalTensor>(tensor_info, backend_layout);
+    _tensors->setNativeTensor(ind, std::move(tensor));
+  }
+  else
+  {
+    auto tensor = std::make_unique<Tensor>(tensor_info, backend_layout,
+                                           _dynamic_tensor_manager->dynamic_mem_mgr().get());
+    _tensors->setNativeTensor(ind, std::move(tensor));
+  }
   _as_constants[ind] = as_const;
 }
 

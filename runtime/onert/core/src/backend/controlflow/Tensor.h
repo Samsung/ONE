@@ -27,6 +27,7 @@ namespace controlflow
 {
 
 using Tensor = cpu_common::Tensor;
+using ExternalTensor = cpu_common::ExternalTensor;
 
 } // namespace controlflow
 } // namespace backend
