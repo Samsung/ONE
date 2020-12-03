@@ -35,6 +35,8 @@
 #include "backend/controlflow/KernelGenerator.h"
 #include "backend/controlflow/UserTensor.h"
 #include "backend/controlflow/TensorBuilder.h"
+#include "util/TracingCtx.h"
+
 #include <memory>
 
 namespace onert
@@ -315,15 +317,13 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lo
 
   auto code_map = builder.releaseCodeMap();
 
-  // TODO pass tracing_ctx
-
-  auto exec =
-      new exec::LinearExecutor{std::move(lowered_graph), tensor_regs, std::move(code_map), order};
+  auto exec = new exec::LinearExecutor{std::move(lowered_graph), tensor_regs, std::move(code_map),
+                                       order, options.tracing_ctx};
 
   if (!options.trace_filepath.empty())
   {
-    std::unique_ptr<exec::IExecutionObserver> ctp =
-        std::make_unique<exec::TracingObserver>(options.trace_filepath, exec->graph());
+    std::unique_ptr<exec::IExecutionObserver> ctp = std::make_unique<exec::TracingObserver>(
+        options.trace_filepath, exec->graph(), options.tracing_ctx);
     exec->addObserver(std::move(ctp));
   }
 
@@ -408,14 +408,13 @@ exec::IExecutor *ExecutorFactory::createDataflowExecutor(
   exec::ExecutorBase *exec = nullptr;
   if (parallel)
   {
-    // TODO pass tracing_ctx
-    exec = new exec::ParallelExecutor{std::move(lowered_graph), tensor_regs, std::move(code_map)};
+    exec = new exec::ParallelExecutor{std::move(lowered_graph), tensor_regs, std::move(code_map),
+                                      options.tracing_ctx};
   }
   else
   {
-    // TODO pass tracing_ctx
-    auto dataflow_exec =
-        new exec::DataflowExecutor{std::move(lowered_graph), tensor_regs, std::move(code_map)};
+    auto dataflow_exec = new exec::DataflowExecutor{std::move(lowered_graph), tensor_regs,
+                                                    std::move(code_map), options.tracing_ctx};
     if (options.he_profiling_mode)
     {
       std::vector<const backend::Backend *> backends;
@@ -433,8 +432,8 @@ exec::IExecutor *ExecutorFactory::createDataflowExecutor(
 
   if (!options.trace_filepath.empty())
   {
-    std::unique_ptr<exec::IExecutionObserver> ctp =
-        std::make_unique<exec::TracingObserver>(options.trace_filepath, exec->graph());
+    std::unique_ptr<exec::IExecutionObserver> ctp = std::make_unique<exec::TracingObserver>(
+        options.trace_filepath, exec->graph(), options.tracing_ctx);
     exec->addObserver(std::move(ctp));
   }
 

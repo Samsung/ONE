@@ -30,6 +30,7 @@
 #include "compiler/LoweredGraph.h"
 #include "compiler/TensorRegistries.h"
 #include "backend/controlflow/IOTensor.h"
+#include "util/TracingCtx.h"
 
 #include <cstdint>
 #include <memory>
@@ -50,7 +51,7 @@ public:
    * @param tensor_builders Tensor builders that are currently used
    */
   ExecutorBase(std::unique_ptr<compiler::LoweredGraph> &&lowered_graph,
-               const compiler::TensorRegistries &tensor_regs);
+               const compiler::TensorRegistries &tensor_regs, const util::TracingCtx *tracing_ctx);
 
   virtual ~ExecutorBase() = default;
 
@@ -90,6 +91,7 @@ protected:
   std::vector<backend::controlflow::IOTensor *> _input_tensors;
   std::vector<backend::controlflow::IOTensor *> _output_tensors;
   std::mutex _mutex;
+  const util::TracingCtx *_tracing_ctx;
 
 private:
   void handleDynamicInputTensor(ir::IOIndex input_index, const IODescription &desc);

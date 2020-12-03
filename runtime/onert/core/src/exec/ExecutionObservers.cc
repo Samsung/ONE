@@ -119,8 +119,10 @@ void ProfileObserver::handleJobEnd(IExecutor *exec, const ir::OpSequence *op_seq
   }
 };
 
-TracingObserver::TracingObserver(const std::string &filepath, const ir::Graph &graph)
-    : _base_filepath(filepath), _recorder{}, _collector{&_recorder}, _graph{graph}
+TracingObserver::TracingObserver(const std::string &filepath, const ir::Graph &graph,
+                                 const util::TracingCtx *tracing_ctx)
+    : _base_filepath(filepath), _recorder{}, _collector{&_recorder}, _graph{graph},
+      _tracing_ctx{tracing_ctx}
 {
 }
 
