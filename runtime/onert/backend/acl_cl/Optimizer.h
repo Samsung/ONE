@@ -17,7 +17,6 @@
 #ifndef __ONERT_BACKEND_ACL_CL_OPTIMIZER_H__
 #define __ONERT_BACKEND_ACL_CL_OPTIMIZER_H__
 
-#include <backend/IOptimizer.h>
 #include "BackendContext.h"
 #include "TensorBuilder.h"
 
@@ -28,12 +27,12 @@ namespace backend
 namespace acl_cl
 {
 
-class Optimizer : public IOptimizer
+class Optimizer
 {
 public:
   Optimizer(BackendContext *context);
 
-  void optimize() override;
+  void optimize();
 
 private:
   BackendContext *_context;

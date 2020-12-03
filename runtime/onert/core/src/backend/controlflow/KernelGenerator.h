@@ -18,7 +18,6 @@
 #define __ONERT_BACKEND_CONTROLFLOW_KERNEL_GENERATOR_H__
 
 #include <backend/IKernelGenerator.h>
-#include <backend/ITensorBuilder.h>
 #include <exec/IExecutor.h>
 #include "ExternalContext.h"
 #include <ir/Graph.h>

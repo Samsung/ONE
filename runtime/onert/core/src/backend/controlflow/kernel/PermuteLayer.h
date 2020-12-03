@@ -17,7 +17,6 @@
 #ifndef __ONERT_BACKEND_CONTROLFLOW_KERNEL_PERMUTELAYER_H__
 #define __ONERT_BACKEND_CONTROLFLOW_KERNEL_PERMUTELAYER_H__
 
-#include "backend/ITensorBuilder.h"
 #include "exec/IPermuteFunction.h"
 #include "exec/IExecutor.h"
 #include "../ExternalContext.h"

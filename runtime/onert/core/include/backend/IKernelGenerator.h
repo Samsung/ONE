@@ -21,11 +21,11 @@
 #include <memory>
 #include <functional>
 
-#include "ITensorBuilder.h"
 #include "ir/OperationVisitor.h"
 #include "ir/OpSequence.h"
 #include <memory>
 #include "exec/FunctionSequence.h"
+#include "backend/ITensorRegistry.h"
 
 namespace onert
 {
