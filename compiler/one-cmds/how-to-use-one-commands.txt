@@ -161,7 +161,7 @@ Current transformation options are
 - make_batchnorm_gamma_positive: This makes negative gamma of batch normalization into a small positive value (1e-10).
   Note that this pass can change the execution result of the model.
   So, use it only when the impact is known to be acceptable.
-- replace_mul_add_with_depthwise_conv: This will replace channel-wise Mul/Add with DepthwiseConv2D.
+- replace_cw_mul_add_with_depthwise_conv: This will replace channel-wise Mul/Add with DepthwiseConv2D.
 - resolve_customop_add: This will convert Custom(Add) to normal Add operator
 - resolve_customop_batchmatmul: This will convert Custom(BatchMatMul) to
   normal BatchMatMul operator
