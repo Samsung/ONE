@@ -21,6 +21,9 @@
 #include <luci/Pass/ShapeInferencePass.h>
 #include <luci/Pass/TypeInferencePass.h>
 
+// Following passes will be removed after refactoring is finished
+#include <luci/Pass/MigrateLegacyShapeDtypePass.h>
+
 #include <iostream>
 #include <map>
 #include <string>
@@ -92,6 +95,12 @@ int entry(int argc, char **argv)
     }
     {
       luci::TypeInferencePass pass;
+      while (pass.run(graph) == true)
+        ;
+    }
+    {
+      // This pass will be removed after refactoring is finished
+      luci::MigrateLegacyShapeDtypePass pass;
       while (pass.run(graph) == true)
         ;
     }
