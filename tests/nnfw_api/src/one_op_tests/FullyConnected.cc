@@ -52,7 +52,7 @@ TEST_F(GenModelTest, OneOp_FullyConnected)
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
   _context->addTestCase(
       uniformTCD<float>({{1, 3, 2, 1}}, {{2, 1, 5, 5, 2, 1, 5, 5, 2, 1, 5, 5, 2, 1, 5, 6}}));
-  _context->setBackends({"cpu", "acl_neon", "xnnpack"});
+  _context->setBackends({"cpu", "acl_neon", "xnnpack", "ruy"});
 
   SUCCEED();
 }
@@ -173,7 +173,7 @@ TEST_F(GenModelTest, OneOp_FullyConnected_OptionalBias)
   _context->addTestCase(
       uniformTCD<float>({{3, -1, -1, 1, -2, 0, -2, 1}},
                         {{-4, -2, 9, -6, 8, 13, 5, 18, 5, -3, -7, -2, -16, -5, -1, -1}}));
-  _context->setBackends({"acl_cl", "acl_neon", "cpu", "xnnpack"});
+  _context->setBackends({"acl_cl", "acl_neon", "cpu", "xnnpack", "ruy"});
 
   SUCCEED();
 }
@@ -202,7 +202,7 @@ TEST_F(GenModelTest, neg_OneOp_FullyConnected_NoBias)
   _context->addTestCase(
       uniformTCD<float>({{3, -1, -1, 1, -2, 0, -2, 1}},
                         {{-4, -2, 9, -6, 8, 13, 5, 18, 5, -3, -7, -2, -16, -5, -1, -1}}));
-  _context->setBackends({"acl_cl", "acl_neon", "cpu", "xnnpack"});
+  _context->setBackends({"acl_cl", "acl_neon", "cpu", "xnnpack", "ruy"});
   _context->expectFailCompile();
 
   SUCCEED();
