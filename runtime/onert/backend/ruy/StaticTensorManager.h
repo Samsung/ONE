@@ -17,13 +17,7 @@
 #ifndef __ONERT_BACKEND_RUY_STATICTENSOR_MANAGER_H__
 #define __ONERT_BACKEND_RUY_STATICTENSOR_MANAGER_H__
 
-#include "backend/IStaticTensorManager.h"
-#include "backend/cpu_common/DynamicTensorManager.h"
-#include "backend/cpu_common/MemoryManager.h"
-#include "backend/cpu_common/TensorRegistry.h"
-#include "backend/ITensorManager.h"
-#include "ir/OperandIndexMap.h"
-#include "ir/OperandInfo.h"
+#include "backend/cpu_common/StaticTensorManager.h"
 
 namespace onert
 {
@@ -32,30 +26,7 @@ namespace backend
 namespace ruy
 {
 
-class StaticTensorManager : public backend::IStaticTensorManager
-{
-public:
-  StaticTensorManager(const std::shared_ptr<cpu_common::TensorRegistry> &reg,
-                      cpu_common::DynamicTensorManager *dynamic_tensor_manager);
-  virtual ~StaticTensorManager() = default;
-
-  void allocateNonconsts(void);
-  void deallocateNonconsts(void);
-
-  void buildTensor(const ir::OperandIndex &ind, const ir::OperandInfo &tensor_info,
-                   ir::Layout backend_layout, bool as_const);
-
-  void claimPlan(const ir::OperandIndex &ind, uint32_t size);
-  void releasePlan(const ir::OperandIndex &ind);
-
-  void iterate(const std::function<void(const ir::OperandIndex &)> &fn);
-
-private:
-  std::unique_ptr<cpu_common::MemoryManager> _nonconst_mgr;
-  const std::shared_ptr<cpu_common::TensorRegistry> _tensors;
-  ir::OperandIndexMap<bool> _as_constants;
-  cpu_common::DynamicTensorManager *_dynamic_tensor_manager;
-};
+using StaticTensorManager = cpu_common::StaticTensorManager;
 
 } // namespace ruy
 } // namespace backend
