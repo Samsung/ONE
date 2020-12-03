@@ -46,7 +46,7 @@ const float DIFFERENCE_THRESHOLD = 10e-5;
   }
 
 // Read vector of floats from selected file
-void readData(const string &path, uint8_t *dest)
+void readData(const string &path, std::vector<uint8_t> &dest)
 {
   std::ifstream in(path);
   if (!in.good())
@@ -57,35 +57,34 @@ void readData(const string &path, uint8_t *dest)
   in.seekg(0, std::ifstream::end);
   size_t len = in.tellg();
   in.seekg(0, std::ifstream::beg);
-  assert(len % sizeof(float) == 0);
-  size_t size = len / sizeof(float);
-  std::vector<float> vec(size);
-  for (size_t i = 0; i < size; ++i)
-  {
-    in.read(reinterpret_cast<char *>(dest), sizeof(len));
-  }
+
+  assert(dest.size() == len);
+  in.read(reinterpret_cast<char *>(dest.data()), len);
 }
 
 template <typename T>
-void randomData(nnfw::misc::RandomGenerator &randgen, const uint64_t elements, uint8_t *dest)
+void randomData(nnfw::misc::RandomGenerator &randgen, std::vector<uint8_t> &dest)
 {
+  size_t elements = dest.size() / sizeof(T);
+  assert(dest.size() % sizeof(T) == 0);
+
   std::vector<T> vec(elements);
   for (uint64_t i = 0; i < elements; i++)
   {
-    bool value = randgen.generate<float>();
-    vec[i] = value ? 1 : 0;
+    vec[i] = randgen.generate<T>();
   }
-  memcpy(dest, vec.data(), elements * sizeof(T));
+  memcpy(dest.data(), vec.data(), elements * sizeof(T));
 }
 
-void randomBoolData(nnfw::misc::RandomGenerator &randgen, const uint64_t elements, uint8_t *dest)
+void randomBoolData(nnfw::misc::RandomGenerator &randgen, std::vector<uint8_t> &dest)
 {
+  size_t elements = dest.size();
   std::vector<uint8_t> vec(elements);
   for (uint64_t i = 0; i < elements; i++)
   {
-    vec[i] = randgen.generate<float>();
+    bool value = randgen.generate<bool>();
+    dest[i] = value ? 1 : 0;
   }
-  memcpy(dest, vec.data(), elements * sizeof(uint8_t));
 }
 
 inline uint64_t num_elems(const nnfw_tensorinfo *ti)
@@ -219,8 +218,7 @@ int main(const int argc, char **argv)
     nnfw_tensorinfo ti_input;
     NNFW_ASSERT_FAIL(nnfw_input_tensorinfo(onert_session, i, &ti_input),
                      "[ ERROR ] Failure during get input data info");
-    uint64_t input_elements = num_elems(&ti_input);
-    size_t input_size = input_elements * sizeOfNnfwType(ti_input.dtype);
+    size_t input_size = num_elems(&ti_input) * sizeOfNnfwType(ti_input.dtype);
 
     inputs[i].resize(input_size);
 
@@ -229,23 +227,23 @@ int main(const int argc, char **argv)
       switch (ti_input.dtype)
       {
         case NNFW_TYPE_TENSOR_BOOL:
-          randomBoolData(randgen, input_elements, inputs[i].data());
+          randomBoolData(randgen, inputs[i]);
           break;
         case NNFW_TYPE_TENSOR_UINT8:
         case NNFW_TYPE_TENSOR_QUANT8_ASYMM:
-          randomData<uint8_t>(randgen, input_elements, inputs[i].data());
+          randomData<uint8_t>(randgen, inputs[i]);
           break;
         case NNFW_TYPE_TENSOR_QUANT8_ASYMM_SIGNED:
-          randomData<int8_t>(randgen, input_elements, inputs[i].data());
+          randomData<int8_t>(randgen, inputs[i]);
           break;
         case NNFW_TYPE_TENSOR_FLOAT32:
-          randomData<float>(randgen, input_elements, inputs[i].data());
+          randomData<float>(randgen, inputs[i]);
           break;
         case NNFW_TYPE_TENSOR_INT32:
-          randomData<int32_t>(randgen, input_elements, inputs[i].data());
+          randomData<int32_t>(randgen, inputs[i]);
           break;
         case NNFW_TYPE_TENSOR_INT64:
-          randomData<uint64_t>(randgen, input_elements, inputs[i].data());
+          randomData<uint64_t>(randgen, inputs[i]);
           break;
         default:
           std::cerr << "[ ERROR ] "
@@ -255,7 +253,7 @@ int main(const int argc, char **argv)
       }
     }
     else /* read_data */
-      readData(data_files[i], inputs[i].data());
+      readData(data_files[i], inputs[i]);
 
     NNFW_ASSERT_FAIL(nnfw_set_input(onert_session, i, ti_input.dtype, inputs[i].data(), input_size),
                      "[ ERROR ] Failure to set input tensor buffer");
