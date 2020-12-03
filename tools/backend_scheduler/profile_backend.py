@@ -5,24 +5,45 @@ from os.path import dirname, basename, isdir, realpath, normpath
 import argparse
 
 
+def parse_op_list():
+    script_dir = dirname(realpath(__file__))
+    print(script_dir)
+    op_list_file = os.path.join(script_dir, "op_list.txt")
+    backend_op_list = {}
+
+    with open(op_list_file, 'r') as f:
+        lines = f.readlines()
+
+        for line in lines:
+            line = line.rstrip()
+            backend, _, op_list_str = line.partition(':')
+            op_list = op_list_str.split(',')
+            backend_op_list[backend] = op_list
+    return backend_op_list
+
+
 def main(args):
     script_path = realpath(__file__)
     root_path = dirname(dirname(dirname(script_path)))
+    backend_op_list = parse_op_list()
+    backend_list = ["cpu"]
+    backend_list.extend([backend for backend in backend_op_list])
     os.chdir(root_path)
 
-    backend_list = ["cpu", "ruy", "xnnpack"]
-
     if (isdir('./Product/armv7l-linux.release')):
-        for index, backend in enumerate(backend_list):
+        for backend in backend_list:
             trace_name = "{}_{}_{}_{}".format("armv7l",
                                               basename(normpath(args.nnpackage_dir)),
                                               backend, args.num_threads)
             command = "TRACE_FILEPATH={}/traces/{}".format(
                 dirname(script_path), trace_name)
+            for target_backend, op_list in backend_op_list.items():
+                if backend == target_backend:
+                    for op in op_list:
+                        command += " OP_BACKEND_{}={}".format(op, backend)
             command += " EIGEN_THREADS={}".format(args.num_threads)
             command += " XNNPACK_THREADS={}".format(args.num_threads)
             command += " RUY_THREADS={}".format(args.num_threads)
-            command += " OP_BACKEND_Conv2D={}".format(backend)
             command += " BACKENDS='{}'".format(';'.join(backend_list))
             command += " OP_SEQ_MAX_NODE=1"
             command += " ./Product/armv7l-linux.release/out/bin/nnpackage_run"
