@@ -20,7 +20,6 @@
 #include <unordered_map>
 #include <functional>
 
-#include "ITensorBuilder.h"
 #include "ir/Coordinates.h"
 #include "ir/Layout.h"
 #include "ir/Operand.h"
@@ -28,6 +27,7 @@
 #include "ir/OperationVisitor.h"
 #include "ir/OpSequence.h"
 #include "util/logging.h"
+#include "backend/ITensorRegistry.h"
 
 namespace
 {

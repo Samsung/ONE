@@ -23,8 +23,6 @@
 #include "ir/OpSequences.h"
 #include "ir/LowerInfoMap.h"
 #include "util/logging.h"
-#include "backend/BackendContext.h"
-#include "backend/ITensorBuilder.h"
 
 namespace onert
 {
@@ -33,8 +31,9 @@ namespace backend
 namespace cpu_common
 {
 
-void planTensors(const backend::BackendContext &ctx,
-                 const std::vector<onert::ir::OpSequenceIndex> &order,
+// TODO Remove the template param BackendContext once unification of cpu backend context is done
+template <typename T_BackendContext>
+void planTensors(const T_BackendContext &ctx, const std::vector<onert::ir::OpSequenceIndex> &order,
                  const ir::OpSequences &op_seqs, const ir::LowerInfoMap &lower_info)
 {
   auto graph = ctx.graph();

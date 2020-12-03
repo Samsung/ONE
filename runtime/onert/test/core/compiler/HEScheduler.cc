@@ -55,8 +55,7 @@ struct MockBackendCPU : public Backend
   std::unique_ptr<BackendContext>
   newContext(const Graph &, const std::shared_ptr<custom::IKernelBuilder> &, bool) const override
   {
-    return std::unique_ptr<BackendContext>(
-        new BackendContext{this, nullptr, nullptr, nullptr, nullptr});
+    return std::unique_ptr<BackendContext>(new BackendContext{this, nullptr});
   }
 };
 
@@ -79,8 +78,7 @@ struct MockBackendGPU : public Backend
   std::unique_ptr<BackendContext>
   newContext(const Graph &, const std::shared_ptr<custom::IKernelBuilder> &, bool) const override
   {
-    return std::unique_ptr<BackendContext>(
-        new BackendContext{this, nullptr, nullptr, nullptr, nullptr});
+    return std::unique_ptr<BackendContext>(new BackendContext{this, nullptr});
   }
 };
 
@@ -103,8 +101,7 @@ struct MockBackendNPU : public Backend
   std::unique_ptr<BackendContext>
   newContext(const Graph &, const std::shared_ptr<custom::IKernelBuilder> &, bool) const override
   {
-    return std::unique_ptr<BackendContext>(
-        new BackendContext{this, nullptr, nullptr, nullptr, nullptr});
+    return std::unique_ptr<BackendContext>(new BackendContext{this, nullptr});
   }
 };
 
