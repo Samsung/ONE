@@ -14,23 +14,16 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_XNNPACK_BACKEND_CONTEXT_H__
-#define __ONERT_BACKEND_XNNPACK_BACKEND_CONTEXT_H__
+#ifndef __ONERT_BACKEND_ACL_CL_BACKEND_CONTEXT_H__
+#define __ONERT_BACKEND_ACL_CL_BACKEND_CONTEXT_H__
 
 #include <backend/BackendContext.h>
-#include <util/ConfigSource.h>
-#include "ExternalContext.h"
-
-namespace
-{
-const int kDefaultNumThreadpoolThreads = 1;
-}
 
 namespace onert
 {
 namespace backend
 {
-namespace xnnpack
+namespace acl_cl
 {
 
 class BackendContext : public onert::backend::BackendContext
@@ -43,34 +36,23 @@ public:
                  std::shared_ptr<IKernelGenerator> kernel_gen = nullptr,
                  std::shared_ptr<IOptimizer> optimizer = nullptr)
       : onert::backend::BackendContext(backend, graph, tensor_registry, tensor_builder,
-                                       constant_initializer, kernel_gen, optimizer),
-        _external_context(nullptr)
+                                       constant_initializer, kernel_gen, optimizer)
   {
-    int num_threads = util::getConfigInt(util::config::XNNPACK_THREADS);
-    if (num_threads < 1)
-      num_threads = kDefaultNumThreadpoolThreads; // default num of threads
-    _external_context.reset(new ExternalContext(static_cast<size_t>(num_threads)));
   }
 
   ITensorRegistry *genTensors(const std::vector<onert::ir::OpSequenceIndex> &order,
                               const ir::OpSequences &op_seqs,
                               const ir::LowerInfoMap &lower_info) override;
-
-  FunctionMap genKernels(const std::vector<ir::OpSequenceIndex> &order,
+  FunctionMap genKernels(const std::vector<onert::ir::OpSequenceIndex> &order,
                          const ir::OpSequences &op_seqs) override;
-
-  std::shared_ptr<ExternalContext> external_context() { return _external_context; }
 
 private:
   void planTensors(const std::vector<onert::ir::OpSequenceIndex> &order,
                    const ir::OpSequences &op_seqs, const ir::LowerInfoMap &lower_info);
-
-private:
-  std::shared_ptr<ExternalContext> _external_context;
 };
 
-} // namespace xnnpack
+} // namespace acl_cl
 } // namespace backend
 } // namespace onert
 
-#endif // __ONERT_BACKEND_XNNPACK_BACKEND_CONTEXT_H__
+#endif // __ONERT_BACKEND_ACL_CL_BACKEND_CONTEXT_H__

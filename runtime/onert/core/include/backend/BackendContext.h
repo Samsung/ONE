@@ -19,6 +19,8 @@
 
 #include <memory>
 #include "ir/Graph.h"
+#include "ir/LowerInfoMap.h"
+#include "exec/FunctionSequence.h"
 
 namespace onert
 {
@@ -31,6 +33,9 @@ class IKernelGenerator;
 struct ITensorRegistry;
 struct ITensorBuilder;
 struct IOptimizer;
+
+using FunctionMap =
+    std::vector<std::pair<ir::OpSequenceIndex, std::unique_ptr<exec::FunctionSequence>>>;
 
 class BackendContext
 {
@@ -66,6 +71,17 @@ public:
   const ir::Graph *graph() const { return _graph; }
   const std::vector<OperationInfo> &operation_list() const { return _operation_list; }
   const std::vector<ir::OperandIndex> &operand_list() const { return _operand_list; }
+
+  virtual ITensorRegistry *genTensors(const std::vector<onert::ir::OpSequenceIndex> &,
+                                      const ir::OpSequences &, const ir::LowerInfoMap &)
+  {
+    return nullptr;
+  }
+  virtual FunctionMap genKernels(const std::vector<onert::ir::OpSequenceIndex> &,
+                                 const ir::OpSequences &)
+  {
+    return {};
+  }
 
 private:
   const Backend *_backend{nullptr};
