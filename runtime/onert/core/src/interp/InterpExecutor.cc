@@ -66,7 +66,7 @@ void InterpExecutor::execute(const exec::IODescription &desc)
   {
     if (tensor_map.find(index) != tensor_map.end())
     {
-      VERBOSE(INTERPRETER) << "Assign input tensor. operand index:" << index.value() << std::endl;
+      VERBOSE(INTERPRETER) << "Assign input tensor. operand index:" << index << std::endl;
       interp_env->assignTensor(index, tensor_map.at(index));
     }
   }
@@ -94,7 +94,7 @@ void InterpExecutor::execute(const exec::IODescription &desc)
   _graph.operands().iterate([&](const ir::OperandIndex &ind, const ir::Operand &obj) {
     if (obj.isConstant())
     {
-      VERBOSE(INTERPRETER) << "Allocate and assign constant tensor. operand index:" << ind.value()
+      VERBOSE(INTERPRETER) << "Allocate and assign constant tensor. operand index:" << ind
                            << std::endl;
 
       assert(obj.data());

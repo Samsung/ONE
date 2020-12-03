@@ -49,7 +49,7 @@ public:
     const ir::Operation &node = _env->graph().operations().at(idx);
     const auto nodeName = node.name();
     VERBOSE(INTERPRETER) << "Prepare output operands and execute " << nodeName
-                         << " operation (id: " << idx.value() << ")" << std::endl;
+                         << " operation (id: " << idx << ")" << std::endl;
 
     const auto nodeOpCode = node.opcode();
     if (_kernels.find(nodeOpCode) == _kernels.end())
@@ -83,7 +83,7 @@ void Interpreter::run()
   //       But that scenario may not exist
   for (auto ind : _env->graph().getInputs())
   {
-    VERBOSE(INTERPRETER) << "Input: Push to operand stack " << ind.value() << std::endl;
+    VERBOSE(INTERPRETER) << "Input: Push to operand stack " << ind << std::endl;
 
     operand_stack.push(ind);
   }
@@ -91,7 +91,7 @@ void Interpreter::run()
   _env->graph().operands().iterate([&](const ir::OperandIndex &ind, const ir::Operand &obj) {
     if (obj.isConstant())
     {
-      VERBOSE(INTERPRETER) << "Constant: Push to operand stack " << ind.value() << std::endl;
+      VERBOSE(INTERPRETER) << "Constant: Push to operand stack " << ind << std::endl;
 
       operand_stack.push(ind);
     }
@@ -129,7 +129,7 @@ void Interpreter::run()
 
       if (operator_ready)
       {
-        VERBOSE(INTERPRETER) << "Ready to execute operation " << use_operator.value() << std::endl;
+        VERBOSE(INTERPRETER) << "Ready to execute operation " << use_operator << std::endl;
         operation_stack.push(use_operator);
       }
     }
@@ -138,7 +138,7 @@ void Interpreter::run()
     {
       const auto current_operation_index = operation_stack.top();
       operation_stack.pop();
-      VERBOSE(INTERPRETER) << "Poped operation: " << current_operation_index.value() << "("
+      VERBOSE(INTERPRETER) << "Poped operation: " << current_operation_index << "("
                            << _env->graph().operations().at(current_operation_index).name() << ")"
                            << std::endl;
 

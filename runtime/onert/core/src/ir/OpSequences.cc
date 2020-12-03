@@ -116,7 +116,7 @@ OpSequenceIndex OpSequences::findOperation(const OperationIndex &operation_index
 void dumpOpSequences(const OpSequences &op_seqs, const Operations &operations)
 {
   op_seqs.iterate([&](const OpSequenceIndex &idx, const OpSequence &op_seq) {
-    VERBOSE(OpSequences) << idx.value() << "] " << getStrFromOpSeq(op_seq, operations) << std::endl;
+    VERBOSE(OpSequences) << idx << "] " << getStrFromOpSeq(op_seq, operations) << std::endl;
   });
 }
 
