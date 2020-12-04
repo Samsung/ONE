@@ -39,7 +39,9 @@ char *seq_to_label(const onert::ir::OpSequence *op_seq, const onert::ir::Operati
 
 void LinearExecutor::executeImpl()
 {
-  _subject.notifySubgraphBegin(this);
+  auto profiling_subg_index = _tracing_ctx->getSubgraphIndex(&_graph);
+
+  _subject.notifySubgraphBegin(profiling_subg_index);
   for (auto &&code : _code)
   {
     const auto op_seq = code.op_seq;
@@ -48,7 +50,7 @@ void LinearExecutor::executeImpl()
 #ifdef RUY_PROFILER
     ruy::profiler::ScopeLabel label(seq_to_label(op_seq, _graph.operations()));
 #endif
-    _subject.notifyJobBegin(this, op_seq, backend);
+    _subject.notifyJobBegin(this, profiling_subg_index, op_seq, backend);
 
     auto &fn_seq = code.fn_seq;
 
@@ -58,9 +60,9 @@ void LinearExecutor::executeImpl()
     fn_seq->enableDynamicShapeInferer(handle_dynamic_tensor);
     fn_seq->run();
 
-    _subject.notifyJobEnd(this, op_seq, backend);
+    _subject.notifyJobEnd(this, profiling_subg_index, op_seq, backend);
   }
-  _subject.notifySubgraphEnd(this);
+  _subject.notifySubgraphEnd(profiling_subg_index);
 }
 
 } // namespace exec

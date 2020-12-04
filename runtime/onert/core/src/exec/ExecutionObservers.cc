@@ -80,8 +80,8 @@ namespace onert
 namespace exec
 {
 
-void ProfileObserver::handleJobBegin(onert::exec::IExecutor *, const ir::OpSequence *,
-                                     const onert::backend::Backend *backend)
+void ProfileObserver::handleJobBegin(onert::exec::IExecutor *, ir::SubgraphIndex,
+                                     const ir::OpSequence *, const onert::backend::Backend *backend)
 {
   _timer = backend->config()->timer();
   if (_timer == nullptr)
@@ -89,7 +89,7 @@ void ProfileObserver::handleJobBegin(onert::exec::IExecutor *, const ir::OpSeque
   _timer->handleBegin();
 }
 
-void ProfileObserver::handleJobEnd(IExecutor *exec, const ir::OpSequence *op_seq,
+void ProfileObserver::handleJobEnd(IExecutor *exec, ir::SubgraphIndex, const ir::OpSequence *op_seq,
                                    const backend::Backend *backend)
 {
   _timer->handleEnd();
@@ -141,14 +141,19 @@ TracingObserver::~TracingObserver()
   }
 }
 
-void TracingObserver::handleSubgraphBegin(IExecutor *)
+void TracingObserver::handleSubgraphBegin(ir::SubgraphIndex subg_ind)
 {
+  // TODO Write subg_ind into profling result
+  UNUSED_RELEASE(subg_ind);
   _collector.onEvent(EventCollector::Event{EventCollector::Edge::BEGIN, "runtime", "Graph"});
 }
 
-void TracingObserver::handleJobBegin(IExecutor *, const ir::OpSequence *op_seq,
-                                     const backend::Backend *backend)
+void TracingObserver::handleJobBegin(IExecutor *, ir::SubgraphIndex subg_ind,
+                                     const ir::OpSequence *op_seq, const backend::Backend *backend)
 {
+  // TODO Write subg_ind into profling result
+  UNUSED_RELEASE(subg_ind);
+
   std::string backend_id = backend->config()->id();
 
   auto ev = EventCollector::Event{EventCollector::Edge::BEGIN, backend_id,
@@ -159,16 +164,22 @@ void TracingObserver::handleJobBegin(IExecutor *, const ir::OpSequence *op_seq,
   _collector.onEvent(ev);
 }
 
-void TracingObserver::handleJobEnd(IExecutor *, const ir::OpSequence *op_seq,
-                                   const backend::Backend *backend)
+void TracingObserver::handleJobEnd(IExecutor *, ir::SubgraphIndex subg_ind,
+                                   const ir::OpSequence *op_seq, const backend::Backend *backend)
 {
+  // TODO Write subg_ind into profling result
+  UNUSED_RELEASE(subg_ind);
+
   std::string backend_id = backend->config()->id();
   _collector.onEvent(EventCollector::Event{EventCollector::Edge::END, backend_id,
                                            opSequenceTag(op_seq, _graph.operations())});
 }
 
-void TracingObserver::handleSubgraphEnd(IExecutor *)
+void TracingObserver::handleSubgraphEnd(ir::SubgraphIndex subg_ind)
 {
+  // TODO Write subg_ind into profling result
+  UNUSED_RELEASE(subg_ind);
+
   _collector.onEvent(EventCollector::Event{EventCollector::Edge::END, "runtime", "Graph"});
 }
 

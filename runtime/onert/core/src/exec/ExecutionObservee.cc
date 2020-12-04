@@ -26,37 +26,38 @@ void ExecutionObservee::add(std::unique_ptr<IExecutionObserver> observer)
   _observers.emplace_back(std::move(observer));
 }
 
-void ExecutionObservee::notifySubgraphBegin(IExecutor *executor)
+void ExecutionObservee::notifySubgraphBegin(ir::SubgraphIndex ind)
 {
   for (auto &o : _observers)
   {
-    o->handleSubgraphBegin(executor);
+    o->handleSubgraphBegin(ind);
   }
 }
 
-void ExecutionObservee::notifySubgraphEnd(IExecutor *executor)
+void ExecutionObservee::notifySubgraphEnd(ir::SubgraphIndex ind)
 {
   for (auto &o : _observers)
   {
-    o->handleSubgraphEnd(executor);
+    o->handleSubgraphEnd(ind);
   }
 }
 
-void ExecutionObservee::notifyJobBegin(IExecutor *executor, const ir::OpSequence *op_seq,
+void ExecutionObservee::notifyJobBegin(IExecutor *executor, ir::SubgraphIndex index,
+                                       const ir::OpSequence *op_seq,
                                        const backend::Backend *backend)
 {
   for (auto &o : _observers)
   {
-    o->handleJobBegin(executor, op_seq, backend);
+    o->handleJobBegin(executor, index, op_seq, backend);
   }
 }
 
-void ExecutionObservee::notifyJobEnd(IExecutor *executor, const ir::OpSequence *op_seq,
-                                     const backend::Backend *backend)
+void ExecutionObservee::notifyJobEnd(IExecutor *executor, ir::SubgraphIndex index,
+                                     const ir::OpSequence *op_seq, const backend::Backend *backend)
 {
   for (auto &o : _observers)
   {
-    o->handleJobEnd(executor, op_seq, backend);
+    o->handleJobEnd(executor, index, op_seq, backend);
   }
 }
 
