@@ -21,7 +21,6 @@
 #include <luci/IR/CircleNode.h>
 #include <luci/IR/CircleNodes.h>
 #include <luci/IR/CircleNodeVisitor.h>
-#include <luci/Service/CircleShapeInference.h>
 #include <luci/UserSettings.h>
 #include <luci/Log.h>
 
