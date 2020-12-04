@@ -6,13 +6,30 @@ from os.path import dirname, basename, isdir, realpath
 import argparse
 
 
+def parse_op_list():
+    script_dir = dirname(realpath(__file__))
+    print(script_dir)
+    op_list_file = os.path.join(script_dir, "op_list.txt")
+    backend_op_list = {}
+
+    with open(op_list_file, 'r') as f:
+        lines = f.readlines()
+
+        for line in lines:
+            line = line.rstrip()
+            backend, _, op_list_str = line.partition(':')
+            op_list = op_list_str.split(',')
+            backend_op_list[backend] = op_list
+    return backend_op_list
+
+
 def main(args):
     script_path = realpath(__file__)
     root_path = dirname(dirname(dirname(script_path)))
+    backend_op_list = parse_op_list()
+    backend_list = ["cpu"]
+    backend_list.extend([backend for backend in backend_op_list])
     os.chdir(root_path)
-
-    backend_list = ["cpu", "ruy", "xnnpack"]
-    #  backend_list = ["cpu", "ruy"]
 
     op_time = {}
     for trace_file in os.listdir('./tools/backend_scheduler/traces'):
@@ -35,7 +52,7 @@ def main(args):
                 for op in backend_data:
                     op_index = int(op.split(' ')[0][1:])
                     op_type = op.split(' ')[1]
-                    time = int(backend_data[op]["Min_Time"])
+                    time = int(backend_data[op]["Avg_Time"])
                     if op_index not in op_time.keys():
                         op_time[op_index] = {backend: time}
                         op_time[op_index].update({"type": op_type})
@@ -50,12 +67,14 @@ def main(args):
     # Find fastest library for each operation
     for op_index, value in sorted(op_time.items()):
         op_type = value['type']
-        if op_type != 'Conv2D' and op_type != 'FullyConnected':
+        if op_type != 'Conv2D' and op_type != 'FullyConnected' and op_type != 'DepthwiseConv2D':
             continue
 
         print("----- Operation {} -----".format(op_index))
         op_infer_time = 0
         for backend in backend_list:
+            if backend not in value:
+                continue
             backend_time = value[backend]
 
             print("{}[{}]".format(backend, backend_time))
@@ -82,7 +101,7 @@ def main(args):
     schedule_time = 0
     for op_index, value in sorted(op_time.items()):
         op_type = value['type']
-        if op_type != 'Conv2D' and op_type != 'FullyConnected':
+        if op_type != 'Conv2D' and op_type != 'FullyConnected' and op_type != 'DepthwiseConv2D':
             single_backend_time += value["cpu"]
             schedule_time += value["cpu"]
             continue
@@ -99,9 +118,14 @@ def main(args):
     print("Mixed backend : {:.2f} ms".format(schedule_time / 1000))
 
     print("-------- Backend Scheduling --------")
+    command = ""
+    for target_backend, op_list in backend_op_list.items():
+        if default_backend == target_backend:
+            for op in op_list:
+                command += " OP_BACKEND_{}={}".format(op, default_backend)
     print(
-        "OP_BACKEND_MAP='{}' OP_BACKEND_Conv2D={} BACKENDS='{}' EIGEN_THREADS={} RUY_THREADS={} XNNPACK_THREADS={}".
-        format(backend_conf, default_backend, ';'.join(backend_list), args.num_threads,
+        "OP_BACKEND_MAP='{}' {} BACKENDS='{}' EIGEN_THREADS={} RUY_THREADS={} XNNPACK_THREADS={}".
+        format(backend_conf, command, ';'.join(backend_list), args.num_threads,
                args.num_threads, args.num_threads))
 
 
