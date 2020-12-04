@@ -46,7 +46,7 @@ JNIEXPORT void JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeCloseSe
  * Signature: (JLjava/lang/String;)Z
  */
 JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeLoadModelFromFile(
-    JNIEnv *, jobject, jlong, jstring);
+  JNIEnv *, jobject, jlong, jstring);
 
 /*
  * Class:     com_samsung_onert_NativeSessionWrapper
@@ -71,7 +71,7 @@ JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeRun
  * Signature: (JIILjava/nio/ByteBuffer;I)Z
  */
 JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeSetInput(
-    JNIEnv *, jobject, jlong, jint, jint, jobject, jint);
+  JNIEnv *, jobject, jlong, jint, jint, jobject, jint);
 
 /*
  * Class:     com_samsung_onert_NativeSessionWrapper
@@ -79,7 +79,7 @@ JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeSet
  * Signature: (JIILjava/nio/ByteBuffer;I)Z
  */
 JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeSetOutput(
-    JNIEnv *, jobject, jlong, jint, jint, jobject, jint);
+  JNIEnv *, jobject, jlong, jint, jint, jobject, jint);
 
 /*
  * Class:     com_samsung_onert_NativeSessionWrapper
@@ -87,7 +87,7 @@ JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeSet
  * Signature: (JII)Z
  */
 JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeSetInputLayout(
-    JNIEnv *, jobject, jlong, jint, jint);
+  JNIEnv *, jobject, jlong, jint, jint);
 
 /*
  * Class:     com_samsung_onert_NativeSessionWrapper
@@ -95,7 +95,7 @@ JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeSet
  * Signature: (JII)Z
  */
 JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeSetOutputLayout(
-    JNIEnv *, jobject, jlong, jint, jint);
+  JNIEnv *, jobject, jlong, jint, jint);
 
 /*
  * Class:     com_samsung_onert_NativeSessionWrapper
@@ -121,7 +121,7 @@ JNIEXPORT jint JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeGetOutp
  * Signature: (JILcom/samsung/onert/NativeSessionWrapper/InternalTensorInfo;)Z
  */
 JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeGetInputTensorInfo(
-    JNIEnv *, jobject, jlong, jint, jobject);
+  JNIEnv *, jobject, jlong, jint, jobject);
 
 /*
  * Class:     com_samsung_onert_NativeSessionWrapper
@@ -129,7 +129,7 @@ JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeGet
  * Signature: (JILcom/samsung/onert/NativeSessionWrapper/InternalTensorInfo;)Z
  */
 JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeGetOutputTensorInfo(
-    JNIEnv *, jobject, jlong, jint, jobject);
+  JNIEnv *, jobject, jlong, jint, jobject);
 
 /*
  * Class:     com_samsung_onert_NativeSessionWrapper
@@ -137,7 +137,7 @@ JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeGet
  * Signature: (JLjava/lang/String;)Z
  */
 JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeSetAvailableBackends(
-    JNIEnv *, jobject, jlong, jstring);
+  JNIEnv *, jobject, jlong, jstring);
 
 #ifdef __cplusplus
 }

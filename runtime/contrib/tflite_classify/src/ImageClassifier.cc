@@ -24,9 +24,9 @@ ImageClassifier::ImageClassifier(const std::string &model_file, const std::strin
                                  const int input_size, const int image_mean, const int image_std,
                                  const std::string &input_name, const std::string &output_name,
                                  const bool use_nnapi)
-    : _inference(new InferenceInterface(model_file, use_nnapi)), _input_size(input_size),
-      _image_mean(image_mean), _image_std(image_std), _input_name(input_name),
-      _output_name(output_name)
+  : _inference(new InferenceInterface(model_file, use_nnapi)), _input_size(input_size),
+    _image_mean(image_mean), _image_std(image_std), _input_name(input_name),
+    _output_name(output_name)
 {
   // Load label
   std::ifstream label_stream(label_file.c_str());

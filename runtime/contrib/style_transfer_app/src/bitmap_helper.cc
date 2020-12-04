@@ -49,10 +49,10 @@ unsigned char *BitmapHelper::createBitmapFileHeader(int height, int width, int p
   int fileSize = fileHeaderSize + infoHeaderSize + (bytesPerPixel * width + paddingSize) * height;
 
   static unsigned char fileHeader[] = {
-      0, 0,       /// signature
-      0, 0, 0, 0, /// image file size in bytes
-      0, 0, 0, 0, /// reserved
-      0, 0, 0, 0, /// start of pixel array
+    0, 0,       /// signature
+    0, 0, 0, 0, /// image file size in bytes
+    0, 0, 0, 0, /// reserved
+    0, 0, 0, 0, /// start of pixel array
   };
 
   fileHeader[0] = (unsigned char)('B');
@@ -69,17 +69,17 @@ unsigned char *BitmapHelper::createBitmapFileHeader(int height, int width, int p
 unsigned char *BitmapHelper::createBitmapInfoHeader(int height, int width)
 {
   static unsigned char infoHeader[] = {
-      0, 0, 0, 0, /// header size
-      0, 0, 0, 0, /// image width
-      0, 0, 0, 0, /// image height
-      0, 0,       /// number of color planes
-      0, 0,       /// bits per pixel
-      0, 0, 0, 0, /// compression
-      0, 0, 0, 0, /// image size
-      0, 0, 0, 0, /// horizontal resolution
-      0, 0, 0, 0, /// vertical resolution
-      0, 0, 0, 0, /// colors in color table
-      0, 0, 0, 0, /// important color count
+    0, 0, 0, 0, /// header size
+    0, 0, 0, 0, /// image width
+    0, 0, 0, 0, /// image height
+    0, 0,       /// number of color planes
+    0, 0,       /// bits per pixel
+    0, 0, 0, 0, /// compression
+    0, 0, 0, 0, /// image size
+    0, 0, 0, 0, /// horizontal resolution
+    0, 0, 0, 0, /// vertical resolution
+    0, 0, 0, 0, /// colors in color table
+    0, 0, 0, 0, /// important color count
   };
 
   // Minus height means top to bottom write
@@ -191,7 +191,7 @@ int BitmapHelper::read_bmp(const std::string &input_bmp_name, std::vector<float>
   // Decode image, allocating tensor once the image size is known
   const uint8_t *bmp_pixels = &img_bytes[header_size];
   std::vector<uint8_t> bmp =
-      decode_bmp(bmp_pixels, row_size, width, abs(height), channels, top_down);
+    decode_bmp(bmp_pixels, row_size, width, abs(height), channels, top_down);
   for (uint32_t j = 0; j < bmp.size(); j++)
   {
     input.push_back(static_cast<float>(bmp[j]));

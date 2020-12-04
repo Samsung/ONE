@@ -72,7 +72,7 @@ void Trace::logAllocationEvent(cl_mem memory_ptr, size_t size_of_allocated_space
   if (found_memory_space_description == _memory_in_use_on_gpu.end())
   {
     _memory_in_use_on_gpu.insert(
-        std::make_pair(memory_ptr, MemoryTraits(1, size_of_allocated_space_in_bytes)));
+      std::make_pair(memory_ptr, MemoryTraits(1, size_of_allocated_space_in_bytes)));
     _total_allocated_bytes_on_gpu += size_of_allocated_space_in_bytes;
     if (_peak_heap_usage_on_gpu < _total_allocated_bytes_on_gpu - _total_deallocated_bytes_on_gpu)
     {

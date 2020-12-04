@@ -173,7 +173,7 @@ inline void runBenchmark(JNIEnv *env, jobject thisObj, Activity &act)
 }
 
 JNIEXPORT void JNICALL Java_com_ndk_tflbench_MainActivity_runInterpreterBenchmark(
-    JNIEnv *env, jobject thisObj, jobject model_buffer)
+  JNIEnv *env, jobject thisObj, jobject model_buffer)
 {
   setTitle(env, thisObj, "Running Interpreter Benchmark");
 

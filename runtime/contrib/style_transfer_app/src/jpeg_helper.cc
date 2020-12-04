@@ -26,7 +26,7 @@ namespace StyleTransferApp
 {
 
 JpegHelper::JpegHelper(int bytes_per_pixel, J_COLOR_SPACE color_space)
-    : _bytes_per_pixel(bytes_per_pixel), _color_space(color_space)
+  : _bytes_per_pixel(bytes_per_pixel), _color_space(color_space)
 {
   // DO NOTHING
 }

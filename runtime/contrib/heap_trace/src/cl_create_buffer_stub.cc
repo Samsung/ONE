@@ -31,8 +31,8 @@ cl_mem clCreateBuffer(cl_context context, cl_mem_flags flags, size_t size, void 
   static auto isOriginalFunctionCallSuccessful = [](cl_mem result) -> bool { return result; };
 
   static auto originalFunction =
-      findFunctionByName<cl_mem, cl_context, cl_mem_flags, size_t, void *, cl_int *>(
-          "clCreateBuffer");
+    findFunctionByName<cl_mem, cl_context, cl_mem_flags, size_t, void *, cl_int *>(
+      "clCreateBuffer");
   cl_mem result = originalFunction(context, flags, size, host_ptr, errcode_ret);
   if (isOriginalFunctionCallSuccessful(result) && !Trace::Guard{}.isActive())
   {
