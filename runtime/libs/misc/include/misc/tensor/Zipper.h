@@ -48,7 +48,7 @@ public:
    * @param[in] rhs     @c Reader object of a tensor
    */
   Zipper(const Shape &shape, const Reader<T> &lhs, const Reader<T> &rhs)
-      : _shape{shape}, _lhs{lhs}, _rhs{rhs}
+    : _shape{shape}, _lhs{lhs}, _rhs{rhs}
   {
     // DO NOTHING
   }
@@ -63,7 +63,7 @@ public:
   template <typename Callable> void zip(Callable cb) const
   {
     iterate(_shape) <<
-        [this, &cb](const Index &index) { cb(index, _lhs.at(index), _rhs.at(index)); };
+      [this, &cb](const Index &index) { cb(index, _lhs.at(index), _rhs.at(index)); };
   }
 
 private:

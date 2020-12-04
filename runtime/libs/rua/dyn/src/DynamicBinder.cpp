@@ -97,8 +97,8 @@ typedef int (*ANeuralNetworksModel_setOperandValue_fn)(ANeuralNetworksModel *mod
                                                        const void *buffer, size_t length);
 
 typedef int (*ANeuralNetworksModel_setOperandValueFromMemory_fn)(
-    ANeuralNetworksModel *model, int32_t index, const ANeuralNetworksMemory *memory, size_t offset,
-    size_t length);
+  ANeuralNetworksModel *model, int32_t index, const ANeuralNetworksMemory *memory, size_t offset,
+  size_t length);
 
 typedef int (*ANeuralNetworksModel_addOperation_fn)(ANeuralNetworksModel *model,
                                                     ANeuralNetworksOperationType type,
@@ -242,8 +242,8 @@ typedef int (*ANeuralNetworksExecution_setInput_fn)(ANeuralNetworksExecution *ex
                                                     const void *buffer, size_t length);
 
 typedef int (*ANeuralNetworksExecution_setInputFromMemory_fn)(
-    ANeuralNetworksExecution *execution, int32_t index, const ANeuralNetworksOperandType *type,
-    const ANeuralNetworksMemory *memory, size_t offset, size_t length);
+  ANeuralNetworksExecution *execution, int32_t index, const ANeuralNetworksOperandType *type,
+  const ANeuralNetworksMemory *memory, size_t offset, size_t length);
 
 typedef int (*ANeuralNetworksExecution_setOutput_fn)(ANeuralNetworksExecution *execution,
                                                      int32_t index,
@@ -251,8 +251,8 @@ typedef int (*ANeuralNetworksExecution_setOutput_fn)(ANeuralNetworksExecution *e
                                                      void *buffer, size_t length);
 
 typedef int (*ANeuralNetworksExecution_setOutputFromMemory_fn)(
-    ANeuralNetworksExecution *execution, int32_t index, const ANeuralNetworksOperandType *type,
-    const ANeuralNetworksMemory *memory, size_t offset, size_t length);
+  ANeuralNetworksExecution *execution, int32_t index, const ANeuralNetworksOperandType *type,
+  const ANeuralNetworksMemory *memory, size_t offset, size_t length);
 
 typedef int (*ANeuralNetworksExecution_startCompute_fn)(ANeuralNetworksExecution *execution,
                                                         ANeuralNetworksEvent **event);

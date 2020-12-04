@@ -27,7 +27,7 @@ namespace benchmark
 {
 
 MemoryPoller::MemoryPoller(std::chrono::milliseconds duration, bool gpu_poll)
-    : _duration(duration), _run(false), _term(false), _gpu_poll(gpu_poll)
+  : _duration(duration), _run(false), _term(false), _gpu_poll(gpu_poll)
 {
   if (prepareMemoryPolling() == false)
     throw std::runtime_error("failed to prepare memory pooling");

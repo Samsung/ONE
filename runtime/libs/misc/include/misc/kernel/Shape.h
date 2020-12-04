@@ -55,7 +55,7 @@ struct Shape
    * @param[in] width The width index
    */
   Shape(int32_t count, int32_t depth, int32_t height, int32_t width)
-      : N{count}, C{depth}, H{height}, W{width}
+    : N{count}, C{depth}, H{height}, W{width}
   {
     // DO NOTHING
   }

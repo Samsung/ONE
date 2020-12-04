@@ -56,12 +56,12 @@ typedef int (*ANeuralNetworksModel_setOperandValue_fn)(ANeuralNetworksModel *mod
                                                        const void *buffer, size_t length);
 
 typedef int (*ANeuralNetworksModel_setOperandSymmPerChannelQuantParams_fn)(
-    ANeuralNetworksModel *model, int32_t index,
-    const ANeuralNetworksSymmPerChannelQuantParams *channelQuant);
+  ANeuralNetworksModel *model, int32_t index,
+  const ANeuralNetworksSymmPerChannelQuantParams *channelQuant);
 
 typedef int (*ANeuralNetworksModel_setOperandValueFromMemory_fn)(
-    ANeuralNetworksModel *model, int32_t index, const ANeuralNetworksMemory *memory, size_t offset,
-    size_t length);
+  ANeuralNetworksModel *model, int32_t index, const ANeuralNetworksMemory *memory, size_t offset,
+  size_t length);
 
 typedef int (*ANeuralNetworksModel_addOperation_fn)(ANeuralNetworksModel *model,
                                                     ANeuralNetworksOperationType type,
@@ -88,8 +88,8 @@ typedef int (*ANeuralNetworksExecution_setInput_fn)(ANeuralNetworksExecution *ex
                                                     const void *buffer, size_t length);
 
 typedef int (*ANeuralNetworksExecution_setInputFromMemory_fn)(
-    ANeuralNetworksExecution *execution, int32_t index, const ANeuralNetworksOperandType *type,
-    const ANeuralNetworksMemory *memory, size_t offset, size_t length);
+  ANeuralNetworksExecution *execution, int32_t index, const ANeuralNetworksOperandType *type,
+  const ANeuralNetworksMemory *memory, size_t offset, size_t length);
 
 typedef int (*ANeuralNetworksExecution_setOutput_fn)(ANeuralNetworksExecution *execution,
                                                      int32_t index,
@@ -97,8 +97,8 @@ typedef int (*ANeuralNetworksExecution_setOutput_fn)(ANeuralNetworksExecution *e
                                                      void *buffer, size_t length);
 
 typedef int (*ANeuralNetworksExecution_setOutputFromMemory_fn)(
-    ANeuralNetworksExecution *execution, int32_t index, const ANeuralNetworksOperandType *type,
-    const ANeuralNetworksMemory *memory, size_t offset, size_t length);
+  ANeuralNetworksExecution *execution, int32_t index, const ANeuralNetworksOperandType *type,
+  const ANeuralNetworksMemory *memory, size_t offset, size_t length);
 
 typedef int (*ANeuralNetworksExecution_startCompute_fn)(ANeuralNetworksExecution *execution,
                                                         ANeuralNetworksEvent **event);
@@ -125,12 +125,12 @@ typedef int (*ANeuralNetworksDevice_getFeatureLevel_fn)(const ANeuralNetworksDev
                                                         int64_t *featureLevel);
 
 typedef int (*ANeuralNetworksModel_getSupportedOperationsForDevices_fn)(
-    const ANeuralNetworksModel *model, const ANeuralNetworksDevice *const *devices,
-    uint32_t numDevices, bool *supportedOps);
+  const ANeuralNetworksModel *model, const ANeuralNetworksDevice *const *devices,
+  uint32_t numDevices, bool *supportedOps);
 
 typedef int (*ANeuralNetworksCompilation_createForDevices_fn)(
-    ANeuralNetworksModel *model, const ANeuralNetworksDevice *const *devices, uint32_t numDevices,
-    ANeuralNetworksCompilation **compilation);
+  ANeuralNetworksModel *model, const ANeuralNetworksDevice *const *devices, uint32_t numDevices,
+  ANeuralNetworksCompilation **compilation);
 
 typedef int (*ANeuralNetworksCompilation_setCaching_fn)(ANeuralNetworksCompilation *compilation,
                                                         const char *cacheDir, const uint8_t *token);
@@ -157,7 +157,7 @@ typedef int (*ANeuralNetworksExecution_getOutputOperandRank_fn)(ANeuralNetworksE
                                                                 int32_t index, uint32_t *rank);
 
 typedef int (*ANeuralNetworksExecution_getOutputOperandDimensions_fn)(
-    ANeuralNetworksExecution *execution, int32_t index, uint32_t *dimensions);
+  ANeuralNetworksExecution *execution, int32_t index, uint32_t *dimensions);
 
 typedef int (*ANeuralNetworksBurst_create_fn)(ANeuralNetworksCompilation *compilation,
                                               ANeuralNetworksBurst **burst);
@@ -186,8 +186,8 @@ typedef int (*ANeuralNetworksModel_getExtensionOperandType_fn)(ANeuralNetworksMo
                                                                int32_t *type);
 
 typedef int (*ANeuralNetworksModel_getExtensionOperationType_fn)(
-    ANeuralNetworksModel *model, const char *extensionName, uint16_t operationCodeWithinExtension,
-    ANeuralNetworksOperationType *type);
+  ANeuralNetworksModel *model, const char *extensionName, uint16_t operationCodeWithinExtension,
+  ANeuralNetworksOperationType *type);
 
 typedef int (*ANeuralNetworksModel_setOperandExtensionData_fn)(ANeuralNetworksModel *model,
                                                                int32_t index, const void *data,
@@ -199,12 +199,12 @@ typedef int (*ANeuralNetworksMemoryDesc_create_fn)(ANeuralNetworksMemoryDesc **d
 typedef void (*ANeuralNetworksMemoryDesc_free_fn)(ANeuralNetworksMemoryDesc *desc);
 
 typedef int (*ANeuralNetworksMemoryDesc_addInputRole_fn)(
-    ANeuralNetworksMemoryDesc *desc, const ANeuralNetworksCompilation *compilation, int32_t index,
-    float frequency);
+  ANeuralNetworksMemoryDesc *desc, const ANeuralNetworksCompilation *compilation, int32_t index,
+  float frequency);
 
 typedef int (*ANeuralNetworksMemoryDesc_addOutputRole_fn)(
-    ANeuralNetworksMemoryDesc *desc, const ANeuralNetworksCompilation *compilation, uint32_t index,
-    float frequency);
+  ANeuralNetworksMemoryDesc *desc, const ANeuralNetworksCompilation *compilation, uint32_t index,
+  float frequency);
 
 typedef int (*ANeuralNetworksMemoryDesc_setDimensions_fn)(ANeuralNetworksMemoryDesc *desc,
                                                           uint32_t rank,

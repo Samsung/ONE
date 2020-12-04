@@ -225,8 +225,8 @@ inline int ANeuralNetworksModel_setOperandValue(ANeuralNetworksModel *model, int
  * @return ANEURALNETWORKS_NO_ERROR if successful.
  */
 inline int ANeuralNetworksModel_setOperandSymmPerChannelQuantParams(
-    ANeuralNetworksModel *model, int32_t index,
-    const ANeuralNetworksSymmPerChannelQuantParams *channelQuant)
+  ANeuralNetworksModel *model, int32_t index,
+  const ANeuralNetworksSymmPerChannelQuantParams *channelQuant)
 {
   LOAD_FUNCTION(ANeuralNetworksModel_setOperandSymmPerChannelQuantParams);
   EXECUTE_FUNCTION_RETURN(model, index, channelQuant);
