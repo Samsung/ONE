@@ -42,6 +42,19 @@ std::ostream &operator<<(std::ostream &os, const loco::TensorShape &tensor_shape
   return os;
 }
 
+std::ostream &operator<<(std::ostream &os, const luci::CircleNode *circle_node)
+{
+  os << "[";
+  for (uint32_t r = 0; r < circle_node->rank(); ++r)
+  {
+    if (r)
+      os << ",";
+    os << circle_node->dim(r).value();
+  }
+  os << "]";
+  return os;
+}
+
 /**
  * @brief  returns a node that is CircleOutput with index is out_index in nodes
  */
@@ -80,23 +93,28 @@ bool validate_shape_dtype(loco::Graph *g)
     if (dynamic_cast<luci::CircleOutputExclude *>(circle_node))
       continue;
 
-    assert(loco::shape_known(circle_node));
+    assert(circle_node->shape_status() != luci::ShapeStatus::UNDEFINED);
 
     // check if output node shape is same as graph output shape
-    auto co_tensor_shape = loco::shape_get(circle_node).as<loco::TensorShape>();
     auto go_tensor_shape = graph_out->shape();
     assert(go_tensor_shape);
-    if (!(co_tensor_shape == *go_tensor_shape))
+
+    bool is_shape_valid = (circle_node->rank() == go_tensor_shape->rank());
+    for (uint32_t i = 0; is_shape_valid && i < circle_node->rank(); ++i)
+      if (circle_node->dim(i).value() != go_tensor_shape->dim(i).value())
+        is_shape_valid = false;
+
+    if (is_shape_valid == false)
     {
       INFO(l) << "[luci] Shape for output #" << out_index << " not same " << std::endl;
-      INFO(l) << "[luci]    " << circle_node->name() << " " << co_tensor_shape << " vs "
+      INFO(l) << "[luci]    " << circle_node->name() << " " << circle_node << " vs "
               << *go_tensor_shape << std::endl;
       return false;
     }
 
     // check if data type match
-    assert(loco::dtype_known(circle_node));
-    if (graph_out->dtype() != loco::dtype_get(circle_node))
+    assert(circle_node->dtype() != loco::DataType::Unknown);
+    if (graph_out->dtype() != circle_node->dtype())
     {
       INFO(l) << "[luci] Type for output #" << out_index << " not same " << std::endl;
       return false;
