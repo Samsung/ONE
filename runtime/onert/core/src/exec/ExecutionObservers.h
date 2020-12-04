@@ -25,6 +25,7 @@
 #include "util/EventCollector.h"
 #include "util/EventRecorder.h"
 #include "util/TracingCtx.h"
+#include "util/EventWriter.h"
 
 namespace onert
 {
@@ -78,10 +79,10 @@ private:
   static std::string opSequenceTag(const ir::OpSequence *op_seq, const ir::Operations &operations);
 
 private:
-  const std::string &_base_filepath;
-  EventRecorder _recorder;
+  std::unique_ptr<EventRecorder> _recorder;
   EventCollector _collector;
   const ir::Graph &_graph;
+  EventWriter *_event_writer;
   const util::TracingCtx *_tracing_ctx;
 };
 

@@ -20,39 +20,48 @@
 #include "EventRecorder.h"
 
 #include <string>
-#include <ostream>
+#include <vector>
 #include <unordered_map>
+#include <mutex>
+#include <fstream>
 
 class EventFormatWriter
 {
 public:
-  EventFormatWriter(const EventRecorder &recorder) : _recorder(recorder) { /* empty */}
-  virtual void writeToFile(std::ostream &os) = 0;
+  EventFormatWriter(const std::string &filepath) : _os{filepath, std::ofstream::out} {}
   virtual ~EventFormatWriter() { /* empty */}
 
+  virtual void flush(const std::vector<std::unique_ptr<EventRecorder>> &) = 0;
+
 protected:
-  const EventRecorder &_recorder;
+  std::ofstream _os;
 };
 
 class SNPEWriter : public EventFormatWriter
 {
 public:
-  SNPEWriter(const EventRecorder &recorder) : EventFormatWriter(recorder) { /* empty */}
-  void writeToFile(std::ostream &os) override;
+  SNPEWriter(const std::string &filepath) : EventFormatWriter(filepath) { /* empty */}
+  void flush(const std::vector<std::unique_ptr<EventRecorder>> &) override;
 };
 
 class ChromeTracingWriter : public EventFormatWriter
 {
 public:
-  ChromeTracingWriter(const EventRecorder &recorder) : EventFormatWriter(recorder) { /* empty */}
-  void writeToFile(std::ostream &os) override;
+  ChromeTracingWriter(const std::string &filepath) : EventFormatWriter(filepath) { /* empty */}
+  void flush(const std::vector<std::unique_ptr<EventRecorder>> &) override;
+
+private:
+  void flushOneRecord(const EventRecorder &);
 };
 
 class MDTableWriter : public EventFormatWriter
 {
 public:
-  MDTableWriter(const EventRecorder &recorder) : EventFormatWriter(recorder) { /* empty */}
-  void writeToFile(std::ostream &os) override;
+  MDTableWriter(const std::string &filepath) : EventFormatWriter(filepath) { /* empty */}
+  void flush(const std::vector<std::unique_ptr<EventRecorder>> &) override;
+
+private:
+  void flushOneRecord(const EventRecorder &);
 };
 
 class EventWriter
@@ -65,19 +74,57 @@ public:
     MD_TABLE,
   };
 
-public:
-  EventWriter(const EventRecorder &recorder)
+  /**
+   * @brief Retuens a singleton object
+   */
+  static EventWriter *get(const std::string &filename)
   {
-    _actual_writers[WriteFormat::SNPE_BENCHMARK] = std::make_unique<SNPEWriter>(recorder);
-    _actual_writers[WriteFormat::CHROME_TRACING] = std::make_unique<ChromeTracingWriter>(recorder);
-    _actual_writers[WriteFormat::MD_TABLE] = std::make_unique<MDTableWriter>(recorder);
+    std::unique_lock<std::mutex> lock{_mutex};
+
+    static EventWriter singleton(filename);
+    return &singleton;
   }
 
-public:
-  void writeToFiles(const std::string &base_filepath);
-  void writeToFile(const std::string &filepath, WriteFormat write_format);
+  /**
+   * @brief Call this when observer which use EventWriter starts
+   */
+  void startToUse()
+  {
+    std::unique_lock<std::mutex> lock{_mutex};
+    _ref_count++;
+  }
+
+  /**
+   * @brief Call this when observer which use EventWriter finishes.
+   *        After multiple observers calls this method, the reference count will eventually be 0.
+   *        Then, EventWriter will write profiling result file.
+   */
+  void readyToFlush(std::unique_ptr<EventRecorder> &&recorder);
 
 private:
+  EventWriter(const std::string &filepath) : _ref_count(0)
+  {
+    std::string snpe_log_name(filepath);
+    std::string chrome_tracing_log_name(filepath + ".chrome.json");
+    std::string md_table_log_name(filepath + ".table.md");
+
+    _actual_writers[WriteFormat::SNPE_BENCHMARK] = std::make_unique<SNPEWriter>(snpe_log_name);
+    _actual_writers[WriteFormat::CHROME_TRACING] =
+        std::make_unique<ChromeTracingWriter>(chrome_tracing_log_name);
+    _actual_writers[WriteFormat::MD_TABLE] = std::make_unique<MDTableWriter>(md_table_log_name);
+  };
+
+  void flush(WriteFormat write_format);
+
+private:
+  static std::mutex _mutex;
+
+  // number of observer of an executor that want to write profiling data
+  int32_t _ref_count;
+
+  // one recorder object per executor
+  std::vector<std::unique_ptr<EventRecorder>> _recorders;
+
   std::unordered_map<WriteFormat, std::unique_ptr<EventFormatWriter>> _actual_writers;
 };
 

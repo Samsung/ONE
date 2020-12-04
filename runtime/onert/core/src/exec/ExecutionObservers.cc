@@ -122,18 +122,21 @@ void ProfileObserver::handleJobEnd(IExecutor *exec, const ir::OpSequence *op_seq
 
 TracingObserver::TracingObserver(const std::string &filepath, const ir::Graph &graph,
                                  const util::TracingCtx *tracing_ctx)
-    : _base_filepath(filepath), _recorder{}, _collector{&_recorder}, _graph{graph},
+    : _recorder{std::make_unique<EventRecorder>()}, _collector{_recorder.get()}, _graph{graph},
       _tracing_ctx{tracing_ctx}
 {
   // TODO Remove below after using _tracing_ctx
   UNUSED_RELEASE(_tracing_ctx);
+
+  _event_writer = EventWriter::get(filepath);
+  _event_writer->startToUse();
 }
 
 TracingObserver::~TracingObserver()
 {
   try
   {
-    EventWriter{_recorder}.writeToFiles(_base_filepath);
+    _event_writer->readyToFlush(std::move(_recorder));
   }
   catch (const std::exception &e)
   {
