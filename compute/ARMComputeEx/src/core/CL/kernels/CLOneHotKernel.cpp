@@ -65,7 +65,7 @@ inline Status validate_arguments(const ITensorInfo *indices, const ITensorInfo *
   {
     ARM_COMPUTE_RETURN_ERROR_ON_MISMATCHING_DATA_TYPES(on_value, output);
     TensorShape output_shape = arm_compute::misc::shape_calculator::compute_onehot_shape_ex(
-        indices->tensor_shape(), static_cast<uint32_t>(depth), actual_axis);
+      indices->tensor_shape(), static_cast<uint32_t>(depth), actual_axis);
     ARM_COMPUTE_RETURN_ERROR_ON(output_shape.total_size() != output->tensor_shape().total_size());
   }
   return Status{};
@@ -79,7 +79,7 @@ std::pair<Status, Window> validate_and_configure_window(ITensorInfo *indices,
   const uint32_t actual_axis = wrap_around(axis, static_cast<int>(output->num_dimensions()));
   // Output auto initialization if not yet initialized
   TensorShape output_shape = arm_compute::misc::shape_calculator::compute_onehot_shape_ex(
-      indices->tensor_shape(), static_cast<uint32_t>(depth), actual_axis);
+    indices->tensor_shape(), static_cast<uint32_t>(depth), actual_axis);
   auto_init_if_empty((*output), output_shape, 1, on_value->data_type());
   // Create window
   Window win = calculate_max_window(*output, Steps());
@@ -88,8 +88,8 @@ std::pair<Status, Window> validate_and_configure_window(ITensorInfo *indices,
 }
 } // namespace
 CLOneHotKernel::CLOneHotKernel()
-    : _indices(nullptr), _on_value(nullptr), _off_value(nullptr), _output(nullptr),
-      _is_off_value_memset(false)
+  : _indices(nullptr), _on_value(nullptr), _off_value(nullptr), _output(nullptr),
+    _is_off_value_memset(false)
 {
 }
 void CLOneHotKernel::configure(const ICLTensor *indices, const ICLTensor *on_value,
@@ -114,10 +114,10 @@ void CLOneHotKernel::configure_common(const ICLTensor *indices, const ICLTensor 
                                       ICLTensor *output, int depth, int axis)
 {
   ARM_COMPUTE_ERROR_THROW_ON(
-      validate_arguments(indices->info(), on_value->info(), output->info(), depth, axis));
+    validate_arguments(indices->info(), on_value->info(), output->info(), depth, axis));
   // Configure kernel window
   auto win_config =
-      validate_and_configure_window(indices->info(), on_value->info(), output->info(), depth, axis);
+    validate_and_configure_window(indices->info(), on_value->info(), output->info(), depth, axis);
   ARM_COMPUTE_ERROR_THROW_ON(win_config.first);
   if (_is_off_value_memset)
   {
@@ -131,7 +131,7 @@ void CLOneHotKernel::configure_common(const ICLTensor *indices, const ICLTensor 
   // Set build options
   CLBuildOptions build_opts;
   build_opts.add_option("-DDATA_TYPE=" + get_cl_unsigned_type_from_element_size(
-                                             data_size_from_type(on_value->info()->data_type())));
+                                           data_size_from_type(on_value->info()->data_type())));
   build_opts.add_option("-DAXIS=" + support::cpp11::to_string(actual_axis));
   build_opts.add_option("-DDEPTH=" + support::cpp11::to_string(depth));
   build_opts.add_option("-DOUTPUT_DIM_Z=" +
@@ -139,7 +139,7 @@ void CLOneHotKernel::configure_common(const ICLTensor *indices, const ICLTensor 
   // Create kernel
   const std::string kernel_name = _is_off_value_memset ? "one_hot_only_on_value" : "one_hot";
   _kernel = static_cast<cl::Kernel>(
-      CLKernelLibraryEx::get().create_kernel(kernel_name, build_opts.options()));
+    CLKernelLibraryEx::get().create_kernel(kernel_name, build_opts.options()));
   ICLKernel::configure_internal(win_config.second);
 }
 Status CLOneHotKernel::validate(const ITensorInfo *indices, const ITensorInfo *on_value,
@@ -153,7 +153,7 @@ Status CLOneHotKernel::validate(const ITensorInfo *indices, const ITensorInfo *o
   ARM_COMPUTE_RETURN_ON_ERROR(validate_and_configure_window(indices->clone().get(),
                                                             on_value->clone().get(),
                                                             output->clone().get(), depth, axis)
-                                  .first);
+                                .first);
   return Status{};
 }
 Status CLOneHotKernel::validate(const ITensorInfo *indices, const ITensorInfo *on_value,
@@ -163,7 +163,7 @@ Status CLOneHotKernel::validate(const ITensorInfo *indices, const ITensorInfo *o
   ARM_COMPUTE_RETURN_ON_ERROR(validate_and_configure_window(indices->clone().get(),
                                                             on_value->clone().get(),
                                                             output->clone().get(), depth, axis)
-                                  .first);
+                                .first);
   return Status{};
 }
 void CLOneHotKernel::run(const Window &window, cl::CommandQueue &queue)

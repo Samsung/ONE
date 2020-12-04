@@ -94,8 +94,8 @@ std::tuple<Status, Window> validate_and_configure_window(ITensorInfo *input, ITe
 } // namespace
 
 CLInstanceNormalizationLayerKernelEx::CLInstanceNormalizationLayerKernelEx()
-    : _input(nullptr), _output(nullptr), _gamma(nullptr), _beta(nullptr), _epsilon(1e-12),
-      _run_in_place(false)
+  : _input(nullptr), _output(nullptr), _gamma(nullptr), _beta(nullptr), _epsilon(1e-12),
+    _run_in_place(false)
 {
 }
 
@@ -132,7 +132,7 @@ void CLInstanceNormalizationLayerKernelEx::configure(ICLTensor *input, ICLTensor
 
   // Create kernel
   _kernel = static_cast<cl::Kernel>(
-      CLKernelLibraryEx::get().create_kernel("instance_normalization_ex", build_opts.options()));
+    CLKernelLibraryEx::get().create_kernel("instance_normalization_ex", build_opts.options()));
 
   // Configure kernel window
   auto win_config = validate_and_configure_window(_input->info(), _output->info());
@@ -147,7 +147,7 @@ Status CLInstanceNormalizationLayerKernelEx::validate(const ITensorInfo *input,
 {
   ARM_COMPUTE_RETURN_ON_ERROR(validate_arguments(input, output, gamma, beta, epsilon));
   ARM_COMPUTE_RETURN_ON_ERROR(std::get<0>(validate_and_configure_window(
-      input->clone().get(), (output == nullptr ? input->clone().get() : output->clone().get()))));
+    input->clone().get(), (output == nullptr ? input->clone().get() : output->clone().get()))));
   return Status{};
 }
 

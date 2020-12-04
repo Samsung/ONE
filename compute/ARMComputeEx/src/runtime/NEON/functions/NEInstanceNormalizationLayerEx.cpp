@@ -46,9 +46,9 @@
 namespace arm_compute
 {
 NEInstanceNormalizationLayerEx::NEInstanceNormalizationLayerEx(
-    std::shared_ptr<IMemoryManager> memory_manager)
-    : _memory_group(std::move(memory_manager)), _normalization_kernel(), _is_nchw(false),
-      _permute_input(), _permute_output(), _permuted_input(), _permuted_output()
+  std::shared_ptr<IMemoryManager> memory_manager)
+  : _memory_group(std::move(memory_manager)), _normalization_kernel(), _is_nchw(false),
+    _permute_input(), _permute_output(), _permuted_input(), _permuted_output()
 {
 }
 
@@ -88,8 +88,8 @@ Status NEInstanceNormalizationLayerEx::validate(const ITensorInfo *input, const 
                                                 float epsilon)
 {
   return NEInstanceNormalizationLayerKernelEx::validate(
-      &input->clone()->set_data_layout(DataLayout::NCHW),
-      &output->clone()->set_data_layout(DataLayout::NCHW), gamma, beta, epsilon);
+    &input->clone()->set_data_layout(DataLayout::NCHW),
+    &output->clone()->set_data_layout(DataLayout::NCHW), gamma, beta, epsilon);
 }
 
 void NEInstanceNormalizationLayerEx::run()

@@ -66,7 +66,7 @@ public:
    * @param[out] output  The output tensor, Data types supported: same as @p input.
    * @param[in]  axis    (Optional) The axis in @p input to gather @p indices from. Defaults to 0
    * @return N/A
- */
+   */
   void configure(const ICLTensor *input, const ICLTensor *indices, ICLTensor *output, int axis = 0);
 
   /**

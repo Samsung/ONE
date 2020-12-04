@@ -43,8 +43,8 @@ public:
 
 public:
   NEFullyConnectedReshapingLayer(std::shared_ptr<IMemoryManager> memory_manager = nullptr)
-      : _memory_manager{memory_manager}, _input(nullptr), _weights(nullptr), _biases(nullptr),
-        _output(nullptr), _neon_buffer{}, _neon_fc{nullptr}, _neon_reshape{}, _needs_reshape(false)
+    : _memory_manager{memory_manager}, _input(nullptr), _weights(nullptr), _biases(nullptr),
+      _output(nullptr), _neon_buffer{}, _neon_fc{nullptr}, _neon_reshape{}, _needs_reshape(false)
   {
     // DO NOTHING
   }

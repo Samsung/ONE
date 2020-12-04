@@ -101,8 +101,8 @@ bool isOnValue(U index, U depth)
 } // namespace
 
 NEOneHotKernel::NEOneHotKernel()
-    : _indices{nullptr}, _depth{nullptr}, _on_value{nullptr}, _off_value{nullptr}, _axis{-1},
-      _output{nullptr}, _func{}
+  : _indices{nullptr}, _depth{nullptr}, _on_value{nullptr},
+    _off_value{nullptr}, _axis{-1}, _output{nullptr}, _func{}
 {
 }
 
@@ -117,22 +117,22 @@ void NEOneHotKernel::onehot_0_axis(const Window &window, const ThreadInfo &info)
   Iterator output_it(_output, output_window);
   const U off_value = *reinterpret_cast<U *>(_off_value->buffer());
   execute_window_loop(
-      output_window,
-      [&](const Coordinates &id) {
-        std::fill_n(output_it.ptr(),
-                    _output->info()->dimension(0) * _output->info()->element_size(), off_value);
-        Coordinates indices_id(id);
-        indices_id.remove(0);
-        const U new_index = *(reinterpret_cast<U *>(_indices->ptr_to_element(indices_id)));
-        if (isOnValue(new_index, *(reinterpret_cast<U *>(_depth->buffer()))))
-        {
-          Coordinates onehot_id(id);
-          onehot_id.set(0, new_index);
-          std::copy_n(_on_value->buffer(), _output->info()->element_size(),
-                      _output->ptr_to_element(onehot_id));
-        }
-      },
-      output_it);
+    output_window,
+    [&](const Coordinates &id) {
+      std::fill_n(output_it.ptr(), _output->info()->dimension(0) * _output->info()->element_size(),
+                  off_value);
+      Coordinates indices_id(id);
+      indices_id.remove(0);
+      const U new_index = *(reinterpret_cast<U *>(_indices->ptr_to_element(indices_id)));
+      if (isOnValue(new_index, *(reinterpret_cast<U *>(_depth->buffer()))))
+      {
+        Coordinates onehot_id(id);
+        onehot_id.set(0, new_index);
+        std::copy_n(_on_value->buffer(), _output->info()->element_size(),
+                    _output->ptr_to_element(onehot_id));
+      }
+    },
+    output_it);
 }
 
 template <typename U>
@@ -142,22 +142,22 @@ inline void NEOneHotKernel::onehot_n_axis(const Window &window, const ThreadInfo
   // Validate that the indices are not negative
   validate_depth<U>(_depth, _output, _axis);
   Iterator output_it(_output, window);
-  execute_window_loop(window,
-                      [&](const Coordinates &id) {
-                        Coordinates indices_id(id);
-                        indices_id.remove(_axis);
-                        const U new_index =
-                            *(reinterpret_cast<U *>(_indices->ptr_to_element(indices_id)));
-                        if (isOnValue(new_index, *(reinterpret_cast<U *>(_depth->buffer()))))
-                        {
-                          Coordinates onehot_id(id);
-                          onehot_id.set(_axis, new_index);
-                          std::copy_n(static_cast<U>(id[_axis]) == new_index ? _on_value->buffer()
-                                                                             : _off_value->buffer(),
-                                      _output->info()->element_size(), output_it.ptr());
-                        }
-                      },
-                      output_it);
+  execute_window_loop(
+    window,
+    [&](const Coordinates &id) {
+      Coordinates indices_id(id);
+      indices_id.remove(_axis);
+      const U new_index = *(reinterpret_cast<U *>(_indices->ptr_to_element(indices_id)));
+      if (isOnValue(new_index, *(reinterpret_cast<U *>(_depth->buffer()))))
+      {
+        Coordinates onehot_id(id);
+        onehot_id.set(_axis, new_index);
+        std::copy_n(static_cast<U>(id[_axis]) == new_index ? _on_value->buffer()
+                                                           : _off_value->buffer(),
+                    _output->info()->element_size(), output_it.ptr());
+      }
+    },
+    output_it);
 }
 
 void NEOneHotKernel::configure(const ITensor *indices, const ITensor *depth,
@@ -215,7 +215,7 @@ Status NEOneHotKernel::validate(const ITensorInfo *indices, const ITensorInfo *d
                                 const ITensorInfo *output, int axis)
 {
   ARM_COMPUTE_RETURN_ON_ERROR(
-      validate_arguments(indices, depth, on_value, off_value, output, axis));
+    validate_arguments(indices, depth, on_value, off_value, output, axis));
   return Status{};
 }
 

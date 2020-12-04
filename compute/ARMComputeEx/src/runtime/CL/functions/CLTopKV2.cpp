@@ -49,14 +49,14 @@ namespace arm_compute
 {
 
 CLTopKV2::CLTopKV2()
-    : _k(0), _total_bits(0), _bits(0), _radix(0), _hist_buf_size(0), _glob_sum_buf_size(0), _n(0),
-      _input(nullptr), _values(nullptr), _indices(nullptr), _qs_idx_buf(), _qs_temp_buf(),
-      _hist_buf(), _glob_sum_buf(), _temp_buf(), _first_negative_idx_buf(), _in_key_buf(),
-      _out_key_buf(), _in_ind_buf(), _out_ind_buf(), _p_in_key_buf(nullptr),
-      _p_out_key_buf(nullptr), _p_in_ind_buf(nullptr), _p_out_ind_buf(nullptr) /*, _qs_kernel(),
-       _init_kernel(), _hist_kernel(), _scan_hist_kernel(), _glob_scan_hist_kernel(),
-       _paste_hist_kernel(), _reorder_kernel(), _find_first_negative_kernel(),
-       _reorder_negatives_kernel(), _store_kernel()*/
+  : _k(0), _total_bits(0), _bits(0), _radix(0), _hist_buf_size(0), _glob_sum_buf_size(0), _n(0),
+    _input(nullptr), _values(nullptr), _indices(nullptr), _qs_idx_buf(), _qs_temp_buf(),
+    _hist_buf(), _glob_sum_buf(), _temp_buf(), _first_negative_idx_buf(), _in_key_buf(),
+    _out_key_buf(), _in_ind_buf(), _out_ind_buf(), _p_in_key_buf(nullptr), _p_out_key_buf(nullptr),
+    _p_in_ind_buf(nullptr), _p_out_ind_buf(nullptr) /*, _qs_kernel(),
+    _init_kernel(), _hist_kernel(), _scan_hist_kernel(), _glob_scan_hist_kernel(),
+    _paste_hist_kernel(), _reorder_kernel(), _find_first_negative_kernel(),
+    _reorder_negatives_kernel(), _store_kernel()*/
 {
 }
 

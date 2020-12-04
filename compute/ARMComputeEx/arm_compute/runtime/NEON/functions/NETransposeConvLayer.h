@@ -110,39 +110,42 @@ public:
 
   /** Set the input, weights, biases and output tensors.
    *
-   * @param[in,out] input   Input tensor. 3 lower dimensions represent a single input, and an
- * optional 4th dimension for batch of inputs. Data types supported: F32/F16/QASYMM8/QASYMM8_SIGNED.
-   * @param[in]     weights The 4d weights with dimensions [width, height, IFM, OFM]. Data type
- * supported: Same as @p input.
-   * @param[in]     bias    Optional, ignored if NULL. The biases have one dimension. Data type
- * supported: Data types supported: S32 for QASYMM8 and QASYMM8_SIGNED input, F32 for F32 input, F16
- * for F16 input.
-   * @param[out]    output  Output tensor. The output has the same number of dimensions as the @p
- * input.
-   * @param[in]     info    Contains padding and policies to be used in the deconvolution, this is
- * decribed in @ref PadStrideInfo.
- * @param[in]     invalid_right  The number of zeros added to right edge of the output.
- * @param[in]     invalid_bottom The number of zeros added to bottom edge of the output.
+   * @param[in,out] input           Input tensor. 3 lower dimensions represent a single input,
+   *                                and an optional 4th dimension for batch of inputs.
+   *                                Data types supported: F32/F16/QASYMM8/QASYMM8_SIGNED.
+   * @param[in]     weights         The 4d weights with dimensions [width, height, IFM, OFM].
+   *                                Data type supported: Same as @p input.
+   * @param[in]     bias            Optional, ignored if NULL. The biases have one dimension.
+   *                                Data type supported: Data types supported: S32 for QASYMM8 and
+   * QASYMM8_SIGNED input, F32 for F32 input, F16 for F16 input.
+   * @param[out]    output          Output tensor. The output has the same number of dimensions as
+   *                                the @p input.
+   * @param[in]     info            Contains padding and policies to be used in the deconvolution,
+   *                                this is decribed in @ref PadStrideInfo.
+   * @param[in]     invalid_right   The number of zeros added to right edge of the output.
+   * @param[in]     invalid_bottom  The number of zeros added to bottom edge of the output.
    *
    */
   void configure(ITensor *input, const ITensor *weights, const ITensor *bias, ITensor *output,
                  const PadStrideInfo &info, unsigned int invalid_right,
                  unsigned int invalid_bottom);
   /** Static function to check if given info will lead to a valid configuration of @ref
- * NETransposeConvLayer
+   * NETransposeConvLayer
    *
-   * @param[in] input   Input tensor info. 3 lower dimensions represent a single input, and an
- * optional 4th dimension for batch of inputs. Data types supported: F32/F16/QASYMM8/QASYMM8_SIGNED.
-   * @param[in] weights The 4d weights info with dimensions [width, height, IFM, OFM]. Data type
- * supported: Same as @p input.
-   * @param[in] bias    (Optional) The biases have one dimension. Data type supported: Data types
- * supported: S32 for QASYMM8 and QASYMM8_SIGNED input, F32 for F32 input, F16 for F16 input.
-   * @param[in] output  Output tensor info. The output has the same number of dimensions as the @p
- * input.
-   * @param[in] info    Contains padding and policies to be used in the deconvolution, this is
- * decribed in @ref PadStrideInfo.
- * @param[in] innvalid_right  The number of zeros added to right edge of the output.
- * @param[in] invalid_bottom  The number of zeros added to bottom edge of the output.
+   * @param[in] input           Input tensor info. 3 lower dimensions represent a single input,
+   *                            and an optional 4th dimension for batch of inputs.
+   *                            Data types supported: F32/F16/QASYMM8/QASYMM8_SIGNED.
+   * @param[in] weights         The 4d weights info with dimensions [width, height, IFM, OFM].
+   *                            Data type supported: Same as @p input.
+   * @param[in] bias            (Optional) The biases have one dimension.
+   *                            Data types supported: S32 for QASYMM8 and QASYMM8_SIGNED input,
+   *                                                  F32 for F32 input, F16 for F16 input.
+   * @param[in] output          Output tensor info. The output has the same number of dimensions as
+   *                            the @p input.
+   * @param[in] info            Contains padding and policies to be used in the deconvolution,
+   *                            this is decribed in @ref PadStrideInfo.
+   * @param[in] innvalid_right  The number of zeros added to right edge of the output.
+   * @param[in] invalid_bottom  The number of zeros added to bottom edge of the output.
    *
    * @return a status
    */

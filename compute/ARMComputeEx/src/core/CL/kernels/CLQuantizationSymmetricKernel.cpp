@@ -87,9 +87,9 @@ std::pair<Status, Window> validate_and_configure_window(ITensorInfo *input, ITen
 
   if (multi_access_x)
   {
-    win.set(Window::DimX,
-            Window::Dimension(win.x().start(), ceil_to_multiple(win.x().end(), vec_size_x),
-                              vec_size_x));
+    win.set(
+      Window::DimX,
+      Window::Dimension(win.x().start(), ceil_to_multiple(win.x().end(), vec_size_x), vec_size_x));
   }
 
   Coordinates coord;
@@ -101,7 +101,7 @@ std::pair<Status, Window> validate_and_configure_window(ITensorInfo *input, ITen
 } // namespace
 
 CLQuantizationSymmetricKernel::CLQuantizationSymmetricKernel()
-    : _input(nullptr), _scale_factor(nullptr), _output(nullptr)
+  : _input(nullptr), _scale_factor(nullptr), _output(nullptr)
 {
 }
 
@@ -110,7 +110,7 @@ void CLQuantizationSymmetricKernel::configure(const ICLTensor *input, const ICLT
 {
   ARM_COMPUTE_ERROR_ON_NULLPTR(input, scale_factor, output);
   ARM_COMPUTE_ERROR_THROW_ON(
-      validate_arguments(input->info(), scale_factor->info(), output->info()));
+    validate_arguments(input->info(), scale_factor->info(), output->info()));
 
   _input = input;
   _scale_factor = scale_factor;
@@ -132,11 +132,11 @@ void CLQuantizationSymmetricKernel::configure(const ICLTensor *input, const ICLT
   build_opts.add_option("-DDATA_TYPE_OUT=" +
                         get_cl_type_from_data_type(output->info()->data_type()));
   build_opts.add_option_if(
-      multi_access_x, "-DLAST_ACCESSED_X=" +
-                          support::cpp11::to_string(std::max<int>(input_width_x - vec_size_x, 0)));
+    multi_access_x,
+    "-DLAST_ACCESSED_X=" + support::cpp11::to_string(std::max<int>(input_width_x - vec_size_x, 0)));
 
   _kernel = static_cast<cl::Kernel>(
-      CLKernelLibraryEx::get().create_kernel("quantization_symm8", build_opts.options()));
+    CLKernelLibraryEx::get().create_kernel("quantization_symm8", build_opts.options()));
 }
 
 Status CLQuantizationSymmetricKernel::validate(const ITensorInfo *input,
@@ -145,7 +145,7 @@ Status CLQuantizationSymmetricKernel::validate(const ITensorInfo *input,
 {
   ARM_COMPUTE_RETURN_ON_ERROR(validate_arguments(input, scale_factor, output));
   ARM_COMPUTE_RETURN_ON_ERROR(
-      validate_and_configure_window(input->clone().get(), output->clone().get()).first);
+    validate_and_configure_window(input->clone().get(), output->clone().get()).first);
 
   return Status{};
 }

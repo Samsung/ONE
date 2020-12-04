@@ -134,8 +134,8 @@ void configure_slices(const ICLTensor *input, const std::vector<ICLTensor *> &ou
     // Output auto inizialitation if not yet initialized
     TensorInfo tmp_output_info = *output->info()->clone();
     auto_init_if_empty(
-        tmp_output_info,
-        input->info()->clone()->set_is_resizable(true).set_tensor_shape(output_shape));
+      tmp_output_info,
+      input->info()->clone()->set_is_resizable(true).set_tensor_shape(output_shape));
 
     // Update coordinate on axis
     start_coords.set(split_dim, axis_offset);
@@ -153,7 +153,7 @@ void configure_slices(const ICLTensor *input, const std::vector<ICLTensor *> &ou
 } // namespace
 
 CLSplitVEx::CLSplitVEx()
-    : _input(nullptr), _size_splits(nullptr), _outputs(), _num_splits(0), _slice_functions()
+  : _input(nullptr), _size_splits(nullptr), _outputs(), _num_splits(0), _slice_functions()
 {
 }
 

@@ -94,8 +94,8 @@ std::tuple<Status, Window> validate_and_configure_window(ITensorInfo *input, ITe
   output_access.set_valid_region(win, ValidRegion(Coordinates(), output->tensor_shape()));
 
   Status err = (window_changed)
-                   ? ARM_COMPUTE_CREATE_ERROR(ErrorCode::RUNTIME_ERROR, "Insufficient Padding!")
-                   : Status{};
+                 ? ARM_COMPUTE_CREATE_ERROR(ErrorCode::RUNTIME_ERROR, "Insufficient Padding!")
+                 : Status{};
   return std::make_tuple(err, win);
 }
 } // namespace
@@ -115,7 +115,7 @@ void CLScaleFactorSymm8Kernel::configure(const ICLTensor *input, ICLTensor *outp
 
   // Create kernel
   _kernel = static_cast<cl::Kernel>(
-      CLKernelLibraryEx::get().create_kernel("scale_factor_symm8", build_opts));
+    CLKernelLibraryEx::get().create_kernel("scale_factor_symm8", build_opts));
 
   auto win_config = validate_and_configure_window(input->info(), output->info());
 
@@ -128,7 +128,7 @@ Status CLScaleFactorSymm8Kernel::validate(const ITensorInfo *input, const ITenso
 {
   ARM_COMPUTE_RETURN_ON_ERROR(validate_arguments(input, output));
   ARM_COMPUTE_RETURN_ON_ERROR(
-      std::get<0>(validate_and_configure_window(input->clone().get(), output->clone().get())));
+    std::get<0>(validate_and_configure_window(input->clone().get(), output->clone().get())));
 
   return Status{};
 }

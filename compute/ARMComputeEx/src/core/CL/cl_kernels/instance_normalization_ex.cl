@@ -41,7 +41,7 @@
 #include "helpers.h"
 
 #if defined(VEC_SIZE) && defined(DATA_TYPE) && defined(EPSILON) && defined(DIM_X) && \
-    defined(DIM_Y) && defined(DIM_Z)
+  defined(DIM_Y) && defined(DIM_Z)
 /** This function normalizes the input 2D tensor across the first dimension with respect to mean and
  * standard deviation of the same dimension.
  *
@@ -108,14 +108,14 @@ __kernel void instance_normalization_ex(TENSOR4D_DECLARATION(input),
                                         TENSOR4D_DECLARATION(output)
 #endif /* IN_PLACE */
 #ifdef GAMMA
-                                            ,
+                                          ,
                                         VECTOR_DECLARATION(gamma)
 #endif // GAMMA
 #ifdef BETA
-                                            ,
+                                          ,
                                         VECTOR_DECLARATION(beta)
 #endif // BETA
-                                            )
+)
 {
   Tensor4D in = CONVERT_TO_TENSOR4D_STRUCT_NO_STEP(input, 0);
 #ifndef IN_PLACE
@@ -213,12 +213,12 @@ __kernel void instance_normalization_ex(TENSOR4D_DECLARATION(input),
     for (int i_h = 0; i_h < DIM_Z; ++i_h)
     {
       __global DATA_TYPE *input_address =
-          (__global DATA_TYPE *)tensor4D_offset(&in, ch, i_w, i_h, batch);
+        (__global DATA_TYPE *)tensor4D_offset(&in, ch, i_w, i_h, batch);
 #ifdef IN_PLACE
       __global DATA_TYPE *output_address = input_address;
 #else  /* !IN_PLACE */
       __global DATA_TYPE *output_address =
-          (__global DATA_TYPE *)tensor4D_offset(&out, ch, i_w, i_h, batch);
+        (__global DATA_TYPE *)tensor4D_offset(&out, ch, i_w, i_h, batch);
 #endif /* IN_PLACE */
       *(output_address) = (*(input_address)-mean) * multip + beta;
     }
@@ -231,12 +231,12 @@ __kernel void instance_normalization_ex(TENSOR4D_DECLARATION(input),
     for (; x <= (DIM_X - VEC_SIZE); x += VEC_SIZE)
     {
       __global DATA_TYPE *input_address =
-          (__global DATA_TYPE *)tensor4D_offset(&in, x, y, ch, batch);
+        (__global DATA_TYPE *)tensor4D_offset(&in, x, y, ch, batch);
 #ifdef IN_PLACE
       __global DATA_TYPE *output_address = input_address;
 #else  /* !IN_PLACE */
       __global DATA_TYPE *output_address =
-          (__global DATA_TYPE *)tensor4D_offset(&out, x, y, ch, batch);
+        (__global DATA_TYPE *)tensor4D_offset(&out, x, y, ch, batch);
 #endif /* IN_PLACE */
 
       VEC_DATA_TYPE(DATA_TYPE, VEC_SIZE)
@@ -251,12 +251,12 @@ __kernel void instance_normalization_ex(TENSOR4D_DECLARATION(input),
     for (; x < DIM_X; ++x)
     {
       __global DATA_TYPE *input_address =
-          (__global DATA_TYPE *)tensor4D_offset(&in, x, y, ch, batch);
+        (__global DATA_TYPE *)tensor4D_offset(&in, x, y, ch, batch);
 #ifdef IN_PLACE
       __global DATA_TYPE *output_address = input_address;
 #else  /* !IN_PLACE */
       __global DATA_TYPE *output_address =
-          (__global DATA_TYPE *)tensor4D_offset(&out, x, y, ch, batch);
+        (__global DATA_TYPE *)tensor4D_offset(&out, x, y, ch, batch);
 #endif /* IN_PLACE */
       *(output_address) = (*(input_address)-mean) * multip + beta;
     }
