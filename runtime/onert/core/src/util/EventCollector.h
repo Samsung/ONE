@@ -35,7 +35,14 @@ public:
   struct Event
   {
     Edge edge;
+    uint32_t session_index;
+    uint32_t subg_index;
     std::string backend;
+    uint32_t op_index;
+    std::string op_name;
+    uint32_t op_seq_size; // if this event is for an operation sequence of multiple operations
+
+    // TODO deprecate this. label can be differ by writer. So let the writer decide label.
     std::string label;
 
     // user-defined data: pairs of (key, value)
