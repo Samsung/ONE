@@ -111,10 +111,10 @@ void allocateCircleTensorInfo(CircleNode *node, CircleTensorContext &ctx)
   CircleTensoInfo tensor_info;
 
   tensor_info.name(tensor_name);
-  tensor_info.dtype(to_circle_tensortype(luci::node_dtype(node)));
+  tensor_info.dtype(to_circle_tensortype(node->dtype()));
   tensor_info.shape_signature(node->shape_signature());
   if (node->shape_status() == ShapeStatus::VALID)
-    tensor_info.shape(to_shape_description(luci::node_shape(node)));
+    tensor_info.shape(to_shape_description(node));
   tensor_info.shape_status(node->shape_status());
 
   tensor_info.content(dynamic_cast<luci::CircleConst *>(node));

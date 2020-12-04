@@ -23,6 +23,20 @@
 namespace luci
 {
 
+ShapeDescription to_shape_description(const luci::CircleNode *circle_node)
+{
+  ShapeDescription res;
+
+  res._rank_known = true;
+
+  res._dims.resize(circle_node->rank());
+  for (uint32_t i = 0; i < circle_node->rank(); ++i)
+    res._dims.at(i) = circle_node->dim(i).value();
+  res._rank_known = true;
+
+  return res;
+}
+
 ShapeDescription to_shape_description(const loco::TensorShape &shape)
 {
   ShapeDescription res;
