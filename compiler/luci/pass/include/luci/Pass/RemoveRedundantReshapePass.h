@@ -23,7 +23,7 @@ namespace luci
 {
 
 /**
- * @brief  Class to Redundant Reshape node into 1 reshape node.
+ * @brief  Class to remove redundant Reshape node into 1 reshape node.
  */
 struct RemoveRedundantReshapePass final : public logo::Pass
 {

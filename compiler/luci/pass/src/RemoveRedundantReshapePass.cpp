@@ -29,8 +29,9 @@ bool remove_redundant_reshape(luci::CircleNode *node)
   auto pred_node = dynamic_cast<luci::CircleReshape *>(target_node->tensor());
   if (pred_node == nullptr)
     return false;
-  auto value_node = loco::must_cast<luci::CircleNode *>(pred_node->tensor());
-  target_node->tensor(value_node);
+  auto shape_node = loco::must_cast<luci::CircleNode *>(pred_node->shape());
+  // Check shape_node is control input(?)
+  target_node->tensor(pred_node->tensor());
   return true;
 }
 
