@@ -43,9 +43,14 @@ void planTensors(const T_BackendContext &ctx, const std::vector<onert::ir::OpSeq
   ir::OperandIndexMap<uint32_t> def_map;
   ir::OperandIndexSequence constants;
 
+  auto model_io =
+      (graph->getInputs() + graph->getOutputs()) | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED;
+
   // Prepare scanning
   for (auto ind : ctx.operand_list())
   {
+    if (model_io.contains(ind))
+      continue;
     const auto &obj = graph->operands().at(ind);
     const auto &li = lower_info.operand.at(ind);
     if (li->def_factors().getOnlyElement().backend() != ctx.backend())
@@ -104,6 +109,8 @@ void planTensors(const T_BackendContext &ctx, const std::vector<onert::ir::OpSeq
       // Define outputs
       for (const auto &ind : op_outputs)
       {
+        if (model_io.contains(ind))
+          continue;
         if (!tensor_builder->isRegistered(ind))
           continue;
         assert(def_map.find(ind) != def_map.end());
@@ -119,6 +126,8 @@ void planTensors(const T_BackendContext &ctx, const std::vector<onert::ir::OpSeq
       // non-constant because of less memory usage by memory planning in here
       for (const auto &ind : op_inputs)
       {
+        if (model_io.contains(ind))
+          continue;
         if (!tensor_builder->isRegistered(ind))
           continue;
         const auto &operand = graph->operands().at(ind);
@@ -136,6 +145,8 @@ void planTensors(const T_BackendContext &ctx, const std::vector<onert::ir::OpSeq
 
       for (const auto &ind : op_inputs)
       {
+        if (model_io.contains(ind))
+          continue;
         if (!tensor_builder->isRegistered(ind))
           continue;
         assert(uses_map.find(ind) != uses_map.end());
