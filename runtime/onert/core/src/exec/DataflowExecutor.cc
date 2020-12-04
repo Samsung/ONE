@@ -79,8 +79,10 @@ bool DataflowExecutor::noWaitingJobs()
 
 DataflowExecutor::DataflowExecutor(std::unique_ptr<compiler::LoweredGraph> lowered_graph,
                                    const compiler::TensorRegistries &tensor_regs,
-                                   compiler::CodeMap &&code_map)
-    : ExecutorBase{std::move(lowered_graph), tensor_regs}, _code_map{std::move(code_map)}
+                                   compiler::CodeMap &&code_map,
+                                   const util::TracingCtx *tracing_ctx)
+    : ExecutorBase{std::move(lowered_graph), tensor_regs, tracing_ctx},
+      _code_map{std::move(code_map)}
 {
   VERBOSE(DataflowExecutor) << "Constructing Dataflow Executor" << std::endl;
 
