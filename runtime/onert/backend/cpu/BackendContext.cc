@@ -63,6 +63,8 @@ ITensorRegistry *BackendContext::genTensors(const std::vector<onert::ir::OpSeque
       continue;
     const auto &obj = graph()->operands().at(index);
     const auto frontend_layout = [&]() {
+      if (obj.getUses().size() == 0)
+        return ir::Layout::UNKNOWN;
       auto use_op_ind = *obj.getUses().begin(); // FIXME What if it has two or more uses?
       for (auto &operation_info : operation_list())
       {
