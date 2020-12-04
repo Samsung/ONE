@@ -302,8 +302,17 @@ void OperationValidator::visit(const operation::ElementwiseUnary &node)
 void OperationValidator::visit(const operation::EmbeddingLookup &node)
 {
   const auto lookups_index{node.getInputs().at(operation::EmbeddingLookup::Input::LOOKUPS)};
+  const auto values_index{node.getInputs().at(operation::EmbeddingLookup::Input::VALUES)};
+  const auto output_index{node.getOutputs().at(0)};
 
   OP_REQUIRES(isValidType(lookups_index, DataType::INT32));
+
+  // TFLite: Allow hybrid type - value table & output
+  // NNAPI: Require same value table and output type
+  OP_REQUIRES(
+      isSameType(values_index, output_index) ||
+      (isValidType(output_index, DataType::FLOAT32) &&
+       (isValidType(values_index, {DataType::QUANT_INT8_ASYMM, DataType::QUANT_INT8_SYMM}))));
 }
 
 void OperationValidator::visit(const operation::ExpandDims &node)
