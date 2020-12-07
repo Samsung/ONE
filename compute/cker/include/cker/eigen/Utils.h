@@ -36,9 +36,9 @@ namespace cker
 //    Eigen::Map<Eigen::Matrix<const float, ...>>
 template <typename Scalar>
 using VectorMap = typename std::conditional<
-    std::is_const<Scalar>::value,
-    Eigen::Map<const Eigen::Matrix<typename std::remove_const<Scalar>::type, Eigen::Dynamic, 1>>,
-    Eigen::Map<Eigen::Matrix<Scalar, Eigen::Dynamic, 1>>>::type;
+  std::is_const<Scalar>::value,
+  Eigen::Map<const Eigen::Matrix<typename std::remove_const<Scalar>::type, Eigen::Dynamic, 1>>,
+  Eigen::Map<Eigen::Matrix<Scalar, Eigen::Dynamic, 1>>>::type;
 
 template <typename Scalar> VectorMap<Scalar> MapAsVector(Scalar *data, const Shape &shape)
 {
@@ -51,10 +51,10 @@ template <typename Scalar> VectorMap<Scalar> MapAsVector(Scalar *data, const Sha
 // above also applies here.
 template <typename Scalar>
 using MatrixMap = typename std::conditional<
-    std::is_const<Scalar>::value,
-    Eigen::Map<const Eigen::Matrix<typename std::remove_const<Scalar>::type, Eigen::Dynamic,
-                                   Eigen::Dynamic>>,
-    Eigen::Map<Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic>>>::type;
+  std::is_const<Scalar>::value,
+  Eigen::Map<
+    const Eigen::Matrix<typename std::remove_const<Scalar>::type, Eigen::Dynamic, Eigen::Dynamic>>,
+  Eigen::Map<Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic>>>::type;
 
 template <typename Scalar>
 MatrixMap<Scalar> MapAsMatrixWithLastDimAsRows(Scalar *data, const Shape &shape)

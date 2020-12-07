@@ -131,7 +131,7 @@ inline const int8_t *ShuffleVectors(const int8_t *vectors, const int n_batch, co
   const int kWeightsPerUint32 = 4;
 
   int8 *shuffled_vectors = reinterpret_cast<int8 *>(
-      aligned_alloc(kWeightsPerUint32, n_batch * m_cols, shuffled_vectors_free));
+    aligned_alloc(kWeightsPerUint32, n_batch * m_cols, shuffled_vectors_free));
 
   for (int i = 0; i < n_batch; i += 4)
   {
@@ -145,25 +145,25 @@ inline const int8_t *ShuffleVectors(const int8_t *vectors, const int n_batch, co
     while (unshuffled_vec0_ptr != end_vec0_ptr)
     {
       asm volatile(
-          // This code path requires that (n_cols % 16) == 0 so we can safely
-          // read in 16-byte chunks from each row.
-          "ld1 {v0.16b}, [%[unshuffled_vec0_ptr]], #16\n"
-          "ld1 {v1.16b}, [%[unshuffled_vec1_ptr]], #16\n"
-          "ld1 {v2.16b}, [%[unshuffled_vec2_ptr]], #16\n"
-          "ld1 {v3.16b}, [%[unshuffled_vec3_ptr]], #16\n"
+        // This code path requires that (n_cols % 16) == 0 so we can safely
+        // read in 16-byte chunks from each row.
+        "ld1 {v0.16b}, [%[unshuffled_vec0_ptr]], #16\n"
+        "ld1 {v1.16b}, [%[unshuffled_vec1_ptr]], #16\n"
+        "ld1 {v2.16b}, [%[unshuffled_vec2_ptr]], #16\n"
+        "ld1 {v3.16b}, [%[unshuffled_vec3_ptr]], #16\n"
 
-          "st4 {v0.s, v1.s, v2.s, v3.s}[0], [%[shuffled_vectors_ptr]], #16\n"
-          "st4 {v0.s, v1.s, v2.s, v3.s}[1], [%[shuffled_vectors_ptr]], #16\n"
-          "st4 {v0.s, v1.s, v2.s, v3.s}[2], [%[shuffled_vectors_ptr]], #16\n"
-          "st4 {v0.s, v1.s, v2.s, v3.s}[3], [%[shuffled_vectors_ptr]], #16\n"
+        "st4 {v0.s, v1.s, v2.s, v3.s}[0], [%[shuffled_vectors_ptr]], #16\n"
+        "st4 {v0.s, v1.s, v2.s, v3.s}[1], [%[shuffled_vectors_ptr]], #16\n"
+        "st4 {v0.s, v1.s, v2.s, v3.s}[2], [%[shuffled_vectors_ptr]], #16\n"
+        "st4 {v0.s, v1.s, v2.s, v3.s}[3], [%[shuffled_vectors_ptr]], #16\n"
 
-          : [unshuffled_vec0_ptr] "+r"(unshuffled_vec0_ptr),
-            [unshuffled_vec1_ptr] "+r"(unshuffled_vec1_ptr),
-            [unshuffled_vec2_ptr] "+r"(unshuffled_vec2_ptr),
-            [unshuffled_vec3_ptr] "+r"(unshuffled_vec3_ptr),
-            [shuffled_vectors_ptr] "+r"(shuffled_vectors_ptr)
-          :
-          : "v0", "v1", "v2", "v3", "cc", "memory");
+        : [ unshuffled_vec0_ptr ] "+r"(unshuffled_vec0_ptr),
+          [ unshuffled_vec1_ptr ] "+r"(unshuffled_vec1_ptr),
+          [ unshuffled_vec2_ptr ] "+r"(unshuffled_vec2_ptr),
+          [ unshuffled_vec3_ptr ] "+r"(unshuffled_vec3_ptr),
+          [ shuffled_vectors_ptr ] "+r"(shuffled_vectors_ptr)
+        :
+        : "v0", "v1", "v2", "v3", "cc", "memory");
     }
   }
 
@@ -204,104 +204,104 @@ static void DotprodMatrixBatchFourVectorMultiplyAccumulate(const int8_t *__restr
       const int8 *mat_ptr3 = matrix + ((row + 3) * m_cols);
 
       asm volatile(
-          // Zero out the accumulator registers.
-          "dup v0.4s, wzr\n"
-          "dup v1.4s, wzr\n"
-          "dup v2.4s, wzr\n"
-          "dup v3.4s, wzr\n"
+        // Zero out the accumulator registers.
+        "dup v0.4s, wzr\n"
+        "dup v1.4s, wzr\n"
+        "dup v2.4s, wzr\n"
+        "dup v3.4s, wzr\n"
 
-          "1:\n" // batch_cols_loop
+        "1:\n" // batch_cols_loop
 
-          // Read 16 more bytes from a pair of matrix rows.
-          "ld1 {v12.16b}, [%[mat_ptr0]], #16\n"
+        // Read 16 more bytes from a pair of matrix rows.
+        "ld1 {v12.16b}, [%[mat_ptr0]], #16\n"
 
-          // Prefetch two rows ahead.
-          "prfm pldl1strm, [%[mat_ptr2]]\n"
-          "prfm pldl1strm, [%[mat_ptr3]]\n"
+        // Prefetch two rows ahead.
+        "prfm pldl1strm, [%[mat_ptr2]]\n"
+        "prfm pldl1strm, [%[mat_ptr3]]\n"
 
-          // Read from input vectors 4 times; 64 bytes total.
-          // Each 16-byte register contains parts of 4 vectors; see the
-          // shuffle logic above.
+        // Read from input vectors 4 times; 64 bytes total.
+        // Each 16-byte register contains parts of 4 vectors; see the
+        // shuffle logic above.
 
-          // From Benoit, places to look in the future:
-          // - Move load instructions further from sdot
-          // - Switch loop use-then-reload
-          // - Do partial unrolling to use register space better
-          "ld1 {v8.16b}, [%[vec_ptr]], #16\n"
-          ".word 0x4f8ce100  // sdot v0.4s, v8.16b, v12.4b[0]\n"
-          "ld1 {v9.16b}, [%[vec_ptr]], #16\n"
-          ".word 0x4face121  // sdot v1.4s, v9.16b, v12.4b[1]\n"
-          "ld1 {v10.16b}, [%[vec_ptr]], #16\n"
-          ".word 0x4f8ce940  // sdot v0.4s, v10.16b, v12.4b[2]\n"
-          "ld1 {v11.16b}, [%[vec_ptr]], #16\n"
-          ".word 0x4face961  // sdot v1.4s, v11.16b, v12.4b[3]\n"
+        // From Benoit, places to look in the future:
+        // - Move load instructions further from sdot
+        // - Switch loop use-then-reload
+        // - Do partial unrolling to use register space better
+        "ld1 {v8.16b}, [%[vec_ptr]], #16\n"
+        ".word 0x4f8ce100  // sdot v0.4s, v8.16b, v12.4b[0]\n"
+        "ld1 {v9.16b}, [%[vec_ptr]], #16\n"
+        ".word 0x4face121  // sdot v1.4s, v9.16b, v12.4b[1]\n"
+        "ld1 {v10.16b}, [%[vec_ptr]], #16\n"
+        ".word 0x4f8ce940  // sdot v0.4s, v10.16b, v12.4b[2]\n"
+        "ld1 {v11.16b}, [%[vec_ptr]], #16\n"
+        ".word 0x4face961  // sdot v1.4s, v11.16b, v12.4b[3]\n"
 
-          // Update prefetch pointers.
-          "add %[mat_ptr2], %[mat_ptr2], #16\n"
-          "add %[mat_ptr3], %[mat_ptr3], #16\n"
+        // Update prefetch pointers.
+        "add %[mat_ptr2], %[mat_ptr2], #16\n"
+        "add %[mat_ptr3], %[mat_ptr3], #16\n"
 
-          // Re-use those vectors for the next row as well.
-          "ld1 {v13.16b}, [%[mat_ptr1]], #16\n"
-          ".word 0x4f8de102  // sdot v2.4s, v8.16b, v13.4b[0]\n"
-          ".word 0x4fade123  // sdot v3.4s, v9.16b, v13.4b[1]\n"
-          ".word 0x4f8de942  // sdot v2.4s, v10.16b, v13.4b[2]\n"
-          ".word 0x4fade963  // sdot v3.4s, v11.16b, v13.4b[3]\n"
+        // Re-use those vectors for the next row as well.
+        "ld1 {v13.16b}, [%[mat_ptr1]], #16\n"
+        ".word 0x4f8de102  // sdot v2.4s, v8.16b, v13.4b[0]\n"
+        ".word 0x4fade123  // sdot v3.4s, v9.16b, v13.4b[1]\n"
+        ".word 0x4f8de942  // sdot v2.4s, v10.16b, v13.4b[2]\n"
+        ".word 0x4fade963  // sdot v3.4s, v11.16b, v13.4b[3]\n"
 
-          // If we're not done with these rows, continue.
-          "cmp %[mat_ptr0], %[mat_ptr0_end]\n"
-          "bne 1b\n" // batch_cols_loop
+        // If we're not done with these rows, continue.
+        "cmp %[mat_ptr0], %[mat_ptr0_end]\n"
+        "bne 1b\n" // batch_cols_loop
 
-          // Done with the rows, sum the results.
-          "add v0.4s, v0.4s, v1.4s\n"
-          "add v2.4s, v2.4s, v3.4s\n"
+        // Done with the rows, sum the results.
+        "add v0.4s, v0.4s, v1.4s\n"
+        "add v2.4s, v2.4s, v3.4s\n"
 
-          // Convert the per-vector sums to floating point.
-          "scvtf v0.4s, v0.4s\n"
-          "scvtf v1.4s, v2.4s\n"
+        // Convert the per-vector sums to floating point.
+        "scvtf v0.4s, v0.4s\n"
+        "scvtf v1.4s, v2.4s\n"
 
-          // Fetch scale factors.
-          "ld1 {v4.4s}, [%[scaling_factors_ptr]]\n"
+        // Fetch scale factors.
+        "ld1 {v4.4s}, [%[scaling_factors_ptr]]\n"
 
-          // Multiply scale factors times sums.
-          "fmul v0.4s, v4.4s, v0.4s\n"
-          "fmul v1.4s, v4.4s, v1.4s\n"
+        // Multiply scale factors times sums.
+        "fmul v0.4s, v4.4s, v0.4s\n"
+        "fmul v1.4s, v4.4s, v1.4s\n"
 
-          // Load previous result values.
-          // The result position is:
-          //   result[batch * m_rows + row]
-          // Here that is factored into:
-          //   result_ptr = result + row
-          //   *result_ptr = res[0]
-          //   (uint8*)result_ptr += (m_rows * sizeof(float))
-          //   *result_ptr = res[1]
-          //   ...
-          // Since we're reading two rows at a time, though, we read both
-          //   result[batch * m_rows + row]
-          // and
-          //   result[batch * m_rows + row + 1]
-          "ld2 {v9.s, v10.s}[0], [%[result_ptr]], %[wide_rows]\n"
-          "ld2 {v9.s, v10.s}[1], [%[result_ptr]], %[wide_rows]\n"
-          "ld2 {v9.s, v10.s}[2], [%[result_ptr]], %[wide_rows]\n"
-          "ld2 {v9.s, v10.s}[3], [%[result_ptr]], %[wide_rows]\n"
+        // Load previous result values.
+        // The result position is:
+        //   result[batch * m_rows + row]
+        // Here that is factored into:
+        //   result_ptr = result + row
+        //   *result_ptr = res[0]
+        //   (uint8*)result_ptr += (m_rows * sizeof(float))
+        //   *result_ptr = res[1]
+        //   ...
+        // Since we're reading two rows at a time, though, we read both
+        //   result[batch * m_rows + row]
+        // and
+        //   result[batch * m_rows + row + 1]
+        "ld2 {v9.s, v10.s}[0], [%[result_ptr]], %[wide_rows]\n"
+        "ld2 {v9.s, v10.s}[1], [%[result_ptr]], %[wide_rows]\n"
+        "ld2 {v9.s, v10.s}[2], [%[result_ptr]], %[wide_rows]\n"
+        "ld2 {v9.s, v10.s}[3], [%[result_ptr]], %[wide_rows]\n"
 
-          // Go back to the starting position (subtract wide_rows * 4).
-          "sub %[result_ptr], %[result_ptr], %[wide_rows], lsl #2\n"
+        // Go back to the starting position (subtract wide_rows * 4).
+        "sub %[result_ptr], %[result_ptr], %[wide_rows], lsl #2\n"
 
-          // Add previous result values.
-          "fadd v9.4s, v9.4s, v0.4s\n"
-          "fadd v10.4s, v10.4s, v1.4s\n"
+        // Add previous result values.
+        "fadd v9.4s, v9.4s, v0.4s\n"
+        "fadd v10.4s, v10.4s, v1.4s\n"
 
-          // Store results.
-          "st2 {v9.s, v10.s}[0], [%[result_ptr]], %[wide_rows]\n"
-          "st2 {v9.s, v10.s}[1], [%[result_ptr]], %[wide_rows]\n"
-          "st2 {v9.s, v10.s}[2], [%[result_ptr]], %[wide_rows]\n"
-          "st2 {v9.s, v10.s}[3], [%[result_ptr]], %[wide_rows]\n"
-          : [mat_ptr0] "+r"(mat_ptr0), [mat_ptr1] "+r"(mat_ptr1), [vec_ptr] "+r"(vec_ptr),
-            [result_ptr] "+r"(result_ptr), [mat_ptr2] "+r"(mat_ptr2), [mat_ptr3] "+r"(mat_ptr3)
-          : [mat_ptr0_end] "r"(mat_ptr0_end), [scaling_factors_ptr] "r"(scaling_factors_ptr),
-            [wide_rows] "r"(wide_rows)
-          : "x0", "v0", "v1", "v2", "v3", "v4", "v5", "v6", "v7", "v8", "v9", "v10", "v11", "v12",
-            "v13", "cc", "memory");
+        // Store results.
+        "st2 {v9.s, v10.s}[0], [%[result_ptr]], %[wide_rows]\n"
+        "st2 {v9.s, v10.s}[1], [%[result_ptr]], %[wide_rows]\n"
+        "st2 {v9.s, v10.s}[2], [%[result_ptr]], %[wide_rows]\n"
+        "st2 {v9.s, v10.s}[3], [%[result_ptr]], %[wide_rows]\n"
+        : [ mat_ptr0 ] "+r"(mat_ptr0), [ mat_ptr1 ] "+r"(mat_ptr1), [ vec_ptr ] "+r"(vec_ptr),
+          [ result_ptr ] "+r"(result_ptr), [ mat_ptr2 ] "+r"(mat_ptr2), [ mat_ptr3 ] "+r"(mat_ptr3)
+        : [ mat_ptr0_end ] "r"(mat_ptr0_end), [ scaling_factors_ptr ] "r"(scaling_factors_ptr),
+          [ wide_rows ] "r"(wide_rows)
+        : "x0", "v0", "v1", "v2", "v3", "v4", "v5", "v6", "v7", "v8", "v9", "v10", "v11", "v12",
+          "v13", "cc", "memory");
     }
   }
 
@@ -309,9 +309,9 @@ static void DotprodMatrixBatchFourVectorMultiplyAccumulate(const int8_t *__restr
 }
 
 static void DotprodMatrixBatchFourVectorMultiplyAccumulate(
-    const int8_t *__restrict__ matrix, const int m_rows, const int m_cols, const int8_t *vectors,
-    const float *scaling_factors, int n_batch, float *__restrict__ result,
-    const float *per_channel_scale, const int32_t *input_offset, int32_t *row_sums)
+  const int8_t *__restrict__ matrix, const int m_rows, const int m_cols, const int8_t *vectors,
+  const float *scaling_factors, int n_batch, float *__restrict__ result,
+  const float *per_channel_scale, const int32_t *input_offset, int32_t *row_sums)
 {
   void *shuffled_vectors_free;
   const int8_t *shuffled_vectors = ShuffleVectors(vectors, n_batch, m_cols, &shuffled_vectors_free);
@@ -332,102 +332,102 @@ static void DotprodMatrixBatchFourVectorMultiplyAccumulate(
       const int32_t *batch_offsets_ptr = input_offset + batch;
       const int32_t is_channel_scale_nullptr = per_channel_scale == nullptr;
       const int32_t is_row_sums_nullptr = row_sums_ptr == nullptr;
-      asm volatile("dup v0.4s, wzr\n"
-                   "dup v1.4s, wzr\n"
-                   "dup v2.4s, wzr\n"
-                   "dup v3.4s, wzr\n"
-                   // Load zero points.
-                   "ld1 {v7.4s}, [%[batch_offsets_ptr]]\n"
-                   "ld1 {v4.4s}, [%[scaling_factors_ptr]]\n"
-                   // Zero out zero point accumulators.
-                   "dup v14.4s, wzr\n"
-                   "dup v15.4s, wzr\n"
+      asm volatile(
+        "dup v0.4s, wzr\n"
+        "dup v1.4s, wzr\n"
+        "dup v2.4s, wzr\n"
+        "dup v3.4s, wzr\n"
+        // Load zero points.
+        "ld1 {v7.4s}, [%[batch_offsets_ptr]]\n"
+        "ld1 {v4.4s}, [%[scaling_factors_ptr]]\n"
+        // Zero out zero point accumulators.
+        "dup v14.4s, wzr\n"
+        "dup v15.4s, wzr\n"
 
-                   // Load per channel scales if not null.
-                   "cmp %w[is_channel_scale_nullptr], #0\n"
-                   "bne 1f\n"
-                   "ld1r {v16.4s}, [%[channel_scales_ptr]], #4\n"
-                   "ld1r {v17.4s}, [%[channel_scales_ptr]]\n"
-                   "fmul v16.4s, v16.4s, v4.4s\n"
-                   "fmul v17.4s, v17.4s, v4.4s\n"
-                   "b 2f\n"
-                   "1:\n"
-                   "mov v16.16b, v4.16b\n"
-                   "mov v17.16b, v4.16b\n"
-                   "2:\n"
-                   "ld1 {v12.16b}, [%[mat_ptr0]], #16\n"
-                   "ld1 {v8.16b}, [%[vec_ptr]], #16\n"
-                   ".word 0x4f8ce100  // sdot v0.4s, v8.16b, v12.4b[0]\n"
-                   "ld1 {v9.16b}, [%[vec_ptr]], #16\n"
-                   ".word 0x4face121  // sdot v1.4s, v9.16b, v12.4b[1]\n"
-                   "ld1 {v10.16b}, [%[vec_ptr]], #16\n"
-                   ".word 0x4f8ce940  // sdot v0.4s, v10.16b, v12.4b[2]\n"
-                   "ld1 {v11.16b}, [%[vec_ptr]], #16\n"
-                   ".word 0x4face961  // sdot v1.4s, v11.16b, v12.4b[3]\n"
-                   "ld1 {v13.16b}, [%[mat_ptr1]], #16\n"
-                   ".word 0x4f8de102  // sdot v2.4s, v8.16b, v13.4b[0]\n"
-                   ".word 0x4fade123  // sdot v3.4s, v9.16b, v13.4b[1]\n"
-                   ".word 0x4f8de942  // sdot v2.4s, v10.16b, v13.4b[2]\n"
-                   ".word 0x4fade963  // sdot v3.4s, v11.16b, v13.4b[3]\n"
-                   "cmp %w[is_row_sums_nullptr], #1\n"
-                   "bne 3f\n"
-                   // Accumulate row_sums for zero point calculations.
-                   "saddlp v12.8h, v12.16b\n"
-                   "saddlp v13.8h, v13.16b\n"
-                   "sadalp v14.4s, v12.8h\n"
-                   "sadalp v15.4s, v13.8h\n"
-                   "3:\n"
-                   "cmp %[mat_ptr0], %[mat_ptr0_end]\n"
-                   "bne 2b\n"
-                   "add v0.4s, v0.4s, v1.4s\n"
-                   "add v2.4s, v2.4s, v3.4s\n"
+        // Load per channel scales if not null.
+        "cmp %w[is_channel_scale_nullptr], #0\n"
+        "bne 1f\n"
+        "ld1r {v16.4s}, [%[channel_scales_ptr]], #4\n"
+        "ld1r {v17.4s}, [%[channel_scales_ptr]]\n"
+        "fmul v16.4s, v16.4s, v4.4s\n"
+        "fmul v17.4s, v17.4s, v4.4s\n"
+        "b 2f\n"
+        "1:\n"
+        "mov v16.16b, v4.16b\n"
+        "mov v17.16b, v4.16b\n"
+        "2:\n"
+        "ld1 {v12.16b}, [%[mat_ptr0]], #16\n"
+        "ld1 {v8.16b}, [%[vec_ptr]], #16\n"
+        ".word 0x4f8ce100  // sdot v0.4s, v8.16b, v12.4b[0]\n"
+        "ld1 {v9.16b}, [%[vec_ptr]], #16\n"
+        ".word 0x4face121  // sdot v1.4s, v9.16b, v12.4b[1]\n"
+        "ld1 {v10.16b}, [%[vec_ptr]], #16\n"
+        ".word 0x4f8ce940  // sdot v0.4s, v10.16b, v12.4b[2]\n"
+        "ld1 {v11.16b}, [%[vec_ptr]], #16\n"
+        ".word 0x4face961  // sdot v1.4s, v11.16b, v12.4b[3]\n"
+        "ld1 {v13.16b}, [%[mat_ptr1]], #16\n"
+        ".word 0x4f8de102  // sdot v2.4s, v8.16b, v13.4b[0]\n"
+        ".word 0x4fade123  // sdot v3.4s, v9.16b, v13.4b[1]\n"
+        ".word 0x4f8de942  // sdot v2.4s, v10.16b, v13.4b[2]\n"
+        ".word 0x4fade963  // sdot v3.4s, v11.16b, v13.4b[3]\n"
+        "cmp %w[is_row_sums_nullptr], #1\n"
+        "bne 3f\n"
+        // Accumulate row_sums for zero point calculations.
+        "saddlp v12.8h, v12.16b\n"
+        "saddlp v13.8h, v13.16b\n"
+        "sadalp v14.4s, v12.8h\n"
+        "sadalp v15.4s, v13.8h\n"
+        "3:\n"
+        "cmp %[mat_ptr0], %[mat_ptr0_end]\n"
+        "bne 2b\n"
+        "add v0.4s, v0.4s, v1.4s\n"
+        "add v2.4s, v2.4s, v3.4s\n"
 
-                   "cmp %w[is_row_sums_nullptr], #1\n"
-                   "bne 4f\n"
-                   // Calculate zero point offsets.
-                   "addv s14, v14.4s\n"
-                   "addv s15, v15.4s\n"
-                   "dup v14.4s, v14.s[0]\n"
-                   "dup v15.4s, v15.s[0]\n"
-                   "b 5f\n"
-                   "4:\n"
-                   "ld1r {v14.4s}, [%[row_sums_ptr]], #4\n"
-                   "ld1r {v15.4s}, [%[row_sums_ptr]]\n"
-                   "5:\n"
+        "cmp %w[is_row_sums_nullptr], #1\n"
+        "bne 4f\n"
+        // Calculate zero point offsets.
+        "addv s14, v14.4s\n"
+        "addv s15, v15.4s\n"
+        "dup v14.4s, v14.s[0]\n"
+        "dup v15.4s, v15.s[0]\n"
+        "b 5f\n"
+        "4:\n"
+        "ld1r {v14.4s}, [%[row_sums_ptr]], #4\n"
+        "ld1r {v15.4s}, [%[row_sums_ptr]]\n"
+        "5:\n"
 
-                   "mul v14.4s, v14.4s, v7.4s\n"
-                   "mul v15.4s, v15.4s, v7.4s\n"
-                   "sub v0.4s, v0.4s, v14.4s\n"
-                   "sub v2.4s, v2.4s, v15.4s\n"
+        "mul v14.4s, v14.4s, v7.4s\n"
+        "mul v15.4s, v15.4s, v7.4s\n"
+        "sub v0.4s, v0.4s, v14.4s\n"
+        "sub v2.4s, v2.4s, v15.4s\n"
 
-                   "scvtf v0.4s, v0.4s\n"
-                   "scvtf v1.4s, v2.4s\n"
+        "scvtf v0.4s, v0.4s\n"
+        "scvtf v1.4s, v2.4s\n"
 
-                   // Multiply scale.
-                   "fmul v0.4s, v16.4s, v0.4s\n"
-                   "fmul v1.4s, v17.4s, v1.4s\n"
+        // Multiply scale.
+        "fmul v0.4s, v16.4s, v0.4s\n"
+        "fmul v1.4s, v17.4s, v1.4s\n"
 
-                   "ld2 {v9.s, v10.s}[0], [%[result_ptr]], %[wide_rows]\n"
-                   "ld2 {v9.s, v10.s}[1], [%[result_ptr]], %[wide_rows]\n"
-                   "ld2 {v9.s, v10.s}[2], [%[result_ptr]], %[wide_rows]\n"
-                   "ld2 {v9.s, v10.s}[3], [%[result_ptr]], %[wide_rows]\n"
-                   "sub %[result_ptr], %[result_ptr], %[wide_rows], lsl #2\n"
-                   "fadd v9.4s, v9.4s, v0.4s\n"
-                   "fadd v10.4s, v10.4s, v1.4s\n"
-                   "st2 {v9.s, v10.s}[0], [%[result_ptr]], %[wide_rows]\n"
-                   "st2 {v9.s, v10.s}[1], [%[result_ptr]], %[wide_rows]\n"
-                   "st2 {v9.s, v10.s}[2], [%[result_ptr]], %[wide_rows]\n"
-                   "st2 {v9.s, v10.s}[3], [%[result_ptr]], %[wide_rows]\n"
-                   : [mat_ptr0] "+r"(mat_ptr0), [mat_ptr1] "+r"(mat_ptr1), [vec_ptr] "+r"(vec_ptr),
-                     [result_ptr] "+r"(result_ptr), [row_sums_ptr] "+r"(row_sums_ptr)
-                   : [mat_ptr0_end] "r"(mat_ptr0_end),
-                     [scaling_factors_ptr] "r"(scaling_factors_ptr), [wide_rows] "r"(wide_rows),
-                     [channel_scales_ptr] "r"(channel_scales_ptr),
-                     [batch_offsets_ptr] "r"(batch_offsets_ptr),
-                     [is_channel_scale_nullptr] "r"(is_channel_scale_nullptr),
-                     [is_row_sums_nullptr] "r"(is_row_sums_nullptr)
-                   : "x0", "v0", "v1", "v2", "v3", "v4", "v5", "v6", "v7", "v8", "v9", "v10", "v11",
-                     "v12", "v13", "v14", "v15", "v16", "v17", "w0", "w1", "cc", "memory");
+        "ld2 {v9.s, v10.s}[0], [%[result_ptr]], %[wide_rows]\n"
+        "ld2 {v9.s, v10.s}[1], [%[result_ptr]], %[wide_rows]\n"
+        "ld2 {v9.s, v10.s}[2], [%[result_ptr]], %[wide_rows]\n"
+        "ld2 {v9.s, v10.s}[3], [%[result_ptr]], %[wide_rows]\n"
+        "sub %[result_ptr], %[result_ptr], %[wide_rows], lsl #2\n"
+        "fadd v9.4s, v9.4s, v0.4s\n"
+        "fadd v10.4s, v10.4s, v1.4s\n"
+        "st2 {v9.s, v10.s}[0], [%[result_ptr]], %[wide_rows]\n"
+        "st2 {v9.s, v10.s}[1], [%[result_ptr]], %[wide_rows]\n"
+        "st2 {v9.s, v10.s}[2], [%[result_ptr]], %[wide_rows]\n"
+        "st2 {v9.s, v10.s}[3], [%[result_ptr]], %[wide_rows]\n"
+        : [ mat_ptr0 ] "+r"(mat_ptr0), [ mat_ptr1 ] "+r"(mat_ptr1), [ vec_ptr ] "+r"(vec_ptr),
+          [ result_ptr ] "+r"(result_ptr), [ row_sums_ptr ] "+r"(row_sums_ptr)
+        : [ mat_ptr0_end ] "r"(mat_ptr0_end), [ scaling_factors_ptr ] "r"(scaling_factors_ptr),
+          [ wide_rows ] "r"(wide_rows), [ channel_scales_ptr ] "r"(channel_scales_ptr),
+          [ batch_offsets_ptr ] "r"(batch_offsets_ptr),
+          [ is_channel_scale_nullptr ] "r"(is_channel_scale_nullptr),
+          [ is_row_sums_nullptr ] "r"(is_row_sums_nullptr)
+        : "x0", "v0", "v1", "v2", "v3", "v4", "v5", "v6", "v7", "v8", "v9", "v10", "v11", "v12",
+          "v13", "v14", "v15", "v16", "v17", "w0", "w1", "cc", "memory");
     }
   }
 
@@ -458,9 +458,9 @@ static void DotprodMatrixBatchFourVectorMultiplyAccumulate(
 // We don't use this kernel when n_batch = 1 because the baseline kernel
 // is fine for that case.
 inline void DotprodMatrixBatchPaddedFourVectorMultiplyAccumulate(
-    const int8_t *__restrict__ matrix, const int m_rows, const int m_cols, const int8_t *vectors,
-    const float *scaling_factors, int n_batch, float *__restrict__ result,
-    const float *per_channel_scale, const int32_t *input_offset, int32_t *row_sums)
+  const int8_t *__restrict__ matrix, const int m_rows, const int m_cols, const int8_t *vectors,
+  const float *scaling_factors, int n_batch, float *__restrict__ result,
+  const float *per_channel_scale, const int32_t *input_offset, int32_t *row_sums)
 {
   const int kWeightsPerUint32 = 4;
 
@@ -475,14 +475,14 @@ inline void DotprodMatrixBatchPaddedFourVectorMultiplyAccumulate(
   void *padded_vectors_free;
   const int padded_vectors_size = batch_round_up * m_cols;
   int8_t *padded_vectors = reinterpret_cast<int8_t *>(
-      aligned_alloc(kWeightsPerUint32, padded_vectors_size, &padded_vectors_free));
+    aligned_alloc(kWeightsPerUint32, padded_vectors_size, &padded_vectors_free));
   memset(padded_vectors, 0, padded_vectors_size);
 
   void *padded_result_free;
   const int result_size = n_batch * m_rows * sizeof(float);
   const int padded_result_size = batch_round_up * m_rows * sizeof(float);
   float *padded_result = reinterpret_cast<float *>(
-      aligned_alloc(kWeightsPerUint32, padded_result_size, &padded_result_free));
+    aligned_alloc(kWeightsPerUint32, padded_result_size, &padded_result_free));
   memcpy(padded_result, result, result_size);
   memset(reinterpret_cast<char *>(padded_result) + result_size, 0,
          padded_result_size - result_size);
@@ -494,7 +494,7 @@ inline void DotprodMatrixBatchPaddedFourVectorMultiplyAccumulate(
   void *padded_scaling_factors_free;
   const int padded_scaling_factors_size = batch_round_up * sizeof(float);
   float *padded_scaling_factors = reinterpret_cast<float *>(
-      aligned_alloc(kWeightsPerUint32, padded_scaling_factors_size, &padded_scaling_factors_free));
+    aligned_alloc(kWeightsPerUint32, padded_scaling_factors_size, &padded_scaling_factors_free));
   assert(static_cast<int>(n_batch * sizeof(float)) <= padded_scaling_factors_size);
   assert(static_cast<int>(batch_round_up * sizeof(float)) <= padded_scaling_factors_size);
   memset(padded_scaling_factors, 0, batch_round_up * sizeof(float));
@@ -505,7 +505,7 @@ inline void DotprodMatrixBatchPaddedFourVectorMultiplyAccumulate(
     void *padded_input_offset_free;
     const int padded_input_offset_size = batch_round_up * sizeof(int32_t);
     int32_t *padded_input_offset = reinterpret_cast<int32_t *>(
-        aligned_alloc(kWeightsPerUint32, padded_input_offset_size, &padded_input_offset_free));
+      aligned_alloc(kWeightsPerUint32, padded_input_offset_size, &padded_input_offset_free));
     assert(static_cast<int>(n_batch * sizeof(int32_t)) <= padded_input_offset_size);
     assert(static_cast<int>(batch_round_up * sizeof(int32_t)) <= padded_input_offset_size);
     memset(padded_input_offset, 0, batch_round_up * sizeof(int32_t));
@@ -513,8 +513,8 @@ inline void DotprodMatrixBatchPaddedFourVectorMultiplyAccumulate(
 
     // Call the main kernel.
     DotprodMatrixBatchFourVectorMultiplyAccumulate(
-        matrix, m_rows, m_cols, padded_vectors, padded_scaling_factors, batch_round_up,
-        padded_result, per_channel_scale, padded_input_offset, row_sums);
+      matrix, m_rows, m_cols, padded_vectors, padded_scaling_factors, batch_round_up, padded_result,
+      per_channel_scale, padded_input_offset, row_sums);
 
     free(padded_input_offset_free);
   }
@@ -533,13 +533,13 @@ inline void DotprodMatrixBatchPaddedFourVectorMultiplyAccumulate(
 }
 
 inline void DotprodMatrixBatchPaddedFourVectorMultiplyAccumulate(
-    const int8_t *__restrict__ matrix, const int m_rows, const int m_cols, const int8_t *vectors,
-    const float *scaling_factors, int n_batch, float *__restrict__ result)
+  const int8_t *__restrict__ matrix, const int m_rows, const int m_cols, const int8_t *vectors,
+  const float *scaling_factors, int n_batch, float *__restrict__ result)
 {
   DotprodMatrixBatchPaddedFourVectorMultiplyAccumulate(
-      matrix, m_rows, m_cols, vectors, scaling_factors, n_batch, result,
-      /*per_channel_scale=*/nullptr, /*input_offset=*/nullptr,
-      /*row_sums=*/nullptr);
+    matrix, m_rows, m_cols, vectors, scaling_factors, n_batch, result,
+    /*per_channel_scale=*/nullptr, /*input_offset=*/nullptr,
+    /*row_sums=*/nullptr);
 }
 #endif // __aarch64__
 
@@ -736,7 +736,7 @@ inline void NeonSymmetricQuantizeFloats(const float *values, const int size,
   for (int i = postamble_start; i < size; ++i)
   {
     const int32_t quantized_value =
-        static_cast<int32_t>(std::round(scaling_factor_inv * values[i]));
+      static_cast<int32_t>(std::round(scaling_factor_inv * values[i]));
     quantized_values[i] = std::min(kScale, std::max(-kScale, quantized_value));
   }
 }
@@ -830,7 +830,7 @@ inline void NeonMatrixBatchVectorMultiplyAccumulate(const int8_t *__restrict__ m
         // Here the assumption is that each buffer is 4-byte aligned. Otherwise,
         // performance may suffer significantly.
         assert( // NOLINT
-            ((uintptr_t)(&row_ptr[col]) & (kWeightsPerUint32 - 1)) == 0);
+          ((uintptr_t)(&row_ptr[col]) & (kWeightsPerUint32 - 1)) == 0);
         const int8x16_t s1_8x16 = vld1q_s8((const int8_t *)(aligned_vec + col));
         const int8x16_t s2_8x16 = vld1q_s8((const int8_t *)(row_ptr + col));
         // Multiply the low bits (i.e. the lower 8 8bit numbers in the
@@ -855,7 +855,7 @@ inline void NeonMatrixBatchVectorMultiplyAccumulate(const int8_t *__restrict__ m
         // Here the assumption is that each buffer is 4-bytes aligned.
         // Otherwise, performance may suffer significantly.
         assert( // NOLINT
-            ((uintptr_t)(&row_ptr[col]) & (kWeightsPerUint32 - 1)) == 0);
+          ((uintptr_t)(&row_ptr[col]) & (kWeightsPerUint32 - 1)) == 0);
         const int8x8_t s1_8x8 = vld1_s8((const int8_t *)(aligned_vec + col));
         const int8x8_t s2_8x8 = vld1_s8((const int8_t *)(row_ptr + col));
         const int16x8_t prod_16x8 = vmull_s8(s1_8x8, s2_8x8);
@@ -952,7 +952,7 @@ inline void NeonMatrixBatchVectorMultiplyAccumulate(const int8_t *__restrict__ m
       const float32x4_t float_val1 = vcvtq_f32_s32(scratch_val1);
       const float32x4_t result0 = vmlaq_f32(vld1q_f32(result), float_val0, scaling_factor0);
       const float32x4_t result1 =
-          vmlaq_f32(vld1q_f32(result + 4 * result_stride), float_val1, scaling_factor1);
+        vmlaq_f32(vld1q_f32(result + 4 * result_stride), float_val1, scaling_factor1);
       vst1q_f32(result, result0);
       vst1q_f32(result + 4 * result_stride, result1);
     }

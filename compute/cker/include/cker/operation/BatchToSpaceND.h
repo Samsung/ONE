@@ -43,7 +43,7 @@ inline void GetIndexRange(int spatial_index_dim, int block_shape_dim, int input_
   // Similarly, (*end_index) * block_shape_dim is rounded up too (note that
   // end_index is exclusive).
   *end_index =
-      std::min(input_dim, (output_dim - spatial_index_dim + block_shape_dim - 1) / block_shape_dim);
+    std::min(input_dim, (output_dim - spatial_index_dim + block_shape_dim - 1) / block_shape_dim);
 }
 
 template <typename T>
@@ -116,7 +116,7 @@ inline void BatchToSpaceND(const Shape &unextended_input1_shape, const T *input1
       for (int in_w = in_w_start; in_w < in_w_end; ++in_w)
       {
         const int out_w =
-            in_w * block_shape_width + spatial_offset % block_shape_width - crops_left;
+          in_w * block_shape_width + spatial_offset % block_shape_width - crops_left;
         assert(out_w >= 0);
         assert(out_w < output_width);
         T *out = output_data + Offset(output_shape, out_batch, out_h, out_w, 0);

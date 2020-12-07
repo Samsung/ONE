@@ -98,8 +98,8 @@ inline void Conv(const ConvParams &params, const Shape &input_shape, const float
             bias_value = bias_data[out_channel];
           }
           output_data[Offset(output_shape, batch, out_y, out_x, out_channel)] =
-              ActivationFunctionWithMinMax(total + bias_value, output_activation_min,
-                                           output_activation_max);
+            ActivationFunctionWithMinMax(total + bias_value, output_activation_min,
+                                         output_activation_max);
         }
       }
     }
@@ -183,7 +183,7 @@ inline void Conv(const ConvParams &params, const Shape &input_shape, const uint8
           acc = std::max(acc, output_activation_min);
           acc = std::min(acc, output_activation_max);
           output_data[Offset(output_shape, batch, out_y, out_x, out_channel)] =
-              static_cast<uint8_t>(acc);
+            static_cast<uint8_t>(acc);
         }
       }
     }

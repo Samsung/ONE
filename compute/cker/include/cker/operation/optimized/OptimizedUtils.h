@@ -111,7 +111,7 @@ inline void ExtractPatchIntoBufferColumn(const Shape &input_shape, int w, int h,
   {
     const int bottom_row_elements = (bottom_padding * kwidth * in_depth);
     const int bottom_start =
-        output_row_offset + ((top_padding + (ih_end - ih_start)) * kwidth * in_depth);
+      output_row_offset + ((top_padding + (ih_end - ih_start)) * kwidth * in_depth);
     memset(conv_buffer_data + bottom_start, zero_byte, (bottom_row_elements * sizeof(T)));
   }
 }
@@ -159,7 +159,7 @@ void DilatedIm2col(const ConvParams &params, const Shape &input_shape, const T *
   for (int batch = 0; batch < batches; ++batch)
   {
     const T zero_byte =
-        zero_bytes_len > 1 ? static_cast<T>(zero_bytes[batch]) : static_cast<T>(zero_bytes[0]);
+      zero_bytes_len > 1 ? static_cast<T>(zero_bytes[batch]) : static_cast<T>(zero_bytes[0]);
     for (int out_y = 0; out_y < output_height; ++out_y)
     {
       for (int out_x = 0; out_x < output_width; ++out_x)

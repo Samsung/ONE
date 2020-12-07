@@ -62,7 +62,7 @@ inline void ResizeBilinearKernel2x2(int32_t x0, int32_t x1, int32_t y0, int32_t 
 
     // Bottom right corner.
     output_data[output_offset + output_x_offset + output_y_offset] =
-        (output + ((x1y0 + x1y1) / 2)) / 2;
+      (output + ((x1y0 + x1y1) / 2)) / 2;
   }
 }
 
@@ -192,8 +192,8 @@ inline void ResizeBilinearGenericSmallChannel(int32_t batches, int32_t input_hei
                                    &x1);
 
         int32_t input_offset[4] = {
-            Offset(input_shape, b, y0, x0, 0), Offset(input_shape, b, y0, x1, 0),
-            Offset(input_shape, b, y1, x0, 0), Offset(input_shape, b, y1, x1, 0)};
+          Offset(input_shape, b, y0, x0, 0), Offset(input_shape, b, y0, x1, 0),
+          Offset(input_shape, b, y1, x0, 0), Offset(input_shape, b, y1, x1, 0)};
         float scale[4] = {(1 - (input_y - y0)) * (1 - (input_x - x0)),
                           (1 - (input_y - y0)) * (input_x - x0),
                           (input_y - y0) * (1 - (input_x - x0)), (input_y - y0) * (input_x - x0)};
@@ -202,8 +202,8 @@ inline void ResizeBilinearGenericSmallChannel(int32_t batches, int32_t input_hei
         {
           const T *input_ptr = &input_data[d];
           *output_ptr++ = static_cast<T>(
-              input_ptr[input_offset[0]] * scale[0] + input_ptr[input_offset[1]] * scale[1] +
-              input_ptr[input_offset[2]] * scale[2] + input_ptr[input_offset[3]] * scale[3]);
+            input_ptr[input_offset[0]] * scale[0] + input_ptr[input_offset[1]] * scale[1] +
+            input_ptr[input_offset[2]] * scale[2] + input_ptr[input_offset[3]] * scale[3]);
         }
       }
     }
@@ -253,16 +253,16 @@ void ResizeBilinear(ResizeBilinearParams &params, const Shape &input_shape,
   int32_t depth = MatchingDim(input_shape, 3, output_shape, 3);
 
   float height_scale = (params.align_corners && params.output_height > 1)
-                           ? (static_cast<float>(input_height - 1) / (params.output_height - 1))
-                           : (static_cast<float>(input_height) / params.output_height);
+                         ? (static_cast<float>(input_height - 1) / (params.output_height - 1))
+                         : (static_cast<float>(input_height) / params.output_height);
 
   float width_scale = (params.align_corners && params.output_width > 1)
-                          ? (static_cast<float>(input_width - 1) / (params.output_width - 1))
-                          : (static_cast<float>(input_width) / params.output_width);
+                        ? (static_cast<float>(input_width - 1) / (params.output_width - 1))
+                        : (static_cast<float>(input_width) / params.output_width);
 
   ResizeBilinearGenericSmallChannel<uint8_t>(
-      batches, input_height, input_width, depth, params.output_height, params.output_width,
-      height_scale, width_scale, input_shape, input_data, output_data, params.half_pixel_centers);
+    batches, input_height, input_width, depth, params.output_height, params.output_width,
+    height_scale, width_scale, input_shape, input_data, output_data, params.half_pixel_centers);
 }
 } // namespace cker
 } // namespace nnfw

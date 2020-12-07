@@ -72,9 +72,9 @@ inline bool ReduceMeanImpl(const In *input_data, const Shape &input_shape, const
   {
     size_t input_offset = ReducedOutputOffset(input_num_dims, input_dims, input_iter, 0, nullptr);
     size_t output_offset =
-        ReducedOutputOffset(input_num_dims, input_dims, input_iter, num_axis, axis);
+      ReducedOutputOffset(input_num_dims, input_dims, input_iter, num_axis, axis);
     output_data[output_offset] =
-        reducer(output_data[output_offset], input_data[input_offset], normalizer);
+      reducer(output_data[output_offset], input_data[input_offset], normalizer);
   } while (NextIndex(input_num_dims, input_dims, input_iter));
   return true;
 }
@@ -102,7 +102,7 @@ inline size_t ReduceSumQuantImpl(const In *input_data, const Shape &input_shape,
   {
     size_t input_offset = ReducedOutputOffset(input_num_dims, input_dims, input_iter, 0, nullptr);
     size_t output_offset =
-        ReducedOutputOffset(input_num_dims, input_dims, input_iter, num_axis, axis);
+      ReducedOutputOffset(input_num_dims, input_dims, input_iter, num_axis, axis);
     temp_sum[output_offset] = reducer(temp_sum[output_offset], input_data[input_offset]);
   } while (NextIndex(input_num_dims, input_dims, input_iter));
   return normalizer;
@@ -185,8 +185,8 @@ public:
     }
 
     size_t normalizer =
-        ReduceSumQuantImpl<In>(input_data, input_shape, resolved_axis_data(), num_resolved_axis,
-                               temp_index_data(), reducer, _temp_sum.data());
+      ReduceSumQuantImpl<In>(input_data, input_shape, resolved_axis_data(), num_resolved_axis,
+                             temp_index_data(), reducer, _temp_sum.data());
     if (num_outputs > 0)
     {
       float scale = input_scale / output_scale;

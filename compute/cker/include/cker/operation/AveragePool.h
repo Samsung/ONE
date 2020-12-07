@@ -73,10 +73,10 @@ void AveragePool<float>(const PoolParams &params, const Shape &input_shape, cons
         int hpad = h + params.padding_values.height;
         int wpad = w + params.padding_values.width;
         int h_start =
-            (hpad < params.filter_height) ? 0 : (hpad - params.filter_height) / stride_height + 1;
+          (hpad < params.filter_height) ? 0 : (hpad - params.filter_height) / stride_height + 1;
         int h_end = std::min(hpad / stride_height + 1, output_height);
         int w_start =
-            (wpad < params.filter_width) ? 0 : (wpad - params.filter_width) / stride_width + 1;
+          (wpad < params.filter_width) ? 0 : (wpad - params.filter_width) / stride_width + 1;
         int w_end = std::min(wpad / stride_width + 1, output_width);
         // compute elementwise sum
         for (int ph = h_start; ph < h_end; ++ph)
@@ -146,11 +146,11 @@ inline void AveragePool16(const PoolParams &params, const Shape &input_shape,
           const int filter_y_start = std::max(0, -in_y_origin);
           const int filter_y_end = std::min(params.filter_height, input_height - in_y_origin);
           const int filter_count =
-              (filter_x_end - filter_x_start) * (filter_y_end - filter_y_start);
+            (filter_x_end - filter_x_start) * (filter_y_end - filter_y_start);
           memset(acc, 0, tranche_depth * sizeof(acc[0]));
           const uint8_t *input_ptr =
-              input_data + depth_base +
-              depth * (in_x_origin + input_width * (in_y_origin + input_height * batch));
+            input_data + depth_base +
+            depth * (in_x_origin + input_width * (in_y_origin + input_height * batch));
           for (int fy = filter_y_start; fy < filter_y_end; fy++)
           {
             const uint8_t *input_row_ptr = input_ptr + depth * (fy * input_width + filter_x_start);
@@ -283,11 +283,11 @@ inline void AveragePool32(const PoolParams &params, const Shape &input_shape,
           const int filter_y_start = std::max(0, -in_y_origin);
           const int filter_y_end = std::min(params.filter_height, input_height - in_y_origin);
           const int filter_count =
-              (filter_x_end - filter_x_start) * (filter_y_end - filter_y_start);
+            (filter_x_end - filter_x_start) * (filter_y_end - filter_y_start);
           memset(acc, 0, tranche_depth * sizeof(acc[0]));
           const uint8_t *input_ptr =
-              input_data + depth_base +
-              depth * (in_x_origin + input_width * (in_y_origin + input_height * batch));
+            input_data + depth_base +
+            depth * (in_x_origin + input_width * (in_y_origin + input_height * batch));
           for (int fy = filter_y_start; fy < filter_y_end; fy++)
           {
             const uint8_t *input_row_ptr = input_ptr + depth * (fy * input_width + filter_x_start);

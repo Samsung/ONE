@@ -52,7 +52,7 @@ void MakeRuyMatrix(const MatrixParams<Scalar> &params, DataPointer data_ptr,
                    ruy::Matrix<Scalar> *dst, bool use_caching = false)
 {
   ruy::Order ruy_order =
-      params.order == Order::kColMajor ? ruy::Order::kColMajor : ruy::Order::kRowMajor;
+    params.order == Order::kColMajor ? ruy::Order::kColMajor : ruy::Order::kRowMajor;
   ruy::MakeSimpleLayout(params.rows, params.cols, ruy_order, dst->mutable_layout());
   // Note that ruy::Matrix::data is a ConstCheckingPtr, not a plain pointer.
   // It does care whether we assign to it a Scalar* or a const Scalar*.

@@ -142,7 +142,7 @@ inline void ConcatenationWithScaling(const ConcatenationParams &params,
         for (int j = 0; j < copy_size; ++j)
         {
           const int32_t value =
-              static_cast<int32_t>(std::round(input_ptr[j] * scale + bias)) + output_zeropoint;
+            static_cast<int32_t>(std::round(input_ptr[j] * scale + bias)) + output_zeropoint;
           output_ptr[j] = static_cast<uint8_t>(std::max(std::min(255, value), 0));
         }
       }

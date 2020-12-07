@@ -62,30 +62,27 @@ template <typename NewDimension, Index Rows, Index Cols, typename ArgType, typen
           typename Scalar_, typename Index, typename nocontract_t, typename contract_t, int Side,
           int packet_size, bool inner_dim_contiguous, bool inner_dim_reordered, int Alignment>
 class TensorContractionInputMapper<
-    Scalar_, Index, Side,
-    TensorEvaluator<
-        const TensorReshapingOp<NewDimension, const TensorImagePatchOp<Rows, Cols, ArgType>>,
-        Device>,
-    nocontract_t, contract_t, packet_size, inner_dim_contiguous, inner_dim_reordered, Alignment>
+  Scalar_, Index, Side,
+  TensorEvaluator<
+    const TensorReshapingOp<NewDimension, const TensorImagePatchOp<Rows, Cols, ArgType>>, Device>,
+  nocontract_t, contract_t, packet_size, inner_dim_contiguous, inner_dim_reordered, Alignment>
 {
 public:
   typedef Scalar_ Scalar;
 
   typedef TensorContractionInputMapper<
-      Scalar, Index, Side,
-      TensorEvaluator<
-          const TensorReshapingOp<NewDimension, const TensorImagePatchOp<Rows, Cols, ArgType>>,
-          Device>,
-      nocontract_t, contract_t, packet_size, inner_dim_contiguous, inner_dim_reordered, Alignment>
-      Self;
+    Scalar, Index, Side,
+    TensorEvaluator<
+      const TensorReshapingOp<NewDimension, const TensorImagePatchOp<Rows, Cols, ArgType>>, Device>,
+    nocontract_t, contract_t, packet_size, inner_dim_contiguous, inner_dim_reordered, Alignment>
+    Self;
 
   typedef TensorContractionSubMapper<
-      Scalar, Index, Side,
-      TensorEvaluator<
-          const TensorReshapingOp<NewDimension, const TensorImagePatchOp<Rows, Cols, ArgType>>,
-          Device>,
-      nocontract_t, contract_t, packet_size, inner_dim_contiguous, inner_dim_reordered, Alignment>
-      SubMapper;
+    Scalar, Index, Side,
+    TensorEvaluator<
+      const TensorReshapingOp<NewDimension, const TensorImagePatchOp<Rows, Cols, ArgType>>, Device>,
+    nocontract_t, contract_t, packet_size, inner_dim_contiguous, inner_dim_reordered, Alignment>
+    SubMapper;
 
   typedef SubMapper VectorMapper;
   typedef SubMapper LinearMapper;
@@ -95,11 +92,11 @@ public:
 
   EIGEN_DEVICE_FUNC
   TensorContractionInputMapper(
-      const TensorEvaluator<
-          const TensorReshapingOp<NewDimension, const TensorImagePatchOp<Rows, Cols, ArgType>>,
-          Device> &tensor,
-      const nocontract_t &, const nocontract_t &, const contract_t &, const contract_t &)
-      : m_impl(tensor.impl().impl())
+    const TensorEvaluator<
+      const TensorReshapingOp<NewDimension, const TensorImagePatchOp<Rows, Cols, ArgType>>, Device>
+      &tensor,
+    const nocontract_t &, const nocontract_t &, const contract_t &, const contract_t &)
+    : m_impl(tensor.impl().impl())
   {
     Index patch_rows;
     Index patch_depth;
@@ -167,7 +164,7 @@ public:
 
   EIGEN_DEVICE_FUNC
   TensorContractionInputMapper(const TensorContractionInputMapper &base_mapper)
-      : m_impl(base_mapper.m_impl)
+    : m_impl(base_mapper.m_impl)
   {
     m_patch_cols = base_mapper.m_patch_cols;
     m_num_patches = base_mapper.m_num_patches;
@@ -280,11 +277,10 @@ public:
 
 private:
   friend class TensorContractionSubMapper<
-      Scalar, Index, Side,
-      TensorEvaluator<
-          const TensorReshapingOp<NewDimension, const TensorImagePatchOp<Rows, Cols, ArgType>>,
-          Device>,
-      nocontract_t, contract_t, packet_size, inner_dim_contiguous, inner_dim_reordered, Alignment>;
+    Scalar, Index, Side,
+    TensorEvaluator<
+      const TensorReshapingOp<NewDimension, const TensorImagePatchOp<Rows, Cols, ArgType>>, Device>,
+    nocontract_t, contract_t, packet_size, inner_dim_contiguous, inner_dim_reordered, Alignment>;
 
   // Load coefficient from a patch specified by the "within patch offset"
   // (patchId) and the precomputed indices of the first element of the patch.
@@ -298,14 +294,14 @@ private:
     const Index colOffset = patchOffset / m_fastColStride;
     const Index inputCol = colIndex + colOffset * m_in_col_strides;
     const Index origInputCol = (m_patch_col_inflate_strides == 1)
-                                   ? inputCol
-                                   : ((inputCol >= 0) ? (inputCol / m_fastInputColStride) : 0);
+                                 ? inputCol
+                                 : ((inputCol >= 0) ? (inputCol / m_fastInputColStride) : 0);
 
     const Index rowOffset = patchOffset - colOffset * m_colStride;
     const Index inputRow = rowIndex + rowOffset * m_in_row_strides;
     const Index origInputRow = (m_patch_row_inflate_strides == 1)
-                                   ? inputRow
-                                   : ((inputRow >= 0) ? (inputRow / m_fastInputRowStride) : 0);
+                                 ? inputRow
+                                 : ((inputRow >= 0) ? (inputRow / m_fastInputRowStride) : 0);
     if (origInputCol < 0 || origInputRow < 0 || origInputCol >= m_inputCols ||
         origInputRow >= m_inputRows || (inputCol != origInputCol * m_patch_col_inflate_strides) ||
         (inputRow != origInputRow * m_patch_row_inflate_strides))
@@ -314,7 +310,7 @@ private:
     }
     const Index depth = patchId - patchOffset * patchDepth();
     const Index inputIndex =
-        depth + origInputRow * m_rowInputStride + origInputCol * m_colInputStride + otherIndex;
+      depth + origInputRow * m_rowInputStride + origInputCol * m_colInputStride + otherIndex;
     return m_impl.coeff(inputIndex);
   }
 
@@ -338,7 +334,7 @@ private:
     }
     const Index depth = patchId - patchOffset * patchDepth();
     const Index inputIndex =
-        depth + inputRow * m_rowInputStride + inputCol * m_colInputStride + otherIndex;
+      depth + inputRow * m_rowInputStride + inputCol * m_colInputStride + otherIndex;
     return m_impl.coeff(inputIndex);
   }
 
@@ -390,7 +386,7 @@ private:
       // span[0] all the way upto (and including) span[1].
       const Index depth = patchId - patchOffsets[0] * patchDepth();
       const Index inputIndex =
-          depth + inputRows[0] * m_rowInputStride + inputCol * m_colInputStride + otherIndex;
+        depth + inputRows[0] * m_rowInputStride + inputCol * m_colInputStride + otherIndex;
       return m_impl.template partialPacket<Packet>(inputIndex - span[0],
                                                    mask<Packet>(span[0], span[1] + 1));
     }
@@ -445,10 +441,10 @@ private:
 
     // Load partial packets and do bit-wise OR to generate required packet
     return internal::por<Packet>(
-        loadPartialPacketStandard(rowIndex, colIndex, otherIndex, patchIds[0], spans[0],
-                                  patchOffsets2Cols[0], colOffsets[0]),
-        loadPartialPacketStandard(rowIndex, colIndex, otherIndex, patchIds[1], spans[1],
-                                  patchOffsets2Cols[1], colOffsets[1]));
+      loadPartialPacketStandard(rowIndex, colIndex, otherIndex, patchIds[0], spans[0],
+                                patchOffsets2Cols[0], colOffsets[0]),
+      loadPartialPacketStandard(rowIndex, colIndex, otherIndex, patchIds[1], spans[1],
+                                patchOffsets2Cols[1], colOffsets[1]));
   }
 
   // Helper function to load a packet that is present in a single columns.
@@ -477,7 +473,7 @@ private:
       // no padding
       const Index depth = patchId - patchOffsets[0] * patchDepth();
       const Index inputIndex =
-          depth + inputRows[0] * m_rowInputStride + inputCols[0] * m_colInputStride + otherIndex;
+        depth + inputRows[0] * m_rowInputStride + inputCols[0] * m_colInputStride + otherIndex;
       return m_impl.template packet<Unaligned>(inputIndex);
     }
     return packetWithPossibleZero(patchId, rowIndex, colIndex, otherIndex);
@@ -490,7 +486,7 @@ private:
   // load.
   template <typename PacketT, typename TensorEvaluatorT>
   EIGEN_DEVICE_FUNC EIGEN_ALWAYS_INLINE typename std::enable_if<
-      !TensorEvaluatorHasPartialPacket<TensorEvaluatorT, PacketT, Index>::value, PacketT>::type
+    !TensorEvaluatorHasPartialPacket<TensorEvaluatorT, PacketT, Index>::value, PacketT>::type
   loadPacketStandard(Index patchId, Index rowIndex, Index colIndex, Index otherIndex) const
   {
     const Index packetSize = internal::unpacket_traits<Packet>::size;
@@ -538,7 +534,7 @@ private:
   // packets.
   template <typename PacketT, typename TensorEvaluatorT>
   EIGEN_DEVICE_FUNC EIGEN_ALWAYS_INLINE typename std::enable_if<
-      TensorEvaluatorHasPartialPacket<TensorEvaluatorT, PacketT, Index>::value, PacketT>::type
+    TensorEvaluatorHasPartialPacket<TensorEvaluatorT, PacketT, Index>::value, PacketT>::type
   loadPacketStandard(Index patchId, Index rowIndex, Index colIndex, Index otherIndex) const
   {
     const Index packetSize = internal::unpacket_traits<PacketT>::size;
@@ -604,7 +600,7 @@ private:
     // no padding
     const Index depth = patchId - patchOffset * patchDepth();
     const Index inputIndex =
-        depth + inputRow * m_rowInputStride + inputCol * m_colInputStride + otherIndex;
+      depth + inputRow * m_rowInputStride + inputCol * m_colInputStride + otherIndex;
     return m_impl.template packet<Unaligned>(inputIndex);
   }
 
@@ -627,10 +623,10 @@ private:
   computeBaseIndices(Index patchIndex, Index &rowIndex, Index &colIndex, Index &otherIndex) const
   {
     const size_t NumInputDims =
-        array_size<typename TensorEvaluator<ArgType, Device>::Dimensions>::value;
+      array_size<typename TensorEvaluator<ArgType, Device>::Dimensions>::value;
     otherIndex = (NumInputDims == 3) ? 0 : patchIndex / m_fastNumPatches;
     const Index patch2DIndex =
-        (NumInputDims == 3) ? patchIndex : (patchIndex - otherIndex * m_num_patches);
+      (NumInputDims == 3) ? patchIndex : (patchIndex - otherIndex * m_num_patches);
     otherIndex *= m_patchInputStride;
     colIndex = patch2DIndex / m_fastOutputRows;
     rowIndex = patch2DIndex - colIndex * m_outputRows;
@@ -689,31 +685,28 @@ template <typename NewDimension, Index Rows, Index Cols, typename ArgType, typen
           typename Scalar, typename Index, typename nocontract_t, typename contract_t, int Side,
           int packet_size, bool inner_dim_contiguous, bool inner_dim_reordered, int Alignment>
 class TensorContractionSubMapper<
-    Scalar, Index, Side,
-    TensorEvaluator<
-        const TensorReshapingOp<NewDimension, const TensorImagePatchOp<Rows, Cols, ArgType>>,
-        Device>,
-    nocontract_t, contract_t, packet_size, inner_dim_contiguous, inner_dim_reordered, Alignment>
+  Scalar, Index, Side,
+  TensorEvaluator<
+    const TensorReshapingOp<NewDimension, const TensorImagePatchOp<Rows, Cols, ArgType>>, Device>,
+  nocontract_t, contract_t, packet_size, inner_dim_contiguous, inner_dim_reordered, Alignment>
 {
 public:
   typedef typename packet_traits<Scalar>::type Packet;
   typedef typename packet_traits<Scalar>::half HalfPacket;
 
   typedef TensorContractionInputMapper<
-      Scalar, Index, Side,
-      TensorEvaluator<
-          const TensorReshapingOp<NewDimension, const TensorImagePatchOp<Rows, Cols, ArgType>>,
-          Device>,
-      nocontract_t, contract_t, packet_size, inner_dim_contiguous, inner_dim_reordered, Alignment>
-      ParentMapper;
+    Scalar, Index, Side,
+    TensorEvaluator<
+      const TensorReshapingOp<NewDimension, const TensorImagePatchOp<Rows, Cols, ArgType>>, Device>,
+    nocontract_t, contract_t, packet_size, inner_dim_contiguous, inner_dim_reordered, Alignment>
+    ParentMapper;
 
   typedef TensorContractionSubMapper<
-      Scalar, Index, Side,
-      TensorEvaluator<
-          const TensorReshapingOp<NewDimension, const TensorImagePatchOp<Rows, Cols, ArgType>>,
-          Device>,
-      nocontract_t, contract_t, packet_size, inner_dim_contiguous, inner_dim_reordered, Alignment>
-      Self;
+    Scalar, Index, Side,
+    TensorEvaluator<
+      const TensorReshapingOp<NewDimension, const TensorImagePatchOp<Rows, Cols, ArgType>>, Device>,
+    nocontract_t, contract_t, packet_size, inner_dim_contiguous, inner_dim_reordered, Alignment>
+    Self;
 
   typedef Self LinearMapper;
 
@@ -722,16 +715,16 @@ public:
   EIGEN_DEVICE_FUNC EIGEN_STRONG_INLINE TensorContractionSubMapper(const ParentMapper &base_mapper,
                                                                    Index vert_offset,
                                                                    Index horiz_offset)
-      : m_depth_offset(vert_offset), m_col_offset(horiz_offset), m_base_mapper(base_mapper)
+    : m_depth_offset(vert_offset), m_col_offset(horiz_offset), m_base_mapper(base_mapper)
   {
     m_base_mapper.computeBaseIndices(m_col_offset, m_rowIndex, m_colIndex, m_otherIndex);
   }
   EIGEN_DEVICE_FUNC EIGEN_STRONG_INLINE TensorContractionSubMapper(const Self &base_mapper,
                                                                    Index vert_offset,
                                                                    Index horiz_offset)
-      : m_depth_offset(vert_offset + base_mapper.m_depth_offset),
-        m_col_offset(horiz_offset + base_mapper.m_col_offset),
-        m_base_mapper(base_mapper.m_base_mapper)
+    : m_depth_offset(vert_offset + base_mapper.m_depth_offset),
+      m_col_offset(horiz_offset + base_mapper.m_col_offset),
+      m_base_mapper(base_mapper.m_base_mapper)
   {
     m_base_mapper.computeBaseIndices(m_col_offset, m_rowIndex, m_colIndex, m_otherIndex);
   }
@@ -766,7 +759,7 @@ public:
   {
     typedef decltype(m_base_mapper.m_impl) TensorEvaluatorT;
     return m_base_mapper.template loadPacketStandard<Packet, TensorEvaluatorT>(
-        i + m_depth_offset, m_rowIndex, m_colIndex, m_otherIndex);
+      i + m_depth_offset, m_rowIndex, m_colIndex, m_otherIndex);
   }
   template <typename Packet> EIGEN_DEVICE_FUNC bool aligned(Index) const { return false; }
 
@@ -781,7 +774,7 @@ public:
   EIGEN_ALWAYS_INLINE Index maxCol(const Index peeled_k) const
   {
     const Index max_col =
-        (m_depth_offset + (peeled_k == 0 ? 0 : peeled_k - 1)) / fastPatchColStride();
+      (m_depth_offset + (peeled_k == 0 ? 0 : peeled_k - 1)) / fastPatchColStride();
     return std::min<Index>(1 + max_col, patchCols());
   }
 
@@ -789,8 +782,8 @@ public:
   EIGEN_ALWAYS_INLINE Index maxRow(const Index peeled_k, const Index col) const
   {
     const Index max_row =
-        (m_depth_offset + (peeled_k == 0 ? 0 : peeled_k - 1) - col * patchColStride()) /
-        fastPatchRowStride();
+      (m_depth_offset + (peeled_k == 0 ? 0 : peeled_k - 1) - col * patchColStride()) /
+      fastPatchRowStride();
     return std::min<Index>(1 + max_row, patchRows());
   }
 
@@ -862,7 +855,7 @@ public:
   }
   template <typename PacketT = Packet>
   EIGEN_DEVICE_FUNC EIGEN_ALWAYS_INLINE typename std::enable_if<
-      TensorEvaluatorHasPartialPacket<TensorEvaluatorT, PacketT, Index>::value, PacketT>::type
+    TensorEvaluatorHasPartialPacket<TensorEvaluatorT, PacketT, Index>::value, PacketT>::type
   partialPacketNoPadding(const Index depth, const Index baseIndex, Index num_coeffs) const
   {
     const Index inputIndex = depth + baseIndex;
@@ -913,8 +906,8 @@ public:
 
     const Index input_row = m_rowIndex + row * m_base_mapper.m_in_row_strides;
     *orig_row = (m_base_mapper.m_patch_row_inflate_strides == 1)
-                    ? input_row
-                    : ((input_row >= 0) ? (input_row / m_base_mapper.m_fastInputRowStride) : 0);
+                  ? input_row
+                  : ((input_row >= 0) ? (input_row / m_base_mapper.m_fastInputRowStride) : 0);
 
     return (*orig_row < 0 || *orig_row >= m_base_mapper.m_inputRows) ||
            (input_row != *orig_row * m_base_mapper.m_patch_row_inflate_strides);
@@ -932,8 +925,8 @@ public:
 
     const Index input_col = m_colIndex + col * m_base_mapper.m_in_col_strides;
     *orig_col = (m_base_mapper.m_patch_col_inflate_strides == 1)
-                    ? input_col
-                    : ((input_col >= 0) ? (input_col / m_base_mapper.m_fastInputColStride) : 0);
+                  ? input_col
+                  : ((input_col >= 0) ? (input_col / m_base_mapper.m_fastInputColStride) : 0);
 
     return (*orig_col < 0 || *orig_col >= m_base_mapper.m_inputCols) ||
            (input_col != *orig_col * m_base_mapper.m_patch_col_inflate_strides);
@@ -1033,23 +1026,20 @@ template <typename NewDimension, Index Rows, Index Cols, typename ArgType, typen
           int packet_size, bool inner_dim_contiguous, bool inner_dim_reordered, int Alignment,
           int nr>
 struct gemm_pack_rhs<
-    Scalar, Index,
-    TensorContractionSubMapper<
-        Scalar, Index, Rhs,
-        TensorEvaluator<
-            const TensorReshapingOp<NewDimension, const TensorImagePatchOp<Rows, Cols, ArgType>>,
-            Device>,
-        nocontract_t, contract_t, packet_size, inner_dim_contiguous, inner_dim_reordered,
-        Alignment>,
-    nr, ColMajor, false, false>
+  Scalar, Index,
+  TensorContractionSubMapper<
+    Scalar, Index, Rhs,
+    TensorEvaluator<
+      const TensorReshapingOp<NewDimension, const TensorImagePatchOp<Rows, Cols, ArgType>>, Device>,
+    nocontract_t, contract_t, packet_size, inner_dim_contiguous, inner_dim_reordered, Alignment>,
+  nr, ColMajor, false, false>
 {
   typedef TensorContractionSubMapper<
-      Scalar, Index, Rhs,
-      TensorEvaluator<
-          const TensorReshapingOp<NewDimension, const TensorImagePatchOp<Rows, Cols, ArgType>>,
-          Device>,
-      nocontract_t, contract_t, packet_size, inner_dim_contiguous, inner_dim_reordered, Alignment>
-      SubMapper;
+    Scalar, Index, Rhs,
+    TensorEvaluator<
+      const TensorReshapingOp<NewDimension, const TensorImagePatchOp<Rows, Cols, ArgType>>, Device>,
+    nocontract_t, contract_t, packet_size, inner_dim_contiguous, inner_dim_reordered, Alignment>
+    SubMapper;
   typedef SubMapper DataMapper;
   typedef typename packet_traits<Scalar>::type Packet;
 
@@ -1159,7 +1149,7 @@ struct gemm_pack_rhs<
               const Index idx3 = dm3.baseIndex(r, c);
 
               const Index start_depth =
-                  ((c == start_col) && (r == start_row)) ? rhs.depthOffset() : 0;
+                ((c == start_col) && (r == start_row)) ? rhs.depthOffset() : 0;
               const Index max_depth = rhs.maxDepth(peeled_k - k, start_depth);
               eigen_assert((max_depth - start_depth) % packet_size == 0);
 
@@ -1248,22 +1238,20 @@ template <typename NewDimension, Index Rows, Index Cols, typename ArgType, typen
           typename Scalar, typename Index, typename nocontract_t, typename contract_t,
           bool inner_dim_contiguous, bool inner_dim_reordered, int Alignment, int nr>
 struct gemm_pack_rhs<
-    Scalar, Index,
-    TensorContractionSubMapper<
-        Scalar, Index, Rhs,
-        TensorEvaluator<
-            const TensorReshapingOp<NewDimension, const TensorImagePatchOp<Rows, Cols, ArgType>>,
-            Device>,
-        nocontract_t, contract_t, 2, inner_dim_contiguous, inner_dim_reordered, Alignment>,
-    nr, ColMajor, false, false>
+  Scalar, Index,
+  TensorContractionSubMapper<
+    Scalar, Index, Rhs,
+    TensorEvaluator<
+      const TensorReshapingOp<NewDimension, const TensorImagePatchOp<Rows, Cols, ArgType>>, Device>,
+    nocontract_t, contract_t, 2, inner_dim_contiguous, inner_dim_reordered, Alignment>,
+  nr, ColMajor, false, false>
 {
   typedef TensorContractionSubMapper<
-      Scalar, Index, Rhs,
-      TensorEvaluator<
-          const TensorReshapingOp<NewDimension, const TensorImagePatchOp<Rows, Cols, ArgType>>,
-          Device>,
-      nocontract_t, contract_t, 2, inner_dim_contiguous, inner_dim_reordered, Alignment>
-      SubMapper;
+    Scalar, Index, Rhs,
+    TensorEvaluator<
+      const TensorReshapingOp<NewDimension, const TensorImagePatchOp<Rows, Cols, ArgType>>, Device>,
+    nocontract_t, contract_t, 2, inner_dim_contiguous, inner_dim_reordered, Alignment>
+    SubMapper;
   typedef SubMapper DataMapper;
   typedef typename packet_traits<Scalar>::type Packet;
 
@@ -1378,7 +1366,7 @@ struct gemm_pack_rhs<
               const Index idx3 = dm3.baseIndex(r, c);
 
               const Index start_depth =
-                  ((c == start_col) && (r == start_row)) ? rhs.depthOffset() : 0;
+                ((c == start_col) && (r == start_row)) ? rhs.depthOffset() : 0;
               const Index max_depth = rhs.maxDepth(peeled_k - k, start_depth);
               eigen_assert((max_depth - start_depth) % packet_size == 0);
 
@@ -1472,22 +1460,20 @@ template <typename NewDimension, Index Rows, Index Cols, typename ArgType, typen
           typename Scalar, typename Index, typename nocontract_t, typename contract_t,
           bool inner_dim_contiguous, bool inner_dim_reordered, int Alignment, int nr>
 struct gemm_pack_rhs<
-    Scalar, Index,
-    TensorContractionSubMapper<
-        Scalar, Index, Rhs,
-        TensorEvaluator<
-            const TensorReshapingOp<NewDimension, const TensorImagePatchOp<Rows, Cols, ArgType>>,
-            Device>,
-        nocontract_t, contract_t, 1, inner_dim_contiguous, inner_dim_reordered, Alignment>,
-    nr, ColMajor, false, false>
+  Scalar, Index,
+  TensorContractionSubMapper<
+    Scalar, Index, Rhs,
+    TensorEvaluator<
+      const TensorReshapingOp<NewDimension, const TensorImagePatchOp<Rows, Cols, ArgType>>, Device>,
+    nocontract_t, contract_t, 1, inner_dim_contiguous, inner_dim_reordered, Alignment>,
+  nr, ColMajor, false, false>
 {
   typedef TensorContractionSubMapper<
-      Scalar, Index, Rhs,
-      TensorEvaluator<
-          const TensorReshapingOp<NewDimension, const TensorImagePatchOp<Rows, Cols, ArgType>>,
-          Device>,
-      nocontract_t, contract_t, 1, inner_dim_contiguous, inner_dim_reordered, Alignment>
-      SubMapper;
+    Scalar, Index, Rhs,
+    TensorEvaluator<
+      const TensorReshapingOp<NewDimension, const TensorImagePatchOp<Rows, Cols, ArgType>>, Device>,
+    nocontract_t, contract_t, 1, inner_dim_contiguous, inner_dim_reordered, Alignment>
+    SubMapper;
   typedef SubMapper DataMapper;
 
   EIGEN_STATIC_ASSERT((nr == 4), YOU_MADE_A_PROGRAMMING_MISTAKE)
@@ -1582,27 +1568,25 @@ struct gemm_pack_rhs<
  */
 template <typename Input, typename Kernel, typename OutputKernel = const NoOpOutputKernel>
 EIGEN_DEVICE_FUNC EIGEN_ALWAYS_INLINE static const typename internal::conditional<
-    internal::traits<Input>::Layout == ColMajor,
-    TensorReshapingOp<
-        const DSizes<typename internal::traits<Input>::Index,
-                     internal::traits<Input>::NumDimensions>,
-        const TensorContractionOp<
-            const array<IndexPair<typename internal::traits<Input>::Index>, 1>,
-            const TensorReshapingOp<const DSizes<typename internal::traits<Input>::Index, 2>,
-                                    const Kernel>,
-            const TensorReshapingOp<const DSizes<typename internal::traits<Input>::Index, 2>,
-                                    const TensorImagePatchOp<Dynamic, Dynamic, const Input>>,
-            const OutputKernel>>,
-    TensorReshapingOp<
-        const DSizes<typename internal::traits<Input>::Index,
-                     internal::traits<Input>::NumDimensions>,
-        const TensorContractionOp<
-            const array<IndexPair<typename internal::traits<Input>::Index>, 1>,
-            const TensorReshapingOp<const DSizes<typename internal::traits<Input>::Index, 2>,
-                                    const TensorImagePatchOp<Dynamic, Dynamic, const Input>>,
-            const TensorReshapingOp<const DSizes<typename internal::traits<Input>::Index, 2>,
-                                    const Kernel>,
-            const OutputKernel>>>::type
+  internal::traits<Input>::Layout == ColMajor,
+  TensorReshapingOp<
+    const DSizes<typename internal::traits<Input>::Index, internal::traits<Input>::NumDimensions>,
+    const TensorContractionOp<
+      const array<IndexPair<typename internal::traits<Input>::Index>, 1>,
+      const TensorReshapingOp<const DSizes<typename internal::traits<Input>::Index, 2>,
+                              const Kernel>,
+      const TensorReshapingOp<const DSizes<typename internal::traits<Input>::Index, 2>,
+                              const TensorImagePatchOp<Dynamic, Dynamic, const Input>>,
+      const OutputKernel>>,
+  TensorReshapingOp<
+    const DSizes<typename internal::traits<Input>::Index, internal::traits<Input>::NumDimensions>,
+    const TensorContractionOp<
+      const array<IndexPair<typename internal::traits<Input>::Index>, 1>,
+      const TensorReshapingOp<const DSizes<typename internal::traits<Input>::Index, 2>,
+                              const TensorImagePatchOp<Dynamic, Dynamic, const Input>>,
+      const TensorReshapingOp<const DSizes<typename internal::traits<Input>::Index, 2>,
+                              const Kernel>,
+      const OutputKernel>>>::type
 SpatialConvolution(const Input &input, const Kernel &kernel, const Index row_stride = 1,
                    const Index col_stride = 1, const PaddingType padding_type = PADDING_SAME,
                    const Index row_in_stride = 1, const Index col_in_stride = 1,
@@ -1612,11 +1596,11 @@ SpatialConvolution(const Input &input, const Kernel &kernel, const Index row_str
   typedef typename internal::traits<Input>::Index TensorIndex;
   TensorRef<Tensor<typename internal::traits<Input>::Scalar, internal::traits<Input>::NumDimensions,
                    internal::traits<Input>::Layout, TensorIndex>>
-      in(input);
+    in(input);
   TensorRef<
-      Tensor<typename internal::traits<Kernel>::Scalar, internal::traits<Kernel>::NumDimensions,
-             internal::traits<Kernel>::Layout, TensorIndex>>
-      kern(kernel);
+    Tensor<typename internal::traits<Kernel>::Scalar, internal::traits<Kernel>::NumDimensions,
+           internal::traits<Kernel>::Layout, TensorIndex>>
+    kern(kernel);
 
   EIGEN_STATIC_ASSERT(internal::traits<Input>::Layout == internal::traits<Kernel>::Layout,
                       YOU_MADE_A_PROGRAMMING_MISTAKE)
@@ -1735,46 +1719,46 @@ SpatialConvolution(const Input &input, const Kernel &kernel, const Index row_str
   }
   if (padding_explicit)
   {
-    return choose(
-        Cond<internal::traits<Input>::Layout == ColMajor>(),
-        kernel.reshape(kernel_dims)
-            .contract(input
-                          .extract_image_patches(kernelRows, kernelCols, row_stride, col_stride,
-                                                 row_in_stride, col_in_stride,
-                                                 /*row_inflate_stride=*/1,
-                                                 /*col_inflate_stride=*/1, padding_top,
-                                                 padding_bottom, padding_left, padding_right,
-                                                 /*padding_value=*/0)
-                          .reshape(pre_contract_dims),
-                      contract_dims, output_kernel)
-            .reshape(post_contract_dims),
-        input
-            .extract_image_patches(
-                kernelRows, kernelCols, row_stride, col_stride, row_in_stride, col_in_stride,
-                /*row_inflate_stride=*/1,
-                /*col_inflate_stride=*/1, padding_top, padding_bottom, padding_left, padding_right,
-                /*padding_value=*/0)
-            .reshape(pre_contract_dims)
-            .contract(kernel.reshape(kernel_dims), contract_dims, output_kernel)
-            .reshape(post_contract_dims));
+    return choose(Cond<internal::traits<Input>::Layout == ColMajor>(),
+                  kernel.reshape(kernel_dims)
+                    .contract(input
+                                .extract_image_patches(kernelRows, kernelCols, row_stride,
+                                                       col_stride, row_in_stride, col_in_stride,
+                                                       /*row_inflate_stride=*/1,
+                                                       /*col_inflate_stride=*/1, padding_top,
+                                                       padding_bottom, padding_left, padding_right,
+                                                       /*padding_value=*/0)
+                                .reshape(pre_contract_dims),
+                              contract_dims, output_kernel)
+                    .reshape(post_contract_dims),
+                  input
+                    .extract_image_patches(kernelRows, kernelCols, row_stride, col_stride,
+                                           row_in_stride, col_in_stride,
+                                           /*row_inflate_stride=*/1,
+                                           /*col_inflate_stride=*/1, padding_top, padding_bottom,
+                                           padding_left, padding_right,
+                                           /*padding_value=*/0)
+                    .reshape(pre_contract_dims)
+                    .contract(kernel.reshape(kernel_dims), contract_dims, output_kernel)
+                    .reshape(post_contract_dims));
   }
   else
   {
     return choose(
-        Cond<internal::traits<Input>::Layout == ColMajor>(),
-        kernel.reshape(kernel_dims)
-            .contract(input
-                          .extract_image_patches(kernelRows, kernelCols, row_stride, col_stride,
-                                                 row_in_stride, col_in_stride, padding_type)
-                          .reshape(pre_contract_dims),
-                      contract_dims, output_kernel)
-            .reshape(post_contract_dims),
-        input
-            .extract_image_patches(kernelRows, kernelCols, row_stride, col_stride, row_in_stride,
-                                   col_in_stride, padding_type)
-            .reshape(pre_contract_dims)
-            .contract(kernel.reshape(kernel_dims), contract_dims, output_kernel)
-            .reshape(post_contract_dims));
+      Cond<internal::traits<Input>::Layout == ColMajor>(),
+      kernel.reshape(kernel_dims)
+        .contract(input
+                    .extract_image_patches(kernelRows, kernelCols, row_stride, col_stride,
+                                           row_in_stride, col_in_stride, padding_type)
+                    .reshape(pre_contract_dims),
+                  contract_dims, output_kernel)
+        .reshape(post_contract_dims),
+      input
+        .extract_image_patches(kernelRows, kernelCols, row_stride, col_stride, row_in_stride,
+                               col_in_stride, padding_type)
+        .reshape(pre_contract_dims)
+        .contract(kernel.reshape(kernel_dims), contract_dims, output_kernel)
+        .reshape(post_contract_dims));
   }
 }
 

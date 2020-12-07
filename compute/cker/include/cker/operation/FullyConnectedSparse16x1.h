@@ -70,7 +70,7 @@ inline void FullyConnectedSparseWeight16x1(const FullyConnectedParams &params,
   const int weights_dims_count = weights_shape.DimensionsCount();
   const int batches = FlatSizeSkipDim(output_shape, output_dims_count - 1);
   const int output_depth =
-      MatchingDim(weights_shape, weights_dims_count - 2, output_shape, output_dims_count - 1);
+    MatchingDim(weights_shape, weights_dims_count - 2, output_shape, output_dims_count - 1);
   const int accum_depth = weights_shape.Dims(weights_dims_count - 1);
 
   UNUSED_RELEASE(bias_shape);
