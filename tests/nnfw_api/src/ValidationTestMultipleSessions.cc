@@ -47,9 +47,9 @@ TEST_F(ValidationTestTwoSessionsCreated, two_sessions_run_simple_model)
   AveragePoolModel model(N, H, W, C);
 
   NNFW_ENSURE_SUCCESS(
-      nnfw_load_circle_from_buffer(_session1, model.cbuf.buffer(), model.cbuf.size()));
+    nnfw_load_circle_from_buffer(_session1, model.cbuf.buffer(), model.cbuf.size()));
   NNFW_ENSURE_SUCCESS(
-      nnfw_load_circle_from_buffer(_session2, model.cbuf.buffer(), model.cbuf.size()));
+    nnfw_load_circle_from_buffer(_session2, model.cbuf.buffer(), model.cbuf.size()));
 
   NNFW_ENSURE_SUCCESS(nnfw_set_available_backends(_session1, "cpu"));
   NNFW_ENSURE_SUCCESS(nnfw_set_available_backends(_session2, "cpu"));

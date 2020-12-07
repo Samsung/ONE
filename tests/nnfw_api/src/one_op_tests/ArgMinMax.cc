@@ -60,38 +60,38 @@ TEST_P(ArgMinMaxVariation, Test)
 
 // Test with different input type and value
 INSTANTIATE_TEST_CASE_P(
-    GenModelTest, ArgMinMaxVariation,
-    ::testing::Values(
-        // ArgMax, float input
-        ArgMinMaxVariationParam{
-            TestCaseData{}.addInput<float>({1, 4, 2, 3}).addOutput<int32_t>({1, 0}), true},
-        // ArgMax, int32 input
-        ArgMinMaxVariationParam{
-            TestCaseData{}.addInput<int32_t>({1, 4, 2, 3}).addOutput<int32_t>({1, 0}), true,
-            circle::TensorType::TensorType_INT32},
-        // ArgMax, uint8 input
-        ArgMinMaxVariationParam{
-            TestCaseData{}.addInput<uint8_t>({1, 4, 2, 3}).addOutput<int32_t>({1, 0}), true,
-            circle::TensorType::TensorType_UINT8, 1.0, 1},
-        // ArgMax, int8 input
-        ArgMinMaxVariationParam{
-            TestCaseData{}.addInput<int8_t>({1, 4, 2, 3}).addOutput<int32_t>({1, 0}), true,
-            circle::TensorType::TensorType_INT8, 1.0, 1},
-        // ArgMin, float input
-        ArgMinMaxVariationParam{
-            TestCaseData{}.addInput<float>({1, 4, 2, 3}).addOutput<int32_t>({0, 1}), false},
-        // ArgMin, int32 input
-        ArgMinMaxVariationParam{
-            TestCaseData{}.addInput<int32_t>({1, 4, 2, 3}).addOutput<int32_t>({0, 1}), false,
-            circle::TensorType::TensorType_INT32},
-        // ArgMin, uint8 input
-        ArgMinMaxVariationParam{
-            TestCaseData{}.addInput<uint8_t>({1, 4, 2, 3}).addOutput<int32_t>({0, 1}), false,
-            circle::TensorType::TensorType_UINT8, 1.0, 1},
-        // ArgMin, int8 input
-        ArgMinMaxVariationParam{
-            TestCaseData{}.addInput<int8_t>({1, 4, 2, 3}).addOutput<int32_t>({0, 1}), false,
-            circle::TensorType::TensorType_INT8, 1.0, 1}));
+  GenModelTest, ArgMinMaxVariation,
+  ::testing::Values(
+    // ArgMax, float input
+    ArgMinMaxVariationParam{TestCaseData{}.addInput<float>({1, 4, 2, 3}).addOutput<int32_t>({1, 0}),
+                            true},
+    // ArgMax, int32 input
+    ArgMinMaxVariationParam{
+      TestCaseData{}.addInput<int32_t>({1, 4, 2, 3}).addOutput<int32_t>({1, 0}), true,
+      circle::TensorType::TensorType_INT32},
+    // ArgMax, uint8 input
+    ArgMinMaxVariationParam{
+      TestCaseData{}.addInput<uint8_t>({1, 4, 2, 3}).addOutput<int32_t>({1, 0}), true,
+      circle::TensorType::TensorType_UINT8, 1.0, 1},
+    // ArgMax, int8 input
+    ArgMinMaxVariationParam{
+      TestCaseData{}.addInput<int8_t>({1, 4, 2, 3}).addOutput<int32_t>({1, 0}), true,
+      circle::TensorType::TensorType_INT8, 1.0, 1},
+    // ArgMin, float input
+    ArgMinMaxVariationParam{TestCaseData{}.addInput<float>({1, 4, 2, 3}).addOutput<int32_t>({0, 1}),
+                            false},
+    // ArgMin, int32 input
+    ArgMinMaxVariationParam{
+      TestCaseData{}.addInput<int32_t>({1, 4, 2, 3}).addOutput<int32_t>({0, 1}), false,
+      circle::TensorType::TensorType_INT32},
+    // ArgMin, uint8 input
+    ArgMinMaxVariationParam{
+      TestCaseData{}.addInput<uint8_t>({1, 4, 2, 3}).addOutput<int32_t>({0, 1}), false,
+      circle::TensorType::TensorType_UINT8, 1.0, 1},
+    // ArgMin, int8 input
+    ArgMinMaxVariationParam{
+      TestCaseData{}.addInput<int8_t>({1, 4, 2, 3}).addOutput<int32_t>({0, 1}), false,
+      circle::TensorType::TensorType_INT8, 1.0, 1}));
 
 TEST_F(GenModelTest, OneOp_ArgMax_Int64_AxisToConst)
 {
@@ -124,9 +124,9 @@ TEST_F(GenModelTest, OneOp_ArgMax_AxisToVar)
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
   _context->addTestCase(TestCaseData{}
-                            .addInput<float>({1, 4, 2, 3})
-                            .addInput<int32_t>({-3})
-                            .addOutput<int32_t>({1, 0}));
+                          .addInput<float>({1, 4, 2, 3})
+                          .addInput<int32_t>({-3})
+                          .addOutput<int32_t>({1, 0}));
   _context->setBackends({"cpu"});
 
   SUCCEED();

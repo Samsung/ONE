@@ -35,7 +35,7 @@ TEST_P(FillVariation, Test)
   CircleGen cgen;
 
   size_t value_size =
-      (param.data_type == circle::TensorType::TensorType_INT64) ? sizeof(int64_t) : sizeof(int32_t);
+    (param.data_type == circle::TensorType::TensorType_INT64) ? sizeof(int64_t) : sizeof(int32_t);
   uint32_t value_buf = cgen.addBuffer(param.value_data, value_size);
 
   int dims = cgen.addTensor({{2}, circle::TensorType::TensorType_INT32});
@@ -57,21 +57,21 @@ const float test_float = 5.2;
 
 // Test with different value type
 INSTANTIATE_TEST_CASE_P(
-    GenModelTest, FillVariation,
-    ::testing::Values(
-        // float value
-        FillVariationParam{TestCaseData{}.addInput<int32_t>({2, 3}).addOutput<float>(
-                               {5.2, 5.2, 5.2, 5.2, 5.2, 5.2}),
-                           reinterpret_cast<const uint8_t *>(&test_float)},
-        // int32 value
-        FillVariationParam{
-            TestCaseData{}.addInput<int32_t>({2, 3}).addOutput<int32_t>({13, 13, 13, 13, 13, 13}),
-            reinterpret_cast<const uint8_t *>(&test_int32), circle::TensorType::TensorType_INT32},
-        // uint8 value
-        FillVariationParam{
-            TestCaseData{}.addInput<int32_t>({2, 3}).addOutput<int64_t>({1052, 1052, 1052, 1052,
-                                                                         1052, 1052}),
-            reinterpret_cast<const uint8_t *>(&test_int64), circle::TensorType::TensorType_INT64}));
+  GenModelTest, FillVariation,
+  ::testing::Values(
+    // float value
+    FillVariationParam{
+      TestCaseData{}.addInput<int32_t>({2, 3}).addOutput<float>({5.2, 5.2, 5.2, 5.2, 5.2, 5.2}),
+      reinterpret_cast<const uint8_t *>(&test_float)},
+    // int32 value
+    FillVariationParam{
+      TestCaseData{}.addInput<int32_t>({2, 3}).addOutput<int32_t>({13, 13, 13, 13, 13, 13}),
+      reinterpret_cast<const uint8_t *>(&test_int32), circle::TensorType::TensorType_INT32},
+    // uint8 value
+    FillVariationParam{
+      TestCaseData{}.addInput<int32_t>({2, 3}).addOutput<int64_t>({1052, 1052, 1052, 1052, 1052,
+                                                                   1052}),
+      reinterpret_cast<const uint8_t *>(&test_int64), circle::TensorType::TensorType_INT64}));
 
 TEST_F(GenModelTest, OneOp_Fill_Int64_Shape)
 {
@@ -87,7 +87,7 @@ TEST_F(GenModelTest, OneOp_Fill_Int64_Shape)
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
   _context->addTestCase(
-      TestCaseData{}.addInput<int64_t>({2, 3}).addOutput<float>({1.3, 1.3, 1.3, 1.3, 1.3, 1.3}));
+    TestCaseData{}.addInput<int64_t>({2, 3}).addOutput<float>({1.3, 1.3, 1.3, 1.3, 1.3, 1.3}));
   _context->setBackends({"cpu"});
 
   SUCCEED();
@@ -104,7 +104,7 @@ TEST_F(GenModelTest, neg_OneOp_Fill_Int32_oneoperand)
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
   _context->addTestCase(
-      TestCaseData{}.addInput<int32_t>({2, 3}).addOutput<int32_t>({13, 13, 13, 13, 13, 13}));
+    TestCaseData{}.addInput<int32_t>({2, 3}).addOutput<int32_t>({13, 13, 13, 13, 13, 13}));
   _context->setBackends({"cpu"});
   _context->expectFailModelLoad();
 
@@ -122,7 +122,7 @@ TEST_F(GenModelTest, neg_OneOp_Fill_Int64_oneoperand)
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
   _context->addTestCase(
-      TestCaseData{}.addInput<int32_t>({2, 3}).addOutput<int64_t>({13, 13, 13, 13, 13, 13}));
+    TestCaseData{}.addInput<int32_t>({2, 3}).addOutput<int64_t>({13, 13, 13, 13, 13, 13}));
   _context->setBackends({"cpu"});
   _context->expectFailModelLoad();
 
@@ -140,7 +140,7 @@ TEST_F(GenModelTest, neg_OneOp_Fill_Float32_oneoperand)
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
   _context->addTestCase(
-      TestCaseData{}.addInput<int32_t>({2, 3}).addOutput<float>({1.3, 1.3, 1.3, 1.3, 1.3, 1.3}));
+    TestCaseData{}.addInput<int32_t>({2, 3}).addOutput<float>({1.3, 1.3, 1.3, 1.3, 1.3, 1.3}));
   _context->setBackends({"cpu"});
   _context->expectFailModelLoad();
 

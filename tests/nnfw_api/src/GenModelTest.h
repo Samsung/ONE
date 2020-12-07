@@ -286,7 +286,7 @@ protected:
       NNFW_ENSURE_SUCCESS(nnfw_create_session(&_so.session));
       auto &cbuf = _context->cbuf();
       auto model_load_result =
-          nnfw_load_circle_from_buffer(_so.session, cbuf.buffer(), cbuf.size());
+        nnfw_load_circle_from_buffer(_so.session, cbuf.buffer(), cbuf.size());
       if (_context->expected_fail_model_load())
       {
         ASSERT_NE(model_load_result, NNFW_STATUS_NO_ERROR);

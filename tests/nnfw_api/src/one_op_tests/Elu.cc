@@ -26,8 +26,8 @@ TEST_F(GenModelTest, OneOp_Elu)
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
   _context->addTestCase(
-      uniformTCD<float>({{0, -6, 2, -4, 3, -2, 10, -0.1}},
-                        {{0.0, -0.997521, 2.0, -0.981684, 3.0, -0.864665, 10.0, -0.0951626}}));
+    uniformTCD<float>({{0, -6, 2, -4, 3, -2, 10, -0.1}},
+                      {{0.0, -0.997521, 2.0, -0.981684, 3.0, -0.864665, 10.0, -0.0951626}}));
   _context->setBackends({"cpu"});
 
   SUCCEED();
