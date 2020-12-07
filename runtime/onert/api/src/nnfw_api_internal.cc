@@ -244,7 +244,7 @@ NNFW_STATUS nnfw_session::load_model_from_modelfile(const char *model_file_path)
   return NNFW_STATUS_NO_ERROR;
 }
 
-NNFW_STATUS nnfw_session::load_model_from_file(const char *package_dir)
+NNFW_STATUS nnfw_session::load_model_from_nnpackage(const char *package_dir)
 {
   if (!isStateInitialized())
     return NNFW_STATUS_INVALID_STATE;
