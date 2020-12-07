@@ -67,7 +67,7 @@ Status validate_arguments(const ITensorInfo *input, const ITensorInfo *prev_outp
                                                        DataType::QASYMM8_SIGNED, DataType::S32,
                                                        DataType::F16, DataType::F32);
   ARM_COMPUTE_RETURN_ERROR_ON_MSG(op != ReductionOperation::ARG_IDX_MAX &&
-                                      op != ReductionOperation::ARG_IDX_MIN,
+                                    op != ReductionOperation::ARG_IDX_MIN,
                                   "Only ARG_IDX_MAX and ARG_IDX_MIN are supported");
   ARM_COMPUTE_RETURN_ERROR_ON_MSG(axis >= TensorShape::num_max_dimensions,
                                   "Reduction axis greater than max number of dimensions");
@@ -102,13 +102,13 @@ std::tuple<Status, Window> validate_and_configure_window(ITensorInfo *input,
   output_shape.set(axis, 1);
   DataType output_data_type = (prev_output != nullptr) ? (prev_output->data_type()) : DataType::S32;
   auto_init_if_empty(*output, input->clone()
-                                  ->set_tensor_shape(output_shape)
-                                  .set_data_type(output_data_type)
-                                  .reset_padding()
-                                  .set_is_resizable(true));
+                                ->set_tensor_shape(output_shape)
+                                .set_data_type(output_data_type)
+                                .reset_padding()
+                                .set_is_resizable(true));
 
-  Window win = calculate_max_window((prev_output != nullptr) ? (*prev_output) : (*input),
-                                    Steps(vector_size));
+  Window win =
+    calculate_max_window((prev_output != nullptr) ? (*prev_output) : (*input), Steps(vector_size));
   bool window_changed = false;
 
   switch (axis)
@@ -138,15 +138,15 @@ std::tuple<Status, Window> validate_and_configure_window(ITensorInfo *input,
   }
 
   Status err = (window_changed)
-                   ? ARM_COMPUTE_CREATE_ERROR(ErrorCode::RUNTIME_ERROR, "Insufficient Padding!")
-                   : Status{};
+                 ? ARM_COMPUTE_CREATE_ERROR(ErrorCode::RUNTIME_ERROR, "Insufficient Padding!")
+                 : Status{};
   return std::make_tuple(err, win);
 }
 } // namespace
 
 CLArgMinMaxLayerKernelEx::CLArgMinMaxLayerKernelEx()
-    : _input(nullptr), _prev_output(nullptr), _output(nullptr), _reduction_axis(0),
-      _op(ReductionOperation::ARG_IDX_MAX)
+  : _input(nullptr), _prev_output(nullptr), _output(nullptr), _reduction_axis(0),
+    _op(ReductionOperation::ARG_IDX_MAX)
 {
 }
 
@@ -156,11 +156,11 @@ void CLArgMinMaxLayerKernelEx::configure(const ICLTensor *input, const ICLTensor
 {
   ARM_COMPUTE_ERROR_ON_NULLPTR(input, output);
   ARM_COMPUTE_ERROR_THROW_ON(
-      validate_arguments(input->info(), (prev_output != nullptr) ? prev_output->info() : nullptr,
-                         output->info(), axis, op));
+    validate_arguments(input->info(), (prev_output != nullptr) ? prev_output->info() : nullptr,
+                       output->info(), axis, op));
   auto win_config = validate_and_configure_window(
-      input->info(), (prev_output != nullptr) ? prev_output->info() : nullptr, output->info(), axis,
-      op);
+    input->info(), (prev_output != nullptr) ? prev_output->info() : nullptr, output->info(), axis,
+    op);
   ARM_COMPUTE_ERROR_THROW_ON(std::get<0>(win_config));
 
   _input = input;
@@ -214,7 +214,7 @@ void CLArgMinMaxLayerKernelEx::configure(const ICLTensor *input, const ICLTensor
       ARM_COMPUTE_ERROR("Not supported");
   }
   _kernel = static_cast<cl::Kernel>(CLKernelLibraryEx::get().create_kernel(
-      "arg_min_max_ex_" + kernel_axis_name, build_opts.options()));
+    "arg_min_max_ex_" + kernel_axis_name, build_opts.options()));
 
   // Configure kernel window
   ICLKernel::configure_internal(std::get<1>(win_config), lws_hint);
@@ -226,8 +226,8 @@ Status CLArgMinMaxLayerKernelEx::validate(const ITensorInfo *input, const ITenso
 {
   ARM_COMPUTE_RETURN_ON_ERROR(validate_arguments(input, prev_output, output, axis, op));
   ARM_COMPUTE_RETURN_ON_ERROR(std::get<0>(validate_and_configure_window(
-      input->clone().get(), (prev_output != nullptr) ? prev_output->clone().get() : nullptr,
-      output->clone().get(), axis, op)));
+    input->clone().get(), (prev_output != nullptr) ? prev_output->clone().get() : nullptr,
+    output->clone().get(), axis, op)));
   return Status{};
 }
 

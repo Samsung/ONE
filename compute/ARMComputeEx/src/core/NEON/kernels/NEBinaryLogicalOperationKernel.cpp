@@ -103,8 +103,10 @@ template <BinaryLogicalOperation op>
 inline uint8x16x4_t elementwise_logic_op(const uint8x16x4_t &a, const uint8x16x4_t &b)
 {
   uint8x16x4_t out = {{
-      elementwise_logic_op<op>(a.val[0], b.val[0]), elementwise_logic_op<op>(a.val[1], b.val[1]),
-      elementwise_logic_op<op>(a.val[2], b.val[2]), elementwise_logic_op<op>(a.val[3], b.val[3]),
+    elementwise_logic_op<op>(a.val[0], b.val[0]),
+    elementwise_logic_op<op>(a.val[1], b.val[1]),
+    elementwise_logic_op<op>(a.val[2], b.val[2]),
+    elementwise_logic_op<op>(a.val[3], b.val[3]),
   }};
   return out;
 }
@@ -160,8 +162,8 @@ void elementwise_logic_op(const ITensor *in1, const ITensor *in2, ITensor *out,
 }
 
 std::function<void(const ITensor *, const ITensor *, ITensor *, const Window &)> configure_func(
-    const ITensor *input1, const ITensor *input2, ITensor *output,
-    std::map<std::string, NEElementwiseOperationKernel::ElementwiseFunction *> map_function)
+  const ITensor *input1, const ITensor *input2, ITensor *output,
+  std::map<std::string, NEElementwiseOperationKernel::ElementwiseFunction *> map_function)
 {
   std::string function_to_call("op_");
   function_to_call += string_from_data_type(input1->info()->data_type()) + "_";
@@ -184,8 +186,8 @@ std::function<void(const ITensor *, const ITensor *, ITensor *, const Window &)>
 configure_logic_func(const ITensor *input1, const ITensor *input2, ITensor *output)
 {
   static std::map<std::string, NEElementwiseOperationKernel::ElementwiseFunction *> map_function = {
-      {"op_U8_U8_U8", &elementwise_logic_op<op, uint8_t, uint8x16_t>},
-      {"op_QASYMM8_QASYMM8_QASYMM8", &elementwise_logic_op<op, uint8_t, uint8x16_t>}};
+    {"op_U8_U8_U8", &elementwise_logic_op<op, uint8_t, uint8x16_t>},
+    {"op_QASYMM8_QASYMM8_QASYMM8", &elementwise_logic_op<op, uint8_t, uint8x16_t>}};
 
   return configure_func(input1, input2, output, map_function);
 }
@@ -223,7 +225,7 @@ Status NEBinaryLogicalOperationKernel::validate_arguments(const ITensorInfo &inp
   ARM_COMPUTE_RETURN_ERROR_ON_MISMATCHING_DATA_TYPES(&input1, &input2);
 
   const TensorShape out_shape =
-      TensorShape::broadcast_shape(input1.tensor_shape(), input2.tensor_shape());
+    TensorShape::broadcast_shape(input1.tensor_shape(), input2.tensor_shape());
 
   ARM_COMPUTE_RETURN_ERROR_ON_MSG(out_shape.total_size() == 0,
                                   "Inputs are not broadcast compatible");
@@ -232,8 +234,8 @@ Status NEBinaryLogicalOperationKernel::validate_arguments(const ITensorInfo &inp
   if (output.total_size() > 0)
   {
     ARM_COMPUTE_RETURN_ERROR_ON_MSG(
-        detail::have_different_dimensions(out_shape, output.tensor_shape(), 0),
-        "Wrong shape for output");
+      detail::have_different_dimensions(out_shape, output.tensor_shape(), 0),
+      "Wrong shape for output");
   }
 
   return Status{};

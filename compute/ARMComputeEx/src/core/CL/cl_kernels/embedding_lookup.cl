@@ -117,15 +117,15 @@ __kernel void embedding_lookup(TENSOR4D_DECLARATION(input), TENSOR4D_DECLARATION
   // lookup ids for based on the tensor dimensions
   int lup_id[4] = {0};
 
-  lup_id[0] = (NUM_DIMS == 1) ? *((__global int *)vector_offset(&lups, get_global_id(0)))
-                              : get_global_id(0);
-  lup_id[1] = (NUM_DIMS == 2) ? *((__global int *)vector_offset(&lups, get_global_id(1)))
-                              : get_global_id(1);
+  lup_id[0] =
+    (NUM_DIMS == 1) ? *((__global int *)vector_offset(&lups, get_global_id(0))) : get_global_id(0);
+  lup_id[1] =
+    (NUM_DIMS == 2) ? *((__global int *)vector_offset(&lups, get_global_id(1))) : get_global_id(1);
   lup_id[2] = (NUM_DIMS == 3) ? *((__global int *)vector_offset(&lups, get_global_id(2)))
                               : get_global_id(2) % DEPTH_OUT;
   lup_id[3] = (NUM_DIMS == 4)
-                  ? *((__global int *)vector_offset(&lups, get_global_id(2) / DEPTH_OUT))
-                  : get_global_id(2) / DEPTH_OUT;
+                ? *((__global int *)vector_offset(&lups, get_global_id(2) / DEPTH_OUT))
+                : get_global_id(2) / DEPTH_OUT;
 
   in.ptr += input_offset_first_element_in_bytes + lup_id[0] * input_step_x +
             lup_id[1] * input_step_y + lup_id[2] * input_step_z + lup_id[3] * input_step_w;

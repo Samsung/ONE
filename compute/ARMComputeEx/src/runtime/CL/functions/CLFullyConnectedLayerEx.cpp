@@ -79,7 +79,7 @@ Status construct_gemmlowp_output_stage(const ITensorInfo &input, const ITensorIn
     int output_multiplier = 0;
     int output_shift = 0;
     ARM_COMPUTE_RETURN_ON_ERROR(quantization::calculate_quantized_multiplier_less_than_one(
-        multiplier, &output_multiplier, &output_shift));
+      multiplier, &output_multiplier, &output_shift));
 
     // Set the GEMMLowp output stage info
     gemmlowp_output_stage.gemmlowp_offset = output_quant_info.offset;
@@ -99,7 +99,7 @@ Status validate_mm(const ITensorInfo &input, const ITensorInfo &weights, const I
 {
   GEMMLowpOutputStageInfo gemmlowp_output_stage;
   ARM_COMPUTE_RETURN_ON_ERROR(
-      construct_gemmlowp_output_stage(input, weights, output, gemmlowp_output_stage));
+    construct_gemmlowp_output_stage(input, weights, output, gemmlowp_output_stage));
 
   const GEMMInfo &gemm_info = GEMMInfo(false, // is_a_reshaped
                                        false, // is_b_reshaped
@@ -125,14 +125,14 @@ Status validate_mm(const ITensorInfo &input, const ITensorInfo &weights, const I
 
     // Validate gemmlowp function
     ARM_COMPUTE_RETURN_ON_ERROR(CLGEMMLowpMatrixMultiplyCore::validate(
-        &input.clone()->set_quantization_info(input_quantization_info),
-        &weights.clone()->set_quantization_info(weights_quantization_info), bias, &output,
-        gemm_info));
+      &input.clone()->set_quantization_info(input_quantization_info),
+      &weights.clone()->set_quantization_info(weights_quantization_info), bias, &output,
+      gemm_info));
   }
   else
   {
     ARM_COMPUTE_RETURN_ON_ERROR(
-        CLGEMM::validate(&input, &weights, bias, &output, 1.f, 1.f, gemm_info));
+      CLGEMM::validate(&input, &weights, bias, &output, 1.f, 1.f, gemm_info));
   }
 
   return Status{};
@@ -154,12 +154,12 @@ Status CLFullyConnectedLayerReshapeWeightsEx::validate(const ITensorInfo *input,
 
 CLFullyConnectedLayerEx::CLFullyConnectedLayerEx(std::shared_ptr<IMemoryManager> memory_manager,
                                                  IWeightsManager *weights_manager)
-    : _memory_group(memory_manager), _weights_manager(weights_manager), _convert_weights(),
-      _convert_weights_managed(), _reshape_weights_managed_function(), _flatten_layer(),
-      _reshape_weights_function(), _mm_gemm(memory_manager, weights_manager),
-      _mm_gemmlowp(memory_manager), _flatten_output(), _converted_weights_output(),
-      _reshape_weights_output(), _are_weights_converted(true), _are_weights_reshaped(true),
-      _is_fc_after_conv(true), _is_quantized(false), _is_prepared(false), _original_weights(nullptr)
+  : _memory_group(memory_manager), _weights_manager(weights_manager), _convert_weights(),
+    _convert_weights_managed(), _reshape_weights_managed_function(), _flatten_layer(),
+    _reshape_weights_function(), _mm_gemm(memory_manager, weights_manager),
+    _mm_gemmlowp(memory_manager), _flatten_output(), _converted_weights_output(),
+    _reshape_weights_output(), _are_weights_converted(true), _are_weights_reshaped(true),
+    _is_fc_after_conv(true), _is_quantized(false), _is_prepared(false), _original_weights(nullptr)
 {
 }
 void CLFullyConnectedLayerEx::configure_mm(const ICLTensor *input, const ICLTensor *weights,
@@ -190,9 +190,9 @@ void CLFullyConnectedLayerEx::configure_mm(const ICLTensor *input, const ICLTens
     const QuantizationInfo weights_quantization_info = weights->info()->quantization_info();
 
     input->info()->set_quantization_info(QuantizationInfo(
-        input_quantization_info.uniform().scale, -input_quantization_info.uniform().offset));
+      input_quantization_info.uniform().scale, -input_quantization_info.uniform().offset));
     weights->info()->set_quantization_info(QuantizationInfo(
-        weights_quantization_info.uniform().scale, -weights_quantization_info.uniform().offset));
+      weights_quantization_info.uniform().scale, -weights_quantization_info.uniform().offset));
 
     // Configure gemmlowp function
     _mm_gemmlowp.configure(input, weights, bias, output, gemm_info);
@@ -214,8 +214,8 @@ void CLFullyConnectedLayerEx::configure_conv_fc(const ICLTensor *input, const IC
                                                 const FullyConnectedLayerInfo &fc_info)
 {
   ARM_COMPUTE_ERROR_ON(
-      (weights->info()->dimension(1) !=
-       (input->info()->dimension(0) * input->info()->dimension(1) * input->info()->dimension(2))));
+    (weights->info()->dimension(1) !=
+     (input->info()->dimension(0) * input->info()->dimension(1) * input->info()->dimension(2))));
 
   // If the fully connected layer is called after a convolution layer, the input tensor must be
   // linearized
@@ -223,11 +223,11 @@ void CLFullyConnectedLayerEx::configure_conv_fc(const ICLTensor *input, const IC
   // Initialize output tensor for flatten
   TensorShape shape_flatten = compute_flatten_shape(input->info());
   _flatten_output.allocator()->init(input->info()
-                                        ->clone()
-                                        ->set_is_resizable(true)
-                                        .reset_padding()
-                                        .set_tensor_shape(shape_flatten)
-                                        .set_data_layout(DataLayout::NCHW));
+                                      ->clone()
+                                      ->set_is_resizable(true)
+                                      .reset_padding()
+                                      .set_tensor_shape(shape_flatten)
+                                      .set_data_layout(DataLayout::NCHW));
 
   // Configure flatten kernel
   _memory_group.manage(&_flatten_output);
@@ -258,8 +258,8 @@ void CLFullyConnectedLayerEx::configure(const ICLTensor *input, const ICLTensor 
 
   // Perform validate step
   ARM_COMPUTE_ERROR_THROW_ON(CLFullyConnectedLayerEx::validate(
-      input->info(), weights->info(), biases != nullptr ? biases->info() : nullptr, output->info(),
-      fc_info));
+    input->info(), weights->info(), biases != nullptr ? biases->info() : nullptr, output->info(),
+    fc_info));
 
   _are_weights_converted = true;
   _are_weights_reshaped = fc_info.transpose_weights ? fc_info.are_weights_reshaped : true;
@@ -285,10 +285,10 @@ void CLFullyConnectedLayerEx::configure(const ICLTensor *input, const ICLTensor 
   const bool is_batched_fc_layer = output->info()->dimension(1) > 1;
   if (is_batched_fc_layer)
   {
-    _is_fc_after_conv = (TensorShape::num_max_dimensions >= 4) &&
-                        (std::equal(input->info()->tensor_shape().cbegin() + 3,
-                                    input->info()->tensor_shape().cend(),
-                                    output->info()->tensor_shape().cbegin() + 1));
+    _is_fc_after_conv =
+      (TensorShape::num_max_dimensions >= 4) &&
+      (std::equal(input->info()->tensor_shape().cbegin() + 3, input->info()->tensor_shape().cend(),
+                  output->info()->tensor_shape().cbegin() + 1));
   }
   else
   {
@@ -302,7 +302,7 @@ void CLFullyConnectedLayerEx::configure(const ICLTensor *input, const ICLTensor 
     {
       _reshape_weights_managed_function.configure(weights);
       weights_to_use = utils::cast::polymorphic_downcast<ICLTensor *>(
-          _weights_manager->acquire(weights, &_reshape_weights_managed_function));
+        _weights_manager->acquire(weights, &_reshape_weights_managed_function));
     }
     else
     {
@@ -320,7 +320,7 @@ void CLFullyConnectedLayerEx::configure(const ICLTensor *input, const ICLTensor 
       _convert_weights_managed.configure(weights_to_use, input->info()->tensor_shape(),
                                          fc_info.weights_trained_layout);
       weights_to_use = utils::cast::polymorphic_downcast<ICLTensor *>(
-          _weights_manager->acquire(weights, &_convert_weights_managed));
+        _weights_manager->acquire(weights, &_convert_weights_managed));
     }
     else
     {
@@ -359,16 +359,16 @@ Status CLFullyConnectedLayerEx::validate(const ITensorInfo *input, const ITensor
   bool is_fc_after_conv = true;
 
   const ITensorInfo &flatten_input = TensorInfo(input->clone()
-                                                    ->set_is_resizable(true)
-                                                    .reset_padding()
-                                                    .set_tensor_shape(compute_flatten_shape(input))
-                                                    .set_data_layout(DataLayout::NCHW));
+                                                  ->set_is_resizable(true)
+                                                  .reset_padding()
+                                                  .set_tensor_shape(compute_flatten_shape(input))
+                                                  .set_data_layout(DataLayout::NCHW));
   const ITensorInfo &reshaped_weights =
-      TensorInfo(weights->clone()->set_is_resizable(true).reset_padding().set_tensor_shape(
-          compute_transposed_shape(*weights)));
+    TensorInfo(weights->clone()->set_is_resizable(true).reset_padding().set_tensor_shape(
+      compute_transposed_shape(*weights)));
   const ITensorInfo &converted_weights =
-      weights_reshaped ? TensorInfo(weights->clone()->set_is_resizable(true).reset_padding())
-                       : TensorInfo(*reshaped_weights.clone());
+    weights_reshaped ? TensorInfo(weights->clone()->set_is_resizable(true).reset_padding())
+                     : TensorInfo(*reshaped_weights.clone());
 
   // With the Fully Connected layer we can have 4 different cases:
   //  1) Convolution layer -> Fully Connected layer without batches
@@ -396,7 +396,7 @@ Status CLFullyConnectedLayerEx::validate(const ITensorInfo *input, const ITensor
   {
     // Validate reshape weights kernel
     ARM_COMPUTE_RETURN_ON_ERROR(
-        CLFullyConnectedLayerReshapeWeightsEx::validate(weights, &reshaped_weights));
+      CLFullyConnectedLayerReshapeWeightsEx::validate(weights, &reshaped_weights));
     weights_to_use = &reshaped_weights;
   }
 
@@ -404,7 +404,7 @@ Status CLFullyConnectedLayerEx::validate(const ITensorInfo *input, const ITensor
   {
     // Validate convert weights kernel
     ARM_COMPUTE_RETURN_ON_ERROR(CLConvertFullyConnectedWeights::validate(
-        weights_to_use, &converted_weights, input->tensor_shape(), fc_info.weights_trained_layout));
+      weights_to_use, &converted_weights, input->tensor_shape(), fc_info.weights_trained_layout));
     weights_to_use = &converted_weights;
   }
 
@@ -412,8 +412,8 @@ Status CLFullyConnectedLayerEx::validate(const ITensorInfo *input, const ITensor
   {
     // Fully Connected layer after a Convolution Layer without batches
     ARM_COMPUTE_RETURN_ERROR_ON(
-        (weights_to_use->dimension(1) !=
-         (input->dimension(0) * input->dimension(1) * input->dimension(2))));
+      (weights_to_use->dimension(1) !=
+       (input->dimension(0) * input->dimension(1) * input->dimension(2))));
 
     // Validate flatten kernel
     ARM_COMPUTE_RETURN_ON_ERROR(CLFlattenLayer::validate(input, &flatten_input));
@@ -427,7 +427,7 @@ Status CLFullyConnectedLayerEx::validate(const ITensorInfo *input, const ITensor
 
   // Validate matrix multiply kernel
   ARM_COMPUTE_RETURN_ON_ERROR(
-      validate_mm(*input_to_use, *weights_to_use, biases, *output, fc_info));
+    validate_mm(*input_to_use, *weights_to_use, biases, *output, fc_info));
 
   return Status{};
 }
@@ -457,7 +457,7 @@ void CLFullyConnectedLayerEx::run()
       if (_weights_manager && _weights_manager->are_weights_managed(cur_weights))
       {
         _original_weights = utils::cast::polymorphic_downcast<ICLTensor *>(
-            _weights_manager->run(cur_weights, &_reshape_weights_managed_function));
+          _weights_manager->run(cur_weights, &_reshape_weights_managed_function));
       }
       else
       {

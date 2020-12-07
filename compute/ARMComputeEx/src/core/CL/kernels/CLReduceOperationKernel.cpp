@@ -145,7 +145,7 @@ void CLReduceOperationKernel::configure(const ICLTensor *input, ICLTensor *outpu
 
   // Create kernel
   _kernel =
-      static_cast<cl::Kernel>(CLKernelLibraryEx::get().create_kernel(kernel_name, build_opts));
+    static_cast<cl::Kernel>(CLKernelLibraryEx::get().create_kernel(kernel_name, build_opts));
 
   // Configure  kernel window
   Window win = calculate_max_window(*output_info, Steps());

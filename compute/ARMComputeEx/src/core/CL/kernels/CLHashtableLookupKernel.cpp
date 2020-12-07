@@ -61,8 +61,8 @@ std::pair<Status, Window> validate_and_configure_window(ITensorInfo *input, ITen
   input_access.set_valid_region(win, output->valid_region());
 
   Status err = (window_changed)
-                   ? ARM_COMPUTE_CREATE_ERROR(ErrorCode::RUNTIME_ERROR, "Insufficient Padding!")
-                   : Status{};
+                 ? ARM_COMPUTE_CREATE_ERROR(ErrorCode::RUNTIME_ERROR, "Insufficient Padding!")
+                 : Status{};
   return std::make_pair(err, win);
 }
 } // namespace
@@ -78,8 +78,8 @@ Status CLHashtableLookupKernel::validate(const ITensorInfo *lookups, const ITens
 {
   ARM_COMPUTE_ERROR_ON_NULLPTR(lookups, keys, input, output, hits);
   ARM_COMPUTE_ERROR_ON_DATA_TYPE_CHANNEL_NOT_IN(
-      input, 1, DataType::U8, DataType::S8, DataType::QASYMM8, DataType::U16, DataType::S16,
-      DataType::U32, DataType::S32, DataType::F16, DataType::F32);
+    input, 1, DataType::U8, DataType::S8, DataType::QASYMM8, DataType::U16, DataType::S16,
+    DataType::U32, DataType::S32, DataType::F16, DataType::F32);
   ARM_COMPUTE_ERROR_ON_DATA_TYPE_CHANNEL_NOT_IN(lookups, 1, DataType::S32);
   ARM_COMPUTE_ERROR_ON_DATA_TYPE_CHANNEL_NOT_IN(keys, 1, DataType::S32);
   ARM_COMPUTE_ERROR_ON_DATA_TYPE_CHANNEL_NOT_IN(hits, 1, DataType::U8, DataType::QASYMM8);
@@ -102,7 +102,7 @@ void CLHashtableLookupKernel::configure(const ICLTensor *lookups, const ICLTenso
                                         const ICLTensor *input, ICLTensor *output, ICLTensor *hits)
 {
   ARM_COMPUTE_ERROR_THROW_ON(
-      validate(lookups->info(), keys->info(), input->info(), output->info(), hits->info()));
+    validate(lookups->info(), keys->info(), input->info(), output->info(), hits->info()));
 
   _lookups = lookups;
   _keys = keys;
@@ -113,7 +113,7 @@ void CLHashtableLookupKernel::configure(const ICLTensor *lookups, const ICLTenso
   // Make _lookup_indices tensor
   _lookup_indices = support::cpp14::make_unique<CLTensor>();
   _lookup_indices->allocator()->init(
-      TensorInfo(lookups->info()->tensor_shape(), lookups->info()->num_channels(), DataType::S32));
+    TensorInfo(lookups->info()->tensor_shape(), lookups->info()->num_channels(), DataType::S32));
   _lookup_indices->allocator()->allocate();
 
   // Set kernel build options
@@ -127,8 +127,8 @@ void CLHashtableLookupKernel::configure(const ICLTensor *lookups, const ICLTenso
   build_opts.emplace("-DNUM_DIMS=" + support::cpp11::to_string(_input->info()->num_dimensions()));
 
   // Create kernel
-  _kernel = static_cast<cl::Kernel>(
-      CLKernelLibraryEx::get().create_kernel(kernel_name.str(), build_opts));
+  _kernel =
+    static_cast<cl::Kernel>(CLKernelLibraryEx::get().create_kernel(kernel_name.str(), build_opts));
 
   // Configure kernel window
   auto win_config = validate_and_configure_window(input->info(), output->info());
@@ -148,7 +148,7 @@ void CLHashtableLookupKernel::run(const Window &window, cl::CommandQueue &queue)
 
   // Set values of hits
   const int32_t *lookups_buf =
-      reinterpret_cast<int32_t *>(const_cast<ICLTensor *>(_lookups)->buffer());
+    reinterpret_cast<int32_t *>(const_cast<ICLTensor *>(_lookups)->buffer());
   const int32_t *keys_buf = reinterpret_cast<int32_t *>(const_cast<ICLTensor *>(_keys)->buffer());
   uint8_t *hits_buf = reinterpret_cast<uint8_t *>(_hits->buffer());
   int32_t *lookup_indices_buf = reinterpret_cast<int32_t *>(_lookup_indices->buffer());

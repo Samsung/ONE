@@ -61,14 +61,14 @@ std::pair<Status, Window> validate_and_configure_window(ITensorInfo *input, ITen
   input_access.set_valid_region(win, output->valid_region());
 
   Status err = (window_changed)
-                   ? ARM_COMPUTE_CREATE_ERROR(ErrorCode::RUNTIME_ERROR, "Insufficient Padding!")
-                   : Status{};
+                 ? ARM_COMPUTE_CREATE_ERROR(ErrorCode::RUNTIME_ERROR, "Insufficient Padding!")
+                 : Status{};
   return std::make_pair(err, win);
 }
 } // namespace
 
 CLEmbeddingLookupKernel::CLEmbeddingLookupKernel()
-    : _input(nullptr), _output(nullptr), _lookups(nullptr)
+  : _input(nullptr), _output(nullptr), _lookups(nullptr)
 {
 }
 
@@ -77,8 +77,8 @@ Status CLEmbeddingLookupKernel::validate(const ITensorInfo *input, const ITensor
 {
   ARM_COMPUTE_ERROR_ON_NULLPTR(input, output, lookups);
   ARM_COMPUTE_ERROR_ON_DATA_TYPE_CHANNEL_NOT_IN(
-      input, 1, DataType::U8, DataType::S8, DataType::QASYMM8, DataType::U16, DataType::S16,
-      DataType::U32, DataType::S32, DataType::F16, DataType::F32);
+    input, 1, DataType::U8, DataType::S8, DataType::QASYMM8, DataType::U16, DataType::S16,
+    DataType::U32, DataType::S32, DataType::F16, DataType::F32);
   ARM_COMPUTE_ERROR_ON_DATA_TYPE_CHANNEL_NOT_IN(lookups, 1, DataType::S32);
   ARM_COMPUTE_ERROR_ON_MISMATCHING_DATA_TYPES(input, output);
 
@@ -108,8 +108,8 @@ void CLEmbeddingLookupKernel::configure(const ICLTensor *input, ICLTensor *outpu
   build_opts.emplace("-DNUM_DIMS=" + support::cpp11::to_string(_input->info()->num_dimensions()));
 
   // Create kernel
-  _kernel = static_cast<cl::Kernel>(
-      CLKernelLibraryEx::get().create_kernel(kernel_name.str(), build_opts));
+  _kernel =
+    static_cast<cl::Kernel>(CLKernelLibraryEx::get().create_kernel(kernel_name.str(), build_opts));
 
   // Configure kernel window
   auto win_config = validate_and_configure_window(input->info(), output->info());

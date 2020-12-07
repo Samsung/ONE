@@ -53,7 +53,7 @@ using namespace arm_compute;
 using namespace arm_compute::misc::shape_calculator;
 
 CLTransposeConvLayer::CLTransposeConvLayer(std::shared_ptr<IMemoryManager> memory_manager)
-    : _memory_manager(std::move(memory_manager)), _function()
+  : _memory_manager(std::move(memory_manager)), _function()
 {
 }
 
@@ -105,20 +105,20 @@ Status CLTransposeConvLayer::validate(const ITensorInfo *input, const ITensorInf
 {
   ARM_COMPUTE_RETURN_ERROR_ON_NULLPTR(input, weights, output);
   switch (CLTransposeConvLayer::get_deconvolution_method(
-      input, weights, bias, output, deconv_info, invalid_right, invalid_bottom, weights_info))
+    input, weights, bias, output, deconv_info, invalid_right, invalid_bottom, weights_info))
   {
     case DeconvolutionMethod::DIRECT:
     {
       // Validate direct convolution layer
       ARM_COMPUTE_RETURN_ON_ERROR(CLDirectTransposeConvLayer::validate(
-          input, weights, bias, output, deconv_info, invalid_right, invalid_bottom, weights_info));
+        input, weights, bias, output, deconv_info, invalid_right, invalid_bottom, weights_info));
       break;
     }
     case DeconvolutionMethod::GEMM:
     {
       // Validate gemm-based convolution layer
       ARM_COMPUTE_RETURN_ON_ERROR(
-          CLGEMMDeconvolutionLayer::validate(input, weights, bias, output, deconv_info));
+        CLGEMMDeconvolutionLayer::validate(input, weights, bias, output, deconv_info));
       break;
     }
     default:
@@ -130,9 +130,9 @@ Status CLTransposeConvLayer::validate(const ITensorInfo *input, const ITensorInf
 }
 
 DeconvolutionMethod CLTransposeConvLayer::get_deconvolution_method(
-    const ITensorInfo *input, const ITensorInfo *weights, const ITensorInfo *bias,
-    ITensorInfo *output, const PadStrideInfo &deconv_info, unsigned int invalid_right,
-    unsigned int invalid_bottom, const WeightsInfo &weights_info)
+  const ITensorInfo *input, const ITensorInfo *weights, const ITensorInfo *bias,
+  ITensorInfo *output, const PadStrideInfo &deconv_info, unsigned int invalid_right,
+  unsigned int invalid_bottom, const WeightsInfo &weights_info)
 {
   ARM_COMPUTE_UNUSED(output, bias, weights_info);
 

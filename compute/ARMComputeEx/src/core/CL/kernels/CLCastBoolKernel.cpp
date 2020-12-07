@@ -103,7 +103,7 @@ void CLCastBoolKernel::configure(const ICLTensor *input, ICLTensor *output)
   // Create kernel
   const std::string kernel_name = "cast_bool";
   _kernel = static_cast<cl::Kernel>(
-      CLKernelLibraryEx::get().create_kernel(kernel_name, build_opts.options()));
+    CLKernelLibraryEx::get().create_kernel(kernel_name, build_opts.options()));
 
   // Configure kernel
   ICLSimple2DKernel::configure(input, output, num_elems_processed_per_iteration);

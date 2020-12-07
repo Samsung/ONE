@@ -72,10 +72,10 @@ namespace shape_calculator
  * @return the calculated shape
  */
 inline TensorShape compute_transposeconv_upsampled_shape(
-    const ITensorInfo &input, const ITensorInfo &weights, const PadStrideInfo &info,
-    std::pair<unsigned int, unsigned int> &out_dims, unsigned int invalid_right,
-    unsigned int invalid_bottom, unsigned int &pad_left, unsigned int &pad_right,
-    unsigned int &pad_top, unsigned int &pad_bottom)
+  const ITensorInfo &input, const ITensorInfo &weights, const PadStrideInfo &info,
+  std::pair<unsigned int, unsigned int> &out_dims, unsigned int invalid_right,
+  unsigned int invalid_bottom, unsigned int &pad_left, unsigned int &pad_right,
+  unsigned int &pad_top, unsigned int &pad_bottom)
 {
   unsigned int sx = info.stride().first;
   unsigned int sy = info.stride().second;
@@ -103,7 +103,7 @@ inline TensorShape compute_transposeconv_upsampled_shape(
 
   unsigned int padx_all_except_invallid = padx + info.pad_left() + info.pad_right() - invalid_right;
   unsigned int pady_all_except_invallid =
-      pady + info.pad_top() + info.pad_bottom() - invalid_bottom;
+    pady + info.pad_top() + info.pad_bottom() - invalid_bottom;
   pad_left = (padx_all_except_invallid + 1) / 2 - info.pad_left();
   pad_right = pady_all_except_invallid / 2 - info.pad_right() + invalid_right;
   pad_top = (padx_all_except_invallid + 1) / 2 - info.pad_top();
@@ -135,7 +135,7 @@ compute_transposeconv_output_shape(const std::pair<unsigned int, unsigned int> &
   const int width_idx = get_data_layout_dimension_index(data_layout, DataLayoutDimension::WIDTH);
   const int height_idx = get_data_layout_dimension_index(data_layout, DataLayoutDimension::HEIGHT);
   const int channel_idx =
-      get_data_layout_dimension_index(data_layout, DataLayoutDimension::CHANNEL);
+    get_data_layout_dimension_index(data_layout, DataLayoutDimension::CHANNEL);
   const int batch_idx = get_data_layout_dimension_index(data_layout, DataLayoutDimension::BATCHES);
 
   TensorShape out_shape{input_shape};
@@ -160,7 +160,7 @@ inline TensorShape compute_depth_to_space_shape_ex(const ITensorInfo *input, int
   const int idx_width = get_data_layout_dimension_index(data_layout, DataLayoutDimension::WIDTH);
   const int idx_height = get_data_layout_dimension_index(data_layout, DataLayoutDimension::HEIGHT);
   const int idx_channel =
-      get_data_layout_dimension_index(data_layout, DataLayoutDimension::CHANNEL);
+    get_data_layout_dimension_index(data_layout, DataLayoutDimension::CHANNEL);
 
   TensorShape output_shape{input->tensor_shape()};
   output_shape.set(idx_width, input->dimension(idx_width) * block);

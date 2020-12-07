@@ -119,15 +119,15 @@ inline DATA_TYPE_OUTPUT arg_idx_min(__global const DATA_TYPE *input, const int x
   in.s01234567 = select(in.s89abcdef, in.s01234567, idx_sel);
   res.s01234567 = select(res.s89abcdef, res.s01234567, CONVERT(idx_sel, int8));
 
-  idx_sel.s0123 = (in.s0123 < in.s4567) ||
-                  (in.s0123 == in.s4567 &&
-                   CONVERT((res.s0123 < res.s4567), VEC_DATA_TYPE(DATA_TYPE_SELECT, 4)));
+  idx_sel.s0123 =
+    (in.s0123 < in.s4567) ||
+    (in.s0123 == in.s4567 && CONVERT((res.s0123 < res.s4567), VEC_DATA_TYPE(DATA_TYPE_SELECT, 4)));
   in.s0123 = select(in.s4567, in.s0123, idx_sel.s0123);
   res.s0123 = select(res.s4567, res.s0123, CONVERT(idx_sel.s0123, int4));
 
   idx_sel.s01 =
-      (in.s01 < in.s23) ||
-      (in.s01 == in.s23 && CONVERT((res.s01 < res.s23), VEC_DATA_TYPE(DATA_TYPE_SELECT, 2)));
+    (in.s01 < in.s23) ||
+    (in.s01 == in.s23 && CONVERT((res.s01 < res.s23), VEC_DATA_TYPE(DATA_TYPE_SELECT, 2)));
   in.s01 = select(in.s23, in.s01, idx_sel.s01);
   res.s01 = select(res.s23, res.s01, CONVERT(idx_sel.s01, int2));
 
@@ -204,15 +204,15 @@ inline DATA_TYPE_OUTPUT arg_idx_max(__global const DATA_TYPE *input, const int x
   in.s01234567 = select(in.s89abcdef, in.s01234567, idx_sel);
   res.s01234567 = select(res.s89abcdef, res.s01234567, CONVERT(idx_sel, int8));
 
-  idx_sel.s0123 = (in.s0123 > in.s4567) ||
-                  (in.s0123 == in.s4567 &&
-                   CONVERT((res.s0123 < res.s4567), VEC_DATA_TYPE(DATA_TYPE_SELECT, 4)));
+  idx_sel.s0123 =
+    (in.s0123 > in.s4567) ||
+    (in.s0123 == in.s4567 && CONVERT((res.s0123 < res.s4567), VEC_DATA_TYPE(DATA_TYPE_SELECT, 4)));
   in.s0123 = select(in.s4567, in.s0123, idx_sel.s0123);
   res.s0123 = select(res.s4567, res.s0123, CONVERT(idx_sel.s0123, int4));
 
   idx_sel.s01 =
-      (in.s01 > in.s23) ||
-      (in.s01 == in.s23 && CONVERT((res.s01 < res.s23), VEC_DATA_TYPE(DATA_TYPE_SELECT, 2)));
+    (in.s01 > in.s23) ||
+    (in.s01 == in.s23 && CONVERT((res.s01 < res.s23), VEC_DATA_TYPE(DATA_TYPE_SELECT, 2)));
   in.s01 = select(in.s23, in.s01, idx_sel.s01);
   res.s01 = select(res.s23, res.s01, CONVERT(idx_sel.s01, int2));
 
@@ -296,22 +296,21 @@ __kernel void arg_min_max_ex_x(IMAGE_DECLARATION(src),
   const uint x_idx = get_global_id(0);
   const uint y_idx = get_global_id(1);
   const __global DATA_TYPE *src_in_row =
-      (const __global DATA_TYPE *)(src_ptr + src_offset_first_element_in_bytes +
-                                   y_idx * src_step_y);
+    (const __global DATA_TYPE *)(src_ptr + src_offset_first_element_in_bytes + y_idx * src_step_y);
 
   for (unsigned int y = 0; y < get_local_size(1); ++y)
   {
 #if defined(ARG_MAX)
 #if defined(PREV_OUTPUT)
-    local_results[lid] = arg_idx_max_prev_out(
-        src_in_row, (__global DATA_TYPE_OUTPUT *)offset(&prev_res, 0, y), x_idx);
+    local_results[lid] =
+      arg_idx_max_prev_out(src_in_row, (__global DATA_TYPE_OUTPUT *)offset(&prev_res, 0, y), x_idx);
 #else  // !defined(PREV_OUTPUT)
     local_results[lid] = arg_idx_max((__global DATA_TYPE *)offset(&src, 0, y), x_idx);
 #endif // defined(PREV_OUTPUT)
 #else  // defined(ARG_MIN)
 #if defined(PREV_OUTPUT)
-    local_results[lid] = arg_idx_min_prev_out(
-        src_in_row, (__global DATA_TYPE_OUTPUT *)offset(&prev_res, 0, y), x_idx);
+    local_results[lid] =
+      arg_idx_min_prev_out(src_in_row, (__global DATA_TYPE_OUTPUT *)offset(&prev_res, 0, y), x_idx);
 #else  // !defined(PREV_OUTPUT)
     local_results[lid] = arg_idx_min((__global DATA_TYPE *)offset(&src, 0, y), x_idx);
 #endif // defined(PREV_OUTPUT)
@@ -334,12 +333,12 @@ __kernel void arg_min_max_ex_x(IMAGE_DECLARATION(src),
         DATA_TYPE tmp1 = *(src_in_row + local_results[lid + i]);
 #if defined(ARG_MAX)
         condition_check3 =
-            ((tmp0 == tmp1) && (local_results[lid + i] < local_results[lid])) || (tmp0 < tmp1);
+          ((tmp0 == tmp1) && (local_results[lid + i] < local_results[lid])) || (tmp0 < tmp1);
         local_results[lid] = select(local_results[lid], local_results[lid + i], condition_check3);
 #else  // defined(ARG_MIN)
         local_results[lid] = select(
-            local_results[lid], local_results[lid + i],
-            ((tmp0 == tmp1) && (local_results[lid + i] < local_results[lid])) || (tmp0 > tmp1));
+          local_results[lid], local_results[lid + i],
+          ((tmp0 == tmp1) && (local_results[lid + i] < local_results[lid])) || (tmp0 > tmp1));
 #endif // defined(ARG_MAX) || defined(ARG_MIN)
       }
       barrier(CLK_LOCAL_MEM_FENCE);
@@ -403,7 +402,7 @@ __kernel void arg_min_max_ex_y(IMAGE_DECLARATION(src), IMAGE_DECLARATION(output)
   {
     VEC_DATA_TYPE(DATA_TYPE, 16)
     in =
-        CONVERT(vload16(0, (__global DATA_TYPE *)offset(&src, 0, y)), VEC_DATA_TYPE(DATA_TYPE, 16));
+      CONVERT(vload16(0, (__global DATA_TYPE *)offset(&src, 0, y)), VEC_DATA_TYPE(DATA_TYPE, 16));
 
     VEC_DATA_TYPE(DATA_TYPE_OUTPUT, 16)
     cond_conv = CONVERT(CONDITION_TO_USE(in, res), VEC_DATA_TYPE(DATA_TYPE_OUTPUT, 16));

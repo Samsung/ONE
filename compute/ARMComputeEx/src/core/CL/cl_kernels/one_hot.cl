@@ -206,16 +206,16 @@ __kernel void one_hot_only_on_value(TENSOR3D_DECLARATION(indices), VECTOR_DECLAR
 
 #if AXIS == 0
   *(__global DATA_TYPE *)tensor4D_offset(&output, index, px, py, pz) =
-      *((__global const DATA_TYPE *)on_value_ptr);
+    *((__global const DATA_TYPE *)on_value_ptr);
 #elif AXIS == 1
   *(__global DATA_TYPE *)tensor4D_offset(&output, px, index, py, pz) =
-      *((__global const DATA_TYPE *)on_value_ptr);
+    *((__global const DATA_TYPE *)on_value_ptr);
 #elif AXIS == 2
   *(__global DATA_TYPE *)tensor4D_offset(&output, px, py, index, pz) =
-      *((__global const DATA_TYPE *)on_value_ptr);
+    *((__global const DATA_TYPE *)on_value_ptr);
 #elif AXIS == 3
   *(__global DATA_TYPE *)tensor4D_offset(&output, px, py, pz, index) =
-      *((__global const DATA_TYPE *)on_value_ptr);
+    *((__global const DATA_TYPE *)on_value_ptr);
 #endif // AXIS
 }
 

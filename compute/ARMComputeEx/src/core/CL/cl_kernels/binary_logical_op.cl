@@ -111,14 +111,14 @@ __kernel void binary_logical_op(TENSOR3D_DECLARATION(input1), TENSOR3D_DECLARATI
 #if OP_CODE == 1 // LOGICAL AND
   VSTORE(VEC_SIZE)
   (CONVERT(VLOAD(VEC_SIZE)(0, (__global DATA_TYPE *)input1.ptr) &&
-               VLOAD(VEC_SIZE)(0, (__global DATA_TYPE *)input2.ptr),
+             VLOAD(VEC_SIZE)(0, (__global DATA_TYPE *)input2.ptr),
            VEC_DATA_TYPE(DATA_TYPE, VEC_SIZE)),
    0, (__global DATA_TYPE *)output.ptr);
 
 #elif OP_CODE == 2 // LOGICAL OR
   VSTORE(VEC_SIZE)
   (CONVERT(VLOAD(VEC_SIZE)(0, (__global DATA_TYPE *)input1.ptr) ||
-               VLOAD(VEC_SIZE)(0, (__global DATA_TYPE *)input2.ptr),
+             VLOAD(VEC_SIZE)(0, (__global DATA_TYPE *)input2.ptr),
            VEC_DATA_TYPE(DATA_TYPE, VEC_SIZE)),
    0, (__global DATA_TYPE *)output.ptr);
 

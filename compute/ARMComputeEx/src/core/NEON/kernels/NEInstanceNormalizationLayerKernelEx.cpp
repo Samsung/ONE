@@ -63,7 +63,7 @@ void instance_normalization_nchw(ITensor *input, ITensor *output, ITensor *gamma
 {
   /** NEON vector tag type. */
   using ExactTagType =
-      typename wrapper::traits::neon_bitvector_tag_t<T, wrapper::traits::BitWidth::W128>;
+    typename wrapper::traits::neon_bitvector_tag_t<T, wrapper::traits::BitWidth::W128>;
 
   // Clear X/Y dimensions on execution window as we handle the planes manually
   Window win = window;
@@ -73,107 +73,107 @@ void instance_normalization_nchw(ITensor *input, ITensor *output, ITensor *gamma
   constexpr int window_step_x = 16 / sizeof(T);
   const unsigned int elements_plane = input->info()->dimension(0) * output->info()->dimension(1);
   const auto channel_idx =
-      get_data_layout_dimension_index(input->info()->data_layout(), DataLayoutDimension::CHANNEL);
+    get_data_layout_dimension_index(input->info()->data_layout(), DataLayoutDimension::CHANNEL);
 
   Iterator input_it(input, win);
   execute_window_loop(
-      win,
-      [&](const Coordinates &id) {
-        Window win_plane = window;
-        win_plane.set(Window::DimX, Window::Dimension(0, 1, 1));
-        win_plane.set(Window::DimZ, Window::Dimension(id[2], id[2] + 1, 1));
-        win_plane.set(3, Window::Dimension(id[3], id[3] + 1, 1));
+    win,
+    [&](const Coordinates &id) {
+      Window win_plane = window;
+      win_plane.set(Window::DimX, Window::Dimension(0, 1, 1));
+      win_plane.set(Window::DimZ, Window::Dimension(id[2], id[2] + 1, 1));
+      win_plane.set(3, Window::Dimension(id[3], id[3] + 1, 1));
 
-        Iterator input_plane_it(input, win_plane);
-        Iterator output_plane_it(output, win_plane);
+      Iterator input_plane_it(input, win_plane);
+      Iterator output_plane_it(output, win_plane);
 
-        auto sum_h_w = static_cast<T>(0.f);
-        auto sum_squares_h_w = static_cast<T>(0.f);
+      auto sum_h_w = static_cast<T>(0.f);
+      auto sum_squares_h_w = static_cast<T>(0.f);
 
-        execute_window_loop(
-            win_plane,
-            [&](const Coordinates &) {
-              const auto input_ptr = reinterpret_cast<const T *>(input_plane_it.ptr());
+      execute_window_loop(
+        win_plane,
+        [&](const Coordinates &) {
+          const auto input_ptr = reinterpret_cast<const T *>(input_plane_it.ptr());
 
-              auto vec_sum_h_w = wrapper::vdup_n(static_cast<T>(0.f), ExactTagType{});
-              auto vec_sum_squares_h_w = wrapper::vdup_n(static_cast<T>(0.f), ExactTagType{});
+          auto vec_sum_h_w = wrapper::vdup_n(static_cast<T>(0.f), ExactTagType{});
+          auto vec_sum_squares_h_w = wrapper::vdup_n(static_cast<T>(0.f), ExactTagType{});
 
-              // Compute S elements per iteration
-              int x = window.x().start();
-              for (; x <= (window.x().end() - window_step_x); x += window_step_x)
-              {
-                auto vec_input_val = wrapper::vloadq(input_ptr + x);
-                vec_sum_h_w = wrapper::vadd(vec_sum_h_w, vec_input_val);
-                vec_sum_squares_h_w =
-                    wrapper::vadd(vec_sum_squares_h_w, wrapper::vmul(vec_input_val, vec_input_val));
-              }
+          // Compute S elements per iteration
+          int x = window.x().start();
+          for (; x <= (window.x().end() - window_step_x); x += window_step_x)
+          {
+            auto vec_input_val = wrapper::vloadq(input_ptr + x);
+            vec_sum_h_w = wrapper::vadd(vec_sum_h_w, vec_input_val);
+            vec_sum_squares_h_w =
+              wrapper::vadd(vec_sum_squares_h_w, wrapper::vmul(vec_input_val, vec_input_val));
+          }
 
-              auto vec2_sum_h_w =
-                  wrapper::vpadd(wrapper::vgethigh(vec_sum_h_w), wrapper::vgetlow(vec_sum_h_w));
-              auto vec2_sum_squares_h_w = wrapper::vpadd(wrapper::vgethigh(vec_sum_squares_h_w),
-                                                         wrapper::vgetlow(vec_sum_squares_h_w));
-              for (int i = 0; i < window_step_x / 4; ++i)
-              {
-                vec2_sum_h_w = wrapper::vpadd(vec2_sum_h_w, vec2_sum_h_w);
-                vec2_sum_squares_h_w = wrapper::vpadd(vec2_sum_squares_h_w, vec2_sum_squares_h_w);
-              }
-              sum_h_w += wrapper::vgetlane(vec2_sum_h_w, 0);
-              sum_squares_h_w += wrapper::vgetlane(vec2_sum_squares_h_w, 0);
+          auto vec2_sum_h_w =
+            wrapper::vpadd(wrapper::vgethigh(vec_sum_h_w), wrapper::vgetlow(vec_sum_h_w));
+          auto vec2_sum_squares_h_w = wrapper::vpadd(wrapper::vgethigh(vec_sum_squares_h_w),
+                                                     wrapper::vgetlow(vec_sum_squares_h_w));
+          for (int i = 0; i < window_step_x / 4; ++i)
+          {
+            vec2_sum_h_w = wrapper::vpadd(vec2_sum_h_w, vec2_sum_h_w);
+            vec2_sum_squares_h_w = wrapper::vpadd(vec2_sum_squares_h_w, vec2_sum_squares_h_w);
+          }
+          sum_h_w += wrapper::vgetlane(vec2_sum_h_w, 0);
+          sum_squares_h_w += wrapper::vgetlane(vec2_sum_squares_h_w, 0);
 
-              // Compute left-over elements
-              for (; x < window.x().end(); ++x)
-              {
-                const auto value = *(input_ptr + x);
-                sum_h_w += value;
-                sum_squares_h_w += value * value;
-              }
-            },
-            input_plane_it, output_plane_it);
+          // Compute left-over elements
+          for (; x < window.x().end(); ++x)
+          {
+            const auto value = *(input_ptr + x);
+            sum_h_w += value;
+            sum_squares_h_w += value * value;
+          }
+        },
+        input_plane_it, output_plane_it);
 
-        const auto mean_h_w = sum_h_w / elements_plane;
-        const auto var_h_w = sum_squares_h_w / elements_plane - mean_h_w * mean_h_w;
+      const auto mean_h_w = sum_h_w / elements_plane;
+      const auto var_h_w = sum_squares_h_w / elements_plane - mean_h_w * mean_h_w;
 
-        auto gamma_val = 1.0f;
-        if (gamma != nullptr)
-        {
-          gamma_val = *reinterpret_cast<T *>(gamma->ptr_to_element({id[channel_idx]}));
-        }
-        const auto multip_h_w = gamma_val / std::sqrt(var_h_w + epsilon);
-        const auto vec_mean_h_w = wrapper::vdup_n(static_cast<T>(mean_h_w), ExactTagType{});
-        const auto vec_multip_h_w = wrapper::vdup_n(static_cast<T>(multip_h_w), ExactTagType{});
-        auto beta_val = 0.0f;
-        if (beta != nullptr)
-        {
-          beta_val = *reinterpret_cast<T *>(beta->ptr_to_element({id[channel_idx]}));
-        }
-        const auto vec_beta = wrapper::vdup_n(static_cast<T>(beta_val), ExactTagType{});
+      auto gamma_val = 1.0f;
+      if (gamma != nullptr)
+      {
+        gamma_val = *reinterpret_cast<T *>(gamma->ptr_to_element({id[channel_idx]}));
+      }
+      const auto multip_h_w = gamma_val / std::sqrt(var_h_w + epsilon);
+      const auto vec_mean_h_w = wrapper::vdup_n(static_cast<T>(mean_h_w), ExactTagType{});
+      const auto vec_multip_h_w = wrapper::vdup_n(static_cast<T>(multip_h_w), ExactTagType{});
+      auto beta_val = 0.0f;
+      if (beta != nullptr)
+      {
+        beta_val = *reinterpret_cast<T *>(beta->ptr_to_element({id[channel_idx]}));
+      }
+      const auto vec_beta = wrapper::vdup_n(static_cast<T>(beta_val), ExactTagType{});
 
-        execute_window_loop(
-            win_plane,
-            [&](const Coordinates &) {
-              auto input_ptr = reinterpret_cast<T *>(input_plane_it.ptr());
-              auto output_ptr = reinterpret_cast<T *>(output_plane_it.ptr());
+      execute_window_loop(
+        win_plane,
+        [&](const Coordinates &) {
+          auto input_ptr = reinterpret_cast<T *>(input_plane_it.ptr());
+          auto output_ptr = reinterpret_cast<T *>(output_plane_it.ptr());
 
-              // Compute S elements per iteration
-              int x = window.x().start();
-              auto vec_val = wrapper::vdup_n(static_cast<T>(0.0f), ExactTagType{});
-              for (; x <= (window.x().end() - window_step_x); x += window_step_x)
-              {
-                vec_val = wrapper::vloadq(input_ptr + x);
-                vec_val = wrapper::vadd(
-                    wrapper::vmul(wrapper::vsub(vec_val, vec_mean_h_w), vec_multip_h_w), vec_beta);
-                wrapper::vstore(output_ptr + x, vec_val);
-              }
+          // Compute S elements per iteration
+          int x = window.x().start();
+          auto vec_val = wrapper::vdup_n(static_cast<T>(0.0f), ExactTagType{});
+          for (; x <= (window.x().end() - window_step_x); x += window_step_x)
+          {
+            vec_val = wrapper::vloadq(input_ptr + x);
+            vec_val = wrapper::vadd(
+              wrapper::vmul(wrapper::vsub(vec_val, vec_mean_h_w), vec_multip_h_w), vec_beta);
+            wrapper::vstore(output_ptr + x, vec_val);
+          }
 
-              // Compute left-over elements
-              for (; x < window.x().end(); ++x)
-              {
-                *(output_ptr + x) = ((*(input_ptr + x)) - mean_h_w) * multip_h_w + beta_val;
-              }
-            },
-            input_plane_it, output_plane_it);
-      },
-      input_it);
+          // Compute left-over elements
+          for (; x < window.x().end(); ++x)
+          {
+            *(output_ptr + x) = ((*(input_ptr + x)) - mean_h_w) * multip_h_w + beta_val;
+          }
+        },
+        input_plane_it, output_plane_it);
+    },
+    input_it);
 }
 
 Status validate_arguments(const ITensorInfo *input, const ITensorInfo *output,
@@ -199,8 +199,8 @@ Status validate_arguments(const ITensorInfo *input, const ITensorInfo *output,
   {
     ARM_COMPUTE_RETURN_ERROR_ON_MISMATCHING_DATA_TYPES(input, gamma);
     ARM_COMPUTE_RETURN_ERROR_ON_MSG(input->dimension(get_data_layout_dimension_index(
-                                        input->data_layout(), DataLayoutDimension::CHANNEL)) !=
-                                        gamma->dimension(0),
+                                      input->data_layout(), DataLayoutDimension::CHANNEL)) !=
+                                      gamma->dimension(0),
                                     "Gamma's size must be the same as size of input's channel");
   }
 
@@ -208,8 +208,8 @@ Status validate_arguments(const ITensorInfo *input, const ITensorInfo *output,
   {
     ARM_COMPUTE_RETURN_ERROR_ON_MISMATCHING_DATA_TYPES(input, beta);
     ARM_COMPUTE_RETURN_ERROR_ON_MSG(input->dimension(get_data_layout_dimension_index(
-                                        input->data_layout(), DataLayoutDimension::CHANNEL)) !=
-                                        beta->dimension(0),
+                                      input->data_layout(), DataLayoutDimension::CHANNEL)) !=
+                                      beta->dimension(0),
                                     "Beta's size must be the same as size of input's channel");
   }
 
@@ -234,8 +234,8 @@ std::tuple<Status, Window> validate_and_configure_window(ITensorInfo *input, ITe
 } // namespace
 
 NEInstanceNormalizationLayerKernelEx::NEInstanceNormalizationLayerKernelEx()
-    : _func(nullptr), _input(nullptr), _output(nullptr), _gamma(nullptr), _beta(nullptr),
-      _epsilon(1e-12)
+  : _func(nullptr), _input(nullptr), _output(nullptr), _gamma(nullptr), _beta(nullptr),
+    _epsilon(1e-12)
 {
 }
 
@@ -251,7 +251,7 @@ void NEInstanceNormalizationLayerKernelEx::configure(ITensor *input, ITensor *ou
   _epsilon = epsilon;
 
   ARM_COMPUTE_ERROR_THROW_ON(
-      validate_arguments(_input->info(), _output->info(), gamma->info(), beta->info(), epsilon));
+    validate_arguments(_input->info(), _output->info(), gamma->info(), beta->info(), epsilon));
 
   if (_input->info()->data_type() == DataType::F32)
   {
@@ -282,7 +282,7 @@ Status NEInstanceNormalizationLayerKernelEx::validate(const ITensorInfo *input,
 {
   ARM_COMPUTE_RETURN_ON_ERROR(validate_arguments(input, output, gamma, beta, epsilon));
   ARM_COMPUTE_RETURN_ON_ERROR(std::get<0>(validate_and_configure_window(
-      input->clone().get(), (output == nullptr ? input->clone().get() : output->clone().get()))));
+    input->clone().get(), (output == nullptr ? input->clone().get() : output->clone().get()))));
   return Status{};
 }
 

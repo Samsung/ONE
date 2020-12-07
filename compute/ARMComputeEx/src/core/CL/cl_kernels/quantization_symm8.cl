@@ -116,7 +116,7 @@ __kernel void quantization_symm8(IMAGE_DECLARATION(input), VECTOR_DECLARATION(sc
 
   // Create scale vector
   const VEC_DATA_TYPE(DATA_TYPE_IN, VEC_SIZE) vscale =
-      *(((__global DATA_TYPE_IN *)(scale_ptr)) + get_global_id(1));
+    *(((__global DATA_TYPE_IN *)(scale_ptr)) + get_global_id(1));
 
   // Quantize
   VEC_DATA_TYPE(int, VEC_SIZE)
@@ -127,10 +127,10 @@ __kernel void quantization_symm8(IMAGE_DECLARATION(input), VECTOR_DECLARATION(sc
   (CONVERT(res, VEC_DATA_TYPE(DATA_TYPE_OUT, VEC_SIZE)), 0, (__global DATA_TYPE_OUT *)output.ptr);
 #else  //! defined(VEC_SIZE) || !defined(LAST_ACCESSED_X)
   *((__global DATA_TYPE_OUT *)(output.ptr)) = (DATA_TYPE_OUT)CLAMP(
-      CONVERT_RTE((*(__global DATA_TYPE_IN *)input.ptr) /
-                      (*(((__global DATA_TYPE_IN *)(scale_ptr)) + get_global_id(1))),
-                  int),
-      MIN_QUANT_VAL, MAX_QUANT_VAL);
+    CONVERT_RTE((*(__global DATA_TYPE_IN *)input.ptr) /
+                  (*(((__global DATA_TYPE_IN *)(scale_ptr)) + get_global_id(1))),
+                int),
+    MIN_QUANT_VAL, MAX_QUANT_VAL);
 #endif // defined(VEC_SIZE) && defined(LAST_ACCESSED_X)
 }
 #endif // defined(VEC_SIZE) && defined(DATA_TYPE_IN) && defined(DATA_TYPE_OUT)

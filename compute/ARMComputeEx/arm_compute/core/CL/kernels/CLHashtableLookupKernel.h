@@ -55,8 +55,8 @@ namespace arm_compute
 class ICLTensor;
 
 /**
-* @brief Class to perform HashtableLookup operation with opencl kernel
-*/
+ * @brief Class to perform HashtableLookup operation with opencl kernel
+ */
 class CLHashtableLookupKernel : public ICLKernel
 {
 public:
