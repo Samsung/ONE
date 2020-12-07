@@ -55,7 +55,7 @@ void OneHot(const int32_t depth, const T on_value, const T off_value, int32_t ax
       for (int k = 0; k < suffix_dim_size; ++k, ++output_data)
       {
         *output_data =
-            static_cast<int>(indices_data[i * suffix_dim_size + k]) == j ? on_value : off_value;
+          static_cast<int>(indices_data[i * suffix_dim_size + k]) == j ? on_value : off_value;
       }
     }
   }

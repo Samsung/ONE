@@ -43,10 +43,10 @@ template <typename T, typename TS> struct DepthwiseConvWorkerTask : cpu_backend_
                           const T *input_data, const Shape &filter_shape, const T *filter_data,
                           const Shape &bias_shape, const TS *bias_data, const Shape &output_shape,
                           T *output_data, int thread_start, int thread_end, int thread_dim)
-      : params_(params), input_shape_(input_shape), input_data_(input_data),
-        filter_shape_(filter_shape), filter_data_(filter_data), bias_shape_(bias_shape),
-        bias_data_(bias_data), output_shape_(output_shape), output_data_(output_data),
-        thread_start_(thread_start), thread_end_(thread_end), thread_dim_(thread_dim)
+    : params_(params), input_shape_(input_shape), input_data_(input_data),
+      filter_shape_(filter_shape), filter_data_(filter_data), bias_shape_(bias_shape),
+      bias_data_(bias_data), output_shape_(output_shape), output_data_(output_data),
+      thread_start_(thread_start), thread_end_(thread_end), thread_dim_(thread_dim)
   {
   }
 

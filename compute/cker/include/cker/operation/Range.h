@@ -35,8 +35,8 @@ template <typename T> inline int GetSize(T start, T limit, T delta)
   }
 
   int size = (std::is_integral<T>::value
-                  ? ((std::abs(limit - start) + std::abs(delta) - 1) / std::abs(delta))
-                  : std::ceil(std::abs((limit - start) / delta)));
+                ? ((std::abs(limit - start) + std::abs(delta) - 1) / std::abs(delta))
+                : std::ceil(std::abs((limit - start) / delta)));
   return size;
 }
 

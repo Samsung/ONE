@@ -50,7 +50,7 @@ inline void OptimizedReduceSum(const float *input_data, const Shape &input_shape
   {
     int r_idx = 0;
     float tmp_data[4] = {
-        0,
+      0,
     };
     float32x4_t tmp_data_32x4 = vld1q_f32(tmp_data);
     for (; r_idx <= reduce_size - 32; r_idx += 32)
@@ -143,7 +143,7 @@ inline bool ReduceImpl(const In *input_data, const Shape &input_shape, const Sha
   {
     size_t input_offset = ReducedOutputOffset(input_num_dims, input_dims, input_iter, 0, nullptr);
     size_t output_offset =
-        ReducedOutputOffset(input_num_dims, input_dims, input_iter, num_axis, axis);
+      ReducedOutputOffset(input_num_dims, input_dims, input_iter, num_axis, axis);
     output_data[output_offset] = reducer(output_data[output_offset], input_data[input_offset]);
   } while (NextIndex(input_num_dims, input_dims, input_iter));
   return true;
@@ -319,7 +319,7 @@ public:
         for (size_t idx = 0; idx < num_outputs; ++idx)
         {
           const U value =
-              static_cast<U>(std::round(temp_sum[idx] * scale + bias)) + output_zero_point;
+            static_cast<U>(std::round(temp_sum[idx] * scale + bias)) + output_zero_point;
           output_data[idx] = static_cast<T>(value);
         }
       }
@@ -329,7 +329,7 @@ public:
         for (size_t idx = 0; idx < num_outputs; ++idx)
         {
           float float_mean =
-              static_cast<float>(temp_sum[idx]) / static_cast<float>(num_elements_in_axis);
+            static_cast<float>(temp_sum[idx]) / static_cast<float>(num_elements_in_axis);
           float result = std::min(std::round(float_mean * scale + bias) + output_zero_point,
                                   static_cast<float>(std::numeric_limits<T>::max()));
           result = std::max(result, static_cast<float>(std::numeric_limits<T>::min()));

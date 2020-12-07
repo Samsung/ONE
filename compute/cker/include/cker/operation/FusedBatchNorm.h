@@ -105,7 +105,7 @@ public:
     float rest_size_inv = static_cast<float>(1.0f / static_cast<float>(rest_size));
     // This adjustment is for Bessel's correction
     float rest_size_adjust =
-        static_cast<float>(rest_size) / static_cast<float>(rest_size_minus_one);
+      static_cast<float>(rest_size) / static_cast<float>(rest_size_minus_one);
 
     Eigen::Tensor<float, 1, Eigen::RowMajor> batch_mean(depth);
     Eigen::Tensor<float, 1, Eigen::RowMajor> batch_variance(depth);
@@ -117,12 +117,12 @@ public:
 
     batch_variance.device(d) = x_centered.square().sum(reduce_dims) * rest_size_inv;
     auto scaling_factor = ((batch_variance + param.epsilon).rsqrt() * scale)
-                              .eval()
-                              .reshape(one_by_depth)
-                              .broadcast(bcast_spec);
+                            .eval()
+                            .reshape(one_by_depth)
+                            .broadcast(bcast_spec);
     auto x_scaled = x_centered * scaling_factor;
     auto x_shifted =
-        (x_scaled + offset.reshape(one_by_depth).broadcast(bcast_spec)).template cast<float>();
+      (x_scaled + offset.reshape(one_by_depth).broadcast(bcast_spec)).template cast<float>();
 
     UNUSED_RELEASE(rest_size_adjust);
 

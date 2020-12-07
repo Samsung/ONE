@@ -65,7 +65,7 @@ inline void Softmax(const SoftmaxParams &params, const Shape &input_shape, const
     for (int c = 0; c < depth; ++c)
     {
       output_data[i * depth + c] =
-          std::exp((input_data[i * depth + c] - max) * static_cast<float>(params.beta)) / sum;
+        std::exp((input_data[i * depth + c] - max) * static_cast<float>(params.beta)) / sum;
     }
   }
 }
@@ -163,11 +163,11 @@ inline void Softmax(const SoftmaxParams &params, const Shape &input_shape,
       if (input_diff >= diff_min)
       {
         const int32_t input_diff_rescaled = MultiplyByQuantizedMultiplierGreaterThanOne(
-            input_diff, input_beta_multiplier, input_beta_left_shift);
+          input_diff, input_beta_multiplier, input_beta_left_shift);
         const FixedPointScaledDiff scaled_diff_f8 =
-            FixedPointScaledDiff::FromRaw(input_diff_rescaled);
+          FixedPointScaledDiff::FromRaw(input_diff_rescaled);
         sum_of_exps = sum_of_exps + gemmlowp::Rescale<kAccumulationIntegerBits>(
-                                        exp_on_negative_values(scaled_diff_f8));
+                                      exp_on_negative_values(scaled_diff_f8));
       }
     }
 
@@ -178,11 +178,11 @@ inline void Softmax(const SoftmaxParams &params, const Shape &input_shape,
     // no later adjustment will be needed.
     int num_bits_over_unit = kAccumulationIntegerBits - headroom_plus_one;
     int32_t shifted_sum_minus_one =
-        static_cast<int32_t>((static_cast<uint32_t>(fixed_sum_of_exps) << headroom_plus_one) -
-                             (static_cast<uint32_t>(1) << 31));
+      static_cast<int32_t>((static_cast<uint32_t>(fixed_sum_of_exps) << headroom_plus_one) -
+                           (static_cast<uint32_t>(1) << 31));
 
     FixedPoint0 shifted_scale =
-        one_over_one_plus_x_for_x_in_0_1(FixedPoint0::FromRaw(shifted_sum_minus_one));
+      one_over_one_plus_x_for_x_in_0_1(FixedPoint0::FromRaw(shifted_sum_minus_one));
 
     for (int c = 0; c < depth; ++c)
     {
@@ -190,16 +190,16 @@ inline void Softmax(const SoftmaxParams &params, const Shape &input_shape,
       if (input_diff >= diff_min)
       {
         const int32_t input_diff_rescaled = MultiplyByQuantizedMultiplierGreaterThanOne(
-            input_diff, input_beta_multiplier, input_beta_left_shift);
+          input_diff, input_beta_multiplier, input_beta_left_shift);
         const FixedPointScaledDiff scaled_diff_f8 =
-            FixedPointScaledDiff::FromRaw(input_diff_rescaled);
+          FixedPointScaledDiff::FromRaw(input_diff_rescaled);
 
         FixedPoint0 exp_in_0 = exp_on_negative_values(scaled_diff_f8);
         int32_t unsat_output = gemmlowp::RoundingDivideByPOT((shifted_scale * exp_in_0).raw(),
                                                              num_bits_over_unit + 31 - 8);
 
         output_data[i * depth + c] = static_cast<uint8_t>(
-            std::max(std::min(unsat_output, static_cast<int32_t>(255)), static_cast<int32_t>(0)));
+          std::max(std::min(unsat_output, static_cast<int32_t>(255)), static_cast<int32_t>(0)));
       }
       else
       {

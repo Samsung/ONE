@@ -283,23 +283,23 @@ void CalculateLstmOutputFloat(int n_batch, int n_cell, int n_output, const float
 // contiguous, and we manually loop over the batched outputs.
 // LINT.IfChange
 inline void LstmStepFloat(
-    const float *input_ptr, const float *input_to_input_weights_ptr,
-    const float *input_to_forget_weights_ptr, const float *input_to_cell_weights_ptr,
-    const float *input_to_output_weights_ptr, const float *aux_input_ptr,
-    const float *aux_input_to_input_weights_ptr, const float *aux_input_to_forget_weights_ptr,
-    const float *aux_input_to_cell_weights_ptr, const float *aux_input_to_output_weights_ptr,
-    const float *recurrent_to_input_weights_ptr, const float *recurrent_to_forget_weights_ptr,
-    const float *recurrent_to_cell_weights_ptr, const float *recurrent_to_output_weights_ptr,
-    const float *cell_to_input_weights_ptr, const float *cell_to_forget_weights_ptr,
-    const float *cell_to_output_weights_ptr, const float *input_layer_norm_coefficients_ptr,
-    const float *forget_layer_norm_coefficients_ptr, const float *cell_layer_norm_coefficients_ptr,
-    const float *output_layer_norm_coefficients_ptr, const float *input_gate_bias_ptr,
-    const float *forget_gate_bias_ptr, const float *cell_gate_bias_ptr,
-    const float *output_gate_bias_ptr, const float *projection_weights_ptr,
-    const float *projection_bias_ptr, const LSTMParams *params, int n_batch, int n_cell,
-    int n_input, int n_aux_input, int n_output, int output_batch_leading_dim,
-    float *output_state_ptr, float *cell_state_ptr, float *scratch0, float *scratch1,
-    float *scratch2, float *scratch3, float *output_ptr)
+  const float *input_ptr, const float *input_to_input_weights_ptr,
+  const float *input_to_forget_weights_ptr, const float *input_to_cell_weights_ptr,
+  const float *input_to_output_weights_ptr, const float *aux_input_ptr,
+  const float *aux_input_to_input_weights_ptr, const float *aux_input_to_forget_weights_ptr,
+  const float *aux_input_to_cell_weights_ptr, const float *aux_input_to_output_weights_ptr,
+  const float *recurrent_to_input_weights_ptr, const float *recurrent_to_forget_weights_ptr,
+  const float *recurrent_to_cell_weights_ptr, const float *recurrent_to_output_weights_ptr,
+  const float *cell_to_input_weights_ptr, const float *cell_to_forget_weights_ptr,
+  const float *cell_to_output_weights_ptr, const float *input_layer_norm_coefficients_ptr,
+  const float *forget_layer_norm_coefficients_ptr, const float *cell_layer_norm_coefficients_ptr,
+  const float *output_layer_norm_coefficients_ptr, const float *input_gate_bias_ptr,
+  const float *forget_gate_bias_ptr, const float *cell_gate_bias_ptr,
+  const float *output_gate_bias_ptr, const float *projection_weights_ptr,
+  const float *projection_bias_ptr, const LSTMParams *params, int n_batch, int n_cell, int n_input,
+  int n_aux_input, int n_output, int output_batch_leading_dim, float *output_state_ptr,
+  float *cell_state_ptr, float *scratch0, float *scratch1, float *scratch2, float *scratch3,
+  float *output_ptr)
 {
   // Since we have already checked that weights are all there or none, we can
   // check the existence of only one to the get the condition.
@@ -314,7 +314,7 @@ inline void LstmStepFloat(
   // Check if inputs are all zeros so we can skip some computations.
   const bool is_input_all_zeros = IsZeroVector(input_ptr, n_batch * n_input);
   const bool is_aux_input_all_zeros =
-      (aux_input_ptr == nullptr || IsZeroVector(aux_input_ptr, n_batch * n_aux_input));
+    (aux_input_ptr == nullptr || IsZeroVector(aux_input_ptr, n_batch * n_aux_input));
   if (!use_cifg)
   {
     // Calculate the input gate. (If not CIFG.)
@@ -336,11 +336,11 @@ inline void LstmStepFloat(
                          forget_gate_scratch, is_input_all_zeros, is_aux_input_all_zeros);
   // Calculate the cell update gate.
   CalculateLstmGateFloat(
-      input_ptr, input_to_cell_weights_ptr, aux_input_ptr, aux_input_to_cell_weights_ptr,
-      output_state_ptr, recurrent_to_cell_weights_ptr, /*cell_state=*/nullptr,
-      /*cell_to_gate_weights=*/nullptr, cell_layer_norm_coefficients_ptr, cell_gate_bias_ptr,
-      n_batch, n_input, n_aux_input, n_output, n_cell, params->activation, cell_gate_scratch,
-      is_input_all_zeros, is_aux_input_all_zeros);
+    input_ptr, input_to_cell_weights_ptr, aux_input_ptr, aux_input_to_cell_weights_ptr,
+    output_state_ptr, recurrent_to_cell_weights_ptr, /*cell_state=*/nullptr,
+    /*cell_to_gate_weights=*/nullptr, cell_layer_norm_coefficients_ptr, cell_gate_bias_ptr, n_batch,
+    n_input, n_aux_input, n_output, n_cell, params->activation, cell_gate_scratch,
+    is_input_all_zeros, is_aux_input_all_zeros);
   // Update the cell state.
   UpdateLstmCellFloat(n_batch, n_cell, cell_state_ptr, input_gate_scratch, forget_gate_scratch,
                       cell_gate_scratch, use_cifg, params->cell_clip);

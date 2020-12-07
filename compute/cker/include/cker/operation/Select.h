@@ -34,7 +34,7 @@ void Select(const Shape &input_condition_shape, const D *input_condition_data,
             const T *input_y_data, const Shape &output_shape, T *output_data)
 {
   const int64_t flatsize =
-      MatchingFlatSize(input_condition_shape, input_x_shape, input_y_shape, output_shape);
+    MatchingFlatSize(input_condition_shape, input_x_shape, input_y_shape, output_shape);
   for (int64_t i = 0; i < flatsize; ++i)
   {
     output_data[i] = (input_condition_data[i] != 0) ? input_x_data[i] : input_y_data[i];
@@ -101,7 +101,7 @@ void BroadcastSelect4DSlow(const Shape &input_condition_shape, const D *input_co
           const int x_index = SubscriptToIndex(desc_x, b, y, x, c);
           const int y_index = SubscriptToIndex(desc_y, b, y, x, c);
           output_data[Offset(extended_output_shape, b, y, x, c)] =
-              input_condition_data[condition_index] ? input_x_data[x_index] : input_y_data[y_index];
+            input_condition_data[condition_index] ? input_x_data[x_index] : input_y_data[y_index];
         }
       }
     }

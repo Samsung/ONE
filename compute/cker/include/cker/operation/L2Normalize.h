@@ -77,7 +77,7 @@ void L2NormalizeQuant8(L2NormParams &params, const Shape &input_shape, const uin
     {
       int32_t diff = *input_data - input_zero_point;
       int32_t rescaled_diff = MultiplyByQuantizedMultiplierSmallerThanOneExp(
-          128 * diff, inv_l2norm_multiplier, inv_l2norm_shift);
+        128 * diff, inv_l2norm_multiplier, inv_l2norm_shift);
       int32_t unclamped_output_val = 128 + rescaled_diff;
       int32_t output_val = std::min(static_cast<int32_t>(255),
                                     std::max(static_cast<int32_t>(0), unclamped_output_val));

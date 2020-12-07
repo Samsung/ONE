@@ -555,9 +555,9 @@ void Transpose(const TransposeParams &unshrunk_params, const Shape &unshrunk_inp
     const int total_size = shrunk_input_shape.FlatSize();
 
     const int non_flatten_size =
-        Flatten(shrunk_input_shape, shrunk_output_shape, shrunk_params,
+      Flatten(shrunk_input_shape, shrunk_output_shape, shrunk_params,
 
-                &non_flatten_input_shape, &non_flatten_output_shape, &non_flatten_params);
+              &non_flatten_input_shape, &non_flatten_output_shape, &non_flatten_params);
     assert(non_flatten_params.perm[0] != 0);
 
     for (int i = 0; i < total_size; i += non_flatten_size)

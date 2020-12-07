@@ -79,9 +79,9 @@ inline void SpaceToBatchND(const SpaceToBatchParams &params, const Shape &unexte
         else
         {
           const T *in =
-              input_data + Offset(input_shape, input_batch,
-                                  (out_h * block_shape_height + shift_h) - padding_top,
-                                  (out_w * block_shape_width + shift_w) - padding_left, 0);
+            input_data + Offset(input_shape, input_batch,
+                                (out_h * block_shape_height + shift_h) - padding_top,
+                                (out_w * block_shape_width + shift_w) - padding_left, 0);
           memcpy(out, in, depth * sizeof(T));
         }
       }
