@@ -29,9 +29,9 @@ class DiffSummary : public nnfw::misc::tensor::Comparator::Observer
 {
 public:
   DiffSummary()
-      : max_abs_diff_index(0), max_abs_diff_expected{0.0f}, max_abs_diff_obtained{0.0f},
-        max_abs_diff_value{0.0f}, max_rel_diff_index(0), max_rel_diff_expected{0.0f},
-        max_rel_diff_obtained{0.0f}, max_rel_diff_value{0.0f}
+    : max_abs_diff_index(0), max_abs_diff_expected{0.0f}, max_abs_diff_obtained{0.0f},
+      max_abs_diff_value{0.0f}, max_rel_diff_index(0), max_rel_diff_expected{0.0f},
+      max_rel_diff_obtained{0.0f}, max_rel_diff_value{0.0f}
   {
     // DO NOTHING
   }
@@ -86,12 +86,12 @@ bool TfLiteInterpMatchApp::compareSingleTensorView(const nnfw::tflite::TensorVie
   using nnfw::misc::tensor::zip;
 
   zip(expected.shape(), expected, obtained)
-      << [&](const Index &index, T expected_value, T obtained_value) {
-           if (expected_value != obtained_value)
-           {
-             diffs.emplace_back(index, expected_value, obtained_value);
-           }
-         };
+    << [&](const Index &index, T expected_value, T obtained_value) {
+         if (expected_value != obtained_value)
+         {
+           diffs.emplace_back(index, expected_value, obtained_value);
+         }
+       };
 
   // TODO Unify summary generation code
   if (diffs.size() == 0)
@@ -121,8 +121,8 @@ bool TfLiteInterpMatchApp::compareSingleTensorView(const nnfw::tflite::TensorVie
 
 template <>
 bool TfLiteInterpMatchApp::compareSingleTensorView<float>(
-    const nnfw::tflite::TensorView<float> &expected,
-    const nnfw::tflite::TensorView<float> &obtained, int id) const
+  const nnfw::tflite::TensorView<float> &expected, const nnfw::tflite::TensorView<float> &obtained,
+  int id) const
 {
   DiffSummary summary;
 

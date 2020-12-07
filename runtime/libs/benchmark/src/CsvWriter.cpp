@@ -35,7 +35,7 @@ CsvWriter::CsvWriter(const std::string &csv_filename) : CsvWriter(csv_filename, 
 }
 
 CsvWriter::CsvWriter(const std::string &csv_filename, const std::vector<std::string> &header)
-    : _ofs(csv_filename), _header_size(header.size()), _col_idx(0), _row_idx(0)
+  : _ofs(csv_filename), _header_size(header.size()), _col_idx(0), _row_idx(0)
 {
   assert(csv_filename.empty() == false);
   assert(header.size() != 0);

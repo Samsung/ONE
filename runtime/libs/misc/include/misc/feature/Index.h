@@ -62,7 +62,7 @@ public:
    * @param[in]  col   The width index
    */
   Index(int32_t batch, int32_t ch, int32_t row, int32_t col)
-      : _batch{batch}, _ch{ch}, _row{row}, _col{col}
+    : _batch{batch}, _ch{ch}, _row{row}, _col{col}
   {
     // DO NOTHING
   }

@@ -33,18 +33,18 @@ std::vector<Diff<float>> Comparator::compare(const Shape &shape, const Reader<fl
   std::vector<Diff<float>> res;
 
   zip(shape, expected, obtained) <<
-      [&](const Index &index, float expected_value, float obtained_value) {
-        if (!_compare_fn(expected_value, obtained_value))
-        {
-          res.emplace_back(index, expected_value, obtained_value);
-        }
+    [&](const Index &index, float expected_value, float obtained_value) {
+      if (!_compare_fn(expected_value, obtained_value))
+      {
+        res.emplace_back(index, expected_value, obtained_value);
+      }
 
-        // Update max_diff_index, if necessary
-        if (observer != nullptr)
-        {
-          observer->notify(index, expected_value, obtained_value);
-        }
-      };
+      // Update max_diff_index, if necessary
+      if (observer != nullptr)
+      {
+        observer->notify(index, expected_value, obtained_value);
+      }
+    };
 
   return res;
 }

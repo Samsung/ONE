@@ -74,9 +74,8 @@ public:
       _values.resize(_shape.dim(0) * _stride.at(0));
 
       // Set 'value'
-      iterate(_shape) << [this, &fn](const Index &index) {
-        _values.at(_stride.offset(index)) = fn(_shape, index);
-      };
+      iterate(_shape) <<
+        [this, &fn](const Index &index) { _values.at(_stride.offset(index)) = fn(_shape, index); };
     }
   }
 

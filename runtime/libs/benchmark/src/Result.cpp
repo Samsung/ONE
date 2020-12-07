@@ -77,9 +77,9 @@ uint32_t averageMemoryKb(const benchmark::Phase &phase, int type)
   return average<uint32_t, uint32_t>(phase.memory[type]);
 }
 
-uint32_t peakMemory(const uint32_t memory[benchmark::PhaseEnum::END_OF_PHASE]
-                                         [benchmark::MemoryType::END_OF_MEM_TYPE],
-                    int type)
+uint32_t peakMemory(
+  const uint32_t memory[benchmark::PhaseEnum::END_OF_PHASE][benchmark::MemoryType::END_OF_MEM_TYPE],
+  int type)
 {
   using namespace benchmark;
   // tricky. handle WARMUP as EXECUTE
@@ -88,7 +88,7 @@ uint32_t peakMemory(const uint32_t memory[benchmark::PhaseEnum::END_OF_PHASE]
 }
 
 void printResultTime(
-    const double time[benchmark::PhaseEnum::END_OF_PHASE][benchmark::FigureType::END_OF_FIG_TYPE])
+  const double time[benchmark::PhaseEnum::END_OF_PHASE][benchmark::FigureType::END_OF_FIG_TYPE])
 {
   using namespace benchmark;
 
@@ -119,8 +119,8 @@ void printResultTime(
   std::cout << "===================================" << std::endl;
 }
 
-void printResultMemory(const uint32_t memory[benchmark::PhaseEnum::END_OF_PHASE]
-                                            [benchmark::MemoryType::END_OF_MEM_TYPE])
+void printResultMemory(
+  const uint32_t memory[benchmark::PhaseEnum::END_OF_PHASE][benchmark::MemoryType::END_OF_MEM_TYPE])
 {
   using namespace benchmark;
 
