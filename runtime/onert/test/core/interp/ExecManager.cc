@@ -63,7 +63,7 @@ protected:
     auto input_set = OperandIndexSequence{operand_lhs, operand_rhs};
     auto output_set = OperandIndexSequence{operand_result};
     _graph->addOperation(
-        std::make_unique<operation::BinaryArithmetic>(input_set, output_set, param));
+      std::make_unique<operation::BinaryArithmetic>(input_set, output_set, param));
 
     // Identify model inputs and outputs
 
@@ -79,7 +79,7 @@ protected:
 
     _executors = std::make_shared<ExecutorMap>();
     _executors->insert(
-        std::make_pair(onert::ir::SubgraphIndex{0}, std::make_unique<InterpExecutor>(*_graph)));
+      std::make_pair(onert::ir::SubgraphIndex{0}, std::make_unique<InterpExecutor>(*_graph)));
   }
 
   void CreateTwoStepModel()
@@ -109,8 +109,8 @@ protected:
     auto operand_rhs2 = _graph->addOperand(shape, type);
     auto operand_result2 = _graph->addOperand(shape, type);
     _graph->operands()
-        .at(operand_rhs2)
-        .data(std::make_unique<CachedData>(reinterpret_cast<const uint8_t *>(&rhs2_data), 16));
+      .at(operand_rhs2)
+      .data(std::make_unique<CachedData>(reinterpret_cast<const uint8_t *>(&rhs2_data), 16));
 
     // 2nd add operations (result2 <= result1 + rhs2)
 
@@ -120,7 +120,7 @@ protected:
     auto input_set1 = OperandIndexSequence{operand_lhs, operand_rhs1};
     auto output_set1 = OperandIndexSequence{operand_result1};
     _graph->addOperation(
-        std::make_unique<operation::BinaryArithmetic>(input_set1, output_set1, param1));
+      std::make_unique<operation::BinaryArithmetic>(input_set1, output_set1, param1));
 
     operation::BinaryArithmetic::Param param2;
     param2.arithmetic_type = operation::BinaryArithmetic::ArithmeticType::ADD;
@@ -128,7 +128,7 @@ protected:
     auto input_set2 = OperandIndexSequence{operand_result1, operand_rhs2};
     auto output_set2 = OperandIndexSequence{operand_result2};
     _graph->addOperation(
-        std::make_unique<operation::BinaryArithmetic>(input_set2, output_set2, param2));
+      std::make_unique<operation::BinaryArithmetic>(input_set2, output_set2, param2));
 
     // Identify model inputs and outputs
 
@@ -144,7 +144,7 @@ protected:
 
     _executors = std::make_shared<ExecutorMap>();
     _executors->insert(
-        std::make_pair(onert::ir::SubgraphIndex{0}, std::make_unique<InterpExecutor>(*_graph)));
+      std::make_pair(onert::ir::SubgraphIndex{0}, std::make_unique<InterpExecutor>(*_graph)));
   }
 
   void CreateUnspecifiedDimensionsModel()
@@ -168,9 +168,8 @@ protected:
 
     auto operand_activation = _graph->addOperand(shape_scalar, type_scalar);
     _graph->operands()
-        .at(operand_activation)
-        .data(
-            std::make_unique<CachedData>(reinterpret_cast<const uint8_t *>(&_activation_value), 4));
+      .at(operand_activation)
+      .data(std::make_unique<CachedData>(reinterpret_cast<const uint8_t *>(&_activation_value), 4));
 
     auto operand_result = _graph->addOperand(shape, type);
 
@@ -182,7 +181,7 @@ protected:
     auto input_set = OperandIndexSequence{operand_lhs, operand_rhs};
     auto output_set = OperandIndexSequence{operand_result};
     _graph->addOperation(
-        std::make_unique<operation::BinaryArithmetic>(input_set, output_set, param));
+      std::make_unique<operation::BinaryArithmetic>(input_set, output_set, param));
 
     // Identify model inputs and outputs
 
@@ -198,7 +197,7 @@ protected:
 
     _executors = std::make_shared<ExecutorMap>();
     _executors->insert(
-        std::make_pair(onert::ir::SubgraphIndex{0}, std::make_unique<InterpExecutor>(*_graph)));
+      std::make_pair(onert::ir::SubgraphIndex{0}, std::make_unique<InterpExecutor>(*_graph)));
   }
 
   void createExecution() { _execution = std::make_unique<Execution>(_executors); }

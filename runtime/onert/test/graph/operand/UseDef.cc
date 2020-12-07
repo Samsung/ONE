@@ -49,16 +49,16 @@ TEST(ir_Operand, neg_usedef)
   // MockNode1
   auto operand_index1 = graph.addOperand(shape, type);
   auto mocknode_index1 =
-      graph.addOperation(std::make_unique<Mock>(IndexSet{input_operand}, IndexSet{operand_index1}));
+    graph.addOperation(std::make_unique<Mock>(IndexSet{input_operand}, IndexSet{operand_index1}));
 
   // MockNode2
   auto operand_index2 = graph.addOperand(shape, type);
   auto mocknode_index2 =
-      graph.addOperation(std::make_unique<Mock>(IndexSet{input_operand}, IndexSet{operand_index2}));
+    graph.addOperation(std::make_unique<Mock>(IndexSet{input_operand}, IndexSet{operand_index2}));
 
   // MockNode3(two input)
   auto multiinput_index = graph.addOperation(
-      std::make_unique<Mock>(IndexSet{operand_index1, operand_index2}, IndexSet{output_operand}));
+    std::make_unique<Mock>(IndexSet{operand_index1, operand_index2}, IndexSet{output_operand}));
 
   graph.finishBuilding();
 

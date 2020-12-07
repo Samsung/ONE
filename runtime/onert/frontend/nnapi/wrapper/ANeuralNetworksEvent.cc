@@ -20,7 +20,7 @@
 #include "util/logging.h"
 
 ANeuralNetworksEvent::ANeuralNetworksEvent(const std::shared_ptr<onert::exec::Execution> &execution)
-    : _execution{execution}
+  : _execution{execution}
 {
   // DO NOTHING
 }
