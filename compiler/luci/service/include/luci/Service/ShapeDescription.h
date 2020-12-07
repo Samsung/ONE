@@ -20,6 +20,8 @@
 #include <loco/IR/PermutingCodec.h>
 #include <loco/IR/NodeShape.h>
 
+#include <luci/IR/CircleNodes.h>
+
 #include <cstdint>
 #include <vector>
 
@@ -33,6 +35,7 @@ struct ShapeDescription
 };
 
 // TODO remove these when CircleDialect is fully functioal
+ShapeDescription to_shape_description(const luci::CircleNode *node);
 ShapeDescription to_shape_description(const loco::TensorShape &shape);
 ShapeDescription to_shape_description(const loco::FeatureShape &shape);
 ShapeDescription to_shape_description(const loco::FilterShape &shape);
