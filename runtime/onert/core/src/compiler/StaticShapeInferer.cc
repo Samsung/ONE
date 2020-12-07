@@ -336,11 +336,17 @@ void StaticShapeInferer::visit(const ir::operation::ExpandDims &op)
 
   // even when axis is constant, output shape should be recalculated since user might call
   // nnfw_set_input_tensorinfo(input, some_new_shape)
-  auto axis_buf = reinterpret_cast<const int32_t *>(axis.data()->base());
-  assert(axis_buf);
+  auto axis_type = axis.typeInfo().type();
+  assert(axis_type == ir::DataType::INT32 || axis_type == ir::DataType::INT64);
+
+  assert(axis.data()->base());
+  int32_t axis_value =
+      (axis_type == ir::DataType::INT32)
+          ? reinterpret_cast<const int32_t *>(axis.data()->base())[0]
+          : static_cast<int32_t>(reinterpret_cast<const int64_t *>(axis.data()->base())[0]);
 
   // re-sizing output shape
-  ir::Shape new_shape = shape_inference::inferExpandDimsShape(input.info().shape(), axis_buf[0]);
+  ir::Shape new_shape = shape_inference::inferExpandDimsShape(input.info().shape(), axis_value);
   output.info().shape(new_shape);
 }
 

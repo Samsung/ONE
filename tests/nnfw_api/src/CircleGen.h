@@ -159,6 +159,7 @@ public:
                                       int dilation_h = 1);
   uint32_t addOperatorElu(const OperatorParams &params);
   uint32_t addOperatorEqual(const OperatorParams &params);
+  uint32_t addOperatorExpandDims(const OperatorParams &params);
   uint32_t addOperatorFill(const OperatorParams &params);
   uint32_t addOperatorFloor(const OperatorParams &params);
   uint32_t addOperatorFullyConnected(const OperatorParams &params,

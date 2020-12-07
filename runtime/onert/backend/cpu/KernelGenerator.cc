@@ -723,15 +723,14 @@ void KernelGenerator::visit(const ir::operation::ExpandDims &node)
 {
   const auto output_index{node.getOutputs().at(0)};
   const auto input_index{node.getInputs().at(ir::operation::ExpandDims::Input::INPUT)};
-  const auto axis_index{node.getInputs().at(ir::operation::ExpandDims::Input::AXIS)};
+  // AXIS input is used for output shape inference
 
   auto output_tensor = _tensor_reg->getPortableTensor(output_index);
   auto input_tensor = _tensor_reg->getPortableTensor(input_index);
-  auto axis_tensor = _tensor_reg->getPortableTensor(axis_index);
 
   auto fn = std::make_unique<ops::ExpandDimsLayer>();
 
-  fn->configure(input_tensor, axis_tensor, output_tensor);
+  fn->configure(input_tensor, output_tensor);
 
   _return_fn = std::move(fn);
 }
