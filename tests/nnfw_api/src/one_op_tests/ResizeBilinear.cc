@@ -30,8 +30,8 @@ TEST_F(GenModelTest, OneOp_ResizeBilinear_SizeToConst)
   cgen.setInputsAndOutputs({in}, {out});
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
-  _context->addTestCase(uniformTCD<float>(
-      {{1, 1, 2, 2}}, {{1, 1, 1, 1.666666667, 1.666666667, 1.666666667, 2, 2, 2}}));
+  _context->addTestCase(
+    uniformTCD<float>({{1, 1, 2, 2}}, {{1, 1, 1, 1.666666667, 1.666666667, 1.666666667, 2, 2, 2}}));
   _context->setBackends({"acl_cl", "acl_neon", "cpu"});
 
   SUCCEED();

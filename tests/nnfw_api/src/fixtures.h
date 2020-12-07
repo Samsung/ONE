@@ -107,7 +107,7 @@ protected:
     {
       // TODO Eventually, downloaded model tests are removed.
       NNFW_ENSURE_SUCCESS(nnfw_load_model_from_file(
-          _session, NNPackages::get().getModelAbsolutePath(PackageNo).c_str()));
+        _session, NNPackages::get().getModelAbsolutePath(PackageNo).c_str()));
     }
   }
 
@@ -136,8 +136,8 @@ protected:
     EXPECT_EQ(input_elements, 1);
     _input.resize(input_elements);
     ASSERT_EQ(
-        nnfw_set_input(_session, 0, ti_input.dtype, _input.data(), sizeof(float) * input_elements),
-        NNFW_STATUS_NO_ERROR);
+      nnfw_set_input(_session, 0, ti_input.dtype, _input.data(), sizeof(float) * input_elements),
+      NNFW_STATUS_NO_ERROR);
 
     nnfw_tensorinfo ti_output;
     ASSERT_EQ(nnfw_output_tensorinfo(_session, 0, &ti_output), NNFW_STATUS_NO_ERROR);
@@ -155,13 +155,13 @@ protected:
     uint64_t input_elements = num_elems(ti_input);
     _input.resize(input_elements);
     ASSERT_EQ(
-        nnfw_set_input(_session, 0, ti_input->dtype, _input.data(), sizeof(float) * input_elements),
-        NNFW_STATUS_NO_ERROR);
+      nnfw_set_input(_session, 0, ti_input->dtype, _input.data(), sizeof(float) * input_elements),
+      NNFW_STATUS_NO_ERROR);
 
     _output.resize(40000); // Give sufficient size for the output
-    ASSERT_EQ(nnfw_set_output(_session, 0, ti_input->dtype, _output.data(),
-                              sizeof(float) * _output.size()),
-              NNFW_STATUS_NO_ERROR);
+    ASSERT_EQ(
+      nnfw_set_output(_session, 0, ti_input->dtype, _output.data(), sizeof(float) * _output.size()),
+      NNFW_STATUS_NO_ERROR);
   }
 
 protected:

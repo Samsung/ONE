@@ -89,7 +89,7 @@ TEST_F(ValidationTestSingleSession, neg_load_model)
 {
   // Invalid state
   ASSERT_EQ(nnfw_load_model_from_file(
-                nullptr, NNPackages::get().getModelAbsolutePath(NNPackages::ADD).c_str()),
+              nullptr, NNPackages::get().getModelAbsolutePath(NNPackages::ADD).c_str()),
             NNFW_STATUS_UNEXPECTED_NULL);
 }
 

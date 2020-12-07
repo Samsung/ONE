@@ -78,7 +78,7 @@ CircleBuffer CircleGen::finish()
   for (auto &ctx : _subgraph_contexts)
     subgraphs.push_back(buildSubGraph(ctx));
   auto model =
-      circle::CreateModelDirect(_fbb, 3, &_opcodes, &subgraphs, "CircleGen generated", &_buffers);
+    circle::CreateModelDirect(_fbb, 3, &_opcodes, &subgraphs, "CircleGen generated", &_buffers);
   _fbb.Finish(model);
   return CircleBuffer{std::move(_fbb)};
 }
@@ -119,8 +119,8 @@ uint32_t CircleGen::addOperatorAveragePool2D(const OperatorParams &params, circl
                                              circle::ActivationFunctionType actfn)
 {
   auto options =
-      circle::CreatePool2DOptions(_fbb, padding, stride_w, stride_h, filter_w, filter_h, actfn)
-          .Union();
+    circle::CreatePool2DOptions(_fbb, padding, stride_w, stride_h, filter_w, filter_h, actfn)
+      .Union();
   return addOperatorWithOptions(params, circle::BuiltinOperator_AVERAGE_POOL_2D,
                                 circle::BuiltinOptions_Pool2DOptions, options);
 }
@@ -147,8 +147,8 @@ uint32_t CircleGen::addOperatorConv2D(const OperatorParams &params, circle::Padd
                                       int dilation_h)
 {
   auto options =
-      circle::CreateConv2DOptions(_fbb, padding, stride_w, stride_h, actfn, dilation_w, dilation_h)
-          .Union();
+    circle::CreateConv2DOptions(_fbb, padding, stride_w, stride_h, actfn, dilation_w, dilation_h)
+      .Union();
   return addOperatorWithOptions(params, circle::BuiltinOperator_CONV_2D,
                                 circle::BuiltinOptions_Conv2DOptions, options);
 }
@@ -174,9 +174,9 @@ uint32_t CircleGen::addOperatorDepthwiseConv2D(const OperatorParams &params,
                                                int dilation_h)
 {
   auto options =
-      circle::CreateDepthwiseConv2DOptions(_fbb, padding, stride_w, stride_h, depth_multiplier,
-                                           actfn, dilation_w, dilation_h)
-          .Union();
+    circle::CreateDepthwiseConv2DOptions(_fbb, padding, stride_w, stride_h, depth_multiplier, actfn,
+                                         dilation_w, dilation_h)
+      .Union();
   return addOperatorWithOptions(params, circle::BuiltinOperator_DEPTHWISE_CONV_2D,
                                 circle::BuiltinOptions_DepthwiseConv2DOptions, options);
 }
@@ -199,8 +199,8 @@ CircleGen::addOperatorFullyConnected(const OperatorParams &params,
                                      circle::FullyConnectedOptionsWeightsFormat weights_format)
 {
   auto options =
-      circle::CreateFullyConnectedOptions(_fbb, circle::ActivationFunctionType_NONE, weights_format)
-          .Union();
+    circle::CreateFullyConnectedOptions(_fbb, circle::ActivationFunctionType_NONE, weights_format)
+      .Union();
   return addOperatorWithOptions(params, circle::BuiltinOperator_FULLY_CONNECTED,
                                 circle::BuiltinOptions_FullyConnectedOptions, options);
 }
@@ -316,7 +316,7 @@ uint32_t CircleGen::addOperatorResizeBilinear(const OperatorParams &params, bool
                                               bool half_pixel_centers)
 {
   auto options =
-      circle::CreateResizeBilinearOptions(_fbb, align_corners, half_pixel_centers).Union();
+    circle::CreateResizeBilinearOptions(_fbb, align_corners, half_pixel_centers).Union();
   return addOperatorWithOptions(params, circle::BuiltinOperator_RESIZE_BILINEAR,
                                 circle::BuiltinOptions_ResizeBilinearOptions, options);
 }
@@ -368,7 +368,7 @@ uint32_t CircleGen::addOperatorStridedSlice(const OperatorParams &params, int32_
 {
   auto options = circle::CreateStridedSliceOptions(_fbb, begin_mask, end_mask, ellipsis_mask,
                                                    new_axis_mask, shrink_axis_mask)
-                     .Union();
+                   .Union();
   return addOperatorWithOptions(params, circle::BuiltinOperator_STRIDED_SLICE,
                                 circle::BuiltinOptions_StridedSliceOptions, options);
 }
@@ -495,7 +495,7 @@ CircleGen::buildSparsityParameters(const SparsityParams &sp)
   flatbuffers::Offset<flatbuffers::Vector<int32_t>> traversal_order;
   flatbuffers::Offset<flatbuffers::Vector<int32_t>> block_map;
   flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<circle::DimensionMetadata>>>
-      dim_metadata;
+    dim_metadata;
 
   traversal_order = _fbb.CreateVector(sp.traversal_order);
   block_map = _fbb.CreateVector(sp.block_map);
@@ -506,8 +506,8 @@ CircleGen::buildSparsityParameters(const SparsityParams &sp)
     auto fb_array_segments = circle::CreateUint16VectorDirect(_fbb, &it._array_segments.u16);
     auto fb_array_indices = circle::CreateUint16VectorDirect(_fbb, &it._array_indices.u16);
     auto dim_metadata = circle::CreateDimensionMetadata(
-        _fbb, it._format, it._dense_size, it._array_segments_type, fb_array_segments.Union(),
-        it._array_indices_type, fb_array_indices.Union());
+      _fbb, it._format, it._dense_size, it._array_segments_type, fb_array_segments.Union(),
+      it._array_indices_type, fb_array_indices.Union());
     dim_metadata_vec.emplace_back(dim_metadata);
   }
   dim_metadata = _fbb.CreateVector(dim_metadata_vec);
