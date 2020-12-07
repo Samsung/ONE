@@ -60,7 +60,7 @@ template <typename... Args> void Print(const char *fmt, Args... args)
 template <typename DataType> struct BaseLabelData
 {
   explicit BaseLabelData(int label = -1, DataType confidence = 0)
-      : label(label), confidence(confidence)
+    : label(label), confidence(confidence)
   {
   }
 
@@ -116,8 +116,8 @@ public:
   Runner(std::unique_ptr<tflite::Interpreter> interpreter,
          std::unique_ptr<tflite::FlatBufferModel> model,
          std::unique_ptr<::nnfw::tflite::NNAPIDelegate> delegate, unsigned img_size)
-      : interpreter(std::move(interpreter)), model(std::move(model)), delegate(std::move(delegate)),
-        interrupted(false), kInputSize(1 * img_size * img_size * 3 * sizeof(DataType))
+    : interpreter(std::move(interpreter)), model(std::move(model)), delegate(std::move(delegate)),
+      interrupted(false), kInputSize(1 * img_size * img_size * 3 * sizeof(DataType))
   {
     inference_times.reserve(500);
     top1.reserve(500);
@@ -308,7 +308,7 @@ public:
   FloatRunner(std::unique_ptr<tflite::Interpreter> interpreter,
               std::unique_ptr<tflite::FlatBufferModel> model,
               std::unique_ptr<::nnfw::tflite::NNAPIDelegate> delegate, unsigned img_size)
-      : Runner<float>(std::move(interpreter), std::move(model), std::move(delegate), img_size)
+    : Runner<float>(std::move(interpreter), std::move(model), std::move(delegate), img_size)
   {
   }
 
@@ -333,7 +333,7 @@ public:
   QuantizedRunner(std::unique_ptr<tflite::Interpreter> interpreter,
                   std::unique_ptr<tflite::FlatBufferModel> model,
                   std::unique_ptr<::nnfw::tflite::NNAPIDelegate> delegate, unsigned img_size)
-      : Runner<uint8_t>(std::move(interpreter), std::move(model), std::move(delegate), img_size)
+    : Runner<uint8_t>(std::move(interpreter), std::move(model), std::move(delegate), img_size)
   {
   }
 
@@ -411,12 +411,12 @@ std::unique_ptr<BaseRunner> MakeRunner(const std::string &model_path, unsigned i
   if (interpreter->tensor(input_index)->type == kTfLiteFloat32)
   {
     return std::unique_ptr<FloatRunner>(
-        new FloatRunner(std::move(interpreter), std::move(model), std::move(delegate), img_size));
+      new FloatRunner(std::move(interpreter), std::move(model), std::move(delegate), img_size));
   }
   else if (interpreter->tensor(input_index)->type == kTfLiteUInt8)
   {
-    return std::unique_ptr<QuantizedRunner>(new QuantizedRunner(
-        std::move(interpreter), std::move(model), std::move(delegate), img_size));
+    return std::unique_ptr<QuantizedRunner>(
+      new QuantizedRunner(std::move(interpreter), std::move(model), std::move(delegate), img_size));
   }
   throw std::invalid_argument("data type of model's input tensor is not supported.");
 }
@@ -424,13 +424,13 @@ std::unique_ptr<BaseRunner> MakeRunner(const std::string &model_path, unsigned i
 Target GetTarget(const std::string &str)
 {
   static const std::map<std::string, Target> target_names{
-      {"tflite-cpu", Target::TfLiteCpu},
-      {"tflite-delegate", Target::TfLiteDelegate},
-      {"nnfw-delegate", Target::NnfwDelegate}};
+    {"tflite-cpu", Target::TfLiteCpu},
+    {"tflite-delegate", Target::TfLiteDelegate},
+    {"nnfw-delegate", Target::NnfwDelegate}};
   if (target_names.find(str) == target_names.end())
   {
     throw std::invalid_argument(
-        str + ": invalid target. Run with --help for a list of available targets.");
+      str + ": invalid target. Run with --help for a list of available targets.");
   }
   return target_names.at(str);
 }
@@ -451,19 +451,22 @@ void HandleSigInt(int)
   }
 }
 
-int main(int argc, char *argv[]) try
+int main(int argc, char *argv[])
+try
 {
   namespace po = boost::program_options;
   po::options_description desc("Run a model on multiple binary images and print"
                                " statistics");
-  desc.add_options()("help", "print this message and quit")(
-      "model", po::value<std::string>()->default_value(kDefaultModelFile), "tflite file")(
-      "input", po::value<std::string>()->default_value(kDefaultImagesDir),
-      "directory with input images")("offset", po::value<int>()->default_value(1), "labels offset")(
-      "target", po::value<std::string>()->default_value("nnfw-delegate"),
-      "how the model will be run (available targets: tflite-cpu, "
-      "tflite-delegate, nnfw-delegate)")("imgsize", po::value<unsigned>()->default_value(224),
-                                         "the width and height of the image");
+  // clang-format off
+  desc.add_options()
+    ("help", "print this message and quit")
+    ("model", po::value<std::string>()->default_value(kDefaultModelFile), "tflite file")
+    ("input", po::value<std::string>()->default_value(kDefaultImagesDir), "directory with input images")
+    ("offset", po::value<int>()->default_value(1), "labels offset")
+    ("target", po::value<std::string>()->default_value("nnfw-delegate"),
+      "how the model will be run (available targets: tflite-cpu, tflite-delegate, nnfw-delegate)")
+    ("imgsize", po::value<unsigned>()->default_value(224), "the width and height of the image");
+  // clang-fomrat on
   po::variables_map vm;
   po::store(po::parse_command_line(argc, argv, desc), vm);
   if (vm.count("help"))
