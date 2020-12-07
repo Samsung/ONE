@@ -196,7 +196,7 @@ void CircleLoader::loadBCQFullyConnected(const Operator *op, ir::Graph &subg)
   param.activation = convertActivation(options->fused_activation_function());
 
   std::unique_ptr<ir::Operation> new_op(
-      new ir::operation::BCQFullyConnected(inputs, outputs, param));
+    new ir::operation::BCQFullyConnected(inputs, outputs, param));
   subg.addOperation(std::move(new_op));
 }
 

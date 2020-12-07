@@ -64,7 +64,8 @@ typedef struct nnfw_session nnfw_session;
  *
  * The type of tensor represented in {@link nnfw_tensorinfo}
  */
-typedef enum {
+typedef enum
+{
   /** A tensor of 32 bit floating point */
   NNFW_TYPE_TENSOR_FLOAT32 = 0,
   /** A tensor of 32 bit signed integer */
@@ -96,7 +97,8 @@ typedef enum {
 /**
  * @brief Result values returned from a call to an API function
  */
-typedef enum {
+typedef enum
+{
   /** Successful */
   NNFW_STATUS_NO_ERROR = 0,
   /**
@@ -117,7 +119,8 @@ typedef enum {
 /**
  * @brief Data format of a tensor
  */
-typedef enum {
+typedef enum
+{
   /** Don't care layout */
   NNFW_LAYOUT_NONE = 0,
   /**
@@ -135,7 +138,8 @@ typedef enum {
 /**
  * @brief Information ID for retrieving information on nnfw (e.g. version)
  */
-typedef enum {
+typedef enum
+{
   /** nnfw runtime version
    * Its value is uint32 in 0xMMmmmmPP, where MM = major, mmmm = minor, PP = patch.
    */

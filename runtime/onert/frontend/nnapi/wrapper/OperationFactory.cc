@@ -107,7 +107,7 @@ getElementwiseActivationGenerator(const onert::ir::operation::ElementwiseActivat
 }
 
 OperationFactory::Generator getElementwiseBinaryGenerator(
-    const onert::ir::operation::ElementwiseBinary::ElementwiseBinaryType op_type)
+  const onert::ir::operation::ElementwiseBinary::ElementwiseBinaryType op_type)
 {
   return [op_type](const OperationFactory::Param &init_param, Operands &) {
     assert(init_param.input_count == 2);
@@ -182,7 +182,7 @@ getBinaryArithmeticGenerator(const onert::ir::operation::BinaryArithmetic::Arith
     param.arithmetic_type = op_type;
     const auto activation_index = OperandIndex{init_param.inputs[2]};
     param.activation =
-        NNAPIConvert::getFusedActivation(operands.at(activation_index).asScalar<FuseCode>());
+      NNAPIConvert::getFusedActivation(operands.at(activation_index).asScalar<FuseCode>());
 
     return new operation::BinaryArithmetic{inputs, outputs, param};
   };
@@ -221,12 +221,12 @@ getPool2DGenerator(const onert::ir::operation::Pool2D::PoolType pool_type)
       const auto activation_index = OperandIndex{init_param.inputs[6]};
 
       param.padding.type =
-          NNAPIConvert::getPaddingType(operands.at(padding_index).asScalar<PaddingCode>());
+        NNAPIConvert::getPaddingType(operands.at(padding_index).asScalar<PaddingCode>());
       param.stride = makeStride(operands, hstride_index, vstride_index);
       param.kw = getUint32Scalar(operands, kw_index);
       param.kh = operands.at(kh_index).asScalar<uint32_t>();
       param.activation =
-          NNAPIConvert::getFusedActivation(operands.at(activation_index).asScalar<FuseCode>());
+        NNAPIConvert::getFusedActivation(operands.at(activation_index).asScalar<FuseCode>());
     }
     else // support explicit padding
     {
@@ -259,7 +259,7 @@ getPool2DGenerator(const onert::ir::operation::Pool2D::PoolType pool_type)
       param.kw = getUint32Scalar(operands, kw_index);
       param.kh = getUint32Scalar(operands, kh_index);
       param.activation =
-          NNAPIConvert::getFusedActivation(operands.at(activation_index).asScalar<FuseCode>());
+        NNAPIConvert::getFusedActivation(operands.at(activation_index).asScalar<FuseCode>());
     }
     return new operation::Pool2D{inputs, outputs, param};
   };
@@ -382,11 +382,11 @@ OperationFactory::OperationFactory()
       const auto activation_index = OperandIndex{init_param.inputs[7]};
 
       param.padding.type =
-          NNAPIConvert::getPaddingType(operands.at(padding_index).asScalar<PaddingCode>());
+        NNAPIConvert::getPaddingType(operands.at(padding_index).asScalar<PaddingCode>());
       param.stride = makeStride(operands, hstride_index, vstride_index);
       param.multiplier = getUint32Scalar(operands, multiplier_index);
       param.activation =
-          NNAPIConvert::getFusedActivation(operands.at(activation_index).asScalar<FuseCode>());
+        NNAPIConvert::getFusedActivation(operands.at(activation_index).asScalar<FuseCode>());
     }
     else
     {
@@ -417,7 +417,7 @@ OperationFactory::OperationFactory()
       param.stride = makeStride(operands, hstride_index, vstride_index);
       param.multiplier = getUint32Scalar(operands, multiplier_index);
       param.activation =
-          NNAPIConvert::getFusedActivation(operands.at(activation_index).asScalar<FuseCode>());
+        NNAPIConvert::getFusedActivation(operands.at(activation_index).asScalar<FuseCode>());
     }
 
     // TODO set dilation
@@ -490,7 +490,7 @@ OperationFactory::OperationFactory()
     operation::FullyConnected::Param param;
     const auto activation_index = OperandIndex{init_param.inputs[3]};
     param.activation =
-        NNAPIConvert::getFusedActivation(operands.at(activation_index).asScalar<FuseCode>());
+      NNAPIConvert::getFusedActivation(operands.at(activation_index).asScalar<FuseCode>());
     param.weights_format = FullyConnectedWeightsFormat::Default;
 
     return new operation::FullyConnected{inputs, outputs, param};
@@ -517,7 +517,7 @@ OperationFactory::OperationFactory()
   };
 
   _map[ANEURALNETWORKS_CAST] =
-      getElementwiseUnaryGenerator(operation::ElementwiseUnary::Type::CAST);
+    getElementwiseUnaryGenerator(operation::ElementwiseUnary::Type::CAST);
 
   // ANEURALNETWORKS_CAST_EX is deprecated
   // TODO Remove ANEURALNETWORKS_CAST_EX
@@ -557,14 +557,14 @@ OperationFactory::OperationFactory()
       const auto activation_index = OperandIndex{init_param.inputs[6]};
 
       param.padding.type =
-          NNAPIConvert::getPaddingType(operands.at(padding_index).asScalar<PaddingCode>());
+        NNAPIConvert::getPaddingType(operands.at(padding_index).asScalar<PaddingCode>());
       param.stride = makeStride(operands, hstride_index, vstride_index);
 
       param.dilation.width_factor = 1;
       param.dilation.height_factor = 1;
 
       param.activation =
-          NNAPIConvert::getFusedActivation(operands.at(activation_index).asScalar<FuseCode>());
+        NNAPIConvert::getFusedActivation(operands.at(activation_index).asScalar<FuseCode>());
     }
     else if (init_param.input_count == 10) // support explicit padding
     {
@@ -595,7 +595,7 @@ OperationFactory::OperationFactory()
       param.dilation.height_factor = 1;
 
       param.activation =
-          NNAPIConvert::getFusedActivation(operands.at(activation_index).asScalar<FuseCode>());
+        NNAPIConvert::getFusedActivation(operands.at(activation_index).asScalar<FuseCode>());
     }
     else if (init_param.input_count == 13) // support dilation
     {
@@ -633,7 +633,7 @@ OperationFactory::OperationFactory()
       param.dilation.height_factor = height_factor;
 
       param.activation =
-          NNAPIConvert::getFusedActivation(operands.at(activation_index).asScalar<FuseCode>());
+        NNAPIConvert::getFusedActivation(operands.at(activation_index).asScalar<FuseCode>());
     }
     else
     {
@@ -644,19 +644,19 @@ OperationFactory::OperationFactory()
   };
 
   _map[ANEURALNETWORKS_ADD] =
-      getBinaryArithmeticGenerator(onert::ir::operation::BinaryArithmetic::ArithmeticType::ADD);
+    getBinaryArithmeticGenerator(onert::ir::operation::BinaryArithmetic::ArithmeticType::ADD);
 
   _map[ANEURALNETWORKS_ADDV2_EX] = _map[ANEURALNETWORKS_ADD];
 
   _map[ANEURALNETWORKS_REDUCE_SUM] =
-      getReduceGenerator(onert::ir::operation::Reduce::ReduceType::SUM);
+    getReduceGenerator(onert::ir::operation::Reduce::ReduceType::SUM);
 
   // ANEURALNETWORKS_REDUCE_SUM_EX is deprecated
   // TODO Remove ANEURALNETWORKS_REDUCE_SUM_EX
   _map[ANEURALNETWORKS_REDUCE_SUM_EX] = _map[ANEURALNETWORKS_REDUCE_SUM];
 
   _map[ANEURALNETWORKS_SUB] =
-      getBinaryArithmeticGenerator(onert::ir::operation::BinaryArithmetic::ArithmeticType::SUB);
+    getBinaryArithmeticGenerator(onert::ir::operation::BinaryArithmetic::ArithmeticType::SUB);
 
   _map[ANEURALNETWORKS_SLICE] = [](const OperationFactory::Param &init_param, Operands &) {
     assert(init_param.input_count == 3 && init_param.output_count == 1);
@@ -708,7 +708,7 @@ OperationFactory::OperationFactory()
     param.begin_mask = operands.at(OperandIndex{init_param.inputs[4]}).asScalar<std::int32_t>();
     param.end_mask = operands.at(OperandIndex{init_param.inputs[5]}).asScalar<std::int32_t>();
     param.shrink_axis_mask =
-        operands.at(OperandIndex{init_param.inputs[6]}).asScalar<std::int32_t>();
+      operands.at(OperandIndex{init_param.inputs[6]}).asScalar<std::int32_t>();
 
     return new operation::StridedSlice{inputs, outputs, param};
   };
@@ -716,7 +716,7 @@ OperationFactory::OperationFactory()
   _map[ANEURALNETWORKS_TRANSPOSE] = createSimpleBinaryOp<operation::Transpose>;
 
   _map[ANEURALNETWORKS_MUL] =
-      getBinaryArithmeticGenerator(onert::ir::operation::BinaryArithmetic::ArithmeticType::MUL);
+    getBinaryArithmeticGenerator(onert::ir::operation::BinaryArithmetic::ArithmeticType::MUL);
 
   _map[ANEURALNETWORKS_SQUEEZE] = [](const OperationFactory::Param &init_param,
                                      Operands &operands) {
@@ -758,15 +758,15 @@ OperationFactory::OperationFactory()
   };
 
   _map[ANEURALNETWORKS_TANH] = getElementwiseActivationGenerator(
-      onert::ir::operation::ElementwiseActivation::Type::TANH, 1.f, 1.f);
+    onert::ir::operation::ElementwiseActivation::Type::TANH, 1.f, 1.f);
 
   _map[ANEURALNETWORKS_LOG] = getElementwiseUnaryGenerator(operation::ElementwiseUnary::Type::LOG);
 
-  _map[ANEURALNETWORKS_LOGISTIC] = getElementwiseActivationGenerator(
-      onert::ir::operation::ElementwiseActivation::Type::LOGISTIC);
+  _map[ANEURALNETWORKS_LOGISTIC] =
+    getElementwiseActivationGenerator(onert::ir::operation::ElementwiseActivation::Type::LOGISTIC);
 
   _map[ANEURALNETWORKS_DIV] =
-      getBinaryArithmeticGenerator(onert::ir::operation::BinaryArithmetic::ArithmeticType::DIV);
+    getBinaryArithmeticGenerator(onert::ir::operation::BinaryArithmetic::ArithmeticType::DIV);
 
   _map[ANEURALNETWORKS_EXP] = getElementwiseUnaryGenerator(operation::ElementwiseUnary::Type::EXP);
 
@@ -780,16 +780,16 @@ OperationFactory::OperationFactory()
   _map[ANEURALNETWORKS_EXPAND_DIMS] = createSimpleBinaryOp<operation::ExpandDims>;
 
   _map[ANEURALNETWORKS_GREATER] =
-      getComparisonGenerator(operation::Comparison::ComparisonType::Greater);
+    getComparisonGenerator(operation::Comparison::ComparisonType::Greater);
   _map[ANEURALNETWORKS_GREATER_EQUAL] =
-      getComparisonGenerator(operation::Comparison::ComparisonType::GreaterEqual);
+    getComparisonGenerator(operation::Comparison::ComparisonType::GreaterEqual);
   _map[ANEURALNETWORKS_LESS] = getComparisonGenerator(operation::Comparison::ComparisonType::Less);
   _map[ANEURALNETWORKS_LESS_EQUAL] =
-      getComparisonGenerator(operation::Comparison::ComparisonType::LessEqual);
+    getComparisonGenerator(operation::Comparison::ComparisonType::LessEqual);
   _map[ANEURALNETWORKS_NOT_EQUAL] =
-      getComparisonGenerator(operation::Comparison::ComparisonType::NotEqual);
+    getComparisonGenerator(operation::Comparison::ComparisonType::NotEqual);
   _map[ANEURALNETWORKS_EQUAL] =
-      getComparisonGenerator(operation::Comparison::ComparisonType::Equal);
+    getComparisonGenerator(operation::Comparison::ComparisonType::Equal);
 
   // ANEURALNETWORKS_GREATER_EQUAL_EX is deprecated
   // TODO Remove ANEURALNETWORKS_GREATER_EQUAL_EX
@@ -838,13 +838,13 @@ OperationFactory::OperationFactory()
   };
 
   _map[ANEURALNETWORKS_REDUCE_ALL] =
-      getReduceGenerator(onert::ir::operation::Reduce::ReduceType::ALL);
+    getReduceGenerator(onert::ir::operation::Reduce::ReduceType::ALL);
 
   _map[ANEURALNETWORKS_REDUCE_ANY] =
-      getReduceGenerator(onert::ir::operation::Reduce::ReduceType::ANY);
+    getReduceGenerator(onert::ir::operation::Reduce::ReduceType::ANY);
 
   _map[ANEURALNETWORKS_REDUCE_MAX] =
-      getReduceGenerator(onert::ir::operation::Reduce::ReduceType::MAX);
+    getReduceGenerator(onert::ir::operation::Reduce::ReduceType::MAX);
 
   // ANEURALNETWORKS_REDUCE_MAX_EX is deprecated
   // TODO Remove ANEURALNETWORKS_REDUCE_MAX_EX
@@ -873,8 +873,8 @@ OperationFactory::OperationFactory()
     return new operation::Comparison{inputs, outputs, param};
   };
 
-  _map[ANEURALNETWORKS_LOGICAL_AND] = getElementwiseBinaryGenerator(
-      operation::ElementwiseBinary::ElementwiseBinaryType::LOGICAL_AND);
+  _map[ANEURALNETWORKS_LOGICAL_AND] =
+    getElementwiseBinaryGenerator(operation::ElementwiseBinary::ElementwiseBinaryType::LOGICAL_AND);
 
   // ANEURALNETWORKS_LOGICAL_AND_EX is deprecated
   // TODO Remove ANEURALNETWORKS_LOGICAL_AND_EX
@@ -902,7 +902,7 @@ OperationFactory::OperationFactory()
   };
 
   _map[ANEURALNETWORKS_RSQRT] =
-      getElementwiseUnaryGenerator(operation::ElementwiseUnary::Type::RSQRT);
+    getElementwiseUnaryGenerator(operation::ElementwiseUnary::Type::RSQRT);
 
   _map[ANEURALNETWORKS_SELECT] = [](const OperationFactory::Param &init_param, Operands &) {
     assert(init_param.input_count == 3 && init_param.output_count == 1);
@@ -939,8 +939,8 @@ OperationFactory::OperationFactory()
   _map[ANEURALNETWORKS_RSQRT_EX] = _map[ANEURALNETWORKS_RSQRT];
 
   _map[ANEURALNETWORKS_RELU] =
-      getElementwiseActivationGenerator(onert::ir::operation::ElementwiseActivation::Type::RELU,
-                                        onert::ir::operation::ElementwiseActivation::infinity, 0);
+    getElementwiseActivationGenerator(onert::ir::operation::ElementwiseActivation::Type::RELU,
+                                      onert::ir::operation::ElementwiseActivation::infinity, 0);
 
   _map[ANEURALNETWORKS_RESIZE_BILINEAR] = [](const OperationFactory::Param &init_param,
                                              Operands &operands) {
@@ -986,10 +986,10 @@ OperationFactory::OperationFactory()
   };
 
   _map[ANEURALNETWORKS_RELU1] = getElementwiseActivationGenerator(
-      onert::ir::operation::ElementwiseActivation::Type::RELU, 1.f, -1.f);
+    onert::ir::operation::ElementwiseActivation::Type::RELU, 1.f, -1.f);
 
   _map[ANEURALNETWORKS_RELU6] = getElementwiseActivationGenerator(
-      onert::ir::operation::ElementwiseActivation::Type::RELU, 6.f, 0.f);
+    onert::ir::operation::ElementwiseActivation::Type::RELU, 6.f, 0.f);
 
   _map[ANEURALNETWORKS_REVERSE_EX] = [](const OperationFactory::Param &init_param, Operands &) {
     assert(init_param.input_count == 2 && init_param.output_count == 1);
@@ -1031,13 +1031,13 @@ OperationFactory::OperationFactory()
     operation::RNN::Param param;
     const auto activation_index = OperandIndex{init_param.inputs[5]};
     param.activation =
-        NNAPIConvert::getFusedActivation(operands.at(activation_index).asScalar<FuseCode>());
+      NNAPIConvert::getFusedActivation(operands.at(activation_index).asScalar<FuseCode>());
 
     return new operation::RNN{inputs, outputs, param};
   };
 
   _map[ANEURALNETWORKS_FLOOR] =
-      getElementwiseUnaryGenerator(operation::ElementwiseUnary::Type::FLOOR);
+    getElementwiseUnaryGenerator(operation::ElementwiseUnary::Type::FLOOR);
 
   _map[ANEURALNETWORKS_SPACE_TO_BATCH_ND] = [](const OperationFactory::Param &init_param,
                                                Operands &) {
@@ -1169,21 +1169,21 @@ OperationFactory::OperationFactory()
     const auto vstride_index = OperandIndex{init_param.inputs[5]};
 
     param.padding.type =
-        NNAPIConvert::getPaddingType(operands.at(padding_index).asScalar<PaddingCode>());
+      NNAPIConvert::getPaddingType(operands.at(padding_index).asScalar<PaddingCode>());
     param.stride = makeStride(operands, hstride_index, vstride_index);
 
     return new operation::TransposeConv{inputs, outputs, param};
   };
 
   _map[ANEURALNETWORKS_SQRT] =
-      getElementwiseUnaryGenerator(operation::ElementwiseUnary::Type::SQRT);
+    getElementwiseUnaryGenerator(operation::ElementwiseUnary::Type::SQRT);
 
   // ANEURALNETWORKS_SQRT_EX is deprecated
   // TODO Remove ANEURALNETWORKS_SQRT_EX
   _map[ANEURALNETWORKS_SQRT_EX] = _map[ANEURALNETWORKS_SQRT];
 
-  _map[ANEURALNETWORKS_LOGICAL_OR] = getElementwiseBinaryGenerator(
-      operation::ElementwiseBinary::ElementwiseBinaryType::LOGICAL_OR);
+  _map[ANEURALNETWORKS_LOGICAL_OR] =
+    getElementwiseBinaryGenerator(operation::ElementwiseBinary::ElementwiseBinaryType::LOGICAL_OR);
 
   // ANEURALNETWORKS_LOGICAL_OR_EX is deprecated
   // TODO Remove ANEURALNETWORKS_LOGICAL_OR_EX
@@ -1211,7 +1211,7 @@ OperationFactory::OperationFactory()
   };
 
   _map[ANEURALNETWORKS_LOGICAL_NOT] =
-      getElementwiseUnaryGenerator(operation::ElementwiseUnary::Type::LOGICAL_NOT);
+    getElementwiseUnaryGenerator(operation::ElementwiseUnary::Type::LOGICAL_NOT);
 
   // ANEURALNETWORKS_LOGICAL_NOT_EX is deprecated
   // TODO Remove ANEURALNETWORKS_LOGICAL_NOT_EX
@@ -1370,9 +1370,9 @@ OperationFactory::OperationFactory()
     // 2 -> Cell State Out Tensor Index
     const OperandIndex scratch_buffer_index;
     OperandIndex output_state_index =
-        init_param.output_count >= 2 ? OperandIndex{init_param.outputs[1]} : OperandIndex();
+      init_param.output_count >= 2 ? OperandIndex{init_param.outputs[1]} : OperandIndex();
     OperandIndex cell_state_index =
-        init_param.output_count >= 3 ? OperandIndex{init_param.outputs[2]} : OperandIndex();
+      init_param.output_count >= 3 ? OperandIndex{init_param.outputs[2]} : OperandIndex();
     const OperandIndex output_index = OperandIndex{init_param.outputs[0]};
     OperandIndexSequence outputs{scratch_buffer_index, output_state_index, cell_state_index,
                                  output_index};
@@ -1551,7 +1551,7 @@ OperationFactory::OperationFactory()
   };
 
   _map[ANEURALNETWORKS_DEQUANTIZE] =
-      getElementwiseUnaryGenerator(operation::ElementwiseUnary::Type::DEQUANTIZE);
+    getElementwiseUnaryGenerator(operation::ElementwiseUnary::Type::DEQUANTIZE);
 
   _map[ANEURALNETWORKS_MEAN] = [](const OperationFactory::Param &init_param, Operands &operands) {
     assert(init_param.input_count == 3 && init_param.output_count == 1);
@@ -1628,7 +1628,7 @@ OperationFactory::OperationFactory()
   };
 
   _map[ANEURALNETWORKS_REDUCE_MIN] =
-      getReduceGenerator(onert::ir::operation::Reduce::ReduceType::MIN);
+    getReduceGenerator(onert::ir::operation::Reduce::ReduceType::MIN);
 
   // ANEURALNETWORKS_REDUCE_MIN_EX is deprecated
   // TODO Remove ANEURALNETWORKS_REDUCE_MIN_EX
@@ -1709,10 +1709,10 @@ OperationFactory::OperationFactory()
   _map[ANEURALNETWORKS_PAD_V2] = _map[ANEURALNETWORKS_PAD];
 
   _map[ANEURALNETWORKS_MINIMUM] =
-      getElementwiseBinaryGenerator(operation::ElementwiseBinary::ElementwiseBinaryType::MIN);
+    getElementwiseBinaryGenerator(operation::ElementwiseBinary::ElementwiseBinaryType::MIN);
 
   _map[ANEURALNETWORKS_MAXIMUM] =
-      getElementwiseBinaryGenerator(operation::ElementwiseBinary::ElementwiseBinaryType::MAX);
+    getElementwiseBinaryGenerator(operation::ElementwiseBinary::ElementwiseBinaryType::MAX);
 
   _map[ANEURALNETWORKS_ONE_HOT_EX] = [](const OperationFactory::Param &init_param,
                                         Operands &operands) {
@@ -1739,7 +1739,7 @@ OperationFactory::OperationFactory()
   };
 
   _map[ANEURALNETWORKS_COS_EX] =
-      getElementwiseUnaryGenerator(operation::ElementwiseUnary::Type::COS);
+    getElementwiseUnaryGenerator(operation::ElementwiseUnary::Type::COS);
 
   _map[ANEURALNETWORKS_SIN] = getElementwiseUnaryGenerator(operation::ElementwiseUnary::Type::SIN);
 
@@ -1753,10 +1753,10 @@ OperationFactory::OperationFactory()
   };
 
   _map[ANEURALNETWORKS_REDUCE_PROD] =
-      getReduceGenerator(onert::ir::operation::Reduce::ReduceType::PROD);
+    getReduceGenerator(onert::ir::operation::Reduce::ReduceType::PROD);
 
   _map[ANEURALNETWORKS_ROUND_EX] =
-      getElementwiseUnaryGenerator(operation::ElementwiseUnary::Type::ROUND);
+    getElementwiseUnaryGenerator(operation::ElementwiseUnary::Type::ROUND);
 
   _map[ANEURALNETWORKS_RANGE_EX] = [](const OperationFactory::Param &init_param, Operands &) {
     assert(init_param.input_count == 3 && init_param.output_count == 1);
@@ -1784,7 +1784,7 @@ OperationFactory::OperationFactory()
   _map[ANEURALNETWORKS_FILL_EX] = createSimpleBinaryOp<operation::Fill>;
 
   _map[ANEURALNETWORKS_ZEROS_LIKE_EX] =
-      getElementwiseUnaryGenerator(operation::ElementwiseUnary::Type::ZEROS_LIKE);
+    getElementwiseUnaryGenerator(operation::ElementwiseUnary::Type::ZEROS_LIKE);
   // Each input should be interpreted as follows:
   //  0 -> Input Tensor Index
   //  1 -> Multiple Tensor Index
@@ -1924,7 +1924,7 @@ OperationFactory::OperationFactory()
   };
 
   _map[ANEURALNETWORKS_QUANTIZE] =
-      getElementwiseUnaryGenerator(operation::ElementwiseUnary::Type::QUANTIZE);
+    getElementwiseUnaryGenerator(operation::ElementwiseUnary::Type::QUANTIZE);
 }
 
 Operation *OperationFactory::create(ANeuralNetworksOperationType type,

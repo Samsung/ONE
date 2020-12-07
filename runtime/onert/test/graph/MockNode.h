@@ -30,7 +30,7 @@ class SimpleMock : public onert::ir::Operation
 public:
   SimpleMock(const onert::ir::OperandIndexSequence &inputs,
              const onert::ir::OperandIndexSequence &outputs)
-      : Operation{onert::ir::OperandConstraint::createAny()}
+    : Operation{onert::ir::OperandConstraint::createAny()}
   {
     setInputs(inputs);
     setOutputs(outputs);
