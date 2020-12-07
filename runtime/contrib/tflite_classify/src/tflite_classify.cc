@@ -60,9 +60,8 @@ int main(const int argc, char **argv)
   }
 
   // Create ImageClassifier
-  std::unique_ptr<ImageClassifier> classifier(
-      new ImageClassifier(MODEL_FILE, LABEL_FILE, INPUT_SIZE, IMAGE_MEAN, IMAGE_STD, INPUT_NAME,
-                          OUTPUT_NAME, use_nnapi));
+  std::unique_ptr<ImageClassifier> classifier(new ImageClassifier(
+    MODEL_FILE, LABEL_FILE, INPUT_SIZE, IMAGE_MEAN, IMAGE_STD, INPUT_NAME, OUTPUT_NAME, use_nnapi));
 
   // Cam setting
   cv::VideoCapture cap(0);

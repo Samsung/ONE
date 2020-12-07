@@ -87,8 +87,8 @@ TEST_F(MallocStub, should_allocate_memory_from_pool_for_symbol_searcher_internal
 }
 
 TEST_F(
-    MallocStub,
-    should_not_influence_on_trace_results_even_if_orignal_function_return_any_not_null_ptr_when_incoming_size_is_zero)
+  MallocStub,
+  should_not_influence_on_trace_results_even_if_orignal_function_return_any_not_null_ptr_when_incoming_size_is_zero)
 {
   void *p = malloc(0);
   free(p);

@@ -31,7 +31,7 @@ class Trace
     size_t size;
 
     MemoryTraits(size_t init_counter_value, size_t size_of_allocated_memory)
-        : ref_counter(init_counter_value), size(size_of_allocated_memory)
+      : ref_counter(init_counter_value), size(size_of_allocated_memory)
     {
     }
   };

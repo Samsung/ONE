@@ -52,7 +52,7 @@ JNIEXPORT void JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeCloseSe
 }
 
 JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeLoadModelFromFile(
-    JNIEnv *env, jobject, jlong handle, jstring jnnpkg_path)
+  JNIEnv *env, jobject, jlong handle, jstring jnnpkg_path)
 {
   if (jni_helper::verifyHandle(handle) == JNI_FALSE)
     return JNI_FALSE;
@@ -103,7 +103,7 @@ JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeRun
 }
 
 JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeSetInput(
-    JNIEnv *env, jobject, jlong handle, jint jindex, jint jtype, jobject jbuf, jint jbufsize)
+  JNIEnv *env, jobject, jlong handle, jint jindex, jint jtype, jobject jbuf, jint jbufsize)
 {
   if (jni_helper::verifyHandle(handle) == JNI_FALSE)
     return JNI_FALSE;
@@ -129,7 +129,7 @@ JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeSet
 }
 
 JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeSetOutput(
-    JNIEnv *env, jobject, jlong handle, jint jindex, jint jtype, jobject jbuf, jint jbufsize)
+  JNIEnv *env, jobject, jlong handle, jint jindex, jint jtype, jobject jbuf, jint jbufsize)
 {
   if (jni_helper::verifyHandle(handle) == JNI_FALSE)
     return JNI_FALSE;
@@ -156,7 +156,7 @@ JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeSet
 }
 
 JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeSetInputLayout(
-    JNIEnv *, jobject, jlong handle, jint jindex, jint jlayout)
+  JNIEnv *, jobject, jlong handle, jint jindex, jint jlayout)
 {
   if (jni_helper::verifyHandle(handle) == JNI_FALSE)
     return JNI_FALSE;
@@ -178,7 +178,7 @@ JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeSet
 }
 
 JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeSetOutputLayout(
-    JNIEnv *, jobject, jlong handle, jint jindex, jint jlayout)
+  JNIEnv *, jobject, jlong handle, jint jindex, jint jlayout)
 {
   if (jni_helper::verifyHandle(handle) == JNI_FALSE)
     return JNI_FALSE;
@@ -234,7 +234,7 @@ JNIEXPORT jint JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeGetOutp
 }
 
 JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeSetAvailableBackends(
-    JNIEnv *env, jobject, jlong handle, jstring jbackends)
+  JNIEnv *env, jobject, jlong handle, jstring jbackends)
 {
   if (jni_helper::verifyHandle(handle) == JNI_FALSE)
     return JNI_FALSE;
@@ -255,7 +255,7 @@ JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeSet
 }
 
 JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeGetInputTensorInfo(
-    JNIEnv *env, jobject, jlong handle, jint jindex, jobject jinfo)
+  JNIEnv *env, jobject, jlong handle, jint jindex, jobject jinfo)
 {
   if (jni_helper::verifyHandle(handle) == JNI_FALSE)
     return JNI_FALSE;
@@ -277,7 +277,7 @@ JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeGet
 }
 
 JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeGetOutputTensorInfo(
-    JNIEnv *env, jobject, jlong handle, jint jindex, jobject jinfo)
+  JNIEnv *env, jobject, jlong handle, jint jindex, jobject jinfo)
 {
   if (jni_helper::verifyHandle(handle) == JNI_FALSE)
     return JNI_FALSE;

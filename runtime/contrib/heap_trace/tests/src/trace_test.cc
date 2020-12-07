@@ -114,15 +114,15 @@ TEST_F(Trace, should_work_correctly_in_multithreaded_environment)
   GlobalTrace.reset();
 
   string thisShouldBeInLogFile =
-      "Total allocated: " +
-      to_string(numberOfThreads / 2 * numberOfEmulations * numberOfBytesPerOneEmulation) +
-      " B, Total deallocated: " +
-      to_string(numberOfThreads / 2 * numberOfEmulations * numberOfBytesPerOneEmulation) + " B\n";
+    "Total allocated: " +
+    to_string(numberOfThreads / 2 * numberOfEmulations * numberOfBytesPerOneEmulation) +
+    " B, Total deallocated: " +
+    to_string(numberOfThreads / 2 * numberOfEmulations * numberOfBytesPerOneEmulation) + " B\n";
   string andThisToo =
-      "Total allocated: " +
-      to_string(numberOfThreads / 2 * numberOfEmulations * numberOfBytesPerOneEmulation) +
-      " B, Total deallocated: " +
-      to_string(numberOfThreads / 2 * numberOfEmulations * numberOfBytesPerOneEmulation) + " B\n";
+    "Total allocated: " +
+    to_string(numberOfThreads / 2 * numberOfEmulations * numberOfBytesPerOneEmulation) +
+    " B, Total deallocated: " +
+    to_string(numberOfThreads / 2 * numberOfEmulations * numberOfBytesPerOneEmulation) + " B\n";
   ASSERT_TRUE(getContentOfFile("./trace_test.log").find(thisShouldBeInLogFile) != string::npos);
   ASSERT_TRUE(getContentOfFile("./trace_test.log").find(andThisToo) != string::npos);
 }

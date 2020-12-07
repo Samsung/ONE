@@ -68,10 +68,10 @@ uint64_t num_elems(const nnfw_tensorinfo *ti)
 NNFW_STATUS resolve_op_backend(nnfw_session *session)
 {
   static std::unordered_map<std::string, std::string> operation_map = {
-      {"TRANSPOSE_CONV", "OP_BACKEND_TransposeConv"},      {"CONV_2D", "OP_BACKEND_Conv2D"},
-      {"DEPTHWISE_CONV_2D", "OP_BACKEND_DepthwiseConv2D"}, {"MEAN", "OP_BACKEND_Mean"},
-      {"AVERAGE_POOL_2D", "OP_BACKEND_AvgPool2D"},         {"MAX_POOL_2D", "OP_BACKEND_MaxPool2D"},
-      {"INSTANCE_NORM", "OP_BACKEND_InstanceNorm"},        {"ADD", "OP_BACKEND_Add"}};
+    {"TRANSPOSE_CONV", "OP_BACKEND_TransposeConv"},      {"CONV_2D", "OP_BACKEND_Conv2D"},
+    {"DEPTHWISE_CONV_2D", "OP_BACKEND_DepthwiseConv2D"}, {"MEAN", "OP_BACKEND_Mean"},
+    {"AVERAGE_POOL_2D", "OP_BACKEND_AvgPool2D"},         {"MAX_POOL_2D", "OP_BACKEND_MaxPool2D"},
+    {"INSTANCE_NORM", "OP_BACKEND_InstanceNorm"},        {"ADD", "OP_BACKEND_Add"}};
 
   for (auto i : operation_map)
   {

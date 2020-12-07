@@ -70,7 +70,7 @@ TEST_F(SymbolSearcher,
   fs::path pathToTestSample2 = exePath() / "libtest_sample2.so";
   void *test_sample2_handle = dlopen(pathToTestSample2.c_str(), RTLD_NOW);
   void *func_addr_in_test_sample2 =
-      dlsym(test_sample2_handle, "funcWhichCallFuncDefinedInTestSample3");
+    dlsym(test_sample2_handle, "funcWhichCallFuncDefinedInTestSample3");
 
   ASSERT_TRUE(test_sample2_handle);
   ASSERT_TRUE((void *)funcDefinedInTestSample3_ButWrappedInTestSample1 !=
