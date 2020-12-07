@@ -26,7 +26,7 @@ namespace TFLiteRun
 {
 
 TensorLoader::TensorLoader(tflite::Interpreter &interpreter)
-    : _interpreter(interpreter), _raw_data(nullptr)
+  : _interpreter(interpreter), _raw_data(nullptr)
 {
 }
 
