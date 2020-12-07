@@ -90,7 +90,7 @@ NNFW_STATUS nnfw_close_session(nnfw_session *session)
 NNFW_STATUS nnfw_load_model_from_file(nnfw_session *session, const char *pacakge_file_path)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->load_model_from_file(pacakge_file_path);
+  return session->load_model_from_nnpackage(pacakge_file_path);
 }
 
 /*

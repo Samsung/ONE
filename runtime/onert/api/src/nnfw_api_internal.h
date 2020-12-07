@@ -101,7 +101,7 @@ public:
   nnfw_session();
   ~nnfw_session();
 
-  NNFW_STATUS load_model_from_file(const char *package_file_path);
+  NNFW_STATUS load_model_from_nnpackage(const char *package_file_path);
   NNFW_STATUS prepare();
   NNFW_STATUS run();
 
