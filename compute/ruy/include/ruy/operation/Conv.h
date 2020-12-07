@@ -111,7 +111,7 @@ private:
     const int filter_height = filter_shape.Dims(1);
     const bool need_dilated_im2col = dilation_width_factor != 1 || dilation_height_factor != 1;
     const bool need_im2col =
-        stride_width != 1 || stride_height != 1 || filter_width != 1 || filter_height != 1;
+      stride_width != 1 || stride_height != 1 || filter_width != 1 || filter_height != 1;
     if (need_dilated_im2col)
     {
       DilatedIm2col(params, float_zero_byte, input_shape, input_data, filter_shape, output_shape,
