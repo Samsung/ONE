@@ -21,14 +21,6 @@ LOCAL_SRC_FILES := \
 		$(ONERT_PREBUILT_LIB_DIR)/libtflite_loader.so
 include $(PREBUILT_SHARED_LIBRARY)
 
-# libtensorflowlite_jni
-include $(CLEAR_VARS)
-LOCAL_MODULE := tensorflowlite_jni
-PREBUILT_LIB += tensorflowlite_jni
-LOCAL_SRC_FILES := \
-		$(ONERT_PREBUILT_LIB_DIR)/libtensorflowlite_jni.so
-include $(PREBUILT_SHARED_LIBRARY)
-
 # libnnfw
 include $(CLEAR_VARS)
 LOCAL_MODULE := nnfw-dev
