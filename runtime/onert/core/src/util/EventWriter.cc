@@ -419,21 +419,7 @@ struct MDTableBuilder
 
 } // namespace
 
-void EventWriter::writeToFiles(const std::string &base_filepath)
-{
-  // Note. According to an internal issue, let snpe json as just file name not '.snpe.json'
-  writeToFile(base_filepath, WriteFormat::SNPE_BENCHMARK);
-  writeToFile(base_filepath + ".chrome.json", WriteFormat::CHROME_TRACING);
-  writeToFile(base_filepath + ".table.md", WriteFormat::MD_TABLE);
-}
-
-void EventWriter::writeToFile(const std::string &filepath, WriteFormat write_format)
-{
-  std::ofstream os{filepath, std::ofstream::out};
-  _actual_writers.at(write_format)->writeToFile(os);
-}
-
-void SNPEWriter::writeToFile(std::ostream &os)
+void SNPEWriter::flush(const std::vector<std::unique_ptr<EventRecorder>> &recorders)
 {
   Json::Value root;
   auto &exec_data = root["Execution_Data"] = Json::Value{Json::objectValue};
@@ -457,11 +443,14 @@ void SNPEWriter::writeToFile(std::ostream &os)
   // Memory
   {
     std::unordered_map<std::string, Stat> mem_stats;
-    for (auto &evt : _recorder.counter_events())
+    for (auto &recorder : recorders)
     {
-      auto &mem_stat = mem_stats[evt.name];
-      uint64_t val = std::stoull(evt.values.at("value"));
-      mem_stat.accumulate(val);
+      for (auto &evt : recorder->counter_events())
+      {
+        auto &mem_stat = mem_stats[evt.name];
+        uint64_t val = std::stoull(evt.values.at("value"));
+        mem_stat.accumulate(val);
+      }
     }
 
     auto &mem = exec_data["memory"] = Json::Value{Json::objectValue};
@@ -483,26 +472,29 @@ void SNPEWriter::writeToFile(std::ostream &os)
     // 2D keys : stats[tid][name]
     std::unordered_map<std::string, std::unordered_map<std::string, Stat>> stats;
     std::unordered_map<std::string, std::unordered_map<std::string, uint64_t>> begin_timestamps;
-    for (auto &evt : _recorder.duration_events())
+    for (auto &recorder : recorders)
     {
-      auto &stat = stats[evt.tid][evt.name];
-      auto &begin_ts = begin_timestamps[evt.tid][evt.name];
-      uint64_t timestamp = std::stoull(evt.ts);
-      if (evt.ph == "B")
+      for (auto &evt : recorder->duration_events())
       {
-        if (begin_ts != 0)
-          throw std::runtime_error{"Invalid Data"};
-        begin_ts = timestamp;
+        auto &stat = stats[evt.tid][evt.name];
+        auto &begin_ts = begin_timestamps[evt.tid][evt.name];
+        uint64_t timestamp = std::stoull(evt.ts);
+        if (evt.ph == "B")
+        {
+          if (begin_ts != 0)
+            throw std::runtime_error{"Invalid Data"};
+          begin_ts = timestamp;
+        }
+        else if (evt.ph == "E")
+        {
+          if (begin_ts == 0 || timestamp < begin_ts)
+            throw std::runtime_error{"Invalid Data"};
+          stat.accumulate(timestamp - begin_ts);
+          begin_ts = 0;
+        }
+        else
+          throw std::runtime_error{"Invalid Data - invalid value for \"ph\" : \"" + evt.ph + "\""};
       }
-      else if (evt.ph == "E")
-      {
-        if (begin_ts == 0 || timestamp < begin_ts)
-          throw std::runtime_error{"Invalid Data"};
-        stat.accumulate(timestamp - begin_ts);
-        begin_ts = 0;
-      }
-      else
-        throw std::runtime_error{"Invalid Data - invalid value for \"ph\" : \"" + evt.ph + "\""};
     }
 
     for (auto &kv : begin_timestamps)
@@ -527,30 +519,71 @@ void SNPEWriter::writeToFile(std::ostream &os)
     }
   }
 
-  os << root;
+  _os << root;
 }
 
-void ChromeTracingWriter::writeToFile(std::ostream &os)
+void ChromeTracingWriter::flush(const std::vector<std::unique_ptr<EventRecorder>> &recorders)
 {
-  os << "{\n";
-  os << "  " << quote("traceEvents") << ": [\n";
+  _os << "{\n";
+  _os << "  " << quote("traceEvents") << ": [\n";
 
-  for (auto &evt : _recorder.duration_events())
+  for (auto &recorder : recorders)
   {
-    os << "    " << object(evt) << ",\n";
+    flushOneRecord(*recorder);
   }
 
-  for (auto &evt : _recorder.counter_events())
-  {
-    os << "    " << object(evt) << ",\n";
-  }
-
-  os << "    { }\n";
-  os << "  ]\n";
-  os << "}\n";
+  _os << "    { }\n";
+  _os << "  ]\n";
+  _os << "}\n";
 }
 
-void MDTableWriter::writeToFile(std::ostream &os)
+void ChromeTracingWriter::flushOneRecord(const EventRecorder &recorder)
 {
-  MDTableBuilder(_recorder.duration_events(), _recorder.counter_events()).build().write(os);
+  for (auto &evt : recorder.duration_events())
+  {
+    _os << "    " << object(evt) << ",\n";
+  }
+
+  for (auto &evt : recorder.counter_events())
+  {
+    _os << "    " << object(evt) << ",\n";
+  }
+}
+
+void MDTableWriter::flush(const std::vector<std::unique_ptr<EventRecorder>> &records)
+{
+  for (auto &recorder : records)
+  {
+    MDTableBuilder(recorder->duration_events(), recorder->counter_events()).build().write(_os);
+  }
+}
+
+// initialization
+std::mutex EventWriter::_mutex;
+
+void EventWriter::readyToFlush(std::unique_ptr<EventRecorder> &&recorder)
+{
+  {
+    std::unique_lock<std::mutex> lock{_mutex};
+
+    _recorders.emplace_back(std::move(recorder));
+
+    if (--_ref_count > 0)
+      return;
+  }
+  // The caller of this method is the last instance that uses EventWriter.
+  // Let's write log files.
+
+  // Note. According to an internal issue, let snpe json as just file name not '.snpe.json'
+  flush(WriteFormat::SNPE_BENCHMARK);
+  flush(WriteFormat::CHROME_TRACING);
+  flush(WriteFormat::MD_TABLE);
+}
+
+void EventWriter::flush(WriteFormat write_format)
+{
+  auto *writer = _actual_writers[write_format].get();
+  assert(writer);
+
+  writer->flush(_recorders);
 }
