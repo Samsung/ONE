@@ -10,7 +10,7 @@ Abs | O | O | O
 Add | O | O | O
 AddN | O |   |
 ArgMax | O | O | O
-ArgMin | O |   |
+ArgMin | O | O | O
 AvgPool2D | O | O | O
 BatchMatmul | O |   |
 BatchToSpaceND | O | O | O
@@ -111,7 +111,7 @@ Operation | CPU | ACL-CL | ACL-NEON
 -- | -- | -- | --
 Add | O | O | O
 ArgMax | O | O | O
-ArgMin | O |   |
+ArgMin | O | O | O
 AvgPool2D | O | O | O
 BatchToSpaceND | O | O | O
 Cast | O | O |
@@ -173,6 +173,8 @@ Unpack(Unstack) |   | O | O
 
 Operation | CPU | ACL-CL | ACL-NEON
 -- | -- | -- | --
+ArgMax | O | O | O
+ArgMin | O | O | O
 Concat | O |   |
 DepthToSpace | O |   |
 Dequantize | O |   |
