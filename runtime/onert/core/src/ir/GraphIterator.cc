@@ -32,7 +32,7 @@ template <bool is_const>
 void DefaultIterator<is_const>::iterate(GraphRef graph, const IterFn &fn) const
 {
   graph.operations().iterate(
-      [&](const OperationIndex &index, NodeRef node) -> void { fn(index, node); });
+    [&](const OperationIndex &index, NodeRef node) -> void { fn(index, node); });
 }
 
 //
@@ -48,7 +48,7 @@ void PostDfsIterator<is_const>::iterate(GraphRef graph, const IterFn &fn) const
   graph.operations().iterate([&](const OperationIndex &index, NodeRef) { visited[index] = false; });
 
   std::function<void(const OperationIndex &, NodeRef)> dfs_recursive =
-      [&](const OperationIndex &index, NodeRef node) -> void {
+    [&](const OperationIndex &index, NodeRef node) -> void {
     if (visited[index])
       return;
     visited[index] = true;
@@ -78,10 +78,10 @@ void PostDfsIterator<is_const>::iterateOpSeqs(LoweredGraphRef lowered_graph,
 {
   std::unordered_map<OpSequenceIndex, bool> visited;
   lowered_graph.op_seqs().iterate(
-      [&](const OpSequenceIndex &index, OpSequenceRef) { visited[index] = false; });
+    [&](const OpSequenceIndex &index, OpSequenceRef) { visited[index] = false; });
 
   std::function<void(const OpSequenceIndex &, OpSequenceRef)> dfs_recursive =
-      [&](const OpSequenceIndex &index, OpSequenceRef op_seq) -> void {
+    [&](const OpSequenceIndex &index, OpSequenceRef op_seq) -> void {
     if (visited[index])
       return;
     visited[index] = true;

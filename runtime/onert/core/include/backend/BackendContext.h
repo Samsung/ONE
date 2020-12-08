@@ -31,7 +31,7 @@ class Backend;
 struct ITensorRegistry;
 
 using FunctionMap =
-    std::vector<std::pair<ir::OpSequenceIndex, std::unique_ptr<exec::FunctionSequence>>>;
+  std::vector<std::pair<ir::OpSequenceIndex, std::unique_ptr<exec::FunctionSequence>>>;
 
 class BackendContext
 {
@@ -47,7 +47,7 @@ public:
 public:
   BackendContext(const Backend *backend, const ir::Graph *graph,
                  std::shared_ptr<ITensorRegistry> tensor_registry = nullptr)
-      : _backend{backend}, _graph{graph}, tensor_registry{tensor_registry}
+    : _backend{backend}, _graph{graph}, tensor_registry{tensor_registry}
   {
   }
 

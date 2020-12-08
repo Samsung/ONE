@@ -60,7 +60,7 @@ void prepareFC(ExecEnv *env, const ir::Operation &node)
   output_shape.dim(0) = batch_size;
   output_shape.dim(1) = num_units;
   const auto out_info =
-      ir::OperandInfo::createStaticInfo(output_shape, in_tensor->tensorInfo().typeInfo());
+    ir::OperandInfo::createStaticInfo(output_shape, in_tensor->tensorInfo().typeInfo());
   env->allocateIfNeeded(out_index, out_info);
 
   auto out_tensor = env->tensorAt(out_index);
@@ -100,7 +100,7 @@ void invoke(const ITensor *ifm_tensor, const ITensor *ker_tensor, const ITensor 
 void invokeFC(const ExecEnv *env, const ir::Operation &node)
 {
   const auto &conv_node =
-      nnfw::misc::polymorphic_downcast<const ir::operation::FullyConnected &>(node);
+    nnfw::misc::polymorphic_downcast<const ir::operation::FullyConnected &>(node);
 
   const auto ifm_index = node.getInputs().at(ir::operation::FullyConnected::INPUT);
   const auto ker_index = node.getInputs().at(ir::operation::FullyConnected::WEIGHT);

@@ -26,7 +26,7 @@ namespace controlflow
 {
 
 IOTensor::IOTensor(const ir::OperandInfo &info, ir::Layout layout)
-    : IPortableTensor{info}, _orig_info{info}, _orig_layout{layout}
+  : IPortableTensor{info}, _orig_info{info}, _orig_layout{layout}
 {
   setUserTensor(nullptr, 0);
 }

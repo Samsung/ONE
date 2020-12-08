@@ -81,8 +81,7 @@ DataflowExecutor::DataflowExecutor(std::unique_ptr<compiler::LoweredGraph> lower
                                    const compiler::TensorRegistries &tensor_regs,
                                    compiler::CodeMap &&code_map,
                                    const util::TracingCtx *tracing_ctx)
-    : ExecutorBase{std::move(lowered_graph), tensor_regs, tracing_ctx},
-      _code_map{std::move(code_map)}
+  : ExecutorBase{std::move(lowered_graph), tensor_regs, tracing_ctx}, _code_map{std::move(code_map)}
 {
   VERBOSE(DataflowExecutor) << "Constructing Dataflow Executor" << std::endl;
 
@@ -94,7 +93,7 @@ DataflowExecutor::DataflowExecutor(std::unique_ptr<compiler::LoweredGraph> lower
     VERBOSE(DataflowExecutor) << "Create a job #" << next_job_index << " with OpSequenceIndex "
                               << op_seq_index.value() << std::endl;
     _finished_jobs.emplace_back(
-        std::make_unique<Job>(next_job_index, _code_map.at(op_seq_index).fn_seq.get()));
+      std::make_unique<Job>(next_job_index, _code_map.at(op_seq_index).fn_seq.get()));
     op_seq_to_job[op_seq_index] = next_job_index++;
   });
 
@@ -108,14 +107,14 @@ DataflowExecutor::DataflowExecutor(std::unique_ptr<compiler::LoweredGraph> lower
     {
       // Update output and input info
       op_seqs.iterate(
-          [&](const ir::OpSequenceIndex &op_seq_cur_index, const ir::OpSequence &op_seq_cur) {
-            if (op_seq_cur.getInputs().contains(output))
-            {
-              auto dep_index = op_seq_to_job[op_seq_cur_index];
-              ++_initial_input_info[dep_index];
-              _output_info[job_index].push_back(dep_index);
-            }
-          });
+        [&](const ir::OpSequenceIndex &op_seq_cur_index, const ir::OpSequence &op_seq_cur) {
+          if (op_seq_cur.getInputs().contains(output))
+          {
+            auto dep_index = op_seq_to_job[op_seq_cur_index];
+            ++_initial_input_info[dep_index];
+            _output_info[job_index].push_back(dep_index);
+          }
+        });
     }
   });
   for (const auto &s : op_seq_to_job)
@@ -156,7 +155,7 @@ void DataflowExecutor::executeImpl()
     auto op_seq_index = _job_to_op_seq[job_index];
     auto op_seq = &_lowered_graph->op_seqs().at(op_seq_index);
     const backend::Backend *backend =
-        _lowered_graph->getLowerInfo()->op_seq.at(op_seq_index)->backend();
+      _lowered_graph->getLowerInfo()->op_seq.at(op_seq_index)->backend();
 
     _subject.notifyJobBegin(this, profiling_subg_index, op_seq, backend);
 

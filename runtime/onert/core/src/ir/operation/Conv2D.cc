@@ -31,7 +31,7 @@ void Conv2D::accept(OperationVisitor &v) const { v.visit(*this); }
 
 Conv2D::Conv2D(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs,
                const Param &param)
-    : Operation{OperandConstraint::createExact(3u), inputs, outputs}, _param{param}
+  : Operation{OperandConstraint::createExact(3u), inputs, outputs}, _param{param}
 {
 }
 

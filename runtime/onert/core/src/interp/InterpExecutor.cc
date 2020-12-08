@@ -50,7 +50,7 @@ void InterpExecutor::execute(const exec::IODescription &desc)
 
     auto input_tensor = std::make_shared<ROTensor>(input->info);
     input_tensor->setData(std::make_shared<const ir::ExternalData>(
-        reinterpret_cast<const uint8_t *>(input->buffer), input->size));
+      reinterpret_cast<const uint8_t *>(input->buffer), input->size));
     tensor_map[input_index] = input_tensor;
   }
 
@@ -86,8 +86,8 @@ void InterpExecutor::execute(const exec::IODescription &desc)
                          << std::endl;
 
     interp_env->assignExternalBuffer(
-        output_index, std::make_shared<ExternalBuffer>(reinterpret_cast<uint8_t *>(output->buffer),
-                                                       output->size));
+      output_index,
+      std::make_shared<ExternalBuffer>(reinterpret_cast<uint8_t *>(output->buffer), output->size));
   }
 
   // Allocate constant tensor
@@ -101,7 +101,7 @@ void InterpExecutor::execute(const exec::IODescription &desc)
       auto const_tensor = std::make_shared<ROTensor>(obj.info());
       // Assume that interpreter's tensor layout is same with model (NHWC)
       const_tensor->setData(
-          std::make_shared<ir::ExternalData>(obj.data()->base(), obj.info().total_size()));
+        std::make_shared<ir::ExternalData>(obj.data()->base(), obj.info().total_size()));
       interp_env->assignTensor(ind, const_tensor);
     }
   });

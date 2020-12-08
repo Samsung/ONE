@@ -29,7 +29,9 @@ class EventFormatWriter
 {
 public:
   EventFormatWriter(const std::string &filepath) : _os{filepath, std::ofstream::out} {}
-  virtual ~EventFormatWriter() { /* empty */}
+  virtual ~EventFormatWriter()
+  { /* empty */
+  }
 
   virtual void flush(const std::vector<std::unique_ptr<EventRecorder>> &) = 0;
 
@@ -40,14 +42,18 @@ protected:
 class SNPEWriter : public EventFormatWriter
 {
 public:
-  SNPEWriter(const std::string &filepath) : EventFormatWriter(filepath) { /* empty */}
+  SNPEWriter(const std::string &filepath) : EventFormatWriter(filepath)
+  { /* empty */
+  }
   void flush(const std::vector<std::unique_ptr<EventRecorder>> &) override;
 };
 
 class ChromeTracingWriter : public EventFormatWriter
 {
 public:
-  ChromeTracingWriter(const std::string &filepath) : EventFormatWriter(filepath) { /* empty */}
+  ChromeTracingWriter(const std::string &filepath) : EventFormatWriter(filepath)
+  { /* empty */
+  }
   void flush(const std::vector<std::unique_ptr<EventRecorder>> &) override;
 
 private:
@@ -57,7 +63,9 @@ private:
 class MDTableWriter : public EventFormatWriter
 {
 public:
-  MDTableWriter(const std::string &filepath) : EventFormatWriter(filepath) { /* empty */}
+  MDTableWriter(const std::string &filepath) : EventFormatWriter(filepath)
+  { /* empty */
+  }
   void flush(const std::vector<std::unique_ptr<EventRecorder>> &) override;
 
 private:
@@ -110,7 +118,7 @@ private:
 
     _actual_writers[WriteFormat::SNPE_BENCHMARK] = std::make_unique<SNPEWriter>(snpe_log_name);
     _actual_writers[WriteFormat::CHROME_TRACING] =
-        std::make_unique<ChromeTracingWriter>(chrome_tracing_log_name);
+      std::make_unique<ChromeTracingWriter>(chrome_tracing_log_name);
     _actual_writers[WriteFormat::MD_TABLE] = std::make_unique<MDTableWriter>(md_table_log_name);
   };
 

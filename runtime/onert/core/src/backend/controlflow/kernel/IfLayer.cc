@@ -35,9 +35,9 @@ IfLayer::IfLayer(backend::IPortableTensor *cond_tensor,
                  const ir::SubgraphIndex &then_subg_index, const ir::SubgraphIndex &else_subg_index,
                  exec::ExecutorMap *executor_map,
                  const std::shared_ptr<ExternalContext> &external_context)
-    : _cond_tensor{cond_tensor}, _input_tensors{input_tensors}, _output_tensors{output_tensors},
-      _then_subg_index{then_subg_index}, _else_subg_index{else_subg_index},
-      _executor_map{executor_map}, _external_context{external_context}
+  : _cond_tensor{cond_tensor}, _input_tensors{input_tensors}, _output_tensors{output_tensors},
+    _then_subg_index{then_subg_index}, _else_subg_index{else_subg_index},
+    _executor_map{executor_map}, _external_context{external_context}
 {
   // At this point, executor_map may not have executors of then subg and else subg
 }

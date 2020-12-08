@@ -40,7 +40,7 @@ struct OperationVisitor
   virtual void visit(const OpSequence &)
   {
     throw std::runtime_error{
-        "OperationVisitor: This does not privide visit function in OpSequence"};
+      "OperationVisitor: This does not privide visit function in OpSequence"};
   }
 };
 

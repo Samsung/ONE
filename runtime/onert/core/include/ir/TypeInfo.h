@@ -35,7 +35,7 @@ public:
   TypeInfo() = delete;
 
   explicit TypeInfo(DataType type, float scale = 0, int32_t offset = 0)
-      : _type(type), _scale(scale), _offset(offset), _sparsity(nullptr)
+    : _type(type), _scale(scale), _offset(offset), _sparsity(nullptr)
   {
   }
 

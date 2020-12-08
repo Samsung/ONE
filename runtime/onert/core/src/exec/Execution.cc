@@ -57,10 +57,10 @@ void Execution::setInput(const ir::IOIndex &index, const void *buffer, size_t le
   // note: input_shape_sig contains shape passed by nnfw_set_input_tensorinfo()
   {
     auto input_shape_sig = _io_desc.dynamic_input_shapes.find(index);
-    auto size_required = (input_shape_sig != _io_desc.dynamic_input_shapes.end())
-                             ? input_shape_sig->second.num_elements() *
-                                   onert::ir::sizeOfDataType(info.typeInfo().type())
-                             : info.total_size();
+    auto size_required =
+      (input_shape_sig != _io_desc.dynamic_input_shapes.end())
+        ? input_shape_sig->second.num_elements() * onert::ir::sizeOfDataType(info.typeInfo().type())
+        : info.total_size();
 
     if (length < size_required)
     {
@@ -117,14 +117,14 @@ void Execution::setInputLayout(const ir::IOIndex &index, ir::Layout layout)
 {
   const auto &input_desc = _io_desc.inputs.at(index.value());
   _io_desc.inputs.at(index.value()) =
-      std::make_unique<InputDesc>(input_desc->info, input_desc->buffer, input_desc->size, layout);
+    std::make_unique<InputDesc>(input_desc->info, input_desc->buffer, input_desc->size, layout);
 }
 
 void Execution::setOutputLayout(const ir::IOIndex &index, ir::Layout layout)
 {
   const auto &output_desc = _io_desc.outputs.at(index.value());
-  _io_desc.outputs.at(index.value()) = std::make_unique<OutputDesc>(
-      output_desc->info, output_desc->buffer, output_desc->size, layout);
+  _io_desc.outputs.at(index.value()) =
+    std::make_unique<OutputDesc>(output_desc->info, output_desc->buffer, output_desc->size, layout);
 }
 
 void Execution::execute()

@@ -109,7 +109,7 @@ void PermutationInsertionPass::callback(const ir::OperandIndex &index, ir::Opera
 
         // Update from operand
         remove_list.push_back(
-            use); // Removal should be done in another loop since we are in the loop
+          use); // Removal should be done in another loop since we are in the loop
         _graph.operands().at(new_index).insertUse(use);
       }
     }
@@ -205,7 +205,7 @@ ir::OperationIndex PermutationInsertionPass::insertPermute(const ir::OperandInde
     op_seq.setInputs(node.getInputs());
     op_seq.setOutputs(node.getOutputs());
     _lowered_graph.setLowerInfo(op_seq_index, std::make_unique<ir::operation::LowerInfo>(
-                                                  permute_node_backend, permute_node_layout));
+                                                permute_node_backend, permute_node_layout));
   }
 
   // Update Use/Def info

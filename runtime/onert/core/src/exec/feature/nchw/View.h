@@ -40,7 +40,7 @@ public:
   using Strides = typename Reader<T>::Strides;
   // Construct for buffer of model inputs
   View(const ir::FeatureShape &shape, const Strides &strides, T *ptr, size_t len)
-      : Reader<T>{shape, strides, ptr, len}
+    : Reader<T>{shape, strides, ptr, len}
   {
     // DO NOTHING
   }

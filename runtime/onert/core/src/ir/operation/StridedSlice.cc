@@ -31,7 +31,7 @@ void StridedSlice::accept(OperationVisitor &v) const { v.visit(*this); }
 
 StridedSlice::StridedSlice(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs,
                            const Param &param)
-    : Operation{OperandConstraint::createExact(4u), inputs, outputs}, _param{param}
+  : Operation{OperandConstraint::createExact(4u), inputs, outputs}, _param{param}
 {
 }
 

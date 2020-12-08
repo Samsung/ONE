@@ -33,13 +33,14 @@ void ElementwiseActivation::accept(OperationVisitor &v) const { v.visit(*this); 
 ElementwiseActivation::ElementwiseActivation(const OperandIndexSequence &inputs,
                                              const OperandIndexSequence &outputs,
                                              const Param &param)
-    : Operation{OperandConstraint::createExact(1u), inputs, outputs}, _param{param}
+  : Operation{OperandConstraint::createExact(1u), inputs, outputs}, _param{param}
 {
   if (param.op_type == Type::LOGISTIC)
   {
-    assert(param.alpha == 0.0f && param.beta == 0.0f && "Logistic will be supported only as "
-                                                        "sigmoid function(L=1, k=1, x0=0). So, do "
-                                                        "not use alpha and beta");
+    assert(param.alpha == 0.0f && param.beta == 0.0f &&
+           "Logistic will be supported only as "
+           "sigmoid function(L=1, k=1, x0=0). So, do "
+           "not use alpha and beta");
   }
   else if (param.op_type == Type::RELU)
   {
@@ -47,9 +48,10 @@ ElementwiseActivation::ElementwiseActivation(const OperandIndexSequence &inputs,
   }
   else if (param.op_type == Type::TANH)
   {
-    assert(param.alpha == 1.0f && param.beta == 1.0f && "f(x) = alpha * tanh(beta * x), Tanh is "
-                                                        "supported only the values of alpha and "
-                                                        "beta are 1.f");
+    assert(param.alpha == 1.0f && param.beta == 1.0f &&
+           "f(x) = alpha * tanh(beta * x), Tanh is "
+           "supported only the values of alpha and "
+           "beta are 1.f");
   }
 }
 
@@ -57,11 +59,11 @@ std::string ElementwiseActivation::name() const
 {
   using ElementwiseActivationType = onert::ir::operation::ElementwiseActivation::Type;
   static const std::unordered_map<Type, std::string> name_map{
-      {ElementwiseActivationType::ELU, "ELU"},
-      {ElementwiseActivationType::LOGISTIC, "Logistic"},
-      {ElementwiseActivationType::RELU, "ReLU"},
-      {ElementwiseActivationType::TANH, "Tanh"},
-      {ElementwiseActivationType::LEAKY_RELU, "LeakyRelu"}};
+    {ElementwiseActivationType::ELU, "ELU"},
+    {ElementwiseActivationType::LOGISTIC, "Logistic"},
+    {ElementwiseActivationType::RELU, "ReLU"},
+    {ElementwiseActivationType::TANH, "Tanh"},
+    {ElementwiseActivationType::LEAKY_RELU, "LeakyRelu"}};
   return name_map.at(_param.op_type);
 }
 

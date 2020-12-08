@@ -107,8 +107,8 @@ void FirstFitPlanner::release(const ir::OperandIndex &ind)
 }
 
 WICPlanner::WICPlanner()
-    : _initialized(false), _capacity(0), _mem_plans(), _live_operands(), _interference_graph(),
-      _operands()
+  : _initialized(false), _capacity(0), _mem_plans(), _live_operands(), _interference_graph(),
+    _operands()
 {
   // DO NOTHING
 }

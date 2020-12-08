@@ -31,7 +31,7 @@ void ConvertFp32ToFp16::accept(OperationVisitor &v) const { v.visit(*this); }
 
 ConvertFp32ToFp16::ConvertFp32ToFp16(const OperandIndexSequence &inputs,
                                      const OperandIndexSequence &outputs)
-    : Operation{OperandConstraint::createExact(1u), inputs, outputs}
+  : Operation{OperandConstraint::createExact(1u), inputs, outputs}
 {
 }
 

@@ -31,7 +31,7 @@ void SquaredDifference::accept(OperationVisitor &v) const { v.visit(*this); }
 
 SquaredDifference::SquaredDifference(const OperandIndexSequence &inputs,
                                      const OperandIndexSequence &outputs)
-    : Operation{OperandConstraint::createExact(2u), inputs, outputs}
+  : Operation{OperandConstraint::createExact(2u), inputs, outputs}
 {
 }
 

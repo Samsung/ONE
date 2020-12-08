@@ -134,11 +134,11 @@ void StaticShapeInferer::dump()
     const auto &lowered_subg = pair.second;
     VERBOSE(StaticShapeInferer) << "SubGraph #" << index.value() << std::endl;
     lowered_subg->graph().operands().iterate(
-        [&](const ir::OperandIndex &ind, const ir::Operand &operand) {
-          VERBOSE(StaticShapeInferer) << "Operand #" << ind.value() << ", "
-                                      << (operand.info().isDynamic() ? "Dynamic" : "Static") << ", "
-                                      << get_shape_str(operand.info().shape()) << std::endl;
-        });
+      [&](const ir::OperandIndex &ind, const ir::Operand &operand) {
+        VERBOSE(StaticShapeInferer) << "Operand #" << ind.value() << ", "
+                                    << (operand.info().isDynamic() ? "Dynamic" : "Static") << ", "
+                                    << get_shape_str(operand.info().shape()) << std::endl;
+      });
   }
 }
 
@@ -167,7 +167,7 @@ void StaticShapeInferer::visit(const ir::operation::ArgMinMax &op)
 
   // re-sizing output shape
   ir::Shape new_shape =
-      shape_inference::inferArgMinMaxShape(input.info().shape(), axis_value, rank);
+    shape_inference::inferArgMinMaxShape(input.info().shape(), axis_value, rank);
   output.info().shape(new_shape);
 }
 
@@ -189,7 +189,7 @@ void StaticShapeInferer::visit(const ir::operation::BCQFullyConnected &op)
   const auto &input = _operands.at(input_idx);
 
   const auto cluster_idx{
-      op.getInputs().at(ir::operation::BCQFullyConnected::Input::WEIGHTS_CLUSTERS)};
+    op.getInputs().at(ir::operation::BCQFullyConnected::Input::WEIGHTS_CLUSTERS)};
   const auto &cluster = _operands.at(cluster_idx);
 
   const auto output_idx = op.getOutputs().at(0);
@@ -200,7 +200,7 @@ void StaticShapeInferer::visit(const ir::operation::BCQFullyConnected &op)
 
   // re-sizing output shape
   ir::Shape new_shape = shape_inference::inferBCQFullyConnectedShape(
-      input.info().shape(), cluster.info().shape(), cluster_buf);
+    input.info().shape(), cluster.info().shape(), cluster_buf);
   output.info().shape(new_shape);
 }
 
@@ -225,7 +225,7 @@ void StaticShapeInferer::visit(const ir::operation::BCQGather &op)
 
   // re-sizing output shape
   ir::Shape new_shape = shape_inference::inferBCQGatherShape(
-      indices.info().shape(), cluster.info().shape(), cluster_buf, rank, op.param());
+    indices.info().shape(), cluster.info().shape(), cluster_buf, rank, op.param());
 
   output.info().shape(new_shape);
 }
@@ -298,7 +298,7 @@ void StaticShapeInferer::visit(const ir::operation::Conv2D &op)
 
   // re-sizing output shape
   ir::Shape new_shape =
-      shape_inference::inferConv2DShape(input.info().shape(), ker.info().shape(), op.param());
+    shape_inference::inferConv2DShape(input.info().shape(), ker.info().shape(), op.param());
   output.info().shape(new_shape);
 }
 
@@ -341,9 +341,9 @@ void StaticShapeInferer::visit(const ir::operation::ExpandDims &op)
 
   assert(axis.data()->base());
   int32_t axis_value =
-      (axis_type == ir::DataType::INT32)
-          ? reinterpret_cast<const int32_t *>(axis.data()->base())[0]
-          : static_cast<int32_t>(reinterpret_cast<const int64_t *>(axis.data()->base())[0]);
+    (axis_type == ir::DataType::INT32)
+      ? reinterpret_cast<const int32_t *>(axis.data()->base())[0]
+      : static_cast<int32_t>(reinterpret_cast<const int64_t *>(axis.data()->base())[0]);
 
   // re-sizing output shape
   ir::Shape new_shape = shape_inference::inferExpandDimsShape(input.info().shape(), axis_value);
@@ -372,10 +372,10 @@ void StaticShapeInferer::visit(const ir::operation::Fill &op)
 
   const auto &dims_shape = shape.info().shape();
   auto new_shape = ((dims_type == ir::DataType::INT32)
-                        ? shape_inference::inferFillShape<int32_t>(
-                              dims_shape, reinterpret_cast<const int32_t *>(dims_buf))
-                        : shape_inference::inferFillShape<int64_t>(
-                              dims_shape, reinterpret_cast<const int64_t *>(dims_buf)));
+                      ? shape_inference::inferFillShape<int32_t>(
+                          dims_shape, reinterpret_cast<const int32_t *>(dims_buf))
+                      : shape_inference::inferFillShape<int64_t>(
+                          dims_shape, reinterpret_cast<const int64_t *>(dims_buf)));
 
   output.info().shape(new_shape);
 }
@@ -393,7 +393,7 @@ void StaticShapeInferer::visit(const ir::operation::FullyConnected &op)
   ir::Operand &output = _operands.at(output_idx);
   // re-sizing output shape
   ir::Shape new_shape =
-      shape_inference::inferFullyConnectedShape(input.info().shape(), ker.info().shape());
+    shape_inference::inferFullyConnectedShape(input.info().shape(), ker.info().shape());
   output.info().shape(new_shape);
 }
 
@@ -420,7 +420,7 @@ void StaticShapeInferer::visit(const ir::operation::Gather &op)
 
   // re-sizing output shape
   ir::Shape new_shape =
-      shape_inference::inferGatherShape(input.info().shape(), indices.info().shape(), axis, rank);
+    shape_inference::inferGatherShape(input.info().shape(), indices.info().shape(), axis, rank);
   output.info().shape(new_shape);
 }
 
@@ -468,18 +468,18 @@ void StaticShapeInferer::visit(const ir::operation::If &op)
   // re-sizing operands of then subgraph
   StaticShapeInferer then_inferer(op.param().then_subg_index, _lowered_subgs);
   _lowered_subgs.at(op.param().then_subg_index)
-      ->iterateTopolOpSeqs([&](const ir::OpSequenceIndex &, ir::OpSequence &op_seq) {
-        bool has_dynamic_tensor = then_inferer.infer(op_seq);
-        op_seq.has_dynamic_tensor(has_dynamic_tensor);
-      });
+    ->iterateTopolOpSeqs([&](const ir::OpSequenceIndex &, ir::OpSequence &op_seq) {
+      bool has_dynamic_tensor = then_inferer.infer(op_seq);
+      op_seq.has_dynamic_tensor(has_dynamic_tensor);
+    });
 
   // re-sizing operands of else subgraph
   StaticShapeInferer else_inferer(op.param().else_subg_index, _lowered_subgs);
   _lowered_subgs.at(op.param().else_subg_index)
-      ->iterateTopolOpSeqs([&](const ir::OpSequenceIndex &, ir::OpSequence &op_seq) {
-        bool has_dynamic_tensor = else_inferer.infer(op_seq);
-        op_seq.has_dynamic_tensor(has_dynamic_tensor);
-      });
+    ->iterateTopolOpSeqs([&](const ir::OpSequenceIndex &, ir::OpSequence &op_seq) {
+      bool has_dynamic_tensor = else_inferer.infer(op_seq);
+      op_seq.has_dynamic_tensor(has_dynamic_tensor);
+    });
 
   // re-sizing output shapes
   const auto &then_outputs = _lowered_subgs.at(op.param().then_subg_index)->graph().getOutputs();
@@ -515,14 +515,15 @@ void StaticShapeInferer::visit(const ir::operation::LSTM &op)
   auto &output = _operands.at(output_index);
 
   const auto output_state_out_index{
-      op.getOutputs().at(ir::operation::LSTM::Output::OUTPUT_STATE_OUT)};
+    op.getOutputs().at(ir::operation::LSTM::Output::OUTPUT_STATE_OUT)};
 
   const auto cell_state_out_index{op.getOutputs().at(ir::operation::LSTM::Output::CELL_STATE_OUT)};
 
   const auto scratch_buffer_index{op.getOutputs().at(ir::operation::LSTM::Output::SCRATCH_BUFFER)};
 
-  if (output.info().isDynamic() || (_operands.exist(output_state_out_index) &&
-                                    _operands.at(output_state_out_index).info().isDynamic()) ||
+  if (output.info().isDynamic() ||
+      (_operands.exist(output_state_out_index) &&
+       _operands.at(output_state_out_index).info().isDynamic()) ||
       (_operands.exist(cell_state_out_index) &&
        _operands.at(cell_state_out_index).info().isDynamic()) ||
       (_operands.exist(scratch_buffer_index) &&
@@ -533,11 +534,11 @@ void StaticShapeInferer::visit(const ir::operation::LSTM &op)
   const auto &input = _operands.at(input_index);
 
   const auto input_to_output_weights_index{
-      op.getInputs().at(ir::operation::LSTM::Input::INPUT_TO_OUTPUT_WEIGHTS)};
+    op.getInputs().at(ir::operation::LSTM::Input::INPUT_TO_OUTPUT_WEIGHTS)};
   const auto &input_to_output_weights = _operands.at(input_to_output_weights_index);
 
   const auto recurrent_to_output_weights_index{
-      op.getInputs().at(ir::operation::LSTM::Input::RECURRENT_TO_OUTPUT_WEIGHTS)};
+    op.getInputs().at(ir::operation::LSTM::Input::RECURRENT_TO_OUTPUT_WEIGHTS)};
   const auto &recurrent_to_output_weights = _operands.at(recurrent_to_output_weights_index);
 
   // re-sizing outputs
@@ -575,16 +576,16 @@ void StaticShapeInferer::visit(const ir::operation::LSTM &op)
     auto &scratch_buffer = _operands.at(scratch_buffer_index);
 
     const auto input_to_input_weights_index{
-        op.getInputs().at(ir::operation::LSTM::Input::INPUT_TO_INPUT_WEIGHTS)};
+      op.getInputs().at(ir::operation::LSTM::Input::INPUT_TO_INPUT_WEIGHTS)};
     const auto recurrent_to_input_weights_index{
-        op.getInputs().at(ir::operation::LSTM::Input::RECURRENT_TO_INPUT_WEIGHTS)};
+      op.getInputs().at(ir::operation::LSTM::Input::RECURRENT_TO_INPUT_WEIGHTS)};
 
     bool has_input_to_input_weights =
-        _operands.at(input_to_input_weights_index).shape().dim(0) != 0 &&
-        _operands.at(input_to_input_weights_index).shape().dim(1) != 0;
+      _operands.at(input_to_input_weights_index).shape().dim(0) != 0 &&
+      _operands.at(input_to_input_weights_index).shape().dim(1) != 0;
     bool has_recurrent_to_input_weights =
-        _operands.at(recurrent_to_input_weights_index).shape().dim(0) != 0 &&
-        _operands.at(recurrent_to_input_weights_index).shape().dim(1) != 0;
+      _operands.at(recurrent_to_input_weights_index).shape().dim(0) != 0 &&
+      _operands.at(recurrent_to_input_weights_index).shape().dim(1) != 0;
 
     // NOTE The cell_to_input_weights do not exist in non-peephole although regular LSTM(non-CIFG).
     // true: no CIFG
@@ -674,8 +675,8 @@ void StaticShapeInferer::visit(const ir::operation::Pad &op)
 
   // re-sizing output shape
   const auto new_shape = shape_inference::inferPadShape(
-      input.shape(), reinterpret_cast<const int32_t *>(pad.data()->base()),
-      pad.shape().num_elements());
+    input.shape(), reinterpret_cast<const int32_t *>(pad.data()->base()),
+    pad.shape().num_elements());
   output.info().shape(new_shape);
 }
 
@@ -722,12 +723,12 @@ void StaticShapeInferer::visit(const ir::operation::Range &op)
     if (output.typeInfo().type() == ir::DataType::FLOAT32)
     {
       new_shape = shape_inference::inferRangeShape<float>(
-          start_op.asScalar<float>(), limit_op.asScalar<float>(), delta_op.asScalar<float>());
+        start_op.asScalar<float>(), limit_op.asScalar<float>(), delta_op.asScalar<float>());
     }
     else if (output.typeInfo().type() == ir::DataType::INT32)
     {
       new_shape = shape_inference::inferRangeShape<int32_t>(
-          start_op.asScalar<int32_t>(), limit_op.asScalar<int32_t>(), delta_op.asScalar<int32_t>());
+        start_op.asScalar<int32_t>(), limit_op.asScalar<int32_t>(), delta_op.asScalar<int32_t>());
     }
     assert(output.shape() == new_shape);
   }
@@ -774,7 +775,7 @@ void StaticShapeInferer::visit(const ir::operation::Reduce &op)
 
   // re-sizing output shape
   ir::Shape new_shape =
-      shape_inference::inferReduceShape(input.info().shape(), axes_vec, keep_dims);
+    shape_inference::inferReduceShape(input.info().shape(), axes_vec, keep_dims);
   output.info().shape(new_shape);
 }
 
@@ -800,7 +801,7 @@ void StaticShapeInferer::visit(const ir::operation::Reshape &op)
       assert(shape_buf);
 
       ir::Shape new_shape = shape_inference::inferReshapeShape(
-          shape_buf, shape.shape().num_elements(), input.shape().num_elements());
+        shape_buf, shape.shape().num_elements(), input.shape().num_elements());
 
       // if shape is from Const, TFLC put the shape of output into tensor
       if (new_shape != output.shape())
@@ -821,8 +822,8 @@ void StaticShapeInferer::visit(const ir::operation::Reshape &op)
   {
     // Let's check the new_shape option
     auto shape = op.param().new_shape;
-    ir::Shape new_shape = shape_inference::inferReshapeShape(shape.data(), shape.size(),
-                                                             input.shape().num_elements());
+    ir::Shape new_shape =
+      shape_inference::inferReshapeShape(shape.data(), shape.size(), input.shape().num_elements());
 
     if (new_shape != output.shape())
     {
@@ -867,7 +868,7 @@ void StaticShapeInferer::visit(const ir::operation::ResizeBilinear &op)
 
   // Shape inferencing logic based on Params
   ir::Shape new_shape =
-      shape_inference::inferResizeBilinearShape(input.shape(), height_out, width_out);
+    shape_inference::inferResizeBilinearShape(input.shape(), height_out, width_out);
 
   // if size_op is from Const, TFLC put the shape of output into tensor
   if (new_shape != output.shape())
@@ -898,7 +899,7 @@ void StaticShapeInferer::visit(const ir::operation::Select &op)
 
   // Select output shpae
   ir::Shape new_shape = shape_inference::inferSelectShape(
-      input_cond.info().shape(), input_true.info().shape(), input_false.info().shape());
+    input_cond.info().shape(), input_true.info().shape(), input_false.info().shape());
   output.info().shape(new_shape);
 }
 
@@ -941,7 +942,7 @@ void StaticShapeInferer::visit(const ir::operation::Slice &op)
   auto sizes_buf = reinterpret_cast<const int32_t *>(sizes.data()->base());
 
   ir::Shape new_shape =
-      shape_inference::inferSliceShape(input.info().shape(), begins_buf, sizes_buf);
+    shape_inference::inferSliceShape(input.info().shape(), begins_buf, sizes_buf);
   output.info().shape(new_shape);
 }
 
@@ -978,7 +979,7 @@ void StaticShapeInferer::visit(const ir::operation::SpaceToBatchND &op)
   auto padding_data = reinterpret_cast<const int32_t *>(padding.data()->base());
 
   ir::Shape new_shape = shape_inference::inferSpaceToBatchNDShape(
-      input_shape, block_shape_shape, padding_shape, block_shape_data, padding_data);
+    input_shape, block_shape_shape, padding_shape, block_shape_data, padding_data);
 
   output.info().shape(new_shape);
 }
@@ -1012,7 +1013,7 @@ void StaticShapeInferer::visit(const ir::operation::Split &op)
   assert(0 <= axis_value && axis_value < rank);
 
   ir::Shape new_shape =
-      shape_inference::inferSplitShape(input.info().shape(), axis_value, num_splits);
+    shape_inference::inferSplitShape(input.info().shape(), axis_value, num_splits);
   for (auto output_idx : outputs)
   {
     ir::Operand &output = _operands.at(output_idx);
@@ -1069,10 +1070,10 @@ void StaticShapeInferer::visit(const ir::operation::StridedSlice &op)
   auto strides_buf = reinterpret_cast<const uint32_t *>(strides.data()->base());
 
   auto op_params = shape_inference::buildStridedSliceParams(
-      starts_buf, ends_buf, strides_buf, begin_mask, end_mask, shrink_axis_mask, rank);
+    starts_buf, ends_buf, strides_buf, begin_mask, end_mask, shrink_axis_mask, rank);
 
   ir::Shape new_shape =
-      shape_inference::inferStridedSliceShape(input.info().shape(), op_params, rank);
+    shape_inference::inferStridedSliceShape(input.info().shape(), op_params, rank);
   output.info().shape(new_shape);
 }
 
@@ -1226,10 +1227,10 @@ void StaticShapeInferer::visit(const ir::operation::While &op)
   // re-sizing operands of body subgraph
   StaticShapeInferer body_inferer(op.param().body_subg_index, _lowered_subgs);
   _lowered_subgs.at(op.param().body_subg_index)
-      ->iterateTopolOpSeqs([&](const ir::OpSequenceIndex &, ir::OpSequence &op_seq) {
-        bool has_dynamic_tensor = body_inferer.infer(op_seq);
-        op_seq.has_dynamic_tensor(has_dynamic_tensor);
-      });
+    ->iterateTopolOpSeqs([&](const ir::OpSequenceIndex &, ir::OpSequence &op_seq) {
+      bool has_dynamic_tensor = body_inferer.infer(op_seq);
+      op_seq.has_dynamic_tensor(has_dynamic_tensor);
+    });
 
   // Check whether while operation's shapes are predictable
   // If any of shape of body outputs and cond inputs are different, non-constant operands would be
@@ -1274,10 +1275,10 @@ void StaticShapeInferer::visit(const ir::operation::While &op)
     // Set non-constant operands of body subgraph to dynamic
     StaticShapeInferer body_inferer(op.param().body_subg_index, _lowered_subgs);
     _lowered_subgs.at(op.param().body_subg_index)
-        ->iterateTopolOpSeqs([&](const ir::OpSequenceIndex &, ir::OpSequence &op_seq) {
-          bool has_dynamic_tensor = body_inferer.infer(op_seq);
-          op_seq.has_dynamic_tensor(has_dynamic_tensor);
-        });
+      ->iterateTopolOpSeqs([&](const ir::OpSequenceIndex &, ir::OpSequence &op_seq) {
+        bool has_dynamic_tensor = body_inferer.infer(op_seq);
+        op_seq.has_dynamic_tensor(has_dynamic_tensor);
+      });
   }
 
   // re-sizing operands of cond subgraph
@@ -1285,10 +1286,10 @@ void StaticShapeInferer::visit(const ir::operation::While &op)
   // dynamic
   StaticShapeInferer cond_inferer(op.param().cond_subg_index, _lowered_subgs);
   _lowered_subgs.at(op.param().cond_subg_index)
-      ->iterateTopolOpSeqs([&](const ir::OpSequenceIndex &, ir::OpSequence &op_seq) {
-        bool has_dynamic_tensor = cond_inferer.infer(op_seq);
-        op_seq.has_dynamic_tensor(has_dynamic_tensor);
-      });
+    ->iterateTopolOpSeqs([&](const ir::OpSequenceIndex &, ir::OpSequence &op_seq) {
+      bool has_dynamic_tensor = cond_inferer.infer(op_seq);
+      op_seq.has_dynamic_tensor(has_dynamic_tensor);
+    });
 
   // re-sizing outputs of while operation
   // If check_unpredictable_dynamic is true, outputs of while operation would be set to dynamic

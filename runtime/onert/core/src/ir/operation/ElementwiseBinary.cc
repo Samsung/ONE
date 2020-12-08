@@ -32,7 +32,7 @@ void ElementwiseBinary::accept(OperationVisitor &v) const { v.visit(*this); }
 
 ElementwiseBinary::ElementwiseBinary(const OperandIndexSequence &inputs,
                                      const OperandIndexSequence &outputs, const Param &param)
-    : Operation{OperandConstraint::createExact(2u), inputs, outputs}, _param{param}
+  : Operation{OperandConstraint::createExact(2u), inputs, outputs}, _param{param}
 {
 }
 
@@ -40,10 +40,10 @@ std::string ElementwiseBinary::name() const
 {
   using ElementwiseBinaryType = onert::ir::operation::ElementwiseBinary::ElementwiseBinaryType;
   static const std::unordered_map<ElementwiseBinaryType, std::string> name_map{
-      {ElementwiseBinaryType::LOGICAL_AND, std::string{"LogicalAnd"}},
-      {ElementwiseBinaryType::LOGICAL_OR, std::string{"LogicalOr"}},
-      {ElementwiseBinaryType::MAX, std::string{"Max"}},
-      {ElementwiseBinaryType::MIN, std::string{"Min"}}};
+    {ElementwiseBinaryType::LOGICAL_AND, std::string{"LogicalAnd"}},
+    {ElementwiseBinaryType::LOGICAL_OR, std::string{"LogicalOr"}},
+    {ElementwiseBinaryType::MAX, std::string{"Max"}},
+    {ElementwiseBinaryType::MIN, std::string{"Min"}}};
   return name_map.at(_param.op_type);
 }
 

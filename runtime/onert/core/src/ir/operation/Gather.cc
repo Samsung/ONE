@@ -31,7 +31,7 @@ void Gather::accept(OperationVisitor &v) const { v.visit(*this); }
 
 Gather::Gather(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs,
                const Param &param)
-    : Operation{OperandConstraint::createExact(2u), inputs, outputs}, _param{param}
+  : Operation{OperandConstraint::createExact(2u), inputs, outputs}, _param{param}
 {
 }
 

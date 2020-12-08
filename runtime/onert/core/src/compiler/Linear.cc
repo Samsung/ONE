@@ -31,9 +31,9 @@ std::vector<ir::OpSequenceIndex> Linear::linearize(const compiler::LoweredGraph 
 {
   std::vector<ir::OpSequenceIndex> order;
   lowered_graph.iterateTopolOpSeqs(
-      [&](const ir::OpSequenceIndex &index, const ir::OpSequence &) -> void {
-        order.emplace_back(index);
-      });
+    [&](const ir::OpSequenceIndex &index, const ir::OpSequence &) -> void {
+      order.emplace_back(index);
+    });
   return order;
 }
 

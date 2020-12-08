@@ -30,7 +30,7 @@ std::string timestamp(void)
 {
   auto now = std::chrono::steady_clock::now();
   return std::to_string(
-      std::chrono::duration_cast<std::chrono::microseconds>(now.time_since_epoch()).count());
+    std::chrono::duration_cast<std::chrono::microseconds>(now.time_since_epoch()).count());
 }
 
 class DurationEventBuilder

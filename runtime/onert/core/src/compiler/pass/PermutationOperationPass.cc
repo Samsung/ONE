@@ -113,7 +113,7 @@ void PermutationOperationPass::changeToKeepLayout(const Operation &node)
       const auto &target_op_idx = *it;
       const auto &target_node = operations.at(target_op_idx);
       const auto &next_op_seq_index =
-          _lowered_graph.op_seqs().emplace(target_op_idx, prev_op_seq.getLayout());
+        _lowered_graph.op_seqs().emplace(target_op_idx, prev_op_seq.getLayout());
       auto &next_op_seq = _lowered_graph.op_seqs().at(next_op_seq_index);
       next_op_seq.setInputs(target_node.getInputs());
       next_op_seq.setOutputs(target_node.getOutputs());
@@ -134,9 +134,8 @@ void PermutationOperationPass::changeToKeepLayout(const Operation &node)
       }
 
       const auto op_seq_li = _lowered_graph.getLowerInfo(op_seq_index);
-      _lowered_graph.setLowerInfo(
-          next_op_seq_index,
-          std::make_unique<ir::operation::LowerInfo>(op_seq_li->backend(), op_seq_li->layout()));
+      _lowered_graph.setLowerInfo(next_op_seq_index, std::make_unique<ir::operation::LowerInfo>(
+                                                       op_seq_li->backend(), op_seq_li->layout()));
     }
   }
 
@@ -167,7 +166,7 @@ void PermutationOperationPass::changeToKeepLayout(const Operation &node)
     new_op_seq.setInputs(node.getInputs());
     new_op_seq.setOutputs(node.getOutputs());
     _lowered_graph.setLowerInfo(
-        new_op_seq_index, std::make_unique<ir::operation::LowerInfo>(backend, frontend_layout));
+      new_op_seq_index, std::make_unique<ir::operation::LowerInfo>(backend, frontend_layout));
   }
 
   // Change PermuteFactors of operands of target node

@@ -29,7 +29,7 @@ void Custom::accept(OperationVisitor &v) const { v.visit(*this); }
 
 Custom::Custom(OperandConstraint input_constr, const OperandIndexSequence &inputs,
                const OperandIndexSequence &outputs, std::string id, const Userdata &userdata)
-    : Operation{input_constr, inputs, outputs}, _id(std::move(id)), _userdata(userdata)
+  : Operation{input_constr, inputs, outputs}, _id(std::move(id)), _userdata(userdata)
 {
 }
 

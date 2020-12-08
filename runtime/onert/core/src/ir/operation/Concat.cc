@@ -31,7 +31,7 @@ void Concat::accept(OperationVisitor &v) const { v.visit(*this); }
 
 Concat::Concat(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs,
                const Param &param)
-    : Operation{OperandConstraint::createAtLeast(1u), inputs, outputs}, _param{param}
+  : Operation{OperandConstraint::createAtLeast(1u), inputs, outputs}, _param{param}
 {
 }
 

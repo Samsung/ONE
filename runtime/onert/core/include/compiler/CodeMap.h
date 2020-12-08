@@ -32,7 +32,7 @@ struct CodeAndInfo
 
   CodeAndInfo(const ir::OpSequence *op_seq, const ir::operation::LowerInfo *lower_info,
               std::unique_ptr<exec::FunctionSequence> &&fn_seq)
-      : op_seq{op_seq}, lower_info{lower_info}, fn_seq{std::move(fn_seq)}
+    : op_seq{op_seq}, lower_info{lower_info}, fn_seq{std::move(fn_seq)}
   {
   }
 };

@@ -67,8 +67,8 @@ public:
    */
   OperandInfo(const Shape &shape, const TypeInfo &typeInfo, MemAllocType alloc_type,
               bool is_const = false, bool is_variable = false)
-      : _shape(shape), _typeInfo(typeInfo), _alloc_type(alloc_type), _const(is_const),
-        _variable(is_variable)
+    : _shape(shape), _typeInfo(typeInfo), _alloc_type(alloc_type), _const(is_const),
+      _variable(is_variable)
   {
     // DO NOTHING
   }

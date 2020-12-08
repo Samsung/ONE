@@ -144,7 +144,7 @@ void DynamicShapeInferer::visit(const ir::operation::BCQFullyConnected &op)
   const auto &input = _tensor_registry->getITensor(input_idx);
 
   const auto cluster_idx{
-      op.getInputs().at(ir::operation::BCQFullyConnected::Input::WEIGHTS_CLUSTERS)};
+    op.getInputs().at(ir::operation::BCQFullyConnected::Input::WEIGHTS_CLUSTERS)};
   const auto &cluster = _tensor_registry->getITensor(cluster_idx);
   assert(cluster->is_constant());
 
@@ -158,7 +158,7 @@ void DynamicShapeInferer::visit(const ir::operation::BCQFullyConnected &op)
   assert(cluster_buf);
 
   ir::Shape new_shape =
-      shape_inference::inferBCQFullyConnectedShape(input_shape, cluster_shape, cluster_buf);
+    shape_inference::inferBCQFullyConnectedShape(input_shape, cluster_shape, cluster_buf);
 
   auto output_ind = op.getOutputs().at(0);
   auto output = _tensor_registry->getITensor(output_ind);
@@ -222,7 +222,7 @@ void DynamicShapeInferer::visit(const ir::operation::BroadcastTo &op)
   assert(shape); // It shouldn't be 0.
 
   auto output_shape = shape_inference::inferBroadcastToShape(
-      shape->getShape(), reinterpret_cast<const int32_t *>(shape->buffer()));
+    shape->getShape(), reinterpret_cast<const int32_t *>(shape->buffer()));
 
   // set output shape and output buffer
   output->applyShape(output_shape);
@@ -393,9 +393,9 @@ void DynamicShapeInferer::visit(const ir::operation::ExpandDims &op)
 
   assert(axis->buffer());
   int32_t axis_value =
-      (axis_type == ir::DataType::INT32)
-          ? reinterpret_cast<const int32_t *>(axis->buffer())[0]
-          : static_cast<int32_t>(reinterpret_cast<const int64_t *>(axis->buffer())[0]);
+    (axis_type == ir::DataType::INT32)
+      ? reinterpret_cast<const int32_t *>(axis->buffer())[0]
+      : static_cast<int32_t>(reinterpret_cast<const int64_t *>(axis->buffer())[0]);
 
   auto output_shape = shape_inference::inferExpandDimsShape(input_shape, axis_value);
 
@@ -422,10 +422,10 @@ void DynamicShapeInferer::visit(const ir::operation::Fill &op)
 
   const auto &dims_shape = shape->getShape();
   auto output_shape = ((dims_type == ir::DataType::INT32)
-                           ? shape_inference::inferFillShape<int32_t>(
-                                 dims_shape, reinterpret_cast<const int32_t *>(dims_buf))
-                           : shape_inference::inferFillShape<int64_t>(
-                                 dims_shape, reinterpret_cast<const int64_t *>(dims_buf)));
+                         ? shape_inference::inferFillShape<int32_t>(
+                             dims_shape, reinterpret_cast<const int32_t *>(dims_buf))
+                         : shape_inference::inferFillShape<int64_t>(
+                             dims_shape, reinterpret_cast<const int64_t *>(dims_buf)));
 
   output->applyShape(output_shape);
   assert(output->buffer() != nullptr);
@@ -497,7 +497,7 @@ void DynamicShapeInferer::visit(const ir::operation::LSTM &op)
   auto output = _tensor_registry->getITensor(output_index);
 
   const auto output_state_out_index{
-      op.getOutputs().at(ir::operation::LSTM::Output::OUTPUT_STATE_OUT)};
+    op.getOutputs().at(ir::operation::LSTM::Output::OUTPUT_STATE_OUT)};
 
   const auto cell_state_out_index{op.getOutputs().at(ir::operation::LSTM::Output::CELL_STATE_OUT)};
 
@@ -517,19 +517,19 @@ void DynamicShapeInferer::visit(const ir::operation::LSTM &op)
   const auto input_shape = input->getShape();
 
   const auto input_to_output_weights_index{
-      op.getInputs().at(ir::operation::LSTM::Input::INPUT_TO_OUTPUT_WEIGHTS)};
+    op.getInputs().at(ir::operation::LSTM::Input::INPUT_TO_OUTPUT_WEIGHTS)};
   const auto input_to_output_weights = _tensor_registry->getITensor(input_to_output_weights_index);
   const auto input_to_output_weights_shape = input_to_output_weights->getShape();
 
   const auto recurrent_to_output_weights_index{
-      op.getInputs().at(ir::operation::LSTM::Input::RECURRENT_TO_OUTPUT_WEIGHTS)};
+    op.getInputs().at(ir::operation::LSTM::Input::RECURRENT_TO_OUTPUT_WEIGHTS)};
   const auto recurrent_to_output_weights =
-      _tensor_registry->getITensor(recurrent_to_output_weights_index);
+    _tensor_registry->getITensor(recurrent_to_output_weights_index);
   const auto recurrent_to_output_weights_shape = recurrent_to_output_weights->getShape();
 
   // re-sizing outputs
   const int n_batch =
-      (input_shape.rank() == 3 && op.param().time_major) ? input_shape.dim(1) : input_shape.dim(0);
+    (input_shape.rank() == 3 && op.param().time_major) ? input_shape.dim(1) : input_shape.dim(0);
   const int n_cell = input_to_output_weights_shape.dim(0);
   const int n_output = recurrent_to_output_weights_shape.dim(1);
   if (input_shape.rank() == 3)
@@ -564,19 +564,19 @@ void DynamicShapeInferer::visit(const ir::operation::LSTM &op)
   if (scratch_buffer != nullptr)
   {
     const auto input_to_input_weights_index{
-        op.getInputs().at(ir::operation::LSTM::Input::INPUT_TO_INPUT_WEIGHTS)};
+      op.getInputs().at(ir::operation::LSTM::Input::INPUT_TO_INPUT_WEIGHTS)};
     const auto recurrent_to_input_weights_index{
-        op.getInputs().at(ir::operation::LSTM::Input::RECURRENT_TO_INPUT_WEIGHTS)};
+      op.getInputs().at(ir::operation::LSTM::Input::RECURRENT_TO_INPUT_WEIGHTS)};
 
     const auto input_to_input_weights_shape =
-        _tensor_registry->getITensor(input_to_input_weights_index)->getShape();
+      _tensor_registry->getITensor(input_to_input_weights_index)->getShape();
     bool has_input_to_input_weights =
-        input_to_input_weights_shape.dim(0) != 0 && input_to_input_weights_shape.dim(1) != 0;
+      input_to_input_weights_shape.dim(0) != 0 && input_to_input_weights_shape.dim(1) != 0;
 
     const auto recurrent_to_input_weights_shape =
-        _tensor_registry->getITensor(recurrent_to_input_weights_index)->getShape();
-    bool has_recurrent_to_input_weights = recurrent_to_input_weights_shape.dim(0) != 0 &&
-                                          recurrent_to_input_weights_shape.dim(1) != 0;
+      _tensor_registry->getITensor(recurrent_to_input_weights_index)->getShape();
+    bool has_recurrent_to_input_weights =
+      recurrent_to_input_weights_shape.dim(0) != 0 && recurrent_to_input_weights_shape.dim(1) != 0;
 
     // NOTE The cell_to_input_weights do not exist in non-peephole although regular LSTM(non-CIFG).
     // true: no CIFG
@@ -681,7 +681,7 @@ void DynamicShapeInferer::visit(const ir::operation::Pad &op)
   assert(pad_buf);
 
   auto output_shape =
-      shape_inference::inferPadShape(input->getShape(), pad_buf, pad->getShape().num_elements());
+    shape_inference::inferPadShape(input->getShape(), pad_buf, pad->getShape().num_elements());
 
   // change output shape and reallocate output tensor memory
   output->applyShape(output_shape);
@@ -725,16 +725,16 @@ void DynamicShapeInferer::visit(const ir::operation::Range &op)
   if (output->data_type() == ir::DataType::FLOAT32)
   {
     new_shape =
-        shape_inference::inferRangeShape<float>(*reinterpret_cast<float *>(start_tensor->buffer()),
-                                                *reinterpret_cast<float *>(limit_tensor->buffer()),
-                                                *reinterpret_cast<float *>(delta_tensor->buffer()));
+      shape_inference::inferRangeShape<float>(*reinterpret_cast<float *>(start_tensor->buffer()),
+                                              *reinterpret_cast<float *>(limit_tensor->buffer()),
+                                              *reinterpret_cast<float *>(delta_tensor->buffer()));
   }
   else if (output->data_type() == ir::DataType::INT32)
   {
     new_shape = shape_inference::inferRangeShape<int32_t>(
-        *reinterpret_cast<int32_t *>(start_tensor->buffer()),
-        *reinterpret_cast<int32_t *>(limit_tensor->buffer()),
-        *reinterpret_cast<int32_t *>(delta_tensor->buffer()));
+      *reinterpret_cast<int32_t *>(start_tensor->buffer()),
+      *reinterpret_cast<int32_t *>(limit_tensor->buffer()),
+      *reinterpret_cast<int32_t *>(delta_tensor->buffer()));
   }
   output->applyShape(new_shape);
   assert(output->buffer() != nullptr);
@@ -828,7 +828,7 @@ void DynamicShapeInferer::visit(const ir::operation::Reshape &op)
     assert(new_shape_buf);
 
     auto output_shape = shape_inference::inferReshapeShape(
-        new_shape_buf, new_shape->getShape().num_elements(), input->getShape().num_elements());
+      new_shape_buf, new_shape->getShape().num_elements(), input->getShape().num_elements());
 
     // if shape is changed, change output shape and reallocate output tensor memory
     if (output_shape != output->getShape() || output->buffer() == nullptr)
@@ -896,7 +896,7 @@ void DynamicShapeInferer::visit(const ir::operation::ResizeBilinear &op)
     width_out = op.param().width_out;
   }
   auto output_shape =
-      shape_inference::inferResizeBilinearShape(input->getShape(), height_out, width_out);
+    shape_inference::inferResizeBilinearShape(input->getShape(), height_out, width_out);
 
   // if shape is changed, change output shape and reallocate output tensor memory
   if (output_shape != output->getShape() || output->buffer() == nullptr)
@@ -934,7 +934,7 @@ void DynamicShapeInferer::visit(const ir::operation::Select &op)
 
   // Select output shpae
   ir::Shape new_shape =
-      shape_inference::inferSelectShape(input_cond_shape, input_true_shape, input_false_shape);
+    shape_inference::inferSelectShape(input_cond_shape, input_true_shape, input_false_shape);
 
   auto output_ind = op.getOutputs().at(0);
   auto output = _tensor_registry->getITensor(output_ind);
@@ -1019,7 +1019,7 @@ void DynamicShapeInferer::visit(const ir::operation::SpaceToBatchND &op)
   auto padding_data = reinterpret_cast<int32_t *>(padding->buffer());
 
   ir::Shape new_shape = shape_inference::inferSpaceToBatchNDShape(
-      input_shape, block_shape_shape, padding_shape, block_shape_data, padding_data);
+    input_shape, block_shape_shape, padding_shape, block_shape_data, padding_data);
 
   output->applyShape(new_shape);
   assert(output->buffer() != nullptr);
@@ -1120,15 +1120,14 @@ void DynamicShapeInferer::visit(const ir::operation::StridedSlice &op)
   const auto rank = input_shape.rank();
 
   auto op_params = shape_inference::buildStridedSliceParams(
-      reinterpret_cast<uint32_t *>(starts->buffer()), reinterpret_cast<uint32_t *>(ends->buffer()),
-      reinterpret_cast<uint32_t *>(strides->buffer()), begin_mask, end_mask, shrink_axis_mask,
-      rank);
+    reinterpret_cast<uint32_t *>(starts->buffer()), reinterpret_cast<uint32_t *>(ends->buffer()),
+    reinterpret_cast<uint32_t *>(strides->buffer()), begin_mask, end_mask, shrink_axis_mask, rank);
 
   auto output_index = op.getOutputs().at(0);
   auto output = _tensor_registry->getITensor(output_index);
 
   ir::Shape output_shape =
-      onert::shape_inference::inferStridedSliceShape(input_shape, op_params, rank);
+    onert::shape_inference::inferStridedSliceShape(input_shape, op_params, rank);
 
   output->applyShape(output_shape);
   assert(output->buffer() != nullptr);
@@ -1153,7 +1152,7 @@ void DynamicShapeInferer::visit(const ir::operation::Tile &op)
   assert(multiplier_buffer);
 
   auto output_shape =
-      shape_inference::inferTileShape(input_shape, multiplier_buffer, multiplier->dimension(0));
+    shape_inference::inferTileShape(input_shape, multiplier_buffer, multiplier->dimension(0));
 
   // set output shape and output buffer
   output->applyShape(output_shape);

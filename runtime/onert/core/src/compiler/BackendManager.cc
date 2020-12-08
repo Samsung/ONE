@@ -29,9 +29,9 @@
 
 static const char *SHARED_LIB_EXT =
 #if defined(__APPLE__) && defined(__MACH__)
-    ".dylib";
+  ".dylib";
 #else
-    ".so";
+  ".so";
 #endif
 
 namespace onert
@@ -50,7 +50,7 @@ BackendManager::BackendManager() { loadControlflowBackend(); }
 void BackendManager::loadControlflowBackend()
 {
   auto backend_object = std::unique_ptr<backend::controlflow::Backend, backend_destroy_t>(
-      new backend::controlflow::Backend, [](backend::Backend *backend) { delete backend; });
+    new backend::controlflow::Backend, [](backend::Backend *backend) { delete backend; });
 
   bool initialized = backend_object->config()->initialize(); // Call initialize here?
   if (!initialized)
@@ -104,7 +104,7 @@ void BackendManager::loadBackend(const std::string &backend)
     }
 
     auto backend_object =
-        std::unique_ptr<backend::Backend, backend_destroy_t>(backend_create(), backend_destroy);
+      std::unique_ptr<backend::Backend, backend_destroy_t>(backend_create(), backend_destroy);
     bool initialized = backend_object->config()->initialize(); // Call initialize here?
     if (!initialized)
     {
@@ -134,8 +134,8 @@ void BackendManager::loadBackend(const std::string &backend)
               << "Failed to unload backend '" << id << "'- " << dlerror() << "\n";
         }
       }};
-// clang-format on
-_handle_map.emplace(backend, std::move(u_handle));
+  // clang-format on
+  _handle_map.emplace(backend, std::move(u_handle));
 }
 
 backend::Backend *BackendManager::get(const std::string &key)

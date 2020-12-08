@@ -38,7 +38,7 @@ class InsufficientBufferSizeException : public OnertException
 {
 public:
   InsufficientBufferSizeException(const std::string &msg)
-      : OnertException{"InsufficientBufferSize", msg}
+    : OnertException{"InsufficientBufferSize", msg}
   {
   }
 };

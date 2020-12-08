@@ -111,10 +111,9 @@ std::pair<int, int> calcConvLikeHeightAndWidth(const int in_h, const int in_w, c
       break;
     case ir::PaddingType::EXPLICIT:
       out_h =
-          (in_h + pad.param.top + pad.param.bottom - effective_filter_h_size) / stride.vertical + 1;
+        (in_h + pad.param.top + pad.param.bottom - effective_filter_h_size) / stride.vertical + 1;
       out_w =
-          (in_w + pad.param.left + pad.param.right - effective_filter_w_size) / stride.horizontal +
-          1;
+        (in_w + pad.param.left + pad.param.right - effective_filter_w_size) / stride.horizontal + 1;
       break;
     default:
       assert(false);
@@ -595,9 +594,9 @@ template <typename T> ir::Shape inferRangeShape(T start_val, T limit_val, T delt
   ir::Shape out_shape(static_cast<int>(1));
 
   out_shape.dim(0) =
-      (std::is_integral<T>::value
-           ? ((std::abs(start_val - limit_val) + std::abs(delta_val) - 1) / std::abs(delta_val))
-           : std::ceil(std::abs((start_val - limit_val) / delta_val)));
+    (std::is_integral<T>::value
+       ? ((std::abs(start_val - limit_val) + std::abs(delta_val) - 1) / std::abs(delta_val))
+       : std::ceil(std::abs((start_val - limit_val) / delta_val)));
   return out_shape;
 }
 
@@ -664,9 +663,9 @@ ir::Shape inferSelectShape(const ir::Shape &input_cond_shape, const ir::Shape &i
     ir::Shape true_shape = input_true_shape;
     ir::Shape false_shape = input_false_shape;
     int most_rank =
-        (cond_shape.rank() >= true_shape.rank()) && (cond_shape.rank() >= false_shape.rank())
-            ? cond_shape.rank()
-            : (false_shape.rank() >= true_shape.rank() ? false_shape.rank() : true_shape.rank());
+      (cond_shape.rank() >= true_shape.rank()) && (cond_shape.rank() >= false_shape.rank())
+        ? cond_shape.rank()
+        : (false_shape.rank() >= true_shape.rank() ? false_shape.rank() : true_shape.rank());
 
     ir::Shape calculate_shape(most_rank);
 
@@ -677,9 +676,9 @@ ir::Shape inferSelectShape(const ir::Shape &input_cond_shape, const ir::Shape &i
     for (int i = 0; i < most_rank; ++i)
     {
       calculate_shape.dim(i) =
-          (cond_shape.dim(i) >= true_shape.dim(i)) && (cond_shape.dim(i) >= false_shape.dim(i))
-              ? cond_shape.dim(i)
-              : (false_shape.dim(i) >= true_shape.dim(i) ? false_shape.dim(i) : true_shape.dim(i));
+        (cond_shape.dim(i) >= true_shape.dim(i)) && (cond_shape.dim(i) >= false_shape.dim(i))
+          ? cond_shape.dim(i)
+          : (false_shape.dim(i) >= true_shape.dim(i) ? false_shape.dim(i) : true_shape.dim(i));
 
       if ((cond_shape.dim(i) != calculate_shape.dim(i) && cond_shape.dim(i) != 1) ||
           (true_shape.dim(i) != calculate_shape.dim(i) && true_shape.dim(i) != 1) ||
@@ -776,7 +775,7 @@ ir::Shape inferSpaceToBatchNDShape(const ir::Shape &input_shape, const ir::Shape
   for (int dim = 0; dim < kSpatialDimensionNum; ++dim)
   {
     int final_dim_size =
-        (input_shape.dim(dim + 1) + padding_buf[dim * 2] + padding_buf[dim * 2 + 1]);
+      (input_shape.dim(dim + 1) + padding_buf[dim * 2] + padding_buf[dim * 2 + 1]);
 
     assert(final_dim_size % block_shape_buf[dim] == 0);
 
@@ -839,7 +838,7 @@ ir::Shape inferSqueezeShape(const ir::Shape &in_shape, const ir::operation::Sque
       if (!(current >= 0 && current < shape_rank && in_shape.dim(current) == 1))
       {
         throw std::runtime_error(
-            "The following conditions must be met: 0 <= dim < Shape rank, dim == 1");
+          "The following conditions must be met: 0 <= dim < Shape rank, dim == 1");
       }
 
       if (!should_squeeze[current])
@@ -1052,9 +1051,9 @@ ir::Shape inferTileShape(const ir::Shape &in_shape, const int32_t *multiplier_bu
 {
   if (multiplier_size != in_shape.rank())
   {
-    throw std::runtime_error("inferTileShape failed, input rank: " +
-                             std::to_string(in_shape.rank()) + ", bad multipliers size: " +
-                             std::to_string(multiplier_size) + "");
+    throw std::runtime_error(
+      "inferTileShape failed, input rank: " + std::to_string(in_shape.rank()) +
+      ", bad multipliers size: " + std::to_string(multiplier_size) + "");
   }
   ir::Shape new_Shape(in_shape.rank());
 

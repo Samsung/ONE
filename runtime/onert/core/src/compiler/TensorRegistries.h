@@ -44,7 +44,7 @@ public:
       if (e.first->config()->id() == backend::controlflow::Config::ID)
       {
         _cf_tensor_reg =
-            std::dynamic_pointer_cast<backend::controlflow::TensorRegistry>(tensor_reg);
+          std::dynamic_pointer_cast<backend::controlflow::TensorRegistry>(tensor_reg);
         if (include_controlflow)
           _tensor_regs.insert(tensor_reg);
       }
