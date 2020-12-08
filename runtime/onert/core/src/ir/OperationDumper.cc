@@ -520,7 +520,7 @@ void OperationDumper::visit(const While &node)
   }
   VERBOSE(LIR) << "  - Inputs : "
                << "Cond subgraph (" << node.param().cond_subg_index << ") Body subgraph ("
-               << node.param().cond_subg_index << ") Inputs(" << inputs << ")" << std::endl;
+               << node.param().body_subg_index << ") Inputs(" << inputs << ")" << std::endl;
   std::string outputs;
   const auto &output_indices = node.getOutputs();
   for (auto it = std::begin(output_indices); it != std::end(output_indices); ++it)
