@@ -1,6 +1,6 @@
 # Supported Operations and backend
 
-As of 2020-11-10
+As of 2020-12-07
 
 ### Raw-data format (float32, int32, boolean, etc)
 
@@ -10,7 +10,7 @@ Abs | O | O | O
 Add | O | O | O
 AddN | O |   |
 ArgMax | O | O | O
-ArgMin | O |   |
+ArgMin | O | O | O
 AvgPool2D | O | O | O
 BatchMatmul | O |   |
 BatchToSpaceND | O | O | O
@@ -19,7 +19,7 @@ Concat | O | O | O
 Conv2D | O | O | O
 Cos | O |   |
 Custom | O |   |
-DepthToSpace |   | O | O
+DepthToSpace | O | O | O
 DepthwiseConv2D | O | O | O
 Div | O | O | O
 EmbeddingLookup |   | O | O
@@ -37,7 +37,7 @@ If | O |   |
 InstanceNormalize |   | O | O
 L2Normalization | O | O | O
 L2Pool |   | O | O
-LeakyRelu |   | O | O
+LeakyRelu | O | O | O
 Less | O | O | O
 LessEqual | O | O | O
 LocalResponseNormalize |   | O | O
@@ -89,6 +89,7 @@ SpaceToDepth | O | O | O
 Split | O | O | O
 SplitV | O |   |
 Sqrt | O | O | O
+Square | O |   |   |
 SquaredDifference | O | O | O
 Squeeze | O | O | O
 StridedSlice | O | O | O
@@ -110,14 +111,14 @@ Operation | CPU | ACL-CL | ACL-NEON
 -- | -- | -- | --
 Add | O | O | O
 ArgMax | O | O | O
-ArgMin | O |   |
+ArgMin | O | O | O
 AvgPool2D | O | O | O
 BatchToSpaceND | O | O | O
 Cast | O | O |
 Concat | O | O | O
 Conv2D | O | O | O
 Custom | O |   |
-DepthToSpace |   | O | O
+DepthToSpace | O | O | O
 DepthwiseConv2D | O | O | O
 Dequantize | O | O | O
 EmbeddingLookup |   | O | O
@@ -170,6 +171,12 @@ Unpack(Unstack) |   | O | O
 
 ### Quantization format (int8)
 
+Operation | CPU | ACL-CL | ACL-NEON
+-- | -- | -- | --
+ArgMax | O | O | O
+ArgMin | O | O | O
+Concat | O |   |
+DepthToSpace | O |   |
 Dequantize | O |   |
 Rank | O |   |
 Shape | O |   |
