@@ -62,7 +62,10 @@ public:
   ir::DataType data_type() const override { return _tensor->data_type(); }
   float data_scale() const override { return _tensor->data_scale(); }
   int32_t data_offset() const override { return _tensor->data_offset(); }
-  bool is_dynamic() const override { return _is_dynamic || (_tensor && _tensor->is_dynamic()); }
+  bool is_dynamic() const override
+  {
+    return _is_dynamic || _orig_info.isDynamic() || (_tensor && _tensor->is_dynamic());
+  }
   void set_dynamic() override { _is_dynamic = true; }
   ir::Shape getShape() const override { return _tensor->getShape(); }
   void setShape(const ir::Shape &shape) override
