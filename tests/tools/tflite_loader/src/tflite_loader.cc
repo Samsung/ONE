@@ -14,16 +14,17 @@
  * limitations under the License.
  */
 
-#include "tflite/ext/kernels/register.h"
-
 #include "args.h"
-#include "tflite/InterpreterSession.h"
-#include "tflite/Assert.h"
-#include "tflite/Diff.h"
-#include "misc/tensor/IndexIterator.h"
 
 #include <nnfw_experimental.h>
 #include <nnfw_internal.h>
+
+#include <misc/EnvVar.h>
+#include <misc/RandomGenerator.h>
+
+#include <tflite/Assert.h>
+#include <tflite/InterpreterSession.h>
+#include <tflite/ext/kernels/register.h>
 
 #include <iostream>
 #include <fstream>
@@ -45,7 +46,7 @@ const float DIFFERENCE_THRESHOLD = 10e-5;
   }
 
 // Read vector of floats from selected file
-std::vector<float> readData(const string &path)
+void readData(const string &path, std::vector<uint8_t> &dest)
 {
   std::ifstream in(path);
   if (!in.good())
@@ -56,24 +57,34 @@ std::vector<float> readData(const string &path)
   in.seekg(0, std::ifstream::end);
   size_t len = in.tellg();
   in.seekg(0, std::ifstream::beg);
-  assert(len % sizeof(float) == 0);
-  size_t size = len / sizeof(float);
-  std::vector<float> vec(size);
-  for (size_t i = 0; i < size; ++i)
-  {
-    in.read(reinterpret_cast<char *>(&vec[i]), sizeof(float));
-  }
-  return vec;
+
+  assert(dest.size() == len);
+  in.read(reinterpret_cast<char *>(dest.data()), len);
 }
 
-std::vector<float> randomData(nnfw::misc::RandomGenerator &randgen, const uint64_t size)
+template <typename T>
+void randomData(nnfw::misc::RandomGenerator &randgen, std::vector<uint8_t> &dest)
 {
-  std::vector<float> vec(size);
-  for (uint64_t i = 0; i < size; i++)
+  size_t elements = dest.size() / sizeof(T);
+  assert(dest.size() % sizeof(T) == 0);
+
+  std::vector<T> vec(elements);
+  for (uint64_t i = 0; i < elements; i++)
   {
-    vec[i] = randgen.generate<float>();
+    vec[i] = randgen.generate<T>();
   }
-  return vec;
+  memcpy(dest.data(), vec.data(), elements * sizeof(T));
+}
+
+void randomBoolData(nnfw::misc::RandomGenerator &randgen, std::vector<uint8_t> &dest)
+{
+  size_t elements = dest.size();
+  std::vector<uint8_t> vec(elements);
+  for (uint64_t i = 0; i < elements; i++)
+  {
+    bool value = randgen.generate<bool>();
+    dest[i] = value ? 1 : 0;
+  }
 }
 
 inline uint64_t num_elems(const nnfw_tensorinfo *ti)
@@ -103,6 +114,47 @@ inline size_t sizeOfNnfwType(NNFW_TYPE type)
     default:
       throw std::runtime_error{"Invalid tensor type"};
   }
+}
+
+template <typename T>
+bool compareBuffersExact(const T *ref_buf, const std::vector<uint8_t> &act_buf, uint32_t index)
+{
+  bool match = true;
+  for (uint32_t e = 0; e < act_buf.size() / sizeof(T); e++)
+  {
+    T ref = ref_buf[e];
+    T act = reinterpret_cast<const T *>(act_buf.data())[e];
+
+    if (ref != act)
+    {
+      std::cerr << "Output #" << index << ", Element Index : " << e << ", ref: " << ref
+                << ", act: " << act << std::endl;
+      match = false;
+    }
+  }
+
+  return match;
+}
+
+bool compareBuffersExactBool(const uint8_t *ref_buf, const std::vector<uint8_t> &act_buf,
+                             uint32_t index)
+{
+  bool match = true;
+  for (uint32_t e = 0; e < act_buf.size() / sizeof(uint8_t); e++)
+  {
+    uint8_t ref_raw = ref_buf[e];
+    bool ref = (ref_raw != 0 ? true : false);
+    uint8_t act_raw = reinterpret_cast<const uint8_t *>(act_buf.data())[e];
+    bool act = (act_raw != 0 ? true : false);
+    if (ref != act)
+    {
+      std::cerr << "Output #" << index << ", Element Index : " << e << ", ref: " << ref
+                << ", act: " << act << std::endl;
+      match = false;
+    }
+  }
+
+  return match;
 }
 
 int main(const int argc, char **argv)
@@ -137,21 +189,6 @@ int main(const int argc, char **argv)
                    "[ ERROR ] Failure during get model inputs");
   NNFW_ASSERT_FAIL(nnfw_output_size(onert_session, &num_outputs),
                    "[ ERROR ] Failure during get model outputs");
-  // TODO: Support another input/output types
-  for (uint32_t i = 0; i < num_inputs; i++)
-  {
-    nnfw_tensorinfo ti_input;
-    NNFW_ASSERT_FAIL(nnfw_input_tensorinfo(onert_session, i, &ti_input),
-                     "[ ERROR ] Failure during get input data info");
-    assert(ti_input.dtype == NNFW_TYPE_TENSOR_FLOAT32 && "Only FLOAT32 inputs are supported");
-  }
-  for (uint32_t i = 0; i < num_outputs; i++)
-  {
-    nnfw_tensorinfo ti_output;
-    NNFW_ASSERT_FAIL(nnfw_output_tensorinfo(onert_session, i, &ti_output),
-                     "[ ERROR ] Failure during get output data info");
-    assert(ti_output.dtype == NNFW_TYPE_TENSOR_FLOAT32 && "Only FLOAT32 outputs are supported");
-  }
 
   std::cout << "[Execution] Model is deserialized!" << std::endl;
 
@@ -161,8 +198,8 @@ int main(const int argc, char **argv)
   std::cout << "[Execution] Model compiled!" << std::endl;
 
   // Prepare input/output data
-  std::vector<std::vector<float>> inputs(num_inputs);
-  std::vector<std::vector<float>> outputs(num_outputs);
+  std::vector<std::vector<uint8_t>> inputs(num_inputs);
+  std::vector<std::vector<uint8_t>> outputs(num_outputs);
 
   bool generate_data = data_files.empty();
   bool read_data = data_files.size() == num_inputs;
@@ -175,34 +212,51 @@ int main(const int argc, char **argv)
 
   const int seed = 1; /* TODO Add an option for seed value */
   nnfw::misc::RandomGenerator randgen{seed, 0.0f, 2.0f};
-  try
+
+  for (uint32_t i = 0; i < num_inputs; i++)
   {
-    for (uint32_t i = 0; i < num_inputs; i++)
+    nnfw_tensorinfo ti_input;
+    NNFW_ASSERT_FAIL(nnfw_input_tensorinfo(onert_session, i, &ti_input),
+                     "[ ERROR ] Failure during get input data info");
+    size_t input_size = num_elems(&ti_input) * sizeOfNnfwType(ti_input.dtype);
+
+    inputs[i].resize(input_size);
+
+    if (generate_data)
     {
-      nnfw_tensorinfo ti_input;
-      NNFW_ASSERT_FAIL(nnfw_input_tensorinfo(onert_session, i, &ti_input),
-                       "[ ERROR ] Failure during get input data info");
-      uint64_t input_elements = num_elems(&ti_input);
-
-      if (generate_data)
+      switch (ti_input.dtype)
       {
-        inputs[i] = randomData(randgen, input_elements);
+        case NNFW_TYPE_TENSOR_BOOL:
+          randomBoolData(randgen, inputs[i]);
+          break;
+        case NNFW_TYPE_TENSOR_UINT8:
+        case NNFW_TYPE_TENSOR_QUANT8_ASYMM:
+          randomData<uint8_t>(randgen, inputs[i]);
+          break;
+        case NNFW_TYPE_TENSOR_QUANT8_ASYMM_SIGNED:
+          randomData<int8_t>(randgen, inputs[i]);
+          break;
+        case NNFW_TYPE_TENSOR_FLOAT32:
+          randomData<float>(randgen, inputs[i]);
+          break;
+        case NNFW_TYPE_TENSOR_INT32:
+          randomData<int32_t>(randgen, inputs[i]);
+          break;
+        case NNFW_TYPE_TENSOR_INT64:
+          randomData<uint64_t>(randgen, inputs[i]);
+          break;
+        default:
+          std::cerr << "[ ERROR ] "
+                    << "Unspported input data type" << std::endl;
+          exit(-1);
+          break;
       }
-      else /* read_data */
-        inputs[i] = readData(data_files[i]);
-
-      size_t input_size = input_elements * sizeOfNnfwType(ti_input.dtype);
-      NNFW_ASSERT_FAIL(
-        nnfw_set_input(onert_session, i, ti_input.dtype, inputs[i].data(), input_size),
-        "[ ERROR ] ailure to set input tensor buffer");
     }
-  }
-  catch (std::exception &e)
-  {
-    std::cerr << "[ ERROR ] "
-              << "Failure during input data generation" << std::endl;
-    std::cerr << e.what() << std::endl;
-    exit(-1);
+    else /* read_data */
+      readData(data_files[i], inputs[i]);
+
+    NNFW_ASSERT_FAIL(nnfw_set_input(onert_session, i, ti_input.dtype, inputs[i].data(), input_size),
+                     "[ ERROR ] Failure to set input tensor buffer");
   }
 
   std::cout << "[Execution] Input data is defined!" << std::endl;
@@ -214,9 +268,9 @@ int main(const int argc, char **argv)
                      "[ ERROR ] Failure during get output tensor info");
 
     uint64_t output_elements = num_elems(&ti_output);
-    outputs[i].resize(output_elements);
-
     size_t output_size = output_elements * sizeOfNnfwType(ti_output.dtype);
+    outputs[i].resize(output_size);
+
     NNFW_ASSERT_FAIL(
       nnfw_set_output(onert_session, i, ti_output.dtype, outputs[i].data(), output_size),
       "[ ERROR ] Failure to set output tensor buffer");
@@ -246,7 +300,7 @@ int main(const int argc, char **argv)
     std::cerr << e.what() << std::endl;
     exit(FILE_ERROR);
   }
-  interpreter->SetNumThreads(2);
+  interpreter->SetNumThreads(nnfw::misc::EnvVar("THREAD").asInt(-1));
 
   auto sess = std::make_shared<nnfw::tflite::InterpreterSession>(interpreter.get());
   sess->prepare();
@@ -254,7 +308,7 @@ int main(const int argc, char **argv)
   for (uint32_t i = 0; i < num_inputs; i++)
   {
     auto input_tensor = interpreter->tensor(interpreter->inputs().at(i));
-    memcpy(input_tensor->data.f, inputs[i].data(), inputs[i].size() * sizeof(float));
+    memcpy(input_tensor->data.uint8, inputs[i].data(), inputs[i].size());
   }
   if (!sess->run())
   {
@@ -264,31 +318,69 @@ int main(const int argc, char **argv)
   std::cout << "[Comparison] TFLite run done!" << std::endl;
 
   // Calculate max difference over all outputs
-  float max_difference = 0.0f;
+  float max_float_difference = 0.0f;
+  bool find_unmatched_output = false;
+
   for (uint32_t out_idx = 0; out_idx < num_outputs; out_idx++)
   {
-    const auto &tflite_output_tensor = interpreter->tensor(interpreter->outputs().at(out_idx));
-    const auto &nnfw_output_tensor = outputs[out_idx];
+    nnfw_tensorinfo ti;
+    nnfw_output_tensorinfo(onert_session, out_idx, &ti);
 
-    if (nnfw_output_tensor.size() != tflite_output_tensor->bytes / sizeof(float))
-      std::cout << "[Comparison] Different size of outputs!" << std::endl;
-    // Check max difference
-    float *tflite_out_ptr = tflite_output_tensor->data.f;
-    for (const auto &nnfw_out : nnfw_output_tensor)
+    bool matched = true;
+    // Check output tensor values
+
+    const auto &ref_output = interpreter->tensor(interpreter->outputs().at(out_idx))->data;
+    const auto &output = outputs[out_idx];
+
+    switch (ti.dtype)
     {
-      if (std::abs(nnfw_out - *tflite_out_ptr) > max_difference)
-        max_difference = std::abs(nnfw_out - *tflite_out_ptr);
+      case NNFW_TYPE_TENSOR_BOOL:
+        matched = compareBuffersExactBool(ref_output.uint8, output, out_idx);
+        break;
+      case NNFW_TYPE_TENSOR_UINT8:
+      case NNFW_TYPE_TENSOR_QUANT8_ASYMM:
+        matched = compareBuffersExact<uint8_t>(ref_output.uint8, output, out_idx);
+        break;
+      case NNFW_TYPE_TENSOR_QUANT8_ASYMM_SIGNED:
+        matched = compareBuffersExact<int8_t>(ref_output.int8, output, out_idx);
+        break;
+      case NNFW_TYPE_TENSOR_INT32:
+        matched = compareBuffersExact<int32_t>(ref_output.i32, output, out_idx);
+        break;
+      case NNFW_TYPE_TENSOR_FLOAT32:
+        // TODO better way for handling FP error?
+        for (uint32_t e = 0; e < num_elems(&ti); e++)
+        {
+          float refval = ref_output.f[e];
+          float val = reinterpret_cast<const float *>(output.data())[e];
+          if (std::abs(refval - val) > max_float_difference)
+            max_float_difference = std::abs(refval - val);
 
-      tflite_out_ptr++;
+          if (max_float_difference > DIFFERENCE_THRESHOLD)
+            matched = false;
+        }
+        break;
+      case NNFW_TYPE_TENSOR_INT64:
+        matched = compareBuffersExact<int64_t>(ref_output.i64, output, out_idx);
+        break;
+      default:
+        throw std::runtime_error{"Invalid tensor type"};
     }
+
+    if (!matched)
+      find_unmatched_output = true;
   }
 
   // Print results
-  std::cout << "[Comparison] Max difference: " << max_difference << std::endl;
+  std::cout << "[Comparison] Max float difference: " << max_float_difference << std::endl;
   int ret = 0;
-  if (max_difference > DIFFERENCE_THRESHOLD)
+  if (find_unmatched_output)
   {
-    std::cout << "[Comparison] Outputs is not equal!" << std::endl;
+    std::cout << "[Comparison] outputs is not equal!" << std::endl;
+    if (max_float_difference > DIFFERENCE_THRESHOLD)
+    {
+      std::cout << "[Comparison] Float outputs is not equal!" << std::endl;
+    }
     ret = 1;
   }
   else
@@ -296,6 +388,8 @@ int main(const int argc, char **argv)
     std::cout << "[Comparison] Outputs is equal!" << std::endl;
   }
   std::cout << "[Comparison] Done!" << std::endl;
+
+  nnfw_close_session(onert_session);
 
   return ret;
 }
