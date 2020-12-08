@@ -37,9 +37,9 @@ WhileLayer::WhileLayer(const std::vector<backend::IPortableTensor *> input_tenso
                        const ir::SubgraphIndex &body_subg_index, exec::ExecutorMap *executor_map,
                        cpu_common::DynamicMemoryManager *dyn_memory_manager,
                        const std::shared_ptr<ExternalContext> &external_context)
-    : _cond_subg_index{cond_subg_index}, _body_subg_index{body_subg_index},
-      _input_tensors{input_tensors}, _output_tensors{output_tensors}, _executor_map{executor_map},
-      _dyn_memory_manager{dyn_memory_manager}, _external_context{external_context}
+  : _cond_subg_index{cond_subg_index}, _body_subg_index{body_subg_index},
+    _input_tensors{input_tensors}, _output_tensors{output_tensors}, _executor_map{executor_map},
+    _dyn_memory_manager{dyn_memory_manager}, _external_context{external_context}
 {
   // At this point, executor_map may not have executors of cond subg and body subg
 }

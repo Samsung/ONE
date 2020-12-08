@@ -122,8 +122,8 @@ void ProfileObserver::handleJobEnd(IExecutor *exec, ir::SubgraphIndex, const ir:
 
 TracingObserver::TracingObserver(const std::string &filepath, const ir::Graph &graph,
                                  const util::TracingCtx *tracing_ctx)
-    : _recorder{std::make_unique<EventRecorder>()}, _collector{_recorder.get()}, _graph{graph},
-      _tracing_ctx{tracing_ctx}
+  : _recorder{std::make_unique<EventRecorder>()}, _collector{_recorder.get()}, _graph{graph},
+    _tracing_ctx{tracing_ctx}
 {
   // TODO Remove below after using _tracing_ctx
   UNUSED_RELEASE(_tracing_ctx);

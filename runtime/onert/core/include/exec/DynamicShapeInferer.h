@@ -40,7 +40,7 @@ class DynamicShapeInferer : public ir::OperationVisitor
 public:
   DynamicShapeInferer(const ir::Operands &operands,
                       const std::shared_ptr<backend::ITensorRegistry> &tensor_registry)
-      : _operands(operands), _tensor_registry(tensor_registry)
+    : _operands(operands), _tensor_registry(tensor_registry)
   {
     UNUSED_RELEASE(_operands);
     UNUSED_RELEASE(_tensor_registry);

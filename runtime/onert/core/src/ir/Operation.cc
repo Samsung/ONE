@@ -25,14 +25,14 @@ namespace ir
 
 Operation::Operation(OperandConstraint input_constr, const OperandIndexSequence &inputs,
                      const OperandIndexSequence &outputs, OperandConstraint output_constr)
-    : _input_constr{input_constr}, _output_constr{output_constr}
+  : _input_constr{input_constr}, _output_constr{output_constr}
 {
   setInputs(inputs);
   setOutputs(outputs);
 }
 
 Operation::Operation(OperandConstraint input_constr, OperandConstraint output_constr)
-    : _input_constr{input_constr}, _output_constr{output_constr}
+  : _input_constr{input_constr}, _output_constr{output_constr}
 {
 }
 

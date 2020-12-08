@@ -31,7 +31,7 @@ void EmbeddingLookup::accept(OperationVisitor &v) const { v.visit(*this); }
 
 EmbeddingLookup::EmbeddingLookup(const OperandIndexSequence &inputs,
                                  const OperandIndexSequence &outputs)
-    : Operation{OperandConstraint::createExact(2u), inputs, outputs}
+  : Operation{OperandConstraint::createExact(2u), inputs, outputs}
 {
 }
 

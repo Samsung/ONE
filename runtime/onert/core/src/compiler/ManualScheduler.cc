@@ -31,7 +31,7 @@ namespace compiler
 
 ManualScheduler::ManualScheduler(const backend::BackendContexts &backend_contexts,
                                  const compiler::CompilerOptions &options)
-    : _backend_contexts{backend_contexts}, _options{options}
+  : _backend_contexts{backend_contexts}, _options{options}
 {
 }
 
@@ -89,8 +89,8 @@ std::unique_ptr<BackendResolver> ManualScheduler::schedule(const ir::Graph &grap
     {
       graph.operations().at(key); // Check if exist, or this will throw
       backend_resolver->setBackend(
-          key, BackendManager::get().get(
-                   val)); // TODO Ensure this backend is available in backend contexts
+        key, BackendManager::get().get(
+               val)); // TODO Ensure this backend is available in backend contexts
     }
     catch (...)
     {
@@ -101,10 +101,10 @@ std::unique_ptr<BackendResolver> ManualScheduler::schedule(const ir::Graph &grap
 
   // Dump final assignment
   WHEN_LOG_ENABLED(backend_resolver->iterate(
-      [&](const ir::OperationIndex &index, const backend::Backend &backend) {
-        VERBOSE(ManualScheduler) << "backend for operation #" << index.value() << ": "
-                                 << backend.config()->id() << std::endl;
-      }));
+    [&](const ir::OperationIndex &index, const backend::Backend &backend) {
+      VERBOSE(ManualScheduler) << "backend for operation #" << index.value() << ": "
+                               << backend.config()->id() << std::endl;
+    }));
 
   return backend_resolver;
 }

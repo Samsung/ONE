@@ -31,7 +31,7 @@ void TransposeConv::accept(OperationVisitor &v) const { v.visit(*this); }
 
 TransposeConv::TransposeConv(const OperandIndexSequence &inputs,
                              const OperandIndexSequence &outputs, const Param &param)
-    : Operation{OperandConstraint::createExact(3u), inputs, outputs}, _param{param}
+  : Operation{OperandConstraint::createExact(3u), inputs, outputs}, _param{param}
 {
 }
 

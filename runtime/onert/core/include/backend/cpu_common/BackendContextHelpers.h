@@ -44,7 +44,7 @@ void planTensors(const T_BackendContext &ctx, const std::vector<onert::ir::OpSeq
   ir::OperandIndexSequence constants;
 
   auto model_io =
-      (graph->getInputs() + graph->getOutputs()) | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED;
+    (graph->getInputs() + graph->getOutputs()) | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED;
 
   // Prepare scanning
   for (auto ind : ctx.operand_list())
@@ -101,8 +101,8 @@ void planTensors(const T_BackendContext &ctx, const std::vector<onert::ir::OpSeq
     const auto &op_seq = op_seqs.at(op_seq_ind);
     for (const auto &op_idx : op_seq.operations())
     {
-      auto op_inputs = graph->operations().at(op_idx).getInputs() | ir::Remove::DUPLICATED |
-                       ir::Remove::UNDEFINED;
+      auto op_inputs =
+        graph->operations().at(op_idx).getInputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED;
       auto op_outputs = graph->operations().at(op_idx).getOutputs() | ir::Remove::DUPLICATED |
                         ir::Remove::UNDEFINED;
 
@@ -178,12 +178,12 @@ void planTensors(const T_BackendContext &ctx, const std::vector<onert::ir::OpSeq
   }
 
   assert(
-      std::all_of(uses_map.begin(), uses_map.end(),
-                  [](std::pair<const ir::OperandIndex, uint32_t> it) { return it.second == 0; }));
+    std::all_of(uses_map.begin(), uses_map.end(),
+                [](std::pair<const ir::OperandIndex, uint32_t> it) { return it.second == 0; }));
 
   assert(
-      std::all_of(def_map.begin(), def_map.end(),
-                  [](std::pair<const ir::OperandIndex, uint32_t> it) { return it.second == 0; }));
+    std::all_of(def_map.begin(), def_map.end(),
+                [](std::pair<const ir::OperandIndex, uint32_t> it) { return it.second == 0; }));
 }
 
 } // namespace cpu_common

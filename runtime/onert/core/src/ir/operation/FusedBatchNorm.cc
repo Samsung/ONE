@@ -28,7 +28,7 @@ void FusedBatchNorm::accept(OperationVisitor &v) const { v.visit(*this); }
 
 FusedBatchNorm::FusedBatchNorm(const OperandIndexSequence &inputs,
                                const OperandIndexSequence &outputs, const Param &param)
-    : Operation{OperandConstraint::createAtLeast(5u), inputs, outputs}, _param{param}
+  : Operation{OperandConstraint::createAtLeast(5u), inputs, outputs}, _param{param}
 {
 }
 

@@ -28,7 +28,7 @@ namespace pass
 void OperandPass::run()
 {
   _graph.operands().iterate(
-      [&](const ir::OperandIndex &index, ir::Operand &object) { callback(index, object); });
+    [&](const ir::OperandIndex &index, ir::Operand &object) { callback(index, object); });
 }
 
 } // namespace pass

@@ -31,7 +31,7 @@ namespace ir
 {
 
 OperationValidator::OperationValidator(const Graph &graph)
-    : _operations{graph.operations()}, _operands{graph.operands()}
+  : _operations{graph.operations()}, _operands{graph.operands()}
 {
 }
 
@@ -233,22 +233,22 @@ void OperationValidator::visit(const operation::ElementwiseActivation &node)
       break;
     case operation::ElementwiseActivation::Type::LEAKY_RELU:
       OP_REQUIRES(
-          isValidType(input_index, {DataType::FLOAT32, DataType::QUANT_UINT8_ASYMM,
-                                    DataType::QUANT_INT8_ASYMM, DataType::QUANT_INT16_ASYMM}));
+        isValidType(input_index, {DataType::FLOAT32, DataType::QUANT_UINT8_ASYMM,
+                                  DataType::QUANT_INT8_ASYMM, DataType::QUANT_INT16_ASYMM}));
       break;
     case operation::ElementwiseActivation::Type::LOGISTIC:
       OP_REQUIRES(
-          isValidType(input_index, {DataType::FLOAT32, DataType::QUANT_UINT8_ASYMM,
-                                    DataType::QUANT_INT8_ASYMM, DataType::QUANT_INT16_ASYMM}));
+        isValidType(input_index, {DataType::FLOAT32, DataType::QUANT_UINT8_ASYMM,
+                                  DataType::QUANT_INT8_ASYMM, DataType::QUANT_INT16_ASYMM}));
       break;
     case operation::ElementwiseActivation::Type::RELU:
-      OP_REQUIRES(isValidType(input_index, {DataType::FLOAT32, DataType::QUANT_UINT8_ASYMM,
-                                            DataType::QUANT_INT8_ASYMM}));
+      OP_REQUIRES(isValidType(
+        input_index, {DataType::FLOAT32, DataType::QUANT_UINT8_ASYMM, DataType::QUANT_INT8_ASYMM}));
       break;
     case operation::ElementwiseActivation::Type::TANH:
       OP_REQUIRES(
-          isValidType(input_index, {DataType::FLOAT32, DataType::QUANT_UINT8_ASYMM,
-                                    DataType::QUANT_INT8_ASYMM, DataType::QUANT_INT16_ASYMM}));
+        isValidType(input_index, {DataType::FLOAT32, DataType::QUANT_UINT8_ASYMM,
+                                  DataType::QUANT_INT8_ASYMM, DataType::QUANT_INT16_ASYMM}));
       break;
   }
 }
@@ -310,9 +310,9 @@ void OperationValidator::visit(const operation::EmbeddingLookup &node)
   // TFLite: Allow hybrid type - value table & output
   // NNAPI: Require same value table and output type
   OP_REQUIRES(
-      isSameType(values_index, output_index) ||
-      (isValidType(output_index, DataType::FLOAT32) &&
-       (isValidType(values_index, {DataType::QUANT_INT8_ASYMM, DataType::QUANT_INT8_SYMM}))));
+    isSameType(values_index, output_index) ||
+    (isValidType(output_index, DataType::FLOAT32) &&
+     (isValidType(values_index, {DataType::QUANT_INT8_ASYMM, DataType::QUANT_INT8_SYMM}))));
 }
 
 void OperationValidator::visit(const operation::ExpandDims &node)

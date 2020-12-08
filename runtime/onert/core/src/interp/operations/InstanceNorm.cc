@@ -32,7 +32,7 @@ namespace instancenorm
 void prepareInstanceNorm(ExecEnv *env, const ir::Operation &node)
 {
   const auto &instancenorm_node =
-      nnfw::misc::polymorphic_downcast<const ir::operation::InstanceNorm &>(node);
+    nnfw::misc::polymorphic_downcast<const ir::operation::InstanceNorm &>(node);
 
   const auto input_index = node.getInputs().at(instancenorm_node.INPUT);
   const auto output_index = node.getOutputs().at(0);
@@ -88,7 +88,7 @@ void invoke(const ITensor *input_tensor, const ITensor *gamma_tensor, const ITen
 void invokeInstanceNorm(const ExecEnv *env, const ir::Operation &node)
 {
   const auto &instancenorm_node =
-      nnfw::misc::polymorphic_downcast<const ir::operation::InstanceNorm &>(node);
+    nnfw::misc::polymorphic_downcast<const ir::operation::InstanceNorm &>(node);
 
   const auto input_index = node.getInputs().at(instancenorm_node.INPUT);
   const auto gamma_index = node.getInputs().at(instancenorm_node.GAMMA);

@@ -30,7 +30,7 @@ void StatelessRandomUniform::accept(OperationVisitor &v) const { v.visit(*this);
 
 StatelessRandomUniform::StatelessRandomUniform(const OperandIndexSequence &inputs,
                                                const OperandIndexSequence &outputs)
-    : Operation{OperandConstraint::createExact(2u), inputs, outputs}
+  : Operation{OperandConstraint::createExact(2u), inputs, outputs}
 {
 }
 

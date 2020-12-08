@@ -51,7 +51,7 @@ public:
    */
   const ir::Graph &graph() final { return _graph; }
   void setIndexedRanks(std::shared_ptr<ir::OperationIndexMap<int64_t>>) override{
-      // Not implemented
+    // Not implemented
   };
   /**
    * @brief  Start execution

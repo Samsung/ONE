@@ -83,8 +83,8 @@ void invoke(const ITensor *ifm_tensor, const ITensor *ker_tensor, const ITensor 
   const auto ker_shape = ker_tensor->tensorInfo().shape();
   const auto ker_height = ker_shape.dim(1);
   const auto ker_width = ker_shape.dim(2);
-  const auto padding = ir::calculatePadding(param.padding, ofm_shape, ifm_shape, param.stride,
-                                            ker_width, ker_height);
+  const auto padding =
+    ir::calculatePadding(param.padding, ofm_shape, ifm_shape, param.stride, ker_width, ker_height);
 
   nnfw::cker::TransposeConvParams cker_param;
   cker_param.padding_values.width = padding.left;
@@ -108,7 +108,7 @@ void invoke(const ITensor *ifm_tensor, const ITensor *ker_tensor, const ITensor 
 void invokeTransposeConv(const ExecEnv *env, const ir::Operation &node)
 {
   const auto &tconv_node =
-      nnfw::misc::polymorphic_downcast<const ir::operation::TransposeConv &>(node);
+    nnfw::misc::polymorphic_downcast<const ir::operation::TransposeConv &>(node);
 
   const auto ifm_index = node.getInputs().at(ir::operation::TransposeConv::INPUT);
   const auto ker_index = node.getInputs().at(ir::operation::TransposeConv::KERNEL);

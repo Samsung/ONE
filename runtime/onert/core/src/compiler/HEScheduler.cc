@@ -96,8 +96,8 @@ namespace compiler
 void HEScheduler::scheduleShufflingBackends()
 {
   VERBOSE(HEScheduler::schedule)
-      << "Started task scheduling: uses all backends to get more metrics for data transfer"
-      << std::endl;
+    << "Started task scheduling: uses all backends to get more metrics for data transfer"
+    << std::endl;
   size_t backend_ind = 0;
   for (const auto &rank : _rank_to_op)
   {
@@ -123,7 +123,7 @@ void HEScheduler::scheduleShufflingBackends()
         continue;
       }
       const auto exec_time =
-          _exec_time->getOperationExecTime(_all_backends[backend_ind], node.name(), quant, size);
+        _exec_time->getOperationExecTime(_all_backends[backend_ind], node.name(), quant, size);
       // Scheduling to measure data transfer must be done after measuring all backends separately
       assert(exec_time != _exec_time->NOT_FOUND);
       if (exec_time == _exec_time->getMax())
@@ -227,7 +227,7 @@ std::unique_ptr<compiler::BackendResolver> HEScheduler::schedule(const ir::Graph
 
   ir::OperationIndexMap<bool> visited;
   graph.operations().iterate(
-      [&](const ir::OperationIndex &index, const ir::Operation &) { visited[index] = false; });
+    [&](const ir::OperationIndex &index, const ir::Operation &) { visited[index] = false; });
   // for each task select the backend with the smallest earliest finishing time(eft)
   for (const auto &rank : _rank_to_op)
   {
@@ -267,9 +267,9 @@ int64_t HEScheduler::tryBackend(const ir::Operation &node, const backend::Backen
   if (!_is_profiling_mode)
   {
     VERBOSE(HEScheduler::tryBackend)
-        << "Trying to HE schedule while there is no profiling info for " << node.name()
-        << " on backend " << backend->config()->id() << ". So this backend won't be used. "
-        << std::endl;
+      << "Trying to HE schedule while there is no profiling info for " << node.name()
+      << " on backend " << backend->config()->id() << ". So this backend won't be used. "
+      << std::endl;
     _is_supported[backend][node.name()] = false;
     return _exec_time->getMax();
   }
@@ -300,7 +300,7 @@ void HEScheduler::makeRank()
   VERBOSE(HEScheduler::makeRank) << "task prioritizing" << std::endl;
 
   _graph->operations().iterate(
-      [&](const ir::OperationIndex &index, const ir::Operation &) { DFSMaxRank(index); });
+    [&](const ir::OperationIndex &index, const ir::Operation &) { DFSMaxRank(index); });
 
   // Check that ranks are calculated for all operations(nodes)
   _graph->operations().iterate([&](const ir::OperationIndex &index, const ir::Operation &) {
@@ -369,8 +369,8 @@ int64_t HEScheduler::DFSMaxRank(const ir::OperationIndex &index)
   assert(rank >= 0);
   _rank_to_op.emplace(rank, index);
   _op_to_rank->emplace(index, rank);
-  VERBOSE(HEScheduler::DFSMaxRank) << "rank of operation (" << index.value() << ")" << node.name()
-                                   << " is " << rank << std::endl;
+  VERBOSE(HEScheduler::DFSMaxRank)
+    << "rank of operation (" << index.value() << ")" << node.name() << " is " << rank << std::endl;
 
   return rank;
 }
@@ -395,7 +395,7 @@ int64_t HEScheduler::DFSChildrenMaxRank(const ir::OperationIndex &index)
         }
         // TODO Change it to controlflow backend
         auto transfer_cost =
-            getPermuteTime(backend, other_backend, quant, operand.info().total_size());
+          getPermuteTime(backend, other_backend, quant, operand.info().total_size());
         avg_transfer_cost += transfer_cost;
       }
     }
@@ -551,18 +551,18 @@ HEScheduler::ESTAndExecTime(const backend::Backend *backend, const ir::Operation
   if (!_is_parallel_exec)
   {
     VERBOSE(HEScheduler::ESTAndExecTime)
-        << "exec_time of (" << index.value() << ") " << node.name() << " quant==" << quant << " on "
-        << backend->config()->id() << " is " << exec_time
-        << " microseconds. Data transfer cost: " << total_transfer_cost << std::endl;
+      << "exec_time of (" << index.value() << ") " << node.name() << " quant==" << quant << " on "
+      << backend->config()->id() << " is " << exec_time
+      << " microseconds. Data transfer cost: " << total_transfer_cost << std::endl;
 
     return {total_transfer_cost, exec_time};
   }
   VERBOSE(HEScheduler::ESTAndExecTime)
-      << "exec_time of (" << index.value() << ") " << node.name() << " quant==" << quant << " on "
-      << backend->config()->id() << ": " << exec_time
-      << " microseconds. Backend available time: " << prev_op_ft
-      << " Parent's max eft: " << max_pred_eft - total_transfer_cost
-      << " data transfer cost: " << total_transfer_cost << std::endl;
+    << "exec_time of (" << index.value() << ") " << node.name() << " quant==" << quant << " on "
+    << backend->config()->id() << ": " << exec_time
+    << " microseconds. Backend available time: " << prev_op_ft
+    << " Parent's max eft: " << max_pred_eft - total_transfer_cost
+    << " data transfer cost: " << total_transfer_cost << std::endl;
 
   return {prev_op_ft, exec_time};
 }
@@ -587,7 +587,7 @@ int64_t HEScheduler::predMaxEFT(const backend::Backend *backend, const ir::Opera
       {
         // Multiply operand size by 2 because size must describe input+output size
         int64_t transfer_cost =
-            getPermuteTime(parent_backend, backend, quant, input_operand.info().total_size() * 2);
+          getPermuteTime(parent_backend, backend, quant, input_operand.info().total_size() * 2);
         transfer_st_exec_time.emplace(_ops_eft.at(input_node_idx), transfer_cost);
       }
     }

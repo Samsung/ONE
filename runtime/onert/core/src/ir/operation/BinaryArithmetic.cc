@@ -32,7 +32,7 @@ void BinaryArithmetic::accept(OperationVisitor &v) const { v.visit(*this); }
 
 BinaryArithmetic::BinaryArithmetic(const OperandIndexSequence &inputs,
                                    const OperandIndexSequence &outputs, const Param &param)
-    : Operation{OperandConstraint::createExact(2u), inputs, outputs}, _param{param}
+  : Operation{OperandConstraint::createExact(2u), inputs, outputs}, _param{param}
 {
 }
 
@@ -40,10 +40,10 @@ std::string BinaryArithmetic::name() const
 {
   using ArithmeticType = onert::ir::operation::BinaryArithmetic::ArithmeticType;
   static const std::unordered_map<ArithmeticType, std::string> name_map{
-      {ArithmeticType::ADD, std::string{"Add"}},
-      {ArithmeticType::SUB, std::string{"Sub"}},
-      {ArithmeticType::MUL, std::string{"Mul"}},
-      {ArithmeticType::DIV, std::string{"Div"}}};
+    {ArithmeticType::ADD, std::string{"Add"}},
+    {ArithmeticType::SUB, std::string{"Sub"}},
+    {ArithmeticType::MUL, std::string{"Mul"}},
+    {ArithmeticType::DIV, std::string{"Div"}}};
   return name_map.at(_param.arithmetic_type);
 }
 

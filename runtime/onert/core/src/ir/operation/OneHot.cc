@@ -28,7 +28,7 @@ void OneHot::accept(OperationVisitor &v) const { v.visit(*this); }
 
 OneHot::OneHot(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs,
                const Param &param)
-    : Operation{OperandConstraint::createExact(4u), inputs, outputs}, _param{param}
+  : Operation{OperandConstraint::createExact(4u), inputs, outputs}, _param{param}
 {
 }
 

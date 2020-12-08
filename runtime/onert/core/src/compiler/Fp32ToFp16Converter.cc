@@ -45,7 +45,7 @@ namespace compiler
 {
 
 Fp32ToFp16Converter::Fp32ToFp16Converter(compiler::LoweredGraph &lowered_graph)
-    : _lowered_graph{lowered_graph}
+  : _lowered_graph{lowered_graph}
 {
   VERBOSE(Fp32ToFp16Converter) << "Fp16 Enable on" << std::endl;
 }
@@ -177,26 +177,26 @@ void Fp32ToFp16Converter::run()
 void Fp32ToFp16Converter::appendOpSequences()
 {
   _lowered_graph.op_seqs().iterate(
-      [&](const ir::OpSequenceIndex &op_seq_ind, ir::OpSequence &op_seq) {
-        const auto lower_info = _lowered_graph.getLowerInfo(op_seq_ind);
-        assert(lower_info != nullptr);
+    [&](const ir::OpSequenceIndex &op_seq_ind, ir::OpSequence &op_seq) {
+      const auto lower_info = _lowered_graph.getLowerInfo(op_seq_ind);
+      assert(lower_info != nullptr);
 
-        // For now, the only acl_cl supports fully fp16 type
-        // TODO Support fp16 on acl_neon. Current acl_neon supports the only reshape and concat
-        // operations.
-        //      To do this, we could check the support by `operation by operation`. After that, we
-        //      would partition an op_seq if it contains unsupported operations.
-        if (lower_info->backend()->config()->id() != kAclClBackendConfigId)
-          return;
+      // For now, the only acl_cl supports fully fp16 type
+      // TODO Support fp16 on acl_neon. Current acl_neon supports the only reshape and concat
+      // operations.
+      //      To do this, we could check the support by `operation by operation`. After that, we
+      //      would partition an op_seq if it contains unsupported operations.
+      if (lower_info->backend()->config()->id() != kAclClBackendConfigId)
+        return;
 
-        // OpSeq's input set should be included in the first operation's input set or
-        // OpSeq's output set should be included in the last operation's output set
-        assert(checkOperandsOfOpSequence(op_seq));
+      // OpSeq's input set should be included in the first operation's input set or
+      // OpSeq's output set should be included in the last operation's output set
+      assert(checkOperandsOfOpSequence(op_seq));
 
-        // Append converting OpSequence for fp16 but all operands' types are not fp16 still.
-        appendNewOpSeqForConvertFp32ToFp16(op_seq_ind, op_seq);
-        appendNewOpSeqForConvertFp16ToFp32(op_seq_ind, op_seq);
-      });
+      // Append converting OpSequence for fp16 but all operands' types are not fp16 still.
+      appendNewOpSeqForConvertFp32ToFp16(op_seq_ind, op_seq);
+      appendNewOpSeqForConvertFp16ToFp32(op_seq_ind, op_seq);
+    });
 }
 
 //
@@ -372,16 +372,16 @@ void Fp32ToFp16Converter::optimize()
 void Fp32ToFp16Converter::convertOperands()
 {
   _lowered_graph.op_seqs().iterate(
-      [&](const ir::OpSequenceIndex &op_seq_ind, ir::OpSequence &op_seq) {
-        const auto lower_info = _lowered_graph.getLowerInfo(op_seq_ind);
-        assert(lower_info != nullptr);
-        // For now, the only acl_cl supports fully fp16
-        if (lower_info->backend()->config()->id() != kAclClBackendConfigId)
-          return;
+    [&](const ir::OpSequenceIndex &op_seq_ind, ir::OpSequence &op_seq) {
+      const auto lower_info = _lowered_graph.getLowerInfo(op_seq_ind);
+      assert(lower_info != nullptr);
+      // For now, the only acl_cl supports fully fp16
+      if (lower_info->backend()->config()->id() != kAclClBackendConfigId)
+        return;
 
-        // Convert input,output operands' type to fp16
-        convertOperandsOfOpSequence(op_seq);
-      });
+      // Convert input,output operands' type to fp16
+      convertOperandsOfOpSequence(op_seq);
+    });
 }
 
 void Fp32ToFp16Converter::convertOperandsOfOpSequence(ir::OpSequence &op_seq)
@@ -529,7 +529,7 @@ void Fp32ToFp16Converter::setNewOpSequenceLowerInfo(const ir::OpSequenceIndex &o
   assert(lower_info != nullptr);
 
   auto new_lower_info =
-      std::make_unique<ir::operation::LowerInfo>(lower_info->backend(), lower_info->layout());
+    std::make_unique<ir::operation::LowerInfo>(lower_info->backend(), lower_info->layout());
   _lowered_graph.setLowerInfo(new_op_seq_ind, std::move(new_lower_info));
 }
 
@@ -600,7 +600,7 @@ Fp32ToFp16Converter::newOperationConvertFp32ToFp16(const ir::OperandIndex &op_se
   auto &new_op_obj = operands.at(new_op_ind);
 
   std::unique_ptr<ir::Operation> new_node(
-      new ir::operation::ConvertFp32ToFp16({op_seq_input_ind}, {new_op_ind}));
+    new ir::operation::ConvertFp32ToFp16({op_seq_input_ind}, {new_op_ind}));
   const auto new_node_ind = operations.push(std::move(new_node));
 
   input_obj.insertUse(new_node_ind);
@@ -620,7 +620,7 @@ Fp32ToFp16Converter::newOperationConvertFp16ToFp32(const ir::OperandIndex &op_se
   auto &new_op_obj = operands.at(new_op_ind);
 
   std::unique_ptr<ir::Operation> new_node(
-      new ir::operation::ConvertFp16ToFp32({new_op_ind}, {op_seq_output_ind}));
+    new ir::operation::ConvertFp16ToFp32({new_op_ind}, {op_seq_output_ind}));
   const auto new_node_ind = operations.push(std::move(new_node));
 
   new_op_obj.insertUse(new_node_ind);
@@ -760,8 +760,8 @@ Fp32ToFp16Converter::findOpSequencesContiguous(const InputToOpSeqs &input_to_op_
         }
 
         VERBOSE(Fp32ToFp16Converter)
-            << "Contiguous from OpSeq#" << op_seq_ind_fp16_to_fp32.value() << "(ToFp32)"
-            << " to OpSeq#" << op_seq_ind.value() << "(ToFp16)" << std::endl;
+          << "Contiguous from OpSeq#" << op_seq_ind_fp16_to_fp32.value() << "(ToFp32)"
+          << " to OpSeq#" << op_seq_ind.value() << "(ToFp16)" << std::endl;
       }
     }
   }
@@ -842,7 +842,7 @@ Fp32ToFp16Converter::findOperationsToDelete(const OpSeqIndexList &list_to_delete
 }
 
 void Fp32ToFp16Converter::manipulateContiguousOpSequences(
-    const InputToOpSeqs &input_to_op_seqs, const OpSeqIndexToOpSeqIndexList &opseq_map_to_delete)
+  const InputToOpSeqs &input_to_op_seqs, const OpSeqIndexToOpSeqIndexList &opseq_map_to_delete)
 {
   auto &op_seqs = _lowered_graph.op_seqs();
 
@@ -894,8 +894,7 @@ void Fp32ToFp16Converter::manipulateContiguousOpSequences(
 }
 
 void Fp32ToFp16Converter::deleteContiguousOpSequences(
-    const OpSeqIndexList &list_to_delete_op_seqs,
-    const ir::OperandIndexSequence &list_to_delete_ops)
+  const OpSeqIndexList &list_to_delete_op_seqs, const ir::OperandIndexSequence &list_to_delete_ops)
 {
   auto &operands = _lowered_graph.graph().operands();
   auto &operations = _lowered_graph.graph().operations();

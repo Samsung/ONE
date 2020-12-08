@@ -61,8 +61,8 @@ void prepareConcat(ExecEnv *env, const ir::Operation &node)
   // Make output tensor info using first input tensor info, and accumulated axis dimension value
   auto out_shape = first_tensor->tensorInfo().shape();
   out_shape.dim(axis) = out_axis_dimension;
-  env->allocateIfNeeded(out_index, ir::OperandInfo::createStaticInfo(
-                                       out_shape, first_tensor->tensorInfo().typeInfo()));
+  env->allocateIfNeeded(
+    out_index, ir::OperandInfo::createStaticInfo(out_shape, first_tensor->tensorInfo().typeInfo()));
 
   auto out_tensor = env->tensorAt(out_index);
   UNUSED_RELEASE(out_tensor);

@@ -30,7 +30,7 @@ namespace operation
 void Transpose::accept(OperationVisitor &v) const { v.visit(*this); }
 
 Transpose::Transpose(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs)
-    : Operation{OperandConstraint::createExact(2u), inputs, outputs}
+  : Operation{OperandConstraint::createExact(2u), inputs, outputs}
 {
 }
 

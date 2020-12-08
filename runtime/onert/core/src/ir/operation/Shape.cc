@@ -30,7 +30,7 @@ namespace operation
 void Shape::accept(OperationVisitor &v) const { v.visit(*this); }
 
 Shape::Shape(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs)
-    : Operation{OperandConstraint::createExact(1u), inputs, outputs}
+  : Operation{OperandConstraint::createExact(1u), inputs, outputs}
 {
 }
 

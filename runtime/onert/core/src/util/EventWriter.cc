@@ -142,8 +142,8 @@ struct MDContent
   uint32_t max_page_reclaims;
 
   MDContent()
-      : begin_ts(0), end_ts(0), min_rss(UINT32_MAX), max_rss(0), min_page_reclaims(UINT32_MAX),
-        max_page_reclaims(0)
+    : begin_ts(0), end_ts(0), min_rss(UINT32_MAX), max_rss(0), min_page_reclaims(UINT32_MAX),
+      max_page_reclaims(0)
   {
     // DO NOTHING
   }
@@ -245,12 +245,12 @@ struct Graph : public MDContent
     os << "\n";
 
     static std::vector<std::string> opseq_headers{
-        "OpSeq name",  "backend",     "latency(us)",       "latency(%)",
-        "rss_min(kb)", "rss_max(kb)", "page_reclaims_min", "page_reclaims_max"};
+      "OpSeq name",  "backend",     "latency(us)",       "latency(%)",
+      "rss_min(kb)", "rss_max(kb)", "page_reclaims_min", "page_reclaims_max"};
 
     static std::vector<std::string> opseq_headers_line{
-        "----------", "-------", "-----------",       "-----------",
-        "-------",    "-------", "-----------------", "-----------------"};
+      "----------", "-------", "-----------",       "-----------",
+      "-------",    "-------", "-----------------", "-----------------"};
 
     os << "## OpSequences \n";
 
@@ -272,7 +272,7 @@ struct MDTableBuilder
 {
   MDTableBuilder(const std::vector<DurationEvent> &duration_events,
                  const std::vector<CounterEvent> &counter_events)
-      : _duration_events(duration_events), _counter_events(counter_events)
+    : _duration_events(duration_events), _counter_events(counter_events)
   {
 // when ready with low overhead in release build
 #ifdef DEBUG

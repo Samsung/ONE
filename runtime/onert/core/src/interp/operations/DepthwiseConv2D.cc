@@ -58,12 +58,12 @@ void prepareDepthwiseConv(ExecEnv *env, const ir::Operation &node)
   {
     // Handle unspecified output shape
     const auto &depth_conv_node =
-        nnfw::misc::polymorphic_downcast<const ir::operation::DepthwiseConv2D &>(node);
+      nnfw::misc::polymorphic_downcast<const ir::operation::DepthwiseConv2D &>(node);
     const auto infered_output_shape = shape_inference::inferDepthwiseConv2DShape(
-        in_tensor->tensorInfo().shape(), kernel_tensor->tensorInfo().shape(),
-        depth_conv_node.param());
+      in_tensor->tensorInfo().shape(), kernel_tensor->tensorInfo().shape(),
+      depth_conv_node.param());
     env->allocateIfNeeded(
-        out_index, ir::OperandInfo::createStaticInfo(infered_output_shape, output_info.typeInfo()));
+      out_index, ir::OperandInfo::createStaticInfo(infered_output_shape, output_info.typeInfo()));
   }
   else
   {
@@ -88,8 +88,8 @@ void invoke(const ITensor *ifm_tensor, const ITensor *ker_tensor, const ITensor 
   const auto &ker_shape = ker_tensor->tensorInfo().shape();
   const auto ker_height = ker_shape.dim(1);
   const auto ker_width = ker_shape.dim(2);
-  const auto padding = ir::calculatePadding(param.padding, ifm_shape, ofm_shape, param.stride,
-                                            ker_width, ker_height);
+  const auto padding =
+    ir::calculatePadding(param.padding, ifm_shape, ofm_shape, param.stride, ker_width, ker_height);
 
   // Calculate
   float activation_min, activation_max;

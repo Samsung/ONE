@@ -66,7 +66,7 @@ private:
   // contains list of dynamic tensor index, which can be deallocated after running operation
   // note: this map could contain static tensor index too. Careful use is required.
   std::unordered_map<ir::OperationIndex, std::unordered_set<backend::ITensor *>>
-      _dealloc_tensor_map;
+    _dealloc_tensor_map;
 };
 
 } // namespace cpu_common

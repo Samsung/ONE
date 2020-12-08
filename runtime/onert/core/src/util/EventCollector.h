@@ -49,8 +49,8 @@ public:
     std::vector<std::pair<std::string, std::string>> userData;
 
     Event(Edge a_edge, const std::string &a_backend, const std::string &a_label)
-        : edge(a_edge), session_index(0), subg_index(0), backend(a_backend), op_index(0),
-          op_seq_size(0), label(a_label)
+      : edge(a_edge), session_index(0), subg_index(0), backend(a_backend), op_index(0),
+        op_seq_size(0), label(a_label)
     { /* empty */
     }
   };

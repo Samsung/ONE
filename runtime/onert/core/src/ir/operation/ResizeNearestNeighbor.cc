@@ -32,7 +32,7 @@ void ResizeNearestNeighbor::accept(OperationVisitor &v) const { v.visit(*this); 
 ResizeNearestNeighbor::ResizeNearestNeighbor(const OperandIndexSequence &inputs,
                                              const OperandIndexSequence &outputs,
                                              const Param &param)
-    : Operation{OperandConstraint::createInRange(1u, 2u), inputs, outputs}, _param{param}
+  : Operation{OperandConstraint::createInRange(1u, 2u), inputs, outputs}, _param{param}
 {
 }
 

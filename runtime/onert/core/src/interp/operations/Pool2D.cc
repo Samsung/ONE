@@ -48,9 +48,9 @@ void preparePool2D(ExecEnv *env, const ir::Operation &node)
   {
     // Handle unspecified output shape
     const auto infered_output_shape =
-        shape_inference::inferPoolShape(in_tensor->tensorInfo().shape(), pool_node.param());
+      shape_inference::inferPoolShape(in_tensor->tensorInfo().shape(), pool_node.param());
     env->allocateIfNeeded(
-        out_index, ir::OperandInfo::createStaticInfo(infered_output_shape, output_info.typeInfo()));
+      out_index, ir::OperandInfo::createStaticInfo(infered_output_shape, output_info.typeInfo()));
   }
   else
   {
@@ -100,7 +100,7 @@ void invokePool2DOps(const ExecEnv *env, const ir::Operation &node)
   const auto ofm_shape = out_tensor->tensorInfo().shape().asFeature(ir::Layout::NHWC);
   const auto param = pool_node.param();
   const auto padding =
-      ir::calculatePadding(param.padding, ifm_shape, ofm_shape, param.stride, param.kw, param.kh);
+    ir::calculatePadding(param.padding, ifm_shape, ofm_shape, param.stride, param.kw, param.kh);
   // Calculate
   nnfw::cker::PoolParams cker_param;
   cker_param.filter_width = param.kw;

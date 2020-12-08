@@ -30,7 +30,7 @@ namespace operation
 void Range::accept(OperationVisitor &v) const { v.visit(*this); }
 
 Range::Range(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs)
-    : Operation{OperandConstraint::createExact(3u), inputs, outputs}
+  : Operation{OperandConstraint::createExact(3u), inputs, outputs}
 {
 }
 

@@ -40,7 +40,7 @@ enum class OpType
 void prepare(ExecEnv *env, const ir::Operation &node)
 {
   const auto &arithmetic_node =
-      nnfw::misc::polymorphic_downcast<const ir::operation::BinaryArithmetic &>(node);
+    nnfw::misc::polymorphic_downcast<const ir::operation::BinaryArithmetic &>(node);
 
   const auto lhs_index = node.getInputs().at(arithmetic_node.LHS);
   const auto rhs_index = node.getInputs().at(arithmetic_node.RHS);
@@ -68,7 +68,7 @@ void prepare(ExecEnv *env, const ir::Operation &node)
     }
 
     auto output_info =
-        ir::OperandInfo::createStaticInfo(out_shape, lhs_tensor->tensorInfo().typeInfo());
+      ir::OperandInfo::createStaticInfo(out_shape, lhs_tensor->tensorInfo().typeInfo());
     // We can handle already allocated (ex. model output)
     env->allocateIfNeeded(out_index, output_info);
   }
@@ -119,14 +119,13 @@ void invoke(const ITensor *lhs_tensor, const ITensor *rhs_tensor, const ITensor 
   raw_type *out_ptr = reinterpret_cast<raw_type *>(out_buffer);
 
   const auto cker_op_type =
-      (op_type == OpType::ADD)
-          ? nnfw::cker::BinaryArithmeticOpType::ADD
-          : ((op_type == OpType::SUB) ? nnfw::cker::BinaryArithmeticOpType::SUB
-                                      : nnfw::cker::BinaryArithmeticOpType::MUL);
+    (op_type == OpType::ADD) ? nnfw::cker::BinaryArithmeticOpType::ADD
+                             : ((op_type == OpType::SUB) ? nnfw::cker::BinaryArithmeticOpType::SUB
+                                                         : nnfw::cker::BinaryArithmeticOpType::MUL);
 
-  const bool need_broadcast = nnfw::cker::ProcessBroadcastShapes(
-      convertShape(lhs_tensor->tensorInfo().shape()),
-      convertShape(rhs_tensor->tensorInfo().shape()), &cker_param);
+  const bool need_broadcast =
+    nnfw::cker::ProcessBroadcastShapes(convertShape(lhs_tensor->tensorInfo().shape()),
+                                       convertShape(rhs_tensor->tensorInfo().shape()), &cker_param);
 
   if (need_broadcast)
   {
@@ -173,7 +172,7 @@ void invokeBinaryArithmetic(const ExecEnv *env, const ir::operation::BinaryArith
 void invokeBinaryArithmeticOps(const ExecEnv *env, const ir::Operation &node)
 {
   const auto &arithmetic_node =
-      nnfw::misc::polymorphic_downcast<const ir::operation::BinaryArithmetic &>(node);
+    nnfw::misc::polymorphic_downcast<const ir::operation::BinaryArithmetic &>(node);
 
   switch (arithmetic_node.param().arithmetic_type)
   {

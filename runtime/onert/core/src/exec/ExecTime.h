@@ -34,7 +34,7 @@ class ExecTime
 {
 public:
   explicit ExecTime(const std::vector<const backend::Backend *> &backends)
-      : _json(backends, _measurements)
+    : _json(backends, _measurements)
   {
   }
 

@@ -72,8 +72,8 @@ public:
   using NodeRef = typename Iterator<is_const>::NodeRef;
   using IterFn = typename Iterator<is_const>::IterFn;
   using LoweredGraphRef =
-      typename std::conditional<is_const, const typename compiler::LoweredGraph &,
-                                typename compiler::LoweredGraph &>::type;
+    typename std::conditional<is_const, const typename compiler::LoweredGraph &,
+                              typename compiler::LoweredGraph &>::type;
   using OpSequenceRef = typename std::conditional<is_const, const OpSequence &, OpSequence &>::type;
   using OpSeqIndexRef = const OpSequenceIndex &;
   using OpSeqIterFn = std::function<void(OpSeqIndexRef, OpSequenceRef)>;

@@ -37,7 +37,7 @@ struct InputDesc
 
   InputDesc(void) = delete;
   InputDesc(const ir::OperandInfo &info, const void *buffer, const size_t size, ir::Layout layout)
-      : info(info), buffer(buffer), size(size), layout(layout)
+    : info(info), buffer(buffer), size(size), layout(layout)
   {
   }
 };
@@ -53,7 +53,7 @@ struct OutputDesc
 
   OutputDesc(void) = delete;
   OutputDesc(const ir::OperandInfo &info, void *buffer, const size_t size, ir::Layout layout)
-      : info(info), buffer(buffer), size(size), layout(layout)
+    : info(info), buffer(buffer), size(size), layout(layout)
   {
   }
 };

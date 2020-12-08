@@ -31,7 +31,7 @@ void LogSoftmax::accept(OperationVisitor &v) const { v.visit(*this); }
 
 LogSoftmax::LogSoftmax(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs,
                        const Param &param)
-    : Operation{OperandConstraint::createExact(1u), inputs, outputs}, _param{param}
+  : Operation{OperandConstraint::createExact(1u), inputs, outputs}, _param{param}
 {
 }
 
