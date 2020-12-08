@@ -14,19 +14,19 @@
  * limitations under the License.
  */
 
-#include "ConstantInitializer.h"
-#include "Tensor.h"
+#include "backend/cpu_common/ConstantInitializer.h"
+#include "backend/cpu_common/Tensor.h"
 
 namespace onert
 {
 namespace backend
 {
-namespace cpu
+namespace cpu_common
 {
 
 ConstantInitializer::ConstantInitializer(const ir::Operands &operands,
                                          const std::shared_ptr<ITensorRegistry> &tensor_reg)
-    : cpu_common::ConstantInitializerBase{operands}, _tensor_reg{tensor_reg}
+    : ConstantInitializerBase{operands}, _tensor_reg{tensor_reg}
 {
   // DO NOTHING
 }
@@ -53,6 +53,6 @@ void ConstantInitializer::registerExternalInitializer(const ir::OperandIndex &in
   };
 }
 
-} // namespace cpu
+} // namespace cpu_common
 } // namespace backend
 } // namespace onert
