@@ -193,8 +193,8 @@ int main(const int argc, char **argv)
 
       size_t input_size = input_elements * sizeOfNnfwType(ti_input.dtype);
       NNFW_ASSERT_FAIL(
-          nnfw_set_input(onert_session, i, ti_input.dtype, inputs[i].data(), input_size),
-          "[ ERROR ] ailure to set input tensor buffer");
+        nnfw_set_input(onert_session, i, ti_input.dtype, inputs[i].data(), input_size),
+        "[ ERROR ] ailure to set input tensor buffer");
     }
   }
   catch (std::exception &e)
@@ -218,8 +218,8 @@ int main(const int argc, char **argv)
 
     size_t output_size = output_elements * sizeOfNnfwType(ti_output.dtype);
     NNFW_ASSERT_FAIL(
-        nnfw_set_output(onert_session, i, ti_output.dtype, outputs[i].data(), output_size),
-        "[ ERROR ] Failure to set output tensor buffer");
+      nnfw_set_output(onert_session, i, ti_output.dtype, outputs[i].data(), output_size),
+      "[ ERROR ] Failure to set output tensor buffer");
   }
 
   // Execute

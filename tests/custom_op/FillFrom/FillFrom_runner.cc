@@ -87,7 +87,7 @@ std::vector<float> genData(uint64_t size)
 
 template <typename InIter1, typename InIter2>
 static auto findMaxDifference(InIter1 first1, InIter1 last1, InIter2 first2)
-    -> decltype(*first1 - *first2)
+  -> decltype(*first1 - *first2)
 {
   auto max_difference = std::abs(*first1 - *first2);
   for (; first1 != last1; ++first1, ++first2)
@@ -227,7 +227,7 @@ int main(const int argc, char **argv)
 
   const float tolerance = 0.01f;
   auto max_difference =
-      findMaxDifference(outputs[0].begin(), outputs[0].end(), std::begin(ref_data));
+    findMaxDifference(outputs[0].begin(), outputs[0].end(), std::begin(ref_data));
 
   int exit_code = 0;
   if (max_difference > tolerance)

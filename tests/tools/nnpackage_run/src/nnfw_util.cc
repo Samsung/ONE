@@ -34,12 +34,12 @@ uint64_t num_elems(const nnfw_tensorinfo *ti)
 uint64_t bufsize_for(const nnfw_tensorinfo *ti)
 {
   static int elmsize[] = {
-      sizeof(float),   /* NNFW_TYPE_TENSOR_FLOAT32 */
-      sizeof(int),     /* NNFW_TYPE_TENSOR_INT32 */
-      sizeof(uint8_t), /* NNFW_TYPE_TENSOR_QUANT8_ASYMM */
-      sizeof(bool),    /* NNFW_TYPE_TENSOR_BOOL = 3 */
-      sizeof(uint8_t), /* NNFW_TYPE_TENSOR_UINT8 = 4 */
-      sizeof(int64_t), /* NNFW_TYPE_TENSOR_INT64 = 5 */
+    sizeof(float),   /* NNFW_TYPE_TENSOR_FLOAT32 */
+    sizeof(int),     /* NNFW_TYPE_TENSOR_INT32 */
+    sizeof(uint8_t), /* NNFW_TYPE_TENSOR_QUANT8_ASYMM */
+    sizeof(bool),    /* NNFW_TYPE_TENSOR_BOOL = 3 */
+    sizeof(uint8_t), /* NNFW_TYPE_TENSOR_UINT8 = 4 */
+    sizeof(int64_t), /* NNFW_TYPE_TENSOR_INT64 = 5 */
 
   };
   return elmsize[ti->dtype] * num_elems(ti);
