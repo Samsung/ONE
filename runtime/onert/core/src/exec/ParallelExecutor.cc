@@ -98,7 +98,10 @@ void ParallelExecutor::executeImpl()
 
   VERBOSE(ParallelExecutor) << "INITIAL JOBS : " << _ready_jobs.size() << std::endl;
 
-  _subject.notifySubgraphBegin(this);
+  auto profiling_subg_index = _tracing_ctx->getSubgraphIndex(&_graph);
+
+  _subject.notifySubgraphBegin(profiling_subg_index);
+
   while (true)
   {
     std::unique_lock<std::mutex> lock{_mu_jobs};
@@ -124,9 +127,11 @@ void ParallelExecutor::executeImpl()
     auto op_sequence_index = _job_to_op_seq[job_index];
     auto op_seq = &_lowered_graph->op_seqs().at(op_sequence_index);
     auto backend = _lowered_graph->getLowerInfo()->op_seq.at(op_sequence_index)->backend();
-    auto setup = [&, op_seq, backend]() { _subject.notifyJobBegin(this, op_seq, backend); };
+    auto setup = [&, op_seq, backend]() {
+      _subject.notifyJobBegin(this, profiling_subg_index, op_seq, backend);
+    };
     auto teardown = [&, job_index, op_seq, backend]() {
-      _subject.notifyJobEnd(this, op_seq, backend);
+      _subject.notifyJobEnd(this, profiling_subg_index, op_seq, backend);
       notify(job_index);
     };
 
@@ -144,7 +149,7 @@ void ParallelExecutor::executeImpl()
 
   // Wait for all the jobs done
   _scheduler->finish();
-  _subject.notifySubgraphEnd(this);
+  _subject.notifySubgraphEnd(profiling_subg_index);
 
   // Reset input info for the next execution
   _input_info = _initial_input_info;

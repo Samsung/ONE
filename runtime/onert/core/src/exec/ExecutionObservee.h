@@ -20,6 +20,7 @@
 #include <list>
 
 #include "exec/ExecutionObservers.h"
+#include "ir/Index.h"
 
 namespace onert
 {
@@ -39,11 +40,11 @@ public:
    * @param observer Observer to be added
    */
   void add(std::unique_ptr<IExecutionObserver> observer);
-  void notifySubgraphBegin(IExecutor *executor);
-  void notifySubgraphEnd(IExecutor *executor);
-  void notifyJobBegin(IExecutor *executor, const ir::OpSequence *op_seq,
+  void notifySubgraphBegin(ir::SubgraphIndex ind);
+  void notifySubgraphEnd(ir::SubgraphIndex ind);
+  void notifyJobBegin(IExecutor *executor, ir::SubgraphIndex index, const ir::OpSequence *op_seq,
                       const backend::Backend *backend);
-  void notifyJobEnd(IExecutor *executor, const ir::OpSequence *op_seq,
+  void notifyJobEnd(IExecutor *executor, ir::SubgraphIndex index, const ir::OpSequence *op_seq,
                     const backend::Backend *backend);
 
 private:

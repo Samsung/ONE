@@ -142,7 +142,9 @@ void DataflowExecutor::executeImpl()
   }
   assert(!_ready_jobs.empty()); // Cannot begin if there is no initial jobs
 
-  _subject.notifySubgraphBegin(this);
+  auto profiling_subg_index = _tracing_ctx->getSubgraphIndex(&_graph);
+
+  _subject.notifySubgraphBegin(profiling_subg_index);
 
   while (!_ready_jobs.empty())
   {
@@ -156,7 +158,7 @@ void DataflowExecutor::executeImpl()
     const backend::Backend *backend =
         _lowered_graph->getLowerInfo()->op_seq.at(op_seq_index)->backend();
 
-    _subject.notifyJobBegin(this, op_seq, backend);
+    _subject.notifyJobBegin(this, profiling_subg_index, op_seq, backend);
 
     job->fn_seq()->initRunning();
 
@@ -166,13 +168,13 @@ void DataflowExecutor::executeImpl()
 
     job->run();
 
-    _subject.notifyJobEnd(this, op_seq, backend);
+    _subject.notifyJobEnd(this, profiling_subg_index, op_seq, backend);
     notify(job_index);
     _finished_jobs[job_index] = std::move(job);
   }
   assert(noWaitingJobs());
 
-  _subject.notifySubgraphEnd(this);
+  _subject.notifySubgraphEnd(profiling_subg_index);
 
   // Reset input info for the next execution
   _input_info = _initial_input_info;

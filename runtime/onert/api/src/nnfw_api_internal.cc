@@ -238,6 +238,8 @@ NNFW_STATUS nnfw_session::load_model_from_modelfile(const char *model_file_path)
     return NNFW_STATUS_ERROR;
   }
 
+  _tracing_ctx = std::make_unique<onert::util::TracingCtx>(_subgraphs.get());
+
   _compiler = std::make_unique<onert::compiler::Compiler>(_subgraphs, _tracing_ctx.get());
 
   _state = State::MODEL_LOADED;
