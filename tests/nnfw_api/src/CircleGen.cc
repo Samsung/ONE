@@ -194,6 +194,13 @@ uint32_t CircleGen::addOperatorEqual(const OperatorParams &params)
                                 circle::BuiltinOptions_EqualOptions, options);
 }
 
+uint32_t CircleGen::addOperatorExpandDims(const OperatorParams &params)
+{
+  auto options = circle::CreateEqualOptions(_fbb).Union();
+  return addOperatorWithOptions(params, circle::BuiltinOperator_EXPAND_DIMS,
+                                circle::BuiltinOptions_ExpandDimsOptions, options);
+}
+
 uint32_t
 CircleGen::addOperatorFullyConnected(const OperatorParams &params,
                                      circle::FullyConnectedOptionsWeightsFormat weights_format)

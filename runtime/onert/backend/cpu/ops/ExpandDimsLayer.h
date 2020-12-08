@@ -36,14 +36,12 @@ public:
   ExpandDimsLayer();
 
 public:
-  void configure(const IPortableTensor *input, const IPortableTensor *axis,
-                 IPortableTensor *output);
+  void configure(const IPortableTensor *input, IPortableTensor *output);
 
   void run() override;
 
 private:
   const IPortableTensor *_input;
-  const IPortableTensor *_axis;
   IPortableTensor *_output;
 };
 

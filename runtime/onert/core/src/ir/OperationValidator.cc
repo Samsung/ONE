@@ -322,7 +322,7 @@ void OperationValidator::visit(const operation::ExpandDims &node)
   const auto axis_index{node.getInputs().at(operation::ExpandDims::Input::AXIS)};
 
   OP_REQUIRES(isSameType(output_index, input_index));
-  OP_REQUIRES(isValidType(axis_index, DataType::INT32));
+  OP_REQUIRES(isValidType(axis_index, {DataType::INT32, DataType::INT64}));
 }
 
 void OperationValidator::visit(const operation::Fill &node)

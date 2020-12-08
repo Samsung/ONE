@@ -388,10 +388,16 @@ void DynamicShapeInferer::visit(const ir::operation::ExpandDims &op)
 
   auto axis_ind = op.getInputs().at(ir::operation::ExpandDims::AXIS);
   auto axis = _tensor_registry->getITensor(axis_ind);
-  auto axis_buf = reinterpret_cast<const int32_t *>(axis->buffer());
-  assert(axis_buf);
+  auto axis_type = axis->data_type();
+  assert(axis_type == ir::DataType::INT32 || axis_type == ir::DataType::INT64);
 
-  auto output_shape = shape_inference::inferExpandDimsShape(input_shape, axis_buf[0]);
+  assert(axis->buffer());
+  int32_t axis_value =
+      (axis_type == ir::DataType::INT32)
+          ? reinterpret_cast<const int32_t *>(axis->buffer())[0]
+          : static_cast<int32_t>(reinterpret_cast<const int64_t *>(axis->buffer())[0]);
+
+  auto output_shape = shape_inference::inferExpandDimsShape(input_shape, axis_value);
 
   output->applyShape(output_shape);
   assert(output->buffer() != nullptr);

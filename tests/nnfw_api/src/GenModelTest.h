@@ -250,6 +250,11 @@ public:
    */
   void expectFailCompile() { _expected_fail_compile = true; }
 
+  /**
+   * @brief Expect failure while execution
+   */
+  void expectFailExecution() { _expected_fail_execution = true; }
+
 private:
   CircleBuffer _cbuf;
   std::vector<TestCaseData> _test_cases;
@@ -257,6 +262,7 @@ private:
   std::unordered_map<uint32_t, size_t> _output_sizes;
   bool _expected_fail_model_load{false};
   bool _expected_fail_compile{false};
+  bool _expected_fail_execution{false};
 };
 
 /**
