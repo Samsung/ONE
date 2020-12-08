@@ -49,7 +49,7 @@ std::unique_ptr<exec::IFunction>
 AclActivationBuilder<T_Tensor, T_ActivationLayer, T_ExecFunction>::generateReLU(T_Tensor *ifm_alloc)
 {
   const ::arm_compute::ActivationLayerInfo act_info{
-      ::arm_compute::ActivationLayerInfo::ActivationFunction::RELU};
+    ::arm_compute::ActivationLayerInfo::ActivationFunction::RELU};
 
   auto fn = std::make_unique<T_ActivationLayer>();
 
@@ -61,10 +61,10 @@ AclActivationBuilder<T_Tensor, T_ActivationLayer, T_ExecFunction>::generateReLU(
 template <typename T_Tensor, typename T_ActivationLayer, typename T_ExecFunction>
 std::unique_ptr<exec::IFunction>
 AclActivationBuilder<T_Tensor, T_ActivationLayer, T_ExecFunction>::generateReLU1(
-    T_Tensor *ifm_alloc)
+  T_Tensor *ifm_alloc)
 {
   const ::arm_compute::ActivationLayerInfo act_info{
-      ::arm_compute::ActivationLayerInfo::ActivationFunction::LU_BOUNDED_RELU, 1.0f, -1.0f};
+    ::arm_compute::ActivationLayerInfo::ActivationFunction::LU_BOUNDED_RELU, 1.0f, -1.0f};
 
   auto fn = std::make_unique<T_ActivationLayer>();
 
@@ -76,10 +76,10 @@ AclActivationBuilder<T_Tensor, T_ActivationLayer, T_ExecFunction>::generateReLU1
 template <typename T_Tensor, typename T_ActivationLayer, typename T_ExecFunction>
 std::unique_ptr<exec::IFunction>
 AclActivationBuilder<T_Tensor, T_ActivationLayer, T_ExecFunction>::generateReLU6(
-    T_Tensor *ifm_alloc)
+  T_Tensor *ifm_alloc)
 {
   const ::arm_compute::ActivationLayerInfo act_info{
-      ::arm_compute::ActivationLayerInfo::ActivationFunction::LU_BOUNDED_RELU, 6.0f, 0.0f};
+    ::arm_compute::ActivationLayerInfo::ActivationFunction::LU_BOUNDED_RELU, 6.0f, 0.0f};
 
   auto fn = std::make_unique<T_ActivationLayer>();
 

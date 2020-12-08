@@ -28,7 +28,7 @@ namespace operand
 {
 
 NETensor::NETensor(const arm_compute::TensorInfo &info, size_t rank, size_t num_uses)
-    : _ne_tensor(std::make_shared<arm_compute::Tensor>()), _rank{rank}, _num_uses{num_uses}
+  : _ne_tensor(std::make_shared<arm_compute::Tensor>()), _rank{rank}, _num_uses{num_uses}
 {
   allocator()->init(info);
 }

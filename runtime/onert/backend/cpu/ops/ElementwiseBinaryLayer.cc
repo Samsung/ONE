@@ -40,15 +40,15 @@ void logicalAndGeneric(const IPortableTensor *lhs, const IPortableTensor *rhs,
   if (!HaveSameShapes(lhs, rhs))
   {
     nnfw::cker::LogicalAndBroadcast<T>(
-        getTensorShape(lhs), reinterpret_cast<const T *>(lhs->buffer()), getTensorShape(rhs),
-        reinterpret_cast<const T *>(rhs->buffer()), getTensorShape(output),
-        reinterpret_cast<T *>(output->buffer()));
+      getTensorShape(lhs), reinterpret_cast<const T *>(lhs->buffer()), getTensorShape(rhs),
+      reinterpret_cast<const T *>(rhs->buffer()), getTensorShape(output),
+      reinterpret_cast<T *>(output->buffer()));
   }
   else
   {
     nnfw::cker::LogicalAndElementwise<T>(
-        getTensorShape(lhs), reinterpret_cast<const T *>(lhs->buffer()),
-        reinterpret_cast<const T *>(rhs->buffer()), reinterpret_cast<T *>(output->buffer()));
+      getTensorShape(lhs), reinterpret_cast<const T *>(lhs->buffer()),
+      reinterpret_cast<const T *>(rhs->buffer()), reinterpret_cast<T *>(output->buffer()));
   }
 }
 
@@ -59,15 +59,15 @@ void logicalOrGeneric(const IPortableTensor *lhs, const IPortableTensor *rhs,
   if (!HaveSameShapes(lhs, rhs))
   {
     nnfw::cker::LogicalOrBroadcast<T>(
-        getTensorShape(lhs), reinterpret_cast<const T *>(lhs->buffer()), getTensorShape(rhs),
-        reinterpret_cast<const T *>(rhs->buffer()), getTensorShape(output),
-        reinterpret_cast<T *>(output->buffer()));
+      getTensorShape(lhs), reinterpret_cast<const T *>(lhs->buffer()), getTensorShape(rhs),
+      reinterpret_cast<const T *>(rhs->buffer()), getTensorShape(output),
+      reinterpret_cast<T *>(output->buffer()));
   }
   else
   {
     nnfw::cker::LogicalOrElementwise<T>(
-        getTensorShape(lhs), reinterpret_cast<const T *>(lhs->buffer()),
-        reinterpret_cast<const T *>(rhs->buffer()), reinterpret_cast<T *>(output->buffer()));
+      getTensorShape(lhs), reinterpret_cast<const T *>(lhs->buffer()),
+      reinterpret_cast<const T *>(rhs->buffer()), reinterpret_cast<T *>(output->buffer()));
   }
 }
 

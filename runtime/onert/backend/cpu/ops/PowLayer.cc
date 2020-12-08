@@ -39,9 +39,9 @@ void PowLayer::powFloat32()
   if (!HaveSameShapes(_lhs, _rhs))
   {
     nnfw::cker::BroadcastBinaryArithmeticOp<nnfw::cker::BinaryArithmeticOpType::POW>(
-        op_params, getTensorShape(_lhs), reinterpret_cast<const float *>(_lhs->buffer()),
-        getTensorShape(_rhs), reinterpret_cast<const float *>(_rhs->buffer()),
-        getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()));
+      op_params, getTensorShape(_lhs), reinterpret_cast<const float *>(_lhs->buffer()),
+      getTensorShape(_rhs), reinterpret_cast<const float *>(_rhs->buffer()),
+      getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()));
     return;
   }
 

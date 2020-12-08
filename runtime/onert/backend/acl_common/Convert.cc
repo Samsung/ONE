@@ -136,8 +136,8 @@ namespace acl_common
                                        bool apply_dim_correction)
 {
   ::arm_compute::TensorInfo info(
-      asTensorShape(shape, frontend_layout, backend_layout, apply_dim_correction), 1,
-      asDataType(typeInfo.type()), asQuantizationInfo(typeInfo.scale(), typeInfo.offset()));
+    asTensorShape(shape, frontend_layout, backend_layout, apply_dim_correction), 1,
+    asDataType(typeInfo.type()), asQuantizationInfo(typeInfo.scale(), typeInfo.offset()));
   info.set_data_layout(asDataLayout(backend_layout));
   return info;
 }
@@ -162,24 +162,24 @@ namespace acl_common
       return ::arm_compute::ActivationLayerInfo{};
     case ir::Activation::RELU:
       return ::arm_compute::ActivationLayerInfo{
-          ::arm_compute::ActivationLayerInfo::ActivationFunction::RELU};
+        ::arm_compute::ActivationLayerInfo::ActivationFunction::RELU};
     case ir::Activation::RELU1:
       return ::arm_compute::ActivationLayerInfo{
-          ::arm_compute::ActivationLayerInfo::ActivationFunction::LU_BOUNDED_RELU, 1.0f, -1.0f};
+        ::arm_compute::ActivationLayerInfo::ActivationFunction::LU_BOUNDED_RELU, 1.0f, -1.0f};
     case ir::Activation::RELU6:
       return ::arm_compute::ActivationLayerInfo{
-          ::arm_compute::ActivationLayerInfo::ActivationFunction::LU_BOUNDED_RELU, 6.0f, 0.0f};
+        ::arm_compute::ActivationLayerInfo::ActivationFunction::LU_BOUNDED_RELU, 6.0f, 0.0f};
     // Cases for activation of LSTM.
     case ir::Activation::TANH:
       return ::arm_compute::ActivationLayerInfo{
-          ::arm_compute::ActivationLayerInfo::ActivationFunction::TANH, 1.0f, 1.0f};
+        ::arm_compute::ActivationLayerInfo::ActivationFunction::TANH, 1.0f, 1.0f};
     case ir::Activation::SIGMOID:
       // NOTE The sigmoid function is a special case of the Logistic function when L=1, k=1, x0=0.
       // TODO In ACL and nnapi sepc, currently, Logistic's L always is 1, k always is 1, x0 always
       // 0(always sigmoid) regardless of values of the parameter.
       //      If ACL support non-sigmoid logistic, should fix param values.
       return ::arm_compute::ActivationLayerInfo{
-          ::arm_compute::ActivationLayerInfo::ActivationFunction::LOGISTIC, 0.0f, 0.0f};
+        ::arm_compute::ActivationLayerInfo::ActivationFunction::LOGISTIC, 0.0f, 0.0f};
     default:
       throw std::runtime_error{"Not supported internal activation, yet"};
       break;
@@ -198,32 +198,32 @@ asActivationLayerInfo(const ir::operation::ElementwiseActivation::Type op_type, 
         if (alpha == ir::operation::ElementwiseActivation::infinity)
         {
           return ::arm_compute::ActivationLayerInfo{
-              ::arm_compute::ActivationLayerInfo::ActivationFunction::RELU};
+            ::arm_compute::ActivationLayerInfo::ActivationFunction::RELU};
         }
         else
         {
           return ::arm_compute::ActivationLayerInfo{
-              ::arm_compute::ActivationLayerInfo::ActivationFunction::BOUNDED_RELU, alpha};
+            ::arm_compute::ActivationLayerInfo::ActivationFunction::BOUNDED_RELU, alpha};
         }
       }
       else
       {
         return ::arm_compute::ActivationLayerInfo{
-            ::arm_compute::ActivationLayerInfo::ActivationFunction::LU_BOUNDED_RELU, alpha, beta};
+          ::arm_compute::ActivationLayerInfo::ActivationFunction::LU_BOUNDED_RELU, alpha, beta};
       }
     case ir::operation::ElementwiseActivation::Type::TANH:
       return ::arm_compute::ActivationLayerInfo{
-          ::arm_compute::ActivationLayerInfo::ActivationFunction::TANH, alpha, beta};
+        ::arm_compute::ActivationLayerInfo::ActivationFunction::TANH, alpha, beta};
     case ir::operation::ElementwiseActivation::Type::LOGISTIC:
       // NOTE The sigmoid function is a special case of the Logistic function when L=1, k=1, x0=0.
       // TODO In ACL and nnapi sepc, currently, Logistic's L always is 1, k always is 1, x0 always
       // 0(always sigmoid) regardless of values of the parameter.
       //      If ACL support non-sigmoid logistic, should fix param values.
       return ::arm_compute::ActivationLayerInfo{
-          ::arm_compute::ActivationLayerInfo::ActivationFunction::LOGISTIC};
+        ::arm_compute::ActivationLayerInfo::ActivationFunction::LOGISTIC};
     case ir::operation::ElementwiseActivation::Type::LEAKY_RELU:
       return ::arm_compute::ActivationLayerInfo{
-          ::arm_compute::ActivationLayerInfo::ActivationFunction::LEAKY_RELU, alpha};
+        ::arm_compute::ActivationLayerInfo::ActivationFunction::LEAKY_RELU, alpha};
     default:
       throw std::runtime_error{"Not supported internal elementwise activation, yet"};
       break;

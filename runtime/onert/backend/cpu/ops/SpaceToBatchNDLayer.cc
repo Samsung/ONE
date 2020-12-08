@@ -29,7 +29,7 @@ namespace cpu
 namespace ops
 {
 SpaceToBatchNDLayer::SpaceToBatchNDLayer()
-    : _input(nullptr), _block_shape(nullptr), _padding(nullptr), _output(nullptr)
+  : _input(nullptr), _block_shape(nullptr), _padding(nullptr), _output(nullptr)
 {
   // DO NOTHING
 }
@@ -48,13 +48,13 @@ void SpaceToBatchNDLayer::checkDimension()
   for (int dim = 0; dim < kSpatialDimensionNum; ++dim)
   {
     int final_dim_size =
-        (_input->dimension(dim + 1) + reinterpret_cast<int32_t *>(_padding->buffer())[dim * 2] +
-         reinterpret_cast<int32_t *>(_padding->buffer())[dim * 2 + 1]);
+      (_input->dimension(dim + 1) + reinterpret_cast<int32_t *>(_padding->buffer())[dim * 2] +
+       reinterpret_cast<int32_t *>(_padding->buffer())[dim * 2 + 1]);
 
     if (final_dim_size % reinterpret_cast<int32_t *>(_block_shape->buffer())[dim] != 0)
     {
       throw std::runtime_error(
-          "SpaceToBatchND : padded input's dimension is not a multiple of block size\n");
+        "SpaceToBatchND : padded input's dimension is not a multiple of block size\n");
     }
 
     if ((int32_t)_output->dimension(dim + 1) !=
@@ -76,10 +76,10 @@ template <typename T> void SpaceToBatchNDLayer::spaceToBatchND()
   params.output_offset = getPad<T>();
 
   nnfw::cker::SpaceToBatchND(
-      params, getTensorShape(_input), reinterpret_cast<const T *>(_input->buffer()),
-      getTensorShape(_block_shape), reinterpret_cast<const int32_t *>(_block_shape->buffer()),
-      getTensorShape(_padding), reinterpret_cast<const int32_t *>(_padding->buffer()),
-      getTensorShape(_output), reinterpret_cast<T *>(_output->buffer()));
+    params, getTensorShape(_input), reinterpret_cast<const T *>(_input->buffer()),
+    getTensorShape(_block_shape), reinterpret_cast<const int32_t *>(_block_shape->buffer()),
+    getTensorShape(_padding), reinterpret_cast<const int32_t *>(_padding->buffer()),
+    getTensorShape(_output), reinterpret_cast<T *>(_output->buffer()));
 }
 
 void SpaceToBatchNDLayer::configure(const IPortableTensor *input,

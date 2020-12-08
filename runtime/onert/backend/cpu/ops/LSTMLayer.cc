@@ -89,14 +89,14 @@ void LSTMLayer::LSTMFloat()
   float *output_state_buf = getOptionalOutputBuffer<float>(_output_state, &_output_state_vec,
                                                            _output_state_in->total_size());
   float *cell_state_buf =
-      getOptionalOutputBuffer<float>(_cell_state, &_cell_state_vec, _cell_state_in->total_size());
+    getOptionalOutputBuffer<float>(_cell_state, &_cell_state_vec, _cell_state_in->total_size());
 
   initializeStateBuffer(_output_state_in, output_state_buf, _has_output_state_data);
   initializeStateBuffer(_cell_state_in, cell_state_buf, _has_cell_state_data);
 
   // Index the scratch buffers pointers to the global scratch buffer.
   float *scratch_buffer_buf = getOptionalOutputBuffer<float>(
-      _scratch_buffer, &_scratch_vec, n_batch * n_cell * (use_cifg ? 3 : 4) * sizeof(float));
+    _scratch_buffer, &_scratch_vec, n_batch * n_cell * (use_cifg ? 3 : 4) * sizeof(float));
   float *input_gate_scratch = nullptr;
   float *cell_gate_scratch = nullptr;
   float *forget_gate_scratch = nullptr;
@@ -158,9 +158,65 @@ void LSTMLayer::LSTMFloat()
         aux_input_ptr = reinterpret_cast<float *>(_aux_input->buffer()) + t_rel * input_step;
       }
       float *output_ptr =
-          reinterpret_cast<float *>(_output->buffer()) + t_rel * output_step + _output_offset;
+        reinterpret_cast<float *>(_output->buffer()) + t_rel * output_step + _output_offset;
 
       LstmStepFloat(
+        input_ptr, input_to_input_weights_ptr,
+        reinterpret_cast<float *>(_input_to_forget_weights->buffer()),
+        reinterpret_cast<float *>(_input_to_cell_weights->buffer()),
+        reinterpret_cast<float *>(_input_to_output_weights->buffer()), aux_input_ptr,
+        /*aux_input_to_input_weights=*/nullptr,
+        /*aux_input_to_forget_weights=*/nullptr,
+        /*aux_input_to_cell_weights=*/nullptr,
+        /*aux_input_to_output_weights=*/nullptr, recurrent_to_input_weights_ptr,
+        reinterpret_cast<float *>(_recurrent_to_forget_weights->buffer()),
+        reinterpret_cast<float *>(_recurrent_to_cell_weights->buffer()),
+        reinterpret_cast<float *>(_recurrent_to_output_weights->buffer()),
+        cell_to_input_weights_ptr, cell_to_forget_weights_ptr, cell_to_output_weights_ptr,
+        input_layer_norm_coefficients_ptr, forget_layer_norm_coefficients_ptr,
+        cell_layer_norm_coefficients_ptr, output_layer_norm_coefficients_ptr, input_gate_bias_ptr,
+        reinterpret_cast<float *>(_forget_gate_bias->buffer()),
+        reinterpret_cast<float *>(_cell_gate_bias->buffer()),
+        reinterpret_cast<float *>(_output_gate_bias->buffer()), projection_weights_ptr,
+        projection_bias_ptr, &lstm_params, n_batch, n_cell, n_input, aux_input_size, n_output,
+        output_batch_leading_dim, output_state_buf, cell_state_buf, input_gate_scratch,
+        forget_gate_scratch, cell_gate_scratch, output_gate_scratch, output_ptr);
+    }
+  }
+  else
+  {
+    for (int b = 0; b < n_batch; b++)
+    {
+      const int input_step = n_input;
+      const int output_step = output_batch_leading_dim;
+      for (int t = 0; t < max_time; t++)
+      {
+        // If this is the forward_sequence, step forward, otherwise step
+        // backwards.
+        const int t_rel = _forward_sequence ? t : max_time - t - 1;
+        const int time_offset = b * max_time + t_rel;
+        const float *input_ptr =
+          reinterpret_cast<float *>(_input->buffer()) + time_offset * input_step;
+        const float *aux_input_ptr = nullptr;
+        if (_aux_input)
+        {
+          aux_input_ptr =
+            reinterpret_cast<float *>(_aux_input->buffer()) + time_offset * input_step;
+        }
+        float *output_ptr =
+          reinterpret_cast<float *>(_output->buffer()) + time_offset * output_step + _output_offset;
+
+        // Offset the {output,cell}_state pointers to the right batch.
+        float *output_state_ptr = output_state_buf + b * output_batch_leading_dim;
+        float *cell_state_ptr = cell_state_buf + b * n_cell;
+        // Offset the scratch pointers to the right batch.
+        float *input_gate_scratch_ptr =
+          input_gate_scratch ? input_gate_scratch + b * n_cell : nullptr;
+        float *forget_gate_scratch_ptr = forget_gate_scratch + b * n_cell;
+        float *cell_gate_scratch_ptr = cell_gate_scratch + b * n_cell;
+        float *output_gate_scratch_ptr = output_gate_scratch + b * n_cell;
+
+        LstmStepFloat(
           input_ptr, input_to_input_weights_ptr,
           reinterpret_cast<float *>(_input_to_forget_weights->buffer()),
           reinterpret_cast<float *>(_input_to_cell_weights->buffer()),
@@ -178,95 +234,36 @@ void LSTMLayer::LSTMFloat()
           reinterpret_cast<float *>(_forget_gate_bias->buffer()),
           reinterpret_cast<float *>(_cell_gate_bias->buffer()),
           reinterpret_cast<float *>(_output_gate_bias->buffer()), projection_weights_ptr,
-          projection_bias_ptr, &lstm_params, n_batch, n_cell, n_input, aux_input_size, n_output,
-          output_batch_leading_dim, output_state_buf, cell_state_buf, input_gate_scratch,
-          forget_gate_scratch, cell_gate_scratch, output_gate_scratch, output_ptr);
-    }
-  }
-  else
-  {
-    for (int b = 0; b < n_batch; b++)
-    {
-      const int input_step = n_input;
-      const int output_step = output_batch_leading_dim;
-      for (int t = 0; t < max_time; t++)
-      {
-        // If this is the forward_sequence, step forward, otherwise step
-        // backwards.
-        const int t_rel = _forward_sequence ? t : max_time - t - 1;
-        const int time_offset = b * max_time + t_rel;
-        const float *input_ptr =
-            reinterpret_cast<float *>(_input->buffer()) + time_offset * input_step;
-        const float *aux_input_ptr = nullptr;
-        if (_aux_input)
-        {
-          aux_input_ptr =
-              reinterpret_cast<float *>(_aux_input->buffer()) + time_offset * input_step;
-        }
-        float *output_ptr = reinterpret_cast<float *>(_output->buffer()) +
-                            time_offset * output_step + _output_offset;
-
-        // Offset the {output,cell}_state pointers to the right batch.
-        float *output_state_ptr = output_state_buf + b * output_batch_leading_dim;
-        float *cell_state_ptr = cell_state_buf + b * n_cell;
-        // Offset the scratch pointers to the right batch.
-        float *input_gate_scratch_ptr =
-            input_gate_scratch ? input_gate_scratch + b * n_cell : nullptr;
-        float *forget_gate_scratch_ptr = forget_gate_scratch + b * n_cell;
-        float *cell_gate_scratch_ptr = cell_gate_scratch + b * n_cell;
-        float *output_gate_scratch_ptr = output_gate_scratch + b * n_cell;
-
-        LstmStepFloat(
-            input_ptr, input_to_input_weights_ptr,
-            reinterpret_cast<float *>(_input_to_forget_weights->buffer()),
-            reinterpret_cast<float *>(_input_to_cell_weights->buffer()),
-            reinterpret_cast<float *>(_input_to_output_weights->buffer()), aux_input_ptr,
-            /*aux_input_to_input_weights=*/nullptr,
-            /*aux_input_to_forget_weights=*/nullptr,
-            /*aux_input_to_cell_weights=*/nullptr,
-            /*aux_input_to_output_weights=*/nullptr, recurrent_to_input_weights_ptr,
-            reinterpret_cast<float *>(_recurrent_to_forget_weights->buffer()),
-            reinterpret_cast<float *>(_recurrent_to_cell_weights->buffer()),
-            reinterpret_cast<float *>(_recurrent_to_output_weights->buffer()),
-            cell_to_input_weights_ptr, cell_to_forget_weights_ptr, cell_to_output_weights_ptr,
-            input_layer_norm_coefficients_ptr, forget_layer_norm_coefficients_ptr,
-            cell_layer_norm_coefficients_ptr, output_layer_norm_coefficients_ptr,
-            input_gate_bias_ptr, reinterpret_cast<float *>(_forget_gate_bias->buffer()),
-            reinterpret_cast<float *>(_cell_gate_bias->buffer()),
-            reinterpret_cast<float *>(_output_gate_bias->buffer()), projection_weights_ptr,
-            projection_bias_ptr, &lstm_params, /*n_batch=*/1, n_cell, n_input, aux_input_size,
-            n_output, output_batch_leading_dim, output_state_ptr, cell_state_ptr,
-            input_gate_scratch_ptr, forget_gate_scratch_ptr, cell_gate_scratch_ptr,
-            output_gate_scratch_ptr, output_ptr);
+          projection_bias_ptr, &lstm_params, /*n_batch=*/1, n_cell, n_input, aux_input_size,
+          n_output, output_batch_leading_dim, output_state_ptr, cell_state_ptr,
+          input_gate_scratch_ptr, forget_gate_scratch_ptr, cell_gate_scratch_ptr,
+          output_gate_scratch_ptr, output_ptr);
       }
     }
   }
 }
 
 void LSTMLayer::configure(
-    const IPortableTensor *input, const IPortableTensor *input_to_input_weights,
-    const IPortableTensor *input_to_forget_weights, const IPortableTensor *input_to_cell_weights,
-    const IPortableTensor *input_to_output_weights,
-    const IPortableTensor *recurrent_to_input_weights,
-    const IPortableTensor *recurrent_to_forget_weights,
-    const IPortableTensor *recurrent_to_cell_weights,
-    const IPortableTensor *recurrent_to_output_weights,
-    const IPortableTensor *cell_to_input_weights, const IPortableTensor *cell_to_forget_weights,
-    const IPortableTensor *cell_to_output_weights, const IPortableTensor *input_layer_norm_weights,
-    const IPortableTensor *forget_layer_norm_weights,
-    const IPortableTensor *cell_layer_norm_weights,
-    const IPortableTensor *output_layer_norm_weights, const IPortableTensor *aux_input,
-    const IPortableTensor *aux_input_to_input_weights,
-    const IPortableTensor *aux_input_to_forget_weights,
-    const IPortableTensor *aux_input_to_cell_weights,
-    const IPortableTensor *aux_input_to_output_weights, const IPortableTensor *input_gate_bias,
-    const IPortableTensor *forget_gate_bias, const IPortableTensor *cell_gate_bias,
-    const IPortableTensor *output_gate_bias, const IPortableTensor *projection_weights,
-    const IPortableTensor *projection_bias, const IPortableTensor *output_state_in,
-    const IPortableTensor *cell_state_in, const ir::operation::LSTM::Param &params,
-    bool forward_sequence, bool time_major, int output_offset, IPortableTensor *scratch_buffer,
-    IPortableTensor *output_state, IPortableTensor *cell_state, IPortableTensor *output,
-    bool has_output_state_data, bool has_cell_state_data)
+  const IPortableTensor *input, const IPortableTensor *input_to_input_weights,
+  const IPortableTensor *input_to_forget_weights, const IPortableTensor *input_to_cell_weights,
+  const IPortableTensor *input_to_output_weights, const IPortableTensor *recurrent_to_input_weights,
+  const IPortableTensor *recurrent_to_forget_weights,
+  const IPortableTensor *recurrent_to_cell_weights,
+  const IPortableTensor *recurrent_to_output_weights, const IPortableTensor *cell_to_input_weights,
+  const IPortableTensor *cell_to_forget_weights, const IPortableTensor *cell_to_output_weights,
+  const IPortableTensor *input_layer_norm_weights, const IPortableTensor *forget_layer_norm_weights,
+  const IPortableTensor *cell_layer_norm_weights, const IPortableTensor *output_layer_norm_weights,
+  const IPortableTensor *aux_input, const IPortableTensor *aux_input_to_input_weights,
+  const IPortableTensor *aux_input_to_forget_weights,
+  const IPortableTensor *aux_input_to_cell_weights,
+  const IPortableTensor *aux_input_to_output_weights, const IPortableTensor *input_gate_bias,
+  const IPortableTensor *forget_gate_bias, const IPortableTensor *cell_gate_bias,
+  const IPortableTensor *output_gate_bias, const IPortableTensor *projection_weights,
+  const IPortableTensor *projection_bias, const IPortableTensor *output_state_in,
+  const IPortableTensor *cell_state_in, const ir::operation::LSTM::Param &params,
+  bool forward_sequence, bool time_major, int output_offset, IPortableTensor *scratch_buffer,
+  IPortableTensor *output_state, IPortableTensor *cell_state, IPortableTensor *output,
+  bool has_output_state_data, bool has_cell_state_data)
 {
   _input = input;
   _input_to_input_weights = input_to_input_weights;

@@ -45,8 +45,8 @@ void L2NormLayer::run()
   {
     case OperandType::FLOAT32:
       nnfw::cker::L2NormalizeFloat32(
-          getTensorShape(_input), reinterpret_cast<const float *>(_input->buffer()),
-          getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()));
+        getTensorShape(_input), reinterpret_cast<const float *>(_input->buffer()),
+        getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()));
       break;
 
     case OperandType::QUANT_UINT8_ASYMM:
@@ -55,8 +55,8 @@ void L2NormLayer::run()
       assert(_input->data_offset() == 128);
       params.input_zero_point = _input->data_offset();
       nnfw::cker::L2NormalizeQuant8(
-          params, getTensorShape(_input), reinterpret_cast<const uint8_t *>(_input->buffer()),
-          getTensorShape(_output), reinterpret_cast<uint8_t *>(_output->buffer()));
+        params, getTensorShape(_input), reinterpret_cast<const uint8_t *>(_input->buffer()),
+        getTensorShape(_output), reinterpret_cast<uint8_t *>(_output->buffer()));
     }
     break;
 

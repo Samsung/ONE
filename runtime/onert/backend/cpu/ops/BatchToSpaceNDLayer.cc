@@ -28,7 +28,7 @@ namespace ops
 {
 
 BatchToSpaceNDLayer::BatchToSpaceNDLayer()
-    : _input(nullptr), _output(nullptr), _block_shape(nullptr), _crops(nullptr)
+  : _input(nullptr), _output(nullptr), _block_shape(nullptr), _crops(nullptr)
 {
   // DO NOTHING
 }
@@ -47,9 +47,9 @@ template <typename T> void BatchToSpaceNDLayer::batchToSpaceNDGeneric()
     _crops_buffer = reinterpret_cast<const int32_t *>(_crops->buffer());
   }
   nnfw::cker::BatchToSpaceND<T>(
-      getTensorShape(_input), reinterpret_cast<const T *>(_input->buffer()),
-      reinterpret_cast<const int32_t *>(_block_shape->buffer()), _crops_buffer,
-      getTensorShape(_output), reinterpret_cast<T *>(_output->buffer()));
+    getTensorShape(_input), reinterpret_cast<const T *>(_input->buffer()),
+    reinterpret_cast<const int32_t *>(_block_shape->buffer()), _crops_buffer,
+    getTensorShape(_output), reinterpret_cast<T *>(_output->buffer()));
 }
 
 void BatchToSpaceNDLayer::configure(const IPortableTensor *input, IPortableTensor *output,

@@ -30,7 +30,7 @@ namespace acl_cl
 
 ConstantInitializer::ConstantInitializer(const ir::Operands &operands,
                                          const std::shared_ptr<ITensorRegistry> &tensor_reg)
-    : acl_common::AclConstantInitializer{operands, tensor_reg}
+  : acl_common::AclConstantInitializer{operands, tensor_reg}
 {
   // DO NOTHING
 }
@@ -92,7 +92,7 @@ void ConstantInitializer::visit(const ir::operation::SpaceToBatchND &node)
           {
             const int32_t value = base[i * 2 + j];
             int32_t *into = reinterpret_cast<int32_t *>(
-                tensor.buffer() + tensor.calcOffset({shape.dim(0) - i - 1, j}));
+              tensor.buffer() + tensor.calcOffset({shape.dim(0) - i - 1, j}));
             *into = value;
           }
         }
@@ -131,7 +131,7 @@ void ConstantInitializer::visit(const ir::operation::Reverse &node)
       }
 
       auto axis =
-          acl_common::ToARMComputeAxis(ifm_rank, axis_tmp, frontend_layout, backend_layout).value();
+        acl_common::ToARMComputeAxis(ifm_rank, axis_tmp, frontend_layout, backend_layout).value();
 
       obj.access([&](ITensor &tensor) {
         int32_t *into = reinterpret_cast<int32_t *>(tensor.buffer());

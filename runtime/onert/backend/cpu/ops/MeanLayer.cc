@@ -39,8 +39,8 @@ void MeanLayer::MeanFloat32()
   const auto inputShape = getTensorShape(_input);
   const auto axisVec = getReducerAxes(_axes);
   bool axis_is_1_and_2 =
-      _keep_dims && inputShape.DimensionsCount() == 4 && axisVec.size() == 2 &&
-      ((axisVec[0] == 1 && axisVec[1] == 2) || (axisVec[0] == 2 && axisVec[1] == 1));
+    _keep_dims && inputShape.DimensionsCount() == 4 && axisVec.size() == 2 &&
+    ((axisVec[0] == 1 && axisVec[1] == 2) || (axisVec[0] == 2 && axisVec[1] == 1));
 
   if (axis_is_1_and_2)
   {

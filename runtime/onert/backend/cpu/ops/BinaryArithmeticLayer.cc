@@ -40,7 +40,7 @@ template <nnfw::cker::BinaryArithmeticOpType arithmetic_type, typename T> struct
 
   Eval(const IPortableTensor *lhs, const IPortableTensor *rhs, IPortableTensor *output,
        nnfw::cker::BinaryArithmeticOpParam op_params)
-      : _op_params(std::move(op_params)), _need_broadcast(false)
+    : _op_params(std::move(op_params)), _need_broadcast(false)
   {
     if (!output->is_dynamic())
       updateCache(lhs, rhs, output);
@@ -69,12 +69,12 @@ template <nnfw::cker::BinaryArithmeticOpType arithmetic_type, typename T> struct
     if (_need_broadcast)
     {
       nnfw::cker::BroadcastBinaryArithmeticOp<arithmetic_type>(
-          _op_params, _lhs_shape, lhs_buffer, _rhs_shape, rhs_buffer, _output_shape, output_buffer);
+        _op_params, _lhs_shape, lhs_buffer, _rhs_shape, rhs_buffer, _output_shape, output_buffer);
     }
     else
     {
       nnfw::cker::BinaryArithmeticOp<arithmetic_type>(
-          _op_params, _lhs_shape, lhs_buffer, _rhs_shape, rhs_buffer, _output_shape, output_buffer);
+        _op_params, _lhs_shape, lhs_buffer, _rhs_shape, rhs_buffer, _output_shape, output_buffer);
     }
   }
 };
@@ -136,7 +136,7 @@ void setAddOrSubQuant8Params(const IPortableTensor *lhs, const IPortableTensor *
   const double real_rhs_scale = rhs->data_scale() / norm_max_scale;
   // output scale is used to normalize final result, so we invert the scale here
   const double real_output_scale =
-      norm_max_scale / (output->data_scale() * (1 << op_params.left_shift));
+    norm_max_scale / (output->data_scale() * (1 << op_params.left_shift));
 
   // Represent the scales as fixed int32_t multipliers, and int32_t shifts
   QuantizeMultiplier(real_lhs_scale, &op_params.input1_multiplier, &op_params.input1_shift);
@@ -184,12 +184,12 @@ void BinaryArithmeticLayer::configure(const IPortableTensor *lhs, const IPortabl
       {
         setAddOrSubQuant8Params(_lhs, _rhs, _output, activation, &op_params);
         _kernel =
-            Eval<nnfw::cker::BinaryArithmeticOpType::ADD, uint8_t>(_lhs, _rhs, _output, op_params);
+          Eval<nnfw::cker::BinaryArithmeticOpType::ADD, uint8_t>(_lhs, _rhs, _output, op_params);
       }
       else
       {
         _kernel = generateKernelGeneric<nnfw::cker::BinaryArithmeticOpType::ADD>(
-            _lhs, _rhs, _output, activation, op_params);
+          _lhs, _rhs, _output, activation, op_params);
       }
       break;
     case ArithmeticType::kSub:
@@ -198,12 +198,12 @@ void BinaryArithmeticLayer::configure(const IPortableTensor *lhs, const IPortabl
         setAddOrSubQuant8Params(_lhs, _rhs, _output, activation, &op_params);
         op_params.input2_multiplier *= -1;
         _kernel =
-            Eval<nnfw::cker::BinaryArithmeticOpType::SUB, uint8_t>(_lhs, _rhs, _output, op_params);
+          Eval<nnfw::cker::BinaryArithmeticOpType::SUB, uint8_t>(_lhs, _rhs, _output, op_params);
       }
       else
       {
         _kernel = generateKernelGeneric<nnfw::cker::BinaryArithmeticOpType::SUB>(
-            _lhs, _rhs, _output, activation, op_params);
+          _lhs, _rhs, _output, activation, op_params);
       }
       break;
     case ArithmeticType::kMul:
@@ -212,19 +212,19 @@ void BinaryArithmeticLayer::configure(const IPortableTensor *lhs, const IPortabl
         nnfw::cker::BinaryArithmeticOpParam op_params;
         setMulQuant8Params(_lhs, _rhs, _output, activation, &op_params);
         _kernel =
-            Eval<nnfw::cker::BinaryArithmeticOpType::MUL, uint8_t>(_lhs, _rhs, _output, op_params);
+          Eval<nnfw::cker::BinaryArithmeticOpType::MUL, uint8_t>(_lhs, _rhs, _output, op_params);
       }
       else
       {
         _kernel = generateKernelGeneric<nnfw::cker::BinaryArithmeticOpType::MUL>(
-            _lhs, _rhs, _output, activation, op_params);
+          _lhs, _rhs, _output, activation, op_params);
       }
       break;
     case ArithmeticType::kDiv:
       if (_lhs->data_type() == OperandType::QUANT_UINT8_ASYMM)
       {
         throw std::runtime_error{
-            "BinaryArithmetic(Div): Div operation does not support quantization"};
+          "BinaryArithmetic(Div): Div operation does not support quantization"};
       }
       else if (_lhs->data_type() == OperandType::INT32)
       {
@@ -233,7 +233,7 @@ void BinaryArithmeticLayer::configure(const IPortableTensor *lhs, const IPortabl
       else
       {
         _kernel = generateKernelGeneric<nnfw::cker::BinaryArithmeticOpType::DIV>(
-            _lhs, _rhs, _output, activation, op_params);
+          _lhs, _rhs, _output, activation, op_params);
       }
       break;
     default:

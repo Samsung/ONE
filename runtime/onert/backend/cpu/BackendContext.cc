@@ -55,8 +55,8 @@ ITensorRegistry *BackendContext::genTensors(const std::vector<onert::ir::OpSeque
                                             const ir::OpSequences &op_seqs,
                                             const ir::LowerInfoMap &lower_info)
 {
-  auto model_io = (graph()->getInputs() + graph()->getOutputs()) | ir::Remove::UNDEFINED |
-                  ir::Remove::DUPLICATED;
+  auto model_io =
+    (graph()->getInputs() + graph()->getOutputs()) | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED;
   for (auto index : operand_list())
   {
     if (model_io.contains(index))

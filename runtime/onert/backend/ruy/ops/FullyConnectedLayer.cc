@@ -30,8 +30,8 @@ namespace ops
 {
 
 FullyConnectedLayer::FullyConnectedLayer()
-    : _input(nullptr), _weights(nullptr), _bias(nullptr), _output(nullptr),
-      _activation(ir::Activation::NONE), _external_context(nullptr)
+  : _input(nullptr), _weights(nullptr), _bias(nullptr), _output(nullptr),
+    _activation(ir::Activation::NONE), _external_context(nullptr)
 {
   // DO NOTHING
 }
@@ -51,11 +51,11 @@ void FullyConnectedLayer::fullyConnectedFloat32()
   op_params.rhs_cacheable = _input->is_constant();
 
   nnfw::ruy::FullyConnected(
-      op_params, getTensorShape(_input), reinterpret_cast<const float *>(_input->buffer()),
-      getTensorShape(_weights), reinterpret_cast<const float *>(_weights->buffer()),
-      getTensorShape(_bias), reinterpret_cast<const float *>(_bias ? _bias->buffer() : nullptr),
-      getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()),
-      _external_context->ruy_context());
+    op_params, getTensorShape(_input), reinterpret_cast<const float *>(_input->buffer()),
+    getTensorShape(_weights), reinterpret_cast<const float *>(_weights->buffer()),
+    getTensorShape(_bias), reinterpret_cast<const float *>(_bias ? _bias->buffer() : nullptr),
+    getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()),
+    _external_context->ruy_context());
 }
 
 void FullyConnectedLayer::configure(const IPortableTensor *input, const IPortableTensor *weights,

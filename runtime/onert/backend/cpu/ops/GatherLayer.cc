@@ -51,9 +51,9 @@ template <typename InputType> void GatherLayer::runByInputType()
       using IndicesType = int32_t;
 
       nnfw::cker::Gather<InputType, IndicesType>(
-          op_params, getTensorShape(_input), reinterpret_cast<const InputType *>(_input->buffer()),
-          getTensorShape(_indices), reinterpret_cast<const IndicesType *>(_indices->buffer()),
-          getTensorShape(_output), reinterpret_cast<OutputType *>(_output->buffer()));
+        op_params, getTensorShape(_input), reinterpret_cast<const InputType *>(_input->buffer()),
+        getTensorShape(_indices), reinterpret_cast<const IndicesType *>(_indices->buffer()),
+        getTensorShape(_output), reinterpret_cast<OutputType *>(_output->buffer()));
       break;
     }
     case OperandType::INT64:
@@ -61,9 +61,9 @@ template <typename InputType> void GatherLayer::runByInputType()
       using IndicesType = int64_t;
 
       nnfw::cker::Gather<InputType, IndicesType>(
-          op_params, getTensorShape(_input), reinterpret_cast<const InputType *>(_input->buffer()),
-          getTensorShape(_indices), reinterpret_cast<const IndicesType *>(_indices->buffer()),
-          getTensorShape(_output), reinterpret_cast<OutputType *>(_output->buffer()));
+        op_params, getTensorShape(_input), reinterpret_cast<const InputType *>(_input->buffer()),
+        getTensorShape(_indices), reinterpret_cast<const IndicesType *>(_indices->buffer()),
+        getTensorShape(_output), reinterpret_cast<OutputType *>(_output->buffer()));
       break;
     }
     default:

@@ -28,7 +28,7 @@ namespace ops
 {
 
 EinsumLayer::EinsumLayer()
-    : _inputs(), _output(nullptr), _equation(), _einsum_kernel(new nnfw::cker::Einsum())
+  : _inputs(), _output(nullptr), _equation(), _einsum_kernel(new nnfw::cker::Einsum())
 {
   // DO NOTHING
 }

@@ -176,12 +176,12 @@ void BackendContext::planTensors(const std::vector<onert::ir::OpSequenceIndex> &
   }
 
   assert(
-      std::all_of(uses_map.begin(), uses_map.end(),
-                  [](std::pair<const ir::OperandIndex, uint32_t> it) { return it.second == 0; }));
+    std::all_of(uses_map.begin(), uses_map.end(),
+                [](std::pair<const ir::OperandIndex, uint32_t> it) { return it.second == 0; }));
 
   assert(
-      std::all_of(def_map.begin(), def_map.end(),
-                  [](std::pair<const ir::OperandIndex, uint32_t> it) { return it.second == 0; }));
+    std::all_of(def_map.begin(), def_map.end(),
+                [](std::pair<const ir::OperandIndex, uint32_t> it) { return it.second == 0; }));
 }
 
 ITensorRegistry *BackendContext::genTensors(const std::vector<onert::ir::OpSequenceIndex> &order,
@@ -213,7 +213,7 @@ ITensorRegistry *BackendContext::genTensors(const std::vector<onert::ir::OpSeque
             find(operand_list().begin(), operand_list().end(), index) != operand_list().end())
         {
           const auto &operand_lower_info =
-              lower_info.operand.at(index)->def_factors().getOnlyElement();
+            lower_info.operand.at(index)->def_factors().getOnlyElement();
 
           // E.g., permute (CPU) -> tensor A -> MaxPool2D(acl_cl)
           // op.getOutputs() of permute (CPU) returns tensor A

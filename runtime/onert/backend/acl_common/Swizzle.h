@@ -131,7 +131,7 @@ getARMComputePermutationVector(uint32_t rank, const std::vector<int32_t> runtime
   }
 
   ::arm_compute::PermutationVector ACL_PV =
-      ::arm_compute::PermutationVector{new_pv[0], new_pv[1], new_pv[2], new_pv[3]};
+    ::arm_compute::PermutationVector{new_pv[0], new_pv[1], new_pv[2], new_pv[3]};
   ACL_PV.set_num_dimensions(rank);
 
   return ACL_PV;
@@ -146,7 +146,7 @@ inline T ReorderBits(T in, size_t numOfBits, const ir::Layout org_layout = ir::L
   for (int32_t i = numOfBits - 1; i >= 0; --i)
   {
     const uint32_t toShift =
-        numOfBits - ToARMComputeAxis(numOfBits, i, org_layout, acl_layout).value() - 1;
+      numOfBits - ToARMComputeAxis(numOfBits, i, org_layout, acl_layout).value() - 1;
     out += ((in & 1) << toShift);
     in >>= 1;
   }

@@ -55,7 +55,9 @@ public:
 
   void prepare(void);
   void allocate();
-  void postFunctionPrepare() { /* DO NOTHING */}
+  void postFunctionPrepare()
+  { /* DO NOTHING */
+  }
 
   IDynamicTensorManager *dynamicTensorManager(void) { return _dynamic_tensor_mgr.get(); }
 
