@@ -107,19 +107,15 @@ inline int8x16_t vquantizeSymm(const float32x4x4_t &fv, float scale_factor_inv, 
 
   const int32x4x4_t rf = {{
 #ifdef __aarch64__
-      vminq_s32(vposend,
-                vmaxq_s32(vnagend, vcvtnq_s32_f32(round(vmulq_f32(fv.val[0], vinvscale))))),
-      vminq_s32(vposend,
-                vmaxq_s32(vnagend, vcvtnq_s32_f32(round(vmulq_f32(fv.val[1], vinvscale))))),
-      vminq_s32(vposend,
-                vmaxq_s32(vnagend, vcvtnq_s32_f32(round(vmulq_f32(fv.val[2], vinvscale))))),
-      vminq_s32(vposend,
-                vmaxq_s32(vnagend, vcvtnq_s32_f32(round(vmulq_f32(fv.val[3], vinvscale))))),
+    vminq_s32(vposend, vmaxq_s32(vnagend, vcvtnq_s32_f32(round(vmulq_f32(fv.val[0], vinvscale))))),
+    vminq_s32(vposend, vmaxq_s32(vnagend, vcvtnq_s32_f32(round(vmulq_f32(fv.val[1], vinvscale))))),
+    vminq_s32(vposend, vmaxq_s32(vnagend, vcvtnq_s32_f32(round(vmulq_f32(fv.val[2], vinvscale))))),
+    vminq_s32(vposend, vmaxq_s32(vnagend, vcvtnq_s32_f32(round(vmulq_f32(fv.val[3], vinvscale))))),
 #else  //__aarch64__
-      vminq_s32(vposend, vmaxq_s32(vnagend, vcvtq_s32_f32(round(vmulq_f32(fv.val[0], vinvscale))))),
-      vminq_s32(vposend, vmaxq_s32(vnagend, vcvtq_s32_f32(round(vmulq_f32(fv.val[1], vinvscale))))),
-      vminq_s32(vposend, vmaxq_s32(vnagend, vcvtq_s32_f32(round(vmulq_f32(fv.val[2], vinvscale))))),
-      vminq_s32(vposend, vmaxq_s32(vnagend, vcvtq_s32_f32(round(vmulq_f32(fv.val[3], vinvscale))))),
+    vminq_s32(vposend, vmaxq_s32(vnagend, vcvtq_s32_f32(round(vmulq_f32(fv.val[0], vinvscale))))),
+    vminq_s32(vposend, vmaxq_s32(vnagend, vcvtq_s32_f32(round(vmulq_f32(fv.val[1], vinvscale))))),
+    vminq_s32(vposend, vmaxq_s32(vnagend, vcvtq_s32_f32(round(vmulq_f32(fv.val[2], vinvscale))))),
+    vminq_s32(vposend, vmaxq_s32(vnagend, vcvtq_s32_f32(round(vmulq_f32(fv.val[3], vinvscale))))),
 #endif //__aarch64__
   }};
   const int8x8_t pa = vqmovn_s16(vcombine_s16(vqmovn_s32(rf.val[0]), vqmovn_s32(rf.val[1])));
@@ -129,7 +125,7 @@ inline int8x16_t vquantizeSymm(const float32x4x4_t &fv, float scale_factor_inv, 
 } // namespace
 
 NEQuantizationSymmetricKernel::NEQuantizationSymmetricKernel()
-    : _input(nullptr), _output(nullptr), _scale_factor(nullptr)
+  : _input(nullptr), _output(nullptr), _scale_factor(nullptr)
 {
 }
 
@@ -138,7 +134,7 @@ void NEQuantizationSymmetricKernel::configure(const ITensor *input, ITensor *out
 {
   ARM_COMPUTE_ERROR_ON_NULLPTR(input, output);
   ARM_COMPUTE_ERROR_THROW_ON(
-      validate_arguments(input->info(), output->info(), scale_factor->info()));
+    validate_arguments(input->info(), output->info(), scale_factor->info()));
 
   _input = input;
   _output = output;
@@ -182,40 +178,40 @@ template <typename T> void NEQuantizationSymmetricKernel::quantize(const Window 
   const auto dim_x = _input->info()->dimension(0);
   win_collapsed.set(Window::DimX, Window::Dimension(0, 1, 1));
   execute_window_loop(
-      win_collapsed,
-      [&](const Coordinates &id) {
-        const auto start = reinterpret_cast<const T *>(input.ptr());
-        const auto min_max = std::minmax_element(start, start + dim_x);
-        const auto int8_scale = 127;
-        auto range = std::max(std::abs(*min_max.first), std::abs(*min_max.second));
-        if (range == 0)
-        {
-          *reinterpret_cast<T *>(_scale_factor->ptr_to_element({id.y()})) = 1;
-          range = 1;
-        }
-        else
-        {
-          *reinterpret_cast<T *>(_scale_factor->ptr_to_element({id.y()})) = range / int8_scale;
-        }
-        const auto scale_factor_inv = int8_scale / range;
+    win_collapsed,
+    [&](const Coordinates &id) {
+      const auto start = reinterpret_cast<const T *>(input.ptr());
+      const auto min_max = std::minmax_element(start, start + dim_x);
+      const auto int8_scale = 127;
+      auto range = std::max(std::abs(*min_max.first), std::abs(*min_max.second));
+      if (range == 0)
+      {
+        *reinterpret_cast<T *>(_scale_factor->ptr_to_element({id.y()})) = 1;
+        range = 1;
+      }
+      else
+      {
+        *reinterpret_cast<T *>(_scale_factor->ptr_to_element({id.y()})) = range / int8_scale;
+      }
+      const auto scale_factor_inv = int8_scale / range;
 
-        auto input_ptr = reinterpret_cast<const T *>(input.ptr());
-        auto output_ptr = reinterpret_cast<int8_t *>(output.ptr());
-        int x = window_start_x;
-        for (; x <= (window_end_x - window_step); x += window_step)
-        {
-          wrapper::vstore(&output_ptr[x],
-                          vquantizeSymm(load_value(&input_ptr[x]), scale_factor_inv, int8_scale));
-        }
-        // Compute left-over elements
-        for (; x < window_end_x; ++x)
-        {
-          int quantized = arm_compute::round(input_ptr[x] * scale_factor_inv, rounding_policy);
-          quantized = std::min(int8_scale, std::max(quantized, -int8_scale));
-          output_ptr[x] = static_cast<int8_t>(quantized);
-        }
-      },
-      input, output);
+      auto input_ptr = reinterpret_cast<const T *>(input.ptr());
+      auto output_ptr = reinterpret_cast<int8_t *>(output.ptr());
+      int x = window_start_x;
+      for (; x <= (window_end_x - window_step); x += window_step)
+      {
+        wrapper::vstore(&output_ptr[x],
+                        vquantizeSymm(load_value(&input_ptr[x]), scale_factor_inv, int8_scale));
+      }
+      // Compute left-over elements
+      for (; x < window_end_x; ++x)
+      {
+        int quantized = arm_compute::round(input_ptr[x] * scale_factor_inv, rounding_policy);
+        quantized = std::min(int8_scale, std::max(quantized, -int8_scale));
+        output_ptr[x] = static_cast<int8_t>(quantized);
+      }
+    },
+    input, output);
 }
 
 void NEQuantizationSymmetricKernel::run(const Window &window, const ThreadInfo &info)

@@ -75,7 +75,6 @@ CompilerOptions fetchCompilerOptionsFromGlobalConfig(const ir::Subgraphs &subgs)
 {
   CompilerOptions options;
   options.backend_list = nnfw::misc::split(util::getConfigString(util::config::BACKENDS), ';');
-  options.is_primary_subgraph = false;
   options.trace_filepath = util::getConfigString(util::config::TRACE_FILEPATH);
   options.graph_dump_level = util::getConfigInt(util::config::GRAPH_DOT_DUMP);
   options.op_seq_max_node = util::getConfigInt(util::config::OP_SEQ_MAX_NODE);
@@ -132,13 +131,15 @@ CompilerOptions fetchCompilerOptionsFromGlobalConfig(const ir::Subgraphs &subgs)
   return options;
 }
 
-Compiler::Compiler(const std::shared_ptr<ir::Subgraphs> &subgs)
+Compiler::Compiler(const std::shared_ptr<ir::Subgraphs> &subgs, util::TracingCtx *tracing_ctx)
     : _subgraphs{subgs}, _state{State::CREATED}
 {
   // Set default values for CompilerOptions
   // All these default values should not be fetched from Env, when we stop supporting Android NN
   // API.
   _options = fetchCompilerOptionsFromGlobalConfig(*subgs);
+
+  _options.tracing_ctx = tracing_ctx;
 }
 
 void Compiler::enableToFp16() { _options.fp16_enable = true; }
@@ -228,7 +229,6 @@ std::shared_ptr<exec::ExecutorMap> Compiler::compile(void)
   // Lower: Assign backend
   std::unordered_map<ir::SubgraphIndex, std::unique_ptr<compiler::LoweredGraph>> lowered_subgs;
   _subgraphs->iterate([&](const ir::SubgraphIndex &index, ir::Graph &subg) {
-    _options.is_primary_subgraph = (index == ir::SubgraphIndex{0});
     onert::dumper::dot::DotDumper dot_dumper(subg, dump_level);
     dot_dumper.dump(nnfw::misc::str("before_lower_subg-", index.value()));
 
@@ -299,8 +299,6 @@ std::shared_ptr<exec::ExecutorMap> Compiler::compile(void)
     const auto &subg_index = pair.first;
     auto &lowered_subg = pair.second;
     auto indexed_ranks = lowered_subg->indexed_ranks();
-
-    _options.is_primary_subgraph = (subg_index == ir::SubgraphIndex{0});
 
     ir::OperationDumper dumper("Executor generation of Subgraph " +
                                std::to_string(subg_index.value()));

@@ -49,6 +49,7 @@ public:
   void visit(const operation::BatchToSpaceND &node) override;
   void visit(const operation::BinaryArithmetic &node) override;
   void visit(const operation::Comparison &node) override;
+  void visit(const operation::Concat &node) override;
   void visit(const operation::Conv2D &node) override;
   void visit(const operation::DepthToSpace &node) override;
   void visit(const operation::DepthwiseConv2D &node) override;
@@ -57,6 +58,7 @@ public:
   void visit(const operation::ElementwiseUnary &node) override;
   void visit(const operation::EmbeddingLookup &node) override;
   void visit(const operation::ExpandDims &node) override;
+  void visit(const operation::Fill &node) override;
   void visit(const operation::HashtableLookup &node) override;
   void visit(const operation::Pack &node) override;
   void visit(const operation::Pad &node) override;
@@ -78,6 +80,7 @@ private:
   DataType operandType(const OperandIndex &idx);
   bool isConstant(const OperandIndex &idx);
   bool isSameType(const OperandIndex &idx1, const OperandIndex &idx2);
+  bool isSameQuantParam(const OperandIndex &idx1, const OperandIndex &idx2);
   bool isValidType(const OperandIndex &idx, const DataType &type);
   bool isValidType(const OperandIndex &idx, std::initializer_list<DataType> valid_types);
 

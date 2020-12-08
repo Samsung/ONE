@@ -53,16 +53,10 @@ namespace arm_compute
 using namespace arm_compute::misc::shape_calculator;
 
 CLDirectTransposeConvLayer::CLDirectTransposeConvLayer(
-    std::shared_ptr<IMemoryManager> memory_manager) // NOLINT
-    : _memory_group(std::move(memory_manager)),
-      _scale_f(),
-      _conv_f(),
-      _flip_weights(),
-      _scaled_output(),
-      _original_weights(nullptr),
-      _weights_flipped(),
-      _flip_axis(),
-      _is_prepared(false)
+  std::shared_ptr<IMemoryManager> memory_manager) // NOLINT
+  : _memory_group(std::move(memory_manager)), _scale_f(), _conv_f(), _flip_weights(),
+    _scaled_output(), _original_weights(nullptr), _weights_flipped(), _flip_axis(),
+    _is_prepared(false)
 {
 }
 
@@ -74,7 +68,7 @@ Status CLDirectTransposeConvLayer::validate(const ITensorInfo *input, const ITen
 {
   ARM_COMPUTE_RETURN_ERROR_ON_NULLPTR(input, weights, output);
   ARM_COMPUTE_RETURN_ERROR_ON_DATA_TYPE_CHANNEL_NOT_IN(
-      input, 1, DataType::QASYMM8_SIGNED, DataType::QASYMM8, DataType::F16, DataType::F32);
+    input, 1, DataType::QASYMM8_SIGNED, DataType::QASYMM8, DataType::F16, DataType::F32);
   ARM_COMPUTE_RETURN_ERROR_ON_MISMATCHING_DATA_LAYOUT(input, weights);
   const DataLayout data_layout = input->data_layout();
 
@@ -86,8 +80,8 @@ Status CLDirectTransposeConvLayer::validate(const ITensorInfo *input, const ITen
   ARM_COMPUTE_RETURN_ERROR_ON(weights->dimension(idx_w) < 1);
 
   auto out_dims = transposeconv_output_dimensions(
-      input->dimension(idx_w), input->dimension(idx_h), weights->dimension(idx_w),
-      weights->dimension(idx_h), info, invalid_right, invalid_bottom);
+    input->dimension(idx_w), input->dimension(idx_h), weights->dimension(idx_w),
+    weights->dimension(idx_h), info, invalid_right, invalid_bottom);
 
   const TensorShape output_shape = compute_transposeconv_output_shape(out_dims, *input, *weights);
 
@@ -117,19 +111,19 @@ Status CLDirectTransposeConvLayer::validate(const ITensorInfo *input, const ITen
   unsigned int pad_right = 0;
   unsigned int pad_top = 0;
   unsigned int pad_bottom = 0;
-  const TensorShape scale_out_shape = compute_transposeconv_upsampled_shape(
-      *input, *weights, info, out_dims, invalid_right, invalid_bottom, pad_left, pad_right, pad_top,
-      pad_bottom);
+  const TensorShape scale_out_shape =
+    compute_transposeconv_upsampled_shape(*input, *weights, info, out_dims, invalid_right,
+                                          invalid_bottom, pad_left, pad_right, pad_top, pad_bottom);
   TensorInfo scale_out_info(input->clone()
-                                ->set_is_resizable(true)
-                                .reset_padding()
-                                .set_tensor_shape(scale_out_shape)
-                                .set_data_layout(data_layout));
+                              ->set_is_resizable(true)
+                              .reset_padding()
+                              .set_tensor_shape(scale_out_shape)
+                              .set_data_layout(data_layout));
   const PadStrideInfo conv_info(1, 1, 0, 0, 0, 0, DimensionRoundingType::CEIL);
 
   ARM_COMPUTE_RETURN_ON_ERROR(CLDeconvolutionLayerUpsample::validate(input, &scale_out_info, info));
-  ARM_COMPUTE_RETURN_ON_ERROR(CLConvolutionLayer::validate(&scale_out_info, weights, bias, output,
-                                                           conv_info, weights_info));
+  ARM_COMPUTE_RETURN_ON_ERROR(
+    CLConvolutionLayer::validate(&scale_out_info, weights, bias, output, conv_info, weights_info));
 
   return Status{};
 }
@@ -171,22 +165,22 @@ void CLDirectTransposeConvLayer::configure(const CLCompileContext &compile_conte
   _flip_weights.configure(compile_context, weights, &_weights_flipped, &_flip_axis);
 
   auto out_dims = transposeconv_output_dimensions(
-      input->info()->dimension(idx_w), input->info()->dimension(idx_h),
-      weights->info()->dimension(idx_w), weights->info()->dimension(idx_h), info, invalid_right,
-      invalid_bottom);
+    input->info()->dimension(idx_w), input->info()->dimension(idx_h),
+    weights->info()->dimension(idx_w), weights->info()->dimension(idx_h), info, invalid_right,
+    invalid_bottom);
 
   const TensorShape output_shape =
-      compute_transposeconv_output_shape(out_dims, *input->info(), *weights->info());
+    compute_transposeconv_output_shape(out_dims, *input->info(), *weights->info());
 
   // Output auto initialization if not yet initialized
   auto_init_if_empty(
-      *output->info(),
-      input->info()->clone()->set_tensor_shape(output_shape).set_data_layout(data_layout));
+    *output->info(),
+    input->info()->clone()->set_tensor_shape(output_shape).set_data_layout(data_layout));
 
   // Perform validation step
   ARM_COMPUTE_ERROR_THROW_ON(CLDirectTransposeConvLayer::validate(
-      input->info(), weights->info(), bias == nullptr ? nullptr : bias->info(), output->info(),
-      info, invalid_right, invalid_bottom));
+    input->info(), weights->info(), bias == nullptr ? nullptr : bias->info(), output->info(), info,
+    invalid_right, invalid_bottom));
 
   _is_prepared = weights_info.retain_internal_weights();
 
@@ -195,8 +189,8 @@ void CLDirectTransposeConvLayer::configure(const CLCompileContext &compile_conte
   // Find the upsampled dimensions and the padding needed for the convolution with stride 1 in order
   // to match output shape
   const TensorShape scale_out_shape = compute_transposeconv_upsampled_shape(
-      *input->info(), *weights->info(), info, out_dims, invalid_right, invalid_bottom, pad_left,
-      pad_right, pad_top, pad_bottom);
+    *input->info(), *weights->info(), info, out_dims, invalid_right, invalid_bottom, pad_left,
+    pad_right, pad_top, pad_bottom);
 
   TensorInfo scale_out_info(scale_out_shape, 1, input->info()->data_type(),
                             input->info()->quantization_info());

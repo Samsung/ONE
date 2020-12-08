@@ -58,6 +58,27 @@ inline nnfw::ruy::Shape getTensorShape(const IPortableTensor *tensor)
   return ret;
 }
 
+inline nnfw::ruy::FusedActivationFunctionType convertActivationType(const ir::Activation activation)
+{
+  switch (activation)
+  {
+    case ir::Activation::NONE:
+      return nnfw::ruy::FusedActivationFunctionType::kNone;
+    case ir::Activation::RELU:
+      return nnfw::ruy::FusedActivationFunctionType::kRelu;
+    case ir::Activation::RELU1:
+      return nnfw::ruy::FusedActivationFunctionType::kRelu1;
+    case ir::Activation::RELU6:
+      return nnfw::ruy::FusedActivationFunctionType::kRelu6;
+    case ir::Activation::TANH:
+      return nnfw::ruy::FusedActivationFunctionType::kTanh;
+    case ir::Activation::SIGMOID:
+      return nnfw::ruy::FusedActivationFunctionType::kSigmoid;
+    default:
+      throw std::runtime_error{"RUY backend: Cannot convert activation type"};
+  }
+}
+
 template <typename T>
 void CalculateActivationRange(ir::Activation activation, T *activation_min, T *activation_max)
 {

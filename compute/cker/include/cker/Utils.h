@@ -88,8 +88,8 @@ inline int32_t MultiplyByQuantizedMultiplier(int32_t x, int32_t quantized_multip
   int left_shift = shift > 0 ? shift : 0;
   int right_shift = shift > 0 ? 0 : -shift;
   return gemmlowp::RoundingDivideByPOT(
-      gemmlowp::SaturatingRoundingDoublingHighMul(x * (1 << left_shift), quantized_multiplier),
-      right_shift);
+    gemmlowp::SaturatingRoundingDoublingHighMul(x * (1 << left_shift), quantized_multiplier),
+    right_shift);
 }
 
 inline int32_t MultiplyByQuantizedMultiplierGreaterThanOne(int32_t x, int32_t quantized_multiplier,
@@ -103,7 +103,7 @@ inline int32_t MultiplyByQuantizedMultiplierSmallerThanOneExp(int32_t x,
                                                               int left_shift)
 {
   return gemmlowp::RoundingDivideByPOT(
-      gemmlowp::SaturatingRoundingDoublingHighMul(x, quantized_multiplier), -left_shift);
+    gemmlowp::SaturatingRoundingDoublingHighMul(x, quantized_multiplier), -left_shift);
 }
 
 inline int NodeOffset(int b, int h, int w, int height, int width)
@@ -162,7 +162,7 @@ inline void GetInvSqrtQuantizedMultiplierExp(int32_t input, int reverse_shift,
   const F3 fixedpoint_input = F3::FromRaw(input >> 1);
   const F3 fixedpoint_half_input = SaturatingRoundingMultiplyByPOT<-1>(fixedpoint_input);
   const F3 fixedpoint_half_three =
-      GEMMLOWP_CHECKED_FIXEDPOINT_CONSTANT(F3, (1 << 28) + (1 << 27), 1.5);
+    GEMMLOWP_CHECKED_FIXEDPOINT_CONSTANT(F3, (1 << 28) + (1 << 27), 1.5);
   // Newton-Raphson iteration
   // Naive unoptimized starting guess: x = 1
   F3 x = F3::One();
@@ -173,7 +173,7 @@ inline void GetInvSqrtQuantizedMultiplierExp(int32_t input, int reverse_shift,
     x = Rescale<3>(fixedpoint_half_three * x - fixedpoint_half_input * x3);
   }
   const F0 fixedpoint_half_sqrt_2 =
-      GEMMLOWP_CHECKED_FIXEDPOINT_CONSTANT(F0, 1518500250, std::sqrt(2.) / 2.);
+    GEMMLOWP_CHECKED_FIXEDPOINT_CONSTANT(F0, 1518500250, std::sqrt(2.) / 2.);
   x = x * fixedpoint_half_sqrt_2;
   *output_inv_sqrt = x.raw();
   if (*output_shift < 0)
@@ -429,7 +429,7 @@ template <typename T> class SequentialTensorWriter
 {
 public:
   SequentialTensorWriter(const T *input_data, T *output_data)
-      : input_data_(input_data), output_ptr_(output_data)
+    : input_data_(input_data), output_ptr_(output_data)
   {
   }
 

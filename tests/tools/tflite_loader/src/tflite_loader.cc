@@ -22,15 +22,11 @@
 #include "tflite/Diff.h"
 #include "misc/tensor/IndexIterator.h"
 
+#include <nnfw_experimental.h>
+#include <nnfw_internal.h>
+
 #include <iostream>
 #include <fstream>
-
-#include "compiler/Compiler.h"
-#include "exec/Execution.h"
-#include "ir/Graph.h"
-
-#include "tflite_loader.h"
-
 #include <memory>
 
 const int RUN_FAILED = 1;
@@ -40,6 +36,13 @@ using namespace nnfw::tflite;
 
 const int FILE_ERROR = 2;
 const float DIFFERENCE_THRESHOLD = 10e-5;
+
+#define NNFW_ASSERT_FAIL(expr, msg)   \
+  if ((expr) != NNFW_STATUS_NO_ERROR) \
+  {                                   \
+    std::cerr << msg << std::endl;    \
+    exit(-1);                         \
+  }
 
 // Read vector of floats from selected file
 std::vector<float> readData(const string &path)
@@ -73,80 +76,33 @@ std::vector<float> randomData(nnfw::misc::RandomGenerator &randgen, const uint64
   return vec;
 }
 
-void executeGraph(const std::shared_ptr<onert::ir::Graph> &g,
-                  const std::vector<std::vector<float>> &inputs,
-                  std::vector<std::vector<float>> &outputs)
+inline uint64_t num_elems(const nnfw_tensorinfo *ti)
 {
-  auto subgs = std::make_shared<onert::ir::Subgraphs>();
-  subgs->push(onert::ir::SubgraphIndex{0}, g);
-  auto compiler = new onert::compiler::Compiler(subgs);
-  std::shared_ptr<onert::exec::ExecutorMap> executors;
-  // Compilation
-  try
+  uint64_t n = 1;
+  for (uint32_t i = 0; i < ti->rank; ++i)
   {
-    executors = compiler->compile();
+    n *= ti->dims[i];
   }
-  catch (const std::exception &e)
+  return n;
+}
+
+inline size_t sizeOfNnfwType(NNFW_TYPE type)
+{
+  switch (type)
   {
-    std::cerr << "[Execution] Can't compile model" << std::endl;
-    std::cerr << e.what() << std::endl;
-    exit(-1);
+    case NNFW_TYPE_TENSOR_BOOL:
+    case NNFW_TYPE_TENSOR_UINT8:
+    case NNFW_TYPE_TENSOR_QUANT8_ASYMM:
+    case NNFW_TYPE_TENSOR_QUANT8_ASYMM_SIGNED:
+      return 1;
+    case NNFW_TYPE_TENSOR_FLOAT32:
+    case NNFW_TYPE_TENSOR_INT32:
+      return 4;
+    case NNFW_TYPE_TENSOR_INT64:
+      return 8;
+    default:
+      throw std::runtime_error{"Invalid tensor type"};
   }
-
-  std::cout << "[Execution] Graph compiled!" << std::endl;
-
-  auto execution = std::make_shared<onert::exec::Execution>(executors);
-
-  // Setting IO
-  try
-  {
-    // Verify input shapes
-    auto num_inputs = inputs.size();
-    for (size_t i = 0; i < num_inputs; i++)
-    {
-      auto input_operand_idx = g->getInputs().at(i);
-      auto input_shape = g->operands().at(input_operand_idx).shape();
-      assert(inputs[i].size() == input_shape.num_elements());
-    }
-
-    // Set output shapes
-    auto num_outputs = g->getOutputs().size();
-    outputs.resize(num_outputs);
-    for (uint32_t i = 0; i < num_outputs; i++)
-    {
-      auto output_operand_idx = g->getOutputs().at(i);
-      auto output_shape = g->operands().at(output_operand_idx).shape();
-      outputs[i].resize(output_shape.num_elements());
-    }
-
-    for (size_t i = 0; i < num_inputs; i++)
-      execution->setInput(onert::ir::IOIndex(i), inputs[i].data(),
-                          inputs[i].size() * sizeof(float));
-    for (uint32_t i = 0; i < num_outputs; i++)
-      execution->setOutput(onert::ir::IOIndex(i), outputs[i].data(),
-                           outputs[i].size() * sizeof(float));
-  }
-  catch (const std::exception &e)
-  {
-    std::cerr << "[Execution] Can't set model IO" << std::endl;
-    std::cerr << e.what() << '\n';
-    exit(-1);
-  }
-
-  try
-  {
-    execution->execute();
-  }
-  catch (const std::exception &e)
-  {
-    std::cerr << "[Execution] Can't execute" << std::endl;
-    std::cerr << e.what() << '\n';
-    exit(-1);
-  }
-
-  std::cout << "[Execution] Done!" << std::endl;
-
-  delete compiler;
 }
 
 int main(const int argc, char **argv)
@@ -163,44 +119,53 @@ int main(const int argc, char **argv)
   }
 
   std::cout << "[Execution] Stage start!" << std::endl;
-  std::shared_ptr<onert::ir::Graph> test_graph;
   // Loading
-  try
+  nnfw_session *onert_session = nullptr;
+  NNFW_ASSERT_FAIL(nnfw_create_session(&onert_session), "[ ERROR ] Failure during model load");
+  if (onert_session == nullptr)
   {
-    test_graph =
-        onert::tflite_loader::loadModel(tflite_file.c_str())->at(onert::ir::SubgraphIndex{0});
-  }
-  catch (std::exception &e)
-  {
-    std::cerr << "[ ERROR ] "
-              << "Failure during model load" << std::endl;
-    std::cerr << e.what() << std::endl;
+    std::cerr << "[ ERROR ] Failure to open session" << std::endl;
     exit(-1);
   }
 
+  NNFW_ASSERT_FAIL(nnfw_load_model_from_modelfile(onert_session, tflite_file.c_str()),
+                   "[ ERROR ] Failure during model load");
+
+  uint32_t num_inputs;
+  uint32_t num_outputs;
+  NNFW_ASSERT_FAIL(nnfw_input_size(onert_session, &num_inputs),
+                   "[ ERROR ] Failure during get model inputs");
+  NNFW_ASSERT_FAIL(nnfw_output_size(onert_session, &num_outputs),
+                   "[ ERROR ] Failure during get model outputs");
   // TODO: Support another input/output types
-  for (const auto &input_idx : test_graph->getInputs())
+  for (uint32_t i = 0; i < num_inputs; i++)
   {
-    const auto input_type = test_graph->operands().at(input_idx).typeInfo().type();
-    assert(input_type == onert::ir::DataType::FLOAT32 && "Only FLOAT32 inputs are supported");
+    nnfw_tensorinfo ti_input;
+    NNFW_ASSERT_FAIL(nnfw_input_tensorinfo(onert_session, i, &ti_input),
+                     "[ ERROR ] Failure during get input data info");
+    assert(ti_input.dtype == NNFW_TYPE_TENSOR_FLOAT32 && "Only FLOAT32 inputs are supported");
   }
-  for (const auto &output_idx : test_graph->getOutputs())
+  for (uint32_t i = 0; i < num_outputs; i++)
   {
-    const auto output_type = test_graph->operands().at(output_idx).typeInfo().type();
-    assert(output_type == onert::ir::DataType::FLOAT32 && "Only FLOAT32 outputs are supported");
+    nnfw_tensorinfo ti_output;
+    NNFW_ASSERT_FAIL(nnfw_output_tensorinfo(onert_session, i, &ti_output),
+                     "[ ERROR ] Failure during get output data info");
+    assert(ti_output.dtype == NNFW_TYPE_TENSOR_FLOAT32 && "Only FLOAT32 outputs are supported");
   }
 
   std::cout << "[Execution] Model is deserialized!" << std::endl;
-  auto num_inputs = test_graph->getInputs().size();
+
+  // Compile
+  nnfw_prepare(onert_session);
+
+  std::cout << "[Execution] Model compiled!" << std::endl;
+
+  // Prepare input/output data
   std::vector<std::vector<float>> inputs(num_inputs);
+  std::vector<std::vector<float>> outputs(num_outputs);
+
   bool generate_data = data_files.empty();
   bool read_data = data_files.size() == num_inputs;
-  if (num_inputs == 0)
-  {
-    std::cerr << "[ ERROR ] "
-              << "No inputs in model => execution is not possible" << std::endl;
-    exit(1);
-  }
   if (!generate_data && !read_data)
   {
     std::cerr << "[ ERROR ] "
@@ -214,14 +179,22 @@ int main(const int argc, char **argv)
   {
     for (uint32_t i = 0; i < num_inputs; i++)
     {
+      nnfw_tensorinfo ti_input;
+      NNFW_ASSERT_FAIL(nnfw_input_tensorinfo(onert_session, i, &ti_input),
+                       "[ ERROR ] Failure during get input data info");
+      uint64_t input_elements = num_elems(&ti_input);
+
       if (generate_data)
       {
-        uint64_t sz =
-            test_graph->operands().at(test_graph->getInputs().at(i)).shape().num_elements();
-        inputs[i] = randomData(randgen, sz);
+        inputs[i] = randomData(randgen, input_elements);
       }
       else /* read_data */
         inputs[i] = readData(data_files[i]);
+
+      size_t input_size = input_elements * sizeOfNnfwType(ti_input.dtype);
+      NNFW_ASSERT_FAIL(
+        nnfw_set_input(onert_session, i, ti_input.dtype, inputs[i].data(), input_size),
+        "[ ERROR ] ailure to set input tensor buffer");
     }
   }
   catch (std::exception &e)
@@ -233,9 +206,27 @@ int main(const int argc, char **argv)
   }
 
   std::cout << "[Execution] Input data is defined!" << std::endl;
-  std::vector<std::vector<float>> outputs;
-  // Run graph
-  executeGraph(test_graph, inputs, outputs);
+
+  for (uint32_t i = 0; i < num_outputs; i++)
+  {
+    nnfw_tensorinfo ti_output;
+    NNFW_ASSERT_FAIL(nnfw_output_tensorinfo(onert_session, i, &ti_output),
+                     "[ ERROR ] Failure during get output tensor info");
+
+    uint64_t output_elements = num_elems(&ti_output);
+    outputs[i].resize(output_elements);
+
+    size_t output_size = output_elements * sizeOfNnfwType(ti_output.dtype);
+    NNFW_ASSERT_FAIL(
+      nnfw_set_output(onert_session, i, ti_output.dtype, outputs[i].data(), output_size),
+      "[ ERROR ] Failure to set output tensor buffer");
+  }
+
+  // Execute
+  NNFW_ASSERT_FAIL(nnfw_run(onert_session), "[Execution] Can't execute");
+
+  std::cout << "[Execution] Done!" << std::endl;
+
   // Compare with tflite
   std::cout << "[Comparison] Stage start!" << std::endl;
   // Read tflite model
@@ -274,7 +265,6 @@ int main(const int argc, char **argv)
 
   // Calculate max difference over all outputs
   float max_difference = 0.0f;
-  auto num_outputs = test_graph->getOutputs().size();
   for (uint32_t out_idx = 0; out_idx < num_outputs; out_idx++)
   {
     const auto &tflite_output_tensor = interpreter->tensor(interpreter->outputs().at(out_idx));

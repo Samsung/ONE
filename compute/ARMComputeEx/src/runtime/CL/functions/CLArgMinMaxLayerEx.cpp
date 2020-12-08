@@ -50,8 +50,8 @@
 namespace arm_compute
 {
 CLArgMinMaxLayerEx::CLArgMinMaxLayerEx(std::shared_ptr<IMemoryManager> memory_manager)
-    : _memory_group(std::move(memory_manager)), _results_vector(), _not_reshaped_output(),
-      _reduction_kernels_vector(), _reshape_kernel(), _num_of_stages(), _reduction_axis()
+  : _memory_group(std::move(memory_manager)), _results_vector(), _not_reshaped_output(),
+    _reduction_kernels_vector(), _reshape_kernel(), _num_of_stages(), _reduction_axis()
 {
 }
 
@@ -60,13 +60,13 @@ Status CLArgMinMaxLayerEx::validate(const ITensorInfo *input, int axis, const IT
 {
   ARM_COMPUTE_ERROR_ON_NULLPTR(input, output);
   ARM_COMPUTE_RETURN_ERROR_ON_MSG(op != ReductionOperation::ARG_IDX_MAX &&
-                                      op != ReductionOperation::ARG_IDX_MIN,
+                                    op != ReductionOperation::ARG_IDX_MIN,
                                   "Invalid reduction operation");
   ARM_COMPUTE_RETURN_ERROR_ON_MSG(axis >= static_cast<int>(TensorShape::num_max_dimensions),
                                   "Reduction axis greater than max number of dimensions");
   ARM_COMPUTE_RETURN_ERROR_ON_MSG(axis > 3, "Unsupported reduction axis");
   const unsigned int num_of_stages =
-      calculate_number_of_stages_only_x_axis(input->dimension(0), axis);
+    calculate_number_of_stages_only_x_axis(input->dimension(0), axis);
 
   DataType output_data_type = DataType::S32;
   TensorInfo not_reshaped_output;
@@ -76,9 +76,9 @@ Status CLArgMinMaxLayerEx::validate(const ITensorInfo *input, int axis, const IT
   if (output->total_size() != 0)
   {
     output_data_type = output->data_type();
-    const TensorInfo expected_output_shape = output->clone()->set_tensor_shape(
-        arm_compute::misc::shape_calculator::compute_reduced_shape(input->tensor_shape(), axis,
-                                                                   false));
+    const TensorInfo expected_output_shape =
+      output->clone()->set_tensor_shape(arm_compute::misc::shape_calculator::compute_reduced_shape(
+        input->tensor_shape(), axis, false));
     ARM_COMPUTE_RETURN_ERROR_ON_MISMATCHING_SHAPES(&expected_output_shape, output);
   }
 
@@ -87,9 +87,9 @@ Status CLArgMinMaxLayerEx::validate(const ITensorInfo *input, int axis, const IT
   auto initialize_tensorinfo = [](TensorInfo &ti, TensorShape shape, DataType data_type,
                                   int num_channels, QuantizationInfo qinfo) {
     ti.set_data_type(data_type)
-        .set_tensor_shape(shape)
-        .set_num_channels(num_channels)
-        .set_quantization_info(qinfo);
+      .set_tensor_shape(shape)
+      .set_num_channels(num_channels)
+      .set_quantization_info(qinfo);
   };
 
   initialize_tensorinfo(not_reshaped_output, shape_before_reshape, output_data_type,
@@ -98,7 +98,7 @@ Status CLArgMinMaxLayerEx::validate(const ITensorInfo *input, int axis, const IT
   if (num_of_stages == 1)
   {
     ARM_COMPUTE_RETURN_ON_ERROR(
-        CLArgMinMaxLayerKernelEx::validate(input, nullptr, &not_reshaped_output, axis, op));
+      CLArgMinMaxLayerKernelEx::validate(input, nullptr, &not_reshaped_output, axis, op));
   }
   else
   {
@@ -118,19 +118,19 @@ Status CLArgMinMaxLayerEx::validate(const ITensorInfo *input, int axis, const IT
 
     // Validate ReductionOperation only on first kernel
     ARM_COMPUTE_RETURN_ON_ERROR(
-        CLArgMinMaxLayerKernelEx::validate(input, nullptr, &sums_vector[0], axis, op));
+      CLArgMinMaxLayerKernelEx::validate(input, nullptr, &sums_vector[0], axis, op));
 
     // Validate ReductionOperation on intermediate stages
     for (unsigned int i = 1; i < num_of_stages - 1; ++i)
     {
-      ARM_COMPUTE_RETURN_ON_ERROR(CLArgMinMaxLayerKernelEx::validate(input, &sums_vector[i - 1],
-                                                                     &sums_vector[i], axis, op));
+      ARM_COMPUTE_RETURN_ON_ERROR(
+        CLArgMinMaxLayerKernelEx::validate(input, &sums_vector[i - 1], &sums_vector[i], axis, op));
     }
 
     // Validate ReductionOperation on the last stage
     const unsigned int last_stage = num_of_stages - 1;
     ARM_COMPUTE_RETURN_ON_ERROR(CLArgMinMaxLayerKernelEx::validate(
-        input, &sums_vector[last_stage - 1], &not_reshaped_output, axis, op));
+      input, &sums_vector[last_stage - 1], &not_reshaped_output, axis, op));
   }
   ARM_COMPUTE_RETURN_ON_ERROR(CLReshapeLayerKernel::validate(&not_reshaped_output, output));
   return Status{};
@@ -144,16 +144,16 @@ void CLArgMinMaxLayerEx::configure(const ICLTensor *input, int axis, ICLTensor *
   _reduction_axis = axis;
 
   const TensorShape output_shape = arm_compute::misc::shape_calculator::compute_reduced_shape(
-      input->info()->tensor_shape(), axis, false);
+    input->info()->tensor_shape(), axis, false);
   DataType output_data_type = (output->info()->data_type() == DataType::UNKNOWN)
-                                  ? DataType::S32
-                                  : output->info()->data_type();
+                                ? DataType::S32
+                                : output->info()->data_type();
   auto_init_if_empty(*output->info(), input->info()
-                                          ->clone()
-                                          ->set_tensor_shape(output_shape)
-                                          .set_data_type(output_data_type)
-                                          .reset_padding()
-                                          .set_is_resizable(true));
+                                        ->clone()
+                                        ->set_tensor_shape(output_shape)
+                                        .set_data_type(output_data_type)
+                                        .reset_padding()
+                                        .set_is_resizable(true));
 
   // Configure reduction operation kernels
   _reduction_kernels_vector.resize(_num_of_stages);
@@ -166,11 +166,11 @@ void CLArgMinMaxLayerEx::configure(const ICLTensor *input, int axis, ICLTensor *
     TensorShape output_shape{input->info()->tensor_shape()};
     output_shape.set(axis, 1);
     auto_init_if_empty(*_not_reshaped_output.info(), input->info()
-                                                         ->clone()
-                                                         ->set_tensor_shape(output_shape)
-                                                         .set_data_type(output_data_type)
-                                                         .reset_padding()
-                                                         .set_is_resizable(true));
+                                                       ->clone()
+                                                       ->set_tensor_shape(output_shape)
+                                                       .set_data_type(output_data_type)
+                                                       .reset_padding()
+                                                       .set_is_resizable(true));
     _not_reshaped_output.info()->set_tensor_shape(output_shape);
     _reduction_kernels_vector[0].configure(input, nullptr, &_not_reshaped_output, axis, op);
   }
@@ -182,7 +182,7 @@ void CLArgMinMaxLayerEx::configure(const ICLTensor *input, int axis, ICLTensor *
     {
       shape.set(0, ceil(shape.x() / 128.f));
       _results_vector[i].allocator()->init(
-          input->info()->clone()->set_tensor_shape(shape).set_data_type(output_data_type));
+        input->info()->clone()->set_tensor_shape(shape).set_data_type(output_data_type));
     }
 
     // Apply ReductionOperation only on first kernel

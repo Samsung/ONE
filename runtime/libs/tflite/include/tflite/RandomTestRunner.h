@@ -55,7 +55,7 @@ public:
    * @param[in] quantization  TfLiteQuantizationParams type to represent quantization value
    */
   RandomTestRunner(uint32_t seed, const RandomTestParam &param)
-      : _randgen{seed, 0.0f, 2.0f}, _param{param}
+    : _randgen{seed, 0.0f, 2.0f}, _param{param}
   {
     // DO NOTHING
   }

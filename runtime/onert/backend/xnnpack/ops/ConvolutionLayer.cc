@@ -68,7 +68,12 @@ void ConvolutionLayer::configure(const IPortableTensor *input, const IPortableTe
 
 void ConvolutionLayer::run()
 {
-  prepare();
+  assert(_external_context && _external_context->getThreadPool());
+  if (!_setup)
+  {
+    _setup = setup();
+    assert(_setup);
+  }
 
   if (_input->data_type() == OperandType::FLOAT32)
   {
@@ -84,11 +89,8 @@ void ConvolutionLayer::run()
   }
 }
 
-void ConvolutionLayer::prepare()
+bool ConvolutionLayer::create()
 {
-  if (_prepare)
-    return;
-
   float output_activation_min = 0.f, output_activation_max = 0.f;
   CalculateActivationRange<float>(_activation, &output_activation_min, &output_activation_max);
 
@@ -99,9 +101,6 @@ void ConvolutionLayer::prepare()
   uint32_t kernel_width = kernel_shape.dim(2);
   uint32_t output_channels = kernel_shape.dim(0);
   uint32_t input_channels = kernel_shape.dim(3);
-  uint32_t input_width = _input->getShape().dim(2);
-  uint32_t input_height = _input->getShape().dim(1);
-  uint32_t batch_size = _input->getShape().dim(0);
   assert(static_cast<uint32_t>(_input->getShape().dim(3)) == input_channels);
   assert(static_cast<uint32_t>(_output->getShape().dim(3)) == output_channels);
 
@@ -119,18 +118,29 @@ void ConvolutionLayer::prepare()
     throw std::runtime_error{"failed to create FP32 Convolution operator"};
   }
   assert(_kernel_op != nullptr);
+  return true;
+}
 
-  assert(_external_context && _external_context->getThreadPool());
-  status = xnn_setup_convolution2d_nhwc_f32(_kernel_op, batch_size, input_height, input_width,
-                                            reinterpret_cast<const float *>(_input->buffer()),
-                                            reinterpret_cast<float *>(_output->buffer()),
-                                            _external_context->getThreadPool());
+bool ConvolutionLayer::setup()
+{
+  if (_input->buffer() == nullptr || _output->buffer() == nullptr)
+  {
+    // it could be models's input or output
+    return false;
+  }
+
+  uint32_t input_width = _input->getShape().dim(2);
+  uint32_t input_height = _input->getShape().dim(1);
+  uint32_t batch_size = _input->getShape().dim(0);
+  enum xnn_status status = xnn_setup_convolution2d_nhwc_f32(
+      _kernel_op, batch_size, input_height, input_width,
+      reinterpret_cast<const float *>(_input->buffer()),
+      reinterpret_cast<float *>(_output->buffer()), _external_context->getThreadPool());
   if (status != xnn_status_success)
   {
     throw std::runtime_error{"failed to create FP32 Convolution operator"};
   }
-
-  _prepare = true;
+  return true;
 }
 
 } // namespace ops

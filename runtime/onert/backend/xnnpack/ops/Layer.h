@@ -21,6 +21,7 @@
 #include <backend/IPortableTensor.h>
 #include "OperationUtils.h"
 #include "../ExternalContext.h"
+#include "../Tensor.h"
 
 #include <cassert>
 #include <memory>
@@ -40,7 +41,7 @@ class Layer : public ::onert::exec::IFunction
 {
 public:
   Layer(const std::shared_ptr<ExternalContext> external_context)
-      : _kernel_op{nullptr}, _prepare{false}, _external_context{external_context}
+      : _kernel_op{nullptr}, _create{false}, _setup{false}, _external_context{external_context}
   {
     // DO NOTHING
   }
@@ -51,9 +52,24 @@ public:
       xnn_delete_operator(_kernel_op);
   }
 
+public:
+  void prepare() override
+  {
+    if (_create)
+      return;
+
+    _create = create();
+    assert(_create);
+
+    _setup = setup();
+  }
+  virtual bool create() = 0;
+  virtual bool setup() = 0;
+
 protected:
   xnn_operator_t _kernel_op;
-  bool _prepare;
+  bool _create;
+  bool _setup;
   const std::shared_ptr<ExternalContext> _external_context;
 };
 

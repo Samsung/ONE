@@ -62,15 +62,15 @@ inline Status validate_arguments(const ITensorInfo *input, const ITensorInfo *in
   ARM_COMPUTE_RETURN_ERROR_ON(actual_axis >= input->num_dimensions());
   ARM_COMPUTE_RETURN_ERROR_ON_NULLPTR(output);
   ARM_COMPUTE_RETURN_ERROR_ON_DATA_TYPE_CHANNEL_NOT_IN(
-      input, 1, DataType::U8, DataType::S8, DataType::QASYMM8, DataType::U16, DataType::S16,
-      DataType::U32, DataType::S32, DataType::F16, DataType::F32);
+    input, 1, DataType::U8, DataType::S8, DataType::QASYMM8, DataType::U16, DataType::S16,
+    DataType::U32, DataType::S32, DataType::F16, DataType::F32);
 
   if (output->total_size() != 0)
   {
     ARM_COMPUTE_RETURN_ERROR_ON_MISMATCHING_DATA_TYPES(input, output);
     ARM_COMPUTE_RETURN_ERROR_ON_MISMATCHING_QUANTIZATION_INFO(input, output);
     TensorShape output_shape = arm_compute::misc::shape_calculator::compute_gather_shape_ex(
-        input->tensor_shape(), indices->tensor_shape(), actual_axis);
+      input->tensor_shape(), indices->tensor_shape(), actual_axis);
     ARM_COMPUTE_RETURN_ERROR_ON(output_shape.total_size() != output->tensor_shape().total_size());
   }
 
@@ -86,7 +86,7 @@ std::pair<Status, Window> validate_and_configure_window(ITensorInfo *input, ITen
   const uint32_t actual_axis = wrap_around(axis, static_cast<int>(input->num_dimensions()));
   std::unique_ptr<ITensorInfo> output_info = input->clone();
   output_info->set_tensor_shape(arm_compute::misc::shape_calculator::compute_gather_shape_ex(
-      input->tensor_shape(), indices->tensor_shape(), actual_axis));
+    input->tensor_shape(), indices->tensor_shape(), actual_axis));
   // Output auto initialization if not yet initialized
   auto_init_if_empty((*output), output_info->tensor_shape(), 1, input->data_type());
 
@@ -100,7 +100,7 @@ std::pair<Status, Window> validate_and_configure_window(ITensorInfo *input, ITen
 } // namespace
 
 CLGatherExKernel::CLGatherExKernel()
-    : _input(nullptr), _indices(nullptr), _output(nullptr), _axis(0)
+  : _input(nullptr), _indices(nullptr), _output(nullptr), _axis(0)
 {
 }
 
@@ -109,11 +109,11 @@ void CLGatherExKernel::configure(const ICLTensor *input, const ICLTensor *indice
 {
   ARM_COMPUTE_ERROR_ON_NULLPTR(input, output, indices);
   ARM_COMPUTE_ERROR_THROW_ON(
-      validate_arguments(input->info(), indices->info(), output->info(), axis));
+    validate_arguments(input->info(), indices->info(), output->info(), axis));
 
   // Configure kernel window
   auto win_config =
-      validate_and_configure_window(input->info(), indices->info(), output->info(), axis);
+    validate_and_configure_window(input->info(), indices->info(), output->info(), axis);
   ARM_COMPUTE_ERROR_THROW_ON(win_config.first);
 
   _input = input;
@@ -133,7 +133,7 @@ void CLGatherExKernel::configure(const ICLTensor *input, const ICLTensor *indice
 
   // Create kernel
   _kernel = static_cast<cl::Kernel>(
-      CLKernelLibraryEx::get().create_kernel("gather_ex", build_opts.options()));
+    CLKernelLibraryEx::get().create_kernel("gather_ex", build_opts.options()));
   ICLKernel::configure_internal(win_config.second);
 }
 
@@ -144,7 +144,7 @@ Status CLGatherExKernel::validate(const ITensorInfo *input, const ITensorInfo *i
   ARM_COMPUTE_RETURN_ON_ERROR(validate_and_configure_window(input->clone().get(),
                                                             indices->clone().get(),
                                                             output->clone().get(), axis)
-                                  .first);
+                                .first);
   return Status{};
 }
 

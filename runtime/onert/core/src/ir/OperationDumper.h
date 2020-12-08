@@ -48,6 +48,7 @@ public:
   void visit(const operation::ElementwiseUnary &) override;
   void visit(const operation::EmbeddingLookup &) override;
   void visit(const operation::ExpandDims &) override;
+  void visit(const operation::Fill &) override;
   void visit(const operation::FullyConnected &node) override;
   void visit(const operation::Gather &) override;
   void visit(const operation::HashtableLookup &) override;

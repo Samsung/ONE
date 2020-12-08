@@ -36,9 +36,24 @@ MeanLayer::MeanLayer() : _input(nullptr), _axes(nullptr), _output(nullptr), _kee
 
 void MeanLayer::MeanFloat32()
 {
-  nnfw::cker::Mean(getTensorShape(_input), reinterpret_cast<const float *>(_input->buffer()),
-                   getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()),
-                   getReducerAxes(_axes));
+  const auto inputShape = getTensorShape(_input);
+  const auto axisVec = getReducerAxes(_axes);
+  bool axis_is_1_and_2 =
+      _keep_dims && inputShape.DimensionsCount() == 4 && axisVec.size() == 2 &&
+      ((axisVec[0] == 1 && axisVec[1] == 2) || (axisVec[0] == 2 && axisVec[1] == 1));
+
+  if (axis_is_1_and_2)
+  {
+    nnfw::cker::MeanAxis1And2(inputShape, reinterpret_cast<const float *>(_input->buffer()),
+                              getTensorShape(_output),
+                              reinterpret_cast<float *>(_output->buffer()));
+  }
+  else
+  {
+    nnfw::cker::Mean(inputShape, reinterpret_cast<const float *>(_input->buffer()),
+                     getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()),
+                     axisVec);
+  }
 }
 
 void MeanLayer::MeanQuant8()
@@ -57,6 +72,10 @@ void MeanLayer::configure(const IPortableTensor *input, const IPortableTensor *a
   _axes = axes;
   _output = output;
   _keep_dims = keep_dims;
+
+  if (_input->data_type() != OperandType::FLOAT32 &&
+      _input->data_type() != OperandType::QUANT_UINT8_ASYMM)
+    throw std::runtime_error{"Mean: unsupported data type"};
 }
 
 void MeanLayer::run()

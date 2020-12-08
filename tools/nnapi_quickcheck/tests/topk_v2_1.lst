@@ -1,6 +1,0 @@
-#ifndef INT_VALUE
-#error "INT_VALUE should be defined"
-#endif // INT_VALUE
-
-INT_VALUE(INPUT_DATA, 8192)
-INT_VALUE(K, 16)

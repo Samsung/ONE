@@ -46,8 +46,8 @@
 using namespace arm_compute;
 
 CLReduceOperation::CLReduceOperation(std::shared_ptr<IMemoryManager> memory_manager)
-    : _memory_group(std::move(memory_manager)), _input(nullptr), _output(nullptr), _axis(),
-      _keep_dims(false), _interm_tensors(), _reduce_kernels(), _reshape()
+  : _memory_group(std::move(memory_manager)), _input(nullptr), _output(nullptr), _axis(),
+    _keep_dims(false), _interm_tensors(), _reduce_kernels(), _reshape()
 {
 }
 
@@ -91,13 +91,13 @@ Status CLReduceOperation::validate(const ITensorInfo *input, const ITensorInfo *
   for (size_t i = 0; i < num_of_kernels; ++i, ++it)
   {
     ARM_COMPUTE_RETURN_ON_ERROR(
-        CLReduceOperationKernel::validate(tensors[i], tensors[i + 1], *it, op));
+      CLReduceOperationKernel::validate(tensors[i], tensors[i + 1], *it, op));
   }
 
   if (!keep_dims)
   {
     ARM_COMPUTE_RETURN_ON_ERROR(
-        CLReshapeLayer::validate(&interm_tensors[num_of_interm_tensors - 1], output));
+      CLReshapeLayer::validate(&interm_tensors[num_of_interm_tensors - 1], output));
   }
 
   return Status{};

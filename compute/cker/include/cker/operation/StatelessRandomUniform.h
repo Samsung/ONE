@@ -95,7 +95,7 @@ inline void StatelessRandomUniform(const Shape &shape_shape, const int *shape_da
   GenerateKey(seed_t, &key, &counter);
 
   Fill<Eigen::ThreadPoolDevice, random::UniformDistribution<random::PhiloxRandom, float>>(
-      random::PhiloxRandom(counter, key), &output_t);
+    random::PhiloxRandom(counter, key), &output_t);
 }
 } // namespace cker
 } // namespace nnfw

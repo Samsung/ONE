@@ -71,7 +71,7 @@ inline void LogSoftmax(const SoftmaxParams &params, const Shape &input_shape,
       for (int c = 0; c < depth; ++c)
       {
         output_data[(i * depth + c) * inner_size + j] =
-            (input_data[(i * depth + c) * inner_size + j] - max) * beta - log_sum;
+          (input_data[(i * depth + c) * inner_size + j] - max) * beta - log_sum;
       }
     }
   }
@@ -124,10 +124,10 @@ inline void LogSoftmax(const SoftmaxParams &params, float input_scale, const Sha
       for (int c = 0; c < depth; ++c)
       {
         const float log_prob =
-            scale * input_data[(i * depth + c) * inner_size] * beta - precomputed;
+          scale * input_data[(i * depth + c) * inner_size] * beta - precomputed;
         const int32_t prob_quantized = std::rint(log_prob) + params.zero_point;
         output_data[(i * depth + c) * inner_size] =
-            static_cast<uint8_t>(std::max(std::min(clamp_max, prob_quantized), clamp_min));
+          static_cast<uint8_t>(std::max(std::min(clamp_max, prob_quantized), clamp_min));
       }
     }
   }

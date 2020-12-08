@@ -55,6 +55,17 @@ bool OperationValidator::isSameType(const OperandIndex &idx1, const OperandIndex
   return operandType(idx1) == operandType(idx2);
 }
 
+bool OperationValidator::isSameQuantParam(const OperandIndex &idx1, const OperandIndex &idx2)
+{
+  if (_operands.at(idx1).typeInfo().scale() != _operands.at(idx2).typeInfo().scale())
+    return false;
+
+  if (_operands.at(idx1).typeInfo().offset() != _operands.at(idx2).typeInfo().offset())
+    return false;
+
+  return true;
+}
+
 bool OperationValidator::isValidType(const OperandIndex &idx, const DataType &type)
 {
   return operandType(idx) == type;
@@ -76,11 +87,14 @@ bool OperationValidator::isValidType(const OperandIndex &idx,
 
 void OperationValidator::visit(const operation::AddN &node)
 {
+  const auto output_index(node.getOutputs().at(0));
+
   int size = node.getInputs().size();
   for (int i = 0; i < size; i++)
   {
     const auto input_index(node.getInputs().at(i));
     OP_REQUIRES(isValidType(input_index, {DataType::FLOAT32, DataType::INT32}));
+    OP_REQUIRES(isSameType(input_index, output_index));
   }
 }
 
@@ -102,17 +116,25 @@ void OperationValidator::visit(const operation::BatchMatMul &node)
 {
   const auto lhs_index(node.getInputs().at(operation::BatchMatMul::Input::LHS));
   const auto rhs_index(node.getInputs().at(operation::BatchMatMul::Input::RHS));
+  const auto output_index(node.getOutputs().at(0));
 
   // Constant lhs and rhs is not implemented yet
   OP_REQUIRES(!isConstant(lhs_index) && !isConstant(rhs_index));
+
+  // Allow hybrid quantization (lhs: float / rhs: qint8 / out: float)
+  OP_REQUIRES(isValidType(lhs_index, {DataType::FLOAT32, DataType::QUANT_INT8_ASYMM}));
+  OP_REQUIRES(isSameType(lhs_index, rhs_index) ||
+              ((operandType(lhs_index) == DataType::FLOAT32) &&
+               (operandType(rhs_index) == DataType::QUANT_INT8_ASYMM)));
+  OP_REQUIRES(isSameType(lhs_index, output_index));
 }
 
 void OperationValidator::visit(const operation::BatchToSpaceND &node)
 {
-  const auto block_size_index{node.getInputs().at(operation::BatchToSpaceND::Input::BLOCK_SIZE)};
+  const auto input_index{node.getInputs().at(operation::BatchToSpaceND::Input::INPUT)};
+  const auto output_index{node.getOutputs().at(0)};
 
-  // Non-constant block_size is not implemented yet
-  OP_REQUIRES(isConstant(block_size_index));
+  OP_REQUIRES(isSameType(input_index, output_index));
 }
 
 void OperationValidator::visit(const operation::BinaryArithmetic &node)
@@ -136,6 +158,22 @@ void OperationValidator::visit(const operation::Comparison &node)
   OP_REQUIRES(isValidType(output_index, DataType::BOOL8));
 }
 
+void OperationValidator::visit(const operation::Concat &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+
+  for (auto input_index : node.getInputs())
+  {
+    OP_REQUIRES(isSameType(input_index, output_index));
+
+    // Int8 quantization requires same scale and zero point
+    if (isValidType(output_index, DataType::QUANT_INT8_ASYMM))
+    {
+      OP_REQUIRES(isSameQuantParam(input_index, output_index));
+    }
+  }
+}
+
 void OperationValidator::visit(const operation::Conv2D &node)
 {
   const auto input_index{node.getInputs().at(operation::Conv2D::Input::INPUT)};
@@ -153,7 +191,14 @@ void OperationValidator::visit(const operation::Conv2D &node)
 
 void OperationValidator::visit(const operation::DepthToSpace &node)
 {
+  const auto input_index{node.getInputs().at(operation::DepthToSpace::Input::INPUT)};
+  const auto output_index{node.getOutputs().at(0)};
+
   int32_t block_size = node.param().block_size;
+
+  OP_REQUIRES(isValidType(input_index, {DataType::FLOAT32, DataType::INT32, DataType::INT64,
+                                        DataType::QUANT_UINT8_ASYMM, DataType::QUANT_INT8_ASYMM}));
+  OP_REQUIRES(isSameType(input_index, output_index));
 
   OP_REQUIRES(block_size > 0);
 }
@@ -180,6 +225,32 @@ void OperationValidator::visit(const operation::ElementwiseActivation &node)
 
   // Check if I/O types match
   OP_REQUIRES(isSameType(output_index, input_index));
+
+  switch (node.param().op_type)
+  {
+    case operation::ElementwiseActivation::Type::ELU:
+      OP_REQUIRES(isValidType(input_index, DataType::FLOAT32));
+      break;
+    case operation::ElementwiseActivation::Type::LEAKY_RELU:
+      OP_REQUIRES(
+          isValidType(input_index, {DataType::FLOAT32, DataType::QUANT_UINT8_ASYMM,
+                                    DataType::QUANT_INT8_ASYMM, DataType::QUANT_INT16_ASYMM}));
+      break;
+    case operation::ElementwiseActivation::Type::LOGISTIC:
+      OP_REQUIRES(
+          isValidType(input_index, {DataType::FLOAT32, DataType::QUANT_UINT8_ASYMM,
+                                    DataType::QUANT_INT8_ASYMM, DataType::QUANT_INT16_ASYMM}));
+      break;
+    case operation::ElementwiseActivation::Type::RELU:
+      OP_REQUIRES(isValidType(input_index, {DataType::FLOAT32, DataType::QUANT_UINT8_ASYMM,
+                                            DataType::QUANT_INT8_ASYMM}));
+      break;
+    case operation::ElementwiseActivation::Type::TANH:
+      OP_REQUIRES(
+          isValidType(input_index, {DataType::FLOAT32, DataType::QUANT_UINT8_ASYMM,
+                                    DataType::QUANT_INT8_ASYMM, DataType::QUANT_INT16_ASYMM}));
+      break;
+  }
 }
 
 void OperationValidator::visit(const operation::ElementwiseBinary &node)
@@ -190,6 +261,13 @@ void OperationValidator::visit(const operation::ElementwiseBinary &node)
 
   OP_REQUIRES(isSameType(lhs_index, rhs_index));
   OP_REQUIRES(isSameType(lhs_index, output_index));
+
+  const auto op_type = node.param().op_type;
+  if (op_type == operation::ElementwiseBinary::ElementwiseBinaryType::LOGICAL_AND ||
+      op_type == operation::ElementwiseBinary::ElementwiseBinaryType::LOGICAL_OR)
+  {
+    OP_REQUIRES(isValidType(lhs_index, DataType::BOOL8));
+  }
 }
 
 void OperationValidator::visit(const operation::ElementwiseUnary &node)
@@ -224,8 +302,17 @@ void OperationValidator::visit(const operation::ElementwiseUnary &node)
 void OperationValidator::visit(const operation::EmbeddingLookup &node)
 {
   const auto lookups_index{node.getInputs().at(operation::EmbeddingLookup::Input::LOOKUPS)};
+  const auto values_index{node.getInputs().at(operation::EmbeddingLookup::Input::VALUES)};
+  const auto output_index{node.getOutputs().at(0)};
 
   OP_REQUIRES(isValidType(lookups_index, DataType::INT32));
+
+  // TFLite: Allow hybrid type - value table & output
+  // NNAPI: Require same value table and output type
+  OP_REQUIRES(
+      isSameType(values_index, output_index) ||
+      (isValidType(output_index, DataType::FLOAT32) &&
+       (isValidType(values_index, {DataType::QUANT_INT8_ASYMM, DataType::QUANT_INT8_SYMM}))));
 }
 
 void OperationValidator::visit(const operation::ExpandDims &node)
@@ -235,7 +322,19 @@ void OperationValidator::visit(const operation::ExpandDims &node)
   const auto axis_index{node.getInputs().at(operation::ExpandDims::Input::AXIS)};
 
   OP_REQUIRES(isSameType(output_index, input_index));
-  OP_REQUIRES(isValidType(axis_index, DataType::INT32));
+  OP_REQUIRES(isValidType(axis_index, {DataType::INT32, DataType::INT64}));
+}
+
+void OperationValidator::visit(const operation::Fill &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(operation::Fill::Input::SHAPE)};
+  const auto value_index{node.getInputs().at(operation::Fill::Input::VALUE)};
+
+  OP_REQUIRES(isSameType(output_index, value_index));
+  OP_REQUIRES(isValidType(input_index, {DataType::INT32, DataType::INT64}));
+  OP_REQUIRES(isValidType(output_index,
+                          {DataType::FLOAT32, DataType::INT32, DataType::INT64, DataType::BOOL8}));
 }
 
 void OperationValidator::visit(const operation::HashtableLookup &node)

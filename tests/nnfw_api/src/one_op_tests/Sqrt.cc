@@ -34,7 +34,7 @@ TEST_F(GenModelTest, OneOp_Sqrt_f32)
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
   _context->addTestCase(
-      TestCaseData{}.addInput<float>({1, 4, 9, 16}).addOutput<float>({1, 2, 3, 4}));
+    TestCaseData{}.addInput<float>({1, 4, 9, 16}).addOutput<float>({1, 2, 3, 4}));
   _context->setBackends({"cpu"});
 
   SUCCEED();

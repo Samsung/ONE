@@ -139,7 +139,7 @@ inline bool ProcessBroadcastShapes(const Shape &shape0, const Shape &shape1,
   // From this point it is assumed contractually that corresponding dimensions
   // in shape0 and shape1 are either (a) equal or (b) one or other equals 1.
   const bool swap_inputs =
-      params->broadcast_category == BroadcastableOpCategory::kSecondInputBroadcastsFast;
+    params->broadcast_category == BroadcastableOpCategory::kSecondInputBroadcastsFast;
   const Shape *shape_a = swap_inputs ? &extended_shape1 : &extended_shape0;
   const Shape *shape_b = swap_inputs ? &extended_shape0 : &extended_shape1;
 
@@ -281,8 +281,8 @@ inline void BroadcastBinaryArithmeticOp(BinaryArithmeticOpParam &params, const S
       break;
     case nnfw::cker::BinaryArithmeticOpType::MUL:
       optimized::BroadcastMulDispatchQuant8(
-          params, input1_shape, const_cast<uint8_t *>(input1_data), input2_shape,
-          const_cast<uint8_t *>(input2_data), output_shape, output_data);
+        params, input1_shape, const_cast<uint8_t *>(input1_data), input2_shape,
+        const_cast<uint8_t *>(input2_data), output_shape, output_data);
       break;
     case nnfw::cker::BinaryArithmeticOpType::DIV:
     case nnfw::cker::BinaryArithmeticOpType::POW:
@@ -320,8 +320,8 @@ inline void BroadcastBinaryArithmeticOp(BinaryArithmeticOpParam &params, const S
       break;
     case nnfw::cker::BinaryArithmeticOpType::POW:
       reference::BroadcastBinaryArithmeticOpSlow<float>(
-          params, input1_shape, input1_data, input2_shape, input2_data, output_shape, output_data,
-          GetBinaryArtithmeticFn<op_type, float>());
+        params, input1_shape, input1_data, input2_shape, input2_data, output_shape, output_data,
+        GetBinaryArtithmeticFn<op_type, float>());
       break;
     default:
       assert(false);

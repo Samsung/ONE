@@ -111,7 +111,7 @@ void DynamicShapeInferer::visit(const ir::operation::ArgMinMax &op)
   const auto rank = input_shape.rank();
   axis_value = axis_value < 0 ? axis_value + rank : axis_value;
 
-  ir::Shape new_shape = shape_inference::inferArgMaxShape(input_shape, axis_value, rank);
+  ir::Shape new_shape = shape_inference::inferArgMinMaxShape(input_shape, axis_value, rank);
 
   output->applyShape(new_shape);
   assert(output->buffer() != nullptr);
@@ -388,10 +388,16 @@ void DynamicShapeInferer::visit(const ir::operation::ExpandDims &op)
 
   auto axis_ind = op.getInputs().at(ir::operation::ExpandDims::AXIS);
   auto axis = _tensor_registry->getITensor(axis_ind);
-  auto axis_buf = reinterpret_cast<const int32_t *>(axis->buffer());
-  assert(axis_buf);
+  auto axis_type = axis->data_type();
+  assert(axis_type == ir::DataType::INT32 || axis_type == ir::DataType::INT64);
 
-  auto output_shape = shape_inference::inferExpandDimsShape(input_shape, axis_buf[0]);
+  assert(axis->buffer());
+  int32_t axis_value =
+      (axis_type == ir::DataType::INT32)
+          ? reinterpret_cast<const int32_t *>(axis->buffer())[0]
+          : static_cast<int32_t>(reinterpret_cast<const int64_t *>(axis->buffer())[0]);
+
+  auto output_shape = shape_inference::inferExpandDimsShape(input_shape, axis_value);
 
   output->applyShape(output_shape);
   assert(output->buffer() != nullptr);
@@ -402,19 +408,24 @@ void DynamicShapeInferer::visit(const ir::operation::Fill &op)
   // check if output is not dynamic
   auto output_ind = op.getOutputs().at(0);
   auto output = _tensor_registry->getITensor(output_ind);
-  auto input_ind = op.getInputs().at(ir::operation::Fill::Input::INPUT);
-  auto input = _tensor_registry->getITensor(input_ind);
-  ir::Shape input_shape = input->getShape();
+  auto shape_ind = op.getInputs().at(ir::operation::Fill::Input::SHAPE);
+  auto shape = _tensor_registry->getITensor(shape_ind);
 
-  if ((!input->is_dynamic()) && (!output->is_dynamic()))
+  if ((!shape->is_dynamic()) && (!output->is_dynamic()))
     return;
 
-  assert(input->data_type() == ir::DataType::INT32);
+  const auto dims_type = shape->data_type();
+  assert(dims_type == ir::DataType::INT32 || dims_type == ir::DataType::INT64);
 
-  auto input_buf = reinterpret_cast<const int32_t *>(input->buffer());
-  assert(input_buf);
+  auto dims_buf = shape->buffer();
+  assert(dims_buf);
 
-  auto output_shape = shape_inference::inferFillShape(input_shape, input_buf);
+  const auto &dims_shape = shape->getShape();
+  auto output_shape = ((dims_type == ir::DataType::INT32)
+                           ? shape_inference::inferFillShape<int32_t>(
+                                 dims_shape, reinterpret_cast<const int32_t *>(dims_buf))
+                           : shape_inference::inferFillShape<int64_t>(
+                                 dims_shape, reinterpret_cast<const int64_t *>(dims_buf)));
 
   output->applyShape(output_shape);
   assert(output->buffer() != nullptr);

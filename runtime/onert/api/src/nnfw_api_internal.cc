@@ -25,6 +25,8 @@
 #include "tflite_loader.h"
 #include "json/json.h"
 #include "ir/OpCode.h"
+#include "util/TracingCtx.h"
+
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -156,8 +158,9 @@ void setConfigKeyValues(const CfgKeyValues &keyValues)
 } // namespace
 
 nnfw_session::nnfw_session()
-    : _subgraphs{nullptr}, _execution{nullptr},
-      _kernel_registry{std::make_shared<onert::frontend::custom::KernelRegistry>()}
+  : _subgraphs{nullptr}, _execution{nullptr},
+    _kernel_registry{std::make_shared<onert::frontend::custom::KernelRegistry>()}, _tracing_ctx{
+                                                                                     nullptr}
 {
   // DO NOTHING
 }
@@ -185,13 +188,63 @@ NNFW_STATUS nnfw_session::load_circle_from_buffer(uint8_t *buffer, size_t size)
     return NNFW_STATUS_ERROR;
   }
 
-  _compiler = std::make_unique<onert::compiler::Compiler>(_subgraphs);
+  _tracing_ctx = std::make_unique<onert::util::TracingCtx>(_subgraphs.get());
+
+  _compiler = std::make_unique<onert::compiler::Compiler>(_subgraphs, _tracing_ctx.get());
 
   _state = State::MODEL_LOADED;
   return NNFW_STATUS_NO_ERROR;
 }
 
-NNFW_STATUS nnfw_session::load_model_from_file(const char *package_dir)
+NNFW_STATUS nnfw_session::load_model_from_modelfile(const char *model_file_path)
+{
+  if (!isStateInitialized())
+    return NNFW_STATUS_INVALID_STATE;
+
+  if (!model_file_path)
+  {
+    std::cerr << "Model file path is null." << std::endl;
+    return NNFW_STATUS_UNEXPECTED_NULL;
+  }
+
+  std::string filename{model_file_path};
+  if (filename.size() < 8) // .tflite or .circle
+  {
+    std::cerr << "Invalid model file path." << std::endl;
+    return NNFW_STATUS_ERROR;
+  }
+
+  std::string model_type = filename.substr(filename.size() - 7, 7);
+
+  try
+  {
+    if (model_type == ".tflite")
+    {
+      _subgraphs = onert::tflite_loader::loadModel(filename.c_str());
+    }
+    else if (model_type == ".circle")
+    {
+      _subgraphs = onert::circle_loader::loadModel(filename.c_str());
+    }
+    else
+    {
+      std::cerr << "Unsupported model type" << std::endl;
+      return NNFW_STATUS_ERROR;
+    }
+  }
+  catch (const std::exception &e)
+  {
+    std::cerr << "Error during model loading : " << e.what() << std::endl;
+    return NNFW_STATUS_ERROR;
+  }
+
+  _compiler = std::make_unique<onert::compiler::Compiler>(_subgraphs, _tracing_ctx.get());
+
+  _state = State::MODEL_LOADED;
+  return NNFW_STATUS_NO_ERROR;
+}
+
+NNFW_STATUS nnfw_session::load_model_from_nnpackage(const char *package_dir)
 {
   if (!isStateInitialized())
     return NNFW_STATUS_INVALID_STATE;
@@ -265,7 +318,9 @@ NNFW_STATUS nnfw_session::load_model_from_file(const char *package_dir)
     return NNFW_STATUS_ERROR;
   }
 
-  _compiler = std::make_unique<onert::compiler::Compiler>(_subgraphs);
+  _tracing_ctx = std::make_unique<onert::util::TracingCtx>(_subgraphs.get());
+
+  _compiler = std::make_unique<onert::compiler::Compiler>(_subgraphs, _tracing_ctx.get());
 
   _state = State::MODEL_LOADED;
   return NNFW_STATUS_NO_ERROR;
@@ -300,7 +355,7 @@ NNFW_STATUS nnfw_session::prepare()
   {
     _subgraphs.reset();
     std::shared_ptr<onert::exec::ExecutorMap> executors = _compiler->compile();
-    _execution = std::make_shared<onert::exec::Execution>(executors);
+    _execution = std::make_unique<onert::exec::Execution>(executors);
   }
   catch (const std::exception &e)
   {
@@ -383,8 +438,8 @@ NNFW_STATUS nnfw_session::set_input(uint32_t index, NNFW_TYPE /*type*/, const vo
   if (!buffer && length != 0)
   {
     std::cerr
-        << "Error during nnfw_session::set_input : given buffer is NULL but the length is not 0"
-        << std::endl;
+      << "Error during nnfw_session::set_input : given buffer is NULL but the length is not 0"
+      << std::endl;
     return NNFW_STATUS_ERROR;
   }
 
@@ -412,8 +467,8 @@ NNFW_STATUS nnfw_session::set_output(uint32_t index, NNFW_TYPE /*type*/, void *b
   if (!buffer && length != 0)
   {
     std::cerr
-        << "Error during nnfw_session::set_output : given buffer is NULL but the length is not 0"
-        << std::endl;
+      << "Error during nnfw_session::set_output : given buffer is NULL but the length is not 0"
+      << std::endl;
     return NNFW_STATUS_ERROR;
   }
 

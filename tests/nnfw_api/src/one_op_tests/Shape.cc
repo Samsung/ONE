@@ -27,9 +27,9 @@ TEST_F(GenModelTest, OneOp_Shape)
   cgen.setInputsAndOutputs({in}, {out});
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
   _context->addTestCase(
-      TestCaseData{}
-          .addInput<float>({1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18})
-          .addOutput<int32_t>({1, 3, 3, 2}));
+    TestCaseData{}
+      .addInput<float>({1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18})
+      .addOutput<int32_t>({1, 3, 3, 2}));
   _context->setBackends({"cpu"});
 
   SUCCEED();
@@ -46,9 +46,9 @@ TEST_F(GenModelTest, OneOp_Shape_Int64)
   cgen.setInputsAndOutputs({in}, {out});
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
   _context->addTestCase(
-      TestCaseData{}
-          .addInput<float>({1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18})
-          .addOutput<int64_t>({1, 3, 3, 2}));
+    TestCaseData{}
+      .addInput<float>({1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18})
+      .addOutput<int64_t>({1, 3, 3, 2}));
   _context->setBackends({"cpu"});
 
   SUCCEED();

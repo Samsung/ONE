@@ -16,6 +16,7 @@
 
 #include "ExecutorFactory.h"
 
+#include <deque>
 #include <functional>
 #include "exec/ExecutionObservers.h"
 #include "exec/LinearExecutor.h"
@@ -25,15 +26,13 @@
 #include "compiler/ExecutionBuilder.h"
 #include "exec/ExecTime.h"
 #include "compiler/Linear.h"
-#include "compiler/TensorBuilders.h"
-#include "backend/IConstantInitializer.h"
-#include "backend/IKernelGenerator.h"
-#include "backend/IOptimizer.h"
 #include "backend/IPortableTensor.h"
 #include "backend/controlflow/Config.h"
 #include "backend/controlflow/KernelGenerator.h"
 #include "backend/controlflow/UserTensor.h"
 #include "backend/controlflow/TensorBuilder.h"
+#include "util/TracingCtx.h"
+
 #include <memory>
 
 namespace onert
@@ -69,7 +68,6 @@ void initializeSubgraphIOTensors(compiler::LoweredGraph &lowered_graph,
                                  const ir::OperandIndexSequence &indices)
 {
   // TODO Store controlflow backend in BackendContext
-  std::shared_ptr<backend::controlflow::TensorBuilder> cf_tensor_builder;
   std::shared_ptr<backend::controlflow::TensorRegistry> cf_tensor_reg;
   for (const auto &e : lowered_graph.backend_contexts())
   {
@@ -77,13 +75,10 @@ void initializeSubgraphIOTensors(compiler::LoweredGraph &lowered_graph,
     auto &context = e.second;
     if (backend->config()->id() == backend::controlflow::Config::ID)
     {
-      cf_tensor_builder =
-          std::dynamic_pointer_cast<backend::controlflow::TensorBuilder>(context->tensor_builder);
       cf_tensor_reg =
           std::dynamic_pointer_cast<backend::controlflow::TensorRegistry>(context->tensor_registry);
     }
   }
-  assert(cf_tensor_builder);
   assert(cf_tensor_reg);
 
   for (auto ind : indices)
@@ -167,51 +162,6 @@ void ExecutorFactory::initializeBackendContext(compiler::LoweredGraph *lowered_g
   }
 }
 
-void ExecutorFactory::runTensorRegistration(compiler::LoweredGraph *lowered_graph,
-                                            const std::vector<ir::OpSequenceIndex> &order)
-{
-  for (const auto index : order)
-  {
-    const auto &op_seq = lowered_graph->op_seqs().at(index);
-    const auto backend = lowered_graph->getLowerInfo(index)->backend();
-    auto tensor_builder = lowered_graph->backend_contexts().at(backend)->tensor_builder;
-    auto model_io = lowered_graph->graph().getInputs() + lowered_graph->graph().getOutputs();
-
-    // TODO nit: Remove indentation
-    {
-      // Default registration
-      for (const auto op_idx : op_seq)
-      {
-        const auto &op = lowered_graph->graph().operations().at(op_idx);
-        for (const auto &index :
-             (op.getInputs() | ir::Remove::UNDEFINED) + (op.getOutputs() | ir::Remove::UNDEFINED))
-        {
-          if (!tensor_builder->isRegistered(index) && !model_io.contains(index))
-          {
-            const auto &operand_lower_info =
-                lowered_graph->getLowerInfo(index)->def_factors().getOnlyElement();
-
-            // E.g., permute (CPU) -> tensor A -> MaxPool2D(acl_cl)
-            // op.getOutputs() of permute (CPU) returns tensor A
-            // but tensor A belongs to the backend of acl_cl.
-            // So, we have to make this tensor NOT registered for CPU.
-            if (operand_lower_info.backend() != backend)
-              continue;
-
-            const auto &obj = lowered_graph->graph().operands().at(index);
-            const auto frontend_layout = op_seq.getLayout();
-            const auto backend_layout = operand_lower_info.layout();
-            ir::OperandInfo backend_info{permuteShape(obj.shape(), frontend_layout, backend_layout),
-                                         obj.typeInfo(), obj.info().memAllocType(),
-                                         obj.isConstant()};
-            tensor_builder->registerTensorInfo(index, backend_info, backend_layout);
-          }
-        }
-      }
-    }
-  }
-}
-
 void ExecutorFactory::prepareMigrantTensors(compiler::LoweredGraph &lowered_graph)
 {
   TensorRegistries tensor_regs{lowered_graph.backend_contexts(), true};
@@ -247,44 +197,21 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lo
 
   initializeBackendContext(lowered_graph.get());
 
-  // linearize
+  TensorRegistries tensor_regs{lowered_graph->backend_contexts(), true};
+
   assert(!lowered_graph->graph().isBuildingPhase());
-
-  /*************************************************
-   * Backend dependent analysis & optimization phase
-   *************************************************/
-
-  for (auto &pair : backend_contexts)
-  {
-    auto &optimizer = pair.second->optimizer;
-    if (optimizer)
-      optimizer->optimize();
-  }
-
-  /**********************************************************
-   * Backend dependent analysis & optimization phase finished
-   **********************************************************/
-
-  /***********************
-   * Code generation phase
-   ***********************/
-
-  auto order = Linear::linearize(*lowered_graph);
-  runTensorRegistration(lowered_graph.get(), order);
 
   initializeSubgraphIOTensors(
       *lowered_graph, (lowered_graph->graph().getInputs() + lowered_graph->graph().getOutputs()) |
                           ir::Remove::DUPLICATED | ir::Remove::UNDEFINED);
 
+  // linearize
+  auto order = Linear::linearize(*lowered_graph);
   Linear::dump(*lowered_graph, order);
-  Linear::planTensors(*lowered_graph, order);
 
-  TensorBuilders tensor_builders{lowered_graph->backend_contexts(), true};
-  TensorRegistries tensor_regs{lowered_graph->backend_contexts(), true};
-
-  for (auto &tensor_builder : tensor_builders)
+  for (auto &pair : backend_contexts)
   {
-    tensor_builder->prepare();
+    pair.second->genTensors(order, lowered_graph->op_seqs(), *lowered_graph->getLowerInfo());
   }
 
   prepareMigrantTensors(*lowered_graph);
@@ -292,66 +219,56 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lo
   // Give some runtime objects to controlflow KernelGenerator
   for (auto &pair : backend_contexts)
   {
-    auto kernel_gen = pair.second->kernel_gen;
-    auto cf_kernel_gen = dynamic_cast<backend::controlflow::KernelGenerator *>(kernel_gen.get());
-    if (cf_kernel_gen != nullptr)
+    auto cf_context = dynamic_cast<backend::controlflow::BackendContext *>(pair.second.get());
+    if (cf_context != nullptr)
     {
+      auto cf_kernel_gen = cf_context->kernel_gen;
       cf_kernel_gen->setTensorRegistries(tensor_regs);
       cf_kernel_gen->setExecutorMap(executor_map);
-      break;
     }
   }
 
   ExecutionBuilder builder;
 
-  // Generate kernels
-  lowered_graph->iterateTopolOpSeqs(
-      [&](const ir::OpSequenceIndex &op_seq_index, const ir::OpSequence &op_seq) {
-        auto lower_info = lowered_graph->getLowerInfo(op_seq_index);
-        auto kernel_gen = lowered_graph->backend_contexts().at(lower_info->backend())->kernel_gen;
-        auto fn_seq = kernel_gen->generate(op_seq);
-        if (options.he_profiling_mode)
-        {
-          fn_seq->wrap<SyncFunction>(lower_info->backend()->config());
-        }
-        builder.append(op_seq_index, {&op_seq, lower_info, std::move(fn_seq)});
-      });
-
-  for (auto &tensor_builder : tensor_builders)
-  {
-    tensor_builder->allocate();
-  }
-
+  // Adjust the order of backends for the upcoming iteration
+  std::deque<std::pair<const backend::Backend *, backend::BackendContext *>> ordered_contexts;
   for (auto &pair : backend_contexts)
   {
-    pair.second->initConsts();
+    // NOTE controlflow backend must be processed lastly.
+    // This is because of Permute layer's specialty which is the only operation that could have
+    // different ITensor objects for the input and the output. And it requires all other backends'
+    // tensors are ready to use.
+    if (pair.first->config()->id() == "controlflow")
+      ordered_contexts.emplace_back(pair.first, pair.second.get());
+    else
+      ordered_contexts.emplace_front(pair.first, pair.second.get());
   }
 
-  lowered_graph->graph().operands().iterate(
-      [](const ir::OperandIndex &, ir::Operand &obj) { obj.releaseData(); });
+  // Generate kernels
+  for (auto &pair : ordered_contexts)
+  {
+    auto codes = pair.second->genKernels(order, lowered_graph->op_seqs());
+    for (auto &pair : codes)
+    {
+      auto &op_seq_ind = pair.first;
+      auto &fn_seq = pair.second;
+      auto &op_seq = lowered_graph->op_seqs().at(op_seq_ind);
+      auto lower_info = lowered_graph->getLowerInfo(op_seq_ind);
+      if (options.he_profiling_mode)
+        fn_seq->wrap<SyncFunction>(lower_info->backend()->config());
+      builder.append(op_seq_ind, {&op_seq, lower_info, std::move(fn_seq)});
+    }
+  }
 
   auto code_map = builder.releaseCodeMap();
 
-  for (auto &it : code_map)
-  {
-    auto op_seq_index = it.first;
-    auto &fn_seq = it.second.fn_seq;
-
-    fn_seq->iterate([&](exec::IFunction &ifunc) {
-      ifunc.prepare();
-      auto backend = lowered_graph->getLowerInfo(op_seq_index)->backend();
-      auto tensor_builder = lowered_graph->backend_contexts().at(backend)->tensor_builder;
-      tensor_builder->postFunctionPrepare();
-    });
-  }
-
-  auto exec =
-      new exec::LinearExecutor{std::move(lowered_graph), tensor_regs, std::move(code_map), order};
+  auto exec = new exec::LinearExecutor{std::move(lowered_graph), tensor_regs, std::move(code_map),
+                                       order, options.tracing_ctx};
 
   if (!options.trace_filepath.empty())
   {
-    std::unique_ptr<exec::IExecutionObserver> ctp =
-        std::make_unique<exec::TracingObserver>(options.trace_filepath, exec->graph());
+    std::unique_ptr<exec::IExecutionObserver> ctp = std::make_unique<exec::TracingObserver>(
+        options.trace_filepath, exec->graph(), options.tracing_ctx);
     exec->addObserver(std::move(ctp));
   }
 
@@ -366,95 +283,81 @@ exec::IExecutor *ExecutorFactory::createDataflowExecutor(
 
   initializeBackendContext(lowered_graph.get());
 
-  auto order = Linear::linearize(*lowered_graph);
-  runTensorRegistration(lowered_graph.get(), order);
+  TensorRegistries tensor_regs{lowered_graph->backend_contexts(), true};
+
+  assert(!lowered_graph->graph().isBuildingPhase());
 
   initializeSubgraphIOTensors(
       *lowered_graph, (lowered_graph->graph().getInputs() + lowered_graph->graph().getOutputs()) |
                           ir::Remove::DUPLICATED | ir::Remove::UNDEFINED);
 
-  TensorBuilders tensor_builders{lowered_graph->backend_contexts(), true};
-  TensorRegistries tensor_regs{lowered_graph->backend_contexts(), true};
-
-  // To make tensors never be deallocated, this is a workaround to use static memory planner
-  for (auto &tensor_builder : tensor_builders)
+  // linearize
+  // This order is just for giving topological order info to the backens
+  // TODO When we pass a partial graph to a backend, we can remove this
+  auto order = Linear::linearize(*lowered_graph);
+  for (auto &pair : backend_contexts)
   {
-    lowered_graph->graph().operands().iterate(
-        [&](const ir::OperandIndex &ind, const ir::Operand &) {
-          if (tensor_builder->isRegistered(ind))
-          {
-            tensor_builder->notifyFirstUse(ind);
-          }
-        });
-  }
-
-  for (auto &tensor_builder : tensor_builders)
-  {
-    tensor_builder->prepare();
+    pair.second->genTensors(order, lowered_graph->op_seqs(), *lowered_graph->getLowerInfo());
   }
 
   prepareMigrantTensors(*lowered_graph);
 
-  ExecutionBuilder builder;
-
-  // Generate kernels
-  lowered_graph->iterateTopolOpSeqs([&](const ir::OpSequenceIndex &op_seq_index,
-                                        const ir::OpSequence &op_seq) {
-    auto lower_info = lowered_graph->getLowerInfo(op_seq_index);
-    auto kernel_gen = lowered_graph->backend_contexts().at(lower_info->backend())->kernel_gen;
-    // Set TensorBuilderSet and ExecutorMap to kernel_gen of control flow
-    auto cf_kernel_gen = dynamic_cast<backend::controlflow::KernelGenerator *>(kernel_gen.get());
-    if (cf_kernel_gen != nullptr)
+  // Give some runtime objects to controlflow KernelGenerator
+  for (auto &pair : backend_contexts)
+  {
+    auto cf_context = dynamic_cast<backend::controlflow::BackendContext *>(pair.second.get());
+    if (cf_context != nullptr)
     {
-      assert(cf_kernel_gen != nullptr);
+      auto cf_kernel_gen = cf_context->kernel_gen;
       cf_kernel_gen->setTensorRegistries(tensor_regs);
       cf_kernel_gen->setExecutorMap(executor_map);
     }
-    auto fn_seq = kernel_gen->generate(op_seq);
-    if (options.he_profiling_mode)
-    {
-      fn_seq->wrap<SyncFunction>(lower_info->backend()->config());
-    }
-    builder.append(op_seq_index, {&op_seq, lower_info, std::move(fn_seq)});
-  });
-
-  for (const auto &tensor_builder : tensor_builders)
-  {
-    tensor_builder->allocate();
   }
 
+  ExecutionBuilder builder;
+
+  // Adjust the order of backends for the upcoming iteration
+  std::deque<std::pair<const backend::Backend *, backend::BackendContext *>> ordered_contexts;
   for (auto &pair : backend_contexts)
   {
-    pair.second->initConsts();
+    // NOTE controlflow backend must be processed lastly.
+    // This is because of Permute layer's specialty which is the only operation that could have
+    // different ITensor objects for the input and the output. And it requires all other backends'
+    // tensors are ready to use.
+    if (pair.first->config()->id() == "controlflow")
+      ordered_contexts.emplace_back(pair.first, pair.second.get());
+    else
+      ordered_contexts.emplace_front(pair.first, pair.second.get());
   }
 
-  lowered_graph->graph().operands().iterate(
-      [](const ir::OperandIndex &, ir::Operand &obj) { obj.releaseData(); });
+  // Generate kernels
+  for (auto &pair : ordered_contexts)
+  {
+    auto codes = pair.second->genKernels(order, lowered_graph->op_seqs());
+    for (auto &pair : codes)
+    {
+      auto &op_seq_ind = pair.first;
+      auto &fn_seq = pair.second;
+      auto &op_seq = lowered_graph->op_seqs().at(op_seq_ind);
+      auto lower_info = lowered_graph->getLowerInfo(op_seq_ind);
+      if (options.he_profiling_mode)
+        fn_seq->wrap<SyncFunction>(lower_info->backend()->config());
+      builder.append(op_seq_ind, {&op_seq, lower_info, std::move(fn_seq)});
+    }
+  }
 
   auto code_map = builder.releaseCodeMap();
-
-  for (auto &it : code_map)
-  {
-    auto op_seq_index = it.first;
-    auto &fn_seq = it.second.fn_seq;
-
-    fn_seq->iterate([&](exec::IFunction &ifunc) {
-      ifunc.prepare();
-      auto backend = lowered_graph->getLowerInfo(op_seq_index)->backend();
-      auto tensor_builder = lowered_graph->backend_contexts().at(backend)->tensor_builder;
-      tensor_builder->postFunctionPrepare();
-    });
-  }
 
   exec::ExecutorBase *exec = nullptr;
   if (parallel)
   {
-    exec = new exec::ParallelExecutor{std::move(lowered_graph), tensor_regs, std::move(code_map)};
+    exec = new exec::ParallelExecutor{std::move(lowered_graph), tensor_regs, std::move(code_map),
+                                      options.tracing_ctx};
   }
   else
   {
-    auto dataflow_exec =
-        new exec::DataflowExecutor{std::move(lowered_graph), tensor_regs, std::move(code_map)};
+    auto dataflow_exec = new exec::DataflowExecutor{std::move(lowered_graph), tensor_regs,
+                                                    std::move(code_map), options.tracing_ctx};
     if (options.he_profiling_mode)
     {
       std::vector<const backend::Backend *> backends;
@@ -472,8 +375,8 @@ exec::IExecutor *ExecutorFactory::createDataflowExecutor(
 
   if (!options.trace_filepath.empty())
   {
-    std::unique_ptr<exec::IExecutionObserver> ctp =
-        std::make_unique<exec::TracingObserver>(options.trace_filepath, exec->graph());
+    std::unique_ptr<exec::IExecutionObserver> ctp = std::make_unique<exec::TracingObserver>(
+        options.trace_filepath, exec->graph(), options.tracing_ctx);
     exec->addObserver(std::move(ctp));
   }
 

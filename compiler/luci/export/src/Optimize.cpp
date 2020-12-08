@@ -18,6 +18,7 @@
 #include "ProgressReporter.h"
 
 #include <luci/Pass/ShapeInferencePass.h>
+#include <luci/Pass/ShapeSignatureInferencePass.h>
 #include <luci/Pass/TypeInferencePass.h>
 
 #include <logo/Phase.h>
@@ -34,6 +35,7 @@ void optimize(loco::Graph *g)
     // prepare type and shape before optimization
     phase.emplace_back(std::make_unique<TypeInferencePass>());
     phase.emplace_back(std::make_unique<ShapeInferencePass>());
+    phase.emplace_back(std::make_unique<ShapeSignatureInferencePass>());
 
     // TODO add more optimization passes (with a knob)
   }

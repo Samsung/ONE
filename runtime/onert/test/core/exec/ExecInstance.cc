@@ -21,6 +21,7 @@
 #include "compiler/Compiler.h"
 #include "exec/Execution.h"
 #include "ir/operation/BinaryArithmetic.h"
+#include "util/TracingCtx.h"
 
 namespace
 {
@@ -51,8 +52,8 @@ public:
     auto operand_rhs2 = graph->addOperand(shape, type);
     auto operand_result2 = graph->addOperand(shape, type);
     graph->operands()
-        .at(operand_rhs2)
-        .data(std::make_unique<CachedData>(reinterpret_cast<const uint8_t *>(&rhs2_data), 16));
+      .at(operand_rhs2)
+      .data(std::make_unique<CachedData>(reinterpret_cast<const uint8_t *>(&rhs2_data), 16));
     // 2nd add operations (result2 <= result1 + rhs2)
     operation::BinaryArithmetic::Param param1;
     param1.arithmetic_type = operation::BinaryArithmetic::ArithmeticType::ADD;
@@ -60,14 +61,14 @@ public:
     auto input_set1 = OperandIndexSequence{operand_lhs, operand_rhs1};
     auto output_set1 = OperandIndexSequence{operand_result1};
     graph->addOperation(
-        std::make_unique<operation::BinaryArithmetic>(input_set1, output_set1, param1));
+      std::make_unique<operation::BinaryArithmetic>(input_set1, output_set1, param1));
     operation::BinaryArithmetic::Param param2;
     param2.arithmetic_type = operation::BinaryArithmetic::ArithmeticType::ADD;
     param2.activation = Activation::NONE;
     auto input_set2 = OperandIndexSequence{operand_result1, operand_rhs2};
     auto output_set2 = OperandIndexSequence{operand_result2};
     graph->addOperation(
-        std::make_unique<operation::BinaryArithmetic>(input_set2, output_set2, param2));
+      std::make_unique<operation::BinaryArithmetic>(input_set2, output_set2, param2));
     // Identify model inputs and outputs
     graph->addInput(operand_lhs);
     graph->addInput(operand_rhs1);
@@ -77,13 +78,15 @@ public:
     // Compile
     auto subgs = std::make_shared<onert::ir::Subgraphs>();
     subgs->push(onert::ir::SubgraphIndex{0}, graph);
-    onert::compiler::Compiler compiler{subgs};
+    tracing_ctx = std::make_unique<onert::util::TracingCtx>(subgs.get());
+    onert::compiler::Compiler compiler{subgs, tracing_ctx.get()};
     executors = compiler.compile();
   }
 
 public:
   std::shared_ptr<Graph> graph;
   std::shared_ptr<onert::exec::ExecutorMap> executors;
+  std::unique_ptr<onert::util::TracingCtx> tracing_ctx;
 };
 
 TEST(ExecInstance, simple)
@@ -137,7 +140,8 @@ TEST(ExecInstance, twoCompile)
   // Make new executor: compile again
   auto subgs = std::make_shared<onert::ir::Subgraphs>();
   subgs->push(onert::ir::SubgraphIndex{0}, graph);
-  onert::compiler::Compiler compiler{subgs};
+  auto tracing_ctx = std::make_unique<onert::util::TracingCtx>(subgs.get());
+  onert::compiler::Compiler compiler{subgs, tracing_ctx.get()};
   std::shared_ptr<onert::exec::ExecutorMap> executors2 = compiler.compile();
   onert::exec::Execution execution2{executors2};
 
@@ -205,7 +209,7 @@ class Inference
 public:
   Inference(const float (&input1)[4], const float (&input2)[4], float (&output)[4],
             std::shared_ptr<onert::exec::ExecutorMap> &executors)
-      : _input1{input1}, _input2{input2}, _output{output}, _executors{executors}
+    : _input1{input1}, _input2{input2}, _output{output}, _executors{executors}
   {
     // DO NOTHING
   }

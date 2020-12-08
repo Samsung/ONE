@@ -107,7 +107,7 @@ protected:
     {
       // TODO Eventually, downloaded model tests are removed.
       NNFW_ENSURE_SUCCESS(nnfw_load_model_from_file(
-          _session, NNPackages::get().getModelAbsolutePath(PackageNo).c_str()));
+        _session, NNPackages::get().getModelAbsolutePath(PackageNo).c_str()));
     }
   }
 
@@ -136,8 +136,8 @@ protected:
     EXPECT_EQ(input_elements, 1);
     _input.resize(input_elements);
     ASSERT_EQ(
-        nnfw_set_input(_session, 0, ti_input.dtype, _input.data(), sizeof(float) * input_elements),
-        NNFW_STATUS_NO_ERROR);
+      nnfw_set_input(_session, 0, ti_input.dtype, _input.data(), sizeof(float) * input_elements),
+      NNFW_STATUS_NO_ERROR);
 
     nnfw_tensorinfo ti_output;
     ASSERT_EQ(nnfw_output_tensorinfo(_session, 0, &ti_output), NNFW_STATUS_NO_ERROR);
@@ -155,13 +155,13 @@ protected:
     uint64_t input_elements = num_elems(ti_input);
     _input.resize(input_elements);
     ASSERT_EQ(
-        nnfw_set_input(_session, 0, ti_input->dtype, _input.data(), sizeof(float) * input_elements),
-        NNFW_STATUS_NO_ERROR);
+      nnfw_set_input(_session, 0, ti_input->dtype, _input.data(), sizeof(float) * input_elements),
+      NNFW_STATUS_NO_ERROR);
 
     _output.resize(40000); // Give sufficient size for the output
-    ASSERT_EQ(nnfw_set_output(_session, 0, ti_input->dtype, _output.data(),
-                              sizeof(float) * _output.size()),
-              NNFW_STATUS_NO_ERROR);
+    ASSERT_EQ(
+      nnfw_set_output(_session, 0, ti_input->dtype, _output.data(), sizeof(float) * _output.size()),
+      NNFW_STATUS_NO_ERROR);
   }
 
 protected:
@@ -227,6 +227,33 @@ protected:
 
 protected:
   std::array<SessionObject, NUM_SESSIONS> _objects;
+};
+
+class ValidationTestTwoSessions : public ValidationTest
+{
+protected:
+  nnfw_session *_session1 = nullptr;
+  nnfw_session *_session2 = nullptr;
+};
+
+class ValidationTestTwoSessionsCreated : public ValidationTestTwoSessions
+{
+protected:
+  void SetUp() override
+  {
+    ValidationTestTwoSessions::SetUp();
+    ASSERT_EQ(nnfw_create_session(&_session1), NNFW_STATUS_NO_ERROR);
+    ASSERT_EQ(nnfw_create_session(&_session2), NNFW_STATUS_NO_ERROR);
+    ASSERT_NE(_session1, nullptr);
+    ASSERT_NE(_session2, nullptr);
+  }
+
+  void TearDown() override
+  {
+    ASSERT_EQ(nnfw_close_session(_session1), NNFW_STATUS_NO_ERROR);
+    ASSERT_EQ(nnfw_close_session(_session2), NNFW_STATUS_NO_ERROR);
+    ValidationTestTwoSessions::TearDown();
+  }
 };
 
 #endif // __NNFW_API_TEST_FIXTURES_H__

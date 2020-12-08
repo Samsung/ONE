@@ -24,6 +24,8 @@
 #include "exec/IExecutor.h"
 #include "util/EventCollector.h"
 #include "util/EventRecorder.h"
+#include "util/TracingCtx.h"
+#include "util/EventWriter.h"
 
 namespace onert
 {
@@ -65,7 +67,8 @@ private:
 class TracingObserver : public IExecutionObserver
 {
 public:
-  TracingObserver(const std::string &filepath, const ir::Graph &graph);
+  TracingObserver(const std::string &filepath, const ir::Graph &graph,
+                  const util::TracingCtx *tracing_ctx);
   ~TracingObserver();
   void handleSubgraphBegin(IExecutor *) override;
   void handleJobBegin(IExecutor *, const ir::OpSequence *, const backend::Backend *) override;
@@ -76,10 +79,11 @@ private:
   static std::string opSequenceTag(const ir::OpSequence *op_seq, const ir::Operations &operations);
 
 private:
-  const std::string &_base_filepath;
-  EventRecorder _recorder;
+  std::unique_ptr<EventRecorder> _recorder;
   EventCollector _collector;
   const ir::Graph &_graph;
+  EventWriter *_event_writer;
+  const util::TracingCtx *_tracing_ctx;
 };
 
 } // namespace exec

@@ -110,6 +110,18 @@ int entry(int argc, char **argv)
       .default_value(false)
       .help("This will fuse BatchNorm operators of pre-activations to Convolution operator");
 
+  arser.add_argument("--remove_redundant_transpose")
+      .nargs(0)
+      .required(false)
+      .default_value(false)
+      .help("This will fuse or remove subsequent Transpose operators");
+
+  arser.add_argument("--replace_cw_mul_add_with_depthwise_conv")
+      .nargs(0)
+      .required(false)
+      .default_value(false)
+      .help("This will replace channel-wise mul/add with DepthwiseConv2D operator");
+
   arser.add_argument("--resolve_customop_add")
       .nargs(0)
       .required(false)
@@ -134,6 +146,12 @@ int entry(int argc, char **argv)
       .default_value(false)
       .help("This will convert weight format of FullyConnected to SHUFFLED16x1FLOAT32. Note that "
             "it only converts weights whose row is a multiple of 16");
+
+  arser.add_argument("--substitute_pack_to_reshape")
+      .nargs(0)
+      .required(false)
+      .default_value(false)
+      .help("This will convert single input Pack to Reshape");
 
   arser.add_argument("--mute_warnings")
       .nargs(0)
@@ -203,6 +221,8 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::ResolveCustomOpAdd);
     options->enable(Algorithms::ResolveCustomOpBatchMatMul);
     options->enable(Algorithms::ResolveCustomOpMatMul);
+    options->enable(Algorithms::RemoveRedundantTranspose);
+    options->enable(Algorithms::SubstitutePackToReshape);
   }
   if (arser.get<bool>("--fold_dequantize"))
     options->enable(Algorithms::FoldDequantize);
@@ -220,6 +240,10 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::MakeBatchNormGammaPositive);
   if (arser.get<bool>("--fuse_preactivation_batchnorm"))
     options->enable(Algorithms::FusePreActivationBatchNorm);
+  if (arser.get<bool>("--remove_redundant_transpose"))
+    options->enable(Algorithms::RemoveRedundantTranspose);
+  if (arser.get<bool>("--replace_cw_mul_add_with_depthwise_conv"))
+    options->enable(Algorithms::ReplaceMulAddWithDepthwiseConv);
   if (arser.get<bool>("--resolve_customop_add"))
     options->enable(Algorithms::ResolveCustomOpAdd);
   if (arser.get<bool>("--resolve_customop_batchmatmul"))
@@ -228,6 +252,8 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::ResolveCustomOpMatMul);
   if (arser.get<bool>("--shuffle_weight_to_16x1float32"))
     options->enable(Algorithms::ShuffleWeightTo16x1Float32);
+  if (arser.get<bool>("--substitute_pack_to_reshape"))
+    options->enable(Algorithms::SubstitutePackToReshape);
 
   if (arser.get<bool>("--mute_warnings"))
     settings->set(luci::UserSettings::Key::MuteWarnings, true);

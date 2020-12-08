@@ -67,15 +67,15 @@ public:
     DimMetaData() = delete;
     DimMetaData(SparseDimensionType format, std::vector<uint16_t> array_segments,
                 std::vector<uint16_t> array_indices)
-        : _format{format},
-          _array_segments_type(SparseIndexVectorType::SparseIndexVector_Uint16Vector),
-          _array_indices_type(SparseIndexVectorType::SparseIndexVector_Uint16Vector)
+      : _format{format},
+        _array_segments_type(SparseIndexVectorType::SparseIndexVector_Uint16Vector),
+        _array_indices_type(SparseIndexVectorType::SparseIndexVector_Uint16Vector)
     {
       _array_segments.u16 = array_segments;
       _array_indices.u16 = array_indices;
     }
     DimMetaData(SparseDimensionType format, int32_t dense_size)
-        : _format{format}, _dense_size{dense_size}
+      : _format{format}, _dense_size{dense_size}
     {
     }
     SparseDimensionType _format{circle::DimensionType_DENSE};
@@ -139,6 +139,8 @@ public:
   uint32_t addOperatorAddN(const OperatorParams &params);
   uint32_t addOperatorArgMax(const OperatorParams &params,
                              circle::TensorType output_type = circle::TensorType::TensorType_INT32);
+  uint32_t addOperatorArgMin(const OperatorParams &params,
+                             circle::TensorType output_type = circle::TensorType::TensorType_INT32);
   uint32_t addOperatorAveragePool2D(const OperatorParams &params, circle::Padding padding,
                                     int stride_w, int stride_h, int filter_w, int filter_h,
                                     circle::ActivationFunctionType actfn);
@@ -150,16 +152,19 @@ public:
                              int stride_h, circle::ActivationFunctionType actfn, int dilation_w = 1,
                              int dilation_h = 1);
   uint32_t addOperatorCos(const OperatorParams &params);
+  uint32_t addOperatorDepthToSpace(const OperatorParams &params, int32_t block_size);
   uint32_t addOperatorDepthwiseConv2D(const OperatorParams &params, circle::Padding padding,
                                       int stride_w, int stride_h, int depth_multiplier,
                                       circle::ActivationFunctionType actfn, int dilation_w = 1,
                                       int dilation_h = 1);
+  uint32_t addOperatorElu(const OperatorParams &params);
   uint32_t addOperatorEqual(const OperatorParams &params);
+  uint32_t addOperatorExpandDims(const OperatorParams &params);
   uint32_t addOperatorFill(const OperatorParams &params);
   uint32_t addOperatorFloor(const OperatorParams &params);
   uint32_t addOperatorFullyConnected(const OperatorParams &params,
                                      circle::FullyConnectedOptionsWeightsFormat weights_format =
-                                         circle::FullyConnectedOptionsWeightsFormat_DEFAULT);
+                                       circle::FullyConnectedOptionsWeightsFormat_DEFAULT);
   uint32_t addOperatorIf(const OperatorParams &params, uint32_t then_subg, uint32_t else_subg);
   uint32_t addOperatorInstanceNorm(const OperatorParams &params, float epsilon,
                                    circle::ActivationFunctionType actfn);
@@ -167,6 +172,7 @@ public:
   uint32_t addOperatorLeakyRelu(const OperatorParams &params, float alpha);
   uint32_t addOperatorLess(const OperatorParams &params);
   uint32_t addOperatorLogSoftmax(const OperatorParams &params);
+  uint32_t addOperatorMean(const OperatorParams &params, bool keep_dims);
   uint32_t addOperatorNeg(const OperatorParams &params);
   uint32_t addOperatorOneHot(const OperatorParams &params, int32_t axis);
   uint32_t addOperatorPad(const OperatorParams &params);

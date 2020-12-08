@@ -1,7 +1,0 @@
-#ifndef INT_VALUE
-#error "INT_VALUE should be defined"
-#endif // INT_VALUE
-
-INT_VALUE(INPUT_DATA_H, 128192)
-INT_VALUE(INPUT_DATA_W, 4)
-INT_VALUE(INDEX_DATA, 300)

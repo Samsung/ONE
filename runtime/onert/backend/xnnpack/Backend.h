@@ -26,8 +26,6 @@
 
 #include <memory>
 
-#include <xnnpack.h>
-
 namespace onert
 {
 namespace backend
@@ -43,7 +41,7 @@ public:
   std::shared_ptr<IConfig> config() const override { return _config; }
 
   std::unique_ptr<onert::backend::BackendContext>
-  newContext(const ir::Graph &graph, const std::shared_ptr<custom::IKernelBuilder> &,
+  newContext(const ir::Graph &graph, const std::shared_ptr<custom::IKernelBuilder> &kb,
              bool) const override
   {
     const auto &operands = graph.operands();
@@ -54,9 +52,8 @@ public:
     context->tensor_registry = tr;
     context->tensor_builder = tb;
     context->constant_initializer = std::make_shared<ConstantInitializer>(operands, tr);
-    context->kernel_gen = std::make_shared<KernelGenerator>(operands, operations, tb, tr,
+    context->kernel_gen = std::make_shared<KernelGenerator>(operands, operations, tb, tr, kb,
                                                             context->external_context());
-    context->optimizer = nullptr;
     return context;
   }
 

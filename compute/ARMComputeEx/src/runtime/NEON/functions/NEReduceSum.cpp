@@ -47,8 +47,8 @@
 using namespace arm_compute;
 
 NEReduceSum::NEReduceSum(std::shared_ptr<IMemoryManager> memory_manager)
-    : _memory_group(std::move(memory_manager)), _reduction_kernels(), _reduced_outs(), _reshape(),
-      _reduction_ops(), _keep_dims()
+  : _memory_group(std::move(memory_manager)), _reduction_kernels(), _reduced_outs(), _reshape(),
+    _reduction_ops(), _keep_dims()
 {
 }
 
@@ -122,7 +122,7 @@ void NEReduceSum::configure(ITensor *input, const Coordinates &reduction_axis, b
   for (unsigned int i = 0; i < _reduction_ops; ++i)
   {
     TensorShape out_shape =
-        i == 0 ? input->info()->tensor_shape() : (&_reduced_outs[i - 1])->info()->tensor_shape();
+      i == 0 ? input->info()->tensor_shape() : (&_reduced_outs[i - 1])->info()->tensor_shape();
     out_shape.set(axis_local[i], 1);
     auto in = (i == 0) ? input : (&_reduced_outs[i - 1]);
 
@@ -135,7 +135,7 @@ void NEReduceSum::configure(ITensor *input, const Coordinates &reduction_axis, b
       _reduced_outs[i].allocator()->init(TensorInfo(out_shape, input->info()->num_channels(),
                                                     input->info()->data_type(),
                                                     input->info()->quantization_info())
-                                             .set_data_layout(input->info()->data_layout()));
+                                           .set_data_layout(input->info()->data_layout()));
       _memory_group.manage(&_reduced_outs[i]);
       _reduction_kernels[i].configure(in, &_reduced_outs[i], axis_local[i],
                                       ReductionOperation::SUM);

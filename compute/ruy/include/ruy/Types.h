@@ -93,8 +93,11 @@ struct FullyConnectedParams
   int32_t quantized_activation_min;
   int32_t quantized_activation_max;
   // float activation params - no one use this params, but ruy might use them later.
-  // float float_activation_min;
-  // float float_activation_max;
+  float float_activation_min;
+  float float_activation_max;
+  // Mark the operands as cacheable if they are unchanging, e.g. weights.
+  bool lhs_cacheable;
+  bool rhs_cacheable;
   // FullyConnectedWeightsFormat weights_format;
 };
 
@@ -184,9 +187,9 @@ enum class QuantizationFlavor
 // (only those that need perchannel quantization do).
 template <typename AccumScalar, typename DstScalar,
           QuantizationFlavor quantization_flavor =
-              std::is_floating_point<AccumScalar>::value
-                  ? QuantizationFlavor::kFloatingPoint
-                  : QuantizationFlavor::kIntegerWithUniformMultiplier>
+            std::is_floating_point<AccumScalar>::value
+              ? QuantizationFlavor::kFloatingPoint
+              : QuantizationFlavor::kIntegerWithUniformMultiplier>
 struct GemmParams
 {
   // Only for non-floating-point cases. The fixed-point part (i.e. the mantissa)
@@ -213,12 +216,12 @@ struct GemmParams
   const AccumScalar *bias = nullptr;
   // min clamp bound of destination values.
   DstScalar clamp_min = std::is_floating_point<DstScalar>::value
-                            ? -std::numeric_limits<DstScalar>::infinity()
-                            : std::numeric_limits<DstScalar>::lowest();
+                          ? -std::numeric_limits<DstScalar>::infinity()
+                          : std::numeric_limits<DstScalar>::lowest();
   // max clamp bound of destination values.
   DstScalar clamp_max = std::is_floating_point<DstScalar>::value
-                            ? std::numeric_limits<DstScalar>::infinity()
-                            : std::numeric_limits<DstScalar>::max();
+                          ? std::numeric_limits<DstScalar>::infinity()
+                          : std::numeric_limits<DstScalar>::max();
 };
 
 // Validates self-consistency of GemmParams.
@@ -259,6 +262,11 @@ void ValidateGemmParams(const GemmParams<AccumScalar, DstScalar, quantization_fl
     assert(!params.multiplier_exponent_perchannel);
   }
   UNUSED_RELEASE(params);
+}
+
+inline CachePolicy DefaultCachePolicy(bool is_constant_data)
+{
+  return is_constant_data ? CachePolicy::kCacheIfLargeSpeedup : CachePolicy::kNeverCache;
 }
 
 } // namespace ruy

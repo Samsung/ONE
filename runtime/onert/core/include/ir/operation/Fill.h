@@ -31,7 +31,7 @@ class Fill : public Operation
 public:
   enum Input
   {
-    INPUT = 0,
+    SHAPE = 0,
     VALUE,
   };
 

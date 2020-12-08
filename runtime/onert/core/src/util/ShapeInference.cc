@@ -128,11 +128,11 @@ ir::Shape inferEltwiseShape(const ir::Shape &lhs_shape, const ir::Shape &rhs_sha
   return broadcastShapes(lhs_shape, rhs_shape);
 }
 
-ir::Shape inferArgMaxShape(const ir::Shape &input_shape, int axis, int rank)
+ir::Shape inferArgMinMaxShape(const ir::Shape &input_shape, int axis, int rank)
 {
   if (axis < 0 || axis >= rank)
   {
-    throw std::runtime_error("ArgMax shape inference: Wrong axis value " + std::to_string(axis));
+    throw std::runtime_error("ArgMinMax shape inference: Wrong axis value " + std::to_string(axis));
   }
 
   ir::Shape out_shape;
@@ -385,17 +385,21 @@ ir::Shape inferExpandDimsShape(const ir::Shape &in_shape, int32_t axis)
   return out_shape;
 }
 
-ir::Shape inferFillShape(const ir::Shape &in_shape, const int32_t *in_buf)
+template <typename T> ir::Shape inferFillShape(const ir::Shape &fill_shape, const T *shape_buf)
 {
-  ir::Shape out_shape(in_shape.dim(0));
+  ir::Shape out_shape(fill_shape.dim(0));
 
   for (int out_x = 0; out_x < out_shape.rank(); ++out_x)
   {
-    out_shape.dim(out_x) = in_buf[out_x];
+    out_shape.dim(out_x) = static_cast<int32_t>(shape_buf[out_x]);
   }
 
   return out_shape;
 }
+
+// template instantiation
+template ir::Shape inferFillShape(const ir::Shape &fill_shape, const int32_t *shape_buf);
+template ir::Shape inferFillShape(const ir::Shape &fill_shape, const int64_t *shape_buf);
 
 ir::Shape inferFullyConnectedShape(const ir::Shape &in_shape, const ir::Shape &ker_shape)
 {

@@ -1,8 +1,0 @@
-#ifndef INT_VALUE
-#error "INT_VALUE should be defined"
-#endif // INT_VALUE
-
-INT_VALUE(IFM_N, 1)
-INT_VALUE(IFM_C, 3)
-INT_VALUE(IFM_H, 320)
-INT_VALUE(IFM_W, 320)

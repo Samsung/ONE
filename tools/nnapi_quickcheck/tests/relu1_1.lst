@@ -1,6 +1,0 @@
-#ifndef INT_VALUE
-#error "INT_VALUE should be defined"
-#endif // INT_VALUE
-
-INT_VALUE(IFM_H, 16)
-INT_VALUE(IFM_W, 16)

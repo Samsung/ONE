@@ -18,12 +18,14 @@
 
 #include "ops/ConvolutionLayer.h"
 #include "ops/DepthwiseConvolutionLayer.h"
+#include "ops/FullyConnectedLayer.h"
 
 #include <backend/Backend.h>
 #include <backend/IConfig.h>
 #include <memory>
 #include <util/Utils.h>
 #include <util/logging.h>
+#include <exec/DynamicShapeInferer.h>
 
 #include <stdexcept>
 
@@ -34,14 +36,15 @@ namespace backend
 namespace xnnpack
 {
 
-KernelGenerator::KernelGenerator(const ir::Operands &operands_ctx,
-                                 const ir::Operations &operations_ctx,
-                                 const std::shared_ptr<TensorBuilder> &tensor_builder,
-                                 const std::shared_ptr<cpu_common::TensorRegistry> &tensor_reg,
-                                 const std::shared_ptr<ExternalContext> &external_context)
+KernelGenerator::KernelGenerator(
+    const ir::Operands &operands_ctx, const ir::Operations &operations_ctx,
+    const std::shared_ptr<TensorBuilder> &tensor_builder,
+    const std::shared_ptr<cpu_common::TensorRegistry> &tensor_reg,
+    const std::shared_ptr<backend::custom::IKernelBuilder> &kernel_builder,
+    const std::shared_ptr<ExternalContext> &external_context)
     : _ctx(operands_ctx), _operations_ctx{operations_ctx}, _tensor_builder(tensor_builder),
-      _tensor_reg{tensor_reg}, _current_op_seq_layout(ir::Layout::UNKNOWN),
-      _external_context(external_context)
+      _tensor_reg{tensor_reg}, _kernel_builder(kernel_builder),
+      _current_layout(ir::Layout::UNKNOWN), _external_context(external_context)
 {
   // DO NOTHING
 }
@@ -49,20 +52,31 @@ KernelGenerator::KernelGenerator(const ir::Operands &operands_ctx,
 void KernelGenerator::visit(const ir::OpSequence &op_seq)
 {
   assert(!_return_fn_seq);
+  assert(_tensor_builder->dynamicTensorManager());
   assert(_tensor_reg);
+
+  auto dyn_shape_inferer = std::make_shared<exec::DynamicShapeInferer>(_ctx, _tensor_reg);
 
   _return_fn_seq = std::make_unique<exec::FunctionSequence>();
 
-  _current_op_seq_layout = op_seq.getLayout();
+  // Prepare to handle dynamic tensors later
+  auto dyn_ctx = std::make_shared<exec::FunctionSequence::DynamicTensorCtx>();
+  {
+    dyn_ctx->op_seq = &op_seq;
+    dyn_ctx->operations = &_operations_ctx;
+    dyn_ctx->dynamic_shape_inferer = std::move(dyn_shape_inferer);
+    dyn_ctx->dynamic_tensor_manager = _tensor_builder->dynamicTensorManager();
+
+    _return_fn_seq->dynamic_tensor_ctx(dyn_ctx);
+  }
+
+  _current_layout = op_seq.getLayout();
   for (const auto &operation_idx : op_seq.operations())
   {
     const auto &node = _operations_ctx.at(operation_idx);
     node.accept(*this);
     _return_fn_seq->append(releaseFunction());
 
-// TODO Enable this
-// xnnpack cannot do this at kernel generation
-#if 0
     for (const auto &ind : (node.getInputs() | ir::Remove::UNDEFINED) + node.getOutputs())
     {
       auto portable_tensor = _tensor_reg->getPortableTensor(ind);
@@ -77,7 +91,6 @@ void KernelGenerator::visit(const ir::OpSequence &op_seq)
         tensor->increase_ref();
       }
     }
-#endif
   }
 }
 
@@ -101,8 +114,8 @@ void KernelGenerator::visit(const ir::operation::Conv2D &node)
   const auto dilation = node.param().dilation;
   auto fn = std::make_unique<ops::ConvolutionLayer>(_external_context);
 
-  const auto ifm_shape = _ctx.at(ifm_index).shape().asFeature(_current_op_seq_layout);
-  const auto ofm_shape = _ctx.at(ofm_index).shape().asFeature(_current_op_seq_layout);
+  const auto ifm_shape = _ctx.at(ifm_index).shape().asFeature(_current_layout);
+  const auto ofm_shape = _ctx.at(ofm_index).shape().asFeature(_current_layout);
   // Kernel format is [depth_out, kernel_height, kernel_width, depth_in].
   const auto &ker_shape = _ctx.at(ker_index).shape();
   const auto ker_height = ker_shape.dim(1);
@@ -129,8 +142,8 @@ void KernelGenerator::visit(const ir::operation::DepthwiseConv2D &node)
   const auto bias_index{node.getInputs().at(DepthwiseConv2D::Input::BIAS)};
 
   const auto stride = node.param().stride;
-  const auto ifm_shape = _ctx.at(ifm_index).shape().asFeature(_current_op_seq_layout);
-  const auto ofm_shape = _ctx.at(ofm_index).shape().asFeature(_current_op_seq_layout);
+  const auto ifm_shape = _ctx.at(ifm_index).shape().asFeature(_current_layout);
+  const auto ofm_shape = _ctx.at(ofm_index).shape().asFeature(_current_layout);
   // Kernel format is [1, kernel_height, kernel_width, depth_out].
   const auto &ker_shape = _ctx.at(ker_index).shape();
   const auto ker_height = ker_shape.dim(1);
@@ -153,6 +166,28 @@ void KernelGenerator::visit(const ir::operation::DepthwiseConv2D &node)
   fn->configure(ifm_tensor, ker_tensor, bias_tensor, param_padding.type, padding.left,
                 padding.right, padding.top, padding.bottom, stride.horizontal, stride.vertical,
                 multiplier, dilation_width, dilation_height, activation, ofm_tensor);
+
+  _return_fn = std::move(fn);
+}
+
+void KernelGenerator::visit(const ir::operation::FullyConnected &node)
+{
+  using ir::operation::FullyConnected;
+
+  const auto output_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(FullyConnected::Input::INPUT)};
+  const auto weight_index{node.getInputs().at(FullyConnected::Input::WEIGHT)};
+  const auto bias_index{node.getInputs().at(FullyConnected::Input::BIAS)};
+  const auto activation = node.param().activation;
+
+  auto output_tensor = _tensor_reg->getPortableTensor(output_index);
+  auto input_tensor = _tensor_reg->getPortableTensor(input_index);
+  auto weight_tensor = _tensor_reg->getPortableTensor(weight_index);
+  auto bias_tensor = bias_index.undefined() ? nullptr : _tensor_reg->getPortableTensor(bias_index);
+
+  auto fn = std::make_unique<ops::FullyConnectedLayer>(_external_context);
+
+  fn->configure(input_tensor, weight_tensor, bias_tensor, activation, output_tensor);
 
   _return_fn = std::move(fn);
 }

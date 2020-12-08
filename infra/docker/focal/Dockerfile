@@ -29,7 +29,9 @@ RUN apt-get update && apt-get -qqy install libboost-all-dev libgflags-dev libgoo
 RUN apt-get update && apt-get -qqy install libprotobuf-dev protobuf-compiler
 
 # Additonal tools (except clang-format-3.9)
-RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get -qqy install doxygen graphviz wget zip unzip python3 python3-pip python3-venv hdf5-tools pylint
+RUN apt-get update && \
+    DEBIAN_FRONTEND=noninteractive \
+    apt-get -qqy install doxygen graphviz wget zip unzip clang-format-8 python3 python3-pip python3-venv hdf5-tools pylint curl
 RUN pip3 install --upgrade pip
 RUN pip3 install yapf==0.22.0 numpy
 

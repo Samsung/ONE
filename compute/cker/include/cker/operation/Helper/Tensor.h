@@ -29,58 +29,58 @@ template <typename T, int NDIMS = 1, typename IndexType = Eigen::DenseIndex> str
 {
   // Rank-<NDIMS> tensor of scalar type T.
   typedef Eigen::TensorMap<Eigen::Tensor<T, NDIMS, Eigen::RowMajor, IndexType>, Eigen::Aligned>
-      Tensor;
+    Tensor;
   typedef Eigen::TensorMap<Eigen::Tensor<const T, NDIMS, Eigen::RowMajor, IndexType>,
                            Eigen::Aligned>
-      ConstTensor;
+    ConstTensor;
 
   // Unaligned Rank-<NDIMS> tensor of scalar type T.
   typedef Eigen::TensorMap<Eigen::Tensor<T, NDIMS, Eigen::RowMajor, IndexType>> UnalignedTensor;
   typedef Eigen::TensorMap<Eigen::Tensor<const T, NDIMS, Eigen::RowMajor, IndexType>>
-      UnalignedConstTensor;
+    UnalignedConstTensor;
 
   typedef Eigen::TensorMap<Eigen::Tensor<T, NDIMS, Eigen::RowMajor, int>, Eigen::Aligned>
-      Tensor32Bit;
+    Tensor32Bit;
 
   // Scalar tensor (implemented as a rank-0 tensor) of scalar type T.
   typedef Eigen::TensorMap<Eigen::TensorFixedSize<T, Eigen::Sizes<>, Eigen::RowMajor, IndexType>,
                            Eigen::Aligned>
-      Scalar;
+    Scalar;
   typedef Eigen::TensorMap<
-      Eigen::TensorFixedSize<const T, Eigen::Sizes<>, Eigen::RowMajor, IndexType>, Eigen::Aligned>
-      ConstScalar;
+    Eigen::TensorFixedSize<const T, Eigen::Sizes<>, Eigen::RowMajor, IndexType>, Eigen::Aligned>
+    ConstScalar;
 
   // Unaligned Scalar tensor of scalar type T.
   typedef Eigen::TensorMap<Eigen::TensorFixedSize<T, Eigen::Sizes<>, Eigen::RowMajor, IndexType>>
-      UnalignedScalar;
+    UnalignedScalar;
   typedef Eigen::TensorMap<
-      Eigen::TensorFixedSize<const T, Eigen::Sizes<>, Eigen::RowMajor, IndexType>>
-      UnalignedConstScalar;
+    Eigen::TensorFixedSize<const T, Eigen::Sizes<>, Eigen::RowMajor, IndexType>>
+    UnalignedConstScalar;
 
   // Rank-1 tensor (vector) of scalar type T.
   typedef Eigen::TensorMap<Eigen::Tensor<T, 1, Eigen::RowMajor, IndexType>, Eigen::Aligned> Flat;
   typedef Eigen::TensorMap<Eigen::Tensor<const T, 1, Eigen::RowMajor, IndexType>, Eigen::Aligned>
-      ConstFlat;
+    ConstFlat;
   typedef Eigen::TensorMap<Eigen::Tensor<T, 1, Eigen::RowMajor, IndexType>, Eigen::Aligned> Vec;
   typedef Eigen::TensorMap<Eigen::Tensor<const T, 1, Eigen::RowMajor, IndexType>, Eigen::Aligned>
-      ConstVec;
+    ConstVec;
 
   // Unaligned Rank-1 tensor (vector) of scalar type T.
   typedef Eigen::TensorMap<Eigen::Tensor<T, 1, Eigen::RowMajor, IndexType>> UnalignedFlat;
   typedef Eigen::TensorMap<Eigen::Tensor<const T, 1, Eigen::RowMajor, IndexType>>
-      UnalignedConstFlat;
+    UnalignedConstFlat;
   typedef Eigen::TensorMap<Eigen::Tensor<T, 1, Eigen::RowMajor, IndexType>> UnalignedVec;
   typedef Eigen::TensorMap<Eigen::Tensor<const T, 1, Eigen::RowMajor, IndexType>> UnalignedConstVec;
 
   // Rank-2 tensor (matrix) of scalar type T.
   typedef Eigen::TensorMap<Eigen::Tensor<T, 2, Eigen::RowMajor, IndexType>, Eigen::Aligned> Matrix;
   typedef Eigen::TensorMap<Eigen::Tensor<const T, 2, Eigen::RowMajor, IndexType>, Eigen::Aligned>
-      ConstMatrix;
+    ConstMatrix;
 
   // Unaligned Rank-2 tensor (matrix) of scalar type T.
   typedef Eigen::TensorMap<Eigen::Tensor<T, 2, Eigen::RowMajor, IndexType>> UnalignedMatrix;
   typedef Eigen::TensorMap<Eigen::Tensor<const T, 2, Eigen::RowMajor, IndexType>>
-      UnalignedConstMatrix;
+    UnalignedConstMatrix;
 };
 
 typedef typename TTypes<float, 1>::Tensor32Bit::Index Index32;

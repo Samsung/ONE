@@ -25,22 +25,19 @@ namespace cpu
 namespace ops
 {
 
-ExpandDimsLayer::ExpandDimsLayer() : _input(nullptr), _axis(nullptr), _output(nullptr)
+ExpandDimsLayer::ExpandDimsLayer() : _input(nullptr), _output(nullptr)
 {
   // DO NOTHING
 }
 
-void ExpandDimsLayer::configure(const IPortableTensor *input, const IPortableTensor *axis,
-                                IPortableTensor *output)
+void ExpandDimsLayer::configure(const IPortableTensor *input, IPortableTensor *output)
 {
   _input = input;
-  _axis = axis;
   _output = output;
 }
 
 void ExpandDimsLayer::run()
 {
-  // TODO use _axis to calculate shape of output when _axis is not constant
   size_t count = _input->total_size();
   memcpy(_output->buffer(), _input->buffer(), count);
 }

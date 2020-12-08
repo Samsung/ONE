@@ -27,8 +27,10 @@ namespace exec
 {
 
 ExecutorBase::ExecutorBase(std::unique_ptr<compiler::LoweredGraph> &&lowered_graph,
-                           const compiler::TensorRegistries &tensor_regs)
-    : _lowered_graph{std::move(lowered_graph)}, _graph{_lowered_graph->graph()}, _mutex()
+                           const compiler::TensorRegistries &tensor_regs,
+                           const util::TracingCtx *tracing_ctx)
+    : _lowered_graph{std::move(lowered_graph)}, _graph{_lowered_graph->graph()}, _mutex(),
+      _tracing_ctx(tracing_ctx)
 {
   auto build_tensor_list = [&](const auto &ind_seq, auto &tensors) {
     assert(tensors.empty());

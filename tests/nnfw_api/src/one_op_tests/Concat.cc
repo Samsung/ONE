@@ -37,32 +37,75 @@ TEST_F(GenModelTest, OneOp_Concat_ShareSubTensor)
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
   _context->addTestCase(uniformTCD<float>(
-      {{1, 3, 2, 4}, {5, 4, 7, 4}},
-      {{0, 0, 0, 0, 0, 6, 7, 0, 0, 9, 8, 0, 0, 0, 0, 0}, {5, 6, 4, 7, 7, 9, 4, 8}}));
+    {{1, 3, 2, 4}, {5, 4, 7, 4}},
+    {{0, 0, 0, 0, 0, 6, 7, 0, 0, 9, 8, 0, 0, 0, 0, 0}, {5, 6, 4, 7, 7, 9, 4, 8}}));
   _context->setBackends({"acl_cl", "acl_neon", "cpu"});
 
   SUCCEED();
 }
 
-TEST_F(GenModelTest, OneOp_Concat)
+struct ConcatVariationParam
 {
+  TestCaseData tcd;
+  circle::TensorType type = circle::TensorType::TensorType_FLOAT32;
+  float scale = 0.0f;
+  int64_t zero_point = 0;
+};
+
+class ConcatVariation : public GenModelTest,
+                        public ::testing::WithParamInterface<ConcatVariationParam>
+{
+};
+
+// Input shape: {2, 3} / {2, 3}
+// Output shape: {4, 3}
+TEST_P(ConcatVariation, Test)
+{
+  auto &param = GetParam();
+
   CircleGen cgen;
-
-  int input1 = cgen.addTensor({{2, 3}, circle::TensorType::TensorType_FLOAT32});
-  int input2 = cgen.addTensor({{2, 3}, circle::TensorType::TensorType_FLOAT32});
-  int output = cgen.addTensor({{4, 3}, circle::TensorType::TensorType_FLOAT32});
-
+  int input1 = cgen.addTensor({{2, 3}, param.type}, param.scale, param.zero_point);
+  int input2 = cgen.addTensor({{2, 3}, param.type}, param.scale, param.zero_point);
+  int output = cgen.addTensor({{4, 3}, param.type}, param.scale, param.zero_point);
   cgen.addOperatorConcatenation({{input1, input2}, {output}}, 0,
                                 circle::ActivationFunctionType_NONE);
   cgen.setInputsAndOutputs({input1, input2}, {output});
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
-  _context->addTestCase(uniformTCD<float>({{1, 2, 3, 4, 5, 6}, {7, 8, 9, 10, 11, 12}},
-                                          {{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12}}));
+  _context->addTestCase(param.tcd);
   _context->setBackends({"acl_cl", "acl_neon", "cpu"});
 
   SUCCEED();
 }
+
+INSTANTIATE_TEST_CASE_P(
+  GenModelTest, ConcatVariation,
+  ::testing::Values(
+    // Float
+    ConcatVariationParam{uniformTCD<float>({{1, 2, 3, 4, 5, 6}, {7, 8, 9, 10, 11, 12}},
+                                           {{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12}})},
+    // Uint8
+    ConcatVariationParam{uniformTCD<uint8_t>({{1, 2, 3, 4, 5, 6}, {7, 8, 9, 10, 11, 12}},
+                                             {{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12}}),
+                         circle::TensorType::TensorType_UINT8, 1.0f, -2},
+    // Int8
+    ConcatVariationParam{uniformTCD<int8_t>({{1, 2, 3, 4, 5, 6}, {7, 8, 9, 10, 11, 12}},
+                                            {{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12}}),
+                         circle::TensorType::TensorType_INT8, 1.0f, -2},
+    // Int16
+    // TODO Enable when nnfw api support int16 type
+    // ConcatVariationParam{
+    //    uniformTCD<int16_t>({{1, 2, 3, 4, 5, 6}, {7, 8, 9, 10, 11, 12}},
+    //                                  {{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12}}),
+    //    circle::TensorType::TensorType_INT16, 1.0f, 0},
+    // Int32
+    ConcatVariationParam{uniformTCD<int32_t>({{1, 2, 3, 4, 5, 6}, {7, 8, 9, 10, 11, 12}},
+                                             {{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12}}),
+                         circle::TensorType::TensorType_INT32},
+    // Int64
+    ConcatVariationParam{uniformTCD<int64_t>({{1, 2, 3, 4, 5, 6}, {7, 8, 9, 10, 11, 12}},
+                                             {{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12}}),
+                         circle::TensorType::TensorType_INT64}));
 
 TEST_F(GenModelTest, OneOp_Concat_Subtensor_4D)
 {
@@ -112,26 +155,26 @@ TEST_F(GenModelTest, OneOp_Concat_Subtensor_4D)
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
   _context->addTestCase(uniformTCD<float>(
-      {
-          // inputs
-          {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20}, // in1
-          {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}                                           // in2
-      },
-      {
-          // outputs
-          {1, 2, 3, 4, 5},                     // s_out1
-          {6, 7, 8, 9, 10},                    // s_out2
-          {11, 12, 13, 14, 15},                // s_out3
-          {16, 17, 18, 19, 20},                // s_out4
-          {1, 2, 3, 4, 5, 6, 7, 8, 9, 10},     // c_out1
-          {1, 2, 3, 4, 5, 11, 12, 13, 14, 15}, // c_out2
-          {1, 2, 3, 4, 5, 16, 17, 18, 19, 20}, // c_out3
-          {1, 2, 3, 4, 5, 6, 7, 8, 9, 10},     // a_out1
-          {1, 2, 3, 4, 5, 11, 12, 13, 14, 15}, // a_out2
-          {1, 2, 3, 4, 5, 16, 17, 18, 19, 20}, // a_out3
-          {1, 2, 3,  4,  5,  1,  2,  3, 4, 5, 6, 7, 8,  9,  10, 1,  2, 3,
-           4, 5, 11, 12, 13, 14, 15, 1, 2, 3, 4, 5, 16, 17, 18, 19, 20} // final_out
-      }));
+    {
+      // inputs
+      {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20}, // in1
+      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}                                           // in2
+    },
+    {
+      // outputs
+      {1, 2, 3, 4, 5},                     // s_out1
+      {6, 7, 8, 9, 10},                    // s_out2
+      {11, 12, 13, 14, 15},                // s_out3
+      {16, 17, 18, 19, 20},                // s_out4
+      {1, 2, 3, 4, 5, 6, 7, 8, 9, 10},     // c_out1
+      {1, 2, 3, 4, 5, 11, 12, 13, 14, 15}, // c_out2
+      {1, 2, 3, 4, 5, 16, 17, 18, 19, 20}, // c_out3
+      {1, 2, 3, 4, 5, 6, 7, 8, 9, 10},     // a_out1
+      {1, 2, 3, 4, 5, 11, 12, 13, 14, 15}, // a_out2
+      {1, 2, 3, 4, 5, 16, 17, 18, 19, 20}, // a_out3
+      {1, 2, 3,  4,  5,  1,  2,  3, 4, 5, 6, 7, 8,  9,  10, 1,  2, 3,
+       4, 5, 11, 12, 13, 14, 15, 1, 2, 3, 4, 5, 16, 17, 18, 19, 20} // final_out
+    }));
   _context->setBackends({"acl_cl", "acl_neon", "cpu"});
 
   SUCCEED();

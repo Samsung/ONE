@@ -24,27 +24,12 @@ namespace nnfw
 {
 namespace cker
 {
-template <typename T>
-inline void Fill(const Shape &input_shape, int *input_data, const T value_data,
-                 const Shape &output_shape, T output_data)
+template <typename T> inline void Fill(const T value_data, const Shape &output_shape, T output_data)
 {
-  int input_size = input_shape.FlatSize();
-  int output_size = 1;
-  for (int i = 0; i < input_size; i++)
+  int output_size = output_shape.FlatSize();
+  for (int i = 0; i < output_size; i++)
   {
-    output_size *= input_data[i];
-  }
-
-  if (output_size == output_shape.FlatSize())
-  {
-    for (int i = 0; i < output_size; i++)
-    {
-      output_data[i] = *value_data;
-    }
-  }
-  else
-  {
-    throw std::runtime_error("Cker Fill.h: output's size is not matched inferred size of output");
+    output_data[i] = *value_data;
   }
 }
 

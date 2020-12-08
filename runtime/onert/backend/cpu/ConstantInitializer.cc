@@ -26,7 +26,7 @@ namespace cpu
 
 ConstantInitializer::ConstantInitializer(const ir::Operands &operands,
                                          const std::shared_ptr<ITensorRegistry> &tensor_reg)
-    : IConstantInitializer{operands}, _tensor_reg{tensor_reg}
+    : cpu_common::ConstantInitializerBase{operands}, _tensor_reg{tensor_reg}
 {
   // DO NOTHING
 }
@@ -51,42 +51,6 @@ void ConstantInitializer::registerExternalInitializer(const ir::OperandIndex &in
     ExternalTensor &tensor = dynamic_cast<ExternalTensor &>(itensor);
     tensor.setData(data);
   };
-}
-
-void ConstantInitializer::visit(const ir::operation::Conv2D &node)
-{
-  const auto &kernel_index = node.getInputs().at(ir::operation::Conv2D::KERNEL);
-  const auto &kernel_obj = _operands.at(kernel_index);
-  registerExternalInitializer(kernel_index, kernel_obj);
-
-  const auto &bias_index = node.getInputs().at(ir::operation::Conv2D::BIAS);
-  const auto &bias_obj = _operands.at(bias_index);
-  registerExternalInitializer(bias_index, bias_obj);
-}
-
-void ConstantInitializer::visit(const ir::operation::DepthwiseConv2D &node)
-{
-  const auto &kernel_index = node.getInputs().at(ir::operation::DepthwiseConv2D::KERNEL);
-  const auto &kernel_obj = _operands.at(kernel_index);
-  registerExternalInitializer(kernel_index, kernel_obj);
-
-  const auto &bias_index = node.getInputs().at(ir::operation::DepthwiseConv2D::BIAS);
-  const auto &bias_obj = _operands.at(bias_index);
-  registerExternalInitializer(bias_index, bias_obj);
-}
-
-void ConstantInitializer::visit(const ir::operation::FullyConnected &node)
-{
-  const auto &weight_index = node.getInputs().at(ir::operation::FullyConnected::WEIGHT);
-  const auto &weight_obj = _operands.at(weight_index);
-  registerExternalInitializer(weight_index, weight_obj);
-
-  const auto &bias_index = node.getInputs().at(ir::operation::FullyConnected::BIAS);
-  if (!bias_index.undefined())
-  {
-    const auto &bias_obj = _operands.at(bias_index);
-    registerExternalInitializer(bias_index, bias_obj);
-  }
 }
 
 } // namespace cpu

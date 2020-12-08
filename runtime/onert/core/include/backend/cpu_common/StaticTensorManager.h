@@ -17,9 +17,11 @@
 #ifndef __ONERT_BACKEND_CPU_COMMON_STATICTENSOR_MANAGER_H__
 #define __ONERT_BACKEND_CPU_COMMON_STATICTENSOR_MANAGER_H__
 
-#include "MemoryManager.h"
-
 #include "backend/IStaticTensorManager.h"
+#include "backend/cpu_common/DynamicTensorManager.h"
+#include "backend/cpu_common/MemoryManager.h"
+#include "backend/cpu_common/TensorRegistry.h"
+#include "backend/ITensorManager.h"
 #include "ir/OperandIndexMap.h"
 #include "ir/OperandInfo.h"
 #include "TensorRegistry.h"
@@ -37,12 +39,10 @@ class StaticTensorManager : public backend::IStaticTensorManager
 {
 public:
   StaticTensorManager(const std::shared_ptr<TensorRegistry> &reg,
-                      DynamicMemoryManager *dynamic_mem_mgr);
+                      DynamicTensorManager *dynamic_tensor_manager);
   virtual ~StaticTensorManager() = default;
 
-  void allocateConsts(void);
   void allocateNonconsts(void);
-  void deallocateConsts(void);
   void deallocateNonconsts(void);
 
   void buildTensor(const ir::OperandIndex &ind, const ir::OperandInfo &tensor_info,
@@ -54,11 +54,10 @@ public:
   void iterate(const std::function<void(const ir::OperandIndex &)> &fn);
 
 private:
-  std::unique_ptr<DynamicMemoryManager> _const_mgr;
   std::unique_ptr<MemoryManager> _nonconst_mgr;
   const std::shared_ptr<TensorRegistry> _tensors;
   ir::OperandIndexMap<bool> _as_constants;
-  DynamicMemoryManager *_dynamic_mem_mgr;
+  DynamicTensorManager *_dynamic_tensor_manager;
 };
 
 } // namespace cpu_common

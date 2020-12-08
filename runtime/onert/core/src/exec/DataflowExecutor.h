@@ -28,6 +28,7 @@
 #include <memory>
 #include "exec/ExecutorBase.h"
 #include "compiler/CodeMap.h"
+#include "util/TracingCtx.h"
 
 namespace onert
 {
@@ -50,7 +51,8 @@ public:
    * @param code_map OpSequence and its code map
    */
   DataflowExecutor(std::unique_ptr<compiler::LoweredGraph> lowered_graph,
-                   const compiler::TensorRegistries &tensor_regs, compiler::CodeMap &&code_map);
+                   const compiler::TensorRegistries &tensor_regs, compiler::CodeMap &&code_map,
+                   const util::TracingCtx *tracing_ctx);
 
   void executeImpl() override;
 

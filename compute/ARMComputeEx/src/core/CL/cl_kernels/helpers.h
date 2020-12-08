@@ -49,7 +49,7 @@
 #endif // defined(ARM_COMPUTE_OPENCL_DOT8_ENABLED) && defined(cl_arm_integer_dot_product_int8)
 
 #if defined(ARM_COMPUTE_OPENCL_DOT8_ACC_ENABLED) && \
-    defined(cl_arm_integer_dot_product_accumulate_int8)
+  defined(cl_arm_integer_dot_product_accumulate_int8)
 #pragma OPENCL EXTENSION cl_arm_integer_dot_product_accumulate_int8 : enable
 #endif // defined(ARM_COMPUTE_OPENCL_DOT8_ACC_ENABLED) &&
        // defined(cl_arm_integer_dot_product_accumulate_int8)
@@ -288,21 +288,21 @@
 
 #define VECTOR_DECLARATION(name)                                        \
   __global uchar *name##_ptr, uint name##_stride_x, uint name##_step_x, \
-      uint name##_offset_first_element_in_bytes
+    uint name##_offset_first_element_in_bytes
 
 #define IMAGE_DECLARATION(name)                                                               \
   __global uchar *name##_ptr, uint name##_stride_x, uint name##_step_x, uint name##_stride_y, \
-      uint name##_step_y, uint name##_offset_first_element_in_bytes
+    uint name##_step_y, uint name##_offset_first_element_in_bytes
 
 #define TENSOR3D_DECLARATION(name)                                                            \
   __global uchar *name##_ptr, uint name##_stride_x, uint name##_step_x, uint name##_stride_y, \
-      uint name##_step_y, uint name##_stride_z, uint name##_step_z,                           \
-      uint name##_offset_first_element_in_bytes
+    uint name##_step_y, uint name##_stride_z, uint name##_step_z,                             \
+    uint name##_offset_first_element_in_bytes
 
 #define TENSOR4D_DECLARATION(name)                                                            \
   __global uchar *name##_ptr, uint name##_stride_x, uint name##_step_x, uint name##_stride_y, \
-      uint name##_step_y, uint name##_stride_z, uint name##_step_z, uint name##_stride_w,     \
-      uint name##_step_w, uint name##_offset_first_element_in_bytes
+    uint name##_step_y, uint name##_stride_z, uint name##_step_z, uint name##_stride_w,       \
+    uint name##_step_w, uint name##_offset_first_element_in_bytes
 
 #define CONVERT_TO_VECTOR_STRUCT(name)                                                          \
   update_vector_workitem_ptr(name##_ptr, name##_offset_first_element_in_bytes, name##_stride_x, \
@@ -406,9 +406,9 @@ inline Vector update_vector_workitem_ptr(__global uchar *ptr, uint offset_first_
                                          uint stride_x, uint step_x)
 {
   Vector vector = {
-      .ptr = ptr,
-      .offset_first_element_in_bytes = offset_first_element_in_bytes,
-      .stride_x = stride_x,
+    .ptr = ptr,
+    .offset_first_element_in_bytes = offset_first_element_in_bytes,
+    .stride_x = stride_x,
   };
   vector.ptr += vector.offset_first_element_in_bytes + get_global_id(0) * step_x;
   return vector;
@@ -436,7 +436,7 @@ inline Image update_image_workitem_ptr(__global uchar *ptr, uint offset_first_el
                .stride_x = stride_x,
                .stride_y = stride_y};
   img.ptr +=
-      img.offset_first_element_in_bytes + get_global_id(0) * step_x + get_global_id(1) * step_y;
+    img.offset_first_element_in_bytes + get_global_id(0) * step_x + get_global_id(1) * step_y;
   return img;
 }
 

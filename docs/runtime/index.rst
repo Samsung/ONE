@@ -12,8 +12,9 @@ Runtime
 
   ./api.md
   ./core.md
-  ./compute.md
-  ./executors.md
-  ./backend-api.md
-  ./heterogeneous-execution.md
   ./controlflow-operations.md
+  ./executors.md
+  ./heterogeneous-execution.md
+  ./backend-api.md
+  ./compute.md
+  ./supported-operations-backend.md

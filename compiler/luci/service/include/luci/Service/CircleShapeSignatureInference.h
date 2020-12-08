@@ -88,7 +88,7 @@ public:
   // ShapeSignature visit(const luci::CircleMatrixSetDiag *node) final;
   // ShapeSignature visit(const luci::CircleMaximum *node) final;
   // ShapeSignature visit(const luci::CircleMaxPool2D *node) final;
-  // ShapeSignature visit(const luci::CircleMean *node) final;
+  ShapeSignature visit(const luci::CircleMean *node) final;
   // ShapeSignature visit(const luci::CircleMinimum *node) final;
   // ShapeSignature visit(const luci::CircleMirrorPad *node) final;
   // ShapeSignature visit(const luci::CircleNeg *node) final;
@@ -104,10 +104,10 @@ public:
   // ShapeSignature visit(const luci::CircleRank *node) final;
   // ShapeSignature visit(const luci::CircleMul *node) final;
   // ShapeSignature visit(const luci::CircleOneHot *node) final;
-  // ShapeSignature visit(const luci::CircleReduceAny *node) final;
-  // ShapeSignature visit(const luci::CircleReduceMax *node) final;
-  // ShapeSignature visit(const luci::CircleReduceMin *node) final;
-  // ShapeSignature visit(const luci::CircleReduceProd *node) final;
+  ShapeSignature visit(const luci::CircleReduceAny *node) final;
+  ShapeSignature visit(const luci::CircleReduceMax *node) final;
+  ShapeSignature visit(const luci::CircleReduceMin *node) final;
+  ShapeSignature visit(const luci::CircleReduceProd *node) final;
   ShapeSignature visit(const luci::CircleRelu *node) final;
   ShapeSignature visit(const luci::CircleRelu6 *node) final;
   ShapeSignature visit(const luci::CircleReluN1To1 *node) final;
@@ -137,7 +137,7 @@ public:
   // ShapeSignature visit(const luci::CircleSqueeze *node) final;
   // ShapeSignature visit(const luci::CircleStridedSlice *node) final;
   // ShapeSignature visit(const luci::CircleSub *node) final;
-  // ShapeSignature visit(const luci::CircleSum *node) final;
+  ShapeSignature visit(const luci::CircleSum *node) final;
   // ShapeSignature visit(const luci::CircleTanh *node) final;
   // ShapeSignature visit(const luci::CircleTile *node) final;
   // ShapeSignature visit(const luci::CircleTopKV2 *node) final;
@@ -158,8 +158,8 @@ public:
   // Virtual
   ShapeSignature visit(const luci::CircleInput *node) final;
   ShapeSignature visit(const luci::CircleOutput *node) final;
-  // ShapeSignature visit(const luci::CircleOutputDummy *node) final;
-  // ShapeSignature visit(const luci::CircleOutputExclude *node) final;
+  ShapeSignature visit(const luci::CircleOutputDummy *node) final;
+  ShapeSignature visit(const luci::CircleOutputExclude *node) final;
   // ShapeSignature visit(const luci::CircleCustomOut *node) final;
   // ShapeSignature visit(const luci::CircleIfOut *node) final;
   // ShapeSignature visit(const luci::CircleNonMaxSuppressionV4Out *node) final;

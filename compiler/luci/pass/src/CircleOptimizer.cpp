@@ -25,6 +25,8 @@
 #include "luci/Pass/FusePreActivationBatchNormPass.h"
 #include "luci/Pass/MakeBatchNormGammaPositivePass.h"
 #include "luci/Pass/PropagateQuantParamPass.h"
+#include "luci/Pass/RemoveRedundantTransposePass.h"
+#include "luci/Pass/ReplaceMulAddWithDepthwiseConvPass.h"
 #include "luci/Pass/ResolveCustomOpAddPass.h"
 #include "luci/Pass/ResolveCustomOpBatchMatMulPass.h"
 #include "luci/Pass/ResolveCustomOpMatMulPass.h"
@@ -33,10 +35,15 @@
 #include "luci/Pass/QuantizeDequantizeWeightsPass.h"
 #include "luci/Pass/SparsifyTensorPass.h"
 #include "luci/Pass/ShuffleWeightTo16x1Float32Pass.h"
+#include "luci/Pass/SubstitutePackToReshapePass.h"
 // TODO add more passes
 
 #include "luci/Pass/ShapeInferencePass.h"
+#include "luci/Pass/ShapeSignatureInferencePass.h"
 #include "luci/Pass/TypeInferencePass.h"
+
+// Following passes will be removed after refactoring is finished
+#include "luci/Pass/MigrateLegacyShapeDtypePass.h"
 
 // logo passes
 #include <logo/RemoveDeadNodeWithQueryPass.h>
@@ -131,7 +138,18 @@ void CircleOptimizer::optimize(luci::Module *m) const
 {
   luci::Phase phase;
 
-  // Passes will be inserted here
+  // Following passes will be deprecated after refactoring is finished.
+  phase.emplace_back(std::make_unique<luci::MigrateLegacyShapeDtypePass>());
+
+  // Following passes are needed everytime when other passes create new node or modify some nodes.
+  phase.emplace_back(std::make_unique<luci::ShapeInferencePass>());
+  phase.emplace_back(std::make_unique<luci::ShapeSignatureInferencePass>());
+  phase.emplace_back(std::make_unique<luci::TypeInferencePass>());
+
+  if (_options->query(Options::Algorithm::FuseBCQ))
+  {
+    phase.emplace_back(std::make_unique<FuseBCQPass>());
+  }
 
   ModuleProgressReporter prog(m, logo::PhaseStrategy::Restart);
   PhaseRunner<logo::PhaseStrategy::Restart> phase_runner{m};
@@ -144,6 +162,16 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   logo::Phase phase;
 
   /* TRANSFORM DECLARATION BEGIN */
+  phase.emplace_back(std::make_unique<logo::RemoveDeadNodeWithQueryPass>());
+
+  // Following passes will be deprecated after refactoring is finished.
+  phase.emplace_back(std::make_unique<luci::MigrateLegacyShapeDtypePass>());
+
+  // Following passes are needed everytime when other passes create new node or modify some nodes.
+  phase.emplace_back(std::make_unique<luci::TypeInferencePass>());
+  phase.emplace_back(std::make_unique<luci::ShapeInferencePass>());
+  phase.emplace_back(std::make_unique<luci::ShapeSignatureInferencePass>());
+
   if (_options->query(Options::Algorithm::ResolveCustomOpAdd))
   {
     phase.emplace_back(std::make_unique<luci::ResolveCustomOpAddPass>());
@@ -159,10 +187,6 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   if (_options->query(Options::Algorithm::FuseInstanceNorm))
   {
     phase.emplace_back(std::make_unique<FuseInstanceNormPass>());
-  }
-  if (_options->query(Options::Algorithm::FuseBCQ))
-  {
-    phase.emplace_back(std::make_unique<FuseBCQPass>());
   }
   if (_options->query(Options::Algorithm::FuseBatchNormWithTConv))
   {
@@ -192,15 +216,23 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   {
     phase.emplace_back(std::make_unique<luci::ShuffleWeightTo16x1Float32Pass>());
   }
+  if (_options->query(Options::Algorithm::RemoveRedundantTranspose))
+  {
+    phase.emplace_back(std::make_unique<luci::RemoveRedundantTransposePass>());
+  }
+  if (_options->query(Options::Algorithm::ReplaceMulAddWithDepthwiseConv))
+  {
+    phase.emplace_back(std::make_unique<luci::ReplaceMulAddWithDepthwiseConvPass>());
+  }
+  if (_options->query(Options::Algorithm::SubstitutePackToReshape))
+  {
+    phase.emplace_back(std::make_unique<luci::SubstitutePackToReshapePass>());
+  }
 
-  // Shape inference is needed for added nodes doing above transformations
-  phase.emplace_back(std::make_unique<luci::ShapeInferencePass>());
-  phase.emplace_back(std::make_unique<luci::TypeInferencePass>());
-  phase.emplace_back(std::make_unique<logo::RemoveDeadNodeWithQueryPass>());
   /* TRANSFORM DECLARATION END */
 
-  ProgressReporter prog(g, logo::PhaseStrategy::Saturate);
-  logo::PhaseRunner<logo::PhaseStrategy::Saturate> phase_runner{g};
+  ProgressReporter prog(g, logo::PhaseStrategy::Restart);
+  logo::PhaseRunner<logo::PhaseStrategy::Restart> phase_runner{g};
   phase_runner.attach(&prog);
   phase_runner.run(phase);
 }

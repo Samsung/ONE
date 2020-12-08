@@ -99,7 +99,7 @@ std::tuple<Status, Window> validate_and_configure_window(const ITensorInfo *inpu
 } // namespace
 
 CLMultiplyScaleFactorKernel::CLMultiplyScaleFactorKernel()
-    : _input(nullptr), _scale_factor(nullptr), _output(nullptr), _multiplier(1.f)
+  : _input(nullptr), _scale_factor(nullptr), _output(nullptr), _multiplier(1.f)
 {
 }
 
@@ -108,7 +108,7 @@ void CLMultiplyScaleFactorKernel::configure(const ICLTensor *input, const ICLTen
 {
   ARM_COMPUTE_ERROR_ON_NULLPTR(input, output);
   ARM_COMPUTE_ERROR_THROW_ON(
-      validate_arguments(input->info(), scale_factor->info(), output->info()));
+    validate_arguments(input->info(), scale_factor->info(), output->info()));
 
   _input = input;
   _scale_factor = scale_factor;
@@ -123,9 +123,9 @@ void CLMultiplyScaleFactorKernel::configure(const ICLTensor *input, const ICLTen
   Window win = calculate_max_window(*output->info());
   if (multi_access_x)
   {
-    win.set(Window::DimX,
-            Window::Dimension(win.x().start(), ceil_to_multiple(win.x().end(), vec_size_x),
-                              vec_size_x));
+    win.set(
+      Window::DimX,
+      Window::Dimension(win.x().start(), ceil_to_multiple(win.x().end(), vec_size_x), vec_size_x));
   }
   ICLKernel::configure_internal(win);
 
@@ -134,11 +134,11 @@ void CLMultiplyScaleFactorKernel::configure(const ICLTensor *input, const ICLTen
   build_opts.add_option("-DVEC_SIZE=" + support::cpp11::to_string(vec_size_x));
   build_opts.add_option("-DDATA_TYPE=" + get_cl_type_from_data_type(output->info()->data_type()));
   build_opts.add_option_if(
-      multi_access_x, "-DLAST_ACCESSED_X=" +
-                          support::cpp11::to_string(std::max<int>(output_width_x - vec_size_x, 0)));
+    multi_access_x, "-DLAST_ACCESSED_X=" +
+                      support::cpp11::to_string(std::max<int>(output_width_x - vec_size_x, 0)));
 
   _kernel = static_cast<cl::Kernel>(
-      CLKernelLibraryEx::get().create_kernel("multiply_scale_factor", build_opts.options()));
+    CLKernelLibraryEx::get().create_kernel("multiply_scale_factor", build_opts.options()));
 }
 
 Status CLMultiplyScaleFactorKernel::validate(const ITensorInfo *input,
@@ -147,7 +147,7 @@ Status CLMultiplyScaleFactorKernel::validate(const ITensorInfo *input,
 {
   ARM_COMPUTE_RETURN_ON_ERROR(validate_arguments(input, scale_factor, output));
   ARM_COMPUTE_RETURN_ON_ERROR(
-      std::get<0>(validate_and_configure_window(input->clone().get(), output->clone().get())));
+    std::get<0>(validate_and_configure_window(input->clone().get(), output->clone().get())));
   return Status{};
 }
 

@@ -47,7 +47,7 @@ public:
    * @param[in] comparator   Comparator object for tensor comparation
    */
   TfLiteInterpMatchApp(const nnfw::misc::tensor::Comparator &comparator)
-      : _verbose{false}, _comparator(comparator)
+    : _verbose{false}, _comparator(comparator)
   {
     // DO NOTHING
   }

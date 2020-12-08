@@ -1,0 +1,29 @@
+operand {
+  name: "ifm"
+  type: FLOAT32
+  shape { dim: 1 dim: 8 dim: 8 dim: 4 }
+  shape_signature { dim: -1 dim: 8 dim: 8 dim: 4 }
+}
+operand {
+  name: "reduction_indices"
+  type: INT32
+  shape { dim: 1 }
+  filler { tag: "explicit" arg: "-1" }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 1 dim: 8 dim: 8 dim: 1 }
+  shape_signature { dim: -1 dim: 8 dim: 8 dim: 1 }
+}
+operation {
+  type: "Mean"
+  mean_options {
+    keep_dims: true
+  }
+  input: "ifm"
+  input: "reduction_indices"
+  output: "ofm"
+}
+input: "ifm"
+output: "ofm"

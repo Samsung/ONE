@@ -69,14 +69,14 @@ Status validate_mm(const ITensorInfo &input, const ITensorInfo &weights, const I
 
     // Validate gemmlowp function
     ARM_COMPUTE_RETURN_ON_ERROR(NEGEMMLowpMatrixMultiplyCore::validate(
-        &input.clone()->set_quantization_info(input_quantization_info),
-        &weights.clone()->set_quantization_info(weights_quantization_info), nullptr, &output));
+      &input.clone()->set_quantization_info(input_quantization_info),
+      &weights.clone()->set_quantization_info(weights_quantization_info), nullptr, &output));
   }
   else
   {
-    ARM_COMPUTE_RETURN_ON_ERROR(NEGEMM::validate(
-        &input, &weights, nullptr, &output, 1.f, 0.0f,
-        GEMMInfo(false, false, false /* Reshape weights only for the first run */)));
+    ARM_COMPUTE_RETURN_ON_ERROR(
+      NEGEMM::validate(&input, &weights, nullptr, &output, 1.f, 0.0f,
+                       GEMMInfo(false, false, false /* Reshape weights only for the first run */)));
   }
 
   return Status{};
@@ -84,12 +84,12 @@ Status validate_mm(const ITensorInfo &input, const ITensorInfo &weights, const I
 } // namespace
 
 NEFullyConnectedLayerEx::NEFullyConnectedLayerEx(std::shared_ptr<IMemoryManager> memory_manager)
-    : _memory_group(std::move(memory_manager)), _flatten_kernel(), _convert_weights(),
-      _reshape_weights_function(), _mm_gemm(), _mm_gemmlowp(), _gemmlowp_output_stage(),
-      _accumulate_biases_kernel(), _flatten_output(), _gemmlowp_output(),
-      _converted_weights_output(), _reshape_weights_output(), _original_weights(nullptr),
-      _are_weights_converted(true), _are_weights_reshaped(false), _is_fc_after_conv(false),
-      _accumulate_biases(false), _is_quantized(false), _is_prepared(false)
+  : _memory_group(std::move(memory_manager)), _flatten_kernel(), _convert_weights(),
+    _reshape_weights_function(), _mm_gemm(), _mm_gemmlowp(), _gemmlowp_output_stage(),
+    _accumulate_biases_kernel(), _flatten_output(), _gemmlowp_output(), _converted_weights_output(),
+    _reshape_weights_output(), _original_weights(nullptr), _are_weights_converted(true),
+    _are_weights_reshaped(false), _is_fc_after_conv(false), _accumulate_biases(false),
+    _is_quantized(false), _is_prepared(false)
 {
 }
 
@@ -105,9 +105,9 @@ void NEFullyConnectedLayerEx::configure_mm(const ITensor *input, const ITensor *
     const QuantizationInfo weights_quantization_info = weights->info()->quantization_info();
 
     input->info()->set_quantization_info(QuantizationInfo(
-        input_quantization_info.uniform().scale, -input_quantization_info.uniform().offset));
+      input_quantization_info.uniform().scale, -input_quantization_info.uniform().offset));
     weights->info()->set_quantization_info(QuantizationInfo(
-        weights_quantization_info.uniform().scale, -weights_quantization_info.uniform().offset));
+      weights_quantization_info.uniform().scale, -weights_quantization_info.uniform().offset));
 
     // Configure gemmlowp function
     _mm_gemmlowp.configure(input, weights, nullptr, output);
@@ -129,8 +129,8 @@ void NEFullyConnectedLayerEx::configure_conv_fc(const ITensor *input, const ITen
                                                 ITensor *output)
 {
   ARM_COMPUTE_ERROR_ON(
-      (weights->info()->dimension(1) !=
-       (input->info()->dimension(0) * input->info()->dimension(1) * input->info()->dimension(2))));
+    (weights->info()->dimension(1) !=
+     (input->info()->dimension(0) * input->info()->dimension(1) * input->info()->dimension(2))));
 
   // If the fully connected layer is called after a convolution layer, the input tensor must be
   // linearized
@@ -138,8 +138,7 @@ void NEFullyConnectedLayerEx::configure_conv_fc(const ITensor *input, const ITen
   // Initialize output tensor for flatten
   TensorShape shape_flatten = compute_flatten_shape(input->info());
   _flatten_output.allocator()->init(
-      input->info()->clone()->set_is_resizable(true).reset_padding().set_tensor_shape(
-          shape_flatten));
+    input->info()->clone()->set_is_resizable(true).reset_padding().set_tensor_shape(shape_flatten));
 
   // Configure flatten kernel
   _memory_group.manage(&_flatten_output);
@@ -169,8 +168,8 @@ void NEFullyConnectedLayerEx::configure(const ITensor *input, const ITensor *wei
 
   // Perform validate step
   ARM_COMPUTE_ERROR_THROW_ON(NEFullyConnectedLayerEx::validate(
-      input->info(), weights->info(), biases != nullptr ? biases->info() : nullptr, output->info(),
-      fc_info));
+    input->info(), weights->info(), biases != nullptr ? biases->info() : nullptr, output->info(),
+    fc_info));
 
   _are_weights_converted = true;
   _are_weights_reshaped = fc_info.transpose_weights ? fc_info.are_weights_reshaped : true;
@@ -183,8 +182,7 @@ void NEFullyConnectedLayerEx::configure(const ITensor *input, const ITensor *wei
   if (_is_quantized)
   {
     _gemmlowp_output.allocator()->init(
-        output->info()->clone()->set_is_resizable(true).reset_padding().set_data_type(
-            DataType::S32));
+      output->info()->clone()->set_is_resizable(true).reset_padding().set_data_type(DataType::S32));
   }
 
   // Configure accumulate biases kernel for non quantized asymmetric types
@@ -208,10 +206,10 @@ void NEFullyConnectedLayerEx::configure(const ITensor *input, const ITensor *wei
   const bool is_batched_fc_layer = output->info()->dimension(1) > 1;
   if (is_batched_fc_layer)
   {
-    _is_fc_after_conv = (TensorShape::num_max_dimensions >= 4) &&
-                        (std::equal(input->info()->tensor_shape().cbegin() + 3,
-                                    input->info()->tensor_shape().cend(),
-                                    output->info()->tensor_shape().cbegin() + 1));
+    _is_fc_after_conv =
+      (TensorShape::num_max_dimensions >= 4) &&
+      (std::equal(input->info()->tensor_shape().cbegin() + 3, input->info()->tensor_shape().cend(),
+                  output->info()->tensor_shape().cbegin() + 1));
   }
   else
   {
@@ -284,16 +282,16 @@ Status NEFullyConnectedLayerEx::validate(const ITensorInfo *input, const ITensor
   bool is_quantized = is_data_type_quantized_asymmetric(input->data_type());
 
   const ITensorInfo &flatten_input =
-      TensorInfo(input->clone()->set_is_resizable(true).reset_padding().set_tensor_shape(
-          compute_flatten_shape(input)));
+    TensorInfo(input->clone()->set_is_resizable(true).reset_padding().set_tensor_shape(
+      compute_flatten_shape(input)));
   const ITensorInfo &reshaped_weights =
-      TensorInfo(weights->clone()->set_is_resizable(true).reset_padding().set_tensor_shape(
-          compute_transposed_shape(*weights)));
+    TensorInfo(weights->clone()->set_is_resizable(true).reset_padding().set_tensor_shape(
+      compute_transposed_shape(*weights)));
   const ITensorInfo &converted_weights =
-      weights_reshaped ? TensorInfo(weights->clone()->set_is_resizable(true).reset_padding())
-                       : TensorInfo(*reshaped_weights.clone());
+    weights_reshaped ? TensorInfo(weights->clone()->set_is_resizable(true).reset_padding())
+                     : TensorInfo(*reshaped_weights.clone());
   const ITensorInfo &gemmlowp_output = TensorInfo(
-      output->clone()->set_is_resizable(true).reset_padding().set_data_type(DataType::S32));
+    output->clone()->set_is_resizable(true).reset_padding().set_data_type(DataType::S32));
 
   // Configure accumulate biases kernel for non quantized asymmetric types
   if (biases != nullptr && !is_quantized)
@@ -330,7 +328,7 @@ Status NEFullyConnectedLayerEx::validate(const ITensorInfo *input, const ITensor
   {
     // Validate reshape weights kernel
     ARM_COMPUTE_RETURN_ON_ERROR(
-        NEFullyConnectedLayerReshapeWeights::validate(weights, &reshaped_weights));
+      NEFullyConnectedLayerReshapeWeights::validate(weights, &reshaped_weights));
     weights_to_use = &reshaped_weights;
   }
 
@@ -338,7 +336,7 @@ Status NEFullyConnectedLayerEx::validate(const ITensorInfo *input, const ITensor
   {
     // Validate convert weights kernel
     ARM_COMPUTE_RETURN_ON_ERROR(NEConvertFullyConnectedWeights::validate(
-        weights_to_use, &converted_weights, input->tensor_shape(), fc_info.weights_trained_layout));
+      weights_to_use, &converted_weights, input->tensor_shape(), fc_info.weights_trained_layout));
     weights_to_use = &converted_weights;
   }
 
@@ -346,8 +344,8 @@ Status NEFullyConnectedLayerEx::validate(const ITensorInfo *input, const ITensor
   {
     // Fully Connected layer after a Convolution Layer without batches
     ARM_COMPUTE_RETURN_ERROR_ON(
-        (weights_to_use->dimension(1) !=
-         (input->dimension(0) * input->dimension(1) * input->dimension(2))));
+      (weights_to_use->dimension(1) !=
+       (input->dimension(0) * input->dimension(1) * input->dimension(2))));
 
     // Validate flatten kernel
     ARM_COMPUTE_RETURN_ON_ERROR(NEFlattenLayerKernel::validate(input, &flatten_input));
@@ -365,7 +363,7 @@ Status NEFullyConnectedLayerEx::validate(const ITensorInfo *input, const ITensor
   if (is_quantized)
   {
     ARM_COMPUTE_RETURN_ON_ERROR(NEGEMMLowpQuantizeDownInt32ToUint8ScaleByFixedPoint::validate(
-        &gemmlowp_output, biases, output));
+      &gemmlowp_output, biases, output));
   }
 
   return Status{};

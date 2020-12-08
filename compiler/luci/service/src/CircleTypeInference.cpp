@@ -16,6 +16,8 @@
 
 #include "luci/Service/CircleTypeInference.h"
 
+#include <luci/Log.h>
+
 #include <loco.h>
 #include <loco/Service/TypeInference.h>
 
@@ -69,4 +71,48 @@ circle::TensorType TypeInference::get(loco::Node *node)
   return translateLocoTypeToCircle(loco::dtype_get(node));
 }
 
+} // namespace luci
+
+namespace
+{
+
+bool inputs_dtype_ready(const luci::CircleNode *node)
+{
+  for (uint32_t arity = 0; arity < node->arity(); ++arity)
+  {
+    if (node->dtype() == loco::DataType::Unknown)
+      return false;
+  }
+
+  return true;
+}
+
+} // namespace
+
+namespace luci
+{
+namespace tinf
+{
+
+bool Rule::infer(const luci::CircleNode *circle_node, loco::DataType &dtype) const
+{
+  LOGGER(l);
+  VERBOSE(l, 1) << "[CircleTypeInference] " << circle_node->name();
+  VERBOSE(l, 1) << "  before: " << static_cast<int>(circle_node->dtype());
+
+  if (!inputs_dtype_ready(circle_node))
+  {
+    VERBOSE(l, 1) << "   after: Some inputs are not ready for inference";
+    return false;
+  }
+
+  Algorithm alg;
+  dtype = circle_node->accept(&alg);
+
+  VERBOSE(l, 1) << "   after: " << static_cast<int>(dtype);
+
+  return true;
+}
+
+} // namespace tinf
 } // namespace luci

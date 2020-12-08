@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+#ifndef __NNFW_API_TEST_GEN_MODEL_TEST_H__
+#define __NNFW_API_TEST_GEN_MODEL_TEST_H__
+
 #include <gtest/gtest.h>
 #include <nnfw_internal.h>
 
@@ -224,10 +227,16 @@ public:
         _backends.push_back(backend);
       }
 #endif
-      if (backend == "cpu" || backend == "ruy" || backend == "xnnpack")
+      if (backend == "cpu" || backend == "ruy")
       {
         _backends.push_back(backend);
       }
+#ifdef TEST_XNNPACK_BACKEND
+      if (backend == "xnnpack")
+      {
+        _backends.push_back(backend);
+      }
+#endif
     }
   }
 
@@ -241,6 +250,11 @@ public:
    */
   void expectFailCompile() { _expected_fail_compile = true; }
 
+  /**
+   * @brief Expect failure while execution
+   */
+  void expectFailExecution() { _expected_fail_execution = true; }
+
 private:
   CircleBuffer _cbuf;
   std::vector<TestCaseData> _test_cases;
@@ -248,6 +262,7 @@ private:
   std::unordered_map<uint32_t, size_t> _output_sizes;
   bool _expected_fail_model_load{false};
   bool _expected_fail_compile{false};
+  bool _expected_fail_execution{false};
 };
 
 /**
@@ -277,7 +292,7 @@ protected:
       NNFW_ENSURE_SUCCESS(nnfw_create_session(&_so.session));
       auto &cbuf = _context->cbuf();
       auto model_load_result =
-          nnfw_load_circle_from_buffer(_so.session, cbuf.buffer(), cbuf.size());
+        nnfw_load_circle_from_buffer(_so.session, cbuf.buffer(), cbuf.size());
       if (_context->expected_fail_model_load())
       {
         ASSERT_NE(model_load_result, NNFW_STATUS_NO_ERROR);
@@ -447,3 +462,5 @@ protected:
   SessionObjectGeneric _so;
   std::unique_ptr<GenModelTestContext> _context;
 };
+
+#endif // __NNFW_API_TEST_GEN_MODEL_TEST_H__

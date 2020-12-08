@@ -1,9 +1,0 @@
-#ifndef INT_VALUE
-#error "INT_VALUE should be defined"
-#endif // INT_VALUE
-
-INT_VALUE(IFM_C, 2)
-INT_VALUE(IFM_H, 3)
-INT_VALUE(IFM_W, 4)
-
-INT_VALUE(KER_H, 1)

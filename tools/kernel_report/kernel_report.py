@@ -14,8 +14,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import os
 import argparse
+from os.path import dirname, realpath, join
 
 
 class Backend:
@@ -28,11 +28,8 @@ class Backend:
 
 class KernelReporter(object):
     def __init__(self, args):
-        # TODO: Remove os defendency - '/'
-        if args.base[0] != '/':
-            self.onertBase = os.getcwd() + '/' + args.base
-        else:
-            self.onertBase = args.base
+        root_path = dirname(dirname(dirname(realpath(__file__))))
+        self.onertBase = join(root_path, "runtime", "onert")
         if args.md5:
             self.printMD5 = True
         else:
@@ -181,7 +178,6 @@ if __name__ == '__main__':
         default='cpu,acl_cl,acl_neon',
         help="backend list to report (use comma)")
     arg_parser.add_argument("--md5", action='store_true', help="Print for md5")
-    arg_parser.add_argument("base", type=str, help="onert base directory")
     args = arg_parser.parse_args()
 
     report = KernelReporter(args)

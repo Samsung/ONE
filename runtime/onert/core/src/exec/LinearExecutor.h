@@ -27,6 +27,7 @@
 #include "compiler/Linear.h"
 #include "exec/FunctionSequence.h"
 #include "compiler/CodeMap.h"
+#include "util/TracingCtx.h"
 
 namespace onert
 {
@@ -48,8 +49,8 @@ public:
    */
   LinearExecutor(std::unique_ptr<compiler::LoweredGraph> lowered_graph,
                  const compiler::TensorRegistries &tensor_regs, compiler::CodeMap &&code_map,
-                 const std::vector<ir::OpSequenceIndex> &order)
-      : ExecutorBase{std::move(lowered_graph), tensor_regs}
+                 const std::vector<ir::OpSequenceIndex> &order, const util::TracingCtx *tracing_ctx)
+      : ExecutorBase{std::move(lowered_graph), tensor_regs, tracing_ctx}
   {
     for (auto index : order)
     {

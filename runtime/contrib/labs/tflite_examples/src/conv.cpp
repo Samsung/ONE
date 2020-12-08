@@ -217,7 +217,7 @@ int main(int argc, char **argv)
   // Configure Filter
   const uint32_t kernel_size = KER_N * KER_C * KER_H * KER_W;
   float kernel_data[kernel_size] = {
-      0.0f,
+    0.0f,
   };
 
   // Fill kernel data in NHWC order
@@ -243,13 +243,13 @@ int main(int argc, char **argv)
   }
 
   interp.SetTensorParametersReadOnly(
-      2, kTfLiteFloat32 /* type */, "filter" /* name */, {KER_N, KER_H, KER_W, KER_C} /* dims */,
-      quantization, reinterpret_cast<const char *>(kernel_data), sizeof(kernel_data));
+    2, kTfLiteFloat32 /* type */, "filter" /* name */, {KER_N, KER_H, KER_W, KER_C} /* dims */,
+    quantization, reinterpret_cast<const char *>(kernel_data), sizeof(kernel_data));
 
   // Configure Bias
   const uint32_t bias_size = bias.size();
   float bias_data[bias_size] = {
-      0.0f,
+    0.0f,
   };
 
   // Fill bias data

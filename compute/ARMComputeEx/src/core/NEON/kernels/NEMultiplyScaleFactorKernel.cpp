@@ -123,15 +123,17 @@ inline float32x4x4_t multiply_scale_vec(const int32x4x4_t &iv, float scale)
   const float32x4_t vscale = vdupq_n_f32(scale);
 
   const float32x4x4_t ret = {{
-      vmulq_f32(vcvtq_f32_s32(iv.val[0]), vscale), vmulq_f32(vcvtq_f32_s32(iv.val[1]), vscale),
-      vmulq_f32(vcvtq_f32_s32(iv.val[2]), vscale), vmulq_f32(vcvtq_f32_s32(iv.val[3]), vscale),
+    vmulq_f32(vcvtq_f32_s32(iv.val[0]), vscale),
+    vmulq_f32(vcvtq_f32_s32(iv.val[1]), vscale),
+    vmulq_f32(vcvtq_f32_s32(iv.val[2]), vscale),
+    vmulq_f32(vcvtq_f32_s32(iv.val[3]), vscale),
   }};
   return ret;
 }
 } // namespace
 
 NEMultiplyScaleFactorKernel::NEMultiplyScaleFactorKernel()
-    : _input(nullptr), _scale_factor(nullptr), _output(nullptr), _multiplier(1.f)
+  : _input(nullptr), _scale_factor(nullptr), _output(nullptr), _multiplier(1.f)
 {
 }
 
@@ -140,7 +142,7 @@ void NEMultiplyScaleFactorKernel::configure(const ITensor *input, const ITensor 
 {
   ARM_COMPUTE_ERROR_ON_NULLPTR(input, output);
   ARM_COMPUTE_ERROR_THROW_ON(
-      validate_arguments(input->info(), scale_factor->info(), output->info()));
+    validate_arguments(input->info(), scale_factor->info(), output->info()));
 
   _input = input;
   _scale_factor = scale_factor;
@@ -180,25 +182,25 @@ template <typename T> void NEMultiplyScaleFactorKernel::multiply(const Window &w
   Iterator output(_output, win_collapsed);
   win_collapsed.set(Window::DimX, Window::Dimension(0, 1, 1));
   execute_window_loop(
-      win_collapsed,
-      [&](const Coordinates &id) {
-        auto scale = *reinterpret_cast<T *>(_scale_factor->ptr_to_element({id.y()}));
-        scale *= _multiplier;
+    win_collapsed,
+    [&](const Coordinates &id) {
+      auto scale = *reinterpret_cast<T *>(_scale_factor->ptr_to_element({id.y()}));
+      scale *= _multiplier;
 
-        const auto input_ptr = reinterpret_cast<const int32_t *>(input.ptr());
-        auto output_ptr = reinterpret_cast<T *>(output.ptr());
-        int x = window_start_x;
-        for (; x <= (window_end_x - window_step); x += window_step)
-        {
-          store_result<float>(&output_ptr[x], multiply_scale_vec(load_value(&input_ptr[x]), scale));
-        }
-        // Compute left-over elements
-        for (; x < window_end_x; ++x)
-        {
-          output_ptr[x] = input_ptr[x] * scale;
-        }
-      },
-      input, output);
+      const auto input_ptr = reinterpret_cast<const int32_t *>(input.ptr());
+      auto output_ptr = reinterpret_cast<T *>(output.ptr());
+      int x = window_start_x;
+      for (; x <= (window_end_x - window_step); x += window_step)
+      {
+        store_result<float>(&output_ptr[x], multiply_scale_vec(load_value(&input_ptr[x]), scale));
+      }
+      // Compute left-over elements
+      for (; x < window_end_x; ++x)
+      {
+        output_ptr[x] = input_ptr[x] * scale;
+      }
+    },
+    input, output);
 }
 
 void NEMultiplyScaleFactorKernel::run(const Window &window, const ThreadInfo &info)

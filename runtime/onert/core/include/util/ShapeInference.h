@@ -42,7 +42,7 @@ using Shapes = std::vector<ir::Shape>;
 
 // Define shape calculation for operations. List them in alphabetic order.
 
-ir::Shape inferArgMaxShape(const ir::Shape &input_shape, int axis, int rank);
+ir::Shape inferArgMinMaxShape(const ir::Shape &input_shape, int axis, int rank);
 
 ir::Shape inferBatchMatMulShape(const ir::Shape &lhs_shape, const ir::Shape &rhs_shape,
                                 const ir::operation::BatchMatMul::Param &param);
@@ -70,7 +70,7 @@ ir::Shape inferEltwiseShape(const ir::Shape &lhs_shape, const ir::Shape &rhs_sha
 
 ir::Shape inferExpandDimsShape(const ir::Shape &in_shape, int32_t axis);
 
-ir::Shape inferFillShape(const ir::Shape &in_shape, const int32_t *in_buf);
+template <typename T> ir::Shape inferFillShape(const ir::Shape &fill_shape, const T *shape_buf);
 
 ir::Shape inferFullyConnectedShape(const ir::Shape &in_shape, const ir::Shape &ker_shape);
 

@@ -65,7 +65,7 @@ public:
 };
 
 Kernel::Kernel(const nnfw_custom_eval evalFunction)
-    : _in_params(), _userdata(nullptr), _userdata_size(0), _evalFunction(evalFunction)
+  : _in_params(), _userdata(nullptr), _userdata_size(0), _evalFunction(evalFunction)
 {
 }
 

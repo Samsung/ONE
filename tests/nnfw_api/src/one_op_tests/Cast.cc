@@ -34,7 +34,7 @@ TEST_F(GenModelTest, OneOp_Cast_Int32ToFloat32)
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
   _context->addTestCase(
-      TestCaseData{}.addInput<int32_t>({1, 2, 3, 4}).addOutput<float>({1, 2, 3, 4}));
+    TestCaseData{}.addInput<int32_t>({1, 2, 3, 4}).addOutput<float>({1, 2, 3, 4}));
   _context->setBackends({"acl_cl", "acl_neon", "cpu"});
 
   SUCCEED();
@@ -46,7 +46,7 @@ TEST_F(GenModelTest, OneOp_Cast_Float32ToInt32)
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
   _context->addTestCase(
-      TestCaseData{}.addInput<float>({1, 2, 3, 4}).addOutput<int32_t>({1, 2, 3, 4}));
+    TestCaseData{}.addInput<float>({1, 2, 3, 4}).addOutput<int32_t>({1, 2, 3, 4}));
   _context->setBackends({"acl_cl", "acl_neon", "cpu"});
 
   SUCCEED();
@@ -58,7 +58,7 @@ TEST_F(GenModelTest, OneOp_Cast_BoolToFloat32)
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
   _context->addTestCase(
-      TestCaseData{}.addInput<bool>({true, false, true, true}).addOutput<float>({1, 0, 1, 1}));
+    TestCaseData{}.addInput<bool>({true, false, true, true}).addOutput<float>({1, 0, 1, 1}));
   _context->setBackends({"acl_cl", "acl_neon", "cpu"});
 
   SUCCEED();
@@ -70,8 +70,8 @@ TEST_F(GenModelTest, OneOp_Cast_BoolToUInt8)
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
   _context->addTestCase(TestCaseData{}
-                            .addInput<bool>({true, false, true, true})
-                            .addOutput(std::vector<uint8_t>{1, 0, 1, 1}));
+                          .addInput<bool>({true, false, true, true})
+                          .addOutput(std::vector<uint8_t>{1, 0, 1, 1}));
   _context->setBackends({"acl_cl", "acl_neon", "cpu"});
 
   SUCCEED();
@@ -83,7 +83,7 @@ TEST_F(GenModelTest, OneOp_Cast_BoolToInt32)
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
   _context->addTestCase(
-      TestCaseData{}.addInput<bool>({true, false, true, true}).addOutput<int32_t>({1, 0, 1, 1}));
+    TestCaseData{}.addInput<bool>({true, false, true, true}).addOutput<int32_t>({1, 0, 1, 1}));
   _context->setBackends({"acl_cl", "acl_neon", "cpu"});
 
   SUCCEED();

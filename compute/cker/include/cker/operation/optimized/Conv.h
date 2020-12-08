@@ -48,7 +48,7 @@ struct GemmlowpOutputPipeline
   typedef std::tuple<gemmlowp::OutputStageBiasAddition<ColVectorMap>,
                      gemmlowp::OutputStageScaleInt32ByFixedPointAndExponent,
                      gemmlowp::OutputStageClamp, gemmlowp::OutputStageSaturatingCastToUint8>
-      Pipeline;
+    Pipeline;
   static Pipeline MakeExp(const int32_t *bias_data, int output_rows, int32_t output_offset,
                           int32_t output_multiplier, int output_left_shift,
                           int32_t output_activation_min, int32_t output_activation_max)
@@ -106,7 +106,7 @@ inline void Conv(const ConvParams &params, const Shape &input_shape, const uint8
   const int filter_height = filter_shape.Dims(1);
   const bool need_dilated_im2col = dilation_width_factor != 1 || dilation_height_factor != 1;
   const bool need_im2col =
-      stride_width != 1 || stride_height != 1 || filter_width != 1 || filter_height != 1;
+    stride_width != 1 || stride_height != 1 || filter_width != 1 || filter_height != 1;
   if (need_dilated_im2col)
   {
     assert(im2col_data);
@@ -141,7 +141,7 @@ inline void Conv(const ConvParams &params, const Shape &input_shape, const uint8
   // the other calls commented out. This is a partial rollback of cl/196819423.
   // const int gemm_input_cols = FlatSizeSkipDim(*gemm_input_shape, 3);
   const int gemm_input_cols =
-      gemm_input_shape->Dims(0) * gemm_input_shape->Dims(1) * gemm_input_shape->Dims(2);
+    gemm_input_shape->Dims(0) * gemm_input_shape->Dims(1) * gemm_input_shape->Dims(2);
   const int filter_rows = filter_shape.Dims(0);
   // See b/79927784.
   // const int filter_cols = FlatSizeSkipDim(filter_shape, 0);
@@ -156,17 +156,17 @@ inline void Conv(const ConvParams &params, const Shape &input_shape, const uint8
   assert(bias_shape.FlatSize() == output_rows);
   UNUSED_RELEASE(bias_shape);
   gemmlowp::MatrixMap<const uint8_t, gemmlowp::MapOrder::RowMajor> filter_matrix(
-      filter_data, filter_rows, filter_cols);
+    filter_data, filter_rows, filter_cols);
   gemmlowp::MatrixMap<const uint8_t, gemmlowp::MapOrder::ColMajor> input_matrix(
-      gemm_input_data, gemm_input_rows, gemm_input_cols);
+    gemm_input_data, gemm_input_rows, gemm_input_cols);
   gemmlowp::MatrixMap<uint8_t, gemmlowp::MapOrder::ColMajor> output_matrix(output_data, output_rows,
                                                                            output_cols);
   const auto &output_pipeline =
-      GemmlowpOutputPipeline::MakeExp(bias_data, output_rows, output_offset, output_multiplier,
-                                      output_shift, output_activation_min, output_activation_max);
+    GemmlowpOutputPipeline::MakeExp(bias_data, output_rows, output_offset, output_multiplier,
+                                    output_shift, output_activation_min, output_activation_max);
   gemmlowp::GemmWithOutputPipeline<uint8_t, uint8_t, gemmlowp::L8R8WithLhsNonzeroBitDepthParams>(
-      gemm_context, filter_matrix, input_matrix, &output_matrix, filter_offset, input_offset,
-      output_pipeline);
+    gemm_context, filter_matrix, input_matrix, &output_matrix, filter_offset, input_offset,
+    output_pipeline);
 }
 
 } // namespace optimized
@@ -202,10 +202,10 @@ public:
                   T *output_data, int output_height, int output_width)
   {
     const bool is_1x1_kernel =
-        (filter_height == 1 && filter_width == 1 && stride_rows == 1 && stride_cols == 1);
+      (filter_height == 1 && filter_width == 1 && stride_rows == 1 && stride_cols == 1);
     const bool is_same_height_width =
-        (filter_height == input_height && filter_width == input_width && pad_width == 0 &&
-         pad_height == 0);
+      (filter_height == input_height && filter_width == input_width && pad_width == 0 &&
+       pad_height == 0);
     if (is_1x1_kernel || is_same_height_width)
     {
       // is_1x1_kernel: For 1x1 kernel, the 2D convolution is reduced to matrix multiplication.

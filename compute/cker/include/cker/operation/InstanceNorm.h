@@ -78,8 +78,8 @@ inline void InstanceNorm(const InstanceNormParams &params, const Shape &input_sh
           double input_value = input_data[Offset(output_shape, batch, height, width, channel)];
           double output_value = input_value * a + b;
           output_data[Offset(output_shape, batch, height, width, channel)] =
-              ActivationFunctionWithMinMax((float)output_value, output_activation_min,
-                                           output_activation_max);
+            ActivationFunctionWithMinMax((float)output_value, output_activation_min,
+                                         output_activation_max);
         }
       }
     }

@@ -17,6 +17,7 @@
 #include "KernelGenerator.h"
 
 #include "ops/ConvolutionLayer.h"
+#include "ops/FullyConnectedLayer.h"
 
 #include <backend/Backend.h>
 #include <backend/IConfig.h>
@@ -136,6 +137,30 @@ void KernelGenerator::visit(const ir::operation::Conv2D &node)
   fn->configure(ifm_tensor, ker_tensor, bias_tensor, param_padding.type, padding.left,
                 padding.right, padding.top, padding.bottom, stride.horizontal, stride.vertical,
                 dilation.width_factor, dilation.height_factor, activation, ofm_tensor,
+                _external_context);
+
+  _return_fn = std::move(fn);
+}
+
+void KernelGenerator::visit(const ir::operation::FullyConnected &node)
+{
+  using ir::operation::FullyConnected;
+
+  const auto output_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(FullyConnected::Input::INPUT)};
+  const auto weight_index{node.getInputs().at(FullyConnected::Input::WEIGHT)};
+  const auto bias_index{node.getInputs().at(FullyConnected::Input::BIAS)};
+  const auto activation = node.param().activation;
+  const auto weights_format = node.param().weights_format;
+
+  auto output_tensor = _tensor_reg->getPortableTensor(output_index);
+  auto input_tensor = _tensor_reg->getPortableTensor(input_index);
+  auto weight_tensor = _tensor_reg->getPortableTensor(weight_index);
+  auto bias_tensor = bias_index.undefined() ? nullptr : _tensor_reg->getPortableTensor(bias_index);
+
+  auto fn = std::make_unique<ops::FullyConnectedLayer>();
+
+  fn->configure(input_tensor, weight_tensor, bias_tensor, activation, weights_format, output_tensor,
                 _external_context);
 
   _return_fn = std::move(fn);

@@ -117,24 +117,26 @@ void ConcatLayer::configure(const std::vector<const IPortableTensor *> &inputs, 
 
 void ConcatLayer::run()
 {
-  if (_output->data_type() == OperandType::FLOAT32)
+  switch (_output->data_type())
   {
-    concatenationGeneral<float>();
+    case OperandType::FLOAT32:
+      concatenationGeneral<float>();
+      break;
+    case OperandType::QUANT_UINT8_ASYMM:
+      concatenationQuant8();
+      break;
+    case OperandType::QUANT_INT8_ASYMM:
+      concatenationGeneral<int8_t>();
+      break;
+    case OperandType::INT32:
+      concatenationGeneral<int32_t>();
+      break;
+    case OperandType::INT64:
+      concatenationGeneral<int64_t>();
+      break;
+    default:
+      throw std::runtime_error("Concat: unsupported data type");
   }
-  else if (_output->data_type() == OperandType::QUANT_UINT8_ASYMM)
-  {
-    concatenationQuant8();
-  }
-  else if (_output->data_type() == OperandType::INT32)
-  {
-    concatenationGeneral<int32_t>();
-  }
-  else if (_output->data_type() == OperandType::INT64)
-  {
-    concatenationGeneral<int64_t>();
-  }
-  else
-    throw std::runtime_error("Concat: unsupported data type");
 }
 
 } // namespace ops

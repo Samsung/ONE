@@ -102,7 +102,7 @@ TEST_F(ValidationTestAddModelLoaded, neg_load_model)
 {
   // load model twice
   ASSERT_EQ(nnfw_load_model_from_file(
-                _session, NNPackages::get().getModelAbsolutePath(NNPackages::ADD).c_str()),
+              _session, NNPackages::get().getModelAbsolutePath(NNPackages::ADD).c_str()),
             NNFW_STATUS_INVALID_STATE);
 }
 

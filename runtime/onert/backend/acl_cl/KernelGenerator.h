@@ -17,7 +17,7 @@
 #ifndef __ONERT_BACKEND_ACL_CL_KERNEL_GENERATOR_H__
 #define __ONERT_BACKEND_ACL_CL_KERNEL_GENERATOR_H__
 
-#include <backend/IKernelGenerator.h>
+#include <backend/cpu_common/KernelGeneratorBase.h>
 
 #include "ir/Operands.h"
 #include "TensorBuilder.h"
@@ -31,7 +31,7 @@ namespace backend
 namespace acl_cl
 {
 
-class KernelGenerator : public IKernelGenerator
+class KernelGenerator : public cpu_common::KernelGeneratorBase
 {
 public:
   KernelGenerator(const ir::Operands &operands_ctx, const ir::Operations &operations_ctx,
@@ -39,53 +39,54 @@ public:
                   const std::shared_ptr<acl_common::AclTensorRegistry<TensorManager>> &_tensor_reg);
 
   void visit(const ir::OpSequence &) override;
+
+  void visit(const ir::operation::ArgMinMax &) override;
   void visit(const ir::operation::BatchToSpaceND &) override;
   void visit(const ir::operation::BinaryArithmetic &) override;
-  void visit(const ir::operation::Conv2D &) override;
-  void visit(const ir::operation::DepthwiseConv2D &) override;
+  void visit(const ir::operation::Comparison &) override;
   void visit(const ir::operation::Concat &) override;
-  void visit(const ir::operation::FullyConnected &) override;
-  void visit(const ir::operation::Reduce &) override;
-  void visit(const ir::operation::Reshape &) override;
-  void visit(const ir::operation::Squeeze &) override;
-  void visit(const ir::operation::Softmax &) override;
-  void visit(const ir::operation::Slice &) override;
-  void visit(const ir::operation::StridedSlice &) override;
-  void visit(const ir::operation::Transpose &) override;
+  void visit(const ir::operation::Conv2D &) override;
+  void visit(const ir::operation::ConvertFp16ToFp32 &) override;
+  void visit(const ir::operation::ConvertFp32ToFp16 &) override;
+  void visit(const ir::operation::DepthToSpace &) override;
+  void visit(const ir::operation::DepthwiseConv2D &) override;
   void visit(const ir::operation::ElementwiseActivation &) override;
   void visit(const ir::operation::ElementwiseBinary &) override;
   void visit(const ir::operation::ElementwiseUnary &) override;
+  void visit(const ir::operation::EmbeddingLookup &) override;
   void visit(const ir::operation::ExpandDims &) override;
+  void visit(const ir::operation::FullyConnected &) override;
+  void visit(const ir::operation::Gather &) override;
+  void visit(const ir::operation::HashtableLookup &) override;
   void visit(const ir::operation::InstanceNorm &) override;
-  void visit(const ir::operation::Comparison &) override;
+  void visit(const ir::operation::L2Normalization &) override;
+  void visit(const ir::operation::LocalResponseNormalization &) override;
   void visit(const ir::operation::LSTM &) override;
   void visit(const ir::operation::OneHot &) override;
   void visit(const ir::operation::Pack &) override;
-  void visit(const ir::operation::Pool2D &) override;
+  void visit(const ir::operation::Pad &) override;
   void visit(const ir::operation::Permute &) override;
+  void visit(const ir::operation::Pool2D &) override;
+  void visit(const ir::operation::PReLU &) override;
+  void visit(const ir::operation::Reduce &) override;
+  void visit(const ir::operation::Reshape &) override;
   void visit(const ir::operation::ResizeBilinear &) override;
   void visit(const ir::operation::ResizeNearestNeighbor &) override;
+  void visit(const ir::operation::Reverse &) override;
   void visit(const ir::operation::RNN &) override;
+  void visit(const ir::operation::Slice &) override;
+  void visit(const ir::operation::Softmax &) override;
   void visit(const ir::operation::SpaceToBatchND &) override;
   void visit(const ir::operation::SpaceToDepth &) override;
-  void visit(const ir::operation::EmbeddingLookup &) override;
-  void visit(const ir::operation::L2Normalization &) override;
-  void visit(const ir::operation::HashtableLookup &) override;
-  void visit(const ir::operation::PReLU &) override;
-  void visit(const ir::operation::TransposeConv &) override;
-  void visit(const ir::operation::SquaredDifference &) override;
-  void visit(const ir::operation::TopKV2 &) override;
-  void visit(const ir::operation::Gather &) override;
-  void visit(const ir::operation::ArgMinMax &) override;
-  void visit(const ir::operation::LocalResponseNormalization &) override;
-  void visit(const ir::operation::DepthToSpace &) override;
   void visit(const ir::operation::Split &) override;
   void visit(const ir::operation::SplitV &) override;
+  void visit(const ir::operation::SquaredDifference &) override;
+  void visit(const ir::operation::Squeeze &) override;
+  void visit(const ir::operation::StridedSlice &) override;
+  void visit(const ir::operation::TopKV2 &) override;
+  void visit(const ir::operation::Transpose &) override;
+  void visit(const ir::operation::TransposeConv &) override;
   void visit(const ir::operation::Unpack &) override;
-  void visit(const ir::operation::Pad &) override;
-  void visit(const ir::operation::ConvertFp32ToFp16 &) override;
-  void visit(const ir::operation::ConvertFp16ToFp32 &) override;
-  void visit(const ir::operation::Reverse &) override;
 
 private:
   const ir::Operands &_ctx;

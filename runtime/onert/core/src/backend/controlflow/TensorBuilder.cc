@@ -30,8 +30,8 @@ namespace controlflow
 TensorBuilder::TensorBuilder(const std::shared_ptr<TensorRegistry> &tensor_reg)
     : _tensor_reg{tensor_reg},
       _dynamic_tensor_mgr{new DynamicTensorManager(_tensor_reg->base_reg())},
-      _static_tensor_mgr{new cpu_common::StaticTensorManager(
-          _tensor_reg->base_reg(), _dynamic_tensor_mgr->dynamic_mem_mgr().get())}
+      _static_tensor_mgr{
+          new cpu_common::StaticTensorManager(_tensor_reg->base_reg(), _dynamic_tensor_mgr.get())}
 {
   /* empty */
 }
@@ -90,11 +90,7 @@ bool TensorBuilder::isRegistered(const ir::OperandIndex &ind) const
   return _tensor_info_map.find(ind) != _tensor_info_map.end();
 }
 
-void TensorBuilder::prepare(void)
-{
-  _static_tensor_mgr->allocateConsts();
-  _static_tensor_mgr->allocateNonconsts();
-}
+void TensorBuilder::prepare(void) { _static_tensor_mgr->allocateNonconsts(); }
 
 void TensorBuilder::allocate()
 {

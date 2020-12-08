@@ -72,9 +72,9 @@ inline bool ReduceMeanImpl(const In *input_data, const Shape &input_shape, const
   {
     size_t input_offset = ReducedOutputOffset(input_num_dims, input_dims, input_iter, 0, nullptr);
     size_t output_offset =
-        ReducedOutputOffset(input_num_dims, input_dims, input_iter, num_axis, axis);
+      ReducedOutputOffset(input_num_dims, input_dims, input_iter, num_axis, axis);
     output_data[output_offset] =
-        reducer(output_data[output_offset], input_data[input_offset], normalizer);
+      reducer(output_data[output_offset], input_data[input_offset], normalizer);
   } while (NextIndex(input_num_dims, input_dims, input_iter));
   return true;
 }
@@ -102,7 +102,7 @@ inline size_t ReduceSumQuantImpl(const In *input_data, const Shape &input_shape,
   {
     size_t input_offset = ReducedOutputOffset(input_num_dims, input_dims, input_iter, 0, nullptr);
     size_t output_offset =
-        ReducedOutputOffset(input_num_dims, input_dims, input_iter, num_axis, axis);
+      ReducedOutputOffset(input_num_dims, input_dims, input_iter, num_axis, axis);
     temp_sum[output_offset] = reducer(temp_sum[output_offset], input_data[input_offset]);
   } while (NextIndex(input_num_dims, input_dims, input_iter));
   return normalizer;
@@ -185,8 +185,8 @@ public:
     }
 
     size_t normalizer =
-        ReduceSumQuantImpl<In>(input_data, input_shape, resolved_axis_data(), num_resolved_axis,
-                               temp_index_data(), reducer, _temp_sum.data());
+      ReduceSumQuantImpl<In>(input_data, input_shape, resolved_axis_data(), num_resolved_axis,
+                             temp_index_data(), reducer, _temp_sum.data());
     if (num_outputs > 0)
     {
       float scale = input_scale / output_scale;
@@ -229,6 +229,37 @@ void MeanQ8Asymm(const Shape &input_shape, const In *input_data, float input_sca
   m_obj.ReduceOp<In, Out>(input_shape, input_data, input_scale, input_offset, output_shape,
                           output_data, output_scale, output_offset, axes, true, (Out)0,
                           sum_reducer);
+}
+
+template <typename In, typename Out>
+void MeanAxis1And2(const Shape &input_shape, const In *input_data, const Shape &output_shape,
+                   Out *output_data)
+{
+  UNUSED_RELEASE(output_shape);
+  assert(input_shape.DimensionsCount() == 4);
+  assert(output_shape.DimensionsCount() == 4);
+
+  const int output_batch = output_shape.Dims(0);
+  const int output_depth = output_shape.Dims(3);
+
+  const int input_height = input_shape.Dims(1);
+  const int input_width = input_shape.Dims(2);
+
+  for (int out_b = 0; out_b < output_batch; ++out_b)
+  {
+    for (int out_d = 0; out_d < output_depth; ++out_d)
+    {
+      float value = 0;
+      for (int in_h = 0; in_h < input_height; ++in_h)
+      {
+        for (int in_w = 0; in_w < input_width; ++in_w)
+        {
+          value += input_data[Offset(input_shape, out_b, in_h, in_w, out_d)];
+        }
+      }
+      output_data[Offset(output_shape, out_b, 0, 0, out_d)] = value / (input_width * input_height);
+    }
+  }
 }
 
 } // namespace cker

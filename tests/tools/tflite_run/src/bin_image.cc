@@ -20,7 +20,7 @@
 #include "bin_image.h"
 
 BinImage::BinImage(unsigned int width, unsigned int height, unsigned int channels)
-    : _width(width), _height(height), _channels(channels)
+  : _width(width), _height(height), _channels(channels)
 {
 }
 

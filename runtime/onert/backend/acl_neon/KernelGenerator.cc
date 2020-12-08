@@ -91,10 +91,11 @@ void KernelGenerator::visit(const ir::operation::ArgMinMax &node)
   assert(axis_value >= 0 && axis_value < ifm_rank);
   const auto fixed_axis =
       acl_common::ToARMComputeAxis(ifm_rank, axis_value, frontend_layout, backend_layout).value();
+  auto reduce_type = node.param().is_arg_max ? ::arm_compute::ReductionOperation::ARG_IDX_MAX
+                                             : ::arm_compute::ReductionOperation::ARG_IDX_MIN;
 
   auto fn = acl_common::generateLayer<arm_compute::NEArgMinMaxLayer>(
-      ifm_tensor->handle(), fixed_axis, ofm_tensor->handle(),
-      arm_compute::ReductionOperation::ARG_IDX_MAX);
+      ifm_tensor->handle(), fixed_axis, ofm_tensor->handle(), reduce_type);
 
   _return_fn = asAclFunction(std::move(fn));
 }
@@ -105,6 +106,25 @@ void KernelGenerator::visit(const ir::operation::BatchToSpaceND &node)
   const auto ifm_index{node.getInputs().at(ir::operation::BatchToSpaceND::Input::INPUT)};
   const auto block_size_index{
       node.getInputs().at(ir::operation::BatchToSpaceND::Input::BLOCK_SIZE)};
+
+  const auto NNApiInputs = 2;
+  if (node.getInputs().size() != NNApiInputs)
+  {
+    const auto crops_index{node.getInputs().at(ir::operation::BatchToSpaceND::Input::CROPS_DATA)};
+    if (!_ctx.at(crops_index).isConstant())
+    {
+      throw std::runtime_error("Non-constant crops NYI for acl_neon backend BatchToSpaceND");
+    }
+
+    auto crops = _ctx.at(crops_index).asVector<int32_t>();
+    for (auto crop : crops)
+    {
+      if (crop != 0)
+      {
+        throw std::runtime_error("Non-zero crops NYI for acl_neon backend BatchToSpaceND");
+      }
+    }
+  }
 
   auto ofm_tensor = _tensor_reg->getAclTensor(ofm_index);
   auto ifm_tensor = _tensor_reg->getAclTensor(ifm_index);

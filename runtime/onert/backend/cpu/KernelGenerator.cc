@@ -23,6 +23,7 @@
 #include "ops/CompareLayer.h"
 #include "ops/ConcatLayer.h"
 #include "ops/ConvolutionLayer.h"
+#include "ops/DepthToSpaceLayer.h"
 #include "ops/DepthwiseConvolutionLayer.h"
 #include "ops/EinsumLayer.h"
 #include "ops/ElementwiseActivationLayer.h"
@@ -108,6 +109,8 @@ convertElementwiseActivationType(ir::operation::ElementwiseActivation::Type type
 {
   switch (type_ir)
   {
+    case ir::operation::ElementwiseActivation::Type::ELU:
+      return ops::ElementwiseActivationType::kElu;
     case ir::operation::ElementwiseActivation::Type::LOGISTIC:
       return ops::ElementwiseActivationType::kLogistic;
     case ir::operation::ElementwiseActivation::Type::RELU:
@@ -426,16 +429,15 @@ void KernelGenerator::visit(const ir::operation::BatchToSpaceND &node)
 void KernelGenerator::visit(const ir::operation::Fill &node)
 {
   const auto output_index{node.getOutputs().at(0)};
-  const auto input_index{node.getInputs().at(ir::operation::Fill::Input::INPUT)};
+  // SHAPE input is used for shape inference
   const auto value_index{node.getInputs().at(ir::operation::Fill::Input::VALUE)};
 
   auto output_tensor = _tensor_reg->getPortableTensor(output_index);
-  auto input_tensor = _tensor_reg->getPortableTensor(input_index);
   auto value_tensor = _tensor_reg->getPortableTensor(value_index);
 
   auto fn = std::make_unique<ops::FillLayer>();
 
-  fn->configure(input_tensor, value_tensor, output_tensor);
+  fn->configure(value_tensor, output_tensor);
 
   _return_fn = std::move(fn);
 }
@@ -721,15 +723,14 @@ void KernelGenerator::visit(const ir::operation::ExpandDims &node)
 {
   const auto output_index{node.getOutputs().at(0)};
   const auto input_index{node.getInputs().at(ir::operation::ExpandDims::Input::INPUT)};
-  const auto axis_index{node.getInputs().at(ir::operation::ExpandDims::Input::AXIS)};
+  // AXIS input is used for output shape inference
 
   auto output_tensor = _tensor_reg->getPortableTensor(output_index);
   auto input_tensor = _tensor_reg->getPortableTensor(input_index);
-  auto axis_tensor = _tensor_reg->getPortableTensor(axis_index);
 
   auto fn = std::make_unique<ops::ExpandDimsLayer>();
 
-  fn->configure(input_tensor, axis_tensor, output_tensor);
+  fn->configure(input_tensor, output_tensor);
 
   _return_fn = std::move(fn);
 }
@@ -1024,7 +1025,7 @@ void KernelGenerator::visit(const ir::operation::ArgMinMax &node)
 
   auto fn = std::make_unique<ops::ArgMinMaxLayer>();
 
-  fn->configure(input_tensor, output_tensor, axis_tensor, /* is_arg_max */ true);
+  fn->configure(input_tensor, output_tensor, axis_tensor, node.param().is_arg_max);
 
   _return_fn = std::move(fn);
 }
@@ -1260,6 +1261,21 @@ void KernelGenerator::visit(const ir::operation::SpaceToBatchND &node)
 
   fn->configure(input_tensor, block_shape_tensor, padding_tensor, output_tensor);
 
+  _return_fn = std::move(fn);
+}
+
+void KernelGenerator::visit(const ir::operation::DepthToSpace &node)
+{
+  const auto input_index{node.getInputs().at(ir::operation::DepthToSpace::Input::INPUT)};
+  const auto output_index{node.getOutputs().at(0)};
+  auto block_size = node.param().block_size;
+
+  auto input_tensor = _tensor_reg->getPortableTensor(input_index);
+  auto output_tensor = _tensor_reg->getPortableTensor(output_index);
+
+  auto fn = std::make_unique<ops::DepthToSpaceLayer>();
+
+  fn->configure(input_tensor, block_size, output_tensor);
   _return_fn = std::move(fn);
 }
 

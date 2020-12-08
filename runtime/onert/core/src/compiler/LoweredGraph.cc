@@ -32,6 +32,7 @@
 #include "compiler/BackendResolver.h"
 #include "compiler/ManualScheduler.h"
 #include "compiler/HEScheduler.h"
+#include "util/TracingCtx.h"
 
 namespace onert
 {
@@ -40,6 +41,13 @@ namespace compiler
 
 LoweredGraph::LoweredGraph(const ir::Graph &graph, const CompilerOptions &options) : _graph{graph}
 {
+  // set tracing_ctx for copied graph
+  if (options.tracing_ctx)
+  {
+    auto subgraph_index = options.tracing_ctx->getSubgraphIndex(&graph);
+    options.tracing_ctx->setSubgraphIndex(&_graph, subgraph_index.value());
+  }
+
   bool linear_executor = (options.executor == "Linear");
 
   // Build backend contexts
@@ -112,7 +120,7 @@ LoweredGraph::LoweredGraph(const ir::Graph &graph, const CompilerOptions &option
         .run();
 
     // Set LowerInfo for each operand from the operand::LowerInfo holder
-    manipulateLowerInfo(operands_lower_info, options.is_primary_subgraph);
+    manipulateLowerInfo(operands_lower_info);
 
     dumpLowerInfo();
   }
@@ -326,25 +334,22 @@ void LoweredGraph::makeOpSequences(
 }
 
 void LoweredGraph::manipulateLowerInfo(
-    ir::OperandIndexMap<std::unique_ptr<ir::operand::LowerInfo>> &operands_lower_info, bool)
+    ir::OperandIndexMap<std::unique_ptr<ir::operand::LowerInfo>> &operands_lower_info)
 {
   const auto controlflow_backend = BackendManager::get().getControlflow();
 
-  // TODO Remove indentation
+  // TODO Rather than using NHWC Get frontend layout of this node from IR
+  auto factor = ir::operand::PermuteFactor{controlflow_backend, ir::Layout::NHWC};
+  for (auto index : _graph.getInputs() | ir::Remove::UNDEFINED)
   {
-    // TODO Rather than using NHWC Get frontend layout of this node from IR
-    auto factor = ir::operand::PermuteFactor{controlflow_backend, ir::Layout::NHWC};
-    for (auto index : _graph.getInputs() | ir::Remove::UNDEFINED)
-    {
-      auto &&lower_info = operands_lower_info.at(index);
-      assert(lower_info->def_factors().empty());
-      lower_info->addDefPermuteFactor(factor);
-    }
-    for (auto index : _graph.getOutputs() | ir::Remove::UNDEFINED)
-    {
-      auto &&lower_info = operands_lower_info.at(index);
-      lower_info->addUsePermuteFactor(factor);
-    }
+    auto &&lower_info = operands_lower_info.at(index);
+    assert(lower_info->def_factors().empty());
+    lower_info->addDefPermuteFactor(factor);
+  }
+  for (auto index : _graph.getOutputs() | ir::Remove::UNDEFINED)
+  {
+    auto &&lower_info = operands_lower_info.at(index);
+    lower_info->addUsePermuteFactor(factor);
   }
   for (auto index : _graph.getOutputs() | ir::Remove::UNDEFINED)
   {
@@ -425,8 +430,11 @@ void LoweredGraph::dumpLowerInfo()
         sstream << (shape.dim(i)) << " ";
       }
       sstream << "}" << std::endl;
-      sstream << "  - Def ir::Operations  : " << def_ops << std::endl;
-      sstream << "  - Use ir::Operations  : " << use_ops << std::endl;
+      sstream << "  - Def Operations  : " << def_ops << std::endl;
+      sstream << "  - Use Operations  : " << use_ops << std::endl;
+      sstream << "  - Data            : "
+              << (object.data() ? (std::to_string(object.data()->size()) + " bytes") : "N/A")
+              << std::endl;
       sstream << "  - Lower Info" << std::endl;
       sstream << "    - Def Backends    : " << def_layouts << std::endl;
       sstream << "    - Use Backends    : " << use_layouts << std::endl;

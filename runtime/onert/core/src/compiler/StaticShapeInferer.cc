@@ -166,7 +166,8 @@ void StaticShapeInferer::visit(const ir::operation::ArgMinMax &op)
   axis_value = axis_value < 0 ? axis_value + rank : axis_value;
 
   // re-sizing output shape
-  ir::Shape new_shape = shape_inference::inferArgMaxShape(input.info().shape(), axis_value, rank);
+  ir::Shape new_shape =
+      shape_inference::inferArgMinMaxShape(input.info().shape(), axis_value, rank);
   output.info().shape(new_shape);
 }
 
@@ -335,35 +336,47 @@ void StaticShapeInferer::visit(const ir::operation::ExpandDims &op)
 
   // even when axis is constant, output shape should be recalculated since user might call
   // nnfw_set_input_tensorinfo(input, some_new_shape)
-  auto axis_buf = reinterpret_cast<const int32_t *>(axis.data()->base());
-  assert(axis_buf);
+  auto axis_type = axis.typeInfo().type();
+  assert(axis_type == ir::DataType::INT32 || axis_type == ir::DataType::INT64);
+
+  assert(axis.data()->base());
+  int32_t axis_value =
+      (axis_type == ir::DataType::INT32)
+          ? reinterpret_cast<const int32_t *>(axis.data()->base())[0]
+          : static_cast<int32_t>(reinterpret_cast<const int64_t *>(axis.data()->base())[0]);
 
   // re-sizing output shape
-  ir::Shape new_shape = shape_inference::inferExpandDimsShape(input.info().shape(), axis_buf[0]);
+  ir::Shape new_shape = shape_inference::inferExpandDimsShape(input.info().shape(), axis_value);
   output.info().shape(new_shape);
 }
 
 void StaticShapeInferer::visit(const ir::operation::Fill &op)
 {
-  const auto input_idx{op.getInputs().at(ir::operation::Fill::Input::INPUT)};
-  const auto &input = _operands.at(input_idx);
+  const auto shape_idx{op.getInputs().at(ir::operation::Fill::Input::SHAPE)};
+  const auto &shape = _operands.at(shape_idx);
   const auto output_idx = op.getOutputs().at(0);
   ir::Operand &output = _operands.at(output_idx);
 
-  if (!input.isConstant())
+  if (!shape.isConstant())
   {
     output.info().setDynamic();
     _return_has_dynamic_tensor = true;
     return;
   }
 
-  assert(input.typeInfo().type() == ir::DataType::INT32);
+  const auto dims_type = shape.typeInfo().type();
+  assert(dims_type == ir::DataType::INT32 || dims_type == ir::DataType::INT64);
 
-  auto input_buf = reinterpret_cast<const int32_t *>(input.data()->base());
-  assert(input_buf);
+  auto dims_buf = shape.data()->base();
+  assert(dims_buf);
 
-  // re-sizing output shape
-  ir::Shape new_shape = shape_inference::inferFillShape(input.info().shape(), input_buf);
+  const auto &dims_shape = shape.info().shape();
+  auto new_shape = ((dims_type == ir::DataType::INT32)
+                        ? shape_inference::inferFillShape<int32_t>(
+                              dims_shape, reinterpret_cast<const int32_t *>(dims_buf))
+                        : shape_inference::inferFillShape<int64_t>(
+                              dims_shape, reinterpret_cast<const int64_t *>(dims_buf)));
+
   output.info().shape(new_shape);
 }
 

@@ -1702,7 +1702,6 @@ loco::NodeShape infer_bidirectionalsequencelstm(const luci::CircleBidirectionalS
   return loco::NodeShape{shape_output};
 }
 
-
 loco::NodeShape infer_input(const luci::CircleInput *node)
 {
   loco::TensorShape shape;

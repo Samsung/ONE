@@ -40,7 +40,7 @@ public:
 
 public:
   using Generator =
-      std::function<onert::ir::Operation *(const OperationFactory::Param &, onert::ir::Operands &)>;
+    std::function<onert::ir::Operation *(const OperationFactory::Param &, onert::ir::Operands &)>;
 
 public:
   static OperationFactory &get();

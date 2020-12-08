@@ -30,10 +30,11 @@ void TFliteOpBidirectionalSequenceLSTM::filler(const tflite::Operator *op, TFlit
 
   for (int32_t i = 0; i < inputs.size(); i++)
   {
-    // Except for Input 0, 17, 34, 35 and 37.
-    // Each Input mean  Input Tensor, OutputState Tensor and CellState Tensor.
+    // Except for Input 0, 35, 36, 37 and 38.
+    // Each Input mean Input Tensor, ActivationState Tensor (forward and backward), and CellState
+    // Tensor (forward and backward).
     // This could be updated from previous input or User Given data, so This could not be Const
-    if (i == 0 || i == 17 || i == 34 || i == 35 || i == 37)
+    if (i == 0 || i == 35 || i == 36 || i == 37 || i == 38)
       continue;
     if (inputs[i] != -1)
       fill_tensor_to_import(inputs[i], import);

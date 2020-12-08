@@ -121,7 +121,7 @@ namespace acl_common
     case ir::DataType::QUANT_INT8_SYMM_PER_CHANNEL:
       return ::arm_compute::DataType::QSYMM8_PER_CHANNEL;
     default:
-      throw std::runtime_error("Not supported, yet");
+      throw std::runtime_error("Not supported internal data type, yet");
       break;
   }
 }
@@ -181,7 +181,7 @@ namespace acl_common
       return ::arm_compute::ActivationLayerInfo{
           ::arm_compute::ActivationLayerInfo::ActivationFunction::LOGISTIC, 0.0f, 0.0f};
     default:
-      throw std::runtime_error{"Not supported, yet"};
+      throw std::runtime_error{"Not supported internal activation, yet"};
       break;
   }
 }
@@ -225,7 +225,7 @@ asActivationLayerInfo(const ir::operation::ElementwiseActivation::Type op_type, 
       return ::arm_compute::ActivationLayerInfo{
           ::arm_compute::ActivationLayerInfo::ActivationFunction::LEAKY_RELU, alpha};
     default:
-      throw std::runtime_error{"Not supported, yet"};
+      throw std::runtime_error{"Not supported internal elementwise activation, yet"};
       break;
   }
 }
@@ -301,6 +301,8 @@ ir::DataType asRuntimeDataType(::arm_compute::DataType data_type)
       return ir::DataType::UINT32;
     case ::arm_compute::DataType::QASYMM8:
       return ir::DataType::QUANT_UINT8_ASYMM;
+    case ::arm_compute::DataType::QASYMM8_SIGNED:
+      return ir::DataType::QUANT_INT8_ASYMM;
     case ::arm_compute::DataType::U8:
       return ir::DataType::UINT8;
     case ::arm_compute::DataType::QSYMM8:
@@ -310,7 +312,7 @@ ir::DataType asRuntimeDataType(::arm_compute::DataType data_type)
     case ::arm_compute::DataType::S64:
       return ir::DataType::INT64;
     default:
-      throw std::runtime_error{"Not supported, yet"};
+      throw std::runtime_error{"Not supported acl data type, yet"};
       break;
   }
 }

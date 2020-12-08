@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_COMPILER_RUY_CONSTANT_INITIALIZER_H__
-#define __ONERT_COMPILER_RUY_CONSTANT_INITIALIZER_H__
+#ifndef __ONERT_BACKEND_RUY_CONSTANT_INITIALIZER_H__
+#define __ONERT_BACKEND_RUY_CONSTANT_INITIALIZER_H__
 
 #include "backend/cpu_common/TensorRegistry.h"
 
-#include <backend/IConstantInitializer.h>
+#include <backend/cpu_common/ConstantInitializerBase.h>
 #include <ir/Operands.h>
 
 namespace onert
@@ -29,7 +29,7 @@ namespace backend
 namespace ruy
 {
 
-class ConstantInitializer : public IConstantInitializer
+class ConstantInitializer : public cpu_common::ConstantInitializerBase
 {
 public:
   ConstantInitializer(const ir::Operands &operands,
@@ -41,7 +41,7 @@ public:
   // TODO: For now the only cpu backend supports constant tensor to use data from external
   // If the other backend supports (to do this,
   // ExternalTensor should be abstract such as IExternal, maybe),
-  // this can be an interface of IConstantInitializer
+  // this can be an interface of cpu_common::ConstantInitializerBase
   void registerExternalInitializer(const ir::OperandIndex &, const ir::Operand &);
 
 public:
@@ -58,4 +58,4 @@ private:
 } // namespace backend
 } // namespace onert
 
-#endif // __ONERT_COMPILER_RUY_CONSTANT_INITIALIZER_H__
+#endif // __ONERT_BACKEND_RUY_CONSTANT_INITIALIZER_H__

@@ -86,7 +86,7 @@ int main(const int argc, char **argv)
   // TODO Apply verbose level to phases
   const int verbose = args.getVerboseLevel();
   benchmark::Phases phases(
-      benchmark::PhaseOption{args.getMemoryPoll(), args.getGpuMemoryPoll(), args.getRunDelay()});
+    benchmark::PhaseOption{args.getMemoryPoll(), args.getGpuMemoryPoll(), args.getRunDelay()});
 
   std::unique_ptr<tflite::FlatBufferModel> model;
   std::unique_ptr<tflite::Interpreter> interpreter;
@@ -102,8 +102,8 @@ int main(const int argc, char **argv)
       }
       else
       {
-        model = tflite::FlatBufferModel::BuildFromFile(args.getTFLiteFilename().c_str(),
-                                                       &error_reporter);
+        model =
+          tflite::FlatBufferModel::BuildFromFile(args.getTFLiteFilename().c_str(), &error_reporter);
       }
       if (model == nullptr)
       {
@@ -153,12 +153,12 @@ int main(const int argc, char **argv)
       int32_t value = 0;
 
       nnfw::misc::tensor::iterate(tensor_view.shape())
-          << [&](const nnfw::misc::tensor::Index &ind) {
-               // TODO Generate random values
-               // Gather operation: index should be within input coverage.
-               tensor_view.at(ind) = value;
-               value++;
-             };
+        << [&](const nnfw::misc::tensor::Index &ind) {
+             // TODO Generate random values
+             // Gather operation: index should be within input coverage.
+             tensor_view.at(ind) = value;
+             value++;
+           };
     }
     else if (tensor->type == kTfLiteUInt8)
     {
@@ -168,11 +168,11 @@ int main(const int argc, char **argv)
       uint8_t value = 0;
 
       nnfw::misc::tensor::iterate(tensor_view.shape())
-          << [&](const nnfw::misc::tensor::Index &ind) {
-               // TODO Generate random values
-               tensor_view.at(ind) = value;
-               value = (value + 1) & 0xFF;
-             };
+        << [&](const nnfw::misc::tensor::Index &ind) {
+             // TODO Generate random values
+             tensor_view.at(ind) = value;
+             value = (value + 1) & 0xFF;
+           };
     }
     else if (tensor->type == kTfLiteBool)
     {
@@ -180,16 +180,16 @@ int main(const int argc, char **argv)
       auto tensor_view = TFLiteVanillaRun::TensorView<bool>::make(*interpreter, o);
 
       auto fp = static_cast<bool (nnfw::misc::RandomGenerator::*)(
-          const ::nnfw::misc::tensor::Shape &, const ::nnfw::misc::tensor::Index &)>(
-          &nnfw::misc::RandomGenerator::generate<bool>);
+        const ::nnfw::misc::tensor::Shape &, const ::nnfw::misc::tensor::Index &)>(
+        &nnfw::misc::RandomGenerator::generate<bool>);
       const nnfw::misc::tensor::Object<bool> data(tensor_view.shape(),
                                                   std::bind(fp, randgen, _1, _2));
 
       nnfw::misc::tensor::iterate(tensor_view.shape())
-          << [&](const nnfw::misc::tensor::Index &ind) {
-               const auto value = data.at(ind);
-               tensor_view.at(ind) = value;
-             };
+        << [&](const nnfw::misc::tensor::Index &ind) {
+             const auto value = data.at(ind);
+             tensor_view.at(ind) = value;
+           };
     }
     else
     {
@@ -214,27 +214,30 @@ int main(const int argc, char **argv)
   // only warmup.
   if (verbose == 0)
   {
-    phases.run("WARMUP", [&](const benchmark::Phase &, uint32_t) { interpreter->Invoke(); },
-               args.getWarmupRuns());
-    phases.run("EXECUTE", [&](const benchmark::Phase &, uint32_t) { interpreter->Invoke(); },
-               args.getNumRuns(), true);
+    phases.run(
+      "WARMUP", [&](const benchmark::Phase &, uint32_t) { interpreter->Invoke(); },
+      args.getWarmupRuns());
+    phases.run(
+      "EXECUTE", [&](const benchmark::Phase &, uint32_t) { interpreter->Invoke(); },
+      args.getNumRuns(), true);
   }
   else
   {
-    phases.run("WARMUP", [&](const benchmark::Phase &, uint32_t) { interpreter->Invoke(); },
-               [&](const benchmark::Phase &phase, uint32_t nth) {
-                 std::cout << "... "
-                           << "warmup " << nth + 1 << " takes " << phase.time[nth] / 1e3 << " ms"
-                           << std::endl;
-               },
-               args.getWarmupRuns());
-    phases.run("EXECUTE", [&](const benchmark::Phase &, uint32_t) { interpreter->Invoke(); },
-               [&](const benchmark::Phase &phase, uint32_t nth) {
-                 std::cout << "... "
-                           << "run " << nth + 1 << " takes " << phase.time[nth] / 1e3 << " ms"
-                           << std::endl;
-               },
-               args.getNumRuns(), true);
+    phases.run(
+      "WARMUP", [&](const benchmark::Phase &, uint32_t) { interpreter->Invoke(); },
+      [&](const benchmark::Phase &phase, uint32_t nth) {
+        std::cout << "... "
+                  << "warmup " << nth + 1 << " takes " << phase.time[nth] / 1e3 << " ms"
+                  << std::endl;
+      },
+      args.getWarmupRuns());
+    phases.run(
+      "EXECUTE", [&](const benchmark::Phase &, uint32_t) { interpreter->Invoke(); },
+      [&](const benchmark::Phase &phase, uint32_t nth) {
+        std::cout << "... "
+                  << "run " << nth + 1 << " takes " << phase.time[nth] / 1e3 << " ms" << std::endl;
+      },
+      args.getNumRuns(), true);
   }
 
   std::cout << "output tensor indices = [";

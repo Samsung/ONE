@@ -100,16 +100,16 @@ inline float dequantize_qasymm8_signed(char input, float offset, float scale)
  *
  * @return quantized values
  */
-#define QUANTIZE_IMPL(type, size)                                                                 \
-  inline VEC_DATA_TYPE(type, size)                                                                \
-      quantize_##type##size(VEC_DATA_TYPE(float, size) input, float offset, float scale)          \
-  {                                                                                               \
-    VEC_DATA_TYPE(float, size)                                                                    \
-    out_f32 = input / (VEC_DATA_TYPE(float, size))(scale) + (VEC_DATA_TYPE(float, size))(offset); \
-    VEC_DATA_TYPE(type, size)                                                                     \
-    res = CONVERT_SAT(CONVERT_DOWN_RTE(out_f32, VEC_DATA_TYPE(int, size)),                        \
-                      VEC_DATA_TYPE(type, size));                                                 \
-    return res;                                                                                   \
+#define QUANTIZE_IMPL(type, size)                                                                  \
+  inline VEC_DATA_TYPE(type, size)                                                                 \
+    quantize_##type##size(VEC_DATA_TYPE(float, size) input, float offset, float scale)             \
+  {                                                                                                \
+    VEC_DATA_TYPE(float, size)                                                                     \
+    out_f32 = input / (VEC_DATA_TYPE(float, size))(scale) + (VEC_DATA_TYPE(float, size))(offset);  \
+    VEC_DATA_TYPE(type, size)                                                                      \
+    res =                                                                                          \
+      CONVERT_SAT(CONVERT_DOWN_RTE(out_f32, VEC_DATA_TYPE(int, size)), VEC_DATA_TYPE(type, size)); \
+    return res;                                                                                    \
   }
 
 /** Dequantize a vector of values to floating-point
@@ -119,11 +119,11 @@ inline float dequantize_qasymm8_signed(char input, float offset, float scale)
  *
  * @return dequantized values in floating point
  */
-#define DEQUANTIZE_IMPL(type, size)                                                       \
-  inline VEC_DATA_TYPE(float, size)                                                       \
-      dequantize_##type##size(VEC_DATA_TYPE(type, size) input, float offset, float scale) \
-  {                                                                                       \
-    return (CONVERT(input, VEC_DATA_TYPE(float, size)) - offset) * scale;                 \
+#define DEQUANTIZE_IMPL(type, size)                                                     \
+  inline VEC_DATA_TYPE(float, size)                                                     \
+    dequantize_##type##size(VEC_DATA_TYPE(type, size) input, float offset, float scale) \
+  {                                                                                     \
+    return (CONVERT(input, VEC_DATA_TYPE(float, size)) - offset) * scale;               \
   }
 
 /** Correctly-rounded-to-nearest division by a power-of-two.
@@ -134,7 +134,7 @@ inline float dequantize_qasymm8_signed(char input, float offset, float scale)
  */
 #define ASYMM_ROUNDING_DIVIDE_BY_POW2_IMPL(size)                        \
   inline VEC_DATA_TYPE(int, size) asymm_rounding_divide_by_POW2_##size( \
-      VEC_DATA_TYPE(int, size) x, VEC_DATA_TYPE(int, size) exponent)    \
+    VEC_DATA_TYPE(int, size) x, VEC_DATA_TYPE(int, size) exponent)      \
   {                                                                     \
     const VEC_DATA_TYPE(int, size) zero = (VEC_DATA_TYPE(int, size))0;  \
     const VEC_DATA_TYPE(int, size) one = (VEC_DATA_TYPE(int, size))1;   \
@@ -152,32 +152,32 @@ inline float dequantize_qasymm8_signed(char input, float offset, float scale)
  *
  * @return Product of two fixed-point numbers.
  */
-#define ASYMM_MULT_IMPL(size)                                                  \
-  inline VEC_DATA_TYPE(int, size)                                              \
-      asymm_mult##size(VEC_DATA_TYPE(int, size) a, VEC_DATA_TYPE(int, size) b) \
-  {                                                                            \
-    VEC_DATA_TYPE(int, size)                                                   \
-    overflow = a == b && a == INT_MIN;                                         \
-    VEC_DATA_TYPE(long, size)                                                  \
-    a_64 = convert_long##size(a);                                              \
-    VEC_DATA_TYPE(long, size)                                                  \
-    b_64 = convert_long##size(b);                                              \
-    VEC_DATA_TYPE(long, size)                                                  \
-    ab_64 = a_64 * b_64;                                                       \
-    /* Revert COMPMID-907 */                                                   \
-    VEC_DATA_TYPE(long, size)                                                  \
-    mask1 = 1 << 30;                                                           \
-    VEC_DATA_TYPE(long, size)                                                  \
-    mask2 = 1 - (1 << 30);                                                     \
-    VEC_DATA_TYPE(long, size)                                                  \
-    is_positive_or_zero = ab_64 >= 0;                                          \
-    VEC_DATA_TYPE(long, size)                                                  \
-    nudge = select(mask2, mask1, is_positive_or_zero);                         \
-    VEC_DATA_TYPE(long, size)                                                  \
-    mask = 1ll << 31;                                                          \
-    VEC_DATA_TYPE(int, size)                                                   \
-    ab_x2_high32 = convert_int##size((ab_64 + nudge) / mask);                  \
-    return select(ab_x2_high32, INT_MAX, overflow);                            \
+#define ASYMM_MULT_IMPL(size)                                                \
+  inline VEC_DATA_TYPE(int, size)                                            \
+    asymm_mult##size(VEC_DATA_TYPE(int, size) a, VEC_DATA_TYPE(int, size) b) \
+  {                                                                          \
+    VEC_DATA_TYPE(int, size)                                                 \
+    overflow = a == b && a == INT_MIN;                                       \
+    VEC_DATA_TYPE(long, size)                                                \
+    a_64 = convert_long##size(a);                                            \
+    VEC_DATA_TYPE(long, size)                                                \
+    b_64 = convert_long##size(b);                                            \
+    VEC_DATA_TYPE(long, size)                                                \
+    ab_64 = a_64 * b_64;                                                     \
+    /* Revert COMPMID-907 */                                                 \
+    VEC_DATA_TYPE(long, size)                                                \
+    mask1 = 1 << 30;                                                         \
+    VEC_DATA_TYPE(long, size)                                                \
+    mask2 = 1 - (1 << 30);                                                   \
+    VEC_DATA_TYPE(long, size)                                                \
+    is_positive_or_zero = ab_64 >= 0;                                        \
+    VEC_DATA_TYPE(long, size)                                                \
+    nudge = select(mask2, mask1, is_positive_or_zero);                       \
+    VEC_DATA_TYPE(long, size)                                                \
+    mask = 1ll << 31;                                                        \
+    VEC_DATA_TYPE(int, size)                                                 \
+    ab_x2_high32 = convert_int##size((ab_64 + nudge) / mask);                \
+    return select(ab_x2_high32, INT_MAX, overflow);                          \
   }
 
 /** Calculates \f$ exp(x) \f$ for x in [-1/4, 0).
@@ -186,32 +186,32 @@ inline float dequantize_qasymm8_signed(char input, float offset, float scale)
  *
  * @return Result in fixed-point format Q0.
  */
-#define ASYMM_EXP_ON_INTERVAL_BETWEEN_NEGATIVE_ONE_QUARTER_AND_0_EXCL_IMPL(size)                   \
-  inline VEC_DATA_TYPE(int, size)                                                                  \
-      asymm_exp_on_interval_between_negative_one_quarter_and_0_excl##size(VEC_DATA_TYPE(int, size) \
-                                                                              a)                   \
-  {                                                                                                \
-    const VEC_DATA_TYPE(int, size) constant_term = 1895147668;                                     \
-    const VEC_DATA_TYPE(int, size) constant_1_over_3 = 715827883;                                  \
-    const int k_fractional_bits = 31;                                                              \
-    VEC_DATA_TYPE(int, size)                                                                       \
-    x = a + (1 << (k_fractional_bits - 3));                                                        \
-    VEC_DATA_TYPE(int, size)                                                                       \
-    x2 = ASYMM_MULT(x, x, size);                                                                   \
-    VEC_DATA_TYPE(int, size)                                                                       \
-    x3 = ASYMM_MULT(x2, x, size);                                                                  \
-    VEC_DATA_TYPE(int, size)                                                                       \
-    x4 = ASYMM_MULT(x2, x2, size);                                                                 \
-    VEC_DATA_TYPE(int, size)                                                                       \
-    x4_over_4 = ASYMM_ROUNDING_DIVIDE_BY_POW2(x4, 2, size);                                        \
-    VEC_DATA_TYPE(int, size)                                                                       \
-    x4_over_24_plus_x3_over_6_plus_x2 =                                                            \
-        ASYMM_MULT((x4_over_4 + x3), constant_1_over_3, size) + x2;                                \
-    VEC_DATA_TYPE(int, size)                                                                       \
-    x4_over_24_plus_x3_over_6_plus_x2_over_2 =                                                     \
-        ASYMM_ROUNDING_DIVIDE_BY_POW2(x4_over_24_plus_x3_over_6_plus_x2, 1, size);                 \
-    return constant_term +                                                                         \
-           ASYMM_MULT(constant_term, x + x4_over_24_plus_x3_over_6_plus_x2_over_2, size);          \
+#define ASYMM_EXP_ON_INTERVAL_BETWEEN_NEGATIVE_ONE_QUARTER_AND_0_EXCL_IMPL(size)                 \
+  inline VEC_DATA_TYPE(int, size)                                                                \
+    asymm_exp_on_interval_between_negative_one_quarter_and_0_excl##size(VEC_DATA_TYPE(int, size) \
+                                                                          a)                     \
+  {                                                                                              \
+    const VEC_DATA_TYPE(int, size) constant_term = 1895147668;                                   \
+    const VEC_DATA_TYPE(int, size) constant_1_over_3 = 715827883;                                \
+    const int k_fractional_bits = 31;                                                            \
+    VEC_DATA_TYPE(int, size)                                                                     \
+    x = a + (1 << (k_fractional_bits - 3));                                                      \
+    VEC_DATA_TYPE(int, size)                                                                     \
+    x2 = ASYMM_MULT(x, x, size);                                                                 \
+    VEC_DATA_TYPE(int, size)                                                                     \
+    x3 = ASYMM_MULT(x2, x, size);                                                                \
+    VEC_DATA_TYPE(int, size)                                                                     \
+    x4 = ASYMM_MULT(x2, x2, size);                                                               \
+    VEC_DATA_TYPE(int, size)                                                                     \
+    x4_over_4 = ASYMM_ROUNDING_DIVIDE_BY_POW2(x4, 2, size);                                      \
+    VEC_DATA_TYPE(int, size)                                                                     \
+    x4_over_24_plus_x3_over_6_plus_x2 =                                                          \
+      ASYMM_MULT((x4_over_4 + x3), constant_1_over_3, size) + x2;                                \
+    VEC_DATA_TYPE(int, size)                                                                     \
+    x4_over_24_plus_x3_over_6_plus_x2_over_2 =                                                   \
+      ASYMM_ROUNDING_DIVIDE_BY_POW2(x4_over_24_plus_x3_over_6_plus_x2, 1, size);                 \
+    return constant_term +                                                                       \
+           ASYMM_MULT(constant_term, x + x4_over_24_plus_x3_over_6_plus_x2_over_2, size);        \
   }
 
 /** Each bit of the result is set to the corresponding bit of either then_val or
@@ -263,15 +263,15 @@ inline float dequantize_qasymm8_signed(char input, float offset, float scale)
 
 #define EXP_BARREL_SHIFTER_IMPL(size)                                                          \
   inline VEC_DATA_TYPE(int, size) exp_barrel_shifter##size(                                    \
-      VEC_DATA_TYPE(int, size) result, int exponent, int fp_multiplier, int k_integer_bits,    \
-      int k_fractional_bits, VEC_DATA_TYPE(int, size) remainder)                               \
+    VEC_DATA_TYPE(int, size) result, int exponent, int fp_multiplier, int k_integer_bits,      \
+    int k_fractional_bits, VEC_DATA_TYPE(int, size) remainder)                                 \
   {                                                                                            \
     if (k_integer_bits > exponent)                                                             \
     {                                                                                          \
       const int k_shift_amount = k_integer_bits > exponent ? k_fractional_bits + exponent : 0; \
       return ASYMM_SELECT_USING_MASK(                                                          \
-          ASYMM_MASK_IF_NON_ZERO(remainder & (1 << k_shift_amount), size),                     \
-          ASYMM_MULT(result, fp_multiplier, size), result, size);                              \
+        ASYMM_MASK_IF_NON_ZERO(remainder & (1 << k_shift_amount), size),                       \
+        ASYMM_MULT(result, fp_multiplier, size), result, size);                                \
     }                                                                                          \
                                                                                                \
     return result;                                                                             \
@@ -285,7 +285,7 @@ inline float dequantize_qasymm8_signed(char input, float offset, float scale)
  */
 #define ASYMM_EXP_ON_NEGATIVE_VALUES_IMPL(size)                                                   \
   inline VEC_DATA_TYPE(int, size)                                                                 \
-      asymm_exp_on_negative_values##size(VEC_DATA_TYPE(int, size) a, int k_integer_bits)          \
+    asymm_exp_on_negative_values##size(VEC_DATA_TYPE(int, size) a, int k_integer_bits)            \
   {                                                                                               \
     const int k_fractional_bits = 31 - k_integer_bits;                                            \
     VEC_DATA_TYPE(int, size)                                                                      \
@@ -298,7 +298,7 @@ inline float dequantize_qasymm8_signed(char input, float offset, float scale)
     a_mod_quarter_minus_one_quarter_scaled = a_mod_quarter_minus_one_quarter << k_integer_bits;   \
     VEC_DATA_TYPE(int, size)                                                                      \
     result = ASYMM_EXP_ON_INTERVAL_BETWEEN_NEGATIVE_ONE_QUARTER_AND_0_EXCL(                       \
-        a_mod_quarter_minus_one_quarter_scaled, size);                                            \
+      a_mod_quarter_minus_one_quarter_scaled, size);                                              \
     VEC_DATA_TYPE(int, size)                                                                      \
     remainder = a_mod_quarter_minus_one_quarter - a;                                              \
                                                                                                   \
@@ -312,10 +312,10 @@ inline float dequantize_qasymm8_signed(char input, float offset, float scale)
                                 remainder, size);                                                 \
     result = EXP_BARREL_SHIFTER(result, +2, 39332535, k_integer_bits, k_fractional_bits,          \
                                 remainder, size);                                                 \
-    result = EXP_BARREL_SHIFTER(result, +3, 720401, k_integer_bits, k_fractional_bits, remainder, \
-                                size);                                                            \
     result =                                                                                      \
-        EXP_BARREL_SHIFTER(result, +4, 242, k_integer_bits, k_fractional_bits, remainder, size);  \
+      EXP_BARREL_SHIFTER(result, +3, 720401, k_integer_bits, k_fractional_bits, remainder, size); \
+    result =                                                                                      \
+      EXP_BARREL_SHIFTER(result, +4, 242, k_integer_bits, k_fractional_bits, remainder, size);    \
                                                                                                   \
     if (k_integer_bits > 5)                                                                       \
     {                                                                                             \
@@ -335,27 +335,27 @@ inline float dequantize_qasymm8_signed(char input, float offset, float scale)
  *
  * @return Arithmetic left or right shift.
  */
-#define ASYMM_SATURATING_ROUNDING_MULT_BY_POW2_IMPL(size)                                    \
-  inline VEC_DATA_TYPE(int, size)                                                            \
-      asymm_saturating_rounding_mult_by_pow2##size(VEC_DATA_TYPE(int, size) x, int exponent) \
-  {                                                                                          \
-    if (exponent < 0)                                                                        \
-    {                                                                                        \
-      return ASYMM_ROUNDING_DIVIDE_BY_POW2(x, -exponent, size);                              \
-    }                                                                                        \
-                                                                                             \
-    const VEC_DATA_TYPE(int, size) min = INT_MIN;                                            \
-    const VEC_DATA_TYPE(int, size) max = INT_MAX;                                            \
-    int threshold = ((1 << (31 - exponent)) - 1);                                            \
-    VEC_DATA_TYPE(int, size)                                                                 \
-    positive_mask = ASYMM_MASK_IF_NON_ZERO(x > threshold, size);                             \
-    VEC_DATA_TYPE(int, size)                                                                 \
-    negative_mask = ASYMM_MASK_IF_NON_ZERO(x < -threshold, size);                            \
-    VEC_DATA_TYPE(int, size)                                                                 \
-    result = x << exponent;                                                                  \
-    result = ASYMM_SELECT_USING_MASK(positive_mask, max, result, size);                      \
-    result = ASYMM_SELECT_USING_MASK(negative_mask, min, result, size);                      \
-    return result;                                                                           \
+#define ASYMM_SATURATING_ROUNDING_MULT_BY_POW2_IMPL(size)                                  \
+  inline VEC_DATA_TYPE(int, size)                                                          \
+    asymm_saturating_rounding_mult_by_pow2##size(VEC_DATA_TYPE(int, size) x, int exponent) \
+  {                                                                                        \
+    if (exponent < 0)                                                                      \
+    {                                                                                      \
+      return ASYMM_ROUNDING_DIVIDE_BY_POW2(x, -exponent, size);                            \
+    }                                                                                      \
+                                                                                           \
+    const VEC_DATA_TYPE(int, size) min = INT_MIN;                                          \
+    const VEC_DATA_TYPE(int, size) max = INT_MAX;                                          \
+    int threshold = ((1 << (31 - exponent)) - 1);                                          \
+    VEC_DATA_TYPE(int, size)                                                               \
+    positive_mask = ASYMM_MASK_IF_NON_ZERO(x > threshold, size);                           \
+    VEC_DATA_TYPE(int, size)                                                               \
+    negative_mask = ASYMM_MASK_IF_NON_ZERO(x < -threshold, size);                          \
+    VEC_DATA_TYPE(int, size)                                                               \
+    result = x << exponent;                                                                \
+    result = ASYMM_SELECT_USING_MASK(positive_mask, max, result, size);                    \
+    result = ASYMM_SELECT_USING_MASK(negative_mask, min, result, size);                    \
+    return result;                                                                         \
   }
 
 /** Calculates (a+b)/2, rounded to the nearest integer.
@@ -365,21 +365,21 @@ inline float dequantize_qasymm8_signed(char input, float offset, float scale)
  *
  * @return (a+b)/2, rounded to the nearest integer.
  */
-#define ASYMM_ROUNDING_HALF_SUM_IMPL(size)                                                  \
-  inline VEC_DATA_TYPE(int, size)                                                           \
-      asymm_rounding_half_sum##size(VEC_DATA_TYPE(int, size) a, VEC_DATA_TYPE(int, size) b) \
-  {                                                                                         \
-    VEC_DATA_TYPE(long, size)                                                               \
-    a64 = convert_long##size(a);                                                            \
-    VEC_DATA_TYPE(long, size)                                                               \
-    b64 = convert_long##size(b);                                                            \
-    VEC_DATA_TYPE(long, size)                                                               \
-    sum = a64 + b64;                                                                        \
-    const VEC_DATA_TYPE(long, size) one = 1;                                                \
-    const VEC_DATA_TYPE(long, size) minus_one = -1;                                         \
-    VEC_DATA_TYPE(long, size)                                                               \
-    sign = select(minus_one, one, sum >= 0);                                                \
-    return convert_int##size((sum + sign) / 2);                                             \
+#define ASYMM_ROUNDING_HALF_SUM_IMPL(size)                                                \
+  inline VEC_DATA_TYPE(int, size)                                                         \
+    asymm_rounding_half_sum##size(VEC_DATA_TYPE(int, size) a, VEC_DATA_TYPE(int, size) b) \
+  {                                                                                       \
+    VEC_DATA_TYPE(long, size)                                                             \
+    a64 = convert_long##size(a);                                                          \
+    VEC_DATA_TYPE(long, size)                                                             \
+    b64 = convert_long##size(b);                                                          \
+    VEC_DATA_TYPE(long, size)                                                             \
+    sum = a64 + b64;                                                                      \
+    const VEC_DATA_TYPE(long, size) one = 1;                                              \
+    const VEC_DATA_TYPE(long, size) minus_one = -1;                                       \
+    VEC_DATA_TYPE(long, size)                                                             \
+    sign = select(minus_one, one, sum >= 0);                                              \
+    return convert_int##size((sum + sign) / 2);                                           \
   }
 
 /** Calculates \f$ 1 / (1 + x) \f$ for x in (0, 1).
@@ -390,7 +390,7 @@ inline float dequantize_qasymm8_signed(char input, float offset, float scale)
  */
 #define ASYMM_ONE_OVER_ONE_PLUS_X_FOR_X_IN_0_1_IMPL(size)                      \
   inline VEC_DATA_TYPE(int, size)                                              \
-      asymm_one_over_one_plus_x_for_x_in_0_1##size(VEC_DATA_TYPE(int, size) a) \
+    asymm_one_over_one_plus_x_for_x_in_0_1##size(VEC_DATA_TYPE(int, size) a)   \
   {                                                                            \
     const VEC_DATA_TYPE(int, size) Q0_one = INT_MAX;                           \
     const VEC_DATA_TYPE(int, size) Q2_one = 1 << (31 - 2);                     \
@@ -462,14 +462,14 @@ inline float dequantize_qasymm8_signed(char input, float offset, float scale)
 #define ASYMM_RESCALE(value, src_integer_bits, dst_integer_bits, size) \
   asymm_rescale##size(value, src_integer_bits, dst_integer_bits)
 
-#define MULTIPLY_BY_QUANTIZED_MULTIPLIER_IMPL(size)                                               \
-  inline VEC_DATA_TYPE(int, size)                                                                 \
-      multiply_by_quantized_multiplier##size(VEC_DATA_TYPE(int, size) input, int qmul, int shift) \
-  {                                                                                               \
-    const int left_shift = shift > 0 ? shift : 0;                                                 \
-    const int right_shift = shift > 0 ? 0 : -shift;                                               \
-    return ASYMM_ROUNDING_DIVIDE_BY_POW2(ASYMM_MULT(input * (1 << left_shift), qmul, size),       \
-                                         right_shift, size);                                      \
+#define MULTIPLY_BY_QUANTIZED_MULTIPLIER_IMPL(size)                                             \
+  inline VEC_DATA_TYPE(int, size)                                                               \
+    multiply_by_quantized_multiplier##size(VEC_DATA_TYPE(int, size) input, int qmul, int shift) \
+  {                                                                                             \
+    const int left_shift = shift > 0 ? shift : 0;                                               \
+    const int right_shift = shift > 0 ? 0 : -shift;                                             \
+    return ASYMM_ROUNDING_DIVIDE_BY_POW2(ASYMM_MULT(input * (1 << left_shift), qmul, size),     \
+                                         right_shift, size);                                    \
   }
 #define MULTIPLY_BY_QUANTIZED_MULTIPLIER(input, qmul, shift, size) \
   multiply_by_quantized_multiplier##size(input, qmul, shift)

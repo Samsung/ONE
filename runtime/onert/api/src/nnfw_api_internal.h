@@ -21,6 +21,7 @@
 #include "nnfw_experimental.h"
 
 #include <util/GeneralConfigSource.h>
+#include <util/TracingCtx.h>
 
 #include <string>
 #include <memory>
@@ -100,7 +101,7 @@ public:
   nnfw_session();
   ~nnfw_session();
 
-  NNFW_STATUS load_model_from_file(const char *package_file_path);
+  NNFW_STATUS load_model_from_nnpackage(const char *package_file_path);
   NNFW_STATUS prepare();
   NNFW_STATUS run();
 
@@ -132,6 +133,7 @@ public:
   NNFW_STATUS set_config(const char *key, const char *value);
   NNFW_STATUS get_config(const char *key, char *value, size_t value_size);
   NNFW_STATUS load_circle_from_buffer(uint8_t *buffer, size_t size);
+  NNFW_STATUS load_model_from_modelfile(const char *file_path);
 
   //
   // Experimental API
@@ -154,8 +156,10 @@ private:
   State _state{State::INITIALIZED};
   std::shared_ptr<onert::ir::Subgraphs> _subgraphs;
   std::unique_ptr<onert::compiler::Compiler> _compiler;
-  std::shared_ptr<onert::exec::Execution> _execution;
+  std::unique_ptr<onert::exec::Execution> _execution;
   std::shared_ptr<onert::frontend::custom::KernelRegistry> _kernel_registry;
+
+  std::unique_ptr<onert::util::TracingCtx> _tracing_ctx;
 };
 
 #endif // __API_NNFW_API_INTERNAL_H__

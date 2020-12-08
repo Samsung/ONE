@@ -54,8 +54,8 @@ namespace arm_compute
 class ICLTensor;
 
 /**
-* @brief Class to perform EmbeddingLookup operation with opencl kernel
-*/
+ * @brief Class to perform EmbeddingLookup operation with opencl kernel
+ */
 class CLEmbeddingLookupKernel : public ICLKernel
 {
 public:

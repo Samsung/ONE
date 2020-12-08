@@ -216,7 +216,7 @@ private:
   CLConvertFullyConnectedWeights _convert_weights;
   weights_transformations::CLConvertFullyConnectedWeightsManaged _convert_weights_managed;
   weights_transformations::CLFullyConnectedLayerReshapeWeightsExManaged
-      _reshape_weights_managed_function;
+    _reshape_weights_managed_function;
   CLFlattenLayer _flatten_layer;
   CLFullyConnectedLayerReshapeWeightsEx _reshape_weights_function;
   CLGEMM _mm_gemm;

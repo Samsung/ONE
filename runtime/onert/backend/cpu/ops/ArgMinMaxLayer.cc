@@ -79,6 +79,9 @@ void ArgMinMaxLayer::run()
       case ir::DataType::UINT8:
         TF_LITE_ARG_MIN_MAX(uint8_t, int32_t, int32_t);
         break;
+      case ir::DataType::QUANT_INT8_ASYMM:
+        TF_LITE_ARG_MIN_MAX(uint8_t, int32_t, int32_t);
+        break;
       case ir::DataType::INT32:
         TF_LITE_ARG_MIN_MAX(int32_t, int32_t, int32_t);
         break;
@@ -95,6 +98,9 @@ void ArgMinMaxLayer::run()
         break;
       case ir::DataType::QUANT_UINT8_ASYMM:
       case ir::DataType::UINT8:
+        TF_LITE_ARG_MIN_MAX(uint8_t, int32_t, int64_t);
+        break;
+      case ir::DataType::QUANT_INT8_ASYMM:
         TF_LITE_ARG_MIN_MAX(uint8_t, int32_t, int64_t);
         break;
       case ir::DataType::INT32:

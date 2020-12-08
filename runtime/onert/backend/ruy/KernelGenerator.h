@@ -23,7 +23,7 @@
 #include "Tensor.h"
 
 #include <backend/CustomKernelBuilder.h>
-#include <backend/IKernelGenerator.h>
+#include <backend/cpu_common/KernelGeneratorBase.h>
 #include <ir/Operands.h>
 #include <ir/Operations.h>
 
@@ -34,7 +34,7 @@ namespace backend
 namespace ruy
 {
 
-class KernelGenerator : public IKernelGenerator
+class KernelGenerator : public cpu_common::KernelGeneratorBase
 {
 public:
   KernelGenerator(const ir::Operands &operands_ctx, const ir::Operations &operations_ctx,
@@ -43,10 +43,9 @@ public:
                   const std::shared_ptr<custom::IKernelBuilder> &kernel_builder,
                   const std::shared_ptr<ExternalContext> &external_context);
 
-  using IKernelGenerator::visit;
-
   void visit(const ir::OpSequence &) override;
   void visit(const ir::operation::Conv2D &) override;
+  void visit(const ir::operation::FullyConnected &) override;
 
 private:
   const ir::Operands &_ctx;

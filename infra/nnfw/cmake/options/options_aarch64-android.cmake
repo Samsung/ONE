@@ -3,7 +3,7 @@
 # NOTE BUILD_ANDROID_TFLITE(JNI lib) is disabled due to BuiltinOpResolver issue.
 # tensorflow-lite does not build BuiltinOpResolver but JNI lib need it
 # Related Issue : #1403
-option(BUILD_ANDROID_TFLITE "Enable android support for TensorFlow Lite" ON)
+option(BUILD_ANDROID_TFLITE "Enable android support for TensorFlow Lite" OFF)
 option(BUILD_ANDROID_BENCHMARK_APP "Enable Android Benchmark App" ON)
 option(DOWNLOAD_NEON2SSE "Download NEON2SSE library source" OFF)
 # Need boost library
