@@ -182,5 +182,5 @@ private:
   bool _is_prepared;
   const ICLTensor *_original_weights;
 };
-}
+} // namespace arm_compute
 #endif /* __ARM_COMPUTE_CLFULLYCONNECTEDHYBRIDLAYER_H__ */

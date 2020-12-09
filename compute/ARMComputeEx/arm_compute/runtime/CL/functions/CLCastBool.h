@@ -67,5 +67,5 @@ public:
    */
   void configure(ICLTensor *input, ICLTensor *output);
 };
-}
+} // namespace arm_compute
 #endif /* ARM_COMPUTE_CLCASTBOOL_H */

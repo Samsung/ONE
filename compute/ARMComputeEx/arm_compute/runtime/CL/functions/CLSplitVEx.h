@@ -82,5 +82,5 @@ private:
   unsigned int _num_splits;
   std::vector<CLSlice> _slice_functions;
 };
-}
+} // namespace arm_compute
 #endif /* __ARM_COMPUTE_CLSPLITVEX__ */

@@ -47,6 +47,6 @@ template <class Distribution> struct FillPhiloxRandom<CPUDevice, Distribution>
 };
 
 } // namespace functor
-} // namespace tensorflow
-}
+} // namespace cker
+} // namespace nnfw
 #endif // __NNFW_CKER_HELPER_RANDOM_OP_H__

@@ -81,5 +81,5 @@ public:
   static Status validate(const ITensorInfo *input, const ITensorInfo *indices,
                          const ITensorInfo *output, int axis = 0);
 };
-}
+} // namespace arm_compute
 #endif /*__ARM_COMPUTE_CLGATHEREX_H__ */

@@ -288,7 +288,7 @@ size_t Flatten(const Shape &input_shape, const Shape &output_shape, const Transp
   return flat_size;
 }
 
-} // namespace anonymous (util)
+} // namespace
 
 // Transpose2D only deals with typical 2D matrix transpose ops.
 // Perform transpose by transposing 4x4 blocks of the input, proceeding from

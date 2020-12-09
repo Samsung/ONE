@@ -772,7 +772,7 @@ PHILOX_DEVICE_INLINE double Uint64ToDouble(uint32_t x0, uint32_t x1)
 }
 
 } // namespace random
-} // namespace tensorflow
-}
+} // namespace cker
+} // namespace nnfw
 
 #endif // __NNFW_CKER_HELPER_RANDOM_DISTRIBUTIONS_H__

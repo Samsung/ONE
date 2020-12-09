@@ -96,5 +96,5 @@ public:
                          const ITensorInfo *input, const ITensorInfo *output,
                          const ITensorInfo *hits);
 };
-}
+} // namespace arm_compute
 #endif /*__ARM_COMPUTE_NEHASHTABLELOOKUP_H__ */
