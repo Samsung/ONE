@@ -38,7 +38,7 @@ public:
   void tensor(loco::Node *node) { at(0)->node(node); }
 
   // NOTE shape is optional and can be CircleConst or any other type
-  //      and also can be CircleOutputDummy when reshape option does not exist
+  //      and also should be CircleOutputDummy when reshape option does not exist
   loco::Node *shape(void) const { return at(1)->node(); }
   void shape(loco::Node *node) { at(1)->node(node); }
 
