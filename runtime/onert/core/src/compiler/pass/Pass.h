@@ -24,7 +24,7 @@ namespace onert
 namespace ir
 {
 class Graph;
-} // namespace compiler
+} // namespace ir
 } // namespace onert
 
 namespace onert

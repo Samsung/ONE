@@ -463,5 +463,5 @@ void OperationValidator::visit(const operation::While &node)
   OP_REQUIRES(node.getInputs().size() == node.getOutputs().size());
 }
 
-} // namespace compiler
+} // namespace ir
 } // namespace onert

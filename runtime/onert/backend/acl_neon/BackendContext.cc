@@ -297,6 +297,6 @@ FunctionMap BackendContext::genKernels(const std::vector<onert::ir::OpSequenceIn
   return ret;
 }
 
-} // namespace neon
+} // namespace acl_neon
 } // namespace backend
 } // namespace onert

@@ -58,7 +58,7 @@ inline void initializeStateBuffer(const onert::backend::IPortableTensor *tensor_
   else
     memset(buffer, 0, tensor_in->total_size());
 }
-}
+} // namespace
 
 void LSTMLayer::LSTMFloat()
 {

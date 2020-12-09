@@ -39,6 +39,6 @@ bool Config::initialize()
 
 ir::Layout Config::supportLayout(const ir::Operation &, ir::Layout) { return ir::Layout::NHWC; }
 
-} // namespace cpu
+} // namespace xnnpack
 } // namespace backend
 } // namespace onert
