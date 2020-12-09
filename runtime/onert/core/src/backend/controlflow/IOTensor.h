@@ -82,6 +82,9 @@ public:
     return _tensor->applyShape(shape);
   }
 
+public:
+  void setShapeOfIPortableTensor(const ir::Shape &shape) { _info.shape(shape); }
+
 private:
   const ir::OperandInfo _orig_info;
   const ir::Layout _orig_layout;

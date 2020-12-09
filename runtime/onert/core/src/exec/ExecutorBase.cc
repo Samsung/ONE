@@ -68,6 +68,12 @@ void ExecutorBase::execute(const std::vector<backend::IPortableTensor *> &inputs
       const auto orig_input_shape = input_tensor->orig_info().shape();
       const auto changed_input_shape =
         convertShape(input->getShape(), input->layout(), input_tensor->orig_layout());
+      if (input_tensor->get_info().shape() != changed_input_shape)
+      {
+        // TODO Fix this workaround that is introduced since cpu based kernels directly use `_info`
+        // rather than interface methods to avoid virtual function calls.
+        input_tensor->setShapeOfIPortableTensor(changed_input_shape);
+      }
       if (orig_input_shape != changed_input_shape)
       {
         input_tensor->set_dynamic();
