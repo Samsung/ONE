@@ -41,16 +41,16 @@ namespace acl_neon
 {
 
 using MemoryManager =
-    acl_common::AclMemoryManager<operand::INETensor, operand::NETensor, operand::NESubTensor>;
+  acl_common::AclMemoryManager<operand::INETensor, operand::NETensor, operand::NESubTensor>;
 
 using LinearMemoryManager = acl_common::AclLinearMemoryManager<
-    operand::INETensor, operand::NETensor, operand::NESubTensor,
-    ::arm_compute::MemoryManagerOnDemand, ::arm_compute::PoolManager,
-    ::arm_compute::OffsetLifetimeManager, ::arm_compute::Allocator, ::arm_compute::MemoryGroup>;
+  operand::INETensor, operand::NETensor, operand::NESubTensor, ::arm_compute::MemoryManagerOnDemand,
+  ::arm_compute::PoolManager, ::arm_compute::OffsetLifetimeManager, ::arm_compute::Allocator,
+  ::arm_compute::MemoryGroup>;
 
 using InternalBufferManager = acl_common::AclInternalBufferManager<
-    ::arm_compute::MemoryManagerOnDemand, ::arm_compute::PoolManager,
-    ::arm_compute::OffsetLifetimeManager, ::arm_compute::Allocator>;
+  ::arm_compute::MemoryManagerOnDemand, ::arm_compute::PoolManager,
+  ::arm_compute::OffsetLifetimeManager, ::arm_compute::Allocator>;
 
 using TensorManager = acl_common::AclTensorManager<acl_neon::operand::INETensor, operand::NETensor,
                                                    operand::NESubTensor>;

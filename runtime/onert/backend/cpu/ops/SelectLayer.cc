@@ -30,7 +30,7 @@ namespace ops
 {
 
 SelectLayer::SelectLayer()
-    : _cond(nullptr), _input_true(nullptr), _input_false(nullptr), _output(nullptr)
+  : _cond(nullptr), _input_true(nullptr), _input_false(nullptr), _output(nullptr)
 {
   // DO NOTHING
 }
@@ -66,7 +66,7 @@ void SelectLayer::run()
 
   auto input_type = _input_true->data_type();
   bool require_broadcast =
-      !HaveSameShapes(_input_true, _cond) || !HaveSameShapes(_input_false, _cond);
+    !HaveSameShapes(_input_true, _cond) || !HaveSameShapes(_input_false, _cond);
   bool rank_one_select = ((_input_true->num_dimensions() == 1) && !require_broadcast);
 
   if (rank_one_select)

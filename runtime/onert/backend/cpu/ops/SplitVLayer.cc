@@ -30,7 +30,7 @@ namespace ops
 {
 
 SplitVLayer::SplitVLayer()
-    : _input(nullptr), _size_splits(nullptr), _split_dim(nullptr), _num_splits(0), _outputs()
+  : _input(nullptr), _size_splits(nullptr), _split_dim(nullptr), _num_splits(0), _outputs()
 {
   // DO NOTHING
 }

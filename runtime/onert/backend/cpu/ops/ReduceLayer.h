@@ -72,7 +72,7 @@ private:
   std::unique_ptr<nnfw::cker::Reduce> _reduce_kernel;
   std::function<void(const IPortableTensor *input, IPortableTensor *output,
                      const std::vector<int> &axes)>
-      _kernel;
+    _kernel;
 
   ReduceType _reduceType;
 };

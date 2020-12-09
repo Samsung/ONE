@@ -35,7 +35,7 @@ namespace ops
 {
 
 ElementwiseActivationLayer::ElementwiseActivationLayer()
-    : _input(nullptr), _output(nullptr), _kernel()
+  : _input(nullptr), _output(nullptr), _kernel()
 {
   // DO NOTHING
 }
@@ -148,7 +148,7 @@ void ElementwiseActivationLayer::configure(const IPortableTensor *input, IPortab
         else
         {
           throw std::runtime_error(
-              "ElementwiseActivationLayer : This layer suppports only ReLU(0-inf) and ReLU6(0-6)");
+            "ElementwiseActivationLayer : This layer suppports only ReLU(0-inf) and ReLU6(0-6)");
         }
       }
       else

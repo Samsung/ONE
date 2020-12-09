@@ -30,8 +30,8 @@ namespace ops
 {
 
 StridedSliceLayer::StridedSliceLayer()
-    : _input(nullptr), _begin(nullptr), _end(nullptr), _strides(nullptr), _output(nullptr),
-      _begin_mask(0), _ellipsis_mask(0), _end_mask(0), _new_axis_mask(0), _shrink_axis_mask(0)
+  : _input(nullptr), _begin(nullptr), _end(nullptr), _strides(nullptr), _output(nullptr),
+    _begin_mask(0), _ellipsis_mask(0), _end_mask(0), _new_axis_mask(0), _shrink_axis_mask(0)
 {
 }
 
@@ -40,9 +40,9 @@ template <typename T> void StridedSliceLayer::stridedSliceImpl()
   const auto input_shape = getTensorShape(_input);
   const auto output_shape = getTensorShape(_output);
   auto op_params = nnfw::cker::buildStridedSliceParams(
-      reinterpret_cast<uint32_t *>(_begin->buffer()), reinterpret_cast<uint32_t *>(_end->buffer()),
-      reinterpret_cast<uint32_t *>(_strides->buffer()), _begin_mask, _end_mask, _shrink_axis_mask,
-      input_shape.DimensionsCount());
+    reinterpret_cast<uint32_t *>(_begin->buffer()), reinterpret_cast<uint32_t *>(_end->buffer()),
+    reinterpret_cast<uint32_t *>(_strides->buffer()), _begin_mask, _end_mask, _shrink_axis_mask,
+    input_shape.DimensionsCount());
 
   nnfw::cker::checkOutputSize(op_params, input_shape, output_shape, input_shape.DimensionsCount());
 

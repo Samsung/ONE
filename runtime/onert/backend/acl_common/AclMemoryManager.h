@@ -62,8 +62,12 @@ public:
     }
   }
 
-  virtual void startLifetime(const ir::OperandIndex &) { /* DO NOTHING */}
-  virtual void finishLifetime(const ir::OperandIndex &) { /* DO NOTHING */}
+  virtual void startLifetime(const ir::OperandIndex &)
+  { /* DO NOTHING */
+  }
+  virtual void finishLifetime(const ir::OperandIndex &)
+  { /* DO NOTHING */
+  }
 
   void buildTensor(const ir::OperandIndex &ind, const ::arm_compute::TensorInfo &info, size_t rank,
                    size_t num_uses)
@@ -78,7 +82,7 @@ public:
                       bool extent_parent)
   {
     auto subtensor =
-        std::make_shared<T_SubTensor>(parent_tensor.get(), shape, coordinates, rank, extent_parent);
+      std::make_shared<T_SubTensor>(parent_tensor.get(), shape, coordinates, rank, extent_parent);
     _subtensors[child_ind] = subtensor;
   }
 

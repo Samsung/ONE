@@ -28,8 +28,8 @@ namespace ops
 {
 
 FusedBatchNormLayer::FusedBatchNormLayer()
-    : _inputs(), _output(nullptr), _epsilon(0), _is_training(true),
-      _fusedbatchnorm_kernel(new nnfw::cker::FusedBatchNorm())
+  : _inputs(), _output(nullptr), _epsilon(0), _is_training(true),
+    _fusedbatchnorm_kernel(new nnfw::cker::FusedBatchNorm())
 {
   // DO NOTHING
 }

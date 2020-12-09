@@ -65,8 +65,8 @@ void SoftMaxLayer::softmaxFloat32()
     nnfw::cker::SoftmaxParams op_params;
     op_params.beta = _beta;
     nnfw::cker::reference::Softmax(
-        op_params, getTensorShape(_input), reinterpret_cast<const float *>(_input->buffer()),
-        getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()));
+      op_params, getTensorShape(_input), reinterpret_cast<const float *>(_input->buffer()),
+      getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()));
   }
 }
 
@@ -103,7 +103,7 @@ void SoftMaxLayer::softmaxQuant8()
   }
   static const int32_t kScaledDiffIntegerBits = 5;
   const double input_beta_real_multiplier = std::min(
-      1.0 * _beta * _input->data_scale() * (1 << (31 - kScaledDiffIntegerBits)), (1ll << 31) - 1.0);
+    1.0 * _beta * _input->data_scale() * (1 << (31 - kScaledDiffIntegerBits)), (1ll << 31) - 1.0);
   int32_t input_multiplier = 0;
   int32_t input_left_shift = 0;
   QuantizeMultiplierGreaterThanOne(input_beta_real_multiplier, &input_multiplier,

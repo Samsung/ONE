@@ -28,8 +28,8 @@ namespace ops
 {
 
 BatchMatMulLayer::BatchMatMulLayer()
-    : _lhs(nullptr), _rhs(nullptr), _output(nullptr), _adj_x(false), _adj_y(false),
-      _kernel(new nnfw::cker::BatchMatMul())
+  : _lhs(nullptr), _rhs(nullptr), _output(nullptr), _adj_x(false), _adj_y(false),
+    _kernel(new nnfw::cker::BatchMatMul())
 {
   // DO NOTHING
 }

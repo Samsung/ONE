@@ -50,18 +50,18 @@ void BroadcastToLayer::run()
     // ToDo : It need to support INT8 and UINT8 also when will be applied quantization.
     case OperandType::FLOAT32:
       nnfw::cker::BroadcastTo<float>(
-          getTensorShape(_input), reinterpret_cast<float *>(_input->buffer()),
-          getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()));
+        getTensorShape(_input), reinterpret_cast<float *>(_input->buffer()),
+        getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()));
       break;
     case OperandType::INT32:
       nnfw::cker::BroadcastTo<int32_t>(
-          getTensorShape(_input), reinterpret_cast<int32_t *>(_input->buffer()),
-          getTensorShape(_output), reinterpret_cast<int32_t *>(_output->buffer()));
+        getTensorShape(_input), reinterpret_cast<int32_t *>(_input->buffer()),
+        getTensorShape(_output), reinterpret_cast<int32_t *>(_output->buffer()));
       break;
     case OperandType::UINT32:
       nnfw::cker::BroadcastTo<uint32_t>(
-          getTensorShape(_input), reinterpret_cast<uint32_t *>(_input->buffer()),
-          getTensorShape(_output), reinterpret_cast<uint32_t *>(_output->buffer()));
+        getTensorShape(_input), reinterpret_cast<uint32_t *>(_input->buffer()),
+        getTensorShape(_output), reinterpret_cast<uint32_t *>(_output->buffer()));
       break;
     default:
       throw std::runtime_error{"BroadcastToLayer: unsupported data type"};

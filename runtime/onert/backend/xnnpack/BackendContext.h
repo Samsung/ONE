@@ -44,9 +44,9 @@ public:
                  std::shared_ptr<TensorBuilder> tensor_builder = nullptr,
                  std::shared_ptr<ConstantInitializer> constant_initializer = nullptr,
                  std::shared_ptr<KernelGenerator> kernel_gen = nullptr)
-      : onert::backend::BackendContext(backend, graph, tensor_registry),
-        tensor_builder{tensor_builder}, constant_initializer{constant_initializer},
-        kernel_gen{kernel_gen}, _external_context(nullptr)
+    : onert::backend::BackendContext(backend, graph, tensor_registry),
+      tensor_builder{tensor_builder}, constant_initializer{constant_initializer},
+      kernel_gen{kernel_gen}, _external_context(nullptr)
   {
     int num_threads = util::getConfigInt(util::config::XNNPACK_THREADS);
     if (num_threads < 1)

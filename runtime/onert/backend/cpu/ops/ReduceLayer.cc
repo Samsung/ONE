@@ -40,8 +40,8 @@ void evalLogic(const IPortableTensor *input, IPortableTensor *output, const std:
 {
   reduce_kernel.prepare(input->num_dimensions(), axes.size());
   bool result = reduce_kernel.ReduceGeneric<T>(
-      getTensorShape(input), reinterpret_cast<const T *>(input->buffer()), getTensorShape(output),
-      reinterpret_cast<T *>(output->buffer()), axes, keep_dims, init_value, reducer);
+    getTensorShape(input), reinterpret_cast<const T *>(input->buffer()), getTensorShape(output),
+    reinterpret_cast<T *>(output->buffer()), axes, keep_dims, init_value, reducer);
 
   if (!result)
   {
@@ -67,15 +67,15 @@ evalType(bool keep_dims, nnfw::cker::Reduce &reduce_kernel, ReduceType reduce_ty
       break;
     case ReduceType::kMax:
       return std::bind(
-          &evalLogic<T>, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3,
-          keep_dims, std::numeric_limits<T>::lowest(), reduce_kernel,
-          [](const T current, const T in) -> T { return (in > current) ? in : current; });
+        &evalLogic<T>, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3,
+        keep_dims, std::numeric_limits<T>::lowest(), reduce_kernel,
+        [](const T current, const T in) -> T { return (in > current) ? in : current; });
       break;
     case ReduceType::kMin:
       return std::bind(
-          &evalLogic<T>, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3,
-          keep_dims, std::numeric_limits<T>::max(), reduce_kernel,
-          [](const T current, const T in) -> T { return (in < current) ? in : current; });
+        &evalLogic<T>, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3,
+        keep_dims, std::numeric_limits<T>::max(), reduce_kernel,
+        [](const T current, const T in) -> T { return (in < current) ? in : current; });
       break;
     default:
       throw std::runtime_error{"Reduce: Unsupported reduce type"};
@@ -126,8 +126,8 @@ void evalSumQuantized(const IPortableTensor *input, IPortableTensor *output,
                       const std::vector<int> &axes, bool keep_dims,
                       nnfw::cker::Reduce &reduce_kernel)
 {
-  const bool same_scale = (input->data_scale() == output->data_scale() &&
-                           input->data_offset() == output->data_offset());
+  const bool same_scale =
+    (input->data_scale() == output->data_scale() && input->data_offset() == output->data_offset());
 
   reduce_kernel.prepare(input->num_dimensions(), axes.size());
 
@@ -135,13 +135,13 @@ void evalSumQuantized(const IPortableTensor *input, IPortableTensor *output,
   {
     std::vector<int32_t> temp_sum(output->getShape().num_elements());
     bool result = reduce_kernel.QuantizedMeanOrSum<uint8_t, int32_t>(
-        reinterpret_cast<const uint8_t *>(input->buffer()), input->data_offset(),
-        input->data_scale(), getTensorShape(input), reinterpret_cast<uint8_t *>(output->buffer()),
-        output->data_offset(), output->data_scale(), getTensorShape(output), axes, keep_dims,
-        temp_sum.data(), true, [](const int32_t current, const uint8_t in) -> int32_t {
-          const int32_t actual_in = static_cast<int32_t>(in);
-          return current + actual_in;
-        });
+      reinterpret_cast<const uint8_t *>(input->buffer()), input->data_offset(), input->data_scale(),
+      getTensorShape(input), reinterpret_cast<uint8_t *>(output->buffer()), output->data_offset(),
+      output->data_scale(), getTensorShape(output), axes, keep_dims, temp_sum.data(), true,
+      [](const int32_t current, const uint8_t in) -> int32_t {
+        const int32_t actual_in = static_cast<int32_t>(in);
+        return current + actual_in;
+      });
 
     if (!result)
     {
@@ -158,8 +158,8 @@ void evalSumQuantized(const IPortableTensor *input, IPortableTensor *output,
 } // namespace
 
 ReduceLayer::ReduceLayer()
-    : _input(nullptr), _axes(nullptr), _output(nullptr), _reduce_kernel(new nnfw::cker::Reduce()),
-      _kernel(), _reduceType(ReduceType::kInvalid)
+  : _input(nullptr), _axes(nullptr), _output(nullptr), _reduce_kernel(new nnfw::cker::Reduce()),
+    _kernel(), _reduceType(ReduceType::kInvalid)
 {
   // DO NOTHING
 }

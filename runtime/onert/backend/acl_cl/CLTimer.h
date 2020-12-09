@@ -53,8 +53,8 @@ public:
                                           const cl_event *event_wait_list, cl_event *usr_event) {
       cl_event event;
       cl_int enqueue_res =
-          this->_origin_enqueue_function(command_queue, kernel, work_dim, gwo, gws, lws,
-                                         num_events_in_wait_list, event_wait_list, &event);
+        this->_origin_enqueue_function(command_queue, kernel, work_dim, gwo, gws, lws,
+                                       num_events_in_wait_list, event_wait_list, &event);
       this->_measured_events.emplace_back(event);
 
       // According to spec, if NULL was provided in usr_event - event shouldn't be returned
@@ -73,7 +73,7 @@ public:
     if ((props & CL_QUEUE_PROFILING_ENABLE) == 0)
     {
       cl_scheduler.set_queue(
-          cl::CommandQueue(cl_scheduler.context(), props | CL_QUEUE_PROFILING_ENABLE));
+        cl::CommandQueue(cl_scheduler.context(), props | CL_QUEUE_PROFILING_ENABLE));
     }
   };
 

@@ -41,20 +41,20 @@ namespace acl_cl
 {
 
 using MemoryManager =
-    acl_common::AclMemoryManager<operand::ICLTensor, operand::CLTensor, operand::CLSubTensor>;
+  acl_common::AclMemoryManager<operand::ICLTensor, operand::CLTensor, operand::CLSubTensor>;
 
-using LinearMemoryManager = acl_common::AclLinearMemoryManager<
-    operand::ICLTensor, operand::CLTensor, operand::CLSubTensor,
-    ::arm_compute::MemoryManagerOnDemand, ::arm_compute::PoolManager,
-    ::arm_compute::BlobLifetimeManager, ::arm_compute::CLBufferAllocator,
-    ::arm_compute::MemoryGroup>;
+using LinearMemoryManager =
+  acl_common::AclLinearMemoryManager<operand::ICLTensor, operand::CLTensor, operand::CLSubTensor,
+                                     ::arm_compute::MemoryManagerOnDemand,
+                                     ::arm_compute::PoolManager, ::arm_compute::BlobLifetimeManager,
+                                     ::arm_compute::CLBufferAllocator, ::arm_compute::MemoryGroup>;
 
 using InternalBufferManager = acl_common::AclInternalBufferManager<
-    ::arm_compute::MemoryManagerOnDemand, ::arm_compute::PoolManager,
-    ::arm_compute::BlobLifetimeManager, ::arm_compute::CLBufferAllocator>;
+  ::arm_compute::MemoryManagerOnDemand, ::arm_compute::PoolManager,
+  ::arm_compute::BlobLifetimeManager, ::arm_compute::CLBufferAllocator>;
 
 using TensorManager =
-    acl_common::AclTensorManager<operand::ICLTensor, operand::CLTensor, operand::CLSubTensor>;
+  acl_common::AclTensorManager<operand::ICLTensor, operand::CLTensor, operand::CLSubTensor>;
 
 inline TensorManager *createTensorManager(bool is_linear_executor)
 {

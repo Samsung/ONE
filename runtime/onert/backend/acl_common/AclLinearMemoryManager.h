@@ -33,7 +33,7 @@ std::shared_ptr<T_MemoryManager> createMemoryManager()
   std::shared_ptr<T_PoolManager> pool_mgr = std::make_shared<T_PoolManager>();
 
   std::shared_ptr<T_MemoryManager> mem_mgr =
-      std::make_shared<T_MemoryManager>(lifetime_mgr, pool_mgr);
+    std::make_shared<T_MemoryManager>(lifetime_mgr, pool_mgr);
   return mem_mgr;
 }
 
@@ -53,9 +53,9 @@ class AclLinearMemoryManager : public AclMemoryManager<T_ITensor, T_Tensor, T_Su
 {
 public:
   AclLinearMemoryManager()
-      : _allocator{nullptr},
-        _io_manager{createMemoryManager<T_MemoryManager, T_PoolManager, T_LifetimeManager>()},
-        _io_group{std::make_shared<T_MemoryGroup>(_io_manager)}
+    : _allocator{nullptr},
+      _io_manager{createMemoryManager<T_MemoryManager, T_PoolManager, T_LifetimeManager>()},
+      _io_group{std::make_shared<T_MemoryGroup>(_io_manager)}
   {
     // DO NOTHING
   }

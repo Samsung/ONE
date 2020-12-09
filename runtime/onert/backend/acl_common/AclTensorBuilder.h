@@ -131,14 +131,14 @@ namespace acl_common
 template <typename T_ITensor, typename T_Tensor, typename T_SubTensor>
 AclTensorBuilder<T_ITensor, T_Tensor, T_SubTensor>::AclTensorBuilder(const ir::Operands &operands,
                                                                      T_AclTensorManager *tensor_mgr)
-    : _operands{operands}, _tensor_mgr{tensor_mgr}
+  : _operands{operands}, _tensor_mgr{tensor_mgr}
 {
   assert(_tensor_mgr);
 }
 
 template <typename T_ITensor, typename T_Tensor, typename T_SubTensor>
 void AclTensorBuilder<T_ITensor, T_Tensor, T_SubTensor>::registerTensorInfo(
-    const ir::OperandIndex &ind, const ir::OperandInfo &info, ir::Layout backend_layout)
+  const ir::OperandIndex &ind, const ir::OperandInfo &info, ir::Layout backend_layout)
 {
   assert(_tensor_mgr->constTensors().size() == 0);
   assert(_tensor_mgr->nonconstTensors().size() == 0);
@@ -203,7 +203,7 @@ void AclTensorBuilder<T_ITensor, T_Tensor, T_SubTensor>::notifyLastUse(const ir:
 
 template <typename T_ITensor, typename T_Tensor, typename T_SubTensor>
 bool AclTensorBuilder<T_ITensor, T_Tensor, T_SubTensor>::isRegistered(
-    const ir::OperandIndex &ind) const
+  const ir::OperandIndex &ind) const
 {
   return _tensor_info_map.find(ind) != _tensor_info_map.end();
 }
@@ -221,7 +221,7 @@ void AclTensorBuilder<T_ITensor, T_Tensor, T_SubTensor>::allocate(void)
 
   std::unordered_map<ir::OperandIndex, ir::OperandIndex> root_map;
   std::function<ir::OperandIndex &(ir::OperandIndex)> find_root =
-      [&](ir::OperandIndex ind) -> ir::OperandIndex & {
+    [&](ir::OperandIndex ind) -> ir::OperandIndex & {
     ir::OperandIndex &ret = root_map[ind];
 
     // We know the root parent value already
@@ -313,7 +313,7 @@ void AclTensorBuilder<T_ITensor, T_Tensor, T_SubTensor>::buildTensors(void)
     const auto &info = entry.second;
     const auto &backend_layout = _tensor_layout_map[ind];
     auto tensor_info =
-        asTensorInfo(info.shape(), info.typeInfo(), ir::Layout::UNKNOWN, backend_layout, true);
+      asTensorInfo(info.shape(), info.typeInfo(), ir::Layout::UNKNOWN, backend_layout, true);
     _tensor_mgr->buildTensor(ind, tensor_info, info.shape().rank(), info.isConstant(),
                              _uses_count_map[ind]);
   }
@@ -380,7 +380,7 @@ void AclTensorBuilder<T_ITensor, T_Tensor, T_SubTensor>::buildTensors(void)
 
       auto shape = asTensorShape(tensor_info.shape(), ir::Layout::UNKNOWN, backend_layout, true);
       ::arm_compute::Coordinates coordinates =
-          asTensorCoordinate(parent_info.coordinates, ir::Layout::UNKNOWN, backend_layout);
+        asTensorCoordinate(parent_info.coordinates, ir::Layout::UNKNOWN, backend_layout);
       _tensor_mgr->buildSubtensor(parent, current, shape, coordinates, tensor_info.shape().rank(),
                                   true);
       stack.pop();
@@ -390,7 +390,7 @@ void AclTensorBuilder<T_ITensor, T_Tensor, T_SubTensor>::buildTensors(void)
 
 template <typename T_ITensor, typename T_Tensor, typename T_SubTensor>
 bool AclTensorBuilder<T_ITensor, T_Tensor, T_SubTensor>::areSubTensorsOf(
-    const ir::OperandIndex &parent, const ir::OperandIndexSequence &seq)
+  const ir::OperandIndex &parent, const ir::OperandIndexSequence &seq)
 {
   for (auto &cand : seq)
   {
@@ -404,7 +404,7 @@ bool AclTensorBuilder<T_ITensor, T_Tensor, T_SubTensor>::areSubTensorsOf(
 
 template <typename T_ITensor, typename T_Tensor, typename T_SubTensor>
 bool AclTensorBuilder<T_ITensor, T_Tensor, T_SubTensor>::isSubTensorOf(
-    const ir::OperandIndex &parent, const ir::OperandIndex &child)
+  const ir::OperandIndex &parent, const ir::OperandIndex &child)
 {
   auto itr = _parent_map.find(child);
   if (itr == _parent_map.end())

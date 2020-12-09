@@ -28,7 +28,7 @@ namespace ops
 {
 
 StatelessRandomUniformLayer::StatelessRandomUniformLayer()
-    : _shape(nullptr), _seed(nullptr), _output(nullptr)
+  : _shape(nullptr), _seed(nullptr), _output(nullptr)
 {
   // DO NOTHING
 }
@@ -44,9 +44,9 @@ void StatelessRandomUniformLayer::configure(const IPortableTensor *shape,
 void StatelessRandomUniformLayer::StatelessRandomUniformFloat32()
 {
   nnfw::cker::StatelessRandomUniform(
-      getTensorShape(_shape), reinterpret_cast<const int *>(_shape->buffer()),
-      getTensorShape(_seed), reinterpret_cast<const int *>(_seed->buffer()),
-      getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()));
+    getTensorShape(_shape), reinterpret_cast<const int *>(_shape->buffer()), getTensorShape(_seed),
+    reinterpret_cast<const int *>(_seed->buffer()), getTensorShape(_output),
+    reinterpret_cast<float *>(_output->buffer()));
 }
 
 void StatelessRandomUniformLayer::run()
