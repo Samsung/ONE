@@ -109,6 +109,6 @@ namespace cpu_common
 // With this as a key function, `dynamic_cast` works across dl
 ExternalTensor::~ExternalTensor() {}
 
-} // namespace cpu
+} // namespace cpu_common
 } // namespace backend
 } // namespace onert

@@ -36,7 +36,7 @@ std::string getStrFromIndice(const onert::ir::OperandIndexSequence &indice)
 
   return str;
 }
-}
+} // namespace
 
 namespace onert
 {

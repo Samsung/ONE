@@ -40,8 +40,8 @@ namespace controlflow
 {
 class IOTensor;
 }
-}
-}
+} // namespace backend
+} // namespace onert
 namespace onert
 {
 namespace exec

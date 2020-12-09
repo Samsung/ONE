@@ -27,6 +27,6 @@ bool Config::initialize() { return true; }
 
 ir::Layout Config::supportLayout(const ir::Operation &, ir::Layout) { return ir::Layout::NHWC; }
 
-} // namespace cpu
+} // namespace ruy
 } // namespace backend
 } // namespace onert
