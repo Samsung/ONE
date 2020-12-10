@@ -73,5 +73,5 @@ public:
    */
   void configure(const ICLTensor *input, ICLTensor *output, const ICLTensor *lookups);
 };
-}
+} // namespace arm_compute
 #endif /*__ARM_COMPUTE_CLEMBEDDINGLOOKUP_H__ */

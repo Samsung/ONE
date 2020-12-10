@@ -157,7 +157,7 @@ operator()(random::PhiloxRandom gen, typename Distribution::ResultElementType *d
 
 } // namespace functor
 
-} // end namespace tensorflow
-}
+} // namespace cker
+} // namespace nnfw
 
 #endif // __NNFW_CKER_HELPER_RANDOM_OP_CPU_H__

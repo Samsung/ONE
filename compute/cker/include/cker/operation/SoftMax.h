@@ -69,7 +69,7 @@ inline void Softmax(const SoftmaxParams &params, const Shape &input_shape, const
     }
   }
 }
-}
+} // namespace reference
 
 // Performs softmax along the input of size (input_size * batch_size).
 inline void Softmax(const float *in, const int input_size, const int batch_size, const float beta,

@@ -177,7 +177,7 @@ inline Shape copyShape(const Shape &shape)
 {
   return Shape::ExtendedShape(shape.DimensionsCount(), shape);
 }
-}
+} // namespace
 
 class Einsum
 {

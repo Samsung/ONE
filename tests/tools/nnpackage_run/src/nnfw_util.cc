@@ -45,4 +45,4 @@ uint64_t bufsize_for(const nnfw_tensorinfo *ti)
   return elmsize[ti->dtype] * num_elems(ti);
 }
 
-} // end of namespace
+} // namespace nnpkg_run

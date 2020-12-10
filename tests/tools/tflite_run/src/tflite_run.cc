@@ -71,7 +71,7 @@ public:
   }
 };
 
-} // namespace anonymous
+} // namespace
 
 int main(const int argc, char **argv)
 {

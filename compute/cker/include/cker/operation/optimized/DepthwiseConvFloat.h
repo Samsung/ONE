@@ -1243,8 +1243,8 @@ inline void DepthwiseConvImpl(const DepthwiseConvParams &params, const Shape &in
   }
 }
 
-} // nnfw
-} // cker
-} // optimized
+} // namespace optimized
+} // namespace cker
+} // namespace nnfw
 
 #endif

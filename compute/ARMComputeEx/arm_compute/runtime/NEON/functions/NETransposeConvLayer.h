@@ -171,5 +171,5 @@ private:
   PadStrideInfo _info;
   bool _is_prepared;
 };
-} // arm_compute
+} // namespace arm_compute
 #endif /* __ARM_COMPUTE_NETRANSPOSECONVLAYER_H__ */

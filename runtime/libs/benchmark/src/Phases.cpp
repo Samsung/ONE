@@ -42,7 +42,7 @@ void SleepForMicros(uint64_t micros)
   sleep_time.tv_nsec = micros * 1e3;
   nanosleep(&sleep_time, nullptr);
 }
-}
+} // namespace
 
 namespace benchmark
 {

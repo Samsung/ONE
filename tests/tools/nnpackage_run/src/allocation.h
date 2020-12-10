@@ -33,6 +33,6 @@ public:
 private:
   void *data_;
 };
-} // end of namespace
+} // namespace nnpkg_run
 
 #endif // __NNPACKAGE_RUN_ALLOCATION_H__

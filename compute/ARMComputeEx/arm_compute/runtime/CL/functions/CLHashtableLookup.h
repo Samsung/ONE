@@ -78,5 +78,5 @@ public:
   void configure(const ICLTensor *lookups, const ICLTensor *keys, const ICLTensor *intput,
                  ICLTensor *output, ICLTensor *hits);
 };
-}
+} // namespace arm_compute
 #endif /*__ARM_COMPUTE_CLHASHTABLELOOKUP_H__ */

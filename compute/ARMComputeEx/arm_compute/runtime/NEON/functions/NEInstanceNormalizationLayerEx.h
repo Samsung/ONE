@@ -112,5 +112,5 @@ private:
   Tensor _permuted_input;
   Tensor _permuted_output;
 };
-}
+} // namespace arm_compute
 #endif /* __ARM_COMPUTE_NEINSTANCENORMALIZATIONLAYEREX_H__ */
