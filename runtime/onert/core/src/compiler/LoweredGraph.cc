@@ -445,7 +445,10 @@ void LoweredGraph::dumpLowerInfo()
   {
     if (!e.second.empty())
     {
-      VERBOSE(Lower) << e.second;
+      std::istringstream iss(e.second);
+      std::string line;
+      while (std::getline(iss, line))
+        VERBOSE(Lower) << line << std::endl;
     }
   }
 }
