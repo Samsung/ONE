@@ -87,24 +87,19 @@ def main():
     # verify arguments
     _verify_arg(parser, args)
 
-    # get file path to log
+    # make a command to run given backend driver
     dir_path = os.path.dirname(os.path.realpath(__file__))
-    logfile_path = os.path.realpath(args.output_path) + '.log'
+    codegen_path = os.path.join(dir_path, getattr(args, 'backend') + '-compile')
+    codegen_cmd = [codegen_path] + unknown_args
+    if _utils._is_valid_attr(args, 'command'):
+        codegen_cmd += getattr(args, 'command').split()
 
-    with open(logfile_path, 'wb') as f:
-        # make a command to run given backend driver
-        codegen_path = os.path.join(dir_path, getattr(args, 'backend') + '-compile')
-        codegen_cmd = [codegen_path] + unknown_args
-
-        f.write((' '.join(codegen_cmd) + '\n').encode())
-
-        # run backend driver
-        with subprocess.Popen(
-                codegen_cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
-                bufsize=1) as p:
-            for line in p.stdout:
-                sys.stdout.buffer.write(line)
-                f.write(line)
+    # run backend driver
+    with subprocess.Popen(
+            codegen_cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+            bufsize=1) as p:
+        for line in p.stdout:
+            sys.stdout.buffer.write(line)
 
 
 if __name__ == '__main__':
