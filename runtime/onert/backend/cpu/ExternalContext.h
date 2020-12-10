@@ -20,11 +20,6 @@
 #include <util/ConfigSource.h>
 #include <ruy/context.h>
 
-namespace
-{
-const int kDefaultNumThreadpoolThreads = 1;
-}
-
 namespace onert
 {
 namespace backend
@@ -34,6 +29,9 @@ namespace cpu
 
 class ExternalContext
 {
+private:
+  static const int kDefaultNumThreadpoolThreads = 1;
+
 public:
   ExternalContext() : _ruy_context(new ruy::Context)
   {
