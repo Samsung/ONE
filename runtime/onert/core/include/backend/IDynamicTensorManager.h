@@ -17,8 +17,6 @@
 #ifndef __ONERT_BACKEND_IDYNAMICTENSOR_MANAGER_H__
 #define __ONERT_BACKEND_IDYNAMICTENSOR_MANAGER_H__
 
-#include "ITensorManager.h"
-
 #include <ir/Index.h>
 #include <ir/Operation.h>
 #include <ir/Shape.h>
@@ -33,7 +31,7 @@ namespace backend
  * @brief Interface as an abstract tensor manager, providing ways to handle memory
  *        for dynamic tensors.
  */
-struct IDynamicTensorManager : public ITensorManager
+struct IDynamicTensorManager
 {
   virtual ~IDynamicTensorManager() = default;
 
