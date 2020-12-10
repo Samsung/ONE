@@ -59,7 +59,7 @@ private:
 
 public:
   // TODO Make it private
-  std::shared_ptr<cpu_common::TensorBuilder> tensor_builder;
+  std::shared_ptr<TensorBuilder> tensor_builder;
   std::shared_ptr<ConstantInitializer> constant_initializer;
   std::shared_ptr<KernelGenerator> kernel_gen;
 
