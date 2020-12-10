@@ -136,7 +136,7 @@ void StaticShapeInferer::dump()
     lowered_subg->graph().operands().iterate(
       [&](const ir::OperandIndex &ind, const ir::Operand &operand) {
         VERBOSE(StaticShapeInferer)
-          << ind << ", " << (operand.info().isDynamic() ? "Dynamic" : "Static") << ", "
+          << "  " << ind << ", " << (operand.info().isDynamic() ? "Dynamic" : "Static") << ", "
           << get_shape_str(operand.info().shape()) << std::endl;
       });
   }
