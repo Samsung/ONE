@@ -25,12 +25,12 @@ namespace
 
 std::string getStrFromIndice(const onert::ir::OperandIndexSequence &indice)
 {
-  std::string str;
+  std::stringstream sstr;
   for (const auto &ind : indice)
   {
-    str += std::to_string(ind.value());
-    str.push_back(',');
+    sstr << ind << ',';
   }
+  auto str = sstr.str();
   if (str.back() == ',')
     str.pop_back();
 
@@ -53,12 +53,12 @@ void OpSequence::accept(OperationVisitor &v) const { v.visit(*this); }
 // TODO: Impl Dumper instead of this method
 std::string getStrFromOpSeq(const OpSequence &op_seq, const Operations &operations)
 {
-  // "  OpSequence IN(0,1,2) -> { op0(0,1,2:3), op1(3:4), op2(4:5) } -> OUT(5)"
+  // "  IN($0,$1,$2) -> { OPERATION0($0,$1,$2:$3), op1($3:$4), op2($4:$5) } -> OUT($5)"
   std::stringstream ss;
-  ss << "  OpSequence IN(" << getStrFromIndice(op_seq.getInputs()) << ") -> {";
+  ss << " IN(" << getStrFromIndice(op_seq.getInputs()) << ") -> {";
   for (const auto &op_idx : op_seq)
   {
-    ss << " " << op_idx.value() << "(" << operations.at(op_idx).name() << ":"
+    ss << " " << op_idx << "(" << operations.at(op_idx).name() << ":"
        << getStrFromIndice(operations.at(op_idx).getInputs()) << ":"
        << getStrFromIndice(operations.at(op_idx).getOutputs()) << ")";
   }

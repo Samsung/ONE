@@ -148,7 +148,7 @@ void Graph::sweepGarbageOperands()
   operands().iterate([&](const OperandIndex &ind, const Operand &) {
     if (!visited[ind])
     {
-      VERBOSE(Graph::sweepGarbageOperands) << "Sweep garbage operand " << ind.value() << std::endl;
+      VERBOSE(Graph::sweepGarbageOperands) << "Sweep garbage operand " << ind << std::endl;
       operands().remove(ind);
     }
   });

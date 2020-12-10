@@ -286,7 +286,7 @@ void AclTensorManager<T_ITensor, T_Tensor, T_SubTensor>::tryDeallocConstants(voi
     // used in several nodes.
     if (tensor->handle() && !tensor->handle()->is_used() && tensor->num_uses() < 2)
     {
-      VERBOSE(AclTensorManager) << "Tensor #" << ind.value()
+      VERBOSE(AclTensorManager) << "Tensor " << ind
                                 << " will be deallocated as an unused constant tensor" << std::endl;
       tensor->allocator()->free();
       tensor.reset();

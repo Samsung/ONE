@@ -101,7 +101,7 @@ void HEScheduler::scheduleShufflingBackends()
   size_t backend_ind = 0;
   for (const auto &rank : _rank_to_op)
   {
-    VERBOSE(HEScheduler::schedule) << "scheduling (" << rank.second.value() << ")" << std::endl;
+    VERBOSE(HEScheduler::schedule) << "scheduling (" << rank.second << ")" << std::endl;
     const auto &node = _graph->operations().at(rank.second);
     const bool quant = isQuant(*_graph, node);
     const auto size = getOperationsFlattenedIOSize(*_graph, node);
@@ -370,7 +370,7 @@ int64_t HEScheduler::DFSMaxRank(const ir::OperationIndex &index)
   _rank_to_op.emplace(rank, index);
   _op_to_rank->emplace(index, rank);
   VERBOSE(HEScheduler::DFSMaxRank)
-    << "rank of operation (" << index.value() << ")" << node.name() << " is " << rank << std::endl;
+    << "rank of operation (" << index << ")" << node.name() << " is " << rank << std::endl;
 
   return rank;
 }
@@ -428,7 +428,7 @@ int64_t HEScheduler::backendAvailableTime(const backend::Backend *backend,
 
 bool HEScheduler::schedule(const ir::OperationIndex &index, const backend::Backend *parent_backend)
 {
-  VERBOSE(HEScheduler::schedule) << "scheduling (" << index.value() << ")" << std::endl;
+  VERBOSE(HEScheduler::schedule) << "scheduling (" << index << ")" << std::endl;
   int64_t eft = std::numeric_limits<int64_t>::max(), selected_exec_time = 0;
   const auto &node = _graph->operations().at(index);
 
@@ -551,14 +551,14 @@ HEScheduler::ESTAndExecTime(const backend::Backend *backend, const ir::Operation
   if (!_is_parallel_exec)
   {
     VERBOSE(HEScheduler::ESTAndExecTime)
-      << "exec_time of (" << index.value() << ") " << node.name() << " quant==" << quant << " on "
+      << "exec_time of (" << index << ") " << node.name() << " quant==" << quant << " on "
       << backend->config()->id() << " is " << exec_time
       << " microseconds. Data transfer cost: " << total_transfer_cost << std::endl;
 
     return {total_transfer_cost, exec_time};
   }
   VERBOSE(HEScheduler::ESTAndExecTime)
-    << "exec_time of (" << index.value() << ") " << node.name() << " quant==" << quant << " on "
+    << "exec_time of (" << index << ") " << node.name() << " quant==" << quant << " on "
     << backend->config()->id() << ": " << exec_time
     << " microseconds. Backend available time: " << prev_op_ft
     << " Parent's max eft: " << max_pred_eft - total_transfer_cost

@@ -19,6 +19,8 @@
 
 #include "util/Index.h"
 
+#include <ostream>
+
 namespace onert
 {
 namespace ir
@@ -38,6 +40,40 @@ using OpSequenceIndex = ::onert::util::Index<uint32_t, OpSequenceIndexTag>;
 
 struct SubgraphIndexTag;
 using SubgraphIndex = ::onert::util::Index<uint32_t, SubgraphIndexTag>;
+
+template <typename IndexType>
+std::ostream &_index_print_impl(std::ostream &o, const std::string &prefix, IndexType index)
+{
+  if (index.undefined())
+    return o << prefix << std::string("?");
+  else
+    return o << prefix << index.value();
+}
+
+inline std::ostream &operator<<(std::ostream &o, const OperationIndex &i)
+{
+  return _index_print_impl(o, "OPERATION", i);
+}
+
+inline std::ostream &operator<<(std::ostream &o, const OperandIndex &i)
+{
+  return _index_print_impl(o, "$", i);
+}
+
+inline std::ostream &operator<<(std::ostream &o, const IOIndex &i)
+{
+  return _index_print_impl(o, "IO", i);
+}
+
+inline std::ostream &operator<<(std::ostream &o, const OpSequenceIndex &i)
+{
+  return _index_print_impl(o, "OPSEQUENCE", i);
+}
+
+inline std::ostream &operator<<(std::ostream &o, const SubgraphIndex &i)
+{
+  return _index_print_impl(o, "SUBGRAPH", i); // $ubgraph
+}
 
 } // namespace ir
 } // namespace onert

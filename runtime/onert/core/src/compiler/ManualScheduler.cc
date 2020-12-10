@@ -94,16 +94,16 @@ std::unique_ptr<BackendResolver> ManualScheduler::schedule(const ir::Graph &grap
     }
     catch (...)
     {
-      VERBOSE(ManualScheduler) << "Invalid value while OperationIndex to Backend mapping : @"
-                               << key.value() << " -> \"" << val << "\"" << std::endl;
+      VERBOSE(ManualScheduler) << "Invalid value while OperationIndex to Backend mapping : @" << key
+                               << " -> \"" << val << "\"" << std::endl;
     }
   }
 
   // Dump final assignment
   WHEN_LOG_ENABLED(backend_resolver->iterate(
     [&](const ir::OperationIndex &index, const backend::Backend &backend) {
-      VERBOSE(ManualScheduler) << "backend for operation #" << index.value() << ": "
-                               << backend.config()->id() << std::endl;
+      VERBOSE(ManualScheduler) << "backend for " << index << ": " << backend.config()->id()
+                               << std::endl;
     }));
 
   return backend_resolver;

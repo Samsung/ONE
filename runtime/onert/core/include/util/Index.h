@@ -138,14 +138,6 @@ public:
    */
   T value() const { return _index; }
 
-  friend std::ostream &operator<<(std::ostream &o, const Index &t)
-  {
-    if (t.undefined())
-      return o << std::string("undefined");
-    else
-      return o << t.value();
-  }
-
 private:
   T _index;
 };

@@ -405,7 +405,7 @@ void Fp32ToFp16Converter::convertOperandsOfOpSequence(ir::OpSequence &op_seq)
 
       obj.type(ir::DataType::FLOAT16);
 
-      VERBOSE(Fp32ToFp16Converter) << "Input Operand #" << ind.value() << ": fp16" << std::endl;
+      VERBOSE(Fp32ToFp16Converter) << "Input Operand " << ind << ": fp16" << std::endl;
     }
 
     for (auto &ind : node.getOutputs())
@@ -419,7 +419,7 @@ void Fp32ToFp16Converter::convertOperandsOfOpSequence(ir::OpSequence &op_seq)
 
       obj.type(ir::DataType::FLOAT16);
 
-      VERBOSE(Fp32ToFp16Converter) << "Output Operand #" << ind.value() << ": fp16" << std::endl;
+      VERBOSE(Fp32ToFp16Converter) << "Output Operand " << ind << ": fp16" << std::endl;
     }
   }
 }
@@ -444,7 +444,7 @@ void Fp32ToFp16Converter::convertDatas()
 
       obj.data(std::move(new_data));
       obj.type(ir::DataType::FLOAT16);
-      VERBOSE(Fp32ToFp16Converter) << "Constant Operand #" << ind.value() << ": fp16" << std::endl;
+      VERBOSE(Fp32ToFp16Converter) << "Constant Operand " << ind << ": fp16" << std::endl;
     }
   });
 }
@@ -759,9 +759,8 @@ Fp32ToFp16Converter::findOpSequencesContiguous(const InputToOpSeqs &input_to_op_
           opseq_map_to_delete[op_seq_ind_fp16_to_fp32].insert(op_seq_ind);
         }
 
-        VERBOSE(Fp32ToFp16Converter)
-          << "Contiguous from OpSeq#" << op_seq_ind_fp16_to_fp32.value() << "(ToFp32)"
-          << " to OpSeq#" << op_seq_ind.value() << "(ToFp16)" << std::endl;
+        VERBOSE(Fp32ToFp16Converter) << "Contiguous from " << op_seq_ind_fp16_to_fp32 << "(ToFp32)"
+                                     << " to " << op_seq_ind << "(ToFp16)" << std::endl;
       }
     }
   }
@@ -904,21 +903,21 @@ void Fp32ToFp16Converter::deleteContiguousOpSequences(
   {
     auto &op_seq = op_seqs.at(op_seq_ind);
     assert(op_seq.size() == 1);
-    VERBOSE(Fp32ToFp16Converter) << "Delete OpSeq #" << op_seq_ind.value() << std::endl;
+    VERBOSE(Fp32ToFp16Converter) << "Delete OpSeq " << op_seq_ind << std::endl;
 
     auto &first_node_ind = op_seq.operations().at(0);
     auto &first_node = operations.at(first_node_ind);
     assert(first_node.opcode() == ir::OpCode::ConvertFp32ToFp16 ||
            first_node.opcode() == ir::OpCode::ConvertFp16ToFp32);
-    VERBOSE(Fp32ToFp16Converter) << "Delete Node #" << first_node_ind.value() << std::endl;
+    VERBOSE(Fp32ToFp16Converter) << "Delete Node " << first_node_ind << std::endl;
 
     // Uses
     for (auto &ind : first_node.getInputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED)
     {
       auto &obj = operands.at(ind);
       obj.removeUse(first_node_ind);
-      VERBOSE(Fp32ToFp16Converter) << "Operand #" << ind.value() << "'s Use(Node#"
-                                   << first_node_ind.value() << ") is removed" << std::endl;
+      VERBOSE(Fp32ToFp16Converter)
+        << "Operand " << ind << "'s Use(Node" << first_node_ind << ") is removed" << std::endl;
     }
 
     // Def
@@ -927,24 +926,24 @@ void Fp32ToFp16Converter::deleteContiguousOpSequences(
       auto &obj = operands.at(ind);
       assert(obj.getDef() == first_node_ind);
       obj.unsetDef();
-      VERBOSE(Fp32ToFp16Converter) << "Operand #" << ind.value() << "'s Def(Node#"
-                                   << first_node_ind.value() << ") is removed" << std::endl;
+      VERBOSE(Fp32ToFp16Converter)
+        << "Operand " << ind << "'s Def(Node" << first_node_ind << ") is removed" << std::endl;
     }
 
     // Operation
     operations.remove(first_node_ind);
-    VERBOSE(Fp32ToFp16Converter) << "Node#" << first_node_ind.value() << " is removed" << std::endl;
+    VERBOSE(Fp32ToFp16Converter) << "Node" << first_node_ind << " is removed" << std::endl;
 
     // OpSequence
     op_seqs.remove(op_seq_ind);
-    VERBOSE(Fp32ToFp16Converter) << "OpSeq#" << op_seq_ind.value() << " is removed" << std::endl;
+    VERBOSE(Fp32ToFp16Converter) << "OpSeq" << op_seq_ind << " is removed" << std::endl;
   }
 
   // Operand
   for (auto &ind : list_to_delete_ops)
   {
     operands.remove(ind);
-    VERBOSE(Fp32ToFp16Converter) << "Operand #" << ind.value() << " is removed" << std::endl;
+    VERBOSE(Fp32ToFp16Converter) << "Operand " << ind << " is removed" << std::endl;
   }
 }
 

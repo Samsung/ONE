@@ -90,8 +90,8 @@ DataflowExecutor::DataflowExecutor(std::unique_ptr<compiler::LoweredGraph> lower
   uint32_t next_job_index = 0;
   std::unordered_map<ir::OpSequenceIndex, uint32_t> op_seq_to_job;
   op_seqs.iterate([&](const ir::OpSequenceIndex &op_seq_index, const ir::OpSequence &) {
-    VERBOSE(DataflowExecutor) << "Create a job #" << next_job_index << " with OpSequenceIndex "
-                              << op_seq_index.value() << std::endl;
+    VERBOSE(DataflowExecutor) << "Create a job " << next_job_index << " with OpSequenceIndex "
+                              << op_seq_index << std::endl;
     _finished_jobs.emplace_back(
       std::make_unique<Job>(next_job_index, _code_map.at(op_seq_index).fn_seq.get()));
     op_seq_to_job[op_seq_index] = next_job_index++;
@@ -150,7 +150,7 @@ void DataflowExecutor::executeImpl()
     auto job = std::move((_ready_jobs.begin())->second);
     _ready_jobs.erase(_ready_jobs.begin());
     auto job_index = job->index();
-    VERBOSE(DataflowExecutor) << "Run job #" << job_index << std::endl;
+    VERBOSE(DataflowExecutor) << "Run job " << job_index << std::endl;
 
     auto op_seq_index = _job_to_op_seq[job_index];
     auto op_seq = &_lowered_graph->op_seqs().at(op_seq_index);

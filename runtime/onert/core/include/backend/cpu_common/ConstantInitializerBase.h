@@ -175,7 +175,7 @@ public:
       auto tensor_obj = tensor_registry()->getNativeITensor(ind);
       assert(tensor_obj != nullptr);
       fn(model_obj, *tensor_obj);
-      VERBOSE(FillOperandData) << "Fill data for operand " << ind.value() << std::endl;
+      VERBOSE(FillOperandData) << "Fill data for operand " << ind << std::endl;
     }
     _init_map.clear();
   }

@@ -121,7 +121,7 @@ void ParallelExecutor::executeImpl()
 
     lock.unlock();
 
-    VERBOSE(ParallelExecutor) << "Assigning fn #" << job->index() << std::endl;
+    VERBOSE(ParallelExecutor) << "Assigning fn " << job->index() << std::endl;
 
     auto job_index = job->index();
     auto op_sequence_index = _job_to_op_seq[job_index];

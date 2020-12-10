@@ -132,12 +132,12 @@ void StaticShapeInferer::dump()
   {
     const auto index = pair.first;
     const auto &lowered_subg = pair.second;
-    VERBOSE(StaticShapeInferer) << "SubGraph #" << index.value() << std::endl;
+    VERBOSE(StaticShapeInferer) << index << std::endl;
     lowered_subg->graph().operands().iterate(
       [&](const ir::OperandIndex &ind, const ir::Operand &operand) {
-        VERBOSE(StaticShapeInferer) << "Operand #" << ind.value() << ", "
-                                    << (operand.info().isDynamic() ? "Dynamic" : "Static") << ", "
-                                    << get_shape_str(operand.info().shape()) << std::endl;
+        VERBOSE(StaticShapeInferer)
+          << ind << ", " << (operand.info().isDynamic() ? "Dynamic" : "Static") << ", "
+          << get_shape_str(operand.info().shape()) << std::endl;
       });
   }
 }

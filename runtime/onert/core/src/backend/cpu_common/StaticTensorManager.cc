@@ -49,7 +49,7 @@ void StaticTensorManager::allocateNonconsts(void)
       tensor->setBuffer(buffer);
 
       VERBOSE(CPU_StaticTensorManager)
-        << "TENSOR(#" << ind.value() << "): " << static_cast<void *>(buffer) << std::endl;
+        << "TENSOR " << ind << " : " << static_cast<void *>(buffer) << std::endl;
     }
   }
 }

@@ -60,8 +60,7 @@ void planTensors(const T_BackendContext &ctx, const std::vector<onert::ir::OpSeq
     // Ignore unused tensor
     if (li->def_factors().size() == 0 && li->use_factors().size() == 0)
     {
-      VERBOSE_F() << "Operand #" << ind.value() << " will not be used. no more process."
-                  << std::endl;
+      VERBOSE_F() << "Operand " << ind << " will not be used. no more process." << std::endl;
       return;
     }
 

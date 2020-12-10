@@ -40,7 +40,7 @@ void Execution::changeInputShape(const ir::IOIndex &index, const ir::Shape &new_
   _io_desc.dynamic_input_shapes[index] = new_shape;
 
   VERBOSE(Execution) << "Model input shape will be changed at the start of execute()"
-                     << "(index: " << index.value() << ")" << std::endl;
+                     << "(index: " << index << ")" << std::endl;
 }
 
 // TODO Remove default parameter
@@ -159,7 +159,7 @@ ir::Shape Execution::getInputShape(ir::IOIndex ind) const
   auto itr = _io_desc.dynamic_input_shapes.find(ind);
   if (itr == _io_desc.dynamic_input_shapes.end())
   {
-    auto operand_idx = primary_subgraph().getInputs().at(ind.value());
+    auto operand_idx = primary_subgraph().getInputs().at(ind);
     return primary_subgraph().operands().at(operand_idx).shape();
   }
   else

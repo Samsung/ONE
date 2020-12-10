@@ -31,13 +31,12 @@ void BumpPlanner::claim(const ir::OperandIndex &ind, size_t size)
   _mem_plans[ind] = blk;
   _capacity += size;
 
-  VERBOSE(BP_PLANNER) << "CLAIM(#" << ind.value() << "): " << blk.offset << ", " << blk.size
-                      << std::endl;
+  VERBOSE(BP_PLANNER) << "CLAIM(" << ind << "): " << blk.offset << ", " << blk.size << std::endl;
 }
 
 void BumpPlanner::release(const ir::OperandIndex &ind)
 {
-  VERBOSE(BP_PLANNER) << "RELEASE(#" << ind.value() << "): "
+  VERBOSE(BP_PLANNER) << "RELEASE(" << ind << "): "
                       << "NOTHING does" << std::endl;
 }
 
@@ -77,7 +76,7 @@ void FirstFitPlanner::claim(const ir::OperandIndex &ind, size_t size)
   _claim_table[next_offset] = ind;
   _mem_plans[ind] = {next_offset, size};
 
-  VERBOSE(FF_PLANNER) << "claim(#" << ind.value() << "): [+" << next_offset << ", " << size << "sz]"
+  VERBOSE(FF_PLANNER) << "claim(" << ind << "): [+" << next_offset << ", " << size << "sz]"
                       << std::endl;
 
   if (_capacity < next_offset + size)
@@ -98,7 +97,7 @@ void FirstFitPlanner::release(const ir::OperandIndex &ind)
 
       _claim_table.erase(it);
 
-      VERBOSE(FF_PLANNER) << "release(#" << index << "): [+" << offset << ", " << size << "sz]"
+      VERBOSE(FF_PLANNER) << "release(" << index << "): [+" << offset << ", " << size << "sz]"
                           << std::endl;
       return;
     }
@@ -124,13 +123,13 @@ void WICPlanner::claim(const ir::OperandIndex &ind, size_t size)
   }
   _live_operands.emplace(ind);
 
-  VERBOSE(WIC_PLANNER) << "claim(#" << ind.value() << "): [" << size << "sz]" << std::endl;
+  VERBOSE(WIC_PLANNER) << "claim(" << ind << "): [" << size << "sz]" << std::endl;
 }
 
 void WICPlanner::release(const ir::OperandIndex &ind)
 {
   _live_operands.erase(ind);
-  VERBOSE(WIC_PLANNER) << "release(#" << ind.value() << ")" << std::endl;
+  VERBOSE(WIC_PLANNER) << "release(" << ind << ")" << std::endl;
 }
 
 /*
@@ -148,7 +147,7 @@ void WICPlanner::buildMemoryPlans()
   {
     uint32_t size = operand.first;
     const ir::OperandIndex &ind = operand.second;
-    VERBOSE(WIC_PLANNER) << "build_plan(#" << ind.value() << "): [" << size << "sz]" << std::endl;
+    VERBOSE(WIC_PLANNER) << "build_plan(" << ind << "): [" << size << "sz]" << std::endl;
 
     uint32_t next_offset = 0;
     if (_interference_graph.count(ind))
@@ -184,8 +183,8 @@ void WICPlanner::buildMemoryPlans()
     }
 
     _mem_plans[ind] = {next_offset, size};
-    VERBOSE(WIC_PLANNER) << "alloc(#" << ind.value() << "): [+" << next_offset << ", " << size
-                         << "sz]" << std::endl;
+    VERBOSE(WIC_PLANNER) << "alloc(" << ind << "): [+" << next_offset << ", " << size << "sz]"
+                         << std::endl;
 
     if (_capacity < next_offset + size)
     {
