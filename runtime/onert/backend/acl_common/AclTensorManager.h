@@ -19,7 +19,6 @@
 
 #include <arm_compute/runtime/IMemoryManager.h>
 
-#include "backend/ITensorManager.h"
 #include "AclMemoryManager.h"
 #include "AclInternalBufferManager.h"
 #include "ir/OperandIndexMap.h"
@@ -31,8 +30,7 @@ namespace backend
 namespace acl_common
 {
 
-template <typename T_ITensor, typename T_Tensor, typename T_SubTensor>
-class AclTensorManager : public backend::ITensorManager
+template <typename T_ITensor, typename T_Tensor, typename T_SubTensor> class AclTensorManager
 {
 public:
   using T_AclMemoryManager = AclMemoryManager<T_ITensor, T_Tensor, T_SubTensor>;

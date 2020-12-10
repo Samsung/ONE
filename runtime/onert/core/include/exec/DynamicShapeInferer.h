@@ -21,7 +21,6 @@
 #include "ir/OperationVisitor.h"
 #include "ir/Index.h"
 #include "backend/IDynamicTensorManager.h"
-#include "backend/ITensorManager.h"
 #include "backend/ITensorRegistry.h"
 
 #include <map>

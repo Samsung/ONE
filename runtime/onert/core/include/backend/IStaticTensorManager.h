@@ -17,14 +17,12 @@
 #ifndef __ONERT_BACKEND_ISTATICTENSOR_MANAGER_H__
 #define __ONERT_BACKEND_ISTATICTENSOR_MANAGER_H__
 
-#include "ITensorManager.h"
-
 namespace onert
 {
 namespace backend
 {
 
-struct IStaticTensorManager : public ITensorManager
+struct IStaticTensorManager
 {
   virtual ~IStaticTensorManager() = default;
 };

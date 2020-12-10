@@ -21,7 +21,6 @@
 #include "backend/cpu_common/DynamicTensorManager.h"
 #include "backend/cpu_common/MemoryManager.h"
 #include "backend/cpu_common/TensorRegistry.h"
-#include "backend/ITensorManager.h"
 #include "ir/OperandIndexMap.h"
 #include "ir/OperandInfo.h"
 #include "TensorRegistry.h"
@@ -35,7 +34,7 @@ namespace cpu_common
 
 class DynamicTensorManager;
 
-class StaticTensorManager : public backend::IStaticTensorManager
+class StaticTensorManager
 {
 public:
   StaticTensorManager(const std::shared_ptr<TensorRegistry> &reg,
