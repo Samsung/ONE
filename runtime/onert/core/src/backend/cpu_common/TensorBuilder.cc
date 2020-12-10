@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "TensorBuilder.h"
+#include <backend/cpu_common/TensorBuilder.h>
 
 #include <util/logging.h>
 
@@ -24,11 +24,11 @@ namespace onert
 {
 namespace backend
 {
-namespace cpu
+namespace cpu_common
 {
 
-TensorBuilder::TensorBuilder(const std::shared_ptr<cpu_common::TensorRegistry> &tensor_reg)
-  : _tensor_reg{tensor_reg}, _dynamic_tensor_mgr{new cpu_common::DynamicTensorManager(_tensor_reg)},
+TensorBuilder::TensorBuilder(const std::shared_ptr<TensorRegistry> &tensor_reg)
+  : _tensor_reg{tensor_reg}, _dynamic_tensor_mgr{new DynamicTensorManager(_tensor_reg)},
     _static_tensor_mgr{new StaticTensorManager(_tensor_reg, _dynamic_tensor_mgr.get())}
 {
   /* empty */
@@ -84,6 +84,6 @@ void TensorBuilder::allocate()
   //      This is because CPU kernels require `ITensor`s to be allocated before Kernel Generation.
 }
 
-} // namespace cpu
+} // namespace cpu_common
 } // namespace backend
 } // namespace onert
