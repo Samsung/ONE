@@ -26,6 +26,7 @@
 #include "BuildBuiltinOptions/ArgMinOptions.h"
 #include "BuildBuiltinOptions/BatchMatMulOptions.h"
 #include "BuildBuiltinOptions/BatchToSpaceNDOptions.h"
+#include "BuildBuiltinOptions/BidirectionalSequenceLSTMOptions.h"
 #include "BuildBuiltinOptions/CastOptions.h"
 #include "BuildBuiltinOptions/ConcatenationOptions.h"
 #include "BuildBuiltinOptions/Conv2DOptions.h"

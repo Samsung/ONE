@@ -26,6 +26,7 @@
 #include "Op/AveragePool2D.h"
 #include "Op/BatchMatMul.h"
 #include "Op/BatchToSpaceND.h"
+#include "Op/BidirectionalSequenceLSTM.h"
 #include "Op/Cast.h"
 #include "Op/Ceil.h"
 #include "Op/Concatenation.h"

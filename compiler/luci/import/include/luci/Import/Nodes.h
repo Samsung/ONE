@@ -27,6 +27,7 @@
 #include "Nodes/CircleBatchToSpaceND.h"
 #include "Nodes/CircleBCQFullyConnected.h"
 #include "Nodes/CircleBCQGather.h"
+#include "Nodes/CircleBidirectionalSequenceLSTM.h"
 #include "Nodes/CircleCast.h"
 #include "Nodes/CircleCeil.h"
 #include "Nodes/CircleConcatenation.h"
