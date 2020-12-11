@@ -237,7 +237,7 @@ ITensorRegistry *genTensors(T_BackendContext &ctx,
     }
   }
 
-  tensor_builder->prepare();
+  tensor_builder->allocate();
 
   return ctx.tensor_registry.get();
 }

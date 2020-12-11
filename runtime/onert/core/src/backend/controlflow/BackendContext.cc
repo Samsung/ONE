@@ -93,7 +93,7 @@ ITensorRegistry *BackendContext::genTensors(const std::vector<onert::ir::OpSeque
     }
   }
 
-  tensor_builder->prepare();
+  tensor_builder->allocate();
 
   return tensor_registry.get();
 }

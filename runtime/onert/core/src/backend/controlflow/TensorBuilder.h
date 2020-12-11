@@ -53,11 +53,7 @@ public:
 
   bool isRegistered(const ir::OperandIndex &) const;
 
-  void prepare(void);
-  void allocate();
-  void postFunctionPrepare()
-  { /* DO NOTHING */
-  }
+  void allocate(void);
 
   DynamicTensorManager *dynamicTensorManager(void);
 
