@@ -17,7 +17,6 @@
 #ifndef __ONERT_BACKEND_CPU_COMMON_STATICTENSOR_MANAGER_H__
 #define __ONERT_BACKEND_CPU_COMMON_STATICTENSOR_MANAGER_H__
 
-#include "backend/IStaticTensorManager.h"
 #include "backend/cpu_common/DynamicTensorManager.h"
 #include "backend/cpu_common/MemoryManager.h"
 #include "backend/cpu_common/TensorRegistry.h"
