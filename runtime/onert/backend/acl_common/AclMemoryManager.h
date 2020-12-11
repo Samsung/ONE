@@ -21,7 +21,6 @@
 #include <arm_compute/runtime/IMemoryManager.h>
 #include <cassert>
 
-#include "backend/IMemoryManager.h"
 #include "ir/OperandIndexMap.h"
 #include "Convert.h"
 #include "util/logging.h"
@@ -33,8 +32,7 @@ namespace backend
 namespace acl_common
 {
 
-template <typename T_ITensor, typename T_Tensor, typename T_SubTensor>
-class AclMemoryManager : public backend::IMemoryManager
+template <typename T_ITensor, typename T_Tensor, typename T_SubTensor> class AclMemoryManager
 {
 public:
   AclMemoryManager()
@@ -44,7 +42,7 @@ public:
 
   virtual ~AclMemoryManager() = default;
 
-  void allocate(void) override
+  virtual void allocate(void)
   {
     for (const auto &tensor_entry : _tensors)
     {
@@ -53,7 +51,7 @@ public:
     }
   }
 
-  void deallocate(void) override
+  virtual void deallocate(void)
   {
     for (const auto &tensor_entry : _tensors)
     {

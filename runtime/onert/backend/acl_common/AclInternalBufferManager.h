@@ -20,7 +20,6 @@
 #include <arm_compute/runtime/IMemoryManager.h>
 #include <cassert>
 #include <memory>
-#include <backend/IMemoryManager.h>
 
 namespace onert
 {
@@ -34,9 +33,12 @@ namespace acl_common
 /**
  * @brief Interface for InternalBufferManager which has ::arm_compute::IMemoryManager pointer
  */
-struct IInternalBufferManager : public backend::IMemoryManager
+struct IInternalBufferManager
 {
   virtual ~IInternalBufferManager() = default;
+
+  virtual void allocate(void) = 0;
+  virtual void deallocate(void) = 0;
 
   /**
    * @brief Get shared_ptr of ::arm_compute::IMemoryManager

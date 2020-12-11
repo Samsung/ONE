@@ -18,7 +18,6 @@
 #define __ONERT_BACKEND_CPU_MEMORY_MANAGER_H__
 
 #include "Allocator.h"
-#include "backend/IMemoryManager.h"
 #include "IMemoryPlanner.h"
 
 namespace onert
@@ -31,16 +30,16 @@ class ITensor;
 namespace cpu_common
 {
 
-class MemoryManager : public backend::IMemoryManager
+class MemoryManager
 {
 public:
   MemoryManager();
   MemoryManager(const std::string);
   virtual ~MemoryManager() = default;
 
-  void allocate(void) override;
+  void allocate(void);
   uint8_t *getBuffer(const ir::OperandIndex &ind) const;
-  void deallocate(void) override { _mem_alloc->release(); }
+  void deallocate(void) { _mem_alloc->release(); }
 
   void claimPlan(const ir::OperandIndex &ind, uint32_t size);
   void releasePlan(const ir::OperandIndex &ind);
