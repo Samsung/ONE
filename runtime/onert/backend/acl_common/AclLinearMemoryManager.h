@@ -23,7 +23,11 @@
 #include "ir/OperandIndexMap.h"
 #include "util/logging.h"
 
-namespace
+namespace onert
+{
+namespace backend
+{
+namespace acl_common
 {
 
 template <typename T_MemoryManager, typename T_PoolManager, typename T_LifetimeManager>
@@ -36,15 +40,6 @@ std::shared_ptr<T_MemoryManager> createMemoryManager()
     std::make_shared<T_MemoryManager>(lifetime_mgr, pool_mgr);
   return mem_mgr;
 }
-
-} // namespace
-
-namespace onert
-{
-namespace backend
-{
-namespace acl_common
-{
 
 template <typename T_ITensor, typename T_Tensor, typename T_SubTensor, typename T_MemoryManager,
           typename T_PoolManager, typename T_LifetimeManager, typename T_Allocator,

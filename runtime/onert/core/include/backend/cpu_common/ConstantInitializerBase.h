@@ -30,8 +30,13 @@
 #include "util/logging.h"
 #include "backend/ITensorRegistry.h"
 
-namespace
+namespace onert
 {
+namespace backend
+{
+namespace cpu_common
+{
+
 template <typename T>
 static void Init(const onert::ir::Operand &model_obj, onert::backend::ITensor &obj, const bool copy,
                  const onert::ir::Layout frontend_layout = onert::ir::Layout::UNKNOWN)
@@ -147,15 +152,6 @@ void permuteInit(const onert::ir::Operand &model_obj, onert::backend::ITensor &o
   const bool copy = frontend_layout == obj.layout();
   Init<T>(model_obj, obj, copy, frontend_layout);
 }
-
-} // namespace
-
-namespace onert
-{
-namespace backend
-{
-namespace cpu_common
-{
 
 class ConstantInitializerBase : public ir::OperationVisitor
 {

@@ -24,10 +24,7 @@
 #include "KernelGenerator.h"
 #include "ExternalContext.h"
 
-namespace
-{
 const int kDefaultNumThreadpoolThreads = 1;
-}
 
 namespace onert
 {

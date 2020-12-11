@@ -24,11 +24,6 @@
 #include <ruy/ctx.h>
 #include <ruy/tune.h>
 
-namespace
-{
-const int kDefaultNumThreadpoolThreads = 1;
-}
-
 namespace onert
 {
 namespace backend
@@ -39,6 +34,9 @@ namespace controlflow
 // TODO Unify this with cpu::ExternalContext
 class ExternalContext
 {
+private:
+  static const int kDefaultNumThreadpoolThreads = 1;
+
 public:
   ExternalContext() : _ruy_context(std::make_unique<ruy::Context>())
   {
