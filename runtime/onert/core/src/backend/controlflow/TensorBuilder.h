@@ -74,7 +74,6 @@ private:
   std::unique_ptr<DynamicTensorManager> _dynamic_tensor_mgr;
   std::unique_ptr<cpu_common::StaticTensorManager> _static_tensor_mgr;
   ir::OperandIndexMap<ir::OperandInfo> _tensor_info_map;
-  ir::OperandIndexMap<ir::Layout> _tensor_layout_map;
 };
 
 } // namespace controlflow
