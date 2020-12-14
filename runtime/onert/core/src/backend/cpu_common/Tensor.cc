@@ -57,17 +57,17 @@ bool Tensor::applyShape(const ir::Shape &new_shape)
       setBuffer(alloc);
   };
 
+  // Always set shape - when buffer with same size was already allocated, shape could differ
+  setShape(new_shape);
   if (!previously_dynamic)
   {
     // TODO deallocate tensor->buffer()
     // issue is that staticTensorManager might have allocate this memory
-    setShape(new_shape);
     set_dynamic();
     allocTensorMem(true);
   }
   else if (buffer() == nullptr)
   {
-    setShape(new_shape);
     set_dynamic();
     allocTensorMem();
   }
@@ -80,13 +80,8 @@ bool Tensor::applyShape(const ir::Shape &new_shape)
     {
       _dynamic_mem_mgr->deallocate(this);
 
-      setShape(new_shape);
       set_dynamic();
       allocTensorMem(true);
-    }
-    else
-    { // when buffer with same size was already allocated, shape could differ
-      setShape(new_shape);
     }
   }
   return true;
