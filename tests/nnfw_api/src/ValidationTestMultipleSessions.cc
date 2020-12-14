@@ -15,6 +15,7 @@
  */
 
 #include "fixtures.h"
+#include "one_op_tests/WhileTestModel.h"
 
 TEST_F(ValidationTestTwoSessions, neg_two_sessions_create)
 {
@@ -41,7 +42,7 @@ public:
   CircleBuffer cbuf;
 };
 
-TEST_F(ValidationTestTwoSessionsCreated, two_sessions_run_simple_model)
+TEST_F(ValidationTestTwoSessionsCreated, two_sessions_run_simple_AaveragePool_model)
 {
   constexpr int N = 64, H = 64, W = 64, C = 3;
   AveragePoolModel model(N, H, W, C);
@@ -75,6 +76,57 @@ TEST_F(ValidationTestTwoSessionsCreated, two_sessions_run_simple_model)
                                      in_buf2.size() * sizeof(float)));
   NNFW_ENSURE_SUCCESS(nnfw_set_output(_session2, 0, NNFW_TYPE_TENSOR_FLOAT32, out_buf2.data(),
                                       out_buf2.size() * sizeof(float)));
+
+  NNFW_ENSURE_SUCCESS(nnfw_run_async(_session1));
+  NNFW_ENSURE_SUCCESS(nnfw_run_async(_session2));
+
+  NNFW_ENSURE_SUCCESS(nnfw_await(_session1));
+  NNFW_ENSURE_SUCCESS(nnfw_await(_session2));
+
+  SUCCEED();
+}
+
+TEST_F(ValidationTestTwoSessionsCreated, neg_two_sessions_model_load)
+{
+  constexpr int N = 64, H = 64, W = 64, C = 3;
+  AveragePoolModel model(N, H, W, C);
+
+  NNFW_ENSURE_SUCCESS(
+    nnfw_load_circle_from_buffer(_session1, model.cbuf.buffer(), model.cbuf.size()));
+  ASSERT_EQ(nnfw_load_circle_from_buffer(nullptr, model.cbuf.buffer(), model.cbuf.size()),
+            NNFW_STATUS_UNEXPECTED_NULL);
+}
+
+TEST_F(ValidationTestTwoSessionsCreated, two_sessions_run_simple_While_model)
+{
+  WhileModelLoop10 model;
+
+  NNFW_ENSURE_SUCCESS(
+    nnfw_load_circle_from_buffer(_session1, model.cbuf.buffer(), model.cbuf.size()));
+  NNFW_ENSURE_SUCCESS(
+    nnfw_load_circle_from_buffer(_session2, model.cbuf.buffer(), model.cbuf.size()));
+
+  NNFW_ENSURE_SUCCESS(nnfw_set_available_backends(_session1, "cpu"));
+  NNFW_ENSURE_SUCCESS(nnfw_set_available_backends(_session2, "cpu"));
+
+  NNFW_ENSURE_SUCCESS(nnfw_prepare(_session1));
+  NNFW_ENSURE_SUCCESS(nnfw_prepare(_session2));
+
+  std::vector<float> in_buf1(model.inputCount()); // any value
+  std::vector<float> out_buf1(model.outputputCount());
+
+  NNFW_ENSURE_SUCCESS(nnfw_set_input(_session1, 0, NNFW_TYPE_TENSOR_FLOAT32, in_buf1.data(),
+                                     in_buf1.size() * model.sizeOfDType()));
+  NNFW_ENSURE_SUCCESS(nnfw_set_output(_session1, 0, NNFW_TYPE_TENSOR_FLOAT32, out_buf1.data(),
+                                      out_buf1.size() * model.sizeOfDType()));
+
+  std::vector<float> in_buf2(model.inputCount()); // any value
+  std::vector<float> out_buf2(model.outputputCount());
+
+  NNFW_ENSURE_SUCCESS(nnfw_set_input(_session2, 0, NNFW_TYPE_TENSOR_FLOAT32, in_buf2.data(),
+                                     in_buf2.size() * model.sizeOfDType()));
+  NNFW_ENSURE_SUCCESS(nnfw_set_output(_session2, 0, NNFW_TYPE_TENSOR_FLOAT32, out_buf2.data(),
+                                      out_buf2.size() * model.sizeOfDType()));
 
   NNFW_ENSURE_SUCCESS(nnfw_run_async(_session1));
   NNFW_ENSURE_SUCCESS(nnfw_run_async(_session2));
