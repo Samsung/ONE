@@ -33,6 +33,7 @@ namespace operand
 class INETensor : public acl_common::IACLTensor
 {
 public:
+  INETensor(size_t rank) : IACLTensor{rank} {}
   const arm_compute::ITensor *handle() const override = 0;
   arm_compute::ITensor *handle() override = 0;
   void access(const std::function<void(ITensor &tensor)> &fn) final;

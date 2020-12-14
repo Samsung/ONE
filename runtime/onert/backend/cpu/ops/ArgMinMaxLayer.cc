@@ -62,7 +62,7 @@ void ArgMinMaxLayer::run()
   auto axis = *reinterpret_cast<const int32_t *>(_axis->buffer());
   if (axis < 0)
   {
-    axis += _input->num_dimensions();
+    axis += _input->getShape().rank();
   }
 #define TF_LITE_ARG_MIN_MAX(input_type, axis_type, output_type)                                \
   ArgMinMax(getTensorShape(_input), reinterpret_cast<const input_type *>(_input->buffer()),    \

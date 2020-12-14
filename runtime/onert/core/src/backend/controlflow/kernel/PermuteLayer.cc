@@ -66,12 +66,12 @@ void PermuteLayer::optimize()
       if (underlying_type(src->data_type()) != underlying_type(dst->data_type()))
         throw std::runtime_error("data type does not match");
       const auto permute_type = [&]() -> PermuteType {
-        if (src->num_dimensions() == 4 && src->layout() == ir::Layout::NHWC &&
+        if (src->getShape().rank() == 4 && src->layout() == ir::Layout::NHWC &&
             dst->layout() == ir::Layout::NCHW)
         {
           return PermuteType::NHWC_TO_NCHW;
         }
-        else if (src->num_dimensions() == 4 && src->layout() == ir::Layout::NCHW &&
+        else if (src->getShape().rank() == 4 && src->layout() == ir::Layout::NCHW &&
                  dst->layout() == ir::Layout::NHWC)
         {
           return PermuteType::NCHW_TO_NHWC;
@@ -122,8 +122,9 @@ void PermuteLayer::optimize()
           }
           else
           {
-            assert(src_tensor.num_dimensions() == 4 && (permute_type == PermuteType::NHWC_TO_NCHW ||
-                                                        permute_type == PermuteType::NCHW_TO_NHWC));
+            assert(src_tensor.getShape().rank() == 4 &&
+                   (permute_type == PermuteType::NHWC_TO_NCHW ||
+                    permute_type == PermuteType::NCHW_TO_NHWC));
             const auto loop_shape = src_tensor.getShape();
             const auto copy_len = data_size;
 
@@ -144,15 +145,15 @@ void PermuteLayer::appendPermuteTasks(const ITensor *src_tensor, ITensor *dst_te
                                       const ir::Shape &loop_shape, size_t size)
 {
   size_t distributed_dim = 0;
+  auto src_shape = src_tensor->getShape();
   if (src_tensor->layout() == dst_tensor->layout())
   {
-    for (size_t i = 1; i < src_tensor->num_dimensions() - 1; ++i)
+    for (int i = 1; i < src_shape.rank() - 1; ++i)
     {
-      distributed_dim =
-        src_tensor->dimension(distributed_dim) < src_tensor->dimension(i) ? i : distributed_dim;
+      distributed_dim = src_shape.dim(distributed_dim) < src_shape.dim(i) ? i : distributed_dim;
     }
   }
-  const auto distributed_dim_val = src_tensor->dimension(distributed_dim);
+  const auto distributed_dim_val = src_shape.dim(distributed_dim);
   const int thread_count =
     _external_context->ruy_context()->max_num_threads() < static_cast<int>(distributed_dim_val)
       ? _external_context->ruy_context()->max_num_threads()
@@ -262,7 +263,7 @@ void PermuteLayer::run()
         if (_tasks_map.find(src) == _tasks_map.end() || _tasks_map.at(src).size() == 1 ||
             src->is_dynamic() || dst->is_dynamic())
         {
-          permute(src, dst, src->num_dimensions(), src_offsets, dst_offsets);
+          permute(src, dst, src->getShape().rank(), src_offsets, dst_offsets);
         }
         // If dst is subtensor, we have to use clEnqueueMapBuffer instead of clEnqueueWirteBuffer
         else if (dst->needMemoryMap() && !dst->is_subtensor())

@@ -32,7 +32,7 @@ namespace operand
 {
 
 CLTensor::CLTensor(const arm_compute::TensorInfo &info, size_t rank, size_t num_uses)
-  : _cl_tensor(std::make_shared<arm_compute::CLTensor>()), _rank{rank}, _num_uses{num_uses}
+  : ICLTensor{rank}, _cl_tensor(std::make_shared<arm_compute::CLTensor>()), _num_uses{num_uses}
 {
   allocator()->init(info);
 }

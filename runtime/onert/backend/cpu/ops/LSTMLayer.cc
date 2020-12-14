@@ -62,24 +62,25 @@ inline void initializeStateBuffer(const onert::backend::IPortableTensor *tensor_
 
 void LSTMLayer::LSTMFloat()
 {
-  assert(_input->num_dimensions() >= 2 && _input->num_dimensions() <= 3);
+  auto in_shape = _input->getShape();
+  assert(in_shape.rank() >= 2 && in_shape.rank() <= 3);
   int max_time, n_batch;
-  if (_input->num_dimensions() == 3)
+  if (in_shape.rank() == 3)
   {
-    max_time = (_time_major) ? _input->dimension(0) : _input->dimension(1);
-    n_batch = (_time_major) ? _input->dimension(1) : _input->dimension(0);
+    max_time = (_time_major) ? in_shape.dim(0) : in_shape.dim(1);
+    n_batch = (_time_major) ? in_shape.dim(1) : in_shape.dim(0);
   }
   else
   {
     max_time = 1;
-    n_batch = _input->dimension(0);
+    n_batch = in_shape.dim(0);
   }
-  const int n_input = _input->dimension(_input->num_dimensions() - 1);
+  const int n_input = in_shape.dim(_input->getShape().rank() - 1);
   const int aux_input_size = 0;
 
   // n_cell and n_output will be the same size when there is no projection.
-  const int n_cell = _input_to_output_weights->dimension(0);
-  const int n_output = _recurrent_to_output_weights->dimension(1);
+  const int n_cell = _input_to_output_weights->getShape().dim(0);
+  const int n_output = _recurrent_to_output_weights->getShape().dim(1);
 
   // Since we have already checked that weights are all there or none, we can
   // check the existence of only one to the get the condition.
@@ -140,7 +141,8 @@ void LSTMLayer::LSTMFloat()
   lstm_params.cell_clip = _params.cell_threshold;
   lstm_params.proj_clip = _params.projection_threshold;
 
-  const int output_batch_leading_dim = _output->dimension(_output->num_dimensions() - 1);
+  auto out_shape = _output->getShape();
+  const int output_batch_leading_dim = out_shape.dim(out_shape.rank() - 1);
   if (_time_major)
   {
     // Loop through the sequence.

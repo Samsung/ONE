@@ -74,7 +74,8 @@ void SoftMaxLayer::softmaxQuant8()
 {
   nnfw::cker::Shape descrIn4D(4);
 
-  if (getNumberOfDimensions(_input) == 2)
+  auto in_shape = _input->getShape();
+  if (in_shape.rank() == 2)
   {
     auto batch_size = getSizeOfDimension(_input, 0);
     if (batch_size == 0)
@@ -86,12 +87,12 @@ void SoftMaxLayer::softmaxQuant8()
     descrIn4D.SetDim(2, 1);
     descrIn4D.SetDim(3, input_size);
   }
-  else if (getNumberOfDimensions(_input) == 4)
+  else if (in_shape.rank() == 4)
   {
-    descrIn4D.SetDim(0, _input->dimension(0));
-    descrIn4D.SetDim(1, _input->dimension(1));
-    descrIn4D.SetDim(2, _input->dimension(2));
-    descrIn4D.SetDim(3, _input->dimension(3));
+    descrIn4D.SetDim(0, in_shape.dim(0));
+    descrIn4D.SetDim(1, in_shape.dim(1));
+    descrIn4D.SetDim(2, in_shape.dim(2));
+    descrIn4D.SetDim(3, in_shape.dim(3));
   }
   else
   {

@@ -28,11 +28,11 @@ namespace controlflow
 
 size_t UserTensor::calcOffset(const ir::Coordinates &coords) const
 {
-  size_t rank = num_dimensions();
+  size_t rank = getShape().rank();
   size_t offset = 0;
   for (size_t i = 0; i < rank; ++i)
   {
-    offset = offset * dimension(i) + coords[i];
+    offset = offset * getShape().dim(i) + coords[i];
   }
   offset *= sizeOfDataType(data_type());
   return offset;

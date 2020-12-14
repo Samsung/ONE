@@ -39,7 +39,7 @@ void ReverseLayer::run()
   int32_t axis = *(reinterpret_cast<int32_t *>(_axis->buffer()));
   if (axis < 0)
   {
-    axis += _input->num_dimensions();
+    axis += _input->getShape().rank();
   }
 
   switch (_input->data_type())

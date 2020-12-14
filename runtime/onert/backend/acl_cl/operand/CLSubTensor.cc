@@ -27,9 +27,8 @@ namespace operand
 
 CLSubTensor::CLSubTensor(ICLTensor *parent, const arm_compute::TensorShape &tensor_shape,
                          const arm_compute::Coordinates &coords, size_t rank, bool extend_parent)
-  : _cl_sub_tensor(std::make_shared<arm_compute::CLSubTensor>(parent->handle(), tensor_shape,
-                                                              coords, extend_parent)),
-    _rank{rank}
+  : ICLTensor{rank}, _cl_sub_tensor(std::make_shared<arm_compute::CLSubTensor>(
+                       parent->handle(), tensor_shape, coords, extend_parent))
 {
   // DO NOTHING
 }

@@ -89,6 +89,7 @@ public:
     return rank() == 0 ? 1 : _dimensions.at(i);
   }
 
+  // TODO Fix different behavior with const version
   int32_t &dim(int i) { return _dimensions.at(i); }
 
   /**

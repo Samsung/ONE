@@ -25,26 +25,14 @@ namespace backend
 namespace acl_common
 {
 
-size_t IACLTensor::dimension(size_t index) const
-{
-  // Assume that the front is higher dimensional.
-  // i.g. N: 0, C: 1, H: 2, W: 3 for NCHW layout
-  // NOTE This tensor must not be applied dim correction
-  auto rank = num_dimensions();
-  rank = rank == 0 ? 1 : rank;
-  assert(rank > index);
-  const ARMComputeAxis reversed{(static_cast<uint32_t>(rank - index) - 1)};
-  return info()->dimension(reversed.value());
-}
-
 size_t IACLTensor::calcOffset(const ir::Coordinates &coords) const
 {
-  auto rank = num_dimensions();
+  auto rank = _rank;
   rank = rank == 0 ? 1 : rank;
-  assert(rank == coords.size());
+  assert(static_cast<size_t>(rank) == coords.size());
 
   ::arm_compute::Coordinates acl_coords;
-  for (uint32_t i = 0; i < rank; ++i)
+  for (size_t i = 0; i < rank; ++i)
   {
     const ARMComputeAxis reversed{static_cast<uint32_t>((rank - i) - 1)};
     acl_coords.set(reversed.value(), coords[i]);

@@ -57,8 +57,6 @@ public:
 public:
   uint8_t *buffer() const override { return _buffer; }
   size_t total_size() const override { return _size; }
-  size_t dimension(size_t index) const override { return _info.shape().dim(index); }
-  size_t num_dimensions() const override { return _info.shape().rank(); }
   size_t calcOffset(const ir::Coordinates &coords) const override;
   ir::Layout layout() const override { return _layout; }
   ir::DataType data_type() const override { return _info.typeInfo().type(); }

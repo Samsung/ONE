@@ -98,8 +98,6 @@ public:
    *       W : dimension(2)
    *       C : dimension(3)
    */
-  size_t dimension(size_t index) const final override { return _info.shape().dim(index); }
-  size_t num_dimensions() const override { return _info.shape().rank(); }
   size_t total_size() const override { return _info.total_size(); }
   size_t calcOffset(const ir::Coordinates &coords) const override;
   ir::Layout layout() const override { return _layout; }
@@ -161,6 +159,7 @@ public:
   virtual int32_t num_references() { return _num_references; }
 
   void setShape(const ir::Shape &new_shape) override;
+  ir::Shape getShape() const override;
 
 protected:
   ir::Layout _layout;

@@ -74,7 +74,8 @@ inline nnfw::cker::Shape getExtendedTensorShape(const IPortableTensor *tensor)
   assert(tensor);
   const int32_t extended_rank = 4;
   int32_t raw_shape[extended_rank];
-  uint32_t src = extended_rank - tensor->num_dimensions();
+  auto shape = tensor->getShape();
+  uint32_t src = extended_rank - shape.rank();
   for (uint32_t i = 0; i < extended_rank; ++i)
   {
     if (i < src)
@@ -83,7 +84,7 @@ inline nnfw::cker::Shape getExtendedTensorShape(const IPortableTensor *tensor)
     }
     else
     {
-      raw_shape[i] = tensor->dimension(i - src);
+      raw_shape[i] = shape.dim(i - src);
     }
   }
 

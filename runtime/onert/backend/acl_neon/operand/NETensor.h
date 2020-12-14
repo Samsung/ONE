@@ -40,9 +40,6 @@ public:
   NETensor(const arm_compute::TensorInfo &info, size_t rank, size_t num_uses);
 
 public:
-  size_t num_dimensions() const final { return _rank; }
-
-public:
   const arm_compute::Tensor *handle() const override;
   arm_compute::Tensor *handle() override;
   size_t num_uses() const { return _num_uses; }
@@ -52,7 +49,6 @@ public:
 
 private:
   std::shared_ptr<arm_compute::Tensor> _ne_tensor;
-  size_t _rank;
   size_t _num_uses;
 };
 
