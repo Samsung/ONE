@@ -91,6 +91,9 @@ NNFW test rpm. It does not depends on nnfw rpm since it contains nnfw runtime.
 %ifarch aarch64
 %define target_arch aarch64
 %endif
+%ifarch %ix86
+%define target_arch i686
+%endif
 
 %define install_dir %{_prefix}
 %define install_path %{buildroot}%{install_dir}
@@ -128,7 +131,7 @@ tar -xf %{SOURCE1010} -C ./externals
 tar -xf %{SOURCE1011} -C ./externals
 
 %build
-%ifarch arm armv7l aarch64 x86_64
+%ifarch arm armv7l aarch64 x86_64 %ix86
 # runtime build
 %{build_env} ./nnfw configure %{build_options} %{extra_option}
 %{build_env} ./nnfw build -j4
@@ -149,7 +152,7 @@ tar -zcf test-suite.tar.gz infra/scripts
 %endif # arm armv7l aarch64
 
 %install
-%ifarch arm armv7l aarch64 x86_64
+%ifarch arm armv7l aarch64 x86_64 %ix86
 
 mkdir -p %{buildroot}%{_libdir}
 mkdir -p %{buildroot}%{_bindir}
@@ -193,14 +196,14 @@ install -m 0644 ./tests/scripts/build_path.txt %{buildroot}%{test_install_dir}/t
 %files
 %manifest %{name}.manifest
 %defattr(-,root,root,-)
-%ifarch arm armv7l aarch64 x86_64
+%ifarch arm armv7l aarch64 x86_64 %ix86
 %{_libdir}/*.so
 %endif
 
 %files devel
 %manifest %{name}.manifest
 %defattr(-,root,root,-)
-%ifarch arm armv7l aarch64 x86_64
+%ifarch arm armv7l aarch64 x86_64 %ix86
 %dir %{_includedir}/nnfw
 %{_includedir}/nnfw/*
 %{_libdir}/pkgconfig/nnfw.pc
@@ -209,13 +212,13 @@ install -m 0644 ./tests/scripts/build_path.txt %{buildroot}%{test_install_dir}/t
 %files plugin-devel
 %manifest %{name}.manifest
 %defattr(-,root,root,-)
-%ifarch arm armv7l aarch64 x86_64
+%ifarch arm armv7l aarch64 x86_64 %ix86
 %dir %{_includedir}/onert
 %{_includedir}/onert/*
 %{_libdir}/pkgconfig/nnfw-plugin.pc
 %endif
 
-%ifarch arm armv7l aarch64 x86_64
+%ifarch arm armv7l aarch64 x86_64 %ix86
 %files minimal-app
 %manifest %{name}.manifest
 %defattr(-,root,root,-)
