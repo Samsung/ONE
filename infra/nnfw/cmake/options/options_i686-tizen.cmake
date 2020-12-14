@@ -1,5 +1,5 @@
 #
-# x86_64 linux cmake options
+# i686 tizen cmake options
 #
 option(BUILD_ARMCOMPUTE "Build ARM Compute from the downloaded source" OFF)
 option(BUILD_TENSORFLOW_LITE "Build TensorFlow Lite from the downloaded source" OFF)
