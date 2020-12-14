@@ -41,6 +41,7 @@
 #include "ops/PadLayer.h"
 #include "ops/PoolLayer.h"
 #include "ops/PowLayer.h"
+#include "ops/QuantizeLayer.h"
 #include "ops/RangeLayer.h"
 #include "ops/RankLayer.h"
 #include "ops/ReduceLayer.h"
@@ -712,11 +713,18 @@ void KernelGenerator::visit(const ir::operation::ElementwiseUnary &node)
   auto output_tensor = _tensor_reg->getPortableTensor(output_index);
   auto input_tensor = _tensor_reg->getPortableTensor(input_index);
 
-  auto fn = std::make_unique<ops::ElementwiseUnaryLayer>();
-
-  fn->configure(input_tensor, output_tensor, convertElementwiseUnaryType(node.param().op_type));
-
-  _return_fn = std::move(fn);
+  if (node.param().op_type == ir::operation::ElementwiseUnary::Type::QUANTIZE)
+  {
+    auto fn = std::make_unique<ops::QuantizeLayer>();
+    fn->configure(input_tensor, output_tensor);
+    _return_fn = std::move(fn);
+  }
+  else
+  {
+    auto fn = std::make_unique<ops::ElementwiseUnaryLayer>();
+    fn->configure(input_tensor, output_tensor, convertElementwiseUnaryType(node.param().op_type));
+    _return_fn = std::move(fn);
+  }
 }
 
 void KernelGenerator::visit(const ir::operation::ExpandDims &node)
