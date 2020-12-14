@@ -55,7 +55,7 @@ public:
   bool verify(const Graph &graph) const noexcept override;
 };
 
-class EdgeConsistencyChecker : public IVerifier
+class EdgeChecker : public IVerifier
 {
 public:
   bool verify(const Graph &graph) const noexcept override;

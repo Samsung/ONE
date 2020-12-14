@@ -68,7 +68,7 @@ TEST(Verifier, neg_edge_consistency_checker_1)
 
   graph.operands().at(operand1).removeUse(op_ind); // Manipulate the operand alone
 
-  onert::ir::verifier::EdgeConsistencyChecker verifier;
+  onert::ir::verifier::EdgeChecker verifier;
   ASSERT_FALSE(verifier.verify(graph));
 }
 
@@ -93,6 +93,6 @@ TEST(Verifier, neg_edge_consistency_checker_2)
 
   mock_op_ptr->setInputs({operand2}); // Manipulate the operation alone
 
-  onert::ir::verifier::EdgeConsistencyChecker verifier;
+  onert::ir::verifier::EdgeChecker verifier;
   ASSERT_FALSE(verifier.verify(graph));
 }

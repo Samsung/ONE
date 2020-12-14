@@ -57,9 +57,11 @@ inline std::string decorated_name(const char *input)
 {
   const int min_prefix = 16;
   std::string prefix(input);
-  auto spaces_len = prefix.length() > min_prefix ? 0 : ((min_prefix - prefix.length()) / 2);
-  std::string spaces(spaces_len, ' ');
-  return (prefix.length() % 2 ? "[ " : "[") + spaces + prefix + spaces + "] ";
+  auto len_prefix = prefix.size();
+  if (len_prefix > min_prefix)
+    return "[" + prefix + "] ";
+  std::string spaces((min_prefix - len_prefix) / 2, ' ');
+  return (len_prefix % 2 ? "[ " : "[") + spaces + prefix + spaces + "] ";
 }
 
 } // namespace logging
