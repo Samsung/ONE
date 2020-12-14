@@ -39,6 +39,10 @@ BuildRequires:  python
 BuildRequires:  libarmcl-devel >= v20.05
 %endif
 
+%ifarch %{arm} aarch64
+Requires: libarmcl
+%endif
+
 Requires(post): /sbin/ldconfig
 Requires(postun): /sbin/ldconfig
 
