@@ -31,13 +31,13 @@ class FeatureShape : public nncc::core::ADT::feature::Shape
 {
 public:
   FeatureShape(uint32_t depth, uint32_t height, uint32_t width)
-      : Shape{depth, height, width}, _batch{1}
+    : Shape{depth, height, width}, _batch{1}
   {
     // DO NOTHING
   }
 
   FeatureShape(uint32_t batch, uint32_t depth, uint32_t height, uint32_t width)
-      : Shape{depth, height, width}, _batch{batch}
+    : Shape{depth, height, width}, _batch{batch}
   {
     // DO NOTHING
   }

@@ -71,7 +71,7 @@ public:
 private:
   std::map<const coco::Bag *, std::unique_ptr<std::vector<uint8_t>>> _data;
 };
-}
+} // namespace
 
 namespace
 {

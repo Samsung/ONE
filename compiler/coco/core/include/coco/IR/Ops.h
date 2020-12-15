@@ -407,6 +407,6 @@ public:
   const Sqrt *asSqrt(void) const override { return this; }
 };
 
-} // namesapce coco
+} // namespace coco
 
 #endif // __COCO_IR_OPS_H__
