@@ -54,8 +54,8 @@ TEST(BasicTest, option)
   Arser arser;
 
   arser.add_argument("--verbose")
-      .nargs(0)
-      .help("It provides additional details as to what the executable is doing");
+    .nargs(0)
+    .help("It provides additional details as to what the executable is doing");
 
   Prompt prompt("./executable --verbose");
   /* act */
@@ -71,13 +71,13 @@ TEST(BasicTest, OptionalArgument)
   Arser arser;
 
   arser.add_argument("--volume")
-      .nargs(1)
-      .type(arser::DataType::INT32)
-      .help("Set a volume as you provided.");
+    .nargs(1)
+    .type(arser::DataType::INT32)
+    .help("Set a volume as you provided.");
   arser.add_argument("--frequency")
-      .nargs(1)
-      .type(arser::DataType::FLOAT)
-      .help("Set a frequency as you provided.");
+    .nargs(1)
+    .type(arser::DataType::FLOAT)
+    .help("Set a frequency as you provided.");
 
   Prompt prompt("./radio --volume 5 --frequency 128.5");
   /* act */
@@ -99,9 +99,9 @@ TEST(BasicTest, NonRequiredOptionalArgument)
   Arser arser;
 
   arser.add_argument("--weight")
-      .nargs(1)
-      .type(arser::DataType::INT32)
-      .help("Set a volume as you provided.");
+    .nargs(1)
+    .type(arser::DataType::INT32)
+    .help("Set a volume as you provided.");
 
   Prompt prompt("./radio"); // empty argument
   /* act */
@@ -117,10 +117,10 @@ TEST(BasicTest, RequiredOptionalArgument)
   Arser arser;
 
   arser.add_argument("--volume")
-      .nargs(1)
-      .type(arser::DataType::INT32)
-      .required()
-      .help("Set a volume as you provided.");
+    .nargs(1)
+    .type(arser::DataType::INT32)
+    .required()
+    .help("Set a volume as you provided.");
 
   Prompt prompt("./radio");
   /* act */ /* assert */
@@ -152,20 +152,20 @@ TEST(BasicTest, MultipleOptionalArgument)
   Arser arser;
 
   arser.add_argument("--input_path")
-      .nargs(1)
-      .type(arser::DataType::STR)
-      .help("input path of this program.")
-      .required();
+    .nargs(1)
+    .type(arser::DataType::STR)
+    .help("input path of this program.")
+    .required();
   arser.add_argument("--output_path")
-      .nargs(1)
-      .type(arser::DataType::STR)
-      .help("output path of this program.")
-      .required(true);
+    .nargs(1)
+    .type(arser::DataType::STR)
+    .help("output path of this program.")
+    .required(true);
   arser.add_argument("--training_data")
-      .nargs(5)
-      .type(arser::DataType::INT32_VEC)
-      .help("give traning data to this program.")
-      .required();
+    .nargs(5)
+    .type(arser::DataType::INT32_VEC)
+    .help("give traning data to this program.")
+    .required();
 
   Prompt prompt("./ml --input_path /I/am/in.put --output_path I/am/out.put "
                 "--training_data 2 43 234 3 334");
@@ -191,9 +191,9 @@ TEST(BasicTest, MultipleFloatValue)
   Arser arser;
 
   arser.add_argument("--add_float")
-      .nargs(2)
-      .type(arser::DataType::FLOAT_VEC)
-      .help("Add two float numbers.");
+    .nargs(2)
+    .type(arser::DataType::FLOAT_VEC)
+    .help("Add two float numbers.");
 
   Prompt prompt("./calculator --add_float 3.2 5.4");
   /* act */
@@ -213,9 +213,9 @@ TEST(BasicTest, MultipleStringValue)
   Arser arser;
 
   arser.add_argument("--three_color")
-      .nargs(3)
-      .type(arser::DataType::STR_VEC)
-      .help("insert your three favorite color");
+    .nargs(3)
+    .type(arser::DataType::STR_VEC)
+    .help("insert your three favorite color");
 
   Prompt prompt("./color_factory --three_color red blue yellow");
   /* act */
@@ -255,8 +255,8 @@ TEST(BasicTest, ExitWithFunctionCallWithBind)
   Arser arser;
 
   arser.add_argument("--version")
-      .help("Show version and exit")
-      .exit_with(std::bind(printVersion, "1.2.0"));
+    .help("Show version and exit")
+    .exit_with(std::bind(printVersion, "1.2.0"));
 
   Prompt prompt("./arser --version");
   /* act */ /* assert */
@@ -286,34 +286,34 @@ TEST(BasicTest, DefaultValue)
   Arser arser;
 
   arser.add_argument("--delivery")
-      .nargs(3)
-      .type(arser::DataType::STR_VEC)
-      .default_value("pizza", "chicken", "hamburger")
-      .help("Enter three foods that you want to deliver");
+    .nargs(3)
+    .type(arser::DataType::STR_VEC)
+    .default_value("pizza", "chicken", "hamburger")
+    .help("Enter three foods that you want to deliver");
   arser.add_argument("--assistant")
-      .type(arser::DataType::STR)
-      .default_value("Bixby")
-      .help("Enter name of your assistant");
+    .type(arser::DataType::STR)
+    .default_value("Bixby")
+    .help("Enter name of your assistant");
   arser.add_argument("--sound")
-      .type(arser::DataType::BOOL)
-      .nargs(1)
-      .default_value(true)
-      .help("Sound on/off");
+    .type(arser::DataType::BOOL)
+    .nargs(1)
+    .default_value(true)
+    .help("Sound on/off");
   arser.add_argument("--number")
-      .type(arser::DataType::INT32_VEC)
-      .nargs(4)
-      .default_value(1, 2, 3, 4)
-      .help("Enter the number that you want to call");
+    .type(arser::DataType::INT32_VEC)
+    .nargs(4)
+    .default_value(1, 2, 3, 4)
+    .help("Enter the number that you want to call");
   arser.add_argument("--time")
-      .type(arser::DataType::INT32_VEC)
-      .nargs(3)
-      .default_value(0, 0, 0)
-      .help("Current time(H/M/S)");
+    .type(arser::DataType::INT32_VEC)
+    .nargs(3)
+    .default_value(0, 0, 0)
+    .help("Current time(H/M/S)");
   arser.add_argument("--name")
-      .type(arser::DataType::STR)
-      .nargs(1)
-      .default_value("no name")
-      .help("Enter your name");
+    .type(arser::DataType::STR)
+    .nargs(1)
+    .default_value("no name")
+    .help("Enter your name");
 
   Prompt prompt("/phone --time 1 52 34 --name arser");
   /* act */
