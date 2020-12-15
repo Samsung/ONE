@@ -24,9 +24,9 @@ flatbuffers::Offset<void> BatchMatMulChef::value(flatbuffers::FlatBufferBuilder 
 
   circle::BatchMatMulOptionsBuilder batch_matmul_options_options_builder{fbb};
   batch_matmul_options_options_builder.add_adjoint_lhs(
-      operation.batch_matmul_options().adjoint_lhs());
+    operation.batch_matmul_options().adjoint_lhs());
   batch_matmul_options_options_builder.add_adjoint_rhs(
-      operation.batch_matmul_options().adjoint_rhs());
+    operation.batch_matmul_options().adjoint_rhs());
 
   return batch_matmul_options_options_builder.Finish().Union();
 }

@@ -51,7 +51,7 @@ class GeneratedModelImpl final : public circlechef::GeneratedModel::Impl
 {
 public:
   GeneratedModelImpl(std::unique_ptr<flatbuffers::FlatBufferBuilder> &&builder)
-      : _builder{std::move(builder)}
+    : _builder{std::move(builder)}
   {
     // DO NOTHING
   }
@@ -489,7 +489,7 @@ GeneratedModel cook(const ::circlechef::ModelRecipe &model_recipe)
 // Initialize Data Chef Registry
 #define DATA_CHEF(TYPE, NAME, FACTORY_CLASS) \
   data_chef_registry(::circlechef::TYPE)     \
-      .add(#NAME, std::unique_ptr<FACTORY_CLASS>(new FACTORY_CLASS()));
+    .add(#NAME, std::unique_ptr<FACTORY_CLASS>(new FACTORY_CLASS()));
 #include <souschef/DataChef.def>
 #undef DATA_CHEF
 
@@ -497,7 +497,7 @@ GeneratedModel cook(const ::circlechef::ModelRecipe &model_recipe)
   // Create FlatBufferBuilder
   //
   auto flatbuffer_builder =
-      std::unique_ptr<flatbuffers::FlatBufferBuilder>(new flatbuffers::FlatBufferBuilder(1024));
+    std::unique_ptr<flatbuffers::FlatBufferBuilder>(new flatbuffers::FlatBufferBuilder(1024));
 
   // Operand-related
   std::vector<flatbuffers::Offset<::circle::Buffer>> buffer_vec;
@@ -510,7 +510,7 @@ GeneratedModel cook(const ::circlechef::ModelRecipe &model_recipe)
 
   // Create OperatorCode with Builtin Operator
   std::map<circle::BuiltinOperator, int32_t> builtin_code_map =
-      gather_builtincode_map(model_recipe);
+    gather_builtincode_map(model_recipe);
   for (auto const &opcode : builtin_code_map)
   {
     circle::OperatorCodeBuilder code_builder{*flatbuffer_builder};
@@ -592,7 +592,7 @@ GeneratedModel cook(const ::circlechef::ModelRecipe &model_recipe)
 
   // Return "GenerateModel"
   return GeneratedModel{
-      std::unique_ptr<GeneratedModelImpl>(new GeneratedModelImpl(std::move(flatbuffer_builder)))};
+    std::unique_ptr<GeneratedModelImpl>(new GeneratedModelImpl(std::move(flatbuffer_builder)))};
 }
 
 } // namespace circlechef
