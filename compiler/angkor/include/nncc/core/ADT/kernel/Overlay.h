@@ -35,7 +35,7 @@ template <typename T, typename InputIt> class Overlay final : public View<T>
 {
 public:
   explicit Overlay(const Shape &shape, const Layout &layout, InputIt it)
-      : _impl{shape, layout}, _it{it}
+    : _impl{shape, layout}, _it{it}
   {
     // DO NOTHING
   }

@@ -30,7 +30,7 @@ TEST(ADT_KERNEL_OVERLAY, ctor)
   const Shape shape{2, 4, 6, 3};
 
   int data[2 * 4 * 6 * 3] = {
-      0,
+    0,
   };
   auto overlay = make_overlay<int, NCHWLayout>(shape, data);
 
@@ -45,7 +45,7 @@ TEST(ADT_KERNEL_OVERLAY, read)
   const Shape shape{2, 4, 6, 3};
 
   int data[2 * 4 * 6 * 3] = {
-      0,
+    0,
   };
   const auto overlay = make_overlay<int, NCHWLayout>(shape, data);
 
@@ -61,7 +61,7 @@ TEST(ADT_KERNEL_OVERLAY, access)
   const Shape shape{2, 4, 6, 3};
 
   int data[2 * 4 * 6 * 3] = {
-      0,
+    0,
   };
   auto overlay = make_overlay<int, NCHWLayout>(shape, data);
 
