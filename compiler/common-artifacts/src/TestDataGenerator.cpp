@@ -34,7 +34,7 @@ namespace
 uint32_t element_num(std::vector<hsize_t> &vec)
 {
   return static_cast<uint32_t>(
-      std::accumulate(std::begin(vec), std::end(vec), 1, std::multiplies<uint32_t>()));
+    std::accumulate(std::begin(vec), std::end(vec), 1, std::multiplies<uint32_t>()));
 }
 
 H5::PredType hdf5_dtype_cast(const loco::DataType loco_dtype)
@@ -95,9 +95,9 @@ int entry(int argc, char **argv)
   arser::Arser arser;
   arser.add_argument("circle").type(arser::DataType::STR).help("Circle file you want to test");
   arser.add_argument("--fixed_seed")
-      .required(false)
-      .nargs(0)
-      .help("Put a fixed seed into the random number generator");
+    .required(false)
+    .nargs(0)
+    .help("Put a fixed seed into the random number generator");
 
   try
   {
@@ -146,15 +146,15 @@ int entry(int argc, char **argv)
   // create random data and dump into hdf5 file
   H5::H5File input_file{prefix + ".input.h5", H5F_ACC_TRUNC};
   std::unique_ptr<H5::Group> input_name_group =
-      std::make_unique<H5::Group>(input_file.createGroup("name"));
+    std::make_unique<H5::Group>(input_file.createGroup("name"));
   std::unique_ptr<H5::Group> input_value_group =
-      std::make_unique<H5::Group>(input_file.createGroup("value"));
+    std::make_unique<H5::Group>(input_file.createGroup("value"));
 
   H5::H5File output_file{prefix + ".expected.h5", H5F_ACC_TRUNC};
   std::unique_ptr<H5::Group> output_name_group =
-      std::make_unique<H5::Group>(output_file.createGroup("name"));
+    std::make_unique<H5::Group>(output_file.createGroup("name"));
   std::unique_ptr<H5::Group> output_value_group =
-      std::make_unique<H5::Group>(output_file.createGroup("value"));
+    std::make_unique<H5::Group>(output_file.createGroup("value"));
 
   std::random_device rd; // used to obtain a seed for the random number engine
   uint32_t input_index = 0;
@@ -187,7 +187,7 @@ int entry(int argc, char **argv)
       auto dataspace = std::make_unique<H5::DataSpace>(dims.size(), dims.data());
       auto dtype = hdf5_dtype_cast(input_node->dtype());
       auto dataset = std::make_unique<H5::DataSet>(
-          input_file.createDataSet("value/" + std::to_string(input_index), dtype, *dataspace));
+        input_file.createDataSet("value/" + std::to_string(input_index), dtype, *dataspace));
 
       auto data_size = ::element_num(dims);
       auto dtype_size = loco::size(input_node->dtype());
@@ -241,7 +241,7 @@ int entry(int argc, char **argv)
       auto dataspace = std::make_unique<H5::DataSpace>(dims.size(), dims.data());
       auto dtype = hdf5_dtype_cast(output_node->dtype());
       auto dataset = std::make_unique<H5::DataSet>(
-          output_file.createDataSet("value/" + std::to_string(output_index), dtype, *dataspace));
+        output_file.createDataSet("value/" + std::to_string(output_index), dtype, *dataspace));
 
       uint32_t tensor_bytesize = loco::size(output_node->dtype());
       tensor_bytesize *= ::element_num(dims);
