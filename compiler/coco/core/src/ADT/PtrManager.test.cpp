@@ -61,7 +61,7 @@ struct ObjectManager final : public coco::PtrManager<Object>
 
   void free(Object *o) { release(o); }
 };
-}
+} // namespace
 
 TEST(ADT_PTR_MANAGER, usecase)
 {

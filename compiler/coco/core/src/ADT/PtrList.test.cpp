@@ -25,7 +25,7 @@ namespace
 struct Object
 {
 };
-}
+} // namespace
 
 TEST(ADT_PTR_LIST, ctor)
 {

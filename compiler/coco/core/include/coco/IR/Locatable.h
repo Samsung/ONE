@@ -24,7 +24,7 @@ namespace coco
 
 /**
  * @brief Return the associated instruction if exists.
-  */
+ */
 struct Locatable
 {
   virtual ~Locatable() = default;
