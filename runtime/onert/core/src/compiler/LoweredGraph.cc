@@ -469,10 +469,10 @@ bool LoweredGraph::mergeable(const ir::OpSequenceIndex &op_seq_index,
     const auto op_seq_backend_layout = getLowerInfo(op_seq_index)->layout();
     const auto &op_seq_backend_id = getLowerInfo(op_seq_index)->backend()->config()->id();
     const auto &node_backend_id = backend_resolver.getBackend(node_index)->config()->id();
-    VERBOSE(Lower) << "OpSequence" << op_seq_index << " { " << op_seq_backend_id << "("
-                   << to_string(op_seq_backend_layout) << ") } "
-                   << " NODE" << node_index << " (" << node.name() << ") { " << node_backend_id
-                   << "(" << to_string(layout) << ") } " << std::endl;
+    VERBOSE(Lower) << op_seq_index << " { " << op_seq_backend_id << "("
+                   << to_string(op_seq_backend_layout) << ") } " << node_index << " ("
+                   << node.name() << ") { " << node_backend_id << "(" << to_string(layout) << ") } "
+                   << std::endl;
     if (op_seq_backend_id != node_backend_id || op_seq_backend_layout != layout)
       return false;
   }
@@ -538,9 +538,9 @@ bool LoweredGraph::mergeable(const ir::OpSequenceIndex &op_seq_index,
       {
         if (node_outputs.contains(input))
         {
-          VERBOSE(Lower) << "OpSequence" << op_seq_index << " 's NODE" << n_index.value() << "("
-                         << n.name() << ") is connected to NODE" << node_index.value() << "("
-                         << node.name() << ")" << std::endl;
+          VERBOSE(Lower) << op_seq_index << " 's " << node_index << "(" << n.name()
+                         << ") is connected to " << node_index << "(" << node.name() << ")"
+                         << std::endl;
           return true;
         }
       }
@@ -550,15 +550,15 @@ bool LoweredGraph::mergeable(const ir::OpSequenceIndex &op_seq_index,
       {
         if (node_inputs.contains(output))
         {
-          VERBOSE(Lower) << "OpSequence" << op_seq_index << " 's NODE" << n_index.value() << " ("
-                         << n.name() << ") is connected to NODE" << node_index.value() << std::endl;
+          VERBOSE(Lower) << op_seq_index << " 's " << node_index << " (" << n.name()
+                         << ") is connected to " << node_index << std::endl;
           return true;
         }
       }
     }
 
-    VERBOSE(Lower) << "OpSequence" << op_seq_index << " is not connected to NODE" << node_index
-                   << "(" << node.name() << ")" << std::endl;
+    VERBOSE(Lower) << op_seq_index << " is not connected to " << node_index << "(" << node.name()
+                   << ")" << std::endl;
   }
 
   return false;
