@@ -81,8 +81,8 @@ public:
   explicit GraphBuilderContext(coco::Module *module, coco::Data *data, coco::Block *block,
                                ShapeContext &shape_ctx, StoreContext &bag_ctx,
                                WeightContext &weight_ctx)
-      : _module(module), _data(data), _block(block), _shape_ctx(shape_ctx), _bag_ctx(bag_ctx),
-        _weight_ctx(weight_ctx)
+    : _module(module), _data(data), _block(block), _shape_ctx(shape_ctx), _bag_ctx(bag_ctx),
+      _weight_ctx(weight_ctx)
   {
     // DO NOTHING
   }

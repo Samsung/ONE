@@ -68,7 +68,7 @@ private:
     // add GraphBuilder for each tflite operation.
     _builder_map[tflite::BuiltinOperator_CONV_2D] = make_unique<Conv2DGraphBuilder>();
     _builder_map[tflite::BuiltinOperator_DEPTHWISE_CONV_2D] =
-        make_unique<DepthwiseConv2DGraphBuilder>();
+      make_unique<DepthwiseConv2DGraphBuilder>();
     _builder_map[tflite::BuiltinOperator_AVERAGE_POOL_2D] = make_unique<AvgPool2DGraphBuilder>();
     _builder_map[tflite::BuiltinOperator_MAX_POOL_2D] = make_unique<MaxPool2DGraphBuilder>();
     _builder_map[tflite::BuiltinOperator_CONCATENATION] = make_unique<ConcatenationGraphBuilder>();

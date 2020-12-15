@@ -168,7 +168,7 @@ void BackendImpl::compile(coco::Module *m, coco::Data *d)
   ofs << CppCode{data_var, code(sess)} << std::endl;
 }
 
-} // namespace enco
+} // namespace
 
 #include <iostream>
 

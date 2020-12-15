@@ -102,7 +102,7 @@ void AvgPool2DGraphBuilder::build(const tflite::Operator *op, GraphBuilderContex
   coco_avgpool2d->stride()->horizontal(params->stride_w());
 
   coco::Padding2D padding =
-      pool2D_padding(params, ifm_shape, params->filter_width(), params->filter_height());
+    pool2D_padding(params, ifm_shape, params->filter_width(), params->filter_height());
 
   coco_avgpool2d->pad()->top(padding.top());
   coco_avgpool2d->pad()->bottom(padding.bottom());

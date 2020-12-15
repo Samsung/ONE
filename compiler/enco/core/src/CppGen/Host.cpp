@@ -157,7 +157,7 @@ public:
 
 public:
   TransferLoop(uint32_t count, uint32_t src_step, uint32_t dst_step)
-      : _count{count}, _step{src_step, dst_step}
+    : _count{count}, _step{src_step, dst_step}
   {
     // DO NOTHING
   }

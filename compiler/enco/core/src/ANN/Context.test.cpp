@@ -33,7 +33,7 @@ public:
 protected:
   std::unique_ptr<coco::Module> m;
 };
-}
+} // namespace
 
 TEST_F(ANNContextTest, constructor)
 {

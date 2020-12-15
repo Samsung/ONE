@@ -77,7 +77,7 @@ pp::LinearDocument operator<<(const SectionBuilder &builder, Callback cb)
 }
 
 SectionBuilder section(const std::string &tag) { return SectionBuilder{tag}; }
-}
+} // namespace
 
 /**
  * SECTION: Bag

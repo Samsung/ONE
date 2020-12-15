@@ -138,8 +138,8 @@ void DepthwiseConv2DGraphBuilder::build(const tflite::Operator *op,
           auto wc = new_shape.width() * new_shape.depth();
 
           ker_spn[n * hwc + h * wc + w * new_shape.depth() + c] =
-              buffer.ptr[tfl_n * hw * new_shape.count() + /* new_shape.count() is old c */
-                         h * new_shape.width() * new_shape.count() + w * new_shape.count() + tfl_c];
+            buffer.ptr[tfl_n * hw * new_shape.count() + /* new_shape.count() is old c */
+                       h * new_shape.width() * new_shape.count() + w * new_shape.count() + tfl_c];
         }
       }
     }
@@ -220,7 +220,7 @@ void DepthwiseConv2DGraphBuilder::build(const tflite::Operator *op,
 
   // fused activation
   coco::FeatureObject *act_output =
-      build_activation(dconv_params->fused_activation_function(), blk, last_obj);
+    build_activation(dconv_params->fused_activation_function(), blk, last_obj);
 
   // Create Copy Instr of last_obj to Output Object
   auto copy_ins = instr_builder(m).copy(ofm_obj, act_output);

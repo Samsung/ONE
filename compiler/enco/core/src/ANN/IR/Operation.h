@@ -38,7 +38,7 @@ public:
 public:
   Operation(const Code &code, std::initializer_list<OperandID> inputs,
             std::initializer_list<OperandID> outputs)
-      : _code{code}, _inputs{inputs}, _outputs{outputs}
+    : _code{code}, _inputs{inputs}, _outputs{outputs}
   {
     // DO NOTHING
   }

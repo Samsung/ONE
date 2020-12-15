@@ -43,6 +43,6 @@ struct PhaseConstructionPass final : public Pass
   void run(const SessionID &sess) const override { split_into_phases(code(sess)); }
 };
 
-} // namespace enco;
+} // namespace enco
 
 #endif // __SPLIT_H__

@@ -32,7 +32,7 @@ class ANNBinder
 {
 public:
   ANNBinder(coco::Block *block, std::unique_ptr<ann::Module> &&module)
-      : _block{block}, _module{std::move(module)}
+    : _block{block}, _module{std::move(module)}
   {
     // DO NOTHING
   }

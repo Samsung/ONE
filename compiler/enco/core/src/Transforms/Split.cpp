@@ -337,8 +337,8 @@ public:
     auto ofm = binder->addOperand<float>(_ofm);
 
     binder->addOperation(
-        ann::Operation::Code::DEPTHWISE_CONV_2D,
-        {ifm, ker, bias, left, right, top, bottom, hstride, vstride, multiplier, fuse}, {ofm});
+      ann::Operation::Code::DEPTHWISE_CONV_2D,
+      {ifm, ker, bias, left, right, top, bottom, hstride, vstride, multiplier, fuse}, {ofm});
   }
 
 private:

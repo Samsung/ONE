@@ -171,7 +171,7 @@ void Conv2DGraphBuilder::build(const tflite::Operator *op, GraphBuilderContext *
 
   // fused activation
   coco::FeatureObject *act_output =
-      build_activation(conv_params->fused_activation_function(), blk, last_obj);
+    build_activation(conv_params->fused_activation_function(), blk, last_obj);
 
   // Create Copy Instr of last_obj to Output Object
   auto copy_ins = instr_builder(m).copy(ofm_obj, act_output);

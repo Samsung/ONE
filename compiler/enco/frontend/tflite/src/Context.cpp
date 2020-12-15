@@ -48,7 +48,7 @@ void TensorContext::prepare(const tflite::SubGraph *graph)
 }
 
 TflOpCodeContext::TflOpCodeContext(
-    const flatbuffers::Vector<flatbuffers::Offset<tflite::OperatorCode>> *opcodes)
+  const flatbuffers::Vector<flatbuffers::Offset<tflite::OperatorCode>> *opcodes)
 {
   for (const tflite::OperatorCode *opcode : *opcodes)
   {

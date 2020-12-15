@@ -135,8 +135,8 @@ public:
   explicit GraphBuilderContext(coco::Module *m, coco::Data *d, coco::Block *block,
                                TensorBags &tensor_bags, TensorContext &tensor_context,
                                TflBufferContext &buffer_context, const tflite::SubGraph *graph)
-      : _m(m), _d(d), _block(block), _tensor_bags(tensor_bags), _tensor_context(tensor_context),
-        _buffer_context(buffer_context), _graph(graph)
+    : _m(m), _d(d), _block(block), _tensor_bags(tensor_bags), _tensor_context(tensor_context),
+      _buffer_context(buffer_context), _graph(graph)
   {
     // DO NOTHING
   }
