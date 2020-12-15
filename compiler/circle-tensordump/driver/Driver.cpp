@@ -29,14 +29,14 @@
 int entry(int argc, char **argv)
 {
   arser::Arser arser{
-      "circle-tensordump allows users to retrieve tensor information from a Circle model file"};
+    "circle-tensordump allows users to retrieve tensor information from a Circle model file"};
 
   arser.add_argument("circle").nargs(1).type(arser::DataType::STR).help("Circle file path to dump");
   arser.add_argument("--tensors").nargs(0).help("Dump to console");
   arser.add_argument("--tensors_to_hdf5")
-      .nargs(1)
-      .type(arser::DataType::STR)
-      .help("Dump to hdf5 file. Specify hdf5 file path to be dumped");
+    .nargs(1)
+    .type(arser::DataType::STR)
+    .help("Dump to hdf5 file. Specify hdf5 file path to be dumped");
 
   try
   {
