@@ -47,7 +47,7 @@ public:
 
 private:
   pchar_t _argv[N] = {
-      nullptr,
+    nullptr,
   };
   size_t _ptr = 0;
 };
