@@ -49,9 +49,9 @@ bool ShapeInferencePass::run(loco::Graph *g)
   loco::MultiDialectShapeInferenceRule rules;
 
   rules.bind(loco::CanonicalDialect::get(), &canonical_rule)
-      .bind(locoex::TFLDialect::get(), &tfl_rule)
-      .bind(locoex::CircleDialect::get(), &circle_rule)
-      .bind(locoex::COpDialect::get(), &cop_rule);
+    .bind(locoex::TFLDialect::get(), &tfl_rule)
+    .bind(locoex::CircleDialect::get(), &circle_rule)
+    .bind(locoex::COpDialect::get(), &cop_rule);
 
   return loco::apply(&rules).to(g);
 }

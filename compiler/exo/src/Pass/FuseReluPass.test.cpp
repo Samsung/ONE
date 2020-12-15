@@ -73,8 +73,8 @@ template <class FusedTFLType, locoex::FusedActFunc FusedActFunc> void test()
 {
   static_assert((std::is_same<FusedTFLType, locoex::TFLRelu>::value &&
                  FusedActFunc == locoex::FusedActFunc::RELU) ||
-                    (std::is_same<FusedTFLType, locoex::TFLRelu6>::value &&
-                     FusedActFunc == locoex::FusedActFunc::RELU6),
+                  (std::is_same<FusedTFLType, locoex::TFLRelu6>::value &&
+                   FusedActFunc == locoex::FusedActFunc::RELU6),
                 "wrong template type");
 
   exo::test::TestGraph g;

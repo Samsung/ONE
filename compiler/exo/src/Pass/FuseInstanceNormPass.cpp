@@ -291,7 +291,7 @@ bool InstanceNormPattern::matched()
   CHECK_OR_FALSE(add_as_variance);
 
   CHECK_OR_FALSE(
-      fill(&mean_as_variance, &const_as_epsilon).with_commutative_args_of(add_as_variance));
+    fill(&mean_as_variance, &const_as_epsilon).with_commutative_args_of(add_as_variance));
 
   CHECK_OR_FALSE(const_as_epsilon->dtype() == loco::DataType::FLOAT32);
   // TODO Support regarding broadcast
@@ -317,7 +317,7 @@ bool InstanceNormPattern::matched()
   locoex::TFLMul *mul_gamma_should_be = nullptr;
   locoex::TFLMean *mean_of_ifm_should_be = nullptr;
   CHECK_OR_FALSE(fill(&mul_gamma_should_be, &mean_of_ifm_should_be)
-                     .with_commutative_args_of(mul_as_scaled_mean));
+                   .with_commutative_args_of(mul_as_scaled_mean));
   CHECK_OR_FALSE(mul_gamma == mul_gamma_should_be);
   CHECK_OR_FALSE(mean_of_ifm == mean_of_ifm_should_be);
 #undef CHECK_OR_FALSE

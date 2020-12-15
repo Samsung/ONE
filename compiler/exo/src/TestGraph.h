@@ -284,7 +284,7 @@ public:
   {
     filterEncode = exo::make_filter_encode<exo::FilterLayout::HWIO>(pull); // from Tensorflow
     filterDecode =
-        exo::make_filter_decode<exo::FilterLayout::OHWI>(filterEncode); // to Tensorflow Lite
+      exo::make_filter_decode<exo::FilterLayout::OHWI>(filterEncode); // to Tensorflow Lite
     complete(filterDecode);
   }
 };
