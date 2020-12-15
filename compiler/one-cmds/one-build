@@ -58,6 +58,7 @@ def _get_driver_name(driver_name):
         'one-import-tf': 'one-import-tf',
         'one-import-tflite': 'one-import-tflite',
         'one-optimize': 'one-optimize',
+        'one-quantize': 'one-quantize',
         'one-pack': 'one-pack',
         'one-codegen': 'one-codegen'
     }[driver_name]
