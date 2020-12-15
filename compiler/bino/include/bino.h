@@ -33,8 +33,8 @@ public:
 public:
   template <typename T>
   auto operator()(const std::pair<T, T> &p) const
-      -> decltype(std::make_pair(std::declval<Callable>()(p.first),
-                                 std::declval<Callable>()(p.second)))
+    -> decltype(std::make_pair(std::declval<Callable>()(p.first),
+                               std::declval<Callable>()(p.second)))
   {
     return std::make_pair(f(p.first), f(p.second));
   }
