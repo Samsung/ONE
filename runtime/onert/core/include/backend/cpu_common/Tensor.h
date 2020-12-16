@@ -53,24 +53,12 @@ public:
   /**
    * @brief Set the Buffer object. This method is called for static and non-const tensor
    */
-  void setBuffer(uint8_t *buffer)
-  {
-    assert(_buffer == nullptr);
-    _buffer = buffer;
-  }
+  void setBuffer(uint8_t *buffer) { _buffer = buffer; }
 
   /**
    * @brief Set the Buffer object. This method is called for dynamic or const tensor
    */
   void setBuffer(const std::shared_ptr<Allocator> &alloc)
-  {
-    assert(_buffer == nullptr);
-    _allocator = alloc;
-    _buffer = alloc->base();
-  }
-
-  // This works just as setBuffer but it simply overwrite existing Allocator without nullptr check
-  void overwriteBuffer(const std::shared_ptr<Allocator> &alloc)
   {
     _allocator = alloc;
     _buffer = alloc->base();

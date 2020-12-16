@@ -47,31 +47,19 @@ bool Tensor::applyShape(const ir::Shape &new_shape)
 {
   bool previously_dynamic = is_dynamic();
 
-  auto allocTensorMem = [&](bool overwrite = false) {
+  auto allocTensorMem = [&]() {
     auto capacity = total_size();
     auto alloc = _dynamic_mem_mgr->allocate(this, capacity);
-
-    if (overwrite)
-      overwriteBuffer(alloc);
-    else
-      setBuffer(alloc);
+    setBuffer(alloc);
   };
 
-  if (!previously_dynamic)
+  if (!previously_dynamic || buffer() == nullptr)
   {
-    // TODO deallocate tensor->buffer()
-    // issue is that staticTensorManager might have allocate this memory
-    setShape(new_shape);
-    set_dynamic();
-    allocTensorMem(true);
-  }
-  else if (buffer() == nullptr)
-  {
+    // Always set shape - when buffer with same size was already allocated, shape could differ
     setShape(new_shape);
     set_dynamic();
     allocTensorMem();
   }
-  // when buffer was already allocated and new_shape requires different size
   else
   {
     auto previous_size = total_size();
@@ -82,7 +70,7 @@ bool Tensor::applyShape(const ir::Shape &new_shape)
 
       setShape(new_shape);
       set_dynamic();
-      allocTensorMem(true);
+      allocTensorMem();
     }
     else
     { // when buffer with same size was already allocated, shape could differ
