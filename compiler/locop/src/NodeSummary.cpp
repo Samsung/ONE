@@ -38,4 +38,4 @@ const std::string &NodeDesc::opname(void) const
 
 void NodeDesc::opname(const std::string &v) { _name = stdex::make_unique<std::string>(v); }
 
-} // namespace loco
+} // namespace locop
