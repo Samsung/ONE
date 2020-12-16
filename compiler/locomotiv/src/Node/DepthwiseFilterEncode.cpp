@@ -59,8 +59,8 @@ std::unique_ptr<locomotiv::NodeData> dw_filter_encode(const loco::DepthwiseFilte
 
   // Make HWCM (i.e. height, width, depth, multiplier) buffer from DepthwiseFilterShape
   Buffer<T> node_buf = make_buffer<T, LexicalLayout>(
-      Shape{node_shape.height().value(), node_shape.width().value(), node_shape.depth().value(),
-            node_shape.multiplier().value()});
+    Shape{node_shape.height().value(), node_shape.width().value(), node_shape.depth().value(),
+          node_shape.multiplier().value()});
 
   // Copy buffer in an order arranged by encoder
   for (IndexEnumerator e{node_buf.shape()}; e.valid(); e.advance())

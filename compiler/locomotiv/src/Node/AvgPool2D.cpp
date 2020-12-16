@@ -78,9 +78,9 @@ nncc::core::ADT::tensor::Buffer<T> avgPool2D(const loco::AvgPool2D *avgpool2d,
   const uint32_t pad_right = avgpool2d->pad()->right();
 
   const uint32_t output_height =
-      compute_out_size(ifm_height, pad_top + pad_bottom, window_height, stride_height);
+    compute_out_size(ifm_height, pad_top + pad_bottom, window_height, stride_height);
   const uint32_t output_width =
-      compute_out_size(ifm_width, pad_left + pad_right, window_width, stride_width);
+    compute_out_size(ifm_width, pad_left + pad_right, window_width, stride_width);
 
   // prepare output buffer
   Shape output_shape{batches, output_height, output_width, depth};

@@ -89,9 +89,9 @@ Buffer<RET_T> calc_dw_conv2d(const loco::DepthwiseConv2D *dw_conv2d, const Buffe
   const uint32_t pad_right = dw_conv2d->pad()->right();
 
   const uint32_t ofm_height =
-      compute_out_size(ifm_height, pad_top + pad_bottom, ker_height, stride_height);
+    compute_out_size(ifm_height, pad_top + pad_bottom, ker_height, stride_height);
   const uint32_t ofm_width =
-      compute_out_size(ifm_width, pad_left + pad_right, ker_width, stride_width);
+    compute_out_size(ifm_width, pad_left + pad_right, ker_width, stride_width);
 
   const uint32_t batches = ifm_shape.dim(0);
   const uint32_t ifm_depth = ifm_shape.dim(3);

@@ -54,8 +54,8 @@ std::unique_ptr<locomotiv::NodeData> feature_decode(const loco::FeatureDecode *n
 
   // Make tensor buffer from TensorShape
   Buffer<T> node_buf =
-      make_buffer<T, LexicalLayout>(Shape{node_shape.dim(0).value(), node_shape.dim(1).value(),
-                                          node_shape.dim(2).value(), node_shape.dim(3).value()});
+    make_buffer<T, LexicalLayout>(Shape{node_shape.dim(0).value(), node_shape.dim(1).value(),
+                                        node_shape.dim(2).value(), node_shape.dim(3).value()});
 
   // Copy buffer in an order arranged by decoder
   for (IndexEnumerator e{node_buf.shape()}; e.valid(); e.advance())

@@ -97,7 +97,7 @@ void run_test(const float *ifm, const float *ker, const float *expected_ofm, con
   ASSERT_TRUE(*(dw_conv2d_result->shape()) == ofm_shape);
 
   auto ofm_overlay =
-      make_overlay<float, LexicalLayout>(ofm_shape, const_cast<float *>(expected_ofm));
+    make_overlay<float, LexicalLayout>(ofm_shape, const_cast<float *>(expected_ofm));
   for (nncc::core::ADT::tensor::IndexEnumerator e{ofm_shape}; e.valid(); e.advance())
   {
     const auto &ind = e.current();

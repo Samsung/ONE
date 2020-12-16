@@ -62,7 +62,7 @@ TEST(NodeExecution_DepthwiseFilterEncode, f32)
 
   // Encoder to correctly read input tensor as MHWC
   auto encoder = std::unique_ptr<loco::PermutingEncoder<loco::Domain::DepthwiseFilter>>(
-      new loco::PermutingEncoder<loco::Domain::DepthwiseFilter>);
+    new loco::PermutingEncoder<loco::Domain::DepthwiseFilter>);
   encoder->perm()->axis(loco::DepthwiseFilterAxis::Multiplier) = 0;
   encoder->perm()->axis(loco::DepthwiseFilterAxis::Height) = 1;
   encoder->perm()->axis(loco::DepthwiseFilterAxis::Width) = 2;
