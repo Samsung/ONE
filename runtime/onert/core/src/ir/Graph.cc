@@ -102,7 +102,7 @@ void Graph::finishBuilding(void)
       throw std::runtime_error{"One of model input and output operands does not exist."};
     if (!verifier::DAGChecker().verify(*this))
       throw std::runtime_error{"The graph is cyclic."};
-    assert(verifier::EdgeConsistencyChecker().verify(*this));
+    assert(verifier::EdgeChecker().verify(*this));
   }
 
   // Check shape independent operation feature

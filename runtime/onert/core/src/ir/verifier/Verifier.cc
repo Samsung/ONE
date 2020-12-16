@@ -72,7 +72,7 @@ bool DAGChecker::verify(const Graph &graph) const noexcept
 // EdgeConsistencyVerifier
 //
 
-bool EdgeConsistencyChecker::verify(const Graph &graph) const noexcept
+bool EdgeChecker::verify(const Graph &graph) const noexcept
 {
   auto &operations = graph.operations();
   uint32_t errors = 0;
@@ -85,17 +85,16 @@ bool EdgeConsistencyChecker::verify(const Graph &graph) const noexcept
         bool operand_has_use = operand.getUses().contains(index);
         if (!operand_has_use)
         {
-          VERBOSE(EdgeConsistencyChecker)
-            << "[ERROR] EDGE MISMATCH : Missing USE edge - Operand " << operand_index
-            << " to Operation " << index << std::endl;
+          VERBOSE(EdgeChecker) << "[ERROR] EDGE MISMATCH : Missing USE edge - Operand "
+                               << operand_index << " to Operation " << index << std::endl;
           errors += 1;
         }
       }
       catch (const std::out_of_range &e)
       {
-        VERBOSE(EdgeConsistencyChecker)
-          << "[ERROR] OPEARAND NOT FOUND : Operation " << index << " has Operand " << operand_index
-          << ", but the operand object is not present in the graph" << std::endl;
+        VERBOSE(EdgeChecker) << "[ERROR] OPEARAND NOT FOUND : Operation " << index
+                             << " has Operand " << operand_index
+                             << ", but the operand object is not present in the graph" << std::endl;
         errors += 1;
       }
     }
@@ -106,23 +105,22 @@ bool EdgeConsistencyChecker::verify(const Graph &graph) const noexcept
         auto &operand = graph.operands().at(operand_index);
         if (operand.getDef() != index)
         {
-          VERBOSE(EdgeConsistencyChecker)
-            << "[ERROR] EDGE MISMATCH : Missing DEF edge - Operand" << operand_index
-            << " to Operation " << index << std::endl;
+          VERBOSE(EdgeChecker) << "[ERROR] EDGE MISMATCH : Missing DEF edge - Operand"
+                               << operand_index << " to Operation " << index << std::endl;
           errors += 1;
         }
       }
       catch (const std::out_of_range &e)
       {
-        VERBOSE(EdgeConsistencyChecker)
-          << "[ERROR] OPEARAND NOT FOUND : Operation " << index << " has Operand " << operand_index
-          << ", but the operand object is not present in the graph" << std::endl;
+        VERBOSE(EdgeChecker) << "[ERROR] OPEARAND NOT FOUND : Operation " << index
+                             << " has Operand " << operand_index
+                             << ", but the operand object is not present in the graph" << std::endl;
         errors += 1;
       }
     }
   });
 
-  VERBOSE(EdgeConsistencyChecker) << "Total Number of errors : " << errors << std::endl;
+  VERBOSE(EdgeChecker) << "Total Number of errors : " << errors << std::endl;
 
   return errors == 0;
 }

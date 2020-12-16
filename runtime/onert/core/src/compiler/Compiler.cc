@@ -170,8 +170,7 @@ std::shared_ptr<exec::ExecutorMap> Compiler::compile(void)
   }
 
   {
-    VERBOSE(Compiler) << std::boolalpha;
-    VERBOSE(Compiler) << "==== Compiler Options ====" << std::endl;
+    VERBOSE(Compiler) << std::boolalpha << "==== Compiler Options ====" << std::endl;
     VERBOSE(Compiler) << "backend_list             : "
                       << nnfw::misc::join(_options.backend_list.begin(),
                                           _options.backend_list.end(), "/")
@@ -188,8 +187,8 @@ std::shared_ptr<exec::ExecutorMap> Compiler::compile(void)
     VERBOSE(Compiler) << "he_scheduler             : " << _options.he_scheduler << std::endl;
     VERBOSE(Compiler) << "he_profiling_mode        : " << _options.he_profiling_mode << std::endl;
     VERBOSE(Compiler) << "disable_compile          : " << _options.disable_compile << std::endl;
-    VERBOSE(Compiler) << "fp16_enable              : " << _options.fp16_enable << std::endl;
-    VERBOSE(Compiler) << std::noboolalpha;
+    VERBOSE(Compiler) << "fp16_enable              : " << _options.fp16_enable << std::endl
+                      << std::noboolalpha;
   }
 
   _subgraphs->iterate([&](const ir::SubgraphIndex &, ir::Graph &subg) {

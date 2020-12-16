@@ -145,7 +145,7 @@ LoweredGraph::LoweredGraph(const ir::Graph &graph, const CompilerOptions &option
   {
     assert(ir::verifier::InputOutputChecker().verify(_graph));
     assert(ir::verifier::DAGChecker().verify(_graph));
-    assert(ir::verifier::EdgeConsistencyChecker().verify(_graph));
+    assert(ir::verifier::EdgeChecker().verify(_graph));
   }
 }
 
