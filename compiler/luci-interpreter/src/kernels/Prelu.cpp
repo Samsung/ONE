@@ -48,7 +48,7 @@ void Prelu::configure()
 
   if (input()->element_type() == DataType::U8)
   {
-    LUCI_INTERPRETER_CHECK(alpha()->scales().size() <= 1);
+    LUCI_INTERPRETER_CHECK(alpha()->scales().size() <= 1); // remove when CWQ kernel arrives
     _alpha_multipliers.resize(1);
     double alpha_multiplier = input()->scale() * alpha()->scale() / output()->scale();
     quantizeMultiplier(alpha_multiplier, &_alpha_multipliers[0].multiplier,
@@ -58,10 +58,20 @@ void Prelu::configure()
   }
   else if (input()->element_type() == DataType::S16)
   {
+    // Common check for correctness of quant params
     LUCI_INTERPRETER_CHECK(input()->zero_point() == 0 && output()->zero_point() == 0);
     for (size_t channel = 0; channel < alpha()->zero_points().size(); ++channel)
     {
       LUCI_INTERPRETER_CHECK(alpha()->zero_points()[channel] == 0);
+    }
+    // Prelu specific checks for CWQ
+    LUCI_INTERPRETER_CHECK(alpha()->quantized_dimension() == alpha()->shape().num_dims() - 1);
+    LUCI_INTERPRETER_CHECK(alpha()->scales().size() == alpha()->shape().dim(alpha()->quantized_dimension()));
+
+    // all dimension of alpha except last one should be size 1
+    for (int dim = 0; dim < alpha()->shape().num_dims()-1; ++dim)
+    {
+      LUCI_INTERPRETER_CHECK(alpha()->shape().dim(dim) == 1);
     }
 
     std::vector<double> real_multipliers =
