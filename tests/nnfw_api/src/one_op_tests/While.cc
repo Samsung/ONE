@@ -15,57 +15,14 @@
  */
 
 #include "GenModelTest.h"
+#include "WhileTestModel.h"
 
 #include <memory>
 
 TEST_F(GenModelTest, OneOp_While)
 {
-  // The model looks just like the below pseudocode
-  //
-  // function model(x)
-  // {
-  //   while (x < 100.0)
-  //   {
-  //     x = x + 10.0;
-  //   }
-  //   return x
-  // }
-
-  CircleGen cgen;
-  std::vector<float> incr_data{10};
-  uint32_t incr_buf = cgen.addBuffer(incr_data);
-  std::vector<float> end_data{100};
-  uint32_t end_buf = cgen.addBuffer(end_data);
-
-  // primary subgraph
-  {
-    int x_in = cgen.addTensor({{1}, circle::TensorType_FLOAT32});
-    int x_out = cgen.addTensor({{1}, circle::TensorType_FLOAT32});
-    cgen.addOperatorWhile({{x_in}, {x_out}}, 1, 2);
-    cgen.setInputsAndOutputs({x_in}, {x_out});
-  }
-
-  // cond subgraph
-  {
-    cgen.nextSubgraph();
-    int x = cgen.addTensor({{1}, circle::TensorType_FLOAT32});
-    int end = cgen.addTensor({{1}, circle::TensorType_FLOAT32, end_buf});
-    int result = cgen.addTensor({{1}, circle::TensorType_BOOL});
-    cgen.addOperatorLess({{x, end}, {result}});
-    cgen.setInputsAndOutputs({x}, {result});
-  }
-
-  // body subgraph
-  {
-    cgen.nextSubgraph();
-    int x_in = cgen.addTensor({{1}, circle::TensorType_FLOAT32});
-    int incr = cgen.addTensor({{1}, circle::TensorType_FLOAT32, incr_buf});
-    int x_out = cgen.addTensor({{1}, circle::TensorType_FLOAT32});
-    cgen.addOperatorAdd({{x_in, incr}, {x_out}}, circle::ActivationFunctionType_NONE);
-    cgen.setInputsAndOutputs({x_in}, {x_out});
-  }
-
-  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  WhileModelLoop10 model;
+  _context = std::make_unique<GenModelTestContext>(std::move(model.cbuf));
   _context->addTestCase(uniformTCD<float>({{0}}, {{100}}));
   _context->addTestCase(uniformTCD<float>({{2}}, {{102}}));
   _context->addTestCase(uniformTCD<float>({{22}}, {{102}}));
