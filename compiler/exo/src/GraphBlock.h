@@ -72,7 +72,7 @@ template <MatrixLayout T> loco::MatrixEncode *make_matrix_encode(loco::Node *inp
 /// @brief Create a loco::MatrixDecode of given layout
 template <MatrixLayout T> loco::MatrixDecode *make_matrix_decode(loco::Node *input_for_decode);
 
-} // exo
+} // namespace exo
 
 //
 // DomainConverter

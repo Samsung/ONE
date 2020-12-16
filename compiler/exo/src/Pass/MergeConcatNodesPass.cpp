@@ -39,8 +39,8 @@ bool canMerge(locoex::TFLConcatenation *node1, locoex::TFLConcatenation *node2)
     case locoex::FusedActFunc::RELU6:
       return true;
 
-    // case locoex::FusedActFunc::TANH:
-    //   return false;
+      // case locoex::FusedActFunc::TANH:
+      //   return false;
 
     default:
       INTERNAL_EXN_V("Unknown FusedActFunc", oops::to_uint32(node1->fusedActivationFunction()));

@@ -136,7 +136,7 @@ public:
   Fuser(LatterT *latter)
   {
     static_assert(std::is_same<LatterT, locoex::TFLAdd>::value ||
-                      std::is_same<LatterT, locoex::TFLSub>::value,
+                    std::is_same<LatterT, locoex::TFLSub>::value,
                   "wrong template type");
 
     _latter = latter;
@@ -185,7 +185,7 @@ template <class LatterT> locoex::TFLConst *Fuser<LatterT>::create_fused_bias_con
 
     for (uint32_t x = 0; x < bias->dim(0).value(); x++)
       new_bias->at<loco::DataType::FLOAT32>(x) = calc<LatterT>(
-          bias->at<loco::DataType::FLOAT32>(x), _const_node->at<loco::DataType::FLOAT32>(x));
+        bias->at<loco::DataType::FLOAT32>(x), _const_node->at<loco::DataType::FLOAT32>(x));
   }
 
   return new_bias;
@@ -252,14 +252,14 @@ struct Collector final : public locoex::TFLNodeMutableVisitor<void>
   void setCandidate(FormerT *former, LatterT *latter, locoex::TFLConst *const_node)
   {
     static_assert(std::is_same<LatterT, locoex::TFLAdd>::value ||
-                      std::is_same<LatterT, locoex::TFLSub>::value,
+                    std::is_same<LatterT, locoex::TFLSub>::value,
                   "wrong template type");
 
     if (!check_act_func(former))
       return;
 
     auto depth =
-        loco::shape_get(as_loco_node(former)).template as<loco::TensorShape>().dim(3).value();
+      loco::shape_get(as_loco_node(former)).template as<loco::TensorShape>().dim(3).value();
     auto const_shape = loco::shape_get(const_node).template as<loco::TensorShape>();
 
     if (const_shape.rank() == 1 and const_shape.dim(0) == depth)

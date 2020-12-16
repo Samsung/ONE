@@ -53,8 +53,8 @@ private:
  * @brief INSTANCE_NORM in circle
  */
 class CircleInstanceNorm final
-    : public FixedArityNode<3, CircleNodeImpl<CircleOpcode::INSTANCE_NORM>>,
-      public CircleNodeMixin<CircleNodeTrait::FusedActFunc>
+  : public FixedArityNode<3, CircleNodeImpl<CircleOpcode::INSTANCE_NORM>>,
+    public CircleNodeMixin<CircleNodeTrait::FusedActFunc>
 {
 public:
   /// @note  Currently only support FLOAT32 as input node
