@@ -57,7 +57,7 @@ std::vector<std::string> COpCall::attr_names() const
 
 #define INSTANTIATE(AT)                                                                            \
   template const typename AttrTypeTrait<AT>::Type *COpCall::attr<AT>(const std::string &attr_name) \
-      const;
+    const;
 
 INSTANTIATE(COpAttrType::Float)
 INSTANTIATE(COpAttrType::Int)
