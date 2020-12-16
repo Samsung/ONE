@@ -66,16 +66,17 @@ void Prelu::configure()
     }
     // Prelu specific checks for CWQ
     LUCI_INTERPRETER_CHECK(alpha()->quantized_dimension() == alpha()->shape().num_dims() - 1);
-    LUCI_INTERPRETER_CHECK(alpha()->scales().size() == alpha()->shape().dim(alpha()->quantized_dimension()));
+    LUCI_INTERPRETER_CHECK(alpha()->scales().size() ==
+                           alpha()->shape().dim(alpha()->quantized_dimension()));
 
     // all dimension of alpha except last one should be size 1
-    for (int dim = 0; dim < alpha()->shape().num_dims()-1; ++dim)
+    for (int dim = 0; dim < alpha()->shape().num_dims() - 1; ++dim)
     {
       LUCI_INTERPRETER_CHECK(alpha()->shape().dim(dim) == 1);
     }
 
     std::vector<double> real_multipliers =
-        getQuantizedConvolutionMultiplers(input()->scale(), alpha()->scales(), output()->scale());
+      getQuantizedConvolutionMultiplers(input()->scale(), alpha()->scales(), output()->scale());
 
     _alpha_multipliers = quantizeMultipliers(real_multipliers);
 
@@ -165,89 +166,39 @@ static inline int16_t evalElemS16Prelu(int16_t input_val, int16_t alpha_val,
   constexpr int32_t quantized_max = std::numeric_limits<int16_t>::max();
 
   const int32_t output_val =
-      input_val >= 0 ? tflite::MultiplyByQuantizedMultiplier(input_val, identity_mult.multiplier,
-                                                             identity_mult.shift)
-                     : tflite::MultiplyByQuantizedMultiplier(
-                           input_val * alpha_val, alpha_mult.multiplier, alpha_mult.shift);
+    input_val >= 0 ? tflite::MultiplyByQuantizedMultiplier(input_val, identity_mult.multiplier,
+                                                           identity_mult.shift)
+                   : tflite::MultiplyByQuantizedMultiplier(input_val * alpha_val,
+                                                           alpha_mult.multiplier, alpha_mult.shift);
   const int32_t clamped_output = std::min(quantized_max, std::max(quantized_min, output_val));
   return clamped_output;
 }
 
 void Prelu::evalQuantizedS16() const
 {
-  bool channel_wise = alpha()->scales().size() != 1;
-  if (!channel_wise)
-  {
-    auto fn = [this](int16_t input_val, int16_t alpha_val) {
-      const ChannelQuantMultipliers pos_mult{_output_shift_identity, _output_multiplier_identity};
-      const ChannelQuantMultipliers &neg_mult = _alpha_multipliers[0];
-      return evalElemS16Prelu(input_val, alpha_val, pos_mult, neg_mult);
-    };
+  // Note that this kernel assumes alpha is CWQ
+  tflite::RuntimeShape input_shape = getTensorShape(input());
+  const int16_t *input_data = input()->data<int16_t>();
+  const int16_t *alpha_data = alpha()->data<int16_t>();
+  int16_t *output_data = output()->data<int16_t>();
 
-    BinaryOpBroadcastSlow(getTensorShape(input()), getTensorData<int16_t>(input()),
-                          getTensorShape(alpha()), getTensorData<int16_t>(alpha()),
-                          getTensorShape(output()), getTensorData<int16_t>(output()), fn);
-  }
-  else
-  {
-    tflite::RuntimeShape input_shape = getTensorShape(input());
-    tflite::RuntimeShape alpha_shape = getTensorShape(alpha());
-    tflite::RuntimeShape output_shape = getTensorShape(output());
-    const int16_t *input_data = input()->data<int16_t>();
-    const int16_t *alpha_data = alpha()->data<int16_t>();
-    int16_t *output_data = output()->data<int16_t>();
+  const ChannelQuantMultipliers pos_mult{_output_shift_identity, _output_multiplier_identity};
 
-    constexpr int N = 5;
+  const int last_dim = input()->shape().num_dims() - 1;
 
-    const ChannelQuantMultipliers pos_mult{_output_shift_identity, _output_multiplier_identity};
+  int32_t outer_dims_size = 1;
+  for (int i = 0; i < last_dim; ++i)
+    outer_dims_size *= input_shape.Dims(i);
+  int32_t quant_dim_size = input_shape.Dims(last_dim);
 
-    if (input_shape == alpha_shape)
+  for (int32_t outer_dims = 0; outer_dims < outer_dims_size; ++outer_dims)
+    for (int32_t quant_channel = 0; quant_channel < quant_dim_size; ++quant_channel)
     {
-      const int flat_size = tflite::MatchingElementsSize(input_shape, alpha_shape, output_shape);
-      int quantized_dim = alpha()->quantized_dimension();
-
-      int32_t outer_dims_size = 1;
-      for (int i = 0; i < quantized_dim; ++i)
-        outer_dims_size *= input_shape.Dims(i);
-      int32_t quant_dim_size = alpha_shape.Dims(alpha()->quantized_dimension());
-      int32_t inner_dims_size = flat_size / outer_dims_size / quant_dim_size;
-
-      for (int32_t outer_dims = 0; outer_dims < outer_dims_size; ++outer_dims)
-        for (int32_t quant_channel = 0; quant_channel < quant_dim_size; ++quant_channel)
-        {
-          const ChannelQuantMultipliers &neg_mult = _alpha_multipliers[quant_channel];
-          for (int32_t inner_dims = 0; inner_dims < inner_dims_size; ++inner_dims)
-          {
-            size_t offset =
-                inner_dims + (quant_channel + outer_dims * quant_dim_size) * inner_dims_size;
-            output_data[offset] =
-                evalElemS16Prelu(input_data[offset], alpha_data[offset], pos_mult, neg_mult);
-          }
-        }
+      const ChannelQuantMultipliers &neg_mult = _alpha_multipliers[quant_channel];
+      size_t offset = quant_channel + outer_dims * quant_dim_size;
+      output_data[offset] =
+        evalElemS16Prelu(input_data[offset], alpha_data[quant_channel], pos_mult, neg_mult);
     }
-    else
-    {
-      assert(input_shape.DimensionsCount() <= N);
-      assert(alpha_shape.DimensionsCount() <= N);
-      assert(output_shape.DimensionsCount() <= N);
-
-      tflite::NdArrayDesc<N> desc1{};
-      tflite::NdArrayDesc<N> desc2{};
-      tflite::NdArrayDesc<N> output_desc{};
-      tflite::NdArrayDescsForElementwiseBroadcast(input_shape, alpha_shape, &desc1, &desc2);
-      tflite::CopyDimsToDesc(tflite::RuntimeShape::ExtendedShape(N, output_shape), &output_desc);
-
-      const int quantized_dim = alpha()->quantized_dimension() + N - alpha()->shape().num_dims();
-
-      auto fn = [&](int indexes[N]) {
-        const ChannelQuantMultipliers &neg_mult = _alpha_multipliers[indexes[quantized_dim]];
-        output_data[SubscriptToIndex(output_desc, indexes)] =
-            evalElemS16Prelu(input_data[SubscriptToIndex(desc1, indexes)],
-                             alpha_data[SubscriptToIndex(desc2, indexes)], pos_mult, neg_mult);
-      };
-      tflite::NDOpsHelper<N>(output_desc, fn);
-    }
-  }
 }
 
 } // namespace kernels
