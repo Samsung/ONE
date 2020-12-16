@@ -674,7 +674,7 @@ public:
     for (uint32_t axis = 0; axis < out_shape.rank(); ++axis)
     {
       out_shape.dim(axis) =
-          tensor_shape.dim(axis).value() + padding->front(axis) + padding->back(axis);
+        tensor_shape.dim(axis).value() + padding->front(axis) + padding->back(axis);
     }
 
     return loco::NodeShape{out_shape};

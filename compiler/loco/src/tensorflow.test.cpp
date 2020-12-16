@@ -65,7 +65,7 @@ loco::Permutation<loco::Domain::Filter> make_HWIO_permutation(void)
   return HWIO;
 }
 
-} // nemaspace
+} // namespace
 
 #if 0
 >>> MaxPool_Float_000 testcase

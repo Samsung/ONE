@@ -108,7 +108,7 @@ namespace
 {
 // temp node with multple params for ctor. loco::CanonicalOpcode::ReLU is used for simplicity
 class ParamCtorNode
-    : public loco::CanonicalNodeDef<loco::CanonicalOpcode::ReLU, loco::FixedArity<0>::Mixin>
+  : public loco::CanonicalNodeDef<loco::CanonicalOpcode::ReLU, loco::FixedArity<0>::Mixin>
 {
 public:
   ParamCtorNode(int i, float f)

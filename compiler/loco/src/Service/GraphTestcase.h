@@ -278,7 +278,7 @@ public:
     const_node = graph_builder->push<ConstGenLayer>()->node();
 
     filter_encode_node =
-        graph_builder->push<DepthwiseFilterEncodeLayer>()->perm(filter_perm)->node();
+      graph_builder->push<DepthwiseFilterEncodeLayer>()->perm(filter_perm)->node();
 
     depthwiseconv2d_node = graph_builder->push<DepthwiseConv2DLayer>()->node();
 
