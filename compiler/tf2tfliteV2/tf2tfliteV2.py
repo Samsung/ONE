@@ -180,6 +180,15 @@ def _v2_convert(flags):
             raise ValueError("--input_arrays must be provided")
         if not flags.output_arrays:
             raise ValueError("--output_arrays must be provided")
+        input_shapes = None
+        if flags.input_shapes:
+            input_shapes = [
+                _parse_array(shape, type_fn=int)
+                for shape in flags.input_shapes.split(":")
+            ]
+            if len(input_shapes) != len(_parse_array(flags.input_arrays)):
+                raise ValueError(
+                    "--input_shapes and --input_arrays must have the same length")
         file_content = open(flags.input_path, 'rb').read()
         try:
             graph_def = tf.compat.v1.GraphDef()
@@ -200,6 +209,8 @@ def _v2_convert(flags):
                 _str + ":0" if len(_str.split(":")) == 1 else _str
                 for _str in _parse_array(flags.output_arrays)
             ])
+        for i in range(len(input_shapes)):
+            wrap_func.inputs[i].set_shape(input_shapes[i])
         converter = tf.lite.TFLiteConverter.from_concrete_functions([wrap_func])
 
     if flags.model_format == "saved_model":
