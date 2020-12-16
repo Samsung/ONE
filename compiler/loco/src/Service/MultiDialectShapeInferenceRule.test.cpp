@@ -112,8 +112,8 @@ TEST(MultiDialectShapeInferenceRuleTest, test1)
   loco::MultiDialectShapeInferenceRule rules;
 
   rules.bind(loco::CanonicalDialect::get(), &canonical_rule)
-      .bind(TestDialect<2, 3>::get(), &t23_rule)
-      .bind(TestDialect<4, 5>::get(), &t45_rule);
+    .bind(TestDialect<2, 3>::get(), &t23_rule)
+    .bind(TestDialect<4, 5>::get(), &t45_rule);
 
   loco::apply(&rules).to(g.get());
 
