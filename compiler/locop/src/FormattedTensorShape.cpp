@@ -25,7 +25,7 @@ std::ostream &operator<<(std::ostream &os, const loco::Dimension &d)
   return os;
 }
 
-} // namespace
+} // namespace loco
 
 namespace locop
 {
