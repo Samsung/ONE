@@ -49,5 +49,9 @@ ir::Layout Tensor::layout() const
   return ir::Layout::NHWC;
 }
 
+ir::Shape Tensor::getShape() const { return _info.shape(); }
+
+ir::Shape ROTensor::getShape() const { return _info.shape(); }
+
 } // namespace interp
 } // namespace onert

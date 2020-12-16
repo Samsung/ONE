@@ -84,7 +84,7 @@ void ConstantInitializer::visit(const ir::operation::SpaceToBatchND &node)
       const auto &shape = model_obj.shape();
       const auto base = reinterpret_cast<const int32_t *>(model_obj.data()->base());
       assert(model_obj.shape().rank() == 2);
-      assert(obj.dimension(0) == 2);
+      assert(obj.getShape().dim(0) == 2);
       obj.access([&](ITensor &tensor) {
         for (auto i = 0; i < shape.dim(0); ++i)
         {

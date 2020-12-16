@@ -32,16 +32,17 @@ namespace ops
 uint32_t getNumberOfDimensions(const IPortableTensor *tensor)
 {
   assert(tensor);
-  return tensor->num_dimensions();
+  return tensor->getShape().rank();
 }
 
 uint32_t getNumberOfElements(const IPortableTensor *tensor)
 {
   assert(tensor);
   uint32_t count = 1;
-  for (size_t i = 0; i < tensor->num_dimensions(); i++)
+  auto shape = tensor->getShape();
+  for (int i = 0; i < shape.rank(); i++)
   {
-    count *= tensor->dimension(i);
+    count *= shape.dim(i);
   }
   return count;
 }
@@ -49,12 +50,13 @@ uint32_t getNumberOfElements(const IPortableTensor *tensor)
 uint32_t getSizeOfDimension(const IPortableTensor *tensor, uint32_t dimensionIdx)
 {
   assert(tensor);
-  if (dimensionIdx >= tensor->num_dimensions())
+  auto shape = tensor->getShape();
+  if (dimensionIdx >= static_cast<uint32_t>(shape.rank()))
   {
     // TODO, log the error
     return 0;
   }
-  return tensor->dimension(dimensionIdx);
+  return shape.dim(dimensionIdx);
 }
 
 void QuantizeMultiplier(double double_multiplier, int32_t *quantized_multiplier, int *shift)
@@ -167,8 +169,10 @@ bool HaveSameShapes(const IPortableTensor *input1, const IPortableTensor *input2
   if (getNumberOfDimensions(input1) != getNumberOfDimensions(input2))
     return false;
 
+  auto shape1 = input1->getShape();
+  auto shape2 = input2->getShape();
   for (uint32_t i = 0; i < getNumberOfDimensions(input1); i++)
-    if (input1->dimension(i) != input2->dimension(i))
+    if (shape1.dim(i) != shape2.dim(i))
       return false;
 
   return true;
@@ -237,19 +241,20 @@ std::vector<int32_t> getReducerAxes(const IPortableTensor *axes)
 {
   std::vector<int32_t> ret;
 
+  auto axes_vals = (axes->getShape().rank() == 0) ? 1 : axes->getShape().dim(0);
   assert(axes->layout() == ir::Layout::NHWC);
-  assert(axes->dimension(0) == axes->getShape().num_elements());
+  assert(static_cast<size_t>(axes_vals) == axes->getShape().num_elements());
   switch (axes->data_type())
   {
     case ir::DataType::INT32:
     {
-      for (size_t i = 0; i < axes->dimension(0); ++i)
+      for (int i = 0; i < axes_vals; ++i)
         ret.emplace_back(*(reinterpret_cast<const int32_t *>(axes->buffer()) + i));
       break;
     }
     case ir::DataType::INT64:
     {
-      for (size_t i = 0; i < axes->dimension(0); ++i)
+      for (int i = 0; i < axes_vals; ++i)
         ret.emplace_back(*(reinterpret_cast<const int64_t *>(axes->buffer()) + i));
       break;
     }

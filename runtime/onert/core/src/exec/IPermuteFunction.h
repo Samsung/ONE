@@ -99,7 +99,7 @@ public:
       auto &dst_offsets = _dst_tensors_offsets.at(i);
       if (src_tensor != dst_tensor)
       {
-        const auto rank = src_tensor->num_dimensions();
+        const auto rank = src_tensor->getShape().rank();
         permute(src_tensor, dst_tensor, rank, src_offsets, dst_offsets);
       }
     }
@@ -225,17 +225,18 @@ private:
         case PermuteType::NHWC_TO_NCHW:
         {
           ir::FeatureShape shape;
-          shape.N = dst->dimension(0);
-          shape.C = dst->dimension(1);
-          shape.H = dst->dimension(2);
-          shape.W = dst->dimension(3);
+          auto dst_shape = dst->getShape();
+          shape.N = dst_shape.dim(0);
+          shape.C = dst_shape.dim(1);
+          shape.H = dst_shape.dim(2);
+          shape.W = dst_shape.dim(3);
 
           typename feature::nchw::View<T>::Strides strides;
           const auto start_offset = dst->calcOffset({0, 0, 0, 0});
-          strides.W = dst->dimension(3) == 1 ? 0 : dst->calcOffset({0, 0, 0, 1}) - start_offset;
-          strides.H = dst->dimension(2) == 1 ? 0 : dst->calcOffset({0, 0, 1, 0}) - start_offset;
-          strides.C = dst->dimension(1) == 1 ? 0 : dst->calcOffset({0, 1, 0, 0}) - start_offset;
-          strides.N = dst->dimension(0) == 1 ? 0 : dst->calcOffset({1, 0, 0, 0}) - start_offset;
+          strides.W = dst_shape.dim(3) == 1 ? 0 : dst->calcOffset({0, 0, 0, 1}) - start_offset;
+          strides.H = dst_shape.dim(2) == 1 ? 0 : dst->calcOffset({0, 0, 1, 0}) - start_offset;
+          strides.C = dst_shape.dim(1) == 1 ? 0 : dst->calcOffset({0, 1, 0, 0}) - start_offset;
+          strides.N = dst_shape.dim(0) == 1 ? 0 : dst->calcOffset({1, 0, 0, 0}) - start_offset;
 
           const feature::nhwc::Reader<T> from(src);
           feature::nchw::View<T> into(shape, strides,
@@ -249,17 +250,18 @@ private:
         case PermuteType::NCHW_TO_NHWC:
         {
           ir::FeatureShape shape;
-          shape.N = dst->dimension(0);
-          shape.H = dst->dimension(1);
-          shape.W = dst->dimension(2);
-          shape.C = dst->dimension(3);
+          auto dst_shape = dst->getShape();
+          shape.N = dst_shape.dim(0);
+          shape.H = dst_shape.dim(1);
+          shape.W = dst_shape.dim(2);
+          shape.C = dst_shape.dim(3);
 
           typename feature::nhwc::View<T>::Strides strides;
           const auto start_offset = dst->calcOffset({0, 0, 0, 0});
-          strides.C = dst->dimension(3) == 1 ? 0 : dst->calcOffset({0, 0, 0, 1}) - start_offset;
-          strides.W = dst->dimension(2) == 1 ? 0 : dst->calcOffset({0, 0, 1, 0}) - start_offset;
-          strides.H = dst->dimension(1) == 1 ? 0 : dst->calcOffset({0, 1, 0, 0}) - start_offset;
-          strides.N = dst->dimension(0) == 1 ? 0 : dst->calcOffset({1, 0, 0, 0}) - start_offset;
+          strides.C = dst_shape.dim(3) == 1 ? 0 : dst->calcOffset({0, 0, 0, 1}) - start_offset;
+          strides.W = dst_shape.dim(2) == 1 ? 0 : dst->calcOffset({0, 0, 1, 0}) - start_offset;
+          strides.H = dst_shape.dim(1) == 1 ? 0 : dst->calcOffset({0, 1, 0, 0}) - start_offset;
+          strides.N = dst_shape.dim(0) == 1 ? 0 : dst->calcOffset({1, 0, 0, 0}) - start_offset;
 
           const feature::nchw::Reader<T> from(src);
           feature::nhwc::View<T> into(shape, strides,

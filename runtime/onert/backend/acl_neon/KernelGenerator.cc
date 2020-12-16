@@ -986,7 +986,8 @@ void KernelGenerator::visit(const ir::operation::Softmax &node)
   auto input_tensor = _tensor_reg->getAclTensor(input_index);
 
   // Disable applied dim_correction
-  if (input_tensor->num_dimensions() != input_tensor->info()->num_dimensions())
+  if (static_cast<size_t>(input_tensor->getShape().rank()) !=
+      input_tensor->info()->num_dimensions())
   {
     // This means that high dimension's value is 1 and input tensor is applied dim_correction
     acl_common::disableDimCorrection(input_tensor);
@@ -997,7 +998,7 @@ void KernelGenerator::visit(const ir::operation::Softmax &node)
     output_tensor->handle(), beta);
 
   // Revert disabling applied dim_correction
-  if (input_tensor->dimension(0) == 1)
+  if (input_tensor->getShape().dim(0) == 1)
   {
     acl_common::disableDimCorrection(input_tensor);
   }
@@ -1238,7 +1239,8 @@ void KernelGenerator::visit(const ir::operation::StridedSlice &node)
   }
 
   // Disable applied dim_correction
-  if (inputData_tensor->num_dimensions() != inputData_tensor->info()->num_dimensions())
+  if (static_cast<size_t>(inputData_tensor->getShape().rank()) !=
+      inputData_tensor->info()->num_dimensions())
   {
     // This means that high dimension's value is 1 and input tensor is applied dim_correction
     acl_common::disableDimCorrection(inputData_tensor);
@@ -1249,7 +1251,7 @@ void KernelGenerator::visit(const ir::operation::StridedSlice &node)
     begin_mask, end_mask, shrink_axis_mask);
 
   // Revert disabling applied dim_correction
-  if (inputData_tensor->dimension(0) == 1)
+  if (inputData_tensor->getShape().dim(0) == 1)
   {
     acl_common::enableDimCorrection(inputData_tensor);
   }
@@ -1366,7 +1368,8 @@ void KernelGenerator::visit(const ir::operation::Unpack &node)
   axis = acl_common::ToARMComputeAxis(input_rank, axis, frontend_layout, backend_layout).value();
 
   // Disable applied dim_correction
-  if (input_tensor->num_dimensions() != input_tensor->info()->num_dimensions())
+  if (static_cast<size_t>(input_tensor->getShape().rank()) !=
+      input_tensor->info()->num_dimensions())
   {
     // This means that high dimension's value is 1 and input tensor is applied dim_correction
     acl_common::disableDimCorrection(input_tensor);
@@ -1376,7 +1379,7 @@ void KernelGenerator::visit(const ir::operation::Unpack &node)
     acl_common::generateLayer<arm_compute::NEUnstack>(input_tensor->handle(), outputs, axis);
 
   // Revert disabling applied dim_correction
-  if (input_tensor->dimension(0) == 1)
+  if (input_tensor->getShape().dim(0) == 1)
   {
     acl_common::enableDimCorrection(input_tensor);
   }

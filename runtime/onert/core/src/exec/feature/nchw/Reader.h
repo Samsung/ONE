@@ -56,15 +56,16 @@ public:
     assert(tensor->layout() == ir::Layout::NCHW);
 
     const auto start_offset = tensor->calcOffset({0, 0, 0, 0});
-    _strides.W = tensor->dimension(3) == 1 ? 0 : tensor->calcOffset({0, 0, 0, 1}) - start_offset;
-    _strides.H = tensor->dimension(2) == 1 ? 0 : tensor->calcOffset({0, 0, 1, 0}) - start_offset;
-    _strides.C = tensor->dimension(1) == 1 ? 0 : tensor->calcOffset({0, 1, 0, 0}) - start_offset;
-    _strides.N = tensor->dimension(0) == 1 ? 0 : tensor->calcOffset({1, 0, 0, 0}) - start_offset;
+    auto shape = tensor->getShape();
+    _strides.W = shape.dim(3) == 1 ? 0 : tensor->calcOffset({0, 0, 0, 1}) - start_offset;
+    _strides.H = shape.dim(2) == 1 ? 0 : tensor->calcOffset({0, 0, 1, 0}) - start_offset;
+    _strides.C = shape.dim(1) == 1 ? 0 : tensor->calcOffset({0, 1, 0, 0}) - start_offset;
+    _strides.N = shape.dim(0) == 1 ? 0 : tensor->calcOffset({1, 0, 0, 0}) - start_offset;
 
-    _shape.W = tensor->dimension(3);
-    _shape.H = tensor->dimension(2);
-    _shape.C = tensor->dimension(1);
-    _shape.N = tensor->dimension(0);
+    _shape.W = shape.dim(3);
+    _shape.H = shape.dim(2);
+    _shape.C = shape.dim(1);
+    _shape.N = shape.dim(0);
   }
 
 public:

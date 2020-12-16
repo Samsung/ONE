@@ -615,7 +615,7 @@ void KernelGenerator::visit(const ir::operation::OneHot &node)
   auto offvalue_tensor = _tensor_reg->getPortableTensor(offvalue_index);
 
   assert(indices_tensor->data_type() == OperandType::INT32);
-  assert(axis <= static_cast<int>(indices_tensor->num_dimensions()));
+  assert(axis <= static_cast<int>(indices_tensor->getShape().rank()));
 
   auto fn = std::make_unique<ops::OneHotLayer>();
 

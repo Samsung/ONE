@@ -38,19 +38,20 @@ TransposeLayer::TransposeLayer() : _input(nullptr), _perm(nullptr), _output(null
 template <typename T> void TransposeLayer::transpose()
 {
   nnfw::cker::TransposeParams param;
-  assert(_perm->num_dimensions() == 1);
+  auto perm_shape = _perm->getShape();
+  assert(perm_shape.rank() == 1);
 
-  param.perm_count = _input->num_dimensions();
-  if (_perm->dimension(0) == 0) // This means _perm is (n-1...0)
+  param.perm_count = _input->getShape().rank();
+  if (perm_shape.dim(0) == 0) // This means _perm is (n-1...0)
   {
     const auto begin = param.perm;
-    const auto end = param.perm + _input->num_dimensions();
+    const auto end = param.perm + _input->getShape().rank();
     std::iota(begin, end, 0);
     std::reverse(begin, end);
   }
   else
   {
-    assert(param.perm_count == static_cast<int>(_perm->dimension(0)));
+    assert(param.perm_count == static_cast<int>(perm_shape.dim(0)));
     for (auto i = 0; i < param.perm_count; i++)
     {
       param.perm[i] = *(reinterpret_cast<const int32_t *>(_perm->buffer()) + i);

@@ -38,7 +38,7 @@ void evalLogic(const IPortableTensor *input, IPortableTensor *output, const std:
                bool keep_dims, T init_value, nnfw::cker::Reduce &reduce_kernel,
                T reducer(const T current, const T in))
 {
-  reduce_kernel.prepare(input->num_dimensions(), axes.size());
+  reduce_kernel.prepare(input->getShape().rank(), axes.size());
   bool result = reduce_kernel.ReduceGeneric<T>(
     getTensorShape(input), reinterpret_cast<const T *>(input->buffer()), getTensorShape(output),
     reinterpret_cast<T *>(output->buffer()), axes, keep_dims, init_value, reducer);
@@ -129,7 +129,7 @@ void evalSumQuantized(const IPortableTensor *input, IPortableTensor *output,
   const bool same_scale =
     (input->data_scale() == output->data_scale() && input->data_offset() == output->data_offset());
 
-  reduce_kernel.prepare(input->num_dimensions(), axes.size());
+  reduce_kernel.prepare(input->getShape().rank(), axes.size());
 
   if (!same_scale)
   {
@@ -209,7 +209,7 @@ void ReduceLayer::run()
 {
   const auto axes = getReducerAxes(_axes);
 #ifdef USE_NEON
-  int32_t rank = _input->num_dimensions();
+  int32_t rank = _input->getShape().rank();
   if (_input->data_type() == ir::DataType::FLOAT32 && _reduceType == ReduceType::kSum &&
       axes.size() == 1 && (axes[0] == -1 || axes[0] == rank - 1))
   {

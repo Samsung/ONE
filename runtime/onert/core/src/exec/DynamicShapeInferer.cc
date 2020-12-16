@@ -270,15 +270,17 @@ void DynamicShapeInferer::visit(const ir::operation::Concat &op)
   {
     auto isConcatible = [](const backend::ITensor *input1, const backend::ITensor *input2,
                            int32_t axis) {
-      if (input1->num_dimensions() != input2->num_dimensions())
+      auto shape1 = input1->getShape();
+      auto shape2 = input2->getShape();
+      if (shape1.rank() != shape2.rank())
         return false;
 
-      for (size_t i = 0; i < input1->num_dimensions(); i++)
+      for (int i = 0; i < shape1.rank(); i++)
       {
-        auto positive_axis = (axis >= 0) ? axis : axis + input1->num_dimensions();
+        auto positive_axis = (axis >= 0) ? axis : axis + input1->getShape().rank();
 
         if (i != positive_axis)
-          if (input1->dimension(i) != input2->dimension(i))
+          if (shape1.dim(i) != shape2.dim(i))
             return false;
       }
 
@@ -1151,8 +1153,9 @@ void DynamicShapeInferer::visit(const ir::operation::Tile &op)
   auto multiplier_buffer = reinterpret_cast<const int32_t *>(multiplier->buffer());
   assert(multiplier_buffer);
 
-  auto output_shape =
-    shape_inference::inferTileShape(input_shape, multiplier_buffer, multiplier->dimension(0));
+  auto mult_shape = multiplier->getShape();
+  auto output_shape = shape_inference::inferTileShape(
+    input_shape, multiplier_buffer, mult_shape.rank() == 0 ? 1 : mult_shape.dim(0));
 
   // set output shape and output buffer
   output->applyShape(output_shape);
@@ -1190,7 +1193,7 @@ void DynamicShapeInferer::visit(const ir::operation::Transpose &op)
 
   ir::Shape new_shape;
   // TODO Change perm->dimension(0) == 0 to perm->num_elements() == 0
-  if (perm->dimension(0) == 0) // This condition means that perm is (n-1...0)
+  if (perm->getShape().dim(0) == 0) // This condition means that perm is (n-1...0)
   {
     // Call by (n-1...0)
     new_shape = shape_inference::inferTransposeShape(input_shape, nullptr, 0);
@@ -1198,7 +1201,7 @@ void DynamicShapeInferer::visit(const ir::operation::Transpose &op)
   else
   {
     // Check rank
-    if (input->num_dimensions() != perm->getShape().num_elements())
+    if (static_cast<size_t>(input->getShape().rank()) != perm->getShape().num_elements())
     {
       throw std::runtime_error("DynamicShapeInferer failed, bad rank size: " +
                                std::to_string(perm->getShape().num_elements()));
@@ -1206,7 +1209,8 @@ void DynamicShapeInferer::visit(const ir::operation::Transpose &op)
 
     // set output shape, based on input and params
     const auto perm_buffer = reinterpret_cast<const int32_t *>(perm->buffer());
-    new_shape = shape_inference::inferTransposeShape(input_shape, perm_buffer, perm->dimension(0));
+    new_shape =
+      shape_inference::inferTransposeShape(input_shape, perm_buffer, perm->getShape().dim(0));
   }
   output->applyShape(new_shape);
   assert(output->buffer() != nullptr);

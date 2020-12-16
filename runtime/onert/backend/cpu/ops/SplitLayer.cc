@@ -44,7 +44,7 @@ template <typename T> void SplitLayer::split(void)
   auto axis = *reinterpret_cast<const int32_t *>(_axis->buffer());
   if (axis < 0)
   {
-    axis += _input->num_dimensions();
+    axis += _input->getShape().rank();
   }
   op_params.axis = axis;
   op_params.num_split = _num_splits;

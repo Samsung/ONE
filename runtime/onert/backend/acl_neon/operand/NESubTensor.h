@@ -39,9 +39,6 @@ public:
               const arm_compute::Coordinates &coords, size_t rank, bool extend_parent = false);
 
 public:
-  size_t num_dimensions() const final { return _rank; }
-
-public:
   const arm_compute::SubTensor *handle() const override;
   arm_compute::SubTensor *handle() override;
 
@@ -52,7 +49,6 @@ public:
 
 private:
   std::shared_ptr<arm_compute::SubTensor> _ne_sub_tensor;
-  size_t _rank;
 };
 
 } // namespace operand

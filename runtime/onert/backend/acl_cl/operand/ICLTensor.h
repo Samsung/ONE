@@ -33,6 +33,7 @@ namespace operand
 class ICLTensor : public acl_common::IACLTensor
 {
 public:
+  ICLTensor(size_t rank) : IACLTensor{rank} {}
   const arm_compute::ICLTensor *handle() const override = 0;
   arm_compute::ICLTensor *handle() override = 0;
 

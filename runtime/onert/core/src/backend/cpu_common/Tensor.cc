@@ -30,12 +30,14 @@ Tensor::~Tensor() {}
 
 size_t Tensor::calcOffset(const ir::Coordinates &coords) const
 {
-  size_t rank = num_dimensions();
+  auto shape = getShape();
+  size_t rank = shape.rank();
   rank = rank == 0 ? 1 : rank;
   size_t offset = 0;
   for (size_t i = 0; i < rank; ++i)
   {
-    offset = offset * dimension(i) + coords[i];
+    auto dim = shape.rank() == 0 ? 1 : shape.dim(i);
+    offset = offset * dim + coords[i];
   }
   offset *= sizeOfDataType(data_type());
   return offset;
@@ -79,6 +81,8 @@ bool Tensor::applyShape(const ir::Shape &new_shape)
   }
   return true;
 }
+
+ir::Shape Tensor::getShape() const { return _info.shape(); }
 
 } // namespace cpu_common
 } // namespace backend

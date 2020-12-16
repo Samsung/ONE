@@ -106,12 +106,13 @@ private:
   private:
     void setStrides(const ITensor &tensor, Strides *strides)
     {
-      const size_t rank = tensor.num_dimensions();
+      auto shape = tensor.getShape();
+      const size_t rank = shape.rank();
       for (size_t i = 0; i < rank; ++i)
       {
         ir::Coordinates no_step(rank), one_step(rank);
         one_step.set(i, 1);
-        if (tensor.dimension(i) > 1)
+        if (shape.dim(i) > 1)
         {
           strides->set(i, tensor.calcOffset(one_step) - tensor.calcOffset(no_step));
         }

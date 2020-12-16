@@ -34,9 +34,10 @@ ShapeLayer::ShapeLayer() : _input(nullptr), _output(nullptr)
 
 template <typename T> void GetRawShape(const IPortableTensor *input, T *output_data)
 {
-  for (uint32_t i = 0; i < input->num_dimensions(); ++i)
+  auto shape = input->getShape();
+  for (int i = 0; i < shape.rank(); ++i)
   {
-    output_data[i] = static_cast<T>(input->dimension(i));
+    output_data[i] = static_cast<T>(shape.dim(i));
   }
 }
 

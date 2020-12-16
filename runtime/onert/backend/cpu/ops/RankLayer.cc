@@ -41,7 +41,7 @@ void RankLayer::configure(const IPortableTensor *input, IPortableTensor *output)
 void RankLayer::run()
 {
   int32_t *output_data = reinterpret_cast<int32_t *>(_output->buffer());
-  output_data[0] = _input->num_dimensions();
+  output_data[0] = _input->getShape().rank();
 }
 
 } // namespace ops

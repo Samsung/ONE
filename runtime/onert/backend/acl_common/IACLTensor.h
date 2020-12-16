@@ -19,6 +19,7 @@
 
 #include <backend/ITensor.h>
 #include <arm_compute/core/ITensor.h>
+#include "Swizzle.h"
 
 namespace onert
 {
@@ -42,10 +43,11 @@ public:
   IACLTensor(IACLTensor &&) = default;
   IACLTensor &operator=(IACLTensor &&) = default;
 
+  IACLTensor(size_t rank) : _rank{rank} {}
+
 public:
   uint8_t *buffer() const final { return handle()->buffer(); }
   size_t total_size() const final { return info()->total_size(); }
-  size_t dimension(size_t index) const final;
   size_t calcOffset(const ir::Coordinates &coords) const final;
   ir::Layout layout() const final;
   ir::DataType data_type() const final;
@@ -53,6 +55,13 @@ public:
   int32_t data_offset() const override;
   bool has_padding() const override { return info()->has_padding(); }
   bool is_dynamic() const override { return false; }
+  ir::Shape getShape() const override
+  {
+    onert::ir::Shape shape(num_dimensions());
+    for (uint32_t d = 0; d < num_dimensions(); d++)
+      shape.dim(d) = dimension(d);
+    return shape;
+  }
 
 public:
   virtual const arm_compute::ITensor *handle() const = 0;
@@ -60,6 +69,22 @@ public:
 
   const arm_compute::ITensorInfo *info() const { return handle()->info(); }
   arm_compute::ITensorInfo *info() { return handle()->info(); }
+
+  size_t dimension(size_t index) const
+  {
+    // Assume that the front is higher dimensional.
+    // i.g. N: 0, C: 1, H: 2, W: 3 for NCHW layout
+    // NOTE This tensor must not be applied dim correction
+    auto rank = _rank;
+    rank = rank == 0 ? 1 : rank;
+    assert(rank > index);
+    const ARMComputeAxis reversed{(static_cast<uint32_t>(rank - index) - 1)};
+    return info()->dimension(reversed.value());
+  }
+  size_t num_dimensions() const { return _rank; }
+
+protected:
+  size_t _rank; // Actual rank (reflects extended rank)
 };
 
 } // namespace acl_common

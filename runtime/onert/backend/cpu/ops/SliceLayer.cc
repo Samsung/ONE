@@ -55,10 +55,10 @@ template <typename T> void SliceLayer::sliceImpl()
   begins.reserve(kMaxDim);
   sizes.reserve(kMaxDim);
 
-  GetBeginAndSizeVectors<int32_t>(_input->num_dimensions(), _begin, _size, &begins, &sizes);
+  GetBeginAndSizeVectors<int32_t>(_input->getShape().rank(), _begin, _size, &begins, &sizes);
 
   // begins : 0-based, sizes : 1-based
-  for (int i = _input->num_dimensions(); i < kMaxDim; ++i)
+  for (int i = _input->getShape().rank(); i < kMaxDim; ++i)
   {
     begins.push_back(0);
     sizes.push_back(1);

@@ -52,8 +52,6 @@ public:
 public:
   uint8_t *buffer() const override { return _tensor->buffer(); }
   size_t total_size() const override { return _tensor->total_size(); }
-  size_t dimension(size_t index) const override { return _tensor->dimension(index); }
-  size_t num_dimensions() const override { return _tensor->num_dimensions(); }
   size_t calcOffset(const ir::Coordinates &coords) const override
   {
     return _tensor->calcOffset(coords);
