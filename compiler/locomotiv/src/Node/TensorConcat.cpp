@@ -52,7 +52,7 @@ void execute_node(loco::TensorConcat *tensor_concat)
   validate(lhs_data->dtype() == rhs_data->dtype(), "lhs and rhs of Concat should have same dtype");
 
   validate(annot_domain(tensor_concat->lhs()) == loco::Domain::Tensor &&
-               annot_domain(tensor_concat->rhs()) == loco::Domain::Tensor,
+             annot_domain(tensor_concat->rhs()) == loco::Domain::Tensor,
            "Some ingredients of TensorConcat is not Tensor");
 
   // Calculate output shape

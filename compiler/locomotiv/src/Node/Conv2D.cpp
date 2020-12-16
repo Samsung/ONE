@@ -82,9 +82,9 @@ Buffer<RET_T> calc_conv2D(const loco::Conv2D *conv2d, const Buffer<IFM_T> *input
   const uint32_t pad_right = conv2d->pad()->right();
 
   const uint32_t output_height =
-      compute_out_size(input_height + pad_top + pad_bottom, filter_height, stride_height);
+    compute_out_size(input_height + pad_top + pad_bottom, filter_height, stride_height);
   const uint32_t output_width =
-      compute_out_size(input_width + pad_left + pad_right, filter_width, stride_width);
+    compute_out_size(input_width + pad_left + pad_right, filter_width, stride_width);
 
   const uint32_t batches = input_shape.dim(0);
   const uint32_t input_depth = input_shape.dim(3);
@@ -121,9 +121,9 @@ Buffer<RET_T> calc_conv2D(const loco::Conv2D *conv2d, const Buffer<IFM_T> *input
                     ((unsigned)in_y < input_height))
                 {
                   auto input_value =
-                      input_buf->at(Index({batch, (unsigned)in_y, (unsigned)in_x, in_channel}));
+                    input_buf->at(Index({batch, (unsigned)in_y, (unsigned)in_x, in_channel}));
                   auto filter_value =
-                      filter_buf->at(Index({out_channel, filter_y, filter_x, in_channel}));
+                    filter_buf->at(Index({out_channel, filter_y, filter_x, in_channel}));
                   total += (input_value * filter_value);
                 }
               }

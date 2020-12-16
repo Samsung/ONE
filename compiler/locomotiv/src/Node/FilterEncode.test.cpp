@@ -62,7 +62,7 @@ TEST(NodeExecution_FilterEncode, s32)
 
   // Encoder to correctly read input tensor as NCHW
   auto encoder = std::unique_ptr<loco::PermutingEncoder<loco::Domain::Filter>>(
-      new loco::PermutingEncoder<loco::Domain::Filter>);
+    new loco::PermutingEncoder<loco::Domain::Filter>);
   encoder->perm()->axis(loco::FilterAxis::Count) = 0;
   encoder->perm()->axis(loco::FilterAxis::Depth) = 1;
   encoder->perm()->axis(loco::FilterAxis::Height) = 2;
@@ -116,7 +116,7 @@ TEST(NodeExecution_FilterEncode, f32)
 
   // Encoder to correctly read input tensor as CHNW
   auto encoder = std::unique_ptr<loco::PermutingEncoder<loco::Domain::Filter>>(
-      new loco::PermutingEncoder<loco::Domain::Filter>);
+    new loco::PermutingEncoder<loco::Domain::Filter>);
   encoder->perm()->axis(loco::FilterAxis::Depth) = 0;
   encoder->perm()->axis(loco::FilterAxis::Height) = 1;
   encoder->perm()->axis(loco::FilterAxis::Count) = 2;
