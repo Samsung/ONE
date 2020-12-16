@@ -30,7 +30,7 @@ namespace kernels
 ResizeNearestNeighbor::ResizeNearestNeighbor(const Tensor *input, const Tensor *size,
                                              Tensor *output,
                                              const ResizeNearestNeighborParams &params)
-    : KernelWithParams<ResizeNearestNeighborParams>({input, size}, {output}, params)
+  : KernelWithParams<ResizeNearestNeighborParams>({input, size}, {output}, params)
 {
 }
 
@@ -57,15 +57,13 @@ void ResizeNearestNeighbor::execute() const
   {
     case DataType::FLOAT32:
       tflite::reference_ops::ResizeNearestNeighbor(
-          op_params, getTensorShape(input()), getTensorData<int32_t>(input()),
-          getTensorShape(size()), getTensorData<int32_t>(size()), getTensorShape(output()),
-          getTensorData<int32_t>(output()));
+        op_params, getTensorShape(input()), getTensorData<int32_t>(input()), getTensorShape(size()),
+        getTensorData<int32_t>(size()), getTensorShape(output()), getTensorData<int32_t>(output()));
       break;
     case DataType::U8:
       tflite::optimized_ops::ResizeNearestNeighbor(
-          op_params, getTensorShape(input()), getTensorData<uint8_t>(input()),
-          getTensorShape(size()), getTensorData<int32_t>(size()), getTensorShape(output()),
-          getTensorData<uint8_t>(output()));
+        op_params, getTensorShape(input()), getTensorData<uint8_t>(input()), getTensorShape(size()),
+        getTensorData<int32_t>(size()), getTensorShape(output()), getTensorData<uint8_t>(output()));
       break;
     default:
       throw std::runtime_error("Unsupported type.");

@@ -50,10 +50,10 @@ void Check(std::initializer_list<int32_t> input_shape, std::initializer_list<int
 
 template <>
 void Check<uint8_t>(
-    std::initializer_list<int32_t> input_shape, std::initializer_list<int32_t> weights_shape,
-    std::initializer_list<int32_t> bias_shape, std::initializer_list<int32_t> output_shape,
-    std::initializer_list<float> input_data, std::initializer_list<float> weights_data,
-    std::initializer_list<float> bias_data, std::initializer_list<float> output_data)
+  std::initializer_list<int32_t> input_shape, std::initializer_list<int32_t> weights_shape,
+  std::initializer_list<int32_t> bias_shape, std::initializer_list<int32_t> output_shape,
+  std::initializer_list<float> input_data, std::initializer_list<float> weights_data,
+  std::initializer_list<float> bias_data, std::initializer_list<float> output_data)
 {
   const float quantized_tolerance = getTolerance(-127, 128, 255);
   std::pair<float, int32_t> input_quant_param = quantizationParams<uint8_t>(-63.5, 64);
@@ -63,9 +63,9 @@ void Check<uint8_t>(
   Tensor weights_tensor = makeInputTensor<DataType::U8>(weights_shape, input_quant_param.first,
                                                         input_quant_param.second, weights_data);
   Tensor bias_tensor = makeInputTensor<DataType::S32>(
-      bias_shape, input_quant_param.first * input_quant_param.first, 0, bias_data);
+    bias_shape, input_quant_param.first * input_quant_param.first, 0, bias_data);
   Tensor output_tensor =
-      makeOutputTensor(DataType::U8, output_quant_param.first, output_quant_param.second);
+    makeOutputTensor(DataType::U8, output_quant_param.first, output_quant_param.second);
 
   FullyConnectedParams params{};
   params.activation = Activation::RELU;
@@ -90,32 +90,33 @@ TYPED_TEST(FullyConnectedTest, Simple)
 {
   Check<TypeParam>({3, 2, 2, 1}, {3, 6}, {3}, {2, 3},
                    {
-                       -3, -5, 5, 4, 9, -2,  // batch = 0
-                       -3, -2, -4, 9, -8, 1, // batch = 1
+                     -3, -5, 5, 4, 9, -2,  // batch = 0
+                     -3, -2, -4, 9, -8, 1, // batch = 1
                    },
                    {
-                       -3, -7, 4, -4, -6, 4, // unit = 0
-                       3, 5, 2, 3, -3, -8,   // unit = 1
-                       -3, 7, 4, 9, 0, -5,   // unit = 2
+                     -3, -7, 4, -4, -6, 4, // unit = 0
+                     3, 5, 2, 3, -3, -8,   // unit = 1
+                     -3, 7, 4, 9, 0, -5,   // unit = 2
                    },
-                   {-1, -5, -8}, {
-                                     0, 0, 32,   // batch = 0
-                                     22, 11, 47, // batch = 1
-                                 });
+                   {-1, -5, -8},
+                   {
+                     0, 0, 32,   // batch = 0
+                     22, 11, 47, // batch = 1
+                   });
 }
 
 TEST(FullyConnectedTest, InvalidBiasType_NEG)
 {
   Shape input_shape{3, 2, 2, 1};
   std::vector<float> input_data{
-      -3, -5, 5,  4, 9,  -2, // batch = 0
-      -3, -2, -4, 9, -8, 1,  // batch = 1
+    -3, -5, 5,  4, 9,  -2, // batch = 0
+    -3, -2, -4, 9, -8, 1,  // batch = 1
   };
   Shape weights_shape{3, 6};
   std::vector<float> weights_data{
-      -3, -7, 4, -4, -6, 4,  // unit = 0
-      3,  5,  2, 3,  -3, -8, // unit = 1
-      -3, 7,  4, 9,  0,  -5, // unit = 2
+    -3, -7, 4, -4, -6, 4,  // unit = 0
+    3,  5,  2, 3,  -3, -8, // unit = 1
+    -3, 7,  4, 9,  0,  -5, // unit = 2
   };
   Shape bias_shape{3};
   std::vector<int32_t> bias_data{-1, -5, -8};
@@ -136,14 +137,14 @@ TEST(FullyConnectedTest, InvalidWeightShapeDim_NEG)
 {
   Shape input_shape{3, 2, 2, 1};
   std::vector<float> input_data{
-      -3, -5, 5,  4, 9,  -2, // batch = 0
-      -3, -2, -4, 9, -8, 1,  // batch = 1
+    -3, -5, 5,  4, 9,  -2, // batch = 0
+    -3, -2, -4, 9, -8, 1,  // batch = 1
   };
   Shape weights_shape{1, 3, 6};
   std::vector<float> weights_data{
-      -3, -7, 4, -4, -6, 4,  // unit = 0
-      3,  5,  2, 3,  -3, -8, // unit = 1
-      -3, 7,  4, 9,  0,  -5, // unit = 2
+    -3, -7, 4, -4, -6, 4,  // unit = 0
+    3,  5,  2, 3,  -3, -8, // unit = 1
+    -3, 7,  4, 9,  0,  -5, // unit = 2
   };
   Shape bias_shape{3};
   std::vector<float> bias_data{-1, -5, -8};
@@ -164,17 +165,17 @@ TEST(FullyConnectedTest, BiasElementNumWeightDimMismatch_NEG)
 {
   Shape input_shape{3, 2, 2, 1};
   std::vector<float> input_data{
-      -3, -5, 5,  4, 9,  -2, // batch = 0
-      -3, -2, -4, 9, -8, 1,  // batch = 1
+    -3, -5, 5,  4, 9,  -2, // batch = 0
+    -3, -2, -4, 9, -8, 1,  // batch = 1
   };
   Shape weights_shape{6, 3};
   std::vector<float> weights_data{
-      -3, -7, 4,  // unit = 0
-      -4, -6, 4,  // unit = 1
-      3,  5,  2,  // unit = 2
-      3,  -3, -8, // unit = 3
-      -3, 7,  4,  // unit = 4
-      9,  0,  -5, // unit = 5
+    -3, -7, 4,  // unit = 0
+    -4, -6, 4,  // unit = 1
+    3,  5,  2,  // unit = 2
+    3,  -3, -8, // unit = 3
+    -3, 7,  4,  // unit = 4
+    9,  0,  -5, // unit = 5
   };
   Shape bias_shape{3};
   std::vector<float> bias_data{-1, -5, -8};

@@ -31,7 +31,7 @@ namespace kernels
 {
 
 Add::Add(const Tensor *input1, const Tensor *input2, Tensor *output, const AddParams &params)
-    : KernelWithParams<AddParams>({input1, input2}, {output}, params)
+  : KernelWithParams<AddParams>({input1, input2}, {output}, params)
 {
 }
 
@@ -76,13 +76,13 @@ void Add::evalFloat() const
   params.float_activation_max = activation_max;
 
   const bool need_broadcast = tflite::reference_ops::ProcessBroadcastShapes(
-      getTensorShape(input1()), getTensorShape(input2()), &params);
+    getTensorShape(input1()), getTensorShape(input2()), &params);
 
   if (need_broadcast)
   {
     tflite::reference_ops::BroadcastAdd4DSlow(
-        params, getTensorShape(input1()), getTensorData<float>(input1()), getTensorShape(input2()),
-        getTensorData<float>(input2()), getTensorShape(output()), getTensorData<float>(output()));
+      params, getTensorShape(input1()), getTensorData<float>(input1()), getTensorShape(input2()),
+      getTensorData<float>(input2()), getTensorShape(output()), getTensorData<float>(output()));
   }
   else
   {
@@ -130,14 +130,13 @@ void Add::evalQuantized() const
   params.quantized_activation_max = activation_max;
 
   const bool need_broadcast = tflite::reference_ops::ProcessBroadcastShapes(
-      getTensorShape(input1()), getTensorShape(input2()), &params);
+    getTensorShape(input1()), getTensorShape(input2()), &params);
 
   if (need_broadcast)
   {
     tflite::reference_ops::BroadcastAdd4DSlow(
-        params, getTensorShape(input1()), getTensorData<uint8_t>(input1()),
-        getTensorShape(input2()), getTensorData<uint8_t>(input2()), getTensorShape(output()),
-        getTensorData<uint8_t>(output()));
+      params, getTensorShape(input1()), getTensorData<uint8_t>(input1()), getTensorShape(input2()),
+      getTensorData<uint8_t>(input2()), getTensorShape(output()), getTensorData<uint8_t>(output()));
   }
   else
   {
@@ -176,12 +175,12 @@ void Add::evalQuantizedS16() const
     const int32_t shifted_input1_val = static_cast<int32_t>(input1_val) << left_shift;
     const int32_t shifted_input2_val = static_cast<int32_t>(input2_val) << left_shift;
     const int32_t scaled_input1_val = tflite::MultiplyByQuantizedMultiplierSmallerThanOneExp(
-        shifted_input1_val, input1_multiplier, input1_shift);
+      shifted_input1_val, input1_multiplier, input1_shift);
     const int32_t scaled_input2_val = tflite::MultiplyByQuantizedMultiplierSmallerThanOneExp(
-        shifted_input2_val, input2_multiplier, input2_shift);
+      shifted_input2_val, input2_multiplier, input2_shift);
     const int32_t raw_sum = scaled_input1_val + scaled_input2_val;
     const int32_t raw_output = tflite::MultiplyByQuantizedMultiplierSmallerThanOneExp(
-        raw_sum, output_multiplier, output_shift);
+      raw_sum, output_multiplier, output_shift);
     const int32_t clamped_output = std::min(activation_max, std::max(activation_min, raw_output));
     return static_cast<int16_t>(clamped_output);
   };

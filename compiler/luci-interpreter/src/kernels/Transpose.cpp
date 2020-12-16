@@ -29,7 +29,7 @@ namespace kernels
 {
 
 Transpose::Transpose(const Tensor *input, const Tensor *perm, Tensor *output)
-    : Kernel({input, perm}, {output})
+  : Kernel({input, perm}, {output})
 {
 }
 

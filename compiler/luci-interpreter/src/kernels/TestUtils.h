@@ -59,7 +59,7 @@ Tensor makeInputTensor(const Shape &shape, float scale, int32_t zero_point,
   using NativeT = typename DataTypeImpl<DT>::Type;
   Tensor tensor(DT, shape, {{scale}, {zero_point}}, "");
   std::vector<NativeT> quantized_data =
-      quantize<NativeT>(data.data(), data.size(), scale, zero_point);
+    quantize<NativeT>(data.data(), data.size(), scale, zero_point);
   tensor.writeData(quantized_data.data(), quantized_data.size() * sizeof(NativeT));
   return tensor;
 }
@@ -108,7 +108,7 @@ Tensor makeInputTensor(const Shape &shape, const std::vector<float> &scales,
       float scale = scales[channel];
       size_t offset = inner_dims_size * (quant_dim_size * outer_it + channel);
       std::vector<NativeT> part_quantized_data =
-          quantize<NativeT>(data.data() + offset, inner_dims_size, scale, zero_point);
+        quantize<NativeT>(data.data() + offset, inner_dims_size, scale, zero_point);
       quantized_data.insert(quantized_data.end(), part_quantized_data.begin(),
                             part_quantized_data.end());
     }
@@ -172,7 +172,7 @@ std::vector<T> quantize(const float *data, size_t num_elements, float scale, int
   {
     const auto &f = data[i];
     q.push_back(static_cast<T>(
-        std::max<float>(q_min, std::min<float>(q_max, std::round(zero_point + (f / scale))))));
+      std::max<float>(q_min, std::min<float>(q_max, std::round(zero_point + (f / scale))))));
   }
   return q;
 }
@@ -233,8 +233,8 @@ template <typename T> std::pair<float, int32_t> quantizationParams(float f_min, 
   const float zero_point_from_max_error = std::abs(qmax_double) + std::abs(f_max / scale);
 
   const float zero_point_double = zero_point_from_min_error < zero_point_from_max_error
-                                      ? zero_point_from_min
-                                      : zero_point_from_max;
+                                    ? zero_point_from_min
+                                    : zero_point_from_max;
 
   // Now we need to nudge the zero point to be an integer
   // (our zero points are integer, and this is motivated by the requirement

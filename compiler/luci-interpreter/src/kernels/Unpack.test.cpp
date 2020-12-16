@@ -121,11 +121,11 @@ TYPED_TEST(UnpackTest, ThreeDimensionsTwoOutputs)
 TYPED_TEST(UnpackTest, FiveDimensionsTwoOutputs)
 {
   Check<TypeParam>(
-      /*axis=*/2, /*input_shape=*/{2, 2, 2, 2, 1},
-      /*input_data=*/{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16},
-      /*exp_output_shape=*/{{2, 2, 2, 1}, {2, 2, 2, 1}},
-      /*exp_output_data=*/
-      {{1, 2, 5, 6, 9, 10, 13, 14}, {3, 4, 7, 8, 11, 12, 15, 16}});
+    /*axis=*/2, /*input_shape=*/{2, 2, 2, 2, 1},
+    /*input_data=*/{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16},
+    /*exp_output_shape=*/{{2, 2, 2, 1}, {2, 2, 2, 1}},
+    /*exp_output_data=*/
+    {{1, 2, 5, 6, 9, 10, 13, 14}, {3, 4, 7, 8, 11, 12, 15, 16}});
 }
 
 TYPED_TEST(UnpackTest, VectorToScalar)

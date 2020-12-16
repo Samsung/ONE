@@ -28,7 +28,7 @@ namespace kernels
 
 InstanceNorm::InstanceNorm(const Tensor *input, const Tensor *gamma, const Tensor *beta,
                            Tensor *output, const InstanceNormParams &params)
-    : KernelWithParams<InstanceNormParams>({input, gamma, beta}, {output}, params)
+  : KernelWithParams<InstanceNormParams>({input, gamma, beta}, {output}, params)
 {
 }
 
@@ -96,11 +96,11 @@ void InstanceNorm::evalFloat() const
         for (int32_t width = 0; width < widths; width++)
         {
           double input_value =
-              input_data[tflite::Offset(output_shape, batch, height, width, channel)];
+            input_data[tflite::Offset(output_shape, batch, height, width, channel)];
           double output_value = input_value * a + b;
           output_data[tflite::Offset(output_shape, batch, height, width, channel)] =
-              tflite::ActivationFunctionWithMinMax((float)output_value, activation_min,
-                                                   activation_max);
+            tflite::ActivationFunctionWithMinMax((float)output_value, activation_min,
+                                                 activation_max);
         }
       }
     }

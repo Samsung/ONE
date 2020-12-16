@@ -30,7 +30,7 @@ namespace kernels
 {
 
 LeakyRelu::LeakyRelu(const Tensor *input, Tensor *output, const LeakyReluParams &params)
-    : KernelWithParams<LeakyReluParams>({input}, {output}, params)
+  : KernelWithParams<LeakyReluParams>({input}, {output}, params)
 {
 }
 
@@ -82,8 +82,8 @@ void LeakyRelu::evalQuantized() const
   op_params.output_shift_identity = _output_shift_identity;
 
   tflite::reference_ops::QuantizeLeakyRelu(
-      op_params, getTensorShape(input()), getTensorData<uint8_t>(input()), getTensorShape(output()),
-      getTensorData<uint8_t>(output()));
+    op_params, getTensorShape(input()), getTensorData<uint8_t>(input()), getTensorShape(output()),
+    getTensorData<uint8_t>(output()));
 }
 
 } // namespace kernels

@@ -28,7 +28,7 @@ namespace kernels
 {
 
 FloorDiv::FloorDiv(const Tensor *input, const Tensor *alpha, Tensor *output)
-    : Kernel({input, alpha}, {output})
+  : Kernel({input, alpha}, {output})
 {
 }
 
@@ -70,14 +70,14 @@ void FloorDiv::evalFloat() const
   if (x()->shape() != y()->shape())
   {
     tflite::reference_ops::BroadcastBinaryFunction4DSlow<float, float, float>(
-        getTensorShape(x()), x_data, getTensorShape(y()), y_data, getTensorShape(output()),
-        getTensorData<float>(output()), FloorDivFunc);
+      getTensorShape(x()), x_data, getTensorShape(y()), y_data, getTensorShape(output()),
+      getTensorData<float>(output()), FloorDivFunc);
   }
   else
   {
     tflite::reference_ops::BinaryFunction<float, float, float>(
-        getTensorShape(x()), x_data, getTensorShape(y()), y_data, getTensorShape(output()),
-        getTensorData<float>(output()), FloorDivFunc);
+      getTensorShape(x()), x_data, getTensorShape(y()), y_data, getTensorShape(output()),
+      getTensorData<float>(output()), FloorDivFunc);
   }
 }
 

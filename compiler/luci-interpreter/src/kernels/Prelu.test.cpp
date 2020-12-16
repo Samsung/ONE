@@ -52,18 +52,18 @@ TEST(PreluTest, FloatSimple)
                /*output_shape=*/{2, 3},
                /*input_data=*/
                {
-                   0.0f, 1.0f, 3.0f,   // Row 1
-                   1.0f, -1.0f, -2.0f, // Row 2
+                 0.0f, 1.0f, 3.0f,   // Row 1
+                 1.0f, -1.0f, -2.0f, // Row 2
                },
                /*alpha_data=*/
                {
-                   0.0f, 0.5f, 0.1f, // Row 1
-                   0.0f, 0.5f, 0.1f, // Row 2
+                 0.0f, 0.5f, 0.1f, // Row 1
+                 0.0f, 0.5f, 0.1f, // Row 2
                },
                /*output_data=*/
                {
-                   0.0f, 1.0f, 3.0f,   // Row 1
-                   1.0f, -0.5f, -0.2f, // Row 2
+                 0.0f, 1.0f, 3.0f,   // Row 1
+                 1.0f, -0.5f, -0.2f, // Row 2
                });
 
   SUCCEED();
@@ -75,19 +75,19 @@ TEST(PreluTest, FloatBroadcast)
                /*output_shape=*/{1, 2, 2, 3},
                /*input_data=*/
                {
-                   0.0f, 0.0f, 0.0f,    // Row 1, Column 1
-                   1.0f, 1.0f, 1.0f,    // Row 1, Column 2
-                   -1.0f, -1.0f, -1.0f, // Row 2, Column 1
-                   -2.0f, -2.0f, -2.0f, // Row 2, Column 2
+                 0.0f, 0.0f, 0.0f,    // Row 1, Column 1
+                 1.0f, 1.0f, 1.0f,    // Row 1, Column 2
+                 -1.0f, -1.0f, -1.0f, // Row 2, Column 1
+                 -2.0f, -2.0f, -2.0f, // Row 2, Column 2
                },
                /*alpha_data=*/
                {0.0f, 1.0f, 2.0f},
                /*output_data=*/
                {
-                   0.0f, 0.0f, 0.0f,   // Row 1, Column 1
-                   1.0f, 1.0f, 1.0f,   // Row 1, Column 2
-                   0.0f, -1.0f, -2.0f, // Row 2, Column 1
-                   0.0f, -2.0f, -4.0f, // Row 2, Column 2
+                 0.0f, 0.0f, 0.0f,   // Row 1, Column 1
+                 1.0f, 1.0f, 1.0f,   // Row 1, Column 2
+                 0.0f, -1.0f, -2.0f, // Row 2, Column 1
+                 0.0f, -2.0f, -4.0f, // Row 2, Column 2
                });
 
   SUCCEED();
@@ -104,10 +104,10 @@ TEST(PreluTest, Uint8Simple)
   float kQuantizedTolerance = GetTolerance(-1.0, 1.0);
   std::pair<float, int32_t> quant_param = quantizationParams<uint8_t>(-1.0f, 1.0f);
 
-  Tensor input_tensor = makeInputTensor<DataType::U8>({1, 2, 3, 1}, quant_param.first,
-                                                      quant_param.second, input_data);
-  Tensor alpha_tensor = makeInputTensor<DataType::U8>({1, 2, 3, 1}, quant_param.first,
-                                                      quant_param.second, alpha_data);
+  Tensor input_tensor =
+    makeInputTensor<DataType::U8>({1, 2, 3, 1}, quant_param.first, quant_param.second, input_data);
+  Tensor alpha_tensor =
+    makeInputTensor<DataType::U8>({1, 2, 3, 1}, quant_param.first, quant_param.second, alpha_data);
   Tensor output_tensor = makeOutputTensor(DataType::U8, quant_param.first, quant_param.second);
 
   Prelu kernel(&input_tensor, &alpha_tensor, &output_tensor);
@@ -124,33 +124,33 @@ TEST(PreluTest, Uint8Simple)
 TEST(PreluTest, Uint8Broadcast)
 {
   std::vector<float> input_data{
-      0.0f,   0.0f,   0.0f,   // Row 1, Column 1
-      0.5f,   0.5f,   0.5f,   // Row 1, Column 2
-      -1.0f,  -1.0f,  -1.0f,  // Row 2, Column 1
-      -0.25f, -0.25f, -0.25f, // Row 2, Column 2
+    0.0f,   0.0f,   0.0f,   // Row 1, Column 1
+    0.5f,   0.5f,   0.5f,   // Row 1, Column 2
+    -1.0f,  -1.0f,  -1.0f,  // Row 2, Column 1
+    -0.25f, -0.25f, -0.25f, // Row 2, Column 2
   };
   std::vector<float> alpha_data{0.0f, 0.5f, -0.5f};
   std::vector<float> ref_output_data{
-      0.0f, 0.0f,    0.0f,  // Row 1, Column 1
-      0.5f, 0.5f,    0.5f,  // Row 1, Column 2
-      0.0f, -0.5f,   0.5f,  // Row 2, Column 1
-      0.0f, -0.125f, 0.125f // Row 2, Column 2
+    0.0f, 0.0f,    0.0f,  // Row 1, Column 1
+    0.5f, 0.5f,    0.5f,  // Row 1, Column 2
+    0.0f, -0.5f,   0.5f,  // Row 2, Column 1
+    0.0f, -0.125f, 0.125f // Row 2, Column 2
   };
   std::vector<float> ref_quant_output_data{
-      128, 128, 128, // Row 1, Column 1
-      192, 192, 192, // Row 1, Column 2
-      128, 64,  192, // Row 2, Column 1
-      128, 112, 144  // Row 2, Column 2
+    128, 128, 128, // Row 1, Column 1
+    192, 192, 192, // Row 1, Column 2
+    128, 64,  192, // Row 2, Column 1
+    128, 112, 144  // Row 2, Column 2
   };
   float kQuantizedTolerance = 2 * (1. / 256);
   const float kMin = -1;
   const float kMax = 127.f / 128.f;
   std::pair<float, int32_t> quant_param = quantizationParams<uint8_t>(kMin, kMax);
 
-  Tensor input_tensor = makeInputTensor<DataType::U8>({1, 2, 2, 3}, quant_param.first,
-                                                      quant_param.second, input_data);
+  Tensor input_tensor =
+    makeInputTensor<DataType::U8>({1, 2, 2, 3}, quant_param.first, quant_param.second, input_data);
   Tensor alpha_tensor =
-      makeInputTensor<DataType::U8>({1, 1, 3}, quant_param.first, quant_param.second, alpha_data);
+    makeInputTensor<DataType::U8>({1, 1, 3}, quant_param.first, quant_param.second, alpha_data);
   Tensor output_tensor = makeOutputTensor(DataType::U8, quant_param.first, quant_param.second);
 
   Prelu kernel(&input_tensor, &alpha_tensor, &output_tensor);
@@ -185,17 +185,17 @@ TEST(PreluTest, SInt16Simple)
 TEST(PreluTest, SInt16Broadcast)
 {
   std::vector<float> input_data{
-      0.0f,   0.0f,   0.0f,   // Row 1, Column 1
-      0.5f,   0.5f,   0.5f,   // Row 1, Column 2
-      -1.0f,  -1.0f,  -1.0f,  // Row 2, Column 1
-      -0.25f, -0.25f, -0.25f, // Row 2, Column 2
+    0.0f,   0.0f,   0.0f,   // Row 1, Column 1
+    0.5f,   0.5f,   0.5f,   // Row 1, Column 2
+    -1.0f,  -1.0f,  -1.0f,  // Row 2, Column 1
+    -0.25f, -0.25f, -0.25f, // Row 2, Column 2
   };
   std::vector<float> alpha_data{0.0f, 0.5f, -0.5f};
   std::vector<float> ref_output_data{
-      0.0f, 0.0f,    0.0f,  // Row 1, Column 1
-      0.5f, 0.5f,    0.5f,  // Row 1, Column 2
-      0.0f, -0.5f,   0.5f,  // Row 2, Column 1
-      0.0f, -0.125f, 0.125f // Row 2, Column 2
+    0.0f, 0.0f,    0.0f,  // Row 1, Column 1
+    0.5f, 0.5f,    0.5f,  // Row 1, Column 2
+    0.0f, -0.5f,   0.5f,  // Row 2, Column 1
+    0.0f, -0.125f, 0.125f // Row 2, Column 2
   };
 
   Tensor input_tensor = makeInputTensor<DataType::S16>({1, 2, 2, 3}, 0.01, 0, input_data);

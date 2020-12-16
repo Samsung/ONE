@@ -30,13 +30,13 @@ using namespace testing;
 TEST(Relu6Test, FloatSimple)
 {
   std::vector<float> input_data{
-      0.0f, 1.0f,  3.0f,  // Row 1
-      7.0f, -1.0f, -2.0f, // Row 2
+    0.0f, 1.0f,  3.0f,  // Row 1
+    7.0f, -1.0f, -2.0f, // Row 2
   };
 
   std::vector<float> ref_output_data{
-      0.0f, 1.0f, 3.0f, // Row 1
-      6.0f, 0.0f, 0.0f, // Row 2
+    0.0f, 1.0f, 3.0f, // Row 1
+    6.0f, 0.0f, 0.0f, // Row 2
   };
 
   Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({2, 3}, input_data);
@@ -59,13 +59,13 @@ TEST(Relu6Test, Uint8Quantized)
   const float tolerance = (f_max - f_min) / 255.0;
 
   std::vector<float> input_data{
-      0,  -6, 2, 8, //
-      -2, 3,  7, 1, //
+    0,  -6, 2, 8, //
+    -2, 3,  7, 1, //
   };
 
   std::pair<float, int32_t> quant_param = quantizationParams<uint8_t>(f_min, f_max);
-  Tensor input_tensor = makeInputTensor<DataType::U8>({1, 2, 4, 1}, quant_param.first,
-                                                      quant_param.second, input_data);
+  Tensor input_tensor =
+    makeInputTensor<DataType::U8>({1, 2, 4, 1}, quant_param.first, quant_param.second, input_data);
   Tensor output_tensor = makeOutputTensor(DataType::U8, quant_param.first, quant_param.second);
 
   Relu6 kernel(&input_tensor, &output_tensor);
@@ -89,13 +89,13 @@ TEST(Relu6Test, Uint8Requantized)
   const float tolerance = (in_max - in_min) / 255.0;
 
   std::vector<float> input_data{
-      0,  -6, 2, 8, //
-      -2, 3,  7, 1, //
+    0,  -6, 2, 8, //
+    -2, 3,  7, 1, //
   };
 
   std::pair<float, int32_t> quant_input = quantizationParams<uint8_t>(in_min, in_max);
-  Tensor input_tensor = makeInputTensor<DataType::U8>({1, 2, 4, 1}, quant_input.first,
-                                                      quant_input.second, input_data);
+  Tensor input_tensor =
+    makeInputTensor<DataType::U8>({1, 2, 4, 1}, quant_input.first, quant_input.second, input_data);
 
   std::pair<float, int32_t> quant_output = quantizationParams<uint8_t>(out_min, out_max);
   Tensor output_tensor = makeOutputTensor(DataType::U8, quant_output.first, quant_output.second);

@@ -30,7 +30,7 @@ using namespace testing;
 TEST(LocalResponseNormalizationTest, SameAsL2Norm)
 {
   Tensor input_tensor =
-      makeInputTensor<DataType::FLOAT32>({1, 1, 1, 6}, {-1.1, 0.6, 0.7, 1.2, -0.7, 0.1});
+    makeInputTensor<DataType::FLOAT32>({1, 1, 1, 6}, {-1.1, 0.6, 0.7, 1.2, -0.7, 0.1});
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   LocalResponseNormalizationParams params{};
@@ -50,7 +50,7 @@ TEST(LocalResponseNormalizationTest, SameAsL2Norm)
 TEST(LocalResponseNormalizationTest, WithAlpha)
 {
   Tensor input_tensor =
-      makeInputTensor<DataType::FLOAT32>({1, 1, 1, 6}, {-1.1, 0.6, 0.7, 1.2, -0.7, 0.1});
+    makeInputTensor<DataType::FLOAT32>({1, 1, 1, 6}, {-1.1, 0.6, 0.7, 1.2, -0.7, 0.1});
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   LocalResponseNormalizationParams params{};
@@ -70,7 +70,7 @@ TEST(LocalResponseNormalizationTest, WithAlpha)
 TEST(LocalResponseNormalizationTest, WithBias)
 {
   Tensor input_tensor =
-      makeInputTensor<DataType::FLOAT32>({1, 1, 1, 6}, {-1.1, 0.6, 0.7, 1.2, -0.7, 0.1});
+    makeInputTensor<DataType::FLOAT32>({1, 1, 1, 6}, {-1.1, 0.6, 0.7, 1.2, -0.7, 0.1});
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   LocalResponseNormalizationParams params{};
@@ -90,7 +90,7 @@ TEST(LocalResponseNormalizationTest, WithBias)
 TEST(LocalResponseNormalizationTest, SmallRadius)
 {
   Tensor input_tensor =
-      makeInputTensor<DataType::FLOAT32>({1, 1, 1, 6}, {-1.1, 0.6, 0.7, 1.2, -0.7, 0.1});
+    makeInputTensor<DataType::FLOAT32>({1, 1, 1, 6}, {-1.1, 0.6, 0.7, 1.2, -0.7, 0.1});
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   LocalResponseNormalizationParams params{};
@@ -110,7 +110,7 @@ TEST(LocalResponseNormalizationTest, SmallRadius)
 TEST(LocalResponseNormalizationTest, InvalidInputDimension_NEG)
 {
   Tensor input_tensor =
-      makeInputTensor<DataType::FLOAT32>({1, 1, 6}, {-1.1, 0.6, 0.7, 1.2, -0.7, 0.1});
+    makeInputTensor<DataType::FLOAT32>({1, 1, 6}, {-1.1, 0.6, 0.7, 1.2, -0.7, 0.1});
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   LocalResponseNormalizationParams params{};
@@ -126,7 +126,7 @@ TEST(LocalResponseNormalizationTest, InvalidInputDimension_NEG)
 TEST(LocalResponseNormalizationTest, InvalidInputOutputType_NEG)
 {
   Tensor input_tensor =
-      makeInputTensor<DataType::FLOAT32>({1, 1, 1, 6}, {-1.1, 0.6, 0.7, 1.2, -0.7, 0.1});
+    makeInputTensor<DataType::FLOAT32>({1, 1, 1, 6}, {-1.1, 0.6, 0.7, 1.2, -0.7, 0.1});
   Tensor output_tensor = makeOutputTensor(DataType::U8);
 
   LocalResponseNormalizationParams params{};

@@ -30,7 +30,7 @@ namespace kernels
 
 FullyConnected::FullyConnected(const Tensor *input, const Tensor *weights, const Tensor *bias,
                                Tensor *output, const FullyConnectedParams &params)
-    : KernelWithParams<FullyConnectedParams>({input, weights, bias}, {output}, params)
+  : KernelWithParams<FullyConnectedParams>({input, weights, bias}, {output}, params)
 {
 }
 
@@ -97,9 +97,9 @@ void FullyConnected::evalFloat() const
   params.weights_format = tflite::FullyConnectedWeightsFormat::kDefault;
 
   tflite::reference_ops::FullyConnected(
-      params, getTensorShape(input()), getTensorData<float>(input()), getTensorShape(weights()),
-      getTensorData<float>(weights()), getTensorShape(bias()), getTensorData<float>(bias()),
-      getTensorShape(output()), getTensorData<float>(output()));
+    params, getTensorShape(input()), getTensorData<float>(input()), getTensorShape(weights()),
+    getTensorData<float>(weights()), getTensorShape(bias()), getTensorData<float>(bias()),
+    getTensorShape(output()), getTensorData<float>(output()));
 }
 
 void FullyConnected::evalQuantized() const
@@ -110,7 +110,7 @@ void FullyConnected::evalQuantized() const
   int32_t output_activation_max;
   int32_t output_multiplier;
   real_multiplier =
-      getQuantizedConvolutionMultipler(input()->scale(), weights()->scale(), output()->scale());
+    getQuantizedConvolutionMultipler(input()->scale(), weights()->scale(), output()->scale());
   quantizeMultiplier(real_multiplier, &output_multiplier, &output_shift);
   calculateActivationRangeQuantized(params().activation, output(), &output_activation_min,
                                     &output_activation_max);
@@ -130,9 +130,9 @@ void FullyConnected::evalQuantized() const
   op_params.lhs_cacheable = false;
   op_params.rhs_cacheable = false;
   tflite::reference_ops::FullyConnected(
-      op_params, getTensorShape(input()), getTensorData<uint8_t>(input()),
-      getTensorShape(weights()), getTensorData<uint8_t>(weights()), getTensorShape(bias()),
-      getTensorData<int32_t>(bias()), getTensorShape(output()), getTensorData<uint8_t>(output()));
+    op_params, getTensorShape(input()), getTensorData<uint8_t>(input()), getTensorShape(weights()),
+    getTensorData<uint8_t>(weights()), getTensorShape(bias()), getTensorData<int32_t>(bias()),
+    getTensorShape(output()), getTensorData<uint8_t>(output()));
 }
 
 } // namespace kernels

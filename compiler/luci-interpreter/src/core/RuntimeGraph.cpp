@@ -94,7 +94,7 @@ void RuntimeGraph::TensorAllocPlan::deallocate(size_t kernel_index) const
 }
 
 RuntimeGraph::RuntimeGraph(RuntimeModule *owning_module)
-    : _owning_module(owning_module), _tensor_alloc_plan(std::make_unique<TensorAllocPlan>())
+  : _owning_module(owning_module), _tensor_alloc_plan(std::make_unique<TensorAllocPlan>())
 {
 }
 

@@ -27,7 +27,7 @@ namespace kernels
 {
 
 Squeeze::Squeeze(const Tensor *input, Tensor *output, const SqueezeParams &params)
-    : KernelWithParams<SqueezeParams>({input}, {output}, params)
+  : KernelWithParams<SqueezeParams>({input}, {output}, params)
 {
 }
 

@@ -29,7 +29,7 @@ namespace kernels
 {
 
 Unpack::Unpack(const Tensor *input, std::vector<Tensor *> outputs, const UnpackParams &params)
-    : KernelWithParams<UnpackParams>({input}, std::move(outputs), params)
+  : KernelWithParams<UnpackParams>({input}, std::move(outputs), params)
 {
 }
 

@@ -30,9 +30,9 @@ TEST(AveragePool2DTest, Float)
 {
   Shape input_shape{1, 3, 5, 1};
   std::vector<float> input_data{
-      -4, -3, -2, -1, 0,  //
-      1,  2,  3,  4,  5,  //
-      6,  7,  8,  9,  10, //
+    -4, -3, -2, -1, 0,  //
+    1,  2,  3,  4,  5,  //
+    6,  7,  8,  9,  10, //
   };
   Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
@@ -50,8 +50,8 @@ TEST(AveragePool2DTest, Float)
   kernel.execute();
 
   std::vector<float> ref_output_data{
-      0, 1.5, //
-      4.5, 6, //
+    0, 1.5, //
+    4.5, 6, //
   };
   EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(ref_output_data));
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({1, 2, 2, 1}));
@@ -60,12 +60,12 @@ TEST(AveragePool2DTest, Float)
 TEST(AveragePool2DTest, Uint8_0)
 {
   std::vector<float> input_data{
-      0,  -6, 12, 4, //
-      -3, -2, 10, 7, //
+    0,  -6, 12, 4, //
+    -3, -2, 10, 7, //
   };
   std::pair<float, int32_t> quant_param = quantizationParams<uint8_t>(-15.9375f, 15.9375f);
-  Tensor input_tensor = makeInputTensor<DataType::U8>({1, 2, 4, 1}, quant_param.first,
-                                                      quant_param.second, input_data);
+  Tensor input_tensor =
+    makeInputTensor<DataType::U8>({1, 2, 4, 1}, quant_param.first, quant_param.second, input_data);
   Tensor output_tensor = makeOutputTensor(DataType::U8, quant_param.first, quant_param.second);
 
   Pool2DParams params{};
@@ -87,13 +87,13 @@ TEST(AveragePool2DTest, Uint8_0)
 TEST(AveragePool2DTest, Uint8_1)
 {
   std::vector<float> input_data{
-      0, 6, 12, 4, //
-      3, 2, 10, 7, //
+    0, 6, 12, 4, //
+    3, 2, 10, 7, //
   };
 
   std::pair<float, int32_t> quant_param = quantizationParams<uint8_t>(-15.9375f, 15.9375f);
-  Tensor input_tensor = makeInputTensor<DataType::U8>({1, 2, 4, 1}, quant_param.first,
-                                                      quant_param.second, input_data);
+  Tensor input_tensor =
+    makeInputTensor<DataType::U8>({1, 2, 4, 1}, quant_param.first, quant_param.second, input_data);
   Tensor output_tensor = makeOutputTensor(DataType::U8, quant_param.first, quant_param.second);
 
   Pool2DParams params{};
@@ -117,13 +117,13 @@ TEST(AveragePool2DTest, SInt16)
   Shape input_shape{1, 3, 5, 1};
   std::vector<int32_t> ref_output_shape{1, 2, 2, 1};
   std::vector<float> input_data{
-      -4, -3, -2, -1, 0,  //
-      1,  2,  3,  4,  5,  //
-      6,  7,  8,  9,  10, //
+    -4, -3, -2, -1, 0,  //
+    1,  2,  3,  4,  5,  //
+    6,  7,  8,  9,  10, //
   };
   std::vector<float> ref_output_data{
-      0, 1.5, //
-      4.5, 6, //
+    0, 1.5, //
+    4.5, 6, //
   };
   Tensor input_tensor = makeInputTensor<DataType::S16>(input_shape, 0.5, 0, input_data);
   Tensor output_tensor = makeOutputTensor(DataType::S16, 0.5, 0);
@@ -148,9 +148,9 @@ TEST(AveragePool2DTest, Invalid_Input_Shape_NEG)
 {
   Shape input_shape{1, 3, 5};
   std::vector<float> input_data{
-      -4, -3, -2, -1, 0,  //
-      1,  2,  3,  4,  5,  //
-      6,  7,  8,  9,  10, //
+    -4, -3, -2, -1, 0,  //
+    1,  2,  3,  4,  5,  //
+    6,  7,  8,  9,  10, //
   };
   Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
@@ -171,9 +171,9 @@ TEST(AveragePool2DTest, In_Out_Type_NEG)
 {
   Shape input_shape{1, 3, 5, 1};
   std::vector<float> input_data{
-      -4, -3, -2, -1, 0,  //
-      1,  2,  3,  4,  5,  //
-      6,  7,  8,  9,  10, //
+    -4, -3, -2, -1, 0,  //
+    1,  2,  3,  4,  5,  //
+    6,  7,  8,  9,  10, //
   };
   Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
   Tensor output_tensor = makeOutputTensor(DataType::U8);
@@ -193,8 +193,8 @@ TEST(AveragePool2DTest, In_Out_Type_NEG)
 TEST(AveragePool2DTest, Quant_Param_NEG)
 {
   std::vector<float> input_data{
-      0,  -6, 12, 4, //
-      -3, -2, 10, 7, //
+    0,  -6, 12, 4, //
+    -3, -2, 10, 7, //
   };
 
   std::pair<float, int32_t> quant_param1 = quantizationParams<uint8_t>(-15.9375f, 15.9375f);

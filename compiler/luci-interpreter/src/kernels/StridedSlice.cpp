@@ -31,7 +31,7 @@ namespace kernels
 
 StridedSlice::StridedSlice(const Tensor *input, const Tensor *begin, const Tensor *end,
                            const Tensor *strides, Tensor *output, const StridedSliceParams &params)
-    : KernelWithParams<StridedSliceParams>({input, begin, end, strides}, {output}, params)
+  : KernelWithParams<StridedSliceParams>({input, begin, end, strides}, {output}, params)
 {
 }
 
@@ -82,7 +82,7 @@ void StridedSlice::configure()
     assert(stride != 0);
     int32_t begin = ::tflite::strided_slice::StartForAxis(op_params, getTensorShape(input()), idx);
     int32_t end =
-        ::tflite::strided_slice::StopForAxis(op_params, getTensorShape(input()), idx, begin);
+      ::tflite::strided_slice::StopForAxis(op_params, getTensorShape(input()), idx, begin);
 
     const bool shrink_axis = params().shrink_axis_mask & (1 << idx);
     if (shrink_axis)

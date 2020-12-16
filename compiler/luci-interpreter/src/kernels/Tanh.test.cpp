@@ -31,8 +31,8 @@ TEST(TanhTest, Float)
 {
   Shape input_shape{1, 2, 4, 1};
   std::vector<float> input_data{
-      0, -6, 2,  4, //
-      3, -2, 10, 1, //
+    0, -6, 2,  4, //
+    3, -2, 10, 1, //
   };
   Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
@@ -42,8 +42,8 @@ TEST(TanhTest, Float)
   kernel.execute();
 
   std::vector<float> ref_output_data{
-      0,          -0.9999877, 0.9640275, 0.999329,  //
-      0.99505475, -0.9640275, 1,         0.7615941, //
+    0,          -0.9999877, 0.9640275, 0.999329,  //
+    0.99505475, -0.9640275, 1,         0.7615941, //
   };
   EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(ref_output_data));
 }
@@ -56,41 +56,41 @@ TEST(TanhTest, Uint8)
   std::pair<float, int32_t> input_quant_param = quantizationParams<uint8_t>(8 * kMin, 8 * kMax);
   std::pair<float, int32_t> output_quant_param = quantizationParams<uint8_t>(kMin, kMax);
   std::vector<float> input_data{
-      0,  -6, 2, 4, //
-      -4, -2, 8, 1, //
-      0,  -6, 2, 4, //
-      -4, -2, 8, 1, //
-      0,  -6, 2, 4, //
-      -4, -2, 8, 1, //
-      0,  -6, 2, 4, //
-      -4, -2, 8, 1, //
-      0,  -6, 2, 4, //
-      -4, -2, 8, 1, //
-      0,  -6, 2, 4, //
-      -4, -2, 8, 1, //
+    0,  -6, 2, 4, //
+    -4, -2, 8, 1, //
+    0,  -6, 2, 4, //
+    -4, -2, 8, 1, //
+    0,  -6, 2, 4, //
+    -4, -2, 8, 1, //
+    0,  -6, 2, 4, //
+    -4, -2, 8, 1, //
+    0,  -6, 2, 4, //
+    -4, -2, 8, 1, //
+    0,  -6, 2, 4, //
+    -4, -2, 8, 1, //
   };
   Tensor input_tensor = makeInputTensor<DataType::U8>({2, 6, 4, 1}, input_quant_param.first,
                                                       input_quant_param.second, input_data);
   Tensor output_tensor =
-      makeOutputTensor(DataType::U8, output_quant_param.first, output_quant_param.second);
+    makeOutputTensor(DataType::U8, output_quant_param.first, output_quant_param.second);
 
   Tanh kernel(&input_tensor, &output_tensor);
   kernel.configure();
   kernel.execute();
 
   std::vector<float> ref_output_data{
-      0.0,       -0.999987, 0.964027, 0.999329, //
-      -0.999329, -0.96402,  0.99999,  0.76159,  //
-      0.0,       -0.999987, 0.964027, 0.999329, //
-      -0.999329, -0.96402,  0.99999,  0.76159,  //
-      0.0,       -0.999987, 0.964027, 0.999329, //
-      -0.999329, -0.96402,  0.99999,  0.76159,  //
-      0.0,       -0.999987, 0.964027, 0.999329, //
-      -0.999329, -0.96402,  0.99999,  0.76159,  //
-      0.0,       -0.999987, 0.964027, 0.999329, //
-      -0.999329, -0.96402,  0.99999,  0.76159,  //
-      0.0,       -0.999987, 0.964027, 0.999329, //
-      -0.999329, -0.96402,  0.99999,  0.76159,  //
+    0.0,       -0.999987, 0.964027, 0.999329, //
+    -0.999329, -0.96402,  0.99999,  0.76159,  //
+    0.0,       -0.999987, 0.964027, 0.999329, //
+    -0.999329, -0.96402,  0.99999,  0.76159,  //
+    0.0,       -0.999987, 0.964027, 0.999329, //
+    -0.999329, -0.96402,  0.99999,  0.76159,  //
+    0.0,       -0.999987, 0.964027, 0.999329, //
+    -0.999329, -0.96402,  0.99999,  0.76159,  //
+    0.0,       -0.999987, 0.964027, 0.999329, //
+    -0.999329, -0.96402,  0.99999,  0.76159,  //
+    0.0,       -0.999987, 0.964027, 0.999329, //
+    -0.999329, -0.96402,  0.99999,  0.76159,  //
   };
   std::vector<int32_t> ref_output_shape{2, 6, 4, 1};
   EXPECT_THAT(dequantizeTensorData(output_tensor), FloatArrayNear(ref_output_data, kTanhTolerance));
@@ -100,18 +100,18 @@ TEST(TanhTest, Uint8)
 TEST(TanhTest, InputTypeInvalid_NEG)
 {
   std::vector<int64_t> input_data{
-      0,  -6, 2, 4, //
-      -4, -2, 8, 1, //
-      0,  -6, 2, 4, //
-      -4, -2, 8, 1, //
-      0,  -6, 2, 4, //
-      -4, -2, 8, 1, //
-      0,  -6, 2, 4, //
-      -4, -2, 8, 1, //
-      0,  -6, 2, 4, //
-      -4, -2, 8, 1, //
-      0,  -6, 2, 4, //
-      -4, -2, 8, 1, //
+    0,  -6, 2, 4, //
+    -4, -2, 8, 1, //
+    0,  -6, 2, 4, //
+    -4, -2, 8, 1, //
+    0,  -6, 2, 4, //
+    -4, -2, 8, 1, //
+    0,  -6, 2, 4, //
+    -4, -2, 8, 1, //
+    0,  -6, 2, 4, //
+    -4, -2, 8, 1, //
+    0,  -6, 2, 4, //
+    -4, -2, 8, 1, //
   };
   Tensor input_tensor = makeInputTensor<DataType::S64>({2, 6, 4, 1}, input_data);
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
@@ -123,18 +123,18 @@ TEST(TanhTest, InputTypeInvalid_NEG)
 TEST(TanhTest, InputOutputMismatch_NEG)
 {
   std::vector<float> input_data{
-      0,  -6, 2, 4, //
-      -4, -2, 8, 1, //
-      0,  -6, 2, 4, //
-      -4, -2, 8, 1, //
-      0,  -6, 2, 4, //
-      -4, -2, 8, 1, //
-      0,  -6, 2, 4, //
-      -4, -2, 8, 1, //
-      0,  -6, 2, 4, //
-      -4, -2, 8, 1, //
-      0,  -6, 2, 4, //
-      -4, -2, 8, 1, //
+    0,  -6, 2, 4, //
+    -4, -2, 8, 1, //
+    0,  -6, 2, 4, //
+    -4, -2, 8, 1, //
+    0,  -6, 2, 4, //
+    -4, -2, 8, 1, //
+    0,  -6, 2, 4, //
+    -4, -2, 8, 1, //
+    0,  -6, 2, 4, //
+    -4, -2, 8, 1, //
+    0,  -6, 2, 4, //
+    -4, -2, 8, 1, //
   };
   Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({2, 6, 4, 1}, input_data);
   Tensor output_tensor = makeOutputTensor(DataType::U8);

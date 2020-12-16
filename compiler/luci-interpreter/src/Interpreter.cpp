@@ -31,7 +31,7 @@ class EventNotifierImpl final : public EventNotifier
 public:
   EventNotifierImpl(const RuntimeToIR &runtime_to_ir,
                     const std::vector<ExecutionObserver *> &observers)
-      : _runtime_to_ir(runtime_to_ir), _observers(observers)
+    : _runtime_to_ir(runtime_to_ir), _observers(observers)
   {
   }
 

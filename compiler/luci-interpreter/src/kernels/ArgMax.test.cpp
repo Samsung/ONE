@@ -60,14 +60,14 @@ TYPED_TEST(ArgMaxTest, Simple)
                             /*output_shape=*/{1, 1, 1},
                             /*input_data=*/
                             {
-                                1, 9, 7, 3,
+                              1, 9, 7, 3, //
                             },
                             /*dimension_data=*/{3}, /*output_data=*/{1});
   Check<TypeParam, int64_t>(/*input_shape=*/{1, 1, 1, 4}, /*dimension_shape=*/{},
                             /*output_shape=*/{1, 1, 1},
                             /*input_data=*/
                             {
-                                1, 9, 7, 3,
+                              1, 9, 7, 3, //
                             },
                             /*dimension_data=*/{3}, /*output_data=*/{1});
 }
@@ -78,14 +78,16 @@ TYPED_TEST(ArgMaxTest, MultiDimensions)
                             /*output_shape=*/{1, 1, 2},
                             /*input_data=*/
                             {
-                                1, 2, 7, 8, 1, 9, 7, 3,
+                              1, 2, 7, 8, //
+                              1, 9, 7, 3, //
                             },
                             /*dimension_data=*/{3}, /*output_data=*/{3, 1});
   Check<TypeParam, int64_t>(/*input_shape=*/{1, 1, 2, 4}, /*dimension_shape=*/{},
                             /*output_shape=*/{1, 1, 2},
                             /*input_data=*/
                             {
-                                1, 2, 7, 8, 1, 9, 7, 3,
+                              1, 2, 7, 8, //
+                              1, 9, 7, 3, //
                             },
                             /*dimension_data=*/{3}, /*output_data=*/{3, 1});
 }
@@ -93,7 +95,8 @@ TYPED_TEST(ArgMaxTest, MultiDimensions)
 TEST(ArgMaxTest, UnsupportedType_NEG)
 {
   Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({1, 1, 2, 4}, {
-                                                                             1, 2, 7, 8, 1, 9, 7, 3,
+                                                                           1, 2, 7, 8, //
+                                                                           1, 9, 7, 3, //
                                                                          });
   Tensor dimension_tensor = makeInputTensor<DataType::S32>({}, {3});
   Tensor output_tensor = makeOutputTensor(DataType::U8);

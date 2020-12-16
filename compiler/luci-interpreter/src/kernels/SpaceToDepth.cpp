@@ -24,7 +24,7 @@ namespace kernels
 {
 
 SpaceToDepth::SpaceToDepth(const Tensor *input, Tensor *output, const SpaceToDepthParams &params)
-    : KernelWithParams<SpaceToDepthParams>({input}, {output}, params)
+  : KernelWithParams<SpaceToDepthParams>({input}, {output}, params)
 {
 }
 

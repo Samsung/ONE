@@ -107,7 +107,7 @@ TEST(MeanTest, Uint8KeepDims)
 
   std::vector<int32_t> axis_data{1};
   Tensor input_tensor =
-      makeInputTensor<DataType::U8>({3, 2}, quant_param.first, quant_param.second, input_data);
+    makeInputTensor<DataType::U8>({3, 2}, quant_param.first, quant_param.second, input_data);
   Tensor axis_tensor = makeInputTensor<DataType::S32>({1}, axis_data);
   Tensor output_tensor = makeOutputTensor(DataType::U8, quant_param.first, quant_param.second);
 
@@ -133,7 +133,7 @@ TEST(MeanTest, Uint8NotKeepDims)
 
   std::vector<int32_t> axis_data{1};
   Tensor input_tensor =
-      makeInputTensor<DataType::U8>({1, 3, 2}, quant_param.first, quant_param.second, input_data);
+    makeInputTensor<DataType::U8>({1, 3, 2}, quant_param.first, quant_param.second, input_data);
   Tensor axis_tensor = makeInputTensor<DataType::S32>({1}, axis_data);
   Tensor output_tensor = makeOutputTensor(DataType::U8, quant_param.first, quant_param.second);
 
