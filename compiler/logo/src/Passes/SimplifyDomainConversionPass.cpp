@@ -232,7 +232,7 @@ bool SimplifyDomainConversionPass::run(loco::Graph *g)
         }
 
         transposeCandidates.insert(stdex::make_unique<TransposeCtx>(
-            encode_node, decode_node, encode_node->input(), perm_vec));
+          encode_node, decode_node, encode_node->input(), perm_vec));
       }
     }
 
@@ -294,7 +294,7 @@ bool SimplifyDomainConversionPass::run(loco::Graph *g)
         }
 
         transposeCandidates.insert(stdex::make_unique<TransposeCtx>(
-            encode_node, decode_node, encode_node->input(), perm_vec));
+          encode_node, decode_node, encode_node->input(), perm_vec));
       }
     }
 
@@ -378,7 +378,7 @@ bool SimplifyDomainConversionPass::run(loco::Graph *g)
         }
 
         transposeCandidates.insert(stdex::make_unique<TransposeCtx>(
-            encode_node, decode_node, encode_node->input(), perm_vec));
+          encode_node, decode_node, encode_node->input(), perm_vec));
       }
     }
 
@@ -397,7 +397,7 @@ bool SimplifyDomainConversionPass::run(loco::Graph *g)
 
       TransposeCtx(loco::Node *first, loco::Node *last, loco::Node *input,
                    std::vector<loco::TensorAxis> perm)
-          : first_node(first), last_node(last), input_node(input), perm_vec(perm)
+        : first_node(first), last_node(last), input_node(input), perm_vec(perm)
       { /* empty */
       }
     };
