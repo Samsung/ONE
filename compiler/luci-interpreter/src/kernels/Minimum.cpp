@@ -27,7 +27,7 @@ namespace kernels
 {
 
 Minimum::Minimum(const Tensor *input1, const Tensor *input2, Tensor *output)
-    : Kernel({input1, input2}, {output})
+  : Kernel({input1, input2}, {output})
 {
 }
 

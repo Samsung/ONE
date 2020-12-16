@@ -26,7 +26,7 @@ namespace kernels
 {
 
 Pad::Pad(const Tensor *input, const Tensor *paddings, Tensor *output)
-    : Kernel({input, paddings}, {output})
+  : Kernel({input, paddings}, {output})
 {
 }
 

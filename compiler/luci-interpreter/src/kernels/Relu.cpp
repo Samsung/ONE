@@ -82,7 +82,7 @@ void Relu::evalQuantized() const
   params.output_shift = _output_shift;
 
   params.quantized_activation_min =
-      std::max(static_cast<int32_t>(std::numeric_limits<uint8_t>::min()), params.output_offset);
+    std::max(static_cast<int32_t>(std::numeric_limits<uint8_t>::min()), params.output_offset);
   params.quantized_activation_max = static_cast<int32_t>(std::numeric_limits<uint8_t>::max());
 
   tflite::optimized_ops::ReluX(params, getTensorShape(input()), getTensorData<uint8_t>(input()),
@@ -103,7 +103,7 @@ void Relu::evalQuantizedS16() const
   {
     const int32_t input_val = input_data[i];
     int32_t output_val =
-        tflite::MultiplyByQuantizedMultiplier(input_val, _output_multiplier, _output_shift);
+      tflite::MultiplyByQuantizedMultiplier(input_val, _output_multiplier, _output_shift);
     output_val = std::max(output_val, output_min);
     output_val = std::min(output_val, output_max);
     output_data[i] = static_cast<int16_t>(output_val);

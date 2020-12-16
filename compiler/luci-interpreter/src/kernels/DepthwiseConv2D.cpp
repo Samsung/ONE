@@ -30,7 +30,7 @@ namespace kernels
 
 DepthwiseConv2D::DepthwiseConv2D(const Tensor *input, const Tensor *filter, const Tensor *bias,
                                  Tensor *output, const DepthwiseConv2DParams &params)
-    : KernelWithParams<DepthwiseConv2DParams>({input, filter, bias}, {output}, params)
+  : KernelWithParams<DepthwiseConv2DParams>({input, filter, bias}, {output}, params)
 {
 }
 
@@ -85,11 +85,11 @@ void DepthwiseConv2D::configure()
                                                bias()->shape().dim(0) == channels_out));
 
   const int32_t output_height =
-      computeOutputSize(_params.padding, input_height, filter_height, _params.stride_height,
-                        _params.dilation_height_factor);
+    computeOutputSize(_params.padding, input_height, filter_height, _params.stride_height,
+                      _params.dilation_height_factor);
   const int32_t output_width =
-      computeOutputSize(_params.padding, input_width, filter_width, _params.stride_width,
-                        _params.dilation_width_factor);
+    computeOutputSize(_params.padding, input_width, filter_width, _params.stride_width,
+                      _params.dilation_width_factor);
 
   _padding_height = computePadding(_params.stride_height, _params.dilation_height_factor,
                                    input_height, filter_height, output_height);
@@ -149,9 +149,9 @@ void DepthwiseConv2D::evalFloat() const
   params.float_activation_max = activation_max;
 
   tflite::reference_ops::DepthwiseConv(
-      params, getTensorShape(input()), getTensorData<float>(input()), getTensorShape(filter()),
-      getTensorData<float>(filter()), getTensorShape(bias()), getTensorData<float>(bias()),
-      getTensorShape(output()), getTensorData<float>(output()));
+    params, getTensorShape(input()), getTensorData<float>(input()), getTensorShape(filter()),
+    getTensorData<float>(filter()), getTensorShape(bias()), getTensorData<float>(bias()),
+    getTensorShape(output()), getTensorData<float>(output()));
 }
 
 void DepthwiseConv2D::evalQuantizedPerChannel() const
@@ -185,10 +185,10 @@ void DepthwiseConv2D::evalQuantizedPerChannel() const
   calculateActivationRangeQuantized(_params.activation, output(), &activation_min, &activation_max);
 
   const std::vector<double> effective_output_scales =
-      getQuantizedConvolutionMultiplers(input()->scale(), filter()->scales(), output()->scale());
+    getQuantizedConvolutionMultiplers(input()->scale(), filter()->scales(), output()->scale());
 
   std::vector<ChannelQuantMultipliers> quant_multipliers_raw =
-      quantizeMultipliers(effective_output_scales);
+    quantizeMultipliers(effective_output_scales);
   BroadcastableWrapper<ChannelQuantMultipliers> quant_multipliers(quant_multipliers_raw);
 
   for (int batch = 0; batch < batches; ++batch)
@@ -213,13 +213,13 @@ void DepthwiseConv2D::evalQuantizedPerChannel() const
                 const int in_y = in_y_origin + dilation_height_factor * filter_y;
                 // Zero padding by omitting the areas outside the image.
                 const bool is_point_inside_image =
-                    (in_x >= 0) && (in_x < input_width) && (in_y >= 0) && (in_y < input_height);
+                  (in_x >= 0) && (in_x < input_width) && (in_y >= 0) && (in_y < input_height);
                 if (is_point_inside_image)
                 {
                   int32 input_val =
-                      input_data[calcOffset(input_shape, batch, in_y, in_x, in_channel)];
+                    input_data[calcOffset(input_shape, batch, in_y, in_x, in_channel)];
                   int32 filter_val =
-                      filter_data[calcOffset(filter_shape, 0, filter_y, filter_x, output_channel)];
+                    filter_data[calcOffset(filter_shape, 0, filter_y, filter_x, output_channel)];
                   acc += (filter_val - filter()->zero_points()[output_channel]) *
                          (input_val - input()->zero_point());
                 }
@@ -232,12 +232,12 @@ void DepthwiseConv2D::evalQuantizedPerChannel() const
             int32_t output_multiplier = quant_multipliers[output_channel].multiplier;
             int output_shift = quant_multipliers[output_channel].shift;
             int32_t scaled_acc =
-                tflite::MultiplyByQuantizedMultiplier(acc, output_multiplier, output_shift);
+              tflite::MultiplyByQuantizedMultiplier(acc, output_multiplier, output_shift);
             scaled_acc += output()->zero_point();
             scaled_acc = std::max(scaled_acc, activation_min);
             scaled_acc = std::min(scaled_acc, activation_max);
             output_data[calcOffset(output_shape, batch, out_y, out_x, output_channel)] =
-                static_cast<uint8_t>(scaled_acc);
+              static_cast<uint8_t>(scaled_acc);
           }
         }
       }
@@ -278,9 +278,9 @@ void DepthwiseConv2D::evalQuantized() const
   params.quantized_activation_max = activation_max;
 
   tflite::reference_ops::DepthwiseConv(
-      params, getTensorShape(input()), getTensorData<uint8_t>(input()), getTensorShape(filter()),
-      getTensorData<uint8_t>(filter()), getTensorShape(bias()), getTensorData<int32_t>(bias()),
-      getTensorShape(output()), getTensorData<uint8_t>(output()));
+    params, getTensorShape(input()), getTensorData<uint8_t>(input()), getTensorShape(filter()),
+    getTensorData<uint8_t>(filter()), getTensorShape(bias()), getTensorData<int32_t>(bias()),
+    getTensorShape(output()), getTensorData<uint8_t>(output()));
 }
 
 void DepthwiseConv2D::evalQuantizedS16() const
@@ -310,10 +310,10 @@ void DepthwiseConv2D::evalQuantizedS16() const
   const int32_t depth_multiplier = _params.depth_multiplier;
 
   const std::vector<double> effective_output_scales =
-      getQuantizedConvolutionMultiplers(input()->scale(), filter()->scales(), output()->scale());
+    getQuantizedConvolutionMultiplers(input()->scale(), filter()->scales(), output()->scale());
 
   std::vector<ChannelQuantMultipliers> quant_multipliers_raw =
-      quantizeMultipliers(effective_output_scales);
+    quantizeMultipliers(effective_output_scales);
 
   BroadcastableWrapper<ChannelQuantMultipliers> quant_multipliers(quant_multipliers_raw);
 
@@ -344,9 +344,9 @@ void DepthwiseConv2D::evalQuantizedS16() const
                 if ((in_y >= 0 && in_y < input_height) && (in_x >= 0 && in_x < input_width))
                 {
                   const int16_t input_val =
-                      input_data[calcOffset(input_shape, batch, in_y, in_x, in_c)];
+                    input_data[calcOffset(input_shape, batch, in_y, in_x, in_c)];
                   const int16_t filter_val =
-                      filter_data[calcOffset(filter_shape, 0, filter_y, filter_x, out_c)];
+                    filter_data[calcOffset(filter_shape, 0, filter_y, filter_x, out_c)];
                   acc += static_cast<int64_t>(input_val) * static_cast<int64_t>(filter_val);
                 }
               }
@@ -359,7 +359,7 @@ void DepthwiseConv2D::evalQuantizedS16() const
             int32_t output_multiplier = quant_multipliers[out_c].multiplier;
             int output_shift = quant_multipliers[out_c].shift;
             int32_t scaled_acc =
-                tflite::MultiplyByQuantizedMultiplier(acc, output_multiplier, output_shift);
+              tflite::MultiplyByQuantizedMultiplier(acc, output_multiplier, output_shift);
 
             scaled_acc = std::max(scaled_acc, activation_min);
             scaled_acc = std::min(scaled_acc, activation_max);

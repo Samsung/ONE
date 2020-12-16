@@ -29,7 +29,7 @@ class Kernel
 {
 protected:
   Kernel(std::vector<const Tensor *> inputs, std::vector<Tensor *> outputs)
-      : _inputs(std::move(inputs)), _outputs(std::move(outputs))
+    : _inputs(std::move(inputs)), _outputs(std::move(outputs))
   {
   }
 
@@ -59,7 +59,7 @@ template <typename Params> class KernelWithParams : public Kernel
 protected:
   KernelWithParams(std::vector<const Tensor *> inputs, std::vector<Tensor *> outputs,
                    const Params &params)
-      : Kernel(std::move(inputs), std::move(outputs)), _params(params)
+    : Kernel(std::move(inputs), std::move(outputs)), _params(params)
   {
   }
 

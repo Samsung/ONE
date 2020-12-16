@@ -43,17 +43,17 @@ void Check(std::initializer_list<int32_t> input_shape, std::initializer_list<int
 TEST(RsqrtTest, SimpleRsqrt)
 {
   Check(
-      /*input_shape=*/{1, 2, 4, 1}, /*output_shape=*/{1, 2, 4, 1},
-      /*input_data=*/
-      {
-          5, 4, 8, 2,     //
-          6, 7.5, 9, 0.3, //
-      },
-      /*output_data=*/
-      {
-          0.44721360, 0.5, 0.35355339, 0.70710678,       //
-          0.40824829, 0.36514837, 0.33333333, 1.8257419, //
-      });
+    /*input_shape=*/{1, 2, 4, 1}, /*output_shape=*/{1, 2, 4, 1},
+    /*input_data=*/
+    {
+      5, 4, 8, 2,     //
+      6, 7.5, 9, 0.3, //
+    },
+    /*output_data=*/
+    {
+      0.44721360, 0.5, 0.35355339, 0.70710678,       //
+      0.40824829, 0.36514837, 0.33333333, 1.8257419, //
+    });
 }
 
 TEST(RsqrtTest, Input_Output_Type_NEG)

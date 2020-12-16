@@ -30,7 +30,7 @@ namespace kernels
 {
 
 L2Pool2D::L2Pool2D(const Tensor *input, Tensor *output, const Pool2DParams &params)
-    : KernelWithParams<Pool2DParams>({input}, {output}, params)
+  : KernelWithParams<Pool2DParams>({input}, {output}, params)
 {
 }
 
@@ -49,11 +49,11 @@ void L2Pool2D::configure()
   int out_width, out_height;
   out_width = computeOutputSize(padding, width, params().filter_width, params().stride_width, 1);
   out_height =
-      computeOutputSize(padding, height, params().filter_height, params().stride_height, 1);
+    computeOutputSize(padding, height, params().filter_height, params().stride_height, 1);
   _padding_width =
-      computePadding(params().stride_width, 1, width, params().filter_width, out_width);
+    computePadding(params().stride_width, 1, width, params().filter_width, out_width);
   _padding_height =
-      computePadding(params().stride_height, 1, height, params().filter_height, out_height);
+    computePadding(params().stride_height, 1, height, params().filter_height, out_height);
 
   LUCI_INTERPRETER_CHECK(input()->element_type() == DataType::FLOAT32);
   output()->resize({batches, out_height, out_width, channels_out});

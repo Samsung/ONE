@@ -30,7 +30,7 @@ namespace kernels
 {
 
 Softmax::Softmax(const Tensor *input, Tensor *output, const SoftmaxParams &params)
-    : KernelWithParams<SoftmaxParams>({input}, {output}, params)
+  : KernelWithParams<SoftmaxParams>({input}, {output}, params)
 {
 }
 

@@ -31,7 +31,7 @@ namespace kernels
 
 TransposeConv::TransposeConv(const Tensor *output_shape, const Tensor *filter, const Tensor *input,
                              const Tensor *bias, Tensor *output, const TransposeConvParams &params)
-    : KernelWithParams<TransposeConvParams>({output_shape, filter, input, bias}, {output}, params)
+  : KernelWithParams<TransposeConvParams>({output_shape, filter, input, bias}, {output}, params)
 {
 }
 
@@ -63,23 +63,23 @@ void TransposeConv::configure()
   const int32_t output_width = out_shape.dim(2);
 
   const int32_t unused_output_height =
-      computeOutputSize(params().padding, output_height, filter_height, params().stride_height, 1);
+    computeOutputSize(params().padding, output_height, filter_height, params().stride_height, 1);
   const int32_t unused_output_width =
-      computeOutputSize(params().padding, output_width, filter_width, params().stride_width, 1);
+    computeOutputSize(params().padding, output_width, filter_width, params().stride_width, 1);
 
   _padding_height =
-      computePadding(params().stride_height, 1, output_height, filter_height, unused_output_height);
+    computePadding(params().stride_height, 1, output_height, filter_height, unused_output_height);
   _padding_width =
-      computePadding(params().stride_width, 1, output_width, filter_width, unused_output_width);
+    computePadding(params().stride_width, 1, output_width, filter_width, unused_output_width);
 
   if (input()->element_type() == DataType::U8 || input()->element_type() == DataType::S16)
   {
     DataType scratch_data_type =
-        input()->element_type() == DataType::S16 ? DataType::S64 : DataType::S32;
+      input()->element_type() == DataType::S16 ? DataType::S64 : DataType::S32;
     _scratch_tensor =
-        std::make_unique<Tensor>(scratch_data_type, output()->shape(), AffineQuantization{}, "");
+      std::make_unique<Tensor>(scratch_data_type, output()->shape(), AffineQuantization{}, "");
     const std::vector<double> real_multipliers =
-        getQuantizedConvolutionMultiplers(input()->scale(), filter()->scales(), output()->scale());
+      getQuantizedConvolutionMultiplers(input()->scale(), filter()->scales(), output()->scale());
 
     _quant_multipliers = quantizeMultipliers(real_multipliers);
   }
@@ -210,12 +210,12 @@ void TransposeConv::evalQuantizedPerChannel() const
                 for (int32_t out_c = 0; out_c < output_depth; ++out_c)
                 {
                   const uint8_t input_val =
-                      input_data[calcOffset(input_shape, batch, in_y, in_x, in_c)];
+                    input_data[calcOffset(input_shape, batch, in_y, in_x, in_c)];
                   const uint8_t filter_val =
-                      filter_data[calcOffset(filter_shape, out_c, filter_y, filter_x, in_c)];
+                    filter_data[calcOffset(filter_shape, out_c, filter_y, filter_x, in_c)];
                   scratch_data[calcOffset(output_shape, batch, out_y, out_x, out_c)] +=
-                      static_cast<int32_t>(input_val - input()->zero_point()) *
-                      static_cast<int32_t>(filter_val - filter()->zero_points()[out_c]);
+                    static_cast<int32_t>(input_val - input()->zero_point()) *
+                    static_cast<int32_t>(filter_val - filter()->zero_points()[out_c]);
                 }
               }
             }
@@ -236,7 +236,7 @@ void TransposeConv::evalQuantizedPerChannel() const
           }
 
           int32_t scaled_acc = tflite::MultiplyByQuantizedMultiplier(
-              acc, output_multipliers[out_c].multiplier, output_multipliers[out_c].shift);
+            acc, output_multipliers[out_c].multiplier, output_multipliers[out_c].shift);
 
           scaled_acc += output()->zero_point();
           scaled_acc = std::max(scaled_acc, activation_min);
@@ -302,11 +302,11 @@ void TransposeConv::evalQuantizedS16() const
                 for (int32_t out_c = 0; out_c < output_depth; ++out_c)
                 {
                   const int16_t input_val =
-                      input_data[calcOffset(input_shape, batch, in_y, in_x, in_c)];
+                    input_data[calcOffset(input_shape, batch, in_y, in_x, in_c)];
                   const int16_t filter_val =
-                      filter_data[calcOffset(filter_shape, out_c, filter_y, filter_x, in_c)];
+                    filter_data[calcOffset(filter_shape, out_c, filter_y, filter_x, in_c)];
                   scratch_data[calcOffset(output_shape, batch, out_y, out_x, out_c)] +=
-                      static_cast<int64_t>(input_val) * static_cast<int64_t>(filter_val);
+                    static_cast<int64_t>(input_val) * static_cast<int64_t>(filter_val);
                 }
               }
             }
@@ -326,7 +326,7 @@ void TransposeConv::evalQuantizedS16() const
             acc += bias_data[out_c];
           }
           int32_t scaled_acc = tflite::MultiplyByQuantizedMultiplier(
-              acc, output_multipliers[out_c].multiplier, output_multipliers[out_c].shift);
+            acc, output_multipliers[out_c].multiplier, output_multipliers[out_c].shift);
 
           scaled_acc = std::max(scaled_acc, activation_min);
           scaled_acc = std::min(scaled_acc, activation_max);

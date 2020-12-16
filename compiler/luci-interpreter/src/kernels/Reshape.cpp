@@ -65,7 +65,7 @@ static void resolveUnknownDimension(const Shape &input_shape, Shape *output_shap
 }
 
 Reshape::Reshape(const Tensor *input, const Tensor *shape, Tensor *output)
-    : Kernel({input, shape}, {output})
+  : Kernel({input, shape}, {output})
 {
 }
 

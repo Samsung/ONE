@@ -28,7 +28,7 @@ namespace kernels
 {
 
 Sub::Sub(const Tensor *input1, const Tensor *input2, Tensor *output, const SubParams &params)
-    : KernelWithParams<SubParams>({input1, input2}, {output}, params)
+  : KernelWithParams<SubParams>({input1, input2}, {output}, params)
 {
 }
 
@@ -64,13 +64,13 @@ void Sub::evalFloat() const
   params.float_activation_max = activation_max;
 
   const bool need_broadcast = tflite::reference_ops::ProcessBroadcastShapes(
-      getTensorShape(input1()), getTensorShape(input2()), &params);
+    getTensorShape(input1()), getTensorShape(input2()), &params);
 
   if (need_broadcast)
   {
     tflite::reference_ops::BroadcastSubSlow(
-        params, getTensorShape(input1()), getTensorData<float>(input1()), getTensorShape(input2()),
-        getTensorData<float>(input2()), getTensorShape(output()), getTensorData<float>(output()));
+      params, getTensorShape(input1()), getTensorData<float>(input1()), getTensorShape(input2()),
+      getTensorData<float>(input2()), getTensorShape(output()), getTensorData<float>(output()));
   }
   else
   {
@@ -118,14 +118,13 @@ void Sub::evalQuantized() const
   params.quantized_activation_max = activation_max;
 
   const bool need_broadcast = tflite::reference_ops::ProcessBroadcastShapes(
-      getTensorShape(input1()), getTensorShape(input2()), &params);
+    getTensorShape(input1()), getTensorShape(input2()), &params);
 
   if (need_broadcast)
   {
     tflite::reference_ops::BroadcastSubSlow(
-        params, getTensorShape(input1()), getTensorData<uint8_t>(input1()),
-        getTensorShape(input2()), getTensorData<uint8_t>(input2()), getTensorShape(output()),
-        getTensorData<uint8_t>(output()));
+      params, getTensorShape(input1()), getTensorData<uint8_t>(input1()), getTensorShape(input2()),
+      getTensorData<uint8_t>(input2()), getTensorShape(output()), getTensorData<uint8_t>(output()));
   }
   else
   {

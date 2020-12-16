@@ -34,11 +34,11 @@ RuntimeGraph *buildAddSubgraph(RuntimeModule *module)
 {
   RuntimeGraph *graph = module->addGraph();
   Tensor *input1 = graph->addTensor(
-      std::make_unique<Tensor>(DataType::FLOAT32, Shape{}, AffineQuantization{}, ""));
+    std::make_unique<Tensor>(DataType::FLOAT32, Shape{}, AffineQuantization{}, ""));
   Tensor *input2 = graph->addTensor(
-      std::make_unique<Tensor>(DataType::FLOAT32, Shape{}, AffineQuantization{}, ""));
+    std::make_unique<Tensor>(DataType::FLOAT32, Shape{}, AffineQuantization{}, ""));
   Tensor *output = graph->addTensor(
-      std::make_unique<Tensor>(DataType::FLOAT32, Shape{}, AffineQuantization{}, ""));
+    std::make_unique<Tensor>(DataType::FLOAT32, Shape{}, AffineQuantization{}, ""));
 
   graph->setInputTensors({input1, input2});
   graph->setOutputTensors({output});
@@ -54,11 +54,11 @@ RuntimeGraph *buildMulSubgraph(RuntimeModule *module)
 {
   RuntimeGraph *graph = module->addGraph();
   Tensor *input1 = graph->addTensor(
-      std::make_unique<Tensor>(DataType::FLOAT32, Shape{}, AffineQuantization{}, ""));
+    std::make_unique<Tensor>(DataType::FLOAT32, Shape{}, AffineQuantization{}, ""));
   Tensor *input2 = graph->addTensor(
-      std::make_unique<Tensor>(DataType::FLOAT32, Shape{}, AffineQuantization{}, ""));
+    std::make_unique<Tensor>(DataType::FLOAT32, Shape{}, AffineQuantization{}, ""));
   Tensor *output = graph->addTensor(
-      std::make_unique<Tensor>(DataType::FLOAT32, Shape{}, AffineQuantization{}, ""));
+    std::make_unique<Tensor>(DataType::FLOAT32, Shape{}, AffineQuantization{}, ""));
 
   graph->setInputTensors({input1, input2});
   graph->setOutputTensors({output});

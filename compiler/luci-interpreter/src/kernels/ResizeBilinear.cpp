@@ -28,7 +28,7 @@ namespace kernels
 
 ResizeBilinear::ResizeBilinear(const Tensor *input, const Tensor *size, Tensor *output,
                                const ResizeBilinearParams &params)
-    : KernelWithParams<ResizeBilinearParams>({input, size}, {output}, params)
+  : KernelWithParams<ResizeBilinearParams>({input, size}, {output}, params)
 {
 }
 
@@ -57,14 +57,13 @@ void ResizeBilinear::execute() const
   {
     case DataType::FLOAT32:
       tflite::optimized_ops::ResizeBilinear(
-          op_params, getTensorShape(input()), getTensorData<float>(input()), getTensorShape(size()),
-          getTensorData<int32_t>(size()), getTensorShape(output()), getTensorData<float>(output()));
+        op_params, getTensorShape(input()), getTensorData<float>(input()), getTensorShape(size()),
+        getTensorData<int32_t>(size()), getTensorShape(output()), getTensorData<float>(output()));
       break;
     case DataType::U8:
       tflite::optimized_ops::ResizeBilinear(
-          op_params, getTensorShape(input()), getTensorData<uint8_t>(input()),
-          getTensorShape(size()), getTensorData<int32_t>(size()), getTensorShape(output()),
-          getTensorData<uint8_t>(output()));
+        op_params, getTensorShape(input()), getTensorData<uint8_t>(input()), getTensorShape(size()),
+        getTensorData<int32_t>(size()), getTensorShape(output()), getTensorData<uint8_t>(output()));
       break;
     default:
       throw std::runtime_error("Unsupported type.");

@@ -33,9 +33,9 @@ class KernelBuilder : public luci::CircleNodeVisitor<std::unique_ptr<Kernel>>
 {
 public:
   KernelBuilder(
-      const std::unordered_map<const loco::Graph *, RuntimeGraph *> &graph_to_runtime_graph,
-      const std::unordered_map<const loco::Node *, Tensor *> &node_to_tensor)
-      : _graph_to_runtime_graph(graph_to_runtime_graph), _node_to_tensor(node_to_tensor)
+    const std::unordered_map<const loco::Graph *, RuntimeGraph *> &graph_to_runtime_graph,
+    const std::unordered_map<const loco::Node *, Tensor *> &node_to_tensor)
+    : _graph_to_runtime_graph(graph_to_runtime_graph), _node_to_tensor(node_to_tensor)
   {
   }
 

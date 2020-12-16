@@ -29,7 +29,7 @@ namespace kernels
 
 Concatenation::Concatenation(std::vector<const Tensor *> inputs, Tensor *output,
                              const ConcatenationParams &params)
-    : KernelWithParams<ConcatenationParams>(std::move(inputs), {output}, params)
+  : KernelWithParams<ConcatenationParams>(std::move(inputs), {output}, params)
 {
 }
 

@@ -75,10 +75,10 @@ void Relu6::evalQuantized() const
   params.output_shift = _output_shift;
 
   params.quantized_activation_min =
-      std::max(static_cast<int32_t>(std::numeric_limits<uint8_t>::min()), params.output_offset);
+    std::max(static_cast<int32_t>(std::numeric_limits<uint8_t>::min()), params.output_offset);
   params.quantized_activation_max =
-      std::min(static_cast<int32_t>(std::numeric_limits<uint8_t>::max()),
-               params.output_offset + static_cast<int32>(roundf(6.f / output()->scale())));
+    std::min(static_cast<int32_t>(std::numeric_limits<uint8_t>::max()),
+             params.output_offset + static_cast<int32>(roundf(6.f / output()->scale())));
 
   tflite::optimized_ops::ReluX(params, getTensorShape(input()), getTensorData<uint8_t>(input()),
                                getTensorShape(output()), getTensorData<uint8_t>(output()));

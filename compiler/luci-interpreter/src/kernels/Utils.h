@@ -118,7 +118,7 @@ inline std::vector<double> getQuantizedConvolutionMultiplers(float input_scale,
   for (size_t i = 0; i < n; ++i)
   {
     effective_output_scales.push_back(
-        getQuantizedConvolutionMultipler(input_scale, filter_scale[i], output_scale));
+      getQuantizedConvolutionMultipler(input_scale, filter_scale[i], output_scale));
   }
   return effective_output_scales;
 }
@@ -149,6 +149,7 @@ public:
   BroadcastableWrapper(const std::vector<T> &v) : _v(v), _stride(v.size() == 1 ? 0 : 1) {}
 
   T operator[](int idx) { return _v[idx * _stride]; }
+
 private:
   const std::vector<T> &_v;
   int _stride;
@@ -236,7 +237,7 @@ public:
 
   // Build with the tensors in 'tensor_list'.
   explicit VectorOfQuantizedTensors(const std::vector<TensorT *> &tensor_list)
-      : VectorOfTensors<uint8_t, is_const>(tensor_list)
+    : VectorOfTensors<uint8_t, is_const>(tensor_list)
   {
     for (TensorT *tensor : tensor_list)
     {

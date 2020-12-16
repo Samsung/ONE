@@ -88,19 +88,19 @@ TYPED_TEST(ResizeBilinearTest, SimpleTest)
 {
   Check<TypeParam>({2, 2, 2, 1}, {2}, {2, 3, 3, 1},
                    {
-                       3, 6,  //
-                       9, 12, //
-                       4, 10, //
-                       10, 16 //
+                     3, 6,  //
+                     9, 12, //
+                     4, 10, //
+                     10, 16 //
                    },
                    {3, 3},
                    {
-                       3, 5, 6,    //
-                       7, 9, 10,   //
-                       9, 11, 12,  //
-                       4, 8, 10,   //
-                       8, 12, 14,  //
-                       10, 14, 16, //
+                     3, 5, 6,    //
+                     7, 9, 10,   //
+                     9, 11, 12,  //
+                     4, 8, 10,   //
+                     8, 12, 14,  //
+                     10, 14, 16, //
                    },
                    false, false);
   SUCCEED();
@@ -110,19 +110,19 @@ TEST(ResizeBilinearTest, HalfPixelCenterFloatTest)
 {
   Check<float>({2, 2, 2, 1}, {2}, {2, 3, 3, 1},
                {
-                   1, 2, //
-                   3, 4, //
-                   1, 2, //
-                   3, 4  //
+                 1, 2, //
+                 3, 4, //
+                 1, 2, //
+                 3, 4  //
                },
                {3, 3},
                {
-                   1, 1.5, 2, //
-                   2, 2.5, 3, //
-                   3, 3.5, 4, //
-                   1, 1.5, 2, //
-                   2, 2.5, 3, //
-                   3, 3.5, 4, //
+                 1, 1.5, 2, //
+                 2, 2.5, 3, //
+                 3, 3.5, 4, //
+                 1, 1.5, 2, //
+                 2, 2.5, 3, //
+                 3, 3.5, 4, //
                },
                false, true);
   SUCCEED();
@@ -132,19 +132,19 @@ TEST(ResizeBilinearTest, HalfPixelCenterUint8Test)
 {
   Check<uint8_t>({2, 2, 2, 1}, {2}, {2, 3, 3, 1},
                  {
-                     3, 6,  //
-                     9, 12, //
-                     4, 10, //
-                     12, 16 //
+                   3, 6,  //
+                   9, 12, //
+                   4, 10, //
+                   12, 16 //
                  },
                  {3, 3},
                  {
-                     2, 4, 6,    //
-                     6, 7, 9,    //
-                     9, 10, 12,  //
-                     4, 7, 10,   //
-                     8, 10, 13,  //
-                     12, 14, 16, //
+                   2, 4, 6,    //
+                   6, 7, 9,    //
+                   9, 10, 12,  //
+                   4, 7, 10,   //
+                   8, 10, 13,  //
+                   12, 14, 16, //
                  },
                  false, true);
   SUCCEED();
@@ -153,10 +153,10 @@ TEST(ResizeBilinearTest, HalfPixelCenterUint8Test)
 TEST(ResizeBilinearTest, InputShapeInvalid_NEG)
 {
   Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({2, 2, 2}, {
-                                                                          3, 6,  //
-                                                                          9, 12, //
-                                                                          4, 10, //
-                                                                          10, 16 //
+                                                                        3, 6,  //
+                                                                        9, 12, //
+                                                                        4, 10, //
+                                                                        10, 16 //
                                                                       });
   Tensor size_tensor = makeInputTensor<DataType::S32>({2}, {3, 3});
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
@@ -172,10 +172,10 @@ TEST(ResizeBilinearTest, InputShapeInvalid_NEG)
 TEST(ResizeBilinearTest, SizeShapeInvalid_NEG)
 {
   Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({2, 2, 2, 1}, {
-                                                                             3, 6,  //
-                                                                             9, 12, //
-                                                                             4, 10, //
-                                                                             10, 16 //
+                                                                           3, 6,  //
+                                                                           9, 12, //
+                                                                           4, 10, //
+                                                                           10, 16 //
                                                                          });
   Tensor size_tensor = makeInputTensor<DataType::S32>({2, 1}, {3, 3});
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
@@ -191,10 +191,10 @@ TEST(ResizeBilinearTest, SizeShapeInvalid_NEG)
 TEST(ResizeBilinearTest, SizeDimInvalid_NEG)
 {
   Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({2, 2, 2, 1}, {
-                                                                             3, 6,  //
-                                                                             9, 12, //
-                                                                             4, 10, //
-                                                                             10, 16 //
+                                                                           3, 6,  //
+                                                                           9, 12, //
+                                                                           4, 10, //
+                                                                           10, 16 //
                                                                          });
   Tensor size_tensor = makeInputTensor<DataType::S32>({3}, {3, 3, 1});
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
@@ -210,10 +210,10 @@ TEST(ResizeBilinearTest, SizeDimInvalid_NEG)
 TEST(ResizeBilinearTest, InvalidParams_NEG)
 {
   Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({2, 2, 2, 1}, {
-                                                                             3, 6,  //
-                                                                             9, 12, //
-                                                                             4, 10, //
-                                                                             10, 16 //
+                                                                           3, 6,  //
+                                                                           9, 12, //
+                                                                           4, 10, //
+                                                                           10, 16 //
                                                                          });
   Tensor size_tensor = makeInputTensor<DataType::S32>({2}, {3, 3});
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);

@@ -84,7 +84,7 @@ std::vector<float> dequantizeTensorData(const Tensor &tensor)
         float scale = tensor.scales()[channel];
         size_t offset = inner_dims_size * (quant_dim_size * outer_it + channel);
         std::vector<float> part_dequantized_data =
-            dequantize(data.data() + offset, inner_dims_size, scale, 0);
+          dequantize(data.data() + offset, inner_dims_size, scale, 0);
         dequantized_data.insert(dequantized_data.end(), part_dequantized_data.begin(),
                                 part_dequantized_data.end());
       }

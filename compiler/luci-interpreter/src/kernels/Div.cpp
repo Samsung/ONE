@@ -26,7 +26,7 @@ namespace kernels
 {
 
 Div::Div(const Tensor *input1, const Tensor *input2, Tensor *output, const DivParams &params)
-    : KernelWithParams<DivParams>({input1, input2}, {output}, params)
+  : KernelWithParams<DivParams>({input1, input2}, {output}, params)
 {
 }
 
@@ -63,13 +63,13 @@ void Div::evalFloat() const
   params.float_activation_min = activation_min;
   params.float_activation_max = activation_max;
   const bool need_broadcast = tflite::reference_ops::ProcessBroadcastShapes(
-      getTensorShape(input1()), getTensorShape(input2()), &params);
+    getTensorShape(input1()), getTensorShape(input2()), &params);
 
   if (need_broadcast)
   {
     tflite::reference_ops::BroadcastDivSlow(
-        params, getTensorShape(input1()), getTensorData<float>(input1()), getTensorShape(input2()),
-        getTensorData<float>(input2()), getTensorShape(output()), getTensorData<float>(output()));
+      params, getTensorShape(input1()), getTensorData<float>(input1()), getTensorShape(input2()),
+      getTensorData<float>(input2()), getTensorShape(output()), getTensorData<float>(output()));
   }
   else
   {
@@ -107,14 +107,13 @@ void Div::evalQuantized() const
   params.quantized_activation_max = activation_max;
 
   const bool need_broadcast = tflite::reference_ops::ProcessBroadcastShapes(
-      getTensorShape(input1()), getTensorShape(input2()), &params);
+    getTensorShape(input1()), getTensorShape(input2()), &params);
 
   if (need_broadcast)
   {
     tflite::reference_ops::BroadcastDivSlow(
-        params, getTensorShape(input1()), getTensorData<uint8_t>(input1()),
-        getTensorShape(input2()), getTensorData<uint8_t>(input2()), getTensorShape(output()),
-        getTensorData<uint8_t>(output()));
+      params, getTensorShape(input1()), getTensorData<uint8_t>(input1()), getTensorShape(input2()),
+      getTensorData<uint8_t>(input2()), getTensorShape(output()), getTensorData<uint8_t>(output()));
   }
   else
   {

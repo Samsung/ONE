@@ -37,7 +37,7 @@ void Check(std::initializer_list<int32_t> output_shape_shape,
 {
   constexpr DataType element_type = getElementType<T>();
   Tensor output_shape_tensor =
-      makeInputTensor<DataType::S32>(output_shape_shape, output_shape_data);
+    makeInputTensor<DataType::S32>(output_shape_shape, output_shape_data);
   Tensor weight_tensor = makeInputTensor<element_type>(weight_shape, weight_data);
   Tensor input_data_tensor = makeInputTensor<element_type>(input_shape, input_data);
   Tensor output_tensor = makeOutputTensor(element_type);
@@ -68,13 +68,13 @@ void Check(std::initializer_list<int32_t> output_shape_shape,
 TEST(TransposeConvTest, FloatSimple)
 {
   Check<float, float>(
-      /*output_shape_shape=*/{4}, /*weight_shape=*/{1, 3, 3, 1}, /*input_shape=*/{1, 4, 4, 1},
-      /*bias_shape=*/{}, /*output_shape=*/{1, 4, 4, 1}, /*output_shape_data=*/{1, 4, 4, 1},
-      /*weight_data=*/{1, 2, 3, 4, 5, 6, 7, 8, 9},
-      /*input_data=*/{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16},
-      /*bias_data=*/{},
-      /*output_data=*/{29, 62, 83, 75, 99, 192, 237, 198, 207, 372, 417, 330, 263, 446, 485, 365},
-      /*params.padding=*/luci::Padding::SAME, /*stride_height=*/1, /*stride_width=*/1);
+    /*output_shape_shape=*/{4}, /*weight_shape=*/{1, 3, 3, 1}, /*input_shape=*/{1, 4, 4, 1},
+    /*bias_shape=*/{}, /*output_shape=*/{1, 4, 4, 1}, /*output_shape_data=*/{1, 4, 4, 1},
+    /*weight_data=*/{1, 2, 3, 4, 5, 6, 7, 8, 9},
+    /*input_data=*/{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16},
+    /*bias_data=*/{},
+    /*output_data=*/{29, 62, 83, 75, 99, 192, 237, 198, 207, 372, 417, 330, 263, 446, 485, 365},
+    /*params.padding=*/luci::Padding::SAME, /*stride_height=*/1, /*stride_width=*/1);
 
   SUCCEED();
 }
@@ -82,15 +82,15 @@ TEST(TransposeConvTest, FloatSimple)
 TEST(TransposeConvTest, FloatTwoFiltersTest)
 {
   Check<float, float>(
-      /*output_shape_shape=*/{4}, /*weight_shape=*/{1, 3, 3, 2}, /*input_shape=*/{1, 4, 4, 2},
-      /*bias_shape=*/{}, /*output_shape=*/{1, 4, 4, 1}, /*output_shape_data=*/{1, 4, 4, 1},
-      /*weight_data=*/{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18},
-      /*input_data=*/{1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15, 16,
-                      17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32},
-      /*bias_data=*/{},
-      /*output_data=*/
-      {184, 412, 568, 528, 678, 1347, 1689, 1434, 1494, 2715, 3057, 2442, 1968, 3352, 3652, 2760},
-      /*params.padding=*/luci::Padding::SAME, /*stride_height=*/1, /*stride_width=*/1);
+    /*output_shape_shape=*/{4}, /*weight_shape=*/{1, 3, 3, 2}, /*input_shape=*/{1, 4, 4, 2},
+    /*bias_shape=*/{}, /*output_shape=*/{1, 4, 4, 1}, /*output_shape_data=*/{1, 4, 4, 1},
+    /*weight_data=*/{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18},
+    /*input_data=*/{1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15, 16,
+                    17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32},
+    /*bias_data=*/{},
+    /*output_data=*/
+    {184, 412, 568, 528, 678, 1347, 1689, 1434, 1494, 2715, 3057, 2442, 1968, 3352, 3652, 2760},
+    /*params.padding=*/luci::Padding::SAME, /*stride_height=*/1, /*stride_width=*/1);
 
   SUCCEED();
 }
@@ -98,16 +98,16 @@ TEST(TransposeConvTest, FloatTwoFiltersTest)
 TEST(TransposeConvTest, SimpleBiasTest)
 {
   Check<float, float>(
-      /*output_shape_shape=*/{4}, /*weight_shape=*/{2, 3, 3, 1},
-      /*input_shape=*/{1, 2, 2, 1},
-      /*bias_shape=*/{2}, /*output_shape=*/{1, 4, 4, 1}, /*output_shape_data=*/{1, 5, 5, 2},
-      /*weight_data=*/{1, 3, 5, 7, 9, 11, 13, 15, 17, 2, 4, 6, 8, 10, 12, 14, 16, 18},
-      /*input_data=*/{1, 2, 3, 4},
-      /*bias_data=*/{3, 4},
-      /*output_data=*/{4,  6,  6,  8,  10, 14, 9,  12, 13, 16, 10,  12,  12, 14, 28, 32, 21,
-                       24, 25, 28, 19, 24, 27, 32, 65, 76, 45, 52,  57,  64, 24, 28, 30, 34,
-                       64, 72, 39, 44, 47, 52, 42, 46, 48, 52, 106, 114, 63, 68, 71, 76},
-      /*params.padding=*/luci::Padding::VALID, /*stride_height=*/2, /*stride_width=*/2);
+    /*output_shape_shape=*/{4}, /*weight_shape=*/{2, 3, 3, 1},
+    /*input_shape=*/{1, 2, 2, 1},
+    /*bias_shape=*/{2}, /*output_shape=*/{1, 4, 4, 1}, /*output_shape_data=*/{1, 5, 5, 2},
+    /*weight_data=*/{1, 3, 5, 7, 9, 11, 13, 15, 17, 2, 4, 6, 8, 10, 12, 14, 16, 18},
+    /*input_data=*/{1, 2, 3, 4},
+    /*bias_data=*/{3, 4},
+    /*output_data=*/{4,  6,  6,  8,  10, 14, 9,  12, 13, 16, 10,  12,  12, 14, 28, 32, 21,
+                     24, 25, 28, 19, 24, 27, 32, 65, 76, 45, 52,  57,  64, 24, 28, 30, 34,
+                     64, 72, 39, 44, 47, 52, 42, 46, 48, 52, 106, 114, 63, 68, 71, 76},
+    /*params.padding=*/luci::Padding::VALID, /*stride_height=*/2, /*stride_width=*/2);
 
   SUCCEED();
 }
@@ -119,11 +119,11 @@ TEST(TransposeConvTest, UInt8)
   std::vector<float> bias_data{3, 4};
   std::vector<int32_t> output_shape_data{1, 5, 5, 2};
   std::vector<float> ref_output_data{
-      4,  6,  6,  8,  10,  14,  9,  12, 13, 16, //
-      10, 12, 12, 14, 28,  32,  21, 24, 25, 28, //
-      19, 24, 27, 32, 65,  76,  45, 52, 57, 64, //
-      24, 28, 30, 34, 64,  72,  39, 44, 47, 52, //
-      42, 46, 48, 52, 106, 114, 63, 68, 71, 76, //
+    4,  6,  6,  8,  10,  14,  9,  12, 13, 16, //
+    10, 12, 12, 14, 28,  32,  21, 24, 25, 28, //
+    19, 24, 27, 32, 65,  76,  45, 52, 57, 64, //
+    24, 28, 30, 34, 64,  72,  39, 44, 47, 52, //
+    42, 46, 48, 52, 106, 114, 63, 68, 71, 76, //
   };
 
   // Choose quantization parameters carefully.
@@ -131,12 +131,12 @@ TEST(TransposeConvTest, UInt8)
   auto filter_quant = quantizationParams<uint8_t>(-24.0, 39.75); // s = 1 / 4, zp = 96
   auto output_quant = quantizationParams<uint8_t>(-64.0, 191.0); // s = 1, zp = 64
 
-  Tensor input_tensor = makeInputTensor<DataType::U8>({1, 2, 2, 1}, input_quant.first,
-                                                      input_quant.second, input_data);
+  Tensor input_tensor =
+    makeInputTensor<DataType::U8>({1, 2, 2, 1}, input_quant.first, input_quant.second, input_data);
   Tensor filter_tensor = makeInputTensor<DataType::U8>({2, 3, 3, 1}, filter_quant.first,
                                                        filter_quant.second, filter_data);
   Tensor bias_tensor =
-      makeInputTensor<DataType::S32>({2}, input_quant.first * filter_quant.first, 0, bias_data);
+    makeInputTensor<DataType::S32>({2}, input_quant.first * filter_quant.first, 0, bias_data);
   Tensor output_shape_tensor = makeInputTensor<DataType::S32>({4}, output_shape_data);
   Tensor output_tensor = makeOutputTensor(DataType::U8, output_quant.first, output_quant.second);
 
@@ -162,11 +162,11 @@ TEST(TransposeConvTest, UInt8_CWQ)
   std::vector<float> bias_data{3, 4};
   std::vector<int32_t> output_shape_data{1, 5, 5, 2};
   std::vector<float> ref_output_data{
-      4,  6,  6,  8,  10,  14,  9,  12, 13, 16, //
-      10, 12, 12, 14, 28,  32,  21, 24, 25, 28, //
-      19, 24, 27, 32, 65,  76,  45, 52, 57, 64, //
-      24, 28, 30, 34, 64,  72,  39, 44, 47, 52, //
-      42, 46, 48, 52, 106, 114, 63, 68, 71, 76, //
+    4,  6,  6,  8,  10,  14,  9,  12, 13, 16, //
+    10, 12, 12, 14, 28,  32,  21, 24, 25, 28, //
+    19, 24, 27, 32, 65,  76,  45, 52, 57, 64, //
+    24, 28, 30, 34, 64,  72,  39, 44, 47, 52, //
+    42, 46, 48, 52, 106, 114, 63, 68, 71, 76, //
   };
 
   // Choose quantization parameters carefully.
@@ -190,12 +190,12 @@ TEST(TransposeConvTest, UInt8_CWQ)
     bias_scales.push_back(filter_quant_params[i].first * input_quant.first);
   std::vector<int32_t> zerop(output_channels, 0);
 
-  Tensor input_tensor = makeInputTensor<DataType::U8>({1, 2, 2, 1}, input_quant.first,
-                                                      input_quant.second, input_data);
+  Tensor input_tensor =
+    makeInputTensor<DataType::U8>({1, 2, 2, 1}, input_quant.first, input_quant.second, input_data);
   Tensor filter_tensor = makeInputTensor<DataType::U8>({output_channels, 3, 3, 1}, filter_scales,
                                                        filter_zerops, 0, filter_data);
   Tensor bias_tensor =
-      makeInputTensor<DataType::S32>({output_channels}, bias_scales, zerop, 0, bias_data);
+    makeInputTensor<DataType::S32>({output_channels}, bias_scales, zerop, 0, bias_data);
   Tensor output_shape_tensor = makeInputTensor<DataType::S32>({4}, output_shape_data);
   Tensor output_tensor = makeOutputTensor(DataType::U8, output_quant.first, output_quant.second);
 
@@ -220,11 +220,11 @@ TEST(TransposeConvTest, SInt16)
   std::vector<float> bias_data{3, 4};
   std::vector<int32_t> output_shape_data{1, 5, 5, 2};
   std::vector<float> ref_output_data{
-      4,  6,  6,  8,  10,  14,  9,  12, 13, 16, //
-      10, 12, 12, 14, 28,  32,  21, 24, 25, 28, //
-      19, 24, 27, 32, 65,  76,  45, 52, 57, 64, //
-      24, 28, 30, 34, 64,  72,  39, 44, 47, 52, //
-      42, 46, 48, 52, 106, 114, 63, 68, 71, 76, //
+    4,  6,  6,  8,  10,  14,  9,  12, 13, 16, //
+    10, 12, 12, 14, 28,  32,  21, 24, 25, 28, //
+    19, 24, 27, 32, 65,  76,  45, 52, 57, 64, //
+    24, 28, 30, 34, 64,  72,  39, 44, 47, 52, //
+    42, 46, 48, 52, 106, 114, 63, 68, 71, 76, //
   };
 
   Tensor input_tensor = makeInputTensor<DataType::S16>({1, 2, 2, 1}, 0.25, 0, input_data);
@@ -260,11 +260,11 @@ TEST(TransposeConvTest, SInt16_CWQ_weights)
   std::vector<float> bias_data{3, 4};
 
   std::vector<float> ref_output_data{
-      4,  6,  6,  8,  10,  14,  9,  12, 13, 16, //
-      10, 12, 12, 14, 28,  32,  21, 24, 25, 28, //
-      19, 24, 27, 32, 65,  76,  45, 52, 57, 64, //
-      24, 28, 30, 34, 64,  72,  39, 44, 47, 52, //
-      42, 46, 48, 52, 106, 114, 63, 68, 71, 76, //
+    4,  6,  6,  8,  10,  14,  9,  12, 13, 16, //
+    10, 12, 12, 14, 28,  32,  21, 24, 25, 28, //
+    19, 24, 27, 32, 65,  76,  45, 52, 57, 64, //
+    24, 28, 30, 34, 64,  72,  39, 44, 47, 52, //
+    42, 46, 48, 52, 106, 114, 63, 68, 71, 76, //
   };
 
   const float input_scale = 0.25;
@@ -275,7 +275,7 @@ TEST(TransposeConvTest, SInt16_CWQ_weights)
 
   Tensor input_tensor = makeInputTensor<DataType::S16>(input_shape, input_scale, 0, input_data);
   Tensor filter_tensor =
-      makeInputTensor<DataType::S16>(filter_shape, filter_scales, zerop, 0, filter_data);
+    makeInputTensor<DataType::S16>(filter_shape, filter_scales, zerop, 0, filter_data);
   Tensor bias_tensor = makeInputTensor<DataType::S64>(bias_shape, bias_scales, zerop, 0, bias_data);
   Tensor output_shape_tensor = makeInputTensor<DataType::S32>({4}, output_shape_data);
   Tensor output_tensor = makeOutputTensor(DataType::S16, output_scale, 0);

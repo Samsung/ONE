@@ -31,8 +31,8 @@ TEST(LogSoftmaxTest, Float)
 {
   Shape input_shape{2, 4};
   std::vector<float> input_data{
-      0, -6, 2,  4, //
-      3, -2, 10, 1, //
+    0, -6, 2,  4, //
+    3, -2, 10, 1, //
   };
   Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
@@ -42,8 +42,8 @@ TEST(LogSoftmaxTest, Float)
   kernel.execute();
 
   std::vector<float> ref_output_data{
-      -4.14297, -10.14297, -2.14297,   -.142971, //
-      -7.00104, -12.00104, -.00104087, -9.00104, //
+    -4.14297, -10.14297, -2.14297,   -.142971, //
+    -7.00104, -12.00104, -.00104087, -9.00104, //
   };
   EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(ref_output_data));
 }
@@ -55,11 +55,11 @@ TEST(LogSoftmaxTest, Uint8)
   float kLogSoftmaxQuantizedTolerance = 16. / 256;
   std::pair<float, int32_t> quant_param = quantizationParams<uint8_t>(kMin, kMax);
   std::vector<float> input_data{
-      0, -6, 2,  4, //
-      3, -2, 10, 1, //
+    0, -6, 2,  4, //
+    3, -2, 10, 1, //
   };
   Tensor input_tensor =
-      makeInputTensor<DataType::U8>({2, 4}, quant_param.first, quant_param.second, input_data);
+    makeInputTensor<DataType::U8>({2, 4}, quant_param.first, quant_param.second, input_data);
   Tensor output_tensor = makeOutputTensor(DataType::U8, 16. / 256, 255);
 
   LogSoftmax kernel(&input_tensor, &output_tensor);
@@ -67,8 +67,8 @@ TEST(LogSoftmaxTest, Uint8)
   kernel.execute();
 
   std::vector<float> ref_output_data{
-      -4.14297, -10.14297, -2.14297,   -.142971, //
-      -7.00104, -12.00104, -.00104087, -9.00104, //
+    -4.14297, -10.14297, -2.14297,   -.142971, //
+    -7.00104, -12.00104, -.00104087, -9.00104, //
   };
   std::vector<int32_t> ref_output_shape{2, 4};
   EXPECT_THAT(dequantizeTensorData(output_tensor),
@@ -81,8 +81,8 @@ TEST(LogSoftmaxTest, Uint8)
 TEST(LogSoftmaxTest, InvalidInputOutputType_NEG)
 {
   std::vector<float> input_data{
-      0, -6, 2,  4, //
-      3, -2, 10, 1, //
+    0, -6, 2,  4, //
+    3, -2, 10, 1, //
   };
   Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({2, 4}, input_data);
   Tensor output_tensor = makeOutputTensor(DataType::U8, 16. / 256, 255);
@@ -95,11 +95,11 @@ TEST(LogSoftmaxTest, InvalidOutputQuantParam_NEG)
 {
   std::pair<float, int32_t> quant_param = quantizationParams<uint8_t>(-10, 10);
   std::vector<float> input_data{
-      0, -6, 2,  4, //
-      3, -2, 10, 1, //
+    0, -6, 2,  4, //
+    3, -2, 10, 1, //
   };
   Tensor input_tensor =
-      makeInputTensor<DataType::U8>({2, 4}, quant_param.first, quant_param.second, input_data);
+    makeInputTensor<DataType::U8>({2, 4}, quant_param.first, quant_param.second, input_data);
   Tensor output_tensor = makeOutputTensor(DataType::U8, 20. / 256, 255);
 
   LogSoftmax kernel(&input_tensor, &output_tensor);

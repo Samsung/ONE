@@ -99,12 +99,12 @@ TEST(DivTest, Uint8)
   std::pair<float, int32_t> quant_param = quantizationParams<uint8_t>(-1.f, 1.f);
 
   Tensor input1_tensor =
-      makeInputTensor<DataType::U8>(base_shape, quant_param.first, quant_param.second, input1_data);
+    makeInputTensor<DataType::U8>(base_shape, quant_param.first, quant_param.second, input1_data);
   Tensor input2_tensor =
-      makeInputTensor<DataType::U8>(base_shape, quant_param.first, quant_param.second, input2_data);
+    makeInputTensor<DataType::U8>(base_shape, quant_param.first, quant_param.second, input2_data);
 
   Tensor output_tensor =
-      makeOutputTensor(getElementType<uint8_t>(), quant_param.first, quant_param.second);
+    makeOutputTensor(getElementType<uint8_t>(), quant_param.first, quant_param.second);
 
   DivParams params{};
   params.activation = Activation::RELU;

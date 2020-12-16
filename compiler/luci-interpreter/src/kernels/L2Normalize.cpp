@@ -28,7 +28,7 @@ namespace kernels
 {
 
 L2Normalize::L2Normalize(const Tensor *input, Tensor *output, const L2NormParams &params)
-    : KernelWithParams<L2NormParams>({input}, {output}, params)
+  : KernelWithParams<L2NormParams>({input}, {output}, params)
 {
 }
 
