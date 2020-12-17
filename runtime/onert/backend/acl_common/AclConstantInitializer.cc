@@ -25,7 +25,7 @@ namespace acl_common
 
 AclConstantInitializer::AclConstantInitializer(const ir::Operands &operands,
                                                const std::shared_ptr<ITensorRegistry> &tensor_reg)
-  : cpu_common::ConstantInitializerBase{operands}, _tensor_reg{tensor_reg}
+  : _operands{operands}, _tensor_reg{tensor_reg}, _current_layout{ir::Layout::UNKNOWN}
 {
   // DO NOTHING
 }
@@ -124,6 +124,94 @@ void AclConstantInitializer::visit(const ir::operation::RNN &node)
 void AclConstantInitializer::visit(const ir::operation::TransposeConv &node)
 {
   permuteInputInitialize(node, ir::operation::TransposeConv::KERNEL);
+}
+
+// NOTE Workaround for 16b float type. Here, this is enough since only the size of bytes matters.
+using float16 = uint16_t;
+
+void AclConstantInitializer::registerCopyInitializer(const ir::OperandIndex &index,
+                                                     const ir::Operand &obj)
+{
+  // For only CONSTANTS
+  // TODO Add to check if tensor has been allocated
+  if (!obj.isConstant())
+    return;
+
+  const auto type = obj.typeInfo().type();
+  using ir::DataType;
+
+  switch (type)
+  {
+    case DataType::FLOAT32:
+      _init_map[index] = copyInit<float>;
+      break;
+    case DataType::INT32:
+      _init_map[index] = copyInit<int32_t>;
+      break;
+    case DataType::UINT32:
+      _init_map[index] = copyInit<uint32_t>;
+      break;
+    case DataType::BOOL8:
+    case DataType::QUANT_UINT8_ASYMM:
+      _init_map[index] = copyInit<uint8_t>;
+      break;
+    case DataType::QUANT_INT8_SYMM:
+    case DataType::QUANT_INT8_ASYMM:
+      _init_map[index] = copyInit<int8_t>;
+      break;
+    case DataType::FLOAT16:
+      _init_map[index] = copyInit<float16>;
+      break;
+    case DataType::INT64:
+      _init_map[index] = copyInit<int64_t>;
+      break;
+    default:
+      throw std::runtime_error("Not supported, yet");
+      break;
+  }
+}
+
+void AclConstantInitializer::registerPermuteInitializer(const ir::OperandIndex &index,
+                                                        const ir::Operand &obj)
+{
+  // For only CONSTANTS
+  // TODO Add to check if tensor has been allocated
+  if (!obj.isConstant())
+    return;
+
+  const auto type = obj.typeInfo().type();
+  using ir::DataType;
+  using namespace std::placeholders;
+
+  switch (type)
+  {
+    case DataType::FLOAT32:
+      _init_map[index] = std::bind(permuteInit<float>, _1, _2, _current_layout);
+      break;
+    case DataType::INT32:
+      _init_map[index] = std::bind(permuteInit<int32_t>, _1, _2, _current_layout);
+      break;
+    case DataType::UINT32:
+      _init_map[index] = std::bind(permuteInit<uint32_t>, _1, _2, _current_layout);
+      break;
+    case DataType::BOOL8:
+    case DataType::QUANT_UINT8_ASYMM:
+      _init_map[index] = std::bind(permuteInit<uint8_t>, _1, _2, _current_layout);
+      break;
+    case DataType::QUANT_INT8_SYMM:
+    case DataType::QUANT_INT8_ASYMM:
+      _init_map[index] = std::bind(permuteInit<int8_t>, _1, _2, _current_layout);
+      break;
+    case DataType::FLOAT16:
+      _init_map[index] = std::bind(permuteInit<float16>, _1, _2, _current_layout);
+      break;
+    case DataType::INT64:
+      _init_map[index] = std::bind(permuteInit<int64_t>, _1, _2, _current_layout);
+      break;
+    default:
+      throw std::runtime_error("Not supported, yet");
+      break;
+  }
 }
 
 } // namespace acl_common
