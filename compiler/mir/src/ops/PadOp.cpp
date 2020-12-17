@@ -30,7 +30,7 @@ void PadOp::inferOutputTypes()
   for (int32_t dim = 0; dim < num_dims; ++dim)
   {
     out_shape.dim(dim) =
-        _attributes.padding_before[dim] + input_shape.dim(dim) + _attributes.padding_after[dim];
+      _attributes.padding_before[dim] + input_shape.dim(dim) + _attributes.padding_after[dim];
   }
 
   setOutputType(0, {getInput(0)->getElementType(), out_shape});

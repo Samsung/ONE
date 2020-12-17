@@ -139,7 +139,7 @@ void convertConvV1(const onnx::NodeProto &onnx_node, ConverterContext *context)
   {
     auto bias = inputs[2];
     bias = createOp<mir::ops::ReshapeOp>(graph, bias, mir::Shape{1, bias->getShape().dim(0), 1, 1})
-               ->getOutput(0);
+             ->getOutput(0);
     result = createOp<mir::ops::AddOp>(graph, result, bias)->getOutput(0);
   }
 

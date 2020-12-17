@@ -32,7 +32,7 @@ class MaxPool2DOp : public Operation
 {
 public:
   MaxPool2DOp(Output *arg, const MaxPool2DOpAttributes &attributes)
-      : Operation(Type::maxPool2D, {arg}), _attributes(attributes)
+    : Operation(Type::maxPool2D, {arg}), _attributes(attributes)
   {
     inferOutputTypes();
   }

@@ -134,7 +134,7 @@ void ONNXImporterImpl::collectUnsupportedOps()
     auto opset = _modelCtx->getDomainOpsetVersion(onnx_node.domain());
 
     NodeConverterRegistry::ConverterFunc converter =
-        NodeConverterRegistry::getInstance().lookup(op_type, opset);
+      NodeConverterRegistry::getInstance().lookup(op_type, opset);
 
     if (converter == nullptr)
       problems_op_set.emplace(op_type, opset);
@@ -176,7 +176,7 @@ void ONNXImporterImpl::createGraphInputs()
       }
 
       auto elem_type = onnxDataTypeToMirDataType(
-          (onnx::TensorProto_DataType)input.type().tensor_type().elem_type());
+        (onnx::TensorProto_DataType)input.type().tensor_type().elem_type());
       mir::TensorType type{elem_type, shape};
       auto *op = _graph->create<mir::ops::InputOp>(type);
       _converterCtx->setOutput(input.name(), op->getOutput(0));
@@ -199,7 +199,7 @@ std::unique_ptr<mir::Graph> ONNXImporterImpl::createIR()
     auto opset = _modelCtx->getDomainOpsetVersion(onnx_node.domain());
     // Get converter
     NodeConverterRegistry::ConverterFunc converter =
-        NodeConverterRegistry::getInstance().lookup(op_type, opset);
+      NodeConverterRegistry::getInstance().lookup(op_type, opset);
     assert(converter != nullptr);
     converter(onnx_node, _converterCtx.get());
   }

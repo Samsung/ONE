@@ -48,9 +48,9 @@ Shape broadcastShapes(const Shape &lhs_shape, const Shape &rhs_shape)
   for (int i = 0; i < num_dims; ++i)
   {
     const std::int32_t lhs_dim =
-        (i >= num_dims - lhs_shape.rank()) ? lhs_shape.dim(i - (num_dims - lhs_shape.rank())) : 1;
+      (i >= num_dims - lhs_shape.rank()) ? lhs_shape.dim(i - (num_dims - lhs_shape.rank())) : 1;
     const std::int32_t rhs_dim =
-        (i >= num_dims - rhs_shape.rank()) ? rhs_shape.dim(i - (num_dims - rhs_shape.rank())) : 1;
+      (i >= num_dims - rhs_shape.rank()) ? rhs_shape.dim(i - (num_dims - rhs_shape.rank())) : 1;
     if (lhs_dim == 1)
     {
       result_shape.dim(i) = rhs_dim;

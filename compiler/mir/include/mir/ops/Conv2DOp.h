@@ -30,13 +30,13 @@ class Conv2DOp : public Operation
 {
 public:
   Conv2DOp(Output *input, Output *kernel, const Conv2DOpAttributes &attributes)
-      : Operation(Type::conv2D, {input, kernel}), _attributes(attributes)
+    : Operation(Type::conv2D, {input, kernel}), _attributes(attributes)
   {
     inferOutputTypes();
   }
 
   Conv2DOp(Output *input, Output *kernel, Output *bias, const Conv2DOpAttributes &attributes)
-      : Operation(Type::conv2D, {input, kernel, bias}), _attributes(attributes)
+    : Operation(Type::conv2D, {input, kernel, bias}), _attributes(attributes)
   {
     inferOutputTypes();
   }

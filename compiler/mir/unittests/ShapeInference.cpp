@@ -80,8 +80,8 @@ TEST(ShapeInferenceTest, ResizeWithScale)
   auto input = g.create<ops::InputOp>(input_type);
 
   auto op =
-      g.create<ops::ResizeOp>(input->getOutput(0), ops::ResizeOp::ResizeMethod::nearestNeighbor,
-                              std::vector<float>{1, 6, 2, 1});
+    g.create<ops::ResizeOp>(input->getOutput(0), ops::ResizeOp::ResizeMethod::nearestNeighbor,
+                            std::vector<float>{1, 6, 2, 1});
 
   ASSERT_EQ(result_shape, op->getOutputShape(0));
 }

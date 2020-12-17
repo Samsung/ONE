@@ -26,7 +26,7 @@ public:
   AffineQuantization() = default;
 
   AffineQuantization(float scale, int zero_point)
-      : _scale(scale), _zero_point(zero_point), _empty(false)
+    : _scale(scale), _zero_point(zero_point), _empty(false)
   {
   }
 

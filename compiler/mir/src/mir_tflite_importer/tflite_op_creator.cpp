@@ -92,9 +92,9 @@ static void calculatePadding(mir::ops::PaddingType padding_type, const mir::Shap
       {
         // Assuming NHWC format.
         const std::int32_t total_padding =
-            (input_shape.dim(1 + i) % strides[i] == 0)
-                ? std::max(0, window_size[i] - strides[i])
-                : std::max(0, window_size[i] - input_shape.dim(1 + i) % strides[i]);
+          (input_shape.dim(1 + i) % strides[i] == 0)
+            ? std::max(0, window_size[i] - strides[i])
+            : std::max(0, window_size[i] - input_shape.dim(1 + i) % strides[i]);
         padding_before[i] = total_padding / 2;
         padding_after[i] = total_padding - padding_before[i];
       }
@@ -332,7 +332,7 @@ TFLiteOpCreator::convertResizeNearestNeighbor(const tflite::ResizeNearestNeighbo
   Shape res_shape{input_shape.dim(0), size_tensor.at(mir::Index{0}), size_tensor.at(mir::Index{1}),
                   input_shape.dim(3)};
   auto result =
-      createOp<ops::ResizeOp>(input, ops::ResizeOp::ResizeMethod::nearestNeighbor, res_shape);
+    createOp<ops::ResizeOp>(input, ops::ResizeOp::ResizeMethod::nearestNeighbor, res_shape);
   return {result->getOutput(0)};
 }
 

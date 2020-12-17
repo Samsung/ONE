@@ -29,13 +29,13 @@ class FullyConnectedOp : public Operation
 {
 public:
   FullyConnectedOp(Output *input, Output *weights)
-      : Operation(Type::fullyConnected, {input, weights})
+    : Operation(Type::fullyConnected, {input, weights})
   {
     inferOutputTypes();
   }
 
   FullyConnectedOp(Output *input, Output *weights, Output *bias)
-      : Operation(Type::fullyConnected, {input, weights, bias})
+    : Operation(Type::fullyConnected, {input, weights, bias})
   {
     inferOutputTypes();
   }

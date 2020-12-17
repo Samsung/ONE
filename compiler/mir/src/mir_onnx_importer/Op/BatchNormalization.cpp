@@ -81,7 +81,7 @@ void convertBatchNormalizationV9(const onnx::NodeProto &onnx_node, ConverterCont
 
   if (scale_op == nullptr || mean_op == nullptr || var_op == nullptr)
     throw std::runtime_error(
-        "BatchNormalization: only constant 'scale', 'mean' and 'variance' inputs are supported.");
+      "BatchNormalization: only constant 'scale', 'mean' and 'variance' inputs are supported.");
 
   mir::Tensor<float> scale_accessor(scale_op->getValue());
   mir::Tensor<float> mean_accessor(mean_op->getValue());

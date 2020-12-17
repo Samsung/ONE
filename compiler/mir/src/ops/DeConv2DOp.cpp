@@ -36,8 +36,8 @@ void DeConv2DOp::inferPaddings()
   {
     const int spatial_dim_index = getDataSpatialDimIndex(_attributes.data_format, i);
     const std::int32_t total_padding =
-        (input_shape.dim(spatial_dim_index) - 1) * _attributes.strides[i] + kernel_shape.dim(i) -
-        output_shape.dim(spatial_dim_index);
+      (input_shape.dim(spatial_dim_index) - 1) * _attributes.strides[i] + kernel_shape.dim(i) -
+      output_shape.dim(spatial_dim_index);
 
     switch (_attributes.padding_type)
     {
@@ -85,8 +85,8 @@ void DeConv2DOp::inferOutputTypes()
   {
     const int spatial_dim_index = getDataSpatialDimIndex(_attributes.data_format, i);
     output_shape.dim(spatial_dim_index) =
-        (input_shape.dim(spatial_dim_index) - 1) * _attributes.strides[i] + kernel_shape.dim(i) -
-        (_attributes.padding_before.at(i) + _attributes.padding_after.at(i));
+      (input_shape.dim(spatial_dim_index) - 1) * _attributes.strides[i] + kernel_shape.dim(i) -
+      (_attributes.padding_before.at(i) + _attributes.padding_after.at(i));
   }
 
   setOutputType(0, {getInput(0)->getElementType(), output_shape});
