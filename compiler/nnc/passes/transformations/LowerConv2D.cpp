@@ -36,11 +36,11 @@ static void lowerConv2D(mir::Graph *graph, mir::ops::Conv2DOp *op)
     // [O, H, W, I / M] == [M, H, W, 1] -> [H, W, M, 1]
     std::vector<std::size_t> perm{1, 2, 0, 3};
     mir::Operation::Output *new_kernel =
-        graph->create<mir::ops::TransposeOp>(kernel, perm)->getOutput(0);
+      graph->create<mir::ops::TransposeOp>(kernel, perm)->getOutput(0);
     mir::Conv2DOpAttributes attributes = op->getAttributes();
     attributes.num_groups = 1;
     mir::Operation::Output *new_result =
-        graph->create<mir::ops::DepthwiseConv2DOp>(input, new_kernel, attributes)->getOutput(0);
+      graph->create<mir::ops::DepthwiseConv2DOp>(input, new_kernel, attributes)->getOutput(0);
     graph->replaceNode(op, new_result->getNode());
   }
 }

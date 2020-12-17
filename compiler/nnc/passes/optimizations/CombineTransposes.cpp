@@ -72,12 +72,12 @@ nnc::PassData nnc::CombineTransposes::run(nnc::PassData data)
       };
       auto *bottom_transpose = dynamic_cast<mir::ops::TransposeOp *>(match.second);
       auto combined_axis_order =
-          combineAxisOrders(top_transpose->getAxisOrder(), bottom_transpose->getAxisOrder());
+        combineAxisOrders(top_transpose->getAxisOrder(), bottom_transpose->getAxisOrder());
 
       if (!isIdentityTranspose(combined_axis_order))
       {
         auto new_tr_op =
-            g->create<mir::ops::TransposeOp>(top_transpose->getInput(0), combined_axis_order);
+          g->create<mir::ops::TransposeOp>(top_transpose->getInput(0), combined_axis_order);
 
         g->replaceNode(bottom_transpose, new_tr_op);
       }

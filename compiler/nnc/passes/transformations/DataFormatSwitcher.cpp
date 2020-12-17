@@ -27,7 +27,7 @@
 namespace nnc
 {
 DataFormatSwitcher::DataFormatSwitcher(const mir::DataFormat target_format)
-    : _target_format(target_format)
+  : _target_format(target_format)
 {
 }
 
@@ -89,10 +89,10 @@ mir::Operation::Output *DataFormatSwitcher::insertTransposeBefore(mir::Operation
   mir::Operation::Output *new_out;
   if (_target_format == mir::DataFormat::NHWC)
     new_out = _graph->create<mir::ops::TransposeOp>(out, std::vector<std::size_t>{0, 2, 3, 1})
-                  ->getOutput(0); // NCHW -> NHWC
+                ->getOutput(0); // NCHW -> NHWC
   else
     new_out = _graph->create<mir::ops::TransposeOp>(out, std::vector<std::size_t>{0, 3, 1, 2})
-                  ->getOutput(0); // NHWC -> NCHW
+                ->getOutput(0); // NHWC -> NCHW
   if (out->getType().isQuantized())
     new_out->setQuantization(out->getType().getQuantization());
   return new_out;
@@ -103,10 +103,10 @@ mir::Operation::Output *DataFormatSwitcher::insertTransposeAfter(mir::Operation:
   mir::Operation::Output *new_out;
   if (_target_format == mir::DataFormat::NHWC)
     new_out = _graph->create<mir::ops::TransposeOp>(out, std::vector<std::size_t>{0, 3, 1, 2})
-                  ->getOutput(0); // NHWC -> NCHW
+                ->getOutput(0); // NHWC -> NCHW
   else
     new_out = _graph->create<mir::ops::TransposeOp>(out, std::vector<std::size_t>{0, 2, 3, 1})
-                  ->getOutput(0); // NCHW -> NHWC
+                ->getOutput(0); // NCHW -> NHWC
   if (out->getType().isQuantized())
     new_out->setQuantization(out->getType().getQuantization());
   return new_out;

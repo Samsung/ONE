@@ -69,8 +69,8 @@ Option<int32_t> NNegOpt(optname("-neg_val"),
 
 // test option with default negative value
 Option<int32_t>
-    NDefaultNegOpt(optname("-default_neg_val"),
-                   overview("description of integer option with default negative value"), -33);
+  NDefaultNegOpt(optname("-default_neg_val"),
+                 overview("description of integer option with default negative value"), -33);
 // test option with positive values
 Option<uint32_t> NPosOpt(optname("-pos_val"),
                          overview("description of integer option with positive value"), 1,
@@ -124,28 +124,28 @@ TEST(SUPPORT_NNC, verify_cl_options)
 {
   // create command line
   const char *argv[] = {
-      "CLTest", // program name
-      // string options
-      "-m", "multiopt_value",                        // second name for option with several names
-      "--single", "single_value",                    // option with single name
-      "-several_separators:SOME_VALUE1,SOME_VALUE2", // test option with several separators
-      "--one_separarot=AAA_VALUE",                   // test option whit one separator
-      "-default_val_opt",                            // test option with default value
-      "--optional_opt", "/home/guest/tmp",           // test optional option
-      "-valid_opt", "value2",                        // test options with defined values
-      // integer options
-      "-neg_val", "-42",  // test negative value for integer option
-      "-default_neg_val", // test integer option with default value
-      "-pos_val", "33",   // test positive value for integer option
-      // char options
-      "-char-opt", "b", "-dash_opt", "-",
-      // bool options
-      "-bool_opt=false", "-bool-opt2",
-      // vector of strings options
-      "-vec_opt1", "1", "c", "222", "ABC", "857", "-vec_opt2", "--vec_opt_with_vals", "abc", "123",
-      "xxx", "abc", "xxx",
-      // grouped options
-      "-group_opt1", "-group_opt2", "abc", "-group_opt3", "11", nullptr};
+    "CLTest", // program name
+    // string options
+    "-m", "multiopt_value",                        // second name for option with several names
+    "--single", "single_value",                    // option with single name
+    "-several_separators:SOME_VALUE1,SOME_VALUE2", // test option with several separators
+    "--one_separarot=AAA_VALUE",                   // test option whit one separator
+    "-default_val_opt",                            // test option with default value
+    "--optional_opt", "/home/guest/tmp",           // test optional option
+    "-valid_opt", "value2",                        // test options with defined values
+    // integer options
+    "-neg_val", "-42",  // test negative value for integer option
+    "-default_neg_val", // test integer option with default value
+    "-pos_val", "33",   // test positive value for integer option
+    // char options
+    "-char-opt", "b", "-dash_opt", "-",
+    // bool options
+    "-bool_opt=false", "-bool-opt2",
+    // vector of strings options
+    "-vec_opt1", "1", "c", "222", "ABC", "857", "-vec_opt2", "--vec_opt_with_vals", "abc", "123",
+    "xxx", "abc", "xxx",
+    // grouped options
+    "-group_opt1", "-group_opt2", "abc", "-group_opt3", "11", nullptr};
   int argc = (sizeof(argv) / sizeof(argv[0])) - 1;
 
   // It must be failed if option is not passed and other options are in the same group

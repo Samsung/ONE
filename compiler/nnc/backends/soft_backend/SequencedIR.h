@@ -91,7 +91,7 @@ struct TransposeTensor : public Action
 {
 
   TransposeTensor(size_t input, size_t output, std::vector<int32_t> &&perm)
-      : Action(Type::transposeTensor), perm(std::move(perm)), input(input), output(output)
+    : Action(Type::transposeTensor), perm(std::move(perm)), input(input), output(output)
   {
   }
 
@@ -121,8 +121,8 @@ struct CallFunction : public Action
 
   CallFunction(mir::Operation *op, std::string func_name, std::vector<size_t> &&inputs,
                std::vector<size_t> &&outputs)
-      : Action(Type::callFunction), mirOp(op), funcName(std::move(func_name)), inputs(inputs),
-        outputs(outputs), paramStartOffset(0)
+    : Action(Type::callFunction), mirOp(op), funcName(std::move(func_name)), inputs(inputs),
+      outputs(outputs), paramStartOffset(0)
   {
   }
 

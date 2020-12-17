@@ -103,7 +103,7 @@ TEST(OptPass, sinkTrConcat)
   Operation *tr1 = g.create<ops::TransposeOp>(in1->getOutput(0), vector<size_t>{0, 3, 1, 2});
   Operation *tr2 = g.create<ops::TransposeOp>(in2->getOutput(0), vector<size_t>{0, 3, 1, 2});
   Operation *conc =
-      g.create<ops::ConcatOp>(vector<Operation::Output *>{tr1->getOutput(0), tr2->getOutput(0)}, 1);
+    g.create<ops::ConcatOp>(vector<Operation::Output *>{tr1->getOutput(0), tr2->getOutput(0)}, 1);
   Operation *tanh = g.create<ops::TanhOp>(conc->getOutput(0));
   Operation *out = g.create<ops::OutputOp>(tanh->getOutput(0));
   (void)out;
@@ -141,7 +141,7 @@ TEST(OptPass, sinkReluConcat)
   Operation *relu1 = g.create<ops::ReluOp>(in1->getOutput(0));
   Operation *relu2 = g.create<ops::ReluOp>(in2->getOutput(0));
   Operation *conc = g.create<ops::ConcatOp>(
-      vector<Operation::Output *>{relu1->getOutput(0), relu2->getOutput(0)}, 1);
+    vector<Operation::Output *>{relu1->getOutput(0), relu2->getOutput(0)}, 1);
   Operation *tanh = g.create<ops::TanhOp>(conc->getOutput(0));
   Operation *out = g.create<ops::OutputOp>(tanh->getOutput(0));
   (void)out;

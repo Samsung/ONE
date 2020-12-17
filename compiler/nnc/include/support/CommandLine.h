@@ -38,7 +38,7 @@ class BadOption : public std::logic_error
 {
 public:
   explicit BadOption(const std::string &msg, std::string optname = "", std::string value = "")
-      : std::logic_error(msg), _option_name(std::move(optname)), _option_value(std::move(value))
+    : std::logic_error(msg), _option_name(std::move(optname)), _option_value(std::move(value))
   {
   }
 
@@ -387,7 +387,7 @@ private:
   std::map<std::string, IOption *> _options_name; // map of name -> option
   std::vector<IOption *> _options;                // options
   std::map<IOption::Group, std::vector<IOption *>>
-      _grouped_options;   // map of groups: group -> vector of options
+    _grouped_options;     // map of groups: group -> vector of options
   std::string _prog_name; // name of program
   int _args_num = 0;      // number of command line arguments
 };
@@ -530,7 +530,7 @@ Option<T>::Option(const std::vector<std::string> &optnames, const std::string &d
   _group = group;
 
   _can_have_several_vals =
-      std::is_same<T, std::vector<std::string>>::value || std::is_same<T, std::vector<int>>::value;
+    std::is_same<T, std::vector<std::string>>::value || std::is_same<T, std::vector<int>>::value;
   assert(!(_can_have_several_vals && !_seps.empty()) &&
          "option with several values can't have separators");
 

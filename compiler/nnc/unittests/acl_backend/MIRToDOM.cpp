@@ -117,12 +117,12 @@ void checkDomIncludes(const ArtifactModule &m)
 
   // check ordinary includes, like '#include  "artifact_data.h"'
   checkHeadersSetsEqual(
-      m.headerIncludes(),
-      {"arm_compute/core/Types.h", "arm_compute/runtime/BlobLifetimeManager.h",
-       "arm_compute/runtime/CL/CLBufferAllocator.h", "arm_compute/runtime/CL/CLFunctions.h",
-       "arm_compute/runtime/CL/CLScheduler.h", "arm_compute/runtime/MemoryManagerOnDemand.h",
-       "arm_compute/runtime/PoolManager.h"},
-      "system header includes diverged");
+    m.headerIncludes(),
+    {"arm_compute/core/Types.h", "arm_compute/runtime/BlobLifetimeManager.h",
+     "arm_compute/runtime/CL/CLBufferAllocator.h", "arm_compute/runtime/CL/CLFunctions.h",
+     "arm_compute/runtime/CL/CLScheduler.h", "arm_compute/runtime/MemoryManagerOnDemand.h",
+     "arm_compute/runtime/PoolManager.h"},
+    "system header includes diverged");
 
   checkHeadersSetsEqual(m.sourceSysIncludes(), {}, "system source includes diverged");
 }
@@ -287,10 +287,10 @@ TEST(acl_backend_mir_to_dom, conv2d)
 
   Graph g;
   OpConstructor op_generator =
-      [kernel_tensor](mir::Graph &g, const std::vector<mir::Operation::Output *> &inputs) {
-        auto kernel = g.create<mir::ops::ConstantOp>(kernel_tensor)->getOutput(0);
-        return g.create<mir::ops::Conv2DOp>(inputs[0], kernel, mir::Conv2DOpAttributes());
-      };
+    [kernel_tensor](mir::Graph &g, const std::vector<mir::Operation::Output *> &inputs) {
+      auto kernel = g.create<mir::ops::ConstantOp>(kernel_tensor)->getOutput(0);
+      return g.create<mir::ops::Conv2DOp>(inputs[0], kernel, mir::Conv2DOpAttributes());
+    };
 
   vector<Shape> input_shapes{{1, 10, 10, channels}};
 
@@ -312,11 +312,11 @@ TEST(acl_backend_mir_to_dom, depthwise_conv)
 
   Graph g;
   OpConstructor op_generator =
-      [kernel_tensor](mir::Graph &g, const std::vector<mir::Operation::Output *> &inputs) {
-        Conv2DOpAttributes attributes;
-        auto kernel = g.create<mir::ops::ConstantOp>(kernel_tensor)->getOutput(0);
-        return g.create<mir::ops::DepthwiseConv2DOp>(inputs[0], kernel, attributes);
-      };
+    [kernel_tensor](mir::Graph &g, const std::vector<mir::Operation::Output *> &inputs) {
+      Conv2DOpAttributes attributes;
+      auto kernel = g.create<mir::ops::ConstantOp>(kernel_tensor)->getOutput(0);
+      return g.create<mir::ops::DepthwiseConv2DOp>(inputs[0], kernel, attributes);
+    };
 
   vector<Shape> input_shapes{{1, 10, 10, channels}};
 
