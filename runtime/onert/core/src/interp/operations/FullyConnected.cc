@@ -44,16 +44,16 @@ void prepareFC(ExecEnv *env, const ir::Operation &node)
   UNUSED_RELEASE(kernel_tensor);
   UNUSED_RELEASE(bias_tensor);
 
-  assert(in_tensor->num_dimensions() >= 2);
-  assert(kernel_tensor->num_dimensions() == 2);
-  assert(bias_tensor->num_dimensions() == 1);
+  assert(in_tensor->getShape().rank() >= 2);
+  assert(kernel_tensor->getShape().rank() == 2);
+  assert(bias_tensor->getShape().rank() == 1);
 
   const auto input_size_with_batch = in_tensor->num_elements();
-  const auto num_units = kernel_tensor->dimension(0);
-  const auto input_size = kernel_tensor->dimension(1);
-  const auto batch_size = input_size_with_batch / input_size;
+  const auto num_units = kernel_tensor->getShape().dim(0);
+  const auto input_size = kernel_tensor->getShape().dim(1);
+  const int32_t batch_size = input_size_with_batch / input_size;
   assert(input_size_with_batch % input_size == 0);
-  assert(num_units == bias_tensor->dimension(0));
+  assert(num_units == bias_tensor->getShape().dim(0));
 
   // Make output tensor info
   ir::Shape output_shape(2);
@@ -68,9 +68,9 @@ void prepareFC(ExecEnv *env, const ir::Operation &node)
 
   // Handle same ifm & ofm data type only
   assert(in_tensor->data_type() == out_tensor->data_type());
-  assert(out_tensor->num_dimensions() == 2);
-  assert(out_tensor->dimension(0) == batch_size);
-  assert(out_tensor->dimension(1) == num_units);
+  assert(out_tensor->getShape().rank() == 2);
+  assert(out_tensor->getShape().dim(0) == batch_size);
+  assert(out_tensor->getShape().dim(1) == num_units);
 }
 
 void invoke(const ITensor *ifm_tensor, const ITensor *ker_tensor, const ITensor *bias_tensor,

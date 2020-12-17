@@ -40,9 +40,9 @@ void prepareTransposeConv(ExecEnv *env, const ir::Operation &node)
   const auto ker_tensor = env->tensorAt(ker_index);
   const auto ofm_shape_tensor = env->tensorAt(ofm_shape_index);
 
-  assert(ifm_tensor->num_dimensions() == 4);
-  assert(ker_tensor->num_dimensions() == 4);
-  assert(ofm_shape_tensor->num_dimensions() == 1);
+  assert(ifm_tensor->getShape().rank() == 4);
+  assert(ker_tensor->getShape().rank() == 4);
+  assert(ofm_shape_tensor->getShape().rank() == 1);
 
   UNUSED_RELEASE(ifm_tensor);
   UNUSED_RELEASE(ker_tensor);
@@ -68,7 +68,7 @@ void prepareTransposeConv(ExecEnv *env, const ir::Operation &node)
     throw std::runtime_error{"Interp(TConv): Different I/O data dype"};
   }
 
-  if (ofm_tensor->num_dimensions() != 4)
+  if (ofm_tensor->getShape().rank() != 4)
   {
     throw std::runtime_error{"Interp(TConv): Invalid output rank"};
   }

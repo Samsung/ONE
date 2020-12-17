@@ -56,9 +56,9 @@ void prepareGather(ExecEnv *env, const ir::Operation &node)
   }
 
   auto output_tensor = env->tensorAt(output_index);
-  auto output_rank = input_tensor->num_dimensions() + indices_tensor->num_dimensions() - 1;
+  auto output_rank = input_tensor->getShape().rank() + indices_tensor->getShape().rank() - 1;
 
-  if (output_rank != output_tensor->num_dimensions())
+  if (output_rank != output_tensor->getShape().rank())
   {
     throw std::runtime_error{"Interp(Gather): Invalid output rank"};
   }
@@ -106,7 +106,7 @@ void invokeGather(const ExecEnv *env, const ir::Operation &node)
   const auto input_tensor = env->tensorAt(input_index);
   const auto indices_tensor = env->tensorAt(indices_index);
   const auto output_tensor = env->tensorAt(output_index);
-  const uint32_t axis = (axis_raw < 0) ? (axis_raw + input_tensor->num_dimensions()) : axis_raw;
+  const uint32_t axis = (axis_raw < 0) ? (axis_raw + input_tensor->getShape().rank()) : axis_raw;
 
   const auto data_type = input_tensor->data_type();
 
