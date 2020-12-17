@@ -64,7 +64,7 @@ void GatherImpl<T, IndicesT>::run(const TensorVariant &datav, const TensorVarian
       for (int32_t inner = 0; inner < inner_size; inner++)
       {
         output.atOffset((outer * num_indices + i) * inner_size + inner) =
-            data.atOffset((outer * axis_size + index) * inner_size + inner);
+          data.atOffset((outer * axis_size + index) * inner_size + inner);
       }
     }
   }
