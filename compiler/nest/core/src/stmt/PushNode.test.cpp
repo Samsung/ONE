@@ -25,7 +25,7 @@ namespace
 struct DummyExprNode final : public nest::expr::Node
 {
 };
-}
+} // namespace
 
 TEST(STMT_PUSH_NODE, cast)
 {

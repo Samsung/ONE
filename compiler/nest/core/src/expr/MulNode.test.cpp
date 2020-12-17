@@ -25,7 +25,7 @@ namespace
 struct DummyNode final : public nest::expr::Node
 {
 };
-}
+} // namespace
 
 TEST(MUL_NODE, cast)
 {
