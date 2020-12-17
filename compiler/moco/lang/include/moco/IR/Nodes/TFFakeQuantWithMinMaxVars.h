@@ -25,7 +25,7 @@ namespace moco
 {
 
 class TFFakeQuantWithMinMaxVars final
-    : public FixedArityNode<3, TFNodeImpl<TFOpcode::FakeQuantWithMinMaxVars>>
+  : public FixedArityNode<3, TFNodeImpl<TFOpcode::FakeQuantWithMinMaxVars>>
 {
 public:
   loco::Node *inputs(void) const { return at(0)->node(); }

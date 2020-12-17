@@ -37,7 +37,7 @@ class TFBiasAddGraphUpdate final : public GraphUpdate
 {
 public:
   TFBiasAddGraphUpdate(TFBiasAdd *biasadd, std::vector<TensorName> &names)
-      : _biasadd(biasadd), _names(names)
+    : _biasadd(biasadd), _names(names)
   {
   }
 

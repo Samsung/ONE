@@ -34,7 +34,7 @@ class FusedBatchNormGraphUpdate final : public GraphUpdate
 {
 public:
   FusedBatchNormGraphUpdate(TFFusedBatchNorm *node, std::vector<TensorName> names)
-      : _node(node), _names(names)
+    : _node(node), _names(names)
   {
   }
 

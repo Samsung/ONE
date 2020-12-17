@@ -40,7 +40,7 @@ class TFAvgPoolGraphUpdate final : public GraphUpdate
 {
 public:
   TFAvgPoolGraphUpdate(TFAvgPool *node, const TensorName &name)
-      : _avgpool_node(node), _value_name(name)
+    : _avgpool_node(node), _value_name(name)
   {
   }
 

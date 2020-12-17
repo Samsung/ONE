@@ -36,7 +36,7 @@ class TFStridedSliceGraphUpdate final : public GraphUpdate
 {
 public:
   TFStridedSliceGraphUpdate(TFStridedSlice *node, std::vector<TensorName> names)
-      : _node(node), _names(names)
+    : _node(node), _names(names)
   {
   }
 

@@ -118,7 +118,7 @@ class GraphBuilderContext
 public:
   GraphBuilderContext(loco::Graph *g, NodeDefTable *nodedef, SymbolTable *tensor_names,
                       UpdateQueue *updates)
-      : _g(g), _nodedef(nodedef), _tensor_names(tensor_names), _updates(updates)
+    : _g(g), _nodedef(nodedef), _tensor_names(tensor_names), _updates(updates)
   {
     // DO NOTHING
   }

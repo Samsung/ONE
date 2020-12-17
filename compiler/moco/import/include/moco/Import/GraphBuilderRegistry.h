@@ -82,6 +82,6 @@ private:
   std::map<const std::string, std::unique_ptr<GraphBuilder>> _builder_map;
 };
 
-} // namespace mono
+} // namespace moco
 
 #endif // __MOCO_IMPORT_GRAPH_BUILDER_REGISTRY_H__

@@ -35,7 +35,7 @@ class TFConcatV2GraphUpdate final : public GraphUpdate
 {
 public:
   TFConcatV2GraphUpdate(TFConcatV2 *node, std::vector<TensorName> names)
-      : _node(node), _names(names)
+    : _node(node), _names(names)
   {
   }
 

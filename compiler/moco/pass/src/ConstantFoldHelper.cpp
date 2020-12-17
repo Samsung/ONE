@@ -164,7 +164,7 @@ void apply_binary_s32(const moco::TFConst *lhs, const moco::TFConst *rhs, moco::
   for (uint32_t e = 0; e < nume; e++)
   {
     output->at<loco::DataType::S32>(e) =
-        f.apply(lhs->at<loco::DataType::S32>(e), rhs->at<loco::DataType::S32>(e));
+      f.apply(lhs->at<loco::DataType::S32>(e), rhs->at<loco::DataType::S32>(e));
   }
 }
 
@@ -180,7 +180,7 @@ void apply_binary_f32(const moco::TFConst *lhs, const moco::TFConst *rhs, moco::
   for (uint32_t e = 0; e < nume; e++)
   {
     output->at<loco::DataType::FLOAT32>(e) =
-        f.apply(lhs->at<loco::DataType::FLOAT32>(e), rhs->at<loco::DataType::FLOAT32>(e));
+      f.apply(lhs->at<loco::DataType::FLOAT32>(e), rhs->at<loco::DataType::FLOAT32>(e));
   }
 }
 
