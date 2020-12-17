@@ -18,16 +18,21 @@
 #define LUCI_INTERPRETER_KERNELS_PRELU_H
 
 #include "core/Kernel.h"
+#include <vector>
 
 namespace luci_interpreter
 {
 namespace kernels
 {
 
+class ChannelQuantMultipliers;
+
 class Prelu : public Kernel
 {
 public:
   Prelu(const Tensor *input, const Tensor *alpha, Tensor *output);
+
+  ~Prelu();
 
   const Tensor *input() const { return _inputs[0]; }
   const Tensor *alpha() const { return _inputs[1]; }
@@ -42,8 +47,8 @@ private:
   void evalQuantizedS16() const;
 
 private:
-  int32_t _output_multiplier_alpha = 0;
-  int32_t _output_shift_alpha = 0;
+  std::vector<ChannelQuantMultipliers> _alpha_multipliers;
+  // TODO merge this into one ChannelQuantMultiplier object
   int32_t _output_multiplier_identity = 0;
   int32_t _output_shift_identity = 0;
 };

@@ -108,6 +108,8 @@ inline double getQuantizedConvolutionMultipler(float input_scale, float filter_s
   return input_product_scale / static_cast<double>(output_scale);
 }
 
+// TODO rename getQuantizedConvolutionMultiplers to something more general
+// it is used for non conv operators too
 inline std::vector<double> getQuantizedConvolutionMultiplers(float input_scale,
                                                              const std::vector<float> &filter_scale,
                                                              float output_scale)

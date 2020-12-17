@@ -34,20 +34,54 @@ Prelu::Prelu(const Tensor *input, const Tensor *alpha, Tensor *output)
 {
 }
 
+Prelu::~Prelu()
+{
+  // Destructor declared to delete vector of alpha quantized data properly
+}
+
 void Prelu::configure()
 {
   LUCI_INTERPRETER_CHECK(input()->element_type() == output()->element_type());
   LUCI_INTERPRETER_CHECK(alpha()->element_type() == output()->element_type());
+  LUCI_INTERPRETER_CHECK(input()->scales().size() <= 1);
+  LUCI_INTERPRETER_CHECK(output()->scales().size() <= 1);
 
-  if (input()->element_type() == DataType::U8 || input()->element_type() == DataType::S16)
+  if (input()->element_type() == DataType::U8)
   {
-    if (input()->element_type() == DataType::S16)
-    {
-      LUCI_INTERPRETER_CHECK(input()->zero_point() == 0 && alpha()->zero_point() == 0 &&
-                             output()->zero_point() == 0);
-    }
+    LUCI_INTERPRETER_CHECK(alpha()->scales().size() <= 1); // remove when CWQ kernel arrives
+    _alpha_multipliers.resize(1);
     double alpha_multiplier = input()->scale() * alpha()->scale() / output()->scale();
-    quantizeMultiplier(alpha_multiplier, &_output_multiplier_alpha, &_output_shift_alpha);
+    quantizeMultiplier(alpha_multiplier, &_alpha_multipliers[0].multiplier,
+                       &_alpha_multipliers[0].shift);
+    double identity_multiplier = input()->scale() / output()->scale();
+    quantizeMultiplier(identity_multiplier, &_output_multiplier_identity, &_output_shift_identity);
+  }
+  else if (input()->element_type() == DataType::S16)
+  {
+    // Common check for correctness of quant params
+    LUCI_INTERPRETER_CHECK(input()->zero_point() == 0 && output()->zero_point() == 0);
+    for (size_t channel = 0; channel < alpha()->zero_points().size(); ++channel)
+    {
+      LUCI_INTERPRETER_CHECK(alpha()->zero_points()[channel] == 0);
+    }
+    // Prelu specific checks for CWQ
+    LUCI_INTERPRETER_CHECK(alpha()->quantized_dimension() == alpha()->shape().num_dims() - 1);
+    LUCI_INTERPRETER_CHECK(static_cast<int32_t>(alpha()->scales().size()) ==
+                           alpha()->shape().dim(alpha()->quantized_dimension()));
+    LUCI_INTERPRETER_CHECK(alpha()->shape().num_elements() ==
+                           input()->shape().dim(input()->shape().num_dims() - 1));
+
+    // all dimension of alpha except last one should be size 1
+    for (int dim = 0; dim < alpha()->shape().num_dims() - 1; ++dim)
+    {
+      LUCI_INTERPRETER_CHECK(alpha()->shape().dim(dim) == 1);
+    }
+
+    std::vector<double> real_multipliers =
+      getQuantizedConvolutionMultiplers(input()->scale(), alpha()->scales(), output()->scale());
+
+    _alpha_multipliers = quantizeMultipliers(real_multipliers);
+
     double identity_multiplier = input()->scale() / output()->scale();
     quantizeMultiplier(identity_multiplier, &_output_multiplier_identity, &_output_shift_identity);
   }
@@ -109,8 +143,8 @@ void Prelu::evalQuantized() const
   op_params.output_offset = output()->zero_point();
   op_params.output_shift_1 = _output_shift_identity;
   op_params.output_multiplier_1 = _output_multiplier_identity;
-  op_params.output_shift_2 = _output_shift_alpha;
-  op_params.output_multiplier_2 = _output_multiplier_alpha;
+  op_params.output_shift_2 = _alpha_multipliers[0].shift;
+  op_params.output_multiplier_2 = _alpha_multipliers[0].multiplier;
 
   if (input()->shape() != alpha()->shape())
   {
@@ -126,24 +160,47 @@ void Prelu::evalQuantized() const
   }
 }
 
-void Prelu::evalQuantizedS16() const
+static inline int16_t evalElemS16Prelu(int16_t input_val, int16_t alpha_val,
+                                       const ChannelQuantMultipliers &identity_mult,
+                                       const ChannelQuantMultipliers &alpha_mult)
 {
   constexpr int32_t quantized_min = std::numeric_limits<int16_t>::min();
   constexpr int32_t quantized_max = std::numeric_limits<int16_t>::max();
 
-  auto fn = [this, quantized_min, quantized_max](int16_t input_val, int16_t alpha_val) {
-    const int32_t output_val =
-      input_val >= 0 ? tflite::MultiplyByQuantizedMultiplier(input_val, _output_multiplier_identity,
-                                                             _output_shift_identity)
-                     : tflite::MultiplyByQuantizedMultiplier(
-                         input_val * alpha_val, _output_multiplier_alpha, _output_shift_alpha);
-    const int32_t clamped_output = std::min(quantized_max, std::max(quantized_min, output_val));
-    return static_cast<int16_t>(clamped_output);
-  };
+  const int32_t output_val =
+    input_val >= 0 ? tflite::MultiplyByQuantizedMultiplier(input_val, identity_mult.multiplier,
+                                                           identity_mult.shift)
+                   : tflite::MultiplyByQuantizedMultiplier(input_val * alpha_val,
+                                                           alpha_mult.multiplier, alpha_mult.shift);
+  const int32_t clamped_output = std::min(quantized_max, std::max(quantized_min, output_val));
+  return clamped_output;
+}
 
-  BinaryOpBroadcastSlow(getTensorShape(input()), getTensorData<int16_t>(input()),
-                        getTensorShape(alpha()), getTensorData<int16_t>(alpha()),
-                        getTensorShape(output()), getTensorData<int16_t>(output()), fn);
+void Prelu::evalQuantizedS16() const
+{
+  // Note that this kernel assumes alpha is CWQ
+  tflite::RuntimeShape input_shape = getTensorShape(input());
+  const int16_t *input_data = input()->data<int16_t>();
+  const int16_t *alpha_data = alpha()->data<int16_t>();
+  int16_t *output_data = output()->data<int16_t>();
+
+  const ChannelQuantMultipliers pos_mult{_output_shift_identity, _output_multiplier_identity};
+
+  const int last_dim = input()->shape().num_dims() - 1;
+
+  int32_t outer_dims_size = 1;
+  for (int i = 0; i < last_dim; ++i)
+    outer_dims_size *= input_shape.Dims(i);
+  int32_t quant_dim_size = input_shape.Dims(last_dim);
+
+  for (int32_t outer_dims = 0; outer_dims < outer_dims_size; ++outer_dims)
+    for (int32_t quant_channel = 0; quant_channel < quant_dim_size; ++quant_channel)
+    {
+      const ChannelQuantMultipliers &neg_mult = _alpha_multipliers[quant_channel];
+      size_t offset = quant_channel + outer_dims * quant_dim_size;
+      output_data[offset] =
+        evalElemS16Prelu(input_data[offset], alpha_data[quant_channel], pos_mult, neg_mult);
+    }
 }
 
 } // namespace kernels
