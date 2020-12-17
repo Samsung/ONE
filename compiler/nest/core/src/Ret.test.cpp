@@ -23,7 +23,7 @@ namespace
 struct DummyNode final : public nest::expr::Node
 {
 };
-}
+} // namespace
 
 TEST(RET, ctor)
 {

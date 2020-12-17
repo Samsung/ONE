@@ -24,7 +24,7 @@ struct DummyNode final : public nest::stmt::Node
 {
   // Dummy Node for testing
 };
-}
+} // namespace
 
 TEST(BLOCK, use_case_1)
 {

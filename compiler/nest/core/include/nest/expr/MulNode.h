@@ -30,7 +30,7 @@ class MulNode final : public Node
 {
 public:
   MulNode(const std::shared_ptr<expr::Node> &lhs, const std::shared_ptr<expr::Node> &rhs)
-      : _lhs{lhs}, _rhs{rhs}
+    : _lhs{lhs}, _rhs{rhs}
   {
     // DO NOTHING
   }
