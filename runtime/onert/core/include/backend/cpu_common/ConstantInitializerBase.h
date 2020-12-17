@@ -28,7 +28,6 @@
 #include "ir/OpSequence.h"
 #include "backend/ITensorRegistry.h"
 #include "util/logging.h"
-#include "backend/ITensorRegistry.h"
 
 namespace onert
 {
