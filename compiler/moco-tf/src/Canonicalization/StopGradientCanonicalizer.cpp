@@ -30,16 +30,16 @@ bool canonicalize_stopgradient(loco::Graph *graph, moco::TFStopGradient *node)
   INFO(l) << "TFNodeCanonicalize TFStopGradient begin";
 
   /**
-  * This will replace shape inferred TFStopGradient node into canonical Forward
-  *
-  * Before
-  *           In --- TFStopGradient --- Out(s)
-  *
-  * After
-  *               -- TFStopGradient
-  *              /
-  *           In --- Forward --- Out(s)
-  */
+   * This will replace shape inferred TFStopGradient node into canonical Forward
+   *
+   * Before
+   *           In --- TFStopGradient --- Out(s)
+   *
+   * After
+   *               -- TFStopGradient
+   *              /
+   *           In --- Forward --- Out(s)
+   */
 
   // Create loco node to replace
   auto forward_node = graph->nodes()->create<loco::Forward>();

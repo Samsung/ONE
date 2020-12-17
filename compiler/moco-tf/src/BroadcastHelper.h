@@ -65,7 +65,7 @@ private:
  * This mimics "tf.broadcast_to" API in TensorFlow.
  */
 static inline auto broadcast_to(const loco::TensorShape &shape)
-    -> decltype(bino::transform_both(std::declval<BroadcastFunctor>()))
+  -> decltype(bino::transform_both(std::declval<BroadcastFunctor>()))
 {
   return bino::transform_both(BroadcastFunctor{shape});
 }

@@ -30,8 +30,8 @@ namespace tf
 {
 
 /**
-* @brief Canonicalize TF-dialect TFStopGradient into canonical Forward node
-*/
+ * @brief Canonicalize TF-dialect TFStopGradient into canonical Forward node
+ */
 class StopGradientCanonicalizer : public SimpleNodeTransform<moco::TFStopGradient>
 {
 public:

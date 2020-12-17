@@ -157,7 +157,7 @@ moco::GraphBuilderRegistry make_graph_builder_registry(const moco::ModelSignatur
   for (const auto &custom_op : sig.customops())
   {
     std::unique_ptr<moco::tf::COpCallGraphBuilder> builder =
-        stdex::make_unique<moco::tf::COpCallGraphBuilder>(&sig);
+      stdex::make_unique<moco::tf::COpCallGraphBuilder>(&sig);
     registry.add(custom_op, std::move(builder));
   }
 

@@ -37,7 +37,7 @@ class COpCallGraphUpdate final : public moco::GraphUpdate
 {
 public:
   COpCallGraphUpdate(locoex::COpCall *node, const std::vector<moco::TensorName> &input_names)
-      : _node(node), _input_names(input_names)
+    : _node(node), _input_names(input_names)
   {
   }
 

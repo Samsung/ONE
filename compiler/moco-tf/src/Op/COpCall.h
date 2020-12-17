@@ -32,7 +32,9 @@ namespace tf
 class COpCallGraphBuilder final : public GraphBuilder
 {
 public:
-  COpCallGraphBuilder(const ModelSignature *signature) : _signature(signature) { /* empty */}
+  COpCallGraphBuilder(const ModelSignature *signature) : _signature(signature)
+  { /* empty */
+  }
   bool validate(const tensorflow::NodeDef &) const override;
   void build(const tensorflow::NodeDef &, GraphBuilderContext *) const override;
 
