@@ -166,9 +166,9 @@ mir::Operation *foldConstants(mir::Graph *graph, mir::Operation *op)
   }
 
   bool is_foldable =
-      std::all_of(op->getInputs().begin(), op->getInputs().end(), [](mir::Operation::Output *out) {
-        return out->getNode()->getType() == mir::Operation::Type::constant;
-      });
+    std::all_of(op->getInputs().begin(), op->getInputs().end(), [](mir::Operation::Output *out) {
+      return out->getNode()->getType() == mir::Operation::Type::constant;
+    });
 
   if (!is_foldable)
     return op;

@@ -374,7 +374,7 @@ static void convertPoolingParam(const caffe::PoolingParameter &params,
   {
     // Assuming NCHW format.
     const std::int32_t padded_input =
-        input_shape.dim(2 + i) + attributes.padding_before[i] + attributes.padding_after[i];
+      input_shape.dim(2 + i) + attributes.padding_before[i] + attributes.padding_after[i];
     if ((padded_input - attributes.window[i]) % attributes.strides[i] != 0)
       ++attributes.padding_after[i];
   }
@@ -449,7 +449,7 @@ CaffeOpCreator::convertSoftmax(const caffe::LayerParameter &layer,
     auto input = createOp<ops::TransposeOp>(inputs[0], std::vector<std::size_t>{0, 2, 3, 1});
     auto softmax = createOp<ops::SoftmaxOp>(input->getOutput(0), axis);
     auto result =
-        createOp<ops::TransposeOp>(softmax->getOutput(0), std::vector<std::size_t>{0, 3, 1, 2});
+      createOp<ops::TransposeOp>(softmax->getOutput(0), std::vector<std::size_t>{0, 3, 1, 2});
     return {result->getOutput(0)};
   }
 
@@ -823,7 +823,7 @@ CaffeOpCreator::convertLSTM(const caffe::LayerParameter &layer,
 
     c_t = createOp<ops::AddOp>(createOp<ops::MulOp>(c_cont_t, f_t)->getOutput(0),
                                createOp<ops::MulOp>(i_t, g_t)->getOutput(0))
-              ->getOutput(0);
+            ->getOutput(0);
     h_t = createOp<ops::MulOp>(createOp<ops::TanhOp>(c_t)->getOutput(0), o_t)->getOutput(0);
 
     h_slices[t] = h_t;

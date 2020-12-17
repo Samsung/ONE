@@ -50,7 +50,7 @@ void AvgPool2DOp::inferOutputTypes()
     //   (in_size - window_size + 1 + stride - 1) / stride =
     //   (in_size - window_size) / stride + 1
     output_shape.dim(spatial_dim_index) =
-        (padded_input - _attributes.window[i]) / _attributes.strides[i] + 1;
+      (padded_input - _attributes.window[i]) / _attributes.strides[i] + 1;
   }
 
   setOutputType(0, {getInput(0)->getElementType(), output_shape});

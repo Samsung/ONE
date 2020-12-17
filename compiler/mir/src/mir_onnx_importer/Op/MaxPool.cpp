@@ -40,7 +40,7 @@ void convertMaxPoolV1(const onnx::NodeProto &onnx_node, ConverterContext *contex
   constexpr int num_spatial_dims = 2;
 
   const auto strides =
-      getAttributeValue(onnx_node, "strides", std::vector<std::int32_t>(num_spatial_dims, 1));
+    getAttributeValue(onnx_node, "strides", std::vector<std::int32_t>(num_spatial_dims, 1));
   if (strides.size() != num_spatial_dims)
     throw std::runtime_error("MaxPool: attribute 'strides' has incorrect size.");
 

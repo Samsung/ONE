@@ -32,7 +32,7 @@ class AvgPool2DOp : public Operation
 {
 public:
   AvgPool2DOp(Output *arg, const AvgPool2DOpAttributes &attributes)
-      : Operation(Type::avgPool2D, {arg}), _attributes(attributes)
+    : Operation(Type::avgPool2D, {arg}), _attributes(attributes)
   {
     inferOutputTypes();
   }

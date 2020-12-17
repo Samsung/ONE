@@ -123,11 +123,11 @@ void Graph::removeNode(Operation *op)
 
   if (op->getType() == Operation::Type::input)
     _inputs.erase(
-        std::remove(_inputs.begin(), _inputs.end(), op)); // NOLINT(bugprone-inaccurate-erase)
+      std::remove(_inputs.begin(), _inputs.end(), op)); // NOLINT(bugprone-inaccurate-erase)
 
   if (op->getType() == Operation::Type::output)
     _outputs.erase(
-        std::remove(_outputs.begin(), _outputs.end(), op)); // NOLINT(bugprone-inaccurate-erase)
+      std::remove(_outputs.begin(), _outputs.end(), op)); // NOLINT(bugprone-inaccurate-erase)
 
   _ops.erase(op);
   delete op;

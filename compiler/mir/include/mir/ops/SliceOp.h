@@ -28,7 +28,7 @@ class SliceOp : public Operation
 {
 public:
   SliceOp(Output *arg, const Shape &starts, const Shape &sizes)
-      : Operation(Type::slice, {arg}), _starts(starts), _sizes(sizes)
+    : Operation(Type::slice, {arg}), _starts(starts), _sizes(sizes)
   {
     inferOutputTypes();
   }

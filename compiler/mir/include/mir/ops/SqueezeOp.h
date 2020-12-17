@@ -29,7 +29,7 @@ class SqueezeOp : public Operation
 {
 public:
   SqueezeOp(Output *arg, const std::vector<std::int32_t> &dims_to_squeeze)
-      : Operation(Type::squeeze, {arg}), _dims_to_squeeze(dims_to_squeeze)
+    : Operation(Type::squeeze, {arg}), _dims_to_squeeze(dims_to_squeeze)
   {
     // Infer output shape.
     inferOutputTypes();

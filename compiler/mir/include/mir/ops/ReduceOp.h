@@ -29,7 +29,7 @@ class ReduceOp : public Operation
 {
 protected:
   ReduceOp(Type type, Output *arg, const std::vector<int> &reduction_dims, bool keep_dims)
-      : Operation(type, {arg}), _reduction_dims(reduction_dims), _keep_dims(keep_dims)
+    : Operation(type, {arg}), _reduction_dims(reduction_dims), _keep_dims(keep_dims)
   {
     inferOutputTypes();
   }

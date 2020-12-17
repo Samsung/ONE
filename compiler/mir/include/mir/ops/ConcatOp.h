@@ -31,7 +31,7 @@ class ConcatOp : public Operation
 {
 public:
   ConcatOp(const std::vector<Output *> &args, int32_t axis)
-      : Operation(Type::concat, args), _axis(axis)
+    : Operation(Type::concat, args), _axis(axis)
   {
     inferOutputTypes();
   }

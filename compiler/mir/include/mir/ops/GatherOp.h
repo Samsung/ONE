@@ -33,7 +33,7 @@ class GatherOp : public Operation
 {
 public:
   GatherOp(Output *data, Output *indices, int32_t axis)
-      : Operation(Type::gather, {data, indices}), _axis(axis)
+    : Operation(Type::gather, {data, indices}), _axis(axis)
   {
     inferOutputTypes();
   }

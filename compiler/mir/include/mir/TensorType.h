@@ -34,7 +34,7 @@ public:
   }
 
   TensorType(DataType element_type, const Shape &shape, const AffineQuantization &quant)
-      : _element_type(element_type), _shape(shape), _quantization(quant)
+    : _element_type(element_type), _shape(shape), _quantization(quant)
   {
   }
 

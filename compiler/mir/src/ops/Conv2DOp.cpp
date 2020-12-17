@@ -54,7 +54,7 @@ void Conv2DOp::inferOutputTypes()
     //   (in_size - kernel_size + 1 + stride - 1) / stride =
     //   (in_size - kernel_size) / stride + 1
     output_shape.dim(spatial_dim_index) =
-        (padded_input - kernel_shape.dim(1 + i)) / _attributes.strides[i] + 1;
+      (padded_input - kernel_shape.dim(1 + i)) / _attributes.strides[i] + 1;
   }
 
   auto dt = getInput(0)->getElementType();

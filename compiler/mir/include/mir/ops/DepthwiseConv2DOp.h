@@ -30,14 +30,14 @@ class DepthwiseConv2DOp : public Operation
 {
 public:
   DepthwiseConv2DOp(Output *input, Output *kernel, const Conv2DOpAttributes &attributes)
-      : Operation(Type::depthwiseConv, {input, kernel}), _attributes(attributes)
+    : Operation(Type::depthwiseConv, {input, kernel}), _attributes(attributes)
   {
     inferOutputTypes();
   }
 
   DepthwiseConv2DOp(Output *input, Output *kernel, Output *bias,
                     const Conv2DOpAttributes &attributes)
-      : Operation(Type::depthwiseConv, {input, kernel, bias}), _attributes(attributes)
+    : Operation(Type::depthwiseConv, {input, kernel, bias}), _attributes(attributes)
   {
     inferOutputTypes();
   }
