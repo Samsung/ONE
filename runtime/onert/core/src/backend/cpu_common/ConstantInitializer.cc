@@ -26,7 +26,7 @@ namespace cpu_common
 
 ConstantInitializer::ConstantInitializer(const ir::Operands &operands,
                                          const std::shared_ptr<ITensorRegistry> &tensor_reg)
-  : ConstantInitializerBase{operands}, _tensor_reg{tensor_reg}
+  : _operands{operands}, _tensor_reg{tensor_reg}, _current_layout{ir::Layout::UNKNOWN}
 {
   // DO NOTHING
 }
