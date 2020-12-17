@@ -43,7 +43,7 @@ class OutputTensorContext final : public TensorContext
 {
 public:
   OutputTensorContext(const ParsedTensors &parsed_tensors, locomotiv::Session *sess)
-      : TensorContext(parsed_tensors), _sess(sess)
+    : TensorContext(parsed_tensors), _sess(sess)
   { /* empty */
   }
 

@@ -45,7 +45,7 @@ class InputTensorContext final : public TensorContext
 
 public:
   InputTensorContext(const ParsedTensors &parsed_tensors, const Buffers &buffers)
-      : TensorContext(parsed_tensors), _buffers(buffers)
+    : TensorContext(parsed_tensors), _buffers(buffers)
   { /* empty */
   }
 
