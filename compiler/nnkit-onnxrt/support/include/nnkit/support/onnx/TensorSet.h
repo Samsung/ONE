@@ -37,7 +37,7 @@ class TensorSet final
 {
 public:
   TensorSet(Allocator *allocator, size_t nums)
-      : _allocator(allocator), _names(nums), _types(nums), _dims(nums), _tensors(nums, nullptr)
+    : _allocator(allocator), _names(nums), _types(nums), _dims(nums), _tensors(nums, nullptr)
   {
     // DO NOTHING
   }
@@ -60,7 +60,7 @@ public:
     Status status;
 
     status =
-        OrtCreateTensorAsOrtValue(_allocator, dims.data(), dims.size(), type, &_tensors[index]);
+      OrtCreateTensorAsOrtValue(_allocator, dims.data(), dims.size(), type, &_tensors[index]);
     status.throwOnError();
 
     assert(OrtIsTensor(_tensors[index]));
