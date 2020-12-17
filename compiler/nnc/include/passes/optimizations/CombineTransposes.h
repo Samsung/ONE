@@ -33,6 +33,7 @@ public:
   PassData run(PassData data) override;
 
   std::string getName() override { return "opt_combine_transposes"; };
+
 private:
 };
 

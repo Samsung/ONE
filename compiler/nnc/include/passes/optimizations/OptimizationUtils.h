@@ -25,11 +25,11 @@ namespace nnc
 namespace opt_util
 {
 /**
-* @brief Swap adjacent nodes in Graph. Creates new nodes and replaces the old ones with new.
-* @param g MIR Graph
-* @param top Node
-* @param bottom Node
-*/
+ * @brief Swap adjacent nodes in Graph. Creates new nodes and replaces the old ones with new.
+ * @param g MIR Graph
+ * @param top Node
+ * @param bottom Node
+ */
 void swapAdjacent(mir::Graph *g, mir::Operation *top, mir::Operation *bottom);
 
 // TODO: this function and it's usages should be removed, after DCE optimization will be implemented

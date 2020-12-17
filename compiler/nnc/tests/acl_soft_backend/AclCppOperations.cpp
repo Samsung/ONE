@@ -157,7 +157,7 @@ static void runAclSystemTest(const string &name)
 
   // Copy the model input HDF5 file to the remote device.
   ASSERT_TRUE(
-      copyToOdroid(binDir + "/" + name + "/in_" + name + "_caffe.hdf5", dir_name + "/in.hdf5"));
+    copyToOdroid(binDir + "/" + name + "/in_" + name + "_caffe.hdf5", dir_name + "/in.hdf5"));
 
   // Switch to the artifact directory on the remote device and run the artifact.
   ASSERT_TRUE(runOnOdroid("cd " + dir_name + "; ./nnc_test"));

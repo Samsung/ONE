@@ -215,10 +215,10 @@ bool sinkAddThroughMul(Graph *g)
     // Create new operations
     auto old_add_input = old_add_op->getInput(0);
     auto new_mul_op =
-        g->copyOpWithInputs(old_mul_op, {old_add_input, ols_mul_const_op->getOutput(0)});
+      g->copyOpWithInputs(old_mul_op, {old_add_input, ols_mul_const_op->getOutput(0)});
     auto new_add_const_op = mergeConstantOps(g, old_add_const_op, ols_mul_const_op, OpType::mul);
     auto new_add_op =
-        g->copyOpWithInputs(old_add_op, {new_mul_op->getOutput(0), new_add_const_op->getOutput(0)});
+      g->copyOpWithInputs(old_add_op, {new_mul_op->getOutput(0), new_add_const_op->getOutput(0)});
 
     // Replace old mul with new add and remove old nodes
     g->replaceNode(old_mul_op, new_add_op);

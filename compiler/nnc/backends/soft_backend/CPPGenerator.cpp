@@ -80,7 +80,7 @@ static unique_ptr<ofstream> getStream(const string &path)
 }
 
 CPPCodeGenerator::CPPCodeGenerator(std::string output_dir, std::string artifact_name)
-    : _output_dir(std::move(output_dir)), _artifact_name(std::move(artifact_name))
+  : _output_dir(std::move(output_dir)), _artifact_name(std::move(artifact_name))
 {
 }
 
@@ -187,12 +187,14 @@ void CPPCodeGenerator::materializeHeader(ostream &out, const ModelAnalyzer &ma)
   string class_name = ma.getModelName() + "Model";
 
   out.write(cpp_header_types, sizeof(cpp_header_types));
-  out << "class " << class_name << "\n"
-                                   "{\n"
-                                   "public:\n"
-                                   "  "
-      << class_name << "(const std::string& parametersPath);\n"
-                       "  ~"
+  out << "class " << class_name
+      << "\n"
+         "{\n"
+         "public:\n"
+         "  "
+      << class_name
+      << "(const std::string& parametersPath);\n"
+         "  ~"
       << class_name << "();\n";
   // generate input setters
   if (ma.getInputs().size() == 1)
@@ -215,10 +217,12 @@ void CPPCodeGenerator::materializeHeader(ostream &out, const ModelAnalyzer &ma)
   out << "  void doInference();\n\n"
          "private:\n"
          "  "
-      << class_name << "() = delete;\n"
-                       "  "
-      << class_name << "(const " << class_name << "& orig) = delete;\n"
-                                                  "  "
+      << class_name
+      << "() = delete;\n"
+         "  "
+      << class_name << "(const " << class_name
+      << "& orig) = delete;\n"
+         "  "
       << class_name << "& operator=(const " << class_name << "& orig) = delete;\n";
   // generate input/output tensors
   for (const size_t in_tensor_id : ma.getInputs())
@@ -273,8 +277,9 @@ void CPPCodeGenerator::printSetter(ostream &out, const string &class_name,
 {
 
   const string &var_name = _formattedTensors[td.id];
-  out << "bool " << class_name << "::set" << setter_name << "(const Tensor& t)\n"
-                                                            "{\n";
+  out << "bool " << class_name << "::set" << setter_name
+      << "(const Tensor& t)\n"
+         "{\n";
   // need to insert input correctness check
   const mir::Shape expected = td.shape;
   int rank = expected.rank();
@@ -286,9 +291,10 @@ void CPPCodeGenerator::printSetter(ostream &out, const string &class_name,
       out << "  "
           << "if (t.getShape()[" << i << "] != " << expected.dim(i) << ") return false;\n";
   }
-  out << "  " << var_name << " = t;\n"
-                             "  return true;\n"
-                             "}\n\n";
+  out << "  " << var_name
+      << " = t;\n"
+         "  return true;\n"
+         "}\n\n";
 }
 
 void CPPCodeGenerator::printGetter(ostream &out, const string &class_name,
@@ -296,11 +302,13 @@ void CPPCodeGenerator::printGetter(ostream &out, const string &class_name,
 {
 
   const string &var_name = _formattedTensors[td.id];
-  out << "shared_ptr<Tensor> " << class_name << "::get" << getter_name << "()\n"
-                                                                          "{\n"
-                                                                          "  return "
-      << var_name << ";\n"
-                     "}\n\n";
+  out << "shared_ptr<Tensor> " << class_name << "::get" << getter_name
+      << "()\n"
+         "{\n"
+         "  return "
+      << var_name
+      << ";\n"
+         "}\n\n";
 }
 
 void CPPCodeGenerator::materializeCall(ostream &out, const ModelAnalyzer &ma,
@@ -435,13 +443,15 @@ void CPPCodeGenerator::materializeCode(ostream &out, const ModelAnalyzer &ma, co
       << "(const string& parametersPath)\n"
          "{\n"
          "  readParameters(_parameters, _paramSize, parametersPath, "
-      << s.getFormatVersion() << ", " << s.getModelHash() << ");\n"
-                                                             "}\n\n";
+      << s.getFormatVersion() << ", " << s.getModelHash()
+      << ");\n"
+         "}\n\n";
   // gen NN destructor
-  out << class_name << "::~" << class_name << "()\n"
-                                              "{\n"
-                                              "  releaseParameters(_parameters, _paramSize);\n"
-                                              "}\n\n";
+  out << class_name << "::~" << class_name
+      << "()\n"
+         "{\n"
+         "  releaseParameters(_parameters, _paramSize);\n"
+         "}\n\n";
   // generate input setters
   // generate main setter if network has only one
   const auto &inputs = ma.getInputs();
@@ -473,8 +483,9 @@ void CPPCodeGenerator::materializeCode(ostream &out, const ModelAnalyzer &ma, co
     const TensorDescriptor &td = tensors[output_tensor_id];
     printGetter(out, class_name, output_tensor_name, td);
   }
-  out << "void " << class_name << "::doInference()\n"
-                                  "{\n";
+  out << "void " << class_name
+      << "::doInference()\n"
+         "{\n";
   for (size_t output_tensor_id : ma.getPersistentTensors())
   {
     const string &output_tensor_name = _formattedTensors[output_tensor_id];

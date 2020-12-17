@@ -104,7 +104,7 @@ static void writeTensorToHDF5File(const TensorVariant &tensor, std::string tenso
 static TensorVariant readTensorFromFile(const std::string &filename, const TensorType &type)
 {
   const std::size_t input_data_size =
-      type.getShape().numElements() * getDataTypeSize(type.getElementType());
+    type.getShape().numElements() * getDataTypeSize(type.getElementType());
 
   std::ifstream stream(filename, std::ios::in | std::ios::binary);
   if (stream.fail())
@@ -117,9 +117,9 @@ static TensorVariant readTensorFromFile(const std::string &filename, const Tenso
   int64_t file_size = end - begin;
 
   if (static_cast<std::size_t>(file_size) != input_data_size)
-    throw std::runtime_error("File \"" + filename + "\" has incorrect size: " +
-                             std::to_string(file_size) + "(expected: " +
-                             std::to_string(input_data_size) + ").");
+    throw std::runtime_error("File \"" + filename +
+                             "\" has incorrect size: " + std::to_string(file_size) +
+                             "(expected: " + std::to_string(input_data_size) + ").");
 
   std::unique_ptr<char[]> data(new char[input_data_size]);
   stream.read(data.get(), input_data_size);
@@ -130,7 +130,7 @@ static TensorVariant readTensorFromFile(const std::string &filename, const Tenso
 }
 
 InterpreterBackend::InterpreterBackend(std::string input_dir, std::string output_dir)
-    : _input_dir(std::move(input_dir)), _output_dir(std::move(output_dir))
+  : _input_dir(std::move(input_dir)), _output_dir(std::move(output_dir))
 {
 }
 

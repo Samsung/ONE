@@ -33,8 +33,8 @@ nnc::PassData nnc::DeadCodeElimination::run(PassData data)
       return;
 
     bool has_no_uses =
-        std::all_of(op->getOutputs().cbegin(), op->getOutputs().cend(),
-                    [](const Operation::Output &output) { return output.getUses().empty(); });
+      std::all_of(op->getOutputs().cbegin(), op->getOutputs().cend(),
+                  [](const Operation::Output &output) { return output.getUses().empty(); });
 
     if (has_no_uses)
     {

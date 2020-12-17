@@ -33,8 +33,8 @@ using namespace std;
 using namespace mir;
 
 AclCppOpGenerator::AclCppOpGenerator(const string &name, ostream &par_out)
-    : _parOut(par_out), _module(name), _constrBlock(nullptr), _infBlock(nullptr),
-      _clScheduler(AF::id("arm_compute::CLScheduler"))
+  : _parOut(par_out), _module(name), _constrBlock(nullptr), _infBlock(nullptr),
+    _clScheduler(AF::id("arm_compute::CLScheduler"))
 {
 }
 
@@ -60,13 +60,14 @@ const ArtifactModule &AclCppOpGenerator::generate(mir::Graph *g)
   _parInVar = _artifactClass->var(false, "std::ifstream", "_parIn");
   _parIn = _parInVar->use();
   string par_file_name = _module.name() + ".par";
-  _constrBlock->call("open", {AF::lit("\"" + par_file_name + "\""),
-                              AF::lit("std::ios_base::in | std::ios_base::binary")},
-                     _parIn);
+  _constrBlock->call(
+    "open",
+    {AF::lit("\"" + par_file_name + "\""), AF::lit("std::ios_base::in | std::ios_base::binary")},
+    _parIn);
   auto file_fail = _constrBlock->ifCond(AF::call("fail", {}, _parIn));
   auto file_fail_block = file_fail->getBlock();
   file_fail_block->addStatement(
-      AF::lit("throw std::string(\"Failed to open file: " + par_file_name + " for reading\")"));
+    AF::lit("throw std::string(\"Failed to open file: " + par_file_name + " for reading\")"));
 
   // Traverse the computational graph.
   g->accept(this);
@@ -89,8 +90,8 @@ void AclCppOpGenerator::visit(ops::ConcatOp &op)
   const auto *ir_output = op.getOutput(0);
 
   static const char *axis_names[] = {
-      "arm_compute::DataLayoutDimension::BATCHES", "arm_compute::DataLayoutDimension::CHANNEL",
-      "arm_compute::DataLayoutDimension::HEIGHT", "arm_compute::DataLayoutDimension::WIDTH"};
+    "arm_compute::DataLayoutDimension::BATCHES", "arm_compute::DataLayoutDimension::CHANNEL",
+    "arm_compute::DataLayoutDimension::HEIGHT", "arm_compute::DataLayoutDimension::WIDTH"};
 
   int axis = op.getAxis();
   assert(axis >= 0 && axis < static_cast<int>(sizeof(axis_names) / sizeof(axis_names[0])) &&
@@ -105,8 +106,8 @@ void AclCppOpGenerator::visit(ops::ConcatOp &op)
   for (const Operation::Output *ir_input : ir_inputs)
     _constrBlock->call("push_back", {AF::ref(AF::id(tensorName(ir_input)))}, inputs);
 
-  auto layer = genLayer("arm_compute::CLConcatenateLayer", prefix,
-                        {inputs, AF::ref(out), AF::lit(axis_name)});
+  auto layer =
+    genLayer("arm_compute::CLConcatenateLayer", prefix, {inputs, AF::ref(out), AF::lit(axis_name)});
 
   addToPersistentTensors(out);
   genLayerExecution(layer);
@@ -214,13 +215,13 @@ shared_ptr<ArtifactVariable> AclCppOpGenerator::genPadStrideInfo(const Op &op, c
   string var_name = prefix + "_pad_stride_info";
 
   list<std::shared_ptr<ArtifactExpr>> var_init_params = {
-      AF::lit(to_string(strides.dim(1))),
-      AF::lit(to_string(strides.dim(0))),
-      AF::lit(to_string(padding_before.at(1))),
-      AF::lit(to_string(padding_after.at(1))),
-      AF::lit(to_string(padding_before.at(0))),
-      AF::lit(to_string(padding_after.at(0))),
-      AF::lit("arm_compute::DimensionRoundingType::FLOOR")};
+    AF::lit(to_string(strides.dim(1))),
+    AF::lit(to_string(strides.dim(0))),
+    AF::lit(to_string(padding_before.at(1))),
+    AF::lit(to_string(padding_after.at(1))),
+    AF::lit(to_string(padding_before.at(0))),
+    AF::lit(to_string(padding_after.at(0))),
+    AF::lit("arm_compute::DimensionRoundingType::FLOOR")};
 
   auto pad_stride_info_var = block->var(type_name, var_name, {}, var_init_params);
 
@@ -316,7 +317,7 @@ static bool shouldSerializeConstant(const ops::ConstantOp &op)
   // themselves,
   // so we don't serialize them here, also we don't serialize tensors from dangling ConstantOp
   static std::map<Operation::Type, std::size_t> self_serializing_ops_to_inputs{
-      {Operation::Type::conv2D, 1}, {Operation::Type::fullyConnected, 1}};
+    {Operation::Type::conv2D, 1}, {Operation::Type::fullyConnected, 1}};
 
   for (Operation::Use use : op.getOutput(0)->getUses())
   {
@@ -420,8 +421,8 @@ void AclCppOpGenerator::visit(ops::PadOp &op)
   for (int i = 0; i < ir_input->getShape().rank(); ++i)
   {
     auto pad_var = _constrBlock->var(
-        "arm_compute::PaddingInfo", prefix + "_pad_" + to_string(i), {},
-        {AF::lit(to_string(padding_before[i])), AF::lit(to_string(padding_after[i]))});
+      "arm_compute::PaddingInfo", prefix + "_pad_" + to_string(i), {},
+      {AF::lit(to_string(padding_before[i])), AF::lit(to_string(padding_after[i]))});
     auto pad = pad_var->use();
     _constrBlock->call("push_back", {pad}, pad_list);
   }
@@ -430,7 +431,7 @@ void AclCppOpGenerator::visit(ops::PadOp &op)
   // FIXME Set up the `constant_value` parameter.
   assert(op.getPaddingValue() == 0.0f);
   auto layer =
-      genLayer("arm_compute::CLPadLayer", prefix, {AF::ref(input), AF::ref(out), pad_list});
+    genLayer("arm_compute::CLPadLayer", prefix, {AF::ref(input), AF::ref(out), pad_list});
   genLayerExecution(layer);
 }
 
@@ -449,7 +450,7 @@ void AclCppOpGenerator::genPooling(Op &op, const std::string &pooling_type, bool
   // Transpose data from MIR format to format compatible with ACL
   const string transposed_input_name = output_tensor_name + "transposed_input";
   shared_ptr<ArtifactId> transposed_input =
-      genTransposeMIRtoACL(transposed_input_name, ir_input->getShape(), in_id);
+    genTransposeMIRtoACL(transposed_input_name, ir_input->getShape(), in_id);
 
   const string layer_name = output_tensor_name + "_pooling_layer";
 
@@ -459,31 +460,31 @@ void AclCppOpGenerator::genPooling(Op &op, const std::string &pooling_type, bool
 
   // Create kernel window info
   shared_ptr<ArtifactVariable> kernel_window_var = _constrBlock->var(
-      "arm_compute::Size2D", layer_name + "_kernel_window", {},
-      {AF::lit(to_string(op.getWindowSize()[1])), AF::lit(to_string(op.getWindowSize()[0]))});
+    "arm_compute::Size2D", layer_name + "_kernel_window", {},
+    {AF::lit(to_string(op.getWindowSize()[1])), AF::lit(to_string(op.getWindowSize()[0]))});
   shared_ptr<ArtifactId> kernel_window = kernel_window_var->use();
 
   // Create pooling info: pooling type, kernel info, strides, etc
   shared_ptr<ArtifactVariable> pooling_info_var =
-      _constrBlock->var("arm_compute::PoolingLayerInfo", layer_name + "_pooling_info", {},
-                        {AF::lit(pooling_type), kernel_window, pad_stride_info,
-                         AF::lit(exclude_padding ? "true" : "false")});
+    _constrBlock->var("arm_compute::PoolingLayerInfo", layer_name + "_pooling_info", {},
+                      {AF::lit(pooling_type), kernel_window, pad_stride_info,
+                       AF::lit(exclude_padding ? "true" : "false")});
   shared_ptr<ArtifactId> pooling_info = pooling_info_var->use();
 
   // Generate auxiliary tensor to hold transposed output of pool in NCHW format
   Shape transposed_output_shape = transposeShape<0, 3, 1, 2>(ir_output->getShape());
   shared_ptr<ArtifactId> transposed_output =
-      genTensor(layer_name + "_out_transpose", transposed_output_shape);
+    genTensor(layer_name + "_out_transpose", transposed_output_shape);
 
   // Actual layer creation
   shared_ptr<ArtifactId> layer =
-      genLayer("arm_compute::CLPoolingLayer", layer_name,
-               {AF::ref(transposed_input), AF::ref(transposed_output), pooling_info});
+    genLayer("arm_compute::CLPoolingLayer", layer_name,
+             {AF::ref(transposed_input), AF::ref(transposed_output), pooling_info});
   genTensorAllocation(_infBlock, transposed_output);
   genLayerExecution(layer);
 
   shared_ptr<ArtifactId> output =
-      genTransposeACLtoMIR(output_tensor_name, transposed_output_shape, transposed_output);
+    genTransposeACLtoMIR(output_tensor_name, transposed_output_shape, transposed_output);
 
   genTensorDeallocation(_infBlock, transposed_input);
   genTensorDeallocation(_infBlock, transposed_output);
@@ -521,13 +522,13 @@ void AclCppOpGenerator::genConvolution(Op &op, const string &acl_func_name, cons
 
   // Generate auxiliary tensor to hold transposed input of convolution in NCHW format
   shared_ptr<ArtifactId> transposed_input =
-      genTransposeMIRtoACL(output_tensor_name + "_transposed_input", ir_input->getShape(), input);
+    genTransposeMIRtoACL(output_tensor_name + "_transposed_input", ir_input->getShape(), input);
 
   // Create the transposed output tensor in the DOM.
   const string transposed_output_name = output_tensor_name + "_transposed_output";
   Shape transposed_output_shape = transposeShape<0, 3, 1, 2>(ir_output->getShape());
   shared_ptr<ArtifactId> transposed_output =
-      genTensor(transposed_output_name, transposed_output_shape);
+    genTensor(transposed_output_name, transposed_output_shape);
 
   string operation_name = output_tensor_name + suffix;
 
@@ -564,7 +565,7 @@ void AclCppOpGenerator::genConvolution(Op &op, const string &acl_func_name, cons
 
   // Generate auxiliar tensor to hold transposed output of convolution in NHWC format
   shared_ptr<ArtifactId> output =
-      genTransposeACLtoMIR(output_tensor_name, transposed_output_shape, transposed_output);
+    genTransposeACLtoMIR(output_tensor_name, transposed_output_shape, transposed_output);
 
   genTensorDeallocation(_infBlock, transposed_input);
   genTensorDeallocation(_infBlock, transposed_output);
@@ -589,9 +590,9 @@ void AclCppOpGenerator::genActivation(const Operation &op, const std::string &ac
   // constructor. This instance profide information about the concrete activation function,
   // like: ReLU, Tanh etc and two optional parameter (alpha and betha) needed by some activations.
   auto activation_info_var = _constrBlock->var(
-      "arm_compute::ActivationLayerInfo", prefix + "_activation_info", {},
-      {AF::lit("arm_compute::ActivationLayerInfo::ActivationFunction::" + activation_name),
-       AF::lit(to_string(a)), AF::lit(to_string(b))});
+    "arm_compute::ActivationLayerInfo", prefix + "_activation_info", {},
+    {AF::lit("arm_compute::ActivationLayerInfo::ActivationFunction::" + activation_name),
+     AF::lit(to_string(a)), AF::lit(to_string(b))});
   auto activation_info = activation_info_var->use();
 
   // Create an instance of the CLActivationLayer class as a member of the artifact class.
@@ -619,9 +620,10 @@ shared_ptr<ArtifactId> AclCppOpGenerator::genAddition(const string &prefix, size
   auto arithmetic_add_layer = arithmetic_add_layer_var->use();
 
   // Generate the call: arithmetic_add_layer.configure(&in1, &in2, &out);
-  _constrBlock->call("configure", {AF::ref(in1), AF::ref(in2), AF::ref(out),
-                                   AF::lit("arm_compute::ConvertPolicy::WRAP")},
-                     arithmetic_add_layer);
+  _constrBlock->call(
+    "configure",
+    {AF::ref(in1), AF::ref(in2), AF::ref(out), AF::lit("arm_compute::ConvertPolicy::WRAP")},
+    arithmetic_add_layer);
 
   // Generate the call: arithmetic_add_layer.run();
   _infBlock->call("run", {}, arithmetic_add_layer);
@@ -696,8 +698,8 @@ string AclCppOpGenerator::tensorName(const Operation::Output *ir_tensor) const
   if (!tensor_name.empty())
   {
     tensor_name = "_" + tensor_name;
-    replace_if(tensor_name.begin(), tensor_name.end(), [](char c) { return std::isalnum(c) == 0; },
-               '_');
+    replace_if(
+      tensor_name.begin(), tensor_name.end(), [](char c) { return std::isalnum(c) == 0; }, '_');
   }
   else
   {
@@ -740,7 +742,7 @@ shared_ptr<ArtifactId> AclCppOpGenerator::genTensor(const string &name, const Sh
 
     const char *type_name = "arm_compute::TensorShape";
     shared_ptr<ArtifactId> shape =
-        genVectorInitializedVar(_constrBlock, type_name, name + "_shape", shape_vectorized);
+      genVectorInitializedVar(_constrBlock, type_name, name + "_shape", shape_vectorized);
     _constrBlock->call("initializeTensor", {id, shape});
 
     if (gen_accessor)
@@ -903,7 +905,7 @@ void AclCppOpGenerator::genTranspose(const std::shared_ptr<nnc::ArtifactId> &inp
 
   // Create operation parameter containing permutation vector
   shared_ptr<ArtifactId> perm_vector = genVectorInitializedVar(
-      _constrBlock, "arm_compute::PermutationVector", out_name + "_perm_param", acl_perm);
+    _constrBlock, "arm_compute::PermutationVector", out_name + "_perm_param", acl_perm);
 
   // Instantiate the CLPermute object.
   string layer_name = out_name + "_transpose_layer";

@@ -88,7 +88,7 @@ TEST(TRANSFORMATIONS, Switcher_DWConv2D_NHWC2NCHW)
   attributes.padding_before = {67, 123};
   attributes.padding_after = {32, 356};
   auto *dw_conv =
-      g.create<mir::ops::DepthwiseConv2DOp>(input->getOutput(0), kernel->getOutput(0), attributes);
+    g.create<mir::ops::DepthwiseConv2DOp>(input->getOutput(0), kernel->getOutput(0), attributes);
 
   auto *output = g.create<mir::ops::OutputOp>(dw_conv->getOutput(0));
 
@@ -138,7 +138,7 @@ TEST(TRANSFORMATIONS, Switcher_DeConv2D_NHWC2NCHW)
   attributes.padding_before = {31, 72};
   attributes.padding_after = {32, 71};
   auto *deconv =
-      g.create<mir::ops::DeConv2DOp>(input->getOutput(0), kernel->getOutput(0), attributes);
+    g.create<mir::ops::DeConv2DOp>(input->getOutput(0), kernel->getOutput(0), attributes);
 
   auto *output = g.create<mir::ops::OutputOp>(deconv->getOutput(0));
 
