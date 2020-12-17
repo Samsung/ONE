@@ -66,8 +66,10 @@ void Prelu::configure()
     }
     // Prelu specific checks for CWQ
     LUCI_INTERPRETER_CHECK(alpha()->quantized_dimension() == alpha()->shape().num_dims() - 1);
-    LUCI_INTERPRETER_CHECK(alpha()->scales().size() ==
+    LUCI_INTERPRETER_CHECK(static_cast<int32_t>(alpha()->scales().size()) ==
                            alpha()->shape().dim(alpha()->quantized_dimension()));
+    LUCI_INTERPRETER_CHECK(alpha()->shape().num_elements() ==
+                           input()->shape().dim(input()->shape().num_dims() - 1));
 
     // all dimension of alpha except last one should be size 1
     for (int dim = 0; dim < alpha()->shape().num_dims() - 1; ++dim)
