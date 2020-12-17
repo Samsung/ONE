@@ -47,28 +47,28 @@ bool canonicalize_depthwiseconv2dnative(loco::Graph *graph, moco::TFDepthwiseCon
   LOGGER(l);
 
   /**
- * @note This will replace TFDepthwiseConv2dNative node with Canonical FeatureEncode +
- *       DepthwiseFilterEncode + DepthwiseConv2D + FeatureDecode
- *
- *       Before
- *              A -+- TFDepthwiseConv2dNative - C
- *                 |
- *              B -+
- *
- *       After
- *
- *            A -+ FeatureEncode ----------------+- DepthwiseConv2D - FeatureDecode - C
- *               |                               |
- *               +-(TFDepthwiseConv2dNative)     |
- *               |                               |
- *            B -+ DepthwiseFilterEncode --------+
- *
- *       Where
- *                 A : ifm of TFDepthwiseConv2dNative
- *                 B : ker of TFDepthwiseConv2dNative
- *                 C : a node that uses TFDepthwiseConv2dNative as an input
- *                 TFDepthwiseConv2dNative is disconnected from other nodes
- */
+   * @note This will replace TFDepthwiseConv2dNative node with Canonical FeatureEncode +
+   *       DepthwiseFilterEncode + DepthwiseConv2D + FeatureDecode
+   *
+   *       Before
+   *              A -+- TFDepthwiseConv2dNative - C
+   *                 |
+   *              B -+
+   *
+   *       After
+   *
+   *            A -+ FeatureEncode ----------------+- DepthwiseConv2D - FeatureDecode - C
+   *               |                               |
+   *               +-(TFDepthwiseConv2dNative)     |
+   *               |                               |
+   *            B -+ DepthwiseFilterEncode --------+
+   *
+   *       Where
+   *                 A : ifm of TFDepthwiseConv2dNative
+   *                 B : ker of TFDepthwiseConv2dNative
+   *                 C : a node that uses TFDepthwiseConv2dNative as an input
+   *                 TFDepthwiseConv2dNative is disconnected from other nodes
+   */
 
   INFO(l) << "TFNodeCanonicalize TFDepthwiseConv2dNative begin";
 

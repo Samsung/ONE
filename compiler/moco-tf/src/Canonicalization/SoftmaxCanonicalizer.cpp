@@ -31,16 +31,16 @@ bool canonicalize_softmax(loco::Graph *graph, moco::TFSoftmax *node)
   INFO(l) << "TFNodeCanonicalize TFSoftmax begin";
 
   /**
-  * This will replace shape inferred TFSoftmax node into canonical TensorSoftmax
-  *
-  * Before
-  *           In ---- TFSoftmax ---- Out(s)
-  *
-  * After
-  *             ------ TFSoftmax
-  *            /
-  *           In ---- TensorSoftmax ----- Out(s)
-  */
+   * This will replace shape inferred TFSoftmax node into canonical TensorSoftmax
+   *
+   * Before
+   *           In ---- TFSoftmax ---- Out(s)
+   *
+   * After
+   *             ------ TFSoftmax
+   *            /
+   *           In ---- TensorSoftmax ----- Out(s)
+   */
 
   auto nodeshape = moco::node_shape(node);
   // Canonicalization into TensorSoftmax is valid when softmax has shape info

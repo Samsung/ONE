@@ -109,12 +109,12 @@ namespace moco
 namespace tf
 {
 
-#define KNOB_BOOL(NAME, DEFAULT, DESC)                                                           \
-  template <> typename KnobTrait<Knob::NAME>::ValueType get<Knob::NAME>(void)                    \
-  {                                                                                              \
-    static typename KnobTrait<Knob::NAME>::ValueType value =                                     \
-        ::knob_load<typename KnobTrait<Knob::NAME>::ValueType>(::knob_loader(), #NAME, DEFAULT); \
-    return value;                                                                                \
+#define KNOB_BOOL(NAME, DEFAULT, DESC)                                                         \
+  template <> typename KnobTrait<Knob::NAME>::ValueType get<Knob::NAME>(void)                  \
+  {                                                                                            \
+    static typename KnobTrait<Knob::NAME>::ValueType value =                                   \
+      ::knob_load<typename KnobTrait<Knob::NAME>::ValueType>(::knob_loader(), #NAME, DEFAULT); \
+    return value;                                                                              \
   }
 #include "Knob.lst"
 #undef KNOB_BOOL
