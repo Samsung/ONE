@@ -263,8 +263,8 @@ void Runner::prepareInputs(const std::vector<std::unique_ptr<ParsedTensor>> &inp
       throw std::runtime_error("Not supported tensor type");
 
     TF_Tensor *input_tensor =
-        create_tensor(TF_FLOAT, shape.data(), shape.size(), data_map.data(tensor.get()),
-                      num_elements(tensor->shape()) * size);
+      create_tensor(TF_FLOAT, shape.data(), shape.size(), data_map.data(tensor.get()),
+                    num_elements(tensor->shape()) * size);
 
     _input_ops.emplace_back(input_op);
     _input_tensors.emplace_back(input_tensor);
@@ -308,7 +308,7 @@ void Runner::run()
                 0,       // Target operations, number of targets.
                 nullptr, // Run metadata.
                 _status  // Output status.
-                );
+  );
 
   if (TF_GetCode(_status) != TF_OK)
     throw std::runtime_error(TF_Message(_status));
