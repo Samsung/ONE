@@ -38,7 +38,7 @@ void prepareInstanceNorm(ExecEnv *env, const ir::Operation &node)
   const auto output_index = node.getOutputs().at(0);
   const auto input_tensor = env->tensorAt(input_index);
 
-  if (input_tensor->num_dimensions() != 4)
+  if (input_tensor->getShape().rank() != 4)
   {
     throw std::runtime_error{"Interp(InstanceNorm): Input should be 4D-tensor"};
   }

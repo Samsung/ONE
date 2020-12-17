@@ -70,8 +70,6 @@ public:
   virtual void releaseData() = 0;
 
   virtual size_t total_size() const = 0;
-  virtual size_t dimension(size_t index) const = 0;
-  virtual size_t num_dimensions() const = 0;
   virtual size_t calcOffset(const ir::Coordinates &coords) const = 0;
 
   virtual bool has_padding() const = 0;
@@ -118,8 +116,6 @@ public:
   void releaseData() override { _data = nullptr; }
 
   size_t total_size() const override { return _info.total_size(); }
-  size_t dimension(size_t index) const override { return _info.shape().dim(index); }
-  size_t num_dimensions() const override { return _info.shape().rank(); }
   size_t calcOffset(const ir::Coordinates &coords) const override;
   ir::Layout layout() const override;
   bool is_dynamic() const override { return false; }
@@ -161,8 +157,6 @@ public:
   void releaseData() override { _buffer = nullptr; }
 
   size_t total_size() const override { return _info.total_size(); }
-  size_t dimension(size_t index) const override { return _info.shape().dim(index); }
-  size_t num_dimensions() const override { return _info.shape().rank(); }
   size_t calcOffset(const ir::Coordinates &coords) const override;
   ir::Layout layout() const override;
   bool is_dynamic() const override { return false; }

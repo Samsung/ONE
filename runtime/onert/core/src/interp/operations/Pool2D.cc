@@ -41,7 +41,7 @@ void preparePool2D(ExecEnv *env, const ir::Operation &node)
   const auto in_tensor = env->tensorAt(in_index);
   UNUSED_RELEASE(in_tensor);
 
-  assert(in_tensor->num_dimensions() == 4);
+  assert(in_tensor->getShape().rank() == 4);
 
   const auto output_info = env->graph().operands().at(out_index).info();
   if (output_info.total_size() == 0)
@@ -62,7 +62,7 @@ void preparePool2D(ExecEnv *env, const ir::Operation &node)
 
   // Handle same ifm & ofm data type only
   assert(in_tensor->data_type() == out_tensor->data_type());
-  assert(out_tensor->num_dimensions() == 4);
+  assert(out_tensor->getShape().rank() == 4);
 }
 
 template <typename T>

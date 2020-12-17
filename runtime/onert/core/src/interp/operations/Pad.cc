@@ -61,7 +61,7 @@ void invoke(const ITensor *input_tensor, const ITensor *pad_tensor, const ITenso
   const auto pad_buffer = pad_tensor->bufferRO();
   auto output_buffer = output_tensor->buffer();
 
-  int32_t pad_rank = pad_tensor->dimension(0);
+  int32_t pad_rank = pad_tensor->getShape().dim(0);
 
   const auto cker_input_shape = convertShape(input_tensor->tensorInfo().shape());
   const auto cker_output_shape = convertShape(output_tensor->tensorInfo().shape());

@@ -37,7 +37,7 @@ void prepareSoftMax(ExecEnv *env, const ir::Operation &node)
   const auto in_tensor = env->tensorAt(in_index);
   UNUSED_RELEASE(in_tensor);
 
-  assert((in_tensor->num_dimensions() == 4) || (in_tensor->num_dimensions() == 2));
+  assert((in_tensor->getShape().rank() == 4) || (in_tensor->getShape().rank() == 2));
 
   // Output shape should be same with input
   // Output type is pre-defined in model
@@ -51,10 +51,10 @@ void prepareSoftMax(ExecEnv *env, const ir::Operation &node)
   UNUSED_RELEASE(out_tensor);
 
   // Check output shape is same with input
-  assert(out_tensor->num_dimensions() == out_tensor->num_dimensions());
-  for (uint32_t i = 0; i < in_tensor->num_dimensions(); i++)
+  assert(out_tensor->getShape().rank() == out_tensor->getShape().rank());
+  for (int32_t i = 0; i < in_tensor->getShape().rank(); i++)
   {
-    assert(in_tensor->dimension(i) == out_tensor->dimension(i));
+    assert(in_tensor->getShape().dim(i) == out_tensor->getShape().dim(i));
   }
 }
 
@@ -66,14 +66,14 @@ void invoke(const ITensor *in_tensor, const ITensor *out_tensor,
 
   float beta = param.beta;
 
-  if (in_tensor->num_dimensions() == 2)
+  if (in_tensor->getShape().rank() == 2)
   {
-    uint32_t batch_size = in_tensor->dimension(0);
-    uint32_t input_size = in_tensor->dimension(1);
+    uint32_t batch_size = in_tensor->getShape().dim(0);
+    uint32_t input_size = in_tensor->getShape().dim(1);
 
     nnfw::cker::Softmax(in_ptr, input_size, batch_size, beta, out_ptr);
   }
-  else if (in_tensor->num_dimensions() == 4)
+  else if (in_tensor->getShape().rank() == 4)
   {
     const auto in_shape = convertShape(in_tensor->tensorInfo().shape());
     const auto out_shape = convertShape(out_tensor->tensorInfo().shape());

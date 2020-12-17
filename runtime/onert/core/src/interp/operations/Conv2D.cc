@@ -42,9 +42,9 @@ void prepareConv2D(ExecEnv *env, const ir::Operation &node)
   const auto kernel_tensor = env->tensorAt(kernel_index);
   const auto bias_tensor = env->tensorAt(bias_index);
 
-  assert(in_tensor->num_dimensions() == 4);
-  assert(kernel_tensor->num_dimensions() == 4);
-  assert(bias_tensor->num_dimensions() == 1);
+  assert(in_tensor->getShape().rank() == 4);
+  assert(kernel_tensor->getShape().rank() == 4);
+  assert(bias_tensor->getShape().rank() == 1);
 
   UNUSED_RELEASE(in_tensor);
   UNUSED_RELEASE(kernel_tensor);
@@ -70,7 +70,7 @@ void prepareConv2D(ExecEnv *env, const ir::Operation &node)
 
   // Handle same ifm & ofm data type only
   assert(in_tensor->data_type() == out_tensor->data_type());
-  assert(out_tensor->num_dimensions() == 4);
+  assert(out_tensor->getShape().rank() == 4);
 }
 
 void invoke(const ITensor *ifm_tensor, const ITensor *ker_tensor, const ITensor *bias_tensor,

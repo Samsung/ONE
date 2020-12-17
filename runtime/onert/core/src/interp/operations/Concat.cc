@@ -39,22 +39,22 @@ void prepareConcat(ExecEnv *env, const ir::Operation &node)
   const auto first_tensor = env->tensorAt(first_index);
   uint32_t out_axis_dimension = 0;
   const int32_t axis_raw = concat_node.param().axis;
-  const uint32_t axis = (axis_raw < 0) ? (axis_raw + first_tensor->num_dimensions()) : axis_raw;
+  const int32_t axis = (axis_raw < 0) ? (axis_raw + first_tensor->getShape().rank()) : axis_raw;
 
   // All inputs shape should be same except axis dimension
   // All inputs type should be same
   for (auto input : node.getInputs())
   {
-    assert(first_tensor->num_dimensions() == env->tensorAt(input)->num_dimensions());
+    assert(first_tensor->getShape().rank() == env->tensorAt(input)->getShape().rank());
     assert(first_tensor->data_type() == env->tensorAt(input)->data_type());
-    for (uint32_t i = 0; i < first_tensor->num_dimensions(); i++)
+    for (int i = 0; i < first_tensor->getShape().rank(); i++)
     {
       if (i == axis)
       {
-        out_axis_dimension += env->tensorAt(input)->dimension(i);
+        out_axis_dimension += env->tensorAt(input)->getShape().dim(i);
         continue;
       }
-      assert(first_tensor->dimension(i) == env->tensorAt(input)->dimension(i));
+      assert(first_tensor->getShape().dim(i) == env->tensorAt(input)->getShape().dim(i));
     }
   }
 
@@ -67,16 +67,16 @@ void prepareConcat(ExecEnv *env, const ir::Operation &node)
   auto out_tensor = env->tensorAt(out_index);
   UNUSED_RELEASE(out_tensor);
 
-  // Output shape should be same with input except axis dimension
+  // Output shape should be same with input except axis getShape().dim
   // Output type should be same with input
   assert(first_tensor->data_type() == out_tensor->data_type());
-  for (uint32_t i = 0; i < first_tensor->num_dimensions(); i++)
+  for (int i = 0; i < first_tensor->getShape().rank(); i++)
   {
     if (i == axis)
     {
       continue;
     }
-    assert(first_tensor->dimension(i) == out_tensor->dimension(i));
+    assert(first_tensor->getShape().dim(i) == out_tensor->getShape().dim(i));
   }
 }
 
@@ -123,7 +123,7 @@ void invokeConcat(const ExecEnv *env, const ir::Operation &node)
 
   const auto out_index = node.getOutputs().at(0);
   const auto out_tensor = env->tensorAt(out_index);
-  const uint32_t axis = (axis_raw < 0) ? (axis_raw + out_tensor->num_dimensions()) : axis_raw;
+  const uint32_t axis = (axis_raw < 0) ? (axis_raw + out_tensor->getShape().rank()) : axis_raw;
 
   const auto data_type = in_tensors[0]->data_type();
   if (data_type == ir::DataType::FLOAT32)
