@@ -110,6 +110,12 @@ int entry(int argc, char **argv)
     .default_value(false)
     .help("This will fuse BatchNorm operators of pre-activations to Convolution operator");
 
+  arser.add_argument("--remove_no_effect_slice")
+    .nargs(0)
+    .required(false)
+    .default_value(false)
+    .help("This will remove no effect slice operators");
+
   arser.add_argument("--remove_redundant_transpose")
     .nargs(0)
     .required(false)
@@ -223,6 +229,7 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::ResolveCustomOpMatMul);
     options->enable(Algorithms::RemoveRedundantTranspose);
     options->enable(Algorithms::SubstitutePackToReshape);
+    options->enable(Algorithms::RemoveNoEffectSlice);
   }
   if (arser.get<bool>("--fold_dequantize"))
     options->enable(Algorithms::FoldDequantize);
@@ -240,6 +247,8 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::MakeBatchNormGammaPositive);
   if (arser.get<bool>("--fuse_preactivation_batchnorm"))
     options->enable(Algorithms::FusePreActivationBatchNorm);
+  if (arser.get<bool>("--remove_no_effect_slice"))
+    options->enable(Algorithms::RemoveNoEffectSlice);
   if (arser.get<bool>("--remove_redundant_transpose"))
     options->enable(Algorithms::RemoveRedundantTranspose);
   if (arser.get<bool>("--replace_cw_mul_add_with_depthwise_conv"))
