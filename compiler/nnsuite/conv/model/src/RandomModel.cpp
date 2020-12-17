@@ -28,8 +28,8 @@ namespace conv
 {
 
 RandomModel::RandomModel(int32_t seed)
-    : _ifm_shape{1, 8, 8}, _ifm_name{"ifm"}, _ofm_name{"ofm"}, _ofm_shape{2, 6, 6},
-      _ker_buffer{kernel::Shape{2, 1, 3, 3}, kernel::NCHWLayout{}}
+  : _ifm_shape{1, 8, 8}, _ifm_name{"ifm"}, _ofm_name{"ofm"}, _ofm_shape{2, 6, 6},
+    _ker_buffer{kernel::Shape{2, 1, 3, 3}, kernel::NCHWLayout{}}
 {
   std::default_random_engine gen{static_cast<uint32_t>(seed)};
   std::normal_distribution<float> dist{0.0f, 1.0f};
