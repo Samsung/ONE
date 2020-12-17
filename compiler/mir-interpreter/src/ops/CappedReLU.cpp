@@ -68,7 +68,7 @@ template <> struct CappedReLUImpl<uint8_t>
     {
       auto value = dequantize(arg_accessor.at(index), quant_info);
       auto out_value =
-          quantize(std::min(std::max(value, 0.0f), cap), result.getType().getQuantization());
+        quantize(std::min(std::max(value, 0.0f), cap), result.getType().getQuantization());
       res_accessor.at(index) = out_value;
     }
   }

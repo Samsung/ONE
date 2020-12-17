@@ -70,7 +70,7 @@ void SoftmaxImpl<T>::run(const mir::TensorVariant &arg, int axis, mir::TensorVar
     mir::Index expsum_index = res_index;
     expsum_index.at(axis) = 0;
     res_accessor.at(res_index) =
-        std::exp(arg_accessor.at(res_index)) / expsum_accessor.at(expsum_index);
+      std::exp(arg_accessor.at(res_index)) / expsum_accessor.at(expsum_index);
   }
 }
 
@@ -140,7 +140,7 @@ void SoftmaxImpl<uint8_t>::run(const mir::TensorVariant &input, int axis,
       const float prob_rescaled = table_offset[input_data[j]] * inv_sum_exp;
       const int32_t prob_quantized = static_cast<int32_t>(prob_rescaled + 0.5);
       output_data[j] =
-          static_cast<uint8_t>(std::max(std::min(clamp_max, prob_quantized), clamp_min));
+        static_cast<uint8_t>(std::max(std::min(clamp_max, prob_quantized), clamp_min));
     }
     input_data += last_dim;
     output_data += last_dim;

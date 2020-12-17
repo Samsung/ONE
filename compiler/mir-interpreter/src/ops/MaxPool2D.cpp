@@ -72,7 +72,7 @@ void MaxPool2DImpl<T>::run(const TensorVariant &inputv, const ops::MaxPool2DOp &
       // Assuming NHWC format.
       for (int i = 0; i < num_spatial_dims; ++i)
         in_index.at(1 + i) =
-            out_index.at(1 + i) * strides[i] + window_index.at(i) - padding_before[i];
+          out_index.at(1 + i) * strides[i] + window_index.at(i) - padding_before[i];
 
       if (in_range.contains(in_index))
       {
@@ -137,7 +137,7 @@ void MaxPool2DImpl<uint8_t>::run(const TensorVariant &input, const ops::MaxPool2
       // Assuming NHWC format.
       for (int i = 0; i < num_spatial_dims; ++i)
         in_index.at(1 + i) =
-            out_index.at(1 + i) * strides[i] + window_index.at(i) - padding_before[i];
+          out_index.at(1 + i) * strides[i] + window_index.at(i) - padding_before[i];
 
       if (in_range.contains(in_index))
       {

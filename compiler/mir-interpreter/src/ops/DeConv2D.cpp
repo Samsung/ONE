@@ -98,9 +98,9 @@ void DeConv2DImpl<T>::run(const TensorVariant &input, const TensorVariant &kerne
                 for (int32_t out_c = 0; out_c < num_out_channels; ++out_c)
                 {
                   const int32_t kernel_offset =
-                      calcOffset(kernel_shape, in_c, kernel_y, kernel_x, out_c);
+                    calcOffset(kernel_shape, in_c, kernel_y, kernel_x, out_c);
                   const int32_t output_offset =
-                      calcOffset(output_shape, batch, out_y, out_x, out_c);
+                    calcOffset(output_shape, batch, out_y, out_x, out_c);
                   const T kernel_val = kernel_data[kernel_offset];
                   output_data[output_offset] += input_val * kernel_val;
                 }
