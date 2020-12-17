@@ -39,7 +39,7 @@ class TFDepthwiseConv2dNativeGraphUpdate final : public GraphUpdate
 {
 public:
   TFDepthwiseConv2dNativeGraphUpdate(TFDepthwiseConv2dNative *node, std::vector<TensorName> names)
-      : _node(node), _names(names)
+    : _node(node), _names(names)
   {
   }
 
@@ -140,7 +140,7 @@ void DepthwiseConv2dNativeGraphBuilder::build(const tensorflow::NodeDef &node,
 
   // Record ifm inputs to featureEncode_node
   auto tfdepthwiseconv2dnative_update = stdex::make_unique<TFDepthwiseConv2dNativeGraphUpdate>(
-      depthwiseconv2d_native_node, input_names);
+    depthwiseconv2d_native_node, input_names);
 
   updates->enroll(std::move(tfdepthwiseconv2dnative_update));
 }

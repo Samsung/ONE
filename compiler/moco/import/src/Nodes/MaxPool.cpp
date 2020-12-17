@@ -40,7 +40,7 @@ class TFMaxPoolGraphUpdate final : public GraphUpdate
 {
 public:
   TFMaxPoolGraphUpdate(TFMaxPool *node, const TensorName &name)
-      : _maxpool_node(node), _input_name(name)
+    : _maxpool_node(node), _input_name(name)
   {
   }
 

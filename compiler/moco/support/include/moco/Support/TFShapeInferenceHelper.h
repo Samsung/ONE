@@ -136,11 +136,11 @@ protected:
     if (_padding == "VALID")
     {
       res.height =
-          (p.input.height.value() + p.stride.height.value() - p.effective_window.height.value()) /
-          p.stride.height.value();
+        (p.input.height.value() + p.stride.height.value() - p.effective_window.height.value()) /
+        p.stride.height.value();
       res.width =
-          (p.input.width.value() + p.stride.width.value() - p.effective_window.width.value()) /
-          p.stride.width.value();
+        (p.input.width.value() + p.stride.width.value() - p.effective_window.width.value()) /
+        p.stride.width.value();
     }
     else if (_padding == "SAME")
     {

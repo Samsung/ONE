@@ -34,7 +34,7 @@ class MeanGraphUpdate final : public GraphUpdate
 public:
   MeanGraphUpdate(TFMean *node, const TensorName &&input_name,
                   const TensorName &&reduction_indices_name)
-      : _node(node), _input_name(input_name), _reduction_indices_name(reduction_indices_name)
+    : _node(node), _input_name(input_name), _reduction_indices_name(reduction_indices_name)
   {
     // DO NOTHING
   }

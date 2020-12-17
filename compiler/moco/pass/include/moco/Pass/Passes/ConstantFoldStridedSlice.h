@@ -26,7 +26,7 @@ namespace moco
 
 /**
  * @brief  Constant folder for Const + StridedSlice -> Const
-*/
+ */
 class ConstantFoldStridedSlice : public logo::Pass
 {
 public:
