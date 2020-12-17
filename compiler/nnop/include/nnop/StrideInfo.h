@@ -39,6 +39,6 @@ private:
   uint32_t _vertical;
 };
 
-} // namespace nncc
+} // namespace nnop
 
 #endif // __NNOP_STRIDE_INFO_H__

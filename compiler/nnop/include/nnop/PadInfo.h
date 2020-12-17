@@ -26,7 +26,7 @@ class PadInfo
 {
 public:
   PadInfo(uint32_t top, uint32_t bottom, uint32_t left, uint32_t right)
-      : _top{top}, _bottom{bottom}, _left{left}, _right{right}
+    : _top{top}, _bottom{bottom}, _left{left}, _right{right}
   {
     // DO NOTHING
   }
