@@ -74,7 +74,7 @@ static inline std::vector<int> as_dims(const nncc::core::ADT::kernel::Shape &sha
 }
 
 ConvBackend::ConvBackend(const nnsuite::conv::Model &model)
-    : _ifm_name{model.ifm_name()}, _ofm_name{model.ofm_name()}
+  : _ifm_name{model.ifm_name()}, _ofm_name{model.ofm_name()}
 {
   using nncc::core::ADT::kernel::Overlay;
   using nncc::core::ADT::kernel::NHWCLayout;
@@ -123,12 +123,12 @@ ConvBackend::ConvBackend(const nnsuite::conv::Model &model)
                                        as_dims(model.ifm_shape()), quantization);
 
   _interp.SetTensorParametersReadOnly(
-      2, kTfLiteFloat32 /* type */, "kernel" /* name */, as_dims(model.ker_shape()), quantization,
-      reinterpret_cast<const char *>(_kernel.data()), _kernel.size() * sizeof(float));
+    2, kTfLiteFloat32 /* type */, "kernel" /* name */, as_dims(model.ker_shape()), quantization,
+    reinterpret_cast<const char *>(_kernel.data()), _kernel.size() * sizeof(float));
 
   _interp.SetTensorParametersReadOnly(
-      3, kTfLiteFloat32 /* type */, "bias" /* name */, {static_cast<int>(_bias.size())},
-      quantization, reinterpret_cast<const char *>(_bias.data()), _bias.size() * sizeof(float));
+    3, kTfLiteFloat32 /* type */, "bias" /* name */, {static_cast<int>(_bias.size())}, quantization,
+    reinterpret_cast<const char *>(_bias.data()), _bias.size() * sizeof(float));
 
   auto param = typed_malloc<TfLiteConvParams>();
 
