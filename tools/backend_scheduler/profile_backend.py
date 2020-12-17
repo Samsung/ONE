@@ -1,68 +1,81 @@
 #!/usr/bin/python3
 
 import os
-from os.path import dirname, basename, isdir, realpath, normpath
+from os.path import dirname, basename, isdir, realpath, normpath, join
 import argparse
+from op_list_parser import OpListParser
+import subprocess
 
 
-def parse_op_list():
-    script_dir = dirname(realpath(__file__))
-    print(script_dir)
-    op_list_file = os.path.join(script_dir, "op_list.txt")
-    backend_op_list = {}
+class BackendProfiler():
+    def __init__(self, args):
+        self.nnpackage_dir = args.nnpackage_dir
+        self.num_threads = args.num_threads
+        self.script_path = realpath(__file__)
+        self.root_path = dirname(dirname(dirname(self.script_path)))
+        self.remote_base_dir = '/tmp/ONE'
+        self.remote_ip = args.ip
+        self.remote_path = f"odroid@{args.ip}:{self.remote_base_dir}"
 
-    with open(op_list_file, 'r') as f:
-        lines = f.readlines()
+    def sync(self):
+        bin_dir = join(self.root_path, "Product/armv7l-linux.release/out/")
+        if (not isdir(bin_dir)):
+            print(f"Build dir [{bin_dir}] is not exist")
+            exit()
+        elif (not isdir(self.nnpackage_dir)):
+            print(f"nnpackage dir [{realpath(self.nnpackage_dir)}] is not exist")
+            exit()
+        else:
+            # Syne ONE runtime
+            subprocess.call([
+                "rsync", "-azv", "--exclude", "test-suite.tar.gz", bin_dir,
+                self.remote_path
+            ])
+            # Sync target nnpackage
+            subprocess.call(["rsync", "-azv", self.nnpackage_dir, self.remote_path])
 
-        for line in lines:
-            line = line.rstrip()
-            backend, _, op_list_str = line.partition(':')
-            op_list = op_list_str.split(',')
-            backend_op_list[backend] = op_list
-    return backend_op_list
+    def profile(self):
+        backend_op_list = OpListParser().parse()
+        backend_list = ["cpu"]
+        backend_list.extend([backend for backend in backend_op_list])
 
+        nnpkg_dir = basename(normpath(self.nnpackage_dir))
+        remote_bin = join(self.remote_base_dir, "bin/nnpackage_run")
+        remote_nnpkg = join(self.remote_base_dir, nnpkg_dir)
 
-def main(args):
-    script_path = realpath(__file__)
-    root_path = dirname(dirname(dirname(script_path)))
-    backend_op_list = parse_op_list()
-    backend_list = ["cpu"]
-    backend_list.extend([backend for backend in backend_op_list])
-    os.chdir(root_path)
-
-    if (isdir('./Product/armv7l-linux.release')):
         for backend in backend_list:
-            trace_name = "{}_{}_{}_{}".format("armv7l",
-                                              basename(normpath(args.nnpackage_dir)),
-                                              backend, args.num_threads)
-            command = "TRACE_FILEPATH={}/traces/{}".format(
-                dirname(script_path), trace_name)
+            trace_name = f"{nnpkg_dir}_{backend}_{self.num_threads}"
+            command = ["ssh", f"odroid@{self.remote_ip}"]
+            command.append(
+                f"TRACE_FILEPATH={join(self.remote_base_dir,'traces',trace_name)}")
             for target_backend, op_list in backend_op_list.items():
                 if backend == target_backend:
                     for op in op_list:
-                        command += " OP_BACKEND_{}={}".format(op, backend)
-            command += " EIGEN_THREADS={}".format(args.num_threads)
-            command += " XNNPACK_THREADS={}".format(args.num_threads)
-            command += " RUY_THREADS={}".format(args.num_threads)
-            command += " BACKENDS='{}'".format(';'.join(backend_list))
-            command += " OP_SEQ_MAX_NODE=1"
-            command += " ./Product/armv7l-linux.release/out/bin/nnpackage_run"
-            command += " --nnpackage {}".format(normpath(args.nnpackage_dir))
-            command += " -w5 -r50"
+                        command.append(f"OP_BACKEND_{op}={backend}")
+            command.append(f"EIGEN_THREADS={self.num_threads}")
+            command.append(f"XNNPACK_THREADS={self.num_threads}")
+            command.append(f"RUY_THREADS={self.num_threads}")
+            command.append(f"BACKENDS=\'{';'.join(backend_list)}\'")
+            command.append(f"OP_SEQ_MAX_NODE=1")
+            command.append(f"{remote_bin}")
+            command.append(f"--nnpackage")
+            command.append(f"{remote_nnpkg}")
+            command.append(f"-w5 -r50")
             print(command)
-            os.system(command)
-    else:
-        print("./Product/armv7l-linux.release not exist")
+            print(' '.join(command))
+            subprocess.call(command)
 
 
 if __name__ == "__main__":
     arg_parser = argparse.ArgumentParser()
     arg_parser.add_argument("nnpackage_dir", type=str, help="nnpackage folder to profile")
-    arg_parser.add_argument(
-        "--num_threads",
-        type=int,
-        default=1,
-        help="Number of threads used by one runtime")
+    arg_parser.add_argument("--num_threads",
+                            type=int,
+                            default=1,
+                            help="Number of threads used by one runtime")
+    arg_parser.add_argument("--ip", type=str, help="IP address of remote client")
     args = arg_parser.parse_args()
 
-    main(args)
+    backend_profiler = BackendProfiler(args)
+    backend_profiler.sync()
+    backend_profiler.profile()
