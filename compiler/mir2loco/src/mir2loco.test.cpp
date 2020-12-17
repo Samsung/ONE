@@ -140,10 +140,10 @@ TEST_F(TestTransformer_mir2loco, Avg_Pool_Test)
 
   loco::Pull *pull_node = dynamic_cast<loco::Pull *>(loco_graph->nodes()->at(0));
   loco::FeatureEncode *encode_node =
-      dynamic_cast<loco::FeatureEncode *>(loco_graph->nodes()->at(1));
+    dynamic_cast<loco::FeatureEncode *>(loco_graph->nodes()->at(1));
   loco::AvgPool2D *pool_node = dynamic_cast<loco::AvgPool2D *>(loco_graph->nodes()->at(2));
   loco::FeatureDecode *decode_node =
-      dynamic_cast<loco::FeatureDecode *>(loco_graph->nodes()->at(3));
+    dynamic_cast<loco::FeatureDecode *>(loco_graph->nodes()->at(3));
   loco::Push *push_node = dynamic_cast<loco::Push *>(loco_graph->nodes()->at(4));
 
   ASSERT_NE(pull_node, nullptr);
@@ -188,10 +188,10 @@ TEST_F(TestTransformer_mir2loco, Max_Pool_Test)
 
   loco::Pull *pull_node = dynamic_cast<loco::Pull *>(loco_graph->nodes()->at(0));
   loco::FeatureEncode *encode_node =
-      dynamic_cast<loco::FeatureEncode *>(loco_graph->nodes()->at(1));
+    dynamic_cast<loco::FeatureEncode *>(loco_graph->nodes()->at(1));
   loco::MaxPool2D *pool_node = dynamic_cast<loco::MaxPool2D *>(loco_graph->nodes()->at(2));
   loco::FeatureDecode *decode_node =
-      dynamic_cast<loco::FeatureDecode *>(loco_graph->nodes()->at(3));
+    dynamic_cast<loco::FeatureDecode *>(loco_graph->nodes()->at(3));
   loco::Push *push_node = dynamic_cast<loco::Push *>(loco_graph->nodes()->at(4));
 
   ASSERT_NE(pull_node, nullptr);
@@ -273,7 +273,7 @@ TEST_F(TestTransformer_mir2loco, Reshape_Test)
 
   loco::Pull *pull_node = dynamic_cast<loco::Pull *>(loco_graph->nodes()->at(0));
   loco::Reshape<loco::ReshapeType::Fixed> *reshape_node =
-      dynamic_cast<loco::Reshape<loco::ReshapeType::Fixed> *>(loco_graph->nodes()->at(1));
+    dynamic_cast<loco::Reshape<loco::ReshapeType::Fixed> *>(loco_graph->nodes()->at(1));
   loco::Push *push_node = dynamic_cast<loco::Push *>(loco_graph->nodes()->at(2));
 
   ASSERT_NE(pull_node, nullptr);
@@ -385,11 +385,11 @@ TEST_F(TestTransformer_mir2loco, Conv2D_Test)
   loco::Pull *pull_node = dynamic_cast<loco::Pull *>(loco_graph->nodes()->at(0));
   loco::ConstGen *const_node = dynamic_cast<loco::ConstGen *>(loco_graph->nodes()->at(1));
   loco::FeatureEncode *encode_node =
-      dynamic_cast<loco::FeatureEncode *>(loco_graph->nodes()->at(2));
+    dynamic_cast<loco::FeatureEncode *>(loco_graph->nodes()->at(2));
   loco::FilterEncode *filter_node = dynamic_cast<loco::FilterEncode *>(loco_graph->nodes()->at(3));
   loco::Conv2D *conv_node = dynamic_cast<loco::Conv2D *>(loco_graph->nodes()->at(4));
   loco::FeatureDecode *decode_node =
-      dynamic_cast<loco::FeatureDecode *>(loco_graph->nodes()->at(5));
+    dynamic_cast<loco::FeatureDecode *>(loco_graph->nodes()->at(5));
   loco::Push *push_node = dynamic_cast<loco::Push *>(loco_graph->nodes()->at(6));
 
   ASSERT_NE(pull_node, nullptr);
@@ -430,7 +430,7 @@ TEST_F(TestTransformer_mir2loco, Softmax_Test)
 
   loco::Pull *pull_node = dynamic_cast<loco::Pull *>(loco_graph->nodes()->at(0));
   loco::TensorSoftmax *softmax_node =
-      dynamic_cast<loco::TensorSoftmax *>(loco_graph->nodes()->at(1));
+    dynamic_cast<loco::TensorSoftmax *>(loco_graph->nodes()->at(1));
   loco::Push *push_node = dynamic_cast<loco::Push *>(loco_graph->nodes()->at(2));
 
   ASSERT_NE(pull_node, nullptr);
@@ -520,7 +520,7 @@ TEST_F(TestTransformer_mir2loco, DepthwiseConv2D_Test)
   attributes.padding_after = {7, 4};
 
   auto *conv =
-      mir_graph.create<mir::ops::DepthwiseConv2DOp>(input, filter, attributes)->getOutput(0);
+    mir_graph.create<mir::ops::DepthwiseConv2DOp>(input, filter, attributes)->getOutput(0);
 
   mir_graph.create<mir::ops::OutputOp>(conv);
   input->setName("x");
@@ -545,7 +545,7 @@ TEST_F(TestTransformer_mir2loco, DepthwiseConv2D_Test)
   loco::DepthwiseConv2D *dw_conv_node = dynamic_cast<loco::DepthwiseConv2D *>(*encode_uses.begin());
   ASSERT_NE(dw_conv_node, nullptr);
   loco::DepthwiseFilterEncode *filter_node =
-      dynamic_cast<loco::DepthwiseFilterEncode *>(dw_conv_node->ker());
+    dynamic_cast<loco::DepthwiseFilterEncode *>(dw_conv_node->ker());
   ASSERT_NE(filter_node, nullptr);
   ASSERT_EQ(dw_conv_node->ifm(), encode_node);
   // Check params
@@ -611,7 +611,7 @@ TEST_F(TestTransformer_mir2loco, DeConv2D_Test)
   auto encode_uses = loco::succs(encode_node);
   ASSERT_EQ(encode_uses.size(), 1);
   loco::TransposedConv2D *tr_conv_node =
-      dynamic_cast<loco::TransposedConv2D *>(*encode_uses.begin());
+    dynamic_cast<loco::TransposedConv2D *>(*encode_uses.begin());
   ASSERT_NE(tr_conv_node, nullptr);
   loco::FilterEncode *filter_node = dynamic_cast<loco::FilterEncode *>(tr_conv_node->ker());
   ASSERT_NE(filter_node, nullptr);
@@ -703,8 +703,8 @@ TEST_F(TestTransformer_mir2loco, Transpose_Test)
   mir::TensorType input_type{mir::DataType::FLOAT32, {2, 7, 9, 5}};
   auto *input = mir_graph.create<mir::ops::InputOp>(input_type)->getOutput(0);
   auto *transpose =
-      mir_graph.create<mir::ops::TransposeOp>(input, std::vector<std::size_t>{3, 0, 1, 2})
-          ->getOutput(0);
+    mir_graph.create<mir::ops::TransposeOp>(input, std::vector<std::size_t>{3, 0, 1, 2})
+      ->getOutput(0);
   mir_graph.create<mir::ops::OutputOp>(transpose);
   input->setName("x");
   transpose->setName("y");
