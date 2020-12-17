@@ -40,7 +40,7 @@ uint64_t bufsize_for(const nnfw_tensorinfo *ti)
     sizeof(bool),    /* NNFW_TYPE_TENSOR_BOOL = 3 */
     sizeof(uint8_t), /* NNFW_TYPE_TENSOR_UINT8 = 4 */
     sizeof(int64_t), /* NNFW_TYPE_TENSOR_INT64 = 5 */
-
+    sizeof(int8_t),  /* NNFW_TYPE_TENSOR_QUANT8_ASYMM_SIGNED = 6 */
   };
   return elmsize[ti->dtype] * num_elems(ti);
 }
