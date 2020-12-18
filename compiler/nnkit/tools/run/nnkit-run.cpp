@@ -35,7 +35,7 @@ public:
 private:
   nnkit::VectorArguments _args;
 };
-}
+} // namespace
 
 namespace
 {
@@ -59,7 +59,7 @@ private:
   std::string _path;
   std::unique_ptr<nnkit::BackendPlugin> _plugin;
 };
-}
+} // namespace
 
 // TODO Extract Action-related helpers
 #include <nnkit/Action.h>
@@ -120,7 +120,7 @@ private:
   void *_handle;
   Entry _entry;
 };
-}
+} // namespace
 
 namespace
 {
@@ -139,7 +139,7 @@ public:
 private:
   ActionBinder _binder;
 };
-}
+} // namespace
 
 #include <stdex/Memory.h>
 
