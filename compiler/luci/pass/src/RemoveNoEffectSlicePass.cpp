@@ -28,19 +28,17 @@ bool check_input_output_shape(luci::CircleNode *input, luci::CircleConst *begin,
   for (uint32_t i = 0; i < input->rank(); i++)
   {
     int64_t size_value = static_cast<int64_t>(size->at<DT>(i));
+    if (static_cast<int64_t>(begin->at<DT>(i)) != 0)
+      return false;
     if (size_value < 0)
     {
       if (size_value != -1)
         return false;
-      size_value =
-          static_cast<int64_t>(input->dim(i).value()) - static_cast<int64_t>(begin->at<DT>(i));
+      size_value = static_cast<int64_t>(input->dim(i).value());
     }
     else
     {
       if (input->shape_signature().rank() != 0 && input->shape_signature().dim(i) == -1)
-        return false;
-      if (static_cast<int64_t>(input->dim(i).value()) <
-          static_cast<int64_t>(begin->at<DT>(i)) + size_value)
         return false;
     }
     if (size_value != static_cast<int64_t>(input->dim(i).value()))
@@ -55,7 +53,7 @@ bool remove_no_effect_slice(luci::CircleNode *node)
   if (target_node == nullptr)
     return false;
   auto begin_const = dynamic_cast<luci::CircleConst *>(target_node->begin());
-  if (target_node == nullptr)
+  if (begin_const == nullptr)
     return false;
   auto size_const = dynamic_cast<luci::CircleConst *>(target_node->size());
   if (size_const == nullptr)
@@ -97,6 +95,10 @@ namespace luci
  *      |
  * [CircleNode] Remove Slice OP
  *      |
+ *
+ * Slice OP is No Effect if,
+ * 1. Static Shape : begin value = 0 and size value = -1 or input dimension
+ * 2. Dynamic Shape : begin value = 0 and size value = -1
  */
 bool RemoveNoEffectSlicePass::run(loco::Graph *g)
 {
