@@ -41,7 +41,7 @@ class CmdArguments
 public:
   CmdArguments() = delete;
   CmdArguments(int argc, const char *const *argv)
-      : _argc(static_cast<unsigned int>(argc)), _argv{argv}
+    : _argc(static_cast<unsigned int>(argc)), _argv{argv}
   {
   }
 
