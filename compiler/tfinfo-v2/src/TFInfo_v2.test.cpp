@@ -54,7 +54,7 @@ const std::vector<std::string> success_cases =
                     name : "relu:0"
                 }
     ),
-    // clang-format on
+  // clang-format on
 };
 
 } // namespace
@@ -221,7 +221,7 @@ const std::vector<std::string> fail_cases =
                 input, a:0, TF_FLOAT, [2, 3 ,4]
                 output, b:0, TF_FLOAT, [2, 3 ,4]
       )",
-    // clang-format on
+  // clang-format on
 };
 
 } // namespace
