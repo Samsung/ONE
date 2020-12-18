@@ -40,7 +40,6 @@ bool remove_consecutive_transpose_function(luci::CircleNode *node)
   auto target_node = dynamic_cast<luci::CircleTranspose *>(node);
   if (target_node == nullptr)
     return false;
-
   auto pred_node = dynamic_cast<luci::CircleTranspose *>(target_node->a());
   if (pred_node == nullptr)
     return false;
@@ -62,7 +61,6 @@ bool remove_consecutive_transpose_function(luci::CircleNode *node)
   {
     auto g = main_node->graph();
 
-    // Create New Const Node
     auto new_const_node = g->nodes()->create<luci::CircleConst>();
     new_const_node->dtype(loco::DataType::S32);
     new_const_node->rank(1);
