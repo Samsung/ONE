@@ -47,7 +47,7 @@ inline void str_impl(std::ostream &os, Arg &&arg, Args &&... args)
   str_impl(os, std::forward<Args>(args)...);
 }
 
-} // namesapce details
+} // namespace details
 } // namespace pepper
 
 namespace pepper
