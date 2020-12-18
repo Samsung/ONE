@@ -30,7 +30,7 @@ flatbuffers::Offset<void> SqueezeChef::value(flatbuffers::FlatBufferBuilder &fbb
   // Note: 'CreateVector' should be placed before 'CreateOptions'
   //       Read flatbuffers.h 'void NotNested()' for more information
   auto fb_squeeze_dims =
-      fbb.CreateVector(options.squeeze_dim().data(), options.squeeze_dim().size());
+    fbb.CreateVector(options.squeeze_dim().data(), options.squeeze_dim().size());
 
   return tflite::CreateSqueezeOptions(fbb, fb_squeeze_dims).Union();
 }

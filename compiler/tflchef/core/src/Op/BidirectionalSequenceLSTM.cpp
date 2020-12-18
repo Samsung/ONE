@@ -28,14 +28,14 @@ BidirectionalSequenceLSTMChef::value(flatbuffers::FlatBufferBuilder &fbb) const
 
   tflite::BidirectionalSequenceLSTMOptionsBuilder options_builder(fbb);
   options_builder.add_fused_activation_function(
-      as_tflite_activation(operation.bidirectional_sequence_lstm_options().activation()));
+    as_tflite_activation(operation.bidirectional_sequence_lstm_options().activation()));
   options_builder.add_cell_clip(operation.bidirectional_sequence_lstm_options().cell_clip());
   options_builder.add_proj_clip(operation.bidirectional_sequence_lstm_options().proj_clip());
   options_builder.add_time_major(operation.bidirectional_sequence_lstm_options().time_major());
   options_builder.add_asymmetric_quantize_inputs(
-      operation.bidirectional_sequence_lstm_options().asymmetric_quantize_inputs());
+    operation.bidirectional_sequence_lstm_options().asymmetric_quantize_inputs());
   options_builder.add_merge_outputs(
-      operation.bidirectional_sequence_lstm_options().merge_outputs());
+    operation.bidirectional_sequence_lstm_options().merge_outputs());
 
   return options_builder.Finish().Union();
 }
