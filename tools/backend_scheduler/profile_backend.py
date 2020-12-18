@@ -14,8 +14,8 @@ class BackendProfiler():
         self.script_path = realpath(__file__)
         self.root_path = dirname(dirname(dirname(self.script_path)))
         self.remote_base_dir = '/tmp/ONE'
-        self.remote_ip = args.ip
-        self.remote_path = f"odroid@{args.ip}:{self.remote_base_dir}"
+        self.remote_host = f"{args.user}@{args.ip}" if args.user != None else args.ip
+        self.remote_path = f"{self.remote_host}:{self.remote_base_dir}"
 
     def sync(self):
         bin_dir = join(self.root_path, "Product/armv7l-linux.release/out/")
@@ -45,7 +45,7 @@ class BackendProfiler():
 
         for backend in backend_list:
             trace_name = f"{nnpkg_dir}_{backend}_{self.num_threads}"
-            command = ["ssh", f"odroid@{self.remote_ip}"]
+            command = ["ssh", f"{self.remote_host}"]
             command.append(
                 f"TRACE_FILEPATH={join(self.remote_base_dir,'traces',trace_name)}")
             for target_backend, op_list in backend_op_list.items():
@@ -69,11 +69,13 @@ class BackendProfiler():
 if __name__ == "__main__":
     arg_parser = argparse.ArgumentParser()
     arg_parser.add_argument("nnpackage_dir", type=str, help="nnpackage folder to profile")
-    arg_parser.add_argument("--num_threads",
+    arg_parser.add_argument("-n",
+                            "--num_threads",
                             type=int,
                             default=1,
                             help="Number of threads used by one runtime")
     arg_parser.add_argument("--ip", type=str, help="IP address of remote client")
+    arg_parser.add_argument("-u", "--user", type=str, help="User of remote client")
     args = arg_parser.parse_args()
 
     backend_profiler = BackendProfiler(args)
