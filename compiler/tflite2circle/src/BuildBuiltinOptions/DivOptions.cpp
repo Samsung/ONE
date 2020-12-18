@@ -29,7 +29,7 @@ flatbuffers::Offset<circle::DivOptions> build_circle_DivOptions(flatbuffers::Fla
   assert(tflite_builtin_options);
   circle::DivOptionsBuilder builtin_options_builder{fb};
   builtin_options_builder.add_fused_activation_function(
-      get_circle_activation_function_type(tflite_builtin_options->fused_activation_function()));
+    get_circle_activation_function_type(tflite_builtin_options->fused_activation_function()));
   return builtin_options_builder.Finish();
 }
 

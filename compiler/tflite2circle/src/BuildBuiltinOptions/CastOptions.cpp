@@ -31,9 +31,9 @@ build_circle_CastOptions(flatbuffers::FlatBufferBuilder &fb, const tflite::Opera
 
   circle::CastOptionsBuilder builtin_options_builder{fb};
   builtin_options_builder.add_in_data_type(
-      get_circle_tensortype(tflite_builtin_options->in_data_type()));
+    get_circle_tensortype(tflite_builtin_options->in_data_type()));
   builtin_options_builder.add_out_data_type(
-      get_circle_tensortype(tflite_builtin_options->out_data_type()));
+    get_circle_tensortype(tflite_builtin_options->out_data_type()));
   return builtin_options_builder.Finish();
 }
 
