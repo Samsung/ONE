@@ -16,6 +16,7 @@
 
 #include "luci/CircleOptimizer.h"
 
+#include "luci/Pass/ConvertNCHWToNHWCPass.h"
 #include "luci/Pass/FoldDequantizePass.h"
 #include "luci/Pass/FuseActivationFunctionPass.h"
 #include "luci/Pass/FuseAddWithTConvPass.h"
@@ -227,6 +228,10 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   if (_options->query(Options::Algorithm::SubstitutePackToReshape))
   {
     phase.emplace_back(std::make_unique<luci::SubstitutePackToReshapePass>());
+  }
+  if (_options->query(Options::Algorithm::ConvertNCHWToNHWC))
+  {
+    phase.emplace_back(std::make_unique<luci::ConvertNCHWToNHWCPass>());
   }
 
   /* TRANSFORM DECLARATION END */

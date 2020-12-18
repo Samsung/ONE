@@ -53,6 +53,7 @@ public:
       RemoveRedundantTranspose,
       ReplaceMulAddWithDepthwiseConv,
       SubstitutePackToReshape,
+      ConvertNCHWToNHWC,
     };
 
     enum AlgorithmParameters
