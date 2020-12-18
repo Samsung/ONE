@@ -29,11 +29,11 @@ flatbuffers::Offset<void> StridedSliceChef::value(flatbuffers::FlatBufferBuilder
   strided_slice_options_builder.add_begin_mask(operation.strided_slice_options().begin_mask());
   strided_slice_options_builder.add_end_mask(operation.strided_slice_options().end_mask());
   strided_slice_options_builder.add_ellipsis_mask(
-      operation.strided_slice_options().ellipsis_mask());
+    operation.strided_slice_options().ellipsis_mask());
   strided_slice_options_builder.add_new_axis_mask(
-      operation.strided_slice_options().new_axis_mask());
+    operation.strided_slice_options().new_axis_mask());
   strided_slice_options_builder.add_shrink_axis_mask(
-      operation.strided_slice_options().shrink_axis_mask());
+    operation.strided_slice_options().shrink_axis_mask());
 
   return strided_slice_options_builder.Finish().Union();
 }

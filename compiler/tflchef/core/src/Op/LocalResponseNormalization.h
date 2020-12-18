@@ -23,7 +23,7 @@ class LocalResponseNormalizationChef final : public OpChef
 {
 public:
   explicit LocalResponseNormalizationChef(const tflchef::Operation *operation)
-      : _operation{operation}
+    : _operation{operation}
   {
     // DO NOTHING
   }
