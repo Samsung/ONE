@@ -57,7 +57,7 @@ public:
 
   ParsedTensor(const Kind kind, const std::string &name, const DataType &dtype,
                const std::vector<int32_t> &shape)
-      : _kind(kind), _dtype(dtype)
+    : _kind(kind), _dtype(dtype)
   {
     _tensor_name.assign(name);
 
@@ -66,7 +66,9 @@ public:
       _shape.dim(rank) = shape.at(rank);
   }
 
-  ~ParsedTensor() { /* empty */}
+  ~ParsedTensor()
+  { /* empty */
+  }
 
 public:
   Kind kind() const { return _kind; }
