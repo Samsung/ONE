@@ -37,7 +37,7 @@ bool check_input_output_shape(luci::CircleNode *input, luci::CircleConst *begin,
     }
     else
     {
-      if (input->shape_signature().dim(i) == -1)
+      if (input->shape_signature().rank() != 0 && input->shape_signature().dim(i) == -1)
         return false;
       if (static_cast<int64_t>(input->dim(i).value()) <
           static_cast<int64_t>(begin->at<DT>(i)) + size_value)
