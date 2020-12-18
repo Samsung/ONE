@@ -40,20 +40,20 @@ class InternalExn : public std::exception
 {
 public:
   InternalExn(const char *filename, const int line, const std::string &msg)
-      : _filename(filename), _line(to_uint32(line)), _msg(msg)
+    : _filename(filename), _line(to_uint32(line)), _msg(msg)
   {
     construct_full_msg();
   }
 
   explicit InternalExn(const char *filename, const int line, const std::string &msg, uint32_t val)
-      : _filename(filename), _line(to_uint32(line)), _msg(msg + ": " + std::to_string(val))
+    : _filename(filename), _line(to_uint32(line)), _msg(msg + ": " + std::to_string(val))
   {
     construct_full_msg();
   }
 
   explicit InternalExn(const char *filename, const int line, const std::string &msg,
                        const std::string &val)
-      : _filename(filename), _line(to_uint32(line)), _msg(msg + ": " + val)
+    : _filename(filename), _line(to_uint32(line)), _msg(msg + ": " + val)
   {
     construct_full_msg();
   }
@@ -69,7 +69,7 @@ private:
   void construct_full_msg()
   {
     _full_msg =
-        "Internal Exception. " + _msg + " [" + _filename + ":" + std::to_string(_line) + "]";
+      "Internal Exception. " + _msg + " [" + _filename + ":" + std::to_string(_line) + "]";
   }
 
   std::string _full_msg;
