@@ -22,8 +22,8 @@ namespace
 {
 
 template <loco::DataType DT>
-bool check_input_output_shape(luci::CircleNode *input, luci::CircleSlice *target,
-                              luci::CircleConst *begin, luci::CircleConst *size)
+bool check_input_output_shape(luci::CircleNode *input, luci::CircleConst *begin,
+                              luci::CircleConst *size)
 {
   for (uint32_t i = 0; i < input->rank(); i++)
   {
@@ -37,6 +37,8 @@ bool check_input_output_shape(luci::CircleNode *input, luci::CircleSlice *target
     }
     else
     {
+      if (input->shape_signature().dim(i) == -1)
+        return false;
       if (static_cast<int64_t>(input->dim(i).value()) <
           static_cast<int64_t>(begin->at<DT>(i)) + size_value)
         return false;
@@ -62,15 +64,13 @@ bool remove_no_effect_slice(luci::CircleNode *node)
   auto input_node = loco::must_cast<luci::CircleNode *>(target_node->input());
   if (begin_const->dtype() == loco::DataType::S32)
   {
-    if (!check_input_output_shape<loco::DataType::S32>(input_node, target_node, begin_const,
-                                                       size_const))
+    if (!check_input_output_shape<loco::DataType::S32>(input_node, begin_const, size_const))
       return false;
     replace(target_node).with(input_node);
   }
   else if (begin_const->dtype() == loco::DataType::S64)
   {
-    if (!check_input_output_shape<loco::DataType::S64>(input_node, target_node, begin_const,
-                                                       size_const))
+    if (!check_input_output_shape<loco::DataType::S64>(input_node, begin_const, size_const))
       return false;
     replace(target_node).with(input_node);
   }
