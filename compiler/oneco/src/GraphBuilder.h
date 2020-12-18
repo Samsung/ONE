@@ -27,9 +27,9 @@ namespace onnx
 {
 
 /**
-* @brief Parent class of onnx operation graph builders
-* @note GraphBuilder call proper build and validate function according to opset version
-*/
+ * @brief Parent class of onnx operation graph builders
+ * @note GraphBuilder call proper build and validate function according to opset version
+ */
 class GraphBuilder
 {
 public:
