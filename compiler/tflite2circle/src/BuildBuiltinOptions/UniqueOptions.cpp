@@ -29,7 +29,7 @@ build_circle_UniqueOptions(flatbuffers::FlatBufferBuilder &fb, const tflite::Ope
   assert(tflite_builtin_options);
   circle::UniqueOptionsBuilder builtin_options_builder{fb};
   builtin_options_builder.add_idx_out_type(
-      get_circle_tensortype(tflite_builtin_options->idx_out_type()));
+    get_circle_tensortype(tflite_builtin_options->idx_out_type()));
   return builtin_options_builder.Finish();
 }
 

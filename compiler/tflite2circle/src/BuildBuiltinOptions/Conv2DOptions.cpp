@@ -32,7 +32,7 @@ build_circle_Conv2DOptions(flatbuffers::FlatBufferBuilder &fb, const tflite::Ope
   builtin_options_builder.add_stride_w(tflite_builtin_options->stride_w());
   builtin_options_builder.add_stride_h(tflite_builtin_options->stride_h());
   builtin_options_builder.add_fused_activation_function(
-      get_circle_activation_function_type(tflite_builtin_options->fused_activation_function()));
+    get_circle_activation_function_type(tflite_builtin_options->fused_activation_function()));
   builtin_options_builder.add_dilation_w_factor(tflite_builtin_options->dilation_w_factor());
   builtin_options_builder.add_dilation_h_factor(tflite_builtin_options->dilation_h_factor());
   return builtin_options_builder.Finish();

@@ -29,7 +29,7 @@ build_circle_ArgMinOptions(flatbuffers::FlatBufferBuilder &fb, const tflite::Ope
   assert(tflite_builtin_options);
   circle::ArgMinOptionsBuilder builtin_options_builder{fb};
   builtin_options_builder.add_output_type(
-      get_circle_tensortype(tflite_builtin_options->output_type()));
+    get_circle_tensortype(tflite_builtin_options->output_type()));
   return builtin_options_builder.Finish();
 }
 

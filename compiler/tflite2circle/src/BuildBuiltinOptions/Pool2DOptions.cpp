@@ -34,7 +34,7 @@ build_circle_Pool2DOptions(flatbuffers::FlatBufferBuilder &fb, const tflite::Ope
   builtin_options_builder.add_filter_width(tflite_builtin_options->filter_width());
   builtin_options_builder.add_filter_height(tflite_builtin_options->filter_height());
   builtin_options_builder.add_fused_activation_function(
-      get_circle_activation_function_type(tflite_builtin_options->fused_activation_function()));
+    get_circle_activation_function_type(tflite_builtin_options->fused_activation_function()));
   return builtin_options_builder.Finish();
 }
 
