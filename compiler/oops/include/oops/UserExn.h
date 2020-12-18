@@ -72,7 +72,9 @@ private:
     out << pepper::str(attr, " = ", val);
   }
 
-  void build_info(std::stringstream &) { /* empty */}
+  void build_info(std::stringstream &)
+  { /* empty */
+  }
 
   // when only one info of string is provided
   void build_info(std::stringstream &out, const std::string &val) { out << val; }
