@@ -27,15 +27,15 @@ namespace onnx
 {
 
 /**
-* @brief Class to return graph builder for passed onnx Operator
-*/
+ * @brief Class to return graph builder for passed onnx Operator
+ */
 class GraphBuilderRegistry
 {
 public:
   /**
-  * @brief Returns registered GraphBuilder pointer for operator or
-  *        nullptr if not registered
-  */
+   * @brief Returns registered GraphBuilder pointer for operator or
+   *        nullptr if not registered
+   */
   const GraphBuilder *lookup(const std::string &op) const
   {
     if (_builder_map.find(op) == _builder_map.end())

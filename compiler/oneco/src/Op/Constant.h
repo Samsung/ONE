@@ -24,8 +24,8 @@ namespace onnx
 {
 
 /**
-  * @brief GraphBuilder for Constant(since version 1) node
-  */
+ * @brief GraphBuilder for Constant(since version 1) node
+ */
 class Constant_V1
 {
 public:
@@ -34,10 +34,10 @@ public:
 };
 
 /**
-  * @brief GraphBuilder for Constant(since version 9) node
-  * @note Until version 1, only FLOAT16, FLOAT, DOUBLE was supported
-  *       Since version 9, all types are supported
-  */
+ * @brief GraphBuilder for Constant(since version 9) node
+ * @note Until version 1, only FLOAT16, FLOAT, DOUBLE was supported
+ *       Since version 9, all types are supported
+ */
 class Constant_V9
 {
 public:
@@ -46,8 +46,8 @@ public:
 };
 
 /**
-  * @brief GraphBuilder for Constant node
-  */
+ * @brief GraphBuilder for Constant node
+ */
 class ConstantGraphBuilder : public GraphBuilder
 {
 public:

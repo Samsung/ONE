@@ -69,13 +69,13 @@ private:
 };
 
 /**
-* @brief Class to store context to build IR from onnx
-*/
+ * @brief Class to store context to build IR from onnx
+ */
 class GraphBuilderContext
 {
 public:
   GraphBuilderContext(loco::Graph *g, SymbolTable *nodes, SymbolTable *input_names)
-      : _g(g), _nodes(nodes), _input_names(input_names)
+    : _g(g), _nodes(nodes), _input_names(input_names)
   {
     // DO NOTHING
   }
