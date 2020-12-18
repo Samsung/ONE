@@ -98,7 +98,7 @@ public:
   }
 
   TensorSignature(const Kind kind, const std::string &name, const ShapeHint &shape_hint)
-      : TensorSignature(kind, name)
+    : TensorSignature(kind, name)
   {
     _shape_hint = shape_hint;
   }

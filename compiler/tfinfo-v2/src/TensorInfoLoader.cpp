@@ -108,7 +108,7 @@ void convert(tfinfo_v2_proto::InfoDef &info_def, tfinfo::v2::TensorSignatures &t
       validate_tensor_name(name, path);
 
       auto tensor = stdex::make_unique<tfinfo::v2::TensorSignature>(
-          tfinfo::v2::TensorSignature::Kind::Input, name);
+        tfinfo::v2::TensorSignature::Kind::Input, name);
 
       // when there is dim attribute for unknown shape
       if (input_def.dim_size() > 0)
@@ -137,7 +137,7 @@ void convert(tfinfo_v2_proto::InfoDef &info_def, tfinfo::v2::TensorSignatures &t
       validate_tensor_name(name, path);
 
       auto tensor = stdex::make_unique<tfinfo::v2::TensorSignature>(
-          tfinfo::v2::TensorSignature::Kind::Output, name);
+        tfinfo::v2::TensorSignature::Kind::Output, name);
       tensors.emplace_back(std::move(tensor));
     }
   }
