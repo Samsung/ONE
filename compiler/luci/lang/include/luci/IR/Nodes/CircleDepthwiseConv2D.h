@@ -34,9 +34,9 @@ namespace luci
  * @brief DEPTHWISE_CONV_2D in Circle
  */
 class CircleDepthwiseConv2D final
-    : public FixedArityNode<3, CircleNodeImpl<CircleOpcode::DEPTHWISE_CONV_2D>>,
-      public LuciNodeMixin<LuciNodeTrait::FusedActFunc>,
-      public LuciNodeMixin<LuciNodeTrait::Bias>
+  : public FixedArityNode<3, CircleNodeImpl<CircleOpcode::DEPTHWISE_CONV_2D>>,
+    public LuciNodeMixin<LuciNodeTrait::FusedActFunc>,
+    public LuciNodeMixin<LuciNodeTrait::Bias>
 {
 public:
   loco::Node *input(void) const { return at(0)->node(); }

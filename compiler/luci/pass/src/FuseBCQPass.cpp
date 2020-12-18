@@ -111,7 +111,7 @@ template <> class BCQFuser<1>
 {
 public:
   BCQFuser<1>(int32_t original_output_cnt, int32_t bundle_cnt)
-      : _original_output_cnt{original_output_cnt}, _bundle_cnt{bundle_cnt}
+    : _original_output_cnt{original_output_cnt}, _bundle_cnt{bundle_cnt}
   {
     // Do nothing
   }
@@ -133,7 +133,7 @@ public:
       {
         const auto prefix = (output_node->index() - (_original_output_cnt + 1)) / (_bundle_cnt);
         const MetadataType metadata_type = static_cast<MetadataType>(
-            (output_node->index() - (_original_output_cnt + 1)) % (_bundle_cnt));
+          (output_node->index() - (_original_output_cnt + 1)) % (_bundle_cnt));
         const auto circle_node = loco::must_cast<luci::CircleNode *>(output_node->from());
         add_BCQ_info_node(prefix, metadata_type, circle_node);
       }
@@ -177,7 +177,7 @@ public:
             bcq_gather->axis(axis_transpose);
 
             const auto indices_rank =
-                loco::must_cast<luci::CircleNode *>(gather->indices())->rank();
+              loco::must_cast<luci::CircleNode *>(gather->indices())->rank();
 
             auto perm = g->nodes()->create<luci::CircleConst>();
             perm->dtype(loco::DataType::S32);
@@ -237,7 +237,7 @@ public:
 
             new_shape->at<loco::DataType::S32>(0) = batch_size;
             new_shape->at<loco::DataType::S32>(1) =
-                original_input->dim(original_input->rank() - 1).value();
+              original_input->dim(original_input->rank() - 1).value();
             new_shape->shape_status(luci::ShapeStatus::VALID);
 
             auto reshape = g->nodes()->create<luci::CircleReshape>();
@@ -274,7 +274,7 @@ public:
           return true;
         }
         else if (auto weights_as_input =
-                     dynamic_cast<luci::CircleConst *>(fully_connected->input()))
+                   dynamic_cast<luci::CircleConst *>(fully_connected->input()))
         {
           auto prefix = get_prefix_of_const(weights_as_input);
           if (prefix == -1 || !is_valid_prefix(prefix))
@@ -533,7 +533,7 @@ private:
     new_beta->dim(1) = _packed_binary_code[prefix]->dim(1);
     for (uint32_t i = 0; i < _packed_binary_code[prefix]->size<loco::DataType::S32>(); ++i)
       new_beta->at<loco::DataType::S32>(i) =
-          _packed_binary_code[prefix]->at<loco::DataType::S32>(i);
+        _packed_binary_code[prefix]->at<loco::DataType::S32>(i);
     new_beta->shape_status(luci::ShapeStatus::VALID);
 
     return new_beta;
@@ -556,9 +556,9 @@ private:
     for (int i = 0; i < number_of_clusters; ++i)
     {
       packed_clusters->at<loco::DataType::S32>(i * 2) =
-          qbits_of_clusters->at<loco::DataType::S32>(i);
+        qbits_of_clusters->at<loco::DataType::S32>(i);
       packed_clusters->at<loco::DataType::S32>(i * 2 + 1) =
-          size_of_clusters->at<loco::DataType::S32>(i);
+        size_of_clusters->at<loco::DataType::S32>(i);
     }
 
     return packed_clusters;

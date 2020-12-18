@@ -190,6 +190,6 @@ TEST(SparsifierTest, WrongFormatRank_NEG)
   const std::vector<int32_t> block_size = {4, 1};
   const std::vector<int32_t> block_map = {0, 1};
   EXPECT_THROW(
-      luci::Sparsifier<int32_t>(dense_shape, traversal_order, format, block_size, block_map),
-      std::out_of_range);
+    luci::Sparsifier<int32_t>(dense_shape, traversal_order, format, block_size, block_map),
+    std::out_of_range);
 }

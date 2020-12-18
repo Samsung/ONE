@@ -33,12 +33,12 @@ namespace luci
  * @brief CONCATENATION in Circle
  */
 class CircleConcatenation final
-    : public VariadicArityNode<CircleNodeImpl<CircleOpcode::CONCATENATION>>,
-      public LuciNodeMixin<LuciNodeTrait::FusedActFunc>
+  : public VariadicArityNode<CircleNodeImpl<CircleOpcode::CONCATENATION>>,
+    public LuciNodeMixin<LuciNodeTrait::FusedActFunc>
 {
 public:
   CircleConcatenation(uint32_t arity)
-      : VariadicArityNode<CircleNodeImpl<CircleOpcode::CONCATENATION>>(arity)
+    : VariadicArityNode<CircleNodeImpl<CircleOpcode::CONCATENATION>>(arity)
   {
     // TODO Support when arity is 0
     assert(arity >= 1);

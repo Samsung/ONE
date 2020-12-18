@@ -29,7 +29,7 @@ namespace luci
  * @brief GREATER EQUAL in Circle
  */
 class CircleGreaterEqual final
-    : public FixedArityNode<2, CircleNodeImpl<CircleOpcode::GREATER_EQUAL>>
+  : public FixedArityNode<2, CircleNodeImpl<CircleOpcode::GREATER_EQUAL>>
 {
 public:
   loco::Node *x(void) const { return at(0)->node(); }

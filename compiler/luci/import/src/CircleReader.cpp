@@ -190,19 +190,19 @@ luci_sparse_index_vector(const circle::SparseIndexVectorUnion &sparse_index_vect
     case circle::SparseIndexVector_Int32Vector:
     {
       const auto const_vec_ptr =
-          static_cast<const void *>(&(sparse_index_vector.AsInt32Vector()->values));
+        static_cast<const void *>(&(sparse_index_vector.AsInt32Vector()->values));
       return SparseIndexVector{SparseIndexVectorType::I32, const_vec_ptr};
     }
     case circle::SparseIndexVector_Uint16Vector:
     {
       const auto const_vec_ptr =
-          static_cast<const void *>(&(sparse_index_vector.AsUint16Vector()->values));
+        static_cast<const void *>(&(sparse_index_vector.AsUint16Vector()->values));
       return SparseIndexVector{SparseIndexVectorType::U16, const_vec_ptr};
     }
     case circle::SparseIndexVector_Uint8Vector:
     {
       const auto const_vec_ptr =
-          static_cast<const void *>(&(sparse_index_vector.AsUint8Vector()->values));
+        static_cast<const void *>(&(sparse_index_vector.AsUint8Vector()->values));
       return SparseIndexVector{SparseIndexVectorType::U8, const_vec_ptr};
     }
     default:

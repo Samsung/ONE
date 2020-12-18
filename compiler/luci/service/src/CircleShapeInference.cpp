@@ -90,5 +90,5 @@ bool Rule::infer(const luci::CircleNode *circle_node, loco::TensorShape &shape) 
   return true;
 }
 
-} // namespace ssinf
+} // namespace sinf
 } // namespace luci

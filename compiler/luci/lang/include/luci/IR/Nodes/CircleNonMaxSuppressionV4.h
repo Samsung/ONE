@@ -29,7 +29,7 @@ namespace luci
  * @brief NON_MAX_SUPPRESSION_V4 in Circle
  */
 class CircleNonMaxSuppressionV4 final
-    : public FixedArityNode<5, CircleNodeImpl<CircleOpcode::NON_MAX_SUPPRESSION_V4>>
+  : public FixedArityNode<5, CircleNodeImpl<CircleOpcode::NON_MAX_SUPPRESSION_V4>>
 {
 public:
   loco::Node *boxes(void) const { return at(0)->node(); }

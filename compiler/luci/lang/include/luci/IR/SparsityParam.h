@@ -44,7 +44,7 @@ class SparseIndexVector
 public:
   SparseIndexVector() = default;
   SparseIndexVector(const SparseIndexVectorType &type, const std::vector<int32_t> &sparse_index_vec)
-      : _type{type}
+    : _type{type}
   {
     switch (type)
     {
@@ -53,7 +53,7 @@ public:
       case SparseIndexVectorType::I32:
       {
         _vec_ptr = static_cast<void *>(
-            new std::vector<int32_t>(sparse_index_vec.begin(), sparse_index_vec.end()));
+          new std::vector<int32_t>(sparse_index_vec.begin(), sparse_index_vec.end()));
         break;
       }
       case SparseIndexVectorType::U16:
@@ -90,21 +90,21 @@ public:
       case SparseIndexVectorType::I32:
       {
         const std::vector<int32_t> *vec =
-            static_cast<const std::vector<int32_t> *>(sparse_index_vec);
+          static_cast<const std::vector<int32_t> *>(sparse_index_vec);
         _vec_ptr = static_cast<void *>(new std::vector<int32_t>(vec->begin(), vec->end()));
         break;
       }
       case SparseIndexVectorType::U16:
       {
         const std::vector<uint16_t> *vec =
-            static_cast<const std::vector<uint16_t> *>(sparse_index_vec);
+          static_cast<const std::vector<uint16_t> *>(sparse_index_vec);
         _vec_ptr = static_cast<void *>(new std::vector<uint16_t>(vec->begin(), vec->end()));
         break;
       }
       case SparseIndexVectorType::U8:
       {
         const std::vector<uint8_t> *vec =
-            static_cast<const std::vector<uint8_t> *>(sparse_index_vec);
+          static_cast<const std::vector<uint8_t> *>(sparse_index_vec);
         _vec_ptr = static_cast<void *>(new std::vector<uint8_t>(vec->begin(), vec->end()));
         break;
       }
@@ -114,12 +114,12 @@ public:
   }
 
   SparseIndexVector(const SparseIndexVector &sparse_index_vec)
-      : SparseIndexVector(sparse_index_vec._type, sparse_index_vec._vec_ptr)
+    : SparseIndexVector(sparse_index_vec._type, sparse_index_vec._vec_ptr)
   {
   }
 
   SparseIndexVector(SparseIndexVector &&sparse_index_vec)
-      : _type{sparse_index_vec._type}, _vec_ptr{std::exchange(sparse_index_vec._vec_ptr, nullptr)}
+    : _type{sparse_index_vec._type}, _vec_ptr{std::exchange(sparse_index_vec._vec_ptr, nullptr)}
   {
   }
 
@@ -178,8 +178,8 @@ public:
   const std::vector<uint16_t> *as_uint16_vector(void) const
   {
     return _type == SparseIndexVectorType::U16
-               ? static_cast<const std::vector<uint16_t> *>(_vec_ptr)
-               : nullptr;
+             ? static_cast<const std::vector<uint16_t> *>(_vec_ptr)
+             : nullptr;
   }
   const std::vector<uint8_t> *as_uint8_vector(void) const
   {
@@ -202,8 +202,8 @@ public:
   }
   DimMetaData(DimensionType format, int32_t dense_size, const SparseIndexVector &array_segments,
               const SparseIndexVector &array_indices)
-      : _format{format}, _dense_size{dense_size}, _array_segments{array_segments},
-        _array_indices{array_indices}
+    : _format{format}, _dense_size{dense_size}, _array_segments{array_segments}, _array_indices{
+                                                                                   array_indices}
   {
     // DO NOTHING
   }

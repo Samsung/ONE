@@ -34,7 +34,7 @@ class CircleIf final : public VariadicArityNode<CircleNodeImpl<CircleOpcode::IF>
 {
 public:
   CircleIf(uint32_t arity, uint32_t out)
-      : VariadicArityNode<CircleNodeImpl<CircleOpcode::IF>>(arity + 1), _output_count(out)
+    : VariadicArityNode<CircleNodeImpl<CircleOpcode::IF>>(arity + 1), _output_count(out)
   {
     assert(arity > 0);
     assert(out > 0);

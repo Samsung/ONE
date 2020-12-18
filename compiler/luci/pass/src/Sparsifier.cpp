@@ -26,8 +26,8 @@ Sparsifier<T>::Sparsifier(const std::vector<int32_t> &shape,
                           const std::vector<DimensionType> &format,
                           const std::vector<int32_t> &block_size,
                           const std::vector<int32_t> &block_map)
-    : _dense_shape(shape), _traversal_order(traversal_order), _block_size(block_size),
-      _block_map(block_map)
+  : _dense_shape(shape), _traversal_order(traversal_order), _block_size(block_size),
+    _block_map(block_map)
 {
   _dense_size = 1;
   int32_t block_dim = 0;

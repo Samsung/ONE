@@ -51,12 +51,12 @@ struct CircleExpContract : public luci::CircleExporter::Contract
 {
 public:
   CircleExpContract(loco::Graph *graph, const std::string &filename)
-      : _graph(graph), _filepath(filename)
+    : _graph(graph), _filepath(filename)
   {
     // NOTHING TO DO
   }
   CircleExpContract(luci::Module *module, const std::string &filename)
-      : _module(module), _filepath(filename)
+    : _module(module), _filepath(filename)
   {
     // NOTHING TO DO
   }

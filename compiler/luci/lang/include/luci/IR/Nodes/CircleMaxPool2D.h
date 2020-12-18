@@ -36,7 +36,9 @@ class CircleMaxPool2D final : public FixedArityNode<1, CircleNodeImpl<CircleOpco
                               public LuciNodeMixin<LuciNodeTrait::FusedActFunc>
 {
 public:
-  CircleMaxPool2D() : _padding(Padding::UNDEFINED) { /* empty */}
+  CircleMaxPool2D() : _padding(Padding::UNDEFINED)
+  { /* empty */
+  }
 
 public:
   loco::Node *value(void) const { return at(0)->node(); }

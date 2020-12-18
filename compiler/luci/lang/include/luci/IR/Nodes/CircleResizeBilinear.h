@@ -29,7 +29,7 @@ namespace luci
  * @brief RESIZE_BILINEAR in Circle
  */
 class CircleResizeBilinear final
-    : public FixedArityNode<2, CircleNodeImpl<CircleOpcode::RESIZE_BILINEAR>>
+  : public FixedArityNode<2, CircleNodeImpl<CircleOpcode::RESIZE_BILINEAR>>
 {
 public:
   CircleResizeBilinear() = default;

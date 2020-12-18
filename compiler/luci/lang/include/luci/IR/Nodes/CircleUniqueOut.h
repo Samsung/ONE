@@ -29,7 +29,7 @@ namespace luci
  * @brief Virtual CIRCLEUNIQUEOUT in Circle
  */
 class CircleUniqueOut final
-    : public FixedArityNode<1, CircleNodeImpl<CircleOpcode::CIRCLEUNIQUEOUT>>
+  : public FixedArityNode<1, CircleNodeImpl<CircleOpcode::CIRCLEUNIQUEOUT>>
 {
 public:
   CircleUniqueOut() = default;

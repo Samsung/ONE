@@ -113,7 +113,7 @@ void requant_const_int8_to_uint8(CircleConst *node)
 struct RequantizeNonConst final : public luci::CircleNodeMutableVisitor<bool>
 {
   RequantizeNonConst(loco::DataType input, loco::DataType output)
-      : _input_type(input), _output_type(output)
+    : _input_type(input), _output_type(output)
   {
   }
 
@@ -157,7 +157,7 @@ struct RequantizeNonConst final : public luci::CircleNodeMutableVisitor<bool>
 struct RequantizeConst final : public luci::CircleNodeMutableVisitor<bool>
 {
   RequantizeConst(loco::DataType input, loco::DataType output)
-      : _input_type(input), _output_type(output)
+    : _input_type(input), _output_type(output)
   {
   }
 

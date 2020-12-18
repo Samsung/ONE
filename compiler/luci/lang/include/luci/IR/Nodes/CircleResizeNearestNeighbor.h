@@ -29,7 +29,7 @@ namespace luci
  * @brief RESIZE_NEAREST_NEIGHBOR in Circle
  */
 class CircleResizeNearestNeighbor final
-    : public FixedArityNode<2, CircleNodeImpl<CircleOpcode::RESIZE_NEAREST_NEIGHBOR>>
+  : public FixedArityNode<2, CircleNodeImpl<CircleOpcode::RESIZE_NEAREST_NEIGHBOR>>
 {
 public:
   CircleResizeNearestNeighbor() = default;
