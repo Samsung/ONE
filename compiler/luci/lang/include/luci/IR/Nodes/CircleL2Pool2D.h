@@ -36,7 +36,9 @@ class CircleL2Pool2D final : public FixedArityNode<1, CircleNodeImpl<CircleOpcod
                              public LuciNodeMixin<LuciNodeTrait::FusedActFunc>
 {
 public:
-  CircleL2Pool2D() : _padding(Padding::UNDEFINED) { /* empty */}
+  CircleL2Pool2D() : _padding(Padding::UNDEFINED)
+  { /* empty */
+  }
 
 public:
   loco::Node *value(void) const { return at(0)->node(); }

@@ -29,7 +29,7 @@ namespace luci
  * @brief SQUARED_DIFFERENCE in Circle
  */
 class CircleSquaredDifference final
-    : public FixedArityNode<2, CircleNodeImpl<CircleOpcode::SQUARED_DIFFERENCE>>
+  : public FixedArityNode<2, CircleNodeImpl<CircleOpcode::SQUARED_DIFFERENCE>>
 {
 public:
   CircleSquaredDifference() = default;

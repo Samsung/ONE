@@ -34,7 +34,7 @@ class CircleWhile final : public VariadicArityNode<CircleNodeImpl<CircleOpcode::
 {
 public:
   CircleWhile(uint32_t arity, uint32_t out)
-      : VariadicArityNode<CircleNodeImpl<CircleOpcode::WHILE>>(arity), _output_count(out)
+    : VariadicArityNode<CircleNodeImpl<CircleOpcode::WHILE>>(arity), _output_count(out)
   {
     assert(arity > 0);
     assert(out > 0);

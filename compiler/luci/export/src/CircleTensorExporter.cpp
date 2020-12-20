@@ -343,14 +343,14 @@ encodeSparsityParameters(FlatBufferBuilder &builder, luci::SparsityParam *sparsi
     // array_segments
     auto circle_array_segments = to_circle_sparse_index_vector(builder, it.array_segments());
     auto circle_array_segments_type =
-        to_circle_sparse_index_vector_type(it.array_segments().type());
+      to_circle_sparse_index_vector_type(it.array_segments().type());
 
     // array_indices
     auto circle_array_indices = to_circle_sparse_index_vector(builder, it.array_indices());
     auto circle_array_indices_type = to_circle_sparse_index_vector_type(it.array_indices().type());
     auto dim_metadata = circle::CreateDimensionMetadata(
-        builder, to_circle_dimensiontype(it.format()), it.dense_size(), circle_array_segments_type,
-        circle_array_segments, circle_array_indices_type, circle_array_indices);
+      builder, to_circle_dimensiontype(it.format()), it.dense_size(), circle_array_segments_type,
+      circle_array_segments, circle_array_indices_type, circle_array_indices);
     dim_metadata_vec.emplace_back(dim_metadata);
   }
 
@@ -451,8 +451,8 @@ void exportOpDefinedTensor(const CircleTensoInfo &info, FlatBufferBuilder &build
 
   auto name_offset = builder.CreateString(info.name());
   auto tensor_offset =
-      CreateTensor(builder, shape_offset, info.dtype(), buffer_id, name_offset, quantparam,
-                   /*is_variable*/ false, sparsityparam, shape_signature_offset);
+    CreateTensor(builder, shape_offset, info.dtype(), buffer_id, name_offset, quantparam,
+                 /*is_variable*/ false, sparsityparam, shape_signature_offset);
   gd._tensors.push_back(tensor_offset);
 }
 

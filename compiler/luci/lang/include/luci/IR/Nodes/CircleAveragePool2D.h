@@ -33,11 +33,13 @@ namespace luci
  * @brief AVERAGE_POOL_2D in Circle
  */
 class CircleAveragePool2D final
-    : public FixedArityNode<1, CircleNodeImpl<CircleOpcode::AVERAGE_POOL_2D>>,
-      public LuciNodeMixin<LuciNodeTrait::FusedActFunc>
+  : public FixedArityNode<1, CircleNodeImpl<CircleOpcode::AVERAGE_POOL_2D>>,
+    public LuciNodeMixin<LuciNodeTrait::FusedActFunc>
 {
 public:
-  CircleAveragePool2D() : _padding(Padding::UNDEFINED) { /* empty */}
+  CircleAveragePool2D() : _padding(Padding::UNDEFINED)
+  { /* empty */
+  }
 
 public:
   loco::Node *value(void) const { return at(0)->node(); }

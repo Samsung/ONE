@@ -33,7 +33,7 @@ class RequantizePass : public logo::Pass
 {
 public:
   RequantizePass(loco::DataType input_dtype, loco::DataType output_dtype)
-      : _input_dtype{input_dtype}, _output_dtype{output_dtype}
+    : _input_dtype{input_dtype}, _output_dtype{output_dtype}
   {
     // DO NOTHING
   }

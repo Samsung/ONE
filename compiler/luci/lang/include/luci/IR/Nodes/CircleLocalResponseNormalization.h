@@ -29,7 +29,7 @@ namespace luci
  * @brief LOCAL_RESPONSE_NORMALIZATION in Circle
  */
 class CircleLocalResponseNormalization final
-    : public FixedArityNode<1, CircleNodeImpl<CircleOpcode::LOCAL_RESPONSE_NORMALIZATION>>
+  : public FixedArityNode<1, CircleNodeImpl<CircleOpcode::LOCAL_RESPONSE_NORMALIZATION>>
 {
 public:
   loco::Node *input(void) const { return at(0)->node(); }

@@ -32,7 +32,7 @@ bool fuse_activation_function(luci::CircleNode *node)
     return false;
 
   auto node_with_fused_act =
-      dynamic_cast<luci::LuciNodeMixin<luci::LuciNodeTrait::FusedActFunc> *>(pred_node);
+    dynamic_cast<luci::LuciNodeMixin<luci::LuciNodeTrait::FusedActFunc> *>(pred_node);
   if (node_with_fused_act == nullptr)
     return false;
 

@@ -29,7 +29,7 @@ namespace luci
  * @brief Virtual CIRCLESPLITVOUT in Circle
  */
 class CircleSplitVOut final
-    : public FixedArityNode<1, CircleNodeImpl<CircleOpcode::CIRCLESPLITVOUT>>
+  : public FixedArityNode<1, CircleNodeImpl<CircleOpcode::CIRCLESPLITVOUT>>
 {
 public:
   CircleSplitVOut() = default;

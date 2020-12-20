@@ -71,7 +71,7 @@ class GraphBuilderContext
 public:
   GraphBuilderContext(loco::Graph *g, CircleReader *reader, IndexNodeFinder *nodefinder,
                       IndexTensorOutputs *tensoroutputs)
-      : _g(g), _reader(reader), _indexnodefinder(nodefinder), _indextensoroutputs(tensoroutputs)
+    : _g(g), _reader(reader), _indexnodefinder(nodefinder), _indextensoroutputs(tensoroutputs)
   {
     // DO NOTHING
   }

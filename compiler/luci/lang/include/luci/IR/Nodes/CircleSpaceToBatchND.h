@@ -29,7 +29,7 @@ namespace luci
  * @brief SPACE_TO_BATCH_ND in Circle
  */
 class CircleSpaceToBatchND final
-    : public FixedArityNode<3, CircleNodeImpl<CircleOpcode::SPACE_TO_BATCH_ND>>
+  : public FixedArityNode<3, CircleNodeImpl<CircleOpcode::SPACE_TO_BATCH_ND>>
 {
 public:
   loco::Node *input(void) const { return at(0)->node(); }

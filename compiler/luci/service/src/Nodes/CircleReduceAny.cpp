@@ -22,7 +22,7 @@ namespace luci
 ShapeSignature ssinf::Algorithm::visit(const luci::CircleReduceAny *node)
 {
   return legalized_signature(
-      reduced_signature(node->input(), node->reduction_indices(), node->keep_dims()));
+    reduced_signature(node->input(), node->reduction_indices(), node->keep_dims()));
 }
 
 } // namespace luci

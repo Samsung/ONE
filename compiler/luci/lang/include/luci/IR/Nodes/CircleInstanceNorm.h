@@ -30,8 +30,8 @@ namespace luci
  * @brief INSTANCE_NORM in Circle
  */
 class CircleInstanceNorm final
-    : public FixedArityNode<3, CircleNodeImpl<CircleOpcode::INSTANCE_NORM>>,
-      public LuciNodeMixin<LuciNodeTrait::FusedActFunc>
+  : public FixedArityNode<3, CircleNodeImpl<CircleOpcode::INSTANCE_NORM>>,
+    public LuciNodeMixin<LuciNodeTrait::FusedActFunc>
 {
 public:
   /// @note  Currently only support FLOAT32 as input node

@@ -30,9 +30,9 @@ namespace luci
  * @brief FULLY_CONNECTED in Circle
  */
 class CircleFullyConnected final
-    : public FixedArityNode<3, CircleNodeImpl<CircleOpcode::FULLY_CONNECTED>>,
-      public LuciNodeMixin<LuciNodeTrait::FusedActFunc>,
-      public LuciNodeMixin<LuciNodeTrait::Bias>
+  : public FixedArityNode<3, CircleNodeImpl<CircleOpcode::FULLY_CONNECTED>>,
+    public LuciNodeMixin<LuciNodeTrait::FusedActFunc>,
+    public LuciNodeMixin<LuciNodeTrait::Bias>
 {
 public:
   enum class WeightsFormat

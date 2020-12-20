@@ -637,7 +637,7 @@ loco::NodeShape infer_expand_dims(const luci::CircleExpandDims *node)
   }
   int32_t axis = const_axis->at<S32>(0);
   LUCI_ASSERT((axis <= static_cast<int32_t>(x_shape.rank())) &&
-                  (axis >= -1 - static_cast<int32_t>(x_shape.rank())),
+                (axis >= -1 - static_cast<int32_t>(x_shape.rank())),
               "Axis has to be between [-(D+1), D], where D is rank of input.");
   size_t positive_axis = axis < 0 ? x_shape.rank() + axis + 1 : axis;
   loco::TensorShape output_shape;
@@ -1612,7 +1612,7 @@ loco::NodeShape infer_unidirectionalsequencelstm(const luci::CircleUnidirectiona
 {
   auto input_shape = loco::shape_get(node->input()).as<loco::TensorShape>();
   auto recurrent_to_output_weights =
-      loco::shape_get(node->recurrent_to_output_weights()).as<loco::TensorShape>();
+    loco::shape_get(node->recurrent_to_output_weights()).as<loco::TensorShape>();
   auto rank = input_shape.rank();
   loco::TensorShape output_shape;
   output_shape.rank(rank);

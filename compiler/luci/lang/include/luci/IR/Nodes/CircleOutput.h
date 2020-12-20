@@ -54,7 +54,7 @@ private:
  */
 // TODO remove CircleOutputDummy
 class CircleOutputDummy final
-    : public FixedArityNode<0, CircleNodeImpl<CircleOpcode::CIRCLEOUTPUTDUMMY>>
+  : public FixedArityNode<0, CircleNodeImpl<CircleOpcode::CIRCLEOUTPUTDUMMY>>
 {
 public:
   CircleOutputDummy() = default;
@@ -64,7 +64,7 @@ public:
  * @brief CircleOutputExclude is used to specifying not exported nodes
  */
 class CircleOutputExclude final
-    : public FixedArityNode<0, CircleNodeImpl<CircleOpcode::CIRCLEOUTPUTEXCLUDE>>
+  : public FixedArityNode<0, CircleNodeImpl<CircleOpcode::CIRCLEOUTPUTEXCLUDE>>
 {
 public:
   CircleOutputExclude() = default;

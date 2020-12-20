@@ -35,8 +35,8 @@ public:
   SparsifyTensorPass(const std::string &tensor_name, const std::vector<int32_t> &traversal_order,
                      const std::vector<DimensionType> &format,
                      const std::vector<int32_t> &block_size, const std::vector<int32_t> &block_map)
-      : _tensor_name{tensor_name}, _traversal_order{traversal_order}, _format{format},
-        _block_size{block_size}, _block_map{block_map}
+    : _tensor_name{tensor_name}, _traversal_order{traversal_order}, _format{format},
+      _block_size{block_size}, _block_map{block_map}
   {
     // DO NOTHING
   }

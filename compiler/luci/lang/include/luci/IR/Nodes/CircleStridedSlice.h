@@ -29,7 +29,7 @@ namespace luci
  * @brief STRIDED_SLICE in Circle
  */
 class CircleStridedSlice final
-    : public FixedArityNode<4, CircleNodeImpl<CircleOpcode::STRIDED_SLICE>>
+  : public FixedArityNode<4, CircleNodeImpl<CircleOpcode::STRIDED_SLICE>>
 {
 public:
   loco::Node *input(void) const { return at(0)->node(); }
