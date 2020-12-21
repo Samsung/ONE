@@ -158,10 +158,11 @@ if __name__ == '__main__':
 
     # dump input and output in h5
     import h5py
-    supported_dtypes = ("float32", "uint8", "bool", "int32", "int64")
+    supported_dtypes = ("float32", "uint8", "int8", "bool", "int32", "int64")
     h5dtypes = {
         "float32": ">f4",
         "uint8": "u1",
+        "int8": "i1",
         "bool": "u1",
         "int32": "int32",
         "int64": "int64"
