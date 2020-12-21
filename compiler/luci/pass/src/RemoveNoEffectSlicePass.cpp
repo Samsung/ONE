@@ -21,30 +21,18 @@
 namespace
 {
 
-template <loco::DataType DT>
-bool check_input_output_shape(luci::CircleNode *input, luci::CircleConst *begin,
-                              luci::CircleConst *size)
+/// @brief Return -2 if CircleConst is nullptr or not valid shape, otherwise return value in
+/// position on CircleConst with int64 format.
+/// on this pass, begin & size must be large or equal to -1, so -2 is invalid value.
+int64_t value_from_circle_const(luci::CircleConst *node, uint32_t idx)
 {
-  for (uint32_t i = 0; i < input->rank(); i++)
-  {
-    int64_t size_value = static_cast<int64_t>(size->at<DT>(i));
-    if (static_cast<int64_t>(begin->at<DT>(i)) != 0)
-      return false;
-    if (size_value < 0)
-    {
-      if (size_value != -1)
-        return false;
-      size_value = static_cast<int64_t>(input->dim(i).value());
-    }
-    else
-    {
-      if (input->shape_signature().rank() != 0 && input->shape_signature().dim(i) == -1)
-        return false;
-    }
-    if (size_value != static_cast<int64_t>(input->dim(i).value()))
-      return false;
-  }
-  return true;
+  if (node == nullptr || node->rank() != 1 || node->dim(0).value() <= idx)
+    return -2;
+  if (node->dtype() == loco::DataType::S64)
+    return node->at<loco::DataType::S64>(idx);
+  else if (node->dtype() == loco::DataType::S32)
+    return static_cast<int64_t>(node->at<loco::DataType::S32>(idx));
+  return -2;
 }
 
 bool remove_no_effect_slice(luci::CircleNode *node)
@@ -60,20 +48,26 @@ bool remove_no_effect_slice(luci::CircleNode *node)
     return false;
   // Check input output shape.
   auto input_node = loco::must_cast<luci::CircleNode *>(target_node->input());
-  if (begin_const->dtype() == loco::DataType::S32)
+  for (uint32_t i = 0; i < input_node->rank(); i++)
   {
-    if (!check_input_output_shape<loco::DataType::S32>(input_node, begin_const, size_const))
+    int64_t size_value = value_from_circle_const(size_const, i);
+    if (value_from_circle_const(begin_const, i) != 0)
       return false;
-    replace(target_node).with(input_node);
-  }
-  else if (begin_const->dtype() == loco::DataType::S64)
-  {
-    if (!check_input_output_shape<loco::DataType::S64>(input_node, begin_const, size_const))
+    if (size_value < 0)
+    {
+      if (size_value != -1)
+        return false;
+      size_value = static_cast<int64_t>(input_node->dim(i).value());
+    }
+    else
+    {
+      if (input_node->shape_signature().rank() != 0 && input_node->shape_signature().dim(i) == -1)
+        return false;
+    }
+    if (size_value != static_cast<int64_t>(input_node->dim(i).value()))
       return false;
-    replace(target_node).with(input_node);
   }
-  else
-    return false;
+  replace(target_node).with(input_node);
   return true;
 }
 
