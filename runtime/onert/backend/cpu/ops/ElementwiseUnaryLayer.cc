@@ -410,7 +410,7 @@ void ElementwiseUnaryLayer::configure(const IPortableTensor *input, IPortableTen
       }
       break;
     default:
-      throw std::runtime_error{"ElementwiseBinary: Unsupported ElementwiseBinary type"};
+      throw std::runtime_error{"ElementwiseUnary: Unsupported ElementwiseUnary type"};
   }
 }
 
