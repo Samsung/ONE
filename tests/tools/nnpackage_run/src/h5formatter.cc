@@ -137,6 +137,12 @@ void H5Formatter::loadInputs(const std::string &filename, std::vector<Allocation
             throw std::runtime_error(
               "model input type is qasymm8, bool or uint8. But h5 data type is different.");
           break;
+        case NNFW_TYPE_TENSOR_QUANT8_ASYMM_SIGNED:
+          if (type == H5::PredType::STD_I8BE || type == H5::PredType::STD_I8LE)
+            data_set.read(inputs[i].data(), H5::PredType::NATIVE_INT8);
+          else
+            throw std::runtime_error("model input type is int8. But h5 data type is different.");
+          break;
         default:
           throw std::runtime_error("nnpkg_run can load f32, i32, qasymm8, bool and uint8.");
       }
@@ -218,6 +224,13 @@ void H5Formatter::dumpOutputs(const std::string &filename, std::vector<Allocatio
         {
           H5::DataSet data_set =
             value_group.createDataSet(std::to_string(i), H5::PredType::STD_U8LE, data_space);
+          data_set.write(outputs[i].data(), H5::PredType::NATIVE_INT8);
+          break;
+        }
+        case NNFW_TYPE_TENSOR_QUANT8_ASYMM_SIGNED:
+        {
+          H5::DataSet data_set =
+            value_group.createDataSet(std::to_string(i), H5::PredType::STD_I8LE, data_space);
           data_set.write(outputs[i].data(), H5::PredType::NATIVE_INT8);
           break;
         }
