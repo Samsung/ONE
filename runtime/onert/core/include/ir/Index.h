@@ -52,12 +52,12 @@ std::ostream &_index_print_impl(std::ostream &o, const std::string &prefix, Inde
 
 inline std::ostream &operator<<(std::ostream &o, const OperationIndex &i)
 {
-  return _index_print_impl(o, "OPERATION", i);
+  return _index_print_impl(o, "@", i);
 }
 
 inline std::ostream &operator<<(std::ostream &o, const OperandIndex &i)
 {
-  return _index_print_impl(o, "$", i);
+  return _index_print_impl(o, "%", i);
 }
 
 inline std::ostream &operator<<(std::ostream &o, const IOIndex &i)
