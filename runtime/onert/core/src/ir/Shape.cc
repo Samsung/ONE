@@ -87,27 +87,28 @@ uint64_t Shape::num_elements() const
                          std::multiplies<uint64_t>());
 }
 
-Shape permuteShape(const Shape &shape, Layout frontend_layout, Layout backend_layout)
+Shape permuteShape(const Shape &shape, Layout from, Layout to)
 {
   assert(shape.rank() <= Shape::MAX_RANK);
-  Shape backend_shape{shape};
-  if (shape.rank() >= 4 && frontend_layout == Layout::NHWC && backend_layout == Layout::NCHW)
+  Shape ret{shape};
+  if (shape.rank() < 4)
+    return ret;
+  // Permutation changing layout beyond 4-D is not supported yet
+  assert(shape.rank() <= 4);
+  if (from == Layout::NHWC && to == Layout::NCHW)
   {
-    // Permutation changing layout beyond 4-D is not supported yet
-    assert(shape.rank() <= 4);
-    backend_shape.dim(1) = shape.dim(3);
-    backend_shape.dim(2) = shape.dim(1);
-    backend_shape.dim(3) = shape.dim(2);
+    ret.dim(1) = shape.dim(3);
+    ret.dim(2) = shape.dim(1);
+    ret.dim(3) = shape.dim(2);
   }
-  else if (shape.rank() >= 4 && frontend_layout == Layout::NCHW && backend_layout == Layout::NHWC)
+  else if (from == Layout::NCHW && to == Layout::NHWC)
   {
-    // Permutation changing layout beyond 4-D is not supported yet
-    assert(shape.rank() <= 4);
-    backend_shape.dim(1) = shape.dim(2);
-    backend_shape.dim(2) = shape.dim(3);
-    backend_shape.dim(3) = shape.dim(1);
+    ret.dim(1) = shape.dim(2);
+    ret.dim(2) = shape.dim(3);
+    ret.dim(3) = shape.dim(1);
   }
-  return backend_shape;
+  // Other cases(either `from` or `to` is UNKNOWN), just return the original shape
+  return ret;
 }
 
 } // namespace ir
