@@ -55,7 +55,6 @@ public:
 
   void initialize(const std::vector<OperationInfo> &operation_list,
                   const std::vector<ir::OperandIndex> &operand_list);
-  void initConsts();
 
   const Backend *backend() const { return _backend; }
   const ir::Graph *graph() const { return _graph; }

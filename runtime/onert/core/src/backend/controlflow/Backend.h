@@ -19,7 +19,6 @@
 
 #include "BackendContext.h"
 #include "Config.h"
-#include "ConstantInitializer.h"
 #include "KernelGenerator.h"
 #include "TensorBuilder.h"
 #include "Tensor.h"
@@ -46,7 +45,6 @@ public:
   newContext(const ir::Graph &graph, const std::shared_ptr<custom::IKernelBuilder> &,
              bool) const override
   {
-    const auto &operands = graph.operands();
     auto context = std::make_unique<BackendContext>(this, &graph);
     // ControlFlow backend may not build tensors for itself because the backend's operation uses
     // tensors of other baceknd instead
@@ -69,7 +67,6 @@ public:
     auto tb = std::make_shared<TensorBuilder>(tr);
     context->tensor_registry = tr;
     context->tensor_builder = tb;
-    context->constant_initializer = std::make_shared<ConstantInitializer>(operands, tr);
     context->kernel_gen = std::make_shared<KernelGenerator>(graph, tb->dynamicTensorManager(), tr,
                                                             context->external_context());
     return context;
