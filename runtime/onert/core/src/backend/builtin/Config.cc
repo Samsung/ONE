@@ -14,22 +14,24 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_COMPILER_CONTROLFLOW_CONSTANT_INITIALIZER_H__
-#define __ONERT_COMPILER_CONTROLFLOW_CONSTANT_INITIALIZER_H__
-
-#include <backend/cpu_common/ConstantInitializer.h>
+#include "Config.h"
 
 namespace onert
 {
 namespace backend
 {
-namespace controlflow
+namespace builtin
 {
 
-using ConstantInitializer = cpu_common::ConstantInitializer;
+std::string Config::ID = "builtin";
 
-} // namespace controlflow
+bool Config::initialize() { return true; }
+
+ir::Layout Config::supportLayout(const ir::Operation &, ir::Layout frontend_layout)
+{
+  return frontend_layout;
+}
+
+} // namespace builtin
 } // namespace backend
 } // namespace onert
-
-#endif // __ONERT_COMPILER_CONTROLFLOW_CONSTANT_INITIALIZER_H__

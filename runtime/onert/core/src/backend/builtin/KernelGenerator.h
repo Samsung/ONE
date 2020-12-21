@@ -29,7 +29,7 @@ namespace onert
 {
 namespace backend
 {
-namespace controlflow
+namespace builtin
 {
 
 class KernelGenerator : public cpu_common::KernelGeneratorBase
@@ -67,7 +67,7 @@ private:
   const std::shared_ptr<ExternalContext> _external_context;
 };
 
-} // namespace controlflow
+} // namespace builtin
 } // namespace backend
 } // namespace onert
 

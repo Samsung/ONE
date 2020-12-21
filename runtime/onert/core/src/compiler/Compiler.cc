@@ -21,7 +21,7 @@
 #include "ShapeValidator.h"
 #include "Fp32ToFp16Converter.h"
 
-#include <backend/controlflow/Config.h>
+#include <backend/builtin/Config.h>
 #include "compiler/BackendManager.h"
 #include "compiler/IScheduler.h"
 #include "compiler/ManualScheduler.h"
@@ -157,7 +157,7 @@ std::shared_ptr<exec::ExecutorMap> Compiler::compile(void)
 {
   // Set control flow backend for control flow operators
   {
-    auto &cfid = backend::controlflow::Config::ID;
+    auto &cfid = backend::builtin::Config::ID;
     _options.manual_scheduler_options.opcode_to_backend[ir::OpCode::If] = cfid;
     _options.manual_scheduler_options.opcode_to_backend[ir::OpCode::While] = cfid;
     _options.manual_scheduler_options.opcode_to_backend[ir::OpCode::Permute] = cfid;
@@ -240,7 +240,7 @@ std::shared_ptr<exec::ExecutorMap> Compiler::compile(void)
     for (auto it = contexts.begin(); it != contexts.end(); it++)
     {
       // Controlflow backend is not for actual computaion of operations so it is an exception
-      if (it->first->config()->id() != backend::controlflow::Config::ID)
+      if (it->first->config()->id() != backend::builtin::Config::ID)
         backends_support_fp16 &= it->first->config()->supportFP16();
     }
 

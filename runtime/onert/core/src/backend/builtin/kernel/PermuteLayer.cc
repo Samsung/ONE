@@ -24,7 +24,7 @@ namespace onert
 {
 namespace backend
 {
-namespace controlflow
+namespace builtin
 {
 namespace kernel
 {
@@ -307,6 +307,6 @@ void PermuteLayer::run()
 }
 
 } // namespace kernel
-} // namespace controlflow
+} // namespace builtin
 } // namespace backend
 } // namespace onert

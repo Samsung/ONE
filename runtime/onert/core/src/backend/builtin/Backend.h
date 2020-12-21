@@ -31,7 +31,7 @@ namespace onert
 {
 namespace backend
 {
-namespace controlflow
+namespace builtin
 {
 
 class Backend : public ::onert::backend::Backend
@@ -76,7 +76,7 @@ private:
   std::shared_ptr<IConfig> _config;
 };
 
-} // namespace controlflow
+} // namespace builtin
 } // namespace backend
 } // namespace onert
 

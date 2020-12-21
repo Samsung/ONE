@@ -20,7 +20,7 @@
 #include <utility>
 #include <unordered_map>
 
-#include "backend/controlflow/Config.h"
+#include "backend/builtin/Config.h"
 #include "ir/Operand.h"
 #include "ir/operation/LowerInfo.h"
 #include "ir/Graph.h"
@@ -130,7 +130,7 @@ ir::OperationIndex PermutationInsertionPass::insertPermute(const ir::OperandInde
 
   // Generate output operand and permute operation
   auto out_operand_index = _graph.addOperand(operand.shape(), operand.typeInfo());
-  // change model output if operand_index is model output index and the out operand is controlflow
+  // change model output if operand_index is model output index and the out operand is builtin
   // backend
   auto &model_outputs = _graph.getOutputs();
   const backend::Backend *cf_backend = compiler::BackendManager::get().getControlflow();

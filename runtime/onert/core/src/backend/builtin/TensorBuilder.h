@@ -31,7 +31,7 @@ namespace onert
 {
 namespace backend
 {
-namespace controlflow
+namespace builtin
 {
 
 class TensorBuilder
@@ -72,7 +72,7 @@ private:
   ir::OperandIndexMap<ir::OperandInfo> _tensor_info_map;
 };
 
-} // namespace controlflow
+} // namespace builtin
 } // namespace backend
 } // namespace onert
 

@@ -25,7 +25,7 @@ namespace onert
 {
 namespace backend
 {
-namespace controlflow
+namespace builtin
 {
 namespace kernel
 {
@@ -54,7 +54,7 @@ private:
 };
 
 } // namespace kernel
-} // namespace controlflow
+} // namespace builtin
 } // namespace backend
 } // namespace onert
 

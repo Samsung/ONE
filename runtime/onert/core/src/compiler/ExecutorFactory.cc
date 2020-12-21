@@ -27,10 +27,10 @@
 #include "exec/ExecTime.h"
 #include "compiler/Linear.h"
 #include "backend/IPortableTensor.h"
-#include "backend/controlflow/Config.h"
-#include "backend/controlflow/KernelGenerator.h"
-#include "backend/controlflow/UserTensor.h"
-#include "backend/controlflow/TensorBuilder.h"
+#include "backend/builtin/Config.h"
+#include "backend/builtin/KernelGenerator.h"
+#include "backend/builtin/UserTensor.h"
+#include "backend/builtin/TensorBuilder.h"
 #include "util/TracingCtx.h"
 
 #include <memory>
@@ -67,16 +67,16 @@ private:
 void initializeSubgraphIOTensors(compiler::LoweredGraph &lowered_graph,
                                  const ir::OperandIndexSequence &indices)
 {
-  // TODO Store controlflow backend in BackendContext
-  std::shared_ptr<backend::controlflow::TensorRegistry> cf_tensor_reg;
+  // TODO Store builtin backend in BackendContext
+  std::shared_ptr<backend::builtin::TensorRegistry> cf_tensor_reg;
   for (const auto &e : lowered_graph.backend_contexts())
   {
     auto backend = e.first;
     auto &context = e.second;
-    if (backend->config()->id() == backend::controlflow::Config::ID)
+    if (backend->config()->id() == backend::builtin::Config::ID)
     {
       cf_tensor_reg =
-        std::dynamic_pointer_cast<backend::controlflow::TensorRegistry>(context->tensor_registry);
+        std::dynamic_pointer_cast<backend::builtin::TensorRegistry>(context->tensor_registry);
     }
   }
   assert(cf_tensor_reg);
@@ -84,12 +84,12 @@ void initializeSubgraphIOTensors(compiler::LoweredGraph &lowered_graph,
   for (auto ind : indices)
   {
     const auto &operand = lowered_graph.graph().operands().at(ind);
-    auto tensor = std::make_unique<backend::controlflow::IOTensor>(
+    auto tensor = std::make_unique<backend::builtin::IOTensor>(
       operand.info(),
       ir::Layout::NHWC /* FIXME find op_seq for this operand and use frontend_layout */
     );
 
-    // Add tensor to controlflow TensorRegistry.
+    // Add tensor to builtin TensorRegistry.
     cf_tensor_reg->setNativeIOTensor(ind, std::move(tensor));
   }
 }
@@ -216,10 +216,10 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lo
 
   prepareMigrantTensors(*lowered_graph);
 
-  // Give some runtime objects to controlflow KernelGenerator
+  // Give some runtime objects to builtin KernelGenerator
   for (auto &pair : backend_contexts)
   {
-    auto cf_context = dynamic_cast<backend::controlflow::BackendContext *>(pair.second.get());
+    auto cf_context = dynamic_cast<backend::builtin::BackendContext *>(pair.second.get());
     if (cf_context != nullptr)
     {
       auto cf_kernel_gen = cf_context->kernel_gen;
@@ -234,11 +234,11 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lo
   std::deque<std::pair<const backend::Backend *, backend::BackendContext *>> ordered_contexts;
   for (auto &pair : backend_contexts)
   {
-    // NOTE controlflow backend must be processed lastly.
+    // NOTE builtin backend must be processed lastly.
     // This is because of Permute layer's specialty which is the only operation that could have
     // different ITensor objects for the input and the output. And it requires all other backends'
     // tensors are ready to use.
-    if (pair.first->config()->id() == "controlflow")
+    if (pair.first->config()->id() == "builtin")
       ordered_contexts.emplace_back(pair.first, pair.second.get());
     else
       ordered_contexts.emplace_front(pair.first, pair.second.get());
@@ -302,10 +302,10 @@ exec::IExecutor *ExecutorFactory::createDataflowExecutor(
 
   prepareMigrantTensors(*lowered_graph);
 
-  // Give some runtime objects to controlflow KernelGenerator
+  // Give some runtime objects to builtin KernelGenerator
   for (auto &pair : backend_contexts)
   {
-    auto cf_context = dynamic_cast<backend::controlflow::BackendContext *>(pair.second.get());
+    auto cf_context = dynamic_cast<backend::builtin::BackendContext *>(pair.second.get());
     if (cf_context != nullptr)
     {
       auto cf_kernel_gen = cf_context->kernel_gen;
@@ -320,11 +320,11 @@ exec::IExecutor *ExecutorFactory::createDataflowExecutor(
   std::deque<std::pair<const backend::Backend *, backend::BackendContext *>> ordered_contexts;
   for (auto &pair : backend_contexts)
   {
-    // NOTE controlflow backend must be processed lastly.
+    // NOTE builtin backend must be processed lastly.
     // This is because of Permute layer's specialty which is the only operation that could have
     // different ITensor objects for the input and the output. And it requires all other backends'
     // tensors are ready to use.
-    if (pair.first->config()->id() == "controlflow")
+    if (pair.first->config()->id() == "builtin")
       ordered_contexts.emplace_back(pair.first, pair.second.get());
     else
       ordered_contexts.emplace_front(pair.first, pair.second.get());

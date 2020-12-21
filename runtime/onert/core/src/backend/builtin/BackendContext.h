@@ -26,7 +26,7 @@ namespace onert
 {
 namespace backend
 {
-namespace controlflow
+namespace builtin
 {
 
 class BackendContext : public onert::backend::BackendContext
@@ -67,7 +67,7 @@ private:
   std::shared_ptr<ExternalContext> _external_context;
 };
 
-} // namespace controlflow
+} // namespace builtin
 } // namespace backend
 } // namespace onert
 

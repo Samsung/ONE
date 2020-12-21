@@ -502,7 +502,7 @@ bool LoweredGraph::mergeable(const ir::OpSequenceIndex &op_seq_index,
     {
       // TODO Fix this workaround for the case of model outputs that are used by another operation
       //      This is needed since the branching is decided by operation, but for model outputs,
-      //      there is controlflow backen(use backend) but no actual use operation exists
+      //      there is builtin backen(use backend) but no actual use operation exists
       if (_graph.getOutputs().contains(output))
         return false;
 

@@ -21,9 +21,9 @@
 #include <memory>
 #include "backend/BackendContext.h"
 #include "backend/Backend.h"
-#include "backend/controlflow/Config.h"
-#include "backend/controlflow/TensorBuilder.h"
-#include "backend/controlflow/TensorRegistry.h"
+#include "backend/builtin/Config.h"
+#include "backend/builtin/TensorBuilder.h"
+#include "backend/builtin/TensorRegistry.h"
 
 namespace onert
 {
@@ -41,10 +41,9 @@ public:
     for (const auto &e : backend_contexts)
     {
       auto tensor_reg = e.second->tensor_registry;
-      if (e.first->config()->id() == backend::controlflow::Config::ID)
+      if (e.first->config()->id() == backend::builtin::Config::ID)
       {
-        _cf_tensor_reg =
-          std::dynamic_pointer_cast<backend::controlflow::TensorRegistry>(tensor_reg);
+        _cf_tensor_reg = std::dynamic_pointer_cast<backend::builtin::TensorRegistry>(tensor_reg);
         if (include_controlflow)
           _tensor_regs.insert(tensor_reg);
       }
@@ -64,7 +63,7 @@ public:
     return _tensor_regs.cend();
   }
 
-  std::shared_ptr<backend::controlflow::TensorRegistry> getControlflowTensorRegistry() const
+  std::shared_ptr<backend::builtin::TensorRegistry> getControlflowTensorRegistry() const
   {
     return _cf_tensor_reg;
   }
@@ -82,7 +81,7 @@ public:
 
 private:
   std::unordered_set<std::shared_ptr<backend::ITensorRegistry>> _tensor_regs;
-  std::shared_ptr<backend::controlflow::TensorRegistry> _cf_tensor_reg;
+  std::shared_ptr<backend::builtin::TensorRegistry> _cf_tensor_reg;
 };
 
 } // namespace compiler

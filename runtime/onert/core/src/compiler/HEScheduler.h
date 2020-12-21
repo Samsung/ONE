@@ -58,7 +58,7 @@ public:
   {
     for (auto &entry : backend_contexts)
     {
-      if (entry.first->config()->id() == backend::controlflow::Config::ID)
+      if (entry.first->config()->id() == backend::builtin::Config::ID)
         continue;
       _all_backends.push_back(entry.first);
     }

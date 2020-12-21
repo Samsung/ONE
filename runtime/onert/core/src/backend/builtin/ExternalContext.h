@@ -28,7 +28,7 @@ namespace onert
 {
 namespace backend
 {
-namespace controlflow
+namespace builtin
 {
 
 // TODO Unify this with cpu::ExternalContext
@@ -70,7 +70,7 @@ private:
   const std::unique_ptr<ruy::Context> _ruy_context;
 };
 
-} // namespace controlflow
+} // namespace builtin
 } // namespace backend
 } // namespace onert
 

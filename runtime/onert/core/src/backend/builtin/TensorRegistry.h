@@ -27,11 +27,11 @@ namespace onert
 {
 namespace backend
 {
-namespace controlflow
+namespace builtin
 {
 
 /**
- * @brief Tensor registry class for controlflow backend
+ * @brief Tensor registry class for builtin backend
  *
  * This class contains three types of tensors. Two native tensors(tensors that are managed by this
  * backend) and the other is migrant tensor.
@@ -127,7 +127,7 @@ private:
   ir::OperandIndexMap<std::unique_ptr<IOTensor>> _native_io_tensors;
 };
 
-} // namespace controlflow
+} // namespace builtin
 } // namespace backend
 } // namespace onert
 

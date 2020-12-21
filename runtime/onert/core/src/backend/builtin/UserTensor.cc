@@ -23,7 +23,7 @@ namespace onert
 {
 namespace backend
 {
-namespace controlflow
+namespace builtin
 {
 
 size_t UserTensor::calcOffset(const ir::Coordinates &coords) const
@@ -48,6 +48,6 @@ bool UserTensor::applyShape(const ir::Shape &new_shape)
   return true;
 }
 
-} // namespace controlflow
+} // namespace builtin
 } // namespace backend
 } // namespace onert

@@ -36,7 +36,7 @@ namespace onert
 namespace backend
 {
 class IPortableTensor;
-namespace controlflow
+namespace builtin
 {
 class IOTensor;
 }
@@ -97,7 +97,7 @@ struct IExecutor
    *
    * @return Vector of @c IOTensor
    */
-  virtual const std::vector<backend::controlflow::IOTensor *> &getOutputTensors() const = 0;
+  virtual const std::vector<backend::builtin::IOTensor *> &getOutputTensors() const = 0;
 };
 
 using ExecutorMap = std::unordered_map<ir::SubgraphIndex, std::unique_ptr<IExecutor>>;

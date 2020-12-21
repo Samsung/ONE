@@ -24,7 +24,7 @@ namespace onert
 {
 namespace backend
 {
-namespace controlflow
+namespace builtin
 {
 
 /**
@@ -91,7 +91,7 @@ private:
   std::unique_ptr<UserTensor> _user_tensor; //< If it is a user tensor, it is managed by this object
 };
 
-} // namespace controlflow
+} // namespace builtin
 } // namespace backend
 } // namespace onert
 
