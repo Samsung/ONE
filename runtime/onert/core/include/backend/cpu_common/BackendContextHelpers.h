@@ -24,6 +24,8 @@
 #include "ir/LowerInfoMap.h"
 #include "util/logging.h"
 #include "backend/ITensorRegistry.h"
+#include "backend/BackendContext.h"
+#include "Tensor.h"
 
 namespace onert
 {
@@ -240,6 +242,30 @@ ITensorRegistry *genTensors(T_BackendContext &ctx,
   tensor_builder->allocate();
 
   return ctx.tensor_registry.get();
+}
+
+inline void initConsts(BackendContext &ctx)
+{
+  for (auto ind : ctx.operand_list())
+  {
+    const auto &operand = ctx.graph()->operands().at(ind);
+    if (!operand.isConstant())
+      continue;
+
+    auto tensor = ctx.tensor_registry->getNativeITensor(ind);
+    assert(tensor != nullptr);
+
+    VERBOSE(FillOperandData) << "Fill data for " << ind << std::endl;
+
+    if (!operand.isConstant())
+      continue;
+
+    auto data = operand.shareData();
+    assert(data && data->base());
+    ExternalTensor *ext_tensor = dynamic_cast<ExternalTensor *>(tensor);
+    assert(ext_tensor);
+    ext_tensor->setData(data);
+  }
 }
 
 } // namespace cpu_common
