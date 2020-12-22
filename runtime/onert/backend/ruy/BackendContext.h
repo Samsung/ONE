@@ -19,7 +19,6 @@
 
 #include <backend/BackendContext.h>
 #include "TensorBuilder.h"
-#include "ConstantInitializer.h"
 #include "KernelGenerator.h"
 #include "ExternalContext.h"
 

@@ -19,7 +19,6 @@
 
 #include "BackendContext.h"
 #include "Config.h"
-#include "ConstantInitializer.h"
 #include "KernelGenerator.h"
 
 #include <backend/Backend.h>
