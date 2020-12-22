@@ -264,6 +264,91 @@ void ResizeBilinear(ResizeBilinearParams &params, const Shape &input_shape,
     batches, input_height, input_width, depth, params.output_height, params.output_width,
     height_scale, width_scale, input_shape, input_data, output_data, params.half_pixel_centers);
 }
+
+inline void ComputeInterpolationValues(const int32_t value, const int32_t scale_10,
+                                       const bool half_pixel_centers, int32_t input_size,
+                                       int32_t *scaled_value, int32_t *lower_bound,
+                                       int32_t *upper_bound)
+{
+  if (half_pixel_centers)
+  {
+    *scaled_value = value * scale_10 + scale_10 / 2 - (1 << 9);
+  }
+  else
+  {
+    *scaled_value = value * scale_10;
+  }
+  *lower_bound = std::max(*scaled_value / (1 << 10), 0);
+  *upper_bound = std::min(*scaled_value / (1 << 10) + 1, input_size - 1);
+}
+
+inline void ResizeBilinear(const ResizeBilinearParams &op_params,
+                           const Shape &unextended_input_shape, const int8_t *input_data,
+                           const Shape &unextended_output_shape, int8_t *output_data)
+{
+  // If half_pixel_centers is True, align_corners must be False.
+  assert(!op_params.half_pixel_centers || !op_params.align_corners);
+  assert(unextended_input_shape.DimensionsCount() <= 4);
+  assert(unextended_output_shape.DimensionsCount() <= 4);
+  const Shape input_shape = Shape::ExtendedShape(4, unextended_input_shape);
+  const Shape output_shape = Shape::ExtendedShape(4, unextended_output_shape);
+
+  const int32_t batches = MatchingDim(input_shape, 0, output_shape, 0);
+  const int32_t input_height = input_shape.Dims(1);
+  const int32_t input_width = input_shape.Dims(2);
+  const int32_t depth = MatchingDim(input_shape, 3, output_shape, 3);
+
+  const int32_t output_height = op_params.output_height;
+  const int32_t output_width = op_params.output_width;
+
+  int32_t height_scale_10 = ((1 << 10) * input_height + output_height / 2) / output_height;
+  int32_t width_scale_10 = ((1 << 10) * input_width + output_width / 2) / output_width;
+  if (op_params.align_corners && output_height > 1)
+  {
+    height_scale_10 =
+      ((1 << 10) * (input_height - 1) + (output_height - 1) / 2) / (output_height - 1);
+  }
+  if (op_params.align_corners && output_width > 1)
+  {
+    width_scale_10 = ((1 << 10) * (input_width - 1) + (output_width - 1) / 2) / (output_width - 1);
+  }
+
+  for (int b = 0; b < batches; ++b)
+  {
+    for (int y = 0; y < output_height; ++y)
+    {
+      int32_t input_y, y0, y1;
+      ComputeInterpolationValues(y, height_scale_10, op_params.half_pixel_centers, input_height,
+                                 &input_y, &y0, &y1);
+      for (int x = 0; x < output_width; ++x)
+      {
+        int32_t input_x, x0, x1;
+        ComputeInterpolationValues(x, width_scale_10, op_params.half_pixel_centers, input_width,
+                                   &input_x, &x0, &x1);
+        for (int c = 0; c < depth; ++c)
+        {
+          const int64_t output_20_ll =
+            static_cast<int64_t>(input_data[Offset(input_shape, b, y0, x0, c)]) *
+            ((1 << 10) - (input_y - (1 << 10) * y0)) * ((1 << 10) - (input_x - (1 << 10) * x0));
+          const int64_t output_20_lu =
+            static_cast<int64_t>(input_data[Offset(input_shape, b, y1, x0, c)]) *
+            (input_y - (1 << 10) * y0) * ((1 << 10) - (input_x - (1 << 10) * x0));
+          const int64_t output_20_rl =
+            static_cast<int64_t>(input_data[Offset(input_shape, b, y0, x1, c)]) *
+            ((1 << 10) - (input_y - (1 << 10) * y0)) * (input_x - (1 << 10) * x0);
+          const int64_t output_20_ru =
+            static_cast<int64_t>(input_data[Offset(input_shape, b, y1, x1, c)]) *
+            (input_y - (1 << 10) * y0) * (input_x - (1 << 10) * x0);
+          const int64_t output_20 = output_20_ll + output_20_lu + output_20_rl + output_20_ru;
+          const int64_t round = (output_20 > 0) ? (1 << 19) : -(1 << 19);
+          const int8_t interpolation = static_cast<int8_t>((output_20 + round) / (1 << 20));
+          output_data[Offset(output_shape, b, y, x, c)] = interpolation;
+        }
+      }
+    }
+  }
+}
+
 } // namespace cker
 } // namespace nnfw
 

@@ -100,6 +100,12 @@ void ResizeBilinearLayer::run()
         getTensorShape(_output), reinterpret_cast<uint8_t *>(_output->buffer()));
       break;
 
+    case OperandType::QUANT_INT8_ASYMM:
+      nnfw::cker::ResizeBilinear(
+        params, getTensorShape(_input), reinterpret_cast<const int8_t *>(_input->buffer()),
+        getTensorShape(_output), reinterpret_cast<int8_t *>(_output->buffer()));
+      break;
+
     case OperandType::UINT8:
     case OperandType::BOOL8:
     case OperandType::FLOAT16:
