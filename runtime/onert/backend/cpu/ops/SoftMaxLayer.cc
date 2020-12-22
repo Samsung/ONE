@@ -72,51 +72,22 @@ void SoftMaxLayer::softmaxFloat32()
 
 void SoftMaxLayer::softmaxQuant8()
 {
-  nnfw::cker::Shape descrIn4D(4);
-
-  auto in_shape = _input->getShape();
-  if (in_shape.rank() == 2)
-  {
-    auto batch_size = getSizeOfDimension(_input, 0);
-    if (batch_size == 0)
-      throw std::runtime_error("batch_size should not be 0");
-
-    auto input_size = getNumberOfElements(_input) / batch_size;
-    descrIn4D.SetDim(0, batch_size);
-    descrIn4D.SetDim(1, 1);
-    descrIn4D.SetDim(2, 1);
-    descrIn4D.SetDim(3, input_size);
-  }
-  else if (in_shape.rank() == 4)
-  {
-    descrIn4D.SetDim(0, in_shape.dim(0));
-    descrIn4D.SetDim(1, in_shape.dim(1));
-    descrIn4D.SetDim(2, in_shape.dim(2));
-    descrIn4D.SetDim(3, in_shape.dim(3));
-  }
-  else
-  {
-    throw std::runtime_error{"only 2D and 4D tensors supported"};
-  }
-  if (_output->data_offset() != 0 || _output->data_scale() != 1.f / 256)
-  {
-    throw std::runtime_error{"incorrect scale / offset for output"};
-  }
-  static const int32_t kScaledDiffIntegerBits = 5;
-  const double input_beta_real_multiplier = std::min(
-    1.0 * _beta * _input->data_scale() * (1 << (31 - kScaledDiffIntegerBits)), (1ll << 31) - 1.0);
-  int32_t input_multiplier = 0;
-  int32_t input_left_shift = 0;
-  QuantizeMultiplierGreaterThanOne(input_beta_real_multiplier, &input_multiplier,
-                                   &input_left_shift);
-  float diff_min = -1.0f * CalculateInputRadius(kScaledDiffIntegerBits, input_left_shift);
-
   nnfw::cker::SoftmaxParams op_params;
-  op_params.input_multiplier = input_multiplier;
-  op_params.input_left_shift = input_left_shift;
-  op_params.diff_min = diff_min;
-  nnfw::cker::Softmax(op_params, descrIn4D, reinterpret_cast<const uint8_t *>(_input->buffer()),
-                      descrIn4D, reinterpret_cast<uint8_t *>(_output->buffer()));
+  op_params.scale = _output->data_scale();
+  op_params.zero_point = _output->data_offset();
+  op_params.uint8_table1 = _uint8_table1;
+  op_params.uint8_table2 = _uint8_table2;
+  op_params.table = _table;
+
+#ifdef TFLITE_SOFTMAX_USE_UINT16_LUT
+  nnfw::cker::SoftmaxInt8LUT<uint8_t, uint8_t>(
+    op_params, getTensorShape(_input), reinterpret_cast<const uint8_t *>(_input->buffer()),
+    getTensorShape(_output), reinterpret_cast<uint8_t *>(_output->buffer()));
+#else
+  nnfw::cker::Softmax<uint8_t, uint8_t>(
+    op_params, getTensorShape(_input), reinterpret_cast<const uint8_t *>(_input->buffer()),
+    getTensorShape(_output), reinterpret_cast<uint8_t *>(_output->buffer()));
+#endif
 }
 
 void SoftMaxLayer::configure(const IPortableTensor *input, const float beta,
@@ -125,6 +96,18 @@ void SoftMaxLayer::configure(const IPortableTensor *input, const float beta,
   _input = input;
   _output = output;
   _beta = beta;
+
+  if (_input->data_type() == OperandType::QUANT_UINT8_ASYMM)
+  {
+#ifdef TFLITE_SOFTMAX_USE_UINT16_LUT
+    // Only apply when both input & output are uint8/int8 & build with clang
+    // on aarch64.
+    nnfw::cker::PopulateSoftmaxUInt8LookupTable(_uint8_table1, _uint8_table2, _input->data_scale(),
+                                                _beta);
+#else
+    nnfw::cker::PopulateSoftmaxLookupTable(_table, _input->data_scale(), _beta);
+#endif
+  }
 }
 
 void SoftMaxLayer::run()

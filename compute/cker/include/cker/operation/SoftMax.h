@@ -23,6 +23,10 @@
 #include "cker/Types.h"
 #include "cker/eigen/Utils.h"
 
+#if __aarch64__ && __clang__
+#define TFLITE_SOFTMAX_USE_UINT16_LUT
+#endif
+
 #include <Eigen/Core>
 #include <fixedpoint/fixedpoint.h>
 #include <cmath>
@@ -127,87 +131,306 @@ inline void Softmax(const SoftmaxParams &params, const Shape &input_shape, const
   out_mat.array().rowwise() *= scale;
 }
 
-inline void Softmax(const SoftmaxParams &params, const Shape &input_shape,
-                    const uint8_t *input_data, const Shape &output_shape, uint8_t *output_data)
+template <typename T> inline int32_t QuantizeSoftmaxOutput(float prob_rescaled, int32_t zero_point)
 {
-  const int32_t input_beta_multiplier = params.input_multiplier;
-  const int32_t input_beta_left_shift = params.input_left_shift;
-  const int diff_min = params.diff_min;
-  // The representation chosen for the input to the exp() function is Q5.26.
-  // We need to leave extra space since values that we skip might be as large as
-  // -32 before multiplying by input_beta_multiplier, and therefore as large as
-  // -16 afterwards.  Note that exp(-8) is definitely not insignificant to
-  // accumulation, but exp(-16) definitely is.
-  static const int kScaledDiffIntegerBits = 5;
-  static const int kAccumulationIntegerBits = 12;
-  using FixedPointScaledDiff = gemmlowp::FixedPoint<int32_t, kScaledDiffIntegerBits>;
-  using FixedPointAccum = gemmlowp::FixedPoint<int32_t, kAccumulationIntegerBits>;
-  using FixedPoint0 = gemmlowp::FixedPoint<int32_t, 0>;
+  const int32_t prob_rnd = static_cast<int32_t>(std::round(prob_rescaled));
+  return prob_rnd + zero_point;
+}
 
-  const int trailing_dim = input_shape.DimensionsCount() - 1;
-  const int outer_size = MatchingFlatSizeSkipDim(input_shape, trailing_dim, output_shape);
-  const int depth = MatchingDim(input_shape, trailing_dim, output_shape, trailing_dim);
+#if !__aarch64__
+// With ARM64, rounding is faster than add + truncation.
+template <> inline int32_t QuantizeSoftmaxOutput<uint8_t>(float prob_rescaled, int32_t)
+{
+  return static_cast<int32_t>(prob_rescaled + 0.5f);
+}
+#endif
 
-  for (int i = 0; i < outer_size; ++i)
+inline void PopulateSoftmaxLookupTable(float *table, float input_scale, float beta)
+{
+  const float scale = -input_scale * beta;
+  const int32_t max_uint8 = std::numeric_limits<uint8_t>::max();
+  for (int32_t val = 0; val <= max_uint8; ++val)
   {
-    uint8_t max_in_row = 0;
-    for (int c = 0; c < depth; ++c)
-    {
-      max_in_row = std::max(max_in_row, input_data[i * depth + c]);
-    }
-
-    FixedPointAccum sum_of_exps = FixedPointAccum::Zero();
-    for (int c = 0; c < depth; ++c)
-    {
-      int32_t input_diff = static_cast<int32_t>(input_data[i * depth + c]) - max_in_row;
-      if (input_diff >= diff_min)
-      {
-        const int32_t input_diff_rescaled = MultiplyByQuantizedMultiplierGreaterThanOne(
-          input_diff, input_beta_multiplier, input_beta_left_shift);
-        const FixedPointScaledDiff scaled_diff_f8 =
-          FixedPointScaledDiff::FromRaw(input_diff_rescaled);
-        sum_of_exps = sum_of_exps + gemmlowp::Rescale<kAccumulationIntegerBits>(
-                                      exp_on_negative_values(scaled_diff_f8));
-      }
-    }
-
-    int32_t fixed_sum_of_exps = sum_of_exps.raw();
-    int headroom_plus_one = CountLeadingZeros(static_cast<uint32_t>(fixed_sum_of_exps));
-    // This is the number of bits to the left of the binary point above 1.0.
-    // Consider fixed_sum_of_exps=1.25.  In that case shifted_scale=0.8 and
-    // no later adjustment will be needed.
-    int num_bits_over_unit = kAccumulationIntegerBits - headroom_plus_one;
-    int32_t shifted_sum_minus_one =
-      static_cast<int32_t>((static_cast<uint32_t>(fixed_sum_of_exps) << headroom_plus_one) -
-                           (static_cast<uint32_t>(1) << 31));
-
-    FixedPoint0 shifted_scale =
-      one_over_one_plus_x_for_x_in_0_1(FixedPoint0::FromRaw(shifted_sum_minus_one));
-
-    for (int c = 0; c < depth; ++c)
-    {
-      int32_t input_diff = static_cast<int32_t>(input_data[i * depth + c]) - max_in_row;
-      if (input_diff >= diff_min)
-      {
-        const int32_t input_diff_rescaled = MultiplyByQuantizedMultiplierGreaterThanOne(
-          input_diff, input_beta_multiplier, input_beta_left_shift);
-        const FixedPointScaledDiff scaled_diff_f8 =
-          FixedPointScaledDiff::FromRaw(input_diff_rescaled);
-
-        FixedPoint0 exp_in_0 = exp_on_negative_values(scaled_diff_f8);
-        int32_t unsat_output = gemmlowp::RoundingDivideByPOT((shifted_scale * exp_in_0).raw(),
-                                                             num_bits_over_unit + 31 - 8);
-
-        output_data[i * depth + c] = static_cast<uint8_t>(
-          std::max(std::min(unsat_output, static_cast<int32_t>(255)), static_cast<int32_t>(0)));
-      }
-      else
-      {
-        output_data[i * depth + c] = 0;
-      }
-    }
+    table[max_uint8 - val] = expf(scale * val);
   }
 }
+
+template <typename In, typename Out>
+inline void Softmax(const SoftmaxParams &params, const Shape &input_shape, const In *input_data,
+                    const Shape &output_shape, Out *output_data)
+{
+  const int trailing_dim = input_shape.DimensionsCount() - 1;
+  const int excluding_last_dim = MatchingFlatSizeSkipDim(input_shape, trailing_dim, output_shape);
+  const int last_dim = MatchingDim(input_shape, trailing_dim, output_shape, trailing_dim);
+
+  const int32_t clamp_max = std::numeric_limits<Out>::max();
+  const int32_t clamp_min = std::numeric_limits<Out>::min();
+  for (int i = 0; i < excluding_last_dim; ++i)
+  {
+    int32_t max_val = std::numeric_limits<In>::min();
+    // Find max quantized value.
+    for (int j = 0; j < last_dim; ++j)
+    {
+      max_val = std::max(max_val, static_cast<int32_t>(input_data[j]));
+    }
+
+    float sum_exp = 0.0f;
+    const int32_t max_uint8 = std::numeric_limits<uint8_t>::max();
+    const float *table_offset = &params.table[max_uint8 - max_val];
+    // Calculate normalizer sum(exp(x)).
+    for (int j = 0; j < last_dim; ++j)
+    {
+      sum_exp += table_offset[input_data[j]];
+    }
+
+    const float inv_sum_exp = 1.0f / (sum_exp * params.scale);
+    // Normalize and quantize probabilities.
+    for (int j = 0; j < last_dim; ++j)
+    {
+      const float prob_rescaled = table_offset[input_data[j]] * inv_sum_exp;
+      const int32_t prob_quantized = QuantizeSoftmaxOutput<Out>(prob_rescaled, params.zero_point);
+      output_data[j] = static_cast<Out>(std::max(std::min(clamp_max, prob_quantized), clamp_min));
+    }
+    input_data += last_dim;
+    output_data += last_dim;
+  }
+}
+
+#ifdef TFLITE_SOFTMAX_USE_UINT16_LUT
+// Looks up each element of <indices> in <table>, returns them in a vector.
+inline uint8x16_t aarch64_lookup_vector(const uint8x16x4_t table[4], uint8x16_t indices)
+{
+  // Look up in 1st quarter of the table: top 2 bits of indices == 00
+  uint8x16_t output1 = vqtbl4q_u8(table[0], indices);
+  // Look up in 2nd quarter of the table: top 2 bits of indices == 01
+  uint8x16_t output2 = vqtbl4q_u8(table[1], veorq_u8(indices, vdupq_n_u8(0x40)));
+  // Look up in 3rd quarter of the table: top 2 bits of indices == 10
+  uint8x16_t output3 = vqtbl4q_u8(table[2], veorq_u8(indices, vdupq_n_u8(0x80)));
+  // Look up in 4th quarter of the table: top 2 bits of indices == 11
+  uint8x16_t output4 = vqtbl4q_u8(table[3], veorq_u8(indices, vdupq_n_u8(0xc0)));
+
+  // Combine result of the 4 lookups.
+  return vorrq_u8(vorrq_u8(output1, output2), vorrq_u8(output3, output4));
+}
+
+inline void PopulateSoftmaxUInt8LookupTable(uint8_t *uint8_table1, uint8_t *uint8_table2,
+                                            float input_scale, float beta)
+{
+  const float scale = input_scale * beta;
+  const int32_t max_uint8 = std::numeric_limits<uint8_t>::max();
+  const int32_t max_uint16 = std::numeric_limits<uint16_t>::max();
+
+  for (int32_t val = 0; val <= max_uint8; ++val)
+  {
+    float input_to_exp = scale * (val - max_uint8);
+    int32_t temp = static_cast<int>(expf(input_to_exp) * max_uint16 + 0.5);
+    temp = std::min(max_uint16, temp);
+    uint8_t part1 = temp >> 8;
+    uint8_t part2 = temp & 0xff;
+    uint8_table1[val] = static_cast<uint8_t>(part1);
+    uint8_table2[val] = static_cast<uint8_t>(part2);
+  }
+}
+
+inline int FindMaxValue(int size, const uint8_t *input_data, uint8_t offset)
+{
+  int32_t max_val = std::numeric_limits<uint8_t>::min();
+  int j = 0;
+
+  uint8x16_t max_val_dup = vdupq_n_u8(max_val);
+  uint8x16_t offset_dup = vdupq_n_u8(offset);
+  for (; j <= size - 16; j += 16)
+  {
+    uint8x16_t input_value = vld1q_u8(input_data + j);
+    input_value = veorq_u8(input_value, offset_dup);
+    max_val_dup = vmaxq_u8(input_value, max_val_dup);
+  }
+  max_val = std::max(max_val, static_cast<int32_t>(vmaxvq_u8(max_val_dup)));
+
+  for (; j < size; ++j)
+  {
+    max_val = std::max(max_val, static_cast<int32_t>(input_data[j] ^ offset));
+  }
+  return max_val;
+}
+
+#ifdef USE_NEON
+// Value_to_store layout:
+// [high_high, high_low, low_high, low_low].
+inline void StoreValue(int32x4x4_t value_to_store, int8_t *output)
+{
+  const int16x8_t result_1 =
+    vcombine_s16(vqmovn_s32(value_to_store.val[1]), vqmovn_s32(value_to_store.val[0]));
+  const int16x8_t result_2 =
+    vcombine_s16(vqmovn_s32(value_to_store.val[3]), vqmovn_s32(value_to_store.val[2]));
+  const int8x16_t result = vcombine_s8(vqmovn_s16(result_2), vqmovn_s16(result_1));
+  vst1q_s8(output, result);
+}
+
+// Value_to_store layout:
+// [high_high, high_low, low_high, low_low].
+inline void StoreValue(int32x4x4_t value_to_store, uint8_t *output)
+{
+  const uint16x8_t result_1 =
+    vcombine_u16(vqmovn_u32(vreinterpretq_u32_s32(value_to_store.val[1])),
+                 vqmovn_u32(vreinterpretq_u32_s32(value_to_store.val[0])));
+  const uint16x8_t result_2 =
+    vcombine_u16(vqmovn_u32(vreinterpretq_u32_s32(value_to_store.val[3])),
+                 vqmovn_u32(vreinterpretq_u32_s32(value_to_store.val[2])));
+  const uint8x16_t result = vcombine_u8(vqmovn_u16(result_2), vqmovn_u16(result_1));
+  vst1q_u8(output, result);
+}
+
+#endif
+
+template <typename In, typename Out>
+inline void SoftmaxInt8LUT(const SoftmaxParams &params, const Shape &input_shape,
+                           const In *input_data, const Shape &output_shape, Out *output_data)
+{
+  const int trailing_dim = input_shape.DimensionsCount() - 1;
+  const int excluding_last_dim = MatchingFlatSizeSkipDim(input_shape, trailing_dim, output_shape);
+  const int last_dim = MatchingDim(input_shape, trailing_dim, output_shape, trailing_dim);
+
+  const int32_t clamp_max = std::numeric_limits<Out>::max();
+  const int32_t clamp_min = std::numeric_limits<Out>::min();
+
+  // Offset is used to interpret the input data "correctly".
+  // If the input is uint8, the data will be unchanged.
+  // If the input is int8, since it will be reinterpret as uint8.
+  // e.g.,
+  // int8 127 will be applied "offset" to become 255 in uint8.
+  uint8_t offset = 0;
+  if (std::is_same<In, int8_t>::value)
+  {
+    offset = 0x80;
+  }
+
+  const uint8_t *input_data_uint = reinterpret_cast<const uint8_t *>(input_data);
+
+  // This code uses ARM64-only instructions.
+  // TODO(b/143709993): Port to ARMv7
+
+  // Load the tables into registers. (4*4 128-bit registers)
+  uint8x16x4_t table1[4];
+  table1[0] = vld1q_u8_x4(params.uint8_table1 + 16 * 4 * 0);
+  table1[1] = vld1q_u8_x4(params.uint8_table1 + 16 * 4 * 1);
+  table1[2] = vld1q_u8_x4(params.uint8_table1 + 16 * 4 * 2);
+  table1[3] = vld1q_u8_x4(params.uint8_table1 + 16 * 4 * 3);
+
+  uint8x16x4_t table2[4];
+  table2[0] = vld1q_u8_x4(params.uint8_table2 + 16 * 4 * 0);
+  table2[1] = vld1q_u8_x4(params.uint8_table2 + 16 * 4 * 1);
+  table2[2] = vld1q_u8_x4(params.uint8_table2 + 16 * 4 * 2);
+  table2[3] = vld1q_u8_x4(params.uint8_table2 + 16 * 4 * 3);
+
+  for (int i = 0; i < excluding_last_dim; ++i)
+  {
+    // Find max quantized value.
+    int32_t max_val = FindMaxValue(last_dim, input_data_uint, offset);
+
+    int32_t sum_exp = 0;
+    const int32_t max_uint8 = std::numeric_limits<uint8_t>::max();
+    const uint8_t table_offset = max_uint8 - max_val;
+
+    // Calculate normalizer sum(exp(x)).
+    int sum_j = 0;
+    uint8x16_t table_offset_dup = vdupq_n_u8(table_offset);
+    uint8x16_t offset_dup = vdupq_n_u8(offset);
+    uint32x4_t sum_4 = vdupq_n_u32(0);
+    const int multiplier_shift = 8;
+    for (; sum_j <= last_dim - 16; sum_j += 16)
+    {
+      uint8x16_t input_value = vld1q_u8(input_data_uint + sum_j);
+      input_value = veorq_u8(input_value, offset_dup);
+      input_value = vaddq_u8(input_value, table_offset_dup);
+
+      const uint8x16_t output1 = aarch64_lookup_vector(table1, input_value);
+      const uint8x16_t output2 = aarch64_lookup_vector(table2, input_value);
+
+      uint16x8_t exp_value1 = vshll_n_u8(vget_high_u8(output1), multiplier_shift);
+      uint16x8_t exp_value2 = vshll_n_u8(vget_low_u8(output1), multiplier_shift);
+
+      exp_value1 = vaddw_u8(exp_value1, vget_high_u8(output2));
+      exp_value2 = vaddw_u8(exp_value2, vget_low_u8(output2));
+
+      sum_4 = vpadalq_u16(sum_4, exp_value1);
+      sum_4 = vpadalq_u16(sum_4, exp_value2);
+    }
+    int temp = vgetq_lane_u32(sum_4, 0) + vgetq_lane_u32(sum_4, 1) + vgetq_lane_u32(sum_4, 2) +
+               vgetq_lane_u32(sum_4, 3);
+    sum_exp += temp;
+
+    for (; sum_j < last_dim; ++sum_j)
+    {
+      const uint8_t index = (input_data_uint[sum_j] ^ offset) + table_offset;
+
+      uint8_t part1 = params.uint8_table1[index];
+      uint8_t part2 = params.uint8_table2[index];
+      sum_exp += ((part1 << 8) + part2);
+    }
+
+    const float inv_sum_exp = 1.0f / (sum_exp * params.scale);
+
+    int32_t multiplier, shift;
+    QuantizeMultiplier(inv_sum_exp, &multiplier, &shift);
+
+    // Normalize and quantize probabilities.
+    int j = 0;
+    const int32x4_t output_zp_dup = vdupq_n_s32(params.zero_point);
+    const int32x4_t max_val_dup = vdupq_n_s32(clamp_max);
+    const int32x4_t min_val_dup = vdupq_n_s32(clamp_min);
+
+    for (; j <= last_dim - 16; j += 16)
+    {
+      uint8x16_t input_value = vld1q_u8(input_data_uint + j);
+      input_value = veorq_u8(input_value, offset_dup);
+      input_value = vaddq_u8(input_value, table_offset_dup);
+
+      const uint8x16_t output1 = aarch64_lookup_vector(table1, input_value);
+      const uint8x16_t output2 = aarch64_lookup_vector(table2, input_value);
+
+      uint16x8_t exp_value1 = vshll_n_u8(vget_high_u8(output1), multiplier_shift);
+      uint16x8_t exp_value2 = vshll_n_u8(vget_low_u8(output1), multiplier_shift);
+
+      exp_value1 = vaddw_u8(exp_value1, vget_high_u8(output2));
+      exp_value2 = vaddw_u8(exp_value2, vget_low_u8(output2));
+
+      int32x4x4_t output_value;
+      output_value.val[0] = vreinterpretq_s32_u32(vmovl_u16(vget_high_u16(exp_value1)));
+      output_value.val[1] = vreinterpretq_s32_u32(vmovl_u16(vget_low_u16(exp_value1)));
+      output_value.val[2] = vreinterpretq_s32_u32(vmovl_u16(vget_high_u16(exp_value2)));
+      output_value.val[3] = vreinterpretq_s32_u32(vmovl_u16(vget_low_u16(exp_value2)));
+
+      int32x4x4_t temp_val = MultiplyByQuantizedMultiplier4Rows(output_value, multiplier, shift);
+
+      temp_val.val[0] = vaddq_s32(temp_val.val[0], output_zp_dup);
+      temp_val.val[1] = vaddq_s32(temp_val.val[1], output_zp_dup);
+      temp_val.val[2] = vaddq_s32(temp_val.val[2], output_zp_dup);
+      temp_val.val[3] = vaddq_s32(temp_val.val[3], output_zp_dup);
+
+      temp_val.val[0] = vmaxq_s32(vminq_s32(temp_val.val[0], max_val_dup), min_val_dup);
+      temp_val.val[1] = vmaxq_s32(vminq_s32(temp_val.val[1], max_val_dup), min_val_dup);
+      temp_val.val[2] = vmaxq_s32(vminq_s32(temp_val.val[2], max_val_dup), min_val_dup);
+      temp_val.val[3] = vmaxq_s32(vminq_s32(temp_val.val[3], max_val_dup), min_val_dup);
+
+      StoreValue(temp_val, output_data + j);
+    }
+    for (; j < last_dim; ++j)
+    {
+      const uint8_t index = (input_data_uint[j] ^ offset) + table_offset;
+      const uint8_t part1 = params.uint8_table1[index];
+      const uint8_t part2 = params.uint8_table2[index];
+      const int32_t exp_value = (part1 << 8) + part2;
+      const int32_t output_value = MultiplyByQuantizedMultiplier(exp_value, multiplier, shift);
+
+      output_data[j] = static_cast<Out>(
+        std::max(std::min(clamp_max, output_value + params.zero_point), clamp_min));
+    }
+    input_data_uint += last_dim;
+    output_data += last_dim;
+  }
+}
+#endif
 
 } // namespace cker
 } // namespace nnfw
