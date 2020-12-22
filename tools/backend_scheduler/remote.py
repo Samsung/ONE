@@ -38,24 +38,23 @@ class RemoteSSH():
         nnpkg = join(self.base_dir, nnpkg_dir)
 
         trace_name = f"{nnpkg_dir}_{backend}_{self.num_threads}"
-        command = ["ssh", f"{self.host}"]
-        command.append(f"TRACE_FILEPATH={join(self.base_dir,'traces',trace_name)}")
+        cmd = ["ssh", f"{self.host}"]
+        cmd += [f"TRACE_FILEPATH={join(self.base_dir,'traces',trace_name)}"]
         for target_backend, op_list in backend_op_list.items():
             if backend == target_backend:
                 for op in op_list:
-                    command.append(f"OP_BACKEND_{op}={backend}")
-        command.append(f"EIGEN_THREADS={self.num_threads}")
-        command.append(f"XNNPACK_THREADS={self.num_threads}")
-        command.append(f"RUY_THREADS={self.num_threads}")
-        command.append(f"BACKENDS=\'{';'.join(['cpu', backend])}\'")
-        command.append(f"OP_SEQ_MAX_NODE=1")
-        command.append(f"{nnpkg_run}")
-        command.append(f"--nnpackage")
-        command.append(f"{nnpkg}")
-        command.append(f"-w5 -r50")
-        print(command)
-        print(' '.join(command))
-        subprocess.call(command)
+                    cmd += [f"OP_BACKEND_{op}={backend}"]
+        cmd += [f"EIGEN_THREADS={self.num_threads}"]
+        cmd += [f"XNNPACK_THREADS={self.num_threads}"]
+        cmd += [f"RUY_THREADS={self.num_threads}"]
+        cmd += [f"BACKENDS=\'{';'.join(['cpu', backend])}\'"]
+        cmd += [f"OP_SEQ_MAX_NODE=1"]
+        cmd += [f"{nnpkg_run}"]
+        cmd += [f"--nnpackage"]
+        cmd += [f"{nnpkg}"]
+        cmd += [f"-w5 -r50"]
+        print(' '.join(cmd))
+        subprocess.call(cmd)
 
     def base_path():
         pass

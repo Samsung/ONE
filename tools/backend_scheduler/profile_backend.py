@@ -6,9 +6,8 @@ from remote import RemoteSSH
 
 
 class BackendProfiler():
-    def __init__(self, args):
-        self.remote_ssh = RemoteSSH(args.user, args.ip, args.nnpackage_dir,
-                                    args.num_threads)
+    def __init__(self, user, ip, nnpackage_dir, num_threads):
+        self.remote_ssh = RemoteSSH(user, ip, nnpackage_dir, num_threads)
 
     def sync(self):
         self.remote_ssh.sync_binary()
@@ -33,6 +32,7 @@ if __name__ == "__main__":
     arg_parser.add_argument("-u", "--user", type=str, help="User of remote client")
     args = arg_parser.parse_args()
 
-    backend_profiler = BackendProfiler(args)
+    backend_profiler = BackendProfiler(args.user, args.ip, args.nnpackage_dir,
+                                       args.num_threads)
     backend_profiler.sync()
     backend_profiler.profile()
