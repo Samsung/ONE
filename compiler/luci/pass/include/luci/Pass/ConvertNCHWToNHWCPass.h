@@ -46,6 +46,7 @@ struct ConvertNCHWToNHWCPass final : public logo::Pass
 
   bool run(loco::Graph *g) final;
 
+private:
   std::set<loco::Node *> _target_ops;
   std::map<loco::Node *, DataFormat> _op_status;
 };

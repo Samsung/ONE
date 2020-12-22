@@ -22,8 +22,6 @@
 
 #include <loco/Service/ShapeInference.h>
 
-#include <iostream>
-
 namespace
 {
 
