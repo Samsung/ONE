@@ -22,18 +22,18 @@ namespace
 {
 
 /// @brief Return value in CircleConst.
-/// @details Return -2 if CircleConst is nullptr or not valid shape, otherwise return value in
-///          position on CircleConst with int64 format.
-///          Begin & size must be larger than or equal to -1, so -2 is invalid value.
+/// @details Return value in position on CircleConst with int64 format.
+///          Begin & size must be larger than or equal to -1.
+///          Throw an error on Invalid node or invalid node type.
 int64_t value_from_circle_const(const luci::CircleConst *node, uint32_t idx)
 {
   if (node == nullptr || node->rank() != 1 || node->dim(0).value() <= idx)
-    return -2;
+    throw std::runtime_error("Invalid constant node on slice");
   if (node->dtype() == loco::DataType::S64)
     return node->at<loco::DataType::S64>(idx);
   else if (node->dtype() == loco::DataType::S32)
     return static_cast<int64_t>(node->at<loco::DataType::S32>(idx));
-  return -2;
+  throw std::runtime_error("Invalid constant type on slice");
 }
 
 bool remove_no_effect_slice(luci::CircleNode *node)
@@ -62,7 +62,7 @@ bool remove_no_effect_slice(luci::CircleNode *node)
       continue;
 
     if (input_node->shape_signature().rank() != 0 && input_node->shape_signature().dim(i) == -1)
-        return false;
+      return false;
 
     if (size_value != static_cast<int64_t>(input_node->dim(i).value()))
       return false;
@@ -86,6 +86,8 @@ namespace luci
  *      |
  *
  *    AFTER
+ *      |
+ * [CircleNode]
  *      |
  * [CircleNode] Remove Slice OP
  *      |

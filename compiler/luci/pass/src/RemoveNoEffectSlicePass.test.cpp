@@ -33,6 +33,8 @@ namespace
  *
  *    AFTER
  *      |
+ * [CircleNode]
+ *      |
  * [CircleNode] Remove Slice OP
  *      |
  */
