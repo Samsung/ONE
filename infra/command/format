@@ -131,7 +131,7 @@ function check_cpp_files() {
     return
   fi
 
-  CLANG_FORMAT_CANDIDATES+=("clang-format-3.9")
+  CLANG_FORMAT_CANDIDATES+=("clang-format-8")
   for CLANG_FORMAT_CANDIDATE in ${CLANG_FORMAT_CANDIDATES[@]}; do
     if command_exists ${CLANG_FORMAT_CANDIDATE} ; then
       CLANG_FORMAT="${CLANG_FORMAT_CANDIDATE}"
@@ -140,29 +140,14 @@ function check_cpp_files() {
   done
 
   if [[ -z ${CLANG_FORMAT}  ]]; then
-    echo "[ERROR] clang-format-3.9 is unavailable"
-    echo
-    echo "        Please install clang-format-3.9 before running format check"
-    exit 1
-  fi
-
-  # Migration to clang-format-8
-  # TODO Remove this after migration to clang-format-8
-  CLANG_FORMAT_8="clang-format-8"
-  if ! command_exists $CLANG_FORMAT_8_CANDIDATE; then
     echo "[ERROR] clang-format-8 is unavailable"
     echo
     echo "        Please install clang-format-8 before running format check"
-    echo "        (or use latest docker image if you are using docker for format check)"
     exit 1
   fi
-  for DIR_CLANG_FORMAT_8 in $(git ls-files -co --exclude-standard '*/.clang-format'); do
-    DIRECTORIES_USE_CLANG_FORMAT_8+=($(dirname "${DIR_CLANG_FORMAT_8}"))
-  done
 
   # Check c++ files
   FILES_TO_CHECK_CPP=()
-  FILES_TO_CHECK_CPP_BY_CLANG_FORMAT_8=()
   for f in ${FILES_TO_CHECK[@]}; do
     # Manually ignore style checking
     if [[ ${f} == +(*/NeuralNetworks.h|*/NeuralNetworksExtensions.h) ]]; then
@@ -171,21 +156,7 @@ function check_cpp_files() {
 
     # File extension to check
     if [[ ${f} == +(*.h|*.hpp|*.cpp|*.cc|*.c|*.cl) ]]; then
-
-      # Check clang-format-8 target files first
-      # TODO Remove this after migration to clang-format-8
-      FOUND_CLANG_8=0
-      for USE_CLANG_FORMAT_8 in ${DIRECTORIES_USE_CLANG_FORMAT_8[@]}; do
-        if [[ $f = $USE_CLANG_FORMAT_8* ]]; then
-          FILES_TO_CHECK_CPP_BY_CLANG_FORMAT_8+=("$f")
-          FOUND_CLANG_8=1
-          break
-        fi
-      done
-
-      if [[ $FOUND_CLANG_8 -ne 1 ]]; then
-        FILES_TO_CHECK_CPP+=("${f}")
-      fi
+      FILES_TO_CHECK_CPP+=("${f}")
     fi
   done
 
@@ -197,16 +168,6 @@ function check_cpp_files() {
 
   if [[ ${#FILES_TO_CHECK_CPP} -ne 0 ]]; then
     ${CLANG_FORMAT} -i ${FILES_TO_CHECK_CPP[@]}
-    EXIT_CODE=$?
-    if [[ ${EXIT_CODE} -ne 0 ]]; then
-      INVALID_EXIT=${EXIT_CODE}
-    fi
-  fi
-
-  # Check by clang-format-8
-  # TODO Remove this after migration to clang-format-8
-  if [[ ${#FILES_TO_CHECK_CPP_BY_CLANG_FORMAT_8} -ne 0 ]]; then
-    ${CLANG_FORMAT_8} -i ${FILES_TO_CHECK_CPP_BY_CLANG_FORMAT_8[@]}
     EXIT_CODE=$?
     if [[ ${EXIT_CODE} -ne 0 ]]; then
       INVALID_EXIT=${EXIT_CODE}
