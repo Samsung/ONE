@@ -2,7 +2,7 @@
 
 import os
 import json
-from os.path import dirname, basename, isdir, realpath
+from os.path import dirname, realpath, join
 import argparse
 from op_list_parser import OpListParser
 
@@ -10,8 +10,37 @@ from op_list_parser import OpListParser
 class BackendScheduler:
     def __init__(self, args):
         self.num_threads = args.num_threads
-        self.trace_name = args.trace_name
         self.root_path = dirname(dirname(dirname(realpath(__file__))))
+
+    def read_traces(self, backend_list):
+        op_time = {}
+        inference_time = {}
+        for backend in backend_list:
+            try:
+                with open(f"./traces/{backend}_{self.num_threads}") as f:
+                    data = json.load(f)
+                    execution_data = data['Execution_Data']
+                    for entry in execution_data:
+                        if entry == "memory":
+                            continue
+                        elif entry == "runtime":
+                            inference_time[backend] = execution_data['runtime']['Graph'][
+                                'Avg_Time']
+                            continue
+                        op_backend = entry
+                        backend_data = execution_data[op_backend]
+                        for op in backend_data:
+                            op_index = int(op.split(' ')[0][1:])
+                            op_type = op.split(' ')[1]
+                            time = int(backend_data[op]["Avg_Time"])
+                            if op_index not in op_time.keys():
+                                op_time[op_index] = {op_backend: time}
+                                op_time[op_index].update({"type": op_type})
+                            else:
+                                op_time[op_index].update({op_backend: time})
+            except IOError as e:
+                print(e)
+        return op_time, inference_time
 
     def schedule(self):
         backend_op_list = OpListParser().parse()
@@ -19,43 +48,21 @@ class BackendScheduler:
         backend_list.extend([backend for backend in backend_op_list])
         os.chdir(self.root_path)
 
-        op_time = {}
-        for trace_file in os.listdir('./tools/backend_scheduler/traces'):
-            if trace_file.endswith('.json') or trace_file.endswith('.md'):
-                continue
-            trace_name = "_".join(trace_file.split("_")[0:-2])
-            num_threads = trace_file.split("_")[-1]
-            if self.trace_name not in trace_name:
-                continue
-            if num_threads != str(self.num_threads):
-                continue
-            with open('./tools/backend_scheduler/traces/' + trace_file, 'r') as f:
-                data = json.load(f)
-                execution_data = data['Execution_Data']
-                for entry in execution_data:
-                    if entry == "memory" or entry == "runtime":
-                        continue
-                    backend = entry
-                    backend_data = execution_data[backend]
-                    for op in backend_data:
-                        op_index = int(op.split(' ')[0][1:])
-                        op_type = op.split(' ')[1]
-                        time = int(backend_data[op]["Avg_Time"])
-                        if op_index not in op_time.keys():
-                            op_time[op_index] = {backend: time}
-                            op_time[op_index].update({"type": op_type})
-                        else:
-                            op_time[op_index].update({backend: time})
+        op_time, infer_time = self.read_traces(backend_list)
 
         backend_mapping = {}
         backend_count = {}
         for backend in backend_list:
             backend_count[backend] = 0
 
-        # Find fastest library for each operation
+        target_ops = set()
+        for _, v in backend_op_list.items():
+            target_ops.update(v)
+
+        # Find fastest backend for each operation
         for op_index, value in sorted(op_time.items()):
             op_type = value['type']
-            if op_type != 'Conv2D' and op_type != 'FullyConnected' and op_type != 'DepthwiseConv2D':
+            if op_type not in target_ops:
                 continue
 
             print("----- Operation {} -----".format(op_index))
@@ -76,7 +83,8 @@ class BackendScheduler:
             backend_count[backend] += 1
 
         # Find default backend for Conv2D
-        default_backend = max(backend_count, key=backend_count.get)
+        default_backend = min(infer_time, key=infer_time.get)
+        # default_backend = max(backend_count, key=backend_count.get)
 
         # Create OP_BACKEND_MAP string
         backend_conf = ""
@@ -89,7 +97,7 @@ class BackendScheduler:
         schedule_time = 0
         for op_index, value in sorted(op_time.items()):
             op_type = value['type']
-            if op_type != 'Conv2D' and op_type != 'FullyConnected' and op_type != 'DepthwiseConv2D':
+            if op_type not in target_ops:
                 single_backend_time += value["cpu"]
                 schedule_time += value["cpu"]
                 continue
@@ -120,7 +128,6 @@ class BackendScheduler:
 
 if __name__ == "__main__":
     arg_parser = argparse.ArgumentParser()
-    arg_parser.add_argument("trace_name", type=str, help="Recorded trace file name")
     arg_parser.add_argument("--num_threads",
                             type=int,
                             default=1,

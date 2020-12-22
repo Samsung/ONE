@@ -24,17 +24,19 @@ class RemoteSSH():
         else:
             # Syne ONE runtime
             subprocess.call([
-                "rsync", "-azv", "--exclude", "test-suite.tar.gz", bin_dir,
+                "rsync", "-az", "--exclude", "test-suite.tar.gz", bin_dir,
                 self.remote(self.base_dir)
             ])
             # Sync target nnpackage
-            subprocess.call(["rsync", "-azv", self.nnpkg_dir, self.remote(self.base_dir)])
+            subprocess.call(["rsync", "-az", self.nnpkg_dir, self.remote(self.base_dir)])
 
     def sync_trace(self, backend):
         remote_trace_path = self.remote_trace_path(backend)
         local_trace_path = self.local_trace_path(backend)
         # Sync trace file
-        subprocess.call(["rsync", "-azv", remote_trace_path, local_trace_path])
+        subprocess.call(
+            ["rsync", "-az",
+             self.remote(remote_trace_path), local_trace_path])
 
     def profile_backend(self, backend, backend_op_list):
         nnpkg_run_path = join(self.base_dir, "bin/nnpackage_run")
@@ -57,7 +59,7 @@ class RemoteSSH():
         cmd += [f"{nnpkg_path}"]
         cmd += [f"-w5 -r50"]
         print(' '.join(cmd))
-        # subprocess.call(cmd)
+        subprocess.call(cmd)
 
     def base_path():
         pass
@@ -71,8 +73,7 @@ class RemoteSSH():
         return f"{nnpkg_dir}_{backend}_{self.num_threads}"
 
     def remote_trace_path(self, backend):
-        return self.remote(
-            f"{join(self.base_dir,self.trace_dir,self.trace_file(backend))}")
+        return f"{join(self.base_dir,self.trace_dir,self.trace_file(backend))}"
 
     def local_trace_path(self, backend):
-        return join(self.root_path, self.trace_dir, self.trace_file(backend))
+        return join(self.root_path, self.trace_dir, f"{backend}_{self.num_threads}")
