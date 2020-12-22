@@ -25,7 +25,7 @@ namespace
 /// @details Return -2 if CircleConst is nullptr or not valid shape, otherwise return value in
 ///          position on CircleConst with int64 format.
 ///          on this pass, begin & size must be large or equal to -1, so -2 is invalid value.
-int64_t value_from_circle_const(luci::CircleConst *node, uint32_t idx)
+int64_t value_from_circle_const(const luci::CircleConst *node, uint32_t idx)
 {
   if (node == nullptr || node->rank() != 1 || node->dim(0).value() <= idx)
     return -2;
