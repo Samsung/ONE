@@ -68,18 +68,18 @@ void initializeSubgraphIOTensors(compiler::LoweredGraph &lowered_graph,
                                  const ir::OperandIndexSequence &indices)
 {
   // TODO Store builtin backend in BackendContext
-  std::shared_ptr<backend::builtin::TensorRegistry> cf_tensor_reg;
+  std::shared_ptr<backend::builtin::TensorRegistry> builtin_tensor_reg;
   for (const auto &e : lowered_graph.backend_contexts())
   {
     auto backend = e.first;
     auto &context = e.second;
     if (backend->config()->id() == backend::builtin::Config::ID)
     {
-      cf_tensor_reg =
+      builtin_tensor_reg =
         std::dynamic_pointer_cast<backend::builtin::TensorRegistry>(context->tensor_registry);
     }
   }
-  assert(cf_tensor_reg);
+  assert(builtin_tensor_reg);
 
   for (auto ind : indices)
   {
@@ -90,7 +90,7 @@ void initializeSubgraphIOTensors(compiler::LoweredGraph &lowered_graph,
     );
 
     // Add tensor to builtin TensorRegistry.
-    cf_tensor_reg->setNativeIOTensor(ind, std::move(tensor));
+    builtin_tensor_reg->setNativeIOTensor(ind, std::move(tensor));
   }
 }
 
@@ -219,12 +219,12 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lo
   // Give some runtime objects to builtin KernelGenerator
   for (auto &pair : backend_contexts)
   {
-    auto cf_context = dynamic_cast<backend::builtin::BackendContext *>(pair.second.get());
-    if (cf_context != nullptr)
+    auto builtin_context = dynamic_cast<backend::builtin::BackendContext *>(pair.second.get());
+    if (builtin_context != nullptr)
     {
-      auto cf_kernel_gen = cf_context->kernel_gen;
-      cf_kernel_gen->setTensorRegistries(tensor_regs);
-      cf_kernel_gen->setExecutorMap(executor_map);
+      auto builtin_kernel_gen = builtin_context->kernel_gen;
+      builtin_kernel_gen->setTensorRegistries(tensor_regs);
+      builtin_kernel_gen->setExecutorMap(executor_map);
     }
   }
 
@@ -305,12 +305,12 @@ exec::IExecutor *ExecutorFactory::createDataflowExecutor(
   // Give some runtime objects to builtin KernelGenerator
   for (auto &pair : backend_contexts)
   {
-    auto cf_context = dynamic_cast<backend::builtin::BackendContext *>(pair.second.get());
-    if (cf_context != nullptr)
+    auto builtin_context = dynamic_cast<backend::builtin::BackendContext *>(pair.second.get());
+    if (builtin_context != nullptr)
     {
-      auto cf_kernel_gen = cf_context->kernel_gen;
-      cf_kernel_gen->setTensorRegistries(tensor_regs);
-      cf_kernel_gen->setExecutorMap(executor_map);
+      auto builtin_kernel_gen = builtin_context->kernel_gen;
+      builtin_kernel_gen->setTensorRegistries(tensor_regs);
+      builtin_kernel_gen->setExecutorMap(executor_map);
     }
   }
 

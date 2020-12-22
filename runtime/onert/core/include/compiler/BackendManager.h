@@ -41,7 +41,7 @@ public:
 public:
   backend::Backend *get(const std::string &key);
   const backend::Backend *get(const std::string &key) const;
-  const backend::builtin::Backend *getControlflow() const;
+  const backend::builtin::Backend *getBuiltin() const;
   const std::vector<const backend::Backend *> getAll() const
   {
     std::vector<const backend::Backend *> v;
@@ -65,7 +65,7 @@ private:
 private:
   std::map<std::string, std::unique_ptr<void, dlhandle_destroy_t>> _handle_map;
   std::map<std::string, std::unique_ptr<backend::Backend, backend_destroy_t>> _gen_map;
-  backend::builtin::Backend *_controlflow{nullptr};
+  backend::builtin::Backend *_builtin{nullptr};
   /**
    * @brief load builtin backend
    *
@@ -73,7 +73,7 @@ private:
    *
    * @return
    */
-  void loadControlflowBackend();
+  void loadBuiltinBackend();
 };
 
 } // namespace compiler

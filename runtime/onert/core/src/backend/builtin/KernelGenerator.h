@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_CONTROLFLOW_KERNEL_GENERATOR_H__
-#define __ONERT_BACKEND_CONTROLFLOW_KERNEL_GENERATOR_H__
+#ifndef __ONERT_BACKEND_BUILTIN_KERNEL_GENERATOR_H__
+#define __ONERT_BACKEND_BUILTIN_KERNEL_GENERATOR_H__
 
 #include <exec/IExecutor.h>
 #include "ExternalContext.h"
@@ -71,4 +71,4 @@ private:
 } // namespace backend
 } // namespace onert
 
-#endif // __ONERT_BACKEND_CONTROLFLOW_KERNEL_GENERATOR_H__
+#endif // __ONERT_BACKEND_BUILTIN_KERNEL_GENERATOR_H__

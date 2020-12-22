@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_CONTROLFLOW_EXTERNAL_CONTEXT_H__
-#define __ONERT_BACKEND_CONTROLFLOW_EXTERNAL_CONTEXT_H__
+#ifndef __ONERT_BACKEND_BUILTIN_EXTERNAL_CONTEXT_H__
+#define __ONERT_BACKEND_BUILTIN_EXTERNAL_CONTEXT_H__
 
 #include <util/ConfigSource.h>
 
@@ -74,4 +74,4 @@ private:
 } // namespace backend
 } // namespace onert
 
-#endif // __ONERT_BACKEND_CONTROLFLOW_EXTERNAL_CONTEXT_H__
+#endif // __ONERT_BACKEND_BUILTIN_EXTERNAL_CONTEXT_H__

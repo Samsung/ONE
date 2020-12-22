@@ -45,9 +45,9 @@ BackendManager &BackendManager::get()
   return object;
 }
 
-BackendManager::BackendManager() { loadControlflowBackend(); }
+BackendManager::BackendManager() { loadBuiltinBackend(); }
 
-void BackendManager::loadControlflowBackend()
+void BackendManager::loadBuiltinBackend()
 {
   auto backend_object = std::unique_ptr<backend::builtin::Backend, backend_destroy_t>(
     new backend::builtin::Backend, [](backend::Backend *backend) { delete backend; });
@@ -57,8 +57,8 @@ void BackendManager::loadControlflowBackend()
   {
     throw std::runtime_error(backend::builtin::Config::ID + " backend initialization failed");
   }
-  _controlflow = backend_object.get(); // Save the builtin backend implementation pointer
-  assert(_controlflow);
+  _builtin = backend_object.get(); // Save the builtin backend implementation pointer
+  assert(_builtin);
   _gen_map.emplace(backend_object->config()->id(), std::move(backend_object));
 }
 
@@ -158,7 +158,7 @@ const backend::Backend *BackendManager::get(const std::string &key) const
   return nullptr;
 }
 
-const backend::builtin::Backend *BackendManager::getControlflow() const { return _controlflow; }
+const backend::builtin::Backend *BackendManager::getBuiltin() const { return _builtin; }
 
 } // namespace compiler
 } // namespace onert

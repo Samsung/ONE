@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_CONTROLFLOW_TENSOR_BUILDER_H__
-#define __ONERT_BACKEND_CONTROLFLOW_TENSOR_BUILDER_H__
+#ifndef __ONERT_BACKEND_BUILTIN_TENSOR_BUILDER_H__
+#define __ONERT_BACKEND_BUILTIN_TENSOR_BUILDER_H__
 
 #include <backend/cpu_common/StaticTensorManager.h>
 #include <backend/cpu_common/TensorRegistry.h>
@@ -76,4 +76,4 @@ private:
 } // namespace backend
 } // namespace onert
 
-#endif // __ONERT_BACKEND_CONTROLFLOW_TENSOR_BUILDER_H__
+#endif // __ONERT_BACKEND_BUILTIN_TENSOR_BUILDER_H__

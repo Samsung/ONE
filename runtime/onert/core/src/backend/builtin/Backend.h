@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_CONTROLFLOW_BACKEND_H__
-#define __ONERT_BACKEND_CONTROLFLOW_BACKEND_H__
+#ifndef __ONERT_BACKEND_BUILTIN_BACKEND_H__
+#define __ONERT_BACKEND_BUILTIN_BACKEND_H__
 
 #include "BackendContext.h"
 #include "Config.h"
@@ -80,4 +80,4 @@ private:
 } // namespace backend
 } // namespace onert
 
-#endif // __ONERT_BACKEND_CONTROLFLOW_BACKEND_H__
+#endif // __ONERT_BACKEND_BUILTIN_BACKEND_H__

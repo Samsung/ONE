@@ -133,8 +133,8 @@ ir::OperationIndex PermutationInsertionPass::insertPermute(const ir::OperandInde
   // change model output if operand_index is model output index and the out operand is builtin
   // backend
   auto &model_outputs = _graph.getOutputs();
-  const backend::Backend *cf_backend = compiler::BackendManager::get().getControlflow();
-  if (model_outputs.contains(operand_index) && factor.backend() == cf_backend)
+  const backend::Backend *builtin_backend = compiler::BackendManager::get().getBuiltin();
+  if (model_outputs.contains(operand_index) && factor.backend() == builtin_backend)
   {
     model_outputs.replace(operand_index, out_operand_index);
   }
@@ -147,7 +147,7 @@ ir::OperationIndex PermutationInsertionPass::insertPermute(const ir::OperandInde
   // different.
   const auto permute_node_layout = ir::Layout::UNKNOWN;
   // NOTE If one backend supports several layout, the backend must support Permute operation
-  const backend::Backend *permute_node_backend = compiler::BackendManager::get().getControlflow();
+  const backend::Backend *permute_node_backend = compiler::BackendManager::get().getBuiltin();
   if (input_backend == output_backend)
   {
     permute_node_backend = input_backend;

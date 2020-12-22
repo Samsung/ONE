@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_CONTROLFLOW_IO_TENSOR_H__
-#define __ONERT_BACKEND_CONTROLFLOW_IO_TENSOR_H__
+#ifndef __ONERT_BACKEND_BUILTIN_IO_TENSOR_H__
+#define __ONERT_BACKEND_BUILTIN_IO_TENSOR_H__
 
 #include "backend/IPortableTensor.h"
 #include "UserTensor.h"
@@ -95,4 +95,4 @@ private:
 } // namespace backend
 } // namespace onert
 
-#endif // __ONERT_BACKEND_CONTROLFLOW_IO_TENSOR_H__
+#endif // __ONERT_BACKEND_BUILTIN_IO_TENSOR_H__

@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_CONTROLFLOW_TENSOR_REGISTRY_H__
-#define __ONERT_BACKEND_CONTROLFLOW_TENSOR_REGISTRY_H__
+#ifndef __ONERT_BACKEND_BUILTIN_TENSOR_REGISTRY_H__
+#define __ONERT_BACKEND_BUILTIN_TENSOR_REGISTRY_H__
 
 #include "backend/cpu_common/TensorRegistry.h"
 #include "backend/ITensorRegistry.h"
@@ -131,4 +131,4 @@ private:
 } // namespace backend
 } // namespace onert
 
-#endif // ifndef __ONERT_BACKEND_CONTROLFLOW_TENSOR_REGISTRY_H__
+#endif // ifndef __ONERT_BACKEND_BUILTIN_TENSOR_REGISTRY_H__

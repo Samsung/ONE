@@ -35,16 +35,16 @@ class TensorRegistries
 public:
   TensorRegistries() = default;
 
-  TensorRegistries(const onert::backend::BackendContexts &backend_contexts,
-                   bool include_controlflow)
+  TensorRegistries(const onert::backend::BackendContexts &backend_contexts, bool include_builtin)
   {
     for (const auto &e : backend_contexts)
     {
       auto tensor_reg = e.second->tensor_registry;
       if (e.first->config()->id() == backend::builtin::Config::ID)
       {
-        _cf_tensor_reg = std::dynamic_pointer_cast<backend::builtin::TensorRegistry>(tensor_reg);
-        if (include_controlflow)
+        _builtin_tensor_reg =
+          std::dynamic_pointer_cast<backend::builtin::TensorRegistry>(tensor_reg);
+        if (include_builtin)
           _tensor_regs.insert(tensor_reg);
       }
       else
@@ -63,9 +63,9 @@ public:
     return _tensor_regs.cend();
   }
 
-  std::shared_ptr<backend::builtin::TensorRegistry> getControlflowTensorRegistry() const
+  std::shared_ptr<backend::builtin::TensorRegistry> getBuiltinTensorRegistry() const
   {
-    return _cf_tensor_reg;
+    return _builtin_tensor_reg;
   }
 
   backend::ITensor *getITensor(ir::OperandIndex ind) const
@@ -81,7 +81,7 @@ public:
 
 private:
   std::unordered_set<std::shared_ptr<backend::ITensorRegistry>> _tensor_regs;
-  std::shared_ptr<backend::builtin::TensorRegistry> _cf_tensor_reg;
+  std::shared_ptr<backend::builtin::TensorRegistry> _builtin_tensor_reg;
 };
 
 } // namespace compiler

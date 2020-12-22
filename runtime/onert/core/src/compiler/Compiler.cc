@@ -157,10 +157,10 @@ std::shared_ptr<exec::ExecutorMap> Compiler::compile(void)
 {
   // Set control flow backend for control flow operators
   {
-    auto &cfid = backend::builtin::Config::ID;
-    _options.manual_scheduler_options.opcode_to_backend[ir::OpCode::If] = cfid;
-    _options.manual_scheduler_options.opcode_to_backend[ir::OpCode::While] = cfid;
-    _options.manual_scheduler_options.opcode_to_backend[ir::OpCode::Permute] = cfid;
+    auto &builtin_id = backend::builtin::Config::ID;
+    _options.manual_scheduler_options.opcode_to_backend[ir::OpCode::If] = builtin_id;
+    _options.manual_scheduler_options.opcode_to_backend[ir::OpCode::While] = builtin_id;
+    _options.manual_scheduler_options.opcode_to_backend[ir::OpCode::Permute] = builtin_id;
   }
 
   // FIXME This is a workaround for bcq operations, should remove it
@@ -239,7 +239,7 @@ std::shared_ptr<exec::ExecutorMap> Compiler::compile(void)
     auto &contexts = (*lowered_subgs[index]).backend_contexts();
     for (auto it = contexts.begin(); it != contexts.end(); it++)
     {
-      // Controlflow backend is not for actual computaion of operations so it is an exception
+      // Builtin backend is not for actual computaion of operations so it is an exception
       if (it->first->config()->id() != backend::builtin::Config::ID)
         backends_support_fp16 &= it->first->config()->supportFP16();
     }
