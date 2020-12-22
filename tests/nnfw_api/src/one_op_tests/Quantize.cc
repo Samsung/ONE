@@ -18,11 +18,12 @@
 
 #include <memory>
 
-CircleGen genSimpleQuantizeModel(circle::TensorType from_t, circle::TensorType to_t)
+CircleGen genSimpleQuantizeModel(circle::TensorType from_t, float input_scale, int input_zeropoint,
+                                 circle::TensorType to_t, float output_scale, int output_zeropoint)
 {
   CircleGen cgen;
-  int in = cgen.addTensor({{1, 4, 4, 1}, from_t}, 1, 128);
-  int out = cgen.addTensor({{1, 4, 4, 1}, to_t}, 2, -10);
+  int in = cgen.addTensor({{1, 4, 4, 1}, from_t}, input_scale, input_zeropoint);
+  int out = cgen.addTensor({{1, 4, 4, 1}, to_t}, output_scale, output_zeropoint);
   cgen.addOperatorQuantize({{in}, {out}});
   cgen.setInputsAndOutputs({in}, {out});
   return cgen;
@@ -30,7 +31,8 @@ CircleGen genSimpleQuantizeModel(circle::TensorType from_t, circle::TensorType t
 
 TEST_F(GenModelTest, OneOp_Quantize_Uint8toInt8)
 {
-  CircleGen cgen = genSimpleQuantizeModel(circle::TensorType_UINT8, circle::TensorType_INT8);
+  CircleGen cgen =
+    genSimpleQuantizeModel(circle::TensorType_UINT8, 1., 128, circle::TensorType_INT8, 2., -10);
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
   _context->addTestCase(
     TestCaseData{}
@@ -41,15 +43,35 @@ TEST_F(GenModelTest, OneOp_Quantize_Uint8toInt8)
   SUCCEED();
 }
 
-TEST_F(GenModelTest, neg_OneOp_Quantize_Uint8toInt16)
+TEST_F(GenModelTest, OneOp_Quantize_Int8toUint8)
 {
-  CircleGen cgen = genSimpleQuantizeModel(circle::TensorType_UINT8, circle::TensorType_INT16);
+  CircleGen cgen =
+    genSimpleQuantizeModel(circle::TensorType_INT8, 2., -10, circle::TensorType_UINT8, 1., 128);
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
   _context->addTestCase(
     TestCaseData{}
-      .addInput<uint8_t>({127, 48, 151, 232, 56, 176, 47, 37, 51, 52, 39, 94, 1, 128, 142, 243})
-      .addOutput<int16_t>(
-        {-1, -80, 23, 104, -72, 48, -81, -91, -77, -76, -89, -34, -127, 0, 14, 115}));
+      .addInput<int8_t>({-10, -50, 2, 42, -46, 14, -50, -55, -48, -48, -54, -27, -66, -20, -3, 48})
+      .addOutput<uint8_t>({128, 48, 152, 232, 56, 176, 48, 38, 52, 52, 40, 94, 16, 108, 142, 244}));
+  _context->setBackends({"cpu"});
+  SUCCEED();
+}
+
+TEST_F(GenModelTest, neg_OneOp_Quantize_Uint8toInt16)
+{
+  CircleGen cgen =
+    genSimpleQuantizeModel(circle::TensorType_UINT8, 1., 128, circle::TensorType_INT16, 2., -10);
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->setBackends({"acl_cl", "acl_neon", "cpu"});
+  _context->expectFailModelLoad();
+
+  SUCCEED();
+}
+
+TEST_F(GenModelTest, neg_OneOp_Quantize_Int8toInt16)
+{
+  CircleGen cgen =
+    genSimpleQuantizeModel(circle::TensorType_INT8, 2., -10, circle::TensorType_INT16, 1., 128);
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
   _context->setBackends({"acl_cl", "acl_neon", "cpu"});
   _context->expectFailModelLoad();
 
