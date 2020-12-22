@@ -62,7 +62,7 @@ inline void BinaryArithmeticOp(const BinaryArithmeticOpParam &params, const Shap
 }
 
 template <typename T>
-inline void BroadcastBinaryArithmeticOpSlowQuant8(
+inline typename std::enable_if_t<is_quant8<T>::value> BroadcastBinaryArithmeticOpSlow(
   const BinaryArithmeticOpParam &params, const Shape &input1_shape, const T *input1_data,
   const Shape &input2_shape, const T *input2_data, const Shape &output_shape, T *output_data,
   const std::function<T(const BinaryArithmeticOpParam &params, const T &, const T &)> &fn)
@@ -71,11 +71,6 @@ inline void BroadcastBinaryArithmeticOpSlowQuant8(
   NdArrayDesc<4> desc2;
   NdArrayDescsForElementwiseBroadcast(input1_shape, input2_shape, &desc1, &desc2);
   const Shape extended_output_shape = Shape::ExtendedShape(4, output_shape);
-
-  if ((params.quantized_activation_min < 0) && (params.quantized_activation_max > 255))
-  {
-    throw std::runtime_error{"Support only for Quant8."};
-  }
 
   // Comment from tensorflow lite:
   //
@@ -98,11 +93,10 @@ inline void BroadcastBinaryArithmeticOpSlowQuant8(
       {
         for (int c = 0; c < extended_output_shape.Dims(3); ++c)
         {
-          output_data[Offset(extended_output_shape, b, y, x, c)] =
-            ActivationFunctionWithMinMax<uint8_t>(
-              fn(params, input1_data[SubscriptToIndex(desc1, b, y, x, c)],
-                 input2_data[SubscriptToIndex(desc2, b, y, x, c)]),
-              params.quantized_activation_min, params.quantized_activation_max);
+          output_data[Offset(extended_output_shape, b, y, x, c)] = ActivationFunctionWithMinMax<T>(
+            fn(params, input1_data[SubscriptToIndex(desc1, b, y, x, c)],
+               input2_data[SubscriptToIndex(desc2, b, y, x, c)]),
+            params.quantized_activation_min, params.quantized_activation_max);
         }
       }
     }
