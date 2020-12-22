@@ -49,6 +49,10 @@ private:
   IPortableTensor *_output;
 
   float _beta;
+
+  float _table[256];
+  uint8_t _uint8_table1[256];
+  uint8_t _uint8_table2[256];
 };
 
 } // namespace ops

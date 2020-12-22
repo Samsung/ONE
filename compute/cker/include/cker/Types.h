@@ -111,6 +111,8 @@ struct SoftmaxParams
   int32_t zero_point;
   float scale;
   float *table;
+  uint8_t *uint8_table1;
+  uint8_t *uint8_table2;
 };
 
 struct PackParams
