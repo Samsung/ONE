@@ -97,7 +97,7 @@ int main(const int argc, char **argv)
         nnfw_tensorinfo ti;
         NNPR_ENSURE_STATUS(nnfw_input_tensorinfo(session, i, &ti));
 
-        if (ti.dtype < NNFW_TYPE_TENSOR_FLOAT32 || ti.dtype > NNFW_TYPE_TENSOR_INT64)
+        if (ti.dtype < NNFW_TYPE_TENSOR_FLOAT32 || ti.dtype > NNFW_TYPE_TENSOR_QUANT8_ASYMM_SIGNED)
         {
           std::cerr << "E: not supported input type" << std::endl;
           exit(-1);
