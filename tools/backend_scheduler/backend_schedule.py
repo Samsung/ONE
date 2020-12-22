@@ -5,12 +5,14 @@ import json
 from os.path import dirname, realpath, join
 import argparse
 from op_list_parser import OpListParser
+from nnpkg_handler import NnpkgHandler
 
 
 class BackendScheduler:
     def __init__(self, args):
         self.num_threads = args.num_threads
         self.root_path = dirname(dirname(dirname(realpath(__file__))))
+        self.nnpkg_handler = NnpkgHandler()
 
     def read_traces(self, backend_list):
         op_time = {}
@@ -115,15 +117,19 @@ class BackendScheduler:
         print("Mixed backend : {:.2f} ms".format(schedule_time / 1000))
 
         print("-------- Backend Scheduling --------")
-        command = ""
+        cmd = []
+        cmd += [f"OP_BACKEND_MAP={backend_conf}"]
         for target_backend, op_list in backend_op_list.items():
             if default_backend == target_backend:
                 for op in op_list:
-                    command += " OP_BACKEND_{}={}".format(op, default_backend)
-        print(
-            "OP_BACKEND_MAP='{}' {} BACKENDS='{}' EIGEN_THREADS={} RUY_THREADS={} XNNPACK_THREADS={}"
-            .format(backend_conf, command, ';'.join(backend_list), self.num_threads,
-                    self.num_threads, self.num_threads))
+                    cmd += [f"OP_BACKEND_{op}={default_backend}"]
+        cmd += [f"BACKENDS={';'.join(backend_list)}"]
+        cmd += [f"EIGEN_THREADS={self.num_threads}"]
+        cmd += [f"RUY_THREADS={self.num_threads}"]
+        cmd += [f"XNNPACK_THREADS={self.num_threads}"]
+        print(' '.join(cmd))
+
+        # self.nnpkg_handler.add_config('../nnpkg_tst/mobilenet_v2_1.0_224_sched', cmd)
 
 
 if __name__ == "__main__":
