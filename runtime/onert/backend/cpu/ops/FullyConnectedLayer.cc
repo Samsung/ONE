@@ -138,6 +138,10 @@ void FullyConnectedLayer::fullyConnectedHybrid()
   tensor->decrease_ref();
   if (tensor->buffer() == nullptr) // ref == 0?
   {
+#if defined(__ANDROID__) && (__ANDROID_API__ >= 26)
+    // NOTE This line forces OS to release any unused memory immediately
+    mallopt(M_PURGE, 0);
+#endif
     _is_weights_freed = true;
   }
 #endif
