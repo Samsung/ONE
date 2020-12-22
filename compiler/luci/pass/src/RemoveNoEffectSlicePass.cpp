@@ -41,12 +41,15 @@ bool remove_no_effect_slice(luci::CircleNode *node)
   auto target_node = dynamic_cast<luci::CircleSlice *>(node);
   if (target_node == nullptr)
     return false;
+
   auto begin_const = dynamic_cast<luci::CircleConst *>(target_node->begin());
   if (begin_const == nullptr)
     return false;
+
   auto size_const = dynamic_cast<luci::CircleConst *>(target_node->size());
   if (size_const == nullptr)
     return false;
+
   // Check input output shape.
   auto input_node = loco::must_cast<luci::CircleNode *>(target_node->input());
   for (uint32_t i = 0; i < input_node->rank(); i++)
