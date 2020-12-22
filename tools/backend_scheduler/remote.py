@@ -7,10 +7,10 @@ from os.path import dirname, basename, isdir, realpath, normpath, join
 class RemoteSSH():
     def __init__(self, user, ip, nnpkg_dir, num_threads):
         self.base_dir = '/tmp/ONE'
+        self.trace_dir = 'traces/'
         self.host = f"{user}@{ip}" if user != None else ip
         self.nnpkg_dir = nnpkg_dir
         self.root_path = dirname(dirname(dirname(realpath(__file__))))
-        self.base_path = f"{self.host}:{self.base_dir}"
         self.num_threads = num_threads
 
     def sync_binary(self):
@@ -24,22 +24,25 @@ class RemoteSSH():
         else:
             # Syne ONE runtime
             subprocess.call([
-                "rsync", "-azv", "--exclude", "test-suite.tar.gz", bin_dir, self.base_path
+                "rsync", "-azv", "--exclude", "test-suite.tar.gz", bin_dir,
+                self.remote(self.base_dir)
             ])
             # Sync target nnpackage
-            subprocess.call(["rsync", "-azv", self.nnpkg_dir, self.base_path])
+            subprocess.call(["rsync", "-azv", self.nnpkg_dir, self.remote(self.base_dir)])
 
-    def sync_trace():
-        pass
+    def sync_trace(self, backend):
+        remote_trace_path = self.remote_trace_path(backend)
+        local_trace_path = self.local_trace_path(backend)
+        # Sync trace file
+        subprocess.call(["rsync", "-azv", remote_trace_path, local_trace_path])
 
     def profile_backend(self, backend, backend_op_list):
+        nnpkg_run_path = join(self.base_dir, "bin/nnpackage_run")
         nnpkg_dir = basename(normpath(self.nnpkg_dir))
-        nnpkg_run = join(self.base_dir, "bin/nnpackage_run")
-        nnpkg = join(self.base_dir, nnpkg_dir)
+        nnpkg_path = join(self.base_dir, nnpkg_dir)
 
-        trace_name = f"{nnpkg_dir}_{backend}_{self.num_threads}"
         cmd = ["ssh", f"{self.host}"]
-        cmd += [f"TRACE_FILEPATH={join(self.base_dir,'traces',trace_name)}"]
+        cmd += [f"TRACE_FILEPATH={self.remote_trace_path(backend)}"]
         for target_backend, op_list in backend_op_list.items():
             if backend == target_backend:
                 for op in op_list:
@@ -49,15 +52,27 @@ class RemoteSSH():
         cmd += [f"RUY_THREADS={self.num_threads}"]
         cmd += [f"BACKENDS=\'{';'.join(['cpu', backend])}\'"]
         cmd += [f"OP_SEQ_MAX_NODE=1"]
-        cmd += [f"{nnpkg_run}"]
+        cmd += [f"{nnpkg_run_path}"]
         cmd += [f"--nnpackage"]
-        cmd += [f"{nnpkg}"]
+        cmd += [f"{nnpkg_path}"]
         cmd += [f"-w5 -r50"]
         print(' '.join(cmd))
-        subprocess.call(cmd)
+        # subprocess.call(cmd)
 
     def base_path():
         pass
 
-    def trace_path():
-        pass
+    def remote(self, path):
+        return f"{self.host}:{path}"
+
+    # TODO Create class for path generation
+    def trace_file(self, backend):
+        nnpkg_dir = basename(normpath(self.nnpkg_dir))
+        return f"{nnpkg_dir}_{backend}_{self.num_threads}"
+
+    def remote_trace_path(self, backend):
+        return self.remote(
+            f"{join(self.base_dir,self.trace_dir,self.trace_file(backend))}")
+
+    def local_trace_path(self, backend):
+        return join(self.root_path, self.trace_dir, self.trace_file(backend))

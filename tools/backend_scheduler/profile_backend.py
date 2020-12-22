@@ -8,16 +8,17 @@ from remote import RemoteSSH
 class BackendProfiler():
     def __init__(self, user, ip, nnpackage_dir, num_threads):
         self.remote_ssh = RemoteSSH(user, ip, nnpackage_dir, num_threads)
+        self.backend_op_list = OpListParser().parse()
+        self.backend_list = ["cpu"]
+        self.backend_list.extend([backend for backend in self.backend_op_list])
 
     def sync(self):
         self.remote_ssh.sync_binary()
 
     def profile(self):
-        backend_op_list = OpListParser().parse()
-        backend_list = ["cpu"]
-        backend_list.extend([backend for backend in backend_op_list])
-        for backend in backend_list:
-            self.remote_ssh.profile_backend(backend, backend_op_list)
+        for backend in self.backend_list:
+            self.remote_ssh.profile_backend(backend, self.backend_op_list)
+            self.remote_ssh.sync_trace(backend)
 
 
 if __name__ == "__main__":
