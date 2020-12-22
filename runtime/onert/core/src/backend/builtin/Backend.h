@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_CONTROLFLOW_BACKEND_H__
-#define __ONERT_BACKEND_CONTROLFLOW_BACKEND_H__
+#ifndef __ONERT_BACKEND_BUILTIN_BACKEND_H__
+#define __ONERT_BACKEND_BUILTIN_BACKEND_H__
 
 #include "BackendContext.h"
 #include "Config.h"
@@ -31,7 +31,7 @@ namespace onert
 {
 namespace backend
 {
-namespace controlflow
+namespace builtin
 {
 
 class Backend : public ::onert::backend::Backend
@@ -76,8 +76,8 @@ private:
   std::shared_ptr<IConfig> _config;
 };
 
-} // namespace controlflow
+} // namespace builtin
 } // namespace backend
 } // namespace onert
 
-#endif // __ONERT_BACKEND_CONTROLFLOW_BACKEND_H__
+#endif // __ONERT_BACKEND_BUILTIN_BACKEND_H__

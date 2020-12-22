@@ -393,7 +393,7 @@ int64_t HEScheduler::DFSChildrenMaxRank(const ir::OperationIndex &index)
         {
           continue;
         }
-        // TODO Change it to controlflow backend
+        // TODO Change it to builtin backend
         auto transfer_cost =
           getPermuteTime(backend, other_backend, quant, operand.info().total_size());
         avg_transfer_cost += transfer_cost;

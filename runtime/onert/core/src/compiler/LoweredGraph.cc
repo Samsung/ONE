@@ -53,10 +53,10 @@ LoweredGraph::LoweredGraph(const ir::Graph &graph, const CompilerOptions &option
   // Build backend contexts
   auto &backend_manager = BackendManager::get();
 
-  // Always create Controlflow backend context
-  auto cf_backend = backend_manager.getControlflow();
-  _backend_contexts.emplace(
-    cf_backend, cf_backend->newContext(_graph, _graph.getKernelBuilder(), linear_executor));
+  // Always create Builtin backend context
+  auto builtin_backend = backend_manager.getBuiltin();
+  _backend_contexts.emplace(builtin_backend, builtin_backend->newContext(
+                                               _graph, _graph.getKernelBuilder(), linear_executor));
 
   // Create contexts for other backends
   for (auto backend_str : options.backend_list)
@@ -335,10 +335,10 @@ void LoweredGraph::makeOpSequences(
 void LoweredGraph::manipulateLowerInfo(
   ir::OperandIndexMap<std::unique_ptr<ir::operand::LowerInfo>> &operands_lower_info)
 {
-  const auto controlflow_backend = BackendManager::get().getControlflow();
+  const auto builtin_backend = BackendManager::get().getBuiltin();
 
   // TODO Rather than using NHWC Get frontend layout of this node from IR
-  auto factor = ir::operand::PermuteFactor{controlflow_backend, ir::Layout::NHWC};
+  auto factor = ir::operand::PermuteFactor{builtin_backend, ir::Layout::NHWC};
   for (auto index : _graph.getInputs() | ir::Remove::UNDEFINED)
   {
     auto &&lower_info = operands_lower_info.at(index);
@@ -357,7 +357,7 @@ void LoweredGraph::manipulateLowerInfo(
     {
       // In case of that an operand is Graph's output and not input or output of any operation
       lower_info->addDefPermuteFactor(ir::operand::PermuteFactor{
-        controlflow_backend,
+        builtin_backend,
         ir::Layout::NHWC // TODO Get frontend layout of this node from IR
       });
     }
@@ -502,7 +502,7 @@ bool LoweredGraph::mergeable(const ir::OpSequenceIndex &op_seq_index,
     {
       // TODO Fix this workaround for the case of model outputs that are used by another operation
       //      This is needed since the branching is decided by operation, but for model outputs,
-      //      there is controlflow backen(use backend) but no actual use operation exists
+      //      there is builtin backen(use backend) but no actual use operation exists
       if (_graph.getOutputs().contains(output))
         return false;
 

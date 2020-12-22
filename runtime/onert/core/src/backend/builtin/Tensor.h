@@ -14,39 +14,23 @@
  * limitations under the License.
  */
 
-#include "IOTensor.h"
+#ifndef __ONERT_BACKEND_BUILTIN_TENSOR_H__
+#define __ONERT_BACKEND_BUILTIN_TENSOR_H__
 
-#include <assert.h>
+#include <backend/cpu_common/Tensor.h>
 
 namespace onert
 {
 namespace backend
 {
-namespace controlflow
+namespace builtin
 {
 
-IOTensor::IOTensor(const ir::OperandInfo &info, ir::Layout layout)
-  : IPortableTensor{info}, _orig_info{info}, _orig_layout{layout}
-{
-  setUserTensor(nullptr, 0);
-}
+using Tensor = cpu_common::Tensor;
+using ExternalTensor = cpu_common::ExternalTensor;
 
-void IOTensor::setTensor(IPortableTensor *tensor)
-{
-  assert(tensor);
-  assert(tensor != this);
-  // TODO Handle when layout was changed
-  assert(tensor->layout() == _orig_layout); // Changing layout is not considered yet
-  _user_tensor.reset();
-  _tensor = tensor;
-}
-
-void IOTensor::setUserTensor(uint8_t *buffer, size_t size)
-{
-  _user_tensor = std::make_unique<UserTensor>(_orig_info, _orig_layout, buffer, size);
-  _tensor = _user_tensor.get();
-}
-
-} // namespace controlflow
+} // namespace builtin
 } // namespace backend
 } // namespace onert
+
+#endif // __ONERT_BACKEND_BUILTIN_TENSOR_H__

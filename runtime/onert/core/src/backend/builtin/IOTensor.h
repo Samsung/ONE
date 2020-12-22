@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_CONTROLFLOW_IO_TENSOR_H__
-#define __ONERT_BACKEND_CONTROLFLOW_IO_TENSOR_H__
+#ifndef __ONERT_BACKEND_BUILTIN_IO_TENSOR_H__
+#define __ONERT_BACKEND_BUILTIN_IO_TENSOR_H__
 
 #include "backend/IPortableTensor.h"
 #include "UserTensor.h"
@@ -24,7 +24,7 @@ namespace onert
 {
 namespace backend
 {
-namespace controlflow
+namespace builtin
 {
 
 /**
@@ -91,8 +91,8 @@ private:
   std::unique_ptr<UserTensor> _user_tensor; //< If it is a user tensor, it is managed by this object
 };
 
-} // namespace controlflow
+} // namespace builtin
 } // namespace backend
 } // namespace onert
 
-#endif // __ONERT_BACKEND_CONTROLFLOW_IO_TENSOR_H__
+#endif // __ONERT_BACKEND_BUILTIN_IO_TENSOR_H__

@@ -24,7 +24,7 @@ namespace onert
 {
 namespace backend
 {
-namespace controlflow
+namespace builtin
 {
 namespace kernel
 {
@@ -79,6 +79,6 @@ void IfLayer::run()
 }
 
 } // namespace kernel
-} // namespace controlflow
+} // namespace builtin
 } // namespace backend
 } // namespace onert

@@ -28,7 +28,7 @@ namespace onert
 {
 namespace backend
 {
-namespace controlflow
+namespace builtin
 {
 
 KernelGenerator::KernelGenerator(const ir::Graph &graph, DynamicTensorManager *dyn_tensor_manager,
@@ -95,7 +95,7 @@ void KernelGenerator::visit(const ir::operation::If &node)
   // creating executor recusively
   const auto cond_tensor = input_tensors.front();
   input_tensors.erase(input_tensors.begin());
-  auto fn = std::make_unique<::onert::backend::controlflow::kernel::IfLayer>(
+  auto fn = std::make_unique<::onert::backend::builtin::kernel::IfLayer>(
     cond_tensor, input_tensors, output_tensors, then_subg_index, else_subg_index, _executor_map,
     _external_context);
 
@@ -121,7 +121,7 @@ void KernelGenerator::visit(const ir::operation::While &node)
   const auto cond_subg_index = node.param().cond_subg_index;
   const auto body_subg_index = node.param().body_subg_index;
 
-  // This op does not support input as a constant, because controlflow backend does not have
+  // This op does not support input as a constant, because builtin backend does not have
   // TensorBuilder
   std::vector<backend::IPortableTensor *> input_tensors;
   for (const auto input_index : node.getInputs())
@@ -139,7 +139,7 @@ void KernelGenerator::visit(const ir::operation::While &node)
 
   // WhileLayer just set ExecutorMap instead of cond and body executor to avoid complexity of
   // creating executor recusively
-  auto fn = std::make_unique<::onert::backend::controlflow::kernel::WhileLayer>(
+  auto fn = std::make_unique<::onert::backend::builtin::kernel::WhileLayer>(
     input_tensors, output_tensors, cond_subg_index, body_subg_index, _executor_map,
     _dyn_tensor_manager->dynamic_mem_mgr().get(), _external_context);
 
@@ -161,6 +161,6 @@ backend::IPortableTensor *KernelGenerator::getPortableTensor(const ir::OperandIn
   return ret;
 }
 
-} // namespace controlflow
+} // namespace builtin
 } // namespace backend
 } // namespace onert

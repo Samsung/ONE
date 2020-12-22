@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_CONTROLFLOW_KERNEL_PERMUTELAYER_H__
-#define __ONERT_BACKEND_CONTROLFLOW_KERNEL_PERMUTELAYER_H__
+#ifndef __ONERT_BACKEND_BUILTIN_KERNEL_PERMUTELAYER_H__
+#define __ONERT_BACKEND_BUILTIN_KERNEL_PERMUTELAYER_H__
 
 #include "exec/IPermuteFunction.h"
 #include "exec/IExecutor.h"
@@ -26,7 +26,7 @@ namespace onert
 {
 namespace backend
 {
-namespace controlflow
+namespace builtin
 {
 namespace kernel
 {
@@ -143,8 +143,8 @@ private:
 };
 
 } // namespace kernel
-} // namespace controlflow
+} // namespace builtin
 } // namespace backend
 } // namespace onert
 
-#endif // __ONERT_BACKEND_CONTROLFLOW_KERNEL_PERMUTELAYER_H__
+#endif // __ONERT_BACKEND_BUILTIN_KERNEL_PERMUTELAYER_H__

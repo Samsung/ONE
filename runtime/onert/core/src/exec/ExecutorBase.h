@@ -29,7 +29,7 @@
 #include "ir/OperationIndexMap.h"
 #include "compiler/LoweredGraph.h"
 #include "compiler/TensorRegistries.h"
-#include "backend/controlflow/IOTensor.h"
+#include "backend/builtin/IOTensor.h"
 #include "util/TracingCtx.h"
 
 #include <cstdint>
@@ -72,7 +72,7 @@ public:
 
   void addObserver(std::unique_ptr<IExecutionObserver> ref) { _subject.add(std::move(ref)); };
 
-  const std::vector<backend::controlflow::IOTensor *> &getOutputTensors() const override
+  const std::vector<backend::builtin::IOTensor *> &getOutputTensors() const override
   {
     return _output_tensors;
   }
@@ -88,8 +88,8 @@ protected:
   std::shared_ptr<ir::OperationIndexMap<int64_t>> _indexed_ranks;
   std::unique_ptr<compiler::LoweredGraph> _lowered_graph;
   const ir::Graph &_graph;
-  std::vector<backend::controlflow::IOTensor *> _input_tensors;
-  std::vector<backend::controlflow::IOTensor *> _output_tensors;
+  std::vector<backend::builtin::IOTensor *> _input_tensors;
+  std::vector<backend::builtin::IOTensor *> _output_tensors;
   std::mutex _mutex;
   const util::TracingCtx *_tracing_ctx;
 

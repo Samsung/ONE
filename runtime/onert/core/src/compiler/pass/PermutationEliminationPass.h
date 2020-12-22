@@ -35,7 +35,7 @@ namespace pass
  * are compatible and layouts match.
  *
  * Permute input tensor is kept and the output is removed for all the cases, except model outputs.
- * As all output tensors have to be controlflow backend, so the output is kept.
+ * As all output tensors have to be builtin backend, so the output is kept.
  *
  * @note This is an optimization pass which means that everything should work fine even if this pass
  *       was skipped.

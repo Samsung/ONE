@@ -37,15 +37,15 @@ Please refer to each class document for details. You may refer to [Bundle Backen
 
 ## Provided Backend Implementations
 
-We provide some backends along with the runtime. There is the special backend `controlflow` which is part of runtime core, and some bundle backends which are baseline backends and samples of backend implementation.
+We provide some backends along with the runtime. There is the special backend `builtin` which is part of runtime core, and some bundle backends which are baseline backends and samples of backend implementation.
 
-## `controlflow` Backend
+## `builtin` Backend
 
-`controlflow` is a special backend that is always loaded(statically linked, part of runtime core). It is implemented just like other backends, but there are some things that it does exclusively.
+`builtin` is a special backend that is always loaded(statically linked, part of runtime core). It is implemented just like other backends, but there are some things that it does exclusively.
 
 - Has kernels for If, While and Permute operations (Kernels from other backends are never be used)
-- The runtime core directly creates `controlflow`'s tensor objects to accept user-given input and output buffers
-- The runtime core gives the executor context to `controlflow` backend which allows control flow ops can change execution flow properly
+- The runtime core directly creates `builtin`'s tensor objects to accept user-given input and output buffers
+- The runtime core gives the executor context to `builtin` backend which allows control flow ops can change execution flow properly
 
 ## Bundle Backends
 

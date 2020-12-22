@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_CONTROLFLOW_CONFIG_H__
-#define __ONERT_BACKEND_CONTROLFLOW_CONFIG_H__
+#ifndef __ONERT_BACKEND_BUILTIN_CONFIG_H__
+#define __ONERT_BACKEND_BUILTIN_CONFIG_H__
 
 #include <backend/IConfig.h>
 #include <memory>
@@ -25,7 +25,7 @@ namespace onert
 {
 namespace backend
 {
-namespace controlflow
+namespace builtin
 {
 
 class Config : public IConfig
@@ -46,8 +46,8 @@ public:
   std::unique_ptr<util::ITimer> timer() override { return std::make_unique<util::CPUTimer>(); }
 };
 
-} // namespace controlflow
+} // namespace builtin
 } // namespace backend
 } // namespace onert
 
-#endif // __ONERT_BACKEND_CONTROLFLOW_CONFIG_H__
+#endif // __ONERT_BACKEND_BUILTIN_CONFIG_H__

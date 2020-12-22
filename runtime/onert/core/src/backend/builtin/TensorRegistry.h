@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_CONTROLFLOW_TENSOR_REGISTRY_H__
-#define __ONERT_BACKEND_CONTROLFLOW_TENSOR_REGISTRY_H__
+#ifndef __ONERT_BACKEND_BUILTIN_TENSOR_REGISTRY_H__
+#define __ONERT_BACKEND_BUILTIN_TENSOR_REGISTRY_H__
 
 #include "backend/cpu_common/TensorRegistry.h"
 #include "backend/ITensorRegistry.h"
@@ -27,11 +27,11 @@ namespace onert
 {
 namespace backend
 {
-namespace controlflow
+namespace builtin
 {
 
 /**
- * @brief Tensor registry class for controlflow backend
+ * @brief Tensor registry class for builtin backend
  *
  * This class contains three types of tensors. Two native tensors(tensors that are managed by this
  * backend) and the other is migrant tensor.
@@ -127,8 +127,8 @@ private:
   ir::OperandIndexMap<std::unique_ptr<IOTensor>> _native_io_tensors;
 };
 
-} // namespace controlflow
+} // namespace builtin
 } // namespace backend
 } // namespace onert
 
-#endif // ifndef __ONERT_BACKEND_CONTROLFLOW_TENSOR_REGISTRY_H__
+#endif // ifndef __ONERT_BACKEND_BUILTIN_TENSOR_REGISTRY_H__

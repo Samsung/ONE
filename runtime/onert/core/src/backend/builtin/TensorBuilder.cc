@@ -24,7 +24,7 @@ namespace onert
 {
 namespace backend
 {
-namespace controlflow
+namespace builtin
 {
 
 TensorBuilder::TensorBuilder(const std::shared_ptr<TensorRegistry> &tensor_reg)
@@ -99,6 +99,6 @@ cpu_common::Tensor *TensorBuilder::nativeOwnTensorAt(const ir::OperandIndex &ind
   return _tensor_reg->getNativeOwnTensor(ind);
 }
 
-} // namespace controlflow
+} // namespace builtin
 } // namespace backend
 } // namespace onert

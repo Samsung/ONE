@@ -17,7 +17,7 @@
 #include "ExecutorBase.h"
 #include "ShapeConverter.h"
 
-#include "backend/controlflow/UserTensor.h"
+#include "backend/builtin/UserTensor.h"
 #include "util/logging.h"
 #include "misc/polymorphic_downcast.h"
 
@@ -38,7 +38,7 @@ ExecutorBase::ExecutorBase(std::unique_ptr<compiler::LoweredGraph> &&lowered_gra
     {
       backend::ITensor *tensor = tensor_regs.getITensor(ind);
       assert(tensor != nullptr);
-      auto io_tensor = nnfw::misc::polymorphic_downcast<backend::controlflow::IOTensor *>(tensor);
+      auto io_tensor = nnfw::misc::polymorphic_downcast<backend::builtin::IOTensor *>(tensor);
       tensors.push_back(io_tensor);
     }
   };

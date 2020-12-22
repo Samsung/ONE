@@ -14,48 +14,52 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_CONTROLFLOW_KERNEL_IF_LAYER_H__
-#define __ONERT_BACKEND_CONTROLFLOW_KERNEL_IF_LAYER_H__
+#ifndef __ONERT_BACKEND_BUILTIN_KERNEL_WHILE_LAYER_H__
+#define __ONERT_BACKEND_BUILTIN_KERNEL_WHILE_LAYER_H__
 
 #include <backend/IPortableTensor.h>
 #include <exec/IExecutor.h>
+#include <exec/IFunction.h>
+#include <ir/OperandIndexSequence.h>
+#include <ir/Graph.h>
 #include "../ExternalContext.h"
+
+#include "backend/cpu_common/MemoryManager.h"
 
 namespace onert
 {
 namespace backend
 {
-namespace controlflow
+namespace builtin
 {
 namespace kernel
 {
 
-class IfLayer : public ::onert::exec::IFunction
+class WhileLayer : public ::onert::exec::IFunction
 {
 public:
-  IfLayer(backend::IPortableTensor *cond_tensor,
-          const std::vector<backend::IPortableTensor *> input_tensors,
-          const std::vector<backend::IPortableTensor *> output_tensors,
-          const ir::SubgraphIndex &then_subg_index, const ir::SubgraphIndex &else_subg_index,
-          exec::ExecutorMap *executor_map,
-          const std::shared_ptr<ExternalContext> &external_context);
+  WhileLayer(const std::vector<backend::IPortableTensor *> input_tensors,
+             const std::vector<backend::IPortableTensor *> output_tensors,
+             const ir::SubgraphIndex &cond_subg_index, const ir::SubgraphIndex &body_subg_index,
+             exec::ExecutorMap *executor_map, cpu_common::DynamicMemoryManager *dyn_memory_manager,
+             const std::shared_ptr<ExternalContext> &external_context);
 
 public:
   void run() override;
 
 private:
-  backend::IPortableTensor *_cond_tensor;
+  const ir::SubgraphIndex _cond_subg_index;
+  const ir::SubgraphIndex _body_subg_index;
   const std::vector<backend::IPortableTensor *> _input_tensors;
   const std::vector<backend::IPortableTensor *> _output_tensors;
-  const ir::SubgraphIndex _then_subg_index;
-  const ir::SubgraphIndex _else_subg_index;
   exec::ExecutorMap *_executor_map;
+  cpu_common::DynamicMemoryManager *_dyn_memory_manager; // For generating temp tensors
   const std::shared_ptr<ExternalContext> _external_context;
 };
 
 } // namespace kernel
-} // namespace controlflow
+} // namespace builtin
 } // namespace backend
 } // namespace onert
 
-#endif // __ONERT_BACKEND_CONTROLFLOW_KERNEL_IF_LAYER_H__
+#endif // __ONERT_BACKEND_BUILTIN_KERNEL_WHILE_LAYER_H__

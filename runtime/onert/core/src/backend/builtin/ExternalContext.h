@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_CONTROLFLOW_EXTERNAL_CONTEXT_H__
-#define __ONERT_BACKEND_CONTROLFLOW_EXTERNAL_CONTEXT_H__
+#ifndef __ONERT_BACKEND_BUILTIN_EXTERNAL_CONTEXT_H__
+#define __ONERT_BACKEND_BUILTIN_EXTERNAL_CONTEXT_H__
 
 #include <util/ConfigSource.h>
 
@@ -28,7 +28,7 @@ namespace onert
 {
 namespace backend
 {
-namespace controlflow
+namespace builtin
 {
 
 // TODO Unify this with cpu::ExternalContext
@@ -70,8 +70,8 @@ private:
   const std::unique_ptr<ruy::Context> _ruy_context;
 };
 
-} // namespace controlflow
+} // namespace builtin
 } // namespace backend
 } // namespace onert
 
-#endif // __ONERT_BACKEND_CONTROLFLOW_EXTERNAL_CONTEXT_H__
+#endif // __ONERT_BACKEND_BUILTIN_EXTERNAL_CONTEXT_H__

@@ -14,22 +14,25 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_COMPILER_CONTROLFLOW_CONSTANT_INITIALIZER_H__
-#define __ONERT_COMPILER_CONTROLFLOW_CONSTANT_INITIALIZER_H__
+#ifndef __ONERT_BACKEND_BUILTIN_DYNAMICTENSOR_MANAGER_H__
+#define __ONERT_BACKEND_BUILTIN_DYNAMICTENSOR_MANAGER_H__
 
-#include <backend/cpu_common/ConstantInitializer.h>
+#include "TensorRegistry.h"
+#include "Tensor.h"
+
+#include <backend/cpu_common/DynamicTensorManager.h>
 
 namespace onert
 {
 namespace backend
 {
-namespace controlflow
+namespace builtin
 {
 
-using ConstantInitializer = cpu_common::ConstantInitializer;
+using DynamicTensorManager = cpu_common::DynamicTensorManager;
 
-} // namespace controlflow
+} // namespace builtin
 } // namespace backend
 } // namespace onert
 
-#endif // __ONERT_COMPILER_CONTROLFLOW_CONSTANT_INITIALIZER_H__
+#endif // __ONERT_BACKEND_BUILTIN_DYNAMICTENSOR_MANAGER_H__

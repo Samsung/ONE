@@ -14,23 +14,22 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_CONTROLFLOW_TENSOR_H__
-#define __ONERT_BACKEND_CONTROLFLOW_TENSOR_H__
+#ifndef __ONERT_COMPILER_BUILTIN_CONSTANT_INITIALIZER_H__
+#define __ONERT_COMPILER_BUILTIN_CONSTANT_INITIALIZER_H__
 
-#include <backend/cpu_common/Tensor.h>
+#include <backend/cpu_common/ConstantInitializer.h>
 
 namespace onert
 {
 namespace backend
 {
-namespace controlflow
+namespace builtin
 {
 
-using Tensor = cpu_common::Tensor;
-using ExternalTensor = cpu_common::ExternalTensor;
+using ConstantInitializer = cpu_common::ConstantInitializer;
 
-} // namespace controlflow
+} // namespace builtin
 } // namespace backend
 } // namespace onert
 
-#endif // __ONERT_BACKEND_CONTROLFLOW_TENSOR_H__
+#endif // __ONERT_COMPILER_BUILTIN_CONSTANT_INITIALIZER_H__

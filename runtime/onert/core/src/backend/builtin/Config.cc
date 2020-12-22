@@ -14,25 +14,24 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_CONTROLFLOW_DYNAMICTENSOR_MANAGER_H__
-#define __ONERT_BACKEND_CONTROLFLOW_DYNAMICTENSOR_MANAGER_H__
-
-#include "TensorRegistry.h"
-#include "Tensor.h"
-
-#include <backend/cpu_common/DynamicTensorManager.h>
+#include "Config.h"
 
 namespace onert
 {
 namespace backend
 {
-namespace controlflow
+namespace builtin
 {
 
-using DynamicTensorManager = cpu_common::DynamicTensorManager;
+std::string Config::ID = "builtin";
 
-} // namespace controlflow
+bool Config::initialize() { return true; }
+
+ir::Layout Config::supportLayout(const ir::Operation &, ir::Layout frontend_layout)
+{
+  return frontend_layout;
+}
+
+} // namespace builtin
 } // namespace backend
 } // namespace onert
-
-#endif // __ONERT_BACKEND_CONTROLFLOW_DYNAMICTENSOR_MANAGER_H__

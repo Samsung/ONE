@@ -14,24 +14,39 @@
  * limitations under the License.
  */
 
-#include "Config.h"
+#include "IOTensor.h"
+
+#include <assert.h>
 
 namespace onert
 {
 namespace backend
 {
-namespace controlflow
+namespace builtin
 {
 
-std::string Config::ID = "controlflow";
-
-bool Config::initialize() { return true; }
-
-ir::Layout Config::supportLayout(const ir::Operation &, ir::Layout frontend_layout)
+IOTensor::IOTensor(const ir::OperandInfo &info, ir::Layout layout)
+  : IPortableTensor{info}, _orig_info{info}, _orig_layout{layout}
 {
-  return frontend_layout;
+  setUserTensor(nullptr, 0);
 }
 
-} // namespace controlflow
+void IOTensor::setTensor(IPortableTensor *tensor)
+{
+  assert(tensor);
+  assert(tensor != this);
+  // TODO Handle when layout was changed
+  assert(tensor->layout() == _orig_layout); // Changing layout is not considered yet
+  _user_tensor.reset();
+  _tensor = tensor;
+}
+
+void IOTensor::setUserTensor(uint8_t *buffer, size_t size)
+{
+  _user_tensor = std::make_unique<UserTensor>(_orig_info, _orig_layout, buffer, size);
+  _tensor = _user_tensor.get();
+}
+
+} // namespace builtin
 } // namespace backend
 } // namespace onert

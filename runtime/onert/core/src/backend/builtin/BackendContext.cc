@@ -23,7 +23,7 @@ namespace onert
 {
 namespace backend
 {
-namespace controlflow
+namespace builtin
 {
 
 ITensorRegistry *BackendContext::genTensors(const std::vector<onert::ir::OpSequenceIndex> &order,
@@ -117,6 +117,6 @@ FunctionMap BackendContext::genKernels(const std::vector<ir::OpSequenceIndex> &o
   return ret;
 }
 
-} // namespace controlflow
+} // namespace builtin
 } // namespace backend
 } // namespace onert

@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_CONTROLFLOW_KERNEL_GENERATOR_H__
-#define __ONERT_BACKEND_CONTROLFLOW_KERNEL_GENERATOR_H__
+#ifndef __ONERT_BACKEND_BUILTIN_KERNEL_GENERATOR_H__
+#define __ONERT_BACKEND_BUILTIN_KERNEL_GENERATOR_H__
 
 #include <exec/IExecutor.h>
 #include "ExternalContext.h"
@@ -29,7 +29,7 @@ namespace onert
 {
 namespace backend
 {
-namespace controlflow
+namespace builtin
 {
 
 class KernelGenerator : public cpu_common::KernelGeneratorBase
@@ -67,8 +67,8 @@ private:
   const std::shared_ptr<ExternalContext> _external_context;
 };
 
-} // namespace controlflow
+} // namespace builtin
 } // namespace backend
 } // namespace onert
 
-#endif // __ONERT_BACKEND_CONTROLFLOW_KERNEL_GENERATOR_H__
+#endif // __ONERT_BACKEND_BUILTIN_KERNEL_GENERATOR_H__

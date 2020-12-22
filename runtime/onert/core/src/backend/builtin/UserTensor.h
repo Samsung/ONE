@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_CONTROLFLOW_USER_TENSOR_H__
-#define __ONERT_BACKEND_CONTROLFLOW_USER_TENSOR_H__
+#ifndef __ONERT_BACKEND_BUILTIN_USER_TENSOR_H__
+#define __ONERT_BACKEND_BUILTIN_USER_TENSOR_H__
 
 #include "ir/OperandInfo.h"
 #include "backend/IPortableTensor.h"
@@ -24,7 +24,7 @@ namespace onert
 {
 namespace backend
 {
-namespace controlflow
+namespace builtin
 {
 
 /**
@@ -76,8 +76,8 @@ private:
   bool _dynamic;
 };
 
-} // namespace controlflow
+} // namespace builtin
 } // namespace backend
 } // namespace onert
 
-#endif // __ONERT_BACKEND_CONTROLFLOW_USER_TENSOR_H__
+#endif // __ONERT_BACKEND_BUILTIN_USER_TENSOR_H__

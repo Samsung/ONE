@@ -58,7 +58,7 @@ public:
   {
     for (auto &entry : backend_contexts)
     {
-      if (entry.first->config()->id() == backend::controlflow::Config::ID)
+      if (entry.first->config()->id() == backend::builtin::Config::ID)
         continue;
       _all_backends.push_back(entry.first);
     }
@@ -173,7 +173,7 @@ private:
   std::unique_ptr<exec::ExecTime> _exec_time;
   const ir::Graph *_graph{nullptr};
   std::vector<const backend::Backend *> _all_backends;
-  const backend::Backend *_cpu_backend{nullptr}; // TODO Change this to controlflow_backend
+  const backend::Backend *_cpu_backend{nullptr}; // TODO Change this to _builtin_backend
   bool _is_profiling_mode;
   bool _is_linear_exec;
   bool _is_parallel_exec;
