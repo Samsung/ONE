@@ -23,7 +23,6 @@
 #include <cker/operation/Erf.h>
 #include <cker/operation/Exp.h>
 #include <cker/operation/LogicalNot.h>
-#include <cker/operation/Quantize.h>
 #include <cker/operation/Round.h>
 
 namespace onert
@@ -167,14 +166,6 @@ template <typename T> void neg(const IPortableTensor *input, IPortableTensor *ou
 {
   nnfw::cker::Neg<T>(getTensorShape(input), reinterpret_cast<const T *>(input->buffer()),
                      getTensorShape(output), reinterpret_cast<T *>(output->buffer()));
-}
-
-template <typename InputT, typename OutputT>
-void affineQuantize(const IPortableTensor *input, IPortableTensor *output)
-{
-  nnfw::cker::Quantize(getTensorShape(input), reinterpret_cast<const InputT *>(input->buffer()),
-                       getTensorShape(output), reinterpret_cast<OutputT *>(output->buffer()),
-                       output->data_scale(), output->data_offset());
 }
 
 void roundFloat32(const IPortableTensor *input, IPortableTensor *output)
@@ -333,16 +324,6 @@ void ElementwiseUnaryLayer::configure(const IPortableTensor *input, IPortableTen
       else
       {
         throw std::runtime_error{"Neg: Unsupported  data type"};
-      }
-      break;
-    case ElementwiseUnaryType::kQuantize:
-      if ((input->data_type() == OperandType::FLOAT32))
-      {
-        _kernel = affineQuantize<float, uint8_t>;
-      }
-      else
-      {
-        throw std::runtime_error{"Quantize: Unsupported  data type"};
       }
       break;
     case ElementwiseUnaryType::kRound:

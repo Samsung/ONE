@@ -288,6 +288,13 @@ uint32_t CircleGen::addOperatorPadV2(const OperatorParams &params)
                                 circle::BuiltinOptions_PadV2Options, options);
 }
 
+uint32_t CircleGen::addOperatorQuantize(const OperatorParams &params)
+{
+  auto options = circle::CreateQuantizeOptions(_fbb).Union();
+  return addOperatorWithOptions(params, circle::BuiltinOperator_QUANTIZE,
+                                circle::BuiltinOptions_QuantizeOptions, options);
+}
+
 uint32_t CircleGen::addOperatorRank(const OperatorParams &params)
 {
   auto options = circle::CreateRankOptions(_fbb).Union();

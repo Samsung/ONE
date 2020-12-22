@@ -177,6 +177,7 @@ public:
   uint32_t addOperatorOneHot(const OperatorParams &params, int32_t axis);
   uint32_t addOperatorPad(const OperatorParams &params);
   uint32_t addOperatorPadV2(const OperatorParams &params);
+  uint32_t addOperatorQuantize(const OperatorParams &params);
   uint32_t addOperatorRank(const OperatorParams &params);
   uint32_t addOperatorReduce(const OperatorParams &params, circle::BuiltinOperator reduce_op,
                              bool keep_dims);
