@@ -91,6 +91,9 @@ if __name__ == '__main__':
             if this_dtype == tf.uint8:
                 input_values.append(
                     np.random.randint(0, 255, this_shape).astype(np.uint8))
+            if this_dtype == tf.int8:
+                input_values.append(
+                    np.random.randint(-127, 127, this_shape).astype(np.int8))
             elif this_dtype == tf.float32:
                 input_values.append(
                     np.random.random_sample(this_shape).astype(np.float32))
@@ -134,6 +137,9 @@ if __name__ == '__main__':
             if this_dtype == np.uint8:
                 input_values.append(
                     np.random.randint(0, 255, this_shape).astype(np.uint8))
+            if this_dtype == np.int8:
+                input_values.append(
+                    np.random.randint(-127, 127, this_shape).astype(np.int8))
             elif this_dtype == np.float32:
                 input_values.append(
                     np.random.random_sample(this_shape).astype(np.float32))
