@@ -65,14 +65,16 @@ TEST(RemoveNoEffectSplitPass, remove_no_effect_split)
   while (pass.run(graph.get()))
     ;
   luci::CircleSplit *split_node = nullptr;
+  int count = 0;
   for (auto node : loco::active_nodes(loco::output_nodes(graph.get())))
   {
     auto split = dynamic_cast<luci::CircleSplit *>(node);
     if (not split)
       continue;
     split_node = split;
-    break;
+    count++;
   }
   // No transpose node is in graph.
+  ASSERT_EQ(0, count);
   ASSERT_EQ(nullptr, split_node);
 }

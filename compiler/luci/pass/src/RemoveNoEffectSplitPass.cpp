@@ -25,9 +25,14 @@ bool remove_no_effect_split(luci::CircleNode *node)
   auto target_node = dynamic_cast<luci::CircleSplitOut *>(node);
   if (target_node == nullptr)
     return false;
+
   auto split_node = dynamic_cast<luci::CircleSplit *>(target_node->input());
   if (split_node == nullptr)
     return false;
+
+  if (loco::succs(split_node).size()!=1)
+    return false;
+
   if (split_node->num_split() == 1)
   {
     auto input_node = loco::must_cast<luci::CircleNode *>(split_node->input());
