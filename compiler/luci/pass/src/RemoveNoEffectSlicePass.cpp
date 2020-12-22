@@ -54,20 +54,16 @@ bool remove_no_effect_slice(luci::CircleNode *node)
   auto input_node = loco::must_cast<luci::CircleNode *>(target_node->input());
   for (uint32_t i = 0; i < input_node->rank(); i++)
   {
-    int64_t size_value = value_from_circle_const(size_const, i);
     if (value_from_circle_const(begin_const, i) != 0)
       return false;
-    if (size_value < 0)
-    {
-      if (size_value != -1)
+
+    int64_t size_value = value_from_circle_const(size_const, i);
+    if (size_value == -1)
+      continue;
+
+    if (input_node->shape_signature().rank() != 0 && input_node->shape_signature().dim(i) == -1)
         return false;
-      size_value = static_cast<int64_t>(input_node->dim(i).value());
-    }
-    else
-    {
-      if (input_node->shape_signature().rank() != 0 && input_node->shape_signature().dim(i) == -1)
-        return false;
-    }
+
     if (size_value != static_cast<int64_t>(input_node->dim(i).value()))
       return false;
   }
