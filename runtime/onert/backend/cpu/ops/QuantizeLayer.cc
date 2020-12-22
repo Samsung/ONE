@@ -52,8 +52,10 @@ void QuantizeLayer::configure(const IPortableTensor *input, IPortableTensor *out
   {
     // DO NOTHING
   }
-  else if ((input->data_type() == OperandType::QUANT_UINT8_ASYMM) &&
-           (output->data_type() == OperandType::QUANT_INT8_ASYMM))
+  else if (((input->data_type() == OperandType::QUANT_UINT8_ASYMM) &&
+            (output->data_type() == OperandType::QUANT_INT8_ASYMM)) ||
+           ((input->data_type() == OperandType::QUANT_INT8_ASYMM) &&
+            (output->data_type() == OperandType::QUANT_UINT8_ASYMM)))
   {
     const double effective_output_scale =
       static_cast<double>(input->data_scale()) / static_cast<double>(output->data_scale());
@@ -79,6 +81,15 @@ void QuantizeLayer::run()
       MatchingFlatSize(getTensorShape(_input), getTensorShape(_output)), _output_multiplier,
       _output_shift, _input->data_offset(), _output->data_offset(),
       reinterpret_cast<int8_t *>(_output->buffer()));
+  }
+  else if ((_input->data_type() == OperandType::QUANT_INT8_ASYMM) &&
+           (_output->data_type() == OperandType::QUANT_UINT8_ASYMM))
+  {
+    nnfw::cker::Requantize<int8_t, uint8_t>(
+      reinterpret_cast<const int8_t *>(_input->buffer()),
+      MatchingFlatSize(getTensorShape(_input), getTensorShape(_output)), _output_multiplier,
+      _output_shift, _input->data_offset(), _output->data_offset(),
+      reinterpret_cast<uint8_t *>(_output->buffer()));
   }
   else
   {
