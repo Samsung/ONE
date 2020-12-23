@@ -1,6 +1,8 @@
 #!/usr/bin/python3
 
-import os, json, distutils
+import json
+from distutils.dir_util import copy_tree
+from pathlib import Path
 
 
 class NnpkgHelper:
@@ -8,11 +10,11 @@ class NnpkgHelper:
         self.config_name = 'config.cfg'
 
     def copy(self, src, dst):
-        distutils.dir_util.copy_tree(src, dst)
+        copy_tree(str(src), str(dst))
 
     def add_config(self, src, configs):
-        manifest_path = os.path.join(os.path.abspath(src), 'metadata', 'MANIFEST')
-        config_path = os.path.join(os.path.abspath(src), 'metadata', self.config_name)
+        manifest_path = Path(src).resolve() / 'metadata' / 'MANIFEST'
+        config_path = Path(src).resolve() / 'metadata' / self.config_name
 
         try:
             # Read MANIFEST file
@@ -32,9 +34,3 @@ class NnpkgHelper:
             print(e)
         except:
             print("Error")
-
-
-if __name__ == "__main__":
-    nnpkg_helper = NnpkgHelper()
-    nnpkg_helper.add_config('../nnpkg_tst/jointq_sched',
-                            ['BACKENDS=cpu', 'XNNPACK_THREADS=1'])

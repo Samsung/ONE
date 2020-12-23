@@ -1,10 +1,10 @@
-from os.path import dirname, realpath, join
+from pathlib import Path
 
 
 class OpListParser():
     def __init__(self):
         self.file_name = "op_list.txt"
-        self.op_list_file = join(dirname(realpath(__file__)), self.file_name)
+        self.op_list_file = Path(__file__).parent / self.file_name
 
     def parse(self):
         backend_op_list = {}

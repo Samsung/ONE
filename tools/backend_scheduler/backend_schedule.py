@@ -2,17 +2,17 @@
 
 import os
 import json
-from os.path import dirname, realpath, join, basename
 import argparse
+from pathlib import Path
 from op_list_parser import OpListParser
 from nnpkg_helper import NnpkgHelper
 
 
 class BackendScheduler:
     def __init__(self, nnpkg_dir, num_threads):
-        self.nnpkg_dir = realpath(nnpkg_dir)
+        self.nnpkg_dir = Path(nnpkg_dir).resolve()
         self.num_threads = num_threads
-        self.root_path = dirname(dirname(dirname(realpath(__file__))))
+        self.root_path = Path(__file__).resolve().parents[2]
         self.nnpkg_helper = NnpkgHelper()
 
     def read_traces(self, backend_list):
@@ -122,8 +122,7 @@ class BackendScheduler:
         cmd += [f"XNNPACK_THREADS={self.num_threads}"]
         print(' '.join(cmd))
 
-        dst_dir = join(dirname(realpath(__file__)), 'nnpkg_sched',
-                       basename(self.nnpkg_dir))
+        dst_dir = Path(__file__).parent / 'nnpkg_sched' / self.nnpkg_dir.name
         self.nnpkg_helper.copy(self.nnpkg_dir, dst_dir)
         self.nnpkg_helper.add_config(dst_dir, cmd)
 
