@@ -43,10 +43,12 @@ private:
   ExecutorFactory();
 
 private:
-  static void initializeBackendContext(compiler::LoweredGraph *lowered_graph);
+  static void initializeBackendContext(compiler::LoweredGraph *lowered_graph,
+                                       const backend::BackendContexts &backend_contexts);
   static void runTensorRegistration(compiler::LoweredGraph *lowered_graph,
                                     const std::vector<ir::OpSequenceIndex> &order);
-  static void prepareMigrantTensors(compiler::LoweredGraph &lowered_graph);
+  static void prepareMigrantTensors(compiler::LoweredGraph &lowered_graph,
+                                    const backend::BackendContexts &backend_contexts);
   static exec::IExecutor *
   createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lowered_graph,
                        const compiler::CompilerOptions &options,

@@ -48,16 +48,8 @@ LoweredGraph::LoweredGraph(const ir::Graph &graph, const CompilerOptions &option
     options.tracing_ctx->setSubgraphIndex(&_graph, subgraph_index.value());
   }
 
-  bool linear_executor = (options.executor == "Linear");
-
   // Build backend contexts
   auto &backend_manager = BackendManager::get();
-
-  // Always create Builtin backend context
-  auto builtin_backend = backend_manager.getBuiltin();
-  _backend_contexts.emplace(builtin_backend, builtin_backend->newContext(
-                                               _graph, _graph.getKernelBuilder(), linear_executor));
-
   // Create contexts for other backends
   for (auto backend_str : options.backend_list)
   {
@@ -72,9 +64,6 @@ LoweredGraph::LoweredGraph(const ir::Graph &graph, const CompilerOptions &option
       VERBOSE(LoweredGraph) << "Cannot load backend - " << backend_str << std::endl;
       continue;
     }
-
-    _backend_contexts.emplace(
-      backend, backend->newContext(_graph, _graph.getKernelBuilder(), linear_executor));
   }
   if (backend_manager.num_backends() == 0)
     throw std::runtime_error{"No available backends loaded."};

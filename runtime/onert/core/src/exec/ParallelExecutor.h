@@ -52,6 +52,7 @@ public:
    * @param code_map OpSequence and its code map
    */
   ParallelExecutor(std::unique_ptr<compiler::LoweredGraph> lowered_graph,
+                   backend::BackendContexts &&backend_contexts,
                    const compiler::TensorRegistries &tensor_regs, compiler::CodeMap &&code_map,
                    const util::TracingCtx *tracing_ctx);
 

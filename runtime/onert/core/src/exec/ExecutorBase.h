@@ -51,6 +51,7 @@ public:
    * @param tensor_builders Tensor builders that are currently used
    */
   ExecutorBase(std::unique_ptr<compiler::LoweredGraph> &&lowered_graph,
+               backend::BackendContexts &&backend_contexts,
                const compiler::TensorRegistries &tensor_regs, const util::TracingCtx *tracing_ctx);
 
   virtual ~ExecutorBase() = default;
@@ -87,6 +88,7 @@ protected:
   ExecutionObservee _subject;
   std::shared_ptr<ir::OperationIndexMap<int64_t>> _indexed_ranks;
   std::unique_ptr<compiler::LoweredGraph> _lowered_graph;
+  backend::BackendContexts _backend_contexts;
   const ir::Graph &_graph;
   std::vector<backend::builtin::IOTensor *> _input_tensors;
   std::vector<backend::builtin::IOTensor *> _output_tensors;
