@@ -60,6 +60,7 @@ public:
       RemoveUnnecessarySlice,
       RemoveUnnecessarySplit,
       RemoveUnnecessaryReshape,
+      SubstituteTransposeToReshape,
     };
 
     enum AlgorithmParameters

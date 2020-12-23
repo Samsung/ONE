@@ -43,6 +43,7 @@
 #include "luci/Pass/SparsifyTensorPass.h"
 #include "luci/Pass/ShuffleWeightTo16x1Float32Pass.h"
 #include "luci/Pass/SubstitutePackToReshapePass.h"
+#include "luci/Pass/SubstituteTransposeToReshapePass.h"
 // TODO add more passes
 
 #include "luci/Pass/ShapeInferencePass.h"
@@ -262,6 +263,10 @@ void CircleOptimizer::optimize(loco::Graph *g) const
 
     phase.emplace_back(
       std::make_unique<luci::ConvertNCHWToNHWCPass>(preserve_input, preserve_output));
+  }
+  if (_options->query(Options::Algorithm::SubstituteTransposeToReshape))
+  {
+    phase.emplace_back(std::make_unique<luci::SubstituteTransposeToReshapePass>());
   }
 
   /* TRANSFORM DECLARATION END */
