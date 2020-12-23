@@ -36,19 +36,9 @@ struct ConvertNCHWToNHWCPass final : public logo::Pass
 {
   virtual ~ConvertNCHWToNHWCPass() = default;
 
-  enum class DataFormat
-  {
-    NCHW,
-    NHWC
-  };
-
   const char *name(void) const final { return "luci::ConvertNCHWToNHWCPass"; }
 
   bool run(loco::Graph *g) final;
-
-private:
-  std::set<loco::Node *> _target_ops;
-  std::map<loco::Node *, DataFormat> _op_status;
 };
 
 } // namespace luci

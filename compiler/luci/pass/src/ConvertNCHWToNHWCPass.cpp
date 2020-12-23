@@ -25,6 +25,41 @@
 namespace
 {
 
+enum class DataFormat
+{
+  NCHW,
+  NHWC
+};
+
+class DataFormatAnnotation final : public loco::NodeAnnotation
+{
+public:
+  DataFormatAnnotation(const DataFormat &format) : _format{format}
+  {
+    // DO NOTHING
+  }
+
+public:
+  const DataFormat &format(void) const { return _format; }
+
+private:
+  DataFormat _format;
+};
+
+void set_data_format(loco::Node *node, const DataFormat &format)
+{
+  assert(node->annot<DataFormatAnnotation>() == nullptr);
+  node->annot(std::make_unique<DataFormatAnnotation>(format));
+}
+
+DataFormat get_data_format(loco::Node *node)
+{
+  assert(node->annot<DataFormatAnnotation>() != nullptr);
+  return node->annot<DataFormatAnnotation>()->format();
+}
+
+bool has_data_format(loco::Node *node) { return node->annot<DataFormatAnnotation>() != nullptr; }
+
 luci::CircleTranspose *create_4d_transpose(luci::CircleNode *node,
                                            const std::vector<int32_t> indices)
 {
@@ -214,37 +249,42 @@ class ConvertNCHWToNHWC final : public luci::CircleNodeMutableVisitor<bool>
 namespace luci
 {
 
-using DataFormat = ConvertNCHWToNHWCPass::DataFormat;
-
 bool ConvertNCHWToNHWCPass::run(loco::Graph *g)
 {
   LOGGER(l);
   INFO(l) << "ConvertNCHWToNHWCPass Start" << std::endl;
 
-  // Collect target operators (done once)
-  if (_op_status.empty())
+  // Annotate NCHW operators
+  for (auto node : loco::active_nodes(loco::output_nodes(g)))
   {
-    for (auto node : loco::active_nodes(loco::output_nodes(g)))
+    auto circle_node = loco::must_cast<luci::CircleNode *>(node);
+    switch (circle_node->opcode())
     {
-      auto circle_node = loco::must_cast<luci::CircleNode *>(node);
-      switch (circle_node->opcode())
-      {
-        // List of supported Ops
-        case luci::CircleOpcode::ADD:
-          if (_target_ops.insert(node).second)
-            _op_status.emplace(node, DataFormat::NCHW);
-          break;
-        default:
-          break;
-      }
+      // List of supported Ops
+      case luci::CircleOpcode::ADD:
+        if (!has_data_format(node))
+        {
+          set_data_format(node, DataFormat::NCHW);
+        }
+        break;
+      default:
+        break;
     }
   }
 
   bool changed = false;
-  for (auto node : _target_ops)
+  for (auto node : loco::active_nodes(loco::output_nodes(g)))
   {
-    if (_op_status.at(node) == DataFormat::NHWC)
+    if (!has_data_format(node))
+    {
+      // Unsupported Op
       continue;
+    }
+    if (has_data_format(node) && get_data_format(node) == DataFormat::NHWC)
+    {
+      // Already converted to NHWC
+      continue;
+    }
     else
     {
       ConvertNCHWToNHWC converter;
@@ -252,7 +292,7 @@ bool ConvertNCHWToNHWCPass::run(loco::Graph *g)
       assert(circle_node->rank() == 4);
       if (circle_node->accept(&converter))
       {
-        _op_status.at(node) = DataFormat::NHWC;
+        set_data_format(node, DataFormat::NHWC);
         changed = true;
         break;
       }
