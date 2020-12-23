@@ -63,8 +63,8 @@ void FullyConnectedLayer::fullyConnectedQuant8()
   int32_t output_activation_max = 0;
   GetQuantizedConvolutionMultiplier(_input, _weights, _bias, _output, &real_multiplier);
   QuantizeMultiplier(real_multiplier, &output_multiplier, &output_shift);
-  CalculateActivationRangeUint8(_activation, _output, &output_activation_min,
-                                &output_activation_max);
+  CalculateActivationRangeQuantized(_activation, _output, &output_activation_min,
+                                    &output_activation_max);
 
   nnfw::cker::FullyConnectedParams op_params;
   op_params.input_offset = -_input->data_offset();

@@ -67,8 +67,8 @@ void ConvolutionLayer::convQuant8()
 {
   int32_t output_activation_min = 0;
   int32_t output_activation_max = 0;
-  CalculateActivationRangeUint8(_activation, _output, &output_activation_min,
-                                &output_activation_max);
+  CalculateActivationRangeQuantized(_activation, _output, &output_activation_min,
+                                    &output_activation_max);
 
   double real_multiplier = 0.0;
   int32_t output_multiplier = 0;

@@ -113,11 +113,27 @@ void QuantizeMultiplierGreaterThanOne(double double_multiplier, int32_t *quantiz
   *quantized_multiplier = static_cast<int32_t>(q_fixed);
 }
 
-void CalculateActivationRangeUint8(ir::Activation activation, const IPortableTensor *output,
-                                   int32_t *act_min, int32_t *act_max)
+void CalculateActivationRangeQuantized(ir::Activation activation, const IPortableTensor *output,
+                                       int32_t *act_min, int32_t *act_max)
 {
-  const int32_t qmin = std::numeric_limits<uint8_t>::min();
-  const int32_t qmax = std::numeric_limits<uint8_t>::max();
+  int32_t qmin = 0;
+  int32_t qmax = 0;
+
+  switch (output->data_type())
+  {
+    case OperandType::QUANT_UINT8_ASYMM:
+      qmin = std::numeric_limits<uint8_t>::min();
+      qmax = std::numeric_limits<uint8_t>::max();
+      break;
+    case OperandType::QUANT_INT8_ASYMM:
+    case OperandType::QUANT_INT8_SYMM:
+      qmin = std::numeric_limits<int8_t>::min();
+      qmax = std::numeric_limits<int8_t>::max();
+      break;
+    default:
+      throw std::runtime_error("CalculateActivationRangeQuantized: Not supported operand type.");
+  }
+
   const auto scale = output->data_scale();
   const auto zero_point = output->data_offset();
   auto quantize = [scale, zero_point](float f) {

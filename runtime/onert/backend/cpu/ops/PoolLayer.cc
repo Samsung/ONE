@@ -110,8 +110,8 @@ void PoolLayer::configure(const IPortableTensor *input, const uint32_t paddingLe
   {
     int32_t output_activation_min = 0;
     int32_t output_activation_max = 0;
-    CalculateActivationRangeUint8(activation, _output, &output_activation_min,
-                                  &output_activation_max);
+    CalculateActivationRangeQuantized(activation, _output, &output_activation_min,
+                                      &output_activation_max);
     op_params.quantized_activation_min = output_activation_min;
     op_params.quantized_activation_max = output_activation_max;
     _kernel = generateKernelGeneric<uint8_t>(op_params, op_type);

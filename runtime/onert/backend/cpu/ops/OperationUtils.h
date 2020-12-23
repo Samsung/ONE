@@ -195,8 +195,8 @@ void CalculateActivationRange(ir::Activation activation, T *activation_min, T *a
   }
 }
 
-void CalculateActivationRangeUint8(ir::Activation activation, const IPortableTensor *output,
-                                   int32_t *act_min, int32_t *act_max);
+void CalculateActivationRangeQuantized(ir::Activation activation, const IPortableTensor *output,
+                                       int32_t *act_min, int32_t *act_max);
 
 bool HaveSameShapes(const IPortableTensor *input1, const IPortableTensor *input2);
 
