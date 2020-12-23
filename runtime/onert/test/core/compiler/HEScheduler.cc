@@ -337,16 +337,6 @@ protected:
     setenv("PROFILING_MODE", _original_profiling_mode.c_str(), true);
   }
 
-  backend::BackendContexts buildBackendContexts(const Graph &graph)
-  {
-    backend::BackendContexts contexts;
-    for (auto backend : _mock_backends)
-    {
-      contexts.emplace(backend, backend->newContext(graph, nullptr, false));
-    }
-    return contexts;
-  }
-
   const MockBackendCPU *_cpu_backend{nullptr};
   const MockBackendGPU *_gpu_backend{nullptr};
   const MockBackendNPU *_npu_backend{nullptr};
@@ -392,9 +382,8 @@ TEST_P(HESchedulerTestWithExecutorParam, straight_graph_known_exec_time)
     et.storeOperationsExecTime();
 
     // Test scheduler
-    auto backend_contexts = buildBackendContexts(*graph);
-    auto scheduler = compiler::HEScheduler(backend_contexts,
-                                           compiler::fetchCompilerOptionsFromGlobalConfig(subgs));
+    auto scheduler =
+      compiler::HEScheduler(_mock_backends, compiler::fetchCompilerOptionsFromGlobalConfig(subgs));
     const auto br = scheduler.schedule(*graph);
     ASSERT_EQ(br->getBackend(add_op_idx)->config()->id(), "cpu");
     ASSERT_EQ(br->getBackend(sub_op_idx)->config()->id(), "gpu");
@@ -408,9 +397,8 @@ TEST_P(HESchedulerTestWithExecutorParam, straight_graph_known_exec_time)
     setPermutationsExecutionTime(_mock_backends, OPERAND_SIZE, 1e5);
 
     // Test scheduler
-    auto backend_contexts = buildBackendContexts(*graph);
-    auto scheduler = compiler::HEScheduler(backend_contexts,
-                                           compiler::fetchCompilerOptionsFromGlobalConfig(subgs));
+    auto scheduler =
+      compiler::HEScheduler(_mock_backends, compiler::fetchCompilerOptionsFromGlobalConfig(subgs));
     const auto br = scheduler.schedule(*graph);
     ASSERT_EQ(br->getBackend(add_op_idx)->config()->id(), "cpu");
     ASSERT_EQ(br->getBackend(sub_op_idx)->config()->id(), "cpu");
@@ -451,9 +439,8 @@ TEST_P(HESchedulerTestWithExecutorParam, branched_graph_known_exec_time)
     et.storeOperationsExecTime();
 
     // Test scheduler
-    auto backend_contexts = buildBackendContexts(*graph);
-    auto scheduler = compiler::HEScheduler(backend_contexts,
-                                           compiler::fetchCompilerOptionsFromGlobalConfig(subgs));
+    auto scheduler =
+      compiler::HEScheduler(_mock_backends, compiler::fetchCompilerOptionsFromGlobalConfig(subgs));
     const auto br = scheduler.schedule(*graph);
 
     std::string branch1_expected_backend("npu"), branch2_expected_backend("npu");
@@ -486,9 +473,8 @@ TEST_P(HESchedulerTestWithExecutorParam, branched_graph_known_exec_time)
     et.storeOperationsExecTime();
 
     // Test scheduler
-    auto backend_contexts = buildBackendContexts(*graph);
-    auto scheduler = compiler::HEScheduler(backend_contexts,
-                                           compiler::fetchCompilerOptionsFromGlobalConfig(subgs));
+    auto scheduler =
+      compiler::HEScheduler(_mock_backends, compiler::fetchCompilerOptionsFromGlobalConfig(subgs));
     const auto br = scheduler.schedule(*graph);
     ASSERT_EQ(br->getBackend(add_op_idx)->config()->id(), "npu");
     ASSERT_EQ(br->getBackend(mul1_op_idx)->config()->id(), "npu");
@@ -537,9 +523,8 @@ TEST_F(HESchedulerTest, branched_graph_profiling_mode)
     et.storeOperationsExecTime();
 
     // Test scheduler
-    auto backend_contexts = buildBackendContexts(*graph);
-    auto scheduler = compiler::HEScheduler(backend_contexts,
-                                           compiler::fetchCompilerOptionsFromGlobalConfig(subgs));
+    auto scheduler =
+      compiler::HEScheduler(_mock_backends, compiler::fetchCompilerOptionsFromGlobalConfig(subgs));
     const auto br = scheduler.schedule(*graph);
     ASSERT_EQ(br->getBackend(mul1_op_idx)->config()->id(), "npu");
     ASSERT_EQ(br->getBackend(mul2_op_idx)->config()->id(), "npu");
@@ -560,9 +545,8 @@ TEST_F(HESchedulerTest, branched_graph_profiling_mode)
     et.storeOperationsExecTime();
 
     // Test scheduler
-    auto backend_contexts = buildBackendContexts(*graph);
-    auto scheduler = compiler::HEScheduler(backend_contexts,
-                                           compiler::fetchCompilerOptionsFromGlobalConfig(subgs));
+    auto scheduler =
+      compiler::HEScheduler(_mock_backends, compiler::fetchCompilerOptionsFromGlobalConfig(subgs));
     const auto br = scheduler.schedule(*graph);
     ASSERT_NE(br->getBackend(add_op_idx)->config()->id(),
               br->getBackend(mul1_op_idx)->config()->id());
