@@ -28,7 +28,7 @@ TEST_F(RegressionTest, github_1535)
   nnfw_session *session1 = nullptr;
   NNFW_ENSURE_SUCCESS(nnfw_create_session(&session1));
   NNFW_ENSURE_SUCCESS(nnfw_load_model_from_file(session1, package_path.c_str()));
-  NNFW_ENSURE_SUCCESS(nnfw_set_available_backends(session1, "cpu;acl_cl;acl_neon"));
+  NNFW_ENSURE_SUCCESS(nnfw_set_available_backends(session1, "cpu"));
   NNFW_ENSURE_SUCCESS(nnfw_prepare(session1));
 
   nnfw_session *session2 = nullptr;

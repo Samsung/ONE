@@ -45,10 +45,21 @@ OperandIndex Graph::addOperand(const Shape &shape, const TypeInfo &type)
   return _operands.emplace(shape, type);
 }
 
+OperandIndex Graph::addOperand(OperandIndex index, std::unique_ptr<Operand> &&operand)
+{
+  return _operands.push(std::move(operand), index);
+}
+
 OperationIndex Graph::addOperation(std::unique_ptr<Operation> &&node)
 {
   assert(isBuildingPhase());
   return _operations.push(std::move(node));
+}
+
+OperationIndex Graph::addOperation(OperationIndex index, std::unique_ptr<Operation> &&operation)
+{
+  assert(isBuildingPhase());
+  return _operations.push(std::move(operation), index);
 }
 
 void Graph::setOperandValue(const OperandIndex &ind, std::shared_ptr<Data> data)

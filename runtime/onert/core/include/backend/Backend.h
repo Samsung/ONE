@@ -39,9 +39,7 @@ public:
   virtual ~Backend() = default;
   virtual std::shared_ptr<onert::backend::IConfig> config() const = 0;
 
-  virtual std::unique_ptr<BackendContext>
-  newContext(const ir::Graph &graph, const std::shared_ptr<backend::custom::IKernelBuilder> &kb,
-             bool is_linear_executor) const = 0;
+  virtual std::unique_ptr<BackendContext> newContext(ContextData &&) const = 0;
 };
 
 } // namespace backend

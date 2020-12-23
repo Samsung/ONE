@@ -43,8 +43,6 @@ private:
   ExecutorFactory();
 
 private:
-  static void initializeBackendContext(compiler::LoweredGraph *lowered_graph,
-                                       const backend::BackendContexts &backend_contexts);
   static void prepareMigrantTensors(compiler::LoweredGraph &lowered_graph,
                                     const backend::BackendContexts &backend_contexts);
   static exec::IExecutor *

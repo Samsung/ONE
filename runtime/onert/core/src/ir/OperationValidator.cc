@@ -17,6 +17,7 @@
 #include "OperationValidator.h"
 
 #include "ir/Graph.h"
+#include "util/logging.h"
 
 #define OP_REQUIRES(EXP)                                                                         \
   do                                                                                             \
@@ -375,9 +376,12 @@ void OperationValidator::visit(const operation::Pad &node)
   if (isPadV2)
   {
     const auto value_index{node.getInputs().at(operation::Pad::Input::VALUE)};
-    OP_REQUIRES(isSameType(input_index, value_index));
-    if (isQuantType)
-      OP_REQUIRES(isSameQuantParam(input_index, value_index));
+    const auto input_t = operandType(input_index);
+    const auto value_t = operandType(value_index);
+    const bool cond_f16 = (input_t == DataType::FLOAT16 && value_t == DataType::FLOAT16);
+    const bool cond_f32 = (input_t == DataType::FLOAT32 && value_t == DataType::FLOAT32);
+    const bool cond_q8a = (input_t == DataType::QUANT_UINT8_ASYMM && value_t == DataType::INT32);
+    OP_REQUIRES(cond_f16 || cond_f32 || cond_q8a);
   }
 }
 

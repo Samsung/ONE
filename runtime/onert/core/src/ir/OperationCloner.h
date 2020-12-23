@@ -40,6 +40,9 @@ private:
   std::unique_ptr<Operation> _return_op;
 };
 
+// TODO hide OperationCloner and wrap it with the following function
+// std::unique_ptr<Operation> clone(const Operation &operation);
+
 } // namespace ir
 } // namespace onert
 

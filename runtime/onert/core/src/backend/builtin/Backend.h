@@ -41,11 +41,9 @@ public:
 
   std::shared_ptr<IConfig> config() const override { return _config; }
 
-  std::unique_ptr<onert::backend::BackendContext>
-  newContext(const ir::Graph &graph, const std::shared_ptr<custom::IKernelBuilder> &,
-             bool) const override
+  std::unique_ptr<onert::backend::BackendContext> newContext(ContextData &&data) const override
   {
-    auto context = std::make_unique<BackendContext>(this, &graph);
+    auto context = std::make_unique<BackendContext>(this, std::move(data));
     // ControlFlow backend may not build tensors for itself because the backend's operation uses
     // tensors of other baceknd instead
     // But the backend builds tensors in case of that the controlflow operation may have constant
@@ -67,8 +65,8 @@ public:
     auto tb = std::make_shared<TensorBuilder>(tr);
     context->tensor_registry = tr;
     context->tensor_builder = tb;
-    context->kernel_gen = std::make_shared<KernelGenerator>(graph, tb->dynamicTensorManager(), tr,
-                                                            context->external_context());
+    context->kernel_gen = std::make_shared<KernelGenerator>(
+      *context->graph(), tb->dynamicTensorManager(), tr, context->external_context());
     return context;
   }
 
