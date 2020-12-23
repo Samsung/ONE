@@ -30,7 +30,7 @@ bool remove_no_effect_split(luci::CircleNode *node)
   if (split_node == nullptr)
     return false;
 
-  if (loco::succs(split_node).size()!=1)
+  if (loco::succs(split_node).size() != 1)
     return false;
 
   if (split_node->num_split() == 1)
