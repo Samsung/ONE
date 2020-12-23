@@ -5,14 +5,14 @@ import json
 from os.path import dirname, realpath, join
 import argparse
 from op_list_parser import OpListParser
-from nnpkg_handler import NnpkgHandler
+from nnpkg_helper import NnpkgHelper
 
 
 class BackendScheduler:
     def __init__(self, args):
         self.num_threads = args.num_threads
         self.root_path = dirname(dirname(dirname(realpath(__file__))))
-        self.nnpkg_handler = NnpkgHandler()
+        self.nnpkg_helper = NnpkgHelper()
 
     def read_traces(self, backend_list):
         op_time = {}
@@ -50,12 +50,9 @@ class BackendScheduler:
         backend_list.extend([backend for backend in backend_op_list])
         os.chdir(self.root_path)
 
-        op_time, infer_time = self.read_traces(backend_list)
+        op_time, backend_infer_time = self.read_traces(backend_list)
 
         backend_mapping = {}
-        backend_count = {}
-        for backend in backend_list:
-            backend_count[backend] = 0
 
         target_ops = set()
         for _, v in backend_op_list.items():
@@ -80,13 +77,8 @@ class BackendScheduler:
                     op_infer_time = backend_time
                     backend_mapping[op_index] = backend
 
-        # Count backends
-        for op_index, backend in backend_mapping.items():
-            backend_count[backend] += 1
-
         # Find default backend for Conv2D
-        default_backend = min(infer_time, key=infer_time.get)
-        # default_backend = max(backend_count, key=backend_count.get)
+        default_backend = min(backend_infer_time, key=backend_infer_time.get)
 
         # Create OP_BACKEND_MAP string
         backend_conf = ""
@@ -129,11 +121,12 @@ class BackendScheduler:
         cmd += [f"XNNPACK_THREADS={self.num_threads}"]
         print(' '.join(cmd))
 
-        # self.nnpkg_handler.add_config('../nnpkg_tst/mobilenet_v2_1.0_224_sched', cmd)
+        self.nnpkg_helper.add_config(args.nnpackage_dir, cmd)
 
 
 if __name__ == "__main__":
     arg_parser = argparse.ArgumentParser()
+    arg_parser.add_argument("nnpackage_dir", type=str, help="nnpackage folder to profile")
     arg_parser.add_argument("--num_threads",
                             type=int,
                             default=1,

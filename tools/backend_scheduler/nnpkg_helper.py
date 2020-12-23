@@ -1,7 +1,7 @@
 import os, json
 
 
-class NnpkgHandler:
+class NnpkgHelper:
     def __init__(self):
         self.config_name = 'config.cfg'
 
@@ -30,6 +30,6 @@ class NnpkgHandler:
 
 
 if __name__ == "__main__":
-    nnpkg_handler = NnpkgHandler()
-    nnpkg_handler.add_config('../nnpkg_tst/jointq_sched',
-                             ['BACKENDS=cpu', 'XNNPACK_THREADS=1'])
+    nnpkg_helper = NnpkgHelper()
+    nnpkg_helper.add_config('../nnpkg_tst/jointq_sched',
+                            ['BACKENDS=cpu', 'XNNPACK_THREADS=1'])
