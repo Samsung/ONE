@@ -12,7 +12,7 @@ class BackendScheduler:
     def __init__(self, nnpkg_dir, num_threads):
         self.nnpkg_dir = Path(nnpkg_dir).resolve()
         self.num_threads = num_threads
-        self.root_path = Path(__file__).resolve().parents[2]
+        self.root_path = Path(__file__).parents[2]
         self.nnpkg_helper = NnpkgHelper()
 
     def read_traces(self, backend_list):
@@ -20,7 +20,10 @@ class BackendScheduler:
         inference_time = {}
         for backend in backend_list:
             try:
-                with open(f"./traces/{backend}_{self.num_threads}") as f:
+                trace_path = Path(
+                    __file__).parent / 'traces' / f"{backend}_{self.num_threads}"
+                print(trace_path)
+                with open(trace_path) as f:
                     data = json.load(f)
                     execution_data = data['Execution_Data']
                     for entry in execution_data:

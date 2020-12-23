@@ -1,25 +1,25 @@
 #!/usr/bin/python3
 
 import subprocess
-from os.path import dirname, basename, isdir, realpath, normpath, join
+from pathlib import Path
 
 
 class RemoteSSH():
     def __init__(self, user, ip, nnpkg_dir, num_threads):
-        self.base_dir = '/tmp/ONE'
-        self.trace_dir = 'traces/'
+        self.base_dir = Path('/tmp/ONE')
+        self.trace_dir = 'traces'
         self.host = f"{user}@{ip}" if user != None else ip
-        self.nnpkg_dir = nnpkg_dir
-        self.root_path = dirname(dirname(dirname(realpath(__file__))))
+        self.nnpkg_dir = Path(nnpkg_dir).resolve()
+        self.root_path = Path(__file__).resolve().parents[2]
         self.num_threads = num_threads
 
     def sync_binary(self):
-        bin_dir = join(self.root_path, "Product/armv7l-linux.release/out/")
-        if (not isdir(bin_dir)):
+        bin_dir = self.root_path / 'Product/armv7l-linux.release/out'
+        if (not bin_dir.is_dir()):
             print(f"Build dir [{bin_dir}] is not exist")
             exit()
-        elif (not isdir(self.nnpkg_dir)):
-            print(f"nnpackage dir [{realpath(self.nnpkg_dir)}] is not exist")
+        elif (not self.nnpkg_dir.is_dir()):
+            print(f"nnpackage dir [{self.nnpkg_dir}] is not exist")
             exit()
         else:
             # Syne ONE runtime
@@ -33,15 +33,16 @@ class RemoteSSH():
     def sync_trace(self, backend):
         remote_trace_path = self.remote_trace_path(backend)
         local_trace_path = self.local_trace_path(backend)
+        local_trace_path.parent.mkdir(parents=True, exist_ok=True)
+        print(self.remote(remote_trace_path), local_trace_path)
         # Sync trace file
         subprocess.call(
             ["rsync", "-az",
              self.remote(remote_trace_path), local_trace_path])
 
     def profile_backend(self, backend, backend_op_list):
-        nnpkg_run_path = join(self.base_dir, "bin/nnpackage_run")
-        nnpkg_dir = basename(normpath(self.nnpkg_dir))
-        nnpkg_path = join(self.base_dir, nnpkg_dir)
+        nnpkg_run_path = self.base_dir / 'bin/nnpackage_run'
+        nnpkg_path = self.base_dir / self.nnpkg_dir.name
 
         cmd = ["ssh", f"{self.host}"]
         cmd += [f"TRACE_FILEPATH={self.remote_trace_path(backend)}"]
@@ -68,12 +69,11 @@ class RemoteSSH():
         return f"{self.host}:{path}"
 
     # TODO Create class for path generation
-    def trace_file(self, backend):
-        nnpkg_dir = basename(normpath(self.nnpkg_dir))
-        return f"{nnpkg_dir}_{backend}_{self.num_threads}"
+    def trace_name(self, backend):
+        return f"{backend}_{self.num_threads}"
 
     def remote_trace_path(self, backend):
-        return f"{join(self.base_dir,self.trace_dir,self.trace_file(backend))}"
+        return self.base_dir / self.trace_dir / self.trace_name(backend)
 
     def local_trace_path(self, backend):
-        return join(self.root_path, self.trace_dir, f"{backend}_{self.num_threads}")
+        return Path(__file__).parent / self.trace_dir / self.trace_name(backend)
