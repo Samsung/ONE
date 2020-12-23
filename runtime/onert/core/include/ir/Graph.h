@@ -92,6 +92,8 @@ public:
 
 private:
   void initializeUseDef();
+  // TODO Rename to `sweepUnusedOperands`
+  // TODO Make this public
   void sweepGarbageOperands();
 
   // Custom operations support

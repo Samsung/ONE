@@ -43,12 +43,11 @@ void Optimizer::optimize()
   {
     acl_common::AclSubTensorAnalyzer sa{*_context->graph()};
     sa.setUsePadding();
-    for (auto op_info : _context->operation_list())
-    {
-      auto &op = _context->graph()->operations().at(op_info.index);
-      sa.setLayout(op_info.layout);
-      op.accept(sa);
-    }
+    _context->graph()->operations().iterate(
+      [&](const ir::OperationIndex &, const ir::Operation &op) {
+        sa.setLayout(_context->graph()->layout());
+        op.accept(sa);
+      });
 
     _tensor_builder->parent_map(sa.releaseParentMap());
   }

@@ -25,6 +25,7 @@ namespace ir
 
 namespace
 {
+
 class OperationCloner : public OperationVisitor
 {
 public:

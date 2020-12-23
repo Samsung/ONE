@@ -42,13 +42,12 @@ public:
 
   std::shared_ptr<IConfig> config() const override { return _config; }
 
-  std::unique_ptr<backend::BackendContext>
-  newContext(const ir::Graph &graph, const std::shared_ptr<custom::IKernelBuilder> &,
-             bool is_linear_executor) const override
+  std::unique_ptr<backend::BackendContext> newContext(ContextData &&data) const override
   {
-    const auto &operands = graph.operands();
-    auto context = std::make_unique<acl_neon::BackendContext>(this, &graph);
-    auto tm = createTensorManager(is_linear_executor);
+    const auto &graph = *data.graph;
+    const auto &operands = data.graph->operands();
+    auto context = std::make_unique<acl_neon::BackendContext>(this, std::move(data));
+    auto tm = createTensorManager(data.is_linear_executor);
     auto tr = std::make_shared<acl_common::AclTensorRegistry<TensorManager>>(tm);
     auto tb = std::make_shared<TensorBuilder>(operands, tm);
     context->tensor_registry = tr;

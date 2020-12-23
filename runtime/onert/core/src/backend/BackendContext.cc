@@ -23,12 +23,5 @@ namespace onert
 namespace backend
 {
 
-void BackendContext::initialize(const std::vector<OperationInfo> &operation_list,
-                                const std::vector<ir::OperandIndex> &operand_list)
-{
-  _operation_list = operation_list;
-  _operand_list = operand_list;
-}
-
 } // namespace backend
 } // namespace onert

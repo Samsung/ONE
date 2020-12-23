@@ -34,25 +34,23 @@ class Optimizer;
 class BackendContext : public onert::backend::BackendContext
 {
 public:
-  BackendContext(const Backend *backend, const ir::Graph *graph,
+  BackendContext(const Backend *backend, ContextData &&data,
                  std::shared_ptr<ITensorRegistry> tensor_registry = nullptr,
                  std::shared_ptr<TensorBuilder> tensor_builder = nullptr,
                  std::shared_ptr<ConstantInitializer> constant_initializer = nullptr,
                  std::shared_ptr<KernelGenerator> kernel_gen = nullptr)
-    : onert::backend::BackendContext(backend, graph, tensor_registry),
+    : onert::backend::BackendContext(backend, std::move(data), tensor_registry),
       tensor_builder{tensor_builder}, constant_initializer{constant_initializer}, kernel_gen{
                                                                                     kernel_gen}
   {
   }
 
-  ITensorRegistry *genTensors(const std::vector<onert::ir::OperationIndex> &order,
-                              const compiler::GraphLowerInfo &lower_info) override;
-  FunctionMap genKernels(const std::vector<onert::ir::OperationIndex> &order) override;
+  ITensorRegistry *genTensors() override;
+  FunctionMap genKernels() override;
 
 private:
   void initConsts();
-  void planTensors(const std::vector<onert::ir::OperationIndex> &order,
-                   const compiler::GraphLowerInfo &lower_info);
+  void planTensors();
 
 public:
   // TODO Make it private

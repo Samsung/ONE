@@ -18,6 +18,7 @@
 
 #include <deque>
 #include <functional>
+#include "ir/OperationCloner.h"
 #include "exec/ExecutionObservers.h"
 #include "exec/LinearExecutor.h"
 #include "exec/DataflowExecutor.h"
@@ -96,31 +97,132 @@ void initializeSubgraphIOTensors(compiler::LoweredGraph &lowered_graph,
   }
 }
 
-backend::BackendContexts createBackendContexts(const ir::Graph &graph,
-                                               const compiler::CompilerOptions &options)
+backend::BackendContexts createBackendContexts(const compiler::LoweredGraph &lgraph,
+                                               bool linear_executor)
 {
   backend::BackendContexts contexts;
-  bool linear_executor = (options.executor == "Linear");
   auto &backend_manager = compiler::BackendManager::get();
 
-  // Always create Builtin backend context
-  auto builtin_backend = backend_manager.getBuiltin();
-  contexts.emplace(builtin_backend,
-                   builtin_backend->newContext(graph, graph.getKernelBuilder(), linear_executor));
+  std::unordered_map<const backend::Backend *, backend::ContextData> context_data_map;
 
-  // Create contexts for other backends
-  for (auto backend_str : options.backend_list)
+  // Generate partial graphs for each backend
+  for (auto backend : backend_manager.getAll())
   {
-    auto backend = backend_manager.get(backend_str);
-    if (!backend)
-    {
-      VERBOSE_F() << "Failed to create a context - backend '" << backend_str << "' was not loaded."
-                  << std::endl;
-      continue;
-    }
+    auto &data = context_data_map[backend];
+    auto graph = std::make_unique<ir::Graph>();
+    graph->setLayout(lgraph.graph().layout());
+    data.graph = std::move(graph);
+  }
 
-    contexts.emplace(backend,
-                     backend->newContext(graph, graph.getKernelBuilder(), linear_executor));
+  auto &whole_graph = lgraph.graph();
+  whole_graph.operands().iterate(
+    [&](const ir::OperandIndex &operand_ind, const ir::Operand &operand) {
+      auto &operand_li = lgraph.lower_info().operand;
+      const auto &def_factors = operand_li.at(operand_ind).def_factors();
+      if (def_factors.size() == 0) // Ignore unused tensor
+        return;
+      const auto &def_factor = def_factors.getOnlyElement();
+      const auto backend = def_factor.backend();
+      auto &partial_graph = *context_data_map[backend].graph;
+      auto &operand_layouts = context_data_map[backend].operand_layouts;
+      assert(operand_layouts.find(operand_ind) == operand_layouts.end());
+      VERBOSE(BuildBackendGraph) << "backend:" << backend->config()->id() << " Layout of "
+                                 << operand_ind << " is " << ir::to_string(def_factor.layout())
+                                 << std::endl;
+      operand_layouts[operand_ind] = def_factor.layout();
+
+      // Copy the operand and insert it to the partial graph
+      auto new_operand = std::make_unique<ir::Operand>(operand);
+      // TODO Introduce a method for resetting use/def values of Operand
+      // NOTE Use/Def info is going to be filled in `Graph::finishBuilding`
+      const_cast<ir::OperationIndexSet &>(new_operand->getUses()).clear();
+      new_operand->unsetDef();
+      auto new_operand_ind = partial_graph.addOperand(operand_ind, std::move(new_operand));
+      UNUSED_RELEASE(new_operand_ind);
+      assert(new_operand_ind == operand_ind);
+      VERBOSE(BuildBackendGraph) << "backend:" << backend->config()->id()
+                                 << " Added Native Operand " << operand_ind << std::endl;
+    });
+  whole_graph.operations().iterate(
+    [&](const ir::OperationIndex &op_ind, const ir::Operation &operation) {
+      auto &op_li = lgraph.lower_info().operation;
+      auto backend = op_li.at(op_ind).backend();
+      auto &partial_graph = *context_data_map[backend].graph;
+      auto &external_operands = context_data_map[backend].external_operands;
+      auto &operand_layouts = context_data_map[backend].operand_layouts;
+
+      {
+        // Add missing operands (externals)
+        auto io_list = (operation.getInputs() + operation.getOutputs()) | ir::Remove::DUPLICATED |
+                       ir::Remove::UNDEFINED;
+        for (auto operand_ind : io_list)
+        {
+          if (partial_graph.operands().exist(operand_ind))
+            continue;
+
+          // Copy the operand and insert it to the partial graph
+          const auto &operand = whole_graph.operands().at(operand_ind);
+          auto new_operand = std::make_unique<ir::Operand>(operand);
+          // TODO Introduce a method for resetting use/def values of Operand
+          // NOTE Use/Def info is going to be filled in `Graph::finishBuilding`
+          const_cast<ir::OperationIndexSet &>(new_operand->getUses()).clear();
+          new_operand->unsetDef();
+          auto new_operand_ind = partial_graph.addOperand(operand_ind, std::move(new_operand));
+          UNUSED_RELEASE(new_operand_ind);
+          assert(new_operand_ind == operand_ind);
+
+          auto layout =
+            lgraph.lower_info().operand.at(operand_ind).def_factors().getOnlyElement().layout();
+          assert(operand_layouts.find(operand_ind) == operand_layouts.end());
+          VERBOSE(BuildBackendGraph) << "backend:" << backend->config()->id() << " Layout of "
+                                     << operand_ind << " is " << ir::to_string(layout) << std::endl;
+          operand_layouts[operand_ind] = layout;
+          external_operands.add(operand_ind);
+          VERBOSE(BuildBackendGraph) << "backend:" << backend->config()->id()
+                                     << " Added External Operand " << operand_ind << std::endl;
+        }
+
+        auto new_op_ind = partial_graph.addOperation(op_ind, clone(operation));
+        assert(new_op_ind == op_ind);
+        VERBOSE(BuildBackendGraph) << "backend:" << backend->config()->id() << " Added Operation "
+                                   << new_op_ind << std::endl;
+      }
+    });
+
+  // Create contexts
+  auto whole_op_order = lgraph.graph().topolSortOperations();
+  for (auto &pair : context_data_map)
+  {
+    auto backend = pair.first;
+    auto &data = pair.second;
+    data.graph->finishBuilding();
+    data.graph->operands().iterate([&](const ir::OperandIndex &ind, const ir::Operand &operand) {
+      if (whole_graph.getInputs().contains(ind) || whole_graph.getOutputs().contains(ind))
+      {
+        data.external_operands.add(ind);
+        VERBOSE(BuildBackendGraph) << "backend:" << backend->config()->id()
+                                   << " Added External Operand " << ind << std::endl;
+      }
+      if (whole_graph.getInputs().contains(ind) ||
+          (!operand.getDef().valid() && !operand.isConstant()))
+      {
+        data.graph->addInput(ind);
+        VERBOSE(BuildBackendGraph) << "backend:" << backend->config()->id() << " " << ind
+                                   << " as a graph input" << std::endl;
+      }
+      if (whole_graph.getOutputs().contains(ind) || operand.getUses().size() == 0)
+      {
+        data.graph->addOutput(ind);
+        VERBOSE(BuildBackendGraph) << "backend:" << backend->config()->id() << " " << ind
+                                   << " as a graph output" << std::endl;
+      }
+    });
+
+    std::copy_if(whole_op_order.begin(), whole_op_order.end(), std::back_inserter(data.op_order),
+                 [&](const auto &ind) { return data.graph->operations().exist(ind); });
+    data.is_linear_executor = linear_executor;
+    data.custom_kernel_builder = lgraph.graph().getKernelBuilder();
+    contexts.emplace(backend, backend->newContext(std::move(data)));
   }
   return contexts;
 }
@@ -153,41 +255,6 @@ exec::IExecutor *ExecutorFactory::create(std::unique_ptr<compiler::LoweredGraph>
                                          const std::shared_ptr<exec::ExecutorMap> &executor_map)
 {
   return _map.at(options.executor)(std::move(lowered_graph), options, executor_map);
-}
-
-void ExecutorFactory::initializeBackendContext(compiler::LoweredGraph *lowered_graph,
-                                               const backend::BackendContexts &backend_contexts)
-{
-  struct Entry
-  {
-    std::vector<backend::BackendContext::OperationInfo> operation_list;
-    std::vector<ir::OperandIndex> operand_list;
-  };
-  std::unordered_map<const backend::Backend *, Entry> backend_assets;
-
-  lowered_graph->graph().operations().iterate(
-    [&](const ir::OperationIndex &op_ind, const ir::Operation &) {
-      auto &op_li = lowered_graph->lower_info().operation;
-      auto backend = op_li.getRawPtr(op_ind)->backend();
-      backend_assets[backend].operation_list.emplace_back(op_ind, lowered_graph->graph().layout());
-    });
-
-  // Build lists for operands
-  lowered_graph->graph().operands().iterate([&](const ir::OperandIndex &ind, const ir::Operand &) {
-    const auto lower_info = lowered_graph->lower_info().operand.getRawPtr(ind);
-    for (auto factor : lower_info->def_factors())
-    {
-      auto backend = factor.backend();
-      backend_assets[backend].operand_list.emplace_back(ind);
-    }
-  });
-
-  for (auto &pair : backend_assets)
-  {
-    auto backend = pair.first;
-    auto &arg = pair.second;
-    backend_contexts.at(backend)->initialize(arg.operation_list, arg.operand_list);
-  }
 }
 
 void ExecutorFactory::prepareMigrantTensors(compiler::LoweredGraph &lowered_graph,
@@ -223,8 +290,7 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lo
                                       const std::shared_ptr<exec::ExecutorMap> &executor_map)
 {
   backend::BackendContexts backend_contexts =
-    createBackendContexts(lowered_graph->graph(), options);
-  initializeBackendContext(lowered_graph.get(), backend_contexts);
+    createBackendContexts(*lowered_graph, options.executor == "Linear");
 
   TensorRegistries tensor_regs{backend_contexts, true};
 
@@ -241,7 +307,7 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lo
 
   for (auto &pair : backend_contexts)
   {
-    pair.second->genTensors(order, lowered_graph->lower_info());
+    pair.second->genTensors();
   }
 
   prepareMigrantTensors(*lowered_graph, backend_contexts);
@@ -277,7 +343,7 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lo
   // Generate kernels
   for (auto &pair : ordered_contexts)
   {
-    auto codes = pair.second->genKernels(order);
+    auto codes = pair.second->genKernels();
     for (auto &pair : codes)
     {
       auto &op_ind = pair.first;
@@ -311,9 +377,7 @@ exec::IExecutor *ExecutorFactory::createDataflowExecutor(
   const std::shared_ptr<exec::ExecutorMap> &executor_map, bool parallel)
 {
   backend::BackendContexts backend_contexts =
-    createBackendContexts(lowered_graph->graph(), options);
-
-  initializeBackendContext(lowered_graph.get(), backend_contexts);
+    createBackendContexts(*lowered_graph, options.executor == "Linear");
 
   TensorRegistries tensor_regs{backend_contexts, true};
 
@@ -324,13 +388,9 @@ exec::IExecutor *ExecutorFactory::createDataflowExecutor(
     (lowered_graph->graph().getInputs() + lowered_graph->graph().getOutputs()) |
       ir::Remove::DUPLICATED | ir::Remove::UNDEFINED);
 
-  // linearize
-  // This order is just for giving topological order info to the backens
-  // TODO When we pass a partial graph to a backend, we can remove this
-  auto order = Linear::linearize(*lowered_graph);
   for (auto &pair : backend_contexts)
   {
-    pair.second->genTensors(order, lowered_graph->lower_info());
+    pair.second->genTensors();
   }
 
   prepareMigrantTensors(*lowered_graph, backend_contexts);
@@ -366,7 +426,7 @@ exec::IExecutor *ExecutorFactory::createDataflowExecutor(
   // Generate kernels
   for (auto &pair : ordered_contexts)
   {
-    auto codes = pair.second->genKernels(order);
+    auto codes = pair.second->genKernels();
     for (auto &pair : codes)
     {
       auto &op_ind = pair.first;
