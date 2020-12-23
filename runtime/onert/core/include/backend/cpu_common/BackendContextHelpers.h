@@ -257,9 +257,6 @@ inline void initConsts(BackendContext &ctx)
 
     VERBOSE(FillOperandData) << "Fill data for " << ind << std::endl;
 
-    if (!operand.isConstant())
-      continue;
-
     auto data = operand.shareData();
     assert(data && data->base());
     ExternalTensor *ext_tensor = dynamic_cast<ExternalTensor *>(tensor);
