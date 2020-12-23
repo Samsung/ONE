@@ -1,0 +1,49 @@
+#ifndef CANONICAL_NODE
+#error "Define CANONICAL_NODE"
+#endif // CANONICAL_NODE
+
+//
+// PLEASE SORT NODE DECLS IN ALPHABETICAL ORDER
+//
+
+// CANONICAL_NODE(OPCODE, CLASS)
+CANONICAL_NODE(AvgPool2D, AvgPool2D)
+CANONICAL_NODE(BiasDecode, BiasDecode)
+CANONICAL_NODE(BiasEncode, BiasEncode)
+CANONICAL_NODE(ConstGen, ConstGen)
+CANONICAL_NODE(Conv2D, Conv2D)
+CANONICAL_NODE(DepthwiseConv2D, DepthwiseConv2D)
+CANONICAL_NODE(DepthwiseFilterDecode, DepthwiseFilterDecode)
+CANONICAL_NODE(DepthwiseFilterEncode, DepthwiseFilterEncode)
+CANONICAL_NODE(EltwiseAdd, EltwiseAdd)
+CANONICAL_NODE(EltwiseDiv, EltwiseDiv)
+CANONICAL_NODE(EltwiseMax, EltwiseMax)
+CANONICAL_NODE(EltwiseMul, EltwiseMul)
+CANONICAL_NODE(EltwiseSqrt, EltwiseSqrt)
+CANONICAL_NODE(EltwiseSub, EltwiseSub)
+CANONICAL_NODE(FeatureBiasAdd, BiasAdd<Domain::Feature>)
+CANONICAL_NODE(FeatureDecode, FeatureDecode)
+CANONICAL_NODE(FeatureEncode, FeatureEncode)
+CANONICAL_NODE(FilterDecode, FilterDecode)
+CANONICAL_NODE(FilterEncode, FilterEncode)
+CANONICAL_NODE(FixedReshape, Reshape<ReshapeType::Fixed>)
+CANONICAL_NODE(Forward, Forward)
+CANONICAL_NODE(MaxPool2D, MaxPool2D)
+// WARN Push may be excluded from canoncial dialect in the future
+CANONICAL_NODE(Push, Push)
+// WARN Pull may be excluded from canoncial dialect in the future
+CANONICAL_NODE(Pull, Pull)
+CANONICAL_NODE(ReLU, ReLU)
+CANONICAL_NODE(ReLU6, ReLU6)
+CANONICAL_NODE(Tanh, Tanh)
+CANONICAL_NODE(TensorConcat, TensorConcat)
+CANONICAL_NODE(TensorConstantPad, TensorConstantPad)
+CANONICAL_NODE(TensorBiasAdd, BiasAdd<Domain::Tensor>)
+CANONICAL_NODE(TensorBroadcast, TensorBroadcast)
+CANONICAL_NODE(TensorReduce, TensorReduce)
+CANONICAL_NODE(TensorTranspose, TensorTranspose)
+CANONICAL_NODE(TensorSoftmax, Softmax<Domain::Tensor>)
+CANONICAL_NODE(TransposedConv2D, TransposedConv2D)
+CANONICAL_NODE(MatrixEncode, MatrixEncode)
+CANONICAL_NODE(MatrixDecode, MatrixDecode)
+CANONICAL_NODE(MatMul, MatMul)
