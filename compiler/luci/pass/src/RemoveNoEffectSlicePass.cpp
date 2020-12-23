@@ -27,7 +27,7 @@ namespace
 ///          Throw an error on Invalid node or invalid node type.
 int64_t value_from_circle_const(const luci::CircleConst *node, uint32_t idx)
 {
-  if (node == nullptr || node->rank() != 1 || node->dim(0).value() <= idx)
+  if (node->rank() != 1 || node->dim(0).value() <= idx)
     throw std::runtime_error("Invalid constant node on slice");
   if (node->dtype() == loco::DataType::S64)
     return node->at<loco::DataType::S64>(idx);
