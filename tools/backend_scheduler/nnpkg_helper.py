@@ -1,9 +1,14 @@
-import os, json
+#!/usr/bin/python3
+
+import os, json, distutils
 
 
 class NnpkgHelper:
     def __init__(self):
         self.config_name = 'config.cfg'
+
+    def copy(self, src, dst):
+        distutils.dir_util.copy_tree(src, dst)
 
     def add_config(self, src, configs):
         manifest_path = os.path.join(os.path.abspath(src), 'metadata', 'MANIFEST')

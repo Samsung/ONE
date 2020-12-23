@@ -2,15 +2,16 @@
 
 import os
 import json
-from os.path import dirname, realpath, join
+from os.path import dirname, realpath, join, basename
 import argparse
 from op_list_parser import OpListParser
 from nnpkg_helper import NnpkgHelper
 
 
 class BackendScheduler:
-    def __init__(self, args):
-        self.num_threads = args.num_threads
+    def __init__(self, nnpkg_dir, num_threads):
+        self.nnpkg_dir = realpath(nnpkg_dir)
+        self.num_threads = num_threads
         self.root_path = dirname(dirname(dirname(realpath(__file__))))
         self.nnpkg_helper = NnpkgHelper()
 
@@ -64,14 +65,14 @@ class BackendScheduler:
             if op_type not in target_ops:
                 continue
 
-            print("----- Operation {} -----".format(op_index))
+            # print("----- Operation {} -----".format(op_index))
             op_infer_time = 0
             for backend in backend_list:
                 if backend not in value:
                     continue
                 backend_time = value[backend]
 
-                print("{}[{}]".format(backend, backend_time))
+                # print("{}[{}]".format(backend, backend_time))
 
                 if op_infer_time == 0 or backend_time < op_infer_time:
                     op_infer_time = backend_time
@@ -104,9 +105,9 @@ class BackendScheduler:
                         op_index, default_backend, op_backend,
                         (value[default_backend] - value[op_backend]) / 1000))
 
-        print("{} backend : {:.2f} ms".format(default_backend,
-                                              single_backend_time / 1000))
-        print("Mixed backend : {:.2f} ms".format(schedule_time / 1000))
+        for backend in backend_list:
+            print(f"{backend} backend : {backend_infer_time[backend]/1000:.2f} ms")
+        print(f"Mixed backend : {schedule_time / 1000:.2f} ms")
 
         print("-------- Backend Scheduling --------")
         cmd = []
@@ -121,7 +122,10 @@ class BackendScheduler:
         cmd += [f"XNNPACK_THREADS={self.num_threads}"]
         print(' '.join(cmd))
 
-        self.nnpkg_helper.add_config(args.nnpackage_dir, cmd)
+        dst_dir = join(dirname(realpath(__file__)), 'nnpkg_sched',
+                       basename(self.nnpkg_dir))
+        self.nnpkg_helper.copy(self.nnpkg_dir, dst_dir)
+        self.nnpkg_helper.add_config(dst_dir, cmd)
 
 
 if __name__ == "__main__":
@@ -133,4 +137,5 @@ if __name__ == "__main__":
                             help="Number of threads used by one runtime")
     args = arg_parser.parse_args()
 
-    BackendScheduler(args).schedule()
+    backend_scheduler = BackendScheduler(args.nnpackage_dir, args.num_threads)
+    backend_scheduler.schedule()
