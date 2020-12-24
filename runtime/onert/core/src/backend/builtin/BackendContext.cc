@@ -30,52 +30,7 @@ ITensorRegistry *BackendContext::genTensors(const std::vector<onert::ir::OpSeque
                                             const ir::OpSequences &op_seqs,
                                             const ir::LowerInfoMap &lower_info)
 {
-  auto model_io =
-    (graph()->getInputs() + graph()->getOutputs()) | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED;
-  for (auto index : operand_list())
-  {
-    if (model_io.contains(index))
-      continue;
-    const auto &obj = graph()->operands().at(index);
-    const auto frontend_layout = [&]() {
-      if (obj.getUses().size() == 0)
-        return ir::Layout::UNKNOWN;
-      auto use_op_ind = *obj.getUses().begin(); // FIXME What if it has two or more uses?
-      for (auto &operation_info : operation_list())
-      {
-        if (operation_info.index == use_op_ind)
-          return operation_info.layout;
-      }
-      return ir::Layout::UNKNOWN;
-    }();
-    const auto &permute_factor = lower_info.operand.at(index)->def_factors().getOnlyElement();
-    if (permute_factor.backend() != backend())
-      continue;
-    const auto backend_layout = permute_factor.layout();
-    ir::OperandInfo backend_info{permuteShape(obj.shape(), frontend_layout, backend_layout),
-                                 obj.typeInfo(), obj.info().memAllocType(), obj.isConstant()};
-    tensor_builder->registerTensorInfo(index, backend_info, backend_layout);
-  }
-
-  // TODO Get compiler options from compiler, and use it rather than getting it from Env
-  if (util::getConfigString(util::config::EXECUTOR) == "Linear")
-  {
-    cpu_common::planTensors(*this, order, op_seqs, lower_info);
-  }
-  else
-  {
-    // For the executors that does not have fixed linear execution order:
-    // To make tensors never be deallocated, this is a workaround to use static memory planner
-    for (auto ind : operand_list())
-    {
-      if (tensor_builder->isRegistered(ind))
-        tensor_builder->notifyFirstUse(ind);
-    }
-  }
-
-  tensor_builder->allocate();
-
-  return tensor_registry.get();
+  return cpu_common::genTensors(*this, order, op_seqs, lower_info);
 }
 
 FunctionMap BackendContext::genKernels(const std::vector<ir::OpSequenceIndex> &order,
