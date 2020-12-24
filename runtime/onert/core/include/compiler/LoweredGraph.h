@@ -73,6 +73,7 @@ private:
                  ir::Layout layout, const compiler::BackendResolver &backend_resolver);
   ir::OpSequenceIndex appendFreshSingleOpSequence(const ir::OperationIndex &node_index,
                                                   const ir::Operation &node);
+  std::vector<ir::OpSequenceIndex> topolSortOpSeqs() const;
 
 private:
   ir::Graph _graph;
