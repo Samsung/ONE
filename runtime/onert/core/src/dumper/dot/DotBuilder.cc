@@ -37,18 +37,18 @@ void DotBuilder::update(const Node &node_info)
 
 void DotBuilder::addOpSequence(const DotSubgraphInfo &subgraph_info)
 {
-  _dot << "subgraph cluster_" << subgraph_info.index() << " {\n";
+  _dot << "subgraph cluster_" << subgraph_info.index().value() << " {\n";
   _dot << "  label=\"" << subgraph_info.label() << "\";\n";
   _dot << "  style=filled;\n";
   _dot << "  color=lightgrey;\n";
   _dot << "  ";
   for (auto op : subgraph_info.operations())
   {
-    _dot << "operation" << op << "; ";
+    _dot << "operation" << op.value() << "; ";
   }
   for (auto op : subgraph_info.operands())
   {
-    _dot << "operand" << op << "; ";
+    _dot << "operand" << op.value() << "; ";
   }
   _dot << "\n";
   _dot << "}\n";
