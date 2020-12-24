@@ -82,15 +82,16 @@ LoweredGraph::LoweredGraph(const ir::Graph &graph, const CompilerOptions &option
   // TODO Move "schedule" phase out of here
   // Schedule
   std::unique_ptr<BackendResolver> backend_resolver;
+  auto all_backends = backend_manager.getAll();
   if (options.he_scheduler)
   {
-    auto scheduler = HEScheduler(_backend_contexts, options);
+    auto scheduler = HEScheduler(all_backends, options);
     backend_resolver = scheduler.schedule(_graph);
     _indexed_ranks = scheduler.getIndexedRanks();
   }
   else
   {
-    auto scheduler = ManualScheduler(_backend_contexts, options);
+    auto scheduler = ManualScheduler(all_backends, options);
     backend_resolver = scheduler.schedule(_graph);
   }
 

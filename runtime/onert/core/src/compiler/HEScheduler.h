@@ -50,17 +50,17 @@ public:
    * @param[in] model Graph model
    * @param[in] backend_resolver backend resolver
    */
-  HEScheduler(const backend::BackendContexts &backend_contexts, const CompilerOptions &options)
+  HEScheduler(const std::vector<const backend::Backend *> &backends, const CompilerOptions &options)
     : _is_supported{}, _backends_avail_time{}, _ops_eft{},
       _op_to_rank{std::make_shared<ir::OperationIndexMap<int64_t>>()},
       _is_profiling_mode{options.he_profiling_mode}, _is_linear_exec{options.executor == "Linear"},
       _is_parallel_exec{options.executor == "Parallel"}
   {
-    for (auto &entry : backend_contexts)
+    for (auto entry : backends)
     {
-      if (entry.first->config()->id() == backend::builtin::Config::ID)
+      if (entry->config()->id() == backend::builtin::Config::ID)
         continue;
-      _all_backends.push_back(entry.first);
+      _all_backends.push_back(entry);
     }
     _backend_resolver = std::make_unique<compiler::BackendResolver>();
     _exec_time = std::make_unique<exec::ExecTime>(_all_backends);

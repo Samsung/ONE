@@ -29,9 +29,9 @@ namespace onert
 namespace compiler
 {
 
-ManualScheduler::ManualScheduler(const backend::BackendContexts &backend_contexts,
+ManualScheduler::ManualScheduler(const std::vector<const backend::Backend *> &backends,
                                  const compiler::CompilerOptions &options)
-  : _backend_contexts{backend_contexts}, _options{options}
+  : _backends{backends}, _options{options}
 {
 }
 
@@ -88,9 +88,7 @@ std::unique_ptr<BackendResolver> ManualScheduler::schedule(const ir::Graph &grap
     try
     {
       graph.operations().at(key); // Check if exist, or this will throw
-      backend_resolver->setBackend(
-        key, BackendManager::get().get(
-               val)); // TODO Ensure this backend is available in backend contexts
+      backend_resolver->setBackend(key, BackendManager::get().get(val));
     }
     catch (...)
     {
@@ -114,7 +112,7 @@ const backend::Backend *ManualScheduler::resolveBackend(const std::string &id,
 {
   // Ensure if the backend is available in the current backend context
   const backend::Backend *backend = BackendManager::get().get(id);
-  if (!backend || _backend_contexts.find(backend) == _backend_contexts.end())
+  if (!backend || std::find(_backends.begin(), _backends.end(), backend) == _backends.end())
   {
     backend = fallback;
   }
