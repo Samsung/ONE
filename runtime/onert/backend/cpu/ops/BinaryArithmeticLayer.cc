@@ -115,7 +115,8 @@ void setAddOrSubQuant8Params(const IPortableTensor *lhs, const IPortableTensor *
                              nnfw::cker::BinaryArithmeticOpParam *params)
 {
   int32_t output_activation_min, output_activation_max;
-  CalculateActivationRangeUint8(activation, output, &output_activation_min, &output_activation_max);
+  CalculateActivationRangeQuantized(activation, output, &output_activation_min,
+                                    &output_activation_max);
   nnfw::cker::BinaryArithmeticOpParam &op_params = *params;
   op_params.quantized_activation_max = output_activation_max;
   op_params.quantized_activation_min = output_activation_min;
@@ -149,7 +150,8 @@ void setMulQuant8Params(const IPortableTensor *lhs, const IPortableTensor *rhs,
                         nnfw::cker::BinaryArithmeticOpParam *params)
 {
   int32_t output_activation_min, output_activation_max;
-  CalculateActivationRangeUint8(activation, output, &output_activation_min, &output_activation_max);
+  CalculateActivationRangeQuantized(activation, output, &output_activation_min,
+                                    &output_activation_max);
   nnfw::cker::BinaryArithmeticOpParam &op_params = *params;
 
   op_params.quantized_activation_max = output_activation_max;
