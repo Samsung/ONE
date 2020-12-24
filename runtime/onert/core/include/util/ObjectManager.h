@@ -36,7 +36,7 @@ namespace util
 template <typename Index, typename Object> class ObjectManager
 {
 public:
-  ObjectManager() : _index_count{0u} {}
+  ObjectManager() : _next_index{0u} {}
 
 public:
   /**
@@ -53,16 +53,22 @@ public:
   }
 
   /**
-   * @brief Put object in the container with a new Index for that
+   * @brief Put object in the container with given index.
+   *
+   * If the index is not valid, the index will be automatically generated.
    *
    * @param[in] object Object to be pushed
-   * @return Created index that is associated to the object
+   * @param[in] index Index associated with the object
+   * @return If @c index is valid, return created index.
+   *         Otherwise, return @c index .
    */
-  Index push(std::unique_ptr<Object> &&object)
+  Index push(std::unique_ptr<Object> &&object, Index index = Index{})
   {
-    auto index = generateIndex();
-    _objects.emplace(index, std::move(object));
-    return index;
+    auto gen_index = generateIndex(index);
+    if (!gen_index.valid())
+      return gen_index;
+    _objects.emplace(gen_index, std::move(object));
+    return gen_index;
   }
 
   /**
@@ -135,11 +141,33 @@ public:
   }
 
 private:
-  Index generateIndex() { return Index{_index_count++}; }
+  Index generateIndex(Index index = Index{})
+  {
+    // _next_index is always maintained to be "the biggest index in the object map" + 1
+    if (index.valid())
+    {
+      if (_objects.find(index) == _objects.end())
+      {
+        // If the given index does not exist, update the next index and return the index
+        if (index.value() >= _next_index)
+          _next_index = index.value() + 1;
+        return index;
+      }
+      else
+      {
+        // If the given index exists already, return a non-valid index
+        return Index{};
+      }
+    }
+    else
+    {
+      return Index{_next_index++};
+    }
+  }
 
 protected:
   std::unordered_map<Index, std::unique_ptr<Object>> _objects;
-  uint32_t _index_count;
+  uint32_t _next_index;
 };
 
 } // namespace util

@@ -65,8 +65,42 @@ TEST(ObjectManager, push)
 {
   util::ObjectManager<Index, int> man;
 
-  auto index = man.push(std::unique_ptr<int>{new int{100}});
+  // Not specify index
+  auto index = man.push(std::make_unique<int>(100));
   ASSERT_EQ(man.at(index), 100);
+
+  // Specify index
+  auto index2 = man.push(std::make_unique<int>(200), Index{33});
+  ASSERT_EQ(index2.value(), 33);
+  ASSERT_EQ(man.at(index2), 200);
+
+  auto index3 = man.push(std::make_unique<int>(300));
+  // NOTE auto-generated index number is always (biggest index in the ObjectManager + 1)
+  ASSERT_EQ(index3.value(), 34);
+  ASSERT_EQ(man.at(index3), 300);
+
+  auto index4 = man.push(std::make_unique<int>(400), Index{22});
+  ASSERT_EQ(index4.value(), 22);
+  ASSERT_EQ(man.at(index4), 400);
+
+  auto index5 = man.push(std::make_unique<int>(500));
+  // NOTE auto-generated index number is always (biggest index in the ObjectManager + 1)
+  ASSERT_EQ(index5.value(), 35);
+  ASSERT_EQ(man.at(index5), 500);
+}
+
+TEST(ObjectManager, neg_push)
+{
+  util::ObjectManager<Index, int> man;
+
+  // Specify index
+  auto index = man.push(std::make_unique<int>(100), Index{55});
+  ASSERT_EQ(index.value(), 55);
+  ASSERT_EQ(man.at(index), 100);
+
+  // Specify the same index
+  auto index2 = man.push(std::make_unique<int>(200), Index{55});
+  ASSERT_FALSE(index2.valid());
 }
 
 TEST(ObjectManager, const_iterate)
