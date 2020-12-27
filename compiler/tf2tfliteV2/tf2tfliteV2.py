@@ -180,7 +180,7 @@ def _v2_convert(flags):
             raise ValueError("--input_arrays must be provided")
         if not flags.output_arrays:
             raise ValueError("--output_arrays must be provided")
-        input_shapes = None
+        input_shapes = []
         if flags.input_shapes:
             input_shapes = [
                 _parse_array(shape, type_fn=int)
