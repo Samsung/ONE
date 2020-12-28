@@ -100,11 +100,15 @@ uint32_t cal_offset(const loco::TensorShape &dimension, const uint32_t *indices)
 
 luci::CircleConst *create_NHWC_from_NCHW(luci::CircleConst *constant)
 {
+  LOGGER(l);
   assert(constant->rank() == 4);
 
   // TODO: Support non-float types
   if (constant->dtype() != loco::DataType::FLOAT32)
+  {
+    INFO(l) << "Non-float type constants." << std::endl;
     return nullptr;
+  }
 
   loco::TensorShape nchw_dimension{constant->dim(0), constant->dim(1), constant->dim(2),
                                    constant->dim(3)};
@@ -283,7 +287,7 @@ bool ConvertNCHWToNHWCPass::run(loco::Graph *g)
       // Unsupported Op
       continue;
     }
-    if (has_data_format(node) && get_data_format(node) == DataFormat::NHWC)
+    else if (get_data_format(node) == DataFormat::NHWC)
     {
       // Already converted to NHWC
       continue;
