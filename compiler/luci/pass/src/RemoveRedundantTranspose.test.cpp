@@ -115,7 +115,6 @@ void create_redundunt_transpose(loco::Graph *g, const std::vector<int32_t> &perm
   output->index(graph_output->index());
 }
 /**
- *  Type1
  *  BEFORE
  *            |
  *      [CircleNode]       [CircleConst]
@@ -132,7 +131,7 @@ void create_redundunt_transpose(loco::Graph *g, const std::vector<int32_t> &perm
  *       [CircleNode]
  *           /  \       Remove all transpose
  * [CircleNode][CircleNode]
- * Type2
+ * Type 2
  *                |                 |
  *          [CircleNode]      [CircleConst]
  *           (main_node)     (new_const_node)
