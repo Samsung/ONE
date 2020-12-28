@@ -30,7 +30,7 @@ Operations::Operations(const Operations &obj)
     op.accept(cloner);
     _objects.emplace(index, cloner.releaseClone());
   });
-  _index_count = obj._index_count;
+  _next_index = obj._next_index;
 }
 
 } // namespace ir

@@ -29,7 +29,7 @@ Operands::Operands(const Operands &obj)
   obj.iterate([&](const OperandIndex &index, const Operand &operand) {
     _objects.emplace(index, std::make_unique<Operand>(operand));
   });
-  _index_count = obj._index_count;
+  _next_index = obj._next_index;
 }
 
 } // namespace ir
