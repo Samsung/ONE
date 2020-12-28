@@ -298,8 +298,7 @@ bool ConvertNCHWToNHWCPass::run(loco::Graph *g)
       }
       else
       {
-        throw std::runtime_error("Unsupported pattern. " + circle_node->name() +
-                                 " node does not have a proper NCHW format.");
+        continue;
       }
     }
   }
