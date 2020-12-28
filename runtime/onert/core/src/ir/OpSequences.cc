@@ -113,12 +113,5 @@ OpSequenceIndex OpSequences::findOperation(const OperationIndex &operation_index
   throw std::runtime_error("Operation not found");
 }
 
-void dumpOpSequences(const OpSequences &op_seqs, const Operations &operations)
-{
-  op_seqs.iterate([&](const OpSequenceIndex &idx, const OpSequence &op_seq) {
-    VERBOSE(OpSequences) << idx << "] " << getStrFromOpSeq(op_seq, operations) << std::endl;
-  });
-}
-
 } // namespace ir
 } // namespace onert
