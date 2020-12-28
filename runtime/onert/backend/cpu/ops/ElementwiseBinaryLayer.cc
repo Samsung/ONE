@@ -91,7 +91,8 @@ bool haveSameQauntInfo(const IPortableTensor *lhs, const IPortableTensor *rhs,
                        const IPortableTensor *output)
 {
   return (lhs->data_scale() == rhs->data_scale() && lhs->data_scale() == output->data_scale()) &&
-         (lhs->data_offset() == rhs->data_offset() && lhs->data_offset() == output->data_offset());
+         (lhs->data_zero_point() == rhs->data_zero_point() &&
+          lhs->data_zero_point() == output->data_zero_point());
 }
 } // namespace
 

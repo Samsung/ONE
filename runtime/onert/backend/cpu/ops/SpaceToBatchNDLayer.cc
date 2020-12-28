@@ -66,7 +66,7 @@ void SpaceToBatchNDLayer::checkDimension()
 }
 
 template <> uint32_t SpaceToBatchNDLayer::getPad<float>() { return 0; }
-template <> uint32_t SpaceToBatchNDLayer::getPad<uint8_t>() { return _output->data_offset(); }
+template <> uint32_t SpaceToBatchNDLayer::getPad<uint8_t>() { return _output->data_zero_point(); }
 
 template <typename T> void SpaceToBatchNDLayer::spaceToBatchND()
 {

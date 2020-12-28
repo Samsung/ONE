@@ -60,7 +60,7 @@ void PadLayer::run()
   {
     if (_constantValueData.u8 == nullptr)
     {
-      uint8_t pad_value = static_cast<uint8_t>(_output->data_offset());
+      uint8_t pad_value = static_cast<uint8_t>(_output->data_zero_point());
       padImpl<uint8_t>(&pad_value);
     }
     else

@@ -135,7 +135,7 @@ void CalculateActivationRangeQuantized(ir::Activation activation, const IPortabl
   }
 
   const auto scale = output->data_scale();
-  const auto zero_point = output->data_offset();
+  const auto zero_point = output->data_zero_point();
   auto quantize = [scale, zero_point](float f) {
     return zero_point + static_cast<int32_t>(std::round(f / scale));
   };

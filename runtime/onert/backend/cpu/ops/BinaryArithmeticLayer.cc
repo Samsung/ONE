@@ -123,9 +123,9 @@ void setAddOrSubQuant8Params(const IPortableTensor *lhs, const IPortableTensor *
   // Parameters for scaled quantized computation
   op_params.left_shift = 20;
   // Zero-points of input and output tensors
-  op_params.input1_offset = -lhs->data_offset();
-  op_params.input2_offset = -rhs->data_offset();
-  op_params.output_offset = output->data_offset();
+  op_params.input1_offset = -lhs->data_zero_point();
+  op_params.input2_offset = -rhs->data_zero_point();
+  op_params.output_offset = output->data_zero_point();
   assert((op_params.input1_offset <= 0) && (op_params.input1_offset >= -255));
   assert((op_params.input2_offset <= 0) && (op_params.input2_offset >= -255));
   assert((op_params.output_offset >= 0) && (op_params.output_offset <= 255));
@@ -156,9 +156,9 @@ void setMulQuant8Params(const IPortableTensor *lhs, const IPortableTensor *rhs,
 
   op_params.quantized_activation_max = output_activation_max;
   op_params.quantized_activation_min = output_activation_min;
-  op_params.input1_offset = -lhs->data_offset();
-  op_params.input2_offset = -rhs->data_offset();
-  op_params.output_offset = output->data_offset();
+  op_params.input1_offset = -lhs->data_zero_point();
+  op_params.input2_offset = -rhs->data_zero_point();
+  op_params.output_offset = output->data_zero_point();
 
   double real_multiplier = lhs->data_scale() * rhs->data_scale() / output->data_scale();
   QuantizeMultiplier(real_multiplier, &op_params.output_multiplier, &op_params.output_shift);

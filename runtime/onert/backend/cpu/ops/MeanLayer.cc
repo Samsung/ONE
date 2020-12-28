@@ -60,9 +60,9 @@ void MeanLayer::MeanQuant8()
 {
   nnfw::cker::MeanQ8Asymm(getTensorShape(_input),
                           reinterpret_cast<const uint8_t *>(_input->buffer()), _input->data_scale(),
-                          _input->data_offset(), getTensorShape(_output),
+                          _input->data_zero_point(), getTensorShape(_output),
                           reinterpret_cast<uint8_t *>(_output->buffer()), _output->data_scale(),
-                          _output->data_offset(), getReducerAxes(_axes));
+                          _output->data_zero_point(), getReducerAxes(_axes));
 }
 
 void MeanLayer::configure(const IPortableTensor *input, const IPortableTensor *axes,

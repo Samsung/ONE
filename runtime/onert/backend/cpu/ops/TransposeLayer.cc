@@ -65,7 +65,7 @@ template <typename T> void TransposeLayer::transpose()
 
 void TransposeLayer::transposeQuant8()
 {
-  if (_input->data_offset() != _output->data_offset())
+  if (_input->data_zero_point() != _output->data_zero_point())
   {
     throw std::runtime_error("TransposeLayer : qassym8 input and output offsets unmatched");
   }

@@ -126,8 +126,8 @@ void evalSumQuantized(const IPortableTensor *input, IPortableTensor *output,
                       const std::vector<int> &axes, bool keep_dims,
                       nnfw::cker::Reduce &reduce_kernel)
 {
-  const bool same_scale =
-    (input->data_scale() == output->data_scale() && input->data_offset() == output->data_offset());
+  const bool same_scale = (input->data_scale() == output->data_scale() &&
+                           input->data_zero_point() == output->data_zero_point());
 
   reduce_kernel.prepare(input->getShape().rank(), axes.size());
 
@@ -135,10 +135,10 @@ void evalSumQuantized(const IPortableTensor *input, IPortableTensor *output,
   {
     std::vector<int32_t> temp_sum(output->getShape().num_elements());
     bool result = reduce_kernel.QuantizedMeanOrSum<uint8_t, int32_t>(
-      reinterpret_cast<const uint8_t *>(input->buffer()), input->data_offset(), input->data_scale(),
-      getTensorShape(input), reinterpret_cast<uint8_t *>(output->buffer()), output->data_offset(),
-      output->data_scale(), getTensorShape(output), axes, keep_dims, temp_sum.data(), true,
-      [](const int32_t current, const uint8_t in) -> int32_t {
+      reinterpret_cast<const uint8_t *>(input->buffer()), input->data_zero_point(),
+      input->data_scale(), getTensorShape(input), reinterpret_cast<uint8_t *>(output->buffer()),
+      output->data_zero_point(), output->data_scale(), getTensorShape(output), axes, keep_dims,
+      temp_sum.data(), true, [](const int32_t current, const uint8_t in) -> int32_t {
         const int32_t actual_in = static_cast<int32_t>(in);
         return current + actual_in;
       });
