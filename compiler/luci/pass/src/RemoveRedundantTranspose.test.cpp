@@ -232,17 +232,14 @@ TEST(RemoveRedundantTransposePass, remove_consecutive_transpose_function_type1)
   while (pass.run(graph.get()))
     ;
   luci::CircleTranspose *transpose_node = nullptr;
-  int count = 0;
   for (auto node : loco::active_nodes(loco::output_nodes(graph.get())))
   {
     auto trans = dynamic_cast<luci::CircleTranspose *>(node);
     if (not trans)
       continue;
     transpose_node = trans;
-    count++;
   }
   // No transpose node is in graph.
-  ASSERT_EQ(0, count);
   ASSERT_EQ(nullptr, transpose_node);
 }
 
@@ -255,17 +252,14 @@ TEST(RemoveRedundantTransposePass, remove_consecutive_transpose_function_type2)
   while (pass.run(graph.get()))
     ;
   luci::CircleTranspose *transpose_node = nullptr;
-  int count = 0;
   for (auto node : loco::active_nodes(loco::output_nodes(graph.get())))
   {
     auto trans = dynamic_cast<luci::CircleTranspose *>(node);
     if (not trans)
       continue;
     transpose_node = trans;
-    count++;
   }
   // Just one transpose node, with updated perm constant.
-  ASSERT_EQ(1, count);
   ASSERT_NE(nullptr, transpose_node);
   auto perm = loco::must_cast<luci::CircleConst *>(transpose_node->perm());
   ASSERT_EQ(1, perm->at<loco::DataType::S32>(0));
@@ -284,17 +278,14 @@ TEST(RemoveRedundantTransposePass, remove_consecutive_transpose_function_with_br
 
   run_phase(graph.get());
   luci::CircleTranspose *transpose_node = nullptr;
-  int count = 0;
   for (auto node : loco::active_nodes(loco::output_nodes(graph.get())))
   {
     auto trans = dynamic_cast<luci::CircleTranspose *>(node);
     if (not trans)
       continue;
     transpose_node = trans;
-    count++;
   }
   // No transpose node is in graph.
-  ASSERT_EQ(0, count);
   ASSERT_EQ(nullptr, transpose_node);
 }
 
@@ -305,17 +296,13 @@ TEST(RemoveRedundantTransposePass, remove_consecutive_transpose_function_with_br
 
   run_phase(graph.get());
   luci::CircleTranspose *transpose_node = nullptr;
-  int count = 0;
   for (auto node : loco::active_nodes(loco::output_nodes(graph.get())))
   {
     auto trans = dynamic_cast<luci::CircleTranspose *>(node);
     if (not trans)
       continue;
     transpose_node = trans;
-    count++;
   }
-  // Just one transpose node, with updated perm constant.
-  ASSERT_EQ(1, count);
   ASSERT_NE(nullptr, transpose_node);
   auto perm = loco::must_cast<luci::CircleConst *>(transpose_node->perm());
   ASSERT_EQ(1, perm->at<loco::DataType::S32>(0));

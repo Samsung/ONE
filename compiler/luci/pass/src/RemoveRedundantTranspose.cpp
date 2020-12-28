@@ -59,9 +59,9 @@ bool remove_consecutive_transpose_function(luci::CircleNode *node)
   }
   else
   {
-    auto g = main_node->graph();
-
+    auto g = main_perm->graph();
     auto new_const_node = g->nodes()->create<luci::CircleConst>();
+
     new_const_node->dtype(loco::DataType::S32);
     new_const_node->rank(1);
     new_const_node->dim(0) = main_perm->dim(0);
