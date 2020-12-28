@@ -122,14 +122,14 @@ void dequantizeInt8(const IPortableTensor *input, IPortableTensor *output)
 {
   nnfw::cker::Dequantize(getTensorShape(input), reinterpret_cast<const int8_t *>(input->buffer()),
                          getTensorShape(output), reinterpret_cast<float *>(output->buffer()),
-                         input->data_scale(), input->data_offset());
+                         input->data_scale(), input->data_zero_point());
 }
 
 void dequantizeUint8(const IPortableTensor *input, IPortableTensor *output)
 {
   nnfw::cker::Dequantize(getTensorShape(input), reinterpret_cast<const uint8_t *>(input->buffer()),
                          getTensorShape(output), reinterpret_cast<float *>(output->buffer()),
-                         input->data_scale(), input->data_offset());
+                         input->data_scale(), input->data_zero_point());
 }
 
 void expFloat32(const IPortableTensor *input, IPortableTensor *output)

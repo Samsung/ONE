@@ -46,7 +46,7 @@ public:
   virtual ir::Layout layout() const = 0;
   virtual ir::DataType data_type() const = 0;
   virtual float data_scale() const = 0;
-  virtual int32_t data_offset() const = 0;
+  virtual int32_t data_zero_point() const = 0;
   virtual bool has_padding() const = 0;
   virtual void access(const std::function<void(ITensor &tensor)> &fn) = 0;
 

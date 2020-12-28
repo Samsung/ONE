@@ -61,7 +61,7 @@ public:
   ir::Layout layout() const override { return _layout; }
   ir::DataType data_type() const override { return _info.typeInfo().type(); }
   float data_scale() const override { return _info.typeInfo().scale(); }
-  int32_t data_offset() const override { return _info.typeInfo().offset(); }
+  int32_t data_zero_point() const override { return _info.typeInfo().offset(); }
   bool is_dynamic() const override { return _dynamic; }
   void set_dynamic() override { _dynamic = true; }
   ir::Shape getShape() const override { return _info.shape(); }

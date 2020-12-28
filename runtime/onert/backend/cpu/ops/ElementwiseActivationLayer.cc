@@ -43,9 +43,9 @@ ElementwiseActivationLayer::ElementwiseActivationLayer()
 void ElementwiseActivationLayer::PopulateLookupTable(const ElementwiseActivationType op_type)
 {
   const auto input_scale = static_cast<double>(_input->data_scale());
-  const auto input_zero_point = static_cast<int32_t>(_input->data_offset());
+  const auto input_zero_point = static_cast<int32_t>(_input->data_zero_point());
   const auto output_scale = static_cast<double>(_output->data_scale());
-  const auto output_zero_point = static_cast<int32_t>(_output->data_offset());
+  const auto output_zero_point = static_cast<int32_t>(_output->data_zero_point());
   const float inverse_scale = 1 / output_scale;
   int32_t maxval = std::numeric_limits<uint8_t>::max();
   int32_t minval = std::numeric_limits<uint8_t>::min();

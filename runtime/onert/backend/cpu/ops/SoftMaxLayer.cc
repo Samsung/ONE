@@ -74,7 +74,7 @@ void SoftMaxLayer::softmaxQuant8()
 {
   nnfw::cker::SoftmaxParams op_params;
   op_params.scale = _output->data_scale();
-  op_params.zero_point = _output->data_offset();
+  op_params.zero_point = _output->data_zero_point();
   op_params.uint8_table1 = _uint8_table1;
   op_params.uint8_table2 = _uint8_table2;
   op_params.table = _table;

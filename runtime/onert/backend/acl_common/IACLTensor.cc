@@ -54,7 +54,7 @@ float IACLTensor::data_scale() const
   return info()->quantization_info().uniform().scale;
 }
 
-int32_t IACLTensor::data_offset() const
+int32_t IACLTensor::data_zero_point() const
 {
   // FIXME What if quantization info is non-uniform?
   return info()->quantization_info().uniform().offset;

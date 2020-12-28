@@ -60,7 +60,7 @@ void LogSoftMaxLayer::logsoftmaxQuant8()
   op_params.beta = _beta;
   op_params.axis = _axis;
   op_params.table = _table;
-  op_params.zero_point = _output->data_offset();
+  op_params.zero_point = _output->data_zero_point();
   op_params.scale = _output->data_scale();
   nnfw::cker::LogSoftmax(op_params, _input->data_scale(), getTensorShape(_input),
                          reinterpret_cast<const uint8_t *>(_input->buffer()),

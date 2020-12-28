@@ -49,8 +49,8 @@ void compareQuant8(const IPortableTensor *lhs, const IPortableTensor *rhs, IPort
 {
   nnfw::cker::ComparisonParams params;
   params.left_shift = 8;
-  params.input1_offset = -lhs->data_offset();
-  params.input2_offset = -rhs->data_offset();
+  params.input1_offset = -lhs->data_zero_point();
+  params.input2_offset = -rhs->data_zero_point();
   const double norm_max_scale =
     2 * std::max(std::abs(lhs->data_scale()), std::abs(rhs->data_scale()));
   const double adjusted_lhs_scale = lhs->data_scale() / norm_max_scale;

@@ -72,9 +72,9 @@ void DepthwiseConvolutionLayer::convQuant8()
   op_params.padding_values.width = _paddingLeft;
   op_params.padding_values.height = _paddingTop;
   op_params.depth_multiplier = _multiplier;
-  op_params.input_offset = -_input->data_offset();
-  op_params.weights_offset = -_kernel->data_offset();
-  op_params.output_offset = _output->data_offset();
+  op_params.input_offset = -_input->data_zero_point();
+  op_params.weights_offset = -_kernel->data_zero_point();
+  op_params.output_offset = _output->data_zero_point();
   op_params.output_multiplier = output_multiplier;
   op_params.output_shift = output_shift;
   op_params.quantized_activation_min = output_activation_min;
