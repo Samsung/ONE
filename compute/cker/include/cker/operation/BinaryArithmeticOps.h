@@ -208,12 +208,12 @@ inline void BinaryArithmeticOp(const BinaryArithmeticOpParam &params, const Shap
   {
     case nnfw::cker::BinaryArithmeticOpType::ADD:
     case nnfw::cker::BinaryArithmeticOpType::SUB:
-      optimized::AddQuant8(params, input1_shape, input1_data, input2_shape, input2_data,
-                           output_shape, output_data);
+      optimized::Add(params, input1_shape, input1_data, input2_shape, input2_data, output_shape,
+                     output_data);
       break;
     case nnfw::cker::BinaryArithmeticOpType::MUL:
-      optimized::MulQuant8(params, input1_shape, const_cast<uint8_t *>(input1_data), input2_shape,
-                           const_cast<uint8_t *>(input2_data), output_shape, output_data);
+      optimized::Mul(params, input1_shape, const_cast<uint8_t *>(input1_data), input2_shape,
+                     const_cast<uint8_t *>(input2_data), output_shape, output_data);
       break;
     case nnfw::cker::BinaryArithmeticOpType::DIV:
       throw std::runtime_error{"Quant8 Asymm NYI"};
@@ -276,13 +276,13 @@ inline void BroadcastBinaryArithmeticOp(BinaryArithmeticOpParam &params, const S
   {
     case nnfw::cker::BinaryArithmeticOpType::ADD:
     case nnfw::cker::BinaryArithmeticOpType::SUB:
-      optimized::BroadcastAddDispatchQuant8(params, input1_shape, input1_data, input2_shape,
-                                            input2_data, output_shape, output_data);
+      optimized::BroadcastAddDispatch(params, input1_shape, input1_data, input2_shape, input2_data,
+                                      output_shape, output_data);
       break;
     case nnfw::cker::BinaryArithmeticOpType::MUL:
-      optimized::BroadcastMulDispatchQuant8(
-        params, input1_shape, const_cast<uint8_t *>(input1_data), input2_shape,
-        const_cast<uint8_t *>(input2_data), output_shape, output_data);
+      optimized::BroadcastMulDispatch(params, input1_shape, const_cast<uint8_t *>(input1_data),
+                                      input2_shape, const_cast<uint8_t *>(input2_data),
+                                      output_shape, output_data);
       break;
     case nnfw::cker::BinaryArithmeticOpType::DIV:
     case nnfw::cker::BinaryArithmeticOpType::POW:
