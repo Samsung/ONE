@@ -40,34 +40,50 @@ public:
 
 public:
   /**
-   * @brief Create an object with args and put it in the container with a new Index for that
+   * @brief Create an object with args and put it in the container with a newly assigned @c Index
    *
    * @param[in] args Arguments for creating Operand object
-   * @return Created index that is associated to the object
+   * @return Created index that is associated to the object if successful, Undefined index otherwise
    */
   template <class... Args> Index emplace(Args &&... args)
   {
     auto index = generateIndex();
+    if (!index.valid())
+      return index;
     _objects.emplace(index, std::make_unique<Object>(std::forward<Args>(args)...));
     return index;
   }
 
   /**
-   * @brief Put object in the container with given index.
+   * @brief Put the object in the container with given index.
    *
-   * If the index is not valid, the index will be automatically generated.
+   * It fails when the given index is already taken or @c index is Undefined.
    *
    * @param[in] object Object to be pushed
    * @param[in] index Index associated with the object
-   * @return If @c index is valid, return created index.
-   *         Otherwise, return @c index .
+   * @return @c index if successful, an Undefined index otherwise
    */
-  Index push(std::unique_ptr<Object> &&object, Index index = Index{})
+  Index push(std::unique_ptr<Object> &&object, Index index)
   {
-    auto gen_index = generateIndex(index);
-    if (!gen_index.valid())
-      return gen_index;
-    _objects.emplace(gen_index, std::move(object));
+    auto gen_index = tryIndex(index);
+    if (gen_index.valid())
+      _objects.emplace(gen_index, std::move(object));
+    return gen_index;
+  }
+
+  /**
+   * @brief Put the object in the container with a newly assigned index.
+   *
+   * It fails when it cannot generate a valid index.
+   *
+   * @param[in] object Object to be pushed
+   * @return The newly assigned index if successful, an Undefined index otherwise
+   */
+  Index push(std::unique_ptr<Object> &&object)
+  {
+    auto gen_index = generateIndex();
+    if (gen_index.valid())
+      _objects.emplace(gen_index, std::move(object));
     return gen_index;
   }
 
@@ -105,6 +121,12 @@ public:
     return it != _objects.end();
   }
   /**
+   * @brief Return the number of objects that the manager contains
+   *
+   * @return size_t Number of objects
+   */
+  size_t size() const { return _objects.size(); }
+  /**
    * @brief Iterate over the container with given function
    *
    * @param[in] fn Function to be run for every container entry
@@ -141,28 +163,32 @@ public:
   }
 
 private:
-  Index generateIndex(Index index = Index{})
+  // Try assigning the given index
+  Index tryIndex(Index index)
   {
-    // _next_index is always maintained to be "the biggest index in the object map" + 1
-    if (index.valid())
+    if (!index.valid())
+      return index;
+    if (_objects.find(index) == _objects.end())
     {
-      if (_objects.find(index) == _objects.end())
-      {
-        // If the given index does not exist, update the next index and return the index
-        if (index.value() >= _next_index)
-          _next_index = index.value() + 1;
-        return index;
-      }
-      else
-      {
-        // If the given index exists already, return a non-valid index
-        return Index{};
-      }
+      // If the given index does not exist, update the next index and return the index
+      if (index.value() >= _next_index)
+        _next_index = index.value() + 1;
+      return index;
     }
     else
     {
-      return Index{_next_index++};
+      // If the given index exists already, return a non-valid index
+      return Index{};
     }
+  }
+
+  // Generate a new index with `_next_index`
+  Index generateIndex()
+  {
+    if (Index{_next_index}.valid())
+      return Index{_next_index++};
+    else
+      return Index{};
   }
 
 protected:

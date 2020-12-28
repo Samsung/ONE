@@ -103,6 +103,50 @@ TEST(ObjectManager, neg_push)
   ASSERT_FALSE(index2.valid());
 }
 
+static const uint32_t kMaxUInt32 = std::numeric_limits<uint32_t>::max();
+
+TEST(ObjectManager, neg_push_undefined_index)
+{
+  util::ObjectManager<Index, int> man;
+
+  // Try inserting invalid(undefined) index
+  auto index = man.push(std::make_unique<int>(100), Index{kMaxUInt32});
+  ASSERT_FALSE(index.valid());
+  ASSERT_EQ(man.size(), 0);
+}
+
+TEST(ObjectManager, neg_push_max_index)
+{
+  util::ObjectManager<Index, int> man;
+
+  // Insert an object with maximum valid index
+  auto index = man.push(std::make_unique<int>(100), Index{kMaxUInt32 - 1});
+  ASSERT_EQ(index.value(), kMaxUInt32 - 1);
+  ASSERT_EQ(man.at(index), 100);
+  ASSERT_EQ(man.size(), 1);
+
+  // Reached to the final index so next push/emplace must fail
+  auto index2 = man.push(std::make_unique<int>(200));
+  ASSERT_EQ(man.size(), 1);
+  ASSERT_FALSE(index2.valid());
+}
+
+TEST(ObjectManager, neg_emplace_max_index)
+{
+  util::ObjectManager<Index, int> man;
+
+  // Insert an object with maximum valid index
+  auto index = man.push(std::make_unique<int>(100), Index{kMaxUInt32 - 1});
+  ASSERT_EQ(index.value(), kMaxUInt32 - 1);
+  ASSERT_EQ(man.at(index), 100);
+  ASSERT_EQ(man.size(), 1);
+
+  // Reached to the final index so next push/emplace must fail
+  auto index3 = man.emplace(200);
+  ASSERT_EQ(man.size(), 1);
+  ASSERT_FALSE(index3.valid());
+}
+
 TEST(ObjectManager, const_iterate)
 {
   util::ObjectManager<Index, int> man;
