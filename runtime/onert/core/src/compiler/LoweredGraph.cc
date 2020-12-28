@@ -17,6 +17,7 @@
 #include "compiler/LoweredGraph.h"
 
 #include <assert.h>
+#include <algorithm>
 #include <sstream>
 #include "util/logging.h"
 #include "compiler/pass/ConstantInsertionPass.h"
@@ -25,7 +26,6 @@
 #include "compiler/pass/PermutationOperationPass.h"
 #include "compiler/pass/PermutationInsertionPass.h"
 #include "compiler/pass/PermutationEliminationPass.h"
-#include "ir/GraphIterator.h"
 #include "ir/verifier/Verifier.h"
 #include "backend/Backend.h"
 #include "backend/IConfig.h"
@@ -198,14 +198,7 @@ void LoweredGraph::removeLowerInfo(const ir::OperandIndex &index)
 void LoweredGraph::iterateTopolOpSeqs(
   const std::function<void(const ir::OpSequenceIndex &, const ir::OpSequence &)> &fn) const
 {
-  // Topological Sorting for ir::OpSequences
-  std::vector<ir::OpSequenceIndex> topol_sorted;
-  ir::PostDfsIterator<true>{}.iterateOpSeqs(
-    *this, [&](const ir::OpSequenceIndex &index, const ir::OpSequence &) {
-      topol_sorted.emplace_back(index);
-    });
-  std::reverse(topol_sorted.begin(), topol_sorted.end());
-  for (const auto op_seq_idx : topol_sorted)
+  for (const auto op_seq_idx : topolSortOpSeqs())
   {
     const auto &op_seq = _op_seqs.at(op_seq_idx);
     fn(op_seq_idx, op_seq);
@@ -215,13 +208,7 @@ void LoweredGraph::iterateTopolOpSeqs(
 void LoweredGraph::iterateTopolOpSeqs(
   const std::function<void(const ir::OpSequenceIndex &, ir::OpSequence &)> &fn)
 {
-  // Topological Sorting for ir::OpSequences
-  std::vector<ir::OpSequenceIndex> topol_sorted;
-  ir::PostDfsIterator<false>{}.iterateOpSeqs(
-    *this,
-    [&](const ir::OpSequenceIndex &index, ir::OpSequence &) { topol_sorted.emplace_back(index); });
-  std::reverse(topol_sorted.begin(), topol_sorted.end());
-  for (const auto op_seq_idx : topol_sorted)
+  for (const auto op_seq_idx : topolSortOpSeqs())
   {
     auto &op_seq = _op_seqs.at(op_seq_idx);
     fn(op_seq_idx, op_seq);
@@ -259,8 +246,11 @@ void LoweredGraph::makeOpSequences(
 
   // NOTE: The below method appends nodes while making one op_seq if needed. If something better
   // ways, happy to update this code.
-  ir::PostDfsConstIterator{}.iterate(_graph, [&](const ir::OperationIndex &node_index,
-                                                 const ir::Operation &node) {
+  auto operations_post_dfs = graph().topolSortOperations();
+  std::reverse(operations_post_dfs.begin(), operations_post_dfs.end());
+  for (auto node_index : operations_post_dfs)
+  {
+    const ir::Operation &node = graph().operations().at(node_index);
     // LowerInfo for in/output operands
     auto backend = backend_resolver.getBackend(node_index);
 
@@ -319,7 +309,7 @@ void LoweredGraph::makeOpSequences(
       VERBOSE(Lower) << op_seq_index << " merges " << node_index << "(" << node.name() << ")"
                      << std::endl;
     }
-  });
+  }
 }
 
 void LoweredGraph::manipulateLowerInfo(
@@ -552,6 +542,40 @@ bool LoweredGraph::mergeable(const ir::OpSequenceIndex &op_seq_index,
   }
 
   return false;
+}
+
+std::vector<ir::OpSequenceIndex> LoweredGraph::topolSortOpSeqs() const
+{
+  std::vector<ir::OpSequenceIndex> ret;
+  std::unordered_map<ir::OpSequenceIndex, bool> visited;
+  op_seqs().iterate(
+    [&](const ir::OpSequenceIndex &index, const ir::OpSequence &) { visited[index] = false; });
+
+  std::function<void(const ir::OpSequenceIndex &, const ir::OpSequence &)> dfs =
+    [&](const ir::OpSequenceIndex &index, const ir::OpSequence &op_seq) {
+      if (visited[index])
+        return;
+      visited[index] = true;
+
+      for (const auto output : op_seq.getOutputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED)
+      {
+        const auto &operand = graph().operands().at(output);
+        for (const auto &use : operand.getUses())
+        {
+          const auto use_ind = op_seqs().getOperation(use);
+          dfs(use_ind, op_seqs().at(use_ind));
+        }
+      }
+      ret.push_back(index);
+    };
+  op_seqs().iterate(dfs);
+
+  // All of the operations(nodes) must have been visited.
+  assert(std::all_of(visited.begin(), visited.end(),
+                     [](const std::pair<const ir::OpSequenceIndex, bool> &v) { return v.second; }));
+  // Reversing Postorder DFS result to make it sorted in topoligical order
+  std::reverse(ret.begin(), ret.end());
+  return ret;
 }
 
 } // namespace compiler

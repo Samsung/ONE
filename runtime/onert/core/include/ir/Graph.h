@@ -104,6 +104,10 @@ public:
   std::shared_ptr<Subgraphs> &subgraphs() { return _subgraphs; }
   Layout layout() const { return _layout; }
 
+  // Topological sort
+public:
+  std::vector<ir::OperationIndex> topolSortOperations() const;
+
 private:
   Phase _phase{Phase::BUILDING};
   Operations _operations;

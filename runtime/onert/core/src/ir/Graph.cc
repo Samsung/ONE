@@ -28,7 +28,7 @@
 #include "ir/operand/LowerInfo.h"
 #include "ir/operand/PermuteFactor.h"
 #include "ir/OperandIndexMap.h"
-#include "ir/GraphIterator.h"
+#include "ir/OperationIndexMap.h"
 #include "backend/IConfig.h"
 
 namespace onert
@@ -152,6 +152,39 @@ void Graph::sweepGarbageOperands()
       operands().remove(ind);
     }
   });
+}
+
+std::vector<ir::OperationIndex> Graph::topolSortOperations() const
+{
+  std::vector<ir::OperationIndex> ret;
+  ir::OperationIndexMap<bool> visited;
+  operations().iterate(
+    [&](const ir::OperationIndex &index, const ir::Operation &) { visited[index] = false; });
+
+  std::function<void(const ir::OperationIndex &, const ir::Operation &)> dfs =
+    [&](const ir::OperationIndex &index, const ir::Operation &op) -> void {
+    if (visited[index])
+      return;
+    visited[index] = true;
+
+    for (const auto output : op.getOutputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED)
+    {
+      const auto &operand = operands().at(output);
+      for (const auto &use : operand.getUses())
+      {
+        dfs(use, operations().at(use));
+      }
+    }
+    ret.push_back(index);
+  };
+  operations().iterate(dfs);
+
+  // All of the operations(nodes) must have been visited.
+  assert(std::all_of(visited.begin(), visited.end(),
+                     [](const std::pair<const ir::OperationIndex, bool> &v) { return v.second; }));
+  // Reversing Postorder DFS result to make it sorted in topoligical order
+  std::reverse(ret.begin(), ret.end());
+  return ret;
 }
 
 } // namespace ir
