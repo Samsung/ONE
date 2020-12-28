@@ -78,4 +78,5 @@ if(NOT ENABLE_TEST)
   return()
 endif(NOT ENABLE_TEST)
 
+add_subdirectory(dummy-driver)
 add_subdirectory(tests)
