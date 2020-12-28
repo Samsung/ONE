@@ -60,10 +60,12 @@ void ParallelExecutor::notify(uint32_t finished_job_id)
 }
 
 ParallelExecutor::ParallelExecutor(std::unique_ptr<compiler::LoweredGraph> lowered_graph,
+                                   backend::BackendContexts &&backend_contexts,
                                    const compiler::TensorRegistries &tensor_regs,
                                    compiler::CodeMap &&code_map,
                                    const util::TracingCtx *tracing_ctx)
-  : DataflowExecutor{std::move(lowered_graph), tensor_regs, std::move(code_map), tracing_ctx}
+  : DataflowExecutor{std::move(lowered_graph), std::move(backend_contexts), tensor_regs,
+                     std::move(code_map), tracing_ctx}
 {
   VERBOSE(ParallelExecutor) << "Constructing Parallel Executor" << std::endl;
 }

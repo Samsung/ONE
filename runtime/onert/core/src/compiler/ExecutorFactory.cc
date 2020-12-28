@@ -26,6 +26,7 @@
 #include "compiler/ExecutionBuilder.h"
 #include "exec/ExecTime.h"
 #include "compiler/Linear.h"
+#include "compiler/BackendManager.h"
 #include "backend/IPortableTensor.h"
 #include "backend/builtin/Config.h"
 #include "backend/builtin/KernelGenerator.h"
@@ -65,11 +66,12 @@ private:
 };
 
 void initializeSubgraphIOTensors(compiler::LoweredGraph &lowered_graph,
+                                 const backend::BackendContexts &backend_contexts,
                                  const ir::OperandIndexSequence &indices)
 {
   // TODO Store builtin backend in BackendContext
   std::shared_ptr<backend::builtin::TensorRegistry> builtin_tensor_reg;
-  for (const auto &e : lowered_graph.backend_contexts())
+  for (const auto &e : backend_contexts)
   {
     auto backend = e.first;
     auto &context = e.second;
@@ -92,6 +94,35 @@ void initializeSubgraphIOTensors(compiler::LoweredGraph &lowered_graph,
     // Add tensor to builtin TensorRegistry.
     builtin_tensor_reg->setNativeIOTensor(ind, std::move(tensor));
   }
+}
+
+backend::BackendContexts createBackendContexts(const ir::Graph &graph,
+                                               const compiler::CompilerOptions &options)
+{
+  backend::BackendContexts contexts;
+  bool linear_executor = (options.executor == "Linear");
+  auto &backend_manager = compiler::BackendManager::get();
+
+  // Always create Builtin backend context
+  auto builtin_backend = backend_manager.getBuiltin();
+  contexts.emplace(builtin_backend,
+                   builtin_backend->newContext(graph, graph.getKernelBuilder(), linear_executor));
+
+  // Create contexts for other backends
+  for (auto backend_str : options.backend_list)
+  {
+    auto backend = backend_manager.get(backend_str);
+    if (!backend)
+    {
+      VERBOSE_F() << "Failed to create a context - backend '" << backend_str << "' was not loaded."
+                  << std::endl;
+      continue;
+    }
+
+    contexts.emplace(backend,
+                     backend->newContext(graph, graph.getKernelBuilder(), linear_executor));
+  }
+  return contexts;
 }
 
 } // namespace
@@ -124,7 +155,8 @@ exec::IExecutor *ExecutorFactory::create(std::unique_ptr<compiler::LoweredGraph>
   return _map.at(options.executor)(std::move(lowered_graph), options, executor_map);
 }
 
-void ExecutorFactory::initializeBackendContext(compiler::LoweredGraph *lowered_graph)
+void ExecutorFactory::initializeBackendContext(compiler::LoweredGraph *lowered_graph,
+                                               const backend::BackendContexts &backend_contexts)
 {
   struct Entry
   {
@@ -158,18 +190,19 @@ void ExecutorFactory::initializeBackendContext(compiler::LoweredGraph *lowered_g
   {
     auto backend = pair.first;
     auto &arg = pair.second;
-    lowered_graph->backend_contexts().at(backend)->initialize(arg.operation_list, arg.operand_list);
+    backend_contexts.at(backend)->initialize(arg.operation_list, arg.operand_list);
   }
 }
 
-void ExecutorFactory::prepareMigrantTensors(compiler::LoweredGraph &lowered_graph)
+void ExecutorFactory::prepareMigrantTensors(compiler::LoweredGraph &lowered_graph,
+                                            const backend::BackendContexts &backend_contexts)
 {
-  TensorRegistries tensor_regs{lowered_graph.backend_contexts(), true};
+  TensorRegistries tensor_regs{backend_contexts, true};
 
   lowered_graph.op_seqs().iterate(
     [&](const ir::OpSequenceIndex &op_seq_index, const ir::OpSequence &op_seq) {
       auto lower_info = lowered_graph.getLowerInfo(op_seq_index);
-      auto &backend_ctx = lowered_graph.backend_contexts().at(lower_info->backend());
+      auto &backend_ctx = backend_contexts.at(lower_info->backend());
       for (auto ind : (op_seq.getInputs() + op_seq.getOutputs()) | ir::Remove::DUPLICATED |
                         ir::Remove::UNDEFINED)
       {
@@ -193,17 +226,18 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lo
                                       const compiler::CompilerOptions &options,
                                       const std::shared_ptr<exec::ExecutorMap> &executor_map)
 {
-  const auto &backend_contexts = lowered_graph->backend_contexts();
+  backend::BackendContexts backend_contexts =
+    createBackendContexts(lowered_graph->graph(), options);
+  initializeBackendContext(lowered_graph.get(), backend_contexts);
 
-  initializeBackendContext(lowered_graph.get());
-
-  TensorRegistries tensor_regs{lowered_graph->backend_contexts(), true};
+  TensorRegistries tensor_regs{backend_contexts, true};
 
   assert(!lowered_graph->graph().isBuildingPhase());
 
   initializeSubgraphIOTensors(
-    *lowered_graph, (lowered_graph->graph().getInputs() + lowered_graph->graph().getOutputs()) |
-                      ir::Remove::DUPLICATED | ir::Remove::UNDEFINED);
+    *lowered_graph, backend_contexts,
+    (lowered_graph->graph().getInputs() + lowered_graph->graph().getOutputs()) |
+      ir::Remove::DUPLICATED | ir::Remove::UNDEFINED);
 
   // linearize
   auto order = Linear::linearize(*lowered_graph);
@@ -214,7 +248,7 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lo
     pair.second->genTensors(order, lowered_graph->op_seqs(), *lowered_graph->getLowerInfo());
   }
 
-  prepareMigrantTensors(*lowered_graph);
+  prepareMigrantTensors(*lowered_graph, backend_contexts);
 
   // Give some runtime objects to builtin KernelGenerator
   for (auto &pair : backend_contexts)
@@ -262,8 +296,9 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lo
 
   auto code_map = builder.releaseCodeMap();
 
-  auto exec = new exec::LinearExecutor{std::move(lowered_graph), tensor_regs, std::move(code_map),
-                                       order, options.tracing_ctx};
+  auto exec = new exec::LinearExecutor{
+    std::move(lowered_graph), std::move(backend_contexts), tensor_regs, std::move(code_map), order,
+    options.tracing_ctx};
 
   if (!options.trace_filepath.empty())
   {
@@ -279,17 +314,19 @@ exec::IExecutor *ExecutorFactory::createDataflowExecutor(
   std::unique_ptr<compiler::LoweredGraph> lowered_graph, const compiler::CompilerOptions &options,
   const std::shared_ptr<exec::ExecutorMap> &executor_map, bool parallel)
 {
-  const auto &backend_contexts = lowered_graph->backend_contexts();
+  backend::BackendContexts backend_contexts =
+    createBackendContexts(lowered_graph->graph(), options);
 
-  initializeBackendContext(lowered_graph.get());
+  initializeBackendContext(lowered_graph.get(), backend_contexts);
 
-  TensorRegistries tensor_regs{lowered_graph->backend_contexts(), true};
+  TensorRegistries tensor_regs{backend_contexts, true};
 
   assert(!lowered_graph->graph().isBuildingPhase());
 
   initializeSubgraphIOTensors(
-    *lowered_graph, (lowered_graph->graph().getInputs() + lowered_graph->graph().getOutputs()) |
-                      ir::Remove::DUPLICATED | ir::Remove::UNDEFINED);
+    *lowered_graph, backend_contexts,
+    (lowered_graph->graph().getInputs() + lowered_graph->graph().getOutputs()) |
+      ir::Remove::DUPLICATED | ir::Remove::UNDEFINED);
 
   // linearize
   // This order is just for giving topological order info to the backens
@@ -300,7 +337,7 @@ exec::IExecutor *ExecutorFactory::createDataflowExecutor(
     pair.second->genTensors(order, lowered_graph->op_seqs(), *lowered_graph->getLowerInfo());
   }
 
-  prepareMigrantTensors(*lowered_graph);
+  prepareMigrantTensors(*lowered_graph, backend_contexts);
 
   // Give some runtime objects to builtin KernelGenerator
   for (auto &pair : backend_contexts)
@@ -351,13 +388,14 @@ exec::IExecutor *ExecutorFactory::createDataflowExecutor(
   exec::ExecutorBase *exec = nullptr;
   if (parallel)
   {
-    exec = new exec::ParallelExecutor{std::move(lowered_graph), tensor_regs, std::move(code_map),
-                                      options.tracing_ctx};
+    exec = new exec::ParallelExecutor{std::move(lowered_graph), std::move(backend_contexts),
+                                      tensor_regs, std::move(code_map), options.tracing_ctx};
   }
   else
   {
-    auto dataflow_exec = new exec::DataflowExecutor{std::move(lowered_graph), tensor_regs,
-                                                    std::move(code_map), options.tracing_ctx};
+    auto dataflow_exec =
+      new exec::DataflowExecutor{std::move(lowered_graph), std::move(backend_contexts), tensor_regs,
+                                 std::move(code_map), options.tracing_ctx};
     if (options.he_profiling_mode)
     {
       std::vector<const backend::Backend *> backends;

@@ -56,8 +56,6 @@ public:
     const std::function<void(const ir::OpSequenceIndex &, const ir::OpSequence &)> &fn) const;
   void
   iterateTopolOpSeqs(const std::function<void(const ir::OpSequenceIndex &, ir::OpSequence &)> &fn);
-  const backend::BackendContexts &backend_contexts() { return _backend_contexts; }
-  const backend::BackendContexts &backend_contexts() const { return _backend_contexts; }
   std::shared_ptr<ir::OperationIndexMap<int64_t>> indexed_ranks() { return _indexed_ranks; }
 
 private:
@@ -76,7 +74,6 @@ private:
 
 private:
   ir::Graph _graph;
-  backend::BackendContexts _backend_contexts;
   std::shared_ptr<ir::OperationIndexMap<int64_t>> _indexed_ranks;
   ir::LowerInfoMap _lower_info_map;
   // Pass(for Perm) can accept only graph so that Graph has OpSequences as a member

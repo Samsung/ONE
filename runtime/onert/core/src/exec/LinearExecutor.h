@@ -48,9 +48,10 @@ public:
    * @param code_map OpSequence and its code map
    */
   LinearExecutor(std::unique_ptr<compiler::LoweredGraph> lowered_graph,
+                 backend::BackendContexts &&backend_contexts,
                  const compiler::TensorRegistries &tensor_regs, compiler::CodeMap &&code_map,
                  const std::vector<ir::OpSequenceIndex> &order, const util::TracingCtx *tracing_ctx)
-    : ExecutorBase{std::move(lowered_graph), tensor_regs, tracing_ctx}
+    : ExecutorBase{std::move(lowered_graph), std::move(backend_contexts), tensor_regs, tracing_ctx}
   {
     for (auto index : order)
     {

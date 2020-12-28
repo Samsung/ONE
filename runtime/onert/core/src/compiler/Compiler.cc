@@ -236,12 +236,12 @@ std::shared_ptr<exec::ExecutorMap> Compiler::compile(void)
 
     // Check backend(s) for subgraph support FP16
     bool backends_support_fp16 = true;
-    auto &contexts = (*lowered_subgs[index]).backend_contexts();
-    for (auto it = contexts.begin(); it != contexts.end(); it++)
+    auto all_backends = BackendManager::get().getAll();
+    for (auto backend : all_backends)
     {
       // Builtin backend is not for actual computaion of operations so it is an exception
-      if (it->first->config()->id() != backend::builtin::Config::ID)
-        backends_support_fp16 &= it->first->config()->supportFP16();
+      if (backend->config()->id() != backend::builtin::Config::ID)
+        backends_support_fp16 &= backend->config()->supportFP16();
     }
 
     if (_options.fp16_enable && backends_support_fp16)
