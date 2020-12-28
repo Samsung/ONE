@@ -31,6 +31,13 @@ enum class DataFormat
   NHWC
 };
 
+/**
+ * @brief Set annotation for DataFormat (NCHW, NHWC)
+ *
+ * @note DataFormatAnnotation will live longer than this Pass (until the
+ *       annotated loco::Node is erased). So, do not use large data in the
+ *       annotation to avoid excessive memory usage.
+ */
 class DataFormatAnnotation final : public loco::NodeAnnotation
 {
 public:
@@ -106,7 +113,7 @@ luci::CircleConst *create_NHWC_from_NCHW(luci::CircleConst *constant)
   // TODO: Support non-float types
   if (constant->dtype() != loco::DataType::FLOAT32)
   {
-    INFO(l) << "Non-float type constants." << std::endl;
+    INFO(l) << "Non-float type constant: " << constant->name() << std::endl;
     return nullptr;
   }
 
