@@ -13,16 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <logo/Phase.h>
-#include <logo/RemoveDeadNodeWithQueryPass.h>
-
 #include "luci/Pass/RemoveRedundantTransposePass.h"
-#include "luci/Pass/ShapeInferencePass.h"
-#include "luci/Pass/ShapeSignatureInferencePass.h"
-#include "luci/Pass/TypeInferencePass.h"
-
-// TODO: Remove this after refactoring is done
-#include "luci/Pass/MigrateLegacyShapeDtypePass.h"
 
 #include <luci/IR/CircleNodes.h>
 
@@ -116,31 +107,32 @@ void create_redundunt_transpose(loco::Graph *g, const std::vector<int32_t> &perm
 }
 /**
  *  BEFORE
- *            |
- *      [CircleNode]       [CircleConst]
- *               \           /
- *[CircleConst] [CircleTranspose] [CircleConst]
- *        \          / \              /
- *  [CircleTranspose] [CircleTranspose]
- *          |                |
- *     [CircleNode]     [CircleNode]
+ *             |
+ *       [CircleNode]       [CircleConst]
+ *                 \           /
+ *  [CircleConst] [CircleTranspose] [CircleConst]
+ *          \          / \              /
+ *     [CircleTranspose] [CircleTranspose]
+ *            |                |
+ *       [CircleNode]     [CircleNode]
  *
  *  AFTER
- * Type 1
- *            |
- *       [CircleNode]
- *           /  \       Remove all transpose
- * [CircleNode][CircleNode]
- * Type 2
+ *   Type 1
+ *              |
+ *         [CircleNode]
+ *             /  \       Remove all transpose
+ *   [CircleNode] [CircleNode]
+ *
+ *   Type 2
  *                |                 |
  *          [CircleNode]      [CircleConst]
  *           (main_node)     (new_const_node)
  *               / \               /
  *    [CircleNode] [CircleTranspose]
- *          |       (new_trans_node)
+ *                  (new_trans_node)
  *                         |
  *                    [CircleNode]
- *                         |
+ *
  */
 void create_redundunt_transpose_with_branch(loco::Graph *g, const std::vector<int32_t> &perm1,
                                             const std::vector<int32_t> &perm2,
@@ -203,24 +195,6 @@ void create_redundunt_transpose_with_branch(loco::Graph *g, const std::vector<in
   graph_output2->shape({4, 4, 4, 4});
 }
 
-void run_phase(loco::Graph *g)
-{
-  logo::Phase phase;
-
-  // Default passes.
-  phase.emplace_back(std::make_unique<logo::RemoveDeadNodeWithQueryPass>());
-  phase.emplace_back(std::make_unique<luci::MigrateLegacyShapeDtypePass>());
-  phase.emplace_back(std::make_unique<luci::TypeInferencePass>());
-  phase.emplace_back(std::make_unique<luci::ShapeInferencePass>());
-  phase.emplace_back(std::make_unique<luci::ShapeSignatureInferencePass>());
-
-  // Pass to test
-  phase.emplace_back(std::make_unique<luci::RemoveRedundantTransposePass>());
-
-  logo::PhaseRunner<logo::PhaseStrategy::Restart> phase_runner{g};
-  phase_runner.run(phase);
-}
-
 } // namespace
 
 TEST(RemoveRedundantTransposePass, remove_consecutive_transpose_function_type1)
@@ -238,6 +212,7 @@ TEST(RemoveRedundantTransposePass, remove_consecutive_transpose_function_type1)
     if (not trans)
       continue;
     transpose_node = trans;
+    break;
   }
   // No transpose node is in graph.
   ASSERT_EQ(nullptr, transpose_node);
@@ -258,6 +233,7 @@ TEST(RemoveRedundantTransposePass, remove_consecutive_transpose_function_type2)
     if (not trans)
       continue;
     transpose_node = trans;
+    break;
   }
   // Just one transpose node, with updated perm constant.
   ASSERT_NE(nullptr, transpose_node);
@@ -276,7 +252,9 @@ TEST(RemoveRedundantTransposePass, remove_consecutive_transpose_function_with_br
   auto graph = loco::make_graph();
   create_redundunt_transpose_with_branch(graph.get(), {1, 0, 2, 3}, {1, 0, 2, 3}, {1, 0, 2, 3});
 
-  run_phase(graph.get());
+  luci::RemoveRedundantTransposePass pass;
+  while (pass.run(graph.get()))
+    ;
   luci::CircleTranspose *transpose_node = nullptr;
   for (auto node : loco::active_nodes(loco::output_nodes(graph.get())))
   {
@@ -284,6 +262,7 @@ TEST(RemoveRedundantTransposePass, remove_consecutive_transpose_function_with_br
     if (not trans)
       continue;
     transpose_node = trans;
+    break;
   }
   // No transpose node is in graph.
   ASSERT_EQ(nullptr, transpose_node);
@@ -294,7 +273,9 @@ TEST(RemoveRedundantTransposePass, remove_consecutive_transpose_function_with_br
   auto graph = loco::make_graph();
   create_redundunt_transpose_with_branch(graph.get(), {1, 0, 2, 3}, {1, 0, 2, 3}, {0, 1, 3, 2});
 
-  run_phase(graph.get());
+  luci::RemoveRedundantTransposePass pass;
+  while (pass.run(graph.get()))
+    ;
   luci::CircleTranspose *transpose_node = nullptr;
   for (auto node : loco::active_nodes(loco::output_nodes(graph.get())))
   {
@@ -302,6 +283,7 @@ TEST(RemoveRedundantTransposePass, remove_consecutive_transpose_function_with_br
     if (not trans)
       continue;
     transpose_node = trans;
+    break;
   }
   ASSERT_NE(nullptr, transpose_node);
   auto perm = loco::must_cast<luci::CircleConst *>(transpose_node->perm());

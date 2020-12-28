@@ -104,13 +104,13 @@ namespace luci
  *  AFTER
  *      <Optional Case>
  *
- *                |                 |                    |
- *          [CircleNode]      [CircleConst]              |
- *           (main_node)     (new_const_node)            |
- *               / \               /           or  [CircleNode]
- *[CircleTranspose][CircleTranspose]                (main_node)
- *   (pred_node)    (new_trans_node)                     |
- *                         |                             |
+ *                 |                 |                    |
+ *           [CircleNode]      [CircleConst]              |
+ *            (main_node)     (new_const_node)            |
+ *                 / \               /           or  [CircleNode]
+ * [CircleTranspose] [CircleTranspose]                (main_node)
+ *    (pred_node)    (new_trans_node)                     |
+ *                          |                             |
  *
  */
 bool RemoveRedundantTransposePass::run(loco::Graph *g)
