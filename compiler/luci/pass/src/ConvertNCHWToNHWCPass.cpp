@@ -104,7 +104,7 @@ luci::CircleConst *create_NHWC_from_NCHW(luci::CircleConst *constant)
 
   // TODO: Support non-float types
   if (constant->dtype() != loco::DataType::FLOAT32)
-    throw std::runtime_error("ConvertNCHWToNHWCPass only supports FP32 model for now.");
+    return nullptr;
 
   loco::TensorShape nchw_dimension{constant->dim(0), constant->dim(1), constant->dim(2),
                                    constant->dim(3)};
@@ -210,9 +210,12 @@ class ConvertNCHWToNHWC final : public luci::CircleNodeMutableVisitor<bool>
     {
       auto pre_trans = create_pre_transpose(node);
       pre_trans->a(pred_node);
-      node->x(pre_trans);
 
       auto nhwc_const = create_NHWC_from_NCHW(beta);
+      if (nhwc_const == nullptr)
+        return false;
+
+      node->x(pre_trans);
       node->y(nhwc_const);
     }
     else if (beta == nullptr)
