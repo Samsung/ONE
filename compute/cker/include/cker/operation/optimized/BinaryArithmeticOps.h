@@ -142,9 +142,9 @@ inline int32_t quant8_sum(const BinaryArithmeticOpParam &params, const uint8_t i
   return clamped_output;
 }
 
-inline void AddElementwiseQuant8(int size, const BinaryArithmeticOpParam &params,
-                                 const uint8_t *input1_data, const uint8_t *input2_data,
-                                 uint8_t *output_data)
+inline void AddElementwise(int size, const BinaryArithmeticOpParam &params,
+                           const uint8_t *input1_data, const uint8_t *input2_data,
+                           uint8_t *output_data)
 {
   int i = 0;
 
@@ -473,12 +473,12 @@ getBinaryOpWithActivationImplFloat(const BinaryArithmeticOpParam &params)
                                   BinaryOpScalarBroadcast<FUNC, BinaryOpActivationFloatMinMax>);
 }
 
-inline void AddQuant8(const BinaryArithmeticOpParam &params, const Shape &input1_shape,
-                      const uint8_t *input1_data, const Shape &input2_shape,
-                      const uint8_t *input2_data, const Shape &output_shape, uint8_t *output_data)
+inline void Add(const BinaryArithmeticOpParam &params, const Shape &input1_shape,
+                const uint8_t *input1_data, const Shape &input2_shape, const uint8_t *input2_data,
+                const Shape &output_shape, uint8_t *output_data)
 {
   const int flat_size = MatchingElementsSize(input1_shape, input2_shape, output_shape);
-  AddElementwiseQuant8(flat_size, params, input1_data, input2_data, output_data);
+  AddElementwise(flat_size, params, input1_data, input2_data, output_data);
 }
 
 inline void Add(const BinaryArithmeticOpParam &params, const Shape &input1_shape,
@@ -506,10 +506,10 @@ inline void AddScalarBroadcastQuant8(int size, const BinaryArithmeticOpParam &pa
   }
 }
 
-inline void BroadcastAddDispatchQuant8(const BinaryArithmeticOpParam &params,
-                                       const Shape &input1_shape, const uint8_t *input1_data,
-                                       const Shape &input2_shape, const uint8_t *input2_data,
-                                       const Shape &output_shape, uint8_t *output_data)
+inline void BroadcastAddDispatch(const BinaryArithmeticOpParam &params, const Shape &input1_shape,
+                                 const uint8_t *input1_data, const Shape &input2_shape,
+                                 const uint8_t *input2_data, const Shape &output_shape,
+                                 uint8_t *output_data)
 {
   if (params.broadcast_category == BroadcastableOpCategory::kGenericBroadcast)
   {
@@ -527,7 +527,7 @@ inline void BroadcastAddDispatchQuant8(const BinaryArithmeticOpParam &params,
       params, params.broadcast_category == BroadcastableOpCategory::kSecondInputBroadcastsFast,
       input1_shape, input1_data, input2_shape, input2_data, output_shape, output_data,
       static_cast<void (*)(int, const BinaryArithmeticOpParam &, const uint8_t *, const uint8_t *,
-                           uint8_t *)>(AddElementwiseQuant8),
+                           uint8_t *)>(AddElementwise),
       static_cast<void (*)(int, const BinaryArithmeticOpParam &, uint8_t, const uint8_t *,
                            uint8_t *)>(AddScalarBroadcastQuant8));
   }
@@ -607,9 +607,9 @@ inline int32_t quant8_mul(const BinaryArithmeticOpParam &params, const uint8_t i
   return clamped_output;
 }
 
-inline void MulElementwiseQuant8(int size, const BinaryArithmeticOpParam &params,
-                                 const uint8_t *input1_data, const uint8_t *input2_data,
-                                 uint8_t *output_data)
+inline void MulElementwise(int size, const BinaryArithmeticOpParam &params,
+                           const uint8_t *input1_data, const uint8_t *input2_data,
+                           uint8_t *output_data)
 {
   int i = 0;
 
@@ -671,12 +671,12 @@ inline void MulElementwiseQuant8(int size, const BinaryArithmeticOpParam &params
   }
 }
 
-inline void MulQuant8(const BinaryArithmeticOpParam &params, const Shape &input1_shape,
-                      const uint8_t *input1_data, const Shape &input2_shape,
-                      const uint8_t *input2_data, const Shape &output_shape, uint8_t *output_data)
+inline void Mul(const BinaryArithmeticOpParam &params, const Shape &input1_shape,
+                const uint8_t *input1_data, const Shape &input2_shape, const uint8_t *input2_data,
+                const Shape &output_shape, uint8_t *output_data)
 {
   const int flat_size = MatchingElementsSize(input1_shape, input2_shape, output_shape);
-  MulElementwiseQuant8(flat_size, params, input1_data, input2_data, output_data);
+  MulElementwise(flat_size, params, input1_data, input2_data, output_data);
 }
 
 inline void Mul(const BinaryArithmeticOpParam &params, const Shape &input1_shape,
@@ -688,9 +688,9 @@ inline void Mul(const BinaryArithmeticOpParam &params, const Shape &input1_shape
   (*implFuncs.first)(flat_size, params, input1_data, input2_data, output_data);
 }
 
-inline void MulSimpleBroadcastQuant8(int size, const BinaryArithmeticOpParam &params,
-                                     const uint8_t broadcast_value, const uint8_t *input2_data,
-                                     uint8_t *output_data)
+inline void MulSimpleBroadcast(int size, const BinaryArithmeticOpParam &params,
+                               const uint8_t broadcast_value, const uint8_t *input2_data,
+                               uint8_t *output_data)
 {
   int i = 0;
   int32_t clamped_output;
@@ -701,10 +701,10 @@ inline void MulSimpleBroadcastQuant8(int size, const BinaryArithmeticOpParam &pa
   }
 }
 
-inline void BroadcastMulDispatchQuant8(const BinaryArithmeticOpParam &params,
-                                       const Shape &input1_shape, const uint8_t *input1_data,
-                                       const Shape &input2_shape, const uint8_t *input2_data,
-                                       const Shape &output_shape, uint8_t *output_data)
+inline void BroadcastMulDispatch(const BinaryArithmeticOpParam &params, const Shape &input1_shape,
+                                 const uint8_t *input1_data, const Shape &input2_shape,
+                                 const uint8_t *input2_data, const Shape &output_shape,
+                                 uint8_t *output_data)
 {
   if (params.broadcast_category == BroadcastableOpCategory::kGenericBroadcast)
   {
@@ -721,9 +721,9 @@ inline void BroadcastMulDispatchQuant8(const BinaryArithmeticOpParam &params,
     params, params.broadcast_category == BroadcastableOpCategory::kSecondInputBroadcastsFast,
     input1_shape, input1_data, input2_shape, input2_data, output_shape, output_data,
     static_cast<void (*)(int, const BinaryArithmeticOpParam &, const uint8_t *, const uint8_t *,
-                         uint8_t *)>(MulElementwiseQuant8),
+                         uint8_t *)>(MulElementwise),
     static_cast<void (*)(int, const BinaryArithmeticOpParam &, uint8_t, const uint8_t *,
-                         uint8_t *)>(MulSimpleBroadcastQuant8));
+                         uint8_t *)>(MulSimpleBroadcast));
 }
 
 inline void BroadcastMulDispatch(const BinaryArithmeticOpParam &params, const Shape &input1_shape,
