@@ -185,6 +185,8 @@ private:
   // Generate a new index with `_next_index`
   Index generateIndex()
   {
+    // No need to check if there is an entry with _next_index since
+    // _next_index is always ("the highest index in the object map" + 1)
     if (Index{_next_index}.valid())
       return Index{_next_index++};
     else
