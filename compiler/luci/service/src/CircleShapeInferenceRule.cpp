@@ -607,6 +607,7 @@ loco::NodeShape infer_depthwise_conv2d(const luci::CircleDepthwiseConv2D *node)
   assert(ifm_shape.rank() == 4);
   assert(ker_shape.rank() == 4);
   assert(ker_shape.dim(0).value() == 1);
+  assert(ifm_shape.dim(3).value() * node->depthMultiplier() == ker_shape.dim(3).value());
 
   auto os = infer_conv2d_type(node);
 
