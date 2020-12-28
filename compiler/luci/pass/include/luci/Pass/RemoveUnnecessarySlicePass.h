@@ -25,9 +25,9 @@ namespace luci
 /**
  * @brief  Class to Remove No Effect(input and output are same) Slice node.
  */
-struct RemoveNoEffectSlicePass final : public logo::Pass
+struct RemoveUnnecessarySlicePass final : public logo::Pass
 {
-  const char *name(void) const final { return "luci::RemoveNoEffectSlicePass"; }
+  const char *name(void) const final { return "luci::RemoveUnnecessarySlicePass"; }
 
   bool run(loco::Graph *g) final;
 };

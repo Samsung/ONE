@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "luci/Pass/RemoveNoEffectSlicePass.h"
+#include "luci/Pass/RemoveUnnecessarySlicePass.h"
 
 #include <luci/IR/CircleNodes.h>
 
@@ -23,20 +23,22 @@ namespace
 {
 /**
  *   BEFORE
- *      |
- * [CircleNode]
- *      |
- * [CircleSlice]
- *      |
- * [CircleNode](with same shape)
- *      |
+ *
+ *          |
+ *    [CircleNode]
+ *          |
+ *    [CircleSlice]
+ *          |
+ *    [CircleNode](with same shape)
+ *          |
  *
  *    AFTER
- *      |
- * [CircleNode]
- *      |
- * [CircleNode] Remove Slice OP
- *      |
+ *
+ *          |
+ *    [CircleNode]
+ *          |
+ *    [CircleNode] Remove Slice OP
+ *          |
  */
 void create_remove_no_effect_slice(loco::Graph *g,
                                    const std::initializer_list<uint32_t> input_shape)
@@ -85,13 +87,12 @@ void create_remove_no_effect_slice(loco::Graph *g,
   output->from(slice);
   auto graph_output = g->outputs()->create();
   output->index(graph_output->index());
-
   return;
 }
 
 } // namespace
 
-TEST(RemoveNoEffectSlicePass, remove_no_effect_slice)
+TEST(RemoveUnnecessarySlicePass, remove_no_effect_slice)
 {
   auto graph = loco::make_graph();
   create_remove_no_effect_slice(graph.get(), {1, 1, 2, 3});
@@ -105,7 +106,7 @@ TEST(RemoveNoEffectSlicePass, remove_no_effect_slice)
     break;
   }
   ASSERT_NE(nullptr, slice_node);
-  luci::RemoveNoEffectSlicePass pass;
+  luci::RemoveUnnecessarySlicePass pass;
   while (pass.run(graph.get()))
     ;
   slice_node = nullptr;

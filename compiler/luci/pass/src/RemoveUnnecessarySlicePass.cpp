@@ -14,27 +14,25 @@
  * limitations under the License.
  */
 
-#include "luci/Pass/RemoveNoEffectSlicePass.h"
+#include "luci/Pass/RemoveUnnecessarySlicePass.h"
 
 #include <luci/IR/CircleNodes.h>
 
 namespace
 {
 
-/// @brief Return value in CircleConst.
-/// @details Return value in position on CircleConst with int64 format.
-///          Begin must be larger than or equal to 0.
-///          Size must be larger than or equal to -1.
-///          Throw an error on Invalid node or invalid node type.
+/**
+ * @brief Return value in CircleConst.
+ * @details Return value in position on CircleConst with int64 format. Begin must be larger than or
+ * equal to 0. Size must be larger than or equal to -1. Throw an error on Invalid node or invalid
+ * node type.
+ */
+
 int64_t value_from_circle_const(const luci::CircleConst *node, uint32_t idx)
 {
-  if (node->rank() != 1 || node->dim(0).value() <= idx)
-    throw std::runtime_error("Invalid constant node on slice");
   if (node->dtype() == loco::DataType::S64)
     return node->at<loco::DataType::S64>(idx);
-  else if (node->dtype() == loco::DataType::S32)
-    return static_cast<int64_t>(node->at<loco::DataType::S32>(idx));
-  throw std::runtime_error("Invalid constant type on slice");
+  return static_cast<int64_t>(node->at<loco::DataType::S32>(idx));
 }
 
 bool remove_no_effect_slice(luci::CircleNode *node)
@@ -78,26 +76,28 @@ namespace luci
 {
 /**
  *   BEFORE
- *      |
- * [CircleNode]
- *      |
- * [CircleSlice]
- *      |
- * [CircleNode](with same shape)
- *      |
+ *
+ *          |
+ *    [CircleNode]
+ *          |
+ *    [CircleSlice]
+ *          |
+ *    [CircleNode](with same shape)
+ *          |
  *
  *    AFTER
- *      |
- * [CircleNode]
- *      |
- * [CircleNode] Remove Slice OP
- *      |
+ *
+ *          |
+ *    [CircleNode]
+ *          |
+ *    [CircleNode] Remove Slice OP
+ *          |
  *
  * Slice OP is No Effect if,
  * 1. Static Shape : begin value = 0 and size value = -1 or input dimension
  * 2. Dynamic Shape : begin value = 0 and size value = -1
  */
-bool RemoveNoEffectSlicePass::run(loco::Graph *g)
+bool RemoveUnnecessarySlicePass::run(loco::Graph *g)
 {
   bool changed = false;
   for (auto node : loco::active_nodes(loco::output_nodes(g)))
