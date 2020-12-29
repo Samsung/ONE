@@ -22,6 +22,7 @@ filename="${filename_ext%.*}"
 trap_err_onexit()
 {
   echo "${filename_ext} FAILED"
+  rm -rf ../bin/dummy-compile
   exit 255
 }
 
@@ -42,6 +43,6 @@ if [[ ! -s "${outputfile}" ]]; then
   trap_err_onexit
 fi
 
-rm ../bin/dummy-compile
+rm -rf ../bin/dummy-compile
 
 echo "${filename_ext} SUCCESS"
