@@ -80,7 +80,8 @@ bool inputs_dtype_ready(const luci::CircleNode *node)
 {
   for (uint32_t arity = 0; arity < node->arity(); ++arity)
   {
-    if (node->dtype() == loco::DataType::Unknown)
+    auto input_node = loco::must_cast<luci::CircleNode *>(node->arg(arity));
+    if (input_node->dtype() == loco::DataType::Unknown)
       return false;
   }
 
