@@ -23,7 +23,8 @@ namespace luci
 {
 
 /**
- * @brief  Class to convert NCHW Ops to NHWC
+ * @brief   Class to convert NCHW Ops to NHWC
+ *
  * @details Find operators that use NCHW layout and make them use NHWC.
  *          Strictly speaking, it is impossible to distinguish whether
  *          an operator is using NCHW or NHWC without programmers' annotations.
