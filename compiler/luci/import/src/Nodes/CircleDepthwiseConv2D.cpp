@@ -20,6 +20,8 @@
 
 #include <oops/UserExn.h>
 
+#include <cassert>
+
 namespace luci
 {
 
@@ -30,6 +32,26 @@ bool CircleDepthwiseConv2DGraphBuilder::validate(const ValidateArgs &args) const
     return false;
 
   if (args.op.outputs.size() != 1)
+    return false;
+
+  const auto &tensors = args.reader.tensors();
+
+  // input shape
+  const auto &input = tensors.at(args.op.inputs.at(0));
+  const auto &input_shape = input->shape;
+  assert(input_shape.size() == 4);
+
+  // filter shape
+  const auto &filter = tensors.at(args.op.inputs.at(1));
+  const auto &filter_shape = filter->shape;
+  assert(filter_shape.size() == 4);
+
+  // multiplier
+  const auto *options = args.op.builtin_options.AsDepthwiseConv2DOptions();
+  const auto &multiplier = options->depth_multiplier;
+
+  // filter represents as [1, H, W, C*M] where M is multiplier.
+  if (filter_shape.at(3) != input_shape.at(3) * multiplier)
     return false;
 
   return true;
