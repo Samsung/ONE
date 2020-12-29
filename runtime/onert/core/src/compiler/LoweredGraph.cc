@@ -548,15 +548,15 @@ bool LoweredGraph::mergeable(const ir::OpSequenceIndex &op_seq_index,
 std::vector<ir::OpSequenceIndex> LoweredGraph::topolSortOpSeqs() const
 {
   std::vector<ir::OpSequenceIndex> ret;
-  std::unordered_map<ir::OpSequenceIndex, bool> visited;
+  util::Set<ir::OpSequenceIndex> unvisited;
   op_seqs().iterate(
-    [&](const ir::OpSequenceIndex &index, const ir::OpSequence &) { visited[index] = false; });
+    [&](const ir::OpSequenceIndex &index, const ir::OpSequence &) { unvisited.add(index); });
 
   std::function<void(const ir::OpSequenceIndex &, const ir::OpSequence &)> dfs =
     [&](const ir::OpSequenceIndex &index, const ir::OpSequence &op_seq) {
-      if (visited[index])
+      if (!unvisited.contains(index))
         return;
-      visited[index] = true;
+      unvisited.remove(index);
 
       for (const auto output : op_seq.getOutputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED)
       {
@@ -571,9 +571,7 @@ std::vector<ir::OpSequenceIndex> LoweredGraph::topolSortOpSeqs() const
     };
   op_seqs().iterate(dfs);
 
-  // All of the operations(nodes) must have been visited.
-  assert(std::all_of(visited.begin(), visited.end(),
-                     [](const std::pair<const ir::OpSequenceIndex, bool> &v) { return v.second; }));
+  assert(unvisited.empty()); // All of the nodes must have been visited
   // Reversing Postorder DFS result to make it sorted in topoligical order
   std::reverse(ret.begin(), ret.end());
   return ret;

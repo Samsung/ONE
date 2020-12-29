@@ -161,15 +161,15 @@ void Graph::sweepGarbageOperands()
 std::vector<ir::OperationIndex> Graph::topolSortOperations() const
 {
   std::vector<ir::OperationIndex> ret;
-  ir::OperationIndexMap<bool> visited;
+  util::Set<ir::OperationIndex> unvisited;
   operations().iterate(
-    [&](const ir::OperationIndex &index, const ir::Operation &) { visited[index] = false; });
+    [&](const ir::OperationIndex &index, const ir::Operation &) { unvisited.add(index); });
 
   std::function<void(const ir::OperationIndex &, const ir::Operation &)> dfs =
     [&](const ir::OperationIndex &index, const ir::Operation &op) -> void {
-    if (visited[index])
+    if (!unvisited.contains(index))
       return;
-    visited[index] = true;
+    unvisited.remove(index);
 
     for (const auto output : op.getOutputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED)
     {
@@ -183,9 +183,7 @@ std::vector<ir::OperationIndex> Graph::topolSortOperations() const
   };
   operations().iterate(dfs);
 
-  // All of the operations(nodes) must have been visited.
-  assert(std::all_of(visited.begin(), visited.end(),
-                     [](const std::pair<const ir::OperationIndex, bool> &v) { return v.second; }));
+  assert(unvisited.empty()); // All of the nodes must have been visited
   // Reversing Postorder DFS result to make it sorted in topoligical order
   std::reverse(ret.begin(), ret.end());
   return ret;
