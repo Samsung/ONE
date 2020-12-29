@@ -16,6 +16,7 @@
 
 #include "luci/Pass/CircleTypeInferencePass.h"
 
+#include <luci/IR/DeadNodeQueryService.h>
 #include <luci/Service/CircleTypeInference.h>
 
 #include <loco.h>
@@ -41,15 +42,19 @@ bool CircleTypeInferencePass::run(loco::Graph *g)
   luci::tinf::Rule type_infer_rule;
   bool changed = false;
 
-  for (auto node : loco::postorder_traversal(loco::output_nodes(g)))
+  // Use all_nodes to prevent an error such as WHILE_002
+  for (auto node : loco::all_nodes(g))
   {
-    loco::DataType dtype;
-    auto circle_node = loco::must_cast<luci::CircleNode *>(node);
-
-    if (type_infer_rule.infer(circle_node, dtype) && circle_node->dtype() != dtype)
+    if (!node->dialect()->service<DeadNodeQueryServiceImpl>()->isDeadNode(node))
     {
-      circle_node->dtype(dtype);
-      changed = true;
+      loco::DataType dtype;
+      auto circle_node = loco::must_cast<luci::CircleNode *>(node);
+
+      if (type_infer_rule.infer(circle_node, dtype) && circle_node->dtype() != dtype)
+      {
+        circle_node->dtype(dtype);
+        changed = true;
+      }
     }
   }
 

@@ -24,6 +24,7 @@
 #include <luci/IR/CircleNodes.h>
 #include <luci/IR/CircleNodeVisitor.h>
 #include <luci/Service/CircleTypeInferenceHelper.h>
+#include <luci/Service/CircleTypeInferenceRule.h>
 
 namespace luci
 {
@@ -53,7 +54,12 @@ class Algorithm final : public luci::CircleNodeVisitor<loco::DataType>
 {
 public:
   // TODO Remove this when all of visit function is implemented
-  loco::DataType visit(const luci::CircleNode *node) final { return node->dtype(); }
+  loco::DataType visit(const luci::CircleNode *node) final
+  {
+    loco::DataType dtype;
+    luci::CircleTypeInferenceRule().infer(node, dtype);
+    return dtype;
+  }
 
   // loco::DataType visit(const luci::CircleAbs *node) final;
   // loco::DataType visit(const luci::CircleAdd *node) final;
