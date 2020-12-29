@@ -79,6 +79,10 @@ std::unique_ptr<ModelRecipe> generate_recipe(const circle::Model *model)
   auto tensors = circle_import.tensors();
   auto buffers = circle_import.buffers();
   auto operators = circle_import.operators();
+  auto data_format = circle_import.data_format();
+
+  // data format
+  model_recipe->set_data_format(as_circlechef_dataformat(data_format));
 
   // operand fillers for adding all operators
   for (uint32_t i = 0; i < operators->Length(); ++i)

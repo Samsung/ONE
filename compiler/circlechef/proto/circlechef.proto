@@ -64,6 +64,16 @@ enum Activation {
   RELU6 = 3;
 }
 
+// This enum value corresponds to DataFormat in Circle schema
+enum DataFormat {
+  // For 2D data, NHWC(batch, height, width, channels)
+  // For 3D data, NDHWC(batch, depth, height, width, channels)
+  CHANNELS_LAST = 0;
+  // For 2D data, NCHW(batch, channels, height, width)
+  // For 3D data, NCDHW(batch, channels, depth, height, width)
+  CHANNELS_FIRST = 1;
+}
+
 message BatchMatMulOptions {
   optional bool adjoint_lhs = 1 [default = false];
   optional bool adjoint_rhs = 2 [default = false];
@@ -103,6 +113,7 @@ message Graph {
   repeated string input = 3;
   repeated string output = 4;
   optional string name = 5;
+  optional DataFormat data_format = 6;
 }
 
 message ModelRecipe {
@@ -113,4 +124,5 @@ message ModelRecipe {
   optional string name = 5;
   optional uint32 version = 6 [default = 1];
   repeated Graph graph = 7;
+  optional DataFormat data_format = 8;
 }

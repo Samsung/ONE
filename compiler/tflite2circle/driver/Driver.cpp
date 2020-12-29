@@ -43,6 +43,12 @@ int entry(int argc, char **argv)
     .help("Show version information and exit")
     .exit_with(print_version);
 
+  arser.add_argument("--channels_first")
+    .nargs(0)
+    .required(false)
+    .default_value(false)
+    .help("This will set data format of circle model CHANNELS_FIRST (default: CHANNELS_LAST)");
+
   arser.add_argument("tflite")
     .nargs(1)
     .type(arser::DataType::STR)
@@ -73,8 +79,13 @@ int entry(int argc, char **argv)
   // create flatbuffer builder
   auto flatbuffer_builder = std::make_unique<flatbuffers::FlatBufferBuilder>(1024);
 
+  // Data format (default: CHANNELS_LAST)
+  tflite2circle::DataFormat format = tflite2circle::DataFormat::CHANNELS_LAST;
+  if (arser.get<bool>("--channels_first"))
+    format = tflite2circle::DataFormat::CHANNELS_FIRST;
+
   // convert tflite to circle
-  tflite2circle::CircleModel circle_model{flatbuffer_builder, tfl_model};
+  tflite2circle::CircleModel circle_model{flatbuffer_builder, tfl_model, format};
 
   std::ofstream outfile{circle_path, std::ios::binary};
 

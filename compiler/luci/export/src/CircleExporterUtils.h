@@ -20,6 +20,7 @@
 #include "SerializedData.h"
 
 #include <luci/IR/CircleNodes.h>
+#include <luci/IR/CircleDataFormat.h>
 #include <luci/Service/ShapeDescription.h>
 
 #include <loco.h>
@@ -38,6 +39,7 @@ circle::DimensionType to_circle_dimensiontype(luci::DimensionType type);
 flatbuffers::Offset<void> to_circle_sparse_index_vector(flatbuffers::FlatBufferBuilder &fb,
                                                         const SparseIndexVector &sparse_idx_vec);
 circle::SparseIndexVector to_circle_sparse_index_vector_type(luci::SparseIndexVectorType type);
+circle::DataFormat to_circle_data_format(luci::CircleDataFormat format);
 
 } // namespace luci
 

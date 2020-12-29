@@ -224,8 +224,8 @@ void CircleExporterImpl::exportModule(Module *module)
     // set Subgraph name
     gd._name = graph->name();
 
-    // TODO set this value properly
-    gd._data_format = circle::DataFormat::DataFormat_CHANNELS_LAST;
+    const auto format = module->data_format(graph);
+    gd._data_format = to_circle_data_format(format);
 
     // parse graph into SerializedModelData structure
     exportOpDefinedTensors(graph, _builder, md, gd);

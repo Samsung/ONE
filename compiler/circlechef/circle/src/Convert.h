@@ -27,6 +27,7 @@ namespace circlechef
 circlechef::TensorType as_circlechef_type(const circle::TensorType type);
 circlechef::Activation as_circlechef_activation(const circle::ActivationFunctionType type);
 circlechef::Padding as_circlechef_padding(const circle::Padding padding);
+circlechef::DataFormat as_circlechef_dataformat(const circle::DataFormat format);
 
 /**
  * @brief extract buffer data to std::vector<DT>

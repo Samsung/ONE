@@ -467,6 +467,9 @@ template <typename T> void cook_graph(const T &graph, CookParams &cp)
   subgraph_builder.add_operators(operators);
   subgraph_builder.add_name(name);
 
+  if (graph.has_data_format())
+    subgraph_builder.add_data_format(as_circle_dataformat(graph.data_format()));
+
   subgraph_vec.emplace_back(subgraph_builder.Finish());
 }
 

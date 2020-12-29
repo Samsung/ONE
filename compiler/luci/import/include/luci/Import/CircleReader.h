@@ -25,6 +25,7 @@
 #include <luci/IR/CircleQuantParam.h>
 #include <luci/IR/CircleShapeSignature.h>
 #include <luci/IR/SparsityParam.h>
+#include <luci/IR/CircleDataFormat.h>
 
 #include <loco.h>
 
@@ -50,6 +51,7 @@ luci::CircleFullyConnected::WeightsFormat
 luci_weights_format(const circle::FullyConnectedOptionsWeightsFormat weights_format);
 std::unique_ptr<CircleQuantParam>
 luci_quantparam(const circle::QuantizationParametersT *quantization);
+luci::CircleDataFormat luci_dataformat(circle::DataFormat format);
 
 /// @brief Copy common tensor attributes such as name, type, etc. to node.
 void copy_tensor_attributes(const circle::TensorT &tensor, CircleNode *node);
@@ -79,6 +81,7 @@ public:
   const std::vector<int32_t> &inputs() const { return _current_subgraph->inputs; }
   const std::vector<int32_t> &outputs() const { return _current_subgraph->outputs; }
   const std::string &name() const { return _current_subgraph->name; }
+  const circle::DataFormat &data_format() const { return _current_subgraph->data_format; }
 
   const CircleTensorsPtr_t *tensors_ptr() const { return _tensors_ptr; }
 

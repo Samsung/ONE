@@ -31,6 +31,17 @@ namespace tflite2circle
 
 using FlatBufBuilder = std::unique_ptr<flatbuffers::FlatBufferBuilder>;
 
+enum DataFormat
+{
+  CHANNELS_LAST = 0,
+  CHANNELS_FIRST = 1,
+};
+
+struct SubGraphParameter
+{
+  DataFormat format;
+};
+
 struct OperatorCodeLink
 {
   using TFL = flatbuffers::Offset<::tflite::OperatorCode>;
@@ -55,7 +66,9 @@ struct MetaDataBufferLink
   using CIR = int32_t;
 };
 
-template <typename T> class Offset
+template <typename...> class Offset;
+
+template <typename T> class Offset<T>
 {
 private:
   using TFLFlatBufVec = flatbuffers::Vector<typename T::TFL>;
@@ -72,6 +85,23 @@ private:
   CIRFlatBufVecOffset _circle_flatbuffer_vec_offset;
 };
 
+template <typename T, typename P> class Offset<T, P>
+{
+private:
+  using TFLFlatBufVec = flatbuffers::Vector<typename T::TFL>;
+  using CIRFlatBufVecOffset = flatbuffers::Offset<flatbuffers::Vector<typename T::CIR>>;
+
+public:
+  Offset(void) = delete;
+  Offset(FlatBufBuilder &fb, const TFLFlatBufVec *tflite_flatbuffer_vec, const P param);
+
+public:
+  CIRFlatBufVecOffset offset(void) const { return _circle_flatbuffer_vec_offset; }
+
+private:
+  CIRFlatBufVecOffset _circle_flatbuffer_vec_offset;
+};
+
 class CircleModel
 {
 private:
@@ -79,7 +109,7 @@ private:
 
 public:
   CircleModel(void) = delete;
-  CircleModel(FlatBufBuilder &fb, TFLModel &tfl_model);
+  CircleModel(FlatBufBuilder &fb, TFLModel &tfl_model, DataFormat format);
 
 public:
   void model_build(void) const;
@@ -91,7 +121,7 @@ private:
   Description _description;
   FlatBufBuilder &_fb;
   std::unique_ptr<Offset<OperatorCodeLink>> _operator_codes_offset;
-  std::unique_ptr<Offset<SubGraphLink>> _subGraphs_offset;
+  std::unique_ptr<Offset<SubGraphLink, SubGraphParameter>> _subGraphs_offset;
   std::unique_ptr<Offset<BufferLink>> _buffers_offset;
   std::unique_ptr<Offset<MetaDataBufferLink>> _metadata_buffer_offset;
 };

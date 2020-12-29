@@ -160,6 +160,20 @@ circle::SparseIndexVector to_circle_sparse_index_vector_type(luci::SparseIndexVe
   }
 }
 
+circle::DataFormat to_circle_data_format(luci::CircleDataFormat format)
+{
+  switch (format)
+  {
+    case luci::CircleDataFormat::CHANNELS_LAST:
+      return circle::DataFormat::DataFormat_CHANNELS_LAST;
+    case luci::CircleDataFormat::CHANNELS_FIRST:
+      return circle::DataFormat::DataFormat_CHANNELS_FIRST;
+    default:
+      INTERNAL_EXN_V("trying to convert unsupported luci::CircleDataFormat",
+                     oops::to_uint32(format));
+  }
+}
+
 } // namespace luci
 
 namespace luci

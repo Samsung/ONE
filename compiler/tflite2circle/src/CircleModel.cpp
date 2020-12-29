@@ -55,7 +55,9 @@ Offset<BufferLink>::Offset(FlatBufBuilder &fb, const TFLFlatBufVec *tflite_flatb
 }
 
 template <>
-Offset<SubGraphLink>::Offset(FlatBufBuilder &fb, const TFLFlatBufVec *tflite_flatbuffer_vec)
+Offset<SubGraphLink, SubGraphParameter>::Offset(FlatBufBuilder &fb,
+                                                const TFLFlatBufVec *tflite_flatbuffer_vec,
+                                                const SubGraphParameter param)
 {
   std::vector<flatbuffers::Offset<circle::SubGraph>> subgprahs_vec;
 
@@ -270,7 +272,16 @@ Offset<SubGraphLink>::Offset(FlatBufBuilder &fb, const TFLFlatBufVec *tflite_fla
     circle_subgraph_builder.add_outputs(circle_outputs);
     circle_subgraph_builder.add_operators(circle_operators);
     circle_subgraph_builder.add_name(subgraphs_name);
-    circle_subgraph_builder.add_data_format(circle::DataFormat_CHANNELS_LAST);
+
+    if (param.format == DataFormat::CHANNELS_LAST)
+    {
+      circle_subgraph_builder.add_data_format(circle::DataFormat_CHANNELS_LAST);
+    }
+    else
+    {
+      assert(param.format == DataFormat::CHANNELS_FIRST);
+      circle_subgraph_builder.add_data_format(circle::DataFormat_CHANNELS_FIRST);
+    }
 
     auto circle_subgraph = circle_subgraph_builder.Finish();
     subgprahs_vec.emplace_back(circle_subgraph);
@@ -296,7 +307,7 @@ Offset<OperatorCodeLink>::Offset(FlatBufBuilder &fb, const TFLFlatBufVec *tflite
   _circle_flatbuffer_vec_offset = fb->CreateVector(operator_code_vec);
 }
 
-CircleModel::CircleModel(FlatBufBuilder &fb, TFLModel &model)
+CircleModel::CircleModel(FlatBufBuilder &fb, TFLModel &model, DataFormat format)
   : _version{0}, _description{fb->CreateString("nnpackage")}, _fb{fb}
 {
   const tflite::Model *tfl_model = model.load_model();
@@ -308,9 +319,12 @@ CircleModel::CircleModel(FlatBufBuilder &fb, TFLModel &model)
     throw std::runtime_error("ERROR: Failed to verify tflite");
   }
 
+  SubGraphParameter graph_param{format};
+
   _operator_codes_offset =
     std::make_unique<Offset<OperatorCodeLink>>(fb, tfl_model->operator_codes());
-  _subGraphs_offset = std::make_unique<Offset<SubGraphLink>>(fb, tfl_model->subgraphs());
+  _subGraphs_offset = std::make_unique<Offset<SubGraphLink, SubGraphParameter>>(
+    fb, tfl_model->subgraphs(), graph_param);
   _buffers_offset = std::make_unique<Offset<BufferLink>>(fb, tfl_model->buffers());
   _metadata_buffer_offset =
     std::make_unique<Offset<MetaDataBufferLink>>(fb, tfl_model->metadata_buffer());

@@ -257,6 +257,18 @@ std::unique_ptr<SparsityParam> luci_sparsityparam(const circle::SparsityParamete
   return sparsityparam;
 }
 
+luci::CircleDataFormat luci_dataformat(const circle::DataFormat format)
+{
+  if (format == circle::DataFormat::DataFormat_CHANNELS_LAST)
+    return luci::CircleDataFormat::CHANNELS_LAST;
+
+  if (format == circle::DataFormat::DataFormat_CHANNELS_FIRST)
+    return luci::CircleDataFormat::CHANNELS_FIRST;
+
+  assert(false);
+  return luci::CircleDataFormat::UNDEFINED;
+}
+
 void copy_tensor_attributes(const circle::TensorT &tensor, CircleNode *node)
 {
   node->name(tensor_name(tensor));

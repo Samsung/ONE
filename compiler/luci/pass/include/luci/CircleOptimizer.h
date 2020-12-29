@@ -92,6 +92,8 @@ public:
 
   void sparsify(loco::Graph *) const;
 
+  void convert_nchw_to_nhwc(luci::Module *) const;
+
 private:
   std::unique_ptr<Options> _options;
 };

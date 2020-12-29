@@ -75,4 +75,17 @@ circlechef::Padding as_circlechef_padding(const circle::Padding padding)
   }
 }
 
+circlechef::DataFormat as_circlechef_dataformat(const circle::DataFormat format)
+{
+  switch (format)
+  {
+    case circle::DataFormat::DataFormat_CHANNELS_LAST:
+      return circlechef::CHANNELS_LAST;
+    case circle::DataFormat::DataFormat_CHANNELS_FIRST:
+      return circlechef::CHANNELS_FIRST;
+    default:
+      throw std::runtime_error{"unsupported data format"};
+  }
+}
+
 } // namespace circlechef

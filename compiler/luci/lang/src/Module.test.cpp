@@ -15,6 +15,7 @@
  */
 
 #include "luci/IR/Module.h"
+#include "luci/IR/CircleDataFormat.h"
 
 #include <gtest/gtest.h>
 
@@ -70,4 +71,37 @@ TEST(ModuleTest, graph_index_overflow_NEG)
   auto m = luci::make_module();
 
   EXPECT_ANY_THROW(m->graph(100));
+}
+
+TEST(ModuleTest, dataformat)
+{
+  auto m = luci::make_module();
+  auto g = loco::make_graph();
+  auto g_ptr = g.get();
+
+  m->data_format(g_ptr, luci::CircleDataFormat::CHANNELS_FIRST);
+
+  m->add(std::move(g));
+  ASSERT_EQ(luci::CircleDataFormat::CHANNELS_FIRST, m->data_format(g_ptr));
+
+  m->data_format(g_ptr, luci::CircleDataFormat::CHANNELS_LAST);
+  ASSERT_EQ(luci::CircleDataFormat::CHANNELS_LAST, m->data_format(g_ptr));
+}
+
+TEST(ModuleTest, dataformat_nullptr_NEG)
+{
+  auto m = luci::make_module();
+
+  EXPECT_ANY_THROW(m->data_format(nullptr, luci::CircleDataFormat::CHANNELS_FIRST));
+  EXPECT_ANY_THROW(m->data_format(nullptr));
+}
+
+TEST(ModuleTest, dataformat_unsaved_graph_NEG)
+{
+  auto m = luci::make_module();
+  auto g = loco::make_graph();
+
+  m->add(std::move(g));
+
+  EXPECT_ANY_THROW(m->data_format(g.get()));
 }

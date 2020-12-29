@@ -272,6 +272,9 @@ std::unique_ptr<Module> Importer::importModule(const circle::Model *model) const
 
     graph->name(reader.name());
 
+    const auto data_format = reader.data_format();
+    module->data_format(graph.get(), luci_dataformat(data_format));
+
     // Convert circle::Model to loco::Graph
     convert_graph(*source_ptr, reader, graph.get());
 

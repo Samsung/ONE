@@ -14,19 +14,24 @@
  * limitations under the License.
  */
 
-/**
- * @file  Convert.h
- * @brief This header declares various as_circle_TYPE functions
- */
-#ifndef __CONVERT_H__
-#define __CONVERT_H__
+#ifndef __LUCI_IR_CIRCLEDATAFORMAT_H__
+#define __LUCI_IR_CIRCLEDATAFORMAT_H__
 
-#include <circlechef.pb.h>
-#include <mio/circle/schema_generated.h>
+namespace luci
+{
 
-circle::Padding as_circle_padding(const circlechef::Padding &value);
-circle::ActivationFunctionType as_circle_activation(const circlechef::Activation &value);
-circle::TensorType as_circle_tensortype(const circlechef::TensorType &value);
-circle::DataFormat as_circle_dataformat(const circlechef::DataFormat &format);
+enum CircleDataFormat
+{
+  UNDEFINED, // This is not defined by Circle schema. This was added to prevent programming error.
 
-#endif // __CONVERT_H__
+  // For 2D data, NHWC(batch, height, width, channels)
+  // For 3D data, NDHWC(batch, depth, height, width, channels)
+  CHANNELS_LAST,
+  // For 2D data, NCHW(batch, channels, height, width)
+  // For 3D data, NCDHW(batch, channels, depth, height, width)
+  CHANNELS_FIRST,
+};
+
+} // namespace luci
+
+#endif // __LUCI_IR_CIRCLEDATAFORMAT_H__

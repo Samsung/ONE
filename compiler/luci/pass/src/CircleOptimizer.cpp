@@ -229,10 +229,6 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   {
     phase.emplace_back(std::make_unique<luci::SubstitutePackToReshapePass>());
   }
-  if (_options->query(Options::Algorithm::ConvertNCHWToNHWC))
-  {
-    phase.emplace_back(std::make_unique<luci::ConvertNCHWToNHWCPass>());
-  }
 
   /* TRANSFORM DECLARATION END */
 
@@ -397,6 +393,43 @@ void CircleOptimizer::sparsify(loco::Graph *g) const
     luci::SparsifyTensorPass sparsifier{tensor_name, traversal_order, format, block_size,
                                         block_map};
     sparsifier.run(g);
+  }
+}
+
+void CircleOptimizer::convert_nchw_to_nhwc(luci::Module *m) const
+{
+  if (_options->query(Options::Algorithm::ConvertNCHWToNHWC))
+  {
+    for (size_t idx = 0; idx < m->size(); ++idx)
+    {
+      auto graph = m->graph(idx);
+      const auto format = m->data_format(graph);
+      if (format == CircleDataFormat::CHANNELS_LAST)
+        continue;
+
+      assert(format == CircleDataFormat::CHANNELS_FIRST);
+
+      logo::Phase phase;
+
+      // Following passes will be deprecated after refactoring is finished.
+      phase.emplace_back(std::make_unique<luci::MigrateLegacyShapeDtypePass>());
+
+      // Following passes are needed everytime when other passes create new node or modify some
+      // nodes.
+      phase.emplace_back(std::make_unique<luci::TypeInferencePass>());
+      phase.emplace_back(std::make_unique<luci::ShapeInferencePass>());
+      phase.emplace_back(std::make_unique<luci::ShapeSignatureInferencePass>());
+
+      // Pass that converts NCHW to NHWC
+      phase.emplace_back(std::make_unique<luci::ConvertNCHWToNHWCPass>());
+
+      ProgressReporter prog(graph, logo::PhaseStrategy::Restart);
+      logo::PhaseRunner<logo::PhaseStrategy::Restart> phase_runner{graph};
+      phase_runner.attach(&prog);
+      phase_runner.run(phase);
+
+      m->data_format(graph, CircleDataFormat::CHANNELS_LAST);
+    }
   }
 }
 

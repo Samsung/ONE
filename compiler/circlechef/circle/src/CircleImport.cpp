@@ -83,6 +83,8 @@ bool CircleImport::select_sub_graph(uint32_t sgindex)
   _inputs = as_index_vector(subgraph->inputs());
   _outputs = as_index_vector(subgraph->outputs());
 
+  _data_format = subgraph->data_format();
+
   return true;
 }
 

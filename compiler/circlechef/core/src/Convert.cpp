@@ -33,6 +33,21 @@ circle::Padding as_circle_padding(const circlechef::Padding &value)
   throw std::runtime_error{"Unknown padding value"};
 }
 
+circle::DataFormat as_circle_dataformat(const circlechef::DataFormat &format)
+{
+  switch (format)
+  {
+    case circlechef::CHANNELS_LAST:
+      return circle::DataFormat::DataFormat_CHANNELS_LAST;
+    case circlechef::CHANNELS_FIRST:
+      return circle::DataFormat::DataFormat_CHANNELS_FIRST;
+    default:
+      break;
+  }
+
+  throw std::runtime_error{"Unknown data format"};
+}
+
 circle::ActivationFunctionType as_circle_activation(const circlechef::Activation &value)
 {
   switch (value)
