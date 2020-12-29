@@ -20,7 +20,7 @@
 #include "LoweredOperandPass.h"
 #include "compiler/BackendManager.h"
 #include "ir/Operand.h"
-#include "ir/operand/PermuteFactor.h"
+#include "compiler/PermuteFactor.h"
 
 namespace onert
 {
@@ -48,7 +48,7 @@ private:
    * @return ir::OperationIndex
    */
   ir::OperationIndex insertPermute(const ir::OperandIndex &operand_index,
-                                   const ir::operand::PermuteFactor &factor);
+                                   const PermuteFactor &factor);
 };
 
 } // namespace pass

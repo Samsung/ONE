@@ -134,8 +134,9 @@ void PermutationOperationPass::changeToKeepLayout(const Operation &node)
       }
 
       const auto op_seq_li = _lowered_graph.getLowerInfo(op_seq_index);
-      _lowered_graph.setLowerInfo(next_op_seq_index, std::make_unique<ir::operation::LowerInfo>(
-                                                       op_seq_li->backend(), op_seq_li->layout()));
+      _lowered_graph.setLowerInfo(
+        next_op_seq_index,
+        std::make_unique<compiler::OpSequenceLowerInfo>(op_seq_li->backend(), op_seq_li->layout()));
     }
   }
 
@@ -166,7 +167,7 @@ void PermutationOperationPass::changeToKeepLayout(const Operation &node)
     new_op_seq.setInputs(node.getInputs());
     new_op_seq.setOutputs(node.getOutputs());
     _lowered_graph.setLowerInfo(
-      new_op_seq_index, std::make_unique<ir::operation::LowerInfo>(backend, frontend_layout));
+      new_op_seq_index, std::make_unique<compiler::OpSequenceLowerInfo>(backend, frontend_layout));
   }
 
   // Change PermuteFactors of operands of target node
@@ -174,8 +175,8 @@ void PermutationOperationPass::changeToKeepLayout(const Operation &node)
     const auto &op_seq_index = _lowered_graph.op_seqs().getOperation(node_index);
     const auto op_seq_li = _lowered_graph.getLowerInfo(op_seq_index);
     const auto backend = op_seq_li->backend();
-    const operand::PermuteFactor removed_factor{backend, backend_layout};
-    const operand::PermuteFactor new_factor{backend, frontend_layout};
+    const PermuteFactor removed_factor{backend, backend_layout};
+    const PermuteFactor new_factor{backend, frontend_layout};
     for (const auto &input : node.getInputs() | Remove::DUPLICATED | Remove::UNDEFINED)
     {
       bool canRemove = true;

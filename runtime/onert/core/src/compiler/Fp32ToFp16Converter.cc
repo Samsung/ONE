@@ -515,8 +515,8 @@ void Fp32ToFp16Converter::setNewOperandLowerInfo(const ir::OpSequenceIndex &op_s
 {
   const auto lower_info = _lowered_graph.getLowerInfo(op_seq_ind);
   assert(lower_info != nullptr);
-  auto new_lower_info = std::make_unique<ir::operand::LowerInfo>();
-  auto permute_factor = ir::operand::PermuteFactor(lower_info->backend(), lower_info->layout());
+  auto new_lower_info = std::make_unique<compiler::OperandLowerInfo>();
+  auto permute_factor = compiler::PermuteFactor(lower_info->backend(), lower_info->layout());
   new_lower_info->addDefPermuteFactor(permute_factor);
   new_lower_info->addUsePermuteFactor(permute_factor);
   _lowered_graph.setLowerInfo(new_op_ind, std::move(new_lower_info));
@@ -529,7 +529,7 @@ void Fp32ToFp16Converter::setNewOpSequenceLowerInfo(const ir::OpSequenceIndex &o
   assert(lower_info != nullptr);
 
   auto new_lower_info =
-    std::make_unique<ir::operation::LowerInfo>(lower_info->backend(), lower_info->layout());
+    std::make_unique<compiler::OpSequenceLowerInfo>(lower_info->backend(), lower_info->layout());
   _lowered_graph.setLowerInfo(new_op_seq_ind, std::move(new_lower_info));
 }
 

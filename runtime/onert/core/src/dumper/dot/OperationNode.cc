@@ -18,7 +18,6 @@
 
 #include "OperationNode.h"
 #include "ir/Graph.h"
-#include "ir/operation/LowerInfo.h"
 #include "backend/IConfig.h"
 #include "backend/Backend.h"
 

@@ -19,7 +19,7 @@
 
 #include <memory>
 #include "ir/Graph.h"
-#include "ir/LowerInfoMap.h"
+#include "compiler/GraphLowerInfo.h"
 #include "exec/FunctionSequence.h"
 
 namespace onert
@@ -62,7 +62,7 @@ public:
   const std::vector<ir::OperandIndex> &operand_list() const { return _operand_list; }
 
   virtual ITensorRegistry *genTensors(const std::vector<onert::ir::OpSequenceIndex> &,
-                                      const ir::OpSequences &, const ir::LowerInfoMap &)
+                                      const ir::OpSequences &, const compiler::GraphLowerInfo &)
   {
     return nullptr;
   }

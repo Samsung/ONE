@@ -21,7 +21,7 @@
 
 #include "ir/Index.h"
 #include "ir/OpSequences.h"
-#include "ir/LowerInfoMap.h"
+#include "compiler/GraphLowerInfo.h"
 #include "util/logging.h"
 #include "backend/ITensorRegistry.h"
 #include "backend/BackendContext.h"
@@ -37,7 +37,7 @@ namespace cpu_common
 // TODO Remove the template param BackendContext once unification of cpu backend context is done
 template <typename T_BackendContext>
 void planTensors(const T_BackendContext &ctx, const std::vector<onert::ir::OpSequenceIndex> &order,
-                 const ir::OpSequences &op_seqs, const ir::LowerInfoMap &lower_info)
+                 const ir::OpSequences &op_seqs, const compiler::GraphLowerInfo &lower_info)
 {
   auto graph = ctx.graph();
   auto tensor_builder = ctx.tensor_builder;
@@ -189,9 +189,9 @@ void planTensors(const T_BackendContext &ctx, const std::vector<onert::ir::OpSeq
 }
 
 template <typename T_BackendContext>
-ITensorRegistry *genTensors(T_BackendContext &ctx,
-                            const std::vector<onert::ir::OpSequenceIndex> &order,
-                            const ir::OpSequences &op_seqs, const ir::LowerInfoMap &lower_info)
+ITensorRegistry *
+genTensors(T_BackendContext &ctx, const std::vector<onert::ir::OpSequenceIndex> &order,
+           const ir::OpSequences &op_seqs, const compiler::GraphLowerInfo &lower_info)
 {
   auto graph = ctx.graph();
   auto tensor_builder = ctx.tensor_builder;

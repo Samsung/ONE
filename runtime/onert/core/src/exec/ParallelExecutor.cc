@@ -75,7 +75,7 @@ void ParallelExecutor::executeImpl()
   bool dynamic_input_exists = hasDynamicInput();
 
   // Init scheduler
-  // TODO Consider to have distinct backend set in LowerInfoMap
+  // TODO Consider to have distinct backend set in GraphLowerInfo
   BackendSet backends;
   for (auto &itr : _lowered_graph->getLowerInfo()->op_seq)
   {

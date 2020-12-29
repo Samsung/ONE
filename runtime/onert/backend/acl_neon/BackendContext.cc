@@ -52,7 +52,8 @@ void BackendContext::initConsts()
 }
 
 void BackendContext::planTensors(const std::vector<onert::ir::OpSequenceIndex> &order,
-                                 const ir::OpSequences &op_seqs, const ir::LowerInfoMap &lower_info)
+                                 const ir::OpSequences &op_seqs,
+                                 const compiler::GraphLowerInfo &lower_info)
 {
   ir::OperandIndexMap<uint32_t> uses_map;
   ir::OperandIndexMap<uint32_t> def_map;
@@ -186,7 +187,7 @@ void BackendContext::planTensors(const std::vector<onert::ir::OpSequenceIndex> &
 
 ITensorRegistry *BackendContext::genTensors(const std::vector<onert::ir::OpSequenceIndex> &order,
                                             const ir::OpSequences &op_seqs,
-                                            const ir::LowerInfoMap &lower_info)
+                                            const compiler::GraphLowerInfo &lower_info)
 {
   optimizer->optimize();
 

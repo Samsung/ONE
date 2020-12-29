@@ -18,7 +18,6 @@
 
 #include "OperandNode.h"
 #include "ir/Graph.h"
-#include "ir/operand/LowerInfo.h"
 
 namespace onert
 {

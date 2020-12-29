@@ -16,12 +16,12 @@
 
 /**
  * @file     PermuteFactor.h
- * @brief    This file contains onert::ir::operand::PermuteFactor class
+ * @brief    This file contains PermuteFactor class
  * @ingroup  COM_AI_RUNTIME
  */
 
-#ifndef __ONERT_IR_OPERAND_PERMUTE_FACTOR_H__
-#define __ONERT_IR_OPERAND_PERMUTE_FACTOR_H__
+#ifndef __ONERT_COMPILER_OPERAND_PERMUTE_FACTOR_H__
+#define __ONERT_COMPILER_OPERAND_PERMUTE_FACTOR_H__
 
 #include <functional>
 
@@ -37,9 +37,7 @@ class Backend;
 
 namespace onert
 {
-namespace ir
-{
-namespace operand
+namespace compiler
 {
 
 /**
@@ -53,7 +51,8 @@ public:
    * @param backend  The backend factor
    * @param layout   The layout factor
    */
-  PermuteFactor(const backend::Backend *backend, Layout layout) : _backend{backend}, _layout{layout}
+  PermuteFactor(const backend::Backend *backend, ir::Layout layout)
+    : _backend{backend}, _layout{layout}
   {
     // DO NOTHING
   }
@@ -81,7 +80,7 @@ public:
    *
    * @return Layout factor
    */
-  Layout layout() const { return _layout; }
+  ir::Layout layout() const { return _layout; }
 
 public:
   /**
@@ -102,11 +101,10 @@ public:
 
 private:
   const backend::Backend *_backend{nullptr};
-  Layout _layout{Layout::UNKNOWN};
+  ir::Layout _layout{ir::Layout::UNKNOWN};
 };
 
-} // namespace operand
-} // namespace ir
+} // namespace compiler
 } // namespace onert
 
 namespace std
@@ -115,9 +113,9 @@ namespace std
 /**
  * @brief Structure that provides hash value of PermuteFactor
  */
-template <> struct hash<onert::ir::operand::PermuteFactor>
+template <> struct hash<onert::compiler::PermuteFactor>
 {
-  size_t operator()(const onert::ir::operand::PermuteFactor &factor) const noexcept
+  size_t operator()(const onert::compiler::PermuteFactor &factor) const noexcept
   {
     hash<const onert::backend::Backend *> b_hash{};
     hash<onert::ir::Layout> l_hash{};
@@ -127,4 +125,4 @@ template <> struct hash<onert::ir::operand::PermuteFactor>
 
 } // namespace std
 
-#endif // __ONERT_IR_OPERAND_PERMUTE_FACTOR_H__
+#endif // __ONERT_COMPILER_OPERAND_PERMUTE_FACTOR_H__

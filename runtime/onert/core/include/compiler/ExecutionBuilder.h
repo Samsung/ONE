@@ -19,7 +19,6 @@
 
 #include <memory>
 
-#include "ir/operation/LowerInfo.h"
 #include "ir/OpSequence.h"
 #include "exec/FunctionSequence.h"
 #include "CodeMap.h"

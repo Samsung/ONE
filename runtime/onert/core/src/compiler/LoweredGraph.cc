@@ -87,10 +87,10 @@ LoweredGraph::LoweredGraph(const ir::Graph &graph, const CompilerOptions &option
 
   {
     // operand::LowerInfo holder
-    ir::OperandIndexMap<std::unique_ptr<ir::operand::LowerInfo>> operands_lower_info;
+    ir::OperandIndexMap<std::unique_ptr<compiler::OperandLowerInfo>> operands_lower_info;
 
     _graph.operands().iterate([&](const ir::OperandIndex &index, const ir::Operand &) {
-      operands_lower_info[index] = std::make_unique<ir::operand::LowerInfo>();
+      operands_lower_info[index] = std::make_unique<compiler::OperandLowerInfo>();
     });
 
     // Make op_seqs while checking whether a node can be merged into a op_seq.
@@ -140,7 +140,7 @@ LoweredGraph::LoweredGraph(const ir::Graph &graph, const CompilerOptions &option
   }
 }
 
-const ir::operation::LowerInfo *
+const compiler::OpSequenceLowerInfo *
 LoweredGraph::getLowerInfo(const ir::OpSequenceIndex &op_seq_index) const
 {
   auto itr = _lower_info_map.op_seq.find(op_seq_index);
@@ -150,7 +150,7 @@ LoweredGraph::getLowerInfo(const ir::OpSequenceIndex &op_seq_index) const
 }
 
 void LoweredGraph::setLowerInfo(const ir::OpSequenceIndex &op_seq_index,
-                                std::unique_ptr<ir::operation::LowerInfo> &&lower_info)
+                                std::unique_ptr<compiler::OpSequenceLowerInfo> &&lower_info)
 {
   _lower_info_map.op_seq.insert(std::make_pair(op_seq_index, std::move(lower_info)));
 }
@@ -169,7 +169,7 @@ void LoweredGraph::removeLowerInfo(const ir::OpSequenceIndex &op_seq_index)
   }
 }
 
-const ir::operand::LowerInfo *LoweredGraph::getLowerInfo(const ir::OperandIndex &index) const
+const compiler::OperandLowerInfo *LoweredGraph::getLowerInfo(const ir::OperandIndex &index) const
 {
   auto itr = _lower_info_map.operand.find(index);
   if (itr == _lower_info_map.operand.end())
@@ -177,7 +177,7 @@ const ir::operand::LowerInfo *LoweredGraph::getLowerInfo(const ir::OperandIndex 
   return itr->second.get();
 }
 
-ir::operand::LowerInfo *LoweredGraph::getLowerInfo(const ir::OperandIndex &index)
+compiler::OperandLowerInfo *LoweredGraph::getLowerInfo(const ir::OperandIndex &index)
 {
   auto itr = _lower_info_map.operand.find(index);
   if (itr == _lower_info_map.operand.end())
@@ -186,7 +186,7 @@ ir::operand::LowerInfo *LoweredGraph::getLowerInfo(const ir::OperandIndex &index
 }
 
 void LoweredGraph::setLowerInfo(const ir::OperandIndex &index,
-                                std::unique_ptr<ir::operand::LowerInfo> &&lower_info)
+                                std::unique_ptr<compiler::OperandLowerInfo> &&lower_info)
 {
   _lower_info_map.operand.insert(std::make_pair(index, std::move(lower_info)));
 }
@@ -234,7 +234,7 @@ ir::OpSequenceIndex LoweredGraph::appendFreshSingleOpSequence(const ir::Operatio
 }
 
 void LoweredGraph::makeOpSequences(
-  ir::OperandIndexMap<std::unique_ptr<ir::operand::LowerInfo>> &operands_lower_info,
+  ir::OperandIndexMap<std::unique_ptr<compiler::OperandLowerInfo>> &operands_lower_info,
   const CompilerOptions &options, const BackendResolver &backend_resolver)
 {
   // if SUBG_MAX_NODE == 0, no limit on nodes of a op_seq
@@ -265,12 +265,12 @@ void LoweredGraph::makeOpSequences(
     for (auto operand : node.getInputs() | ir::Remove::UNDEFINED)
     {
       auto &&lower_info = operands_lower_info.at(operand);
-      lower_info->addUsePermuteFactor(ir::operand::PermuteFactor{backend, backend_layout});
+      lower_info->addUsePermuteFactor(PermuteFactor{backend, backend_layout});
     }
     for (auto operand : node.getOutputs() | ir::Remove::UNDEFINED)
     {
       auto &&lower_info = operands_lower_info.at(operand);
-      lower_info->addDefPermuteFactor(ir::operand::PermuteFactor{backend, backend_layout});
+      lower_info->addDefPermuteFactor(PermuteFactor{backend, backend_layout});
     }
 
     bool new_op_seq =
@@ -286,7 +286,7 @@ void LoweredGraph::makeOpSequences(
 
       // ir::OpSequence LowerInfo
       setLowerInfo(new_op_seq_index,
-                   std::make_unique<ir::operation::LowerInfo>(backend, backend_layout));
+                   std::make_unique<compiler::OpSequenceLowerInfo>(backend, backend_layout));
 
       op_seq_index = new_op_seq_index;
       op_seq = &(_op_seqs.at(new_op_seq_index));
@@ -314,12 +314,12 @@ void LoweredGraph::makeOpSequences(
 }
 
 void LoweredGraph::manipulateLowerInfo(
-  ir::OperandIndexMap<std::unique_ptr<ir::operand::LowerInfo>> &operands_lower_info)
+  ir::OperandIndexMap<std::unique_ptr<compiler::OperandLowerInfo>> &operands_lower_info)
 {
   const auto builtin_backend = BackendManager::get().getBuiltin();
 
   // TODO Rather than using NHWC Get frontend layout of this node from IR
-  auto factor = ir::operand::PermuteFactor{builtin_backend, ir::Layout::NHWC};
+  auto factor = PermuteFactor{builtin_backend, ir::Layout::NHWC};
   for (auto index : _graph.getInputs() | ir::Remove::UNDEFINED)
   {
     auto &&lower_info = operands_lower_info.at(index);
@@ -337,7 +337,7 @@ void LoweredGraph::manipulateLowerInfo(
     if (lower_info->def_factors().size() == 0)
     {
       // In case of that an operand is Graph's output and not input or output of any operation
-      lower_info->addDefPermuteFactor(ir::operand::PermuteFactor{
+      lower_info->addDefPermuteFactor(PermuteFactor{
         builtin_backend,
         ir::Layout::NHWC // TODO Get frontend layout of this node from IR
       });
@@ -345,7 +345,7 @@ void LoweredGraph::manipulateLowerInfo(
   }
 
   // 1. Add def of variable operand
-  // 2. Set LowerInfo for each operand from the operand::LowerInfo holder
+  // 2. Set LowerInfo for each operand from the OperandLowerInfo holder
   _graph.operands().iterate([&](const ir::OperandIndex &index, ir::Operand &operand) {
     // Some inputs of an operation could be non-constant, but not existed in graph inputs/outputs
     // and not undefined operand. Those inputs must have exist as a Tensor. For example,
@@ -375,7 +375,7 @@ void LoweredGraph::dumpLowerInfo()
     std::stringstream sstream;
     if (!getLowerInfo(index)->def_factors().empty() || !getLowerInfo(index)->use_factors().empty())
     {
-      auto factors_to_string = [](const ir::operand::PermuteFactorSet &factors) {
+      auto factors_to_string = [](const PermuteFactorSet &factors) {
         std::string str;
         for (auto factor : factors)
         {
