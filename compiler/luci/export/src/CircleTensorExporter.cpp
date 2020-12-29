@@ -112,7 +112,6 @@ void allocateCircleTensorInfo(CircleNode *node, CircleTensorContext &ctx)
 
   tensor_info.name(tensor_name);
   tensor_info.dtype(to_circle_tensortype(node->dtype()));
-  tensor_info.shape_signature(node->shape_signature());
   if (node->shape_status() == ShapeStatus::VALID)
     tensor_info.shape(to_shape_description(node));
   tensor_info.shape_status(node->shape_status());
@@ -245,12 +244,20 @@ flatbuffers::Offset<Vector<int32_t>> encodeShape(FlatBufferBuilder &builder,
 }
 
 flatbuffers::Offset<Vector<int32_t>> encodeShapeSignature(FlatBufferBuilder &builder,
-                                                          const ShapeSignature &shape_signature)
+                                                          const ShapeDescription &shape)
 {
-  if (shape_signature.rank() == 0)
-    return 0;
+  assert(shape._rank_known && "unknown number of dimensions is not supported");
+  flatbuffers::Offset<Vector<int32_t>> signature_offset;
+  bool has_unknown = false;
 
-  return builder.CreateVector(shape_signature.as_vector());
+  for(uint32_t i=0;i<shape._dims.size();++i)
+    if(shape._dims.at(i) == -1)
+      has_unknown = true;
+  
+  if(has_unknown)
+    signature_offset = builder.CreateVector(shape._dims);
+  
+  return signature_offset;
 }
 
 flatbuffers::Offset<circle::Buffer> encodeOpBuffer(FlatBufferBuilder &builder)
@@ -449,7 +456,7 @@ void exportOpDefinedTensor(const CircleTensoInfo &info, FlatBufferBuilder &build
 
   auto sparsityparam = encodeSparsityParameters(builder, info.sparsityparam());
 
-  auto shape_signature_offset = encodeShapeSignature(builder, info.shape_signature());
+  auto shape_signature_offset = encodeShapeSignature(builder, info.shape());
 
   auto buffer_id = get_buffer_id(builder, md, info.content());
 

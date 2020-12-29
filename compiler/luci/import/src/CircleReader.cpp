@@ -272,8 +272,6 @@ void copy_tensor_attributes(const circle::TensorT &tensor, CircleNode *node)
       node->dim(r).set(dims[r]);
   }
 
-  node->shape_signature(tensor.shape_signature);
-
   const auto *quantization = tensor.quantization.get();
   if (quantization != nullptr)
   {
