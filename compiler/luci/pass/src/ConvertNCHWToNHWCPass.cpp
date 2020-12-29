@@ -100,7 +100,7 @@ luci::CircleTranspose *create_pre_transpose(luci::CircleNode *node)
 uint32_t cal_offset(const loco::TensorShape &dimension, const uint32_t *indices)
 {
   return indices[0] * dimension.dim(1).value() * dimension.dim(2).value() *
-             dimension.dim(3).value() +
+           dimension.dim(3).value() +
          indices[1] * dimension.dim(2).value() * dimension.dim(3).value() +
          indices[2] * dimension.dim(3).value() + indices[3];
 }
@@ -143,7 +143,7 @@ luci::CircleConst *create_NHWC_from_NCHW(luci::CircleConst *constant)
           uint32_t nchw_indices[4] = {n, c, h, w};
           uint32_t nhwc_indices[4] = {n, h, w, c};
           auto data =
-              constant->at<loco::DataType::FLOAT32>(cal_offset(nchw_dimension, nchw_indices));
+            constant->at<loco::DataType::FLOAT32>(cal_offset(nchw_dimension, nchw_indices));
           nhwc_const->at<loco::DataType::FLOAT32>(cal_offset(nhwc_dimension, nhwc_indices)) = data;
         }
       }
