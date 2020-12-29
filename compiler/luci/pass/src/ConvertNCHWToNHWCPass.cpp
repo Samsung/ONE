@@ -55,6 +55,7 @@ private:
 
 void set_data_format(loco::Node *node, const DataFormat &format)
 {
+  assert(node->annot<DataFormatAnnotation>() == nullptr);
   node->annot(std::make_unique<DataFormatAnnotation>(format));
 }
 
