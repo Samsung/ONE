@@ -77,14 +77,6 @@ private:
   mutable std::unordered_map<OperationIndex, OpSequenceIndex> _seq_indexes;
 };
 
-/**
- * @brief Dump OpSequences
- *
- * @param op_seqs Operation Sequences
- * @param operations Operation context
- */
-void dumpOpSequences(const OpSequences &op_seqs, const Operations &operations);
-
 } // namespace ir
 } // namespace onert
 

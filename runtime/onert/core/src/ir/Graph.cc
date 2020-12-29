@@ -19,6 +19,7 @@
 #include "OperationValidator.h"
 
 #include <algorithm>
+
 #include <bitset>
 #include <sstream>
 
@@ -29,6 +30,7 @@
 #include "ir/operand/PermuteFactor.h"
 #include "ir/OperandIndexMap.h"
 #include "ir/OperationIndexMap.h"
+#include "dumper/text/GraphDumper.h"
 #include "backend/IConfig.h"
 
 namespace onert
@@ -109,6 +111,8 @@ void Graph::finishBuilding(void)
   // - Operand type
   // - Shape independent parameter
   OperationValidator{*this}();
+
+  dumper::text::dumpGraph(*this);
 }
 
 void Graph::initializeUseDef()

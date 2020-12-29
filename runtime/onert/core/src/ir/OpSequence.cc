@@ -50,7 +50,7 @@ OpSequence::OpSequence(Layout layout) : _layout{layout}, _has_dynamic_tensor{fal
 
 void OpSequence::accept(OperationVisitor &v) const { v.visit(*this); }
 
-// TODO: Impl Dumper instead of this method
+// TODO Remove this and replace the calls to this with dumper::text::formatOpSequence.
 std::string getStrFromOpSeq(const OpSequence &op_seq, const Operations &operations)
 {
   // "  IN($0,$1,$2) -> { OPERATION0($0,$1,$2:$3), op1($3:$4), op2($4:$5) } -> OUT($5)"

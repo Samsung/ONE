@@ -15,12 +15,14 @@
  */
 
 #include <algorithm>
+#include <sstream>
 
 #include "Linear.h"
 
 #include "backend/IConfig.h"
 #include "backend/Backend.h"
 #include "util/logging.h"
+#include "dumper/text/GraphDumper.h"
 
 namespace onert
 {
@@ -41,21 +43,14 @@ void Linear::dump(const compiler::LoweredGraph &lowered_graph,
                   const std::vector<ir::OpSequenceIndex> &order)
 {
   {
-    const auto &toString = [](const onert::backend::Backend *backend) {
-      assert(backend);
-      std::string str;
-      str += backend->config()->id();
-      return "{" + str + "}";
-    };
-
-    VERBOSE(Linear) << "Final OpSequence" << std::endl;
+    VERBOSE(Linear) << "Final OpSequences" << std::endl;
     for (const auto index : order)
     {
-      const auto &op_seq = lowered_graph.op_seqs().at(index);
-      const auto lower_info = lowered_graph.getLowerInfo(index);
-      const auto &operations = lowered_graph.graph().operations();
-      VERBOSE(Linear) << "* OP_SEQ " << toString(lower_info->backend()) << " "
-                      << ir::getStrFromOpSeq(op_seq, operations) << std::endl;
+      // TODO Could logging system can handle this? (Inserting prefix for each line)
+      std::istringstream iss{dumper::text::formatOpSequence(lowered_graph, index)};
+      std::string line;
+      while (std::getline(iss, line))
+        VERBOSE(GraphDumper) << line << std::endl;
     }
   }
 }

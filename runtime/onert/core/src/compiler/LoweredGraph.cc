@@ -26,6 +26,7 @@
 #include "compiler/pass/PermutationOperationPass.h"
 #include "compiler/pass/PermutationInsertionPass.h"
 #include "compiler/pass/PermutationEliminationPass.h"
+#include "dumper/text/GraphDumper.h"
 #include "ir/verifier/Verifier.h"
 #include "backend/Backend.h"
 #include "backend/IConfig.h"
@@ -101,7 +102,7 @@ LoweredGraph::LoweredGraph(const ir::Graph &graph, const CompilerOptions &option
     });
 
     VERBOSE(OpSequences) << "dump before permutation insertion" << std::endl;
-    dumpOpSequences(_op_seqs, _graph.operations());
+    dumper::text::dumpLoweredGraph(*this);
 
     // Mandatory passes
     pass::PassRunner{}
@@ -129,7 +130,7 @@ LoweredGraph::LoweredGraph(const ir::Graph &graph, const CompilerOptions &option
     VERBOSE(LoweredGraph) << "Graph Input : " << operand << std::endl;
   for (auto operand : _graph.getOutputs())
     VERBOSE(LoweredGraph) << "Graph Output : " << operand << std::endl;
-  dumpOpSequences(_op_seqs, _graph.operations());
+  dumper::text::dumpLoweredGraph(*this);
 
   // Graph verifications
   {
