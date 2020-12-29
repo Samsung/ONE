@@ -25,6 +25,8 @@ namespace
 
 bool resolve_custom_op(luci::CircleCustom *cop)
 {
+  bool changed = false;
+
   const std::string custom_code = cop->custom_code();
   const std::vector<uint8_t> custom_options = cop->custom_options();
 
@@ -40,10 +42,17 @@ bool resolve_custom_op(luci::CircleCustom *cop)
     batch_matmul->adj_x(map["adj_x"].AsBool());
     batch_matmul->adj_y(map["adj_y"].AsBool());
 
-    replace(cop).with(batch_matmul);
-    return true;
+    for (auto s : loco::succs(cop))
+    {
+      if (auto cop_out = dynamic_cast<luci::CircleCustomOut *>(s))
+      {
+        replace(cop_out).with(batch_matmul);
+        changed = true;
+      }
+    }
   }
-  return false;
+
+  return changed;
 }
 
 } // namespace
