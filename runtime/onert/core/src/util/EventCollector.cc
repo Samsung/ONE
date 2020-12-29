@@ -78,7 +78,6 @@ public:
     dur_evt->backend = evt_collected.backend;
     dur_evt->op_index = evt_collected.op_index;
     dur_evt->op_name = evt_collected.op_name;
-    dur_evt->op_seq_size = evt_collected.op_seq_size;
 
     dur_evt->args = evt_collected.userData;
     {

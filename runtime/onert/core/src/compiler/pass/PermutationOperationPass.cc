@@ -33,7 +33,7 @@ using namespace ir;
 void PermutationOperationPass::callback(const OperationIndex &, Operation &node)
 {
   node.accept(*this);
-};
+}
 
 // TODO Remove this. Expanding ranks of Operand is dangerous
 void PermutationOperationPass::applyExpandRanks(const Operation &node)
@@ -43,9 +43,8 @@ void PermutationOperationPass::applyExpandRanks(const Operation &node)
 
   assert(output.getDef().valid());
   const auto node_index = output.getDef();
-  const auto &op_seq_index = _lowered_graph.op_seqs().getOperation(node_index);
-  const auto frontend_layout = _lowered_graph.op_seqs().at(op_seq_index).getLayout();
-  const auto backend_layout = _lowered_graph.getLowerInfo(op_seq_index)->layout();
+  const auto frontend_layout = _graph.layout();
+  const auto backend_layout = _lowered_graph.getLowerInfo(node_index)->layout();
 
   if (frontend_layout == backend_layout)
   {
@@ -84,10 +83,9 @@ void PermutationOperationPass::changeToKeepLayout(const Operation &node)
 
   assert(output_obj.getDef().valid());
   const auto node_index = output_obj.getDef();
-  const auto &op_seq_index = _lowered_graph.op_seqs().getOperation(node_index);
 
-  const auto frontend_layout = _lowered_graph.op_seqs().at(op_seq_index).getLayout();
-  const auto backend_layout = _lowered_graph.getLowerInfo(op_seq_index)->layout();
+  const auto frontend_layout = _graph.layout();
+  const auto backend_layout = _lowered_graph.getLowerInfo(node_index)->layout();
 
   if (frontend_layout == backend_layout)
   {
@@ -97,96 +95,27 @@ void PermutationOperationPass::changeToKeepLayout(const Operation &node)
   // Permutation changing layout beyond 4-D is not supported yet
   assert(output_obj.shape().rank() <= 4);
 
-  // Divide op_seq based on target operation
+  // Change PermuteFactors of operands and the operation of target node
   {
-    auto &prev_op_seq = _lowered_graph.op_seqs().at(op_seq_index);
-    auto &operations = _lowered_graph.graph().operations();
+    const auto op_li = _lowered_graph.getLowerInfo(node_index);
+    const auto backend = op_li->backend();
 
-    // Create new op_seq and move information from existing op_seq to new op_seq if target
-    // node is the end of op_seq
-    auto it = prev_op_seq.begin();
-    // Find iterator of target node in op_seq
-    while (*(it++) != node_index)
-      ;
-    if (it != prev_op_seq.end())
-    {
-      const auto &target_op_idx = *it;
-      const auto &target_node = operations.at(target_op_idx);
-      const auto &next_op_seq_index =
-        _lowered_graph.op_seqs().emplace(target_op_idx, prev_op_seq.getLayout());
-      auto &next_op_seq = _lowered_graph.op_seqs().at(next_op_seq_index);
-      next_op_seq.setInputs(target_node.getInputs());
-      next_op_seq.setOutputs(target_node.getOutputs());
-
-      std::vector<OperationIndex> remove_list;
-      remove_list.emplace_back(target_op_idx);
-      while (++it != prev_op_seq.end())
-      {
-        next_op_seq.appendOperation(target_op_idx);
-        next_op_seq.setOutputs(target_node.getOutputs());
-        remove_list.emplace_back(target_op_idx);
-      }
-
-      prev_op_seq.setOutputs(node.getOutputs());
-      for (const auto &index : remove_list)
-      {
-        prev_op_seq.remove(index);
-      }
-
-      const auto op_seq_li = _lowered_graph.getLowerInfo(op_seq_index);
-      _lowered_graph.setLowerInfo(
-        next_op_seq_index,
-        std::make_unique<compiler::OpSequenceLowerInfo>(op_seq_li->backend(), op_seq_li->layout()));
-    }
-  }
-
-  // Remove target operation from op_seq and insert the target operation to new op_seq
-  {
-    const auto backend = _lowered_graph.getLowerInfo(op_seq_index)->backend();
-
-    // Remove target operation from op_sequence
-    _lowered_graph.op_seqs().removeFromOpSequence(node_index);
-
-    if (!_lowered_graph.op_seqs().exist(op_seq_index))
-    {
-      // Remove lowerinfo for op_seq of target operation if the op_seq does not exist
-      _lowered_graph.removeLowerInfo(op_seq_index);
-    }
-    else
-    {
-      // Update op_seq of target operation if the op_seq exists
-      auto &prev_op_seq = _lowered_graph.op_seqs().at(op_seq_index);
-      const auto &last_node_idx = *(--prev_op_seq.end());
-      const auto &last_node = _lowered_graph.graph().operations().at(last_node_idx);
-      prev_op_seq.setOutputs(last_node.getOutputs());
-    }
-
-    // Create new op_seq and set information to the op_seq
-    auto new_op_seq_index = _lowered_graph.op_seqs().emplace(node_index, frontend_layout);
-    auto &new_op_seq = _lowered_graph.op_seqs().at(new_op_seq_index);
-    new_op_seq.setInputs(node.getInputs());
-    new_op_seq.setOutputs(node.getOutputs());
     _lowered_graph.setLowerInfo(
-      new_op_seq_index, std::make_unique<compiler::OpSequenceLowerInfo>(backend, frontend_layout));
-  }
+      node_index, std::make_unique<compiler::OperationLowerInfo>(backend, frontend_layout));
 
-  // Change PermuteFactors of operands of target node
-  {
-    const auto &op_seq_index = _lowered_graph.op_seqs().getOperation(node_index);
-    const auto op_seq_li = _lowered_graph.getLowerInfo(op_seq_index);
-    const auto backend = op_seq_li->backend();
     const PermuteFactor removed_factor{backend, backend_layout};
     const PermuteFactor new_factor{backend, frontend_layout};
     for (const auto &input : node.getInputs() | Remove::DUPLICATED | Remove::UNDEFINED)
     {
+      // Check if it can be removed by checking if the operand is used by another operation and
+      // it uses the same backend and layout
       bool canRemove = true;
       for (const auto &use : _graph.operands().at(input).getUses())
       {
         if (use != node_index)
         {
-          const auto &use_op_seq_index = _lowered_graph.op_seqs().getOperation(use);
-          auto use_op_seq_li = _lowered_graph.getLowerInfo(use_op_seq_index);
-          if (use_op_seq_li->backend() == backend && use_op_seq_li->layout() == backend_layout)
+          auto use_op_li = _lowered_graph.getLowerInfo(use);
+          if (use_op_li->backend() == backend && use_op_li->layout() == backend_layout)
           {
             canRemove = false;
             break;
@@ -194,21 +123,21 @@ void PermutationOperationPass::changeToKeepLayout(const Operation &node)
         }
       }
 
-      auto lower_info = _lowered_graph.getLowerInfo(input);
+      auto input_li = _lowered_graph.getLowerInfo(input);
       if (canRemove)
       {
-        lower_info->removeUsePermuteFactor(removed_factor);
+        input_li->removeUsePermuteFactor(removed_factor);
       }
-      lower_info->addUsePermuteFactor(new_factor);
+      input_li->addUsePermuteFactor(new_factor);
 
       // Whether if node's input is an input of model or a constant
       if (!_graph.operands().at(input).getDef().valid() &&
-          (lower_info->def_factors().size() == 1 &&
-           lower_info->def_factors().getOnlyElement() == removed_factor))
+          (input_li->def_factors().size() == 1 &&
+           input_li->def_factors().getOnlyElement() == removed_factor))
       {
         assert(_graph.getInputs().contains(input) || _graph.operands().at(input).isConstant());
-        lower_info->removeDefPermuteFactor(removed_factor);
-        lower_info->addDefPermuteFactor(new_factor);
+        input_li->removeDefPermuteFactor(removed_factor);
+        input_li->addDefPermuteFactor(new_factor);
       }
     }
 

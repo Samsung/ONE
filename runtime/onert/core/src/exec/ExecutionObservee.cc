@@ -42,22 +42,21 @@ void ExecutionObservee::notifySubgraphEnd(ir::SubgraphIndex ind)
   }
 }
 
-void ExecutionObservee::notifyJobBegin(IExecutor *executor, ir::SubgraphIndex index,
-                                       const ir::OpSequence *op_seq,
-                                       const backend::Backend *backend)
+void ExecutionObservee::notifyJobBegin(IExecutor *executor, ir::SubgraphIndex subg_ind,
+                                       ir::OperationIndex op_ind, const backend::Backend *backend)
 {
   for (auto &o : _observers)
   {
-    o->handleJobBegin(executor, index, op_seq, backend);
+    o->handleJobBegin(executor, subg_ind, op_ind, backend);
   }
 }
 
-void ExecutionObservee::notifyJobEnd(IExecutor *executor, ir::SubgraphIndex index,
-                                     const ir::OpSequence *op_seq, const backend::Backend *backend)
+void ExecutionObservee::notifyJobEnd(IExecutor *executor, ir::SubgraphIndex subg_ind,
+                                     ir::OperationIndex op_ind, const backend::Backend *backend)
 {
   for (auto &o : _observers)
   {
-    o->handleJobEnd(executor, index, op_seq, backend);
+    o->handleJobEnd(executor, subg_ind, op_ind, backend);
   }
 }
 

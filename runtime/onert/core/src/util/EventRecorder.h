@@ -50,13 +50,13 @@ struct SubgDurationEvent : public DurationEvent
 { /* same with DurationEvent */
 };
 
+// TODO Rename it to OperationDurationEvent
 struct OpSeqDurationEvent : public DurationEvent
 {
   // Note: DurationEvent's name and tid will be set by EventWriter
   std::string backend;
   uint32_t op_index;
   std::string op_name;
-  uint32_t op_seq_size; // if this event is for an operation sequence of multiple operations
 };
 
 struct CounterEvent : public Event

@@ -45,16 +45,14 @@ public:
   {
   }
 
-  ITensorRegistry *genTensors(const std::vector<onert::ir::OpSequenceIndex> &order,
-                              const ir::OpSequences &op_seqs,
+  ITensorRegistry *genTensors(const std::vector<onert::ir::OperationIndex> &order,
                               const compiler::GraphLowerInfo &lower_info) override;
-  FunctionMap genKernels(const std::vector<onert::ir::OpSequenceIndex> &order,
-                         const ir::OpSequences &op_seqs) override;
+  FunctionMap genKernels(const std::vector<onert::ir::OperationIndex> &order) override;
 
 private:
   void initConsts();
-  void planTensors(const std::vector<onert::ir::OpSequenceIndex> &order,
-                   const ir::OpSequences &op_seqs, const compiler::GraphLowerInfo &lower_info);
+  void planTensors(const std::vector<onert::ir::OperationIndex> &order,
+                   const compiler::GraphLowerInfo &lower_info);
 
 public:
   std::shared_ptr<TensorBuilder> tensor_builder;

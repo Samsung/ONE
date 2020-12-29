@@ -29,29 +29,23 @@ namespace onert
 namespace compiler
 {
 
-std::vector<ir::OpSequenceIndex> Linear::linearize(const compiler::LoweredGraph &lowered_graph)
+// TODO(easy) Change the LoweredGraph param to Graph
+std::vector<ir::OperationIndex> Linear::linearize(const compiler::LoweredGraph &lowered_graph)
 {
-  std::vector<ir::OpSequenceIndex> order;
-  lowered_graph.iterateTopolOpSeqs(
-    [&](const ir::OpSequenceIndex &index, const ir::OpSequence &) -> void {
-      order.emplace_back(index);
-    });
-  return order;
+  return lowered_graph.graph().topolSortOperations();
 }
 
+// TODO(easy) Change the LoweredGraph param to Graph
 void Linear::dump(const compiler::LoweredGraph &lowered_graph,
-                  const std::vector<ir::OpSequenceIndex> &order)
+                  const std::vector<ir::OperationIndex> &order)
 {
+  for (const auto ind : order)
   {
-    VERBOSE(Linear) << "Final OpSequences" << std::endl;
-    for (const auto index : order)
-    {
-      // TODO Could logging system can handle this? (Inserting prefix for each line)
-      std::istringstream iss{dumper::text::formatOpSequence(lowered_graph, index)};
-      std::string line;
-      while (std::getline(iss, line))
-        VERBOSE(GraphDumper) << line << std::endl;
-    }
+    // TODO Could logging system can handle this? (Inserting prefix for each line)
+    std::istringstream iss{dumper::text::formatOperation(lowered_graph.graph(), ind)};
+    std::string line;
+    while (std::getline(iss, line))
+      VERBOSE(GraphDumper) << line << std::endl;
   }
 }
 

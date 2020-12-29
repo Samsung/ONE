@@ -45,30 +45,24 @@ using ActivationBuilder = ::onert::backend::acl_common::AclActivationBuilder<
   ::arm_compute::ICLTensor, ::arm_compute::CLActivationLayer, acl_common::AclFunction>;
 
 KernelGenerator::KernelGenerator(
-  const ir::Operands &operands_ctx, const ir::Operations &operations_ctx,
-  const std::shared_ptr<TensorBuilder> &tensor_builder,
+  const ir::Graph &graph, const std::shared_ptr<TensorBuilder> &tensor_builder,
   const std::shared_ptr<acl_common::AclTensorRegistry<TensorManager>> &tensor_reg)
-  : _ctx(operands_ctx), _operations_ctx(operations_ctx), _tensor_builder(tensor_builder),
-    _tensor_reg(tensor_reg), _current_layout(ir::Layout::UNKNOWN)
+  : cpu_common::KernelGeneratorBase{graph}, _ctx(graph.operands()),
+    _operations_ctx(graph.operations()), _current_layout{graph.layout()},
+    _tensor_builder(tensor_builder), _tensor_reg(tensor_reg)
 {
   // DO NOTHING
 }
 
-void KernelGenerator::visit(const ir::OpSequence &op_seq)
+std::unique_ptr<exec::FunctionSequence> KernelGenerator::generate(ir::OperationIndex ind)
 {
-  // TODO Move this to IKernelGenerator
-  //      (all derivatives have the same implementation for this)
-  assert(!_return_fn_seq);
-  _return_fn_seq = std::make_unique<exec::FunctionSequence>();
-  _return_fn_seq->enableDynamicShapeInferer(false);
+  auto ret = std::make_unique<exec::FunctionSequence>();
+  ret->enableDynamicShapeInferer(false);
 
-  _current_layout = op_seq.getLayout();
-  for (const auto &operation_idx : op_seq.operations())
-  {
-    const auto &node = _operations_ctx.at(operation_idx);
-    node.accept(*this);
-    _return_fn_seq->append(releaseFunction());
-  }
+  const auto &op = _graph.operations().at(ind);
+  op.accept(*this);
+  ret->append(releaseFunction());
+  return ret;
 }
 
 void KernelGenerator::visit(const ir::operation::BatchToSpaceND &node)

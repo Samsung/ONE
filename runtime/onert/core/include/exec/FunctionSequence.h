@@ -76,7 +76,7 @@ public:
 public: // methods related to dynamic tensor
   struct DynamicTensorCtx
   {
-    const ir::OpSequence *op_seq = nullptr;
+    ir::OperationIndex op_ind;
     const ir::Operations *operations = nullptr;
     std::shared_ptr<exec::DynamicShapeInferer> dynamic_shape_inferer = nullptr;
     backend::IDynamicTensorManager *dynamic_tensor_manager = nullptr;

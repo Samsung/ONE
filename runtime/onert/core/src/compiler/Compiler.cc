@@ -26,7 +26,7 @@
 #include "compiler/ManualScheduler.h"
 #include "compiler/HEScheduler.h"
 #include "compiler/StaticShapeInferer.h"
-#include "compiler/OpSequenceLowerInfo.h"
+#include "compiler/OperationLowerInfo.h"
 #include "compiler/pass/ConstantOutputPass.h"
 #include "compiler/pass/OddOutputPass.h"
 #include "compiler/pass/PassRunner.h"
@@ -245,11 +245,14 @@ std::shared_ptr<exec::ExecutorMap> Compiler::compile(void)
   {
     const auto primary_subg_idx = ir::SubgraphIndex{0};
     StaticShapeInferer inferer(primary_subg_idx, lowered_subgs);
-    lowered_subgs.at(primary_subg_idx)
-      ->iterateTopolOpSeqs([&](const ir::OpSequenceIndex &, ir::OpSequence &op_seq) {
-        auto has_dynamic_tensor = inferer.infer(op_seq);
-        op_seq.has_dynamic_tensor(has_dynamic_tensor);
-      });
+    auto &lowered_subg = lowered_subgs.at(primary_subg_idx);
+    auto ordered_ops = lowered_subg->graph().topolSortOperations();
+    for (auto op_ind : ordered_ops)
+    {
+      const auto &op = lowered_subg->graph().operations().at(op_ind);
+      bool has_dynamic_tensor = inferer.infer(op);
+      lowered_subg->setHasDynamicTensor(op_ind, has_dynamic_tensor);
+    }
     inferer.dump();
   }
 

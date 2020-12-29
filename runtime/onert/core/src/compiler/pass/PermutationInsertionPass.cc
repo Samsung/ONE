@@ -23,7 +23,7 @@
 
 #include "backend/builtin/Config.h"
 #include "ir/Operand.h"
-#include "compiler/OpSequenceLowerInfo.h"
+#include "compiler/OperationLowerInfo.h"
 #include "ir/Graph.h"
 #include "backend/IConfig.h"
 #include "util/logging.h"
@@ -83,26 +83,17 @@ void PermutationInsertionPass::callback(const ir::OperandIndex &index, ir::Opera
         continue;
 
       auto &operation = _graph.operations().at(use);
-      assert(_lowered_graph.op_seqs().containsOperation(use));
-      auto op_seq_index = _lowered_graph.op_seqs().getOperation(use);
-      auto op_seq_li = _lowered_graph.getLowerInfo(op_seq_index);
-      assert(op_seq_li);
-      const auto op_seq_layout = op_seq_li->layout();
-      const backend::Backend *backend = op_seq_li->backend();
+      auto op_li = _lowered_graph.getLowerInfo(use);
+      assert(op_li);
+      const auto op_layout = op_li->layout();
+      const backend::Backend *backend = op_li->backend();
       assert(backend);
       auto use_node_inputs = operation.getInputs();
       assert(use_node_inputs.contains(index));
 
-      auto new_index = factor_to_index.at({backend, op_seq_layout});
+      auto new_index = factor_to_index.at({backend, op_layout});
       if (index != new_index)
       {
-        // Update from op_seq
-        // Replace the same inputs of an OpSequence at once for the following reasons:
-        // 1. An OpSequence's inputs are the same inputs of first operation
-        // 2. An OpSequence may have inputs as the same operand (2 or more).
-        // 3. The same inputs of OpSequence have the same PermuteFactor.
-        _lowered_graph.op_seqs().at(op_seq_index).replaceInputs(index, new_index);
-
         // Update from operation
         // Replace the same inputs of an operation at once for the following reasons:
         // No. 2 and 3 above
@@ -191,7 +182,6 @@ ir::OperationIndex PermutationInsertionPass::insertPermute(const ir::OperandInde
   auto insert_node = std::make_unique<Permute>(operand_index, out_operand_index, permute_type);
 
   auto node_index = _graph.operations().push(std::move(insert_node));
-  const auto &node = _graph.operations().at(node_index);
 
   VERBOSE_F() << "Permute Op inserted, node index : " << node_index << std::endl;
   VERBOSE_F() << "  - Input (original) Operand : " << operand_index << "("
@@ -199,14 +189,10 @@ ir::OperationIndex PermutationInsertionPass::insertPermute(const ir::OperandInde
   VERBOSE_F() << "  - Output(inserted) Operand : " << out_operand_index << "("
               << factor.backend()->config()->id() << ")" << std::endl;
 
-  // OpSequence
+  // Operation LowerInfo
   {
-    auto op_seq_index = _lowered_graph.op_seqs().emplace(node_index, permute_node_layout);
-    auto &op_seq = _lowered_graph.op_seqs().at(op_seq_index);
-    op_seq.setInputs(node.getInputs());
-    op_seq.setOutputs(node.getOutputs());
-    _lowered_graph.setLowerInfo(op_seq_index, std::make_unique<compiler::OpSequenceLowerInfo>(
-                                                permute_node_backend, permute_node_layout));
+    _lowered_graph.setLowerInfo(node_index, std::make_unique<compiler::OperationLowerInfo>(
+                                              permute_node_backend, permute_node_layout));
   }
 
   // Update Use/Def info

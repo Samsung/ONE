@@ -21,7 +21,7 @@
 #include <unordered_map>
 
 #include "compiler/OperandLowerInfo.h"
-#include "compiler/OpSequenceLowerInfo.h"
+#include "compiler/OperationLowerInfo.h"
 #include "ir/OperandIndexMap.h"
 #include "ir/Index.h"
 
@@ -32,7 +32,7 @@ namespace compiler
 
 struct GraphLowerInfo
 {
-  std::unordered_map<ir::OpSequenceIndex, std::unique_ptr<OpSequenceLowerInfo>> op_seq;
+  std::unordered_map<ir::OperationIndex, std::unique_ptr<OperationLowerInfo>> operation;
   ir::OperandIndexMap<std::unique_ptr<OperandLowerInfo>> operand;
 };
 

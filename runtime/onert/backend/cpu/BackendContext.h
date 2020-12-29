@@ -41,17 +41,15 @@ public:
   {
   }
 
-  ITensorRegistry *genTensors(const std::vector<onert::ir::OpSequenceIndex> &order,
-                              const ir::OpSequences &op_seqs,
+  ITensorRegistry *genTensors(const std::vector<onert::ir::OperationIndex> &order,
                               const compiler::GraphLowerInfo &lower_info) override;
-  FunctionMap genKernels(const std::vector<onert::ir::OpSequenceIndex> &order,
-                         const ir::OpSequences &op_seqs) override;
+  FunctionMap genKernels(const std::vector<onert::ir::OperationIndex> &order) override;
 
   std::shared_ptr<ExternalContext> external_context() { return _external_context; }
 
 private:
-  void planTensors(const std::vector<onert::ir::OpSequenceIndex> &order,
-                   const ir::OpSequences &op_seqs, const compiler::GraphLowerInfo &lower_info);
+  void planTensors(const std::vector<onert::ir::OperationIndex> &order,
+                   const compiler::GraphLowerInfo &lower_info);
 
 public:
   // TODO Make it private

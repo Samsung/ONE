@@ -18,7 +18,6 @@
 #define __ONERT_COMPILER_STATIC_SHAPE_INFERER_H__
 
 #include "ir/OperationVisitor.h"
-#include "ir/OpSequence.h"
 #include "compiler/LoweredGraph.h"
 #include "ir/Index.h"
 
@@ -55,14 +54,15 @@ public:
    * @brief Infer shape of operands beloning to ops and set the output shape.
    *        If output shape cannot be known without running op, mark it so that it can be allocated
    *        when running kernel.
-   * @param op_seq sequence of operations
-   * @return @c true if op_seq's input or output has any dynamic tensor; @c false otherwise.
+   * @param op Operation
+   * @return @c true if op's input or output has any dynamic tensor; @c false otherwise.
    */
-  bool infer(const ir::OpSequence &op_seq);
+  bool infer(const ir::Operation &op);
 
   void dump();
 
 private:
+  void inferSubgraph(ir::SubgraphIndex subg_ind);
   bool checkDynamicInput(const ir::Operation &op);
   void setDynamicOutput(const ir::Operation &op);
 

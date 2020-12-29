@@ -20,7 +20,6 @@
 #include <vector>
 
 #include "ir/Index.h"
-#include "ir/OpSequences.h"
 #include "compiler/GraphLowerInfo.h"
 #include "util/logging.h"
 #include "backend/ITensorRegistry.h"
@@ -36,8 +35,8 @@ namespace cpu_common
 
 // TODO Remove the template param BackendContext once unification of cpu backend context is done
 template <typename T_BackendContext>
-void planTensors(const T_BackendContext &ctx, const std::vector<onert::ir::OpSequenceIndex> &order,
-                 const ir::OpSequences &op_seqs, const compiler::GraphLowerInfo &lower_info)
+void planTensors(const T_BackendContext &ctx, const std::vector<onert::ir::OperationIndex> &order,
+                 const compiler::GraphLowerInfo &lower_info)
 {
   auto graph = ctx.graph();
   auto tensor_builder = ctx.tensor_builder;
@@ -75,7 +74,7 @@ void planTensors(const T_BackendContext &ctx, const std::vector<onert::ir::OpSeq
     auto factor = li->def_factors().getOnlyElement();
     if (!tensor_builder->isRegistered(ind))
     {
-      // These tensors do not exist in any op_seq (No use and def)
+      // These tensors do not exist in any  (No use and def)
       const auto info = obj.info();
       const auto backend_layout = factor.layout();
       // TODO Change tensor info to have permuted shape
@@ -98,15 +97,13 @@ void planTensors(const T_BackendContext &ctx, const std::vector<onert::ir::OpSeq
   // 1. Scan DEF of outputs. If the DEF, allocate it
   // 2. Scan DEF of inputs. If variable tensor, allocate it
   // 3. Scan USE of inputs. Decrease the USE and deallocate if the USE is 0
-  for (const auto op_seq_ind : order)
+  for (const auto op_ind : order)
   {
-    const auto &op_seq = op_seqs.at(op_seq_ind);
-    for (const auto &op_idx : op_seq.operations())
+    const auto &op = graph->operations().at(op_ind);
+    // TODO Remove indentation
     {
-      auto op_inputs =
-        graph->operations().at(op_idx).getInputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED;
-      auto op_outputs = graph->operations().at(op_idx).getOutputs() | ir::Remove::DUPLICATED |
-                        ir::Remove::UNDEFINED;
+      auto op_inputs = op.getInputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED;
+      auto op_outputs = op.getOutputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED;
 
       // Define outputs
       for (const auto &ind : op_outputs)
@@ -163,7 +160,7 @@ void planTensors(const T_BackendContext &ctx, const std::vector<onert::ir::OpSeq
           auto dyn_tensor_manager = tensor_builder->dynamicTensorManager();
           auto *tensor = ctx.tensor_registry->getITensor(ind);
           assert(tensor);
-          dyn_tensor_manager->planDealloc(op_idx, tensor);
+          dyn_tensor_manager->planDealloc(op_ind, tensor);
         }
       }
     }
@@ -189,9 +186,9 @@ void planTensors(const T_BackendContext &ctx, const std::vector<onert::ir::OpSeq
 }
 
 template <typename T_BackendContext>
-ITensorRegistry *
-genTensors(T_BackendContext &ctx, const std::vector<onert::ir::OpSequenceIndex> &order,
-           const ir::OpSequences &op_seqs, const compiler::GraphLowerInfo &lower_info)
+ITensorRegistry *genTensors(T_BackendContext &ctx,
+                            const std::vector<onert::ir::OperationIndex> &order,
+                            const compiler::GraphLowerInfo &lower_info)
 {
   auto graph = ctx.graph();
   auto tensor_builder = ctx.tensor_builder;
@@ -226,7 +223,7 @@ genTensors(T_BackendContext &ctx, const std::vector<onert::ir::OpSequenceIndex> 
   // TODO Get compiler options from compiler, and use it rather than getting it from Env
   if (util::getConfigString(util::config::EXECUTOR) == "Linear")
   {
-    cpu_common::planTensors(ctx, order, op_seqs, lower_info);
+    cpu_common::planTensors(ctx, order, lower_info);
   }
   else
   {

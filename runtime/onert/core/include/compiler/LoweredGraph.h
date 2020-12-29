@@ -19,7 +19,6 @@
 
 #include "ir/Graph.h"
 #include "compiler/GraphLowerInfo.h"
-#include "ir/OpSequences.h"
 #include "compiler/BackendResolver.h"
 #include "compiler/Compiler.h"
 
@@ -41,43 +40,40 @@ public:
   ir::Graph &graph() { return _graph; }
   const ir::Graph &graph() const { return _graph; }
   const compiler::GraphLowerInfo *getLowerInfo() const { return &_lower_info_map; }
-  const compiler::OpSequenceLowerInfo *getLowerInfo(const ir::OpSequenceIndex &op_seq_index) const;
-  void setLowerInfo(const ir::OpSequenceIndex &op_seq_index,
-                    std::unique_ptr<compiler::OpSequenceLowerInfo> &&lower_info);
-  void removeLowerInfo(const ir::OpSequenceIndex &op_seq_index);
+  const compiler::OperationLowerInfo *getLowerInfo(const ir::OperationIndex &op_ind) const;
+  void setLowerInfo(const ir::OperationIndex &op_ind,
+                    std::unique_ptr<compiler::OperationLowerInfo> &&lower_info);
+  void removeLowerInfo(const ir::OperationIndex &op_ind);
   const compiler::OperandLowerInfo *getLowerInfo(const ir::OperandIndex &index) const;
   compiler::OperandLowerInfo *getLowerInfo(const ir::OperandIndex &index);
   void setLowerInfo(const ir::OperandIndex &index,
                     std::unique_ptr<compiler::OperandLowerInfo> &&lower_info);
   void removeLowerInfo(const ir::OperandIndex &index);
-  ir::OpSequences &op_seqs() { return _op_seqs; }
-  const ir::OpSequences &op_seqs() const { return _op_seqs; }
-  void iterateTopolOpSeqs(
-    const std::function<void(const ir::OpSequenceIndex &, const ir::OpSequence &)> &fn) const;
-  void
-  iterateTopolOpSeqs(const std::function<void(const ir::OpSequenceIndex &, ir::OpSequence &)> &fn);
   std::shared_ptr<ir::OperationIndexMap<int64_t>> indexed_ranks() { return _indexed_ranks; }
 
-private:
-  void makeOpSequences(
-    ir::OperandIndexMap<std::unique_ptr<compiler::OperandLowerInfo>> &operands_lower_info,
-    const compiler::CompilerOptions &options, const compiler::BackendResolver &backend_resolver);
+  void setHasDynamicTensor(ir::OperationIndex ind, bool val)
+  {
+    _has_dynamic_tensor_map.emplace(ind, val);
+  }
+  bool getHasDynamicTensor(ir::OperationIndex ind) const
+  {
+    auto itr = _has_dynamic_tensor_map.find(ind);
+    return (itr == _has_dynamic_tensor_map.end()) ? false : itr->second;
+  }
 
+private:
+  void makeOperationLowerInfo(
+    ir::OperandIndexMap<std::unique_ptr<compiler::OperandLowerInfo>> &operands_lower_info,
+    const compiler::BackendResolver &backend_resolver);
   void manipulateLowerInfo(
     ir::OperandIndexMap<std::unique_ptr<compiler::OperandLowerInfo>> &operands_lower_info);
   void dumpLowerInfo();
-  bool mergeable(const ir::OpSequenceIndex &op_seq_index, const ir::OperationIndex &node_index,
-                 ir::Layout layout, const compiler::BackendResolver &backend_resolver);
-  ir::OpSequenceIndex appendFreshSingleOpSequence(const ir::OperationIndex &node_index,
-                                                  const ir::Operation &node);
-  std::vector<ir::OpSequenceIndex> topolSortOpSeqs() const;
 
 private:
   ir::Graph _graph;
   std::shared_ptr<ir::OperationIndexMap<int64_t>> _indexed_ranks;
   compiler::GraphLowerInfo _lower_info_map;
-  // Pass(for Perm) can accept only graph so that Graph has OpSequences as a member
-  ir::OpSequences _op_seqs;
+  ir::OperationIndexMap<bool> _has_dynamic_tensor_map;
 };
 
 } // namespace compiler

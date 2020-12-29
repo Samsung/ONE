@@ -321,7 +321,7 @@ void AclTensorBuilder<T_ITensor, T_Tensor, T_SubTensor>::buildTensors(void)
   // Subtensors
   assert(_tensor_mgr->nonconstSubtensors().size() == 0);
   // TODO Iterate `_parent_map` instead, once the optimizer bug is fixed
-  //      `Optimizer` iterates the entire OpSequences, so there is a bug if iterating _parent_map
+  //      `Optimizer` iterates the entire Operations, so there is a bug if iterating _parent_map
   for (auto &entry : _tensor_info_map)
   {
     auto ind = entry.first;
