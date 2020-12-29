@@ -19,12 +19,11 @@
 #include <luci/Importer.h>
 #include <luci/Pass/ShapeInferencePass.h>
 #include <luci/Pass/TypeInferencePass.h>
+#include <luci/Pass/CircleShapeInferencePass.h>
+#include <luci/Pass/CircleTypeInferencePass.h>
 #include <luci/Service/Validate.h>
 #include <luci/CircleExporter.h>
 #include <oops/InternalExn.h>
-
-// Following passes will be removed after refactoring is finished
-#include <luci/Pass/MigrateLegacyShapeDtypePass.h>
 
 #include <fstream>
 #include <iostream>
@@ -143,8 +142,12 @@ int entry(int argc, char **argv)
         ;
     }
     {
-      // This pass will be removed after refactoring is finished
-      luci::MigrateLegacyShapeDtypePass pass;
+      luci::CircleShapeInferencePass pass;
+      while (pass.run(graph) == true)
+        ;
+    }
+    {
+      luci::CircleTypeInferencePass pass;
       while (pass.run(graph) == true)
         ;
     }
