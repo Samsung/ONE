@@ -32,9 +32,7 @@ ShapeDescription to_shape_description(const loco::TensorShape &shape)
   res._dims.resize(shape.rank());
   for (uint32_t axis = 0; axis < shape.rank(); ++axis)
   {
-    // All the dimensions SHOULD be known
-    assert(shape.dim(axis).known());
-    res._dims.at(axis) = shape.dim(axis).value();
+    res._dims.at(axis) = shape.dim(axis).known() ? shape.dim(axis).value() : -1;
   }
 
   return res;

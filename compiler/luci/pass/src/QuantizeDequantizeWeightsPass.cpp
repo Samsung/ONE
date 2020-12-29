@@ -31,7 +31,7 @@ namespace luci
 namespace
 {
 
-void cal_minmax_per_channel(CircleConst *node, std::vector<float> &min, std::vector<float> &max)
+void cal_minmax_per_channel(CircleConst *node, std::vector<float> &min, std::vector<float> &max) // TODO : value() fix needed...? belows too...
 {
   loco::TensorShape dimension;
   dimension.rank(4);

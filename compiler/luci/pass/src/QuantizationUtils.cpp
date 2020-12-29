@@ -301,7 +301,7 @@ bool get_channel_dim_index(CircleConst *node, loco::TensorShape &dimension, int 
   return false;
 }
 
-uint32_t cal_offset(loco::TensorShape &dimension, uint32_t *indices)
+uint32_t cal_offset(loco::TensorShape &dimension, uint32_t *indices) // TODO : value() fix needed
 {
   return indices[0] * dimension.dim(1).value() * dimension.dim(2).value() *
              dimension.dim(3).value() +

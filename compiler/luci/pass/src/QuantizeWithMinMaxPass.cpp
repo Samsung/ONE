@@ -350,7 +350,7 @@ bool has_min_max(const CircleNode *node)
 {
   return node->quantparam() && !node->quantparam()->min.empty() && !node->quantparam()->max.empty();
 }
-
+// TODO : value() fix needed ??
 void sym_wquant_per_channel(CircleConst *node, std::vector<float> &scaling_factor,
                             int32_t &channel_dim_index)
 {
@@ -400,7 +400,7 @@ void sym_wquant_per_channel(CircleConst *node, std::vector<float> &scaling_facto
         std::min(kMaxScale, std::max(kMinScale, quantized_values[i]));
   }
 }
-
+// TODO : value() fix needed ??
 void asym_wquant_per_channel(CircleConst *node, std::vector<float> &min,
                              std::vector<float> &scaling_factor, int32_t &channel_dim_index)
 {

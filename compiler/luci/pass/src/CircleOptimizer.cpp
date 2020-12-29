@@ -36,11 +36,9 @@
 #include "luci/Pass/ShuffleWeightTo16x1Float32Pass.h"
 // TODO add more passes
 
-#include "luci/Pass/CheckCircleRulesPass.h"
 #include "luci/Pass/CircleShapeInferencePass.h"
 #include "luci/Pass/CircleTypeInferencePass.h"
 #include "luci/Pass/ShapeInferencePass.h"
-#include "luci/Pass/ShapeSignatureInferencePass.h"
 #include "luci/Pass/TypeInferencePass.h"
 
 // This pass will be removed after refactoring is finished
@@ -144,12 +142,7 @@ void CircleOptimizer::optimize(luci::Module *m) const
   phase.emplace_back(std::make_unique<luci::TypeInferencePass>());
   phase.emplace_back(std::make_unique<luci::ShapeInferencePass>());
 
-  // Following pass is for checking whether new circle rules are implemented correctly.
-  // It will be deprecated after all implementation is finished.
-  phase.emplace_back(std::make_unique<luci::CheckCircleRulesPass>());
-
   // Following passes are needed everytime when new nodes are created.
-  phase.emplace_back(std::make_unique<luci::ShapeSignatureInferencePass>());
   phase.emplace_back(std::make_unique<luci::CircleShapeInferencePass>());
   phase.emplace_back(std::make_unique<luci::CircleTypeInferencePass>());
 
@@ -176,12 +169,7 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   phase.emplace_back(std::make_unique<luci::TypeInferencePass>());
   phase.emplace_back(std::make_unique<luci::ShapeInferencePass>());
 
-  // Following pass is for checking whether new circle rules are implemented correctly.
-  // It will be deprecated after all implementation is finished.
-  phase.emplace_back(std::make_unique<luci::CheckCircleRulesPass>());
-
   // Following passes are needed everytime when new nodes are created.
-  phase.emplace_back(std::make_unique<luci::ShapeSignatureInferencePass>());
   phase.emplace_back(std::make_unique<luci::CircleShapeInferencePass>());
   phase.emplace_back(std::make_unique<luci::CircleTypeInferencePass>());
 

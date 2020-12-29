@@ -30,7 +30,7 @@ template <typename NodeT> Shape getNodeShape(const NodeT *node)
   Shape shape(node->rank());
   for (uint32_t i = 0; i < node->rank(); ++i)
   {
-    shape.dim(i) = node->dim(i).value();
+    shape.dim(i) = node->dim(i).known() ? node->dim(i).value() : 1;
   }
   return shape;
 }

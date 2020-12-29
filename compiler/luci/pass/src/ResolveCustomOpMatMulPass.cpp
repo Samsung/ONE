@@ -144,7 +144,7 @@ bool resolve_matmul(luci::CircleCustom *cop)
 
   // Make a constant zero-filled bias node
   auto circle_b = loco::must_cast<luci::CircleNode *>(cop->inputs(1));
-  uint32_t bias_size = circle_b->dim(transpose_b ? 1 : 0).value();
+  uint32_t bias_size = circle_b->dim(transpose_b ? 1 : 0).value(); // TODO : value() fix needed ??
   const std::vector<float> val(bias_size, .0f);
   auto bias_node = create_const_node(graph, lhs_dtype, {bias_size}, val);
   auto fc_node = graph->nodes()->create<luci::CircleFullyConnected>();

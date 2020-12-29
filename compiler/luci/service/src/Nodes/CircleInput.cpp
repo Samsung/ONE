@@ -15,7 +15,6 @@
  */
 
 #include <luci/Service/CircleShapeInference.h>
-#include <luci/Service/CircleShapeSignatureInference.h>
 #include <luci/Service/CircleTypeInference.h>
 
 namespace luci
@@ -23,12 +22,17 @@ namespace luci
 
 loco::TensorShape sinf::Algorithm::visit(const luci::CircleInput *node)
 {
-  return sinf::circle_shape(node);
-}
-
-ShapeSignature ssinf::Algorithm::visit(const luci::CircleInput *node)
-{
-  return node->shape_signature();
+  return circle_shape(node);
+  // loco::TensorShape output_shape;
+  // output_shape.rank(node->rank());
+  // for(uint32_t i=0;i<node->rank();++i)
+  // {
+  //   if (node->shape_signature().rank() > 0 && node->shape_signature().dim(i) == -1)
+  //     output_shape.dim(i).unset();
+  //   else
+  //     output_shape.dim(i) = node->dim(i);
+  // }
+  // return output_shape;
 }
 
 loco::DataType tinf::Algorithm::visit(const luci::CircleInput *node) { return node->dtype(); }

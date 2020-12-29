@@ -20,7 +20,6 @@
 #include <loco/IR/TensorShape.h>
 
 #include <luci/IR/CircleNodes.h>
-#include <luci/IR/CircleShapeSignature.h>
 
 namespace luci
 {
@@ -32,7 +31,7 @@ loco::TensorShape circle_shape(const luci::CircleNode *node);
 
 loco::TensorShape input_arg_shape(const luci::CircleNode *node, unsigned int index);
 
-loco::TensorShape signature_to_shape(const luci::ShapeSignature &signature);
+loco::TensorShape reduced_shape(const loco::Node *node, const loco::Node *indices, bool keep_dims);
 
 } // namespace sinf
 

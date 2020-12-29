@@ -287,7 +287,7 @@ luci::CircleSub *insert_sub(luci::CircleNode *pred, luci::CircleConst *beta)
   sub->rank(pred->rank());
   for (uint32_t i = 0; i < sub->rank(); i++)
   {
-    sub->dim(i).set(pred->dim(i).value());
+    sub->dim(i).set(pred->dim(i).value()); // TODO : value() fix needed
   }
   sub->fusedActivationFunction(luci::FusedActFunc::NONE);
 

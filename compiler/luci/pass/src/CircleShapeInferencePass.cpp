@@ -25,12 +25,20 @@ namespace
 
 bool is_same_shape(luci::CircleNode *node, loco::TensorShape shape)
 {
+  if(node->shape_status() != luci::ShapeStatus::VALID)
+    return false;
+
   if (node->rank() != shape.rank())
     return false;
 
   for (uint32_t i = 0; i < node->rank(); ++i)
-    if (!(node->dim(i) == shape.dim(i)))
+  {
+    if(node->dim(i).known() != shape.dim(i).known())
       return false;
+    
+    if(node->dim(i).known() && !(node->dim(i) == shape.dim(i)))
+      return false;
+  }
 
   return true;
 }
@@ -58,7 +66,8 @@ bool CircleShapeInferencePass::run(loco::Graph *g)
   luci::sinf::Rule shape_infer_rule;
   bool changed = false;
 
-  for (auto node : loco::postorder_traversal(loco::output_nodes(g)))
+  // Use all_nodes to prevent an error such as WHILE_002
+  for (auto node : loco::all_nodes(g))
   {
     loco::TensorShape shape;
     auto circle_node = loco::must_cast<luci::CircleNode *>(node);

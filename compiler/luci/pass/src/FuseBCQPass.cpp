@@ -231,6 +231,7 @@ public:
             new_shape->rank(1);
             new_shape->dim(0) = 2;
 
+            // TODO : value() fix needed
             auto batch_size = 1;
             for (uint32_t i = 0; i < original_input->rank() - 1; ++i)
               batch_size *= original_input->dim(i).value();
