@@ -28,12 +28,12 @@ int main(int argc, char **argv)
     return EXIT_FAILURE;
 
   std::string opt_o{"-o"};
-  std::string output_name{argv[1]};
-  if (opt_o != output_name)
+  std::string argv_1{argv[1]};
+  if (opt_o != argv_1)
     return EXIT_FAILURE;
 
-  std::string input_name{argv[2]};
-  std::ofstream outfile(input_name);
+  std::string output_name{argv[2]};
+  std::ofstream outfile(output_name);
 
   outfile << "dummy-compile dummy output!!" << std::endl;
 
