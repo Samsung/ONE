@@ -48,7 +48,7 @@ public:
    *
    * @param lowered_graph LoweredGraph object
    * @param tensor_builders Tensor builders that are currently used
-   * @param code_map OpSequence and its code map
+   * @param code_map @c ir::Operation and its code map
    */
   DataflowExecutor(std::unique_ptr<compiler::LoweredGraph> lowered_graph,
                    backend::BackendContexts &&backend_contexts,
@@ -88,7 +88,7 @@ protected:
   std::multimap<int64_t, std::unique_ptr<Job>, std::greater<int64_t>> _ready_jobs;
 
   /// @brief Which job runs which op and function.
-  std::unordered_map<uint32_t, ir::OpSequenceIndex> _job_to_op_seq;
+  std::unordered_map<uint32_t, ir::OperationIndex> _job_to_op;
 };
 
 } // namespace exec

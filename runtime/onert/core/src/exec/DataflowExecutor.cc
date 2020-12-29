@@ -54,8 +54,7 @@ void DataflowExecutor::emplaceToReadyJobs(const uint32_t &id)
 {
   auto &job = _waiting_jobs[id];
   assert(job != nullptr);
-  auto &op_seq = _lowered_graph->op_seqs().at(_job_to_op_seq[job->index()]);
-  auto rank = calculateRank(op_seq.operations());
+  auto rank = calculateRank({_job_to_op[job->index()]});
   _ready_jobs.emplace(rank, std::move(job));
 }
 
@@ -87,40 +86,39 @@ DataflowExecutor::DataflowExecutor(std::unique_ptr<compiler::LoweredGraph> lower
 {
   VERBOSE(DataflowExecutor) << "Constructing Dataflow Executor" << std::endl;
 
-  const auto &op_seqs = _lowered_graph->op_seqs();
-  // Assign jobs convert OpSequenceIndex to job index(uint32_t)
+  // Assign jobs convert OperationIndex to job index(uint32_t)
   uint32_t next_job_index = 0;
-  std::unordered_map<ir::OpSequenceIndex, uint32_t> op_seq_to_job;
-  op_seqs.iterate([&](const ir::OpSequenceIndex &op_seq_index, const ir::OpSequence &) {
-    VERBOSE(DataflowExecutor) << "Create a job " << next_job_index << " with OpSequenceIndex "
-                              << op_seq_index << std::endl;
+  std::unordered_map<ir::OperationIndex, uint32_t> op_to_job;
+  const auto &operations = _lowered_graph->graph().operations();
+  operations.iterate([&](const ir::OperationIndex &op_ind, const ir::Operation &) {
+    VERBOSE(DataflowExecutor) << "Create a job " << next_job_index << " with Operation " << op_ind
+                              << std::endl;
     _finished_jobs.emplace_back(
-      std::make_unique<Job>(next_job_index, _code_map.at(op_seq_index).fn_seq.get()));
-    op_seq_to_job[op_seq_index] = next_job_index++;
+      std::make_unique<Job>(next_job_index, _code_map.at(op_ind).fn_seq.get()));
+    op_to_job[op_ind] = next_job_index++;
   });
 
   _waiting_jobs.resize(next_job_index);
   _output_info.resize(next_job_index);
   _initial_input_info.resize(next_job_index, 0);
 
-  op_seqs.iterate([&](const ir::OpSequenceIndex &op_seq_index, const ir::OpSequence &op_seq) {
-    auto job_index = op_seq_to_job[op_seq_index];
-    for (auto output : op_seq.getOutputs())
+  operations.iterate([&](const ir::OperationIndex &op_ind, const ir::Operation &op) {
+    auto job_index = op_to_job[op_ind];
+    for (auto output : op.getOutputs())
     {
       // Update output and input info
-      op_seqs.iterate(
-        [&](const ir::OpSequenceIndex &op_seq_cur_index, const ir::OpSequence &op_seq_cur) {
-          if (op_seq_cur.getInputs().contains(output))
-          {
-            auto dep_index = op_seq_to_job[op_seq_cur_index];
-            ++_initial_input_info[dep_index];
-            _output_info[job_index].push_back(dep_index);
-          }
-        });
+      operations.iterate([&](const ir::OperationIndex &op_cur_ind, const ir::Operation &op_cur) {
+        if (op_cur.getInputs().contains(output))
+        {
+          auto dep_index = op_to_job[op_cur_ind];
+          ++_initial_input_info[dep_index];
+          _output_info[job_index].push_back(dep_index);
+        }
+      });
     }
   });
-  for (const auto &s : op_seq_to_job)
-    _job_to_op_seq.emplace(s.second, s.first);
+  for (const auto &s : op_to_job)
+    _job_to_op.emplace(s.second, s.first);
 
   _input_info = _initial_input_info;
 }
@@ -154,22 +152,22 @@ void DataflowExecutor::executeImpl()
     auto job_index = job->index();
     VERBOSE(DataflowExecutor) << "Run job " << job_index << std::endl;
 
-    auto op_seq_index = _job_to_op_seq[job_index];
-    auto op_seq = &_lowered_graph->op_seqs().at(op_seq_index);
+    auto op_ind = _job_to_op[job_index];
     const backend::Backend *backend =
-      _lowered_graph->getLowerInfo()->op_seq.at(op_seq_index)->backend();
+      _lowered_graph->getLowerInfo()->operation.at(op_ind)->backend();
 
-    _subject.notifyJobBegin(this, profiling_subg_index, op_seq, backend);
+    _subject.notifyJobBegin(this, profiling_subg_index, op_ind, backend);
 
     job->fn_seq()->initRunning();
 
     // check if FunctionSequence needs to handle dynamic tensor
-    bool handle_dynamic_tensor = op_seq->has_dynamic_tensor() || dynamic_input_exists;
+    bool handle_dynamic_tensor =
+      _lowered_graph->getHasDynamicTensor(op_ind) || dynamic_input_exists;
     job->fn_seq()->enableDynamicShapeInferer(handle_dynamic_tensor);
 
     job->run();
 
-    _subject.notifyJobEnd(this, profiling_subg_index, op_seq, backend);
+    _subject.notifyJobEnd(this, profiling_subg_index, op_ind, backend);
     notify(job_index);
     _finished_jobs[job_index] = std::move(job);
   }

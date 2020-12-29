@@ -255,7 +255,7 @@ void Fp32ToFp16Converter::appendNewOpSeqForConvertFp32ToFp16(const ir::OpSequenc
     const auto new_op_seq_ind = newOpSequence(op_seq_ind, new_node_ind);
 
     // set new lower_info for op_seq
-    setNewOpSequenceLowerInfo(op_seq_ind, new_op_seq_ind);
+    setNewOperationLowerInfo(op_seq_ind, new_op_seq_ind);
 
     _list_fp32_to_fp16.insert(new_op_seq_ind);
 
@@ -328,7 +328,7 @@ void Fp32ToFp16Converter::appendNewOpSeqForConvertFp16ToFp32(const ir::OpSequenc
     auto new_op_seq_ind = newOpSequence(op_seq_ind, new_node_ind);
 
     // set new lower_info for op_seq
-    setNewOpSequenceLowerInfo(op_seq_ind, new_op_seq_ind);
+    setNewOperationLowerInfo(op_seq_ind, new_op_seq_ind);
 
     _list_fp16_to_fp32.insert(new_op_seq_ind);
 
@@ -524,14 +524,14 @@ void Fp32ToFp16Converter::setNewOperandLowerInfo(const ir::OpSequenceIndex &op_s
   _lowered_graph.setLowerInfo(new_op_ind, std::move(new_lower_info));
 }
 
-void Fp32ToFp16Converter::setNewOpSequenceLowerInfo(const ir::OpSequenceIndex &op_seq_ind,
-                                                    const ir::OpSequenceIndex &new_op_seq_ind)
+void Fp32ToFp16Converter::setNewOperationLowerInfo(const ir::OpSequenceIndex &op_seq_ind,
+                                                   const ir::OpSequenceIndex &new_op_seq_ind)
 {
   const auto lower_info = _lowered_graph.getLowerInfo(op_seq_ind);
   assert(lower_info != nullptr);
 
   auto new_lower_info =
-    std::make_unique<compiler::OpSequenceLowerInfo>(lower_info->backend(), lower_info->layout());
+    std::make_unique<compiler::OperationLowerInfo>(lower_info->backend(), lower_info->layout());
   _lowered_graph.setLowerInfo(new_op_seq_ind, std::move(new_lower_info));
 }
 

@@ -22,8 +22,6 @@
 
 #include "ir/Operands.h"
 #include "ir/Operations.h"
-#include "ir/OpSequence.h"
-#include "ir/OpSequences.h"
 #include "ir/Subgraphs.h"
 
 namespace onert

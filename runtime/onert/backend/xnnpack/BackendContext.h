@@ -48,18 +48,12 @@ public:
     _external_context.reset(new ExternalContext(static_cast<size_t>(num_threads)));
   }
 
-  ITensorRegistry *genTensors(const std::vector<onert::ir::OpSequenceIndex> &order,
-                              const ir::OpSequences &op_seqs,
+  ITensorRegistry *genTensors(const std::vector<onert::ir::OperationIndex> &order,
                               const compiler::GraphLowerInfo &lower_info) override;
 
-  FunctionMap genKernels(const std::vector<ir::OpSequenceIndex> &order,
-                         const ir::OpSequences &op_seqs) override;
+  FunctionMap genKernels(const std::vector<ir::OperationIndex> &order) override;
 
   std::shared_ptr<ExternalContext> external_context() { return _external_context; }
-
-private:
-  void planTensors(const std::vector<onert::ir::OpSequenceIndex> &order,
-                   const ir::OpSequences &op_seqs, const compiler::GraphLowerInfo &lower_info);
 
 public:
   // TODO Make it private

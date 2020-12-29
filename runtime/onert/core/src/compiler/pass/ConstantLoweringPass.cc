@@ -30,10 +30,9 @@ namespace pass
 
 void ConstantLoweringPass::callback(const ir::OperationIndex &node_index, ir::Operation &node)
 {
-  const auto &op_sequence_index = _lowered_graph.op_seqs().getOperation(node_index);
-  const auto op_seq_lower_info = _lowered_graph.getLowerInfo(op_sequence_index);
-  const auto backend = op_seq_lower_info->backend();
-  const auto layout = op_seq_lower_info->layout();
+  const auto op_lower_info = _lowered_graph.getLowerInfo(node_index);
+  const auto backend = op_lower_info->backend();
+  const auto layout = op_lower_info->layout();
   const auto factor = PermuteFactor{backend, layout};
 
   // Now this runtime does not support the node making output of operation as constant

@@ -45,8 +45,6 @@ private:
 private:
   static void initializeBackendContext(compiler::LoweredGraph *lowered_graph,
                                        const backend::BackendContexts &backend_contexts);
-  static void runTensorRegistration(compiler::LoweredGraph *lowered_graph,
-                                    const std::vector<ir::OpSequenceIndex> &order);
   static void prepareMigrantTensors(compiler::LoweredGraph &lowered_graph,
                                     const backend::BackendContexts &backend_contexts);
   static exec::IExecutor *

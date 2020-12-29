@@ -42,9 +42,9 @@ public:
   void add(std::unique_ptr<IExecutionObserver> observer);
   void notifySubgraphBegin(ir::SubgraphIndex ind);
   void notifySubgraphEnd(ir::SubgraphIndex ind);
-  void notifyJobBegin(IExecutor *executor, ir::SubgraphIndex index, const ir::OpSequence *op_seq,
+  void notifyJobBegin(IExecutor *executor, ir::SubgraphIndex subg_ind, ir::OperationIndex op_ind,
                       const backend::Backend *backend);
-  void notifyJobEnd(IExecutor *executor, ir::SubgraphIndex index, const ir::OpSequence *op_seq,
+  void notifyJobEnd(IExecutor *executor, ir::SubgraphIndex subg_ind, ir::OperationIndex op_ind,
                     const backend::Backend *backend);
 
 private:

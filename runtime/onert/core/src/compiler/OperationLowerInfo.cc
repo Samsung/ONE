@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-#include "compiler/OpSequenceLowerInfo.h"
+#include "compiler/OperationLowerInfo.h"
 
 namespace onert
 {
 namespace compiler
 {
 
-OpSequenceLowerInfo::OpSequenceLowerInfo(const backend::Backend *backend, ir::Layout layout)
+OperationLowerInfo::OperationLowerInfo(const backend::Backend *backend, ir::Layout layout)
   : _permute_factor{backend, layout}
 {
   // DO NOTHING

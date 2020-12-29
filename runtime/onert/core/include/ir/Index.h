@@ -35,9 +35,6 @@ using OperandIndex = ::onert::util::Index<uint32_t, OperandIndexTag>;
 struct IOIndexTag;
 using IOIndex = ::onert::util::Index<uint32_t, IOIndexTag>;
 
-struct OpSequenceIndexTag;
-using OpSequenceIndex = ::onert::util::Index<uint32_t, OpSequenceIndexTag>;
-
 struct SubgraphIndexTag;
 using SubgraphIndex = ::onert::util::Index<uint32_t, SubgraphIndexTag>;
 
@@ -63,11 +60,6 @@ inline std::ostream &operator<<(std::ostream &o, const OperandIndex &i)
 inline std::ostream &operator<<(std::ostream &o, const IOIndex &i)
 {
   return _index_print_impl(o, "IO", i);
-}
-
-inline std::ostream &operator<<(std::ostream &o, const OpSequenceIndex &i)
-{
-  return _index_print_impl(o, "OPSEQUENCE", i);
 }
 
 inline std::ostream &operator<<(std::ostream &o, const SubgraphIndex &i)

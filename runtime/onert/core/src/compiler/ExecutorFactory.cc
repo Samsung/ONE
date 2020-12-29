@@ -88,7 +88,7 @@ void initializeSubgraphIOTensors(compiler::LoweredGraph &lowered_graph,
     const auto &operand = lowered_graph.graph().operands().at(ind);
     auto tensor = std::make_unique<backend::builtin::IOTensor>(
       operand.info(),
-      ir::Layout::NHWC /* FIXME find op_seq for this operand and use frontend_layout */
+      ir::Layout::NHWC /* FIXME find operation for this operand and use frontend_layout */
     );
 
     // Add tensor to builtin TensorRegistry.
@@ -165,15 +165,11 @@ void ExecutorFactory::initializeBackendContext(compiler::LoweredGraph *lowered_g
   };
   std::unordered_map<const backend::Backend *, Entry> backend_assets;
 
-  // Build lists for operations
-  lowered_graph->op_seqs().iterate(
-    [&](const ir::OpSequenceIndex &op_seq_index, const ir::OpSequence &op_seq) {
-      auto &op_seq_li = lowered_graph->getLowerInfo()->op_seq;
-      auto backend = op_seq_li.at(op_seq_index)->backend();
-      for (auto &operation_idx : op_seq.operations())
-      {
-        backend_assets[backend].operation_list.emplace_back(operation_idx, op_seq.getLayout());
-      }
+  lowered_graph->graph().operations().iterate(
+    [&](const ir::OperationIndex &op_ind, const ir::Operation &) {
+      auto &op_li = lowered_graph->getLowerInfo()->operation;
+      auto backend = op_li.at(op_ind)->backend();
+      backend_assets[backend].operation_list.emplace_back(op_ind, lowered_graph->graph().layout());
     });
 
   // Build lists for operands
@@ -199,16 +195,16 @@ void ExecutorFactory::prepareMigrantTensors(compiler::LoweredGraph &lowered_grap
 {
   TensorRegistries tensor_regs{backend_contexts, true};
 
-  lowered_graph.op_seqs().iterate(
-    [&](const ir::OpSequenceIndex &op_seq_index, const ir::OpSequence &op_seq) {
-      auto lower_info = lowered_graph.getLowerInfo(op_seq_index);
+  lowered_graph.graph().operations().iterate(
+    [&](const ir::OperationIndex &op_ind, const ir::Operation &op) {
+      auto lower_info = lowered_graph.getLowerInfo(op_ind);
       auto &backend_ctx = backend_contexts.at(lower_info->backend());
-      for (auto ind : (op_seq.getInputs() + op_seq.getOutputs()) | ir::Remove::DUPLICATED |
-                        ir::Remove::UNDEFINED)
+      for (auto ind :
+           (op.getInputs() + op.getOutputs()) | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED)
       {
-        // If an OpSequence input/output tensor does not have a own tensor object,
-        // it must be using migrant tensors, so find the tensor from other tensor builders and
-        // set the tensor to this tensor builder if portable
+        // If an Operation's input/output tensor does not have an own tensor object,
+        // it must be using migrant tensors, so find the tensor from other tensor registries and
+        // register it to the current tensor registry if it is portable
         if (!backend_ctx->tensor_registry->getITensor(ind))
         {
           auto tensor = tensor_regs.getITensor(ind);
@@ -245,7 +241,7 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lo
 
   for (auto &pair : backend_contexts)
   {
-    pair.second->genTensors(order, lowered_graph->op_seqs(), *lowered_graph->getLowerInfo());
+    pair.second->genTensors(order, *lowered_graph->getLowerInfo());
   }
 
   prepareMigrantTensors(*lowered_graph, backend_contexts);
@@ -281,16 +277,16 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lo
   // Generate kernels
   for (auto &pair : ordered_contexts)
   {
-    auto codes = pair.second->genKernels(order, lowered_graph->op_seqs());
+    auto codes = pair.second->genKernels(order);
     for (auto &pair : codes)
     {
-      auto &op_seq_ind = pair.first;
+      auto &op_ind = pair.first;
       auto &fn_seq = pair.second;
-      auto &op_seq = lowered_graph->op_seqs().at(op_seq_ind);
-      auto lower_info = lowered_graph->getLowerInfo(op_seq_ind);
+      auto &op = lowered_graph->graph().operations().at(op_ind);
+      auto lower_info = lowered_graph->getLowerInfo(op_ind);
       if (options.he_profiling_mode)
         fn_seq->wrap<SyncFunction>(lower_info->backend()->config());
-      builder.append(op_seq_ind, {&op_seq, lower_info, std::move(fn_seq)});
+      builder.append(op_ind, {op_ind, &op, lower_info, std::move(fn_seq)});
     }
   }
 
@@ -334,7 +330,7 @@ exec::IExecutor *ExecutorFactory::createDataflowExecutor(
   auto order = Linear::linearize(*lowered_graph);
   for (auto &pair : backend_contexts)
   {
-    pair.second->genTensors(order, lowered_graph->op_seqs(), *lowered_graph->getLowerInfo());
+    pair.second->genTensors(order, *lowered_graph->getLowerInfo());
   }
 
   prepareMigrantTensors(*lowered_graph, backend_contexts);
@@ -370,16 +366,16 @@ exec::IExecutor *ExecutorFactory::createDataflowExecutor(
   // Generate kernels
   for (auto &pair : ordered_contexts)
   {
-    auto codes = pair.second->genKernels(order, lowered_graph->op_seqs());
+    auto codes = pair.second->genKernels(order);
     for (auto &pair : codes)
     {
-      auto &op_seq_ind = pair.first;
+      auto &op_ind = pair.first;
       auto &fn_seq = pair.second;
-      auto &op_seq = lowered_graph->op_seqs().at(op_seq_ind);
-      auto lower_info = lowered_graph->getLowerInfo(op_seq_ind);
+      auto &op = lowered_graph->graph().operations().at(op_ind);
+      auto lower_info = lowered_graph->getLowerInfo(op_ind);
       if (options.he_profiling_mode)
         fn_seq->wrap<SyncFunction>(lower_info->backend()->config());
-      builder.append(op_seq_ind, {&op_seq, lower_info, std::move(fn_seq)});
+      builder.append(op_ind, {op_ind, &op, lower_info, std::move(fn_seq)});
     }
   }
 

@@ -34,12 +34,12 @@ namespace acl_neon
 class KernelGenerator : public cpu_common::KernelGeneratorBase
 {
 public:
-  KernelGenerator(const ir::Operands &operands_ctx, const ir::Operations &operations_ctx,
-                  const std::shared_ptr<TensorBuilder> &tensor_builder,
+  KernelGenerator(const ir::Graph &graph, const std::shared_ptr<TensorBuilder> &tensor_builder,
                   const std::shared_ptr<acl_common::AclTensorRegistry<TensorManager>> &_tensor_reg);
 
-  void visit(const ir::OpSequence &) override;
+  std::unique_ptr<exec::FunctionSequence> generate(ir::OperationIndex ind) override;
 
+private:
   void visit(const ir::operation::ArgMinMax &) override;
   void visit(const ir::operation::BatchToSpaceND &) override;
   void visit(const ir::operation::BinaryArithmetic &) override;
@@ -85,9 +85,9 @@ public:
 private:
   const ir::Operands &_ctx;
   const ir::Operations &_operations_ctx;
+  const ir::Layout _current_layout;
   std::shared_ptr<TensorBuilder> _tensor_builder;
   std::shared_ptr<acl_common::AclTensorRegistry<TensorManager>> _tensor_reg;
-  ir::Layout _current_layout;
 };
 
 } // namespace acl_neon

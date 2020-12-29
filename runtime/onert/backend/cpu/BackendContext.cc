@@ -31,31 +31,26 @@ namespace backend
 namespace cpu
 {
 
-ITensorRegistry *BackendContext::genTensors(const std::vector<onert::ir::OpSequenceIndex> &order,
-                                            const ir::OpSequences &op_seqs,
+ITensorRegistry *BackendContext::genTensors(const std::vector<onert::ir::OperationIndex> &order,
                                             const compiler::GraphLowerInfo &lower_info)
 {
-  return cpu_common::genTensors(*this, order, op_seqs, lower_info);
+  return cpu_common::genTensors(*this, order, lower_info);
 }
 
-FunctionMap BackendContext::genKernels(const std::vector<onert::ir::OpSequenceIndex> &order,
-                                       const ir::OpSequences &op_seqs)
+FunctionMap BackendContext::genKernels(const std::vector<onert::ir::OperationIndex> &order)
 {
   FunctionMap ret;
 
-  for (auto op_seq_ind : order)
+  for (auto op_ind : order)
   {
-    const auto &op_seq = op_seqs.at(op_seq_ind);
-    bool assigned = [&]() {
-      for (auto op_info : operation_list())
-        if (op_seq.exist(op_info.index))
-          return true;
-      return false;
-    }();
+    // Skip if operation is not assigned to the backend
+    auto &ops = operation_list();
+    bool assigned = std::any_of(ops.begin(), ops.end(),
+                                [&](const OperationInfo &info) { return info.index == op_ind; });
     if (!assigned)
       continue;
-    auto fn_seq = kernel_gen->generate(op_seqs.at(op_seq_ind));
-    ret.emplace_back(op_seq_ind, std::move(fn_seq));
+    auto fn_seq = kernel_gen->generate(op_ind);
+    ret.emplace_back(op_ind, std::move(fn_seq));
   }
 
   cpu_common::initConsts(*this);

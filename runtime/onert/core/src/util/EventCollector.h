@@ -81,22 +81,20 @@ public:
     }
   };
 
+  // TODO Rename this to OperationEvent
   struct OpSeqEvent : public Event
   {
     std::string backend;
     uint32_t op_index;
     std::string op_name;
-    uint32_t op_seq_size; // if this event is for an operation sequence of multiple operations
 
     OpSeqEvent(const onert::util::TracingCtx *a_tracing_ctx, Edge a_edge, uint32_t a_subg_index,
-               const std::string a_backend, uint32_t a_op_index, const std::string a_op_name,
-               uint32_t a_op_seq_size)
+               const std::string a_backend, uint32_t a_op_index, const std::string a_op_name)
       : Event(a_tracing_ctx, a_edge, a_subg_index)
     {
       backend.assign(a_backend);
       op_index = a_op_index;
       op_name.assign(a_op_name);
-      op_seq_size = a_op_seq_size;
     }
   };
 

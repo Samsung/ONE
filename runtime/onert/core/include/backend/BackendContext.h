@@ -31,7 +31,7 @@ class Backend;
 struct ITensorRegistry;
 
 using FunctionMap =
-  std::vector<std::pair<ir::OpSequenceIndex, std::unique_ptr<exec::FunctionSequence>>>;
+  std::vector<std::pair<ir::OperationIndex, std::unique_ptr<exec::FunctionSequence>>>;
 
 class BackendContext
 {
@@ -61,16 +61,12 @@ public:
   const std::vector<OperationInfo> &operation_list() const { return _operation_list; }
   const std::vector<ir::OperandIndex> &operand_list() const { return _operand_list; }
 
-  virtual ITensorRegistry *genTensors(const std::vector<onert::ir::OpSequenceIndex> &,
-                                      const ir::OpSequences &, const compiler::GraphLowerInfo &)
+  virtual ITensorRegistry *genTensors(const std::vector<onert::ir::OperationIndex> &,
+                                      const compiler::GraphLowerInfo &)
   {
     return nullptr;
   }
-  virtual FunctionMap genKernels(const std::vector<onert::ir::OpSequenceIndex> &,
-                                 const ir::OpSequences &)
-  {
-    return {};
-  }
+  virtual FunctionMap genKernels(const std::vector<onert::ir::OperationIndex> &) { return {}; }
 
 private:
   const Backend *_backend{nullptr};

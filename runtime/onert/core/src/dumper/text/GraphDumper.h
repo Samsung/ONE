@@ -45,7 +45,6 @@ namespace text
 std::string formatOperandBrief(ir::OperandIndex ind);
 std::string formatOperand(const ir::Graph &, ir::OperandIndex ind);
 std::string formatOperation(const ir::Graph &graph, ir::OperationIndex ind);
-std::string formatOpSequence(const compiler::LoweredGraph &lgraph, ir::OpSequenceIndex ind);
 void dumpGraph(const ir::Graph &graph);
 void dumpLoweredGraph(const compiler::LoweredGraph &lgraph);
 

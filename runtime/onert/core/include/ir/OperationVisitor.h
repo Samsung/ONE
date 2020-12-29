@@ -18,7 +18,6 @@
 #define __ONERT_IR_OPERATION_VISITOR_H__
 
 #include "ir/Operations.Include.h"
-#include "ir/OpSequence.h"
 
 namespace onert
 {
@@ -33,15 +32,6 @@ struct OperationVisitor
   virtual void visit(const operation::InternalName &) {}
 #include "ir/Operations.lst"
 #undef OP
-
-  // This OpSequence node should be handled specially so that
-  // Op.lst doesn't have OpSequence
-  // TODO Remove by pushing it down to derived classes.
-  virtual void visit(const OpSequence &)
-  {
-    throw std::runtime_error{
-      "OperationVisitor: This does not privide visit function in OpSequence"};
-  }
 };
 
 } // namespace ir

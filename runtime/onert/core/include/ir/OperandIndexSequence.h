@@ -77,7 +77,7 @@ public:
 
 public:
   OperandIndexSequence operator+(const OperandIndexSequence &other) const;
-  friend std::ostream &operator<<(std::ostream &o, const OperandIndexSequence &op_seq);
+  friend std::ostream &operator<<(std::ostream &o, const OperandIndexSequence &operand_seq);
 
 public:
   std::vector<OperandIndex>::const_iterator begin(void) const { return _vec.begin(); }

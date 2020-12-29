@@ -77,7 +77,7 @@ void ParallelExecutor::executeImpl()
   // Init scheduler
   // TODO Consider to have distinct backend set in GraphLowerInfo
   BackendSet backends;
-  for (auto &itr : _lowered_graph->getLowerInfo()->op_seq)
+  for (auto &itr : _lowered_graph->getLowerInfo()->operation)
   {
     backends.add(itr.second->backend());
   }
@@ -126,21 +126,21 @@ void ParallelExecutor::executeImpl()
     VERBOSE(ParallelExecutor) << "Assigning fn " << job->index() << std::endl;
 
     auto job_index = job->index();
-    auto op_sequence_index = _job_to_op_seq[job_index];
-    auto op_seq = &_lowered_graph->op_seqs().at(op_sequence_index);
-    auto backend = _lowered_graph->getLowerInfo()->op_seq.at(op_sequence_index)->backend();
-    auto setup = [&, op_seq, backend]() {
-      _subject.notifyJobBegin(this, profiling_subg_index, op_seq, backend);
+    auto op_ind = _job_to_op[job_index];
+    auto backend = _lowered_graph->getLowerInfo()->operation.at(op_ind)->backend();
+    auto setup = [&, op_ind, backend]() {
+      _subject.notifyJobBegin(this, profiling_subg_index, op_ind, backend);
     };
-    auto teardown = [&, job_index, op_seq, backend]() {
-      _subject.notifyJobEnd(this, profiling_subg_index, op_seq, backend);
+    auto teardown = [&, job_index, op_ind, backend]() {
+      _subject.notifyJobEnd(this, profiling_subg_index, op_ind, backend);
       notify(job_index);
     };
 
     job->fn_seq()->initRunning();
 
     // dynamic tensor setting
-    bool handle_dynamic_tensor = op_seq->has_dynamic_tensor() || dynamic_input_exists;
+    bool handle_dynamic_tensor =
+      _lowered_graph->getHasDynamicTensor(op_ind) || dynamic_input_exists;
     job->fn_seq()->enableDynamicShapeInferer(handle_dynamic_tensor);
 
     _scheduler->assign(std::make_unique<HookFunction>(job->fn_seq(), setup, teardown), backend);

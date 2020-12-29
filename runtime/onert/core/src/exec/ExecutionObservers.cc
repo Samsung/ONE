@@ -22,18 +22,15 @@
 #include "util/logging.h"
 #include "exec/IExecutor.h"
 #include "misc/polymorphic_downcast.h"
-#include "ir/OpSequence.h"
+#include "ir/Operation.h"
 #include "util/EventWriter.h"
 
 namespace
 {
 
-void setUserData(const onert::ir::Graph &g, const onert::ir::OpSequence *op_seq,
+void setUserData(const onert::ir::Graph &g, const onert::ir::Operation *op,
                  decltype(EventCollector::Event::userData) &data)
 {
-  if (op_seq->size() == 0)
-    return;
-
   // From a tensor of shape [a, b, c], this will return a string "shape(a b c)".
   // String like "[1, 2, 3]" looks better but this will be considered as a list in Json
   // so text search (e.g., Ctrl-F in Chrome Tracing) could be difficult
@@ -52,10 +49,7 @@ void setUserData(const onert::ir::Graph &g, const onert::ir::OpSequence *op_seq,
     return shape_str;
   };
 
-  const auto &first_op_idx = op_seq->operations().at(0);
-  const auto &first_op_node = g.operations().at(first_op_idx);
-
-  auto &inputs = first_op_node.getInputs();
+  auto &inputs = op->getInputs();
   auto size = inputs.size();
   for (size_t i = 0; i < size; i++)
   {
@@ -80,7 +74,7 @@ namespace exec
 {
 
 void ProfileObserver::handleJobBegin(onert::exec::IExecutor *, ir::SubgraphIndex,
-                                     const ir::OpSequence *, const onert::backend::Backend *backend)
+                                     ir::OperationIndex, const onert::backend::Backend *backend)
 {
   _timer = backend->config()->timer();
   if (_timer == nullptr)
@@ -88,14 +82,14 @@ void ProfileObserver::handleJobBegin(onert::exec::IExecutor *, ir::SubgraphIndex
   _timer->handleBegin();
 }
 
-void ProfileObserver::handleJobEnd(IExecutor *exec, ir::SubgraphIndex, const ir::OpSequence *op_seq,
-                                   const backend::Backend *backend)
+void ProfileObserver::handleJobEnd(IExecutor *exec, ir::SubgraphIndex,
+                                   const ir::OperationIndex op_ind, const backend::Backend *backend)
 {
   _timer->handleEnd();
   const auto timer_res = _timer->getTime();
 
-  // NOTE This assumes there is just one operation in a op_seq
-  const auto &node = _graph.operations().at(op_seq->operations().at(0));
+  // NOTE This assumes there is just one operation in a op
+  const auto &node = _graph.operations().at(op_ind);
   auto node_name = node.name();
   VERBOSE(ProfileInfo) << "Time for " << node_name << " : " << timer_res << std::endl;
 
@@ -147,33 +141,25 @@ void TracingObserver::handleSubgraphBegin(ir::SubgraphIndex subg_ind)
 }
 
 void TracingObserver::handleJobBegin(IExecutor *, ir::SubgraphIndex subg_ind,
-                                     const ir::OpSequence *op_seq, const backend::Backend *backend)
+                                     ir::OperationIndex op_ind, const backend::Backend *backend)
 {
-  if (op_seq->size() == 0)
-    throw std::runtime_error{"Empty OpSequence"};
-  const auto &first_op_idx = op_seq->operations().at(0);
-
   std::string backend_id = backend->config()->id();
-  auto ev = EventCollector::OpSeqEvent{
-    _tracing_ctx,  EventCollector::Edge::BEGIN, subg_ind.value(),
-    backend_id,    first_op_idx.value(),        _graph.operations().at(first_op_idx).name(),
-    op_seq->size()};
+  const auto &op = _graph.operations().at(op_ind);
+  auto ev = EventCollector::OpSeqEvent{_tracing_ctx,     EventCollector::Edge::BEGIN,
+                                       subg_ind.value(), backend_id,
+                                       op_ind.value(),   op.name()};
   // add shape of inputs
-  setUserData(_graph, op_seq, ev.userData);
+  setUserData(_graph, &op, ev.userData);
   _collector.onEvent(ev);
 }
 
 void TracingObserver::handleJobEnd(IExecutor *, ir::SubgraphIndex subg_ind,
-                                   const ir::OpSequence *op_seq, const backend::Backend *backend)
+                                   ir::OperationIndex op_ind, const backend::Backend *backend)
 {
-  if (op_seq->size() == 0)
-    throw std::runtime_error{"Empty OpSequence"};
-  const auto &first_op_idx = op_seq->operations().at(0);
-
   std::string backend_id = backend->config()->id();
-  _collector.onEvent(EventCollector::OpSeqEvent{
-    _tracing_ctx, EventCollector::Edge::END, subg_ind.value(), backend_id, first_op_idx.value(),
-    _graph.operations().at(first_op_idx).name(), op_seq->size()});
+  _collector.onEvent(EventCollector::OpSeqEvent{_tracing_ctx, EventCollector::Edge::END,
+                                                subg_ind.value(), backend_id, op_ind.value(),
+                                                _graph.operations().at(op_ind).name()});
 }
 
 void TracingObserver::handleSubgraphEnd(ir::SubgraphIndex subg_ind)
