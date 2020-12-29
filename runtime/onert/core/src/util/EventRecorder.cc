@@ -16,11 +16,11 @@
 
 #include "util/EventRecorder.h"
 
-void EventRecorder::emit(const DurationEvent &evt)
+void EventRecorder::emit(std::unique_ptr<DurationEvent> &&evt)
 {
   std::lock_guard<std::mutex> lock{_mu};
 
-  _duration_events.push_back(evt);
+  _duration_events.push_back(std::move(evt));
 }
 
 void EventRecorder::emit(const CounterEvent &evt)

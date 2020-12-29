@@ -18,16 +18,10 @@
 
 #include <sstream>
 #include <vector>
-#include <unordered_map>
-#include <json/json.h>
-#include <assert.h>
+#include <cassert>
 #include <utility>
-#include <map>
-#include <set>
-#include <stdint.h>
-#include <fstream>
 
-// json type for Chrome Event Trace
+// json type for ChromeTracingWriter
 namespace
 {
 
@@ -82,8 +76,21 @@ std::string object(const Content &content)
   return ss.str();
 }
 
-void fill(Content &content, const Event &evt)
+void fill(Content &content, const DurationEvent &evt, const std::string &name,
+          const std::string &tid)
 {
+  content.flds.emplace_back("name", name);
+  content.flds.emplace_back("pid", "0");
+  content.flds.emplace_back("tid", tid);
+  content.flds.emplace_back("ph", evt.ph);
+  content.flds.emplace_back("ts", evt.ts);
+  content.args = evt.args;
+}
+
+void fill(Content &content, const CounterEvent &evt)
+{
+  assert(evt.name != "");
+
   content.flds.emplace_back("name", evt.name);
   content.flds.emplace_back("pid", "0");
   content.flds.emplace_back("tid", evt.tid);
@@ -92,11 +99,11 @@ void fill(Content &content, const Event &evt)
   content.args = evt.args;
 }
 
-std::string object(const DurationEvent &evt)
+std::string object(const DurationEvent &evt, const std::string &name, const std::string &tid)
 {
   Content content;
 
-  fill(content, evt);
+  fill(content, evt, name, tid);
 
   return ::object(content);
 }
@@ -113,6 +120,49 @@ std::string object(const CounterEvent &evt)
   }
 
   return ::object(content);
+}
+
+std::string getSessionLabel(const DurationEvent &evt)
+{
+  return "$" + std::to_string(evt.session_index) + " sess";
+}
+
+std::string getSubgLabel(const DurationEvent &evt)
+{
+  return "$" + std::to_string(evt.subg_index) + " subg";
+}
+
+std::string getOpLabel(const OpSeqDurationEvent &evt)
+{
+  if (evt.op_seq_size > 1)
+    return "@" + std::to_string(evt.op_index) + " " + evt.op_name + " (" +
+           std::to_string(evt.op_seq_size) + ")";
+  else
+    return "@" + std::to_string(evt.op_index) + " " + evt.op_name;
+}
+
+std::string getLabel(const DurationEvent &evt)
+{
+  if (auto evt_ptr = dynamic_cast<const OpSeqDurationEvent *>(&evt))
+  {
+    return getOpLabel(*evt_ptr);
+  }
+  else // SubgDurationEvent
+  {
+    return getSubgLabel(evt);
+  }
+}
+
+std::string getTid(const DurationEvent &evt)
+{
+  if (auto evt_ptr = dynamic_cast<const OpSeqDurationEvent *>(&evt))
+  {
+    return getSessionLabel(*evt_ptr) + ", " + getSubgLabel(*evt_ptr) + ", " + evt_ptr->backend;
+  }
+  else // SubgDurationEvent
+  {
+    return getSessionLabel(evt) + ", " + getSubgLabel(evt);
+  }
 }
 
 } // namespace
@@ -136,7 +186,10 @@ void ChromeTracingWriter::flushOneRecord(const EventRecorder &recorder)
 {
   for (auto &evt : recorder.duration_events())
   {
-    _os << "    " << object(evt) << ",\n";
+    const std::string name = getLabel(*evt);
+    const std::string tid = getTid(*evt);
+
+    _os << "    " << object(*evt, name, tid) << ",\n";
   }
 
   for (auto &evt : recorder.counter_events())
