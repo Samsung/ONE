@@ -46,12 +46,11 @@ void setValue(luci::CircleConst *node, const std::vector<int> &v)
  *                   \              /
  *                   [CircleTranspose]
  *                           |
- *                      [CircleNode]
  *
  *  AFTER
  *         |
  *   [CircleNode]
- *             Remove Both
+ *         |   Remove Both
  *
  * --------------------------------------------
  *
@@ -64,7 +63,6 @@ void setValue(luci::CircleConst *node, const std::vector<int> &v)
  *                   \               /
  *                   [CircleTranspose]
  *                           |
- *                     [CircleNode]
  *
  *  AFTER
  *          |                 |
@@ -72,7 +70,6 @@ void setValue(luci::CircleConst *node, const std::vector<int> &v)
  *           \               /
  *           [CircleTranspose]
  *                   |
- *              [CircleNode]
  *
  */
 void create_redundunt_transpose(loco::Graph *g, const std::vector<int32_t> &perm1,
@@ -110,7 +107,6 @@ void create_redundunt_transpose(loco::Graph *g, const std::vector<int32_t> &perm
 }
 /**
  *  BEFORE
- *             |
  *       [CircleNode]       [CircleConst]
  *                 \           /
  *  [CircleConst] [CircleTranspose] [CircleConst]
@@ -121,13 +117,11 @@ void create_redundunt_transpose(loco::Graph *g, const std::vector<int32_t> &perm
  *
  *  AFTER
  *   Type 1
- *              |
  *         [CircleNode]
  *             /  \       Remove all transpose
  *   [CircleNode] [CircleNode]
  *
  *   Type 2
- *                |                 |
  *          [CircleNode]      [CircleConst]
  *           (main_node)     (new_const_node)
  *               / \               /
