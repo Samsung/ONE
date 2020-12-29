@@ -21,21 +21,7 @@
 
 namespace
 {
-/**
- *   BEFORE
- *
- *    [CircleNode]
- *          |
- *    [CircleSlice]
- *          |
- *    [CircleNode](with same shape)
- *
- *    AFTER
- *
- *    [CircleNode]
- *          |      Remove Slice OP
- *    [CircleNode]
- */
+
 void create_remove_no_effect_slice(loco::Graph *g,
                                    const std::initializer_list<uint32_t> input_shape)
 {

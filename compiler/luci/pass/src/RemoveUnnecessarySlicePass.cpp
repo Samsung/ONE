@@ -22,14 +22,17 @@ namespace
 {
 
 /**
- * @brief Return value in CircleConst.
- * @details Return value in position on CircleConst with int64 format. Begin must be larger than or
- * equal to 0. Size must be larger than or equal to -1. Throw an error on Invalid node or invalid
- * node type.
+ * @brief   Return value in CircleConst.
+ * @details Return value in position on CircleConst with int64 format.
+ *          Begin must be larger than or equal to 0. Size must be larger
+ *          than or equal to -1. Throw an error on invalid node or invalid
+ *          node type.
  */
-
 int64_t value_from_circle_const(const luci::CircleConst *node, uint32_t idx)
 {
+  assert(node->rank() == 1 && node->dim(0).value() > idx);
+  assert(node->dtype() == loco::DataType::S64 || node->dtype() == loco::DataType::S32);
+
   if (node->dtype() == loco::DataType::S64)
     return node->at<loco::DataType::S64>(idx);
   return static_cast<int64_t>(node->at<loco::DataType::S32>(idx));
@@ -59,11 +62,10 @@ bool remove_no_effect_slice(luci::CircleNode *node)
     int64_t size_value = value_from_circle_const(size_const, i);
     if (size_value == -1)
       continue;
-
-    if (input_node->shape_signature().rank() != 0 && input_node->shape_signature().dim(i) == -1)
+    if (size_value != static_cast<int64_t>(input_node->dim(i).value()))
       return false;
 
-    if (size_value != static_cast<int64_t>(input_node->dim(i).value()))
+    if (input_node->shape_signature().rank() != 0 && input_node->shape_signature().dim(i) == -1)
       return false;
   }
   replace(target_node).with(input_node);
@@ -75,27 +77,23 @@ bool remove_no_effect_slice(luci::CircleNode *node)
 namespace luci
 {
 /**
- *   BEFORE
+ * BEFORE
  *
- *          |
  *    [CircleNode]
  *          |
  *    [CircleSlice]
  *          |
- *    [CircleNode](with same shape)
- *          |
+ *    [CircleNode]
  *
- *    AFTER
+ * AFTER
  *
- *          |
  *    [CircleNode]
  *          |
- *    [CircleNode] Remove Slice OP
- *          |
+ *    [CircleNode]
  *
- * Slice OP is No Effect if,
- * 1. Static Shape : begin value = 0 and size value = -1 or input dimension
- * 2. Dynamic Shape : begin value = 0 and size value = -1
+ * Slice OP has no effect if,
+ *    1. Static Shape : begin_const[idx] is 0 AND size_const[idx] is (-1 OR input_dimension[idx])
+ *    2. Dynamic Shape : begin_const[idx] is 0 AND size_const[idx] is -1
  */
 bool RemoveUnnecessarySlicePass::run(loco::Graph *g)
 {
