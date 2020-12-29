@@ -31,6 +31,11 @@ namespace nnfw
 namespace cker
 {
 
+template <typename T> struct is_quant8
+{
+  static constexpr bool value = std::is_same<T, uint8_t>::value || std::is_same<T, int8_t>::value;
+};
+
 template <typename T>
 inline T ActivationFunctionWithMinMax(T x, T output_activation_min, T output_activation_max)
 {

@@ -190,19 +190,20 @@ inline bool ProcessBroadcastShapes(const Shape &shape0, const Shape &shape1,
 }
 
 template <BinaryArithmeticOpType op_type, typename T>
-inline void BinaryArithmeticOp(const BinaryArithmeticOpParam &params, const Shape &input1_shape,
-                               const T *input1_data, const Shape &input2_shape,
-                               const T *input2_data, const Shape &output_shape, T *output_data)
+inline typename std::enable_if_t<!is_quant8<T>::value>
+BinaryArithmeticOp(const BinaryArithmeticOpParam &params, const Shape &input1_shape,
+                   const T *input1_data, const Shape &input2_shape, const T *input2_data,
+                   const Shape &output_shape, T *output_data)
 {
   reference::BinaryArithmeticOp(params, input1_shape, input1_data, input2_shape, input2_data,
                                 output_shape, output_data, GetBinaryArtithmeticFn<op_type, T>());
 }
 
-template <BinaryArithmeticOpType op_type>
-inline void BinaryArithmeticOp(const BinaryArithmeticOpParam &params, const Shape &input1_shape,
-                               const uint8_t *input1_data, const Shape &input2_shape,
-                               const uint8_t *input2_data, const Shape &output_shape,
-                               uint8_t *output_data)
+template <BinaryArithmeticOpType op_type, typename T>
+inline typename std::enable_if_t<is_quant8<T>::value>
+BinaryArithmeticOp(const BinaryArithmeticOpParam &params, const Shape &input1_shape,
+                   const T *input1_data, const Shape &input2_shape, const T *input2_data,
+                   const Shape &output_shape, T *output_data)
 {
   switch (op_type)
   {
@@ -212,12 +213,11 @@ inline void BinaryArithmeticOp(const BinaryArithmeticOpParam &params, const Shap
                      output_data);
       break;
     case nnfw::cker::BinaryArithmeticOpType::MUL:
-      optimized::Mul(params, input1_shape, const_cast<uint8_t *>(input1_data), input2_shape,
-                     const_cast<uint8_t *>(input2_data), output_shape, output_data);
+      optimized::Mul(params, input1_shape, input1_data, input2_shape, input2_data, output_shape,
+                     output_data);
       break;
     case nnfw::cker::BinaryArithmeticOpType::DIV:
       throw std::runtime_error{"Quant8 Asymm NYI"};
-
     default:
       assert(false);
       break;
@@ -256,21 +256,21 @@ inline void BinaryArithmeticOp(const BinaryArithmeticOpParam &params, const Shap
 }
 
 template <BinaryArithmeticOpType op_type, typename T>
-inline void BroadcastBinaryArithmeticOp(BinaryArithmeticOpParam &params, const Shape &input1_shape,
-                                        const T *input1_data, const Shape &input2_shape,
-                                        const T *input2_data, const Shape &output_shape,
-                                        T *output_data)
+inline typename std::enable_if_t<!is_quant8<T>::value>
+BroadcastBinaryArithmeticOp(BinaryArithmeticOpParam &params, const Shape &input1_shape,
+                            const T *input1_data, const Shape &input2_shape, const T *input2_data,
+                            const Shape &output_shape, T *output_data)
 {
   reference::BroadcastBinaryArithmeticOpSlow(params, input1_shape, input1_data, input2_shape,
                                              input2_data, output_shape, output_data,
                                              GetBinaryArtithmeticFn<op_type, T>());
 }
 
-template <BinaryArithmeticOpType op_type>
-inline void BroadcastBinaryArithmeticOp(BinaryArithmeticOpParam &params, const Shape &input1_shape,
-                                        const uint8_t *input1_data, const Shape &input2_shape,
-                                        const uint8_t *input2_data, const Shape &output_shape,
-                                        uint8_t *output_data)
+template <BinaryArithmeticOpType op_type, typename T>
+inline typename std::enable_if_t<is_quant8<T>::value>
+BroadcastBinaryArithmeticOp(BinaryArithmeticOpParam &params, const Shape &input1_shape,
+                            const T *input1_data, const Shape &input2_shape, const T *input2_data,
+                            const Shape &output_shape, T *output_data)
 {
   switch (op_type)
   {
@@ -280,8 +280,7 @@ inline void BroadcastBinaryArithmeticOp(BinaryArithmeticOpParam &params, const S
                                       output_shape, output_data);
       break;
     case nnfw::cker::BinaryArithmeticOpType::MUL:
-      optimized::BroadcastMulDispatch(params, input1_shape, const_cast<uint8_t *>(input1_data),
-                                      input2_shape, const_cast<uint8_t *>(input2_data),
+      optimized::BroadcastMulDispatch(params, input1_shape, input1_data, input2_shape, input2_data,
                                       output_shape, output_data);
       break;
     case nnfw::cker::BinaryArithmeticOpType::DIV:
