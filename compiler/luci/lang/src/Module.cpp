@@ -41,6 +41,23 @@ loco::Graph *Module::graph(size_t idx) const
   return graph.get();
 }
 
+void Module::data_format(const loco::Graph *g, CircleDataFormat data_format)
+{
+  if (g == nullptr)
+    throw std::invalid_argument("Module::data_format: Graph cannot be null");
+
+  _data_formats[g] = data_format;
+}
+
+CircleDataFormat Module::data_format(const loco::Graph *g) const
+{
+  if (g == nullptr)
+    throw std::invalid_argument("Module::data_format: Graph cannot be null");
+
+  assert(_data_formats.find(g) != _data_formats.end());
+  return _data_formats.at(g);
+}
+
 std::unique_ptr<Module> make_module(void) { return std::make_unique<Module>(); }
 
 } // namespace luci

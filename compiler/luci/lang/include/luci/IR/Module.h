@@ -18,6 +18,7 @@
 #define __LUCI_MODULE_H__
 
 #include <loco/IR/Graph.h>
+#include "CircleDataFormat.h"
 
 #include <memory>
 #include <vector>
@@ -59,8 +60,19 @@ public:
 
   // TODO provide graph accessor with a name
 
+  /**
+   * @brief set data format of graph
+   */
+  void data_format(const loco::Graph *g, CircleDataFormat data_format);
+
+  /**
+   * @brief get data format of graph
+   */
+  CircleDataFormat data_format(const loco::Graph *g) const;
+
 private:
   std::vector<std::unique_ptr<loco::Graph>> _graphs;
+  std::map<const loco::Graph *, CircleDataFormat> _data_formats;
 };
 
 std::unique_ptr<Module> make_module(void);
