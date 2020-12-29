@@ -301,6 +301,7 @@ bool get_channel_dim_index(CircleConst *node, loco::TensorShape &dimension, int 
   return false;
 }
 
+// TODO Which value should be selected for unknown?
 uint32_t cal_offset(loco::TensorShape &dimension, uint32_t *indices)
 {
   return indices[0] * dimension.dim(1).value() * dimension.dim(2).value() *

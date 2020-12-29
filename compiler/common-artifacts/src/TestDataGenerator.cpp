@@ -181,7 +181,7 @@ int entry(int argc, char **argv)
       std::vector<hsize_t> dims(input_node->rank());
       for (uint32_t d = 0; d < input_node->rank(); d++)
       {
-        dims.at(d) = input_node->dim(d).value();
+        dims.at(d) = input_node->dim(d).known() ? input_node->dim(d).value() : 1;
         assert(dims.at(d) >= 0);
       }
       auto dataspace = std::make_unique<H5::DataSpace>(dims.size(), dims.data());
@@ -232,10 +232,11 @@ int entry(int argc, char **argv)
       name_attr.write(name_datatype, name);
 
       // create value
-      std::vector<hsize_t> dims(output_node->rank());
-      for (uint32_t d = 0; d < output_node->rank(); d++)
+      auto output_shape = interpreter.readOutputTensorShape(output_node);
+      std::vector<hsize_t> dims(output_shape.size());
+      for (uint32_t d = 0; d < output_shape.size(); d++)
       {
-        dims.at(d) = output_node->dim(d).value();
+        dims.at(d) = output_shape.at(d);
         assert(dims.at(d) >= 0);
       }
       auto dataspace = std::make_unique<H5::DataSpace>(dims.size(), dims.data());

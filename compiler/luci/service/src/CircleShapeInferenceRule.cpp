@@ -41,7 +41,7 @@ std::ostream &operator<<(std::ostream &os, const loco::TensorShape &tensor_shape
   {
     if (r)
       os << ",";
-    os << tensor_shape.dim(r).value();
+    os << (tensor_shape.dim(r).known() ? tensor_shape.dim(r).value() : -1);
   }
   os << "]";
   return os;
@@ -52,7 +52,7 @@ loco::TensorShape own_shape(const luci::CircleNode *node)
   loco::TensorShape shape;
   shape.rank(node->rank());
   for (uint32_t r = 0; r < node->rank(); ++r)
-    shape.dim(r) = loco::Dimension(node->dim(r).value());
+    shape.dim(r) = node->dim(r).known() ? node->dim(r).value() : 1;
   return shape;
 }
 

@@ -237,7 +237,11 @@ flatbuffers::Offset<Vector<int32_t>> encodeShape(FlatBufferBuilder &builder,
                                                  const ShapeDescription &shape)
 {
   assert(shape._rank_known && "unknown number of dimensions is not supported");
-  return builder.CreateVector(shape._dims);
+  std::vector<int32_t> encoded_shape;
+  encoded_shape.resize(shape._dims.size());
+  for(uint32_t i=0;i<shape._dims.size();++i)
+    encoded_shape.at(i) = shape._dims.at(i) == -1 ? 1 : shape._dims.at(i);
+  return builder.CreateVector(encoded_shape);
 }
 
 flatbuffers::Offset<Vector<int32_t>> encodeShapeSignature(FlatBufferBuilder &builder,

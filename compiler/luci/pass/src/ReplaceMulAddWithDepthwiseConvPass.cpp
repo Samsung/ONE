@@ -92,7 +92,7 @@ bool is_batchnorm_add(const luci::CircleAdd *add, luci::CircleMul *&mul, luci::C
 
   auto channel_dim = constant->dim(0);
   // Assumption: Layout is channel-last
-  if (!(channel_dim == add->dim(add->rank() - 1)))
+  if (!(channel_dim == add->dim(add->rank() - 1))) // TODO Which value should be selected for unknown?
     return false;
 
   mul = pred;
@@ -129,7 +129,7 @@ bool is_batchnorm_mul(const luci::CircleMul *mul, luci::CircleNode *&pred_node,
     return false;
 
   auto channel_dim = constant->dim(0);
-  if (!(channel_dim == mul->dim(mul->rank() - 1)))
+  if (!(channel_dim == mul->dim(mul->rank() - 1))) // TODO Which value should be selected for unknown?
     return false;
 
   pred_node = pred;

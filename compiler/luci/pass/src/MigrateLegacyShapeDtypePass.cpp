@@ -26,13 +26,13 @@
 namespace
 {
 
-bool has_same_shape(luci::CircleNode *node, loco::TensorShape shape)
+bool has_acceptable_shape(luci::CircleNode *node, loco::TensorShape shape)
 {
   if (node->rank() != shape.rank())
     return false;
 
   for (uint32_t i = 0; i < shape.rank(); ++i)
-    if (!(node->dim(i) == shape.dim(i)))
+    if (node->dim(i).known() && shape.dim(i).known() && !(node->dim(i) == shape.dim(i)))
       return false;
 
   return true;
@@ -77,13 +77,13 @@ bool MigrateLegacyShapeDtypePass::run(loco::Graph *g)
       {
         if (circle_node->shape_signature().rank() > 0 &&
             circle_node->shape_signature().dim(i) == -1)
-          new_shape.dim(i) = 1;
+          new_shape.dim(i).unset();
         else
           new_shape.dim(i) = loco_shape.dim(i);
       }
 
       if (circle_node->shape_status() == luci::ShapeStatus::UNDEFINED ||
-          !has_same_shape(circle_node, new_shape))
+          !has_acceptable_shape(circle_node, new_shape))
       {
         circle_node->rank(new_shape.rank());
         for (uint32_t i = 0; i < new_shape.rank(); ++i)

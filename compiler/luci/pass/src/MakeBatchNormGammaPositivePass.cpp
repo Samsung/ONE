@@ -62,7 +62,7 @@ bool is_batchnorm_add(const luci::CircleAdd *add)
     return false;
 
   auto channel_dim = constant->dim(0);
-  if (!(channel_dim == add->dim(add->rank() - 1)))
+  if (!(channel_dim == add->dim(add->rank() - 1))) // TODO Which value should be selected for unknown?
     return false;
 
   return true;
@@ -87,7 +87,7 @@ bool is_batchnorm_mul(const luci::CircleMul *mul, luci::CircleConst *&gamma)
     return false;
 
   auto channel_dim = constant->dim(0);
-  if (!(channel_dim == mul->dim(mul->rank() - 1)))
+  if (!(channel_dim == mul->dim(mul->rank() - 1))) // TODO Which value should be selected for unknown?
     return false;
 
   // Check successor is batchnorm add

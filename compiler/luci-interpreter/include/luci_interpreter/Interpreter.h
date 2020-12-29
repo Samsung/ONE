@@ -55,6 +55,8 @@ public:
 
   void writeInputTensor(const luci::CircleInput *input_node, const void *data, size_t data_size);
 
+  std::vector<int32_t> readOutputTensorShape(const luci::CircleOutput *output_node);
+
   void readOutputTensor(const luci::CircleOutput *output_node, void *data, size_t data_size);
 
   void interpret();

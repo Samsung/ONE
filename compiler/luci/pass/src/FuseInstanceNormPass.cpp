@@ -456,7 +456,7 @@ bool InstanceNormPattern::matched()
 
     luci::CircleNode *ifm_node = loco::must_cast<luci::CircleNode *>(ifm);
     CHECK_OR_FALSE(ifm_node->rank() == 4);
-    uint32_t ifm_channel_depth = ifm_node->dim(3).value();
+    uint32_t ifm_channel_depth = ifm_node->dim(3).value(); // TODO Which value should be selected for unknown?
 
     mean_of_ifm = dynamic_cast<luci::CircleMean *>(sub->y());
     CHECK_OR_FALSE(mean_of_ifm);
@@ -519,7 +519,7 @@ bool InstanceNormPattern::matched()
   CHECK_OR_FALSE(ifm_shape.domain() == loco::Domain::Tensor);
   auto ifm_tensor_shape = ifm_shape.as<loco::TensorShape>();
   CHECK_OR_FALSE(ifm_tensor_shape.rank() == 4);
-  uint32_t ifm_channel_depth = ifm_tensor_shape.dim(3).value();
+  uint32_t ifm_channel_depth = ifm_tensor_shape.dim(3).value(); // TODO Which value should be selected for unknown?
 
   CHECK_OR_FALSE(fill(&rsqrt, &const_as_gamma).with_commutative_args_of(mul_gamma));
 
@@ -653,7 +653,7 @@ void fuse_instance_norm(const InstanceNormPattern &p)
   auto reshape_beta = graph->nodes()->create<luci::CircleReshape>();
   {
     auto ifm_shape = loco::shape_get(p.ifm).as<loco::TensorShape>();
-    uint32_t ifm_channel_depth = ifm_shape.dim(3).value();
+    uint32_t ifm_channel_depth = ifm_shape.dim(3).value(); // TODO Which value should be selected for unknown?
 
     int32_t new_shape[1] = {static_cast<int32_t>(ifm_channel_depth)};
 

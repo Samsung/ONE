@@ -53,11 +53,11 @@ bool substitute_pack_to_reshape(luci::CircleNode *node)
     }
     else if (i < axis)
     {
-      const_node->at<loco::DataType::S32>(i) = value_node->dim(i).value();
+      const_node->at<loco::DataType::S32>(i) = value_node->dim(i).value(); // TODO Which value should be selected for unknown?
     }
     else
     {
-      const_node->at<loco::DataType::S32>(i) = value_node->dim(i - 1).value();
+      const_node->at<loco::DataType::S32>(i) = value_node->dim(i - 1).value(); // TODO Which value should be selected for unknown?
     }
   }
   reshape_node->shape(const_node);

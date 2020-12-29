@@ -36,7 +36,7 @@ std::ostream &operator<<(std::ostream &os, const loco::TensorShape &tensor_shape
   {
     if (r)
       os << ",";
-    os << tensor_shape.dim(r).value();
+    os << (tensor_shape.dim(r).known() ? tensor_shape.dim(r).value() : -1);
   }
   os << "]";
   return os;
@@ -49,7 +49,7 @@ std::ostream &operator<<(std::ostream &os, const luci::CircleNode *circle_node)
   {
     if (r)
       os << ",";
-    os << circle_node->dim(r).value();
+    os << (circle_node->dim(r).known() ? circle_node->dim(r).value() : -1);
   }
   os << "]";
   return os;
@@ -101,7 +101,7 @@ bool validate_shape_dtype(loco::Graph *g)
 
     bool is_shape_valid = (circle_node->rank() == go_tensor_shape->rank());
     for (uint32_t i = 0; is_shape_valid && i < circle_node->rank(); ++i)
-      if (circle_node->dim(i).value() != go_tensor_shape->dim(i).value())
+      if (circle_node->dim(i).known() && go_tensor_shape->dim(i).known() && circle_node->dim(i).value() != go_tensor_shape->dim(i).value())
         is_shape_valid = false;
 
     if (is_shape_valid == false)
