@@ -14,7 +14,13 @@
  * limitations under the License.
  */
 
-// dummy-compile only tests its interface rather than its functionality.
+/**
+ * dummy-compile only tests its interface rather than its functionality.
+ *
+ * ./dummy-compile -o ${OUTPUT_NAME} ${INPUT_NAME}
+ *
+ * NOTE argv[3](INPUT_NAME) is not used here.
+ */
 
 #include <iostream>
 #include <fstream>
@@ -22,13 +28,12 @@
 
 int main(int argc, char **argv)
 {
-  // Assume cmd from user will be like this.
-  // ./dummy-compile -o ${OUTPUT_NAME} ${INPUT_NAME}
   if (argc != 4)
     return EXIT_FAILURE;
 
   std::string opt_o{"-o"};
   std::string argv_1{argv[1]};
+
   if (opt_o != argv_1)
     return EXIT_FAILURE;
 
