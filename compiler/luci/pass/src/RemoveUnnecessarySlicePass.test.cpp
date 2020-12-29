@@ -69,7 +69,6 @@ void create_remove_no_effect_slice(loco::Graph *g,
   output->from(slice);
   auto graph_output = g->outputs()->create();
   output->index(graph_output->index());
-  return;
 }
 
 } // namespace
