@@ -260,6 +260,14 @@ uint32_t CircleGen::addOperatorMean(const OperatorParams &params, bool keep_dims
                                 circle::BuiltinOptions_ReducerOptions, options);
 }
 
+uint32_t CircleGen::addOperatorMul(const OperatorParams &params,
+                                   circle::ActivationFunctionType actfn)
+{
+  auto options = circle::CreateMulOptions(_fbb, actfn).Union();
+  return addOperatorWithOptions(params, circle::BuiltinOperator_MUL,
+                                circle::BuiltinOptions_MulOptions, options);
+}
+
 uint32_t CircleGen::addOperatorNeg(const OperatorParams &params)
 {
   auto options = circle::CreatePadOptions(_fbb).Union();

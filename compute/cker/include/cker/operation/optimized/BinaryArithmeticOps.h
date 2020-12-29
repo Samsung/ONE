@@ -35,6 +35,7 @@ namespace cker
 namespace optimized
 {
 
+/* TODO: Old version. It is used for Add, Sub and Div. To be removed */
 template <typename ElementwiseF, typename ScalarBroadcastF, typename T>
 inline void BinaryBroadcastFiveFold(const BinaryArithmeticOpParam &params, bool switch_inputs,
                                     const Shape & /* unswitched_input1_shape */,
@@ -102,6 +103,105 @@ inline void BinaryBroadcastFiveFold(const BinaryArithmeticOpParam &params, bool 
     //
     // NOTE The process is the same as the above general case except simplified
     // for y4 == 1 and the loop over y3 is contained within the
+    // AddScalarBroadcast function.
+    for (int i0 = 0; i0 < y0; ++i0)
+    {
+      const T *input2_data_ptr = nullptr;
+      for (int i1 = 0; i1 < y1; ++i1)
+      {
+        input2_data_ptr = input2_data_reset;
+        for (int i2 = 0; i2 < y2; ++i2)
+        {
+          scalar_broadcast_f(y3, params, *input1_data_ptr, input2_data_ptr, output_data_ptr);
+          input2_data_ptr += y3;
+          output_data_ptr += y3;
+          input1_data_ptr += 1;
+        }
+      }
+      input2_data_reset = input2_data_ptr;
+    }
+  }
+}
+
+// New version from tf 2.3 or later. Used for Mul
+template <typename ElementwiseF, typename ScalarBroadcastF, typename T>
+inline void BinaryBroadcastFiveFold(const BinaryArithmeticOpParam &unswitched_params,
+                                    const Shape & /* unswitched_input1_shape */,
+                                    const T *unswitched_input1_data,
+                                    const Shape & /* unswitched_input2_shape */,
+                                    const T *unswitched_input2_data,
+                                    const Shape & /* output_shape */, T *output_data,
+                                    ElementwiseF elementwise_f, ScalarBroadcastF scalar_broadcast_f)
+{
+  BinaryArithmeticOpParam switched_params = unswitched_params;
+  switched_params.input1_offset = unswitched_params.input2_offset;
+  switched_params.input1_multiplier = unswitched_params.input2_multiplier;
+  switched_params.input1_shift = unswitched_params.input2_shift;
+  switched_params.input2_offset = unswitched_params.input1_offset;
+  switched_params.input2_multiplier = unswitched_params.input1_multiplier;
+  switched_params.input2_shift = unswitched_params.input1_shift;
+
+  const bool use_unswitched =
+    unswitched_params.broadcast_category == BroadcastableOpCategory::kFirstInputBroadcastsFast;
+
+  const BinaryArithmeticOpParam &params = use_unswitched ? unswitched_params : switched_params;
+  const T *input1_data = use_unswitched ? unswitched_input1_data : unswitched_input2_data;
+  const T *input2_data = use_unswitched ? unswitched_input2_data : unswitched_input1_data;
+
+  // Fivefold nested loops. The second input resets its position for each
+  // iteration of the second loop. The first input resets its position at the
+  // beginning of the fourth loop. The innermost loop is an elementwise add of
+  // sections of the arrays.
+  T *output_data_ptr = output_data;
+  const T *input1_data_ptr = input1_data;
+  const T *input2_data_reset = input2_data;
+  // In the fivefold pattern, y0, y2 and y4 are not broadcast, and so shared
+  // between input shapes. y3 for input 1 is always broadcast, and so the
+  // dimension there is 1, whereas optionally y1 might be broadcast for
+  // input 2. Put another way, input1.shape.FlatSize = y0 * y1 * y2 * y4,
+  // input2.shape.FlatSize = y0 * y2 * y3 * y4.
+  int y0 = params.broadcast_shape[0];
+  int y1 = params.broadcast_shape[1];
+  int y2 = params.broadcast_shape[2];
+  int y3 = params.broadcast_shape[3];
+  int y4 = params.broadcast_shape[4];
+  if (y4 > 1)
+  {
+    // General fivefold pattern, with y4 > 1 so there is a non-broadcast inner
+    // dimension.
+    for (int i0 = 0; i0 < y0; ++i0)
+    {
+      const T *input2_data_ptr = nullptr;
+      for (int i1 = 0; i1 < y1; ++i1)
+      {
+        input2_data_ptr = input2_data_reset;
+        for (int i2 = 0; i2 < y2; ++i2)
+        {
+          for (int i3 = 0; i3 < y3; ++i3)
+          {
+            elementwise_f(y4, params, input1_data_ptr, input2_data_ptr, output_data_ptr);
+            input2_data_ptr += y4;
+            output_data_ptr += y4;
+          }
+          // We have broadcast y4 of input1 data y3 times, and now move on.
+          input1_data_ptr += y4;
+        }
+      }
+      // We have broadcast y2*y3*y4 of input2 data y1 times, and now move on.
+      input2_data_reset = input2_data_ptr;
+    }
+  }
+  else
+  {
+    // Special case of y4 == 1, in which the innermost loop is a single
+    // element and can be combined with the next (y3) as an inner broadcast.
+    //
+    // Note that this handles the case of pure scalar broadcast when
+    // y0 == y1 == y2 == 1. With low overhead it handles cases such as scalar
+    // broadcast with batch (as y2 > 1).
+    //
+    // NOTE The process is the same as the above general case except
+    // simplified for y4 == 1 and the loop over y3 is contained within the
     // AddScalarBroadcast function.
     for (int i0 = 0; i0 < y0; ++i0)
     {
@@ -683,6 +783,95 @@ inline void MulElementwise(int size, const BinaryArithmeticOpParam &params,
   }
 }
 
+inline void MulElementwise(int size, const BinaryArithmeticOpParam &params,
+                           const int8_t *input1_data, const int8_t *input2_data,
+                           int8_t *output_data)
+{
+  int i = 0;
+#ifdef USE_NEON
+  const int16x8_t input1_offset_vector = vdupq_n_s16(params.input1_offset);
+  const int16x8_t input2_offset_vector = vdupq_n_s16(params.input2_offset);
+  const int16x8_t output_offset_vector = vdupq_n_s16(params.output_offset);
+  const auto output_activation_min_vector = vdupq_n_s8(params.quantized_activation_min);
+  const auto output_activation_max_vector = vdupq_n_s8(params.quantized_activation_max);
+  const int left_shift = std::max(0, params.output_shift);
+  const int right_shift = std::max(0, -params.output_shift);
+  const int32x4_t left_shift_vec = vdupq_n_s32(left_shift);
+  for (; i <= size - 16; i += 16)
+  {
+    // We load / store 16 at a time, multiplying as four sets of 4 int32s.
+    const int8x16_t input1_val_original = vld1q_s8(input1_data + i);
+    const int8x16_t input2_val_original = vld1q_s8(input2_data + i);
+
+    const int16x8_t input1_val_s16_high = vmovl_s8(vget_high_s8(input1_val_original));
+    const int16x8_t input1_val_s16_low = vmovl_s8(vget_low_s8(input1_val_original));
+
+    const int16x8_t input2_val_s16_high = vmovl_s8(vget_high_s8(input2_val_original));
+    const int16x8_t input2_val_s16_low = vmovl_s8(vget_low_s8(input2_val_original));
+    const int16x8_t input1_val_high = vaddq_s16(input1_val_s16_high, input1_offset_vector);
+    const int16x8_t input2_val_high = vaddq_s16(input2_val_s16_high, input2_offset_vector);
+    const int16x8_t input1_val_low = vaddq_s16(input1_val_s16_low, input1_offset_vector);
+    const int16x8_t input2_val_low = vaddq_s16(input2_val_s16_low, input2_offset_vector);
+    const int16x4_t input1_val_high_high = vget_high_s16(input1_val_high);
+    const int16x4_t input1_val_high_low = vget_low_s16(input1_val_high);
+    const int16x4_t input1_val_low_high = vget_high_s16(input1_val_low);
+    const int16x4_t input1_val_low_low = vget_low_s16(input1_val_low);
+    const int16x4_t input2_val_high_high = vget_high_s16(input2_val_high);
+    const int16x4_t input2_val_high_low = vget_low_s16(input2_val_high);
+    const int16x4_t input2_val_low_high = vget_high_s16(input2_val_low);
+    const int16x4_t input2_val_low_low = vget_low_s16(input2_val_low);
+
+    auto p1 = vmull_s16(input2_val_high_high, input1_val_high_high);
+    auto p2 = vmull_s16(input2_val_high_low, input1_val_high_low);
+    auto p3 = vmull_s16(input2_val_low_high, input1_val_low_high);
+    auto p4 = vmull_s16(input2_val_low_low, input1_val_low_low);
+
+    p1 = vshlq_s32(p1, left_shift_vec);
+    p2 = vshlq_s32(p2, left_shift_vec);
+    p3 = vshlq_s32(p3, left_shift_vec);
+    p4 = vshlq_s32(p4, left_shift_vec);
+
+    p1 = vqrdmulhq_n_s32(p1, params.output_multiplier);
+    p2 = vqrdmulhq_n_s32(p2, params.output_multiplier);
+    p3 = vqrdmulhq_n_s32(p3, params.output_multiplier);
+    p4 = vqrdmulhq_n_s32(p4, params.output_multiplier);
+    using gemmlowp::RoundingDivideByPOT;
+    p1 = RoundingDivideByPOT(p1, right_shift);
+    p2 = RoundingDivideByPOT(p2, right_shift);
+    p3 = RoundingDivideByPOT(p3, right_shift);
+    p4 = RoundingDivideByPOT(p4, right_shift);
+
+    const auto p1_narrowed = vqmovn_s32(p1);
+    const auto p2_narrowed = vqmovn_s32(p2);
+    const auto p3_narrowed = vqmovn_s32(p3);
+    const auto p4_narrowed = vqmovn_s32(p4);
+
+    const int16x8_t p_part1 =
+      vaddq_s16(vcombine_s16(p2_narrowed, p1_narrowed), output_offset_vector);
+    const int16x8_t p_part2 =
+      vaddq_s16(vcombine_s16(p4_narrowed, p3_narrowed), output_offset_vector);
+    const int8x16_t p = vcombine_s8(vqmovn_s16(p_part2), vqmovn_s16(p_part1));
+
+    const auto clamped =
+      vmaxq_s8(output_activation_min_vector, vminq_s8(output_activation_max_vector, p));
+    vst1q_s8(output_data + i, clamped);
+  }
+#endif // NEON
+
+  for (; i < size; ++i)
+  {
+    const int32_t input1_val = params.input1_offset + input1_data[i];
+    const int32_t input2_val = params.input2_offset + input2_data[i];
+    const int32_t unclamped_result =
+      params.output_offset + MultiplyByQuantizedMultiplier(input1_val * input2_val,
+                                                           params.output_multiplier,
+                                                           params.output_shift);
+    const int32_t clamped_output = std::min(
+      params.quantized_activation_max, std::max(params.quantized_activation_min, unclamped_result));
+    output_data[i] = static_cast<int8_t>(clamped_output);
+  }
+}
+
 template <typename T>
 inline typename std::enable_if_t<is_quant8<T>::value>
 Mul(const BinaryArithmeticOpParam &params, const Shape &input1_shape, const T *input1_data,
@@ -701,17 +890,97 @@ inline void Mul(const BinaryArithmeticOpParam &params, const Shape &input1_shape
   (*implFuncs.first)(flat_size, params, input1_data, input2_data, output_data);
 }
 
-template <typename T>
-inline typename std::enable_if_t<is_quant8<T>::value>
-MulSimpleBroadcast(int size, const BinaryArithmeticOpParam &params, const T broadcast_value,
-                   const T *input2_data, T *output_data)
+inline void MulSimpleBroadcast(int size, const BinaryArithmeticOpParam &params,
+                               const uint8_t broadcast_value, const uint8_t *input2_data,
+                               uint8_t *output_data)
 {
   int i = 0;
   int32_t clamped_output;
   for (; i < size; ++i)
   {
     clamped_output = quant8_mul(params, broadcast_value, input2_data[i]);
-    output_data[i] = static_cast<T>(clamped_output);
+    output_data[i] = static_cast<uint8_t>(clamped_output);
+  }
+}
+
+// Broadcast mul that can often be used for inner loop of broadcast Mul.
+inline void MulSimpleBroadcast(int size, const BinaryArithmeticOpParam &params,
+                               const int8_t broadcast_value, const int8_t *input2_data,
+                               int8_t *output_data)
+{
+  const int16_t input1_val = params.input1_offset + broadcast_value;
+
+  int i = 0;
+#ifdef USE_NEON
+  const auto input2_offset_vector = vdupq_n_s16(params.input2_offset);
+  const auto output_offset_vector = vdupq_n_s16(params.output_offset);
+  const auto output_activation_min_vector = vdupq_n_s8(params.quantized_activation_min);
+  const auto output_activation_max_vector = vdupq_n_s8(params.quantized_activation_max);
+  const int left_shift = std::max(0, params.output_shift);
+  const int right_shift = std::max(0, -params.output_shift);
+  const int32x4_t left_shift_vec = vdupq_n_s32(left_shift);
+  for (; i <= size - 16; i += 16)
+  {
+    // We load / store 16 at a time, multiplying as four sets of 4 int32s.
+    const auto input2_val_original = vld1q_s8(input2_data + i);
+    const auto input2_val_s16_high = vmovl_s8(vget_high_s8(input2_val_original));
+    const auto input2_val_s16_low = vmovl_s8(vget_low_s8(input2_val_original));
+
+    const auto input2_val_high = vaddq_s16(input2_val_s16_high, input2_offset_vector);
+    const auto input2_val_low = vaddq_s16(input2_val_s16_low, input2_offset_vector);
+
+    const auto input2_val_low_low = vget_low_s16(input2_val_low);
+    const auto input2_val_low_high = vget_high_s16(input2_val_low);
+    const auto input2_val_high_low = vget_low_s16(input2_val_high);
+    const auto input2_val_high_high = vget_high_s16(input2_val_high);
+
+    auto p1 = vmull_n_s16(input2_val_high_high, input1_val);
+    auto p2 = vmull_n_s16(input2_val_high_low, input1_val);
+    auto p3 = vmull_n_s16(input2_val_low_high, input1_val);
+    auto p4 = vmull_n_s16(input2_val_low_low, input1_val);
+
+    p1 = vshlq_s32(p1, left_shift_vec);
+    p2 = vshlq_s32(p2, left_shift_vec);
+    p3 = vshlq_s32(p3, left_shift_vec);
+    p4 = vshlq_s32(p4, left_shift_vec);
+
+    p1 = vqrdmulhq_n_s32(p1, params.output_multiplier);
+    p2 = vqrdmulhq_n_s32(p2, params.output_multiplier);
+    p3 = vqrdmulhq_n_s32(p3, params.output_multiplier);
+    p4 = vqrdmulhq_n_s32(p4, params.output_multiplier);
+    using gemmlowp::RoundingDivideByPOT;
+    p1 = RoundingDivideByPOT(p1, right_shift);
+    p2 = RoundingDivideByPOT(p2, right_shift);
+    p3 = RoundingDivideByPOT(p3, right_shift);
+    p4 = RoundingDivideByPOT(p4, right_shift);
+
+    const auto p1_narrowed = vqmovn_s32(p1);
+    const auto p2_narrowed = vqmovn_s32(p2);
+    const auto p3_narrowed = vqmovn_s32(p3);
+    const auto p4_narrowed = vqmovn_s32(p4);
+
+    const int16x8_t p_part1 =
+      vaddq_s16(vcombine_s16(p2_narrowed, p1_narrowed), output_offset_vector);
+    const int16x8_t p_part2 =
+      vaddq_s16(vcombine_s16(p4_narrowed, p3_narrowed), output_offset_vector);
+    const int8x16_t p = vcombine_s8(vqmovn_s16(p_part2), vqmovn_s16(p_part1));
+
+    const auto clamped =
+      vmaxq_s8(output_activation_min_vector, vminq_s8(output_activation_max_vector, p));
+    vst1q_s8(output_data + i, clamped);
+  }
+#endif // NEON
+
+  for (; i < size; ++i)
+  {
+    const int32_t input2_val = params.input2_offset + input2_data[i];
+    const int32_t unclamped_result =
+      params.output_offset + MultiplyByQuantizedMultiplier(input1_val * input2_val,
+                                                           params.output_multiplier,
+                                                           params.output_shift);
+    const int32_t clamped_output = std::min(
+      params.quantized_activation_max, std::max(params.quantized_activation_min, unclamped_result));
+    output_data[i] = static_cast<int8_t>(clamped_output);
   }
 }
 
@@ -732,8 +1001,7 @@ BroadcastMulDispatch(const BinaryArithmeticOpParam &params, const Shape &input1_
     return;
   }
   BinaryBroadcastFiveFold(
-    params, params.broadcast_category == BroadcastableOpCategory::kSecondInputBroadcastsFast,
-    input1_shape, input1_data, input2_shape, input2_data, output_shape, output_data,
+    params, input1_shape, input1_data, input2_shape, input2_data, output_shape, output_data,
     static_cast<void (*)(int, const BinaryArithmeticOpParam &, const T *, const T *, T *)>(
       MulElementwise),
     static_cast<void (*)(int, const BinaryArithmeticOpParam &, T, const T *, T *)>(
@@ -755,10 +1023,8 @@ inline void BroadcastMulDispatch(const BinaryArithmeticOpParam &params, const Sh
     return;
   }
   auto implFuncs = getBinaryOpWithActivationImplFloat<BinaryOpFuncMulFloat>(params);
-  BinaryBroadcastFiveFold(
-    params, params.broadcast_category == BroadcastableOpCategory::kSecondInputBroadcastsFast,
-    input1_shape, input1_data, input2_shape, input2_data, output_shape, output_data,
-    implFuncs.first, implFuncs.second);
+  BinaryBroadcastFiveFold(params, input1_shape, input1_data, input2_shape, input2_data,
+                          output_shape, output_data, implFuncs.first, implFuncs.second);
 }
 
 inline void Div(const BinaryArithmeticOpParam &params, const Shape &input1_shape,
