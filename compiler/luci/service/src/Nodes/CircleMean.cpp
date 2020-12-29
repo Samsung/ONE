@@ -14,15 +14,11 @@
  * limitations under the License.
  */
 
-#include <luci/Service/CircleShapeSignatureInference.h>
-
 namespace luci
 {
 
-ShapeSignature ssinf::Algorithm::visit(const luci::CircleMean *node)
-{
-  return legalized_signature(
-    reduced_signature(node->input(), node->reduction_indices(), node->keep_dims()));
-}
+// Shape Inference Algorithm will be added
+
+// Type Inference Algorithm will be added
 
 } // namespace luci
