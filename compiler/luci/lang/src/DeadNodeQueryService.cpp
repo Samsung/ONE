@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-#include "DeadNodeQueryService.h"
-
 #include "luci/IR/CircleNodeVisitor.h"
+#include "luci/IR/DeadNodeQueryService.h"
 
 #include <loco/IR/Graph.h>
 
