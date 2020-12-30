@@ -23,7 +23,7 @@ namespace luci
 {
 
 /**
- * @brief  Class to Remove No Effect(input and output are same) Slice node.
+ * @brief  Class to Remove Unnecessary(input and output are same) Slice node.
  */
 struct RemoveUnnecessarySlicePass final : public logo::Pass
 {
