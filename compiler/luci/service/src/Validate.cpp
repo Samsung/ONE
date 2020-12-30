@@ -36,7 +36,11 @@ std::ostream &operator<<(std::ostream &os, const loco::TensorShape &tensor_shape
   {
     if (r)
       os << ",";
-    os << tensor_shape.dim(r).value();
+
+    if (tensor_shape.dim(r).known())
+      os << tensor_shape.dim(r).value();
+    else
+      os << "?"
   }
   os << "]";
   return os;
@@ -49,7 +53,11 @@ std::ostream &operator<<(std::ostream &os, const luci::CircleNode *circle_node)
   {
     if (r)
       os << ",";
-    os << circle_node->dim(r).value();
+
+    if (tensor_shape.dim(r).known())
+      os << tensor_shape.dim(r).value();
+    else
+      os << "?"
   }
   os << "]";
   return os;
