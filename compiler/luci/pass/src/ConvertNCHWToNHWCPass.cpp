@@ -67,6 +67,18 @@ DataFormat get_data_format(loco::Node *node)
 
 bool has_data_format(loco::Node *node) { return node->annot<DataFormatAnnotation>() != nullptr; }
 
+bool has_dynamic_shape(const loco::Node *node)
+{
+  const auto circle_node = loco::must_cast<const luci::CircleNode *>(node);
+  const auto shape_signature = circle_node->shape_signature().as_vector();
+  for (auto ss : shape_signature)
+  {
+    if (ss == -1)
+      return true;
+  }
+  return false;
+}
+
 luci::CircleTranspose *create_4d_transpose(luci::CircleNode *node,
                                            const std::vector<int32_t> indices)
 {
@@ -351,6 +363,12 @@ bool ConvertNCHWToNHWCPass::run(loco::Graph *g)
     else if (get_data_format(node) == DataFormat::NHWC)
     {
       // Already converted to NHWC
+      continue;
+    }
+    else if (has_dynamic_shape(node))
+    {
+      // This pass only works for static-shaped node
+      INFO(l) << "Skip the node with a dynamic shape." << std::endl;
       continue;
     }
     else
