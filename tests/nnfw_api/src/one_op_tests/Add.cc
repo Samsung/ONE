@@ -69,6 +69,38 @@ TEST_F(GenModelTest, OneOp_Add_VarToVarUint8)
   SUCCEED();
 }
 
+TEST_F(GenModelTest, OneOp_Add_VarToVarInt8)
+{
+  CircleGen cgen;
+  int lhs = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_INT8}, 1., 2);
+  int rhs = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_INT8}, 2., 3);
+  int out = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_INT8}, 0.5, -6);
+  cgen.addOperatorAdd({{lhs, rhs}, {out}}, circle::ActivationFunctionType_NONE);
+  cgen.setInputsAndOutputs({lhs, rhs}, {out});
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->addTestCase(uniformTCD<int8_t>({{1, 3, 2, 4}, {5, -4, -7, 4}}, {{0, -32, -46, 2}}));
+  _context->setBackends({"acl_cl", "acl_neon", "cpu"});
+
+  SUCCEED();
+}
+
+TEST_F(GenModelTest, OneOp_BroadcastAdd_VarToVarInt8)
+{
+  CircleGen cgen;
+  int lhs = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_INT8}, 1., 2);
+  int rhs = cgen.addTensor({{1, 1, 1, 1}, circle::TensorType::TensorType_INT8}, 2., 3);
+  int out = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_INT8}, 0.5, -6);
+  cgen.addOperatorAdd({{lhs, rhs}, {out}}, circle::ActivationFunctionType_NONE);
+  cgen.setInputsAndOutputs({lhs, rhs}, {out});
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->addTestCase(uniformTCD<int8_t>({{1, 3, 2, 4}, {5}}, {{0, 4, 2, 6}}));
+  _context->setBackends({"acl_cl", "acl_neon", "cpu"});
+
+  SUCCEED();
+}
+
 TEST_F(GenModelTest, OneOp_Add_VarToVarSame)
 {
   CircleGen cgen;
@@ -109,6 +141,22 @@ TEST_F(GenModelTest, neg_OneOp_Add_InvalidType)
   int lhs = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_FLOAT32});
   int rhs = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_UINT8}, 0.1, 2);
   int out = cgen.addTensor({{1, 2, 3, 1}, circle::TensorType::TensorType_FLOAT32});
+  cgen.addOperatorAdd({{lhs, rhs}, {out}}, circle::ActivationFunctionType_NONE);
+  cgen.setInputsAndOutputs({lhs, rhs}, {out});
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->setBackends({"acl_cl", "acl_neon", "cpu"});
+  _context->expectFailModelLoad();
+
+  SUCCEED();
+}
+
+TEST_F(GenModelTest, neg_OneOp_Add_DifferentQuant8Type)
+{
+  CircleGen cgen;
+  int lhs = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_INT8}, 0.2, -3);
+  int rhs = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_UINT8}, 0.1, 2);
+  int out = cgen.addTensor({{1, 2, 3, 1}, circle::TensorType::TensorType_INT8});
   cgen.addOperatorAdd({{lhs, rhs}, {out}}, circle::ActivationFunctionType_NONE);
   cgen.setInputsAndOutputs({lhs, rhs}, {out});
 
@@ -231,6 +279,23 @@ TEST_F(GenModelTest, neg_OneOp_Add_VarToVarSize0_InvalidShape)
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
   _context->expectFailCompile();
   _context->setBackends({"cpu"});
+
+  SUCCEED();
+}
+
+TEST_F(GenModelTest, net_OneOp_Add_VarToVarInt16)
+{
+  CircleGen cgen;
+  int lhs = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_INT16}, 1., 2);
+  int rhs = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_INT16}, 2., 3);
+  int out = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_INT16}, 0.5, -6);
+  cgen.addOperatorAdd({{lhs, rhs}, {out}}, circle::ActivationFunctionType_NONE);
+  cgen.setInputsAndOutputs({lhs, rhs}, {out});
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  // _context->addTestCase(uniformTCD<int8_t>({{1, 3, 2, 4}, {5, -4, -7, 4}}, {{0, -32, -46, 2}}));
+  _context->setBackends({"acl_cl", "acl_neon", "cpu"});
+  _context->expectFailCompile();
 
   SUCCEED();
 }
