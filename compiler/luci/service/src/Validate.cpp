@@ -57,7 +57,7 @@ std::ostream &operator<<(std::ostream &os, const luci::CircleNode *circle_node)
     if (tensor_shape.dim(r).known())
       os << tensor_shape.dim(r).value();
     else
-      os << "?"
+      os << "?";
   }
   os << "]";
   return os;
