@@ -35,7 +35,7 @@ namespace cker
 namespace optimized
 {
 
-/* TODO: Old version. It is used for Sub and Div. To be removed */
+/* Old version: For Sub(float) and Div. */
 template <typename ElementwiseF, typename ScalarBroadcastF, typename T>
 inline void BinaryBroadcastFiveFold(const BinaryArithmeticOpParam &params, bool switch_inputs,
                                     const Shape & /* unswitched_input1_shape */,
@@ -123,7 +123,7 @@ inline void BinaryBroadcastFiveFold(const BinaryArithmeticOpParam &params, bool 
   }
 }
 
-// New version from tf 2.3 or later. Used for Mul and Add
+// New version: For Mul, Add and Sub(quant8)
 template <typename ElementwiseF, typename ScalarBroadcastF, typename T>
 inline void BinaryBroadcastFiveFold(const BinaryArithmeticOpParam &unswitched_params,
                                     const Shape & /* unswitched_input1_shape */,

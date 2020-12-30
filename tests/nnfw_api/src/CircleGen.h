@@ -201,6 +201,7 @@ public:
   uint32_t addOperatorStridedSlice(const OperatorParams &params, int32_t begin_mask = 0,
                                    int32_t end_mask = 0, int32_t ellipsis_mask = 0,
                                    int32_t new_axis_mask = 0, int32_t shrink_axis_mask = 0);
+  uint32_t addOperatorSub(const OperatorParams &params, circle::ActivationFunctionType actfn);
   uint32_t addOperatorTile(const OperatorParams &params);
   uint32_t addOperatorTranspose(const OperatorParams &params);
   uint32_t addOperatorWhile(const OperatorParams &params, uint32_t cond_subg, uint32_t body_subg);

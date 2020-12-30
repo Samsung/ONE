@@ -206,6 +206,14 @@ void BinaryArithmeticLayer::configure(const IPortableTensor *lhs, const IPortabl
         _kernel =
           Eval<nnfw::cker::BinaryArithmeticOpType::SUB, uint8_t>(_lhs, _rhs, _output, op_params);
       }
+      else if (_lhs->data_type() == OperandType::QUANT_INT8_ASYMM)
+      {
+        setAddOrSubQuant8Params(_lhs, _rhs, _output, activation, &op_params);
+        op_params.input2_multiplier *= -1;
+        _kernel =
+          Eval<nnfw::cker::BinaryArithmeticOpType::SUB, int8_t>(_lhs, _rhs, _output, op_params);
+      }
+
       else
       {
         _kernel = generateKernelGeneric<nnfw::cker::BinaryArithmeticOpType::SUB>(
