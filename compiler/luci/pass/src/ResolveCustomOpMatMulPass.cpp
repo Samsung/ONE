@@ -97,30 +97,31 @@ bool resolve_matmul(luci::CircleCustom *cop)
   loco::Node *rhs = cop->inputs(1);
 
   // Check that the type of the first input is known
-  CHECK_OR_FALSE(loco::dtype_known(lhs));
-  auto lhs_dtype = loco::dtype_get(cop->inputs(0));
+  auto lhs_dtype = loco::must_cast<luci::CircleNode *>(cop->inputs(0))->dtype();
+  CHECK_OR_FALSE(lhs_dtype != loco::DataType::Unknown);
 
   // If transpose of first input is requested, its shape must be known
-  CHECK_OR_FALSE(!transpose_a || loco::shape_known(lhs));
+  auto circle_lhs = loco::must_cast<luci::CircleNode *>(lhs);
+  CHECK_OR_FALSE(!transpose_a || circle_lhs->shape_status() == luci::ShapeStatus::VALID);
   // and its rank should be at least 2
-  CHECK_OR_FALSE(!transpose_a || loco::shape_get(lhs).as<loco::TensorShape>().rank() >= 2);
+  CHECK_OR_FALSE(!transpose_a || circle_lhs->rank() >= 2);
   // Check that the shape of the 2nd input is known
-  CHECK_OR_FALSE(loco::shape_known(rhs));
+  auto circle_rhs = loco::must_cast<luci::CircleNode *>(rhs);
+  CHECK_OR_FALSE(circle_rhs->shape_status() == luci::ShapeStatus::VALID);
   // TODO as of 06/23/20 TFLite only supports rank 2 for 2nd input. Fix this once that changes!
-  CHECK_OR_FALSE(loco::shape_get(rhs).as<loco::TensorShape>().rank() == 2);
+  CHECK_OR_FALSE(circle_rhs->rank() == 2);
   // Check that input data type is supported
   CHECK_OR_THROW(lhs_dtype == U8 || lhs_dtype == S16 || lhs_dtype == FLOAT32,
                  "Only UInt8, Int16 and Float32 data types are supported by MatMul");
 
   if (transpose_a)
   {
-    auto a_shape = loco::shape_get(lhs).as<loco::TensorShape>();
     // Create a permutation constant node
     std::vector<uint32_t> perm;
-    for (uint32_t i = 0; i < a_shape.rank(); ++i)
+    for (uint32_t i = 0; i < circle_lhs->rank(); ++i)
       perm.push_back(i);
-    std::swap(perm[a_shape.rank() - 1], perm[a_shape.rank() - 2]);
-    auto perm_node = create_const_node(graph, S32, {a_shape.rank()}, perm);
+    std::swap(perm[circle_lhs->rank() - 1], perm[circle_lhs->rank() - 2]);
+    auto perm_node = create_const_node(graph, S32, {circle_lhs->rank()}, perm);
     // Now make a transpose node
     auto transpose_node = graph->nodes()->create<luci::CircleTranspose>();
     transpose_node->a(lhs);
@@ -142,8 +143,8 @@ bool resolve_matmul(luci::CircleCustom *cop)
   }
 
   // Make a constant zero-filled bias node
-  auto b_shape = loco::shape_get(cop->inputs(1)).as<loco::TensorShape>();
-  uint32_t bias_size = b_shape.dim(transpose_b ? 1 : 0).value();
+  auto circle_b = loco::must_cast<luci::CircleNode *>(cop->inputs(1));
+  uint32_t bias_size = circle_b->dim(transpose_b ? 1 : 0).value();
   const std::vector<float> val(bias_size, .0f);
   auto bias_node = create_const_node(graph, lhs_dtype, {bias_size}, val);
   auto fc_node = graph->nodes()->create<luci::CircleFullyConnected>();
