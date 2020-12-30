@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __LUCI_REMOVE_NO_EFFECT_SPLIT_H__
-#define __LUCI_REMOVE_NO_EFFECT_SPLIT_H__
+#ifndef __LUCI_REMOVE_UNNECESSARY_SPLIT_H__
+#define __LUCI_REMOVE_UNNECESSARY_SPLIT_H__
 
 #include <logo/Pass.h>
 
@@ -23,15 +23,15 @@ namespace luci
 {
 
 /**
- * @brief fuse or remove subsequent Transpose operators
+ * @brief Remove unnecessary Split OP
  */
-struct RemoveNoEffectSplitPass final : public logo::Pass
+struct RemoveUnnecessarySplitPass final : public logo::Pass
 {
-  const char *name(void) const final { return "luci::RemoveNoEffectSplitPass"; }
+  const char *name(void) const final { return "luci::RemoveUnnecessarySplitPass"; }
 
   bool run(loco::Graph *g) final;
 };
 
 } // namespace luci
 
-#endif // __LUCI_REMOVE_NO_EFFECT_SPLIT_H__
+#endif // __LUCI_REMOVE_UNNECESSARY_SPLIT_H__

@@ -54,7 +54,7 @@ public:
       ReplaceMulAddWithDepthwiseConv,
       SubstitutePackToReshape,
       ConvertNCHWToNHWC,
-      RemoveNoEffectSplit,
+      RemoveUnnecessarySplit,
     };
 
     enum AlgorithmParameters

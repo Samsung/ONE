@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "luci/Pass/RemoveNoEffectSplitPass.h"
+#include "luci/Pass/RemoveUnnecessarySplitPass.h"
 
 #include <luci/IR/CircleNodes.h>
 
@@ -23,7 +23,7 @@
 namespace
 {
 
-void create_no_effect_split_graph(loco::Graph *g)
+void create_unnecessary_split_graph(loco::Graph *g, bool remove)
 {
   assert(g);
 
@@ -37,31 +37,45 @@ void create_no_effect_split_graph(loco::Graph *g)
   dim->rank(1);
   dim->dim(0).set(1);
   dim->at<loco::DataType::S32>(0) = 0;
-
   auto split_node = g->nodes()->create<luci::CircleSplit>();
   split_node->split_dim(dim);
   split_node->input(input);
-  split_node->num_split(1);
+  if (remove)
+    split_node->num_split(1);
+  else
+    split_node->num_split(2);
 
-  auto split_out_node = g->nodes()->create<luci::CircleSplitOut>();
-  split_out_node->input(split_node);
-  split_out_node->index(0);
+  auto split_out_node0 = g->nodes()->create<luci::CircleSplitOut>();
+  split_out_node0->input(split_node);
+  split_out_node0->index(0);
 
   // Output
-  auto output = g->nodes()->create<luci::CircleOutput>();
-  output->from(split_out_node);
-  auto graph_output = g->outputs()->create();
-  output->index(graph_output->index());
+  auto output0 = g->nodes()->create<luci::CircleOutput>();
+  output0->from(split_out_node0);
+  auto graph_output0 = g->outputs()->create();
+  output0->index(graph_output0->index());
+
+  if (!remove)
+  {
+    auto split_out_node1 = g->nodes()->create<luci::CircleSplitOut>();
+    split_out_node1->input(split_node);
+    split_out_node1->index(1);
+
+    auto output1 = g->nodes()->create<luci::CircleOutput>();
+    output1->from(split_out_node1);
+    auto graph_output1 = g->outputs()->create();
+    output1->index(graph_output1->index());
+  }
 }
 
 } // namespace
 
-TEST(RemoveNoEffectSplitPass, remove_no_effect_split)
+TEST(RemoveUnnecessarySplitPass, create_unnecessary_split)
 {
   auto graph = loco::make_graph();
-  create_no_effect_split_graph(graph.get());
+  create_unnecessary_split_graph(graph.get(), true);
 
-  luci::RemoveNoEffectSplitPass pass;
+  luci::RemoveUnnecessarySplitPass pass;
   while (pass.run(graph.get()))
     ;
   luci::CircleSplit *split_node = nullptr;
@@ -74,4 +88,24 @@ TEST(RemoveNoEffectSplitPass, remove_no_effect_split)
   }
   // No transpose node is in graph.
   ASSERT_EQ(nullptr, split_node);
+}
+
+TEST(RemoveUnnecessarySplitPass, create_unnecessary_split_NEG)
+{
+  auto graph = loco::make_graph();
+  create_unnecessary_split_graph(graph.get(), false);
+
+  luci::RemoveUnnecessarySplitPass pass;
+  while (pass.run(graph.get()))
+    ;
+  luci::CircleSplit *split_node = nullptr;
+  for (auto node : loco::active_nodes(loco::output_nodes(graph.get())))
+  {
+    auto split = dynamic_cast<luci::CircleSplit *>(node);
+    if (not split)
+      continue;
+    split_node = split;
+  }
+  // No transpose node is in graph.
+  ASSERT_NE(nullptr, split_node);
 }

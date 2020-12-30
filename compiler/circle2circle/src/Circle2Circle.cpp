@@ -110,11 +110,11 @@ int entry(int argc, char **argv)
     .default_value(false)
     .help("This will fuse BatchNorm operators of pre-activations to Convolution operator");
 
-  arser.add_argument("--remove_no_effect_split")
+  arser.add_argument("--remove_unnecessary_split")
     .nargs(0)
     .required(false)
     .default_value(false)
-    .help("This will remove no effect split operators");
+    .help("This will remove unnecessary split operators");
 
   arser.add_argument("--remove_redundant_transpose")
     .nargs(0)
@@ -227,7 +227,7 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::ResolveCustomOpAdd);
     options->enable(Algorithms::ResolveCustomOpBatchMatMul);
     options->enable(Algorithms::ResolveCustomOpMatMul);
-    options->enable(Algorithms::RemoveNoEffectSplit);
+    options->enable(Algorithms::RemoveUnnecessarySplit);
     options->enable(Algorithms::RemoveRedundantTranspose);
     options->enable(Algorithms::SubstitutePackToReshape);
   }
@@ -247,8 +247,8 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::MakeBatchNormGammaPositive);
   if (arser.get<bool>("--fuse_preactivation_batchnorm"))
     options->enable(Algorithms::FusePreActivationBatchNorm);
-  if (arser.get<bool>("--remove_no_effect_split"))
-    options->enable(Algorithms::RemoveNoEffectSplit);
+  if (arser.get<bool>("--remove_unnecessary_split"))
+    options->enable(Algorithms::RemoveUnnecessarySplit);
   if (arser.get<bool>("--remove_redundant_transpose"))
     options->enable(Algorithms::RemoveRedundantTranspose);
   if (arser.get<bool>("--replace_cw_mul_add_with_depthwise_conv"))

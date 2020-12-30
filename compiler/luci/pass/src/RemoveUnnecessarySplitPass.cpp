@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-#include "luci/Pass/RemoveNoEffectSplitPass.h"
+#include "luci/Pass/RemoveUnnecessarySplitPass.h"
 
 #include <luci/IR/CircleNodes.h>
 
 namespace
 {
-bool remove_no_effect_split(luci::CircleNode *node)
+bool remove_unnecessary_split(luci::CircleNode *node)
 {
   auto target_node = dynamic_cast<luci::CircleSplitOut *>(node);
   if (target_node == nullptr)
@@ -47,13 +47,13 @@ bool remove_no_effect_split(luci::CircleNode *node)
 namespace luci
 {
 
-bool RemoveNoEffectSplitPass::run(loco::Graph *g)
+bool RemoveUnnecessarySplitPass::run(loco::Graph *g)
 {
   bool changed = false;
   for (auto node : loco::active_nodes(loco::output_nodes(g)))
   {
     auto circle_node = loco::must_cast<luci::CircleNode *>(node);
-    if (remove_no_effect_split(circle_node))
+    if (remove_unnecessary_split(circle_node))
     {
       changed = true;
       break;
