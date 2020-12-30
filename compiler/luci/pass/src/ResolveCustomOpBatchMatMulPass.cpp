@@ -42,14 +42,9 @@ bool resolve_custom_op(luci::CircleCustom *cop)
     batch_matmul->adj_x(map["adj_x"].AsBool());
     batch_matmul->adj_y(map["adj_y"].AsBool());
 
-    for (auto s : loco::succs(cop))
-    {
-      if (auto cop_out = dynamic_cast<luci::CircleCustomOut *>(s))
-      {
-        replace(cop_out).with(batch_matmul);
-        changed = true;
-      }
-    }
+    auto customOut = loco::succs(cop);
+    assert(customOut.size() == 1);
+    replace(*customOut.begin()).with(batch_matmul);
   }
 
   return changed;
