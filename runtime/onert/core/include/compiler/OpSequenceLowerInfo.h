@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_IR_OPERATION_LOWER_INFO_H__
-#define __ONERT_IR_OPERATION_LOWER_INFO_H__
+#ifndef __ONERT_COMPILER_OP_SEQUENCE_LOWER_INFO_H__
+#define __ONERT_COMPILER_OP_SEQUENCE_LOWER_INFO_H__
 
 #include <string>
 
@@ -49,4 +49,4 @@ private:
 } // namespace compiler
 } // namespace onert
 
-#endif // __ONERT_IR_OPERATION_LOWER_INFO_H__
+#endif // __ONERT_COMPILER_OP_SEQUENCE_LOWER_INFO_H__

@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_IR_LOWERED_GRAPH_H__
-#define __ONERT_IR_LOWERED_GRAPH_H__
+#ifndef __ONERT_COMPILER_LOWERED_GRAPH_H__
+#define __ONERT_COMPILER_LOWERED_GRAPH_H__
 
 #include "ir/Graph.h"
 #include "compiler/GraphLowerInfo.h"
@@ -83,4 +83,4 @@ private:
 } // namespace compiler
 } // namespace onert
 
-#endif // __ONERT_IR_LOWERED_GRAPH_H__
+#endif // __ONERT_COMPILER_LOWERED_GRAPH_H__

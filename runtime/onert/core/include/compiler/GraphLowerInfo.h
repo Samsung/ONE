@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_GRAPH_LOWER_INFO_H__
-#define __ONERT_GRAPH_LOWER_INFO_H__
+#ifndef __ONERT_COMPILER_GRAPH_LOWER_INFO_H__
+#define __ONERT_COMPILER_GRAPH_LOWER_INFO_H__
 
 #include <memory>
 #include <unordered_map>
@@ -39,4 +39,4 @@ struct GraphLowerInfo
 } // namespace compiler
 } // namespace onert
 
-#endif // __ONERT_IR_LOWER_INFO_MAP_H__
+#endif // __ONERT_COMPILER_GRAPH_LOWER_INFO_MAP_H__
