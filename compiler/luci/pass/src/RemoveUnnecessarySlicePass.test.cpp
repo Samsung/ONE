@@ -22,8 +22,8 @@
 namespace
 {
 
-void create_remove_no_effect_slice(loco::Graph *g,
-                                   const std::initializer_list<uint32_t> input_shape)
+void create_remove_unnecessary_slice(loco::Graph *g,
+                                     const std::initializer_list<uint32_t> input_shape, bool remove)
 {
   assert(g);
 
@@ -43,7 +43,7 @@ void create_remove_no_effect_slice(loco::Graph *g,
   begin->dim(0).set(input_shape.size());
   for (int i = 0; i < input_shape.size(); ++i)
   {
-    begin->at<loco::DataType::S32>(i) = 0;
+    begin->at<loco::DataType::S32>(i) = remove ? 0 : 1;
   }
 
   // Size Create.
@@ -76,7 +76,7 @@ void create_remove_no_effect_slice(loco::Graph *g,
 TEST(RemoveUnnecessarySlicePass, remove_no_effect_slice)
 {
   auto graph = loco::make_graph();
-  create_remove_no_effect_slice(graph.get(), {1, 1, 2, 3});
+  create_remove_unnecessary_slice(graph.get(), {2, 4, 2, 3}, true);
   luci::CircleSlice *slice_node = nullptr;
   for (auto node : loco::active_nodes(loco::output_nodes(graph.get())))
   {
@@ -100,4 +100,33 @@ TEST(RemoveUnnecessarySlicePass, remove_no_effect_slice)
     break;
   }
   ASSERT_EQ(nullptr, slice_node);
+}
+
+TEST(RemoveUnnecessarySlicePass, remove_no_effect_slice_NEG)
+{
+  auto graph = loco::make_graph();
+  create_remove_unnecessary_slice(graph.get(), {2, 4, 2, 3}, false);
+  luci::CircleSlice *slice_node = nullptr;
+  for (auto node : loco::active_nodes(loco::output_nodes(graph.get())))
+  {
+    auto slice = dynamic_cast<luci::CircleSlice *>(node);
+    if (not slice)
+      continue;
+    slice_node = slice;
+    break;
+  }
+  ASSERT_NE(nullptr, slice_node);
+  luci::RemoveUnnecessarySlicePass pass;
+  while (pass.run(graph.get()))
+    ;
+  slice_node = nullptr;
+  for (auto node : loco::active_nodes(loco::output_nodes(graph.get())))
+  {
+    auto slice = dynamic_cast<luci::CircleSlice *>(node);
+    if (not slice)
+      continue;
+    slice_node = slice;
+    break;
+  }
+  ASSERT_NE(nullptr, slice_node);
 }
