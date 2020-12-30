@@ -406,6 +406,16 @@ void OperationValidator::visit(const operation::Shape &node)
   OP_REQUIRES(isValidType(output_index, {DataType::UINT32, DataType::INT32, DataType::INT64}));
 }
 
+void OperationValidator::visit(const operation::Softmax &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(operation::Softmax::INPUT)};
+
+  OP_REQUIRES(isSameType(input_index, output_index));
+  OP_REQUIRES(isValidType(
+    output_index, {DataType::FLOAT32, DataType::QUANT_UINT8_ASYMM, DataType::QUANT_INT8_ASYMM}));
+}
+
 void OperationValidator::visit(const operation::SpaceToBatchND &node)
 {
   const auto block_size_index{node.getInputs().at(operation::SpaceToBatchND::Input::BLOCK_SIZE)};

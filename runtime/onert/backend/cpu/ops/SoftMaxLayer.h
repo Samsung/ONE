@@ -38,7 +38,7 @@ public:
 public:
   void softmaxFloat32();
 
-  void softmaxQuant8();
+  template <typename T> void softmaxQuant8();
 
   void configure(const IPortableTensor *input, const float beta, IPortableTensor *output);
 
