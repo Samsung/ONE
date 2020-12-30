@@ -70,12 +70,9 @@ bool has_data_format(loco::Node *node) { return node->annot<DataFormatAnnotation
 bool has_dynamic_shape(const loco::Node *node)
 {
   const auto circle_node = loco::must_cast<const luci::CircleNode *>(node);
-  const auto shape_signature = circle_node->shape_signature().as_vector();
-  for (auto ss : shape_signature)
-  {
-    if (ss == -1)
+  for (uint32_t i = 0; i < circle_node->rank(); ++i)
+    if (!circle_node->dim(i).known())
       return true;
-  }
   return false;
 }
 
