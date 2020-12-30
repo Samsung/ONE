@@ -55,7 +55,7 @@ std::ostream &operator<<(std::ostream &os, const luci::CircleNode *circle_node)
       os << ",";
 
     if (circle_node->dim(r).known())
-      os << cielce_node->dim(r).value();
+      os << circle_node->dim(r).value();
     else
       os << "?";
   }
