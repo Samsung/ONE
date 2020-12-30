@@ -15,14 +15,13 @@
  */
 
 #include "luci/IR/CircleDialect.h"
+#include "luci/IR/DeadNodeQueryService.h"
 #include "luci/IR/Nodes/CircleInput.h"
 #include "luci/IR/Nodes/CircleOutput.h"
 
 #include <loco/IR/Graph.h>
 #include <loco/IR/GraphInputIndex.h>
 #include <loco/IR/GraphOutputIndex.h>
-
-#include "DeadNodeQueryService.h"
 
 #include <cassert>
 #include <memory>
