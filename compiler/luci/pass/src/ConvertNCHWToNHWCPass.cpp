@@ -226,14 +226,14 @@ class ConvertNCHWToNHWC final : public luci::CircleNodeMutableVisitor<bool>
 
   bool visit(luci::CircleInput *node)
   {
-    const auto n = node->dim(0).value();
-    const auto c = node->dim(1).value();
-    const auto h = node->dim(2).value();
-    const auto w = node->dim(3).value();
+    const auto n = node->dim(0);
+    const auto c = node->dim(1);
+    const auto h = node->dim(2);
+    const auto w = node->dim(3);
 
-    node->dim(1).set(h);
-    node->dim(2).set(w);
-    node->dim(3).set(c);
+    node->dim(1) = h;
+    node->dim(2) = w;
+    node->dim(3) = c;
 
     node->shape_status(luci::ShapeStatus::VALID);
 
