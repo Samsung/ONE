@@ -391,6 +391,7 @@ uint32_t CircleGen::addOperatorSplit(const OperatorParams &params, int32_t num_s
   return addOperatorWithOptions(params, circle::BuiltinOperator_SPLIT,
                                 circle::BuiltinOptions_SplitOptions, options);
 }
+
 uint32_t CircleGen::addOperatorStridedSlice(const OperatorParams &params, int32_t begin_mask,
                                             int32_t end_mask, int32_t ellipsis_mask,
                                             int32_t new_axis_mask, int32_t shrink_axis_mask)
@@ -401,6 +402,15 @@ uint32_t CircleGen::addOperatorStridedSlice(const OperatorParams &params, int32_
   return addOperatorWithOptions(params, circle::BuiltinOperator_STRIDED_SLICE,
                                 circle::BuiltinOptions_StridedSliceOptions, options);
 }
+
+uint32_t CircleGen::addOperatorSub(const OperatorParams &params,
+                                   circle::ActivationFunctionType actfn)
+{
+  auto options = circle::CreateSubOptions(_fbb, actfn).Union();
+  return addOperatorWithOptions(params, circle::BuiltinOperator_SUB,
+                                circle::BuiltinOptions_SubOptions, options);
+}
+
 uint32_t CircleGen::addOperatorTile(const OperatorParams &params)
 {
   auto options = circle::CreateTileOptions(_fbb).Union();
