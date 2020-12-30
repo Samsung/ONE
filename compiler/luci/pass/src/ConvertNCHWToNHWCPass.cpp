@@ -66,6 +66,15 @@ DataFormat get_data_format(loco::Node *node)
 
 bool has_data_format(loco::Node *node) { return node->annot<DataFormatAnnotation>() != nullptr; }
 
+bool has_dynamic_shape(const loco::Node *node)
+{
+  const auto circle_node = loco::must_cast<const luci::CircleNode *>(node);
+  for (uint32_t i = 0; i < circle_node->rank(); ++i)
+    if (!circle_node->dim(i).known())
+      return true;
+  return false;
+}
+
 luci::CircleTranspose *create_4d_transpose(luci::CircleNode *node,
                                            const std::vector<int32_t> indices)
 {
@@ -211,6 +220,58 @@ class ConvertNCHWToNHWC final : public luci::CircleNodeMutableVisitor<bool>
     throw std::runtime_error(node->name() + " is an unsupported operator.");
   }
 
+  bool visit(luci::CircleInput *node)
+  {
+    const auto n = node->dim(0);
+    const auto c = node->dim(1);
+    const auto h = node->dim(2);
+    const auto w = node->dim(3);
+
+    node->dim(1) = h;
+    node->dim(2) = w;
+    node->dim(3) = c;
+
+    node->shape_status(luci::ShapeStatus::VALID);
+
+    loco::shape_erase(node);
+
+    // Insert post-tranpose
+    auto post_trans = create_post_transpose(node);
+    loco::replace(node).with(post_trans);
+
+    post_trans->a(node);
+
+    // Update graph input
+    auto graph_inputs = node->graph()->inputs();
+    auto graph_input = graph_inputs->at(node->index());
+    graph_input->shape({n, h, w, c});
+
+    return true;
+  }
+
+  bool visit(luci::CircleOutput *node)
+  {
+    // Insert pre-transpose
+    auto pre_trans = create_pre_transpose(node);
+    pre_trans->a(node->from());
+
+    node->from(pre_trans);
+
+    loco::shape_erase(node);
+
+    // Update graph output
+    const auto n = node->dim(0).value();
+    const auto c = node->dim(1).value();
+    const auto h = node->dim(2).value();
+    const auto w = node->dim(3).value();
+
+    auto graph_outputs = node->graph()->outputs();
+    auto graph_output = graph_outputs->at(node->index());
+    graph_output->shape({n, h, w, c});
+
+    return true;
+  }
+
   bool visit(luci::CircleAdd *node)
   {
     luci::CircleNode *pred_node = nullptr;
@@ -274,6 +335,8 @@ bool ConvertNCHWToNHWCPass::run(loco::Graph *g)
     switch (circle_node->opcode())
     {
       // List of supported Ops
+      case luci::CircleOpcode::CIRCLEINPUT:
+      case luci::CircleOpcode::CIRCLEOUTPUT:
       case luci::CircleOpcode::ADD:
         if (!has_data_format(node))
         {
@@ -296,6 +359,12 @@ bool ConvertNCHWToNHWCPass::run(loco::Graph *g)
     else if (get_data_format(node) == DataFormat::NHWC)
     {
       // Already converted to NHWC
+      continue;
+    }
+    else if (has_dynamic_shape(node))
+    {
+      // This pass only works for static-shaped node
+      INFO(l) << "Skip the node with a dynamic shape." << std::endl;
       continue;
     }
     else
