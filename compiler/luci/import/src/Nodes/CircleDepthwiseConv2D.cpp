@@ -20,8 +20,6 @@
 
 #include <oops/UserExn.h>
 
-#include <cassert>
-
 namespace luci
 {
 
@@ -39,12 +37,18 @@ bool CircleDepthwiseConv2DGraphBuilder::validate(const ValidateArgs &args) const
   // input shape
   const auto &input = tensors.at(args.op.inputs.at(0));
   const auto &input_shape = input->shape;
-  assert(input_shape.size() == 4);
+
+  // input shape must be rank 4
+  if (input_shape.size() != 4)
+    return false;
 
   // filter shape
   const auto &filter = tensors.at(args.op.inputs.at(1));
   const auto &filter_shape = filter->shape;
-  assert(filter_shape.size() == 4);
+
+  // filter shape must be rank 4
+  if (filter_shape.size() != 4)
+    return false;
 
   // multiplier
   const auto *options = args.op.builtin_options.AsDepthwiseConv2DOptions();
