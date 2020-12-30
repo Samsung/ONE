@@ -70,7 +70,7 @@ void SoftMaxLayer::softmaxFloat32()
   }
 }
 
-void SoftMaxLayer::softmaxQuant8()
+template <typename T> void SoftMaxLayer::softmaxQuant8()
 {
   nnfw::cker::SoftmaxParams op_params;
   op_params.scale = _output->data_scale();
@@ -80,13 +80,13 @@ void SoftMaxLayer::softmaxQuant8()
   op_params.table = _table;
 
 #ifdef TFLITE_SOFTMAX_USE_UINT16_LUT
-  nnfw::cker::SoftmaxInt8LUT<uint8_t, uint8_t>(
-    op_params, getTensorShape(_input), reinterpret_cast<const uint8_t *>(_input->buffer()),
-    getTensorShape(_output), reinterpret_cast<uint8_t *>(_output->buffer()));
+  nnfw::cker::SoftmaxInt8LUT<T, T>(
+    op_params, getTensorShape(_input), reinterpret_cast<const T *>(_input->buffer()),
+    getTensorShape(_output), reinterpret_cast<T *>(_output->buffer()));
 #else
-  nnfw::cker::Softmax<uint8_t, uint8_t>(
-    op_params, getTensorShape(_input), reinterpret_cast<const uint8_t *>(_input->buffer()),
-    getTensorShape(_output), reinterpret_cast<uint8_t *>(_output->buffer()));
+  nnfw::cker::Softmax<T, T>(op_params, getTensorShape(_input),
+                            reinterpret_cast<const T *>(_input->buffer()), getTensorShape(_output),
+                            reinterpret_cast<T *>(_output->buffer()));
 #endif
 }
 
@@ -97,7 +97,8 @@ void SoftMaxLayer::configure(const IPortableTensor *input, const float beta,
   _output = output;
   _beta = beta;
 
-  if (_input->data_type() == OperandType::QUANT_UINT8_ASYMM)
+  if (_input->data_type() == OperandType::QUANT_UINT8_ASYMM ||
+      _input->data_type() == OperandType::QUANT_INT8_ASYMM)
   {
 #ifdef TFLITE_SOFTMAX_USE_UINT16_LUT
     // Only apply when both input & output are uint8/int8 & build with clang
@@ -112,17 +113,19 @@ void SoftMaxLayer::configure(const IPortableTensor *input, const float beta,
 
 void SoftMaxLayer::run()
 {
-  if (_input->data_type() == OperandType::FLOAT32)
+  switch (_input->data_type())
   {
-    softmaxFloat32();
-  }
-  else if (_input->data_type() == OperandType::QUANT_UINT8_ASYMM)
-  {
-    softmaxQuant8();
-  }
-  else
-  {
-    throw std::runtime_error{"SoftMax: unsupported data type"};
+    case OperandType::FLOAT32:
+      softmaxFloat32();
+      break;
+    case OperandType::QUANT_UINT8_ASYMM:
+      softmaxQuant8<uint8_t>();
+      break;
+    case OperandType::QUANT_INT8_ASYMM:
+      softmaxQuant8<int8_t>();
+      break;
+    default:
+      throw std::runtime_error{"SoftMax: unsupported data type"};
   }
 }
 

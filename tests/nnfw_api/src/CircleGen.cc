@@ -370,6 +370,13 @@ uint32_t CircleGen::addOperatorSelectV2(const OperatorParams &params)
                                 circle::BuiltinOptions_SelectV2Options, options);
 }
 
+uint32_t CircleGen::addOperatorSoftmax(const OperatorParams &params, float beta)
+{
+  auto options = circle::CreateSoftmaxOptions(_fbb, beta).Union();
+  return addOperatorWithOptions(params, circle::BuiltinOperator_SOFTMAX,
+                                circle::BuiltinOptions_SoftmaxOptions, options);
+}
+
 uint32_t CircleGen::addOperatorSplit(const OperatorParams &params, int32_t num_split)
 {
   auto options = circle::CreateSplitOptions(_fbb, num_split).Union();

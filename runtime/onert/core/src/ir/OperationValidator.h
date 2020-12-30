@@ -67,6 +67,7 @@ public:
   void visit(const operation::Reverse &node) override;
   void visit(const operation::Select &node) override;
   void visit(const operation::Shape &node) override;
+  void visit(const operation::Softmax &node) override;
   void visit(const operation::SpaceToBatchND &node) override;
   void visit(const operation::SpaceToDepth &node) override;
   void visit(const operation::Split &node) override;
