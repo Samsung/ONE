@@ -45,7 +45,7 @@ std::ostream &operator<<(std::ostream &os, const loco::TensorShape &tensor_shape
     if (tensor_shape.dim(r).known())
       os << tensor_shape.dim(r).value();
     else
-      os << "?"
+      os << "?";
   }
   os << "]";
   return os;
