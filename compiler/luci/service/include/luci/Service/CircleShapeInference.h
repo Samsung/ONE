@@ -24,6 +24,7 @@
 #include <luci/IR/CircleNodes.h>
 #include <luci/IR/CircleNodeVisitor.h>
 #include <luci/Service/CircleShapeInferenceHelper.h>
+#include <luci/Service/CircleShapeInferenceRule.h>
 
 namespace luci
 {
@@ -52,7 +53,12 @@ class Algorithm final : public luci::CircleNodeVisitor<loco::TensorShape>
 {
 public:
   // TODO Remove this when all of visit function is implemented
-  loco::TensorShape visit(const luci::CircleNode *node) final { return sinf::circle_shape(node); }
+  loco::TensorShape visit(const luci::CircleNode *node) final
+  {
+    loco::NodeShape shape;
+    luci::CircleShapeInferenceRule().infer(node, shape);
+    return shape.as<loco::TensorShape>();
+  }
 
   // loco::TensorShape visit(const luci::CircleAbs *node) final;
   // loco::TensorShape visit(const luci::CircleAdd *node) final;
