@@ -126,9 +126,6 @@ void setAddOrSubQuant8Params(const IPortableTensor *lhs, const IPortableTensor *
   op_params.input1_offset = -lhs->data_zero_point();
   op_params.input2_offset = -rhs->data_zero_point();
   op_params.output_offset = output->data_zero_point();
-  assert((op_params.input1_offset <= 0) && (op_params.input1_offset >= -255));
-  assert((op_params.input2_offset <= 0) && (op_params.input2_offset >= -255));
-  assert((op_params.output_offset >= 0) && (op_params.output_offset <= 255));
 
   // Compute normalized scale for _lhs and _rhs values,
   // and represent in 32-bit fixed point
@@ -188,6 +185,13 @@ void BinaryArithmeticLayer::configure(const IPortableTensor *lhs, const IPortabl
         _kernel =
           Eval<nnfw::cker::BinaryArithmeticOpType::ADD, uint8_t>(_lhs, _rhs, _output, op_params);
       }
+      else if (_lhs->data_type() == OperandType::QUANT_INT8_ASYMM)
+      {
+        setAddOrSubQuant8Params(_lhs, _rhs, _output, activation, &op_params);
+        _kernel =
+          Eval<nnfw::cker::BinaryArithmeticOpType::ADD, int8_t>(_lhs, _rhs, _output, op_params);
+      }
+
       else
       {
         _kernel = generateKernelGeneric<nnfw::cker::BinaryArithmeticOpType::ADD>(
@@ -209,9 +213,6 @@ void BinaryArithmeticLayer::configure(const IPortableTensor *lhs, const IPortabl
       }
       break;
     case ArithmeticType::kMul:
-      if (_lhs->data_type() != _rhs->data_type() || _lhs->data_type() != _output->data_type())
-        throw std::runtime_error{"Mul does not have same data type for inputs and output"};
-
       if (_lhs->data_type() == OperandType::QUANT_UINT8_ASYMM)
       {
         nnfw::cker::BinaryArithmeticOpParam op_params;
