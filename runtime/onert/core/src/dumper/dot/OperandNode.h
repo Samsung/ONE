@@ -64,7 +64,6 @@ public:
    *
    * @param[in] index Operand index
    * @param[in] type Operand type
-   * @param[in] lower_info Operand LowerInfo
    */
   Operand(const ir::OperandIndex &index, Type type);
 

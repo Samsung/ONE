@@ -24,10 +24,8 @@
 #include <sstream>
 
 #include "util/logging.h"
+#include "util/Set.h"
 #include "verifier/Verifier.h"
-#include "ir/operation/LowerInfo.h"
-#include "ir/operand/LowerInfo.h"
-#include "ir/operand/PermuteFactor.h"
 #include "ir/OperandIndexMap.h"
 #include "ir/OperationIndexMap.h"
 #include "dumper/text/GraphDumper.h"

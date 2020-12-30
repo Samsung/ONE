@@ -19,8 +19,6 @@
 #include <typeinfo>
 
 #include "ir/Graph.h"
-#include "ir/operation/LowerInfo.h"
-
 #include "util/logging.h"
 #include "util/Utils.h"
 

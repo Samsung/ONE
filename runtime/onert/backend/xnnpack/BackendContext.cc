@@ -33,7 +33,7 @@ namespace xnnpack
 
 ITensorRegistry *BackendContext::genTensors(const std::vector<onert::ir::OpSequenceIndex> &order,
                                             const ir::OpSequences &op_seqs,
-                                            const ir::LowerInfoMap &lower_info)
+                                            const compiler::GraphLowerInfo &lower_info)
 {
   return cpu_common::genTensors(*this, order, op_seqs, lower_info);
 }

@@ -33,7 +33,7 @@ void ConstantInsertionPass::callback(const ir::OperationIndex &node_index, ir::O
   const auto op_seq_lower_info = _lowered_graph.getLowerInfo(op_sequence_index);
   const auto backend = op_seq_lower_info->backend();
   const auto layout = op_seq_lower_info->layout();
-  const auto factor = ir::operand::PermuteFactor{backend, layout};
+  const auto factor = PermuteFactor{backend, layout};
 
   for (const auto input : node.getInputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED)
   {

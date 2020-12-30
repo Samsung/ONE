@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_IR_OPERAND_LOWER_INFO_H__
-#define __ONERT_IR_OPERAND_LOWER_INFO_H__
+#ifndef __ONERT_COMPILER_OPERAND_LOWER_INFO_H__
+#define __ONERT_COMPILER_OPERAND_LOWER_INFO_H__
 
 #include <functional>
 #include <stdint.h>
 
-#include "ir/operand/PermuteFactor.h"
+#include "compiler/PermuteFactor.h"
 #include "util/Set.h"
 
 namespace onert
@@ -33,16 +33,15 @@ class Backend;
 
 namespace onert
 {
-namespace ir
+namespace compiler
 {
-namespace operand
-{
+
 using PermuteFactorSet = util::Set<PermuteFactor>;
 
-class LowerInfo
+class OperandLowerInfo
 {
 public:
-  LowerInfo()
+  OperandLowerInfo()
   {
     // DO NOTHING
   }
@@ -62,8 +61,7 @@ private:
   PermuteFactorSet _use_factors;
 };
 
-} // namespace operand
-} // namespace ir
+} // namespace compiler
 } // namespace onert
 
-#endif // __ONERT_IR_OPERAND_LOWER_INFO_H__
+#endif // __ONERT_COMPILER_OPERAND_LOWER_INFO_H__

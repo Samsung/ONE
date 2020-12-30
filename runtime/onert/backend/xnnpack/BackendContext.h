@@ -50,7 +50,7 @@ public:
 
   ITensorRegistry *genTensors(const std::vector<onert::ir::OpSequenceIndex> &order,
                               const ir::OpSequences &op_seqs,
-                              const ir::LowerInfoMap &lower_info) override;
+                              const compiler::GraphLowerInfo &lower_info) override;
 
   FunctionMap genKernels(const std::vector<ir::OpSequenceIndex> &order,
                          const ir::OpSequences &op_seqs) override;
@@ -59,7 +59,7 @@ public:
 
 private:
   void planTensors(const std::vector<onert::ir::OpSequenceIndex> &order,
-                   const ir::OpSequences &op_seqs, const ir::LowerInfoMap &lower_info);
+                   const ir::OpSequences &op_seqs, const compiler::GraphLowerInfo &lower_info);
 
 public:
   // TODO Make it private

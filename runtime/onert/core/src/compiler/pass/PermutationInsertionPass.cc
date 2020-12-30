@@ -9,6 +9,7 @@
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
+
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -22,7 +23,7 @@
 
 #include "backend/builtin/Config.h"
 #include "ir/Operand.h"
-#include "ir/operation/LowerInfo.h"
+#include "compiler/OpSequenceLowerInfo.h"
 #include "ir/Graph.h"
 #include "backend/IConfig.h"
 #include "util/logging.h"
@@ -51,7 +52,7 @@ void PermutationInsertionPass::callback(const ir::OperandIndex &index, ir::Opera
   std::list<ir::OperationIndex> permute_indexes;
 
   // Build a map for all necessary type of operands
-  std::unordered_map<ir::operand::PermuteFactor, ir::OperandIndex> factor_to_index;
+  std::unordered_map<PermuteFactor, ir::OperandIndex> factor_to_index;
   {
     assert(operand_li->def_factors().size() == 1);
     for (auto factor : operand_li->def_factors())
@@ -122,7 +123,7 @@ void PermutationInsertionPass::callback(const ir::OperandIndex &index, ir::Opera
 }
 
 ir::OperationIndex PermutationInsertionPass::insertPermute(const ir::OperandIndex &operand_index,
-                                                           const ir::operand::PermuteFactor &factor)
+                                                           const PermuteFactor &factor)
 {
   assert(!_graph.isBuildingPhase());
 
@@ -152,7 +153,7 @@ ir::OperationIndex PermutationInsertionPass::insertPermute(const ir::OperandInde
   {
     permute_node_backend = input_backend;
   }
-  const ir::operand::PermuteFactor permute_node_factor{permute_node_backend, permute_node_layout};
+  const PermuteFactor permute_node_factor{permute_node_backend, permute_node_layout};
 
   // Update LowerInfo of input operand
   auto operand_lower_info = _lowered_graph.getLowerInfo(operand_index);
@@ -160,7 +161,7 @@ ir::OperationIndex PermutationInsertionPass::insertPermute(const ir::OperandInde
   operand_lower_info->addUsePermuteFactor(permute_node_factor);
 
   // Update LowerInfo of output operand
-  auto out_operand_li = std::make_unique<ir::operand::LowerInfo>();
+  auto out_operand_li = std::make_unique<compiler::OperandLowerInfo>();
 
   // The input and output factors of all nodes will be the same except Permute. So Tensor's
   // allocators allocates memory using only the information of def permutation factor now.
@@ -204,7 +205,7 @@ ir::OperationIndex PermutationInsertionPass::insertPermute(const ir::OperandInde
     auto &op_seq = _lowered_graph.op_seqs().at(op_seq_index);
     op_seq.setInputs(node.getInputs());
     op_seq.setOutputs(node.getOutputs());
-    _lowered_graph.setLowerInfo(op_seq_index, std::make_unique<ir::operation::LowerInfo>(
+    _lowered_graph.setLowerInfo(op_seq_index, std::make_unique<compiler::OpSequenceLowerInfo>(
                                                 permute_node_backend, permute_node_layout));
   }
 

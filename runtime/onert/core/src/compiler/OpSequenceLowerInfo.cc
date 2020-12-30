@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2018 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,29 +14,18 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_IR_LOWER_INFO_MAP_H__
-#define __ONERT_IR_LOWER_INFO_MAP_H__
-
-#include <memory>
-#include <unordered_map>
-
-#include "ir/operand/LowerInfo.h"
-#include "ir/operation/LowerInfo.h"
-#include "ir/OperandIndexMap.h"
-#include "ir/Index.h"
+#include "compiler/OpSequenceLowerInfo.h"
 
 namespace onert
 {
-namespace ir
+namespace compiler
 {
 
-struct LowerInfoMap
+OpSequenceLowerInfo::OpSequenceLowerInfo(const backend::Backend *backend, ir::Layout layout)
+  : _permute_factor{backend, layout}
 {
-  std::unordered_map<OpSequenceIndex, std::unique_ptr<operation::LowerInfo>> op_seq;
-  OperandIndexMap<std::unique_ptr<operand::LowerInfo>> operand;
-};
+  // DO NOTHING
+}
 
-} // namespace ir
+} // namespace compiler
 } // namespace onert
-
-#endif // __ONERT_IR_LOWER_INFO_MAP_H__

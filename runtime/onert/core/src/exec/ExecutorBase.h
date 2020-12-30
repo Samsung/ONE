@@ -25,7 +25,7 @@
 #include "exec/IODescription.h"
 #include "ir/Graph.h"
 #include "ir/Index.h"
-#include "ir/LowerInfoMap.h"
+#include "compiler/GraphLowerInfo.h"
 #include "ir/OperationIndexMap.h"
 #include "compiler/LoweredGraph.h"
 #include "compiler/TensorRegistries.h"

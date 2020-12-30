@@ -19,7 +19,8 @@
 
 #include <string>
 
-#include <ir/operand/PermuteFactor.h>
+#include <compiler/PermuteFactor.h>
+#include <ir/Layout.h>
 
 namespace onert
 {
@@ -31,24 +32,21 @@ class Backend;
 
 namespace onert
 {
-namespace ir
-{
-namespace operation
+namespace compiler
 {
 
-class LowerInfo
+class OpSequenceLowerInfo
 {
 public:
-  LowerInfo(const backend::Backend *backend, Layout layout);
+  OpSequenceLowerInfo(const backend::Backend *backend, ir::Layout layout);
   const backend::Backend *backend() const { return _permute_factor.backend(); }
-  Layout layout() const { return _permute_factor.layout(); }
+  ir::Layout layout() const { return _permute_factor.layout(); }
 
 private:
-  operand::PermuteFactor _permute_factor;
+  PermuteFactor _permute_factor;
 };
 
-} // namespace operation
-} // namespace ir
+} // namespace compiler
 } // namespace onert
 
 #endif // __ONERT_IR_OPERATION_LOWER_INFO_H__

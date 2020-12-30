@@ -17,7 +17,7 @@
 #ifndef __ONERT_COMPILER_PASS_CONSTANT_INSERTION_PASS_H__
 #define __ONERT_COMPILER_PASS_CONSTANT_INSERTION_PASS_H__
 
-#include <ir/operand/PermuteFactor.h>
+#include <compiler/PermuteFactor.h>
 #include <ir/Index.h>
 #include "LoweredOperationPass.h"
 #include <unordered_map>
@@ -45,7 +45,7 @@ private:
   struct ReplaceKey
   {
     ir::OperandIndex index;
-    ir::operand::PermuteFactor factor;
+    PermuteFactor factor;
 
     bool operator==(const ReplaceKey &other) const
     {
@@ -61,8 +61,7 @@ private:
     std::size_t operator()(const ReplaceKey &key) const noexcept
     {
       using std::hash;
-      return hash<ir::OperandIndex>()(key.index) ^
-             (hash<ir::operand::PermuteFactor>()(key.factor) << 1);
+      return hash<ir::OperandIndex>()(key.index) ^ (hash<PermuteFactor>()(key.factor) << 1);
     }
   };
 

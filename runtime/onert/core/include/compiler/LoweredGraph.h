@@ -18,7 +18,7 @@
 #define __ONERT_IR_LOWERED_GRAPH_H__
 
 #include "ir/Graph.h"
-#include "ir/LowerInfoMap.h"
+#include "compiler/GraphLowerInfo.h"
 #include "ir/OpSequences.h"
 #include "compiler/BackendResolver.h"
 #include "compiler/Compiler.h"
@@ -40,15 +40,15 @@ public:
 
   ir::Graph &graph() { return _graph; }
   const ir::Graph &graph() const { return _graph; }
-  const ir::LowerInfoMap *getLowerInfo() const { return &_lower_info_map; }
-  const ir::operation::LowerInfo *getLowerInfo(const ir::OpSequenceIndex &op_seq_index) const;
+  const compiler::GraphLowerInfo *getLowerInfo() const { return &_lower_info_map; }
+  const compiler::OpSequenceLowerInfo *getLowerInfo(const ir::OpSequenceIndex &op_seq_index) const;
   void setLowerInfo(const ir::OpSequenceIndex &op_seq_index,
-                    std::unique_ptr<ir::operation::LowerInfo> &&lower_info);
+                    std::unique_ptr<compiler::OpSequenceLowerInfo> &&lower_info);
   void removeLowerInfo(const ir::OpSequenceIndex &op_seq_index);
-  const ir::operand::LowerInfo *getLowerInfo(const ir::OperandIndex &index) const;
-  ir::operand::LowerInfo *getLowerInfo(const ir::OperandIndex &index);
+  const compiler::OperandLowerInfo *getLowerInfo(const ir::OperandIndex &index) const;
+  compiler::OperandLowerInfo *getLowerInfo(const ir::OperandIndex &index);
   void setLowerInfo(const ir::OperandIndex &index,
-                    std::unique_ptr<ir::operand::LowerInfo> &&lower_info);
+                    std::unique_ptr<compiler::OperandLowerInfo> &&lower_info);
   void removeLowerInfo(const ir::OperandIndex &index);
   ir::OpSequences &op_seqs() { return _op_seqs; }
   const ir::OpSequences &op_seqs() const { return _op_seqs; }
@@ -59,13 +59,12 @@ public:
   std::shared_ptr<ir::OperationIndexMap<int64_t>> indexed_ranks() { return _indexed_ranks; }
 
 private:
-  void
-  makeOpSequences(ir::OperandIndexMap<std::unique_ptr<ir::operand::LowerInfo>> &operands_lower_info,
-                  const compiler::CompilerOptions &options,
-                  const compiler::BackendResolver &backend_resolver);
+  void makeOpSequences(
+    ir::OperandIndexMap<std::unique_ptr<compiler::OperandLowerInfo>> &operands_lower_info,
+    const compiler::CompilerOptions &options, const compiler::BackendResolver &backend_resolver);
 
   void manipulateLowerInfo(
-    ir::OperandIndexMap<std::unique_ptr<ir::operand::LowerInfo>> &operands_lower_info);
+    ir::OperandIndexMap<std::unique_ptr<compiler::OperandLowerInfo>> &operands_lower_info);
   void dumpLowerInfo();
   bool mergeable(const ir::OpSequenceIndex &op_seq_index, const ir::OperationIndex &node_index,
                  ir::Layout layout, const compiler::BackendResolver &backend_resolver);
@@ -76,7 +75,7 @@ private:
 private:
   ir::Graph _graph;
   std::shared_ptr<ir::OperationIndexMap<int64_t>> _indexed_ranks;
-  ir::LowerInfoMap _lower_info_map;
+  compiler::GraphLowerInfo _lower_info_map;
   // Pass(for Perm) can accept only graph so that Graph has OpSequences as a member
   ir::OpSequences _op_seqs;
 };
