@@ -116,6 +116,12 @@ int entry(int argc, char **argv)
     .default_value(false)
     .help("This will fuse or remove subsequent Transpose operators");
 
+  arser.add_argument("--remove_unnecessary_slice")
+    .nargs(0)
+    .required(false)
+    .default_value(false)
+    .help("This will remove unnecessary slice operators");
+
   arser.add_argument("--replace_cw_mul_add_with_depthwise_conv")
     .nargs(0)
     .required(false)
@@ -242,6 +248,8 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::FusePreActivationBatchNorm);
   if (arser.get<bool>("--remove_redundant_transpose"))
     options->enable(Algorithms::RemoveRedundantTranspose);
+  if (arser.get<bool>("--remove_unnecessary_slice"))
+    options->enable(Algorithms::RemoveUnnecessarySlice);
   if (arser.get<bool>("--replace_cw_mul_add_with_depthwise_conv"))
     options->enable(Algorithms::ReplaceMulAddWithDepthwiseConv);
   if (arser.get<bool>("--resolve_customop_add"))
