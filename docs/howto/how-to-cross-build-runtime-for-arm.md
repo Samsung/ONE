@@ -105,7 +105,13 @@ Then, copy `libstdc++.so.6.0.24` into `/usr/lib/arm-linux-gnueabihf`, and update
 
 ## Build and install ARM Compute Library
 
-Mostly you only need once of ACL build.
+Mostly you only need once of ACL (ARM Compute Library) build.
+
+To build ACL, you need to install scons
+
+```
+$ sudo apt-get install scons
+```
 
 ACL will be automatically installed in `externals/acl` when you build runtime without any changes.
 
