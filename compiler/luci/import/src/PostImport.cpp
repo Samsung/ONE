@@ -172,9 +172,19 @@ public:
 
       auto then_graph_output = then_graph_outputs->at(then_out->index());
       auto else_graph_output = else_graph_outputs->at(else_out->index());
-      if (!(*then_graph_output->shape() == *else_graph_output->shape()))
+      if (then_graph_output->shape()->rank() != else_graph_output->shape()->rank())
       {
-        INTERNAL_EXN_V("CircleIf THEN and ELSE Graph Output shape mismatch ", idx);
+        INTERNAL_EXN_V("CircleIf THEN and ELSE Graph Output rank mismatch ", idx);
+      }
+      for (uint32_t i = 0; i < then_graph_output->shape()->rank(); ++i)
+      {
+        if (then_graph_output->shape()->dim(i).known() &&
+            else_graph_output->shape()->dim(i).known() &&
+            then_graph_output->shape()->dim(i).value() !=
+              else_graph_output->shape()->dim(i).value())
+        {
+          INTERNAL_EXN_V("CircleIf THEN and ELSE Graph Output dimension mismatch ", idx);
+        }
       }
       if (then_graph_output->dtype() != else_graph_output->dtype())
       {
@@ -231,18 +241,20 @@ public:
 
       auto cond_graph_input = cond_graph_inputs->at(cond_in->index());
       auto body_graph_input = body_graph_inputs->at(body_in->index());
-      if ((cond_in->rank() != body_in->rank()))
+      if (cond_graph_input->shape()->rank() != body_graph_input->shape()->rank())
       {
-        INTERNAL_EXN_V("CircleWhile COND input and BODY input shape mismatch ", idx);
+        INTERNAL_EXN_V("CircleWhile COND input and BODY input rank mismatch ", idx);
       }
-      if (cond_in->rank() > 0 && body_in->rank() > 0)
+      for (uint32_t i = 0; i < cond_graph_input->shape()->rank(); ++i)
       {
-        if (!(*cond_graph_input->shape() == *body_graph_input->shape()))
+        if (cond_graph_input->shape()->dim(i).known() &&
+            body_graph_input->shape()->dim(i).known() &&
+            cond_graph_input->shape()->dim(i).value() != body_graph_input->shape()->dim(i).value())
         {
-          INTERNAL_EXN_V("CircleWhile COND input and BODY input shape mismatch ", idx);
+          INTERNAL_EXN_V("CircleWhile COND input and BODY input dimension mismatch ", idx);
         }
       }
-      if (cond_in->dtype() != body_in->dtype())
+      if (cond_graph_input->dtype() != body_graph_input->dtype())
       {
         INTERNAL_EXN_V("CircleWhile COND input and BODY input type mismatch ", idx);
       }
