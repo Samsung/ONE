@@ -55,6 +55,7 @@ public:
       SubstitutePackToReshape,
       ConvertNCHWToNHWC,
       RemoveUnnecessarySlice,
+      RemoveUnnecessarySplit,
     };
 
     enum AlgorithmParameters
