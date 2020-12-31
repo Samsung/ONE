@@ -44,6 +44,11 @@ public:
   float scale() const { return _scale; }
   int32_t offset() const { return _offset; }
   const ir::Sparsity *sparsity() const { return _sparsity.get(); }
+  void quantization(float scale, int32_t zero_point)
+  {
+    _scale = scale;
+    _offset = zero_point;
+  }
   void sparsity(std::shared_ptr<ir::Sparsity> sparsity) { _sparsity = sparsity; }
 
 public:

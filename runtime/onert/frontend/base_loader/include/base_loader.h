@@ -98,7 +98,8 @@ protected:
 
   // Create operands form tflite::Tensor
   ir::OperandIndex loadOperand(const Tensor *tensor, ir::Graph &subg);
-  void loadSparsity(const Tensor *tensor, const ir::Shape &shape, ir::TypeInfo &typeInfo);
+  void loadQuantization(const Tensor *tensor, ir::TypeInfo &typeInfo);
+  void loadSparsity(const Tensor *tensor, ir::TypeInfo &typeInfo);
   void loadOperationIO(const Operator *op, ir::OperandIndexSequence &inputs,
                        ir::OperandIndexSequence &outputs);
   // Create operations from Operator
@@ -324,42 +325,10 @@ ir::OperandIndex BaseLoader<LoaderDomain>::loadOperand(const Tensor *tensor, ir:
   //       If app wants to change the input shape, call nnfw_apply_input_tensorinfo() can
   //       be used.
 
-  // Type
-  ir::DataType data_type = tensorTypeToDataType(tensor->type());
-  // Quantization
-  auto q_params = tensor->quantization();
-  float scale = 0.0;
-  long zero_point = 0;
-  if (q_params != nullptr)
-  {
-    if (q_params->scale())
-    {
-      if (q_params->scale()->size() != 1)
-      {
-        throw std::runtime_error("Only 1 scale for a tensor is supported.");
-      }
-      scale = q_params->scale()->Get(0);
-    }
-
-    if (q_params->zero_point())
-    {
-      if (q_params->zero_point()->size() != 1)
-      {
-        throw std::runtime_error("Only 1 zero_point value for a tensor is supported.");
-      }
-      zero_point = q_params->zero_point()->Get(0);
-      // zero_point is long while TypeInfo.zero_point is defined as int32_t.
-      assert(zero_point >= std::numeric_limits<int32_t>::min());
-      assert(zero_point <= std::numeric_limits<int32_t>::max());
-    }
-    auto details = q_params->details_as_CustomQuantization();
-    if (details != nullptr)
-      throw std::runtime_error("Custom Quantization is not supported");
-  }
-  // Create TypeInfo
-  ir::TypeInfo type_info(data_type, scale, zero_point);
-  // Sparsity
-  loadSparsity(tensor, shape, type_info);
+  // TypeInfo
+  ir::TypeInfo type_info(tensorTypeToDataType(tensor->type()));
+  loadQuantization(tensor, type_info);
+  loadSparsity(tensor, type_info);
 
   // Create operand
   const auto operand_index = subg.addOperand(shape, type_info);
@@ -417,8 +386,42 @@ ir::OperandIndex BaseLoader<LoaderDomain>::loadOperand(const Tensor *tensor, ir:
 }
 
 template <typename LoaderDomain>
-void BaseLoader<LoaderDomain>::loadSparsity(const Tensor *tensor, const ir::Shape &shape,
-                                            ir::TypeInfo &typeInfo)
+void BaseLoader<LoaderDomain>::loadQuantization(const Tensor *tensor, ir::TypeInfo &typeInfo)
+{
+  auto q_params = tensor->quantization();
+  float scale = 0.0;
+  long zero_point = 0;
+  if (q_params != nullptr)
+  {
+    if (q_params->scale())
+    {
+      if (q_params->scale()->size() != 1)
+      {
+        throw std::runtime_error("Only 1 scale for a tensor is supported.");
+      }
+      scale = q_params->scale()->Get(0);
+    }
+
+    if (q_params->zero_point())
+    {
+      if (q_params->zero_point()->size() != 1)
+      {
+        throw std::runtime_error("Only 1 zero_point value for a tensor is supported.");
+      }
+      zero_point = q_params->zero_point()->Get(0);
+      // zero_point is long while TypeInfo.zero_point is defined as int32_t.
+      assert(zero_point >= std::numeric_limits<int32_t>::min());
+      assert(zero_point <= std::numeric_limits<int32_t>::max());
+    }
+    auto details = q_params->details_as_CustomQuantization();
+    if (details != nullptr)
+      throw std::runtime_error("Custom Quantization is not supported");
+  }
+  typeInfo.quantization(scale, zero_point);
+}
+
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadSparsity(const Tensor *tensor, ir::TypeInfo &typeInfo)
 {
   auto src_sparsity = tensor->sparsity();
   if (src_sparsity != nullptr)
@@ -447,8 +450,8 @@ void BaseLoader<LoaderDomain>::loadSparsity(const Tensor *tensor, const ir::Shap
       }
     }
     // load metadata
-    const int dim_metadata_size = src_sparsity->dim_metadata()->size();
-    auto dense_rank = shape.rank();
+    const auto dim_metadata_size = src_sparsity->dim_metadata()->size();
+    const auto dense_rank = tensor->shape() ? tensor->shape()->size() : 0;
     if (dense_rank + block_rank != dim_metadata_size)
       throw std::runtime_error("sparsity dim_metadata length is wrong.");
     bool random_sparsity = dim_metadata_size == 2 && block_rank == 0;
