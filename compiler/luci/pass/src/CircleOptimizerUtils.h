@@ -17,8 +17,7 @@
 #ifndef __LUCI_CIRCLE_OPTIMIZER_UTILS_H__
 #define __LUCI_CIRCLE_OPTIMIZER_UTILS_H__
 
-#include "luci/Pass/QuantizeDequantizeWeightsPass.h"
-#include "luci/Pass/QuantizeWithMinMaxPass.h"
+#include "luci/Pass/QuantizationParameters.h"
 
 #include <loco.h>
 
