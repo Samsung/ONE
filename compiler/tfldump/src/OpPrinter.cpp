@@ -74,6 +74,26 @@ public:
   }
 };
 
+class BidirectionalSequenceLSTMPrinter : public OpPrinter
+{
+public:
+  void options(const tflite::Operator *op, std::ostream &os) const override
+  {
+    if (auto *params = op->builtin_options_as_BidirectionalSequenceLSTMOptions())
+    {
+      os << "    ";
+      os << "Activation(" << EnumNameActivationFunctionType(params->fused_activation_function())
+         << ") ";
+      os << "cell_clip(" << params->cell_clip() << ") ";
+      os << "proj_clip(" << params->proj_clip() << ") ";
+      os << "time_major(" << params->time_major() << ") ";
+      os << "asymmetric_quantize_inputs(" << params->asymmetric_quantize_inputs() << ") ";
+      os << "merge_outputs(" << params->merge_outputs() << ") ";
+      os << std::endl;
+    }
+  }
+};
+
 class CastPrinter : public OpPrinter
 {
 public:
@@ -672,6 +692,8 @@ OpPrinterRegistry::OpPrinterRegistry()
   _op_map[tflite::BuiltinOperator_ARG_MAX] = make_unique<ArgMaxPrinter>();
   _op_map[tflite::BuiltinOperator_ARG_MIN] = make_unique<ArgMinPrinter>();
   _op_map[tflite::BuiltinOperator_AVERAGE_POOL_2D] = make_unique<Pool2DPrinter>();
+  _op_map[tflite::BuiltinOperator_BIDIRECTIONAL_SEQUENCE_LSTM] =
+    make_unique<BidirectionalSequenceLSTMPrinter>();
   _op_map[tflite::BuiltinOperator_CAST] = make_unique<CastPrinter>();
   // There is no Option for CEIL
   _op_map[tflite::BuiltinOperator_CONCATENATION] = make_unique<ConcatenationPrinter>();
