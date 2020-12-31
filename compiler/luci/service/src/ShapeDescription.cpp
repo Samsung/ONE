@@ -31,7 +31,7 @@ ShapeDescription to_shape_description(const luci::CircleNode *circle_node)
 
   res._dims.resize(circle_node->rank());
   for (uint32_t i = 0; i < circle_node->rank(); ++i)
-    res._dims.at(i) = circle_node->dim(i).value();
+    res._dims.at(i) = circle_node->dim(i).known() ? circle_node->dim(i).value() : -1;
 
   return res;
 }
