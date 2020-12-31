@@ -231,13 +231,8 @@ public:
             new_shape->rank(1);
             new_shape->dim(0) = 2;
 
-            auto batch_size = 1;
-            for (uint32_t i = 0; i < original_input->rank() - 1; ++i)
-              batch_size *= original_input->dim(i).value();
-
-            new_shape->at<loco::DataType::S32>(0) = batch_size;
-            new_shape->at<loco::DataType::S32>(1) =
-              original_input->dim(original_input->rank() - 1).value();
+            new_shape->at<loco::DataType::S32>(0) = -1;
+            new_shape->at<loco::DataType::S32>(1) = weights->dim(1).value();
             new_shape->shape_status(luci::ShapeStatus::VALID);
 
             auto reshape = g->nodes()->create<luci::CircleReshape>();
