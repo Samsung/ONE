@@ -102,6 +102,7 @@ public:
 
 class AddGraph final : public SimpleGraph
 {
+protected:
   loco::Node *insertGraphBody(loco::Node *input) override
   {
     add = g.nodes()->create<luci::CircleAdd>();
