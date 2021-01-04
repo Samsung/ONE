@@ -368,7 +368,7 @@ void AclTensorBuilder<T_ITensor, T_Tensor, T_SubTensor>::buildTensors(void)
       assert(parent_tensor != nullptr);
 
       // Child's type should be same with parent
-      assert(tensor_info.typeInfo().offset() ==
+      assert(tensor_info.typeInfo().zero_point() ==
              parent_tensor->info()->quantization_info().uniform().offset);
       assert(tensor_info.typeInfo().scale() ==
              parent_tensor->info()->quantization_info().uniform().scale);

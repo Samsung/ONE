@@ -1538,7 +1538,7 @@ void KernelGenerator::visit(const ir::operation::Pad &node)
 
   auto input_type = _ctx.at(input_index).typeInfo();
   auto data_type = acl_common::asDataType(input_type.type());
-  auto quant_info = ::arm_compute::QuantizationInfo(input_type.scale(), input_type.offset());
+  auto quant_info = ::arm_compute::QuantizationInfo(input_type.scale(), input_type.zero_point());
   const auto pixel_value = ::arm_compute::PixelValue(0, data_type, quant_info);
 
   auto input = _tensor_reg->getAclTensor(input_index)->handle();
