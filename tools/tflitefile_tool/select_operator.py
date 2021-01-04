@@ -188,6 +188,11 @@ def GenerateQuantization(new_builder, selected_quantization):
         tflite.QuantizationParameters.QuantizationParametersAddZeroPoint(
             new_builder, new_zeropoint)
 
+    quantized_dimension = selected_quantization.QuantizedDimension()
+    if quantized_dimension != 0:
+        tflite.QuantizationParameters.QuantizationParametersAddQuantizedDimension(
+            new_builder, quantized_dimension)
+
     return tflite.QuantizationParameters.QuantizationParametersEnd(new_builder)
 
 
