@@ -130,7 +130,10 @@ private:
 namespace
 {
 /**
- * @brief  ValidateNodeProp will validate inter graph connections for each Nodes
+ * @brief  ValidateNodeProp will validate inter graph connections for each Nodes.
+ * @note   In here, only loco::GraphInput and loco::GraphOutput are validated,
+ *         since this class is for checking inter graph connections.
+ *         CircleNodes such as CircleInput and CircleOutput will be validated at later steps.
  */
 class ValidateNodeProp final : public luci::CircleNodeMutableVisitor<void>
 {
