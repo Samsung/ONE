@@ -359,9 +359,26 @@ void OperationValidator::visit(const operation::Pack &node)
 
 void OperationValidator::visit(const operation::Pad &node)
 {
+  const auto output_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(operation::Pad::Input::INPUT)};
   const auto pad_index{node.getInputs().at(operation::Pad::Input::PAD)};
+  bool isQuantType =
+    isValidType(output_index, {DataType::QUANT_UINT8_ASYMM, DataType::QUANT_INT8_ASYMM});
+  bool isPadV2 = node.getInputs().size() == 3 ? true : false;
 
   OP_REQUIRES(isValidType(pad_index, DataType::INT32));
+  OP_REQUIRES(isSameType(input_index, output_index));
+
+  if (isQuantType)
+    OP_REQUIRES(isSameQuantParam(input_index, output_index));
+
+  if (isPadV2)
+  {
+    const auto value_index{node.getInputs().at(operation::Pad::Input::VALUE)};
+    OP_REQUIRES(isSameType(input_index, value_index));
+    if (isQuantType)
+      OP_REQUIRES(isSameQuantParam(input_index, value_index));
+  }
 }
 
 void OperationValidator::visit(const operation::Rank &node)

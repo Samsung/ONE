@@ -112,3 +112,49 @@ TEST_F(GenModelTest, neg_OneOp_PadV2_InvalidPadDim1)
 
   SUCCEED();
 }
+
+TEST_F(GenModelTest, neg_OneOp_PadV2_Type)
+{
+  CircleGen cgen;
+  int in = cgen.addTensor({{1, 1, 1, 1}, circle::TensorType::TensorType_FLOAT32});
+  std::vector<int32_t> padding_data{1, 1, 1, 1};
+  uint32_t padding_buf = cgen.addBuffer(padding_data);
+  int padding = cgen.addTensor({{4, 2}, circle::TensorType::TensorType_INT32, padding_buf});
+  std::vector<uint8_t> padding_value_data{3};
+  uint32_t padding_value_buf = cgen.addBuffer(padding_value_data);
+  int padding_value =
+    cgen.addTensor({{1}, circle::TensorType::TensorType_UINT8, padding_value_buf}, 1.0, 1);
+
+  int out = cgen.addTensor({{1, 4, 4, 1}, circle::TensorType::TensorType_FLOAT32});
+
+  cgen.addOperatorPadV2({{in, padding, padding_value}, {out}});
+  cgen.setInputsAndOutputs({in}, {out});
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->expectFailModelLoad();
+
+  SUCCEED();
+}
+
+TEST_F(GenModelTest, neg_OneOp_PadV2_QuantParam)
+{
+  CircleGen cgen;
+  int in = cgen.addTensor({{1, 1, 1, 1}, circle::TensorType::TensorType_UINT8}, 1.0, 2);
+  std::vector<int32_t> padding_data{1, 1, 1, 1};
+  uint32_t padding_buf = cgen.addBuffer(padding_data);
+  int padding = cgen.addTensor({{4, 2}, circle::TensorType::TensorType_INT32, padding_buf});
+  std::vector<uint8_t> padding_value_data{3};
+  uint32_t padding_value_buf = cgen.addBuffer(padding_value_data);
+  int padding_value =
+    cgen.addTensor({{1}, circle::TensorType::TensorType_UINT8, padding_value_buf}, 1.0, 1);
+
+  int out = cgen.addTensor({{1, 4, 4, 1}, circle::TensorType::TensorType_UINT8}, 1.0, 1);
+
+  cgen.addOperatorPadV2({{in, padding, padding_value}, {out}});
+  cgen.setInputsAndOutputs({in}, {out});
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->expectFailModelLoad();
+
+  SUCCEED();
+}
