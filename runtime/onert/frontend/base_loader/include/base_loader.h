@@ -389,35 +389,36 @@ template <typename LoaderDomain>
 void BaseLoader<LoaderDomain>::loadQuantization(const Tensor *tensor, ir::TypeInfo &typeInfo)
 {
   auto q_params = tensor->quantization();
-  float scale = 0.0;
-  long zero_point = 0;
-  if (q_params != nullptr)
+  if (q_params == nullptr || q_params->scale() == nullptr || q_params->scale()->size() == 0)
   {
-    if (q_params->scale())
-    {
-      if (q_params->scale()->size() != 1)
-      {
-        throw std::runtime_error("Only 1 scale for a tensor is supported.");
-      }
-      scale = q_params->scale()->Get(0);
-    }
-
-    if (q_params->zero_point())
-    {
-      if (q_params->zero_point()->size() != 1)
-      {
-        throw std::runtime_error("Only 1 zero_point value for a tensor is supported.");
-      }
-      zero_point = q_params->zero_point()->Get(0);
-      // zero_point is long while TypeInfo.zero_point is defined as int32_t.
-      assert(zero_point >= std::numeric_limits<int32_t>::min());
-      assert(zero_point <= std::numeric_limits<int32_t>::max());
-    }
-    auto details = q_params->details_as_CustomQuantization();
-    if (details != nullptr)
-      throw std::runtime_error("Custom Quantization is not supported");
+    typeInfo.quantization(0., 0);
+    return;
   }
-  typeInfo.quantization(scale, zero_point);
+  if (q_params->zero_point() == nullptr)
+  {
+    throw std::runtime_error("Quantization params: scale is not null, but zero_point is null.");
+  }
+  const size_t num_scales = q_params->scale()->size();
+  if (num_scales != q_params->zero_point()->size())
+  {
+    throw std::runtime_error("Quantization params: scale size != zero_point size");
+  }
+  std::vector<float> scales;
+  std::vector<int32_t> zero_points;
+  scales.resize(num_scales);
+  zero_points.resize(num_scales);
+  for (size_t i = 0; i < num_scales; ++i)
+  {
+    scales[i] = q_params->scale()->Get(i);
+    int32_t zero_point = q_params->zero_point()->Get(i);
+    assert(zero_point >= std::numeric_limits<int32_t>::min());
+    assert(zero_point <= std::numeric_limits<int32_t>::max());
+    zero_points[i] = zero_point;
+  }
+  auto details = q_params->details_as_CustomQuantization();
+  if (details != nullptr)
+    throw std::runtime_error("Custom Quantization is not supported");
+  typeInfo.quantization(std::move(scales), std::move(zero_points));
 }
 
 template <typename LoaderDomain>
