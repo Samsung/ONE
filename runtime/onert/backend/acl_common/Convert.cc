@@ -137,7 +137,7 @@ namespace acl_common
 {
   ::arm_compute::TensorInfo info(
     asTensorShape(shape, frontend_layout, backend_layout, apply_dim_correction), 1,
-    asDataType(typeInfo.type()), asQuantizationInfo(typeInfo.scale(), typeInfo.offset()));
+    asDataType(typeInfo.type()), asQuantizationInfo(typeInfo.scale(), typeInfo.zero_point()));
   info.set_data_layout(asDataLayout(backend_layout));
   return info;
 }

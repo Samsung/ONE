@@ -60,7 +60,7 @@ bool OperationValidator::isSameQuantParam(const OperandIndex &idx1, const Operan
   if (_operands.at(idx1).typeInfo().scale() != _operands.at(idx2).typeInfo().scale())
     return false;
 
-  if (_operands.at(idx1).typeInfo().offset() != _operands.at(idx2).typeInfo().offset())
+  if (_operands.at(idx1).typeInfo().zero_point() != _operands.at(idx2).typeInfo().zero_point())
     return false;
 
   return true;

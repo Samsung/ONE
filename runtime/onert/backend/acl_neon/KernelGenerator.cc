@@ -769,7 +769,7 @@ void KernelGenerator::visit(const ir::operation::Pad &node)
   UNUSED_RELEASE(input_type);
   assert(input->info()->data_type() == acl_common::asDataType(input_type.type()));
   assert(input->info()->quantization_info() ==
-         ::arm_compute::QuantizationInfo(input_type.scale(), input_type.offset()));
+         ::arm_compute::QuantizationInfo(input_type.scale(), input_type.zero_point()));
   const auto pixel_value =
     ::arm_compute::PixelValue(0, input->info()->data_type(), input->info()->quantization_info());
 

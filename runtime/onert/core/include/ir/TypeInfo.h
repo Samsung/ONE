@@ -17,6 +17,7 @@
 #ifndef __ONERT_IR_TYPEINFO_H__
 #define __ONERT_IR_TYPEINFO_H__
 
+#include <cassert>
 #include <cstdint>
 #include <memory>
 #include <vector>
@@ -29,25 +30,43 @@ namespace onert
 namespace ir
 {
 
+struct Quantization
+{
+  std::vector<float> scales;
+  std::vector<int32_t> zero_points;
+};
+
 class TypeInfo
 {
 public:
   TypeInfo() = delete;
 
-  explicit TypeInfo(DataType type, float scale = 0, int32_t offset = 0)
-    : _type(type), _scale(scale), _offset(offset), _sparsity(nullptr)
+  explicit TypeInfo(DataType type) : _type{type}, _sparsity{nullptr} {}
+
+  TypeInfo(DataType type, float scale, int32_t zero_point) : _type{type}, _sparsity{nullptr}
   {
+    quantization(scale, zero_point);
   }
 
 public:
   DataType type() const { return _type; }
-  float scale() const { return _scale; }
-  int32_t offset() const { return _offset; }
+  float scale() const
+  {
+    assert(_quant.scales.size() == 1);
+    return _quant.scales[0];
+  }
+  int32_t zero_point() const
+  {
+    assert(_quant.zero_points.size() == 1);
+    return _quant.zero_points[0];
+  }
   const ir::Sparsity *sparsity() const { return _sparsity.get(); }
   void quantization(float scale, int32_t zero_point)
   {
-    _scale = scale;
-    _offset = zero_point;
+    _quant.scales.resize(1);
+    _quant.scales[0] = scale;
+    _quant.zero_points.resize(1);
+    _quant.zero_points[0] = zero_point;
   }
   void sparsity(std::shared_ptr<ir::Sparsity> sparsity) { _sparsity = sparsity; }
 
@@ -56,10 +75,7 @@ public:
 
 private:
   DataType _type;
-  // for quantization
-  float _scale;
-  int32_t _offset;
-  // for sparsity
+  ir::Quantization _quant;
   std::shared_ptr<ir::Sparsity> _sparsity;
 };
 

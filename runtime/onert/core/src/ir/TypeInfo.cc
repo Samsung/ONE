@@ -28,7 +28,7 @@ bool operator==(const TypeInfo &lhs, const TypeInfo &rhs)
     return false;
   }
 
-  if (lhs.offset() != rhs.offset())
+  if (lhs.zero_point() != rhs.zero_point())
   {
     return false;
   }
