@@ -160,6 +160,56 @@ luci::CircleConst *create_NHWC_from_NCHW(luci::CircleConst *constant)
   return nhwc_const;
 }
 
+// We assume MUL is NCHW if,
+// Input shape: (N, C, H, W)
+// Output shape: (N, C, H, W)
+// 1. Const shape is (1, C, 1, 1)
+// 2. Input, Output, Const have the same C.
+bool is_NCHW_with_const(const luci::CircleMul *node, luci::CircleNode *&pred_node,
+                        luci::CircleConst *&gamma)
+{
+  auto x = dynamic_cast<luci::CircleConst *>(node->x());
+  auto y = dynamic_cast<luci::CircleConst *>(node->y());
+
+  if (x != nullptr && y == nullptr)
+  {
+    pred_node = loco::must_cast<luci::CircleNode *>(node->y());
+    gamma = x;
+  }
+  else if (x == nullptr && y != nullptr)
+  {
+    pred_node = loco::must_cast<luci::CircleNode *>(node->x());
+    gamma = y;
+  }
+  else
+  {
+    // Ignore if MUL does not have a gamma input.
+    return false;
+  }
+
+  const auto const_rank = gamma->rank();
+  if (const_rank != 4)
+    return false;
+
+  for (uint32_t i = 0; i < const_rank; i++)
+  {
+    if (i == 1)
+      continue;
+
+    if (gamma->dim(i).value() != 1)
+      return false;
+  }
+
+  const auto const_cdim = gamma->dim(1);
+  const auto input_cdim = pred_node->dim(1);
+  const auto output_cdim = node->dim(1);
+
+  if (const_cdim == input_cdim && input_cdim == output_cdim)
+    return true;
+  else
+    return false;
+}
+
 // We assume ADD with const input is NCHW if,
 // Input shape: (N, C, H, W)
 // Output shape: (N, C, H, W)
@@ -316,6 +366,43 @@ class ConvertNCHWToNHWC final : public luci::CircleNodeMutableVisitor<bool>
     post_trans->a(node);
     return true;
   }
+
+  bool visit(luci::CircleMul *node)
+  {
+    LOGGER(l);
+
+    luci::CircleNode *pred_node = nullptr;
+    luci::CircleConst *gamma = nullptr;
+
+    if (is_NCHW_with_const(node, pred_node, gamma))
+    {
+      auto pre_trans = create_pre_transpose(node);
+      pre_trans->a(pred_node);
+      node->x(pre_trans);
+
+      auto nhwc_const = create_NHWC_from_NCHW(gamma);
+      node->y(nhwc_const);
+    }
+    else if (gamma == nullptr)
+    {
+      // TODO : Implement this case.
+      INFO(l) << "Not yet implemented. Both inputs of MUL are non-const." << std::endl;
+      return false;
+    }
+    else
+    {
+      return false;
+    }
+
+    // Make loco do shape inference for this node again.
+    loco::shape_erase(node);
+
+    auto post_trans = create_post_transpose(node);
+    loco::replace(node).with(post_trans);
+
+    post_trans->a(node);
+    return true;
+  }
 };
 
 } // namespace
@@ -338,6 +425,7 @@ bool ConvertNCHWToNHWCPass::run(loco::Graph *g)
       case luci::CircleOpcode::CIRCLEINPUT:
       case luci::CircleOpcode::CIRCLEOUTPUT:
       case luci::CircleOpcode::ADD:
+      case luci::CircleOpcode::MUL:
         if (!has_data_format(node))
         {
           set_data_format(node, DataFormat::NCHW);
