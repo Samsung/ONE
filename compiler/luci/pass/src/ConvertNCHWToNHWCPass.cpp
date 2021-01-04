@@ -166,7 +166,7 @@ luci::CircleConst *create_NHWC_from_NCHW(luci::CircleConst *constant)
 // 1. Const shape is (1, C, 1, 1)
 // 2. Input, Output, Const have the same C.
 bool is_NCHW_with_const(const luci::CircleMul *node, luci::CircleNode *&pred_node,
-                        luci::CircleConst *&gamma)
+                        luci::CircleConst *&multiplier)
 {
   auto x = dynamic_cast<luci::CircleConst *>(node->x());
   auto y = dynamic_cast<luci::CircleConst *>(node->y());
@@ -174,20 +174,20 @@ bool is_NCHW_with_const(const luci::CircleMul *node, luci::CircleNode *&pred_nod
   if (x != nullptr && y == nullptr)
   {
     pred_node = loco::must_cast<luci::CircleNode *>(node->y());
-    gamma = x;
+    multiplier = x;
   }
   else if (x == nullptr && y != nullptr)
   {
     pred_node = loco::must_cast<luci::CircleNode *>(node->x());
-    gamma = y;
+    multiplier = y;
   }
   else
   {
-    // Ignore if MUL does not have a gamma input.
+    // Ignore if MUL does not have a multiplier input.
     return false;
   }
 
-  const auto const_rank = gamma->rank();
+  const auto const_rank = multiplier->rank();
   if (const_rank != 4)
     return false;
 
@@ -196,11 +196,11 @@ bool is_NCHW_with_const(const luci::CircleMul *node, luci::CircleNode *&pred_nod
     if (i == 1)
       continue;
 
-    if (gamma->dim(i).value() != 1)
+    if (multiplier->dim(i).value() != 1)
       return false;
   }
 
-  const auto const_cdim = gamma->dim(1);
+  const auto const_cdim = multiplier->dim(1);
   const auto input_cdim = pred_node->dim(1);
   const auto output_cdim = node->dim(1);
 
@@ -372,18 +372,18 @@ class ConvertNCHWToNHWC final : public luci::CircleNodeMutableVisitor<bool>
     LOGGER(l);
 
     luci::CircleNode *pred_node = nullptr;
-    luci::CircleConst *gamma = nullptr;
+    luci::CircleConst *multiplier = nullptr;
 
-    if (is_NCHW_with_const(node, pred_node, gamma))
+    if (is_NCHW_with_const(node, pred_node, multiplier))
     {
       auto pre_trans = create_pre_transpose(node);
       pre_trans->a(pred_node);
       node->x(pre_trans);
 
-      auto nhwc_const = create_NHWC_from_NCHW(gamma);
+      auto nhwc_const = create_NHWC_from_NCHW(multiplier);
       node->y(nhwc_const);
     }
-    else if (gamma == nullptr)
+    else if (multiplier == nullptr)
     {
       // TODO : Implement this case.
       INFO(l) << "Not yet implemented. Both inputs of MUL are non-const." << std::endl;
