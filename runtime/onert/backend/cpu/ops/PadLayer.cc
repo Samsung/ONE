@@ -52,25 +52,35 @@ void PadLayer::configure(const IPortableTensor *input, IPortableTensor *output,
 
 void PadLayer::run()
 {
-  if (_input->data_type() == OperandType::FLOAT32)
+  switch (_input->data_type())
   {
-    padImpl<float>(_constantValueData.f);
-  }
-  else if (_input->data_type() == OperandType::QUANT_UINT8_ASYMM)
-  {
-    if (_constantValueData.u8 == nullptr)
-    {
-      uint8_t pad_value = static_cast<uint8_t>(_output->data_zero_point());
-      padImpl<uint8_t>(&pad_value);
-    }
-    else
-    {
-      padImpl<uint8_t>(_constantValueData.u8);
-    }
-  }
-  else
-  {
-    throw std::runtime_error{"Pad: unsupported data type"};
+    case OperandType::FLOAT32:
+      padImpl<float>(_constantValueData.f);
+      break;
+    case OperandType::QUANT_UINT8_ASYMM:
+      if (_constantValueData.u8 == nullptr)
+      {
+        uint8_t pad_value = static_cast<uint8_t>(_output->data_zero_point());
+        padImpl<uint8_t>(&pad_value);
+      }
+      else
+      {
+        padImpl<uint8_t>(_constantValueData.u8);
+      }
+      break;
+    case OperandType::QUANT_INT8_ASYMM:
+      if (_constantValueData.i8 == nullptr)
+      {
+        int8_t pad_value = static_cast<int8_t>(_output->data_zero_point());
+        padImpl<int8_t>(&pad_value);
+      }
+      else
+      {
+        padImpl<int8_t>(_constantValueData.i8);
+      }
+      break;
+    default:
+      throw std::runtime_error{"Pad: unsupported data type"};
   }
 }
 
