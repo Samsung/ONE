@@ -1,0 +1,7 @@
+{
+  "major-version" : "1",
+  "minor-version" : "0",
+  "patch-version" : "0",
+  "models"      : [ "if_dynamic.tflite" ],
+  "model-types" : [ "tflite" ]
+}
