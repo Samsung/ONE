@@ -86,6 +86,7 @@ class BackendScheduler:
             if backend != default_backend:
                 backend_conf += "{}={};".format(op_index, backend)
 
+        # Select fastet backend for each operation
         logging.info("-------- Expected inference time ---------")
         single_backend_time = 0
         schedule_time = 0
@@ -106,7 +107,7 @@ class BackendScheduler:
 
         for backend in backend_list:
             logging.info(f"{backend} backend : {backend_infer_time[backend]/1000:.2f} ms")
-        logging.info(f"Mixed backend : {schedule_time / 1000:.2f} ms")
+        logging.info(f"Backend scheduling : {schedule_time / 1000:.2f} ms")
 
         logging.info("-------- Backend Scheduling --------")
         cmd = []
