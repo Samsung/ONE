@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __LUCI_REMOVE_UNNECESSARY_SPLIT_H__
-#define __LUCI_REMOVE_UNNECESSARY_SPLIT_H__
+#ifndef __LUCI_REMOVE_UNNECESSARY_SPLIT_PASS_H__
+#define __LUCI_REMOVE_UNNECESSARY_SPLIT_PASS_H__
 
 #include <logo/Pass.h>
 
@@ -34,4 +34,4 @@ struct RemoveUnnecessarySplitPass final : public logo::Pass
 
 } // namespace luci
 
-#endif // __LUCI_REMOVE_UNNECESSARY_SPLIT_H__
+#endif // __LUCI_REMOVE_UNNECESSARY_SPLIT_PASS_H__
