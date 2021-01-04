@@ -30,7 +30,7 @@ namespace
 {
 
 /**
- *  Graph with a single Add Op.
+ *  Graph with a single Op (example: Add).
  *
  *  BEFORE
  *  - All Ops including Input/Output are NCHW.
@@ -61,11 +61,12 @@ namespace
 class SimpleGraph
 {
 public:
-  SimpleGraph()
+  SimpleGraph() = default;
+
+public:
+  void init()
   {
     input = g.nodes()->create<luci::CircleInput>();
-    add = g.nodes()->create<luci::CircleAdd>();
-    beta = g.nodes()->create<luci::CircleConst>();
     output = g.nodes()->create<luci::CircleOutput>();
 
     auto graph_input = g.inputs()->create();
@@ -75,18 +76,44 @@ public:
 
     graph_input->dtype(loco::DataType::FLOAT32);
     input->dtype(loco::DataType::FLOAT32);
-    add->dtype(loco::DataType::FLOAT32);
-    beta->dtype(loco::DataType::FLOAT32);
     output->dtype(loco::DataType::FLOAT32);
     graph_output->dtype(loco::DataType::FLOAT32);
 
     uint32_t channel_size = 16;
     graph_input->shape({1, channel_size, 4, 4});
     input->shape({1, channel_size, 4, 4});
-    add->shape({1, channel_size, 4, 4});
-    beta->shape({1, channel_size, 1, 1});
     output->shape({1, channel_size, 4, 4});
     graph_output->shape({1, channel_size, 4, 4});
+
+    auto graph_body = insertGraphBody(input);
+    output->from(graph_body);
+  }
+
+  virtual ~SimpleGraph() = default;
+
+protected:
+  virtual loco::Node *insertGraphBody(loco::Node *input) = 0;
+
+public:
+  loco::Graph g;
+  luci::CircleInput *input = nullptr;
+  luci::CircleOutput *output = nullptr;
+};
+
+class AddGraph final : public SimpleGraph
+{
+protected:
+  loco::Node *insertGraphBody(loco::Node *input) override
+  {
+    add = g.nodes()->create<luci::CircleAdd>();
+    beta = g.nodes()->create<luci::CircleConst>();
+
+    add->dtype(loco::DataType::FLOAT32);
+    beta->dtype(loco::DataType::FLOAT32);
+
+    uint32_t channel_size = 16;
+    add->shape({1, channel_size, 4, 4});
+    beta->shape({1, channel_size, 1, 1});
 
     beta->size<loco::DataType::FLOAT32>(channel_size);
     for (uint32_t i = 0; i < channel_size; i++)
@@ -96,15 +123,13 @@ public:
 
     add->x(input);
     add->y(beta);
-    output->from(add);
+
+    return add;
   }
 
 public:
-  loco::Graph g;
-  luci::CircleInput *input = nullptr;
   luci::CircleAdd *add = nullptr;
   luci::CircleConst *beta = nullptr;
-  luci::CircleOutput *output = nullptr;
 };
 
 void check_pre_trans(loco::Node *node)
@@ -157,7 +182,8 @@ void run_phase(loco::Graph *g)
 
 TEST(ConvertNCHWToNHWC, Add)
 {
-  SimpleGraph g;
+  AddGraph g;
+  g.init();
 
   run_phase(&g.g);
 
@@ -185,7 +211,9 @@ TEST(ConvertNCHWToNHWC, Add)
 
 TEST(ConvertNCHWToNHWC, Unknown_Shape_NEG)
 {
-  SimpleGraph g;
+  AddGraph g;
+  g.init();
+
   // Unknown shape
   g.input->dim(0).unset();
   g.add->dim(0).unset();
