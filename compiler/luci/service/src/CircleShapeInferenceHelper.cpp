@@ -26,7 +26,7 @@ loco::TensorShape circle_shape(const luci::CircleNode *node)
   loco::TensorShape shape;
   shape.rank(node->rank());
   for (uint32_t r = 0; r < node->rank(); ++r)
-    shape.dim(r) = loco::Dimension(node->dim(r).value());
+    shape.dim(r) = node->dim(r);
   return shape;
 }
 
