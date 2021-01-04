@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-import json
+import json, logging
 from distutils.dir_util import copy_tree
 from pathlib import Path
 
@@ -30,7 +30,9 @@ class NnpkgHelper:
             with open(config_path, 'w') as config_file:
                 config_file.write('\n'.join(configs))
 
+            logging.info(f"Scheduled nnpackage is saved at {src}")
+
         except IOError as e:
-            print(e)
+            logging.warn(e)
         except:
-            print("Error")
+            logging.warn("Error")

@@ -1,8 +1,6 @@
 #!/usr/bin/python3
 
-import os
-import json
-import argparse
+import os, json, argparse, logging
 from pathlib import Path
 from op_list_parser import OpListParser
 from nnpkg_helper import NnpkgHelper
@@ -22,7 +20,7 @@ class BackendScheduler:
             try:
                 trace_path = Path(
                     __file__).parent / 'traces' / f"{backend}_{self.num_threads}"
-                print(trace_path)
+                logging.debug(f"Trace path : {trace_path}")
                 with open(trace_path) as f:
                     data = json.load(f)
                     execution_data = data['Execution_Data']
@@ -45,14 +43,13 @@ class BackendScheduler:
                             else:
                                 op_time[op_index].update({op_backend: time})
             except IOError as e:
-                print(e)
+                logging.warning(e)
         return op_time, inference_time
 
     def schedule(self):
         backend_op_list = OpListParser().parse()
         backend_list = ["cpu"]
         backend_list.extend([backend for backend in backend_op_list])
-        os.chdir(self.root_path)
 
         op_time, backend_infer_time = self.read_traces(backend_list)
 
@@ -68,15 +65,14 @@ class BackendScheduler:
             if op_type not in target_ops:
                 continue
 
-            # print("----- Operation {} -----".format(op_index))
+            logging.debug(f"----- Operation {op_index} -----")
             op_infer_time = 0
             for backend in backend_list:
                 if backend not in value:
                     continue
                 backend_time = value[backend]
 
-                # print("{}[{}]".format(backend, backend_time))
-
+                logging.debug(f"{backend}[{backend_time}]")
                 if op_infer_time == 0 or backend_time < op_infer_time:
                     op_infer_time = backend_time
                     backend_mapping[op_index] = backend
@@ -90,7 +86,7 @@ class BackendScheduler:
             if backend != default_backend:
                 backend_conf += "{}={};".format(op_index, backend)
 
-        print("-------- Expected inference time ---------")
+        logging.info("-------- Expected inference time ---------")
         single_backend_time = 0
         schedule_time = 0
         for op_index, value in sorted(op_time.items()):
@@ -104,15 +100,15 @@ class BackendScheduler:
                 single_backend_time += value[default_backend]
                 schedule_time += value[op_backend]
                 if (default_backend != op_backend):
-                    print("[{}] {} -> {} : {:.2f} ms decrease".format(
+                    logging.debug("[{}] {} -> {} : {:.2f} ms decrease".format(
                         op_index, default_backend, op_backend,
                         (value[default_backend] - value[op_backend]) / 1000))
 
         for backend in backend_list:
-            print(f"{backend} backend : {backend_infer_time[backend]/1000:.2f} ms")
-        print(f"Mixed backend : {schedule_time / 1000:.2f} ms")
+            logging.info(f"{backend} backend : {backend_infer_time[backend]/1000:.2f} ms")
+        logging.info(f"Mixed backend : {schedule_time / 1000:.2f} ms")
 
-        print("-------- Backend Scheduling --------")
+        logging.info("-------- Backend Scheduling --------")
         cmd = []
         cmd += [f"OP_BACKEND_MAP={backend_conf}"]
         for target_backend, op_list in backend_op_list.items():
@@ -123,7 +119,7 @@ class BackendScheduler:
         cmd += [f"EIGEN_THREADS={self.num_threads}"]
         cmd += [f"RUY_THREADS={self.num_threads}"]
         cmd += [f"XNNPACK_THREADS={self.num_threads}"]
-        print(' '.join(cmd))
+        logging.info(' '.join(cmd))
 
         dst_dir = Path(__file__).parent / 'nnpkg_sched' / self.nnpkg_dir.name
         self.nnpkg_helper.copy(self.nnpkg_dir, dst_dir)

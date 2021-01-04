@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-import subprocess
+import subprocess, logging
 from pathlib import Path
 
 
@@ -16,10 +16,10 @@ class RemoteSSH():
     def sync_binary(self):
         bin_dir = self.root_path / 'Product/armv7l-linux.release/out'
         if (not bin_dir.is_dir()):
-            print(f"Build dir [{bin_dir}] is not exist")
+            logging.warn(f"Build dir [{bin_dir}] is not exist")
             exit()
         elif (not self.nnpkg_dir.is_dir()):
-            print(f"nnpackage dir [{self.nnpkg_dir}] is not exist")
+            logging.warn(f"nnpackage dir [{self.nnpkg_dir}] is not exist")
             exit()
         else:
             # Syne ONE runtime
@@ -34,7 +34,8 @@ class RemoteSSH():
         remote_trace_path = self.remote_trace_path(backend)
         local_trace_path = self.local_trace_path(backend)
         local_trace_path.parent.mkdir(parents=True, exist_ok=True)
-        print(self.remote(remote_trace_path), local_trace_path)
+        logging.debug(f"Remote trace path : {self.remote(remote_trace_path)}")
+        logging.debug(f"Local trace path : {local_trace_path}")
         # Sync trace file
         subprocess.call(
             ["rsync", "-az",
@@ -59,7 +60,7 @@ class RemoteSSH():
         cmd += [f"--nnpackage"]
         cmd += [f"{nnpkg_path}"]
         cmd += [f"-w5 -r50"]
-        print(' '.join(cmd))
+        logging.debug(f"SSH command : {' '.join(cmd)}")
         subprocess.call(cmd)
 
     def base_path():

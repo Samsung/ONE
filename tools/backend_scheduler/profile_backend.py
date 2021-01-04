@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-import argparse
+import argparse, logging
 from op_list_parser import OpListParser
 from remote import RemoteSSH
 
@@ -13,10 +13,12 @@ class BackendProfiler():
         self.backend_list.extend([backend for backend in self.backend_op_list])
 
     def sync(self):
+        logging.info("Upload ONE runtime and nnpackage to remote device")
         self.remote_ssh.sync_binary()
 
     def profile(self):
         for backend in self.backend_list:
+            logging.info(f"Profiling {backend} backend")
             self.remote_ssh.profile_backend(backend, self.backend_op_list)
             self.remote_ssh.sync_trace(backend)
 
