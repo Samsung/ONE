@@ -16,24 +16,55 @@
 
 #include "GenModelTest.h"
 
-TEST_F(GenModelTest, OneOp_Pad)
+// Input shape: {1, 2, 2, 1}
+// Padding: {0, 0, 1, 1, 1, 1, 0, 0}
+// Output shape: {1, 4, 4, 1}
+struct PadParam
 {
+  TestCaseData tcd;
+  circle::TensorType data_type = circle::TensorType::TensorType_FLOAT32;
+  float scale = 0.0f;
+  int64_t zero_point = 0;
+};
+
+class PadVariation : public GenModelTest, public ::testing::WithParamInterface<PadParam>
+{
+};
+
+TEST_P(PadVariation, Test)
+{
+  auto &param = GetParam();
+
   CircleGen cgen;
-  int in = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_FLOAT32});
+  int in = cgen.addTensor({{1, 2, 2, 1}, param.data_type}, param.scale, param.zero_point);
   std::vector<int32_t> padding_data{0, 0, 1, 1, 1, 1, 0, 0};
   uint32_t padding_buf = cgen.addBuffer(padding_data);
   int padding = cgen.addTensor({{4, 2}, circle::TensorType::TensorType_INT32, padding_buf});
-  int out = cgen.addTensor({{1, 4, 4, 1}, circle::TensorType::TensorType_FLOAT32});
+  int out = cgen.addTensor({{1, 4, 4, 1}, param.data_type}, param.scale, param.zero_point);
 
   cgen.addOperatorPad({{in, padding}, {out}});
   cgen.setInputsAndOutputs({in}, {out});
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
-  _context->addTestCase(
-    uniformTCD<float>({{1, 2, 3, 4}}, {{0, 0, 0, 0, 0, 1, 2, 0, 0, 3, 4, 0, 0, 0, 0, 0}}));
+  _context->addTestCase(param.tcd);
   _context->setBackends({"acl_cl", "acl_neon", "cpu"});
 
   SUCCEED();
 }
+
+// Test with different value type
+INSTANTIATE_TEST_CASE_P(
+  GenModelTest, PadVariation,
+  ::testing::Values(
+    // float value
+    PadParam{uniformTCD<float>({{1, 2, 3, 4}}, {{0, 0, 0, 0, 0, 1, 2, 0, 0, 3, 4, 0, 0, 0, 0, 0}})},
+    // uint8 value
+    PadParam{
+      uniformTCD<uint8_t>({{1, 2, 3, 4}}, {{8, 8, 8, 8, 8, 1, 2, 8, 8, 3, 4, 8, 8, 8, 8, 8}}),
+      circle::TensorType::TensorType_UINT8, 1.0, 8},
+    // int8 value
+    PadParam{uniformTCD<int8_t>({{-2, -1, 1, 2}},
+                                {{-5, -5, -5, -5, -5, -2, -1, -5, -5, 1, 2, -5, -5, -5, -5, -5}}),
+             circle::TensorType::TensorType_INT8, 1.0, -5}));
 
 TEST_F(GenModelTest, neg_OneOp_Pad_InvalidPadRank)
 {
