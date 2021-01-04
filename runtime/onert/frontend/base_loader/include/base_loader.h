@@ -410,10 +410,13 @@ void BaseLoader<LoaderDomain>::loadQuantization(const Tensor *tensor, ir::TypeIn
   for (size_t i = 0; i < num_scales; ++i)
   {
     scales[i] = q_params->scale()->Get(i);
-    int32_t zero_point = q_params->zero_point()->Get(i);
-    assert(zero_point >= std::numeric_limits<int32_t>::min());
-    assert(zero_point <= std::numeric_limits<int32_t>::max());
-    zero_points[i] = zero_point;
+    // zero_point is defined as long (i64) in schema while TypeInfo's zero_point is int32_t.
+    // int64_t is used instead of long because long is 4 byte in most 32bit architecture.
+    int64_t zero_point = q_params->zero_point()->Get(i);
+    if (zero_point < std::numeric_limits<int32_t>::min() ||
+        zero_point > std::numeric_limits<int32_t>::max())
+      throw std::runtime_error("Zero_point is out of int32 range.");
+    zero_points[i] = static_cast<int32_t>(zero_point);
   }
   auto details = q_params->details_as_CustomQuantization();
   if (details != nullptr)
