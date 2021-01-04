@@ -68,6 +68,11 @@ public:
     _quant.zero_points.resize(1);
     _quant.zero_points[0] = zero_point;
   }
+  void quantization(std::vector<float> &&scales, std::vector<int32_t> &&zero_points)
+  {
+    _quant.scales = scales;
+    _quant.zero_points = zero_points;
+  }
   void sparsity(std::shared_ptr<ir::Sparsity> sparsity) { _sparsity = sparsity; }
 
 public:
