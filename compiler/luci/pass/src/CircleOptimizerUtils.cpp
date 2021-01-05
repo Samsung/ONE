@@ -16,6 +16,8 @@
 
 #include "CircleOptimizerUtils.h"
 
+#include <luci/IR/CircleNode.h>
+
 namespace luci
 {
 
@@ -84,6 +86,15 @@ QuantizationGranularity str_to_granularity(const std::string &str)
     return QuantizationGranularity::ChannelWise;
 
   throw std::runtime_error("Quantization granularity must be either 'layer' or 'channel'");
+}
+
+bool has_dynamic_shape(const loco::Node *node)
+{
+  const auto circle_node = loco::must_cast<const luci::CircleNode *>(node);
+  for (uint32_t i = 0; i < circle_node->rank(); ++i)
+    if (!circle_node->dim(i).known())
+      return true;
+  return false;
 }
 
 } // namespace luci

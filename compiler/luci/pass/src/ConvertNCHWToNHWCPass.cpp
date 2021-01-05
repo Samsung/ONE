@@ -15,6 +15,7 @@
  */
 
 #include "luci/Pass/ConvertNCHWToNHWCPass.h"
+#include "CircleOptimizerUtils.h"
 
 #include <luci/IR/CircleNodes.h>
 #include <luci/IR/CircleNodeVisitor.h>
@@ -65,15 +66,6 @@ DataFormat get_data_format(loco::Node *node)
 }
 
 bool has_data_format(loco::Node *node) { return node->annot<DataFormatAnnotation>() != nullptr; }
-
-bool has_dynamic_shape(const loco::Node *node)
-{
-  const auto circle_node = loco::must_cast<const luci::CircleNode *>(node);
-  for (uint32_t i = 0; i < circle_node->rank(); ++i)
-    if (!circle_node->dim(i).known())
-      return true;
-  return false;
-}
 
 luci::CircleTranspose *create_4d_transpose(luci::CircleNode *node,
                                            const std::vector<int32_t> indices)
