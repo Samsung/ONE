@@ -44,24 +44,21 @@ void MeanLayer::MeanFloat32()
 
   if (axis_is_1_and_2)
   {
-    nnfw::cker::MeanAxis1And2(inputShape, reinterpret_cast<const float *>(_input->buffer()),
-                              getTensorShape(_output),
-                              reinterpret_cast<float *>(_output->buffer()));
+    nnfw::cker::MeanAxis1And2(inputShape, getBuffer<float>(_input), getTensorShape(_output),
+                              getBuffer<float>(_output));
   }
   else
   {
-    nnfw::cker::Mean(inputShape, reinterpret_cast<const float *>(_input->buffer()),
-                     getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()),
-                     axisVec);
+    nnfw::cker::Mean(inputShape, getBuffer<float>(_input), getTensorShape(_output),
+                     getBuffer<float>(_output), axisVec);
   }
 }
 
 void MeanLayer::MeanQuant8()
 {
-  nnfw::cker::MeanQ8Asymm(getTensorShape(_input),
-                          reinterpret_cast<const uint8_t *>(_input->buffer()), _input->data_scale(),
+  nnfw::cker::MeanQ8Asymm(getTensorShape(_input), getBuffer<uint8_t>(_input), _input->data_scale(),
                           _input->data_zero_point(), getTensorShape(_output),
-                          reinterpret_cast<uint8_t *>(_output->buffer()), _output->data_scale(),
+                          getBuffer<uint8_t>(_output), _output->data_scale(),
                           _output->data_zero_point(), getReducerAxes(_axes));
 }
 

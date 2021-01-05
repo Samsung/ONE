@@ -46,9 +46,8 @@ void BatchMatMulLayer::batchMatMulFloat32()
   // TODO implement for constant input
 
   batchmatmul_kernel.prepare(lhs_shape, rhs_shape, _adj_x, _adj_y);
-  batchmatmul_kernel(lhs_shape, reinterpret_cast<const float *>(_lhs->buffer()), rhs_shape,
-                     reinterpret_cast<const float *>(_rhs->buffer()), _adj_x, _adj_y, output_shape,
-                     reinterpret_cast<float *>(_output->buffer()));
+  batchmatmul_kernel(lhs_shape, getBuffer<float>(_lhs), rhs_shape, getBuffer<float>(_rhs), _adj_x,
+                     _adj_y, output_shape, getBuffer<float>(_output));
 }
 
 void BatchMatMulLayer::configure(const IPortableTensor *lhs, const IPortableTensor *rhs, bool adj_x,

@@ -41,7 +41,7 @@ template <typename T> void SplitLayer::split(void)
   {
     throw std::runtime_error("ArgMinMax: wrong shape of axis");
   }
-  auto axis = *reinterpret_cast<const int32_t *>(_axis->buffer());
+  auto axis = *getBuffer<int32_t>(_axis);
   if (axis < 0)
   {
     axis += _input->getShape().rank();
@@ -54,11 +54,11 @@ template <typename T> void SplitLayer::split(void)
   for (const auto output : _outputs)
   {
     assert(output->total_size() == sizeOfData(output->data_type(), output->getShape().dims()));
-    outputPtrs.emplace_back(reinterpret_cast<T *>(output->buffer()));
+    outputPtrs.emplace_back(getBuffer<T>(output));
   }
 
   assert(_input->total_size() == sizeOfData(_input->data_type(), _input->getShape().dims()));
-  nnfw::cker::Split<T>(op_params, getTensorShape(_input), reinterpret_cast<T *>(_input->buffer()),
+  nnfw::cker::Split<T>(op_params, getTensorShape(_input), getBuffer<T>(_input),
                        getTensorShape(_outputs[0]), outputPtrs.data());
 }
 

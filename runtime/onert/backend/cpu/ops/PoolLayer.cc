@@ -36,18 +36,16 @@ template <typename T>
 void avgPool2D(const nnfw::cker::PoolParams &params, const IPortableTensor *input,
                IPortableTensor *output)
 {
-  nnfw::cker::AveragePool<T>(params, getTensorShape(input),
-                             reinterpret_cast<const T *>(input->buffer()), getTensorShape(output),
-                             reinterpret_cast<T *>(output->buffer()));
+  nnfw::cker::AveragePool<T>(params, getTensorShape(input), getBuffer<T>(input),
+                             getTensorShape(output), getBuffer<T>(output));
 }
 
 template <typename T>
 void maxPool2D(const nnfw::cker::PoolParams &params, const IPortableTensor *input,
                IPortableTensor *output)
 {
-  nnfw::cker::MaxPool<T>(params, getTensorShape(input),
-                         reinterpret_cast<const T *>(input->buffer()), getTensorShape(output),
-                         reinterpret_cast<T *>(output->buffer()));
+  nnfw::cker::MaxPool<T>(params, getTensorShape(input), getBuffer<T>(input), getTensorShape(output),
+                         getBuffer<T>(output));
 }
 
 template <typename T>

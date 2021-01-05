@@ -24,7 +24,8 @@ namespace nnfw
 {
 namespace cker
 {
-template <typename T> inline void Fill(const T value_data, const Shape &output_shape, T output_data)
+template <typename T>
+inline void Fill(const T *value_data, const Shape &output_shape, T *output_data)
 {
   int output_size = output_shape.FlatSize();
   for (int i = 0; i < output_size; i++)

@@ -75,8 +75,8 @@ void ElementwiseActivationLayer::EvalUsingLookupTable(const IPortableTensor *inp
                                                       IPortableTensor *output)
 {
   const int size = MatchingFlatSize(getTensorShape(input), getTensorShape(output));
-  const uint8_t *input_data = reinterpret_cast<const uint8_t *>(input->buffer());
-  uint8_t *output_data = reinterpret_cast<uint8_t *>(output->buffer());
+  const uint8_t *input_data = getBuffer<uint8_t>(input);
+  uint8_t *output_data = getBuffer<uint8_t>(output);
 
   for (int i = 0; i < size; ++i)
   {
@@ -97,8 +97,8 @@ void ElementwiseActivationLayer::configure(const IPortableTensor *input, IPortab
       if (input->data_type() == OperandType::FLOAT32)
       {
         _kernel = [](const IPortableTensor *input, IPortableTensor *output) {
-          nnfw::cker::ELU(getTensorShape(input), reinterpret_cast<const float *>(input->buffer()),
-                          getTensorShape(output), reinterpret_cast<float *>(output->buffer()));
+          nnfw::cker::ELU(getTensorShape(input), getBuffer<float>(input), getTensorShape(output),
+                          getBuffer<float>(output));
         };
       }
       else
@@ -116,9 +116,8 @@ void ElementwiseActivationLayer::configure(const IPortableTensor *input, IPortab
       else if (_input->data_type() == OperandType::FLOAT32)
       {
         _kernel = [](const IPortableTensor *input, IPortableTensor *output) {
-          nnfw::cker::Logistic(getTensorShape(input),
-                               reinterpret_cast<const float *>(input->buffer()),
-                               getTensorShape(output), reinterpret_cast<float *>(output->buffer()));
+          nnfw::cker::Logistic(getTensorShape(input), getBuffer<float>(input),
+                               getTensorShape(output), getBuffer<float>(output));
         };
       }
       else
@@ -132,17 +131,15 @@ void ElementwiseActivationLayer::configure(const IPortableTensor *input, IPortab
         if (alpha == std::numeric_limits<float>::infinity() && beta == 0.f)
         {
           _kernel = [](const IPortableTensor *input, IPortableTensor *output) {
-            nnfw::cker::ReLU(getTensorShape(input),
-                             reinterpret_cast<const float *>(input->buffer()),
-                             getTensorShape(output), reinterpret_cast<float *>(output->buffer()));
+            nnfw::cker::ReLU(getTensorShape(input), getBuffer<float>(input), getTensorShape(output),
+                             getBuffer<float>(output));
           };
         }
         else if (alpha == 6.f && beta == 0.f)
         {
           _kernel = [](const IPortableTensor *input, IPortableTensor *output) {
-            nnfw::cker::ReLU6(getTensorShape(input),
-                              reinterpret_cast<const float *>(input->buffer()),
-                              reinterpret_cast<float *>(output->buffer()));
+            nnfw::cker::ReLU6(getTensorShape(input), getBuffer<float>(input),
+                              getBuffer<float>(output));
           };
         }
         else
@@ -166,8 +163,8 @@ void ElementwiseActivationLayer::configure(const IPortableTensor *input, IPortab
       else if (_input->data_type() == OperandType::FLOAT32)
       {
         _kernel = [](const IPortableTensor *input, IPortableTensor *output) {
-          nnfw::cker::Tanh(getTensorShape(input), reinterpret_cast<const float *>(input->buffer()),
-                           getTensorShape(output), reinterpret_cast<float *>(output->buffer()));
+          nnfw::cker::Tanh(getTensorShape(input), getBuffer<float>(input), getTensorShape(output),
+                           getBuffer<float>(output));
         };
       }
       else
@@ -180,9 +177,8 @@ void ElementwiseActivationLayer::configure(const IPortableTensor *input, IPortab
       {
         _kernel = [alpha](const IPortableTensor *input, IPortableTensor *output) {
           nnfw::cker::LeakyReLU(nnfw::cker::LeakyReluParams{alpha}, getTensorShape(input),
-                                reinterpret_cast<const float *>(input->buffer()),
-                                getTensorShape(output),
-                                reinterpret_cast<float *>(output->buffer()));
+                                getBuffer<float>(input), getTensorShape(output),
+                                getBuffer<float>(output));
         };
       }
       else

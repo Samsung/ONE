@@ -32,11 +32,10 @@ namespace ops
 template <typename T> void OneHotLayer::oneHotImpl()
 {
   // It assumes index is int32_t type.
-  nnfw::cker::OneHot<T, int32_t>(
-    *reinterpret_cast<const int32_t *>(_depth->buffer()),
-    *reinterpret_cast<T *>(_on_value->buffer()), *reinterpret_cast<T *>(_off_value->buffer()),
-    _axis, getTensorShape(_indices), reinterpret_cast<const int32_t *>(_indices->buffer()),
-    getTensorShape(_output), reinterpret_cast<T *>(_output->buffer()));
+  nnfw::cker::OneHot<T, int32_t>(*getBuffer<int32_t>(_depth), *getBuffer<T>(_on_value),
+                                 *getBuffer<T>(_off_value), _axis, getTensorShape(_indices),
+                                 getBuffer<int32_t>(_indices), getTensorShape(_output),
+                                 getBuffer<T>(_output));
 }
 
 void OneHotLayer::configure(const IPortableTensor *indices, const IPortableTensor *depth,

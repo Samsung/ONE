@@ -44,11 +44,9 @@ void DepthwiseConvolutionLayer::convFloat32()
   op_params.float_activation_max = output_activation_max;
 
   nnfw::cker::DepthwiseConv<float, float>(
-    op_params, getTensorShape(_input), reinterpret_cast<const float *>(_input->buffer()),
-    getTensorShape(_kernel), reinterpret_cast<const float *>(_kernel->buffer()),
-    getTensorShape(_bias), reinterpret_cast<const float *>(_bias->buffer()),
-    getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()),
-    _external_context->ruy_context());
+    op_params, getTensorShape(_input), getBuffer<float>(_input), getTensorShape(_kernel),
+    getBuffer<float>(_kernel), getTensorShape(_bias), getBuffer<float>(_bias),
+    getTensorShape(_output), getBuffer<float>(_output), _external_context->ruy_context());
 }
 
 void DepthwiseConvolutionLayer::convQuant8()
@@ -81,11 +79,9 @@ void DepthwiseConvolutionLayer::convQuant8()
   op_params.quantized_activation_max = output_activation_max;
 
   nnfw::cker::DepthwiseConv<uint8_t, int32_t>(
-    op_params, getTensorShape(_input), reinterpret_cast<const uint8_t *>(_input->buffer()),
-    getTensorShape(_kernel), reinterpret_cast<const uint8_t *>(_kernel->buffer()),
-    getTensorShape(_bias), reinterpret_cast<const int32_t *>(_bias->buffer()),
-    getTensorShape(_output), reinterpret_cast<uint8_t *>(_output->buffer()),
-    _external_context->ruy_context());
+    op_params, getTensorShape(_input), getBuffer<uint8_t>(_input), getTensorShape(_kernel),
+    getBuffer<uint8_t>(_kernel), getTensorShape(_bias), getBuffer<int32_t>(_bias),
+    getTensorShape(_output), getBuffer<uint8_t>(_output), _external_context->ruy_context());
 }
 
 void DepthwiseConvolutionLayer::configure(

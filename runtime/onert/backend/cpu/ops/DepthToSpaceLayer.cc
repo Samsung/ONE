@@ -35,9 +35,8 @@ DepthToSpaceLayer::DepthToSpaceLayer() : _input(nullptr), _block_size(0), _outpu
 
 template <typename T> void DepthToSpaceLayer::depthToSpace()
 {
-  nnfw::cker::DepthToSpace(getTensorShape(_input), reinterpret_cast<const T *>(_input->buffer()),
-                           getTensorShape(_output), reinterpret_cast<T *>(_output->buffer()),
-                           _block_size);
+  nnfw::cker::DepthToSpace(getTensorShape(_input), getBuffer<T>(_input), getTensorShape(_output),
+                           getBuffer<T>(_output), _block_size);
 }
 
 void DepthToSpaceLayer::configure(const IPortableTensor *input, const int32_t block_size,

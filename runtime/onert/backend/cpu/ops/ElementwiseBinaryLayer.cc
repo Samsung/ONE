@@ -39,16 +39,14 @@ void logicalAndGeneric(const IPortableTensor *lhs, const IPortableTensor *rhs,
 {
   if (!HaveSameShapes(lhs, rhs))
   {
-    nnfw::cker::LogicalAndBroadcast<T>(
-      getTensorShape(lhs), reinterpret_cast<const T *>(lhs->buffer()), getTensorShape(rhs),
-      reinterpret_cast<const T *>(rhs->buffer()), getTensorShape(output),
-      reinterpret_cast<T *>(output->buffer()));
+    nnfw::cker::LogicalAndBroadcast<T>(getTensorShape(lhs), getBuffer<T>(lhs), getTensorShape(rhs),
+                                       getBuffer<T>(rhs), getTensorShape(output),
+                                       getBuffer<T>(output));
   }
   else
   {
-    nnfw::cker::LogicalAndElementwise<T>(
-      getTensorShape(lhs), reinterpret_cast<const T *>(lhs->buffer()),
-      reinterpret_cast<const T *>(rhs->buffer()), reinterpret_cast<T *>(output->buffer()));
+    nnfw::cker::LogicalAndElementwise<T>(getTensorShape(lhs), getBuffer<T>(lhs), getBuffer<T>(rhs),
+                                         getBuffer<T>(output));
   }
 }
 
@@ -58,33 +56,29 @@ void logicalOrGeneric(const IPortableTensor *lhs, const IPortableTensor *rhs,
 {
   if (!HaveSameShapes(lhs, rhs))
   {
-    nnfw::cker::LogicalOrBroadcast<T>(
-      getTensorShape(lhs), reinterpret_cast<const T *>(lhs->buffer()), getTensorShape(rhs),
-      reinterpret_cast<const T *>(rhs->buffer()), getTensorShape(output),
-      reinterpret_cast<T *>(output->buffer()));
+    nnfw::cker::LogicalOrBroadcast<T>(getTensorShape(lhs), getBuffer<T>(lhs), getTensorShape(rhs),
+                                      getBuffer<T>(rhs), getTensorShape(output),
+                                      getBuffer<T>(output));
   }
   else
   {
-    nnfw::cker::LogicalOrElementwise<T>(
-      getTensorShape(lhs), reinterpret_cast<const T *>(lhs->buffer()),
-      reinterpret_cast<const T *>(rhs->buffer()), reinterpret_cast<T *>(output->buffer()));
+    nnfw::cker::LogicalOrElementwise<T>(getTensorShape(lhs), getBuffer<T>(lhs), getBuffer<T>(rhs),
+                                        getBuffer<T>(output));
   }
 }
 
 template <typename T>
 void maximumGeneric(const IPortableTensor *lhs, const IPortableTensor *rhs, IPortableTensor *output)
 {
-  nnfw::cker::Max<T>(getTensorShape(lhs), reinterpret_cast<const T *>(lhs->buffer()),
-                     getTensorShape(rhs), reinterpret_cast<const T *>(rhs->buffer()),
-                     getTensorShape(output), reinterpret_cast<T *>(output->buffer()));
+  nnfw::cker::Max<T>(getTensorShape(lhs), getBuffer<T>(lhs), getTensorShape(rhs), getBuffer<T>(rhs),
+                     getTensorShape(output), getBuffer<T>(output));
 }
 
 template <typename T>
 void minimumGeneric(const IPortableTensor *lhs, const IPortableTensor *rhs, IPortableTensor *output)
 {
-  nnfw::cker::Min<T>(getTensorShape(lhs), reinterpret_cast<const T *>(lhs->buffer()),
-                     getTensorShape(rhs), reinterpret_cast<const T *>(rhs->buffer()),
-                     getTensorShape(output), reinterpret_cast<T *>(output->buffer()));
+  nnfw::cker::Min<T>(getTensorShape(lhs), getBuffer<T>(lhs), getTensorShape(rhs), getBuffer<T>(rhs),
+                     getTensorShape(output), getBuffer<T>(output));
 }
 
 bool haveSameQauntInfo(const IPortableTensor *lhs, const IPortableTensor *rhs,

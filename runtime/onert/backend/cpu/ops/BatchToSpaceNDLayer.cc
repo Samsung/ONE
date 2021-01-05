@@ -44,12 +44,11 @@ template <typename T> void BatchToSpaceNDLayer::batchToSpaceNDGeneric()
   }
   else
   {
-    _crops_buffer = reinterpret_cast<const int32_t *>(_crops->buffer());
+    _crops_buffer = getBuffer<int32_t>(_crops);
   }
-  nnfw::cker::BatchToSpaceND<T>(
-    getTensorShape(_input), reinterpret_cast<const T *>(_input->buffer()),
-    reinterpret_cast<const int32_t *>(_block_shape->buffer()), _crops_buffer,
-    getTensorShape(_output), reinterpret_cast<T *>(_output->buffer()));
+  nnfw::cker::BatchToSpaceND<T>(getTensorShape(_input), getBuffer<T>(_input),
+                                getBuffer<int32_t>(_block_shape), _crops_buffer,
+                                getTensorShape(_output), getBuffer<T>(_output));
 }
 
 void BatchToSpaceNDLayer::configure(const IPortableTensor *input, IPortableTensor *output,

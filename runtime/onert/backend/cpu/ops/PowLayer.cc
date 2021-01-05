@@ -39,15 +39,13 @@ void PowLayer::powFloat32()
   if (!HaveSameShapes(_lhs, _rhs))
   {
     nnfw::cker::BroadcastBinaryArithmeticOp<nnfw::cker::BinaryArithmeticOpType::POW>(
-      op_params, getTensorShape(_lhs), reinterpret_cast<const float *>(_lhs->buffer()),
-      getTensorShape(_rhs), reinterpret_cast<const float *>(_rhs->buffer()),
-      getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()));
+      op_params, getTensorShape(_lhs), getBuffer<float>(_lhs), getTensorShape(_rhs),
+      getBuffer<float>(_rhs), getTensorShape(_output), getBuffer<float>(_output));
     return;
   }
 
-  nnfw::cker::powImpl(getTensorShape(_lhs), reinterpret_cast<const float *>(_lhs->buffer()),
-                      getTensorShape(_rhs), reinterpret_cast<const float *>(_rhs->buffer()),
-                      getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()));
+  nnfw::cker::powImpl(getTensorShape(_lhs), getBuffer<float>(_lhs), getTensorShape(_rhs),
+                      getBuffer<float>(_rhs), getTensorShape(_output), getBuffer<float>(_output));
 }
 
 void PowLayer::configure(const IPortableTensor *lhs, const IPortableTensor *rhs,

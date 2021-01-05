@@ -41,8 +41,8 @@ void SliceLayer::GetBeginAndSizeVectors(int dimensions, const IPortableTensor *b
 {
   for (int idx = dimensions - 1; idx >= 0; --idx)
   {
-    begins->push_back(reinterpret_cast<T *>(begin->buffer())[idx]);
-    sizes->push_back(reinterpret_cast<T *>(size->buffer())[idx]);
+    begins->push_back(getBuffer<T>(begin)[idx]);
+    sizes->push_back(getBuffer<T>(size)[idx]);
   }
 }
 
@@ -73,9 +73,8 @@ template <typename T> void SliceLayer::sliceImpl()
     op_params.size[i] = sizes[3 - i];
   }
 
-  nnfw::cker::Slice(op_params, getExtendedTensorShape(_input),
-                    reinterpret_cast<const T *>(_input->buffer()),
-                    reinterpret_cast<T *>(_output->buffer()));
+  nnfw::cker::Slice(op_params, getExtendedTensorShape(_input), getBuffer<T>(_input),
+                    getBuffer<T>(_output));
 }
 
 void SliceLayer::configure(const IPortableTensor *input, const IPortableTensor *begin,

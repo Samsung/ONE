@@ -38,7 +38,7 @@ SplitVLayer::SplitVLayer()
 template <typename T> void SplitVLayer::splitV(void)
 {
   nnfw::cker::SplitVParams op_params;
-  op_params.axis = *(reinterpret_cast<const int32_t *>(_split_dim->buffer()));
+  op_params.axis = *getBuffer<int32_t>(_split_dim);
   op_params.num_split = _num_splits;
 
   std::vector<T *> outputPtrs;
@@ -47,13 +47,13 @@ template <typename T> void SplitVLayer::splitV(void)
   for (const auto output : _outputs)
   {
     assert(output->total_size() == sizeOfData(output->data_type(), output->getShape().dims()));
-    outputPtrs.emplace_back(reinterpret_cast<T *>(output->buffer()));
+    outputPtrs.emplace_back(getBuffer<T>(output));
     outshape.emplace_back(getTensorShape(output));
   }
 
   assert(_input->total_size() == sizeOfData(_input->data_type(), _input->getShape().dims()));
-  nnfw::cker::SplitV<T>(op_params, getTensorShape(_input), reinterpret_cast<T *>(_input->buffer()),
-                        outshape, outputPtrs.data());
+  nnfw::cker::SplitV<T>(op_params, getTensorShape(_input), getBuffer<T>(_input), outshape,
+                        outputPtrs.data());
 }
 
 void SplitVLayer::configure(const IPortableTensor *input, const IPortableTensor *size_splits,

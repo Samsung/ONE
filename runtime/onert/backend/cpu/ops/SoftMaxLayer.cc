@@ -39,8 +39,7 @@ void SoftMaxLayer::softmaxFloat32()
   if (getNumberOfDimensions(_input) == 1)
   {
     uint32_t input_size = getNumberOfElements(_input);
-    nnfw::cker::Softmax(reinterpret_cast<const float *>(_input->buffer()), input_size, 1, _beta,
-                        reinterpret_cast<float *>(_output->buffer()));
+    nnfw::cker::Softmax(getBuffer<float>(_input), input_size, 1, _beta, getBuffer<float>(_output));
   }
   else if (getNumberOfDimensions(_input) == 2)
   {
@@ -49,24 +48,22 @@ void SoftMaxLayer::softmaxFloat32()
       throw std::runtime_error("batch_size should not be 0");
 
     uint32_t input_size = getNumberOfElements(_input) / batch_size;
-    nnfw::cker::Softmax(reinterpret_cast<const float *>(_input->buffer()), input_size, batch_size,
-                        _beta, reinterpret_cast<float *>(_output->buffer()));
+    nnfw::cker::Softmax(getBuffer<float>(_input), input_size, batch_size, _beta,
+                        getBuffer<float>(_output));
   }
   else if (getNumberOfDimensions(_input) == 4)
   {
     nnfw::cker::SoftmaxParams op_params;
     op_params.beta = _beta;
-    nnfw::cker::Softmax(op_params, getTensorShape(_input),
-                        reinterpret_cast<const float *>(_input->buffer()), getTensorShape(_output),
-                        reinterpret_cast<float *>(_output->buffer()));
+    nnfw::cker::Softmax(op_params, getTensorShape(_input), getBuffer<float>(_input),
+                        getTensorShape(_output), getBuffer<float>(_output));
   }
   else
   {
     nnfw::cker::SoftmaxParams op_params;
     op_params.beta = _beta;
-    nnfw::cker::reference::Softmax(
-      op_params, getTensorShape(_input), reinterpret_cast<const float *>(_input->buffer()),
-      getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()));
+    nnfw::cker::reference::Softmax(op_params, getTensorShape(_input), getBuffer<float>(_input),
+                                   getTensorShape(_output), getBuffer<float>(_output));
   }
 }
 
@@ -80,13 +77,11 @@ template <typename T> void SoftMaxLayer::softmaxQuant8()
   op_params.table = _table;
 
 #ifdef TFLITE_SOFTMAX_USE_UINT16_LUT
-  nnfw::cker::SoftmaxInt8LUT<T, T>(
-    op_params, getTensorShape(_input), reinterpret_cast<const T *>(_input->buffer()),
-    getTensorShape(_output), reinterpret_cast<T *>(_output->buffer()));
+  nnfw::cker::SoftmaxInt8LUT<T, T>(op_params, getTensorShape(_input), getBuffer<T>(_input),
+                                   getTensorShape(_output), getBuffer<T>(_output));
 #else
-  nnfw::cker::Softmax<T, T>(op_params, getTensorShape(_input),
-                            reinterpret_cast<const T *>(_input->buffer()), getTensorShape(_output),
-                            reinterpret_cast<T *>(_output->buffer()));
+  nnfw::cker::Softmax<T, T>(op_params, getTensorShape(_input), getBuffer<T>(_input),
+                            getTensorShape(_output), getBuffer<T>(_output));
 #endif
 }
 

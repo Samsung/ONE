@@ -35,9 +35,8 @@ PadLayer::PadLayer()
 
 template <typename T> void PadLayer::padImpl(const T *constant_value_data)
 {
-  nnfw::cker::Pad<T>(_padData, _padRank, getTensorShape(_input),
-                     reinterpret_cast<const T *>(_input->buffer()), getTensorShape(_output),
-                     reinterpret_cast<T *>(_output->buffer()), constant_value_data);
+  nnfw::cker::Pad<T>(_padData, _padRank, getTensorShape(_input), getBuffer<T>(_input),
+                     getTensorShape(_output), getBuffer<T>(_output), constant_value_data);
 }
 
 void PadLayer::configure(const IPortableTensor *input, IPortableTensor *output,
