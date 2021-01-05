@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+#if 0 // This file is temporarily unused
+
 #ifndef __ONERT_COMPILER_FP32_TO_FP16_CONVERTER_H__
 #define __ONERT_COMPILER_FP32_TO_FP16_CONVERTER_H__
 
@@ -99,3 +101,5 @@ private:
 } // namespace onert
 
 #endif // __ONERT_COMPILER_FP32_TO_FP16_CONVERTER_H__
+
+#endif

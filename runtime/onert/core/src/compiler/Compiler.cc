@@ -19,7 +19,6 @@
 #include "ParamChecker.h"
 #include "ExecutorFactory.h"
 #include "ShapeValidator.h"
-#include "Fp32ToFp16Converter.h"
 
 #include <backend/builtin/Config.h>
 #include "compiler/BackendManager.h"
@@ -233,22 +232,6 @@ std::shared_ptr<exec::ExecutorMap> Compiler::compile(void)
 
     // Lower: Assign backend
     lowered_subgs[index] = std::make_unique<compiler::LoweredGraph>(subg, _options);
-
-    // Check backend(s) for subgraph support FP16
-    bool backends_support_fp16 = true;
-    auto all_backends = BackendManager::get().getAll();
-    for (auto backend : all_backends)
-    {
-      // Builtin backend is not for actual computaion of operations so it is an exception
-      if (backend->config()->id() != backend::builtin::Config::ID)
-        backends_support_fp16 &= backend->config()->supportFP16();
-    }
-
-    if (_options.fp16_enable && backends_support_fp16)
-    {
-      // NOTE: the only acl_cl backend enables fp16 mode
-      Fp32ToFp16Converter(*lowered_subgs[index]).run();
-    }
 
     subg.setSubgraphs(nullptr);
   });
