@@ -1,0 +1,161 @@
+#!/usr/bin/env bash
+''''export SCRIPT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"                  # '''
+''''export PY_PATH=${SCRIPT_PATH}/venv/bin/python                                       # '''
+''''test -f ${PY_PATH} && exec ${PY_PATH} "$0" "$@"                                     # '''
+''''echo "Error: Virtual environment not found. Please run 'one-prepare-venv' command." # '''
+''''exit 255                                                                            # '''
+
+# Copyright (c) 2021 Samsung Electronics Co., Ltd. All Rights Reserved
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import argparse
+import os
+import subprocess
+import sys
+import tempfile
+import onnx
+import onnx_tf
+
+import utils as _utils
+
+
+def _get_parser():
+    parser = argparse.ArgumentParser(
+        description='command line tool to convert TensorFlow to circle')
+
+    _utils._add_default_arg(parser)
+
+    ## tf2tfliteV2 arguments
+    tf2tfliteV2_group = parser.add_argument_group('converter arguments')
+
+    # input and output path.
+    tf2tfliteV2_group.add_argument(
+        '-i', '--input_path', type=str, help='full filepath of the input file')
+    tf2tfliteV2_group.add_argument(
+        '-o', '--output_path', type=str, help='full filepath of the output file')
+
+    # input and output arrays.
+    tf2tfliteV2_group.add_argument(
+        '-I',
+        '--input_arrays',
+        type=str,
+        help='names of the input arrays, comma-separated')
+    tf2tfliteV2_group.add_argument(
+        '-O',
+        '--output_arrays',
+        type=str,
+        help='names of the output arrays, comma-separated')
+
+    # fixed options
+    tf2tfliteV2_group.add_argument('--model_format', default='v2')
+    tf2tfliteV2_group.add_argument('--converter_version', default='saved_model')
+
+    return parser
+
+
+def _verify_arg(parser, args):
+    """verify given arguments"""
+    # check if required arguments is given
+    missing = []
+    if not _utils._is_valid_attr(args, 'input_path'):
+        missing.append('-i/--input_path')
+    if not _utils._is_valid_attr(args, 'output_path'):
+        missing.append('-o/--output_path')
+    if len(missing):
+        parser.error('the following arguments are required: ' + ' '.join(missing))
+
+
+def _parse_arg(parser):
+    args = parser.parse_args()
+    # print version
+    if args.version:
+        _utils._print_version_and_exit(__file__)
+
+    return args
+
+
+def _convert(args):
+    # get file path to log
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    logfile_path = os.path.realpath(args.output_path) + '.log'
+
+    with open(logfile_path, 'wb') as f, tempfile.TemporaryDirectory() as tmpdir:
+        # convert onnx to tf saved model
+        onnx_model = onnx.load(getattr(args, 'input_path'))
+        tf_savedmodel = onnx_tf.backend.prepare(onnx_model)
+
+        savedmodel_name = os.path.splitext(os.path.basename(
+            args.output_path))[0] + '.savedmodel'
+        savedmodel_output_path = os.path.join(tmpdir, savedmodel_name)
+        tf_savedmodel.export_graph(savedmodel_output_path)
+
+        # make a command to convert from tf to tflite
+        tf2tfliteV2_path = os.path.join(dir_path, 'tf2tfliteV2.py')
+        tf2tfliteV2_output_name = os.path.splitext(os.path.basename(
+            args.output_path))[0] + '.tflite'
+        tf2tfliteV2_output_path = tf2tfliteV2_output_name  # os.path.join(tmpdir, tf2tfliteV2_output_name)
+
+        tf2tfliteV2_cmd = _utils._make_tf2tfliteV2_cmd(
+            args, tf2tfliteV2_path, savedmodel_output_path, tf2tfliteV2_output_path)
+
+        f.write((' '.join(tf2tfliteV2_cmd) + '\n').encode())
+
+        # convert tf to tflite
+        with subprocess.Popen(
+                tf2tfliteV2_cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                bufsize=1) as p:
+            for line in p.stdout:
+                sys.stdout.buffer.write(line)
+                f.write(line)
+        if p.returncode != 0:
+            sys.exit(p.returncode)
+
+        # make a command to convert from tflite to circle
+        tflite2circle_path = os.path.join(dir_path, 'tflite2circle')
+        tflite2circle_cmd = _utils._make_tflite2circle_cmd(tflite2circle_path,
+                                                           tf2tfliteV2_output_path,
+                                                           getattr(args, 'output_path'))
+
+        f.write((' '.join(tflite2circle_cmd) + '\n').encode())
+
+        # convert tflite to circle
+        with subprocess.Popen(
+                tflite2circle_cmd,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
+                bufsize=1) as p:
+            for line in p.stdout:
+                sys.stdout.buffer.write(line)
+                f.write(line)
+        if p.returncode != 0:
+            sys.exit(p.returncode)
+
+
+def main():
+    # parse arguments
+    parser = _get_parser()
+    args = _parse_arg(parser)
+
+    # parse configuration file
+    _utils._parse_cfg(args, 'one-import-onnx')
+
+    # verify arguments
+    _verify_arg(parser, args)
+
+    # convert
+    _convert(args)
+
+
+if __name__ == '__main__':
+    main()
