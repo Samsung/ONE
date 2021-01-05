@@ -76,15 +76,11 @@ CompilerOptions fetchCompilerOptionsFromGlobalConfig(const ir::Subgraphs &subgs)
   options.backend_list = nnfw::misc::split(util::getConfigString(util::config::BACKENDS), ';');
   options.trace_filepath = util::getConfigString(util::config::TRACE_FILEPATH);
   options.graph_dump_level = util::getConfigInt(util::config::GRAPH_DOT_DUMP);
-  options.op_seq_max_node = util::getConfigInt(util::config::OP_SEQ_MAX_NODE);
   options.executor = util::getConfigString(util::config::EXECUTOR);
   options.he_scheduler = util::getConfigBool(util::config::USE_SCHEDULER);
   options.he_profiling_mode = util::getConfigBool(util::config::PROFILING_MODE);
   options.disable_compile = util::getConfigBool(util::config::DISABLE_COMPILE);
   options.fp16_enable = util::getConfigBool(util::config::FP16_ENABLE);
-#ifdef RUY_PROFILER
-  options.op_seq_max_node = 1;
-#endif
 
   {
     // Backend for all
@@ -176,7 +172,6 @@ std::shared_ptr<exec::ExecutorMap> Compiler::compile(void)
                       << std::endl;
     VERBOSE(Compiler) << "trace_filepath           : " << _options.trace_filepath << std::endl;
     VERBOSE(Compiler) << "graph_dump_level         : " << _options.graph_dump_level << std::endl;
-    VERBOSE(Compiler) << "op_seq_max_node          : " << _options.op_seq_max_node << std::endl;
     VERBOSE(Compiler) << "executor                 : " << _options.executor << std::endl;
     VERBOSE(Compiler) << "manual backend_for_all   : "
                       << _options.manual_scheduler_options.backend_for_all << std::endl;

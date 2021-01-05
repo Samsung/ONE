@@ -840,10 +840,6 @@ NNFW_STATUS nnfw_session::set_config(const char *key, const char *value)
   {
     options.graph_dump_level = toInt(value);
   }
-  else if (skey == config::OP_SEQ_MAX_NODE)
-  {
-    options.op_seq_max_node = toInt(value);
-  }
   else if (skey == config::EXECUTOR)
   {
     options.executor = value;
