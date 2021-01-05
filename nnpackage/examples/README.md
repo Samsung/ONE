@@ -20,12 +20,12 @@
 - Only one `ADD` operation
 - Invalid menifest: invalid json format
 
-### if_dynmic
+### if_dynamic
 
 - Model file: TensorFlow Lite model
 - `IF` operation example with input and output example
 
-### while_dynmic
+### while_dynamic
 
 - Model file: TensorFlow Lite model
 - `WHILE` operation example with input and output example
