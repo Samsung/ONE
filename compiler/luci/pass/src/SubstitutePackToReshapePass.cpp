@@ -21,6 +21,17 @@
 namespace
 {
 
+int32_t unknown_dim_count(luci::CircleNode *node)
+{
+  int32_t count = 0;
+
+  for (uint32_t i = 0; i < node->rank(); ++i)
+    if (!node->dim(i).known())
+      ++count;
+
+  return count;
+}
+
 bool substitute_pack_to_reshape(luci::CircleNode *node)
 {
   auto target_node = dynamic_cast<luci::CirclePack *>(node);
@@ -53,11 +64,13 @@ bool substitute_pack_to_reshape(luci::CircleNode *node)
     }
     else if (i < axis)
     {
-      const_node->at<loco::DataType::S32>(i) = value_node->dim(i).value();
+      const_node->at<loco::DataType::S32>(i) =
+        value_node->dim(i).known() ? value_node->dim(i).value() : -1;
     }
     else
     {
-      const_node->at<loco::DataType::S32>(i) = value_node->dim(i - 1).value();
+      const_node->at<loco::DataType::S32>(i) =
+        value_node->dim(i - 1).known() ? value_node->dim(i - 1).value() : -1;
     }
   }
   reshape_node->shape(const_node);
@@ -96,7 +109,7 @@ bool SubstitutePackToReshapePass::run(loco::Graph *g)
   for (auto node : loco::active_nodes(loco::output_nodes(g)))
   {
     auto circle_node = loco::must_cast<luci::CircleNode *>(node);
-    if (substitute_pack_to_reshape(circle_node))
+    if (unknown_dim_count(circle_node) <= 1 && substitute_pack_to_reshape(circle_node))
     {
       changed = true;
     }
