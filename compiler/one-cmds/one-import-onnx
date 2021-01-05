@@ -58,8 +58,8 @@ def _get_parser():
         help='names of the output arrays, comma-separated')
 
     # fixed options
-    tf2tfliteV2_group.add_argument('--model_format', default='v2')
-    tf2tfliteV2_group.add_argument('--converter_version', default='saved_model')
+    tf2tfliteV2_group.add_argument('--model_format', default='saved_model')
+    tf2tfliteV2_group.add_argument('--converter_version', default='v2')
 
     return parser
 
