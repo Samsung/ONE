@@ -42,7 +42,6 @@
 // TODO add more passes
 
 #include "luci/Pass/ShapeInferencePass.h"
-#include "luci/Pass/ShapeSignatureInferencePass.h"
 #include "luci/Pass/TypeInferencePass.h"
 
 // Following passes will be removed after refactoring is finished
@@ -146,7 +145,6 @@ void CircleOptimizer::optimize(luci::Module *m) const
 
   // Following passes are needed everytime when other passes create new node or modify some nodes.
   phase.emplace_back(std::make_unique<luci::ShapeInferencePass>());
-  phase.emplace_back(std::make_unique<luci::ShapeSignatureInferencePass>());
   phase.emplace_back(std::make_unique<luci::TypeInferencePass>());
 
   if (_options->query(Options::Algorithm::FuseBCQ))
@@ -173,7 +171,6 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   // Following passes are needed everytime when other passes create new node or modify some nodes.
   phase.emplace_back(std::make_unique<luci::TypeInferencePass>());
   phase.emplace_back(std::make_unique<luci::ShapeInferencePass>());
-  phase.emplace_back(std::make_unique<luci::ShapeSignatureInferencePass>());
 
   if (_options->query(Options::Algorithm::ResolveCustomOpAdd))
   {
