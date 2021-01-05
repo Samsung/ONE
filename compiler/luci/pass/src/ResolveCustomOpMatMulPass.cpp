@@ -142,15 +142,13 @@ bool resolve_matmul(luci::CircleCustom *cop)
     rhs = transpose_node;
   }
 
-  // Make a constant zero-filled bias node
-  auto circle_b = loco::must_cast<luci::CircleNode *>(cop->inputs(1));
-  uint32_t bias_size = circle_b->dim(transpose_b ? 1 : 0).value();
-  const std::vector<float> val(bias_size, .0f);
-  auto bias_node = create_const_node(graph, lhs_dtype, {bias_size}, val);
+  auto empty_bias = graph->nodes()->create<luci::CircleOutputExclude>();
+  empty_bias->dtype(loco::DataType::FLOAT32); // Needed for type inference
+
   auto fc_node = graph->nodes()->create<luci::CircleFullyConnected>();
   fc_node->input(lhs);
   fc_node->weights(rhs);
-  fc_node->bias(bias_node);
+  fc_node->bias(empty_bias);
   fc_node->fusedActivationFunction(luci::FusedActFunc::NONE);
 
   replace(cop).with(fc_node);
