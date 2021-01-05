@@ -160,11 +160,12 @@ luci::CircleConst *create_NHWC_from_NCHW(luci::CircleConst *constant)
   return nhwc_const;
 }
 
-// We assume MUL is NCHW if,
-// Input shape: (N, C, H, W)
-// Output shape: (N, C, H, W)
-// 1. Const shape is (1, C, 1, 1)
-// 2. Input, Output, Const have the same C.
+// NOTE Following conditions can be extended later
+//
+// Find MUL with an NCHW pattern described below
+//   - Input (non-constant) shape : [N, C, H, W]
+//   - Input (constant) shape : [1, C, 1, 1]
+//   - Output shape : [N, C, H, W]
 bool is_NCHW_with_const(const luci::CircleMul *node, luci::CircleNode *&pred_node,
                         luci::CircleConst *&multiplier)
 {
@@ -193,10 +194,7 @@ bool is_NCHW_with_const(const luci::CircleMul *node, luci::CircleNode *&pred_nod
 
   for (uint32_t i = 0; i < const_rank; i++)
   {
-    if (i == 1)
-      continue;
-
-    if (multiplier->dim(i).value() != 1)
+    if (i != 1 && multiplier->dim(i).value() != 1)
       return false;
   }
 
