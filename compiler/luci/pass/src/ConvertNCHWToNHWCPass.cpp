@@ -121,6 +121,12 @@ luci::CircleConst *create_NHWC_paddings(luci::CircleConst *paddings)
   assert(paddings->dim(0).value() == 4);
   assert(paddings->dim(1).value() == 2);
 
+  // paddings for idx 0~3 are 0 (checked by is_NCHW)
+  assert(paddings->at<loco::DataType::S32>(0) == 0);
+  assert(paddings->at<loco::DataType::S32>(1) == 0);
+  assert(paddings->at<loco::DataType::S32>(2) == 0);
+  assert(paddings->at<loco::DataType::S32>(3) == 0);
+
   auto nhwc_paddings = paddings->graph()->nodes()->create<luci::CircleConst>();
   nhwc_paddings->dtype(loco::DataType::S32);
   nhwc_paddings->shape({4, 2});
