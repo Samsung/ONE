@@ -128,6 +128,12 @@ int entry(int argc, char **argv)
     .default_value(false)
     .help("This will remove unnecessary split operators");
 
+  arser.add_argument("--remove_unnecessary_reshape")
+    .nargs(0)
+    .required(false)
+    .default_value(false)
+    .help("This will remove unnecessary reshape operators");
+
   arser.add_argument("--replace_cw_mul_add_with_depthwise_conv")
     .nargs(0)
     .required(false)
@@ -258,6 +264,8 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::RemoveUnnecessarySlice);
   if (arser.get<bool>("--remove_unnecessary_split"))
     options->enable(Algorithms::RemoveUnnecessarySplit);
+  if (arser.get<bool>("--remove_unnecessary_reshape"))
+    options->enable(Algorithms::RemoveUnnecessaryReshape);
   if (arser.get<bool>("--replace_cw_mul_add_with_depthwise_conv"))
     options->enable(Algorithms::ReplaceMulAddWithDepthwiseConv);
   if (arser.get<bool>("--resolve_customop_add"))

@@ -29,6 +29,7 @@
 #include "luci/Pass/RemoveRedundantTransposePass.h"
 #include "luci/Pass/RemoveUnnecessarySlicePass.h"
 #include "luci/Pass/RemoveUnnecessarySplitPass.h"
+#include "luci/Pass/RemoveUnnecessaryReshapePass.h"
 #include "luci/Pass/ReplaceMulAddWithDepthwiseConvPass.h"
 #include "luci/Pass/ResolveCustomOpAddPass.h"
 #include "luci/Pass/ResolveCustomOpBatchMatMulPass.h"
