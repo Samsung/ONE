@@ -125,14 +125,32 @@ def _make_circle2circle_cmd(args, driver_path, input_path, output_path):
         cmd.append('--fuse_batchnorm_with_tconv')
     if _is_valid_attr(args, 'fuse_bcq'):
         cmd.append('--fuse_bcq')
+    if _is_valid_attr(args, 'fuse_preactivation_batchnorm'):
+        cmd.append('--fuse_preactivation_batchnorm')
+    if _is_valid_attr(args, 'make_batchnorm_gamma_positive'):
+        cmd.append('--make_batchnorm_gamma_positive')
+    if _is_valid_attr(args, 'fuse_activation_function'):
+        cmd.append('--fuse_activation_function')
     if _is_valid_attr(args, 'fuse_instnorm'):
         cmd.append('--fuse_instnorm')
+    if _is_valid_attr(args, 'replace_cw_mul_add_with_depthwise_conv'):
+        cmd.append('--replace_cw_mul_add_with_depthwise_conv')
+    if _is_valid_attr(args, 'remove_redundant_transpose'):
+        cmd.append('--remove_redundant_transpose')
+    if _is_valid_attr(args, 'remove_unnecessary_slice'):
+        cmd.append('--remove_unnecessary_slice')
+    if _is_valid_attr(args, 'remove_unnecessary_split'):
+        cmd.append('--remove_unnecessary_split')
     if _is_valid_attr(args, 'resolve_customop_add'):
         cmd.append('--resolve_customop_add')
     if _is_valid_attr(args, 'resolve_customop_batchmatmul'):
         cmd.append('--resolve_customop_batchmatmul')
     if _is_valid_attr(args, 'resolve_customop_matmul'):
         cmd.append('--resolve_customop_matmul')
+    if _is_valid_attr(args, 'shuffle_weight_to_16x1float32'):
+        cmd.append('--shuffle_weight_to_16x1float32')
+    if _is_valid_attr(args, 'substitute_pack_to_reshape'):
+        cmd.append('--substitute_pack_to_reshape')
 
     return cmd
 

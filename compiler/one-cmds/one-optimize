@@ -77,6 +77,18 @@ def _get_parser():
         action='store_true',
         help='replace channel-wise Mul/Add with DepthwiseConv2D')
     circle2circle_group.add_argument(
+        '--remove_redundant_transpose',
+        action='store_true',
+        help='fuse or remove subsequent Transpose ops')
+    circle2circle_group.add_argument(
+        '--remove_unnecessary_slice',
+        action='store_true',
+        help='remove unnecessary slice ops')
+    circle2circle_group.add_argument(
+        '--remove_unnecessary_split',
+        action='store_true',
+        help='remove unnecessary split ops')
+    circle2circle_group.add_argument(
         '--resolve_customop_add',
         action='store_true',
         help='convert Custom(Add) op to Add op')
@@ -88,6 +100,15 @@ def _get_parser():
         '--resolve_customop_matmul',
         action='store_true',
         help='convert Custom(Matmul) op to Matmul op')
+    circle2circle_group.add_argument(
+        '--shuffle_weight_to_16x1float32',
+        action='store_true',
+        help="""convert weight format of FullyConnected op to SHUFFLED16x1FLOAT32.
+        Note that it only converts weights whose row is a multiple of 16""")
+    circle2circle_group.add_argument(
+        '--substitute_pack_to_reshape',
+        action='store_true',
+        help='convert single input Pack op to Reshape op')
 
     return parser
 
