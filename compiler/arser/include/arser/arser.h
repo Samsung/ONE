@@ -369,7 +369,8 @@ template <typename T> T Arser::get_impl(const std::string &arg_name, T *)
   auto arg = _arg_map.find(arg_name);
   if (arg == _arg_map.end())
     throw std::runtime_error("Invalid argument. "
-                             "There is no argument you are looking for.");
+                             "There is no argument you are looking for: " +
+                             arg_name);
 
   if (arg->second->_type != TypeName<T>::Get())
     throw std::runtime_error("Type mismatch. "

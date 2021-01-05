@@ -97,14 +97,14 @@ def _convert(args):
 
         savedmodel_name = os.path.splitext(os.path.basename(
             args.output_path))[0] + '.savedmodel'
-        savedmodel_output_path = os.path.join(tmpdir, savedmodel_name)
+        savedmodel_output_path = savedmodel_name  # os.path.join(tmpdir, savedmodel_name)
         tf_savedmodel.export_graph(savedmodel_output_path)
 
         # make a command to convert from tf to tflite
         tf2tfliteV2_path = os.path.join(dir_path, 'tf2tfliteV2.py')
         tf2tfliteV2_output_name = os.path.splitext(os.path.basename(
             args.output_path))[0] + '.tflite'
-        tf2tfliteV2_output_path = os.path.join(tmpdir, tf2tfliteV2_output_name)
+        tf2tfliteV2_output_path = tf2tfliteV2_output_name  # os.path.join(tmpdir, tf2tfliteV2_output_name)
 
         tf2tfliteV2_cmd = _utils._make_tf2tfliteV2_cmd(
             args, tf2tfliteV2_path, savedmodel_output_path, tf2tfliteV2_output_path)
