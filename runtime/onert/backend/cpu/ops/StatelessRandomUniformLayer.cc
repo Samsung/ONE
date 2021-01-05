@@ -43,8 +43,8 @@ void StatelessRandomUniformLayer::configure(const IPortableTensor *shape,
 
 void StatelessRandomUniformLayer::StatelessRandomUniformFloat32()
 {
-  nnfw::cker::StatelessRandomUniform(getShape(_shape), getBuffer<int>(_shape), getShape(_seed),
-                                     getBuffer<int>(_seed), getShape(_output),
+  nnfw::cker::StatelessRandomUniform(getShape(_shape), getBuffer<int32_t>(_shape), getShape(_seed),
+                                     getBuffer<int32_t>(_seed), getShape(_output),
                                      getBuffer<float>(_output));
 }
 

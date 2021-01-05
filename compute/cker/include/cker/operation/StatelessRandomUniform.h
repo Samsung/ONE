@@ -72,8 +72,8 @@ void Fill(random::PhiloxRandom random, Tensor *output)
                                                     Distribution());
 }
 
-inline void StatelessRandomUniform(const Shape &shape_shape, const int *shape_data,
-                                   const Shape &seed_shape, const int *seed_data,
+inline void StatelessRandomUniform(const Shape &shape_shape, const int32_t *shape_data,
+                                   const Shape &seed_shape, const int32_t *seed_data,
                                    const Shape &output_shape, float *output_data)
 {
   Tensor shape_t;

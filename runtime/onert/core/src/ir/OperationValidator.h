@@ -74,6 +74,7 @@ public:
   void visit(const operation::SpaceToDepth &node) override;
   void visit(const operation::Split &node) override;
   void visit(const operation::SquaredDifference &node) override;
+  void visit(const operation::StatelessRandomUniform &node) override;
   void visit(const operation::StridedSlice &node) override;
   void visit(const operation::TransposeConv &node) override;
   void visit(const operation::Unpack &node) override;
