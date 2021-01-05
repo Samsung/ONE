@@ -114,18 +114,15 @@ bool validate_shape_dtype(loco::Graph *g)
     bool is_shape_valid = (circle_node->rank() == go_tensor_shape->rank());
     for (uint32_t i = 0; is_shape_valid && i < circle_node->rank(); ++i)
     {
-      if (circle_node->dim(i).value() != go_tensor_shape->dim(i).value())
+      if (!circle_node->dim(i).known() || !go_tensor_shape->dim(i).known())
       {
-        if (!circle_node->dim(i).known() || !go_tensor_shape->dim(i).known())
-        {
-          // If at least one of two dimensions is unknown,
-          // the unknown dimension can accept any value.
-          INFO(l) << "Unknown dimension is matched with known dimension" << std::endl;
-        }
-        else
-        {
-          is_shape_valid = false;
-        }
+        // If at least one of two dimensions is unknown,
+        // the unknown dimension can accept any value.
+        INFO(l) << "Unknown dimension is matched with known dimension" << std::endl;
+      }
+      else if (circle_node->dim(i).value() != go_tensor_shape->dim(i).value())
+      {
+        is_shape_valid = false;
       }
     }
 
