@@ -36,6 +36,8 @@ loco::DataType str_to_dtype(const std::string &);
 
 QuantizationGranularity str_to_granularity(const std::string &);
 
+bool has_dynamic_shape(const loco::Node *node);
+
 } // namespace luci
 
 #endif // __LUCI_CIRCLE_OPTIMIZER_UTILS_H__
