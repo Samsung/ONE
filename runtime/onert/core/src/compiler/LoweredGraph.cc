@@ -237,9 +237,7 @@ void LoweredGraph::makeOpSequences(
   ir::OperandIndexMap<std::unique_ptr<compiler::OperandLowerInfo>> &operands_lower_info,
   const CompilerOptions &options, const BackendResolver &backend_resolver)
 {
-  // if SUBG_MAX_NODE == 0, no limit on nodes of a op_seq
-  const int op_seq_max_node = options.op_seq_max_node;
-  assert(op_seq_max_node >= 0);
+  const int op_seq_max_node = 1;
 
   bool is_profiling = options.he_profiling_mode;
   ir::OpSequence *op_seq = nullptr;

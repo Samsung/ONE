@@ -53,7 +53,6 @@ struct CompilerOptions
   // OPTIONS ONLY FOR DEBUGGING/PROFILING
   std::string trace_filepath; //< File path to save trace records
   int graph_dump_level;       //< Graph dump level, values between 0 and 2 are valid
-  int op_seq_max_node;        //< Number of nodes that can be
   std::string executor;       //< Executor name to use
   ManualSchedulerOptions manual_scheduler_options; //< Options for ManualScheduler
   bool he_scheduler;      //< HEScheduler if true, ManualScheduler otherwise

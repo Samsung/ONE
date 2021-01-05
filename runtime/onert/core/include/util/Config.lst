@@ -31,7 +31,6 @@ CONFIG(ACL_LAYOUT              , std::string  , "none")
 CONFIG(NCNN_LAYOUT             , std::string  , "NCHW")
 CONFIG(PROFILING_MODE          , bool         , "0")
 CONFIG(USE_SCHEDULER           , bool         , "0")
-CONFIG(OP_SEQ_MAX_NODE         , int          , "0")
 CONFIG(TRACE_FILEPATH          , std::string  , "")
 CONFIG(FP16_ENABLE             , bool         , "0")
 CONFIG(RUY_THREADS             , int          , "-1")
@@ -44,4 +43,3 @@ CONFIG(USE_MMAPED_DATA         , bool         , "0")
     CONFIG(OP_BACKEND_ ## InternalName, std::string, "")
 #include "ir/Operations.lst"
 #undef OP
-
