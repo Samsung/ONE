@@ -107,10 +107,27 @@ bool validate_shape_dtype(loco::Graph *g)
     auto go_tensor_shape = graph_out->shape();
     assert(go_tensor_shape);
 
+    // NOTE Even if shape of graph output is [] (which means "shape inference was impossible")
+    //      but shape of CircleNode is not, it can be valid case because shape inference
+    //      algorithm of CircleNode may be upgraded than before. The opposite is possible either.
+    //      If such cases are appeared, following validation code should be fixed.
     bool is_shape_valid = (circle_node->rank() == go_tensor_shape->rank());
     for (uint32_t i = 0; is_shape_valid && i < circle_node->rank(); ++i)
+    {
       if (circle_node->dim(i).value() != go_tensor_shape->dim(i).value())
-        is_shape_valid = false;
+      {
+        if (!circle_node->dim(i).known() || !go_tensor_shape->dim(i).known())
+        {
+          // If at least one of two dimensions is unknown,
+          // the unknown dimension can accept any value.
+          INFO(l) << "Unknown dimension is matched with known dimension" << std::endl;
+        }
+        else
+        {
+          is_shape_valid = false;
+        }
+      }
+    }
 
     if (is_shape_valid == false)
     {
