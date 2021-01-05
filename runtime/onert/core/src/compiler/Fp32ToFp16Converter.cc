@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+#if 0 // This file is temporarily unused
+
 #include "Fp32ToFp16Converter.h"
 #include "ir/operation/ConvertFp32ToFp16.h"
 #include "ir/operation/ConvertFp16ToFp32.h"
@@ -950,3 +952,5 @@ void Fp32ToFp16Converter::deleteContiguousOpSequences(
 } // namespace compiler
 
 } // namespace onert
+
+#endif
