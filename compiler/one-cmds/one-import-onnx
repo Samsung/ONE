@@ -32,7 +32,7 @@ import utils as _utils
 
 def _get_parser():
     parser = argparse.ArgumentParser(
-        description='command line tool to convert TensorFlow to circle')
+        description='command line tool to convert ONNX to circle')
 
     _utils._add_default_arg(parser)
 
