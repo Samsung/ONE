@@ -132,6 +132,38 @@ public:
   luci::CircleConst *beta = nullptr;
 };
 
+class MulGraph final : public SimpleGraph
+{
+protected:
+  loco::Node *insertGraphBody(loco::Node *input) override
+  {
+    mul = g.nodes()->create<luci::CircleMul>();
+    multiplier = g.nodes()->create<luci::CircleConst>();
+
+    mul->dtype(loco::DataType::FLOAT32);
+    multiplier->dtype(loco::DataType::FLOAT32);
+
+    uint32_t channel_size = 16;
+    mul->shape({1, channel_size, 4, 4});
+    multiplier->shape({1, channel_size, 1, 1});
+
+    multiplier->size<loco::DataType::FLOAT32>(channel_size);
+    for (uint32_t i = 0; i < channel_size; i++)
+    {
+      multiplier->at<loco::DataType::FLOAT32>(i) = i;
+    }
+
+    mul->x(input);
+    mul->y(multiplier);
+
+    return mul;
+  }
+
+public:
+  luci::CircleMul *mul = nullptr;
+  luci::CircleConst *multiplier = nullptr;
+};
+
 void check_pre_trans(loco::Node *node)
 {
   auto pre_trans = dynamic_cast<luci::CircleTranspose *>(node);
@@ -205,6 +237,35 @@ TEST(ConvertNCHWToNHWC, Add)
   EXPECT_EQ(1, new_beta->dim(1).value());
   EXPECT_EQ(1, new_beta->dim(2).value());
   EXPECT_EQ(channel_size, new_beta->dim(3).value());
+
+  check_pre_trans(g.output->from());
+}
+
+TEST(ConvertNCHWToNHWC, Mul)
+{
+  MulGraph g;
+  g.init();
+
+  run_phase(&g.g);
+
+  auto input_succs = loco::succs(g.input);
+  EXPECT_EQ(1, input_succs.size());
+  check_post_trans(*input_succs.begin());
+
+  check_pre_trans(g.mul->x());
+
+  auto mul_succs = loco::succs(g.mul);
+  EXPECT_EQ(1, mul_succs.size());
+  check_post_trans(*mul_succs.begin());
+
+  uint32_t channel_size = 16;
+  auto new_multiplier = dynamic_cast<luci::CircleConst *>(g.mul->y());
+  EXPECT_NE(nullptr, new_multiplier);
+  EXPECT_EQ(4, new_multiplier->rank());
+  EXPECT_EQ(1, new_multiplier->dim(0).value());
+  EXPECT_EQ(1, new_multiplier->dim(1).value());
+  EXPECT_EQ(1, new_multiplier->dim(2).value());
+  EXPECT_EQ(channel_size, new_multiplier->dim(3).value());
 
   check_pre_trans(g.output->from());
 }
