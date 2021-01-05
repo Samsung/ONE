@@ -164,6 +164,50 @@ public:
   luci::CircleConst *multiplier = nullptr;
 };
 
+class PadGraph final : public SimpleGraph
+{
+protected:
+  loco::Node *insertGraphBody(loco::Node *input) override
+  {
+    pad = g.nodes()->create<luci::CirclePad>();
+    paddings = g.nodes()->create<luci::CircleConst>();
+
+    pad->dtype(loco::DataType::FLOAT32);
+    paddings->dtype(loco::DataType::S32);
+
+    uint32_t channel_size = 16;
+    pad->shape({1, channel_size, 4, 4});
+    paddings->shape({4, 2});
+
+    // paddings data (NCHW)
+    // [[0,0], [0,0], [1,1], [2,2]]
+    paddings->size<loco::DataType::S32>(8);
+    for (uint32_t dim = 0; dim < 4; dim++)
+    {
+      for (uint32_t i = 0; i < 2; i++)
+      {
+        int32_t data = 0;
+
+        if (dim == 2)
+          data = 1;
+        else if (dim == 3)
+          data = 2;
+
+        paddings->at<loco::DataType::S32>(dim * 2 + i) = data;
+      }
+    }
+
+    pad->input(input);
+    pad->paddings(paddings);
+
+    return pad;
+  }
+
+public:
+  luci::CirclePad *pad = nullptr;
+  luci::CircleConst *paddings = nullptr;
+};
+
 void check_pre_trans(loco::Node *node)
 {
   auto pre_trans = dynamic_cast<luci::CircleTranspose *>(node);
@@ -266,6 +310,40 @@ TEST(ConvertNCHWToNHWC, Mul)
   EXPECT_EQ(1, new_multiplier->dim(1).value());
   EXPECT_EQ(1, new_multiplier->dim(2).value());
   EXPECT_EQ(channel_size, new_multiplier->dim(3).value());
+
+  check_pre_trans(g.output->from());
+}
+
+TEST(ConvertNCHWToNHWC, Pad)
+{
+  PadGraph g;
+  g.init();
+
+  run_phase(&g.g);
+
+  auto input_succs = loco::succs(g.input);
+  EXPECT_EQ(1, input_succs.size());
+  check_post_trans(*input_succs.begin());
+
+  check_pre_trans(g.pad->input());
+
+  auto pad_succs = loco::succs(g.pad);
+  EXPECT_EQ(1, pad_succs.size());
+  check_post_trans(*pad_succs.begin());
+
+  auto new_paddings = dynamic_cast<luci::CircleConst *>(g.pad->paddings());
+  EXPECT_NE(nullptr, new_paddings);
+  EXPECT_EQ(2, new_paddings->rank());
+  EXPECT_EQ(4, new_paddings->dim(0).value());
+  EXPECT_EQ(2, new_paddings->dim(1).value());
+  EXPECT_EQ(0, new_paddings->at<loco::DataType::S32>(0));
+  EXPECT_EQ(0, new_paddings->at<loco::DataType::S32>(1));
+  EXPECT_EQ(1, new_paddings->at<loco::DataType::S32>(2));
+  EXPECT_EQ(1, new_paddings->at<loco::DataType::S32>(3));
+  EXPECT_EQ(2, new_paddings->at<loco::DataType::S32>(4));
+  EXPECT_EQ(2, new_paddings->at<loco::DataType::S32>(5));
+  EXPECT_EQ(0, new_paddings->at<loco::DataType::S32>(6));
+  EXPECT_EQ(0, new_paddings->at<loco::DataType::S32>(7));
 
   check_pre_trans(g.output->from());
 }
