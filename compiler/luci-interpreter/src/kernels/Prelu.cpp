@@ -197,7 +197,9 @@ void Prelu::evalQuantizedS16() const
     for (int32_t quant_channel = 0; quant_channel < quant_dim_size; ++quant_channel)
     {
       const ChannelQuantMultipliers &neg_mult = _alpha_multipliers[quant_channel];
-      size_t offset = quant_channel + outer_dims * quant_dim_size;
+      size_t offset = static_cast<size_t>(outer_dims) * static_cast<size_t>(quant_dim_size);
+      offset += quant_channel;
+
       output_data[offset] =
         evalElemS16Prelu(input_data[offset], alpha_data[quant_channel], pos_mult, neg_mult);
     }
