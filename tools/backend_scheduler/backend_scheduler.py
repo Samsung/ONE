@@ -1,12 +1,32 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 
-import os, json, argparse, logging
+# Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import json, argparse, logging
 from pathlib import Path
 from op_list_parser import OpListParser
 from nnpkg_helper import NnpkgHelper
 
 
 class BackendScheduler:
+    """
+    Read profiled data and select proper backend for each operation
+    Scheduled nnpackage is saved at ./tools/backend_scheduler/nnpkg_sched
+
+    TODO : Use permutation time for better scheduling
+    """
     def __init__(self, nnpkg_dir, num_threads):
         self.nnpkg_dir = Path(nnpkg_dir).resolve()
         self.num_threads = num_threads
@@ -18,6 +38,7 @@ class BackendScheduler:
         inference_time = {}
         for backend in backend_list:
             try:
+                # Trace file is located at ./tools/backend_scheduler/traces
                 trace_path = Path(
                     __file__).parent / 'traces' / f"{backend}_{self.num_threads}"
                 logging.debug(f"Trace path : {trace_path}")
@@ -122,6 +143,7 @@ class BackendScheduler:
         cmd += [f"XNNPACK_THREADS={self.num_threads}"]
         logging.info(' '.join(cmd))
 
+        # Create nnpackage with backend mapping
         dst_dir = Path(__file__).parent / 'nnpkg_sched' / self.nnpkg_dir.name
         self.nnpkg_helper.copy(self.nnpkg_dir, dst_dir)
         self.nnpkg_helper.add_config(dst_dir, cmd)
