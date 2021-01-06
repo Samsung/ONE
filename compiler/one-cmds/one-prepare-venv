@@ -57,7 +57,7 @@ python -m pip --default-timeout=1000 --trusted-host pypi.org --trusted-host file
   install torch==1.7.0+cpu -f https://download.pytorch.org/whl/torch_stable.html
 
 # Provide install of custom onnx-tf
-if [ -n ${EXT_ONNX_TF_WHL} ]; then
+if [ -n "${EXT_ONNX_TF_WHL}" ]; then
   python -m pip --default-timeout=1000 install ${EXT_ONNX_TF_WHL}
 else
   python -m pip --default-timeout=1000 --trusted-host pypi.org --trusted-host files.pythonhost.org \
