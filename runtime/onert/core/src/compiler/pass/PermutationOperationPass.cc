@@ -44,7 +44,7 @@ void PermutationOperationPass::applyExpandRanks(const Operation &node)
   assert(output.getDef().valid());
   const auto node_index = output.getDef();
   const auto frontend_layout = _graph.layout();
-  const auto backend_layout = _lowered_graph.getLowerInfo(node_index)->layout();
+  const auto backend_layout = _lowered_graph.lower_info().operation.getRawPtr(node_index)->layout();
 
   if (frontend_layout == backend_layout)
   {
@@ -84,8 +84,10 @@ void PermutationOperationPass::changeToKeepLayout(const Operation &node)
   assert(output_obj.getDef().valid());
   const auto node_index = output_obj.getDef();
 
+  auto &operation_li_map = _lowered_graph.lower_info().operation;
+  auto &operand_li_map = _lowered_graph.lower_info().operand;
   const auto frontend_layout = _graph.layout();
-  const auto backend_layout = _lowered_graph.getLowerInfo(node_index)->layout();
+  const auto backend_layout = operation_li_map.getRawPtr(node_index)->layout();
 
   if (frontend_layout == backend_layout)
   {
@@ -97,11 +99,11 @@ void PermutationOperationPass::changeToKeepLayout(const Operation &node)
 
   // Change PermuteFactors of operands and the operation of target node
   {
-    const auto op_li = _lowered_graph.getLowerInfo(node_index);
+    const auto op_li = operation_li_map.getRawPtr(node_index);
     const auto backend = op_li->backend();
 
-    _lowered_graph.setLowerInfo(
-      node_index, std::make_unique<compiler::OperationLowerInfo>(backend, frontend_layout));
+    operation_li_map.set(node_index,
+                         std::make_unique<compiler::OperationLowerInfo>(backend, frontend_layout));
 
     const PermuteFactor removed_factor{backend, backend_layout};
     const PermuteFactor new_factor{backend, frontend_layout};
@@ -114,7 +116,7 @@ void PermutationOperationPass::changeToKeepLayout(const Operation &node)
       {
         if (use != node_index)
         {
-          auto use_op_li = _lowered_graph.getLowerInfo(use);
+          auto use_op_li = operation_li_map.getRawPtr(use);
           if (use_op_li->backend() == backend && use_op_li->layout() == backend_layout)
           {
             canRemove = false;
@@ -123,7 +125,7 @@ void PermutationOperationPass::changeToKeepLayout(const Operation &node)
         }
       }
 
-      auto input_li = _lowered_graph.getLowerInfo(input);
+      auto input_li = operand_li_map.getRawPtr(input);
       if (canRemove)
       {
         input_li->removeUsePermuteFactor(removed_factor);
@@ -143,7 +145,7 @@ void PermutationOperationPass::changeToKeepLayout(const Operation &node)
 
     for (const auto &output : node.getOutputs() | Remove::DUPLICATED | Remove::UNDEFINED)
     {
-      auto lower_info = _lowered_graph.getLowerInfo(output);
+      auto lower_info = operand_li_map.getRawPtr(output);
       lower_info->removeDefPermuteFactor(removed_factor);
       lower_info->addDefPermuteFactor(new_factor);
 

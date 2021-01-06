@@ -135,63 +135,6 @@ LoweredGraph::LoweredGraph(const ir::Graph &graph, const CompilerOptions &option
   }
 }
 
-const compiler::OperationLowerInfo *
-LoweredGraph::getLowerInfo(const ir::OperationIndex &op_ind) const
-{
-  auto itr = _lower_info_map.operation.find(op_ind);
-  if (itr == _lower_info_map.operation.end())
-    return nullptr;
-  return itr->second.get();
-}
-
-void LoweredGraph::setLowerInfo(const ir::OperationIndex &op_ind,
-                                std::unique_ptr<compiler::OperationLowerInfo> &&lower_info)
-{
-  _lower_info_map.operation[op_ind] = std::move(lower_info);
-}
-
-void LoweredGraph::removeLowerInfo(const ir::OperationIndex &op_ind)
-{
-  auto &op_lower_info = _lower_info_map.operation;
-  assert(op_lower_info.find(op_ind) != op_lower_info.end());
-  // TODO Simplify implementation using `erase` method
-  for (auto it = op_lower_info.begin(); it != op_lower_info.end(); ++it)
-  {
-    if (it->first == op_ind)
-    {
-      op_lower_info.erase(it);
-      break;
-    }
-  }
-}
-
-const compiler::OperandLowerInfo *LoweredGraph::getLowerInfo(const ir::OperandIndex &index) const
-{
-  auto itr = _lower_info_map.operand.find(index);
-  if (itr == _lower_info_map.operand.end())
-    return nullptr;
-  return itr->second.get();
-}
-
-compiler::OperandLowerInfo *LoweredGraph::getLowerInfo(const ir::OperandIndex &index)
-{
-  auto itr = _lower_info_map.operand.find(index);
-  if (itr == _lower_info_map.operand.end())
-    return nullptr;
-  return itr->second.get();
-}
-
-void LoweredGraph::setLowerInfo(const ir::OperandIndex &index,
-                                std::unique_ptr<compiler::OperandLowerInfo> &&lower_info)
-{
-  _lower_info_map.operand.insert(std::make_pair(index, std::move(lower_info)));
-}
-
-void LoweredGraph::removeLowerInfo(const ir::OperandIndex &index)
-{
-  _lower_info_map.operand.erase(index);
-}
-
 void LoweredGraph::makeOperationLowerInfo(
   ir::OperandIndexMap<std::unique_ptr<compiler::OperandLowerInfo>> &operands_lower_info,
   const BackendResolver &backend_resolver)
@@ -215,7 +158,8 @@ void LoweredGraph::makeOperationLowerInfo(
       auto &&lower_info = operands_lower_info.at(operand);
       lower_info->addDefPermuteFactor(PermuteFactor{backend, backend_layout});
     }
-    setLowerInfo(op_ind, std::make_unique<compiler::OperationLowerInfo>(backend, backend_layout));
+    lower_info().operation.set(
+      op_ind, std::make_unique<compiler::OperationLowerInfo>(backend, backend_layout));
   });
 }
 
@@ -266,7 +210,8 @@ void LoweredGraph::manipulateLowerInfo(
       lowered_info->addDefPermuteFactor(lowered_info->use_factors().getOnlyElement());
     }
 
-    setLowerInfo(index, std::move(operands_lower_info[index]));
+    if (operands_lower_info.count(index) != 0)
+      lower_info().operand.set(index, std::move(operands_lower_info[index]));
   });
 }
 
@@ -279,7 +224,8 @@ void LoweredGraph::dumpLowerInfo()
 
   _graph.operands().iterate([&](const ir::OperandIndex &index, ir::Operand &object) {
     std::stringstream sstream;
-    if (!getLowerInfo(index)->def_factors().empty() || !getLowerInfo(index)->use_factors().empty())
+    const auto operand_lower_info = lower_info().operand.getRawPtr(index);
+    if (!operand_lower_info->def_factors().empty() || !operand_lower_info->use_factors().empty())
     {
       auto factors_to_string = [](const PermuteFactorSet &factors) {
         std::string str;
@@ -302,13 +248,12 @@ void LoweredGraph::dumpLowerInfo()
         return "{ " + str + "}";
       };
 
-      const auto lower_info = getLowerInfo(index);
       const auto &shape = object.shape();
       std::string def_ops =
         object.getDef().valid() ? std::to_string(object.getDef().value()) : "N/A";
       std::string use_ops = operation_index_to_string(object.getUses());
-      std::string def_layouts = factors_to_string(lower_info->def_factors());
-      std::string use_layouts = factors_to_string(lower_info->use_factors());
+      std::string def_layouts = factors_to_string(operand_lower_info->def_factors());
+      std::string use_layouts = factors_to_string(operand_lower_info->use_factors());
       sstream << "Operand " << index << " LowerInfo" << std::endl;
       sstream << "  - Shape           : { ";
       for (auto i = 0; i < shape.rank(); ++i)

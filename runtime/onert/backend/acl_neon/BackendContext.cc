@@ -63,11 +63,11 @@ void BackendContext::planTensors(const std::vector<onert::ir::OperationIndex> &o
   {
     const auto &obj = graph()->operands().at(ind);
     const auto &li = lower_info.operand.at(ind);
-    if (li->def_factors().getOnlyElement().backend() != backend())
+    if (li.def_factors().getOnlyElement().backend() != backend())
       continue;
 
     // Ignore unused tensor
-    if (li->def_factors().size() == 0 && li->use_factors().size() == 0)
+    if (li.def_factors().size() == 0 && li.use_factors().size() == 0)
     {
       VERBOSE(planTensors) << "Operand " << ind << " will not be used. no more process."
                            << std::endl;
@@ -80,7 +80,7 @@ void BackendContext::planTensors(const std::vector<onert::ir::OperationIndex> &o
     if (obj.isConstant())
       constants.append(ind);
 
-    auto factor = li->def_factors().getOnlyElement();
+    auto factor = li.def_factors().getOnlyElement();
     if (!tensor_builder->isRegistered(ind))
     {
       // These tensors do not exist in any operation (No use and def)
@@ -141,8 +141,8 @@ void BackendContext::planTensors(const std::vector<onert::ir::OperationIndex> &o
           // The variable tensor with buffer is not supported yet
           assert(operand.data() == nullptr);
           assert(operand.getUses().size() == 1 && !operand.getDef().valid());
-          assert(lower_info.operand.at(ind)->def_factors().size() == 1 &&
-                 lower_info.operand.at(ind)->use_factors().size() == 1);
+          assert(lower_info.operand.at(ind).def_factors().size() == 1 &&
+                 lower_info.operand.at(ind).use_factors().size() == 1);
           assert(uses_map[ind] == 1 && def_map[ind] == 0);
           tensor_builder->notifyFirstUse(ind);
         }
@@ -210,7 +210,7 @@ ITensorRegistry *BackendContext::genTensors(const std::vector<onert::ir::Operati
             find(operand_list().begin(), operand_list().end(), index) != operand_list().end())
         {
           const auto &operand_lower_info =
-            lower_info.operand.at(index)->def_factors().getOnlyElement();
+            lower_info.operand.at(index).def_factors().getOnlyElement();
 
           // E.g., permute (CPU) -> tensor A -> MaxPool2D(acl_cl)
           // op.getOutputs() of permute (CPU) returns tensor A
