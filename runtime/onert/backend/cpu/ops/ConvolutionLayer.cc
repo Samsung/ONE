@@ -98,6 +98,32 @@ void ConvolutionLayer::convQuant8()
          getBuffer<uint8_t>(_output));
 }
 
+void ConvolutionLayer::convQuant8PerChannel()
+{
+  int32_t output_activation_min = 0;
+  int32_t output_activation_max = 0;
+  CalculateActivationRangeQuantized(_activation, _output, &output_activation_min,
+                                    &output_activation_max);
+
+  nnfw::cker::ConvParams op_params;
+  op_params.input_offset = -_input->data_zero_point();
+  op_params.output_offset = _output->data_zero_point();
+  op_params.stride_height = _strideHeight;
+  op_params.stride_width = _strideWidth;
+  op_params.dilation_height_factor = _dilationHeightFactor;
+  op_params.dilation_width_factor = _dilationWidthFactor;
+  op_params.padding_values.height = _paddingTop;
+  op_params.padding_values.width = _paddingLeft;
+  op_params.quantized_activation_min = output_activation_min;
+  op_params.quantized_activation_max = output_activation_max;
+
+  nnfw::cker::Conv &kernel = *_conv_kernel;
+  kernel(op_params, getShape(_input), reinterpret_cast<const int8_t *>(_input->buffer()),
+         getShape(_kernel), reinterpret_cast<const int8_t *>(_kernel->buffer()), getShape(_bias),
+         reinterpret_cast<const int32_t *>(_bias->buffer()), getShape(_output),
+         reinterpret_cast<int8_t *>(_output->buffer()));
+}
+
 void ConvolutionLayer::configure(const IPortableTensor *input, const IPortableTensor *kernel,
                                  const IPortableTensor *bias, const ir::PaddingType paddingType,
                                  const uint32_t paddingLeft, const uint32_t paddingRight,
@@ -164,6 +190,10 @@ void ConvolutionLayer::run()
   {
     convQuant8();
   }
+  else if (_input->data_type() == OperandType::QUANT_INT8_ASYMM)
+  {
+    convQuant8PerChannel();
+  }
   else
   {
     throw std::runtime_error{"Conv: unsupported data type"};
@@ -196,6 +226,19 @@ void ConvolutionLayer::prepare()
   {
     kernel.prepareQuant(getShape(_input), getShape(_kernel), getShape(_output), _strideWidth,
                         _strideHeight, _dilationWidthFactor, _dilationHeightFactor);
+  }
+  else if (_input->data_type() == OperandType::QUANT_INT8_ASYMM)
+  {
+    if (_kernel->is_constant() && !_input->is_dynamic() && !_output->is_dynamic())
+    {
+      kernel.getQuantizedConvolutionMultipliersAndShifts(
+        _input->data_scale(), _output->data_scale(), _kernel->data_scales().data(),
+        _kernel->data_scales().size(), getShape(_kernel).Dims(0));
+    }
+    else
+    {
+      throw std::runtime_error{"Conv2D: Int8 dynamic weight is not supported"};
+    }
   }
   _prepare = true;
 }

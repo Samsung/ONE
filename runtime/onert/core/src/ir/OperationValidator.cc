@@ -177,6 +177,7 @@ void OperationValidator::visit(const operation::Concat &node)
 void OperationValidator::visit(const operation::Conv2D &node)
 {
   const auto input_index{node.getInputs().at(operation::Conv2D::Input::INPUT)};
+  const auto kernel_index{node.getInputs().at(operation::Conv2D::Input::KERNEL)};
   const auto output_index{node.getOutputs().at(0)};
 
   uint32_t stride_horizontal = node.param().stride.horizontal;
@@ -187,6 +188,12 @@ void OperationValidator::visit(const operation::Conv2D &node)
   OP_REQUIRES((stride_horizontal > 0) && (stride_vertical > 0));
   OP_REQUIRES((dilation_width > 0) && (dilation_height > 0));
   OP_REQUIRES(isSameType(input_index, output_index));
+
+  if (isConstant(kernel_index) && operandType(kernel_index) == DataType::QUANT_INT8_ASYMM)
+  {
+    for (const auto zeropoint : _operands.at(kernel_index).typeInfo().zero_points())
+      OP_REQUIRES(zeropoint == 0);
+  }
 }
 
 void OperationValidator::visit(const operation::DepthToSpace &node)

@@ -52,6 +52,8 @@ public:
 
   void convQuant8();
 
+  void convQuant8PerChannel();
+
   void configure(const IPortableTensor *input, const IPortableTensor *kernel,
                  const IPortableTensor *bias, ir::PaddingType _paddingType,
                  const uint32_t paddingLeft, const uint32_t paddingRight, const uint32_t paddingTop,
