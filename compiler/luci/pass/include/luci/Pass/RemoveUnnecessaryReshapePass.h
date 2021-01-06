@@ -34,4 +34,4 @@ struct RemoveUnnecessaryReshapePass final : public logo::Pass
 
 } // namespace luci
 
-#endif // __LUCI_REMOVE_UNNECESSARY_Reshape_PASS_H__
+#endif // __LUCI_REMOVE_UNNECESSARY_RESHAPE_PASS_H__

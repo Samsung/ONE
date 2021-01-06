@@ -217,6 +217,10 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   {
     phase.emplace_back(std::make_unique<luci::ShuffleWeightTo16x1Float32Pass>());
   }
+  if (_options->query(Options::Algorithm::RemoveUnnecessaryReshape))
+  {
+    phase.emplace_back(std::make_unique<luci::RemoveUnnecessaryReshapePass>());
+  }
   if (_options->query(Options::Algorithm::RemoveUnnecessarySlice))
   {
     phase.emplace_back(std::make_unique<luci::RemoveUnnecessarySlicePass>());
