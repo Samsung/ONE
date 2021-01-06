@@ -57,6 +57,7 @@ def _get_driver_name(driver_name):
         'one-import-bcq': 'one-import-bcq',
         'one-import-tf': 'one-import-tf',
         'one-import-tflite': 'one-import-tflite',
+        'one-import-onnx': 'one-import-onnx',
         'one-optimize': 'one-optimize',
         'one-quantize': 'one-quantize',
         'one-pack': 'one-pack',
@@ -88,6 +89,8 @@ def _verify_cfg(driver_list, config):
         import_driver_cnt += 1
     if _is_available_driver(config, 'one-import-bcq'):
         import_driver_cnt += 1
+    if _is_available_driver(config, 'one-import-onnx'):
+        import_driver_cnt += 1
     if import_driver_cnt > 1:
         raise AssertionError('Only one import-* driver can be executed')
 
@@ -107,8 +110,8 @@ def main():
 
     # verify configuration file
     drivers = [
-        'one-import-tf', 'one-import-tflite', 'one-import-bcq', 'one-optimize',
-        'one-quantize', 'one-pack', 'one-codegen'
+        'one-import-tf', 'one-import-tflite', 'one-import-bcq', 'one-import-onnx',
+        'one-optimize', 'one-quantize', 'one-pack', 'one-codegen'
     ]
     _verify_cfg(drivers, config)
 
