@@ -39,9 +39,9 @@ BatchMatMulLayer::~BatchMatMulLayer() = default;
 void BatchMatMulLayer::batchMatMulFloat32()
 {
   nnfw::cker::BatchMatMul &batchmatmul_kernel = *_kernel;
-  nnfw::cker::Shape lhs_shape = getTensorShape(_lhs);
-  nnfw::cker::Shape rhs_shape = getTensorShape(_rhs);
-  nnfw::cker::Shape output_shape = getTensorShape(_output);
+  nnfw::cker::Shape lhs_shape = getShape(_lhs);
+  nnfw::cker::Shape rhs_shape = getShape(_rhs);
+  nnfw::cker::Shape output_shape = getShape(_output);
 
   // TODO implement for constant input
 

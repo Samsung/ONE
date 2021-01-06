@@ -45,19 +45,19 @@ void FillLayer::run()
   switch (_output->data_type())
   {
     case OperandType::FLOAT32:
-      nnfw::cker::Fill<float>(getBuffer<float>(_value), getTensorShape(_output),
+      nnfw::cker::Fill<float>(getBuffer<float>(_value), getShape(_output),
                               getBuffer<float>(_output));
       break;
     case OperandType::INT32:
-      nnfw::cker::Fill<int32_t>(getBuffer<int32_t>(_value), getTensorShape(_output),
+      nnfw::cker::Fill<int32_t>(getBuffer<int32_t>(_value), getShape(_output),
                                 getBuffer<int32_t>(_output));
       break;
     case OperandType::INT64:
-      nnfw::cker::Fill<int64_t>(getBuffer<int64_t>(_value), getTensorShape(_output),
+      nnfw::cker::Fill<int64_t>(getBuffer<int64_t>(_value), getShape(_output),
                                 getBuffer<int64_t>(_output));
       break;
     case OperandType::UINT32:
-      nnfw::cker::Fill<uint32_t>(getBuffer<uint32_t>(_value), getTensorShape(_output),
+      nnfw::cker::Fill<uint32_t>(getBuffer<uint32_t>(_value), getShape(_output),
                                  getBuffer<uint32_t>(_output));
       break;
     default:

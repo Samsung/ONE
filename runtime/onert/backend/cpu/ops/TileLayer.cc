@@ -36,7 +36,7 @@ TileLayer::TileLayer() : _input(nullptr), _multipliers(nullptr), _output(nullptr
 
 void TileLayer::tileFloat32()
 {
-  TileOneDimension(getTensorShape(_input), getBuffer<float>(_input), getBuffer<int>(_multipliers),
+  TileOneDimension(getShape(_input), getBuffer<float>(_input), getBuffer<int>(_multipliers),
                    getBuffer<float>(_output), 0);
 }
 

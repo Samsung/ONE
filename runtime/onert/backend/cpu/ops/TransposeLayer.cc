@@ -58,8 +58,8 @@ template <typename T> void TransposeLayer::transpose()
     }
   }
 
-  nnfw::cker::Transpose(param, getTensorShape(_input), getBuffer<T>(_input),
-                        getTensorShape(_output), getBuffer<T>(_output));
+  nnfw::cker::Transpose(param, getShape(_input), getBuffer<T>(_input), getShape(_output),
+                        getBuffer<T>(_output));
 }
 
 void TransposeLayer::transposeQuant8()

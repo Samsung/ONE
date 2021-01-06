@@ -36,8 +36,8 @@ SqDiffLayer::SqDiffLayer() : _input1(nullptr), _input2(nullptr), _output(nullptr
 
 void SqDiffLayer::SqDiffFloat32()
 {
-  nnfw::cker::SqDiff(getTensorShape(_input1), getBuffer<float>(_input1), getTensorShape(_input2),
-                     getBuffer<float>(_input2), getTensorShape(_output), getBuffer<float>(_output));
+  nnfw::cker::SqDiff(getShape(_input1), getBuffer<float>(_input1), getShape(_input2),
+                     getBuffer<float>(_input2), getShape(_output), getBuffer<float>(_output));
 }
 
 void SqDiffLayer::configure(const IPortableTensor *input1, const IPortableTensor *input2,

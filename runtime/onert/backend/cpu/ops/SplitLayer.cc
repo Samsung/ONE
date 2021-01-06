@@ -58,8 +58,8 @@ template <typename T> void SplitLayer::split(void)
   }
 
   assert(_input->total_size() == sizeOfData(_input->data_type(), _input->getShape().dims()));
-  nnfw::cker::Split<T>(op_params, getTensorShape(_input), getBuffer<T>(_input),
-                       getTensorShape(_outputs[0]), outputPtrs.data());
+  nnfw::cker::Split<T>(op_params, getShape(_input), getBuffer<T>(_input), getShape(_outputs[0]),
+                       outputPtrs.data());
 }
 
 void SplitLayer::configure(const IPortableTensor *input, const IPortableTensor *axis,

@@ -45,10 +45,10 @@ void FullyConnectedLayer::fullyConnectedFloat32()
   nnfw::cker::FullyConnectedParams op_params;
   op_params.activation = convertActivationType(_activation);
 
-  nnfw::cker::FullyConnected(op_params, getTensorShape(_input), getBuffer<float>(_input),
-                             getTensorShape(_weights), getBuffer<float>(_weights),
-                             getTensorShape(_bias), _bias ? getBuffer<float>(_bias) : nullptr,
-                             getTensorShape(_output), getBuffer<float>(_output));
+  nnfw::cker::FullyConnected(op_params, getShape(_input), getBuffer<float>(_input),
+                             getShape(_weights), getBuffer<float>(_weights), getShape(_bias),
+                             _bias ? getBuffer<float>(_bias) : nullptr, getShape(_output),
+                             getBuffer<float>(_output));
 }
 
 // executionMutex is used to protect concurrent access of non-threadsafe resources
@@ -74,10 +74,10 @@ void FullyConnectedLayer::fullyConnectedQuant8()
   op_params.quantized_activation_min = output_activation_min;
   op_params.quantized_activation_max = output_activation_max;
 
-  nnfw::cker::FullyConnected(op_params, getTensorShape(_input), getBuffer<uint8_t>(_input),
-                             getTensorShape(_weights), getBuffer<uint8_t>(_weights),
-                             getTensorShape(_bias), _bias ? getBuffer<int32_t>(_bias) : nullptr,
-                             getTensorShape(_output), getBuffer<uint8_t>(_output));
+  nnfw::cker::FullyConnected(op_params, getShape(_input), getBuffer<uint8_t>(_input),
+                             getShape(_weights), getBuffer<uint8_t>(_weights), getShape(_bias),
+                             _bias ? getBuffer<int32_t>(_bias) : nullptr, getShape(_output),
+                             getBuffer<uint8_t>(_output));
 }
 
 void FullyConnectedLayer::fullyConnectedHybrid()
@@ -85,7 +85,7 @@ void FullyConnectedLayer::fullyConnectedHybrid()
   nnfw::cker::FCTempArena &temp_arena = *_temp_arena;
   if (!temp_arena.prepared)
   {
-    temp_arena.prepare(getTensorShape(_input), getTensorShape(_weights));
+    temp_arena.prepare(getShape(_input), getShape(_weights));
   }
 
   nnfw::cker::FullyConnectedParams op_params;
@@ -93,17 +93,16 @@ void FullyConnectedLayer::fullyConnectedHybrid()
   op_params.weights_scale = _weights->data_scale();
 
 #ifndef USE_RUY_GEMV
-  nnfw::cker::FullyConnectedHybrid(op_params, getTensorShape(_input), getBuffer<float>(_input),
-                                   getTensorShape(_weights), getBuffer<int8_t>(_weights),
-                                   getTensorShape(_bias), _bias ? getBuffer<float>(_bias) : nullptr,
-                                   getTensorShape(_output), getBuffer<float>(_output), temp_arena,
-                                   _external_context->ruy_context());
+  nnfw::cker::FullyConnectedHybrid(
+    op_params, getShape(_input), getBuffer<float>(_input), getShape(_weights),
+    getBuffer<int8_t>(_weights), getShape(_bias), _bias ? getBuffer<float>(_bias) : nullptr,
+    getShape(_output), getBuffer<float>(_output), temp_arena, _external_context->ruy_context());
 #else
   nnfw::cker::FullyConnectedHybrid(
-    op_params, getTensorShape(_input), getBuffer<float>(_input), getTensorShape(_weights),
+    op_params, getShape(_input), getBuffer<float>(_input), getShape(_weights),
     (_cached_weights) ? reinterpret_cast<const int8_t *>(_cached_weights)
                       : getBuffer<int8_t>(_weights),
-    getTensorShape(_bias), _bias ? getBuffer<float>(_bias) : nullptr, getTensorShape(_output),
+    getShape(_bias), _bias ? getBuffer<float>(_bias) : nullptr, getShape(_output),
     getBuffer<float>(_output), temp_arena, _external_context->ruy_context());
 
   if (_cached_weights == nullptr || _is_weights_freed)
@@ -115,7 +114,7 @@ void FullyConnectedLayer::fullyConnectedHybrid()
 
   // if input's elements are filled with zero, it by-passes(does not enter ruy-kernel path)
   // so that handle this case
-  const int input_size = getTensorShape(_input).FlatSize();
+  const int input_size = getShape(_input).FlatSize();
   if (nnfw::cker::IsZeroVector(getBuffer<float>(_input), input_size))
     return;
 
@@ -154,16 +153,16 @@ void FullyConnectedLayer::fullyConnectedSparseWeight()
   if (block_size.size() == 0)
   {
     nnfw::cker::FullyConnectedSparseWeightRandom(
-      op_params, getTensorShape(_input), getBuffer<float>(_input), getTensorShape(_weights),
-      getBuffer<float>(_weights), getTensorShape(_bias), _bias ? getBuffer<float>(_bias) : nullptr,
-      getTensorShape(_output), getBuffer<float>(_output), w1_segments, w1_indices);
+      op_params, getShape(_input), getBuffer<float>(_input), getShape(_weights),
+      getBuffer<float>(_weights), getShape(_bias), _bias ? getBuffer<float>(_bias) : nullptr,
+      getShape(_output), getBuffer<float>(_output), w1_segments, w1_indices);
   }
   else if (block_size.size() == 2 && block_size[0] == 16 && block_size[1] == 1)
   {
     nnfw::cker::FullyConnectedSparseWeight16x1(
-      op_params, getTensorShape(_input), getBuffer<float>(_input), getTensorShape(_weights),
-      getBuffer<float>(_weights), getTensorShape(_bias), _bias ? getBuffer<float>(_bias) : nullptr,
-      getTensorShape(_output), getBuffer<float>(_output), w1_segments, w1_indices);
+      op_params, getShape(_input), getBuffer<float>(_input), getShape(_weights),
+      getBuffer<float>(_weights), getShape(_bias), _bias ? getBuffer<float>(_bias) : nullptr,
+      getShape(_output), getBuffer<float>(_output), w1_segments, w1_indices);
   }
   else
     throw std::runtime_error{"FullyConnected: unsupported sparsity"};
@@ -178,10 +177,10 @@ void FullyConnectedLayer::fullyConnected16x1Float32()
   nnfw::cker::FullyConnectedParams op_params;
   op_params.activation = convertActivationType(_activation);
 
-  nnfw::cker::FullyConnected16x1Float32(
-    op_params, getTensorShape(_input), getBuffer<float>(_input), getTensorShape(_weights),
-    getBuffer<float>(_weights), getTensorShape(_bias), _bias ? getBuffer<float>(_bias) : nullptr,
-    getTensorShape(_output), getBuffer<float>(_output));
+  nnfw::cker::FullyConnected16x1Float32(op_params, getShape(_input), getBuffer<float>(_input),
+                                        getShape(_weights), getBuffer<float>(_weights),
+                                        getShape(_bias), _bias ? getBuffer<float>(_bias) : nullptr,
+                                        getShape(_output), getBuffer<float>(_output));
 #else
   throw std::runtime_error{"FullyConnected: Shuffled16x1Float32 weights_format is not supported."};
 #endif
@@ -239,7 +238,7 @@ void FullyConnectedLayer::prepare()
 {
   if (_bias && _bias->is_constant())
   {
-    const int bias_size = getTensorShape(_bias).FlatSize();
+    const int bias_size = getShape(_bias).FlatSize();
     if (nnfw::cker::IsZeroVector(getBuffer<float>(_bias), bias_size))
     {
       _bias = nullptr;
@@ -262,7 +261,7 @@ void FullyConnectedLayer::prepare()
   if (_input->is_dynamic() || !_weights->is_constant())
     return;
 
-  const int rows = getTensorShape(_weights).Dims(0);
+  const int rows = getShape(_weights).Dims(0);
   if (rows % 4 == 0)
   {
     // TODO If it's possible to extract precaching from ruy kernel,

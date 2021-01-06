@@ -39,8 +39,8 @@ template <typename T> void SpaceToDepthLayer::spaceToDepth()
   nnfw::cker::SpaceToDepthParams params;
   params.block_size = _block_size;
 
-  nnfw::cker::SpaceToDepth(params, getTensorShape(_input), getBuffer<T>(_input),
-                           getTensorShape(_output), getBuffer<T>(_output));
+  nnfw::cker::SpaceToDepth(params, getShape(_input), getBuffer<T>(_input), getShape(_output),
+                           getBuffer<T>(_output));
 }
 
 void SpaceToDepthLayer::configure(const IPortableTensor *input, const int32_t block_size,

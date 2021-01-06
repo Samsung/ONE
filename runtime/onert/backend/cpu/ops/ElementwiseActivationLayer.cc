@@ -74,7 +74,7 @@ void ElementwiseActivationLayer::PopulateLookupTable(const ElementwiseActivation
 void ElementwiseActivationLayer::EvalUsingLookupTable(const IPortableTensor *input,
                                                       IPortableTensor *output)
 {
-  const int size = MatchingFlatSize(getTensorShape(input), getTensorShape(output));
+  const int size = MatchingFlatSize(getShape(input), getShape(output));
   const uint8_t *input_data = getBuffer<uint8_t>(input);
   uint8_t *output_data = getBuffer<uint8_t>(output);
 
@@ -97,7 +97,7 @@ void ElementwiseActivationLayer::configure(const IPortableTensor *input, IPortab
       if (input->data_type() == OperandType::FLOAT32)
       {
         _kernel = [](const IPortableTensor *input, IPortableTensor *output) {
-          nnfw::cker::ELU(getTensorShape(input), getBuffer<float>(input), getTensorShape(output),
+          nnfw::cker::ELU(getShape(input), getBuffer<float>(input), getShape(output),
                           getBuffer<float>(output));
         };
       }
@@ -116,8 +116,8 @@ void ElementwiseActivationLayer::configure(const IPortableTensor *input, IPortab
       else if (_input->data_type() == OperandType::FLOAT32)
       {
         _kernel = [](const IPortableTensor *input, IPortableTensor *output) {
-          nnfw::cker::Logistic(getTensorShape(input), getBuffer<float>(input),
-                               getTensorShape(output), getBuffer<float>(output));
+          nnfw::cker::Logistic(getShape(input), getBuffer<float>(input), getShape(output),
+                               getBuffer<float>(output));
         };
       }
       else
@@ -131,15 +131,14 @@ void ElementwiseActivationLayer::configure(const IPortableTensor *input, IPortab
         if (alpha == std::numeric_limits<float>::infinity() && beta == 0.f)
         {
           _kernel = [](const IPortableTensor *input, IPortableTensor *output) {
-            nnfw::cker::ReLU(getTensorShape(input), getBuffer<float>(input), getTensorShape(output),
+            nnfw::cker::ReLU(getShape(input), getBuffer<float>(input), getShape(output),
                              getBuffer<float>(output));
           };
         }
         else if (alpha == 6.f && beta == 0.f)
         {
           _kernel = [](const IPortableTensor *input, IPortableTensor *output) {
-            nnfw::cker::ReLU6(getTensorShape(input), getBuffer<float>(input),
-                              getBuffer<float>(output));
+            nnfw::cker::ReLU6(getShape(input), getBuffer<float>(input), getBuffer<float>(output));
           };
         }
         else
@@ -163,7 +162,7 @@ void ElementwiseActivationLayer::configure(const IPortableTensor *input, IPortab
       else if (_input->data_type() == OperandType::FLOAT32)
       {
         _kernel = [](const IPortableTensor *input, IPortableTensor *output) {
-          nnfw::cker::Tanh(getTensorShape(input), getBuffer<float>(input), getTensorShape(output),
+          nnfw::cker::Tanh(getShape(input), getBuffer<float>(input), getShape(output),
                            getBuffer<float>(output));
         };
       }
@@ -176,8 +175,8 @@ void ElementwiseActivationLayer::configure(const IPortableTensor *input, IPortab
       if (_input->data_type() == OperandType::FLOAT32)
       {
         _kernel = [alpha](const IPortableTensor *input, IPortableTensor *output) {
-          nnfw::cker::LeakyReLU(nnfw::cker::LeakyReluParams{alpha}, getTensorShape(input),
-                                getBuffer<float>(input), getTensorShape(output),
+          nnfw::cker::LeakyReLU(nnfw::cker::LeakyReluParams{alpha}, getShape(input),
+                                getBuffer<float>(input), getShape(output),
                                 getBuffer<float>(output));
         };
       }

@@ -48,7 +48,7 @@ void FusedBatchNormLayer::fusedbatchnormFloat32()
 
   for (uint32_t i = 0; i < num_inputs; i++)
   {
-    inputShapes.emplace_back(getTensorShape(_inputs[i]));
+    inputShapes.emplace_back(getShape(_inputs[i]));
     inputFloatPtrs.emplace_back(getBuffer<float>(_inputs[i]));
   }
 
@@ -58,7 +58,7 @@ void FusedBatchNormLayer::fusedbatchnormFloat32()
   param.is_training = _is_training;
   param.data_format = _data_format;
 
-  kernel(inputShapes, inputFloatPtrs, getTensorShape(_output), getBuffer<float>(_output), param);
+  kernel(inputShapes, inputFloatPtrs, getShape(_output), getBuffer<float>(_output), param);
 }
 
 void FusedBatchNormLayer::run()

@@ -49,8 +49,8 @@ void LogSoftMaxLayer::logsoftmaxFloat32()
   nnfw::cker::SoftmaxParams op_params;
   op_params.beta = _beta;
   op_params.axis = _axis;
-  nnfw::cker::LogSoftmax(op_params, getTensorShape(_input), getBuffer<float>(_input),
-                         getTensorShape(_output), getBuffer<float>(_output));
+  nnfw::cker::LogSoftmax(op_params, getShape(_input), getBuffer<float>(_input), getShape(_output),
+                         getBuffer<float>(_output));
 }
 
 void LogSoftMaxLayer::logsoftmaxQuant8()
@@ -61,8 +61,8 @@ void LogSoftMaxLayer::logsoftmaxQuant8()
   op_params.table = _table;
   op_params.zero_point = _output->data_zero_point();
   op_params.scale = _output->data_scale();
-  nnfw::cker::LogSoftmax(op_params, _input->data_scale(), getTensorShape(_input),
-                         getBuffer<uint8_t>(_input), getTensorShape(_output),
+  nnfw::cker::LogSoftmax(op_params, _input->data_scale(), getShape(_input),
+                         getBuffer<uint8_t>(_input), getShape(_output),
                          getBuffer<uint8_t>(_output));
 }
 

@@ -57,9 +57,9 @@ void ConvolutionLayer::convFloat32()
   op_params.float_activation_max = output_activation_max;
 
   nnfw::cker::Conv &kernel = *_conv_kernel;
-  kernel(op_params, getTensorShape(_input), getBuffer<float>(_input), getTensorShape(_kernel),
-         getBuffer<float>(_kernel), getTensorShape(_bias), getBuffer<float>(_bias),
-         getTensorShape(_output), getBuffer<float>(_output));
+  kernel(op_params, getShape(_input), getBuffer<float>(_input), getShape(_kernel),
+         getBuffer<float>(_kernel), getShape(_bias), getBuffer<float>(_bias), getShape(_output),
+         getBuffer<float>(_output));
 }
 
 void ConvolutionLayer::convQuant8()
@@ -93,9 +93,9 @@ void ConvolutionLayer::convQuant8()
   op_params.is_replaced_weights = true;
 
   nnfw::cker::Conv &kernel = *_conv_kernel;
-  kernel(op_params, getTensorShape(_input), getBuffer<uint8_t>(_input), getTensorShape(_kernel),
-         getBuffer<uint8_t>(_kernel), getTensorShape(_bias), getBuffer<int32_t>(_bias),
-         getTensorShape(_output), getBuffer<uint8_t>(_output));
+  kernel(op_params, getShape(_input), getBuffer<uint8_t>(_input), getShape(_kernel),
+         getBuffer<uint8_t>(_kernel), getShape(_bias), getBuffer<int32_t>(_bias), getShape(_output),
+         getBuffer<uint8_t>(_output));
 }
 
 void ConvolutionLayer::configure(const IPortableTensor *input, const IPortableTensor *kernel,
@@ -179,7 +179,7 @@ void ConvolutionLayer::prepare()
   if (_input->data_type() == OperandType::FLOAT32 && _kernel->is_constant())
   {
     bool is_transposed = false;
-    kernel.prepare(getTensorShape(_kernel), getBuffer<float>(_kernel), getPaddingType(_paddingType),
+    kernel.prepare(getShape(_kernel), getBuffer<float>(_kernel), getPaddingType(_paddingType),
                    is_transposed, _dilationWidthFactor, _dilationHeightFactor);
 
     // Decrease reference of _kernel(weights) only when _kernel is constant
@@ -194,8 +194,8 @@ void ConvolutionLayer::prepare()
   else if (_input->data_type() == OperandType::QUANT_UINT8_ASYMM && _kernel->is_constant() &&
            !_input->is_dynamic() && !_output->is_dynamic())
   {
-    kernel.prepareQuant(getTensorShape(_input), getTensorShape(_kernel), getTensorShape(_output),
-                        _strideWidth, _strideHeight, _dilationWidthFactor, _dilationHeightFactor);
+    kernel.prepareQuant(getShape(_input), getShape(_kernel), getShape(_output), _strideWidth,
+                        _strideHeight, _dilationWidthFactor, _dilationHeightFactor);
   }
   _prepare = true;
 }

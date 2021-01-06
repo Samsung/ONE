@@ -49,7 +49,7 @@ template <typename T> void ConcatLayer::concatenationGeneral()
 
   for (uint32_t i = 0; i < num_inputs; i++)
   {
-    inputDims.push_back(getTensorShape(_inputs[i]));
+    inputDims.push_back(getShape(_inputs[i]));
     inputDimsPtr.push_back(&inputDims[i]);
   }
 
@@ -61,7 +61,7 @@ template <typename T> void ConcatLayer::concatenationGeneral()
   }
 
   nnfw::cker::Concatenation<T>(op_params, inputDimsPtr.data(), inputDataPtrs.data(),
-                               getTensorShape(_output), getBuffer<T>(_output));
+                               getShape(_output), getBuffer<T>(_output));
 }
 void ConcatLayer::concatenationQuant8()
 {
@@ -89,7 +89,7 @@ void ConcatLayer::concatenationQuant8()
   inputDims.reserve(num_inputs);
   for (uint32_t i = 0; i < num_inputs; i++)
   {
-    inputDims.push_back(getTensorShape(_inputs[i]));
+    inputDims.push_back(getShape(_inputs[i]));
     inputDimsPtr.push_back(&inputDims[i]);
   }
 
@@ -100,7 +100,7 @@ void ConcatLayer::concatenationQuant8()
   }
 
   nnfw::cker::ConcatenationWithScaling(op_params, inputDimsPtr.data(), inputDataPtrs.data(),
-                                       getTensorShape(_output), getBuffer<uint8_t>(_output));
+                                       getShape(_output), getBuffer<uint8_t>(_output));
 }
 
 void ConcatLayer::configure(const std::vector<const IPortableTensor *> &inputs, int32_t axis,
