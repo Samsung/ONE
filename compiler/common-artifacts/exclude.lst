@@ -60,6 +60,9 @@ tcgenerate(MatrixSetDiag_000)
 tcgenerate(MaxPoolWithArgMax_000)
 tcgenerate(MaxPoolWithArgMax_001)
 tcgenerate(MaxPoolWithArgMax_002)
+tcgenerate(Mean_dynamic_000) # luci-interpreter doesn't support dynamic shape
+tcgenerate(Mean_dynamic_001) # luci-interpreter doesn't support dynamic shape
+tcgenerate(Mean_U8_dynamic_000) # luci-interpreter doesn't support dynamic shape
 tcgenerate(NonMaxSuppressionV4_000)
 tcgenerate(NonMaxSuppressionV4_001)
 tcgenerate(NonMaxSuppressionV5_000)
@@ -85,24 +88,26 @@ tcgenerate(ReduceAny_000)
 tcgenerate(ReduceAny_001)
 tcgenerate(ReduceAny_002)
 tcgenerate(ReduceAny_003)
-tcgenerate(ReduceAny_dynamic_000)
-tcgenerate(ReduceAny_dynamic_001)
-tcgenerate(ReduceAny_dynamic_002)
-tcgenerate(ReduceAny_dynamic_003)
+tcgenerate(ReduceAny_dynamic_000) # luci-interpreter doesn't support dynamic shape
+tcgenerate(ReduceAny_dynamic_001) # luci-interpreter doesn't support dynamic shape
+tcgenerate(ReduceAny_dynamic_002) # luci-interpreter doesn't support dynamic shape
+tcgenerate(ReduceAny_dynamic_003) # luci-interpreter doesn't support dynamic shape
 tcgenerate(ReduceMax_000)
-tcgenerate(ReduceMax_dynamic_000)
+tcgenerate(ReduceMax_dynamic_000) # luci-interpreter doesn't support dynamic shape
 tcgenerate(ReduceMin_000)
-tcgenerate(ReduceMin_dynamic_000)
+tcgenerate(ReduceMin_dynamic_000) # luci-interpreter doesn't support dynamic shape
 tcgenerate(ReduceProd_000)
 tcgenerate(ReduceProd_001)
 tcgenerate(ReduceProd_002)
 tcgenerate(ReduceProd_003)
-tcgenerate(ReduceProd_dynamic_000)
-tcgenerate(ReduceProd_dynamic_001)
-tcgenerate(ReduceProd_dynamic_002)
-tcgenerate(ReduceProd_dynamic_003)
+tcgenerate(ReduceProd_dynamic_000) # luci-interpreter doesn't support dynamic shape
+tcgenerate(ReduceProd_dynamic_001) # luci-interpreter doesn't support dynamic shape
+tcgenerate(ReduceProd_dynamic_002) # luci-interpreter doesn't support dynamic shape
+tcgenerate(ReduceProd_dynamic_003) # luci-interpreter doesn't support dynamic shape
+tcgenerate(ReLU_dynamic_000) # luci-interpreter doesn't support dynamic shape
+tcgenerate(ReLU6_dynamic_000) # luci-interpreter doesn't support dynamic shape
 tcgenerate(ReLUN1To1_000)
-tcgenerate(ReLUN1To1_dynamic_000)
+tcgenerate(ReLUN1To1_dynamic_000) # luci-interpreter doesn't support dynamic shape
 tcgenerate(Reshape_003) # luci-interpreter doesn't support reshape without built-in option
 tcgenerate(ReverseSequence_000)
 tcgenerate(ReverseV2_000)
@@ -127,8 +132,8 @@ tcgenerate(Square_000)
 tcgenerate(SquaredDifference_000)
 tcgenerate(Sum_000)
 tcgenerate(Sum_001)
-tcgenerate(Sum_dynamic_000)
-tcgenerate(Sum_dynamic_001)
+tcgenerate(Sum_dynamic_000) # luci-interpreter doesn't support dynamic shape
+tcgenerate(Sum_dynamic_001) # luci-interpreter doesn't support dynamic shape
 tcgenerate(Tile_000)
 tcgenerate(Tile_U8_000)
 tcgenerate(TopKV2_000)
