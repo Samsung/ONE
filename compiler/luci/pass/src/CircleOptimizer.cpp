@@ -43,6 +43,8 @@
 
 #include "luci/Pass/ShapeInferencePass.h"
 #include "luci/Pass/TypeInferencePass.h"
+#include "luci/Pass/CircleShapeInferencePass.h"
+#include "luci/Pass/CircleTypeInferencePass.h"
 
 // Following passes will be removed after refactoring is finished
 #include "luci/Pass/MigrateLegacyShapeDtypePass.h"
@@ -146,6 +148,8 @@ void CircleOptimizer::optimize(luci::Module *m) const
   // Following passes are needed everytime when other passes create new node or modify some nodes.
   phase.emplace_back(std::make_unique<luci::ShapeInferencePass>());
   phase.emplace_back(std::make_unique<luci::TypeInferencePass>());
+  phase.emplace_back(std::make_unique<luci::CircleShapeInferencePass>());
+  phase.emplace_back(std::make_unique<luci::CircleTypeInferencePass>());
 
   if (_options->query(Options::Algorithm::FuseBCQ))
   {
@@ -171,6 +175,8 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   // Following passes are needed everytime when other passes create new node or modify some nodes.
   phase.emplace_back(std::make_unique<luci::TypeInferencePass>());
   phase.emplace_back(std::make_unique<luci::ShapeInferencePass>());
+  phase.emplace_back(std::make_unique<luci::CircleShapeInferencePass>());
+  phase.emplace_back(std::make_unique<luci::CircleTypeInferencePass>());
 
   if (_options->query(Options::Algorithm::ResolveCustomOpAdd))
   {
@@ -329,6 +335,8 @@ void CircleOptimizer::quantize(loco::Graph *g) const
 
     phase.emplace_back(std::make_unique<luci::ShapeInferencePass>());
     phase.emplace_back(std::make_unique<luci::TypeInferencePass>());
+    phase.emplace_back(std::make_unique<luci::CircleShapeInferencePass>());
+    phase.emplace_back(std::make_unique<luci::CircleTypeInferencePass>());
     phase.emplace_back(std::make_unique<logo::RemoveDeadNodeWithQueryPass>());
 
     ProgressReporter prog(g, logo::PhaseStrategy::Saturate);
@@ -363,6 +371,8 @@ void CircleOptimizer::quantize(loco::Graph *g) const
   // Do Shape/Type inference
   phase.emplace_back(std::make_unique<luci::ShapeInferencePass>());
   phase.emplace_back(std::make_unique<luci::TypeInferencePass>());
+  phase.emplace_back(std::make_unique<luci::CircleShapeInferencePass>());
+  phase.emplace_back(std::make_unique<luci::CircleTypeInferencePass>());
 
   ProgressReporter prog(g, logo::PhaseStrategy::Saturate);
   logo::PhaseRunner<logo::PhaseStrategy::Saturate> phase_runner{g};

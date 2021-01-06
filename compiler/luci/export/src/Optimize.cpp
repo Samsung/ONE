@@ -19,6 +19,8 @@
 
 #include <luci/Pass/ShapeInferencePass.h>
 #include <luci/Pass/TypeInferencePass.h>
+#include <luci/Pass/CircleShapeInferencePass.h>
+#include <luci/Pass/CircleTypeInferencePass.h>
 
 #include <logo/Phase.h>
 
@@ -34,6 +36,8 @@ void optimize(loco::Graph *g)
     // prepare type and shape before optimization
     phase.emplace_back(std::make_unique<TypeInferencePass>());
     phase.emplace_back(std::make_unique<ShapeInferencePass>());
+    phase.emplace_back(std::make_unique<luci::CircleShapeInferencePass>());
+    phase.emplace_back(std::make_unique<luci::CircleTypeInferencePass>());
 
     // TODO add more optimization passes (with a knob)
   }
