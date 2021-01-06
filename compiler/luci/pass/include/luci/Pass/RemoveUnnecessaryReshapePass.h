@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2021 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __LUCI_REMOVE_NO_EFFECT_RESHAPE_PASS_H__
-#define __LUCI_REMOVE_NO_EFFECT_RESHAPE_PASS_H__
+#ifndef __LUCI_REMOVE_UNNECESSARY_RESHAPE_PASS_H__
+#define __LUCI_REMOVE_UNNECESSARY_RESHAPE_PASS_H__
 
 #include <logo/Pass.h>
 
@@ -34,4 +34,4 @@ struct RemoveUnnecessaryReshapePass final : public logo::Pass
 
 } // namespace luci
 
-#endif // __LUCI_REMOVE_NO_EFFECT_Reshape_PASS_H__
+#endif // __LUCI_REMOVE_UNNECESSARY_Reshape_PASS_H__

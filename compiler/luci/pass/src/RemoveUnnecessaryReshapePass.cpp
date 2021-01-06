@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2021 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,6 +29,7 @@ bool remove_no_effect_reshape(luci::CircleNode *node)
 
   std::vector<int32_t> shape_info;
   auto new_shape = dynamic_cast<luci::CircleConst *>(target_node->shape());
+  // If shape node is not a const node, get updated shape info from option.
   if (new_shape == nullptr)
   {
     auto dummy_shape = dynamic_cast<luci::CircleOutputDummy *>(target_node->shape());
@@ -40,6 +41,7 @@ bool remove_no_effect_reshape(luci::CircleNode *node)
     for (uint32_t i = 0; i < target_node->newShape()->rank(); i++)
       shape_info.at(i) = target_node->newShape()->dim(i);
   }
+  // If shape node is presented as const node, extract updated shape from const node.
   else
   {
     shape_info.resize(new_shape->dim(0).value());
@@ -47,16 +49,21 @@ bool remove_no_effect_reshape(luci::CircleNode *node)
       shape_info.at(i) = new_shape->at<loco::DataType::S32>(i);
   }
 
+  // Compare updated shape and input shape.
   auto input_node = loco::must_cast<luci::CircleNode *>(target_node->tensor());
   if (input_node->rank() != shape_info.size())
     return false;
   for (uint32_t i = 0; i < input_node->rank(); i++)
   {
+    // If update_shape is -1, don't care
+    // TODO check updated shape has value -1 at most one.
     if (shape_info.at(i) == -1)
       continue;
-    if (input_node->shape_signature().rank() > 0 && input_node->shape_signature().dim(i) == -1)
+    // If input_shape dynamic, can't remove this.
+    if (!input_node->dim(i).known())
       return false;
-    if (input_node->dim(i).value() != shape_info.at(i))
+    // If input_shape and updated shape differ, also can't remove.
+    if (input_node->dim(i).value() != static_cast<uint32_t>(shape_info.at(i)))
       return false;
   }
 
