@@ -51,6 +51,19 @@ python -m pip --default-timeout=1000 --trusted-host pypi.org --trusted-host file
 python -m pip --default-timeout=1000 --trusted-host pypi.org --trusted-host files.pythonhost.org \
   install Pillow==6.2.2
 
+# Install PyTorch and ONNX related
+python -m pip --default-timeout=1000 --trusted-host pypi.org --trusted-host files.pythonhost.org \
+  --trusted-host download.pytorch.org \
+  install torch==1.7.0+cpu -f https://download.pytorch.org/whl/torch_stable.html
+
+# Provide install of custom onnx-tf
+if [ -n ${EXT_ONNX_TF_WHL} ]; then
+  python -m pip --default-timeout=1000 install ${EXT_ONNX_TF_WHL}
+else
+  python -m pip --default-timeout=1000 --trusted-host pypi.org --trusted-host files.pythonhost.org \
+    install onnx-tf==1.7.0
+fi
+
 # Create python symoblic link
 rm -f ${DRIVER_PATH}/python
 ln -s venv/bin/python ${DRIVER_PATH}/python
