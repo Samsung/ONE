@@ -19,6 +19,8 @@
 #include <luci/Importer.h>
 #include <luci/Pass/ShapeInferencePass.h>
 #include <luci/Pass/TypeInferencePass.h>
+#include <luci/Pass/CircleShapeInferencePass.h>
+#include <luci/Pass/CircleTypeInferencePass.h>
 #include <luci/Service/Validate.h>
 #include <luci/CircleExporter.h>
 #include <oops/InternalExn.h>
@@ -139,6 +141,16 @@ int entry(int argc, char **argv)
     }
     {
       luci::TypeInferencePass pass;
+      while (pass.run(graph) == true)
+        ;
+    }
+    {
+      luci::CircleShapeInferencePass pass;
+      while (pass.run(graph) == true)
+        ;
+    }
+    {
+      luci::CircleTypeInferencePass pass;
       while (pass.run(graph) == true)
         ;
     }
