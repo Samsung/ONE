@@ -74,10 +74,10 @@ template <typename T> void SpaceToBatchNDLayer::spaceToBatchND()
   nnfw::cker::SpaceToBatchParams params;
   params.output_offset = getPad<T>();
 
-  nnfw::cker::SpaceToBatchND(params, getTensorShape(_input), getBuffer<T>(_input),
-                             getTensorShape(_block_shape), getBuffer<int32_t>(_block_shape),
-                             getTensorShape(_padding), getBuffer<int32_t>(_padding),
-                             getTensorShape(_output), getBuffer<T>(_output));
+  nnfw::cker::SpaceToBatchND(params, getShape(_input), getBuffer<T>(_input), getShape(_block_shape),
+                             getBuffer<int32_t>(_block_shape), getShape(_padding),
+                             getBuffer<int32_t>(_padding), getShape(_output),
+                             getBuffer<T>(_output));
 }
 
 void SpaceToBatchNDLayer::configure(const IPortableTensor *input,

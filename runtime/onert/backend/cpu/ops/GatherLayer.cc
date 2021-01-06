@@ -51,8 +51,8 @@ template <typename InputType> void GatherLayer::runByInputType()
       using IndicesType = int32_t;
 
       nnfw::cker::Gather<InputType, IndicesType>(
-        op_params, getTensorShape(_input), getBuffer<InputType>(_input), getTensorShape(_indices),
-        getBuffer<IndicesType>(_indices), getTensorShape(_output), getBuffer<OutputType>(_output));
+        op_params, getShape(_input), getBuffer<InputType>(_input), getShape(_indices),
+        getBuffer<IndicesType>(_indices), getShape(_output), getBuffer<OutputType>(_output));
       break;
     }
     case OperandType::INT64:
@@ -60,8 +60,8 @@ template <typename InputType> void GatherLayer::runByInputType()
       using IndicesType = int64_t;
 
       nnfw::cker::Gather<InputType, IndicesType>(
-        op_params, getTensorShape(_input), getBuffer<InputType>(_input), getTensorShape(_indices),
-        getBuffer<IndicesType>(_indices), getTensorShape(_output), getBuffer<OutputType>(_output));
+        op_params, getShape(_input), getBuffer<InputType>(_input), getShape(_indices),
+        getBuffer<IndicesType>(_indices), getShape(_output), getBuffer<OutputType>(_output));
       break;
     }
     default:

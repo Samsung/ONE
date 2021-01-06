@@ -91,7 +91,7 @@ inline nnfw::cker::Shape getExtendedTensorShape(const IPortableTensor *tensor)
   return nnfw::cker::Shape(extended_rank, raw_shape);
 }
 
-inline nnfw::cker::Shape getTensorShape(const IPortableTensor *tensor)
+inline nnfw::cker::Shape getShape(const IPortableTensor *tensor)
 {
   if (tensor == nullptr)
     return nnfw::cker::Shape();

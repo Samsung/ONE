@@ -39,17 +39,15 @@ void MatrixBandPartLayer::matrixBandPartFloat32()
 {
   if (_num_lower_diag->data_type() == OperandType::INT64)
   {
-    nnfw::cker::MatrixBandPart<int64_t>(*getBuffer<int64_t>(_num_lower_diag),
-                                        *getBuffer<int64_t>(_num_upper_diag),
-                                        getTensorShape(_input), getBuffer<float>(_input),
-                                        getTensorShape(_output), getBuffer<float>(_output));
+    nnfw::cker::MatrixBandPart<int64_t>(
+      *getBuffer<int64_t>(_num_lower_diag), *getBuffer<int64_t>(_num_upper_diag), getShape(_input),
+      getBuffer<float>(_input), getShape(_output), getBuffer<float>(_output));
   }
   else
   {
-    nnfw::cker::MatrixBandPart<int32_t>(*getBuffer<int32_t>(_num_lower_diag),
-                                        *getBuffer<int32_t>(_num_upper_diag),
-                                        getTensorShape(_input), getBuffer<float>(_input),
-                                        getTensorShape(_output), getBuffer<float>(_output));
+    nnfw::cker::MatrixBandPart<int32_t>(
+      *getBuffer<int32_t>(_num_lower_diag), *getBuffer<int32_t>(_num_upper_diag), getShape(_input),
+      getBuffer<float>(_input), getShape(_output), getBuffer<float>(_output));
   }
 }
 

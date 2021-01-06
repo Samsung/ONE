@@ -64,8 +64,8 @@ void ArgMinMaxLayer::run()
   {
     axis += _input->getShape().rank();
   }
-#define TF_LITE_ARG_MIN_MAX(input_type, axis_type, output_type)                             \
-  ArgMinMax(getTensorShape(_input), getBuffer<input_type>(_input), getTensorShape(_output), \
+#define TF_LITE_ARG_MIN_MAX(input_type, axis_type, output_type)                 \
+  ArgMinMax(getShape(_input), getBuffer<input_type>(_input), getShape(_output), \
             getBuffer<output_type>(_output), axis, GetComparefunction<input_type>(_is_arg_max));
   if (_output->data_type() == ir::DataType::INT32)
   {

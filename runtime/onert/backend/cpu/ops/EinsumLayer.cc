@@ -47,12 +47,11 @@ void EinsumLayer::einsumFloat32()
 
   for (uint32_t i = 0; i < num_inputs; i++)
   {
-    inputShapes.emplace_back(getTensorShape(_inputs[i]));
+    inputShapes.emplace_back(getShape(_inputs[i]));
     inputFloatPtrs.emplace_back(getBuffer<float>(_inputs[i]));
   }
 
-  kernel(_equation, inputShapes, inputFloatPtrs, getTensorShape(_output),
-         getBuffer<float>(_output));
+  kernel(_equation, inputShapes, inputFloatPtrs, getShape(_output), getBuffer<float>(_output));
 }
 
 void EinsumLayer::run()

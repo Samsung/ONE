@@ -48,11 +48,11 @@ template <typename T> void SplitVLayer::splitV(void)
   {
     assert(output->total_size() == sizeOfData(output->data_type(), output->getShape().dims()));
     outputPtrs.emplace_back(getBuffer<T>(output));
-    outshape.emplace_back(getTensorShape(output));
+    outshape.emplace_back(getShape(output));
   }
 
   assert(_input->total_size() == sizeOfData(_input->data_type(), _input->getShape().dims()));
-  nnfw::cker::SplitV<T>(op_params, getTensorShape(_input), getBuffer<T>(_input), outshape,
+  nnfw::cker::SplitV<T>(op_params, getShape(_input), getBuffer<T>(_input), outshape,
                         outputPtrs.data());
 }
 

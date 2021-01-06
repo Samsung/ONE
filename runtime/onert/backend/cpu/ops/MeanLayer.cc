@@ -36,7 +36,7 @@ MeanLayer::MeanLayer() : _input(nullptr), _axes(nullptr), _output(nullptr), _kee
 
 void MeanLayer::MeanFloat32()
 {
-  const auto inputShape = getTensorShape(_input);
+  const auto inputShape = getShape(_input);
   const auto axisVec = getReducerAxes(_axes);
   bool axis_is_1_and_2 =
     _keep_dims && inputShape.DimensionsCount() == 4 && axisVec.size() == 2 &&
@@ -44,22 +44,21 @@ void MeanLayer::MeanFloat32()
 
   if (axis_is_1_and_2)
   {
-    nnfw::cker::MeanAxis1And2(inputShape, getBuffer<float>(_input), getTensorShape(_output),
+    nnfw::cker::MeanAxis1And2(inputShape, getBuffer<float>(_input), getShape(_output),
                               getBuffer<float>(_output));
   }
   else
   {
-    nnfw::cker::Mean(inputShape, getBuffer<float>(_input), getTensorShape(_output),
+    nnfw::cker::Mean(inputShape, getBuffer<float>(_input), getShape(_output),
                      getBuffer<float>(_output), axisVec);
   }
 }
 
 void MeanLayer::MeanQuant8()
 {
-  nnfw::cker::MeanQ8Asymm(getTensorShape(_input), getBuffer<uint8_t>(_input), _input->data_scale(),
-                          _input->data_zero_point(), getTensorShape(_output),
-                          getBuffer<uint8_t>(_output), _output->data_scale(),
-                          _output->data_zero_point(), getReducerAxes(_axes));
+  nnfw::cker::MeanQ8Asymm(getShape(_input), getBuffer<uint8_t>(_input), _input->data_scale(),
+                          _input->data_zero_point(), getShape(_output), getBuffer<uint8_t>(_output),
+                          _output->data_scale(), _output->data_zero_point(), getReducerAxes(_axes));
 }
 
 void MeanLayer::configure(const IPortableTensor *input, const IPortableTensor *axes,

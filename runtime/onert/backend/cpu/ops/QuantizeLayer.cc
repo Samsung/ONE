@@ -35,7 +35,7 @@ namespace ops
 template <typename InputT, typename OutputT>
 void affineQuantize(const IPortableTensor *input, IPortableTensor *output)
 {
-  nnfw::cker::Quantize(getTensorShape(input), getBuffer<InputT>(input), getTensorShape(output),
+  nnfw::cker::Quantize(getShape(input), getBuffer<InputT>(input), getShape(output),
                        getBuffer<OutputT>(output), output->data_scale(), output->data_zero_point());
 }
 
@@ -76,7 +76,7 @@ void QuantizeLayer::run()
            (_output->data_type() == OperandType::QUANT_INT8_ASYMM))
   {
     nnfw::cker::Requantize<uint8_t, int8_t>(
-      getBuffer<uint8_t>(_input), MatchingFlatSize(getTensorShape(_input), getTensorShape(_output)),
+      getBuffer<uint8_t>(_input), MatchingFlatSize(getShape(_input), getShape(_output)),
       _output_multiplier, _output_shift, _input->data_zero_point(), _output->data_zero_point(),
       getBuffer<int8_t>(_output));
   }
@@ -84,7 +84,7 @@ void QuantizeLayer::run()
            (_output->data_type() == OperandType::QUANT_UINT8_ASYMM))
   {
     nnfw::cker::Requantize<int8_t, uint8_t>(
-      getBuffer<int8_t>(_input), MatchingFlatSize(getTensorShape(_input), getTensorShape(_output)),
+      getBuffer<int8_t>(_input), MatchingFlatSize(getShape(_input), getShape(_output)),
       _output_multiplier, _output_shift, _input->data_zero_point(), _output->data_zero_point(),
       getBuffer<uint8_t>(_output));
   }

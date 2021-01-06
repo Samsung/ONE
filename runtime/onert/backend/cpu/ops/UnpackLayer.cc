@@ -47,7 +47,7 @@ template <typename T> void UnpackLayer::unpackImpl()
 
   for (int32_t i = 0; i < _num_output; i++)
   {
-    outputDims.push_back(getTensorShape(_outputs[i]));
+    outputDims.push_back(getShape(_outputs[i]));
     outputDimsPtr.push_back(&outputDims[i]);
   }
 
@@ -58,8 +58,8 @@ template <typename T> void UnpackLayer::unpackImpl()
     outputPtrs.emplace_back(getBuffer<T>(output));
   }
 
-  nnfw::cker::Unpack<T>(op_params, getTensorShape(_input), getBuffer<T>(_input),
-                        getTensorShape(_outputs[0]), outputPtrs.data());
+  nnfw::cker::Unpack<T>(op_params, getShape(_input), getBuffer<T>(_input), getShape(_outputs[0]),
+                        outputPtrs.data());
 }
 
 void UnpackLayer::configure(const IPortableTensor *input, uint32_t axis, int32_t num,

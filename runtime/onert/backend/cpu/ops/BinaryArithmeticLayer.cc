@@ -48,9 +48,9 @@ template <nnfw::cker::BinaryArithmeticOpType arithmetic_type, typename T> struct
 
   void updateCache(const IPortableTensor *lhs, const IPortableTensor *rhs, IPortableTensor *output)
   {
-    _lhs_shape.ReplaceWith(getTensorShape(lhs));
-    _rhs_shape.ReplaceWith(getTensorShape(rhs));
-    _output_shape.ReplaceWith(getTensorShape(output));
+    _lhs_shape.ReplaceWith(getShape(lhs));
+    _rhs_shape.ReplaceWith(getShape(rhs));
+    _output_shape.ReplaceWith(getShape(output));
     _need_broadcast = nnfw::cker::ProcessBroadcastShapes(_lhs_shape, _rhs_shape, &_op_params);
   }
 
@@ -61,8 +61,8 @@ template <nnfw::cker::BinaryArithmeticOpType arithmetic_type, typename T> struct
     if (output->is_dynamic())
       updateCache(lhs, rhs, output);
     else
-      assert(_lhs_shape == getTensorShape(lhs) && _rhs_shape == getTensorShape(rhs) &&
-             _output_shape == getTensorShape(output));
+      assert(_lhs_shape == getShape(lhs) && _rhs_shape == getShape(rhs) &&
+             _output_shape == getShape(output));
     auto lhs_buffer = getBuffer<T>(lhs);
     auto rhs_buffer = getBuffer<T>(rhs);
     auto output_buffer = getBuffer<T>(output);

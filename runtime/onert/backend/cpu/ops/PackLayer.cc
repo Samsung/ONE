@@ -48,7 +48,7 @@ template <typename T> void PackLayer::packImpl()
 
   for (uint32_t i = 0; i < num_inputs; i++)
   {
-    inputDims.push_back(getTensorShape(_inputs[i]));
+    inputDims.push_back(getShape(_inputs[i]));
     inputDimsPtr.push_back(&inputDims[i]);
   }
 
@@ -59,7 +59,7 @@ template <typename T> void PackLayer::packImpl()
     inputPtrs.emplace_back(getBuffer<T>(input));
   }
 
-  nnfw::cker::Pack<T>(op_params, inputPtrs.data(), getTensorShape(_output), getBuffer<T>(_output));
+  nnfw::cker::Pack<T>(op_params, inputPtrs.data(), getShape(_output), getBuffer<T>(_output));
 }
 
 void PackLayer::configure(const std::vector<const IPortableTensor *> &inputs, int32_t axis,

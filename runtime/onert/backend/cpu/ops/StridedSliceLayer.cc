@@ -37,8 +37,8 @@ StridedSliceLayer::StridedSliceLayer()
 
 template <typename T> void StridedSliceLayer::stridedSliceImpl()
 {
-  const auto input_shape = getTensorShape(_input);
-  const auto output_shape = getTensorShape(_output);
+  const auto input_shape = getShape(_input);
+  const auto output_shape = getShape(_output);
   auto op_params = nnfw::cker::buildStridedSliceParams(
     getBuffer<uint32_t>(_begin), getBuffer<uint32_t>(_end), getBuffer<uint32_t>(_strides),
     _begin_mask, _end_mask, _shrink_axis_mask, input_shape.DimensionsCount());
