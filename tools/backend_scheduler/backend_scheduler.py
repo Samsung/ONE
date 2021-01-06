@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import json, argparse, logging
+import json, logging
 from pathlib import Path
 from op_list_parser import OpListParser
 from nnpkg_helper import NnpkgHelper
@@ -147,16 +147,3 @@ class BackendScheduler:
         dst_dir = Path(__file__).parent / 'nnpkg_sched' / self.nnpkg_dir.name
         self.nnpkg_helper.copy(self.nnpkg_dir, dst_dir)
         self.nnpkg_helper.add_config(dst_dir, cmd)
-
-
-if __name__ == "__main__":
-    arg_parser = argparse.ArgumentParser()
-    arg_parser.add_argument("nnpackage_dir", type=str, help="nnpackage folder to profile")
-    arg_parser.add_argument("--num_threads",
-                            type=int,
-                            default=1,
-                            help="Number of threads used by one runtime")
-    args = arg_parser.parse_args()
-
-    backend_scheduler = BackendScheduler(args.nnpackage_dir, args.num_threads)
-    backend_scheduler.schedule()
