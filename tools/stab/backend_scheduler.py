@@ -55,8 +55,8 @@ class BackendScheduler:
                         op_backend = entry
                         backend_data = execution_data[op_backend]
                         for op in backend_data:
-                            op_index = int(op.split(' ')[0][1:])
-                            op_type = op.split(' ')[1]
+                            op_index = int(op.split(' ')[2][1:])
+                            op_type = op.split(' ')[-1]
                             time = int(backend_data[op]["Avg_Time"])
                             if op_index not in op_time.keys():
                                 op_time[op_index] = {op_backend: time}

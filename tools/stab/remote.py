@@ -77,7 +77,6 @@ class RemoteSSH():
         cmd += [f"XNNPACK_THREADS={self.num_threads}"]
         cmd += [f"RUY_THREADS={self.num_threads}"]
         cmd += [f"BACKENDS=\'{';'.join(['cpu', backend])}\'"]
-        cmd += [f"OP_SEQ_MAX_NODE=1"]
         cmd += [f"{nnpkg_run_path}"]
         cmd += [f"--nnpackage"]
         cmd += [f"{nnpkg_path}"]
