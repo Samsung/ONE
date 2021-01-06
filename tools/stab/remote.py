@@ -21,6 +21,8 @@ from pathlib import Path
 class RemoteSSH():
     """
     Execute commands on remove device using SSH
+
+    TODO : Using SSH library instead of direct ssh call
     """
     def __init__(self, user, ip, nnpkg_dir, num_threads):
         self.base_dir = Path('/tmp/ONE')
@@ -39,6 +41,9 @@ class RemoteSSH():
             logging.warn(f"nnpackage dir [{self.nnpkg_dir}] is not exist")
             exit()
         else:
+            # Create temporary folder
+            subprocess.call(
+                ["ssh", f"{self.host}", "mkdir", "-p", self.base_dir / self.trace_dir])
             # Syne ONE runtime
             subprocess.call([
                 "rsync", "-az", "--exclude", "test-suite.tar.gz", bin_dir,
@@ -59,7 +64,7 @@ class RemoteSSH():
              self.remote(remote_trace_path), local_trace_path])
 
     def profile_backend(self, backend, backend_op_list):
-        nnpkg_run_path = self.base_dir / 'bin/nnpackage_run'
+        nnpkg_run_path = self.base_dir / 'out/bin/nnpackage_run'
         nnpkg_path = self.base_dir / self.nnpkg_dir.name
 
         cmd = ["ssh", f"{self.host}"]

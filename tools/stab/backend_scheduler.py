@@ -23,7 +23,7 @@ from nnpkg_helper import NnpkgHelper
 class BackendScheduler:
     """
     Read profiled data and select proper backend for each operation
-    Scheduled nnpackage is saved at ./tools/backend_scheduler/nnpkg_sched
+    Scheduled nnpackage is saved at ./tools/stab/nnpkg_sched
 
     TODO : Use permutation time for better scheduling
     """
@@ -38,7 +38,7 @@ class BackendScheduler:
         inference_time = {}
         for backend in backend_list:
             try:
-                # Trace file is located at ./tools/backend_scheduler/traces
+                # Trace file is located at ./tools/stab/traces
                 trace_path = Path(
                     __file__).parent / 'traces' / f"{backend}_{self.num_threads}"
                 logging.debug(f"Trace path : {trace_path}")
