@@ -208,6 +208,16 @@ nnfw::cker::PaddingType getPaddingType(ir::PaddingType ir_padding_type);
 
 std::vector<int32_t> getReducerAxes(const IPortableTensor *axes);
 
+template <typename T> const T *getBuffer(const IPortableTensor *tensor)
+{
+  return reinterpret_cast<const T *>(tensor->buffer());
+}
+
+template <typename T> T *getBuffer(IPortableTensor *tensor)
+{
+  return reinterpret_cast<T *>(tensor->buffer());
+}
+
 } // namespace ops
 } // namespace cpu
 } // namespace backend

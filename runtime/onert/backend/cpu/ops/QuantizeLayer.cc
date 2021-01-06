@@ -35,9 +35,8 @@ namespace ops
 template <typename InputT, typename OutputT>
 void affineQuantize(const IPortableTensor *input, IPortableTensor *output)
 {
-  nnfw::cker::Quantize(getTensorShape(input), reinterpret_cast<const InputT *>(input->buffer()),
-                       getTensorShape(output), reinterpret_cast<OutputT *>(output->buffer()),
-                       output->data_scale(), output->data_zero_point());
+  nnfw::cker::Quantize(getTensorShape(input), getBuffer<InputT>(input), getTensorShape(output),
+                       getBuffer<OutputT>(output), output->data_scale(), output->data_zero_point());
 }
 
 void QuantizeLayer::configure(const IPortableTensor *input, IPortableTensor *output)
@@ -77,19 +76,17 @@ void QuantizeLayer::run()
            (_output->data_type() == OperandType::QUANT_INT8_ASYMM))
   {
     nnfw::cker::Requantize<uint8_t, int8_t>(
-      reinterpret_cast<const uint8_t *>(_input->buffer()),
-      MatchingFlatSize(getTensorShape(_input), getTensorShape(_output)), _output_multiplier,
-      _output_shift, _input->data_zero_point(), _output->data_zero_point(),
-      reinterpret_cast<int8_t *>(_output->buffer()));
+      getBuffer<uint8_t>(_input), MatchingFlatSize(getTensorShape(_input), getTensorShape(_output)),
+      _output_multiplier, _output_shift, _input->data_zero_point(), _output->data_zero_point(),
+      getBuffer<int8_t>(_output));
   }
   else if ((_input->data_type() == OperandType::QUANT_INT8_ASYMM) &&
            (_output->data_type() == OperandType::QUANT_UINT8_ASYMM))
   {
     nnfw::cker::Requantize<int8_t, uint8_t>(
-      reinterpret_cast<const int8_t *>(_input->buffer()),
-      MatchingFlatSize(getTensorShape(_input), getTensorShape(_output)), _output_multiplier,
-      _output_shift, _input->data_zero_point(), _output->data_zero_point(),
-      reinterpret_cast<uint8_t *>(_output->buffer()));
+      getBuffer<int8_t>(_input), MatchingFlatSize(getTensorShape(_input), getTensorShape(_output)),
+      _output_multiplier, _output_shift, _input->data_zero_point(), _output->data_zero_point(),
+      getBuffer<uint8_t>(_output));
   }
   else
   {

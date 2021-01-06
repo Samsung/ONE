@@ -56,11 +56,10 @@ template <typename T> void PackLayer::packImpl()
 
   for (const auto input : _inputs)
   {
-    inputPtrs.emplace_back(reinterpret_cast<const T *>(input->buffer()));
+    inputPtrs.emplace_back(getBuffer<T>(input));
   }
 
-  nnfw::cker::Pack<T>(op_params, inputPtrs.data(), getTensorShape(_output),
-                      reinterpret_cast<T *>(_output->buffer()));
+  nnfw::cker::Pack<T>(op_params, inputPtrs.data(), getTensorShape(_output), getBuffer<T>(_output));
 }
 
 void PackLayer::configure(const std::vector<const IPortableTensor *> &inputs, int32_t axis,

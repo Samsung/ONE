@@ -43,10 +43,9 @@ void StatelessRandomUniformLayer::configure(const IPortableTensor *shape,
 
 void StatelessRandomUniformLayer::StatelessRandomUniformFloat32()
 {
-  nnfw::cker::StatelessRandomUniform(
-    getTensorShape(_shape), reinterpret_cast<const int *>(_shape->buffer()), getTensorShape(_seed),
-    reinterpret_cast<const int *>(_seed->buffer()), getTensorShape(_output),
-    reinterpret_cast<float *>(_output->buffer()));
+  nnfw::cker::StatelessRandomUniform(getTensorShape(_shape), getBuffer<int>(_shape),
+                                     getTensorShape(_seed), getBuffer<int>(_seed),
+                                     getTensorShape(_output), getBuffer<float>(_output));
 }
 
 void StatelessRandomUniformLayer::run()

@@ -36,7 +36,7 @@ void ReverseLayer::run()
   {
     throw std::runtime_error{"Reverse: only support 1 axis"};
   }
-  int32_t axis = *(reinterpret_cast<int32_t *>(_axis->buffer()));
+  int32_t axis = *getBuffer<int32_t>(_axis);
   if (axis < 0)
   {
     axis += _input->getShape().rank();
@@ -45,9 +45,8 @@ void ReverseLayer::run()
   switch (_input->data_type())
   {
     case OperandType::FLOAT32:
-      nnfw::cker::Reverse<float>(
-        axis, getTensorShape(_input), reinterpret_cast<const float *>(_input->buffer()),
-        getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()));
+      nnfw::cker::Reverse<float>(axis, getTensorShape(_input), getBuffer<float>(_input),
+                                 getTensorShape(_output), getBuffer<float>(_output));
       break;
     default:
       throw std::runtime_error{"Reverse: unsupported data type"};

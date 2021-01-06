@@ -39,9 +39,9 @@ void evalLogic(const IPortableTensor *input, IPortableTensor *output, const std:
                T reducer(const T current, const T in))
 {
   reduce_kernel.prepare(input->getShape().rank(), axes.size());
-  bool result = reduce_kernel.ReduceGeneric<T>(
-    getTensorShape(input), reinterpret_cast<const T *>(input->buffer()), getTensorShape(output),
-    reinterpret_cast<T *>(output->buffer()), axes, keep_dims, init_value, reducer);
+  bool result = reduce_kernel.ReduceGeneric<T>(getTensorShape(input), getBuffer<T>(input),
+                                               getTensorShape(output), getBuffer<T>(output), axes,
+                                               keep_dims, init_value, reducer);
 
   if (!result)
   {
@@ -135,10 +135,10 @@ void evalSumQuantized(const IPortableTensor *input, IPortableTensor *output,
   {
     std::vector<int32_t> temp_sum(output->getShape().num_elements());
     bool result = reduce_kernel.QuantizedMeanOrSum<uint8_t, int32_t>(
-      reinterpret_cast<const uint8_t *>(input->buffer()), input->data_zero_point(),
-      input->data_scale(), getTensorShape(input), reinterpret_cast<uint8_t *>(output->buffer()),
-      output->data_zero_point(), output->data_scale(), getTensorShape(output), axes, keep_dims,
-      temp_sum.data(), true, [](const int32_t current, const uint8_t in) -> int32_t {
+      getBuffer<uint8_t>(input), input->data_zero_point(), input->data_scale(),
+      getTensorShape(input), getBuffer<uint8_t>(output), output->data_zero_point(),
+      output->data_scale(), getTensorShape(output), axes, keep_dims, temp_sum.data(), true,
+      [](const int32_t current, const uint8_t in) -> int32_t {
         const int32_t actual_in = static_cast<int32_t>(in);
         return current + actual_in;
       });
@@ -213,8 +213,7 @@ void ReduceLayer::run()
   if (_input->data_type() == ir::DataType::FLOAT32 && _reduceType == ReduceType::kSum &&
       axes.size() == 1 && (axes[0] == -1 || axes[0] == rank - 1))
   {
-    OptimizedReduceSum(reinterpret_cast<const float *>(_input->buffer()), getTensorShape(_input),
-                       reinterpret_cast<float *>(_output->buffer()));
+    OptimizedReduceSum(getBuffer<float>(_input), getTensorShape(_input), getBuffer<float>(_output));
     return;
   }
 #endif // NEON

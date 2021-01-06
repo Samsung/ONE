@@ -265,13 +265,13 @@ std::vector<int32_t> getReducerAxes(const IPortableTensor *axes)
     case ir::DataType::INT32:
     {
       for (int i = 0; i < axes_vals; ++i)
-        ret.emplace_back(*(reinterpret_cast<const int32_t *>(axes->buffer()) + i));
+        ret.emplace_back(*(getBuffer<int32_t>(axes) + i));
       break;
     }
     case ir::DataType::INT64:
     {
       for (int i = 0; i < axes_vals; ++i)
-        ret.emplace_back(*(reinterpret_cast<const int64_t *>(axes->buffer()) + i));
+        ret.emplace_back(*(getBuffer<int64_t>(axes) + i));
       break;
     }
     default:

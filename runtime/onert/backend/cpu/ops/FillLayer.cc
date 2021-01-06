@@ -45,24 +45,20 @@ void FillLayer::run()
   switch (_output->data_type())
   {
     case OperandType::FLOAT32:
-      nnfw::cker::Fill<float *>(reinterpret_cast<float *>(_value->buffer()),
-                                getTensorShape(_output),
-                                reinterpret_cast<float *>(_output->buffer()));
+      nnfw::cker::Fill<float>(getBuffer<float>(_value), getTensorShape(_output),
+                              getBuffer<float>(_output));
       break;
     case OperandType::INT32:
-      nnfw::cker::Fill<int32_t *>(reinterpret_cast<int32_t *>(_value->buffer()),
-                                  getTensorShape(_output),
-                                  reinterpret_cast<int32_t *>(_output->buffer()));
+      nnfw::cker::Fill<int32_t>(getBuffer<int32_t>(_value), getTensorShape(_output),
+                                getBuffer<int32_t>(_output));
       break;
     case OperandType::INT64:
-      nnfw::cker::Fill<int64_t *>(reinterpret_cast<int64_t *>(_value->buffer()),
-                                  getTensorShape(_output),
-                                  reinterpret_cast<int64_t *>(_output->buffer()));
+      nnfw::cker::Fill<int64_t>(getBuffer<int64_t>(_value), getTensorShape(_output),
+                                getBuffer<int64_t>(_output));
       break;
     case OperandType::UINT32:
-      nnfw::cker::Fill<uint32_t *>(reinterpret_cast<uint32_t *>(_value->buffer()),
-                                   getTensorShape(_output),
-                                   reinterpret_cast<uint32_t *>(_output->buffer()));
+      nnfw::cker::Fill<uint32_t>(getBuffer<uint32_t>(_value), getTensorShape(_output),
+                                 getBuffer<uint32_t>(_output));
       break;
     default:
       throw std::runtime_error{"Fill: unsupported data type"};

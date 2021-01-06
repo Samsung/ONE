@@ -40,14 +40,13 @@ template <typename T> void StridedSliceLayer::stridedSliceImpl()
   const auto input_shape = getTensorShape(_input);
   const auto output_shape = getTensorShape(_output);
   auto op_params = nnfw::cker::buildStridedSliceParams(
-    reinterpret_cast<uint32_t *>(_begin->buffer()), reinterpret_cast<uint32_t *>(_end->buffer()),
-    reinterpret_cast<uint32_t *>(_strides->buffer()), _begin_mask, _end_mask, _shrink_axis_mask,
-    input_shape.DimensionsCount());
+    getBuffer<uint32_t>(_begin), getBuffer<uint32_t>(_end), getBuffer<uint32_t>(_strides),
+    _begin_mask, _end_mask, _shrink_axis_mask, input_shape.DimensionsCount());
 
   nnfw::cker::checkOutputSize(op_params, input_shape, output_shape, input_shape.DimensionsCount());
 
-  nnfw::cker::StridedSlice(op_params, input_shape, reinterpret_cast<const T *>(_input->buffer()),
-                           output_shape, reinterpret_cast<T *>(_output->buffer()));
+  nnfw::cker::StridedSlice(op_params, input_shape, getBuffer<T>(_input), output_shape,
+                           getBuffer<T>(_output));
 }
 
 void StridedSliceLayer::configure(const IPortableTensor *input, const IPortableTensor *begin,

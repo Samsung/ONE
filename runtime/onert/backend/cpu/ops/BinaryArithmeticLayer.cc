@@ -63,9 +63,9 @@ template <nnfw::cker::BinaryArithmeticOpType arithmetic_type, typename T> struct
     else
       assert(_lhs_shape == getTensorShape(lhs) && _rhs_shape == getTensorShape(rhs) &&
              _output_shape == getTensorShape(output));
-    auto lhs_buffer = reinterpret_cast<const T *>(lhs->buffer());
-    auto rhs_buffer = reinterpret_cast<const T *>(rhs->buffer());
-    auto output_buffer = reinterpret_cast<T *>(output->buffer());
+    auto lhs_buffer = getBuffer<T>(lhs);
+    auto rhs_buffer = getBuffer<T>(rhs);
+    auto output_buffer = getBuffer<T>(output);
     if (_need_broadcast)
     {
       nnfw::cker::BroadcastBinaryArithmeticOp<arithmetic_type>(

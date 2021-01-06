@@ -79,7 +79,7 @@ void ResizeBilinearLayer::run()
   }
   else
   {
-    const auto size_buf = reinterpret_cast<const int32_t *>(_size->buffer());
+    const auto size_buf = getBuffer<int32_t>(_size);
     params.output_height = size_buf[0];
     params.output_width = size_buf[1];
   }
@@ -89,21 +89,18 @@ void ResizeBilinearLayer::run()
   switch (_input->data_type())
   {
     case OperandType::FLOAT32:
-      nnfw::cker::ResizeBilinear(
-        params, getTensorShape(_input), reinterpret_cast<const float *>(_input->buffer()),
-        getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()));
+      nnfw::cker::ResizeBilinear(params, getTensorShape(_input), getBuffer<float>(_input),
+                                 getTensorShape(_output), getBuffer<float>(_output));
       break;
 
     case OperandType::QUANT_UINT8_ASYMM:
-      nnfw::cker::ResizeBilinear(
-        params, getTensorShape(_input), reinterpret_cast<const uint8_t *>(_input->buffer()),
-        getTensorShape(_output), reinterpret_cast<uint8_t *>(_output->buffer()));
+      nnfw::cker::ResizeBilinear(params, getTensorShape(_input), getBuffer<uint8_t>(_input),
+                                 getTensorShape(_output), getBuffer<uint8_t>(_output));
       break;
 
     case OperandType::QUANT_INT8_ASYMM:
-      nnfw::cker::ResizeBilinear(
-        params, getTensorShape(_input), reinterpret_cast<const int8_t *>(_input->buffer()),
-        getTensorShape(_output), reinterpret_cast<int8_t *>(_output->buffer()));
+      nnfw::cker::ResizeBilinear(params, getTensorShape(_input), getBuffer<int8_t>(_input),
+                                 getTensorShape(_output), getBuffer<int8_t>(_output));
       break;
 
     case OperandType::UINT8:

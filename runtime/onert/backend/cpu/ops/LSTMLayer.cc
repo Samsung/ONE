@@ -44,7 +44,7 @@ T *getOptionalOutputBuffer(onert::backend::IPortableTensor *tensor, std::vector<
   else
   {
     assert(tensor->total_size() == total_size);
-    return reinterpret_cast<T *>(tensor->buffer());
+    return getBuffer<T>(tensor);
   }
 }
 
@@ -118,22 +118,25 @@ void LSTMLayer::LSTMFloat()
 
   auto optional_tensor_ptr = [](const IPortableTensor *tensor) {
     // If tensor is not given or the tensor size is 0, consider it was not given
-    return (tensor && tensor->total_size() > 0) ? reinterpret_cast<float *>(tensor->buffer())
-                                                : nullptr;
+    return (tensor && tensor->total_size() > 0) ? getBuffer<float>(tensor) : nullptr;
   };
   // Optional inputs
-  float *input_to_input_weights_ptr = optional_tensor_ptr(_input_to_input_weights);
-  float *recurrent_to_input_weights_ptr = optional_tensor_ptr(_recurrent_to_input_weights);
-  float *cell_to_input_weights_ptr = optional_tensor_ptr(_cell_to_input_weights);
-  float *cell_to_forget_weights_ptr = optional_tensor_ptr(_cell_to_forget_weights);
-  float *cell_to_output_weights_ptr = optional_tensor_ptr(_cell_to_output_weights);
-  float *input_gate_bias_ptr = optional_tensor_ptr(_input_gate_bias);
-  float *projection_weights_ptr = optional_tensor_ptr(_projection_weights);
-  float *projection_bias_ptr = optional_tensor_ptr(_projection_bias);
-  float *input_layer_norm_coefficients_ptr = optional_tensor_ptr(_input_layer_norm_coefficients);
-  float *forget_layer_norm_coefficients_ptr = optional_tensor_ptr(_forget_layer_norm_coefficients);
-  float *cell_layer_norm_coefficients_ptr = optional_tensor_ptr(_cell_layer_norm_coefficients);
-  float *output_layer_norm_coefficients_ptr = optional_tensor_ptr(_output_layer_norm_coefficients);
+  const float *input_to_input_weights_ptr = optional_tensor_ptr(_input_to_input_weights);
+  const float *recurrent_to_input_weights_ptr = optional_tensor_ptr(_recurrent_to_input_weights);
+  const float *cell_to_input_weights_ptr = optional_tensor_ptr(_cell_to_input_weights);
+  const float *cell_to_forget_weights_ptr = optional_tensor_ptr(_cell_to_forget_weights);
+  const float *cell_to_output_weights_ptr = optional_tensor_ptr(_cell_to_output_weights);
+  const float *input_gate_bias_ptr = optional_tensor_ptr(_input_gate_bias);
+  const float *projection_weights_ptr = optional_tensor_ptr(_projection_weights);
+  const float *projection_bias_ptr = optional_tensor_ptr(_projection_bias);
+  const float *input_layer_norm_coefficients_ptr =
+    optional_tensor_ptr(_input_layer_norm_coefficients);
+  const float *forget_layer_norm_coefficients_ptr =
+    optional_tensor_ptr(_forget_layer_norm_coefficients);
+  const float *cell_layer_norm_coefficients_ptr =
+    optional_tensor_ptr(_cell_layer_norm_coefficients);
+  const float *output_layer_norm_coefficients_ptr =
+    optional_tensor_ptr(_output_layer_norm_coefficients);
 
   // Copy out the LSTM specific params so they can be passed in the function.
   nnfw::cker::LSTMParams lstm_params;
@@ -153,36 +156,33 @@ void LSTMLayer::LSTMFloat()
       // If this is the forward_sequence, step forward, otherwise step
       // backwards.
       const int t_rel = _forward_sequence ? t : max_time - t - 1;
-      const float *input_ptr = reinterpret_cast<float *>(_input->buffer()) + t_rel * input_step;
+      const float *input_ptr = getBuffer<float>(_input) + t_rel * input_step;
       const float *aux_input_ptr = nullptr;
       if (_aux_input)
       {
-        aux_input_ptr = reinterpret_cast<float *>(_aux_input->buffer()) + t_rel * input_step;
+        aux_input_ptr = getBuffer<float>(_aux_input) + t_rel * input_step;
       }
-      float *output_ptr =
-        reinterpret_cast<float *>(_output->buffer()) + t_rel * output_step + _output_offset;
+      float *output_ptr = getBuffer<float>(_output) + t_rel * output_step + _output_offset;
 
       LstmStepFloat(
-        input_ptr, input_to_input_weights_ptr,
-        reinterpret_cast<float *>(_input_to_forget_weights->buffer()),
-        reinterpret_cast<float *>(_input_to_cell_weights->buffer()),
-        reinterpret_cast<float *>(_input_to_output_weights->buffer()), aux_input_ptr,
+        input_ptr, input_to_input_weights_ptr, getBuffer<float>(_input_to_forget_weights),
+        getBuffer<float>(_input_to_cell_weights), getBuffer<float>(_input_to_output_weights),
+        aux_input_ptr,
         /*aux_input_to_input_weights=*/nullptr,
         /*aux_input_to_forget_weights=*/nullptr,
         /*aux_input_to_cell_weights=*/nullptr,
         /*aux_input_to_output_weights=*/nullptr, recurrent_to_input_weights_ptr,
-        reinterpret_cast<float *>(_recurrent_to_forget_weights->buffer()),
-        reinterpret_cast<float *>(_recurrent_to_cell_weights->buffer()),
-        reinterpret_cast<float *>(_recurrent_to_output_weights->buffer()),
-        cell_to_input_weights_ptr, cell_to_forget_weights_ptr, cell_to_output_weights_ptr,
-        input_layer_norm_coefficients_ptr, forget_layer_norm_coefficients_ptr,
-        cell_layer_norm_coefficients_ptr, output_layer_norm_coefficients_ptr, input_gate_bias_ptr,
-        reinterpret_cast<float *>(_forget_gate_bias->buffer()),
-        reinterpret_cast<float *>(_cell_gate_bias->buffer()),
-        reinterpret_cast<float *>(_output_gate_bias->buffer()), projection_weights_ptr,
-        projection_bias_ptr, &lstm_params, n_batch, n_cell, n_input, aux_input_size, n_output,
-        output_batch_leading_dim, output_state_buf, cell_state_buf, input_gate_scratch,
-        forget_gate_scratch, cell_gate_scratch, output_gate_scratch, output_ptr);
+        getBuffer<float>(_recurrent_to_forget_weights),
+        getBuffer<float>(_recurrent_to_cell_weights),
+        getBuffer<float>(_recurrent_to_output_weights), cell_to_input_weights_ptr,
+        cell_to_forget_weights_ptr, cell_to_output_weights_ptr, input_layer_norm_coefficients_ptr,
+        forget_layer_norm_coefficients_ptr, cell_layer_norm_coefficients_ptr,
+        output_layer_norm_coefficients_ptr, input_gate_bias_ptr,
+        getBuffer<float>(_forget_gate_bias), getBuffer<float>(_cell_gate_bias),
+        getBuffer<float>(_output_gate_bias), projection_weights_ptr, projection_bias_ptr,
+        &lstm_params, n_batch, n_cell, n_input, aux_input_size, n_output, output_batch_leading_dim,
+        output_state_buf, cell_state_buf, input_gate_scratch, forget_gate_scratch,
+        cell_gate_scratch, output_gate_scratch, output_ptr);
     }
   }
   else
@@ -197,16 +197,13 @@ void LSTMLayer::LSTMFloat()
         // backwards.
         const int t_rel = _forward_sequence ? t : max_time - t - 1;
         const int time_offset = b * max_time + t_rel;
-        const float *input_ptr =
-          reinterpret_cast<float *>(_input->buffer()) + time_offset * input_step;
+        const float *input_ptr = getBuffer<float>(_input) + time_offset * input_step;
         const float *aux_input_ptr = nullptr;
         if (_aux_input)
         {
-          aux_input_ptr =
-            reinterpret_cast<float *>(_aux_input->buffer()) + time_offset * input_step;
+          aux_input_ptr = getBuffer<float>(_aux_input) + time_offset * input_step;
         }
-        float *output_ptr =
-          reinterpret_cast<float *>(_output->buffer()) + time_offset * output_step + _output_offset;
+        float *output_ptr = getBuffer<float>(_output) + time_offset * output_step + _output_offset;
 
         // Offset the {output,cell}_state pointers to the right batch.
         float *output_state_ptr = output_state_buf + b * output_batch_leading_dim;
@@ -219,27 +216,24 @@ void LSTMLayer::LSTMFloat()
         float *output_gate_scratch_ptr = output_gate_scratch + b * n_cell;
 
         LstmStepFloat(
-          input_ptr, input_to_input_weights_ptr,
-          reinterpret_cast<float *>(_input_to_forget_weights->buffer()),
-          reinterpret_cast<float *>(_input_to_cell_weights->buffer()),
-          reinterpret_cast<float *>(_input_to_output_weights->buffer()), aux_input_ptr,
+          input_ptr, input_to_input_weights_ptr, getBuffer<float>(_input_to_forget_weights),
+          getBuffer<float>(_input_to_cell_weights), getBuffer<float>(_input_to_output_weights),
+          aux_input_ptr,
           /*aux_input_to_input_weights=*/nullptr,
           /*aux_input_to_forget_weights=*/nullptr,
           /*aux_input_to_cell_weights=*/nullptr,
           /*aux_input_to_output_weights=*/nullptr, recurrent_to_input_weights_ptr,
-          reinterpret_cast<float *>(_recurrent_to_forget_weights->buffer()),
-          reinterpret_cast<float *>(_recurrent_to_cell_weights->buffer()),
-          reinterpret_cast<float *>(_recurrent_to_output_weights->buffer()),
-          cell_to_input_weights_ptr, cell_to_forget_weights_ptr, cell_to_output_weights_ptr,
-          input_layer_norm_coefficients_ptr, forget_layer_norm_coefficients_ptr,
-          cell_layer_norm_coefficients_ptr, output_layer_norm_coefficients_ptr, input_gate_bias_ptr,
-          reinterpret_cast<float *>(_forget_gate_bias->buffer()),
-          reinterpret_cast<float *>(_cell_gate_bias->buffer()),
-          reinterpret_cast<float *>(_output_gate_bias->buffer()), projection_weights_ptr,
-          projection_bias_ptr, &lstm_params, /*n_batch=*/1, n_cell, n_input, aux_input_size,
-          n_output, output_batch_leading_dim, output_state_ptr, cell_state_ptr,
-          input_gate_scratch_ptr, forget_gate_scratch_ptr, cell_gate_scratch_ptr,
-          output_gate_scratch_ptr, output_ptr);
+          getBuffer<float>(_recurrent_to_forget_weights),
+          getBuffer<float>(_recurrent_to_cell_weights),
+          getBuffer<float>(_recurrent_to_output_weights), cell_to_input_weights_ptr,
+          cell_to_forget_weights_ptr, cell_to_output_weights_ptr, input_layer_norm_coefficients_ptr,
+          forget_layer_norm_coefficients_ptr, cell_layer_norm_coefficients_ptr,
+          output_layer_norm_coefficients_ptr, input_gate_bias_ptr,
+          getBuffer<float>(_forget_gate_bias), getBuffer<float>(_cell_gate_bias),
+          getBuffer<float>(_output_gate_bias), projection_weights_ptr, projection_bias_ptr,
+          &lstm_params, /*n_batch=*/1, n_cell, n_input, aux_input_size, n_output,
+          output_batch_leading_dim, output_state_ptr, cell_state_ptr, input_gate_scratch_ptr,
+          forget_gate_scratch_ptr, cell_gate_scratch_ptr, output_gate_scratch_ptr, output_ptr);
       }
     }
   }

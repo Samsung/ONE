@@ -54,13 +54,12 @@ template <typename T> void TransposeLayer::transpose()
     assert(param.perm_count == static_cast<int>(perm_shape.dim(0)));
     for (auto i = 0; i < param.perm_count; i++)
     {
-      param.perm[i] = *(reinterpret_cast<const int32_t *>(_perm->buffer()) + i);
+      param.perm[i] = *(getBuffer<int32_t>(_perm) + i);
     }
   }
 
-  nnfw::cker::Transpose(param, getTensorShape(_input),
-                        reinterpret_cast<const T *>(_input->buffer()), getTensorShape(_output),
-                        reinterpret_cast<T *>(_output->buffer()));
+  nnfw::cker::Transpose(param, getTensorShape(_input), getBuffer<T>(_input),
+                        getTensorShape(_output), getBuffer<T>(_output));
 }
 
 void TransposeLayer::transposeQuant8()

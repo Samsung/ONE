@@ -55,10 +55,10 @@ template <typename T> void UnpackLayer::unpackImpl()
 
   for (const auto output : _outputs)
   {
-    outputPtrs.emplace_back(reinterpret_cast<T *>(output->buffer()));
+    outputPtrs.emplace_back(getBuffer<T>(output));
   }
 
-  nnfw::cker::Unpack<T>(op_params, getTensorShape(_input), reinterpret_cast<T *>(_input->buffer()),
+  nnfw::cker::Unpack<T>(op_params, getTensorShape(_input), getBuffer<T>(_input),
                         getTensorShape(_outputs[0]), outputPtrs.data());
 }
 

@@ -47,18 +47,17 @@ void SpaceToBatchNDLayer::checkDimension()
   // shape height and width.
   for (int dim = 0; dim < kSpatialDimensionNum; ++dim)
   {
-    int final_dim_size =
-      (_input->getShape().dim(dim + 1) + reinterpret_cast<int32_t *>(_padding->buffer())[dim * 2] +
-       reinterpret_cast<int32_t *>(_padding->buffer())[dim * 2 + 1]);
+    int final_dim_size = (_input->getShape().dim(dim + 1) + getBuffer<int32_t>(_padding)[dim * 2] +
+                          getBuffer<int32_t>(_padding)[dim * 2 + 1]);
 
-    if (final_dim_size % reinterpret_cast<int32_t *>(_block_shape->buffer())[dim] != 0)
+    if (final_dim_size % getBuffer<int32_t>(_block_shape)[dim] != 0)
     {
       throw std::runtime_error(
         "SpaceToBatchND : padded input's dimension is not a multiple of block size\n");
     }
 
     if ((int32_t)_output->getShape().dim(dim + 1) !=
-        final_dim_size / reinterpret_cast<int32_t *>(_block_shape->buffer())[dim])
+        final_dim_size / getBuffer<int32_t>(_block_shape)[dim])
     {
       throw std::runtime_error("SpaceToBatchND : wrong output dimension\n");
     }
@@ -75,11 +74,10 @@ template <typename T> void SpaceToBatchNDLayer::spaceToBatchND()
   nnfw::cker::SpaceToBatchParams params;
   params.output_offset = getPad<T>();
 
-  nnfw::cker::SpaceToBatchND(
-    params, getTensorShape(_input), reinterpret_cast<const T *>(_input->buffer()),
-    getTensorShape(_block_shape), reinterpret_cast<const int32_t *>(_block_shape->buffer()),
-    getTensorShape(_padding), reinterpret_cast<const int32_t *>(_padding->buffer()),
-    getTensorShape(_output), reinterpret_cast<T *>(_output->buffer()));
+  nnfw::cker::SpaceToBatchND(params, getTensorShape(_input), getBuffer<T>(_input),
+                             getTensorShape(_block_shape), getBuffer<int32_t>(_block_shape),
+                             getTensorShape(_padding), getBuffer<int32_t>(_padding),
+                             getTensorShape(_output), getBuffer<T>(_output));
 }
 
 void SpaceToBatchNDLayer::configure(const IPortableTensor *input,

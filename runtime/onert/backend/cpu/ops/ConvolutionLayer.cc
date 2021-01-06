@@ -57,10 +57,9 @@ void ConvolutionLayer::convFloat32()
   op_params.float_activation_max = output_activation_max;
 
   nnfw::cker::Conv &kernel = *_conv_kernel;
-  kernel(op_params, getTensorShape(_input), reinterpret_cast<const float *>(_input->buffer()),
-         getTensorShape(_kernel), reinterpret_cast<const float *>(_kernel->buffer()),
-         getTensorShape(_bias), reinterpret_cast<const float *>(_bias->buffer()),
-         getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()));
+  kernel(op_params, getTensorShape(_input), getBuffer<float>(_input), getTensorShape(_kernel),
+         getBuffer<float>(_kernel), getTensorShape(_bias), getBuffer<float>(_bias),
+         getTensorShape(_output), getBuffer<float>(_output));
 }
 
 void ConvolutionLayer::convQuant8()
@@ -94,10 +93,9 @@ void ConvolutionLayer::convQuant8()
   op_params.is_replaced_weights = true;
 
   nnfw::cker::Conv &kernel = *_conv_kernel;
-  kernel(op_params, getTensorShape(_input), reinterpret_cast<const uint8_t *>(_input->buffer()),
-         getTensorShape(_kernel), reinterpret_cast<const uint8_t *>(_kernel->buffer()),
-         getTensorShape(_bias), reinterpret_cast<const int32_t *>(_bias->buffer()),
-         getTensorShape(_output), reinterpret_cast<uint8_t *>(_output->buffer()));
+  kernel(op_params, getTensorShape(_input), getBuffer<uint8_t>(_input), getTensorShape(_kernel),
+         getBuffer<uint8_t>(_kernel), getTensorShape(_bias), getBuffer<int32_t>(_bias),
+         getTensorShape(_output), getBuffer<uint8_t>(_output));
 }
 
 void ConvolutionLayer::configure(const IPortableTensor *input, const IPortableTensor *kernel,
@@ -181,9 +179,8 @@ void ConvolutionLayer::prepare()
   if (_input->data_type() == OperandType::FLOAT32 && _kernel->is_constant())
   {
     bool is_transposed = false;
-    kernel.prepare(getTensorShape(_kernel), reinterpret_cast<const float *>(_kernel->buffer()),
-                   getPaddingType(_paddingType), is_transposed, _dilationWidthFactor,
-                   _dilationHeightFactor);
+    kernel.prepare(getTensorShape(_kernel), getBuffer<float>(_kernel), getPaddingType(_paddingType),
+                   is_transposed, _dilationWidthFactor, _dilationHeightFactor);
 
     // Decrease reference of _kernel(weights) only when _kernel is constant
     if (is_transposed)

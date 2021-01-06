@@ -38,8 +38,8 @@ namespace
 {
 void absFloat32(const IPortableTensor *input, IPortableTensor *output)
 {
-  nnfw::cker::Abs(getTensorShape(input), reinterpret_cast<const float *>(input->buffer()),
-                  getTensorShape(output), reinterpret_cast<float *>(output->buffer()));
+  nnfw::cker::Abs(getTensorShape(input), getBuffer<float>(input), getTensorShape(output),
+                  getBuffer<float>(output));
 }
 
 template <typename FromT>
@@ -114,88 +114,86 @@ void cast(const IPortableTensor *input, IPortableTensor *output)
 
 void cosFloat32(const IPortableTensor *input, IPortableTensor *output)
 {
-  nnfw::cker::Cos(getTensorShape(input), reinterpret_cast<const float *>(input->buffer()),
-                  getTensorShape(output), reinterpret_cast<float *>(output->buffer()));
+  nnfw::cker::Cos(getTensorShape(input), getBuffer<float>(input), getTensorShape(output),
+                  getBuffer<float>(output));
 }
 
 void dequantizeInt8(const IPortableTensor *input, IPortableTensor *output)
 {
-  nnfw::cker::Dequantize(getTensorShape(input), reinterpret_cast<const int8_t *>(input->buffer()),
-                         getTensorShape(output), reinterpret_cast<float *>(output->buffer()),
-                         input->data_scale(), input->data_zero_point());
+  nnfw::cker::Dequantize(getTensorShape(input), getBuffer<int8_t>(input), getTensorShape(output),
+                         getBuffer<float>(output), input->data_scale(), input->data_zero_point());
 }
 
 void dequantizeUint8(const IPortableTensor *input, IPortableTensor *output)
 {
-  nnfw::cker::Dequantize(getTensorShape(input), reinterpret_cast<const uint8_t *>(input->buffer()),
-                         getTensorShape(output), reinterpret_cast<float *>(output->buffer()),
-                         input->data_scale(), input->data_zero_point());
+  nnfw::cker::Dequantize(getTensorShape(input), getBuffer<uint8_t>(input), getTensorShape(output),
+                         getBuffer<float>(output), input->data_scale(), input->data_zero_point());
 }
 
 void expFloat32(const IPortableTensor *input, IPortableTensor *output)
 {
-  nnfw::cker::Exp(getTensorShape(input), reinterpret_cast<const float *>(input->buffer()),
-                  getTensorShape(output), reinterpret_cast<float *>(output->buffer()));
+  nnfw::cker::Exp(getTensorShape(input), getBuffer<float>(input), getTensorShape(output),
+                  getBuffer<float>(output));
 }
 
 void erfFloat32(const IPortableTensor *input, IPortableTensor *output)
 {
-  nnfw::cker::Erf(getTensorShape(input), reinterpret_cast<const float *>(input->buffer()),
-                  getTensorShape(output), reinterpret_cast<float *>(output->buffer()));
+  nnfw::cker::Erf(getTensorShape(input), getBuffer<float>(input), getTensorShape(output),
+                  getBuffer<float>(output));
 }
 
 void floorFloat32(const IPortableTensor *input, IPortableTensor *output)
 {
-  nnfw::cker::Floor(getTensorShape(input), reinterpret_cast<const float *>(input->buffer()),
-                    getTensorShape(output), reinterpret_cast<float *>(output->buffer()));
+  nnfw::cker::Floor(getTensorShape(input), getBuffer<float>(input), getTensorShape(output),
+                    getBuffer<float>(output));
 }
 
 void logFloat32(const IPortableTensor *input, IPortableTensor *output)
 {
-  nnfw::cker::Log(getTensorShape(input), reinterpret_cast<const float *>(input->buffer()),
-                  getTensorShape(output), reinterpret_cast<float *>(output->buffer()));
+  nnfw::cker::Log(getTensorShape(input), getBuffer<float>(input), getTensorShape(output),
+                  getBuffer<float>(output));
 }
 
 void logicalNot(const IPortableTensor *input, IPortableTensor *output)
 {
-  nnfw::cker::LogicalNot(getTensorShape(input), reinterpret_cast<const bool *>(input->buffer()),
-                         getTensorShape(output), reinterpret_cast<bool *>(output->buffer()));
+  nnfw::cker::LogicalNot(getTensorShape(input), getBuffer<bool>(input), getTensorShape(output),
+                         getBuffer<bool>(output));
 }
 
 template <typename T> void neg(const IPortableTensor *input, IPortableTensor *output)
 {
-  nnfw::cker::Neg<T>(getTensorShape(input), reinterpret_cast<const T *>(input->buffer()),
-                     getTensorShape(output), reinterpret_cast<T *>(output->buffer()));
+  nnfw::cker::Neg<T>(getTensorShape(input), getBuffer<T>(input), getTensorShape(output),
+                     getBuffer<T>(output));
 }
 
 void roundFloat32(const IPortableTensor *input, IPortableTensor *output)
 {
-  nnfw::cker::Round(getTensorShape(input), reinterpret_cast<const float *>(input->buffer()),
-                    getTensorShape(output), reinterpret_cast<float *>(output->buffer()));
+  nnfw::cker::Round(getTensorShape(input), getBuffer<float>(input), getTensorShape(output),
+                    getBuffer<float>(output));
 }
 
 void rsqrtFloat32(const IPortableTensor *input, IPortableTensor *output)
 {
-  nnfw::cker::Rsqrt(getTensorShape(input), reinterpret_cast<const float *>(input->buffer()),
-                    getTensorShape(output), reinterpret_cast<float *>(output->buffer()));
+  nnfw::cker::Rsqrt(getTensorShape(input), getBuffer<float>(input), getTensorShape(output),
+                    getBuffer<float>(output));
 }
 
 void sinFloat32(const IPortableTensor *input, IPortableTensor *output)
 {
-  nnfw::cker::Sin(getTensorShape(input), reinterpret_cast<const float *>(input->buffer()),
-                  getTensorShape(output), reinterpret_cast<float *>(output->buffer()));
+  nnfw::cker::Sin(getTensorShape(input), getBuffer<float>(input), getTensorShape(output),
+                  getBuffer<float>(output));
 }
 
 void sqrtFloat32(const IPortableTensor *input, IPortableTensor *output)
 {
-  nnfw::cker::Sqrt(getTensorShape(input), reinterpret_cast<const float *>(input->buffer()),
-                   getTensorShape(output), reinterpret_cast<float *>(output->buffer()));
+  nnfw::cker::Sqrt(getTensorShape(input), getBuffer<float>(input), getTensorShape(output),
+                   getBuffer<float>(output));
 }
 
 void squareFloat32(const IPortableTensor *input, IPortableTensor *output)
 {
-  nnfw::cker::Square(getTensorShape(input), reinterpret_cast<const float *>(input->buffer()),
-                     getTensorShape(output), reinterpret_cast<float *>(output->buffer()));
+  nnfw::cker::Square(getTensorShape(input), getBuffer<float>(input), getTensorShape(output),
+                     getBuffer<float>(output));
 }
 
 template <typename T> void zerosLikeFloat32(const IPortableTensor *input, IPortableTensor *output)
@@ -205,7 +203,7 @@ template <typename T> void zerosLikeFloat32(const IPortableTensor *input, IPorta
 
   auto element_size = getTensorShape(input).FlatSize();
 
-  memset(reinterpret_cast<T *>(output->buffer()), 0, element_size * sizeof(T));
+  memset(getBuffer<T>(output), 0, element_size * sizeof(T));
 }
 } // namespace
 

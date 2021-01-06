@@ -84,9 +84,8 @@ void compareQuant8(const IPortableTensor *lhs, const IPortableTensor *rhs, IPort
 
   CompareFunction fn = (params.is_broadcast ? broadcast_fns[index] : non_broadcast_fns[index]);
 
-  fn(params, getExtendedTensorShape(lhs), reinterpret_cast<const T *>(lhs->buffer()),
-     getExtendedTensorShape(rhs), reinterpret_cast<const T *>(rhs->buffer()),
-     getExtendedTensorShape(output), reinterpret_cast<bool *>(output->buffer()));
+  fn(params, getExtendedTensorShape(lhs), getBuffer<T>(lhs), getExtendedTensorShape(rhs),
+     getBuffer<T>(rhs), getExtendedTensorShape(output), getBuffer<bool>(output));
 }
 
 template <typename T>
@@ -117,9 +116,8 @@ void compareScalar(const IPortableTensor *lhs, const IPortableTensor *rhs, IPort
 
   CompareFunction fn = (requires_broadcast ? broadcast_fns[index] : non_broadcast_fns[index]);
 
-  fn(getExtendedTensorShape(lhs), reinterpret_cast<const T *>(lhs->buffer()),
-     getExtendedTensorShape(rhs), reinterpret_cast<const T *>(rhs->buffer()),
-     getExtendedTensorShape(output), reinterpret_cast<bool *>(output->buffer()));
+  fn(getExtendedTensorShape(lhs), getBuffer<T>(lhs), getExtendedTensorShape(rhs), getBuffer<T>(rhs),
+     getExtendedTensorShape(output), getBuffer<bool>(output));
 }
 
 } // namespace

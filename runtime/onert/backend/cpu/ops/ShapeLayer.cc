@@ -51,15 +51,15 @@ void ShapeLayer::run()
 {
   if (_output->data_type() == OperandType::UINT32)
   {
-    GetRawShape(_input, reinterpret_cast<uint32_t *>(_output->buffer()));
+    GetRawShape(_input, getBuffer<uint32_t>(_output));
   }
   else if (_output->data_type() == OperandType::INT32)
   {
-    GetRawShape(_input, reinterpret_cast<int32_t *>(_output->buffer()));
+    GetRawShape(_input, getBuffer<int32_t>(_output));
   }
   else if (_output->data_type() == OperandType::INT64)
   {
-    GetRawShape(_input, reinterpret_cast<int64_t *>(_output->buffer()));
+    GetRawShape(_input, getBuffer<int64_t>(_output));
   }
   else
   {

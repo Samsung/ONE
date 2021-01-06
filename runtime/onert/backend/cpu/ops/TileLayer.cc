@@ -36,9 +36,8 @@ TileLayer::TileLayer() : _input(nullptr), _multipliers(nullptr), _output(nullptr
 
 void TileLayer::tileFloat32()
 {
-  TileOneDimension(getTensorShape(_input), reinterpret_cast<const float *>(_input->buffer()),
-                   reinterpret_cast<const int *>(_multipliers->buffer()),
-                   reinterpret_cast<float *>(_output->buffer()), 0);
+  TileOneDimension(getTensorShape(_input), getBuffer<float>(_input), getBuffer<int>(_multipliers),
+                   getBuffer<float>(_output), 0);
 }
 
 void TileLayer::tileQuant8()
