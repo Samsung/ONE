@@ -283,12 +283,6 @@ bool update_conv_bias_with_beta(luci::CircleConv2D *conv, const luci::CircleCons
 luci::CircleSub *insert_sub(luci::CircleNode *pred, luci::CircleConst *beta)
 {
   auto sub = pred->graph()->nodes()->create<luci::CircleSub>();
-  sub->dtype(loco::DataType::FLOAT32);
-  sub->rank(pred->rank());
-  for (uint32_t i = 0; i < sub->rank(); i++)
-  {
-    sub->dim(i).set(pred->dim(i).value());
-  }
   sub->fusedActivationFunction(luci::FusedActFunc::NONE);
 
   loco::replace(pred).with(sub);
