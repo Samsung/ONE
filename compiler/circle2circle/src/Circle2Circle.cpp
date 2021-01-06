@@ -169,7 +169,7 @@ int entry(int argc, char **argv)
     .nargs(0)
     .required(false)
     .default_value(false)
-    .help("This will convert NCHW operators to NHWC under the assumption that "
+    .help("Experimental: This will convert NCHW operators to NHWC under the assumption that "
           "input model is NCHW.");
 
   arser.add_argument("--mute_warnings")
