@@ -165,6 +165,13 @@ int entry(int argc, char **argv)
     .default_value(false)
     .help("This will convert single input Pack to Reshape");
 
+  arser.add_argument("--convert_nchw_to_nhwc")
+    .nargs(0)
+    .required(false)
+    .default_value(false)
+    .help("This will convert NCHW operators to NHWC under the assumption that "
+          "input model is NCHW.");
+
   arser.add_argument("--mute_warnings")
     .nargs(0)
     .required(false)
@@ -270,6 +277,8 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::ShuffleWeightTo16x1Float32);
   if (arser.get<bool>("--substitute_pack_to_reshape"))
     options->enable(Algorithms::SubstitutePackToReshape);
+  if (arser.get<bool>("--convert_nchw_to_nhwc"))
+    options->enable(Algorithms::ConvertNCHWToNHWC);
 
   if (arser.get<bool>("--mute_warnings"))
     settings->set(luci::UserSettings::Key::MuteWarnings, true);
