@@ -64,7 +64,7 @@ bool remove_no_effect_slice(luci::CircleNode *node)
     if (size_value != static_cast<int64_t>(input_node->dim(i).value()))
       return false;
 
-    if (input_node->shape_signature().rank() != 0 && input_node->shape_signature().dim(i) == -1)
+    if (!input_node->dim(i).known())
       return false;
   }
   replace(target_node).with(input_node);
