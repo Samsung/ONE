@@ -173,3 +173,39 @@ TEST(ObjectManager, non_const_iterate)
   ASSERT_EQ(man.at(index1), 201);
   ASSERT_EQ(man.at(index2), 301);
 }
+
+TEST(ObjectManager, set)
+{
+  util::ObjectManager<Index, int> man;
+  auto index = man.set(Index{1}, std::make_unique<int>(100)); // Insert
+  ASSERT_EQ(index, Index{1});
+  auto index2 = man.set(index, std::make_unique<int>(200)); // Overwrite
+  ASSERT_EQ(index2, index);
+  ASSERT_EQ(man.at(index2), 200);
+}
+
+TEST(ObjectManager, neg_set)
+{
+  auto v = std::make_unique<int>(100);
+  util::ObjectManager<Index, int> man;
+  auto index = man.set(Index{}, std::move(v)); // Try set with an invalid index
+  ASSERT_EQ(index, Index{});
+  ASSERT_FALSE(index.valid());
+  ASSERT_NE(v, nullptr); // v must be kept when failure
+}
+
+TEST(ObjectManager, getRawPtr)
+{
+  auto v = std::make_unique<int>(100);
+  auto v_ptr = v.get();
+  util::ObjectManager<Index, int> man;
+  auto index = man.push(std::move(v));
+  ASSERT_EQ(v_ptr, man.getRawPtr(index));
+}
+
+TEST(ObjectManager, neg_getRawPtr)
+{
+  util::ObjectManager<Index, int> man;
+  auto ptr = man.getRawPtr(Index{1});
+  ASSERT_EQ(ptr, nullptr);
+}
