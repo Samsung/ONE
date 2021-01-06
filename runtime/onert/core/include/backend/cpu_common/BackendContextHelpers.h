@@ -54,7 +54,7 @@ void planTensors(const T_BackendContext &ctx, const std::vector<onert::ir::Opera
     if (model_io.contains(ind))
       continue;
     const auto &obj = graph->operands().at(ind);
-    const auto &li = lower_info.operand.at(ind);
+    const auto &li = lower_info.operand.getRawPtr(ind);
     if (li->def_factors().getOnlyElement().backend() != ctx.backend())
       continue;
 
@@ -135,8 +135,8 @@ void planTensors(const T_BackendContext &ctx, const std::vector<onert::ir::Opera
           // The variable tensor with buffer is not supported yet
           assert(operand.data() == nullptr);
           assert(operand.getUses().size() == 1 && !operand.getDef().valid());
-          assert(lower_info.operand.at(ind)->def_factors().size() == 1 &&
-                 lower_info.operand.at(ind)->use_factors().size() == 1);
+          assert(lower_info.operand.at(ind).def_factors().size() == 1 &&
+                 lower_info.operand.at(ind).use_factors().size() == 1);
           assert(uses_map[ind] == 1 && def_map[ind] == 0);
           tensor_builder->notifyFirstUse(ind);
         }
@@ -211,7 +211,8 @@ ITensorRegistry *genTensors(T_BackendContext &ctx,
       }
       return ir::Layout::UNKNOWN;
     }();
-    const auto &permute_factor = lower_info.operand.at(index)->def_factors().getOnlyElement();
+    const auto &permute_factor =
+      lower_info.operand.getRawPtr(index)->def_factors().getOnlyElement();
     if (permute_factor.backend() != ctx.backend())
       continue;
     const auto backend_layout = permute_factor.layout();

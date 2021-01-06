@@ -39,7 +39,8 @@ namespace pass
 
 void PermutationInsertionPass::callback(const ir::OperandIndex &index, ir::Operand &object)
 {
-  auto &&operand_li = _lowered_graph.getLowerInfo(index);
+  auto &operand_li_map = _lowered_graph.lower_info().operand;
+  auto &&operand_li = operand_li_map.getRawPtr(index);
   assert(operand_li);
 
   // NOTE Later, constants also will have Def
@@ -83,7 +84,7 @@ void PermutationInsertionPass::callback(const ir::OperandIndex &index, ir::Opera
         continue;
 
       auto &operation = _graph.operations().at(use);
-      auto op_li = _lowered_graph.getLowerInfo(use);
+      auto op_li = _lowered_graph.lower_info().operation.getRawPtr(use);
       assert(op_li);
       const auto op_layout = op_li->layout();
       const backend::Backend *backend = op_li->backend();
@@ -131,8 +132,10 @@ ir::OperationIndex PermutationInsertionPass::insertPermute(const ir::OperandInde
     model_outputs.replace(operand_index, out_operand_index);
   }
 
+  auto &operand_li_map = _lowered_graph.lower_info().operand;
+
   // Find Permute information
-  auto input_factor = _lowered_graph.getLowerInfo(operand_index)->def_factors().getOnlyElement();
+  auto input_factor = operand_li_map.getRawPtr(operand_index)->def_factors().getOnlyElement();
   auto input_backend = input_factor.backend();
   auto output_backend = factor.backend();
   // NOTE Permute may not have specific layout because the layout of input and output may be
@@ -147,7 +150,7 @@ ir::OperationIndex PermutationInsertionPass::insertPermute(const ir::OperandInde
   const PermuteFactor permute_node_factor{permute_node_backend, permute_node_layout};
 
   // Update LowerInfo of input operand
-  auto operand_lower_info = _lowered_graph.getLowerInfo(operand_index);
+  auto operand_lower_info = operand_li_map.getRawPtr(operand_index);
   operand_lower_info->removeUsePermuteFactor(factor);
   operand_lower_info->addUsePermuteFactor(permute_node_factor);
 
@@ -159,7 +162,7 @@ ir::OperationIndex PermutationInsertionPass::insertPermute(const ir::OperandInde
   // TODO Change param to permute_node_factor
   out_operand_li->addDefPermuteFactor(factor);
   out_operand_li->addUsePermuteFactor(factor);
-  _lowered_graph.setLowerInfo(out_operand_index, std::move(out_operand_li));
+  operand_li_map.set(out_operand_index, std::move(out_operand_li));
 
   // Insert permute operation to the graph
   const auto input_layout = input_factor.layout();
@@ -191,8 +194,9 @@ ir::OperationIndex PermutationInsertionPass::insertPermute(const ir::OperandInde
 
   // Operation LowerInfo
   {
-    _lowered_graph.setLowerInfo(node_index, std::make_unique<compiler::OperationLowerInfo>(
-                                              permute_node_backend, permute_node_layout));
+    auto &operation_li_map = _lowered_graph.lower_info().operation;
+    operation_li_map.set(node_index, std::make_unique<compiler::OperationLowerInfo>(
+                                       permute_node_backend, permute_node_layout));
   }
 
   // Update Use/Def info

@@ -39,16 +39,8 @@ public:
 
   ir::Graph &graph() { return _graph; }
   const ir::Graph &graph() const { return _graph; }
-  const compiler::GraphLowerInfo *getLowerInfo() const { return &_lower_info_map; }
-  const compiler::OperationLowerInfo *getLowerInfo(const ir::OperationIndex &op_ind) const;
-  void setLowerInfo(const ir::OperationIndex &op_ind,
-                    std::unique_ptr<compiler::OperationLowerInfo> &&lower_info);
-  void removeLowerInfo(const ir::OperationIndex &op_ind);
-  const compiler::OperandLowerInfo *getLowerInfo(const ir::OperandIndex &index) const;
-  compiler::OperandLowerInfo *getLowerInfo(const ir::OperandIndex &index);
-  void setLowerInfo(const ir::OperandIndex &index,
-                    std::unique_ptr<compiler::OperandLowerInfo> &&lower_info);
-  void removeLowerInfo(const ir::OperandIndex &index);
+  const compiler::GraphLowerInfo &lower_info() const { return _lower_info_map; }
+  compiler::GraphLowerInfo &lower_info() { return _lower_info_map; }
   std::shared_ptr<ir::OperationIndexMap<int64_t>> indexed_ranks() { return _indexed_ranks; }
 
   void setHasDynamicTensor(ir::OperationIndex ind, bool val)

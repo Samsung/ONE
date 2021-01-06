@@ -103,7 +103,7 @@ void DotDumper::dump(const std::string &tag)
         std::string fillcolor = "";
         if (_lowered_graph)
         {
-          auto lower_info = _lowered_graph->getLowerInfo(index);
+          auto lower_info = _lowered_graph->lower_info().operand.getRawPtr(index);
           const auto &def_factors = lower_info->def_factors();
           if (def_factors.size() > 0)
           {
@@ -150,7 +150,7 @@ void DotDumper::dump(const std::string &tag)
   if (_lowered_graph)
   {
     _graph.operations().iterate([&](const ir::OperationIndex &index, const ir::Operation &) {
-      const auto lower_info = _lowered_graph->getLowerInfo(index);
+      const auto lower_info = _lowered_graph->lower_info().operation.getRawPtr(index);
       if (lower_info)
       {
         auto fillcolor = backend_to_fillcolor(lower_info->backend());

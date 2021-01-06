@@ -77,10 +77,10 @@ void ParallelExecutor::executeImpl()
   // Init scheduler
   // TODO Consider to have distinct backend set in GraphLowerInfo
   BackendSet backends;
-  for (auto &itr : _lowered_graph->getLowerInfo()->operation)
-  {
-    backends.add(itr.second->backend());
-  }
+  _lowered_graph->lower_info().operation.iterate(
+    [&](const ir::OperationIndex &, const compiler::OperationLowerInfo &lower_info) {
+      backends.add(lower_info.backend());
+    });
   _scheduler = std::make_unique<ParallelScheduler>(backends);
 
   assert(noWaitingJobs());
@@ -127,7 +127,7 @@ void ParallelExecutor::executeImpl()
 
     auto job_index = job->index();
     auto op_ind = _job_to_op[job_index];
-    auto backend = _lowered_graph->getLowerInfo()->operation.at(op_ind)->backend();
+    auto backend = _lowered_graph->lower_info().operation.at(op_ind).backend();
     auto setup = [&, op_ind, backend]() {
       _subject.notifyJobBegin(this, profiling_subg_index, op_ind, backend);
     };

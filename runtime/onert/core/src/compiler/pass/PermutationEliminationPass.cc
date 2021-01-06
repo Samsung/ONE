@@ -39,8 +39,9 @@ void PermutationEliminationPass::visit(const ir::operation::Permute &node)
 
   // Check if two tensors are both portable if not, we can't eliminate the node
   {
-    auto in_def_factor = _lowered_graph.getLowerInfo(in_operand)->def_factors().getOnlyElement();
-    auto out_def_factor = _lowered_graph.getLowerInfo(out_operand)->def_factors().getOnlyElement();
+    auto &operand_li_map = _lowered_graph.lower_info().operand;
+    auto in_def_factor = operand_li_map.getRawPtr(in_operand)->def_factors().getOnlyElement();
+    auto out_def_factor = operand_li_map.getRawPtr(out_operand)->def_factors().getOnlyElement();
 
     auto in_config = in_def_factor.backend()->config();
     auto out_config = out_def_factor.backend()->config();

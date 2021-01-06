@@ -70,7 +70,6 @@ public:
       _objects.emplace(gen_index, std::move(object));
     return gen_index;
   }
-
   /**
    * @brief Put the object in the container with a newly assigned index.
    *
@@ -86,7 +85,22 @@ public:
       _objects.emplace(gen_index, std::move(object));
     return gen_index;
   }
-
+  /**
+   * @brief Set the object in the container with given index.
+   *
+   * If the index is Undefined, it will fail.
+   * If the index is already taken, it will overwrite the content.
+   *
+   * @param[in] object Object to be pushed
+   * @param[in] index Index associated with the object
+   * @return @c index if successful, an Undefined index otherwise
+   */
+  Index set(Index index, std::unique_ptr<Object> &&object)
+  {
+    if (index.valid())
+      _objects[index] = std::move(object);
+    return index;
+  }
   /**
    * @brief Remove the object that is associated with the given index
    *
@@ -98,6 +112,8 @@ public:
   /**
    * @brief Get the object that is associated with the given index
    *
+   * If such object does not exist, it will throw @c std::out_of_range
+   *
    * @param[in] index Index of the object to be returned
    * @return Object
    */
@@ -105,10 +121,44 @@ public:
   /**
    * @brief Get the object that is associated with the given index
    *
+   * If such object does not exist, it will throw @c std::out_of_range
+   *
    * @param[in] index Index of the object to be returned
    * @return Object
    */
   Object &at(const Index &index) { return *(_objects.at(index)); }
+  /**
+   * @brief Get the object that is associated with the given index
+   *
+   * If such object does not exist, it will return `nullptr`
+   *
+   * @param[in] index Index of the object to be returned
+   * @return Object
+   */
+  const Object *getRawPtr(const Index &index) const
+  {
+    auto itr = _objects.find(index);
+    if (itr == _objects.end())
+      return nullptr;
+    else
+    {
+      assert(itr->second != nullptr);
+      return itr->second.get();
+    }
+  }
+  /**
+   * @brief Get the object that is associated with the given index
+   *
+   * If such object does not exist, it will return `nullptr`
+   *
+   * @param[in] index Index of the object to be returned
+   * @return Object The found object
+   */
+  Object *getRawPtr(const Index &index)
+  {
+    return const_cast<Object *>(
+      const_cast<const ObjectManager<Index, Object> *>(this)->getRawPtr(index));
+  }
   /**
    * @brief Get the object that is associated with the given index
    *

@@ -20,6 +20,7 @@
 #include <ir/Graph.h>
 #include <compiler/PermuteFactor.h>
 #include <util/Utils.h>
+#include "util/logging.h"
 
 namespace onert
 {
@@ -30,7 +31,7 @@ namespace pass
 
 void ConstantLoweringPass::callback(const ir::OperationIndex &node_index, ir::Operation &node)
 {
-  const auto op_lower_info = _lowered_graph.getLowerInfo(node_index);
+  const auto op_lower_info = _lowered_graph.lower_info().operation.getRawPtr(node_index);
   const auto backend = op_lower_info->backend();
   const auto layout = op_lower_info->layout();
   const auto factor = PermuteFactor{backend, layout};
@@ -43,9 +44,10 @@ void ConstantLoweringPass::callback(const ir::OperationIndex &node_index, ir::Op
     {
       // All constant operand are already assinged at each backend by ContantInsertionPass. So a
       // constant has `def` and `use` as the same PermuteFactor
-      _lowered_graph.setLowerInfo(input, std::make_unique<compiler::OperandLowerInfo>());
-      _lowered_graph.getLowerInfo(input)->addDefPermuteFactor(factor);
-      _lowered_graph.getLowerInfo(input)->addUsePermuteFactor(factor);
+      auto operand_li = std::make_unique<compiler::OperandLowerInfo>();
+      operand_li->addDefPermuteFactor(factor);
+      operand_li->addUsePermuteFactor(factor);
+      _lowered_graph.lower_info().operand.set(input, std::move(operand_li));
     }
   }
 }

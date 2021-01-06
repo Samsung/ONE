@@ -22,7 +22,7 @@
 
 #include "compiler/OperandLowerInfo.h"
 #include "compiler/OperationLowerInfo.h"
-#include "ir/OperandIndexMap.h"
+#include "util/ObjectManager.h"
 #include "ir/Index.h"
 
 namespace onert
@@ -32,8 +32,8 @@ namespace compiler
 
 struct GraphLowerInfo
 {
-  std::unordered_map<ir::OperationIndex, std::unique_ptr<OperationLowerInfo>> operation;
-  ir::OperandIndexMap<std::unique_ptr<OperandLowerInfo>> operand;
+  util::ObjectManager<ir::OperationIndex, OperationLowerInfo> operation;
+  util::ObjectManager<ir::OperandIndex, OperandLowerInfo> operand;
 };
 
 } // namespace compiler
