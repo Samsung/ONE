@@ -21,9 +21,8 @@
 #include <memory>
 #include <functional>
 
+#include "ir/Graph.h"
 #include "ir/OperationVisitor.h"
-#include "ir/OpSequence.h"
-#include <memory>
 #include "exec/FunctionSequence.h"
 #include "backend/ITensorRegistry.h"
 
@@ -38,26 +37,12 @@ class KernelGeneratorBase : public ir::OperationVisitor
 {
 public:
   virtual ~KernelGeneratorBase() = default;
+  KernelGeneratorBase(const ir::Graph &graph) : _graph{graph} {}
 
-  std::unique_ptr<exec::IFunction> releaseFunction()
-  {
-    assert(_return_fn);
-    return std::move(_return_fn);
-  }
-
-  std::unique_ptr<exec::FunctionSequence> generate(const ir::OpSequence &op_seq)
-  {
-    op_seq.accept(*this);
-    return std::move(_return_fn_seq);
-  }
+  virtual std::unique_ptr<exec::FunctionSequence> generate(ir::OperationIndex ind) = 0;
 
 protected:
   using OperationVisitor::visit;
-
-  void visit(const ir::OpSequence &) override
-  {
-    throw std::runtime_error("KernelGenerator: NYI for operation 'OpSequence'");
-  }
 
 #define OP(InternalName)                                                                \
   void visit(const ir::operation::InternalName &) override                              \
@@ -68,8 +53,15 @@ protected:
 #undef OP
 
 protected:
+  std::unique_ptr<exec::IFunction> releaseFunction()
+  {
+    assert(_return_fn);
+    return std::move(_return_fn);
+  }
+
+protected:
+  const ir::Graph &_graph;
   std::unique_ptr<exec::IFunction> _return_fn;
-  std::unique_ptr<exec::FunctionSequence> _return_fn_seq; // TODO Extract this out
 };
 
 } // namespace cpu_common

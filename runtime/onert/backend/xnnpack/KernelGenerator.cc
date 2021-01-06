@@ -37,61 +37,58 @@ namespace xnnpack
 {
 
 KernelGenerator::KernelGenerator(
-  const ir::Operands &operands_ctx, const ir::Operations &operations_ctx,
-  const std::shared_ptr<TensorBuilder> &tensor_builder,
+  const ir::Graph &graph, const std::shared_ptr<TensorBuilder> &tensor_builder,
   const std::shared_ptr<cpu_common::TensorRegistry> &tensor_reg,
   const std::shared_ptr<backend::custom::IKernelBuilder> &kernel_builder,
   const std::shared_ptr<ExternalContext> &external_context)
-  : _ctx(operands_ctx), _operations_ctx{operations_ctx},
+  : cpu_common::KernelGeneratorBase{graph},
+    _ctx(graph.operands()), _operations_ctx{graph.operations()}, _current_layout{graph.layout()},
     _tensor_builder(tensor_builder), _tensor_reg{tensor_reg}, _kernel_builder(kernel_builder),
-    _current_layout(ir::Layout::UNKNOWN), _external_context(external_context)
+    _external_context(external_context)
 {
   // DO NOTHING
 }
 
-void KernelGenerator::visit(const ir::OpSequence &op_seq)
+std::unique_ptr<exec::FunctionSequence> KernelGenerator::generate(ir::OperationIndex ind)
 {
-  assert(!_return_fn_seq);
+  auto ret = std::make_unique<exec::FunctionSequence>();
+
   assert(_tensor_builder->dynamicTensorManager());
   assert(_tensor_reg);
 
   auto dyn_shape_inferer = std::make_shared<exec::DynamicShapeInferer>(_ctx, _tensor_reg);
 
-  _return_fn_seq = std::make_unique<exec::FunctionSequence>();
-
   // Prepare to handle dynamic tensors later
   auto dyn_ctx = std::make_shared<exec::FunctionSequence::DynamicTensorCtx>();
   {
-    dyn_ctx->op_seq = &op_seq;
+    dyn_ctx->op_ind = ind;
     dyn_ctx->operations = &_operations_ctx;
     dyn_ctx->dynamic_shape_inferer = std::move(dyn_shape_inferer);
     dyn_ctx->dynamic_tensor_manager = _tensor_builder->dynamicTensorManager();
 
-    _return_fn_seq->dynamic_tensor_ctx(dyn_ctx);
+    ret->dynamic_tensor_ctx(dyn_ctx);
   }
 
-  _current_layout = op_seq.getLayout();
-  for (const auto &operation_idx : op_seq.operations())
+  auto &op = _graph.operations().at(ind);
+  op.accept(*this);
+  assert(_return_fn); // _return_fn must have been generated
+  ret->append(std::move(_return_fn));
+
+  for (auto ind : (op.getInputs() | ir::Remove::UNDEFINED) + op.getOutputs())
   {
-    const auto &node = _operations_ctx.at(operation_idx);
-    node.accept(*this);
-    _return_fn_seq->append(releaseFunction());
-
-    for (const auto &ind : (node.getInputs() | ir::Remove::UNDEFINED) + node.getOutputs())
+    auto portable_tensor = _tensor_reg->getPortableTensor(ind);
+    if (portable_tensor)
     {
-      auto portable_tensor = _tensor_reg->getPortableTensor(ind);
-      if (portable_tensor)
-      {
-        assert(portable_tensor->layout() == ir::Layout::NHWC);
-      }
+      assert(portable_tensor->layout() == ir::Layout::NHWC);
+    }
 
-      auto tensor = _tensor_reg->getNativeTensor(ind);
-      if (tensor)
-      {
-        tensor->increase_ref();
-      }
+    auto tensor = _tensor_reg->getNativeTensor(ind);
+    if (tensor)
+    {
+      tensor->increase_ref();
     }
   }
+  return ret;
 }
 
 void KernelGenerator::visit(const ir::operation::Conv2D &node)

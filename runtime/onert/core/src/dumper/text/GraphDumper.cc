@@ -69,23 +69,6 @@ std::string formatOperation(const ir::Graph &graph, ir::OperationIndex ind)
   return ss.str();
 }
 
-std::string formatOpSequence(const compiler::LoweredGraph &lgraph, ir::OpSequenceIndex ind)
-{
-  std::stringstream ss;
-  const auto &lower_info = lgraph.getLowerInfo()->op_seq.at(ind);
-
-  const auto &op_seq = lgraph.op_seqs().at(ind);
-  std::string inputs_str = formatOperandIndexSequence(op_seq.getInputs());
-  std::string outputs_str = formatOperandIndexSequence(op_seq.getOutputs());
-  VERBOSE(GraphDumper) << ind << " {" << lower_info->backend()->config()->id() << "} In("
-                       << inputs_str << ") Out(" << outputs_str << "):" << std::endl;
-  for (auto op_ind : op_seq.operations())
-  {
-    ss << "  " << formatOperation(lgraph.graph(), op_ind) << "\n";
-  }
-  return ss.str();
-}
-
 void dumpGraph(const ir::Graph &graph)
 {
   VERBOSE(GraphDumper) << "{\n";
@@ -100,16 +83,8 @@ void dumpGraph(const ir::Graph &graph)
 
 void dumpLoweredGraph(const compiler::LoweredGraph &lgraph)
 {
-  VERBOSE(GraphDumper) << "{\n";
-  // TODO Could logging system handle this? (Inserting prefix for each line)
-  lgraph.iterateTopolOpSeqs([&](const ir::OpSequenceIndex &ind, const ir::OpSequence &) {
-    std::istringstream iss{dumper::text::formatOpSequence(lgraph, ind)};
-    std::string line;
-    while (std::getline(iss, line))
-      VERBOSE(GraphDumper) << line << std::endl;
-  });
-  VERBOSE(GraphDumper) << "}\n";
-  VERBOSE(GraphDumper) << std::endl;
+  // TODO Graph dump with backend info
+  dumpGraph(lgraph.graph());
 }
 
 } // namespace text

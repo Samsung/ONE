@@ -35,10 +35,10 @@ namespace onert
 namespace compiler
 {
 
-class OpSequenceLowerInfo
+class OperationLowerInfo
 {
 public:
-  OpSequenceLowerInfo(const backend::Backend *backend, ir::Layout layout);
+  OperationLowerInfo(const backend::Backend *backend, ir::Layout layout);
   const backend::Backend *backend() const { return _permute_factor.backend(); }
   ir::Layout layout() const { return _permute_factor.layout(); }
 

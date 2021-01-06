@@ -19,7 +19,7 @@
 
 #include <memory>
 
-#include "ir/OpSequence.h"
+#include "ir/Index.h"
 #include "exec/FunctionSequence.h"
 #include "CodeMap.h"
 
@@ -31,7 +31,7 @@ namespace compiler
 class ExecutionBuilder
 {
 public:
-  void append(const ir::OpSequenceIndex index, CodeAndInfo &&code_and_info)
+  void append(const ir::OperationIndex index, CodeAndInfo &&code_and_info)
   {
     _code_map.emplace(index, std::move(code_and_info));
   }

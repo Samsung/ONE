@@ -43,15 +43,13 @@ public:
   newContext(const ir::Graph &graph, const std::shared_ptr<custom::IKernelBuilder> &kb,
              bool) const override
   {
-    const auto &operands = graph.operands();
-    const auto &operations = graph.operations();
     auto context = std::make_unique<BackendContext>(this, &graph);
     auto tr = std::make_shared<cpu_common::TensorRegistry>();
     auto tb = std::make_shared<TensorBuilder>(tr);
     context->tensor_registry = tr;
     context->tensor_builder = tb;
-    context->kernel_gen = std::make_shared<KernelGenerator>(operands, operations, tb, tr, kb,
-                                                            context->external_context());
+    context->kernel_gen =
+      std::make_shared<KernelGenerator>(graph, tb, tr, kb, context->external_context());
     return context;
   }
 

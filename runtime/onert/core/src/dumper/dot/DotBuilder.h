@@ -25,7 +25,6 @@
 
 #include "OperationNode.h"
 #include "OperandNode.h"
-#include "DotSubgraphInfo.h"
 
 using Operation = onert::ir::Operation;
 using Object = onert::ir::Operand;
@@ -44,7 +43,6 @@ public:
 
 public:
   void update(const Node &dotinfo);
-  void addOpSequence(const DotSubgraphInfo &subgraph_info);
 
   void writeDot(std::ostream &os);
 

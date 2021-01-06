@@ -19,7 +19,7 @@
 
 #include "exec/IFunction.h"
 #include "ir/Index.h"
-#include "ir/OpSequence.h"
+#include "ir/Operation.h"
 #include "ExecTime.h"
 #include "util/ITimer.h"
 #include "exec/IExecutor.h"
@@ -39,9 +39,9 @@ public:
   /// @brief Invoked just before model (not individual operation) execution begins
   virtual void handleSubgraphBegin(ir::SubgraphIndex) { return; }
 
-  virtual void handleJobBegin(IExecutor *, ir::SubgraphIndex, const ir::OpSequence *,
+  virtual void handleJobBegin(IExecutor *, ir::SubgraphIndex, ir::OperationIndex,
                               const backend::Backend *) = 0;
-  virtual void handleJobEnd(IExecutor *, ir::SubgraphIndex, const ir::OpSequence *,
+  virtual void handleJobEnd(IExecutor *, ir::SubgraphIndex, ir::OperationIndex,
                             const backend::Backend *) = 0;
 
   /// @brief Invoked just after model (not individual operation) execution ends
@@ -57,9 +57,9 @@ public:
     : _et(std::move(et)), _graph(graph)
   {
   }
-  void handleJobBegin(IExecutor *, ir::SubgraphIndex, const ir::OpSequence *,
+  void handleJobBegin(IExecutor *, ir::SubgraphIndex, ir::OperationIndex,
                       const backend::Backend *) override;
-  void handleJobEnd(IExecutor *, ir::SubgraphIndex, const ir::OpSequence *,
+  void handleJobEnd(IExecutor *, ir::SubgraphIndex, ir::OperationIndex,
                     const backend::Backend *) override;
 
   void handleSubgraphEnd(ir::SubgraphIndex) override { _et->storeOperationsExecTime(); }
@@ -77,14 +77,11 @@ public:
                   const util::TracingCtx *tracing_ctx);
   ~TracingObserver();
   void handleSubgraphBegin(ir::SubgraphIndex) override;
-  void handleJobBegin(IExecutor *, ir::SubgraphIndex, const ir::OpSequence *,
+  void handleJobBegin(IExecutor *, ir::SubgraphIndex, ir::OperationIndex,
                       const backend::Backend *) override;
-  void handleJobEnd(IExecutor *, ir::SubgraphIndex, const ir::OpSequence *,
+  void handleJobEnd(IExecutor *, ir::SubgraphIndex, ir::OperationIndex,
                     const backend::Backend *) override;
   void handleSubgraphEnd(ir::SubgraphIndex) override;
-
-private:
-  static std::string opSequenceTag(const ir::OpSequence *op_seq, const ir::Operations &operations);
 
 private:
   std::unique_ptr<EventRecorder> _recorder;

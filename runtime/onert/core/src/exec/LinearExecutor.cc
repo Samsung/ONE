@@ -24,19 +24,6 @@ namespace onert
 namespace exec
 {
 
-#ifdef RUY_PROFILER
-namespace
-{
-char *seq_to_label(const onert::ir::OpSequence *op_seq, const onert::ir::Operations &operations)
-{
-  auto node_name = operations.at(*op_seq->begin()).name();
-  char *cstr = new char[node_name.length() + 1];
-  std::strcpy(cstr, node_name.c_str());
-  return cstr;
-}
-} // namespace
-#endif
-
 void LinearExecutor::executeImpl()
 {
   auto profiling_subg_index = _tracing_ctx->getSubgraphIndex(&_graph);
@@ -44,23 +31,23 @@ void LinearExecutor::executeImpl()
   _subject.notifySubgraphBegin(profiling_subg_index);
   for (auto &&code : _code)
   {
-    const auto op_seq = code.op_seq;
     const auto backend = code.lower_info->backend();
 // TODO : Move ruy profiler into ExecutionObserver
 #ifdef RUY_PROFILER
-    ruy::profiler::ScopeLabel label(seq_to_label(op_seq, _graph.operations()));
+    ruy::profiler::ScopeLabel label(code.op->name());
 #endif
-    _subject.notifyJobBegin(this, profiling_subg_index, op_seq, backend);
+    _subject.notifyJobBegin(this, profiling_subg_index, code.op_ind, backend);
 
     auto &fn_seq = code.fn_seq;
 
     fn_seq->initRunning();
 
-    bool handle_dynamic_tensor = op_seq->has_dynamic_tensor() || hasDynamicInput();
+    bool handle_dynamic_tensor =
+      _lowered_graph->getHasDynamicTensor(code.op_ind) || hasDynamicInput();
     fn_seq->enableDynamicShapeInferer(handle_dynamic_tensor);
     fn_seq->run();
 
-    _subject.notifyJobEnd(this, profiling_subg_index, op_seq, backend);
+    _subject.notifyJobEnd(this, profiling_subg_index, code.op_ind, backend);
   }
   _subject.notifySubgraphEnd(profiling_subg_index);
 }

@@ -45,12 +45,12 @@ public:
    * @brief Construct a new LinearExecutor object
    * @param lowered_graph LoweredGraph object
    * @param tensor_builders Tensor builders that are currently used
-   * @param code_map OpSequence and its code map
+   * @param code_map @c ir::Operation and its code map
    */
   LinearExecutor(std::unique_ptr<compiler::LoweredGraph> lowered_graph,
                  backend::BackendContexts &&backend_contexts,
                  const compiler::TensorRegistries &tensor_regs, compiler::CodeMap &&code_map,
-                 const std::vector<ir::OpSequenceIndex> &order, const util::TracingCtx *tracing_ctx)
+                 const std::vector<ir::OperationIndex> &order, const util::TracingCtx *tracing_ctx)
     : ExecutorBase{std::move(lowered_graph), std::move(backend_contexts), tensor_regs, tracing_ctx}
   {
     for (auto index : order)

@@ -62,10 +62,10 @@ OperandIndexSequence OperandIndexSequence::operator+(const OperandIndexSequence 
   return ret;
 }
 
-std::ostream &operator<<(std::ostream &o, const OperandIndexSequence &op_seq)
+std::ostream &operator<<(std::ostream &o, const OperandIndexSequence &operand_seq)
 {
   std::string delimeter;
-  for (const auto &ind : op_seq._vec)
+  for (const auto &ind : operand_seq._vec)
   {
     o << delimeter << ind;
     delimeter = ',';

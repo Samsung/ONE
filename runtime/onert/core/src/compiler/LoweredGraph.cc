@@ -93,15 +93,10 @@ LoweredGraph::LoweredGraph(const ir::Graph &graph, const CompilerOptions &option
       operands_lower_info[index] = std::make_unique<compiler::OperandLowerInfo>();
     });
 
-    // Make op_seqs while checking whether a node can be merged into a op_seq.
-    makeOpSequences(operands_lower_info, options, *backend_resolver);
+    // Make op_seqs while checking whether a op can be merged into a op_seq.
+    makeOperationLowerInfo(operands_lower_info, *backend_resolver);
 
-    _op_seqs.iterate([&](const ir::OpSequenceIndex &, ir::OpSequence &op_seq) {
-      assert(op_seq.operations().size() > 0);
-      std::reverse(std::begin(op_seq.operations()), std::end(op_seq.operations()));
-    });
-
-    VERBOSE(OpSequences) << "dump before permutation insertion" << std::endl;
+    VERBOSE(LoweredGraph) << "dump before permutation insertion" << std::endl;
     dumper::text::dumpLoweredGraph(*this);
 
     // Mandatory passes
@@ -140,30 +135,31 @@ LoweredGraph::LoweredGraph(const ir::Graph &graph, const CompilerOptions &option
   }
 }
 
-const compiler::OpSequenceLowerInfo *
-LoweredGraph::getLowerInfo(const ir::OpSequenceIndex &op_seq_index) const
+const compiler::OperationLowerInfo *
+LoweredGraph::getLowerInfo(const ir::OperationIndex &op_ind) const
 {
-  auto itr = _lower_info_map.op_seq.find(op_seq_index);
-  if (itr == _lower_info_map.op_seq.end())
+  auto itr = _lower_info_map.operation.find(op_ind);
+  if (itr == _lower_info_map.operation.end())
     return nullptr;
   return itr->second.get();
 }
 
-void LoweredGraph::setLowerInfo(const ir::OpSequenceIndex &op_seq_index,
-                                std::unique_ptr<compiler::OpSequenceLowerInfo> &&lower_info)
+void LoweredGraph::setLowerInfo(const ir::OperationIndex &op_ind,
+                                std::unique_ptr<compiler::OperationLowerInfo> &&lower_info)
 {
-  _lower_info_map.op_seq.insert(std::make_pair(op_seq_index, std::move(lower_info)));
+  _lower_info_map.operation[op_ind] = std::move(lower_info);
 }
 
-void LoweredGraph::removeLowerInfo(const ir::OpSequenceIndex &op_seq_index)
+void LoweredGraph::removeLowerInfo(const ir::OperationIndex &op_ind)
 {
-  auto &op_seq_lower_info = _lower_info_map.op_seq;
-  assert(op_seq_lower_info.find(op_seq_index) != op_seq_lower_info.end());
-  for (auto it = op_seq_lower_info.begin(); it != op_seq_lower_info.end(); ++it)
+  auto &op_lower_info = _lower_info_map.operation;
+  assert(op_lower_info.find(op_ind) != op_lower_info.end());
+  // TODO Simplify implementation using `erase` method
+  for (auto it = op_lower_info.begin(); it != op_lower_info.end(); ++it)
   {
-    if (it->first == op_seq_index)
+    if (it->first == op_ind)
     {
-      op_seq_lower_info.erase(it);
+      op_lower_info.erase(it);
       break;
     }
   }
@@ -196,119 +192,31 @@ void LoweredGraph::removeLowerInfo(const ir::OperandIndex &index)
   _lower_info_map.operand.erase(index);
 }
 
-void LoweredGraph::iterateTopolOpSeqs(
-  const std::function<void(const ir::OpSequenceIndex &, const ir::OpSequence &)> &fn) const
-{
-  for (const auto op_seq_idx : topolSortOpSeqs())
-  {
-    const auto &op_seq = _op_seqs.at(op_seq_idx);
-    fn(op_seq_idx, op_seq);
-  }
-}
-
-void LoweredGraph::iterateTopolOpSeqs(
-  const std::function<void(const ir::OpSequenceIndex &, ir::OpSequence &)> &fn)
-{
-  for (const auto op_seq_idx : topolSortOpSeqs())
-  {
-    auto &op_seq = _op_seqs.at(op_seq_idx);
-    fn(op_seq_idx, op_seq);
-  }
-}
-
-ir::OpSequenceIndex LoweredGraph::appendFreshSingleOpSequence(const ir::OperationIndex &node_index,
-                                                              const ir::Operation &node)
-{
-  // Create a fresh op_seq with one operation, and append it to op_seqs
-  // Create a fresh op_seq
-  auto op_seq = std::make_unique<ir::OpSequence>(_graph.layout());
-
-  // Add an operation
-  op_seq->appendOperation(node_index);
-
-  // Update input/output
-  op_seq->setOutputs(node.getOutputs());
-  op_seq->setInputs(node.getInputs());
-
-  return _op_seqs.emplace(std::move(op_seq));
-}
-
-void LoweredGraph::makeOpSequences(
+void LoweredGraph::makeOperationLowerInfo(
   ir::OperandIndexMap<std::unique_ptr<compiler::OperandLowerInfo>> &operands_lower_info,
-  const CompilerOptions &options, const BackendResolver &backend_resolver)
+  const BackendResolver &backend_resolver)
 {
-  const int op_seq_max_node = 1;
-
-  bool is_profiling = options.he_profiling_mode;
-  ir::OpSequence *op_seq = nullptr;
-  ir::OpSequenceIndex op_seq_index;
-
-  // NOTE: The below method appends nodes while making one op_seq if needed. If something better
-  // ways, happy to update this code.
-  auto operations_post_dfs = graph().topolSortOperations();
-  std::reverse(operations_post_dfs.begin(), operations_post_dfs.end());
-  for (auto node_index : operations_post_dfs)
-  {
-    const ir::Operation &node = graph().operations().at(node_index);
-    // LowerInfo for in/output operands
-    auto backend = backend_resolver.getBackend(node_index);
-
-    // Get frontend's layout
+  graph().operations().iterate([&](const ir::OperationIndex &op_ind, const ir::Operation &) {
+    const ir::Operation &op = graph().operations().at(op_ind);
+    auto backend = backend_resolver.getBackend(op_ind);
     auto frontend_layout = _graph.layout();
 
     // The layout of each backend should be set at another place
     // TODO Change setting layout of each backend at another place
-    auto backend_layout = backend->config()->supportLayout(node, frontend_layout);
+    auto backend_layout = backend->config()->supportLayout(op, frontend_layout);
 
-    for (auto operand : node.getInputs() | ir::Remove::UNDEFINED)
+    for (auto operand : op.getInputs() | ir::Remove::UNDEFINED)
     {
       auto &&lower_info = operands_lower_info.at(operand);
       lower_info->addUsePermuteFactor(PermuteFactor{backend, backend_layout});
     }
-    for (auto operand : node.getOutputs() | ir::Remove::UNDEFINED)
+    for (auto operand : op.getOutputs() | ir::Remove::UNDEFINED)
     {
       auto &&lower_info = operands_lower_info.at(operand);
       lower_info->addDefPermuteFactor(PermuteFactor{backend, backend_layout});
     }
-
-    bool new_op_seq =
-      (op_seq == nullptr || (op_seq_max_node != 0 &&
-                             op_seq->operations().size() >= static_cast<size_t>(op_seq_max_node)));
-
-    // for profiling each op_seq must contain just one node,
-    // so that we can measure a node separately
-    if (new_op_seq || is_profiling ||
-        !mergeable(op_seq_index, node_index, backend_layout, backend_resolver))
-    {
-      auto new_op_seq_index = appendFreshSingleOpSequence(node_index, node);
-
-      // ir::OpSequence LowerInfo
-      setLowerInfo(new_op_seq_index,
-                   std::make_unique<compiler::OpSequenceLowerInfo>(backend, backend_layout));
-
-      op_seq_index = new_op_seq_index;
-      op_seq = &(_op_seqs.at(new_op_seq_index));
-
-      VERBOSE(Lower) << op_seq_index << " is created for " << node_index << "(" << node.name()
-                     << ")" << std::endl;
-    }
-    else
-    {
-      op_seq->appendOperation(node_index);
-      // Set inputs
-      auto new_inputs = node.getInputs();
-      // Add inputs except outputs of the previous node
-      for (auto ind : op_seq->getInputs())
-      {
-        if (!node.getOutputs().contains(ind))
-          new_inputs.append(ind);
-      }
-      op_seq->setInputs(new_inputs);
-
-      VERBOSE(Lower) << op_seq_index << " merges " << node_index << "(" << node.name() << ")"
-                     << std::endl;
-    }
-  }
+    setLowerInfo(op_ind, std::make_unique<compiler::OperationLowerInfo>(backend, backend_layout));
+  });
 }
 
 void LoweredGraph::manipulateLowerInfo(
@@ -430,149 +338,6 @@ void LoweredGraph::dumpLowerInfo()
         VERBOSE(Lower) << line << std::endl;
     }
   }
-}
-
-bool LoweredGraph::mergeable(const ir::OpSequenceIndex &op_seq_index,
-                             const ir::OperationIndex &node_index, ir::Layout layout,
-                             const BackendResolver &backend_resolver)
-{
-  // Are they mergeable?
-  // 1. the same backend id and layout?
-  // 2. Is op_seq or node branched?
-  // 3. if 1 is true, the op_seq and a node are connected?
-  const auto &op_seq = _op_seqs.at(op_seq_index);
-  const auto &node = _graph.operations().at(node_index);
-
-  // The same backend id and layout?
-  {
-    const auto op_seq_backend_layout = getLowerInfo(op_seq_index)->layout();
-    const auto &op_seq_backend_id = getLowerInfo(op_seq_index)->backend()->config()->id();
-    const auto &node_backend_id = backend_resolver.getBackend(node_index)->config()->id();
-    VERBOSE(Lower) << op_seq_index << " { " << op_seq_backend_id << "("
-                   << to_string(op_seq_backend_layout) << ") } " << node_index << " ("
-                   << node.name() << ") { " << node_backend_id << "(" << to_string(layout) << ") } "
-                   << std::endl;
-    if (op_seq_backend_id != node_backend_id || op_seq_backend_layout != layout)
-      return false;
-  }
-
-  // Branched?
-  {
-    std::unordered_set<ir::OperationIndex> branched_set;
-
-    // Check for branching up
-    for (const auto &input : op_seq.getInputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED)
-    {
-      const auto &input_obj = _graph.operands().at(input);
-      auto def = input_obj.getDef();
-      if (def.valid())
-      {
-        branched_set.insert(def);
-        if (branched_set.size() > 1)
-        {
-          return false;
-        }
-      }
-    }
-    branched_set.clear();
-
-    // Check for branching down
-    for (const auto &output : node.getOutputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED)
-    {
-      // TODO Fix this workaround for the case of model outputs that are used by another operation
-      //      This is needed since the branching is decided by operation, but for model outputs,
-      //      there is builtin backen(use backend) but no actual use operation exists
-      if (_graph.getOutputs().contains(output))
-        return false;
-
-      const auto &output_obj = _graph.operands().at(output);
-      for (const auto &use : output_obj.getUses())
-      {
-        branched_set.insert(use);
-        if (branched_set.size() > 1)
-        {
-          return false;
-        }
-      }
-    }
-  }
-
-  // Connected?
-  // an input of one node is an output of the other node? or vice-versa?
-  {
-    const auto &node_inputs = node.getInputs();
-    const auto &node_outputs = node.getOutputs();
-
-    // op_seq's operations are in order so that we just check the first and the last
-    std::vector<ir::OperationIndex> op_seq_ops{op_seq.operations()[0]};
-    if (op_seq.operations().size() > 1)
-      op_seq_ops.emplace_back(op_seq.operations()[op_seq.operations().size() - 1]);
-
-    for (const auto &n_index : op_seq_ops)
-    {
-      const auto &n = _graph.operations().at(n_index);
-
-      // node's output == op_seq's input?
-      for (const auto input : n.getInputs() | ir::Remove::UNDEFINED)
-      {
-        if (node_outputs.contains(input))
-        {
-          VERBOSE(Lower) << op_seq_index << " 's " << node_index << "(" << n.name()
-                         << ") is connected to " << node_index << "(" << node.name() << ")"
-                         << std::endl;
-          return true;
-        }
-      }
-
-      // node's input == op_seq's output?
-      for (const auto output : n.getOutputs() | ir::Remove::UNDEFINED)
-      {
-        if (node_inputs.contains(output))
-        {
-          VERBOSE(Lower) << op_seq_index << " 's " << node_index << " (" << n.name()
-                         << ") is connected to " << node_index << std::endl;
-          return true;
-        }
-      }
-    }
-
-    VERBOSE(Lower) << op_seq_index << " is not connected to " << node_index << "(" << node.name()
-                   << ")" << std::endl;
-  }
-
-  return false;
-}
-
-std::vector<ir::OpSequenceIndex> LoweredGraph::topolSortOpSeqs() const
-{
-  std::vector<ir::OpSequenceIndex> ret;
-  util::Set<ir::OpSequenceIndex> unvisited;
-  op_seqs().iterate(
-    [&](const ir::OpSequenceIndex &index, const ir::OpSequence &) { unvisited.add(index); });
-
-  std::function<void(const ir::OpSequenceIndex &, const ir::OpSequence &)> dfs =
-    [&](const ir::OpSequenceIndex &index, const ir::OpSequence &op_seq) {
-      if (!unvisited.contains(index))
-        return;
-      unvisited.remove(index);
-
-      for (const auto output : op_seq.getOutputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED)
-      {
-        const auto &operand = graph().operands().at(output);
-        for (const auto &use : operand.getUses())
-        {
-          const auto use_ind = op_seqs().getOperation(use);
-          dfs(use_ind, op_seqs().at(use_ind));
-        }
-      }
-      ret.push_back(index);
-    };
-  op_seqs().iterate(dfs);
-
-  assert(unvisited.empty()); // All of the nodes must have been visited
-  // Reversing Postorder DFS result to make it sorted in topoligical order
-  std::reverse(ret.begin(), ret.end());
-  return ret;
 }
 
 } // namespace compiler

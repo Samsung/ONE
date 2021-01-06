@@ -25,13 +25,24 @@ namespace onert
 namespace compiler
 {
 
-bool StaticShapeInferer::infer(const ir::OpSequence &op_seq)
+void StaticShapeInferer::inferSubgraph(ir::SubgraphIndex subg_ind)
+{
+  StaticShapeInferer inferer(subg_ind, _lowered_subgs);
+  auto &lgraph = _lowered_subgs.at(subg_ind);
+  for (auto op_ind : lgraph->graph().topolSortOperations())
+  {
+    auto &op = lgraph->graph().operations().at(op_ind);
+    bool has_dynamic_tensor = inferer.infer(op);
+    lgraph->setHasDynamicTensor(op_ind, has_dynamic_tensor);
+  }
+}
+
+bool StaticShapeInferer::infer(const ir::Operation &op)
 {
   bool has_dynamic_tensor = false;
 
-  for (const auto &operation_idx : op_seq.operations())
+  // TODO Remove indentation
   {
-    auto &op = _operations.at(operation_idx);
     auto opcode = op.opcode();
 
     _return_has_dynamic_tensor = false; // this is used as a return value inside operation's visit()
@@ -465,23 +476,11 @@ void StaticShapeInferer::visit(const ir::operation::If &op)
     }
   }
 
-  // re-sizing operands of then subgraph
-  StaticShapeInferer then_inferer(op.param().then_subg_index, _lowered_subgs);
-  _lowered_subgs.at(op.param().then_subg_index)
-    ->iterateTopolOpSeqs([&](const ir::OpSequenceIndex &, ir::OpSequence &op_seq) {
-      bool has_dynamic_tensor = then_inferer.infer(op_seq);
-      op_seq.has_dynamic_tensor(has_dynamic_tensor);
-    });
-
-  // re-sizing operands of else subgraph
-  StaticShapeInferer else_inferer(op.param().else_subg_index, _lowered_subgs);
-  _lowered_subgs.at(op.param().else_subg_index)
-    ->iterateTopolOpSeqs([&](const ir::OpSequenceIndex &, ir::OpSequence &op_seq) {
-      bool has_dynamic_tensor = else_inferer.infer(op_seq);
-      op_seq.has_dynamic_tensor(has_dynamic_tensor);
-    });
+  inferSubgraph(op.param().then_subg_index);
+  inferSubgraph(op.param().else_subg_index);
 
   // re-sizing output shapes
+  // TODO use then_graph / else_graph instead
   const auto &then_outputs = _lowered_subgs.at(op.param().then_subg_index)->graph().getOutputs();
   const auto &else_outputs = _lowered_subgs.at(op.param().else_subg_index)->graph().getOutputs();
   assert(outputs.size() == then_outputs.size());
@@ -1225,12 +1224,7 @@ void StaticShapeInferer::visit(const ir::operation::While &op)
   }
 
   // re-sizing operands of body subgraph
-  StaticShapeInferer body_inferer(op.param().body_subg_index, _lowered_subgs);
-  _lowered_subgs.at(op.param().body_subg_index)
-    ->iterateTopolOpSeqs([&](const ir::OpSequenceIndex &, ir::OpSequence &op_seq) {
-      bool has_dynamic_tensor = body_inferer.infer(op_seq);
-      op_seq.has_dynamic_tensor(has_dynamic_tensor);
-    });
+  inferSubgraph(op.param().body_subg_index);
 
   // Check whether while operation's shapes are predictable
   // If any of shape of body outputs and cond inputs are different, non-constant operands would be
@@ -1273,23 +1267,13 @@ void StaticShapeInferer::visit(const ir::operation::While &op)
     }
 
     // Set non-constant operands of body subgraph to dynamic
-    StaticShapeInferer body_inferer(op.param().body_subg_index, _lowered_subgs);
-    _lowered_subgs.at(op.param().body_subg_index)
-      ->iterateTopolOpSeqs([&](const ir::OpSequenceIndex &, ir::OpSequence &op_seq) {
-        bool has_dynamic_tensor = body_inferer.infer(op_seq);
-        op_seq.has_dynamic_tensor(has_dynamic_tensor);
-      });
+    inferSubgraph(op.param().body_subg_index);
   }
 
   // re-sizing operands of cond subgraph
   // If check_unpredictable_dynamic is true, non-constant operands of cond subgraph would be set to
   // dynamic
-  StaticShapeInferer cond_inferer(op.param().cond_subg_index, _lowered_subgs);
-  _lowered_subgs.at(op.param().cond_subg_index)
-    ->iterateTopolOpSeqs([&](const ir::OpSequenceIndex &, ir::OpSequence &op_seq) {
-      bool has_dynamic_tensor = cond_inferer.infer(op_seq);
-      op_seq.has_dynamic_tensor(has_dynamic_tensor);
-    });
+  inferSubgraph(op.param().cond_subg_index);
 
   // re-sizing outputs of while operation
   // If check_unpredictable_dynamic is true, outputs of while operation would be set to dynamic

@@ -87,26 +87,29 @@ struct MDContent
   virtual void write(std::ostream &os) const = 0;
 };
 
-struct OpSeq : public MDContent
+struct Operation : public MDContent
 {
   std::string backend;
   uint64_t graph_latency;
 
-  struct OpSeqCmp
+  struct OperationCmp
   {
-    bool operator()(const OpSeq &lhs, const OpSeq &rhs) const
+    bool operator()(const Operation &lhs, const Operation &rhs) const
     {
       return lhs.begin_ts < rhs.begin_ts;
     }
-    bool operator()(const OpSeq &lhs, const OpSeq &rhs) { return lhs.begin_ts < rhs.begin_ts; }
-    bool operator()(OpSeq &lhs, OpSeq &rhs) { return lhs.begin_ts < rhs.begin_ts; }
+    bool operator()(const Operation &lhs, const Operation &rhs)
+    {
+      return lhs.begin_ts < rhs.begin_ts;
+    }
+    bool operator()(Operation &lhs, Operation &rhs) { return lhs.begin_ts < rhs.begin_ts; }
   };
 
   void write(std::ostream &os) const override
   {
-    uint64_t opseq_latency = end_ts - begin_ts;
-    double opseq_per = static_cast<double>(opseq_latency) / graph_latency * 100.0;
-    writeMDTableRow(os, {name, backend, std::to_string(opseq_latency), std::to_string(opseq_per),
+    uint64_t op_latency = end_ts - begin_ts;
+    double op_per = static_cast<double>(op_latency) / graph_latency * 100.0;
+    writeMDTableRow(os, {name, backend, std::to_string(op_latency), std::to_string(op_per),
                          std::to_string(min_rss), std::to_string(max_rss),
                          std::to_string(min_page_reclaims), std::to_string(max_page_reclaims)});
   }
@@ -114,24 +117,24 @@ struct OpSeq : public MDContent
 
 struct Graph : public MDContent
 {
-  std::set<OpSeq, OpSeq::OpSeqCmp> opseqs;
+  std::set<Operation, Operation::OperationCmp> ops;
   std::string session_index;
   std::string subgraph_index;
 
-  void setOpSeqs(const std::map<std::string, OpSeq> &name_to_opseq)
+  void setOperations(const std::map<std::string, Operation> &name_to_op)
   {
     uint64_t graph_latency = end_ts - begin_ts;
-    for (auto it : name_to_opseq)
+    for (auto it : name_to_op)
     {
-      auto opseq = it.second;
-      opseq.graph_latency = graph_latency;
+      auto op = it.second;
+      op.graph_latency = graph_latency;
 
-      opseqs.insert(opseq);
+      ops.insert(op);
 
-      updateRss(opseq.min_rss);
-      updateRss(opseq.max_rss);
-      updateMinflt(opseq.min_page_reclaims);
-      updateMinflt(opseq.max_page_reclaims);
+      updateRss(op.min_rss);
+      updateRss(op.max_rss);
+      updateMinflt(op.min_page_reclaims);
+      updateMinflt(op.max_page_reclaims);
     }
   }
 
@@ -154,24 +157,24 @@ struct Graph : public MDContent
 
     os << "\n";
 
-    static std::vector<std::string> opseq_headers{
-      "OpSeq name",  "backend",     "latency(us)",       "latency(%)",
+    static std::vector<std::string> op_headers{
+      "Op name",     "backend",     "latency(us)",       "latency(%)",
       "rss_min(kb)", "rss_max(kb)", "page_reclaims_min", "page_reclaims_max"};
 
-    static std::vector<std::string> opseq_headers_line{
-      "----------", "-------", "-----------",       "-----------",
-      "-------",    "-------", "-----------------", "-----------------"};
+    static std::vector<std::string> op_headers_line{
+      "-------", "-------", "-----------",       "-----------",
+      "-------", "-------", "-----------------", "-----------------"};
 
-    os << "## OpSequences \n";
+    os << "## Op \n";
 
-    // OpSeq's Header
-    writeMDTableRow(os, opseq_headers);
-    writeMDTableRow(os, opseq_headers_line);
+    // Operation's Header
+    writeMDTableRow(os, op_headers);
+    writeMDTableRow(os, op_headers_line);
 
-    // OpSeq's contents
-    for (auto opseq : opseqs)
+    // Operation's contents
+    for (auto op : ops)
     {
-      opseq.write(os);
+      op.write(os);
     }
 
     os << "\n";
@@ -228,7 +231,7 @@ struct MDTableBuilder
     {
       size_t begin_idx = it.first;
       size_t end_idx = it.second;
-      std::map<std::string, OpSeq> name_to_opseq;
+      std::map<std::string, Operation> name_to_op;
       for (size_t i = begin_idx + 1; i < end_idx; ++i)
       {
         const auto *evt = dynamic_cast<const OpSeqDurationEvent *>(_duration_events[i].get());
@@ -237,18 +240,18 @@ struct MDTableBuilder
         assert(evt->ph.compare("B") == 0 || evt->ph.compare("E") == 0);
         if (evt->ph.compare("B") == 0)
         {
-          assert(name_to_opseq.find(evt_name) == name_to_opseq.end());
-          name_to_opseq.insert({evt_name, makeOpSeq(*evt)});
+          assert(name_to_op.find(evt_name) == name_to_op.end());
+          name_to_op.insert({evt_name, makeOperation(*evt)});
         }
         else
         {
-          assert(name_to_opseq.find(evt_name) != name_to_opseq.end());
-          auto &opseq = name_to_opseq.at(evt_name);
-          updateOpSeq(opseq, *evt);
+          assert(name_to_op.find(evt_name) != name_to_op.end());
+          auto &op = name_to_op.at(evt_name);
+          updateOperation(op, *evt);
         }
       }
 
-      _graphs.emplace_back(makeGraph(begin_idx, end_idx, name_to_opseq));
+      _graphs.emplace_back(makeGraph(begin_idx, end_idx, name_to_op));
     }
 
     return *this;
@@ -271,43 +274,43 @@ struct MDTableBuilder
     return graph_idx_list;
   }
 
-  OpSeq makeOpSeq(const OpSeqDurationEvent &evt)
+  Operation makeOperation(const OpSeqDurationEvent &evt)
   {
-    OpSeq opseq;
+    Operation op;
     const std::string &evt_name = getLabel(evt);
-    opseq.name = evt_name;
-    opseq.begin_ts = std::stoull(evt.ts);
-    opseq.backend = evt.backend;
+    op.name = evt_name;
+    op.begin_ts = std::stoull(evt.ts);
+    op.backend = evt.backend;
 #ifdef DEBUG
-    opseq.updateRss(_ts_to_values.at(opseq.begin_ts).first);
-    opseq.updateMinflt(_ts_to_values.at(opseq.begin_ts).second);
+    op.updateRss(_ts_to_values.at(op.begin_ts).first);
+    op.updateMinflt(_ts_to_values.at(op.begin_ts).second);
 #else
-    opseq.updateRss(0);
-    opseq.updateMinflt(0);
+    op.updateRss(0);
+    op.updateMinflt(0);
 #endif
-    return opseq;
+    return op;
   }
 
-  void updateOpSeq(OpSeq &opseq, const DurationEvent &evt)
+  void updateOperation(Operation &op, const DurationEvent &evt)
   {
-    opseq.end_ts = std::stoull(evt.ts);
+    op.end_ts = std::stoull(evt.ts);
 #ifdef DEBUG
-    opseq.updateRss(_ts_to_values.at(opseq.end_ts).first);
-    opseq.updateMinflt(_ts_to_values.at(opseq.end_ts).second);
+    op.updateRss(_ts_to_values.at(op.end_ts).first);
+    op.updateMinflt(_ts_to_values.at(op.end_ts).second);
 #else
-    opseq.updateRss(0);
-    opseq.updateMinflt(0);
+    op.updateRss(0);
+    op.updateMinflt(0);
 #endif
   }
 
   Graph makeGraph(size_t begin_idx, size_t end_idx,
-                  const std::map<std::string, OpSeq> &name_to_opseq)
+                  const std::map<std::string, Operation> &name_to_op)
   {
     Graph graph;
     graph.name = "Subgraph";
     graph.begin_ts = std::stoull(_duration_events[begin_idx]->ts);
     graph.end_ts = std::stoull(_duration_events[end_idx]->ts);
-    graph.setOpSeqs(name_to_opseq);
+    graph.setOperations(name_to_op);
 
     for (auto &arg : _duration_events[end_idx]->args)
     {

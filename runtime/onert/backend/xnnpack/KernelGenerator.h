@@ -37,13 +37,14 @@ namespace xnnpack
 class KernelGenerator : public cpu_common::KernelGeneratorBase
 {
 public:
-  KernelGenerator(const ir::Operands &operands_ctx, const ir::Operations &operations_ctx,
-                  const std::shared_ptr<TensorBuilder> &tensor_builder,
+  KernelGenerator(const ir::Graph &graph, const std::shared_ptr<TensorBuilder> &tensor_builder,
                   const std::shared_ptr<cpu_common::TensorRegistry> &tensor_reg,
                   const std::shared_ptr<custom::IKernelBuilder> &kernel_builder,
                   const std::shared_ptr<ExternalContext> &external_context);
 
-  void visit(const ir::OpSequence &) override;
+  std::unique_ptr<exec::FunctionSequence> generate(ir::OperationIndex ind) override;
+
+private:
   void visit(const ir::operation::Conv2D &) override;
   void visit(const ir::operation::DepthwiseConv2D &) override;
   void visit(const ir::operation::FullyConnected &) override;
@@ -51,10 +52,10 @@ public:
 private:
   const ir::Operands &_ctx;
   const ir::Operations &_operations_ctx;
+  ir::Layout _current_layout;
   std::shared_ptr<TensorBuilder> _tensor_builder;
   std::shared_ptr<cpu_common::TensorRegistry> _tensor_reg;
   std::shared_ptr<backend::custom::IKernelBuilder> _kernel_builder;
-  ir::Layout _current_layout;
   const std::shared_ptr<ExternalContext> _external_context;
 };
 

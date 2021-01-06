@@ -29,10 +29,9 @@ namespace pass
 
 void ConstantInsertionPass::callback(const ir::OperationIndex &node_index, ir::Operation &node)
 {
-  const auto &op_sequence_index = _lowered_graph.op_seqs().getOperation(node_index);
-  const auto op_seq_lower_info = _lowered_graph.getLowerInfo(op_sequence_index);
-  const auto backend = op_seq_lower_info->backend();
-  const auto layout = op_seq_lower_info->layout();
+  const auto op_lower_info = _lowered_graph.getLowerInfo(node_index);
+  const auto backend = op_lower_info->backend();
+  const auto layout = op_lower_info->layout();
   const auto factor = PermuteFactor{backend, layout};
 
   for (const auto input : node.getInputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED)
@@ -53,13 +52,6 @@ void ConstantInsertionPass::callback(const ir::OperationIndex &node_index, ir::O
       }
 
       const auto replaced_input = _replace_operands_map[key];
-      // Update op_seq
-      if (_lowered_graph.op_seqs().at(op_sequence_index).getInputs().contains(input))
-      {
-        // All inputs of op_seq have the same PermuteFactor because those inputs are inputs of first
-        // operation
-        _lowered_graph.op_seqs().at(op_sequence_index).replaceInputs(input, replaced_input);
-      }
 
       // Update the same inputs of a node at once because inputs of an operation have the same
       // PermuteFactor

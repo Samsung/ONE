@@ -134,11 +134,7 @@ std::string getSubgLabel(const DurationEvent &evt)
 
 std::string getOpLabel(const OpSeqDurationEvent &evt)
 {
-  if (evt.op_seq_size > 1)
-    return "@" + std::to_string(evt.op_index) + " " + evt.op_name + " (" +
-           std::to_string(evt.op_seq_size) + ")";
-  else
-    return "@" + std::to_string(evt.op_index) + " " + evt.op_name;
+  return "@" + std::to_string(evt.op_index) + " " + evt.op_name;
 }
 
 std::string getLabel(const DurationEvent &evt)

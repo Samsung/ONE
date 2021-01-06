@@ -18,7 +18,10 @@
 #define __ONERT_COMPILER_CODE_MAP_H__
 
 #include <unordered_map>
-#include "OpSequenceLowerInfo.h"
+#include "ir/Index.h"
+#include "ir/Operation.h"
+#include "exec/FunctionSequence.h"
+#include "OperationLowerInfo.h"
 
 namespace onert
 {
@@ -27,18 +30,20 @@ namespace compiler
 
 struct CodeAndInfo
 {
-  const ir::OpSequence *op_seq;
-  const OpSequenceLowerInfo *lower_info;
+  ir::OperationIndex op_ind;
+  const ir::Operation *op;
+  const OperationLowerInfo *lower_info;
   std::unique_ptr<exec::FunctionSequence> fn_seq;
 
-  CodeAndInfo(const ir::OpSequence *op_seq, const OpSequenceLowerInfo *lower_info,
+  CodeAndInfo(const ir::OperationIndex op_ind, const ir::Operation *op,
+              const OperationLowerInfo *lower_info,
               std::unique_ptr<exec::FunctionSequence> &&fn_seq)
-    : op_seq{op_seq}, lower_info{lower_info}, fn_seq{std::move(fn_seq)}
+    : op_ind{op_ind}, op{op}, lower_info{lower_info}, fn_seq{std::move(fn_seq)}
   {
   }
 };
 
-using CodeMap = std::unordered_map<ir::OpSequenceIndex, CodeAndInfo>;
+using CodeMap = std::unordered_map<ir::OperationIndex, CodeAndInfo>;
 
 } // namespace compiler
 } // namespace onert

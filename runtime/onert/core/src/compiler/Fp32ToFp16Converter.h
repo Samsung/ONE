@@ -66,8 +66,8 @@ private:
 
   void setNewOperandLowerInfo(const ir::OpSequenceIndex &op_seq_ind,
                               const ir::OperandIndex &new_op_ind);
-  void setNewOpSequenceLowerInfo(const ir::OpSequenceIndex &op_seq_ind,
-                                 const ir::OpSequenceIndex &new_op_seq_ind);
+  void setNewOperationLowerInfo(const ir::OpSequenceIndex &op_seq_ind,
+                                const ir::OpSequenceIndex &new_op_seq_ind);
 
   void manipulateInput(const ir::OpSequenceIndex &op_seq_ind,
                        const ir::OperandIndex &op_seq_input_ind,

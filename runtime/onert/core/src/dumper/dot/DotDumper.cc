@@ -19,8 +19,6 @@
 
 #include "DotDumper.h"
 #include "DotBuilder.h"
-#include "DotSubgraphInfo.h"
-#include "ir/OpSequence.h"
 #include "ir/OperationIndexMap.h"
 #include "backend/Backend.h"
 #include "backend/IConfig.h"
@@ -151,25 +149,18 @@ void DotDumper::dump(const std::string &tag)
 
   if (_lowered_graph)
   {
-    const auto &op_seqs = _lowered_graph->op_seqs();
-    op_seqs.iterate([&](const ir::OpSequenceIndex &index, const ir::OpSequence &op_seq) {
+    _graph.operations().iterate([&](const ir::OperationIndex &index, const ir::Operation &) {
       const auto lower_info = _lowered_graph->getLowerInfo(index);
-      auto fillcolor = backend_to_fillcolor(lower_info->backend());
-      std::string label =
-        std::to_string(index.value()) + " [" + lower_info->backend()->config()->id() + "]";
-      DotSubgraphInfo subgraph_info{index, op_seq, shown_operand_set, _graph.operations()};
-      subgraph_info.label(label);
-      subgraph_info.fillcolor(fillcolor);
-      dot_builder.addOpSequence(subgraph_info);
-
-      // Set fillcolor of all operations in the op_seq
-      for (const auto &op_idx : op_seq.operations())
+      if (lower_info)
       {
-        auto found = operation_nodes.find(op_idx);
-        if (found != operation_nodes.end())
+        auto fillcolor = backend_to_fillcolor(lower_info->backend());
+        std::string backend_label = "[" + lower_info->backend()->config()->id() + "]";
+        auto itr = operation_nodes.find(index);
+        if (itr != operation_nodes.end())
         {
-          auto &&op = found->second;
-          op->setAttribute("fillcolor", fillcolor);
+          auto &node = itr->second;
+          node->setAttribute("label", node->getAttribute("label") + "\n" + backend_label);
+          node->setAttribute("fillcolor", fillcolor);
         }
       }
     });

@@ -20,17 +20,8 @@
 #include <vector>
 #include <memory>
 
-#include "ir/OpSequences.h"
 #include "ir/Index.h"
 #include "compiler/LoweredGraph.h"
-
-namespace onert
-{
-namespace ir
-{
-struct OperationVisitor;
-} // namespace ir
-} // namespace onert
 
 namespace onert
 {
@@ -40,9 +31,9 @@ namespace compiler
 class Linear
 {
 public:
-  static std::vector<ir::OpSequenceIndex> linearize(const compiler::LoweredGraph &lowered_graph);
+  static std::vector<ir::OperationIndex> linearize(const compiler::LoweredGraph &lowered_graph);
   static void dump(const compiler::LoweredGraph &lowered_graph,
-                   const std::vector<ir::OpSequenceIndex> &order);
+                   const std::vector<ir::OperationIndex> &order);
 };
 
 } // namespace compiler

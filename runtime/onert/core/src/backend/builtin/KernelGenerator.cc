@@ -34,42 +34,42 @@ namespace builtin
 KernelGenerator::KernelGenerator(const ir::Graph &graph, DynamicTensorManager *dyn_tensor_manager,
                                  const std::shared_ptr<TensorRegistry> &tensor_reg,
                                  const std::shared_ptr<ExternalContext> &external_context)
-  : _graph{graph}, _dyn_tensor_manager{dyn_tensor_manager}, _tensor_reg{tensor_reg},
-    _tensor_registries{}, _executor_map{nullptr}, _external_context{external_context}
+  : cpu_common::KernelGeneratorBase{graph}, _dyn_tensor_manager{dyn_tensor_manager},
+    _tensor_reg{tensor_reg}, _tensor_registries{}, _executor_map{nullptr}, _external_context{
+                                                                             external_context}
 {
   UNUSED_RELEASE(_graph);
   UNUSED_RELEASE(_tensor_registries);
   UNUSED_RELEASE(_executor_map);
 }
 
-void KernelGenerator::visit(const ir::OpSequence &op_seq)
+std::unique_ptr<exec::FunctionSequence> KernelGenerator::generate(ir::OperationIndex ind)
 {
-  assert(!_return_fn_seq);
   assert(_dyn_tensor_manager);
   assert(_tensor_reg);
 
   auto dyn_shape_inferer =
     std::make_unique<exec::DynamicShapeInferer>(_graph.operands(), _tensor_reg);
 
-  _return_fn_seq = std::make_unique<exec::FunctionSequence>();
+  auto ret = std::make_unique<exec::FunctionSequence>();
 
   // Prepare to handle dynamic tensors later
   auto dyn_ctx = std::make_shared<exec::FunctionSequence::DynamicTensorCtx>();
   {
-    dyn_ctx->op_seq = &op_seq;
+    dyn_ctx->op_ind = ind;
     dyn_ctx->operations = &_graph.operations();
     dyn_ctx->dynamic_shape_inferer = std::move(dyn_shape_inferer);
     dyn_ctx->dynamic_tensor_manager = _dyn_tensor_manager;
 
-    _return_fn_seq->dynamic_tensor_ctx(dyn_ctx);
+    ret->dynamic_tensor_ctx(dyn_ctx);
   }
 
-  for (const auto &op_idx : op_seq.operations())
-  {
-    const auto &node = _graph.operations().at(op_idx);
-    node.accept(*this);
-    _return_fn_seq->append(releaseFunction());
-  }
+  auto &op = _graph.operations().at(ind);
+  op.accept(*this);
+  assert(_return_fn); // _return_fn must have been generated
+  ret->append(std::move(_return_fn));
+
+  return ret;
 }
 
 void KernelGenerator::visit(const ir::operation::If &node)

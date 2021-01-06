@@ -27,7 +27,6 @@
 #include <ir/Operand.h>
 #include <ir/Operands.h>
 #include <ir/OperationVisitor.h>
-#include <ir/OpSequence.h>
 #include <backend/ITensorRegistry.h>
 #include <util/logging.h>
 

@@ -51,8 +51,7 @@ void BackendContext::initConsts()
   constant_initializer->run();
 }
 
-void BackendContext::planTensors(const std::vector<onert::ir::OpSequenceIndex> &order,
-                                 const ir::OpSequences &op_seqs,
+void BackendContext::planTensors(const std::vector<onert::ir::OperationIndex> &order,
                                  const compiler::GraphLowerInfo &lower_info)
 {
   ir::OperandIndexMap<uint32_t> uses_map;
@@ -84,7 +83,7 @@ void BackendContext::planTensors(const std::vector<onert::ir::OpSequenceIndex> &
     auto factor = li->def_factors().getOnlyElement();
     if (!tensor_builder->isRegistered(ind))
     {
-      // These tensors do not exist in any op_seq (No use and def)
+      // These tensors do not exist in any operation (No use and def)
       const auto info = obj.info();
       const auto backend_layout = factor.layout();
       // TODO Change tensor info to have permuted shape
@@ -108,12 +107,11 @@ void BackendContext::planTensors(const std::vector<onert::ir::OpSequenceIndex> &
   // 1. Scan DEF of outputs. If the DEF, allocate it
   // 2. Scan DEF of inputs. If variable tensor, allocate it
   // 3. Scan USE of inputs. Decrease the USE and deallocate if the USE is 0
-  for (const auto op_seq_ind : order)
+  for (const auto op_ind : order)
   {
-    const auto &op_seq = op_seqs.at(op_seq_ind);
-    for (const auto &op_idx : op_seq.operations())
+    const auto &op = graph()->operations().at(op_ind);
+    // TODO Remove indentation
     {
-      auto &op = graph()->operations().at(op_idx);
       auto op_inputs = op.getInputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED;
       auto op_outputs = op.getOutputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED;
 
@@ -185,18 +183,17 @@ void BackendContext::planTensors(const std::vector<onert::ir::OpSequenceIndex> &
                 [](std::pair<const ir::OperandIndex, uint32_t> it) { return it.second == 0; }));
 }
 
-ITensorRegistry *BackendContext::genTensors(const std::vector<onert::ir::OpSequenceIndex> &order,
-                                            const ir::OpSequences &op_seqs,
+ITensorRegistry *BackendContext::genTensors(const std::vector<onert::ir::OperationIndex> &order,
                                             const compiler::GraphLowerInfo &lower_info)
 {
   optimizer->optimize();
 
-  for (const auto op_seq_ind : order)
+  for (const auto op_ind : order)
   {
-    const auto &op_seq = op_seqs.at(op_seq_ind);
+    const auto &op = graph()->operations().at(op_ind);
     auto model_io = (graph()->getInputs() + graph()->getOutputs()) | ir::Remove::UNDEFINED |
                     ir::Remove::DUPLICATED;
-    for (const auto op_ind : op_seq)
+    // TODO Remove indentation
     {
       bool op_assigned = [&]() {
         for (auto &op_info : operation_list())
@@ -207,7 +204,6 @@ ITensorRegistry *BackendContext::genTensors(const std::vector<onert::ir::OpSeque
       if (!op_assigned)
         continue;
 
-      const auto &op = graph()->operations().at(op_ind);
       for (const auto &index : (op.getInputs() + op.getOutputs()) | ir::Remove::UNDEFINED)
       {
         if (!tensor_builder->isRegistered(index) && !model_io.contains(index) &&
@@ -224,7 +220,7 @@ ITensorRegistry *BackendContext::genTensors(const std::vector<onert::ir::OpSeque
             continue;
 
           const auto &obj = graph()->operands().at(index);
-          const auto frontend_layout = op_seq.getLayout();
+          const auto frontend_layout = graph()->layout();
           const auto backend_layout = operand_lower_info.layout();
           ir::OperandInfo backend_info{permuteShape(obj.shape(), frontend_layout, backend_layout),
                                        obj.typeInfo(), obj.info().memAllocType(), obj.isConstant()};
@@ -237,7 +233,7 @@ ITensorRegistry *BackendContext::genTensors(const std::vector<onert::ir::OpSeque
   // TODO Get compiler options from compiler, and use it rather than getting it from Env
   if (util::getConfigString(util::config::EXECUTOR) == "Linear")
   {
-    planTensors(order, op_seqs, lower_info);
+    planTensors(order, lower_info);
   }
   else
   {
@@ -255,24 +251,20 @@ ITensorRegistry *BackendContext::genTensors(const std::vector<onert::ir::OpSeque
   return tensor_registry.get();
 }
 
-FunctionMap BackendContext::genKernels(const std::vector<onert::ir::OpSequenceIndex> &order,
-                                       const ir::OpSequences &op_seqs)
+FunctionMap BackendContext::genKernels(const std::vector<onert::ir::OperationIndex> &order)
 {
   FunctionMap ret;
 
-  for (auto op_seq_ind : order)
+  for (auto op_ind : order)
   {
-    const auto &op_seq = op_seqs.at(op_seq_ind);
-    bool assigned = [&]() {
-      for (auto op_info : operation_list())
-        if (op_seq.exist(op_info.index))
-          return true;
-      return false;
-    }();
+    // Skip if operation is not assigned to the backend
+    auto &ops = operation_list();
+    bool assigned = std::any_of(ops.begin(), ops.end(),
+                                [&](const OperationInfo &info) { return info.index == op_ind; });
     if (!assigned)
       continue;
-    auto fn_seq = kernel_gen->generate(op_seqs.at(op_seq_ind));
-    ret.emplace_back(op_seq_ind, std::move(fn_seq));
+    auto fn_seq = kernel_gen->generate(op_ind);
+    ret.emplace_back(op_ind, std::move(fn_seq));
   }
 
   tensor_builder->allocate();

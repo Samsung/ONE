@@ -36,7 +36,7 @@ void PassRunner::run()
     VERBOSE(PassRunner) << "Start running '" << pass->id() << "'" << std::endl;
     pass->run();
     VERBOSE(PassRunner) << "Finished running '" << pass->id() << "'" << std::endl;
-    // TODO Dump graph(LowerInfo, OpSequence, ...)?
+    // TODO Dump graph?
   }
 }
 

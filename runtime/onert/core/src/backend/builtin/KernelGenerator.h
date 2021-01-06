@@ -17,9 +17,9 @@
 #ifndef __ONERT_BACKEND_BUILTIN_KERNEL_GENERATOR_H__
 #define __ONERT_BACKEND_BUILTIN_KERNEL_GENERATOR_H__
 
-#include <exec/IExecutor.h>
+#include "exec/IExecutor.h"
 #include "ExternalContext.h"
-#include <ir/Graph.h>
+#include "ir/Graph.h"
 #include "TensorBuilder.h"
 #include "compiler/TensorRegistries.h"
 #include "backend/cpu_common/KernelGeneratorBase.h"
@@ -49,7 +49,9 @@ public:
     _executor_map = executor_map.get();
   }
 
-  void visit(const ir::OpSequence &) override;
+  std::unique_ptr<exec::FunctionSequence> generate(ir::OperationIndex ind) override;
+
+private:
   void visit(const ir::operation::If &) override;
   void visit(const ir::operation::Permute &) override;
   void visit(const ir::operation::While &) override;
@@ -59,7 +61,6 @@ private:
   backend::IPortableTensor *getPortableTensor(const ir::OperandIndex &index);
 
 private:
-  const ir::Graph &_graph;
   DynamicTensorManager *_dyn_tensor_manager;
   std::shared_ptr<TensorRegistry> _tensor_reg;
   compiler::TensorRegistries _tensor_registries;
