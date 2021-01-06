@@ -2,7 +2,7 @@
 
 `Stab` is a tool to schedule backend for each opration using profiled data
 
-nnpackage with backend configuration will be generated at `./tools/backend_scheduler/nnpkg_sched`
+nnpackage with backend configuration will be created at `./tools/backend_scheduler/nnpkg_sched`
 
 ## Scheduling Process
 
@@ -42,6 +42,7 @@ optional arguments:
                         Number of threads used by one runtime
   -u USER, --user USER  User of remote client
   -v, --verbose         Print verbose message
+  --no-profile          Disable profiling
 
 Examples:
     python3 ./tools/backend_scheduler/stab.py --nnpackage ../nnpkg_tst/inception --ip 1.1.1.1               => Profile on remote device 1.1.1.1 with current user
