@@ -77,6 +77,13 @@ if [[ ! -s "test_keras_model.h5" ]]; then
     # https://github.com/Samsung/ONE/issues/4268#issuecomment-725025805
 fi
 
+if [[ ! -s "test_onnx_model.onnx" ]]; then
+    rm -rf test_onnx_model.zip
+    wget https://github.com/Samsung/ONE/files/5768243/test_onnx_model.zip
+    unzip test_onnx_model.zip
+    # https://github.com/Samsung/ONE/issues/5548#issuecomment-754373360
+fi
+
 # prepare 'inception_v3.circle' file used for quantization test
 inputfile="./inception_v3.pb"
 outputfile="./inception_v3.circle"
