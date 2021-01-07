@@ -40,7 +40,8 @@ class BackendScheduler:
             try:
                 # Trace file is located at ./tools/stab/traces
                 trace_path = Path(
-                    __file__).parent / 'traces' / f"{backend}_{self.num_threads}"
+                    __file__
+                ).parent / 'traces' / f"{self.nnpkg_dir.name}_{backend}_{self.num_threads}"
                 logging.debug(f"Trace path : {trace_path}")
                 with open(trace_path) as f:
                     data = json.load(f)
@@ -109,17 +110,23 @@ class BackendScheduler:
 
         # Select fastet backend for each operation
         logging.info("-------- Expected inference time ---------")
-        single_backend_time = 0
+        inference_time = {}
+        for backend in backend_list:
+            inference_time[backend] = 0
+            for op_index, value in sorted(op_time.items()):
+                if backend in value:
+                    inference_time[backend] += value[backend]
+                else:
+                    inference_time[backend] += value["cpu"]
+
         schedule_time = 0
         for op_index, value in sorted(op_time.items()):
             op_type = value['type']
             if op_type not in target_ops:
-                single_backend_time += value["cpu"]
                 schedule_time += value["cpu"]
                 continue
             else:
                 op_backend = backend_mapping[op_index]
-                single_backend_time += value[default_backend]
                 schedule_time += value[op_backend]
                 if (default_backend != op_backend):
                     logging.debug("[{}] {} -> {} : {:.2f} ms decrease".format(
@@ -127,7 +134,7 @@ class BackendScheduler:
                         (value[default_backend] - value[op_backend]) / 1000))
 
         for backend in backend_list:
-            logging.info(f"{backend} backend : {backend_infer_time[backend]/1000:.2f} ms")
+            logging.info(f"{backend} backend : {inference_time[backend]/1000:.2f} ms")
         logging.info(f"Backend scheduling : {schedule_time / 1000:.2f} ms")
 
         logging.info("-------- Backend Scheduling --------")

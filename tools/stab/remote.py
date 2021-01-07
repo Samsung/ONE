@@ -29,6 +29,7 @@ class RemoteSSH():
         self.trace_dir = 'traces'
         self.host = f"{user}@{ip}" if user != None else ip
         self.nnpkg_dir = Path(nnpkg_dir).resolve()
+        self.nnpkg_name = self.nnpkg_dir.name
         self.root_path = Path(__file__).resolve().parents[2]
         self.num_threads = num_threads
 
@@ -92,7 +93,7 @@ class RemoteSSH():
 
     # TODO Create class for path generation
     def trace_name(self, backend):
-        return f"{backend}_{self.num_threads}"
+        return f"{self.nnpkg_name}_{backend}_{self.num_threads}"
 
     def remote_trace_path(self, backend):
         return self.base_dir / self.trace_dir / self.trace_name(backend)
