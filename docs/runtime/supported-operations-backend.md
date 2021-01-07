@@ -1,6 +1,6 @@
 # Supported Operations and backend
 
-As of 2020-12-07
+As of 2021-01-07
 
 ### Raw-data format (float32, int32, boolean, etc)
 
@@ -145,6 +145,7 @@ Pack |   | O | O
 Pad | O | O | O
 PadV2 | O | O | O
 PReLU |   | O | O
+Quantize | O |   |
 Rank | O |   |
 ReduceMax(Max) |   | O |
 ReduceMin(Min) |   | O |
@@ -152,7 +153,7 @@ ReduceSum(Sum) | O | O |
 ReLU |   | O | O
 ReLU6 |   | O | O
 Reshape | O | O | O
-ResizeBilinear | O |   | O
+ResizeBilinear | O | O | O
 Shape | O |   |
 Slice | O | O | O
 Softmax | O | O | O
@@ -173,10 +174,18 @@ Unpack(Unstack) |   | O | O
 
 Operation | CPU | ACL-CL | ACL-NEON
 -- | -- | -- | --
+Add | O | O | O
 ArgMax | O | O | O
 ArgMin | O | O | O
 Concat | O |   |
 DepthToSpace | O |   |
 Dequantize | O |   |
+Mul | O | O | O
+Pad | O | O | O
+PadV2 | O |   |
+Quantize | O |   |
 Rank | O |   |
+ResizeBilinear | O | O | O
 Shape | O |   |
+Softmax | O |   | O
+Sub | O | O | O
