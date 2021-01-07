@@ -123,6 +123,11 @@ public:
   ir::DataType data_type() const override { return _info.typeInfo().type(); }
   float data_scale() const override { return _info.typeInfo().scale(); }
   int32_t data_zero_point() const override { return _info.typeInfo().zero_point(); }
+  const std::vector<float> &data_scales() const override { return _info.typeInfo().scales(); }
+  const std::vector<int32_t> &data_zero_points() const override
+  {
+    return _info.typeInfo().zero_points();
+  }
   const ir::OperandInfo &tensorInfo() const override { return _info; }
   uint64_t num_elements() const override { return _info.shape().num_elements(); };
   ir::Shape getShape() const override;
@@ -164,6 +169,11 @@ public:
   ir::DataType data_type() const override { return _info.typeInfo().type(); }
   float data_scale() const override { return _info.typeInfo().scale(); }
   int32_t data_zero_point() const override { return _info.typeInfo().zero_point(); }
+  const std::vector<float> &data_scales() const override { return _info.typeInfo().scales(); }
+  const std::vector<int32_t> &data_zero_points() const override
+  {
+    return _info.typeInfo().zero_points();
+  }
   const ir::OperandInfo &tensorInfo() const override { return _info; }
   uint64_t num_elements() const override { return _info.shape().num_elements(); };
   ir::Shape getShape() const override;

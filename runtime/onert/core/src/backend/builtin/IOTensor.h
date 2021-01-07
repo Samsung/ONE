@@ -58,8 +58,6 @@ public:
   }
   ir::Layout layout() const override { return _tensor->layout(); }
   ir::DataType data_type() const override { return _tensor->data_type(); }
-  float data_scale() const override { return _tensor->data_scale(); }
-  int32_t data_zero_point() const override { return _tensor->data_zero_point(); }
   bool is_dynamic() const override
   {
     return _is_dynamic || _orig_info.isDynamic() || (_tensor && _tensor->is_dynamic());

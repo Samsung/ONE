@@ -60,6 +60,16 @@ int32_t IACLTensor::data_zero_point() const
   return info()->quantization_info().uniform().offset;
 }
 
+const std::vector<float> &IACLTensor::data_scales() const
+{
+  throw std::runtime_error("IACLTensor::data_scales() is not supported.");
+}
+
+const std::vector<int32_t> &IACLTensor::data_zero_points() const
+{
+  throw std::runtime_error("IACLTensor::data_zero_points() is not supported.");
+}
+
 } // namespace acl_common
 } // namespace backend
 } // namespace onert

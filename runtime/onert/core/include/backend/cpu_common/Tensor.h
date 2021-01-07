@@ -90,8 +90,6 @@ public:
   size_t calcOffset(const ir::Coordinates &coords) const override;
   ir::Layout layout() const override { return _layout; }
   ir::DataType data_type() const override { return _info.typeInfo().type(); }
-  float data_scale() const override { return _info.typeInfo().scale(); }
-  int32_t data_zero_point() const override { return _info.typeInfo().zero_point(); }
   bool is_constant() const override { return _info.isConstant(); }
   bool is_dynamic() const override { return _info.isDynamic(); }
   void set_dynamic() override { _info.setDynamic(); }

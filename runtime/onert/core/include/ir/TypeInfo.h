@@ -55,11 +55,13 @@ public:
     assert(_quant.scales.size() == 1);
     return _quant.scales[0];
   }
+  const std::vector<float> &scales() const { return _quant.scales; }
   int32_t zero_point() const
   {
     assert(_quant.zero_points.size() == 1);
     return _quant.zero_points[0];
   }
+  const std::vector<int32_t> &zero_points() const { return _quant.zero_points; }
   const ir::Sparsity *sparsity() const { return _sparsity.get(); }
   void quantization(float scale, int32_t zero_point)
   {
