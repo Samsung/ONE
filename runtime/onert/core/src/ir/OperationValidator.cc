@@ -467,6 +467,17 @@ void OperationValidator::visit(const operation::SquaredDifference &node)
   OP_REQUIRES(isSameType(lhs_index, rhs_index));
 }
 
+void OperationValidator::visit(const operation::StatelessRandomUniform &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto shape_index{node.getInputs().at(operation::StatelessRandomUniform::Input::SHAPE)};
+  const auto seed_index{node.getInputs().at(operation::StatelessRandomUniform::Input::SEED)};
+
+  OP_REQUIRES(isValidType(output_index, DataType::FLOAT32));
+  OP_REQUIRES(isValidType(shape_index, DataType::INT32));
+  OP_REQUIRES(isValidType(seed_index, DataType::INT32));
+}
+
 void OperationValidator::visit(const operation::StridedSlice &node)
 {
   const auto output_index{node.getOutputs().at(0)};
