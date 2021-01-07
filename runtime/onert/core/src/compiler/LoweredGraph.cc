@@ -223,10 +223,19 @@ void LoweredGraph::dumpLowerInfo()
   std::map<uint32_t, std::string> dumps;
 
   _graph.operands().iterate([&](const ir::OperandIndex &index, ir::Operand &object) {
-    std::stringstream sstream;
     const auto operand_lower_info = lower_info().operand.getRawPtr(index);
+    assert(operand_lower_info);
     if (!operand_lower_info->def_factors().empty() || !operand_lower_info->use_factors().empty())
     {
+      auto shape_to_string = [](const ir::Shape &shape) {
+        std::stringstream sstream;
+        sstream << "{ ";
+        for (auto i = 0; i < shape.rank(); ++i)
+          sstream << (shape.dim(i)) << " ";
+        sstream << "}";
+        return sstream.str();
+      };
+
       auto factors_to_string = [](const PermuteFactorSet &factors) {
         std::string str;
         for (auto factor : factors)
@@ -238,39 +247,32 @@ void LoweredGraph::dumpLowerInfo()
         return "{ " + str + "}";
       };
 
-      auto operation_index_to_string = [](const ir::OperationIndexSet &operations) {
-        std::string str;
+      auto operation_index_set_to_string = [](const ir::OperationIndexSet &operations) {
+        std::stringstream sstream;
+        sstream << "{ ";
         for (auto op : operations)
-        {
-          str += std::to_string(op.value());
-          str += " ";
-        }
-        return "{ " + str + "}";
+          sstream << op << " ";
+        sstream << "}";
+        return sstream.str();
       };
 
-      const auto &shape = object.shape();
-      std::string def_ops =
-        object.getDef().valid() ? std::to_string(object.getDef().value()) : "N/A";
-      std::string use_ops = operation_index_to_string(object.getUses());
-      std::string def_layouts = factors_to_string(operand_lower_info->def_factors());
-      std::string use_layouts = factors_to_string(operand_lower_info->use_factors());
-      sstream << "Operand " << index << " LowerInfo" << std::endl;
-      sstream << "  - Shape           : { ";
-      for (auto i = 0; i < shape.rank(); ++i)
-      {
-        sstream << (shape.dim(i)) << " ";
-      }
-      sstream << "}" << std::endl;
-      sstream << "  - Def Operations  : " << def_ops << std::endl;
-      sstream << "  - Use Operations  : " << use_ops << std::endl;
-      sstream << "  - Data            : "
-              << (object.data() ? (std::to_string(object.data()->size()) + " bytes") : "N/A")
-              << std::endl;
-      sstream << "  - Lower Info" << std::endl;
-      sstream << "    - Def Backends    : " << def_layouts << std::endl;
-      sstream << "    - Use Backends    : " << use_layouts << std::endl;
+      auto data_to_str = [](const ir::Data *data) {
+        return (data ? (std::to_string(data->size()) + " bytes") : "N/A");
+      };
+
+      std::string shape_str = shape_to_string(object.shape());
+      std::string def_op = operation_index_set_to_string({object.getDef()});
+      std::string use_ops = operation_index_set_to_string(object.getUses());
+      std::string def_factors = factors_to_string(operand_lower_info->def_factors());
+      std::string use_factors = factors_to_string(operand_lower_info->use_factors());
+      std::stringstream sstream;
+      sstream << "Operand " << index << " Info" << std::endl;
+      sstream << "  - Shape     : " << shape_str << std::endl;
+      sstream << "  - Def/Uses  : Def " << def_op << " Uses " << use_ops << std::endl;
+      sstream << "  - Data      : " << data_to_str(object.data()) << std::endl;
+      sstream << "  - LowerInfo : Def " << def_factors << " Uses " << use_factors << std::endl;
+      dumps.emplace(index.value(), sstream.str());
     }
-    dumps.emplace(index.value(), sstream.str());
   });
 
   for (const auto &e : dumps)
