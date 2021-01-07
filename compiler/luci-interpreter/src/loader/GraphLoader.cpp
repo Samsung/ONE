@@ -30,7 +30,11 @@ template <typename NodeT> Shape getNodeShape(const NodeT *node)
   Shape shape(node->rank());
   for (uint32_t i = 0; i < node->rank(); ++i)
   {
-    shape.dim(i) = node->dim(i).value();
+    // NOTE In theory, unknown dimension can be any value.
+    //      However, we are not sure about the side effect for setting other than 1.
+    //      In addition, -1 in shape_signature is represented as 1 in shape.
+    //      Therefore 1 seems best for the value of unknown dimension for now.
+    shape.dim(i) = node->dim(i).known() ? node->dim(i).value() : 1;
   }
   return shape;
 }
