@@ -53,6 +53,8 @@ public:
   ir::DataType data_type() const final;
   float data_scale() const override;
   int32_t data_zero_point() const override;
+  const std::vector<float> &data_scales() const override;
+  const std::vector<int32_t> &data_zero_points() const override;
   bool has_padding() const override { return info()->has_padding(); }
   bool is_dynamic() const override { return false; }
   ir::Shape getShape() const override

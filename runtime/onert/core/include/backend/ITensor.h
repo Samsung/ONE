@@ -47,6 +47,8 @@ public:
   virtual ir::DataType data_type() const = 0;
   virtual float data_scale() const = 0;
   virtual int32_t data_zero_point() const = 0;
+  virtual const std::vector<float> &data_scales() const = 0;
+  virtual const std::vector<int32_t> &data_zero_points() const = 0;
   virtual bool has_padding() const = 0;
   virtual void access(const std::function<void(ITensor &tensor)> &fn) = 0;
 
