@@ -57,8 +57,7 @@ TEST_P(SoftmaxVariation, Test)
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
   _context->addTestCase(param.tcd);
-  // TODO Enable acl-neon test
-  _context->setBackends({"cpu", "acl_cl"});
+  _context->setBackends({"cpu", "acl_neon", "acl_cl"});
 
   SUCCEED();
 }
