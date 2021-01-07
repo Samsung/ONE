@@ -54,11 +54,7 @@ public:
   }
 
 private:
-  void makeOperationLowerInfo(
-    ir::OperandIndexMap<std::unique_ptr<compiler::OperandLowerInfo>> &operands_lower_info,
-    const compiler::BackendResolver &backend_resolver);
-  void manipulateLowerInfo(
-    ir::OperandIndexMap<std::unique_ptr<compiler::OperandLowerInfo>> &operands_lower_info);
+  void makeLowerInfo(const compiler::BackendResolver &backend_resolver);
   void dumpLowerInfo();
 
 private:

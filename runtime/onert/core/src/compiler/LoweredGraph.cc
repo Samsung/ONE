@@ -85,42 +85,24 @@ LoweredGraph::LoweredGraph(const ir::Graph &graph, const CompilerOptions &option
     backend_resolver = scheduler.schedule(_graph);
   }
 
-  {
-    // operand::LowerInfo holder
-    ir::OperandIndexMap<std::unique_ptr<compiler::OperandLowerInfo>> operands_lower_info;
+  makeLowerInfo(*backend_resolver);
+  VERBOSE(LoweredGraph) << "dump before mandatory passes" << std::endl;
+  dumper::text::dumpLoweredGraph(*this);
 
-    _graph.operands().iterate([&](const ir::OperandIndex &index, const ir::Operand &) {
-      operands_lower_info[index] = std::make_unique<compiler::OperandLowerInfo>();
-    });
-
-    // Make op_seqs while checking whether a op can be merged into a op_seq.
-    makeOperationLowerInfo(operands_lower_info, *backend_resolver);
-
-    VERBOSE(LoweredGraph) << "dump before permutation insertion" << std::endl;
-    dumper::text::dumpLoweredGraph(*this);
-
-    // Mandatory passes
-    pass::PassRunner{}
-      .append(std::make_unique<pass::ConstantInsertionPass>(*this))
-      .append(std::make_unique<pass::ConstantLoweringPass>(*this))
-      .run();
-
-    // Set LowerInfo for each operand from the operand::LowerInfo holder
-    manipulateLowerInfo(operands_lower_info);
-
-    dumpLowerInfo();
-  }
-
-  // Mandatory passes
+  // Mandatory passes - kind of legalization(?)
   pass::PassRunner{}
+    .append(std::make_unique<pass::ConstantInsertionPass>(*this))
+    .append(std::make_unique<pass::ConstantLoweringPass>(*this))
     .append(std::make_unique<pass::PermutationOperationPass>(*this))
     .append(std::make_unique<pass::PermutationInsertionPass>(*this))
     .run();
 
-  // Optimization passes
+  dumpLowerInfo();
+
+  // Optimization passes (optional)
   pass::PassRunner{}.append(std::make_unique<pass::PermutationEliminationPass>(*this)).run();
 
-  VERBOSE(LoweredGraph) << "Dump after permutation insertion" << std::endl;
+  VERBOSE(LoweredGraph) << "Dump after all the passes" << std::endl;
   for (auto operand : _graph.getInputs())
     VERBOSE(LoweredGraph) << "Graph Input : " << operand << std::endl;
   for (auto operand : _graph.getOutputs())
@@ -135,12 +117,15 @@ LoweredGraph::LoweredGraph(const ir::Graph &graph, const CompilerOptions &option
   }
 }
 
-void LoweredGraph::makeOperationLowerInfo(
-  ir::OperandIndexMap<std::unique_ptr<compiler::OperandLowerInfo>> &operands_lower_info,
-  const BackendResolver &backend_resolver)
+void LoweredGraph::makeLowerInfo(const compiler::BackendResolver &backend_resolver)
 {
-  graph().operations().iterate([&](const ir::OperationIndex &op_ind, const ir::Operation &) {
-    const ir::Operation &op = graph().operations().at(op_ind);
+  _graph.operands().iterate([&](const ir::OperandIndex &index, const ir::Operand &) {
+    lower_info().operand.set(index, std::make_unique<OperandLowerInfo>());
+  });
+
+  // Set operand lower info using assigned backends to operations
+  _graph.operations().iterate([&](const ir::OperationIndex &op_ind, const ir::Operation &) {
+    const ir::Operation &op = _graph.operations().at(op_ind);
     auto backend = backend_resolver.getBackend(op_ind);
     auto frontend_layout = _graph.layout();
 
@@ -148,70 +133,49 @@ void LoweredGraph::makeOperationLowerInfo(
     // TODO Change setting layout of each backend at another place
     auto backend_layout = backend->config()->supportLayout(op, frontend_layout);
 
-    for (auto operand : op.getInputs() | ir::Remove::UNDEFINED)
+    for (auto ind : op.getInputs() | ir::Remove::UNDEFINED)
     {
-      auto &&lower_info = operands_lower_info.at(operand);
-      lower_info->addUsePermuteFactor(PermuteFactor{backend, backend_layout});
+      auto &operand_li = lower_info().operand.at(ind);
+      operand_li.addUsePermuteFactor(PermuteFactor{backend, backend_layout});
     }
-    for (auto operand : op.getOutputs() | ir::Remove::UNDEFINED)
+    for (auto ind : op.getOutputs() | ir::Remove::UNDEFINED)
     {
-      auto &&lower_info = operands_lower_info.at(operand);
-      lower_info->addDefPermuteFactor(PermuteFactor{backend, backend_layout});
+      auto &operand_li = lower_info().operand.at(ind);
+      operand_li.addDefPermuteFactor(PermuteFactor{backend, backend_layout});
     }
     lower_info().operation.set(
       op_ind, std::make_unique<compiler::OperationLowerInfo>(backend, backend_layout));
   });
-}
 
-void LoweredGraph::manipulateLowerInfo(
-  ir::OperandIndexMap<std::unique_ptr<compiler::OperandLowerInfo>> &operands_lower_info)
-{
+  // Handle graph inputs and outputs
   const auto builtin_backend = BackendManager::get().getBuiltin();
-
-  // TODO Rather than using NHWC Get frontend layout of this node from IR
-  auto factor = PermuteFactor{builtin_backend, ir::Layout::NHWC};
+  auto factor = PermuteFactor{builtin_backend, _graph.layout()};
   for (auto index : _graph.getInputs() | ir::Remove::UNDEFINED)
   {
-    auto &&lower_info = operands_lower_info.at(index);
-    assert(lower_info->def_factors().empty());
-    lower_info->addDefPermuteFactor(factor);
+    auto &operand_li = lower_info().operand.at(index);
+    assert(operand_li.def_factors().empty());
+    operand_li.addDefPermuteFactor(factor);
   }
   for (auto index : _graph.getOutputs() | ir::Remove::UNDEFINED)
   {
-    auto &&lower_info = operands_lower_info.at(index);
-    lower_info->addUsePermuteFactor(factor);
-  }
-  for (auto index : _graph.getOutputs() | ir::Remove::UNDEFINED)
-  {
-    auto &&lower_info = operands_lower_info.at(index);
-    if (lower_info->def_factors().size() == 0)
-    {
-      // In case of that an operand is Graph's output and not input or output of any operation
-      lower_info->addDefPermuteFactor(PermuteFactor{
-        builtin_backend,
-        ir::Layout::NHWC // TODO Get frontend layout of this node from IR
-      });
-    }
+    auto &operand_li = lower_info().operand.at(index);
+    operand_li.addUsePermuteFactor(factor);
   }
 
-  // 1. Add def of variable operand
-  // 2. Set LowerInfo for each operand from the OperandLowerInfo holder
+  // Handle variable tensors
   _graph.operands().iterate([&](const ir::OperandIndex &index, ir::Operand &operand) {
     // Some inputs of an operation could be non-constant, but not existed in graph inputs/outputs
-    // and not undefined operand. Those inputs must have exist as a Tensor. For example,
-    // UnidirectionalSequenceLSTM operation could have state inputs such as it.
+    // and not undefined operand - these are variable tensors. For example,
+    // UnidirectionalSequenceLSTM has such inputs.
     if (operand.info().isVariable())
     {
       // The variable operand with buffer is not supported yet
       assert(operand.data() == nullptr);
       assert(operand.getUses().size() == 1 && !operand.getDef().valid());
-      auto &lowered_info = operands_lower_info[index];
-      assert(lowered_info->def_factors().empty());
-      lowered_info->addDefPermuteFactor(lowered_info->use_factors().getOnlyElement());
+      auto operand_li = lower_info().operand.at(index);
+      assert(operand_li.def_factors().empty());
+      operand_li.addDefPermuteFactor(operand_li.use_factors().getOnlyElement());
     }
-
-    if (operands_lower_info.count(index) != 0)
-      lower_info().operand.set(index, std::move(operands_lower_info[index]));
   });
 }
 
