@@ -16,37 +16,95 @@
 
 #include "GenModelTest.h"
 
-TEST_F(GenModelTest, OneOp_AvgPool2D)
+struct AvgPool2DParam
 {
+  TestCaseData tcd;
+  std::vector<int32_t> input_shape;
+  std::vector<int32_t> output_shape;
+  struct filter_stride
+  {
+    int32_t filter_w;
+    int32_t filter_h;
+    int32_t stride_w;
+    int32_t stride_h;
+  } param = {1, 1, 1, 1};
+  struct data_type
+  {
+    circle::TensorType data_type;
+    float scale;
+    int64_t zero_point;
+  } type = {circle::TensorType::TensorType_FLOAT32, 0.0f, 0};
+  std::vector<std::string> backend = {"acl_cl", "acl_neon", "cpu"};
+};
+
+class AveragePool2DVariation : public GenModelTest,
+                               public ::testing::WithParamInterface<AvgPool2DParam>
+{
+};
+
+TEST_P(AveragePool2DVariation, Test)
+{
+  auto &param = GetParam();
   CircleGen cgen;
-  int in = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_FLOAT32});
-  int out = cgen.addTensor({{1, 1, 1, 1}, circle::TensorType::TensorType_FLOAT32});
-  cgen.addOperatorAveragePool2D({{in}, {out}}, circle::Padding_SAME, 2, 2, 2, 2,
+
+  int in = cgen.addTensor({param.input_shape, param.type.data_type}, param.type.scale,
+                          param.type.zero_point);
+  int out = cgen.addTensor({param.output_shape, param.type.data_type}, param.type.scale,
+                           param.type.zero_point);
+  cgen.addOperatorAveragePool2D({{in}, {out}}, circle::Padding_SAME, param.param.stride_w,
+                                param.param.stride_h, param.param.filter_w, param.param.filter_h,
                                 circle::ActivationFunctionType_NONE);
   cgen.setInputsAndOutputs({in}, {out});
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
-  _context->addTestCase(uniformTCD<float>({{1, 3, 2, 4}}, {{2.5}}));
-  _context->setBackends({"acl_cl", "acl_neon", "cpu"});
+  _context->addTestCase(param.tcd);
+  _context->setBackends(param.backend);
 
   SUCCEED();
 }
 
-TEST_F(GenModelTest, OneOp_AvgPool2D_Large)
-{
-  CircleGen cgen;
-  int in = cgen.addTensor({{1, 16, 32, 2}, circle::TensorType::TensorType_FLOAT32});
-  int out = cgen.addTensor({{1, 1, 2, 2}, circle::TensorType::TensorType_FLOAT32});
-  cgen.addOperatorAveragePool2D({{in}, {out}}, circle::Padding_SAME, 16, 16, 16, 16,
-                                circle::ActivationFunctionType_NONE);
-  cgen.setInputsAndOutputs({in}, {out});
-
-  _context = std::make_unique<GenModelTestContext>(cgen.finish());
-  _context->addTestCase(uniformTCD<float>({std::vector<float>(1024, 99)}, {{99, 99, 99, 99}}));
-  _context->setBackends({"acl_cl", "acl_neon", "cpu"});
-
-  SUCCEED();
-}
+// Test with different input type and value
+INSTANTIATE_TEST_CASE_P(
+  GenModelTest, AveragePool2DVariation,
+  ::testing::Values(
+    // float data
+    AvgPool2DParam{
+      uniformTCD<float>({{1, 3, 2, 4}}, {{2.5}}), {1, 2, 2, 1}, {1, 1, 1, 1}, {2, 2, 2, 2}},
+    // float data - large
+    AvgPool2DParam{uniformTCD<float>({std::vector<float>(18 * 36 * 2, 99)}, {{99, 99, 99, 99}}),
+                   {1, 18, 36, 2},
+                   {1, 1, 2, 2},
+                   {18, 18, 18, 18}},
+    // uint8_t data
+    AvgPool2DParam{uniformTCD<uint8_t>({{2, 6, 4, 8}}, {{5}}),
+                   {1, 2, 2, 1},
+                   {1, 1, 1, 1},
+                   {2, 2, 2, 2},
+                   {circle::TensorType::TensorType_UINT8, 1.2, 3}},
+    // uint8_t data -large
+    AvgPool2DParam{
+      uniformTCD<uint8_t>({{std::vector<uint8_t>(18 * 36 * 2, 99)}}, {{99, 99, 99, 99}}),
+      {1, 18, 36, 2},
+      {1, 1, 2, 2},
+      {18, 18, 18, 18},
+      {circle::TensorType::TensorType_UINT8, 1.2, 3}},
+    // int8_t data
+    // TODO enable acl-neon backend
+    AvgPool2DParam{uniformTCD<int8_t>({{2, -6, 4, -8}}, {{-2}}),
+                   {1, 2, 2, 1},
+                   {1, 1, 1, 1},
+                   {2, 2, 2, 2},
+                   {circle::TensorType::TensorType_INT8, 2.0, -1},
+                   {"acl_cl", "cpu"}},
+    // int8_t data - large
+    // TODO enable acl-neon backend
+    AvgPool2DParam{
+      uniformTCD<int8_t>({{std::vector<int8_t>(18 * 36 * 2, -99)}}, {{-99, -99, -99, -99}}),
+      {1, 18, 36, 2},
+      {1, 1, 2, 2},
+      {18, 18, 18, 18},
+      {circle::TensorType::TensorType_INT8, 2.0, -1},
+      {"acl_cl", "cpu"}}));
 
 TEST_F(GenModelTest, neg_OneOp_AvgPool2D_3DInput)
 {
