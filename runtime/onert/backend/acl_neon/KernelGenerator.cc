@@ -987,9 +987,10 @@ void KernelGenerator::visit(const ir::operation::Softmax &node)
     acl_common::disableDimCorrection(input_tensor);
   }
 
+  // NOTE NESoftmaxLayer's default axis is -1
   auto fn = acl_common::generateLayer<arm_compute::NESoftmaxLayer>(
     _tensor_builder->acl_tensor_manager()->internal_buffer_manager(), input_tensor->handle(),
-    output_tensor->handle(), beta);
+    output_tensor->handle(), beta, 1);
 
   // Revert disabling applied dim_correction
   if (input_tensor->getShape().dim(0) == 1)
