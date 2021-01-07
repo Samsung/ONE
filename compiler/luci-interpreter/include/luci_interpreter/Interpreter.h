@@ -57,6 +57,8 @@ public:
 
   void readOutputTensor(const luci::CircleOutput *output_node, void *data, size_t data_size);
 
+  const std::vector<int32_t> getOutputTensorShape(const luci::CircleOutput *output_node);
+
   void interpret();
 
   void attachObserver(ExecutionObserver *observer);

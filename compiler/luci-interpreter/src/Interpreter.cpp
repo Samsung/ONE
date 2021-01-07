@@ -106,6 +106,21 @@ void Interpreter::readOutputTensor(const luci::CircleOutput *output_node, void *
     tensor->readData(data, data_size);
 }
 
+const std::vector<int32_t> Interpreter::getOutputTensorShape(const luci::CircleOutput *output_node)
+{
+  Tensor *tensor = _runtime_module->getOutputTensors()[output_node->index()];
+  if (tensor == nullptr)
+  {
+    const std::string &name = output_node->name();
+    throw std::runtime_error("Cannot find tensor for output node named \"" + name + "\".");
+  }
+
+  std::vector<int32_t> output_shape;
+  for (int32_t i = 0; i < tensor->shape().num_dims(); ++i)
+    output_shape.push_back(tensor->shape().dim(i));
+  return output_shape;
+}
+
 void Interpreter::interpret() { _runtime_module->execute(); }
 
 void Interpreter::attachObserver(ExecutionObserver *observer)
