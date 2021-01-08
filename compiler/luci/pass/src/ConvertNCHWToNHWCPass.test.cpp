@@ -18,6 +18,7 @@
 
 #include "luci/Pass/ConvertNCHWToNHWCPass.h"
 #include "luci/Pass/ShapeInferencePass.h"
+#include "luci/Pass/CircleShapeInferencePass.h"
 
 // TODO: Remove this after refactoring is done
 #include "luci/Pass/MigrateLegacyShapeDtypePass.h"
@@ -246,6 +247,7 @@ void run_phase(loco::Graph *g)
   // TODO: Remove this after refactoring is done
   phase.emplace_back(std::make_unique<luci::MigrateLegacyShapeDtypePass>());
   phase.emplace_back(std::make_unique<luci::ShapeInferencePass>());
+  phase.emplace_back(std::make_unique<luci::CircleShapeInferencePass>());
 
   // Pass to test
   phase.emplace_back(std::make_unique<luci::ConvertNCHWToNHWCPass>());
