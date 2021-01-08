@@ -238,7 +238,7 @@ void check_post_trans(loco::Node *node)
   EXPECT_EQ(2, post_trans_perm->at<loco::DataType::S32>(3));
 }
 
-void run_phase(loco::Graph *g)
+void run_phase(loco::Graph *g, bool preserve_input = false, bool preserve_output = false)
 {
   logo::Phase phase;
 
@@ -248,7 +248,8 @@ void run_phase(loco::Graph *g)
   phase.emplace_back(std::make_unique<luci::ShapeInferencePass>());
 
   // Pass to test
-  phase.emplace_back(std::make_unique<luci::ConvertNCHWToNHWCPass>());
+  phase.emplace_back(
+    std::make_unique<luci::ConvertNCHWToNHWCPass>(preserve_input, preserve_output));
 
   logo::PhaseRunner<logo::PhaseStrategy::Restart> phase_runner{g};
   phase_runner.run(phase);
@@ -360,4 +361,67 @@ TEST(ConvertNCHWToNHWC, Unknown_Shape_NEG)
 
   luci::ConvertNCHWToNHWCPass pass;
   EXPECT_EQ(false, pass.run(&g.g));
+}
+
+TEST(ConvertNCHWToNHWC, Preserve_Input_Output)
+{
+  // Preserve input
+  {
+    AddGraph g;
+    g.init();
+
+    run_phase(&g.g, true, false);
+
+    // Check input shape
+    EXPECT_EQ(1, g.input->dim(0).value());
+    EXPECT_EQ(16, g.input->dim(1).value());
+    EXPECT_EQ(4, g.input->dim(2).value());
+    EXPECT_EQ(4, g.input->dim(3).value());
+
+    // Check output shape
+    EXPECT_EQ(1, g.output->dim(0).value());
+    EXPECT_EQ(4, g.output->dim(1).value());
+    EXPECT_EQ(4, g.output->dim(2).value());
+    EXPECT_EQ(16, g.output->dim(3).value());
+  }
+
+  // Preserve output
+  {
+    AddGraph g;
+    g.init();
+
+    run_phase(&g.g, false, true);
+
+    // Check input shape
+    EXPECT_EQ(1, g.input->dim(0).value());
+    EXPECT_EQ(4, g.input->dim(1).value());
+    EXPECT_EQ(4, g.input->dim(2).value());
+    EXPECT_EQ(16, g.input->dim(3).value());
+
+    // Check output shape
+    EXPECT_EQ(1, g.output->dim(0).value());
+    EXPECT_EQ(16, g.output->dim(1).value());
+    EXPECT_EQ(4, g.output->dim(2).value());
+    EXPECT_EQ(4, g.output->dim(3).value());
+  }
+
+  // Preserve both input and output
+  {
+    AddGraph g;
+    g.init();
+
+    run_phase(&g.g, true, true);
+
+    // Check input shape
+    EXPECT_EQ(1, g.input->dim(0).value());
+    EXPECT_EQ(16, g.input->dim(1).value());
+    EXPECT_EQ(4, g.input->dim(2).value());
+    EXPECT_EQ(4, g.input->dim(3).value());
+
+    // Check output shape
+    EXPECT_EQ(1, g.output->dim(0).value());
+    EXPECT_EQ(16, g.output->dim(1).value());
+    EXPECT_EQ(4, g.output->dim(2).value());
+    EXPECT_EQ(4, g.output->dim(3).value());
+  }
 }

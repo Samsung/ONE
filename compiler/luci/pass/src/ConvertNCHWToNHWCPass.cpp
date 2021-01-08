@@ -513,7 +513,17 @@ bool ConvertNCHWToNHWCPass::run(loco::Graph *g)
     {
       // List of supported Ops
       case luci::CircleOpcode::CIRCLEINPUT:
+        if (!_preserve_input && !has_data_format(node))
+        {
+          set_data_format(node, DataFormat::NCHW);
+        }
+        break;
       case luci::CircleOpcode::CIRCLEOUTPUT:
+        if (!_preserve_output && !has_data_format(node))
+        {
+          set_data_format(node, DataFormat::NCHW);
+        }
+        break;
       case luci::CircleOpcode::ADD:
       case luci::CircleOpcode::MUL:
       case luci::CircleOpcode::PAD:
