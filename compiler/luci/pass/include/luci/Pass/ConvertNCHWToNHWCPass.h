@@ -49,8 +49,8 @@ public:
   bool run(loco::Graph *g) final;
 
 private:
-  bool _preserve_input;
-  bool _preserve_output;
+  bool _preserve_input = false;
+  bool _preserve_output = false;
 };
 
 } // namespace luci
