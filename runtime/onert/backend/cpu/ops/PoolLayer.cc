@@ -94,29 +94,44 @@ void PoolLayer::configure(const IPortableTensor *input, const uint32_t paddingLe
   _output = output;
 
   POOLING_PARAMETERS
-  if (_input->data_type() == OperandType::FLOAT32)
-  {
-    float output_activation_min = 0;
-    float output_activation_max = 0;
-    CalculateActivationRange<float>(activation, &output_activation_min, &output_activation_max);
-    op_params.float_activation_min = output_activation_min;
-    op_params.float_activation_max = output_activation_max;
 
-    _kernel = generateKernelGeneric<float>(op_params, op_type);
-  }
-  else if (_input->data_type() == OperandType::QUANT_UINT8_ASYMM)
+  switch (_input->data_type())
   {
-    int32_t output_activation_min = 0;
-    int32_t output_activation_max = 0;
-    CalculateActivationRangeQuantized(activation, _output, &output_activation_min,
-                                      &output_activation_max);
-    op_params.quantized_activation_min = output_activation_min;
-    op_params.quantized_activation_max = output_activation_max;
-    _kernel = generateKernelGeneric<uint8_t>(op_params, op_type);
-  }
-  else
-  {
-    throw std::runtime_error{"Pool: unsupported data type"};
+    case OperandType::FLOAT32:
+    {
+      float output_activation_min = 0;
+      float output_activation_max = 0;
+      CalculateActivationRange<float>(activation, &output_activation_min, &output_activation_max);
+      op_params.float_activation_min = output_activation_min;
+      op_params.float_activation_max = output_activation_max;
+
+      _kernel = generateKernelGeneric<float>(op_params, op_type);
+      break;
+    }
+    case OperandType::QUANT_UINT8_ASYMM:
+    {
+      int32_t output_activation_min = 0;
+      int32_t output_activation_max = 0;
+      CalculateActivationRangeQuantized(activation, _output, &output_activation_min,
+                                        &output_activation_max);
+      op_params.quantized_activation_min = output_activation_min;
+      op_params.quantized_activation_max = output_activation_max;
+      _kernel = generateKernelGeneric<uint8_t>(op_params, op_type);
+      break;
+    }
+    case OperandType::QUANT_INT8_ASYMM:
+    {
+      int32_t output_activation_min = 0;
+      int32_t output_activation_max = 0;
+      CalculateActivationRangeQuantized(activation, _output, &output_activation_min,
+                                        &output_activation_max);
+      op_params.quantized_activation_min = output_activation_min;
+      op_params.quantized_activation_max = output_activation_max;
+      _kernel = generateKernelGeneric<int8_t>(op_params, op_type);
+      break;
+    }
+    default:
+      throw std::runtime_error{"Pool: unsupported data type"};
   }
 }
 
