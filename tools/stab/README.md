@@ -4,6 +4,9 @@
 
 nnpackage with backend configuration will be created at `./tools/stab/nnpkg_sched`
 
+Supported backends : `cpu`, `ruy`, and `xnnpack`
+- Other backends will be supported when `stab` can measure and use permutation time between backends
+
 ## Scheduling Process
 
 1. Upload ONE runtime and nnpackage to remote device
