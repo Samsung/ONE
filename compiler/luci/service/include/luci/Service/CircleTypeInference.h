@@ -23,7 +23,6 @@
 
 #include <luci/IR/CircleNodes.h>
 #include <luci/IR/CircleNodeVisitor.h>
-#include <luci/Service/CircleTypeInferenceHelper.h>
 #include <luci/Service/CircleTypeInferenceRule.h>
 
 namespace luci
