@@ -100,8 +100,9 @@ protected:
     ValidationTestSessionCreated::SetUp();
     if (PackageNo == NNPackages::ADD)
     {
-      auto cbuf = genAddModel();
-      NNFW_ENSURE_SUCCESS(nnfw_load_circle_from_buffer(_session, cbuf.buffer(), cbuf.size()));
+      // NOTE the circle buffer must be kept until finishing the test, so keep it as a member
+      _cbuf = genAddModel();
+      NNFW_ENSURE_SUCCESS(nnfw_load_circle_from_buffer(_session, _cbuf.buffer(), _cbuf.size()));
     }
     else
     {
@@ -112,6 +113,9 @@ protected:
   }
 
   void TearDown() override { ValidationTestSessionCreated::TearDown(); }
+
+private:
+  CircleBuffer _cbuf; // Used only for models from buffer, unused for models from files
 };
 
 template <int PackageNo>
