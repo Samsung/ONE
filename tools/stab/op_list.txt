@@ -1,0 +1,2 @@
+ruy:Conv2D,FullyConnected
+xnnpack:Conv2D,DepthwiseConv2D,FullyConnected
