@@ -25,7 +25,8 @@ namespace
 /**
  * Fold to const if
  *
- * 1. indices has 0-sized static shape (i.e., output is filled with default value)
+ * 1. indices has 0-sized static shape such as [0]
+ *    (i.e., output is filled with default value)
  * 2. default_value: const scalar
  * 3. output_shape: const
  *
