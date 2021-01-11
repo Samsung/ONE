@@ -12,6 +12,8 @@ set(LIB_PATH ${CMAKE_CURRENT_SOURCE_DIR}/lib CACHE INTERNAL "")
 include(${MBED_PATH}/tools/cmake/app.cmake)
 
 add_subdirectory(${LIB_PATH}/stdex)
+add_subdirectory(${LIB_PATH}/oops)
+add_subdirectory(${LIB_PATH}/pepper-str)
 
 add_subdirectory(${MBED_PATH})
 
@@ -27,6 +29,9 @@ project(${APP_TARGET})
 
 target_link_libraries(${APP_TARGET} mbed-os)
 target_link_libraries(${APP_TARGET} stdex)
+target_link_libraries(${APP_TARGET} oops)
+target_link_libraries(${APP_TARGET} pepper_str)
+
 mbed_set_post_build(${APP_TARGET})
 
 option(VERBOSE_BUILD "Have a verbose build process")
