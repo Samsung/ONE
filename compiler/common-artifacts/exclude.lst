@@ -5,6 +5,8 @@
 
 #[[ optimize : Exclude from circle optimization(circle2circle) ]]
 ## TensorFlowLiteRecipes
+optimize(BidirectionalSequenceLSTM_000)
+optimize(BidirectionalSequenceLSTM_001)
 optimize(UnidirectionalSequenceLSTM_001) # This recipe contains is_variable Tensor
 
 ## CircleRecipes
@@ -28,6 +30,8 @@ tcgenerate(BatchMatMul_000)
 tcgenerate(BatchMatMulV2_000)
 tcgenerate(BatchMatMulV2_001)
 tcgenerate(BatchToSpaceND_000)
+tcgenerate(BidirectionalSequenceLSTM_000) # runtime and luci-interpreter doesn't support BidirectionalSequenceLSTM op yet
+tcgenerate(BidirectionalSequenceLSTM_001) # runtime and luci-interpreter doesn't support BidirectionalSequenceLSTM op yet
 tcgenerate(Cast_000)
 tcgenerate(Cast_001)
 tcgenerate(Ceil_000)
