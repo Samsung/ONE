@@ -56,7 +56,7 @@ bool RemoveUnnecessarySplitPass::run(loco::Graph *g)
     if (remove_unnecessary_split(circle_node))
     {
       changed = true;
-      break;
+      // break;
     }
   }
   return changed;

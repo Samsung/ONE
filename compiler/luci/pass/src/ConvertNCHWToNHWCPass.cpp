@@ -309,7 +309,7 @@ bool is_NCHW_with_const(const luci::CircleAdd *node, luci::CircleNode *&pred_nod
     return false;
 
   const auto const_rank = beta->rank();
-  if (const_rank != 4)
+  if (const_rank != 4 || pred_node->rank() != 4)
     return false;
 
   // Check the shape is (1, C, 1, 1)
@@ -561,7 +561,7 @@ bool ConvertNCHWToNHWCPass::run(loco::Graph *g)
       {
         set_data_format(node, DataFormat::NHWC);
         changed = true;
-        break;
+        // break;
       }
       else
       {

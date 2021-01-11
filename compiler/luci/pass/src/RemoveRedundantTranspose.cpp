@@ -122,7 +122,7 @@ bool RemoveRedundantTransposePass::run(loco::Graph *g)
     if (remove_consecutive_transpose_function(circle_node))
     {
       changed = true;
-      break;
+      // break;
     }
   }
   return changed;
