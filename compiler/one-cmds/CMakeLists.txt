@@ -4,6 +4,7 @@ set(ONE_COMMAND_FILES
     one-import-bcq
     one-import-tf
     one-import-tflite
+    one-import-onnx
     one-optimize
     one-quantize
     one-pack
