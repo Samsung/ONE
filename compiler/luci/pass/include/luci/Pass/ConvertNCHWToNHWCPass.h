@@ -36,11 +36,13 @@ namespace luci
 struct ConvertNCHWToNHWCPass final : public logo::Pass
 {
 public:
-  ConvertNCHWToNHWCPass(bool preserve_input = false, bool preserve_output = false)
+  ConvertNCHWToNHWCPass(bool preserve_input, bool preserve_output)
     : _preserve_input(preserve_input), _preserve_output(preserve_output)
   {
     // Do nothing
   }
+
+  ConvertNCHWToNHWCPass() = delete;
 
   virtual ~ConvertNCHWToNHWCPass() = default;
 

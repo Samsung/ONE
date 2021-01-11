@@ -238,7 +238,7 @@ void check_post_trans(loco::Node *node)
   EXPECT_EQ(2, post_trans_perm->at<loco::DataType::S32>(3));
 }
 
-void run_phase(loco::Graph *g, bool preserve_input = false, bool preserve_output = false)
+void run_phase(loco::Graph *g, bool preserve_input, bool preserve_output)
 {
   logo::Phase phase;
 
@@ -262,7 +262,7 @@ TEST(ConvertNCHWToNHWC, Add)
   AddGraph g;
   g.init();
 
-  run_phase(&g.g);
+  run_phase(&g.g, false, false);
 
   auto input_succs = loco::succs(g.input);
   EXPECT_EQ(1, input_succs.size());
@@ -291,7 +291,7 @@ TEST(ConvertNCHWToNHWC, Mul)
   MulGraph g;
   g.init();
 
-  run_phase(&g.g);
+  run_phase(&g.g, false, false);
 
   auto input_succs = loco::succs(g.input);
   EXPECT_EQ(1, input_succs.size());
@@ -320,7 +320,7 @@ TEST(ConvertNCHWToNHWC, Pad)
   PadGraph g;
   g.init();
 
-  run_phase(&g.g);
+  run_phase(&g.g, false, false);
 
   auto input_succs = loco::succs(g.input);
   EXPECT_EQ(1, input_succs.size());
@@ -359,7 +359,7 @@ TEST(ConvertNCHWToNHWC, Unknown_Shape_NEG)
   g.add->dim(0).unset();
   g.output->dim(0).unset();
 
-  luci::ConvertNCHWToNHWCPass pass;
+  luci::ConvertNCHWToNHWCPass pass(false, false);
   EXPECT_EQ(false, pass.run(&g.g));
 }
 
