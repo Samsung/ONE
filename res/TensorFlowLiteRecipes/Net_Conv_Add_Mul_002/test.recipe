@@ -1,0 +1,92 @@
+operand {
+  name: "ifm_conv"
+  type: FLOAT32
+  shape { dim: 1 dim: 64 dim: 64 dim: 32 }
+}
+operand {
+  name: "filter"
+  type: FLOAT32
+  shape { dim: 64 dim: 1 dim: 1 dim: 32 }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "1.0"
+  }
+}
+operand {
+  name: "bias"
+  type: FLOAT32
+  shape { dim: 64 }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "1.0"
+  }
+}
+operand {
+  name: "ofm_conv"
+  type: FLOAT32
+  shape { dim: 1 dim: 32 dim: 32 dim: 64 }
+}
+operand {
+  name: "mul_const"
+  type: FLOAT32
+  shape { dim: 1 dim: 1 dim: 1 dim: 64 }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "1.0"
+  }
+}
+operand {
+  name: "add_const"
+  type: FLOAT32
+  shape { dim: 1 dim: 1 dim: 1 dim: 64 }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "1.0"
+  }
+}
+operand { 
+  name: "ofm_mul"
+  type: FLOAT32
+  shape { dim: 1 dim: 32 dim: 32 dim: 64 }
+}
+operand {
+  name: "ofm_add"
+  type: FLOAT32
+  shape { dim: 1 dim: 32 dim: 32 dim: 64 }
+}
+operation {
+  type: "Conv2D"
+  conv2d_options {
+    padding: VALID
+    stride_w: 2
+    stride_h: 2
+  }
+  input: "ifm_conv"
+  input: "filter"
+  input: "bias"
+  output: "ofm_conv"
+}
+operation {
+  type: "Mul"
+  input: "mul_const"
+  input: "ofm_conv"
+  output: "ofm_mul"
+  mul_options {
+    activation: NONE
+  }
+}
+operation {
+  type: "Add"
+  input: "add_const"
+  input: "ofm_mul"
+  output: "ofm_add"
+  add_options {
+    activation: NONE
+  }
+}
+input: "ifm_conv"
+output: "ofm_add"

@@ -1,0 +1,6 @@
+# To check if Add+Mul is fused to Conv2D
+
+RULE    "VERIFY_FILE_FORMAT"      $(verify_file_format) '=' 1
+
+RULE    "NO_ADD"                  $(op_count ADD) '=' 0
+RULE    "NO_MUL"                  $(op_count MUL) '=' 0
