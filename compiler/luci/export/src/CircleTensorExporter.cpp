@@ -250,18 +250,13 @@ flatbuffers::Offset<Vector<int32_t>> encodeShapeSignature(FlatBufferBuilder &bui
                                                           const ShapeDescription &shape)
 {
   assert(shape._rank_known && "unknown number of dimensions is not supported");
-  flatbuffers::Offset<Vector<int32_t>> signature_offset;
-  bool has_unknown = false;
 
+  // shape_signature is set if and only if at least one of dimensions are unknown.
   for (uint32_t i = 0; i < shape._dims.size(); ++i)
     if (shape._dims.at(i) == -1)
-      has_unknown = true;
+      return builder.CreateVector(shape._dims);
 
-  // shape_signature should be empty if at least one of dimensions are unknown.
-  if (has_unknown)
-    signature_offset = builder.CreateVector(shape._dims);
-
-  return signature_offset;
+  return flatbuffers::Offset<Vector<int32_t>>();
 }
 
 flatbuffers::Offset<circle::Buffer> encodeOpBuffer(FlatBufferBuilder &builder)
