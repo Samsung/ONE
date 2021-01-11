@@ -255,8 +255,11 @@ bool is_NCHW_with_const(const luci::CircleMul *node, luci::CircleNode *&pred_nod
     return false;
   }
 
+  if (pred_node->rank() != 4)
+    return false;
+
   const auto const_rank = multiplier->rank();
-  if (const_rank != 4 || pred_node->rank() != 4)
+  if (const_rank != 4)
     return false;
 
   for (uint32_t i = 0; i < const_rank; i++)
@@ -302,8 +305,11 @@ bool is_NCHW_with_const(const luci::CircleAdd *node, luci::CircleNode *&pred_nod
     return false;
   }
 
+  if (pred_node->rank() != 4)
+    return false;
+
   const auto const_rank = beta->rank();
-  if (const_rank != 4 || pred_node->rank() != 4)
+  if (const_rank != 4)
     return false;
 
   // Check the shape is (1, C, 1, 1)
