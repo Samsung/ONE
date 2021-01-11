@@ -27,6 +27,7 @@
 #include "luci/Pass/MakeBatchNormGammaPositivePass.h"
 #include "luci/Pass/PropagateQuantParamPass.h"
 #include "luci/Pass/RemoveRedundantTransposePass.h"
+#include "luci/Pass/RemoveUnnecessaryReshapePass.h"
 #include "luci/Pass/RemoveUnnecessarySlicePass.h"
 #include "luci/Pass/RemoveUnnecessarySplitPass.h"
 #include "luci/Pass/ReplaceMulAddWithDepthwiseConvPass.h"
@@ -221,6 +222,10 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   if (_options->query(Options::Algorithm::ShuffleWeightTo16x1Float32))
   {
     phase.emplace_back(std::make_unique<luci::ShuffleWeightTo16x1Float32Pass>());
+  }
+  if (_options->query(Options::Algorithm::RemoveUnnecessaryReshape))
+  {
+    phase.emplace_back(std::make_unique<luci::RemoveUnnecessaryReshapePass>());
   }
   if (_options->query(Options::Algorithm::RemoveUnnecessarySlice))
   {

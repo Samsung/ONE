@@ -56,6 +56,7 @@ public:
       ConvertNCHWToNHWC,
       RemoveUnnecessarySlice,
       RemoveUnnecessarySplit,
+      RemoveUnnecessaryReshape,
     };
 
     enum AlgorithmParameters
