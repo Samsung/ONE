@@ -6,6 +6,7 @@ cmake_minimum_required(VERSION 3.19.0)
 set(MBED_PATH ${CMAKE_CURRENT_SOURCE_DIR}/mbed-os CACHE INTERNAL "")
 set(MBED_CONFIG_PATH ${CMAKE_CURRENT_SOURCE_DIR}/.mbedbuild CACHE INTERNAL "")
 set(APP_TARGET luci-micro)
+set(LIB_PATH ${CMAKE_CURRENT_SOURCE_DIR}/lib CACHE INTERNAL "")
 
 include(${MBED_PATH}/tools/cmake/app.cmake)
 
