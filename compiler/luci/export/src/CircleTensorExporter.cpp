@@ -19,7 +19,6 @@
 
 #include <luci/IR/CircleNodes.h>
 #include <luci/IR/CircleNodeVisitor.h>
-#include <luci/IR/CircleShapeSignature.h>
 #include <luci/Service/CircleTypeInference.h>
 #include <luci/Service/CircleShapeInference.h>
 #include <luci/Log.h>
@@ -54,9 +53,6 @@ public:
   const ShapeDescription &shape(void) const { return _shape; }
   void shape(const ShapeDescription &shape) { _shape = shape; }
 
-  const ShapeSignature &shape_signature(void) const { return _shape_signature; }
-  void shape_signature(const ShapeSignature &ss) { _shape_signature = ss; }
-
   luci::ShapeStatus shape_status(void) const { return _shape_status; }
   void shape_status(luci::ShapeStatus ss) { _shape_status = ss; }
 
@@ -75,7 +71,6 @@ private:
 
   circle::TensorType _dtype{circle::TensorType_FLOAT32};
   ShapeDescription _shape{};
-  ShapeSignature _shape_signature;
   luci::ShapeStatus _shape_status{luci::ShapeStatus::UNDEFINED};
 
   luci::CircleConst *_content = nullptr;
@@ -112,7 +107,6 @@ void allocateCircleTensorInfo(CircleNode *node, CircleTensorContext &ctx)
 
   tensor_info.name(tensor_name);
   tensor_info.dtype(to_circle_tensortype(node->dtype()));
-  tensor_info.shape_signature(node->shape_signature());
   if (node->shape_status() == ShapeStatus::VALID)
     tensor_info.shape(to_shape_description(node));
   tensor_info.shape_status(node->shape_status());

@@ -20,7 +20,6 @@
 #include <loco/IR/TensorShape.h>
 
 #include <luci/IR/CircleNodes.h>
-#include <luci/IR/CircleShapeSignature.h>
 
 namespace luci
 {
