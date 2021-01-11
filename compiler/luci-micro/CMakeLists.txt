@@ -8,7 +8,10 @@ set(MBED_CONFIG_PATH ${CMAKE_CURRENT_SOURCE_DIR}/.mbedbuild CACHE INTERNAL "")
 set(APP_TARGET luci-micro)
 set(LIB_PATH ${CMAKE_CURRENT_SOURCE_DIR}/lib CACHE INTERNAL "")
 
+
 include(${MBED_PATH}/tools/cmake/app.cmake)
+
+add_subdirectory(${LIB_PATH}/stdex)
 
 add_subdirectory(${MBED_PATH})
 
@@ -23,7 +26,7 @@ mbed_set_mbed_target_linker_script(${APP_TARGET})
 project(${APP_TARGET})
 
 target_link_libraries(${APP_TARGET} mbed-os)
-
+target_link_libraries(${APP_TARGET} stdex)
 mbed_set_post_build(${APP_TARGET})
 
 option(VERBOSE_BUILD "Have a verbose build process")

@@ -4,7 +4,7 @@
  */
 
 #include "mbed.h"
-
+#include "stdex/Memory.h"
 
 int main()
 {
