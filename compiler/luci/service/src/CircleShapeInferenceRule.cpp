@@ -1425,19 +1425,33 @@ loco::NodeShape infer_sparse_to_dense(const luci::CircleSparseToDense *node)
     auto output_shape_node = dynamic_cast<luci::CircleConst *>(node->output_shape());
     if (output_shape_node != nullptr)
     {
-      // Only support node with S32
-      LUCI_ASSERT(output_shape_node->dtype() == loco::DataType::S32,
-                  "Only support int32 CircleConst");
+      const auto output_shape_type = output_shape_node->dtype();
 
       if (output_shape_node->rank() != 1)
         INTERNAL_EXN_V("Only support rank 1 CircleConst",
                        oops::to_uint32(output_shape_node->rank()));
 
-      shape.rank(output_shape_node->size<loco::DataType::S32>());
-
-      for (uint32_t axis = 0; axis < shape.rank(); ++axis)
+      if (output_shape_type == loco::DataType::S32)
       {
-        shape.dim(axis) = output_shape_node->at<loco::DataType::S32>(axis);
+        shape.rank(output_shape_node->size<loco::DataType::S32>());
+
+        for (uint32_t axis = 0; axis < shape.rank(); ++axis)
+        {
+          shape.dim(axis) = output_shape_node->at<loco::DataType::S32>(axis);
+        }
+      }
+      else if (output_shape_type == loco::DataType::S64)
+      {
+        shape.rank(output_shape_node->size<loco::DataType::S64>());
+
+        for (uint32_t axis = 0; axis < shape.rank(); ++axis)
+        {
+          shape.dim(axis) = output_shape_node->at<loco::DataType::S64>(axis);
+        }
+      }
+      else
+      {
+        INTERNAL_EXN("Output shape of SparseToDense must be either int32 or int64");
       }
     }
     else
