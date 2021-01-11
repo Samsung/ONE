@@ -39,15 +39,13 @@ bool fold_sparse_to_dense(luci::CircleSparseToDense *stod)
   const auto default_value = loco::must_cast<luci::CircleConst *>(stod->default_value());
   const auto output_shape = loco::must_cast<luci::CircleConst *>(stod->output_shape());
 
-  int32_t indices_size = 1;
+  bool has_zero = false;
   for (uint32_t i = 0; i < indices->rank(); i++)
   {
-    if (!indices->dim(i).known())
-      return false;
-    indices_size *= indices->dim(i).value();
+    if (indices->dim(i).known() && indices->dim(i).value() == 0)
+      has_zero = true;
   }
-
-  if (indices_size != 0)
+  if (!has_zero)
     return false;
 
   if (default_value->rank() != 0 || default_value->size<ValueT>() != 1)
