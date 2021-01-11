@@ -66,6 +66,12 @@ int entry(int argc, char **argv)
     .default_value(false)
     .help("This will fold dequantize op");
 
+  arser.add_argument("--fold_sparse_to_dense")
+    .nargs(0)
+    .required(false)
+    .default_value(false)
+    .help("This will fold SparseToDense");
+
   arser.add_argument("--fuse_activation_function")
     .nargs(0)
     .required(false)
@@ -251,6 +257,8 @@ int entry(int argc, char **argv)
   }
   if (arser.get<bool>("--fold_dequantize"))
     options->enable(Algorithms::FoldDequantize);
+  if (arser.get<bool>("--fold_sparse_to_dense"))
+    options->enable(Algorithms::FoldSparseToDense);
   if (arser.get<bool>("--fuse_activation_function"))
     options->enable(Algorithms::FuseActivationFunction);
   if (arser.get<bool>("--fuse_add_with_tconv"))

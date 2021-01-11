@@ -18,6 +18,7 @@
 
 #include "luci/Pass/ConvertNCHWToNHWCPass.h"
 #include "luci/Pass/FoldDequantizePass.h"
+#include "luci/Pass/FoldSparseToDensePass.h"
 #include "luci/Pass/FuseActivationFunctionPass.h"
 #include "luci/Pass/FuseAddWithTConvPass.h"
 #include "luci/Pass/FuseBatchNormWithTConv.h"
@@ -201,6 +202,10 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   if (_options->query(Options::Algorithm::FoldDequantize))
   {
     phase.emplace_back(std::make_unique<luci::FoldDequantizePass>());
+  }
+  if (_options->query(Options::Algorithm::FoldSparseToDense))
+  {
+    phase.emplace_back(std::make_unique<luci::FoldSparseToDensePass>());
   }
   if (_options->query(Options::Algorithm::FusePreActivationBatchNorm))
   {
