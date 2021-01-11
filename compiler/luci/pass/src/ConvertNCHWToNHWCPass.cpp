@@ -255,6 +255,9 @@ bool is_NCHW_with_const(const luci::CircleMul *node, luci::CircleNode *&pred_nod
     return false;
   }
 
+  if (pred_node->rank() != 4)
+    return false;
+
   const auto const_rank = multiplier->rank();
   if (const_rank != 4)
     return false;
@@ -301,6 +304,9 @@ bool is_NCHW_with_const(const luci::CircleAdd *node, luci::CircleNode *&pred_nod
     // Ignore if ADD does not have a constant input.
     return false;
   }
+
+  if (pred_node->rank() != 4)
+    return false;
 
   const auto const_rank = beta->rank();
   if (const_rank != 4)
