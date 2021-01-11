@@ -72,6 +72,10 @@ public:
       Sparsify_format,
       Sparsify_block_size,
       Sparsify_block_map,
+
+      // convert NCHW to NHWC
+      NCHW_to_NHWC_preserve_input_shape,
+      NCHW_to_NHWC_preserve_output_shape,
     };
 
     virtual ~Options() = default;

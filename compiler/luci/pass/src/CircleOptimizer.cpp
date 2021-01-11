@@ -240,7 +240,13 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   }
   if (_options->query(Options::Algorithm::ConvertNCHWToNHWC))
   {
-    phase.emplace_back(std::make_unique<luci::ConvertNCHWToNHWCPass>());
+    bool preserve_input =
+      _options->param(Options::AlgorithmParameters::NCHW_to_NHWC_preserve_input_shape) == "true";
+    bool preserve_output =
+      _options->param(Options::AlgorithmParameters::NCHW_to_NHWC_preserve_output_shape) == "true";
+
+    phase.emplace_back(
+      std::make_unique<luci::ConvertNCHWToNHWCPass>(preserve_input, preserve_output));
   }
 
   /* TRANSFORM DECLARATION END */

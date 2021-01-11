@@ -35,11 +35,24 @@ namespace luci
  */
 struct ConvertNCHWToNHWCPass final : public logo::Pass
 {
+public:
+  ConvertNCHWToNHWCPass(bool preserve_input, bool preserve_output)
+    : _preserve_input(preserve_input), _preserve_output(preserve_output)
+  {
+    // Do nothing
+  }
+
+  ConvertNCHWToNHWCPass() = delete;
+
   virtual ~ConvertNCHWToNHWCPass() = default;
 
   const char *name(void) const final { return "luci::ConvertNCHWToNHWCPass"; }
 
   bool run(loco::Graph *g) final;
+
+private:
+  bool _preserve_input = false;
+  bool _preserve_output = false;
 };
 
 } // namespace luci
