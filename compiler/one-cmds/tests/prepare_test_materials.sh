@@ -84,6 +84,13 @@ if [[ ! -s "test_onnx_model.onnx" ]]; then
     # https://github.com/Samsung/ONE/issues/5548#issuecomment-754373360
 fi
 
+if [[ ! -s "onnx_conv2d_conv2d.onnx" ]]; then
+    rm -rf onnx_conv2d_conv2d.zip
+    wget https://github.com/Samsung/ONE/files/5774648/onnx_conv2d_conv2d.zip
+    unzip onnx_conv2d_conv2d.zip
+    # https://github.com/Samsung/ONE/issues/5577#issuecomment-755078444
+fi
+
 # prepare 'inception_v3.circle' file used for quantization test
 inputfile="./inception_v3.pb"
 outputfile="./inception_v3.circle"
