@@ -454,6 +454,7 @@ bool InstanceNormPattern::matched()
 
     luci::CircleNode *ifm_node = loco::must_cast<luci::CircleNode *>(ifm);
     CHECK_OR_FALSE(ifm_node->rank() == 4);
+    CHECK_OR_FALSE(ifm_node->dim(3).known());
     uint32_t ifm_channel_depth = ifm_node->dim(3).value();
 
     mean_of_ifm = dynamic_cast<luci::CircleMean *>(sub->y());
@@ -515,6 +516,7 @@ bool InstanceNormPattern::matched()
   auto ifm_circle = loco::must_cast<luci::CircleNode *>(ifm);
   CHECK_OR_FALSE(ifm_circle->shape_status() == luci::ShapeStatus::VALID);
   CHECK_OR_FALSE(ifm_circle->rank() == 4);
+  CHECK_OR_FALSE(ifm_circle->dim(3).known());
   uint32_t ifm_channel_depth = ifm_circle->dim(3).value();
 
   CHECK_OR_FALSE(fill(&rsqrt, &const_as_gamma).with_commutative_args_of(mul_gamma));
@@ -627,44 +629,23 @@ void fuse_instance_norm(const InstanceNormPattern &p)
 
   auto graph = p.add_as_terminal->graph();
 
-  // Special case for version 2 (no need to reshape)
-  if (p.version() == InstanceNormPattern::Version_2)
+  // Version 0 and 1 need to reshape
+  if (p.version() != InstanceNormPattern::Version_2)
   {
-    // Make Instance Norm to replace
-    auto instance_norm = graph->nodes()->create<luci::CircleInstanceNorm>();
-    instance_norm->input(p.ifm);
-    instance_norm->gamma(p.const_as_gamma);
-    instance_norm->beta(p.const_as_beta);
-    float epsilon = p.const_as_epsilon->at<loco::DataType::FLOAT32>(0);
-    instance_norm->epsilon(epsilon);
-    instance_norm->fusedActivationFunction(p.add_as_terminal->fusedActivationFunction());
+    p.const_as_gamma->rank(1);
+    p.const_as_gamma->dim(0).set(p.const_as_gamma->size<loco::DataType::FLOAT32>());
+    p.const_as_beta->rank(1);
+    p.const_as_beta->dim(0).set(p.const_as_beta->size<loco::DataType::FLOAT32>());
 
-    replace(p.add_as_terminal).with(instance_norm);
-
-    return;
-  }
-
-  // Make reshape for gamma & beta
-  auto reshape_gamma = graph->nodes()->create<luci::CircleReshape>();
-  auto reshape_beta = graph->nodes()->create<luci::CircleReshape>();
-  {
-    auto circle_ifm = loco::must_cast<luci::CircleNode *>(p.ifm);
-    uint32_t ifm_channel_depth = circle_ifm->dim(3).value();
-
-    int32_t new_shape[1] = {static_cast<int32_t>(ifm_channel_depth)};
-
-    reshape_gamma->tensor(p.const_as_gamma);
-    reshape_beta->tensor(p.const_as_beta);
-
-    luci::set_new_shape(reshape_gamma, new_shape, 1);
-    luci::set_new_shape(reshape_beta, new_shape, 1);
+    loco::shape_erase(p.const_as_gamma);
+    loco::shape_erase(p.const_as_beta);
   }
 
   // Make Instance Norm to replace
   auto instance_norm = graph->nodes()->create<luci::CircleInstanceNorm>();
   instance_norm->input(p.ifm);
-  instance_norm->gamma(reshape_gamma);
-  instance_norm->beta(reshape_beta);
+  instance_norm->gamma(p.const_as_gamma);
+  instance_norm->beta(p.const_as_beta);
   float epsilon = p.const_as_epsilon->at<loco::DataType::FLOAT32>(0);
   instance_norm->epsilon(epsilon);
   instance_norm->fusedActivationFunction(p.add_as_terminal->fusedActivationFunction());
