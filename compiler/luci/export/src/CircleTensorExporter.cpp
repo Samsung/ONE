@@ -257,7 +257,7 @@ flatbuffers::Offset<Vector<int32_t>> encodeShapeSignature(FlatBufferBuilder &bui
     if (shape._dims.at(i) == -1)
       has_unknown = true;
 
-  // If all of dimensions are known, shape_signature should be empty.
+  // shape_signature should be empty if at least one of dimensions are unknown.
   if (has_unknown)
     signature_offset = builder.CreateVector(shape._dims);
 
