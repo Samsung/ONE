@@ -83,7 +83,7 @@ bool fused_batch_norm_with_conv(luci::CircleAdd *add)
   if (conv == nullptr || scale == nullptr)
     return false;
 
-  // To apply this pass, shape of shift should be [1, 1, 1, out_channel].
+  // To apply this pass, shape of scale should be [1, 1, 1, out_channel].
   if (scale->rank() != 4)
     return false;
   for (uint32_t i = 0; i < 3; ++i)
