@@ -60,6 +60,9 @@ tcgenerate(MatrixSetDiag_000)
 tcgenerate(MaxPoolWithArgMax_000)
 tcgenerate(MaxPoolWithArgMax_001)
 tcgenerate(MaxPoolWithArgMax_002)
+tcgenerate(Mean_dynamic_000) # TestDataGenerator does not support unknown dimension
+tcgenerate(Mean_dynamic_001) # TestDataGenerator does not support unknown dimension
+tcgenerate(Mean_U8_dynamic_000) # TestDataGenerator does not support unknown dimension
 tcgenerate(NonMaxSuppressionV4_000)
 tcgenerate(NonMaxSuppressionV4_001)
 tcgenerate(NonMaxSuppressionV5_000)
@@ -101,6 +104,8 @@ tcgenerate(ReduceProd_dynamic_000) # TestDataGenerator does not support unknown 
 tcgenerate(ReduceProd_dynamic_001) # TestDataGenerator does not support unknown dimension
 tcgenerate(ReduceProd_dynamic_002) # TestDataGenerator does not support unknown dimension
 tcgenerate(ReduceProd_dynamic_003) # TestDataGenerator does not support unknown dimension
+tcgenerate(ReLU_dynamic_000) # TestDataGenerator does not support unknown dimension
+tcgenerate(ReLU6_dynamic_000) # TestDataGenerator does not support unknown dimension
 tcgenerate(ReLUN1To1_000)
 tcgenerate(ReLUN1To1_dynamic_000) # TestDataGenerator does not support unknown dimension
 tcgenerate(Reshape_003) # luci-interpreter doesn't support reshape without built-in option
