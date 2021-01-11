@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2021 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ namespace
  * Fold to const if
  *
  * 1. indices has 0-sized static shape (i.e., output is filled with default value)
- * 2. defalut_value: const scalar
+ * 2. default_value: const scalar
  * 3. output_shape: const
  *
  * TODO: Support more general patterns
@@ -122,16 +122,17 @@ namespace luci
  **/
 bool FoldSparseToDensePass::run(loco::Graph *g)
 {
+  bool changed = false;
   for (auto node : loco::active_nodes(loco::output_nodes(g)))
   {
     if (auto stod = dynamic_cast<luci::CircleSparseToDense *>(node))
     {
       if (fold_sparse_to_dense(stod))
-        return true;
+        changed = true;
     }
   }
 
-  return false;
+  return changed;
 }
 
 } // namespace luci
