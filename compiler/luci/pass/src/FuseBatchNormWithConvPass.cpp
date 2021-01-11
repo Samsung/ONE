@@ -156,11 +156,8 @@ bool fused_batch_norm_with_conv(luci::CircleAdd *add)
   // Copy bias
   fused_bias->dtype(bias->dtype());
   fused_bias->size<loco::DataType::FLOAT32>(filter->size<loco::DataType::FLOAT32>());
-  fused_bias->rank(4);
-  fused_bias->dim(0).set(1);
-  fused_bias->dim(1).set(1);
-  fused_bias->dim(2).set(1);
-  fused_bias->dim(3).set(filter_out_channel);
+  fused_bias->rank(1);
+  fused_bias->dim(0).set(filter_out_channel);
 
   // Fuse scale and shift to bias
   for (uint32_t b = 0; b < filter_out_channel; ++b)
