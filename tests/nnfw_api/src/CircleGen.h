@@ -128,6 +128,8 @@ public:
   uint32_t addBuffer(const uint8_t *buf, size_t size);
   uint32_t addTensor(const TensorParams &params);
   uint32_t addTensor(const TensorParams &params, float scale, int64_t zero_point);
+  uint32_t addTensor(const TensorParams &params, std::vector<float> &scale,
+                     std::vector<int64_t> &zero_point);
   uint32_t addTensor(const TensorParams &params, const SparsityParams &sp);
   void setInputsAndOutputs(const std::vector<int> &inputs, const std::vector<int> &outputs);
   uint32_t nextSubgraph();
@@ -219,6 +221,9 @@ private:
   flatbuffers::Offset<circle::Tensor> buildTensor(const TensorParams &params);
   flatbuffers::Offset<circle::Tensor> buildTensor(const TensorParams &params, float scale,
                                                   int64_t zero_point);
+  flatbuffers::Offset<circle::Tensor> buildTensor(const TensorParams &params,
+                                                  std::vector<float> &scales,
+                                                  std::vector<int64_t> &zero_points);
   flatbuffers::Offset<circle::SparsityParameters> buildSparsityParameters(const SparsityParams &sp);
   flatbuffers::Offset<circle::Tensor> buildTensor(const TensorParams &params,
                                                   const SparsityParams &sp);

@@ -52,6 +52,14 @@ uint32_t CircleGen::addTensor(const TensorParams &params, float scale, int64_t z
   return ind;
 }
 
+uint32_t CircleGen::addTensor(const TensorParams &params, std::vector<float> &scale,
+                              std::vector<int64_t> &zero_point)
+{
+  uint32_t ind = curSubgCtx().tensors.size();
+  curSubgCtx().tensors.emplace_back(buildTensor(params, scale, zero_point));
+  return ind;
+}
+
 uint32_t CircleGen::addTensor(const TensorParams &params, const SparsityParams &sp)
 {
   uint32_t ind = curSubgCtx().tensors.size();
@@ -524,6 +532,18 @@ flatbuffers::Offset<circle::Tensor> CircleGen::buildTensor(const TensorParams &p
   std::vector<int64_t> zero_point_vector = {zero_point};
   auto quantization = circle::CreateQuantizationParametersDirect(_fbb, nullptr, nullptr,
                                                                  &scale_vector, &zero_point_vector);
+  return circle::CreateTensor(_fbb, shape, params.tensor_type, params.buffer, name, quantization,
+                              false /* is_variable */, 0 /* sparsity */, 0 /* shape_signature */);
+}
+
+flatbuffers::Offset<circle::Tensor> CircleGen::buildTensor(const TensorParams &params,
+                                                           std::vector<float> &scales,
+                                                           std::vector<int64_t> &zero_points)
+{
+  auto shape = _fbb.CreateVector(params.shape);
+  auto name = _fbb.CreateString(params.name);
+  auto quantization =
+    circle::CreateQuantizationParametersDirect(_fbb, nullptr, nullptr, &scales, &zero_points);
   return circle::CreateTensor(_fbb, shape, params.tensor_type, params.buffer, name, quantization,
                               false /* is_variable */, 0 /* sparsity */, 0 /* shape_signature */);
 }
