@@ -182,13 +182,13 @@ int entry(int argc, char **argv)
     .nargs(0)
     .required(false)
     .default_value(false)
-    .help("Preserve the input shape of the model.");
+    .help("Preserve the input shape of the model (argument for --convert_nchw_to_nhwc).");
 
   arser.add_argument("--nchw_to_nhwc_preserve_output_shape")
     .nargs(0)
     .required(false)
     .default_value(false)
-    .help("Preserve the output shape of the model.");
+    .help("Preserve the output shape of the model (argument for --convert_nchw_to_nhwc).");
 
   arser.add_argument("--mute_warnings")
     .nargs(0)
