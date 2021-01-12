@@ -51,6 +51,10 @@ def _get_parser():
     circle2circle_group.add_argument(
         '--fuse_add_with_tconv', action='store_true', help='fuse Add op to Transposed')
     circle2circle_group.add_argument(
+        '--fuse_batchnorm_with_conv',
+        action='store_true',
+        help='fuse Mul and Add to Convolution op')
+    circle2circle_group.add_argument(
         '--fuse_batchnorm_with_tconv',
         action='store_true',
         help='fuse BatchNorm op to Transposed Convolution op')
