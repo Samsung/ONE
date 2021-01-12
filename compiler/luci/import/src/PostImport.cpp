@@ -272,18 +272,20 @@ public:
 
       auto cond_graph_input = cond_graph_inputs->at(cond_in->index());
       auto body_graph_output = body_graph_outputs->at(body_out->index());
-      if ((cond_in->rank() != body_out->rank()))
+      if (cond_graph_input->shape()->rank() != body_graph_output->shape()->rank())
       {
-        INTERNAL_EXN_V("CircleWhile COND input and BODY output shape mismatch ", idx);
+        INTERNAL_EXN_V("CircleWhile COND input and BODY output rank mismatch ", idx);
       }
-      if (cond_in->rank() > 0 && body_out->rank() > 0)
+      for (uint32_t i = 0; i < cond_graph_input->shape()->rank(); ++i)
       {
-        if (!(*cond_graph_input->shape() == *body_graph_output->shape()))
+        if (cond_graph_input->shape()->dim(i).known() &&
+            body_graph_output->shape()->dim(i).known() &&
+            cond_graph_input->shape()->dim(i).value() != body_graph_output->shape()->dim(i).value())
         {
-          INTERNAL_EXN_V("CircleWhile COND input and BODY output shape mismatch ", idx);
+          INTERNAL_EXN_V("CircleWhile COND input and BODY output dimension mismatch ", idx);
         }
       }
-      if (cond_in->dtype() != body_out->dtype())
+      if (cond_graph_input->dtype() != body_graph_output->dtype())
       {
         INTERNAL_EXN_V("CircleWhile COND input and BODY output type mismatch ", idx);
       }
