@@ -189,6 +189,7 @@ protected:
       auto cbuf = genAddModel();
       NNFW_ENSURE_SUCCESS(nnfw_load_circle_from_buffer(obj.session, cbuf.buffer(), cbuf.size()));
       ASSERT_EQ(nnfw_prepare(obj.session), NNFW_STATUS_NO_ERROR);
+      _cbufs.push_back(std::move(cbuf)); // Keep the buffer so it can outlive the session
 
       uint32_t num_inputs;
       ASSERT_EQ(nnfw_input_size(obj.session, &num_inputs), NNFW_STATUS_NO_ERROR);
@@ -231,6 +232,7 @@ protected:
 
 protected:
   std::array<SessionObject, NUM_SESSIONS> _objects;
+  std::vector<CircleBuffer> _cbufs;
 };
 
 class ValidationTestTwoSessions : public ValidationTest
