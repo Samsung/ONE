@@ -1,6 +1,4 @@
-if(ENABLE_TEST)
 file(GLOB_RECURSE TESTS "src/*.test.cpp")
-endif(ENABLE_TEST)
 
 add_library(stdex INTERFACE)
 target_include_directories(stdex INTERFACE include)
