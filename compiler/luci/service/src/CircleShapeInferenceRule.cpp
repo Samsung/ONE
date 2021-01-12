@@ -147,10 +147,8 @@ loco::TensorShape expand_dimension(const loco::TensorShape &x, const loco::Tenso
   output_shape.rank(rank);
   for (uint32_t axis = 0; axis < rank; ++axis)
   {
-    assert(x.dim(axis).known() && y.dim(axis).known());
-
-    auto x_dim = x.dim(axis).value();
-    auto y_dim = y.dim(axis).value();
+    auto x_dim = x.dim(axis).known() ? x.dim(axis).value() : 1;
+    auto y_dim = y.dim(axis).known() ? y.dim(axis).value() : 1;
 
     // each dimension of x and y should be same or one must be 1 if different
     if (!((x_dim == y_dim) || (x_dim == 1 || y_dim == 1)))
@@ -508,7 +506,7 @@ loco::NodeShape infer_batchmatmul_shape(const loco::TensorShape &x_shape,
   loco::Dimension y_lhs = adj_y ? y_shape.dim(y_rank - 1) : y_shape.dim(y_rank - 2);
   loco::Dimension y_rhs = adj_y ? y_shape.dim(y_rank - 2) : y_shape.dim(y_rank - 1);
 
-  if (not(x_rhs == y_lhs))
+  if (x_rhs.known() && y_lhs.known() && not(x_rhs == y_lhs))
     INTERNAL_EXN("x_rhs and y_lhs should be same");
 
   uint32_t out_rank = output_shape.rank();
@@ -1101,9 +1099,11 @@ loco::NodeShape infer_reshape(const luci::CircleReshape *node)
 
   // One of the dimensions can have special value -1, meaning its actual value should be inferred.
   const auto input_shape = loco::shape_get(node->tensor()).as<loco::TensorShape>();
-  const uint32_t input_element_count = loco::element_count(&input_shape);
+  uint32_t input_element_count = 1;
   uint32_t output_element_count = 1;
   uint32_t unknown_dim_index = UINT32_MAX;
+  for (uint32_t i = 0; i < input_shape.rank(); ++i)
+    input_element_count *= (input_shape.dim(i).known() ? input_shape.dim(i).value() : 1);
   for (uint32_t dim_index = 0; dim_index < output_shape.rank(); ++dim_index)
   {
     const uint32_t dim_value = output_shape.dim(dim_index).value();
