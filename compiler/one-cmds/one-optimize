@@ -54,11 +54,11 @@ def _get_parser():
     circle2circle_group.add_argument(
         '--nchw_to_nhwc_preserve_input_shape',
         action='store_true',
-        help='preserve the input shape of the model')
+        help='preserve the input shape of the model (argument for convert_nchw_to_nhwc)')
     circle2circle_group.add_argument(
         '--nchw_to_nhwc_preserve_output_shape',
         action='store_true',
-        help='preserve the output shape of the model')
+        help='preserve the output shape of the model (argument for convert_nchw_to_nhwc)')
     circle2circle_group.add_argument(
         '--fold_dequantize', action='store_true', help='fold Dequantize op')
     circle2circle_group.add_argument(
