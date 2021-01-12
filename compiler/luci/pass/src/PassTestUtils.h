@@ -62,13 +62,13 @@ public:
     auto input_tensor_shape = std::make_unique<loco::TensorShape>();
     input_tensor_shape->rank(input_shape.size());
     for (int i = 0; i < input_shape.size(); i++)
-      input_tensor_shape->dim(i) = input_shape[i];
+      input_tensor_shape->dim(i).set(input_shape[i]);
     graph_input->shape(std::move(input_tensor_shape));
 
     auto output_tensor_shape = std::make_unique<loco::TensorShape>();
     output_tensor_shape->rank(input_shape.size());
     for (int i = 0; i < input_shape.size(); i++)
-      output_tensor_shape->dim(i) = input_shape[i];
+      output_tensor_shape->dim(i).set(input_shape[i]);
     graph_output->shape(std::move(output_tensor_shape));
 
     input->rank(input_shape.size());
