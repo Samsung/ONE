@@ -83,6 +83,33 @@ public:
     }
   }
 
+  void getQuantizedConvolutionMultipliersAndShifts(float input_scale, float output_scale,
+                                                   const float *filter_scales,
+                                                   size_t filter_scales_size, int num_channels)
+  {
+    // Originates from tflite's PopulateConvolutionQuantizationParams()
+    _per_channel_output_multiplier.resize(num_channels);
+    _per_channel_output_shift.resize(num_channels);
+
+    const bool is_per_channel = filter_scales_size > 1;
+    auto per_channel_multiplier = _per_channel_output_multiplier.data();
+    auto per_channel_shift = _per_channel_output_shift.data();
+    for (int i = 0; i < num_channels; ++i)
+    {
+      // If per-tensor quantization parameter is specified, broadcast it along the
+      // quantization dimension (channels_out).
+      const float scale = is_per_channel ? filter_scales[i] : filter_scales[0];
+      const double filter_scale = static_cast<double>(scale);
+      const double effective_output_scale =
+        static_cast<double>(input_scale) * filter_scale / static_cast<double>(output_scale);
+      int32_t significand;
+      int channel_shift;
+      QuantizeMultiplier(effective_output_scale, &significand, &channel_shift);
+      per_channel_multiplier[i] = significand;
+      per_channel_shift[i] = channel_shift;
+    }
+  }
+
   void operator()(const ConvParams &params, const Shape &input_shape, const float *input_data,
                   const Shape &filter_shape, const float *filter_data, const Shape &bias_shape,
                   const float *bias_data, const Shape &output_shape, float *output_data)
@@ -138,6 +165,15 @@ public:
     }
   }
 
+  void operator()(const ConvParams &params, const Shape &input_shape, const int8_t *input_data,
+                  const Shape &filter_shape, const int8_t *filter_data, const Shape &bias_shape,
+                  const int32_t *bias_data, const Shape &output_shape, int8_t *output_data)
+  {
+    reference::Conv(params, _per_channel_output_multiplier.data(), _per_channel_output_shift.data(),
+                    input_shape, input_data, filter_shape, filter_data, bias_shape, bias_data,
+                    output_shape, output_data);
+  }
+
 private:
   bool usableMultiThreaded(PaddingType padding_type, uint32_t dilation_width_factor,
                            int32_t dilation_height_factor)
@@ -180,6 +216,9 @@ private:
   Shape _im2col_shape;
   bool _need_im2col;
   bool _prepared;
+  // Per channel output multiplier and shift.
+  std::vector<int32_t> _per_channel_output_multiplier;
+  std::vector<int> _per_channel_output_shift;
 };
 } // namespace cker
 } // namespace nnfw
