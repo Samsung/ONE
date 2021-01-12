@@ -125,4 +125,6 @@ template <> struct hash<onert::compiler::PermuteFactor>
 
 } // namespace std
 
+std::ostream &operator<<(std::ostream &os, const onert::compiler::PermuteFactor &obj);
+
 #endif // __ONERT_COMPILER_OPERAND_PERMUTE_FACTOR_H__

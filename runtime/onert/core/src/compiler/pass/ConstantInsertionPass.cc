@@ -17,8 +17,9 @@
 #include "ConstantInsertionPass.h"
 
 #include "backend/Backend.h"
-#include <ir/Graph.h>
-#include <util/Utils.h>
+#include "ir/Graph.h"
+#include "util/Utils.h"
+#include "util/logging.h"
 
 namespace onert
 {
@@ -61,6 +62,8 @@ void ConstantInsertionPass::callback(const ir::OperationIndex &node_index, ir::O
       auto &replaced_object = _graph.operands().at(replaced_input);
       replaced_object.insertUse(node_index);
 
+      VERBOSE(ConstInsertPass) << "New operand " << replaced_input << " added(copy of " << input
+                               << ") for " << factor << std::endl;
       // Remove this node from uses of origin operand
       // Constant operand has no def.
       assert(!object.getDef().valid());
@@ -68,7 +71,11 @@ void ConstantInsertionPass::callback(const ir::OperationIndex &node_index, ir::O
 
       // Remove origin operand
       if (object.getUses().size() == 0)
+      {
         _graph.removeOperand(input);
+        VERBOSE(ConstInsertPass) << "Original operand " << input << " removed - no uses"
+                                 << std::endl;
+      }
     }
   }
 
