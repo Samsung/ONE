@@ -178,6 +178,18 @@ int entry(int argc, char **argv)
     .help("Experimental: This will convert NCHW operators to NHWC under the assumption that "
           "input model is NCHW.");
 
+  arser.add_argument("--nchw_to_nhwc_preserve_input_shape")
+    .nargs(0)
+    .required(false)
+    .default_value(false)
+    .help("Preserve the input shape of the model.");
+
+  arser.add_argument("--nchw_to_nhwc_preserve_output_shape")
+    .nargs(0)
+    .required(false)
+    .default_value(false)
+    .help("Preserve the output shape of the model.");
+
   arser.add_argument("--mute_warnings")
     .nargs(0)
     .required(false)
@@ -285,8 +297,6 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::ShuffleWeightTo16x1Float32);
   if (arser.get<bool>("--substitute_pack_to_reshape"))
     options->enable(Algorithms::SubstitutePackToReshape);
-  if (arser.get<bool>("--convert_nchw_to_nhwc"))
-    options->enable(Algorithms::ConvertNCHWToNHWC);
 
   if (arser.get<bool>("--mute_warnings"))
     settings->set(luci::UserSettings::Key::MuteWarnings, true);
@@ -315,6 +325,15 @@ int entry(int argc, char **argv)
     }
     options->param(AlgorithmParameters::Sparsify_block_map,
                    arser.get<std::string>("--sparsify_block_map"));
+  }
+
+  if (arser.get<bool>("--convert_nchw_to_nhwc"))
+  {
+    options->enable(Algorithms::ConvertNCHWToNHWC);
+    if (arser.get<bool>("--nchw_to_nhwc_preserve_input_shape"))
+      options->param(AlgorithmParameters::NCHW_to_NHWC_preserve_input_shape, "true");
+    if (arser.get<bool>("--nchw_to_nhwc_preserve_output_shape"))
+      options->param(AlgorithmParameters::NCHW_to_NHWC_preserve_output_shape, "true");
   }
 
   // Load model from the file
