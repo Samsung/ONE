@@ -139,6 +139,8 @@ def _make_circle2circle_cmd(args, driver_path, input_path, output_path):
         cmd.append('--replace_cw_mul_add_with_depthwise_conv')
     if _is_valid_attr(args, 'remove_redundant_transpose'):
         cmd.append('--remove_redundant_transpose')
+    if _is_valid_attr(args, 'remove_unnecessary_reshape'):
+        cmd.append('--remove_unnecessary_reshape')
     if _is_valid_attr(args, 'remove_unnecessary_slice'):
         cmd.append('--remove_unnecessary_slice')
     if _is_valid_attr(args, 'remove_unnecessary_split'):

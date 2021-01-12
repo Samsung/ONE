@@ -86,6 +86,10 @@ def _get_parser():
         action='store_true',
         help='fuse or remove subsequent Transpose ops')
     circle2circle_group.add_argument(
+        '--remove_unnecessary_reshape',
+        action='store_true',
+        help='remove unnecessary reshape ops')
+    circle2circle_group.add_argument(
         '--remove_unnecessary_slice',
         action='store_true',
         help='remove unnecessary slice ops')
