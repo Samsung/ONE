@@ -40,6 +40,7 @@
 #include "Nodes/CircleEqual.h"
 #include "Nodes/CircleExp.h"
 #include "Nodes/CircleExpandDims.h"
+#include "Nodes/CircleFakeQuant.h"
 #include "Nodes/CircleFill.h"
 #include "Nodes/CircleFloor.h"
 #include "Nodes/CircleFloorDiv.h"
