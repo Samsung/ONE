@@ -1314,6 +1314,11 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleExpandDims *node,
   return summary_node(tbl(), node, s);
 }
 
+bool CircleNodeSummaryBuilder::summary(const luci::CircleFill *node, locop::NodeSummary &s) const
+{
+  return summary_node(tbl(), node, s);
+}
+
 bool CircleNodeSummaryBuilder::summary(const luci::CircleFloor *node, locop::NodeSummary &s) const
 {
   return use_x(tbl(), node, s);
@@ -1329,11 +1334,6 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleFloorMod *node,
                                        locop::NodeSummary &s) const
 {
   return use_xy(tbl(), node, s);
-}
-
-bool CircleNodeSummaryBuilder::summary(const luci::CircleFill *node, locop::NodeSummary &s) const
-{
-  return summary_node(tbl(), node, s);
 }
 
 bool CircleNodeSummaryBuilder::summary(const luci::CircleFullyConnected *node,
