@@ -15,7 +15,7 @@
  */
 
 #include "luci/Pass/FoldSparseToDensePass.h"
-#include "PassTestUtils.h"
+#include "PassTestGraphs.h"
 
 #include <luci/IR/CircleNodes.h>
 

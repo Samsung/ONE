@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __LUCI_PASS_TEST_UTILS_H__
-#define __LUCI_PASS_TEST_UTILS_H__
+#ifndef __LUCI_PASS_TEST_GRAPHS_H__
+#define __LUCI_PASS_TEST_GRAPHS_H__
 
 #include <loco.h>
 #include <luci/IR/CircleNodes.h>
@@ -24,7 +24,6 @@ namespace luci
 {
 
 /**
- *
  *  ConstantFoldingTestGraph is a parent class for testing
  *  constant folding passes. It creates Input, Add, Output
  *  in the below graph. Child class must implement the folded pattern.
@@ -104,4 +103,4 @@ public:
 
 } // namespace luci
 
-#endif // __LUCI_PASS_TEST_UTILS_H__
+#endif // __LUCI_PASS_TEST_GRAPHS_H__
