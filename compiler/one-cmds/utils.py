@@ -119,6 +119,10 @@ def _make_circle2circle_cmd(args, driver_path, input_path, output_path):
         cmd.append('--all')
     if _is_valid_attr(args, 'convert_nchw_to_nhwc'):
         cmd.append('--convert_nchw_to_nhwc')
+    if _is_valid_attr(args, 'nchw_to_nhwc_preserve_input_shape'):
+        cmd.append('--nchw_to_nhwc_preserve_input_shape')
+    if _is_valid_attr(args, 'nchw_to_nhwc_preserve_output_shape'):
+        cmd.append('--nchw_to_nhwc_preserve_output_shape')
     if _is_valid_attr(args, 'fold_dequantize'):
         cmd.append('--fold_dequantize')
     if _is_valid_attr(args, 'fuse_add_with_tconv'):
