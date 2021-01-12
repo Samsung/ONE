@@ -80,7 +80,7 @@ def _is_available_driver(config, driver_name):
 
 def _verify_cfg(driver_list, config):
     if not config.has_section('one-build'):
-        raise ImportError('\'one-build\' section is required in configuraion file')
+        raise ImportError('[one-build] section is required in configuraion file')
 
     import_driver_cnt = 0
     if _is_available_driver(config, 'one-import-tf'):
