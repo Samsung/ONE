@@ -45,6 +45,7 @@ public:
       QuantizeWithMinMax,
       Requantize,
       FoldDequantize,
+      FoldSparseToDense,
       SparsifyTensorPass,
       FusePreActivationBatchNorm,
       MakeBatchNormGammaPositive,
