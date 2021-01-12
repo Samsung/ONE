@@ -8,7 +8,9 @@ target_include_directories(luci_lang PUBLIC include)
 target_link_libraries(luci_lang PUBLIC loco)
 target_link_libraries(luci_lang PUBLIC oops)
 target_link_libraries(luci_lang PRIVATE logo)
-target_link_libraries(luci_lang PRIVATE nncc_common)
+if(NOT LUCI_MICRO)
+  target_link_libraries(luci_lang PRIVATE nncc_common)
+endif(NOT LUCI_MICRO)
 
 install(TARGETS luci_lang DESTINATION lib)
 

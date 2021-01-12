@@ -82,7 +82,7 @@ public:
   virtual ~FixedArityNode() = default;
 
 public:
-  unsigned arity(void) const final { return N; }
+  uint32_t arity(void) const final { return N; }
 
   loco::Node *arg(uint32_t n) const final { return _args.at(n)->node(); }
 

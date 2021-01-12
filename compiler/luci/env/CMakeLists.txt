@@ -4,7 +4,10 @@ list(REMOVE_ITEM SOURCES ${TESTS})
 
 add_library(luci_env SHARED ${SOURCES})
 target_include_directories(luci_env PUBLIC include)
-target_link_libraries(luci_env PRIVATE nncc_common)
+if(NOT LUCI_MICRO)
+  target_link_libraries(luci_env PRIVATE nncc_common)
+endif(NOT LUCI_MICRO)
+
 install(TARGETS luci_env DESTINATION lib)
 
 if(NOT ENABLE_TEST)
