@@ -3,5 +3,6 @@
 - install mbed cli 2 https://os.mbed.com/docs/mbed-os/v6.6/build-tools/install-or-upgrade.html
 ```bash
 mbed-tools deploy
+python import_libs.py
 mbed-tools compile -m DISCO_F746NG -t GCC_ARM
 ```
