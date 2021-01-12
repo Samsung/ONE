@@ -52,6 +52,14 @@ def _get_parser():
         help="""Experimental: This will convert NCHW operators to NHWC under the
         assumption that input model is NCHW.""")
     circle2circle_group.add_argument(
+        '--nchw_to_nhwc_preserve_input_shape',
+        action='store_true',
+        help='preserve the input shape of the model (argument for convert_nchw_to_nhwc)')
+    circle2circle_group.add_argument(
+        '--nchw_to_nhwc_preserve_output_shape',
+        action='store_true',
+        help='preserve the output shape of the model (argument for convert_nchw_to_nhwc)')
+    circle2circle_group.add_argument(
         '--fold_dequantize', action='store_true', help='fold Dequantize op')
     circle2circle_group.add_argument(
         '--fuse_add_with_tconv', action='store_true', help='fuse Add op to Transposed')
