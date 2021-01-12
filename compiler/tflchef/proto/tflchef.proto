@@ -518,6 +518,13 @@ message MaxPoolWithArgMaxOptions {
   optional bool include_batch_in_index = 7 [default = false];
 }
 
+message FakeQuantOptions {
+  optional float min = 1 [default = 0.0];
+  optional float max = 2 [default = 0.0];
+  optional int32 num_bits = 3 [default = 0];
+  optional bool narrow_range = 4 [default = false];
+}
+
 message Operation {
   optional string type = 1;
   repeated string input = 2;
@@ -602,7 +609,7 @@ message Operation {
   optional SparseToDenseOptions sparse_to_dense_options = 175;
   optional PowOptions pow_options = 176;
   optional ArgMinOptions argmin_options = 177;
-  // FakeQuantOptions 178
+  optional FakeQuantOptions fakequant_options = 178;
   optional BidirectionalSequenceLSTMOptions bidirectional_sequence_lstm_options = 179;
   // BidirectionalSequenceRNNOptions 180
   optional UnidirectionalSequenceLSTMOptions unidirectional_sequence_lstm_options = 181;

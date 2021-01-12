@@ -77,6 +77,7 @@ private:
     REG_TFL_OP(EQUAL, TFliteOpEqual);
     REG_TFL_OP(EXP, TFliteOpExp);
     REG_TFL_OP(EXPAND_DIMS, TFliteOpExpandDims);
+    REG_TFL_OP(FAKE_QUANT, TFliteOpFakeQuant);
     REG_TFL_OP(FILL, TFliteOpFill);
     REG_TFL_OP(FLOOR, TFliteOpFloor);
     REG_TFL_OP(FLOOR_DIV, TFliteOpFloorDiv);
