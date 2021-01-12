@@ -154,6 +154,8 @@ bool fused_batch_norm_with_conv(luci::CircleAdd *add)
   }
 
   // Copy bias
+  assert(bias->rank() == 1);
+  assert(bias->dim(0).value() == filter_out_channel);
   fused_bias->dtype(bias->dtype());
   fused_bias->size<loco::DataType::FLOAT32>(filter->size<loco::DataType::FLOAT32>());
   fused_bias->rank(1);
