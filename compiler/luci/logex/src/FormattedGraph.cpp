@@ -219,6 +219,7 @@ private:
   IMPLEMENT(luci::CircleElu)
   IMPLEMENT(luci::CircleExp)
   IMPLEMENT(luci::CircleExpandDims)
+  IMPLEMENT(luci::CircleFakeQuant)
   IMPLEMENT(luci::CircleFill)
   IMPLEMENT(luci::CircleFloor)
   IMPLEMENT(luci::CircleFloorDiv)
@@ -517,6 +518,18 @@ bool summary_node(const locop::SymbolTable *tbl, const luci::CircleExpandDims *n
 {
   s.args().append("input", tbl->lookup(node->input()));
   s.args().append("axis", tbl->lookup(node->axis()));
+  s.state(locop::NodeSummary::State::Complete);
+  return true;
+}
+
+bool summary_node(const locop::SymbolTable *tbl, const luci::CircleFakeQuant *node,
+                  locop::NodeSummary &s)
+{
+  s.args().append("inputs", tbl->lookup(node->inputs()));
+  s.args().append("min", pepper::str(node->min()));
+  s.args().append("max", pepper::str(node->max()));
+  s.args().append("num_bits", pepper::str(node->num_bits()));
+  s.args().append("narrow_range", node->narrow_range() ? "true" : "false");
   s.state(locop::NodeSummary::State::Complete);
   return true;
 }
@@ -1309,6 +1322,12 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleExp *node, locop::NodeS
 }
 
 bool CircleNodeSummaryBuilder::summary(const luci::CircleExpandDims *node,
+                                       locop::NodeSummary &s) const
+{
+  return summary_node(tbl(), node, s);
+}
+
+bool CircleNodeSummaryBuilder::summary(const luci::CircleFakeQuant *node,
                                        locop::NodeSummary &s) const
 {
   return summary_node(tbl(), node, s);
