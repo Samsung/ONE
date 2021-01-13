@@ -96,6 +96,34 @@ void GetQuantizedConvolutionMultiplier(const IPortableTensor *input, const IPort
   *multiplier = input_product_scale / output_scale;
 }
 
+void GetQuantizedConvolutionMultipliersAndShifts(
+  float input_scale, float output_scale, const float *filter_scales, size_t filter_scales_size,
+  int num_channels, std::vector<int32_t> &per_channel_output_multiplier,
+  std::vector<int> &per_channel_output_shift)
+{
+  // Originates from tflite's PopulateConvolutionQuantizationParams()
+  per_channel_output_multiplier.resize(num_channels);
+  per_channel_output_shift.resize(num_channels);
+
+  const bool is_per_channel = filter_scales_size > 1;
+  auto per_channel_multiplier = per_channel_output_multiplier.data();
+  auto per_channel_shift = per_channel_output_shift.data();
+  for (int i = 0; i < num_channels; ++i)
+  {
+    // If per-tensor quantization parameter is specified, broadcast it along the
+    // quantization dimension (channels_out).
+    const float scale = is_per_channel ? filter_scales[i] : filter_scales[0];
+    const double filter_scale = static_cast<double>(scale);
+    const double effective_output_scale =
+      static_cast<double>(input_scale) * filter_scale / static_cast<double>(output_scale);
+    int32_t significand;
+    int channel_shift;
+    QuantizeMultiplier(effective_output_scale, &significand, &channel_shift);
+    per_channel_multiplier[i] = significand;
+    per_channel_shift[i] = channel_shift;
+  }
+}
+
 void QuantizeMultiplierGreaterThanOne(double double_multiplier, int32_t *quantized_multiplier,
                                       int *left_shift)
 {

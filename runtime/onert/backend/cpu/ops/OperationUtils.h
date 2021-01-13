@@ -161,6 +161,11 @@ void GetQuantizedConvolutionMultiplier(const IPortableTensor *inputDescr,
 void QuantizeMultiplierGreaterThanOne(double double_multiplier, int32_t *quantized_multiplier,
                                       int *left_shift);
 
+void GetQuantizedConvolutionMultipliersAndShifts(
+  float input_scale, float output_scale, const float *filter_scales, size_t filter_scales_size,
+  int num_channels, std::vector<int32_t> &per_channel_output_multiplier,
+  std::vector<int> &per_channel_output_shift);
+
 template <typename T>
 void CalculateActivationRange(ir::Activation activation, T *activation_min, T *activation_max)
 {

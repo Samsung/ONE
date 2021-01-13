@@ -15,6 +15,7 @@
  */
 
 #include "ConvolutionLayer.h"
+#include "OperationUtils.h"
 
 #include "../Tensor.h"
 #include "ir/Padding.h"
@@ -231,9 +232,10 @@ void ConvolutionLayer::prepare()
   {
     if (_kernel->is_constant() && !_input->is_dynamic() && !_output->is_dynamic())
     {
-      kernel.getQuantizedConvolutionMultipliersAndShifts(
+      GetQuantizedConvolutionMultipliersAndShifts(
         _input->data_scale(), _output->data_scale(), _kernel->data_scales().data(),
-        _kernel->data_scales().size(), getShape(_kernel).Dims(0));
+        _kernel->data_scales().size(), getShape(_kernel).Dims(0),
+        kernel.per_channel_output_multiplier(), kernel.per_channel_output_shift());
     }
     else
     {
