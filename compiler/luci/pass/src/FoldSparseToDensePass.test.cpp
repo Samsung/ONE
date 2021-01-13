@@ -41,15 +41,14 @@ namespace
  *            [Const] (shape: [3], values: [2, 2, 2])
  *
  */
-class S64SparseToDenseZeroIndicesGraph final : public luci::ConstantFoldingTestGraph
+class S64SparseToDenseZeroIndicesTest : public luci::ConstantFoldingTestGraph,
+                                        public ::testing::Test
 {
 public:
-  S64SparseToDenseZeroIndicesGraph(std::vector<int32_t> input_shape, loco::DataType input_dtype)
-    : luci::ConstantFoldingTestGraph(input_shape, input_dtype)
-  {
-  }
+  S64SparseToDenseZeroIndicesTest() : luci::ConstantFoldingTestGraph({3}, loco::DataType::S64) {}
 
-public:
+  virtual void SetUp() { init(); }
+
   loco::Node *createFoldedPattern() override
   {
     stod = g.nodes()->create<luci::CircleSparseToDense>();
@@ -84,6 +83,7 @@ public:
     return stod;
   }
 
+  // NOTE: we're not adding _ prefix as these class members are public
 public:
   luci::CircleSparseToDense *stod = nullptr;
   luci::CircleConst *indices = nullptr;
@@ -94,16 +94,13 @@ public:
 
 } // namespace
 
-TEST(FoldSparseToDense, S64Value)
+TEST_F(S64SparseToDenseZeroIndicesTest, fold_stod_with_zero_indices)
 {
-  S64SparseToDenseZeroIndicesGraph g({3}, loco::DataType::S64);
-  g.init();
-
   luci::FoldSparseToDensePass pass;
-  while (pass.run(&g.g))
+  while (pass.run(&g))
     ;
 
-  auto folded_const = dynamic_cast<luci::CircleConst *>(g.add->y());
+  auto folded_const = dynamic_cast<luci::CircleConst *>(add->y());
   EXPECT_NE(nullptr, folded_const);
 
   // Chec type, shape, values of folded const
@@ -115,13 +112,10 @@ TEST(FoldSparseToDense, S64Value)
   EXPECT_EQ(2, folded_const->at<loco::DataType::S64>(2));
 }
 
-TEST(FoldSparseToDense, Illegal_input_NEG)
+TEST_F(S64SparseToDenseZeroIndicesTest, illegal_input_NEG)
 {
-  S64SparseToDenseZeroIndicesGraph g({3}, loco::DataType::S64);
-  g.init();
-
-  g.indices->dtype(loco::DataType::S32);
+  indices->dtype(loco::DataType::S32);
 
   luci::FoldSparseToDensePass pass;
-  EXPECT_ANY_THROW(pass.run(&g.g));
+  EXPECT_ANY_THROW(pass.run(&g));
 }

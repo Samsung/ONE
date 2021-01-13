@@ -26,7 +26,8 @@ namespace luci
 /**
  *  ConstantFoldingTestGraph is a parent class for testing
  *  constant folding passes. It creates Input, Add, Output
- *  in the below graph. Child class must implement the folded pattern.
+ *  in the below graph. Child class must implement the folded pattern
+ *  in createFoldedPattern().
  *
  *      [Input]   [Folded pattern] (Implemented by child class)
  *           \     /
@@ -86,14 +87,13 @@ public:
     output->from(add);
   }
 
-public:
   void init() { add->y(createFoldedPattern()); }
 
   virtual ~ConstantFoldingTestGraph() = default;
 
-private:
   virtual loco::Node *createFoldedPattern() = 0;
 
+  // NOTE: we're not adding _ prefix as these class members are public
 public:
   loco::Graph g;
   luci::CircleInput *input = nullptr;
