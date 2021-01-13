@@ -1,0 +1,37 @@
+operand {
+  name: "ifm"
+  type: FLOAT32
+  shape { dim: 3 dim: 2 dim: 3 }
+}
+operand {
+  name: "begin"
+  type: INT32
+  shape { dim: 3 }
+  filler {
+    tag: "explicit"
+    arg: "-1" arg: "0" arg: "0"
+  }
+}
+operand {
+  name: "size"
+  type: INT32
+  shape { dim: 3 }
+  filler {
+    tag: "explicit"
+    arg: "1" arg: "1" arg: "3"
+  }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 1 dim: 1 dim: 3 }
+}
+operation {
+  type: "Slice"
+  input: "ifm"
+  input: "begin"
+  input: "size"
+  output: "ofm"
+}
+input: "ifm"
+output: "ofm"
