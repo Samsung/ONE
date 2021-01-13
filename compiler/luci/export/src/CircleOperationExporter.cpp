@@ -637,6 +637,7 @@ public:
   void visit(luci::CircleEqual *) final;
   void visit(luci::CircleExp *) final;
   void visit(luci::CircleExpandDims *) final;
+  void visit(luci::CircleFakeQuant *) final;
   void visit(luci::CircleFill *) final;
   void visit(luci::CircleFloor *) final;
   void visit(luci::CircleFloorDiv *) final;
@@ -899,6 +900,14 @@ void OperationExporter::visit(luci::CircleExpandDims *node)
 {
   export_simple(node, circle::BuiltinOperator_EXPAND_DIMS, circle::BuiltinOptions_ExpandDimsOptions,
                 CreateExpandDimsOptions(_ctx.builder).Union());
+}
+
+void OperationExporter::visit(luci::CircleFakeQuant *node)
+{
+  export_simple(node, circle::BuiltinOperator_FAKE_QUANT, circle::BuiltinOptions_FakeQuantOptions,
+                CreateFakeQuantOptions(_ctx.builder, node->min(), node->max(), node->num_bits(),
+                                       node->narrow_range())
+                  .Union());
 }
 
 void OperationExporter::visit(luci::CircleFill *node)
