@@ -197,6 +197,12 @@ template <class CIRCLENODE> loco::NodeShape broadcast_xy(const CIRCLENODE *node)
   return loco::NodeShape{output_shape};
 }
 
+template <class CIRCLENODE> loco::NodeShape use_inputs(const CIRCLENODE *node)
+{
+  auto inputs_shape = loco::shape_get(node->inputs()).template as<loco::TensorShape>();
+  return loco::NodeShape{inputs_shape};
+}
+
 template <class CIRCLENODE> loco::NodeShape use_x(const CIRCLENODE *node)
 {
   auto x_shape = loco::shape_get(node->x()).template as<loco::TensorShape>();
@@ -2113,6 +2119,8 @@ public:
   {
     return infer_expand_dims(node);
   }
+
+  loco::NodeShape visit(const luci::CircleFakeQuant *node) final { return use_inputs(node); }
 
   loco::NodeShape visit(const luci::CircleFill *node) final { return infer_fill(node); }
 
