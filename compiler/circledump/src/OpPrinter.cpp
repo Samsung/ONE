@@ -320,6 +320,7 @@ public:
       os << "NumBits(" << params->num_bits() << ") ";
       os << std::boolalpha;
       os << "NarrowRange(" << params->narrow_range() << ") ";
+      os << std::noboolalpha;
       os << std::endl;
     }
   }
