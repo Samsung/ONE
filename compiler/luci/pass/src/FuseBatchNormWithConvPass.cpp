@@ -134,6 +134,7 @@ bool fused_batch_norm_with_conv(luci::CircleAdd *add)
   fused_filter->dim(1).set(filter_height);
   fused_filter->dim(2).set(filter_width);
   fused_filter->dim(3).set(filter_in_channel);
+  fused_filter->shape_status(luci::ShapeStatus::VALID);
 
   // Fuse scale to new filter
   for (uint32_t c = 0; c < filter_out_channel; c++)
@@ -160,6 +161,7 @@ bool fused_batch_norm_with_conv(luci::CircleAdd *add)
   fused_bias->size<loco::DataType::FLOAT32>(filter->size<loco::DataType::FLOAT32>());
   fused_bias->rank(1);
   fused_bias->dim(0).set(filter_out_channel);
+  fused_bias->shape_status(luci::ShapeStatus::VALID);
 
   // Fuse scale and shift to bias
   for (uint32_t b = 0; b < filter_out_channel; ++b)
