@@ -376,7 +376,7 @@ void OperationValidator::visit(const operation::Pad &node)
   {
     const auto value_index{node.getInputs().at(operation::Pad::Input::VALUE)};
     const bool cond_same = isSameType(input_index, value_index);
-    const bool cond_same_quant = (!isQuantType && isSameQuantParam(input_index, value_index));
+    const bool cond_same_quant = (!isQuantType || isSameQuantParam(input_index, value_index));
     const auto input_t = operandType(input_index);
     const auto value_t = operandType(value_index);
     // NNAPI accepts this case. scale and zeroPoint are assumed to be the same as in input0.
