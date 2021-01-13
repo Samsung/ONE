@@ -112,10 +112,12 @@ public:
   // loco::TensorShape visit(const luci::CircleMean *node) final;
   // loco::TensorShape visit(const luci::CircleMinimum *node) final;
   // loco::TensorShape visit(const luci::CircleMirrorPad *node) final;
+  // loco::TensorShape visit(const luci::CircleMul *node) final;
   // loco::TensorShape visit(const luci::CircleNeg *node) final;
   // loco::TensorShape visit(const luci::CircleNonMaxSuppressionV4 *node) final;
   // loco::TensorShape visit(const luci::CircleNonMaxSuppressionV5 *node) final;
   // loco::TensorShape visit(const luci::CircleNotEqual *node) final;
+  // loco::TensorShape visit(const luci::CircleOneHot *node) final;
   // loco::TensorShape visit(const luci::CirclePack *node) final;
   // loco::TensorShape visit(const luci::CirclePad *node) final;
   // loco::TensorShape visit(const luci::CirclePadV2 *node) final;
@@ -123,8 +125,6 @@ public:
   // loco::TensorShape visit(const luci::CirclePRelu *node) final;
   // loco::TensorShape visit(const luci::CircleRange *node) final;
   // loco::TensorShape visit(const luci::CircleRank *node) final;
-  // loco::TensorShape visit(const luci::CircleMul *node) final;
-  // loco::TensorShape visit(const luci::CircleOneHot *node) final;
   // loco::TensorShape visit(const luci::CircleReduceAny *node) final;
   // loco::TensorShape visit(const luci::CircleReduceMax *node) final;
   // loco::TensorShape visit(const luci::CircleReduceMin *node) final;
@@ -177,14 +177,14 @@ public:
   // loco::TensorShape visit(const luci::CircleInstanceNorm *node) final;
 
   // Virtual
+  // loco::TensorShape visit(const luci::CircleCustomOut *node) final;
+  // loco::TensorShape visit(const luci::CircleIfOut *node) final;
   // loco::TensorShape visit(const luci::CircleInput *node) final;
+  // loco::TensorShape visit(const luci::CircleNonMaxSuppressionV4Out *node) final;
+  // loco::TensorShape visit(const luci::CircleNonMaxSuppressionV5Out *node) final;
   // loco::TensorShape visit(const luci::CircleOutput *node) final;
   // loco::TensorShape visit(const luci::CircleOutputDummy *node) final;
   // loco::TensorShape visit(const luci::CircleOutputExclude *node) final;
-  // loco::TensorShape visit(const luci::CircleCustomOut *node) final;
-  // loco::TensorShape visit(const luci::CircleIfOut *node) final;
-  // loco::TensorShape visit(const luci::CircleNonMaxSuppressionV4Out *node) final;
-  // loco::TensorShape visit(const luci::CircleNonMaxSuppressionV5Out *node) final;
   // loco::TensorShape visit(const luci::CircleSplitOut *node) final;
   // loco::TensorShape visit(const luci::CircleSplitVOut *node) final;
   // loco::TensorShape visit(const luci::CircleTopKV2Out *node) final;
