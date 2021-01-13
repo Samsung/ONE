@@ -305,6 +305,25 @@ public:
   }
 };
 
+class FakeQuantPrinter : public OpPrinter
+{
+public:
+  void options(const tflite::Operator *op, std::ostream &os) const override
+  {
+    if (auto *params = op->builtin_options_as_FakeQuantOptions())
+    {
+      os << "    ";
+      os << "Min(" << params->min() << ") ";
+      os << "Max(" << params->max() << ") ";
+      os << "NumBits(" << params->num_bits() << ") ";
+      os << std::boolalpha;
+      os << "NarrowRange(" << params->narrow_range() << ") ";
+      os << std::noboolalpha;
+      os << std::endl;
+    }
+  }
+};
+
 class FullyConnectedPrinter : public OpPrinter
 {
 public:
@@ -702,6 +721,7 @@ OpPrinterRegistry::OpPrinterRegistry()
   _op_map[tflite::BuiltinOperator_DEPTHWISE_CONV_2D] = make_unique<DepthwiseConv2DPrinter>();
   // There is no Option for DEQUANTIZE
   _op_map[tflite::BuiltinOperator_DIV] = make_unique<DivPrinter>();
+  _op_map[tflite::BuiltinOperator_FAKE_QUANT] = make_unique<FakeQuantPrinter>();
   // There is no Option for FLOOR
   // There is no Option for FLOOR_MOD
   _op_map[tflite::BuiltinOperator_FULLY_CONNECTED] = make_unique<FullyConnectedPrinter>();
