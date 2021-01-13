@@ -51,6 +51,7 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   CIRCLE_NODE(EQUAL, CircleEqualGraphBuilder);                                             // 71
   CIRCLE_NODE(EXP, CircleExpGraphBuilder);                                                 // 47
   CIRCLE_NODE(EXPAND_DIMS, CircleExpandDimsGraphBuilder);                                  // 70
+  CIRCLE_NODE(FAKE_QUANT, CircleFakeQuantGraphBuilder);                                    // 80
   CIRCLE_NODE(FILL, CircleFillGraphBuilder);                                               // 94
   CIRCLE_NODE(FLOOR, CircleFloorGraphBuilder);                                             // 8
   CIRCLE_NODE(FLOOR_DIV, CircleFloorDivGraphBuilder);                                      // 90
@@ -157,7 +158,6 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   // BuiltinOperator_DELEGATE = 51,
   // BuiltinOperator_BIDIRECTIONAL_SEQUENCE_LSTM = 52,
   // BuiltinOperator_ARG_MAX = 56,
-  // BuiltinOperator_FAKE_QUANT = 80,
   // BuiltinOperator_QUANTIZE = 114,
   // BuiltinOperator_HARD_SWISH = 117,
   // BuiltinOperator_DENSIFY = 124,
