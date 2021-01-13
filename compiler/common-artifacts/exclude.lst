@@ -122,6 +122,7 @@ tcgenerate(SelectV2_001)
 tcgenerate(SelectV2_002)
 tcgenerate(Shape_000)
 tcgenerate(Sin_000)
+tcgenerate(Slice_001) # luci-interpreter doesn't support Slice with -1
 tcgenerate(SpaceToBatchND_000)
 tcgenerate(SpaceToBatchND_001)
 tcgenerate(SpaceToBatchND_002)
