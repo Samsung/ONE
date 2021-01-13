@@ -125,6 +125,8 @@ def _make_circle2circle_cmd(args, driver_path, input_path, output_path):
         cmd.append('--nchw_to_nhwc_preserve_output_shape')
     if _is_valid_attr(args, 'fold_dequantize'):
         cmd.append('--fold_dequantize')
+    if _is_valid_attr(args, 'fold_sparse_to_dense'):
+        cmd.append('--fold_sparse_to_dense')
     if _is_valid_attr(args, 'fuse_add_with_tconv'):
         cmd.append('--fuse_add_with_tconv')
     if _is_valid_attr(args, 'fuse_batchnorm_with_conv'):
