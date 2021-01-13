@@ -1,0 +1,25 @@
+operand {
+  name: "ifm"
+  type: FLOAT32
+  shape { dim: 1 dim: 3 dim: 3 dim: 2 }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 1 dim: 3 dim: 3 dim: 2 }
+}
+
+operation {
+  type: "FakeQuant"
+  fakequant_options {
+    min: 0.0
+    max: 1.0
+    num_bits: 8
+    narrow_range: false
+  }
+  input: "ifm"
+  output: "ofm"
+}
+
+input: "ifm"
+output: "ofm"
