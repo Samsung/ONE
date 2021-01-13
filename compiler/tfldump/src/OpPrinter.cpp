@@ -297,7 +297,7 @@ public:
       os << "Stride.H(" << conv_params->stride_h() << ") ";
       os << "DepthMultiplier(" << conv_params->depth_multiplier() << ") ";
       os << "Dilation.W(" << conv_params->dilation_w_factor() << ") ";
-      os << "Dilation.H(" << conv_params->dilation_h_factor() << ")";
+      os << "Dilation.H(" << conv_params->dilation_h_factor() << ") ";
       os << "Activation("
          << EnumNameActivationFunctionType(conv_params->fused_activation_function()) << ") ";
       os << std::endl;
