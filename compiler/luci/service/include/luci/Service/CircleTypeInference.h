@@ -84,6 +84,7 @@ public:
   // loco::DataType visit(const luci::CircleEqual *node) final;
   // loco::DataType visit(const luci::CircleExp *node) final;
   // loco::DataType visit(const luci::CircleExpandDims *node) final;
+  // loco::DataType visit(const luci::CircleFakeQuant *node) final;
   // loco::DataType visit(const luci::CircleFill *node) final;
   // loco::DataType visit(const luci::CircleFloor *node) final;
   // loco::DataType visit(const luci::CircleFloorDiv *node) final;
