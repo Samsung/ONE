@@ -60,6 +60,8 @@ def _get_parser():
         action='store_true',
         help='preserve the output shape of the model (argument for convert_nchw_to_nhwc)')
     circle2circle_group.add_argument(
+        '--fold_add_v2', action='store_true', help='fold AddV2 op')
+    circle2circle_group.add_argument(
         '--fold_dequantize', action='store_true', help='fold Dequantize op')
     circle2circle_group.add_argument(
         '--fuse_add_with_tconv', action='store_true', help='fuse Add op to Transposed')
