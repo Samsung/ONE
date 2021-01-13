@@ -83,6 +83,7 @@ public:
   // loco::TensorShape visit(const luci::CircleEqual *node) final;
   // loco::TensorShape visit(const luci::CircleExp *node) final;
   // loco::TensorShape visit(const luci::CircleExpandDims *node) final;
+  // loco::TensorShape visit(const luci::CircleFakeQuant *node) final;
   // loco::TensorShape visit(const luci::CircleFill *node) final;
   // loco::TensorShape visit(const luci::CircleFloor *node) final;
   // loco::TensorShape visit(const luci::CircleFloorDiv *node) final;
