@@ -266,7 +266,10 @@ void copy_tensor_attributes(const circle::TensorT &tensor, CircleNode *node)
   node->rank(dims.size());
   for (uint32_t r = 0; r < dims.size(); ++r)
   {
-    node->dim(r) = loco::Dimension(dims[r]);
+    if (tensor.shape_signature.size() > 0 && tensor.shape_signature.at(r) == -1)
+      node->dim(r).unset();
+    else
+      node->dim(r).set(dims[r]);
   }
 
   const auto *quantization = tensor.quantization.get();
