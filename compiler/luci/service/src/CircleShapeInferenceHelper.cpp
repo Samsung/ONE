@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "luci/Service/CircleShapeInferenceHelper.h"
+#include "CircleShapeInferenceHelper.h"
 
 namespace luci
 {
