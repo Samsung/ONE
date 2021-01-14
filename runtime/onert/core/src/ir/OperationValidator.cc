@@ -382,9 +382,15 @@ void OperationValidator::visit(const operation::Pad &node)
   if (isPadV2)
   {
     const auto value_index{node.getInputs().at(operation::Pad::Input::VALUE)};
-    OP_REQUIRES(isSameType(input_index, value_index));
-    if (isQuantType)
-      OP_REQUIRES(isSameQuantParam(input_index, value_index));
+    const bool cond_same = isSameType(input_index, value_index);
+    const bool cond_same_quant = (!isQuantType || isSameQuantParam(input_index, value_index));
+    const auto input_t = operandType(input_index);
+    const auto value_t = operandType(value_index);
+    // NNAPI accepts this case. scale and zeroPoint are assumed to be the same as in input0.
+    const bool cond_quant8 =
+      ((input_t == DataType::QUANT_UINT8_ASYMM || input_t == DataType::QUANT_UINT8_ASYMM) &&
+       value_t == DataType::INT32);
+    OP_REQUIRES((cond_same && cond_same_quant) || cond_quant8);
   }
 }
 
