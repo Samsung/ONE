@@ -1,0 +1,86 @@
+operand {
+  name: "Const"
+  type: FLOAT32
+  shape {
+  }
+  filler {
+    tag: "explicit"
+    arg: "6"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "Const_1"
+  type: FLOAT32
+  shape {
+  }
+  filler {
+    tag: "explicit"
+    arg: "0"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "Hole"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 3
+    dim: 3
+    dim: 4
+  }
+  quant {
+    min: 0
+    max: 255
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "Maximum"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 3
+    dim: 3
+    dim: 4
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "Minimum"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 3
+    dim: 3
+    dim: 4
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operation {
+  type: "Minimum"
+  input: "Hole"
+  input: "Const"
+  output: "Minimum"
+}
+operation {
+  type: "Maximum"
+  input: "Minimum"
+  input: "Const_1"
+  output: "Maximum"
+}
+input: "Hole"
+output: "Maximum"
