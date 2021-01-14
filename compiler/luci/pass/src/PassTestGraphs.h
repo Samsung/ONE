@@ -42,7 +42,7 @@ namespace luci
 class ConstantFoldingTestGraph
 {
 public:
-  ConstantFoldingTestGraph(std::vector<int32_t> input_shape, loco::DataType input_dtype)
+  ConstantFoldingTestGraph(std::vector<uint32_t> input_shape, loco::DataType input_dtype)
   {
     input = g.nodes()->create<luci::CircleInput>();
     add = g.nodes()->create<luci::CircleAdd>();
