@@ -54,6 +54,8 @@ void planTensors(const T_BackendContext &ctx, const std::vector<onert::ir::Opera
     if (ctx.external_operands().contains(ind))
       return;
 
+    // TODO Check if we need to handle unused tensors
+
     uses_map[ind] = obj.getUses().size();
     def_map[ind] = obj.getDef().valid() ? 1 : 0;
 
@@ -68,8 +70,8 @@ void planTensors(const T_BackendContext &ctx, const std::vector<onert::ir::Opera
       //      There is no way to get the layout info from the backend context for now.
       //      When we support NCHW tensors as well, we also need to change tensor info to be
       //      permuted shape.
-      const auto backend_layout = ir::Layout::NHWC;
-      tensor_builder->registerTensorInfo(ind, info, backend_layout);
+      assert(ctx.operand_layouts().at(ind) == ir::Layout::NHWC);
+      tensor_builder->registerTensorInfo(ind, info, ir::Layout::NHWC);
     }
   });
 
@@ -84,6 +86,20 @@ void planTensors(const T_BackendContext &ctx, const std::vector<onert::ir::Opera
     tensor_builder->notifyFirstUse(ind);
   }
 
+  for (auto &pair : def_map)
+  {
+    if (pair.second == 0)
+      tensor_builder->notifyFirstUse(pair.first);
+  }
+
+  // These operands finish their lifetimes lastly
+  std::vector<ir::OperandIndex> operands_last_until_end;
+  for (auto &pair : uses_map)
+  {
+    if (pair.second == 0)
+      operands_last_until_end.push_back(pair.first);
+  }
+
   // At each operation,
   // 1. Scan DEF of outputs. If the DEF, allocate it
   // 2. Scan DEF of inputs. If variable tensor, allocate it
@@ -92,8 +108,6 @@ void planTensors(const T_BackendContext &ctx, const std::vector<onert::ir::Opera
   {
     // TODO Remove indentation
     {
-      if (!graph.operations().exist(op_ind))
-        continue;
       auto op_inputs =
         graph.operations().at(op_ind).getInputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED;
       auto op_outputs =
@@ -156,6 +170,11 @@ void planTensors(const T_BackendContext &ctx, const std::vector<onert::ir::Opera
         }
       }
     }
+  }
+
+  for (auto ind : operands_last_until_end)
+  {
+    tensor_builder->notifyLastUse(ind);
   }
 
   // Dispose and validate

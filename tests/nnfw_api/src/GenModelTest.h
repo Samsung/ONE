@@ -224,7 +224,7 @@ public:
 #ifdef TEST_ACL_BACKEND
       if (backend == "acl_cl" || backend == "acl_neon")
       {
-        //        _backends.push_back(backend);
+        _backends.push_back(backend);
       }
 #endif
       if (backend == "cpu" || backend == "ruy")

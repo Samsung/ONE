@@ -42,14 +42,11 @@ void Optimizer::optimize()
   // Concat elimination (build subtensor info)
   {
     acl_common::AclSubTensorAnalyzer sa{*_context->graph()};
-    for (auto op_info : _context->operation_list())
-    {
-      auto &op = _context->graph()->operations().at(op_info.index);
-      sa.setLayout(op_info.layout);
+    sa.setUsePadding();
+    _context->graph()->operations().iterate([&](const ir::OperationIndex &ind, const ir::Operation &op) {
+      sa.setLayout(_context->operation_layouts().at(ind));
       op.accept(sa);
-    }
-
-    _tensor_builder->parent_map(sa.releaseParentMap());
+    });
   }
 }
 

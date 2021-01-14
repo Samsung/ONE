@@ -60,6 +60,7 @@ void TensorBuilder::notifyFirstUse(const ir::OperandIndex &ind)
   {
     const auto size = tensor_info.total_size();
     _static_tensor_mgr->claimPlan(ind, size);
+    VERBOSE_F() << ind << std::endl;
   }
 }
 
@@ -68,6 +69,7 @@ void TensorBuilder::notifyLastUse(const ir::OperandIndex &ind)
   if (!_tensor_reg->getNativeTensor(ind)->is_dynamic())
   {
     _static_tensor_mgr->releasePlan(ind);
+    VERBOSE_F() << ind << std::endl;
   }
 }
 

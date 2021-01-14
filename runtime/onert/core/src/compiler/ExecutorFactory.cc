@@ -111,8 +111,6 @@ backend::BackendContexts createBackendContexts(const compiler::LoweredGraph &lgr
     auto graph = std::make_unique<ir::Graph>();
     graph->setLayout(lgraph.graph().layout());
     data.graph = std::move(graph);
-    data.is_linear_executor = linear_executor;
-    data.custom_kernel_builder = lgraph.graph().getKernelBuilder();
   }
 
   // Generate partial graphs for each backend
@@ -124,6 +122,8 @@ backend::BackendContexts createBackendContexts(const compiler::LoweredGraph &lgr
       auto &operand_li = lgraph.lower_info().operand;
       auto backend = op_li.at(op_ind).backend();
       auto &partial_graph = *context_data_map[backend].graph;
+      auto &operation_layouts = context_data_map[backend].operation_layouts;
+      auto &operand_layouts = context_data_map[backend].operand_layouts;
       auto &external_operands = context_data_map[backend].external_operands;
 
       {
@@ -141,6 +141,7 @@ backend::BackendContexts createBackendContexts(const compiler::LoweredGraph &lgr
           // If it failed, it means that the operand was added already
           if (new_operand_ind.valid())
           {
+            // Add entries for external_operands and operand_layouts
             const auto &permute_factor = operand_li.at(operand_ind).def_factors().getOnlyElement();
             if (permute_factor.backend() != backend)
             {
@@ -148,6 +149,8 @@ backend::BackendContexts createBackendContexts(const compiler::LoweredGraph &lgr
                                          << " Added External Operand " << operand_ind << std::endl;
               external_operands.add(operand_ind);
             }
+            operand_layouts[operand_ind] = permute_factor.layout();
+
             // Make the in/outputs be in/outputs in the partial graph
             if (whole_graph.getInputs().contains(operand_ind))
               partial_graph.addInput(operand_ind);
@@ -160,6 +163,7 @@ backend::BackendContexts createBackendContexts(const compiler::LoweredGraph &lgr
 
         operation.accept(op_cloner);
         auto new_op_ind = partial_graph.addOperation(op_ind, op_cloner.releaseClone());
+        operation_layouts[new_op_ind] = op_li.at(new_op_ind).layout();
         assert(new_op_ind == op_ind);
         VERBOSE(BuildBackendGraph) << "backend:" << backend->config()->id() << " Added Operation "
                                    << new_op_ind << std::endl;
@@ -175,6 +179,8 @@ backend::BackendContexts createBackendContexts(const compiler::LoweredGraph &lgr
     data.graph->finishBuilding();
     std::copy_if(whole_op_order.begin(), whole_op_order.end(), std::back_inserter(data.op_order),
                  [&](const auto &ind) { return data.graph->operations().exist(ind); });
+    data.is_linear_executor = linear_executor;
+    data.custom_kernel_builder = lgraph.graph().getKernelBuilder();
     contexts.emplace(backend, backend->newContext(std::move(data)));
   }
   return contexts;
