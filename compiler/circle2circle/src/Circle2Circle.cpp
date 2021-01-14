@@ -64,7 +64,7 @@ int entry(int argc, char **argv)
     .nargs(0)
     .required(false)
     .default_value(false)
-    .help("This will fold AddV2 operator");
+    .help("This will fold AddV2 operators with constant inputs");
 
   arser.add_argument("--fold_dequantize")
     .nargs(0)
