@@ -96,12 +96,20 @@ void convert_graph(const luci::GraphBuilderSource &source, luci::CircleReader &r
     // Data type
     graph_input->dtype(input_node->dtype());
 
+    assert(tensor.shape_signature.size() == 0 ||
+           tensor.shape_signature.size() == tensor.shape.size());
+
     // Shape of GraphInput
     auto input_shape = std::make_unique<loco::TensorShape>();
     const std::vector<int32_t> &input_dims = tensor.shape; // in NHWC
     input_shape->rank(input_dims.size());
     for (uint32_t r = 0; r < input_dims.size(); ++r)
-      input_shape->dim(r) = loco::Dimension(input_dims[r]);
+    {
+      if (tensor.shape_signature.size() > 0 && tensor.shape_signature.at(r) == -1)
+        input_shape->dim(r).unset();
+      else
+        input_shape->dim(r).set(input_dims[r]);
+    }
     graph_input->shape(std::move(input_shape));
   }
 
@@ -176,12 +184,20 @@ void convert_graph(const luci::GraphBuilderSource &source, luci::CircleReader &r
     // Set GraphInputOutputIndex for graph
     output_node->index(graph_output->index());
 
+    assert(tensor.shape_signature.size() == 0 ||
+           tensor.shape_signature.size() == tensor.shape.size());
+
     // Shape of Output
     auto output_shape = std::make_unique<loco::TensorShape>();
     const std::vector<int32_t> &output_dims = tensor.shape; // in NHWC
     output_shape->rank(output_dims.size());
     for (uint32_t r = 0; r < output_dims.size(); ++r)
-      output_shape->dim(r) = loco::Dimension(output_dims[r]);
+    {
+      if (tensor.shape_signature.size() > 0 && tensor.shape_signature.at(r) == -1)
+        output_shape->dim(r).unset();
+      else
+        output_shape->dim(r).set(output_dims[r]);
+    }
     graph_output->shape(std::move(output_shape));
 
     // Data type
