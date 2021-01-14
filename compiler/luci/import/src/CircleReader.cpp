@@ -262,6 +262,9 @@ void copy_tensor_attributes(const circle::TensorT &tensor, CircleNode *node)
   node->name(tensor_name(tensor));
   node->dtype(luci_datatype(tensor.type));
 
+  assert(tensor.shape_signature.size() == 0 ||
+         tensor.shape_signature.size() == tensor.shape.size());
+
   std::vector<int32_t> dims = tensor.shape; // in NHWC
   node->rank(dims.size());
   for (uint32_t r = 0; r < dims.size(); ++r)

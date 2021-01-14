@@ -96,6 +96,9 @@ void convert_graph(const luci::GraphBuilderSource &source, luci::CircleReader &r
     // Data type
     graph_input->dtype(input_node->dtype());
 
+    assert(tensor.shape_signature.size() == 0 ||
+           tensor.shape_signature.size() == tensor.shape.size());
+
     // Shape of GraphInput
     auto input_shape = std::make_unique<loco::TensorShape>();
     const std::vector<int32_t> &input_dims = tensor.shape; // in NHWC
@@ -180,6 +183,9 @@ void convert_graph(const luci::GraphBuilderSource &source, luci::CircleReader &r
 
     // Set GraphInputOutputIndex for graph
     output_node->index(graph_output->index());
+
+    assert(tensor.shape_signature.size() == 0 ||
+           tensor.shape_signature.size() == tensor.shape.size());
 
     // Shape of Output
     auto output_shape = std::make_unique<loco::TensorShape>();
