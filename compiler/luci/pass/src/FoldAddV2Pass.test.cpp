@@ -59,14 +59,18 @@ public:
     y->shape(shape);
     addV2_out->shape(shape);
 
-    x->size<T>(3);
-    x->at<T>(0) = 1;
-    x->at<T>(1) = 2;
-    x->at<T>(2) = 3;
-    y->size<T>(3);
-    y->at<T>(0) = 1;
-    y->at<T>(1) = 2;
-    y->at<T>(2) = 3;
+    uint32_t num_elems = 1;
+    for (auto dim = shape.begin(); dim != shape.end(); dim++)
+      num_elems *= *dim;
+
+    x->size<T>(num_elems);
+    y->size<T>(num_elems);
+
+    for (uint32_t i = 0; i < num_elems; i++)
+    {
+      x->at<T>(i) = i + 1;
+      y->at<T>(i) = i + 1;
+    }
 
     addV2->custom_code("AddV2");
     addV2->inputs(0, x);
@@ -75,6 +79,8 @@ public:
   }
 
   loco::Node *createFoldedPattern() override { return addV2_out; }
+
+  virtual ~FoldAddV2Test() = default;
 
   // NOTE: we're not adding _ prefix as these class members are public
 public:
