@@ -1,0 +1,7 @@
+# To check if Maximum and Minimum is fused to Relu6.
+
+RULE    "VERIFY_FILE_FORMAT"      $(verify_file_format) '=' 1
+
+RULE    "RELU6_EXIST"             $(op_count RELU6) '=' 1
+RULE    "NO_MAXIMUM"              $(op_count MAXIMUM) '=' 0
+RULE    "NO_MINIMUM"              $(op_count MINIMUM) '=' 0
