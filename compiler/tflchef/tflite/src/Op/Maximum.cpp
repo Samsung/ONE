@@ -16,13 +16,20 @@
 
 #include "Maximum.h"
 
+#include "Convert.h"
+#include "FillerHelper.h"
+
 namespace tflchef
 {
 
 void TFliteOpMaximum::filler(const tflite::Operator *op, TFliteImport *import,
                              tflchef::ModelRecipe *model_recipe) const
 {
-  // Nothing to do with filler
+  const std::vector<int32_t> &inputs = as_index_vector(op->inputs());
+  assert(inputs.size() == 2);
+
+  fill_tensor_to_import(inputs[0], import);
+  fill_tensor_to_import(inputs[1], import);
 }
 
 tflchef::Operation *TFliteOpMaximum::build(const tflite::Operator *op, TFliteImport *import,
