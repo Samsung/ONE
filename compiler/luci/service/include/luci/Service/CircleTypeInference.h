@@ -63,7 +63,6 @@ public:
   // loco::DataType visit(const luci::CircleAbs *node) final;
   // loco::DataType visit(const luci::CircleAdd *node) final;
   // loco::DataType visit(const luci::CircleAddN *node) final;
-  // loco::DataType visit(const luci::CircleAll *node) final;
   // loco::DataType visit(const luci::CircleArgMax *node) final;
   // loco::DataType visit(const luci::CircleArgMin *node) final;
   // loco::DataType visit(const luci::CircleAveragePool2D *node) final;
@@ -114,12 +113,10 @@ public:
   // loco::DataType visit(const luci::CircleMean *node) final;
   // loco::DataType visit(const luci::CircleMinimum *node) final;
   // loco::DataType visit(const luci::CircleMirrorPad *node) final;
-  // loco::DataType visit(const luci::CircleMul *node) final;
   // loco::DataType visit(const luci::CircleNeg *node) final;
   // loco::DataType visit(const luci::CircleNonMaxSuppressionV4 *node) final;
   // loco::DataType visit(const luci::CircleNonMaxSuppressionV5 *node) final;
   // loco::DataType visit(const luci::CircleNotEqual *node) final;
-  // loco::DataType visit(const luci::CircleOneHot *node) final;
   // loco::DataType visit(const luci::CirclePack *node) final;
   // loco::DataType visit(const luci::CirclePad *node) final;
   // loco::DataType visit(const luci::CirclePadV2 *node) final;
@@ -127,6 +124,8 @@ public:
   // loco::DataType visit(const luci::CirclePRelu *node) final;
   // loco::DataType visit(const luci::CircleRange *node) final;
   // loco::DataType visit(const luci::CircleRank *node) final;
+  // loco::DataType visit(const luci::CircleMul *node) final;
+  // loco::DataType visit(const luci::CircleOneHot *node) final;
   // loco::DataType visit(const luci::CircleReduceAny *node) final;
   // loco::DataType visit(const luci::CircleReduceMax *node) final;
   // loco::DataType visit(const luci::CircleReduceMin *node) final;
@@ -179,14 +178,14 @@ public:
   // loco::DataType visit(const luci::CircleInstanceNorm *node) final;
 
   // Virtual
-  // loco::DataType visit(const luci::CircleCustomOut *node) final;
-  // loco::DataType visit(const luci::CircleIfOut *node) final;
   // loco::DataType visit(const luci::CircleInput *node) final;
-  // loco::DataType visit(const luci::CircleNonMaxSuppressionV4Out *node) final;
-  // loco::DataType visit(const luci::CircleNonMaxSuppressionV5Out *node) final;
   // loco::DataType visit(const luci::CircleOutput *node) final;
   // loco::DataType visit(const luci::CircleOutputDummy *node) final;
   // loco::DataType visit(const luci::CircleOutputExclude *node) final;
+  // loco::DataType visit(const luci::CircleCustomOut *node) final;
+  // loco::DataType visit(const luci::CircleIfOut *node) final;
+  // loco::DataType visit(const luci::CircleNonMaxSuppressionV4Out *node) final;
+  // loco::DataType visit(const luci::CircleNonMaxSuppressionV5Out *node) final;
   // loco::DataType visit(const luci::CircleSplitOut *node) final;
   // loco::DataType visit(const luci::CircleSplitVOut *node) final;
   // loco::DataType visit(const luci::CircleTopKV2Out *node) final;
