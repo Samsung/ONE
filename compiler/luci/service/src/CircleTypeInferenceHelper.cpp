@@ -18,6 +18,22 @@
 
 namespace luci
 {
+
+loco::DataType dtype_get(const loco::Node *node)
+{
+  assert(dtype_known(node));
+  return loco::must_cast<const luci::CircleNode *>(node)->dtype();
+}
+
+bool dtype_known(const loco::Node *node)
+{
+  return loco::must_cast<const luci::CircleNode *>(node)->dtype() != loco::DataType::Unknown;
+}
+
+} // namespace luci
+
+namespace luci
+{
 namespace tinf
 {
 

@@ -23,6 +23,20 @@
 
 namespace luci
 {
+
+// NOTE Functions in this namespace will be removed after new inference
+//      algorithms are fully implemented.
+
+// This function is temporary function for deprecating loco::dtype_get
+loco::DataType dtype_get(const loco::Node *node);
+
+// This function is temporary function for deprecating loco::dtype_known
+bool dtype_known(const loco::Node *node);
+
+} // namespace luci
+
+namespace luci
+{
 namespace tinf // Namespace for Type Inference
 {
 

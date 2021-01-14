@@ -18,6 +18,23 @@
 
 namespace luci
 {
+
+loco::NodeShape shape_get(const loco::Node *node)
+{
+  assert(shape_known(node));
+  return loco::NodeShape{sinf::circle_shape(loco::must_cast<const luci::CircleNode *>(node))};
+}
+
+bool shape_known(const loco::Node *node)
+{
+  return loco::must_cast<const luci::CircleNode *>(node)->shape_status() !=
+         luci::ShapeStatus::UNDEFINED;
+}
+
+} // namespace luci
+
+namespace luci
+{
 namespace sinf
 {
 
