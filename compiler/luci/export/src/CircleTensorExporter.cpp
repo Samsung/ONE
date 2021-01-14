@@ -15,7 +15,6 @@
  */
 
 #include "CircleTensorExporter.h"
-#include "TypeBridge.h"
 
 #include <luci/IR/CircleNodes.h>
 #include <luci/IR/CircleNodeVisitor.h>
