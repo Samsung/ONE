@@ -19,10 +19,11 @@
 #include <luci/IR/CircleNodes.h>
 
 #include <iostream>
+
 namespace
 {
 
-bool same_static_shape(const luci::CircleNode *x, const luci::CircleNode *y)
+bool same_shape(const luci::CircleConst *x, const luci::CircleConst *y)
 {
   if (x->rank() != y->rank())
     return false;
@@ -37,14 +38,11 @@ bool same_static_shape(const luci::CircleNode *x, const luci::CircleNode *y)
 }
 
 /**
- * Fold AddV2 to const if
- *
- * 1. it has two inputs
- * 2. both inputs are const
- *
+ * Fold AddV2 to const if both inputs are const
  **/
 template <loco::DataType T> bool fold_add_v2(luci::CircleCustom *add_v2)
 {
+  // This should hold for AddV2
   if (add_v2->numInputs() != 2)
     return false;
 
@@ -61,7 +59,7 @@ template <loco::DataType T> bool fold_add_v2(luci::CircleCustom *add_v2)
   if (x->dtype() != y->dtype())
     return false;
 
-  if (!same_static_shape(x, y))
+  if (!same_shape(x, y))
     return false;
 
   auto constant = add_v2->graph()->nodes()->create<luci::CircleConst>();
