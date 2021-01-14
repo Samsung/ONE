@@ -45,6 +45,7 @@ public:
       QuantizeDequantizeWeights,
       QuantizeWithMinMax,
       Requantize,
+      FoldAddV2,
       FoldDequantize,
       FoldSparseToDense,
       SparsifyTensorPass,
