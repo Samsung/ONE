@@ -36,10 +36,19 @@ bool substitute_transpose_to_reshape(luci::CircleNode *node)
   auto input_node = loco::must_cast<luci::CircleNode *>(target_node->a());
   if (perm_const->dim(0).value() != input_node->rank())
     return false;
+  // If input have more than 2 unknown dimension, transpose will not changed.
+  int count = 0;
+  for (uint32_t i = 0; i < input_node->rank(); i++)
+    if (!input_node->dim(i).known())
+      count++;
+  if (count > 1)
+    return false;
 
   uint32_t idx = 0;
   for (uint32_t i = 0; i < perm_const->size<loco::DataType::S32>(); i++)
   {
+    assert(perm_const->at<loco::DataType::S32>(i) >= 0 &&
+           perm_const->at<loco::DataType::S32>(i) < static_cast<int32_t>(input_node->rank()));
     if (input_node->dim(static_cast<uint32_t>(perm_const->at<loco::DataType::S32>(i))).known() &&
         input_node->dim(static_cast<uint32_t>(perm_const->at<loco::DataType::S32>(i))).value() == 1)
       continue;
