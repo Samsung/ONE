@@ -151,7 +151,9 @@ bool resolve_matmul(luci::CircleCustom *cop)
   fc_node->bias(empty_bias);
   fc_node->fusedActivationFunction(luci::FusedActFunc::NONE);
 
-  replace(cop).with(fc_node);
+  auto customOut = loco::succs(cop);
+  assert(customOut.size() == 1);
+  replace(*customOut.begin()).with(fc_node);
   return true;
 }
 
