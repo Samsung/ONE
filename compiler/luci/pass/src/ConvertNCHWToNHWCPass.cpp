@@ -566,7 +566,9 @@ bool ConvertNCHWToNHWCPass::run(loco::Graph *g)
     {
       ConvertNCHWToNHWC converter;
       auto circle_node = loco::must_cast<luci::CircleNode *>(node);
-      assert(circle_node->rank() == 4);
+      if (circle_node->rank() != 4)
+        continue;
+
       if (circle_node->accept(&converter))
       {
         set_data_format(node, DataFormat::NHWC);
