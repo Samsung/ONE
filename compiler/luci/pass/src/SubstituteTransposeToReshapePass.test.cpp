@@ -22,62 +22,80 @@
 namespace
 {
 
-void create_substitute_transpose_to_reshape(loco::Graph *g,
-                                            const std::initializer_list<uint32_t> shape,
-                                            const std::vector<int32_t> perm)
+class SubstituteTransposeToReshapeTestBase
 {
-  assert(g);
-  // Input Create.
-  auto input = g->nodes()->create<luci::CircleInput>();
-  auto graph_input = g->inputs()->create();
-  input->index(graph_input->index());
-  input->shape_status(luci::ShapeStatus::VALID);
-  input->rank(shape.size());
-  input->shape(shape);
-
-  // Permutation Create.
-  auto perm_const = g->nodes()->create<luci::CircleConst>();
-  perm_const->dtype(loco::DataType::S32);
-  perm_const->size<loco::DataType::S32>(perm.size());
-  perm_const->shape_status(luci::ShapeStatus::VALID);
-  perm_const->rank(1);
-  perm_const->dim(0).set(perm.size());
-  for (uint32_t i = 0; i < static_cast<uint32_t>(perm.size()); i++)
+public:
+  SubstituteTransposeToReshapeTestBase(std::vector<int32_t> perm)
   {
-    perm_const->at<loco::DataType::S32>(i) = perm.at(i);
+    // Input Create.
+    input = g.nodes()->create<luci::CircleInput>();
+    auto graph_input = g.inputs()->create();
+    input->index(graph_input->index());
+    input->shape_status(luci::ShapeStatus::VALID);
+    input->rank(4);
+    input->shape({126, 201, 1, 1});
+
+    // Permutation Create.
+    auto perm_const = g.nodes()->create<luci::CircleConst>();
+    perm_const->dtype(loco::DataType::S32);
+    perm_const->size<loco::DataType::S32>(4);
+    perm_const->shape_status(luci::ShapeStatus::VALID);
+    perm_const->rank(1);
+    perm_const->dim(0).set(4);
+
+    for (uint32_t i = 0; i < static_cast<uint32_t>(perm.size()); i++)
+    {
+      perm_const->at<loco::DataType::S32>(i) = perm.at(i);
+    }
+
+    // Transpose Create.
+    auto transpose = g.nodes()->create<luci::CircleTranspose>();
+    transpose->a(input);
+    transpose->perm(perm_const);
+
+    // Output Connect.
+    output = g.nodes()->create<luci::CircleOutput>();
+    output->from(transpose);
+    auto graph_output = g.outputs()->create();
+    output->index(graph_output->index());
   }
 
-  // Transpose Create.
-  auto transpose_node = g->nodes()->create<luci::CircleTranspose>();
-  transpose_node->a(input);
-  transpose_node->perm(perm_const);
+public:
+  loco::Graph g;
+  luci::CircleInput *input = nullptr;
+  luci::CircleOutput *output = nullptr;
+};
 
-  // Output Connect.
-  auto output = g->nodes()->create<luci::CircleOutput>();
-  output->from(transpose_node);
-  auto graph_output = g->outputs()->create();
-  output->index(graph_output->index());
-}
+class SubstituteTransposeToReshapeTest : public SubstituteTransposeToReshapeTestBase,
+                                         public ::testing::Test
+{
+public:
+  SubstituteTransposeToReshapeTest()
+    : SubstituteTransposeToReshapeTestBase(std::vector<int32_t>({2, 0, 3, 1}))
+  {
+  }
+};
+
+class SubstituteTransposeToReshapeTest_NEG : public SubstituteTransposeToReshapeTestBase,
+                                             public ::testing::Test
+{
+public:
+  SubstituteTransposeToReshapeTest_NEG()
+    : SubstituteTransposeToReshapeTestBase(std::vector<int32_t>({2, 1, 3, 0}))
+  {
+  }
+};
 
 } // namespace
 
-TEST(SubstituteTransposeToReshapePass, simple_case)
+TEST_F(SubstituteTransposeToReshapeTest, simple_case)
 {
-  auto graph = loco::make_graph();
-  create_substitute_transpose_to_reshape(graph.get(), {126, 201, 1, 1},
-                                         std::vector<int32_t>({2, 0, 3, 1}));
   luci::SubstituteTransposeToReshapePass pass;
-  while (pass.run(graph.get()))
+  while (pass.run(&g))
     ;
-  luci::CircleReshape *reshape_node = nullptr;
-  luci::CircleTranspose *transpose_node = nullptr;
-  for (auto node : loco::active_nodes(loco::output_nodes(graph.get())))
-  {
-    if (auto reshape = dynamic_cast<luci::CircleReshape *>(node))
-      reshape_node = reshape;
-    else if (auto pack = dynamic_cast<luci::CircleTranspose *>(node))
-      transpose_node = pack;
-  }
+
+  auto reshape_node = dynamic_cast<luci::CircleReshape *>(output->from());
+  auto transpose_node = dynamic_cast<luci::CircleTranspose *>(output->from());
   ASSERT_NE(nullptr, reshape_node);
   ASSERT_EQ(nullptr, transpose_node);
   auto new_shape = loco::must_cast<luci::CircleConst *>(reshape_node->shape());
@@ -87,23 +105,14 @@ TEST(SubstituteTransposeToReshapePass, simple_case)
   ASSERT_EQ(201, new_shape->at<loco::DataType::S32>(3));
 }
 
-TEST(SubstituteTransposeToReshapePass, simple_case_NEG)
+TEST_F(SubstituteTransposeToReshapeTest_NEG, simple_case_NEG)
 {
-  auto graph = loco::make_graph();
-  create_substitute_transpose_to_reshape(graph.get(), {126, 201, 1, 1},
-                                         std::vector<int32_t>({2, 1, 3, 0}));
   luci::SubstituteTransposeToReshapePass pass;
-  while (pass.run(graph.get()))
+  while (pass.run(&g))
     ;
-  luci::CircleReshape *reshape_node = nullptr;
-  luci::CircleTranspose *transpose_node = nullptr;
-  for (auto node : loco::active_nodes(loco::output_nodes(graph.get())))
-  {
-    if (auto reshape = dynamic_cast<luci::CircleReshape *>(node))
-      reshape_node = reshape;
-    else if (auto tran = dynamic_cast<luci::CircleTranspose *>(node))
-      transpose_node = tran;
-  }
+
+  auto reshape_node = dynamic_cast<luci::CircleReshape *>(output->from());
+  auto transpose_node = dynamic_cast<luci::CircleTranspose *>(output->from());
   ASSERT_EQ(nullptr, reshape_node);
   ASSERT_NE(nullptr, transpose_node);
   auto perm = loco::must_cast<luci::CircleConst *>(transpose_node->perm());

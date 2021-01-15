@@ -45,7 +45,8 @@ bool substitute_transpose_to_reshape(luci::CircleNode *node)
   auto input_node = loco::must_cast<luci::CircleNode *>(target_node->a());
   if (perm_const->dim(0).value() != input_node->rank())
     return false;
-  // If input have more than 2 unknown dimension, transpose will not changed.
+
+  // If input have more than 2 unknown dimension, transpose will not be changed.
   int count = 0;
   for (uint32_t i = 0; i < input_node->rank(); i++)
     if (!input_node->dim(i).known())
@@ -54,13 +55,15 @@ bool substitute_transpose_to_reshape(luci::CircleNode *node)
     return false;
 
   uint32_t idx = 0;
-  for (uint32_t i = 0; i < perm_const->size<loco::DataType::S32>(); i++)
+  auto size_items = perm_const->size<loco::DataType::S32>();
+  for (uint32_t i = 0; i < size_items; i++)
   {
     assert(perm_const->at<loco::DataType::S32>(i) >= 0 &&
            perm_const->at<loco::DataType::S32>(i) < static_cast<int32_t>(input_node->rank()));
     if (input_node->dim(static_cast<uint32_t>(perm_const->at<loco::DataType::S32>(i))).known() &&
         input_node->dim(static_cast<uint32_t>(perm_const->at<loco::DataType::S32>(i))).value() == 1)
       continue;
+    // To check idx values are increasing
     if (idx > static_cast<uint32_t>(perm_const->at<loco::DataType::S32>(i)))
       return false;
     idx = static_cast<uint32_t>(perm_const->at<loco::DataType::S32>(i));
@@ -68,11 +71,11 @@ bool substitute_transpose_to_reshape(luci::CircleNode *node)
 
   auto new_const_node = node->graph()->nodes()->create<luci::CircleConst>();
   new_const_node->dtype(loco::DataType::S32);
-  new_const_node->size<loco::DataType::S32>(perm_const->size<loco::DataType::S32>());
+  new_const_node->size<loco::DataType::S32>(size_items);
   new_const_node->shape_status(luci::ShapeStatus::VALID);
   new_const_node->rank(1);
-  new_const_node->dim(0).set(perm_const->size<loco::DataType::S32>());
-  for (uint32_t i = 0; i < perm_const->size<loco::DataType::S32>(); i++)
+  new_const_node->dim(0).set(size_items);
+  for (uint32_t i = 0; i < size_items; i++)
   {
     if (input_node->dim(static_cast<uint32_t>(perm_const->at<loco::DataType::S32>(i))).known())
       new_const_node->at<loco::DataType::S32>(i) = static_cast<int32_t>(
@@ -95,21 +98,21 @@ namespace luci
 {
 
 /**
- *   BEFORE
+ * BEFORE
  *
- * [CircleNode]  [CircleConst]
- *       \             /
- *      [CircleTranspose]
- *             |
- *        [CircleNode]
+ *     [CircleNode]  [CircleConst]
+ *          \             /
+ *          [CircleTranspose]
+ *                 |
+ *            [CircleNode]
  *
- *    AFTER
+ * AFTER
  *
- * [CircleNode]  [CircleConst]
- *       \             /
- *       [CircleReshape]
- *             |
- *        [CircleNode]
+ *     [CircleNode]  [CircleConst]
+ *           \             /
+ *          [CircleReshape]
+ *                 |
+ *            [CircleNode]
  *
  */
 bool SubstituteTransposeToReshapePass::run(loco::Graph *g)
