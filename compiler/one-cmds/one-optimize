@@ -134,6 +134,10 @@ def _get_parser():
         '--substitute_pack_to_reshape',
         action='store_true',
         help='convert single input Pack op to Reshape op')
+    circle2circle_group.add_argument(
+        '--substitute_transpose_to_reshape',
+        action='store_true',
+        help='convert certain condition Transpose op to Reshape op')
 
     return parser
 
