@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2021 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,7 +40,8 @@ bool substitute_transpose_to_reshape(luci::CircleNode *node)
   uint32_t idx = 0;
   for (uint32_t i = 0; i < perm_const->size<loco::DataType::S32>(); i++)
   {
-    if (input_node->dim(static_cast<uint32_t>(perm_const->at<loco::DataType::S32>(i))).value() == 1)
+    if (input_node->dim(static_cast<uint32_t>(perm_const->at<loco::DataType::S32>(i))).known() &&
+        input_node->dim(static_cast<uint32_t>(perm_const->at<loco::DataType::S32>(i))).value() == 1)
       continue;
     if (idx > static_cast<uint32_t>(perm_const->at<loco::DataType::S32>(i)))
       return false;
@@ -55,8 +56,11 @@ bool substitute_transpose_to_reshape(luci::CircleNode *node)
   new_const_node->dim(0).set(perm_const->size<loco::DataType::S32>());
   for (uint32_t i = 0; i < perm_const->size<loco::DataType::S32>(); i++)
   {
-    new_const_node->at<loco::DataType::S32>(i) = static_cast<int32_t>(
-      input_node->dim(static_cast<uint32_t>(perm_const->at<loco::DataType::S32>(i))).value());
+    if (input_node->dim(static_cast<uint32_t>(perm_const->at<loco::DataType::S32>(i))).known())
+      new_const_node->at<loco::DataType::S32>(i) = static_cast<int32_t>(
+        input_node->dim(static_cast<uint32_t>(perm_const->at<loco::DataType::S32>(i))).value());
+    else
+      new_const_node->at<loco::DataType::S32>(i) = -1;
   }
 
   auto new_reshape_node = node->graph()->nodes()->create<luci::CircleReshape>();
