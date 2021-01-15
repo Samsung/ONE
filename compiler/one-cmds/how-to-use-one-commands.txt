@@ -150,6 +150,7 @@ one-optimize provides network or operator transformation shown below.
 
 Current transformation options are
 - fold_add_v2 : This removes AddV2 operation which can be folded
+- fold_cast : This removes Cast operation which can be folded
 - fold_dequantize : This removes Dequantize operation which can be folded
 - fold_sparse_to_dense : This removes SparseToDense operation which can be folded
 - fuse_add_with_tconv: This fuses Add operator with the preceding TConv operator if possible

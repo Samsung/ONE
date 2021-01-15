@@ -66,6 +66,12 @@ int entry(int argc, char **argv)
     .default_value(false)
     .help("This will fold AddV2 operators with constant inputs");
 
+  arser.add_argument("--fold_cast")
+    .nargs(0)
+    .required(false)
+    .default_value(false)
+    .help("This will fold Cast operators with constant input");
+
   arser.add_argument("--fold_dequantize")
     .nargs(0)
     .required(false)
@@ -281,6 +287,8 @@ int entry(int argc, char **argv)
   }
   if (arser.get<bool>("--fold_add_v2"))
     options->enable(Algorithms::FoldAddV2);
+  if (arser.get<bool>("--fold_cast"))
+    options->enable(Algorithms::FoldCast);
   if (arser.get<bool>("--fold_dequantize"))
     options->enable(Algorithms::FoldDequantize);
   if (arser.get<bool>("--fold_sparse_to_dense"))

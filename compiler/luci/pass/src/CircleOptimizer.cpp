@@ -18,6 +18,7 @@
 
 #include "luci/Pass/ConvertNCHWToNHWCPass.h"
 #include "luci/Pass/FoldAddV2Pass.h"
+#include "luci/Pass/FoldCastPass.h"
 #include "luci/Pass/FoldDequantizePass.h"
 #include "luci/Pass/FoldSparseToDensePass.h"
 #include "luci/Pass/FuseActivationFunctionPass.h"
@@ -208,6 +209,10 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   if (_options->query(Options::Algorithm::FoldAddV2))
   {
     phase.emplace_back(std::make_unique<luci::FoldAddV2Pass>());
+  }
+  if (_options->query(Options::Algorithm::FoldCast))
+  {
+    phase.emplace_back(std::make_unique<luci::FoldCastPass>());
   }
   if (_options->query(Options::Algorithm::FoldDequantize))
   {
