@@ -21,18 +21,6 @@
 namespace
 {
 
-template <typename FromT, typename ToT> ToT safe_down_cast(FromT from)
-{
-  // Check overflow
-  if (from < std::numeric_limits<ToT>::lowest())
-    return std::numeric_limits<ToT>::lowest();
-
-  if (from > std::numeric_limits<ToT>::max())
-    return std::numeric_limits<ToT>::max();
-
-  return static_cast<ToT>(from);
-}
-
 luci::CircleConst *cast_const(luci::CircleConst *node, loco::DataType from_dtype,
                               loco::DataType to_dtype)
 {
@@ -58,7 +46,7 @@ luci::CircleConst *cast_const(luci::CircleConst *node, loco::DataType from_dtype
       constant->size<loco::DataType::S32>(num_elems);
       for (uint32_t i = 0; i < num_elems; i++)
         constant->at<loco::DataType::S32>(i) =
-          safe_down_cast<int64_t, int32_t>(node->at<loco::DataType::S64>(i));
+          static_cast<int32_t>(node->at<loco::DataType::S64>(i));
       return constant;
     }
     return nullptr;
