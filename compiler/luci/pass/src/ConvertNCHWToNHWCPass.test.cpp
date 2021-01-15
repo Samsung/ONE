@@ -206,6 +206,21 @@ public:
   luci::CircleConst *paddings = nullptr;
 };
 
+class Relu6Graph final : public SimpleGraph
+{
+protected:
+  loco::Node *insertGraphBody(loco::Node *input) override
+  {
+    relu6 = g.nodes()->create<luci::CircleRelu6>();
+    relu6->features(input);
+
+    return relu6;
+  }
+
+public:
+  luci::CircleRelu6 *relu6 = nullptr;
+};
+
 void check_pre_trans(loco::Node *node)
 {
   auto pre_trans = dynamic_cast<luci::CircleTranspose *>(node);
@@ -421,4 +436,24 @@ TEST(ConvertNCHWToNHWC, Preserve_Input_Output)
     EXPECT_EQ(4, g.output->dim(2).value());
     EXPECT_EQ(4, g.output->dim(3).value());
   }
+}
+
+TEST(ConvertNCHWToNHWC, Relu6)
+{
+  Relu6Graph g;
+  g.init();
+
+  run_phase(&g.g, true, true);
+
+  check_pre_trans(g.relu6->features());
+
+  auto relu6_succs = loco::succs(g.relu6);
+  EXPECT_EQ(1, relu6_succs.size());
+  check_post_trans(*relu6_succs.begin());
+
+  // Check relu6 shape
+  EXPECT_EQ(1, g.relu6->dim(0).value());
+  EXPECT_EQ(4, g.relu6->dim(1).value());
+  EXPECT_EQ(4, g.relu6->dim(2).value());
+  EXPECT_EQ(16, g.relu6->dim(3).value());
 }
