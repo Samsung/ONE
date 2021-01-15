@@ -34,9 +34,9 @@ namespace
  *             |
  *       [CircleOutput]
  */
-class MinMaxGraph
+class MinMaxGraph : public ::testing::Test
 {
-public:
+protected:
   MinMaxGraph()
   {
     const int N = 1;
@@ -45,59 +45,59 @@ public:
     const int C = 3;
 
     // graph input and output
-    auto graph_input = g.inputs()->create();
-    auto graph_output = g.outputs()->create();
+    auto graph_input = _g.inputs()->create();
+    auto graph_output = _g.outputs()->create();
 
     // CircleInput
-    input = g.nodes()->create<luci::CircleInput>();
-    input->index(graph_input->index());
-    input->shape({N, H, W, C});
-    input->dtype(loco::DataType::FLOAT32);
+    _input = _g.nodes()->create<luci::CircleInput>();
+    _input->index(graph_input->index());
+    _input->shape({N, H, W, C});
+    _input->dtype(loco::DataType::FLOAT32);
 
     // CircleConst
-    mini_const = g.nodes()->create<luci::CircleConst>();
-    mini_const->shape({}); // scalar
-    mini_const->dtype(loco::DataType::FLOAT32);
-    mini_const->size<loco::DataType::FLOAT32>(1);
-    mini_const->at<loco::DataType::FLOAT32>(0) = 6.;
+    _mini_const = _g.nodes()->create<luci::CircleConst>();
+    _mini_const->shape({}); // scalar
+    _mini_const->dtype(loco::DataType::FLOAT32);
+    _mini_const->size<loco::DataType::FLOAT32>(1);
+    _mini_const->at<loco::DataType::FLOAT32>(0) = 6.;
 
     // CircleMinimum
-    mini = g.nodes()->create<luci::CircleMinimum>();
-    mini->x(input);
-    mini->y(mini_const);
-    mini->shape({N, H, W, C});
-    mini->dtype(loco::DataType::FLOAT32);
+    _mini = _g.nodes()->create<luci::CircleMinimum>();
+    _mini->x(_input);
+    _mini->y(_mini_const);
+    _mini->shape({N, H, W, C});
+    _mini->dtype(loco::DataType::FLOAT32);
 
     // CircleConst
-    maxi_const = g.nodes()->create<luci::CircleConst>();
-    mini_const->shape({}); // scalar
-    maxi_const->dtype(loco::DataType::FLOAT32);
-    maxi_const->size<loco::DataType::FLOAT32>(1);
-    maxi_const->at<loco::DataType::FLOAT32>(0) = 0.;
+    _maxi_const = _g.nodes()->create<luci::CircleConst>();
+    _mini_const->shape({}); // scalar
+    _maxi_const->dtype(loco::DataType::FLOAT32);
+    _maxi_const->size<loco::DataType::FLOAT32>(1);
+    _maxi_const->at<loco::DataType::FLOAT32>(0) = 0.;
 
     // CircleMaximum
-    maxi = g.nodes()->create<luci::CircleMaximum>();
-    maxi->x(mini);
-    maxi->y(maxi_const);
-    maxi->shape({N, H, W, C});
-    maxi->dtype(loco::DataType::FLOAT32);
+    _maxi = _g.nodes()->create<luci::CircleMaximum>();
+    _maxi->x(_mini);
+    _maxi->y(_maxi_const);
+    _maxi->shape({N, H, W, C});
+    _maxi->dtype(loco::DataType::FLOAT32);
 
     // CircleOutput
-    output = g.nodes()->create<luci::CircleOutput>();
-    output->index(graph_output->index());
-    output->from(maxi);
-    output->shape({N, H, W, C});
-    output->dtype(loco::DataType::FLOAT32);
+    _output = _g.nodes()->create<luci::CircleOutput>();
+    _output->index(graph_output->index());
+    _output->from(_maxi);
+    _output->shape({N, H, W, C});
+    _output->dtype(loco::DataType::FLOAT32);
   }
 
-public:
-  loco::Graph g;
-  luci::CircleInput *input = nullptr;
-  luci::CircleMinimum *mini = nullptr;
-  luci::CircleConst *mini_const = nullptr;
-  luci::CircleMaximum *maxi = nullptr;
-  luci::CircleConst *maxi_const = nullptr;
-  luci::CircleOutput *output = nullptr;
+protected:
+  loco::Graph _g;
+  luci::CircleInput *_input = nullptr;
+  luci::CircleMinimum *_mini = nullptr;
+  luci::CircleConst *_mini_const = nullptr;
+  luci::CircleMaximum *_maxi = nullptr;
+  luci::CircleConst *_maxi_const = nullptr;
+  luci::CircleOutput *_output = nullptr;
 };
 
 } // namespace
@@ -111,29 +111,25 @@ public:
  *        |
  *  [CircleOutput]
  */
-TEST(ReplaceMulAddWithDepthwiseConv, simple_test)
+TEST_F(MinMaxGraph, simple_test)
 {
-  MinMaxGraph g;
-
   luci::TransformMinMaxToRelu6Pass pass;
-  auto ret = pass.run(&g.g);
+  auto ret = pass.run(&_g);
   EXPECT_EQ(true, ret);
 
-  auto relu6 = dynamic_cast<luci::CircleRelu6 *>(g.output->from());
+  auto relu6 = dynamic_cast<luci::CircleRelu6 *>(_output->from());
   EXPECT_NE(nullptr, relu6);
 
   auto input = dynamic_cast<luci::CircleInput *>(relu6->features());
   EXPECT_NE(nullptr, input);
 }
 
-TEST(ReplaceMulAddWithDepthwiseConv, wrong_condition_NEG)
+TEST_F(MinMaxGraph, wrong_condition_NEG)
 {
-  MinMaxGraph g;
-
-  g.maxi_const->at<loco::DataType::FLOAT32>(0) = 2.;
+  _maxi_const->at<loco::DataType::FLOAT32>(0) = 2.;
 
   luci::TransformMinMaxToRelu6Pass pass;
-  auto ret = pass.run(&g.g);
+  auto ret = pass.run(&_g);
 
   EXPECT_EQ(false, ret);
 }

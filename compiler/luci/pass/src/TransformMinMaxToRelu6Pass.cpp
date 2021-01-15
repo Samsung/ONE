@@ -16,10 +16,24 @@
 
 #include "luci/Pass/TransformMinMaxToRelu6Pass.h"
 
+#include "helpers/NodeFiller.h"
+
 #include <luci/IR/CircleNodes.h>
 
 namespace
 {
+
+bool is_scalar_with_value(luci::CircleConst *node, float val)
+{
+  if (node->rank() != 0)
+    return false;
+  if (node->size<loco::DataType::FLOAT32>() != 1)
+    return false;
+  if (node->at<loco::DataType::FLOAT32>(0) != val)
+    return false;
+
+  return true;
+}
 
 /**
  *  BEFORE
@@ -50,61 +64,59 @@ bool transform_min_max_pattern(luci::CircleMaximum *maxi)
   luci::CircleConst *maxi_const = nullptr;
   luci::CircleMinimum *mini = nullptr;
 
-  // There are two ways Maximum takes inputs.
-  // 1. Maximum(x = CircleConst, y = CircleMinimum)
-  if (auto lhs = dynamic_cast<luci::CircleConst *>(maxi->x()))
-  {
-    maxi_const = lhs;
-    mini = dynamic_cast<luci::CircleMinimum *>(maxi->y());
-  }
-  // 2. Maximum(x = CircleMinimum, y = CircleConst)
-  else if (auto lhs = dynamic_cast<luci::CircleMinimum *>(maxi->x()))
-  {
-    maxi_const = dynamic_cast<luci::CircleConst *>(maxi->y());
-    mini = lhs;
-  }
-  else
-    return false;
+  // // There are two ways Maximum takes inputs.
+  // // 1. Maximum(x = CircleConst, y = CircleMinimum)
+  // if (auto lhs = dynamic_cast<luci::CircleConst *>(maxi->x()))
+  // {
+  //   maxi_const = lhs;
+  //   mini = dynamic_cast<luci::CircleMinimum *>(maxi->y());
+  // }
+  // // 2. Maximum(x = CircleMinimum, y = CircleConst)
+  // else if (auto lhs = dynamic_cast<luci::CircleMinimum *>(maxi->x()))
+  // {
+  //   maxi_const = dynamic_cast<luci::CircleConst *>(maxi->y());
+  //   mini = lhs;
+  // }
+  // else
+  //   return false;
 
-  if (maxi_const == nullptr || mini == nullptr)
+  // if (maxi_const == nullptr || mini == nullptr)
+  //   return false;
+
+  if (not luci::fill(&maxi_const, &mini).with_commutative_args_of(maxi))
     return false;
 
   // Maximum constant should be scalar whose value is 0.
-  if (maxi_const->rank() != 0)
-    return false;
-  if (maxi_const->size<loco::DataType::FLOAT32>() != 1)
-    return false;
-  if (maxi_const->at<loco::DataType::FLOAT32>(0) != 0.)
+  if (not is_scalar_with_value(maxi_const, 0.))
     return false;
 
   luci::CircleConst *mini_const = nullptr;
   loco::Node *mini_input = nullptr;
 
-  // There are two ways Miminum takes inputs.
-  // 1. Miminum(x = CircleNode, y = CircleMinimum)
-  if (auto lhs = dynamic_cast<luci::CircleConst *>(mini->x()))
-  {
-    mini_const = lhs;
-    mini_input = mini->y();
-  }
-  // 2. Miminum(x = CircleMinimum, y = CircleNode)
-  else if (auto rhs = dynamic_cast<luci::CircleConst *>(mini->y()))
-  {
-    mini_const = rhs;
-    mini_input = mini->x();
-  }
-  else
-    return false;
+  // // There are two ways Miminum takes inputs.
+  // // 1. Miminum(x = CircleNode, y = CircleMinimum)
+  // if (auto lhs = dynamic_cast<luci::CircleConst *>(mini->x()))
+  // {
+  //   mini_const = lhs;
+  //   mini_input = mini->y();
+  // }
+  // // 2. Miminum(x = CircleMinimum, y = CircleNode)
+  // else if (auto rhs = dynamic_cast<luci::CircleConst *>(mini->y()))
+  // {
+  //   mini_const = rhs;
+  //   mini_input = mini->x();
+  // }
+  // else
+  //   return false;
 
-  if (mini_const == nullptr || mini_input == nullptr)
+  // if (mini_const == nullptr || mini_input == nullptr)
+  //   return false;
+
+  if (not luci::fill(&mini_const, &mini_input).with_commutative_args_of(mini))
     return false;
 
   // Miminum constant should be scalar whose value is 6.
-  if (mini_const->rank() != 0)
-    return false;
-  if (mini_const->size<loco::DataType::FLOAT32>() != 1)
-    return false;
-  if (mini_const->at<loco::DataType::FLOAT32>(0) != 6.)
+  if (not is_scalar_with_value(mini_const, 6.))
     return false;
 
   // Create Relu6 op
