@@ -125,6 +125,8 @@ def _make_circle2circle_cmd(args, driver_path, input_path, output_path):
         cmd.append('--nchw_to_nhwc_preserve_output_shape')
     if _is_valid_attr(args, 'fold_add_v2'):
         cmd.append('--fold_add_v2')
+    if _is_valid_attr(args, 'fold_cast'):
+        cmd.append('--fold_cast')
     if _is_valid_attr(args, 'fold_dequantize'):
         cmd.append('--fold_dequantize')
     if _is_valid_attr(args, 'fold_sparse_to_dense'):
