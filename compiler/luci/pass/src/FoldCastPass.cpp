@@ -33,27 +33,6 @@ template <typename FromT, typename ToT> ToT safe_down_cast(FromT from)
   return static_cast<ToT>(from);
 }
 
-template <loco::DataType FromT, loco::DataType ToT>
-void write_downcasted_const(const luci::CircleConst *from, luci::CircleConst *to)
-{
-  assert(FromT == from->dtype());
-  assert(ToT == to->dtype());
-
-  // Resize destination const
-  const auto size = from->size<FromT>();
-  to->size<ToT>(size);
-
-  // TODO: Support more data types
-  if (FromT == loco::DataType::S64)
-  {
-    if (ToT == loco::DataType::S32)
-    {
-      for (uint32_t i = 0; i < size; i++)
-        to->at<ToT>(i) = safe_down_cast<int64_t, int32_t>(from->at<FromT>(i));
-    }
-  }
-}
-
 luci::CircleConst *cast_const(luci::CircleConst *node, loco::DataType from_dtype,
                               loco::DataType to_dtype)
 {
@@ -70,9 +49,14 @@ luci::CircleConst *cast_const(luci::CircleConst *node, loco::DataType from_dtype
   // TODO: Support more data types
   if (from_dtype == loco::DataType::S64)
   {
+    const auto num_elems = node->size<loco::DataType::S64>();
+
     if (to_dtype == loco::DataType::S32)
     {
-      write_downcasted_const<loco::DataType::S64, loco::DataType::S32>(node, constant);
+      constant->size<loco::DataType::S32>(num_elems);
+      for (uint32_t i = 0; i < num_elems; i++)
+        constant->at<loco::DataType::S32>(i) =
+          safe_down_cast<int64_t, int32_t>(node->at<loco::DataType::S64>(i));
       return constant;
     }
     return nullptr;
