@@ -46,6 +46,7 @@ public:
       QuantizeWithMinMax,
       Requantize,
       FoldAddV2,
+      FoldCast,
       FoldDequantize,
       FoldSparseToDense,
       SparsifyTensorPass,
