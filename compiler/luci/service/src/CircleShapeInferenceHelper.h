@@ -17,9 +17,24 @@
 #ifndef __LUCI_CIRCLE_SHAPE_INFERENCE_HELPER_H__
 #define __LUCI_CIRCLE_SHAPE_INFERENCE_HELPER_H__
 
+#include <loco/IR/NodeShape.h>
 #include <loco/IR/TensorShape.h>
 
 #include <luci/IR/CircleNodes.h>
+
+namespace luci
+{
+
+// NOTE Functions in this namespace will be removed after new inference
+//      algorithms are fully implemented.
+
+// This function is temporary function for deprecating loco::shape_get
+loco::NodeShape shape_get(const loco::Node *node);
+
+// This function is temporary function for deprecating loco::shape_known
+bool shape_known(const loco::Node *node);
+
+} // namespace luci
 
 namespace luci
 {
