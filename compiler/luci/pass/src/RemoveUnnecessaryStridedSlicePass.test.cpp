@@ -23,7 +23,8 @@ namespace
 {
 
 void create_remove_unnecessary_strided_slice(loco::Graph *g,
-                                     const std::initializer_list<uint32_t> input_shape, bool remove)
+                                             const std::initializer_list<uint32_t> input_shape,
+                                             bool remove)
 {
   assert(g);
 

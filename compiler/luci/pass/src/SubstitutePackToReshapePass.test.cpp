@@ -87,7 +87,6 @@ TEST(SubstitutePackToReshapePass, simple_case)
     else if (auto pack = dynamic_cast<luci::CirclePack *>(node))
       pack_node = pack;
   }
-  /*
   ASSERT_NE(nullptr, reshape_node);
   ASSERT_EQ(nullptr, pack_node);
   auto new_shape = loco::must_cast<luci::CircleConst *>(reshape_node->shape());
@@ -96,7 +95,6 @@ TEST(SubstitutePackToReshapePass, simple_case)
   ASSERT_EQ(2, new_shape->at<loco::DataType::S32>(2));
   ASSERT_EQ(3, new_shape->at<loco::DataType::S32>(3));
   ASSERT_EQ(4, new_shape->at<loco::DataType::S32>(4));
-  */
 }
 
 TEST(SubstitutePackToReshapePass, simple_case_neg_axis)
@@ -115,7 +113,6 @@ TEST(SubstitutePackToReshapePass, simple_case_neg_axis)
     else if (auto pack = dynamic_cast<luci::CirclePack *>(node))
       pack_node = pack;
   }
-  /*
   ASSERT_NE(nullptr, reshape_node);
   ASSERT_EQ(nullptr, pack_node);
   auto new_shape = loco::must_cast<luci::CircleConst *>(reshape_node->shape());
@@ -124,5 +121,4 @@ TEST(SubstitutePackToReshapePass, simple_case_neg_axis)
   ASSERT_EQ(3, new_shape->at<loco::DataType::S32>(2));
   ASSERT_EQ(4, new_shape->at<loco::DataType::S32>(3));
   ASSERT_EQ(1, new_shape->at<loco::DataType::S32>(4));
-  */
 }

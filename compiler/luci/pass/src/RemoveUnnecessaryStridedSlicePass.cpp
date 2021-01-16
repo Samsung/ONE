@@ -42,7 +42,7 @@ bool remove_no_effect_strided_slice(luci::CircleNode *node)
   auto target_node = dynamic_cast<luci::CircleStridedSlice *>(node);
   if (target_node == nullptr)
     return false;
-  
+
   auto begin_const = dynamic_cast<luci::CircleConst *>(target_node->begin());
   if (begin_const == nullptr)
     return false;
@@ -57,18 +57,18 @@ bool remove_no_effect_strided_slice(luci::CircleNode *node)
 
   for (uint32_t i = 0; i < input_node->rank(); i++)
   {
-      if (value_from_circle_const(begin_const, i) != 0)
-          return false;
+    if (value_from_circle_const(begin_const, i) != 0)
+      return false;
 
-      int64_t strides_value = value_from_circle_const(strides_const, i);
-      if (strides_value == -1)
-          continue;
+    int64_t strides_value = value_from_circle_const(strides_const, i);
+    if (strides_value == -1)
+      continue;
 
-      if (strides_value != static_cast<int64_t>(input_node->dim(i).value()))
-          return false;
+    if (strides_value != static_cast<int64_t>(input_node->dim(i).value()))
+      return false;
 
-      if (!input_node->dim(i).known())
-          return false;
+    if (!input_node->dim(i).known())
+      return false;
   }
 
   replace(target_node).with(input_node);
