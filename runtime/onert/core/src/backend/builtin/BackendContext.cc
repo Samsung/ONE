@@ -28,7 +28,7 @@ namespace builtin
 
 ITensorRegistry *BackendContext::genTensors()
 {
-  return cpu_common::genTensors(*this, _data.op_order);
+  return cpu_common::genTensors(*this, _data.op_order, true);
 }
 
 FunctionMap BackendContext::genKernels()

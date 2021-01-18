@@ -35,7 +35,7 @@ namespace cpu_common
 
 // TODO Remove the template param BackendContext once unification of cpu backend context is done
 template <typename T_BackendContext>
-void planTensors(const T_BackendContext &ctx, const std::vector<onert::ir::OperationIndex> &order)
+void planTensors(const T_BackendContext &ctx, const std::vector<onert::ir::OperationIndex> &order, bool is_builtin = false)
 {
   const ir::Graph &graph = *ctx.graph();
   auto tensor_builder = ctx.tensor_builder;
@@ -49,7 +49,7 @@ void planTensors(const T_BackendContext &ctx, const std::vector<onert::ir::Opera
 
   // Prepare scanning
   graph.operands().iterate([&](const ir::OperandIndex &ind, const ir::Operand &obj) {
-    if (model_io.contains(ind))
+    if (is_builtin && model_io.contains(ind))
       return;
     if (ctx.external_operands().contains(ind))
       return;
@@ -116,7 +116,7 @@ void planTensors(const T_BackendContext &ctx, const std::vector<onert::ir::Opera
       // Define outputs
       for (const auto &ind : op_outputs)
       {
-        if (model_io.contains(ind))
+        if (is_builtin && model_io.contains(ind))
           continue;
         if (!tensor_builder->isRegistered(ind))
           continue;
@@ -133,7 +133,7 @@ void planTensors(const T_BackendContext &ctx, const std::vector<onert::ir::Opera
       // non-constant because of less memory usage by memory planning in here
       for (const auto &ind : op_inputs)
       {
-        if (model_io.contains(ind))
+        if (is_builtin && model_io.contains(ind))
           continue;
         if (!tensor_builder->isRegistered(ind))
           continue;
@@ -150,7 +150,7 @@ void planTensors(const T_BackendContext &ctx, const std::vector<onert::ir::Opera
 
       for (const auto &ind : op_inputs)
       {
-        if (model_io.contains(ind))
+        if (is_builtin && model_io.contains(ind))
           continue;
         if (!tensor_builder->isRegistered(ind))
           continue;
@@ -198,7 +198,7 @@ void planTensors(const T_BackendContext &ctx, const std::vector<onert::ir::Opera
 
 template <typename T_BackendContext>
 ITensorRegistry *genTensors(T_BackendContext &ctx,
-                            const std::vector<onert::ir::OperationIndex> &order)
+                            const std::vector<onert::ir::OperationIndex> &order, bool is_builtin = false)
 {
   const ir::Graph &graph = *ctx.graph();
   auto tensor_builder = ctx.tensor_builder;
@@ -206,7 +206,7 @@ ITensorRegistry *genTensors(T_BackendContext &ctx,
   auto model_io =
     (graph.getInputs() + graph.getOutputs()) | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED;
   graph.operands().iterate([&](const ir::OperandIndex &ind, const ir::Operand &obj) {
-    if (model_io.contains(ind))
+    if (is_builtin && model_io.contains(ind))
       return;
     if (ctx.external_operands().contains(ind))
       return;
@@ -220,7 +220,7 @@ ITensorRegistry *genTensors(T_BackendContext &ctx,
   // TODO Get compiler options from compiler, and use it rather than getting it from Env
   if (util::getConfigString(util::config::EXECUTOR) == "Linear")
   {
-    cpu_common::planTensors(ctx, order);
+    cpu_common::planTensors(ctx, order, is_builtin);
   }
   else
   {

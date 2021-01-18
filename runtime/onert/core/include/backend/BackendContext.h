@@ -60,7 +60,10 @@ public:
   const Backend *backend() const { return _backend; }
   const ir::Graph *graph() const { return _data.graph.get(); }
   const util::Set<ir::OperandIndex> &external_operands() const { return _data.external_operands; }
-  const ir::OperationIndexMap<ir::Layout> &operation_layouts() const { return _data.operation_layouts; }
+  const ir::OperationIndexMap<ir::Layout> &operation_layouts() const
+  {
+    return _data.operation_layouts;
+  }
   const ir::OperandIndexMap<ir::Layout> &operand_layouts() const { return _data.operand_layouts; }
 
   virtual ITensorRegistry *genTensors() { return nullptr; }

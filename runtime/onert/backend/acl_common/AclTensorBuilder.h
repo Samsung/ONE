@@ -140,6 +140,7 @@ template <typename T_ITensor, typename T_Tensor, typename T_SubTensor>
 void AclTensorBuilder<T_ITensor, T_Tensor, T_SubTensor>::registerTensorInfo(
   const ir::OperandIndex &ind, const ir::OperandInfo &info, ir::Layout backend_layout)
 {
+  VERBOSE_F() << "ACL REGISTER TENSOR " << ind << std::endl;
   assert(_tensor_mgr->constTensors().size() == 0);
   assert(_tensor_mgr->nonconstTensors().size() == 0);
 

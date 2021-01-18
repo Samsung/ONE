@@ -98,10 +98,10 @@ void BackendContext::planTensors()
   {
     // TODO Remove indentation
     {
-      auto op_inputs =
-        graph()->operations().at(op_ind).getInputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED;
-      auto op_outputs =
-        graph()->operations().at(op_ind).getOutputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED;
+      auto op_inputs = graph()->operations().at(op_ind).getInputs() | ir::Remove::DUPLICATED |
+                       ir::Remove::UNDEFINED;
+      auto op_outputs = graph()->operations().at(op_ind).getOutputs() | ir::Remove::DUPLICATED |
+                        ir::Remove::UNDEFINED;
 
       // Define outputs
       for (const auto &ind : op_outputs)
