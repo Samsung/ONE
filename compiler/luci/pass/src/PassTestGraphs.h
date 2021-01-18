@@ -86,7 +86,7 @@ public:
 
   virtual loco::Node *createFoldedPattern() = 0;
 
-  virtual loco::Node *getFoldedPattern() = 0;
+  virtual luci::CircleConst *getFoldedPattern() = 0;
 
   loco::Graph *graph() { return &_g; }
 
@@ -125,7 +125,7 @@ protected:
 protected:
   luci::CircleConst *getFoldedPattern() override
   {
-    loco::must_cast<luci::CircleConst *>(_add->y());
+    return dynamic_cast<luci::CircleConst *>(_add->y());
   }
 
 protected:
