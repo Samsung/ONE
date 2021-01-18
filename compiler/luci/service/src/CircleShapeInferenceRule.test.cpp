@@ -16,6 +16,7 @@
 
 #include "TestGraph.h"
 #include "luci/Service/CircleShapeInferenceRule.h"
+#include "CircleShapeInferenceHelper.h"
 
 #include <luci/IR/CircleNodes.h>
 #include <luci/IR/CircleDialect.h>
@@ -80,9 +81,9 @@ TEST(CircleShapeInferenceRuleTest, minimal_with_CircleRelu)
   // Verify
   {
     ASSERT_TRUE(loco::shape_known(relu_node));
-    ASSERT_EQ(loco::Domain::Tensor, loco::shape_get(relu_node).domain());
+    ASSERT_EQ(loco::Domain::Tensor, luci::shape_get(relu_node).domain());
 
-    auto shape = loco::shape_get(relu_node).as<loco::TensorShape>();
+    auto shape = luci::shape_get(relu_node).as<loco::TensorShape>();
     ASSERT_EQ(2, shape.rank());
     ASSERT_EQ(3, shape.dim(0));
     ASSERT_EQ(4, shape.dim(1));
@@ -125,9 +126,9 @@ TEST(CircleShapeInferenceRuleTest, avgpool2d_valid)
   // Verify
   {
     ASSERT_TRUE(loco::shape_known(avg_node));
-    ASSERT_EQ(loco::Domain::Tensor, loco::shape_get(avg_node).domain());
+    ASSERT_EQ(loco::Domain::Tensor, luci::shape_get(avg_node).domain());
 
-    auto shape = loco::shape_get(avg_node).as<loco::TensorShape>();
+    auto shape = luci::shape_get(avg_node).as<loco::TensorShape>();
     ASSERT_EQ(4, shape.rank());
     ASSERT_EQ(1, shape.dim(0).value());
     ASSERT_EQ(2, shape.dim(1).value());
@@ -172,9 +173,9 @@ TEST(CircleShapeInferenceRuleTest, avgpool2d_same)
   // Verify
   {
     ASSERT_TRUE(loco::shape_known(avg_node));
-    ASSERT_EQ(loco::Domain::Tensor, loco::shape_get(avg_node).domain());
+    ASSERT_EQ(loco::Domain::Tensor, luci::shape_get(avg_node).domain());
 
-    auto shape = loco::shape_get(avg_node).as<loco::TensorShape>();
+    auto shape = luci::shape_get(avg_node).as<loco::TensorShape>();
     ASSERT_EQ(4, shape.rank());
     ASSERT_EQ(1, shape.dim(0).value());
     ASSERT_EQ(2, shape.dim(1).value());
@@ -249,9 +250,9 @@ TEST(CircleShapeInferenceRuleTest, TFAdd_shapeinf_different)
   // Verify
   {
     ASSERT_TRUE(loco::shape_known(add_node));
-    ASSERT_EQ(loco::Domain::Tensor, loco::shape_get(add_node).domain());
+    ASSERT_EQ(loco::Domain::Tensor, luci::shape_get(add_node).domain());
 
-    auto shape = loco::shape_get(add_node).as<loco::TensorShape>();
+    auto shape = luci::shape_get(add_node).as<loco::TensorShape>();
     ASSERT_EQ(3, shape.rank());
     ASSERT_EQ(2, shape.dim(0));
     ASSERT_EQ(3, shape.dim(1));
@@ -290,7 +291,7 @@ TEST(CircleShapeInferenceRuleTest, CircleTranspose_simple)
   {
     ASSERT_TRUE(loco::shape_known(g.transpose_node));
 
-    auto shape = loco::shape_get(g.transpose_node).as<loco::TensorShape>();
+    auto shape = luci::shape_get(g.transpose_node).as<loco::TensorShape>();
     ASSERT_EQ(3, shape.rank());
     ASSERT_EQ(8, shape.dim(0));
     ASSERT_EQ(1, shape.dim(1));
@@ -329,7 +330,7 @@ TEST(CircleShapeInferenceRuleTest, CircleSqueeze)
   {
     ASSERT_TRUE(loco::shape_known(squeeze_node));
 
-    auto shape = loco::shape_get(squeeze_node).as<loco::TensorShape>();
+    auto shape = luci::shape_get(squeeze_node).as<loco::TensorShape>();
     ASSERT_EQ(3, shape.rank());
     ASSERT_EQ(4, shape.dim(0));
     ASSERT_EQ(3, shape.dim(1));
@@ -370,7 +371,7 @@ TEST(CircleShapeInferenceRuleTest, CircleExpandDims)
   {
     ASSERT_TRUE(loco::shape_known(expand_dims));
 
-    auto shape = loco::shape_get(expand_dims).as<loco::TensorShape>();
+    auto shape = luci::shape_get(expand_dims).as<loco::TensorShape>();
 
     ASSERT_EQ(3, shape.rank());
     ASSERT_EQ(4, shape.dim(0));
@@ -410,7 +411,7 @@ TEST(CircleShapeInferenceRuleTest, CircleSqueezeAll)
   {
     ASSERT_TRUE(loco::shape_known(squeeze_node));
 
-    auto shape = loco::shape_get(squeeze_node).as<loco::TensorShape>();
+    auto shape = luci::shape_get(squeeze_node).as<loco::TensorShape>();
     ASSERT_EQ(2, shape.rank());
     ASSERT_EQ(4, shape.dim(0));
     ASSERT_EQ(3, shape.dim(1));
@@ -450,7 +451,7 @@ TEST(CircleShapeInferenceRuleTest, CircleGatherNd_simple)
   {
     ASSERT_TRUE(loco::shape_known(gather_nd_node));
 
-    auto shape = loco::shape_get(gather_nd_node).as<loco::TensorShape>();
+    auto shape = luci::shape_get(gather_nd_node).as<loco::TensorShape>();
     ASSERT_EQ(3, shape.rank());
     ASSERT_EQ(1, shape.dim(0));
     ASSERT_EQ(2, shape.dim(1));
@@ -491,7 +492,7 @@ TEST(CircleShapeInferenceRuleTest, CircleGatherNd_slices)
   {
     ASSERT_TRUE(loco::shape_known(gather_nd_node));
 
-    auto shape = loco::shape_get(gather_nd_node).as<loco::TensorShape>();
+    auto shape = luci::shape_get(gather_nd_node).as<loco::TensorShape>();
     ASSERT_EQ(5, shape.rank());
     ASSERT_EQ(1, shape.dim(0));
     ASSERT_EQ(2, shape.dim(1));
@@ -572,7 +573,7 @@ TEST(CircleShapeInferenceRuleTest, CircleResizeNearestNeighbor)
   {
     ASSERT_TRUE(loco::shape_known(resize_node));
 
-    auto shape = loco::shape_get(resize_node).as<loco::TensorShape>();
+    auto shape = luci::shape_get(resize_node).as<loco::TensorShape>();
     ASSERT_EQ(4, shape.rank());
     ASSERT_EQ(1, shape.dim(0));
     ASSERT_EQ(16, shape.dim(1));
@@ -616,7 +617,7 @@ TEST(CircleShapeInferenceRuleTest, CircleResizeBilinear)
   {
     ASSERT_TRUE(loco::shape_known(resize_node));
 
-    auto shape = loco::shape_get(resize_node).as<loco::TensorShape>();
+    auto shape = luci::shape_get(resize_node).as<loco::TensorShape>();
     ASSERT_EQ(4, shape.rank());
     ASSERT_EQ(1, shape.dim(0));
     ASSERT_EQ(16, shape.dim(1));

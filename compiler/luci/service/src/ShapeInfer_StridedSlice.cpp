@@ -17,6 +17,7 @@
 
 #include "ShapeInfer_StridedSlice.h"
 #include "Check.h"
+#include "CircleShapeInferenceHelper.h"
 
 #include <luci/IR/CircleNode.h>
 #include <loco/IR/DataType.h>
@@ -245,7 +246,7 @@ loco::TensorShape infer_output_shape(const CircleStridedSlice *node)
   assert(node->new_axis_mask() == 0);
 
   auto op_params = BuildStridedSliceParams(node);
-  loco::TensorShape input_shape = loco::shape_get(input_node).as<loco::TensorShape>();
+  loco::TensorShape input_shape = luci::shape_get(input_node).as<loco::TensorShape>();
 
   uint32_t num_input_axes = input_shape.rank();
   assert(begin_node->size<S32>() <= num_input_axes);

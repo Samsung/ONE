@@ -33,7 +33,7 @@ namespace luci
 ShapeDescription ShapeInference::get(loco::Node *node)
 {
   assert(loco::shape_known(node));
-  return to_shape_description(loco::shape_get(node));
+  return to_shape_description(luci::shape_get(node));
 }
 
 } // namespace luci
