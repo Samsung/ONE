@@ -22,40 +22,41 @@
 namespace
 {
 
-class SubstituteTransposeToReshapeTestBase
+class SubstituteTransposeToReshapeTest : public ::testing::Test
 {
 public:
-  SubstituteTransposeToReshapeTestBase(std::vector<int32_t> perm)
+  SubstituteTransposeToReshapeTest() {}
+
+  void buildGraph(const std::initializer_list<uint32_t> shape, const std::vector<int32_t> perm)
   {
     // Input Create.
     input = g.nodes()->create<luci::CircleInput>();
     auto graph_input = g.inputs()->create();
     input->index(graph_input->index());
     input->shape_status(luci::ShapeStatus::VALID);
-    input->rank(4);
-    input->shape({126, 201, 1, 1});
+    input->rank(shape.size());
+    input->shape(shape);
 
     // Permutation Create.
     auto perm_const = g.nodes()->create<luci::CircleConst>();
     perm_const->dtype(loco::DataType::S32);
-    perm_const->size<loco::DataType::S32>(4);
+    perm_const->size<loco::DataType::S32>(perm.size());
     perm_const->shape_status(luci::ShapeStatus::VALID);
     perm_const->rank(1);
-    perm_const->dim(0).set(4);
-
+    perm_const->dim(0).set(perm.size());
     for (uint32_t i = 0; i < static_cast<uint32_t>(perm.size()); i++)
     {
       perm_const->at<loco::DataType::S32>(i) = perm.at(i);
     }
 
     // Transpose Create.
-    auto transpose = g.nodes()->create<luci::CircleTranspose>();
-    transpose->a(input);
-    transpose->perm(perm_const);
+    auto transpose_node = g.nodes()->create<luci::CircleTranspose>();
+    transpose_node->a(input);
+    transpose_node->perm(perm_const);
 
     // Output Connect.
     output = g.nodes()->create<luci::CircleOutput>();
-    output->from(transpose);
+    output->from(transpose_node);
     auto graph_output = g.outputs()->create();
     output->index(graph_output->index());
   }
@@ -66,30 +67,15 @@ public:
   luci::CircleOutput *output = nullptr;
 };
 
-class SubstituteTransposeToReshapeTest : public SubstituteTransposeToReshapeTestBase,
-                                         public ::testing::Test
-{
-public:
-  SubstituteTransposeToReshapeTest()
-    : SubstituteTransposeToReshapeTestBase(std::vector<int32_t>({2, 0, 3, 1}))
-  {
-  }
-};
-
-class SubstituteTransposeToReshapeTest_NEG : public SubstituteTransposeToReshapeTestBase,
-                                             public ::testing::Test
-{
-public:
-  SubstituteTransposeToReshapeTest_NEG()
-    : SubstituteTransposeToReshapeTestBase(std::vector<int32_t>({2, 1, 3, 0}))
-  {
-  }
-};
-
 } // namespace
 
 TEST_F(SubstituteTransposeToReshapeTest, simple_case)
 {
+  // Create graph that tranpose input {126, 201, 1, 1} with permutation {2, 0, 3, 1}
+  buildGraph({126, 201, 1, 1}, std::vector<int32_t>({2, 0, 3, 1}));
+  // on this input shape and permutation value, output shape will be {1, 126, 1, 201}
+  // the value in buffer will not change as order of value is same
+  // so, this transpose operation will change into reshape with new_shape value {1, 126, 1, 201}
   luci::SubstituteTransposeToReshapePass pass;
   while (pass.run(&g))
     ;
@@ -105,8 +91,15 @@ TEST_F(SubstituteTransposeToReshapeTest, simple_case)
   ASSERT_EQ(201, new_shape->at<loco::DataType::S32>(3));
 }
 
-TEST_F(SubstituteTransposeToReshapeTest_NEG, simple_case_NEG)
+TEST_F(SubstituteTransposeToReshapeTest, simple_case_NEG)
 {
+  // Create graph that tranpose input {126, 201, 1, 1} with permutation {2, 1, 3, 0}
+  buildGraph({126, 201, 1, 1}, std::vector<int32_t>({2, 1, 3, 0}));
+  // on this input shape and permutation value, output shape will be {1, 201, 1, 126}
+  // the value in buffer also change as index become reversed
+  // for example, index 1 value in input will value.at[0][1][0][0], output will be
+  // value.at[0][0][0][1] which is same with input value.at[1][0][0][0]. so this transpose cannot
+  // convert to reshape.
   luci::SubstituteTransposeToReshapePass pass;
   while (pass.run(&g))
     ;

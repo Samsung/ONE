@@ -25,10 +25,10 @@ namespace
  * @brief Convert transpose op in a certain condition to reshape op
  * @details Convert transpose op if it have condition below
  *          1. have a CircleConst perm value.
- *          2. input have a unknown shape less then 2
+ *          2. input have an unknown dimension less then 2
  *          3. the order of shape that except dim value 1 remains same on input and output
- *          eg) input shape  = (1, 2, 3, 4, 5, 1, 1, 1) => (2, 3, 4, 5)
- *              output shape = (2, 1, 3, 1, 1, 4, 5, 1) => (2, 3, 4, 5)
+ *             eg) input shape  = (126, 201, 1, 1) => (126, 201)
+ *                 output shape = (1, 126, 1, 201) => (126, 201)
  */
 bool substitute_transpose_to_reshape(luci::CircleNode *node)
 {
@@ -60,13 +60,13 @@ bool substitute_transpose_to_reshape(luci::CircleNode *node)
   {
     assert(perm_const->at<loco::DataType::S32>(i) >= 0 &&
            perm_const->at<loco::DataType::S32>(i) < static_cast<int32_t>(input_node->rank()));
-    if (input_node->dim(static_cast<uint32_t>(perm_const->at<loco::DataType::S32>(i))).known() &&
-        input_node->dim(static_cast<uint32_t>(perm_const->at<loco::DataType::S32>(i))).value() == 1)
+    const auto perm_value = static_cast<uint32_t>(perm_const->at<loco::DataType::S32>(i));
+    if (input_node->dim(perm_value).known() && input_node->dim(perm_value).value() == 1)
       continue;
     // To check idx values are increasing
-    if (idx > static_cast<uint32_t>(perm_const->at<loco::DataType::S32>(i)))
+    if (idx > perm_value)
       return false;
-    idx = static_cast<uint32_t>(perm_const->at<loco::DataType::S32>(i));
+    idx = perm_value;
   }
 
   auto new_const_node = node->graph()->nodes()->create<luci::CircleConst>();
