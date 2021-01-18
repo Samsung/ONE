@@ -499,6 +499,24 @@ class ConvertNCHWToNHWC final : public luci::CircleNodeMutableVisitor<bool>
 
     return true;
   }
+
+  bool visit(luci::CircleRelu6 *node)
+  {
+    const auto pred_node = loco::must_cast<luci::CircleNode *>(node->features());
+    auto pre_trans = create_pre_transpose(node);
+    pre_trans->a(pred_node);
+    node->features(pre_trans);
+
+    // Do shape inference for this node again.
+    loco::shape_erase(node);
+
+    auto post_trans = create_post_transpose(node);
+    loco::replace(node).with(post_trans);
+
+    post_trans->a(node);
+
+    return true;
+  }
 };
 
 } // namespace
@@ -533,6 +551,7 @@ bool ConvertNCHWToNHWCPass::run(loco::Graph *g)
       case luci::CircleOpcode::ADD:
       case luci::CircleOpcode::MUL:
       case luci::CircleOpcode::PAD:
+      case luci::CircleOpcode::RELU6:
         if (!has_data_format(node))
         {
           set_data_format(node, DataFormat::NCHW);
