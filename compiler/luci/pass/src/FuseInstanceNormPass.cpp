@@ -15,6 +15,7 @@
  */
 
 #include "luci/Pass/FuseInstanceNormPass.h"
+#include "helpers/NodeFiller.h"
 #include "FuseInstanceNormPassInternal.h"
 
 #include <luci/IR/CircleNodes.h>
@@ -23,96 +24,6 @@
 
 #include <cassert>
 #include <set>
-
-// Helper to find commutative node's arguments
-namespace
-{
-
-/**
- * INTRODUCTION
- *         Binary operation f(x,y) is 'commutative' when
- *         f(x,y) == f(y,x) holds for all x, y.
- *         For examples, ADD, MUL and SQUARED_DIFFERENCE are commutative.
- *         These helpers make it easy to find commutative arguemnts of commtative node.
- *
- * HOW TO USE
- *         COMM_NODE *node;
- *         ARG_TYPE_1 *arg1;
- *         ARG_TYPE_2 *arg2;
- *
- *         bool ok = fill(&arg1, &arg2).with_commutative_args_of(node);
- *
- * Result
- *         If 'node's commutative argument types are actually {ARG_TYPE_1, ARG_TYPE_2}
- *         (as a set), 'arg1' and 'arg2' set as actual 'node's arguemnts with matching
- *         type, and return value 'ok' is true.
- *         Otherwise, 'arg1' and 'arg2' not changed, 'ok' is false.
- */
-
-template <class ARG_TYPE_1, class ARG_TYPE_2> class NodeFiller final
-{
-public:
-  NodeFiller(ARG_TYPE_1 **arg_1, ARG_TYPE_2 **arg_2) : _arg_1(arg_1), _arg_2(arg_2)
-  {
-    // DO NOTHING
-  }
-
-  /**
-   * @return true   When 'node's argument types are 'ARG_TYPE_1' and 'ARG_TYPE_2'
-   *                In such case, it assign '_arg_1' and '_arg_2' to actual arguments
-   *
-   * @return false  When 'node's argument types are NOT matched with 'ARG_TYPE_*'
-   *                In such case, it does not amend '_arg_1' and '_arg_2'
-   *
-   * @require       COMM_NODE has member x() and y()
-   */
-  template <class COMM_NODE> bool with_commutative_args_of(const COMM_NODE *node);
-
-private:
-  ARG_TYPE_1 **_arg_1;
-  ARG_TYPE_2 **_arg_2;
-};
-
-template <class ARG_TYPE_1, class ARG_TYPE_2>
-inline NodeFiller<ARG_TYPE_1, ARG_TYPE_2> fill(ARG_TYPE_1 **arg_1, ARG_TYPE_2 **arg_2)
-{
-  return NodeFiller<ARG_TYPE_1, ARG_TYPE_2>{arg_1, arg_2};
-}
-
-template <class ARG_TYPE_1, class ARG_TYPE_2>
-template <class COMM_NODE>
-bool NodeFiller<ARG_TYPE_1, ARG_TYPE_2>::with_commutative_args_of(const COMM_NODE *node)
-{
-  // Case 1) X == ARG_TYPE_1 / Y == ARG_TYPE_2
-  {
-    auto x = dynamic_cast<ARG_TYPE_1 *>(node->x());
-    auto y = dynamic_cast<ARG_TYPE_2 *>(node->y());
-
-    if (x && y)
-    {
-      *_arg_1 = x;
-      *_arg_2 = y;
-      return true;
-    }
-  }
-
-  // Case 2) X == ARG_TYPE_2 / Y == ARG_TYPE_1
-  {
-    auto x = dynamic_cast<ARG_TYPE_2 *>(node->x());
-    auto y = dynamic_cast<ARG_TYPE_1 *>(node->y());
-
-    if (x && y)
-    {
-      *_arg_1 = y;
-      *_arg_2 = x;
-      return true;
-    }
-  }
-
-  return false;
-}
-
-} // namespace
 
 // Helper to check detail
 
@@ -443,8 +354,9 @@ bool InstanceNormPattern::matched()
   // So it is handled in the separate if statement
   if (_pv == PatternVersion::Version_2)
   {
-    CHECK_OR_FALSE(fill(&mul_gamma, &const_as_beta).with_commutative_args_of(add_as_terminal));
-    CHECK_OR_FALSE(fill(&div, &const_as_gamma).with_commutative_args_of(mul_gamma));
+    CHECK_OR_FALSE(
+      luci::fill(&mul_gamma, &const_as_beta).with_commutative_args_of(add_as_terminal));
+    CHECK_OR_FALSE(luci::fill(&div, &const_as_gamma).with_commutative_args_of(mul_gamma));
 
     sub = dynamic_cast<luci::CircleSub *>(div->x());
     CHECK_OR_FALSE(sub);
@@ -476,7 +388,7 @@ bool InstanceNormPattern::matched()
     CHECK_OR_FALSE(zero_point_five->at<loco::DataType::FLOAT32>(0) == 0.5);
 
     CHECK_OR_FALSE(
-      fill(&mean_as_variance, &const_as_epsilon).with_commutative_args_of(add_as_variance));
+      luci::fill(&mean_as_variance, &const_as_epsilon).with_commutative_args_of(add_as_variance));
     CHECK_OR_FALSE(const_as_epsilon->dtype() == loco::DataType::FLOAT32);
     // TODO Support regarding broadcast
     CHECK_OR_FALSE(const_as_epsilon->size<loco::DataType::FLOAT32>() == 1);
@@ -488,7 +400,8 @@ bool InstanceNormPattern::matched()
 
     loco::Node *ifm_should_be = nullptr;
     luci::CircleMean *mean_of_ifm_should_be = nullptr;
-    CHECK_OR_FALSE(fill(&ifm_should_be, &mean_of_ifm_should_be).with_commutative_args_of(sqdiff));
+    CHECK_OR_FALSE(
+      luci::fill(&ifm_should_be, &mean_of_ifm_should_be).with_commutative_args_of(sqdiff));
     CHECK_OR_FALSE(ifm == ifm_should_be);
     CHECK_OR_FALSE(mean_of_ifm == mean_of_ifm_should_be);
 
@@ -502,14 +415,15 @@ bool InstanceNormPattern::matched()
 
   if (_pv == PatternVersion::Version_0)
   {
-    CHECK_OR_FALSE(fill(&mul_as_scaled_ifm, &sub).with_commutative_args_of(add_as_terminal));
-    CHECK_OR_FALSE(fill(&ifm, &mul_gamma).with_commutative_args_of(mul_as_scaled_ifm));
+    CHECK_OR_FALSE(luci::fill(&mul_as_scaled_ifm, &sub).with_commutative_args_of(add_as_terminal));
+    CHECK_OR_FALSE(luci::fill(&ifm, &mul_gamma).with_commutative_args_of(mul_as_scaled_ifm));
   }
   if (_pv == PatternVersion::Version_1)
   {
-    CHECK_OR_FALSE(fill(&mul_as_scaled_reshape, &sub).with_commutative_args_of(add_as_terminal));
     CHECK_OR_FALSE(
-      fill(&reshape_of_ifm, &mul_gamma).with_commutative_args_of(mul_as_scaled_reshape));
+      luci::fill(&mul_as_scaled_reshape, &sub).with_commutative_args_of(add_as_terminal));
+    CHECK_OR_FALSE(
+      luci::fill(&reshape_of_ifm, &mul_gamma).with_commutative_args_of(mul_as_scaled_reshape));
     ifm = reshape_of_ifm->tensor();
   }
 
@@ -519,7 +433,7 @@ bool InstanceNormPattern::matched()
   CHECK_OR_FALSE(ifm_circle->dim(3).known());
   uint32_t ifm_channel_depth = ifm_circle->dim(3).value();
 
-  CHECK_OR_FALSE(fill(&rsqrt, &const_as_gamma).with_commutative_args_of(mul_gamma));
+  CHECK_OR_FALSE(luci::fill(&rsqrt, &const_as_gamma).with_commutative_args_of(mul_gamma));
 
   if (_pv == PatternVersion::Version_0)
   {
@@ -534,7 +448,7 @@ bool InstanceNormPattern::matched()
   CHECK_OR_FALSE(add_as_variance);
 
   CHECK_OR_FALSE(
-    fill(&mean_as_variance, &const_as_epsilon).with_commutative_args_of(add_as_variance));
+    luci::fill(&mean_as_variance, &const_as_epsilon).with_commutative_args_of(add_as_variance));
 
   CHECK_OR_FALSE(const_as_epsilon->dtype() == loco::DataType::FLOAT32);
   // TODO Support regarding broadcast
@@ -555,7 +469,7 @@ bool InstanceNormPattern::matched()
   if (_pv == PatternVersion::Version_0)
   {
     loco::Node *ifm_should_be = nullptr;
-    CHECK_OR_FALSE(fill(&ifm_should_be, &mean_of_ifm).with_commutative_args_of(sqdiff));
+    CHECK_OR_FALSE(luci::fill(&ifm_should_be, &mean_of_ifm).with_commutative_args_of(sqdiff));
     CHECK_OR_FALSE(ifm == ifm_should_be);
     CHECK_OR_FALSE(is_instance_mean_v0(mean_of_ifm));
     CHECK_OR_FALSE(ifm == mean_of_ifm->input());
@@ -563,7 +477,8 @@ bool InstanceNormPattern::matched()
   if (_pv == PatternVersion::Version_1)
   {
     loco::Node *reshape_should_be = nullptr;
-    CHECK_OR_FALSE(fill(&reshape_should_be, &mean_of_reshape).with_commutative_args_of(sqdiff));
+    CHECK_OR_FALSE(
+      luci::fill(&reshape_should_be, &mean_of_reshape).with_commutative_args_of(sqdiff));
     CHECK_OR_FALSE(reshape_of_ifm == reshape_should_be);
     CHECK_OR_FALSE(is_instance_mean_v1(mean_of_reshape));
     CHECK_OR_FALSE(reshape_of_ifm == mean_of_reshape->input());
@@ -590,14 +505,14 @@ bool InstanceNormPattern::matched()
 
   if (_pv == PatternVersion::Version_0)
   {
-    CHECK_OR_FALSE(fill(&mul_gamma_should_be, &mean_of_ifm_should_be)
+    CHECK_OR_FALSE(luci::fill(&mul_gamma_should_be, &mean_of_ifm_should_be)
                      .with_commutative_args_of(mul_as_scaled_mean));
     CHECK_OR_FALSE(mul_gamma == mul_gamma_should_be);
     CHECK_OR_FALSE(mean_of_ifm == mean_of_ifm_should_be);
   }
   if (_pv == PatternVersion::Version_1)
   {
-    CHECK_OR_FALSE(fill(&mul_gamma_should_be, &mean_of_reshape_should_be)
+    CHECK_OR_FALSE(luci::fill(&mul_gamma_should_be, &mean_of_reshape_should_be)
                      .with_commutative_args_of(mul_as_scaled_mean));
     CHECK_OR_FALSE(mul_gamma == mul_gamma_should_be);
     CHECK_OR_FALSE(mean_of_reshape == mean_of_reshape_should_be);
