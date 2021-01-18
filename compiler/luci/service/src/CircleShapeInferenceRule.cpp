@@ -343,8 +343,6 @@ loco::NodeShape infer_arg_min(const luci::CircleArgMin *node)
 // Call this for CircleAvgPool2D and CircleMaxPool2D only
 template <class Pool2DType> loco::NodeShape infer_pool_2d_shape(const Pool2DType *node)
 {
-  LUCI_ASSERT(loco::shape_known(node->value()), "Shape must be known");
-
   auto ifm_shape = luci::shape_get(node->value()).template as<loco::TensorShape>();
   assert(ifm_shape.rank() == 4);
 
