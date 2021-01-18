@@ -84,6 +84,49 @@ void DepthwiseConvolutionLayer::convQuant8()
     getBuffer<uint8_t>(_output), _external_context->ruy_context());
 }
 
+void DepthwiseConvolutionLayer::convQuant8PerChannel()
+{
+  if (!_prepared)
+  {
+    prepareQuant8PerChannel();
+    _prepared = true;
+  }
+
+  int32_t output_activation_min = 0;
+  int32_t output_activation_max = 0;
+  CalculateActivationRangeQuantized(_activation, _output, &output_activation_min,
+                                    &output_activation_max);
+
+  nnfw::cker::DepthwiseConvParams op_params;
+  op_params.padding_type = nnfw::cker::PaddingType::kSame;
+  op_params.padding_values.width = _paddingLeft;
+  op_params.padding_values.height = _paddingTop;
+  op_params.depth_multiplier = _multiplier;
+  op_params.stride_width = _strideWidth;
+  op_params.stride_height = _strideHeight;
+  op_params.dilation_width_factor = _dilationWidth;
+  op_params.dilation_height_factor = _dilationHeight;
+  op_params.input_offset = -_input->data_zero_point();
+  op_params.weights_offset = 0;
+  op_params.output_offset = _output->data_zero_point();
+  op_params.quantized_activation_min = output_activation_min;
+  op_params.quantized_activation_max = output_activation_max;
+
+  nnfw::cker::optimized_integer_ops::DepthwiseConvPerChannel(
+    op_params, _per_channel_output_multiplier.data(), _per_channel_output_shift.data(),
+    getShape(_input), getBuffer<int8_t>(_input), getShape(_kernel), getBuffer<int8_t>(_kernel),
+    getShape(_bias), getBuffer<int32_t>(_bias), getShape(_output), getBuffer<int8_t>(_output),
+    _external_context->ruy_context());
+}
+
+void DepthwiseConvolutionLayer::prepareQuant8PerChannel()
+{
+  GetQuantizedConvolutionMultipliersAndShifts(
+    _input->data_scale(), _output->data_scale(), _kernel->data_scales().data(),
+    _kernel->data_scales().size(), getShape(_kernel).Dims(3), _per_channel_output_multiplier,
+    _per_channel_output_shift);
+}
+
 void DepthwiseConvolutionLayer::configure(
   const IPortableTensor *input, const IPortableTensor *kernel, const IPortableTensor *bias,
   const uint32_t paddingLeft, const uint32_t paddingRight, const uint32_t paddingTop,
@@ -107,6 +150,15 @@ void DepthwiseConvolutionLayer::configure(
   _activation = activation;
   _output = output;
   _external_context = external_context;
+
+  if (_input->data_type() == OperandType::QUANT_INT8_ASYMM)
+  {
+    if (_kernel->is_constant() && !_input->is_dynamic() && !_output->is_dynamic())
+    {
+      prepareQuant8PerChannel();
+      _prepared = true;
+    }
+  }
 }
 
 void DepthwiseConvolutionLayer::run()
@@ -118,6 +170,10 @@ void DepthwiseConvolutionLayer::run()
   else if (_input->data_type() == OperandType::QUANT_UINT8_ASYMM)
   {
     convQuant8();
+  }
+  else if (_input->data_type() == OperandType::QUANT_INT8_ASYMM)
+  {
+    convQuant8PerChannel();
   }
   else
   {

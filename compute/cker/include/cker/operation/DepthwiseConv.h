@@ -24,6 +24,7 @@
 #include "cker/neon/neon_check.h"
 #include "cker/operation/optimized/DepthwiseConvFloat.h"
 #include "cker/operation/optimized/DepthwiseConvUint8.h"
+#include "cker/operation/optimized/integer_ops/DepthwiseConvInt8.h"
 #include "cker/CpuBackendThreadpool.h"
 
 namespace nnfw

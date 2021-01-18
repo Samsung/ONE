@@ -170,8 +170,25 @@ CircleBuffer genNegTestDepthwiseConv2DModel(circle::Padding padding, int stride_
   return cgen.finish();
 }
 
-CircleBuffer genSimpleDepthwiseConv2DQuantizedModel(int stride, int input_depth,
-                                                    int depth_multiplier)
+template <typename T> struct DepthwiseConv2DQuantTestParam
+{
+  int stride = 1; // Used for both height and width
+  int input_depth = 1;
+  int depth_multiplier = 1;
+  std::vector<T> ref_output;
+};
+
+template <typename T>
+class DepthwiseConv2DQuantTest
+  : public GenModelTest,
+    public ::testing::WithParamInterface<DepthwiseConv2DQuantTestParam<T>>
+{
+};
+
+using DepthwiseConv2DQuantTestParamU8 = DepthwiseConv2DQuantTestParam<uint8_t>;
+using DepthwiseConv2DQuantTestU8 = DepthwiseConv2DQuantTest<uint8_t>;
+
+CircleBuffer genDepthwiseConv2DQuantU8Model(int stride, int input_depth, int depth_multiplier)
 {
   assert(1 <= stride && stride <= 2);
   assert(1 <= input_depth && input_depth <= 16);
@@ -198,24 +215,6 @@ CircleBuffer genSimpleDepthwiseConv2DQuantizedModel(int stride, int input_depth,
   return cgen.finish();
 }
 
-template <typename T> struct DepthwiseConv2DQuantTestParam
-{
-  int stride = 1; // Used for both height and width
-  int input_depth = 1;
-  int depth_multiplier = 1;
-  std::vector<T> ref_output;
-};
-
-template <typename T>
-class DepthwiseConv2DQuantTest
-  : public GenModelTest,
-    public ::testing::WithParamInterface<DepthwiseConv2DQuantTestParam<T>>
-{
-};
-
-using DepthwiseConv2DQuantTestParamU8 = DepthwiseConv2DQuantTestParam<uint8_t>;
-using DepthwiseConv2DQuantTestU8 = DepthwiseConv2DQuantTest<uint8_t>;
-
 TEST_P(DepthwiseConv2DQuantTestU8, Test)
 {
   // Same input is used for all tests but output differs
@@ -224,8 +223,8 @@ TEST_P(DepthwiseConv2DQuantTestU8, Test)
     2, 4, 6, 8, 2, 4, 6, 8, 2, 4, 6, 8, 2, 4, 6, 8, 2, 3, 5, 8, 8, 5, 3, 2, 1, 2, 3, 4, 5, 4, 3, 2};
 
   auto &param = GetParam();
-  _context = std::make_unique<GenModelTestContext>(genSimpleDepthwiseConv2DQuantizedModel(
-    param.stride, param.input_depth, param.depth_multiplier));
+  _context = std::make_unique<GenModelTestContext>(
+    genDepthwiseConv2DQuantU8Model(param.stride, param.input_depth, param.depth_multiplier));
   std::vector<uint8_t> ref_input(input64.begin(), input64.begin() + param.input_depth * 4);
   _context->addTestCase(uniformTCD<uint8_t>({ref_input}, {param.ref_output}));
   _context->setBackends({"acl_cl", "acl_neon", "cpu"});
@@ -269,6 +268,89 @@ INSTANTIATE_TEST_CASE_P(
     DepthwiseConv2DQuantTestParamU8{
       2, 16, 1, std::vector<uint8_t>{0, 3, 8, 16, 0, 4, 7, 12, 0, 3, 7, 13, 0, 4, 7, 12}}));
 
+using DepthwiseConv2DQuantTestParamI8 = DepthwiseConv2DQuantTestParam<int8_t>;
+using DepthwiseConv2DQuantTestI8 = DepthwiseConv2DQuantTest<int8_t>;
+
+CircleBuffer genDepthwiseConv2DQuantI8Model(int stride, int input_depth, int depth_multiplier)
+{
+  assert(1 <= stride && stride <= 2);
+  assert(1 <= input_depth && input_depth <= 16);
+  assert(1 <= depth_multiplier && depth_multiplier <= 32);
+
+  const int output_depth = input_depth * depth_multiplier;
+  assert(1 <= output_depth && output_depth <= 32);
+
+  CircleGen cgen;
+  uint32_t ker_buf = cgen.addBuffer(std::vector<int8_t>{
+    0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1,
+    2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3,
+    0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1,
+    2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3,
+    0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3});
+  uint32_t bias_buf = cgen.addBuffer(std::vector<int32_t>(output_depth, 0));
+  int in = cgen.addTensor({{1, 2, 2, input_depth}, circle::TensorType_INT8}, 0.5, 0);
+  int ker = cgen.addTensor({{1, 2, 2, output_depth}, circle::TensorType_INT8, ker_buf}, 0.5, 0);
+  int bias = cgen.addTensor({{output_depth}, circle::TensorType_INT32, bias_buf}, 0.25, 0);
+  int out = cgen.addTensor({{1, 1, 1, output_depth}, circle::TensorType_INT8}, 1, 0);
+  cgen.addOperatorDepthwiseConv2D({{in, ker, bias}, {out}}, circle::Padding::Padding_VALID, stride,
+                                  stride, depth_multiplier, circle::ActivationFunctionType_NONE);
+  cgen.setInputsAndOutputs({in}, {out});
+  return cgen.finish();
+}
+
+TEST_P(DepthwiseConv2DQuantTestI8, Test)
+{
+  // Same input is used for all tests but output differs
+  static const std::vector<int8_t> input64{
+    0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 5, 4, 3, 2, 5, 4, 3, 2, 5, 4, 3, 2, 5, 4, 3, 2,
+    2, 4, 6, 8, 2, 4, 6, 8, 2, 4, 6, 8, 2, 4, 6, 8, 2, 3, 5, 8, 8, 5, 3, 2, 1, 2, 3, 4, 5, 4, 3, 2};
+
+  auto &param = GetParam();
+  _context = std::make_unique<GenModelTestContext>(
+    genDepthwiseConv2DQuantI8Model(param.stride, param.input_depth, param.depth_multiplier));
+  std::vector<int8_t> ref_input(input64.begin(), input64.begin() + param.input_depth * 4);
+  _context->addTestCase(uniformTCD<int8_t>({ref_input}, {param.ref_output}));
+  _context->setBackends({"acl_cl", "acl_neon", "cpu"});
+
+  SUCCEED();
+}
+
+// Test with different InputDepth and DepthMultiplier. The values are intended to test optimized CPU
+// kernels.
+INSTANTIATE_TEST_CASE_P(
+  GenModelTest, DepthwiseConv2DQuantTestI8,
+  ::testing::Values(
+    // Stride == 1
+    DepthwiseConv2DQuantTestParamI8{1, 8, 1, std::vector<int8_t>{0, 3, 5, 8, 0, 3, 5, 8}},
+    DepthwiseConv2DQuantTestParamI8{1, 4, 2, std::vector<int8_t>{0, 0, 2, 3, 0, 2, 6, 9}},
+    DepthwiseConv2DQuantTestParamI8{
+      1, 2, 8, std::vector<int8_t>{0, 1, 2, 3, 0, 1, 2, 3, 0, 2, 4, 6, 0, 2, 4, 6}},
+    DepthwiseConv2DQuantTestParamI8{1, 2, 2, std::vector<int8_t>{0, 1, 4, 6}},
+    DepthwiseConv2DQuantTestParamI8{1, 2, 1, std::vector<int8_t>{2, 5}},
+    DepthwiseConv2DQuantTestParamI8{1, 1, 2, std::vector<int8_t>{2, 4}},
+    DepthwiseConv2DQuantTestParamI8{1, 1, 4, std::vector<int8_t>{0, 2, 3, 5}},
+    DepthwiseConv2DQuantTestParamI8{1, 4, 1, std::vector<int8_t>{0, 1, 4, 9}},
+    DepthwiseConv2DQuantTestParamI8{
+      1, 4, 4, std::vector<int8_t>{0, 0, 0, 0, 0, 1, 2, 3, 0, 2, 4, 6, 0, 3, 6, 9}},
+    DepthwiseConv2DQuantTestParamI8{1, 12, 1,
+                                    std::vector<int8_t>{0, 3, 7, 12, 0, 4, 7, 12, 0, 4, 9, 16}},
+    // Stride == 2
+    DepthwiseConv2DQuantTestParamI8{2, 4, 1, std::vector<int8_t>{0, 1, 4, 9}},
+    DepthwiseConv2DQuantTestParamI8{2, 2, 1, std::vector<int8_t>{2, 5}},
+    DepthwiseConv2DQuantTestParamI8{2, 1, 8, std::vector<int8_t>{0, 2, 3, 5, 0, 2, 3, 5}},
+    DepthwiseConv2DQuantTestParamI8{2, 1, 32, std::vector<int8_t>{0, 2, 3, 5, 0, 2, 3, 5, 0, 2, 3,
+                                                                  5, 0, 2, 3, 5, 0, 2, 3, 5, 0, 2,
+                                                                  3, 5, 0, 2, 3, 5, 0, 2, 3, 5}},
+    DepthwiseConv2DQuantTestParamI8{
+      2, 1, 20, std::vector<int8_t>{0, 2, 3, 5, 0, 2, 3, 5, 0, 2, 3, 5, 0, 2, 3, 5, 0, 2, 3, 5}},
+    DepthwiseConv2DQuantTestParamI8{
+      2, 1, 16, std::vector<int8_t>{0, 2, 3, 5, 0, 2, 3, 5, 0, 2, 3, 5, 0, 2, 3, 5}},
+    DepthwiseConv2DQuantTestParamI8{2, 8, 1, std::vector<int8_t>{0, 3, 5, 8, 0, 3, 5, 8}},
+    DepthwiseConv2DQuantTestParamI8{
+      2, 8, 2, std::vector<int8_t>{0, 3, 5, 8, 0, 3, 5, 8, 0, 3, 5, 8, 0, 3, 5, 8}},
+    DepthwiseConv2DQuantTestParamI8{
+      2, 16, 1, std::vector<int8_t>{0, 3, 8, 16, 0, 4, 7, 12, 0, 3, 7, 13, 0, 4, 7, 12}}));
+
 TEST_F(GenModelTest, neg_OneOp_DepthwiseConv2D_InvalidPaddingType)
 {
   _context = std::make_unique<GenModelTestContext>(genNegTestDepthwiseConv2DModel(
@@ -280,3 +362,27 @@ TEST_F(GenModelTest, neg_OneOp_DepthwiseConv2D_InvalidPaddingType)
 }
 
 // TODO add other invalid operation tests like above
+
+TEST_F(GenModelTest, neg_OneOp_DepthwiseConv2D_I8_NonZero_ZeroPoints)
+{
+  CircleGen cgen;
+  std::vector<int8_t> weight_data{1, 2, 3, 4, 5, 6, 7, 8};
+  uint32_t weight_buf = cgen.addBuffer(weight_data);
+  std::vector<int32_t> bias_data{0, 2};
+  uint32_t bias_buf = cgen.addBuffer(bias_data);
+  int in = cgen.addTensor({{1, 3, 3, 2}, circle::TensorType::TensorType_INT8}, 0.5, 0);
+  std::vector<float> weight_scales = {0.5, 1};
+  std::vector<int64_t> weight_zeropoints = {0, 10};
+  int weight = cgen.addTensor({{1, 2, 2, 2}, circle::TensorType::TensorType_INT8, weight_buf},
+                              weight_scales, weight_zeropoints);
+  int bias = cgen.addTensor({{1, 1, 1, 2}, circle::TensorType::TensorType_INT32, bias_buf});
+  int out = cgen.addTensor({{1, 2, 2, 2}, circle::TensorType::TensorType_FLOAT32}, 1.0, 0);
+  cgen.addOperatorDepthwiseConv2D({{in, weight, bias}, {out}}, circle::Padding_VALID, 1, 1, 2,
+                                  circle::ActivationFunctionType_NONE);
+  cgen.setInputsAndOutputs({in}, {out});
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->setBackends({"cpu"});
+  _context->expectFailModelLoad();
+
+  SUCCEED();
+}

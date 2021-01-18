@@ -42,6 +42,8 @@ public:
 
   void convQuant8();
 
+  void convQuant8PerChannel();
+
   void configure(const IPortableTensor *input, const IPortableTensor *kernel,
                  const IPortableTensor *bias, const uint32_t paddingLeft,
                  const uint32_t paddingRight, const uint32_t paddingTop,
@@ -51,6 +53,9 @@ public:
                  IPortableTensor *output, const std::shared_ptr<ExternalContext> &external_context);
 
   void run() override;
+
+private:
+  void prepareQuant8PerChannel();
 
 private:
   const IPortableTensor *_input{nullptr};
@@ -74,6 +79,12 @@ private:
   ir::Activation _activation{ir::Activation::NONE};
 
   std::shared_ptr<ExternalContext> _external_context;
+
+  bool _prepared{false};
+
+  // Per channel output multiplier and shift.
+  std::vector<int32_t> _per_channel_output_multiplier;
+  std::vector<int> _per_channel_output_shift;
 };
 
 } // namespace ops
