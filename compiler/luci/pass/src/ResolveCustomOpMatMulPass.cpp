@@ -23,8 +23,6 @@
 
 #include <loco.h>
 #include <oops/InternalExn.h>
-#include <loco/Service/ShapeInference.h>
-#include <loco/Service/TypeInference.h>
 
 namespace
 {
