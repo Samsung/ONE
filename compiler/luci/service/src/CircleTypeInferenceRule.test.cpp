@@ -35,9 +35,8 @@ TEST(CircleTypeInferenceRuleTest, minimal_with_CircleRelu)
   auto relu_node = graph.append<luci::CircleRelu>(graph.input_node);
   graph.complete(relu_node);
 
-  // set dtype for nodes; like setting them in import
+  // set dtype for I/O nodes
   graph.input_node->dtype(loco::DataType::S32);
-  relu_node->dtype(loco::DataType::S32);
   graph.output_node->dtype(loco::DataType::S32);
 
   luci::test::graph_input_dtype(graph.input_node);
