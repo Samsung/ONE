@@ -224,8 +224,8 @@ public:
 void check_pre_trans(loco::Node *node)
 {
   auto pre_trans = dynamic_cast<luci::CircleTranspose *>(node);
-  auto pre_trans_perm = dynamic_cast<luci::CircleConst *>(pre_trans->perm());
   EXPECT_NE(nullptr, pre_trans);
+  auto pre_trans_perm = dynamic_cast<luci::CircleConst *>(pre_trans->perm());
   EXPECT_NE(nullptr, pre_trans_perm);
   EXPECT_EQ(1, pre_trans_perm->rank());
   EXPECT_EQ(4, pre_trans_perm->dim(0).value());
