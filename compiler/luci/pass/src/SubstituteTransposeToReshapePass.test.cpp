@@ -73,9 +73,9 @@ TEST_F(SubstituteTransposeToReshapeTest, simple_case)
 {
   // Create graph that tranpose input {126, 201, 1, 1} with permutation {2, 0, 3, 1}
   buildGraph({126, 201, 1, 1}, std::vector<int32_t>({2, 0, 3, 1}));
-  // on this input shape and permutation value, output shape will be {1, 126, 1, 201}
-  // the value in buffer will not change as order of value is same
-  // so, this transpose operation will change into reshape with new_shape value {1, 126, 1, 201}
+  // With this input shape and permutation values, output shape will be [1, 126, 1, 201].
+  // The order of non-one values is unchanged (126, 201).
+  // So this Transpose op can be converted to Reshape op.
   luci::SubstituteTransposeToReshapePass pass;
   while (pass.run(&g))
     ;
@@ -91,15 +91,13 @@ TEST_F(SubstituteTransposeToReshapeTest, simple_case)
   ASSERT_EQ(201, new_shape->at<loco::DataType::S32>(3));
 }
 
-TEST_F(SubstituteTransposeToReshapeTest, simple_case_NEG)
+TEST_F(SubstituteTransposeToReshapeTest, simple_case_not_convert)
 {
   // Create graph that tranpose input {126, 201, 1, 1} with permutation {2, 1, 3, 0}
   buildGraph({126, 201, 1, 1}, std::vector<int32_t>({2, 1, 3, 0}));
-  // on this input shape and permutation value, output shape will be {1, 201, 1, 126}
-  // the value in buffer also change as index become reversed
-  // for example, index 1 value in input will value.at[0][1][0][0], output will be
-  // value.at[0][0][0][1] which is same with input value.at[1][0][0][0]. so this transpose cannot
-  // convert to reshape.
+  // With this input shape and permutation values, output shape will be [1, 201, 1, 126].
+  // The order of non-one values is changed (126, 201) -> (201, 126).
+  // So this Transpose op cannot be converted to Reshape op.
   luci::SubstituteTransposeToReshapePass pass;
   while (pass.run(&g))
     ;
