@@ -25,37 +25,37 @@ namespace
 {
 
 template <loco::DataType FromT, loco::DataType ToT>
-class FoldCastTest : public luci::ConstantFoldingTestGraph
+class FoldCastTest : public luci::ConstantFoldingAddTestGraph
 {
 public:
-  FoldCastTest(std::initializer_list<uint32_t> shape) : luci::ConstantFoldingTestGraph(shape, ToT)
+  FoldCastTest(std::initializer_list<uint32_t> shape)
+    : luci::ConstantFoldingAddTestGraph(shape, ToT)
   {
-    cast = g.nodes()->create<luci::CircleCast>();
-    x = g.nodes()->create<luci::CircleConst>();
+    _cast = _g.nodes()->create<luci::CircleCast>();
+    _x = _g.nodes()->create<luci::CircleConst>();
 
-    cast->dtype(ToT);
-    x->dtype(FromT);
+    _cast->dtype(ToT);
+    _x->dtype(FromT);
 
-    cast->shape(shape);
-    x->shape(shape);
+    _cast->shape(shape);
+    _x->shape(shape);
 
     uint32_t num_elems = 1;
     for (auto dim = shape.begin(); dim != shape.end(); dim++)
       num_elems *= *dim;
 
-    x->size<FromT>(num_elems);
+    _x->size<FromT>(num_elems);
     for (uint32_t i = 0; i < num_elems; i++)
-      x->at<FromT>(i) = i + 1;
+      _x->at<FromT>(i) = i + 1;
 
-    cast->x(x);
+    _cast->x(_x);
   }
 
-  loco::Node *createFoldedPattern() override { return cast; }
+  loco::Node *createFoldedPattern() override { return _cast; }
 
-  // NOTE: we're not adding _ prefix as these class members are public
-public:
-  luci::CircleCast *cast = nullptr;
-  luci::CircleConst *x = nullptr;
+protected:
+  luci::CircleCast *_cast = nullptr;
+  luci::CircleConst *_x = nullptr;
 };
 
 /**
@@ -86,10 +86,10 @@ public:
 TEST_F(FoldS64ToS32CastTest, fold_cast_s64_to_s32)
 {
   luci::FoldCastPass pass;
-  while (pass.run(&g))
+  while (pass.run(graph()))
     ;
 
-  auto folded_const = dynamic_cast<luci::CircleConst *>(add->y());
+  auto folded_const = getFoldedPattern();
   EXPECT_NE(nullptr, folded_const);
 
   // Check type, shape, values of folded const

@@ -41,55 +41,54 @@ namespace
  *            [Const] (shape: [3], values: [2, 2, 2])
  *
  */
-class S64SparseToDenseZeroIndicesTest : public luci::ConstantFoldingTestGraph,
+class S64SparseToDenseZeroIndicesTest : public luci::ConstantFoldingAddTestGraph,
                                         public ::testing::Test
 {
 public:
-  S64SparseToDenseZeroIndicesTest() : luci::ConstantFoldingTestGraph({3}, loco::DataType::S64) {}
+  S64SparseToDenseZeroIndicesTest() : luci::ConstantFoldingAddTestGraph({3}, loco::DataType::S64) {}
 
   virtual void SetUp() { init(); }
 
   loco::Node *createFoldedPattern() override
   {
-    stod = g.nodes()->create<luci::CircleSparseToDense>();
-    indices = g.nodes()->create<luci::CircleConst>();
-    output_shape = g.nodes()->create<luci::CircleConst>();
-    values = g.nodes()->create<luci::CircleConst>();
-    default_value = g.nodes()->create<luci::CircleConst>();
+    _stod = _g.nodes()->create<luci::CircleSparseToDense>();
+    _indices = _g.nodes()->create<luci::CircleConst>();
+    _output_shape = _g.nodes()->create<luci::CircleConst>();
+    _values = _g.nodes()->create<luci::CircleConst>();
+    _default_value = _g.nodes()->create<luci::CircleConst>();
 
-    stod->dtype(loco::DataType::S64);
-    indices->dtype(loco::DataType::S64);
-    output_shape->dtype(loco::DataType::S64);
-    values->dtype(loco::DataType::S64);
-    default_value->dtype(loco::DataType::S64);
+    _stod->dtype(loco::DataType::S64);
+    _indices->dtype(loco::DataType::S64);
+    _output_shape->dtype(loco::DataType::S64);
+    _values->dtype(loco::DataType::S64);
+    _default_value->dtype(loco::DataType::S64);
 
-    indices->shape({0, 1});
-    output_shape->shape({1});
-    values->shape({0});
-    default_value->rank(0);
+    _indices->shape({0, 1});
+    _output_shape->shape({1});
+    _values->shape({0});
+    _default_value->rank(0);
 
-    indices->size<loco::DataType::S64>(0);
-    output_shape->size<loco::DataType::S64>(1);
-    output_shape->at<loco::DataType::S64>(0) = 3;
-    values->size<loco::DataType::S64>(0);
-    default_value->size<loco::DataType::S64>(1);
-    default_value->at<loco::DataType::S64>(0) = 2;
+    _indices->size<loco::DataType::S64>(0);
+    _output_shape->size<loco::DataType::S64>(1);
+    _output_shape->at<loco::DataType::S64>(0) = 3;
+    _values->size<loco::DataType::S64>(0);
+    _default_value->size<loco::DataType::S64>(1);
+    _default_value->at<loco::DataType::S64>(0) = 2;
 
-    stod->indices(indices);
-    stod->output_shape(output_shape);
-    stod->values(values);
-    stod->default_value(default_value);
+    _stod->indices(_indices);
+    _stod->output_shape(_output_shape);
+    _stod->values(_values);
+    _stod->default_value(_default_value);
 
-    return stod;
+    return _stod;
   }
 
-  // NOTE: we're not adding _ prefix as these class members are public
-public:
-  luci::CircleSparseToDense *stod = nullptr;
-  luci::CircleConst *indices = nullptr;
-  luci::CircleConst *output_shape = nullptr;
-  luci::CircleConst *values = nullptr;
-  luci::CircleConst *default_value = nullptr;
+protected:
+  luci::CircleSparseToDense *_stod = nullptr;
+  luci::CircleConst *_indices = nullptr;
+  luci::CircleConst *_output_shape = nullptr;
+  luci::CircleConst *_values = nullptr;
+  luci::CircleConst *_default_value = nullptr;
 };
 
 } // namespace
@@ -97,10 +96,10 @@ public:
 TEST_F(S64SparseToDenseZeroIndicesTest, fold_stod_with_zero_indices)
 {
   luci::FoldSparseToDensePass pass;
-  while (pass.run(&g))
+  while (pass.run(graph()))
     ;
 
-  auto folded_const = dynamic_cast<luci::CircleConst *>(add->y());
+  auto folded_const = getFoldedPattern();
   EXPECT_NE(nullptr, folded_const);
 
   // Chec type, shape, values of folded const
@@ -114,8 +113,8 @@ TEST_F(S64SparseToDenseZeroIndicesTest, fold_stod_with_zero_indices)
 
 TEST_F(S64SparseToDenseZeroIndicesTest, illegal_input_NEG)
 {
-  indices->dtype(loco::DataType::S32);
+  _indices->dtype(loco::DataType::S32);
 
   luci::FoldSparseToDensePass pass;
-  EXPECT_ANY_THROW(pass.run(&g));
+  EXPECT_ANY_THROW(pass.run(graph()));
 }
