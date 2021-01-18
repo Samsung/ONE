@@ -20,8 +20,10 @@
 #include "arm_compute/core/CL/CLKernelLibraryEx.h"
 
 #include <util/ConfigSource.h>
+#include <fstream>
 
 #include <arm_compute/runtime/CL/CLScheduler.h>
+#include <arm_compute/runtime/CL/CLTunerTypes.h>
 
 #include "Config.h"
 
@@ -32,13 +34,84 @@ namespace backend
 namespace acl_cl
 {
 
+Config::~Config()
+{
+  auto tuner_active = util::getConfigBool(util::config::TUNER_ACTIVE);
+  auto tuner_update = util::getConfigBool(util::config::TUNER_UPDATE);
+  auto tuner_filepath = util::getConfigString(util::config::TUNER_FILEPATH);
+
+  if (_tuner != nullptr)
+  {
+    if (tuner_active == true && tuner_update == true)
+    {
+      _tuner->save_to_file(tuner_filepath);
+    }
+    delete _tuner;
+    _tuner = nullptr;
+  }
+}
+
+bool Config::file_exists(const std::string &file_name)
+{
+  std::ifstream file(file_name);
+  return file.good();
+}
+
+bool Config::set_tuner()
+{
+  auto tuner_active = util::getConfigBool(util::config::TUNER_ACTIVE);
+  auto tuner_mode = util::getConfigInt(util::config::TUNER_MODE);
+  auto tuner_filepath = util::getConfigString(util::config::TUNER_FILEPATH);
+
+  if (tuner_active)
+  {
+    _tuner = new arm_compute::CLTuner();
+
+    if (tuner_mode <= CONFIG_CLTUNER_MIN || tuner_mode >= CONFIG_CLTUNER_MAX)
+    {
+      return false;
+    }
+
+    _tuner->set_tune_new_kernels(tuner_active);
+    switch (tuner_mode)
+    {
+      case CONFIG_CLTUNER_READ:
+        if (file_exists(tuner_filepath))
+        {
+          _tuner->load_from_file(tuner_filepath);
+        }
+        break;
+      case CONFIG_CLTUNER_EXHAUSTIVE:
+        _tuner->set_tuner_mode(arm_compute::CLTunerMode::EXHAUSTIVE);
+        break;
+      case CONFIG_CLTUNER_NORMAL:
+        _tuner->set_tuner_mode(arm_compute::CLTunerMode::NORMAL);
+        break;
+      case CONFIG_CLTUNER_RAPID:
+        _tuner->set_tuner_mode(arm_compute::CLTunerMode::RAPID);
+        break;
+      default:
+        return false;
+    }
+  }
+
+  return true;
+}
+
 bool Config::initialize()
 {
   if (!arm_compute::opencl_is_available())
   {
     return false;
   }
-  arm_compute::CLScheduler::get().default_init();
+
+  if (set_tuner() == false)
+  {
+    _tuner = nullptr;
+  }
+
+  arm_compute::CLScheduler::get().default_init(_tuner);
+
   // NOTE CLKernelLibraryEx must use the same context as CLScheduler
   // It did not check whether another device is available.
   arm_compute::CLKernelLibraryEx::get().init(

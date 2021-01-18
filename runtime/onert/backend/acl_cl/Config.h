@@ -21,6 +21,7 @@
 #include <memory>
 #include <backend/IConfig.h>
 #include <arm_compute/runtime/CL/CLScheduler.h>
+#include <arm_compute/runtime/CL/CLTuner.h>
 
 namespace onert
 {
@@ -29,9 +30,20 @@ namespace backend
 namespace acl_cl
 {
 
+typedef enum
+{
+  CONFIG_CLTUNER_MIN = -1,
+  CONFIG_CLTUNER_READ,
+  CONFIG_CLTUNER_EXHAUSTIVE,
+  CONFIG_CLTUNER_NORMAL,
+  CONFIG_CLTUNER_RAPID,
+  CONFIG_CLTUNER_MAX
+} CONFIG_CLTUNER_MODE;
+
 class Config : public IConfig
 {
 public:
+  virtual ~Config();
   std::string id() override { return "acl_cl"; }
   bool initialize() override;
   bool supportPermutation() override { return true; }
@@ -41,6 +53,12 @@ public:
   void sync() const override { arm_compute::CLScheduler::get().sync(); }
 
   std::unique_ptr<util::ITimer> timer() override { return std::make_unique<CLTimer>(); }
+
+  bool file_exists(const std::string &file_name);
+  bool set_tuner();
+
+private:
+  arm_compute::CLTuner *_tuner = nullptr;
 };
 
 } // namespace acl_cl

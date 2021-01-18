@@ -113,6 +113,8 @@ using CfgKeyValues = std::unordered_map<std::string, std::string>;
 
 bool loadConfigure(const std::string cfgfile, CfgKeyValues &keyValues)
 {
+  keyValues.clear();
+
   std::ifstream ifs(cfgfile);
   if (ifs.is_open())
   {
@@ -141,20 +143,6 @@ bool loadConfigure(const std::string cfgfile, CfgKeyValues &keyValues)
   }
   return false;
 }
-
-void setConfigKeyValues(const CfgKeyValues &keyValues)
-{
-  auto configsrc = std::make_unique<onert::util::GeneralConfigSource>();
-
-  for (auto it = keyValues.begin(); it != keyValues.end(); ++it)
-  {
-    VERBOSE(NNPKG_CONFIGS) << "(" << it->first << ") = (" << it->second << ")" << std::endl;
-    configsrc->set(it->first, it->second);
-  }
-
-  onert::util::config_source_ext(std::move(configsrc));
-}
-
 } // namespace
 
 nnfw_session::nnfw_session()
@@ -286,19 +274,27 @@ NNFW_STATUS nnfw_session::load_model_from_nnpackage(const char *package_dir)
     const Json::Value &model_types = root["model-types"];
     const Json::Value &configs = root["configs"];
 
+    CfgKeyValues keyValues;
+
+    auto model_file_path = package_dir + std::string("/") + models[0].asString(); // first model
+    auto model_type = model_types[0].asString(); // first model's type
+
+    auto tuner_file_path =
+      model_file_path.substr(0, model_file_path.rfind(".", model_file_path.length() - 1)) + ".tune";
+    keyValues[onert::util::config::TUNER_FILEPATH] = tuner_file_path;
+
+    onert::util::setConfigKeyValues(keyValues);
+
     if (!configs.empty() && !configs[0].empty())
     {
       auto filepath = package_dir + std::string("/metadata/") + configs[0].asCString();
 
-      CfgKeyValues keyValues;
       if (loadConfigure(filepath, keyValues))
       {
-        setConfigKeyValues(keyValues);
+        onert::util::setConfigKeyValues(keyValues);
       }
     }
 
-    auto model_file_path = package_dir + std::string("/") + models[0].asString(); // first model
-    auto model_type = model_types[0].asString(); // first model's type
     if (model_type == "tflite")
     {
       _subgraphs = onert::tflite_loader::loadModel(model_file_path.c_str());
@@ -813,6 +809,50 @@ NNFW_STATUS nnfw_session::set_op_backend(const char *op, const char *backend)
   catch (const std::exception &e)
   {
     std::cerr << "Error during nnfw_session::set_op_backend : " << e.what() << std::endl;
+    return NNFW_STATUS_ERROR;
+  }
+  return NNFW_STATUS_NO_ERROR;
+}
+
+NNFW_STATUS nnfw_session::set_tuner(nnfw_cltunerinfo *cltuner)
+{
+  CfgKeyValues keyValues;
+
+  if (!isStateModelLoaded() || isStatePrepared())
+  {
+    return NNFW_STATUS_INVALID_STATE;
+  }
+
+  try
+  {
+    if (cltuner->active && (cltuner->mode <= NNFW_CLTUNER_MIN || cltuner->mode >= NNFW_CLTUNER_MAX))
+    {
+      return NNFW_STATUS_UNEXPECTED_NULL;
+    }
+
+    if (cltuner->update == false)
+    {
+      cltuner->mode = NNFW_CLTUNER_READ;
+    }
+
+    if (cltuner->mode == NNFW_CLTUNER_READ)
+    {
+      cltuner->update = false;
+    }
+
+    keyValues[onert::util::config::TUNER_ACTIVE] = std::to_string(cltuner->active);
+    keyValues[onert::util::config::TUNER_UPDATE] = std::to_string(cltuner->update);
+    keyValues[onert::util::config::TUNER_MODE] = std::to_string(cltuner->mode);
+    if (!cltuner->file_path.empty())
+    {
+      keyValues[onert::util::config::TUNER_FILEPATH] = cltuner->file_path;
+    }
+
+    onert::util::setConfigKeyValues(keyValues);
+  }
+  catch (const std::exception &e)
+  {
+    std::cerr << "Error during nnfw_session::set_tuner : " << e.what() << std::endl;
     return NNFW_STATUS_ERROR;
   }
   return NNFW_STATUS_NO_ERROR;

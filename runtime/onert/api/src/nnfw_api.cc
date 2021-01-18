@@ -317,6 +317,20 @@ NNFW_STATUS nnfw_set_op_backend(nnfw_session *session, const char *op, const cha
 }
 
 /*
+ * Set the OpenCL Tuner Configuration
+ *
+ * @param[in] session session to set OpenCL Tuner Configuration
+ * @param[in] cltuner cltuner to configure OpenCL Tuner Configuration Value
+ *
+ * @return NNFW_STATUS_NO_ERROR if successful
+ */
+NNFW_STATUS nnfw_set_tuner(nnfw_session *session, nnfw_cltunerinfo *cltuner)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return session->set_tuner(cltuner);
+}
+
+/*
  * Retrieve uint32 type of nnfw information for given information ID.
  *
  * @param[in] session session to be queried on

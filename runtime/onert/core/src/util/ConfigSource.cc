@@ -33,7 +33,6 @@ static std::unique_ptr<IConfigSource> _source;
 static std::unique_ptr<IConfigSource> _source_ext;
 
 void config_source(std::unique_ptr<IConfigSource> &&source) { _source = std::move(source); }
-void config_source_ext(std::unique_ptr<IConfigSource> &&source) { _source_ext = std::move(source); }
 
 static IConfigSource *config_source()
 {
@@ -47,6 +46,15 @@ static IConfigSource *config_source()
 #endif // ENVVAR_FOR_DEFAULT_CONFIG
   }
   return _source.get();
+}
+
+static IConfigSource *config_source_ext()
+{
+  if (!_source_ext)
+  {
+    _source_ext = std::make_unique<GeneralConfigSource>();
+  }
+  return _source_ext.get();
 }
 
 static std::string getConfigOrDefault(const std::string &key)
@@ -87,6 +95,14 @@ static std::string getConfigOrDefault(const std::string &key)
   }
 
   return ret;
+}
+
+void setConfigKeyValues(const CfgKeyValues &keyValues)
+{
+  for (auto it = keyValues.begin(); it != keyValues.end(); ++it)
+  {
+    static_cast<GeneralConfigSource *>(config_source_ext())->set(it->first, it->second);
+  }
 }
 
 bool toBool(const std::string &val)

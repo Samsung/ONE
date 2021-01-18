@@ -23,6 +23,7 @@
 
 #include <stddef.h>
 #include <stdint.h>
+#include <string>
 
 #ifdef __cplusplus
 extern "C" {
@@ -146,6 +147,16 @@ typedef enum
   NNFW_INFO_ID_VERSION = 0,
 } NNFW_INFO_ID;
 
+typedef enum
+{
+  NNFW_CLTUNER_MIN = -1,
+  NNFW_CLTUNER_READ,
+  NNFW_CLTUNER_EXHAUSTIVE,
+  NNFW_CLTUNER_NORMAL,
+  NNFW_CLTUNER_RAPID,
+  NNFW_CLTUNER_MAX
+} NNFW_CLTUNER_MODE;
+
 /**
  * @brief Maximum rank expressible with nnfw
  */
@@ -175,6 +186,14 @@ typedef struct nnfw_tensorinfo
    */
   int32_t dims[NNFW_MAX_RANK];
 } nnfw_tensorinfo;
+
+typedef struct nnfw_cltunerinfo
+{
+  bool active;
+  bool update;
+  NNFW_CLTUNER_MODE mode;
+  std::string file_path;
+} nnfw_cltunerinfo;
 
 /**
  * @brief Create a new session instance.
@@ -478,6 +497,19 @@ NNFW_STATUS nnfw_set_available_backends(nnfw_session *session, const char *backe
  * @return @c NNFW_STATUS_NO_ERROR if successful
  */
 NNFW_STATUS nnfw_set_op_backend(nnfw_session *session, const char *op, const char *backend);
+
+/**
+ * @brief     Set the OpenCL Tuner Configuration
+ *
+ * This function should be called before {@link nnfw_prepare} is invoked.
+ *
+ *
+ * @param[in] session session to set OpenCL Tuner Configuration
+ * @param[in] cltuner cltuner to configure OpenCL Tuner Configuration Value
+ *
+ * @return @c NNFW_STATUS_NO_ERROR if successful
+ */
+NNFW_STATUS nnfw_set_tuner(nnfw_session *session, nnfw_cltunerinfo *cltuner);
 
 /**
  * @brief     Retrieve uint32 type of nnfw information for given information ID.

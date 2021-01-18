@@ -126,6 +126,8 @@ public:
   NNFW_STATUS set_available_backends(const char *backends);
   NNFW_STATUS set_op_backend(const char *op, const char *backend);
 
+  NNFW_STATUS set_tuner(nnfw_cltunerinfo *cltuner);
+
   //
   // Internal-only API
   //

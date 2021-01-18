@@ -20,14 +20,17 @@
 #include <memory>
 
 #include "IConfigSource.h"
+#include <unordered_map>
 
 namespace onert
 {
 namespace util
 {
+using CfgKeyValues = std::unordered_map<std::string, std::string>;
 
 void config_source(std::unique_ptr<IConfigSource> &&source);
-void config_source_ext(std::unique_ptr<IConfigSource> &&source);
+
+void setConfigKeyValues(const CfgKeyValues &keyValues);
 
 bool toBool(const std::string &val);
 int toInt(const std::string &val);
