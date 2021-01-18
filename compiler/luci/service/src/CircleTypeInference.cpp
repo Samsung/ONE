@@ -68,7 +68,7 @@ namespace luci
 
 circle::TensorType TypeInference::get(loco::Node *node)
 {
-  assert(loco::dtype_known(node));
+  assert(luci::dtype_known(node));
   return translateLocoTypeToCircle(luci::dtype_get(node));
 }
 
