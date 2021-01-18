@@ -300,7 +300,7 @@ int main(const int argc, char **argv)
     std::cerr << e.what() << std::endl;
     exit(FILE_ERROR);
   }
-  interpreter->SetNumThreads(nnfw::misc::EnvVar("THREAD").asInt(-1));
+  interpreter->SetNumThreads(nnfw::misc::EnvVar("THREAD").asInt(1));
 
   auto sess = std::make_shared<nnfw::tflite::InterpreterSession>(interpreter.get());
   sess->prepare();

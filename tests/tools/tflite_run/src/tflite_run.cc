@@ -112,7 +112,7 @@ int main(const int argc, char **argv)
       BuiltinOpResolver resolver;
       InterpreterBuilder builder(*model, resolver);
       TFLITE_ENSURE(builder(&interpreter))
-      interpreter->SetNumThreads(nnfw::misc::EnvVar("THREAD").asInt(-1));
+      interpreter->SetNumThreads(nnfw::misc::EnvVar("THREAD").asInt(1));
     });
   }
   catch (const std::exception &e)
