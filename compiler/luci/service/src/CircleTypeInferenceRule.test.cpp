@@ -15,6 +15,7 @@
  */
 
 #include "TestGraph.h"
+#include "CircleTypeInferenceHelper.h"
 #include <luci/Service/CircleTypeInferenceRule.h>
 
 #include <luci/IR/CircleNodes.h>
@@ -57,6 +58,6 @@ TEST(CircleTypeInferenceRuleTest, minimal_with_CircleRelu)
 
   // Verify
   ASSERT_TRUE(loco::dtype_known(relu_node));
-  auto type = loco::dtype_get(relu_node);
+  auto type = luci::dtype_get(relu_node);
   ASSERT_EQ(loco::DataType::S32, type);
 }

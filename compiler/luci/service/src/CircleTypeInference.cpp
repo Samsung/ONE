@@ -15,6 +15,7 @@
  */
 
 #include "luci/Service/CircleTypeInference.h"
+#include "CircleTypeInferenceHelper.h"
 
 #include <luci/Log.h>
 
@@ -68,7 +69,7 @@ namespace luci
 circle::TensorType TypeInference::get(loco::Node *node)
 {
   assert(loco::dtype_known(node));
-  return translateLocoTypeToCircle(loco::dtype_get(node));
+  return translateLocoTypeToCircle(luci::dtype_get(node));
 }
 
 } // namespace luci
