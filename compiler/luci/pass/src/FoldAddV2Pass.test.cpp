@@ -39,55 +39,54 @@ namespace
  *
  *           [CircleConst]
  */
-template <loco::DataType T> class FoldAddV2Test : public luci::ConstantFoldingTestGraph
+template <loco::DataType T> class FoldAddV2Test : public luci::ConstantFoldingAddTestGraph
 {
 public:
-  FoldAddV2Test(std::initializer_list<uint32_t> shape) : luci::ConstantFoldingTestGraph(shape, T)
+  FoldAddV2Test(std::initializer_list<uint32_t> shape) : luci::ConstantFoldingAddTestGraph(shape, T)
   {
-    addV2 = g.nodes()->create<luci::CircleCustom>(2);
-    x = g.nodes()->create<luci::CircleConst>();
-    y = g.nodes()->create<luci::CircleConst>();
-    addV2_out = g.nodes()->create<luci::CircleCustomOut>();
+    _addV2 = _g.nodes()->create<luci::CircleCustom>(2);
+    _x = _g.nodes()->create<luci::CircleConst>();
+    _y = _g.nodes()->create<luci::CircleConst>();
+    _addV2_out = _g.nodes()->create<luci::CircleCustomOut>();
 
-    addV2->dtype(T);
-    x->dtype(T);
-    y->dtype(T);
-    addV2_out->dtype(T);
+    _addV2->dtype(T);
+    _x->dtype(T);
+    _y->dtype(T);
+    _addV2_out->dtype(T);
 
-    addV2->shape(shape);
-    x->shape(shape);
-    y->shape(shape);
-    addV2_out->shape(shape);
+    _addV2->shape(shape);
+    _x->shape(shape);
+    _y->shape(shape);
+    _addV2_out->shape(shape);
 
     uint32_t num_elems = 1;
     for (auto dim = shape.begin(); dim != shape.end(); dim++)
       num_elems *= *dim;
 
-    x->size<T>(num_elems);
-    y->size<T>(num_elems);
+    _x->size<T>(num_elems);
+    _y->size<T>(num_elems);
 
     for (uint32_t i = 0; i < num_elems; i++)
     {
-      x->at<T>(i) = i + 1;
-      y->at<T>(i) = i + 1;
+      _x->at<T>(i) = i + 1;
+      _y->at<T>(i) = i + 1;
     }
 
-    addV2->custom_code("AddV2");
-    addV2->inputs(0, x);
-    addV2->inputs(1, y);
-    addV2_out->input(addV2);
+    _addV2->custom_code("AddV2");
+    _addV2->inputs(0, _x);
+    _addV2->inputs(1, _y);
+    _addV2_out->input(_addV2);
   }
 
-  loco::Node *createFoldedPattern() override { return addV2_out; }
+  loco::Node *createFoldedPattern() override { return _addV2_out; }
 
   virtual ~FoldAddV2Test() = default;
 
-  // NOTE: we're not adding _ prefix as these class members are public
-public:
-  luci::CircleCustom *addV2 = nullptr;
-  luci::CircleCustomOut *addV2_out = nullptr;
-  luci::CircleConst *x = nullptr;
-  luci::CircleConst *y = nullptr;
+protected:
+  luci::CircleCustom *_addV2 = nullptr;
+  luci::CircleCustomOut *_addV2_out = nullptr;
+  luci::CircleConst *_x = nullptr;
+  luci::CircleConst *_y = nullptr;
 };
 
 class FoldS64AddV2Test : public FoldAddV2Test<loco::DataType::S64>, public ::testing::Test
@@ -103,10 +102,10 @@ public:
 TEST_F(FoldS64AddV2Test, fold_addV2)
 {
   luci::FoldAddV2Pass pass;
-  while (pass.run(&g))
+  while (pass.run(graph()))
     ;
 
-  auto folded_const = dynamic_cast<luci::CircleConst *>(add->y());
+  auto folded_const = getFoldedPattern();
   EXPECT_NE(nullptr, folded_const);
 
   // Check type, shape, values of folded const
@@ -120,8 +119,8 @@ TEST_F(FoldS64AddV2Test, fold_addV2)
 
 TEST_F(FoldS64AddV2Test, input_type_mismatch_NEG)
 {
-  x->dtype(loco::DataType::S32);
+  _x->dtype(loco::DataType::S32);
 
   luci::FoldAddV2Pass pass;
-  EXPECT_FALSE(pass.run(&g));
+  EXPECT_FALSE(pass.run(graph()));
 }
