@@ -42,6 +42,7 @@ luci::CircleConst *create_const_node(loco::Graph *g, const loco::DataType dtype,
     node->dim(i) = shape.at(i);
     size *= shape.at(i);
   }
+  node->shape_status(luci::ShapeStatus::VALID);
 
 #define INIT_VALUES(DT)                          \
   {                                              \
