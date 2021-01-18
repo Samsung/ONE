@@ -428,7 +428,7 @@ class ConvertNCHWToNHWC final : public luci::CircleNodeMutableVisitor<bool>
       return false;
     }
 
-    // Do shape inference for this node again.
+    // Make loco do shape inference for this node again.
     loco::shape_erase(node);
 
     auto post_trans = create_post_transpose(node);
@@ -465,7 +465,7 @@ class ConvertNCHWToNHWC final : public luci::CircleNodeMutableVisitor<bool>
       return false;
     }
 
-    // Do shape inference for this node again.
+    // Make loco do shape inference for this node again.
     loco::shape_erase(node);
 
     auto post_trans = create_post_transpose(node);
@@ -489,7 +489,7 @@ class ConvertNCHWToNHWC final : public luci::CircleNodeMutableVisitor<bool>
     const auto nhwc_paddings = create_NHWC_paddings(nchw_paddings);
     node->paddings(nhwc_paddings);
 
-    // Do shape inference for this node again.
+    // Make loco do shape inference for this node again.
     loco::shape_erase(node);
 
     auto post_trans = create_post_transpose(node);
