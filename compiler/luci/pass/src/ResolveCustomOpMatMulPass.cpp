@@ -16,6 +16,8 @@
 
 #include "luci/Pass/ResolveCustomOpMatMulPass.h"
 
+#include "helpers/TypeMapper.h"
+
 #include "flatbuffers/flexbuffers.h"
 #include <loco/IR/DataTypeTraits.h>
 
@@ -28,12 +30,11 @@ namespace
 {
 
 template <typename T>
-luci::CircleConst *create_const_node(loco::Graph *g, const loco::DataType dtype,
-                                     const std::vector<uint32_t> &shape,
+luci::CircleConst *create_const_node(loco::Graph *g, const std::vector<uint32_t> &shape,
                                      const std::vector<T> &values)
 {
   auto node = g->nodes()->create<luci::CircleConst>();
-  node->dtype(dtype);
+  node->dtype(luci::TypeMapper<T>::get());
   node->rank(shape.size());
 
   uint32_t size = 1;
@@ -44,31 +45,12 @@ luci::CircleConst *create_const_node(loco::Graph *g, const loco::DataType dtype,
   }
   node->shape_status(luci::ShapeStatus::VALID);
 
-#define INIT_VALUES(DT)                          \
-  {                                              \
-    node->size<DT>(size);                        \
-    for (uint32_t i = 0; i < values.size(); ++i) \
-      node->at<DT>(i) = values[i];               \
+  node->size<luci::TypeMapper<T>::get()>(size);
+  for (uint32_t i = 0; i < values.size(); ++i)
+  {
+    node->at<luci::TypeMapper<T>::get()>(i) = values[i];
   }
 
-  switch (dtype)
-  {
-    case loco::DataType::U8:
-      INIT_VALUES(loco::DataType::U8);
-      break;
-    case loco::DataType::S16:
-      INIT_VALUES(loco::DataType::S16);
-      break;
-    case loco::DataType::S32:
-      INIT_VALUES(loco::DataType::S32);
-      break;
-    case loco::DataType::FLOAT32:
-      INIT_VALUES(loco::DataType::FLOAT32)
-      break;
-    default:
-      INTERNAL_EXN("create_const_node called with unsupported type");
-      break;
-  }
   return node;
 }
 
@@ -86,7 +68,6 @@ bool resolve_matmul(luci::CircleCustom *cop)
   auto map = flexbuffers::GetRoot(custom_options).AsMap();
   const auto U8 = loco::DataType::U8;
   const auto S16 = loco::DataType::S16;
-  const auto S32 = loco::DataType::S32;
   const auto FLOAT32 = loco::DataType::FLOAT32;
 
   bool transpose_a = map["transpose_a"].AsBool();
@@ -116,11 +97,11 @@ bool resolve_matmul(luci::CircleCustom *cop)
   if (transpose_a)
   {
     // Create a permutation constant node
-    std::vector<uint32_t> perm;
+    std::vector<int32_t> perm;
     for (uint32_t i = 0; i < circle_lhs->rank(); ++i)
       perm.push_back(i);
     std::swap(perm[circle_lhs->rank() - 1], perm[circle_lhs->rank() - 2]);
-    auto perm_node = create_const_node(graph, S32, {circle_lhs->rank()}, perm);
+    auto perm_node = create_const_node(graph, {circle_lhs->rank()}, perm);
     // Now make a transpose node
     auto transpose_node = graph->nodes()->create<luci::CircleTranspose>();
     transpose_node->a(lhs);
@@ -133,8 +114,8 @@ bool resolve_matmul(luci::CircleCustom *cop)
   // in row-major order, thus we need to convert between them.
   if (!transpose_b)
   {
-    const std::vector<uint32_t> perm{1, 0};
-    auto perm_node = create_const_node(graph, S32, {2}, perm);
+    const std::vector<int32_t> perm{1, 0};
+    auto perm_node = create_const_node(graph, {2}, perm);
     auto transpose_node = graph->nodes()->create<luci::CircleTranspose>();
     transpose_node->a(rhs);
     transpose_node->perm(perm_node);
