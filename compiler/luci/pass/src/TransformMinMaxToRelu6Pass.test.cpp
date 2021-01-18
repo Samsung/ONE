@@ -115,7 +115,7 @@ TEST_F(MinMaxGraph, simple_test)
 {
   luci::TransformMinMaxToRelu6Pass pass;
   auto ret = pass.run(&_g);
-  EXPECT_EQ(true, ret);
+  EXPECT_TRUE(ret);
 
   auto relu6 = dynamic_cast<luci::CircleRelu6 *>(_output->from());
   EXPECT_NE(nullptr, relu6);
@@ -131,5 +131,5 @@ TEST_F(MinMaxGraph, wrong_condition_NEG)
   luci::TransformMinMaxToRelu6Pass pass;
   auto ret = pass.run(&_g);
 
-  EXPECT_EQ(false, ret);
+  EXPECT_FALSE(ret);
 }
