@@ -16,13 +16,21 @@
 
 #include "CircleTypeInferenceHelper.h"
 
+#include <loco/Service/TypeInference.h>
+
 namespace luci
 {
 
 loco::DataType dtype_get(const loco::Node *node)
 {
-  assert(dtype_known(node));
-  return loco::must_cast<const luci::CircleNode *>(node)->dtype();
+  // NOTE This function is subject to change after refactoring is finished.
+  //      If type of CircleNode is returned, TypeInferencePass may cause errors.
+  //      If type of loco::Node is returned, CircleTypeInferencePass may cause errors.
+  //      Therefore until refactoring is finished, both kind of type should be used.
+  if (luci::dtype_known(node))
+    return loco::must_cast<const luci::CircleNode *>(node)->dtype();
+  assert(loco::dtype_known(node));
+  return loco::dtype_get(node);
 }
 
 bool dtype_known(const loco::Node *node)

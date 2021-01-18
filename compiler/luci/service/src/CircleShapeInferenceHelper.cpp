@@ -16,13 +16,21 @@
 
 #include "CircleShapeInferenceHelper.h"
 
+#include <loco/Service/ShapeInference.h>
+
 namespace luci
 {
 
 loco::NodeShape shape_get(const loco::Node *node)
 {
-  assert(shape_known(node));
-  return loco::NodeShape{sinf::circle_shape(loco::must_cast<const luci::CircleNode *>(node))};
+  // NOTE This function is subject to change after refactoring is finished.
+  //      If shape of CircleNode is returned, ShapeInferencePass may cause errors.
+  //      If shape of loco::Node is returned, CircleShapeInferencePass may cause errors.
+  //      Therefore until refactoring is finished, both kind of shape should be used.
+  if (luci::shape_known(node))
+    return loco::NodeShape{sinf::circle_shape(loco::must_cast<const luci::CircleNode *>(node))};
+  assert(loco::shape_known(node));
+  return loco::shape_get(node);
 }
 
 bool shape_known(const loco::Node *node)
