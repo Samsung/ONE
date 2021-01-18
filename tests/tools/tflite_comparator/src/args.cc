@@ -47,8 +47,8 @@ void Args::Initialize(void)
 
 void Args::print(char **argv)
 {
-  std::cout << "tflite_loader" << std::endl << std::endl;
-  std::cout << "Load tflite model by Loader and TFLite and compare their output" << std::endl;
+  std::cout << "tflite_comparator" << std::endl << std::endl;
+  std::cout << "Load tflite model by onert and TFLite, and compare their output" << std::endl;
   std::cout << "Usage:" << std::endl;
   std::cout << argv[0] << " --tflite model_file.tflite --data input_data.dat" << std::endl;
   std::cout << _options;
