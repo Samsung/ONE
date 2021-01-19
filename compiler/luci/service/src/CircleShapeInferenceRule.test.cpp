@@ -20,6 +20,7 @@
 
 #include <luci/IR/CircleNodes.h>
 #include <luci/IR/CircleDialect.h>
+#include <luci/Service/CircleShapeInference.h>
 
 #include <loco.h>
 #include <loco/IR/CanonicalDialect.h>
@@ -46,6 +47,54 @@ bool shape_pass(loco::Graph *g)
     .bind(luci::CircleDialect::get(), &circle_rule);
 
   return loco::apply(&rules).to(g);
+}
+
+bool is_same_shape(luci::CircleNode *node, loco::TensorShape shape)
+{
+  if (node->shape_status() != luci::ShapeStatus::VALID)
+    return false;
+
+  if (node->rank() != shape.rank())
+    return false;
+
+  for (uint32_t i = 0; i < node->rank(); ++i)
+  {
+    if (node->dim(i).known() != shape.dim(i).known())
+      return false;
+
+    if (node->dim(i).value() != shape.dim(i).value())
+      return false;
+  }
+
+  return true;
+}
+
+// NOTE This function imitates CircleShapeInferencePass but little bit different.
+//      In CircleShapeInferencePass, DeadNodeQueryService is used to get alive nodes,
+//      which are not detected with postorder_traversal.
+//      However, it is not considered in this function because this is just for testing
+//      inference rule itself, not for inference pass.
+bool circle_shape_pass(loco::Graph *g)
+{
+  luci::sinf::Rule shape_infer_rule;
+  bool changed = false;
+
+  for (auto node : loco::postorder_traversal(loco::output_nodes(g)))
+  {
+    loco::TensorShape shape;
+    auto circle_node = loco::must_cast<luci::CircleNode *>(node);
+
+    if (shape_infer_rule.infer(circle_node, shape) && !is_same_shape(circle_node, shape))
+    {
+      circle_node->rank(shape.rank());
+      for (uint32_t i = 0; i < shape.rank(); ++i)
+        circle_node->dim(i) = shape.dim(i);
+      circle_node->shape_status(luci::ShapeStatus::VALID);
+      changed = true;
+    }
+  }
+
+  return changed;
 }
 
 } // namespace

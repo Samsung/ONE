@@ -16,6 +16,7 @@
 
 #include "TestGraph.h"
 #include "CircleTypeInferenceHelper.h"
+#include <luci/Service/CircleTypeInference.h>
 #include <luci/Service/CircleTypeInferenceRule.h>
 
 #include <luci/IR/CircleNodes.h>
@@ -28,6 +29,36 @@
 #include <gtest/gtest.h>
 
 #include <memory>
+
+namespace
+{
+
+// NOTE This function imitates CircleTypeInferencePass but little bit different.
+//      In CircleTypeInferencePass, DeadNodeQueryService is used to get alive nodes,
+//      which are not detected with postorder_traversal.
+//      However, it is not considered in this function because this is just for testing
+//      inference rule itself, not for inference pass.
+bool circle_type_pass(loco::Graph *g)
+{
+  luci::tinf::Rule type_infer_rule;
+  bool changed = false;
+
+  for (auto node : loco::postorder_traversal(loco::output_nodes(g)))
+  {
+    loco::DataType dtype;
+    auto circle_node = loco::must_cast<luci::CircleNode *>(node);
+
+    if (type_infer_rule.infer(circle_node, dtype) && circle_node->dtype() != dtype)
+    {
+      circle_node->dtype(dtype);
+      changed = true;
+    }
+  }
+
+  return changed;
+}
+
+} // namespace
 
 TEST(CircleTypeInferenceRuleTest, minimal_with_CircleRelu)
 {
