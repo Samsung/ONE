@@ -39,9 +39,39 @@ template <> struct TypeMapper<uint8_t>
   static constexpr loco::DataType get() { return loco::DataType::U8; }
 };
 
+template <> struct TypeMapper<uint16_t>
+{
+  static constexpr loco::DataType get() { return loco::DataType::U16; }
+};
+
+template <> struct TypeMapper<uint32_t>
+{
+  static constexpr loco::DataType get() { return loco::DataType::U32; }
+};
+
+template <> struct TypeMapper<uint64_t>
+{
+  static constexpr loco::DataType get() { return loco::DataType::U64; }
+};
+
+template <> struct TypeMapper<int8_t>
+{
+  static constexpr loco::DataType get() { return loco::DataType::S8; }
+};
+
 template <> struct TypeMapper<int16_t>
 {
   static constexpr loco::DataType get() { return loco::DataType::S16; }
+};
+
+template <> struct TypeMapper<int32_t>
+{
+  static constexpr loco::DataType get() { return loco::DataType::S32; }
+};
+
+template <> struct TypeMapper<int64_t>
+{
+  static constexpr loco::DataType get() { return loco::DataType::S64; }
 };
 
 } // namespace luci
