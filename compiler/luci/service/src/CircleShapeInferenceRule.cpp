@@ -547,9 +547,15 @@ loco::NodeShape infer_concatenation(const luci::CircleConcatenation *node)
     for (uint32_t j = 0; j < output_shape.rank(); ++j)
     {
       if (j == static_cast<uint32_t>(axis))
+      {
+        // If dimension is unknown, value() will return 0.
+        // This is wrong but until new inference algorithm is implemented,
+        // this code will not be modified to keep compatibility.
         output_shape.dim(j) = output_shape.dim(j).value() + input_shape.dim(j).value();
+      }
       else
-        assert(output_shape.dim(j) == input_shape.dim(j));
+        assert(!output_shape.dim(j).known() || !input_shape.dim(j).known() ||
+               output_shape.dim(j) == input_shape.dim(j));
     }
   }
 
