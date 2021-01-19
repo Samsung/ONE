@@ -91,7 +91,7 @@ TEST_F(SubstituteTransposeToReshapeTest, simple_case)
   ASSERT_EQ(201, new_shape->at<loco::DataType::S32>(3));
 }
 
-TEST_F(SubstituteTransposeToReshapeTest, simple_case_not_convert)
+TEST_F(SubstituteTransposeToReshapeTest, simple_case_NEG)
 {
   // Create graph that tranpose input {126, 201, 1, 1} with permutation {2, 1, 3, 0}
   buildGraph({126, 201, 1, 1}, std::vector<int32_t>({2, 1, 3, 0}));
