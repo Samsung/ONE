@@ -23,7 +23,9 @@ namespace luci
 {
 
 /**
- * @brief  Class to remove redundant Reshape node into 1 reshape node.
+ * @brief  Class to remove redundant Reshape node into 1 Reshape node.
+ * @details This class will update consecutive two Reshape node into single Reshape node.
+ *          As Reshape operation just change shape, not buffer, former reshape could be unnecessary.
  */
 struct RemoveRedundantReshapePass final : public logo::Pass
 {

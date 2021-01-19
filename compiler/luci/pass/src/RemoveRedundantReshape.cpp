@@ -48,18 +48,25 @@ bool remove_redundant_reshape(luci::CircleNode *node)
 namespace luci
 {
 
-// Bypass redundant reshape nodes:
-//
-//      input                      input  ---+
-//        |                          |       |
-//        V                          V       |
-//     Reshape       becomes      Reshape    |
-//   (pred_node)                (pred_node)  |
-//        |                                  |
-//        V                                  |
-//     Reshape                    Reshape  <-+
-//  (target_node)              (target_node)
-
+/**
+ * BEFORE
+ *
+ *      [CircleNode]
+ *            |
+ *    [CircleReshape_1]
+ *            |
+ *    [CircleReshape_2]
+ *            |
+ *      [CircleNode]
+ *
+ * AFTER
+ *
+ *      [CircleNode]
+ *            |
+ *    [CircleReshape_2]
+ *            |
+ *      [CircleNode]
+ **/
 bool RemoveRedundantReshapePass::run(loco::Graph *g)
 {
   bool changed = false;

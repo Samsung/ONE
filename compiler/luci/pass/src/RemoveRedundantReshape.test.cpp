@@ -27,9 +27,23 @@ class RemoveRedundantReshape : public ::testing::Test
 public:
   RemoveRedundantReshape() {}
 
+  void createReshapeConst(luci::CircleReshape *target, const std::vector<int32_t> shape)
+  {
+    auto shape_const = g.nodes()->create<luci::CircleConst>();
+    shape_const->dtype(loco::DataType::S32);
+    shape_const->size<loco::DataType::S32>(shape.size());
+    shape_const->shape_status(luci::ShapeStatus::VALID);
+    shape_const->rank(1);
+    shape_const->dim(0).set(shape.size());
+    for (int32_t i = 0; i < shape.size(); i++)
+    {
+      shape_const->at<loco::DataType::S32>(i) = shape.at(i);
+    }
+    target->shape(shape_const);
+  }
+
   void buildGraph(const std::initializer_list<uint32_t> base_shape,
-                  const std::vector<int32_t> intermediate_shape,
-                  const std::vector<int32_t> final_shape)
+                  const std::vector<int32_t> first_shape, const std::vector<int32_t> second_shape)
   {
     // Input Create.
     input = g.nodes()->create<luci::CircleInput>();
@@ -39,39 +53,19 @@ public:
     input->rank(base_shape.size());
     input->shape(base_shape);
 
-    // Reshape Node create.
-    auto intermediate_reshape = g.nodes()->create<luci::CircleReshape>();
-    intermediate_reshape->tensor(input);
-    auto intermediate_const = g.nodes()->create<luci::CircleConst>();
-    intermediate_const->dtype(loco::DataType::S32);
-    intermediate_const->size<loco::DataType::S32>(intermediate_shape.size());
-    intermediate_const->shape_status(luci::ShapeStatus::VALID);
-    intermediate_const->rank(1);
-    intermediate_const->dim(0).set(intermediate_shape.size());
-    for (int32_t i = 0; i < intermediate_shape.size(); i++)
-    {
-      intermediate_const->at<loco::DataType::S32>(i) = intermediate_shape.at(i);
-    }
-    intermediate_reshape->shape(intermediate_const);
+    // Create first reshape.
+    first_reshape = g.nodes()->create<luci::CircleReshape>();
+    first_reshape->tensor(input);
+    createReshapeConst(first_reshape, first_shape);
 
-    // Reshape Node create.
-    auto final_reshape = g.nodes()->create<luci::CircleReshape>();
-    final_reshape->tensor(intermediate_reshape);
-    auto final_const = g.nodes()->create<luci::CircleConst>();
-    final_const->dtype(loco::DataType::S32);
-    final_const->size<loco::DataType::S32>(final_shape.size());
-    final_const->shape_status(luci::ShapeStatus::VALID);
-    final_const->rank(1);
-    final_const->dim(0).set(final_shape.size());
-    for (int32_t i = 0; i < final_shape.size(); i++)
-    {
-      final_const->at<loco::DataType::S32>(i) = final_shape.at(i);
-    }
-    final_reshape->shape(final_const);
+    // Create second reshape.
+    second_reshape = g.nodes()->create<luci::CircleReshape>();
+    second_reshape->tensor(first_reshape);
+    createReshapeConst(second_reshape, second_shape);
 
     // Output Connect.
     output = g.nodes()->create<luci::CircleOutput>();
-    output->from(final_reshape);
+    output->from(second_reshape);
     auto graph_output = g.outputs()->create();
     output->index(graph_output->index());
   }
@@ -79,6 +73,8 @@ public:
 public:
   loco::Graph g;
   luci::CircleInput *input = nullptr;
+  luci::CircleReshape *first_reshape = nullptr;
+  luci::CircleReshape *second_reshape = nullptr;
   luci::CircleOutput *output = nullptr;
 };
 
@@ -100,6 +96,5 @@ TEST_F(RemoveRedundantReshape, simple_case)
       count++;
     }
   }
-  ASSERT_NE(nullptr, reshape_node);
   ASSERT_EQ(1, count);
 }
