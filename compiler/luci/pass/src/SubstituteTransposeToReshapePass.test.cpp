@@ -91,7 +91,7 @@ TEST_F(SubstituteTransposeToReshapeTest, simple_case)
   ASSERT_EQ(201, new_shape->at<loco::DataType::S32>(3));
 }
 
-TEST_F(SubstituteTransposeToReshapeTest, simple_case_NEG)
+TEST_F(SubstituteTransposeToReshapeTest, failed_to_substitute_NEG)
 {
   // Create graph that tranpose input {126, 201, 1, 1} with permutation {2, 1, 3, 0}
   buildGraph({126, 201, 1, 1}, std::vector<int32_t>({2, 1, 3, 0}));
@@ -106,9 +106,4 @@ TEST_F(SubstituteTransposeToReshapeTest, simple_case_NEG)
   auto transpose_node = dynamic_cast<luci::CircleTranspose *>(output->from());
   ASSERT_EQ(nullptr, reshape_node);
   ASSERT_NE(nullptr, transpose_node);
-  auto perm = loco::must_cast<luci::CircleConst *>(transpose_node->perm());
-  ASSERT_EQ(2, perm->at<loco::DataType::S32>(0));
-  ASSERT_EQ(1, perm->at<loco::DataType::S32>(1));
-  ASSERT_EQ(3, perm->at<loco::DataType::S32>(2));
-  ASSERT_EQ(0, perm->at<loco::DataType::S32>(3));
 }
