@@ -71,7 +71,7 @@ void Graph::setOperandValue(const OperandIndex &ind, std::shared_ptr<Data> data)
 
 void Graph::addInput(const OperandIndex &ind, const std::string &name)
 {
-  assert(isBuildingPhase());
+  // assert(isBuildingPhase());
   if (!name.empty())
     _name_to_input.emplace(name, IOIndex{_inputs.size()});
   _inputs.append(ind);
@@ -79,7 +79,7 @@ void Graph::addInput(const OperandIndex &ind, const std::string &name)
 
 void Graph::addOutput(const OperandIndex &ind, const std::string &name)
 {
-  assert(isBuildingPhase());
+  // assert(isBuildingPhase());
   if (!name.empty())
     _name_to_output.emplace(name, IOIndex{_outputs.size()});
   _outputs.append(ind);
@@ -103,7 +103,7 @@ void Graph::finishBuilding(void)
   _phase = Phase::MODEL;
 
   initializeUseDef();
-  sweepGarbageOperands();
+  // sweepGarbageOperands();
 
   // Call graph verifications for the MODEL phase
   {

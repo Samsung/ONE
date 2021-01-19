@@ -34,6 +34,7 @@
 #include "backend/builtin/UserTensor.h"
 #include "backend/builtin/TensorBuilder.h"
 #include "util/TracingCtx.h"
+#include "dumper/dot/DotDumper.h"
 
 #include <memory>
 
@@ -117,98 +118,72 @@ backend::BackendContexts createBackendContexts(const compiler::LoweredGraph &lgr
 
   ir::OperationCloner op_cloner;
   auto &whole_graph = lgraph.graph();
+  whole_graph.operands().iterate(
+    [&](const ir::OperandIndex &operand_ind, const ir::Operand &operand) {
+      auto &operand_li = lgraph.lower_info().operand;
+      const auto &def_factors = operand_li.at(operand_ind).def_factors();
+      if (def_factors.size() == 0) // Ignore unused tensor
+        return;
+      const auto &def_factor = def_factors.getOnlyElement();
+      const auto backend = def_factor.backend();
+      auto &partial_graph = *context_data_map[backend].graph;
+      auto &operand_layouts = context_data_map[backend].operand_layouts;
+      operand_layouts[operand_ind] = def_factor.layout();
+
+      // Copy the operand and insert it to the partial graph
+      auto new_operand = std::make_unique<ir::Operand>(operand);
+      // TODO Introduce a method for resetting use/def values of Operand
+      // NOTE Use/Def info is going to be filled in `Graph::finishBuilding`
+      const_cast<ir::OperationIndexSet &>(new_operand->getUses()).clear();
+      new_operand->unsetDef();
+      auto new_operand_ind = partial_graph.addOperand(operand_ind, std::move(new_operand));
+      UNUSED_RELEASE(new_operand_ind);
+      assert(new_operand_ind == operand_ind);
+      VERBOSE(BuildBackendGraph) << "backend:" << backend->config()->id()
+                                 << " Added Native Operand " << operand_ind << std::endl;
+    });
   whole_graph.operations().iterate(
     [&](const ir::OperationIndex &op_ind, const ir::Operation &operation) {
       auto &op_li = lgraph.lower_info().operation;
-      auto &operand_li = lgraph.lower_info().operand;
       auto backend = op_li.at(op_ind).backend();
       auto &partial_graph = *context_data_map[backend].graph;
       auto &operation_layouts = context_data_map[backend].operation_layouts;
-      auto &operand_layouts = context_data_map[backend].operand_layouts;
       auto &external_operands = context_data_map[backend].external_operands;
+      auto &operand_layouts = context_data_map[backend].operand_layouts;
 
       {
+        /*
+        VERBOSE(BuildBackendGraph)
+          << "backend:" << backend->config()->id() << " Operand " << operand_ind << " "
+          << (partial_graph.getInputs().contains(operand_ind) ? "IN" : "") << " "
+          << (partial_graph.getOutputs().contains(operand_ind) ? "OUT" : "") << " "
+          << (external_operands.contains(operand_ind) ? "EXT" : "") << std::endl;
+          */
+        // Add missing operands (externals)
         auto io_list = (operation.getInputs() + operation.getOutputs()) | ir::Remove::DUPLICATED |
                        ir::Remove::UNDEFINED;
         for (auto operand_ind : io_list)
         {
+          if (partial_graph.operands().exist(operand_ind))
+            continue;
+
+          // Copy the operand and insert it to the partial graph
           const auto &operand = whole_graph.operands().at(operand_ind);
           auto new_operand = std::make_unique<ir::Operand>(operand);
           // TODO Introduce a method for resetting use/def values of Operand
           // NOTE Use/Def info is going to be filled in `Graph::finishBuilding`
           const_cast<ir::OperationIndexSet &>(new_operand->getUses()).clear();
           new_operand->unsetDef();
-
           auto new_operand_ind = partial_graph.addOperand(operand_ind, std::move(new_operand));
-          assert(!new_operand_ind.valid() || new_operand_ind == operand_ind);
+          UNUSED_RELEASE(new_operand_ind);
+          assert(new_operand_ind == operand_ind);
 
-          // If it failed, it means that the operand was added already
-          if (new_operand_ind.valid())
-          {
-            const auto &def_factors = operand_li.at(operand_ind).def_factors();
-            const auto &def_factor = def_factors.getOnlyElement();
-            operand_layouts[operand_ind] = def_factor.layout();
-          }
-
-          {
-            // Add entries for external_operands and operand_layouts
-            const auto &def_factors = operand_li.at(operand_ind).def_factors();
-            const auto &def_factor = def_factors.getOnlyElement();
-            if (def_factor.backend() != backend)
-            {
-              external_operands.add(operand_ind);
-              if (operation.getInputs().contains(operand_ind))
-              {
-                if (!partial_graph.getInputs().contains(operand_ind))
-                  partial_graph.addInput(operand_ind);
-              }
-            }
-            else
-            {
-              auto def = operand.getDef();
-              // Partial graph input condition (when it is defined by this backend)
-              //   - If Def is not valid and not constant, it is a subgraph input
-              //   - If Def is valid but the def op is Permute - the only exception
-              if (operation.getInputs().contains(operand_ind))
-              {
-                VERBOSE(CHECK_INPUT) << operand_ind << " : " << def.valid() << " " << operand.isConstant() << std::endl;
-                if ((!def.valid() && !operand.isConstant()) ||
-                    (def.valid() &&
-                     whole_graph.operations().at(def).opcode() == ir::OpCode::Permute))
-                {
-                  if (!partial_graph.getInputs().contains(operand_ind))
-                    partial_graph.addInput(operand_ind);
-                }
-              }
-            }
-
-            if (operation.getOutputs().contains(operand_ind))
-            {
-              bool is_output = false;
-              for (const auto &use_factor : operand_li.at(operand_ind).use_factors())
-              {
-                if (backend != use_factor.backend())
-                {
-                  is_output = true;
-                  break;
-                }
-              }
-              if (whole_graph.getOutputs().contains(operand_ind))
-                is_output = true;
-              VERBOSE(CHECK_OUTPUT) << operand_ind << " : " << whole_graph.getOutputs().contains(operand_ind) << std::endl;
-              if (is_output)
-              {
-                if (!partial_graph.getOutputs().contains(operand_ind))
-                  partial_graph.addOutput(operand_ind);
-              }
-            }
-
-            VERBOSE(BuildBackendGraph)
-              << "backend:" << backend->config()->id() << " Operand " << operand_ind << " "
-              << (partial_graph.getInputs().contains(operand_ind) ? "IN" : "") << " "
-              << (partial_graph.getOutputs().contains(operand_ind) ? "OUT" : "") << " "
-              << (external_operands.contains(operand_ind) ? "EXT" : "") << std::endl;
-          }
+          auto layout =
+            lgraph.lower_info().operand.at(operand_ind).def_factors().getOnlyElement().layout();
+          operand_layouts[operand_ind] = layout;
+          external_operands.add(operand_ind);
+          VERBOSE(BuildBackendGraph) << "backend:" << backend->config()->id()
+                                     << " Added External Operand " << operand_ind << std::endl;
         }
 
         operation.accept(op_cloner);
@@ -222,27 +197,37 @@ backend::BackendContexts createBackendContexts(const compiler::LoweredGraph &lgr
 
   // Create contexts
   auto whole_op_order = lgraph.graph().topolSortOperations();
+  int rndv = rand();
   for (auto &pair : context_data_map)
   {
     auto backend = pair.first;
     auto &data = pair.second;
     data.graph->finishBuilding();
-    /*
     data.graph->operands().iterate([&](const ir::OperandIndex &ind, const ir::Operand &operand) {
-      if (!operand.getDef().valid())
+      if (whole_graph.getInputs().contains(ind) || whole_graph.getOutputs().contains(ind))
       {
-        data.graph->addInput(ind);
-        VERBOSE(BuildBackendGraph) << "backend:" << backend->config()->id() << " " << ind << " as a
-    graph input" <<  std::endl;
+        data.external_operands.add(ind);
+        VERBOSE(BuildBackendGraph) << "backend:" << backend->config()->id()
+                                   << " Added External Operand " << ind << std::endl;
       }
-      if (operand.getUses().size() == 0 || operand.getUses() -
+      if (whole_graph.getInputs().contains(ind) ||
+          (!operand.getDef().valid() && !operand.isConstant()))
       {
         data.graph->addInput(ind);
-        VERBOSE(BuildBackendGraph) << "backend:" << backend->config()->id() << " " << ind << " as a
-    graph input" <<  std::endl;
+        VERBOSE(BuildBackendGraph) << "backend:" << backend->config()->id() << " " << ind
+                                   << " as a graph input" << std::endl;
+      }
+      if (whole_graph.getOutputs().contains(ind) || operand.getUses().size() == 0)
+      {
+        data.graph->addOutput(ind);
+        VERBOSE(BuildBackendGraph) << "backend:" << backend->config()->id() << " " << ind
+                                   << " as a graph output" << std::endl;
       }
     });
-    */
+
+    dumper::dot::DotDumper dot_dumper(*data.graph, dumper::dot::DotDumper::Level::ALL);
+    dot_dumper.dump(std::string{"graph_"} + backend->config()->id() + "-" + std::to_string(rndv));
+
     std::copy_if(whole_op_order.begin(), whole_op_order.end(), std::back_inserter(data.op_order),
                  [&](const auto &ind) { return data.graph->operations().exist(ind); });
     data.is_linear_executor = linear_executor;
@@ -300,7 +285,8 @@ void ExecutorFactory::prepareMigrantTensors(compiler::LoweredGraph &lowered_grap
         if (!backend_ctx->tensor_registry->getITensor(ind))
         {
           auto tensor = tensor_regs.getITensor(ind);
-          VERBOSE_F() << backend_ctx->backend()->config()->id() << " REGISTER MIGRANT TENSOR : " << ind << std::endl;
+          VERBOSE_F() << backend_ctx->backend()->config()->id()
+                      << " REGISTER MIGRANT TENSOR : " << ind << std::endl;
           assert(tensor); // The tensor must have been registered
           auto ptensor = dynamic_cast<backend::IPortableTensor *>(tensor);
           if (ptensor)
