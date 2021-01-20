@@ -117,15 +117,8 @@ bool TransformMinMaxToRelu6Pass::run(loco::Graph *g)
   {
     if (auto maxi = dynamic_cast<luci::CircleMaximum *>(node))
     {
-      switch (maxi->dtype())
-      {
-        case loco::DataType::FLOAT32:
-          if (transform_min_max_pattern<loco::DataType::FLOAT32>(maxi))
-            changed = true;
-          break;
-        default:
-          return false;
-      }
+      if (transform_min_max_pattern<loco::DataType::FLOAT32>(maxi))
+        changed = true;
     }
   }
 
