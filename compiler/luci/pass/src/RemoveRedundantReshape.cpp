@@ -61,11 +61,11 @@ namespace luci
  *
  * AFTER
  *
- *      [CircleNode]
- *            |
- *    [CircleReshape_2]
- *            |
- *      [CircleNode]
+ *                [CircleNode]
+ *                /          \
+ *    [CircleReshape_1]  [CircleReshape_2]
+ *                               |
+ *                         [CircleNode]
  **/
 bool RemoveRedundantReshapePass::run(loco::Graph *g)
 {
