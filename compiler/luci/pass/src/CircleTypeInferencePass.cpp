@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+#include "CircleOptimizerUtils.h"
+
 #include "luci/Pass/CircleTypeInferencePass.h"
 
 #include <luci/IR/DeadNodeQueryService.h>
@@ -42,18 +44,15 @@ bool CircleTypeInferencePass::run(loco::Graph *g)
   luci::tinf::Rule type_infer_rule;
   bool changed = false;
 
-  for (auto node : loco::all_nodes(g))
+  for (auto node : alive_nodes(g))
   {
-    if (!node->dialect()->service<DeadNodeQueryServiceImpl>()->isDeadNode(node))
-    {
-      loco::DataType dtype;
-      auto circle_node = loco::must_cast<luci::CircleNode *>(node);
+    loco::DataType dtype;
+    auto circle_node = loco::must_cast<luci::CircleNode *>(node);
 
-      if (type_infer_rule.infer(circle_node, dtype) && circle_node->dtype() != dtype)
-      {
-        circle_node->dtype(dtype);
-        changed = true;
-      }
+    if (type_infer_rule.infer(circle_node, dtype) && circle_node->dtype() != dtype)
+    {
+      circle_node->dtype(dtype);
+      changed = true;
     }
   }
 

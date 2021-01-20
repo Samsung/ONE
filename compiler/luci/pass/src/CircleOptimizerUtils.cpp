@@ -17,6 +17,7 @@
 #include "CircleOptimizerUtils.h"
 
 #include <luci/IR/CircleNode.h>
+#include <luci/IR/DeadNodeQueryService.h>
 
 namespace luci
 {
@@ -95,6 +96,25 @@ bool has_dynamic_shape(const loco::Node *node)
     if (!circle_node->dim(i).known())
       return true;
   return false;
+}
+
+std::vector<loco::Node *> alive_nodes(loco::Graph *g)
+{
+  auto result = loco::postorder_traversal(loco::output_nodes(g));
+
+  for (auto node : loco::all_nodes(g))
+  {
+    // already checked as alive
+    if (std::find(result.begin(), result.end(), node) != result.end())
+      continue;
+
+    // This node is not used for both graph output and multiple output operation
+    if (node->dialect()->service<DeadNodeQueryServiceImpl>()->isDeadNode(node))
+      continue;
+
+    result.emplace_back(node);
+  }
+  return result;
 }
 
 } // namespace luci

@@ -38,6 +38,8 @@ QuantizationGranularity str_to_granularity(const std::string &);
 
 bool has_dynamic_shape(const loco::Node *node);
 
+std::vector<loco::Node *> alive_nodes(loco::Graph *g);
+
 } // namespace luci
 
 #endif // __LUCI_CIRCLE_OPTIMIZER_UTILS_H__
