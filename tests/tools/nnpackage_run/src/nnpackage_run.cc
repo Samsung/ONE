@@ -237,7 +237,7 @@ int main(const int argc, char **argv)
         args.getWarmupRuns());
       phases.run(
         "EXECUTE",
-        [&](const benchmark::Phase &, uint32_t) { NNPR_ENSURE_STATUS(nnfw_run(session)); },
+        [&](const benchmark::Phase &, uint32_t) { for (int i = 0; i < 1000; ++i) NNPR_ENSURE_STATUS(nnfw_run(session)); },
         args.getNumRuns(), true);
     }
     else
