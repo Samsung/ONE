@@ -17,8 +17,6 @@
 #ifndef __LUCI_CIRCLE_SHAPE_INFERENCE_H__
 #define __LUCI_CIRCLE_SHAPE_INFERENCE_H__
 
-#include "ShapeDescription.h"
-
 #include <loco/IR/Nodes.h>
 
 #include <luci/IR/CircleNodes.h>
@@ -27,18 +25,6 @@
 
 namespace luci
 {
-
-/**
- * @brief Get the shape of each node as a node annotation
- *
- * HOW TO USE
- *
- *   ShapeInference::get(g->nodes()->at(..));
- */
-struct ShapeInference
-{
-  static ShapeDescription get(loco::Node *node);
-};
 
 namespace sinf // namespace for Shape Inference
 {
