@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "luci/Pass/FuseBatchNormWithTConv.h"
+#include "luci/Pass/FuseBatchNormWithTConvPass.h"
 
 #include <luci/IR/CircleNodes.h>
 
