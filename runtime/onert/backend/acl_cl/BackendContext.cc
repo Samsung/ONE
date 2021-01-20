@@ -186,6 +186,8 @@ ITensorRegistry *BackendContext::genTensors()
 
     const auto frontend_layout = graph()->layout();
     const auto backend_layout = operand_layouts().at(ind);
+    // VERBOSE(acl_cl_genTensors) << (backend_layout == ir::Layout::NCHW ? "NCHW" : "NHWC")
+    //                           << std::endl;
     ir::OperandInfo backend_info{permuteShape(obj.shape(), frontend_layout, backend_layout),
                                  obj.typeInfo(), obj.info().memAllocType(), obj.isConstant()};
     tensor_builder->registerTensorInfo(ind, backend_info, backend_layout);

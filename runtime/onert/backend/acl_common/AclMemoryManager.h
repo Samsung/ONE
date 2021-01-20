@@ -47,6 +47,7 @@ public:
     for (const auto &tensor_entry : _tensors)
     {
       auto tensor = tensor_entry.second;
+      VERBOSE(ALLOCATE_TENSOR_ACL) << tensor_entry.first << std::endl;
       tensor->allocator()->allocate();
     }
   }

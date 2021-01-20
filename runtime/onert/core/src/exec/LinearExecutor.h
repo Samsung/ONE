@@ -55,6 +55,7 @@ public:
   {
     for (auto index : order)
     {
+      VERBOSE(ORDERCHECK) << index << std::endl;
       _code.emplace_back(std::move(code_map.at(index)));
     }
   }

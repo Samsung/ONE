@@ -128,6 +128,10 @@ backend::BackendContexts createBackendContexts(const compiler::LoweredGraph &lgr
       const auto backend = def_factor.backend();
       auto &partial_graph = *context_data_map[backend].graph;
       auto &operand_layouts = context_data_map[backend].operand_layouts;
+      assert(operand_layouts.find(operand_ind) == operand_layouts.end());
+      VERBOSE(BuildBackendGraph) << "backend:" << backend->config()->id() << " Layout of "
+                                 << operand_ind << " is " << ir::to_string(def_factor.layout())
+                                 << std::endl;
       operand_layouts[operand_ind] = def_factor.layout();
 
       // Copy the operand and insert it to the partial graph
@@ -180,6 +184,9 @@ backend::BackendContexts createBackendContexts(const compiler::LoweredGraph &lgr
 
           auto layout =
             lgraph.lower_info().operand.at(operand_ind).def_factors().getOnlyElement().layout();
+          assert(operand_layouts.find(operand_ind) == operand_layouts.end());
+          VERBOSE(BuildBackendGraph) << "backend:" << backend->config()->id() << " Layout of "
+                                     << operand_ind << " is " << ir::to_string(layout) << std::endl;
           operand_layouts[operand_ind] = layout;
           external_operands.add(operand_ind);
           VERBOSE(BuildBackendGraph) << "backend:" << backend->config()->id()
@@ -188,7 +195,7 @@ backend::BackendContexts createBackendContexts(const compiler::LoweredGraph &lgr
 
         operation.accept(op_cloner);
         auto new_op_ind = partial_graph.addOperation(op_ind, op_cloner.releaseClone());
-        operation_layouts[new_op_ind] = op_li.at(new_op_ind).layout();
+        operation_layouts[new_op_ind] = whole_graph.layout();
         assert(new_op_ind == op_ind);
         VERBOSE(BuildBackendGraph) << "backend:" << backend->config()->id() << " Added Operation "
                                    << new_op_ind << std::endl;
@@ -197,7 +204,7 @@ backend::BackendContexts createBackendContexts(const compiler::LoweredGraph &lgr
 
   // Create contexts
   auto whole_op_order = lgraph.graph().topolSortOperations();
-  int rndv = rand();
+  // int rndv = rand();
   for (auto &pair : context_data_map)
   {
     auto backend = pair.first;
@@ -225,8 +232,9 @@ backend::BackendContexts createBackendContexts(const compiler::LoweredGraph &lgr
       }
     });
 
-    dumper::dot::DotDumper dot_dumper(*data.graph, dumper::dot::DotDumper::Level::ALL);
-    dot_dumper.dump(std::string{"graph_"} + backend->config()->id() + "-" + std::to_string(rndv));
+    // dumper::dot::DotDumper dot_dumper(*data.graph, dumper::dot::DotDumper::Level::ALL);
+    // dot_dumper.dump(std::string{"graph_"} + backend->config()->id() + "-" +
+    // std::to_string(rndv));
 
     std::copy_if(whole_op_order.begin(), whole_op_order.end(), std::back_inserter(data.op_order),
                  [&](const auto &ind) { return data.graph->operations().exist(ind); });
@@ -364,6 +372,7 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lo
       auto lower_info = lowered_graph->lower_info().operation.getRawPtr(op_ind);
       if (options.he_profiling_mode)
         fn_seq->wrap<SyncFunction>(lower_info->backend()->config());
+      VERBOSE(GEN_KERNELS) << op_ind << std::endl;
       builder.append(op_ind, {op_ind, &op, lower_info, std::move(fn_seq)});
     }
   }

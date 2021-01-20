@@ -105,6 +105,7 @@ AclTensorManager<T_ITensor, T_Tensor, T_SubTensor>::AclTensorManager(
 template <typename T_ITensor, typename T_Tensor, typename T_SubTensor>
 void AclTensorManager<T_ITensor, T_Tensor, T_SubTensor>::allocateConsts(void)
 {
+  VERBOSE(TENSOR_MANAGER_ACL) << "ALLOCATE CONSTS" << std::endl;
   _const_mgr->allocate();
 }
 
