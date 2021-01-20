@@ -58,12 +58,20 @@ void create_remove_unnecessary_strided_slice(loco::Graph *g,
     strides->at<loco::DataType::S32>(i) = -1;
   }
 
+  auto end = g->nodes()->create<luci::CircleConst>();
+  end->dtype(loco::DataType::S32);
+  end->size<loco::DataType::S32>(input_shape.size());
+  end->rank(1);
+  end->dim(0).set(input_shape.size());
+  end->shape(input_shape);
+
   // StridedSlice Node create
   auto strided_slice = g->nodes()->create<luci::CircleStridedSlice>();
   strided_slice->dtype(loco::DataType::S32);
   strided_slice->input(input);
   strided_slice->begin(begin);
   strided_slice->strides(strides);
+  strided_slice->end(end);
 
   // Output connect
   auto output = g->nodes()->create<luci::CircleOutput>();
@@ -82,7 +90,7 @@ TEST(RemoveUnnecessaryStridedSlicePass, remove_unnecessary_strided_slice)
   for (auto node : loco::active_nodes(loco::output_nodes(graph.get())))
   {
     auto strided_slice = dynamic_cast<luci::CircleStridedSlice *>(node);
-    if (not strided_slice)
+    if (strided_slice == nullptr)
       continue;
     strided_slice_node = strided_slice;
     break;
@@ -95,7 +103,7 @@ TEST(RemoveUnnecessaryStridedSlicePass, remove_unnecessary_strided_slice)
   for (auto node : loco::active_nodes(loco::output_nodes(graph.get())))
   {
     auto strided_slice = dynamic_cast<luci::CircleStridedSlice *>(node);
-    if (not strided_slice)
+    if (strided_slice == nullptr)
       continue;
     strided_slice_node = strided_slice;
     break;
@@ -103,7 +111,7 @@ TEST(RemoveUnnecessaryStridedSlicePass, remove_unnecessary_strided_slice)
   ASSERT_EQ(nullptr, strided_slice_node);
 }
 
-TEST(RemoveUnnecessarySlicePass, remove_unnecessary_strided_slice_NEG)
+TEST(RemoveUnnecessaryStridedSlicePass, remove_unnecessary_strided_slice_NEG)
 {
   auto graph = loco::make_graph();
   create_remove_unnecessary_strided_slice(graph.get(), {2, 4, 2, 3}, false);
@@ -111,7 +119,7 @@ TEST(RemoveUnnecessarySlicePass, remove_unnecessary_strided_slice_NEG)
   for (auto node : loco::active_nodes(loco::output_nodes(graph.get())))
   {
     auto strided_slice = dynamic_cast<luci::CircleStridedSlice *>(node);
-    if (not strided_slice)
+    if (strided_slice == nullptr)
       continue;
     strided_slice_node = strided_slice;
     break;
@@ -124,7 +132,7 @@ TEST(RemoveUnnecessarySlicePass, remove_unnecessary_strided_slice_NEG)
   for (auto node : loco::active_nodes(loco::output_nodes(graph.get())))
   {
     auto strided_slice = dynamic_cast<luci::CircleStridedSlice *>(node);
-    if (not strided_slice)
+    if (strided_slice == nullptr)
       continue;
     strided_slice_node = strided_slice;
     break;

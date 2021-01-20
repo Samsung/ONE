@@ -43,11 +43,11 @@ bool remove_no_effect_strided_slice(luci::CircleNode *node)
   if (target_node == nullptr)
     return false;
 
-  auto begin_const = loco::must_cast<luci::CircleConst *>(target_node->begin());
+  auto begin_const = dynamic_cast<luci::CircleConst *>(target_node->begin());
   if (begin_const == nullptr)
     return false;
 
-  auto strides_const = loco::must_cast<luci::CircleConst *>(target_node->strides());
+  auto strides_const = dynamic_cast<luci::CircleConst *>(target_node->strides());
   if (strides_const == nullptr)
     return false;
 
@@ -55,7 +55,7 @@ bool remove_no_effect_strided_slice(luci::CircleNode *node)
   if (input_node == nullptr)
     return false;
 
-  auto end_const = loco::must_cast<luci::CircleConst *>(target_node->end());
+  auto end_const = dynamic_cast<luci::CircleConst *>(target_node->end());
   if (end_const == nullptr)
     return false;
 
