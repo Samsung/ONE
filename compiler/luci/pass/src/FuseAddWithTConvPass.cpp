@@ -21,16 +21,25 @@
 namespace
 {
 /**
- *  Fuse add to TCONV if possible
+ *  Fuse Add to TransposeConv if possible
  *
  *  BEFORE
- *
- *         [CircleTransposeConv]
+ *                     |
+ *   [CircleConst]  [CircleTransposeConv]
+ *               \     |
+ *             [CircleAdd]
  *                  |
- *                [add]
- *  AFTER
  *
- *         [CircleTransposeConv]
+ *  AFTER
+ *                  |
+ *   [CircleConst]  |
+ *             \    |
+ *         [CircleTransposeConv]   [CircleAdd]
+ *                  |
+ *            ([CircleRelu6])
+ *                  |
+ *
+ *  Note: CircleRelu6 is inserted if Add activation is ReLU6
  */
 bool fuse_add_with_tconv(luci::CircleTransposeConv *tconv)
 {
