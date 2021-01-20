@@ -307,7 +307,6 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::ResolveCustomOpBatchMatMul);
     options->enable(Algorithms::ResolveCustomOpMatMul);
     options->enable(Algorithms::RemoveRedundantTranspose);
-    options->enable(Algorithms::RemoveUnnecessaryStridedSlice);
     options->enable(Algorithms::SubstitutePackToReshape);
   }
   if (arser.get<bool>("--fold_add_v2"))
