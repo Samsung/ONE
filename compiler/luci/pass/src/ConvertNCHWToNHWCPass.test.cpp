@@ -17,7 +17,6 @@
 #include <logo/Phase.h>
 
 #include "luci/Pass/ConvertNCHWToNHWCPass.h"
-#include "luci/Pass/ShapeInferencePass.h"
 #include "luci/Pass/CircleShapeInferencePass.h"
 
 #include <luci/IR/CircleNodes.h>
@@ -256,7 +255,6 @@ void run_phase(loco::Graph *g, bool preserve_input, bool preserve_output)
   logo::Phase phase;
 
   // Default passes.
-  phase.emplace_back(std::make_unique<luci::ShapeInferencePass>());
   phase.emplace_back(std::make_unique<luci::CircleShapeInferencePass>());
 
   // Pass to test
