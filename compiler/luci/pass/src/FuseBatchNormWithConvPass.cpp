@@ -21,18 +21,31 @@
 namespace
 {
 /**
- *  NOTE TF's fusedBatchNorm is converted to mul and add of Circle.
+ *  Fuse Mul-Add to Conv2D if possible.
+ *
+ *  NOTE TF's BatchNormalization is converted to Mul and Add.
  *
  *  BEFORE
+ *                  |   [CircleConst]
+ *                  |  / [CircleConst]
+ *                  | / /
+ *         [CircleConv2D] [CircleConst]
+ *                  |    /
+ *            [CircleMul] [CircleConst]
+ *                  |    /
+ *             [CircleAdd]
+ *                  |
  *
- *            [CircleConv]
- *                  |
- *                [mul]
- *                  |
- *                [add]
  *  AFTER
- *
- *            [CircleConv]
+ *                  |                  [CircleConst]
+ *                  +--------------+  / [CircleConst]
+ *                  |              | / /
+ *                  |     [CircleConv2D] [CircleConst]
+ *  [CircleConst]   |              |    /
+ * [CircleConst] \  |         [CircleMul] [CircleConst]
+ *              \ \ |              |     /
+ *           [CircleConv2D]   [CircleAdd]
+ *                  |
  */
 bool fused_batch_norm_with_conv(luci::CircleAdd *add)
 {
