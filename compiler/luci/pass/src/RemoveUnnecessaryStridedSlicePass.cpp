@@ -43,11 +43,11 @@ bool remove_no_effect_strided_slice(luci::CircleNode *node)
   if (target_node == nullptr)
     return false;
 
-  auto begin_const = dynamic_cast<luci::CircleConst *>(target_node->begin());
+  auto begin_const = loco::must_cast<luci::CircleConst *>(target_node->begin());
   if (begin_const == nullptr)
     return false;
 
-  auto strides_const = dynamic_cast<luci::CircleConst *>(target_node->strides());
+  auto strides_const = loco::must_cast<luci::CircleConst *>(target_node->strides());
   if (strides_const == nullptr)
     return false;
 
@@ -55,22 +55,33 @@ bool remove_no_effect_strided_slice(luci::CircleNode *node)
   if (input_node == nullptr)
     return false;
 
+  auto end_const = loco::must_cast<luci::CircleConst *>(target_node->end());
+  if (end_const == nullptr)
+    return false;
+
   for (uint32_t i = 0; i < input_node->rank(); i++)
   {
-    if (value_from_circle_const(begin_const, i) != 0)
+    int64_t begin_value = value_from_circle_const(begin_const, i);
+    if (begin_value != 0)
       return false;
 
     int64_t strides_value = value_from_circle_const(strides_const, i);
     if (strides_value == -1)
       continue;
 
-    if (strides_value != static_cast<int64_t>(input_node->dim(i).value()))
+    if (strides_value != 1)
+      return false;
+
+    int64_t end_value = value_from_circle_const(end_const, i);
+    if (end_value == -1)
+      continue;
+
+    if (end_value != input_node->dim(i).value())
       return false;
 
     if (!input_node->dim(i).known())
       return false;
   }
-
   replace(target_node).with(input_node);
   return true;
 }
