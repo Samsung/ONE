@@ -214,6 +214,12 @@ int entry(int argc, char **argv)
     .default_value(false)
     .help("Preserve the output shape of the model (argument for --convert_nchw_to_nhwc).");
 
+  arser.add_argument("--transform_min_max_to_relu6")
+    .nargs(0)
+    .required(false)
+    .default_value(false)
+    .help("Transform Minimum-Maximum pattern to Relu6 operator");
+
   arser.add_argument("--mute_warnings")
     .nargs(0)
     .required(false)
@@ -329,6 +335,8 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::ShuffleWeightTo16x1Float32);
   if (arser.get<bool>("--substitute_pack_to_reshape"))
     options->enable(Algorithms::SubstitutePackToReshape);
+  if (arser.get<bool>("--transform_min_max_to_relu6"))
+    options->enable(Algorithms::TransformMinMaxToRelu6Pass);
 
   if (arser.get<bool>("--mute_warnings"))
     settings->set(luci::UserSettings::Key::MuteWarnings, true);
