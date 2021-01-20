@@ -20,6 +20,8 @@
 
 #include <luci/IR/CircleNodes.h>
 #include <luci/IR/CircleDialect.h>
+#include <luci/Service/CircleShapeInference.h>
+#include <luci/Pass/CircleShapeInferencePass.h>
 
 #include <loco.h>
 #include <loco/IR/CanonicalDialect.h>
@@ -33,25 +35,10 @@
 
 #include <memory>
 
-namespace
-{
-
-bool shape_pass(loco::Graph *g)
-{
-  loco::CanonicalShapeInferenceRule canonical_rule;
-  luci::CircleShapeInferenceRule circle_rule;
-  loco::MultiDialectShapeInferenceRule rules;
-
-  rules.bind(loco::CanonicalDialect::get(), &canonical_rule)
-    .bind(luci::CircleDialect::get(), &circle_rule);
-
-  return loco::apply(&rules).to(g);
-}
-
-} // namespace
-
 TEST(CircleShapeInferenceRuleTest, minimal_with_CircleRelu)
 {
+  luci::CircleShapeInferencePass pass;
+
   // Create a simple network
   luci::test::TestGraph graph;
   auto relu_node = graph.append<luci::CircleRelu>(graph.input_node);
@@ -72,15 +59,15 @@ TEST(CircleShapeInferenceRuleTest, minimal_with_CircleRelu)
   }
 
   // pre-check
-  ASSERT_FALSE(loco::shape_known(relu_node));
+  ASSERT_FALSE(luci::shape_known(relu_node));
 
   // shape inference
-  while (shape_pass(graph.graph()) == true)
+  while (pass.run(graph.graph()) == true)
     ;
 
   // Verify
   {
-    ASSERT_TRUE(loco::shape_known(relu_node));
+    ASSERT_TRUE(luci::shape_known(relu_node));
     ASSERT_EQ(loco::Domain::Tensor, luci::shape_get(relu_node).domain());
 
     auto shape = luci::shape_get(relu_node).as<loco::TensorShape>();
@@ -94,6 +81,8 @@ TEST(CircleShapeInferenceRuleTest, minimal_with_CircleRelu)
 // https://www.corvil.com/kb/what-is-the-difference-between-same-and-valid-padding-in-tf-nn-max-pool-of-tensorflow
 TEST(CircleShapeInferenceRuleTest, avgpool2d_valid)
 {
+  luci::CircleShapeInferencePass pass;
+
   luci::test::TestGraph graph;
   auto avg_node = graph.append<luci::CircleAveragePool2D>(graph.input_node);
   graph.complete();
@@ -117,15 +106,15 @@ TEST(CircleShapeInferenceRuleTest, avgpool2d_valid)
     avg_node->fusedActivationFunction(luci::FusedActFunc::NONE);
     avg_node->padding(luci::Padding::VALID);
   }
-  ASSERT_FALSE(loco::shape_known(avg_node));
+  ASSERT_FALSE(luci::shape_known(avg_node));
 
   // shape inference
-  while (shape_pass(graph.graph()) == true)
+  while (pass.run(graph.graph()) == true)
     ;
 
   // Verify
   {
-    ASSERT_TRUE(loco::shape_known(avg_node));
+    ASSERT_TRUE(luci::shape_known(avg_node));
     ASSERT_EQ(loco::Domain::Tensor, luci::shape_get(avg_node).domain());
 
     auto shape = luci::shape_get(avg_node).as<loco::TensorShape>();
@@ -139,6 +128,8 @@ TEST(CircleShapeInferenceRuleTest, avgpool2d_valid)
 
 TEST(CircleShapeInferenceRuleTest, avgpool2d_same)
 {
+  luci::CircleShapeInferencePass pass;
+
   luci::test::TestGraph graph;
   auto avg_node = graph.append<luci::CircleAveragePool2D>(graph.input_node);
   graph.complete();
@@ -164,15 +155,15 @@ TEST(CircleShapeInferenceRuleTest, avgpool2d_same)
     avg_node->padding(luci::Padding::SAME);
   }
 
-  ASSERT_FALSE(loco::shape_known(avg_node));
+  ASSERT_FALSE(luci::shape_known(avg_node));
 
   // shape inference
-  while (shape_pass(graph.graph()) == true)
+  while (pass.run(graph.graph()) == true)
     ;
 
   // Verify
   {
-    ASSERT_TRUE(loco::shape_known(avg_node));
+    ASSERT_TRUE(luci::shape_known(avg_node));
     ASSERT_EQ(loco::Domain::Tensor, luci::shape_get(avg_node).domain());
 
     auto shape = luci::shape_get(avg_node).as<loco::TensorShape>();
@@ -195,6 +186,8 @@ TEST(CircleShapeInferenceRuleTest, avgpool2d_same)
  */
 TEST(CircleShapeInferenceRuleTest, TFAdd_shapeinf_different)
 {
+  luci::CircleShapeInferencePass pass;
+
   auto g = loco::make_graph();
 
   auto x_node = g->nodes()->create<luci::CircleInput>();
@@ -241,15 +234,15 @@ TEST(CircleShapeInferenceRuleTest, TFAdd_shapeinf_different)
   luci::test::graph_output_shape(output_node);
 
   // pre-check
-  ASSERT_FALSE(loco::shape_known(add_node));
+  ASSERT_FALSE(luci::shape_known(add_node));
 
   // shape inference
-  while (shape_pass(g.get()) == true)
+  while (pass.run(g.get()) == true)
     ;
 
   // Verify
   {
-    ASSERT_TRUE(loco::shape_known(add_node));
+    ASSERT_TRUE(luci::shape_known(add_node));
     ASSERT_EQ(loco::Domain::Tensor, luci::shape_get(add_node).domain());
 
     auto shape = luci::shape_get(add_node).as<loco::TensorShape>();
@@ -262,6 +255,8 @@ TEST(CircleShapeInferenceRuleTest, TFAdd_shapeinf_different)
 
 TEST(CircleShapeInferenceRuleTest, CircleTranspose_simple)
 {
+  luci::CircleShapeInferencePass pass;
+
   luci::test::ExampleGraph<luci::test::ExampleGraphType::CircleTranspose> g;
 
   g.input_node->rank(3);
@@ -281,15 +276,15 @@ TEST(CircleShapeInferenceRuleTest, CircleTranspose_simple)
   luci::test::graph_output_shape(g.output_node);
 
   // pre-check
-  ASSERT_FALSE(loco::shape_known(g.transpose_node));
+  ASSERT_FALSE(luci::shape_known(g.transpose_node));
 
   // shape inference
-  while (shape_pass(g.graph()) == true)
+  while (pass.run(g.graph()) == true)
     ;
 
   // Verify
   {
-    ASSERT_TRUE(loco::shape_known(g.transpose_node));
+    ASSERT_TRUE(luci::shape_known(g.transpose_node));
 
     auto shape = luci::shape_get(g.transpose_node).as<loco::TensorShape>();
     ASSERT_EQ(3, shape.rank());
@@ -301,6 +296,8 @@ TEST(CircleShapeInferenceRuleTest, CircleTranspose_simple)
 
 TEST(CircleShapeInferenceRuleTest, CircleSqueeze)
 {
+  luci::CircleShapeInferencePass pass;
+
   luci::test::TestGraph graph;
   auto squeeze_node = graph.append<luci::CircleSqueeze>(graph.input_node);
   graph.complete();
@@ -320,15 +317,15 @@ TEST(CircleShapeInferenceRuleTest, CircleSqueeze)
   squeeze_node->squeeze_dims({0});
 
   // pre-check
-  ASSERT_FALSE(loco::shape_known(squeeze_node));
+  ASSERT_FALSE(luci::shape_known(squeeze_node));
 
   // shape inference
-  while (shape_pass(graph.graph()) == true)
+  while (pass.run(graph.graph()) == true)
     ;
 
   // Verify
   {
-    ASSERT_TRUE(loco::shape_known(squeeze_node));
+    ASSERT_TRUE(luci::shape_known(squeeze_node));
 
     auto shape = luci::shape_get(squeeze_node).as<loco::TensorShape>();
     ASSERT_EQ(3, shape.rank());
@@ -340,6 +337,8 @@ TEST(CircleShapeInferenceRuleTest, CircleSqueeze)
 
 TEST(CircleShapeInferenceRuleTest, CircleExpandDims)
 {
+  luci::CircleShapeInferencePass pass;
+
   luci::test::TestGraph graph;
   auto axis = graph.append<luci::CircleConst>();
   axis->dtype(loco::DataType::S32);
@@ -364,12 +363,12 @@ TEST(CircleShapeInferenceRuleTest, CircleExpandDims)
   luci::test::graph_output_shape(output_node);
 
   // shape inference
-  while (shape_pass(graph.graph()))
+  while (pass.run(graph.graph()))
     ;
 
   // validation
   {
-    ASSERT_TRUE(loco::shape_known(expand_dims));
+    ASSERT_TRUE(luci::shape_known(expand_dims));
 
     auto shape = luci::shape_get(expand_dims).as<loco::TensorShape>();
 
@@ -382,6 +381,8 @@ TEST(CircleShapeInferenceRuleTest, CircleExpandDims)
 
 TEST(CircleShapeInferenceRuleTest, CircleSqueezeAll)
 {
+  luci::CircleShapeInferencePass pass;
+
   luci::test::TestGraph graph;
   auto squeeze_node = graph.append<luci::CircleSqueeze>(graph.input_node);
   graph.complete();
@@ -401,15 +402,15 @@ TEST(CircleShapeInferenceRuleTest, CircleSqueezeAll)
   squeeze_node->squeeze_dims({});
 
   // pre-check
-  ASSERT_FALSE(loco::shape_known(squeeze_node));
+  ASSERT_FALSE(luci::shape_known(squeeze_node));
 
   // shape inference
-  while (shape_pass(graph.graph()) == true)
+  while (pass.run(graph.graph()) == true)
     ;
 
   // Verify
   {
-    ASSERT_TRUE(loco::shape_known(squeeze_node));
+    ASSERT_TRUE(luci::shape_known(squeeze_node));
 
     auto shape = luci::shape_get(squeeze_node).as<loco::TensorShape>();
     ASSERT_EQ(2, shape.rank());
@@ -420,6 +421,8 @@ TEST(CircleShapeInferenceRuleTest, CircleSqueezeAll)
 
 TEST(CircleShapeInferenceRuleTest, CircleGatherNd_simple)
 {
+  luci::CircleShapeInferencePass pass;
+
   luci::test::TestGraph graph;
   auto indices_const = graph.append<luci::CircleConst>();
   auto gather_nd_node = graph.append<luci::CircleGatherNd>(graph.input_node, indices_const);
@@ -441,15 +444,15 @@ TEST(CircleShapeInferenceRuleTest, CircleGatherNd_simple)
   }
 
   // pre-check
-  ASSERT_FALSE(loco::shape_known(gather_nd_node));
+  ASSERT_FALSE(luci::shape_known(gather_nd_node));
 
   // shape inference
-  while (shape_pass(graph.graph()) == true)
+  while (pass.run(graph.graph()) == true)
     ;
 
   // Verify
   {
-    ASSERT_TRUE(loco::shape_known(gather_nd_node));
+    ASSERT_TRUE(luci::shape_known(gather_nd_node));
 
     auto shape = luci::shape_get(gather_nd_node).as<loco::TensorShape>();
     ASSERT_EQ(3, shape.rank());
@@ -461,6 +464,8 @@ TEST(CircleShapeInferenceRuleTest, CircleGatherNd_simple)
 
 TEST(CircleShapeInferenceRuleTest, CircleGatherNd_slices)
 {
+  luci::CircleShapeInferencePass pass;
+
   luci::test::TestGraph graph;
   auto indices_const = graph.append<luci::CircleConst>();
   auto gather_nd_node = graph.append<luci::CircleGatherNd>(graph.input_node, indices_const);
@@ -482,15 +487,15 @@ TEST(CircleShapeInferenceRuleTest, CircleGatherNd_slices)
   }
 
   // pre-check
-  ASSERT_FALSE(loco::shape_known(gather_nd_node));
+  ASSERT_FALSE(luci::shape_known(gather_nd_node));
 
   // shape inference
-  while (shape_pass(graph.graph()) == true)
+  while (pass.run(graph.graph()) == true)
     ;
 
   // Verify
   {
-    ASSERT_TRUE(loco::shape_known(gather_nd_node));
+    ASSERT_TRUE(luci::shape_known(gather_nd_node));
 
     auto shape = luci::shape_get(gather_nd_node).as<loco::TensorShape>();
     ASSERT_EQ(5, shape.rank());
@@ -504,6 +509,8 @@ TEST(CircleShapeInferenceRuleTest, CircleGatherNd_slices)
 
 TEST(CircleShapeInferenceRuleTest, CircleGatherNd_NEG)
 {
+  luci::CircleShapeInferencePass pass;
+
   luci::test::TestGraph graph;
   auto indices_const = graph.append<luci::CircleConst>();
   auto gather_nd_node = graph.append<luci::CircleGatherNd>(graph.input_node, indices_const);
@@ -526,12 +533,12 @@ TEST(CircleShapeInferenceRuleTest, CircleGatherNd_NEG)
   }
 
   // pre-check
-  ASSERT_FALSE(loco::shape_known(gather_nd_node));
+  ASSERT_FALSE(luci::shape_known(gather_nd_node));
 
   // had to pack into lambda to check throw
   auto lambda = [&]() {
     // shape inference
-    while (shape_pass(graph.graph()) == true)
+    while (pass.run(graph.graph()) == true)
       ;
   };
 
@@ -540,6 +547,8 @@ TEST(CircleShapeInferenceRuleTest, CircleGatherNd_NEG)
 
 TEST(CircleShapeInferenceRuleTest, CircleResizeNearestNeighbor)
 {
+  luci::CircleShapeInferencePass pass;
+
   luci::test::TestGraph graph;
   auto size_const = graph.append<luci::CircleConst>();
   size_const->dtype(loco::DataType::S32);
@@ -563,15 +572,15 @@ TEST(CircleShapeInferenceRuleTest, CircleResizeNearestNeighbor)
   }
 
   // pre-check
-  ASSERT_FALSE(loco::shape_known(resize_node));
+  ASSERT_FALSE(luci::shape_known(resize_node));
 
   // shape inference
-  while (shape_pass(graph.graph()) == true)
+  while (pass.run(graph.graph()) == true)
     ;
 
   // Verify
   {
-    ASSERT_TRUE(loco::shape_known(resize_node));
+    ASSERT_TRUE(luci::shape_known(resize_node));
 
     auto shape = luci::shape_get(resize_node).as<loco::TensorShape>();
     ASSERT_EQ(4, shape.rank());
@@ -584,6 +593,8 @@ TEST(CircleShapeInferenceRuleTest, CircleResizeNearestNeighbor)
 
 TEST(CircleShapeInferenceRuleTest, CircleResizeBilinear)
 {
+  luci::CircleShapeInferencePass pass;
+
   luci::test::TestGraph graph;
   auto size_const = graph.append<luci::CircleConst>();
   size_const->dtype(loco::DataType::S32);
@@ -607,15 +618,15 @@ TEST(CircleShapeInferenceRuleTest, CircleResizeBilinear)
   }
 
   // pre-check
-  ASSERT_FALSE(loco::shape_known(resize_node));
+  ASSERT_FALSE(luci::shape_known(resize_node));
 
   // shape inference
-  while (shape_pass(graph.graph()) == true)
+  while (pass.run(graph.graph()) == true)
     ;
 
   // Verify
   {
-    ASSERT_TRUE(loco::shape_known(resize_node));
+    ASSERT_TRUE(luci::shape_known(resize_node));
 
     auto shape = luci::shape_get(resize_node).as<loco::TensorShape>();
     ASSERT_EQ(4, shape.rank());

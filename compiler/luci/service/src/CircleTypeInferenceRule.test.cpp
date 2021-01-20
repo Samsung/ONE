@@ -16,7 +16,9 @@
 
 #include "TestGraph.h"
 #include "CircleTypeInferenceHelper.h"
+#include <luci/Service/CircleTypeInference.h>
 #include <luci/Service/CircleTypeInferenceRule.h>
+#include <luci/Pass/CircleTypeInferencePass.h>
 
 #include <luci/IR/CircleNodes.h>
 #include <luci/IR/CircleDialect.h>
@@ -31,6 +33,8 @@
 
 TEST(CircleTypeInferenceRuleTest, minimal_with_CircleRelu)
 {
+  luci::CircleTypeInferencePass pass;
+
   // Create a simple network
   luci::test::TestGraph graph;
   auto relu_node = graph.append<luci::CircleRelu>(graph.input_node);
@@ -44,20 +48,13 @@ TEST(CircleTypeInferenceRuleTest, minimal_with_CircleRelu)
   luci::test::graph_output_dtype(graph.output_node);
 
   // pre-check
-  ASSERT_FALSE(loco::dtype_known(relu_node));
+  ASSERT_FALSE(luci::dtype_known(relu_node));
 
-  // type inference
-  luci::CircleTypeInferenceRule circle_rule;
-  loco::CanonicalTypeInferenceRule canon_rule;
-  loco::MultiDialectTypeInferenceRule rules;
-
-  rules.bind(loco::CanonicalDialect::get(), &canon_rule);
-  rules.bind(luci::CircleDialect::get(), &circle_rule);
-
-  loco::apply(&rules).to(graph.g.get());
+  while (pass.run(graph.g.get()) == true)
+    ;
 
   // Verify
-  ASSERT_TRUE(loco::dtype_known(relu_node));
+  ASSERT_TRUE(luci::dtype_known(relu_node));
   auto type = luci::dtype_get(relu_node);
   ASSERT_EQ(loco::DataType::S32, type);
 }
