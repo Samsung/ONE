@@ -226,6 +226,12 @@ int entry(int argc, char **argv)
     .default_value(false)
     .help("This will turn off operator validations. May help input model investigation.");
 
+  arser.add_argument("--generate_profiling_info")
+    .nargs(0)
+    .required(false)
+    .default_value(false)
+    .help("This will generates profiling information.");
+
   arser.add_argument("input").nargs(1).type(arser::DataType::STR).help("Input circle model");
   arser.add_argument("output").nargs(1).type(arser::DataType::STR).help("Output circle model");
 
@@ -334,6 +340,8 @@ int entry(int argc, char **argv)
     settings->set(luci::UserSettings::Key::MuteWarnings, true);
   if (arser.get<bool>("--disable_validation"))
     settings->set(luci::UserSettings::Key::DisableValidation, true);
+  if (arser.get<bool>("--generate_profiling_info"))
+    options->enable(Algorithms::GenerateProfilingInfoPass);
 
   std::string input_path = arser.get<std::string>("input");
   std::string output_path = arser.get<std::string>("output");

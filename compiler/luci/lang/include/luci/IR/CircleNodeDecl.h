@@ -67,12 +67,17 @@ struct CircleNode : public loco::Node,
   int32_t op_version(void) const { return _op_version; }
   void op_version(int32_t op_version) { _op_version = op_version; }
 
+  int32_t p_index(void) const { return _p_index; }
+  void p_index(int32_t _p_index) { _p_index = _p_index; }
+
 private:
   NodeName _name;
   std::unique_ptr<CircleQuantParam> _quantparam;
   std::unique_ptr<SparsityParam> _sparsityparam;
   ShapeStatus _shape_status{ShapeStatus::UNDEFINED};
   int32_t _op_version = 1;
+  // for profiling
+  int32_t _p_index = -1;
 };
 
 template <CircleOpcode Code> struct CircleNodeImpl : public CircleNode

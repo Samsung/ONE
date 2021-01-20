@@ -69,8 +69,10 @@ void export_pool_2d(ExportContext &ctx, CirclePool2D *node, circle::BuiltinOpera
   auto options = CreatePool2DOptions(ctx.builder, padding, node->stride()->w(), node->stride()->h(),
                                      node->filter()->w(), node->filter()->h(),
                                      to_circle_actfunc(node->fusedActivationFunction()));
-  auto op_offset = CreateOperator(ctx.builder, op_idx, inputs, outputs,
-                                  circle::BuiltinOptions_Pool2DOptions, options.Union());
+  auto op_offset = CreateOperator(
+    ctx.builder, op_idx, inputs, outputs, circle::BuiltinOptions_Pool2DOptions, options.Union(),
+    0 /* custom_options */, CustomOptionsFormat_FLEXBUFFERS /* custom_options_format */,
+    0 /* mutating_variable_inputs */, 0 /* intermediates */, node->p_index());
   ctx.gd._operators.push_back(op_offset);
 }
 
@@ -80,6 +82,9 @@ void export_pool_2d(ExportContext &ctx, CirclePool2D *node, circle::BuiltinOpera
 void export_node(ExportContext &ctx, loco::Node *node, circle::BuiltinOperator bop,
                  circle::BuiltinOptions bot, flatbuffers::Offset<void> options_offset)
 {
+  auto circle_node = dynamic_cast<luci::CircleNode *>(node);
+  if (not circle_node)
+    return;
   uint32_t op_idx =
     ctx.md.registerBuiltinOpcode(bop, loco::must_cast<luci::CircleNode *>(node)->op_version());
   std::vector<int32_t> inputs_vec;
@@ -88,7 +93,11 @@ void export_node(ExportContext &ctx, loco::Node *node, circle::BuiltinOperator b
     inputs_vec.push_back(get_tensor_index(node->arg(i)));
   auto inputs = ctx.builder.CreateVector(inputs_vec);
   auto outputs = ctx.builder.CreateVector(outputs_vec);
-  auto op_offset = CreateOperator(ctx.builder, op_idx, inputs, outputs, bot, options_offset);
+  auto p_index = circle_node->p_index();
+  auto op_offset = CreateOperator(ctx.builder, op_idx, inputs, outputs, bot, options_offset,
+                                  0 /* custom_options */,
+                                  CustomOptionsFormat_FLEXBUFFERS /* custom_options_format */,
+                                  0 /* mutating_variable_inputs */, 0 /* intermediates */, p_index);
   ctx.gd._operators.push_back(op_offset);
 }
 
@@ -97,6 +106,9 @@ void export_node(ExportContext &ctx, loco::Node *node, circle::BuiltinOperator b
  */
 void export_node(ExportContext &ctx, loco::Node *node, circle::BuiltinOperator bop)
 {
+  auto circle_node = dynamic_cast<luci::CircleNode *>(node);
+  if (not circle_node)
+    return;
   uint32_t op_idx =
     ctx.md.registerBuiltinOpcode(bop, loco::must_cast<luci::CircleNode *>(node)->op_version());
   std::vector<int32_t> inputs_vec;
@@ -105,7 +117,12 @@ void export_node(ExportContext &ctx, loco::Node *node, circle::BuiltinOperator b
     inputs_vec.push_back(get_tensor_index(node->arg(i)));
   auto inputs = ctx.builder.CreateVector(inputs_vec);
   auto outputs = ctx.builder.CreateVector(outputs_vec);
-  auto op_offset = CreateOperator(ctx.builder, op_idx, inputs, outputs);
+  auto p_index = circle_node->p_index();
+  auto op_offset = CreateOperator(ctx.builder, op_idx, inputs, outputs,
+                                  BuiltinOptions_NONE /* builtin_options_type */,
+                                  0 /* builtin_options */, 0 /* custom_options */,
+                                  CustomOptionsFormat_FLEXBUFFERS /* custom_options_format */,
+                                  0 /* mutating_variable_inputs */, 0 /* intermediates */, p_index);
   ctx.gd._operators.push_back(op_offset);
 }
 
@@ -121,8 +138,10 @@ void export_node(ExportContext &ctx, luci::CircleAddN *node)
   auto inputs = ctx.builder.CreateVector(inputs_vec);
   auto outputs = ctx.builder.CreateVector(outputs_vec);
   auto options = CreateAddNOptions(ctx.builder);
-  auto op_offset = CreateOperator(ctx.builder, op_idx, inputs, outputs,
-                                  circle::BuiltinOptions_AddNOptions, options.Union());
+  auto op_offset = CreateOperator(
+    ctx.builder, op_idx, inputs, outputs, circle::BuiltinOptions_AddNOptions, options.Union(),
+    0 /* custom_options */, CustomOptionsFormat_FLEXBUFFERS /* custom_options_format */,
+    0 /* mutating_variable_inputs */, 0 /* intermediates */, node->p_index());
   ctx.gd._operators.push_back(op_offset);
 }
 
@@ -139,12 +158,18 @@ void export_node(ExportContext &ctx, luci::CircleCast *node)
   {
     auto options = CreateCastOptions(ctx.builder, to_circle_tensortype(node->in_data_type()),
                                      to_circle_tensortype(node->out_data_type()));
-    op_offset = CreateOperator(ctx.builder, op_idx, inputs, outputs,
-                               circle::BuiltinOptions_CastOptions, options.Union());
+    op_offset = CreateOperator(
+      ctx.builder, op_idx, inputs, outputs, circle::BuiltinOptions_CastOptions, options.Union(),
+      0 /* custom_options */, CustomOptionsFormat_FLEXBUFFERS /* custom_options_format */,
+      0 /* mutating_variable_inputs */, 0 /* intermediates */, node->p_index());
   }
   else
   {
-    op_offset = CreateOperator(ctx.builder, op_idx, inputs, outputs);
+    op_offset = CreateOperator(
+      ctx.builder, op_idx, inputs, outputs, BuiltinOptions_NONE /* builtin_options_type */,
+      0 /* builtin_options */, 0 /* custom_options */,
+      CustomOptionsFormat_FLEXBUFFERS /* custom_options_format */, 0 /* mutating_variable_inputs */,
+      0 /* intermediates */, node->p_index());
   }
   ctx.gd._operators.push_back(op_offset);
 }
@@ -163,8 +188,11 @@ void export_node(ExportContext &ctx, luci::CircleConcatenation *node)
   auto outputs = ctx.builder.CreateVector(outputs_vec);
   auto options = CreateConcatenationOptions(ctx.builder, node->axis(),
                                             to_circle_actfunc(node->fusedActivationFunction()));
-  auto op_offset = CreateOperator(ctx.builder, op_idx, inputs, outputs,
-                                  circle::BuiltinOptions_ConcatenationOptions, options.Union());
+  auto op_offset = CreateOperator(
+    ctx.builder, op_idx, inputs, outputs, circle::BuiltinOptions_ConcatenationOptions,
+    options.Union(), 0 /* custom_options */,
+    CustomOptionsFormat_FLEXBUFFERS /* custom_options_format */, 0 /* mutating_variable_inputs */,
+    0 /* intermediates */, node->p_index());
   ctx.gd._operators.push_back(op_offset);
 }
 
@@ -206,8 +234,10 @@ void export_node(ExportContext &ctx, luci::CircleCustom *node)
   std::vector<uint8_t> custom_options_vec{node->custom_options().begin(),
                                           node->custom_options().end()};
   circle_custom_options = ctx.builder.CreateVector(custom_options_vec);
-  auto op_offset = CreateOperator(ctx.builder, op_idx, inputs, outputs, circle::BuiltinOptions_NONE,
-                                  flatbuffers::Offset<void>(), circle_custom_options);
+  auto op_offset = CreateOperator(
+    ctx.builder, op_idx, inputs, outputs, circle::BuiltinOptions_NONE, flatbuffers::Offset<void>(),
+    circle_custom_options, CustomOptionsFormat_FLEXBUFFERS /* custom_options_format */,
+    0 /* mutating_variable_inputs */, 0 /* intermediates */, node->p_index());
   ctx.gd._operators.push_back(op_offset);
 }
 
@@ -247,8 +277,10 @@ void export_node(ExportContext &ctx, luci::CircleIf *node)
   auto inputs = ctx.builder.CreateVector(inputs_vec);
   auto outputs = ctx.builder.CreateVector(outputs_vec);
   auto options = CreateIfOptions(ctx.builder, node->then_branch(), node->else_branch());
-  auto op_offset = CreateOperator(ctx.builder, op_idx, inputs, outputs,
-                                  circle::BuiltinOptions_IfOptions, options.Union());
+  auto op_offset = CreateOperator(
+    ctx.builder, op_idx, inputs, outputs, circle::BuiltinOptions_IfOptions, options.Union(),
+    0 /* custom_options */, CustomOptionsFormat_FLEXBUFFERS /* custom_options_format */,
+    0 /* mutating_variable_inputs */, 0 /* intermediates */, node->p_index());
   ctx.gd._operators.push_back(op_offset);
 }
 
@@ -289,9 +321,11 @@ void export_node(ExportContext &ctx, luci::CircleNonMaxSuppressionV4 *node)
   auto inputs = ctx.builder.CreateVector(inputs_vec);
   auto outputs = ctx.builder.CreateVector(outputs_vec);
   auto options = CreateNonMaxSuppressionV4Options(ctx.builder);
-  auto op_offset =
-    CreateOperator(ctx.builder, op_idx, inputs, outputs,
-                   circle::BuiltinOptions_NonMaxSuppressionV4Options, options.Union());
+  auto op_offset = CreateOperator(
+    ctx.builder, op_idx, inputs, outputs, circle::BuiltinOptions_NonMaxSuppressionV4Options,
+    options.Union(), 0 /* custom_options */,
+    CustomOptionsFormat_FLEXBUFFERS /* custom_options_format */, 0 /* mutating_variable_inputs */,
+    0 /* intermediates */, node->p_index());
   ctx.gd._operators.push_back(op_offset);
 }
 
@@ -332,9 +366,11 @@ void export_node(ExportContext &ctx, luci::CircleNonMaxSuppressionV5 *node)
   auto inputs = ctx.builder.CreateVector(inputs_vec);
   auto outputs = ctx.builder.CreateVector(outputs_vec);
   auto options = CreateNonMaxSuppressionV5Options(ctx.builder);
-  auto op_offset =
-    CreateOperator(ctx.builder, op_idx, inputs, outputs,
-                   circle::BuiltinOptions_NonMaxSuppressionV5Options, options.Union());
+  auto op_offset = CreateOperator(
+    ctx.builder, op_idx, inputs, outputs, circle::BuiltinOptions_NonMaxSuppressionV5Options,
+    options.Union(), 0 /* custom_options */,
+    CustomOptionsFormat_FLEXBUFFERS /* custom_options_format */, 0 /* mutating_variable_inputs */,
+    0 /* intermediates */, node->p_index());
   ctx.gd._operators.push_back(op_offset);
 }
 
@@ -347,8 +383,11 @@ void export_node(ExportContext &ctx, luci::CircleReverseV2 *node)
   auto inputs = ctx.builder.CreateVector(inputs_vec);
   auto outputs = ctx.builder.CreateVector(outputs_vec);
   auto options = CreateReverseV2Options(ctx.builder);
-  auto op_offset = CreateOperator(ctx.builder, op_idx, inputs, outputs,
-                                  circle::BuiltinOptions_ReverseSequenceOptions, options.Union());
+  auto op_offset = CreateOperator(
+    ctx.builder, op_idx, inputs, outputs, circle::BuiltinOptions_ReverseSequenceOptions,
+    options.Union(), 0 /* custom_options */,
+    CustomOptionsFormat_FLEXBUFFERS /* custom_options_format */, 0 /* mutating_variable_inputs */,
+    0 /* intermediates */, node->p_index());
   ctx.gd._operators.push_back(op_offset);
 }
 
@@ -386,8 +425,10 @@ void export_node(ExportContext &ctx, luci::CircleSplit *node)
   auto inputs = ctx.builder.CreateVector(inputs_vec);
   auto outputs = ctx.builder.CreateVector(outputs_vec);
   auto options = CreateSplitOptions(ctx.builder, node->num_split());
-  auto op_offset = CreateOperator(ctx.builder, op_idx, inputs, outputs,
-                                  circle::BuiltinOptions_SplitOptions, options.Union());
+  auto op_offset = CreateOperator(
+    ctx.builder, op_idx, inputs, outputs, circle::BuiltinOptions_SplitOptions, options.Union(),
+    0 /* custom_options */, CustomOptionsFormat_FLEXBUFFERS /* custom_options_format */,
+    0 /* mutating_variable_inputs */, 0 /* intermediates */, node->p_index());
   ctx.gd._operators.push_back(op_offset);
 }
 
@@ -426,8 +467,10 @@ void export_node(ExportContext &ctx, luci::CircleSplitV *node)
   auto inputs = ctx.builder.CreateVector(inputs_vec);
   auto outputs = ctx.builder.CreateVector(outputs_vec);
   auto options = CreateSplitVOptions(ctx.builder, node->num_split());
-  auto op_offset = CreateOperator(ctx.builder, op_idx, inputs, outputs,
-                                  circle::BuiltinOptions_SplitVOptions, options.Union());
+  auto op_offset = CreateOperator(
+    ctx.builder, op_idx, inputs, outputs, circle::BuiltinOptions_SplitVOptions, options.Union(),
+    0 /* custom_options */, CustomOptionsFormat_FLEXBUFFERS /* custom_options_format */,
+    0 /* mutating_variable_inputs */, 0 /* intermediates */, node->p_index());
   ctx.gd._operators.push_back(op_offset);
 }
 
@@ -465,8 +508,10 @@ void export_node(ExportContext &ctx, luci::CircleTopKV2 *node)
   auto inputs = ctx.builder.CreateVector(inputs_vec);
   auto outputs = ctx.builder.CreateVector(outputs_vec);
   auto options = CreateTopKV2Options(ctx.builder);
-  auto op_offset = CreateOperator(ctx.builder, op_idx, inputs, outputs,
-                                  circle::BuiltinOptions_TopKV2Options, options.Union());
+  auto op_offset = CreateOperator(
+    ctx.builder, op_idx, inputs, outputs, circle::BuiltinOptions_TopKV2Options, options.Union(),
+    0 /* custom_options */, CustomOptionsFormat_FLEXBUFFERS /* custom_options_format */,
+    0 /* mutating_variable_inputs */, 0 /* intermediates */, node->p_index());
   ctx.gd._operators.push_back(op_offset);
 }
 
@@ -503,8 +548,10 @@ void export_node(ExportContext &ctx, luci::CircleUnique *node)
   auto inputs = ctx.builder.CreateVector(inputs_vec);
   auto outputs = ctx.builder.CreateVector(outputs_vec);
   auto options = CreateUniqueOptions(ctx.builder, to_circle_tensortype(node->idx_out_type()));
-  auto op_offset = CreateOperator(ctx.builder, op_idx, inputs, outputs,
-                                  circle::BuiltinOptions_UniqueOptions, options.Union());
+  auto op_offset = CreateOperator(
+    ctx.builder, op_idx, inputs, outputs, circle::BuiltinOptions_UniqueOptions, options.Union(),
+    0 /* custom_options */, CustomOptionsFormat_FLEXBUFFERS /* custom_options_format */,
+    0 /* mutating_variable_inputs */, 0 /* intermediates */, node->p_index());
   ctx.gd._operators.push_back(op_offset);
 }
 
@@ -559,8 +606,10 @@ void export_node(ExportContext &ctx, luci::CircleUnpack *node)
   auto inputs = ctx.builder.CreateVector(inputs_vec);
   auto outputs = ctx.builder.CreateVector(outputs_vec);
   auto options = CreateUnpackOptions(ctx.builder, node->num(), node->axis());
-  auto op_offset = CreateOperator(ctx.builder, op_idx, inputs, outputs,
-                                  circle::BuiltinOptions_UnpackOptions, options.Union());
+  auto op_offset = CreateOperator(
+    ctx.builder, op_idx, inputs, outputs, circle::BuiltinOptions_UnpackOptions, options.Union(),
+    0 /* custom_options */, CustomOptionsFormat_FLEXBUFFERS /* custom_options_format */,
+    0 /* mutating_variable_inputs */, 0 /* intermediates */, node->p_index());
   ctx.gd._operators.push_back(op_offset);
 }
 
@@ -599,8 +648,10 @@ void export_node(ExportContext &ctx, luci::CircleWhile *node)
   auto inputs = ctx.builder.CreateVector(inputs_vec);
   auto outputs = ctx.builder.CreateVector(outputs_vec);
   auto options = CreateWhileOptions(ctx.builder, node->cond_branch(), node->body_branch());
-  auto op_offset = CreateOperator(ctx.builder, op_idx, inputs, outputs,
-                                  circle::BuiltinOptions_WhileOptions, options.Union());
+  auto op_offset = CreateOperator(
+    ctx.builder, op_idx, inputs, outputs, circle::BuiltinOptions_WhileOptions, options.Union(),
+    0 /* custom_options */, CustomOptionsFormat_FLEXBUFFERS /* custom_options_format */,
+    0 /* mutating_variable_inputs */, 0 /* intermediates */, node->p_index());
   ctx.gd._operators.push_back(op_offset);
 }
 

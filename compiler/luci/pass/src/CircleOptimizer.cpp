@@ -45,6 +45,7 @@
 #include "luci/Pass/ShuffleWeightTo16x1Float32Pass.h"
 #include "luci/Pass/SubstitutePackToReshapePass.h"
 #include "luci/Pass/TransformMinMaxToRelu6Pass.h"
+#include "luci/Pass/GenerateProfilingInfoPass.h"
 // TODO add more passes
 
 #include "luci/Pass/ShapeInferencePass.h"
@@ -262,6 +263,10 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   if (_options->query(Options::Algorithm::TransformMinMaxToRelu6Pass))
   {
     phase.emplace_back(std::make_unique<luci::TransformMinMaxToRelu6Pass>());
+  }
+  if (_options->query(Options::Algorithm::GenerateProfilingInfoPass))
+  {
+    phase.emplace_back(std::make_unique<luci::GenerateProfilingInfoPass>());
   }
   if (_options->query(Options::Algorithm::ConvertNCHWToNHWC))
   {
