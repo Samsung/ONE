@@ -551,9 +551,6 @@ void fuse_instance_norm(const InstanceNormPattern &p)
     p.const_as_gamma->dim(0).set(p.const_as_gamma->size<loco::DataType::FLOAT32>());
     p.const_as_beta->rank(1);
     p.const_as_beta->dim(0).set(p.const_as_beta->size<loco::DataType::FLOAT32>());
-
-    loco::shape_erase(p.const_as_gamma);
-    loco::shape_erase(p.const_as_beta);
   }
 
   // Make Instance Norm to replace
