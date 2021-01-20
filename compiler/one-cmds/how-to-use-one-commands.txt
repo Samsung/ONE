@@ -181,6 +181,7 @@ Current transformation options are
 - shuffle_weight_to_16x1float32 : This will convert weight format of FullyConnected to SHUFFLED16x1FLOAT32.
   Note that it only converts weights whose row is a multiple of 16.
 - substitute_pack_to_reshape : This will convert single input Pack to Reshape.
+- transform_min_max_to_relu6: This will transform Minimum-Maximum pattern to Relu6 operator.
 
 
 one-quantize
