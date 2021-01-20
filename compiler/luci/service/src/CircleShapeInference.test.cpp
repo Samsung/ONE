@@ -79,7 +79,7 @@ TEST(CircleShapeInferenceRuleTest, minimal_with_CircleRelu)
 
 // based on the case shown in
 // https://www.corvil.com/kb/what-is-the-difference-between-same-and-valid-padding-in-tf-nn-max-pool-of-tensorflow
-TEST(CircleShapeInferenceRuleTest, avgpool2d_valid)
+TEST(CircleShapeInferenceTest, avgpool2d_valid)
 {
   luci::CircleShapeInferencePass pass;
 
@@ -126,7 +126,7 @@ TEST(CircleShapeInferenceRuleTest, avgpool2d_valid)
   }
 }
 
-TEST(CircleShapeInferenceRuleTest, avgpool2d_same)
+TEST(CircleShapeInferenceTest, avgpool2d_same)
 {
   luci::CircleShapeInferencePass pass;
 
@@ -184,7 +184,7 @@ TEST(CircleShapeInferenceRuleTest, avgpool2d_same)
  *          x(2,1,5) + y(1,3,5) --> output(2,3,5)
  *       For each axis, dim value should be same OR one of them should be 1
  */
-TEST(CircleShapeInferenceRuleTest, TFAdd_shapeinf_different)
+TEST(CircleShapeInferenceTest, TFAdd_shapeinf_different)
 {
   luci::CircleShapeInferencePass pass;
 
@@ -253,7 +253,7 @@ TEST(CircleShapeInferenceRuleTest, TFAdd_shapeinf_different)
   }
 }
 
-TEST(CircleShapeInferenceRuleTest, CircleTranspose_simple)
+TEST(CircleShapeInferenceTest, CircleTranspose_simple)
 {
   luci::CircleShapeInferencePass pass;
 
@@ -294,7 +294,7 @@ TEST(CircleShapeInferenceRuleTest, CircleTranspose_simple)
   }
 }
 
-TEST(CircleShapeInferenceRuleTest, CircleSqueeze)
+TEST(CircleShapeInferenceTest, CircleSqueeze)
 {
   luci::CircleShapeInferencePass pass;
 
@@ -335,7 +335,7 @@ TEST(CircleShapeInferenceRuleTest, CircleSqueeze)
   }
 }
 
-TEST(CircleShapeInferenceRuleTest, CircleExpandDims)
+TEST(CircleShapeInferenceTest, CircleExpandDims)
 {
   luci::CircleShapeInferencePass pass;
 
@@ -379,7 +379,7 @@ TEST(CircleShapeInferenceRuleTest, CircleExpandDims)
   }
 }
 
-TEST(CircleShapeInferenceRuleTest, CircleSqueezeAll)
+TEST(CircleShapeInferenceTest, CircleSqueezeAll)
 {
   luci::CircleShapeInferencePass pass;
 
@@ -419,7 +419,7 @@ TEST(CircleShapeInferenceRuleTest, CircleSqueezeAll)
   }
 }
 
-TEST(CircleShapeInferenceRuleTest, CircleGatherNd_simple)
+TEST(CircleShapeInferenceTest, CircleGatherNd_simple)
 {
   luci::CircleShapeInferencePass pass;
 
@@ -462,7 +462,7 @@ TEST(CircleShapeInferenceRuleTest, CircleGatherNd_simple)
   }
 }
 
-TEST(CircleShapeInferenceRuleTest, CircleGatherNd_slices)
+TEST(CircleShapeInferenceTest, CircleGatherNd_slices)
 {
   luci::CircleShapeInferencePass pass;
 
@@ -507,7 +507,7 @@ TEST(CircleShapeInferenceRuleTest, CircleGatherNd_slices)
   }
 }
 
-TEST(CircleShapeInferenceRuleTest, CircleGatherNd_NEG)
+TEST(CircleShapeInferenceTest, CircleGatherNd_NEG)
 {
   luci::CircleShapeInferencePass pass;
 
@@ -545,7 +545,7 @@ TEST(CircleShapeInferenceRuleTest, CircleGatherNd_NEG)
   ASSERT_THROW(lambda(), oops::InternalExn);
 }
 
-TEST(CircleShapeInferenceRuleTest, CircleResizeNearestNeighbor)
+TEST(CircleShapeInferenceTest, CircleResizeNearestNeighbor)
 {
   luci::CircleShapeInferencePass pass;
 
@@ -591,7 +591,7 @@ TEST(CircleShapeInferenceRuleTest, CircleResizeNearestNeighbor)
   }
 }
 
-TEST(CircleShapeInferenceRuleTest, CircleResizeBilinear)
+TEST(CircleShapeInferenceTest, CircleResizeBilinear)
 {
   luci::CircleShapeInferencePass pass;
 
