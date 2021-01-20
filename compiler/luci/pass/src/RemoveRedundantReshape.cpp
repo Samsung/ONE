@@ -21,25 +21,13 @@
 namespace
 {
 
-bool remove_redundant_reshape(luci::CircleNode *node)
+bool remove_redundant_reshape(luci::CircleReshape *node)
 {
-  auto target_node = dynamic_cast<luci::CircleReshape *>(node);
-  if (target_node == nullptr)
-    return false;
-
-  auto pred_node = dynamic_cast<luci::CircleReshape *>(target_node->tensor());
+  auto pred_node = dynamic_cast<luci::CircleReshape *>(node->tensor());
   if (pred_node == nullptr)
     return false;
 
-  auto target_shape_node = dynamic_cast<luci::CircleConst *>(target_node->shape());
-  if (target_shape_node == nullptr)
-    return false;
-
-  auto pred_shape_node = dynamic_cast<luci::CircleConst *>(pred_node->shape());
-  if (pred_shape_node == nullptr)
-    return false;
-
-  target_node->tensor(pred_node->tensor());
+  node->tensor(pred_node->tensor());
   return true;
 }
 
@@ -72,10 +60,10 @@ bool RemoveRedundantReshapePass::run(loco::Graph *g)
   bool changed = false;
   for (auto node : loco::active_nodes(loco::output_nodes(g)))
   {
-    auto circle_node = loco::must_cast<luci::CircleNode *>(node);
-    if (remove_redundant_reshape(circle_node))
+    if (auto reshape_node = dynamic_cast<luci::CircleReshape *>(node))
     {
-      changed = true;
+      if (remove_redundant_reshape(reshape_node))
+        changed = true;
     }
   }
   return changed;

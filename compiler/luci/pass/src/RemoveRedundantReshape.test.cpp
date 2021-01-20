@@ -86,13 +86,11 @@ TEST_F(RemoveRedundantReshape, simple_case)
   luci::RemoveRedundantReshapePass pass;
   while (pass.run(&g))
     ;
-  luci::CircleReshape *reshape_node = nullptr;
   int count = 0;
   for (auto node : loco::active_nodes(loco::output_nodes(&g)))
   {
     if (auto reshape = dynamic_cast<luci::CircleReshape *>(node))
     {
-      reshape_node = reshape;
       count++;
     }
   }
