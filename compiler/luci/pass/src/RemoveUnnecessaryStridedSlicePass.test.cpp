@@ -82,7 +82,7 @@ void create_remove_unnecessary_strided_slice(loco::Graph *g,
 
 } // namespace
 
-TEST(RemoveUnnecessaryStridedSlicePass, remove_unnecessary_strided_slice)
+TEST(RemoveUnnecessaryStridedSlicePass, basic_case)
 {
   auto graph = loco::make_graph();
   create_remove_unnecessary_strided_slice(graph.get(), {2, 4, 2, 3}, true);
@@ -111,7 +111,7 @@ TEST(RemoveUnnecessaryStridedSlicePass, remove_unnecessary_strided_slice)
   ASSERT_EQ(nullptr, strided_slice_node);
 }
 
-TEST(RemoveUnnecessaryStridedSlicePass, remove_unnecessary_strided_slice_NEG)
+TEST(RemoveUnnecessaryStridedSlicePass, basic_fail_case_NEG)
 {
   auto graph = loco::make_graph();
   create_remove_unnecessary_strided_slice(graph.get(), {2, 4, 2, 3}, false);
