@@ -174,11 +174,26 @@ void Conv2D::evalFloat() const
   params.float_activation_max = activation_max;
 
   if (_im2col)
-    tflite::optimized_ops::Conv(params, getTensorShape(input()), getTensorData<float>(input()),
-                                getTensorShape(filter()), getTensorData<float>(filter()),
-                                getTensorShape(bias()), getTensorData<float>(bias()),
-                                getTensorShape(output()), getTensorData<float>(output()),
-                                getTensorShape(_im2col.get()), getTensorData<float>(_im2col.get()));
+  {
+    try
+    {
+      tflite::optimized_ops::Conv(
+        params, getTensorShape(input()), getTensorData<float>(input()), getTensorShape(filter()),
+        getTensorData<float>(filter()), getTensorShape(bias()), getTensorData<float>(bias()),
+        getTensorShape(output()), getTensorData<float>(output()), getTensorShape(_im2col.get()),
+        getTensorData<float>(_im2col.get()));
+    }
+    catch (std::bad_alloc &ba)
+    {
+      // Failed memory allocation
+      _im2col->deallocate();
+
+      tflite::reference_ops::Conv(
+        params, getTensorShape(input()), getTensorData<float>(input()), getTensorShape(filter()),
+        getTensorData<float>(filter()), getTensorShape(bias()), getTensorData<float>(bias()),
+        getTensorShape(output()), getTensorData<float>(output()), tflite::RuntimeShape(), nullptr);
+    }
+  }
   else
     tflite::reference_ops::Conv(
       params, getTensorShape(input()), getTensorData<float>(input()), getTensorShape(filter()),
