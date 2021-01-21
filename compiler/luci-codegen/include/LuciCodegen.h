@@ -26,22 +26,35 @@
 namespace luci_codegen
 {
 
-class LuciCodegenImpl;
+struct Options
+{
+  /***
+   * max size of constant buffer to inline in code in bytes
+   */
+  int max_inline_buffer_threshold = 1024;
+};
+
+class CodegenContext;
 
 class LuciCodegen
 {
 public:
-  LuciCodegen();
+  LuciCodegen(const Options &options = Options());
 
-  void addOperator(luci::CircleNode *node);
+  ~LuciCodegen();
 
-  void compile(std::string &func_name);
+  void add_operator(luci::CircleNode *node);
 
-  void process(const luci::Module &module);
+  bool supported(luci::CircleNode *node);
+
+  void process(loco::Graph &graph);
+
+  void process(luci::Module &module);
 
   void emit_code(std::string package_name);
 private:
-  std::unique_ptr<LuciCodegenImpl> impl;
+  std::unique_ptr<CodegenContext> _context;
+  Options _options;
 };
 
 } // namespace luci_codegen

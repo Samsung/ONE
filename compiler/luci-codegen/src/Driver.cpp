@@ -19,7 +19,9 @@ int main(int argc, char **argv)
   const circle::Model *circle_module;
   std::unique_ptr<luci::Module> luci_module = importer.importModule(circle_module);
 
-  luci_codegen::LuciCodegen codegen;
+  luci_codegen::Options options;
+  // set options if needed
+  luci_codegen::LuciCodegen codegen(options);
   codegen.process(*luci_module);
   codegen.emit_code(output_package_name);
 
