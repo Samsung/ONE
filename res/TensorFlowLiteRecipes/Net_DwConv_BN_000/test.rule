@@ -1,0 +1,7 @@
+# To check if BatchNorm op(mul + add) is fused to Depthwise Convolution op
+
+RULE    "VERIFY_FILE_FORMAT"      $(verify_file_format) '=' 1
+
+RULE    "DWCONV_EXIST"            $(op_count DEPTHWISE_CONV_2D) '=' 1
+RULE    "NO_MUL"                  $(op_count MUL) '=' 0
+RULE    "NO_ADD"                  $(op_count ADD) '=' 0
