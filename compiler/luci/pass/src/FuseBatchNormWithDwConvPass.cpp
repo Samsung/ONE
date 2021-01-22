@@ -95,6 +95,7 @@ bool fused_batch_norm_with_dwconv(luci::CircleAdd *add)
     return false;
   if (add->dtype() != loco::DataType::FLOAT32)
     return false;
+  // TODO support more Activations
   if (add->fusedActivationFunction() != luci::FusedActFunc::NONE &&
       add->fusedActivationFunction() != luci::FusedActFunc::RELU6)
     return false;
