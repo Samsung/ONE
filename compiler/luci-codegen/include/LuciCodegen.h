@@ -34,7 +34,7 @@ struct Options
   int max_inline_buffer_threshold = 1024;
 };
 
-class CodegenContext;
+class SubgraphContext;
 
 class LuciCodegen
 {
@@ -43,18 +43,19 @@ public:
 
   ~LuciCodegen();
 
-  void add_operator(luci::CircleNode *node);
-
-  bool supported(luci::CircleNode *node);
-
-  void process(loco::Graph &graph);
-
-  void process(luci::Module &module);
+  void process_module(luci::Module &module);
 
   void emit_code(std::string package_name);
+
 private:
-  std::unique_ptr<CodegenContext> _context;
+  bool fits_constrains(luci::CircleNode *node);
+
+  void add_operator(luci::CircleNode *node, SubgraphContext &subgraph);
+
+  void process_graph(loco::Graph &graph);
+
   Options _options;
+  std::vector<SubgraphContext> _compiled_subgraphs;
 };
 
 } // namespace luci_codegen
