@@ -36,6 +36,7 @@ public:
     {
       FuseAddWithTConv,
       FuseBatchNormWithConv,
+      FuseBatchNormWithDwConv,
       FuseBatchNormWithTConv,
       FuseBCQ,
       FuseInstanceNorm,
