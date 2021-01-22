@@ -46,7 +46,6 @@
 #include "luci/Pass/SubstitutePackToReshapePass.h"
 #include "luci/Pass/SubstituteTransposeToReshapePass.h"
 #include "luci/Pass/TransformMinMaxToRelu6Pass.h"
-
 // TODO add more passes
 
 #include "luci/Pass/ShapeInferencePass.h"
