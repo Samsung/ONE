@@ -28,10 +28,11 @@ C API above is just an entrypoint and it delegates core stuff to C++ API.
 Here are major classes are described below. One must implement these classes(and some more classes) to create a backend.
 
 - `Backend` : Responsible to create a backend context which is a set of backend components
-- `IConfig` : Configurations and miscellaneous stuff
+- `BackendContext` : Holds data for the current session and also responsible to create tensor objects and kernels
+  - `BackendContext::genTensors` : Create tensor objects
+  - `BackendContext::genKernels` : Create kernels
+- `IConfig` : Configurations and miscellaneous stuff (not session based, global)
 - `ITensorRegistry` : A set of tensor(`ITensor`) objects that are used by the current backend
-- `ITensorBuilder` : Make tensor object and register it to `ITensorRegistry` and static tensors
-- `IKernelGenerator` : Generates operation kernels
 
 Please refer to each class document for details. You may refer to [Bundle Backends](#bundle-backends) for actual implementation samples.
 
