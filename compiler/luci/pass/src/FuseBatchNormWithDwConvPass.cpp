@@ -108,7 +108,7 @@ bool fused_batch_norm_with_dwconv(luci::CircleAdd *add)
   if (filter->rank() != 4)
     return false;
 
-  // check attributes of dwcon
+  // check attributes of dwconv
   if (dwconv->fusedActivationFunction() != luci::FusedActFunc::NONE)
     return false;
   if (dwconv->depthMultiplier() < 0) // can this happen?
