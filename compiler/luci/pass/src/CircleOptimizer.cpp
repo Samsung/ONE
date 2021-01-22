@@ -24,6 +24,7 @@
 #include "luci/Pass/FuseActivationFunctionPass.h"
 #include "luci/Pass/FuseAddWithTConvPass.h"
 #include "luci/Pass/FuseBatchNormWithConvPass.h"
+#include "luci/Pass/FuseBatchNormWithDwConvPass.h"
 #include "luci/Pass/FuseBatchNormWithTConvPass.h"
 #include "luci/Pass/FuseBCQPass.h"
 #include "luci/Pass/FuseInstanceNormPass.h"
@@ -194,6 +195,10 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   if (_options->query(Options::Algorithm::FuseBatchNormWithConv))
   {
     phase.emplace_back(std::make_unique<FuseBatchNormWithConvPass>());
+  }
+  if (_options->query(Options::Algorithm::FuseBatchNormWithDwConv))
+  {
+    phase.emplace_back(std::make_unique<FuseBatchNormWithDwConvPass>());
   }
   if (_options->query(Options::Algorithm::FuseBatchNormWithTConv))
   {
