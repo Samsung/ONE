@@ -30,19 +30,15 @@ namespace
  *             eg) input shape  = (126, 201, 1, 1) => (126, 201)
  *                 output shape = (1, 126, 1, 201) => (126, 201)
  */
-bool substitute_transpose_to_reshape(luci::CircleNode *node)
+bool substitute_transpose_to_reshape(luci::CircleTranspose *node)
 {
-  auto target_node = dynamic_cast<luci::CircleTranspose *>(node);
-  if (target_node == nullptr)
-    return false;
-
-  auto perm_const = dynamic_cast<luci::CircleConst *>(target_node->perm());
+  auto perm_const = dynamic_cast<luci::CircleConst *>(node->perm());
   if (perm_const == nullptr)
     return false;
 
   assert(perm_const->dtype() == loco::DataType::S32);
 
-  auto input_node = loco::must_cast<luci::CircleNode *>(target_node->a());
+  auto input_node = loco::must_cast<luci::CircleNode *>(node->a());
   if (perm_const->dim(0).value() != input_node->rank())
     return false;
 
@@ -88,7 +84,7 @@ bool substitute_transpose_to_reshape(luci::CircleNode *node)
   new_reshape_node->tensor(input_node);
   new_reshape_node->shape(new_const_node);
 
-  replace(target_node).with(new_reshape_node);
+  replace(node).with(new_reshape_node);
   return true;
 }
 
@@ -120,10 +116,12 @@ bool SubstituteTransposeToReshapePass::run(loco::Graph *g)
   bool changed = false;
   for (auto node : loco::active_nodes(loco::output_nodes(g)))
   {
-    auto circle_node = loco::must_cast<luci::CircleNode *>(node);
-    if (substitute_transpose_to_reshape(circle_node))
+    if (auto circle_node = dynamic_cast<luci::CircleTranspose *>(node))
     {
-      changed = true;
+      if (substitute_transpose_to_reshape(circle_node))
+      {
+        changed = true;
+      }
     }
   }
   return changed;
