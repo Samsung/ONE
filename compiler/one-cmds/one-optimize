@@ -74,6 +74,10 @@ def _get_parser():
         action='store_true',
         help='fuse BatchNorm op to Convolution op')
     circle2circle_group.add_argument(
+        '--fuse_batchnorm_with_dwconv',
+        action='store_true',
+        help='fuse BatchNorm op to Depthwise Convolution op')
+    circle2circle_group.add_argument(
         '--fuse_batchnorm_with_tconv',
         action='store_true',
         help='fuse BatchNorm op to Transposed Convolution op')
