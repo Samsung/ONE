@@ -31,7 +31,6 @@ operation {
   input: "shape1"
   output: "reshape_out"
 }
-
 operation {
   type: "Reshape"
   input: "reshape_out"
