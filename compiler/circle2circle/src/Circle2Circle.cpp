@@ -201,6 +201,12 @@ int entry(int argc, char **argv)
     .default_value(false)
     .help("This will convert single input Pack to Reshape");
 
+  arser.add_argument("--substitute_transpose_to_reshape")
+    .nargs(0)
+    .required(false)
+    .default_value(false)
+    .help("This will convert single input Transpose to Reshape");
+
   arser.add_argument("--convert_nchw_to_nhwc")
     .nargs(0)
     .required(false)
@@ -343,6 +349,8 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::ShuffleWeightTo16x1Float32);
   if (arser.get<bool>("--substitute_pack_to_reshape"))
     options->enable(Algorithms::SubstitutePackToReshape);
+  if (arser.get<bool>("--substitute_transpose_to_reshape"))
+    options->enable(Algorithms::SubstituteTransposeToReshape);
   if (arser.get<bool>("--transform_min_max_to_relu6"))
     options->enable(Algorithms::TransformMinMaxToRelu6Pass);
 
