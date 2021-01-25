@@ -68,25 +68,22 @@ bool CircleShapeInferencePass::run(loco::Graph *g)
   luci::sinf::Rule shape_infer_rule;
   bool changed = false;
 
-  // TODO Remove clang-format off
-  // clang-format off
   for (auto node : inference_candidates(g))
+  {
+    loco::TensorShape shape;
+    auto circle_node = loco::must_cast<luci::CircleNode *>(node);
+
+    if (shape_infer_rule.infer(circle_node, shape) && !is_same_shape(circle_node, shape))
     {
-      loco::TensorShape shape;
-      auto circle_node = loco::must_cast<luci::CircleNode *>(node);
+      circle_node->rank(shape.rank());
+      for (uint32_t i = 0; i < shape.rank(); ++i)
+        circle_node->dim(i) = shape.dim(i);
 
-      if (shape_infer_rule.infer(circle_node, shape) && !is_same_shape(circle_node, shape))
-      {
-        circle_node->rank(shape.rank());
-        for (uint32_t i = 0; i < shape.rank(); ++i)
-          circle_node->dim(i) = shape.dim(i);
+      circle_node->shape_status(luci::ShapeStatus::VALID);
 
-        circle_node->shape_status(luci::ShapeStatus::VALID);
-
-        changed = true;
-      }
+      changed = true;
     }
-  // clang-format on
+  }
 
   return changed;
 }

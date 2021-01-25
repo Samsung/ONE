@@ -43,20 +43,17 @@ bool CircleTypeInferencePass::run(loco::Graph *g)
   luci::tinf::Rule type_infer_rule;
   bool changed = false;
 
-  // TODO Remove clang-format off
-  // clang-format off
   for (auto node : inference_candidates(g))
-    {
-      loco::DataType dtype;
-      auto circle_node = loco::must_cast<luci::CircleNode *>(node);
+  {
+    loco::DataType dtype;
+    auto circle_node = loco::must_cast<luci::CircleNode *>(node);
 
-      if (type_infer_rule.infer(circle_node, dtype) && circle_node->dtype() != dtype)
-      {
-        circle_node->dtype(dtype);
-        changed = true;
-      }
+    if (type_infer_rule.infer(circle_node, dtype) && circle_node->dtype() != dtype)
+    {
+      circle_node->dtype(dtype);
+      changed = true;
     }
-  // clang-format on
+  }
 
   return changed;
 }
