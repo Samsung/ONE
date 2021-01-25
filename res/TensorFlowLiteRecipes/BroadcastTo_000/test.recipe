@@ -1,0 +1,24 @@
+operand {
+  name: "bc_input"
+  type: FLOAT32
+  shape { dim: 2 dim: 3 }
+}
+operand {
+  name: "bc_shape"
+  type: INT32
+  shape { dim: 3 }
+  filler { tag: "explicit" arg: "1" arg: "2" arg: "3" }
+}
+operand {
+  name: "bc_ofm"
+  type: FLOAT32
+  shape { dim: 1 dim: 2 dim: 3 }
+}
+operation {
+  type: "BroadcastTo"
+  input: "bc_input"
+  input: "bc_shape"
+  output: "bc_ofm"
+}
+input: "bc_input"
+output: "bc_ofm"
