@@ -24,6 +24,7 @@
 #include "luci/Pass/FuseActivationFunctionPass.h"
 #include "luci/Pass/FuseAddWithTConvPass.h"
 #include "luci/Pass/FuseBatchNormWithConvPass.h"
+#include "luci/Pass/FuseBatchNormWithDwConvPass.h"
 #include "luci/Pass/FuseBatchNormWithTConvPass.h"
 #include "luci/Pass/FuseBCQPass.h"
 #include "luci/Pass/FuseInstanceNormPass.h"
@@ -45,6 +46,7 @@
 #include "luci/Pass/SparsifyTensorPass.h"
 #include "luci/Pass/ShuffleWeightTo16x1Float32Pass.h"
 #include "luci/Pass/SubstitutePackToReshapePass.h"
+#include "luci/Pass/SubstituteTransposeToReshapePass.h"
 #include "luci/Pass/TransformMinMaxToRelu6Pass.h"
 // TODO add more passes
 
@@ -196,6 +198,10 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   {
     phase.emplace_back(std::make_unique<FuseBatchNormWithConvPass>());
   }
+  if (_options->query(Options::Algorithm::FuseBatchNormWithDwConv))
+  {
+    phase.emplace_back(std::make_unique<FuseBatchNormWithDwConvPass>());
+  }
   if (_options->query(Options::Algorithm::FuseBatchNormWithTConv))
   {
     phase.emplace_back(std::make_unique<FuseBatchNormWithTConvPass>());
@@ -263,6 +269,10 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   if (_options->query(Options::Algorithm::SubstitutePackToReshape))
   {
     phase.emplace_back(std::make_unique<luci::SubstitutePackToReshapePass>());
+  }
+  if (_options->query(Options::Algorithm::SubstituteTransposeToReshape))
+  {
+    phase.emplace_back(std::make_unique<luci::SubstituteTransposeToReshapePass>());
   }
   if (_options->query(Options::Algorithm::TransformMinMaxToRelu6Pass))
   {

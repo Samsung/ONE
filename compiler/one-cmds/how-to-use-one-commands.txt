@@ -155,8 +155,8 @@ Current transformation options are
 - fold_dequantize : This removes Dequantize operation which can be folded
 - fold_sparse_to_dense : This removes SparseToDense operation which can be folded
 - fuse_add_with_tconv: This fuses Add operator with the preceding TConv operator if possible
-- fuse_batchnorm_wich_conv : This fuses BatchNorm operator to convolution operator
-- fuse_batchnorm_wich_tconv : This fuses BatchNorm operator to transpose convolution operator
+- fuse_batchnorm_with_conv : This fuses BatchNorm operator to convolution operator
+- fuse_batchnorm_with_tconv : This fuses BatchNorm operator to transpose convolution operator
 - fuse_bcq: This enables Binary-Coded-bases Quantized DNNs
    - read https://arxiv.org/abs/2005.09904 for detailed information
 - fuse_instnorm: This will convert instance normalization related operators to
@@ -181,6 +181,7 @@ Current transformation options are
 - shuffle_weight_to_16x1float32 : This will convert weight format of FullyConnected to SHUFFLED16x1FLOAT32.
   Note that it only converts weights whose row is a multiple of 16.
 - substitute_pack_to_reshape : This will convert single input Pack to Reshape.
+- transform_min_max_to_relu6: This will transform Minimum-Maximum pattern to Relu6 operator.
 
 
 one-quantize

@@ -1,0 +1,91 @@
+operand {
+  name: "ifm"
+  type: FLOAT32
+  shape { dim: 1 dim: 64 dim: 64 dim: 8 }
+}
+operand {
+  name: "filter"
+  type: FLOAT32
+  shape { dim: 1 dim: 3 dim: 3 dim: 8 }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "1.0"
+  }
+}
+operand {
+  name: "bias"
+  type: FLOAT32
+  shape { dim: 8 }
+  filler {
+    tag: "constant"
+    arg: "1.1"
+  }
+}
+operand {
+  name: "scale"
+  type: FLOAT32
+  shape { dim: 8 }
+  filler {
+    tag: "constant"
+    arg: "1.1"
+  }
+}
+operand {
+  name: "shift"
+  type: FLOAT32
+  shape { dim: 8 }
+  filler {
+    tag: "constant"
+    arg: "1.1"
+  }
+}
+operand {
+  name: "dwout"
+  type: FLOAT32
+  shape { dim: 1 dim: 64 dim: 64 dim: 8 }
+}
+operand {
+  name: "mulout"
+  type: FLOAT32
+  shape { dim: 1 dim: 64 dim: 64 dim: 8 }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 1 dim: 64 dim: 64 dim: 8 }
+}
+operation {
+  type: "DepthwiseConv2D"
+  depthwiseconv2d_options {
+    padding: SAME
+    stride_w: 1
+    stride_h: 1
+    depth_multiplier: 1
+    activation : NONE
+  }
+  input: "ifm"
+  input: "filter"
+  input: "bias"
+  output: "dwout"
+}
+operation {
+  type: "Mul"
+  input: "dwout"
+  input: "scale"
+  output: "mulout"
+  mul_options {
+    activation: NONE
+  }
+}
+operation {
+  type: "Add"
+  input: "mulout"
+  input: "shift"
+  output: "ofm"
+  add_options {
+    activation: RELU6
+  }
+}
+input: "ifm"
+output: "ofm"

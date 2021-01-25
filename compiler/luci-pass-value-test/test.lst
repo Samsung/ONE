@@ -1,0 +1,20 @@
+#
+# Format:
+#   addeval(MODEL PASS)
+# MODEL: tflite model file name in build/compiler/common-artifacts folder.
+# PASS: Optimization Pass to test. Supports only one Pass for now.
+#
+
+# addeval(Net_Preactivation_BN_000 fuse_preactivation_batchnorm) : Segmentation fault
+addeval(Net_Conv_Add_Mul_000 fuse_batchnorm_with_conv)
+addeval(Net_Conv_Add_Mul_000 fuse_batchnorm_with_conv)
+addeval(Net_Conv_Add_Mul_001 fuse_batchnorm_with_conv)
+addeval(Net_Conv_Add_Mul_002 fuse_batchnorm_with_conv)
+addeval(Net_TConv_Add_000 fuse_add_with_tconv)
+addeval(Net_TConv_Add_001 fuse_add_with_tconv)
+addeval(Net_TConv_Add_002 fuse_add_with_tconv)
+addeval(Net_TConv_BN_000 fuse_batchnorm_with_tconv)
+addeval(Net_TConv_BN_001 fuse_batchnorm_with_tconv)
+addeval(Net_InstanceNorm_001 fuse_instnorm)
+# addeval(Net_InstanceNorm_002 fuse_instnorm) : core dumped
+addeval(Net_InstanceNorm_003 fuse_instnorm)

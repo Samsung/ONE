@@ -102,6 +102,12 @@ int entry(int argc, char **argv)
     .default_value(false)
     .help("This will fuse BatchNorm operators to Convolution operator");
 
+  arser.add_argument("--fuse_batchnorm_with_dwconv")
+    .nargs(0)
+    .required(false)
+    .default_value(false)
+    .help("This will fuse BatchNorm operators to Depthwise Convolution operator");
+
   arser.add_argument("--fuse_batchnorm_with_tconv")
     .nargs(0)
     .required(false)
@@ -305,6 +311,8 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::FuseBatchNormWithConv);
   if (arser.get<bool>("--fuse_add_with_tconv"))
     options->enable(Algorithms::FuseAddWithTConv);
+  if (arser.get<bool>("--fuse_batchnorm_with_dwconv"))
+    options->enable(Algorithms::FuseBatchNormWithDwConv);
   if (arser.get<bool>("--fuse_batchnorm_with_tconv"))
     options->enable(Algorithms::FuseBatchNormWithTConv);
   if (arser.get<bool>("--fuse_bcq"))

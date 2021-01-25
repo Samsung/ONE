@@ -36,6 +36,7 @@ public:
     {
       FuseAddWithTConv,
       FuseBatchNormWithConv,
+      FuseBatchNormWithDwConv,
       FuseBatchNormWithTConv,
       FuseBCQ,
       FuseInstanceNorm,
@@ -62,6 +63,7 @@ public:
       RemoveUnnecessarySplit,
       RemoveUnnecessaryReshape,
       TransformMinMaxToRelu6Pass,
+      SubstituteTransposeToReshape,
       RemoveRedundantReshape,
     };
 
