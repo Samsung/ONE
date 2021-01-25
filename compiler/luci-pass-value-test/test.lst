@@ -18,5 +18,5 @@ addeval(Net_TConv_Add_002 fuse_add_with_tconv)
 addeval(Net_TConv_BN_000 fuse_batchnorm_with_tconv)
 addeval(Net_TConv_BN_001 fuse_batchnorm_with_tconv)
 addeval(Net_InstanceNorm_001 fuse_instnorm)
-# addeval(Net_InstanceNorm_002 fuse_instnorm) : core dumped
+addeval(Net_InstanceNorm_002 fuse_instnorm)
 addeval(Net_InstanceNorm_003 fuse_instnorm)
