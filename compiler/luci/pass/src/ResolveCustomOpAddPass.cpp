@@ -86,6 +86,25 @@ bool resolve_custom_op(luci::CircleCustom *addv2)
   if (custom_code != "AddV2")
     return false;
 
+  if (addv2->numInputs() != 2)
+    return false;
+  // check if inputs are suppport data types
+  for (uint32_t i = 0; i < addv2->numInputs(); i++)
+  {
+    auto input = dynamic_cast<luci::CircleNode *>(addv2->inputs(i));
+    switch (input->dtype())
+    {
+      case loco::DataType::U8:
+      case loco::DataType::S8:
+      case loco::DataType::S16:
+      case loco::DataType::S32:
+      case loco::DataType::FLOAT32:
+        break;
+      default:
+        return false;
+    }
+  }
+
   if (resolve_with_BroadcastTo(addv2))
     return true;
 

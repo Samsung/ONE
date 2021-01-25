@@ -72,6 +72,7 @@ tcgenerate(NonMaxSuppressionV5_001)
 tcgenerate(MirrorPad_000)
 tcgenerate(Mul_U8_000)
 tcgenerate(Neg_000)
+tcgenerate(Net_BroadcastTo_AddV2_001) # luci-interpreter doesn't support custom operator
 tcgenerate(Net_Dangle_001)
 tcgenerate(Net_InstanceNorm_001)
 tcgenerate(Net_InstanceNorm_002)

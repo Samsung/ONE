@@ -26,6 +26,8 @@ Add(Net_Maximum_Minimum_000 PASS transform_min_max_to_relu6)
 Add(BatchMatMulV2_000 PASS resolve_customop_batchmatmul)
 Add(MatMul_000 PASS resolve_customop_matmul)
 Add(DepthwiseConv2D_003 PASS)
+Add(Net_BroadcastTo_AddV2_000 PASS resolve_customop_add)
+Add(Net_BroadcastTo_AddV2_001 PASS resolve_customop_add)
 
 ## CIRCLE RECIPE
 
