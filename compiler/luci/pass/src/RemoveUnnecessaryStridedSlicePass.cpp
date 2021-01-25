@@ -24,8 +24,6 @@ namespace
 /**
  * @brief   Return value in CircleConst.
  * @details Return value in position on CircleConst with int64 format.
- *          Begin must be larger than or equal to 0. Size must be larger
- *          than or equal to -1.
  */
 int64_t value_from_circle_const(const luci::CircleConst *node, uint32_t idx)
 {
