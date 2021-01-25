@@ -37,6 +37,7 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   CIRCLE_NODE(BATCH_TO_SPACE_ND, CircleBatchToSpaceNDGraphBuilder);                        // 37
   CIRCLE_NODE(BCQ_FULLY_CONNECTED, CircleBCQFullyConnectedGraphBuilder);                   // 253
   CIRCLE_NODE(BCQ_GATHER, CircleBCQGatherGraphBuilder);                                    // 252
+  CIRCLE_NODE(BIDIRECTIONAL_SEQUENCE_LSTM, CircleBidirectionalSequenceLSTMGraphBuilder);   // 52
   CIRCLE_NODE(CAST, CircleCastGraphBuilder);                                               // 53
   CIRCLE_NODE(CEIL, CircleCeilGraphBuilder);                                               // 104
   CIRCLE_NODE(CUSTOM, CircleCustomGraphBuilder);                                           // 32
@@ -156,7 +157,6 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   // BuiltinOperator_UNIDIRECTIONAL_SEQUENCE_RNN = 35,
   // BuiltinOperator_BIDIRECTIONAL_SEQUENCE_RNN = 46,
   // BuiltinOperator_DELEGATE = 51,
-  // BuiltinOperator_BIDIRECTIONAL_SEQUENCE_LSTM = 52,
   // BuiltinOperator_ARG_MAX = 56,
   // BuiltinOperator_QUANTIZE = 114,
   // BuiltinOperator_HARD_SWISH = 117,
