@@ -131,6 +131,8 @@ bool ShuffleWeightTo16x1Float32Pass::run(loco::Graph *g)
       fc->weights(new_weights);
       fc->weights_format(luci::CircleFullyConnected::WeightsFormat::SHUFFLED16x1FLOAT32);
     }
+
+    changed = true;
   }
 
   return changed;
