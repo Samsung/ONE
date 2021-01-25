@@ -156,6 +156,7 @@ Current transformation options are
 - fold_sparse_to_dense : This removes SparseToDense operation which can be folded
 - fuse_add_with_tconv: This fuses Add operator with the preceding TConv operator if possible
 - fuse_batchnorm_with_conv : This fuses BatchNorm operator to convolution operator
+- fuse_batchnorm_with_dwconv : This fuses BatchNorm operator to depthwise convolution operator
 - fuse_batchnorm_with_tconv : This fuses BatchNorm operator to transpose convolution operator
 - fuse_bcq: This enables Binary-Coded-bases Quantized DNNs
    - read https://arxiv.org/abs/2005.09904 for detailed information
