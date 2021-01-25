@@ -35,11 +35,8 @@ bool check_perm(const luci::CircleConst *first_perm, const luci::CircleConst *se
   return true;
 }
 
-bool remove_consecutive_transpose_function(luci::CircleNode *node)
+bool remove_consecutive_transpose_function(luci::CircleTranspose *target_node)
 {
-  auto target_node = dynamic_cast<luci::CircleTranspose *>(node);
-  if (target_node == nullptr)
-    return false;
   auto pred_node = dynamic_cast<luci::CircleTranspose *>(target_node->a());
   if (pred_node == nullptr)
     return false;
@@ -55,7 +52,7 @@ bool remove_consecutive_transpose_function(luci::CircleNode *node)
   auto main_node = loco::must_cast<luci::CircleNode *>(pred_node->a());
   if (check_perm(pred_perm, main_perm))
   {
-    replace(node).with(main_node);
+    replace(target_node).with(main_node);
   }
   else
   {
@@ -79,7 +76,7 @@ bool remove_consecutive_transpose_function(luci::CircleNode *node)
     new_transpose_node->a(main_node);
     new_transpose_node->perm(new_const_node);
 
-    replace(node).with(new_transpose_node);
+    replace(target_node).with(new_transpose_node);
   }
   return true;
 }
@@ -118,11 +115,10 @@ bool RemoveRedundantTransposePass::run(loco::Graph *g)
   bool changed = false;
   for (auto node : loco::active_nodes(loco::output_nodes(g)))
   {
-    auto circle_node = loco::must_cast<luci::CircleNode *>(node);
-    if (remove_consecutive_transpose_function(circle_node))
+    if (auto transpose = dynamic_cast<luci::CircleTranspose *>(node))
     {
-      changed = true;
-      break;
+      if (remove_consecutive_transpose_function(transpose))
+        changed = true;
     }
   }
   return changed;
