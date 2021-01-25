@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
+#include "helpers/InferenceCandidates.h"
+
 #include "luci/Pass/CircleTypeInferencePass.h"
 
-#include <luci/IR/DeadNodeQueryService.h>
 #include <luci/Service/CircleTypeInference.h>
 
 #include <loco.h>
@@ -42,9 +43,9 @@ bool CircleTypeInferencePass::run(loco::Graph *g)
   luci::tinf::Rule type_infer_rule;
   bool changed = false;
 
-  for (auto node : loco::all_nodes(g))
-  {
-    if (!node->dialect()->service<DeadNodeQueryServiceImpl>()->isDeadNode(node))
+  // TODO Remove clang-format off
+  // clang-format off
+  for (auto node : inference_candidates(g))
     {
       loco::DataType dtype;
       auto circle_node = loco::must_cast<luci::CircleNode *>(node);
@@ -55,7 +56,7 @@ bool CircleTypeInferencePass::run(loco::Graph *g)
         changed = true;
       }
     }
-  }
+  // clang-format on
 
   return changed;
 }
