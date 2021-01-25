@@ -7,11 +7,6 @@ operand {
     dim: 4
     dim: 16
   }
-  filler {
-    tag: "gaussian"
-    arg: "0.0"
-    arg: "0.1"
-  }
 }
 operand {
   name: "Weights1"
