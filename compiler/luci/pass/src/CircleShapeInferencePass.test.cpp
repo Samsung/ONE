@@ -23,11 +23,12 @@
 #include <gtest/gtest.h>
 
 /**
- * This test is for checking when traversal order affect the result of inference.
+ * This test is to check whether shape inference is done by topological order.
  *
- * Because "transpose1" only changed permutation node from "old_perm" to "new_perm",
- * shape_status of "transpose1" is still VALID even the shape should be changed.
- * If "transpose2" is visted first before shape of "transpose1" is updated,
+ * When perm() of "transpose1" is changed from "old_perm" to "new_perm"
+ * by some of luci/Pass like below diagram, shape_status of "transpose1" is
+ * still VALID even the shape should be changed.
+ * If "transpose2" is visited first before shape of "transpose1" is updated,
  * "transpose2" can reference the shape of "relu" which is not updated yet.
  * Then shape of "transpose2" becomes 3x5x5x1 and it causes an error at "conv2d".
  *
