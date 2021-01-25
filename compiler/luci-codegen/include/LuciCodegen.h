@@ -21,6 +21,7 @@
 #include "luci/IR/CircleNodeDecl.h"
 
 #include <memory>
+#include <unordered_set>
 #include <string>
 
 namespace luci_codegen
@@ -48,9 +49,9 @@ public:
   void emit_code(std::string package_name);
 
 private:
-  bool fits_constrains(luci::CircleNode *node);
+  bool fits_constrains(luci::CircleNode *node) const;
 
-  void add_operator(luci::CircleNode *node, SubgraphContext &subgraph);
+  std::vector<luci::CircleNode *> gather_suitable_nodes(luci::CircleNode *node, std::unordered_set<luci::CircleNode *> &processed) const;
 
   void process_graph(loco::Graph &graph);
 

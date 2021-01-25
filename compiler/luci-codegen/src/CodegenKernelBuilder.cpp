@@ -58,24 +58,6 @@ struct DivOp
   }
 };
 
-Halide::Type transform_type(loco::DataType dtype)
-{
-  switch (dtype)
-  {
-    case loco::DataType::FLOAT32:
-      return Halide::Type(Halide::Type::Float, 32, 1);
-    case loco::DataType::FLOAT64:
-      return Halide::Type(Halide::Type::Float, 64, 1);
-    case loco::DataType::S32:
-      return Halide::Type(Halide::Type::Int, 32, 1);
-    case loco::DataType::S64:
-      return Halide::Type(Halide::Type::Int, 64, 1);
-    default:
-      assert("NYI");
-  }
-  return Halide::Type();
-}
-
 std::vector<Halide::Expr> debroadcast_iter_space(const std::vector<Halide::Expr> &output_space, const luci::CircleNode *node)
 {
   int rank = node->rank();
@@ -110,22 +92,11 @@ void CodegenKernelBuilder::binary_operator(luci::CircleNode *node)
   std::vector<Halide::Expr> output_vars = iter_space(node);
   std::vector<Halide::Expr> arg_a_vars = debroadcast_iter_space(output_vars, node); // separate variables according broadcasting rules
   std::vector<Halide::Expr> arg_b_vars = debroadcast_iter_space(output_vars, node);
-  Halide::Func output_func;
-  Halide::Func input_a = get_func(static_cast<luci::CircleNode *>(node->arg(0)));
-  Halide::Func input_b = get_func(static_cast<luci::CircleNode *>(node->arg(1)));
+  Halide::Func output_func = _subgraph.get_func(node);
+  Halide::Func input_a = _subgraph.get_func(static_cast<luci::CircleNode *>(node->arg(0)));
+  Halide::Func input_b = _subgraph.get_func(static_cast<luci::CircleNode *>(node->arg(1)));
 
   output_func(output_vars) = OP::op(input_a(arg_a_vars), input_b(arg_b_vars));
-  _subgraph.generated_funcs()[node] = output_func;
-}
-
-Halide::Func CodegenKernelBuilder::get_func(luci::CircleNode *node)
-{
-  if (_subgraph.generated_funcs().count(node))
-    return _subgraph.generated_funcs()[node];
-  // No function found, need to create input
-  Halide::ImageParam input = Halide::ImageParam(transform_type(node->dtype()), node->rank());
-  _subgraph.add_input(input);
-  return input;
 }
 
 void CodegenKernelBuilder::visit(luci::CircleConst *node)
@@ -146,7 +117,8 @@ void CodegenKernelBuilder::visit(luci::CircleConst *node)
         buf.data()[i] = node->at<loco::DataType::FLOAT32>(i);
         iter_space[i] = Halide::Var();
       }
-      _subgraph.generated_funcs()[node] = Halide::Func(buf(iter_space));
+      Halide::Func const_func = _subgraph.get_func(node);
+      const_func(iter_space) = buf(iter_space);
     }
   }
 }

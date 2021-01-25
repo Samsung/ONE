@@ -24,6 +24,7 @@
 #include "Halide.h"
 
 #include <map>
+#include <unordered_set>
 
 namespace luci_codegen
 {
@@ -32,33 +33,101 @@ LuciCodegen::LuciCodegen(const Options &options) : _options(options) {}
 
 LuciCodegen::~LuciCodegen() {}
 
-bool LuciCodegen::fits_constrains(luci::CircleNode *node)
+bool LuciCodegen::fits_constrains(luci::CircleNode *node) const
 {
   if (node->opcode() == luci::CircleOpcode::CIRCLECONST)
     return const_node_size(node) <= _options.max_inline_buffer_threshold;
   return is_supported(node);
 }
 
-void LuciCodegen::add_operator(luci::CircleNode *node, SubgraphContext &subgraph)
+std::vector<luci::CircleNode *> LuciCodegen::gather_suitable_nodes(luci::CircleNode *node, std::unordered_set<luci::CircleNode *> &processed) const
 {
-  assert(fits_constrains(node));
-  CodegenKernelBuilder builder(subgraph);
-  node->accept(&builder);
+  std::vector<luci::CircleNode *> subgraph_nodes;
+  std::queue<luci::CircleNode *> queue;
+  queue.push(node);
+  processed.insert(node);
+  while (!queue.empty())
+  {
+    luci::CircleNode *cur_node = queue.front();
+    subgraph_nodes.push_back(cur_node);
+    queue.pop();
+
+    std::vector<luci::CircleNode *> adjacent;
+    // gather adjacent nodes
+    for (int i = 0; i < cur_node->arity(); ++i)
+    {
+      adjacent.push_back(static_cast<luci::CircleNode *>(cur_node->arg(i)));
+    }
+    auto succs = loco::succs(cur_node);
+    for (auto succ: succs)
+    {
+      adjacent.push_back(static_cast<luci::CircleNode *>(succ));
+    }
+    // process adjacent nodes
+    for (auto adj: adjacent)
+    {
+      if (processed.count(adj) || !fits_constrains(adj))
+      {
+        continue;
+      }
+      processed.insert(adj);
+      queue.push(adj);
+    }
+  }
+  return subgraph_nodes;
 }
 
 void LuciCodegen::process_graph(loco::Graph &graph)
 {
-  SubgraphContext subgraph;
-  auto *inputs = graph.inputs();
-  auto input = inputs->at(0);
-  auto outputs = loco::output_nodes(&graph);
-  for (loco::Node *node: loco::postorder_traversal(outputs))
+  std::unordered_set<luci::CircleNode *> processed;
+  auto nodes = graph.nodes();
+
+  for (int i = 0; i < nodes->size(); ++i)
   {
-    auto circle_node = static_cast<luci::CircleNode *>(node);
-    if (fits_constrains(circle_node))
-      add_operator(circle_node, subgraph);
+    auto node = static_cast<luci::CircleNode *>(nodes->at(i));
+    if (processed.count(node) || !fits_constrains(node))
+      continue;
+
+    // Traverse graph to find adjacent supported nodes
+    std::vector<luci::CircleNode *> subgraph_nodes = gather_suitable_nodes(node, processed);
+
+    _compiled_subgraphs.emplace_back(std::move(subgraph_nodes));
+    auto &subgraph = _compiled_subgraphs.back();
+    subgraph.finish_construction();
+
+    CodegenKernelBuilder kernel_builder(subgraph);
+
+    // TODO make separate scheduler entity for this
+    for (auto node: subgraph.get_nodes())
+      kernel_builder.visit(node);
+
+    // Replace subgraph with custom operator
+    auto &inputs = subgraph.inputs();
+    const auto num_inputs = inputs.size();
+
+    auto compiled_node = graph.nodes()->create<luci::CircleCustom>(num_inputs);
+    compiled_node->custom_code("COMPILED_OP");
+
+    for (int i = 0; i < num_inputs; ++i)
+    {
+      compiled_node->inputs(i, subgraph.inputs()[i].first);
+    }
+
+    for (int i = 0; i < subgraph.outputs().size(); ++i)
+    {
+      auto output = subgraph.outputs()[i];
+      auto custom_output = graph.nodes()->create<luci::CircleCustomOut>();
+      custom_output->input(compiled_node);
+      custom_output->index(i);
+      loco::replace(output.first).with(custom_output);
+    }
+
+    // Cleanup graph
+    for (auto node: subgraph.get_nodes())
+    {
+      graph.nodes()->destroy(node);
+    }
   }
-  _compiled_subgraphs.push_back(std::move(subgraph));
 }
 
 void LuciCodegen::process_module(luci::Module &module)
@@ -71,13 +140,23 @@ void LuciCodegen::process_module(luci::Module &module)
 void LuciCodegen::emit_code(std::string package_name)
 {
   int no = 0;
-  for (auto subgraph: _compiled_subgraphs)
-    for (auto &node_func: subgraph.generated_funcs())
+  for (auto &subgraph: _compiled_subgraphs)
+  {
+    std::vector<Halide::Argument> arguments;
+    for (auto input: subgraph.inputs())
     {
-      ++no;
-      node_func.second.compile_to_lowered_stmt("func_" + std::to_string(no) + ".html", subgraph.inputs(), Halide::StmtOutputFormat::HTML);
+      arguments.push_back(input.second);
     }
-  // TODO generate object files?
+    std::vector<Halide::Func> outputs;
+    for (auto output: subgraph.outputs())
+    {
+      outputs.push_back(output.second);
+    }
+    Halide::Pipeline composite_output(outputs);
+    ++no;
+    composite_output.compile_to_lowered_stmt("func_" + std::to_string(no) + ".html", arguments, Halide::StmtOutputFormat::HTML);
+  }
+  // TODO generate object files/static libraries?
 }
 
 } // namespace luci_codegen

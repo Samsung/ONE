@@ -21,28 +21,96 @@
 
 #include "Halide.h"
 
+#include <unordered_map>
+#include <vector>
+#include <utility>
+
 namespace luci_codegen
 {
 
+/**
+ * @brief This class is responsible for holding subgraph nodes and corresponding halide entities
+ */
 class SubgraphContext
 {
 public:
-  SubgraphContext() {}
-
-  std::map<luci::CircleNode *, Halide::Func> &generated_funcs() { return _generated_funcs; }
-
-  std::vector<Halide::Argument> inputs() { return _inputs; }
-
-  std::vector<Halide::Func> outputs()
+  SubgraphContext()
   {
-    //NYI
+#ifndef NDEBUG
+    _constructed = false;
+#endif
   }
 
-  void add_input(Halide::Argument input) { _inputs.push_back(input); }
+  template<typename Cont>
+  SubgraphContext(Cont &&nodes): _nodes(std::forward<Cont>(nodes))
+  {
+#ifndef NDEBUG
+    _constructed = false;
+#endif
+  }
+
+  SubgraphContext(const SubgraphContext &sub) = default;
+
+  SubgraphContext(SubgraphContext &&sub) = default;
+
+  // Construction methods
+
+  /**
+   * @brief construction method, adds node to subgraph
+   * @param node node to add in subgraph
+   */
+  void add_node(luci::CircleNode *node)
+  {
+    assert(_constructed);
+    _nodes.push_back(node);
+  }
+
+  /**
+   * @brief gathers inputs and outputs, generates functions for operators
+   * after this call no construction methods are allowed
+   */
+  void finish_construction();
+
+  /**
+   * @return nodes in subgraph
+   */
+  const std::vector<luci::CircleNode *> get_nodes() const
+  {
+    return _nodes;
+  }
+
+  /**
+   * @param node target node, it should belong to graph or graph inputs
+   * @return function created for given node
+   */
+  Halide::Func get_func(luci::CircleNode *node) const;
+
+  /**
+   * @return vector of inputs (needed for halide code generation)
+   */
+  const std::vector<std::pair<luci::CircleNode *, Halide::ImageParam>> &inputs() const
+  {
+    assert(_constructed);
+    return _inputs;
+  }
+
+  /**
+   * @return vector of outputs (needed to generate outputs of subgraph)
+   */
+  const std::vector<std::pair<luci::CircleNode *, Halide::Func>> &outputs() const
+  {
+    assert(_constructed);
+    return _outputs;
+  }
 
 private:
-  std::map<luci::CircleNode *, Halide::Func> _generated_funcs;
-  std::vector<Halide::Argument> _inputs;
+#ifndef NDEBUG
+  bool _constructed;
+#endif
+  std::vector<luci::CircleNode *> _nodes;
+  std::unordered_map<luci::CircleNode *, Halide::Func> _generated_funcs;
+  std::vector<std::pair<luci::CircleNode *, Halide::ImageParam>> _inputs;
+  std::vector<std::pair<luci::CircleNode *, Halide::Func>> _outputs;
 };
 
 }
