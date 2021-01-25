@@ -64,6 +64,7 @@ public:
       RemoveUnnecessaryReshape,
       TransformMinMaxToRelu6Pass,
       SubstituteTransposeToReshape,
+      RemoveRedundantReshape,
     };
 
     enum AlgorithmParameters
