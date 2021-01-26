@@ -49,12 +49,14 @@ public:
   void emit_code(std::string package_name);
 
 private:
+
   bool fits_constrains(luci::CircleNode *node) const;
 
   std::vector<luci::CircleNode *> gather_suitable_nodes(luci::CircleNode *node, std::unordered_set<luci::CircleNode *> &processed) const;
 
   void process_graph(loco::Graph &graph);
 
+  int _processed_graphs;
   Options _options;
   std::vector<SubgraphContext> _compiled_subgraphs;
 };

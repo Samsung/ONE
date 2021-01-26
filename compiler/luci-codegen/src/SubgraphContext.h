@@ -24,6 +24,7 @@
 #include <unordered_map>
 #include <vector>
 #include <utility>
+#include <string>
 
 namespace luci_codegen
 {
@@ -34,7 +35,7 @@ namespace luci_codegen
 class SubgraphContext
 {
 public:
-  SubgraphContext()
+  SubgraphContext(std::string name = ""): _name(std::move(name))
   {
 #ifndef NDEBUG
     _constructed = false;
@@ -42,7 +43,7 @@ public:
   }
 
   template<typename Cont>
-  SubgraphContext(Cont &&nodes): _nodes(std::forward<Cont>(nodes))
+  SubgraphContext(std::string name, Cont &&nodes): _name(std::move(name)), _nodes(std::forward<Cont>(nodes))
   {
 #ifndef NDEBUG
     _constructed = false;
@@ -70,6 +71,11 @@ public:
    * after this call no construction methods are allowed
    */
   void finish_construction();
+
+  std::string get_name() const
+  {
+    return _name;
+  }
 
   /**
    * @return nodes in subgraph
@@ -107,6 +113,7 @@ private:
 #ifndef NDEBUG
   bool _constructed;
 #endif
+  std::string _name;
   std::vector<luci::CircleNode *> _nodes;
   std::unordered_map<luci::CircleNode *, Halide::Func> _generated_funcs;
   std::vector<std::pair<luci::CircleNode *, Halide::ImageParam>> _inputs;

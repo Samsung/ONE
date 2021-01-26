@@ -29,7 +29,7 @@
 namespace luci_codegen
 {
 
-LuciCodegen::LuciCodegen(const Options &options) : _options(options) {}
+LuciCodegen::LuciCodegen(const Options &options) : _processed_graphs(0), _options(options) {}
 
 LuciCodegen::~LuciCodegen() {}
 
@@ -91,7 +91,8 @@ void LuciCodegen::process_graph(loco::Graph &graph)
     // Traverse graph to find adjacent supported nodes
     std::vector<luci::CircleNode *> subgraph_nodes = gather_suitable_nodes(node, processed);
 
-    _compiled_subgraphs.emplace_back(std::move(subgraph_nodes));
+    std::string subgraph_name = "generated_subgraph_" + std::to_string(_processed_graphs);
+    _compiled_subgraphs.emplace_back(subgraph_name, std::move(subgraph_nodes));
     auto &subgraph = _compiled_subgraphs.back();
     subgraph.finish_construction();
 
@@ -127,6 +128,7 @@ void LuciCodegen::process_graph(loco::Graph &graph)
     {
       graph.nodes()->destroy(node);
     }
+    _processed_graphs++;
   }
 }
 
@@ -139,7 +141,6 @@ void LuciCodegen::process_module(luci::Module &module)
 
 void LuciCodegen::emit_code(std::string package_name)
 {
-  int no = 0;
   for (auto &subgraph: _compiled_subgraphs)
   {
     std::vector<Halide::Argument> arguments;
@@ -153,8 +154,7 @@ void LuciCodegen::emit_code(std::string package_name)
       outputs.push_back(output.second);
     }
     Halide::Pipeline composite_output(outputs);
-    ++no;
-    composite_output.compile_to_lowered_stmt("func_" + std::to_string(no) + ".html", arguments, Halide::StmtOutputFormat::HTML);
+    composite_output.compile_to_lowered_stmt(subgraph.get_name() + ".html", arguments, Halide::StmtOutputFormat::HTML);
   }
   // TODO generate object files/static libraries?
 }
