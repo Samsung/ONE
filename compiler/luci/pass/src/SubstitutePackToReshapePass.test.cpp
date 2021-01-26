@@ -22,26 +22,6 @@
 namespace
 {
 
-/**
- *           BEFORE
- *             |
- *        [CircleNode]
- *             |
- *        [CirclePack]
- *             |
- *        [CircleNode]
- *             |
- *
- *           AFTER
- *      |
- * [CircleNode]  [CircleConst]
- *       \             /
- *       [CircleReshape]
- *             |
- *        [CircleNode]
- *             |
- *
- */
 void create_substitute_pack_to_reshape(loco::Graph *g, const std::initializer_list<uint32_t> shape,
                                        int32_t axis)
 {
