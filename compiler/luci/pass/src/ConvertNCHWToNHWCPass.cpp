@@ -604,7 +604,6 @@ bool ConvertNCHWToNHWCPass::run(loco::Graph *g)
       {
         set_data_format(node, DataFormat::NHWC);
         changed = true;
-        break;
       }
       else
       {
