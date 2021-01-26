@@ -16,6 +16,8 @@
 
 #include "luci/Pass/FuseBatchNormWithConvPass.h"
 
+#include <luci/IR/ProfilingData.h>
+
 #include <luci/IR/CircleNodes.h>
 
 namespace
@@ -194,6 +196,9 @@ bool fused_batch_norm_with_conv(luci::CircleAdd *add)
   fused_conv->stride()->w(conv->stride()->w());
   fused_conv->dilation()->h(conv->dilation()->h());
   fused_conv->dilation()->w(conv->dilation()->w());
+
+  auto origins = std::vector<const luci::CircleNode *>{conv, add, mul};
+  fused_conv->annot(std::make_unique<luci::CircleNodeOrigin>(origins));
 
   replace(add).with(fused_conv);
 

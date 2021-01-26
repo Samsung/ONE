@@ -16,6 +16,7 @@
 
 #include "luci/Import/GraphBuilder.h"
 
+#include <luci/IR/ProfilingData.h>
 #include <luci/Log.h>
 
 namespace luci
@@ -31,6 +32,7 @@ void GraphBuilder::build(const circle::OperatorT &op, GraphBuilderContext *conte
   const std::vector<int32_t> &outputs = op.outputs;
   const auto &tensors = context->reader()->tensors();
   const auto &opcodes = context->reader()->opcodes();
+  const auto &operators = context->reader()->operators();
   auto tensors_ptr = context->reader()->tensors_ptr();
   assert(tensors_ptr != nullptr);
 
@@ -52,6 +54,17 @@ void GraphBuilder::build(const circle::OperatorT &op, GraphBuilderContext *conte
   }
 
   CircleNode *node = build_node(op, input_nodes, context->graph());
+
+  for (uint32_t i = 0; i < operators.size(); ++i)
+  {
+    const circle::OperatorT &ref_op = *operators[i];
+    if (&ref_op == &op)
+    {
+      node->annot(std::make_unique<luci::CircleNodeID>(i));
+      node->annot(std::make_unique<luci::CircleNodeOrigin>(i));
+      break;
+    }
+  }
 
   // Set up node parameters.
   assert(outputs.size() == 1);
