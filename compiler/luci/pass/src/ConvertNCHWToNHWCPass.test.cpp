@@ -177,6 +177,21 @@ public:
   luci::CircleConst *multiplier = nullptr;
 };
 
+class NegGraph final : public SimpleGraph
+{
+protected:
+  loco::Node *insertGraphBody(loco::Node *input) override
+  {
+    neg = g.nodes()->create<luci::CircleNeg>();
+    neg->x(input);
+
+    return neg;
+  }
+
+public:
+  luci::CircleNeg *neg = nullptr;
+};
+
 class PadGraph final : public SimpleGraph
 {
 protected:
@@ -360,6 +375,26 @@ TEST(ConvertNCHWToNHWC, Mul)
   EXPECT_EQ(channel_size, new_multiplier->dim(3).value());
 
   check_pre_trans(g.output->from());
+}
+
+TEST(ConvertNCHWToNHWC, Neg)
+{
+  NegGraph g;
+  g.init();
+
+  run_phase(&g.g, true, true);
+
+  check_pre_trans(g.neg->x());
+
+  auto neg_succs = loco::succs(g.neg);
+  EXPECT_EQ(1, neg_succs.size());
+  check_post_trans(*neg_succs.begin());
+
+  // Check leakyrelu shape
+  EXPECT_EQ(1, g.neg->dim(0).value());
+  EXPECT_EQ(4, g.neg->dim(1).value());
+  EXPECT_EQ(4, g.neg->dim(2).value());
+  EXPECT_EQ(16, g.neg->dim(3).value());
 }
 
 TEST(ConvertNCHWToNHWC, Pad)
