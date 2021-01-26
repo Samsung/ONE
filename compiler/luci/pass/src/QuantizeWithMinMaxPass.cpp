@@ -612,79 +612,81 @@ struct QuantizeBias final : public luci::CircleNodeMutableVisitor<bool>
     if (is_quantized(node))
       return false;
 
-    // Check if this is bias
     auto iwo_list = get_input_weight_output_of_bias(node);
 
+    // TODO: Fix indentation
+    // clang-format off
     for (auto iwo : iwo_list)
     {
-      assert(iwo.size() == 3);
+    assert(iwo.size() == 3);
 
-      auto input = loco::must_cast<luci::CircleNode *>(iwo[0]);
-      auto weight = loco::must_cast<luci::CircleNode *>(iwo[1]);
-      auto output = loco::must_cast<luci::CircleNode *>(iwo[2]);
+    auto input = loco::must_cast<luci::CircleNode *>(iwo[0]);
+    auto weight = loco::must_cast<luci::CircleNode *>(iwo[1]);
+    auto output = loco::must_cast<luci::CircleNode *>(iwo[2]);
 
-      auto const_bias = loco::must_cast<luci::CircleConst *>(node);
-      assert(const_bias->dtype() == loco::DataType::FLOAT32);
+    auto const_bias = loco::must_cast<luci::CircleConst *>(node);
+    assert(const_bias->dtype() == loco::DataType::FLOAT32);
 
-      CircleConst *new_bias = nullptr;
+    CircleConst *new_bias = nullptr;
 
-      if (granularity == QuantizationGranularity::ChannelWise)
+    if (granularity == QuantizationGranularity::ChannelWise)
+    {
+      assert(input->quantparam()->scale.size() == 1); // input scale's layer-wise
+      auto input_scale = input->quantparam()->scale[0];
+
+      assert(weight->quantparam() != nullptr); // weight scale's channel-wise
+      auto weight_scale = weight->quantparam()->scale;
+
+      uint32_t size = const_bias->size<loco::DataType::FLOAT32>();
+      assert(size == weight_scale.size());
+      std::vector<float> scaling_factor(size);
+      std::vector<int64_t> zp(size);
+
+      if (output_type == loco::DataType::U8)
       {
-        assert(input->quantparam()->scale.size() == 1); // input scale's layer-wise
-        auto input_scale = input->quantparam()->scale[0];
-
-        assert(weight->quantparam() != nullptr); // weight scale's channel-wise
-        auto weight_scale = weight->quantparam()->scale;
-
-        uint32_t size = const_bias->size<loco::DataType::FLOAT32>();
-        assert(size == weight_scale.size());
-        std::vector<float> scaling_factor(size);
-        std::vector<int64_t> zp(size);
-
-        if (output_type == loco::DataType::U8)
-        {
-          new_bias =
-            quant_bias_per_channel(const_bias, input_scale, weight_scale, scaling_factor, zp);
-        }
-        else if (output_type == loco::DataType::S16)
-        {
-          new_bias =
-            int16_quant_bias_per_channel(const_bias, input_scale, weight_scale, scaling_factor, zp);
-        }
-        else
-        {
-          throw std::runtime_error("Unsupported quantization type.");
-        }
-
-        auto quantparam = std::make_unique<CircleQuantParam>();
-        quantparam->scale = scaling_factor;
-        quantparam->zerop = zp;
-        assert(new_bias->quantparam() == nullptr); // bias should not be quantized before
-        new_bias->quantparam(std::move(quantparam));
-
-        set_bias(output, new_bias);
+        new_bias =
+          quant_bias_per_channel(const_bias, input_scale, weight_scale, scaling_factor, zp);
+      }
+      else if (output_type == loco::DataType::S16)
+      {
+        new_bias =
+          int16_quant_bias_per_channel(const_bias, input_scale, weight_scale, scaling_factor, zp);
       }
       else
       {
-        assert(input->quantparam()->scale.size() == 1); // Only support per-layer quant
-        auto input_scale = input->quantparam()->scale[0];
-
-        assert(weight->quantparam()->scale.size() == 1); // Only support per-layer quant
-        auto weight_scale = weight->quantparam()->scale[0];
-
-        float scaling_factor{0};
-        int64_t zp{0};
-        new_bias =
-          asym_quant_bias_per_layer(const_bias, input_scale, weight_scale, &scaling_factor, &zp);
-        auto quantparam = std::make_unique<CircleQuantParam>();
-        quantparam->scale.push_back(scaling_factor);
-        quantparam->zerop.push_back(zp);
-        assert(new_bias->quantparam() == nullptr); // bias should not be quantized before
-        new_bias->quantparam(std::move(quantparam));
-
-        set_bias(output, new_bias);
+        throw std::runtime_error("Unsupported quantization type.");
       }
+
+      auto quantparam = std::make_unique<CircleQuantParam>();
+      quantparam->scale = scaling_factor;
+      quantparam->zerop = zp;
+      assert(new_bias->quantparam() == nullptr); // bias should not be quantized before
+      new_bias->quantparam(std::move(quantparam));
+
+      set_bias(output, new_bias);
     }
+    else
+    {
+      assert(input->quantparam()->scale.size() == 1); // Only support per-layer quant
+      auto input_scale = input->quantparam()->scale[0];
+
+      assert(weight->quantparam()->scale.size() == 1); // Only support per-layer quant
+      auto weight_scale = weight->quantparam()->scale[0];
+
+      float scaling_factor{0};
+      int64_t zp{0};
+      new_bias =
+        asym_quant_bias_per_layer(const_bias, input_scale, weight_scale, &scaling_factor, &zp);
+      auto quantparam = std::make_unique<CircleQuantParam>();
+      quantparam->scale.push_back(scaling_factor);
+      quantparam->zerop.push_back(zp);
+      assert(new_bias->quantparam() == nullptr); // bias should not be quantized before
+      new_bias->quantparam(std::move(quantparam));
+
+      set_bias(output, new_bias);
+    }
+    }
+    // clang-format on
     return false;
   }
 };
