@@ -1747,6 +1747,8 @@ loco::NodeShape infer_output(const luci::CircleOutput *node)
   auto graph_output = graph_outputs->at(node->index());
   auto output_shape = graph_output->shape();
 
+  assert(output_shape != nullptr);
+
   return loco::NodeShape{*output_shape};
 }
 
