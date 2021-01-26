@@ -91,9 +91,8 @@ bool PropagateQuantParamPass::run(loco::Graph *g)
     INFO(l) << "PropagateQuantParamPass visit node: " << circle_node->name() << std::endl;
 
     PropagateQuantParam pqp;
-    changed = circle_node->accept(&pqp);
-    if (changed)
-      break;
+    if (circle_node->accept(&pqp))
+      changed = true;
   }
 
   return changed;
