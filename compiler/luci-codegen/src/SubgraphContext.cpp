@@ -55,7 +55,7 @@ void SubgraphContext::finish_construction()
   // gather inputs and  outputs
   for (auto *node: _nodes)
   {
-    for (int i = 0; i< node->arity(); ++i)
+    for (int i = 0; i < node->arity(); ++i)
     {
       assert(dynamic_cast<luci::CircleNode *>(node->arg(i)));
       luci::CircleNode *prev = static_cast<luci::CircleNode *>(node->arg(i));

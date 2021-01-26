@@ -22,6 +22,26 @@
 #include <iostream>
 #include <string>
 
+std::vector<char> read_file(const std::string &path)
+{
+  std::ifstream file(path, std::ios::binary | std::ios::ate);
+  if (!file.is_open())
+  {
+    std::cerr << "failed to open \"" << path << "\" file\n";
+    exit(1);
+  }
+  std::streamsize size = file.tellg();
+  file.seekg(0, std::ios::beg);
+
+  std::vector<char> buffer(size);
+  if (file.read(buffer.data(), size).bad())
+  {
+    std::cerr << "failed to read \"" << path << "\" file\n";
+    exit(1);
+  }
+  return buffer;
+}
+
 int main(int argc, char **argv)
 {
   if (argc != 3)
@@ -32,7 +52,10 @@ int main(int argc, char **argv)
   std::string input_circle_name = argv[1];
   std::string output_package_name = argv[2];
   luci::Importer importer;
-  const circle::Model *circle_module;
+
+  auto raw_model_data = read_file(input_circle_name);
+
+  const circle::Model *circle_module = circle::GetModel(raw_model_data.data());
   std::unique_ptr<luci::Module> luci_module = importer.importModule(circle_module);
 
   luci_codegen::Options options;

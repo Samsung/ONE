@@ -19,12 +19,16 @@
 #include "SubgraphContext.h"
 #include "Utilities.h"
 
+#include "luci/IR/Nodes/CircleCustom.h"
+#include "luci/IR/Nodes/CircleCustomOut.h"
 #include "loco/IR/Algorithm.h"
 
 #include "Halide.h"
+#include "../../luci/service/src/CircleShapeInferenceHelper.h"
 
 #include <map>
 #include <unordered_set>
+#include <algorithm>
 
 namespace luci_codegen
 {
@@ -37,7 +41,7 @@ bool LuciCodegen::fits_constrains(luci::CircleNode *node) const
 {
   if (node->opcode() == luci::CircleOpcode::CIRCLECONST)
     return const_node_size(node) <= _options.max_inline_buffer_threshold;
-  return is_supported(node);
+  return CodegenKernelBuilder::is_supported(node);
 }
 
 std::vector<luci::CircleNode *> LuciCodegen::gather_suitable_nodes(luci::CircleNode *node, std::unordered_set<luci::CircleNode *> &processed) const
@@ -96,37 +100,55 @@ void LuciCodegen::process_graph(loco::Graph &graph)
     auto &subgraph = _compiled_subgraphs.back();
     subgraph.finish_construction();
 
-    CodegenKernelBuilder kernel_builder(subgraph);
+    CodegenKernelBuilder(subgraph).process();
 
-    // TODO make separate scheduler entity for this
-    for (auto node: subgraph.get_nodes())
-      kernel_builder.visit(node);
+    // TODO add scheduler entity
 
     // Replace subgraph with custom operator
-    auto &inputs = subgraph.inputs();
+    auto &inputs = subgraph.get_inputs();
     const auto num_inputs = inputs.size();
 
     auto compiled_node = graph.nodes()->create<luci::CircleCustom>(num_inputs);
     compiled_node->custom_code("COMPILED_OP");
+    compiled_node->dtype(loco::DataType::FLOAT32);
 
     for (int i = 0; i < num_inputs; ++i)
     {
-      compiled_node->inputs(i, subgraph.inputs()[i].first);
+      compiled_node->inputs(i, subgraph.get_inputs()[i].first);
     }
 
-    for (int i = 0; i < subgraph.outputs().size(); ++i)
+    for (int i = 0; i < subgraph.get_outputs().size(); ++i)
     {
-      auto output = subgraph.outputs()[i];
+      auto output = subgraph.get_outputs()[i];
       auto custom_output = graph.nodes()->create<luci::CircleCustomOut>();
       custom_output->input(compiled_node);
       custom_output->index(i);
+      custom_output->dtype(output.first->dtype());
+      custom_output->shape_status(output.first->shape_status());
+
+      // copy shape
+      uint32_t rank = output.first->rank();
+      custom_output->rank(rank);
+      for (uint32_t i = 0; i < rank; ++i)
+      {
+        custom_output->dim(i) = output.first->dim(i);
+      }
+
       loco::replace(output.first).with(custom_output);
     }
 
     // Cleanup graph
-    for (auto node: subgraph.get_nodes())
+    std::vector<loco::Node *> outputs;
+    for (auto node: subgraph.get_outputs())
     {
-      graph.nodes()->destroy(node);
+      outputs.push_back(node.first);
+    }
+    auto ordered_nodes = loco::postorder_traversal(outputs);
+    std::reverse(ordered_nodes.begin(), ordered_nodes.end());
+    for (auto node: ordered_nodes)
+    {
+      if (subgraph.contains(static_cast<luci::CircleNode *>(node)))
+        graph.nodes()->destroy(node);
     }
     _processed_graphs++;
   }
@@ -144,12 +166,12 @@ void LuciCodegen::emit_code(std::string package_name)
   for (auto &subgraph: _compiled_subgraphs)
   {
     std::vector<Halide::Argument> arguments;
-    for (auto input: subgraph.inputs())
+    for (auto input: subgraph.get_inputs())
     {
       arguments.push_back(input.second);
     }
     std::vector<Halide::Func> outputs;
-    for (auto output: subgraph.outputs())
+    for (auto output: subgraph.get_outputs())
     {
       outputs.push_back(output.second);
     }

@@ -14,48 +14,28 @@
  * limitations under the License.
  */
 
-#ifndef NNCC_KERNELBUILDER_H
-#define NNCC_KERNELBUILDER_H
+#ifndef NNCC_CODEGEN_KERNEL_BUILDER_H
+#define NNCC_CODEGEN_KERNEL_BUILDER_H
 
-#include "luci/IR/CircleNodeDecl.h"
 #include "SubgraphContext.h"
-
-#include "luci/IR/CircleNodeVisitor.h"
 
 namespace luci_codegen
 {
 
-bool is_supported(luci::CircleNode *node);
-
-class CodegenKernelBuilder: public luci::CircleNodeMutableVisitor<void>
+class CodegenKernelBuilder
 {
-private:
-  SubgraphContext &_subgraph;
-
-  // elementwise operator supports
-
-  template <typename OP>
-  void binary_operator(luci::CircleNode *node);
-
 public:
-  Halide::Func get_func(luci::CircleNode *node);
 
   explicit CodegenKernelBuilder(SubgraphContext &subgraph);
 
-  void visit(luci::CircleConst *node) override;
+  static bool is_supported(luci::CircleNode *node);
 
-  void visit(luci::CircleAdd *node) override;
+  void process();
 
-  void visit(luci::CircleSub *node) override;
-
-  void visit(luci::CircleMul *node) override;
-
-  void visit(luci::CircleDiv *node) override;
-
-  /// @brief Default fallback
-  void visit(luci::CircleNode *) override;
+private:
+  SubgraphContext &_subgraph;
 };
 
 }
 
-#endif // NNCC_KERNELBUILDER_H
+#endif // NNCC_CODEGEN_KERNEL_BUILDER_H

@@ -18,6 +18,9 @@
 #include "SubgraphContext.h"
 #include "Utilities.h"
 
+#include "luci/IR/CircleNodeVisitor.h"
+#include "loco/IR/Algorithm.h"
+
 #include <cassert>
 
 namespace luci_codegen
@@ -28,41 +31,30 @@ namespace
 
 struct AddOp
 {
-  static Halide::Expr op(Halide::Expr a, Halide::Expr b)
-  {
-    return a + b;
-  }
+  static Halide::Expr op(Halide::Expr a, Halide::Expr b) { return a + b; }
 };
 
 struct SubOp
 {
-  static Halide::Expr op(Halide::Expr a, Halide::Expr b)
-  {
-    return a - b;
-  }
+  static Halide::Expr op(Halide::Expr a, Halide::Expr b) { return a - b; }
 };
 
 struct MulOp
 {
-  static Halide::Expr op(Halide::Expr a, Halide::Expr b)
-  {
-    return a * b;
-  }
+  static Halide::Expr op(Halide::Expr a, Halide::Expr b) { return a * b; }
 };
 
 struct DivOp
 {
-  static Halide::Expr op(Halide::Expr a, Halide::Expr b)
-  {
-    return a / b;
-  }
+  static Halide::Expr op(Halide::Expr a, Halide::Expr b) { return a / b; }
 };
 
-std::vector<Halide::Expr> debroadcast_iter_space(const std::vector<Halide::Expr> &output_space, const luci::CircleNode *node)
+std::vector<Halide::Expr> debroadcast_iter_space(const std::vector<Halide::Expr> &output_space,
+                                                 const luci::CircleNode *node)
 {
   int rank = node->rank();
   std::vector<Halide::Expr> iter_space(rank);
-  for (int i = rank-1; i >= 0; --i)
+  for (int i = rank - 1; i >= 0; --i)
   {
     if (node->dim(i) == 1)
       iter_space[i] = Halide::Expr(0);
@@ -81,25 +73,51 @@ std::vector<Halide::Expr> iter_space(const luci::CircleNode *node)
   return iter_space;
 }
 
-} // unnamed namespace
-
-CodegenKernelBuilder::CodegenKernelBuilder(SubgraphContext &subgraph) : _subgraph(subgraph) {}
-
-template <typename OP>
-void CodegenKernelBuilder::binary_operator(luci::CircleNode *node)
+class CodegenKernelBuilderImpl : public luci::CircleNodeMutableVisitor<void>
 {
-  auto rank = node->rank();
-  std::vector<Halide::Expr> output_vars = iter_space(node);
-  std::vector<Halide::Expr> arg_a_vars = debroadcast_iter_space(output_vars, node); // separate variables according broadcasting rules
-  std::vector<Halide::Expr> arg_b_vars = debroadcast_iter_space(output_vars, node);
-  Halide::Func output_func = _subgraph.get_func(node);
-  Halide::Func input_a = _subgraph.get_func(static_cast<luci::CircleNode *>(node->arg(0)));
-  Halide::Func input_b = _subgraph.get_func(static_cast<luci::CircleNode *>(node->arg(1)));
+private:
+  SubgraphContext &_subgraph;
 
+  // elementwise operator supports
+
+  template <typename OP> void binary_operator(luci::CircleNode *node);
+
+public:
+  explicit CodegenKernelBuilderImpl(SubgraphContext &subgraph);
+
+  void visit(luci::CircleConst *node) override;
+
+  void visit(luci::CircleAdd *node) override;
+
+  void visit(luci::CircleSub *node) override;
+
+  void visit(luci::CircleMul *node) override;
+
+  void visit(luci::CircleDiv *node) override;
+
+  /// @brief Default fallback
+  void visit(luci::CircleNode *) override;
+};
+
+CodegenKernelBuilderImpl::CodegenKernelBuilderImpl(SubgraphContext &subgraph) : _subgraph(subgraph) {}
+
+template <typename OP> void CodegenKernelBuilderImpl::binary_operator(luci::CircleNode *node)
+{
+  std::vector<Halide::Expr> output_vars = iter_space(node);
+
+  luci::CircleNode *arg_a = static_cast<luci::CircleNode *>(node->arg(0));
+  std::vector<Halide::Expr> arg_a_vars = debroadcast_iter_space(output_vars, arg_a);
+  Halide::Func input_a = _subgraph.get_func(arg_a);
+
+  luci::CircleNode *arg_b = static_cast<luci::CircleNode *>(node->arg(1));
+  std::vector<Halide::Expr> arg_b_vars = debroadcast_iter_space(output_vars, arg_b);
+  Halide::Func input_b = _subgraph.get_func(arg_b);
+
+  Halide::Func output_func = _subgraph.get_func(node);
   output_func(output_vars) = OP::op(input_a(arg_a_vars), input_b(arg_b_vars));
 }
 
-void CodegenKernelBuilder::visit(luci::CircleConst *node)
+void CodegenKernelBuilderImpl::visit(luci::CircleConst *node)
 {
   size_t rank = node->rank();
   std::vector<int> dims(rank);
@@ -123,32 +141,51 @@ void CodegenKernelBuilder::visit(luci::CircleConst *node)
   }
 }
 
-void CodegenKernelBuilder::visit(luci::CircleAdd *node)
-{
-  binary_operator<AddOp>(node);
-}
+void CodegenKernelBuilderImpl::visit(luci::CircleAdd *node) { binary_operator<AddOp>(node); }
 
-void CodegenKernelBuilder::visit(luci::CircleSub *node)
-{
-  binary_operator<SubOp>(node);
-}
+void CodegenKernelBuilderImpl::visit(luci::CircleSub *node) { binary_operator<SubOp>(node); }
 
-void CodegenKernelBuilder::visit(luci::CircleMul *node)
-{
-  binary_operator<MulOp>(node);
-}
+void CodegenKernelBuilderImpl::visit(luci::CircleMul *node) { binary_operator<MulOp>(node); }
 
-void CodegenKernelBuilder::visit(luci::CircleDiv *node)
-{
-  binary_operator<DivOp>(node);
-}
+void CodegenKernelBuilderImpl::visit(luci::CircleDiv *node) { binary_operator<DivOp>(node); }
 
-void CodegenKernelBuilder::visit(luci::CircleNode *)
+void CodegenKernelBuilderImpl::visit(luci::CircleNode *)
 {
   INTERNAL_EXN("CodegenKernelBuilder: unsupported node");
 }
 
-bool is_supported(luci::CircleNode *node)
+} // unnamed namespace
+
+CodegenKernelBuilder::CodegenKernelBuilder(SubgraphContext &subgraph) : _subgraph(subgraph) {}
+
+void CodegenKernelBuilder::process()
+{
+  std::vector<luci::CircleNode *> sorted_nodes;
+  // collect subgraph outputs
+  std::vector<loco::Node *> outputs;
+  for (auto node: _subgraph.get_outputs())
+  {
+    outputs.push_back(node.first);
+  }
+  // collect nodes in topological order
+  for (auto node: loco::postorder_traversal(outputs))
+  {
+    luci::CircleNode *circle_node = static_cast<luci::CircleNode *>(node);
+    if (_subgraph.contains(circle_node))
+    {
+      sorted_nodes.push_back(circle_node);
+    }
+  }
+
+  // Define kernels
+  CodegenKernelBuilderImpl visitor(_subgraph);
+  for (auto node: sorted_nodes)
+  {
+    node->accept(&visitor);
+  }
+}
+
+bool CodegenKernelBuilder::is_supported(luci::CircleNode *node)
 {
   assert(dynamic_cast<luci::CircleNode *>(node));
   luci::CircleNode *circle_node = static_cast<luci::CircleNode *>(node);

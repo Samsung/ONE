@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef NNCC_SUBGRAPHCONTEXT_H
-#define NNCC_SUBGRAPHCONTEXT_H
+#ifndef NNCC_SUBGRAPH_CONTEXT_H
+#define NNCC_SUBGRAPH_CONTEXT_H
 
 #include "luci/IR/CircleNodeDecl.h"
 
@@ -62,7 +62,9 @@ public:
    */
   void add_node(luci::CircleNode *node)
   {
-    assert(_constructed);
+#ifndef NDEBUG
+    assert(!_constructed);
+#endif
     _nodes.push_back(node);
   }
 
@@ -92,9 +94,18 @@ public:
   Halide::Func get_func(luci::CircleNode *node) const;
 
   /**
+   * @param node target node
+   * @return true if node belongs to subgraph, false otherwise
+   */
+  bool contains(luci::CircleNode *node) const
+  {
+    return _generated_funcs.count(node);
+  }
+
+  /**
    * @return vector of inputs (needed for halide code generation)
    */
-  const std::vector<std::pair<luci::CircleNode *, Halide::ImageParam>> &inputs() const
+  const std::vector<std::pair<luci::CircleNode *, Halide::ImageParam>> &get_inputs() const
   {
     assert(_constructed);
     return _inputs;
@@ -103,7 +114,7 @@ public:
   /**
    * @return vector of outputs (needed to generate outputs of subgraph)
    */
-  const std::vector<std::pair<luci::CircleNode *, Halide::Func>> &outputs() const
+  const std::vector<std::pair<luci::CircleNode *, Halide::Func>> &get_outputs() const
   {
     assert(_constructed);
     return _outputs;
@@ -122,4 +133,4 @@ private:
 
 }
 
-#endif //NNCC_SUBGRAPHCONTEXT_H
+#endif //NNCC_SUBGRAPH_CONTEXT_H
