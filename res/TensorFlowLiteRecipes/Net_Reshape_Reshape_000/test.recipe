@@ -1,7 +1,7 @@
 operand {
   name: "ifm"
   type: FLOAT32
-  shape { dim: 2 dim: 3 dim: 6}
+  shape { dim: 2 dim: 3 dim: 6 }
 }
 operand {
   name: "shape1"
