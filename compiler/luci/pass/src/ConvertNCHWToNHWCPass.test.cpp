@@ -130,6 +130,21 @@ public:
   luci::CircleConst *beta = nullptr;
 };
 
+class LeakyReluGraph final : public SimpleGraph
+{
+protected:
+  loco::Node *insertGraphBody(loco::Node *input) override
+  {
+    leakyrelu = g.nodes()->create<luci::CircleLeakyRelu>();
+    leakyrelu->features(input);
+
+    return leakyrelu;
+  }
+
+public:
+  luci::CircleLeakyRelu *leakyrelu = nullptr;
+};
+
 class MulGraph final : public SimpleGraph
 {
 protected:
@@ -296,6 +311,26 @@ TEST(ConvertNCHWToNHWC, Add)
   EXPECT_EQ(channel_size, new_beta->dim(3).value());
 
   check_pre_trans(g.output->from());
+}
+
+TEST(ConvertNCHWToNHWC, LeakyRelu)
+{
+  LeakyReluGraph g;
+  g.init();
+
+  run_phase(&g.g, true, true);
+
+  check_pre_trans(g.leakyrelu->features());
+
+  auto leakyrelu_succs = loco::succs(g.leakyrelu);
+  EXPECT_EQ(1, leakyrelu_succs.size());
+  check_post_trans(*leakyrelu_succs.begin());
+
+  // Check leakyrelu shape
+  EXPECT_EQ(1, g.leakyrelu->dim(0).value());
+  EXPECT_EQ(4, g.leakyrelu->dim(1).value());
+  EXPECT_EQ(4, g.leakyrelu->dim(2).value());
+  EXPECT_EQ(16, g.leakyrelu->dim(3).value());
 }
 
 TEST(ConvertNCHWToNHWC, Mul)
