@@ -169,6 +169,7 @@ Current transformation options are
   Note that this pass can change the execution result of the model.
   So, use it only when the impact is known to be acceptable.
 - mute_warnings : This will turn off warning messages.
+- remove_redundant_reshape : This fuses or removes redundant reshape operators.
 - remove_redundant_transpose : This fuses or removes redundant transpose operators.
 - remove_unnecessary_reshape : This removes unnecessary reshape operators.
 - remove_unnecessary_slice : This removes unnecessary slice operators.

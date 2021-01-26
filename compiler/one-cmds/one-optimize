@@ -104,6 +104,10 @@ def _get_parser():
         action='store_true',
         help='replace channel-wise Mul/Add with DepthwiseConv2D')
     circle2circle_group.add_argument(
+        '--remove_redundant_reshape',
+        action='store_true',
+        help='fuse or remove subsequent Reshape ops')
+    circle2circle_group.add_argument(
         '--remove_redundant_transpose',
         action='store_true',
         help='fuse or remove subsequent Transpose ops')
