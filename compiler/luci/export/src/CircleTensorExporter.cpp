@@ -146,6 +146,21 @@ public:
   bool visit(luci::CircleUnpackOut *) final { return true; }
   bool visit(luci::CircleWhileOut *) final { return true; }
 
+  bool visit(luci::CircleBidirectionalSequenceLSTMOut *) final { return true; }
+
+  bool visit(luci::CircleBidirectionalSequenceLSTM *node) final
+  {
+    if (node->merge_outputs())
+    {
+      store_outputs(node, 1);
+    }
+    else
+    {
+      store_outputs(node, 2);
+    }
+    return true;
+  }
+
   bool visit(luci::CircleIf *node) final
   {
     store_outputs(node, node->output_count());
