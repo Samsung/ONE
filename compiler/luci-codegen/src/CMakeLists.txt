@@ -18,8 +18,14 @@ target_link_libraries(luci_codegen
 
 install(TARGETS luci_codegen DESTINATION lib)
 
-
 set(DRIVER_SOURCE Driver.cpp)
+
+if(ENABLE_TEST)
+    nnas_find_package(GTest REQUIRED)
+    GTest_AddTest(luci_codegen_kernel_builder_test CodegenKernelBuilder.test.cpp)
+    target_link_libraries(luci_codegen_kernel_builder_test luci_codegen luci_import luci_export Halide::Halide)
+endif(ENABLE_TEST)
+
 
 add_executable(circle_codegen ${DRIVER_SOURCE})
 target_link_libraries(circle_codegen PRIVATE luci_codegen luci_import luci_export)
