@@ -23,6 +23,8 @@ namespace
 
 /**
  * @brief return TRUE if all dim is known
+ * @note This pass can be applied even some of dimensions are unknown.
+         For now, do not consider about it and update logic later.
  */
 bool can_squeeze_shape(const luci::CircleNode *node)
 {
