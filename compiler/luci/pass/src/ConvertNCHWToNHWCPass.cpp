@@ -90,16 +90,10 @@ luci::CircleTranspose *create_4d_transpose(luci::CircleNode *node,
 int32_t nchw_axis_to_nhwc(int32_t axis)
 {
   uint32_t pos_axis = axis >= 0 ? static_cast<uint32_t>(axis) : static_cast<uint32_t>(axis + 4);
-  if (pos_axis == 0)
-    return 0;
-  else if (pos_axis == 1)
-    return 3;
-  else if (pos_axis == 2)
-    return 1;
-  else if (pos_axis == 3)
-    return 2;
-  else
+  static const uint32_t to_nhwc[4] = {0, 3, 1, 2};
+  if (pos_axis > 3)
     throw std::runtime_error("Concat axis must be in range [-4, 4)");
+  return to_nhwc[pos_axis];
 }
 
 luci::CircleTranspose *create_post_transpose(luci::CircleNode *node)
