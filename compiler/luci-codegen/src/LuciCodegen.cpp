@@ -26,9 +26,24 @@
 #include "Halide.h"
 #include "../../luci/service/src/CircleShapeInferenceHelper.h"
 
+#include "flatbuffers/flexbuffers.h"
+
 #include <map>
 #include <unordered_set>
 #include <algorithm>
+
+namespace
+{
+
+std::vector<uint8_t> create_custom_options(const std::string &name)
+{
+  flexbuffers::Builder fbb;
+  fbb.Map([&]() {fbb.String("func_name", name);});
+  fbb.Finish();
+  return fbb.GetBuffer();
+}
+
+} // unnamed namespace
 
 namespace luci_codegen
 {
@@ -110,6 +125,10 @@ void LuciCodegen::process_graph(loco::Graph &graph)
 
     auto compiled_node = graph.nodes()->create<luci::CircleCustom>(num_inputs);
     compiled_node->custom_code("COMPILED_OP");
+
+    auto options = create_custom_options(subgraph.get_name());
+    compiled_node->custom_options(options);
+
     compiled_node->dtype(loco::DataType::FLOAT32);
 
     for (int i = 0; i < num_inputs; ++i)

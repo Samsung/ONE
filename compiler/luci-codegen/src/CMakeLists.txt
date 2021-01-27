@@ -14,7 +14,7 @@ target_include_directories(luci_codegen PRIVATE "${LUCI_CODEGEN_SOURCE_DIR}")
 
 target_link_libraries(luci_codegen
         PUBLIC luci_lang
-        PRIVATE nncc_common Halide::Halide)
+        PRIVATE nncc_common Halide::Halide flatbuffers)
 
 install(TARGETS luci_codegen DESTINATION lib)
 
