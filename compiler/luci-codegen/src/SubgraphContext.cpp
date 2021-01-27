@@ -78,7 +78,7 @@ void SubgraphContext::finish_construction()
       }
     }
   }
-#ifndef NO_DEBUG
+#ifndef NDEBUG
   _constructed = true;
 #endif
 }
@@ -99,6 +99,5 @@ Halide::Func SubgraphContext::get_func(luci::CircleNode *node) const
   assert(false && "target node does not belong to subgraph");
   return Halide::Func();
 }
-
 
 } // namespace luci_codegen
