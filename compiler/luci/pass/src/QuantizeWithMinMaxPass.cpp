@@ -703,33 +703,19 @@ struct QuantizeWeights final : public luci::CircleNodeMutableVisitor<bool>
   loco::DataType output_type;
   QuantizationGranularity granularity;
 
-  // Quantize input tensors of each node
-  bool visit(luci::CircleNode *node)
+private:
+  void quantize_weights(luci::CircleConst *weights)
   {
-    LOGGER(l);
-    INFO(l) << "QuantizeWeights visit node: " << node->name() << std::endl;
-    auto arity = node->arity();
-    for (uint32_t i = 0; i < arity; i++)
-    {
-      auto input_node = node->arg(i);
-      auto circle_node = loco::must_cast<luci::CircleNode *>(input_node);
-
-      // Check if this is already quantized
-      if (is_quantized(circle_node))
-        continue;
-
-      if (is_weights(circle_node))
-      {
-        auto circle_const = loco::must_cast<luci::CircleConst *>(circle_node);
-
+    // TODO: Fix indentation
+    // clang-format off
         // Find min/max per channel-wise
         if (granularity == QuantizationGranularity::ChannelWise)
         {
-          auto quantparam = circle_node->quantparam();
+          auto quantparam = weights->quantparam();
           if (quantparam == nullptr)
           {
             assert(false && "quantparam is nullptr");
-            return false;
+            return;
           }
 
           auto min = quantparam->min;
@@ -738,11 +724,11 @@ struct QuantizeWeights final : public luci::CircleNodeMutableVisitor<bool>
 
           if (output_type == loco::DataType::U8)
           {
-            asym_wquant_per_channel(circle_const, min, scaling_factor, channel_dim_index);
+            asym_wquant_per_channel(weights, min, scaling_factor, channel_dim_index);
           }
           else
           {
-            sym_wquant_per_channel(circle_const, scaling_factor, channel_dim_index);
+            sym_wquant_per_channel(weights, scaling_factor, channel_dim_index);
           }
           quantparam->min.clear();
           quantparam->max.clear();
@@ -752,20 +738,84 @@ struct QuantizeWeights final : public luci::CircleNodeMutableVisitor<bool>
         else
         {
           // Quantize using recorded quantparam
-          auto quantparam = circle_node->quantparam();
+          auto quantparam = weights->quantparam();
           assert(quantparam != nullptr);
           assert(quantparam->min.size() == 1);   // only support layer-wise quant
           assert(quantparam->scale.size() == 1); // only support layer-wise quant
           auto min = quantparam->min[0];
           auto scaling_factor = quantparam->scale[0];
-          asym_wquant_per_layer(circle_const, min, scaling_factor);
+          asym_wquant_per_layer(weights, min, scaling_factor);
           quantparam->min.clear();
           quantparam->max.clear();
         }
-      }
+    // clang-format on
+  }
+
+  bool visit(luci::CircleConv2D *node)
+  {
+    LOGGER(l);
+    INFO(l) << "QuantizeWeights visit node: " << node->name() << std::endl;
+
+    auto weights = loco::must_cast<luci::CircleConst *>(node->filter());
+    if (!is_quantized(weights))
+    {
+      auto new_weights = clone_const_from<loco::DataType::FLOAT32>(weights);
+      node->filter(new_weights);
+      quantize_weights(new_weights);
+      return true;
     }
     return false;
   }
+
+  bool visit(luci::CircleDepthwiseConv2D *node)
+  {
+    LOGGER(l);
+    INFO(l) << "QuantizeWeights visit node: " << node->name() << std::endl;
+
+    auto weights = loco::must_cast<luci::CircleConst *>(node->filter());
+    if (!is_quantized(weights))
+    {
+      auto new_weights = clone_const_from<loco::DataType::FLOAT32>(weights);
+      node->filter(new_weights);
+      quantize_weights(new_weights);
+      return true;
+    }
+    return false;
+  }
+
+  bool visit(luci::CircleTransposeConv *node)
+  {
+    LOGGER(l);
+    INFO(l) << "QuantizeWeights visit node: " << node->name() << std::endl;
+
+    auto weights = loco::must_cast<luci::CircleConst *>(node->filter());
+    if (!is_quantized(weights))
+    {
+      auto new_weights = clone_const_from<loco::DataType::FLOAT32>(weights);
+      node->filter(new_weights);
+      quantize_weights(new_weights);
+      return true;
+    }
+    return false;
+  }
+
+  bool visit(luci::CircleFullyConnected *node)
+  {
+    LOGGER(l);
+    INFO(l) << "QuantizeWeights visit node: " << node->name() << std::endl;
+
+    auto weights = loco::must_cast<luci::CircleConst *>(node->weights());
+    if (!is_quantized(weights))
+    {
+      auto new_weights = clone_const_from<loco::DataType::FLOAT32>(weights);
+      node->weights(new_weights);
+      quantize_weights(new_weights);
+      return true;
+    }
+    return false;
+  }
+
+  bool visit(luci::CircleNode *) { return false; }
 };
 
 void quant_instnorm(luci::CircleInstanceNorm *node, loco::DataType output_type,
