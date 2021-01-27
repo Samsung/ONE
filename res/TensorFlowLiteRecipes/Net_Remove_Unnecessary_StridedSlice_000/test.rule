@@ -1,0 +1,5 @@
+# To check if Unnecessary StridedSlice removed.
+
+RULE    "VERIFY_FILE_FORMAT"      $(verify_file_format) '=' 1
+
+RULE    "STRIDEDSLICE_EXIST"             $(op_count STRIDEDSLICE) '=' 1

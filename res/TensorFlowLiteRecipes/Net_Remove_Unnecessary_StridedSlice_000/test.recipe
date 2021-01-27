@@ -1,0 +1,92 @@
+operand {
+  name: "ifm"
+  type: INT32
+  shape { dim: 1 dim: 256 dim: 40 dim: 40 }
+}
+operand {
+  name: "begin"
+  type: INT32
+  shape { dim: 4 }
+  filler {
+    tag: "explicit"
+    arg: "1" arg: "1" arg: "1" arg: "1"
+  }
+}
+operand {
+  name: "end"
+  type: INT32
+  shape { dim: 4 }
+  filler {
+    tag: "explicit"
+    arg: "1" arg: "256" arg: "40" arg: "40"
+  }
+}
+operand {
+  name: "strides"
+  type: INT32
+  shape { dim: 4 }
+  filler {
+    tag: "explicit"
+    arg: "1" arg: "1" arg: "1" arg: "1"
+  }
+}
+operand {
+  name: "output"
+  type: INT32
+  shape { dim: 1 dim: 256 dim: 40 dim: 40 }
+}
+operation {
+  type: "StridedSlice"
+  strided_slice_options {
+    begin_mask: 0
+    end_mask: 0
+    ellipsis_mask: 0
+    new_axis_mask: 0
+    shrink_axis_mask: 0
+  }
+  input: "ifm"
+  input: "begin"
+  input: "end"
+  input: "strides"
+  output: "output"
+}
+operand {
+  name: "begin_2"
+  type: INT32
+  shape { dim: 4 }
+  filler {
+    tag: "explicit"
+    arg: "0" arg: "0" arg: "0" arg: "0"
+  }
+}
+operand {
+  name: "end_2"
+  type: INT32
+  shape { dim: 4 }
+  filler {
+    tag: "explicit"
+    arg: "0" arg: "1" arg: "0" arg: "0"
+  }
+}
+operand {
+  name: "ofm"
+  type: INT32
+  shape { dim:1 dim: 40 dim: 40 }
+}
+operation {
+  type: "StridedSlice"
+  strided_slice_options {
+    begin_mask: 5
+    end_mask: 5
+    ellipsis_mask: 0
+    new_axis_mask: 0
+    shrink_axis_mask: 2
+  }
+  input: "output"
+  input: "begin_2"
+  input: "end_2"
+  input: "strides"
+  output: "ofm"
+}
+input: "ifm"
+output: "ofm"
