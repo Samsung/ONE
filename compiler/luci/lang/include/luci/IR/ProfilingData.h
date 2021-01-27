@@ -39,7 +39,7 @@ public:
 
 public:
   uint32_t node_id(void) const { return _node_id; }
-  // void node_id(uint32_t id) { _node_id = id; }
+  void node_id(uint32_t id) { _node_id = id; } // Do we need this?
 
 private:
   uint32_t _node_id;
@@ -67,7 +67,7 @@ public:
 
 public:
   const std::set<uint32_t> &origins(void) const { return _origins; }
-  // void origins(const std::set<uint32_t> &origins) { _origins = origins; }
+  void origins(const std::set<uint32_t> &origins) { _origins = origins; } // Do we need this?
 
 private:
   std::set<uint32_t> _origins;
