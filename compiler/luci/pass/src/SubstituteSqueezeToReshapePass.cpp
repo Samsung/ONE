@@ -22,15 +22,13 @@ namespace
 {
 
 /**
- * @brief return TRUE if all dim is known && dim > 0
+ * @brief return TRUE if all dim is known
  */
 bool can_squeeze_shape(const luci::CircleNode *node)
 {
   for (uint32_t r = 0; r < node->rank(); ++r)
   {
     if (not node->dim(r).known())
-      return false;
-    if (node->dim(r).value() < 1)
       return false;
   }
   return true;

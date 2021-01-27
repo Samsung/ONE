@@ -128,10 +128,10 @@ TEST_F(SubstituteSqueezeToReshapeTest, simple_with_squeeze_dims)
   auto squeeze = dynamic_cast<luci::CircleSqueeze *>(_graph.output()->from());
   ASSERT_NE(nullptr, reshape);
   ASSERT_EQ(nullptr, squeeze);
-  auto new_shape = loco::must_cast<luci::CircleConst *>(reshape->shape());
-  ASSERT_EQ(2, new_shape->size<loco::DataType::S32>());
-  ASSERT_EQ(1, new_shape->at<loco::DataType::S32>(0));
-  ASSERT_EQ(16, new_shape->at<loco::DataType::S32>(1));
+  auto reshape_shape = loco::must_cast<luci::CircleConst *>(reshape->shape());
+  ASSERT_EQ(2, reshape_shape->size<loco::DataType::S32>());
+  ASSERT_EQ(1, reshape_shape->at<loco::DataType::S32>(0));
+  ASSERT_EQ(16, reshape_shape->at<loco::DataType::S32>(1));
 }
 
 TEST_F(SubstituteSqueezeToReshapeTest, simple_without_squeeze_dims)
@@ -144,9 +144,25 @@ TEST_F(SubstituteSqueezeToReshapeTest, simple_without_squeeze_dims)
   auto squeeze = dynamic_cast<luci::CircleSqueeze *>(_graph.output()->from());
   ASSERT_NE(nullptr, reshape);
   ASSERT_EQ(nullptr, squeeze);
-  auto new_shape = loco::must_cast<luci::CircleConst *>(reshape->shape());
-  ASSERT_EQ(1, new_shape->size<loco::DataType::S32>());
-  ASSERT_EQ(16, new_shape->at<loco::DataType::S32>(0));
+  auto reshape_shape = loco::must_cast<luci::CircleConst *>(reshape->shape());
+  ASSERT_EQ(1, reshape_shape->size<loco::DataType::S32>());
+  ASSERT_EQ(16, reshape_shape->at<loco::DataType::S32>(0));
+}
+
+TEST_F(SubstituteSqueezeToReshapeTest, input_with_0_dims)
+{
+  _graph.init({1, 16, 0, 1}, {16, 0}, {});
+
+  run_pass();
+
+  auto reshape = dynamic_cast<luci::CircleReshape *>(_graph.output()->from());
+  auto squeeze = dynamic_cast<luci::CircleSqueeze *>(_graph.output()->from());
+  ASSERT_NE(nullptr, reshape);
+  ASSERT_EQ(nullptr, squeeze);
+  auto reshape_shape = loco::must_cast<luci::CircleConst *>(reshape->shape());
+  ASSERT_EQ(2, reshape_shape->size<loco::DataType::S32>());
+  ASSERT_EQ(16, reshape_shape->at<loco::DataType::S32>(0));
+  ASSERT_EQ(0, reshape_shape->at<loco::DataType::S32>(1));
 }
 
 TEST_F(SubstituteSqueezeToReshapeTest, nothing_to_squeeze)
