@@ -120,12 +120,12 @@ bool substitute_squeeze_to_reshape(luci::CircleSqueeze *squeeze)
 
   auto squeeze_dims = squeeze->squeeze_dims();
   if (not is_valid_input(input, squeeze_dims))
-    return false;
+    throw std::runtime_error("Invalid values in squeeze_dims: " + squeeze->name());
 
-  auto new_shape = node_shape(squeeze);
+  auto reshape_shape = node_shape(squeeze);
   auto graph = squeeze->graph();
   auto reshape = graph->nodes()->create<luci::CircleReshape>();
-  auto shape_const = create_shape_const(graph, new_shape);
+  auto shape_const = create_shape_const(graph, reshape_shape);
 
   // graph connection
   reshape->tensor(input);
