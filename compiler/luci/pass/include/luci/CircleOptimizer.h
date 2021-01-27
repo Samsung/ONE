@@ -58,6 +58,7 @@ public:
       RemoveRedundantTranspose,
       ReplaceMulAddWithDepthwiseConv,
       SubstitutePackToReshape,
+      SubstituteSqueezeToReshape,
       ConvertNCHWToNHWC,
       RemoveUnnecessarySlice,
       RemoveUnnecessarySplit,
