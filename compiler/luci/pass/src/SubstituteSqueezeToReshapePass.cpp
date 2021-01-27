@@ -37,8 +37,8 @@ bool can_squeeze_shape(const luci::CircleNode *node)
 }
 
 /**
- * @brief return valid unsigned dim value from 0 ~ rank
- * @note  dim can be -rank to rank
+ * @brief return valid unsigned dim value from 0 ~ (rank-1)
+ * @note  dim can be -rank to (rank-1)
  */
 uint32_t valid_unsigned_dim(uint32_t rank, int32_t dim)
 {
@@ -79,18 +79,25 @@ std::vector<uint32_t> node_shape(const luci::CircleNode *input)
  */
 luci::CircleConst *create_shape_const(loco::Graph *graph, const std::vector<uint32_t> &new_shape)
 {
+  // NOTE dim_size can be 0
   uint32_t dim_size = static_cast<uint32_t>(new_shape.size());
 
   auto shape_const = graph->nodes()->create<luci::CircleConst>();
 
   // const shape/dtype
   shape_const->dtype(loco::DataType::S32);
-  shape_const->shape({dim_size});
+  if (dim_size > 0)
+  {
+    shape_const->rank(1);
+    shape_const->dim(0).set(dim_size);
+  }
+  else
+    shape_const->rank(0);
   shape_const->shape_status(luci::ShapeStatus::VALID);
 
   // constant values
   shape_const->size<loco::DataType::S32>(dim_size);
-  for (uint32_t i = 0; i < new_shape.size(); ++i)
+  for (uint32_t i = 0; i < dim_size; ++i)
     shape_const->at<loco::DataType::S32>(i) = new_shape.at(i);
 
   return shape_const;

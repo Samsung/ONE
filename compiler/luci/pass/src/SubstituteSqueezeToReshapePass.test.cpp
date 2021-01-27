@@ -161,6 +161,18 @@ TEST_F(SubstituteSqueezeToReshapeTest, nothing_to_squeeze)
   ASSERT_EQ(nullptr, squeeze);
 }
 
+TEST_F(SubstituteSqueezeToReshapeTest, all_to_squeeze)
+{
+  _graph.init({1, 1}, {}, {});
+
+  run_pass();
+
+  auto reshape = dynamic_cast<luci::CircleReshape *>(_graph.output()->from());
+  auto squeeze = dynamic_cast<luci::CircleSqueeze *>(_graph.output()->from());
+  ASSERT_NE(nullptr, reshape);
+  ASSERT_EQ(nullptr, squeeze);
+}
+
 TEST_F(SubstituteSqueezeToReshapeTest, wrong_squeeze_dims_NEG)
 {
   _graph.init({1, 16, 1, 1}, {1, 16, 1, 1}, {1});
