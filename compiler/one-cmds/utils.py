@@ -171,6 +171,8 @@ def _make_circle2circle_cmd(args, driver_path, input_path, output_path):
         cmd.append('--shuffle_weight_to_16x1float32')
     if _is_valid_attr(args, 'substitute_pack_to_reshape'):
         cmd.append('--substitute_pack_to_reshape')
+    if _is_valid_attr(args, 'substitute_squeeze_to_reshape'):
+        cmd.append('--substitute_squeeze_to_reshape')
     if _is_valid_attr(args, 'substitute_transpose_to_reshape'):
         cmd.append('--substitute_transpose_to_reshape')
     if _is_valid_attr(args, 'transform_min_max_to_relu6'):
