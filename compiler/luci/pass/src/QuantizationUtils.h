@@ -69,14 +69,17 @@ template <loco::DataType T> luci::CircleConst *clone_const_from(luci::CircleCons
 
   new_node->shape_status(luci::ShapeStatus::VALID);
 
-  auto qparam = std::make_unique<CircleQuantParam>();
-  qparam->scale = node->quantparam()->scale;
-  qparam->zerop = node->quantparam()->zerop;
-  qparam->min = node->quantparam()->min;
-  qparam->max = node->quantparam()->max;
-  qparam->quantized_dimension = node->quantparam()->quantized_dimension;
+  if (node->quantparam() != nullptr)
+  {
+    auto qparam = std::make_unique<CircleQuantParam>();
+    qparam->scale = node->quantparam()->scale;
+    qparam->zerop = node->quantparam()->zerop;
+    qparam->min = node->quantparam()->min;
+    qparam->max = node->quantparam()->max;
+    qparam->quantized_dimension = node->quantparam()->quantized_dimension;
 
-  new_node->quantparam(std::move(qparam));
+    new_node->quantparam(std::move(qparam));
+  }
 
   return new_node;
 }
