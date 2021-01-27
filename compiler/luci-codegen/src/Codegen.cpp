@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "LuciCodegen.h"
+#include "Codegen.h"
 #include "CodegenKernelBuilder.h"
 #include "SubgraphContext.h"
 #include "Utilities.h"
@@ -48,18 +48,19 @@ std::vector<uint8_t> create_custom_options(const std::string &name)
 namespace luci_codegen
 {
 
-LuciCodegen::LuciCodegen(const Options &options) : _processed_graphs(0), _options(options) {}
+Codegen::Codegen(const Options &options) : _processed_graphs(0), _options(options) {}
 
-LuciCodegen::~LuciCodegen() {}
+Codegen::~Codegen() {}
 
-bool LuciCodegen::fits_constrains(luci::CircleNode *node) const
+bool Codegen::fits_constrains(luci::CircleNode *node) const
 {
   if (node->opcode() == luci::CircleOpcode::CIRCLECONST)
     return const_node_size(node) <= _options.max_inline_buffer_threshold;
   return CodegenKernelBuilder::is_supported(node);
 }
 
-std::vector<luci::CircleNode *> LuciCodegen::gather_suitable_nodes(luci::CircleNode *node, std::unordered_set<luci::CircleNode *> &processed) const
+std::vector<luci::CircleNode *>
+Codegen::gather_suitable_nodes(luci::CircleNode *node, std::unordered_set<luci::CircleNode *> &processed) const
 {
   std::vector<luci::CircleNode *> subgraph_nodes;
   std::queue<luci::CircleNode *> queue;
@@ -96,7 +97,7 @@ std::vector<luci::CircleNode *> LuciCodegen::gather_suitable_nodes(luci::CircleN
   return subgraph_nodes;
 }
 
-void LuciCodegen::process_graph(loco::Graph &graph)
+void Codegen::process_graph(loco::Graph &graph)
 {
   std::unordered_set<luci::CircleNode *> processed;
   auto nodes = graph.nodes();
@@ -173,14 +174,14 @@ void LuciCodegen::process_graph(loco::Graph &graph)
   }
 }
 
-void LuciCodegen::process_module(luci::Module &module)
+void Codegen::process_module(luci::Module &module)
 {
   auto num_graphs = module.size();
   for (size_t i = 0; i < num_graphs; ++i)
     process_graph(*module.graph(i));
 }
 
-void LuciCodegen::emit_code(std::string package_name)
+void Codegen::emit_code(std::string package_name)
 {
   for (auto &subgraph: _compiled_subgraphs)
   {

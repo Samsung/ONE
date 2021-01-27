@@ -1,4 +1,4 @@
-set(SOURCES LuciCodegen.cpp
+set(SOURCES Codegen.cpp
             CodegenKernelBuilder.cpp
             CodegenKernelBuilder.h
             SubgraphContext.cpp
@@ -6,7 +6,8 @@ set(SOURCES LuciCodegen.cpp
             Utilities.cpp
             Utilities.h
             )
-set(HEADERS ${LUCI_CODEGEN_INCLUDE_DIR}/LuciCodegen.h)
+
+set(HEADERS ${LUCI_CODEGEN_INCLUDE_DIR}/Codegen.h)
 
 add_library(luci_codegen SHARED ${SOURCES} ${HEADERS})
 target_include_directories(luci_codegen PUBLIC "${LUCI_CODEGEN_INCLUDE_DIR}")

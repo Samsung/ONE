@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "LuciCodegen.h"
+#include "Codegen.h"
 #include "luci/Importer.h"
 #include "luci/CircleExporter.h"
 #include "luci/CircleFileExpContract.h"
@@ -60,7 +60,7 @@ int main(int argc, char **argv)
 
   luci_codegen::Options options;
   // set options if needed
-  luci_codegen::LuciCodegen codegen(options);
+  luci_codegen::Codegen codegen(options);
   codegen.process_module(*luci_module);
   codegen.emit_code(output_package_name);
 

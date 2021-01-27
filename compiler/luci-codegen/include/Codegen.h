@@ -37,12 +37,12 @@ struct Options
 
 class SubgraphContext;
 
-class LuciCodegen
+class Codegen
 {
 public:
-  LuciCodegen(const Options &options = Options());
+  Codegen(const Options &options = Options());
 
-  ~LuciCodegen();
+  ~Codegen();
 
   void process_module(luci::Module &module);
 
