@@ -24,7 +24,6 @@
 #include "loco/IR/Algorithm.h"
 
 #include "Halide.h"
-#include "../../luci/service/src/CircleShapeInferenceHelper.h"
 
 #include "flatbuffers/flexbuffers.h"
 

@@ -7,6 +7,8 @@ set(SOURCES
     ArgMax.cpp
     AveragePool2D.h
     AveragePool2D.cpp
+    Compiled.h
+    Compiled.cpp
     Concatenation.h
     Concatenation.cpp
     Conv2D.h
