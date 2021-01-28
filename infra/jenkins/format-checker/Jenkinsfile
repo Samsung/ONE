@@ -30,4 +30,12 @@ pipeline {
       }
     }
   }
+  post {
+    success {
+      githubNotify context: "format-checker/test", status: "SUCCESS", description: "Passed"
+    }
+    failure {
+      githubNotify context: "format-checker/test", status: "FAILURE", description: "Failed. Comment \"@nnfw-bot test format-checker\" if you want to rerun"
+    }
+  }
 }
