@@ -130,6 +130,48 @@ public:
   luci::CircleConst *beta = nullptr;
 };
 
+class ConcatenationGraph final : public SimpleGraph
+{
+protected:
+  loco::Node *insertGraphBody(loco::Node *input) override
+  {
+    concat = g.nodes()->create<luci::CircleConcatenation>(2);
+    concat->values(0, input);
+    concat->axis(1);
+
+    input2 = g.nodes()->create<luci::CircleConst>();
+    input2->dtype(loco::DataType::FLOAT32);
+    input2->shape({1, 16, 4, 4});
+    input2->size<loco::DataType::FLOAT32>(16 * 4 * 4);
+    for (uint32_t i = 0; i < 16 * 4 * 4; i++)
+    {
+      input2->at<loco::DataType::FLOAT32>(i) = i;
+    }
+    concat->values(1, input2);
+
+    return concat;
+  }
+
+public:
+  luci::CircleConcatenation *concat = nullptr;
+  luci::CircleConst *input2 = nullptr;
+};
+
+class LeakyReluGraph final : public SimpleGraph
+{
+protected:
+  loco::Node *insertGraphBody(loco::Node *input) override
+  {
+    leakyrelu = g.nodes()->create<luci::CircleLeakyRelu>();
+    leakyrelu->features(input);
+
+    return leakyrelu;
+  }
+
+public:
+  luci::CircleLeakyRelu *leakyrelu = nullptr;
+};
+
 class MulGraph final : public SimpleGraph
 {
 protected:
@@ -160,6 +202,21 @@ protected:
 public:
   luci::CircleMul *mul = nullptr;
   luci::CircleConst *multiplier = nullptr;
+};
+
+class NegGraph final : public SimpleGraph
+{
+protected:
+  loco::Node *insertGraphBody(loco::Node *input) override
+  {
+    neg = g.nodes()->create<luci::CircleNeg>();
+    neg->x(input);
+
+    return neg;
+  }
+
+public:
+  luci::CircleNeg *neg = nullptr;
 };
 
 class PadGraph final : public SimpleGraph
@@ -298,6 +355,48 @@ TEST(ConvertNCHWToNHWC, Add)
   check_pre_trans(g.output->from());
 }
 
+TEST(ConvertNCHWToNHWC, Concatenation)
+{
+  ConcatenationGraph g;
+  g.init();
+
+  run_phase(&g.g, true, true);
+
+  check_pre_trans(g.concat->values(0));
+  check_pre_trans(g.concat->values(1));
+
+  auto concat_succs = loco::succs(g.concat);
+  EXPECT_EQ(1, concat_succs.size());
+  check_post_trans(*concat_succs.begin());
+
+  // Check concat shape, axis
+  EXPECT_EQ(1, g.concat->dim(0).value());
+  EXPECT_EQ(4, g.concat->dim(1).value());
+  EXPECT_EQ(4, g.concat->dim(2).value());
+  EXPECT_EQ(32, g.concat->dim(3).value());
+  EXPECT_EQ(3, g.concat->axis());
+}
+
+TEST(ConvertNCHWToNHWC, LeakyRelu)
+{
+  LeakyReluGraph g;
+  g.init();
+
+  run_phase(&g.g, true, true);
+
+  check_pre_trans(g.leakyrelu->features());
+
+  auto leakyrelu_succs = loco::succs(g.leakyrelu);
+  EXPECT_EQ(1, leakyrelu_succs.size());
+  check_post_trans(*leakyrelu_succs.begin());
+
+  // Check leakyrelu shape
+  EXPECT_EQ(1, g.leakyrelu->dim(0).value());
+  EXPECT_EQ(4, g.leakyrelu->dim(1).value());
+  EXPECT_EQ(4, g.leakyrelu->dim(2).value());
+  EXPECT_EQ(16, g.leakyrelu->dim(3).value());
+}
+
 TEST(ConvertNCHWToNHWC, Mul)
 {
   MulGraph g;
@@ -325,6 +424,26 @@ TEST(ConvertNCHWToNHWC, Mul)
   EXPECT_EQ(channel_size, new_multiplier->dim(3).value());
 
   check_pre_trans(g.output->from());
+}
+
+TEST(ConvertNCHWToNHWC, Neg)
+{
+  NegGraph g;
+  g.init();
+
+  run_phase(&g.g, true, true);
+
+  check_pre_trans(g.neg->x());
+
+  auto neg_succs = loco::succs(g.neg);
+  EXPECT_EQ(1, neg_succs.size());
+  check_post_trans(*neg_succs.begin());
+
+  // Check leakyrelu shape
+  EXPECT_EQ(1, g.neg->dim(0).value());
+  EXPECT_EQ(4, g.neg->dim(1).value());
+  EXPECT_EQ(4, g.neg->dim(2).value());
+  EXPECT_EQ(16, g.neg->dim(3).value());
 }
 
 TEST(ConvertNCHWToNHWC, Pad)

@@ -206,14 +206,10 @@ bool ReplaceMulAddWithDepthwiseConvPass::run(loco::Graph *g)
   bool changed = false;
   for (auto node : loco::active_nodes(loco::output_nodes(g)))
   {
-    auto add = dynamic_cast<luci::CircleAdd *>(node);
-    if (not add)
-      continue;
-
-    if (replace_mul_add_with_dwconv(add))
+    if (auto add = dynamic_cast<luci::CircleAdd *>(node))
     {
-      changed = true;
-      break;
+      if (replace_mul_add_with_dwconv(add))
+        changed = true;
     }
   }
 

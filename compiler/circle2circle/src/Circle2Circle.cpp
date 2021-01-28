@@ -140,6 +140,12 @@ int entry(int argc, char **argv)
     .default_value(false)
     .help("This will fuse BatchNorm operators of pre-activations to Convolution operator");
 
+  arser.add_argument("--remove_redundant_reshape")
+    .nargs(0)
+    .required(false)
+    .default_value(false)
+    .help("This will fuse or remove subsequent Reshape operators");
+
   arser.add_argument("--remove_redundant_transpose")
     .nargs(0)
     .required(false)
@@ -200,6 +206,18 @@ int entry(int argc, char **argv)
     .required(false)
     .default_value(false)
     .help("This will convert single input Pack to Reshape");
+
+  arser.add_argument("--substitute_squeeze_to_reshape")
+    .nargs(0)
+    .required(false)
+    .default_value(false)
+    .help("This will convert certain condition Squeeze to Reshape");
+
+  arser.add_argument("--substitute_transpose_to_reshape")
+    .nargs(0)
+    .required(false)
+    .default_value(false)
+    .help("This will convert single input Transpose to Reshape");
 
   arser.add_argument("--convert_nchw_to_nhwc")
     .nargs(0)
@@ -323,6 +341,8 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::MakeBatchNormGammaPositive);
   if (arser.get<bool>("--fuse_preactivation_batchnorm"))
     options->enable(Algorithms::FusePreActivationBatchNorm);
+  if (arser.get<bool>("--remove_redundant_reshape"))
+    options->enable(Algorithms::RemoveRedundantReshape);
   if (arser.get<bool>("--remove_redundant_transpose"))
     options->enable(Algorithms::RemoveRedundantTranspose);
   if (arser.get<bool>("--remove_unnecessary_reshape"))
@@ -343,6 +363,10 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::ShuffleWeightTo16x1Float32);
   if (arser.get<bool>("--substitute_pack_to_reshape"))
     options->enable(Algorithms::SubstitutePackToReshape);
+  if (arser.get<bool>("--substitute_squeeze_to_reshape"))
+    options->enable(Algorithms::SubstituteSqueezeToReshape);
+  if (arser.get<bool>("--substitute_transpose_to_reshape"))
+    options->enable(Algorithms::SubstituteTransposeToReshape);
   if (arser.get<bool>("--transform_min_max_to_relu6"))
     options->enable(Algorithms::TransformMinMaxToRelu6Pass);
 

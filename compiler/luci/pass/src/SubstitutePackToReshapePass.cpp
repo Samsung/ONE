@@ -84,24 +84,23 @@ namespace luci
 {
 
 /**
- *   BEFORE
- *      |
- * [CircleNode]
- *      |
- * [CirclePack]
- *      |
- * [CircleNode]
- *      |
+ * BEFORE
+ *           |
+ *      [CircleNode]
+ *           |
+ *      [CirclePack]
+ *           |
+ *      [CircleNode]
+ *           |
  *
- *    AFTER
- *      |
- * [CircleNode]  [CircleConst]
- *       \             /
- *       [CircleReshape]
+ * AFTER
  *             |
- *        [CircleNode]
- *             |
- *
+ *        [CircleNode]  [CircleConst]
+ *           |   \             /
+ *  [CirclePack] [CircleReshape]
+ *                      |
+ *                 [CircleNode]
+ *                      |
  */
 bool SubstitutePackToReshapePass::run(loco::Graph *g)
 {

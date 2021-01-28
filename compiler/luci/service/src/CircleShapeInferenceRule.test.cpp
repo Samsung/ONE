@@ -15,6 +15,7 @@
  */
 
 #include "TestGraph.h"
+#include "luci/Service/CircleShapeInference.h"
 #include "luci/Service/CircleShapeInferenceRule.h"
 #include "CircleShapeInferenceHelper.h"
 
