@@ -1,7 +1,7 @@
 operand {
   name: "ifm"
   type: INT32
-  shape { dim: 1 dim: 256 dim: 40 dim: 40 }
+  shape { dim: 1 dim: 2 dim: 4 dim: 4 }
 }
 operand {
   name: "begin"
@@ -18,7 +18,7 @@ operand {
   shape { dim: 4 }
   filler {
     tag: "explicit"
-    arg: "1" arg: "256" arg: "40" arg: "40"
+    arg: "1" arg: "2" arg: "4" arg: "4"
   }
 }
 operand {
@@ -33,7 +33,7 @@ operand {
 operand {
   name: "output"
   type: INT32
-  shape { dim: 1 dim: 256 dim: 40 dim: 40 }
+  shape { dim: 1 dim: 2 dim: 4 dim: 4 }
 }
 operation {
   type: "StridedSlice"
@@ -71,7 +71,7 @@ operand {
 operand {
   name: "ofm"
   type: INT32
-  shape { dim:1 dim: 40 dim: 40 }
+  shape { dim:1 dim: 4 dim: 4 }
 }
 operation {
   type: "StridedSlice"
