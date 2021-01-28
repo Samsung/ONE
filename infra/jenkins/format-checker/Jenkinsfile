@@ -4,7 +4,7 @@ pipeline {
   agent none
 
   options {
-    timeout(time:2, unit: 'HOURS')
+    timeout(time:30, unit: 'MINUTES')
     skipDefaultCheckout true
   }
 
@@ -28,14 +28,6 @@ pipeline {
         '''
         archiveArtifacts artifacts: "format.patch", onlyIfSuccessful: false, allowEmptyArchive: true
       }
-    }
-  }
-  post {
-    success {
-      githubNotify context: "format-checker/test", status: "SUCCESS", description: "Passed"
-    }
-    failure {
-      githubNotify context: "format-checker/test", status: "FAILURE", description: "Failed. Comment \"@nnfw-bot test format-checker\" if you want to rerun"
     }
   }
 }
