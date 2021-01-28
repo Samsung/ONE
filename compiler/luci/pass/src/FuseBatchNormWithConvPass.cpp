@@ -16,7 +16,7 @@
 
 #include "luci/Pass/FuseBatchNormWithConvPass.h"
 
-#include <luci/IR/ProfilingData.h>
+#include <luci/Profile/ProfilingData.h>
 
 #include <luci/IR/CircleNodes.h>
 

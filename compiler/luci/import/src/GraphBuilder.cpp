@@ -16,7 +16,7 @@
 
 #include "luci/Import/GraphBuilder.h"
 
-#include <luci/IR/ProfilingData.h>
+#include <luci/Profile/ProfilingData.h>
 #include <luci/Log.h>
 
 namespace luci

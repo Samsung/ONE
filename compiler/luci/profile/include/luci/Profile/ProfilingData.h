@@ -53,15 +53,19 @@ class CircleNodeOrigin final : public loco::NodeAnnotation
 public:
   CircleNodeOrigin() = delete;
 
-  CircleNodeOrigin(uint32_t origin) { _origins.insert(origin); }
+  CircleNodeOrigin(uint32_t origin) : _origins{origin}
+  {
+    // Do Nothing
+  }
 
   CircleNodeOrigin(std::vector<const luci::CircleNode *> origin_nodes)
   {
     for (auto node : origin_nodes)
     {
       assert(node->annot<CircleNodeOrigin>() != nullptr);
-      for (auto origin : node->annot<CircleNodeOrigin>()->origins())
-        _origins.insert(origin);
+
+      auto origins = node->annot<CircleNodeOrigin>()->origins();
+      _origins.insert(origins.begin(), origins.end());
     }
   }
 
