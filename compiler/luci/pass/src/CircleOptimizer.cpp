@@ -21,6 +21,7 @@
 #include "luci/Pass/FoldCastPass.h"
 #include "luci/Pass/FoldDequantizePass.h"
 #include "luci/Pass/FoldSparseToDensePass.h"
+#include "luci/Pass/ForwardReshapeToUnaryOpPass.h"
 #include "luci/Pass/FuseActivationFunctionPass.h"
 #include "luci/Pass/FuseAddWithTConvPass.h"
 #include "luci/Pass/FuseBatchNormWithConvPass.h"
@@ -230,6 +231,10 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   if (_options->query(Options::Algorithm::FoldSparseToDense))
   {
     phase.emplace_back(std::make_unique<luci::FoldSparseToDensePass>());
+  }
+  if (_options->query(Options::Algorithm::ForwardReshapeToUnaryOp))
+  {
+    phase.emplace_back(std::make_unique<luci::ForwardReshapeToUnaryOpPass>());
   }
   if (_options->query(Options::Algorithm::FusePreActivationBatchNorm))
   {
