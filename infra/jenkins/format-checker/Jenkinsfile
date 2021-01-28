@@ -1,0 +1,33 @@
+#!/usr/bin/env groovy
+
+pipeline {
+  agent none
+
+  options {
+    timeout(time:2, unit: 'HOURS')
+    skipDefaultCheckout true
+  }
+
+  stages {
+    stage('format-check')
+    {
+      agent {
+        docker {
+          label 'checker'
+          image 'nnfw/one-devtools:bionic'
+        }
+      }
+
+      steps {
+        checkout scm
+
+        sh '''#!/bin/bash
+
+        ./nnas format
+
+        '''
+        archiveArtifacts artifacts: "format.patch", onlyIfSuccessful: false, allowEmptyArchive: true
+      }
+    }
+  }
+}
