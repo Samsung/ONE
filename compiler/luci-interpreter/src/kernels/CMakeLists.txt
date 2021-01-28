@@ -70,6 +70,8 @@ set(SOURCES
     Minimum.cpp
     Mul.h
     Mul.cpp
+    Neg.h
+    Neg.cpp
     NotEqual.h
     NotEqual.cpp
     Pad.h
@@ -171,6 +173,7 @@ set(TEST_SOURCES
     Mean.test.cpp
     Minimum.test.cpp
     Mul.test.cpp
+    Neg.test.cpp
     NotEqual.test.cpp
     Pad.test.cpp
     Pow.test.cpp

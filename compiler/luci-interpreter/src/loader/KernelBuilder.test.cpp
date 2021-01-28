@@ -50,6 +50,7 @@
 #include <kernels/Mean.h>
 #include <kernels/Minimum.h>
 #include <kernels/Mul.h>
+#include <kernels/Neg.h>
 #include <kernels/NotEqual.h>
 #include <kernels/Pad.h>
 #include <kernels/Pow.h>
@@ -774,6 +775,20 @@ TEST_F(KernelBuilderTest, Mul)
   checkTensor(kernel->input2(), input2);
   checkTensor(kernel->output(), op);
   EXPECT_THAT(kernel->params().activation, Eq(op->fusedActivationFunction()));
+}
+
+TEST_F(KernelBuilderTest, Neg)
+{
+  auto *input = createInputNode();
+
+  auto *op = createNode<luci::CircleNeg>();
+  op->x(input);
+
+  auto kernel = buildKernel<kernels::Neg>(op);
+  ASSERT_THAT(kernel, NotNull());
+
+  checkTensor(kernel->input(), input);
+  checkTensor(kernel->output(), op);
 }
 
 TEST_F(KernelBuilderTest, NotEqual)
