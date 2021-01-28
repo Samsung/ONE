@@ -43,9 +43,6 @@ void Neg::execute() const
     case DataType::FLOAT32:
       evalFloat();
       break;
-    case DataType::U8:
-      evalQuantized();
-      break;
     default:
       throw std::runtime_error("Unsupported type.");
   }
@@ -55,12 +52,6 @@ void Neg::evalFloat() const
 {
   tflite::reference_ops::Negate(getTensorShape(input()), getTensorData<float>(input()),
                                 getTensorShape(output()), getTensorData<float>(output()));
-}
-
-void Neg::evalQuantized() const
-{
-  // TODO: implement this
-  throw std::runtime_error("TODO: Support Neg::evalQuantized");
 }
 
 } // namespace kernels

@@ -25,8 +25,6 @@ namespace luci_interpreter
 namespace kernels
 {
 
-class ChannelQuantMultipliers;
-
 class Neg : public Kernel
 {
 public:
@@ -40,7 +38,6 @@ public:
 
 private:
   void evalFloat() const;
-  void evalQuantized() const;
 };
 
 } // namespace kernels
