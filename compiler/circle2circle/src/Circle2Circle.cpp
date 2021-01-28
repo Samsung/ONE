@@ -84,6 +84,12 @@ int entry(int argc, char **argv)
     .default_value(false)
     .help("This will fold SparseToDense operator");
 
+  arser.add_argument("--forward_reshape_to_unaryop")
+    .nargs(0)
+    .required(false)
+    .default_value(false)
+    .help("This will move Reshape after UnaryOp for centain condition");
+
   arser.add_argument("--fuse_activation_function")
     .nargs(0)
     .required(false)
@@ -323,6 +329,8 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::FoldDequantize);
   if (arser.get<bool>("--fold_sparse_to_dense"))
     options->enable(Algorithms::FoldSparseToDense);
+  if (arser.get<bool>("--forward_reshape_to_unaryop"))
+    options->enable(Algorithms::ForwardReshapeToUnaryOp);
   if (arser.get<bool>("--fuse_activation_function"))
     options->enable(Algorithms::FuseActivationFunction);
   if (arser.get<bool>("--fuse_batchnorm_with_conv"))
