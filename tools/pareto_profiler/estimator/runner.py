@@ -1,5 +1,19 @@
 #! /usr/bin/python
 
+# Copyright (c) 2021 Samsung Electronics Co., Ltd. All Rights Reserved
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 import json
 import numpy as np
 from utils import fetch_config_by_name
@@ -8,6 +22,7 @@ from utils import generate_vars
 from utils import generate_vars_for_indx
 from utils import exec_shell
 from utils import import_configs
+from utils import int_to_vec
 import sys
 
 
@@ -26,6 +41,30 @@ class Mapper:
     def get_opname_by_indx(self):
         return self._opname_by_indx
 
+    def get_indices(self, value):
+        indx_list = []
+        for i in range(len(self._opname_by_indx)):
+            if self._opname_by_indx[i] == value:
+                indx_list.append(i)
+        return indx_list
+
+    def map_to_extended_space(self, n, backends):
+        n_vec = int_to_vec(n, backends, len(self._oplist))
+        extended_vec = np.zeros(max(self._opmap) + 1, dtype=int)
+        cnt = 0
+
+        for allocation in n_vec:
+            extended_pos = list(
+                set([self._opmap[i] for i in self.get_indices(self._oplist[cnt])]))
+            try:
+                extended_vec[extended_pos] = allocation
+            except IndexError:
+                print("extended_vec size = ", extended_vec.size, ", extended_pos = ",
+                      extended_pos)
+            cnt += 1
+        extended_n = int(''.join(str(i) for i in extended_vec[::-1]), 2)
+        return extended_n
+
 
 class Runner:
     def __init__(self, model, run_folder, num_backends, mode):
@@ -35,6 +74,7 @@ class Runner:
         oplist, opmap, opname_by_index = import_configs(mode)
         self._mapper = Mapper(opmap, oplist, opname_by_index)
         self._nbackends = num_backends
+        self._extended_map = {}
 
     def get_solution_spacelen(self):
         if self._mode == "name":
@@ -44,6 +84,23 @@ class Runner:
         else:
             print("Unknown mode ", mode, ", exiting profiler")
             sys.exit(-1)
+
+    def get_nbits(self, extended_search_mode):
+        if self._mode == "index" and extended_search_mode == True:
+            return max(self._mapper.get_opmap())
+        else:
+            return len(self._mapper.get_oplist())
+
+    def get_mode_extended(self):
+        return (self._mode == "index")
+
+    def get_extended_solution(self, s):
+        if s in self._extended_map:
+            return self._extended_map[s]
+
+        extended_value = self._mapper.map_to_extended_space(s, self._nbackends)
+        self._extended_map[s] = extended_value
+        return extended_value
 
     def run_inference(self, solution):
         cmd_str = [
