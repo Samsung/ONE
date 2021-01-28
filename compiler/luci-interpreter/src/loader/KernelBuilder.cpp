@@ -50,6 +50,7 @@
 #include "kernels/Mean.h"
 #include "kernels/Minimum.h"
 #include "kernels/Mul.h"
+#include "kernels/Neg.h"
 #include "kernels/NotEqual.h"
 #include "kernels/Pad.h"
 #include "kernels/Pow.h"
@@ -596,6 +597,16 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleMul *node)
   params.activation = node->fusedActivationFunction();
 
   return std::make_unique<kernels::Mul>(input1, input2, output, params);
+}
+
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleNeg *node)
+{
+  assert(node->arity() == 1);
+
+  const Tensor *input = getInputTensor(node->x());
+  Tensor *output = getOutputTensor(node);
+
+  return std::make_unique<kernels::Neg>(input, output);
 }
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleNotEqual *node)
