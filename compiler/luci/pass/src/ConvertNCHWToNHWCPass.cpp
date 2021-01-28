@@ -87,6 +87,15 @@ luci::CircleTranspose *create_4d_transpose(luci::CircleNode *node,
   return trans;
 }
 
+int32_t nchw_axis_to_nhwc(int32_t axis)
+{
+  uint32_t pos_axis = axis >= 0 ? static_cast<uint32_t>(axis) : static_cast<uint32_t>(axis + 4);
+  static const uint32_t to_nhwc[4] = {0, 3, 1, 2};
+  if (pos_axis > 3)
+    throw std::runtime_error("Concat axis must be in range [-4, 4)");
+  return to_nhwc[pos_axis];
+}
+
 luci::CircleTranspose *create_post_transpose(luci::CircleNode *node)
 {
   return create_4d_transpose(node, {0, 3, 1, 2});
@@ -444,6 +453,32 @@ class ConvertNCHWToNHWC final : public luci::CircleNodeMutableVisitor<bool>
     return true;
   }
 
+  bool visit(luci::CircleConcatenation *node)
+  {
+    const auto num_values = node->numValues();
+    for (uint32_t i = 0; i < num_values; i++)
+    {
+      auto pred_node = loco::must_cast<luci::CircleNode *>(node->values(i));
+      auto pre_trans = create_pre_transpose(node);
+      pre_trans->a(pred_node);
+      node->values(i, pre_trans);
+    }
+
+    // Do shape inference for this node again.
+    // TODO Remove loco::shape_erase()
+    loco::shape_erase(node);
+    node->shape_status(luci::ShapeStatus::UNDEFINED);
+
+    node->axis(nchw_axis_to_nhwc(node->axis()));
+
+    auto post_trans = create_post_transpose(node);
+    loco::replace(node).with(post_trans);
+
+    post_trans->a(node);
+
+    return true;
+  }
+
   bool visit(luci::CircleLeakyRelu *node)
   {
     const auto pred_node = loco::must_cast<luci::CircleNode *>(node->features());
@@ -601,6 +636,7 @@ bool ConvertNCHWToNHWCPass::run(loco::Graph *g)
         }
         break;
       case luci::CircleOpcode::ADD:
+      case luci::CircleOpcode::CONCATENATION:
       case luci::CircleOpcode::LEAKY_RELU:
       case luci::CircleOpcode::MUL:
       case luci::CircleOpcode::NEG:

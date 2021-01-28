@@ -130,6 +130,33 @@ public:
   luci::CircleConst *beta = nullptr;
 };
 
+class ConcatenationGraph final : public SimpleGraph
+{
+protected:
+  loco::Node *insertGraphBody(loco::Node *input) override
+  {
+    concat = g.nodes()->create<luci::CircleConcatenation>(2);
+    concat->values(0, input);
+    concat->axis(1);
+
+    input2 = g.nodes()->create<luci::CircleConst>();
+    input2->dtype(loco::DataType::FLOAT32);
+    input2->shape({1, 16, 4, 4});
+    input2->size<loco::DataType::FLOAT32>(16 * 4 * 4);
+    for (uint32_t i = 0; i < 16 * 4 * 4; i++)
+    {
+      input2->at<loco::DataType::FLOAT32>(i) = i;
+    }
+    concat->values(1, input2);
+
+    return concat;
+  }
+
+public:
+  luci::CircleConcatenation *concat = nullptr;
+  luci::CircleConst *input2 = nullptr;
+};
+
 class LeakyReluGraph final : public SimpleGraph
 {
 protected:
@@ -326,6 +353,28 @@ TEST(ConvertNCHWToNHWC, Add)
   EXPECT_EQ(channel_size, new_beta->dim(3).value());
 
   check_pre_trans(g.output->from());
+}
+
+TEST(ConvertNCHWToNHWC, Concatenation)
+{
+  ConcatenationGraph g;
+  g.init();
+
+  run_phase(&g.g, true, true);
+
+  check_pre_trans(g.concat->values(0));
+  check_pre_trans(g.concat->values(1));
+
+  auto concat_succs = loco::succs(g.concat);
+  EXPECT_EQ(1, concat_succs.size());
+  check_post_trans(*concat_succs.begin());
+
+  // Check concat shape, axis
+  EXPECT_EQ(1, g.concat->dim(0).value());
+  EXPECT_EQ(4, g.concat->dim(1).value());
+  EXPECT_EQ(4, g.concat->dim(2).value());
+  EXPECT_EQ(32, g.concat->dim(3).value());
+  EXPECT_EQ(3, g.concat->axis());
 }
 
 TEST(ConvertNCHWToNHWC, LeakyRelu)
