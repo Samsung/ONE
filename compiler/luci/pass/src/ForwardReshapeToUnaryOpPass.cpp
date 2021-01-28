@@ -1,0 +1,188 @@
+/*
+ * Copyright (c) 2021 Samsung Electronics Co., Ltd. All Rights Reserved
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+#include "luci/Pass/ForwardReshapeToUnaryOpPass.h"
+
+#include <luci/IR/CircleNodes.h>
+#include <luci/IR/CircleNodeVisitor.h>
+#include <luci/Log.h>
+#include <luci/Service/CircleShapeInference.h>
+
+namespace
+{
+
+luci::CircleReshape *as_reshape(loco::Node *node)
+{
+  return dynamic_cast<luci::CircleReshape *>(node);
+}
+
+template <loco::DataType T> luci::CircleConst *clone(luci::CircleConst *node)
+{
+  assert(T == node->dtype());
+
+  auto cloned = node->graph()->nodes()->create<luci::CircleConst>();
+  // TODO: We don't have any naming policy for newly created nodes yet.
+  //       Fix this when we have one.
+  cloned->name(node->name());
+  // dtype/shape
+  cloned->dtype(node->dtype());
+  cloned->rank(node->rank());
+  for (uint32_t i = 0; i < node->rank(); i++)
+    cloned->dim(i).set(node->dim(i).value());
+  cloned->shape_status(luci::ShapeStatus::VALID);
+  // values
+  const auto size = node->size<T>();
+  cloned->size<T>(size);
+  for (uint32_t i = 0; i < size; i++)
+    cloned->at<T>(i) = node->at<T>(i);
+  // quantparam
+  const auto *quantparam = node->quantparam();
+  if (quantparam != nullptr)
+  {
+    auto qparam = std::make_unique<luci::CircleQuantParam>();
+    qparam->scale = quantparam->scale;
+    qparam->zerop = quantparam->zerop;
+    qparam->min = quantparam->min;
+    qparam->max = quantparam->max;
+    qparam->quantized_dimension = quantparam->quantized_dimension;
+
+    cloned->quantparam(std::move(qparam));
+  }
+  // sparsity
+  const auto *sparsity = node->sparsityparam();
+  if (sparsity != nullptr)
+  {
+    auto sparam = std::make_unique<luci::SparsityParam>();
+    sparam->traversal_order = sparsity->traversal_order;
+    sparam->block_map = sparsity->block_map;
+    sparam->dim_metadata = sparsity->dim_metadata;
+
+    cloned->sparsityparam(std::move(sparam));
+  }
+  // op version
+  cloned->op_version(node->op_version());
+
+  return cloned;
+}
+
+bool forward_reshape(luci::CircleReshape *reshape, luci::CircleNeg *neg)
+{
+  assert(reshape != nullptr);
+  assert(neg != nullptr);
+
+  luci::CircleConst *cloned_shape = nullptr;
+  const auto reshape_shape = dynamic_cast<luci::CircleConst *>(reshape->shape());
+  // only support CircleConst for now
+  if (reshape_shape == nullptr)
+    return false;
+
+  if (reshape_shape->dtype() == loco::DataType::S32)
+    cloned_shape = clone<loco::DataType::S32>(reshape_shape);
+  else if (reshape_shape->dtype() == loco::DataType::S64)
+    cloned_shape = clone<loco::DataType::S64>(reshape_shape);
+  else
+    return false;
+
+  loco::Graph *graph = neg->graph();
+  // create reshape placed after neg
+  luci::CircleReshape *new_reshape = graph->nodes()->create<luci::CircleReshape>();
+  auto ns_rank = reshape->newShape()->rank();
+  new_reshape->newShape()->rank(ns_rank);
+  for (uint32_t r = 0; r < ns_rank; ++r)
+    new_reshape->newShape()->dim(r) = reshape->newShape()->dim(r);
+
+  new_reshape->shape(cloned_shape);
+
+  // reconnect network
+  loco::replace(neg).with(new_reshape);
+  neg->x(reshape->tensor());
+  new_reshape->tensor(neg);
+
+  // need to reset shape as it leaped over Reshape
+  // TODO Remove loco::shape_erase()
+  loco::shape_erase(neg);
+  neg->shape_status(luci::ShapeStatus::UNDEFINED);
+
+  return true;
+}
+
+class ForwardReshape final : public luci::CircleNodeMutableVisitor<bool>
+{
+protected:
+  bool visit(luci::CircleNode *node)
+  {
+    LOGGER(l);
+    INFO(l) << "ForwardReshape: Unsupported operator: " << node->name() << std::endl;
+    return false;
+  }
+
+  bool visit(luci::CircleNeg *node)
+  {
+    auto reshape = as_reshape(node->x());
+    if (reshape == nullptr)
+      return false;
+    return forward_reshape(reshape, node);
+  }
+
+  // TODO add more unary operators
+};
+
+} // namespace
+
+namespace luci
+{
+
+/**
+ * BEFORE
+ *                       |
+ *                  [CircleNode]  [CircleConst]
+ *                       |       /
+ *                 [CircleReshape]
+ *                /      |
+ *     [CircleNode]  [(UnaryOp)]
+ *          |            |     \
+ *          |            |      [CircleNode]
+ *          |            |           |
+ *
+ *   UnaryOp: CircleNeg, ...
+ *
+ * AFTER
+ *                       |
+ *   [CircleConst]  [CircleNode]
+ *         |       /     |
+ *  [CircleReshape] [(UnaryOp)] [CircleConst]
+ *         |             |      /
+ *   [CircleNode] [CircleReshape]
+ *         |             |      \
+ *         |             |       [CircleNode]
+ *         |             |            |
+ *
+ *   Note: new [CircleReshape] after [(UnaryOp)] added
+ */
+bool ForwardReshapeToUnaryOpPass::run(loco::Graph *g)
+{
+  bool changed = false;
+  ForwardReshape forward;
+  for (auto node : loco::active_nodes(loco::output_nodes(g)))
+  {
+    auto circle_node = loco::must_cast<luci::CircleNode *>(node);
+    if (circle_node->accept(&forward))
+      changed = true;
+  }
+  return changed;
+}
+
+} // namespace luci

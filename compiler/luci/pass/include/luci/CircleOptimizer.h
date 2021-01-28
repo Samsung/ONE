@@ -50,6 +50,7 @@ public:
       FoldCast,
       FoldDequantize,
       FoldSparseToDense,
+      ForwardReshapeToUnaryOp,
       SparsifyTensorPass,
       FusePreActivationBatchNorm,
       MakeBatchNormGammaPositive,
