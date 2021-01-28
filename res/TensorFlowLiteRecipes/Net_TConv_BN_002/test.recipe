@@ -1,0 +1,156 @@
+# Tconv with asymmetric filter + BN + Relu6
+operand {
+  name: "Hole"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+    dim: 1
+    dim: 2
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "conv2d_transpose/input_sizes"
+  type: INT32
+  shape {
+    dim: 4
+  }
+  filler {
+    tag: "explicit"
+    arg: "1"
+    arg: "5"
+    arg: "1"
+    arg: "2"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "FusedBatchNormV3"
+  type: FLOAT32
+  shape {
+    dim: 2
+  }
+  filler {
+    tag: "explicit"
+    arg: "-2.04724"
+    arg: "-7.80109"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "FusedBatchNormV3;conv2d_transpose;conv2d_transpose/input_sizes"
+  type: FLOAT32
+  shape {
+    dim: 2
+    dim: 5
+    dim: 1
+    dim: 2
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "FusedBatchNormV3;conv2d_transpose;conv2d_transpose/input_sizes2"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 5
+    dim: 1
+    dim: 2
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "FusedBatchNormV3_mul_0"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 5
+    dim: 1
+    dim: 2
+  }
+  quant {
+    quantized_dimension: 0
+  }
+}
+operand {
+  name: "FusedBatchNormV3_mul_0_param"
+  type: FLOAT32
+  shape {
+    dim: 2
+  }
+  filler {
+    tag: "explicit"
+    arg: "2.00834"
+    arg: "1.00344"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+}
+operand {
+  name: "Relu6"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 5
+    dim: 1
+    dim: 2
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operation {
+  type: "TransposeConv"
+  input: "conv2d_transpose/input_sizes"
+  input: "FusedBatchNormV3;conv2d_transpose;conv2d_transpose/input_sizes"
+  input: "Hole"
+  output: "FusedBatchNormV3;conv2d_transpose;conv2d_transpose/input_sizes2"
+  transpose_conv_options {
+    padding: VALID
+    stride_w: 1
+    stride_h: 1
+  }
+}
+operation {
+  type: "Mul"
+  input: "FusedBatchNormV3;conv2d_transpose;conv2d_transpose/input_sizes2"
+  input: "FusedBatchNormV3_mul_0_param"
+  output: "FusedBatchNormV3_mul_0"
+  mul_options {
+    activation: NONE
+  }
+}
+operation {
+  type: "Add"
+  input: "FusedBatchNormV3_mul_0"
+  input: "FusedBatchNormV3"
+  output: "Relu6"
+  add_options {
+    activation: RELU6
+  }
+}
+input: "Hole"
+output: "Relu6"
