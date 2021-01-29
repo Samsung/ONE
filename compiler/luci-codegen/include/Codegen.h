@@ -54,6 +54,14 @@ private:
 
   std::vector<luci::CircleNode *> gather_suitable_nodes(luci::CircleNode *node, std::unordered_set<luci::CircleNode *> &processed) const;
 
+  std::vector<luci::CircleNode *> filter_nodes(const std::vector<luci::CircleNode *> &nodes) const;
+
+  SubgraphContext *create_subgraph(const std::vector<luci::CircleNode *> &nodes);
+
+  void replace_subgraph_with_generated_node(SubgraphContext *subgraph) const;
+
+  void cleanup_graph(SubgraphContext *subgraph) const;
+
   void process_graph(loco::Graph &graph);
 
   int _processed_graphs;

@@ -64,6 +64,7 @@ public:
   {
 #ifndef NDEBUG
     assert(!_constructed);
+    assert(node->graph() == get_graph());
 #endif
     _nodes.push_back(node);
   }
@@ -77,6 +78,12 @@ public:
   std::string get_name() const
   {
     return _name;
+  }
+
+  loco::Graph *get_graph() const
+  {
+    assert(!_nodes.empty() && "graph is not filled add at least one node");
+    return _nodes[0]->graph();
   }
 
   /**
