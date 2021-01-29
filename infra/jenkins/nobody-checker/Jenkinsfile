@@ -40,7 +40,6 @@ pipeline {
         fi
 
         '''
-        archiveArtifacts artifacts: "format.patch", onlyIfSuccessful: false, allowEmptyArchive: true
       }
     }
   }

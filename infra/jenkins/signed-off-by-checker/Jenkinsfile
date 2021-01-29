@@ -1,0 +1,34 @@
+#!/usr/bin/env groovy
+
+pipeline {
+  agent none
+
+  options {
+    timeout(time:30, unit: 'MINUTES')
+    skipDefaultCheckout true
+  }
+
+  stages {
+    stage('signed-off-by-check')
+    {
+      agent {
+        docker {
+          label 'checker'
+          image 'nnfw/one-devtools:bionic'
+        }
+      }
+
+      steps {
+        checkout scm
+
+        sh '''#!/bin/bash
+
+        # Remove Signed-off-by line
+        git fetch origin +refs/heads/*:refs/remotes/origin/*
+        git log --format=%b origin/$CHANGE_TARGET..HEAD | grep "Signed-off-by"
+
+        '''
+      }
+    }
+  }
+}
