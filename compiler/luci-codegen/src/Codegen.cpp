@@ -247,8 +247,8 @@ void Codegen::emit_code(std::string package_name)
     }
     Halide::Pipeline composite_output(outputs);
     composite_output.compile_to_lowered_stmt(subgraph.get_name() + ".html", arguments, Halide::StmtOutputFormat::HTML);
+    composite_output.compile_to_object(subgraph.get_name() + ".o", arguments, subgraph.get_name());
   }
-  // TODO generate object files/static libraries?
 }
 
 } // namespace luci_codegen

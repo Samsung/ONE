@@ -39,3 +39,11 @@ target_link_libraries(luci_interpreter
     PRIVATE nncc_common)
 
 install(TARGETS luci_interpreter DESTINATION lib)
+
+add_executable(luci_runner Runner.cpp)
+target_link_libraries(luci_runner PRIVATE luci_interpreter)
+target_link_libraries(luci_runner PRIVATE oops)
+target_link_libraries(luci_runner PRIVATE loco)
+target_link_libraries(luci_runner PRIVATE luci_import)
+target_link_libraries(luci_runner PRIVATE luci_export)
+target_link_libraries(luci_runner PRIVATE luci_lang)

@@ -229,7 +229,7 @@ static void add_argument_halide_buffer(std::vector<Halide::Runtime::Buffer<>> &a
 {
   const luci::CircleNode *luci_node = static_cast<const luci::CircleNode *>(node);
   std::vector<int> dims;
-  for (int j = 0; j < luci_node->arity(); ++j)
+  for (int j = 0; j < luci_node->rank(); ++j)
   {
     assert(luci_node->dim(j).known());
     dims.push_back(luci_node->dim(j).value()); // TODO check if dims order is correct
