@@ -20,6 +20,7 @@
 #include <nnfw_internal.h>
 
 #include <misc/EnvVar.h>
+#include <misc/fp32.h>
 #include <misc/RandomGenerator.h>
 
 #include <tflite/Assert.h>
@@ -36,7 +37,6 @@ using namespace tflite;
 using namespace nnfw::tflite;
 
 const int FILE_ERROR = 2;
-const float DIFFERENCE_THRESHOLD = 10e-5;
 
 #define NNFW_ASSERT_FAIL(expr, msg)   \
   if ((expr) != NNFW_STATUS_NO_ERROR) \
@@ -320,6 +320,7 @@ int main(const int argc, char **argv)
   // Calculate max difference over all outputs
   float max_float_difference = 0.0f;
   bool find_unmatched_output = false;
+  auto tolerance = nnfw::misc::EnvVar("TOLERANCE").asInt(1);
 
   for (uint32_t out_idx = 0; out_idx < num_outputs; out_idx++)
   {
@@ -356,8 +357,9 @@ int main(const int argc, char **argv)
           if (std::abs(refval - val) > max_float_difference)
             max_float_difference = std::abs(refval - val);
 
-          if (max_float_difference > DIFFERENCE_THRESHOLD)
-            matched = false;
+          matched = nnfw::misc::fp32::absolute_epsilon_equal(refval, val)
+                      ? true
+                      : nnfw::misc::fp32::epsilon_equal(refval, val, tolerance);
         }
         break;
       case NNFW_TYPE_TENSOR_INT64:
@@ -377,10 +379,6 @@ int main(const int argc, char **argv)
   if (find_unmatched_output)
   {
     std::cout << "[Comparison] outputs is not equal!" << std::endl;
-    if (max_float_difference > DIFFERENCE_THRESHOLD)
-    {
-      std::cout << "[Comparison] Float outputs is not equal!" << std::endl;
-    }
     ret = 1;
   }
   else
