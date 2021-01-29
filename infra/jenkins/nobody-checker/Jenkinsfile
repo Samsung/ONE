@@ -1,0 +1,47 @@
+#!/usr/bin/env groovy
+
+pipeline {
+  agent none
+
+  options {
+    timeout(time:30, unit: 'MINUTES')
+    skipDefaultCheckout true
+  }
+
+  stages {
+    stage('nobody-check')
+    {
+      agent {
+        docker {
+          label 'checker'
+          image 'nnfw/one-devtools:bionic'
+        }
+      }
+
+      steps {
+        checkout scm
+
+        sh '''#!/bin/bash
+
+        # Remove Signed-off-by line
+        git fetch origin +refs/heads/*:refs/remotes/origin/*
+        body_count=`git log --format=%b origin/$CHANGE_TARGET..HEAD | sed '/Signed-off-by:/d' | wc -w`
+
+        # determine if a commit body exceeds 4 words
+        body_count_criteria=4
+        echo "[DEBUG] body count is $body_count"
+        if  [[ $body_count -lt $body_count_criteria ]]; then
+            echo "[DEBUG] commit body checker is FAILED."
+            nobody_result=0
+            exit 1
+        else
+            echo "[DEBUG] commit body checker is PASSED."
+            nobody_result=1
+        fi
+
+        '''
+        archiveArtifacts artifacts: "format.patch", onlyIfSuccessful: false, allowEmptyArchive: true
+      }
+    }
+  }
+}
