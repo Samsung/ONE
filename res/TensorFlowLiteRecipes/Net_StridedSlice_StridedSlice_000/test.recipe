@@ -1,39 +1,30 @@
 operand {
   name: "ifm"
-  type: INT32
-  shape { dim: 1 dim: 2 dim: 4 dim: 4 }
+  type: FLOAT32
+  shape { dim: 1 dim: 2 dim: 4}
 }
 operand {
   name: "begin"
   type: INT32
-  shape { dim: 4 }
-  filler {
-    tag: "explicit"
-    arg: "1" arg: "1" arg: "1" arg: "1"
-  }
+  shape { dim: 3 }
+  filler { tag: "explicit" arg: "0" arg: "0" arg: "0" }
 }
 operand {
   name: "end"
   type: INT32
-  shape { dim: 4 }
-  filler {
-    tag: "explicit"
-    arg: "1" arg: "2" arg: "4" arg: "4"
-  }
+  shape { dim: 3 }
+  filler { tag: "explicit" arg: "1" arg: "2" arg: "4" }
 }
 operand {
   name: "strides"
   type: INT32
-  shape { dim: 4 }
-  filler {
-    tag: "explicit"
-    arg: "1" arg: "1" arg: "1" arg: "1"
-  }
+  shape { dim: 3 }
+  filler { tag: "explicit" arg: "1" arg: "1" arg: "1" }
 }
 operand {
-  name: "output"
-  type: INT32
-  shape { dim: 1 dim: 2 dim: 4 dim: 4 }
+  name: "output_1"
+  type: FLOAT32
+  shape { dim: 1 dim: 2 dim: 4 }
 }
 operation {
   type: "StridedSlice"
@@ -48,30 +39,26 @@ operation {
   input: "begin"
   input: "end"
   input: "strides"
-  output: "output"
+  output: "output_1"
 }
 operand {
   name: "begin_2"
   type: INT32
-  shape { dim: 4 }
-  filler {
-    tag: "explicit"
-    arg: "0" arg: "0" arg: "0" arg: "0"
+  shape { dim: 3 }
+  filler { tag: "explicit" arg: "0" arg: "0" arg: "0"
   }
 }
 operand {
   name: "end_2"
   type: INT32
-  shape { dim: 4 }
-  filler {
-    tag: "explicit"
-    arg: "0" arg: "1" arg: "0" arg: "0"
+  shape { dim: 3 }
+  filler { tag: "explicit" arg: "0" arg: "1" arg: "0"
   }
 }
 operand {
   name: "ofm"
-  type: INT32
-  shape { dim:1 dim: 4 dim: 4 }
+  type: FLOAT32
+  shape { dim:1 dim: 4}
 }
 operation {
   type: "StridedSlice"
@@ -82,7 +69,7 @@ operation {
     new_axis_mask: 0
     shrink_axis_mask: 2
   }
-  input: "output"
+  input: "output_1"
   input: "begin_2"
   input: "end_2"
   input: "strides"
@@ -90,3 +77,4 @@ operation {
 }
 input: "ifm"
 output: "ofm"
+
