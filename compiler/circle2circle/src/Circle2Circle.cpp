@@ -164,6 +164,12 @@ int entry(int argc, char **argv)
     .default_value(false)
     .help("This will remove unnecessary slice operators");
 
+  arser.add_argument("--remove_unnecessary_strided_slice")
+    .nargs(0)
+    .required(false)
+    .default_value(false)
+    .help("This will remove unnecessary strided slice operators");
+
   arser.add_argument("--remove_unnecessary_split")
     .nargs(0)
     .required(false)
@@ -343,6 +349,8 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::RemoveUnnecessaryReshape);
   if (arser.get<bool>("--remove_unnecessary_slice"))
     options->enable(Algorithms::RemoveUnnecessarySlice);
+  if (arser.get<bool>("--remove_unnecessary_strided_slice"))
+    options->enable(Algorithms::RemoveUnnecessaryStridedSlice);
   if (arser.get<bool>("--remove_unnecessary_split"))
     options->enable(Algorithms::RemoveUnnecessarySplit);
   if (arser.get<bool>("--replace_cw_mul_add_with_depthwise_conv"))

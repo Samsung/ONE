@@ -155,9 +155,8 @@ Current transformation options are
 - fold_dequantize : This removes Dequantize operation which can be folded
 - fold_sparse_to_dense : This removes SparseToDense operation which can be folded
 - fuse_add_with_tconv: This fuses Add operator with the preceding TConv operator if possible
-- fuse_batchnorm_with_conv : This fuses BatchNorm operator to convolution operator
-- fuse_batchnorm_with_dwconv : This fuses BatchNorm operator to depthwise convolution operator
-- fuse_batchnorm_with_tconv : This fuses BatchNorm operator to transpose convolution operator
+- fuse_batchnorm_wich_conv : This fuses BatchNorm operator to convolution operator
+- fuse_batchnorm_wich_tconv : This fuses BatchNorm operator to transpose convolution operator
 - fuse_bcq: This enables Binary-Coded-bases Quantized DNNs
    - read https://arxiv.org/abs/2005.09904 for detailed information
 - fuse_instnorm: This will convert instance normalization related operators to
@@ -169,10 +168,10 @@ Current transformation options are
   Note that this pass can change the execution result of the model.
   So, use it only when the impact is known to be acceptable.
 - mute_warnings : This will turn off warning messages.
-- remove_redundant_reshape : This fuses or removes redundant reshape operators.
 - remove_redundant_transpose : This fuses or removes redundant transpose operators.
 - remove_unnecessary_reshape : This removes unnecessary reshape operators.
 - remove_unnecessary_slice : This removes unnecessary slice operators.
+- remove_unnecessary_strided_slice : This removes unnecessary strided slice operators.
 - remove_unnecessary_split : This removes unnecessary split operators.
 - replace_cw_mul_add_with_depthwise_conv: This will replace channel-wise Mul/Add with DepthwiseConv2D.
 - resolve_customop_add: This will convert Custom(Add) to normal Add operator
@@ -183,8 +182,6 @@ Current transformation options are
 - shuffle_weight_to_16x1float32 : This will convert weight format of FullyConnected to SHUFFLED16x1FLOAT32.
   Note that it only converts weights whose row is a multiple of 16.
 - substitute_pack_to_reshape : This will convert single input Pack to Reshape.
-- substitute_transpose_to_reshape : This will convert certain condition Transpose to Reshape.
-- transform_min_max_to_relu6: This will transform Minimum-Maximum pattern to Relu6 operator.
 
 
 one-quantize

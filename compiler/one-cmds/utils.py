@@ -135,8 +135,6 @@ def _make_circle2circle_cmd(args, driver_path, input_path, output_path):
         cmd.append('--fuse_add_with_tconv')
     if _is_valid_attr(args, 'fuse_batchnorm_with_conv'):
         cmd.append('--fuse_batchnorm_with_conv')
-    if _is_valid_attr(args, 'fuse_batchnorm_with_dwconv'):
-        cmd.append('--fuse_batchnorm_with_dwconv')
     if _is_valid_attr(args, 'fuse_batchnorm_with_tconv'):
         cmd.append('--fuse_batchnorm_with_tconv')
     if _is_valid_attr(args, 'fuse_bcq'):
@@ -151,14 +149,14 @@ def _make_circle2circle_cmd(args, driver_path, input_path, output_path):
         cmd.append('--fuse_instnorm')
     if _is_valid_attr(args, 'replace_cw_mul_add_with_depthwise_conv'):
         cmd.append('--replace_cw_mul_add_with_depthwise_conv')
-    if _is_valid_attr(args, 'remove_redundant_reshape'):
-        cmd.append('--remove_redundant_reshape')
     if _is_valid_attr(args, 'remove_redundant_transpose'):
         cmd.append('--remove_redundant_transpose')
     if _is_valid_attr(args, 'remove_unnecessary_reshape'):
         cmd.append('--remove_unnecessary_reshape')
     if _is_valid_attr(args, 'remove_unnecessary_slice'):
         cmd.append('--remove_unnecessary_slice')
+    if _is_valid_attr(args, 'remove_unnecessary_strided_slice'):
+        cmd.append('--remove_unnecessary_strided_slice')
     if _is_valid_attr(args, 'remove_unnecessary_split'):
         cmd.append('--remove_unnecessary_split')
     if _is_valid_attr(args, 'resolve_customop_add'):
@@ -171,10 +169,6 @@ def _make_circle2circle_cmd(args, driver_path, input_path, output_path):
         cmd.append('--shuffle_weight_to_16x1float32')
     if _is_valid_attr(args, 'substitute_pack_to_reshape'):
         cmd.append('--substitute_pack_to_reshape')
-    if _is_valid_attr(args, 'substitute_transpose_to_reshape'):
-        cmd.append('--substitute_transpose_to_reshape')
-    if _is_valid_attr(args, 'transform_min_max_to_relu6'):
-        cmd.append('--transform_min_max_to_relu6')
 
     return cmd
 

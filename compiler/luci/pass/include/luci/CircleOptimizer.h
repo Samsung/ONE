@@ -60,6 +60,7 @@ public:
       SubstitutePackToReshape,
       ConvertNCHWToNHWC,
       RemoveUnnecessarySlice,
+      RemoveUnnecessaryStridedSlice,
       RemoveUnnecessarySplit,
       RemoveUnnecessaryReshape,
       TransformMinMaxToRelu6Pass,

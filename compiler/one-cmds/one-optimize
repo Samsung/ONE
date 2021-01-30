@@ -74,10 +74,6 @@ def _get_parser():
         action='store_true',
         help='fuse BatchNorm op to Convolution op')
     circle2circle_group.add_argument(
-        '--fuse_batchnorm_with_dwconv',
-        action='store_true',
-        help='fuse BatchNorm op to Depthwise Convolution op')
-    circle2circle_group.add_argument(
         '--fuse_batchnorm_with_tconv',
         action='store_true',
         help='fuse BatchNorm op to Transposed Convolution op')
@@ -104,10 +100,6 @@ def _get_parser():
         action='store_true',
         help='replace channel-wise Mul/Add with DepthwiseConv2D')
     circle2circle_group.add_argument(
-        '--remove_redundant_reshape',
-        action='store_true',
-        help='fuse or remove subsequent Reshape ops')
-    circle2circle_group.add_argument(
         '--remove_redundant_transpose',
         action='store_true',
         help='fuse or remove subsequent Transpose ops')
@@ -119,6 +111,10 @@ def _get_parser():
         '--remove_unnecessary_slice',
         action='store_true',
         help='remove unnecessary slice ops')
+    circle2circle_group.add_argument(
+        '--remove_unnecessary_strided_slice',
+        action='store_true',
+        help='remove unnecessary strided slice ops')
     circle2circle_group.add_argument(
         '--remove_unnecessary_split',
         action='store_true',
@@ -144,14 +140,6 @@ def _get_parser():
         '--substitute_pack_to_reshape',
         action='store_true',
         help='convert single input Pack op to Reshape op')
-    circle2circle_group.add_argument(
-        '--substitute_transpose_to_reshape',
-        action='store_true',
-        help='convert certain condition Transpose to Reshape')
-    circle2circle_group.add_argument(
-        '--transform_min_max_to_relu6',
-        action='store_true',
-        help='transform Minimum-Maximum pattern to Relu6 op')
 
     return parser
 
