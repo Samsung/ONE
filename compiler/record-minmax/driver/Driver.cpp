@@ -48,8 +48,10 @@ int entry(const int argc, char **argv)
   arser.add_argument("--input_data")
     .nargs(1)
     .type(arser::DataType::STR)
-    .required(true)
-    .help("Input data filepath");
+    .required(false)
+    .help("Input data filepath. If not given, record-minmax will run with randomly generated data. "
+          "Note that the random dataset does not represent inference workload, leading to poor "
+          "model accuracy.");
 
   arser.add_argument("--output_model")
     .nargs(1)
@@ -84,7 +86,6 @@ int entry(const int argc, char **argv)
   }
 
   auto input_model_path = arser.get<std::string>("--input_model");
-  auto input_data_path = arser.get<std::string>("--input_data");
   auto output_model_path = arser.get<std::string>("--output_model");
 
   // Default values
@@ -109,8 +110,18 @@ int entry(const int argc, char **argv)
   // Initialize interpreter and observer
   rmm.initialize(input_model_path);
 
-  // Profile min/max while executing the given input data
-  rmm.profileData(mode, input_data_path, min_percentile, max_percentile);
+  if (arser["--input_data"])
+  {
+    auto input_data_path = arser.get<std::string>("--input_data");
+
+    // Profile min/max while executing the given input data
+    rmm.profileData(mode, input_data_path, min_percentile, max_percentile);
+  }
+  else
+  {
+    // Profile min/max while executing random input data
+    rmm.profileDataWithRandomInputs(mode, min_percentile, max_percentile);
+  }
 
   // Save profiled values to the model
   rmm.saveModel(output_model_path);

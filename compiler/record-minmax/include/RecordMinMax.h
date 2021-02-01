@@ -39,6 +39,9 @@ public:
   void profileData(const std::string &mode, const std::string &input_data_path,
                    float min_percentile, float max_percentile);
 
+  void profileDataWithRandomInputs(const std::string &mode, float min_percentile,
+                                   float max_percentile);
+
   void saveModel(const std::string &output_model_path);
 
 private:
