@@ -39,7 +39,7 @@ rm -rf ${outputfile}
 rm -rf ${outputfile}.log
 
 # run test
-one-optimize --all \
+one-optimize --O1 \
 --input_path ${inputfile} \
 --output_path ${outputfile} > ${filename}.log
 
