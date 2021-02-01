@@ -44,8 +44,8 @@ void Optimizer::optimize()
     acl_common::AclSubTensorAnalyzer sa{*_context->graph()};
     sa.setUsePadding();
     _context->graph()->operations().iterate(
-      [&](const ir::OperationIndex &ind, const ir::Operation &op) {
-        sa.setLayout(_context->operation_layouts().at(ind));
+      [&](const ir::OperationIndex &, const ir::Operation &op) {
+        sa.setLayout(_context->graph()->layout());
         op.accept(sa);
       });
 

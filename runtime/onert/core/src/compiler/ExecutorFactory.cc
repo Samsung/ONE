@@ -151,7 +151,6 @@ backend::BackendContexts createBackendContexts(const compiler::LoweredGraph &lgr
       auto &op_li = lgraph.lower_info().operation;
       auto backend = op_li.at(op_ind).backend();
       auto &partial_graph = *context_data_map[backend].graph;
-      auto &operation_layouts = context_data_map[backend].operation_layouts;
       auto &external_operands = context_data_map[backend].external_operands;
       auto &operand_layouts = context_data_map[backend].operand_layouts;
 
@@ -195,7 +194,6 @@ backend::BackendContexts createBackendContexts(const compiler::LoweredGraph &lgr
 
         operation.accept(op_cloner);
         auto new_op_ind = partial_graph.addOperation(op_ind, op_cloner.releaseClone());
-        operation_layouts[new_op_ind] = whole_graph.layout();
         assert(new_op_ind == op_ind);
         VERBOSE(BuildBackendGraph) << "backend:" << backend->config()->id() << " Added Operation "
                                    << new_op_ind << std::endl;

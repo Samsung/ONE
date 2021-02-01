@@ -33,8 +33,8 @@ namespace acl_neon
 
 void BackendContext::initConsts()
 {
-  _data.graph->operations().iterate([&](const ir::OperationIndex &ind, const ir::Operation &op) {
-    constant_initializer->setLayout(operation_layouts().at(ind));
+  _data.graph->operations().iterate([&](const ir::OperationIndex &, const ir::Operation &op) {
+    constant_initializer->setLayout(graph()->layout());
     op.accept(*constant_initializer);
   });
 
