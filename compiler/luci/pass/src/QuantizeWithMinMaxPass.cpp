@@ -970,8 +970,8 @@ void quantize_const_inputs(luci::CircleNode *node, loco::DataType output_type)
  *                        (U8 qparam2)
  *
  *  AFTER
- *         [CircleNode]             [CircleConst]
- *         (U8 qparam2)             (U8 qparam2)
+ *         [CircleNode]             [CircleConst]   [CircleConst] <- Dead node
+ *         (U8 qparam2)             (U8 qparam2)       (FP32)
  *                   \                    /
  *                    \                  /
  *                    [CircleConcatenation]
@@ -991,7 +991,11 @@ void propagate_concat_quantparam(luci::CircleConcatenation *concat, loco::DataTy
       auto node = concat->arg(i);
       auto const_node = dynamic_cast<luci::CircleConst *>(node);
       if (const_node != nullptr)
-        quant_const(const_node, quant_type);
+      {
+        auto new_const = luci::clone(const_node);
+        quant_const(new_const, quant_type);
+        concat->values(i, new_const);
+      }
     }
     return;
   }
@@ -1003,20 +1007,6 @@ void propagate_concat_quantparam(luci::CircleConcatenation *concat, loco::DataTy
     // Skip if this input is CONCAT Op
     if (node->opcode() == luci::CircleOpcode::CONCATENATION)
       continue;
-
-    // Skip if this input is used by other Ops
-    auto succs = loco::succs(node);
-    if (succs.size() != 1)
-    {
-      if (node->opcode() == luci::CircleOpcode::CIRCLECONST)
-      {
-        luci::CircleConst *const_node = loco::must_cast<luci::CircleConst *>(node);
-        quant_const(const_node, quant_type);
-      }
-      continue;
-    }
-
-    assert(succs.find(concat) != succs.end());
 
     // Quantize constant values
     if (node->opcode() == luci::CircleOpcode::CIRCLECONST)
@@ -1033,15 +1023,21 @@ void propagate_concat_quantparam(luci::CircleConcatenation *concat, loco::DataTy
       const auto scaling_factor = concat_qparam->scale[0];
       const auto zerop = concat_qparam->zerop[0];
 
-      quant_const_values(const_node, scaling_factor, zerop, quant_type);
+      auto new_const = luci::clone(const_node);
+      quant_const_values(new_const, scaling_factor, zerop, quant_type);
+      concat->values(i, new_const);
+      overwrite_quantparam(concat, new_const);
     }
     else
     {
+      const auto succs = loco::succs(node);
+      if (succs.size() > 1)
+        continue;
+
       // Non-const input must have been quantized
       assert(node->quantparam() != nullptr);
+      overwrite_quantparam(concat, node);
     }
-
-    overwrite_quantparam(concat, node);
   }
 }
 
@@ -1074,13 +1070,6 @@ bool QuantizeWithMinMaxPass::run(loco::Graph *g)
     circle_node->accept(&qb);
   }
 
-  // Quantize const inputs other than weights and bias
-  for (auto node : loco::active_nodes(loco::output_nodes(g)))
-  {
-    auto circle_node = loco::must_cast<luci::CircleNode *>(node);
-    quantize_const_inputs(circle_node, _output_dtype);
-  }
-
   // Propagate quantization parameters of concat Op
   for (auto node : loco::active_nodes(loco::output_nodes(g)))
   {
@@ -1094,6 +1083,13 @@ bool QuantizeWithMinMaxPass::run(loco::Graph *g)
     // (3) the input is not concatenation Op
     // (4) the input is not produced to Ops other than concat
     propagate_concat_quantparam(concat, _output_dtype);
+  }
+
+  // Quantize const inputs other than weights and bias
+  for (auto node : loco::active_nodes(loco::output_nodes(g)))
+  {
+    auto circle_node = loco::must_cast<luci::CircleNode *>(node);
+    quantize_const_inputs(circle_node, _output_dtype);
   }
 
   // Update output dtype
