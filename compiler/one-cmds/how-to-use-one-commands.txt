@@ -188,6 +188,10 @@ Current transformation options are
 - substitute_transpose_to_reshape : This will convert certain condition Transpose to Reshape.
 - transform_min_max_to_relu6: This will transform Minimum-Maximum pattern to Relu6 operator.
 
+There are options to enable multiple options at once for convenience.
+- O1: fuse_bcq, fuse_instnorm, resolve_customop_add, resolve_customop_batchmatmul,
+  resolve_customop_matmul, remove_redundant_transpose, substitute_pack_to_reshape
+
 
 one-quantize
 ------------
