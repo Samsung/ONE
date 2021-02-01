@@ -38,7 +38,12 @@ def _get_parser():
     parser.add_argument(
         '-i', '--input_path', type=str, help='full filepath of the input file')
     parser.add_argument(
-        '-d', '--input_data', type=str, help='full filepath of the input data file')
+        '-d',
+        '--input_data',
+        type=str,
+        help=
+        'full filepath of the input data file. if not specified, run with random input data.'
+    )
     parser.add_argument(
         '-o', '--output_path', type=str, help='full filepath of the output file')
 
@@ -84,8 +89,6 @@ def _verify_arg(parser, args):
     missing = []
     if not _utils._is_valid_attr(args, 'input_path'):
         missing.append('-i/--input_path')
-    if not _utils._is_valid_attr(args, 'input_data'):
-        missing.append('-d/--input_data')
     if not _utils._is_valid_attr(args, 'output_path'):
         missing.append('-o/--output_path')
     if len(missing):

@@ -30,6 +30,7 @@
 #include <numeric>
 #include <stdexcept>
 #include <iostream>
+#include <random>
 
 using Shape = luci_interpreter::Shape;
 using DataType = luci_interpreter::DataType;
@@ -168,6 +169,86 @@ void RecordMinMax::profileData(const std::string &mode, const std::string &input
     H5::Exception::printErrorStack();
     throw std::runtime_error("HDF5 error occurred.");
   }
+
+  auto minmax_map = _observer->minMaxData()->getMap();
+  for (auto iter = minmax_map->begin(); iter != minmax_map->end(); ++iter)
+  {
+    auto node = iter->first;
+    auto minmax = iter->second;
+
+    float min{0.0f}, max{0.0f};
+    if (mode == "percentile")
+    {
+      min = getNthPercentile(minmax.min_vector, min_percentile);
+      max = getNthPercentile(minmax.max_vector, max_percentile);
+    }
+    else if (mode == "moving_average")
+    {
+      min = getMovingAverage(minmax.min_vector, 0.9, 16, true);
+      max = getMovingAverage(minmax.max_vector, 0.9, 16, false);
+    }
+    assert(mode == "percentile" || mode == "moving_average");
+    auto quantparam = std::make_unique<luci::CircleQuantParam>();
+    quantparam->min.push_back(min);
+    quantparam->max.push_back(max);
+
+    assert(node->quantparam() == nullptr);
+
+    auto mutable_node = const_cast<luci::CircleNode *>(node);
+    mutable_node->quantparam(std::move(quantparam));
+  }
+}
+
+void RecordMinMax::profileDataWithRandomInputs(const std::string &mode, float min_percentile,
+                                               float max_percentile)
+{
+  // We use three randomly-generated records
+  const uint32_t num_records = 3;
+
+  const auto input_nodes = loco::input_nodes(_module->graph());
+  const auto num_inputs = input_nodes.size();
+
+  std::random_device rd;
+  std::mt19937 gen(rd());
+  std::uniform_real_distribution<> dist(-5, 5);
+
+  for (int32_t record_idx = 0; record_idx < num_records; record_idx++)
+  {
+    std::cout << "Recording " << record_idx << "'th data" << std::endl;
+
+    for (int32_t input_idx = 0; input_idx < num_inputs; input_idx++)
+    {
+      const auto *input_node = loco::must_cast<const luci::CircleInput *>(input_nodes[input_idx]);
+      assert(input_node->index() == input_idx);
+      assert(input_node->dtype() == loco::DataType::FLOAT32);
+      uint32_t num_elements = 1;
+      for (uint32_t i = 0; i < input_node->rank(); i++)
+      {
+        if (!input_node->dim(i).known())
+          throw std::runtime_error("Input dimension must be known");
+
+        num_elements *= input_node->dim(i).value();
+      }
+
+      if (num_elements == 0)
+        throw std::runtime_error("Only support non-zero sized inputs");
+
+      std::vector<float> input_data(num_elements);
+
+      // Write random data
+      for (auto &iter : input_data)
+        iter = static_cast<float>(dist(gen));
+
+      // TODO: Input data is copied twice (file -> buffer (input_data) -> interpreter inputs)
+      //       We can redcue the copy by directly writing data from file to interpreter inputs
+      _interpreter->writeInputTensor(input_node, input_data.data(),
+                                     input_data.size() * sizeof(float));
+    }
+
+    _interpreter->interpret();
+  }
+
+  std::cout << "Recording finished. Number of recorded data: " << num_records << std::endl;
 
   auto minmax_map = _observer->minMaxData()->getMap();
   for (auto iter = minmax_map->begin(); iter != minmax_map->end(); ++iter)
