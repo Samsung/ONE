@@ -919,7 +919,7 @@ void quantize_const_inputs(luci::CircleNode *node, loco::DataType output_type)
       // Ex: axis, paddings
       input_node = node->arg(0);
       const_node = dynamic_cast<luci::CircleConst *>(input_node);
-      if (const_node != nullptr)
+      if (const_node != nullptr && !is_quantized(const_node))
         quant_const(const_node, output_type);
       break;
 
@@ -941,7 +941,7 @@ void quantize_const_inputs(luci::CircleNode *node, loco::DataType output_type)
       {
         input_node = node->arg(i);
         const_node = dynamic_cast<luci::CircleConst *>(input_node);
-        if (const_node != nullptr)
+        if (const_node != nullptr && !is_quantized(const_node))
           quant_const(const_node, output_type);
       }
       break;
