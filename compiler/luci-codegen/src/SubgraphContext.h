@@ -64,7 +64,7 @@ public:
   {
 #ifndef NDEBUG
     assert(!_constructed);
-    assert(node->graph() == get_graph());
+    assert(_nodes.empty() || node->graph() == get_graph());
 #endif
     _nodes.push_back(node);
   }
@@ -98,7 +98,7 @@ public:
    * @param node target node, it should belong to graph or graph inputs
    * @return function created for given node
    */
-  Halide::Func get_func(luci::CircleNode *node) const;
+  Halide::Func get_func(loco::Node *node) const;
 
   /**
    * @param node target node
@@ -133,7 +133,7 @@ private:
 #endif
   std::string _name;
   std::vector<luci::CircleNode *> _nodes;
-  std::unordered_map<luci::CircleNode *, Halide::Func> _generated_funcs;
+  std::unordered_map<loco::Node *, Halide::Func> _generated_funcs;
   std::vector<std::pair<luci::CircleNode *, Halide::ImageParam>> _inputs;
   std::vector<std::pair<luci::CircleNode *, Halide::Func>> _outputs;
 };

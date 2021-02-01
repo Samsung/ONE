@@ -83,7 +83,7 @@ void SubgraphContext::finish_construction()
 #endif
 }
 
-Halide::Func SubgraphContext::get_func(luci::CircleNode *node) const
+Halide::Func SubgraphContext::get_func(loco::Node *node) const
 {
   assert(_constructed);
   auto in_body = _generated_funcs.find(node);

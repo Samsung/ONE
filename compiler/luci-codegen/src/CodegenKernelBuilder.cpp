@@ -95,6 +95,16 @@ public:
 
   void visit(luci::CircleDiv *node) override;
 
+  void visit(luci::CircleTanh *node) override;
+
+  void visit(luci::CircleLogistic *node) override;
+
+  void visit(luci::CircleSplit *node) override;
+
+  void visit(luci::CircleSplitOut *node) override;
+
+  void visit(luci::CircleFullyConnected *node) override;
+
   /// @brief Default fallback
   void visit(luci::CircleNode *) override;
 };
@@ -149,6 +159,139 @@ void CodegenKernelBuilderImpl::visit(luci::CircleMul *node) { binary_operator<Mu
 
 void CodegenKernelBuilderImpl::visit(luci::CircleDiv *node) { binary_operator<DivOp>(node); }
 
+void CodegenKernelBuilderImpl::visit(luci::CircleTanh *node)
+{
+  std::vector<Halide::Expr> iterators = iter_space(node);
+  Halide::Func input = _subgraph.get_func(node->x());
+
+  constexpr float min_x = -9.f;
+  constexpr float max_x = 9.f;
+
+  constexpr float t_a1 = 4.89352455891786e-03f;
+  constexpr float t_a3 = 6.37261928875436e-04;
+  constexpr float t_a5 = 1.48572235717979e-05;
+  constexpr float t_a7 = 5.12229709037114e-08;
+  constexpr float t_a9 = -8.60467152213735e-11;
+  constexpr float t_a11 = 2.00018790482477e-13;
+  constexpr float t_a13 = -2.76076847742355e-16;
+
+  constexpr float t_b0 = 4.89352518554385e-03;
+  constexpr float t_b2 = 2.26843463243900e-03;
+  constexpr float t_b4 = 1.18534705686654e-04;
+  constexpr float t_b6 = 1.19825839466702e-06;
+
+  Halide::Expr t_clipped_x = Halide::max(Halide::min(input(iterators), max_x), min_x);
+  Halide::Expr t_x2 = t_clipped_x * t_clipped_x;
+
+  Halide::Expr t_p1 = t_a13 * t_x2 + t_a11;
+  Halide::Expr t_p2 = t_p1 * t_x2 + t_a9;
+  Halide::Expr t_p3 = t_p2 * t_x2 + t_a7;
+  Halide::Expr t_p4 = t_p3 * t_x2 + t_a5;
+  Halide::Expr t_p5 = t_p4 * t_x2 + t_a3;
+  Halide::Expr t_p = (t_p5 * t_x2 + t_a1) * t_clipped_x;
+
+  Halide::Expr t_q1 = t_b6 * t_x2 + t_b4;
+  Halide::Expr t_q2 = t_q1 * t_x2 + t_b2;
+  Halide::Expr t_q = t_q2 * t_x2 + t_b0;
+
+  Halide::Expr tanh = t_p / t_q;
+  _subgraph.get_func(node)(iterators) = tanh;
+}
+
+void CodegenKernelBuilderImpl::visit(luci::CircleLogistic *node)
+{
+  std::vector<Halide::Expr> iterators = iter_space(node);
+  Halide::Func input = _subgraph.get_func(node->x());
+
+  constexpr float min_x = -18.f;
+  constexpr float max_x = 18.f;
+
+  // The monomial coefficients of the numerator polynomial (odd).
+  constexpr float s_a1 = 2.48287947061529e-01;
+  constexpr float s_a3 = 8.51377133304701e-03;
+  constexpr float s_a5 = 6.08574864600143e-05;
+  constexpr float s_a7 = 1.15627324459942e-07;
+  constexpr float s_a9 = 4.37031012579801e-11;
+
+  // The monomial coefficients of the denominator polynomial (even).
+  constexpr float s_b0 = 9.93151921023180e-01;
+  constexpr float s_b2 = 1.16817656904453e-01;
+  constexpr float s_b4 = 1.70198817374094e-03;
+  constexpr float s_b6 = 6.29106785017040e-06;
+  constexpr float s_b8 = 5.76102136993427e-09;
+  constexpr float s_b10 = 6.10247389755681e-13;
+
+// construct first sigmoid operation
+  Halide::Expr s1_clipped_x = Halide::max(Halide::min(input(iterators), max_x), min_x);
+  Halide::Expr s1_x2 = s1_clipped_x * s1_clipped_x;
+
+  Halide::Expr s1_p1 = s_a9 * s1_x2 + s_a7;
+  Halide::Expr s1_p2 = s1_p1 * s1_x2 + s_a5;
+  Halide::Expr s1_p3 = s1_p2 * s1_x2 + s_a3;
+  Halide::Expr s1_p = (s1_p3 * s1_x2 + s_a1) * s1_clipped_x;
+
+  Halide::Expr s1_q1 = s_b10 * s1_x2 + s_b8;
+  Halide::Expr s1_q2 = s1_q1 * s1_x2 + s_b6;
+  Halide::Expr s1_q3 = s1_q2 * s1_x2 + s_b4;
+  Halide::Expr s1_q4 = s1_q3 * s1_x2 + s_b2;
+  Halide::Expr s1_q = s1_q4 * s1_x2 + s_b0;
+
+  Halide::Expr sigmoid = s1_p / s1_q + 0.5f;
+  _subgraph.get_func(node)(iterators) = sigmoid;
+}
+
+void CodegenKernelBuilderImpl::visit(luci::CircleSplit *node)
+{
+  // nothing to do. everything will be done on OUT nodes
+}
+
+void CodegenKernelBuilderImpl::visit(luci::CircleSplitOut *node)
+{
+  auto split_node = static_cast<luci::CircleSplit *>(node->input());
+  auto split_input_node = static_cast<luci::CircleNode *>(split_node->input());
+  assert(static_cast<luci::CircleNode *>(split_node->split_dim())->opcode() == luci::CircleOpcode::CIRCLECONST);
+  auto split_dim_node = static_cast<luci::CircleConst *>(split_node->split_dim());
+
+  assert(split_dim_node->dtype() == loco::DataType::S32);
+  assert(split_dim_node->size<loco::DataType::S32>() == 1);
+
+  int split_dim = split_dim_node->at<loco::DataType::S32>(0);
+  int split_input_dim_size = split_node->dim(split_dim).value(); // dim size before split
+  int split_output_dim_size = split_input_dim_size / split_node->num_split(); // dim size after split
+
+  assert(split_input_dim_size % split_node->num_split() == 0);
+
+  int start_tile_index = split_output_dim_size * split_node->num_split();
+
+  auto output_iterators = iter_space(node);
+
+  auto input_iterators = output_iterators;
+  input_iterators[split_dim] = input_iterators[split_dim] + start_tile_index;
+
+  Halide::Func input = _subgraph.get_func(split_input_node);
+
+  Halide::Func split_func = _subgraph.get_func(node);
+
+  split_func(output_iterators) = input(input_iterators);
+}
+
+void CodegenKernelBuilderImpl::visit(luci::CircleFullyConnected *node)
+{
+  assert(node->weights_format() == luci::CircleFullyConnected::WeightsFormat::DEFAULT);
+  assert(node->rank() == 2);
+  assert(node->dim(0) == 1);
+  Halide::Func input = _subgraph.get_func(node->input());
+  Halide::Func fc = _subgraph.get_func(node);
+  Halide::Func weights = _subgraph.get_func(node->weights());
+  Halide::Func bias = _subgraph.get_func(node->bias());
+  Halide::Var output_iter;
+  Halide::RDom partial_sum_iter(0, static_cast<int>(node->dim(1).value()), "partial_sum_iter");
+
+
+  fc(output_iter, 0) = bias(output_iter);
+  fc(output_iter, 0) += weights(partial_sum_iter, output_iter) * input(partial_sum_iter, 0);
+}
+
 void CodegenKernelBuilderImpl::visit(luci::CircleNode *)
 {
   INTERNAL_EXN("CodegenKernelBuilder: unsupported node");
@@ -185,9 +328,41 @@ void CodegenKernelBuilder::process()
   }
 }
 
+static bool is_supported_fc(luci::CircleFullyConnected *fc)
+{
+  int outputs = fc->dim(0).value();
+  return outputs == 1 && fc->shape_status() == luci::ShapeStatus::VALID &&
+      fc->weights_format() == luci::CircleFullyConnected::WeightsFormat::DEFAULT;
+}
+
+static bool is_supported_split(luci::CircleSplit *split)
+{
+  bool const_split_dim = static_cast<luci::CircleNode *>(split->split_dim())->opcode() == luci::CircleOpcode::CIRCLECONST;
+  if (!const_split_dim)
+    return false;
+  auto split_dim = static_cast<luci::CircleConst *>(split->split_dim());
+  bool supported_split_dim_dtype = (split_dim->dtype() == loco::DataType::S32);
+  if (!supported_split_dim_dtype)
+    return false;
+  bool is_scalar_dim = (split_dim->size<loco::DataType::S32>() == 1);
+  if (!is_scalar_dim)
+    return false;
+
+  int split_dim_value = split_dim->at<loco::DataType::S32>(0);
+  int split_input_dim_size = split->dim(split_dim_value).value(); // dim size before split
+
+  if (split_input_dim_size % split->num_split() != 0)
+    return false;
+
+  return split->shape_status() == luci::ShapeStatus::VALID;
+}
+
 bool CodegenKernelBuilder::is_supported(luci::CircleNode *node)
 {
   assert(dynamic_cast<luci::CircleNode *>(node));
+  bool is_quantized = node->quantparam();
+  if (is_quantized)
+    return false;
   luci::CircleNode *circle_node = static_cast<luci::CircleNode *>(node);
   switch (circle_node->opcode())
   {
@@ -197,6 +372,16 @@ bool CodegenKernelBuilder::is_supported(luci::CircleNode *node)
     case luci::CircleOpcode::MUL:
     case luci::CircleOpcode::DIV:
       return circle_node->shape_status() == luci::ShapeStatus::VALID;
+    case luci::CircleOpcode::TANH:
+    case luci::CircleOpcode::LOGISTIC:
+      return circle_node->dtype() == loco::DataType::FLOAT32 &&
+             circle_node->shape_status() == luci::ShapeStatus::VALID;
+    case luci::CircleOpcode::FULLY_CONNECTED:
+      return is_supported_fc(static_cast<luci::CircleFullyConnected *>(node));
+    case luci::CircleOpcode::SPLIT:
+      return is_supported_split(static_cast<luci::CircleSplit *>(node));
+    case luci::CircleOpcode::CIRCLESPLITOUT:
+      return is_supported_split(static_cast<luci::CircleSplit *>(node->arg(0)));
   }
   return false;
 }
