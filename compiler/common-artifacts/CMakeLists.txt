@@ -213,7 +213,7 @@ foreach(RECIPE IN ITEMS ${RECIPES})
   if(NOT DEFINED NO_OPTIMIZE_${RECIPE})
     # Generate optimized .circle
     add_custom_command(OUTPUT ${OPT_CIRCLE_OUTPUT_PATH}
-      COMMAND $<TARGET_FILE:circle2circle> --all ${CIRCLE_OUTPUT_PATH} ${OPT_CIRCLE_OUTPUT_PATH}
+      COMMAND $<TARGET_FILE:circle2circle> --O1 ${CIRCLE_OUTPUT_PATH} ${OPT_CIRCLE_OUTPUT_PATH}
       DEPENDS $<TARGET_FILE:circle2circle>  ${CIRCLE_OUTPUT_PATH}
       COMMENT "Generate ${OPT_CIRCLE_FILE}"
     )
