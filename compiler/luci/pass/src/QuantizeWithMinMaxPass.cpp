@@ -706,49 +706,46 @@ struct QuantizeWeights final : public luci::CircleNodeMutableVisitor<bool>
 private:
   void quantize_weights(luci::CircleConst *weights)
   {
-    // TODO: Fix indentation
-    // clang-format off
-        // Find min/max per channel-wise
-        if (granularity == QuantizationGranularity::ChannelWise)
-        {
-          auto quantparam = weights->quantparam();
-          if (quantparam == nullptr)
-          {
-            assert(false && "quantparam is nullptr");
-            return;
-          }
+    // Find min/max per channel-wise
+    if (granularity == QuantizationGranularity::ChannelWise)
+    {
+      auto quantparam = weights->quantparam();
+      if (quantparam == nullptr)
+      {
+        assert(false && "quantparam is nullptr");
+        return;
+      }
 
-          auto min = quantparam->min;
-          auto scaling_factor = quantparam->scale;
-          int32_t channel_dim_index = 0;
+      auto min = quantparam->min;
+      auto scaling_factor = quantparam->scale;
+      int32_t channel_dim_index = 0;
 
-          if (output_type == loco::DataType::U8)
-          {
-            asym_wquant_per_channel(weights, min, scaling_factor, channel_dim_index);
-          }
-          else
-          {
-            sym_wquant_per_channel(weights, scaling_factor, channel_dim_index);
-          }
-          quantparam->min.clear();
-          quantparam->max.clear();
-          quantparam->quantized_dimension = channel_dim_index;
-        }
-        // Find min/max per layer-wise
-        else
-        {
-          // Quantize using recorded quantparam
-          auto quantparam = weights->quantparam();
-          assert(quantparam != nullptr);
-          assert(quantparam->min.size() == 1);   // only support layer-wise quant
-          assert(quantparam->scale.size() == 1); // only support layer-wise quant
-          auto min = quantparam->min[0];
-          auto scaling_factor = quantparam->scale[0];
-          asym_wquant_per_layer(weights, min, scaling_factor);
-          quantparam->min.clear();
-          quantparam->max.clear();
-        }
-    // clang-format on
+      if (output_type == loco::DataType::U8)
+      {
+        asym_wquant_per_channel(weights, min, scaling_factor, channel_dim_index);
+      }
+      else
+      {
+        sym_wquant_per_channel(weights, scaling_factor, channel_dim_index);
+      }
+      quantparam->min.clear();
+      quantparam->max.clear();
+      quantparam->quantized_dimension = channel_dim_index;
+    }
+    // Find min/max per layer-wise
+    else
+    {
+      // Quantize using recorded quantparam
+      auto quantparam = weights->quantparam();
+      assert(quantparam != nullptr);
+      assert(quantparam->min.size() == 1);   // only support layer-wise quant
+      assert(quantparam->scale.size() == 1); // only support layer-wise quant
+      auto min = quantparam->min[0];
+      auto scaling_factor = quantparam->scale[0];
+      asym_wquant_per_layer(weights, min, scaling_factor);
+      quantparam->min.clear();
+      quantparam->max.clear();
+    }
   }
 
   bool visit(luci::CircleConv2D *node)
