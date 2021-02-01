@@ -19,6 +19,7 @@
 
 #include <luci/IR/CircleNodes.h>
 #include <luci/IR/CircleNodeVisitor.h>
+#include <luci/Service/Nodes/CircleConst.h>
 #include <luci/Log.h>
 
 #include <oops/UserExn.h>
@@ -780,6 +781,41 @@ private:
     return false;
   }
 
+  bool visit(luci::CircleInstanceNorm *node)
+  {
+    LOGGER(l);
+    INFO(l) << "QuantizeWeights visit node: " << node->name() << std::endl;
+
+    auto gamma = loco::must_cast<luci::CircleConst *>(node->gamma());
+    auto beta = loco::must_cast<luci::CircleConst *>(node->beta());
+
+    bool changed = false;
+    if (!is_quantized(gamma))
+    {
+      assert(gamma->dtype() == loco::DataType::FLOAT32);
+      auto new_gamma = luci::clone(gamma);
+      if (granularity == QuantizationGranularity::LayerWise)
+        quant_const(new_gamma, output_type);
+      else if (granularity == QuantizationGranularity::ChannelWise)
+        quant_const_per_channel(new_gamma, output_type);
+      node->gamma(new_gamma);
+      changed = true;
+    }
+    if (!is_quantized(beta))
+    {
+      assert(beta->dtype() == loco::DataType::FLOAT32);
+      auto new_beta = luci::clone(beta);
+      if (granularity == QuantizationGranularity::LayerWise)
+        quant_const(new_beta, output_type);
+      else if (granularity == QuantizationGranularity::ChannelWise)
+        quant_const_per_channel(new_beta, output_type);
+      node->beta(new_beta);
+      changed = true;
+    }
+
+    return changed;
+  }
+
   bool visit(luci::CircleTransposeConv *node)
   {
     LOGGER(l);
@@ -814,28 +850,6 @@ private:
 
   bool visit(luci::CircleNode *) { return false; }
 };
-
-void quant_instnorm(luci::CircleInstanceNorm *node, loco::DataType output_type,
-                    QuantizationGranularity granularity)
-{
-  auto gamma = loco::must_cast<luci::CircleConst *>(node->gamma());
-  auto beta = loco::must_cast<luci::CircleConst *>(node->beta());
-  assert(gamma->dtype() == loco::DataType::FLOAT32);
-  assert(beta->dtype() == loco::DataType::FLOAT32);
-
-  if (granularity == QuantizationGranularity::LayerWise)
-  {
-    quant_const(gamma, output_type);
-    quant_const(beta, output_type);
-  }
-  else if (granularity == QuantizationGranularity::ChannelWise)
-  {
-    quant_const_per_channel(gamma, output_type);
-    quant_const_per_channel(beta, output_type);
-  }
-  else
-    throw std::runtime_error("Quantization granularity must be either 'layer' or 'channel'");
-}
 
 void quant_prelu(luci::CirclePRelu *node, loco::DataType output_type,
                  QuantizationGranularity granularity)
@@ -872,6 +886,7 @@ void quantize_const_inputs(luci::CircleNode *node, loco::DataType output_type,
     case luci::CircleOpcode::CONV_2D:
     case luci::CircleOpcode::DEPTHWISE_CONV_2D:
     case luci::CircleOpcode::FULLY_CONNECTED:
+    case luci::CircleOpcode::INSTANCE_NORM:
     case luci::CircleOpcode::TRANSPOSE_CONV:
       // Handled in QuantizeWeights and QuantizeBias
       break;
@@ -902,10 +917,6 @@ void quantize_const_inputs(luci::CircleNode *node, loco::DataType output_type,
       const_node = dynamic_cast<luci::CircleConst *>(input_node);
       if (const_node != nullptr)
         quant_const(const_node, output_type);
-      break;
-
-    case luci::CircleOpcode::INSTANCE_NORM:
-      quant_instnorm(loco::must_cast<luci::CircleInstanceNorm *>(node), output_type, granularity);
       break;
 
     case luci::CircleOpcode::PRELU:
