@@ -37,7 +37,7 @@ struct IDynamicTensorManager;
 class ITensor
 {
 public:
-  virtual ~ITensor() = default;
+  virtual ~ITensor();
 
 public:
   virtual uint8_t *buffer() const = 0;
