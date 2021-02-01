@@ -816,6 +816,28 @@ private:
     return changed;
   }
 
+  bool visit(luci::CirclePRelu *node)
+  {
+    LOGGER(l);
+    INFO(l) << "QuantizeWeights visit node: " << node->name() << std::endl;
+
+    auto alpha = loco::must_cast<luci::CircleConst *>(node->alpha());
+
+    if (!is_quantized(alpha))
+    {
+      assert(alpha->dtype() == loco::DataType::FLOAT32);
+      auto new_alpha = luci::clone(alpha);
+      if (granularity == QuantizationGranularity::LayerWise)
+        quant_const(new_alpha, output_type);
+      else if (granularity == QuantizationGranularity::ChannelWise)
+        quant_const_per_channel(new_alpha, output_type);
+      node->alpha(new_alpha);
+      return true;
+    }
+
+    return false;
+  }
+
   bool visit(luci::CircleTransposeConv *node)
   {
     LOGGER(l);
@@ -851,29 +873,10 @@ private:
   bool visit(luci::CircleNode *) { return false; }
 };
 
-void quant_prelu(luci::CirclePRelu *node, loco::DataType output_type,
-                 QuantizationGranularity granularity)
-{
-  auto alpha = loco::must_cast<luci::CircleConst *>(node->alpha());
-  assert(alpha->dtype() == loco::DataType::FLOAT32);
-
-  if (granularity == QuantizationGranularity::LayerWise)
-  {
-    quant_const(alpha, output_type);
-  }
-  else if (granularity == QuantizationGranularity::ChannelWise)
-  {
-    quant_const_per_channel(alpha, output_type);
-  }
-  else
-    throw std::runtime_error("Quantization granularity must be either 'layer' or 'channel'");
-}
-
 /**
  * @brief Quantize const input tensors using min/max of const values
  */
-void quantize_const_inputs(luci::CircleNode *node, loco::DataType output_type,
-                           QuantizationGranularity granularity)
+void quantize_const_inputs(luci::CircleNode *node, loco::DataType output_type)
 {
   auto opcode = node->opcode();
   auto arity = node->arity();
@@ -887,6 +890,7 @@ void quantize_const_inputs(luci::CircleNode *node, loco::DataType output_type,
     case luci::CircleOpcode::DEPTHWISE_CONV_2D:
     case luci::CircleOpcode::FULLY_CONNECTED:
     case luci::CircleOpcode::INSTANCE_NORM:
+    case luci::CircleOpcode::PRELU:
     case luci::CircleOpcode::TRANSPOSE_CONV:
       // Handled in QuantizeWeights and QuantizeBias
       break;
@@ -917,10 +921,6 @@ void quantize_const_inputs(luci::CircleNode *node, loco::DataType output_type,
       const_node = dynamic_cast<luci::CircleConst *>(input_node);
       if (const_node != nullptr)
         quant_const(const_node, output_type);
-      break;
-
-    case luci::CircleOpcode::PRELU:
-      quant_prelu(loco::must_cast<luci::CirclePRelu *>(node), output_type, granularity);
       break;
 
     case luci::CircleOpcode::ADD:
@@ -1078,7 +1078,7 @@ bool QuantizeWithMinMaxPass::run(loco::Graph *g)
   for (auto node : loco::active_nodes(loco::output_nodes(g)))
   {
     auto circle_node = loco::must_cast<luci::CircleNode *>(node);
-    quantize_const_inputs(circle_node, _output_dtype, _granularity);
+    quantize_const_inputs(circle_node, _output_dtype);
   }
 
   // Propagate quantization parameters of concat Op
