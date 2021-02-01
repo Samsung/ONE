@@ -47,43 +47,6 @@ bool is_weights(CircleNode *node);
 
 bool is_quantized(const CircleNode *node);
 
-// Clone a new const node from an existing node.
-// The new node has the same shape, type, contents, and qparam with 'node'
-template <loco::DataType T> luci::CircleConst *clone_const_from(luci::CircleConst *node)
-{
-  assert(T == node->dtype());
-
-  auto new_node = node->graph()->nodes()->create<CircleConst>();
-  // TODO: We don't have any naming policy for newly created nodes yet.
-  //       Fix this when we have one.
-  new_node->name(node->name());
-  new_node->dtype(node->dtype());
-  new_node->rank(node->rank());
-  for (uint32_t i = 0; i < node->rank(); i++)
-    new_node->dim(i).set(node->dim(i).value());
-
-  const auto size = node->size<T>();
-  new_node->size<T>(size);
-  for (uint32_t i = 0; i < size; i++)
-    new_node->at<T>(i) = node->at<T>(i);
-
-  new_node->shape_status(luci::ShapeStatus::VALID);
-
-  if (node->quantparam() != nullptr)
-  {
-    auto qparam = std::make_unique<CircleQuantParam>();
-    qparam->scale = node->quantparam()->scale;
-    qparam->zerop = node->quantparam()->zerop;
-    qparam->min = node->quantparam()->min;
-    qparam->max = node->quantparam()->max;
-    qparam->quantized_dimension = node->quantparam()->quantized_dimension;
-
-    new_node->quantparam(std::move(qparam));
-  }
-
-  return new_node;
-}
-
 } // namespace luci
 
 #endif // __LUCI_QUANTIZATION_UTILS_H__
