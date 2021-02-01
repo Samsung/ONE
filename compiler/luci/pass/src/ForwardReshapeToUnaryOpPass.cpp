@@ -20,6 +20,7 @@
 #include <luci/IR/CircleNodeVisitor.h>
 #include <luci/Log.h>
 #include <luci/Service/CircleShapeInference.h>
+#include <luci/Service/Nodes/CircleConst.h>
 
 namespace
 {
@@ -27,55 +28,6 @@ namespace
 luci::CircleReshape *as_reshape(loco::Node *node)
 {
   return dynamic_cast<luci::CircleReshape *>(node);
-}
-
-template <loco::DataType T> luci::CircleConst *clone(luci::CircleConst *node)
-{
-  assert(T == node->dtype());
-
-  auto cloned = node->graph()->nodes()->create<luci::CircleConst>();
-  // TODO: We don't have any naming policy for newly created nodes yet.
-  //       Fix this when we have one.
-  cloned->name(node->name());
-  // dtype/shape
-  cloned->dtype(node->dtype());
-  cloned->rank(node->rank());
-  for (uint32_t i = 0; i < node->rank(); i++)
-    cloned->dim(i).set(node->dim(i).value());
-  cloned->shape_status(luci::ShapeStatus::VALID);
-  // values
-  const auto size = node->size<T>();
-  cloned->size<T>(size);
-  for (uint32_t i = 0; i < size; i++)
-    cloned->at<T>(i) = node->at<T>(i);
-  // quantparam
-  const auto *quantparam = node->quantparam();
-  if (quantparam != nullptr)
-  {
-    auto qparam = std::make_unique<luci::CircleQuantParam>();
-    qparam->scale = quantparam->scale;
-    qparam->zerop = quantparam->zerop;
-    qparam->min = quantparam->min;
-    qparam->max = quantparam->max;
-    qparam->quantized_dimension = quantparam->quantized_dimension;
-
-    cloned->quantparam(std::move(qparam));
-  }
-  // sparsity
-  const auto *sparsity = node->sparsityparam();
-  if (sparsity != nullptr)
-  {
-    auto sparam = std::make_unique<luci::SparsityParam>();
-    sparam->traversal_order = sparsity->traversal_order;
-    sparam->block_map = sparsity->block_map;
-    sparam->dim_metadata = sparsity->dim_metadata;
-
-    cloned->sparsityparam(std::move(sparam));
-  }
-  // op version
-  cloned->op_version(node->op_version());
-
-  return cloned;
 }
 
 bool forward_reshape(luci::CircleReshape *reshape, luci::CircleNeg *neg)
@@ -89,12 +41,7 @@ bool forward_reshape(luci::CircleReshape *reshape, luci::CircleNeg *neg)
   if (reshape_shape == nullptr)
     return false;
 
-  if (reshape_shape->dtype() == loco::DataType::S32)
-    cloned_shape = clone<loco::DataType::S32>(reshape_shape);
-  else if (reshape_shape->dtype() == loco::DataType::S64)
-    cloned_shape = clone<loco::DataType::S64>(reshape_shape);
-  else
-    return false;
+  cloned_shape = luci::clone(reshape_shape);
 
   loco::Graph *graph = neg->graph();
   // create reshape placed after neg
