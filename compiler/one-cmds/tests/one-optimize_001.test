@@ -40,7 +40,7 @@ if [[ ! -s ${inputfile} ]]; then
 fi
 
 # run test
-one-optimize --all \
+one-optimize --O1 \
 --input_path ${inputfile} \
 --output_path ${outputfile} >> /dev/null
 

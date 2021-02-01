@@ -44,7 +44,7 @@ if [[ ! -s ${inputfile} ]]; then
 fi
 
 # run test
-one-optimize --all \
+one-optimize --O1 \
 --input_path "${inputfile}" > "${filename}.log" 2>&1
 
 echo "${filename_ext} FAILED"
