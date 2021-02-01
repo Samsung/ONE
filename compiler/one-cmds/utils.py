@@ -115,9 +115,6 @@ def _make_circle2circle_cmd(args, driver_path, input_path, output_path):
     """make a command for running circle2circle"""
     cmd = [os.path.expanduser(c) for c in [driver_path, input_path, output_path]]
     # optimization pass
-    # TODO remove all
-    if _is_valid_attr(args, 'all'):
-        cmd.append('--all')
     if _is_valid_attr(args, 'O1'):
         cmd.append('--O1')
     if _is_valid_attr(args, 'convert_nchw_to_nhwc'):

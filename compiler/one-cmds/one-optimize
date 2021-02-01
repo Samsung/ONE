@@ -44,9 +44,6 @@ def _get_parser():
         '-o', '--output_path', type=str, help='full filepath of the output file')
 
     # optimization pass
-    # TODO remove all
-    circle2circle_group.add_argument(
-        '--all', action='store_true', help='enable all optimization pass')
     circle2circle_group.add_argument(
         '--O1', action='store_true', help='enable O1 optimization pass')
     circle2circle_group.add_argument(
