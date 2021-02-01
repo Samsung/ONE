@@ -757,7 +757,7 @@ private:
     auto weights = loco::must_cast<luci::CircleConst *>(node->filter());
     if (!is_quantized(weights))
     {
-      auto new_weights = clone_const_from<loco::DataType::FLOAT32>(weights);
+      auto new_weights = luci::clone(weights);
       node->filter(new_weights);
       quantize_weights(new_weights);
       return true;
@@ -773,7 +773,7 @@ private:
     auto weights = loco::must_cast<luci::CircleConst *>(node->filter());
     if (!is_quantized(weights))
     {
-      auto new_weights = clone_const_from<loco::DataType::FLOAT32>(weights);
+      auto new_weights = luci::clone(weights);
       node->filter(new_weights);
       quantize_weights(new_weights);
       return true;
@@ -824,7 +824,7 @@ private:
     auto weights = loco::must_cast<luci::CircleConst *>(node->filter());
     if (!is_quantized(weights))
     {
-      auto new_weights = clone_const_from<loco::DataType::FLOAT32>(weights);
+      auto new_weights = luci::clone(weights);
       node->filter(new_weights);
       quantize_weights(new_weights);
       return true;
@@ -840,7 +840,7 @@ private:
     auto weights = loco::must_cast<luci::CircleConst *>(node->weights());
     if (!is_quantized(weights))
     {
-      auto new_weights = clone_const_from<loco::DataType::FLOAT32>(weights);
+      auto new_weights = luci::clone(weights);
       node->weights(new_weights);
       quantize_weights(new_weights);
       return true;
