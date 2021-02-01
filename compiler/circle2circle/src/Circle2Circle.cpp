@@ -57,8 +57,11 @@ int entry(int argc, char **argv)
     .help("Show version information and exit")
     .exit_with(print_version);
 
+  // TODO remove '--all'
   arser.add_argument("--all").nargs(0).required(false).default_value(false).help(
     "Enable all optimize options");
+  arser.add_argument("--O1").nargs(0).required(false).default_value(false).help(
+    "Enable O1 optimize options");
 
   arser.add_argument("--fold_add_v2")
     .nargs(0)
@@ -311,7 +314,18 @@ int entry(int argc, char **argv)
     return 255;
   }
 
+  // TODO remove '--all'
   if (arser.get<bool>("--all"))
+  {
+    options->enable(Algorithms::FuseBCQ);
+    options->enable(Algorithms::FuseInstanceNorm);
+    options->enable(Algorithms::ResolveCustomOpAdd);
+    options->enable(Algorithms::ResolveCustomOpBatchMatMul);
+    options->enable(Algorithms::ResolveCustomOpMatMul);
+    options->enable(Algorithms::RemoveRedundantTranspose);
+    options->enable(Algorithms::SubstitutePackToReshape);
+  }
+  if (arser.get<bool>("--O1"))
   {
     options->enable(Algorithms::FuseBCQ);
     options->enable(Algorithms::FuseInstanceNorm);
