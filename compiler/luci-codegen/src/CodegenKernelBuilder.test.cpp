@@ -176,6 +176,64 @@ void fill_data(luci::CircleConst *node, const std::vector<Type<DType>> &data)
     node->at<DType>(i) = data[i];
 }
 
+template <loco::DataType DType>
+void test_const_op(const Shape &shape, DataVector<DType> data)
+{
+  luci::CircleConst const_node;
+  constructBasicNode<DType>(const_node, shape);
+  fill_data<DType>(&const_node, data);
+
+  luci::CircleOutput output_node;
+
+  constructBasicNode<DType>(output_node, shape);
+  output_node.from(&const_node);
+
+  ASSERT_TRUE(luci_codegen::CodegenKernelBuilder::is_supported(&const_node));
+
+  luci_codegen::SubgraphContext subgraph("", {&const_node});
+  subgraph.finish_construction();
+
+  luci_codegen::CodegenKernelBuilder builder(subgraph);
+  builder.process();
+
+  Halide::Buffer<Type<DType>> res(reverse_vector(shape));
+  Halide::ParamMap params;
+  Halide::Func output_func = subgraph.get_outputs()[0].second;
+
+  output_func.realize(res, Halide::Target(), params);
+
+  int output_size = data.size();
+  compare_arrays<Type<DType>>(data.data(), res.data(), output_size);
+}
+
+TEST(codegen_kernels, constant_scalar_float)
+{
+  // simple test to check that constant beffers created properly
+  std::vector<int> shape{1};
+  std::vector<float> data{1.5f};
+
+  test_const_op<loco::DataType::FLOAT32>(shape, data);
+}
+
+// TODO add double test
+
+TEST(codegen_kernels, constant_scalar_int32)
+{
+  // simple test to check that constant beffers created properly
+  std::vector<int> shape{1};
+  std::vector<int> data{42};
+
+  test_const_op<loco::DataType::S32>(shape, data);
+}
+
+TEST(codegen_kernels, constant_scalar_int64)
+{
+  // simple test to check that constant beffers created properly
+  std::vector<int> shape{1};
+  std::vector<int64_t > data{10050054321}; // number that do not fit in 32 bit int
+
+  test_const_op<loco::DataType::S64>(shape, data);
+}
 
 TEST(codegen_kernels, add_scalar)
 {
@@ -448,5 +506,3 @@ TEST(codegen_kernels, fc)
 
   compare_arrays<Type<dtype>>(ref_out_data.data(), res.data(), output_size);
 }
-
-// TODO add simple constant tests with various dtypes

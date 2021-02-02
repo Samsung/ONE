@@ -138,11 +138,10 @@ void CodegenKernelBuilderImpl::visit(luci::CircleConst *node)
     iter_space[i] = Halide::Var();
   }
   Halide::Buffer<> buf(halide_type(node->dtype()), dims);
-  switch (node->dtype())
+  switch (node->dtype()) // TODO raw buffer access?
   {
     case loco::DataType::FLOAT32:
     {
-//      Halide::Buffer<float> buf(dims);
       size_t size = node->size<loco::DataType::FLOAT32>();
       for (int i = 0; i < size; ++i)
       {
@@ -150,13 +149,30 @@ void CodegenKernelBuilderImpl::visit(luci::CircleConst *node)
       }
       break;
     }
+//    case loco::DataType::FLOAT64:
+//    {
+//      size_t size = node->size<loco::DataType::FLOAT64>();
+//      for (int i = 0; i < size; ++i)
+//      {
+//        reinterpret_cast<double *>(buf.data())[i] = node->at<loco::DataType::FLOAT64>(i);
+//      }
+//      break;
+//    }
     case loco::DataType::S32:
     {
-//      Halide::Buffer<int32_t> buf(dims);
       size_t size = node->size<loco::DataType::S32>();
       for (int i = 0; i < size; ++i)
       {
         reinterpret_cast<int32_t *>(buf.data())[i] = node->at<loco::DataType::S32>(i);
+      }
+      break;
+    }
+    case loco::DataType::S64:
+    {
+      size_t size = node->size<loco::DataType::S64>();
+      for (int i = 0; i < size; ++i)
+      {
+        reinterpret_cast<int64_t *>(buf.data())[i] = node->at<loco::DataType::S64>(i);
       }
       break;
     }
