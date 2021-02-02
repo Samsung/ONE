@@ -19,6 +19,8 @@ test:
       - ./logo-core
       - ./luci
       - ./luci-interpreter
+      - ./luci-eval-driver
+      - ./luci-pass-value-test
       - ./luci-value-test
       - ./mio-circle
       - ./mio-tflite
