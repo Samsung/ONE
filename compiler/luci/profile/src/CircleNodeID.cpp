@@ -62,7 +62,7 @@ void set_node_id(luci::CircleNode *circle_node, uint32_t id)
   circle_node->annot(std::make_unique<CircleNodeID>(id));
 }
 
-uint32_t get_node_id(luci::CircleNode *circle_node)
+luci::CircleNodeIDType get_node_id(luci::CircleNode *circle_node)
 {
   if (!has_node_id(circle_node))
     throw std::runtime_error("Cannot find CircleNodeID");

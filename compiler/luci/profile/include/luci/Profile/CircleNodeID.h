@@ -26,9 +26,9 @@ using CircleNodeIDType = uint32_t;
 
 bool has_node_id(luci::CircleNode *circle_node);
 
-void set_node_id(luci::CircleNode *circle_node, uint32_t id);
+void set_node_id(luci::CircleNode *circle_node, CircleNodeIDType id);
 
-uint32_t get_node_id(luci::CircleNode *circle_node);
+CircleNodeIDType get_node_id(luci::CircleNode *circle_node);
 
 } // namespace luci
 
