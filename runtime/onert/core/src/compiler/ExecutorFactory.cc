@@ -115,6 +115,7 @@ backend::BackendContexts createBackendContexts(const compiler::LoweredGraph &lgr
   }
 
   auto &whole_graph = lgraph.graph();
+  // Separate operands into partial graphs
   whole_graph.operands().iterate(
     [&](const ir::OperandIndex &operand_ind, const ir::Operand &operand) {
       auto &operand_li = lgraph.lower_info().operand;
@@ -126,9 +127,6 @@ backend::BackendContexts createBackendContexts(const compiler::LoweredGraph &lgr
       auto &partial_graph = *context_data_map[backend].graph;
       auto &operand_layouts = context_data_map[backend].operand_layouts;
       assert(operand_layouts.find(operand_ind) == operand_layouts.end());
-      VERBOSE(BuildBackendGraph) << "backend:" << backend->config()->id() << " Layout of "
-                                 << operand_ind << " is " << ir::to_string(def_factor.layout())
-                                 << std::endl;
       operand_layouts[operand_ind] = def_factor.layout();
 
       // Copy the operand and insert it to the partial graph
@@ -140,9 +138,8 @@ backend::BackendContexts createBackendContexts(const compiler::LoweredGraph &lgr
       auto new_operand_ind = partial_graph.addOperand(operand_ind, std::move(new_operand));
       UNUSED_RELEASE(new_operand_ind);
       assert(new_operand_ind == operand_ind);
-      VERBOSE(BuildBackendGraph) << "backend:" << backend->config()->id()
-                                 << " Added Native Operand " << operand_ind << std::endl;
     });
+  // Separate operations into partial graphs
   whole_graph.operations().iterate(
     [&](const ir::OperationIndex &op_ind, const ir::Operation &operation) {
       auto &op_li = lgraph.lower_info().operation;
@@ -174,18 +171,13 @@ backend::BackendContexts createBackendContexts(const compiler::LoweredGraph &lgr
           auto layout =
             lgraph.lower_info().operand.at(operand_ind).def_factors().getOnlyElement().layout();
           assert(operand_layouts.find(operand_ind) == operand_layouts.end());
-          VERBOSE(BuildBackendGraph) << "backend:" << backend->config()->id() << " Layout of "
-                                     << operand_ind << " is " << ir::to_string(layout) << std::endl;
           operand_layouts[operand_ind] = layout;
           external_operands.add(operand_ind);
-          VERBOSE(BuildBackendGraph) << "backend:" << backend->config()->id()
-                                     << " Added External Operand " << operand_ind << std::endl;
         }
 
         auto new_op_ind = partial_graph.addOperation(op_ind, clone(operation));
+        UNUSED_RELEASE(new_op_ind);
         assert(new_op_ind == op_ind);
-        VERBOSE(BuildBackendGraph) << "backend:" << backend->config()->id() << " Added Operation "
-                                   << new_op_ind << std::endl;
       }
     });
 
@@ -196,26 +188,17 @@ backend::BackendContexts createBackendContexts(const compiler::LoweredGraph &lgr
     auto backend = pair.first;
     auto &data = pair.second;
     data.graph->finishBuilding();
+    // Handle graph input/outputs or external tensors
     data.graph->operands().iterate([&](const ir::OperandIndex &ind, const ir::Operand &operand) {
       if (whole_graph.getInputs().contains(ind) || whole_graph.getOutputs().contains(ind))
-      {
         data.external_operands.add(ind);
-        VERBOSE(BuildBackendGraph) << "backend:" << backend->config()->id()
-                                   << " Added External Operand " << ind << std::endl;
-      }
+      // Inputs are either "graph input" or "no def op and non-constant"
       if (whole_graph.getInputs().contains(ind) ||
           (!operand.getDef().valid() && !operand.isConstant()))
-      {
+        // Outputs are either "graph output" or "no uses"
         data.graph->addInput(ind);
-        VERBOSE(BuildBackendGraph) << "backend:" << backend->config()->id() << " " << ind
-                                   << " as a graph input" << std::endl;
-      }
       if (whole_graph.getOutputs().contains(ind) || operand.getUses().size() == 0)
-      {
         data.graph->addOutput(ind);
-        VERBOSE(BuildBackendGraph) << "backend:" << backend->config()->id() << " " << ind
-                                   << " as a graph output" << std::endl;
-      }
     });
 
     std::copy_if(whole_op_order.begin(), whole_op_order.end(), std::back_inserter(data.op_order),
