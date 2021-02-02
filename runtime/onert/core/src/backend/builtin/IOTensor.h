@@ -42,6 +42,7 @@ class IOTensor : public IPortableTensor
 {
 public:
   IOTensor(const ir::OperandInfo &info, ir::Layout layout);
+  ~IOTensor();
 
 public:
   void setTensor(IPortableTensor *tensor);
