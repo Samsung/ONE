@@ -9,7 +9,7 @@ import traceback
 # This script compares the execution result of luci-interpreter with that of TFLite interpreter
 #
 # Basic usage:
-#   eval_verifier.py --driver build/compiler/luci-value-test/tester/luci_eval_tester
+#   eval_verifier.py --driver build/compiler/luci-eval-driver/luci_eval_driver
 #           --model inception_v3
 parser = argparse.ArgumentParser()
 parser.add_argument('--driver', type=str, required=True)

@@ -14,7 +14,7 @@ VERIFY_SCRIPT_PATH="${VERIFY_SOURCE_PATH}/luci_eval_verifier.py"
 BINDIR="$1"; shift
 WORKDIR="$1"; shift
 VIRTUALENV="$1"; shift
-INTERPRETER_DRIVER_PATH="${BINDIR}/tester/luci_eval_tester"
+INTERPRETER_DRIVER_PATH="$1"; shift
 
 TESTED=()
 PASSED=()
