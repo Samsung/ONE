@@ -39,6 +39,9 @@ void Concatenation::configure()
   LUCI_INTERPRETER_CHECK(num_inputs > 0);
   const Tensor *t0 = _inputs[0];
 
+  // TODO: Support concat with fused activation function
+  LUCI_INTERPRETER_CHECK(params().activation == luci::FusedActFunc::NONE);
+
   int axis = _params.axis;
   if (axis < 0)
     axis += t0->shape().num_dims();
