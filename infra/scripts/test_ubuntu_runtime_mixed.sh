@@ -32,14 +32,14 @@ popd > /dev/null
 BACKENDS=(acl_cl acl_neon cpu)
 
 # Get the intersect of framework test list files
-TESTLIST_PREFIX="Product/out/test/list/frameworktest_list.${TEST_ARCH}"
+TESTLIST_PREFIX="Product/out/test/list/tflite_comparator.${TEST_ARCH}"
 SKIPLIST_PREFIX="Product/out/unittest/nnapi_gtest.skip.${TEST_ARCH}-${TEST_OS}"
-sort $TESTLIST_PREFIX.${BACKENDS[0]}.txt > $TESTLIST_PREFIX.intersect.txt
+sort $TESTLIST_PREFIX.${BACKENDS[0]}.list > $TESTLIST_PREFIX.intersect.list
 sort $SKIPLIST_PREFIX.${BACKENDS[0]} > $SKIPLIST_PREFIX.union
 for BACKEND in "${BACKENDS[@]:1}"; do
-    comm -12 <(sort $TESTLIST_PREFIX.intersect.txt) <(sort $TESTLIST_PREFIX.$BACKEND.txt) > $TESTLIST_PREFIX.intersect.next.txt
+    comm -12 <(sort $TESTLIST_PREFIX.intersect.list) <(sort $TESTLIST_PREFIX.$BACKEND.list) > $TESTLIST_PREFIX.intersect.next.list
     comm <(sort $SKIPLIST_PREFIX.union) <(sort $SKIPLIST_PREFIX.$BACKEND) | tr -d "[:blank:]" > $SKIPLIST_PREFIX.union.next
-    mv $TESTLIST_PREFIX.intersect.next.txt $TESTLIST_PREFIX.intersect.txt
+    mv $TESTLIST_PREFIX.intersect.next.list $TESTLIST_PREFIX.intersect.list
     mv $SKIPLIST_PREFIX.union.next $SKIPLIST_PREFIX.union
 done
 popd > /dev/null
@@ -60,4 +60,4 @@ export OP_BACKEND_AvgPool2D="acl_neon"
 export ACL_LAYOUT="NCHW"
 export RUY_THREADS=4
 NNAPIGTest "acl_cl;acl_neon;cpu" "Product/out/unittest/nnapi_gtest.skip.${TEST_ARCH}-${TEST_OS}.union" "report/mixed"
-TFLiteModelVerification "acl_cl;acl_neon;cpu" "${TESTLIST_PREFIX}.intersect.txt" "report/mixed"
+TFLiteModelVerification "acl_cl;acl_neon;cpu" "${TESTLIST_PREFIX}.intersect.list" "report/mixed"

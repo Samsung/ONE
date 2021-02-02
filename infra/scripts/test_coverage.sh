@@ -24,7 +24,7 @@ if [[ ! -e $ROOT_PATH/tests/scripts/build_path_depth.txt ]]; then
 fi
 export GCOV_PREFIX_STRIP=`cat $ROOT_PATH/tests/scripts/build_path_depth.txt`
 
-./infra/scripts/test_ubuntu_runtime.sh --backend acl_cl --tflite-loader
+./infra/scripts/test_ubuntu_runtime.sh --backend acl_cl --nnapi-frontend
 ./infra/scripts/test_ubuntu_runtime.sh --backend acl_neon
 ./infra/scripts/test_ubuntu_runtime.sh --backend cpu
 
@@ -32,7 +32,7 @@ export GCOV_PREFIX_STRIP=`cat $ROOT_PATH/tests/scripts/build_path_depth.txt`
 TENSOR_LOGGING=trace_log.txt ONERT_LOG_ENABLE=1 GRAPH_DOT_DUMP=1 ./infra/scripts/test_ubuntu_runtime_mixed.sh
 # Enable trace event (acl_cl default backend)
 export TRACE_FILEPATH=trace.json
-TFLiteModelVerification "acl_cl" "Product/out/test/list/frameworktest_list.armv7l.acl_cl.txt" "report/acl_cl/trace"
+TFLiteModelVerification "acl_cl" "Product/out/test/list/tflite_comparator.armv7l.acl_cl.list" "report/acl_cl/trace"
 unset TRACE_FILEPATH
 
 # Interpreter

@@ -7,9 +7,10 @@ source "$(dirname "${BASH_SOURCE[0]}")/common.sh"
 BACKEND="cpu"
 TEST_OS="linux"
 TEST_PLATFORM="$TEST_ARCH-$TEST_OS"
-TFLITE_LOADER="0"
+TFLITE_LOADER="1"
 LINEAR_ONLY="0"
 RUN_INTERP="0"
+NNAPI_FRONTEND="0"
 
 function Usage()
 {
@@ -17,7 +18,7 @@ function Usage()
   echo ""
   echo "Options:"
   echo "      --backend <BACKEND>     Runtime backend to test (default: ${BACKEND})"
-  echo "      --tflite-loader         Enable TFLite Loader test"
+  echo "      --nnapi-frontend        NNAPI Frontend test"
   echo "      --linear-only           Use Linear executor only"
 }
 
@@ -39,6 +40,12 @@ do
       ;;
     --tflite-loader)
       TFLITE_LOADER="1"
+      NNAPI_FRONTEND="1" # For CI test
+      echo "[INFO] \"--tflite-loader\" argument is deprecated"
+      shift
+      ;;
+    --nnapi-frontend)
+      NNAPI_FRONTEND="1"
       shift
       ;;
     --linear-only)
@@ -68,7 +75,7 @@ else
 fi
 
 UNITTEST_SKIPLIST="Product/out/unittest/nnapi_gtest.skip.${TEST_PLATFORM}.${BACKEND}"
-FRAMEWORK_TESTLIST="Product/out/test/list/frameworktest_list.${TEST_ARCH}.${BACKEND}.txt"
+TFLITE_TESTLIST="Product/out/test/list/tflite_comparator.${TEST_ARCH}.${BACKEND}.list"
 REPORT_BASE="report/${BACKEND}"
 EXECUTORS=("Linear" "Dataflow" "Parallel")
 
@@ -92,7 +99,7 @@ do
   fi
 
   NNAPIGTest "${BACKEND}" "${UNITTEST_SKIPLIST}" "${REPORT_PATH}"
-  TFLiteModelVerification "${BACKEND}" "${FRAMEWORK_TESTLIST}" "${REPORT_PATH}"
+  TFLiteModelVerification "${BACKEND}" "${TFLITE_TESTLIST}" "${REPORT_PATH}"
 
   if [ $EXECUTOR = "Interpreter" ]; then
     unset DISABLE_COMPILE
@@ -101,9 +108,8 @@ do
   fi
 done
 
-# Current support acl_cl backend testlist only
 # TODO Support more backends
-TFLITE_LOADER_TESTLIST="Product/out/test/list/tflite_loader_list.${TEST_ARCH}.txt"
-if [[ $TFLITE_LOADER = "1" ]]; then
-  TFLiteLoaderTest "${BACKEND}" "${TFLITE_LOADER_TESTLIST}" "${REPORT_BASE}/loader/${EXECUTOR}"
+NNAPI_FRONTEND_TESTLIST="Product/out/test/list/nnapi_test.${TEST_ARCH}.list"
+if [[ $NNAPI_FRONTEND = "1" ]]; then
+  NNAPIFrontendTest "${BACKEND}" "${NNAPI_FRONTEND_TESTLIST}" "${REPORT_BASE}/nnapi/${EXECUTOR}"
 fi
