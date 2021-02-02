@@ -77,4 +77,3 @@ operation {
 }
 input: "ifm"
 output: "ofm"
-
