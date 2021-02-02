@@ -22,6 +22,8 @@
 namespace luci
 {
 
+using CircleNodeIDType = uint32_t;
+
 bool has_node_id(luci::CircleNode *circle_node);
 
 void set_node_id(luci::CircleNode *circle_node, uint32_t id);

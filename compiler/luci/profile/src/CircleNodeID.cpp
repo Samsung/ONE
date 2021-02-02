@@ -23,8 +23,6 @@
 namespace
 {
 
-using CircleNodeIDType = uint32_t;
-
 /**
  * @brief Set annotation for circle node id
  * @note  Once CircleNodeID is annotated, it should not be changed.
@@ -35,17 +33,17 @@ class CircleNodeID final : public loco::NodeAnnotation
 public:
   CircleNodeID() = delete;
 
-  CircleNodeID(CircleNodeIDType node_id) : _node_id{node_id}
+  CircleNodeID(luci::CircleNodeIDType node_id) : _node_id{node_id}
   {
     // Do nothing
   }
 
 public:
-  CircleNodeIDType node_id(void) const { return _node_id; }
+  luci::CircleNodeIDType node_id(void) const { return _node_id; }
   // No setter
 
 private:
-  CircleNodeIDType _node_id;
+  luci::CircleNodeIDType _node_id;
 };
 
 } // namespace
