@@ -61,7 +61,7 @@ void SubgraphContext::finish_construction()
       luci::CircleNode *prev = static_cast<luci::CircleNode *>(node->arg(i));
       if (in_graph.count(prev) == 0 && in_inputs.count(prev) == 0)
       {
-        auto graph_input = Halide::ImageParam(transform_type(node->dtype()), node->rank());
+        auto graph_input = Halide::ImageParam(transform_type(prev->dtype()), prev->rank());
         _inputs.push_back({prev, graph_input});
         in_inputs.insert(prev);
       }

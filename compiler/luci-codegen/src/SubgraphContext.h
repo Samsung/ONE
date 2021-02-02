@@ -42,7 +42,7 @@ public:
 #endif
   }
 
-  template<typename Cont>
+  template<typename Cont = std::vector<luci::CircleNode *>>
   SubgraphContext(std::string name, Cont &&nodes): _name(std::move(name)), _nodes(std::forward<Cont>(nodes))
   {
 #ifndef NDEBUG

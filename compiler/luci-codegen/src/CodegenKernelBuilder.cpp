@@ -56,7 +56,7 @@ std::vector<Halide::Expr> debroadcast_iter_space(const std::vector<Halide::Expr>
   std::vector<Halide::Expr> iter_space(rank);
   for (int i = rank - 1; i >= 0; --i)
   {
-    if (node->dim(i) == 1)
+    if (node->dim(rank - 1 - i) == 1)
       iter_space[i] = Halide::Expr(0);
     else
       iter_space[i] = output_space[i];
@@ -261,12 +261,12 @@ void CodegenKernelBuilderImpl::visit(luci::CircleSplitOut *node)
 
   assert(split_input_dim_size % split_node->num_split() == 0);
 
-  int start_tile_index = split_output_dim_size * split_node->num_split();
+  int start_tile_index = split_output_dim_size * node->index();
 
   auto output_iterators = iter_space(node);
 
   auto input_iterators = output_iterators;
-  input_iterators[split_dim] = input_iterators[split_dim] + start_tile_index;
+  input_iterators[split_node->rank() - 1 - split_dim] += start_tile_index;
 
   Halide::Func input = _subgraph.get_func(split_input_node);
 
