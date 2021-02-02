@@ -174,6 +174,7 @@ TEST(ConcatenationTest, Unsupported_Configure_Type_NEG)
   EXPECT_ANY_THROW(kernel.configure());
 }
 
+// TODO: Remove this test when concat w/ fused_activation is supported
 TEST(ConcatenationTest, With_Fused_Activation_NEG)
 {
   std::vector<float> input1_data{1, 2, 3, 4, 5, 6};
