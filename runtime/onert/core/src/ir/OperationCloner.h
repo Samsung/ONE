@@ -26,19 +26,7 @@ namespace onert
 namespace ir
 {
 
-class OperationCloner : public OperationVisitor
-{
-public:
-#define OP(Name) void visit(const operation::Name &o) override;
-#include "ir/Operations.lst"
-#undef OP
-
-public:
-  std::unique_ptr<Operation> releaseClone();
-
-private:
-  std::unique_ptr<Operation> _return_op;
-};
+std::unique_ptr<Operation> clone(const Operation &operation);
 
 } // namespace ir
 } // namespace onert
