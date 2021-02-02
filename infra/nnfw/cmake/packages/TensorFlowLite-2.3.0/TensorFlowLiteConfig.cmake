@@ -100,7 +100,7 @@ if(BUILD_TENSORFLOW_LITE_2_3_0)
   endif(NOT CpuInfo_FOUND)
 
   nnas_include(ExternalProjectTools)
-  add_extdirectory("${CMAKE_CURRENT_LIST_DIR}/TensorFlowLite-2.3.0" tflite-2.3.0)
+  add_extdirectory("${CMAKE_CURRENT_LIST_DIR}/TensorFlowLite" tflite-2.3.0)
 
   set(TensorFlowLite_2_3_0_FOUND TRUE)
   return()
