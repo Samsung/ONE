@@ -18,6 +18,8 @@ safemain mio-circle mio-tflite \
 tflite2circle \
 luci \
 luci-interpreter \
+luci-eval-driver \
+luci-pass-value-test \
 luci-value-test \
 record-minmax \
 circle2circle circle-quantizer"
