@@ -52,8 +52,7 @@ operand {
   name: "end_2"
   type: INT32
   shape { dim: 3 }
-  filler { tag: "explicit" arg: "0" arg: "1" arg: "0"
-  }
+  filler { tag: "explicit" arg: "0" arg: "1" arg: "0" }
 }
 operand {
   name: "ofm"
