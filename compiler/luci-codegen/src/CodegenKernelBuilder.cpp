@@ -288,7 +288,7 @@ void CodegenKernelBuilderImpl::visit(luci::CircleSplitOut *node)
   assert(split_dim_node->size<loco::DataType::S32>() == 1);
 
   int split_dim = split_dim_node->at<loco::DataType::S32>(0);
-  int split_input_dim_size = split_node->dim(split_dim).value(); // dim size before split
+  int split_input_dim_size = split_input_node->dim(split_dim).value(); // dim size before split
   int split_output_dim_size = split_input_dim_size / split_node->num_split(); // dim size after split
 
   assert(split_input_dim_size % split_node->num_split() == 0);
@@ -298,7 +298,7 @@ void CodegenKernelBuilderImpl::visit(luci::CircleSplitOut *node)
   auto output_iterators = iter_space(node);
 
   auto input_iterators = output_iterators;
-  input_iterators[split_node->rank() - 1 - split_dim] += start_tile_index;
+  input_iterators[split_input_node->rank() - 1 - split_dim] += start_tile_index;
 
   Halide::Func input = _subgraph.get_func(split_input_node);
 
@@ -382,12 +382,19 @@ static bool is_supported_split(luci::CircleSplit *split)
     return false;
 
   int split_dim_value = split_dim->at<loco::DataType::S32>(0);
-  int split_input_dim_size = split->dim(split_dim_value).value(); // dim size before split
+
+  auto split_input = static_cast<luci::CircleConst *>(split->input());
+  int split_input_dim_size = split_input->dim(split_dim_value).value(); // dim size before split
 
   if (split_input_dim_size % split->num_split() != 0)
     return false;
 
-  return split->shape_status() == luci::ShapeStatus::VALID;
+  for (auto out: succs(split))
+  {
+    if (static_cast<luci::CircleSplitOut *>(out)->shape_status() != luci::ShapeStatus::VALID)
+      return false;
+  }
+  return true;
 }
 
 bool CodegenKernelBuilder::is_supported(luci::CircleNode *node)

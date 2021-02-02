@@ -392,7 +392,6 @@ TEST(codegen_kernels, split)
   fill_data<loco::DataType::S32>(&split_dim, {1});
 
   luci::CircleSplit split;
-  constructBasicNode<dtype>(split, input_shape);
   split.num_split(3);
   split.split_dim(&split_dim);
   split.input(&input_node);
