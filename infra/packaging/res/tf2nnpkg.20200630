@@ -125,6 +125,6 @@ ${TF2TFLITE_CONVERT_SCRIPT}
 "${ROOT}/bin/tflite2circle" "${TMPDIR}/${MODEL_NAME}.tflite" "${TMPDIR}/${MODEL_NAME}.tmp.circle"
 
 # optimize
-"${ROOT}/bin/circle2circle" --all "${TMPDIR}/${MODEL_NAME}.tmp.circle" "${TMPDIR}/${MODEL_NAME}.circle"
+"${ROOT}/bin/circle2circle" --O1 "${TMPDIR}/${MODEL_NAME}.tmp.circle" "${TMPDIR}/${MODEL_NAME}.circle"
 
 "${ROOT}/bin/model2nnpkg.sh" -o "${OUTPUT_DIR}" "${TMPDIR}/${MODEL_NAME}.circle"
