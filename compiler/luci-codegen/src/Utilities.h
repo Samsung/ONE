@@ -19,10 +19,14 @@
 
 #include "luci/IR/CircleNodeDecl.h"
 
+#include "Halide.h"
+
 namespace luci_codegen
 {
 
 size_t const_node_size(const luci::CircleNode *node);
+
+Halide::Type halide_type(loco::DataType dtype);
 
 }
 

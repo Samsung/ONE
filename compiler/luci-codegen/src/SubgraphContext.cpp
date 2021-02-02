@@ -16,29 +16,9 @@
 
 #include "SubgraphContext.h"
 
+#include "Utilities.h"
+
 #include <unordered_set>
-
-namespace
-{
-Halide::Type transform_type(loco::DataType dtype)
-{
-  switch (dtype)
-  {
-    case loco::DataType::FLOAT32:
-      return Halide::Type(Halide::Type::Float, 32, 1);
-    case loco::DataType::FLOAT64:
-      return Halide::Type(Halide::Type::Float, 64, 1);
-    case loco::DataType::S32:
-      return Halide::Type(Halide::Type::Int, 32, 1);
-    case loco::DataType::S64:
-      return Halide::Type(Halide::Type::Int, 64, 1);
-    default:
-      assert("NYI");
-  }
-  return Halide::Type();
-}
-
-} // unnamed namespace
 
 namespace luci_codegen
 {
@@ -61,7 +41,7 @@ void SubgraphContext::finish_construction()
       luci::CircleNode *prev = static_cast<luci::CircleNode *>(node->arg(i));
       if (in_graph.count(prev) == 0 && in_inputs.count(prev) == 0)
       {
-        auto graph_input = Halide::ImageParam(transform_type(prev->dtype()), prev->rank());
+        auto graph_input = Halide::ImageParam(halide_type(prev->dtype()), prev->rank());
         _inputs.push_back({prev, graph_input});
         in_inputs.insert(prev);
       }

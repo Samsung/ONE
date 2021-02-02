@@ -41,4 +41,22 @@ size_t const_node_size(const luci::CircleNode *node)
   return 0;
 }
 
+Halide::Type halide_type(loco::DataType dtype)
+{
+  switch (dtype)
+  {
+    case loco::DataType::FLOAT32:
+      return Halide::Type(Halide::Type::Float, 32, 1);
+    case loco::DataType::FLOAT64:
+      return Halide::Type(Halide::Type::Float, 64, 1);
+    case loco::DataType::S32:
+      return Halide::Type(Halide::Type::Int, 32, 1);
+    case loco::DataType::S64:
+      return Halide::Type(Halide::Type::Int, 64, 1);
+    default:
+      assert("NYI");
+  }
+  return Halide::Type();
+}
+
 } // namespace luci_codegen

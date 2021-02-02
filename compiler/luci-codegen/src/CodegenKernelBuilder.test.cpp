@@ -60,7 +60,7 @@ template <>
 void compare_arrays<float>(const float *ref_data, const float *result, int size)
 {
   for (int i = 0; i < size; ++i)
-    ASSERT_FLOAT_EQ(ref_data[i], result[i]);
+    ASSERT_FLOAT_EQ(ref_data[i], result[i]) << " index " << i;
 }
 
 template <>
@@ -161,6 +161,19 @@ void test_unary_op(const Shape &in_out_shape, DataVector<DType> in_data, const D
   target_func.realize(res, Halide::Target(), params);
 
   compare_arrays<Type<DType>>(ref_out_data.data(), res.data(), ref_out_data.size());
+}
+
+template <loco::DataType DType>
+void fill_data(luci::CircleConst *node, const std::vector<Type<DType>> &data)
+{
+  assert(node->shape_status() == luci::ShapeStatus::VALID);
+  int size = 1;
+  for (int i = 0; i < node->rank(); ++i)
+    size *= node->dim(i).value();
+  node->size<DType>(size);
+  assert(data.size() == size);
+  for (int i = 0; i < size; ++i)
+    node->at<DType>(i) = data[i];
 }
 
 
@@ -318,8 +331,7 @@ TEST(codegen_kernels, split)
 
   luci::CircleConst split_dim;
   constructBasicNode<loco::DataType::S32>(split_dim, {1});
-  split_dim.size<loco::DataType::S32>(1);
-  split_dim.at<loco::DataType::S32>(0) = 1;
+  fill_data<loco::DataType::S32>(&split_dim, {1});
 
   luci::CircleSplit split;
   constructBasicNode<dtype>(split, input_shape);
@@ -374,3 +386,67 @@ TEST(codegen_kernels, split)
   compare_arrays<Type<dtype>>(ref_out2_data.data(), res[1].data(), output_size);
   compare_arrays<Type<dtype>>(ref_out3_data.data(), res[2].data(), output_size);
 }
+
+TEST(codegen_kernels, fc)
+{
+  std::vector<int> input_shape{1, 3};
+  std::vector<int> weights_shape{2, 3};
+  std::vector<int> bias_shape{2};
+  std::vector<int> output_shape{1, 2};
+
+  std::vector<float> in_data{1.f, 2.f, 3.f};
+  std::vector<float> weights_data{1.f, 2.f, 3.f, 4.f, 5.f, 6.f};
+  std::vector<float> ref_out_data{15.f, 34.f};
+  std::vector<float> bias_data{1.f, 2.f};
+
+  constexpr auto dtype = loco::DataType::FLOAT32;
+  // construct test graph
+  luci::CircleInput input_node;
+  constructBasicNode<dtype>(input_node, input_shape);
+
+  luci::CircleConst weights_node;
+  constructBasicNode<dtype>(weights_node, weights_shape);
+  fill_data<loco::DataType::FLOAT32>(&weights_node, weights_data);
+
+  luci::CircleConst bias_node;
+  constructBasicNode<dtype>(bias_node, bias_shape);
+  fill_data<loco::DataType::FLOAT32>(&bias_node, bias_data);
+
+  luci::CircleFullyConnected fc;
+  constructBasicNode<dtype>(fc, output_shape);
+  fc.input(&input_node);
+  fc.weights(&weights_node);
+  fc.bias(&bias_node);
+  fc.weights_format(luci::CircleFullyConnected::WeightsFormat::DEFAULT);
+
+  luci::CircleOutput output_node;
+
+  constructBasicNode<dtype>(output_node, output_shape);
+  output_node.from(&fc);
+
+  ASSERT_TRUE(luci_codegen::CodegenKernelBuilder::is_supported(&fc));
+
+  luci_codegen::SubgraphContext subgraph("", {&fc, &weights_node, &bias_node});
+  subgraph.finish_construction();
+
+  luci_codegen::CodegenKernelBuilder builder(subgraph);
+  builder.process();
+
+  Halide::Buffer<Type<dtype>> input_buffer(in_data.data(), reverse_vector(input_shape));
+  Halide::Buffer<Type<dtype>> res(reverse_vector(output_shape));
+
+  Halide::ImageParam input_param = subgraph.get_inputs()[0].second;
+
+  Halide::ParamMap params;
+  params.set(input_param, input_buffer);
+
+  Halide::Func output_func = subgraph.get_outputs()[0].second;
+
+  output_func.realize(res, Halide::Target(), params);
+
+  int output_size = ref_out_data.size();
+
+  compare_arrays<Type<dtype>>(ref_out_data.data(), res.data(), output_size);
+}
+
+// TODO add simple constant tests with various dtypes
