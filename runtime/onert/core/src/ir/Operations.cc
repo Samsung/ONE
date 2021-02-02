@@ -25,11 +25,8 @@ namespace ir
 
 Operations::Operations(const Operations &obj)
 {
-  obj.iterate([&](const OperationIndex &index, const Operation &op) {
-    OperationCloner cloner;
-    op.accept(cloner);
-    _objects.emplace(index, cloner.releaseClone());
-  });
+  obj.iterate(
+    [&](const OperationIndex &index, const Operation &op) { _objects.emplace(index, clone(op)); });
   _next_index = obj._next_index;
 }
 
