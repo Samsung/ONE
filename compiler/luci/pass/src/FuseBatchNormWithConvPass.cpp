@@ -197,7 +197,7 @@ bool fused_batch_norm_with_conv(luci::CircleAdd *add)
   fused_conv->dilation()->h(conv->dilation()->h());
   fused_conv->dilation()->w(conv->dilation()->w());
 
-  auto origins = std::vector<const luci::CircleNode *>{conv, add, mul};
+  auto origins = std::initializer_list<const luci::CircleNode *>{conv, add, mul};
   fused_conv->annot(std::make_unique<luci::CircleNodeOrigin>(origins));
 
   replace(add).with(fused_conv);

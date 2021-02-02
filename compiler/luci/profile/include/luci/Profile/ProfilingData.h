@@ -18,7 +18,7 @@
 
 #include <loco.h>
 
-#include <vector>
+#include <initializer_list>
 #include <set>
 
 namespace luci
@@ -58,7 +58,7 @@ public:
     // Do Nothing
   }
 
-  CircleNodeOrigin(std::vector<const luci::CircleNode *> origin_nodes)
+  CircleNodeOrigin(std::initializer_list<const luci::CircleNode *> origin_nodes)
   {
     for (auto node : origin_nodes)
     {
