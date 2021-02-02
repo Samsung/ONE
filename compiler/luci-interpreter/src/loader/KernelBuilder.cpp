@@ -191,6 +191,7 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleConcatenation *no
 
   ConcatenationParams params{};
   params.axis = node->axis();
+  params.activation = node->fusedActivationFunction();
 
   return std::make_unique<kernels::Concatenation>(std::move(inputs), output, params);
 }

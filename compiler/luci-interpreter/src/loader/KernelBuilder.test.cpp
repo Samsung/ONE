@@ -217,6 +217,7 @@ TEST_F(KernelBuilderTest, Concatenation)
   checkTensor(kernel->input(1), input2);
   checkTensor(kernel->output(), op);
   EXPECT_THAT(kernel->params().axis, Eq(op->axis()));
+  EXPECT_THAT(kernel->params().activation, Eq(op->fusedActivationFunction()));
 }
 
 TEST_F(KernelBuilderTest, Conv2D)

@@ -44,6 +44,7 @@ struct ArgMaxParams
 struct ConcatenationParams
 {
   int axis;
+  Activation activation;
 };
 
 struct Conv2DParams

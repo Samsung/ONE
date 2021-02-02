@@ -38,6 +38,7 @@ TEST(ConcatenationTest, Float)
   // Try different 'axis' and expect different results.
   {
     params.axis = 0;
+    params.activation = luci::FusedActFunc::NONE;
 
     Concatenation kernel({&input1_tensor, &input2_tensor}, &output_tensor, params);
     kernel.configure();
@@ -48,6 +49,7 @@ TEST(ConcatenationTest, Float)
   }
   {
     params.axis = -2; // Same as '0'.
+    params.activation = luci::FusedActFunc::NONE;
 
     Concatenation kernel({&input1_tensor, &input2_tensor}, &output_tensor, params);
     kernel.configure();
@@ -58,6 +60,7 @@ TEST(ConcatenationTest, Float)
   }
   {
     params.axis = 1;
+    params.activation = luci::FusedActFunc::NONE;
 
     Concatenation kernel({&input1_tensor, &input2_tensor}, &output_tensor, params);
     kernel.configure();
@@ -68,6 +71,7 @@ TEST(ConcatenationTest, Float)
   }
   {
     params.axis = -1; // Same as '1'.
+    params.activation = luci::FusedActFunc::NONE;
 
     Concatenation kernel({&input1_tensor, &input2_tensor}, &output_tensor, params);
     kernel.configure();
@@ -84,6 +88,7 @@ TEST(ConcatenationTest, Input_Number_Check_NEG)
   ConcatenationParams params{};
 
   params.axis = -1;
+  params.activation = luci::FusedActFunc::NONE;
 
   Concatenation kernel({}, &output_tensor, params);
   EXPECT_ANY_THROW(kernel.configure());
@@ -99,6 +104,7 @@ TEST(ConcatenationTest, Invalid_Axis_NEG)
   ConcatenationParams params{};
 
   params.axis = -3;
+  params.activation = luci::FusedActFunc::NONE;
 
   Concatenation kernel({&input1_tensor, &input2_tensor}, &output_tensor, params);
   EXPECT_ANY_THROW(kernel.configure());
@@ -114,6 +120,7 @@ TEST(ConcatenationTest, Mismatching_Input_Type_NEG)
   ConcatenationParams params{};
 
   params.axis = -1;
+  params.activation = luci::FusedActFunc::NONE;
 
   Concatenation kernel({&input1_tensor, &input2_tensor}, &output_tensor, params);
   EXPECT_ANY_THROW(kernel.configure());
@@ -129,6 +136,7 @@ TEST(ConcatenationTest, Mismatching_Input_Dimension_Num_NEG)
   ConcatenationParams params{};
 
   params.axis = -1;
+  params.activation = luci::FusedActFunc::NONE;
 
   Concatenation kernel({&input1_tensor, &input2_tensor}, &output_tensor, params);
   EXPECT_ANY_THROW(kernel.configure());
@@ -144,6 +152,7 @@ TEST(ConcatenationTest, Mismatching_Input_Dimension_NEG)
   ConcatenationParams params{};
 
   params.axis = -1;
+  params.activation = luci::FusedActFunc::NONE;
 
   Concatenation kernel({&input1_tensor, &input2_tensor}, &output_tensor, params);
   EXPECT_ANY_THROW(kernel.configure());
@@ -159,6 +168,24 @@ TEST(ConcatenationTest, Unsupported_Configure_Type_NEG)
   ConcatenationParams params{};
 
   params.axis = -1;
+  params.activation = luci::FusedActFunc::NONE;
+
+  Concatenation kernel({&input1_tensor, &input2_tensor}, &output_tensor, params);
+  EXPECT_ANY_THROW(kernel.configure());
+}
+
+// TODO: Remove this test when concat w/ fused_activation is supported
+TEST(ConcatenationTest, With_Fused_Activation_NEG)
+{
+  std::vector<float> input1_data{1, 2, 3, 4, 5, 6};
+  std::vector<float> input2_data{7, 8, 9, 10, 11, 12};
+  Tensor input1_tensor = makeInputTensor<DataType::FLOAT32>({2, 3}, input1_data);
+  Tensor input2_tensor = makeInputTensor<DataType::FLOAT32>({2, 3}, input2_data);
+  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
+  ConcatenationParams params{};
+
+  params.axis = 1;
+  params.activation = luci::FusedActFunc::RELU;
 
   Concatenation kernel({&input1_tensor, &input2_tensor}, &output_tensor, params);
   EXPECT_ANY_THROW(kernel.configure());
