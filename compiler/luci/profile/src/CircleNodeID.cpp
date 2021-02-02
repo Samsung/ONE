@@ -56,7 +56,7 @@ bool has_node_id(luci::CircleNode *circle_node)
   return circle_node->annot<CircleNodeID>() != nullptr;
 }
 
-void set_node_id(luci::CircleNode *circle_node, uint32_t id)
+void set_node_id(luci::CircleNode *circle_node, luci::CircleNodeIDType id)
 {
   circle_node->annot<CircleNodeID>(nullptr);
   circle_node->annot(std::make_unique<CircleNodeID>(id));
