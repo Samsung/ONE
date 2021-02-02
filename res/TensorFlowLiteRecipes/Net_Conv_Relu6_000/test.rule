@@ -1,0 +1,6 @@
+# To check if ReLU6 is fused to Convolution op
+
+RULE    "VERIFY_FILE_FORMAT"      $(verify_file_format) '=' 1
+
+RULE    "CONV_EXIST"              $(op_count CONV_2D) '=' 2
+RULE    "RELU6_NOT_EXIST"         $(op_count RELU6) '=' 0
