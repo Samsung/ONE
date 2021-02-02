@@ -197,6 +197,7 @@ struct CookParams
   std::vector<flatbuffers::Offset<::tflite::SubGraph>> &subgraph_vec;
   std::unique_ptr<flatbuffers::FlatBufferBuilder> &flatbuffer_builder;
   std::map<tflite::BuiltinOperator, int32_t> &builtin_code_map;
+  std::vector<std::string> &custom_code_vec;
   std::string noname;
 };
 
@@ -209,6 +210,7 @@ template <typename T> void cook_graph(const T &graph, CookParams &cp)
   std::vector<flatbuffers::Offset<::tflite::SubGraph>> &subgraph_vec = cp.subgraph_vec;
   std::unique_ptr<flatbuffers::FlatBufferBuilder> &flatbuffer_builder = cp.flatbuffer_builder;
   std::map<tflite::BuiltinOperator, int32_t> &builtin_code_map = cp.builtin_code_map;
+  std::vector<std::string> &custom_code_vec = cp.custom_code_vec;
 
   // Operand-related
   std::vector<flatbuffers::Offset<::tflite::Tensor>> tensor_vec;
@@ -480,11 +482,23 @@ template <typename T> void cook_graph(const T &graph, CookParams &cp)
     // Create Operator
     tflite::OperatorBuilder op_builder{*flatbuffer_builder};
 
-    // Get operator code index from builtin_code_set with assumption, order of
-    // builtin_code_set is same as that of code_vec
+    // Note that opcode_index is an index into the operator_codes vector.
+    // operator_codes consists of buildtin_code and custom_code, which is inserted sequentially.
+    uint32_t opcode_index = 0;
     auto op_it = builtin_code_map.find(op_chef->code());
-    assert(op_it != builtin_code_map.end());
-    uint32_t opcode_index = std::distance(builtin_code_map.begin(), op_it);
+    // builtin operator
+    if (op_it != builtin_code_map.end())
+    {
+      opcode_index = std::distance(builtin_code_map.begin(), op_it);
+    }
+    // custom operator
+    else
+    {
+      auto op_it = std::find(custom_code_vec.begin(), custom_code_vec.end(), operation.type());
+      assert(op_it != custom_code_vec.end());
+      opcode_index = builtin_code_map.size();
+      opcode_index += std::distance(custom_code_vec.begin(), op_it);
+    }
 
     op_builder.add_opcode_index(opcode_index);
     op_builder.add_inputs(inputs);
@@ -571,11 +585,9 @@ GeneratedModel cook(const ::tflchef::ModelRecipe &model_recipe)
 
   // Create OperatorCode with Custom Operator
   std::set<std::string> custom_code_set = gather_customcode_set(model_recipe);
-  if (custom_code_set.size() &&
-      builtin_code_map.find(tflite::BuiltinOperator_CUSTOM) == builtin_code_map.end())
-    builtin_code_map[tflite::BuiltinOperator_CUSTOM] = 1;
+  std::vector<std::string> custom_code_vec{custom_code_set.begin(), custom_code_set.end()};
 
-  for (auto opcode : custom_code_set)
+  for (auto opcode : custom_code_vec)
   {
     auto custom_code = flatbuffer_builder->CreateString(opcode);
     tflite::OperatorCodeBuilder code_builder{*flatbuffer_builder};
@@ -598,7 +610,8 @@ GeneratedModel cook(const ::tflchef::ModelRecipe &model_recipe)
   //
   // Create Main graph
   //
-  CookParams cp{buffer_vec, code_vec, subgraph_vec, flatbuffer_builder, builtin_code_map, "main"};
+  CookParams cp{buffer_vec,       code_vec,        subgraph_vec, flatbuffer_builder,
+                builtin_code_map, custom_code_vec, "main"};
 
   cook_graph<::tflchef::ModelRecipe>(model_recipe, cp);
 
@@ -612,8 +625,8 @@ GeneratedModel cook(const ::tflchef::ModelRecipe &model_recipe)
     std::ostringstream stringStream;
     stringStream << "sub_" << (g + 1);
 
-    CookParams cp{buffer_vec,         code_vec,         subgraph_vec,
-                  flatbuffer_builder, builtin_code_map, stringStream.str()};
+    CookParams cp{buffer_vec,       code_vec,        subgraph_vec,      flatbuffer_builder,
+                  builtin_code_map, custom_code_vec, stringStream.str()};
 
     cook_graph<::tflchef::Graph>(graph, cp);
   }
