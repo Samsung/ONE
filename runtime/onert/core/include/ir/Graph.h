@@ -56,7 +56,31 @@ public:
   // Graph Building
 public:
   OperandIndex addOperand(const Shape &shape, const TypeInfo &type);
+  /**
+   * @brief Add an operand to the graph with the given index and object
+   *
+   * If the given index is available, it succeeds. And @c operand is moved which invalidates the
+   * caller's pointer. If the given index is already taken, it fails. And @c operand will not be
+   * moved so the caller's pointer will be still valid.
+   *
+   * @param[in] index Index to be added
+   * @param[in] operand Operand to be added
+   * @return OperandIndex @c index if successful, Undefined otherwise
+   */
+  OperandIndex addOperand(OperandIndex index, std::unique_ptr<Operand> &&operand);
   OperationIndex addOperation(std::unique_ptr<Operation> &&node);
+  /**
+   * @brief Add an operation to the graph with the given index and object
+   *
+   * If the given index is available, it succeeds. And @c operation is moved which invalidates the
+   * caller's pointer. If the given index is already taken, it fails. And @c operation will not be
+   * moved so the caller's pointer will be still valid.
+   *
+   * @param index Index to be added
+   * @param operation Operation to be added
+   * @return OperandIndex @c index if successful, Undefined otherwise
+   */
+  OperationIndex addOperation(OperationIndex index, std::unique_ptr<Operation> &&operation);
   void setOperandValue(const OperandIndex &ind, std::shared_ptr<Data> data);
   void addInput(const OperandIndex &ind, const std::string &name = "");
   void addOutput(const OperandIndex &ind, const std::string &name = "");
