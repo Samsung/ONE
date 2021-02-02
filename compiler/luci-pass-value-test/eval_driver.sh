@@ -9,7 +9,7 @@
 # bin_dir  : build directory of luci-pass-value-test (ex: build/compiler/luci-pass-value-test)
 # work_dir : artifacts directoy where test materials exist
 # venv_dir : python virtual environment home directory
-# intp_dir : path to luci_eval_tester from luci-value-test
+# intp_dir : path to luci_eval_driver from luci-eval-driver
 
 VERIFY_SOURCE_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 VERIFY_SCRIPT_PATH="${VERIFY_SOURCE_PATH}/eval_result_verifier.py"
