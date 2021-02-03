@@ -174,6 +174,7 @@ Current transformation options are
 - remove_redundant_transpose : This fuses or removes redundant transpose operators.
 - remove_unnecessary_reshape : This removes unnecessary reshape operators.
 - remove_unnecessary_slice : This removes unnecessary slice operators.
+- remove_unnecessary_strided_slice : This removes unnecessary strided slice operators.
 - remove_unnecessary_split : This removes unnecessary split operators.
 - replace_cw_mul_add_with_depthwise_conv: This will replace channel-wise Mul/Add with DepthwiseConv2D.
 - resolve_customop_add: This will convert Custom(Add) to normal Add operator

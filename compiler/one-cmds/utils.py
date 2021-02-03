@@ -161,6 +161,8 @@ def _make_circle2circle_cmd(args, driver_path, input_path, output_path):
         cmd.append('--remove_unnecessary_reshape')
     if _is_valid_attr(args, 'remove_unnecessary_slice'):
         cmd.append('--remove_unnecessary_slice')
+    if _is_valid_attr(args, 'remove_unnecessary_strided_slice'):
+        cmd.append('--remove_unnecessary_strided_slice')
     if _is_valid_attr(args, 'remove_unnecessary_split'):
         cmd.append('--remove_unnecessary_split')
     if _is_valid_attr(args, 'resolve_customop_add'):
