@@ -1,0 +1,63 @@
+operand {
+  name: "bc_input"
+  type: INT64
+  shape { dim: 2 dim: 3 }
+}
+operand {
+  name: "bc_shape"
+  type: INT32
+  shape { dim: 3 }
+  filler { tag: "explicit" arg: "1" arg: "2" arg: "3" }
+}
+operand {
+  name: "bc_ofm"
+  type: INT64
+  shape { dim: 1 dim: 2 dim: 3 }
+}
+operation {
+  type: "BroadcastTo"
+  input: "bc_input"
+  input: "bc_shape"
+  output: "bc_ofm"
+}
+operand {
+  name: "reshape_data"
+  type: INT64
+  shape { dim: 2 dim: 3 }
+}
+operand {
+  name: "reshape_shape"
+  type: INT32
+  shape { dim: 3 }
+  filler { tag: "explicit" arg: "1" arg: "2" arg: "3" }
+}
+operand {
+  name: "reshape_ofm"
+  type: INT64
+  shape { dim: 1 dim: 2 dim: 3 }
+}
+operation {
+  type: "Reshape"
+  reshape_options {
+    new_shape: 1
+    new_shape: 2
+    new_shape: 3
+  }
+  input: "reshape_data"
+  input: "reshape_shape"
+  output: "reshape_ofm"
+}
+operand {
+  name: "ofm"
+  type: INT64
+  shape { dim: 1 dim: 2 dim: 3 }
+}
+operation {
+  type: "AddV2"
+  input: "bc_ofm"
+  input: "reshape_ofm"
+  output: "ofm"
+}
+input: "bc_input"
+input: "reshape_data"
+output: "ofm"
