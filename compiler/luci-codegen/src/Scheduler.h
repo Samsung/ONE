@@ -14,28 +14,37 @@
  * limitations under the License.
  */
 
-#ifndef NNCC_CODEGEN_KERNEL_BUILDER_H
-#define NNCC_CODEGEN_KERNEL_BUILDER_H
+#ifndef NNCC_SCHEDULER_H
+#define NNCC_SCHEDULER_H
 
 #include "SubgraphContext.h"
 
 namespace luci_codegen
 {
 
-class CodegenKernelBuilder
+struct SchedulerParameters
+{
+  enum class Architecture
+  {
+    X86,
+    ARM
+  };
+
+  Architecture arch;
+};
+
+class Scheduler
 {
 public:
-
-  explicit CodegenKernelBuilder(SubgraphContext &subgraph);
-
-  static bool is_supported(luci::CircleNode *node);
+  Scheduler(SubgraphContext &subgraph, const SchedulerParameters &params) : _subgraph(subgraph), _params(params) {}
 
   void process();
 
 private:
   SubgraphContext &_subgraph;
+  SchedulerParameters _params;
 };
 
-}
+} // namespace luci_codegen
 
-#endif // NNCC_CODEGEN_KERNEL_BUILDER_H
+#endif //NNCC_SCHEDULER_H

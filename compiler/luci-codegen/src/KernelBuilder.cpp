@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "CodegenKernelBuilder.h"
+#include "KernelBuilder.h"
 #include "SubgraphContext.h"
 #include "Utilities.h"
 
@@ -327,14 +327,14 @@ void CodegenKernelBuilderImpl::visit(luci::CircleFullyConnected *node)
 
 void CodegenKernelBuilderImpl::visit(luci::CircleNode *)
 {
-  INTERNAL_EXN("CodegenKernelBuilder: unsupported node");
+  INTERNAL_EXN("KernelBuilder: unsupported node");
 }
 
 } // unnamed namespace
 
-CodegenKernelBuilder::CodegenKernelBuilder(SubgraphContext &subgraph) : _subgraph(subgraph) {}
+KernelBuilder::KernelBuilder(SubgraphContext &subgraph) : _subgraph(subgraph) {}
 
-void CodegenKernelBuilder::process()
+void KernelBuilder::process()
 {
   std::vector<luci::CircleNode *> sorted_nodes;
   // collect subgraph outputs
@@ -397,7 +397,7 @@ static bool is_supported_split(luci::CircleSplit *split)
   return true;
 }
 
-bool CodegenKernelBuilder::is_supported(luci::CircleNode *node)
+bool KernelBuilder::is_supported(luci::CircleNode *node)
 {
   assert(dynamic_cast<luci::CircleNode *>(node));
   bool is_quantized = node->quantparam();

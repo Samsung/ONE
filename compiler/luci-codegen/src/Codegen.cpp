@@ -15,8 +15,9 @@
  */
 
 #include "Codegen.h"
-#include "CodegenKernelBuilder.h"
+#include "KernelBuilder.h"
 #include "SubgraphContext.h"
+#include "Scheduler.h"
 #include "Utilities.h"
 
 #include "luci/IR/Nodes/CircleCustom.h"
@@ -55,17 +56,16 @@ bool Codegen::fits_constrains(luci::CircleNode *node) const
 {
   if (node->opcode() == luci::CircleOpcode::CIRCLECONST)
     return const_node_size(node) <= _options.max_inline_buffer_threshold;
-  return CodegenKernelBuilder::is_supported(node);
+  return KernelBuilder::is_supported(node);
 }
 
-// todo move processed to class members
 std::vector<luci::CircleNode *>
-Codegen::gather_suitable_nodes(luci::CircleNode *node, std::unordered_set<luci::CircleNode *> &processed) const
+Codegen::gather_suitable_nodes(luci::CircleNode *node)
 {
   std::vector<luci::CircleNode *> subgraph_nodes;
   std::queue<luci::CircleNode *> queue;
   queue.push(node);
-  processed.insert(node);
+  _processed.insert(node);
   while (!queue.empty())
   {
     luci::CircleNode *cur_node = queue.front();
@@ -86,11 +86,11 @@ Codegen::gather_suitable_nodes(luci::CircleNode *node, std::unordered_set<luci::
     // process adjacent nodes
     for (auto adj: adjacent)
     {
-      if (processed.count(adj) || !fits_constrains(adj))
+      if (_processed.count(adj) || !fits_constrains(adj))
       {
         continue;
       }
-      processed.insert(adj);
+      _processed.insert(adj);
       queue.push(adj);
     }
   }
@@ -111,11 +111,11 @@ Codegen::gather_suitable_nodes(luci::CircleNode *node, std::unordered_set<luci::
 //   |
 //
 // this graph will be transformed into graph with cyclic dependency of generated node from itself
-std::vector<luci::CircleNode *>
-Codegen::filter_nodes(const std::vector<luci::CircleNode *> &nodes) const
+std::vector<std::vector<luci::CircleNode *>>
+Codegen::extract_subgraphs(const std::vector<luci::CircleNode *> &nodes) const
 {
   // TODO
-  return nodes;
+  return {nodes};
 }
 
 SubgraphContext *Codegen::create_subgraph(const std::vector<luci::CircleNode *> &nodes)
@@ -199,18 +199,21 @@ void Codegen::process_graph(loco::Graph &graph)
       continue;
 
     // Traverse graph to find all compilable adjacent nodes
-    std::vector<luci::CircleNode *> suitable_nodes = gather_suitable_nodes(node, processed);
+    std::vector<luci::CircleNode *> suitable_nodes = gather_suitable_nodes(node);
 
-    std::vector<luci::CircleNode *> subgraph_nodes = filter_nodes(suitable_nodes);
+    std::vector<std::vector<luci::CircleNode *>> extracted_subgraph_nodes = extract_subgraphs(suitable_nodes);
 
-    SubgraphContext *subgraph = create_subgraph(subgraph_nodes);
+    for (auto &nodes: extracted_subgraph_nodes)
+    {
+      SubgraphContext *subgraph = create_subgraph(nodes);
 
-    // Create kernels for nodes
-    CodegenKernelBuilder(*subgraph).process();
+      // Create kernels for nodes
+      KernelBuilder(*subgraph).process();
 
-    // TODO add scheduler entity
+      Scheduler(*subgraph, {SchedulerParameters::Architecture::X86}).process();
 
-    _processed_graphs++;
+      _processed_graphs++;
+    }
   }
 
   // replace circle graph with generated nodes

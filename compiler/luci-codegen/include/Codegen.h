@@ -52,9 +52,10 @@ private:
 
   bool fits_constrains(luci::CircleNode *node) const;
 
-  std::vector<luci::CircleNode *> gather_suitable_nodes(luci::CircleNode *node, std::unordered_set<luci::CircleNode *> &processed) const;
+  std::vector<luci::CircleNode *> gather_suitable_nodes(luci::CircleNode *node);
 
-  std::vector<luci::CircleNode *> filter_nodes(const std::vector<luci::CircleNode *> &nodes) const;
+  std::vector<std::vector<luci::CircleNode *>>
+  extract_subgraphs(const std::vector<luci::CircleNode *> &nodes) const;
 
   SubgraphContext *create_subgraph(const std::vector<luci::CircleNode *> &nodes);
 
@@ -66,6 +67,7 @@ private:
 
   int _processed_graphs;
   Options _options;
+  std::unordered_set<luci::CircleNode *> _processed;
   std::vector<SubgraphContext> _compiled_subgraphs;
 };
 

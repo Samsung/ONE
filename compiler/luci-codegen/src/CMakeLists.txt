@@ -1,11 +1,13 @@
 set(SOURCES Codegen.cpp
-            CodegenKernelBuilder.cpp
-            CodegenKernelBuilder.h
-            SubgraphContext.cpp
-            SubgraphContext.h
-            Utilities.cpp
-            Utilities.h
-            )
+        KernelBuilder.cpp
+        KernelBuilder.h
+        Scheduler.cpp
+        Scheduler.h
+        SubgraphContext.cpp
+        SubgraphContext.h
+        Utilities.cpp
+        Utilities.h
+        )
 
 set(HEADERS ${LUCI_CODEGEN_INCLUDE_DIR}/Codegen.h)
 

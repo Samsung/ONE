@@ -20,7 +20,7 @@
 
 #include "gtest/gtest.h"
 
-#include "CodegenKernelBuilder.h"
+#include "KernelBuilder.h"
 
 #include "Halide.h"
 
@@ -99,13 +99,13 @@ void test_binary_op(const Shape &x_shape, const Shape &y_shape, const Shape &out
   constructBasicNode<DType>(output_node, out_shape);
   output_node.from(&op);
 
-  ASSERT_TRUE(luci_codegen::CodegenKernelBuilder::is_supported(&op));
+  ASSERT_TRUE(luci_codegen::KernelBuilder::is_supported(&op));
 
   luci_codegen::SubgraphContext subgraph;
   subgraph.add_node(&op);
   subgraph.finish_construction();
 
-  luci_codegen::CodegenKernelBuilder builder(subgraph);
+  luci_codegen::KernelBuilder builder(subgraph);
   builder.process();
 
   Halide::Buffer<Type<DType>> x(x_data.data(), reverse_vector(x_shape));
@@ -140,13 +140,13 @@ void test_unary_op(const Shape &in_out_shape, DataVector<DType> in_data, const D
   constructBasicNode<DType>(output_node, in_out_shape);
   output_node.from(&op_node);
 
-  ASSERT_TRUE(luci_codegen::CodegenKernelBuilder::is_supported(&op_node));
+  ASSERT_TRUE(luci_codegen::KernelBuilder::is_supported(&op_node));
 
   luci_codegen::SubgraphContext subgraph;
   subgraph.add_node(&op_node);
   subgraph.finish_construction();
 
-  luci_codegen::CodegenKernelBuilder builder(subgraph);
+  luci_codegen::KernelBuilder builder(subgraph);
   builder.process();
 
   Halide::Buffer<Type<DType>> input_buffer(in_data.data(), reverse_vector(in_out_shape));
@@ -188,12 +188,12 @@ void test_const_op(const Shape &shape, DataVector<DType> data)
   constructBasicNode<DType>(output_node, shape);
   output_node.from(&const_node);
 
-  ASSERT_TRUE(luci_codegen::CodegenKernelBuilder::is_supported(&const_node));
+  ASSERT_TRUE(luci_codegen::KernelBuilder::is_supported(&const_node));
 
   luci_codegen::SubgraphContext subgraph("", {&const_node});
   subgraph.finish_construction();
 
-  luci_codegen::CodegenKernelBuilder builder(subgraph);
+  luci_codegen::KernelBuilder builder(subgraph);
   builder.process();
 
   Halide::Buffer<Type<DType>> res(reverse_vector(shape));
@@ -409,12 +409,12 @@ TEST(codegen_kernels, split)
     output_node[i].from(&split_out[i]);
   }
 
-  ASSERT_TRUE(luci_codegen::CodegenKernelBuilder::is_supported(&split));
+  ASSERT_TRUE(luci_codegen::KernelBuilder::is_supported(&split));
 
   luci_codegen::SubgraphContext subgraph("", {&split, &split_dim, &split_out[0], &split_out[1], &split_out[2]});
   subgraph.finish_construction();
 
-  luci_codegen::CodegenKernelBuilder builder(subgraph);
+  luci_codegen::KernelBuilder builder(subgraph);
   builder.process();
 
   Halide::Buffer<Type<dtype>> input_buffer(in_data.data(), reverse_vector(input_shape));
@@ -481,12 +481,12 @@ TEST(codegen_kernels, fc)
   constructBasicNode<dtype>(output_node, output_shape);
   output_node.from(&fc);
 
-  ASSERT_TRUE(luci_codegen::CodegenKernelBuilder::is_supported(&fc));
+  ASSERT_TRUE(luci_codegen::KernelBuilder::is_supported(&fc));
 
   luci_codegen::SubgraphContext subgraph("", {&fc, &weights_node, &bias_node});
   subgraph.finish_construction();
 
-  luci_codegen::CodegenKernelBuilder builder(subgraph);
+  luci_codegen::KernelBuilder builder(subgraph);
   builder.process();
 
   Halide::Buffer<Type<dtype>> input_buffer(in_data.data(), reverse_vector(input_shape));
