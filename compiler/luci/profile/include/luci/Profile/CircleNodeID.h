@@ -22,13 +22,13 @@
 namespace luci
 {
 
-using CircleNodeIDType = uint32_t;
+using CircleNodeID = uint32_t;
 
 bool has_node_id(luci::CircleNode *circle_node);
 
-void set_node_id(luci::CircleNode *circle_node, CircleNodeIDType id);
+void set_node_id(luci::CircleNode *circle_node, CircleNodeID id);
 
-CircleNodeIDType get_node_id(luci::CircleNode *circle_node);
+CircleNodeID get_node_id(luci::CircleNode *circle_node);
 
 } // namespace luci
 

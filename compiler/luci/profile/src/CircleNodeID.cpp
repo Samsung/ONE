@@ -28,22 +28,22 @@ namespace
  * @note  Once CircleNodeID is annotated, it should not be changed.
  *        If CircleNodeID is needed to be changed, create new CircleNodeID.
  */
-class CircleNodeID final : public loco::NodeAnnotation
+class CircleNodeIDAnnotation final : public loco::NodeAnnotation
 {
 public:
-  CircleNodeID() = delete;
+  CircleNodeIDAnnotation() = delete;
 
-  CircleNodeID(luci::CircleNodeIDType node_id) : _node_id{node_id}
+  CircleNodeIDAnnotation(luci::CircleNodeID node_id) : _node_id{node_id}
   {
     // Do nothing
   }
 
 public:
-  luci::CircleNodeIDType node_id(void) const { return _node_id; }
+  luci::CircleNodeID node_id(void) const { return _node_id; }
   // No setter
 
 private:
-  luci::CircleNodeIDType _node_id;
+  luci::CircleNodeID _node_id;
 };
 
 } // namespace
@@ -53,21 +53,21 @@ namespace luci
 
 bool has_node_id(luci::CircleNode *circle_node)
 {
-  return circle_node->annot<CircleNodeID>() != nullptr;
+  return circle_node->annot<CircleNodeIDAnnotation>() != nullptr;
 }
 
-void set_node_id(luci::CircleNode *circle_node, luci::CircleNodeIDType id)
+void set_node_id(luci::CircleNode *circle_node, luci::CircleNodeID id)
 {
-  circle_node->annot<CircleNodeID>(nullptr);
-  circle_node->annot(std::make_unique<CircleNodeID>(id));
+  circle_node->annot<CircleNodeIDAnnotation>(nullptr);
+  circle_node->annot(std::make_unique<CircleNodeIDAnnotation>(id));
 }
 
-luci::CircleNodeIDType get_node_id(luci::CircleNode *circle_node)
+luci::CircleNodeID get_node_id(luci::CircleNode *circle_node)
 {
   if (!has_node_id(circle_node))
     throw std::runtime_error("Cannot find CircleNodeID");
 
-  return circle_node->annot<CircleNodeID>()->node_id();
+  return circle_node->annot<CircleNodeIDAnnotation>()->node_id();
 }
 
 } // namespace luci
