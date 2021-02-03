@@ -25,6 +25,7 @@
 
 #include <luci/IR/Module.h>
 #include <luci/IR/CircleNodes.h>
+#include <luci/Profile/CircleNodeID.h>
 #include <luci/Log.h>
 #include <luci/LogHelper.h>
 
@@ -138,7 +139,8 @@ void convert_graph(const luci::GraphBuilderSource &source, luci::CircleReader &r
         throw oops::UserExn("Invalid operator", reader.opcode_name(op));
       }
 
-      builder->build(op, &gb_context);
+      auto built_op = builder->build(op, &gb_context);
+      set_node_id(built_op, i);
     }
     else
     {
