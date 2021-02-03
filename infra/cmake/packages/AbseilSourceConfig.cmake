@@ -7,19 +7,14 @@ function(_AbseilSource_import)
   nnas_include(ExternalSourceTools)
   nnas_include(OptionTools)
 
-  # NOTE TensorFlow 1.12 downloads abseil from the following URL
-  # - https://github.com/abseil/abseil-cpp/archive/48cd2c3f351ff188bc85684b84a91b6e6d17d896.tar.gz
-  #
-  # The last change of "48cd2c3f351" was commited on 2018.09.27
-  #
-  # Let's use the latest released version (2020-02 release patch 2)
+  # NOTE TensorFlow 2.3 downloads abseil from the following URL
   envoption(EXTERNAL_DOWNLOAD_SERVER "https://github.com")
-  envoption(ABSEIL_URL ${EXTERNAL_DOWNLOAD_SERVER}/abseil/abseil-cpp/archive/20200225.2.tar.gz)
+  envoption(ABSEIL_URL ${EXTERNAL_DOWNLOAD_SERVER}/abseil/abseil-cpp/archive/df3ea785d8c30a9503321a3d35ee7d35808f190d.tar.gz)
 
   ExternalSource_Download(ABSEIL
     DIRNAME ABSEIL
     URL ${ABSEIL_URL}
-    CHECKSUM MD5=73f2b6e72f1599a9139170c29482ddc4)
+    CHECKSUM MD5=4d9aa7e757adf48fef171c85f0d88552)
 
   set(AbseilSource_DIR ${ABSEIL_SOURCE_DIR} PARENT_SCOPE)
   set(AbseilSource_FOUND TRUE PARENT_SCOPE)

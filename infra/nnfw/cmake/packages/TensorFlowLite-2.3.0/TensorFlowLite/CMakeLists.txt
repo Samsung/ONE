@@ -37,14 +37,14 @@ list(APPEND TFLITE_SRCS "${TFLiteVanillaFFT2DSource_DIR}/fftsg2d.c")
 list(APPEND TFLITE_SRCS "${TFLiteVanillaFlatBuffersSource_DIR}/src/util.cpp")
 
 # externals - absl
-file(GLOB_RECURSE ABSL_SRCS "${TFLiteVanillaAbslSource_DIR}/absl/*.cc")
-file(GLOB_RECURSE ABSL_EXCLS "${TFLiteVanillaAbslSource_DIR}/absl/*test*.cc"
-     "${TFLiteVanillaAbslSource_DIR}/absl/*benchmark*.cc"
-     "${TFLiteVanillaAbslSource_DIR}/absl/synchronization/*.cc"
-     "${TFLiteVanillaAbslSource_DIR}/absl/debugging/*.cc"
-     "${TFLiteVanillaAbslSource_DIR}/absl/hash/*.cc"
-     "${TFLiteVanillaAbslSource_DIR}/absl/flags/*.cc"
-     "${TFLiteVanillaAbslSource_DIR}/absl/random/*.cc")
+file(GLOB_RECURSE ABSL_SRCS "${AbseilSource_DIR}/absl/*.cc")
+file(GLOB_RECURSE ABSL_EXCLS "${AbseilSource_DIR}/absl/*test*.cc"
+     "${AbseilSource_DIR}/absl/*benchmark*.cc"
+     "${AbseilSource_DIR}/absl/synchronization/*.cc"
+     "${AbseilSource_DIR}/absl/debugging/*.cc"
+     "${AbseilSource_DIR}/absl/hash/*.cc"
+     "${AbseilSource_DIR}/absl/flags/*.cc"
+     "${AbseilSource_DIR}/absl/random/*.cc")
 list(REMOVE_ITEM ABSL_SRCS ${ABSL_EXCLS})
 list(APPEND TFLITE_SRCS ${ABSL_SRCS})
 
@@ -100,7 +100,7 @@ list(REMOVE_ITEM TFLITE_SRCS ${TFLITE_EXCLS})
 # include headers
 list(APPEND TFLITE_INCLUDES "${TFLiteVanillaTensorFlowSource_DIR}")
 list(APPEND TFLITE_INCLUDES "${TFLiteVanillaEigenSource_DIR}")
-list(APPEND TFLITE_INCLUDES "${TFLiteVanillaAbslSource_DIR}")
+list(APPEND TFLITE_INCLUDES "${AbseilSource_DIR}")
 list(APPEND TFLITE_INCLUDES "${TFLiteVanillaGEMMLowpSource_DIR}")
 list(APPEND TFLITE_INCLUDES "${TFLiteVanillaNEON2SSESource_DIR}")
 list(APPEND TFLITE_INCLUDES "${TFLiteVanillaFarmhashSource_DIR}/src")

@@ -11,14 +11,8 @@ if(BUILD_TENSORFLOW_LITE_2_3_0)
   nnas_include(OptionTools)
 
   # Below urls come from https://github.com/tensorflow/tensorflow/blob/v2.3.0/tensorflow/lite/tools/make/Makefile
-
-  set(absl_url "https://github.com/abseil/abseil-cpp/archive/df3ea785d8c30a9503321a3d35ee7d35808f190d.tar.gz")
-  ExternalSource_Download("TFLiteVanilla_Absl" ${absl_url})
-  set(TFLiteVanillaAbslSource_DIR "${TFLiteVanilla_Absl_SOURCE_DIR}")
-  if (NOT TFLiteVanillaAbslSource_DIR STREQUAL "")
-    set(TFLiteVanillaAbslSource_FOUND TRUE)
-  endif()
-  return_unless(TFLiteVanillaAbslSource_FOUND)
+  nnas_find_package(AbseilSource QUIET)
+  return_unless(AbseilSource_FOUND)
 
   set(eigen_url "https://gitlab.com/libeigen/eigen/-/archive/386d809bde475c65b7940f290efe80e6a05878c4/eigen-386d809bde475c65b7940f290efe80e6a05878c4.tar.gz")
   ExternalSource_Download("TFLiteVanilla_Eigen" ${eigen_url})
