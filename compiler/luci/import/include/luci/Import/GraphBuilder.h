@@ -33,7 +33,7 @@ class GraphBuilder : public GraphBuilderBase
 public:
   virtual ~GraphBuilder() = default;
 
-  void build(const circle::OperatorT &op, GraphBuilderContext *context) const final;
+  CircleNode *build(const circle::OperatorT &op, GraphBuilderContext *context) const final;
 
 private:
   virtual CircleNode *build_node(const circle::OperatorT &op,

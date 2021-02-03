@@ -63,8 +63,8 @@ bool CircleNonMaxSuppressionV5GraphBuilder::validate(const ValidateArgs &args) c
  *         We will create multiple NonMasSuppressionV5Oout nodes to emulate this
  */
 
-void CircleNonMaxSuppressionV5GraphBuilder::build(const circle::OperatorT &op,
-                                                  GraphBuilderContext *context) const
+CircleNode *CircleNonMaxSuppressionV5GraphBuilder::build(const circle::OperatorT &op,
+                                                         GraphBuilderContext *context) const
 {
   assert(context != nullptr);
 
@@ -121,6 +121,8 @@ void CircleNonMaxSuppressionV5GraphBuilder::build(const circle::OperatorT &op,
 
     context->nodefinder()->enroll(outputs[n], nodeout);
   }
+
+  return node;
 }
 
 } // namespace luci

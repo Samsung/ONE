@@ -58,7 +58,8 @@ bool CircleSplitGraphBuilder::validate(const ValidateArgs &args) const
  *                          \- CircleSplitOut --- FullyConnected ---
  */
 
-void CircleSplitGraphBuilder::build(const circle::OperatorT &op, GraphBuilderContext *context) const
+CircleNode *CircleSplitGraphBuilder::build(const circle::OperatorT &op,
+                                           GraphBuilderContext *context) const
 {
   assert(context != nullptr);
 
@@ -114,6 +115,8 @@ void CircleSplitGraphBuilder::build(const circle::OperatorT &op, GraphBuilderCon
 
     context->nodefinder()->enroll(outputs[n], nodeout);
   }
+
+  return node;
 }
 
 } // namespace luci
