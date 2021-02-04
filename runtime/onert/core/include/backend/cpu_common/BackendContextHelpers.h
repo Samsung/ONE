@@ -34,11 +34,10 @@ namespace cpu_common
 {
 
 // TODO Remove the template param BackendContext once unification of cpu backend context is done
-template <typename T_BackendContext>
-void planTensors(const T_BackendContext &ctx, const std::vector<onert::ir::OperationIndex> &order,
-                 const compiler::GraphLowerInfo &lower_info)
+template <typename T_BackendContext> void planTensors(const T_BackendContext &ctx)
 {
-  auto graph = ctx.graph();
+  const ir::Graph &graph = *ctx.graph();
+  const auto &order = ctx.data().op_order;
   auto tensor_builder = ctx.tensor_builder;
 
   ir::OperandIndexMap<uint32_t> uses_map;
@@ -46,24 +45,14 @@ void planTensors(const T_BackendContext &ctx, const std::vector<onert::ir::Opera
   ir::OperandIndexSequence constants;
 
   auto model_io =
-    (graph->getInputs() + graph->getOutputs()) | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED;
+    (graph.getInputs() + graph.getOutputs()) | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED;
 
   // Prepare scanning
-  for (auto ind : ctx.operand_list())
-  {
-    if (model_io.contains(ind))
-      continue;
-    const auto &obj = graph->operands().at(ind);
-    const auto &li = lower_info.operand.getRawPtr(ind);
-    if (li->def_factors().getOnlyElement().backend() != ctx.backend())
-      continue;
-
-    // Ignore unused tensor
-    if (li->def_factors().size() == 0 && li->use_factors().size() == 0)
-    {
-      VERBOSE_F() << "Operand " << ind << " will not be used. no more process." << std::endl;
+  graph.operands().iterate([&](const ir::OperandIndex &ind, const ir::Operand &obj) {
+    if (ctx.external_operands().contains(ind))
       return;
-    }
+
+    // TODO Check if we need to handle unused tensors
 
     uses_map[ind] = obj.getUses().size();
     def_map[ind] = obj.getDef().valid() ? 1 : 0;
@@ -71,16 +60,18 @@ void planTensors(const T_BackendContext &ctx, const std::vector<onert::ir::Opera
     if (obj.isConstant())
       constants.append(ind);
 
-    auto factor = li->def_factors().getOnlyElement();
     if (!tensor_builder->isRegistered(ind))
     {
       // These tensors do not exist in any  (No use and def)
       const auto info = obj.info();
-      const auto backend_layout = factor.layout();
-      // TODO Change tensor info to have permuted shape
-      tensor_builder->registerTensorInfo(ind, info, backend_layout);
+      // NOTE Currently we only support NHWC tensors for cpu-common tensors.
+      //      There is no way to get the layout info from the backend context for now.
+      //      When we support NCHW tensors as well, we also need to change tensor info to be
+      //      permuted shape.
+      assert(ctx.operand_layouts().at(ind) == ir::Layout::NHWC);
+      tensor_builder->registerTensorInfo(ind, info, ir::Layout::NHWC);
     }
-  }
+  });
 
   // Start scanning to do notify{First|Last}Use for each tensor
 
@@ -93,13 +84,28 @@ void planTensors(const T_BackendContext &ctx, const std::vector<onert::ir::Opera
     tensor_builder->notifyFirstUse(ind);
   }
 
+  for (auto &pair : def_map)
+  {
+    if (pair.second == 0)
+      tensor_builder->notifyFirstUse(pair.first);
+  }
+
+  // This is a workaround to keep the operands over the execution
+  // (the operands look like they are unused)
+  std::vector<ir::OperandIndex> operands_last_until_end;
+  for (auto &pair : uses_map)
+  {
+    if (pair.second == 0)
+      operands_last_until_end.push_back(pair.first);
+  }
+
   // At each operation,
   // 1. Scan DEF of outputs. If the DEF, allocate it
   // 2. Scan DEF of inputs. If variable tensor, allocate it
   // 3. Scan USE of inputs. Decrease the USE and deallocate if the USE is 0
   for (const auto op_ind : order)
   {
-    const auto &op = graph->operations().at(op_ind);
+    const auto &op = graph.operations().at(op_ind);
     // TODO Remove indentation
     {
       auto op_inputs = op.getInputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED;
@@ -108,7 +114,7 @@ void planTensors(const T_BackendContext &ctx, const std::vector<onert::ir::Opera
       // Define outputs
       for (const auto &ind : op_outputs)
       {
-        if (model_io.contains(ind))
+        if (ctx.external_operands().contains(ind))
           continue;
         if (!tensor_builder->isRegistered(ind))
           continue;
@@ -125,18 +131,16 @@ void planTensors(const T_BackendContext &ctx, const std::vector<onert::ir::Opera
       // non-constant because of less memory usage by memory planning in here
       for (const auto &ind : op_inputs)
       {
-        if (model_io.contains(ind))
+        if (ctx.external_operands().contains(ind))
           continue;
         if (!tensor_builder->isRegistered(ind))
           continue;
-        const auto &operand = graph->operands().at(ind);
+        const auto &operand = graph.operands().at(ind);
         if (operand.info().isVariable())
         {
           // The variable tensor with buffer is not supported yet
           assert(operand.data() == nullptr);
           assert(operand.getUses().size() == 1 && !operand.getDef().valid());
-          assert(lower_info.operand.at(ind).def_factors().size() == 1 &&
-                 lower_info.operand.at(ind).use_factors().size() == 1);
           assert(uses_map[ind] == 1 && def_map[ind] == 0);
           tensor_builder->notifyFirstUse(ind);
         }
@@ -144,7 +148,7 @@ void planTensors(const T_BackendContext &ctx, const std::vector<onert::ir::Opera
 
       for (const auto &ind : op_inputs)
       {
-        if (model_io.contains(ind))
+        if (ctx.external_operands().contains(ind))
           continue;
         if (!tensor_builder->isRegistered(ind))
           continue;
@@ -166,6 +170,11 @@ void planTensors(const T_BackendContext &ctx, const std::vector<onert::ir::Opera
     }
   }
 
+  for (auto ind : operands_last_until_end)
+  {
+    tensor_builder->notifyLastUse(ind);
+  }
+
   // Dispose and validate
   for (const auto &ind : constants)
   {
@@ -185,56 +194,36 @@ void planTensors(const T_BackendContext &ctx, const std::vector<onert::ir::Opera
                 [](std::pair<const ir::OperandIndex, uint32_t> it) { return it.second == 0; }));
 }
 
-template <typename T_BackendContext>
-ITensorRegistry *genTensors(T_BackendContext &ctx,
-                            const std::vector<onert::ir::OperationIndex> &order,
-                            const compiler::GraphLowerInfo &lower_info)
+template <typename T_BackendContext> ITensorRegistry *genTensors(T_BackendContext &ctx)
 {
-  auto graph = ctx.graph();
+  const ir::Graph &graph = *ctx.graph();
   auto tensor_builder = ctx.tensor_builder;
 
   auto model_io =
-    (graph->getInputs() + graph->getOutputs()) | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED;
-  for (auto index : ctx.operand_list())
-  {
-    if (model_io.contains(index))
-      continue;
-    const auto &obj = graph->operands().at(index);
-    const auto frontend_layout = [&]() {
-      if (obj.getUses().size() == 0)
-        return ir::Layout::UNKNOWN;
-      auto use_op_ind = *obj.getUses().begin(); // FIXME What if it has two or more uses?
-      for (auto &operation_info : ctx.operation_list())
-      {
-        if (operation_info.index == use_op_ind)
-          return operation_info.layout;
-      }
-      return ir::Layout::UNKNOWN;
-    }();
-    const auto &permute_factor =
-      lower_info.operand.getRawPtr(index)->def_factors().getOnlyElement();
-    if (permute_factor.backend() != ctx.backend())
-      continue;
-    const auto backend_layout = permute_factor.layout();
-    ir::OperandInfo backend_info{permuteShape(obj.shape(), frontend_layout, backend_layout),
-                                 obj.typeInfo(), obj.info().memAllocType(), obj.isConstant()};
-    tensor_builder->registerTensorInfo(index, backend_info, backend_layout);
-  }
+    (graph.getInputs() + graph.getOutputs()) | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED;
+  graph.operands().iterate([&](const ir::OperandIndex &ind, const ir::Operand &obj) {
+    if (ctx.external_operands().contains(ind))
+      return;
+    // NOTE Assuming there is no layout changes (Always assume NHWC or UNKNOWN)
+    assert(graph.layout() != ir::Layout::NCHW);
+    ir::OperandInfo backend_info{obj.shape(), obj.typeInfo(), obj.info().memAllocType(),
+                                 obj.isConstant()};
+    tensor_builder->registerTensorInfo(ind, backend_info, ir::Layout::NHWC);
+  });
 
   // TODO Get compiler options from compiler, and use it rather than getting it from Env
   if (util::getConfigString(util::config::EXECUTOR) == "Linear")
   {
-    cpu_common::planTensors(ctx, order, lower_info);
+    cpu_common::planTensors(ctx);
   }
   else
   {
     // For the executors that does not have fixed linear execution order:
     // To make tensors never be deallocated, this is a workaround to use static memory planner
-    for (auto ind : ctx.operand_list())
-    {
+    graph.operands().iterate([&](const ir::OperandIndex &ind, const ir::Operand &) {
       if (tensor_builder->isRegistered(ind))
         tensor_builder->notifyFirstUse(ind);
-    }
+    });
   }
 
   tensor_builder->allocate();
@@ -244,11 +233,9 @@ ITensorRegistry *genTensors(T_BackendContext &ctx,
 
 inline void initConsts(BackendContext &ctx)
 {
-  for (auto ind : ctx.operand_list())
-  {
-    const auto &operand = ctx.graph()->operands().at(ind);
-    if (!operand.isConstant())
-      continue;
+  ctx.graph()->operands().iterate([&](const ir::OperandIndex &ind, const ir::Operand &operand) {
+    if (ctx.external_operands().contains(ind) || !operand.isConstant())
+      return;
 
     auto tensor = ctx.tensor_registry->getNativeITensor(ind);
     assert(tensor != nullptr);
@@ -260,7 +247,7 @@ inline void initConsts(BackendContext &ctx)
     ExternalTensor *ext_tensor = dynamic_cast<ExternalTensor *>(tensor);
     assert(ext_tensor);
     ext_tensor->setData(data);
-  }
+  });
 }
 
 } // namespace cpu_common

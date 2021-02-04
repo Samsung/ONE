@@ -17,6 +17,7 @@
 #include "OperationValidator.h"
 
 #include "ir/Graph.h"
+#include "util/logging.h"
 
 #define OP_REQUIRES(EXP)                                                                         \
   do                                                                                             \

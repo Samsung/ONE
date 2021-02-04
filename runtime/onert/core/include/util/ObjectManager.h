@@ -24,6 +24,8 @@
 
 #include <memory>
 
+#include "util/logging.h"
+
 namespace onert
 {
 namespace util

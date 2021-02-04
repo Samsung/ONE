@@ -40,6 +40,7 @@ void TensorBuilder::registerTensorInfo(const ir::OperandIndex &ind, const ir::Op
 {
   _tensor_info_map.emplace(ind, info);
 
+  VERBOSE_F() << "cpucommon REGISTER!! " << ind << std::endl;
   if (info.isDynamic())
   {
     _dynamic_tensor_mgr->buildTensor(ind, info, backend_layout);

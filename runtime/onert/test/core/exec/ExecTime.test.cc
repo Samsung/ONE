@@ -45,9 +45,7 @@ struct MockBackend : public ::onert::backend::Backend
   {
     return std::make_shared<MockConfig>();
   }
-  std::unique_ptr<BackendContext> newContext(const ir::Graph &,
-                                             const std::shared_ptr<custom::IKernelBuilder> &kb,
-                                             bool) const override
+  std::unique_ptr<onert::backend::BackendContext> newContext(ContextData &&) const override
   {
     return nullptr;
   }

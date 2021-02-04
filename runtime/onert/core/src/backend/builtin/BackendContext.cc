@@ -26,24 +26,14 @@ namespace backend
 namespace builtin
 {
 
-ITensorRegistry *BackendContext::genTensors(const std::vector<onert::ir::OperationIndex> &order,
-                                            const compiler::GraphLowerInfo &lower_info)
-{
-  return cpu_common::genTensors(*this, order, lower_info);
-}
+ITensorRegistry *BackendContext::genTensors() { return cpu_common::genTensors(*this); }
 
-FunctionMap BackendContext::genKernels(const std::vector<ir::OperationIndex> &order)
+FunctionMap BackendContext::genKernels()
 {
   FunctionMap ret;
 
-  for (auto op_ind : order)
+  for (auto op_ind : _data.op_order)
   {
-    // Skip if operation is not assigned to the backend
-    auto &ops = operation_list();
-    bool assigned = std::any_of(ops.begin(), ops.end(),
-                                [&](const OperationInfo &info) { return info.index == op_ind; });
-    if (!assigned)
-      continue;
     auto fn_seq = kernel_gen->generate(op_ind);
     ret.emplace_back(op_ind, std::move(fn_seq));
   }
@@ -51,12 +41,8 @@ FunctionMap BackendContext::genKernels(const std::vector<ir::OperationIndex> &or
   cpu_common::initConsts(*this);
 
   // NOTE For memory optimization, we want to free some operand data
-  for (auto ind : operand_list())
-  {
-    // TODO Remove const_cast
-    auto &obj = const_cast<ir::Graph *>(graph())->operands().at(ind);
-    obj.releaseData();
-  }
+  const_cast<ir::Graph *>(graph())->operands().iterate(
+    [&](const ir::OperandIndex &, ir::Operand &obj) { obj.releaseData(); });
 
   for (auto &it : ret)
   {

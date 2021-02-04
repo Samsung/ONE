@@ -32,19 +32,18 @@ namespace ruy
 class BackendContext : public onert::backend::BackendContext
 {
 public:
-  BackendContext(const Backend *backend, const ir::Graph *graph,
+  BackendContext(const Backend *backend, ContextData &&data,
                  std::shared_ptr<ITensorRegistry> tensor_registry = nullptr,
                  std::shared_ptr<TensorBuilder> tensor_builder = nullptr,
                  std::shared_ptr<KernelGenerator> kernel_gen = nullptr)
-    : onert::backend::BackendContext(backend, graph, tensor_registry),
+    : onert::backend::BackendContext(backend, std::move(data), tensor_registry),
       tensor_builder{tensor_builder}, kernel_gen{kernel_gen}, _external_context(new ExternalContext)
   {
   }
 
-  ITensorRegistry *genTensors(const std::vector<onert::ir::OperationIndex> &order,
-                              const compiler::GraphLowerInfo &lower_info) override;
+  ITensorRegistry *genTensors() override;
 
-  FunctionMap genKernels(const std::vector<ir::OperationIndex> &order) override;
+  FunctionMap genKernels() override;
 
   std::shared_ptr<ExternalContext> external_context() { return _external_context; }
 

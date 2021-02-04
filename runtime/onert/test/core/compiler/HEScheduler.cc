@@ -52,10 +52,9 @@ struct MockConfigCPU : public IConfig
 struct MockBackendCPU : public Backend
 {
   std::shared_ptr<IConfig> config() const override { return std::make_shared<MockConfigCPU>(); }
-  std::unique_ptr<BackendContext>
-  newContext(const Graph &, const std::shared_ptr<custom::IKernelBuilder> &, bool) const override
+  std::unique_ptr<BackendContext> newContext(ContextData &&data) const override
   {
-    return std::unique_ptr<BackendContext>(new BackendContext{this, nullptr});
+    return std::make_unique<BackendContext>(this, std::move(data), nullptr);
   }
 };
 
@@ -75,10 +74,9 @@ struct MockConfigGPU : public IConfig
 struct MockBackendGPU : public Backend
 {
   std::shared_ptr<IConfig> config() const override { return std::make_shared<MockConfigGPU>(); }
-  std::unique_ptr<BackendContext>
-  newContext(const Graph &, const std::shared_ptr<custom::IKernelBuilder> &, bool) const override
+  std::unique_ptr<BackendContext> newContext(ContextData &&data) const override
   {
-    return std::unique_ptr<BackendContext>(new BackendContext{this, nullptr});
+    return std::make_unique<BackendContext>(this, std::move(data), nullptr);
   }
 };
 
@@ -98,10 +96,9 @@ struct MockConfigNPU : public IConfig
 struct MockBackendNPU : public Backend
 {
   std::shared_ptr<IConfig> config() const override { return std::make_shared<MockConfigNPU>(); }
-  std::unique_ptr<BackendContext>
-  newContext(const Graph &, const std::shared_ptr<custom::IKernelBuilder> &, bool) const override
+  std::unique_ptr<BackendContext> newContext(ContextData &&data) const override
   {
-    return std::unique_ptr<BackendContext>(new BackendContext{this, nullptr});
+    return std::make_unique<BackendContext>(this, std::move(data), nullptr);
   }
 };
 
