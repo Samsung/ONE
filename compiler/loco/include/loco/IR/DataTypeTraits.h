@@ -52,6 +52,12 @@ template <> struct DataTypeImpl<DataType::S16>
   using Type = int16_t;
 };
 
+template <> struct DataTypeImpl<DataType::U16>
+{
+  // Use C++ uint16_t type for unsigned 16bit integer
+  using Type = uint16_t;
+};
+
 template <> struct DataTypeImpl<DataType::S32>
 {
   // Use C++ int32_t type for 32bit integer
@@ -70,10 +76,22 @@ template <> struct DataTypeImpl<DataType::S64>
   using Type = int64_t;
 };
 
+template <> struct DataTypeImpl<DataType::U64>
+{
+  // Use C++ uint64_t type for unsigned 64bit integer
+  using Type = uint64_t;
+};
+
 template <> struct DataTypeImpl<DataType::FLOAT32>
 {
   // Use C++ float type for IEEE 32-bit floating-point numbers
   using Type = float;
+};
+
+template <> struct DataTypeImpl<DataType::FLOAT64>
+{
+  // Use C++ double type for IEEE 64-bit floating-point numbers
+  using Type = double;
 };
 
 // NOTE DataTypeImpl for BOOL is subject to change
@@ -97,14 +115,20 @@ inline uint32_t size(DataType data_type)
       return sizeof(DataTypeImpl<DataType::U8>::Type);
     case DataType::S16:
       return sizeof(DataTypeImpl<DataType::S16>::Type);
+    case DataType::U16:
+      return sizeof(DataTypeImpl<DataType::U16>::Type);
     case DataType::S32:
       return sizeof(DataTypeImpl<DataType::S32>::Type);
     case DataType::U32:
       return sizeof(DataTypeImpl<DataType::U32>::Type);
     case DataType::S64:
       return sizeof(DataTypeImpl<DataType::S64>::Type);
+    case DataType::U64:
+      return sizeof(DataTypeImpl<DataType::U64>::Type);
     case DataType::FLOAT32:
       return sizeof(DataTypeImpl<DataType::FLOAT32>::Type);
+    case DataType::FLOAT64:
+      return sizeof(DataTypeImpl<DataType::FLOAT64>::Type);
     case DataType::BOOL:
       return sizeof(DataTypeImpl<DataType::BOOL>::Type);
     default:
