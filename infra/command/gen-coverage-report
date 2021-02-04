@@ -67,12 +67,9 @@ done
   "${CANDIDATES[@]}"
 
 # Exclude *.test.cpp files from coverage report
-"${LCOV_PATH}" -r "${EXTRACTED_COVERAGE_INFO_PATH}" -o "${EXCLUDED_COVERAGE_INFO_PATH}" \
-  '*.test.cpp'
-
 # Exclude flatbuffer generated files from coverage report
 "${LCOV_PATH}" -r "${EXTRACTED_COVERAGE_INFO_PATH}" -o "${EXCLUDED_COVERAGE_INFO_PATH}" \
-  '*_schema_generated.h'
+  '*.test.cpp' '*_schema_generated.h'
 
 # Final coverage data
 cp -v ${EXCLUDED_COVERAGE_INFO_PATH} ${COVERAGE_INFO_PATH}
