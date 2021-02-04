@@ -5,7 +5,7 @@ usage()
 {
     echo "Usage: $0 [BuildArch] [LinuxCodeName] [--setproxy=IP] [--skipunmount]"
     echo "BuildArch can be: arm(default), aarch64 and armel"
-    echo "LinuxCodeName - optional, Code name for Linux, can be: bionic(default), trusty, xenial, focal"
+    echo "LinuxCodeName - optional, Code name for Linux, can be: xenial, bionic(default), focal"
     echo "                          If BuildArch is armel, this can be tizen(default)"
     echo "--setproxy=IP - optional, IP is the proxy server IP address or url with portnumber"
     echo "                           default no proxy. Example: --setproxy=127.1.2.3:8080"
@@ -68,9 +68,6 @@ for i in "$@" ; do
             __QemuArch=
             __UbuntuRepo=
             __LinuxCodeName=
-            ;;
-        trusty)
-            __LinuxCodeName=trusty
             ;;
         xenial)
             __LinuxCodeName=xenial
