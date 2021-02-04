@@ -59,6 +59,7 @@ int main(int argc, char **argv)
   std::unique_ptr<luci::Module> luci_module = importer.importModule(circle_module);
 
   luci_codegen::Options options;
+  options.generate_checks = false;
   // set options if needed
   luci_codegen::Codegen codegen(options);
   codegen.process_module(*luci_module);

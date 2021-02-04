@@ -33,6 +33,7 @@ struct Options
    * max size of constant buffer to inline in code in bytes
    */
   int max_inline_buffer_threshold = 1024;
+  bool generate_checks = true;
 };
 
 class SubgraphContext;

@@ -186,7 +186,6 @@ void Codegen::cleanup_graph(SubgraphContext *subgraph) const
 
 void Codegen::process_graph(loco::Graph &graph)
 {
-  std::unordered_set<luci::CircleNode *> processed;
   auto nodes = graph.nodes();
 
   // find and generate code
@@ -195,7 +194,7 @@ void Codegen::process_graph(loco::Graph &graph)
     auto node = static_cast<luci::CircleNode *>(nodes->at(i));
 
     // Check if we found node that belongs to subgraph we can compile
-    if (processed.count(node) || !fits_constrains(node))
+    if (_processed.count(node) || !fits_constrains(node))
       continue;
 
     // Traverse graph to find all compilable adjacent nodes
@@ -250,7 +249,14 @@ void Codegen::emit_code(std::string package_name)
     }
     Halide::Pipeline composite_output(outputs);
     composite_output.compile_to_lowered_stmt(subgraph.get_name() + ".html", arguments, Halide::StmtOutputFormat::HTML);
-    composite_output.compile_to_object(subgraph.get_name() + ".o", arguments, subgraph.get_name());
+
+    Halide::Target target = Halide::get_host_target();
+
+    if (!_options.generate_checks)
+    {
+      target.set_feature(Halide::Target::NoAsserts);
+    }
+    composite_output.compile_to_object(subgraph.get_name() + ".o", arguments, subgraph.get_name(), target);
   }
 }
 

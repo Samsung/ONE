@@ -21,7 +21,11 @@ namespace luci_codegen
 
 void Scheduler::process()
 {
-  // TODO
+  std::
+  for (auto output: _subgraph.get_outputs())
+  {
+    output.second.vectorize(output.second.args()[0], Halide::Expr(4));
+  }
 }
 
 } // namespace luci_codegen

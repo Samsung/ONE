@@ -35,8 +35,8 @@ size_t const_node_size(const luci::CircleNode *node)
       return sizeof(std::int32_t) * const_node->size<loco::DataType::S64>();
     case loco::DataType::FLOAT32:
       return sizeof(std::int32_t) * const_node->size<loco::DataType::FLOAT32>();
-      //    case loco::DataType::FLOAT64:
-      //      return sizeof(std::int32_t) * const_node->size<loco::DataType::FLOAT64>(); // double is not supported in luci
+    case loco::DataType::FLOAT64:
+      return sizeof(std::int32_t) * const_node->size<loco::DataType::FLOAT64>(); // double is not supported in luci
   }
   return 0;
 }

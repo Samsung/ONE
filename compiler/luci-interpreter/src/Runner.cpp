@@ -26,8 +26,11 @@
 #include <map>
 #include <string>
 #include <random>
+#include <chrono>
 
 #include <algorithm>
+
+// NOTE THIS UTILITY IS JUST FOR MANUAL TESING, IT SHOULD BE REMOVED OR REWRITTEN LATER
 
 namespace
 {
@@ -117,8 +120,21 @@ int main(int argc, char **argv)
     interpreter.writeInputTensor(input_node, input_data.data(), input_data.size());
   }
 
-  // Do inference.
-  interpreter.interpret();
+  constexpr int repeats = 1000;
+
+  std::chrono::system_clock::time_point start = std::chrono::system_clock::now();
+
+  for (int i = 0; i < repeats; ++i)
+  {
+    // Do inference.
+    interpreter.interpret();
+  }
+
+  std::chrono::system_clock::time_point finish = std::chrono::system_clock::now();
+
+  float elapsed_time = std::chrono::duration_cast<std::chrono::microseconds>(finish - start).count();
+
+  std::cout << "elapsed time: " << elapsed_time / repeats << " us\n";
 
   // Get output.
   const auto output_nodes = loco::output_nodes(module->graph());
