@@ -14,7 +14,7 @@ Use `install_rootfs.sh` script to prepare Root File System. You should have `sud
 $ sudo ./tools/cross/install_rootfs.sh arm
 ```
 - supports `arm`(default) and `aarch` architecutre for now
-- supports `bionic`(default), `trusty`, `xenial` and `focal` release
+- supports `bionic`(default), and `focal` release
 
 To see the options,
 ```
@@ -25,7 +25,7 @@ RootFS will be prepared at `tools/cross/rootfs/arm` folder.
 
 ***\* CAUTION: The OS version of rootfs must match the OS version of execution target device. On the other hand, you need to match the Ubuntu version of the development PC with the Ubuntu version of rootfs to be used for cross-build. Otherwise, unexpected build errors may occur.***
 
-If you are using Ubuntu 16.04 LTS, select `xenial`, if you are using Ubuntu 18.04 LTS, select `bionic`. You can check your Ubuntu code name in the following way.
+If you are using Ubuntu 18.04 LTS, select `bionic`, if you are using Ubuntu 20.04 LTS, select `focal`. You can check your Ubuntu code name in the following way.
 
 ```
 $ cat /etc/lsb-release
@@ -42,7 +42,7 @@ If a build error occurs because the version of the development system and the ta
 Use `ROOTFS_DIR` to a full path to prepare at alternative path.
 
 ```
-$ ROOTFS_DIR=/home/user/rootfs/arm-xenial sudo -E ./tools/cross/install_rootfs.sh arm
+$ ROOTFS_DIR=/home/user/rootfs/arm-bionic sudo -E ./tools/cross/install_rootfs.sh arm
 ```
 
 ### Using proxy
@@ -81,27 +81,9 @@ $ update-alternatives --install /usr/bin/arm-linux-gnueabihf-gcc arm-linux-gnuea
     --slave /usr/bin/arm-linux-gnueabihf-gcov arm-linux-gnueabihf-gcov /usr/bin/arm-linux-gnueabihf-gcov-8
 ```
 
-### Ubuntu 16.04 LTS
+### Ubuntu 20.04 LTS
 
-On Ubuntu 16.04 or older, follow the next steps:
-
-```
-$ cd ~/your/path
-$ wget https://releases.linaro.org/components/toolchain/binaries/7.2-2017.11/arm-linux-gnueabihf/gcc-linaro-7.2.1-2017.11-x86_64_arm-linux-gnueabihf.tar.xz
-$ tar xvf gcc-linaro-7.2.1-2017.11-x86_64_arm-linux-gnueabihf.tar.xz
-$ echo 'export PATH=~/your/path/gcc-linaro-7.2.1-2017.11-x86_64_arm-linux-gnueabihf/bin:$PATH' >> ~/.bashrc
-```
-
-Make sure you get `libstdc++.so` updated on your target with your new toolchain's corresponding one.
-
-For example, if you installed gcc-linaro-7.2.1-2017.11 above, do
-
-```
-$ wget https://releases.linaro.org/components/toolchain/binaries/7.2-2017.11/arm-linux-gnueabihf/runtime-gcc-linaro-7.2.1-2017.11-arm-linux-gnueabihf.tar.xz
-$ tar xvf runtime-gcc-linaro-7.2.1-2017.11-arm-linux-gnueabihf.tar.xz
-```
-
-Then, copy `libstdc++.so.6.0.24` into `/usr/lib/arm-linux-gnueabihf`, and update symbolic links on your device.
+Same with Ubuntu 18.04 LTS. (except g++ version)
 
 ## Build and install ARM Compute Library
 
