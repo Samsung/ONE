@@ -19,6 +19,8 @@
 
 #include <gtest/gtest.h>
 
+#include <vector>
+
 namespace
 {
 
@@ -50,20 +52,27 @@ void create_remove_unnecessary_strided_slice(loco::Graph *g,
   // Strides create
   auto strides = g->nodes()->create<luci::CircleConst>();
   strides->dtype(loco::DataType::S32);
-  strides->size<loco::DataType::S32>(input_shape.size());
   strides->rank(1);
   strides->dim(0).set(input_shape.size());
+  strides->size<loco::DataType::S32>(input_shape.size());
   for (int i = 0; i < input_shape.size(); ++i)
   {
-    strides->at<loco::DataType::S32>(i) = -1;
+    strides->at<loco::DataType::S32>(i) = remove ? 1 : -1;
   }
 
   auto end = g->nodes()->create<luci::CircleConst>();
+  std::vector<uint32_t> shape_vector{input_shape};
   end->dtype(loco::DataType::S32);
-  end->size<loco::DataType::S32>(input_shape.size());
   end->rank(1);
   end->dim(0).set(input_shape.size());
-  end->shape(input_shape);
+  end->size<loco::DataType::S32>(input_shape.size());
+  for (int i = 0; i < input_shape.size(); ++i)
+  {
+    if (remove)
+      end->at<loco::DataType::S32>(i) = static_cast<int32_t>(shape_vector.at(i));
+    else
+      end->at<loco::DataType::S32>(i) = -1;
+  }
 
   // StridedSlice Node create
   auto strided_slice = g->nodes()->create<luci::CircleStridedSlice>();
