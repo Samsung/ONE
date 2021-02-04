@@ -88,8 +88,8 @@ bool CircleUnpackGraphBuilder::validate(const ValidateArgs &args) const
  *                           \- CircleUnpackOut --- FullyConnected ---
  */
 
-void CircleUnpackGraphBuilder::build(const circle::OperatorT &op,
-                                     GraphBuilderContext *context) const
+CircleNode *CircleUnpackGraphBuilder::build(const circle::OperatorT &op,
+                                            GraphBuilderContext *context) const
 {
   assert(context != nullptr);
 
@@ -146,6 +146,8 @@ void CircleUnpackGraphBuilder::build(const circle::OperatorT &op,
 
     context->nodefinder()->enroll(outputs[n], nodeout);
   }
+
+  return node;
 }
 
 } // namespace luci

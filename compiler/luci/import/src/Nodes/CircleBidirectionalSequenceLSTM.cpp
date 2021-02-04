@@ -109,8 +109,8 @@ CircleNode *CircleBidirectionalSequenceLSTMGraphBuilder::build_node(
   return node;
 }
 
-void CircleBidirectionalSequenceLSTMGraphBuilder::build(const circle::OperatorT &op,
-                                                        GraphBuilderContext *context) const
+CircleNode *CircleBidirectionalSequenceLSTMGraphBuilder::build(const circle::OperatorT &op,
+                                                               GraphBuilderContext *context) const
 {
   assert(context != nullptr);
 
@@ -163,6 +163,8 @@ void CircleBidirectionalSequenceLSTMGraphBuilder::build(const circle::OperatorT 
 
     context->nodefinder()->enroll(outputs[n], nodeout);
   }
+
+  return node;
 }
 
 } // namespace luci

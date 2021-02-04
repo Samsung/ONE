@@ -59,8 +59,8 @@ bool CircleTopKV2GraphBuilder::validate(const ValidateArgs &args) const
  *                           \- CircleTopKV2Out --- FullyConnected ---
  */
 
-void CircleTopKV2GraphBuilder::build(const circle::OperatorT &op,
-                                     GraphBuilderContext *context) const
+CircleNode *CircleTopKV2GraphBuilder::build(const circle::OperatorT &op,
+                                            GraphBuilderContext *context) const
 {
   assert(context != nullptr);
 
@@ -112,6 +112,8 @@ void CircleTopKV2GraphBuilder::build(const circle::OperatorT &op,
 
     context->nodefinder()->enroll(outputs[n], nodeout);
   }
+
+  return node;
 }
 
 } // namespace luci

@@ -35,8 +35,8 @@ bool CircleUniqueGraphBuilder::validate(const ValidateArgs &args) const
   return true;
 }
 
-void CircleUniqueGraphBuilder::build(const circle::OperatorT &op,
-                                     GraphBuilderContext *context) const
+CircleNode *CircleUniqueGraphBuilder::build(const circle::OperatorT &op,
+                                            GraphBuilderContext *context) const
 {
   assert(context != nullptr);
 
@@ -84,6 +84,8 @@ void CircleUniqueGraphBuilder::build(const circle::OperatorT &op,
 
     context->nodefinder()->enroll(outputs[n], nodeout);
   }
+
+  return node;
 }
 
 } // namespace luci

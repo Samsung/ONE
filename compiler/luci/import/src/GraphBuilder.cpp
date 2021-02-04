@@ -21,7 +21,7 @@
 namespace luci
 {
 
-void GraphBuilder::build(const circle::OperatorT &op, GraphBuilderContext *context) const
+CircleNode *GraphBuilder::build(const circle::OperatorT &op, GraphBuilderContext *context) const
 {
   LOGGER(l);
 
@@ -73,6 +73,8 @@ void GraphBuilder::build(const circle::OperatorT &op, GraphBuilderContext *conte
   {
     context->nodefinder()->enroll(outputs[0], node);
   }
+
+  return node;
 }
 
 } // namespace luci

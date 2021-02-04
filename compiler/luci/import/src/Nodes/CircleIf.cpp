@@ -70,7 +70,8 @@ bool CircleIfGraphBuilder::validate(const ValidateArgs &args) const
  *                       \- CircleIfOut --- Node ---
  */
 
-void CircleIfGraphBuilder::build(const circle::OperatorT &op, GraphBuilderContext *context) const
+CircleNode *CircleIfGraphBuilder::build(const circle::OperatorT &op,
+                                        GraphBuilderContext *context) const
 {
   assert(context != nullptr);
 
@@ -133,6 +134,8 @@ void CircleIfGraphBuilder::build(const circle::OperatorT &op, GraphBuilderContex
 
     context->nodefinder()->enroll(outputs[n], nodeout);
   }
+
+  return node;
 }
 
 } // namespace luci
