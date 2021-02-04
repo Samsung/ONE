@@ -16,7 +16,7 @@ Use `install_rootfs.sh` script to prepare Root File System. You should have `sud
 $ sudo ./tools/cross/install_rootfs.sh aarch64
 ```
 - supports `arm`(default) and `aarch64` architecutre for now
-- supports `xenial`(default), `trusty` and `bionic` release
+- supports `bionic`(default) and `focal` release
 
 To see the options,
 ```
@@ -27,7 +27,7 @@ RootFS will be prepared at `tools/cross/rootfs/aarch64` folder.
 
 ***\* CAUTION: The OS version of rootfs must match the OS version of execution target device. On the other hand, you need to match the Ubuntu version of the development PC with the Ubuntu version of rootfs to be used for cross-build. Otherwise, unexpected build errors may occur.***
 
-If you are using Ubuntu 16.04 LTS, select `xenial`, if you are using Ubuntu 18.04 LTS, select `bionic`. You can check your Ubuntu code name in the following way.
+If you are using Ubuntu 18.04 LTS, select `bionic`, if you are using Ubuntu 20.04 LTS, select `focal`. You can check your Ubuntu code name in the following way.
 
 ```
 $ cat /etc/lsb-release
@@ -44,7 +44,7 @@ If a build error occurs because the version of the development system and the ta
 Use `ROOTFS_DIR` to a full path to prepare at alternative path.
 
 ```
-$ ROOTFS_DIR=/home/user/rootfs/aarch64-xenial sudo -E ./tools/cross/install_rootfs.sh aarch64
+$ ROOTFS_DIR=/home/user/rootfs/aarch64-bionic sudo -E ./tools/cross/install_rootfs.sh aarch64
 ```
 
 ### Using proxy
