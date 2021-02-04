@@ -131,10 +131,8 @@ backend::BackendContexts createBackendContexts(const compiler::LoweredGraph &lgr
 
       // Copy the operand and insert it to the partial graph
       auto new_operand = std::make_unique<ir::Operand>(operand);
-      // TODO Introduce a method for resetting use/def values of Operand
       // NOTE Use/Def info is going to be filled in `Graph::finishBuilding`
-      const_cast<ir::OperationIndexSet &>(new_operand->getUses()).clear();
-      new_operand->unsetDef();
+      new_operand->clearDefUse();
       auto new_operand_ind = partial_graph.addOperand(operand_ind, std::move(new_operand));
       UNUSED_RELEASE(new_operand_ind);
       assert(new_operand_ind == operand_ind);
@@ -160,10 +158,8 @@ backend::BackendContexts createBackendContexts(const compiler::LoweredGraph &lgr
           // Copy the operand and insert it to the partial graph
           const auto &operand = whole_graph.operands().at(operand_ind);
           auto new_operand = std::make_unique<ir::Operand>(operand);
-          // TODO Introduce a method for resetting use/def values of Operand
           // NOTE Use/Def info is going to be filled in `Graph::finishBuilding`
-          const_cast<ir::OperationIndexSet &>(new_operand->getUses()).clear();
-          new_operand->unsetDef();
+          new_operand->clearDefUse();
           auto new_operand_ind = partial_graph.addOperand(operand_ind, std::move(new_operand));
           UNUSED_RELEASE(new_operand_ind);
           assert(new_operand_ind == operand_ind);
