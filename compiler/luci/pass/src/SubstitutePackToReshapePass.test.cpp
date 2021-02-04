@@ -51,6 +51,13 @@ void create_substitute_pack_to_reshape(loco::Graph *g, const std::initializer_li
 
 } // namespace
 
+TEST(SubstitutePackToReshapePassTest, name)
+{
+  luci::SubstitutePackToReshapePass pass;
+  auto const name = pass.name();
+  ASSERT_NE(nullptr, name);
+}
+
 TEST(SubstitutePackToReshapePass, simple_case)
 {
   auto graph = loco::make_graph();

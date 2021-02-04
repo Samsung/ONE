@@ -16,6 +16,8 @@
 
 #include "FuseInstanceNormPassInternal.h"
 
+#include "luci/Pass/FuseInstanceNormPass.h"
+
 #include <vector>
 
 #include <gtest/gtest.h>
@@ -33,6 +35,13 @@ void setShape(luci::CircleNode &node, const std::vector<int> &v)
 }
 
 } // namespace
+
+TEST(FuseInstanceNormPassTest, name)
+{
+  luci::FuseInstanceNormPass pass;
+  auto const name = pass.name();
+  ASSERT_NE(nullptr, name);
+}
 
 TEST(FuseInstanceNormPass, is_quasi_1D_with_dummy_dim)
 {

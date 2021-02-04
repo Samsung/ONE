@@ -341,6 +341,13 @@ void run_phase(loco::Graph *g, bool preserve_input, bool preserve_output)
 
 } // namespace
 
+TEST(ConvertNCHWToNHWCPassTest, name)
+{
+  luci::ConvertNCHWToNHWCPass pass(false, false);
+  auto const name = pass.name();
+  ASSERT_NE(nullptr, name);
+}
+
 TEST(ConvertNCHWToNHWC, Add)
 {
   AddGraph g;

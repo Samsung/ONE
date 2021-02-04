@@ -22,6 +22,13 @@
 
 #include <gtest/gtest.h>
 
+TEST(CircleShapeInferencePassTest, name)
+{
+  luci::CircleShapeInferencePass pass;
+  auto const name = pass.name();
+  ASSERT_NE(nullptr, name);
+}
+
 /**
  * This test is to check whether shape inference is done by topological order.
  *

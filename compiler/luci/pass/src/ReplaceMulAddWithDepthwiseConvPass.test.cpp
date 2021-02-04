@@ -99,6 +99,13 @@ public:
 
 } // namespace
 
+TEST(ReplaceMulAddWithDepthwiseConv, name)
+{
+  luci::ReplaceMulAddWithDepthwiseConvPass pass;
+  auto const name = pass.name();
+  ASSERT_NE(nullptr, name);
+}
+
 TEST(ReplaceMulAddWithDepthwiseConv, simple)
 {
   SimpleGraph g;

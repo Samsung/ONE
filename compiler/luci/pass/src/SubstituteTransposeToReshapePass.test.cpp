@@ -69,6 +69,13 @@ public:
 
 } // namespace
 
+TEST(SubstituteTransposeToReshapePassTest, name)
+{
+  luci::SubstituteTransposeToReshapePass pass;
+  auto const name = pass.name();
+  ASSERT_NE(nullptr, name);
+}
+
 TEST_F(SubstituteTransposeToReshapeTest, simple_case)
 {
   // Create graph that tranpose input {126, 201, 1, 1} with permutation {2, 0, 3, 1}

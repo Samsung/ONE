@@ -110,6 +110,13 @@ protected:
 
 } // namespace
 
+TEST(ResolveCustomOpBatchMatMulPassTest, name)
+{
+  luci::ResolveCustomOpBatchMatMulPass pass;
+  auto const name = pass.name();
+  ASSERT_NE(nullptr, name);
+}
+
 /**
  *  Optimized graph looks like below.
  *

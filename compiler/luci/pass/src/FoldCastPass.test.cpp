@@ -83,6 +83,13 @@ public:
 
 } // namespace
 
+TEST(FoldCastPassTest, name)
+{
+  luci::FoldCastPass pass;
+  auto const name = pass.name();
+  ASSERT_NE(nullptr, name);
+}
+
 TEST_F(FoldS64ToS32CastTest, fold_cast_s64_to_s32)
 {
   luci::FoldCastPass pass;
