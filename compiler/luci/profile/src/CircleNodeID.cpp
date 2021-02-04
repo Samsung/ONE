@@ -51,7 +51,7 @@ private:
 namespace luci
 {
 
-bool has_node_id(luci::CircleNode *circle_node)
+bool has_node_id(const luci::CircleNode *circle_node)
 {
   return circle_node->annot<CircleNodeIDAnnotation>() != nullptr;
 }
@@ -62,7 +62,7 @@ void set_node_id(luci::CircleNode *circle_node, luci::CircleNodeID id)
   circle_node->annot(std::make_unique<CircleNodeIDAnnotation>(id));
 }
 
-luci::CircleNodeID get_node_id(luci::CircleNode *circle_node)
+luci::CircleNodeID get_node_id(const luci::CircleNode *circle_node)
 {
   if (!has_node_id(circle_node))
     throw std::runtime_error("Cannot find CircleNodeID");

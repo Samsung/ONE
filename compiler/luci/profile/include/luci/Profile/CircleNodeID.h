@@ -24,11 +24,11 @@ namespace luci
 
 using CircleNodeID = uint32_t;
 
-bool has_node_id(luci::CircleNode *circle_node);
+bool has_node_id(const luci::CircleNode *circle_node);
 
 void set_node_id(luci::CircleNode *circle_node, CircleNodeID id);
 
-CircleNodeID get_node_id(luci::CircleNode *circle_node);
+CircleNodeID get_node_id(const luci::CircleNode *circle_node);
 
 } // namespace luci
 
