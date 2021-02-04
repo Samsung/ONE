@@ -96,55 +96,52 @@ void BackendContext::planTensors()
   // 3. Scan USE of inputs. Decrease the USE and deallocate if the USE is 0
   for (const auto op_ind : _data.op_order)
   {
-    // TODO Remove indentation
     const auto &op = graph()->operations().at(op_ind);
+    auto op_inputs = op.getInputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED;
+    auto op_outputs = op.getOutputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED;
+
+    // Define outputs
+    for (const auto &ind : op_outputs)
     {
-      auto op_inputs = op.getInputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED;
-      auto op_outputs = op.getOutputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED;
-
-      // Define outputs
-      for (const auto &ind : op_outputs)
+      if (!tensor_builder->isRegistered(ind))
+        continue;
+      assert(def_map.find(ind) != def_map.end());
+      if (def_map[ind])
       {
-        if (!tensor_builder->isRegistered(ind))
-          continue;
-        assert(def_map.find(ind) != def_map.end());
-        if (def_map[ind])
-        {
-          def_map[ind] = 0;
-          tensor_builder->notifyFirstUse(ind);
-        }
+        def_map[ind] = 0;
+        tensor_builder->notifyFirstUse(ind);
       }
+    }
 
-      // Scan variable tensors
-      // This tensor has features like constant. But OperandInfo and LowerInfo treat them as
-      // non-constant because of less memory usage by memory planning in here
-      for (const auto &ind : op_inputs)
+    // Scan variable tensors
+    // This tensor has features like constant. But OperandInfo and LowerInfo treat them as
+    // non-constant because of less memory usage by memory planning in here
+    for (const auto &ind : op_inputs)
+    {
+      if (!tensor_builder->isRegistered(ind))
+        continue;
+      const auto &operand = graph()->operands().at(ind);
+      if (operand.info().isVariable())
       {
-        if (!tensor_builder->isRegistered(ind))
-          continue;
-        const auto &operand = graph()->operands().at(ind);
-        if (operand.info().isVariable())
-        {
-          // The variable tensor with buffer is not supported yet
-          assert(operand.data() == nullptr);
-          assert(operand.getUses().size() == 1 && !operand.getDef().valid());
-          assert(uses_map[ind] == 1 && def_map[ind] == 0);
-          tensor_builder->notifyFirstUse(ind);
-        }
+        // The variable tensor with buffer is not supported yet
+        assert(operand.data() == nullptr);
+        assert(operand.getUses().size() == 1 && !operand.getDef().valid());
+        assert(uses_map[ind] == 1 && def_map[ind] == 0);
+        tensor_builder->notifyFirstUse(ind);
       }
+    }
 
-      for (const auto &ind : op_inputs)
+    for (const auto &ind : op_inputs)
+    {
+      if (!tensor_builder->isRegistered(ind))
+        continue;
+      assert(uses_map.find(ind) != uses_map.end());
+      assert(uses_map[ind] > 0);
+      uses_map[ind]--;
+      if (uses_map[ind] == 0)
       {
-        if (!tensor_builder->isRegistered(ind))
-          continue;
-        assert(uses_map.find(ind) != uses_map.end());
-        assert(uses_map[ind] > 0);
-        uses_map[ind]--;
-        if (uses_map[ind] == 0)
-        {
-          // plan for deallocation of static tensornode
-          tensor_builder->notifyLastUse(ind);
-        }
+        // plan for deallocation of static tensornode
+        tensor_builder->notifyLastUse(ind);
       }
     }
   }

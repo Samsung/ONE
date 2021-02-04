@@ -41,34 +41,31 @@ bool StaticShapeInferer::infer(const ir::Operation &op)
 {
   bool has_dynamic_tensor = false;
 
-  // TODO Remove indentation
+  auto opcode = op.opcode();
+
+  _return_has_dynamic_tensor = false; // this is used as a return value inside operation's visit()
+
+  // IF: need shape inference for then, else
+  // While: need shape inference for condition, body
+  if (opcode == ir::OpCode::If || opcode == ir::OpCode::While)
   {
-    auto opcode = op.opcode();
+    op.accept(*this);
+  }
+  else
+  {
+    _return_has_dynamic_tensor = checkDynamicInput(op);
 
-    _return_has_dynamic_tensor = false; // this is used as a return value inside operation's visit()
-
-    // IF: need shape inference for then, else
-    // While: need shape inference for condition, body
-    if (opcode == ir::OpCode::If || opcode == ir::OpCode::While)
+    if (_return_has_dynamic_tensor)
     {
-      op.accept(*this);
+      setDynamicOutput(op);
     }
     else
     {
-      _return_has_dynamic_tensor = checkDynamicInput(op);
-
-      if (_return_has_dynamic_tensor)
-      {
-        setDynamicOutput(op);
-      }
-      else
-      {
-        op.accept(*this);
-      }
+      op.accept(*this);
     }
-
-    has_dynamic_tensor = has_dynamic_tensor || _return_has_dynamic_tensor;
   }
+
+  has_dynamic_tensor = has_dynamic_tensor || _return_has_dynamic_tensor;
 
   return has_dynamic_tensor;
 }
