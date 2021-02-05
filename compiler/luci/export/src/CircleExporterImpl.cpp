@@ -20,6 +20,8 @@
 #include "CircleOperationExporter.h"
 #include "CircleExporterUtils.h"
 
+#include <luci/IR/CircleNodes.h>
+
 #include <oops/InternalExn.h>
 #include <mio/circle/schema_generated.h>
 #include <flatbuffers/flatbuffers.h>
@@ -32,41 +34,11 @@
 namespace
 {
 
-luci::CircleInput *input_node(loco::Graph *g, const loco::GraphInputIndex &index)
-{
-  for (uint32_t n = 0; n < g->nodes()->size(); ++n)
-  {
-    if (auto input = dynamic_cast<luci::CircleInput *>(g->nodes()->at(n)))
-    {
-      if (input->indexed() && input->index() == index)
-      {
-        return input;
-      }
-    }
-  }
-  return nullptr;
-}
-
-luci::CircleOutput *output_node(loco::Graph *g, const loco::GraphOutputIndex &index)
-{
-  for (uint32_t n = 0; n < g->nodes()->size(); ++n)
-  {
-    if (auto output = dynamic_cast<luci::CircleOutput *>(g->nodes()->at(n)))
-    {
-      if (output->indexed() && output->index() == index)
-      {
-        return output;
-      }
-    }
-  }
-  return nullptr;
-}
-
 void registerGraphInputTensors(loco::Graph *graph, luci::SubGraphContext &ctx)
 {
   for (uint32_t n = 0; n < graph->inputs()->size(); ++n)
   {
-    auto node = input_node(graph, n);
+    auto node = luci::input_node(graph, n);
     assert(node != nullptr);
     ctx._inputs.push_back(luci::get_tensor_index(node));
   }
@@ -76,7 +48,7 @@ void registerGraphOutputTensors(loco::Graph *graph, luci::SubGraphContext &ctx)
 {
   for (uint32_t n = 0; n < graph->outputs()->size(); ++n)
   {
-    auto push = output_node(graph, n);
+    auto push = luci::output_node(graph, n);
     assert(push != nullptr);
     auto node = push->from();
     assert(node != nullptr);
