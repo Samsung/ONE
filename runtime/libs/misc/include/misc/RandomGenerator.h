@@ -76,6 +76,7 @@ private:
   std::normal_distribution<float> _dist;
 };
 
+template <> int8_t RandomGenerator::generate<int8_t>(void);
 template <> uint8_t RandomGenerator::generate<uint8_t>(void);
 template <> bool RandomGenerator::generate<bool>(void);
 template <> int32_t RandomGenerator::generate<int32_t>(void);
