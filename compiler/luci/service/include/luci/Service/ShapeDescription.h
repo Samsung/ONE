@@ -37,10 +37,6 @@ struct ShapeDescription
 // TODO remove these when CircleDialect is fully functioal
 ShapeDescription to_shape_description(const luci::CircleNode *node);
 ShapeDescription to_shape_description(const loco::TensorShape &shape);
-ShapeDescription to_shape_description(const loco::FeatureShape &shape);
-ShapeDescription to_shape_description(const loco::FilterShape &shape);
-ShapeDescription to_shape_description(const loco::BiasShape &shape);
-ShapeDescription to_shape_description(const loco::MatrixShape &shape);
 ShapeDescription to_shape_description(const loco::NodeShape &shape);
 
 template <typename Permutation> inline bool isNHWC(Permutation *perm);
