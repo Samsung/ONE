@@ -346,13 +346,6 @@ NNFW_STATUS nnfw_session::prepare()
     return NNFW_STATUS_INVALID_STATE;
   }
 
-  if (!_subgraphs || !primary_subgraph() || primary_subgraph()->isBuildingPhase())
-  {
-    std::cerr << "Error during model prepare : "
-              << "prepare should be run after load_model" << std::endl;
-    return NNFW_STATUS_ERROR;
-  }
-
   try
   {
     _subgraphs.reset();
@@ -632,8 +625,9 @@ NNFW_STATUS nnfw_session::apply_tensorinfo(uint32_t index, nnfw_tensorinfo ti)
   {
     // In this case, if we apply input shape in primary_subgraph, it will propagate after
     // compilation and excution
-    auto ind = primary_subgraph()->getInputs().at(index);
-    auto &input = primary_subgraph()->operands().at(ind);
+    auto primary_subgraph = _subgraphs->primary();
+    auto ind = primary_subgraph->getInputs().at(index);
+    auto &input = primary_subgraph->operands().at(ind);
 
     // overwrite input shape with the shape from ti
     input.info().shape(new_shape);
@@ -867,7 +861,7 @@ NNFW_STATUS nnfw_session::set_config(const char *key, const char *value)
   return NNFW_STATUS_NO_ERROR;
 }
 
-onert::ir::Graph *nnfw_session::primary_subgraph()
+const onert::ir::Graph *nnfw_session::primary_subgraph()
 {
   if (_subgraphs)
   {
@@ -879,7 +873,7 @@ onert::ir::Graph *nnfw_session::primary_subgraph()
     assert(_execution);
     // TODO Remove const_cast
     // We assumed the graph will not change after compilation, but shape could change
-    return const_cast<onert::ir::Graph *>(&_execution->primary_subgraph());
+    return &_execution->primary_subgraph();
   }
 }
 

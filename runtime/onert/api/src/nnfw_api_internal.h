@@ -144,7 +144,7 @@ public:
   NNFW_STATUS output_tensorindex(const char *tensorname, uint32_t *index);
 
 private:
-  onert::ir::Graph *primary_subgraph();
+  const onert::ir::Graph *primary_subgraph();
   bool isStateInitialized();
   bool isStateModelLoaded();
   bool isStatePrepared();
