@@ -56,9 +56,6 @@ bool remove_no_effect_strided_slice(luci::CircleStridedSlice *target_node)
       return false;
 
     int64_t strides_value = value_from_circle_const(strides_const, i);
-    if (strides_value == -1)
-      continue;
-
     if (strides_value != 1)
       return false;
 
@@ -96,8 +93,11 @@ namespace luci
  *    [CircleNode]   [CircleStridedSlice]
  *
  * StridedSlice OP has no effect if,
- *    1. Static Shape : begin_const[idx] is 0 AND strides_const[idx] is (-1 OR input_dimension[idx])
- *    2. Dynamic Shape : begin_const[idx] is 0 AND strides_const[idx] is -1
+ *    1. Static Shape : begin_const[idx] is 0 AND strides_const[idx] is (not 1 OR input_dimension[idx])
+ *    2. Dynamic Shape : begin_const[idx] is 0 AND strides_const[idx] is not 1
+ *
+ * StridedSlice OP has effect if,
+ *    1. begin_const[idx] is 0 AND input_shape[idx] are equal to end_shape[idx]
  */
 bool RemoveUnnecessaryStridedSlicePass::run(loco::Graph *g)
 {
