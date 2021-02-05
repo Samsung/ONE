@@ -21,6 +21,34 @@ namespace nnfw
 namespace misc
 {
 
+template <> int8_t RandomGenerator::generate<int8_t>(void)
+{
+  // The value of type_range is 255.
+  float type_range = static_cast<float>(std::numeric_limits<int8_t>::max()) -
+                     static_cast<float>(std::numeric_limits<int8_t>::min());
+  // Most _dist values range from -5.0 to 5.0.
+  float min_range = -5.0f;
+  float max_range = 5.0f;
+  // NOTE shifted_relative_val has Gaussian distribution that origin mean was 0 and standard
+  // deviation was 2. And then its values are distributed and shift to that mean is 127.5 and range
+  // is about [0, 255].
+  float shifted_relative_val = (_dist(_rand) - min_range) * type_range / (max_range - min_range);
+
+  // shifted_relative_val is adjusted to be mapped to end points of the range, if it is out of range
+  // values.
+  if (shifted_relative_val < -128.0f)
+  {
+    return -128;
+  }
+  else if (shifted_relative_val > type_range)
+  {
+    return 127;
+  }
+
+  // Convert shifted_relative_val from float to int8
+  return static_cast<int8_t>(shifted_relative_val);
+}
+
 template <> uint8_t RandomGenerator::generate<uint8_t>(void)
 {
   // The value of type_range is 255.
