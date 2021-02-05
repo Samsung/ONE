@@ -40,8 +40,8 @@ if [ -d $ONNXRUNTIME_PREFIX ]; then
 fi
 
 # docker image name
-# - for xenial, use DOCKER_IMAGE_NAME="nnfw/one-devtools:xenial"
 # - for bionic, use DOCKER_IMAGE_NAME="nnfw/one-devtools:bionic"
+# - for focal, use DOCKER_IMAGE_NAME="nnfw/one-devtools:focal"
 if [[ -z $DOCKER_IMAGE_NAME ]]; then
   echo "It will use default docker image name"
 fi
