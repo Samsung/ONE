@@ -16,7 +16,23 @@
 
 #include "luci/Service/ShapeDescription.h"
 
+#include <luci/IR/CircleNode.h>
+#include <luci/IR/Nodes/CircleConst.h>
+
 #include <gtest/gtest.h>
+
+TEST(ShapeDescriptionTest, CircleNode)
+{
+  // Use CircleConst as CircleNode
+  luci::CircleConst circle_const;
+  circle_const.shape({1, 2, 3, 4});
+
+  auto sd = luci::to_shape_description(&circle_const);
+
+  ASSERT_EQ(4, sd._dims.size());
+  ASSERT_EQ(1, sd._dims.at(0));
+  ASSERT_TRUE(sd._rank_known);
+}
 
 TEST(ShapeDescriptionTest, TensorShape)
 {
