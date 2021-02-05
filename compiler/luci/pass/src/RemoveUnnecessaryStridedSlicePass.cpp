@@ -93,7 +93,8 @@ namespace luci
  *    [CircleNode]   [CircleStridedSlice]
  *
  * StridedSlice OP has no effect if,
- *    1. Static Shape : begin_const[idx] is 0 AND strides_const[idx] is (not 1 OR input_dimension[idx])
+ *    1. Static Shape : begin_const[idx] is 0 AND strides_const[idx] is (not 1 OR
+ *       input_dimension[idx])
  *    2. Dynamic Shape : begin_const[idx] is 0 AND strides_const[idx] is not 1
  *
  * StridedSlice OP has effect if,
