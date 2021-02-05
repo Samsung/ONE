@@ -33,3 +33,15 @@ TEST(FormattedTensorShapeTest, BracketFormat)
 
   SUCCEED();
 }
+
+TEST(FormattedTensorShapeTest, PlainFormat)
+{
+  auto tensor_shape = stdex::make_unique<loco::TensorShape>();
+
+  tensor_shape->rank(2);
+  tensor_shape->dim(0) = 4;
+
+  std::cout << fmt<TensorShapeFormat::Plain>(tensor_shape.get()) << std::endl;
+
+  SUCCEED();
+}
