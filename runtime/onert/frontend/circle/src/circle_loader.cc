@@ -122,7 +122,7 @@ private:
 
     subg->setLayout(convertDataFormat(circle_subg->data_format()));
 
-    subg->finishBuilding();
+    subg->verify();
 
     return subg;
   }

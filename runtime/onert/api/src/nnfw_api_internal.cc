@@ -947,7 +947,6 @@ bool nnfw_session::isStateModelLoaded()
     assert(_subgraphs);
     assert(_compiler);
     assert(!_execution);
-    assert(!primary_subgraph()->isBuildingPhase());
     return true;
   }
   else
@@ -963,7 +962,6 @@ bool nnfw_session::isStatePrepared()
     assert(!_subgraphs);
     assert(_compiler);
     assert(_execution);
-    assert(!primary_subgraph()->isBuildingPhase());
     return true;
   }
   else
@@ -979,7 +977,6 @@ bool nnfw_session::isStateRunning()
     assert(!_subgraphs);
     assert(_compiler);
     assert(_execution);
-    assert(!primary_subgraph()->isBuildingPhase());
     return true;
   }
   return false;
@@ -992,7 +989,6 @@ bool nnfw_session::isStateFinishedRun()
     assert(!_subgraphs);
     assert(_compiler);
     assert(_execution);
-    assert(!primary_subgraph()->isBuildingPhase());
     return true;
   }
   else

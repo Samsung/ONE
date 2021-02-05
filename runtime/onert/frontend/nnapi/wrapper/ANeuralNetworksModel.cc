@@ -27,7 +27,8 @@
 // ANeuralNetworksModel
 //
 ANeuralNetworksModel::ANeuralNetworksModel() noexcept
-  : _optional_operands{}, _operand_usages{}, _allowFloat32toFloat16{false}
+  : _finished_building{false}, _optional_operands{}, _operand_usages{}, _allowFloat32toFloat16{
+                                                                          false}
 {
   _graph = std::make_shared<onert::ir::Graph>();
 }
@@ -208,9 +209,9 @@ bool ANeuralNetworksModel::finish() noexcept
   {
     fillOptionalOperand();
 
-    _graph->finishBuilding();
-
+    _graph->verify();
     _operand_usages.clear();
+    _finished_building = true;
   }
   catch (const std::exception &e)
   {
@@ -222,7 +223,7 @@ bool ANeuralNetworksModel::finish() noexcept
   return true;
 }
 
-bool ANeuralNetworksModel::isFinished() noexcept { return !_graph->isBuildingPhase(); }
+bool ANeuralNetworksModel::isFinished() noexcept { return _finished_building; }
 
 bool ANeuralNetworksModel::isExistOperand(uint32_t index) noexcept
 {

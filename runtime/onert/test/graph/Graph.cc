@@ -67,7 +67,7 @@ OperationIndex addAddOperation(Graph &graph, const OperandIndexSequence inputs,
   return graph.addOperation(std::make_unique<operation::BinaryArithmetic>(inputs, outputs, param));
 }
 
-TEST(Graph, OneOpGraphFinish)
+TEST(Graph, OneOpGraphSimpleValid)
 {
   // Simple Graph with just one Add operation
 
@@ -87,12 +87,12 @@ TEST(Graph, OneOpGraphFinish)
   graph.addInput(rhs);
   graph.addOutput(res);
 
-  graph.finishBuilding();
+  graph.verify();
 
   SUCCEED();
 }
 
-TEST(Graph, neg_InvalidGraphFinish_BadInput)
+TEST(Graph, neg_InvalidGraph_BadInput)
 {
   Graph graph;
 
@@ -107,10 +107,10 @@ TEST(Graph, neg_InvalidGraphFinish_BadInput)
   graph.addOutput(out);
   graph.addInput(OperandIndex{89}); // Non-exisiting operand!
 
-  EXPECT_ANY_THROW(graph.finishBuilding());
+  EXPECT_ANY_THROW(graph.verify());
 }
 
-TEST(Graph, neg_InvalidGraphFinish_BadOutput)
+TEST(Graph, neg_InvalidGraph_BadOutput)
 {
   Graph graph;
 
@@ -125,10 +125,10 @@ TEST(Graph, neg_InvalidGraphFinish_BadOutput)
   graph.addOutput(out);
   graph.addOutput(OperandIndex{12}); // Non-exisiting operand!
 
-  EXPECT_ANY_THROW(graph.finishBuilding());
+  EXPECT_ANY_THROW(graph.verify());
 }
 
-TEST(Graph, neg_InvalidGraphFinish_BadInputOutputForOp)
+TEST(Graph, neg_InvalidAddOperation_BadInputIndex)
 {
   Graph graph;
 
@@ -139,12 +139,10 @@ TEST(Graph, neg_InvalidGraphFinish_BadInputOutputForOp)
   auto rhs = graph.addOperand(shape, type);
   auto res = graph.addOperand(shape, type);
 
-  addAddOperation(graph, {lhs, OperandIndex{99}}, {res});
-
   // Set model inputs/outputs
   graph.addInput(lhs);
   graph.addInput(rhs);
   graph.addOutput(res);
 
-  EXPECT_ANY_THROW(graph.finishBuilding());
+  ASSERT_FALSE(addAddOperation(graph, {lhs, OperandIndex{99}}, {res}).valid());
 }

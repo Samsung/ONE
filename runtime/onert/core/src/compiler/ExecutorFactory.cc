@@ -34,6 +34,7 @@
 #include "backend/builtin/UserTensor.h"
 #include "backend/builtin/TensorBuilder.h"
 #include "util/TracingCtx.h"
+#include "dumper/text/GraphDumper.h"
 
 #include <memory>
 
@@ -131,7 +132,6 @@ backend::BackendContexts createBackendContexts(const compiler::LoweredGraph &lgr
 
       // Copy the operand and insert it to the partial graph
       auto new_operand = std::make_unique<ir::Operand>(operand);
-      // NOTE Use/Def info is going to be filled in `Graph::finishBuilding`
       new_operand->clearDefUse();
       auto new_operand_ind = partial_graph.addOperand(operand_ind, std::move(new_operand));
       UNUSED_RELEASE(new_operand_ind);
@@ -158,7 +158,6 @@ backend::BackendContexts createBackendContexts(const compiler::LoweredGraph &lgr
           // Copy the operand and insert it to the partial graph
           const auto &operand = whole_graph.operands().at(operand_ind);
           auto new_operand = std::make_unique<ir::Operand>(operand);
-          // NOTE Use/Def info is going to be filled in `Graph::finishBuilding`
           new_operand->clearDefUse();
           auto new_operand_ind = partial_graph.addOperand(operand_ind, std::move(new_operand));
           UNUSED_RELEASE(new_operand_ind);
@@ -183,7 +182,6 @@ backend::BackendContexts createBackendContexts(const compiler::LoweredGraph &lgr
   {
     auto backend = pair.first;
     auto &data = pair.second;
-    data.graph->finishBuilding();
     // Handle graph input/outputs or external tensors
     data.graph->operands().iterate([&](const ir::OperandIndex &ind, const ir::Operand &operand) {
       if (whole_graph.getInputs().contains(ind) || whole_graph.getOutputs().contains(ind))
@@ -196,6 +194,7 @@ backend::BackendContexts createBackendContexts(const compiler::LoweredGraph &lgr
       if (whole_graph.getOutputs().contains(ind) || operand.getUses().size() == 0)
         data.graph->addOutput(ind);
     });
+    dumper::text::dumpGraph(*data.graph);
 
     std::copy_if(whole_op_order.begin(), whole_op_order.end(), std::back_inserter(data.op_order),
                  [&](const auto &ind) { return data.graph->operations().exist(ind); });
@@ -272,8 +271,6 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lo
     createBackendContexts(*lowered_graph, options.executor == "Linear");
 
   TensorRegistries tensor_regs{backend_contexts, true};
-
-  assert(!lowered_graph->graph().isBuildingPhase());
 
   initializeSubgraphIOTensors(
     *lowered_graph, backend_contexts,
@@ -359,8 +356,6 @@ exec::IExecutor *ExecutorFactory::createDataflowExecutor(
     createBackendContexts(*lowered_graph, options.executor == "Linear");
 
   TensorRegistries tensor_regs{backend_contexts, true};
-
-  assert(!lowered_graph->graph().isBuildingPhase());
 
   initializeSubgraphIOTensors(
     *lowered_graph, backend_contexts,

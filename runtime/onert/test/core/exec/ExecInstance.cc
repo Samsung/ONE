@@ -73,7 +73,7 @@ public:
     graph->addInput(operand_lhs);
     graph->addInput(operand_rhs1);
     graph->addOutput(operand_result2);
-    graph->finishBuilding();
+    graph->verify();
 
     // Compile
     auto subgs = std::make_shared<onert::ir::Subgraphs>();
