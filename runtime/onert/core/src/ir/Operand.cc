@@ -46,5 +46,11 @@ void Operand::setDef(const OperationIndex &idx) { _def = idx; }
 
 void Operand::unsetDef() { _def = OperationIndex{}; }
 
+void Operand::clearDefUse()
+{
+  unsetDef();
+  _uses.clear();
+}
+
 } // namespace ir
 } // namespace onert

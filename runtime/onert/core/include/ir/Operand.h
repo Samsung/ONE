@@ -55,6 +55,7 @@ public:
   void removeUse(const OperationIndex &idx);
   void setDef(const OperationIndex &idx);
   void unsetDef();
+  void clearDefUse();
 
 public:
   void type(const DataType type) { _info.type(type); };
