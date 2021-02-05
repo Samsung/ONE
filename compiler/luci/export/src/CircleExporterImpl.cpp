@@ -29,7 +29,7 @@
 #include <cassert>
 #include <unordered_map>
 #include <string>
-#include <stdexcept>
+#include <vector>
 
 namespace
 {
