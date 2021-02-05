@@ -100,7 +100,7 @@ $ tree -L 3 ./Product/out
 ├── bin
 │   ├── nnapi_test
 │   ├── nnpackage_run
-│   ├── tflite_loader_test_tool
+│   ├── tflite_comparator
 │   └── tflite_run
 ├── include
 │   ├── nnfw

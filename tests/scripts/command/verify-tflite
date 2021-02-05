@@ -78,7 +78,7 @@ if [[ $TFLITE_LOADER == "nnapi" ]]; then
     TEST_DRIVER=nnapi_test
 elif [[ $TFLITE_LOADER == "loader" ]]; then
     TEST_NAME="Loader Verification"
-    TEST_DRIVER=tflite_loader_test_tool
+    TEST_DRIVER=tflite_comparator
 else
     Usage
     exit 1
