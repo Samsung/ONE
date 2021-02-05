@@ -53,95 +53,12 @@ ShapeDescription to_shape_description(const loco::TensorShape &shape)
   return res;
 }
 
-ShapeDescription to_shape_description(const loco::FeatureShape &shape)
-{
-  ShapeDescription res;
-
-  res._rank_known = true;
-
-  // T/F Lite encodes a feature map as a NHWC tensor
-  res._dims.resize(4);
-  res._dims.at(0) = shape.count().value();
-  res._dims.at(1) = shape.height().value();
-  res._dims.at(2) = shape.width().value();
-  res._dims.at(3) = shape.depth().value();
-
-  return res;
-}
-
-ShapeDescription to_shape_description(const loco::FilterShape &shape)
-{
-  ShapeDescription res;
-
-  res._rank_known = true;
-
-  // T/F Lite encodes a convolution filter as a NHWC tensor
-  res._dims.resize(4);
-  res._dims.at(0) = shape.count().value();
-  res._dims.at(1) = shape.height().value();
-  res._dims.at(2) = shape.width().value();
-  res._dims.at(3) = shape.depth().value();
-
-  return res;
-}
-
-ShapeDescription to_shape_description(const loco::DepthwiseFilterShape &shape)
-{
-  ShapeDescription res;
-
-  res._rank_known = true;
-
-  // T/F Lite encodes a depthwise convolution filter as a [1, H, W, C*M] tensor
-  res._dims.resize(4);
-  res._dims.at(0) = 1;
-  res._dims.at(1) = shape.height().value();
-  res._dims.at(2) = shape.width().value();
-  res._dims.at(3) = shape.depth().value() * shape.multiplier().value();
-
-  return res;
-}
-
-ShapeDescription to_shape_description(const loco::BiasShape &shape)
-{
-  ShapeDescription res;
-
-  res._rank_known = true;
-
-  res._dims.resize(1);
-  res._dims.at(0) = shape.length().value();
-
-  return res;
-}
-
-ShapeDescription to_shape_description(const loco::MatrixShape &shape)
-{
-  ShapeDescription res;
-
-  res._rank_known = true;
-
-  res._dims.resize(2);
-  res._dims.at(0) = shape.height().value();
-  res._dims.at(1) = shape.width().value();
-
-  return res;
-}
-
 ShapeDescription to_shape_description(const loco::NodeShape &shape)
 {
   switch (shape.domain())
   {
     case loco::Domain::Tensor:
       return to_shape_description(shape.as<loco::TensorShape>());
-    case loco::Domain::Feature:
-      return to_shape_description(shape.as<loco::FeatureShape>());
-    case loco::Domain::Filter:
-      return to_shape_description(shape.as<loco::FilterShape>());
-    case loco::Domain::DepthwiseFilter:
-      return to_shape_description(shape.as<loco::DepthwiseFilterShape>());
-    case loco::Domain::Bias:
-      return to_shape_description(shape.as<loco::BiasShape>());
-    case loco::Domain::Matrix:
-      return to_shape_description(shape.as<loco::MatrixShape>());
     default:
       break;
   }
