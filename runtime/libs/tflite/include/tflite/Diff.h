@@ -44,9 +44,9 @@ class TfLiteInterpMatchApp
 public:
   /**
    * @brief Construct a new TfLiteInterpMatchApp object with Comparator
-   * @param[in] comparator   Comparator object for tensor comparation
+   * @param[in] comparator   Comparator object for float tensor comparation
    */
-  TfLiteInterpMatchApp(const nnfw::misc::tensor::Comparator &comparator)
+  TfLiteInterpMatchApp(const nnfw::misc::tensor::Comparator<float> &comparator)
     : _verbose{false}, _comparator(comparator)
   {
     // DO NOTHING
@@ -71,18 +71,18 @@ public:
    */
   bool run(::tflite::Interpreter &pure, ::tflite::Interpreter &nnapi) const;
   /**
-   * @brief Compare two TensorView values and return the match result
-   * @param[in] expected  TensorView object to read expected values
-   * @param[in] obtained  TensorView object to read obtained values
+   * @brief Compare two Tensor values and return the match result
+   * @param[in] expected  Tensor reader object to read expected values
+   * @param[in] obtained  Tensor reader object to read obtained values
    * @param[in] id        Tensor ID value used for debug message
    * @return  @c true if two TensorView values are same, otherwise @c false
    */
   template <typename T>
-  bool compareSingleTensorView(const nnfw::tflite::TensorView<T> &expected,
-                               const nnfw::tflite::TensorView<T> &obtained, int id) const;
+  bool compareSingleTensorView(const nnfw::misc::tensor::Reader<T> &expected,
+                               const nnfw::misc::tensor::Reader<T> &obtained, int id) const;
 
 private:
-  const nnfw::misc::tensor::Comparator &_comparator;
+  const nnfw::misc::tensor::Comparator<float> &_comparator;
 };
 
 #endif // __NNFW_TFLITE_DIFF_H__

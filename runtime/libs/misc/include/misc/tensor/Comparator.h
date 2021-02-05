@@ -42,14 +42,14 @@ namespace tensor
 /**
  * @brief Class to compare two tensors (expected and obtained to compare)
  */
-class Comparator
+template <typename T> class Comparator
 {
 public:
   /**
    * @brief Construct a new @c Comparator object
-   * @param[in] fn     Function that compares two float values
+   * @param[in] fn     Function that compares two T values
    */
-  Comparator(const std::function<bool(float lhs, float rhs)> &fn) : _compare_fn{fn}
+  Comparator(const std::function<bool(T lhs, T rhs)> &fn) : _compare_fn{fn}
   {
     // DO NOTHING
   }
@@ -67,25 +67,24 @@ public:
      * @param[in] obtained    Obtained value of element at @c index
      * @return    N/A
      */
-    virtual void notify(const Index &index, float expected, float obtained) = 0;
+    virtual void notify(const Index &index, T expected, T obtained) = 0;
   };
 
 public:
   /**
    * @brief Compare two tensors
    * @param[in] shape       Shape of two tensors
-   * @param[in] expected    @c Reader<float> object that accesses expected tensor
-   * @param[in] obtained    @c Reader<float> object that accesses obtained tensor
+   * @param[in] expected    @c Reader<T> object that accesses expected tensor
+   * @param[in] obtained    @c Reader<T> object that accesses obtained tensor
    * @param[in] observer    @c Observer notified of expected value and obtained value at every index
-   * @return    @c std::vector<Diff<float>> containing information of failed comparison
+   * @return    @c std::vector<Diff<T>> containing information of failed comparison
    */
   // NOTE Observer should live longer than comparator
-  std::vector<Diff<float>> compare(const Shape &shape, const Reader<float> &expected,
-                                   const Reader<float> &obtained,
-                                   Observer *observer = nullptr) const;
+  std::vector<Diff<T>> compare(const Shape &shape, const Reader<T> &expected,
+                               const Reader<T> &obtained, Observer *observer = nullptr) const;
 
 private:
-  std::function<bool(float lhs, float rhs)> _compare_fn;
+  std::function<bool(T lhs, T rhs)> _compare_fn;
 };
 
 } // namespace tensor

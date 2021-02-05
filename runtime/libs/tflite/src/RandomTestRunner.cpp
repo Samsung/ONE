@@ -273,7 +273,7 @@ int RandomTestRunner::run(size_t running_count)
       return nnfw::misc::fp32::epsilon_equal(lhs, rhs, tolerance);
     };
 
-    nnfw::misc::tensor::Comparator comparator(equals);
+    nnfw::misc::tensor::Comparator<float> comparator(equals);
     TfLiteInterpMatchApp app(comparator);
 
     app.verbose() = _param.verbose;

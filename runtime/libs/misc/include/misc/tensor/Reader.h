@@ -24,6 +24,7 @@
 #define __NNFW_MISC_TENSOR_READER_H__
 
 #include "misc/tensor/Index.h"
+#include "misc/tensor/Shape.h"
 
 namespace nnfw
 {
@@ -49,6 +50,12 @@ template <typename T> struct Reader
    * @return The value of specificed element
    */
   virtual T at(const Index &index) const = 0;
+
+  /**
+   * @brief   Get shape of tensor
+   * @return  Reference of shape
+   */
+  virtual const Shape &shape(void) const = 0;
 };
 
 } // namespace tensor

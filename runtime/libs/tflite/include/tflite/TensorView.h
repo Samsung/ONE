@@ -57,7 +57,7 @@ public:
    * @brief Get shape of tensor
    * @return Reference of shape
    */
-  const nnfw::misc::tensor::Shape &shape(void) const { return _shape; }
+  const nnfw::misc::tensor::Shape &shape(void) const override { return _shape; }
 
 public:
   /**

@@ -26,28 +26,29 @@ namespace misc
 namespace tensor
 {
 
-std::vector<Diff<float>> Comparator::compare(const Shape &shape, const Reader<float> &expected,
-                                             const Reader<float> &obtained,
-                                             Observer *observer) const
+template <typename T>
+std::vector<Diff<T>> Comparator<T>::compare(const Shape &shape, const Reader<T> &expected,
+                                            const Reader<T> &obtained, Observer *observer) const
 {
-  std::vector<Diff<float>> res;
+  std::vector<Diff<T>> res;
 
-  zip(shape, expected, obtained) <<
-    [&](const Index &index, float expected_value, float obtained_value) {
-      if (!_compare_fn(expected_value, obtained_value))
-      {
-        res.emplace_back(index, expected_value, obtained_value);
-      }
+  zip(shape, expected, obtained) << [&](const Index &index, T expected_value, T obtained_value) {
+    if (!_compare_fn(expected_value, obtained_value))
+    {
+      res.emplace_back(index, expected_value, obtained_value);
+    }
 
-      // Update max_diff_index, if necessary
-      if (observer != nullptr)
-      {
-        observer->notify(index, expected_value, obtained_value);
-      }
-    };
+    // Update max_diff_index, if necessary
+    if (observer != nullptr)
+    {
+      observer->notify(index, expected_value, obtained_value);
+    }
+  };
 
   return res;
 }
+
+template class Comparator<float>;
 
 } // namespace tensor
 } // namespace misc

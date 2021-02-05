@@ -25,7 +25,7 @@
 #include <iostream>
 #include <cassert>
 
-class DiffSummary : public nnfw::misc::tensor::Comparator::Observer
+class DiffSummary : public nnfw::misc::tensor::Comparator<float>::Observer
 {
 public:
   DiffSummary()
@@ -75,8 +75,8 @@ void DiffSummary::notify(const nnfw::misc::tensor::Index &index, float expected,
 }
 
 template <typename T>
-bool TfLiteInterpMatchApp::compareSingleTensorView(const nnfw::tflite::TensorView<T> &expected,
-                                                   const nnfw::tflite::TensorView<T> &obtained,
+bool TfLiteInterpMatchApp::compareSingleTensorView(const nnfw::misc::tensor::Reader<T> &expected,
+                                                   const nnfw::misc::tensor::Reader<T> &obtained,
                                                    int id) const
 {
   std::vector<nnfw::misc::tensor::Diff<T>> diffs;
@@ -121,8 +121,8 @@ bool TfLiteInterpMatchApp::compareSingleTensorView(const nnfw::tflite::TensorVie
 
 template <>
 bool TfLiteInterpMatchApp::compareSingleTensorView<float>(
-  const nnfw::tflite::TensorView<float> &expected, const nnfw::tflite::TensorView<float> &obtained,
-  int id) const
+  const nnfw::misc::tensor::Reader<float> &expected,
+  const nnfw::misc::tensor::Reader<float> &obtained, int id) const
 {
   DiffSummary summary;
 
