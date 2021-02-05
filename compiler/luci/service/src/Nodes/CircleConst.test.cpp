@@ -39,6 +39,22 @@ TEST(CirCleConst, clone)
   for (uint32_t i = 0; i < size; i++)
     circle_const->at<loco::DataType::S32>(i) = i;
 
+  // quantparam
+  auto quantparam = std::make_unique<luci::CircleQuantParam>();
+  quantparam->scale = {1.0};
+  quantparam->zerop = {0};
+  quantparam->min = {-127.0};
+  quantparam->max = {127.0};
+  quantparam->quantized_dimension = 1;
+  circle_const->quantparam(std::move(quantparam));
+
+  // sparsityparam
+  auto sparam = std::make_unique<luci::SparsityParam>();
+  sparam->traversal_order = {1};
+  sparam->block_map = {1};
+  sparam->dim_metadata = {};
+  circle_const->sparsityparam(std::move(sparam));
+
   // make a clone
   auto const_cloned = luci::clone(circle_const);
 
@@ -49,6 +65,94 @@ TEST(CirCleConst, clone)
   ASSERT_EQ(2, const_cloned->size<loco::DataType::S32>());
   ASSERT_EQ(0, const_cloned->at<loco::DataType::S32>(0));
   ASSERT_EQ(1, const_cloned->at<loco::DataType::S32>(1));
-  ASSERT_EQ(nullptr, const_cloned->quantparam());
-  ASSERT_EQ(nullptr, const_cloned->sparsityparam());
+  ASSERT_NE(nullptr, const_cloned->quantparam());
+  ASSERT_NE(nullptr, const_cloned->sparsityparam());
+}
+
+TEST(CirCleConst, clone_U8)
+{
+  auto g = loco::make_graph();
+
+  // prepare source CircleConst
+  auto circle_const = g->nodes()->create<luci::CircleConst>();
+
+  const auto size = 0;
+
+  circle_const->dtype(loco::DataType::U8);
+  circle_const->rank(1);
+  circle_const->dim(0).set(size);
+  circle_const->shape_status(luci::ShapeStatus::VALID);
+  circle_const->size<loco::DataType::U8>(size);
+
+  // make a clone
+  auto const_cloned = luci::clone(circle_const);
+
+  // check attributes
+  ASSERT_EQ(loco::DataType::U8, const_cloned->dtype());
+}
+
+TEST(CirCleConst, clone_S8)
+{
+  auto g = loco::make_graph();
+
+  // prepare source CircleConst
+  auto circle_const = g->nodes()->create<luci::CircleConst>();
+
+  const auto size = 0;
+
+  circle_const->dtype(loco::DataType::S8);
+  circle_const->rank(1);
+  circle_const->dim(0).set(size);
+  circle_const->shape_status(luci::ShapeStatus::VALID);
+  circle_const->size<loco::DataType::S8>(size);
+
+  // make a clone
+  auto const_cloned = luci::clone(circle_const);
+
+  // check attributes
+  ASSERT_EQ(loco::DataType::S8, const_cloned->dtype());
+}
+
+TEST(CirCleConst, clone_S64)
+{
+  auto g = loco::make_graph();
+
+  // prepare source CircleConst
+  auto circle_const = g->nodes()->create<luci::CircleConst>();
+
+  const auto size = 0;
+
+  circle_const->dtype(loco::DataType::S64);
+  circle_const->rank(1);
+  circle_const->dim(0).set(size);
+  circle_const->shape_status(luci::ShapeStatus::VALID);
+  circle_const->size<loco::DataType::S64>(size);
+
+  // make a clone
+  auto const_cloned = luci::clone(circle_const);
+
+  // check attributes
+  ASSERT_EQ(loco::DataType::S64, const_cloned->dtype());
+}
+
+TEST(CirCleConst, clone_BOOL)
+{
+  auto g = loco::make_graph();
+
+  // prepare source CircleConst
+  auto circle_const = g->nodes()->create<luci::CircleConst>();
+
+  const auto size = 0;
+
+  circle_const->dtype(loco::DataType::BOOL);
+  circle_const->rank(1);
+  circle_const->dim(0).set(size);
+  circle_const->shape_status(luci::ShapeStatus::VALID);
+  circle_const->size<loco::DataType::BOOL>(size);
+
+  // make a clone
+  auto const_cloned = luci::clone(circle_const);
+
+  // check attributes
+  ASSERT_EQ(loco::DataType::BOOL, const_cloned->dtype());
 }
