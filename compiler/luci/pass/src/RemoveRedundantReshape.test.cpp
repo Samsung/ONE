@@ -80,6 +80,13 @@ public:
 
 } // namespace
 
+TEST(RemoveRedundantReshapePassTest, name)
+{
+  luci::RemoveRedundantReshapePass pass;
+  auto const name = pass.name();
+  ASSERT_NE(nullptr, name);
+}
+
 TEST_F(RemoveRedundantReshape, simple_case)
 {
   buildGraph({4, 6}, {-1, 4, 6}, {1, -1, 2, 3});

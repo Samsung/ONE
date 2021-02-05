@@ -194,6 +194,13 @@ void create_redundunt_transpose_with_branch(loco::Graph *g, const std::vector<in
 
 } // namespace
 
+TEST(RemoveRedundantTransposePassTest, name)
+{
+  luci::RemoveRedundantTransposePass pass;
+  auto const name = pass.name();
+  ASSERT_NE(nullptr, name);
+}
+
 TEST(RemoveRedundantTransposePass, remove_consecutive_transpose_function_type1)
 {
   auto graph = loco::make_graph();

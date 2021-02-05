@@ -118,6 +118,13 @@ protected:
 
 } // namespace
 
+TEST(SubstituteSqueezeToReshapePassTest, name)
+{
+  luci::SubstituteSqueezeToReshapePass pass;
+  auto const name = pass.name();
+  ASSERT_NE(nullptr, name);
+}
+
 TEST_F(SubstituteSqueezeToReshapeTest, simple_with_squeeze_dims)
 {
   _graph.init({1, 16, 1, 1}, {1, 16}, {2, 3});

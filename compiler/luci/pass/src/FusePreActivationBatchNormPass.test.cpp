@@ -16,6 +16,8 @@
 
 #include "FusePreActivationBatchNormPassInternal.h"
 
+#include "luci/Pass/FusePreActivationBatchNormPass.h"
+
 #include <luci/IR/CircleNodes.h>
 
 #include <math.h>
@@ -170,6 +172,13 @@ public:
 };
 
 } // namespace
+
+TEST(FusePreActivationBatchNormPassTest, name)
+{
+  luci::FusePreActivationBatchNormPass pass;
+  auto const name = pass.name();
+  ASSERT_NE(nullptr, name);
+}
 
 TEST(FusePreActivationBatchNorm, swap_mul_add)
 {

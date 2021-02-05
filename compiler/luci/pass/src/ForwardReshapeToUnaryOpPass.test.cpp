@@ -138,6 +138,13 @@ protected:
 
 } // namespace
 
+TEST(ForwardReshapeToUnaryOpPassTest, name)
+{
+  luci::ForwardReshapeToUnaryOpPass pass;
+  auto const name = pass.name();
+  ASSERT_NE(nullptr, name);
+}
+
 TEST_F(ForwardReshapeToNegGraphTest, simple_forward)
 {
   _graph.init({2, 2, 2}, {2, 4});

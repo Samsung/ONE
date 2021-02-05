@@ -83,6 +83,13 @@ public:
 
 } // namespace
 
+TEST(PropagateQuantParamPassTest, name)
+{
+  luci::PropagateQuantParamPass pass;
+  auto const name = pass.name();
+  ASSERT_NE(nullptr, name);
+}
+
 TEST(PropagateQuantParam, simple)
 {
   SimpleGraph g;

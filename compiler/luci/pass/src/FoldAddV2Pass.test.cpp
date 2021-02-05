@@ -99,6 +99,13 @@ public:
 
 } // namespace
 
+TEST(FoldAddV2PassTest, name)
+{
+  luci::FoldAddV2Pass pass;
+  auto const name = pass.name();
+  ASSERT_NE(nullptr, name);
+}
+
 TEST_F(FoldS64AddV2Test, fold_addV2)
 {
   luci::FoldAddV2Pass pass;

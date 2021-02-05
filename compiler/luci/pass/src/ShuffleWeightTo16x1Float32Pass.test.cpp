@@ -58,6 +58,13 @@ void create_fc_net(loco::Graph *g)
   output->index(graph_output->index());
 }
 
+TEST(ShuffleWeightTo16x1Float32PassTest, name)
+{
+  luci::ShuffleWeightTo16x1Float32Pass pass;
+  auto const name = pass.name();
+  ASSERT_NE(nullptr, name);
+}
+
 TEST(ShuffleWeightTo16x1Float32PassTest, SimpleTest1)
 {
   auto graph = loco::make_graph();

@@ -75,6 +75,13 @@ void create_unnecessary_reshape_graph(loco::Graph *g,
 
 } // namespace
 
+TEST(RemoveUnnecessaryReshapePassTest, name)
+{
+  luci::RemoveUnnecessaryReshapePass pass;
+  auto const name = pass.name();
+  ASSERT_NE(nullptr, name);
+}
+
 TEST(RemoveUnnecessaryReshapePass, create_unnecessary_reshape)
 {
   auto graph = loco::make_graph();

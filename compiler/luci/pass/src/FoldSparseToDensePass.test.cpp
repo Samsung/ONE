@@ -93,6 +93,13 @@ protected:
 
 } // namespace
 
+TEST(FoldSparseToDensePassTest, name)
+{
+  luci::FoldSparseToDensePass pass;
+  auto const name = pass.name();
+  ASSERT_NE(nullptr, name);
+}
+
 TEST_F(S64SparseToDenseZeroIndicesTest, fold_stod_with_zero_indices)
 {
   luci::FoldSparseToDensePass pass;

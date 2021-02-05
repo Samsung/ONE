@@ -16,6 +16,8 @@
 
 #include "FuseActivationFunctionPassInternal.h"
 
+#include "luci/Pass/FuseActivationFunctionPass.h"
+
 #include <luci/IR/CircleNodes.h>
 
 #include <gtest/gtest.h>
@@ -64,6 +66,13 @@ public:
 };
 
 } // namespace
+
+TEST(FuseActivationFunctionPassTest, name)
+{
+  luci::FuseActivationFunctionPass pass;
+  auto const name = pass.name();
+  ASSERT_NE(nullptr, name);
+}
 
 TEST(FusePreActivationBatchNorm, fuse_activation_function)
 {

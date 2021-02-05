@@ -108,6 +108,12 @@ protected:
 
 } // namespace
 
+TEST_F(TransformMinMaxToRelu6PassTest, name)
+{
+  auto const name = _pass.name();
+  ASSERT_NE(nullptr, name);
+}
+
 /**
  *  Optimized graph looks like below.
  *

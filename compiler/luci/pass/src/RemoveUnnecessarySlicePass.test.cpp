@@ -73,6 +73,13 @@ void create_remove_unnecessary_slice(loco::Graph *g,
 
 } // namespace
 
+TEST(RemoveUnnecessarySlicePass, name)
+{
+  luci::RemoveUnnecessarySlicePass pass;
+  auto const name = pass.name();
+  ASSERT_NE(nullptr, name);
+}
+
 TEST(RemoveUnnecessarySlicePass, remove_no_effect_slice)
 {
   auto graph = loco::make_graph();

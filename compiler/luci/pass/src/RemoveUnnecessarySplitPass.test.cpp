@@ -69,6 +69,13 @@ void create_unnecessary_split_graph(loco::Graph *g, bool remove)
 
 } // namespace
 
+TEST(RemoveUnnecessarySplitPass, name)
+{
+  luci::RemoveUnnecessarySplitPass pass;
+  auto const name = pass.name();
+  ASSERT_NE(nullptr, name);
+}
+
 TEST(RemoveUnnecessarySplitPass, create_unnecessary_split)
 {
   auto graph = loco::make_graph();
