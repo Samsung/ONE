@@ -153,15 +153,6 @@
 namespace luci
 {
 
-/**
- * @brief  Set both CircleReshape's 2nd input as CircleConst, and newShape attribute
- *         with same value
- * @note   Shape inference for TFLReshape forces them to be same
- *
- * TODO find better place for this helper
- */
-void set_new_shape(CircleReshape *node, int32_t *base, uint32_t size);
-
 /// @brief Link GraphOutput with CircleOutput node
 void link(loco::GraphOutput *, CircleOutput *);
 

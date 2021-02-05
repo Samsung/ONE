@@ -23,31 +23,6 @@
 namespace luci
 {
 
-void set_new_shape(CircleReshape *node, int32_t *base, uint32_t size)
-{
-  // Check node does not have both of new shape infos
-  LUCI_ASSERT(node->shape() == nullptr, "node already has shape input");
-  LUCI_ASSERT(node->newShape()->rank() == 0, "node already has newShape attribute");
-
-  const loco::DataType S32 = loco::DataType::S32;
-
-  // Set 2nd input as CircleConst
-  auto const_shape_node = node->graph()->nodes()->create<CircleConst>();
-  const_shape_node->rank(1);
-  const_shape_node->dim(0) = size;
-  const_shape_node->dtype(S32);
-  const_shape_node->size<S32>(size);
-  const_shape_node->shape_status(luci::ShapeStatus::VALID);
-  for (uint32_t axis = 0; axis < size; ++axis)
-    const_shape_node->at<S32>(axis) = base[axis];
-  node->shape(const_shape_node);
-
-  // Set newShape attribute
-  node->newShape()->rank(size);
-  for (uint32_t axis = 0; axis < size; ++axis)
-    node->newShape()->dim(axis) = base[axis];
-}
-
 void link(loco::GraphOutput *output, CircleOutput *node) { node->index(output->index()); }
 
 CircleOutput *output_node(loco::Graph *g, const loco::GraphOutputIndex &index)
