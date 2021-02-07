@@ -25,33 +25,14 @@
 #include <fstream>
 #include <iostream>
 
-int entry(int argc, char **argv)
+int entry_stream(std::istream &is, const std::string &recipe_path, const std::string &tflite_path)
 {
-  arser::Arser arser;
-  arser.add_argument("recipe")
-    .type(arser::DataType::STR)
-    .help("Source recipe file path to convert");
-  arser.add_argument("tflite").type(arser::DataType::STR).help("Target tflite file path");
-
-  try
-  {
-    arser.parse(argc, argv);
-  }
-  catch (const std::runtime_error &err)
-  {
-    std::cout << err.what() << std::endl;
-    std::cout << arser;
-    return 255;
-  }
-
   int32_t model_version = 1;
 
   ::tflchef::ModelRecipe model_recipe;
 
-  std::string recipe_path = arser.get<std::string>("recipe");
   // Load model recipe from a file
   {
-    std::ifstream is{recipe_path};
     google::protobuf::io::IstreamInputStream iis{&is};
     if (!google::protobuf::TextFormat::Parse(&iis, &model_recipe))
     {
@@ -74,7 +55,6 @@ int entry(int argc, char **argv)
 
   auto generated_model = tflchef::cook(model_recipe);
 
-  std::string tflite_path = arser.get<std::string>("tflite");
   // Dump generated model into a file
   {
     std::ofstream os{tflite_path, std::ios::binary};
@@ -82,4 +62,31 @@ int entry(int argc, char **argv)
   }
 
   return 0;
+}
+
+int entry(int argc, char **argv)
+{
+  arser::Arser arser;
+  arser.add_argument("recipe")
+    .type(arser::DataType::STR)
+    .help("Source recipe file path to convert");
+  arser.add_argument("tflite").type(arser::DataType::STR).help("Target tflite file path");
+
+  try
+  {
+    arser.parse(argc, argv);
+  }
+  catch (const std::runtime_error &err)
+  {
+    std::cout << err.what() << std::endl;
+    std::cout << arser;
+    return 255;
+  }
+
+  std::string recipe_path = arser.get<std::string>("recipe");
+  std::string tflite_path = arser.get<std::string>("tflite");
+
+  std::ifstream is{recipe_path};
+
+  return entry_stream(is, recipe_path, tflite_path);
 }

@@ -168,15 +168,17 @@ public:
   bool build(const loco::Node *, locop::NodeSummary &s) const final;
 
 protected:
-#define CIRCLE_NODE(OPCODE, CLASS)                                      \
-  virtual bool summary(const CLASS *, locop::NodeSummary &s) const      \
-  {                                                                     \
-    s.comments().append("Emitted by Default CircleNodeSummaryBuilder"); \
-    s.state(locop::NodeSummary::State::PartiallyKnown);                 \
-    return true;                                                        \
-  }
+#define CIRCLE_NODE(OPCODE, CLASS) \
+  virtual bool summary(const CLASS *, locop::NodeSummary &s) const { return summary(s); }
 #include <luci/IR/CircleNodes.lst>
 #undef CIRCLE_NODE
+
+  bool summary(locop::NodeSummary &s) const
+  {
+    s.comments().append("Emitted by Default CircleNodeSummaryBuilder");
+    s.state(locop::NodeSummary::State::PartiallyKnown);
+    return true;
+  }
 
 protected:
   const locop::SymbolTable *tbl(void) const { return _tbl; }
