@@ -166,33 +166,6 @@ void Graph::initializeUseDef()
   });
 }
 
-void Graph::sweepGarbageOperands()
-{
-  // Remove operands that are not used by any operations, except Graph inputs/outputs
-  ir::OperandIndexMap<bool> visited;
-
-  operations().iterate([&](const OperationIndex &, const Operation &node) {
-    for (auto ind : node.getInputs() + node.getOutputs())
-    {
-      visited[ind] = true;
-    }
-  });
-
-  // Graph's inputs/outputs are always reachable
-  for (auto ind : getInputs() + getOutputs())
-  {
-    visited[ind] = true;
-  }
-
-  operands().iterate([&](const OperandIndex &ind, const Operand &) {
-    if (!visited[ind])
-    {
-      VERBOSE(Graph::sweepGarbageOperands) << "Sweep garbage operand " << ind << std::endl;
-      operands().remove(ind);
-    }
-  });
-}
-
 std::vector<ir::OperationIndex> Graph::topolSortOperations() const
 {
   std::vector<ir::OperationIndex> ret;
