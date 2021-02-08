@@ -23,6 +23,21 @@
 
 #include <gtest/gtest.h>
 
+TEST(SimplifyDomainConversionPassTest, name)
+{
+  logo::SimplifyDomainConversionPass pass;
+  auto const name = pass.name();
+  ASSERT_NE(nullptr, name);
+}
+
+TEST(SimplifyDomainConversionPassTest, run_NEG)
+{
+  loco::Graph g;
+  logo::SimplifyDomainConversionPass pass;
+
+  ASSERT_FALSE(pass.run(&g));
+}
+
 namespace
 {
 
