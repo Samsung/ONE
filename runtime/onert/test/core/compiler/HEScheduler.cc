@@ -233,7 +233,7 @@ std::shared_ptr<Graph> createStraightGraph()
   BinaryArithmetic::Param mul_op_params{BinaryArithmetic::ArithmeticType::MUL, Activation::NONE};
   create<BinaryArithmetic>(graph, OIS{sub_out_idx, mul_const_idx}, OIS{mul_out_idx}, mul_op_params);
 
-  graph->finishBuilding();
+  graph->verify();
   return graph;
 }
 
@@ -289,7 +289,7 @@ std::shared_ptr<Graph> createBranchedGraph()
   BinaryArithmetic::Param sub_op_params{BinaryArithmetic::ArithmeticType::SUB, Activation::NONE};
   create<BinaryArithmetic>(graph, OIS{mul2_out_idx, fc2_out_idx}, OIS{sub_out_idx}, sub_op_params);
 
-  graph->finishBuilding();
+  graph->verify();
   return graph;
 }
 

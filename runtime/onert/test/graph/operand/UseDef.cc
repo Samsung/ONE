@@ -60,7 +60,7 @@ TEST(ir_Operand, neg_usedef)
   auto multiinput_index = graph.addOperation(
     std::make_unique<Mock>(IndexSet{operand_index1, operand_index2}, IndexSet{output_operand}));
 
-  graph.finishBuilding();
+  graph.verify();
 
   ASSERT_TRUE(verifier.verify(graph));
 

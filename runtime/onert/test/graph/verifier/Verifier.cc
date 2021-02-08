@@ -41,8 +41,6 @@ TEST(Verifier, dag_checker)
 
   graph.addOperation(std::make_unique<Mock>(IndexSet{operand1}, IndexSet{operand2}));
 
-  graph.finishBuilding();
-
   onert::ir::verifier::DAGChecker verifier;
 
   ASSERT_TRUE(verifier.verify(graph));
@@ -63,8 +61,6 @@ TEST(Verifier, neg_edge_consistency_checker_1)
 
   auto mock_op = std::make_unique<Mock>(IndexSet{operand1}, IndexSet{operand2});
   auto op_ind = graph.addOperation(std::move(mock_op));
-
-  graph.finishBuilding();
 
   graph.operands().at(operand1).removeUse(op_ind); // Manipulate the operand alone
 
@@ -88,8 +84,6 @@ TEST(Verifier, neg_edge_consistency_checker_2)
   auto mock_op = std::make_unique<Mock>(IndexSet{operand1}, IndexSet{operand2});
   auto mock_op_ptr = mock_op.get();
   auto op_ind = graph.addOperation(std::move(mock_op));
-
-  graph.finishBuilding();
 
   mock_op_ptr->setInputs({operand2}); // Manipulate the operation alone
 

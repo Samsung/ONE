@@ -67,6 +67,7 @@ private:
 
 private:
   std::shared_ptr<onert::ir::Graph> _graph;
+  bool _finished_building;
   std::unordered_set<onert::ir::OperandIndex> _optional_operands;
   std::vector<OperandUsage> _operand_usages;
   bool _allowFloat32toFloat16;

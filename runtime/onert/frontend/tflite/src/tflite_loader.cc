@@ -107,7 +107,7 @@ private:
       loadOperation(op, *subg);
     }
 
-    subg->finishBuilding();
+    subg->verify();
 
     return subg;
   }

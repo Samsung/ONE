@@ -84,13 +84,14 @@ public:
   void setOperandValue(const OperandIndex &ind, std::shared_ptr<Data> data);
   void addInput(const OperandIndex &ind, const std::string &name = "");
   void addOutput(const OperandIndex &ind, const std::string &name = "");
-  void finishBuilding(void);
+  void verify(void);
   void removeOperand(const OperandIndex &ind) { _operands.remove(ind); }
-  bool isBuildingPhase(void) const { return _phase == Phase::BUILDING; }
   void setLayout(Layout layout) { _layout = layout; }
   void setSubgraphs(const std::shared_ptr<Subgraphs> &subgs) { _subgraphs = subgs; }
 
 private:
+  bool checkOperandsForOperation(const Operation &operation);
+  void linkOperandToOperation(OperationIndex index, const Operation &operation);
   void initializeUseDef();
   // TODO Rename to `sweepUnusedOperands`
   // TODO Make this public
@@ -133,7 +134,6 @@ public:
   std::vector<ir::OperationIndex> topolSortOperations() const;
 
 private:
-  Phase _phase{Phase::BUILDING};
   Operations _operations;
   Operands _operands;
   OperandIndexSequence _inputs;

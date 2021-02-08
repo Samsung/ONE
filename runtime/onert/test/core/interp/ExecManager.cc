@@ -71,7 +71,7 @@ protected:
     _graph->getInputs().append(operand_rhs);
     _graph->getOutputs().append(operand_result);
 
-    _graph->finishBuilding();
+    _graph->verify();
 
     auto subgs = std::make_shared<onert::ir::Subgraphs>();
     subgs->push(onert::ir::SubgraphIndex{0}, _graph);
@@ -136,7 +136,7 @@ protected:
     _graph->getInputs().append(operand_rhs1);
     _graph->getOutputs().append(operand_result2);
 
-    _graph->finishBuilding();
+    _graph->verify();
 
     auto subgs = std::make_shared<onert::ir::Subgraphs>();
     subgs->push(onert::ir::SubgraphIndex{0}, _graph);
@@ -189,7 +189,7 @@ protected:
     _graph->getInputs().append(operand_rhs);
     _graph->getOutputs().append(operand_result);
 
-    _graph->finishBuilding();
+    _graph->verify();
 
     auto subgs = std::make_shared<onert::ir::Subgraphs>();
     subgs->push(onert::ir::SubgraphIndex{0}, _graph);
@@ -213,7 +213,7 @@ protected:
 TEST_F(InterpExecutorTest, create_empty)
 {
   Graph graph;
-  graph.finishBuilding();
+  graph.verify();
   auto executor = std::make_unique<InterpExecutor>(graph);
   ASSERT_NE(executor, nullptr);
 }

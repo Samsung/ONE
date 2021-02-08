@@ -117,8 +117,6 @@ void PermutationInsertionPass::callback(const ir::OperandIndex &index, ir::Opera
 ir::OperationIndex PermutationInsertionPass::insertPermute(const ir::OperandIndex &operand_index,
                                                            const PermuteFactor &factor)
 {
-  assert(!_graph.isBuildingPhase());
-
   auto &operand = _graph.operands().at(operand_index);
 
   // Generate output operand and permute operation

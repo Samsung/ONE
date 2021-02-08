@@ -50,20 +50,57 @@ OperandIndex Graph::addOperand(OperandIndex index, std::unique_ptr<Operand> &&op
   return _operands.push(std::move(operand), index);
 }
 
-OperationIndex Graph::addOperation(std::unique_ptr<Operation> &&node)
+bool Graph::checkOperandsForOperation(const Operation &operation)
 {
-  assert(isBuildingPhase());
-  return _operations.push(std::move(node));
+  auto inputs = operation.getInputs() | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED;
+  auto outputs = operation.getOutputs() | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED;
+  for (auto input : inputs)
+    if (!operands().exist(input))
+      return false;
+  for (auto input : outputs)
+    if (!operands().exist(input))
+      return false;
+  return true;
+}
+
+void Graph::linkOperandToOperation(OperationIndex index, const Operation &operation)
+{
+  auto inputs = operation.getInputs() | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED;
+  auto outputs = operation.getOutputs() | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED;
+
+  for (auto input : inputs)
+    operands().at(input).insertUse(index);
+  for (auto output : outputs)
+    operands().at(output).setDef(index);
+}
+
+OperationIndex Graph::addOperation(std::unique_ptr<Operation> &&operation)
+{
+  const Operation &op_ref = *operation;
+  if (!checkOperandsForOperation(op_ref))
+    return OperationIndex{};
+  auto ind = _operations.push(std::move(operation));
+  if (ind.valid())
+    linkOperandToOperation(ind, op_ref);
+  return ind;
 }
 
 OperationIndex Graph::addOperation(OperationIndex index, std::unique_ptr<Operation> &&operation)
 {
-  return _operations.push(std::move(operation), index);
+  const Operation &op_ref = *operation;
+  if (!checkOperandsForOperation(op_ref))
+    return OperationIndex{};
+  auto ind_gen = _operations.push(std::move(operation), index);
+  if (ind_gen.valid())
+  {
+    assert(ind_gen == index);
+    linkOperandToOperation(index, op_ref);
+  }
+  return index;
 }
 
 void Graph::setOperandValue(const OperandIndex &ind, std::shared_ptr<Data> data)
 {
-  assert(isBuildingPhase());
   assert(_operands.exist(ind));
   _operands.at(ind).data(std::move(data));
 }
@@ -94,15 +131,8 @@ IOIndex Graph::getOutputIndex(const std::string &name) const
   return (itr == _name_to_output.end()) ? IOIndex{} : itr->second;
 }
 
-void Graph::finishBuilding(void)
+void Graph::verify(void)
 {
-  assert(isBuildingPhase());
-  _phase = Phase::MODEL;
-
-  initializeUseDef();
-  // Temporarilly disabled since it may cause error for partial graphs of backend contexts
-  // sweepGarbageOperands();
-
   // Call graph verifications for the MODEL phase
   {
     // Except for edge consistency, the user might have been given a bad model
@@ -118,8 +148,6 @@ void Graph::finishBuilding(void)
   // - Operand type
   // - Shape independent parameter
   OperationValidator{*this}();
-
-  dumper::text::dumpGraph(*this);
 }
 
 void Graph::initializeUseDef()
