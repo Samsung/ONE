@@ -221,7 +221,7 @@ void RandomTestRunner::compile(const nnfw::tflite::Builder &builder)
 
     if (it == reseters.end())
     {
-      throw std::runtime_error{"Not supported input type"};
+      throw std::runtime_error{"Not supported output type"};
     }
 
     it->second(id, _tfl_interp.get(), _nnapi.get());
