@@ -24,6 +24,21 @@
 
 using namespace logo::test;
 
+TEST(ConstantFoldingTest, name)
+{
+  logo::ConstantFoldingPass pass;
+  auto const name = pass.name();
+  ASSERT_NE(nullptr, name);
+}
+
+TEST(ConstantFoldingTest, run_NEG)
+{
+  loco::Graph g;
+  logo::ConstantFoldingPass pass;
+
+  ASSERT_FALSE(pass.run(&g));
+}
+
 namespace
 {
 
