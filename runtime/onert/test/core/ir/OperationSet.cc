@@ -16,7 +16,7 @@
 
 #include <gtest/gtest.h>
 
-#include "../MockNode.h"
+#include "MockNode.h"
 #include "ir/Operations.h"
 
 using onert::ir::Operation;

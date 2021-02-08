@@ -19,7 +19,7 @@
 #include "ir/Graph.h"
 #include "ir/verifier/Verifier.h"
 #include <memory>
-#include "../MockNode.h"
+#include "MockNode.h"
 
 #include <typeindex>
 
