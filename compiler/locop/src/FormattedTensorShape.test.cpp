@@ -28,6 +28,7 @@ TEST(FormattedTensorShapeTest, BracketFormat)
 
   tensor_shape->rank(2);
   tensor_shape->dim(0) = 4;
+  tensor_shape->dim(1) = 8;
 
   std::cout << fmt<TensorShapeFormat::Bracket>(tensor_shape.get()) << std::endl;
 
