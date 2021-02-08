@@ -25,6 +25,8 @@
 #include <luci/CircleExporter.h>
 #include <oops/InternalExn.h>
 
+#include <logo/Phase.h>
+
 #include <fstream>
 #include <iostream>
 #include <map>
@@ -132,24 +134,15 @@ int entry(int argc, char **argv)
       return 255;
 
     {
-      luci::ShapeInferencePass pass;
-      while (pass.run(graph) == true)
-        ;
-    }
-    {
-      luci::TypeInferencePass pass;
-      while (pass.run(graph) == true)
-        ;
-    }
-    {
-      luci::CircleShapeInferencePass pass;
-      while (pass.run(graph) == true)
-        ;
-    }
-    {
-      luci::CircleTypeInferencePass pass;
-      while (pass.run(graph) == true)
-        ;
+      logo::Phase phase;
+
+      phase.emplace_back(std::make_unique<luci::ShapeInferencePass>());
+      phase.emplace_back(std::make_unique<luci::TypeInferencePass>());
+      phase.emplace_back(std::make_unique<luci::CircleShapeInferencePass>());
+      phase.emplace_back(std::make_unique<luci::CircleTypeInferencePass>());
+
+      logo::PhaseRunner<logo::PhaseStrategy::Saturate> phase_runner{graph};
+      phase_runner.run(phase);
     }
 
     if (!luci::validate(graph))
