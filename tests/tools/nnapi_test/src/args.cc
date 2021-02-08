@@ -55,6 +55,7 @@ void Args::Initialize(void)
     ("tflite", po::value<std::string>()->required())
     ("seed", po::value<int>()->default_value(0), "The seed of random inputs")
     ("num_runs", po::value<int>()->default_value(2), "The number of runs")
+    ("input_set", po::value<int>()->default_value(1), "The number of different input set")
     ;
   // clang-format on
 
@@ -108,6 +109,16 @@ void Args::Parse(const int argc, char **argv)
     if (_num_runs < 0)
     {
       std::cerr << "num_runs value must be greater than 0.\n";
+      exit(255);
+    }
+  }
+
+  if (vm.count("input_set"))
+  {
+    _input_set = vm["input_set"].as<int>();
+    if (_input_set < 0)
+    {
+      std::cerr << "input_set value must be greater than 0.\n";
       exit(255);
     }
   }

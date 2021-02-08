@@ -52,8 +52,9 @@ int main(const int argc, char **argv)
     const auto seed = static_cast<uint32_t>(args.getSeed());
     auto runner = nnfw::tflite::RandomTestRunner::make(seed);
     const auto num_runs = static_cast<size_t>(args.getNumRuns());
+    const auto input_set = static_cast<size_t>(args.getInputSet());
     runner.compile(builder);
-    return runner.run(num_runs);
+    return runner.run(num_runs, input_set);
   }
   catch (const std::exception &e)
   {

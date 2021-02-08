@@ -34,6 +34,7 @@ public:
   const std::string &getTfliteFilename(void) const { return _tflite_filename; }
   const int getSeed(void) const { return _seed; }
   const int getNumRuns(void) const { return _num_runs; }
+  const int getInputSet(void) const { return _input_set; }
 
 private:
   void Initialize();
@@ -46,6 +47,7 @@ private:
   std::string _tflite_filename;
   int _seed;
   int _num_runs;
+  int _input_set;
 };
 
 } // end of namespace nnapi_test

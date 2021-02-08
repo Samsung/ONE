@@ -102,81 +102,83 @@ void RandomTestRunner::compile(const nnfw::tflite::Builder &builder)
   // Allocate Tensors
   _tfl_interp->AllocateTensors();
   _nnapi->AllocateTensors();
-
-  assert(_tfl_interp->inputs() == _nnapi->inputs());
-
-  nnfw::tflite::OutputResetter resetter;
-  resetter.run(*(_tfl_interp.get()));
-  resetter.run(*(_nnapi.get()));
-
-  RandomInputInitializer initializer{_randgen};
-  initializer.run(*(_tfl_interp.get()));
-
-  CopyInputInitializer copy_initializer{*(_tfl_interp.get())};
-  copy_initializer.run(*(_nnapi.get()));
 }
 
-int RandomTestRunner::run(size_t running_count)
+int RandomTestRunner::run(size_t running_count, size_t input_set)
 {
-  std::cout << "[NNAPI TEST] Run T/F Lite Interpreter without NNAPI" << std::endl;
-  _tfl_interp->Invoke();
-
   nnfw::tflite::NNAPIDelegate d;
 
-  for (size_t i = 1; i <= running_count; ++i)
+  for (size_t n = 1; n <= input_set; ++n)
   {
-    std::cout << "[NNAPI TEST #" << i << "] Run T/F Lite Interpreter with NNAPI" << std::endl;
+    OutputResetter resetter;
+    resetter.run(*(_tfl_interp.get()));
+    resetter.run(*(_nnapi.get()));
 
-    char *env = getenv("UPSTREAM_DELEGATE");
+    RandomInputInitializer initializer{_randgen};
+    initializer.run(*(_tfl_interp.get()));
 
-    if (env && !std::string(env).compare("1"))
+    CopyInputInitializer copy_initializer{*(_tfl_interp.get())};
+    copy_initializer.run(*(_nnapi.get()));
+
+    std::cout << "[NNAPI TEST #" << n << "] Run T/F Lite Interpreter without NNAPI" << std::endl;
+    _tfl_interp->Invoke();
+
+    for (size_t i = 1; i <= running_count; ++i)
     {
-      _nnapi->UseNNAPI(true);
-      _nnapi->Invoke();
-    }
-    else
-    {
-      // WARNING
-      // primary_subgraph: Experimental interface. Return 1st sugbraph
-      // Invoke() will call BuildGraph() internally
-      if (d.Invoke(&_nnapi.get()->primary_subgraph()))
+      std::cout << "[NNAPI TEST #" << n << "-" << i << "] Run T/F Lite Interpreter with NNAPI"
+                << std::endl;
+
+      char *env = getenv("UPSTREAM_DELEGATE");
+
+      if (env && !std::string(env).compare("1"))
       {
-        throw std::runtime_error{"Failed to BuildGraph"};
+        _nnapi->UseNNAPI(true);
+        _nnapi->Invoke();
       }
-    }
-
-    // Compare OFM
-    std::cout << "[NNAPI TEST #" << i << "] Compare the result" << std::endl;
-
-    const auto tolerance = _param.tolerance;
-
-    auto equals = [tolerance](float lhs, float rhs) {
-      // NOTE Hybrid approach
-      // TODO Allow users to set tolerance for absolute_epsilon_equal
-      if (nnfw::misc::fp32::absolute_epsilon_equal(lhs, rhs))
+      else
       {
-        return true;
+        // WARNING
+        // primary_subgraph: Experimental interface. Return 1st sugbraph
+        // Invoke() will call BuildGraph() internally
+        if (d.Invoke(&_nnapi.get()->primary_subgraph()))
+        {
+          throw std::runtime_error{"Failed to BuildGraph"};
+        }
       }
 
-      return nnfw::misc::fp32::epsilon_equal(lhs, rhs, tolerance);
-    };
+      // Compare OFM
+      std::cout << "[NNAPI TEST #" << n << "-" << i << "] Compare the result" << std::endl;
 
-    nnfw::misc::tensor::Comparator<float> comparator(equals);
-    TfLiteInterpMatchApp app(comparator);
+      const auto tolerance = _param.tolerance;
 
-    app.verbose() = _param.verbose;
+      auto equals = [tolerance](float lhs, float rhs) {
+        // NOTE Hybrid approach
+        // TODO Allow users to set tolerance for absolute_epsilon_equal
+        if (nnfw::misc::fp32::absolute_epsilon_equal(lhs, rhs))
+        {
+          return true;
+        }
 
-    bool res = app.run(*_tfl_interp, *_nnapi);
+        return nnfw::misc::fp32::epsilon_equal(lhs, rhs, tolerance);
+      };
 
-    if (!res)
-    {
-      return 255;
+      nnfw::misc::tensor::Comparator<float> comparator(equals);
+      TfLiteInterpMatchApp app(comparator);
+
+      app.verbose() = _param.verbose;
+
+      bool res = app.run(*_tfl_interp, *_nnapi);
+
+      if (!res)
+      {
+        return 255;
+      }
+
+      std::cout << "[NNAPI TEST #" << n << "-" << i << "] PASSED" << std::endl << std::endl;
+
+      if (_param.tensor_logging)
+        nnfw::tflite::TensorLogger::get().save(_param.log_path, *_tfl_interp);
     }
-
-    std::cout << "[NNAPI TEST #" << i << "] PASSED" << std::endl << std::endl;
-
-    if (_param.tensor_logging)
-      nnfw::tflite::TensorLogger::get().save(_param.log_path, *_tfl_interp);
   }
 
   return 0;

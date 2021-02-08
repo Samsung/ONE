@@ -64,9 +64,10 @@ public:
   /**
    * @brief     Run the random test runner
    * @param[in] running_count  Count to run tflite interpreter with NNAPI
+   * @param[in] input_set      Count to run tflite interpreter with different input set
    * @return    0 if test succeeds, otherwise failure
    */
-  int run(size_t running_count);
+  int run(size_t running_count, size_t input_set);
 
 public:
   /**
