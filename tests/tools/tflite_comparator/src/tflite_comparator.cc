@@ -15,6 +15,8 @@
  */
 
 #include "args.h"
+#include "InputInitializer.h"
+#include "IOManager.h"
 
 #include <nnfw_experimental.h>
 #include <nnfw_internal.h>
@@ -198,7 +200,6 @@ int main(const int argc, char **argv)
   std::cout << "[Execution] Model compiled!" << std::endl;
 
   // Prepare input/output data
-  std::vector<std::vector<uint8_t>> inputs(num_inputs);
   std::vector<std::vector<uint8_t>> outputs(num_outputs);
 
   bool generate_data = data_files.empty();
@@ -210,53 +211,25 @@ int main(const int argc, char **argv)
     exit(1);
   }
 
-  const int seed = 1; /* TODO Add an option for seed value */
-  nnfw::misc::RandomGenerator randgen{seed, 0.0f, 2.0f};
+  nnfw::onert_cmp::IOManager manager{onert_session};
+
+  if (generate_data)
+  {
+    const int seed = 1; /* TODO Add an option for seed value */
+    nnfw::misc::RandomGenerator randgen{seed, 0.0f, 2.0f};
+    nnfw::onert_cmp::RandomInputInitializer initializer{randgen};
+
+    initializer.run(manager);
+  }
+  else
+  {
+    nnfw::onert_cmp::FileInputInitializer initialier{data_files};
+    initialier.run(manager);
+  }
 
   for (uint32_t i = 0; i < num_inputs; i++)
   {
-    nnfw_tensorinfo ti_input;
-    NNFW_ASSERT_FAIL(nnfw_input_tensorinfo(onert_session, i, &ti_input),
-                     "[ ERROR ] Failure during get input data info");
-    size_t input_size = num_elems(&ti_input) * sizeOfNnfwType(ti_input.dtype);
-
-    inputs[i].resize(input_size);
-
-    if (generate_data)
-    {
-      switch (ti_input.dtype)
-      {
-        case NNFW_TYPE_TENSOR_BOOL:
-          randomBoolData(randgen, inputs[i]);
-          break;
-        case NNFW_TYPE_TENSOR_UINT8:
-        case NNFW_TYPE_TENSOR_QUANT8_ASYMM:
-          randomData<uint8_t>(randgen, inputs[i]);
-          break;
-        case NNFW_TYPE_TENSOR_QUANT8_ASYMM_SIGNED:
-          randomData<int8_t>(randgen, inputs[i]);
-          break;
-        case NNFW_TYPE_TENSOR_FLOAT32:
-          randomData<float>(randgen, inputs[i]);
-          break;
-        case NNFW_TYPE_TENSOR_INT32:
-          randomData<int32_t>(randgen, inputs[i]);
-          break;
-        case NNFW_TYPE_TENSOR_INT64:
-          randomData<uint64_t>(randgen, inputs[i]);
-          break;
-        default:
-          std::cerr << "[ ERROR ] "
-                    << "Unspported input data type" << std::endl;
-          exit(-1);
-          break;
-      }
-    }
-    else /* read_data */
-      readData(data_files[i], inputs[i]);
-
-    NNFW_ASSERT_FAIL(nnfw_set_input(onert_session, i, ti_input.dtype, inputs[i].data(), input_size),
-                     "[ ERROR ] Failure to set input tensor buffer");
+    manager.setInput(i);
   }
 
   std::cout << "[Execution] Input data is defined!" << std::endl;
@@ -308,7 +281,7 @@ int main(const int argc, char **argv)
   for (uint32_t i = 0; i < num_inputs; i++)
   {
     auto input_tensor = interpreter->tensor(interpreter->inputs().at(i));
-    memcpy(input_tensor->data.uint8, inputs[i].data(), inputs[i].size());
+    memcpy(input_tensor->data.uint8, manager.inputBase(i).data(), input_tensor->bytes);
   }
   if (!sess->run())
   {

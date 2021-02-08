@@ -10,6 +10,8 @@ endif(NOT BUILD_ONERT)
 
 list(APPEND SOURCES "src/tflite_comparator.cc")
 list(APPEND SOURCES "src/args.cc")
+list(APPEND SOURCES "src/InputInitializer.cc")
+list(APPEND SOURCES "src/IOManager.cc")
 
 nnfw_find_package(Boost REQUIRED program_options system filesystem)
 
