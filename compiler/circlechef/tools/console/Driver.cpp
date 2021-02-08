@@ -22,7 +22,7 @@
 
 #include <iostream>
 
-int entry(int argc, char **argv)
+int entry_stream(std::istream &is)
 {
   int32_t model_version = 1;
 
@@ -30,7 +30,7 @@ int entry(int argc, char **argv)
 
   // Read a model recipe from standard input
   {
-    google::protobuf::io::IstreamInputStream iis{&std::cin};
+    google::protobuf::io::IstreamInputStream iis{&is};
     if (!google::protobuf::TextFormat::Parse(&iis, &model_recipe))
     {
       std::cerr << "ERROR: Failed to parse recipe" << std::endl;
@@ -55,4 +55,10 @@ int entry(int argc, char **argv)
   std::cout.write(generated_model.base(), generated_model.size());
 
   return 0;
+}
+
+int entry(int, char **)
+{
+  // forward to entry_stream
+  return entry_stream(std::cin);
 }
