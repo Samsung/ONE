@@ -30,6 +30,7 @@
 #include "compiler/pass/ConstantOutputPass.h"
 #include "compiler/pass/OddOutputPass.h"
 #include "compiler/pass/PassRunner.h"
+#include "compiler/pass/UnusedOperandEliminationPass.h"
 #include "exec/ExecTime.h"
 #include "ir/verifier/Verifier.h"
 #include "dumper/dot/DotDumper.h"
@@ -191,6 +192,9 @@ std::shared_ptr<exec::ExecutorMap> Compiler::compile(void)
       .append(std::make_unique<pass::ConstantOutputPass>(subg))
       .append(std::make_unique<pass::OddOutputPass>(subg))
       .run();
+
+    // Optimizations
+    pass::PassRunner{}.append(std::make_unique<pass::UnusedOperandEliminationPass>(subg)).run();
   });
 
   /***************************************************

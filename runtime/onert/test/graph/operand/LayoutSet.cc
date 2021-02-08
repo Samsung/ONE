@@ -36,6 +36,15 @@ TEST(ir_LayoutSet, neg_add_remove)
   ASSERT_EQ(set.size(), 0);
 }
 
+TEST(ir_LayoutSet, neg_add_twice)
+{
+  LayoutSet set;
+  set.add(Layout::NHWC);
+  ASSERT_EQ(set.size(), 1);
+  set.add(Layout::NHWC);
+  ASSERT_EQ(set.size(), 1);
+}
+
 TEST(ir_LayoutSet, set_operators)
 {
   LayoutSet set1{Layout::NCHW};
