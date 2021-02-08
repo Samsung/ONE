@@ -17,7 +17,8 @@
 #include "Pass.h"
 
 #include "UnusedOperandEliminationPass.h"
-#include "ir/OperandIndexMap.h"
+#include "ir/Index.h"
+#include "util/Set.h"
 #include "ir/Graph.h"
 
 /**
@@ -34,24 +35,23 @@ namespace pass
 
 void UnusedOperandEliminationPass::run()
 {
-  // Remove operands that are not used by any operations, except Graph inputs/outputs
-  ir::OperandIndexMap<bool> visited;
+  util::Set<ir::OperandIndex> used;
 
   _graph.operations().iterate([&](const ir::OperationIndex &, const ir::Operation &node) {
-    for (auto ind : node.getInputs() + node.getOutputs())
+    for (auto ind : (node.getInputs() + node.getOutputs()) | ir::Remove::UNDEFINED)
     {
-      visited[ind] = true;
+      used.add(ind);
     }
   });
 
-  // Graph's inputs/outputs are always reachable
-  for (auto ind : _graph.getInputs() + _graph.getOutputs())
+  // Graph's inputs/outputs are always considered as used
+  for (auto ind : (_graph.getInputs() + _graph.getOutputs()) | ir::Remove::UNDEFINED)
   {
-    visited[ind] = true;
+    used.add(ind);
   }
 
   _graph.operands().iterate([&](const ir::OperandIndex &ind, const ir::Operand &) {
-    if (!visited[ind])
+    if (!used.contains(ind))
     {
       VERBOSE() << "Remove unused operand " << ind << std::endl;
       _graph.operands().remove(ind);
