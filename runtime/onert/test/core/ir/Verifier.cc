@@ -21,7 +21,7 @@
 #include "ir/verifier/Verifier.h"
 #include <memory>
 #include "ir/Operand.h"
-#include "../MockNode.h"
+#include "MockNode.h"
 
 using IndexSet = onert::ir::OperandIndexSequence;
 using Mock = onert_test::ir::SimpleMock;
