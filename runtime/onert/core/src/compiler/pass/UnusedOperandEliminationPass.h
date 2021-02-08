@@ -33,6 +33,9 @@ namespace pass
 
 /**
  * @brief  A pass to eliminate unused operands from the graph
+ *
+ * Remove operands that are not used by any operations, except Graph inputs/outputs.
+ *
  */
 class UnusedOperandEliminationPass : public Pass
 {
