@@ -8,5 +8,5 @@ endif(NOT ENABLE_TEST)
 
 nnas_find_package(GTest REQUIRED)
 
-GTest_AddTest(oops_test test.cpp)
+GTest_AddTest(oops_test src/oops.test.cpp)
 target_link_libraries(oops_test oops)
