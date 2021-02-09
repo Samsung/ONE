@@ -67,8 +67,8 @@ int entry(int argc, char **argv)
 
   if (model_version > 1)
   {
-    std::cerr << "ERROR: Unsupported recipe version: " << model_version << ", '" << argv[1] << "'"
-              << std::endl;
+    std::cerr << "ERROR: Unsupported recipe version: " << model_version << ", '" << recipe_path
+              << "'" << std::endl;
     return 255;
   }
 
