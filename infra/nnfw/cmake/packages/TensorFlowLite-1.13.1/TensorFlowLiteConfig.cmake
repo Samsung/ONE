@@ -13,8 +13,8 @@ if(BUILD_TENSORFLOW_LITE)
   endmacro(return_unless)
 
   # Required packages
-  nnas_find_package(AbseilSource QUIET)
-  return_unless(AbseilSource_FOUND)
+  nnas_find_package(Abseil QUIET)
+  return_unless(Abseil_FOUND)
   nnfw_find_package(TensorFlowEigen EXACT 1.13.1 QUIET)
   return_unless(TensorFlowEigen_1_13_1_FOUND)
   nnas_find_package(FarmhashSource QUIET)

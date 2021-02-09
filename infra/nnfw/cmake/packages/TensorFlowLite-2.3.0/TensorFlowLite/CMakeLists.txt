@@ -2,7 +2,7 @@
 #
 # Tensorflow Lite library 2.3.0
 #
-set(TENSORFLOW_LITE_BASE ${TFLiteVanillaTensorFlowSource_DIR}/tensorflow/lite)
+set(TENSORFLOW_LITE_BASE ${TensorFlowSource_DIR}/tensorflow/lite)
 
 file(GLOB TFLITE_CORE_SRCS "${TENSORFLOW_LITE_BASE}/*.c"
      "${TENSORFLOW_LITE_BASE}/*.cc"
@@ -31,34 +31,8 @@ list(APPEND TFLITE_SRCS ${TFLITE_EXPERIMENTAL_SRCS})
 list(APPEND TFLITE_SRCS ${TFLITE_SPARSITY_SRCS})
 
 # externals
-list(APPEND TFLITE_SRCS "${TFLiteVanillaFarmhashSource_DIR}/src/farmhash.cc")
-list(APPEND TFLITE_SRCS "${TFLiteVanillaFFT2DSource_DIR}/fftsg.c")
-list(APPEND TFLITE_SRCS "${TFLiteVanillaFFT2DSource_DIR}/fftsg2d.c")
-list(APPEND TFLITE_SRCS "${TFLiteVanillaFlatBuffersSource_DIR}/src/util.cpp")
-
-# externals - absl
-file(GLOB_RECURSE ABSL_SRCS "${AbseilSource_DIR}/absl/*.cc")
-file(GLOB_RECURSE ABSL_EXCLS "${AbseilSource_DIR}/absl/*test*.cc"
-     "${AbseilSource_DIR}/absl/*benchmark*.cc"
-     "${AbseilSource_DIR}/absl/synchronization/*.cc"
-     "${AbseilSource_DIR}/absl/debugging/*.cc"
-     "${AbseilSource_DIR}/absl/hash/*.cc"
-     "${AbseilSource_DIR}/absl/flags/*.cc"
-     "${AbseilSource_DIR}/absl/random/*.cc")
-list(REMOVE_ITEM ABSL_SRCS ${ABSL_EXCLS})
-list(APPEND TFLITE_SRCS ${ABSL_SRCS})
-
-# externals - ruy
-file(GLOB RUY_SRCS "${TFLiteVanillaRuySource_DIR}/ruy/*.cc")
-file(GLOB_RECURSE RUY_EXCLS "${TFLiteVanillaRuySource_DIR}/ruy/*test*.cc"
-      "${TFLiteVanillaRuySource_DIR}/ruy/*benchmark*.cc"
-      "${TFLiteVanillaRuySource_DIR}/ruy/*example*.cc")
-list(REMOVE_ITEM RUY_SRCS ${RUY_EXCLS})
-# Temporary fix for ruy compilation error.
-# TODO(b/158800055): Remove this hack once the ruy version is correctly bumped.
-list(REMOVE_ITEM RUY_SRCS "${TFLiteVanillaRuySource_DIR}/ruy/prepare_packed_matrices.cc")
-list(APPEND TFLITE_SRCS ${RUY_SRCS})
-
+list(APPEND TFLITE_SRCS "${OouraFFTSource_DIR}/fftsg.c")
+list(APPEND TFLITE_SRCS "${OouraFFTSource_DIR}/fftsg2d.c")
 
 # Build with mmap? true
 # caution: v2.3.0's Makefile has wrong code on this part. This is fixed on master branch.
@@ -98,22 +72,20 @@ file(GLOB_RECURSE TFLITE_EXCLS "${TENSORFLOW_LITE_BASE}/*test*.cc"
 list(REMOVE_ITEM TFLITE_SRCS ${TFLITE_EXCLS})
 
 # include headers
-list(APPEND TFLITE_INCLUDES "${TFLiteVanillaTensorFlowSource_DIR}")
-list(APPEND TFLITE_INCLUDES "${TFLiteVanillaEigenSource_DIR}")
-list(APPEND TFLITE_INCLUDES "${AbseilSource_DIR}")
-list(APPEND TFLITE_INCLUDES "${TFLiteVanillaGEMMLowpSource_DIR}")
-list(APPEND TFLITE_INCLUDES "${TFLiteVanillaNEON2SSESource_DIR}")
-list(APPEND TFLITE_INCLUDES "${TFLiteVanillaFarmhashSource_DIR}/src")
-list(APPEND TFLITE_INCLUDES "${TFLiteVanillaFlatBuffersSource_DIR}/include")
-list(APPEND TFLITE_INCLUDES "${TFLiteVanillaFP16Source_DIR}/include")
-list(APPEND TFLITE_INCLUDES "${TFLiteVanillaRuySource_DIR}")
+list(APPEND TFLITE_INCLUDES "${TensorFlowSource_DIR}")
+list(APPEND TFLITE_INCLUDES "${TensorFlowGEMMLowpSource_DIR}")
+list(APPEND TFLITE_INCLUDES "${Fp16Source_DIR}/include")
+
+if(NEON2SSESource_FOUND)
+  list(APPEND TFLITE_INCLUDES "${NEON2SSESource_DIR}")
+endif(NEON2SSESource_FOUND)
 
 add_library(tensorflow-lite-2.3.0 STATIC ${TFLITE_SRCS})
 target_include_directories(tensorflow-lite-2.3.0 SYSTEM PUBLIC ${TFLITE_INCLUDES})
 target_include_directories(tensorflow-lite-2.3.0 PRIVATE ${CpuInfoSource_DIR})
 target_compile_definitions(tensorflow-lite-2.3.0 PUBLIC "GEMMLOWP_ALLOW_SLOW_SCALAR_FALLBACK -DTFLITE_WITH_RUY -DTFLITE_WITH_RUY_GEMV -DRUY_HAVE_CPUINFO")
 set_property(TARGET tensorflow-lite-2.3.0 PROPERTY POSITION_INDEPENDENT_CODE ON)
-target_link_libraries(tensorflow-lite-2.3.0 eigen ${LIB_PTHREAD} dl cpuinfo)
+target_link_libraries(tensorflow-lite-2.3.0 eigen flatbuffers::flatbuffers ruy abseil farmhash ${LIB_PTHREAD} dl)
 if(NOT ANDROID AND ${BUILD_WITH_NNAPI})
   target_link_libraries(tensorflow-lite-2.3.0 rt)
 endif()
