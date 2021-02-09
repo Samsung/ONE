@@ -68,8 +68,8 @@ public:
   const ir::OperandIndexMap<ir::Layout> &operand_layouts() const { return _data.operand_layouts; }
   const ContextData &data() const { return _data; }
 
-  virtual ITensorRegistry *genTensors() { return nullptr; }
-  virtual FunctionMap genKernels() { return {}; }
+  virtual ITensorRegistry *genTensors() = 0;
+  virtual FunctionMap genKernels() = 0;
 
 protected:
   const Backend *_backend{nullptr};
