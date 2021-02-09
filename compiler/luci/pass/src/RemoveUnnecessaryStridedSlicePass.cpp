@@ -69,6 +69,15 @@ bool remove_no_effect_strided_slice(luci::CircleStridedSlice *target_node)
     if (!input_node->dim(i).known())
       return false;
   }
+
+  /**
+   * We check additional attributes on zero after shapes
+   * for skipping wrong StridedSlice operator.
+   */
+  if (target_node->new_axis_mask() != 0 ||
+      target_node->shrink_axis_mask() != 0)
+    return false;
+
   replace(target_node).with(input_node);
   return true;
 }
