@@ -22,6 +22,9 @@ namespace luci_codegen
 
 void Scheduler::process()
 {
+  Halide::load_plugin("autoschedule_adams2019");
+  Halide::load_plugin("autoschedule_li2018");
+  Halide::load_plugin("autoschedule_mullapudi2016");
   for (auto &input: _subgraph.get_inputs())
   {
     luci::CircleNode *node = input.first;
@@ -50,8 +53,19 @@ void Scheduler::process()
   }
   Halide::Pipeline pipeline(halide_outputs);
   Halide::MachineParams params(1, 32*1024, 40);
+  Halide::Target target = Halide::get_host_target();
   // todo see GeneratorBase::build_module how to compile pipeline to module and use schedule
-  Halide::AutoSchedulerResults schedule = pipeline.auto_schedule(Halide::get_host_target(), params);
+  Halide::AutoSchedulerResults schedule = pipeline.auto_schedule("Mullapudi2016", target, params);
+
+  std::vector<Halide::Argument> inputs;
+  for (auto subgraph_input: _subgraph.get_inputs())
+  {
+    inputs.push_back(subgraph_input.second);
+  }
+
+  Halide::Module module = pipeline.compile_to_module(inputs, _subgraph.get_name(), target, Halide::LinkageType::ExternalPlusMetadata);
+  module.set_auto_scheduler_results(schedule);
+  module.compile({{Halide::Output::object, _subgraph.get_name() + "_.o"}, {Halide::Output::stmt, "/proc/self/fd/1"}, {Halide::Output::c_header, _subgraph.get_name() + ".h"}});
 }
 
 } // namespace luci_codegen

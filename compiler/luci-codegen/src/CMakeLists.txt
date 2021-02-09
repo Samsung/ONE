@@ -29,6 +29,8 @@ if(ENABLE_TEST)
     target_link_libraries(luci_codegen_kernel_builder_test luci_codegen luci_import luci_export Halide::Halide)
 endif(ENABLE_TEST)
 
-
 add_executable(circle_codegen ${DRIVER_SOURCE})
 target_link_libraries(circle_codegen PRIVATE luci_codegen luci_import luci_export)
+
+add_executable(simple_runner simple_runner.cpp)
+target_link_libraries(simple_runner PUBLIC Halide::Halide)
