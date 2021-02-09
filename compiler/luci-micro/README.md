@@ -9,3 +9,4 @@ python import_libs.py
 mbed-tools compile -m DISCO_F746NG -t GCC_ARM
 ```
 - debugger for clion https://habr.com/ru/post/345670/
+- mbed-cli example https://os.mbed.com/docs/mbed-os/v6.6/quick-start/compiling-the-code.html
