@@ -49,12 +49,20 @@ struct MockConfigCPU : public IConfig
   bool supportFP16() override { return false; }
 };
 
+class MockBackendContext : public BackendContext
+{
+public:
+  using BackendContext::BackendContext;
+  ITensorRegistry *genTensors() override { return nullptr; }
+  FunctionMap genKernels() override { return {}; }
+};
+
 struct MockBackendCPU : public Backend
 {
   std::shared_ptr<IConfig> config() const override { return std::make_shared<MockConfigCPU>(); }
   std::unique_ptr<BackendContext> newContext(ContextData &&data) const override
   {
-    return std::make_unique<BackendContext>(this, std::move(data), nullptr);
+    return std::make_unique<MockBackendContext>(this, std::move(data), nullptr);
   }
 };
 
@@ -76,7 +84,7 @@ struct MockBackendGPU : public Backend
   std::shared_ptr<IConfig> config() const override { return std::make_shared<MockConfigGPU>(); }
   std::unique_ptr<BackendContext> newContext(ContextData &&data) const override
   {
-    return std::make_unique<BackendContext>(this, std::move(data), nullptr);
+    return std::make_unique<MockBackendContext>(this, std::move(data), nullptr);
   }
 };
 
@@ -98,7 +106,7 @@ struct MockBackendNPU : public Backend
   std::shared_ptr<IConfig> config() const override { return std::make_shared<MockConfigNPU>(); }
   std::unique_ptr<BackendContext> newContext(ContextData &&data) const override
   {
-    return std::make_unique<BackendContext>(this, std::move(data), nullptr);
+    return std::make_unique<MockBackendContext>(this, std::move(data), nullptr);
   }
 };
 
