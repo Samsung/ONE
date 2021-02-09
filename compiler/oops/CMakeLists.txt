@@ -1,6 +1,7 @@
 add_library(oops INTERFACE)
 target_include_directories(oops INTERFACE include)
 target_link_libraries(oops INTERFACE pepper_str)
+target_link_libraries(oops INTERFACE nncc_coverage)
 
 if(NOT ENABLE_TEST)
   return()
