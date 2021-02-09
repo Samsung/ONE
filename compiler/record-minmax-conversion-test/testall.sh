@@ -55,6 +55,16 @@ for TESTCASE in "$@"; do
       --input_data "${BIN_PATH}/${TESTCASE}.tflite.input.h5" \
       --output_model "${BIN_PATH}/${TESTCASE}.out.circle"
 
+    if [[ $? -ne 0 ]]; then
+      echo "FAILED TO GENERATE CIRCLE OUTPUT"
+      continue
+    fi
+
+    # Run record-minmax with auto generated random input
+    "${RECORD_MINMAX_PATH}" \
+      --input_model "${TESTCASE_FILE}.circle" \
+      --output_model "${BIN_PATH}/${TESTCASE}.outr.circle"
+
     if [[ $? -eq 0 ]]; then
       touch "${PASSED_TAG}"
     fi
