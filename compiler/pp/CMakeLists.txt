@@ -6,6 +6,7 @@ add_library(pp STATIC ${SOURCES})
 set_target_properties(pp PROPERTIES POSITION_INDEPENDENT_CODE ON)
 target_include_directories(pp PUBLIC include)
 target_link_libraries(pp PRIVATE nncc_common)
+target_link_libraries(pp PUBLIC nncc_coverage)
 
 if(NOT ENABLE_TEST)
   return()
