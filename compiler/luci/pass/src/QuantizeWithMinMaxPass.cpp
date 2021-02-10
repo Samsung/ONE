@@ -69,6 +69,9 @@ void overwrite_quantparam(luci::CircleConcatenation *concat, luci::CircleNode *t
     auto quantparam = std::make_unique<CircleQuantParam>();
     target->quantparam(std::move(quantparam));
     target_qparam = target->quantparam();
+
+    if (target_qparam == nullptr)
+      throw std::runtime_error("Creating new quant param failed");
   }
   target_qparam->min = concat_qparam->min;
   target_qparam->max = concat_qparam->max;
