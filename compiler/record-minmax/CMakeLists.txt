@@ -28,7 +28,9 @@ if(NOT ENABLE_TEST)
   return()
 endif(NOT ENABLE_TEST)
 
+file(GLOB_RECURSE TESTS "tests/*.test.cpp")
+
 nnas_find_package(GTest REQUIRED)
-GTest_AddTest(record_minmax_function_test "${CMAKE_CURRENT_SOURCE_DIR}/tests/RecordFunction.test.cpp")
+GTest_AddTest(record_minmax_function_test "${TESTS}")
 target_include_directories(record_minmax_function_test PRIVATE include)
 target_link_libraries(record_minmax_function_test nncc_coverage)
