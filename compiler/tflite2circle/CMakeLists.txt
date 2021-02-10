@@ -15,5 +15,6 @@ target_link_libraries(tflite2circle safemain)
 target_link_libraries(tflite2circle mio_tflite)
 target_link_libraries(tflite2circle mio_circle)
 target_link_libraries(tflite2circle vconone)
+target_link_libraries(tflite2circle nncc_coverage)
 
 install(TARGETS tflite2circle DESTINATION bin)
