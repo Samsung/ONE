@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-#include "CircleOptimizerUtils.h"
+#include "Strings.h"
 
 #include "luci/Pass/QuantizationParameters.h"
 
 #include <gtest/gtest.h>
 
-TEST(CircleOptimizerUtilTest, str_to_dtype)
+TEST(StringsTest, str_to_dtype)
 {
   ASSERT_EQ(loco::DataType::U8, luci::str_to_dtype("uint8"));
   ASSERT_EQ(loco::DataType::U16, luci::str_to_dtype("uint16"));
@@ -41,7 +41,7 @@ TEST(CircleOptimizerUtilTest, str_to_dtype)
   ASSERT_EQ(loco::DataType::Unknown, luci::str_to_dtype("foo"));
 }
 
-TEST(CircleOptimizerUtilTest, str_to_granularity)
+TEST(StringsTest, str_to_granularity)
 {
   ASSERT_EQ(luci::QuantizationGranularity::LayerWise, luci::str_to_granularity("layer"));
   ASSERT_EQ(luci::QuantizationGranularity::ChannelWise, luci::str_to_granularity("channel"));

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2021 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,16 +14,30 @@
  * limitations under the License.
  */
 
-#ifndef __LUCI_CIRCLE_OPTIMIZER_UTILS_H__
-#define __LUCI_CIRCLE_OPTIMIZER_UTILS_H__
+#ifndef __LUCI_PASS_STRING_CONVERSION_H__
+#define __LUCI_PASS_STRING_CONVERSION_H__
+
+#include "luci/Pass/QuantizationParameters.h"
 
 #include <loco.h>
+
+#include <vector>
+#include <sstream>
+#include <string>
 
 namespace luci
 {
 
-bool has_dynamic_shape(const loco::Node *node);
+bool in_array(const std::string &, const std::vector<std::string> &);
+
+std::string to_string(const std::vector<std::string> &);
+
+std::string to_lower_case(std::string);
+
+loco::DataType str_to_dtype(const std::string &);
+
+QuantizationGranularity str_to_granularity(const std::string &);
 
 } // namespace luci
 
-#endif // __LUCI_CIRCLE_OPTIMIZER_UTILS_H__
+#endif // __LUCI_PASS_STRING_CONVERSION_H__
