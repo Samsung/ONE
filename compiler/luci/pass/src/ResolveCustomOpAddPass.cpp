@@ -92,7 +92,7 @@ bool resolve_custom_op(luci::CircleCustom *addv2)
   // check if inputs are suppport data types
   for (uint32_t i = 0; i < addv2->numInputs(); i++)
   {
-    auto input = dynamic_cast<luci::CircleNode *>(addv2->inputs(i));
+    auto input = loco::must_cast<luci::CircleNode *>(addv2->inputs(i));
     switch (input->dtype())
     {
       case loco::DataType::U8:
