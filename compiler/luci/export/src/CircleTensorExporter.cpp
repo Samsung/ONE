@@ -77,7 +77,29 @@ private:
   luci::SparsityParam *_sparsityparam = nullptr;
 };
 
-using CircleTensorContext = std::vector<CircleTensorInfo>;
+class CircleTensorContext
+{
+public:
+  CircleTensorContext() = default;
+
+public:
+  void emplace_back(CircleTensorInfo &ti)
+  {
+    assert(_names.find(ti.name()) == _names.end());
+    _tis.emplace_back(ti);
+    _names.insert(ti.name());
+  }
+  size_t size(void) const { return _tis.size(); }
+  std::vector<CircleTensorInfo>::iterator begin(void) { return _tis.begin(); }
+  std::vector<CircleTensorInfo>::iterator end(void) { return _tis.end(); }
+
+public:
+  bool exist(const std::string &name) const { return _names.find(name) != _names.end(); }
+
+private:
+  std::vector<CircleTensorInfo> _tis;
+  std::set<std::string> _names;
+};
 
 struct NoOpDetector final : public luci::CircleNodeMutableVisitor<bool>
 {
@@ -96,10 +118,17 @@ void allocateCircleTensorInfo(CircleNode *node, CircleTensorContext &ctx)
 
   auto tensor_index = static_cast<CircleTensorIndex>(ctx.size());
   // TODO Use Graph-level metadata for Input & Output
-  // auto tensor_name = "t_" + std::to_string(tensor_index);
   std::string tensor_name = node->name();
-  if (tensor_name.empty())
-    tensor_name = "t_" + std::to_string(tensor_index);
+  // NOTE tensor_name maybe empty. this assertion will alert when this happens.
+  //      currently we require tensor should have a name.
+  // TODO if this breaks, fix the cause or permit empty tensor_name.
+  assert(!tensor_name.empty());
+  if (ctx.exist(tensor_name))
+  {
+    // NOTE this should assign unique name for a Tensor.
+    tensor_name = tensor_name + "_" + std::to_string(tensor_index);
+    assert(!ctx.exist(tensor_name));
+  }
   INFO(l) << "[luci] Tensor for " << tensor_name << ": " << tensor_index << std::endl;
 
   CircleTensorInfo tensor_info;

@@ -63,6 +63,9 @@ const char *tensor_name(const circle::TensorT &tensor)
   if (!tensor.name.empty())
     return tensor.name.c_str();
 
+  // let's see if there is a case
+  assert(false);
+
   return kEmptyTensorName;
 }
 
