@@ -109,13 +109,20 @@ int entry(int argc, char **argv)
     return 255;
   }
 
-  if (arser[qdqw])
   {
-    if (arser[qwmm] || arser[rq])
+    // only one of qdqw, qwmm, rq option can be used
+    int32_t opt_used = arser[qdqw] ? 1 : 0;
+    opt_used += arser[qwmm] ? 1 : 0;
+    opt_used += arser[rq] ? 1 : 0;
+    if (opt_used != 1)
     {
       print_exclusive_options();
       return 255;
     }
+  }
+
+  if (arser[qdqw])
+  {
     auto values = arser.get<std::vector<std::string>>(qdqw);
     if (values.size() != 3)
     {
@@ -131,11 +138,6 @@ int entry(int argc, char **argv)
 
   if (arser[qwmm])
   {
-    if (arser[qdqw] || arser[rq])
-    {
-      print_exclusive_options();
-      return 255;
-    }
     auto values = arser.get<std::vector<std::string>>(qwmm);
     if (values.size() != 3)
     {
@@ -151,11 +153,6 @@ int entry(int argc, char **argv)
 
   if (arser[rq])
   {
-    if (arser[qwmm] || arser[qdqw])
-    {
-      print_exclusive_options();
-      return 255;
-    }
     auto values = arser.get<std::vector<std::string>>(rq);
     if (values.size() != 2)
     {
