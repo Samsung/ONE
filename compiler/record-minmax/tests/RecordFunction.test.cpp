@@ -115,4 +115,12 @@ TEST(GetNthPercentileTest, EmptyVector_NEG)
   SUCCEED();
 }
 
+TEST(GetMovingAverageTest, Simple)
+{
+  std::vector<float> input{0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+
+  EXPECT_NE(0, getMovingAverage(input, 0.5, 4, true));
+  EXPECT_NE(0, getMovingAverage(input, 0.5, 4, false));
+}
+
 } // namespace record_minmax
