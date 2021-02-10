@@ -8,5 +8,5 @@ endif(NOT ENABLE_TEST)
 # Google Test is mandatory for test
 nnas_find_package(GTest REQUIRED)
 
-GTest_AddTest(pepper_str_test test.cpp)
+GTest_AddTest(pepper_str_test src/pepper-str.test.cpp)
 target_link_libraries(pepper_str_test pepper_str)
