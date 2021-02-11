@@ -1,4 +1,4 @@
-- install python 3.7+ version
+- install python 3.8+ version
 
 - install https://developer.arm.com/tools-and-software/open-source-software/developer-tools/gnu-toolchain/gnu-rm/downloads
 
