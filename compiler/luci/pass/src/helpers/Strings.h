@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __LUCI_PASS_STRING_CONVERSION_H__
-#define __LUCI_PASS_STRING_CONVERSION_H__
+#ifndef __LUCI_PASS_HELPERS_STRINGS_H__
+#define __LUCI_PASS_HELPERS_STRINGS_H__
 
 #include "luci/Pass/QuantizationParameters.h"
 
@@ -40,4 +40,4 @@ QuantizationGranularity str_to_granularity(const std::string &);
 
 } // namespace luci
 
-#endif // __LUCI_PASS_STRING_CONVERSION_H__
+#endif // __LUCI_PASS_HELPERS_STRINGS_H__
