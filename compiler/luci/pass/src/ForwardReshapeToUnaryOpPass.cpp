@@ -30,21 +30,28 @@ luci::CircleReshape *as_reshape(loco::Node *node)
   return dynamic_cast<luci::CircleReshape *>(node);
 }
 
+luci::CircleConst *clone_shape(luci::CircleReshape *reshape)
+{
+  const auto shape = dynamic_cast<luci::CircleConst *>(reshape->shape());
+  // only support CircleConst for now
+  if (shape == nullptr)
+    return nullptr;
+
+  auto dtype = shape->dtype();
+  if (dtype != loco::DataType::S32 && dtype != loco::DataType::S64)
+    return nullptr;
+
+  return luci::clone(shape);
+}
+
 bool forward_reshape(luci::CircleReshape *reshape, luci::CircleNeg *neg)
 {
   assert(reshape != nullptr);
   assert(neg != nullptr);
 
-  luci::CircleConst *cloned_shape = nullptr;
-  const auto reshape_shape = dynamic_cast<luci::CircleConst *>(reshape->shape());
-  // only support CircleConst for now
-  if (reshape_shape == nullptr)
+  luci::CircleConst *cloned_shape = clone_shape(reshape);
+  if (cloned_shape == nullptr)
     return false;
-
-  auto dtype = reshape_shape->dtype();
-  if (dtype != loco::DataType::S32 && dtype != loco::DataType::S64)
-    return false;
-  cloned_shape = luci::clone(reshape_shape);
 
   loco::Graph *graph = neg->graph();
   // create reshape placed after neg
