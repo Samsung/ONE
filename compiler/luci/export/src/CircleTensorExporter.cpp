@@ -36,10 +36,10 @@ namespace
 
 using namespace luci;
 
-class CircleTensoInfo
+class CircleTensorInfo
 {
 public:
-  CircleTensoInfo() = default;
+  CircleTensorInfo() = default;
 
 public:
   void name(const std::string &name) { _name = name; }
@@ -77,7 +77,7 @@ private:
   luci::SparsityParam *_sparsityparam = nullptr;
 };
 
-using CircleTensorContext = std::vector<CircleTensoInfo>;
+using CircleTensorContext = std::vector<CircleTensorInfo>;
 
 struct NoOpDetector final : public luci::CircleNodeMutableVisitor<bool>
 {
@@ -102,7 +102,7 @@ void allocateCircleTensorInfo(CircleNode *node, CircleTensorContext &ctx)
     tensor_name = "t_" + std::to_string(tensor_index);
   INFO(l) << "[luci] Tensor for " << tensor_name << ": " << tensor_index << std::endl;
 
-  CircleTensoInfo tensor_info;
+  CircleTensorInfo tensor_info;
 
   tensor_info.name(tensor_name);
   tensor_info.dtype(to_circle_tensortype(node->dtype()));
@@ -451,7 +451,7 @@ uint32_t get_buffer_id(FlatBufferBuilder &builder, SerializedModelData &md, luci
   }
 }
 
-void exportOpDefinedTensor(const CircleTensoInfo &info, FlatBufferBuilder &builder,
+void exportOpDefinedTensor(const CircleTensorInfo &info, FlatBufferBuilder &builder,
                            SerializedModelData &md, SerializedGraphData &gd)
 {
   // Create and register output tensor shape
