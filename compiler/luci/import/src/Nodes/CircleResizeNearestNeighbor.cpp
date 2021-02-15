@@ -16,7 +16,6 @@
 
 #include "luci/Import/Nodes/CircleResizeNearestNeighbor.h"
 
-#include <luci/IR/Nodes/CircleConst.h>
 #include <luci/IR/Nodes/CircleResizeNearestNeighbor.h>
 
 namespace luci

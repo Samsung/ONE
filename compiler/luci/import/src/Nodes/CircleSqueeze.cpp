@@ -16,7 +16,6 @@
 
 #include "luci/Import/Nodes/CircleSqueeze.h"
 
-#include <luci/IR/Nodes/CircleConst.h>
 #include <luci/IR/Nodes/CircleSqueeze.h>
 
 namespace luci

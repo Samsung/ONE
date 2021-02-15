@@ -16,7 +16,6 @@
 
 #include "luci/Import/Nodes/CircleResizeBilinear.h"
 
-#include <luci/IR/Nodes/CircleConst.h>
 #include <luci/IR/Nodes/CircleResizeBilinear.h>
 
 namespace luci
