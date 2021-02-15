@@ -29,8 +29,8 @@ struct buffer_t;
 extern "C" {
 #endif
 
-int arithmetic(struct halide_buffer_t *_x_buffer, struct halide_buffer_t *_y_buffer, struct halide_buffer_t *_z_buffer, struct halide_buffer_t *_output_buffer) HALIDE_FUNCTION_ATTRS;
-int arithmetic_old_buffer_t(struct buffer_t *_x, struct buffer_t *_y, struct buffer_t *_z, struct buffer_t *_output) HALIDE_FUNCTION_ATTRS;
+int arithmetic(struct halide_buffer_t *_b_A_buffer, struct halide_buffer_t *_b_B_buffer, struct halide_buffer_t *_b_C_buffer) HALIDE_FUNCTION_ATTRS;
+int arithmetic_old_buffer_t(struct buffer_t *_b_A, struct buffer_t *_b_B, struct buffer_t *_b_C) HALIDE_FUNCTION_ATTRS;
 
 #ifdef __cplusplus
 }  // extern "C"
