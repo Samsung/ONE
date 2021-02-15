@@ -26,6 +26,9 @@
 
 #include "Halide.h"
 
+//#include "llvm/IR/Function.h"
+//#include "llvm/IR/Module.h"
+
 #include "flatbuffers/flexbuffers.h"
 
 #include <map>
@@ -48,7 +51,7 @@ std::vector<uint8_t> create_custom_options(const std::string &name)
 namespace luci_codegen
 {
 
-Codegen::Codegen(const Options &options) : _processed_graphs(0), _options(options) {}
+Codegen::Codegen(const CodegenOptions &options) : _processed_graphs(0), _options(options) {}
 
 Codegen::~Codegen() {}
 
@@ -97,6 +100,77 @@ Codegen::gather_suitable_nodes(luci::CircleNode *node)
   return subgraph_nodes;
 }
 
+/**
+ * This function checks if there are no forbidden paths through graphs,
+ * so after replacement of compiled subgraph generated node will be dependent from itself
+ * @param nodes
+ * @return
+ */
+bool has_self_dependency_subgraph(std::vector<luci::CircleNode *> nodes)
+{
+  std::unordered_set<loco::Node *> belong_to_subgraph;
+  belong_to_subgraph.insert(nodes.begin(), nodes.end());
+  // gather input nodes
+  std::unordered_set<loco::Node *> inputs;
+  for (auto *node: nodes)
+  {
+    for (int i = 0; i < node->arity(); ++i)
+    {
+      loco::Node *prev = node->arg(i);
+      // We do not care if same input will be inserted several times, so no checks for this
+      // only first appearance will take effect
+      if (belong_to_subgraph.count(prev) == 0)
+      {
+        inputs.insert(prev);
+      }
+    }
+  }
+  // gather successors of input nodes and constants belonging subgraph
+  std::queue<loco::Node *> queue;
+  std::unordered_set<loco::Node *> visited;
+  for (loco::Node *node: nodes)
+  {
+    if (static_cast<luci::CircleNode *>(node)->opcode() == luci::CircleOpcode::CIRCLECONST)
+    {
+      queue.push(node);
+      visited.insert(node);
+    }
+  }
+  for (loco::Node *input: inputs)
+  {
+    for (loco::Node *succ: loco::succs(input))
+    {
+      if (belong_to_subgraph.count(succ) != 0)
+      {
+        queue.push(succ);
+        visited.insert(succ);
+      }
+    }
+  }
+  // check reachability of inputs from start_nodes
+  // traverse nodes, to get all intermediate nodes
+  while (!queue.empty())
+  {
+    loco::Node *node = queue.front();
+    queue.pop();
+    for (loco::Node *succ: loco::succs(node))
+    {
+      if (visited.count(succ) != 0)
+      {
+        continue;
+      }
+      visited.insert(succ);
+      if (inputs.count(succ) != 0)
+      {
+        // this means algorithm reached subgraph input from nodes of this subgraph, we found cyclic dependency
+        return true;
+      }
+      queue.push(succ);
+    }
+  }
+  return false;
+}
+
 // check if we can compile found subgraph and remove redundant nodes
 // Example of problematic subgraph:
 // C - compilable node
@@ -114,7 +188,8 @@ Codegen::gather_suitable_nodes(luci::CircleNode *node)
 std::vector<std::vector<luci::CircleNode *>>
 Codegen::extract_subgraphs(const std::vector<luci::CircleNode *> &nodes) const
 {
-  // TODO
+  if (has_self_dependency_subgraph(nodes))
+    return {};
   return {nodes};
 }
 
@@ -123,7 +198,7 @@ SubgraphContext *Codegen::create_subgraph(const std::vector<luci::CircleNode *> 
   std::string subgraph_name = "generated_subgraph_" + std::to_string(_processed_graphs);
   _compiled_subgraphs.emplace_back(subgraph_name, std::move(nodes));
   auto *subgraph = &_compiled_subgraphs.back();
-  subgraph->finish_construction();
+  subgraph->finish_nodes_construction();
   return subgraph;
 }
 
@@ -184,9 +259,66 @@ void Codegen::cleanup_graph(SubgraphContext *subgraph) const
   }
 }
 
+Halide::Target get_halide_target(const CodegenOptions &options)
+{
+  Halide::Target target = Halide::get_host_target();
+  target.set_features({});
+
+  if (!options.debug)
+    target.set_feature(Halide::Target::NoAsserts);
+
+  switch (options.os)
+  {
+    case OS::Linux:
+      target.os = Halide::Target::Linux;
+      break;
+    case OS::Windows:
+      target.os = Halide::Target::Windows;
+      break;
+    case OS::Android:
+      target.os = Halide::Target::Android;
+      break;
+    case OS::Native:
+      // Do nothing
+      break;
+    default:
+      assert(false && "unsupported OS");
+      break;
+  }
+
+  switch (options.arch.type)
+  {
+    case ArchType::ARM_32:
+      target.arch = Halide::Target::ARM;
+      target.bits = 32;
+      break;
+    case ArchType::ARM_64:
+      target.arch = Halide::Target::ARM;
+      target.bits = 64;
+      break;
+    case ArchType::X86_32:
+      target.arch = Halide::Target::X86;
+      target.bits = 32;
+      break;
+    case ArchType::X86_64:
+      target.arch = Halide::Target::X86;
+      target.bits = 64;
+      break;
+    case ArchType::Native:
+      // Do nothing
+      break;
+    default:
+      assert(false && "unsupported arch");
+      break;
+  }
+  return target;
+}
+
 void Codegen::process_graph(loco::Graph &graph)
 {
   auto nodes = graph.nodes();
+
+  Halide::Target target = get_halide_target(_options);
 
   // find and generate code
   for (int i = 0; i < nodes->size(); ++i)
@@ -206,10 +338,13 @@ void Codegen::process_graph(loco::Graph &graph)
     {
       SubgraphContext *subgraph = create_subgraph(nodes);
 
+      subgraph->set_target(target);
+
       // Create kernels for nodes
       KernelBuilder(*subgraph).process();
 
-      Scheduler(*subgraph, {SchedulerParameters::Architecture::X86}).process();
+      SchedulerOptions scheduler_options = {_options.scheduler, _options.arch.l1_size};
+      Scheduler(*subgraph, scheduler_options).process();
 
       _processed_graphs++;
     }
@@ -235,28 +370,33 @@ void Codegen::process_module(luci::Module &module)
 
 void Codegen::emit_code(std::string package_name)
 {
+//  llvm::LLVMContext llvm_context;
+//  llvm::Module support_module("generated wrappers", llvm_context);
+//
+//  llvm::FunctionType *wrapper_function_type =
+//    llvm::FunctionType::get(llvm::Type::gePoinDoubleTy(*TheContext), Doubles, false);
+
   for (auto &subgraph: _compiled_subgraphs)
   {
+//    llvm::Function *wrapper_func = llvm::Function::Create(FT, Function::ExternalLinkage, Name, TheModule.get());
+
+    Halide::Pipeline &pipeline = subgraph.get_pipeline();
+    Halide::Target target = subgraph.get_target();
+
     std::vector<Halide::Argument> arguments;
     for (auto input: subgraph.get_inputs())
     {
       arguments.push_back(input.second);
     }
-    std::vector<Halide::Func> outputs;
-    for (auto output: subgraph.get_outputs())
-    {
-      outputs.push_back(output.second);
-    }
-    Halide::Pipeline composite_output(outputs);
-    composite_output.compile_to_lowered_stmt(subgraph.get_name() + ".html", arguments, Halide::StmtOutputFormat::HTML);
 
-    Halide::Target target = Halide::get_host_target();
+    Halide::Module module = pipeline.compile_to_module(arguments, subgraph.get_name(), target, Halide::LinkageType::ExternalPlusMetadata);
+    module.set_auto_scheduler_results(subgraph.get_schedule());
 
-    if (!_options.generate_checks)
-    {
-      target.set_feature(Halide::Target::NoAsserts);
-    }
-    composite_output.compile_to_object(subgraph.get_name() + ".o", arguments, subgraph.get_name(), target);
+    std::map<Halide::Output, std::string> products;
+
+    products[Halide::Output::object] = subgraph.get_name() + ".o";
+
+    module.compile(products);
   }
 }
 

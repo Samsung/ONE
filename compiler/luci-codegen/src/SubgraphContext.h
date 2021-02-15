@@ -71,9 +71,11 @@ public:
 
   /**
    * @brief gathers inputs and outputs, generates functions for operators
-   * after this call no construction methods are allowed
+   * after this call no construction methods (adding nodes) are allowed
    */
-  void finish_construction();
+  void finish_nodes_construction();
+
+  void finish_function_construction();
 
   std::string get_name() const
   {
@@ -127,6 +129,32 @@ public:
     return _outputs;
   }
 
+  Halide::Pipeline &get_pipeline()
+  {
+    assert(_constructed);
+    return *_pipeline;
+  }
+
+  void set_schedule(Halide::AutoSchedulerResults &schedule)
+  {
+    _schedule = std::make_unique<Halide::AutoSchedulerResults>(schedule);
+  }
+
+  Halide::AutoSchedulerResults &get_schedule()
+  {
+    return *_schedule;
+  }
+
+  void set_target(const Halide::Target &target)
+  {
+    _target = target;
+  }
+
+  Halide::Target get_target() const
+  {
+    return _target;
+  }
+
 private:
 #ifndef NDEBUG
   bool _constructed;
@@ -136,6 +164,9 @@ private:
   std::unordered_map<loco::Node *, Halide::Func> _generated_funcs;
   std::vector<std::pair<luci::CircleNode *, Halide::ImageParam>> _inputs;
   std::vector<std::pair<luci::CircleNode *, Halide::Func>> _outputs;
+  std::unique_ptr<Halide::Pipeline> _pipeline;
+  std::unique_ptr<Halide::AutoSchedulerResults> _schedule;
+  Halide::Target _target;
 };
 
 }

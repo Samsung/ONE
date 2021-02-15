@@ -9,7 +9,7 @@ set(SOURCES Codegen.cpp
         Utilities.h
         )
 
-set(HEADERS ${LUCI_CODEGEN_INCLUDE_DIR}/Codegen.h)
+set(HEADERS ${LUCI_CODEGEN_INCLUDE_DIR}/Codegen.h ${LUCI_CODEGEN_INCLUDE_DIR}/CodegenOptions.h)
 
 add_library(luci_codegen SHARED ${SOURCES} ${HEADERS})
 target_include_directories(luci_codegen PUBLIC "${LUCI_CODEGEN_INCLUDE_DIR}")
@@ -17,7 +17,7 @@ target_include_directories(luci_codegen PRIVATE "${LUCI_CODEGEN_SOURCE_DIR}")
 
 target_link_libraries(luci_codegen
         PUBLIC luci_lang
-        PRIVATE nncc_common Halide::Halide flatbuffers)
+        PRIVATE nncc_common Halide::Halide flatbuffers ${llvm_libs})
 
 install(TARGETS luci_codegen DESTINATION lib)
 

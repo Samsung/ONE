@@ -15,16 +15,41 @@
  */
 
 #include "Scheduler.h"
-//#include "loco/IR/Algorithm.h"
+#include "Utilities.h"
 
 namespace luci_codegen
 {
 
+Scheduler::Scheduler(luci_codegen::SubgraphContext &subgraph,
+                     const luci_codegen::SchedulerOptions &options) : _subgraph(subgraph), _options(options)
+{
+  static bool initialized = false;
+  if (!initialized)
+  {
+    Halide::load_plugin("autoschedule_adams2019");
+    Halide::load_plugin("autoschedule_li2018");
+    Halide::load_plugin("autoschedule_mullapudi2016");
+  }
+  initialized = true;
+}
+
 void Scheduler::process()
 {
-  Halide::load_plugin("autoschedule_adams2019");
-  Halide::load_plugin("autoschedule_li2018");
-  Halide::load_plugin("autoschedule_mullapudi2016");
+  Halide::Pipeline pipeline = _subgraph.get_pipeline();
+
+  std::vector<Halide::Argument> inputs;
+  for (auto subgraph_input: _subgraph.get_inputs())
+  {
+    inputs.push_back(subgraph_input.second);
+  }
+
+  if (_options.algorithm == SchedulerAlgorithm::None)
+  {
+    return;
+  }
+
+  // proceed if need to schedule
+
   for (auto &input: _subgraph.get_inputs())
   {
     luci::CircleNode *node = input.first;
@@ -51,34 +76,28 @@ void Scheduler::process()
     }
     output_func.set_estimates(std::move(estimates));
   }
-  Halide::Pipeline pipeline(halide_outputs);
-  Halide::MachineParams params(1, 32*1024, 40);
-  Halide::Target target;// = Halide::get_host_target();
-  target.os = Halide::Target::Android;
-  target.arch = Halide::Target::ARM;
-  target.bits = 64;
-  target.set_features({Halide::Target::NoAsserts});
-  // todo see GeneratorBase::build_module how to compile pipeline to module and use schedule
-//  Halide::AutoSchedulerResults schedule = pipeline.auto_schedule("Mullapudi2016", target, params);
-  Halide::AutoSchedulerResults schedule = pipeline.auto_schedule("Li2018", target, params);
-//  Halide::AutoSchedulerResults schedule = pipeline.auto_schedule("Adams2019", target, params);
 
-  std::vector<Halide::Argument> inputs;
-  for (auto subgraph_input: _subgraph.get_inputs())
+  Halide::MachineParams params(1, _options.cache_l1_size, 40);
+
+  std::string scheduler_algorithm;
+  switch (_options.algorithm)
   {
-    inputs.push_back(subgraph_input.second);
+    case SchedulerAlgorithm::Mullapudi:
+      scheduler_algorithm = "Mullapudi2016";
+      break;
+    case SchedulerAlgorithm::Li:
+      scheduler_algorithm = "Li2018";
+      break;
+    case SchedulerAlgorithm::Adams:
+      scheduler_algorithm = "Adams2019";
+      break;
+    default:
+      assert(false && "unsupported scheduling algorithm");
+      break;
   }
+  Halide::AutoSchedulerResults schedule = pipeline.auto_schedule(scheduler_algorithm, _subgraph.get_target(), params);
 
-  Halide::Module module = pipeline.compile_to_module(inputs, _subgraph.get_name(), target, Halide::LinkageType::ExternalPlusMetadata);
-  module.set_auto_scheduler_results(schedule);
-
-  std::map<Halide::Output, std::string> output_files;
-  output_files[Halide::Output::object] = _subgraph.get_name() + "_.o";
-  output_files[Halide::Output::static_library] = _subgraph.get_name() + ".a";
-  output_files[Halide::Output::stmt] = _subgraph.get_name() + ".stmt";
-  output_files[Halide::Output::c_header] = _subgraph.get_name() + ".h";
-  output_files[Halide::Output::c_source] = _subgraph.get_name() + ".c";
-  module.compile(output_files);
+  _subgraph.set_schedule(schedule);
 }
 
 } // namespace luci_codegen

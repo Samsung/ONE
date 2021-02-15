@@ -23,7 +23,7 @@
 namespace luci_codegen
 {
 
-void SubgraphContext::finish_construction()
+void SubgraphContext::finish_nodes_construction()
 {
   std::unordered_set<luci::CircleNode *> in_graph;
   std::unordered_set<luci::CircleNode *> in_inputs;
@@ -58,9 +58,21 @@ void SubgraphContext::finish_construction()
       }
     }
   }
+
 #ifndef NDEBUG
   _constructed = true;
 #endif
+}
+
+void SubgraphContext::finish_function_construction()
+{
+  std::vector<Halide::Func> output_funcs;
+  for (auto &output_descr: _outputs)
+  {
+    output_funcs.push_back(output_descr.second);
+  }
+
+  _pipeline = std::make_unique<Halide::Pipeline>(output_funcs);
 }
 
 Halide::Func SubgraphContext::get_func(loco::Node *node) const

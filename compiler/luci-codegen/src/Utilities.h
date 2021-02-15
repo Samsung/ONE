@@ -19,6 +19,8 @@
 
 #include "luci/IR/CircleNodeDecl.h"
 
+#include "CodegenOptions.h"
+
 #include "Halide.h"
 
 namespace luci_codegen

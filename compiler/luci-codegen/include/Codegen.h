@@ -20,6 +20,8 @@
 #include "luci/IR/Module.h"
 #include "luci/IR/CircleNodeDecl.h"
 
+#include "CodegenOptions.h"
+
 #include <memory>
 #include <unordered_set>
 #include <string>
@@ -27,21 +29,12 @@
 namespace luci_codegen
 {
 
-struct Options
-{
-  /***
-   * max size of constant buffer to inline in code in bytes
-   */
-  int max_inline_buffer_threshold = 1024;
-  bool generate_checks = true;
-};
-
 class SubgraphContext;
 
 class Codegen
 {
 public:
-  Codegen(const Options &options = Options());
+  Codegen(const CodegenOptions &options = CodegenOptions());
 
   ~Codegen();
 
@@ -67,7 +60,7 @@ private:
   void process_graph(loco::Graph &graph);
 
   int _processed_graphs;
-  Options _options;
+  CodegenOptions _options;
   std::unordered_set<luci::CircleNode *> _processed;
   std::vector<SubgraphContext> _compiled_subgraphs;
 };

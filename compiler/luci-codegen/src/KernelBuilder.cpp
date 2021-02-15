@@ -359,6 +359,8 @@ void KernelBuilder::process()
   {
     node->accept(&visitor);
   }
+
+  _subgraph.finish_function_construction();
 }
 
 static bool is_supported_fc(luci::CircleFullyConnected *fc)

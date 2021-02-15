@@ -58,8 +58,13 @@ int main(int argc, char **argv)
   const circle::Model *circle_module = circle::GetModel(raw_model_data.data());
   std::unique_ptr<luci::Module> luci_module = importer.importModule(circle_module);
 
-  luci_codegen::Options options;
-  options.generate_checks = false;
+  luci_codegen::CodegenOptions options;
+  options.max_inline_buffer_threshold = 1024;
+  options.arch.type = luci_codegen::ArchType::Native;
+  options.arch.l1_size = 16*1024;
+  options.debug = false;
+  options.os = luci_codegen::OS::Native;
+  options.scheduler = luci_codegen::SchedulerAlgorithm::Adams;
   // set options if needed
   luci_codegen::Codegen codegen(options);
   codegen.process_module(*luci_module);

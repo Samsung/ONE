@@ -18,31 +18,27 @@
 #define NNCC_SCHEDULER_H
 
 #include "SubgraphContext.h"
+#include "CodegenOptions.h"
 
 namespace luci_codegen
 {
 
-struct SchedulerParameters
+struct SchedulerOptions
 {
-  enum class Architecture
-  {
-    X86,
-    ARM
-  };
-
-  Architecture arch;
+  SchedulerAlgorithm algorithm;
+  int cache_l1_size;
 };
 
 class Scheduler
 {
 public:
-  Scheduler(SubgraphContext &subgraph, const SchedulerParameters &params) : _subgraph(subgraph), _params(params) {}
+  Scheduler(SubgraphContext &subgraph, const SchedulerOptions &options);
 
   void process();
 
 private:
   SubgraphContext &_subgraph;
-  SchedulerParameters _params;
+  SchedulerOptions _options;
 };
 
 } // namespace luci_codegen
