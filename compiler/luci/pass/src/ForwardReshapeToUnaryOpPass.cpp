@@ -44,6 +44,14 @@ luci::CircleConst *clone_shape(luci::CircleReshape *reshape)
   return luci::clone(shape);
 }
 
+void copy_shape(luci::CircleReshape *reshape, luci::CircleReshape *new_reshape)
+{
+  auto ns_rank = reshape->newShape()->rank();
+  new_reshape->newShape()->rank(ns_rank);
+  for (uint32_t r = 0; r < ns_rank; ++r)
+    new_reshape->newShape()->dim(r) = reshape->newShape()->dim(r);
+}
+
 bool forward_reshape(luci::CircleReshape *reshape, luci::CircleNeg *neg)
 {
   assert(reshape != nullptr);
@@ -56,11 +64,7 @@ bool forward_reshape(luci::CircleReshape *reshape, luci::CircleNeg *neg)
   loco::Graph *graph = neg->graph();
   // create reshape placed after neg
   luci::CircleReshape *new_reshape = graph->nodes()->create<luci::CircleReshape>();
-  auto ns_rank = reshape->newShape()->rank();
-  new_reshape->newShape()->rank(ns_rank);
-  for (uint32_t r = 0; r < ns_rank; ++r)
-    new_reshape->newShape()->dim(r) = reshape->newShape()->dim(r);
-
+  copy_shape(reshape, new_reshape);
   new_reshape->shape(cloned_shape);
 
   // reconnect network
