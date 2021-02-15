@@ -38,6 +38,20 @@ loco::DataType str_to_dtype(const std::string &);
 
 QuantizationGranularity str_to_granularity(const std::string &);
 
+template <typename T> std::vector<T> csv_to_vector(const std::string &str)
+{
+  std::vector<T> ret;
+  std::istringstream is(str);
+  for (T i; is >> i;)
+  {
+    assert(i != ',');
+    ret.push_back(i);
+    if (is.peek() == ',')
+      is.ignore();
+  }
+  return ret;
+}
+
 } // namespace luci
 
 #endif // __LUCI_PASS_HELPERS_STRINGS_H__
