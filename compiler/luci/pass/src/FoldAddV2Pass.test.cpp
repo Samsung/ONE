@@ -44,7 +44,7 @@ template <loco::DataType T> class FoldAddV2Test : public luci::ConstantFoldingAd
 public:
   FoldAddV2Test(std::initializer_list<uint32_t> shape) : luci::ConstantFoldingAddTestGraph(shape, T)
   {
-    _addV2 = _g.nodes()->create<luci::CircleCustom>(2);
+    _addV2 = _g.nodes()->create<luci::CircleCustom>(2, 1);
     _x = _g.nodes()->create<luci::CircleConst>();
     _y = _g.nodes()->create<luci::CircleConst>();
     _addV2_out = _g.nodes()->create<luci::CircleCustomOut>();

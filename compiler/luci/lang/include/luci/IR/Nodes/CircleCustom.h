@@ -29,14 +29,17 @@ namespace luci
 class CircleCustom final : public VariadicArityNode<CircleNodeImpl<CircleOpcode::CUSTOM>>
 {
 public:
-  CircleCustom(uint32_t arity) : VariadicArityNode<CircleNodeImpl<CircleOpcode::CUSTOM>>(arity)
+  CircleCustom(uint32_t arity, uint32_t out)
+    : VariadicArityNode<CircleNodeImpl<CircleOpcode::CUSTOM>>(arity), _output_count(out)
   {
     // TODO Support when arity is 0
     assert(arity >= 1);
+    assert(out > 0);
   }
 
 public:
   uint32_t numInputs(void) const { return arity(); }
+  uint32_t numOutputs(void) const { return _output_count; }
 
 public:
   Node *inputs(uint32_t index) const { return at(index)->node(); }
@@ -54,6 +57,7 @@ public:
 private:
   std::vector<uint8_t> _custom_options;
   std::string _custom_code;
+  uint32_t _output_count{0};
 };
 
 } // namespace luci
