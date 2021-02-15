@@ -37,8 +37,10 @@ luci::CircleConst *clone_shape(luci::CircleReshape *reshape)
   if (shape == nullptr)
     return nullptr;
 
+  // NOTE tflite and circle only supports S32
+  // TODO just check with assert() after import handles this
   auto dtype = shape->dtype();
-  if (dtype != loco::DataType::S32 && dtype != loco::DataType::S64)
+  if (dtype != loco::DataType::S32)
     return nullptr;
 
   return luci::clone(shape);
