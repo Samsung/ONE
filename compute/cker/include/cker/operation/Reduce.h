@@ -46,6 +46,7 @@ inline void OptimizedReduceSum(const float *input_data, const Shape &input_shape
     input_size *= input_dims[idx];
   }
   reduce_size = input_dims[input_num_dims - 1];
+  int offset = 0;
   for (int idx = 0; idx < input_size; idx++)
   {
     int r_idx = 0;
@@ -55,14 +56,14 @@ inline void OptimizedReduceSum(const float *input_data, const Shape &input_shape
     float32x4_t tmp_data_32x4 = vld1q_f32(tmp_data);
     for (; r_idx <= reduce_size - 32; r_idx += 32)
     {
-      float32x4_t a10 = vld1q_f32(input_data + r_idx);
-      float32x4_t a11 = vld1q_f32(input_data + r_idx + 4);
-      float32x4_t a12 = vld1q_f32(input_data + r_idx + 8);
-      float32x4_t a13 = vld1q_f32(input_data + r_idx + 12);
-      float32x4_t a20 = vld1q_f32(input_data + r_idx + 16);
-      float32x4_t a21 = vld1q_f32(input_data + r_idx + 20);
-      float32x4_t a22 = vld1q_f32(input_data + r_idx + 24);
-      float32x4_t a23 = vld1q_f32(input_data + r_idx + 28);
+      float32x4_t a10 = vld1q_f32(input_data + offset + r_idx);
+      float32x4_t a11 = vld1q_f32(input_data + offset + r_idx + 4);
+      float32x4_t a12 = vld1q_f32(input_data + offset + r_idx + 8);
+      float32x4_t a13 = vld1q_f32(input_data + offset + r_idx + 12);
+      float32x4_t a20 = vld1q_f32(input_data + offset + r_idx + 16);
+      float32x4_t a21 = vld1q_f32(input_data + offset + r_idx + 20);
+      float32x4_t a22 = vld1q_f32(input_data + offset + r_idx + 24);
+      float32x4_t a23 = vld1q_f32(input_data + offset + r_idx + 28);
 
       float32x4_t x0 = vaddq_f32(a10, a20);
       float32x4_t x1 = vaddq_f32(a11, a21);
@@ -74,10 +75,23 @@ inline void OptimizedReduceSum(const float *input_data, const Shape &input_shape
       float32x4_t y2 = vaddq_f32(y0, y1);
       tmp_data_32x4 = vaddq_f32(tmp_data_32x4, y2);
     }
+    for (; r_idx <= reduce_size - 16; r_idx += 16)
+    {
+      float32x4_t a10 = vld1q_f32(input_data + offset + r_idx);
+      float32x4_t a11 = vld1q_f32(input_data + offset + r_idx + 4);
+      float32x4_t a12 = vld1q_f32(input_data + offset + r_idx + 8);
+      float32x4_t a13 = vld1q_f32(input_data + offset + r_idx + 12);
+
+      float32x4_t x0 = vaddq_f32(a10, a11);
+      float32x4_t x1 = vaddq_f32(a12, a13);
+
+      float32x4_t y0 = vaddq_f32(x0, x1);
+      tmp_data_32x4 = vaddq_f32(tmp_data_32x4, y0);
+    }
     for (; r_idx <= reduce_size - 8; r_idx += 8)
     {
-      float32x4_t a1 = vld1q_f32(input_data + r_idx);
-      float32x4_t a2 = vld1q_f32(input_data + r_idx + 4);
+      float32x4_t a1 = vld1q_f32(input_data + offset + r_idx);
+      float32x4_t a2 = vld1q_f32(input_data + offset + r_idx + 4);
       float32x4_t x = vaddq_f32(a1, a2);
       tmp_data_32x4 = vaddq_f32(tmp_data_32x4, x);
     }
@@ -88,13 +102,14 @@ inline void OptimizedReduceSum(const float *input_data, const Shape &input_shape
     {
       if (r_idx == 0)
       {
-        output_data[idx] = input_data[idx * reduce_size];
+        output_data[idx] = input_data[offset];
       }
       else
       {
-        output_data[idx] += input_data[idx * reduce_size + r_idx];
+        output_data[idx] += input_data[offset + r_idx];
       }
     }
+    offset += reduce_size;
   }
 }
 #endif // NEON
