@@ -1,14 +1,14 @@
 find_package(Halide REQUIRED)
 
 if (NOT Halide_FOUND)
-    message(STATUS "Skipping luci-codegen: Halide not found")
+    message(STATUS "Skipping luci-codegen: Halide not found, see README.md for instructions")
     return()
 endif ()
 
 find_package(LLVM REQUIRED)
 
 if (NOT LLVM_FOUND)
-    message(STATUS "Skipping luci-codegen: LLVM not found")
+    message(STATUS "Skipping luci-codegen: LLVM not found, see README.md for instructions")
     return()
 endif ()
 
