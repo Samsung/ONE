@@ -139,14 +139,13 @@ private:
   }
 
 public:
+  bool visit(luci::CircleBidirectionalSequenceLSTMOut *) final { return true; }
   bool visit(luci::CircleIfOut *) final { return true; }
   bool visit(luci::CircleSplitOut *) final { return true; }
   bool visit(luci::CircleSplitVOut *) final { return true; }
   bool visit(luci::CircleTopKV2Out *) final { return true; }
   bool visit(luci::CircleUnpackOut *) final { return true; }
   bool visit(luci::CircleWhileOut *) final { return true; }
-
-  bool visit(luci::CircleBidirectionalSequenceLSTMOut *) final { return true; }
 
   bool visit(luci::CircleBidirectionalSequenceLSTM *node) final
   {
