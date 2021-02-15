@@ -62,7 +62,7 @@
 
 #include "ModulePhase.h"
 #include "ProgressReporter.h"
-#include "CircleOptimizerUtils.h"
+#include "helpers/Strings.h"
 
 #include <luci/IR/CircleNodes.h>
 #include <logo/Phase.h>

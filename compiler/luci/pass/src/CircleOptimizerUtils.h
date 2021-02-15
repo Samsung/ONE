@@ -17,24 +17,10 @@
 #ifndef __LUCI_CIRCLE_OPTIMIZER_UTILS_H__
 #define __LUCI_CIRCLE_OPTIMIZER_UTILS_H__
 
-#include "luci/Pass/QuantizationParameters.h"
-
 #include <loco.h>
-
-#include <algorithm>
 
 namespace luci
 {
-
-bool in_array(const std::string &, const std::vector<std::string> &);
-
-std::string to_string(const std::vector<std::string> &);
-
-std::string to_lower_case(std::string);
-
-loco::DataType str_to_dtype(const std::string &);
-
-QuantizationGranularity str_to_granularity(const std::string &);
 
 bool has_dynamic_shape(const loco::Node *node);
 

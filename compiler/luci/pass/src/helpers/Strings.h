@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2021 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,20 +14,30 @@
  * limitations under the License.
  */
 
-#include "CircleOptimizerUtils.h"
+#ifndef __LUCI_PASS_HELPERS_STRINGS_H__
+#define __LUCI_PASS_HELPERS_STRINGS_H__
 
-#include <luci/IR/CircleNode.h>
+#include "luci/Pass/QuantizationParameters.h"
+
+#include <loco.h>
+
+#include <vector>
+#include <sstream>
+#include <string>
 
 namespace luci
 {
 
-bool has_dynamic_shape(const loco::Node *node)
-{
-  const auto circle_node = loco::must_cast<const luci::CircleNode *>(node);
-  for (uint32_t i = 0; i < circle_node->rank(); ++i)
-    if (!circle_node->dim(i).known())
-      return true;
-  return false;
-}
+bool in_array(const std::string &, const std::vector<std::string> &);
+
+std::string to_string(const std::vector<std::string> &);
+
+std::string to_lower_case(std::string);
+
+loco::DataType str_to_dtype(const std::string &);
+
+QuantizationGranularity str_to_granularity(const std::string &);
 
 } // namespace luci
+
+#endif // __LUCI_PASS_HELPERS_STRINGS_H__
