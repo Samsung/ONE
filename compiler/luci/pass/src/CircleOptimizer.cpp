@@ -74,20 +74,6 @@
 namespace
 {
 
-std::vector<int> parseIntFromCommadelimitedStr(std::string str)
-{
-  std::vector<int> ret;
-  std::istringstream is(str);
-  for (uint32_t i; is >> i;)
-  {
-    assert(i != ',');
-    ret.push_back(i);
-    if (is.peek() == ',')
-      is.ignore();
-  }
-  return ret;
-}
-
 using namespace luci;
 
 class OptimizeOptionsImpl final : public luci::CircleOptimizer::Options
@@ -449,7 +435,7 @@ void CircleOptimizer::sparsify(loco::Graph *g) const
     std::string str_block_map = _options->param(Options::AlgorithmParameters::Sparsify_block_map);
 
     // traversal order
-    std::vector<int32_t> traversal_order = parseIntFromCommadelimitedStr(str_tarversal_order);
+    std::vector<int32_t> traversal_order = csv_to_vector<int32_t>(str_tarversal_order);
     // format
     std::vector<DimensionType> format;
     std::istringstream is(str_format);
@@ -464,9 +450,9 @@ void CircleOptimizer::sparsify(loco::Graph *g) const
         is.ignore();
     }
     // block size
-    std::vector<int32_t> block_size = parseIntFromCommadelimitedStr(str_block_size);
+    std::vector<int32_t> block_size = csv_to_vector<int32_t>(str_block_size);
     // block map
-    std::vector<int32_t> block_map = parseIntFromCommadelimitedStr(str_block_map);
+    std::vector<int32_t> block_map = csv_to_vector<int32_t>(str_block_map);
 
     luci::SparsifyTensorPass sparsifier{tensor_name, traversal_order, format, block_size,
                                         block_map};
