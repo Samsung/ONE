@@ -13,23 +13,30 @@ void generate_code(const std::string &obj_filename)
     // Layer I
     // -------------------------------------------------------
 
-#define SIZE0 (100)
-    constant p0("N", expr((int32_t) SIZE0));
+    const int N = 10;
+    const int M = 100;
+    const int K = 100;
 
-    var i("i", 0, p0), j("j", 0, p0), k("k", 0, p0);
+    constant cn("N", expr(N));
+    constant cm("M", expr(M));
+    constant ck("K", expr(K));
+
+    var vn("n", 0, cn);
+    var vm("m", 0, cm);
+    var vk("k", 0, ck);
 
     // Declare computations that represents the input buffers.  The actual
     // input buffers will be declared later.
-    input A("A", {"i", "j"}, {SIZE0, SIZE0}, p_uint8);
-    input B("B", {"i", "j"}, {SIZE0, SIZE0}, p_uint8);
+    input A("A", {"n", "k"}, {N, K}, p_uint8);
+    input B("B", {"k", "m"}, {K, M}, p_uint8);
 
     // Declare a computation to initialize the reduction.
-    computation C_init("C_init", {i,j}, expr((uint8_t) 0));
+    computation C_init("C_init", {vn,vm}, expr((uint8_t) 0));
 
     // Declare the reduction operation.  Do not provide any expression during declaration.
-    computation C("C", {i,j,k}, p_uint8);
+    computation C("C", {vn,vm,vk}, p_uint8);
     // Note that the previous computation has an empty expression (because we can only use C in an expression after its declaration)
-    C.set_expression(C(i, j, k - 1) + A(i, k) * B(k, j));
+    C.set_expression(C(vn, vm, vk - 1) + A(vn, vk) * B(vk, vm));
 
     // In this example, C does not read the value of C_init, but later
     // we indicate that C_init and C both are stored in the same buffer,
@@ -46,8 +53,8 @@ void generate_code(const std::string &obj_filename)
     // i0, j0, i1 and j1 where i0 is the outermost loop level and j1 is the innermost.
 
     var i0("i0"), j0("j0"), i1("i1"), j1("j1");
-    C_init.tile(i, j, 32, 32, i0, j0, i1, j1);
-    C.tile(i, j, 32, 32, i0, j0, i1, j1);
+    C_init.tile(vn, vm, 32, 32, i0, j0, i1, j1);
+    C.tile(vn, vm, 32, 32, i0, j0, i1, j1);
 
     // Parallelize the outermost loop level i0
     C.parallelize(i0);
@@ -62,18 +69,18 @@ void generate_code(const std::string &obj_filename)
     // -------------------------------------------------------
 
     // Declare the buffers.
-    buffer b_A("b_A", {expr(SIZE0), expr(SIZE0)}, p_uint8, a_input);
-    buffer b_B("b_B", {expr(SIZE0), expr(SIZE0)}, p_uint8, a_input);
-    buffer b_C("b_C", {expr(SIZE0), expr(SIZE0)}, p_uint8, a_output);
+    buffer b_A("b_A", {expr(N), expr(K)}, p_uint8, a_input);
+    buffer b_B("b_B", {expr(K), expr(M)}, p_uint8, a_input);
+    buffer b_C("b_C", {expr(N), expr(M)}, p_uint8, a_output);
 
     // Map the computations to a buffer.
     A.store_in(&b_A);
     B.store_in(&b_B);
 
     // Store C_init[i,j] in b_C[i,j]
-    C_init.store_in(&b_C, {i,j});
+    C_init.store_in(&b_C, {vn,vm});
     // Store c_C[i,j,k] in b_C[i,j]
-    C.store_in(&b_C, {i,j});
+    C.store_in(&b_C, {vn,vm});
     // Note that both of the computations C_init and C store their
     // results in the buffer b_C.
 
