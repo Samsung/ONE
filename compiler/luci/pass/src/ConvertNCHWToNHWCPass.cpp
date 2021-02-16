@@ -72,6 +72,9 @@ luci::CircleTranspose *create_4d_transpose(luci::CircleNode *node,
 {
   assert(indices.size() == 4);
 
+  auto name = node->name();
+  assert(name.length() > 0);
+
   auto perm = node->graph()->nodes()->create<luci::CircleConst>();
   perm->dtype(loco::DataType::S32);
   perm->size<loco::DataType::S32>(4);
@@ -81,8 +84,24 @@ luci::CircleTranspose *create_4d_transpose(luci::CircleNode *node,
     perm->at<loco::DataType::S32>(i) = indices[i];
   perm->shape_status(luci::ShapeStatus::VALID);
 
+  auto make_string = [](const std::vector<int32_t> &nums) {
+    std::string str;
+    for (auto num : nums)
+    {
+      if (str.length() > 0)
+        str += ".";
+      str += std::to_string(num);
+    }
+    return str;
+  };
+
+  auto str_indices = make_string(indices);
+
+  perm->name(name + "/Transpose_" + str_indices + "/perm");
+
   auto trans = node->graph()->nodes()->create<luci::CircleTranspose>();
   trans->perm(perm);
+  trans->name(name + "/Transpose_" + str_indices);
 
   return trans;
 }
@@ -128,11 +147,15 @@ luci::CircleConst *create_NHWC_paddings(luci::CircleConst *paddings)
   assert(paddings->at<loco::DataType::S32>(2) == 0);
   assert(paddings->at<loco::DataType::S32>(3) == 0);
 
+  auto name = paddings->name();
+  assert(name.length() > 0);
+
   auto nhwc_paddings = paddings->graph()->nodes()->create<luci::CircleConst>();
   nhwc_paddings->dtype(loco::DataType::S32);
   nhwc_paddings->shape({4, 2});
   nhwc_paddings->shape_status(luci::ShapeStatus::VALID);
   nhwc_paddings->size<loco::DataType::S32>(4 * 2);
+  nhwc_paddings->name(name + "_NHWC");
 
   for (uint32_t dim = 0; dim < 4; dim++)
   {
@@ -174,6 +197,9 @@ luci::CircleConst *create_NHWC_from_NCHW(luci::CircleConst *constant)
   loco::TensorShape nhwc_dimension{constant->dim(0), constant->dim(2), constant->dim(3),
                                    constant->dim(1)};
 
+  auto name = constant->name();
+  assert(name.length() > 0);
+
   auto nhwc_const = constant->graph()->nodes()->create<luci::CircleConst>();
   nhwc_const->dtype(constant->dtype());
   nhwc_const->rank(4);
@@ -183,6 +209,7 @@ luci::CircleConst *create_NHWC_from_NCHW(luci::CircleConst *constant)
   nhwc_const->dim(3).set(constant->dim(1).value());
   nhwc_const->shape_status(luci::ShapeStatus::VALID);
   nhwc_const->size<loco::DataType::FLOAT32>(constant->size<loco::DataType::FLOAT32>());
+  nhwc_const->name(name + "_NHWC");
 
   for (uint32_t n = 0; n < nchw_dimension.dim(0).value(); n++)
   {
