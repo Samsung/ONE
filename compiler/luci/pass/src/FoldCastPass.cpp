@@ -26,6 +26,8 @@ luci::CircleConst *cast_const(luci::CircleConst *node, loco::DataType from_dtype
 {
   assert(node->dtype() == from_dtype);
 
+  auto name = node->name();
+  assert(name.length() > 0);
   auto constant = node->graph()->nodes()->create<luci::CircleConst>();
   constant->dtype(to_dtype);
   constant->rank(node->rank());
@@ -47,6 +49,8 @@ luci::CircleConst *cast_const(luci::CircleConst *node, loco::DataType from_dtype
       for (uint32_t i = 0; i < num_elems; i++)
         constant->at<loco::DataType::S32>(i) =
           static_cast<int32_t>(node->at<loco::DataType::S64>(i));
+
+      constant->name(name + "_S32");
       return constant;
     }
     return nullptr;
