@@ -85,6 +85,13 @@ public:
     add->x(mul);
     add->y(beta);
     output->from(add);
+
+    input->name("input");
+    mul->name("mul");
+    gamma->name("gamma");
+    add->name("add");
+    beta->name("beta");
+    output->name("output");
   }
 
 public:

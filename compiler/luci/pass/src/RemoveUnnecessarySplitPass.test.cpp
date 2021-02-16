@@ -30,6 +30,7 @@ void create_unnecessary_split_graph(loco::Graph *g, bool remove)
   auto input = g->nodes()->create<luci::CircleInput>();
   auto graph_input = g->inputs()->create();
   input->index(graph_input->index());
+  input->name("input");
 
   auto dim = g->nodes()->create<luci::CircleConst>();
   dim->dtype(loco::DataType::S32);
@@ -37,6 +38,7 @@ void create_unnecessary_split_graph(loco::Graph *g, bool remove)
   dim->rank(1);
   dim->dim(0).set(1);
   dim->at<loco::DataType::S32>(0) = 0;
+  dim->name("dim");
   auto split_node = g->nodes()->create<luci::CircleSplit>();
   split_node->split_dim(dim);
   split_node->input(input);
@@ -44,26 +46,31 @@ void create_unnecessary_split_graph(loco::Graph *g, bool remove)
     split_node->num_split(1);
   else
     split_node->num_split(2);
+  split_node->name("split_node");
 
   auto split_out_node0 = g->nodes()->create<luci::CircleSplitOut>();
   split_out_node0->input(split_node);
   split_out_node0->index(0);
+  split_out_node0->name("split_out_node0");
 
   auto output0 = g->nodes()->create<luci::CircleOutput>();
   output0->from(split_out_node0);
   auto graph_output0 = g->outputs()->create();
   output0->index(graph_output0->index());
+  output0->name("output0");
 
   if (!remove)
   {
     auto split_out_node1 = g->nodes()->create<luci::CircleSplitOut>();
     split_out_node1->input(split_node);
     split_out_node1->index(1);
+    split_out_node1->name("split_out_node1");
 
     auto output1 = g->nodes()->create<luci::CircleOutput>();
     output1->from(split_out_node1);
     auto graph_output1 = g->outputs()->create();
     output1->index(graph_output1->index());
+    output1->name("output1");
   }
 }
 

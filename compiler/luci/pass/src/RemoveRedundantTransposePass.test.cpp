@@ -80,30 +80,36 @@ void create_redundunt_transpose(loco::Graph *g, const std::vector<int32_t> &perm
   auto input = g->nodes()->create<luci::CircleInput>();
   auto graph_input = g->inputs()->create();
   input->index(graph_input->index());
+  input->name("input");
 
   // Create perm1
   auto perm1_node = g->nodes()->create<luci::CircleConst>();
   setValue(perm1_node, perm1);
+  perm1_node->name("perm1_node");
 
   auto transpose1 = g->nodes()->create<luci::CircleTranspose>();
   transpose1->dtype(loco::DataType::FLOAT32);
   transpose1->a(input);
   transpose1->perm(perm1_node);
+  transpose1->name("transpose1");
 
   // Create perm2
   auto perm2_node = g->nodes()->create<luci::CircleConst>();
   setValue(perm2_node, perm2);
+  perm2_node->name("perm2_node");
 
   auto transpose2 = g->nodes()->create<luci::CircleTranspose>();
   transpose2->dtype(loco::DataType::FLOAT32);
   transpose2->a(transpose1);
   transpose2->perm(perm2_node);
+  transpose2->name("transpose2");
 
   // Output
   auto output = g->nodes()->create<luci::CircleOutput>();
   output->from(transpose2);
   auto graph_output = g->outputs()->create();
   output->index(graph_output->index());
+  output->name("output");
 }
 /**
  *  BEFORE
@@ -141,6 +147,7 @@ void create_redundunt_transpose_with_branch(loco::Graph *g, const std::vector<in
   auto graph_input = g->inputs()->create();
   input->dtype(loco::DataType::FLOAT32);
   input->index(graph_input->index());
+  input->name("input");
   graph_input->dtype(loco::DataType::FLOAT32);
 
   graph_input->shape({4, 4, 4, 4});
@@ -149,35 +156,43 @@ void create_redundunt_transpose_with_branch(loco::Graph *g, const std::vector<in
   // Create perm1
   auto perm1_node = g->nodes()->create<luci::CircleConst>();
   setValue(perm1_node, perm1);
+  perm1_node->name("perm1_node");
 
   auto transpose1 = g->nodes()->create<luci::CircleTranspose>();
   transpose1->dtype(loco::DataType::FLOAT32);
   transpose1->a(input);
   transpose1->perm(perm1_node);
+  transpose1->name("transpose1");
 
   // Create perm2
   auto perm2_node = g->nodes()->create<luci::CircleConst>();
   setValue(perm2_node, perm2);
+  perm2_node->name("perm2_node");
 
   auto transpose2 = g->nodes()->create<luci::CircleTranspose>();
   transpose2->dtype(loco::DataType::FLOAT32);
   transpose2->a(transpose1);
   transpose2->perm(perm2_node);
+  transpose2->name("transpose2");
 
   // create perm3
   auto perm3_node = g->nodes()->create<luci::CircleConst>();
   setValue(perm3_node, perm3);
+  perm3_node->name("perm3_node");
 
   auto transpose3 = g->nodes()->create<luci::CircleTranspose>();
   transpose3->dtype(loco::DataType::FLOAT32);
   transpose3->a(transpose1);
   transpose3->perm(perm3_node);
+  transpose3->name("transpose3");
 
   // Output
   auto output1 = g->nodes()->create<luci::CircleOutput>();
   output1->from(transpose2);
+  output1->name("output1");
   auto output2 = g->nodes()->create<luci::CircleOutput>();
   output2->from(transpose3);
+  output2->name("output2");
   auto graph_output1 = g->outputs()->create();
   output1->index(graph_output1->index());
   auto graph_output2 = g->outputs()->create();

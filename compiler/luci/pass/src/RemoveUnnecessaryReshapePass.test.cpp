@@ -36,6 +36,7 @@ void create_unnecessary_reshape_graph(loco::Graph *g,
   input->shape_status(luci::ShapeStatus::VALID);
   input->rank(input_shape.size());
   input->shape(input_shape);
+  input->name("input");
 
   // Output_shape CircleConst create
   std::vector<uint32_t> shape_vector{input_shape};
@@ -52,6 +53,7 @@ void create_unnecessary_reshape_graph(loco::Graph *g,
     else
       output_shape->at<loco::DataType::S32>(i) = -1;
   }
+  output_shape->name("output_shape");
 
   // Reshape create
   auto reshape_node = g->nodes()->create<luci::CircleReshape>();
@@ -65,12 +67,14 @@ void create_unnecessary_reshape_graph(loco::Graph *g,
     else
       reshape_node->newShape()->dim(i) = -1;
   }
+  reshape_node->name("reshape_node");
 
   // Output create
   auto output = g->nodes()->create<luci::CircleOutput>();
   output->from(reshape_node);
   auto graph_output = g->outputs()->create();
   output->index(graph_output->index());
+  output->name("output");
 }
 
 } // namespace

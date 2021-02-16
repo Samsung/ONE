@@ -39,6 +39,7 @@ public:
     {
       shape_const->at<loco::DataType::S32>(i) = shape.at(i);
     }
+    shape_const->name("shape_const");
     target->shape(shape_const);
   }
 
@@ -52,20 +53,24 @@ public:
     input->shape_status(luci::ShapeStatus::VALID);
     input->rank(base_shape.size());
     input->shape(base_shape);
+    input->name("input");
 
     // Create first reshape.
     first_reshape = g.nodes()->create<luci::CircleReshape>();
     first_reshape->tensor(input);
+    first_reshape->name("Reshape");
     createReshapeConst(first_reshape, first_shape);
 
     // Create second reshape.
     second_reshape = g.nodes()->create<luci::CircleReshape>();
     second_reshape->tensor(first_reshape);
+    second_reshape->name("second_reshape");
     createReshapeConst(second_reshape, second_shape);
 
     // Output Connect.
     output = g.nodes()->create<luci::CircleOutput>();
     output->from(second_reshape);
+    output->name("output");
     auto graph_output = g.outputs()->create();
     output->index(graph_output->index());
   }
