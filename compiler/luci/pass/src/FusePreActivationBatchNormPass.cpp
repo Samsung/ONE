@@ -249,6 +249,9 @@ bool update_conv_bias_with_beta(luci::CircleConv2D *conv, const luci::CircleCons
   auto size = beta->dim(0).value();
   auto bias = dynamic_cast<luci::CircleConst *>(conv->bias());
 
+  auto name = conv->name();
+  assert(name.length() > 0);
+
   if (bias == nullptr)
   {
     bias = conv->graph()->nodes()->create<luci::CircleConst>();
@@ -256,6 +259,7 @@ bool update_conv_bias_with_beta(luci::CircleConv2D *conv, const luci::CircleCons
     bias->rank(1);
     bias->dim(0).set(size);
     bias->size<loco::DataType::FLOAT32>(size);
+    bias->name(name + "/bias");
     conv->bias(bias);
   }
   else
@@ -282,8 +286,12 @@ bool update_conv_bias_with_beta(luci::CircleConv2D *conv, const luci::CircleCons
 
 luci::CircleSub *insert_sub(luci::CircleNode *pred, luci::CircleConst *beta)
 {
+  auto name = pred->name();
+  assert(name.length() > 0);
+
   auto sub = pred->graph()->nodes()->create<luci::CircleSub>();
   sub->fusedActivationFunction(luci::FusedActFunc::NONE);
+  sub->name(name + "/Sub");
 
   loco::replace(pred).with(sub);
 
@@ -576,8 +584,12 @@ bool swap_mul_add(luci::CircleAdd *add, std::vector<luci::CircleMul *> &mul_list
     return false;
 
   // Insert Relu at the bottom
+  auto name = add->name();
+  assert(name.length() > 0);
+
   auto relu = add->graph()->nodes()->create<luci::CircleRelu>();
   relu->features(mul);
+  relu->name(name + "/Relu");
   loco::replace(add).with(relu);
 
   // Replace beta <- beta / gamma

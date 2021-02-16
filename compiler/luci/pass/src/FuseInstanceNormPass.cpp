@@ -564,6 +564,8 @@ void fuse_instance_norm(const InstanceNormPattern &p)
   float epsilon = p.const_as_epsilon->at<loco::DataType::FLOAT32>(0);
   instance_norm->epsilon(epsilon);
   instance_norm->fusedActivationFunction(p.add_as_terminal->fusedActivationFunction());
+  // NOTE unique name should be assigned in export
+  instance_norm->name("InstanceNorm");
 
   replace(p.add_as_terminal).with(instance_norm);
 }
