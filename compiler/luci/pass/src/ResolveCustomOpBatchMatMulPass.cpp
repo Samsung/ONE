@@ -30,6 +30,9 @@ bool resolve_custom_op(luci::CircleCustom *cop)
 
   if (custom_code == "BatchMatMulV2")
   {
+    auto name = cop->name();
+    assert(name.length() > 0);
+
     auto batch_matmul = cop->graph()->nodes()->create<luci::CircleBatchMatMul>();
     // input
     batch_matmul->x(cop->inputs(0));
@@ -39,6 +42,7 @@ bool resolve_custom_op(luci::CircleCustom *cop)
     auto map = flexbuffers::GetRoot(custom_options).AsMap();
     batch_matmul->adj_x(map["adj_x"].AsBool());
     batch_matmul->adj_y(map["adj_y"].AsBool());
+    batch_matmul->name(name + "/BatchMatMul");
 
     auto customOut = loco::succs(cop);
     assert(customOut.size() == 1);

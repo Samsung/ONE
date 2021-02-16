@@ -67,10 +67,15 @@ bool resolve_with_BroadcastTo(luci::CircleCustom *addv2)
   auto input = loco::must_cast<const luci::CircleCustomOut *>(addv2->inputs(broadcastTo_idx));
   auto broadcastTo = loco::must_cast<luci::CircleCustom *>(input->input());
 
+  auto name = addv2->name();
+  assert(name.length() > 0);
+
   auto add = addv2->graph()->nodes()->create<luci::CircleAdd>();
   add->fusedActivationFunction(luci::FusedActFunc::NONE);
   add->x(addv2->inputs(1 - broadcastTo_idx));
   add->y(broadcastTo->inputs(0));
+  add->name(name + "/Add");
+
   auto customOut = loco::succs(addv2);
   assert(customOut.size() == 1);
   replace(*customOut.begin()).with(add);
@@ -109,10 +114,15 @@ bool resolve_custom_op(luci::CircleCustom *addv2)
   if (resolve_with_BroadcastTo(addv2))
     return true;
 
+  auto name = addv2->name();
+  assert(name.length() > 0);
+
   auto add = addv2->graph()->nodes()->create<luci::CircleAdd>();
   add->fusedActivationFunction(luci::FusedActFunc::NONE);
   add->x(addv2->inputs(0));
   add->y(addv2->inputs(1));
+  add->name(name + "/Add");
+
   auto customOut = loco::succs(addv2);
   assert(customOut.size() == 1);
   replace(*customOut.begin()).with(add);
