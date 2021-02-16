@@ -130,6 +130,9 @@ bool fused_batch_norm_with_conv(luci::CircleAdd *add)
   if (filter->dim(0).value() != shift->dim(3).value())
     return false;
 
+  auto name = add->name();
+  assert(name.length() > 0);
+
   luci::CircleConv2D *fused_conv = add->graph()->nodes()->create<luci::CircleConv2D>();
   luci::CircleConst *fused_filter = add->graph()->nodes()->create<luci::CircleConst>();
   luci::CircleConst *fused_bias = add->graph()->nodes()->create<luci::CircleConst>();
@@ -148,6 +151,7 @@ bool fused_batch_norm_with_conv(luci::CircleAdd *add)
   fused_filter->dim(2).set(filter_width);
   fused_filter->dim(3).set(filter_in_channel);
   fused_filter->shape_status(luci::ShapeStatus::VALID);
+  fused_filter->name(name + "/Conv2D/filter");
 
   // Fuse scale to new filter
   for (uint32_t c = 0; c < filter_out_channel; c++)
@@ -175,6 +179,7 @@ bool fused_batch_norm_with_conv(luci::CircleAdd *add)
   fused_bias->rank(1);
   fused_bias->dim(0).set(filter_out_channel);
   fused_bias->shape_status(luci::ShapeStatus::VALID);
+  fused_bias->name(name + "/Conv2D/bias");
 
   // Fuse scale and shift to bias
   for (uint32_t b = 0; b < filter_out_channel; ++b)
@@ -194,6 +199,7 @@ bool fused_batch_norm_with_conv(luci::CircleAdd *add)
   fused_conv->stride()->w(conv->stride()->w());
   fused_conv->dilation()->h(conv->dilation()->h());
   fused_conv->dilation()->w(conv->dilation()->w());
+  fused_conv->name(name + "/Conv2D");
 
   replace(add).with(fused_conv);
 

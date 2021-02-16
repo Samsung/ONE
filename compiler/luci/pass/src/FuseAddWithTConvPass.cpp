@@ -90,9 +90,12 @@ bool fuse_add_with_tconv(luci::CircleTransposeConv *tconv)
 
   if (add->fusedActivationFunction() == luci::FusedActFunc::RELU6)
   {
+    auto name = addition->name();
+    assert(name.length() > 0);
     // separate relu op from add op
     auto relu = add->graph()->nodes()->create<luci::CircleRelu6>();
     relu->features(tconv);
+    relu->name(name + "/Relu6");
 
     // remove add node
     replace(add).with(relu);
