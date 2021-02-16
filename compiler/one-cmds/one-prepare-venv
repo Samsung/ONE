@@ -61,7 +61,7 @@ if [ -n "${EXT_ONNX_TF_WHL}" ]; then
   python -m pip --default-timeout=1000 install ${EXT_ONNX_TF_WHL}
 else
   python -m pip --default-timeout=1000 --trusted-host pypi.org --trusted-host files.pythonhost.org \
-    install onnx-tf==1.7.0
+    install onnx==1.8.0 onnx-tf==1.7.0
 fi
 
 # Create python symoblic link
