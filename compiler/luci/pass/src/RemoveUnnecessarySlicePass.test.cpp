@@ -34,6 +34,7 @@ void create_remove_unnecessary_slice(loco::Graph *g,
   input->shape_status(luci::ShapeStatus::VALID);
   input->rank(input_shape.size());
   input->shape(input_shape);
+  input->name("input");
 
   // Begin Create.
   auto begin = g->nodes()->create<luci::CircleConst>();
@@ -45,6 +46,7 @@ void create_remove_unnecessary_slice(loco::Graph *g,
   {
     begin->at<loco::DataType::S32>(i) = remove ? 0 : 1;
   }
+  begin->name("begin");
 
   // Size Create.
   auto size = g->nodes()->create<luci::CircleConst>();
@@ -56,6 +58,7 @@ void create_remove_unnecessary_slice(loco::Graph *g,
   {
     size->at<loco::DataType::S32>(i) = -1;
   }
+  size->name("size");
 
   // Slice Node create.
   auto slice = g->nodes()->create<luci::CircleSlice>();
@@ -63,12 +66,14 @@ void create_remove_unnecessary_slice(loco::Graph *g,
   slice->input(input);
   slice->begin(begin);
   slice->size(size);
+  slice->name("slice");
 
   // Output Connect.
   auto output = g->nodes()->create<luci::CircleOutput>();
   output->from(slice);
   auto graph_output = g->outputs()->create();
   output->index(graph_output->index());
+  output->name("output");
 }
 
 } // namespace
