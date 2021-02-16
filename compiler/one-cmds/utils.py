@@ -51,7 +51,8 @@ def _parse_cfg(args, driver_name):
                 raise AssertionError('configuration file must have \'' + driver_name +
                                      '\' section')
             for key in config[args.section]:
-                setattr(args, key, config[args.section][key])
+                if not _is_valid_attr(args, key):
+                    setattr(args, key, config[args.section][key])
         # if section is not given, section name is same with its driver name
         else:
             if not config.has_section(driver_name):
@@ -59,7 +60,8 @@ def _parse_cfg(args, driver_name):
                                      '\' section')
             secton_to_run = driver_name
             for key in config[secton_to_run]:
-                setattr(args, key, config[secton_to_run][key])
+                if not _is_valid_attr(args, key):
+                    setattr(args, key, config[secton_to_run][key])
 
 
 def _make_tf2tfliteV2_cmd(args, driver_path, input_path, output_path):
