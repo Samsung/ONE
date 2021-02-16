@@ -56,6 +56,9 @@ bool remove_consecutive_transpose_function(luci::CircleTranspose *target_node)
   }
   else
   {
+    auto name = target_node->name();
+    assert(name.length() > 0);
+
     auto g = main_perm->graph();
     auto new_const_node = g->nodes()->create<luci::CircleConst>();
 
@@ -69,12 +72,14 @@ bool remove_consecutive_transpose_function(luci::CircleTranspose *target_node)
       new_const_node->at<loco::DataType::S32>(i) =
         pred_perm->at<loco::DataType::S32>(main_perm->at<loco::DataType::S32>(i));
     }
+    new_const_node->name(name + "/Transpose/perm");
 
     // Create New Transpose Node
     auto new_transpose_node = g->nodes()->create<luci::CircleTranspose>();
     new_transpose_node->dtype(target_node->dtype());
     new_transpose_node->a(main_node);
     new_transpose_node->perm(new_const_node);
+    new_transpose_node->name(name + "/Transpose");
 
     replace(target_node).with(new_transpose_node);
   }

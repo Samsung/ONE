@@ -89,6 +89,9 @@ bool resolve_matmul(luci::CircleCustom *cop)
   const auto S32 = loco::DataType::S32;
   const auto FLOAT32 = loco::DataType::FLOAT32;
 
+  auto name = cop->name();
+  assert(name.length() > 0);
+
   bool transpose_a = map["transpose_a"].AsBool();
   bool transpose_b = map["transpose_b"].AsBool();
 
@@ -121,10 +124,12 @@ bool resolve_matmul(luci::CircleCustom *cop)
       perm.push_back(i);
     std::swap(perm[circle_lhs->rank() - 1], perm[circle_lhs->rank() - 2]);
     auto perm_node = create_const_node(graph, S32, {circle_lhs->rank()}, perm);
+    perm_node->name(name + "/lhs/Transpose/perm");
     // Now make a transpose node
     auto transpose_node = graph->nodes()->create<luci::CircleTranspose>();
     transpose_node->a(lhs);
     transpose_node->perm(perm_node);
+    transpose_node->name(name + "/lhs/Transpose");
     lhs = transpose_node;
   }
 
@@ -135,9 +140,11 @@ bool resolve_matmul(luci::CircleCustom *cop)
   {
     const std::vector<uint32_t> perm{1, 0};
     auto perm_node = create_const_node(graph, S32, {2}, perm);
+    perm_node->name(name + "/rhs/Transpose/perm");
     auto transpose_node = graph->nodes()->create<luci::CircleTranspose>();
     transpose_node->a(rhs);
     transpose_node->perm(perm_node);
+    transpose_node->name(name + "/rhs/Transpose");
     rhs = transpose_node;
   }
 
@@ -149,6 +156,7 @@ bool resolve_matmul(luci::CircleCustom *cop)
   fc_node->weights(rhs);
   fc_node->bias(empty_bias);
   fc_node->fusedActivationFunction(luci::FusedActFunc::NONE);
+  fc_node->name(name + "/FullyConnected");
 
   auto customOut = loco::succs(cop);
   assert(customOut.size() == 1);

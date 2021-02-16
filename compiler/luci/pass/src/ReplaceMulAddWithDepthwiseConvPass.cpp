@@ -26,6 +26,9 @@ luci::CircleConst *create_weights_from_gamma(luci::CircleConst *gamma)
   assert(gamma->rank() == 1);
   auto channel_size = gamma->dim(0).value();
 
+  auto name = gamma->name();
+  assert(name.length() > 0);
+
   // Channel-wise MUL is the same as DEPTHWISE_CONV2D with filter shape (1,1,1,channel_size)
   auto weights = gamma->graph()->nodes()->create<luci::CircleConst>();
   weights->dtype(loco::DataType::FLOAT32);
@@ -40,6 +43,7 @@ luci::CircleConst *create_weights_from_gamma(luci::CircleConst *gamma)
   {
     weights->at<loco::DataType::FLOAT32>(i) = gamma->at<loco::DataType::FLOAT32>(i);
   }
+  weights->name(name + "_weights");
 
   return weights;
 }
@@ -48,6 +52,9 @@ luci::CircleConst *create_bias_from_beta(luci::CircleConst *beta)
 {
   assert(beta->rank() == 1);
   auto channel_size = beta->dim(0).value();
+
+  auto name = beta->name();
+  assert(name.length() > 0);
 
   // Channel-wise ADD is the same as bias (shape = (channel_size)) of DEPTHWISE_CONV2D
   auto bias = beta->graph()->nodes()->create<luci::CircleConst>();
@@ -60,6 +67,7 @@ luci::CircleConst *create_bias_from_beta(luci::CircleConst *beta)
   {
     bias->at<loco::DataType::FLOAT32>(i) = beta->at<loco::DataType::FLOAT32>(i);
   }
+  bias->name(name + "_bias");
 
   return bias;
 }
@@ -180,6 +188,9 @@ bool replace_mul_add_with_dwconv(luci::CircleAdd *add)
   auto weights = create_weights_from_gamma(gamma);
   auto bias = create_bias_from_beta(beta);
 
+  auto name = add->name();
+  assert(name.length() > 0);
+
   auto dwconv = add->graph()->nodes()->create<luci::CircleDepthwiseConv2D>();
   dwconv->input(pred_node);
   dwconv->filter(weights);
@@ -191,6 +202,7 @@ bool replace_mul_add_with_dwconv(luci::CircleAdd *add)
   dwconv->dilation()->w(1);
   dwconv->dilation()->h(1);
   dwconv->fusedActivationFunction(add->fusedActivationFunction());
+  dwconv->name(name + "/DepthwiseConv2D");
 
   loco::replace(add).with(dwconv);
   return true;
