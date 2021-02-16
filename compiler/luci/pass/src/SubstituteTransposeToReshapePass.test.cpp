@@ -36,6 +36,7 @@ public:
     input->shape_status(luci::ShapeStatus::VALID);
     input->rank(shape.size());
     input->shape(shape);
+    input->name("input");
 
     // Permutation Create.
     auto perm_const = g.nodes()->create<luci::CircleConst>();
@@ -48,17 +49,20 @@ public:
     {
       perm_const->at<loco::DataType::S32>(i) = perm.at(i);
     }
+    perm_const->name("perm_const");
 
     // Transpose Create.
     auto transpose_node = g.nodes()->create<luci::CircleTranspose>();
     transpose_node->a(input);
     transpose_node->perm(perm_const);
+    transpose_node->name("transpose_node");
 
     // Output Connect.
     output = g.nodes()->create<luci::CircleOutput>();
     output->from(transpose_node);
     auto graph_output = g.outputs()->create();
     output->index(graph_output->index());
+    output->name("output");
   }
 
 public:

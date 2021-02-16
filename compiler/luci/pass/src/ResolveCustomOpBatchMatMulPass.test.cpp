@@ -59,10 +59,12 @@ protected:
     _input_0->index(graph_input_0->index());
     _input_0->shape({N, C, H_X, W_X});
     _input_0->dtype(loco::DataType::FLOAT32);
+    _input_0->name("input_0");
     _input_1 = _g.nodes()->create<luci::CircleInput>();
     _input_1->index(graph_input_1->index());
     _input_1->shape({N, C, H_Y, W_Y});
     _input_1->dtype(loco::DataType::FLOAT32);
+    _input_1->name("input_1");
 
     // custom option
     auto flatbuffer_builder =
@@ -83,6 +85,7 @@ protected:
     _batchmatmulv2->inputs(1, _input_1);
     _batchmatmulv2->shape({N, C, H_X, W_Y});
     _batchmatmulv2->dtype(loco::DataType::FLOAT32);
+    _batchmatmulv2->name("batchmatmulv2");
 
     // CircleCustomOut
     _batchmatmulv2_out = _g.nodes()->create<luci::CircleCustomOut>();
@@ -97,6 +100,7 @@ protected:
     _output->from(_batchmatmulv2_out);
     _output->shape({N, C, H_X, W_Y});
     _output->dtype(loco::DataType::FLOAT32);
+    _output->name("output");
   }
 
 protected:

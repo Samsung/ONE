@@ -64,6 +64,7 @@ protected:
     _min_max_g._input->index(graph_input->index());
     _min_max_g._input->shape({N, H, W, C});
     _min_max_g._input->dtype(loco::DataType::FLOAT32);
+    _min_max_g._input->name("input");
 
     // CircleConst
     _min_max_g._mini_const = _min_max_g._g.nodes()->create<luci::CircleConst>();
@@ -71,6 +72,7 @@ protected:
     _min_max_g._mini_const->dtype(loco::DataType::FLOAT32);
     _min_max_g._mini_const->size<loco::DataType::FLOAT32>(1);
     _min_max_g._mini_const->at<loco::DataType::FLOAT32>(0) = 6.;
+    _min_max_g._mini_const->name("mini_const");
 
     // CircleMinimum
     _min_max_g._mini = _min_max_g._g.nodes()->create<luci::CircleMinimum>();
@@ -78,6 +80,7 @@ protected:
     _min_max_g._mini->y(_min_max_g._mini_const);
     _min_max_g._mini->shape({N, H, W, C});
     _min_max_g._mini->dtype(loco::DataType::FLOAT32);
+    _min_max_g._mini->name("mini");
 
     // CircleConst
     _min_max_g._maxi_const = _min_max_g._g.nodes()->create<luci::CircleConst>();
@@ -85,6 +88,7 @@ protected:
     _min_max_g._maxi_const->dtype(loco::DataType::FLOAT32);
     _min_max_g._maxi_const->size<loco::DataType::FLOAT32>(1);
     _min_max_g._maxi_const->at<loco::DataType::FLOAT32>(0) = 0.;
+    _min_max_g._maxi_const->name("maxi_const");
 
     // CircleMaximum
     _min_max_g._maxi = _min_max_g._g.nodes()->create<luci::CircleMaximum>();
@@ -92,6 +96,7 @@ protected:
     _min_max_g._maxi->y(_min_max_g._maxi_const);
     _min_max_g._maxi->shape({N, H, W, C});
     _min_max_g._maxi->dtype(loco::DataType::FLOAT32);
+    _min_max_g._maxi->name("maxi");
 
     // CircleOutput
     _min_max_g._output = _min_max_g._g.nodes()->create<luci::CircleOutput>();
@@ -99,6 +104,7 @@ protected:
     _min_max_g._output->from(_min_max_g._maxi);
     _min_max_g._output->shape({N, H, W, C});
     _min_max_g._output->dtype(loco::DataType::FLOAT32);
+    _min_max_g._output->name("output");
   }
 
 protected:

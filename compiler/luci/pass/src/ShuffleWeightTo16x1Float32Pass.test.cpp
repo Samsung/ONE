@@ -32,6 +32,7 @@ void create_fc_net(loco::Graph *g)
   auto input = g->nodes()->create<luci::CircleInput>();
   auto graph_input = g->inputs()->create();
   input->index(graph_input->index());
+  input->name("input");
 
   // fc weights
   auto weights = g->nodes()->create<luci::CircleConst>();
@@ -44,18 +45,21 @@ void create_fc_net(loco::Graph *g)
   {
     weights->at<loco::DataType::FLOAT32>(idx) = idx;
   }
+  weights->name("weights");
 
   // fc
   auto fc = g->nodes()->create<luci::CircleFullyConnected>();
   fc->dtype(loco::DataType::FLOAT32);
   fc->input(input);
   fc->weights(weights);
+  fc->name("fc");
 
   // output
   auto output = g->nodes()->create<luci::CircleOutput>();
   output->from(fc);
   auto graph_output = g->outputs()->create();
   output->index(graph_output->index());
+  output->name("output");
 }
 
 TEST(ShuffleWeightTo16x1Float32PassTest, name)

@@ -40,10 +40,12 @@ public:
     _input = _g.nodes()->create<luci::CircleInput>();
     _input->shape(shape_in);
     _input->shape_status(luci::ShapeStatus::VALID);
+    _input->name("input");
 
     _output = _g.nodes()->create<luci::CircleOutput>();
     _output->shape(shape_out);
     _output->shape_status(luci::ShapeStatus::VALID);
+    _output->name("output");
 
     _input->index(_graph_input->index());
     _output->index(_graph_output->index());
@@ -91,6 +93,7 @@ public:
     _squeeze = _g.nodes()->create<luci::CircleSqueeze>();
     _squeeze->input(_input);
     _squeeze->squeeze_dims(squeeze_dims);
+    _squeeze->name("squeeze");
 
     _output->from(_squeeze);
   }

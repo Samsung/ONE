@@ -34,17 +34,20 @@ void create_substitute_pack_to_reshape(loco::Graph *g, const std::initializer_li
   input->shape_status(luci::ShapeStatus::VALID);
   input->rank(shape.size());
   input->shape(shape);
+  input->name("input");
 
   // Pack Node create.
   auto pack = g->nodes()->create<luci::CirclePack>(1);
   pack->values(0, input);
   pack->axis(axis);
+  pack->name("pack");
 
   // Output Connect.
   auto output = g->nodes()->create<luci::CircleOutput>();
   output->from(pack);
   auto graph_output = g->outputs()->create();
   output->index(graph_output->index());
+  output->name("output");
 
   return;
 }
