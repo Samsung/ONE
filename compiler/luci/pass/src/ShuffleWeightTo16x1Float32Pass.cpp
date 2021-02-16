@@ -72,6 +72,9 @@ luci::CircleConst *shuffle_weight(luci::CircleFullyConnected *fc)
 {
   auto the_weights = loco::must_cast<luci::CircleConst *>(fc->weights());
 
+  auto name = fc->name();
+  assert(name.length() > 0);
+
   // create CircleConst where shuffled data will be stored
   luci::CircleConst *new_weights = fc->graph()->nodes()->create<luci::CircleConst>();
   new_weights->dtype(loco::DataType::FLOAT32);
@@ -82,6 +85,7 @@ luci::CircleConst *shuffle_weight(luci::CircleFullyConnected *fc)
   {
     new_weights->dim(r).set(the_weights->dim(r).value());
   }
+  new_weights->name(name + "/shuffle_weight");
 
   // suffle weight
   const uint32_t MULTIPLE = 16;

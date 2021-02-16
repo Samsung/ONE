@@ -95,9 +95,13 @@ template <loco::DataType DT> bool transform_min_max_pattern(luci::CircleMaximum 
                                    static_cast<typename loco::DataTypeImpl<DT>::Type>(6)))
     return false;
 
+  auto name = maxi->name();
+  assert(name.length() > 0);
+
   // Create Relu6 op
   auto relu6 = mini->graph()->nodes()->create<luci::CircleRelu6>();
   relu6->features(mini_input);
+  relu6->name(name + "/Relu6");
 
   replace(maxi).with(relu6);
 

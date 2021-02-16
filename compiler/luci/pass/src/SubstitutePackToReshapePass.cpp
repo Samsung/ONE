@@ -46,9 +46,13 @@ bool substitute_pack_to_reshape(luci::CircleNode *node)
   if (axis < 0)
     axis = axis + static_cast<int32_t>(value_node->rank()) + 1;
 
+  auto name = node->name();
+  assert(name.length() > 0);
+
   auto graph = target_node->graph();
   auto reshape_node = graph->nodes()->create<luci::CircleReshape>();
   reshape_node->tensor(value_node);
+  reshape_node->name(name + "/Reshape");
 
   auto const_node = graph->nodes()->create<luci::CircleConst>();
   const_node->dtype(loco::DataType::S32);
@@ -73,6 +77,7 @@ bool substitute_pack_to_reshape(luci::CircleNode *node)
         value_node->dim(i - 1).known() ? value_node->dim(i - 1).value() : -1;
     }
   }
+  const_node->name(name + "/Reshape/shape");
   reshape_node->shape(const_node);
   replace(target_node).with(reshape_node);
   return true;
