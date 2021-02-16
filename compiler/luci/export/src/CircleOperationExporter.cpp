@@ -171,6 +171,7 @@ void export_node(ExportContext &ctx, luci::CircleConcatenation *node)
 void export_node(ExportContext &ctx, luci::CircleCustom *node)
 {
   auto custom_outputs = loco::succs(node);
+  assert(custom_outputs.size() == node->numOutputs());
 
   uint32_t op_idx = ctx.md.registerCustomOpcode(node->custom_code());
   std::vector<int32_t> inputs_vec;
