@@ -53,6 +53,7 @@ static CircleNode *create_shape_node(const std::vector<int32_t> &shape, loco::Gr
   {
     shape_node->at<loco::DataType::S32>(i) = shape[i];
   }
+  shape_node->name("Reshape/shape");
   return shape_node;
 }
 
@@ -73,6 +74,7 @@ CircleNode *CircleReshapeGraphBuilder::build_node(const circle::OperatorT &op,
       shape_node = graph->nodes()->create<CircleOutputDummy>();
       shape_node->dtype(loco::DataType::S32);
       shape_node->rank(0);
+      shape_node->name("Reshape/dummy");
     }
   }
 
