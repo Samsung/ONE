@@ -63,11 +63,14 @@ bool forward_reshape(luci::CircleReshape *reshape, luci::CircleNeg *neg)
   if (cloned_shape == nullptr)
     return false;
 
+  auto name = reshape->name();
+  assert(name.length() > 0);
   loco::Graph *graph = neg->graph();
   // create reshape placed after neg
   luci::CircleReshape *new_reshape = graph->nodes()->create<luci::CircleReshape>();
   copy_shape(reshape, new_reshape);
   new_reshape->shape(cloned_shape);
+  new_reshape->name(name + "_C");
 
   // reconnect network
   loco::replace(neg).with(new_reshape);

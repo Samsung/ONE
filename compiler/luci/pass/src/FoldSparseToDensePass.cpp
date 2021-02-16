@@ -63,6 +63,8 @@ bool fold_sparse_to_dense(luci::CircleSparseToDense *stod)
     shape.push_back(dim);
   }
 
+  auto name = stod->name();
+  assert(name.length() > 0);
   auto constant = stod->graph()->nodes()->create<luci::CircleConst>();
   constant->dtype(default_value->dtype());
   constant->rank(rank);
@@ -79,6 +81,7 @@ bool fold_sparse_to_dense(luci::CircleSparseToDense *stod)
     constant->at<ValueT>(i) = value;
 
   constant->shape_status(luci::ShapeStatus::VALID);
+  constant->name(name + "_D");
 
   loco::replace(stod).with(constant);
 
