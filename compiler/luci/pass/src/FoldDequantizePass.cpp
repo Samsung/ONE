@@ -51,6 +51,8 @@ luci::CircleConst *dequantized_const_node(luci::CircleConst *const_node)
     throw std::runtime_error("Given constant node has no quantization parameter");
   }
 
+  auto name = const_node->name();
+  assert(name.length() > 0);
   auto g = const_node->graph();
   auto new_const_node = g->nodes()->create<luci::CircleConst>();
 
@@ -64,6 +66,7 @@ luci::CircleConst *dequantized_const_node(luci::CircleConst *const_node)
   }
   new_const_node->size<loco::DataType::FLOAT32>(dim_size);
   new_const_node->shape_status(luci::ShapeStatus::VALID);
+  new_const_node->name(name + "_DQ");
 
   const int32_t q_dim = const_node->quantparam()->quantized_dimension;
   const int32_t q_dim_value = const_node->dim(q_dim).value();
