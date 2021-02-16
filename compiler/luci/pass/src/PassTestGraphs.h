@@ -78,6 +78,9 @@ public:
     _output->rank(input_shape.size());
     for (int i = 0; i < input_shape.size(); i++)
       _output->dim(i).set(input_shape[i]);
+
+    _input->name("input");
+    _output->name("output");
   }
 
   virtual void init() = 0;
@@ -117,6 +120,8 @@ protected:
     _add->x(_input);
 
     _output->from(_add);
+
+    _add->name("add");
   }
 
 protected:
