@@ -71,16 +71,22 @@ def _get_parser():
         type=str,
         help='record mode (supported: percentile/moving_average, default=percentile)')
 
-    # set default values
-    quantization_group.set_defaults(
-        input_dtype='float32',
-        quantized_dtype='uint8',
-        granularity='layer',
-        min_percentile='1.0',
-        max_percentile='99.0',
-        mode='percentile')
-
     return parser
+
+
+def _set_default_values(args):
+    if not _utils._is_valid_attr(args, 'input_dtype'):
+        setattr(args, 'input_dtype', 'float32')
+    if not _utils._is_valid_attr(args, 'quantized_dtype'):
+        setattr(args, 'quantized_dtype', 'uint8')
+    if not _utils._is_valid_attr(args, 'granularity'):
+        setattr(args, 'granularity', 'layer')
+    if not _utils._is_valid_attr(args, 'mode'):
+        setattr(args, 'mode', 'percentile')
+    if not _utils._is_valid_attr(args, 'min_percentile'):
+        setattr(args, 'min_percentile', '1.0')
+    if not _utils._is_valid_attr(args, 'max_percentile'):
+        setattr(args, 'max_percentile', '99.0')
 
 
 def _verify_arg(parser, args):
@@ -223,6 +229,9 @@ def main():
 
     # parse configuration file
     _utils._parse_cfg(args, 'one-quantize')
+
+    # set default values
+    _set_default_values(args)
 
     # verify arguments
     _verify_arg(parser, args)
