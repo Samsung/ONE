@@ -140,11 +140,15 @@ private:
 
 public:
   bool visit(luci::CircleBidirectionalSequenceLSTMOut *) final { return true; }
+  bool visit(luci::CircleCustomOut *) final { return true; }
   bool visit(luci::CircleIfOut *) final { return true; }
+  bool visit(luci::CircleNonMaxSuppressionV4Out *) final { return true; }
+  bool visit(luci::CircleNonMaxSuppressionV5Out *) final { return true; }
   bool visit(luci::CircleSplitOut *) final { return true; }
   bool visit(luci::CircleSplitVOut *) final { return true; }
   bool visit(luci::CircleTopKV2Out *) final { return true; }
   bool visit(luci::CircleUnpackOut *) final { return true; }
+  bool visit(luci::CircleUniqueOut *) final { return true; }
   bool visit(luci::CircleWhileOut *) final { return true; }
 
   bool visit(luci::CircleBidirectionalSequenceLSTM *node) final
@@ -160,9 +164,27 @@ public:
     return true;
   }
 
+  bool visit(luci::CircleCustom *node) final
+  {
+    store_outputs(node, node->numOutputs());
+    return true;
+  }
+
   bool visit(luci::CircleIf *node) final
   {
     store_outputs(node, node->output_count());
+    return true;
+  }
+
+  bool visit(luci::CircleNonMaxSuppressionV4 *node) final
+  {
+    store_outputs(node, 2);
+    return true;
+  }
+
+  bool visit(luci::CircleNonMaxSuppressionV5 *node) final
+  {
+    store_outputs(node, 3);
     return true;
   }
 
@@ -187,6 +209,12 @@ public:
   bool visit(luci::CircleUnpack *node) final
   {
     store_outputs(node, node->num());
+    return true;
+  }
+
+  bool visit(luci::CircleUnique *node) final
+  {
+    store_outputs(node, 2);
     return true;
   }
 
