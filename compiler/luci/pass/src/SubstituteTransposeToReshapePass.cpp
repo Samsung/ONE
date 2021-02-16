@@ -65,6 +65,9 @@ bool substitute_transpose_to_reshape(luci::CircleTranspose *node)
     idx = perm_value;
   }
 
+  auto name = node->name();
+  assert(name.length() > 0);
+
   auto new_const_node = node->graph()->nodes()->create<luci::CircleConst>();
   new_const_node->dtype(loco::DataType::S32);
   new_const_node->size<loco::DataType::S32>(size_items);
@@ -83,6 +86,8 @@ bool substitute_transpose_to_reshape(luci::CircleTranspose *node)
   auto new_reshape_node = node->graph()->nodes()->create<luci::CircleReshape>();
   new_reshape_node->tensor(input_node);
   new_reshape_node->shape(new_const_node);
+  new_reshape_node->name(name + "/Reshape");
+  new_const_node->name(name + "/Reshape/shape");
 
   replace(node).with(new_reshape_node);
   return true;
