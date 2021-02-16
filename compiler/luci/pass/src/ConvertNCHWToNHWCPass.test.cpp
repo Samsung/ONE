@@ -66,6 +66,8 @@ public:
   {
     input = g.nodes()->create<luci::CircleInput>();
     output = g.nodes()->create<luci::CircleOutput>();
+    input->name("input");
+    output->name("output");
 
     auto graph_input = g.inputs()->create();
     input->index(graph_input->index());
@@ -122,6 +124,9 @@ protected:
     add->x(input);
     add->y(beta);
 
+    add->name("add");
+    beta->name("beta");
+
     return add;
   }
 
@@ -149,6 +154,9 @@ protected:
     }
     concat->values(1, input2);
 
+    concat->name("concat");
+    input2->name("input2");
+
     return concat;
   }
 
@@ -164,6 +172,7 @@ protected:
   {
     leakyrelu = g.nodes()->create<luci::CircleLeakyRelu>();
     leakyrelu->features(input);
+    leakyrelu->name("leakyrelu");
 
     return leakyrelu;
   }
@@ -196,6 +205,9 @@ protected:
     mul->x(input);
     mul->y(multiplier);
 
+    mul->name("mul");
+    multiplier->name("multiplier");
+
     return mul;
   }
 
@@ -211,6 +223,7 @@ protected:
   {
     neg = g.nodes()->create<luci::CircleNeg>();
     neg->x(input);
+    neg->name("neg");
 
     return neg;
   }
@@ -255,6 +268,9 @@ protected:
     pad->input(input);
     pad->paddings(paddings);
 
+    pad->name("pad");
+    paddings->name("paddings");
+
     return pad;
   }
 
@@ -270,6 +286,7 @@ protected:
   {
     relu = g.nodes()->create<luci::CircleRelu>();
     relu->features(input);
+    relu->name("Relu");
 
     return relu;
   }
@@ -285,6 +302,7 @@ protected:
   {
     relu6 = g.nodes()->create<luci::CircleRelu6>();
     relu6->features(input);
+    relu6->name("relu6");
 
     return relu6;
   }

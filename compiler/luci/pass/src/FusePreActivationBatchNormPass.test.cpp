@@ -150,6 +150,22 @@ public:
         conv_filter->at<loco::DataType::FLOAT32>(i * out_size + j) = i * out_size + j;
       }
     }
+
+    pred_conv->name("pred_conv");
+    pred_conv_filter->name("pred_conv_filter");
+    pred_conv_bias->name("pred_conv_bias");
+    pred_conv2->name("pred_conv2");
+    pred_conv2_filter->name("pred_conv2_filter");
+    pred_conv2_bias->name("pred_conv2_bias");
+    pred_add->name("pred_add");
+    mul->name("mul");
+    mul_gamma->name("mul_gamma");
+    add->name("add");
+    add_beta->name("add_beta");
+    conv->name("conv");
+    conv_filter->name("conv_filter");
+    conv_bias->name("conv_bias");
+    succ_add->name("succ_add");
   }
 
 public:

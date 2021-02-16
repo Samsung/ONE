@@ -76,6 +76,10 @@ public:
     _addV2->inputs(0, _x);
     _addV2->inputs(1, _y);
     _addV2_out->input(_addV2);
+
+    _addV2->name("addV2");
+    _x->name("x");
+    _y->name("y");
   }
 
   loco::Node *createFoldedPattern() override { return _addV2_out; }

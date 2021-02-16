@@ -49,6 +49,9 @@ public:
       _x->at<FromT>(i) = i + 1;
 
     _cast->x(_x);
+
+    _cast->name("cast");
+    _x->name("x");
   }
 
   loco::Node *createFoldedPattern() override { return _cast; }

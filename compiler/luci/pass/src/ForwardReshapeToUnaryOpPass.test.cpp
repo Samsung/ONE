@@ -59,6 +59,9 @@ public:
     auto output_shape = std::make_unique<loco::TensorShape>();
     set(output_shape.get(), shape_out);
     _graph_output->shape(std::move(output_shape));
+
+    _input->name("input");
+    _output->name("output");
   }
 
 protected:
@@ -112,6 +115,10 @@ public:
     _reshape->shape(_reshape_shape);
     _neg->x(_reshape);
     _output->from(_neg);
+
+    _reshape_shape->name("reshape_shape");
+    _reshape->name("reshape");
+    _neg->name("neg");
   }
 
 protected:
