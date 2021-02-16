@@ -80,6 +80,12 @@ public:
     _stod->values(_values);
     _stod->default_value(_default_value);
 
+    _stod->name("stod");
+    _indices->name("indices");
+    _output_shape->name("output_shape");
+    _values->name("values");
+    _default_value->name("default_value");
+
     return _stod;
   }
 

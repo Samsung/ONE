@@ -56,6 +56,10 @@ public:
 
     relu->features(conv1);
     conv2->input(relu);
+
+    conv1->name("conv1");
+    conv2->name("conv2");
+    relu->name("relu");
   }
 
 public:
