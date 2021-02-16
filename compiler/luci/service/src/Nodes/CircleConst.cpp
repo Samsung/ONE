@@ -47,8 +47,7 @@ luci::CircleConst *clone(luci::CircleConst *node)
 {
   auto cloned = node->graph()->nodes()->create<luci::CircleConst>();
 
-  // TODO: We don't have any naming policy for newly created nodes yet.
-  //       Fix this when we have one.
+  // NOTE unique name should be assigned in export
   cloned->name(node->name());
 
   // dtype/shape
