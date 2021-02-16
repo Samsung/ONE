@@ -135,6 +135,9 @@ bool fused_batch_norm_with_dwconv(luci::CircleAdd *add)
     return false;
   auto channel = filter_out_chn / multiplier;
 
+  auto name = add->name();
+  assert(name.length() > 0);
+
   loco::Graph *graph = add->graph();
   luci::CircleDepthwiseConv2D *fused_dwconv = graph->nodes()->create<luci::CircleDepthwiseConv2D>();
   luci::CircleConst *fused_filter = graph->nodes()->create<luci::CircleConst>();
@@ -154,6 +157,7 @@ bool fused_batch_norm_with_dwconv(luci::CircleAdd *add)
   fused_filter->dim(2).set(filter_width);
   fused_filter->dim(3).set(filter_out_chn);
   fused_filter->shape_status(luci::ShapeStatus::VALID);
+  fused_filter->name(name + "/DepthwiseConv2D/filter");
 
   // fused filter weight = filter weight * mul(scale) + add(shift)
   for (uint32_t b = 0; b < filter_in_chn; b++)
@@ -186,6 +190,7 @@ bool fused_batch_norm_with_dwconv(luci::CircleAdd *add)
       bias->at<loco::DataType::FLOAT32>(c) * scale->at<loco::DataType::FLOAT32>(c) +
       shift->at<loco::DataType::FLOAT32>(c);
   }
+  fused_bias->name(name + "/DepthwiseConv2D/bias");
 
   // set new tconv properties
   fused_dwconv->input(dwconv->input());
@@ -198,6 +203,7 @@ bool fused_batch_norm_with_dwconv(luci::CircleAdd *add)
   fused_dwconv->depthMultiplier(dwconv->depthMultiplier());
   fused_dwconv->dilation()->h(dwconv->dilation()->h());
   fused_dwconv->dilation()->w(dwconv->dilation()->w());
+  fused_dwconv->name(name + "/DepthwiseConv2D");
 
   replace(add).with(fused_dwconv);
 

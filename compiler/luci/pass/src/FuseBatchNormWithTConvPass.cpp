@@ -100,6 +100,9 @@ bool fused_batch_norm_with_tconv(luci::CircleAdd *add)
   if (filter_out_chn != shift->dim(0).value())
     return false;
 
+  auto name = add->name();
+  assert(name.length() > 0);
+
   loco::Graph *graph = add->graph();
   luci::CircleTransposeConv *fused_tconv = graph->nodes()->create<luci::CircleTransposeConv>();
   luci::CircleConst *fused_filter = graph->nodes()->create<luci::CircleConst>();
@@ -118,6 +121,7 @@ bool fused_batch_norm_with_tconv(luci::CircleAdd *add)
   fused_filter->dim(2).set(filter_width);
   fused_filter->dim(3).set(filter_in_chn);
   fused_filter->shape_status(luci::ShapeStatus::VALID);
+  fused_filter->name(name + "/TransposeConv/filter");
 
   // fused filter weight = filter weight * mul(scale) + add(shift)
   for (uint32_t c = 0; c < filter_out_chn; c++)
@@ -147,6 +151,7 @@ bool fused_batch_norm_with_tconv(luci::CircleAdd *add)
   {
     fused_bias->at<loco::DataType::FLOAT32>(c) = shift->at<loco::DataType::FLOAT32>(c);
   }
+  fused_bias->name(name + "/TransposeConv/bias");
 
   // set new tconv properties
   fused_tconv->inputSizes(tconv->inputSizes());
@@ -156,12 +161,14 @@ bool fused_batch_norm_with_tconv(luci::CircleAdd *add)
   fused_tconv->padding(tconv->padding());
   fused_tconv->stride()->h(tconv->stride()->h());
   fused_tconv->stride()->w(tconv->stride()->w());
+  fused_tconv->name(name + "/TransposeConv");
 
   if (add->fusedActivationFunction() == luci::FusedActFunc::RELU6)
   {
     // separate relu op from add op
     auto relu = add->graph()->nodes()->create<luci::CircleRelu6>();
     relu->features(fused_tconv);
+    relu->name(name + "/Relu6");
 
     replace(add).with(relu);
   }
