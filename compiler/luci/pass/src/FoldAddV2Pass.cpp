@@ -62,6 +62,10 @@ template <loco::DataType T> bool fold_add_v2(luci::CircleCustom *add_v2)
   if (!same_shape(x, y))
     return false;
 
+  auto name_x = x->name();
+  auto name_y = y->name();
+  assert(name_x.length() > 0);
+  assert(name_y.length() > 0);
   auto constant = add_v2->graph()->nodes()->create<luci::CircleConst>();
   constant->dtype(x->dtype());
   constant->rank(x->rank());
@@ -74,6 +78,7 @@ template <loco::DataType T> bool fold_add_v2(luci::CircleCustom *add_v2)
     constant->at<T>(i) = x->at<T>(i) + y->at<T>(i);
 
   constant->shape_status(luci::ShapeStatus::VALID);
+  constant->name(name_x + ";" + name_y);
 
   for (auto succ : loco::succs(add_v2))
   {
