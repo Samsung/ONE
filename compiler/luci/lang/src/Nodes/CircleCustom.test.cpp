@@ -22,7 +22,7 @@
 
 TEST(CircleCustomTest, constructor)
 {
-  luci::CircleCustom custom_node(2);
+  luci::CircleCustom custom_node(2, 1);
 
   ASSERT_EQ(luci::CircleDialect::get(), custom_node.dialect());
   ASSERT_EQ(luci::CircleOpcode::CUSTOM, custom_node.opcode());
@@ -33,18 +33,19 @@ TEST(CircleCustomTest, constructor)
 
   ASSERT_EQ(2, custom_node.numInputs());
   ASSERT_EQ(0, custom_node.custom_code().size());
+  ASSERT_EQ(1, custom_node.numOutputs());
 }
 
 TEST(CircleCustomTest, constructor_NEG)
 {
-  ASSERT_DEBUG_DEATH(luci::CircleCustom{0}, "");
+  ASSERT_DEBUG_DEATH(luci::CircleCustom(0, 0), "");
 
   SUCCEED();
 }
 
 TEST(CircleCustomTest, invalidIndex_NEG)
 {
-  luci::CircleCustom custom_node(2);
+  luci::CircleCustom custom_node(2, 1);
 
   EXPECT_ANY_THROW(custom_node.arg(5));
 }

@@ -76,7 +76,7 @@ protected:
     flex_buffers->Finish();
 
     // CircleCustom(BatchMatMulV2, adj_x=False, adj_y=False)
-    _batchmatmulv2 = _g.nodes()->create<luci::CircleCustom>(2);
+    _batchmatmulv2 = _g.nodes()->create<luci::CircleCustom>(2, 1);
     _batchmatmulv2->custom_code("BatchMatMulV2");
     _batchmatmulv2->custom_options(flex_buffers->GetBuffer());
     _batchmatmulv2->inputs(0, _input_0);
