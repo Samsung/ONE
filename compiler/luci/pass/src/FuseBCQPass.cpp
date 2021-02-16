@@ -156,6 +156,9 @@ public:
           if (prefix == -1 || !is_valid_prefix(prefix))
             continue;
 
+          auto name = gather->name();
+          assert(name.length() > 0);
+
           auto bcq_gather = g->nodes()->create<luci::CircleBCQGather>();
 
           bcq_gather->op_version(1);
@@ -163,6 +166,7 @@ public:
           bcq_gather->input_binary(packed_binary_code(g, prefix));
           bcq_gather->indices(gather->indices());
           bcq_gather->input_clusters(packed_clusters(g, prefix));
+          bcq_gather->name(name + "/BCQGather");
 
           if (_do_w_x[prefix]->at<loco::DataType::BOOL>(0))
           {
@@ -188,10 +192,12 @@ public:
               perm->at<loco::DataType::S32>(idx) = idx + 1;
             perm->at<loco::DataType::S32>(indices_rank) = 0;
             perm->shape_status(luci::ShapeStatus::VALID);
+            perm->name(name + "/Transpose/perm");
 
             auto output_transpose = g->nodes()->create<luci::CircleTranspose>();
             output_transpose->a(bcq_gather);
             output_transpose->perm(perm);
+            output_transpose->name(name + "/Transpose");
 
             loco::replace(gather).with(output_transpose);
           }
@@ -209,6 +215,9 @@ public:
           if (prefix == -1 || !is_valid_prefix(prefix))
             continue;
 
+          auto name = fully_connected->name();
+          assert(name.length() > 0);
+
           auto bcq_fc = g->nodes()->create<luci::CircleBCQFullyConnected>();
 
           bcq_fc->op_version(1);
@@ -217,6 +226,7 @@ public:
           bcq_fc->bias(fully_connected->bias());
           bcq_fc->weights_clusters(packed_clusters(g, prefix));
           bcq_fc->fusedActivationFunction(fully_connected->fusedActivationFunction());
+          bcq_fc->name(name + "/BCQFullyConnected");
 
           loco::Node *bcq_input = fully_connected->input();
 
@@ -234,10 +244,12 @@ public:
             new_shape->at<loco::DataType::S32>(0) = -1;
             new_shape->at<loco::DataType::S32>(1) = weights->dim(1).value();
             new_shape->shape_status(luci::ShapeStatus::VALID);
+            new_shape->name(name + "/Reshape/shape");
 
             auto reshape = g->nodes()->create<luci::CircleReshape>();
             reshape->tensor(original_input);
             reshape->shape(new_shape);
+            reshape->name(name + "/Reshape");
 
             bcq_input = reshape;
           }
@@ -253,16 +265,19 @@ public:
           perm->at<loco::DataType::S32>(0) = 1;
           perm->at<loco::DataType::S32>(1) = 0;
           perm->shape_status(luci::ShapeStatus::VALID);
+          perm->name(name + "/Transpose/perm");
 
           auto input_transpose = g->nodes()->create<luci::CircleTranspose>();
           input_transpose->a(bcq_input);
           input_transpose->perm(perm);
+          input_transpose->name(name + "_input/Transpose");
 
           bcq_fc->input(input_transpose);
 
           auto output_transpose = g->nodes()->create<luci::CircleTranspose>();
           output_transpose->a(bcq_fc);
           output_transpose->perm(perm);
+          output_transpose->name(name + "_output/Transpose");
 
           loco::replace(fully_connected).with(output_transpose);
 
@@ -277,6 +292,9 @@ public:
 
           assert(_do_w_x[prefix]->at<loco::DataType::BOOL>(0) == true);
 
+          auto name = weights_as_input->name();
+          assert(name.length() > 0);
+
           auto perm = g->nodes()->create<luci::CircleConst>();
           perm->dtype(loco::DataType::S32);
           perm->size<loco::DataType::S32>(2);
@@ -285,10 +303,12 @@ public:
           perm->at<loco::DataType::S32>(0) = 1;
           perm->at<loco::DataType::S32>(1) = 0;
           perm->shape_status(luci::ShapeStatus::VALID);
+          perm->name(name + "/Transpose/perm");
 
           auto input_transpose = g->nodes()->create<luci::CircleTranspose>();
           input_transpose->a(fully_connected->weights());
           input_transpose->perm(perm);
+          input_transpose->name(name + "/Transpose");
 
           auto bcq_fc = g->nodes()->create<luci::CircleBCQFullyConnected>();
 
@@ -303,6 +323,8 @@ public:
 
           bcq_fc->weights_hidden_size(weights_as_input->dim(1).value());
           bcq_fc->input(input_transpose);
+          bcq_fc->name(name + "/BCQFullyConnected");
+
           loco::replace(fully_connected).with(bcq_fc);
 
           return true;
