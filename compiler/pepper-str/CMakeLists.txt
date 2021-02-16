@@ -1,5 +1,6 @@
 add_library(pepper_str INTERFACE)
 target_include_directories(pepper_str INTERFACE include)
+target_link_libraries(pepper_str INTERFACE nncc_coverage)
 
 if(NOT ENABLE_TEST)
   return()
