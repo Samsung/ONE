@@ -26,6 +26,7 @@
 #include "tflite/Diff.h"
 #include "tflite/Assert.h"
 #include "tflite/Session.h"
+#include "tflite/RandomInputInitializer.h"
 #include "tflite/InterpreterSession.h"
 #include "tflite/NNAPISession.h"
 #include "misc/tensor/IndexIterator.h"
@@ -196,70 +197,8 @@ int main(const int argc, char **argv)
     const int seed = 1; /* TODO Add an option for seed value */
     nnfw::misc::RandomGenerator randgen{seed, 0.0f, 2.0f};
 
-    // No input specified. So we fill the input tensors with random values.
-    for (const auto &o : interpreter->inputs())
-    {
-      TfLiteTensor *tensor = interpreter->tensor(o);
-      if (tensor->type == kTfLiteInt32)
-      {
-        // Generate singed 32-bit integer (s32) input
-        auto tensor_view = nnfw::tflite::TensorView<int32_t>::make(*interpreter, o);
-
-        int32_t value = 0;
-
-        nnfw::misc::tensor::iterate(tensor_view.shape())
-          << [&](const nnfw::misc::tensor::Index &ind) {
-               // TODO Generate random values
-               // Gather operation: index should be within input coverage.
-               tensor_view.at(ind) = value;
-               value++;
-             };
-      }
-      else if (tensor->type == kTfLiteUInt8)
-      {
-        // Generate unsigned 8-bit integer input
-        auto tensor_view = nnfw::tflite::TensorView<uint8_t>::make(*interpreter, o);
-
-        auto fp = static_cast<uint8_t (nnfw::misc::RandomGenerator::*)(
-          const ::nnfw::misc::tensor::Shape &, const ::nnfw::misc::tensor::Index &)>(
-          &nnfw::misc::RandomGenerator::generate<uint8_t>);
-        const nnfw::misc::tensor::Object<uint8_t> data(tensor_view.shape(),
-                                                       std::bind(fp, randgen, _1, _2));
-
-        nnfw::misc::tensor::iterate(tensor_view.shape())
-          << [&](const nnfw::misc::tensor::Index &ind) {
-               const auto value = data.at(ind);
-               tensor_view.at(ind) = value;
-             };
-      }
-      else if (tensor->type == kTfLiteBool)
-      {
-        // Generate bool input
-        auto tensor_view = nnfw::tflite::TensorView<bool>::make(*interpreter, o);
-
-        auto fp = static_cast<bool (nnfw::misc::RandomGenerator::*)(
-          const ::nnfw::misc::tensor::Shape &, const ::nnfw::misc::tensor::Index &)>(
-          &nnfw::misc::RandomGenerator::generate<bool>);
-        const nnfw::misc::tensor::Object<bool> data(tensor_view.shape(),
-                                                    std::bind(fp, randgen, _1, _2));
-
-        nnfw::misc::tensor::iterate(tensor_view.shape())
-          << [&](const nnfw::misc::tensor::Index &ind) {
-               const auto value = data.at(ind);
-               tensor_view.at(ind) = value;
-             };
-      }
-      else
-      {
-        assert(tensor->type == kTfLiteFloat32);
-
-        const float *end = reinterpret_cast<const float *>(tensor->data.raw_const + tensor->bytes);
-        for (float *ptr = tensor->data.f; ptr < end; ptr++)
-        {
-          *ptr = randgen.generate<float>();
-        }
-      }
-    }
+    RandomInputInitializer initializer{randgen};
+    initializer.run(*(interpreter.get()));
   }
 
   TFLiteRun::TensorDumper tensor_dumper;
