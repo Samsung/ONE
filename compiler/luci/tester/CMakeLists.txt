@@ -6,6 +6,7 @@ TargetRequire_Return(${REQUIRED_TARGETS})
 
 set(SRCS_READ_TESTER
       src/ReadTester.cpp
+      src/ReadModule.cpp
    )
 
 add_executable(luci_readtester "${SRCS_READ_TESTER}")
@@ -18,6 +19,7 @@ target_link_libraries(luci_readtester PRIVATE safemain)
 
 set(SRCS_WRITE_TESTER
       src/WriteTester.cpp
+      src/ReadModule.cpp
    )
 
 add_executable(luci_writetester "${SRCS_WRITE_TESTER}")
