@@ -30,6 +30,19 @@ bool CircleReshapeGraphBuilder::validate(const ValidateArgs &args) const
   if (args.op.outputs.size() != 1)
     return false;
 
+  // for two inputs, check if type is S32
+  if (args.op.inputs.size() == 2)
+  {
+    const auto &inputs = args.op.inputs;
+    const auto &tensors = args.reader.tensors();
+    const auto &tensor_in = tensors.at(inputs.at(1));
+
+    // NOTE fix this if there is any other case
+    // TensorFlow lite and circle only supports S32
+    if (tensor_in->type != circle::TensorType::TensorType_INT32)
+      return false;
+  }
+
   return true;
 }
 
