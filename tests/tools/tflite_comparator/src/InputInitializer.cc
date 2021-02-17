@@ -59,9 +59,17 @@ const int FILE_ERROR = 2;
 
 void FileInputInitializer::run(IOManager &manager)
 {
-  for (uint32_t index = 0; index < manager.inputs(); index++)
+  uint32_t num_inputs = manager.inputs();
+  bool read_data = (_files.size() == num_inputs);
+  if (!read_data)
   {
-    auto info = manager.inputTensorInfo(index);
+    std::cerr << "[ ERROR ] "
+              << "Wrong number of input files." << std::endl;
+    exit(1);
+  }
+
+  for (uint32_t index = 0; index < num_inputs; index++)
+  {
     auto path = _files[index];
     auto dest = manager.inputBase(index);
 

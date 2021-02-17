@@ -173,7 +173,10 @@ int main(const int argc, char **argv)
   }
 
   std::cout << "[Execution] Stage start!" << std::endl;
-  // Loading
+
+  //////////////////////////////////
+  // Model Loading
+  //////////////////////////////////
   nnfw_session *onert_session = nullptr;
   NNFW_ASSERT_FAIL(nnfw_create_session(&onert_session), "[ ERROR ] Failure during model load");
   if (onert_session == nullptr)
@@ -185,34 +188,25 @@ int main(const int argc, char **argv)
   NNFW_ASSERT_FAIL(nnfw_load_model_from_modelfile(onert_session, tflite_file.c_str()),
                    "[ ERROR ] Failure during model load");
 
-  uint32_t num_inputs;
-  uint32_t num_outputs;
-  NNFW_ASSERT_FAIL(nnfw_input_size(onert_session, &num_inputs),
-                   "[ ERROR ] Failure during get model inputs");
-  NNFW_ASSERT_FAIL(nnfw_output_size(onert_session, &num_outputs),
-                   "[ ERROR ] Failure during get model outputs");
-
   std::cout << "[Execution] Model is deserialized!" << std::endl;
 
+  //////////////////////////////////
   // Compile
+  //////////////////////////////////
   nnfw_prepare(onert_session);
 
   std::cout << "[Execution] Model compiled!" << std::endl;
 
-  // Prepare input/output data
-  std::vector<std::vector<uint8_t>> outputs(num_outputs);
+  //////////////////////////////////
+  // Set input / output
+  //////////////////////////////////
+  nnfw::onert_cmp::IOManager manager{onert_session};
+  manager.prepareIOBuffers();
+
+  uint32_t num_inputs = manager.inputs();
+  uint32_t num_outputs = manager.outputs();
 
   bool generate_data = data_files.empty();
-  bool read_data = data_files.size() == num_inputs;
-  if (!generate_data && !read_data)
-  {
-    std::cerr << "[ ERROR ] "
-              << "Wrong number of input files." << std::endl;
-    exit(1);
-  }
-
-  nnfw::onert_cmp::IOManager manager{onert_session};
-
   if (generate_data)
   {
     const int seed = 1; /* TODO Add an option for seed value */
@@ -227,36 +221,21 @@ int main(const int argc, char **argv)
     initialier.run(manager);
   }
 
-  for (uint32_t i = 0; i < num_inputs; i++)
-  {
-    manager.setInput(i);
-  }
-
   std::cout << "[Execution] Input data is defined!" << std::endl;
 
-  for (uint32_t i = 0; i < num_outputs; i++)
-  {
-    nnfw_tensorinfo ti_output;
-    NNFW_ASSERT_FAIL(nnfw_output_tensorinfo(onert_session, i, &ti_output),
-                     "[ ERROR ] Failure during get output tensor info");
-
-    uint64_t output_elements = num_elems(&ti_output);
-    size_t output_size = output_elements * sizeOfNnfwType(ti_output.dtype);
-    outputs[i].resize(output_size);
-
-    NNFW_ASSERT_FAIL(
-      nnfw_set_output(onert_session, i, ti_output.dtype, outputs[i].data(), output_size),
-      "[ ERROR ] Failure to set output tensor buffer");
-  }
-
+  //////////////////////////////////
   // Execute
+  //////////////////////////////////
   NNFW_ASSERT_FAIL(nnfw_run(onert_session), "[Execution] Can't execute");
 
   std::cout << "[Execution] Done!" << std::endl;
 
   // Compare with tflite
   std::cout << "[Comparison] Stage start!" << std::endl;
+
+  //////////////////////////////////
   // Read tflite model
+  //////////////////////////////////
   StderrReporter error_reporter;
   auto model = FlatBufferModel::BuildFromFile(tflite_file.c_str(), &error_reporter);
 
@@ -277,7 +256,10 @@ int main(const int argc, char **argv)
 
   auto sess = std::make_shared<nnfw::tflite::InterpreterSession>(interpreter.get());
   sess->prepare();
+
+  //////////////////////////////////
   // Set input and run
+  //////////////////////////////////
   for (uint32_t i = 0; i < num_inputs; i++)
   {
     auto input_tensor = interpreter->tensor(interpreter->inputs().at(i));
@@ -290,7 +272,9 @@ int main(const int argc, char **argv)
   }
   std::cout << "[Comparison] TFLite run done!" << std::endl;
 
+  //////////////////////////////////
   // Calculate max difference over all outputs
+  //////////////////////////////////
   float max_float_difference = 0.0f;
   bool find_unmatched_output = false;
   auto tolerance = nnfw::misc::EnvVar("TOLERANCE").asInt(1);
@@ -304,7 +288,7 @@ int main(const int argc, char **argv)
     // Check output tensor values
 
     const auto &ref_output = interpreter->tensor(interpreter->outputs().at(out_idx))->data;
-    const auto &output = outputs[out_idx];
+    const auto &output = manager.outputBase(out_idx);
 
     switch (ti.dtype)
     {
@@ -346,7 +330,9 @@ int main(const int argc, char **argv)
       find_unmatched_output = true;
   }
 
+  //////////////////////////////////
   // Print results
+  //////////////////////////////////
   std::cout << "[Comparison] Max float difference: " << max_float_difference << std::endl;
   int ret = 0;
   if (find_unmatched_output)

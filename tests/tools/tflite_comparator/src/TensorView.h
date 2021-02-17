@@ -37,7 +37,6 @@ public:
    */
   const misc::tensor::Shape &shape(void) const override { return _shape; }
 
-public:
   /**
    * @brief Get value of tensor index
    * @param[in] index The tensor index
@@ -49,7 +48,6 @@ public:
     return *(_base + offset);
   }
 
-public:
   /**
    * @brief Get reference value of tensor index
    * @param[in] index The tensor index
