@@ -35,13 +35,13 @@ endif(NOT ENABLE_TEST)
 
 nnas_find_package(GTest REQUIRED)
 
-GTest_AddTest(luci_readtester_test src/ReadTester.test.cpp src/ReadTester.cpp)
+GTest_AddTest(luci_readtester_test src/ReadTester.test.cpp ${SRCS_READ_TESTER})
 target_link_libraries(luci_readtester_test luci_import)
 target_link_libraries(luci_readtester_test luci_service)
 target_link_libraries(luci_readtester_test luci_pass)
 target_link_libraries(luci_readtester_test foder)
 
-GTest_AddTest(luci_writetester_test src/WriteTester.test.cpp src/WriteTester.cpp)
+GTest_AddTest(luci_writetester_test src/WriteTester.test.cpp ${SRCS_WRITE_TESTER})
 target_link_libraries(luci_writetester_test luci_import)
 target_link_libraries(luci_writetester_test luci_service)
 target_link_libraries(luci_writetester_test luci_pass)
