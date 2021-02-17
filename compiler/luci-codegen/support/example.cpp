@@ -1,10 +1,7 @@
 #include "generated_subgraph_0.h"
 
-extern "C"
-{
-
 /**
- Full description of one input/output buffer
+ * Full description of one input/output buffer
  */
 struct alignas(void*) HalideBuffer
 {
@@ -12,52 +9,69 @@ struct alignas(void*) HalideBuffer
   halide_buffer_t buffer_data;
 };
 
+/**
+ * Pointer to Halide generated function
+ */
+typedef int (*CompiledFuncImpl)(void **);
+
+/**
+ * Structure that stores data needed to execute Halide generated code wrapper
+ */
 struct alignas(void*) HalideConfiguration
 {
   int num_arguments;
+  CompiledFuncImpl impl;
   void **args;
   HalideBuffer *buffers;
 };
 
-void generated_subgraph_0_impl(char *configuration, void **args)
+/**
+ * Pointer to wrapper function around generated code
+ * First argument: pointer to configuration
+ * Second argument: arrays of pointers to input and output buffers. Inputs goes first
+ */
+typedef int (*CompiledFuncWrapper)(char *, void **);
+
+/**
+ * Configured function, detached from underlying generator technology, like Halide.
+ * All technology specific infomation should be stored in configuration array.
+ */
+struct ConfiguredCompiledFunc
+{
+  CompiledFuncWrapper wrapper;
+  char *configuration;
+};
+
+static int halide_func_wrapper(char *configuration, void **args)
 {
   auto *h_config = reinterpret_cast<HalideConfiguration *>(configuration);
   for (int i = 0; i < h_config->num_arguments; ++i)
   {
     h_config->buffers[i].buffer_data.host = static_cast<uint8_t *>(args[i]);
   }
-  generated_subgraph_0_argv(h_config->args);
+  return h_config->impl(h_config->args);
 }
 
-typedef void (*CompiledFuncPtr)(char *configuration, void **); // accepts array of pointers to buffers with data
-
-struct ConfiguredCompiledFunc
-{
-  CompiledFuncPtr func;
-  char *configuration;
-};
-
-ConfiguredCompiledFunc create_generated_subgraph_0(int arguments, int ranks[], int *dims[])
+static inline ConfiguredCompiledFunc create_generated_subgraph_impl(int ranks[], int *dims[], const halide_filter_metadata_t *metadata, CompiledFuncImpl func_impl)
 {
   ConfiguredCompiledFunc func;
-  func.func = generated_subgraph_0_impl;
-
-  const halide_filter_metadata_t *metadata = generated_subgraph_0_metadata();
+  func.wrapper = halide_func_wrapper;
 
 /*
   Allocate and initilize memory for Halide structures.
   First place HalideConfiguration structure, then array of HalideBuffers, then array of void* that will be passed to generated function.
 */
+  const int arguments = metadata->num_arguments;
 
   int need_memory = sizeof(HalideConfiguration) + arguments * (sizeof(HalideBuffer) + arguments*sizeof(void*));
-  char *raw_config = new char[need_memory];
-  func.configuration = raw_config;
+  char *raw_config = func.configuration = new char[need_memory];
   
   auto *header = reinterpret_cast<HalideConfiguration *>(raw_config);
   auto *buffers = reinterpret_cast<HalideBuffer *>(raw_config + sizeof(HalideConfiguration));
   auto *args = reinterpret_cast<void **>(raw_config + sizeof(HalideConfiguration) + arguments * sizeof(HalideBuffer));
 
   header->num_arguments = arguments;
+  header->impl = func_impl;
   header->args = args;
   header->buffers = buffers;
 
@@ -89,25 +103,77 @@ ConfiguredCompiledFunc create_generated_subgraph_0(int arguments, int ranks[], i
   return func;
 }
 
-void free_generated_subgraph_0(ConfiguredCompiledFunc *func)
-{
-  delete [] func->configuration;
+// public interface
+
+#define GENERATED_OPERATOR(name)\
+ConfiguredCompiledFunc create_##name(int ranks[], int *dims[])\
+{\
+  const halide_filter_metadata_t *metadata = name##_metadata();\
+  return create_generated_subgraph_impl(ranks, dims, metadata, name##_argv);\
+}\
+\
+void free_##name(ConfiguredCompiledFunc *func)\
+{\
+  delete [] func->configuration;\
 }
+
+extern "C"
+{
+
+GENERATED_OPERATOR(generated_subgraph_0)
 
 } // extern "C"
 
+// ************************************ test part
+
+#include <iostream>
+#include <chrono>
+
+void fill_sequential(float *data, int n)
+{
+  for (int i = 0; i < n; ++i)
+    data[i] = i;
+}
+
 int main()
 {
-//  void *args[] = {bb.raw_buffer()};
-//  generated_subgraph_0_argv(args);
   int ranks[] = {2,2,2,2};
-  int shape_x[] = {1, 384};
-  int shape_y[] = {1, 1152};
-  int shape_z[] = {1, 1152};
-  int shape_output[] = {1, 384};
+
+  constexpr int N = 384;
+  constexpr int runs = 1000;
+
+  int shape_x[] = {1, N};
+  int shape_y[] = {1, N*3};
+  int shape_z[] = {1, N*3};
+  int shape_output[] = {1, N};
   int *shapes[] = {shape_x, shape_y, shape_z, shape_output};
-  auto func = create_generated_subgraph_0(4, ranks, shapes);
-  // todo run
+  auto func = create_generated_subgraph_0(ranks, shapes);
+
+  float data_x[N];
+  float data_y[N*3];
+  float data_z[N*3];
+  float data_output[N];
+  fill_sequential(data_x, N);
+  fill_sequential(data_y, N*3);
+  fill_sequential(data_z, N*3);
+  void *args[] = {data_x, data_y, data_z, data_output};
+
+  auto start = std::chrono::system_clock::now();
+
+  for (int i = 0; i < runs; ++i)
+  {
+    func.wrapper(func.configuration, args);
+  }
+
+  auto finish = std::chrono::system_clock::now();
+
+  float elapsed = std::chrono::duration_cast<std::chrono::microseconds>(finish - start).count();
+  std::cout << "elapsed " << elapsed / runs << " microseconds\n";
+
+  for (int i = 0; i < 10; ++i)
+  {
+    std::cout << data_output[i] << "\n";
+  }
   free_generated_subgraph_0(&func);
 }
 
