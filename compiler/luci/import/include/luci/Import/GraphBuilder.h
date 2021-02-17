@@ -33,6 +33,12 @@ class GraphBuilder : public GraphBuilderBase
 public:
   virtual ~GraphBuilder() = default;
 
+  // common validate to check number of inputs and single output
+  bool validate(const ValidateArgs &args, size_t i) const
+  {
+    return (args.op.inputs.size() == i && args.op.outputs.size() == 1);
+  }
+
   CircleNode *build(const circle::OperatorT &op, GraphBuilderContext *context) const final;
 
 private:
