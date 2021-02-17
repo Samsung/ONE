@@ -31,7 +31,6 @@ bool CircleGatherGraphBuilder::validate(const ValidateArgs &args) const
 
   const auto &inputs = args.op.inputs;
   const auto *options = args.op.builtin_options.AsGatherOptions();
-
   int32_t axis = options->axis;
 
   if (axis < 0)
