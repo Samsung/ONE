@@ -26,9 +26,6 @@
 
 #include "Halide.h"
 
-//#include "llvm/IR/Function.h"
-//#include "llvm/IR/Module.h"
-
 #include "flatbuffers/flexbuffers.h"
 
 #include <map>
@@ -370,16 +367,8 @@ void Codegen::process_module(luci::Module &module)
 
 void Codegen::emit_code(std::string package_name)
 {
-//  llvm::LLVMContext llvm_context;
-//  llvm::Module support_module("generated wrappers", llvm_context);
-//
-//  llvm::FunctionType *wrapper_function_type =
-//    llvm::FunctionType::get(llvm::Type::gePoinDoubleTy(*TheContext), Doubles, false);
-
   for (auto &subgraph: _compiled_subgraphs)
   {
-//    llvm::Function *wrapper_func = llvm::Function::Create(FT, Function::ExternalLinkage, Name, TheModule.get());
-
     Halide::Pipeline &pipeline = subgraph.get_pipeline();
     Halide::Target target = subgraph.get_target();
 
