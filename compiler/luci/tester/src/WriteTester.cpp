@@ -14,22 +14,13 @@
  * limitations under the License.
  */
 
-#include <foder/FileLoader.h>
+#include "ReadModule.h"
 
-#include <luci/Importer.h>
-#include <luci/Pass/ShapeInferencePass.h>
-#include <luci/Pass/TypeInferencePass.h>
-#include <luci/Pass/CircleShapeInferencePass.h>
-#include <luci/Pass/CircleTypeInferencePass.h>
-#include <luci/Service/Validate.h>
 #include <luci/CircleExporter.h>
 #include <oops/InternalExn.h>
 
-#include <logo/Phase.h>
-
 #include <fstream>
 #include <iostream>
-#include <map>
 #include <string>
 
 namespace
@@ -112,42 +103,9 @@ int entry(int argc, char **argv)
 
   std::cout << "[INFO] Circle from '" << input_path << "' to '" << output_path << "'" << std::endl;
 
-  // Load model from the file
-  foder::FileLoader file_loader{input_path};
-  std::vector<char> model_data = file_loader.load();
-  const circle::Model *circle_model = circle::GetModel(model_data.data());
-  if (circle_model == nullptr)
-  {
-    std::cerr << "ERROR: Failed to load circle '" << input_path << "'" << std::endl;
+  auto module = ReadModule(input_path);
+  if (module == nullptr)
     return EXIT_FAILURE;
-  }
-
-  // Import from input Circle file
-  luci::Importer importer;
-  auto module = importer.importModule(circle_model);
-  assert(module->size() > 0);
-
-  for (size_t g = 0; g < module->size(); ++g)
-  {
-    auto graph = module->graph(g);
-    if (graph == nullptr)
-      return 255;
-
-    {
-      logo::Phase phase;
-
-      phase.emplace_back(std::make_unique<luci::ShapeInferencePass>());
-      phase.emplace_back(std::make_unique<luci::TypeInferencePass>());
-      phase.emplace_back(std::make_unique<luci::CircleShapeInferencePass>());
-      phase.emplace_back(std::make_unique<luci::CircleTypeInferencePass>());
-
-      logo::PhaseRunner<logo::PhaseStrategy::Saturate> phase_runner{graph};
-      phase_runner.run(phase);
-    }
-
-    if (!luci::validate(graph))
-      return 255;
-  }
 
   // Export to output Circle file
   luci::CircleExporter exporter;
