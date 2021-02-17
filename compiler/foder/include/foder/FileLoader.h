@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+#ifndef __FODER_FILE_LOADER_H__
+#define __FODER_FILE_LOADER_H__
+
 #include <fstream>
 #include <vector>
 
@@ -67,3 +70,5 @@ private:
 };
 
 } // namespace foder
+
+#endif // __FODER_FILE_LOADER_H__
