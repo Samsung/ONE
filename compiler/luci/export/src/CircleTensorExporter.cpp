@@ -432,6 +432,18 @@ encodeSparsityParameters(FlatBufferBuilder &builder, luci::SparsityParam *sparsi
                                                 &sparsityparam->block_map, &dim_metadata_vec);
 }
 
+template <loco::DataType DT> bool has_same_elements(luci::CircleConst *lhs, luci::CircleConst *rhs)
+{
+  assert(lhs->dtype() == DT);
+  assert(rhs->dtype() == DT);
+  assert(lhs->size<DT>() == rhs->size<DT>());
+
+  for (uint32_t i = 0; i < lhs->size<DT>(); ++i)
+    if (lhs->at<DT>(i) != rhs->at<DT>(i))
+      return false;
+  return true;
+}
+
 bool has_same_values(luci::CircleConst *lhs, luci::CircleConst *rhs)
 {
   if (lhs->dtype() != rhs->dtype())
@@ -447,34 +459,22 @@ bool has_same_values(luci::CircleConst *lhs, luci::CircleConst *rhs)
   switch (lhs->dtype())
   {
     case loco::DataType::FLOAT32:
-      for (uint32_t i = 0; i < lhs->size<loco::DataType::FLOAT32>(); ++i)
-        if (lhs->at<loco::DataType::FLOAT32>(i) != rhs->at<loco::DataType::FLOAT32>(i))
-          return false;
-      break;
+      return has_same_elements<loco::DataType::FLOAT32>(lhs, rhs);
 
     case loco::DataType::S32:
-      for (uint32_t i = 0; i < lhs->size<loco::DataType::S32>(); ++i)
-        if (lhs->at<loco::DataType::S32>(i) != rhs->at<loco::DataType::S32>(i))
-          return false;
-      break;
+      return has_same_elements<loco::DataType::S32>(lhs, rhs);
 
     case loco::DataType::S64:
-      for (uint32_t i = 0; i < lhs->size<loco::DataType::S64>(); ++i)
-        if (lhs->at<loco::DataType::S64>(i) != rhs->at<loco::DataType::S64>(i))
-          return false;
-      break;
+      return has_same_elements<loco::DataType::S64>(lhs, rhs);
 
     case loco::DataType::BOOL:
-      for (uint32_t i = 0; i < lhs->size<loco::DataType::BOOL>(); ++i)
-        if (lhs->at<loco::DataType::BOOL>(i) != rhs->at<loco::DataType::BOOL>(i))
-          return false;
-      break;
+      return has_same_elements<loco::DataType::BOOL>(lhs, rhs);
 
     default:
-      return false;
+      break;
   }
 
-  return true;
+  return false;
 }
 
 uint32_t get_buffer_id(FlatBufferBuilder &builder, SerializedModelData &md, luci::CircleConst *node)
