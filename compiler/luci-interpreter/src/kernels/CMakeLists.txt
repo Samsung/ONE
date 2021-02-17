@@ -1,5 +1,4 @@
 find_package(Threads REQUIRED)
-nnas_find_package(GTest REQUIRED)
 
 set(SOURCES
     Add.h
@@ -137,6 +136,11 @@ target_link_libraries(luci_interpreter_kernels
     PUBLIC luci_interpreter_core
     PRIVATE nncc_common Threads::Threads)
 
+if(NOT ENABLE_TEST)
+  return()
+endif(NOT ENABLE_TEST)
+
+nnas_find_package(GTest REQUIRED)
 
 set(TEST_SOURCES
     Add.test.cpp

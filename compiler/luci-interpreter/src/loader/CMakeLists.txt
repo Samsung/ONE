@@ -1,5 +1,3 @@
-nnas_find_package(GTest REQUIRED)
-
 set(SOURCES
     GraphLoader.h
     GraphLoader.cpp
@@ -15,6 +13,12 @@ target_include_directories(luci_interpreter_loader PUBLIC "${LUCI_INTERPRETER_SO
 target_link_libraries(luci_interpreter_loader
     PUBLIC luci_lang luci_interpreter_core
     PRIVATE luci_interpreter_kernels nncc_common)
+
+if(NOT ENABLE_TEST)
+  return()
+endif(NOT ENABLE_TEST)
+
+nnas_find_package(GTest REQUIRED)
 
 set(TEST_SOURCES KernelBuilder.test.cpp)
 
