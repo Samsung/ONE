@@ -24,6 +24,45 @@
 
 #include <iostream>
 #include <cmath>
+#include <functional>
+
+namespace
+{
+
+using namespace luci;
+using IterFunc = std::function<void(uint32_t *, loco::TensorShape &, int)>;
+
+void iterate_per_channel(CircleConst *node, IterFunc func)
+{
+  loco::TensorShape dimension;
+  dimension.rank(4);
+  uint32_t indices[4] = {
+    0,
+  };
+  int channel_dim_index{0};
+
+  if (!get_channel_dim_index(node, dimension, channel_dim_index))
+  {
+    assert(false);
+    return;
+  }
+
+  for (indices[0] = 0; indices[0] < dimension.dim(0).value(); indices[0]++)
+  {
+    for (indices[1] = 0; indices[1] < dimension.dim(1).value(); indices[1]++)
+    {
+      for (indices[2] = 0; indices[2] < dimension.dim(2).value(); indices[2]++)
+      {
+        for (indices[3] = 0; indices[3] < dimension.dim(3).value(); indices[3]++)
+        {
+          func(indices, dimension, channel_dim_index);
+        }
+      }
+    }
+  }
+}
+
+} // namespace
 
 namespace luci
 {
@@ -246,35 +285,14 @@ void asymmetric_wdequant_per_channel(CircleConst *node, std::vector<float> &scal
   uint32_t size = node->size<loco::DataType::U8>();
   std::vector<float> dequantized_values(size);
 
-  loco::TensorShape dimension;
-  dimension.rank(4);
-  uint32_t indices[4] = {
-    0,
+  auto func = [&](uint32_t *indices, loco::TensorShape &dimension, int channel_dim_index) {
+    int channel_idx = indices[channel_dim_index];
+    auto data = node->at<loco::DataType::U8>(cal_offset(dimension, indices));
+    dequantized_values[cal_offset(dimension, indices)] =
+      static_cast<float>(data) * scaling_factor[channel_idx] + nudged_min[channel_idx];
   };
-  int channel_dim_index{0};
 
-  if (!get_channel_dim_index(node, dimension, channel_dim_index))
-  {
-    assert(false);
-    return;
-  }
-
-  for (indices[0] = 0; indices[0] < dimension.dim(0).value(); indices[0]++)
-  {
-    for (indices[1] = 0; indices[1] < dimension.dim(1).value(); indices[1]++)
-    {
-      for (indices[2] = 0; indices[2] < dimension.dim(2).value(); indices[2]++)
-      {
-        for (indices[3] = 0; indices[3] < dimension.dim(3).value(); indices[3]++)
-        {
-          int channel_idx = indices[channel_dim_index];
-          auto data = node->at<loco::DataType::U8>(cal_offset(dimension, indices));
-          dequantized_values[cal_offset(dimension, indices)] =
-            static_cast<float>(data) * scaling_factor[channel_idx] + nudged_min[channel_idx];
-        }
-      }
-    }
-  }
+  iterate_per_channel(node, func);
 
   node->dtype(loco::DataType::FLOAT32);      // change the type of tensor
   node->size<loco::DataType::FLOAT32>(size); // resize tensor
