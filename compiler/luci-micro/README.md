@@ -13,7 +13,7 @@ mbed-tools compile -m DISCO_F746NG -t GCC_ARM
 - openocd http://openocd.org/getting-openocd/
 
 ## Docker
-```
+```bash
 sudo docker pull slavikmipt/one-mbed-env:latest
 sudo docker run -it --privileged -v /dev/disk/by-id:/dev/disk/by-id -v /dev/serial/by-id:/dev/serial/by-id slavikmipt/one-mbed-env:latest
 ```
