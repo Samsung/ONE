@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+#include "tflite/CopyInputInitializer.h"
 #include "tflite/RandomInputInitializer.h"
 #include "tflite/RandomTestRunner.h"
 #include "tflite/Diff.h"
@@ -37,60 +38,6 @@ namespace tflite
 {
 
 using namespace std::placeholders;
-
-class CopyInputInitializer
-{
-public:
-  CopyInputInitializer(::tflite::Interpreter &from) : _from{from}
-  {
-    // DO NOTHING
-  }
-
-  void run(::tflite::Interpreter &interp)
-  {
-    for (const auto &tensor_idx : interp.inputs())
-    {
-      TfLiteTensor *tensor = interp.tensor(tensor_idx);
-      if (tensor->type == kTfLiteInt32)
-      {
-        setValue<int32_t>(interp, tensor_idx);
-      }
-      else if (tensor->type == kTfLiteUInt8)
-      {
-        setValue<uint8_t>(interp, tensor_idx);
-      }
-      else if (tensor->type == kTfLiteInt8)
-      {
-        setValue<int8_t>(interp, tensor_idx);
-      }
-      else if (tensor->type == kTfLiteBool)
-      {
-        setValue<bool>(interp, tensor_idx);
-      }
-      else
-      {
-        assert(tensor->type == kTfLiteFloat32);
-
-        setValue<float>(interp, tensor_idx);
-      }
-    }
-  }
-
-private:
-  template <typename T> void setValue(::tflite::Interpreter &interp, int tensor_idx)
-  {
-    auto tensor_from_view = nnfw::tflite::TensorView<T>::make(_from, tensor_idx);
-    auto tensor_to_view = nnfw::tflite::TensorView<T>::make(interp, tensor_idx);
-
-    nnfw::misc::tensor::iterate(tensor_from_view.shape())
-      << [&](const nnfw::misc::tensor::Index &ind) {
-           tensor_to_view.at(ind) = tensor_from_view.at(ind);
-         };
-  }
-
-private:
-  ::tflite::Interpreter &_from;
-};
 
 void RandomTestRunner::compile(const nnfw::tflite::Builder &builder)
 {
