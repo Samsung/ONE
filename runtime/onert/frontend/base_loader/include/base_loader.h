@@ -186,6 +186,9 @@ protected:
   std::unique_ptr<Verifier> _verifier;
   // Boolean flag to use MMAPED_DATA
   bool _use_mmaped_data = false;
+
+  std::unordered_map<uint32_t /* Buffer Index in circle file */, std::shared_ptr<ir::Data>>
+    _buf_to_data;
 };
 
 template <typename LoaderDomain>
@@ -338,10 +341,11 @@ ir::OperandIndex BaseLoader<LoaderDomain>::loadOperand(const Tensor *tensor, ir:
   if (data != nullptr)
   {
     using std::ptrdiff_t;
-    std::unique_ptr<ir::Data> data_obj;
+    std::shared_ptr<ir::Data> data_obj;
+
     if (_fd == -1) // Model is from memory
     {
-      data_obj = std::make_unique<ir::ExternalData>(data->data(), data->size());
+      data_obj = std::make_shared<ir::ExternalData>(data->data(), data->size());
     }
     else // Model is loaded(mmap'd) from a file
     {
@@ -354,18 +358,43 @@ ir::OperandIndex BaseLoader<LoaderDomain>::loadOperand(const Tensor *tensor, ir:
       ptrdiff_t aligned_offset_start = (unaligned_offset_start / _pagesize) * _pagesize;
       size_t mmap_size = offset_end - aligned_offset_start;
 
+      uint32_t buf_idx = tensor->buffer();
+      auto buffer_found = _buf_to_data.find(buf_idx);
+
       if (_use_mmaped_data)
       {
-        data_obj = std::make_unique<ir::MMapedData>(_fd, aligned_offset_start, mmap_size,
-                                                    unaligned_offset_start, data_size);
+        if (buffer_found != _buf_to_data.end())
+        {
+          // another tensor points this buffer and CachedData was already created
+          // let's reuse the CachedData
+          data_obj = buffer_found->second;
+        }
+        else
+        {
+          data_obj = std::make_shared<ir::MMapedData>(_fd, aligned_offset_start, mmap_size,
+                                                      unaligned_offset_start, data_size);
+          _buf_to_data[buf_idx] = data_obj;
+        }
       }
       else
       {
-        size_t offset = unaligned_offset_start - aligned_offset_start;
-        uint8_t *mmap_base = static_cast<uint8_t *>(
-          mmap(NULL, mmap_size, PROT_READ, MAP_PRIVATE, _fd, aligned_offset_start));
-        data_obj = std::make_unique<ir::CachedData>(mmap_base + offset, data_size);
-        munmap(mmap_base, mmap_size);
+        if (buffer_found != _buf_to_data.end())
+        {
+          // another tensor points this buffer and CachedData was already created
+          // let's reuse the CachedData
+          data_obj = buffer_found->second;
+        }
+        else
+        {
+          size_t offset = unaligned_offset_start - aligned_offset_start;
+          uint8_t *mmap_base = static_cast<uint8_t *>(
+            mmap(NULL, mmap_size, PROT_READ, MAP_PRIVATE, _fd, aligned_offset_start));
+
+          data_obj = std::make_shared<ir::CachedData>(mmap_base + offset, data_size);
+          _buf_to_data[buf_idx] = data_obj;
+
+          munmap(mmap_base, mmap_size);
+        }
       }
     }
     subg.setOperandValue(operand_index, std::move(data_obj));
