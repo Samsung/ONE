@@ -461,11 +461,20 @@ bool has_same_values(luci::CircleConst *lhs, luci::CircleConst *rhs)
     case loco::DataType::FLOAT32:
       return has_same_elements<loco::DataType::FLOAT32>(lhs, rhs);
 
+    case loco::DataType::S8:
+      return has_same_elements<loco::DataType::S8>(lhs, rhs);
+
+    case loco::DataType::S16:
+      return has_same_elements<loco::DataType::S16>(lhs, rhs);
+
     case loco::DataType::S32:
       return has_same_elements<loco::DataType::S32>(lhs, rhs);
 
     case loco::DataType::S64:
       return has_same_elements<loco::DataType::S64>(lhs, rhs);
+
+    case loco::DataType::U8:
+      return has_same_elements<loco::DataType::U8>(lhs, rhs);
 
     case loco::DataType::BOOL:
       return has_same_elements<loco::DataType::BOOL>(lhs, rhs);
