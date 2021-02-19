@@ -27,10 +27,7 @@ namespace luci
 
 bool CircleFullyConnectedGraphBuilder::validate(const ValidateArgs &args) const
 {
-  if (args.op.inputs.size() != 3)
-    return false;
-
-  return true;
+  return GraphBuilder::validate(args, 3);
 }
 
 CircleNode *CircleFullyConnectedGraphBuilder::build_node(const circle::OperatorT &op,
