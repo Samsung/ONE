@@ -133,38 +133,17 @@ void sym_wquant_per_channel(CircleConst *node, std::vector<float> &min, std::vec
     compute_sym_scale_zp(min[i], max[i], scaling_factor[i], zp[i], nudged_min[i], nudged_max[i]);
   }
 
-  loco::TensorShape dimension;
-  dimension.rank(4);
-  uint32_t indices[4] = {
-    0,
+  auto quantize = [&](uint32_t *indices, loco::TensorShape &dimension, int channel_dim_index) {
+    int channel_idx = indices[channel_dim_index];
+    const float scaling_factor_inv = 1.0 / scaling_factor[channel_idx];
+    auto data = node->at<loco::DataType::FLOAT32>(cal_offset(dimension, indices));
+    data = data < nudged_min[channel_idx] ? nudged_min[channel_idx] : data;
+    data = data > nudged_max[channel_idx] ? nudged_max[channel_idx] : data;
+    quantized_values[cal_offset(dimension, indices)] =
+      static_cast<int32_t>(std::round(data * scaling_factor_inv));
   };
-  int channel_dim_index{0};
 
-  if (!get_channel_dim_index(node, dimension, channel_dim_index))
-  {
-    assert(false);
-    return;
-  }
-
-  for (indices[0] = 0; indices[0] < dimension.dim(0).value(); indices[0]++)
-  {
-    for (indices[1] = 0; indices[1] < dimension.dim(1).value(); indices[1]++)
-    {
-      for (indices[2] = 0; indices[2] < dimension.dim(2).value(); indices[2]++)
-      {
-        for (indices[3] = 0; indices[3] < dimension.dim(3).value(); indices[3]++)
-        {
-          int channel_idx = indices[channel_dim_index];
-          const float scaling_factor_inv = 1.0 / scaling_factor[channel_idx];
-          auto data = node->at<loco::DataType::FLOAT32>(cal_offset(dimension, indices));
-          data = data < nudged_min[channel_idx] ? nudged_min[channel_idx] : data;
-          data = data > nudged_max[channel_idx] ? nudged_max[channel_idx] : data;
-          quantized_values[cal_offset(dimension, indices)] =
-            static_cast<int32_t>(std::round(data * scaling_factor_inv));
-        }
-      }
-    }
-  }
+  iterate_per_channel(node, quantize);
 
   node->dtype(loco::DataType::S16);      // change the type of tensor
   node->size<loco::DataType::S16>(size); // resize tensor
@@ -181,35 +160,14 @@ void sym_wdequant_per_channel(CircleConst *node, std::vector<float> &scaling_fac
   uint32_t size = node->size<loco::DataType::S16>();
   std::vector<float> dequantized_values(size);
 
-  loco::TensorShape dimension;
-  dimension.rank(4);
-  uint32_t indices[4] = {
-    0,
+  auto dequantize = [&](uint32_t *indices, loco::TensorShape &dimension, int channel_dim_index) {
+    int channel_idx = indices[channel_dim_index];
+    auto data = node->at<loco::DataType::S16>(cal_offset(dimension, indices));
+    dequantized_values[cal_offset(dimension, indices)] =
+      static_cast<float>(data) * scaling_factor[channel_idx];
   };
-  int channel_dim_index{0};
 
-  if (!get_channel_dim_index(node, dimension, channel_dim_index))
-  {
-    assert(false);
-    return;
-  }
-
-  for (indices[0] = 0; indices[0] < dimension.dim(0).value(); indices[0]++)
-  {
-    for (indices[1] = 0; indices[1] < dimension.dim(1).value(); indices[1]++)
-    {
-      for (indices[2] = 0; indices[2] < dimension.dim(2).value(); indices[2]++)
-      {
-        for (indices[3] = 0; indices[3] < dimension.dim(3).value(); indices[3]++)
-        {
-          int channel_idx = indices[channel_dim_index];
-          auto data = node->at<loco::DataType::S16>(cal_offset(dimension, indices));
-          dequantized_values[cal_offset(dimension, indices)] =
-            static_cast<float>(data) * scaling_factor[channel_idx];
-        }
-      }
-    }
-  }
+  iterate_per_channel(node, dequantize);
 
   node->dtype(loco::DataType::FLOAT32);      // change the type of tensor
   node->size<loco::DataType::FLOAT32>(size); // resize tensor
@@ -237,38 +195,17 @@ void asymmetric_wquant_per_channel(CircleConst *node, std::vector<float> &min,
     compute_asym_scale_zp(min[i], max[i], scaling_factor[i], zp[i], nudged_min[i], nudged_max[i]);
   }
 
-  loco::TensorShape dimension;
-  dimension.rank(4);
-  uint32_t indices[4] = {
-    0,
+  auto quantize = [&](uint32_t *indices, loco::TensorShape &dimension, int channel_dim_index) {
+    int channel_idx = indices[channel_dim_index];
+    const float scaling_factor_inv = 1.0 / scaling_factor[channel_idx];
+    auto data = node->at<loco::DataType::FLOAT32>(cal_offset(dimension, indices));
+    data = data < nudged_min[channel_idx] ? nudged_min[channel_idx] : data;
+    data = data > nudged_max[channel_idx] ? nudged_max[channel_idx] : data;
+    quantized_values[cal_offset(dimension, indices)] =
+      static_cast<int32_t>(std::round((data - nudged_min[channel_idx]) * scaling_factor_inv));
   };
-  int channel_dim_index{0};
 
-  if (!get_channel_dim_index(node, dimension, channel_dim_index))
-  {
-    assert(false);
-    return;
-  }
-
-  for (indices[0] = 0; indices[0] < dimension.dim(0).value(); indices[0]++)
-  {
-    for (indices[1] = 0; indices[1] < dimension.dim(1).value(); indices[1]++)
-    {
-      for (indices[2] = 0; indices[2] < dimension.dim(2).value(); indices[2]++)
-      {
-        for (indices[3] = 0; indices[3] < dimension.dim(3).value(); indices[3]++)
-        {
-          int channel_idx = indices[channel_dim_index];
-          const float scaling_factor_inv = 1.0 / scaling_factor[channel_idx];
-          auto data = node->at<loco::DataType::FLOAT32>(cal_offset(dimension, indices));
-          data = data < nudged_min[channel_idx] ? nudged_min[channel_idx] : data;
-          data = data > nudged_max[channel_idx] ? nudged_max[channel_idx] : data;
-          quantized_values[cal_offset(dimension, indices)] =
-            static_cast<int32_t>(std::round((data - nudged_min[channel_idx]) * scaling_factor_inv));
-        }
-      }
-    }
-  }
+  iterate_per_channel(node, quantize);
 
   node->dtype(loco::DataType::U8);      // change the type of tensor
   node->size<loco::DataType::U8>(size); // resize tensor
