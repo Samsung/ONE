@@ -75,14 +75,13 @@ void cal_minmax_per_channel(CircleConst *node, std::vector<float> &min, std::vec
   loco::TensorShape dimension;
   dimension.rank(4);
   int32_t channel_dim_index{0};
-  int size{0};
 
   if (!get_channel_dim_index(node, dimension, channel_dim_index))
   {
     assert(false);
     return;
   }
-  size = dimension.dim(channel_dim_index).value();
+  auto size = dimension.dim(channel_dim_index).value();
 
   std::vector<bool> has_min_max_value(size, false);
   min.resize(size);
