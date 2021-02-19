@@ -10,12 +10,10 @@ Package provides:
 
 ## Build
 
-This component needs external modules for build:
-- LLVM
-- Halide
+This component needs external `Halide` build. If `Halide` is built from sources it demands `LLVM`.
 
-To build `luci_codegen`, `circle_codegen` and related components on linux you can use following instruction.
-See README.md in Halide for more methods of LLVM and Halide builds (including windows build).
+To get needed components and build `luci_codegen` library and `circle_codegen` executable on linux you can use following instruction.
+Also see README.md in Halide repo for more methods to build LLVM and Halide (including windows build).
 
 ##### LLVM Build
 
@@ -88,8 +86,16 @@ Basic usage:
 $ ./circle_codegen model.circle compiled
 ```
 
-As a result there will be generated `compiled.circle` models and set of generated_subgraph_X.o files with implementation of compiled subgraphs.
-These object files should be compiled in library and distributed along with `compiled.circle` model.
+As a result there will be created new directory `compiled` where compiler will place all generated files.
+
+This includes:
+
+- `model.circle`: circle model with "compiled" operators replacing parts of graph
+- `generated_subgraph_XX.o`: Halide generated code
+- `generated_subgraph_XX.h`: Halide generated header that describes interfaces of generated code
+- `generated_subgraph_XX.cpp`: Wrappers around Halide generated code. Needed to break dependencies between Halide and runtimes (see section Wrappers for more info)
+
+`generated_subgraph_*` files should be compiled in library and distributed along with `compiled.circle` model.
 
 ##### luci_codegen
 
@@ -112,15 +118,22 @@ Common usage looks like:
 // Create codegen object
   luci_codegen::Codegen codegen(options);
 
-// Process graph and emit compiled operators
+// Process graph
   codegen.process_module(*luci_module);
-  codegen.emit_code(output_package_name);
+
+// Emit object files, headers and needed support libraries
+// output_package_path should represent path to existing directory
+  codegen.emit_code(output_package_path);
 
 ```
 
-Note that this code will transform `luci_module`, it should be saved separately.
+Note that this code will transform `luci_module` structure, it should be saved separately.
 
-#Example
+#Wrappers
+
+TBD
+
+#Examples
 
 Original graph | Compiled graph
 -------------- | --------------
