@@ -30,7 +30,7 @@ namespace
 {
 
 using namespace luci;
-using IterFunc = std::function<void(uint32_t *, loco::TensorShape &, int)>;
+using IterFunc = std::function<void(uint32_t *, loco::TensorShape &, int32_t)>;
 
 void iterate_per_channel(CircleConst *node, IterFunc func)
 {
@@ -39,7 +39,7 @@ void iterate_per_channel(CircleConst *node, IterFunc func)
   uint32_t indices[4] = {
     0,
   };
-  int channel_dim_index{0};
+  int32_t channel_dim_index{0};
 
   if (!get_channel_dim_index(node, dimension, channel_dim_index))
   {
@@ -74,7 +74,7 @@ void cal_minmax_per_channel(CircleConst *node, std::vector<float> &min, std::vec
 {
   loco::TensorShape dimension;
   dimension.rank(4);
-  int channel_dim_index{0};
+  int32_t channel_dim_index{0};
   int size{0};
 
   if (!get_channel_dim_index(node, dimension, channel_dim_index))

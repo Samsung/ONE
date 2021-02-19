@@ -37,7 +37,8 @@ void symmetric_wquant_with_minmax_per_layer(CircleConst *node, float min, float 
                                             float &scaling_factor, int64_t &zp, float &nudged_min,
                                             float &nudged_max);
 
-bool get_channel_dim_index(CircleConst *node, loco::TensorShape &dimension, int &channel_dim_index);
+bool get_channel_dim_index(CircleConst *node, loco::TensorShape &dimension,
+                           int32_t &channel_dim_index);
 
 uint32_t cal_offset(loco::TensorShape &dimension, uint32_t *indices);
 
