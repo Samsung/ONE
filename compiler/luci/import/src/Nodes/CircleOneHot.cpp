@@ -26,17 +26,12 @@ namespace luci
 
 bool CircleOneHotGraphBuilder::validate(const ValidateArgs &args) const
 {
-  const auto &inputs = args.op.inputs;
-  const auto &outputs = args.op.outputs;
-  const auto *options = args.op.builtin_options.AsOneHotOptions();
-
   // Only 4 Input come refered from
-  if (inputs.size() != 4)
+  if (!GraphBuilder::validate(args, 4))
     return false;
 
-  if (outputs.size() != 1)
-    return false;
-
+  const auto &inputs = args.op.inputs;
+  const auto *options = args.op.builtin_options.AsOneHotOptions();
   const auto &tensors = args.reader.tensors();
   const auto &indices = tensors.at(inputs.at(0));
   const auto &depth = tensors.at(inputs.at(1));
