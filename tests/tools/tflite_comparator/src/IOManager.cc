@@ -95,7 +95,7 @@ void IOManager::prepareIOBuffers()
     _outputs.at(index).resize(buffer_size);
 
     NNFW_ASSERT_FAIL(
-      nnfw_set_output(_session, index, info.dtype, _inputs.at(index).data(), buffer_size),
+      nnfw_set_output(_session, index, info.dtype, _outputs.at(index).data(), buffer_size),
       "[ ERROR ] Failure to set output tensor buffer");
   }
 }

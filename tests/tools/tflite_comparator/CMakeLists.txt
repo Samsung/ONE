@@ -12,6 +12,7 @@ list(APPEND SOURCES "src/tflite_comparator.cc")
 list(APPEND SOURCES "src/args.cc")
 list(APPEND SOURCES "src/InputInitializer.cc")
 list(APPEND SOURCES "src/IOManager.cc")
+list(APPEND SOURCES "src/MatchApp.cc")
 
 nnfw_find_package(Boost REQUIRED program_options system filesystem)
 

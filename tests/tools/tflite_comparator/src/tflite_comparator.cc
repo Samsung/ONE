@@ -17,6 +17,7 @@
 #include "args.h"
 #include "InputInitializer.h"
 #include "IOManager.h"
+#include "MatchApp.h"
 
 #include <nnfw_experimental.h>
 #include <nnfw_internal.h>
@@ -24,6 +25,7 @@
 #include <misc/EnvVar.h>
 #include <misc/fp32.h>
 #include <misc/RandomGenerator.h>
+#include <misc/tensor/Comparator.h>
 
 #include <tflite/Assert.h>
 #include <tflite/InterpreterSession.h>
@@ -46,118 +48,6 @@ const int FILE_ERROR = 2;
     std::cerr << msg << std::endl;    \
     exit(-1);                         \
   }
-
-// Read vector of floats from selected file
-void readData(const string &path, std::vector<uint8_t> &dest)
-{
-  std::ifstream in(path);
-  if (!in.good())
-  {
-    std::cerr << "can not open data file " << path << "\n";
-    exit(FILE_ERROR);
-  }
-  in.seekg(0, std::ifstream::end);
-  size_t len = in.tellg();
-  in.seekg(0, std::ifstream::beg);
-
-  assert(dest.size() == len);
-  in.read(reinterpret_cast<char *>(dest.data()), len);
-}
-
-template <typename T>
-void randomData(nnfw::misc::RandomGenerator &randgen, std::vector<uint8_t> &dest)
-{
-  size_t elements = dest.size() / sizeof(T);
-  assert(dest.size() % sizeof(T) == 0);
-
-  std::vector<T> vec(elements);
-  for (uint64_t i = 0; i < elements; i++)
-  {
-    vec[i] = randgen.generate<T>();
-  }
-  memcpy(dest.data(), vec.data(), elements * sizeof(T));
-}
-
-void randomBoolData(nnfw::misc::RandomGenerator &randgen, std::vector<uint8_t> &dest)
-{
-  size_t elements = dest.size();
-  std::vector<uint8_t> vec(elements);
-  for (uint64_t i = 0; i < elements; i++)
-  {
-    bool value = randgen.generate<bool>();
-    dest[i] = value ? 1 : 0;
-  }
-}
-
-inline uint64_t num_elems(const nnfw_tensorinfo *ti)
-{
-  uint64_t n = 1;
-  for (uint32_t i = 0; i < ti->rank; ++i)
-  {
-    n *= ti->dims[i];
-  }
-  return n;
-}
-
-inline size_t sizeOfNnfwType(NNFW_TYPE type)
-{
-  switch (type)
-  {
-    case NNFW_TYPE_TENSOR_BOOL:
-    case NNFW_TYPE_TENSOR_UINT8:
-    case NNFW_TYPE_TENSOR_QUANT8_ASYMM:
-    case NNFW_TYPE_TENSOR_QUANT8_ASYMM_SIGNED:
-      return 1;
-    case NNFW_TYPE_TENSOR_FLOAT32:
-    case NNFW_TYPE_TENSOR_INT32:
-      return 4;
-    case NNFW_TYPE_TENSOR_INT64:
-      return 8;
-    default:
-      throw std::runtime_error{"Invalid tensor type"};
-  }
-}
-
-template <typename T>
-bool compareBuffersExact(const T *ref_buf, const std::vector<uint8_t> &act_buf, uint32_t index)
-{
-  bool match = true;
-  for (uint32_t e = 0; e < act_buf.size() / sizeof(T); e++)
-  {
-    T ref = ref_buf[e];
-    T act = reinterpret_cast<const T *>(act_buf.data())[e];
-
-    if (ref != act)
-    {
-      std::cerr << "Output #" << index << ", Element Index : " << e << ", ref: " << ref
-                << ", act: " << act << std::endl;
-      match = false;
-    }
-  }
-
-  return match;
-}
-
-bool compareBuffersExactBool(const uint8_t *ref_buf, const std::vector<uint8_t> &act_buf,
-                             uint32_t index)
-{
-  bool match = true;
-  for (uint32_t e = 0; e < act_buf.size() / sizeof(uint8_t); e++)
-  {
-    uint8_t ref_raw = ref_buf[e];
-    bool ref = (ref_raw != 0 ? true : false);
-    uint8_t act_raw = reinterpret_cast<const uint8_t *>(act_buf.data())[e];
-    bool act = (act_raw != 0 ? true : false);
-    if (ref != act)
-    {
-      std::cerr << "Output #" << index << ", Element Index : " << e << ", ref: " << ref
-                << ", act: " << act << std::endl;
-      match = false;
-    }
-  }
-
-  return match;
-}
 
 int main(const int argc, char **argv)
 {
@@ -275,78 +165,37 @@ int main(const int argc, char **argv)
   //////////////////////////////////
   // Calculate max difference over all outputs
   //////////////////////////////////
-  float max_float_difference = 0.0f;
-  bool find_unmatched_output = false;
-  auto tolerance = nnfw::misc::EnvVar("TOLERANCE").asInt(1);
-
-  for (uint32_t out_idx = 0; out_idx < num_outputs; out_idx++)
-  {
-    nnfw_tensorinfo ti;
-    nnfw_output_tensorinfo(onert_session, out_idx, &ti);
-
-    bool matched = true;
-    // Check output tensor values
-
-    const auto &ref_output = interpreter->tensor(interpreter->outputs().at(out_idx))->data;
-    const auto &output = manager.outputBase(out_idx);
-
-    switch (ti.dtype)
+  const auto tolerance = nnfw::misc::EnvVar("TOLERANCE").asInt(1);
+  auto equals = [tolerance](float lhs, float rhs) {
+    // NOTE Hybrid approach
+    // TODO Allow users to set tolerance for absolute_epsilon_equal
+    if (nnfw::misc::fp32::absolute_epsilon_equal(lhs, rhs))
     {
-      case NNFW_TYPE_TENSOR_BOOL:
-        matched = compareBuffersExactBool(ref_output.uint8, output, out_idx);
-        break;
-      case NNFW_TYPE_TENSOR_UINT8:
-      case NNFW_TYPE_TENSOR_QUANT8_ASYMM:
-        matched = compareBuffersExact<uint8_t>(ref_output.uint8, output, out_idx);
-        break;
-      case NNFW_TYPE_TENSOR_QUANT8_ASYMM_SIGNED:
-        matched = compareBuffersExact<int8_t>(ref_output.int8, output, out_idx);
-        break;
-      case NNFW_TYPE_TENSOR_INT32:
-        matched = compareBuffersExact<int32_t>(ref_output.i32, output, out_idx);
-        break;
-      case NNFW_TYPE_TENSOR_FLOAT32:
-        // TODO better way for handling FP error?
-        for (uint32_t e = 0; e < num_elems(&ti); e++)
-        {
-          float refval = ref_output.f[e];
-          float val = reinterpret_cast<const float *>(output.data())[e];
-          if (std::abs(refval - val) > max_float_difference)
-            max_float_difference = std::abs(refval - val);
-
-          matched = nnfw::misc::fp32::absolute_epsilon_equal(refval, val)
-                      ? true
-                      : nnfw::misc::fp32::epsilon_equal(refval, val, tolerance);
-        }
-        break;
-      case NNFW_TYPE_TENSOR_INT64:
-        matched = compareBuffersExact<int64_t>(ref_output.i64, output, out_idx);
-        break;
-      default:
-        throw std::runtime_error{"Invalid tensor type"};
+      return true;
     }
 
-    if (!matched)
-      find_unmatched_output = true;
-  }
+    return nnfw::misc::fp32::epsilon_equal(lhs, rhs, tolerance);
+  };
+
+  nnfw::misc::tensor::Comparator comparator(equals);
+  nnfw::onert_cmp::MatchApp app(comparator);
+
+  app.verbose() = nnfw::misc::EnvVar("VERBOSE").asInt(0);
+
+  bool res = app.run(*interpreter, manager);
+
+  nnfw_close_session(onert_session);
 
   //////////////////////////////////
   // Print results
   //////////////////////////////////
-  std::cout << "[Comparison] Max float difference: " << max_float_difference << std::endl;
-  int ret = 0;
-  if (find_unmatched_output)
+  if (!res)
   {
     std::cout << "[Comparison] outputs is not equal!" << std::endl;
-    ret = 1;
+    return 1;
   }
-  else
-  {
-    std::cout << "[Comparison] Outputs is equal!" << std::endl;
-  }
+
   std::cout << "[Comparison] Done!" << std::endl;
 
-  nnfw_close_session(onert_session);
-
-  return ret;
+  return 0;
 }
