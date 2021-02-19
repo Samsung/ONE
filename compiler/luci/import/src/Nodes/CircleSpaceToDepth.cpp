@@ -27,13 +27,8 @@ namespace luci
 
 bool CircleSpaceToDepthGraphBuilder::validate(const ValidateArgs &args) const
 {
-  const auto &inputs = args.op.inputs;
-  if (inputs.size() != 1)
-    return false;
-
   // TODO do attribute checks
-
-  return true;
+  return GraphBuilder::validate(args, 1);
 }
 
 CircleNode *CircleSpaceToDepthGraphBuilder::build_node(const circle::OperatorT &op,

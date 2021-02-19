@@ -25,10 +25,7 @@ namespace luci
 
 bool CircleSparseToDenseGraphBuilder::validate(const ValidateArgs &args) const
 {
-  if (args.op.inputs.size() != 4)
-    return false;
-
-  return true;
+  return GraphBuilder::validate(args, 4);
 }
 
 CircleNode *CircleSparseToDenseGraphBuilder::build_node(const circle::OperatorT &op,
