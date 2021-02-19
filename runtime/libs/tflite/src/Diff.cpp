@@ -25,7 +25,7 @@
 #include <iostream>
 #include <cassert>
 
-class DiffSummary : public nnfw::misc::tensor::Comparator<float>::Observer
+class DiffSummary : public nnfw::misc::tensor::Comparator::Observer
 {
 public:
   DiffSummary()

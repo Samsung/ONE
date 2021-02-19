@@ -40,16 +40,16 @@ namespace tensor
 {
 
 /**
- * @brief Class to compare two tensors (expected and obtained to compare)
+ * @brief Class to compare two float tensors (expected and obtained to compare)
  */
-template <typename T> class Comparator
+class Comparator
 {
 public:
   /**
    * @brief Construct a new @c Comparator object
    * @param[in] fn     Function that compares two T values
    */
-  Comparator(const std::function<bool(T lhs, T rhs)> &fn) : _compare_fn{fn}
+  Comparator(const std::function<bool(float lhs, float rhs)> &fn) : _compare_fn{fn}
   {
     // DO NOTHING
   }
@@ -67,7 +67,7 @@ public:
      * @param[in] obtained    Obtained value of element at @c index
      * @return    N/A
      */
-    virtual void notify(const Index &index, T expected, T obtained) = 0;
+    virtual void notify(const Index &index, float expected, float obtained) = 0;
   };
 
 public:
@@ -80,11 +80,12 @@ public:
    * @return    @c std::vector<Diff<T>> containing information of failed comparison
    */
   // NOTE Observer should live longer than comparator
-  std::vector<Diff<T>> compare(const Shape &shape, const Reader<T> &expected,
-                               const Reader<T> &obtained, Observer *observer = nullptr) const;
+  std::vector<Diff<float>> compare(const Shape &shape, const Reader<float> &expected,
+                                   const Reader<float> &obtained,
+                                   Observer *observer = nullptr) const;
 
 private:
-  std::function<bool(T lhs, T rhs)> _compare_fn;
+  std::function<bool(float lhs, float rhs)> _compare_fn;
 };
 
 } // namespace tensor

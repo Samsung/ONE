@@ -46,7 +46,7 @@ public:
    * @brief Construct a new TfLiteInterpMatchApp object with Comparator
    * @param[in] comparator   Comparator object for float tensor comparation
    */
-  TfLiteInterpMatchApp(const nnfw::misc::tensor::Comparator<float> &comparator)
+  TfLiteInterpMatchApp(const nnfw::misc::tensor::Comparator &comparator)
     : _verbose{false}, _comparator(comparator)
   {
     // DO NOTHING
@@ -82,7 +82,7 @@ public:
                                const nnfw::misc::tensor::Reader<T> &obtained, int id) const;
 
 private:
-  const nnfw::misc::tensor::Comparator<float> &_comparator;
+  const nnfw::misc::tensor::Comparator &_comparator;
 };
 
 #endif // __NNFW_TFLITE_DIFF_H__

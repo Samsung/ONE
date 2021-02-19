@@ -310,7 +310,7 @@ int main(const int argc, char **argv)
       return nnfw::misc::fp32::epsilon_equal(lhs, rhs, tolerance);
     };
 
-    nnfw::misc::tensor::Comparator<float> comparator(equals);
+    nnfw::misc::tensor::Comparator comparator(equals);
     TfLiteInterpMatchApp app(comparator);
     bool res = true;
 
