@@ -25,14 +25,11 @@ namespace luci
 
 bool CircleReverseSequenceGraphBuilder::validate(const ValidateArgs &args) const
 {
+  if (!GraphBuilder::validate(args, 2))
+    return false;
+
   const auto &inputs = args.op.inputs;
   const auto &outputs = args.op.outputs;
-
-  if (inputs.size() != 2)
-    return false;
-  if (outputs.size() != 1)
-    return false;
-
   const auto &tensors = args.reader.tensors();
   const auto &tensor_in = tensors.at(inputs.at(0));
   const auto &tensor_lengths = tensors.at(inputs.at(1));
