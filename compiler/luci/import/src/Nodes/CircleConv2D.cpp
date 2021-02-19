@@ -28,10 +28,7 @@ namespace luci
 bool CircleConv2DGraphBuilder::validate(const ValidateArgs &args) const
 {
   // Circle Conv2D may not have a bias but we won't support this
-  if (args.op.inputs.size() != 3)
-    return false;
-
-  return true;
+  return GraphBuilder::validate(args, 3);
 }
 
 CircleNode *CircleConv2DGraphBuilder::build_node(const circle::OperatorT &op,
