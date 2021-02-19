@@ -158,7 +158,7 @@ void setConfigKeyValues(const CfgKeyValues &keyValues)
 } // namespace
 
 nnfw_session::nnfw_session()
-  : _subgraphs{nullptr}, _execution{nullptr},
+  : _subgraphs{nullptr}, _execution{nullptr}, _next_session{nullptr},
     _kernel_registry{std::make_shared<onert::frontend::custom::KernelRegistry>()}, _tracing_ctx{
                                                                                      nullptr}
 {
@@ -484,6 +484,180 @@ NNFW_STATUS nnfw_session::set_output(uint32_t index, NNFW_TYPE /*type*/, void *b
     return NNFW_STATUS_ERROR;
   }
   return NNFW_STATUS_NO_ERROR;
+}
+
+NNFW_STATUS nnfw_session::run_async_execute()
+{
+  try
+  {
+    _execution->Async_execute();
+
+    onert::exec::IODescription* _async_io_desc = _execution->get_async_io_desc();
+    if (_next_session != nullptr) {
+      _next_session->create_new_async_desc();
+      nnfw_tensorinfo ti;
+      for (size_t i = 0; i < _async_io_desc->outputs.size(); i++) {
+        _next_session->input_tensorinfo(i, &ti);
+        _next_session->set_async_input(i, ti.dtype, _async_io_desc->outputs[i]->buffer, _async_io_desc->outputs[i]->size);
+      }
+      nnfw_input_post(_next_session);
+      delete _async_io_desc;
+    }
+    else {
+      _execution->push_async_result(_async_io_desc);
+    }
+  }
+  catch (const onert::InsufficientBufferSizeException &e)
+  {
+    // Currently insufficient buffer always means output buffer.
+    std::cerr << "Error during nnfw_session::run_async_execute : " << e.what() << std::endl;
+    return NNFW_STATUS_INSUFFICIENT_OUTPUT_SIZE;
+  }
+  catch (const std::exception &e)
+  {
+    std::cerr << "Error during nnfw_session::run_async_execute : " << e.what() << std::endl;
+    return NNFW_STATUS_ERROR;
+  }
+
+  return NNFW_STATUS_NO_ERROR;
+}
+
+NNFW_STATUS nnfw_session::wait_async_finish()
+{
+  if (_execution->isFinished() && _execution->is_empty_queue()) {
+    _state = State::FINISHED_RUN;
+    return NNFW_STATUS_NO_ERROR;
+  }
+  return NNFW_STATUS_ERROR;
+}
+
+NNFW_STATUS nnfw_session::check_empty_queue()
+{
+  if (_execution->is_empty_queue()) return NNFW_STATUS_ERROR;
+  return NNFW_STATUS_NO_ERROR;
+}
+
+NNFW_STATUS nnfw_session::set_async_input(uint32_t index, NNFW_TYPE /*type*/, const void *buffer,
+                                          size_t length)
+{
+  if (!isStatePreparedOrFinishedRun())
+  {
+    std::cerr << "Error during nnfw_session::set_input : invalid state" << std::endl;
+    return NNFW_STATUS_INVALID_STATE;
+  }
+
+  if (!buffer && length != 0)
+  {
+    std::cerr
+      << "Error during nnfw_session::set_input : given buffer is NULL but the length is not 0"
+      << std::endl;
+    return NNFW_STATUS_ERROR;
+  }
+
+  try
+  {
+    _execution->setAsyncInput(onert::ir::IOIndex(index), buffer, length);
+  }
+  catch (const std::exception &e)
+  {
+    std::cerr << "Error during nnfw_session::set_input : " << e.what() << std::endl;
+    return NNFW_STATUS_ERROR;
+  }
+  return NNFW_STATUS_NO_ERROR;
+}
+
+NNFW_STATUS nnfw_session::set_async_output(uint32_t index, NNFW_TYPE /*type*/, void *buffer,
+                                           size_t length)
+{
+  if (!isStatePreparedOrFinishedRun())
+  {
+    std::cerr << "Error during nnfw_session::set_output : invalid state" << std::endl;
+    return NNFW_STATUS_INVALID_STATE;
+  }
+
+  if (!buffer && length != 0)
+  {
+    std::cerr
+      << "Error during nnfw_session::set_output : given buffer is NULL but the length is not 0"
+      << std::endl;
+    return NNFW_STATUS_ERROR;
+  }
+
+  try
+  {
+    _execution->setAsyncOutput(onert::ir::IOIndex(index), buffer, length);
+  }
+  catch (const std::exception &e)
+  {
+    std::cerr << "Error during nnfw_session::set_output : " << e.what() << std::endl;
+    return NNFW_STATUS_ERROR;
+  }
+  return NNFW_STATUS_NO_ERROR;
+}
+
+NNFW_STATUS nnfw_session::create_new_async_desc()
+{
+  _execution->CreateNewAsyncDesc();
+  return NNFW_STATUS_NO_ERROR;
+}
+
+NNFW_STATUS nnfw_session::set_next_session(nnfw_session *session)
+{
+  _next_session = session;
+  return NNFW_STATUS_NO_ERROR;
+}
+
+NNFW_STATUS nnfw_session::async_finish_post()
+{
+  _execution->finish_post();
+  return NNFW_STATUS_NO_ERROR;
+}
+
+NNFW_STATUS nnfw_session::async_finish_wait()
+{
+  _execution->finish_wait();
+  return NNFW_STATUS_NO_ERROR;
+}
+
+NNFW_STATUS nnfw_session::async_deque_post()
+{
+  _execution->deque_post();
+  return NNFW_STATUS_NO_ERROR;
+}
+
+NNFW_STATUS nnfw_session::async_deque_wait()
+{
+  _execution->deque_wait();
+  return NNFW_STATUS_NO_ERROR;
+}
+
+NNFW_STATUS nnfw_session::async_input_post()
+{
+  _execution->input_post();
+  return NNFW_STATUS_NO_ERROR;
+}
+
+NNFW_STATUS nnfw_session::async_input_wait()
+{
+  _execution->input_wait();
+  return NNFW_STATUS_NO_ERROR;
+}
+
+NNFW_STATUS nnfw_session::async_set_finish()
+{
+  _execution->set_finish();
+  return NNFW_STATUS_NO_ERROR;
+}
+
+NNFW_STATUS nnfw_session::async_get_result(std::vector<void *> outputs)
+{
+  _execution->get_result(outputs);
+  return NNFW_STATUS_NO_ERROR;
+}
+
+nnfw_session* nnfw_session::get_next_session()
+{
+  return _next_session;
 }
 
 NNFW_STATUS nnfw_session::input_size(uint32_t *number)

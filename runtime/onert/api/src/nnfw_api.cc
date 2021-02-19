@@ -168,6 +168,129 @@ NNFW_STATUS nnfw_set_output(nnfw_session *session, uint32_t index, NNFW_TYPE typ
   return session->set_output(index, type, buffer, length);
 }
 
+NNFW_STATUS pipelining(std::thread *works, std::vector<nnfw_session *> sessions)
+{
+  for (size_t idx = 0; idx < sessions.size(); idx++) {
+    if (idx < sessions.size() - 1) {
+      sessions[idx]->set_next_session(sessions[idx + 1]);
+    }
+
+    works[idx] = std::thread([](nnfw_session *session, int sess_num) {
+      nnfw_tensorinfo ti;
+      uint32_t sz;
+      nnfw_output_size(session, &sz);
+      while (true) {
+        if (session->wait_async_finish() == NNFW_STATUS_NO_ERROR) {
+          nnfw_session *next_session = session->get_next_session();
+          if (next_session != nullptr) {
+            next_session->async_set_finish();
+          }
+          break;
+        }
+
+        if (session->check_empty_queue() == NNFW_STATUS_NO_ERROR) {
+          nnfw_input_wait(session);
+          for (uint32_t i = 0; i < sz; i++) {
+            nnfw_output_tensorinfo(session, i, &ti);
+            uint32_t tensor_size = 1;
+            for (int32_t j = 0; j < ti.rank; j++) {
+              tensor_size *= ti.dims[j];
+            }
+            if (ti.dtype == NNFW_TYPE_TENSOR_INT32 || ti.dtype == NNFW_TYPE_TENSOR_FLOAT32) tensor_size *= 4;
+            else if (ti.dtype == NNFW_TYPE_TENSOR_INT64) tensor_size *= 8;
+            void *buffer = (void *)malloc(tensor_size);
+            nnfw_set_async_output(session, i, ti.dtype, buffer, tensor_size);
+          }
+          nnfw_run_async_execute(session);
+        }
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+      }
+      session->async_finish_post();
+    }, sessions[idx], idx);
+  }
+  return NNFW_STATUS_NO_ERROR;
+}
+
+NNFW_STATUS nnfw_run_async_execute(nnfw_session *session)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return session->run_async_execute();
+}
+
+NNFW_STATUS nnfw_set_async_input(nnfw_session *session, uint32_t index, NNFW_TYPE type,
+                                 const void *buffer, size_t length)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return session->set_async_input(index, type, buffer, length);
+}
+
+NNFW_STATUS nnfw_set_async_output(nnfw_session *session, uint32_t index, NNFW_TYPE type,
+                                  void *buffer, size_t length)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return session->set_async_output(index, type, buffer, length);
+}
+
+NNFW_STATUS nnfw_create_new_async_desc(nnfw_session *session)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return session->create_new_async_desc();
+}
+
+NNFW_STATUS nnfw_finish_post(nnfw_session *session)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return session->async_finish_post();
+}
+
+NNFW_STATUS nnfw_finish_wait(nnfw_session *session)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return session->async_finish_wait();
+}
+
+NNFW_STATUS nnfw_deque_post(nnfw_session *session)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return session->async_deque_post();
+}
+
+NNFW_STATUS nnfw_deque_wait(nnfw_session *session)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return session->async_deque_wait();
+}
+
+NNFW_STATUS nnfw_input_post(nnfw_session *session)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return session->async_input_post();
+}
+
+NNFW_STATUS nnfw_input_wait(nnfw_session *session)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return session->async_input_wait();
+}
+
+NNFW_STATUS nnfw_set_finish(nnfw_session *session)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return session->async_set_finish();
+}
+
+NNFW_STATUS nnfw_get_result(nnfw_session *session, std::vector<void *> outputs)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return session->async_get_result(outputs);
+}
+
+NNFW_STATUS nnfw_wait_async_finish(nnfw_session *session)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return session->wait_async_finish();
+}
+
 /*
  * Get the number of inputs
  *

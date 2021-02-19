@@ -17,8 +17,9 @@
 #ifndef __API_NNFW_API_INTERNAL_H__
 #define __API_NNFW_API_INTERNAL_H__
 
-#include "nnfw.h"
-#include "nnfw_experimental.h"
+#include "../include/nnfw.h"
+#include "../include/nnfw_experimental.h"
+#include "../../core/include/exec/IODescription.h"
 
 #include <util/GeneralConfigSource.h>
 #include <util/TracingCtx.h>
@@ -111,6 +112,26 @@ public:
   NNFW_STATUS set_input(uint32_t index, NNFW_TYPE type, const void *buffer, size_t length);
   NNFW_STATUS set_output(uint32_t index, NNFW_TYPE type, void *buffer, size_t length);
 
+  NNFW_STATUS run_async_execute();
+  NNFW_STATUS wait_async_finish();
+  NNFW_STATUS check_empty_queue();
+  NNFW_STATUS set_async_input(uint32_t index, NNFW_TYPE type, const void *buffer, size_t length);
+  NNFW_STATUS set_async_output(uint32_t index, NNFW_TYPE type, void *buffer, size_t length);
+  NNFW_STATUS create_new_async_desc();
+  NNFW_STATUS set_next_session(nnfw_session *session);
+  nnfw_session* get_next_session();
+
+  NNFW_STATUS async_finish_post();
+  NNFW_STATUS async_finish_wait();
+  NNFW_STATUS async_deque_post();
+  NNFW_STATUS async_deque_wait();
+  NNFW_STATUS async_input_post();
+  NNFW_STATUS async_input_wait();
+
+  NNFW_STATUS async_set_finish();
+
+  NNFW_STATUS async_get_result(std::vector<void *> outputs);
+
   NNFW_STATUS input_size(uint32_t *number);
   NNFW_STATUS output_size(uint32_t *number);
 
@@ -157,6 +178,7 @@ private:
   std::shared_ptr<onert::ir::Subgraphs> _subgraphs;
   std::unique_ptr<onert::compiler::Compiler> _compiler;
   std::unique_ptr<onert::exec::Execution> _execution;
+  nnfw_session *_next_session;
   std::shared_ptr<onert::frontend::custom::KernelRegistry> _kernel_registry;
 
   std::unique_ptr<onert::util::TracingCtx> _tracing_ctx;

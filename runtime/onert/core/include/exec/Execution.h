@@ -24,8 +24,11 @@
 #include "ir/Layout.h"
 #include "exec/IExecutor.h"
 #include "IODescription.h"
+#include "../../api/src/nnfw_api_internal.h"
 
 #include <thread>
+#include <deque>
+#include <semaphore.h>
 
 namespace onert
 {
@@ -69,6 +72,26 @@ public:
    */
   void setInput(const ir::IOIndex &index, const void *buffer, size_t length,
                 ir::Layout layout = ir::Layout::NHWC);
+
+  void CreateNewAsyncDesc();
+  void setAsyncInput(const ir::IOIndex &index, const void *buffer, size_t length,
+                     ir::Layout layout = ir::Layout::NHWC);
+  void setAsyncOutput(const ir::IOIndex &index, void *buffer, size_t length,
+                      ir::Layout layout = ir::Layout::NHWC);
+  void Async_execute();
+  void finish_post();
+  void finish_wait();
+  void deque_post();
+  void deque_wait();
+  void input_post();
+  void input_wait();
+  void set_finish();
+  bool is_empty_queue();
+  void get_result(std::vector<void *> outputs);
+
+  IODescription* get_async_io_desc();
+  void push_async_result(IODescription* io_desc);
+
   /**
    * @brief     Set input data's information, especially to specify unknown dimensions on model
    * build time.
@@ -152,6 +175,11 @@ private:
 private:
   const std::shared_ptr<ExecutorMap> _executors;
   IODescription _io_desc;
+  std::deque<IODescription *> _async_io_descs;
+  std::deque<IODescription *> _async_result;
+  sem_t _async_finish;
+  sem_t _async_input_sem;
+  sem_t _deque;
   std::unique_ptr<std::thread> _exec_thread;
   bool finished{false};
 };

@@ -23,6 +23,8 @@
 
 #include <stddef.h>
 #include <stdint.h>
+#include <vector>
+#include <thread>
 
 #ifdef __cplusplus
 extern "C" {
@@ -350,6 +352,23 @@ NNFW_STATUS nnfw_set_input(nnfw_session *session, uint32_t index, NNFW_TYPE type
  */
 NNFW_STATUS nnfw_set_output(nnfw_session *session, uint32_t index, NNFW_TYPE type, void *buffer,
                             size_t length);
+
+NNFW_STATUS pipelining(std::thread *works, std::vector<nnfw_session *> sessions);
+NNFW_STATUS nnfw_set_async_input(nnfw_session *session, uint32_t index, NNFW_TYPE type,
+                                 const void *buffer, size_t length);
+NNFW_STATUS nnfw_set_async_output(nnfw_session *session, uint32_t index, NNFW_TYPE type,
+                                  void *buffer, size_t length);
+NNFW_STATUS nnfw_run_async_execute(nnfw_session *session);
+NNFW_STATUS nnfw_create_new_async_desc(nnfw_session *session);
+NNFW_STATUS nnfw_finish_post(nnfw_session *session);
+NNFW_STATUS nnfw_finish_wait(nnfw_session *session);
+NNFW_STATUS nnfw_deque_post(nnfw_session *session);
+NNFW_STATUS nnfw_deque_wait(nnfw_session *session);
+NNFW_STATUS nnfw_input_post(nnfw_session *session);
+NNFW_STATUS nnfw_input_wait(nnfw_session *session);
+NNFW_STATUS nnfw_set_finish(nnfw_session *session);
+NNFW_STATUS nnfw_get_result(nnfw_session *session, std::vector<void *> outputs);
+NNFW_STATUS nnfw_wait_async_finish(nnfw_session *session);
 
 /**
  * @brief       Get the number of inputs

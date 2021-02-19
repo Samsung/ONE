@@ -30,6 +30,10 @@ Execution::Execution(const std::shared_ptr<ExecutorMap> &executors) : _executors
   const auto &primary_subg = primary_subgraph();
   _io_desc.inputs.resize(primary_subg.getInputs().size());
   _io_desc.outputs.resize(primary_subg.getOutputs().size());
+
+  sem_init(&_async_finish, 0, 0);
+  sem_init(&_deque, 0, 1);
+  sem_init(&_async_input_sem, 0, 0);
 }
 
 void Execution::changeInputShape(const ir::IOIndex &index, const ir::Shape &new_shape)
@@ -69,6 +73,126 @@ void Execution::setInput(const ir::IOIndex &index, const void *buffer, size_t le
   }
 
   _io_desc.inputs.at(index.value()) = std::make_unique<InputDesc>(info, buffer, length, layout);
+}
+
+void Execution::CreateNewAsyncDesc()
+{
+  IODescription *_async_io_desc = new IODescription;
+  _async_io_desc->inputs.resize(primary_subgraph().getInputs().size());
+  _async_io_desc->outputs.resize(primary_subgraph().getOutputs().size());
+
+  deque_wait();
+  _async_io_descs.push_back(_async_io_desc);
+  deque_post();
+}
+
+void Execution::finish_post()
+{
+  sem_post(&_async_finish);
+}
+
+void Execution::finish_wait()
+{
+  sem_wait(&_async_finish);
+}
+
+void Execution::deque_post()
+{
+  sem_post(&_deque);
+}
+
+void Execution::deque_wait()
+{
+  sem_wait(&_deque);
+}
+
+void Execution::input_post()
+{
+  sem_post(&_async_input_sem);
+}
+
+void Execution::input_wait()
+{
+  sem_wait(&_async_input_sem);
+}
+
+void Execution::set_finish()
+{
+  finished = true;
+}
+
+IODescription* Execution::get_async_io_desc()
+{
+  deque_wait();
+  IODescription* ret = _async_io_descs.front();
+  _async_io_descs.pop_front();
+  deque_post();
+
+  return ret;
+}
+
+void Execution::push_async_result(IODescription* io_desc)
+{
+  _async_result.push_back(io_desc);
+}
+
+bool Execution::is_empty_queue()
+{
+  return _async_io_descs.empty();
+}
+
+void Execution::get_result(std::vector<void *> outputs)
+{
+  IODescription* ret = _async_result.front();
+  _async_result.pop_front();
+  for (uint i = 0; i < ret->outputs.size(); i++) {
+    memcpy(outputs[i], ret->outputs[i]->buffer, ret->outputs[i]->size);
+  }
+  free(ret);
+}
+
+void Execution::setAsyncInput(const ir::IOIndex &index, const void *buffer, size_t length,
+                              ir::Layout layout)
+{
+  deque_wait();
+  const auto input_index = primary_subgraph().getInputs().at(index);
+  const auto info = primary_subgraph().operands().at(input_index).info();
+  IODescription *_async_io_desc = _async_io_descs.back();
+
+  {
+    auto input_shape_sig = _async_io_desc->dynamic_input_shapes.find(index);
+    auto size_required =
+      (input_shape_sig != _async_io_desc->dynamic_input_shapes.end())
+        ? input_shape_sig->second.num_elements() * onert::ir::sizeOfDataType(info.typeInfo().type())
+        : info.total_size();
+
+    if (length < size_required)
+    {
+      throw std::runtime_error{"Too small length"};
+    }
+  }
+  void *_buffer = (void *)malloc(sizeof(void *) * length);
+  memcpy(_buffer, buffer, length);
+
+  _async_io_desc->inputs.at(index.value()) = std::make_unique<InputDesc>(info, _buffer, length, layout);
+  deque_post();
+}
+
+void Execution::setAsyncOutput(const ir::IOIndex &index, void *buffer, size_t length,
+                               ir::Layout layout)
+{
+  deque_wait();
+  const auto output_index = primary_subgraph().getOutputs().at(index);
+  const auto info = primary_subgraph().operands().at(output_index).info();
+  IODescription *_async_io_desc = _async_io_descs.front();
+
+  if (length < info.total_size())
+  {
+    throw std::runtime_error{"Too small length"};
+  }
+
+  _async_io_desc->outputs.at(index.value()) = std::make_unique<OutputDesc>(info, buffer, length, layout);
+  deque_post();
 }
 
 // TODO Remove default parameter
@@ -135,6 +259,19 @@ void Execution::execute()
   finished = true;
 
   VERBOSE(Execution) << "Execution finished" << std::endl;
+}
+
+void Execution::Async_execute()
+{
+  VERBOSE(Execution) << "Start Async execution" << std::endl;
+  if (_async_io_descs.empty()) {
+    VERBOSE(Execution) << "The input is not ready" << std::endl;
+    return;
+  }
+
+  deque_wait();
+  primary_executor()->execute(*_async_io_descs.front());
+  deque_post();
 }
 
 void Execution::startExecute()
