@@ -285,14 +285,14 @@ void asymmetric_wdequant_per_channel(CircleConst *node, std::vector<float> &scal
   uint32_t size = node->size<loco::DataType::U8>();
   std::vector<float> dequantized_values(size);
 
-  auto func = [&](uint32_t *indices, loco::TensorShape &dimension, int channel_dim_index) {
+  auto dequantize = [&](uint32_t *indices, loco::TensorShape &dimension, int channel_dim_index) {
     int channel_idx = indices[channel_dim_index];
     auto data = node->at<loco::DataType::U8>(cal_offset(dimension, indices));
     dequantized_values[cal_offset(dimension, indices)] =
       static_cast<float>(data) * scaling_factor[channel_idx] + nudged_min[channel_idx];
   };
 
-  iterate_per_channel(node, func);
+  iterate_per_channel(node, dequantize);
 
   node->dtype(loco::DataType::FLOAT32);      // change the type of tensor
   node->size<loco::DataType::FLOAT32>(size); // resize tensor
