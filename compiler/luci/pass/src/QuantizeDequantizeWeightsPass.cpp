@@ -74,9 +74,6 @@ void cal_minmax_per_channel(CircleConst *node, std::vector<float> &min, std::vec
 {
   loco::TensorShape dimension;
   dimension.rank(4);
-  uint32_t indices[4] = {
-    0,
-  };
   int channel_dim_index{0};
   int size{0};
 
@@ -90,31 +87,24 @@ void cal_minmax_per_channel(CircleConst *node, std::vector<float> &min, std::vec
   std::vector<bool> has_min_max_value(size, false);
   min.resize(size);
   max.resize(size);
-  for (indices[0] = 0; indices[0] < dimension.dim(0).value(); indices[0]++)
-  {
-    for (indices[1] = 0; indices[1] < dimension.dim(1).value(); indices[1]++)
+
+  auto cal_minmax = [&](uint32_t *indices, loco::TensorShape &dimension, int channel_dim_index) {
+    int channel_idx = indices[channel_dim_index];
+    auto data = node->at<loco::DataType::FLOAT32>(cal_offset(dimension, indices));
+    if (has_min_max_value[channel_idx])
     {
-      for (indices[2] = 0; indices[2] < dimension.dim(2).value(); indices[2]++)
-      {
-        for (indices[3] = 0; indices[3] < dimension.dim(3).value(); indices[3]++)
-        {
-          int channel_idx = indices[channel_dim_index];
-          auto data = node->at<loco::DataType::FLOAT32>(cal_offset(dimension, indices));
-          if (has_min_max_value[channel_idx])
-          {
-            min[channel_idx] = data < min[channel_idx] ? data : min[channel_idx];
-            max[channel_idx] = data > max[channel_idx] ? data : max[channel_idx];
-          }
-          else
-          {
-            min[channel_idx] = data;
-            max[channel_idx] = data;
-            has_min_max_value[channel_idx] = true;
-          }
-        }
-      }
+      min[channel_idx] = data < min[channel_idx] ? data : min[channel_idx];
+      max[channel_idx] = data > max[channel_idx] ? data : max[channel_idx];
     }
-  }
+    else
+    {
+      min[channel_idx] = data;
+      max[channel_idx] = data;
+      has_min_max_value[channel_idx] = true;
+    }
+  };
+
+  iterate_per_channel(node, cal_minmax);
 }
 
 void sym_wquant_per_channel(CircleConst *node, std::vector<float> &min, std::vector<float> &max,
