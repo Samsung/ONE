@@ -26,6 +26,44 @@
 
 #include <iostream>
 #include <cmath>
+#include <functional>
+
+namespace
+{
+
+using namespace luci;
+using IterFunc = std::function<void(uint32_t *, loco::TensorShape &, int32_t)>;
+
+void iterate_per_channel(CircleConst *node, int32_t &channel_dim_index, IterFunc func)
+{
+  loco::TensorShape dimension;
+  dimension.rank(4);
+  uint32_t indices[4] = {
+    0,
+  };
+
+  if (!get_channel_dim_index(node, dimension, channel_dim_index))
+  {
+    assert(false);
+    return;
+  }
+
+  for (indices[0] = 0; indices[0] < dimension.dim(0).value(); indices[0]++)
+  {
+    for (indices[1] = 0; indices[1] < dimension.dim(1).value(); indices[1]++)
+    {
+      for (indices[2] = 0; indices[2] < dimension.dim(2).value(); indices[2]++)
+      {
+        for (indices[3] = 0; indices[3] < dimension.dim(3).value(); indices[3]++)
+        {
+          func(indices, dimension, channel_dim_index);
+        }
+      }
+    }
+  }
+}
+
+} // namespace
 
 namespace luci
 {
@@ -401,35 +439,18 @@ void sym_wquant_per_channel(CircleConst *node, std::vector<float> &scaling_facto
   uint32_t size = node->size<loco::DataType::FLOAT32>();
   std::vector<int32_t> quantized_values(size);
 
-  loco::TensorShape dimension;
-  dimension.rank(4);
-  uint32_t indices[4] = {
-    0,
-  };
-
-  if (!get_channel_dim_index(node, dimension, channel_dim_index))
-  {
-    assert(false);
-    return;
-  }
-
-  for (indices[0] = 0; indices[0] < dimension.dim(0).value(); indices[0]++)
-  {
-    for (indices[1] = 0; indices[1] < dimension.dim(1).value(); indices[1]++)
-    {
-      for (indices[2] = 0; indices[2] < dimension.dim(2).value(); indices[2]++)
-      {
-        for (indices[3] = 0; indices[3] < dimension.dim(3).value(); indices[3]++)
-        {
+  auto quantize = [&](uint32_t *indices, loco::TensorShape &dimension, int32_t channel_dim_index) {
+    // TODO remove clang-format off and fix indentation
+    // clang-format off
           int channel_idx = indices[channel_dim_index];
           const float scaling_factor_inv = 1.0 / scaling_factor[channel_idx];
           auto data = node->at<loco::DataType::FLOAT32>(cal_offset(dimension, indices));
           quantized_values[cal_offset(dimension, indices)] =
             static_cast<int32_t>(std::round(data * scaling_factor_inv));
-        }
-      }
-    }
-  }
+    // clang-format on
+  };
+
+  iterate_per_channel(node, channel_dim_index, quantize);
 
   node->dtype(loco::DataType::S16);      // change the type of tensor
   node->size<loco::DataType::S16>(size); // resize tensor
@@ -451,35 +472,18 @@ void asym_wquant_per_channel(CircleConst *node, std::vector<float> &min,
   uint32_t size = node->size<loco::DataType::FLOAT32>();
   std::vector<int32_t> quantized_values(size);
 
-  loco::TensorShape dimension;
-  dimension.rank(4);
-  uint32_t indices[4] = {
-    0,
-  };
-
-  if (!get_channel_dim_index(node, dimension, channel_dim_index))
-  {
-    assert(false);
-    return;
-  }
-
-  for (indices[0] = 0; indices[0] < dimension.dim(0).value(); indices[0]++)
-  {
-    for (indices[1] = 0; indices[1] < dimension.dim(1).value(); indices[1]++)
-    {
-      for (indices[2] = 0; indices[2] < dimension.dim(2).value(); indices[2]++)
-      {
-        for (indices[3] = 0; indices[3] < dimension.dim(3).value(); indices[3]++)
-        {
+  auto quantize = [&](uint32_t *indices, loco::TensorShape &dimension, int32_t channel_dim_index) {
+    // TODO remove clang-format off and fix indentation
+    // clang-format off
           int channel_idx = indices[channel_dim_index];
           const float scaling_factor_inv = 1.0 / scaling_factor[channel_idx];
           auto data = node->at<loco::DataType::FLOAT32>(cal_offset(dimension, indices));
           quantized_values[cal_offset(dimension, indices)] =
             static_cast<int32_t>(std::round((data - min[channel_idx]) * scaling_factor_inv));
-        }
-      }
-    }
-  }
+    // clang-format on
+  };
+
+  iterate_per_channel(node, channel_dim_index, quantize);
 
   node->dtype(loco::DataType::U8);      // change the type of tensor
   node->size<loco::DataType::U8>(size); // resize tensor
