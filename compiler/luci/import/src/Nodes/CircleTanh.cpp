@@ -25,13 +25,11 @@ namespace luci
 
 bool CircleTanhGraphBuilder::validate(const ValidateArgs &args) const
 {
-  const auto &inputs = args.op.inputs;
-  if (inputs.size() != 1)
-    return false;
-  const auto &outputs = args.op.outputs;
-  if (outputs.size() != 1)
+  if (!GraphBuilder::validate(args, 1))
     return false;
 
+  const auto &inputs = args.op.inputs;
+  const auto &outputs = args.op.outputs;
   const auto &tensors = args.reader.tensors();
   if (tensors.at(inputs.at(0))->type != tensors.at(outputs[0])->type)
     return false;

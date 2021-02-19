@@ -25,15 +25,11 @@ namespace luci
 
 bool CircleTileGraphBuilder::validate(const ValidateArgs &args) const
 {
+  if (!GraphBuilder::validate(args, 2))
+    return false;
+
   auto inputs = args.op.inputs;
   auto outputs = args.op.outputs;
-
-  if (inputs.size() != 2)
-    return false;
-
-  if (outputs.size() != 1)
-    return false;
-
   // Multiples (inputs.at(1)) must be one of the following types
   // int32, int64
   const auto &tensors = args.reader.tensors();
