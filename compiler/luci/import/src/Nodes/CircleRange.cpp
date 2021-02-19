@@ -24,11 +24,8 @@ namespace luci
 {
 bool CircleRangeGraphBuilder::validate(const ValidateArgs &args) const
 {
-  if (args.op.inputs.size() != 3)
-    return false;
-
   // TODO Support type check
-  return true;
+  return GraphBuilder::validate(args, 3);
 }
 
 CircleNode *CircleRangeGraphBuilder::build_node(const circle::OperatorT &,

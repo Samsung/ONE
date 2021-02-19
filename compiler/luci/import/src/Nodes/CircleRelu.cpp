@@ -25,13 +25,7 @@ namespace luci
 
 bool CircleReluGraphBuilder::validate(const ValidateArgs &args) const
 {
-  if (args.op.inputs.size() != 1)
-    return false;
-
-  if (args.op.outputs.size() != 1)
-    return false;
-
-  return true;
+  return GraphBuilder::validate(args, 1);
 }
 
 CircleNode *CircleReluGraphBuilder::build_node(const circle::OperatorT &,
