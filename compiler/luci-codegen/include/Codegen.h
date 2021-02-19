@@ -26,6 +26,8 @@
 #include <unordered_set>
 #include <string>
 
+class CodegenTest;
+
 namespace luci_codegen
 {
 
@@ -33,6 +35,7 @@ class SubgraphContext;
 
 class Codegen
 {
+  friend CodegenTest;
 public:
   Codegen(const CodegenOptions &options = CodegenOptions());
 
@@ -44,9 +47,13 @@ public:
 
 private:
 
+  void emit_wrapper_library(std::string path, std::string func_name);
+
   bool fits_constrains(luci::CircleNode *node) const;
 
   std::vector<luci::CircleNode *> gather_suitable_nodes(luci::CircleNode *node);
+
+  static bool has_self_dependency_subgraph(const std::vector<luci::CircleNode *> &nodes);
 
   std::vector<std::vector<luci::CircleNode *>>
   extract_subgraphs(const std::vector<luci::CircleNode *> &nodes) const;

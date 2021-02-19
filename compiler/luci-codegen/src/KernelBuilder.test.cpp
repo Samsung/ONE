@@ -27,7 +27,7 @@
 #include <type_traits>
 
 template <loco::DataType DType>
-void constructBasicNode(luci::CircleNode &node, const std::vector<int> &dims)
+static void constructBasicNode(luci::CircleNode &node, const std::vector<int> &dims)
 {
   node.dtype(DType);
   node.rank(dims.size());
@@ -103,7 +103,7 @@ void test_binary_op(const Shape &x_shape, const Shape &y_shape, const Shape &out
 
   luci_codegen::SubgraphContext subgraph;
   subgraph.add_node(&op);
-  subgraph.finish_construction();
+  subgraph.finish_nodes_construction();
 
   luci_codegen::KernelBuilder builder(subgraph);
   builder.process();
@@ -144,7 +144,7 @@ void test_unary_op(const Shape &in_out_shape, DataVector<DType> in_data, const D
 
   luci_codegen::SubgraphContext subgraph;
   subgraph.add_node(&op_node);
-  subgraph.finish_construction();
+  subgraph.finish_nodes_construction();
 
   luci_codegen::KernelBuilder builder(subgraph);
   builder.process();
@@ -191,7 +191,7 @@ void test_const_op(const Shape &shape, DataVector<DType> data)
   ASSERT_TRUE(luci_codegen::KernelBuilder::is_supported(&const_node));
 
   luci_codegen::SubgraphContext subgraph("", {&const_node});
-  subgraph.finish_construction();
+  subgraph.finish_nodes_construction();
 
   luci_codegen::KernelBuilder builder(subgraph);
   builder.process();
@@ -412,7 +412,7 @@ TEST(codegen_kernels, split)
   ASSERT_TRUE(luci_codegen::KernelBuilder::is_supported(&split));
 
   luci_codegen::SubgraphContext subgraph("", {&split, &split_dim, &split_out[0], &split_out[1], &split_out[2]});
-  subgraph.finish_construction();
+  subgraph.finish_nodes_construction();
 
   luci_codegen::KernelBuilder builder(subgraph);
   builder.process();
@@ -484,7 +484,7 @@ TEST(codegen_kernels, fc)
   ASSERT_TRUE(luci_codegen::KernelBuilder::is_supported(&fc));
 
   luci_codegen::SubgraphContext subgraph("", {&fc, &weights_node, &bias_node});
-  subgraph.finish_construction();
+  subgraph.finish_nodes_construction();
 
   luci_codegen::KernelBuilder builder(subgraph);
   builder.process();

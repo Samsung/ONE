@@ -19,6 +19,8 @@
 #include "luci/CircleExporter.h"
 #include "luci/CircleFileExpContract.h"
 
+#include <boost/filesystem.hpp>
+
 #include <iostream>
 #include <string>
 
@@ -50,7 +52,7 @@ int main(int argc, char **argv)
     return 1;
   }
   std::string input_circle_name = argv[1];
-  std::string output_package_name = argv[2];
+  std::string output_package_path = argv[2];
   luci::Importer importer;
 
   auto raw_model_data = read_file(input_circle_name);
@@ -68,10 +70,17 @@ int main(int argc, char **argv)
   // set options if needed
   luci_codegen::Codegen codegen(options);
   codegen.process_module(*luci_module);
-  codegen.emit_code(output_package_name);
 
+  boost::filesystem::path output_package_dir(output_package_path);
+  if (!boost::filesystem::exists(output_package_dir))
+  {
+    boost::filesystem::create_directory(output_package_dir);
+  }
+  boost::filesystem::path output_model_path = output_package_dir / "model.circle";
   luci::CircleExporter exporter;
-  luci::CircleFileExpContract contract(luci_module.get(), output_package_name + ".circle");
+  luci::CircleFileExpContract contract(luci_module.get(), output_model_path.string());
   exporter.invoke(&contract);
+
+  codegen.emit_code(output_package_path);
   return 0;
 }

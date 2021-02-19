@@ -24,6 +24,9 @@
 #include "luci/IR/Nodes/CircleCustomOut.h"
 #include "loco/IR/Algorithm.h"
 
+// generated header, see CMakeLists.txt
+#include "GeneratedWrapperLib.h"
+
 #include "Halide.h"
 
 #include "flatbuffers/flexbuffers.h"
@@ -31,6 +34,8 @@
 #include <map>
 #include <unordered_set>
 #include <algorithm>
+#include <boost/filesystem.hpp>
+#include <fstream>
 
 namespace
 {
@@ -103,7 +108,7 @@ Codegen::gather_suitable_nodes(luci::CircleNode *node)
  * @param nodes
  * @return
  */
-bool has_self_dependency_subgraph(std::vector<luci::CircleNode *> nodes)
+bool Codegen::has_self_dependency_subgraph(const std::vector<luci::CircleNode *> &nodes)
 {
   std::unordered_set<loco::Node *> belong_to_subgraph;
   belong_to_subgraph.insert(nodes.begin(), nodes.end());
@@ -127,7 +132,7 @@ bool has_self_dependency_subgraph(std::vector<luci::CircleNode *> nodes)
   std::unordered_set<loco::Node *> visited;
   for (loco::Node *node: nodes)
   {
-    if (static_cast<luci::CircleNode *>(node)->opcode() == luci::CircleOpcode::CIRCLECONST)
+    if (node->arity() == 0)
     {
       queue.push(node);
       visited.insert(node);
@@ -365,8 +370,31 @@ void Codegen::process_module(luci::Module &module)
     process_graph(*module.graph(i));
 }
 
-void Codegen::emit_code(std::string package_name)
+void Codegen::emit_wrapper_library(std::string path, std::string func_name)
 {
+  std::ofstream support_lib(path);
+  if (support_lib.bad())
+  {
+    throw std::runtime_error("Can not create support library for function " + func_name);
+  }
+  support_lib << "#include \"" << func_name << ".h\"\n";
+  support_lib << wrapper_lib_source;
+  support_lib << "extern \"C\"\n"
+              << "{\n"
+              << "GENERATED_OPERATOR(" << func_name << ")\n"
+              << "}\n";
+};
+
+void Codegen::emit_code(std::string target_dir)
+{
+
+  boost::filesystem::path package_path(target_dir);
+
+  if (boost::filesystem::exists(package_path) && !boost::filesystem::is_directory(package_path))
+  {
+    throw std::runtime_error("Output path exists, but it is not directory");
+  }
+
   for (auto &subgraph: _compiled_subgraphs)
   {
     Halide::Pipeline &pipeline = subgraph.get_pipeline();
@@ -383,9 +411,18 @@ void Codegen::emit_code(std::string package_name)
 
     std::map<Halide::Output, std::string> products;
 
-    products[Halide::Output::object] = subgraph.get_name() + ".o";
+    boost::filesystem::path obj_name(subgraph.get_name() + ".o");
+    boost::filesystem::path header_name(subgraph.get_name() + ".h");
+    boost::filesystem::path wrapper_name(subgraph.get_name() + ".cpp");
+
+    boost::filesystem::path obj_path = package_path / obj_name;
+    boost::filesystem::path header_path = package_path / header_name;
+    boost::filesystem::path wrapper_path = package_path / wrapper_name;
+    products[Halide::Output::object] = obj_path.string();
+    products[Halide::Output::c_header] = header_path.string();
 
     module.compile(products);
+    emit_wrapper_library(wrapper_path.string(), subgraph.get_name());
   }
 }
 
