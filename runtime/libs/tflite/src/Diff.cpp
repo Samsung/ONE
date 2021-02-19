@@ -16,63 +16,12 @@
 
 #include "tflite/Diff.h"
 
-#include "misc/fp32.h"
-
+#include "misc/tensor/DiffSummary.h"
 #include "misc/tensor/IndexFormatter.h"
-#include "misc/tensor/Zipper.h"
-#include "misc/tensor/Comparator.h"
 
 #include <iostream>
 #include <cassert>
-
-class DiffSummary : public nnfw::misc::tensor::Comparator::Observer
-{
-public:
-  DiffSummary()
-    : max_abs_diff_index(0), max_abs_diff_expected{0.0f}, max_abs_diff_obtained{0.0f},
-      max_abs_diff_value{0.0f}, max_rel_diff_index(0), max_rel_diff_expected{0.0f},
-      max_rel_diff_obtained{0.0f}, max_rel_diff_value{0.0f}
-  {
-    // DO NOTHING
-  }
-
-public:
-  void notify(const nnfw::misc::tensor::Index &index, float expected, float obtained) override;
-
-public:
-  nnfw::misc::tensor::Index max_abs_diff_index;
-  float max_abs_diff_expected;
-  float max_abs_diff_obtained;
-  float max_abs_diff_value;
-
-  nnfw::misc::tensor::Index max_rel_diff_index;
-  float max_rel_diff_expected;
-  float max_rel_diff_obtained;
-  float max_rel_diff_value;
-};
-
-void DiffSummary::notify(const nnfw::misc::tensor::Index &index, float expected, float obtained)
-{
-  const auto abs_diff_value = std::fabs(expected - obtained);
-
-  if (max_abs_diff_value < abs_diff_value)
-  {
-    max_abs_diff_index = index;
-    max_abs_diff_value = abs_diff_value;
-    max_abs_diff_expected = expected;
-    max_abs_diff_obtained = obtained;
-  }
-
-  const auto rel_diff_value = nnfw::misc::fp32::relative_diff(expected, obtained);
-
-  if (max_rel_diff_value < rel_diff_value)
-  {
-    max_rel_diff_index = index;
-    max_rel_diff_value = rel_diff_value;
-    max_rel_diff_expected = expected;
-    max_rel_diff_obtained = obtained;
-  }
-}
+#include <map>
 
 template <typename T>
 bool TfLiteInterpMatchApp::compareSingleTensorView(const nnfw::misc::tensor::Reader<T> &expected,
@@ -124,7 +73,7 @@ bool TfLiteInterpMatchApp::compareSingleTensorView<float>(
   const nnfw::misc::tensor::Reader<float> &expected,
   const nnfw::misc::tensor::Reader<float> &obtained, int id) const
 {
-  DiffSummary summary;
+  nnfw::misc::tensor::DiffSummary summary;
 
   assert(expected.shape() == obtained.shape());
   auto diffs = _comparator.compare(expected.shape(), expected, obtained, &summary);
@@ -187,8 +136,6 @@ bool TfLiteInterpMatchApp::compareSingleTensorView<float>(
   }
   return true;
 }
-
-#include <map>
 
 bool TfLiteInterpMatchApp::run(::tflite::Interpreter &interp, ::tflite::Interpreter &nnapi) const
 {
