@@ -25,16 +25,8 @@ namespace luci
 
 bool CircleCeilGraphBuilder::validate(const ValidateArgs &args) const
 {
-  const auto &inputs = args.op.inputs;
-  const auto &outputs = args.op.outputs;
-  if (inputs.size() != 1)
-    return false;
-  if (outputs.size() != 1)
-    return false;
-
   // TODO dtype check
-
-  return true;
+  return GraphBuilder::validate(args, 1);
 }
 
 CircleNode *CircleCeilGraphBuilder::build_node(const circle::OperatorT &,

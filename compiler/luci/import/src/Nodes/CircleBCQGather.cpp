@@ -25,10 +25,7 @@ namespace luci
 
 bool CircleBCQGatherGraphBuilder::validate(const ValidateArgs &args) const
 {
-  if (args.op.inputs.size() != 4)
-    return false;
-
-  return true;
+  return GraphBuilder::validate(args, 4);
 }
 
 CircleNode *CircleBCQGatherGraphBuilder::build_node(const circle::OperatorT &op,

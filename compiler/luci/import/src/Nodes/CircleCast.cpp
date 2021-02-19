@@ -30,14 +30,13 @@ bool CircleCastGraphBuilder::validate(const ValidateArgs &args) const
 {
   LOGGER(l);
 
+  if (!GraphBuilder::validate(args, 1))
+    return false;
+
   auto settings = luci::UserSettings::settings();
 
   const auto &inputs = args.op.inputs;
   const auto &outputs = args.op.outputs;
-  if (inputs.size() != 1)
-    return false;
-  if (outputs.size() != 1)
-    return false;
 
   // NOTE real models do have type mismatch
   const auto *options = args.op.builtin_options.AsCastOptions();
