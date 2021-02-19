@@ -23,10 +23,7 @@ namespace luci
 
 bool CircleMeanGraphBuilder::validate(const ValidateArgs &args) const
 {
-  if (args.op.inputs.size() != 2)
-    return false;
-
-  return true;
+  return GraphBuilder::validate(args, 2);
 }
 
 CircleNode *CircleMeanGraphBuilder::build_node(const circle::OperatorT &op,
