@@ -25,12 +25,8 @@ namespace luci
 
 bool CircleMirrorPadGraphBuilder::validate(const ValidateArgs &args) const
 {
-  if (args.op.inputs.size() != 2)
-    return false;
-
   // TODO check others
-
-  return true;
+  return GraphBuilder::validate(args, 2);
 }
 
 CircleNode *CircleMirrorPadGraphBuilder::build_node(const circle::OperatorT &op,

@@ -25,10 +25,7 @@ namespace luci
 
 bool CircleMaxPool2DGraphBuilder::validate(const ValidateArgs &args) const
 {
-  if (args.op.inputs.size() != 1)
-    return false;
-
-  return true;
+  return GraphBuilder::validate(args, 1);
 }
 
 CircleNode *CircleMaxPool2DGraphBuilder::build_node(const circle::OperatorT &op,
