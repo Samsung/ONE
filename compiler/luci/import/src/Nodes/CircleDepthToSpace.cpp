@@ -27,17 +27,13 @@ namespace luci
 
 bool CircleDepthToSpaceGraphBuilder::validate(const ValidateArgs &args) const
 {
+  if (!GraphBuilder::validate(args, 1))
+    return false;
+
   const auto &inputs = args.op.inputs;
   const auto &outputs = args.op.outputs;
 
   const auto *options = args.op.builtin_options.AsDepthToSpaceOptions();
-
-  if (inputs.size() != 1)
-    return false;
-
-  if (outputs.size() != 1)
-    return false;
-
   const auto &tensors = args.reader.tensors();
 
   if (tensors[outputs[0]]->type != tensors[inputs.at(0)]->type)
