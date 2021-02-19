@@ -25,11 +25,11 @@ namespace luci
 
 bool CircleLogicalAndGraphBuilder::validate(const ValidateArgs &args) const
 {
-  // Only BOOL type is allowed for inputs
-  const auto &inputs = args.op.inputs;
-  if (inputs.size() != 2)
+  if (!GraphBuilder::validate(args, 2))
     return false;
 
+  // Only BOOL type is allowed for inputs
+  const auto &inputs = args.op.inputs;
   const auto &tensors = args.reader.tensors();
   for (auto input : inputs)
   {

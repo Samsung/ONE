@@ -25,20 +25,7 @@ namespace luci
 
 bool CircleL2NormalizeGraphBuilder::validate(const ValidateArgs &args) const
 {
-  const auto &inputs = args.op.inputs;
-  const auto &outputs = args.op.outputs;
-
-  if (inputs.size() != 1)
-  {
-    return false;
-  }
-
-  if (outputs.size() != 1)
-  {
-    return false;
-  }
-
-  return true;
+  return GraphBuilder::validate(args, 1);
 }
 
 CircleNode *CircleL2NormalizeGraphBuilder::build_node(const circle::OperatorT &op,

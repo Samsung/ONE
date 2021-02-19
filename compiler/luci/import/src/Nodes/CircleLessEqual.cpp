@@ -25,19 +25,11 @@ namespace luci
 
 bool CircleLessEqualGraphBuilder::validate(const ValidateArgs &args) const
 {
+  if (!GraphBuilder::validate(args, 2))
+    return false;
+
   const auto &inputs = args.op.inputs;
   const auto &outputs = args.op.outputs;
-
-  if (inputs.size() != 2)
-  {
-    return false;
-  }
-
-  if (outputs.size() != 1)
-  {
-    return false;
-  }
-
   const auto &tensors = args.reader.tensors();
 
   if (tensors[inputs.at(0)]->type != tensors[inputs.at(1)]->type)

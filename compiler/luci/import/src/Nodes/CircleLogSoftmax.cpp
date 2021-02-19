@@ -25,12 +25,8 @@ namespace luci
 
 bool CircleLogSoftmaxGraphBuilder::validate(const ValidateArgs &args) const
 {
-  if (args.op.inputs.size() != 1)
-    return false;
-
   // TODO do attribute checks
-
-  return true;
+  return GraphBuilder::validate(args, 1);
 }
 
 CircleNode *CircleLogSoftmaxGraphBuilder::build_node(const circle::OperatorT &,
