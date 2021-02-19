@@ -25,7 +25,7 @@ namespace luci
 
 bool CircleLogicalNotGraphBuilder::validate(const ValidateArgs &args) const
 {
-  if (args.op.inputs.size() != 1)
+  if (!GraphBuilder::validate(args, 1))
     return false;
 
   // Only BOOL type is allowed for the input

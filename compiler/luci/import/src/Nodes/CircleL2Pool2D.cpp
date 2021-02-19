@@ -25,12 +25,8 @@ namespace luci
 
 bool CircleL2Pool2DGraphBuilder::validate(const ValidateArgs &args) const
 {
-  if (args.op.inputs.size() != 1)
-    return false;
-
   // TODO check dtypes
-
-  return true;
+  return GraphBuilder::validate(args, 1);
 }
 
 CircleNode *CircleL2Pool2DGraphBuilder::build_node(const circle::OperatorT &op,
