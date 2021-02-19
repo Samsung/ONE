@@ -27,15 +27,10 @@ namespace luci
 
 bool CircleGatherNdGraphBuilder::validate(const ValidateArgs &args) const
 {
+  if (!GraphBuilder::validate(args, 2))
+    return false;
+
   const auto &inputs = args.op.inputs;
-  const auto &outputs = args.op.outputs;
-
-  if (inputs.size() != 2)
-    return false;
-
-  if (outputs.size() != 1)
-    return false;
-
   auto &indices_tensor = args.reader.tensors()[inputs.at(1)];
 
   if (!(indices_tensor->type == circle::TensorType::TensorType_INT32 ||

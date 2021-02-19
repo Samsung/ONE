@@ -30,17 +30,13 @@ bool CircleGreaterGraphBuilder::validate(const ValidateArgs &args) const
 {
   LOGGER(l);
 
+  if (!GraphBuilder::validate(args, 2))
+    return false;
+
   auto settings = luci::UserSettings::settings();
 
   const auto &inputs = args.op.inputs;
   const auto &outputs = args.op.outputs;
-
-  if (inputs.size() != 2)
-    return false;
-
-  if (outputs.size() != 1)
-    return false;
-
   const auto &tensors = args.reader.tensors();
 
   if (tensors[inputs.at(0)]->type != tensors[inputs.at(1)]->type)

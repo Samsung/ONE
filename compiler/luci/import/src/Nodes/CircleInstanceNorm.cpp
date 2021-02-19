@@ -25,12 +25,8 @@ namespace luci
 
 bool CircleInstanceNormGraphBuilder::validate(const ValidateArgs &args) const
 {
-  if (args.op.inputs.size() != 3)
-    return false;
-
   // TODO check dtypes
-
-  return true;
+  return GraphBuilder::validate(args, 3);
 }
 
 CircleNode *CircleInstanceNormGraphBuilder::build_node(const circle::OperatorT &op,
