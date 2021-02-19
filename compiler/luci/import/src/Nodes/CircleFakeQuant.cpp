@@ -27,10 +27,7 @@ namespace luci
 
 bool CircleFakeQuantGraphBuilder::validate(const ValidateArgs &args) const
 {
-  if (args.op.inputs.size() != 1)
-    return false;
-
-  return true;
+  return GraphBuilder::validate(args, 1);
 }
 
 CircleNode *CircleFakeQuantGraphBuilder::build_node(const circle::OperatorT &op,
