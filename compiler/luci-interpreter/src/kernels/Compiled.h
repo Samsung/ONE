@@ -30,6 +30,8 @@ class Compiled : public KernelWithParams<CompiledParams>
 public:
   Compiled(std::vector<const Tensor *> inputs, std::vector<Tensor *> output, const CompiledParams &params);
 
+  ~Compiled();
+
   const Tensor *input(int i) const { return _inputs[i]; }
   size_t num_inputs() const { return _inputs.size(); }
   Tensor *output(int i) const { return _outputs[i]; }
@@ -37,6 +39,8 @@ public:
 
   void configure() override;
   void execute() const override;
+private:
+  ConfiguredCompiledFunc _impl;
 };
 
 } // namespace kernels

@@ -26,9 +26,39 @@ namespace luci_interpreter
 namespace kernels
 {
 
+template <typename TensorT>
+static void add_arguemnt_descriptions(std::vector<int> &ranks, std::vector<std::vector<int>> &dims, const std::vector<TensorT *> &tensors)
+{
+  for (int i = 0; i < tensors.size(); ++i)
+  {
+    int rank = tensors[i]->shape().num_dims();
+    ranks.push_back(rank);
+    dims.emplace_back(rank);
+    for (int j = 0; j < rank; ++j)
+    {
+      dims.back()[j] = tensors[i]->shape().dim(j);
+    }
+  }
+}
+
 Compiled::Compiled(std::vector<const Tensor *> inputs, std::vector<Tensor *> outputs, const CompiledParams &params)
   : KernelWithParams<CompiledParams>(std::move(inputs), std::move(outputs), params)
 {
+  std::vector<int> ranks;
+  std::vector<std::vector<int>> dims;
+  add_arguemnt_descriptions(ranks, dims, inputs);
+  add_arguemnt_descriptions(ranks, dims, outputs);
+  std::vector<int*> raw_dims;
+  for (int i = 0; i < dims.size(); ++i)
+  {
+    raw_dims.push_back(dims[i].data());
+  }
+  _impl = params.constructor(ranks.data(), raw_dims.data());
+}
+
+Compiled::~Compiled()
+{
+  _params.destructor(&_impl);
 }
 
 void Compiled::configure()
@@ -41,17 +71,16 @@ void Compiled::configure()
 
 void Compiled::execute() const
 {
-  std::vector<const char *> inputs;
-  std::vector<char *> outputs;
+  std::vector<void *> args(num_inputs() + num_outputs());
   for (int i = 0; i < num_inputs(); ++i)
   {
-    inputs.push_back(input(i)->data<char>());
+    args[i] = const_cast<void *>(input(i)->data<void>());
   }
   for (int i = 0; i < num_outputs(); ++i)
   {
-    outputs.push_back(output(i)->data<char>());
+    args[num_inputs() + i] = output(i)->data<void>();
   }
-  _params.func(inputs, outputs);
+  _impl.wrapper(_impl.configuration, args.data());
 }
 
 } // namespace kernels

@@ -76,12 +76,13 @@
 #include "kernels/Transpose.h"
 #include "kernels/TransposeConv.h"
 
-#include "Halide.h"
 #include "flatbuffers/flexbuffers.h"
 
 #include <stdexcept>
 
 #include <dlfcn.h>
+
+#include <iostream>
 
 namespace luci_interpreter
 {
@@ -99,24 +100,6 @@ static std::vector<const loco::Node *> collectOutputNodes(const luci::CircleNode
               return node1->index() < node2->index();
             });
   return {output_nodes.cbegin(), output_nodes.cend()};
-}
-
-static Halide::Type to_halide_type(loco::DataType dtype)
-{
-  switch (dtype)
-  {
-    case loco::DataType::FLOAT32:
-      return Halide::Type(Halide::Type::Float, 32, 1);
-    case loco::DataType::FLOAT64:
-      return Halide::Type(Halide::Type::Float, 64, 1);
-    case loco::DataType::S32:
-      return Halide::Type(Halide::Type::Int, 32, 1);
-    case loco::DataType::S64:
-      return Halide::Type(Halide::Type::Int, 64, 1);
-    default:
-      assert("NYI");
-  }
-  return Halide::Type();
 }
 
 const Tensor *KernelBuilder::getInputTensor(const loco::Node *node) const
@@ -225,39 +208,6 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleConst *)
   throw std::runtime_error("Const node cannot be executed.");
 }
 
-static void add_argument_halide_buffer(std::vector<Halide::Runtime::Buffer<>> &arguments, const loco::Node *node)
-{
-  const luci::CircleNode *luci_node = static_cast<const luci::CircleNode *>(node);
-  std::vector<int> dims;
-  for (int j = luci_node->rank() - 1; j >= 0; --j)
-  {
-    assert(luci_node->dim(j).known());
-    dims.push_back(luci_node->dim(j).value()); // TODO check if dims order is correct
-  }
-  arguments.emplace_back(to_halide_type(luci_node->dtype()), nullptr, dims);
-  assert(!arguments.back().owns_host_memory());
-}
-
-static auto get_custom_function_impl(const luci::CircleCustom *node) -> void (*)(void **)
-{
-  // get function name
-  const auto &options_buffer = node->custom_options();
-  auto options_map = flexbuffers::GetRoot(options_buffer).AsMap();
-  auto func_name = options_map["func_name"].AsString().str() + "_argv";
-
-  // get pointer from name
-  auto handle = dlopen("libcompiled.so", RTLD_LAZY);
-  if (!handle)
-  {
-    std::cerr << dlerror();
-    exit(EXIT_FAILURE);
-  }
-
-  auto actual_func = reinterpret_cast<void (*)(void **)>(dlsym(handle, func_name.c_str()));
-
-  return actual_func;
-}
-
 static std::vector<luci_interpreter::Shape> get_custom_output_shapes(const std::vector<const loco::Node *> &nodes)
 {
   std::vector<luci_interpreter::Shape> shapes;
@@ -276,45 +226,25 @@ static std::vector<luci_interpreter::Shape> get_custom_output_shapes(const std::
   return shapes;
 }
 
-static CompiledParams::OperationImpl get_custom_function(const luci::CircleCustom *node)
+static std::pair<ConstructorCompiledFunc, DestructorCompiledFunc> get_compiled_function_handles(const luci::CircleCustom *node)
 {
-  std::vector<Halide::Runtime::Buffer<>> arguments;
+  const auto &options_buffer = node->custom_options();
+  auto options_map = flexbuffers::GetRoot(options_buffer).AsMap();
+  std::string base_func_name = options_map["func_name"].AsString().str();
+  auto cst_func_name = "create_" + base_func_name;
+  auto dest_func_name = "free_" + base_func_name;
 
-  std::vector<const loco::Node *> output_nodes = collectOutputNodes<luci::CircleCustomOut>(node);
-
-  for (int i = 0; i < node->numInputs(); ++i)
+  auto handle = dlopen("libcompiled.so", RTLD_LAZY);
+  if (!handle)
   {
-    add_argument_halide_buffer(arguments, node->inputs(i));
+    std::cerr << dlerror();
+    exit(EXIT_FAILURE);
   }
 
-  for (int i = 0; i < output_nodes.size(); ++i)
-  {
-    add_argument_halide_buffer(arguments, output_nodes[i]);
-  }
+  auto constructor = reinterpret_cast<ConstructorCompiledFunc>(dlsym(handle, cst_func_name.c_str()));
+  auto destructor = reinterpret_cast<DestructorCompiledFunc>(dlsym(handle, dest_func_name.c_str()));
 
-  auto actual_func = get_custom_function_impl(node);
-
-  auto impl = [arguments, actual_func](std::vector<const char *> inputs, const std::vector<char *> outputs) mutable
-  {
-    std::vector<void *> raw_arguments; // TODO allocate this on stack, maybe?
-    int num_inputs = inputs.size();
-    int num_outputs = outputs.size();
-    for (int i = 0; i < num_inputs; ++i)
-    {
-      halide_buffer_t *buf = arguments[i].raw_buffer();
-      buf->host = reinterpret_cast<uint8_t*>(const_cast<char *>(inputs[i]));  // a little dirty, but we need this to pass input data to halide generated function
-      raw_arguments.push_back(reinterpret_cast<void *>(buf));
-    }
-    for (int i = 0; i < num_outputs; ++i)
-    {
-      halide_buffer_t *buf = arguments[num_inputs + i].raw_buffer();
-      buf->host = reinterpret_cast<uint8_t*>(outputs[i]);
-      raw_arguments.push_back(reinterpret_cast<void *>(buf));
-    }
-    actual_func(raw_arguments.data());
-  };
-
-  return impl;
+  return {constructor, destructor};
 }
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleCustom *node)
@@ -327,7 +257,8 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleCustom *node)
   std::vector<const loco::Node *> output_nodes = collectOutputNodes<luci::CircleCustomOut>(node);
   std::vector<Tensor *> outputs = getOutputTensors(output_nodes);
 
-  CompiledParams params{get_custom_output_shapes(output_nodes), get_custom_function(node)};
+  auto handles = get_compiled_function_handles(node);
+  CompiledParams params{handles.first, handles.second, get_custom_output_shapes(output_nodes)};
 
   return std::make_unique<kernels::Compiled>(std::move(inputs), std::move(outputs), params);
 }

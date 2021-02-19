@@ -182,11 +182,25 @@ struct UnpackParams
   int axis;
 };
 
+// Compiled Func parameters
+
+using CompiledFuncWrapper = int (*)(char *, void **);
+
+struct ConfiguredCompiledFunc
+{
+  CompiledFuncWrapper wrapper;
+  char *configuration;
+};
+
+using ConstructorCompiledFunc = ConfiguredCompiledFunc (*)(int ranks[], int *dims[]);
+
+using DestructorCompiledFunc = void (*)(ConfiguredCompiledFunc *func);
+
 struct CompiledParams
 {
-  typedef std::function<void (const std::vector<const char *> &inputs, const std::vector<char *> &outputs)> OperationImpl;
+  ConstructorCompiledFunc constructor;
+  DestructorCompiledFunc destructor;
   std::vector<luci_interpreter::Shape> output_shapes;
-  OperationImpl func;
 };
 
 } // namespace luci_interpreter

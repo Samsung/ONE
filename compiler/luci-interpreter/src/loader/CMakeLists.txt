@@ -12,7 +12,7 @@ set_target_properties(luci_interpreter_loader PROPERTIES POSITION_INDEPENDENT_CO
 target_include_directories(luci_interpreter_loader PUBLIC "${LUCI_INTERPRETER_SOURCE_DIR}")
 target_link_libraries(luci_interpreter_loader
     PUBLIC luci_lang luci_interpreter_core
-    PRIVATE luci_interpreter_kernels nncc_common Halide::Halide flatbuffers)
+    PRIVATE luci_interpreter_kernels nncc_common flatbuffers)
 
 if(NOT ENABLE_TEST)
   return()
