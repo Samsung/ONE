@@ -226,7 +226,8 @@ void compute_asym_scale_zp(float min, float max, float &scaling_factor, int64_t 
   zp = nudged_zero_point;
 }
 
-bool get_channel_dim_index(CircleConst *node, loco::TensorShape &dimension, int &channel_dim_index)
+bool get_channel_dim_index(CircleConst *node, loco::TensorShape &dimension,
+                           int32_t &channel_dim_index)
 {
   auto succs = loco::succs(node);
 
