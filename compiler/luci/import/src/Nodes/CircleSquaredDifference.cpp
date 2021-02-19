@@ -25,15 +25,11 @@ namespace luci
 
 bool CircleSquaredDifferenceGraphBuilder::validate(const ValidateArgs &args) const
 {
+  if (!GraphBuilder::validate(args, 2))
+    return false;
+
   const auto &inputs = args.op.inputs;
   const auto &outputs = args.op.outputs;
-
-  if (inputs.size() != 2)
-    return false;
-
-  if (outputs.size() != 1)
-    return false;
-
   // Inputs must be one of the following types
   // bfloat16, half(float16), float32, float64, int32, int64, complex64, complex128
   const auto &tensors = args.reader.tensors();

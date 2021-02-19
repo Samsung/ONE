@@ -25,13 +25,10 @@ namespace luci
 
 bool CircleSelectV2GraphBuilder::validate(const ValidateArgs &args) const
 {
-  const auto &inputs = args.op.inputs;
-  const auto &outputs = args.op.outputs;
-  if (inputs.size() != 3)
-    return false;
-  if (outputs.size() != 1)
+  if (!GraphBuilder::validate(args, 3))
     return false;
 
+  const auto &inputs = args.op.inputs;
   const auto &tensors = args.reader.tensors();
   const auto &condition = tensors.at(inputs.at(0));
   if (condition->type != circle::TensorType_BOOL)

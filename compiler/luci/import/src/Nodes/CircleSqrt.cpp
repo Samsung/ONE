@@ -25,10 +25,7 @@ namespace luci
 
 bool CircleSqrtGraphBuilder::validate(const ValidateArgs &args) const
 {
-  if (args.op.inputs.size() != 1)
-    return false;
-
-  return true;
+  return GraphBuilder::validate(args, 1);
 }
 
 CircleNode *CircleSqrtGraphBuilder::build_node(const circle::OperatorT &,

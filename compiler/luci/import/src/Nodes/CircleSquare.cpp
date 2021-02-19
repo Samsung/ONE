@@ -25,10 +25,10 @@ namespace luci
 
 bool CircleSquareGraphBuilder::validate(const ValidateArgs &args) const
 {
-  const auto &inputs = args.op.inputs;
-  if (inputs.size() != 1)
+  if (!GraphBuilder::validate(args, 1))
     return false;
 
+  const auto &inputs = args.op.inputs;
   // Must be one of the following types
   // bfloat16, half (float16), float32, float64, complex64, complex128
   // Currently, circle supports float16, float32, complex64

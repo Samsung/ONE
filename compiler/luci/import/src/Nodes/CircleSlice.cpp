@@ -27,14 +27,8 @@ namespace luci
 
 bool CircleSliceGraphBuilder::validate(const ValidateArgs &args) const
 {
-  if (args.op.inputs.size() != 3)
-    return false;
-  if (args.op.outputs.size() != 1)
-    return false;
-
   // TODO check shapes and types
-
-  return true;
+  return GraphBuilder::validate(args, 3);
 }
 
 CircleNode *CircleSliceGraphBuilder::build_node(const circle::OperatorT &,

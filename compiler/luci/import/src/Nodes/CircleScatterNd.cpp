@@ -25,10 +25,10 @@ namespace luci
 
 bool CircleScatterNdGraphBuilder::validate(const ValidateArgs &args) const
 {
-  const auto &inputs = args.op.inputs;
-  if (inputs.size() != 3)
+  if (!GraphBuilder::validate(args, 3))
     return false;
 
+  const auto &inputs = args.op.inputs;
   // indices must have the same type as shape
   const auto &tensors = args.reader.tensors();
 
