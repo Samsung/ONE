@@ -29,6 +29,8 @@ size_t const_node_size(const luci::CircleNode *node)
   auto const_node = static_cast<const luci::CircleConst *>(node);
   switch (node->dtype())
   {
+    case loco::DataType::S8:
+      return sizeof(std::int8_t) * const_node->size<loco::DataType::S8>();
     case loco::DataType::S32:
       return sizeof(std::int32_t) * const_node->size<loco::DataType::S32>();
     case loco::DataType::S64:
@@ -49,6 +51,8 @@ Halide::Type halide_type(loco::DataType dtype)
       return Halide::Type(Halide::Type::Float, 32, 1);
     case loco::DataType::FLOAT64:
       return Halide::Type(Halide::Type::Float, 64, 1);
+    case loco::DataType::S8:
+      return Halide::Type(Halide::Type::Int, 8, 1);
     case loco::DataType::S32:
       return Halide::Type(Halide::Type::Int, 32, 1);
     case loco::DataType::S64:

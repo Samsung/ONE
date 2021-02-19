@@ -158,6 +158,15 @@ void CodegenKernelBuilderImpl::visit(luci::CircleConst *node)
 //      }
 //      break;
 //    }
+    case loco::DataType::S8:
+    {
+      size_t size = node->size<loco::DataType::S8>();
+      for (int i = 0; i < size; ++i)
+      {
+        reinterpret_cast<int8_t *>(buf.data())[i] = node->at<loco::DataType::S8>(i);
+      }
+      break;
+    }
     case loco::DataType::S32:
     {
       size_t size = node->size<loco::DataType::S32>();
@@ -315,14 +324,17 @@ void CodegenKernelBuilderImpl::visit(luci::CircleFullyConnected *node)
   Halide::Func input = _subgraph.get_func(node->input());
   Halide::Func weights = _subgraph.get_func(node->weights());
   Halide::Func bias = _subgraph.get_func(node->bias());
+
+  Halide::Type output_type = halide_type(node->dtype());
+
   Halide::Var output_iter;
   int inner_sum_size = static_cast<luci::CircleConst *>(node->weights())->dim(1).value();
   Halide::RDom partial_sum_iter(0, inner_sum_size, "partial_sum_iter");
   Halide::Var batch;
 
   Halide::Func fc = _subgraph.get_func(node);
-  fc(output_iter, batch) = bias(output_iter);
-  fc(output_iter, batch) += weights(partial_sum_iter, output_iter) * input(partial_sum_iter, batch);
+  fc(output_iter, batch) = Halide::cast(output_type, bias(output_iter));
+  fc(output_iter, batch) += Halide::cast(output_type, weights(partial_sum_iter, output_iter)) * Halide::cast(output_type, input(partial_sum_iter, batch));
 }
 
 void CodegenKernelBuilderImpl::visit(luci::CircleNode *)

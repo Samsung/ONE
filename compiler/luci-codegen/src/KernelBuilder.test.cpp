@@ -444,7 +444,7 @@ TEST(codegen_kernels, split)
   compare_arrays<Type<dtype>>(ref_out3_data.data(), res[2].data(), output_size);
 }
 
-TEST(codegen_kernels, fc)
+TEST(codegen_kernels, fc_float)
 {
   std::vector<int> input_shape{1, 3};
   std::vector<int> weights_shape{2, 3};
@@ -504,4 +504,69 @@ TEST(codegen_kernels, fc)
   int output_size = ref_out_data.size();
 
   compare_arrays<Type<dtype>>(ref_out_data.data(), res.data(), output_size);
+}
+
+TEST(codegen_kernels, fc_hybrid_int)
+{
+  std::vector<int> input_shape{1, 3};
+  std::vector<int> weights_shape{2, 3};
+  std::vector<int> bias_shape{2};
+  std::vector<int> output_shape{1, 2};
+
+  std::vector<int8_t> in_data{1, 2, 3};
+  std::vector<int8_t> weights_data{1, 2, 3, 4, 5, 6};
+  std::vector<int32_t> ref_out_data{15, 34};
+  std::vector<int32_t> bias_data{1, 2};
+
+  constexpr auto input_dtype = loco::DataType::S8;
+  constexpr auto output_dtype = loco::DataType::S32;
+  // construct test graph
+  luci::CircleInput input_node;
+  constructBasicNode<input_dtype>(input_node, input_shape);
+
+  luci::CircleConst weights_node;
+  constructBasicNode<input_dtype>(weights_node, weights_shape);
+  fill_data<loco::DataType::S8>(&weights_node, weights_data);
+
+  luci::CircleConst bias_node;
+  constructBasicNode<output_dtype>(bias_node, bias_shape);
+  fill_data<loco::DataType::S32>(&bias_node, bias_data);
+
+  luci::CircleFullyConnected fc;
+  constructBasicNode<output_dtype>(fc, output_shape);
+  fc.input(&input_node);
+  fc.weights(&weights_node);
+  fc.bias(&bias_node);
+  fc.weights_format(luci::CircleFullyConnected::WeightsFormat::DEFAULT);
+
+  luci::CircleOutput output_node;
+
+  constructBasicNode<output_dtype>(output_node, output_shape);
+  output_node.from(&fc);
+
+  ASSERT_TRUE(luci_codegen::KernelBuilder::is_supported(&fc));
+
+  luci_codegen::SubgraphContext subgraph("", {&fc, &weights_node, &bias_node});
+  subgraph.finish_nodes_construction();
+
+  luci_codegen::KernelBuilder builder(subgraph);
+  builder.process();
+
+  Halide::Buffer<Type<input_dtype>> input_buffer(in_data.data(), reverse_vector(input_shape));
+  Halide::Buffer<Type<output_dtype>> res(reverse_vector(output_shape));
+
+  Halide::ImageParam input_param = subgraph.get_inputs()[0].second;
+
+  Halide::ParamMap params;
+  params.set(input_param, input_buffer);
+
+  Halide::Func output_func = subgraph.get_outputs()[0].second;
+
+  output_func.compile_to_lowered_stmt("/proc/self/fd/1", {subgraph.get_inputs().begin()->second});
+
+  output_func.realize(res, Halide::Target(), params);
+
+  int output_size = ref_out_data.size();
+
+  compare_arrays<Type<output_dtype>>(ref_out_data.data(), res.data(), output_size);
 }
