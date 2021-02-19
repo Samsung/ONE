@@ -25,13 +25,10 @@ namespace luci
 
 bool CircleEqualGraphBuilder::validate(const ValidateArgs &args) const
 {
-  const auto &inputs = args.op.inputs;
-
-  if (inputs.size() != 2)
-  {
+  if (!GraphBuilder::validate(args, 2))
     return false;
-  }
 
+  const auto &inputs = args.op.inputs;
   const auto &tensors = args.reader.tensors();
 
   return tensors[inputs.at(0)]->type == tensors[inputs.at(1)]->type;
