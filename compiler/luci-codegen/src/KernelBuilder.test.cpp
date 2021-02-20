@@ -164,14 +164,26 @@ void test_unary_op(const Shape &in_out_shape, DataVector<DType> in_data, const D
 }
 
 template <loco::DataType DType>
-void fill_data(luci::CircleConst *node, const std::vector<Type<DType>> &data)
+void fill_data(luci::CircleConst *node, const Type<DType> *data)
 {
   assert(node->shape_status() == luci::ShapeStatus::VALID);
   int size = 1;
   for (int i = 0; i < node->rank(); ++i)
     size *= node->dim(i).value();
   node->size<DType>(size);
+  for (int i = 0; i < size; ++i)
+    node->at<DType>(i) = data[i];
+}
+
+template <loco::DataType DType>
+void fill_data(luci::CircleConst *node, const std::vector<Type<DType>> data)
+{
+  assert(node->shape_status() == luci::ShapeStatus::VALID);
+  int size = 1;
+  for (int i = 0; i < node->rank(); ++i)
+    size *= node->dim(i).value();
   assert(data.size() == size);
+  node->size<DType>(size);
   for (int i = 0; i < size; ++i)
     node->at<DType>(i) = data[i];
 }
@@ -444,6 +456,64 @@ TEST(codegen_kernels, split)
   compare_arrays<Type<dtype>>(ref_out3_data.data(), res[2].data(), output_size);
 }
 
+struct RawTensor
+{
+  std::vector<int> shape;
+  void *data;
+};
+
+template <loco::DataType input_dtype, loco::DataType weights_dtype, loco::DataType bias_dtype, loco::DataType output_dtype>
+void test_fc(const RawTensor &input, const RawTensor &weights, const RawTensor &bias, const RawTensor &ref_output)
+{
+  // construct test graph
+  luci::CircleInput input_node;
+  constructBasicNode<input_dtype>(input_node, input.shape);
+
+  luci::CircleConst weights_node;
+  constructBasicNode<weights_dtype>(weights_node, weights.shape);
+  fill_data<weights_dtype>(&weights_node, reinterpret_cast<Type<weights_dtype> *>(weights.data));
+
+  luci::CircleConst bias_node;
+  constructBasicNode<bias_dtype>(bias_node, bias.shape);
+  fill_data<bias_dtype>(&bias_node, reinterpret_cast<Type<bias_dtype> *>(bias.data));
+
+  luci::CircleFullyConnected fc;
+  constructBasicNode<output_dtype>(fc, ref_output.shape);
+  fc.input(&input_node);
+  fc.weights(&weights_node);
+  fc.bias(&bias_node);
+  fc.weights_format(luci::CircleFullyConnected::WeightsFormat::DEFAULT);
+
+  luci::CircleOutput output_node;
+
+  constructBasicNode<output_dtype>(output_node, ref_output.shape);
+  output_node.from(&fc);
+
+  ASSERT_TRUE(luci_codegen::KernelBuilder::is_supported(&fc));
+
+  luci_codegen::SubgraphContext subgraph("", {&fc, &weights_node, &bias_node});
+  subgraph.finish_nodes_construction();
+
+  luci_codegen::KernelBuilder builder(subgraph);
+  builder.process();
+
+  Halide::Buffer<Type<input_dtype>> input_buffer(reinterpret_cast<Type<input_dtype> *>(input.data), reverse_vector(input.shape));
+  Halide::Buffer<Type<output_dtype>> res(reverse_vector(ref_output.shape));
+
+  Halide::ImageParam input_param = subgraph.get_inputs()[0].second;
+
+  Halide::ParamMap params;
+  params.set(input_param, input_buffer);
+
+  Halide::Func output_func = subgraph.get_outputs()[0].second;
+
+  output_func.realize(res, Halide::Target(), params);
+
+  int output_size = std::accumulate(ref_output.shape.begin(), ref_output.shape.end(), 1, std::multiplies<int>());
+
+  compare_arrays<Type<output_dtype>>(reinterpret_cast<Type<output_dtype> *>(ref_output.data), res.data(), output_size);
+}
+
 TEST(codegen_kernels, fc_float)
 {
   std::vector<int> input_shape{1, 3};
@@ -457,53 +527,34 @@ TEST(codegen_kernels, fc_float)
   std::vector<float> bias_data{1.f, 2.f};
 
   constexpr auto dtype = loco::DataType::FLOAT32;
-  // construct test graph
-  luci::CircleInput input_node;
-  constructBasicNode<dtype>(input_node, input_shape);
 
-  luci::CircleConst weights_node;
-  constructBasicNode<dtype>(weights_node, weights_shape);
-  fill_data<loco::DataType::FLOAT32>(&weights_node, weights_data);
+  RawTensor input_tensor{input_shape, in_data.data()};
+  RawTensor weights_tensor{weights_shape, weights_data.data()};
+  RawTensor bias_tensor{bias_shape, bias_data.data()};
+  RawTensor ref_output_tensor{output_shape, ref_out_data.data()};
+  test_fc<dtype, dtype, dtype, dtype>(input_tensor, weights_tensor, bias_tensor, ref_output_tensor);
+}
 
-  luci::CircleConst bias_node;
-  constructBasicNode<dtype>(bias_node, bias_shape);
-  fill_data<loco::DataType::FLOAT32>(&bias_node, bias_data);
+TEST(codegen_kernels, fc_matmul_float)
+{
+  // Differs from fc_float by input and output shape
+  std::vector<int> input_shape{2, 3};
+  std::vector<int> weights_shape{2, 3};
+  std::vector<int> bias_shape{2};
+  std::vector<int> output_shape{2, 2};
 
-  luci::CircleFullyConnected fc;
-  constructBasicNode<dtype>(fc, output_shape);
-  fc.input(&input_node);
-  fc.weights(&weights_node);
-  fc.bias(&bias_node);
-  fc.weights_format(luci::CircleFullyConnected::WeightsFormat::DEFAULT);
+  std::vector<float> in_data{1.f, 2.f, 3.f, 4.f, 5.f, 6.f};
+  std::vector<float> weights_data{1.f, 2.f, 3.f, 4.f, 5.f, 6.f};
+  std::vector<float> ref_out_data{15.f, 34.f, 33.f, 79.f};
+  std::vector<float> bias_data{1.f, 2.f};
 
-  luci::CircleOutput output_node;
+  constexpr auto dtype = loco::DataType::FLOAT32;
 
-  constructBasicNode<dtype>(output_node, output_shape);
-  output_node.from(&fc);
-
-  ASSERT_TRUE(luci_codegen::KernelBuilder::is_supported(&fc));
-
-  luci_codegen::SubgraphContext subgraph("", {&fc, &weights_node, &bias_node});
-  subgraph.finish_nodes_construction();
-
-  luci_codegen::KernelBuilder builder(subgraph);
-  builder.process();
-
-  Halide::Buffer<Type<dtype>> input_buffer(in_data.data(), reverse_vector(input_shape));
-  Halide::Buffer<Type<dtype>> res(reverse_vector(output_shape));
-
-  Halide::ImageParam input_param = subgraph.get_inputs()[0].second;
-
-  Halide::ParamMap params;
-  params.set(input_param, input_buffer);
-
-  Halide::Func output_func = subgraph.get_outputs()[0].second;
-
-  output_func.realize(res, Halide::Target(), params);
-
-  int output_size = ref_out_data.size();
-
-  compare_arrays<Type<dtype>>(ref_out_data.data(), res.data(), output_size);
+  RawTensor input_tensor{input_shape, in_data.data()};
+  RawTensor weights_tensor{weights_shape, weights_data.data()};
+  RawTensor bias_tensor{bias_shape, bias_data.data()};
+  RawTensor ref_output_tensor{output_shape, ref_out_data.data()};
+  test_fc<dtype, dtype, dtype, dtype>(input_tensor, weights_tensor, bias_tensor, ref_output_tensor);
 }
 
 TEST(codegen_kernels, fc_hybrid_int)
@@ -520,53 +571,10 @@ TEST(codegen_kernels, fc_hybrid_int)
 
   constexpr auto input_dtype = loco::DataType::S8;
   constexpr auto output_dtype = loco::DataType::S32;
-  // construct test graph
-  luci::CircleInput input_node;
-  constructBasicNode<input_dtype>(input_node, input_shape);
 
-  luci::CircleConst weights_node;
-  constructBasicNode<input_dtype>(weights_node, weights_shape);
-  fill_data<loco::DataType::S8>(&weights_node, weights_data);
-
-  luci::CircleConst bias_node;
-  constructBasicNode<output_dtype>(bias_node, bias_shape);
-  fill_data<loco::DataType::S32>(&bias_node, bias_data);
-
-  luci::CircleFullyConnected fc;
-  constructBasicNode<output_dtype>(fc, output_shape);
-  fc.input(&input_node);
-  fc.weights(&weights_node);
-  fc.bias(&bias_node);
-  fc.weights_format(luci::CircleFullyConnected::WeightsFormat::DEFAULT);
-
-  luci::CircleOutput output_node;
-
-  constructBasicNode<output_dtype>(output_node, output_shape);
-  output_node.from(&fc);
-
-  ASSERT_TRUE(luci_codegen::KernelBuilder::is_supported(&fc));
-
-  luci_codegen::SubgraphContext subgraph("", {&fc, &weights_node, &bias_node});
-  subgraph.finish_nodes_construction();
-
-  luci_codegen::KernelBuilder builder(subgraph);
-  builder.process();
-
-  Halide::Buffer<Type<input_dtype>> input_buffer(in_data.data(), reverse_vector(input_shape));
-  Halide::Buffer<Type<output_dtype>> res(reverse_vector(output_shape));
-
-  Halide::ImageParam input_param = subgraph.get_inputs()[0].second;
-
-  Halide::ParamMap params;
-  params.set(input_param, input_buffer);
-
-  Halide::Func output_func = subgraph.get_outputs()[0].second;
-
-  output_func.compile_to_lowered_stmt("/proc/self/fd/1", {subgraph.get_inputs().begin()->second});
-
-  output_func.realize(res, Halide::Target(), params);
-
-  int output_size = ref_out_data.size();
-
-  compare_arrays<Type<output_dtype>>(ref_out_data.data(), res.data(), output_size);
+  RawTensor input_tensor{input_shape, in_data.data()};
+  RawTensor weights_tensor{weights_shape, weights_data.data()};
+  RawTensor bias_tensor{bias_shape, bias_data.data()};
+  RawTensor ref_output_tensor{output_shape, ref_out_data.data()};
+  test_fc<input_dtype, input_dtype, output_dtype, output_dtype>(input_tensor, weights_tensor, bias_tensor, ref_output_tensor);
 }

@@ -320,7 +320,6 @@ void CodegenKernelBuilderImpl::visit(luci::CircleFullyConnected *node)
 {
   assert(node->weights_format() == luci::CircleFullyConnected::WeightsFormat::DEFAULT);
   assert(node->rank() == 2);
-  assert(node->dim(0) == 1);
   Halide::Func input = _subgraph.get_func(node->input());
   Halide::Func weights = _subgraph.get_func(node->weights());
   Halide::Func bias = _subgraph.get_func(node->bias());
@@ -378,7 +377,7 @@ void KernelBuilder::process()
 static bool is_supported_fc(luci::CircleFullyConnected *fc)
 {
   int outputs = fc->dim(0).value();
-  return outputs == 1 && fc->shape_status() == luci::ShapeStatus::VALID &&
+  return fc->shape_status() == luci::ShapeStatus::VALID &&
       fc->weights_format() == luci::CircleFullyConnected::WeightsFormat::DEFAULT;
 }
 
