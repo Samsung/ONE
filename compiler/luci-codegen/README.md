@@ -129,12 +129,75 @@ Common usage looks like:
 
 Note that this code will transform `luci_module` structure, it should be saved separately.
 
-#Wrappers
+##Wrappers
+
+Wrappers provides simple portable interface to generated code.
+
+Related structures and methods of this interface are the following:
+
+```c++
+using CompiledFuncWrapper = int (*)(char *, void **);
+
+struct ConfiguredCompiledFunc
+{
+  CompiledFuncWrapper wrapper;
+  char *configuration;
+};
+
+using ConstructorCompiledFunc = ConfiguredCompiledFunc (*)(int ranks[], int *dims[]);
+
+using DestructorCompiledFunc = void (*)(ConfiguredCompiledFunc *func);
+```
+
+Let's take a look at example:
+
+After processing graph contains compiled operator with name `generated_subgraph_0`.
+This means generated library will contain functions `create_generated_subgraph_0` and `free_generated_subgraph_0`
+of types `ConstructorCompiledFunc` and `DestructorCompiledFunc` respectively.
+
+To run compiled operator:
+
+
+```
+  // First fill information about input and output tensor shapes
+  // for example this compiled operator has:
+  // - two inputs with shapes {1, 2} and {2, 3}
+  // - one output with shape {3, 4, 5}
+  // input and output buffers can be accessed from pointers input1_buf, input2_buf, output_buf
+
+int ranks[] = {2, 2, 3};
+int input1_dims[] = {1, 2};
+int input2_dims[] = {2, 3};
+int output_dims[] = {3, 4, 5};
+int *dims[] = {input1_dims, input2_dims, output_dims};
+
+  // this call allocates ConfiguredCompiledFunc::configuration array and initializes needed structures
+ConfiguredCompiledFunc compiled_func = create_generated_subgraph_0(ranks, dims);
+
+void *buffers[] = {input1_buf, input2_buf, output_buf};
+
+  // actual computations
+compiled_func.wrapper(compiled_func.configuration, buffers);
+
+  // This call release resources and deallocates ConfiguredCompiledFunc::configuration array
+  // Note that ConfiguredCompileFunc structure still exists, but is not valid anymore.
+free_generated_subgraph_0(compiled_func);
+```
+
+#####Rationale
 
 TBD
 
-#Examples
+##Class diagram
+
+TBD
+
+##Examples
 
 Original graph | Compiled graph
 -------------- | --------------
-![example_graph_original](docs/example_graph_original.jpg) | ![example_graph_compiled](docs/example_graph_compiled.jpg) 
+![example_graph_original](docs/example_graph_original.jpg) | ![example_graph_compiled](docs/example_graph_compiled.jpg)
+
+##Limitations
+
+TBD
