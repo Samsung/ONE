@@ -41,6 +41,7 @@ public:
   void execute() const override;
 private:
   ConfiguredCompiledFunc _impl;
+  std::unique_ptr<std::vector<void *>> _args;
 };
 
 } // namespace kernels

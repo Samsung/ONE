@@ -200,6 +200,7 @@ struct CompiledParams
 {
   ConstructorCompiledFunc constructor;
   DestructorCompiledFunc destructor;
+  std::vector<luci_interpreter::Shape> input_shapes;
   std::vector<luci_interpreter::Shape> output_shapes;
 };
 

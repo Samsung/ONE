@@ -26,28 +26,27 @@ namespace luci_interpreter
 namespace kernels
 {
 
-template <typename TensorT>
-static void add_arguemnt_descriptions(std::vector<int> &ranks, std::vector<std::vector<int>> &dims, const std::vector<TensorT *> &tensors)
+static void add_argument_descriptions(std::vector<int> &ranks, std::vector<std::vector<int>> &dims, const std::vector<luci_interpreter::Shape> &shapes)
 {
-  for (int i = 0; i < tensors.size(); ++i)
+  for (int i = 0; i < shapes.size(); ++i)
   {
-    int rank = tensors[i]->shape().num_dims();
+    int rank = shapes[i].num_dims();
     ranks.push_back(rank);
     dims.emplace_back(rank);
     for (int j = 0; j < rank; ++j)
     {
-      dims.back()[j] = tensors[i]->shape().dim(j);
+      dims.back()[j] = shapes[i].dim(j);
     }
   }
 }
 
 Compiled::Compiled(std::vector<const Tensor *> inputs, std::vector<Tensor *> outputs, const CompiledParams &params)
-  : KernelWithParams<CompiledParams>(std::move(inputs), std::move(outputs), params)
+  : KernelWithParams<CompiledParams>(std::move(inputs), std::move(outputs), params), _args(std::make_unique<std::vector<void*>>(num_inputs() + num_outputs()))
 {
   std::vector<int> ranks;
   std::vector<std::vector<int>> dims;
-  add_arguemnt_descriptions(ranks, dims, inputs);
-  add_arguemnt_descriptions(ranks, dims, outputs);
+  add_argument_descriptions(ranks, dims, params.input_shapes);
+  add_argument_descriptions(ranks, dims, params.output_shapes);
   std::vector<int*> raw_dims;
   for (int i = 0; i < dims.size(); ++i)
   {
@@ -71,16 +70,15 @@ void Compiled::configure()
 
 void Compiled::execute() const
 {
-  std::vector<void *> args(num_inputs() + num_outputs());
   for (int i = 0; i < num_inputs(); ++i)
   {
-    args[i] = const_cast<void *>(input(i)->data<void>());
+    (*_args)[i] = const_cast<void *>(input(i)->data<void>());
   }
   for (int i = 0; i < num_outputs(); ++i)
   {
-    args[num_inputs() + i] = output(i)->data<void>();
+    (*_args)[num_inputs() + i] = output(i)->data<void>();
   }
-  _impl.wrapper(_impl.configuration, args.data());
+  _impl.wrapper(_impl.configuration, _args->data());
 }
 
 } // namespace kernels
