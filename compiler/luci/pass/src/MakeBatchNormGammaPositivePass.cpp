@@ -57,10 +57,6 @@ bool is_batchnorm_add(const luci::CircleAdd *add)
   if (constant->rank() != 1)
     return false;
 
-  // Only support Relu
-  if (add->fusedActivationFunction() != luci::FusedActFunc::RELU)
-    return false;
-
   auto channel_dim = constant->dim(0);
   if (!(channel_dim == add->dim(add->rank() - 1)))
     return false;
@@ -100,6 +96,9 @@ bool is_batchnorm_mul(const luci::CircleMul *mul, luci::CircleConst *&gamma)
     return false;
 
   if (!is_batchnorm_add(add))
+    return false;
+  // Only support Relu
+  if (add->fusedActivationFunction() != luci::FusedActFunc::RELU)
     return false;
 
   gamma = constant;

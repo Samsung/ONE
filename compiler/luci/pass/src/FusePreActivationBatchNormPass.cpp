@@ -83,9 +83,6 @@ bool is_batchnorm_add(const luci::CircleAdd *add, luci::CircleMul *&mul, luci::C
   luci::CircleMul *pred = nullptr;
   luci::CircleConst *constant = nullptr;
 
-  if (add->fusedActivationFunction() != luci::FusedActFunc::RELU)
-    return false;
-
   if (x->opcode() == luci::CircleOpcode::CIRCLECONST && y->opcode() == luci::CircleOpcode::MUL)
   {
     pred = loco::must_cast<luci::CircleMul *>(y);
@@ -569,6 +566,8 @@ bool swap_mul_add(luci::CircleAdd *add, std::vector<luci::CircleMul *> &mul_list
   luci::CircleConst *gamma = nullptr;
 
   if (!is_batchnorm_add(add, mul, beta))
+    return false;
+  if (add->fusedActivationFunction() != luci::FusedActFunc::RELU)
     return false;
 
   if (loco::succs(mul).size() != 1)
