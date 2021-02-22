@@ -19,7 +19,6 @@ target_link_libraries(enco_tflite_frontend enco_intf_frontend)
 target_link_libraries(enco_tflite_frontend enco_intf_cmdline)
 target_link_libraries(enco_tflite_frontend flatbuffers)
 target_link_libraries(enco_tflite_frontend enco_tflite_schema)
-target_link_libraries(enco_tflite_frontend stdex)
 target_link_libraries(enco_tflite_frontend morph)
 target_link_libraries(enco_tflite_frontend cwrap)
 

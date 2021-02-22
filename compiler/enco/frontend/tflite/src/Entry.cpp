@@ -19,12 +19,11 @@
 
 #include <cmdline/View.h>
 
-#include <stdex/Memory.h>
-
+#include <memory>
 #include <fstream>
 #include <cassert>
 
-using stdex::make_unique;
+using std::make_unique;
 
 extern "C" std::unique_ptr<enco::Frontend> make_frontend(const cmdline::View &cmdline)
 {

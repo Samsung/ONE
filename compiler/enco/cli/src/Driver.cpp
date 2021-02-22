@@ -135,8 +135,7 @@ private:
 
 } // namespace
 
-#include <stdex/Memory.h>
-
+#include <memory>
 #include <map>
 
 #include <iostream>
@@ -153,7 +152,7 @@ static int entry(int argc, char **argv)
   std::map<std::string, std::function<void(const std::string &arg)>> argparse;
 
   argparse["--frontend"] = [&](const std::string &path) {
-    frontend_zone = stdex::make_unique<FrontendZone>(path);
+    frontend_zone = std::make_unique<FrontendZone>(path);
   };
 
   argparse["--frontend-arg"] = [&](const std::string &arg) { frontend_zone->append(arg); };

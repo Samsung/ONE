@@ -16,12 +16,10 @@
 
 #include "Session.h"
 
-#include <stdex/Memory.h>
-
 #include <map>
 #include <memory>
 
-using stdex::make_unique;
+using std::make_unique;
 
 namespace
 {

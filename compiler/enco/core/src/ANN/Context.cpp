@@ -16,12 +16,12 @@
 
 #include "ANN/Context.h"
 
-#include <stdex/Memory.h>
+#include <memory>
 
 ANNBinder *ANNContext::create(coco::Block *blk)
 {
-  auto mod = stdex::make_unique<ann::Module>();
-  auto obj = stdex::make_unique<ANNBinder>(blk, std::move(mod));
+  auto mod = std::make_unique<ann::Module>();
+  auto obj = std::make_unique<ANNBinder>(blk, std::move(mod));
   auto ptr = obj.get();
 
   _binders.emplace_back(std::move(obj));

@@ -18,11 +18,10 @@
 #include "Split.h"
 #include "Dims.h"
 
-#include <stdex/Memory.h>
-
+#include <memory>
 #include <map>
 
-using stdex::make_unique;
+using std::make_unique;
 
 namespace
 {

@@ -44,13 +44,12 @@
 #include "Transforms/Split.h"
 #include "Transforms/GlobalDataGeneration.h"
 
-#include <stdex/Memory.h>
-
+#include <memory>
 #include <stdexcept>
 #include <iostream>
 #include <fstream>
 
-using stdex::make_unique;
+using std::make_unique;
 using namespace enco;
 
 namespace

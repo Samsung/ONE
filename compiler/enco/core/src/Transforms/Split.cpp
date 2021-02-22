@@ -22,13 +22,13 @@
 #include <coco/IR.h>
 
 #include <nncc/core/ADT/kernel/NHWCLayout.h>
-#include <stdex/Memory.h>
 
+#include <memory>
 #include <map>
 #include <stdexcept>
 #include <functional>
 
-using stdex::make_unique;
+using std::make_unique;
 
 namespace
 {

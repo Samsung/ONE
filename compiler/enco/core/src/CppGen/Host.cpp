@@ -18,8 +18,7 @@
 
 #include <pp/EnclosedDocument.h>
 
-#include <stdex/Memory.h>
-
+#include <memory>
 #include <map>
 #include <string>
 
@@ -293,7 +292,7 @@ std::unique_ptr<pp::MultiLineText> HostBlockCompiler::compile(const coco::Block 
 {
   InstrPrinter prn{_mem};
 
-  auto res = stdex::make_unique<pp::LinearDocument>();
+  auto res = std::make_unique<pp::LinearDocument>();
 
   for (auto ins = blk->instr()->head(); ins; ins = ins->next())
   {
