@@ -369,6 +369,26 @@ bool is_NCHW_with_const(const luci::CircleAdd *node, luci::CircleNode *&pred_nod
     return false;
 }
 
+template <class T> bool convert_unary_features(T *node)
+{
+  const auto pred_node = loco::must_cast<luci::CircleNode *>(node->features());
+  auto pre_trans = create_pre_transpose(node);
+  pre_trans->a(pred_node);
+  node->features(pre_trans);
+
+  // Do shape inference for this node again.
+  // TODO Remove loco::shape_erase()
+  loco::shape_erase(node);
+  node->shape_status(luci::ShapeStatus::UNDEFINED);
+
+  auto post_trans = create_post_transpose(node);
+  loco::replace(node).with(post_trans);
+
+  post_trans->a(node);
+
+  return true;
+}
+
 class ConvertNCHWToNHWC final : public luci::CircleNodeMutableVisitor<bool>
 {
   // Default
@@ -508,22 +528,7 @@ class ConvertNCHWToNHWC final : public luci::CircleNodeMutableVisitor<bool>
 
   bool visit(luci::CircleLeakyRelu *node)
   {
-    const auto pred_node = loco::must_cast<luci::CircleNode *>(node->features());
-    auto pre_trans = create_pre_transpose(node);
-    pre_trans->a(pred_node);
-    node->features(pre_trans);
-
-    // Do shape inference for this node again.
-    // TODO Remove loco::shape_erase()
-    loco::shape_erase(node);
-    node->shape_status(luci::ShapeStatus::UNDEFINED);
-
-    auto post_trans = create_post_transpose(node);
-    loco::replace(node).with(post_trans);
-
-    post_trans->a(node);
-
-    return true;
+    return convert_unary_features<luci::CircleLeakyRelu>(node);
   }
 
   bool visit(luci::CircleMul *node)
@@ -612,45 +617,9 @@ class ConvertNCHWToNHWC final : public luci::CircleNodeMutableVisitor<bool>
     return true;
   }
 
-  bool visit(luci::CircleRelu *node)
-  {
-    const auto pred_node = loco::must_cast<luci::CircleNode *>(node->features());
-    auto pre_trans = create_pre_transpose(node);
-    pre_trans->a(pred_node);
-    node->features(pre_trans);
+  bool visit(luci::CircleRelu *node) { return convert_unary_features<luci::CircleRelu>(node); }
 
-    // Do shape inference for this node again.
-    // TODO Remove loco::shape_erase()
-    loco::shape_erase(node);
-    node->shape_status(luci::ShapeStatus::UNDEFINED);
-
-    auto post_trans = create_post_transpose(node);
-    loco::replace(node).with(post_trans);
-
-    post_trans->a(node);
-
-    return true;
-  }
-
-  bool visit(luci::CircleRelu6 *node)
-  {
-    const auto pred_node = loco::must_cast<luci::CircleNode *>(node->features());
-    auto pre_trans = create_pre_transpose(node);
-    pre_trans->a(pred_node);
-    node->features(pre_trans);
-
-    // Do shape inference for this node again.
-    // TODO Remove loco::shape_erase()
-    loco::shape_erase(node);
-    node->shape_status(luci::ShapeStatus::UNDEFINED);
-
-    auto post_trans = create_post_transpose(node);
-    loco::replace(node).with(post_trans);
-
-    post_trans->a(node);
-
-    return true;
-  }
+  bool visit(luci::CircleRelu6 *node) { return convert_unary_features<luci::CircleRelu6>(node); }
 };
 
 } // namespace
