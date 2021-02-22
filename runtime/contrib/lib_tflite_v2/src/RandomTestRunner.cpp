@@ -1,0 +1,133 @@
+/*
+ * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+#include "tflite/CopyInputInitializer.h"
+#include "tflite/RandomInputInitializer.h"
+#include "tflite/RandomTestRunner.h"
+#include "tflite/Diff.h"
+#include "tflite/TensorLogger.h"
+#include "tflite/OutputResetter.h"
+
+#include <misc/tensor/IndexIterator.h>
+#include <misc/tensor/Object.h>
+#include <misc/EnvVar.h>
+#include <misc/fp32.h>
+
+#include <tensorflow/lite/c/c_api_experimental.h>
+
+#include <cassert>
+#include <map>
+#include <functional>
+#include <iostream>
+
+namespace nnfw
+{
+namespace tflite
+{
+
+using namespace std::placeholders;
+
+void RandomTestRunner::compile(const TfLiteModel *model)
+{
+  auto tfl_option = TfLiteInterpreterOptionsCreate();
+  TfLiteInterpreterOptionsSetUseNNAPI(tfl_option, false);
+  _tfl_interp = TfLiteInterpreterCreate(model, tfl_option);
+
+  auto nnapi_option = TfLiteInterpreterOptionsCreate();
+  TfLiteInterpreterOptionsSetUseNNAPI(nnapi_option, true);
+  _nnapi = TfLiteInterpreterCreate(model, nnapi_option);
+
+  // Allocate Tensors
+  TfLiteInterpreterAllocateTensors(_tfl_interp);
+  TfLiteInterpreterAllocateTensors(_nnapi);
+}
+
+int RandomTestRunner::run(size_t running_count, size_t input_set)
+{
+  for (size_t n = 1; n <= input_set; ++n)
+  {
+    OutputResetter resetter;
+    resetter.run(_tfl_interp);
+    resetter.run(_nnapi);
+
+    RandomInputInitializer initializer{_randgen};
+    initializer.run(_tfl_interp);
+
+    CopyInputInitializer copy_initializer{_tfl_interp};
+    copy_initializer.run(_nnapi);
+
+    std::cout << "[NNAPI TEST #" << n << "] Run T/F Lite Interpreter without NNAPI" << std::endl;
+    TfLiteInterpreterInvoke(_tfl_interp);
+
+    for (size_t i = 1; i <= running_count; ++i)
+    {
+      std::cout << "[NNAPI TEST #" << n << "-" << i << "] Run T/F Lite Interpreter with NNAPI"
+                << std::endl;
+
+      TfLiteInterpreterInvoke(_nnapi);
+
+      // Compare OFM
+      std::cout << "[NNAPI TEST #" << n << "-" << i << "] Compare the result" << std::endl;
+
+      const auto tolerance = _param.tolerance;
+
+      auto equals = [tolerance](float lhs, float rhs) {
+        // NOTE Hybrid approach
+        // TODO Allow users to set tolerance for absolute_epsilon_equal
+        if (nnfw::misc::fp32::absolute_epsilon_equal(lhs, rhs))
+        {
+          return true;
+        }
+
+        return nnfw::misc::fp32::epsilon_equal(lhs, rhs, tolerance);
+      };
+
+      nnfw::misc::tensor::Comparator comparator(equals);
+      TfLiteInterpMatchApp app(comparator);
+
+      app.verbose() = _param.verbose;
+
+      bool res = app.run(_tfl_interp, _nnapi);
+
+      if (!res)
+      {
+        return 255;
+      }
+
+      std::cout << "[NNAPI TEST #" << n << "-" << i << "] PASSED" << std::endl << std::endl;
+
+      if (_param.tensor_logging)
+        nnfw::tflite::TensorLogger::get().save(_param.log_path, _tfl_interp);
+    }
+  }
+
+  return 0;
+}
+
+RandomTestRunner RandomTestRunner::make(uint32_t seed)
+{
+  RandomTestParam param;
+
+  param.verbose = nnfw::misc::EnvVar("VERBOSE").asInt(0);
+  param.tolerance = nnfw::misc::EnvVar("TOLERANCE").asInt(1);
+  param.tensor_logging = nnfw::misc::EnvVar("TENSOR_LOGGING").asBool(false);
+  param.log_path = nnfw::misc::EnvVar("TENSOR_LOGGING").asString("tensor_log.txt");
+
+  return RandomTestRunner{seed, param};
+}
+
+} // namespace tflite
+} // namespace nnfw
