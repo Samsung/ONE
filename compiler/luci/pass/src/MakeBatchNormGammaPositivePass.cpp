@@ -40,27 +40,39 @@ bool negative_gamma_to_positive(luci::CircleConst *gamma)
 }
 
 // Check if add is batchnorm add
-bool is_batchnorm_add(const luci::CircleAdd *add)
+bool is_batchnorm_add(const luci::CircleAdd *add, luci::CircleMul *&mul, luci::CircleConst *&beta)
 {
-  auto x = dynamic_cast<luci::CircleConst *>(add->x());
-  auto y = dynamic_cast<luci::CircleConst *>(add->y());
+  auto x = loco::must_cast<luci::CircleNode *>(add->x());
+  auto y = loco::must_cast<luci::CircleNode *>(add->y());
 
+  luci::CircleMul *pred = nullptr;
   luci::CircleConst *constant = nullptr;
 
-  if (x != nullptr && y == nullptr)
-    constant = x;
-  else if (x == nullptr && y != nullptr)
-    constant = y;
+  if (x->opcode() == luci::CircleOpcode::CIRCLECONST && y->opcode() == luci::CircleOpcode::MUL)
+  {
+    pred = loco::must_cast<luci::CircleMul *>(y);
+    constant = loco::must_cast<luci::CircleConst *>(x);
+  }
+  else if (x->opcode() == luci::CircleOpcode::MUL && y->opcode() == luci::CircleOpcode::CIRCLECONST)
+  {
+    pred = loco::must_cast<luci::CircleMul *>(x);
+    constant = loco::must_cast<luci::CircleConst *>(y);
+  }
   else
+  {
     return false;
+  }
 
   if (constant->rank() != 1)
     return false;
 
   auto channel_dim = constant->dim(0);
+  // Assumption: Layout is channel-last
   if (!(channel_dim == add->dim(add->rank() - 1)))
     return false;
 
+  mul = pred;
+  beta = constant;
   return true;
 }
 
@@ -91,18 +103,29 @@ bool is_batchnorm_mul(const luci::CircleMul *mul, luci::CircleConst *&gamma)
   if (succs.size() != 1)
     return false;
 
-  auto add = dynamic_cast<luci::CircleAdd *>(*succs.begin());
-  if (add == nullptr)
+  gamma = constant;
+  return true;
+}
+
+bool make_positive_gamma(luci::CircleAdd *add)
+{
+  luci::CircleMul *mul = nullptr;
+  luci::CircleConst *beta = nullptr;
+  luci::CircleConst *gamma = nullptr;
+
+  if (!is_batchnorm_add(add, mul, beta))
     return false;
 
-  if (!is_batchnorm_add(add))
+  if (loco::succs(mul).size() != 1)
+    return false;
+
+  if (!is_batchnorm_mul(mul, gamma))
     return false;
   // Only support Relu
   if (add->fusedActivationFunction() != luci::FusedActFunc::RELU)
     return false;
 
-  gamma = constant;
-  return true;
+  return negative_gamma_to_positive(gamma);
 }
 
 } // namespace
@@ -115,13 +138,12 @@ bool MakeBatchNormGammaPositivePass::run(loco::Graph *g)
   bool changed = false;
   for (auto node : loco::active_nodes(loco::output_nodes(g)))
   {
-    auto mul = dynamic_cast<luci::CircleMul *>(node);
-    if (mul == nullptr)
+    auto add = dynamic_cast<luci::CircleAdd *>(node);
+    if (add == nullptr)
       continue;
 
-    luci::CircleConst *gamma;
-    if (is_batchnorm_mul(mul, gamma))
-      changed = negative_gamma_to_positive(gamma);
+    if (make_positive_gamma(add))
+      changed = true;
   }
   return changed;
 }
