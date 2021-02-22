@@ -52,9 +52,10 @@ struct RandomizeAction final : public nnkit::Action
 };
 
 #include <nnkit/CmdlineArguments.h>
-#include <stdex/Memory.h>
+
+#include <memory>
 
 extern "C" std::unique_ptr<nnkit::Action> make_action(const nnkit::CmdlineArguments &args)
 {
-  return stdex::make_unique<RandomizeAction>();
+  return std::make_unique<RandomizeAction>();
 }

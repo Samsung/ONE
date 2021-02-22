@@ -92,9 +92,10 @@ private:
 };
 
 #include <nnkit/CmdlineArguments.h>
-#include <stdex/Memory.h>
+
+#include <memory>
 
 extern "C" std::unique_ptr<nnkit::Action> make_action(const nnkit::CmdlineArguments &args)
 {
-  return stdex::make_unique<HD5ImportAction>(args.at(0));
+  return std::make_unique<HD5ImportAction>(args.at(0));
 }

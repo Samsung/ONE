@@ -141,8 +141,7 @@ private:
 };
 } // namespace
 
-#include <stdex/Memory.h>
-
+#include <memory>
 #include <map>
 #include <iostream>
 
@@ -170,7 +169,7 @@ int main(int argc, char **argv)
   std::map<std::string, std::function<void(const std::string &arg)>> argparse;
 
   argparse["--backend"] = [&sections](const std::string &tag) {
-    sections.backend = stdex::make_unique<BackendSection>(tag);
+    sections.backend = std::make_unique<BackendSection>(tag);
   };
 
   argparse["--backend-arg"] = [&sections](const std::string &arg) {
