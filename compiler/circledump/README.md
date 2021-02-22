@@ -67,5 +67,4 @@ O T(3) ofm
 
 - mio-circle
 - safemain
-- stdex
 - FlatBuffers
