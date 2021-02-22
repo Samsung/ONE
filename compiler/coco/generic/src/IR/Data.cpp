@@ -19,13 +19,12 @@
 #include <nncc/core/ADT/kernel/NCHWLayout.h>
 #include <nncc/core/ADT/kernel/Overlay.h>
 
-#include <stdex/Memory.h>
-
+#include <memory>
 #include <map>
 
 using namespace nncc::core::ADT;
 
-using stdex::make_unique;
+using std::make_unique;
 
 namespace
 {

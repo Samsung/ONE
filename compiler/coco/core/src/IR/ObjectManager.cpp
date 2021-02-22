@@ -19,11 +19,10 @@
 #include "coco/IR/FeatureObject.h"
 #include "coco/IR/KernelObject.h"
 
-#include <stdex/Memory.h>
-
+#include <memory>
 #include <cassert>
 
-using stdex::make_unique;
+using std::make_unique;
 
 namespace coco
 {

@@ -19,13 +19,13 @@
 
 #include "coco/IR/FeatureObject.h"
 
-#include <stdex/Memory.h>
+#include <memory>
 
 #include "Producer.mock.h"
 
 #include <gtest/gtest.h>
 
-using stdex::make_unique;
+using std::make_unique;
 
 namespace
 {

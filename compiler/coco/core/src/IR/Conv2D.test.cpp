@@ -20,11 +20,9 @@
 #include <vector>
 #include <memory>
 
-#include <stdex/Memory.h>
-
 #include <gtest/gtest.h>
 
-using stdex::make_unique;
+using std::make_unique;
 
 namespace
 {

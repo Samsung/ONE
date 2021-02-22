@@ -7,7 +7,6 @@ target_include_directories(coco_core PUBLIC include)
 # NOTE Some coco_core PUBLIC headers include angkor headers
 target_link_libraries(coco_core PUBLIC angkor)
 target_link_libraries(coco_core PRIVATE pepper_assert)
-target_link_libraries(coco_core PRIVATE stdex)
 # Let's apply nncc common compile options
 # NOTE This will enable strict compilation (warnings as error).
 #      Please refer to top-level CMakeLists.txt for details
@@ -22,4 +21,3 @@ nnas_find_package(GTest REQUIRED)
 
 GTest_AddTest(coco_core_test ${TESTS})
 target_link_libraries(coco_core_test coco_core)
-target_link_libraries(coco_core_test stdex)

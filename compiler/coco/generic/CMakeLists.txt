@@ -5,7 +5,6 @@ list(REMOVE_ITEM SOURCES ${TESTS})
 add_library(coco_generic SHARED ${SOURCES})
 target_include_directories(coco_generic PUBLIC include)
 target_link_libraries(coco_generic PUBLIC coco_core)
-target_link_libraries(coco_generic PRIVATE stdex)
 target_link_libraries(coco_generic PRIVATE nncc_common)
 
 if(NOT ENABLE_TEST)
@@ -17,6 +16,3 @@ nnas_find_package(GTest REQUIRED)
 
 GTest_AddTest(coco_generic_test ${TESTS})
 target_link_libraries(coco_generic_test coco_generic)
-# stdex is a PRIVATE dependency of coco_generic, and thus is not linked to coco_generic_test
-# even though coco_generic_test is linked to coco_generic
-target_link_libraries(coco_generic_test stdex)
