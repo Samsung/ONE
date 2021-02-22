@@ -32,17 +32,17 @@ using namespace luci::test;
  *
  *  BEFORE
  *
- *         [Conv1]
+ *     [CircleConv2D]
  *           |
- *     [Activation func]
+ *      [CircleRelu]
  *           |
- *         [Conv2]
+ *     [CircleConv2D]
  *
  *  AFTER
  *
- *   [Conv1 + Activation func]
+ *     [CircleConv2D]
  *           |
- *         [Conv2]
+ *     [CircleConv2D]
  *
  */
 class ConvReluConvGraphlet
