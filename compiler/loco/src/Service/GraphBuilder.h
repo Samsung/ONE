@@ -20,10 +20,8 @@
 // loco-internal headers
 #include "loco/IR/Graph.h"
 
-// repo-internal headers
-#include <stdex/Memory.h>
-
 // C++ standard headers
+#include <memory>
 #include <stack>
 
 //
@@ -108,7 +106,7 @@ private:
 
 static inline std::unique_ptr<GraphBuilder> make_graph_builder(loco::Graph *g)
 {
-  return stdex::make_unique<GraphBuilder>(g);
+  return std::make_unique<GraphBuilder>(g);
 }
 
 // "InputLayer" creates both GraphInput and Pull node at once
@@ -159,7 +157,7 @@ struct InputLayer final
 
     ctx->stack()->push(pull_node);
 
-    return stdex::make_unique<Return>(graph_input, pull_node);
+    return std::make_unique<Return>(graph_input, pull_node);
   }
 };
 
@@ -205,7 +203,7 @@ struct OutputLayer final
 
     ctx->stack()->push(push_node);
 
-    return stdex::make_unique<Return>(graph_output, push_node);
+    return std::make_unique<Return>(graph_output, push_node);
   }
 };
 
@@ -236,7 +234,7 @@ struct ReLULayer final
 
     ctx->stack()->push(relu_node);
 
-    return stdex::make_unique<Return>(relu_node);
+    return std::make_unique<Return>(relu_node);
   }
 };
 
@@ -263,7 +261,7 @@ struct ConstGenLayer final
 
     ctx->stack()->push(const_node);
 
-    return stdex::make_unique<Return>(const_node);
+    return std::make_unique<Return>(const_node);
   }
 };
 
@@ -283,7 +281,7 @@ struct FeatureEncodeLayer final
     Return *perm(const loco::Permutation<loco::Domain::Feature> &perm)
     {
       using namespace loco;
-      _node->encoder(stdex::make_unique<PermutingEncoder<Domain::Feature>>(perm));
+      _node->encoder(std::make_unique<PermutingEncoder<Domain::Feature>>(perm));
       return this;
     }
 
@@ -302,7 +300,7 @@ struct FeatureEncodeLayer final
 
     ctx->stack()->push(encode_node);
 
-    return stdex::make_unique<Return>(encode_node);
+    return std::make_unique<Return>(encode_node);
   }
 };
 
@@ -320,7 +318,7 @@ struct FeatureDecodeLayer final
     Return *perm(const loco::Permutation<loco::Domain::Feature> &perm)
     {
       using namespace loco;
-      _node->decoder(stdex::make_unique<PermutingDecoder<Domain::Feature>>(perm));
+      _node->decoder(std::make_unique<PermutingDecoder<Domain::Feature>>(perm));
       return this;
     }
 
@@ -341,7 +339,7 @@ struct FeatureDecodeLayer final
 
     ctx->stack()->push(decode_node);
 
-    return stdex::make_unique<Return>(decode_node);
+    return std::make_unique<Return>(decode_node);
   }
 };
 
@@ -358,7 +356,7 @@ struct FilterEncodeLayer final
   public:
     Return *perm(const loco::Permutation<loco::Domain::Filter> &perm)
     {
-      auto encoder = stdex::make_unique<loco::PermutingEncoder<loco::Domain::Filter>>();
+      auto encoder = std::make_unique<loco::PermutingEncoder<loco::Domain::Filter>>();
       encoder->perm(perm);
       _node->encoder(std::move(encoder));
       return this;
@@ -379,7 +377,7 @@ struct FilterEncodeLayer final
 
     ctx->stack()->push(encode_node);
 
-    return stdex::make_unique<Return>(encode_node);
+    return std::make_unique<Return>(encode_node);
   }
 };
 
@@ -397,7 +395,7 @@ struct DepthwiseFilterEncodeLayer final
     Return *perm(const loco::Permutation<loco::Domain::DepthwiseFilter> &perm)
     {
       using namespace loco;
-      _node->encoder(stdex::make_unique<PermutingEncoder<Domain::DepthwiseFilter>>(perm));
+      _node->encoder(std::make_unique<PermutingEncoder<Domain::DepthwiseFilter>>(perm));
       return this;
     }
 
@@ -416,7 +414,7 @@ struct DepthwiseFilterEncodeLayer final
 
     ctx->stack()->push(encode_node);
 
-    return stdex::make_unique<Return>(encode_node);
+    return std::make_unique<Return>(encode_node);
   }
 };
 
@@ -446,7 +444,7 @@ struct DepthwiseConv2DLayer final
 
     ctx->stack()->push(depthwiseconv2d_node);
 
-    return stdex::make_unique<Return>(depthwiseconv2d_node);
+    return std::make_unique<Return>(depthwiseconv2d_node);
   }
 };
 
@@ -476,7 +474,7 @@ struct TransposedConv2DLayer final
 
     ctx->stack()->push(tr_conv2d_node);
 
-    return stdex::make_unique<Return>(tr_conv2d_node);
+    return std::make_unique<Return>(tr_conv2d_node);
   }
 };
 
@@ -512,7 +510,7 @@ struct FixedReshapeLayer final
 
     ctx->stack()->push(reshape_node);
 
-    return stdex::make_unique<Return>(reshape_node);
+    return std::make_unique<Return>(reshape_node);
   }
 };
 
@@ -540,7 +538,7 @@ struct TensorBroadcastLayer final
     broadcast_node->input(ctx->stack()->pop());
     ctx->stack()->push(broadcast_node);
 
-    return stdex::make_unique<Return>(broadcast_node);
+    return std::make_unique<Return>(broadcast_node);
   }
 };
 

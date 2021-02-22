@@ -18,8 +18,7 @@
 #include "loco/IR/Graph.h"
 #include "loco/IR/Nodes.h"
 
-#include <stdex/Memory.h>
-
+#include <memory>
 #include <cassert>
 #include <stdexcept>
 
@@ -55,7 +54,7 @@ namespace loco
 
 CanonicalDialect::CanonicalDialect()
 {
-  service<GraphOutputIndexQueryService>(stdex::make_unique<GraphOutputIndexQueryServiceImpl>());
+  service<GraphOutputIndexQueryService>(std::make_unique<GraphOutputIndexQueryServiceImpl>());
 }
 
 Dialect *CanonicalDialect::get(void)

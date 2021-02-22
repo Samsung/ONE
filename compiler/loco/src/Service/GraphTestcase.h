@@ -22,8 +22,6 @@
 
 #include "GraphBuilder.h"
 
-#include <stdex/Memory.h>
-
 enum class GraphCode
 {
   Identity,

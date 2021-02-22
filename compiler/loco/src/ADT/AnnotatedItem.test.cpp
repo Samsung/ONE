@@ -17,7 +17,8 @@
 #include "loco/ADT/AnnotatedItem.h"
 
 #include <gtest/gtest.h>
-#include <stdex/Memory.h>
+
+#include <memory>
 
 namespace
 {
@@ -31,7 +32,7 @@ template <int N> struct DerivedAnnotation final : public Annotation
 {
   static std::unique_ptr<DerivedAnnotation<N>> make(void)
   {
-    return stdex::make_unique<DerivedAnnotation<N>>();
+    return std::make_unique<DerivedAnnotation<N>>();
   }
 };
 

@@ -122,7 +122,7 @@ TEST(CanonicalShapeInferenceRuleTest, avgpool2d)
 
   testcase.pull_node->shape({1, 8, 4, 3});
 
-  testcase.encode_node->encoder(stdex::make_unique<PermutingEncoder<Domain::Feature>>(perm));
+  testcase.encode_node->encoder(std::make_unique<PermutingEncoder<Domain::Feature>>(perm));
 
   testcase.avgpool2d_node->window()->vertical(2);
   testcase.avgpool2d_node->window()->horizontal(2);
@@ -130,7 +130,7 @@ TEST(CanonicalShapeInferenceRuleTest, avgpool2d)
   testcase.avgpool2d_node->stride()->vertical(2);
   testcase.avgpool2d_node->stride()->horizontal(2);
 
-  testcase.decode_node->decoder(stdex::make_unique<PermutingDecoder<Domain::Feature>>(perm));
+  testcase.decode_node->decoder(std::make_unique<PermutingDecoder<Domain::Feature>>(perm));
 
   // Run Inference
   loco::CanonicalShapeInferenceRule rule;
@@ -224,7 +224,7 @@ TEST(CanonicalShapeInferenceRuleTest, maxpool2d)
 
   testcase.pull_node->shape({1, 8, 4, 3});
 
-  testcase.encode_node->encoder(stdex::make_unique<PermutingEncoder<Domain::Feature>>(perm));
+  testcase.encode_node->encoder(std::make_unique<PermutingEncoder<Domain::Feature>>(perm));
 
   testcase.maxpool2d_node->window()->vertical(2);
   testcase.maxpool2d_node->window()->horizontal(2);
@@ -232,7 +232,7 @@ TEST(CanonicalShapeInferenceRuleTest, maxpool2d)
   testcase.maxpool2d_node->stride()->vertical(2);
   testcase.maxpool2d_node->stride()->horizontal(2);
 
-  testcase.decode_node->decoder(stdex::make_unique<PermutingDecoder<Domain::Feature>>(perm));
+  testcase.decode_node->decoder(std::make_unique<PermutingDecoder<Domain::Feature>>(perm));
 
   // Run Inference
   loco::CanonicalShapeInferenceRule rule;

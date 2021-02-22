@@ -16,8 +16,7 @@
 
 #include "loco/IR/Graph.h"
 
-#include <stdex/Memory.h>
-
+#include <memory>
 #include <cassert>
 
 namespace
@@ -25,7 +24,7 @@ namespace
 
 std::unique_ptr<loco::TensorShape> make_tensor_shape(std::initializer_list<loco::Dimension> dims)
 {
-  auto tensor_shape = stdex::make_unique<loco::TensorShape>();
+  auto tensor_shape = std::make_unique<loco::TensorShape>();
 
   tensor_shape->rank(dims.size());
   {
@@ -50,14 +49,11 @@ void Mixin<Trait::TensorShaped>::shape(std::initializer_list<Dimension> dims)
   shape(make_tensor_shape(dims));
 }
 
-GraphInput *Graph::InputContext::create(void)
-{
-  return take(stdex::make_unique<GraphInput>(size()));
-}
+GraphInput *Graph::InputContext::create(void) { return take(std::make_unique<GraphInput>(size())); }
 
 GraphOutput *Graph::OutputContext::create(void)
 {
-  return take(stdex::make_unique<GraphOutput>(size()));
+  return take(std::make_unique<GraphOutput>(size()));
 }
 
 std::set<loco::Node *> all_nodes(loco::Graph *g)
