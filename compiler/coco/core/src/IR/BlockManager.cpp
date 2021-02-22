@@ -16,8 +16,7 @@
 
 #include "coco/IR/BlockManager.h"
 
-#include <stdex/Memory.h>
-
+#include <memory>
 #include <cassert>
 
 namespace coco
@@ -25,7 +24,7 @@ namespace coco
 
 Block *BlockManager::create(void)
 {
-  auto blk = stdex::make_unique<Block>();
+  auto blk = std::make_unique<Block>();
   modulize(blk.get());
   return take(std::move(blk));
 }

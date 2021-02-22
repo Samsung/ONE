@@ -16,14 +16,14 @@
 
 #include "coco/IR/BagManager.h"
 
-#include <stdex/Memory.h>
+#include <memory>
 
 namespace coco
 {
 
 Bag *BagManager::create(uint32_t size)
 {
-  auto bag = stdex::make_unique<Bag>(size);
+  auto bag = std::make_unique<Bag>(size);
   modulize(bag.get());
   return take(std::move(bag));
 }

@@ -16,13 +16,12 @@
 
 #include "coco/IR/OpManager.h"
 
-#include <stdex/Memory.h>
-
+#include <memory>
 #include <cassert>
 #include <queue>
 #include <set>
 
-using stdex::make_unique;
+using std::make_unique;
 
 namespace coco
 {

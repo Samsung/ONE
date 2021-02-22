@@ -16,14 +16,14 @@
 
 #include "coco/IR/InputManager.h"
 
-#include <stdex/Memory.h>
+#include <memory>
 
 namespace coco
 {
 
 Input *InputManager::create(const nncc::core::ADT::tensor::Shape &shape)
 {
-  auto input = stdex::make_unique<Input>(shape);
+  auto input = std::make_unique<Input>(shape);
   modulize(input.get());
   return take(std::move(input));
 }

@@ -16,14 +16,14 @@
 
 #include "coco/IR/OutputManager.h"
 
-#include <stdex/Memory.h>
+#include <memory>
 
 namespace coco
 {
 
 Output *OutputManager::create(const nncc::core::ADT::tensor::Shape &shape)
 {
-  auto output = stdex::make_unique<Output>(shape);
+  auto output = std::make_unique<Output>(shape);
   modulize(output.get());
   return take(std::move(output));
 }

@@ -21,11 +21,11 @@
 
 #include "Consumer.mock.h"
 
-#include <stdex/Memory.h>
+#include <memory>
 
 #include <gtest/gtest.h>
 
-using stdex::make_unique;
+using std::make_unique;
 
 namespace
 {
