@@ -31,8 +31,6 @@
 
 #include <oops/InternalExn.h>
 
-#include <stdex/Memory.h>
-
 #include <stdexcept>
 #include <type_traits>
 

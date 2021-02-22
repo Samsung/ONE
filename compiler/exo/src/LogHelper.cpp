@@ -72,7 +72,7 @@ namespace exo
 
 FormattedGraph fmt(loco::Graph *g)
 {
-  auto node_summary_builder = stdex::make_unique<NodeSummaryBuilderFactory>();
+  auto node_summary_builder = std::make_unique<NodeSummaryBuilderFactory>();
   return std::move(locop::fmt<locop::LinearV1>(g).with(std::move(node_summary_builder)));
 }
 

@@ -18,16 +18,15 @@
 
 #include "TFLExporterImpl.h"
 
-#include <stdex/Memory.h>
-
 #include <oops/InternalExn.h>
 
+#include <memory>
 #include <fstream>
 
 namespace exo
 {
 
-TFLExporter::TFLExporter(loco::Graph *graph) : _impl(stdex::make_unique<Impl>(graph))
+TFLExporter::TFLExporter(loco::Graph *graph) : _impl(std::make_unique<Impl>(graph))
 {
   // NOTHING TO DO
 }

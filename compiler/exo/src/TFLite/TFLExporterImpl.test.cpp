@@ -23,7 +23,8 @@
 #include "Knob.h"
 
 #include <loco/IR/PermutingCodec.h>
-#include <stdex/Memory.h>
+
+#include <memory>
 
 #include <gtest/gtest.h>
 
@@ -56,7 +57,7 @@ template <> loco::FeatureEncode *TFLExporterImplTests::make_node(void)
 {
   loco::FeatureEncode *encode_layer = graph()->nodes()->create<loco::FeatureEncode>();
 
-  auto encoder = stdex::make_unique<loco::PermutingEncoder<loco::Domain::Feature>>();
+  auto encoder = std::make_unique<loco::PermutingEncoder<loco::Domain::Feature>>();
   (*encoder->perm())[loco::FeatureAxis::Count] = 0;
   (*encoder->perm())[loco::FeatureAxis::Depth] = 1;
   (*encoder->perm())[loco::FeatureAxis::Height] = 2;
@@ -70,7 +71,7 @@ template <> loco::FeatureDecode *TFLExporterImplTests::make_node(void)
 {
   loco::FeatureDecode *decode_layer = graph()->nodes()->create<loco::FeatureDecode>();
 
-  auto decoder = stdex::make_unique<loco::PermutingDecoder<loco::Domain::Feature>>();
+  auto decoder = std::make_unique<loco::PermutingDecoder<loco::Domain::Feature>>();
   (*decoder->perm())[loco::FeatureAxis::Count] = 0;
   (*decoder->perm())[loco::FeatureAxis::Depth] = 1;
   (*decoder->perm())[loco::FeatureAxis::Height] = 2;

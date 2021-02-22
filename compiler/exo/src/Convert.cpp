@@ -32,7 +32,7 @@
 #include <logo/RemoveForwardNodePass.h>
 
 #include <logo/Phase.h>
-#include <stdex/Memory.h>
+#include <memory>
 
 namespace exo
 {
@@ -49,40 +49,40 @@ void convert_to_TFLNodes(loco::Graph *graph)
   logo::Phase phase;
   {
     // prepare type and shape before conversion
-    phase.emplace_back(stdex::make_unique<TypeInferencePass>());
-    phase.emplace_back(stdex::make_unique<ShapeInferencePass>());
+    phase.emplace_back(std::make_unique<TypeInferencePass>());
+    phase.emplace_back(std::make_unique<ShapeInferencePass>());
 
     // Add converters for canonical nodes. Note: Not all loco canonical nodes are listed.
-    phase.emplace_back(stdex::make_unique<AvgPool2DConverter>());
-    phase.emplace_back(stdex::make_unique<ConstGenConverter>());
-    phase.emplace_back(stdex::make_unique<Conv2DConverter>());
-    phase.emplace_back(stdex::make_unique<DepthwiseConv2DConverter>());
+    phase.emplace_back(std::make_unique<AvgPool2DConverter>());
+    phase.emplace_back(std::make_unique<ConstGenConverter>());
+    phase.emplace_back(std::make_unique<Conv2DConverter>());
+    phase.emplace_back(std::make_unique<DepthwiseConv2DConverter>());
     // TODO loco::DepthwiseFilterEncode
-    phase.emplace_back(stdex::make_unique<EltwiseAddConverter>());
-    phase.emplace_back(stdex::make_unique<EltwiseDivConverter>());
-    phase.emplace_back(stdex::make_unique<EltwiseMaxConverter>());
-    phase.emplace_back(stdex::make_unique<EltwiseMulConverter>());
-    phase.emplace_back(stdex::make_unique<EltwiseSqrtConverter>());
-    phase.emplace_back(stdex::make_unique<EltwiseSubConverter>());
-    phase.emplace_back(stdex::make_unique<FeatureBiasAddConverter>());
+    phase.emplace_back(std::make_unique<EltwiseAddConverter>());
+    phase.emplace_back(std::make_unique<EltwiseDivConverter>());
+    phase.emplace_back(std::make_unique<EltwiseMaxConverter>());
+    phase.emplace_back(std::make_unique<EltwiseMulConverter>());
+    phase.emplace_back(std::make_unique<EltwiseSqrtConverter>());
+    phase.emplace_back(std::make_unique<EltwiseSubConverter>());
+    phase.emplace_back(std::make_unique<FeatureBiasAddConverter>());
     // TODO loco::FixedReshape
-    phase.emplace_back(stdex::make_unique<MatMulConverter>());
-    phase.emplace_back(stdex::make_unique<MaxPool2DConverter>());
-    phase.emplace_back(stdex::make_unique<ReluConverter>());
-    phase.emplace_back(stdex::make_unique<Relu6Converter>());
+    phase.emplace_back(std::make_unique<MatMulConverter>());
+    phase.emplace_back(std::make_unique<MaxPool2DConverter>());
+    phase.emplace_back(std::make_unique<ReluConverter>());
+    phase.emplace_back(std::make_unique<Relu6Converter>());
     // TODO loco::Tanh
-    phase.emplace_back(stdex::make_unique<TensorConcatConverter>());
+    phase.emplace_back(std::make_unique<TensorConcatConverter>());
     // TODO loco::TensorBiasAdd
-    phase.emplace_back(stdex::make_unique<TensorBroadcastConverter>());
-    phase.emplace_back(stdex::make_unique<TensorReduceConverter>());
+    phase.emplace_back(std::make_unique<TensorBroadcastConverter>());
+    phase.emplace_back(std::make_unique<TensorReduceConverter>());
     // TODO loco::TensorSoftmax
-    phase.emplace_back(stdex::make_unique<TensorTransposeConverter>());
-    phase.emplace_back(stdex::make_unique<TransposedConv2DConverter>());
+    phase.emplace_back(std::make_unique<TensorTransposeConverter>());
+    phase.emplace_back(std::make_unique<TransposedConv2DConverter>());
 
     // Add optimization below
-    phase.emplace_back(stdex::make_unique<logo::SimplifyDomainConversionPass>());
-    phase.emplace_back(stdex::make_unique<logo::RemoveForwardNodePass>());
-    phase.emplace_back(stdex::make_unique<logo::RemoveDeadNodePass>());
+    phase.emplace_back(std::make_unique<logo::SimplifyDomainConversionPass>());
+    phase.emplace_back(std::make_unique<logo::RemoveForwardNodePass>());
+    phase.emplace_back(std::make_unique<logo::RemoveDeadNodePass>());
   }
 
   logo::PhaseRunner<logo::PhaseStrategy::Restart> phase_runner{graph};

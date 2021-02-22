@@ -23,8 +23,6 @@
 
 #include <loco.h>
 
-#include <stdex/Memory.h>
-
 #include <cassert>
 
 namespace exo

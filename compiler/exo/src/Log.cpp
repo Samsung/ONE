@@ -17,7 +17,6 @@
 #include "Log.h"
 
 #include <hermes/ConsoleReporter.h>
-#include <stdex/Memory.h>
 
 #include <cstdlib>
 #include <iostream>
