@@ -24,9 +24,10 @@
 #include "Convert.h"
 
 #include <loco.h>
-#include <stdex/Memory.h>
 #include <plier/tf/Convert.h>
 #include <oops/UserExn.h>
+
+#include <memory>
 
 namespace
 {
@@ -179,7 +180,7 @@ void StridedSliceGraphBuilder::build(const tensorflow::NodeDef &node,
   input_names.push_back(TensorName(node.input(2))); // end
   input_names.push_back(TensorName(node.input(3))); // strides
 
-  auto tfconv2d_update = stdex::make_unique<TFStridedSliceGraphUpdate>(stridedslice, input_names);
+  auto tfconv2d_update = std::make_unique<TFStridedSliceGraphUpdate>(stridedslice, input_names);
 
   updates->enroll(std::move(tfconv2d_update));
 }

@@ -17,7 +17,8 @@
 #include "TestHelper.h"
 
 #include <moco/IR/Nodes/TFConst.h>
-#include <stdex/Memory.h>
+
+#include <memory>
 
 #include <gtest/gtest.h>
 
@@ -29,7 +30,7 @@ namespace test
 TFNodeBuildTester::TFNodeBuildTester()
 {
   _graph = loco::make_graph();
-  _tensor_names = stdex::make_unique<moco::SymbolTable>();
+  _tensor_names = std::make_unique<moco::SymbolTable>();
 }
 
 void TFNodeBuildTester::inputs(const std::vector<std::string> &names)
@@ -71,8 +72,8 @@ void TFNodeBuildTester::run(tensorflow::NodeDef &nodedef, moco::GraphBuilder &gr
 {
   assert(_output != nullptr);
 
-  auto node_defs = stdex::make_unique<moco::NodeDefTable>();
-  auto updates = stdex::make_unique<moco::UpdateQueue>();
+  auto node_defs = std::make_unique<moco::NodeDefTable>();
+  auto updates = std::make_unique<moco::UpdateQueue>();
 
   moco::GraphBuilderContext gb_context(_graph.get(), node_defs.get(), _tensor_names.get(),
                                        updates.get());

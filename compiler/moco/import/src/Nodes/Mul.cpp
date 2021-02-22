@@ -19,7 +19,8 @@
 #include <moco/IR/Nodes/TFMul.h>
 
 #include <loco.h>
-#include <stdex/Memory.h>
+
+#include <memory>
 
 namespace
 {
@@ -78,7 +79,7 @@ void MulGraphBuilder::build(const tensorflow::NodeDef &node, GraphBuilderContext
   add_input_names.push_back(TensorName(node.input(0))); // x
   add_input_names.push_back(TensorName(node.input(1))); // y
 
-  auto tf_mul_update = stdex::make_unique<TFMulGraphUpdate>(tf_mul, add_input_names);
+  auto tf_mul_update = std::make_unique<TFMulGraphUpdate>(tf_mul, add_input_names);
   updates->enroll(std::move(tf_mul_update));
 }
 

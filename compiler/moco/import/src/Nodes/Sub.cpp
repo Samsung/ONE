@@ -19,7 +19,8 @@
 #include <moco/IR/Nodes/TFSub.h>
 
 #include <loco.h>
-#include <stdex/Memory.h>
+
+#include <memory>
 
 namespace
 {
@@ -78,7 +79,7 @@ void SubGraphBuilder::build(const tensorflow::NodeDef &node, GraphBuilderContext
   sub_input_names.push_back(TensorName(node.input(0))); // x
   sub_input_names.push_back(TensorName(node.input(1))); // y
 
-  auto tf_sub_update = stdex::make_unique<TFSubGraphUpdate>(tf_sub, sub_input_names);
+  auto tf_sub_update = std::make_unique<TFSubGraphUpdate>(tf_sub, sub_input_names);
   updates->enroll(std::move(tf_sub_update));
 }
 

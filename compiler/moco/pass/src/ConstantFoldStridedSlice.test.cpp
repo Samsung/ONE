@@ -19,7 +19,8 @@
 
 #include <moco/IR/TFNodes.h>
 #include <loco.h>
-#include <stdex/Memory.h>
+
+#include <memory>
 
 #include <gtest/gtest.h>
 
@@ -83,7 +84,7 @@ TEST(ConstantFoldStridedSlice, basic_matrix55_11)
   }
   setup_output_node(&graph, sslice_node);
 
-  auto pass = stdex::make_unique<moco::ConstantFoldStridedSlice>();
+  auto pass = std::make_unique<moco::ConstantFoldStridedSlice>();
   bool cont = true;
   while (cont)
   {
@@ -121,7 +122,7 @@ TEST(ConstantFoldStridedSlice, basic_vector4_0)
   }
   setup_output_node(&graph, sslice_node);
 
-  auto pass = stdex::make_unique<moco::ConstantFoldStridedSlice>();
+  auto pass = std::make_unique<moco::ConstantFoldStridedSlice>();
   bool cont = true;
   while (cont)
   {
@@ -157,7 +158,7 @@ TEST(ConstantFoldStridedSlice, basic_vector4_1)
   }
   setup_output_node(&graph, sslice_node);
 
-  auto pass = stdex::make_unique<moco::ConstantFoldStridedSlice>();
+  auto pass = std::make_unique<moco::ConstantFoldStridedSlice>();
   bool cont = true;
   while (cont)
   {
@@ -193,7 +194,7 @@ TEST(ConstantFoldStridedSlice, basic_vector4_2)
   }
   setup_output_node(&graph, sslice_node);
 
-  auto pass = stdex::make_unique<moco::ConstantFoldStridedSlice>();
+  auto pass = std::make_unique<moco::ConstantFoldStridedSlice>();
   bool cont = true;
   while (cont)
   {

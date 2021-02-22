@@ -19,7 +19,8 @@
 
 #include <moco/IR/TFNodes.h>
 #include <loco.h>
-#include <stdex/Memory.h>
+
+#include <memory>
 
 #include <gtest/gtest.h>
 
@@ -60,7 +61,7 @@ TEST(ConstantFoldMul, basic_vector)
   }
   setup_output_node(&graph, mul_node);
 
-  auto pass = stdex::make_unique<moco::ConstantFoldMul>();
+  auto pass = std::make_unique<moco::ConstantFoldMul>();
   bool cont = true;
   while (cont)
   {
@@ -92,7 +93,7 @@ TEST(ConstantFoldMul, basic_refinedet_1)
   }
   setup_output_node(&graph, mul_node);
 
-  auto pass = stdex::make_unique<moco::ConstantFoldMul>();
+  auto pass = std::make_unique<moco::ConstantFoldMul>();
   bool cont = true;
   while (cont)
   {

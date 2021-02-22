@@ -19,7 +19,8 @@
 #include <moco/IR/Nodes/TFRsqrt.h>
 
 #include <loco.h>
-#include <stdex/Memory.h>
+
+#include <memory>
 
 namespace
 {
@@ -74,8 +75,7 @@ void RsqrtGraphBuilder::build(const tensorflow::NodeDef &node, GraphBuilderConte
   tensor_names->enroll(output_name, tf_rsqrt);
 
   // Queue node input update
-  auto tf_rsqrt_update =
-    stdex::make_unique<TFRsqrtGraphUpdate>(tf_rsqrt, TensorName(node.input(0)));
+  auto tf_rsqrt_update = std::make_unique<TFRsqrtGraphUpdate>(tf_rsqrt, TensorName(node.input(0)));
   updates->enroll(std::move(tf_rsqrt_update));
 }
 

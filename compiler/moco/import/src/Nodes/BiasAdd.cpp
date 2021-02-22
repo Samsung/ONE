@@ -22,10 +22,10 @@
 
 #include <loco.h>
 #include <loco/IR/PermutingCodec.h>
-#include <stdex/Memory.h>
 #include <plier/tf/Convert.h>
 #include <oops/UserExn.h>
 
+#include <memory>
 #include <cassert>
 #include <vector>
 
@@ -115,7 +115,7 @@ void BiasAddGraphBuilder::build(const tensorflow::NodeDef &node, GraphBuilderCon
   input_names.push_back(TensorName(node.input(0)));
   input_names.push_back(TensorName(node.input(1)));
 
-  auto update = stdex::make_unique<TFBiasAddGraphUpdate>(tf_bias_add, input_names);
+  auto update = std::make_unique<TFBiasAddGraphUpdate>(tf_bias_add, input_names);
   updates->enroll(std::move(update));
 }
 

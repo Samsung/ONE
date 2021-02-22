@@ -24,10 +24,10 @@
 
 #include <loco.h>
 #include <loco/IR/PermutingCodec.h>
-#include <stdex/Memory.h>
 #include <plier/tf/Convert.h>
 #include <oops/UserExn.h>
 
+#include <memory>
 #include <cassert>
 #include <stdexcept>
 
@@ -132,7 +132,7 @@ void MaxPoolGraphBuilder::build(const tensorflow::NodeDef &node, GraphBuilderCon
   tensor_names->enroll(output_name, maxPool_node);
 
   // Record ifm inputs to featureEncode_node
-  auto update = stdex::make_unique<TFMaxPoolGraphUpdate>(maxPool_node, TensorName(node.input(0)));
+  auto update = std::make_unique<TFMaxPoolGraphUpdate>(maxPool_node, TensorName(node.input(0)));
 
   updates->enroll(std::move(update));
 }

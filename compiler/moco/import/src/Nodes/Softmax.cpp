@@ -19,8 +19,9 @@
 #include <moco/IR/Nodes/TFSoftmax.h>
 
 #include <loco.h>
-#include <stdex/Memory.h>
 #include <plier/tf/Convert.h>
+
+#include <memory>
 
 namespace
 {
@@ -79,7 +80,7 @@ void SoftmaxGraphBuilder::build(const tensorflow::NodeDef &node, GraphBuilderCon
   TensorName output_name(node.name(), 0);
   tensor_names->enroll(output_name, tf_softmax);
 
-  auto update = stdex::make_unique<SoftmaxGraphUpdate>(tf_softmax, TensorName(node.input(0)));
+  auto update = std::make_unique<SoftmaxGraphUpdate>(tf_softmax, TensorName(node.input(0)));
   updates->enroll(std::move(update));
 }
 

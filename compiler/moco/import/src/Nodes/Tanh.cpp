@@ -19,7 +19,8 @@
 #include <moco/IR/Nodes/TFTanh.h>
 
 #include <loco.h>
-#include <stdex/Memory.h>
+
+#include <memory>
 
 namespace
 {
@@ -74,7 +75,7 @@ void TanhGraphBuilder::build(const tensorflow::NodeDef &node, GraphBuilderContex
   tensor_names->enroll(output_name, tf_tanh);
 
   // Queue node input update
-  auto tf_tanh_update = stdex::make_unique<TFTanhGraphUpdate>(tf_tanh, TensorName(node.input(0)));
+  auto tf_tanh_update = std::make_unique<TFTanhGraphUpdate>(tf_tanh, TensorName(node.input(0)));
   updates->enroll(std::move(tf_tanh_update));
 }
 

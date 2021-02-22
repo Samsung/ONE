@@ -17,6 +17,7 @@
 #include "moco/IR/TFNode.h"
 #include "moco/IR/TFDialect.h"
 
+#include <memory>
 #include <cassert>
 
 namespace moco
@@ -25,9 +26,6 @@ namespace moco
 const loco::Dialect *TFNode::dialect(void) const { return TFDialect::get(); }
 
 } // namespace moco
-
-// TODO move this to appropriate place
-#include <stdex/Memory.h>
 
 namespace moco
 {
@@ -60,7 +58,7 @@ loco::GraphInputIndex index(const TFPlaceholder *node)
 
 void index(TFPlaceholder *node, const loco::GraphInputIndex index)
 {
-  node->annot(stdex::make_unique<GraphInputIndexAnnotation>(index));
+  node->annot(std::make_unique<GraphInputIndexAnnotation>(index));
 }
 
 loco::TensorShape tensor_shape(const TFPlaceholder *node)

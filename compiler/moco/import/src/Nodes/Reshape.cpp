@@ -21,8 +21,8 @@
 #include <moco/Names.h>
 #include <plier/tf/Convert.h>
 #include <loco.h>
-#include <stdex/Memory.h>
 
+#include <memory>
 #include <cassert>
 #include <stdexcept>
 
@@ -94,7 +94,7 @@ void ReshapeGraphBuilder::build(const tensorflow::NodeDef &node, GraphBuilderCon
   input_names.push_back(TensorName(node.input(1))); // shape
 
   // Queue node input update
-  auto update = stdex::make_unique<ReshapeGraphUpdate>(reshape, input_names);
+  auto update = std::make_unique<ReshapeGraphUpdate>(reshape, input_names);
 
   updates->enroll(std::move(update));
 }

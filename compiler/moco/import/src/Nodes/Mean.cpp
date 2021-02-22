@@ -19,8 +19,9 @@
 #include <moco/IR/Nodes/TFMean.h>
 
 #include <loco.h>
-#include <stdex/Memory.h>
 #include <plier/tf/Convert.h>
+
+#include <memory>
 
 namespace
 {
@@ -91,8 +92,8 @@ void MeanGraphBuilder::build(const tensorflow::NodeDef &node, GraphBuilderContex
   TensorName output_name(node.name(), 0);
   tensor_names->enroll(output_name, tf_mean);
 
-  auto update = stdex::make_unique<MeanGraphUpdate>(tf_mean, TensorName(node.input(0)),
-                                                    TensorName(node.input(1)));
+  auto update = std::make_unique<MeanGraphUpdate>(tf_mean, TensorName(node.input(0)),
+                                                  TensorName(node.input(1)));
   updates->enroll(std::move(update));
 }
 

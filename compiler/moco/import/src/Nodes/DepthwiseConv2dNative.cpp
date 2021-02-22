@@ -24,9 +24,9 @@
 
 #include <plier/tf/Convert.h>
 #include <loco/IR/PermutingCodec.h>
-#include <stdex/Memory.h>
 #include <oops/UserExn.h>
 
+#include <memory>
 #include <cassert>
 
 using namespace plier::tf;
@@ -139,8 +139,8 @@ void DepthwiseConv2dNativeGraphBuilder::build(const tensorflow::NodeDef &node,
   input_names.push_back(TensorName(node.input(1))); // kernel
 
   // Record ifm inputs to featureEncode_node
-  auto tfdepthwiseconv2dnative_update = stdex::make_unique<TFDepthwiseConv2dNativeGraphUpdate>(
-    depthwiseconv2d_native_node, input_names);
+  auto tfdepthwiseconv2dnative_update =
+    std::make_unique<TFDepthwiseConv2dNativeGraphUpdate>(depthwiseconv2d_native_node, input_names);
 
   updates->enroll(std::move(tfdepthwiseconv2dnative_update));
 }

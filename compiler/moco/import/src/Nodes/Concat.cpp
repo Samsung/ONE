@@ -21,9 +21,9 @@
 #include <moco/Names.h>
 
 #include <loco.h>
-#include <stdex/Memory.h>
 #include <plier/tf/Convert.h>
 
+#include <memory>
 #include <cassert>
 
 namespace
@@ -102,7 +102,7 @@ void ConcatV2GraphBuilder::build(const tensorflow::NodeDef &node,
   TensorName output_name(node.name(), 0);
   tensor_names->enroll(output_name, concat_node);
 
-  auto update = stdex::make_unique<TFConcatV2GraphUpdate>(concat_node, input_names);
+  auto update = std::make_unique<TFConcatV2GraphUpdate>(concat_node, input_names);
   updates->enroll(std::move(update));
 }
 
