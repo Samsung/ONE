@@ -19,7 +19,8 @@
 #include "TestHelper.h"
 
 #include <loco.h>
-#include <stdex/Memory.h>
+
+#include <memory>
 
 #include <gtest/gtest.h>
 
@@ -80,7 +81,7 @@ template <FilterLayout T> loco::FilterDecode *make_filter_decode(loco::Node *inp
 {
   loco::Graph *g = input_for_decode->graph();
 
-  auto decoder = stdex::make_unique<loco::PermutingDecoder<loco::Domain::Filter>>();
+  auto decoder = std::make_unique<loco::PermutingDecoder<loco::Domain::Filter>>();
 
   decoder->perm(perm<T>());
 
@@ -95,7 +96,7 @@ template <FilterLayout T> loco::FilterEncode *make_filter_encode(loco::Node *inp
 {
   loco::Graph *g = input_for_encode->graph();
 
-  auto encoder = stdex::make_unique<loco::PermutingEncoder<loco::Domain::Filter>>();
+  auto encoder = std::make_unique<loco::PermutingEncoder<loco::Domain::Filter>>();
 
   encoder->perm(perm<T>());
 
