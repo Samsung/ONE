@@ -20,8 +20,7 @@
 #include <loco/IR/CanonicalDialect.h>
 #include <loco/IR/CanonicalNode.h>
 
-#include <stdex/Memory.h>
-
+#include <memory>
 #include <set>
 #include <vector>
 #include <cassert>
@@ -231,8 +230,8 @@ bool SimplifyDomainConversionPass::run(loco::Graph *g)
           perm_vec[to] = from;
         }
 
-        transposeCandidates.insert(stdex::make_unique<TransposeCtx>(
-          encode_node, decode_node, encode_node->input(), perm_vec));
+        transposeCandidates.insert(
+          std::make_unique<TransposeCtx>(encode_node, decode_node, encode_node->input(), perm_vec));
       }
     }
 
@@ -293,8 +292,8 @@ bool SimplifyDomainConversionPass::run(loco::Graph *g)
           perm_vec[to] = from;
         }
 
-        transposeCandidates.insert(stdex::make_unique<TransposeCtx>(
-          encode_node, decode_node, encode_node->input(), perm_vec));
+        transposeCandidates.insert(
+          std::make_unique<TransposeCtx>(encode_node, decode_node, encode_node->input(), perm_vec));
       }
     }
 
@@ -377,8 +376,8 @@ bool SimplifyDomainConversionPass::run(loco::Graph *g)
           perm_vec[to] = from;
         }
 
-        transposeCandidates.insert(stdex::make_unique<TransposeCtx>(
-          encode_node, decode_node, encode_node->input(), perm_vec));
+        transposeCandidates.insert(
+          std::make_unique<TransposeCtx>(encode_node, decode_node, encode_node->input(), perm_vec));
       }
     }
 

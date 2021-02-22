@@ -19,8 +19,6 @@
 #include <loco.h>
 #include <loco/IR/CanonicalDialect.h>
 
-#include <stdex/Memory.h>
-
 #include <locomotiv/Session.h>
 
 #include <cassert>
