@@ -18,14 +18,15 @@
 #include "DecodeCommand.hpp"
 
 #include <cli/App.h>
-#include <stdex/Memory.h>
+
+#include <memory>
 
 int main(int argc, char **argv)
 {
   cli::App app{argv[0]};
 
-  app.insert("encode", stdex::make_unique<EncodeCommand>());
-  app.insert("decode", stdex::make_unique<DecodeCommand>());
+  app.insert("encode", std::make_unique<EncodeCommand>());
+  app.insert("decode", std::make_unique<DecodeCommand>());
 
   return app.run(argc - 1, argv + 1);
 }

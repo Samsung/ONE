@@ -58,4 +58,3 @@ nncc$ cat decoded.pbtxt | path_to_onnxkit/onnxkit encode > encoded.pb
 - onnx
 - Protobuf
 - cli
-- stdex
