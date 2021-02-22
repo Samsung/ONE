@@ -70,7 +70,7 @@ namespace luci
 {
 
 /**
- * Make gamma value of Mul-Add(as BatchNorm) to positive
+ * Make negative gamma values of Mul-Add (as BatchNorm) to a small positive value (1e-10)
  *
  *  PATTERN:
  *          |
