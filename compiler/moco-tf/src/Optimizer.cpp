@@ -22,7 +22,7 @@
 
 #include <logo/Phase.h>
 
-#include <stdex/Memory.h>
+#include <memory>
 
 namespace moco
 {
@@ -35,48 +35,48 @@ void Optimizer::optimize(loco::Graph *g) const
 
   /* TRANSFORM DECLARATION BEGIN */
   // Shape inference is required for ResolveRedundantReshape
-  phase.emplace_back(stdex::make_unique<ShapeInferencePass>());
+  phase.emplace_back(std::make_unique<ShapeInferencePass>());
 
   if (moco::tf::get<moco::tf::Knob::ConstantFolding>())
   {
-    phase.emplace_back(stdex::make_unique<logo::ConstantFoldingPass>());
+    phase.emplace_back(std::make_unique<logo::ConstantFoldingPass>());
   }
 
   if (moco::tf::get<moco::tf::Knob::RemoveDeadNode>())
   {
-    phase.emplace_back(stdex::make_unique<logo::RemoveDeadNodePass>());
+    phase.emplace_back(std::make_unique<logo::RemoveDeadNodePass>());
   }
 
   if (moco::tf::get<moco::tf::Knob::ReorderDecode>() &&
       moco::tf::get<moco::tf::Knob::ReorderDecodeTensorBiasAdd>())
   {
-    phase.emplace_back(stdex::make_unique<logo::ReorderDecodePass<loco::TensorBiasAdd>>());
+    phase.emplace_back(std::make_unique<logo::ReorderDecodePass<loco::TensorBiasAdd>>());
   }
 
   if (moco::tf::get<moco::tf::Knob::ReorderDecode>() &&
       moco::tf::get<moco::tf::Knob::ReorderDecodeReLU>())
   {
-    phase.emplace_back(stdex::make_unique<logo::ReorderDecodePass<loco::ReLU>>());
+    phase.emplace_back(std::make_unique<logo::ReorderDecodePass<loco::ReLU>>());
   }
 
   if (moco::tf::get<moco::tf::Knob::SimplifyDomainConversion>())
   {
-    phase.emplace_back(stdex::make_unique<logo::SimplifyDomainConversionPass>());
+    phase.emplace_back(std::make_unique<logo::SimplifyDomainConversionPass>());
   }
 
   if (moco::tf::get<moco::tf::Knob::RemoveForwardNode>())
   {
-    phase.emplace_back(stdex::make_unique<logo::RemoveForwardNodePass>());
+    phase.emplace_back(std::make_unique<logo::RemoveForwardNodePass>());
   }
 
   if (moco::tf::get<moco::tf::Knob::ResolveDuplicateReshape>())
   {
-    phase.emplace_back(stdex::make_unique<logo::ResolveDuplicateReshapePass>());
+    phase.emplace_back(std::make_unique<logo::ResolveDuplicateReshapePass>());
   }
 
   if (moco::tf::get<moco::tf::Knob::ResolveRedundantReshape>())
   {
-    phase.emplace_back(stdex::make_unique<logo::ResolveRedundantReshapePass>());
+    phase.emplace_back(std::make_unique<logo::ResolveRedundantReshapePass>());
   }
   /* TRANSFORM DECLARATION END */
 

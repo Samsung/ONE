@@ -24,7 +24,6 @@
 
 #include <loco/Service/ShapeInference.h>
 
-#include <stdex/Memory.h>
 #include <oops/UserExn.h>
 
 namespace

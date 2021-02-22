@@ -18,7 +18,8 @@
 #define __CODEC_HELPER_H__
 
 #include <plier/tf/Convert.h>
-#include <stdex/Memory.h>
+
+#include <memory>
 
 namespace
 {
@@ -27,7 +28,7 @@ using plier::tf::DataLayout;
 
 void set_feature_enc(loco::FeatureEncode *feature_enc, DataLayout data_layout)
 {
-  auto enc = stdex::make_unique<loco::PermutingEncoder<loco::Domain::Feature>>();
+  auto enc = std::make_unique<loco::PermutingEncoder<loco::Domain::Feature>>();
 
   if (data_layout == DataLayout::NHWC)
   {
@@ -49,7 +50,7 @@ void set_feature_enc(loco::FeatureEncode *feature_enc, DataLayout data_layout)
 
 void set_feature_dec(loco::FeatureDecode *feature_dec, DataLayout data_layout)
 {
-  auto dec = stdex::make_unique<loco::PermutingDecoder<loco::Domain::Feature>>();
+  auto dec = std::make_unique<loco::PermutingDecoder<loco::Domain::Feature>>();
 
   if (data_layout == DataLayout::NHWC)
   {

@@ -32,7 +32,7 @@ using plier::tf::DataLayout;
 
 void set_filter_enc(loco::FilterEncode *filter_enc)
 {
-  auto enc = stdex::make_unique<loco::PermutingEncoder<loco::Domain::Filter>>();
+  auto enc = std::make_unique<loco::PermutingEncoder<loco::Domain::Filter>>();
 
   // In TensorFlow, Conv2dBackpropInput's filter is a 4-D tensor of following shape:
   // [filter_height, filter_width, out_channels, in_channels] or HWOI or HWNC (in/out in loco sense)

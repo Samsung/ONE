@@ -27,9 +27,10 @@
 
 #include <loco.h>
 #include <plier/tf/TestHelper.h>
-#include <stdex/Memory.h>
 
 #include <gtest/gtest.h>
+
+#include <memory>
 
 using namespace moco::tf::test;
 
@@ -91,7 +92,7 @@ TEST(Call_Test, Call_01)
 
   // import
   moco::GraphBuilderRegistry registry{&moco::GraphBuilderRegistry::get()};
-  registry.add("new_custom_op", stdex::make_unique<moco::tf::COpCallGraphBuilder>(&signature));
+  registry.add("new_custom_op", std::make_unique<moco::tf::COpCallGraphBuilder>(&signature));
 
   moco::Importer importer(&registry);
   std::unique_ptr<loco::Graph> graph = importer.import(signature, graph_def);
