@@ -26,7 +26,7 @@
 
 #include <loco.h>
 
-#include <stdex/Memory.h>
+#include <memory>
 
 #include <gtest/gtest.h>
 
@@ -54,11 +54,11 @@ public:
   TypeShapeReadyPhase()
   {
     // Type and Shape inference is prerequisite for run other test
-    _phase.emplace_back(stdex::make_unique<::exo::TypeInferencePass>());
-    _phase.emplace_back(stdex::make_unique<::exo::ShapeInferencePass>());
+    _phase.emplace_back(std::make_unique<::exo::TypeInferencePass>());
+    _phase.emplace_back(std::make_unique<::exo::ShapeInferencePass>());
   }
 
-  template <typename PassT> void add_pass() { _phase.emplace_back(stdex::make_unique<PassT>()); }
+  template <typename PassT> void add_pass() { _phase.emplace_back(std::make_unique<PassT>()); }
 
   void run(loco::Graph *g)
   {

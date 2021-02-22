@@ -123,8 +123,7 @@ void registerGraphIOName(loco::Graph *graph, SerializedModelData &gd)
   gd._data_format = circle::DataFormat::DataFormat_CHANNELS_LAST;
 }
 
-#include <stdex/Memory.h>
-
+#include <memory>
 #include <cassert>
 
 namespace
@@ -150,7 +149,7 @@ private:
 void set_tensor_index(loco::Node *node, const TFLTensorIndex &tensor_id)
 {
   assert(node->annot<TFLTensorIndexAnnotation>() == nullptr);
-  node->annot(stdex::make_unique<TFLTensorIndexAnnotation>(tensor_id));
+  node->annot(std::make_unique<TFLTensorIndexAnnotation>(tensor_id));
 }
 
 TFLTensorIndex get_tensor_index(loco::Node *node)

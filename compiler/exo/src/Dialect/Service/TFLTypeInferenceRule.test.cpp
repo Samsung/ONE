@@ -24,8 +24,6 @@
 #include <loco/IR/CanonicalDialect.h>
 #include <loco/Service/TypeInference.h>
 
-#include <stdex/Memory.h>
-
 #include <gtest/gtest.h>
 
 TEST(TFLTypeInferenceRuleTest, minimal_with_TFLRelu)

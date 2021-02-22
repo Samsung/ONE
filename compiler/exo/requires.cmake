@@ -1,4 +1,3 @@
-require("stdex")
 require("loco")
 require("locoex-customop")
 require("logo")

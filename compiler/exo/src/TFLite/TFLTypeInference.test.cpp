@@ -18,11 +18,8 @@
 #include "Pass/TypeInferencePass.h"
 
 #include <loco/IR/PermutingCodec.h>
-#include <stdex/Memory.h>
 
 #include <gtest/gtest.h>
-
-using stdex::make_unique;
 
 namespace
 {

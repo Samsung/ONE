@@ -19,7 +19,7 @@
 
 #include <locop/FormattedGraph.h>
 
-#include <stdex/Memory.h>
+#include <memory>
 
 namespace exo
 {
@@ -47,7 +47,7 @@ public:
 public:
   std::unique_ptr<locop::NodeSummaryBuilder> create(const locop::SymbolTable *tlb) const final
   {
-    return stdex::make_unique<NodeSummaryBuilder>(tlb);
+    return std::make_unique<NodeSummaryBuilder>(tlb);
   }
 };
 

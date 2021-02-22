@@ -22,7 +22,7 @@
 
 #include <logo/Phase.h>
 
-#include <stdex/Memory.h>
+#include <memory>
 
 namespace exo
 {
@@ -32,36 +32,36 @@ void optimize(loco::Graph *g)
   logo::Phase phase;
   {
     // prepare type and shape before optimization
-    phase.emplace_back(stdex::make_unique<TypeInferencePass>());
-    phase.emplace_back(stdex::make_unique<ShapeInferencePass>());
+    phase.emplace_back(std::make_unique<TypeInferencePass>());
+    phase.emplace_back(std::make_unique<ShapeInferencePass>());
 
-    phase.emplace_back(stdex::make_unique<FoldReshapeOfConstPass>());
-    phase.emplace_back(stdex::make_unique<FoldTransposeOfConstPass>());
+    phase.emplace_back(std::make_unique<FoldReshapeOfConstPass>());
+    phase.emplace_back(std::make_unique<FoldTransposeOfConstPass>());
 
     if (get<Knob::UseFuseBiasAddPass>())
     {
-      phase.emplace_back(stdex::make_unique<FuseBiasAddPass>());
+      phase.emplace_back(std::make_unique<FuseBiasAddPass>());
     }
 
     if (get<Knob::UseFuseInstanceNormPass>())
     {
-      phase.emplace_back(stdex::make_unique<FuseInstanceNormPass>());
+      phase.emplace_back(std::make_unique<FuseInstanceNormPass>());
     }
 
     if (get<Knob::UseFuseReluPass>())
     {
-      phase.emplace_back(stdex::make_unique<FuseReluPass>());
+      phase.emplace_back(std::make_unique<FuseReluPass>());
     }
-    phase.emplace_back(stdex::make_unique<FuseRsqrtPass>());
+    phase.emplace_back(std::make_unique<FuseRsqrtPass>());
 
     if (get<Knob::UseFuseSquaredDifferencePass>())
     {
-      phase.emplace_back(stdex::make_unique<FuseSquaredDifferencePass>());
+      phase.emplace_back(std::make_unique<FuseSquaredDifferencePass>());
     }
 
-    phase.emplace_back(stdex::make_unique<MergeConcatNodesPass>());
+    phase.emplace_back(std::make_unique<MergeConcatNodesPass>());
 
-    phase.emplace_back(stdex::make_unique<logo::RemoveDeadNodePass>());
+    phase.emplace_back(std::make_unique<logo::RemoveDeadNodePass>());
   }
 
   logo::PhaseRunner<logo::PhaseStrategy::Restart> phase_runner{g};

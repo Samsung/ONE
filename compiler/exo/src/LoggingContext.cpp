@@ -18,7 +18,8 @@
 #include "Log.h" // To use LoggerConfig
 
 #include <hermes/ConsoleReporter.h>
-#include <stdex/Memory.h>
+
+#include <memory>
 
 namespace exo
 {
@@ -30,8 +31,8 @@ hermes::Context *LoggingContext::get(void)
   if (ctx == nullptr)
   {
     ctx = new hermes::Context;
-    ctx->sinks()->append(stdex::make_unique<hermes::ConsoleReporter>());
-    ctx->config(stdex::make_unique<LoggerConfig>());
+    ctx->sinks()->append(std::make_unique<hermes::ConsoleReporter>());
+    ctx->config(std::make_unique<LoggerConfig>());
   }
 
   return ctx;

@@ -26,8 +26,6 @@
 #include <loco/Service/CanonicalShapeInferenceRule.h>
 #include <loco/Service/MultiDialectShapeInferenceRule.h>
 
-#include <stdex/Memory.h>
-
 #include <gtest/gtest.h>
 
 TEST(TFLShapeInferenceRuleTest, minimal_with_TFLRelu)

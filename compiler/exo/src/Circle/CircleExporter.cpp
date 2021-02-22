@@ -18,16 +18,15 @@
 
 #include "CircleExporterImpl.h"
 
-#include <stdex/Memory.h>
-
 #include <oops/InternalExn.h>
 
+#include <memory>
 #include <fstream>
 
 namespace exo
 {
 
-CircleExporter::CircleExporter(loco::Graph *graph) : _impl(stdex::make_unique<Impl>(graph))
+CircleExporter::CircleExporter(loco::Graph *graph) : _impl(std::make_unique<Impl>(graph))
 {
   // NOTHING TO DO
 }
