@@ -21,11 +21,10 @@
 
 #include <pp/LinearDocument.h>
 
-#include <stdex/Memory.h>
-
+#include <memory>
 #include <sstream>
 
-using stdex::make_unique;
+using std::make_unique;
 using enco::concat;
 
 #define S(content) #content

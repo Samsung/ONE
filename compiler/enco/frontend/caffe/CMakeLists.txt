@@ -16,7 +16,6 @@ target_link_libraries(enco_caffe_frontend enco_intf_frontend)
 target_link_libraries(enco_caffe_frontend enco_intf_cmdline)
 target_link_libraries(enco_caffe_frontend morph)
 target_link_libraries(enco_caffe_frontend caffeproto)
-target_link_libraries(enco_caffe_frontend stdex)
 
 nnas_find_package(GTest QUIET)
 

@@ -19,7 +19,7 @@
 
 #include <nncc/core/ADT/tensor/LexicalLayout.h>
 
-#include <stdex/Memory.h>
+#include <memory>
 
 using namespace nncc::core::ADT;
 
@@ -77,5 +77,5 @@ struct Frontend final : public enco::Frontend
 
 extern "C" std::unique_ptr<enco::Frontend> make_frontend(const cmdline::View &cmdline)
 {
-  return stdex::make_unique<Frontend>();
+  return std::make_unique<Frontend>();
 }

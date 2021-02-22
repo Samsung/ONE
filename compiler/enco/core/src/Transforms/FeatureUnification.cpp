@@ -17,14 +17,13 @@
 #include "FeatureUnification.h"
 #include "IRUtils.h"
 
-#include <stdex/Memory.h>
-
+#include <memory>
 #include <set>
 #include <vector>
 
 #include <cassert>
 
-using stdex::make_unique;
+using std::make_unique;
 
 namespace
 {

@@ -29,11 +29,11 @@
 #include "Op/Div.h"
 
 #include <schema_generated.h>
-#include <stdex/Memory.h>
 
+#include <memory>
 #include <map>
 
-using stdex::make_unique;
+using std::make_unique;
 
 namespace tflimport
 {

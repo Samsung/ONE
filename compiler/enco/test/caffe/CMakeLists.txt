@@ -123,7 +123,6 @@ foreach(PREFIX IN ITEMS ${CANDIDATES})
   target_link_libraries(${BINDER_TARGET} nnkit_intf_backend)
   target_link_libraries(${BINDER_TARGET} ann_api)
   target_link_libraries(${BINDER_TARGET} ann_ref_static)
-  target_link_libraries(${BINDER_TARGET} stdex)
   set_target_properties(${BINDER_TARGET} PROPERTIES OUTPUT_NAME ${PREFIX})
 
   list(APPEND TESTS ${PREFIX})

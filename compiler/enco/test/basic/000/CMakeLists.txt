@@ -11,7 +11,6 @@ set(LIB_TARGET ${PREFIX}-lib)
 add_library(${PREFIX}-frontend SHARED enco.test.cpp)
 target_link_libraries(${PREFIX}-frontend enco_intf_cmdline)
 target_link_libraries(${PREFIX}-frontend enco_intf_frontend)
-target_link_libraries(${PREFIX}-frontend stdex)
 
 # NOTE BYPRODUCTS are not specified in order to enforce source code generation
 add_custom_command(OUTPUT ${GENERATED_CPP} ${GENERATED_ASM} ${GENERATED_BIN}

@@ -17,7 +17,6 @@ target_link_libraries(enco_core PUBLIC coco_generic)
 # These libraries are linked for internal use, and thus does not appear in public headers.
 target_link_libraries(enco_core PRIVATE pp)
 target_link_libraries(enco_core PRIVATE morph)
-target_link_libraries(enco_core PRIVATE stdex)
 # Let's use nncc project-wide build options
 target_link_libraries(enco_core PRIVATE nncc_common)
 
