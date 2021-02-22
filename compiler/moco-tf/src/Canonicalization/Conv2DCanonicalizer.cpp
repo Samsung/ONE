@@ -29,7 +29,7 @@ using plier::tf::DataLayout;
 
 void set_filter_enc(loco::FilterEncode *filter_enc)
 {
-  auto enc = stdex::make_unique<loco::PermutingEncoder<loco::Domain::Filter>>();
+  auto enc = std::make_unique<loco::PermutingEncoder<loco::Domain::Filter>>();
 
   // In TensorFlow, conv2d filter is a 4-D tensor of following shape:
   // [filter_height, filter_width, in_channels, out_channels] -> HWIO (HWCN)

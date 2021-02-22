@@ -22,7 +22,7 @@
 
 #include <logo/Phase.h>
 
-#include <stdex/Memory.h>
+#include <memory>
 
 namespace moco
 {
@@ -36,39 +36,39 @@ void TFOptimizer::optimize(loco::Graph *g) const
   /* TRANSFORM DECLARATION BEGIN */
   if (moco::tf::get<moco::tf::Knob::ResolveFusedBatchNorm>())
   {
-    phase.emplace_back(stdex::make_unique<moco::ResolveFusedBatchNorm>());
+    phase.emplace_back(std::make_unique<moco::ResolveFusedBatchNorm>());
   }
   if (moco::tf::get<moco::tf::Knob::FuseBinaryIntoPreceding>())
   {
-    phase.emplace_back(stdex::make_unique<moco::FuseBinaryIntoPreceding>());
+    phase.emplace_back(std::make_unique<moco::FuseBinaryIntoPreceding>());
   }
   if (moco::tf::get<moco::tf::Knob::ResolveConstantShape>())
   {
-    phase.emplace_back(stdex::make_unique<moco::ResolveConstantShape>());
+    phase.emplace_back(std::make_unique<moco::ResolveConstantShape>());
   }
   if (moco::tf::get<moco::tf::Knob::ResolveReshapeWildcardDim>())
   {
-    phase.emplace_back(stdex::make_unique<moco::ResolveReshapeWildcardDim>());
+    phase.emplace_back(std::make_unique<moco::ResolveReshapeWildcardDim>());
   }
   if (moco::tf::get<moco::tf::Knob::ResolveSquaredDifference>())
   {
-    phase.emplace_back(stdex::make_unique<moco::ResolveSquaredDifference>());
+    phase.emplace_back(std::make_unique<moco::ResolveSquaredDifference>());
   }
   if (moco::tf::get<moco::tf::Knob::RemoveTFIdentityNode>())
   {
-    phase.emplace_back(stdex::make_unique<moco::RemoveTFIdentityNode>());
+    phase.emplace_back(std::make_unique<moco::RemoveTFIdentityNode>());
   }
   if (moco::tf::get<moco::tf::Knob::RemoveDeadNode>())
   {
-    phase.emplace_back(stdex::make_unique<logo::RemoveDeadNodePass>());
+    phase.emplace_back(std::make_unique<logo::RemoveDeadNodePass>());
   }
   if (moco::tf::get<moco::tf::Knob::SqueezeReduceNode>())
   {
-    phase.emplace_back(stdex::make_unique<moco::SqueezeReduceNode>());
+    phase.emplace_back(std::make_unique<moco::SqueezeReduceNode>());
   }
   // Shape inference is needed for added nodes doing above transformations
-  phase.emplace_back(stdex::make_unique<moco::tf::ShapeInferencePass>());
-  phase.emplace_back(stdex::make_unique<moco::tf::TypeInferencePass>());
+  phase.emplace_back(std::make_unique<moco::tf::ShapeInferencePass>());
+  phase.emplace_back(std::make_unique<moco::tf::TypeInferencePass>());
   /* TRANSFORM DECLARATION END */
 
   ProgressReporter prog(g, logo::PhaseStrategy::Saturate);

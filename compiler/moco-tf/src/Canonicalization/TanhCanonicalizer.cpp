@@ -18,8 +18,6 @@
 
 #include <moco/IR/TFDialect.h>
 
-#include <stdex/Memory.h>
-
 namespace
 {
 

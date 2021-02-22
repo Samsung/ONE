@@ -23,9 +23,9 @@
 #include <moco/Names.h>
 #include <moco/tf/Frontend.h>
 #include <loco.h>
-#include <stdex/Memory.h>
 #include <oops/UserExn.h>
 
+#include <memory>
 #include <vector>
 #include <cassert>
 #include <stdexcept>
@@ -94,11 +94,11 @@ void COpCallGraphBuilder::build(const tensorflow::NodeDef &tf_node,
 
       if (val.value_case() == tensorflow::AttrValue::kF)
       {
-        call_node->attr(name, stdex::make_unique<locoex::COpAttrFloat>(val.f()));
+        call_node->attr(name, std::make_unique<locoex::COpAttrFloat>(val.f()));
       }
       else if (val.value_case() == tensorflow::AttrValue::kI)
       {
-        call_node->attr(name, stdex::make_unique<locoex::COpAttrInt>(val.i()));
+        call_node->attr(name, std::make_unique<locoex::COpAttrInt>(val.i()));
       }
       // TODO define more types
       else
@@ -118,7 +118,7 @@ void COpCallGraphBuilder::build(const tensorflow::NodeDef &tf_node,
   {
     input_names.emplace_back(TensorName(tf_node.input(i)));
   }
-  auto update = stdex::make_unique<COpCallGraphUpdate>(call_node, input_names);
+  auto update = std::make_unique<COpCallGraphUpdate>(call_node, input_names);
   updates->enroll(std::move(update));
 }
 

@@ -56,8 +56,7 @@
 
 #include <logo/Phase.h>
 
-#include <stdex/Memory.h>
-
+#include <memory>
 #include <cassert>
 
 namespace
@@ -92,41 +91,41 @@ void Canonicalizer::canonicalize(loco::Graph *g) const
 
   /* TRANSFORM DECLARATION BEGIN */
   // Run shape and type inference at the top
-  phase.emplace_back(stdex::make_unique<ShapeInferencePass>());
-  phase.emplace_back(stdex::make_unique<TypeInferencePass>());
+  phase.emplace_back(std::make_unique<ShapeInferencePass>());
+  phase.emplace_back(std::make_unique<TypeInferencePass>());
 
-  phase.emplace_back(stdex::make_unique<AddCanonicalizer>());
-  phase.emplace_back(stdex::make_unique<AvgPoolCanonicalizer>());
+  phase.emplace_back(std::make_unique<AddCanonicalizer>());
+  phase.emplace_back(std::make_unique<AvgPoolCanonicalizer>());
   if (moco::tf::get<moco::tf::Knob::CanonicalizeBiasAdd>())
-    phase.emplace_back(stdex::make_unique<BiasAddCanonicalizer>());
-  phase.emplace_back(stdex::make_unique<ConcatV2Canonicalizer>());
+    phase.emplace_back(std::make_unique<BiasAddCanonicalizer>());
+  phase.emplace_back(std::make_unique<ConcatV2Canonicalizer>());
   if (moco::tf::get<moco::tf::Knob::CanonicalizeConst>())
-    phase.emplace_back(stdex::make_unique<ConstCanonicalizer>());
-  phase.emplace_back(stdex::make_unique<Conv2DBackpropInputCanonicalizer>());
+    phase.emplace_back(std::make_unique<ConstCanonicalizer>());
+  phase.emplace_back(std::make_unique<Conv2DBackpropInputCanonicalizer>());
   if (moco::tf::get<moco::tf::Knob::CanonicalizeConv2D>())
-    phase.emplace_back(stdex::make_unique<Conv2DCanonicalizer>());
-  phase.emplace_back(stdex::make_unique<DepthwiseConv2dNativeCanonicalizer>());
-  phase.emplace_back(stdex::make_unique<IdentityCanonicalizer>());
-  phase.emplace_back(stdex::make_unique<MaximumCanonicalizer>());
-  phase.emplace_back(stdex::make_unique<MaxPoolCanonicalizer>());
-  phase.emplace_back(stdex::make_unique<MeanCanonicalizer>());
-  phase.emplace_back(stdex::make_unique<MulCanonicalizer>());
-  phase.emplace_back(stdex::make_unique<PadCanonicalizer>());
-  phase.emplace_back(stdex::make_unique<PlaceholderCanonicalizer>());
-  phase.emplace_back(stdex::make_unique<RealDivCanonicalizer>());
-  phase.emplace_back(stdex::make_unique<ReluCanonicalizer>());
-  phase.emplace_back(stdex::make_unique<Relu6Canonicalizer>());
-  phase.emplace_back(stdex::make_unique<ReshapeCanonicalizer>());
-  phase.emplace_back(stdex::make_unique<RsqrtCanonicalizer>());
-  phase.emplace_back(stdex::make_unique<SoftmaxCanonicalizer>());
-  phase.emplace_back(stdex::make_unique<SqrtCanonicalizer>());
+    phase.emplace_back(std::make_unique<Conv2DCanonicalizer>());
+  phase.emplace_back(std::make_unique<DepthwiseConv2dNativeCanonicalizer>());
+  phase.emplace_back(std::make_unique<IdentityCanonicalizer>());
+  phase.emplace_back(std::make_unique<MaximumCanonicalizer>());
+  phase.emplace_back(std::make_unique<MaxPoolCanonicalizer>());
+  phase.emplace_back(std::make_unique<MeanCanonicalizer>());
+  phase.emplace_back(std::make_unique<MulCanonicalizer>());
+  phase.emplace_back(std::make_unique<PadCanonicalizer>());
+  phase.emplace_back(std::make_unique<PlaceholderCanonicalizer>());
+  phase.emplace_back(std::make_unique<RealDivCanonicalizer>());
+  phase.emplace_back(std::make_unique<ReluCanonicalizer>());
+  phase.emplace_back(std::make_unique<Relu6Canonicalizer>());
+  phase.emplace_back(std::make_unique<ReshapeCanonicalizer>());
+  phase.emplace_back(std::make_unique<RsqrtCanonicalizer>());
+  phase.emplace_back(std::make_unique<SoftmaxCanonicalizer>());
+  phase.emplace_back(std::make_unique<SqrtCanonicalizer>());
   // NOTE SquaredDifference is handled in ResolveSquaredDifference
-  phase.emplace_back(stdex::make_unique<SqueezeCanonicalizer>());
-  phase.emplace_back(stdex::make_unique<StopGradientCanonicalizer>());
-  phase.emplace_back(stdex::make_unique<SubCanonicalizer>());
-  phase.emplace_back(stdex::make_unique<TanhCanonicalizer>());
+  phase.emplace_back(std::make_unique<SqueezeCanonicalizer>());
+  phase.emplace_back(std::make_unique<StopGradientCanonicalizer>());
+  phase.emplace_back(std::make_unique<SubCanonicalizer>());
+  phase.emplace_back(std::make_unique<TanhCanonicalizer>());
   // For virtual nodes
-  phase.emplace_back(stdex::make_unique<TFPushCanonicalizer>());
+  phase.emplace_back(std::make_unique<TFPushCanonicalizer>());
   /* TRANSFORM DECLARATION END */
 
   ProgressReporter prog(g, logo::PhaseStrategy::Restart);

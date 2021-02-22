@@ -19,7 +19,7 @@
 
 #include <locop/FormattedGraph.h>
 
-#include <stdex/Memory.h>
+#include <memory>
 
 namespace moco
 {
@@ -49,7 +49,7 @@ public:
 public:
   std::unique_ptr<locop::NodeSummaryBuilder> create(const locop::SymbolTable *tlb) const final
   {
-    return stdex::make_unique<MocoNodeSummaryBuilder>(tlb);
+    return std::make_unique<MocoNodeSummaryBuilder>(tlb);
   }
 };
 

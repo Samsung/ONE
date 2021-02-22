@@ -23,7 +23,6 @@
 
 #include <loco/Service/TypeInference.h>
 
-#include <stdex/Memory.h>
 #include <oops/UserExn.h>
 
 namespace

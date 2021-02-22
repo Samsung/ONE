@@ -31,13 +31,13 @@
 
 #include <loco/Service/ShapeInference.h>
 
-#include <stdex/Memory.h>
 #include <oops/UserExn.h>
 
 #include <google/protobuf/io/coded_stream.h>
 #include <google/protobuf/io/zero_copy_stream_impl.h>
 #include <google/protobuf/text_format.h>
 
+#include <memory>
 #include <iostream>
 #include <sstream>
 #include <fstream>
@@ -157,7 +157,7 @@ moco::GraphBuilderRegistry make_graph_builder_registry(const moco::ModelSignatur
   for (const auto &custom_op : sig.customops())
   {
     std::unique_ptr<moco::tf::COpCallGraphBuilder> builder =
-      stdex::make_unique<moco::tf::COpCallGraphBuilder>(&sig);
+      std::make_unique<moco::tf::COpCallGraphBuilder>(&sig);
     registry.add(custom_op, std::move(builder));
   }
 
@@ -243,7 +243,7 @@ std::unique_ptr<loco::Graph> Frontend::import(const ModelSignature &signature,
     auto input = graph->inputs()->at(n);
     auto input_node = moco::placeholder_node(graph.get(), n);
     assert(input_node != nullptr);
-    input->shape(stdex::make_unique<loco::TensorShape>(tensor_shape(input_node)));
+    input->shape(std::make_unique<loco::TensorShape>(tensor_shape(input_node)));
   }
 
   for (uint32_t n = 0; n < graph->outputs()->size(); ++n)
@@ -251,7 +251,7 @@ std::unique_ptr<loco::Graph> Frontend::import(const ModelSignature &signature,
     auto output = graph->outputs()->at(n);
     auto output_node = moco::push_node(graph.get(), n);
     assert(output_node != nullptr);
-    output->shape(stdex::make_unique<loco::TensorShape>(::tensor_shape(output_node)));
+    output->shape(std::make_unique<loco::TensorShape>(::tensor_shape(output_node)));
   }
 
   // Convert graph to hold only Canonical dialect

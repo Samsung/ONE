@@ -30,7 +30,7 @@ using plier::tf::DataLayout;
 
 void set_filter_enc(loco::DepthwiseFilterEncode *filter_enc)
 {
-  auto enc = stdex::make_unique<loco::PermutingEncoder<loco::Domain::DepthwiseFilter>>();
+  auto enc = std::make_unique<loco::PermutingEncoder<loco::Domain::DepthwiseFilter>>();
 
   // In TensorFlow, depthwiseconv2dnative filter is a 4-D tensor of following shape:
   // [filter_height, filter_width, in_channels, channel_multiplier] -> HWCM
