@@ -23,9 +23,9 @@
 
 #include <gtest/gtest.h>
 
-#include <stdex/Memory.h>
+#include <memory>
 
-using stdex::make_unique;
+using std::make_unique;
 
 namespace
 {

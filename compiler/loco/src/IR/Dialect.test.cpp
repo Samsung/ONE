@@ -16,7 +16,7 @@
 
 #include "loco/IR/Dialect.h"
 
-#include <stdex/Memory.h>
+#include <memory>
 
 #include <gtest/gtest.h>
 
@@ -31,7 +31,7 @@ TEST(DialectTest, service)
 
   struct MockDialect final : public loco::Dialect
   {
-    MockDialect() { service<S1>(stdex::make_unique<S1>()); }
+    MockDialect() { service<S1>(std::make_unique<S1>()); }
   };
 
   MockDialect dialect;

@@ -18,8 +18,7 @@
 #include "loco/IR/Algorithm.h"
 
 #include <cassert>
-
-#include <stdex/Memory.h>
+#include <memory>
 
 namespace
 {
@@ -82,7 +81,7 @@ bool ShapeInferenceSession::to(Graph *g) const
       {
         if (_rule->infer(node, shape))
         {
-          node->annot(stdex::make_unique<ShapeAnnotation>(shape));
+          node->annot(std::make_unique<ShapeAnnotation>(shape));
           changed = true;
         }
       }

@@ -6,7 +6,6 @@ add_library(loco SHARED ${SOURCES})
 target_include_directories(loco PUBLIC include)
 # TODO Remove dependencies on angkor library
 target_link_libraries(loco PUBLIC angkor)
-target_link_libraries(loco PRIVATE stdex)
 # Let's apply nncc common compile options
 #
 # NOTE This will enable strict compilation (warnings as error).
@@ -24,5 +23,4 @@ endif(NOT ENABLE_TEST)
 nnas_find_package(GTest REQUIRED)
 
 GTest_AddTest(loco_test ${TESTS})
-target_link_libraries(loco_test stdex)
 target_link_libraries(loco_test loco)

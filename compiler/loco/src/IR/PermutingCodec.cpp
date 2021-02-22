@@ -16,8 +16,7 @@
 
 #include "loco/IR/PermutingCodec.h"
 
-#include <stdex/Memory.h>
-
+#include <memory>
 #include <cassert>
 #include <set>
 #include <stdexcept>
@@ -139,7 +138,7 @@ TensorIndex PermutingEncoder<Domain::Feature>::value(const FeatureIndex &in) con
 
 std::unique_ptr<FeatureEncoder> PermutingEncoder<Domain::Feature>::clone(void) const
 {
-  return stdex::make_unique<PermutingEncoder<Domain::Feature>>(_perm);
+  return std::make_unique<PermutingEncoder<Domain::Feature>>(_perm);
 }
 
 bool PermutingEncoder<Domain::Feature>::valid(void) const { return ::valid(_perm); }
@@ -179,7 +178,7 @@ FeatureIndex PermutingDecoder<Domain::Feature>::value(const TensorIndex &in) con
 
 std::unique_ptr<FeatureDecoder> PermutingDecoder<Domain::Feature>::clone(void) const
 {
-  return stdex::make_unique<PermutingDecoder<Domain::Feature>>(_perm);
+  return std::make_unique<PermutingDecoder<Domain::Feature>>(_perm);
 }
 
 bool PermutingDecoder<Domain::Feature>::valid(void) const { return ::valid(_perm); }

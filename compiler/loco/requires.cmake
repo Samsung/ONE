@@ -1,2 +1,1 @@
-require("stdex")
 require("angkor")

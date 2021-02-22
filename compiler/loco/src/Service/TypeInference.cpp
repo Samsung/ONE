@@ -19,8 +19,7 @@
 #include "loco/IR/Algorithm.h"
 
 #include <cassert>
-
-#include <stdex/Memory.h>
+#include <memory>
 
 namespace
 {
@@ -73,7 +72,7 @@ bool TypeInferenceSession::to(Graph *g) const
       {
         if (_rule->infer(node, dtype))
         {
-          node->annot(stdex::make_unique<DataTypeAnnotation>(dtype));
+          node->annot(std::make_unique<DataTypeAnnotation>(dtype));
           changed = true;
         }
       }
