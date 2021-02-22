@@ -17,8 +17,7 @@
 #include "locop/GenericNodeSummaryBuilder.h"
 #include "locop/FormattedGraph.h"
 
-#include <stdex/Memory.h>
-
+#include <memory>
 #include <stdexcept>
 
 #include <gtest/gtest.h>
@@ -44,7 +43,7 @@ TEST(GenericNodeSummaryBuilderTest, simple)
   {
     std::unique_ptr<locop::NodeSummaryBuilder> create(const locop::SymbolTable *tbl) const final
     {
-      return stdex::make_unique<locop::GenericNodeSummaryBuilder>(tbl);
+      return std::make_unique<locop::GenericNodeSummaryBuilder>(tbl);
     }
   };
 
@@ -52,7 +51,7 @@ TEST(GenericNodeSummaryBuilderTest, simple)
 
   g->nodes()->create<MockNode>();
 
-  std::cout << locop::fmt<locop::LinearV1>(g).with(stdex::make_unique<MockFactory>()) << std::endl;
+  std::cout << locop::fmt<locop::LinearV1>(g).with(std::make_unique<MockFactory>()) << std::endl;
 
   SUCCEED();
 }

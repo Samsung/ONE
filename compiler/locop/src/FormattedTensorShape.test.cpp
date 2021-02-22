@@ -16,7 +16,7 @@
 
 #include "locop/FormattedTensorShape.h"
 
-#include <stdex/Memory.h>
+#include <memory>
 
 #include <gtest/gtest.h>
 
@@ -24,7 +24,7 @@ using namespace locop;
 
 TEST(FormattedTensorShapeTest, BracketFormat)
 {
-  auto tensor_shape = stdex::make_unique<loco::TensorShape>();
+  auto tensor_shape = std::make_unique<loco::TensorShape>();
 
   tensor_shape->rank(2);
   tensor_shape->dim(0) = 4;
@@ -37,7 +37,7 @@ TEST(FormattedTensorShapeTest, BracketFormat)
 
 TEST(FormattedTensorShapeTest, PlainFormat)
 {
-  auto tensor_shape = stdex::make_unique<loco::TensorShape>();
+  auto tensor_shape = std::make_unique<loco::TensorShape>();
 
   tensor_shape->rank(2);
   tensor_shape->dim(0) = 4;

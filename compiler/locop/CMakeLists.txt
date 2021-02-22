@@ -13,7 +13,6 @@ target_link_libraries(locop PUBLIC loco)
 target_link_libraries(locop PRIVATE nncc_common)
 target_link_libraries(locop PUBLIC nncc_coverage)
 target_link_libraries(locop PRIVATE pp)
-target_link_libraries(locop PRIVATE stdex)
 
 if(NOT ENABLE_TEST)
   return()
@@ -23,5 +22,4 @@ endif(NOT ENABLE_TEST)
 nnas_find_package(GTest REQUIRED)
 
 GTest_AddTest(locop_test ${TESTS})
-target_link_libraries(locop_test stdex)
 target_link_libraries(locop_test locop)

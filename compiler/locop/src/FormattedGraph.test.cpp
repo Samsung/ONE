@@ -17,7 +17,7 @@
 #include "locop/FormattedGraph.h"
 #include "ExampleGraph.h"
 
-#include <stdex/Memory.h>
+#include <memory>
 
 #include <gtest/gtest.h>
 
@@ -42,7 +42,7 @@ TEST(LinearV1FormatterTest, user_defined_node_summary_builder)
   auto bundle = make_bundle<PullPush>();
   auto g = bundle->graph();
   {
-    bundle->push->annot(stdex::make_unique<MyAnnotation>());
+    bundle->push->annot(std::make_unique<MyAnnotation>());
   }
 
   struct MyBuilder final : public locop::NodeSummaryBuilder
@@ -63,11 +63,11 @@ TEST(LinearV1FormatterTest, user_defined_node_summary_builder)
   {
     std::unique_ptr<locop::NodeSummaryBuilder> create(const locop::SymbolTable *) const final
     {
-      return stdex::make_unique<MyBuilder>();
+      return std::make_unique<MyBuilder>();
     }
   };
 
-  std::cout << locop::fmt<locop::LinearV1>(g).with(stdex::make_unique<MyFactory>()) << std::endl;
+  std::cout << locop::fmt<locop::LinearV1>(g).with(std::make_unique<MyFactory>()) << std::endl;
 
   // TODO Check whether MyBuilder actually sees all the nodes in a graph
   SUCCEED();
@@ -134,11 +134,11 @@ TEST(LinearV1FormatterTest, node_summary_builder_composition)
   {
     std::unique_ptr<locop::NodeSummaryBuilder> create(const locop::SymbolTable *tbl) const final
     {
-      return stdex::make_unique<CompositeBuilder>(tbl);
+      return std::make_unique<CompositeBuilder>(tbl);
     }
   };
 
-  std::cout << locop::fmt<locop::LinearV1>(g).with(stdex::make_unique<MyFactory>()) << std::endl;
+  std::cout << locop::fmt<locop::LinearV1>(g).with(std::make_unique<MyFactory>()) << std::endl;
 
   // TODO Check whether MyBuilder actually sees all the nodes in a graph
   SUCCEED();
