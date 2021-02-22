@@ -20,8 +20,8 @@
 
 #include <moco/Names.h>
 #include <loco.h>
-#include <stdex/Memory.h>
 
+#include <memory>
 #include <vector>
 
 namespace
@@ -88,7 +88,7 @@ void IdentityGraphBuilder::build(const tensorflow::NodeDef &node,
   {
     names.emplace_back(TensorName(node.input(i)));
   }
-  auto update = stdex::make_unique<TFIdentityGraphUpdate>(identity_node, names);
+  auto update = std::make_unique<TFIdentityGraphUpdate>(identity_node, names);
   updates->enroll(std::move(update));
 }
 

@@ -21,8 +21,7 @@
 #include <loco/IR/GraphInputIndex.h>
 #include <loco/IR/GraphOutputIndex.h>
 
-#include <stdex/Memory.h>
-
+#include <memory>
 #include <cassert>
 #include <stdexcept>
 
@@ -78,8 +77,8 @@ namespace moco
 
 TFDialect::TFDialect()
 {
-  service<loco::GraphInputIndexQueryService>(stdex::make_unique<GiiQueryServiceImpl>());
-  service<loco::GraphOutputIndexQueryService>(stdex::make_unique<GoiQueryServiceImpl>());
+  service<loco::GraphInputIndexQueryService>(std::make_unique<GiiQueryServiceImpl>());
+  service<loco::GraphOutputIndexQueryService>(std::make_unique<GoiQueryServiceImpl>());
 }
 
 loco::Dialect *TFDialect::get(void)

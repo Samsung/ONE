@@ -19,7 +19,8 @@
 #include <moco/IR/Nodes/TFAdd.h>
 
 #include <loco.h>
-#include <stdex/Memory.h>
+
+#include <memory>
 
 namespace
 {
@@ -78,7 +79,7 @@ void AddGraphBuilder::build(const tensorflow::NodeDef &node, GraphBuilderContext
   add_input_names.push_back(TensorName(node.input(0))); // x
   add_input_names.push_back(TensorName(node.input(1))); // y
 
-  auto tf_add_update = stdex::make_unique<TFAddGraphUpdate>(tf_add, add_input_names);
+  auto tf_add_update = std::make_unique<TFAddGraphUpdate>(tf_add, add_input_names);
   updates->enroll(std::move(tf_add_update));
 }
 

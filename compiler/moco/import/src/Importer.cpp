@@ -23,9 +23,9 @@
 #include <moco/IR/Nodes/TFPlaceholder.h>
 #include <moco/IR/TFNode.h>
 
-#include <stdex/Memory.h>
 #include <oops/UserExn.h>
 
+#include <memory>
 #include <cassert>
 #include <sstream>
 #include <stdexcept>
@@ -36,9 +36,9 @@ namespace
 void convert_graph(const moco::GraphBuilderSource &source, const moco::ModelSignature &signature,
                    tensorflow::GraphDef &tf_graph_def, loco::Graph *graph)
 {
-  auto nodedef = stdex::make_unique<moco::NodeDefTable>();
-  auto tensor_names = stdex::make_unique<moco::SymbolTable>();
-  auto updates = stdex::make_unique<moco::UpdateQueue>();
+  auto nodedef = std::make_unique<moco::NodeDefTable>();
+  auto tensor_names = std::make_unique<moco::SymbolTable>();
+  auto updates = std::make_unique<moco::UpdateQueue>();
 
   moco::GraphBuilderContext gb_context(graph, nodedef.get(), tensor_names.get(), updates.get());
 

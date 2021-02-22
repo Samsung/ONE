@@ -19,7 +19,8 @@
 #include <moco/IR/Nodes/TFMaximum.h>
 
 #include <loco.h>
-#include <stdex/Memory.h>
+
+#include <memory>
 
 namespace
 {
@@ -80,7 +81,7 @@ void MaximumGraphBuilder::build(const tensorflow::NodeDef &node, GraphBuilderCon
   add_input_names.push_back(TensorName(node.input(0))); // x
   add_input_names.push_back(TensorName(node.input(1))); // y
 
-  auto tf_maximum_update = stdex::make_unique<TFMaximumGraphUpdate>(tf_maximum, add_input_names);
+  auto tf_maximum_update = std::make_unique<TFMaximumGraphUpdate>(tf_maximum, add_input_names);
   updates->enroll(std::move(tf_maximum_update));
 }
 

@@ -19,8 +19,9 @@
 #include <moco/IR/Nodes/TFPad.h>
 
 #include <loco.h>
-#include <stdex/Memory.h>
 #include <plier/tf/Convert.h>
+
+#include <memory>
 
 namespace
 {
@@ -84,7 +85,7 @@ void PadGraphBuilder::build(const tensorflow::NodeDef &node, GraphBuilderContext
   add_input_names.push_back(TensorName(node.input(1))); // paddings
 
   // Queue node input update
-  auto tf_pad_update = stdex::make_unique<TFPadGraphUpdate>(tf_pad, add_input_names);
+  auto tf_pad_update = std::make_unique<TFPadGraphUpdate>(tf_pad, add_input_names);
   updates->enroll(std::move(tf_pad_update));
 }
 

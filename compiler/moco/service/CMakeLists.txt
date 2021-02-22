@@ -9,7 +9,6 @@ target_link_libraries(moco_service PUBLIC loco)
 target_link_libraries(moco_service PUBLIC moco_lang)
 target_link_libraries(moco_service PRIVATE moco_support)
 target_link_libraries(moco_service PRIVATE nncc_common)
-target_link_libraries(moco_service PRIVATE stdex)
 target_link_libraries(moco_service PRIVATE oops)
 install(TARGETS moco_service DESTINATION lib)
 

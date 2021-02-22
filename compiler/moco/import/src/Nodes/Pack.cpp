@@ -23,9 +23,9 @@
 
 #include <loco.h>
 #include <loco/IR/NodeShape.h>
-#include <stdex/Memory.h>
 #include <plier/tf/Convert.h>
 
+#include <memory>
 #include <cassert>
 
 namespace
@@ -95,7 +95,7 @@ void PackGraphBuilder::build(const tensorflow::NodeDef &node, GraphBuilderContex
   TensorName output_name(node.name(), 0);
   tensor_names->enroll(output_name, pack_node);
 
-  auto update = stdex::make_unique<TFPackGraphUpdate>(pack_node, input_names);
+  auto update = std::make_unique<TFPackGraphUpdate>(pack_node, input_names);
   updates->enroll(std::move(update));
 }
 

@@ -24,10 +24,10 @@
 
 #include <loco.h>
 #include <loco/IR/PermutingCodec.h>
-#include <stdex/Memory.h>
 #include <plier/tf/Convert.h>
 #include <oops/UserExn.h>
 
+#include <memory>
 #include <cassert>
 #include <stdexcept>
 #include <algorithm>
@@ -131,7 +131,7 @@ void Conv2DGraphBuilder::build(const tensorflow::NodeDef &node, GraphBuilderCont
   input_names.push_back(TensorName(node.input(1))); // kernel
 
   // Record ifm inputs to featureEncode_node
-  auto tfconv2d_update = stdex::make_unique<TFConv2DGraphUpdate>(conv2d, input_names);
+  auto tfconv2d_update = std::make_unique<TFConv2DGraphUpdate>(conv2d, input_names);
 
   updates->enroll(std::move(tfconv2d_update));
 }

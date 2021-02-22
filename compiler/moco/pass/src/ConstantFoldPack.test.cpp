@@ -19,7 +19,8 @@
 
 #include <moco/IR/TFNodes.h>
 #include <loco.h>
-#include <stdex/Memory.h>
+
+#include <memory>
 
 #include <gtest/gtest.h>
 
@@ -69,7 +70,7 @@ TEST(ConstantFoldPack, basic_scalar4_vector)
   identity->input(pack_node);
   setup_output_node(&graph, identity);
 
-  auto pass = stdex::make_unique<moco::ConstantFoldPack>();
+  auto pass = std::make_unique<moco::ConstantFoldPack>();
   bool cont = true;
   while (cont)
   {

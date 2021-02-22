@@ -20,8 +20,8 @@
 
 #include <moco/Names.h>
 #include <loco.h>
-#include <stdex/Memory.h>
 
+#include <memory>
 #include <cassert>
 #include <stdexcept>
 
@@ -79,7 +79,7 @@ void ReluGraphBuilder::build(const tensorflow::NodeDef &node, GraphBuilderContex
   tensor_names->enroll(output_name, relu_node);
 
   // Queue node input update
-  auto update = stdex::make_unique<TFReluGraphUpdate>(relu_node, TensorName(node.input(0)));
+  auto update = std::make_unique<TFReluGraphUpdate>(relu_node, TensorName(node.input(0)));
   updates->enroll(std::move(update));
 }
 

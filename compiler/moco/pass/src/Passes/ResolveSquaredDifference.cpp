@@ -24,8 +24,6 @@
 #include <loco/IR/NodeShape.h>
 #include <loco/Service/ShapeInference.h>
 
-#include <stdex/Memory.h>
-
 namespace
 {
 

@@ -17,45 +17,45 @@
 #include "moco/Import/GraphBuilderRegistry.h"
 #include "moco/Import/Nodes.h"
 
-#include <stdex/Memory.h>
+#include <memory>
 
 namespace moco
 {
 
 GraphBuilderRegistry::GraphBuilderRegistry()
 {
-  add("Add", stdex::make_unique<AddGraphBuilder>());
-  add("AvgPool", stdex::make_unique<AvgPoolGraphBuilder>());
-  add("BiasAdd", stdex::make_unique<BiasAddGraphBuilder>());
-  add("ConcatV2", stdex::make_unique<ConcatV2GraphBuilder>());
-  add("Const", stdex::make_unique<ConstGraphBuilder>());
-  add("Conv2D", stdex::make_unique<Conv2DGraphBuilder>());
-  add("Conv2DBackpropInput", stdex::make_unique<Conv2DBackpropInputGraphBuilder>());
-  add("DepthwiseConv2dNative", stdex::make_unique<DepthwiseConv2dNativeGraphBuilder>());
-  add("FakeQuantWithMinMaxVars", stdex::make_unique<FakeQuantWithMinMaxVarsGraphBuilder>());
-  add("FusedBatchNorm", stdex::make_unique<FusedBatchNormGraphBuilder>());
-  add("Identity", stdex::make_unique<IdentityGraphBuilder>());
-  add("Maximum", stdex::make_unique<MaximumGraphBuilder>());
-  add("MaxPool", stdex::make_unique<MaxPoolGraphBuilder>());
-  add("Mean", stdex::make_unique<MeanGraphBuilder>());
-  add("Mul", stdex::make_unique<MulGraphBuilder>());
-  add("Pack", stdex::make_unique<PackGraphBuilder>());
-  add("Pad", stdex::make_unique<PadGraphBuilder>());
-  add("Placeholder", stdex::make_unique<PlaceholderGraphBuilder>());
-  add("RealDiv", stdex::make_unique<RealDivGraphBuilder>());
-  add("Relu", stdex::make_unique<ReluGraphBuilder>());
-  add("Relu6", stdex::make_unique<Relu6GraphBuilder>());
-  add("Reshape", stdex::make_unique<ReshapeGraphBuilder>());
-  add("Rsqrt", stdex::make_unique<RsqrtGraphBuilder>());
-  add("Shape", stdex::make_unique<ShapeGraphBuilder>());
-  add("Softmax", stdex::make_unique<SoftmaxGraphBuilder>());
-  add("Sqrt", stdex::make_unique<SqrtGraphBuilder>());
-  add("SquaredDifference", stdex::make_unique<SquaredDifferenceGraphBuilder>());
-  add("Squeeze", stdex::make_unique<SqueezeGraphBuilder>());
-  add("StopGradient", stdex::make_unique<StopGradientGraphBuilder>());
-  add("StridedSlice", stdex::make_unique<StridedSliceGraphBuilder>());
-  add("Sub", stdex::make_unique<SubGraphBuilder>());
-  add("Tanh", stdex::make_unique<TanhGraphBuilder>());
+  add("Add", std::make_unique<AddGraphBuilder>());
+  add("AvgPool", std::make_unique<AvgPoolGraphBuilder>());
+  add("BiasAdd", std::make_unique<BiasAddGraphBuilder>());
+  add("ConcatV2", std::make_unique<ConcatV2GraphBuilder>());
+  add("Const", std::make_unique<ConstGraphBuilder>());
+  add("Conv2D", std::make_unique<Conv2DGraphBuilder>());
+  add("Conv2DBackpropInput", std::make_unique<Conv2DBackpropInputGraphBuilder>());
+  add("DepthwiseConv2dNative", std::make_unique<DepthwiseConv2dNativeGraphBuilder>());
+  add("FakeQuantWithMinMaxVars", std::make_unique<FakeQuantWithMinMaxVarsGraphBuilder>());
+  add("FusedBatchNorm", std::make_unique<FusedBatchNormGraphBuilder>());
+  add("Identity", std::make_unique<IdentityGraphBuilder>());
+  add("Maximum", std::make_unique<MaximumGraphBuilder>());
+  add("MaxPool", std::make_unique<MaxPoolGraphBuilder>());
+  add("Mean", std::make_unique<MeanGraphBuilder>());
+  add("Mul", std::make_unique<MulGraphBuilder>());
+  add("Pack", std::make_unique<PackGraphBuilder>());
+  add("Pad", std::make_unique<PadGraphBuilder>());
+  add("Placeholder", std::make_unique<PlaceholderGraphBuilder>());
+  add("RealDiv", std::make_unique<RealDivGraphBuilder>());
+  add("Relu", std::make_unique<ReluGraphBuilder>());
+  add("Relu6", std::make_unique<Relu6GraphBuilder>());
+  add("Reshape", std::make_unique<ReshapeGraphBuilder>());
+  add("Rsqrt", std::make_unique<RsqrtGraphBuilder>());
+  add("Shape", std::make_unique<ShapeGraphBuilder>());
+  add("Softmax", std::make_unique<SoftmaxGraphBuilder>());
+  add("Sqrt", std::make_unique<SqrtGraphBuilder>());
+  add("SquaredDifference", std::make_unique<SquaredDifferenceGraphBuilder>());
+  add("Squeeze", std::make_unique<SqueezeGraphBuilder>());
+  add("StopGradient", std::make_unique<StopGradientGraphBuilder>());
+  add("StridedSlice", std::make_unique<StridedSliceGraphBuilder>());
+  add("Sub", std::make_unique<SubGraphBuilder>());
+  add("Tanh", std::make_unique<TanhGraphBuilder>());
 
   // Virtual node like `TFPush` need not to be added here
 }

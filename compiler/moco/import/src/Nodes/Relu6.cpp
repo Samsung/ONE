@@ -18,7 +18,7 @@
 
 #include <moco/IR/Nodes/TFRelu6.h>
 
-#include <stdex/Memory.h>
+#include <memory>
 
 namespace
 {
@@ -73,7 +73,7 @@ void Relu6GraphBuilder::build(const tensorflow::NodeDef &node, GraphBuilderConte
   tensor_names->enroll(output_name, relu_node);
 
   // Queue node input update
-  auto update = stdex::make_unique<TFRelu6GraphUpdate>(relu_node, TensorName(node.input(0)));
+  auto update = std::make_unique<TFRelu6GraphUpdate>(relu_node, TensorName(node.input(0)));
   updates->enroll(std::move(update));
 }
 

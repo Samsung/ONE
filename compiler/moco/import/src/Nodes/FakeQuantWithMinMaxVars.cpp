@@ -24,8 +24,8 @@
 
 #include <plier/tf/Convert.h>
 #include <loco/IR/PermutingCodec.h>
-#include <stdex/Memory.h>
 
+#include <memory>
 #include <cassert>
 
 using namespace plier::tf;
@@ -115,7 +115,7 @@ void FakeQuantWithMinMaxVarsGraphBuilder::build(const tensorflow::NodeDef &node,
 
   // Record ifm inputs to featureEncode_node
   auto tffakequant_update =
-    stdex::make_unique<TFFakeQuantWithMinMaxVarsGraphUpdate>(fakequant_node, input_names);
+    std::make_unique<TFFakeQuantWithMinMaxVarsGraphUpdate>(fakequant_node, input_names);
 
   updates->enroll(std::move(tffakequant_update));
 }

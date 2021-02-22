@@ -21,9 +21,10 @@
 #include "Convert.h"
 
 #include <loco.h>
-#include <stdex/Memory.h>
 #include <plier/tf/Convert.h>
 #include <oops/UserExn.h>
+
+#include <memory>
 
 namespace
 {
@@ -132,7 +133,7 @@ void Conv2DBackpropInputGraphBuilder::build(const tensorflow::NodeDef &node,
 
   // update
   auto conv2d_backprop_update =
-    stdex::make_unique<Conv2DBackpropInputGraphUpdate>(conv2d_backprop, input_names);
+    std::make_unique<Conv2DBackpropInputGraphUpdate>(conv2d_backprop, input_names);
 
   updates->enroll(std::move(conv2d_backprop_update));
 }

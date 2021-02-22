@@ -7,7 +7,6 @@ target_include_directories(moco_lang PRIVATE src)
 target_include_directories(moco_lang PUBLIC include)
 target_link_libraries(moco_lang PUBLIC loco)
 target_link_libraries(moco_lang PRIVATE nncc_common)
-target_link_libraries(moco_lang PRIVATE stdex)
 install(TARGETS moco_lang DESTINATION lib)  # moco_tf_frontend requires moco_lang
 
 if(NOT ENABLE_TEST)

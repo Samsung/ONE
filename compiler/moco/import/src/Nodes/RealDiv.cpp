@@ -19,7 +19,8 @@
 #include <moco/IR/Nodes/TFRealDiv.h>
 
 #include <loco.h>
-#include <stdex/Memory.h>
+
+#include <memory>
 
 namespace
 {
@@ -79,7 +80,7 @@ void RealDivGraphBuilder::build(const tensorflow::NodeDef &node, GraphBuilderCon
   div_input_names.push_back(TensorName(node.input(0))); // x
   div_input_names.push_back(TensorName(node.input(1))); // y
 
-  auto tf_div_update = stdex::make_unique<TFRealDivGraphUpdate>(tf_div, div_input_names);
+  auto tf_div_update = std::make_unique<TFRealDivGraphUpdate>(tf_div, div_input_names);
   updates->enroll(std::move(tf_div_update));
 }
 

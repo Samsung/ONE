@@ -19,7 +19,8 @@
 #include <moco/IR/Nodes/TFSquaredDifference.h>
 
 #include <loco.h>
-#include <stdex/Memory.h>
+
+#include <memory>
 
 namespace
 {
@@ -85,7 +86,7 @@ void SquaredDifferenceGraphBuilder::build(const tensorflow::NodeDef &node,
 
   // Queue node input update
   auto tf_sqrt_update =
-    stdex::make_unique<TFSquaredDifferenceGraphUpdate>(tf_sqdiff, add_input_names);
+    std::make_unique<TFSquaredDifferenceGraphUpdate>(tf_sqdiff, add_input_names);
   updates->enroll(std::move(tf_sqrt_update));
 }
 

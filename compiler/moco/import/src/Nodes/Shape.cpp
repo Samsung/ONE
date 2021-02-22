@@ -19,8 +19,9 @@
 #include <moco/IR/Nodes/TFShape.h>
 
 #include <loco.h>
-#include <stdex/Memory.h>
 #include <plier/tf/Convert.h>
+
+#include <memory>
 
 namespace
 {
@@ -93,7 +94,7 @@ void ShapeGraphBuilder::build(const tensorflow::NodeDef &node, GraphBuilderConte
   TensorName output_name(node.name(), 0);
   tensor_names->enroll(output_name, tf_shape);
 
-  auto update = stdex::make_unique<ShapeGraphUpdate>(tf_shape, TensorName(node.input(0)));
+  auto update = std::make_unique<ShapeGraphUpdate>(tf_shape, TensorName(node.input(0)));
   updates->enroll(std::move(update));
 }
 

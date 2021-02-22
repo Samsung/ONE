@@ -21,9 +21,10 @@
 #include <moco/Names.h>
 
 #include <loco.h>
-#include <stdex/Memory.h>
 #include <plier/tf/Convert.h>
 #include <oops/UserExn.h>
+
+#include <memory>
 
 namespace
 {
@@ -105,7 +106,7 @@ void SqueezeGraphBuilder::build(const tensorflow::NodeDef &node, GraphBuilderCon
   TensorName output_name(node.name(), 0);
   tensor_names->enroll(output_name, tf_squeeze);
 
-  auto update = stdex::make_unique<SqueezeGraphUpdate>(tf_squeeze, TensorName(node.input(0)));
+  auto update = std::make_unique<SqueezeGraphUpdate>(tf_squeeze, TensorName(node.input(0)));
   updates->enroll(std::move(update));
 }
 

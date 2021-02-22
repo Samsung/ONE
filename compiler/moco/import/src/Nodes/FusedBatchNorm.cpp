@@ -19,8 +19,9 @@
 #include <moco/IR/Nodes/TFFusedBatchNorm.h>
 
 #include <loco.h>
-#include <stdex/Memory.h>
 #include <plier/tf/Convert.h>
+
+#include <memory>
 
 namespace
 {
@@ -95,7 +96,7 @@ void FusedBatchNormGraphBuilder::build(const tensorflow::NodeDef &node,
   fbn_input_names.push_back(TensorName(node.input(3))); // mean
   fbn_input_names.push_back(TensorName(node.input(4))); // variance
 
-  auto tf_fbn_update = stdex::make_unique<FusedBatchNormGraphUpdate>(tf_fbn, fbn_input_names);
+  auto tf_fbn_update = std::make_unique<FusedBatchNormGraphUpdate>(tf_fbn, fbn_input_names);
   updates->enroll(std::move(tf_fbn_update));
 }
 
