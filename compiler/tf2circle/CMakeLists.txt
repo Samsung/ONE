@@ -40,7 +40,6 @@ target_link_libraries(tf2circle PRIVATE tfinfo)
 target_link_libraries(tf2circle PRIVATE exo)
 target_link_libraries(tf2circle PRIVATE locop)
 target_link_libraries(tf2circle PRIVATE hermes_std)
-target_link_libraries(tf2circle PRIVATE stdex)
 target_link_libraries(tf2circle PRIVATE angkor cwrap)
 target_link_libraries(tf2circle PRIVATE tf2circle_customop_info_proto)
 

@@ -28,10 +28,8 @@
 #include <hermes/ConsoleReporter.h>
 #include <hermes/EnvConfig.h>
 
-#include <stdex/Memory.h>
-
 #include <cassert>
-
+#include <memory>
 #include <iostream>
 #include <stdexcept>
 #include <string>
@@ -70,8 +68,8 @@ struct LoggingContext
     if (ctx == nullptr)
     {
       ctx = new hermes::Context;
-      ctx->sinks()->append(stdex::make_unique<hermes::ConsoleReporter>());
-      ctx->config(stdex::make_unique<EnvConfig>("TF2CIRCLE_Log"));
+      ctx->sinks()->append(std::make_unique<hermes::ConsoleReporter>());
+      ctx->config(std::make_unique<EnvConfig>("TF2CIRCLE_Log"));
     }
 
     return ctx;
@@ -133,9 +131,9 @@ int EntryFunctor::operator()(int argc, char **argv) const
   using EnvConfig = hermes::EnvConfig<hermes::EnvFormat::BooleanNumber>;
 
   // This line allows users to control all the moco-tf loggers via TF2CIRCLE_Log_Frontend
-  moco::LoggingContext::get()->config(stdex::make_unique<EnvConfig>("TF2CIRCLE_Log_Frontend"));
+  moco::LoggingContext::get()->config(std::make_unique<EnvConfig>("TF2CIRCLE_Log_Frontend"));
   // This line allows users to control all the exo-circle loggers via TF2CIRCLE_Log_Backend
-  exo::LoggingContext::get()->config(stdex::make_unique<EnvConfig>("TF2CIRCLE_Log_Backend"));
+  exo::LoggingContext::get()->config(std::make_unique<EnvConfig>("TF2CIRCLE_Log_Backend"));
 
   LOGGER(l);
 

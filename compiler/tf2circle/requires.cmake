@@ -1,4 +1,3 @@
-require("stdex")
 require("hermes-std")
 require("moco-tf")
 require("exo")
