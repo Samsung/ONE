@@ -21,7 +21,6 @@
 #include "Compat.h"
 
 #include <oops/UserExn.h>
-#include <stdex/Memory.h>
 #include <nncc/core/ADT/tensor/Shape.h>
 
 #include <cctype>
@@ -197,7 +196,7 @@ std::unique_ptr<ParsedTensor> parse_line(std::string &line)
     shape.emplace_back(std::stoi(dim));
   }
 
-  return stdex::make_unique<ParsedTensor>(kind, name, dtype, shape);
+  return std::make_unique<ParsedTensor>(kind, name, dtype, shape);
 }
 
 #undef CHECK_NOT_NULL
