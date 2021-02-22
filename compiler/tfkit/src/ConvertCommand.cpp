@@ -17,8 +17,6 @@
 #include "ConvertCommand.hpp"
 #include "Support.hpp"
 
-#include <stdex/Memory.h>
-
 #include <tensorflow/core/framework/graph.pb.h>
 
 #include <google/protobuf/io/coded_stream.h>
@@ -26,6 +24,7 @@
 #include <google/protobuf/text_format.h>
 #include <google/protobuf/util/json_util.h>
 
+#include <memory>
 #include <cassert>
 #include <map>
 #include <string>
@@ -114,12 +113,12 @@ int ConvertCommand::run(int argc, const char *const *argv) const
 
   std::map<std::string, std::unique_ptr<Importer>> importers;
 
-  importers["pb"] = stdex::make_unique<ImporterImpl<DataFormat::PBBIN>>();
-  importers["pbtxt"] = stdex::make_unique<ImporterImpl<DataFormat::PBTXT>>();
+  importers["pb"] = std::make_unique<ImporterImpl<DataFormat::PBBIN>>();
+  importers["pbtxt"] = std::make_unique<ImporterImpl<DataFormat::PBTXT>>();
 
   std::map<std::string, std::unique_ptr<Exporter>> exporters;
 
-  exporters["json"] = stdex::make_unique<ExporterImpl<DataFormat::JSON>>();
+  exporters["json"] = std::make_unique<ExporterImpl<DataFormat::JSON>>();
 
   auto importer = importers.at(input_format).get();
   auto exporter = exporters.at(output_format).get();

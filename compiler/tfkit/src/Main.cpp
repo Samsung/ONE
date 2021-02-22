@@ -21,17 +21,18 @@
 #include "ConvertCommand.hpp"
 
 #include <cli/App.h>
-#include <stdex/Memory.h>
+
+#include <memory>
 
 int main(int argc, char **argv)
 {
   cli::App app{argv[0]};
 
-  app.insert("encode", stdex::make_unique<tfkit::EncodeCommand>());
-  app.insert("decode", stdex::make_unique<tfkit::DecodeCommand>());
-  app.insert("unpack", stdex::make_unique<tfkit::UnpackCommand>());
-  app.insert("pack", stdex::make_unique<tfkit::PackCommand>());
-  app.insert("convert", stdex::make_unique<tfkit::ConvertCommand>());
+  app.insert("encode", std::make_unique<tfkit::EncodeCommand>());
+  app.insert("decode", std::make_unique<tfkit::DecodeCommand>());
+  app.insert("unpack", std::make_unique<tfkit::UnpackCommand>());
+  app.insert("pack", std::make_unique<tfkit::PackCommand>());
+  app.insert("convert", std::make_unique<tfkit::ConvertCommand>());
 
   return app.run(argc - 1, argv + 1);
 }
