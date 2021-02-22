@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "stdex/Memory.h"
+#include <memory>
 
 #include <gtest/gtest.h>
 
@@ -48,7 +48,7 @@ TEST(MemoryTest, make_unique)
   ASSERT_EQ(stat.allocated, 0);
   ASSERT_EQ(stat.freed, 0);
 
-  auto o = stdex::make_unique<::Counter>(&stat);
+  auto o = std::make_unique<::Counter>(&stat);
 
   ASSERT_EQ(stat.allocated, 1);
   ASSERT_EQ(stat.freed, 0);

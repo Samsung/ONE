@@ -1,3 +1,5 @@
+return()
+
 file(GLOB_RECURSE TESTS "src/*.test.cpp")
 
 add_library(stdex INTERFACE)
