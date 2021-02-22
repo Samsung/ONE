@@ -23,8 +23,7 @@
 
 #include <pp/Format.h>
 
-#include <stdex/Memory.h>
-
+#include <memory>
 #include <map>
 #include <set>
 
@@ -300,7 +299,7 @@ void FormattedGraphImpl<Formatter::LinearV1>::dump(std::ostream &os) const
   else
   {
     // Use Built-in NodeSummaryBuilder otherwise
-    node_summary_builder = stdex::make_unique<GenericNodeSummaryBuilder>(&symbols);
+    node_summary_builder = std::make_unique<GenericNodeSummaryBuilder>(&symbols);
   }
 
   // Print Graph Input(s)

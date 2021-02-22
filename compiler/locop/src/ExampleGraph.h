@@ -19,7 +19,7 @@
 
 #include <loco.h>
 
-#include <stdex/Memory.h>
+#include <memory>
 
 namespace
 {
@@ -55,7 +55,7 @@ template <> std::unique_ptr<Bundle<PullPush>> make_bundle(void)
 
   push->from(pull);
 
-  auto res = stdex::make_unique<Bundle<PullPush>>();
+  auto res = std::make_unique<Bundle<PullPush>>();
 
   res->g = std::move(g);
   res->pull = pull;

@@ -25,8 +25,6 @@
 
 #include <pp/Format.h>
 
-#include <stdex/Memory.h>
-
 #include <map>
 #include <set>
 

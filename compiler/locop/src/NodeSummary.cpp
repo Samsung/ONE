@@ -16,8 +16,7 @@
 
 #include "locop/NodeSummary.h"
 
-#include <stdex/Memory.h>
-
+#include <memory>
 #include <cassert>
 
 namespace locop
@@ -36,6 +35,6 @@ const std::string &NodeDesc::opname(void) const
   return *_name;
 }
 
-void NodeDesc::opname(const std::string &v) { _name = stdex::make_unique<std::string>(v); }
+void NodeDesc::opname(const std::string &v) { _name = std::make_unique<std::string>(v); }
 
 } // namespace locop
