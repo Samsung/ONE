@@ -16,6 +16,7 @@
 
 #include "luci/Pass/FusePreActivationBatchNormPass.h"
 #include "FusePreActivationBatchNormPassInternal.h"
+#include "BatchNormPatternFinder.h"
 
 #include <luci/IR/CircleNodes.h>
 #include <luci/Log.h>
@@ -34,80 +35,6 @@ bool is_non_negative(const luci::CircleConst *node)
     if (node->at<loco::DataType::FLOAT32>(i) < 0)
       return false;
   }
-  return true;
-}
-
-// Check if mul is batchnorm mul
-bool is_batchnorm_mul(const luci::CircleMul *mul, luci::CircleNode *&pred_node,
-                      luci::CircleConst *&gamma)
-{
-  auto x = dynamic_cast<luci::CircleConst *>(mul->x());
-  auto y = dynamic_cast<luci::CircleConst *>(mul->y());
-
-  luci::CircleNode *pred = nullptr;
-  luci::CircleConst *constant = nullptr;
-
-  if (x != nullptr && y == nullptr)
-  {
-    pred = loco::must_cast<luci::CircleNode *>(mul->y());
-    constant = x;
-  }
-  else if (x == nullptr && y != nullptr)
-  {
-    pred = loco::must_cast<luci::CircleNode *>(mul->x());
-    constant = y;
-  }
-  else
-  {
-    return false;
-  }
-
-  if (constant->rank() != 1)
-    return false;
-
-  auto channel_dim = constant->dim(0);
-  if (!(channel_dim == mul->dim(mul->rank() - 1)))
-    return false;
-
-  pred_node = pred;
-  gamma = constant;
-  return true;
-}
-
-// Check if add is batchnorm add
-bool is_batchnorm_add(const luci::CircleAdd *add, luci::CircleMul *&mul, luci::CircleConst *&beta)
-{
-  auto x = loco::must_cast<luci::CircleNode *>(add->x());
-  auto y = loco::must_cast<luci::CircleNode *>(add->y());
-
-  luci::CircleMul *pred = nullptr;
-  luci::CircleConst *constant = nullptr;
-
-  if (x->opcode() == luci::CircleOpcode::CIRCLECONST && y->opcode() == luci::CircleOpcode::MUL)
-  {
-    pred = loco::must_cast<luci::CircleMul *>(y);
-    constant = loco::must_cast<luci::CircleConst *>(x);
-  }
-  else if (x->opcode() == luci::CircleOpcode::MUL && y->opcode() == luci::CircleOpcode::CIRCLECONST)
-  {
-    pred = loco::must_cast<luci::CircleMul *>(x);
-    constant = loco::must_cast<luci::CircleConst *>(y);
-  }
-  else
-  {
-    return false;
-  }
-
-  if (constant->rank() != 1)
-    return false;
-
-  auto channel_dim = constant->dim(0);
-  // Assumption: Layout is channel-last
-  if (!(channel_dim == add->dim(add->rank() - 1)))
-    return false;
-
-  mul = pred;
-  beta = constant;
   return true;
 }
 
