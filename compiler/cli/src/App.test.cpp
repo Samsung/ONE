@@ -16,7 +16,7 @@
 
 #include "cli/App.h"
 
-#include <stdex/Memory.h>
+#include <memory>
 
 #include <gtest/gtest.h>
 
@@ -52,7 +52,7 @@ TEST(APP, run)
   cli::App app("test");
 
   std::string args;
-  app.insert("record", stdex::make_unique<RecordCommand>(3, args));
+  app.insert("record", std::make_unique<RecordCommand>(3, args));
 
   const char *argv[] = {"record", "hello", "world"};
 
