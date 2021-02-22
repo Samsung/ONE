@@ -5,7 +5,6 @@ list(REMOVE_ITEM SOURCES ${TESTS})
 add_library(hermes STATIC ${SOURCES})
 set_target_properties(hermes PROPERTIES POSITION_INDEPENDENT_CODE ON)
 target_include_directories(hermes PUBLIC include)
-target_link_libraries(hermes PRIVATE stdex)
 # Let's apply nncc common compile options
 #
 # NOTE This will enable strict compilation (warnings as error).
@@ -22,7 +21,6 @@ nnas_find_package(GTest REQUIRED)
 
 add_executable(hermes_test ${TESTS})
 target_link_libraries(hermes_test gtest_main)
-target_link_libraries(hermes_test stdex)
 target_link_libraries(hermes_test hermes)
 
 add_test(hermes_test hermes_test)
