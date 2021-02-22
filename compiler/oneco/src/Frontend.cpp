@@ -76,8 +76,8 @@ void load_onnx(const std::string &path, moco::onnx::Frontend::FileType type,
 // TODO Make comments clear
 void convert_graph(::onnx::ModelProto &onnx_model_proto, loco::Graph *graph)
 {
-  auto nodes = stdex::make_unique<moco::onnx::SymbolTable>();
-  auto input_names = stdex::make_unique<moco::onnx::SymbolTable>();
+  auto nodes = std::make_unique<moco::onnx::SymbolTable>();
+  auto input_names = std::make_unique<moco::onnx::SymbolTable>();
 
   moco::onnx::GraphBuilderContext gb_context(graph, nodes.get(), input_names.get());
 

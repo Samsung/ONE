@@ -63,16 +63,16 @@ private:
 } // namespace onnx
 } // namespace moco
 
-#include <stdex/Memory.h>
+#include <memory>
 
-#define REGISTER_OP_BUILDER(NAME, BUILDER)                                                    \
-  namespace                                                                                   \
-  {                                                                                           \
-  __attribute__((constructor)) void reg_op(void)                                              \
-  {                                                                                           \
-    std::unique_ptr<moco::onnx::BUILDER> builder = stdex::make_unique<moco::onnx::BUILDER>(); \
-    moco::onnx::GraphBuilderRegistry::get().add(#NAME, std::move(builder));                   \
-  }                                                                                           \
+#define REGISTER_OP_BUILDER(NAME, BUILDER)                                                  \
+  namespace                                                                                 \
+  {                                                                                         \
+  __attribute__((constructor)) void reg_op(void)                                            \
+  {                                                                                         \
+    std::unique_ptr<moco::onnx::BUILDER> builder = std::make_unique<moco::onnx::BUILDER>(); \
+    moco::onnx::GraphBuilderRegistry::get().add(#NAME, std::move(builder));                 \
+  }                                                                                         \
   }
 
 #endif // __MOCO_FRONTEND_ONNX_GRAPH_BUILDER_REGISTRY_H__

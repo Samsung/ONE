@@ -20,7 +20,6 @@ target_include_directories(moco_onnx_frontend PRIVATE src)
 target_include_directories(moco_onnx_frontend PUBLIC include)
 target_link_libraries(moco_onnx_frontend PUBLIC moco_onnx_proto)
 target_link_libraries(moco_onnx_frontend PUBLIC loco)
-target_link_libraries(moco_onnx_frontend PRIVATE stdex)
 target_link_libraries(moco_onnx_frontend PRIVATE cwrap)
 
 nnas_find_package(GTest QUIET)
