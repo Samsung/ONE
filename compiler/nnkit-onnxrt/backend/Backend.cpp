@@ -17,13 +17,13 @@
 #include "nnkit/support/onnx/Backend.h"
 
 #include <nnkit/CmdlineArguments.h>
-#include <stdex/Memory.h>
 
+#include <memory>
 #include <cassert>
 
 extern "C" std::unique_ptr<nnkit::Backend> make_backend(const nnkit::CmdlineArguments &args)
 {
   assert(args.size() == 1); // args.at[0] : onnx file
 
-  return stdex::make_unique<::nnkit::support::onnx::Backend>(args.at(0));
+  return std::make_unique<::nnkit::support::onnx::Backend>(args.at(0));
 }
