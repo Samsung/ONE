@@ -12,4 +12,3 @@ endif(NOT GTest_FOUND)
 
 GTest_AddTEst(cli_test ${TESTS})
 target_link_libraries(cli_test cli)
-target_link_libraries(cli_test stdex)
