@@ -9,7 +9,6 @@ list(REMOVE_ITEM SOURCES ${TESTS})
 add_library(nnsuite_conv_caffe SHARED ${SOURCES})
 target_link_libraries(nnsuite_conv_caffe nnsuite_conv)
 target_link_libraries(nnsuite_conv_caffe nnkit_support_caffe)
-target_link_libraries(nnsuite_conv_caffe stdex)
 
 nnas_find_package(GTest QUIET)
 

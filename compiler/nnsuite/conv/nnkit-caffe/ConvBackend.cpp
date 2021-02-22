@@ -23,9 +23,9 @@
 #include <nncc/core/ADT/kernel/Overlay.h>
 #include <nncc/core/ADT/kernel/NCHWLayout.h>
 
-#include <stdex/Memory.h>
+#include <memory>
 
-using stdex::make_unique;
+using std::make_unique;
 
 std::unique_ptr<nnkit::Backend> ConvBackend::create(const nnsuite::conv::Model &model)
 {

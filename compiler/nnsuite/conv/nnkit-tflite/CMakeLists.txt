@@ -9,7 +9,6 @@ list(REMOVE_ITEM SOURCES ${TESTS})
 add_library(nnsuite_conv_tflite SHARED ${SOURCES})
 target_link_libraries(nnsuite_conv_tflite nnsuite_conv)
 target_link_libraries(nnsuite_conv_tflite nnkit_support_tflite-1.7)
-target_link_libraries(nnsuite_conv_tflite stdex)
 
 nnas_find_package(GTest QUIET)
 
