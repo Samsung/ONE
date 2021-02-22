@@ -69,6 +69,18 @@ bool make_positive_gamma(luci::CircleAdd *add)
 namespace luci
 {
 
+/**
+ * Make gamma value of Mul-Add(as BatchNorm) to positive
+ *
+ *  PATTERN:
+ *          |
+ *    [CircleNode] [CircleConst](as gamma)
+ *              |   |
+ *           [CircleMul] [CircleConst]
+ *                   |    |
+ *               [CircleAdd]
+ *                     |
+ */
 bool MakeBatchNormGammaPositivePass::run(loco::Graph *g)
 {
   bool changed = false;
