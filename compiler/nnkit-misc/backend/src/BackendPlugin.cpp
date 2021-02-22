@@ -17,7 +17,7 @@
 #include "nnkit/BackendPlugin.h"
 
 #include <cassert>
-#include <stdex/Memory.h>
+#include <memory>
 #include <iostream>
 
 // NOTE dlfcn.h is not a standard library
@@ -82,7 +82,7 @@ std::unique_ptr<BackendPlugin> make_backend_plugin(const std::string &path)
     exit(1);
   }
 
-  return stdex::make_unique<BackendPlugin>(handle, entry);
+  return std::make_unique<BackendPlugin>(handle, entry);
 }
 
 } // namespace nnkit
