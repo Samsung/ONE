@@ -20,12 +20,12 @@
 #include "MergeCommand.h"
 
 #include <cli/App.h>
-#include <stdex/Memory.h>
 
+#include <memory>
 #include <map>
 #include <string>
 
-using stdex::make_unique;
+using std::make_unique;
 
 int main(int argc, char **argv)
 {
