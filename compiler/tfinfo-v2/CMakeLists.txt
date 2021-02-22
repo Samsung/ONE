@@ -24,7 +24,6 @@ set_target_properties(tfinfo_v2 PROPERTIES POSITION_INDEPENDENT_CODE ON)
 target_include_directories(tfinfo_v2 PUBLIC include)
 target_link_libraries(tfinfo_v2 PRIVATE tfinfo_v2_proto)
 target_link_libraries(tfinfo_v2 PRIVATE oops)
-target_link_libraries(tfinfo_v2 PRIVATE stdex)
 
 if(NOT ENABLE_TEST)
   return()
