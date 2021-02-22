@@ -16,8 +16,7 @@
 
 #include "UserData.h"
 
-#include <stdex/Memory.h>
-
+#include <memory>
 #include <cassert>
 
 namespace
@@ -55,7 +54,7 @@ const NodeData *user_data(const loco::Node *node)
 
 void user_data(loco::Node *node, std::unique_ptr<NodeData> &&data)
 {
-  node->annot(stdex::make_unique<UserDataAnnotation>(std::move(data)));
+  node->annot(std::make_unique<UserDataAnnotation>(std::move(data)));
 }
 
 void erase_user_data(loco::Node *node) { node->annot<UserDataAnnotation>(nullptr); }
