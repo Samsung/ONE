@@ -17,11 +17,12 @@
 #include "nnkit/support/caffe/Backend.h"
 
 #include <nnkit/CmdlineArguments.h>
-#include <stdex/Memory.h>
+
+#include <memory>
 
 extern "C" std::unique_ptr<nnkit::Backend> make_backend(const nnkit::CmdlineArguments &args)
 {
-  using stdex::make_unique;
+  using std::make_unique;
 
   auto net = make_unique<::caffe::Net<float>>(args.at(0), caffe::TEST);
 
