@@ -1,4 +1,3 @@
-require("stdex")
 require("hermes-std")
 require("mir2loco")
 require("mir")
