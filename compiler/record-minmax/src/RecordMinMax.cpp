@@ -69,6 +69,38 @@ void verifyTypeShape(const luci::CircleInput *input_node, const DataType &dtype,
   }
 }
 
+void update_quantparam(record_minmax::MinMaxObserver *observer, const std::string &mode,
+                       float min_percentile, float max_percentile)
+{
+  auto minmax_map = observer->minMaxData()->getMap();
+  for (auto iter = minmax_map->begin(); iter != minmax_map->end(); ++iter)
+  {
+    auto node = iter->first;
+    auto minmax = iter->second;
+
+    float min{0.0f}, max{0.0f};
+    if (mode == "percentile")
+    {
+      min = record_minmax::getNthPercentile(minmax.min_vector, min_percentile);
+      max = record_minmax::getNthPercentile(minmax.max_vector, max_percentile);
+    }
+    else if (mode == "moving_average")
+    {
+      min = record_minmax::getMovingAverage(minmax.min_vector, 0.9, 16, true);
+      max = record_minmax::getMovingAverage(minmax.max_vector, 0.9, 16, false);
+    }
+    assert(mode == "percentile" || mode == "moving_average");
+    auto quantparam = std::make_unique<luci::CircleQuantParam>();
+    quantparam->min.push_back(min);
+    quantparam->max.push_back(max);
+
+    assert(node->quantparam() == nullptr);
+
+    auto mutable_node = const_cast<luci::CircleNode *>(node);
+    mutable_node->quantparam(std::move(quantparam));
+  }
+}
+
 } // namespace
 
 namespace record_minmax
@@ -170,33 +202,7 @@ void RecordMinMax::profileData(const std::string &mode, const std::string &input
     throw std::runtime_error("HDF5 error occurred.");
   }
 
-  auto minmax_map = _observer->minMaxData()->getMap();
-  for (auto iter = minmax_map->begin(); iter != minmax_map->end(); ++iter)
-  {
-    auto node = iter->first;
-    auto minmax = iter->second;
-
-    float min{0.0f}, max{0.0f};
-    if (mode == "percentile")
-    {
-      min = getNthPercentile(minmax.min_vector, min_percentile);
-      max = getNthPercentile(minmax.max_vector, max_percentile);
-    }
-    else if (mode == "moving_average")
-    {
-      min = getMovingAverage(minmax.min_vector, 0.9, 16, true);
-      max = getMovingAverage(minmax.max_vector, 0.9, 16, false);
-    }
-    assert(mode == "percentile" || mode == "moving_average");
-    auto quantparam = std::make_unique<luci::CircleQuantParam>();
-    quantparam->min.push_back(min);
-    quantparam->max.push_back(max);
-
-    assert(node->quantparam() == nullptr);
-
-    auto mutable_node = const_cast<luci::CircleNode *>(node);
-    mutable_node->quantparam(std::move(quantparam));
-  }
+  update_quantparam(_observer.get(), mode, min_percentile, max_percentile);
 }
 
 void RecordMinMax::profileDataWithRandomInputs(const std::string &mode, float min_percentile,
@@ -250,33 +256,7 @@ void RecordMinMax::profileDataWithRandomInputs(const std::string &mode, float mi
 
   std::cout << "Recording finished. Number of recorded data: " << num_records << std::endl;
 
-  auto minmax_map = _observer->minMaxData()->getMap();
-  for (auto iter = minmax_map->begin(); iter != minmax_map->end(); ++iter)
-  {
-    auto node = iter->first;
-    auto minmax = iter->second;
-
-    float min{0.0f}, max{0.0f};
-    if (mode == "percentile")
-    {
-      min = getNthPercentile(minmax.min_vector, min_percentile);
-      max = getNthPercentile(minmax.max_vector, max_percentile);
-    }
-    else if (mode == "moving_average")
-    {
-      min = getMovingAverage(minmax.min_vector, 0.9, 16, true);
-      max = getMovingAverage(minmax.max_vector, 0.9, 16, false);
-    }
-    assert(mode == "percentile" || mode == "moving_average");
-    auto quantparam = std::make_unique<luci::CircleQuantParam>();
-    quantparam->min.push_back(min);
-    quantparam->max.push_back(max);
-
-    assert(node->quantparam() == nullptr);
-
-    auto mutable_node = const_cast<luci::CircleNode *>(node);
-    mutable_node->quantparam(std::move(quantparam));
-  }
+  update_quantparam(_observer.get(), mode, min_percentile, max_percentile);
 }
 
 void RecordMinMax::saveModel(const std::string &output_model_path)
