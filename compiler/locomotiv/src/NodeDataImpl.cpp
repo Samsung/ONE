@@ -16,8 +16,7 @@
 
 #include "NodeDataImpl.h"
 
-#include <stdex/Memory.h>
-
+#include <memory>
 #include <cassert>
 
 namespace
@@ -59,7 +58,7 @@ template <> NodeDataImpl::NodeDataImpl(const Buffer<float> &buf)
 
 void annot_data(loco::Node *node, std::unique_ptr<NodeData> &&data)
 {
-  node->annot(stdex::make_unique<NodeDataAnnotation>(std::move(data)));
+  node->annot(std::make_unique<NodeDataAnnotation>(std::move(data)));
 }
 
 const NodeData *annot_data(const loco::Node *node)

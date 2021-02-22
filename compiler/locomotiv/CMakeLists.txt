@@ -8,7 +8,6 @@ target_include_directories(locomotiv PUBLIC include)
 target_include_directories(locomotiv PRIVATE src)
 target_link_libraries(locomotiv PUBLIC loco)
 target_link_libraries(locomotiv PUBLIC angkor)
-target_link_libraries(locomotiv PRIVATE stdex)
 # Let's apply nncc common compile options
 #
 # NOTE This will enable strict compilation (warnings as error).
