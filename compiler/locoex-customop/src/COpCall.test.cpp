@@ -20,7 +20,7 @@
 #include <loco/IR/Graph.h>
 #include <loco/IR/Nodes.h>
 
-#include <stdex/Memory.h>
+#include <memory>
 
 #include <gtest/gtest.h>
 
@@ -51,8 +51,8 @@ TEST(CallTest, Test_01)
     custom->input(0, inp);
     custom->input(1, inp);
 
-    custom->attr(int_attr, stdex::make_unique<COpAttrInt>(int_val));
-    custom->attr(float_attr, stdex::make_unique<COpAttrFloat>(float_val));
+    custom->attr(int_attr, std::make_unique<COpAttrInt>(int_val));
+    custom->attr(float_attr, std::make_unique<COpAttrFloat>(float_val));
   }
 
   // access custom op input
