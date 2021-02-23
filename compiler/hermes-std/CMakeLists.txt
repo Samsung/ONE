@@ -6,7 +6,6 @@ add_library(hermes_std STATIC ${SOURCES})
 set_target_properties(hermes_std PROPERTIES POSITION_INDEPENDENT_CODE ON)
 target_include_directories(hermes_std PUBLIC include)
 target_link_libraries(hermes_std PUBLIC hermes)
-target_link_libraries(hermes_std PRIVATE stdex)
 target_link_libraries(hermes_std PRIVATE pepper_strcast)
 # Let's apply nncc common compile options
 #
@@ -23,5 +22,4 @@ endif(NOT ENABLE_TEST)
 nnas_find_package(GTest REQUIRED)
 
 GTest_AddTest(hermes_std_test ${TESTS})
-target_link_libraries(hermes_std_test stdex)
 target_link_libraries(hermes_std_test hermes_std)

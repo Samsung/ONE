@@ -16,8 +16,7 @@
 
 #include "hermes/ConsoleReporter.h"
 
-#include <stdex/Memory.h>
-
+#include <memory>
 #include <sstream>
 
 #include <gtest/gtest.h>
@@ -37,7 +36,7 @@ TEST(ConsoleReporterTest, notify)
 
     ss << "Hello" << std::endl;
 
-    m.text(stdex::make_unique<hermes::MessageText>(ss));
+    m.text(std::make_unique<hermes::MessageText>(ss));
   }
 
   hermes::ConsoleReporter r;
