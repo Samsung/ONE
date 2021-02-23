@@ -16,7 +16,7 @@
 
 #include "hermes/core/MessageBuffer.h"
 
-#include <stdex/Memory.h>
+#include <memory>
 
 namespace hermes
 {
@@ -30,9 +30,9 @@ MessageBuffer::~MessageBuffer()
 {
   // NOTE The current implementation is unsafe as it may throw an excpetion.
   // TODO Find a better safe implementation.
-  auto msg = stdex::make_unique<Message>();
+  auto msg = std::make_unique<Message>();
 
-  msg->text(stdex::make_unique<MessageText>(_ss));
+  msg->text(std::make_unique<MessageText>(_ss));
 
   _bus->post(std::move(msg));
 }

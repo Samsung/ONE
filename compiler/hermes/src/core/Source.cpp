@@ -16,8 +16,7 @@
 
 #include "hermes/core/Source.h"
 
-#include <stdex/Memory.h>
-
+#include <memory>
 #include <cassert>
 
 namespace hermes
@@ -64,7 +63,7 @@ void Source::reload(const Config *c) { c->configure(this, _setting); }
 std::unique_ptr<MessageBuffer> Source::buffer(const Severity &) const
 {
   // TODO Pass Severity
-  return stdex::make_unique<MessageBuffer>(_bus);
+  return std::make_unique<MessageBuffer>(_bus);
 }
 
 } // namespace hermes
