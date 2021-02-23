@@ -29,27 +29,25 @@ void OutputResetter::run(::tflite::Interpreter &interp)
   for (const auto &tensor_idx : interp.outputs())
   {
     TfLiteTensor *tensor = interp.tensor(tensor_idx);
-    if (tensor->type == kTfLiteInt32)
+    switch (tensor->type)
     {
-      resetValue<int32_t>(interp, tensor_idx);
-    }
-    else if (tensor->type == kTfLiteUInt8)
-    {
-      resetValue<uint8_t>(interp, tensor_idx);
-    }
-    else if (tensor->type == kTfLiteInt8)
-    {
-      resetValue<int8_t>(interp, tensor_idx);
-    }
-    else if (tensor->type == kTfLiteBool)
-    {
-      resetValue<bool>(interp, tensor_idx);
-    }
-    else
-    {
-      assert(tensor->type == kTfLiteFloat32);
-
-      resetValue<float>(interp, tensor_idx);
+      case kTfLiteInt32:
+        resetValue<int32_t>(interp, tensor_idx);
+        break;
+      case kTfLiteUInt8:
+        resetValue<uint8_t>(interp, tensor_idx);
+        break;
+      case kTfLiteInt8:
+        resetValue<int8_t>(interp, tensor_idx);
+        break;
+      case kTfLiteBool:
+        resetValue<bool>(interp, tensor_idx);
+        break;
+      case kTfLiteFloat32:
+        resetValue<float>(interp, tensor_idx);
+        break;
+      default:
+        throw std::runtime_error{"Not supported output type"};
     }
   }
 }
