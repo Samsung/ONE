@@ -41,16 +41,16 @@ bool remove_consecutive_transpose_function(luci::CircleTranspose *target_node)
   if (pred_node == nullptr)
     return false;
 
-  auto pred_perm = dynamic_cast<luci::CircleConst *>(target_node->perm());
+  auto target_perm = dynamic_cast<luci::CircleConst *>(target_node->perm());
+  if (target_perm == nullptr)
+    return false;
+
+  auto pred_perm = dynamic_cast<luci::CircleConst *>(pred_node->perm());
   if (pred_perm == nullptr)
     return false;
 
-  auto main_perm = dynamic_cast<luci::CircleConst *>(pred_node->perm());
-  if (main_perm == nullptr)
-    return false;
-
   auto main_node = loco::must_cast<luci::CircleNode *>(pred_node->a());
-  if (check_perm(pred_perm, main_perm))
+  if (check_perm(target_perm, pred_perm))
   {
     replace(target_node).with(main_node);
   }
@@ -59,18 +59,18 @@ bool remove_consecutive_transpose_function(luci::CircleTranspose *target_node)
     auto name = target_node->name();
     assert(name.length() > 0);
 
-    auto g = main_perm->graph();
+    auto g = pred_perm->graph();
     auto new_const_node = g->nodes()->create<luci::CircleConst>();
 
     new_const_node->dtype(loco::DataType::S32);
     new_const_node->rank(1);
-    new_const_node->dim(0) = main_perm->dim(0);
-    new_const_node->size<loco::DataType::S32>(main_perm->dim(0).value());
+    new_const_node->dim(0) = pred_perm->dim(0);
+    new_const_node->size<loco::DataType::S32>(pred_perm->dim(0).value());
     new_const_node->shape_status(luci::ShapeStatus::VALID);
-    for (uint32_t i = 0; i < main_perm->size<loco::DataType::S32>(); i++)
+    for (uint32_t i = 0; i < pred_perm->size<loco::DataType::S32>(); i++)
     {
       new_const_node->at<loco::DataType::S32>(i) =
-        pred_perm->at<loco::DataType::S32>(main_perm->at<loco::DataType::S32>(i));
+        target_perm->at<loco::DataType::S32>(pred_perm->at<loco::DataType::S32>(i));
     }
     new_const_node->name(name + "/Transpose/perm");
 
