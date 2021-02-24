@@ -37,39 +37,41 @@ void setValue(luci::CircleConst *node, const std::vector<int> &v)
 }
 
 /**
- *  Type1
- *  BEFORE
- *         |
- *   [CircleNode]     [CircleConst]
- *           \              /
- *           [CircleTranspose]  [CircleConst]
- *                   \              /
- *                   [CircleTranspose]
- *                           |
+ *  Remove for consecutive Transpose
  *
- *  AFTER
- *         |
- *   [CircleNode]
- *         |   Remove Both
+ *  Type1: Remove both Transpose
+ *     BEFORE
+ *            |
+ *      [CircleNode]     [CircleConst]
+ *              \              /
+ *              [CircleTranspose]  [CircleConst]
+ *                      \              /
+ *                      [CircleTranspose]
+ *                              |
+ *
+ *     AFTER
+ *            |
+ *      [CircleNode]
+ *            |
  *
  * --------------------------------------------
  *
- *  Type2
- *  BEFORE
- *         |
- *   [CircleNode]     [CircleConst]
- *           \              /
- *           [CircleTranspose]  [CircleConst]
- *                   \               /
- *                   [CircleTranspose]
- *                           |
+ *  Type2: Merge to one Transpose
+ *     BEFORE
+ *            |
+ *      [CircleNode]     [CircleConst]
+ *              \              /
+ *              [CircleTranspose]  [CircleConst]
+ *                      \               /
+ *                      [CircleTranspose]
+ *                              |
  *
- *  AFTER
- *          |                 |
- *    [CircleNode]      [CircleConst]
- *           \               /
- *           [CircleTranspose]
- *                   |
+ *     AFTER
+ *             |
+ *       [CircleNode]      [CircleConst]
+ *              \               /
+ *              [CircleTranspose]
+ *                      |
  *
  */
 void create_redundunt_transpose(loco::Graph *g, const std::vector<int32_t> &perm1,
@@ -111,31 +113,37 @@ void create_redundunt_transpose(loco::Graph *g, const std::vector<int32_t> &perm
   output->index(graph_output->index());
   output->name("output");
 }
+
 /**
+ * Remove for consecutive Transposes with branching
+ *
  *  BEFORE
- *       [CircleNode]       [CircleConst]
- *                 \           /
- *  [CircleConst] [CircleTranspose] [CircleConst]
- *          \          / \              /
- *     [CircleTranspose] [CircleTranspose]
- *            |                |
- *       [CircleNode]     [CircleNode]
+ *               |
+ *          [CircleNode]       [CircleConst]
+ *                    \           /
+ *     [CircleConst] [CircleTranspose] [CircleConst]
+ *             \          / \              /
+ *        [CircleTranspose] [CircleTranspose]
+ *               |                |
+ *          [CircleNode]     [CircleNode]
+ *               |                |
  *
  *  AFTER
- *   Type 1
- *         [CircleNode]
- *             /  \       Remove all transpose
- *   [CircleNode] [CircleNode]
+ *   Type 1: Remove all Transpose
+ *                 |
+ *            [CircleNode]
+ *               /    \
+ *      [CircleNode] [CircleNode]
+ *           |            |
  *
- *   Type 2
- *          [CircleNode]      [CircleConst]
- *           (main_node)     (new_const_node)
- *               / \               /
- *    [CircleNode] [CircleTranspose]
- *                  (new_trans_node)
- *                         |
- *                    [CircleNode]
- *
+ *   Type 2: Remove both for one side and create new for another side
+ *                |
+ *          [CircleNode]      [CircleConst](new)
+ *              /  \               /
+ *             /    [CircleTranspose](new)
+ *            |            |
+ *     [CircleNode]   [CircleNode]
+ *            |            |
  */
 void create_redundunt_transpose_with_branch(loco::Graph *g, const std::vector<int32_t> &perm1,
                                             const std::vector<int32_t> &perm2,

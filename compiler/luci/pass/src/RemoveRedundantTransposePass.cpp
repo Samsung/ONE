@@ -90,30 +90,26 @@ bool remove_consecutive_transpose_function(luci::CircleTranspose *target_node)
 
 namespace luci
 {
+
 /**
  *  BEFORE
  *         |
  *   [CircleNode]     [CircleConst]
- *    (main_node)      (main_perm)
- *         \               /
+ *         |           (pred_perm)
+ *          \              /
  *         [CircleTranspose]  [CircleConst]
- *            (pred_node)      (pred_perm)
+ *            (pred_node)     (target_perm)
  *                 \               /
  *                 [CircleTranspose]
  *                   (target_node)
  *                         |
  *
  *  AFTER
- *      <Optional Case>
- *
- *          |                 |                   |
- *    [CircleNode]      [CircleConst]             |
- *     (main_node)     (new_const_node)           |
- *           \               /           or  [CircleNode]
- *           [CircleTranspose]                (main_node)
- *              (pred_node)                       |
+ *          |                                     |
+ *    [CircleNode]  [CircleConst](new)            |
+ *           \           /               or  [CircleNode]
+ *           [CircleTranspose](new)               |
  *                   |                            |
- *
  */
 bool RemoveRedundantTransposePass::run(loco::Graph *g)
 {
