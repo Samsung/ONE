@@ -40,15 +40,6 @@ CircleNode *CircleBCQFullyConnectedGraphBuilder::build_node(const circle::Operat
   node->bias(inputs.at(3));
   node->weights_clusters(inputs.at(4));
 
-  // TODO Find and move to appropriate place for setting optional input
-  if (auto bias = dynamic_cast<luci::CircleOutputExclude *>(node->bias()))
-  {
-    // bias is not used for type inference, but node itself should have a type
-    bias->dtype(loco::DataType::FLOAT32);
-
-    // bias is not used for shape inference
-  }
-
   const auto *options = op.builtin_options.AsBCQFullyConnectedOptions();
   node->weights_hidden_size(options->weights_hidden_size);
   node->fusedActivationFunction(luci_actfunc(options->fused_activation_function));
