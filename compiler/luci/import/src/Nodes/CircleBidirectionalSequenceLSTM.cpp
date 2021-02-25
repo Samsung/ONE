@@ -86,18 +86,6 @@ CircleNode *CircleBidirectionalSequenceLSTMGraphBuilder::build_node(
   node->bw_auxillary_input_to_cell_weights(inputs.at(46));   // Optional
   node->bw_auxillary_input_to_output_weights(inputs.at(47)); // Optional
 
-  const std::vector<int32_t> optionals = {1,  5,  9,  10, 11, 12, 16, 17, 18, 22, 26, 27, 28,
-                                          29, 33, 34, 39, 40, 41, 42, 43, 44, 45, 46, 47};
-  for (auto optional : optionals)
-  {
-    if (auto inp = dynamic_cast<luci::CircleOutputExclude *>(node->arg(optional)))
-    {
-      // CircleOutputExclude doesn't need a type, but since all nodes must have a type, a dummy type
-      // is inserted.
-      inp->dtype(loco::DataType::FLOAT32);
-    }
-  }
-
   const auto *options = op.builtin_options.AsBidirectionalSequenceLSTMOptions();
   node->fusedActivationFunction(luci_actfunc(options->fused_activation_function));
   node->cell_clip(options->cell_clip);
