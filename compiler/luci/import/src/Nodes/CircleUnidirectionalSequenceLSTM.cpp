@@ -56,16 +56,6 @@ CircleNode *CircleUnidirectionalSequenceLSTMGraphBuilder::build_node(
   node->forget_layer_norm_coefficients(inputs.at(21)); // Optional
   node->cell_layer_norm_coefficients(inputs.at(22));   // Optional
   node->output_layer_norm_coefficients(inputs.at(23)); // Optional
-  const std::vector<int32_t> optionals = {1, 5, 9, 10, 11, 12, 16, 17, 20, 21, 22, 23};
-  for (auto optional : optionals)
-  {
-    if (auto inp = dynamic_cast<luci::CircleOutputExclude *>(node->arg(optional)))
-    {
-      // CircleOutputExclude doesn't need a type, but since all nodes must have a type, a dummy type
-      // is inserted.
-      inp->dtype(loco::DataType::FLOAT32);
-    }
-  }
 
   const auto *options = op.builtin_options.AsUnidirectionalSequenceLSTMOptions();
   node->fusedActivationFunction(luci_actfunc(options->fused_activation_function));
