@@ -130,7 +130,7 @@ ifneq ($(EXT_ACL_FOLDER),)
 	mkdir -p $(OVERLAY_FOLDER)/lib
 	cp $(EXT_ACL_FOLDER)/* $(OVERLAY_FOLDER)/lib
 # Make stamp file
-	printf "20.05" > $(OVERLAY_FOLDER)/ARMCOMPUTE.stamp
+	printf "21.02" > $(OVERLAY_FOLDER)/ARMCOMPUTE.stamp
 endif
 
 	NNFW_WORKSPACE="$(WORKSPACE)" NNFW_INSTALL_PREFIX=$(INSTALL_PATH) ./nnfw configure \
