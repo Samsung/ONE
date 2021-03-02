@@ -127,6 +127,11 @@ void LoweredGraph::makeLowerInfo(const compiler::BackendResolver &backend_resolv
   _graph.operations().iterate([&](const ir::OperationIndex &op_ind, const ir::Operation &) {
     const ir::Operation &op = _graph.operations().at(op_ind);
     auto backend = backend_resolver.getBackend(op_ind);
+    if (!backend)
+    {
+      throw std::runtime_error{"Fail to find backend for " + op.name() + " operation"};
+    }
+
     auto frontend_layout = _graph.layout();
 
     // The layout of each backend should be set at another place
