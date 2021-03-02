@@ -28,6 +28,8 @@ bool CircleBidirectionalSequenceLSTMGraphBuilder::validate(const ValidateArgs &a
 {
   if (args.op.inputs.size() != 48)
     return false;
+  if (args.op.outputs.size() != 2)
+    return false;
 
   return true;
 }
