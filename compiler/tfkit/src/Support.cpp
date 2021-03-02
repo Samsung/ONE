@@ -17,10 +17,9 @@
 
 #include "Support.hpp"
 
-#include <stdex/Memory.h>
-
 #include <tensorflow/core/framework/graph.pb.h>
 
+#include <memory>
 #include <cassert>
 #include <fstream>
 #include <stdexcept>
@@ -36,7 +35,7 @@ std::unique_ptr<T> open_fstream(const std::string &path, std::ios_base::openmode
     return nullptr;
   }
 
-  auto stream = stdex::make_unique<T>(path.c_str(), mode);
+  auto stream = std::make_unique<T>(path.c_str(), mode);
   if (!stream->is_open())
   {
     throw std::runtime_error{"ERROR: Failed to open " + path};
@@ -111,7 +110,7 @@ std::string CmdArguments::get_or(unsigned int index, const std::string &s) const
 
 std::unique_ptr<IOConfiguration> make_ioconfig(const CmdArguments &cmdargs)
 {
-  auto iocfg = stdex::make_unique<IOConfiguration>();
+  auto iocfg = std::make_unique<IOConfiguration>();
 
   auto in = open_fstream<std::ifstream>(cmdargs.get_or(0, "-"), std::ios::in | std::ios::binary);
   iocfg->in(std::move(in));
