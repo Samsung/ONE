@@ -953,6 +953,14 @@ void quantize_const_inputs(luci::CircleNode *node, loco::DataType output_type)
       }
       break;
 
+    case luci::CircleOpcode::SPLIT:
+      // Only the second input is quantized
+      input_node = node->arg(1);
+      const_node = dynamic_cast<luci::CircleConst *>(input_node);
+      if (const_node != nullptr && !is_quantized(const_node))
+        quant_const(const_node, output_type);
+      break;
+
     default:
       for (uint32_t i = 0; i < arity; i++)
       {
