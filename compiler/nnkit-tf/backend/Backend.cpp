@@ -17,13 +17,13 @@
 #include "nnkit/support/tf/Backend.h"
 
 #include <nnkit/CmdlineArguments.h>
-#include <stdex/Memory.h>
 
+#include <memory>
 #include <cassert>
 
 extern "C" std::unique_ptr<nnkit::Backend> make_backend(const nnkit::CmdlineArguments &args)
 {
-  using stdex::make_unique;
+  using std::make_unique;
 
   assert(args.size() == 2); // args.at[0] : test.pb path, argas.at[1]: test.info path
 
