@@ -63,5 +63,4 @@ O T(3) ofm
 ### Dependency
 
 - safemain
-- stdex
 - FlatBuffers
