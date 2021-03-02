@@ -9,7 +9,7 @@ function preset_configure()
 {
   REQUIRED_UNITS=()
   # Common Libraries
-  REQUIRED_UNITS+=("angkor" "cwrap" "pepper-str" "pepper-strcast" "pp" "stdex")
+  REQUIRED_UNITS+=("angkor" "cwrap" "pepper-str" "pepper-strcast" "pp")
   REQUIRED_UNITS+=("oops" "pepper-assert" "foder")
   REQUIRED_UNITS+=("souschef")
   REQUIRED_UNITS+=("safemain")
