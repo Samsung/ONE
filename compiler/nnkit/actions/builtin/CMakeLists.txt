@@ -1,7 +1,5 @@
 add_library(nnkit_show_action SHARED Show.cpp)
 target_link_libraries(nnkit_show_action nnkit_intf_action)
-target_link_libraries(nnkit_show_action stdex)
 
 add_library(nnkit_randomize_action SHARED Randomize.cpp)
 target_link_libraries(nnkit_randomize_action nnkit_intf_action)
-target_link_libraries(nnkit_randomize_action stdex)

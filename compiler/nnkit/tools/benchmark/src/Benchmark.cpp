@@ -18,8 +18,7 @@
 #include <nnkit/VectorArguments.h>
 #include <nnkit/BackendPlugin.h>
 
-#include <stdex/Memory.h>
-
+#include <memory>
 #include <map>
 #include <string>
 
@@ -28,7 +27,7 @@
 #include <iostream>
 #include <iomanip>
 
-using stdex::make_unique;
+using std::make_unique;
 
 using std::chrono::milliseconds;
 using std::chrono::microseconds;

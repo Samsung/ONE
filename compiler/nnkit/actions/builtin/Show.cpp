@@ -63,9 +63,10 @@ void ShowAction::run(nnkit::TensorContext &ctx)
 }
 
 #include <nnkit/CmdlineArguments.h>
-#include <stdex/Memory.h>
+
+#include <memory>
 
 extern "C" std::unique_ptr<nnkit::Action> make_action(const nnkit::CmdlineArguments &args)
 {
-  return stdex::make_unique<ShowAction>();
+  return std::make_unique<ShowAction>();
 }
