@@ -70,6 +70,7 @@ bool CircleIfGraphBuilder::validate(const ValidateArgs &args) const
  *                       \- CircleIfOut --- Node ---
  */
 
+#if 0
 CircleNode *CircleIfGraphBuilder::build(const circle::OperatorT &op,
                                         GraphBuilderContext *context) const
 {
@@ -136,6 +137,37 @@ CircleNode *CircleIfGraphBuilder::build(const circle::OperatorT &op,
   }
 
   return node;
+}
+#endif
+
+CircleNode *CircleIfGraphBuilder::build_node(const BuildNodeArgs &bna) const
+{
+  uint32_t input_count = bna.op.inputs.size() - 1;
+  uint32_t output_count = bna.op.outputs.size();
+
+  auto *node = bna.context->graph()->nodes()->create<CircleIf>(input_count, output_count);
+
+  node->cond(bna.input_nodes[0]);
+  for (uint32_t idx = 0; idx < input_count; ++idx)
+  {
+    node->input(idx, bna.input_nodes[idx + 1]);
+  }
+
+  const auto *options = bna.op.builtin_options.AsIfOptions();
+  node->then_branch(options->then_subgraph_index);
+  node->else_branch(options->else_subgraph_index);
+
+  return node;
+}
+
+CircleNode *CircleIfGraphBuilder::build_out(const BuildOutArgs &boa) const
+{
+  auto *nodeout = boa.node->graph()->nodes()->create<CircleIfOut>();
+
+  nodeout->input(boa.node);
+  nodeout->index(boa.index);
+
+  return nodeout;
 }
 
 } // namespace luci
