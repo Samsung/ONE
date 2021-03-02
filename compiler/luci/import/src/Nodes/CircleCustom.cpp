@@ -27,6 +27,7 @@ bool CircleCustomGraphBuilder::validate(const ValidateArgs &) const
   return true;
 }
 
+#if 0
 CircleNode *CircleCustomGraphBuilder::build(const circle::OperatorT &op,
                                             GraphBuilderContext *context) const
 {
@@ -85,6 +86,42 @@ CircleNode *CircleCustomGraphBuilder::build(const circle::OperatorT &op,
   }
 
   return node;
+}
+#endif
+
+CircleNode *CircleCustomGraphBuilder::build_node(const BuildNodeArgs &bna) const
+{
+  uint32_t input_count = bna.op.inputs.size();
+  uint32_t output_count = bna.op.outputs.size();
+
+  auto *node = bna.context->graph()->nodes()->create<CircleCustom>(input_count, output_count);
+
+  for (uint32_t idx = 0; idx < input_count; ++idx)
+  {
+    node->inputs(idx, bna.input_nodes[idx]);
+  }
+
+  const auto &opcodes = bna.context->reader()->opcodes();
+  const uint32_t opcode_index = bna.op.opcode_index;
+  const circle::OperatorCodeT &opcode = *opcodes[opcode_index];
+
+  node->custom_options(
+    std::vector<uint8_t>{bna.op.custom_options.begin(), bna.op.custom_options.end()});
+  node->custom_code(opcode.custom_code);
+
+  // NOTE Operator version of custom is always 1
+
+  return node;
+}
+
+CircleNode *CircleCustomGraphBuilder::build_out(const BuildOutArgs &boa) const
+{
+  auto *nodeout = boa.node->graph()->nodes()->create<CircleCustomOut>();
+
+  nodeout->input(boa.node);
+  nodeout->index(boa.index);
+
+  return nodeout;
 }
 
 } // namespace luci
