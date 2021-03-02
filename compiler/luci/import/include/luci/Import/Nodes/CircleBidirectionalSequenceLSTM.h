@@ -17,21 +17,19 @@
 #ifndef __LUCI_IMPORT_OP_CIRCLE_BIDIRECTIONALSEQUENCE_LSTM_H__
 #define __LUCI_IMPORT_OP_CIRCLE_BIDIRECTIONALSEQUENCE_LSTM_H__
 
-#include "luci/Import/GraphBuilder.h"
+#include "luci/Import/GraphBuilderMultiOutput.h"
 
 namespace luci
 {
 
-class CircleBidirectionalSequenceLSTMGraphBuilder : public GraphBuilderBase
+class CircleBidirectionalSequenceLSTMGraphBuilder : public GraphBuilderMultiOutput
 {
 public:
   bool validate(const ValidateArgs &args) const final;
 
-  CircleNode *build(const circle::OperatorT &op, GraphBuilderContext *context) const final;
-
 private:
-  CircleNode *build_node(const circle::OperatorT &op, const std::vector<CircleNode *> &inputs,
-                         loco::Graph *graph) const;
+  CircleNode *build_node(const BuildNodeArgs &) const final;
+  CircleNode *build_out(const BuildOutArgs &) const final;
 };
 
 } // namespace luci
