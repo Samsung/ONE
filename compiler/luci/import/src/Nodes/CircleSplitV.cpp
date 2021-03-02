@@ -58,6 +58,7 @@ bool CircleSplitVGraphBuilder::validate(const ValidateArgs &args) const
  *                           \- CircleSplitVOut --- FullyConnected ---
  */
 
+#if 0
 CircleNode *CircleSplitVGraphBuilder::build(const circle::OperatorT &op,
                                             GraphBuilderContext *context) const
 {
@@ -118,6 +119,33 @@ CircleNode *CircleSplitVGraphBuilder::build(const circle::OperatorT &op,
   }
 
   return node;
+}
+#endif
+
+CircleNode *CircleSplitVGraphBuilder::build_node(const BuildNodeArgs &bna) const
+{
+  auto node = bna.context->graph()->nodes()->create<CircleSplitV>();
+
+  node->input(bna.input_nodes[0]);
+  node->size_splits(bna.input_nodes[1]);
+  node->split_dim(bna.input_nodes[2]);
+
+  const auto *options = bna.op.builtin_options.AsSplitVOptions();
+  node->num_split(options->num_splits);
+
+  assert(int32_t(bna.op.outputs.size()) == options->num_splits);
+
+  return node;
+}
+
+CircleNode *CircleSplitVGraphBuilder::build_out(const BuildOutArgs &boa) const
+{
+  auto *nodeout = boa.node->graph()->nodes()->create<CircleSplitVOut>();
+
+  nodeout->input(boa.node);
+  nodeout->index(boa.index);
+
+  return nodeout;
 }
 
 } // namespace luci
