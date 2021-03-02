@@ -25,10 +25,8 @@
 #include "hermes/ConsoleReporter.h"
 #include "hermes/EnvConfig.h"
 
-#include "stdex/Memory.h"
-
 #include <cassert>
-
+#include <memory>
 #include <iostream>
 #include <stdexcept>
 #include <string>
@@ -56,8 +54,8 @@ struct LoggingContext
     if (ctx == nullptr)
     {
       ctx = new hermes::Context;
-      ctx->sinks()->append(stdex::make_unique<hermes::ConsoleReporter>());
-      ctx->config(stdex::make_unique<EnvConfig>("ONNX2CIRCLE_Log"));
+      ctx->sinks()->append(std::make_unique<hermes::ConsoleReporter>());
+      ctx->config(std::make_unique<EnvConfig>("ONNX2CIRCLE_Log"));
     }
 
     return ctx;
@@ -81,7 +79,7 @@ int main(int argc, char **argv)
   using EnvConfig = hermes::EnvConfig<hermes::EnvFormat::BooleanNumber>;
 
   // This line allows users to control all the exo-circle loggers via ONNX2CIRCLE_Log_Backend
-  exo::LoggingContext::get()->config(stdex::make_unique<EnvConfig>("ONNX2CIRCLE_Log_Backend"));
+  exo::LoggingContext::get()->config(std::make_unique<EnvConfig>("ONNX2CIRCLE_Log_Backend"));
 
   LOGGER(l);
 
