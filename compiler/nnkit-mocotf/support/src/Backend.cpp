@@ -25,11 +25,11 @@
 
 #include <moco/tf/Frontend.h>
 #include <moco/Names.h>
-#include <stdex/Memory.h>
 
 #include <nncc/core/ADT/tensor/Buffer.h>
 #include <nncc/core/ADT/tensor/LexicalLayout.h>
 
+#include <memory>
 #include <utility> // std::move
 #include <stdexcept>
 
@@ -116,7 +116,7 @@ Backend::Backend(const char *pb_path, const char *info_path)
 
   // set member vars
   _loco_graph = std::move(loco_graph);
-  _sess = stdex::make_unique<locomotiv::Session>(_loco_graph.get());
+  _sess = std::make_unique<locomotiv::Session>(_loco_graph.get());
 }
 
 void Backend::prepare(const std::function<void(nnkit::TensorContext &)> &f)
@@ -131,7 +131,7 @@ void Backend::prepare(const std::function<void(nnkit::TensorContext &)> &f)
   for (int n = 0; n < _inputs.size(); n++)
   {
     auto buf = make_buffer<float, LexicalLayout>(_inputs.at(n)->shape());
-    buf_list.emplace_back(stdex::make_unique<nncc::core::ADT::tensor::Buffer<float>>(buf));
+    buf_list.emplace_back(std::make_unique<nncc::core::ADT::tensor::Buffer<float>>(buf));
   }
 
   // fill test input values
