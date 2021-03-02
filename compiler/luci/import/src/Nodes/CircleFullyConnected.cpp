@@ -39,15 +39,6 @@ CircleNode *CircleFullyConnectedGraphBuilder::build_node(const circle::OperatorT
   node->weights(inputs.at(1));
   node->bias(inputs.at(2)); // bias is optional
 
-  // TODO Find and move to appropriate place for setting optional input
-  if (auto bias = dynamic_cast<luci::CircleOutputExclude *>(node->bias()))
-  {
-    // bias is not used for type inference, but node itself should have a type
-    bias->dtype(loco::DataType::FLOAT32);
-
-    // bias is not used for shape inference
-  }
-
   const auto *options = op.builtin_options.AsFullyConnectedOptions();
   node->fusedActivationFunction(luci_actfunc(options->fused_activation_function));
   node->weights_format(luci_weights_format(options->weights_format));

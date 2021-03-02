@@ -61,16 +61,15 @@ CircleNode *CircleTransposeConvGraphBuilder::build_node(const circle::OperatorT 
   node->filter(inputs.at(1));
   node->outBackprop(inputs.at(2));
   if (inputs.size() == 3)
-    node->bias(graph->nodes()->create<CircleOutputExclude>());
+  {
+    auto *bias = graph->nodes()->create<CircleOutputExclude>();
+    // CircleOutputExclude doesn't need a type, but since all nodes must have a type,
+    // a dummy type is inserted.
+    bias->dtype(loco::DataType::FLOAT32);
+    node->bias(bias);
+  }
   else
     node->bias(inputs.at(3));
-
-  if (auto bias = dynamic_cast<luci::CircleOutputExclude *>(node->bias()))
-  {
-    // CircleOutputExclude doesn't need a type, but since all nodes must have a type, a dummy type
-    // is inserted.
-    bias->dtype(loco::DataType::FLOAT32);
-  }
 
   const auto *options = op.builtin_options.AsTransposeConvOptions();
   node->padding(luci_padding(options->padding));
