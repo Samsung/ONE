@@ -9,7 +9,7 @@ if [[ ! -d "${BUILD_WORKSPACE_PATH}" ]]; then
   exit 255
 fi
 
-BUILD_ITEMS="angkor cwrap pepper-str pepper-strcast pp stdex \
+BUILD_ITEMS="angkor cwrap pepper-str pepper-strcast pp \
 oops pepper-assert \
 hermes hermes-std \
 loco locop locomotiv logo-core logo \
