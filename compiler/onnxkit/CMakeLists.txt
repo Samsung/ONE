@@ -24,7 +24,6 @@ target_include_directories(onnxkitproto PUBLIC ${ONNX_PROTO_INCLUDE_DIRS})
 target_link_libraries(onnxkitproto PUBLIC libprotobuf)
 
 add_executable(onnxkit ${SOURCES})
-target_link_libraries(onnxkit PRIVATE stdex)
 target_link_libraries(onnxkit PRIVATE cli)
 target_link_libraries(onnxkit PRIVATE onnxkitproto)
 target_link_libraries(onnxkit PRIVATE nncc_common)
