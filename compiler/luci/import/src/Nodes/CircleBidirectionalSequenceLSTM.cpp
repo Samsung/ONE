@@ -32,10 +32,10 @@ bool CircleBidirectionalSequenceLSTMGraphBuilder::validate(const ValidateArgs &a
   return true;
 }
 
-CircleNode *CircleBidirectionalSequenceLSTMGraphBuilder::build_node(
-  const circle::OperatorT &op, const std::vector<CircleNode *> &inputs, loco::Graph *graph) const
+CircleNode *CircleBidirectionalSequenceLSTMGraphBuilder::build_node(const BuildNodeArgs &bna) const
 {
-  auto *node = graph->nodes()->create<CircleBidirectionalSequenceLSTM>();
+  auto *node = bna.context->graph()->nodes()->create<CircleBidirectionalSequenceLSTM>();
+  auto &inputs = bna.input_nodes;
   node->input(inputs.at(0));
   node->fw_input_to_input_weights(inputs.at(1)); // Optional
   node->fw_input_to_cell_weights(inputs.at(2));
@@ -86,7 +86,7 @@ CircleNode *CircleBidirectionalSequenceLSTMGraphBuilder::build_node(
   node->bw_auxillary_input_to_cell_weights(inputs.at(46));   // Optional
   node->bw_auxillary_input_to_output_weights(inputs.at(47)); // Optional
 
-  const auto *options = op.builtin_options.AsBidirectionalSequenceLSTMOptions();
+  const auto *options = bna.op.builtin_options.AsBidirectionalSequenceLSTMOptions();
   node->fusedActivationFunction(luci_actfunc(options->fused_activation_function));
   node->cell_clip(options->cell_clip);
   node->proj_clip(options->proj_clip);
@@ -97,6 +97,7 @@ CircleNode *CircleBidirectionalSequenceLSTMGraphBuilder::build_node(
   return node;
 }
 
+#if 0
 CircleNode *CircleBidirectionalSequenceLSTMGraphBuilder::build(const circle::OperatorT &op,
                                                                GraphBuilderContext *context) const
 {
@@ -153,6 +154,17 @@ CircleNode *CircleBidirectionalSequenceLSTMGraphBuilder::build(const circle::Ope
   }
 
   return node;
+}
+#endif
+
+CircleNode *CircleBidirectionalSequenceLSTMGraphBuilder::build_out(const BuildOutArgs &boa) const
+{
+  auto *nodeout = boa.node->graph()->nodes()->create<CircleBidirectionalSequenceLSTMOut>();
+
+  nodeout->input(boa.node);
+  nodeout->index(boa.index);
+
+  return nodeout;
 }
 
 } // namespace luci
