@@ -3,7 +3,7 @@
 # Don't run this script
 [[ "${BASH_SOURCE[0]}" == "${0}" ]] && echo "Please don't execute ${BASH_SOURCE[0]}, source it" && return
 
-DEBUG_BUILD_ITEMS="angkor;cwrap;pepper-str;pepper-strcast;pp;stdex"
+DEBUG_BUILD_ITEMS="angkor;cwrap;pepper-str;pepper-strcast;pp"
 DEBUG_BUILD_ITEMS+=";oops;pepper-assert"
 DEBUG_BUILD_ITEMS+=";hermes;hermes-std"
 DEBUG_BUILD_ITEMS+=";loco;locop;locomotiv;logo-core;logo"
