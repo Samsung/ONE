@@ -17,7 +17,7 @@
 #include "nnkit/support/onnx/Runner.h"
 #include "nnkit/support/onnx/Status.h"
 
-#include <stdex/Memory.h>
+#include <memory>
 #include <cassert>
 
 namespace nnkit
@@ -27,7 +27,7 @@ namespace support
 namespace onnx
 {
 
-Runner::Runner(const std::string &path) : _allocator(stdex::make_unique<Allocator>())
+Runner::Runner(const std::string &path) : _allocator(std::make_unique<Allocator>())
 {
   Status status;
 
@@ -61,7 +61,7 @@ void Runner::prepareInputs(void)
   status = OrtSessionGetInputCount(_session, &num_input_nodes);
   status.throwOnError();
 
-  _inputs = stdex::make_unique<TensorSet>(_allocator.get(), num_input_nodes);
+  _inputs = std::make_unique<TensorSet>(_allocator.get(), num_input_nodes);
 
   for (size_t i = 0; i < num_input_nodes; ++i)
   {
@@ -113,7 +113,7 @@ void Runner::prepareOutputs(void)
   status = OrtSessionGetOutputCount(_session, &num_output_nodes);
   status.throwOnError();
 
-  _outputs = stdex::make_unique<TensorSet>(_allocator.get(), num_output_nodes);
+  _outputs = std::make_unique<TensorSet>(_allocator.get(), num_output_nodes);
 
   for (size_t i = 0; i < num_output_nodes; ++i)
   {
