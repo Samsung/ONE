@@ -21,8 +21,7 @@
 #include <nnkit/Backend.h>
 #include <nnkit/CmdlineArguments.h>
 
-#include <stdex/Memory.h>
-
+#include <memory>
 #include <chrono>
 #include <iostream>
 
@@ -40,5 +39,5 @@ extern "C" std::unique_ptr<nnkit::Backend> make_backend(const nnkit::CmdlineArgu
 
   const nnsuite::conv::RandomModel model{seed};
 
-  return stdex::make_unique<ConvBackend>(model);
+  return std::make_unique<ConvBackend>(model);
 }
