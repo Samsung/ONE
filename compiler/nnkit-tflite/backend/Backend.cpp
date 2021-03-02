@@ -54,9 +54,10 @@ private:
 } // namespace
 
 #include <nnkit/CmdlineArguments.h>
-#include <stdex/Memory.h>
+
+#include <memory>
 
 extern "C" std::unique_ptr<nnkit::Backend> make_backend(const nnkit::CmdlineArguments &args)
 {
-  return stdex::make_unique<GenericBackend>(args.at(0));
+  return std::make_unique<GenericBackend>(args.at(0));
 }
