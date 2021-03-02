@@ -32,7 +32,6 @@ test:
       - ./record-minmax
       - ./safemain
       - ./souschef
-      - ./stdex
       - ./tflite2circle
 
     testFile:
