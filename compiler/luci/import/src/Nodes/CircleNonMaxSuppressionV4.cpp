@@ -61,6 +61,7 @@ bool CircleNonMaxSuppressionV4GraphBuilder::validate(const ValidateArgs &args) c
  *         We will create multiple NonMasSuppressionV4Oout nodes to emulate this
  */
 
+#if 0
 CircleNode *CircleNonMaxSuppressionV4GraphBuilder::build(const circle::OperatorT &op,
                                                          GraphBuilderContext *context) const
 {
@@ -120,6 +121,30 @@ CircleNode *CircleNonMaxSuppressionV4GraphBuilder::build(const circle::OperatorT
   }
 
   return node;
+}
+#endif
+
+CircleNode *CircleNonMaxSuppressionV4GraphBuilder::build_node(const BuildNodeArgs &bna) const
+{
+  auto node = bna.context->graph()->nodes()->create<CircleNonMaxSuppressionV4>();
+
+  node->boxes(bna.input_nodes[0]);
+  node->scores(bna.input_nodes[1]);
+  node->max_output_size(bna.input_nodes[2]);
+  node->iou_threshold(bna.input_nodes[3]);
+  node->score_threshold(bna.input_nodes[4]);
+
+  return node;
+}
+
+CircleNode *CircleNonMaxSuppressionV4GraphBuilder::build_out(const BuildOutArgs &boa) const
+{
+  auto *nodeout = boa.node->graph()->nodes()->create<CircleNonMaxSuppressionV4Out>();
+
+  nodeout->input(boa.node);
+  nodeout->index(boa.index);
+
+  return nodeout;
 }
 
 } // namespace luci
