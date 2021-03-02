@@ -35,6 +35,7 @@ bool CircleUniqueGraphBuilder::validate(const ValidateArgs &args) const
   return true;
 }
 
+#if 0
 CircleNode *CircleUniqueGraphBuilder::build(const circle::OperatorT &op,
                                             GraphBuilderContext *context) const
 {
@@ -86,6 +87,29 @@ CircleNode *CircleUniqueGraphBuilder::build(const circle::OperatorT &op,
   }
 
   return node;
+}
+#endif
+
+CircleNode *CircleUniqueGraphBuilder::build_node(const BuildNodeArgs &bna) const
+{
+  auto node = bna.context->graph()->nodes()->create<CircleUnique>();
+
+  node->input(bna.input_nodes[0]);
+
+  const auto *options = bna.op.builtin_options.AsUniqueOptions();
+  node->output_type(luci_datatype(options->idx_out_type));
+
+  return node;
+}
+
+CircleNode *CircleUniqueGraphBuilder::build_out(const BuildOutArgs &boa) const
+{
+  auto *nodeout = boa.node->graph()->nodes()->create<CircleUniqueOut>();
+
+  nodeout->input(boa.node);
+  nodeout->index(boa.index);
+
+  return nodeout;
 }
 
 } // namespace luci
