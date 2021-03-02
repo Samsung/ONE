@@ -59,6 +59,7 @@ bool CircleTopKV2GraphBuilder::validate(const ValidateArgs &args) const
  *                           \- CircleTopKV2Out --- FullyConnected ---
  */
 
+#if 0
 CircleNode *CircleTopKV2GraphBuilder::build(const circle::OperatorT &op,
                                             GraphBuilderContext *context) const
 {
@@ -114,6 +115,27 @@ CircleNode *CircleTopKV2GraphBuilder::build(const circle::OperatorT &op,
   }
 
   return node;
+}
+#endif
+
+CircleNode *CircleTopKV2GraphBuilder::build_node(const BuildNodeArgs &bna) const
+{
+  auto node = bna.context->graph()->nodes()->create<CircleTopKV2>();
+
+  node->input(bna.input_nodes[0]);
+  node->k(bna.input_nodes[1]);
+
+  return node;
+}
+
+CircleNode *CircleTopKV2GraphBuilder::build_out(const BuildOutArgs &boa) const
+{
+  auto *nodeout = boa.node->graph()->nodes()->create<CircleTopKV2Out>();
+
+  nodeout->input(boa.node);
+  nodeout->index(boa.index);
+
+  return nodeout;
 }
 
 } // namespace luci
