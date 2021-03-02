@@ -5,7 +5,7 @@ list(REMOVE_ITEM SOURCES ${TESTS})
 add_library(tfinfo STATIC ${SOURCES})
 set_target_properties(tfinfo PROPERTIES POSITION_INDEPENDENT_CODE ON)
 target_include_directories(tfinfo PUBLIC include)
-target_link_libraries(tfinfo stdex angkor oops)
+target_link_libraries(tfinfo angkor oops)
 
 # TODO Remove "nnkit_support_tftestinfo" later
 add_library(nnkit_support_tftestinfo ALIAS tfinfo)
