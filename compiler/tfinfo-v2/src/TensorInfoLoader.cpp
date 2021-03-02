@@ -19,13 +19,13 @@
 #include "tfinfo-v2/TensorSignature.h"
 
 #include <oops/UserExn.h>
-#include <stdex/Memory.h>
 
 #include <tfinfo-v2.pb.h>
 
 #include <google/protobuf/io/zero_copy_stream_impl.h>
 #include <google/protobuf/text_format.h>
 
+#include <memory>
 #include <fstream>
 #include <fcntl.h>
 
@@ -107,7 +107,7 @@ void convert(tfinfo_v2_proto::InfoDef &info_def, tfinfo::v2::TensorSignatures &t
       auto name = input_def.name();
       validate_tensor_name(name, path);
 
-      auto tensor = stdex::make_unique<tfinfo::v2::TensorSignature>(
+      auto tensor = std::make_unique<tfinfo::v2::TensorSignature>(
         tfinfo::v2::TensorSignature::Kind::Input, name);
 
       // when there is dim attribute for unknown shape
@@ -136,7 +136,7 @@ void convert(tfinfo_v2_proto::InfoDef &info_def, tfinfo::v2::TensorSignatures &t
       auto name = info_def.output().Get(i).name();
       validate_tensor_name(name, path);
 
-      auto tensor = stdex::make_unique<tfinfo::v2::TensorSignature>(
+      auto tensor = std::make_unique<tfinfo::v2::TensorSignature>(
         tfinfo::v2::TensorSignature::Kind::Output, name);
       tensors.emplace_back(std::move(tensor));
     }
