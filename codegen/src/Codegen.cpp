@@ -345,7 +345,7 @@ void Codegen::process_graph(loco::Graph &graph)
       // Create kernels for nodes
       KernelBuilder(*subgraph).process();
 
-      SchedulerOptions scheduler_options = {_options.scheduler, _options.arch.l1_size};
+      SchedulerOptions scheduler_options = {_options.scheduler, _options.arch.last_level_cache_size};
       Scheduler(*subgraph, scheduler_options).process();
 
       _processed_graphs++;

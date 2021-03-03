@@ -36,18 +36,18 @@ add_custom_command(OUTPUT ${WRAPPER_LIB}
 
 install(TARGETS luci_codegen DESTINATION lib)
 
-# circle_codegen EXECUTABLE
+# native_compiler EXECUTABLE
 
 set(DRIVER_SOURCE Driver.cpp)
 
-add_executable(circle_codegen ${DRIVER_SOURCE})
+add_executable(native_compiler ${DRIVER_SOURCE})
 
-target_include_directories(circle_codegen PRIVATE ${Boost_INCLUDE_DIRS})
+target_include_directories(native_compiler PRIVATE ${Boost_INCLUDE_DIRS})
 
-target_link_libraries(circle_codegen PRIVATE luci_codegen)
-target_link_libraries(circle_codegen PRIVATE luci_import)
-target_link_libraries(circle_codegen PRIVATE luci_export)
-target_link_libraries(circle_codegen PRIVATE ${Boost_LIBRARIES})
+target_link_libraries(native_compiler PRIVATE luci_codegen)
+target_link_libraries(native_compiler PRIVATE luci_import)
+target_link_libraries(native_compiler PRIVATE luci_export)
+target_link_libraries(native_compiler PRIVATE ${Boost_LIBRARIES})
 
 # tests
 

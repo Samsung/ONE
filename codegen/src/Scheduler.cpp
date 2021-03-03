@@ -77,7 +77,7 @@ void Scheduler::process()
     output_func.set_estimates(std::move(estimates));
   }
 
-  Halide::MachineParams params(1, _options.cache_l1_size, 40);
+  Halide::MachineParams params(1, _options.last_level_cache_size, 40);
 
   std::string scheduler_algorithm;
   switch (_options.algorithm)

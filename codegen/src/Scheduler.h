@@ -26,7 +26,7 @@ namespace luci_codegen
 struct SchedulerOptions
 {
   SchedulerAlgorithm algorithm;
-  int cache_l1_size;
+  int last_level_cache_size;
 };
 
 class Scheduler

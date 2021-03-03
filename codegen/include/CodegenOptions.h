@@ -32,7 +32,9 @@ enum class ArchType
 struct Architecture
 {
   ArchType type = ArchType::Native;
-  int l1_size = 16*1024;  // 16 kbytes is a conservative guess
+  // 512 kbytes is a conservative guess
+  // This is common size cache size of many ARM processors
+  int last_level_cache_size = 512*1024;
 };
 
 enum class OS
