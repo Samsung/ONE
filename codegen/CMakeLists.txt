@@ -1,4 +1,8 @@
-find_package(Halide REQUIRED)
+if(NOT DEFINED Halide_DIR)
+  nnas_find_package(Halide REQUIRED)
+else(NOT DEFINED Halide_DIR)
+  find_package(Halide REQUIRED)
+endif(NOT DEFINED Halide_DIR)
 
 if (NOT Halide_FOUND)
     message(STATUS "Skipping luci-codegen: Halide not found, see README.md for instructions")
