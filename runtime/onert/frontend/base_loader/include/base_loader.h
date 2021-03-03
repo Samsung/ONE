@@ -361,40 +361,28 @@ ir::OperandIndex BaseLoader<LoaderDomain>::loadOperand(const Tensor *tensor, ir:
       uint32_t buf_idx = tensor->buffer();
       auto buffer_found = _buf_to_data.find(buf_idx);
 
-      if (_use_mmaped_data)
+      if (buffer_found != _buf_to_data.end())
       {
-        if (buffer_found != _buf_to_data.end())
-        {
-          // another tensor points this buffer and CachedData was already created
-          // let's reuse the CachedData
-          data_obj = buffer_found->second;
-        }
-        else
-        {
-          data_obj = std::make_shared<ir::MMapedData>(_fd, aligned_offset_start, mmap_size,
-                                                      unaligned_offset_start, data_size);
-          _buf_to_data[buf_idx] = data_obj;
-        }
+        // Another tensor points this buffer and its matching Data(either CachedData or MMapedData)
+        // was already created. Let's reuse the Data
+        data_obj = buffer_found->second;
+      }
+      else if (_use_mmaped_data)
+      {
+        data_obj = std::make_shared<ir::MMapedData>(_fd, aligned_offset_start, mmap_size,
+                                                    unaligned_offset_start, data_size);
+        _buf_to_data[buf_idx] = data_obj;
       }
       else
       {
-        if (buffer_found != _buf_to_data.end())
-        {
-          // another tensor points this buffer and CachedData was already created
-          // let's reuse the CachedData
-          data_obj = buffer_found->second;
-        }
-        else
-        {
-          size_t offset = unaligned_offset_start - aligned_offset_start;
-          uint8_t *mmap_base = static_cast<uint8_t *>(
-            mmap(NULL, mmap_size, PROT_READ, MAP_PRIVATE, _fd, aligned_offset_start));
+        size_t offset = unaligned_offset_start - aligned_offset_start;
+        uint8_t *mmap_base = static_cast<uint8_t *>(
+          mmap(NULL, mmap_size, PROT_READ, MAP_PRIVATE, _fd, aligned_offset_start));
 
-          data_obj = std::make_shared<ir::CachedData>(mmap_base + offset, data_size);
-          _buf_to_data[buf_idx] = data_obj;
+        data_obj = std::make_shared<ir::CachedData>(mmap_base + offset, data_size);
+        _buf_to_data[buf_idx] = data_obj;
 
-          munmap(mmap_base, mmap_size);
-        }
+        munmap(mmap_base, mmap_size);
       }
     }
     subg.setOperandValue(operand_index, std::move(data_obj));
