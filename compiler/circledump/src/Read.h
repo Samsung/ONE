@@ -52,6 +52,7 @@ private:
   using CircleBuffers_t = flatbuffers::Vector<flatbuffers::Offset<circle::Buffer>>;
   using CircleTensors_t = flatbuffers::Vector<flatbuffers::Offset<circle::Tensor>>;
   using CircleOperators_t = flatbuffers::Vector<flatbuffers::Offset<circle::Operator>>;
+  using CircleMetadata_t = flatbuffers::Vector<flatbuffers::Offset<circle::Metadata>>;
 
 public:
   Reader(const circle::Model *model);
@@ -68,6 +69,7 @@ public:
   const std::vector<int32_t> &inputs() const { return _inputs; }
   const std::vector<int32_t> &outputs() const { return _outputs; }
   const circle::DataFormat &data_format() const { return _data_format; }
+  const CircleMetadata_t *metadata() const { return _metadata; }
 
   uint32_t num_subgraph() const { return _subgraphs->Length(); }
 
@@ -87,6 +89,7 @@ private:
   const CircleBuffers_t *_buffers{nullptr};
   const CircleTensors_t *_tensors{nullptr};
   const CircleOperators_t *_operators{nullptr};
+  const CircleMetadata_t *_metadata{nullptr};
 
   uint32_t _subgraph_index;
   std::string _subgraph_name;
