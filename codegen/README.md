@@ -1,18 +1,19 @@
-# luci-codegen
+# Codegen
 
 ## Overview
 
-`luci-codegen` component is responcible for native code generation from graph representation.
+`codegen` component is responsible for native code generation from graph representation.
 
-Package provides:
-- Library `luci_codegen`: takes luci IR, replaces some nodes with special "Compiled" custom nodes.
-- Executable `circle_codegen`: takes neural network in circle format, generates new circle model with compiled subgraphs. 
+Package provides utility `native_compiler` that takes neural network in circle format and compiles parts of the models into native code.
+It's output is another circle model and library containing implementations for compiled parts.
+
+Main module of `native_compiler` utility is `luci_codegen` library.
 
 ## Build
 
 This component needs external `Halide` build. If `Halide` is built from sources it demands `LLVM`.
 
-To get needed components and build `luci_codegen` library and `circle_codegen` executable on linux you can use following instruction.
+To get needed components and build `native_compiler` executable on linux you can use following instruction.
 Also see README.md in Halide repo for more methods to build LLVM and Halide (including windows build).
 
 ##### LLVM Build
@@ -54,23 +55,23 @@ $ make install
 $ export Halide_DIR=${PWD}/../install/lib/cmake/Halide
 ```
 
-##### luci-codegen build
+##### Codegen build
 
 Assuming current dir is where build should be done.
 If `LLVM_DIR` and `Halide_DIR` variables are not set you can pass them as cmake arguments.
 
 ```
 $ cmake <path to nncc CMakeLists.txt dir>
-$ make -j$(nproc) circle_codegen
+$ make -j$(nproc) native_compiler
 ```
 
-`circle_codegen` executable path is `<build dir>/compiler/luci-codegen/src/circle_codegen`
+`native_compiler` executable path is `<build dir>/codegen/luci-codegen/src/native_compiler`
 
-`luci_codegen` library path is `<build dir>/compiler/luci-codegen/src/luci_codegen.so`
+`luci_codegen` library path is `<build dir>/codegen/luci-codegen/src/luci_codegen.so`
 
 ## Usage
 
-##### circle_codegen
+##### native_compiler
 
 `luci_codegen` uses Halide autoschedulers, they are built along with main Halide library (libHalide.so on linux)
 and distributed as shared libraries:
@@ -78,12 +79,12 @@ and distributed as shared libraries:
 - `libautoschedule_li2018.so`
 - `libautoschedule_mullapudi2016.so`
 
-in order to use `circle_codegen` executable LD_LIBRARY_PATH variable should be set, so these libraries are in path. For example: `$ export LD_PRELOAD_PATH=${Halide_DIR}/../../`.
+In order to use `native_compiler` utility LD_LIBRARY_PATH variable should be set, so these libraries are in path. For example: `$ export LD_PRELOAD_PATH=${Halide_DIR}/../../`.
 
 Basic usage:
 
 ```
-$ ./circle_codegen model.circle compiled
+$ ./native_compiler model.circle compiled
 ```
 
 As a result there will be created new directory `compiled` where compiler will place all generated files.
@@ -110,7 +111,7 @@ Common usage looks like:
   luci_codegen::CodegenOptions options;
   options.max_inline_buffer_threshold = 1024;
   options.arch.type = luci_codegen::ArchType::Native;
-  options.arch.l1_size = 16*1024;
+  options.arch.last_level_cache_size = 512*1024;
   options.debug = false;
   options.os = luci_codegen::OS::Native;
   options.scheduler = luci_codegen::SchedulerAlgorithm::Adams;
@@ -129,7 +130,7 @@ Common usage looks like:
 
 Note that this code will transform `luci_module` structure, it should be saved separately.
 
-##Wrappers
+## Wrappers
 
 Wrappers provides simple portable interface to generated code.
 
@@ -184,20 +185,21 @@ compiled_func.wrapper(compiled_func.configuration, buffers);
 free_generated_subgraph_0(compiled_func);
 ```
 
-#####Rationale
+##### Rationale
 
 TBD
 
-##Class diagram
+## Class diagram
 
 TBD
 
-##Examples
+## Examples
 
 Original graph | Compiled graph
 -------------- | --------------
 ![example_graph_original](docs/example_graph_original.jpg) | ![example_graph_compiled](docs/example_graph_compiled.jpg)
 
-##Limitations
+## Limitations
 
 TBD
+
