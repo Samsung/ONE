@@ -99,66 +99,6 @@ CircleNode *CircleBidirectionalSequenceLSTMGraphBuilder::build_node(const BuildN
   return node;
 }
 
-#if 0
-CircleNode *CircleBidirectionalSequenceLSTMGraphBuilder::build(const circle::OperatorT &op,
-                                                               GraphBuilderContext *context) const
-{
-  assert(context != nullptr);
-
-  const std::vector<int32_t> &inputs = op.inputs;
-  const std::vector<int32_t> &outputs = op.outputs;
-  const auto &tensors = context->reader()->tensors();
-  auto tensors_ptr = context->reader()->tensors_ptr();
-  assert(tensors_ptr != nullptr);
-
-  std::vector<CircleNode *> input_nodes;
-  for (const int32_t input_tensor_index : inputs)
-  {
-    if (input_tensor_index >= 0)
-    {
-      auto input = context->nodefinder()->node(input_tensor_index);
-      if (input != nullptr)
-        input_nodes.push_back(input);
-    }
-    else
-    {
-      // If there is no tensor, insert CircleOutputExclude.
-      input_nodes.push_back(context->graph()->nodes()->create<luci::CircleOutputExclude>());
-    }
-  }
-
-  // Create CircleBidirectionalSequenceLSTM
-  CircleNode *node =
-    CircleBidirectionalSequenceLSTMGraphBuilder::build_node(op, input_nodes, context->graph());
-
-  assert(int32_t(outputs.size()) == 2);
-  // Let's use name of output 0 as BidirectionalSequenceLSTM name
-  const circle::TensorT &output_tensor = *tensors[outputs[0]];
-  node->name(tensor_name(output_tensor));
-
-  // Create virtual outputs of BidirectionalSequenceLSTM
-  for (int32_t n = 0; n < 2; ++n)
-  {
-    const circle::TensorT &output_tensor = *tensors[outputs[n]];
-
-    auto *nodeout = context->graph()->nodes()->create<CircleBidirectionalSequenceLSTMOut>();
-    copy_tensor_attributes(output_tensor, nodeout);
-    // mark shape_status
-    if (tensors_ptr->Get(outputs[n])->shape() == nullptr)
-      nodeout->shape_status(ShapeStatus::NOSHAPE);
-    else
-      nodeout->shape_status(ShapeStatus::VALID);
-
-    nodeout->input(node);
-    nodeout->index(n);
-
-    context->nodefinder()->enroll(outputs[n], nodeout);
-  }
-
-  return node;
-}
-#endif
-
 CircleNode *CircleBidirectionalSequenceLSTMGraphBuilder::build_out(const BuildOutArgs &boa) const
 {
   auto *nodeout = boa.node->graph()->nodes()->create<CircleBidirectionalSequenceLSTMOut>();
