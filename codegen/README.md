@@ -11,7 +11,20 @@ Main module of `native_compiler` utility is `luci_codegen` library.
 
 ## Build
 
-This component needs external `Halide` build. If `Halide` is built from sources it demands `LLVM`.
+If you are using default build process, just run:
+
+```
+$ cmake <path to infra/codegen dir>
+$ make -j$(nproc) native_compiler
+```
+
+This will download official Halide release automatically and build native_compiler using it.
+
+Proceed with `detailed build` if you want to try your own Halide build.
+
+### Detailed Build
+
+Codegen needs external `Halide` build. If `Halide` is built from sources it demands `LLVM`.
 
 To get needed components and build `native_compiler` executable on linux you can use following instruction.
 Also see README.md in Halide repo for more methods to build LLVM and Halide (including windows build).
@@ -61,7 +74,7 @@ Assuming current dir is where build should be done.
 If `LLVM_DIR` and `Halide_DIR` variables are not set you can pass them as cmake arguments.
 
 ```
-$ cmake <path to nncc CMakeLists.txt dir>
+$ cmake <path to codegen CMakeLists.txt dir>
 $ make -j$(nproc) native_compiler
 ```
 
@@ -79,7 +92,7 @@ and distributed as shared libraries:
 - `libautoschedule_li2018.so`
 - `libautoschedule_mullapudi2016.so`
 
-In order to use `native_compiler` utility LD_LIBRARY_PATH variable should be set, so these libraries are in path. For example: `$ export LD_PRELOAD_PATH=${Halide_DIR}/../../`.
+In order to use `native_compiler` utility `LD_LIBRARY_PATH` variable should be set, so these libraries are in path. For example: `$ export LD_PRELOAD_PATH=${Halide_DIR}/../../`.
 
 Basic usage:
 
