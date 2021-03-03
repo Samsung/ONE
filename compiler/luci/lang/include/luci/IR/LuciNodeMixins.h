@@ -17,90 +17,16 @@
 #ifndef __LUCI_IR_LUCINODEMIXINS_H__
 #define __LUCI_IR_LUCINODEMIXINS_H__
 
-#include "luci/IR/AttrFusedActFunc.h"
+// TODO remove this file after LuciNodeTrait and LuciNodeMixin are not used in backend
 
-#include <loco/IR/Node.h>
-#include <loco/IR/NodeMixins.h>
-
-#include <vector>
+#include "luci/IR/CircleNodeMixins.h"
 
 namespace luci
 {
 
-/// @brief enumeration of mixin class
-enum class LuciNodeTrait
-{
-  FusedActFunc,
-  Bias
-};
+using LuciNodeTrait = CircleNodeTrait;
 
-template <LuciNodeTrait T> class LuciNodeMixin;
-
-template <> class LuciNodeMixin<LuciNodeTrait::FusedActFunc>
-{
-public:
-  LuciNodeMixin() = default;
-
-public:
-  FusedActFunc fusedActivationFunction() const { return _fused_act_fun; }
-  void fusedActivationFunction(FusedActFunc fused_act_fun) { _fused_act_fun = fused_act_fun; }
-
-private:
-  FusedActFunc _fused_act_fun = FusedActFunc::UNDEFINED;
-};
-
-/**
- * @brief Mixin class for nodes that has a bias input
- */
-template <> class LuciNodeMixin<LuciNodeTrait::Bias>
-{
-public:
-  LuciNodeMixin() = default;
-
-public:
-  virtual loco::Node *bias(void) const = 0; /// @brief get the input for bias.
-  virtual void bias(loco::Node *node) = 0;  /// @brief set the input for bias.
-};
-
-/**
- * @brief Nodes with the fixed number of inputs
- *
- * TODO Deprecated this class, and use loco::FixedArity instead
- */
-template <unsigned N, typename Base> class FixedArityNode : public Base
-{
-public:
-  FixedArityNode()
-  {
-    _args.resize(N);
-    for (uint32_t n = 0; n < N; ++n)
-    {
-      _args[n] = std::make_unique<loco::Use>(this);
-    }
-  }
-
-  virtual ~FixedArityNode() = default;
-
-public:
-  unsigned arity(void) const final { return N; }
-
-  loco::Node *arg(uint32_t n) const final { return _args.at(n)->node(); }
-
-  void drop(void) final
-  {
-    for (uint32_t n = 0; n < N; ++n)
-    {
-      _args.at(n)->node(nullptr);
-    }
-  }
-
-protected:
-  // This API allows inherited classes to access "_args" field.
-  loco::Use *at(unsigned n) const { return _args.at(n).get(); }
-
-private:
-  std::vector<std::unique_ptr<loco::Use>> _args{};
-};
+template <LuciNodeTrait T> using LuciNodeMixin = CircleNodeMixin<T>;
 
 } // namespace luci
 
