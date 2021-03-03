@@ -114,6 +114,9 @@ def _make_tflite2circle_cmd(driver_path, input_path, output_path):
 def _make_circle2circle_cmd(args, driver_path, input_path, output_path):
     """make a command for running circle2circle"""
     cmd = [os.path.expanduser(c) for c in [driver_path, input_path, output_path]]
+    # utility
+    if _is_valid_attr(args, 'profiling_info'):
+        cmd.append('--profiling_info')
     # optimization pass
     if _is_valid_attr(args, 'O1'):
         cmd.append('--O1')

@@ -47,6 +47,13 @@ def _get_parser():
     parser.add_argument(
         '-o', '--output_path', type=str, help='full filepath of the output file')
 
+    # argument for profiling
+    parser.add_argument(
+        '-p',
+        '--profiling_info',
+        action='store_true',
+        help='produce profiling information')
+
     ## arguments for quantization
     quantization_group = parser.add_argument_group('arguments for quantization')
 
@@ -137,6 +144,9 @@ def _quantize(args):
             tmpdir,
             os.path.splitext(os.path.basename(args.input_path))[0]) + '1.circle'
         circle_quantizer_cmd.append(tmp_output_path_1)
+        # profiling
+        if _utils._is_valid_attr(args, 'profiling_info'):
+            circle_quantizer_cmd.append('--profiling_info')
 
         f.write((' '.join(circle_quantizer_cmd) + '\n').encode())
 
@@ -206,6 +216,9 @@ def _quantize(args):
         circle_quantizer_cmd.append(tmp_output_path_2)
         if _utils._is_valid_attr(args, 'output_path'):
             circle_quantizer_cmd.append(getattr(args, 'output_path'))
+        # profiling
+        if _utils._is_valid_attr(args, 'profiling_info'):
+            circle_quantizer_cmd.append('--profiling_info')
 
         f.write((' '.join(circle_quantizer_cmd) + '\n').encode())
 
