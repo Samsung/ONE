@@ -21,7 +21,7 @@
 #include "luci/IR/CircleOpcode.h"
 
 #include "luci/IR/AttrFusedActFunc.h"
-#include "luci/IR/LuciNodeMixins.h"
+#include "luci/IR/CircleNodeMixins.h"
 
 namespace luci
 {
@@ -30,7 +30,7 @@ namespace luci
  * @brief ADD in Circle
  */
 class CircleAdd final : public FixedArityNode<2, CircleNodeImpl<CircleOpcode::ADD>>,
-                        public LuciNodeMixin<LuciNodeTrait::FusedActFunc>
+                        public CircleNodeMixin<CircleNodeTrait::FusedActFunc>
 {
 public:
   loco::Node *x(void) const { return at(0)->node(); }

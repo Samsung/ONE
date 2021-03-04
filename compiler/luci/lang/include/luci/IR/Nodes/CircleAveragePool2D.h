@@ -24,7 +24,7 @@
 #include "luci/IR/AttrPadding.h"
 #include "luci/IR/AttrStride.h"
 #include "luci/IR/AttrFusedActFunc.h"
-#include "luci/IR/LuciNodeMixins.h"
+#include "luci/IR/CircleNodeMixins.h"
 
 namespace luci
 {
@@ -34,7 +34,7 @@ namespace luci
  */
 class CircleAveragePool2D final
   : public FixedArityNode<1, CircleNodeImpl<CircleOpcode::AVERAGE_POOL_2D>>,
-    public LuciNodeMixin<LuciNodeTrait::FusedActFunc>
+    public CircleNodeMixin<CircleNodeTrait::FusedActFunc>
 {
 public:
   CircleAveragePool2D() : _padding(Padding::UNDEFINED)
