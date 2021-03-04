@@ -21,7 +21,7 @@
 #include "luci/IR/CircleOpcode.h"
 
 #include "luci/IR/AttrFusedActFunc.h"
-#include "luci/IR/LuciNodeMixins.h"
+#include "luci/IR/CircleNodeMixins.h"
 
 namespace luci
 {
@@ -31,7 +31,7 @@ namespace luci
  */
 class CircleUnidirectionalSequenceLSTM final
   : public FixedArityNode<24, CircleNodeImpl<CircleOpcode::UNIDIRECTIONAL_SEQUENCE_LSTM>>,
-    public LuciNodeMixin<LuciNodeTrait::FusedActFunc>
+    public CircleNodeMixin<CircleNodeTrait::FusedActFunc>
 {
 public:
   loco::Node *input(void) const { return at(0)->node(); }
