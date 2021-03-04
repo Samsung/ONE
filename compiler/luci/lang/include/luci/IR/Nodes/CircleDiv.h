@@ -24,7 +24,7 @@
 #include "luci/IR/AttrPadding.h"
 #include "luci/IR/AttrStride.h"
 #include "luci/IR/AttrFusedActFunc.h"
-#include "luci/IR/LuciNodeMixins.h"
+#include "luci/IR/CircleNodeMixins.h"
 
 namespace luci
 {
@@ -33,7 +33,7 @@ namespace luci
  * @brief DIV in Circle
  */
 class CircleDiv final : public FixedArityNode<2, CircleNodeImpl<CircleOpcode::DIV>>,
-                        public LuciNodeMixin<LuciNodeTrait::FusedActFunc>
+                        public CircleNodeMixin<CircleNodeTrait::FusedActFunc>
 {
 public:
   CircleDiv() = default;
