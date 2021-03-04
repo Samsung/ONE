@@ -17,6 +17,7 @@
 #include "luci/Pass/FuseActivationFunctionPass.h"
 
 #include <luci/IR/CircleNodes.h>
+#include <luci/IR/CircleNodeMixins.h>
 #include <luci/IR/CircleOpcode.h>
 
 namespace luci
@@ -32,7 +33,7 @@ bool fuse_activation_function(luci::CircleNode *node)
     return false;
 
   auto node_with_fused_act =
-    dynamic_cast<luci::LuciNodeMixin<luci::LuciNodeTrait::FusedActFunc> *>(pred_node);
+    dynamic_cast<luci::CircleNodeMixin<luci::CircleNodeTrait::FusedActFunc> *>(pred_node);
   if (node_with_fused_act == nullptr)
     return false;
 
