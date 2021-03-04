@@ -710,8 +710,8 @@ ir::Shape inferSelectShape(const ir::Shape &input_cond_shape, const ir::Shape &i
   return new_shape;
 }
 
-ir::Shape inferSliceShape(const ir::Shape &input_shape, const int32_t *begins_buf,
-                          const int32_t *sizes_buf)
+template <typename T>
+ir::Shape inferSliceShape(const ir::Shape &input_shape, const T *begins_buf, const T *sizes_buf)
 {
   const uint32_t rank = input_shape.rank();
   ir::Shape out_shape(rank);
@@ -736,14 +736,19 @@ ir::Shape inferSliceShape(const ir::Shape &input_shape, const int32_t *begins_bu
     }
     else
     {
-      if (input_dim < begin + size)
+      if (input_dim < static_cast<int32_t>(begin + size))
         throw std::runtime_error("shape inference Slice: Invalid begin and size.");
     }
-    out_shape.dim(idx) = size;
+    out_shape.dim(idx) = static_cast<int32_t>(size);
   }
 
   return out_shape;
 }
+// template instantiation
+template ir::Shape inferSliceShape(const ir::Shape &input_shape, const int32_t *begins_buf,
+                                   const int32_t *sizes_buf);
+template ir::Shape inferSliceShape(const ir::Shape &input_shape, const int64_t *begins_buf,
+                                   const int64_t *sizes_buf);
 
 ir::Shape inferSpaceToBatchNDShape(const ir::Shape &input_shape, const ir::Shape &block_shape_shape,
                                    const ir::Shape &padding_shape, const int32_t *block_shape_buf,

@@ -104,8 +104,8 @@ ir::Shape inferResizeBilinearShape(const ir::Shape &in_shape, const int32_t outp
 ir::Shape inferSelectShape(const ir::Shape &input_cond_shape, const ir::Shape &input_true_shape,
                            const ir::Shape &input_false_shape);
 
-ir::Shape inferSliceShape(const ir::Shape &input_shape, const int32_t *begins_buf,
-                          const int32_t *sizes_buf);
+template <typename T>
+ir::Shape inferSliceShape(const ir::Shape &input_shape, const T *begins_buf, const T *sizes_buf);
 
 ir::Shape inferSpaceToBatchNDShape(const ir::Shape &input_shape, const ir::Shape &block_shape_shape,
                                    const ir::Shape &padding_shape, const int32_t *block_shape_buf,

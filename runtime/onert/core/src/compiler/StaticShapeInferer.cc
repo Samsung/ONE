@@ -934,11 +934,21 @@ void StaticShapeInferer::visit(const ir::operation::Slice &op)
     return;
   }
 
-  auto begins_buf = reinterpret_cast<const int32_t *>(begins.data()->base());
-  auto sizes_buf = reinterpret_cast<const int32_t *>(sizes.data()->base());
+  auto begins_buf = begins.data()->base();
+  auto sizes_buf = sizes.data()->base();
+
+  const auto begins_type = begins.typeInfo().type();
+  assert(begins_type == ir::DataType::INT32 || begins_type == ir::DataType::INT64);
+  assert(begins_type == sizes.typeInfo().type());
 
   ir::Shape new_shape =
-    shape_inference::inferSliceShape(input.info().shape(), begins_buf, sizes_buf);
+    (begins_type == ir::DataType::INT32)
+      ? shape_inference::inferSliceShape<int32_t>(input.info().shape(),
+                                                  reinterpret_cast<const int32_t *>(begins_buf),
+                                                  reinterpret_cast<const int32_t *>(sizes_buf))
+      : shape_inference::inferSliceShape<int64_t>(input.info().shape(),
+                                                  reinterpret_cast<const int64_t *>(begins_buf),
+                                                  reinterpret_cast<const int64_t *>(sizes_buf));
   output.info().shape(new_shape);
 }
 
