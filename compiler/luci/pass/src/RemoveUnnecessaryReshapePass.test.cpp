@@ -18,64 +18,82 @@
 
 #include <luci/IR/CircleNodes.h>
 
+#include "test/TestIOGraph.h"
+#include "test/TestFirstNode.h"
+
 #include <gtest/gtest.h>
 
 namespace
 {
 
-void create_unnecessary_reshape_graph(loco::Graph *g,
-                                      const std::initializer_list<uint32_t> input_shape,
-                                      bool remove)
+using namespace luci::test;
+
+class ReshapeGraphlet
 {
-  assert(g);
+public:
+  ReshapeGraphlet() = default;
 
-  // Input create
-  auto input = g->nodes()->create<luci::CircleInput>();
-  auto graph_input = g->inputs()->create();
-  input->index(graph_input->index());
-  input->shape_status(luci::ShapeStatus::VALID);
-  input->rank(input_shape.size());
-  input->shape(input_shape);
-  input->name("input");
-
-  // Output_shape CircleConst create
-  std::vector<uint32_t> shape_vector{input_shape};
-  auto output_shape = g->nodes()->create<luci::CircleConst>();
-  output_shape->shape_status(luci::ShapeStatus::VALID);
-  output_shape->dtype(loco::DataType::S32);
-  output_shape->rank(1);
-  output_shape->dim(0).set(remove ? shape_vector.size() : 1);
-  output_shape->size<loco::DataType::S32>(remove ? shape_vector.size() : 1);
-  for (uint32_t i = 0; i < output_shape->dim(0).value(); i++)
+public:
+  void init(loco::Graph *g, const ShapeU32 input_shape, bool remove)
   {
-    if (remove)
-      output_shape->at<loco::DataType::S32>(i) = static_cast<int32_t>(shape_vector.at(i));
-    else
-      output_shape->at<loco::DataType::S32>(i) = -1;
-  }
-  output_shape->name("output_shape");
+    std::vector<uint32_t> shape_vector{input_shape};
 
-  // Reshape create
-  auto reshape_node = g->nodes()->create<luci::CircleReshape>();
-  reshape_node->tensor(input);
-  reshape_node->shape(output_shape);
-  reshape_node->newShape()->rank(remove ? shape_vector.size() : 1);
-  for (uint32_t i = 0; i < reshape_node->newShape()->rank(); i++)
+    auto dim0_val = remove ? shape_vector.size() : 1;
+    _reshape_shape = g->nodes()->create<luci::CircleConst>();
+    _reshape_shape->rank(1);
+    _reshape_shape->dim(0).set(dim0_val);
+    _reshape_shape->shape_status(luci::ShapeStatus::VALID);
+    _reshape_shape->dtype(loco::DataType::S32);
+
+    _reshape_shape->size<loco::DataType::S32>(dim0_val);
+    for (uint32_t i = 0; i < dim0_val; i++)
+    {
+      if (remove)
+        _reshape_shape->at<loco::DataType::S32>(i) = static_cast<int32_t>(shape_vector.at(i));
+      else
+        _reshape_shape->at<loco::DataType::S32>(i) = -1;
+    }
+    _reshape_shape->name("reshape_shape");
+
+    // Reshape create
+    auto newshape_rank = remove ? shape_vector.size() : 1;
+    _reshape = g->nodes()->create<luci::CircleReshape>();
+    _reshape->newShape()->rank(newshape_rank);
+    for (uint32_t i = 0; i < newshape_rank; i++)
+    {
+      if (remove)
+        _reshape->newShape()->dim(i) = static_cast<int32_t>(shape_vector.at(i));
+      else
+        _reshape->newShape()->dim(i) = -1;
+    }
+    _reshape->name("reshape");
+  }
+
+protected:
+  luci::CircleReshape *_reshape = nullptr;
+  luci::CircleConst *_reshape_shape = nullptr;
+};
+
+class ReshapeGraph : public TestIOGraph, public ReshapeGraphlet
+{
+public:
+  ReshapeGraph() = default;
+
+public:
+  void init(const ShapeU32 shape, bool remove)
   {
-    if (remove)
-      reshape_node->newShape()->dim(i) = static_cast<int32_t>(shape_vector.at(i));
-    else
-      reshape_node->newShape()->dim(i) = -1;
-  }
-  reshape_node->name("reshape_node");
+    TestIOGraph::init(shape, shape);
+    ReshapeGraphlet::init(g(), shape, remove);
 
-  // Output create
-  auto output = g->nodes()->create<luci::CircleOutput>();
-  output->from(reshape_node);
-  auto graph_output = g->outputs()->create();
-  output->index(graph_output->index());
-  output->name("output");
-}
+    // connect graph
+    _reshape->tensor(input());
+    _reshape->shape(_reshape_shape);
+
+    output()->from(_reshape);
+  }
+};
+
+// TODO use ::testing::Test
 
 } // namespace
 
@@ -86,60 +104,38 @@ TEST(RemoveUnnecessaryReshapePassTest, name)
   ASSERT_NE(nullptr, name);
 }
 
-TEST(RemoveUnnecessaryReshapePass, create_unnecessary_reshape)
+TEST(RemoveUnnecessaryReshapePass, removed)
 {
-  auto graph = loco::make_graph();
-  create_unnecessary_reshape_graph(graph.get(), {1, 2, 3, 4}, true);
-  luci::CircleReshape *reshape_node = nullptr;
-  for (auto node : loco::active_nodes(loco::output_nodes(graph.get())))
-  {
-    auto reshape = dynamic_cast<luci::CircleReshape *>(node);
-    if (not reshape)
-      continue;
-    reshape_node = reshape;
-    break;
-  }
+  ReshapeGraph g;
+
+  g.init({1, 2, 3, 4}, true);
+
+  // confirm graph has Reshape
+  auto reshape_node = luci::test::first_node<luci::CircleReshape>(g.g());
   ASSERT_NE(nullptr, reshape_node);
   luci::RemoveUnnecessaryReshapePass pass;
-  while (pass.run(graph.get()))
+  while (pass.run(g.g()))
     ;
-  reshape_node = nullptr;
-  for (auto node : loco::active_nodes(loco::output_nodes(graph.get())))
-  {
-    auto reshape = dynamic_cast<luci::CircleReshape *>(node);
-    if (not reshape)
-      continue;
-    reshape_node = reshape;
-    break;
-  }
+
+  // check Reshape is removed
+  reshape_node = luci::test::first_node<luci::CircleReshape>(g.g());
   ASSERT_EQ(nullptr, reshape_node);
 }
 
-TEST(RemoveUnnecessaryReshapePass, create_unnecessary_reshape_NEG)
+TEST(RemoveUnnecessaryReshapePass, not_removed_NEG)
 {
-  auto graph = loco::make_graph();
-  create_unnecessary_reshape_graph(graph.get(), {1, 2, 3, 4}, false);
-  luci::CircleReshape *reshape_node = nullptr;
-  for (auto node : loco::active_nodes(loco::output_nodes(graph.get())))
-  {
-    auto reshape = dynamic_cast<luci::CircleReshape *>(node);
-    if (not reshape)
-      continue;
-    reshape_node = reshape;
-    break;
-  }
+  ReshapeGraph g;
+
+  g.init({1, 2, 3, 4}, false);
+
+  // confirm graph has Reshape
+  auto reshape_node = luci::test::first_node<luci::CircleReshape>(g.g());
   ASSERT_NE(nullptr, reshape_node);
   luci::RemoveUnnecessaryReshapePass pass;
-  while (pass.run(graph.get()))
+  while (pass.run(g.g()))
     ;
-  reshape_node = nullptr;
-  for (auto node : loco::active_nodes(loco::output_nodes(graph.get())))
-  {
-    auto reshape = dynamic_cast<luci::CircleReshape *>(node);
-    if (not reshape)
-      continue;
-    reshape_node = reshape;
-    break;
-  }
+
+  // check Reshape is NOT removed
+  reshape_node = luci::test::first_node<luci::CircleReshape>(g.g());
   ASSERT_NE(nullptr, reshape_node);
 }
