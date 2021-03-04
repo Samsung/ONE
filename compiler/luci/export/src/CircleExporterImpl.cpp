@@ -16,6 +16,7 @@
 
 #include "CircleExporterImpl.h"
 #include "Optimize.h"
+#include "CircleMetadataExporter.h"
 #include "CircleTensorExporter.h"
 #include "CircleOperationExporter.h"
 #include "CircleExporterUtils.h"
@@ -158,16 +159,16 @@ void CircleExporterImpl::exportGraph(loco::Graph *graph)
   std::string description_str = "nnpackage";
   auto description = _builder.CreateString(description_str);
 
+  // metadata
+  auto metadata_vec = createCircleMetadataVector(_builder, md);
+  auto metadata = _builder.CreateVector(std::vector<Offset<Metadata>>(metadata_vec));
+
   // create array of buffers
   auto buffers = _builder.CreateVector(md._buffers);
 
-  // empty metadata
-  std::vector<int> metadata_buffer_vec;
-  auto metadata_buffer = _builder.CreateVector(metadata_buffer_vec);
-
   // Model
   auto model_offset = CreateModel(_builder, version, operator_codes, subgraphs, description,
-                                  buffers, metadata_buffer);
+                                  buffers, 0 /* metadata_buffer */, metadata);
   FinishModelBuffer(_builder, model_offset);
 }
 
@@ -222,19 +223,19 @@ void CircleExporterImpl::exportModule(Module *module)
   std::string description_str = "nnpackage";
   auto description = _builder.CreateString(description_str);
 
-  // create array of buffers
-  auto buffers = _builder.CreateVector(md._buffers);
-
-  // empty metadata
-  std::vector<int> metadata_buffer_vec;
-  auto metadata_buffer = _builder.CreateVector(metadata_buffer_vec);
+  // metadata
+  auto metadata_vec = createCircleMetadataVector(_builder, md);
+  auto metadata = _builder.CreateVector(std::vector<Offset<Metadata>>(metadata_vec));
 
   // This version is taken from comment in fbs
   constexpr uint32_t version = 0;
 
+  // create array of buffers
+  auto buffers = _builder.CreateVector(md._buffers);
+
   // Model
   auto model_offset = CreateModel(_builder, version, operator_codes, subgraphs, description,
-                                  buffers, metadata_buffer);
+                                  buffers, 0 /* metadata_buffer */, metadata);
   FinishModelBuffer(_builder, model_offset);
 }
 

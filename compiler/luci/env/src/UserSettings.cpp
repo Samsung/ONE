@@ -30,6 +30,7 @@ public:
 private:
   bool _MuteWarnings{false};
   bool _DisableValidation{false};
+  bool _ProfilingDataGen{false};
 };
 
 void UserSettingsImpl::set(const Key key, bool value)
@@ -41,6 +42,9 @@ void UserSettingsImpl::set(const Key key, bool value)
       break;
     case Key::DisableValidation:
       _DisableValidation = value;
+      break;
+    case Key::ProfilingDataGen:
+      _ProfilingDataGen = value;
       break;
     default:
       throw std::runtime_error("Invalid key in boolean set");
@@ -56,6 +60,8 @@ bool UserSettingsImpl::get(const Key key) const
       return _MuteWarnings;
     case Key::DisableValidation:
       return _DisableValidation;
+    case Key::ProfilingDataGen:
+      return _ProfilingDataGen;
     default:
       throw std::runtime_error("Invalid key in boolean get");
       break;

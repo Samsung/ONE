@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2021 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,33 +14,23 @@
  * limitations under the License.
  */
 
-#ifndef __LUCI_USER_SETTINGS__
-#define __LUCI_USER_SETTINGS__
+#ifndef __LUCI_CIRCLE_METADATA_EXPORTER_H__
+#define __LUCI_CIRCLE_METADATA_EXPORTER_H__
 
-// NOTE Revise the logic if we find a better way not using global status
+#include "SerializedData.h"
+
+#include <flatbuffers/flatbuffers.h>
+#include <mio/circle/schema_generated.h>
 
 namespace luci
 {
 
 /**
- * @brief UserSettings provides user settings by key-value
+ * @brief  Create Metadata corresponding to model metadata
  */
-struct UserSettings
-{
-  enum Key
-  {
-    Undefined,
-    MuteWarnings,
-    DisableValidation,
-    ProfilingDataGen,
-  };
-
-  static UserSettings *settings();
-
-  virtual void set(const Key key, bool value) = 0;
-  virtual bool get(const Key key) const = 0;
-};
+std::vector<flatbuffers::Offset<circle::Metadata>>
+createCircleMetadataVector(flatbuffers::FlatBufferBuilder &builder, luci::SerializedModelData &md);
 
 } // namespace luci
 
-#endif // __LUCI_USER_SETTINGS__
+#endif // __LUCI_CIRCLE_METADATA_EXPORTER_H__

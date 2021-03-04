@@ -48,6 +48,41 @@ struct OpCode
   }
 };
 
+class CircleExportMetadata
+{
+public:
+  void add_source_table(uint32_t source_id, std::string origin_name)
+  {
+    if (_source_table.find(source_id) == _source_table.end())
+      _source_table.emplace(source_id, origin_name);
+    else
+    {
+      // Model with multiple subgraph may have different origin_name
+      // even if source_id is same. However, as we do not consider about
+      // multiple subgraph in profiling for now, just do not care those cases
+      // and support them correctly in the future.
+    }
+  }
+
+  void add_op_table(uint32_t node_id, uint32_t source_id)
+  {
+    // Model with multiple subgraph may have duplicated node id.
+    // For now, as we do not consider about multiple subgraph in profiling,
+    // just ignore those cases and support them in the future.
+    if (_op_table.find(node_id) == _op_table.end())
+      _op_table.emplace(node_id, std::set<uint32_t>());
+    _op_table.at(node_id).emplace(source_id);
+  }
+
+public:
+  const std::vector<uint8_t> encoded_source_table(void);
+  const std::vector<uint8_t> encoded_op_table(void);
+
+private:
+  std::map<uint32_t, std::string> _source_table;
+  std::map<uint32_t, std::set<uint32_t>> _op_table;
+};
+
 } // namespace luci
 
 namespace std
@@ -89,6 +124,9 @@ struct SerializedModelData final
 
   // This is used for removing buffers with same values
   std::map<luci::CircleConst *, uint32_t> _cached_buffer_id;
+
+  // This is used for storing metadata during export
+  CircleExportMetadata _metadata;
 
   /**
    * @brief if opcode is not registered in table of opcodes add it
