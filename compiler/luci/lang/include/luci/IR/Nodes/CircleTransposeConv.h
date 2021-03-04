@@ -22,7 +22,7 @@
 
 #include "luci/IR/AttrPadding.h"
 #include "luci/IR/AttrStride.h"
-#include "luci/IR/LuciNodeMixins.h"
+#include "luci/IR/CircleNodeMixins.h"
 
 namespace luci
 {
@@ -35,7 +35,7 @@ namespace luci
  */
 class CircleTransposeConv final
   : public FixedArityNode<4, CircleNodeImpl<CircleOpcode::TRANSPOSE_CONV>>,
-    public LuciNodeMixin<LuciNodeTrait::Bias>
+    public CircleNodeMixin<CircleNodeTrait::Bias>
 {
 public:
   loco::Node *inputSizes(void) const { return at(0)->node(); }
