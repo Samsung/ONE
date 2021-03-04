@@ -21,7 +21,7 @@
 #include "luci/IR/CircleOpcode.h"
 
 #include "luci/IR/AttrFusedActFunc.h"
-#include "luci/IR/LuciNodeMixins.h"
+#include "luci/IR/CircleNodeMixins.h"
 
 namespace luci
 {
@@ -31,7 +31,7 @@ namespace luci
  */
 class CircleInstanceNorm final
   : public FixedArityNode<3, CircleNodeImpl<CircleOpcode::INSTANCE_NORM>>,
-    public LuciNodeMixin<LuciNodeTrait::FusedActFunc>
+    public CircleNodeMixin<CircleNodeTrait::FusedActFunc>
 {
 public:
   /// @note  Currently only support FLOAT32 as input node
