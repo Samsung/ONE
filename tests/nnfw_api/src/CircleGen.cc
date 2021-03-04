@@ -386,6 +386,13 @@ uint32_t CircleGen::addOperatorSelectV2(const OperatorParams &params)
                                 circle::BuiltinOptions_SelectV2Options, options);
 }
 
+uint32_t CircleGen::addOperatorSlice(const OperatorParams &params)
+{
+  auto options = circle::CreateSliceOptions(_fbb).Union();
+  return addOperatorWithOptions(params, circle::BuiltinOperator_SLICE,
+                                circle::BuiltinOptions_SliceOptions, options);
+}
+
 uint32_t CircleGen::addOperatorSoftmax(const OperatorParams &params, float beta)
 {
   auto options = circle::CreateSoftmaxOptions(_fbb, beta).Union();

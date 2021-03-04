@@ -197,6 +197,7 @@ public:
                             circle::TensorType type = circle::TensorType::TensorType_INT32);
   uint32_t addOperatorSelect(const OperatorParams &params);
   uint32_t addOperatorSelectV2(const OperatorParams &params);
+  uint32_t addOperatorSlice(const OperatorParams &params);
   uint32_t addOperatorSoftmax(const OperatorParams &params, float beta);
   uint32_t addOperatorSplit(const OperatorParams &params, int32_t num_split);
   uint32_t addOperatorSqrt(const OperatorParams &params);

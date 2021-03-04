@@ -55,7 +55,18 @@ template <typename T> void SliceLayer::sliceImpl()
   begins.reserve(kMaxDim);
   sizes.reserve(kMaxDim);
 
-  GetBeginAndSizeVectors<int32_t>(_input->getShape().rank(), _begin, _size, &begins, &sizes);
+  if (_begin->data_type() == OperandType::INT32)
+  {
+    GetBeginAndSizeVectors<int32_t>(_input->getShape().rank(), _begin, _size, &begins, &sizes);
+  }
+  else if (_begin->data_type() == OperandType::INT64)
+  {
+    GetBeginAndSizeVectors<int64_t>(_input->getShape().rank(), _begin, _size, &begins, &sizes);
+  }
+  else
+  {
+    throw std::runtime_error{"Slice: unsupported begin and/or size data type"};
+  }
 
   // begins : 0-based, sizes : 1-based
   for (int i = _input->getShape().rank(); i < kMaxDim; ++i)

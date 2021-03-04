@@ -444,6 +444,15 @@ void OperationValidator::visit(const operation::Shape &node)
   OP_REQUIRES(isValidType(output_index, {DataType::UINT32, DataType::INT32, DataType::INT64}));
 }
 
+void OperationValidator::visit(const operation::Slice &node)
+{
+  const auto begins_index{node.getInputs().at(operation::Slice::BEGINS)};
+  const auto sizes_index{node.getInputs().at(operation::Slice::SIZES)};
+
+  OP_REQUIRES(isValidType(begins_index, {DataType::INT32, DataType::INT64}));
+  OP_REQUIRES(isSameType(begins_index, sizes_index));
+}
+
 void OperationValidator::visit(const operation::Softmax &node)
 {
   const auto output_index{node.getOutputs().at(0)};
