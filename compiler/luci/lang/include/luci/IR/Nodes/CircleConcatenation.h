@@ -21,7 +21,7 @@
 #include "luci/IR/CircleOpcode.h"
 
 #include "luci/IR/AttrFusedActFunc.h"
-#include "luci/IR/LuciNodeMixins.h"
+#include "luci/IR/CircleNodeMixins.h"
 #include "luci/IR/VariadicArityNode.h"
 
 #include <cassert>
@@ -34,7 +34,7 @@ namespace luci
  */
 class CircleConcatenation final
   : public VariadicArityNode<CircleNodeImpl<CircleOpcode::CONCATENATION>>,
-    public LuciNodeMixin<LuciNodeTrait::FusedActFunc>
+    public CircleNodeMixin<CircleNodeTrait::FusedActFunc>
 {
 public:
   CircleConcatenation(uint32_t arity)

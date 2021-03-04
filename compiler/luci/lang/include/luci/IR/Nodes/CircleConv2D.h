@@ -24,7 +24,7 @@
 #include "luci/IR/AttrStride.h"
 #include "luci/IR/AttrDilation.h"
 #include "luci/IR/AttrFusedActFunc.h"
-#include "luci/IR/LuciNodeMixins.h"
+#include "luci/IR/CircleNodeMixins.h"
 
 namespace luci
 {
@@ -33,8 +33,8 @@ namespace luci
  * @brief CONV_2D in Circle
  */
 class CircleConv2D final : public FixedArityNode<3, CircleNodeImpl<CircleOpcode::CONV_2D>>,
-                           public LuciNodeMixin<LuciNodeTrait::FusedActFunc>,
-                           public LuciNodeMixin<LuciNodeTrait::Bias>
+                           public CircleNodeMixin<CircleNodeTrait::FusedActFunc>,
+                           public CircleNodeMixin<CircleNodeTrait::Bias>
 {
 public:
   loco::Node *input(void) const { return at(0)->node(); }

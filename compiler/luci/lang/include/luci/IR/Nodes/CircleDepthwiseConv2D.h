@@ -25,7 +25,7 @@
 #include "luci/IR/AttrPadding.h"
 #include "luci/IR/AttrStride.h"
 #include "luci/IR/AttrFusedActFunc.h"
-#include "luci/IR/LuciNodeMixins.h"
+#include "luci/IR/CircleNodeMixins.h"
 
 namespace luci
 {
@@ -35,8 +35,8 @@ namespace luci
  */
 class CircleDepthwiseConv2D final
   : public FixedArityNode<3, CircleNodeImpl<CircleOpcode::DEPTHWISE_CONV_2D>>,
-    public LuciNodeMixin<LuciNodeTrait::FusedActFunc>,
-    public LuciNodeMixin<LuciNodeTrait::Bias>
+    public CircleNodeMixin<CircleNodeTrait::FusedActFunc>,
+    public CircleNodeMixin<CircleNodeTrait::Bias>
 {
 public:
   loco::Node *input(void) const { return at(0)->node(); }
