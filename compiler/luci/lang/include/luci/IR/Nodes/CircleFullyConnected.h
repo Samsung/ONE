@@ -21,7 +21,7 @@
 #include "luci/IR/CircleOpcode.h"
 
 #include "luci/IR/AttrFusedActFunc.h"
-#include "luci/IR/LuciNodeMixins.h"
+#include "luci/IR/CircleNodeMixins.h"
 
 namespace luci
 {
@@ -31,8 +31,8 @@ namespace luci
  */
 class CircleFullyConnected final
   : public FixedArityNode<3, CircleNodeImpl<CircleOpcode::FULLY_CONNECTED>>,
-    public LuciNodeMixin<LuciNodeTrait::FusedActFunc>,
-    public LuciNodeMixin<LuciNodeTrait::Bias>
+    public CircleNodeMixin<CircleNodeTrait::FusedActFunc>,
+    public CircleNodeMixin<CircleNodeTrait::Bias>
 {
 public:
   enum class WeightsFormat
