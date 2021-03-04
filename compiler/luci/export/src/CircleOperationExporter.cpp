@@ -21,6 +21,7 @@
 #include <luci/IR/CircleNode.h>
 #include <luci/IR/CircleNodes.h>
 #include <luci/IR/CircleNodeVisitor.h>
+#include <luci/Profile/CircleNodeOrigin.h>
 #include <luci/UserSettings.h>
 #include <luci/Log.h>
 
@@ -1491,7 +1492,17 @@ void exportNode(loco::Node *node, flatbuffers::FlatBufferBuilder &builder, Seria
   {
     ExportContext ctx{builder, md, gd};
     OperationExporter exporter{ctx};
+    const auto ops_size = gd._operators.size();
     circle_node->accept(&exporter);
+    if (has_origin(circle_node) && ops_size != gd._operators.size())
+    {
+      const auto node_id = gd._operators.size() - 1;
+      for (auto source : get_origin(circle_node)->sources())
+      {
+        md._metadata.add_source(source->id(), source->name());
+        md._metadata.link_source(node_id, source->id());
+      }
+    }
   }
   else
   {

@@ -19,8 +19,10 @@
 #include "CircleTensorExporter.h"
 #include "CircleOperationExporter.h"
 #include "CircleExporterUtils.h"
+#include "ExportMetadata.h"
 
 #include <luci/IR/CircleNodes.h>
+#include <luci/UserSettings.h>
 
 #include <oops/InternalExn.h>
 #include <mio/circle/schema_generated.h>
@@ -218,15 +220,41 @@ void CircleExporterImpl::exportModule(Module *module)
   std::string description_str = "nnpackage";
   auto description = _builder.CreateString(description_str);
 
-  // create array of buffers
-  auto buffers = _builder.CreateVector(md._buffers);
+  // metadata
+  auto settings = luci::UserSettings::settings();
+  std::vector<flatbuffers::Offset<circle::Metadata>> metadata_vec;
+  if (settings->get(luci::UserSettings::Key::ProfilingDataGen))
+  {
+    // Insert source table data
+    auto source_table_buffer_id = static_cast<uint32_t>(md._buffers.size());
+    auto source_table_data = encoded_source_table(md._metadata);
+    auto source_table_vec_offset =
+      _builder.CreateVector(source_table_data.data(), source_table_data.size());
+    md._buffers.push_back(CreateBuffer(_builder, source_table_vec_offset));
+    Offset<circle::Metadata> source_table_metadata =
+      CreateMetadata(_builder, _builder.CreateString("source_table"), source_table_buffer_id);
+    metadata_vec.push_back(source_table_metadata);
+
+    // Insert op table data
+    auto op_table_buffer_id = static_cast<uint32_t>(md._buffers.size());
+    auto op_table_data = encoded_op_table(md._metadata);
+    auto op_table_vec_offset = _builder.CreateVector(op_table_data.data(), op_table_data.size());
+    md._buffers.push_back(CreateBuffer(_builder, op_table_vec_offset));
+    Offset<circle::Metadata> op_table_metadata =
+      CreateMetadata(_builder, _builder.CreateString("op_table"), op_table_buffer_id);
+    metadata_vec.push_back(op_table_metadata);
+  }
+  auto metadata = _builder.CreateVector(std::vector<Offset<Metadata>>(metadata_vec));
 
   // This version is taken from comment in fbs
   constexpr uint32_t version = 0;
 
+  // create array of buffers
+  auto buffers = _builder.CreateVector(md._buffers);
+
   // Model
   auto model_offset = CreateModel(_builder, version, operator_codes, subgraphs, description,
-                                  buffers, 0 /* metadata_buffer */);
+                                  buffers, 0 /* metadata_buffer */, metadata);
   FinishModelBuffer(_builder, model_offset);
 }
 

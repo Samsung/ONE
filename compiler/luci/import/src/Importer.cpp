@@ -15,6 +15,7 @@
  */
 
 #include "luci/Importer.h"
+#include "ImportMetadata.h"
 #include "PostImport.h"
 
 #include "luci/Import/GraphBuilder.h"
@@ -26,13 +27,16 @@
 #include <luci/IR/Module.h>
 #include <luci/IR/CircleNodes.h>
 #include <luci/Profile/CircleNodeID.h>
+#include <luci/Profile/CircleNodeOrigin.h>
 #include <luci/Log.h>
 #include <luci/LogHelper.h>
 
 #include <oops/InternalExn.h>
 #include <oops/UserExn.h>
 
+#include <map>
 #include <memory>
+#include <set>
 
 namespace
 {
@@ -51,6 +55,9 @@ void convert_graph(const luci::GraphBuilderSource &source, luci::CircleReader &r
   const auto &tensors = reader.tensors();
   auto tensors_ptr = reader.tensors_ptr();
   assert(tensors_ptr != nullptr);
+
+  // Metadata holder
+  auto import_metadata = luci::ImportMetadata(reader);
 
   // build a cache to identify if a tensor is output of an operator
   // if this is set, we should not create a CircleConst for this tensor
@@ -141,6 +148,10 @@ void convert_graph(const luci::GraphBuilderSource &source, luci::CircleReader &r
 
       auto built_op = builder->build(op, &gb_context);
       set_node_id(built_op, i);
+      if (import_metadata.has_origin_data())
+        add_origin(built_op, import_metadata.find_origin(i));
+      else
+        add_origin(built_op, luci::single_origin(i, built_op->name()));
     }
     else
     {

@@ -17,6 +17,8 @@
 #ifndef __SERIALIZED_DATA_H__
 #define __SERIALIZED_DATA_H__
 
+#include "ExportMetadata.h"
+
 #include <mio/circle/schema_generated.h>
 
 #include <luci/IR/CircleNodes.h>
@@ -89,6 +91,9 @@ struct SerializedModelData final
 
   // This is used for removing buffers with same values
   std::map<luci::CircleConst *, uint32_t> _cached_buffer_id;
+
+  // This is used for storing metadata during export
+  ExportMetadata _metadata;
 
   /**
    * @brief if opcode is not registered in table of opcodes add it
