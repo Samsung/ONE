@@ -91,6 +91,8 @@ Shape permuteShape(const Shape &shape, Layout from, Layout to)
 {
   assert(shape.rank() <= Shape::MAX_RANK);
   Shape ret{shape};
+  if (from == to)
+    return ret;
   if (shape.rank() < 4)
     return ret;
   // Permutation changing layout beyond 4-D is not supported yet
