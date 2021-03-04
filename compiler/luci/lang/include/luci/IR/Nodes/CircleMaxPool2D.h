@@ -24,7 +24,7 @@
 #include "luci/IR/AttrPadding.h"
 #include "luci/IR/AttrStride.h"
 #include "luci/IR/AttrFusedActFunc.h"
-#include "luci/IR/LuciNodeMixins.h"
+#include "luci/IR/CircleNodeMixins.h"
 
 namespace luci
 {
@@ -33,7 +33,7 @@ namespace luci
  * @brief MAX_POOL_2D in Circle
  */
 class CircleMaxPool2D final : public FixedArityNode<1, CircleNodeImpl<CircleOpcode::MAX_POOL_2D>>,
-                              public LuciNodeMixin<LuciNodeTrait::FusedActFunc>
+                              public CircleNodeMixin<CircleNodeTrait::FusedActFunc>
 {
 public:
   CircleMaxPool2D() : _padding(Padding::UNDEFINED)
