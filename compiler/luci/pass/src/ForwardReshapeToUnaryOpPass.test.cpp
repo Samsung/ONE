@@ -19,87 +19,30 @@
 
 #include <luci/IR/CircleNodes.h>
 
+#include "test/TestIOGraph.h"
+
 #include <gtest/gtest.h>
 
-#include <initializer_list>
 #include <vector>
 
 namespace
 {
 
-using uilist = std::initializer_list<uint32_t>;
-using ilist = std::initializer_list<int32_t>;
+using namespace luci::test;
 
-class PassTestGraph
+class ReshapeNegGraphlet
 {
 public:
-  PassTestGraph() = default;
+  ReshapeNegGraphlet() = default;
 
 public:
-  void init(const uilist shape_in, const uilist shape_out)
+  void init(loco::Graph *g, const ShapeU32 shape_in, const ShapeU32 shape_out)
   {
-    _graph_input = _g.inputs()->create();
-    _graph_output = _g.outputs()->create();
-
-    _input = _g.nodes()->create<luci::CircleInput>();
-    _input->shape(shape_in);
-    _input->shape_status(luci::ShapeStatus::VALID);
-
-    _output = _g.nodes()->create<luci::CircleOutput>();
-    _output->shape(shape_out);
-    _output->shape_status(luci::ShapeStatus::VALID);
-
-    _input->index(_graph_input->index());
-    _output->index(_graph_output->index());
-
-    auto input_shape = std::make_unique<loco::TensorShape>();
-    set(input_shape.get(), shape_in);
-    _graph_input->shape(std::move(input_shape));
-
-    auto output_shape = std::make_unique<loco::TensorShape>();
-    set(output_shape.get(), shape_out);
-    _graph_output->shape(std::move(output_shape));
-
-    _input->name("input");
-    _output->name("output");
-  }
-
-protected:
-  void set(loco::TensorShape *shape, const uilist &values)
-  {
-    uint32_t r = 0;
-    shape->rank(values.size());
-    for (auto v : values)
-      shape->dim(r++).set(v);
-  }
-
-public:
-  loco::Graph *g(void) { return &_g; }
-  luci::CircleOutput *output(void) { return _output; }
-
-protected:
-  loco::Graph _g;
-  loco::GraphInput *_graph_input = nullptr;
-  loco::GraphOutput *_graph_output = nullptr;
-  luci::CircleInput *_input = nullptr;
-  luci::CircleOutput *_output = nullptr;
-};
-
-class ForwardReshapeToNegGraph : public PassTestGraph
-{
-public:
-  ForwardReshapeToNegGraph() = default;
-
-public:
-  void init(const uilist shape_in, const uilist shape_out)
-  {
-    PassTestGraph::init(shape_in, shape_out);
-
     std::vector<uint32_t> shape_out_v = shape_out;
 
-    _reshape_shape = _g.nodes()->create<luci::CircleConst>();
-    _reshape = _g.nodes()->create<luci::CircleReshape>();
-    _neg = _g.nodes()->create<luci::CircleNeg>();
+    _reshape_shape = g->nodes()->create<luci::CircleConst>();
+    _reshape = g->nodes()->create<luci::CircleReshape>();
+    _neg = g->nodes()->create<luci::CircleNeg>();
 
     _reshape_shape->dtype(loco::DataType::S32);
     _reshape_shape->rank(1);
@@ -111,11 +54,6 @@ public:
     for (uint32_t i = 0; i < size; i++)
       _reshape_shape->at<loco::DataType::S32>(i) = shape_out_v[i];
 
-    _reshape->tensor(_input);
-    _reshape->shape(_reshape_shape);
-    _neg->x(_reshape);
-    _output->from(_neg);
-
     _reshape_shape->name("reshape_shape");
     _reshape->name("reshape");
     _neg->name("neg");
@@ -125,6 +63,26 @@ protected:
   luci::CircleReshape *_reshape = nullptr;
   luci::CircleNeg *_neg = nullptr;
   luci::CircleConst *_reshape_shape = nullptr;
+};
+
+class ForwardReshapeToNegGraph : public TestIOGraph, public ReshapeNegGraphlet
+{
+public:
+  ForwardReshapeToNegGraph() = default;
+
+public:
+  void init(const ShapeU32 shape_in, const ShapeU32 shape_out)
+  {
+    TestIOGraph::init(shape_in, shape_out);
+    ReshapeNegGraphlet::init(g(), shape_in, shape_out);
+
+    // connect network
+    _reshape->tensor(input());
+    _reshape->shape(_reshape_shape);
+    _neg->x(_reshape);
+
+    output()->from(_neg);
+  }
 };
 
 class ForwardReshapeToNegGraphTest : public ::testing::Test
