@@ -18,61 +18,96 @@
 
 #include <luci/IR/CircleNodes.h>
 
+#include "test/TestIOGraph.h"
+#include "test/TestFirstNode.h"
+
 #include <gtest/gtest.h>
 
 namespace
 {
 
-void create_unnecessary_split_graph(loco::Graph *g, bool remove)
+using namespace luci::test;
+
+class SplitGraphlet
 {
-  assert(g);
+public:
+  SplitGraphlet() = default;
 
-  auto input = g->nodes()->create<luci::CircleInput>();
-  auto graph_input = g->inputs()->create();
-  input->index(graph_input->index());
-  input->name("input");
-
-  auto dim = g->nodes()->create<luci::CircleConst>();
-  dim->dtype(loco::DataType::S32);
-  dim->size<loco::DataType::S32>(1);
-  dim->rank(1);
-  dim->dim(0).set(1);
-  dim->at<loco::DataType::S32>(0) = 0;
-  dim->name("dim");
-  auto split_node = g->nodes()->create<luci::CircleSplit>();
-  split_node->split_dim(dim);
-  split_node->input(input);
-  if (remove)
-    split_node->num_split(1);
-  else
-    split_node->num_split(2);
-  split_node->name("split_node");
-
-  auto split_out_node0 = g->nodes()->create<luci::CircleSplitOut>();
-  split_out_node0->input(split_node);
-  split_out_node0->index(0);
-  split_out_node0->name("split_out_node0");
-
-  auto output0 = g->nodes()->create<luci::CircleOutput>();
-  output0->from(split_out_node0);
-  auto graph_output0 = g->outputs()->create();
-  output0->index(graph_output0->index());
-  output0->name("output0");
-
-  if (!remove)
+public:
+  void init(loco::Graph *g, uint32_t nout)
   {
-    auto split_out_node1 = g->nodes()->create<luci::CircleSplitOut>();
-    split_out_node1->input(split_node);
-    split_out_node1->index(1);
-    split_out_node1->name("split_out_node1");
+    assert(nout == 1 || nout == 2);
 
-    auto output1 = g->nodes()->create<luci::CircleOutput>();
-    output1->from(split_out_node1);
-    auto graph_output1 = g->outputs()->create();
-    output1->index(graph_output1->index());
-    output1->name("output1");
+    _dim = g->nodes()->create<luci::CircleConst>();
+    set_shape_vector(_dim, {0});
+    _dim->name("dim");
+
+    _split = g->nodes()->create<luci::CircleSplit>();
+    _split->num_split(nout);
+    _split->name("split");
+
+    _split_out_0 = g->nodes()->create<luci::CircleSplitOut>();
+    _split_out_0->index(0);
+    _split_out_0->name("split_out_0");
+
+    if (nout == 2)
+    {
+      _split_out_1 = g->nodes()->create<luci::CircleSplitOut>();
+      _split_out_1->index(1);
+      _split_out_1->name("split_out_1");
+    }
   }
-}
+
+protected:
+  luci::CircleSplit *_split = nullptr;
+  luci::CircleConst *_dim = nullptr;
+  luci::CircleSplitOut *_split_out_0 = nullptr;
+  luci::CircleSplitOut *_split_out_1 = nullptr;
+};
+
+class SplitOneGraph : public TestIGraphlet, public TestOGraphlet, public SplitGraphlet
+{
+public:
+  SplitOneGraph() = default;
+
+public:
+  void init()
+  {
+    TestIGraphlet::init(g(), {1});
+    TestOGraphlet::init(g(), {1});
+    SplitGraphlet::init(g(), 1);
+
+    _split->input(input());
+    _split->split_dim(_dim);
+    _split_out_0->input(_split);
+
+    output()->from(_split_out_0);
+  }
+};
+
+class SplitTwoGraph : public TestIGraphlet, public TestOsGraphlet<2>, public SplitGraphlet
+{
+public:
+  SplitTwoGraph() = default;
+
+public:
+  void init()
+  {
+    TestIGraphlet::init(g(), {1});
+    TestOsGraphlet<2>::init(g(), {1});
+    SplitGraphlet::init(g(), 2);
+
+    _split->input(input());
+    _split->split_dim(_dim);
+    _split_out_0->input(_split);
+    _split_out_1->input(_split);
+
+    output(0)->from(_split_out_0);
+    output(1)->from(_split_out_1);
+  }
+};
+
+// TODO use ::testing::Test
 
 } // namespace
 
@@ -85,40 +120,30 @@ TEST(RemoveUnnecessarySplitPass, name)
 
 TEST(RemoveUnnecessarySplitPass, create_unnecessary_split)
 {
-  auto graph = loco::make_graph();
-  create_unnecessary_split_graph(graph.get(), true);
+  SplitOneGraph g;
+
+  g.init();
 
   luci::RemoveUnnecessarySplitPass pass;
-  while (pass.run(graph.get()))
+  while (pass.run(g.g()))
     ;
-  luci::CircleSplit *split_node = nullptr;
-  for (auto node : loco::active_nodes(loco::output_nodes(graph.get())))
-  {
-    auto split = dynamic_cast<luci::CircleSplit *>(node);
-    if (not split)
-      continue;
-    split_node = split;
-  }
+
+  auto split_node = luci::test::first_node<luci::CircleSplit>(g.g());
   // No Split node is in graph.
   ASSERT_EQ(nullptr, split_node);
 }
 
 TEST(RemoveUnnecessarySplitPass, create_unnecessary_split_NEG)
 {
-  auto graph = loco::make_graph();
-  create_unnecessary_split_graph(graph.get(), false);
+  SplitTwoGraph g;
+
+  g.init();
 
   luci::RemoveUnnecessarySplitPass pass;
-  while (pass.run(graph.get()))
+  while (pass.run(g.g()))
     ;
-  luci::CircleSplit *split_node = nullptr;
-  for (auto node : loco::active_nodes(loco::output_nodes(graph.get())))
-  {
-    auto split = dynamic_cast<luci::CircleSplit *>(node);
-    if (not split)
-      continue;
-    split_node = split;
-  }
+
+  auto split_node = luci::test::first_node<luci::CircleSplit>(g.g());
   // Split node is in graph.
   ASSERT_NE(nullptr, split_node);
 }
