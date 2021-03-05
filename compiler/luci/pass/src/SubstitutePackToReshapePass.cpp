@@ -17,6 +17,7 @@
 #include "luci/Pass/SubstitutePackToReshapePass.h"
 
 #include <luci/IR/CircleNodes.h>
+#include <luci/Profile/CircleNodeOrigin.h>
 
 namespace
 {
@@ -53,6 +54,7 @@ bool substitute_pack_to_reshape(luci::CircleNode *node)
   auto reshape_node = graph->nodes()->create<luci::CircleReshape>();
   reshape_node->tensor(value_node);
   reshape_node->name(name + "/Reshape");
+  luci::add_origin(reshape_node, luci::get_origin(node));
 
   auto const_node = graph->nodes()->create<luci::CircleConst>();
   const_node->dtype(loco::DataType::S32);

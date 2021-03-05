@@ -19,6 +19,7 @@
 #include "BatchNormPatternFinder.h"
 
 #include <luci/IR/CircleNodes.h>
+#include <luci/Profile/CircleNodeOrigin.h>
 
 namespace
 {
@@ -132,6 +133,7 @@ bool replace_mul_add_with_dwconv(luci::CircleAdd *add)
   dwconv->dilation()->h(1);
   dwconv->fusedActivationFunction(add->fusedActivationFunction());
   dwconv->name(name + "/DepthwiseConv2D");
+  luci::add_origin(dwconv, luci::composite_origin({luci::get_origin(mul), luci::get_origin(add)}));
 
   loco::replace(add).with(dwconv);
   return true;

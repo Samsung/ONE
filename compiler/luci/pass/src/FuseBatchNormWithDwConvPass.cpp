@@ -19,6 +19,7 @@
 #include "helpers/NodeFiller.h"
 
 #include <luci/IR/CircleNodes.h>
+#include <luci/Profile/CircleNodeOrigin.h>
 
 namespace
 {
@@ -204,6 +205,9 @@ bool fused_batch_norm_with_dwconv(luci::CircleAdd *add)
   fused_dwconv->dilation()->h(dwconv->dilation()->h());
   fused_dwconv->dilation()->w(dwconv->dilation()->w());
   fused_dwconv->name(name + "/DepthwiseConv2D");
+  luci::add_origin(fused_dwconv,
+                   luci::composite_origin(
+                     {luci::get_origin(add), luci::get_origin(mul), luci::get_origin(dwconv)}));
 
   replace(add).with(fused_dwconv);
 

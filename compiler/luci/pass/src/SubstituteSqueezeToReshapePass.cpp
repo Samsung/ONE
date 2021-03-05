@@ -17,6 +17,7 @@
 #include "luci/Pass/SubstituteSqueezeToReshapePass.h"
 
 #include <luci/IR/CircleNodes.h>
+#include <luci/Profile/CircleNodeOrigin.h>
 
 namespace
 {
@@ -130,6 +131,7 @@ bool substitute_squeeze_to_reshape(luci::CircleSqueeze *squeeze)
   auto reshape = graph->nodes()->create<luci::CircleReshape>();
   auto shape_const = create_shape_const(graph, reshape_shape);
   reshape->name(name + "/Reshape");
+  luci::add_origin(reshape, luci::get_origin(squeeze));
   shape_const->name(name + "/Reshape/shape");
 
   // graph connection

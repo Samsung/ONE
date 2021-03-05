@@ -19,6 +19,7 @@
 #include <luci/IR/CircleNodes.h>
 #include <luci/IR/CircleNodeVisitor.h>
 #include <luci/Log.h>
+#include <luci/Profile/CircleNodeOrigin.h>
 #include <luci/Service/CircleShapeInference.h>
 #include <luci/Service/Nodes/CircleConst.h>
 
@@ -71,6 +72,7 @@ bool forward_reshape(luci::CircleReshape *reshape, luci::CircleNeg *neg)
   copy_shape(reshape, new_reshape);
   new_reshape->shape(cloned_shape);
   new_reshape->name(name + "_C");
+  luci::add_origin(new_reshape, luci::get_origin(reshape));
 
   // reconnect network
   loco::replace(neg).with(new_reshape);
