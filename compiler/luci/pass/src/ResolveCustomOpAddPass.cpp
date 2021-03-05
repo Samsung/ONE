@@ -145,7 +145,8 @@ bool ResolveCustomOpAddPass::run(loco::Graph *g)
     if (not cop)
       continue;
 
-    changed |= resolve_custom_op(cop);
+    if (resolve_custom_op(cop))
+      changed = true;
   }
 
   return changed;
