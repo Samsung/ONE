@@ -3,7 +3,6 @@
  * WILL BE REPLACED WITH ACTUAL TESTS
  */
 
-
 #include "HalideBuffer.h"
 
 #include "reference.h"
@@ -11,26 +10,25 @@
 #include <chrono>
 #include <iostream>
 
-extern "C"
-{
+extern "C" {
 
 int generated_subgraph_0_argv(void **);
-//int generated_subgraph_0(struct halide_buffer_t *, struct halide_buffer_t *, struct halide_buffer_t *, struct halide_buffer_t *);
-
+// int generated_subgraph_0(struct halide_buffer_t *, struct halide_buffer_t *, struct
+// halide_buffer_t *, struct halide_buffer_t *);
 }
 
 int main()
 {
   constexpr int N = 384;
   Halide::Runtime::Buffer<float> x(N, 1);
-  Halide::Runtime::Buffer<float> y(N*3, 1);
-  Halide::Runtime::Buffer<float> z(N*3, 1);
+  Halide::Runtime::Buffer<float> y(N * 3, 1);
+  Halide::Runtime::Buffer<float> z(N * 3, 1);
   Halide::Runtime::Buffer<float> output(N, 1);
 
   for (int i = 0; i < N; ++i)
     x.data()[i] = i;
 
-  for (int i = 0; i < N*3; ++i)
+  for (int i = 0; i < N * 3; ++i)
   {
     y.data()[i] = i;
     z.data()[i] = i;
@@ -49,7 +47,8 @@ int main()
   auto finish = std::chrono::system_clock::now();
 
   auto elapsed = std::chrono::duration_cast<std::chrono::microseconds>(finish - start).count();
-  std::cout << "elapsed " << static_cast<float>(elapsed) / runs << " us" << "\n";
+  std::cout << "elapsed " << static_cast<float>(elapsed) / runs << " us"
+            << "\n";
 
   bool failed = false;
   for (int i = 0; i < N; ++i)

@@ -43,4 +43,4 @@ private:
 
 } // namespace luci_codegen
 
-#endif //NNCC_SCHEDULER_H
+#endif // NNCC_SCHEDULER_H

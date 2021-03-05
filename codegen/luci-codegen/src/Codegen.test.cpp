@@ -21,7 +21,7 @@
 
 #include "gtest/gtest.h"
 
-class CodegenTest: public ::testing::Test
+class CodegenTest : public ::testing::Test
 {
 public:
   static bool has_self_dependency_subgraph(const std::vector<luci::CircleNode *> &nodes)
@@ -42,20 +42,19 @@ static void constructBasicNode(luci::CircleNode &node, const std::vector<int> &d
   node.shape_status(luci::ShapeStatus::VALID);
 }
 
-template<loco::DataType DType>
-using Type = typename loco::DataTypeImpl<DType>::Type;
+template <loco::DataType DType> using Type = typename loco::DataTypeImpl<DType>::Type;
 
 template <loco::DataType DType>
 void fill_data(luci::CircleConst *node, const std::vector<Type<DType>> &data)
 {
-assert(node->shape_status() == luci::ShapeStatus::VALID);
-int size = 1;
-for (int i = 0; i < node->rank(); ++i)
-size *= node->dim(i).value();
-node->size<DType>(size);
-assert(data.size() == size);
-for (int i = 0; i < size; ++i)
-node->at<DType>(i) = data[i];
+  assert(node->shape_status() == luci::ShapeStatus::VALID);
+  int size = 1;
+  for (int i = 0; i < node->rank(); ++i)
+    size *= node->dim(i).value();
+  node->size<DType>(size);
+  assert(data.size() == size);
+  for (int i = 0; i < size; ++i)
+    node->at<DType>(i) = data[i];
 }
 
 TEST_F(CodegenTest, self_dependency_subgraph_supported)
@@ -124,4 +123,3 @@ TEST_F(CodegenTest, self_dependency_subgraph_unsupported)
 
   ASSERT_TRUE(has_self_dependency_subgraph(nodes));
 }
-

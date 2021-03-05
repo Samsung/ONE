@@ -25,7 +25,6 @@ namespace luci_codegen
 class KernelBuilder
 {
 public:
-
   explicit KernelBuilder(SubgraphContext &subgraph);
 
   static bool is_supported(luci::CircleNode *node);
@@ -36,6 +35,6 @@ private:
   SubgraphContext &_subgraph;
 };
 
-}
+} // namespace luci_codegen
 
 #endif // NNCC_CODEGEN_KERNEL_BUILDER_H

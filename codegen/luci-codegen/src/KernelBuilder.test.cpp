@@ -38,8 +38,7 @@ static void constructBasicNode(luci::CircleNode &node, const std::vector<int> &d
   node.shape_status(luci::ShapeStatus::VALID);
 }
 
-template<typename T>
-std::vector<T> reverse_vector(const std::vector<T> &v)
+template <typename T> std::vector<T> reverse_vector(const std::vector<T> &v)
 {
   std::vector<T> rev;
   std::reverse_copy(v.begin(), v.end(), std::back_insert_iterator<std::vector<T>>(rev));
@@ -47,24 +46,21 @@ std::vector<T> reverse_vector(const std::vector<T> &v)
 }
 
 // todo are luci-interpreter comparators better?
-//template <typename T, bool>
-//void compare_arrays(T *ref_data, T *result, int size);
-template <typename T>
-static void compare_arrays(const T *ref_data, const T *result, int size)
+// template <typename T, bool>
+// void compare_arrays(T *ref_data, T *result, int size);
+template <typename T> static void compare_arrays(const T *ref_data, const T *result, int size)
 {
   for (int i = 0; i < size; ++i)
     ASSERT_EQ(ref_data[i], result[i]);
 }
 
-template <>
-void compare_arrays<float>(const float *ref_data, const float *result, int size)
+template <> void compare_arrays<float>(const float *ref_data, const float *result, int size)
 {
   for (int i = 0; i < size; ++i)
     ASSERT_FLOAT_EQ(ref_data[i], result[i]) << " index " << i;
 }
 
-template <>
-void compare_arrays<double>(const double *ref_data, const double *result, int size)
+template <> void compare_arrays<double>(const double *ref_data, const double *result, int size)
 {
   for (int i = 0; i < size; ++i)
     ASSERT_DOUBLE_EQ(ref_data[i], result[i]);
@@ -73,16 +69,17 @@ void compare_arrays<double>(const double *ref_data, const double *result, int si
 // a little hack to simplify definitions of functions
 // othrwise it is hard to read code
 // todo maybe add reverse c++ types -> loco types transformation?
-template<loco::DataType DType>
+template <loco::DataType DType>
 using DataVector = std::vector<typename loco::DataTypeImpl<DType>::Type>;
 
 using Shape = std::vector<int>;
 
-template<loco::DataType DType>
-using Type = typename loco::DataTypeImpl<DType>::Type;
+template <loco::DataType DType> using Type = typename loco::DataTypeImpl<DType>::Type;
 
 template <typename LuciOp, loco::DataType DType>
-void test_binary_op(const Shape &x_shape, const Shape &y_shape, const Shape &out_shape, DataVector<DType> x_data, DataVector<DType> y_data, const DataVector<DType> &ref_out_data)
+void test_binary_op(const Shape &x_shape, const Shape &y_shape, const Shape &out_shape,
+                    DataVector<DType> x_data, DataVector<DType> y_data,
+                    const DataVector<DType> &ref_out_data)
 {
   // construct test graph
   luci::CircleInput input_x;
@@ -126,7 +123,8 @@ void test_binary_op(const Shape &x_shape, const Shape &y_shape, const Shape &out
 }
 
 template <typename LuciOp, loco::DataType DType>
-void test_unary_op(const Shape &in_out_shape, DataVector<DType> in_data, const DataVector<DType> &ref_out_data)
+void test_unary_op(const Shape &in_out_shape, DataVector<DType> in_data,
+                   const DataVector<DType> &ref_out_data)
 {
   // construct test graph
   luci::CircleInput input_node;
@@ -163,8 +161,7 @@ void test_unary_op(const Shape &in_out_shape, DataVector<DType> in_data, const D
   compare_arrays<Type<DType>>(ref_out_data.data(), res.data(), ref_out_data.size());
 }
 
-template <loco::DataType DType>
-void fill_data(luci::CircleConst *node, const Type<DType> *data)
+template <loco::DataType DType> void fill_data(luci::CircleConst *node, const Type<DType> *data)
 {
   assert(node->shape_status() == luci::ShapeStatus::VALID);
   int size = 1;
@@ -188,8 +185,7 @@ void fill_data(luci::CircleConst *node, const std::vector<Type<DType>> data)
     node->at<DType>(i) = data[i];
 }
 
-template <loco::DataType DType>
-void test_const_op(const Shape &shape, DataVector<DType> data)
+template <loco::DataType DType> void test_const_op(const Shape &shape, DataVector<DType> data)
 {
   luci::CircleConst const_node;
   constructBasicNode<DType>(const_node, shape);
@@ -242,7 +238,7 @@ TEST(codegen_kernels, constant_scalar_int64)
 {
   // simple test to check that constant beffers created properly
   std::vector<int> shape{1};
-  std::vector<int64_t > data{10050054321}; // number that do not fit in 32 bit int
+  std::vector<int64_t> data{10050054321}; // number that do not fit in 32 bit int
 
   test_const_op<loco::DataType::S64>(shape, data);
 }
@@ -257,7 +253,8 @@ TEST(codegen_kernels, add_scalar)
   std::vector<float> y_data{3.5f};
   std::vector<float> ref_res_data{5.0f};
 
-  test_binary_op<luci::CircleAdd, loco::DataType::FLOAT32>(x_shape, y_shape, out_shape, x_data, y_data, ref_res_data);
+  test_binary_op<luci::CircleAdd, loco::DataType::FLOAT32>(x_shape, y_shape, out_shape, x_data,
+                                                           y_data, ref_res_data);
 }
 
 TEST(codegen_kernels, add_scalar_int)
@@ -270,7 +267,8 @@ TEST(codegen_kernels, add_scalar_int)
   std::vector<int32_t> y_data{3};
   std::vector<int32_t> ref_res_data{4};
 
-  test_binary_op<luci::CircleAdd, loco::DataType::S32>(x_shape, y_shape, out_shape, x_data, y_data, ref_res_data);
+  test_binary_op<luci::CircleAdd, loco::DataType::S32>(x_shape, y_shape, out_shape, x_data, y_data,
+                                                       ref_res_data);
 }
 
 TEST(codegen_kernels, add_broadcast)
@@ -281,11 +279,14 @@ TEST(codegen_kernels, add_broadcast)
 
   std::vector<float> x_data{1.f, 2.f, 3.f, 4.f, 5.f, 6.f};
   std::vector<float> y_data{10.f, 20.f, 30.f, 40.f, 50.f, 60.f};
-  std::vector<float> ref_res_data{11.f, 21.f, 32.f, 42.f, 53.f, 63.f, 14.f, 24.f, 35.f, 45.f, 56.f, 66.f};
+  std::vector<float> ref_res_data{11.f, 21.f, 32.f, 42.f, 53.f, 63.f,
+                                  14.f, 24.f, 35.f, 45.f, 56.f, 66.f};
 
-  test_binary_op<luci::CircleAdd, loco::DataType::FLOAT32>(x_shape, y_shape, out_shape, x_data, y_data, ref_res_data);
+  test_binary_op<luci::CircleAdd, loco::DataType::FLOAT32>(x_shape, y_shape, out_shape, x_data,
+                                                           y_data, ref_res_data);
 
-  test_binary_op<luci::CircleAdd, loco::DataType::FLOAT32>(y_shape, x_shape, out_shape, y_data, x_data, ref_res_data);
+  test_binary_op<luci::CircleAdd, loco::DataType::FLOAT32>(y_shape, x_shape, out_shape, y_data,
+                                                           x_data, ref_res_data);
 }
 
 TEST(codegen_kernels, sub_scalar)
@@ -298,7 +299,8 @@ TEST(codegen_kernels, sub_scalar)
   std::vector<float> y_data{1.5f};
   std::vector<float> ref_res_data{2.0f};
 
-  test_binary_op<luci::CircleSub, loco::DataType::FLOAT32>(x_shape, y_shape, out_shape, x_data, y_data, ref_res_data);
+  test_binary_op<luci::CircleSub, loco::DataType::FLOAT32>(x_shape, y_shape, out_shape, x_data,
+                                                           y_data, ref_res_data);
 }
 
 TEST(codegen_kernels, sub_broadcast)
@@ -309,9 +311,11 @@ TEST(codegen_kernels, sub_broadcast)
 
   std::vector<float> x_data{10.f, 20.f, 30.f, 40.f, 50.f, 60.f};
   std::vector<float> y_data{1.f, 2.f, 3.f, 4.f, 5.f, 6.f};
-  std::vector<float> ref_res_data{9.f, 8.f, 17.f, 16.f, 25.f, 24.f, 39.f, 38.f, 47.f, 46.f, 55.f, 54.f};
+  std::vector<float> ref_res_data{9.f,  8.f,  17.f, 16.f, 25.f, 24.f,
+                                  39.f, 38.f, 47.f, 46.f, 55.f, 54.f};
 
-  test_binary_op<luci::CircleSub, loco::DataType::FLOAT32>(x_shape, y_shape, out_shape, x_data, y_data, ref_res_data);
+  test_binary_op<luci::CircleSub, loco::DataType::FLOAT32>(x_shape, y_shape, out_shape, x_data,
+                                                           y_data, ref_res_data);
 }
 
 TEST(codegen_kernels, mul_scalar)
@@ -324,7 +328,8 @@ TEST(codegen_kernels, mul_scalar)
   std::vector<float> y_data{1.5f};
   std::vector<float> ref_res_data{5.25f};
 
-  test_binary_op<luci::CircleMul, loco::DataType::FLOAT32>(x_shape, y_shape, out_shape, x_data, y_data, ref_res_data);
+  test_binary_op<luci::CircleMul, loco::DataType::FLOAT32>(x_shape, y_shape, out_shape, x_data,
+                                                           y_data, ref_res_data);
 }
 
 TEST(codegen_kernels, mul_broadcast)
@@ -335,9 +340,11 @@ TEST(codegen_kernels, mul_broadcast)
 
   std::vector<float> x_data{10.f, 20.f, 30.f, 40.f, 50.f, 60.f};
   std::vector<float> y_data{1.f, 2.f, 3.f, 4.f, 5.f, 6.f};
-  std::vector<float> ref_res_data{10.f, 20.f, 60.f, 80.f, 150.f, 180.f, 40.f, 80.f, 150.f, 200.f, 300.f, 360.f};
+  std::vector<float> ref_res_data{10.f, 20.f, 60.f,  80.f,  150.f, 180.f,
+                                  40.f, 80.f, 150.f, 200.f, 300.f, 360.f};
 
-  test_binary_op<luci::CircleMul, loco::DataType::FLOAT32>(x_shape, y_shape, out_shape, x_data, y_data, ref_res_data);
+  test_binary_op<luci::CircleMul, loco::DataType::FLOAT32>(x_shape, y_shape, out_shape, x_data,
+                                                           y_data, ref_res_data);
 }
 
 TEST(codegen_kernels, div_scalar)
@@ -350,7 +357,8 @@ TEST(codegen_kernels, div_scalar)
   std::vector<float> y_data{2.f};
   std::vector<float> ref_res_data{1.75f};
 
-  test_binary_op<luci::CircleDiv, loco::DataType::FLOAT32>(x_shape, y_shape, out_shape, x_data, y_data, ref_res_data);
+  test_binary_op<luci::CircleDiv, loco::DataType::FLOAT32>(x_shape, y_shape, out_shape, x_data,
+                                                           y_data, ref_res_data);
 }
 
 TEST(codegen_kernels, div_broadcast)
@@ -361,9 +369,11 @@ TEST(codegen_kernels, div_broadcast)
 
   std::vector<float> x_data{10.f, 20.f, 30.f, 40.f, 50.f, 60.f};
   std::vector<float> y_data{1.f, 2.f, 4.f, 8.f, 16.f, 32.f};
-  std::vector<float> ref_res_data{10.f, 10.f/2, 20.f/4, 20.f/8, 30.f/16, 30.f/32, 40.f, 40.f/2, 50.f/4, 50.f/8, 60.f/16, 60.f/32};
+  std::vector<float> ref_res_data{10.f, 10.f / 2, 20.f / 4, 20.f / 8, 30.f / 16, 30.f / 32,
+                                  40.f, 40.f / 2, 50.f / 4, 50.f / 8, 60.f / 16, 60.f / 32};
 
-  test_binary_op<luci::CircleDiv, loco::DataType::FLOAT32>(x_shape, y_shape, out_shape, x_data, y_data, ref_res_data);
+  test_binary_op<luci::CircleDiv, loco::DataType::FLOAT32>(x_shape, y_shape, out_shape, x_data,
+                                                           y_data, ref_res_data);
 }
 
 TEST(codegen_kernels, tanh)
@@ -423,7 +433,8 @@ TEST(codegen_kernels, split)
 
   ASSERT_TRUE(luci_codegen::KernelBuilder::is_supported(&split));
 
-  luci_codegen::SubgraphContext subgraph("", {&split, &split_dim, &split_out[0], &split_out[1], &split_out[2]});
+  luci_codegen::SubgraphContext subgraph(
+    "", {&split, &split_dim, &split_out[0], &split_out[1], &split_out[2]});
   subgraph.finish_nodes_construction();
 
   luci_codegen::KernelBuilder builder(subgraph);
@@ -441,7 +452,7 @@ TEST(codegen_kernels, split)
   params.set(input_param, input_buffer);
 
   std::vector<Halide::Func> outputs;
-  for (auto output: subgraph.get_outputs())
+  for (auto output : subgraph.get_outputs())
   {
     outputs.push_back(output.second);
   }
@@ -462,8 +473,10 @@ struct RawTensor
   void *data;
 };
 
-template <loco::DataType input_dtype, loco::DataType weights_dtype, loco::DataType bias_dtype, loco::DataType output_dtype>
-void test_fc(const RawTensor &input, const RawTensor &weights, const RawTensor &bias, const RawTensor &ref_output)
+template <loco::DataType input_dtype, loco::DataType weights_dtype, loco::DataType bias_dtype,
+          loco::DataType output_dtype>
+void test_fc(const RawTensor &input, const RawTensor &weights, const RawTensor &bias,
+             const RawTensor &ref_output)
 {
   // construct test graph
   luci::CircleInput input_node;
@@ -497,7 +510,8 @@ void test_fc(const RawTensor &input, const RawTensor &weights, const RawTensor &
   luci_codegen::KernelBuilder builder(subgraph);
   builder.process();
 
-  Halide::Buffer<Type<input_dtype>> input_buffer(reinterpret_cast<Type<input_dtype> *>(input.data), reverse_vector(input.shape));
+  Halide::Buffer<Type<input_dtype>> input_buffer(reinterpret_cast<Type<input_dtype> *>(input.data),
+                                                 reverse_vector(input.shape));
   Halide::Buffer<Type<output_dtype>> res(reverse_vector(ref_output.shape));
 
   Halide::ImageParam input_param = subgraph.get_inputs()[0].second;
@@ -509,9 +523,11 @@ void test_fc(const RawTensor &input, const RawTensor &weights, const RawTensor &
 
   output_func.realize(res, Halide::Target(), params);
 
-  int output_size = std::accumulate(ref_output.shape.begin(), ref_output.shape.end(), 1, std::multiplies<int>());
+  int output_size =
+    std::accumulate(ref_output.shape.begin(), ref_output.shape.end(), 1, std::multiplies<int>());
 
-  compare_arrays<Type<output_dtype>>(reinterpret_cast<Type<output_dtype> *>(ref_output.data), res.data(), output_size);
+  compare_arrays<Type<output_dtype>>(reinterpret_cast<Type<output_dtype> *>(ref_output.data),
+                                     res.data(), output_size);
 }
 
 TEST(codegen_kernels, fc_float)
@@ -576,5 +592,6 @@ TEST(codegen_kernels, fc_hybrid_int)
   RawTensor weights_tensor{weights_shape, weights_data.data()};
   RawTensor bias_tensor{bias_shape, bias_data.data()};
   RawTensor ref_output_tensor{output_shape, ref_out_data.data()};
-  test_fc<input_dtype, input_dtype, output_dtype, output_dtype>(input_tensor, weights_tensor, bias_tensor, ref_output_tensor);
+  test_fc<input_dtype, input_dtype, output_dtype, output_dtype>(input_tensor, weights_tensor,
+                                                                bias_tensor, ref_output_tensor);
 }

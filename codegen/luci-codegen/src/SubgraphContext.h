@@ -35,15 +35,16 @@ namespace luci_codegen
 class SubgraphContext
 {
 public:
-  SubgraphContext(std::string name = ""): _name(std::move(name))
+  SubgraphContext(std::string name = "") : _name(std::move(name))
   {
 #ifndef NDEBUG
     _constructed = false;
 #endif
   }
 
-  template<typename Cont = std::vector<luci::CircleNode *>>
-  SubgraphContext(std::string name, Cont &&nodes): _name(std::move(name)), _nodes(std::forward<Cont>(nodes))
+  template <typename Cont = std::vector<luci::CircleNode *>>
+  SubgraphContext(std::string name, Cont &&nodes)
+    : _name(std::move(name)), _nodes(std::forward<Cont>(nodes))
   {
 #ifndef NDEBUG
     _constructed = false;
@@ -77,10 +78,7 @@ public:
 
   void finish_function_construction();
 
-  std::string get_name() const
-  {
-    return _name;
-  }
+  std::string get_name() const { return _name; }
 
   loco::Graph *get_graph() const
   {
@@ -91,10 +89,7 @@ public:
   /**
    * @return nodes in subgraph
    */
-  const std::vector<luci::CircleNode *> get_nodes() const
-  {
-    return _nodes;
-  }
+  const std::vector<luci::CircleNode *> get_nodes() const { return _nodes; }
 
   /**
    * @param node target node, it should belong to graph or graph inputs
@@ -106,10 +101,7 @@ public:
    * @param node target node
    * @return true if node belongs to subgraph, false otherwise
    */
-  bool contains(luci::CircleNode *node) const
-  {
-    return _generated_funcs.count(node);
-  }
+  bool contains(luci::CircleNode *node) const { return _generated_funcs.count(node); }
 
   /**
    * @return vector of inputs (needed for halide code generation)
@@ -140,20 +132,11 @@ public:
     _schedule = std::make_unique<Halide::AutoSchedulerResults>(schedule);
   }
 
-  Halide::AutoSchedulerResults &get_schedule()
-  {
-    return *_schedule;
-  }
+  Halide::AutoSchedulerResults &get_schedule() { return *_schedule; }
 
-  void set_target(const Halide::Target &target)
-  {
-    _target = target;
-  }
+  void set_target(const Halide::Target &target) { _target = target; }
 
-  Halide::Target get_target() const
-  {
-    return _target;
-  }
+  Halide::Target get_target() const { return _target; }
 
 private:
 #ifndef NDEBUG
@@ -169,6 +152,6 @@ private:
   Halide::Target _target;
 };
 
-}
+} // namespace luci_codegen
 
-#endif //NNCC_SUBGRAPH_CONTEXT_H
+#endif // NNCC_SUBGRAPH_CONTEXT_H

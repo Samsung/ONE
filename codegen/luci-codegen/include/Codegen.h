@@ -36,6 +36,7 @@ class SubgraphContext;
 class Codegen
 {
   friend CodegenTest;
+
 public:
   Codegen(const CodegenOptions &options = CodegenOptions());
 
@@ -46,7 +47,6 @@ public:
   void emit_code(std::string package_name);
 
 private:
-
   void emit_wrapper_library(std::string path, std::string func_name);
 
   bool fits_constrains(luci::CircleNode *node) const;
@@ -74,4 +74,4 @@ private:
 
 } // namespace luci_codegen
 
-#endif //NNCC_LUCI_CODEGEN_H
+#endif // NNCC_LUCI_CODEGEN_H

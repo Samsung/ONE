@@ -87,9 +87,7 @@ int main(int argc, char **argv)
 {
   if (argc != 2)
   {
-    std::cerr
-      << "Usage: " << argv[0]
-      << " <path/to/circle/model>\n";
+    std::cerr << "Usage: " << argv[0] << " <path/to/circle/model>\n";
     return EXIT_FAILURE;
   }
 
@@ -115,7 +113,7 @@ int main(int argc, char **argv)
   {
     const auto *input_node = loco::must_cast<const luci::CircleInput *>(input_nodes[i]);
     std::vector<char> input_data(getTensorSize(input_node));
-    for (int i = 0; i < input_data.size()/sizeof(float); ++i)
+    for (int i = 0; i < input_data.size() / sizeof(float); ++i)
       (reinterpret_cast<float *>(input_data.data()))[i] = i;
     interpreter.writeInputTensor(input_node, input_data.data(), input_data.size());
   }
@@ -132,7 +130,8 @@ int main(int argc, char **argv)
 
   std::chrono::system_clock::time_point finish = std::chrono::system_clock::now();
 
-  float elapsed_time = std::chrono::duration_cast<std::chrono::microseconds>(finish - start).count();
+  float elapsed_time =
+    std::chrono::duration_cast<std::chrono::microseconds>(finish - start).count();
 
   std::cout << "elapsed time: " << elapsed_time / repeats << " us\n";
 
@@ -143,9 +142,8 @@ int main(int argc, char **argv)
     const auto *output_node = loco::must_cast<const luci::CircleOutput *>(output_nodes[i]);
     std::vector<char> output_data(getTensorSize(output_node));
     interpreter.readOutputTensor(output_node, output_data.data(), output_data.size());
-    for (int i = 0; i < std::min((size_t)10, output_data.size()/sizeof(float)); ++i)
+    for (int i = 0; i < std::min((size_t)10, output_data.size() / sizeof(float)); ++i)
       std::cout << (reinterpret_cast<float *>(output_data.data()))[i] << "\n";
-
   }
   return EXIT_SUCCESS;
 }

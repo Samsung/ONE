@@ -26,7 +26,8 @@ namespace luci_interpreter
 namespace kernels
 {
 
-static void add_argument_descriptions(std::vector<int> &ranks, std::vector<std::vector<int>> &dims, const std::vector<luci_interpreter::Shape> &shapes)
+static void add_argument_descriptions(std::vector<int> &ranks, std::vector<std::vector<int>> &dims,
+                                      const std::vector<luci_interpreter::Shape> &shapes)
 {
   for (int i = 0; i < shapes.size(); ++i)
   {
@@ -40,14 +41,16 @@ static void add_argument_descriptions(std::vector<int> &ranks, std::vector<std::
   }
 }
 
-Compiled::Compiled(std::vector<const Tensor *> inputs, std::vector<Tensor *> outputs, const CompiledParams &params)
-  : KernelWithParams<CompiledParams>(std::move(inputs), std::move(outputs), params), _args(std::make_unique<std::vector<void*>>(num_inputs() + num_outputs()))
+Compiled::Compiled(std::vector<const Tensor *> inputs, std::vector<Tensor *> outputs,
+                   const CompiledParams &params)
+  : KernelWithParams<CompiledParams>(std::move(inputs), std::move(outputs), params),
+    _args(std::make_unique<std::vector<void *>>(num_inputs() + num_outputs()))
 {
   std::vector<int> ranks;
   std::vector<std::vector<int>> dims;
   add_argument_descriptions(ranks, dims, params.input_shapes);
   add_argument_descriptions(ranks, dims, params.output_shapes);
-  std::vector<int*> raw_dims;
+  std::vector<int *> raw_dims;
   for (int i = 0; i < dims.size(); ++i)
   {
     raw_dims.push_back(dims[i].data());
@@ -55,10 +58,7 @@ Compiled::Compiled(std::vector<const Tensor *> inputs, std::vector<Tensor *> out
   _impl = params.constructor(ranks.data(), raw_dims.data());
 }
 
-Compiled::~Compiled()
-{
-  _params.destructor(&_impl);
-}
+Compiled::~Compiled() { _params.destructor(&_impl); }
 
 void Compiled::configure()
 {

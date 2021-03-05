@@ -31,7 +31,7 @@ enum class ArchType
 
 // 512 kbytes is a conservative guess
 // This is common size cache size of many ARM processors
-constexpr int default_cache_size = 512*1024;
+constexpr int default_cache_size = 512 * 1024;
 
 struct Architecture
 {
@@ -61,14 +61,12 @@ enum class SchedulerAlgorithm
 struct CodegenOptions
 {
 public: // graph analysis options section
-
   /**
    * max size of constant buffer to inline in code in bytes
    */
   int max_inline_buffer_threshold = 1024;
 
 public: // backend options
-
   /**
    * If true generate argument correctness checks
    */

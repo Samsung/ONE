@@ -43,7 +43,7 @@ namespace
 std::vector<uint8_t> create_custom_options(const std::string &name)
 {
   flexbuffers::Builder fbb;
-  fbb.Map([&]() {fbb.String("func_name", name);});
+  fbb.Map([&]() { fbb.String("func_name", name); });
   fbb.Finish();
   return fbb.GetBuffer();
 }
@@ -64,8 +64,7 @@ bool Codegen::fits_constrains(luci::CircleNode *node) const
   return KernelBuilder::is_supported(node);
 }
 
-std::vector<luci::CircleNode *>
-Codegen::gather_suitable_nodes(luci::CircleNode *node)
+std::vector<luci::CircleNode *> Codegen::gather_suitable_nodes(luci::CircleNode *node)
 {
   std::vector<luci::CircleNode *> subgraph_nodes;
   std::queue<luci::CircleNode *> queue;
@@ -84,12 +83,12 @@ Codegen::gather_suitable_nodes(luci::CircleNode *node)
       adjacent.push_back(static_cast<luci::CircleNode *>(cur_node->arg(i)));
     }
     auto succs = loco::succs(cur_node);
-    for (auto succ: succs)
+    for (auto succ : succs)
     {
       adjacent.push_back(static_cast<luci::CircleNode *>(succ));
     }
     // process adjacent nodes
-    for (auto adj: adjacent)
+    for (auto adj : adjacent)
     {
       if (_processed.count(adj) || !fits_constrains(adj))
       {
@@ -114,7 +113,7 @@ bool Codegen::has_self_dependency_subgraph(const std::vector<luci::CircleNode *>
   belong_to_subgraph.insert(nodes.begin(), nodes.end());
   // gather input nodes
   std::unordered_set<loco::Node *> inputs;
-  for (auto *node: nodes)
+  for (auto *node : nodes)
   {
     for (int i = 0; i < node->arity(); ++i)
     {
@@ -130,7 +129,7 @@ bool Codegen::has_self_dependency_subgraph(const std::vector<luci::CircleNode *>
   // gather successors of input nodes and constants belonging subgraph
   std::queue<loco::Node *> queue;
   std::unordered_set<loco::Node *> visited;
-  for (loco::Node *node: nodes)
+  for (loco::Node *node : nodes)
   {
     if (node->arity() == 0)
     {
@@ -138,9 +137,9 @@ bool Codegen::has_self_dependency_subgraph(const std::vector<luci::CircleNode *>
       visited.insert(node);
     }
   }
-  for (loco::Node *input: inputs)
+  for (loco::Node *input : inputs)
   {
-    for (loco::Node *succ: loco::succs(input))
+    for (loco::Node *succ : loco::succs(input))
     {
       if (belong_to_subgraph.count(succ) != 0)
       {
@@ -155,7 +154,7 @@ bool Codegen::has_self_dependency_subgraph(const std::vector<luci::CircleNode *>
   {
     loco::Node *node = queue.front();
     queue.pop();
-    for (loco::Node *succ: loco::succs(node))
+    for (loco::Node *succ : loco::succs(node))
     {
       if (visited.count(succ) != 0)
       {
@@ -164,7 +163,8 @@ bool Codegen::has_self_dependency_subgraph(const std::vector<luci::CircleNode *>
       visited.insert(succ);
       if (inputs.count(succ) != 0)
       {
-        // this means algorithm reached subgraph input from nodes of this subgraph, we found cyclic dependency
+        // this means algorithm reached subgraph input from nodes of this subgraph, we found cyclic
+        // dependency
         return true;
       }
       queue.push(succ);
@@ -249,13 +249,13 @@ void Codegen::cleanup_graph(SubgraphContext *subgraph) const
 {
   loco::Graph *graph = subgraph->get_graph();
   std::vector<loco::Node *> outputs;
-  for (auto node: subgraph->get_outputs())
+  for (auto node : subgraph->get_outputs())
   {
     outputs.push_back(node.first);
   }
   auto ordered_nodes = loco::postorder_traversal(outputs);
   std::reverse(ordered_nodes.begin(), ordered_nodes.end());
-  for (auto node: ordered_nodes)
+  for (auto node : ordered_nodes)
   {
     if (subgraph->contains(static_cast<luci::CircleNode *>(node)))
       graph->nodes()->destroy(node);
@@ -335,9 +335,10 @@ void Codegen::process_graph(loco::Graph &graph)
     // Traverse graph to find all compilable adjacent nodes
     std::vector<luci::CircleNode *> suitable_nodes = gather_suitable_nodes(node);
 
-    std::vector<std::vector<luci::CircleNode *>> extracted_subgraph_nodes = extract_subgraphs(suitable_nodes);
+    std::vector<std::vector<luci::CircleNode *>> extracted_subgraph_nodes =
+      extract_subgraphs(suitable_nodes);
 
-    for (auto &nodes: extracted_subgraph_nodes)
+    for (auto &nodes : extracted_subgraph_nodes)
     {
       SubgraphContext *subgraph = create_subgraph(nodes);
 
@@ -346,7 +347,8 @@ void Codegen::process_graph(loco::Graph &graph)
       // Create kernels for nodes
       KernelBuilder(*subgraph).process();
 
-      SchedulerOptions scheduler_options = {_options.scheduler, _options.arch.last_level_cache_size};
+      SchedulerOptions scheduler_options = {_options.scheduler,
+                                            _options.arch.last_level_cache_size};
       Scheduler(*subgraph, scheduler_options).process();
 
       _processed_graphs++;
@@ -354,7 +356,7 @@ void Codegen::process_graph(loco::Graph &graph)
   }
 
   // replace circle graph with generated nodes
-  for (SubgraphContext &subgraph: _compiled_subgraphs)
+  for (SubgraphContext &subgraph : _compiled_subgraphs)
   {
     // Replace subgraph with custom operator
     replace_subgraph_with_generated_node(&subgraph);
@@ -396,18 +398,19 @@ void Codegen::emit_code(std::string target_dir)
     throw std::runtime_error("Output path exists, but it is not directory");
   }
 
-  for (auto &subgraph: _compiled_subgraphs)
+  for (auto &subgraph : _compiled_subgraphs)
   {
     Halide::Pipeline &pipeline = subgraph.get_pipeline();
     Halide::Target target = subgraph.get_target();
 
     std::vector<Halide::Argument> arguments;
-    for (auto input: subgraph.get_inputs())
+    for (auto input : subgraph.get_inputs())
     {
       arguments.push_back(input.second);
     }
 
-    Halide::Module module = pipeline.compile_to_module(arguments, subgraph.get_name(), target, Halide::LinkageType::ExternalPlusMetadata);
+    Halide::Module module = pipeline.compile_to_module(arguments, subgraph.get_name(), target,
+                                                       Halide::LinkageType::ExternalPlusMetadata);
     module.set_auto_scheduler_results(subgraph.get_schedule());
 
     std::map<Halide::Output, std::string> products;

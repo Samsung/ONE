@@ -28,7 +28,8 @@ namespace kernels
 class Compiled : public KernelWithParams<CompiledParams>
 {
 public:
-  Compiled(std::vector<const Tensor *> inputs, std::vector<Tensor *> output, const CompiledParams &params);
+  Compiled(std::vector<const Tensor *> inputs, std::vector<Tensor *> output,
+           const CompiledParams &params);
 
   ~Compiled();
 
@@ -39,6 +40,7 @@ public:
 
   void configure() override;
   void execute() const override;
+
 private:
   ConfiguredCompiledFunc _impl;
   std::unique_ptr<std::vector<void *>> _args;

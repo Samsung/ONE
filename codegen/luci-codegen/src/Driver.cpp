@@ -63,7 +63,7 @@ int main(int argc, char **argv)
   luci_codegen::CodegenOptions options;
   options.max_inline_buffer_threshold = 1024;
   options.arch.type = luci_codegen::ArchType::Native;
-  options.arch.last_level_cache_size = 16*1024;
+  options.arch.last_level_cache_size = 16 * 1024;
   options.debug = false;
   options.os = luci_codegen::OS::Native;
   options.scheduler = luci_codegen::SchedulerAlgorithm::Adams;

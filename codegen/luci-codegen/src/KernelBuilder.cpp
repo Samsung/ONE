@@ -109,7 +109,9 @@ public:
   void visit(luci::CircleNode *) override;
 };
 
-CodegenKernelBuilderImpl::CodegenKernelBuilderImpl(SubgraphContext &subgraph) : _subgraph(subgraph) {}
+CodegenKernelBuilderImpl::CodegenKernelBuilderImpl(SubgraphContext &subgraph) : _subgraph(subgraph)
+{
+}
 
 template <typename OP> void CodegenKernelBuilderImpl::binary_operator(luci::CircleNode *node)
 {
@@ -149,15 +151,15 @@ void CodegenKernelBuilderImpl::visit(luci::CircleConst *node)
       }
       break;
     }
-//    case loco::DataType::FLOAT64:
-//    {
-//      size_t size = node->size<loco::DataType::FLOAT64>();
-//      for (int i = 0; i < size; ++i)
-//      {
-//        reinterpret_cast<double *>(buf.data())[i] = node->at<loco::DataType::FLOAT64>(i);
-//      }
-//      break;
-//    }
+      //    case loco::DataType::FLOAT64:
+      //    {
+      //      size_t size = node->size<loco::DataType::FLOAT64>();
+      //      for (int i = 0; i < size; ++i)
+      //      {
+      //        reinterpret_cast<double *>(buf.data())[i] = node->at<loco::DataType::FLOAT64>(i);
+      //      }
+      //      break;
+      //    }
     case loco::DataType::S8:
     {
       size_t size = node->size<loco::DataType::S8>();
@@ -262,7 +264,7 @@ void CodegenKernelBuilderImpl::visit(luci::CircleLogistic *node)
   constexpr float s_b8 = 5.76102136993427e-09;
   constexpr float s_b10 = 6.10247389755681e-13;
 
-// construct first sigmoid operation
+  // construct first sigmoid operation
   Halide::Expr s1_clipped_x = Halide::max(Halide::min(input(iterators), max_x), min_x);
   Halide::Expr s1_x2 = s1_clipped_x * s1_clipped_x;
 
@@ -290,7 +292,8 @@ void CodegenKernelBuilderImpl::visit(luci::CircleSplitOut *node)
 {
   auto split_node = static_cast<luci::CircleSplit *>(node->input());
   auto split_input_node = static_cast<luci::CircleNode *>(split_node->input());
-  assert(static_cast<luci::CircleNode *>(split_node->split_dim())->opcode() == luci::CircleOpcode::CIRCLECONST);
+  assert(static_cast<luci::CircleNode *>(split_node->split_dim())->opcode() ==
+         luci::CircleOpcode::CIRCLECONST);
   auto split_dim_node = static_cast<luci::CircleConst *>(split_node->split_dim());
 
   assert(split_dim_node->dtype() == loco::DataType::S32);
@@ -298,7 +301,8 @@ void CodegenKernelBuilderImpl::visit(luci::CircleSplitOut *node)
 
   int split_dim = split_dim_node->at<loco::DataType::S32>(0);
   int split_input_dim_size = split_input_node->dim(split_dim).value(); // dim size before split
-  int split_output_dim_size = split_input_dim_size / split_node->num_split(); // dim size after split
+  int split_output_dim_size =
+    split_input_dim_size / split_node->num_split(); // dim size after split
 
   assert(split_input_dim_size % split_node->num_split() == 0);
 
@@ -333,7 +337,8 @@ void CodegenKernelBuilderImpl::visit(luci::CircleFullyConnected *node)
 
   Halide::Func fc = _subgraph.get_func(node);
   fc(output_iter, batch) = Halide::cast(output_type, bias(output_iter));
-  fc(output_iter, batch) += Halide::cast(output_type, weights(partial_sum_iter, output_iter)) * Halide::cast(output_type, input(partial_sum_iter, batch));
+  fc(output_iter, batch) += Halide::cast(output_type, weights(partial_sum_iter, output_iter)) *
+                            Halide::cast(output_type, input(partial_sum_iter, batch));
 }
 
 void CodegenKernelBuilderImpl::visit(luci::CircleNode *)
@@ -350,12 +355,12 @@ void KernelBuilder::process()
   std::vector<luci::CircleNode *> sorted_nodes;
   // collect subgraph outputs
   std::vector<loco::Node *> outputs;
-  for (auto node: _subgraph.get_outputs())
+  for (auto node : _subgraph.get_outputs())
   {
     outputs.push_back(node.first);
   }
   // collect nodes in topological order
-  for (auto node: loco::postorder_traversal(outputs))
+  for (auto node : loco::postorder_traversal(outputs))
   {
     luci::CircleNode *circle_node = static_cast<luci::CircleNode *>(node);
     if (_subgraph.contains(circle_node))
@@ -366,7 +371,7 @@ void KernelBuilder::process()
 
   // Define kernels
   CodegenKernelBuilderImpl visitor(_subgraph);
-  for (auto node: sorted_nodes)
+  for (auto node : sorted_nodes)
   {
     node->accept(&visitor);
   }
@@ -378,12 +383,13 @@ static bool is_supported_fc(luci::CircleFullyConnected *fc)
 {
   int outputs = fc->dim(0).value();
   return fc->shape_status() == luci::ShapeStatus::VALID &&
-      fc->weights_format() == luci::CircleFullyConnected::WeightsFormat::DEFAULT;
+         fc->weights_format() == luci::CircleFullyConnected::WeightsFormat::DEFAULT;
 }
 
 static bool is_supported_split(luci::CircleSplit *split)
 {
-  bool const_split_dim = static_cast<luci::CircleNode *>(split->split_dim())->opcode() == luci::CircleOpcode::CIRCLECONST;
+  bool const_split_dim = static_cast<luci::CircleNode *>(split->split_dim())->opcode() ==
+                         luci::CircleOpcode::CIRCLECONST;
   if (!const_split_dim)
     return false;
   auto split_dim = static_cast<luci::CircleConst *>(split->split_dim());
@@ -402,7 +408,7 @@ static bool is_supported_split(luci::CircleSplit *split)
   if (split_input_dim_size % split->num_split() != 0)
     return false;
 
-  for (auto out: succs(split))
+  for (auto out : succs(split))
   {
     if (static_cast<luci::CircleSplitOut *>(out)->shape_status() != luci::ShapeStatus::VALID)
       return false;
@@ -439,4 +445,4 @@ bool KernelBuilder::is_supported(luci::CircleNode *node)
   return false;
 }
 
-} // luci_codegen
+} // namespace luci_codegen

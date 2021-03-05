@@ -2,7 +2,7 @@
 /**
  * Full description of one input/output buffer
  */
-struct alignas(void*) HalideBuffer
+struct alignas(void *) HalideBuffer
 {
   halide_dimension_t dims[4]; // 4 is current max number of dimensions supported by Halide
   halide_buffer_t buffer_data;
@@ -16,7 +16,7 @@ typedef int (*CompiledFuncImpl)(void **);
 /**
  * Structure that stores data needed to execute Halide generated code wrapper
  */
-struct alignas(void*) HalideConfiguration
+struct alignas(void *) HalideConfiguration
 {
   int num_arguments;
   CompiledFuncImpl impl;
@@ -51,23 +51,28 @@ static int halide_func_wrapper(char *configuration, void **args)
   return h_config->impl(h_config->args);
 }
 
-static inline ConfiguredCompiledFunc create_generated_subgraph_impl(int ranks[], int *dims[], const halide_filter_metadata_t *metadata, CompiledFuncImpl func_impl)
+static inline ConfiguredCompiledFunc
+create_generated_subgraph_impl(int ranks[], int *dims[], const halide_filter_metadata_t *metadata,
+                               CompiledFuncImpl func_impl)
 {
   ConfiguredCompiledFunc func;
   func.wrapper = halide_func_wrapper;
 
-/*
-  Allocate and initilize memory for Halide structures.
-  First place HalideConfiguration structure, then array of HalideBuffers, then array of void* that will be passed to generated function.
-*/
+  /*
+    Allocate and initilize memory for Halide structures.
+    First place HalideConfiguration structure, then array of HalideBuffers, then array of void* that
+    will be passed to generated function.
+  */
   const int arguments = metadata->num_arguments;
 
-  int need_memory = sizeof(HalideConfiguration) + arguments * (sizeof(HalideBuffer) + arguments*sizeof(void*));
+  int need_memory =
+    sizeof(HalideConfiguration) + arguments * (sizeof(HalideBuffer) + arguments * sizeof(void *));
   char *raw_config = func.configuration = new char[need_memory];
-  
+
   auto *header = reinterpret_cast<HalideConfiguration *>(raw_config);
   auto *buffers = reinterpret_cast<HalideBuffer *>(raw_config + sizeof(HalideConfiguration));
-  auto *args = reinterpret_cast<void **>(raw_config + sizeof(HalideConfiguration) + arguments * sizeof(HalideBuffer));
+  auto *args = reinterpret_cast<void **>(raw_config + sizeof(HalideConfiguration) +
+                                         arguments * sizeof(HalideBuffer));
 
   header->num_arguments = arguments;
   header->impl = func_impl;
@@ -104,14 +109,11 @@ static inline ConfiguredCompiledFunc create_generated_subgraph_impl(int ranks[],
 
 // public interface
 
-#define GENERATED_OPERATOR(name)\
-ConfiguredCompiledFunc create_##name(int ranks[], int *dims[])\
-{\
-  const halide_filter_metadata_t *metadata = name##_metadata();\
-  return create_generated_subgraph_impl(ranks, dims, metadata, name##_argv);\
-}\
-\
-void free_##name(ConfiguredCompiledFunc *func)\
-{\
-  delete [] func->configuration;\
-}
+#define GENERATED_OPERATOR(name)                                               \
+  ConfiguredCompiledFunc create_##name(int ranks[], int *dims[])               \
+  {                                                                            \
+    const halide_filter_metadata_t *metadata = name##_metadata();              \
+    return create_generated_subgraph_impl(ranks, dims, metadata, name##_argv); \
+  }                                                                            \
+                                                                               \
+  void free_##name(ConfiguredCompiledFunc *func) { delete[] func->configuration; }

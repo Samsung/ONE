@@ -30,6 +30,6 @@ size_t const_node_size(const luci::CircleNode *node);
 
 Halide::Type halide_type(loco::DataType dtype);
 
-}
+} // namespace luci_codegen
 
-#endif //NNCC_UTILITIES_H
+#endif // NNCC_UTILITIES_H

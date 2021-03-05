@@ -208,7 +208,8 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleConst *)
   throw std::runtime_error("Const node cannot be executed.");
 }
 
-static std::vector<luci_interpreter::Shape> get_nodes_shapes(const std::vector<const loco::Node *> &nodes)
+static std::vector<luci_interpreter::Shape>
+get_nodes_shapes(const std::vector<const loco::Node *> &nodes)
 {
   std::vector<luci_interpreter::Shape> shapes;
   for (int i = 0; i < nodes.size(); ++i)
@@ -225,7 +226,8 @@ static std::vector<luci_interpreter::Shape> get_nodes_shapes(const std::vector<c
   return shapes;
 }
 
-static std::pair<ConstructorCompiledFunc, DestructorCompiledFunc> get_compiled_function_handles(const luci::CircleCustom *node)
+static std::pair<ConstructorCompiledFunc, DestructorCompiledFunc>
+get_compiled_function_handles(const luci::CircleCustom *node)
 {
   const auto &options_buffer = node->custom_options();
   auto options_map = flexbuffers::GetRoot(options_buffer).AsMap();
@@ -240,7 +242,8 @@ static std::pair<ConstructorCompiledFunc, DestructorCompiledFunc> get_compiled_f
     exit(EXIT_FAILURE);
   }
 
-  auto constructor = reinterpret_cast<ConstructorCompiledFunc>(dlsym(handle, cst_func_name.c_str()));
+  auto constructor =
+    reinterpret_cast<ConstructorCompiledFunc>(dlsym(handle, cst_func_name.c_str()));
   auto destructor = reinterpret_cast<DestructorCompiledFunc>(dlsym(handle, dest_func_name.c_str()));
 
   return {constructor, destructor};

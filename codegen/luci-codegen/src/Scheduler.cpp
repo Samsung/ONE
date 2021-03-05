@@ -21,7 +21,8 @@ namespace luci_codegen
 {
 
 Scheduler::Scheduler(luci_codegen::SubgraphContext &subgraph,
-                     const luci_codegen::SchedulerOptions &options) : _subgraph(subgraph), _options(options)
+                     const luci_codegen::SchedulerOptions &options)
+  : _subgraph(subgraph), _options(options)
 {
   static bool initialized = false;
   if (!initialized)
@@ -38,7 +39,7 @@ void Scheduler::process()
   Halide::Pipeline pipeline = _subgraph.get_pipeline();
 
   std::vector<Halide::Argument> inputs;
-  for (auto subgraph_input: _subgraph.get_inputs())
+  for (auto subgraph_input : _subgraph.get_inputs())
   {
     inputs.push_back(subgraph_input.second);
   }
@@ -50,7 +51,7 @@ void Scheduler::process()
 
   // proceed if need to schedule
 
-  for (auto &input: _subgraph.get_inputs())
+  for (auto &input : _subgraph.get_inputs())
   {
     luci::CircleNode *node = input.first;
     Halide::ImageParam input_param = input.second;
@@ -95,7 +96,8 @@ void Scheduler::process()
       assert(false && "unsupported scheduling algorithm");
       break;
   }
-  Halide::AutoSchedulerResults schedule = pipeline.auto_schedule(scheduler_algorithm, _subgraph.get_target(), params);
+  Halide::AutoSchedulerResults schedule =
+    pipeline.auto_schedule(scheduler_algorithm, _subgraph.get_target(), params);
 
   _subgraph.set_schedule(schedule);
 }

@@ -27,13 +27,13 @@ void SubgraphContext::finish_nodes_construction()
 {
   std::unordered_set<luci::CircleNode *> in_graph;
   std::unordered_set<luci::CircleNode *> in_inputs;
-  for (auto *node: _nodes)
+  for (auto *node : _nodes)
   {
     in_graph.insert(node);
     _generated_funcs[node]; // create object
   }
   // gather inputs and  outputs
-  for (auto *node: _nodes)
+  for (auto *node : _nodes)
   {
     for (int i = 0; i < node->arity(); ++i)
     {
@@ -45,9 +45,8 @@ void SubgraphContext::finish_nodes_construction()
         _inputs.push_back({prev, graph_input});
         in_inputs.insert(prev);
       }
-
     }
-    for (auto loco_succ: loco::succs(node))
+    for (auto loco_succ : loco::succs(node))
     {
       assert(dynamic_cast<luci::CircleNode *>(loco_succ));
       luci::CircleNode *succ = static_cast<luci::CircleNode *>(loco_succ);
@@ -67,7 +66,7 @@ void SubgraphContext::finish_nodes_construction()
 void SubgraphContext::finish_function_construction()
 {
   std::vector<Halide::Func> output_funcs;
-  for (auto &output_descr: _outputs)
+  for (auto &output_descr : _outputs)
   {
     output_funcs.push_back(output_descr.second);
   }
@@ -83,7 +82,7 @@ Halide::Func SubgraphContext::get_func(loco::Node *node) const
   {
     return in_body->second;
   }
-  for (auto input: _inputs)
+  for (auto input : _inputs)
   {
     if (input.first == node)
       return input.second;
