@@ -21,10 +21,21 @@
 #include "flatbuffers/flatbuffers.h"
 #include "flatbuffers/flexbuffers.h"
 
+#include "test/TestIOGraph.h"
+
 #include <gtest/gtest.h>
 
 namespace
 {
+
+using namespace luci::test;
+
+const int N = 1;
+const int C = 2;
+const int H_X = 1;
+const int W_X = 4;
+const int H_Y = 4;
+const int W_Y = 4;
 
 /**
  *  graph having Custom operator BatchMatMulV2
@@ -37,35 +48,14 @@ namespace
  *             |
  *       [CircleOutput]
  */
-class BatchMatmulV2Graph : public ::testing::Test
+class BatchMatmulV2Graphlet
 {
-protected:
-  BatchMatmulV2Graph()
+public:
+  BatchMatmulV2Graphlet() = default;
+
+public:
+  void init(loco::Graph *g)
   {
-    const int N = 1;
-    const int C = 2;
-    const int H_X = 1;
-    const int W_X = 4;
-    const int H_Y = 4;
-    const int W_Y = 4;
-
-    // graph input and output
-    auto graph_input_0 = _g.inputs()->create();
-    auto graph_input_1 = _g.inputs()->create();
-    auto graph_output = _g.outputs()->create();
-
-    // CircleInput
-    _input_0 = _g.nodes()->create<luci::CircleInput>();
-    _input_0->index(graph_input_0->index());
-    _input_0->shape({N, C, H_X, W_X});
-    _input_0->dtype(loco::DataType::FLOAT32);
-    _input_0->name("input_0");
-    _input_1 = _g.nodes()->create<luci::CircleInput>();
-    _input_1->index(graph_input_1->index());
-    _input_1->shape({N, C, H_Y, W_Y});
-    _input_1->dtype(loco::DataType::FLOAT32);
-    _input_1->name("input_1");
-
     // custom option
     auto flatbuffer_builder =
       std::unique_ptr<flatbuffers::FlatBufferBuilder>(new flatbuffers::FlatBufferBuilder(1024));
@@ -78,38 +68,59 @@ protected:
     flex_buffers->Finish();
 
     // CircleCustom(BatchMatMulV2, adj_x=False, adj_y=False)
-    _batchmatmulv2 = _g.nodes()->create<luci::CircleCustom>(2, 1);
+    _batchmatmulv2 = g->nodes()->create<luci::CircleCustom>(2, 1);
     _batchmatmulv2->custom_code("BatchMatMulV2");
     _batchmatmulv2->custom_options(flex_buffers->GetBuffer());
-    _batchmatmulv2->inputs(0, _input_0);
-    _batchmatmulv2->inputs(1, _input_1);
     _batchmatmulv2->shape({N, C, H_X, W_Y});
     _batchmatmulv2->dtype(loco::DataType::FLOAT32);
     _batchmatmulv2->name("batchmatmulv2");
 
     // CircleCustomOut
-    _batchmatmulv2_out = _g.nodes()->create<luci::CircleCustomOut>();
-    _batchmatmulv2_out->input(_batchmatmulv2);
-    _batchmatmulv2_out->index(0);
+    _batchmatmulv2_out = g->nodes()->create<luci::CircleCustomOut>();
     _batchmatmulv2_out->shape({N, C, H_X, W_Y});
     _batchmatmulv2_out->dtype(loco::DataType::FLOAT32);
-
-    // CircleOutput
-    _output = _g.nodes()->create<luci::CircleOutput>();
-    _output->index(graph_output->index());
-    _output->from(_batchmatmulv2_out);
-    _output->shape({N, C, H_X, W_Y});
-    _output->dtype(loco::DataType::FLOAT32);
-    _output->name("output");
+    _batchmatmulv2_out->index(0);
   }
 
+public:
+  luci::CircleCustom *batchmatmulv2() { return _batchmatmulv2; }
+
 protected:
-  loco::Graph _g;
-  luci::CircleInput *_input_0 = nullptr;
-  luci::CircleInput *_input_1 = nullptr;
   luci::CircleCustom *_batchmatmulv2 = nullptr;
   luci::CircleCustomOut *_batchmatmulv2_out = nullptr;
-  luci::CircleOutput *_output = nullptr;
+};
+
+class BatchMatmulV2Graph : public TestIsGraphlet<2>,
+                           public TestOGraphlet,
+                           public BatchMatmulV2Graphlet
+{
+public:
+  BatchMatmulV2Graph() = default;
+
+  void init(void)
+  {
+    TestIsGraphlet<2>::init(g(), {N, C, H_X, W_X});
+    TestOGraphlet::init(g(), {N, C, H_X, W_Y});
+    BatchMatmulV2Graphlet::init(g());
+
+    // TODO how set multiple of shape vector for TestIsGraphlet?
+    // update shape for second input
+    input(1)->shape({N, C, H_Y, W_Y});
+
+    // connect graph
+    _batchmatmulv2->inputs(0, input(0));
+    _batchmatmulv2->inputs(1, input(1));
+    _batchmatmulv2_out->input(_batchmatmulv2);
+
+    output()->from(_batchmatmulv2_out);
+  }
+};
+
+class BatchMatmulV2GraphTest : public ::testing::Test
+{
+public:
+  BatchMatmulV2Graph g;
+  luci::ResolveCustomOpBatchMatMulPass pass;
 };
 
 } // namespace
@@ -130,13 +141,14 @@ TEST(ResolveCustomOpBatchMatMulPassTest, name)
  *        |
  *  [CircleOutput]
  */
-TEST_F(BatchMatmulV2Graph, simple_test)
+TEST_F(BatchMatmulV2GraphTest, simple_test)
 {
-  luci::ResolveCustomOpBatchMatMulPass pass;
-  auto ret = pass.run(&_g);
+  g.init();
+
+  auto ret = pass.run(g.g());
   EXPECT_EQ(true, ret);
 
-  auto batchmatmul = dynamic_cast<luci::CircleBatchMatMul *>(_output->from());
+  auto batchmatmul = dynamic_cast<luci::CircleBatchMatMul *>(g.output()->from());
   EXPECT_NE(nullptr, batchmatmul);
 
   auto input_0 = dynamic_cast<luci::CircleInput *>(batchmatmul->x());
@@ -145,13 +157,13 @@ TEST_F(BatchMatmulV2Graph, simple_test)
   EXPECT_NE(nullptr, input_1);
 }
 
-TEST_F(BatchMatmulV2Graph, wrong_condition_NEG)
+TEST_F(BatchMatmulV2GraphTest, wrong_condition_NEG)
 {
-  luci::ResolveCustomOpBatchMatMulPass pass;
+  g.init();
 
   // wrong custom code
-  _batchmatmulv2->custom_code("BatchMatMulv2");
-  auto ret = pass.run(&_g);
+  g.batchmatmulv2()->custom_code("BatchMatMulv2"); // v is lower case
+  auto ret = pass.run(g.g());
 
   EXPECT_EQ(false, ret);
 }
