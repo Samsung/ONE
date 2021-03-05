@@ -51,6 +51,18 @@ TEST(UserSettings, DisableValidation)
   ASSERT_TRUE(settings->get(luci::UserSettings::Key::DisableValidation));
 }
 
+TEST(UserSettings, ProfilingDataGen)
+{
+  auto settings = luci::UserSettings::settings();
+  ASSERT_NE(nullptr, settings);
+
+  settings->set(luci::UserSettings::Key::ProfilingDataGen, false);
+  ASSERT_FALSE(settings->get(luci::UserSettings::Key::ProfilingDataGen));
+
+  settings->set(luci::UserSettings::Key::ProfilingDataGen, true);
+  ASSERT_TRUE(settings->get(luci::UserSettings::Key::ProfilingDataGen));
+}
+
 TEST(UserSettings, undefined_set_NEG)
 {
   auto settings = luci::UserSettings::settings();
