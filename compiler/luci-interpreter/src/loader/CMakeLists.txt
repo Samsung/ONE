@@ -1,3 +1,5 @@
+nnas_find_package(FlatBuffers REQUIRED)
+
 set(SOURCES
     GraphLoader.h
     GraphLoader.cpp

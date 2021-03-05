@@ -208,9 +208,10 @@ void Codegen::replace_subgraph_with_generated_node(SubgraphContext *subgraph) co
 {
   auto &inputs = subgraph->get_inputs();
   const auto num_inputs = inputs.size();
+  const auto num_outputs = subgraph->get_outputs().size();
   loco::Graph *graph = subgraph->get_graph();
 
-  auto compiled_node = graph->nodes()->create<luci::CircleCustom>(num_inputs);
+  auto compiled_node = graph->nodes()->create<luci::CircleCustom>(num_inputs, num_outputs);
   compiled_node->custom_code("COMPILED_OP");
 
   auto options = create_custom_options(subgraph->get_name());
@@ -223,7 +224,7 @@ void Codegen::replace_subgraph_with_generated_node(SubgraphContext *subgraph) co
     compiled_node->inputs(i, subgraph->get_inputs()[i].first);
   }
 
-  for (int i = 0; i < subgraph->get_outputs().size(); ++i)
+  for (int i = 0; i < num_outputs; ++i)
   {
     auto output = subgraph->get_outputs()[i];
     auto custom_output = graph->nodes()->create<luci::CircleCustomOut>();

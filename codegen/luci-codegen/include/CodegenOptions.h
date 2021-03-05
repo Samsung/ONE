@@ -29,12 +29,14 @@ enum class ArchType
   ARM_64
 };
 
+// 512 kbytes is a conservative guess
+// This is common size cache size of many ARM processors
+constexpr int default_cache_size = 512*1024;
+
 struct Architecture
 {
   ArchType type = ArchType::Native;
-  // 512 kbytes is a conservative guess
-  // This is common size cache size of many ARM processors
-  int last_level_cache_size = 512*1024;
+  int last_level_cache_size = default_cache_size;
 };
 
 enum class OS
@@ -72,7 +74,11 @@ public: // backend options
    */
   bool debug = true;
 
-  Architecture arch;
+  /**
+   * Target architectire description.
+   * For now duplicates default Architecture constructor
+   */
+  Architecture arch = {ArchType::Native, default_cache_size};
 
   /**
    * Target operation system

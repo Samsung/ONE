@@ -1,4 +1,9 @@
-//#include "HalideRuntime.h"
+/*
+ * THIS IS TEMPORARY SOLUTION FOR DRAFT PR ONLY
+ * WILL BE REPLACED WITH ACTUAL TESTS
+ */
+
+
 #include "HalideBuffer.h"
 
 #include "reference.h"
