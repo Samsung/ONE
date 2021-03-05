@@ -87,9 +87,8 @@ public:
 
     for (auto &origin : origins)
     {
-      if (origin == nullptr)
-        throw std::runtime_error("Origin is null");
-      _origins.emplace_back(origin);
+      if (origin != nullptr)
+        _origins.emplace_back(origin);
     }
   }
 
@@ -154,7 +153,7 @@ void add_origin(luci::CircleNode *circle_node, const std::shared_ptr<CircleNodeO
 const std::shared_ptr<luci::CircleNodeOrigin> get_origin(const luci::CircleNode *circle_node)
 {
   if (!has_origin(circle_node))
-    throw std::runtime_error("Cannot find CircleNodeOrigin");
+    return nullptr;
 
   return circle_node->annot<CircleNodeOriginAnnotation>()->origin();
 }
