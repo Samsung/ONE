@@ -55,6 +55,7 @@ public:
   void visit(const operation::Conv2D &node) override;
   void visit(const operation::DepthToSpace &node) override;
   void visit(const operation::DepthwiseConv2D &node) override;
+  void visit(const operation::DetectionPostProcess &node) override;
   void visit(const operation::ElementwiseActivation &node) override;
   void visit(const operation::ElementwiseBinary &node) override;
   void visit(const operation::ElementwiseUnary &node) override;
