@@ -59,6 +59,27 @@ bool resolve_custom_op(luci::CircleCustom *cop)
 namespace luci
 {
 
+/**
+ *  BEFORE
+ *         |             |
+ *    [CircleNode]  [CircleNode]
+ *          \           /
+ *         [CircleCustom]("BatchMatMulV2")
+ *               |
+ *        [CircleCustomOut]
+ *               |
+ *          [CircleNode]
+ *               |
+ *
+ *  AFTER
+ *         |             |
+ *    [CircleNode]  [CircleNode]
+ *          \           /
+ *       [CircleBatchMatMul]
+ *               |
+ *          [CircleNode]
+ *               |
+ */
 bool ResolveCustomOpBatchMatMulPass::run(loco::Graph *g)
 {
   bool changed = false;
