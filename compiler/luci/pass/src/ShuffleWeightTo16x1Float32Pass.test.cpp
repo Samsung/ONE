@@ -141,3 +141,33 @@ TEST(ShuffleWeightTo16x1Float32PassTest, SimpleTest1)
   ASSERT_EQ(28, weights->at<loco::DataType::FLOAT32>(14));
   ASSERT_EQ(30, weights->at<loco::DataType::FLOAT32>(15));
 }
+
+TEST(ShuffleWeightTo16x1Float32PassTest, invalid_weight_shape_NEG)
+{
+  FCGraph g;
+
+  g.init({ROW, COL}, {1, ROW, COL, 1});
+
+  auto fc_node = luci::test::first_node<luci::CircleFullyConnected>(g.g());
+  ASSERT_NE(fc_node, nullptr);
+
+  luci::ShuffleWeightTo16x1Float32Pass pass;
+  auto ret = pass.run(g.g());
+
+  ASSERT_FALSE(ret);
+}
+
+TEST(ShuffleWeightTo16x1Float32PassTest, invalid_weight_row16_NEG)
+{
+  FCGraph g;
+
+  g.init({COL, ROW}, {COL, ROW});
+
+  auto fc_node = luci::test::first_node<luci::CircleFullyConnected>(g.g());
+  ASSERT_NE(fc_node, nullptr);
+
+  luci::ShuffleWeightTo16x1Float32Pass pass;
+  auto ret = pass.run(g.g());
+
+  ASSERT_FALSE(ret);
+}
