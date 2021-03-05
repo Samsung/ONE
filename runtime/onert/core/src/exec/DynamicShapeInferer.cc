@@ -601,6 +601,8 @@ void DynamicShapeInferer::visit(const ir::operation::MatrixBandPart &op)
   handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::MatrixBandPart::INPUT));
 }
 
+void DynamicShapeInferer::visit(const ir::operation::NonMaxSuppression &op) { UNUSED_RELEASE(op); }
+
 void DynamicShapeInferer::visit(const ir::operation::OneHot &op)
 {
   auto output_ind = op.getOutputs().at(0);

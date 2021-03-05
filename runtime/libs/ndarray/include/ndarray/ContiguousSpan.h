@@ -37,7 +37,7 @@ public:
 
   template <typename It>
   explicit ContiguousSpan(It first, It last) noexcept
-      : _data(&*first), _len(std::distance(first, last))
+    : _data(&*first), _len(std::distance(first, last))
   {
   }
 

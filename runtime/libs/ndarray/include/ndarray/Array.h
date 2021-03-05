@@ -157,8 +157,8 @@ private:
   size_t offset(index_sequence<Nums...> seq, Ts... x) const noexcept
   {
     static_assert(
-        sizeof...(Ts) == sizeof...(Nums),
-        "Sanity check failed. Generated index sequence size is not equal to argument count");
+      sizeof...(Ts) == sizeof...(Nums),
+      "Sanity check failed. Generated index sequence size is not equal to argument count");
 
     return _strides.offset(seq, x...);
   }

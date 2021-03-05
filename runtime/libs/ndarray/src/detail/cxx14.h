@@ -43,7 +43,7 @@ template <size_t v, size_t... Nums> struct _append<v, index_sequence<Nums...>>
 template <size_t Len> struct make_index_sequence
 {
   using result =
-      typename detail::_append<Len - 1, typename make_index_sequence<Len - 1>::result>::result;
+    typename detail::_append<Len - 1, typename make_index_sequence<Len - 1>::result>::result;
 };
 
 template <> struct make_index_sequence<1>
