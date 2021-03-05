@@ -17,64 +17,76 @@
 
 #include <luci/IR/CircleNodes.h>
 
+#include "test/TestIOGraph.h"
+#include "test/TestFirstNode.h"
+
 #include <gtest/gtest.h>
 
 namespace
 {
 
-void create_remove_unnecessary_slice(loco::Graph *g,
-                                     const std::initializer_list<uint32_t> input_shape, bool remove)
+using namespace luci::test;
+
+class SliceGraphlet
 {
-  assert(g);
+public:
+  SliceGraphlet() = default;
 
-  // Input Create.
-  auto input = g->nodes()->create<luci::CircleInput>();
-  auto graph_input = g->inputs()->create();
-  input->index(graph_input->index());
-  input->shape_status(luci::ShapeStatus::VALID);
-  input->rank(input_shape.size());
-  input->shape(input_shape);
-  input->name("input");
-
-  // Begin Create.
-  auto begin = g->nodes()->create<luci::CircleConst>();
-  begin->dtype(loco::DataType::S32);
-  begin->size<loco::DataType::S32>(input_shape.size());
-  begin->rank(1);
-  begin->dim(0).set(input_shape.size());
-  for (int i = 0; i < input_shape.size(); ++i)
+public:
+  void init(loco::Graph *g, const ShapeU32 input_shape, bool remove)
   {
-    begin->at<loco::DataType::S32>(i) = remove ? 0 : 1;
-  }
-  begin->name("begin");
+    // Begin Create.
+    _begin = g->nodes()->create<luci::CircleConst>();
+    _begin->rank(1);
+    _begin->dim(0).set(input_shape.size());
+    _begin->shape_status(luci::ShapeStatus::VALID);
+    _begin->dtype(loco::DataType::S32);
+    _begin->size<loco::DataType::S32>(input_shape.size());
+    for (int i = 0; i < input_shape.size(); ++i)
+      _begin->at<loco::DataType::S32>(i) = remove ? 0 : 1;
+    _begin->name("begin");
 
-  // Size Create.
-  auto size = g->nodes()->create<luci::CircleConst>();
-  size->dtype(loco::DataType::S32);
-  size->size<loco::DataType::S32>(input_shape.size());
-  size->rank(1);
-  size->dim(0).set(input_shape.size());
-  for (int i = 0; i < input_shape.size(); ++i)
+    // Size Create.
+    _size = g->nodes()->create<luci::CircleConst>();
+    _size->rank(1);
+    _size->dim(0).set(input_shape.size());
+    _size->shape_status(luci::ShapeStatus::VALID);
+    _size->dtype(loco::DataType::S32);
+    _size->size<loco::DataType::S32>(input_shape.size());
+    for (int i = 0; i < input_shape.size(); ++i)
+      _size->at<loco::DataType::S32>(i) = -1;
+    _size->name("size");
+
+    // Slice Node create.
+    _slice = g->nodes()->create<luci::CircleSlice>();
+    _slice->dtype(loco::DataType::S32);
+    _slice->name("slice");
+  }
+
+protected:
+  luci::CircleSlice *_slice = nullptr;
+  luci::CircleConst *_begin = nullptr;
+  luci::CircleConst *_size = nullptr;
+};
+
+class SliceGraph : public TestIOGraph, public SliceGraphlet
+{
+public:
+  SliceGraph() = default;
+
+public:
+  void init(const ShapeU32 shape, bool remove)
   {
-    size->at<loco::DataType::S32>(i) = -1;
+    TestIOGraph::init(shape, shape);
+    SliceGraphlet::init(g(), shape, remove);
+
+    _slice->input(input());
+    _slice->begin(_begin);
+    _slice->size(_size);
+
+    output()->from(_slice);
   }
-  size->name("size");
-
-  // Slice Node create.
-  auto slice = g->nodes()->create<luci::CircleSlice>();
-  slice->dtype(loco::DataType::S32);
-  slice->input(input);
-  slice->begin(begin);
-  slice->size(size);
-  slice->name("slice");
-
-  // Output Connect.
-  auto output = g->nodes()->create<luci::CircleOutput>();
-  output->from(slice);
-  auto graph_output = g->outputs()->create();
-  output->index(graph_output->index());
-  output->name("output");
-}
+};
 
 } // namespace
 
@@ -85,60 +97,38 @@ TEST(RemoveUnnecessarySlicePass, name)
   ASSERT_NE(nullptr, name);
 }
 
-TEST(RemoveUnnecessarySlicePass, remove_no_effect_slice)
+TEST(RemoveUnnecessarySlicePass, removed)
 {
-  auto graph = loco::make_graph();
-  create_remove_unnecessary_slice(graph.get(), {2, 4, 2, 3}, true);
-  luci::CircleSlice *slice_node = nullptr;
-  for (auto node : loco::active_nodes(loco::output_nodes(graph.get())))
-  {
-    auto slice = dynamic_cast<luci::CircleSlice *>(node);
-    if (not slice)
-      continue;
-    slice_node = slice;
-    break;
-  }
+  SliceGraph g;
+
+  g.init({2, 4, 2, 3}, true);
+
+  // confirm graph has Slice
+  auto slice_node = luci::test::first_node<luci::CircleSlice>(g.g());
   ASSERT_NE(nullptr, slice_node);
   luci::RemoveUnnecessarySlicePass pass;
-  while (pass.run(graph.get()))
+  while (pass.run(g.g()))
     ;
-  slice_node = nullptr;
-  for (auto node : loco::active_nodes(loco::output_nodes(graph.get())))
-  {
-    auto slice = dynamic_cast<luci::CircleSlice *>(node);
-    if (not slice)
-      continue;
-    slice_node = slice;
-    break;
-  }
+
+  // check Slice is removed
+  slice_node = luci::test::first_node<luci::CircleSlice>(g.g());
   ASSERT_EQ(nullptr, slice_node);
 }
 
-TEST(RemoveUnnecessarySlicePass, remove_no_effect_slice_NEG)
+TEST(RemoveUnnecessarySlicePass, not_removed_NEG)
 {
-  auto graph = loco::make_graph();
-  create_remove_unnecessary_slice(graph.get(), {2, 4, 2, 3}, false);
-  luci::CircleSlice *slice_node = nullptr;
-  for (auto node : loco::active_nodes(loco::output_nodes(graph.get())))
-  {
-    auto slice = dynamic_cast<luci::CircleSlice *>(node);
-    if (not slice)
-      continue;
-    slice_node = slice;
-    break;
-  }
+  SliceGraph g;
+
+  g.init({2, 4, 2, 3}, false);
+
+  // confirm graph has Slice
+  auto slice_node = luci::test::first_node<luci::CircleSlice>(g.g());
   ASSERT_NE(nullptr, slice_node);
   luci::RemoveUnnecessarySlicePass pass;
-  while (pass.run(graph.get()))
+  while (pass.run(g.g()))
     ;
-  slice_node = nullptr;
-  for (auto node : loco::active_nodes(loco::output_nodes(graph.get())))
-  {
-    auto slice = dynamic_cast<luci::CircleSlice *>(node);
-    if (not slice)
-      continue;
-    slice_node = slice;
-    break;
-  }
+
+  // check Slice is NOT removed
+  slice_node = luci::test::first_node<luci::CircleSlice>(g.g());
   ASSERT_NE(nullptr, slice_node);
 }
