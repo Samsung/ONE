@@ -18,49 +18,68 @@
 
 #include <luci/IR/CircleNodes.h>
 
+#include "test/TestIOGraph.h"
+#include "test/TestFirstNode.h"
+
 #include <gtest/gtest.h>
 
-void create_fc_net(loco::Graph *g)
+namespace
 {
-  assert(g);
 
-  const uint32_t ROW = 16;
-  const uint32_t COL = 2;
-  const uint32_t elements_num = ROW * COL;
+using namespace luci::test;
 
-  // input
-  auto input = g->nodes()->create<luci::CircleInput>();
-  auto graph_input = g->inputs()->create();
-  input->index(graph_input->index());
-  input->name("input");
+class FCGraphlet
+{
+public:
+  FCGraphlet() = default;
 
-  // fc weights
-  auto weights = g->nodes()->create<luci::CircleConst>();
-  weights->dtype(loco::DataType::FLOAT32);
-  weights->size<loco::DataType::FLOAT32>(elements_num);
-  weights->rank(2);
-  weights->dim(0).set(ROW);
-  weights->dim(1).set(COL);
-  for (uint32_t idx = 0; idx < elements_num; idx++)
+public:
+  void init(loco::Graph *g, const ShapeU32 wshape)
   {
-    weights->at<loco::DataType::FLOAT32>(idx) = idx;
+    const uint32_t elements_num = num_elements(wshape);
+
+    // fc weights
+    _weights = g->nodes()->create<luci::CircleConst>();
+    _weights->dtype(loco::DataType::FLOAT32);
+    _weights->shape(wshape);
+    _weights->size<loco::DataType::FLOAT32>(elements_num);
+    for (uint32_t idx = 0; idx < elements_num; idx++)
+    {
+      _weights->at<loco::DataType::FLOAT32>(idx) = idx;
+    }
+    _weights->name("weights");
+
+    // fc
+    _fc = g->nodes()->create<luci::CircleFullyConnected>();
+    _fc->dtype(loco::DataType::FLOAT32);
+    _fc->name("fc");
   }
-  weights->name("weights");
 
-  // fc
-  auto fc = g->nodes()->create<luci::CircleFullyConnected>();
-  fc->dtype(loco::DataType::FLOAT32);
-  fc->input(input);
-  fc->weights(weights);
-  fc->name("fc");
+protected:
+  luci::CircleFullyConnected *_fc = nullptr;
+  luci::CircleConst *_weights = nullptr;
+};
 
-  // output
-  auto output = g->nodes()->create<luci::CircleOutput>();
-  output->from(fc);
-  auto graph_output = g->outputs()->create();
-  output->index(graph_output->index());
-  output->name("output");
-}
+class FCGraph : public TestIGraphlet, public TestOGraphlet, public FCGraphlet
+{
+public:
+  FCGraph() = default;
+
+  void init(const ShapeU32 shape, const ShapeU32 wshape)
+  {
+    TestIGraphlet::init(g(), shape);
+    TestOGraphlet::init(g(), shape);
+    FCGraphlet::init(g(), wshape);
+
+    // connect graph
+    _fc->input(input());
+    _fc->weights(_weights);
+
+    output()->from(_fc);
+  }
+};
+
+} // namespace
 
 TEST(ShuffleWeightTo16x1Float32PassTest, name)
 {
@@ -69,21 +88,16 @@ TEST(ShuffleWeightTo16x1Float32PassTest, name)
   ASSERT_NE(nullptr, name);
 }
 
+const uint32_t ROW = 16;
+const uint32_t COL = 2;
+
 TEST(ShuffleWeightTo16x1Float32PassTest, SimpleTest1)
 {
-  auto graph = loco::make_graph();
-  create_fc_net(graph.get());
+  FCGraph g;
 
-  luci::CircleFullyConnected *fc_node = nullptr;
-  for (auto node : loco::active_nodes(loco::output_nodes(graph.get())))
-  {
-    auto fc = dynamic_cast<luci::CircleFullyConnected *>(node);
-    if (not fc)
-      continue;
+  g.init({ROW, COL}, {ROW, COL});
 
-    fc_node = fc;
-    break;
-  }
+  auto fc_node = luci::test::first_node<luci::CircleFullyConnected>(g.g());
   ASSERT_NE(fc_node, nullptr);
   auto weights = loco::must_cast<luci::CircleConst *>(fc_node->weights());
   // before
@@ -105,7 +119,7 @@ TEST(ShuffleWeightTo16x1Float32PassTest, SimpleTest1)
   ASSERT_EQ(15, weights->at<loco::DataType::FLOAT32>(15));
 
   luci::ShuffleWeightTo16x1Float32Pass pass;
-  while (pass.run(graph.get()))
+  while (pass.run(g.g()))
     ;
 
   weights = loco::must_cast<luci::CircleConst *>(fc_node->weights());
