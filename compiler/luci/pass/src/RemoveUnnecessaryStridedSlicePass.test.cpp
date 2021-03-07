@@ -17,134 +17,126 @@
 
 #include <luci/IR/CircleNodes.h>
 
-#include <gtest/gtest.h>
+#include "test/TestIOGraph.h"
+#include "test/TestFirstNode.h"
 
-#include <vector>
+#include <gtest/gtest.h>
 
 namespace
 {
 
-void create_remove_unnecessary_strided_slice(loco::Graph *g,
-                                             const std::initializer_list<uint32_t> input_shape,
-                                             bool remove)
+using namespace luci::test;
+
+class StridedSliceGraphlet
 {
-  assert(g);
+public:
+  StridedSliceGraphlet() = default;
 
-  // Input create
-  auto input = g->nodes()->create<luci::CircleInput>();
-  auto graph_input = g->inputs()->create();
-  input->index(graph_input->index());
-  input->shape_status(luci::ShapeStatus::VALID);
-  input->rank(input_shape.size());
-  input->shape(input_shape);
-
-  // Begin create
-  auto begin = g->nodes()->create<luci::CircleConst>();
-  begin->dtype(loco::DataType::S32);
-  begin->size<loco::DataType::S32>(input_shape.size());
-  begin->rank(1);
-  begin->dim(0).set(input_shape.size());
-  for (int i = 0; i < input_shape.size(); ++i)
+public:
+  void init(loco::Graph *g, const ShapeU32 input_shape, bool remove)
   {
-    begin->at<loco::DataType::S32>(i) = remove ? 0 : 1;
+    // Begin create
+    _begin = g->nodes()->create<luci::CircleConst>();
+    _begin->rank(1);
+    _begin->dim(0).set(input_shape.size());
+    _begin->shape_status(luci::ShapeStatus::VALID);
+    _begin->dtype(loco::DataType::S32);
+    _begin->size<loco::DataType::S32>(input_shape.size());
+    for (int i = 0; i < input_shape.size(); ++i)
+    {
+      _begin->at<loco::DataType::S32>(i) = remove ? 0 : 1;
+    }
+
+    // Strides create
+    _strides = g->nodes()->create<luci::CircleConst>();
+    _strides->rank(1);
+    _strides->dim(0).set(input_shape.size());
+    _strides->shape_status(luci::ShapeStatus::VALID);
+    _strides->dtype(loco::DataType::S32);
+    _strides->size<loco::DataType::S32>(input_shape.size());
+    for (int i = 0; i < input_shape.size(); ++i)
+    {
+      _strides->at<loco::DataType::S32>(i) = remove ? 1 : -1;
+    }
+
+    std::vector<uint32_t> shape_vector{input_shape};
+
+    _end = g->nodes()->create<luci::CircleConst>();
+    _end->rank(1);
+    _end->dim(0).set(input_shape.size());
+    _end->shape_status(luci::ShapeStatus::VALID);
+    _end->dtype(loco::DataType::S32);
+    _end->size<loco::DataType::S32>(input_shape.size());
+    for (int i = 0; i < input_shape.size(); ++i)
+    {
+      if (remove)
+        _end->at<loco::DataType::S32>(i) = static_cast<int32_t>(shape_vector.at(i));
+      else
+        _end->at<loco::DataType::S32>(i) = -1;
+    }
+
+    // StridedSlice Node create
+    _strided_slice = g->nodes()->create<luci::CircleStridedSlice>();
+    _strided_slice->dtype(loco::DataType::S32);
   }
 
-  // Strides create
-  auto strides = g->nodes()->create<luci::CircleConst>();
-  strides->dtype(loco::DataType::S32);
-  strides->rank(1);
-  strides->dim(0).set(input_shape.size());
-  strides->size<loco::DataType::S32>(input_shape.size());
-  for (int i = 0; i < input_shape.size(); ++i)
+protected:
+  luci::CircleStridedSlice *_strided_slice = nullptr;
+  luci::CircleConst *_begin = nullptr;
+  luci::CircleConst *_strides = nullptr;
+  luci::CircleConst *_end = nullptr;
+};
+
+class StridedSliceGraph : public TestIOGraph, public StridedSliceGraphlet
+{
+public:
+  StridedSliceGraph() = default;
+
+public:
+  void init(const ShapeU32 shape, bool remove)
   {
-    strides->at<loco::DataType::S32>(i) = remove ? 1 : -1;
+    TestIOGraph::init(shape, shape);
+    StridedSliceGraphlet::init(g(), shape, remove);
+
+    _strided_slice->input(input());
+    _strided_slice->begin(_begin);
+    _strided_slice->strides(_strides);
+    _strided_slice->end(_end);
+
+    output()->from(_strided_slice);
   }
-
-  auto end = g->nodes()->create<luci::CircleConst>();
-  std::vector<uint32_t> shape_vector{input_shape};
-  end->dtype(loco::DataType::S32);
-  end->rank(1);
-  end->dim(0).set(input_shape.size());
-  end->size<loco::DataType::S32>(input_shape.size());
-  for (int i = 0; i < input_shape.size(); ++i)
-  {
-    if (remove)
-      end->at<loco::DataType::S32>(i) = static_cast<int32_t>(shape_vector.at(i));
-    else
-      end->at<loco::DataType::S32>(i) = -1;
-  }
-
-  // StridedSlice Node create
-  auto strided_slice = g->nodes()->create<luci::CircleStridedSlice>();
-  strided_slice->dtype(loco::DataType::S32);
-  strided_slice->input(input);
-  strided_slice->begin(begin);
-  strided_slice->strides(strides);
-  strided_slice->end(end);
-
-  // Output connect
-  auto output = g->nodes()->create<luci::CircleOutput>();
-  output->from(strided_slice);
-  auto graph_output = g->outputs()->create();
-  output->index(graph_output->index());
-}
+};
 
 } // namespace
 
 TEST(RemoveUnnecessaryStridedSlicePass, basic_case)
 {
-  auto graph = loco::make_graph();
-  create_remove_unnecessary_strided_slice(graph.get(), {2, 4, 2, 3}, true);
-  luci::CircleStridedSlice *strided_slice_node = nullptr;
-  for (auto node : loco::active_nodes(loco::output_nodes(graph.get())))
-  {
-    auto strided_slice = dynamic_cast<luci::CircleStridedSlice *>(node);
-    if (strided_slice == nullptr)
-      continue;
-    strided_slice_node = strided_slice;
-    break;
-  }
+  StridedSliceGraph g;
+
+  g.init({2, 4, 2, 3}, true);
+
+  auto strided_slice_node = luci::test::first_node<luci::CircleStridedSlice>(g.g());
   ASSERT_NE(nullptr, strided_slice_node);
   luci::RemoveUnnecessaryStridedSlicePass pass;
-  while (pass.run(graph.get()))
+  while (pass.run(g.g()))
     ;
-  strided_slice_node = nullptr;
-  for (auto node : loco::active_nodes(loco::output_nodes(graph.get())))
-  {
-    auto strided_slice = dynamic_cast<luci::CircleStridedSlice *>(node);
-    if (strided_slice == nullptr)
-      continue;
-    strided_slice_node = strided_slice;
-    break;
-  }
+
+  strided_slice_node = luci::test::first_node<luci::CircleStridedSlice>(g.g());
   ASSERT_EQ(nullptr, strided_slice_node);
 }
 
 TEST(RemoveUnnecessaryStridedSlicePass, basic_fail_case_NEG)
 {
-  auto graph = loco::make_graph();
-  create_remove_unnecessary_strided_slice(graph.get(), {2, 4, 2, 3}, false);
-  luci::CircleStridedSlice *strided_slice_node = nullptr;
-  for (auto node : loco::active_nodes(loco::output_nodes(graph.get())))
-  {
-    auto strided_slice = dynamic_cast<luci::CircleStridedSlice *>(node);
-    if (strided_slice == nullptr)
-      continue;
-    strided_slice_node = strided_slice;
-    break;
-  }
+  StridedSliceGraph g;
+
+  g.init({2, 4, 2, 3}, false);
+
+  auto strided_slice_node = luci::test::first_node<luci::CircleStridedSlice>(g.g());
   ASSERT_NE(nullptr, strided_slice_node);
   luci::RemoveUnnecessaryStridedSlicePass pass;
-  while (pass.run(graph.get()))
+  while (pass.run(g.g()))
     ;
-  strided_slice_node = nullptr;
-  for (auto node : loco::active_nodes(loco::output_nodes(graph.get())))
-  {
-    auto strided_slice = dynamic_cast<luci::CircleStridedSlice *>(node);
-    if (strided_slice == nullptr)
-      continue;
-    strided_slice_node = strided_slice;
-    break;
-  }
+
+  strided_slice_node = luci::test::first_node<luci::CircleStridedSlice>(g.g());
   ASSERT_NE(nullptr, strided_slice_node);
 }
