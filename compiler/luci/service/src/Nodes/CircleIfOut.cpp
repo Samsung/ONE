@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+#include "CircleCloneNode.h"
+
 #include <luci/Service/CircleShapeInference.h>
 #include <luci/Service/CircleTypeInference.h>
 

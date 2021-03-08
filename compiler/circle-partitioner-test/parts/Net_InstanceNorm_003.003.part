@@ -1,0 +1,9 @@
+[partition]
+backends=cpu,acl_cl
+default=cpu
+comply=opname
+
+[OPNAME]
+Mean_as_variance=acl_cl
+Add_as_variance=acl_cl
+Pow=acl_cl

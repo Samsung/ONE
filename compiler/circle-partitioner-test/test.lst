@@ -5,3 +5,8 @@
 # add(RECIPE_NAME PART_NAME)
 
 add(Net_InstanceNorm_003 Net_InstanceNorm_003)
+
+add(Net_InstanceNorm_003 Net_InstanceNorm_003.003)
+add(Part_Add_Sub_001 Part_Add_Sub_001)
+add(Part_Add_Sub_002 Part_Add_Sub_002.001)
+add(Part_Add_Sub_002 Part_Add_Sub_002.002)
