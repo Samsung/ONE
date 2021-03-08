@@ -51,7 +51,7 @@ public:
         assert(len != 0);
         // data
         // non-empty 'data' has trailing '\0'. Let's exclude it.
-        std::string node_name = std::string(cur, len > 0 ? cur + len - 1 : cur + len);
+        std::string node_name = std::string(cur, cur + len - 1);
         cur += len;
 
         // print
@@ -112,8 +112,8 @@ public:
 
 MetadataPrinterRegistry::MetadataPrinterRegistry()
 {
-  _metadata_map["source_table"] = std::make_unique<SourceTablePrinter>();
-  _metadata_map["op_table"] = std::make_unique<OpTablePrinter>();
+  _metadata_map["ONE_source_table"] = std::make_unique<SourceTablePrinter>();
+  _metadata_map["ONE_op_table"] = std::make_unique<OpTablePrinter>();
 }
 
 } // namespace circledump
