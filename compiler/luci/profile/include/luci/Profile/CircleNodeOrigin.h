@@ -47,13 +47,13 @@ public:
   virtual std::set<const Source *> sources(void) const = 0;
 };
 
-std::shared_ptr<CircleNodeOrigin> single_origin(uint32_t id, const std::string name);
+std::shared_ptr<CircleNodeOrigin> single_origin(uint32_t id, const std::string &name);
 
 std::shared_ptr<CircleNodeOrigin>
-composite_origin(std::initializer_list<std::shared_ptr<CircleNodeOrigin>> origins);
+composite_origin(const std::initializer_list<std::shared_ptr<CircleNodeOrigin>> &origins);
 
 std::shared_ptr<CircleNodeOrigin>
-composite_origin(std::vector<std::shared_ptr<CircleNodeOrigin>> origins);
+composite_origin(const std::vector<std::shared_ptr<CircleNodeOrigin>> &origins);
 
 } // namespace luci
 
@@ -64,7 +64,7 @@ bool has_origin(const luci::CircleNode *circle_node);
 
 void add_origin(luci::CircleNode *circle_node, const std::shared_ptr<CircleNodeOrigin> origin);
 
-// NOTE When circle_node does not have origin, nullptr will be returned
+// NOTE When circle_node does not have origin, nullptr is returned
 const std::shared_ptr<luci::CircleNodeOrigin> get_origin(const luci::CircleNode *circle_node);
 
 } // namespace luci
