@@ -80,7 +80,7 @@ class CompositeOrigin final : public luci::CircleNodeOrigin
 public:
   CompositeOrigin() = delete;
 
-  template <typename T> CompositeOrigin(T &origins)
+  template <typename T> CompositeOrigin(T origins)
   {
     if (origins.size() == 0)
       throw std::invalid_argument("No origins provided");
@@ -123,13 +123,13 @@ std::shared_ptr<CircleNodeOrigin> single_origin(uint32_t id, const std::string &
 }
 
 std::shared_ptr<CircleNodeOrigin>
-composite_origin(const std::initializer_list<std::shared_ptr<CircleNodeOrigin>> &origins)
+composite_origin(const std::initializer_list<std::shared_ptr<CircleNodeOrigin>> origins)
 {
   return std::make_shared<CompositeOrigin>(origins);
 }
 
 std::shared_ptr<CircleNodeOrigin>
-composite_origin(const std::vector<std::shared_ptr<CircleNodeOrigin>> &origins)
+composite_origin(const std::vector<std::shared_ptr<CircleNodeOrigin>> origins)
 {
   return std::make_shared<CompositeOrigin>(origins);
 }
