@@ -400,7 +400,7 @@ void dump_model(std::ostream &os, const circle::Model *model)
   // dump metadata
   if (metadata != nullptr)
   {
-    os << "metadata : B(index) name" << std::endl;
+    os << "Metadata: B(index) name" << std::endl;
     for (uint32_t i = 0; i < metadata->Length(); ++i)
     {
       const auto buff_id = metadata->Get(i)->buffer();

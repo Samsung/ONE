@@ -53,7 +53,7 @@ public:
   }
 
 private:
-  std::map<std::string, std::unique_ptr<MetadataPrinter>> _metadata_map;
+  std::map<std::string /* metadata name */, std::unique_ptr<MetadataPrinter>> _metadata_map;
 };
 
 } // namespace circledump
