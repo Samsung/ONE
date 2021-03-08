@@ -32,6 +32,7 @@ struct UserSettings
     Undefined,
     MuteWarnings,
     DisableValidation,
+    ProfilingDataGen,
   };
 
   static UserSettings *settings();
