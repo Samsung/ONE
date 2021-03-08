@@ -21,6 +21,7 @@
 #include <luci/Service/Validate.h>
 #include <luci/CircleExporter.h>
 #include <luci/CircleFileExpContract.h>
+#include <luci/UserSettings.h>
 
 #include <oops/InternalExn.h>
 #include <arser/arser.h>
@@ -57,10 +58,13 @@ int entry(int argc, char **argv)
   luci::CircleOptimizer optimizer;
 
   auto options = optimizer.options();
+  auto settings = luci::UserSettings::settings();
 
   const std::string qdqw = "--quantize_dequantize_weights";
   const std::string qwmm = "--quantize_with_minmax";
   const std::string rq = "--requantize";
+
+  const std::string pdg = "--profiling_data_gen";
 
   arser::Arser arser("circle-quantizer provides circle model quantization");
 
@@ -97,6 +101,12 @@ int entry(int argc, char **argv)
 
   arser.add_argument("input").nargs(1).type(arser::DataType::STR).help("Input circle model");
   arser.add_argument("output").nargs(1).type(arser::DataType::STR).help("Output circle model");
+
+  arser.add_argument("--profiling_data_gen")
+    .nargs(0)
+    .required(false)
+    .default_value(false)
+    .help("This will turn on profiling data generation.");
 
   try
   {
@@ -167,6 +177,9 @@ int entry(int argc, char **argv)
 
   std::string input_path = arser.get<std::string>("input");
   std::string output_path = arser.get<std::string>("output");
+
+  if (arser[pdg])
+    settings->set(luci::UserSettings::Key::ProfilingDataGen, true);
 
   // Load model from the file
   foder::FileLoader file_loader{input_path};
