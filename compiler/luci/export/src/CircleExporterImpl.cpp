@@ -161,13 +161,9 @@ void CircleExporterImpl::exportGraph(loco::Graph *graph)
   // create array of buffers
   auto buffers = _builder.CreateVector(md._buffers);
 
-  // empty metadata
-  std::vector<int> metadata_buffer_vec;
-  auto metadata_buffer = _builder.CreateVector(metadata_buffer_vec);
-
   // Model
   auto model_offset = CreateModel(_builder, version, operator_codes, subgraphs, description,
-                                  buffers, metadata_buffer);
+                                  buffers, 0 /* metadata_buffer */);
   FinishModelBuffer(_builder, model_offset);
 }
 
@@ -225,16 +221,12 @@ void CircleExporterImpl::exportModule(Module *module)
   // create array of buffers
   auto buffers = _builder.CreateVector(md._buffers);
 
-  // empty metadata
-  std::vector<int> metadata_buffer_vec;
-  auto metadata_buffer = _builder.CreateVector(metadata_buffer_vec);
-
   // This version is taken from comment in fbs
   constexpr uint32_t version = 0;
 
   // Model
   auto model_offset = CreateModel(_builder, version, operator_codes, subgraphs, description,
-                                  buffers, metadata_buffer);
+                                  buffers, 0 /* metadata_buffer */);
   FinishModelBuffer(_builder, model_offset);
 }
 
