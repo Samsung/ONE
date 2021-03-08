@@ -102,11 +102,8 @@ int entry(int argc, char **argv)
   arser.add_argument("input").nargs(1).type(arser::DataType::STR).help("Input circle model");
   arser.add_argument("output").nargs(1).type(arser::DataType::STR).help("Output circle model");
 
-  arser.add_argument("--profiling_data_gen")
-    .nargs(0)
-    .required(false)
-    .default_value(false)
-    .help("This will turn on profiling data generation.");
+  arser.add_argument(pdg).nargs(0).required(false).default_value(false).help(
+    "This will turn on profiling data generation.");
 
   try
   {
