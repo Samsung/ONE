@@ -20,6 +20,7 @@
 # limitations under the License.
 
 import argparse
+import itertools
 import os
 import subprocess
 import sys
@@ -68,18 +69,28 @@ def _verify_arg(parser, args):
 
 
 def _parse_arg(parser):
-    args, unknown_args = parser.parse_known_args()
+    codegen_args = []
+    backend_args = []
+    # delete file name
+    del sys.argv[0]
+    # split by '--'
+    argv = [list(y) for x, y in itertools.groupby(sys.argv, lambda z: z == '--') if not x]
+    if len(argv) >= 1:
+        codegen_args = argv[0]
+    if len(argv) == 2:
+        backend_args = argv[1]
+    codegen_args = parser.parse_args(codegen_args)
     # print version
-    if args.version:
+    if codegen_args.version:
         _utils._print_version_and_exit(__file__)
 
-    return args, unknown_args
+    return codegen_args, backend_args
 
 
 def main():
     # parse arguments
     parser = _get_parser()
-    args, unknown_args = _parse_arg(parser)
+    args, backend_args = _parse_arg(parser)
 
     # parse configuration file
     _utils._parse_cfg(args, 'one-codegen')
@@ -90,7 +101,7 @@ def main():
     # make a command to run given backend driver
     dir_path = os.path.dirname(os.path.realpath(__file__))
     codegen_path = os.path.join(dir_path, getattr(args, 'backend') + '-compile')
-    codegen_cmd = [codegen_path] + unknown_args
+    codegen_cmd = [codegen_path] + backend_args
     if _utils._is_valid_attr(args, 'command'):
         codegen_cmd += getattr(args, 'command').split()
 
