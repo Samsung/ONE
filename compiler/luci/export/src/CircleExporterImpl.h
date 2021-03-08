@@ -22,8 +22,6 @@
 
 #include "SerializedData.h"
 
-#include "SerializedData.h"
-
 #include <mio/circle/schema_generated.h>
 
 #include <loco.h>
