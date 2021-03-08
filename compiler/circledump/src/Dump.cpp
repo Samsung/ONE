@@ -18,6 +18,7 @@
 
 #include "Read.h"
 #include "OpPrinter.h"
+#include "MetadataPrinter.h"
 
 #include <ostream>
 
@@ -402,8 +403,16 @@ void dump_model(std::ostream &os, const circle::Model *model)
     os << "metadata : B(index) name" << std::endl;
     for (uint32_t i = 0; i < metadata->Length(); ++i)
     {
-      os << "B(" << metadata->Get(i)->buffer() << ") " << metadata->Get(i)->name()->str()
-         << std::endl;
+      const auto buff_id = metadata->Get(i)->buffer();
+      const auto metadata_name = metadata->Get(i)->name()->str();
+      os << "B(" << buff_id << ") " << metadata_name << std::endl;
+
+      const uint8_t *buff_data;
+      reader.buffer_info(buff_id, &buff_data);
+      if (auto meta_prn = MetadataPrinterRegistry::get().lookup(metadata_name))
+      {
+        meta_prn->print(buff_data, os);
+      }
     }
     os << std::endl;
   }
