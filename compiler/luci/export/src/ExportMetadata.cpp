@@ -49,6 +49,12 @@ const std::vector<uint8_t> encoded_source_table(ExportMetadata &metadata)
   std::vector<uint8_t> data;
 
   const auto source_table = metadata.source_table();
+
+  const auto size = source_table.size();
+  data.emplace_back(0xFF & (size >> 0 * 8));
+  data.emplace_back(0xFF & (size >> 1 * 8));
+  data.emplace_back(0xFF & (size >> 2 * 8));
+  data.emplace_back(0xFF & (size >> 3 * 8));
   for (auto &kv : source_table)
   {
     const auto id = kv.first;
@@ -58,16 +64,17 @@ const std::vector<uint8_t> encoded_source_table(ExportMetadata &metadata)
     data.emplace_back(0xFF & (id >> 3 * 8));
 
     const auto origin_name = kv.second;
-    const auto length = origin_name.length();
+    const auto length = origin_name.length() + 1; // name + '\0'
     data.emplace_back(0xFF & (length >> 0 * 8));
     data.emplace_back(0xFF & (length >> 1 * 8));
     data.emplace_back(0xFF & (length >> 2 * 8));
     data.emplace_back(0xFF & (length >> 3 * 8));
 
-    for (uint32_t i = 0; i < length; ++i)
+    for (uint32_t i = 0; i < length - 1; ++i)
     {
       data.emplace_back(origin_name.at(i));
     }
+    data.emplace_back(0);
   }
 
   return data;
@@ -78,6 +85,12 @@ const std::vector<uint8_t> encoded_op_table(ExportMetadata &metadata)
   std::vector<uint8_t> data;
 
   const auto op_table = metadata.op_table();
+
+  const auto size = op_table.size();
+  data.emplace_back(0xFF & (size >> 0 * 8));
+  data.emplace_back(0xFF & (size >> 1 * 8));
+  data.emplace_back(0xFF & (size >> 2 * 8));
+  data.emplace_back(0xFF & (size >> 3 * 8));
   for (auto &kv : op_table)
   {
     const auto id = kv.first;
