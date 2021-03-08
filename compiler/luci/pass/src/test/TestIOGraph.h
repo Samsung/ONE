@@ -35,7 +35,14 @@ namespace test
 template <unsigned N> class TestIsGraphlet
 {
 public:
-  TestIsGraphlet() = default;
+  TestIsGraphlet()
+  {
+    for (uint32_t n = 0; n < N; ++n)
+    {
+      _graph_inputs[n] = nullptr;
+      _inputs[n] = nullptr;
+    }
+  }
 
 public:
   virtual void init(loco::Graph *g, const ShapeU32 shape_in)
@@ -65,8 +72,8 @@ public:
 
 protected:
   loco::Graph _g;
-  std::array<loco::GraphInput *, N> _graph_inputs{};
-  std::array<luci::CircleInput *, N> _inputs{};
+  std::array<loco::GraphInput *, N> _graph_inputs;
+  std::array<luci::CircleInput *, N> _inputs;
 };
 
 /**
@@ -84,7 +91,14 @@ public:
 template <unsigned N> class TestOsGraphlet
 {
 public:
-  TestOsGraphlet() = default;
+  TestOsGraphlet()
+  {
+    for (uint32_t n = 0; n < N; ++n)
+    {
+      _graph_outputs[n] = nullptr;
+      _outputs[n] = nullptr;
+    }
+  }
 
 public:
   virtual void init(loco::Graph *g, const ShapeU32 shape_out)
@@ -112,8 +126,8 @@ public:
   luci::CircleOutput *output(int idx) { return _outputs[idx]; }
 
 protected:
-  std::array<loco::GraphOutput *, N> _graph_outputs{};
-  std::array<luci::CircleOutput *, N> _outputs{};
+  std::array<loco::GraphOutput *, N> _graph_outputs;
+  std::array<luci::CircleOutput *, N> _outputs;
 };
 
 /**
