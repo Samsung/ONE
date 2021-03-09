@@ -235,7 +235,11 @@ struct MDTableBuilder
       for (size_t i = begin_idx + 1; i < end_idx; ++i)
       {
         const auto *evt = dynamic_cast<const OpSeqDurationEvent *>(_duration_events[i].get());
-        assert(evt != nullptr);
+        if (evt == nullptr)
+        {
+          continue;
+        }
+
         const std::string evt_name = getLabel(*evt);
         assert(evt->ph.compare("B") == 0 || evt->ph.compare("E") == 0);
         if (evt->ph.compare("B") == 0)
