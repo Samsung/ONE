@@ -20,6 +20,7 @@
 
 #include <luci/IR/CircleNodes.h>
 #include <luci/Log.h>
+#include <luci/Profile/CircleNodeOrigin.h>
 
 namespace
 {
@@ -292,6 +293,8 @@ bool fuse_sub_with_conv(luci::CircleSub *sub)
   if (!update_conv_bias_with_beta(conv, beta, false))
     return false;
 
+  luci::add_origin(conv, luci::get_origin(sub));
+
   auto pred = sub->x();
   loco::replace(sub).with(pred);
 
@@ -368,6 +371,7 @@ bool fuse_add_with_conv(luci::CircleAdd *add, std::vector<luci::CircleSub *> &su
     if (!update_conv_bias_with_beta(conv, beta, true))
       return false;
 
+    luci::add_origin(conv, luci::get_origin(add));
     loco::replace(add).with(pred);
     add->drop();
 
@@ -388,6 +392,8 @@ bool fuse_add_with_conv(luci::CircleAdd *add, std::vector<luci::CircleSub *> &su
     if (!update_conv_bias_with_beta(conv, beta, true))
       return false;
 
+    luci::add_origin(conv, luci::get_origin(add));
+
     auto relu = *loco::succs(add).begin();
     auto relu_node = loco::must_cast<luci::CircleRelu *>(relu);
     assert(relu_node != nullptr);
@@ -397,6 +403,7 @@ bool fuse_add_with_conv(luci::CircleAdd *add, std::vector<luci::CircleSub *> &su
     add->drop();
 
     sub_list.push_back(insert_sub(pred, beta));
+    luci::add_origin(sub_list.back(), luci::get_origin(add));
 
     relu_node->features(pred);
 
@@ -456,6 +463,10 @@ bool fuse_mul_with_conv(luci::CircleMul *mul)
 
       // Update CONV weights
       update_conv_weights_with_gamma(conv, gamma);
+
+      // Update origin
+      // TODO need to remove const
+      luci::add_origin(const_cast<luci::CircleConv2D *>(conv), luci::get_origin(mul));
     }
 
     loco::replace(mul).with(pred_node);
@@ -516,6 +527,7 @@ bool swap_mul_add(luci::CircleAdd *add, std::vector<luci::CircleMul *> &mul_list
   auto relu = add->graph()->nodes()->create<luci::CircleRelu>();
   relu->features(mul);
   relu->name(name + "/Relu");
+  luci::add_origin(relu, luci::get_origin(add));
   loco::replace(add).with(relu);
 
   // Replace beta <- beta / gamma

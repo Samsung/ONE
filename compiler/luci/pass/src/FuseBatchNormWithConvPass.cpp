@@ -17,6 +17,7 @@
 #include "luci/Pass/FuseBatchNormWithConvPass.h"
 
 #include <luci/IR/CircleNodes.h>
+#include <luci/Profile/CircleNodeOrigin.h>
 
 namespace
 {
@@ -200,6 +201,8 @@ bool fused_batch_norm_with_conv(luci::CircleAdd *add)
   fused_conv->dilation()->h(conv->dilation()->h());
   fused_conv->dilation()->w(conv->dilation()->w());
   fused_conv->name(name + "/Conv2D");
+  luci::add_origin(fused_conv, luci::composite_origin({luci::get_origin(add), luci::get_origin(mul),
+                                                       luci::get_origin(conv)}));
 
   replace(add).with(fused_conv);
 

@@ -20,6 +20,7 @@
 #include "helpers/TypeMapper.h"
 
 #include <luci/IR/CircleNodes.h>
+#include <luci/Profile/CircleNodeOrigin.h>
 
 namespace
 {
@@ -102,6 +103,7 @@ template <loco::DataType DT> bool transform_min_max_pattern(luci::CircleMaximum 
   auto relu6 = mini->graph()->nodes()->create<luci::CircleRelu6>();
   relu6->features(mini_input);
   relu6->name(name + "/Relu6");
+  luci::add_origin(relu6, luci::composite_origin({luci::get_origin(maxi), luci::get_origin(mini)}));
 
   replace(maxi).with(relu6);
 

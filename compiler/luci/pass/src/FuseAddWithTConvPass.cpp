@@ -17,6 +17,7 @@
 #include "luci/Pass/FuseAddWithTConvPass.h"
 
 #include <luci/IR/CircleNodes.h>
+#include <luci/Profile/CircleNodeOrigin.h>
 
 namespace
 {
@@ -96,6 +97,7 @@ bool fuse_add_with_tconv(luci::CircleTransposeConv *tconv)
     auto relu = add->graph()->nodes()->create<luci::CircleRelu6>();
     relu->features(tconv);
     relu->name(name + "/Relu6");
+    luci::add_origin(relu, luci::get_origin(add));
 
     // remove add node
     replace(add).with(relu);
@@ -104,6 +106,9 @@ bool fuse_add_with_tconv(luci::CircleTransposeConv *tconv)
   {
     replace(add).with(tconv);
   }
+
+  // set origin
+  luci::add_origin(tconv, luci::get_origin(add));
 
   return true;
 }

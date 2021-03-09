@@ -20,6 +20,7 @@
 
 #include <luci/IR/CircleNodes.h>
 
+#include <luci/Profile/CircleNodeOrigin.h>
 #include <loco/Service/ShapeInference.h>
 
 #include <cassert>
@@ -566,6 +567,36 @@ void fuse_instance_norm(const InstanceNormPattern &p)
   instance_norm->fusedActivationFunction(p.add_as_terminal->fusedActivationFunction());
   // NOTE unique name should be assigned in export
   instance_norm->name("InstanceNorm");
+
+  // set origin
+  std::vector<std::shared_ptr<luci::CircleNodeOrigin>> origin_vec{
+    luci::get_origin(p.sqdiff),
+    luci::get_origin(p.mean_as_variance),
+    luci::get_origin(p.add_as_variance),
+    luci::get_origin(p.mul_gamma),
+    luci::get_origin(p.sub),
+    luci::get_origin(p.add_as_terminal)};
+  if (p.version() == InstanceNormPattern::PatternVersion::Version_0)
+  {
+    origin_vec.push_back(luci::get_origin(p.mean_of_ifm));
+    origin_vec.push_back(luci::get_origin(p.rsqrt));
+    origin_vec.push_back(luci::get_origin(p.mul_as_scaled_ifm));
+    origin_vec.push_back(luci::get_origin(p.mul_as_scaled_mean));
+  }
+  if (p.version() == InstanceNormPattern::PatternVersion::Version_1)
+  {
+    origin_vec.push_back(luci::get_origin(p.reshape_of_ifm));
+    origin_vec.push_back(luci::get_origin(p.mean_of_reshape));
+    origin_vec.push_back(luci::get_origin(p.rsqrt));
+    origin_vec.push_back(luci::get_origin(p.mul_as_scaled_mean));
+    origin_vec.push_back(luci::get_origin(p.mul_as_scaled_reshape));
+  }
+  if (p.version() == InstanceNormPattern::PatternVersion::Version_2)
+  {
+    origin_vec.push_back(luci::get_origin(p.pow));
+    origin_vec.push_back(luci::get_origin(p.div));
+  }
+  luci::add_origin(instance_norm, luci::composite_origin(origin_vec));
 
   replace(p.add_as_terminal).with(instance_norm);
 }
