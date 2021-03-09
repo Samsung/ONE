@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __LUCI_CIRCLE_METADATA_IMPORTER_H__
-#define __LUCI_CIRCLE_METADATA_IMPORTER_H__
+#ifndef __LUCI_CIRCLE_IMPORT_METADATA_H__
+#define __LUCI_CIRCLE_IMPORT_METADATA_H__
 
 #include "luci/Import/CircleReader.h"
 
@@ -53,4 +53,4 @@ private:
 
 } // namespace luci
 
-#endif // __LUCI_CIRCLE_METADATA_IMPORTER_H__
+#endif // __LUCI_CIRCLE_IMPORT_METADATA_H__
