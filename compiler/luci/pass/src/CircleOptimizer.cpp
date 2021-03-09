@@ -53,8 +53,6 @@
 #include "luci/Pass/TransformMinMaxToRelu6Pass.h"
 // TODO add more passes
 
-#include "luci/Pass/ShapeInferencePass.h"
-#include "luci/Pass/TypeInferencePass.h"
 #include "luci/Pass/CircleShapeInferencePass.h"
 #include "luci/Pass/CircleTypeInferencePass.h"
 
@@ -138,8 +136,6 @@ void CircleOptimizer::optimize(luci::Module *m) const
   luci::Phase phase;
 
   // Following passes are needed everytime when other passes create new node or modify some nodes.
-  phase.emplace_back(std::make_unique<luci::ShapeInferencePass>());
-  phase.emplace_back(std::make_unique<luci::TypeInferencePass>());
   phase.emplace_back(std::make_unique<luci::CircleShapeInferencePass>());
   phase.emplace_back(std::make_unique<luci::CircleTypeInferencePass>());
 
@@ -162,8 +158,6 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   phase.emplace_back(std::make_unique<logo::RemoveDeadNodeWithQueryPass>());
 
   // Following passes are needed everytime when other passes create new node or modify some nodes.
-  phase.emplace_back(std::make_unique<luci::TypeInferencePass>());
-  phase.emplace_back(std::make_unique<luci::ShapeInferencePass>());
   phase.emplace_back(std::make_unique<luci::CircleShapeInferencePass>());
   phase.emplace_back(std::make_unique<luci::CircleTypeInferencePass>());
 
@@ -376,8 +370,6 @@ void CircleOptimizer::quantize(loco::Graph *g) const
 
     phase.emplace_back(std::make_unique<luci::PropagateQuantParamPass>());
 
-    phase.emplace_back(std::make_unique<luci::ShapeInferencePass>());
-    phase.emplace_back(std::make_unique<luci::TypeInferencePass>());
     phase.emplace_back(std::make_unique<luci::CircleShapeInferencePass>());
     phase.emplace_back(std::make_unique<luci::CircleTypeInferencePass>());
     phase.emplace_back(std::make_unique<logo::RemoveDeadNodeWithQueryPass>());
@@ -412,8 +404,6 @@ void CircleOptimizer::quantize(loco::Graph *g) const
   logo::Phase phase;
 
   // Do Shape/Type inference
-  phase.emplace_back(std::make_unique<luci::ShapeInferencePass>());
-  phase.emplace_back(std::make_unique<luci::TypeInferencePass>());
   phase.emplace_back(std::make_unique<luci::CircleShapeInferencePass>());
   phase.emplace_back(std::make_unique<luci::CircleTypeInferencePass>());
 

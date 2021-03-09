@@ -53,8 +53,6 @@ std::unique_ptr<luci::Module> ReadModule(std::string &input_path)
     {
       logo::Phase phase;
 
-      phase.emplace_back(std::make_unique<luci::ShapeInferencePass>());
-      phase.emplace_back(std::make_unique<luci::TypeInferencePass>());
       phase.emplace_back(std::make_unique<luci::CircleShapeInferencePass>());
       phase.emplace_back(std::make_unique<luci::CircleTypeInferencePass>());
 
