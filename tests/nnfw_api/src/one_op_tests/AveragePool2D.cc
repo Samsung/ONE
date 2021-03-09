@@ -89,22 +89,22 @@ INSTANTIATE_TEST_CASE_P(
       {18, 18, 18, 18},
       {circle::TensorType::TensorType_UINT8, 1.2, 3}},
     // int8_t data
-    // TODO enable acl-neon backend
+    // TODO enable acl-cl, acl-neon backend
     AvgPool2DParam{uniformTCD<int8_t>({{2, -6, 4, -8}}, {{-2}}),
                    {1, 2, 2, 1},
                    {1, 1, 1, 1},
                    {2, 2, 2, 2},
                    {circle::TensorType::TensorType_INT8, 2.0, -1},
-                   {"acl_cl", "cpu"}},
+                   {"cpu"}},
     // int8_t data - large
-    // TODO enable acl-neon backend
+    // TODO enable acl-cl, acl-neon backend
     AvgPool2DParam{
       uniformTCD<int8_t>({{std::vector<int8_t>(18 * 36 * 2, -99)}}, {{-99, -99, -99, -99}}),
       {1, 18, 36, 2},
       {1, 1, 2, 2},
       {18, 18, 18, 18},
       {circle::TensorType::TensorType_INT8, 2.0, -1},
-      {"acl_cl", "cpu"}}));
+      {"cpu"}}));
 
 TEST_F(GenModelTest, neg_OneOp_AvgPool2D_3DInput)
 {

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2021 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -56,6 +56,7 @@
 #include <arm_neon.h>
 #include <cstddef>
 #include <cstdint>
+#include <mutex>
 
 using namespace arm_compute;
 
@@ -131,8 +132,10 @@ Status NEGEMMMatrixAccumulateBiasesKernel::validate(const ITensorInfo *accum,
   return Status{};
 }
 
+std::mutex m;
 void NEGEMMMatrixAccumulateBiasesKernel::run(const Window &window, const ThreadInfo &info)
 {
+  std::lock_guard<std::mutex> lock_guard(m);
   ARM_COMPUTE_UNUSED(info);
   ARM_COMPUTE_ERROR_ON_UNCONFIGURED_KERNEL(this);
   ARM_COMPUTE_ERROR_ON_INVALID_SUBWINDOW(INEKernel::window(), window);

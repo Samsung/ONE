@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2021 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,6 +38,9 @@
  * SOFTWARE.
  */
 #include "arm_compute/core/CL/kernels/CLMemsetKernel.h"
+
+#include "arm_compute/core/CL/CLKernelLibraryEx.h"
+#include "arm_compute/core/CL/CLKernelLibrary.h"
 #include "arm_compute/core/CL/ICLTensor.h"
 #include "arm_compute/core/Error.h"
 #include "arm_compute/core/utils/misc/ShapeCalculator.h"
@@ -56,6 +59,7 @@ void CLMemsetKernel::configure(ICLTensor *tensor, const PixelValue &constant_val
 void CLMemsetKernel::configure(const CLCompileContext &compile_context, ICLTensor *tensor,
                                const PixelValue &constant_value, Window *window)
 {
+  ARM_COMPUTE_UNUSED(compile_context);
   ARM_COMPUTE_ERROR_ON_NULLPTR(tensor);
   ARM_COMPUTE_ERROR_THROW_ON(validate(tensor->info(), constant_value, window));
 
@@ -93,7 +97,9 @@ void CLMemsetKernel::configure(const CLCompileContext &compile_context, ICLTenso
   build_opts.add_option_if(multi_access_x && remainder_x,
                            "-DLAST_ACCESSED_X=" + support::cpp11::to_string(
                                                     std::max<int>(output_width_x - vec_size_x, 0)));
-  _kernel = create_kernel(compile_context, "memset", build_opts.options());
+
+  _kernel =
+    static_cast<cl::Kernel>(CLKernelLibraryEx::get().create_kernel("memset", build_opts.options()));
 }
 
 Status CLMemsetKernel::validate(const ITensorInfo *tensor, const PixelValue &constant_value,

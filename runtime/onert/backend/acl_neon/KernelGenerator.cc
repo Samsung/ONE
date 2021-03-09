@@ -909,9 +909,10 @@ void KernelGenerator::visit(const ir::operation::ResizeBilinear &node)
 
   auto fn = acl_common::generateLayer<arm_compute::NEScale>(
     ifm_tensor->handle(), ofm_tensor->handle(),
-    ::arm_compute::ScaleKernelInfo{
-      ::arm_compute::InterpolationPolicy::BILINEAR, ::arm_compute::BorderMode::REPLICATE,
-      ::arm_compute::PixelValue(0.f), ::arm_compute::SamplingPolicy::TOP_LEFT});
+    ::arm_compute::ScaleKernelInfo{::arm_compute::InterpolationPolicy::BILINEAR,
+                                   ::arm_compute::BorderMode::REPLICATE,
+                                   ::arm_compute::PixelValue(0.f),
+                                   ::arm_compute::SamplingPolicy::TOP_LEFT, false /*use padding*/});
 
   _return_fn = asAclFunction(std::move(fn));
 }
@@ -980,24 +981,10 @@ void KernelGenerator::visit(const ir::operation::Softmax &node)
   auto output_tensor = _tensor_reg->getAclTensor(output_index);
   auto input_tensor = _tensor_reg->getAclTensor(input_index);
 
-  // Disable applied dim_correction
-  if (static_cast<size_t>(input_tensor->getShape().rank()) !=
-      input_tensor->info()->num_dimensions())
-  {
-    // This means that high dimension's value is 1 and input tensor is applied dim_correction
-    acl_common::disableDimCorrection(input_tensor);
-  }
-
   // NOTE NESoftmaxLayer's default axis is -1
   auto fn = acl_common::generateLayer<arm_compute::NESoftmaxLayer>(
     _tensor_builder->acl_tensor_manager()->internal_buffer_manager(), input_tensor->handle(),
-    output_tensor->handle(), beta, 1);
-
-  // Revert disabling applied dim_correction
-  if (input_tensor->getShape().dim(0) == 1)
-  {
-    acl_common::disableDimCorrection(input_tensor);
-  }
+    output_tensor->handle(), beta);
 
   _return_fn = asAclFunction(std::move(fn));
 }

@@ -67,7 +67,7 @@ public:
   /** Set the input and output tensors.
    *
    * @param[in]  input  Weights tensor. The weights must be 2 dimensional. Data types supported:
-   * QASYMM8/QASYMM8_SIGNED/F16/F32.
+   * QASYMM8/F16/F32.
    * @param[out] output Destination tensor which stores the transposed input tensor. Data type
    * supported: Same as @p input.
    */
@@ -76,7 +76,7 @@ public:
    * CLFullyConnectedLayerReshapeWeightsEx
    *
    * @param[in] input  Weights tensor. The weights must be 2 dimensional. Data types supported:
-   * QASYMM8/QASYMM8_SIGNED/F16/F32.
+   * QASYMM8/F16/F32.
    * @param[in] output Destination tensor which stores the transposed input tensor. Data type
    * supported: Same as @p input.
    *
@@ -126,7 +126,7 @@ private:
  * OpenCL kernels:
  *
  *  -# @ref CLIm2ColKernel (called when the input comes from a convolutional layer)
- *  -# @ref CLFullyConnectedLayerReshapeWeights (if @p are_weights_reshaped is set to false and
+ *  -# @ref CLFullyConnectedLayerReshapeWeightsEx (if @p are_weights_reshaped is set to false and
  * transpose_weights is set to true ) (called once)
  *  -# @ref CLGEMMMatrixMultiplyKernel or @ref CLGEMMLowpMatrixMultiplyCore (if quantized
  * asymmetric)
@@ -149,7 +149,7 @@ public:
   CLFullyConnectedLayerEx &operator=(CLFullyConnectedLayerEx &&) = default;
   /** Set the input and output tensors.
    *
-   * @param[in]  input   Source tensor. Data type supported: QASYMM8/QASYMM8_SIGNED/F16/F32.
+   * @param[in]  input   Source tensor. Data type supported: QASYMM8/F16/F32.
    * @param[in]  weights Weights tensor. The weights must be 2 dimensional.
    *                     If this function is called after a Convolution Layer, the (transposed)
    * weights will have as many rows as the product of the first 3 input's dimensions. If it is
@@ -169,7 +169,7 @@ public:
   /** Static function to check if given info will lead to a valid configuration of @ref
    * CLFullyConnectedLayer
    *
-   * @param[in]  input   Source tensor info. Data type supported: QASYMM8/QASYMM8_SIGNED/F16/F32.
+   * @param[in]  input   Source tensor info. Data type supported: QASYMM8/F16/F32.
    * @param[in]  weights Weights tensor info. The weights must be 2 dimensional.
    *                     If this function is called after a Convolution Layer, the (transposed)
    * weights will have as many rows as the product of the first 3 input's dimensions. If it is

@@ -51,6 +51,7 @@
 #include "arm_compute/runtime/NEON/functions/NEGEMMLowpOutputStage.h"
 #include "arm_compute/runtime/MemoryGroup.h"
 #include "arm_compute/runtime/Tensor.h"
+#include "arm_compute/core/NEON/kernels/NEGEMMMatrixAccumulateBiasesKernel.h"
 #include "src/core/NEON/kernels/NETransposeKernel.h"
 
 namespace arm_compute
@@ -78,11 +79,11 @@ public:
   /** Prevent instances of this class from being copied (As this class contains pointers) */
   NEFullyConnectedLayerEx(const NEFullyConnectedLayerEx &) = delete;
   /** Default move constructor */
-  NEFullyConnectedLayerEx(NEFullyConnectedLayerEx &&) = default;
+  NEFullyConnectedLayerEx(NEFullyConnectedLayerEx &&) = delete;
   /** Prevent instances of this class from being copied (As this class contains pointers) */
   NEFullyConnectedLayerEx &operator=(const NEFullyConnectedLayerEx &) = delete;
   /** Default move assignment operator */
-  NEFullyConnectedLayerEx &operator=(NEFullyConnectedLayerEx &&) = default;
+  NEFullyConnectedLayerEx &operator=(NEFullyConnectedLayerEx &&) = delete;
   /** Set the input and output tensors.
    *
    * @param[in]  input   Source tensor. Data type supported: QASYMM8/F16/F32.
@@ -146,6 +147,7 @@ private:
   NEGEMM _mm_gemm;
   NEGEMMLowpMatrixMultiplyCore _mm_gemmlowp;
   NEGEMMLowpQuantizeDownInt32ToUint8ScaleByFixedPoint _gemmlowp_output_stage;
+  NEGEMMMatrixAccumulateBiasesKernel _accumulate_biases_kernel;
   Tensor _flatten_output;
   Tensor _gemmlowp_output;
   Tensor _converted_weights_output;

@@ -87,9 +87,10 @@ Status validate_mm(const ITensorInfo &input, const ITensorInfo &weights, const I
 NEFullyConnectedLayerEx::NEFullyConnectedLayerEx(std::shared_ptr<IMemoryManager> memory_manager)
   : _memory_group(std::move(memory_manager)), _flatten_kernel(), _convert_weights(),
     _reshape_weights_function(), _mm_gemm(), _mm_gemmlowp(), _gemmlowp_output_stage(),
-    _flatten_output(), _gemmlowp_output(), _converted_weights_output(), _reshape_weights_output(),
-    _original_weights(nullptr), _are_weights_converted(true), _are_weights_reshaped(false),
-    _is_fc_after_conv(false), _accumulate_biases(false), _is_quantized(false), _is_prepared(false)
+    _accumulate_biases_kernel(), _flatten_output(), _gemmlowp_output(), _converted_weights_output(),
+    _reshape_weights_output(), _original_weights(nullptr), _are_weights_converted(true),
+    _are_weights_reshaped(false), _is_fc_after_conv(false), _accumulate_biases(false),
+    _is_quantized(false), _is_prepared(false)
 {
 }
 
@@ -166,7 +167,7 @@ void NEFullyConnectedLayerEx::configure(const ITensor *input, const ITensor *wei
 {
   // Perform validate step
   ARM_COMPUTE_ERROR_ON_NULLPTR(input, weights, output);
-  ARM_COMPUTE_ERROR_THROW_ON(NEFullyConnectedLayer::validate(
+  ARM_COMPUTE_ERROR_THROW_ON(NEFullyConnectedLayerEx::validate(
     input->info(), weights->info(), biases != nullptr ? biases->info() : nullptr, output->info(),
     fc_info));
 
@@ -190,7 +191,7 @@ void NEFullyConnectedLayerEx::configure(const ITensor *input, const ITensor *wei
     _accumulate_biases = true;
 
     // Configure accumulate biases kernel
-    // _accumulate_biases_kernel.configure(output, biases);
+    _accumulate_biases_kernel.configure(output, biases);
   }
 
   // With the Fully Connected layer we can have 4 different cases:
@@ -296,7 +297,7 @@ Status NEFullyConnectedLayerEx::validate(const ITensorInfo *input, const ITensor
   if (biases != nullptr && !is_quantized)
   {
     ARM_COMPUTE_RETURN_ERROR_ON_MISMATCHING_DATA_TYPES(input, biases);
-    // ARM_COMPUTE_RETURN_ON_ERROR(NEGEMMMatrixAccumulateBiasesKernel::validate(output, biases));
+    ARM_COMPUTE_RETURN_ON_ERROR(NEGEMMMatrixAccumulateBiasesKernel::validate(output, biases));
   }
 
   // With the Fully Connected layer we can have 4 different cases:
@@ -373,9 +374,13 @@ void NEFullyConnectedLayerEx::run()
   if (!_is_prepared)
   {
     if (!_are_weights_reshaped)
+    {
       _reshape_weights_output.allocator()->allocate();
+    }
     if (!_are_weights_converted)
+    {
       _converted_weights_output.allocator()->allocate();
+    }
     _is_prepared = true;
   }
 
@@ -406,7 +411,6 @@ void NEFullyConnectedLayerEx::run()
   // Linearize input if it comes from a convolutional layer
   if (_is_fc_after_conv)
   {
-    // NEScheduler::get().schedule(&_flatten_kernel, Window::DimY);
     _flatten_kernel.run();
   }
 
@@ -429,7 +433,7 @@ void NEFullyConnectedLayerEx::run()
   {
     if (_accumulate_biases)
     {
-      // NEScheduler::get().schedule(&_accumulate_biases_kernel, Window::DimY);
+      NEScheduler::get().schedule(&_accumulate_biases_kernel, Window::DimY);
     }
   }
 }
@@ -437,78 +441,57 @@ void NEFullyConnectedLayerEx::run()
 void NEFullyConnectedLayerEx::prepare()
 {
 #if 0 // TODO Remove this block
-  if(!_is_prepared)
+  if (!_is_prepared)
+  {
+    ARM_COMPUTE_ERROR_ON(!_original_weights->is_used());
+
+    auto release_unused = [](Tensor *w) {
+      if (!w->is_used())
+      {
+        w->allocator()->free();
+      }
+    };
+
+    // Pointer to current weights
+    const ITensor *cur_weights = _original_weights;
+
+    // Reshape of the weights (happens only once)
+    if (!_are_weights_reshaped)
     {
-        if(!_weights_manager)
-        {
-            ARM_COMPUTE_ERROR_ON(!_original_weights->is_used());
-        }
+      // Run reshape weights kernel and mark weights as unused
+      _reshape_weights_output.allocator()->allocate();
+      _reshape_weights_function.run();
 
-        auto release_unused = [](Tensor * w)
-        {
-            if(!w->is_used())
-            {
-                w->allocator()->free();
-            }
-        };
-
-        // Pointer to current weights
-        const ITensor *cur_weights = _original_weights;
-
-        // Reshape of the weights (happens only once)
-        if(!_are_weights_reshaped)
-        {
-            if(_weights_manager && _weights_manager->are_weights_managed(_original_weights))
-            {
-                cur_weights = _weights_manager->run(cur_weights, &_reshape_weights_managed_function);
-            }
-            else
-            {
-                // Reshape of the weights (happens only once)
-                if(!_are_weights_reshaped)
-                {
-                    // Run reshape weights kernel and mark weights as unused
-                    _reshape_weights_output.allocator()->allocate();
-                    _reshape_weights_function.run();
-                }
-                cur_weights->mark_as_unused();
-                cur_weights = &_reshape_weights_output;
-            }
-            _are_weights_reshaped = true;
-        }
-
-        // Convert weights if needed (happens only once)
-        if(!_are_weights_converted)
-        {
-            if(_weights_manager && _weights_manager->are_weights_managed(cur_weights))
-            {
-                _weights_manager->run(cur_weights, &_convert_weights_managed);
-            }
-            else
-            {
-                _converted_weights_output.allocator()->allocate();
-                _convert_weights.run();
-                cur_weights->mark_as_unused();
-            }
-
-            _are_weights_converted = true;
-        }
-
-        // Release reshaped weights if unused
-        release_unused(&_reshape_weights_output);
-
-        // Prepare GEMM prepare and release unused weights
-        if(!_is_quantized)
-        {
-            _mm_gemm.prepare();
-        }
-
-        // Release converted weights if unused
-        release_unused(&_reshape_weights_output);
-        release_unused(&_converted_weights_output);
-
-        _is_prepared = true;
+      cur_weights->mark_as_unused();
+      cur_weights = &_reshape_weights_output;
+      _are_weights_reshaped = true;
     }
+
+    // Convert weights if needed (happens only once)
+    if (!_are_weights_converted)
+    {
+      _converted_weights_output.allocator()->allocate();
+      _convert_weights.run();
+
+      cur_weights->mark_as_unused();
+      _are_weights_converted = true;
+    }
+
+    // Release reshaped weights if unused
+    release_unused(&_reshape_weights_output);
+
+    // Prepare GEMM prepare and release unused weights
+    if (!_is_quantized)
+    {
+      _mm_gemm.prepare();
+    }
+
+    // Release converted weights if unused
+    release_unused(&_reshape_weights_output);
+    release_unused(&_converted_weights_output);
+
+    _is_prepared = true;
+  }
 #endif
 }
 } // namespace arm_compute

@@ -1565,7 +1565,7 @@ void KernelGenerator::visit(const ir::operation::Pad &node)
   }
 
   auto fn =
-    acl_common::generateLayer<arm_compute::CLPadLayer>(input, output, padding_list, pixel_value);
+    acl_common::generateLayer<arm_compute::CLPadLayerEx>(input, output, padding_list, pixel_value);
 
   // NOTE Do not revert disabling applied dim_correction for 4D.
   // It would produce a mistach of result by incorrect offset_first_element in

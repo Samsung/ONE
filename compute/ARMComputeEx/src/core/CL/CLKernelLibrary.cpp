@@ -66,12 +66,16 @@ const std::map<std::string, std::string> CLKernelLibraryEx::_kernel_program_map 
   {"gather_ex_1d", "gather_ex.cl"},
   {"gather_ex_1d_out", "gather_ex.cl"},
   {"gemmlowp_mm_midgard_ex", "gemmlowp_ex.cl"},
+  {"gemm_accumulate_biases", "gemm.cl"},
   {"hashtable_lookup", "hashtable_lookup.cl"},
   {"instance_normalization_ex", "instance_normalization_ex.cl"},
+  {"memset", "memset.cl"},
   {"multiply_scale_factor", "multiply_scale_factor.cl"},
   {"neg_tensor", "neg_tensor.cl"},
   {"one_hot", "one_hot.cl"},
   {"one_hot_only_on_value", "one_hot.cl"},
+  {"pad_layer_constant", "pad_layer.cl"},
+  {"pad_layer_symmetric_reflect", "pad_layer.cl"},
   {"quantization_symm8", "quantization_symm8.cl"},
   {"reduce_min_max", "reduce_operation.cl"},
   {"reduce_sum_mean", "reduce_operation.cl"},
@@ -156,6 +160,10 @@ const std::map<std::string, std::string> CLKernelLibraryEx::_program_source_map 
   {
     "one_hot.cl",
 #include "./cl_kernels/one_hot.clembed"
+  },
+  {
+    "pad_layer.cl",
+#include "./cl_kernels/pad_layer.clembed"
   },
   {
     "quantization_symm8.cl",

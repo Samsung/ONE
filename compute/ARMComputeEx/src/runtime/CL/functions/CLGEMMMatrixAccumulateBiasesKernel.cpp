@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2021 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,8 +39,9 @@
 
 #include "arm_compute/core/CL/kernels/CLGEMMMatrixAccumulateBiasesKernel.h"
 
-#include "arm_compute/core/CL/CLHelpers.h"
 #include "arm_compute/core/CL/CLKernelLibrary.h"
+#include "arm_compute/core/CL/CLKernelLibraryEx.h"
+#include "arm_compute/core/CL/CLHelpers.h"
 #include "arm_compute/core/CL/ICLTensor.h"
 #include "arm_compute/core/CL/OpenCL.h"
 #include "arm_compute/core/Error.h"
@@ -106,6 +107,7 @@ void CLGEMMMatrixAccumulateBiasesKernel::configure(ICLTensor *accum, const ICLTe
 void CLGEMMMatrixAccumulateBiasesKernel::configure(const CLCompileContext &compile_context,
                                                    ICLTensor *accum, const ICLTensor *biases)
 {
+  ARM_COMPUTE_UNUSED(compile_context);
   // Perform validate step
   ARM_COMPUTE_ERROR_ON_NULLPTR(accum, biases);
   ARM_COMPUTE_ERROR_THROW_ON(validate_arguments(accum->info(), biases->info()));
@@ -129,7 +131,8 @@ void CLGEMMMatrixAccumulateBiasesKernel::configure(const CLCompileContext &compi
   build_opts.add_option("-DVECTOR_SIZE=" + support::cpp11::to_string(vector_size));
 
   // Create kernel
-  _kernel = create_kernel(compile_context, "gemm_accumulate_biases", build_opts.options());
+  _kernel = static_cast<cl::Kernel>(
+    CLKernelLibraryEx::get().create_kernel("gemm_accumulate_biases", build_opts.options()));
 }
 
 Status CLGEMMMatrixAccumulateBiasesKernel::validate(const ITensorInfo *accum,

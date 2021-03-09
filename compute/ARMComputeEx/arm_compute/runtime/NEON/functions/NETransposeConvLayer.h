@@ -102,9 +102,9 @@ public:
   /** Prevent instances of this class from being copied (As this class contains pointers) */
   NETransposeConvLayer &operator=(const NETransposeConvLayer &) = delete;
   /** Allow instances of this class to be moved */
-  NETransposeConvLayer(NETransposeConvLayer &&) = default;
+  NETransposeConvLayer(NETransposeConvLayer &&) = delete;
   /** Allow instances of this class to be moved */
-  NETransposeConvLayer &operator=(NETransposeConvLayer &&) = default;
+  NETransposeConvLayer &operator=(NETransposeConvLayer &&) = delete;
   /** Default destructor */
   virtual ~NETransposeConvLayer() = default;
 
