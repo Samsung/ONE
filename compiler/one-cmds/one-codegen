@@ -20,6 +20,7 @@
 # limitations under the License.
 
 import argparse
+import copy
 import itertools
 import os
 import subprocess
@@ -71,14 +72,15 @@ def _verify_arg(parser, args):
 def _parse_arg(parser):
     codegen_args = []
     backend_args = []
+    argv = copy.deepcopy(sys.argv)
     # delete file name
-    del sys.argv[0]
+    del argv[0]
     # split by '--'
-    argv = [list(y) for x, y in itertools.groupby(sys.argv, lambda z: z == '--') if not x]
+    args = [list(y) for x, y in itertools.groupby(argv, lambda z: z == '--') if not x]
     if len(argv) >= 1:
-        codegen_args = argv[0]
+        codegen_args = args[0]
     if len(argv) == 2:
-        backend_args = argv[1]
+        backend_args = args[1]
     codegen_args = parser.parse_args(codegen_args)
     # print version
     if codegen_args.version:
