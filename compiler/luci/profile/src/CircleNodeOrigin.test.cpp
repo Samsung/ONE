@@ -102,22 +102,7 @@ TEST(LuciCircleNodeOrigin, simple_composite_origin_with_vector)
   ASSERT_EQ(true, sub_origin_passed);
 }
 
-TEST(LuciCircleNodeOrigin, get_origin_NEG)
-{
-  auto g = loco::make_graph();
-  auto add = g->nodes()->create<luci::CircleAdd>();
-
-  ASSERT_FALSE(has_origin(add));
-
-  ASSERT_ANY_THROW(get_origin(add));
-}
-
 TEST(LuciCircleNodeOrigin, composite_origin_empty_ctor_NEG)
 {
   ASSERT_ANY_THROW(luci::composite_origin({}));
-}
-
-TEST(LuciCircleNodeOrigin, composite_origin_null_ctor_NEG)
-{
-  ASSERT_ANY_THROW(luci::composite_origin({nullptr}));
 }
