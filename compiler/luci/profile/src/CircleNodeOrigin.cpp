@@ -129,7 +129,7 @@ composite_origin(const std::initializer_list<std::shared_ptr<CircleNodeOrigin>> 
 }
 
 std::shared_ptr<CircleNodeOrigin>
-composite_origin(const std::vector<std::shared_ptr<CircleNodeOrigin>> origins)
+composite_origin(const std::vector<std::shared_ptr<CircleNodeOrigin>> &origins)
 {
   return std::make_shared<CompositeOrigin>(origins);
 }
