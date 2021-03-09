@@ -29,27 +29,25 @@ void CopyInputInitializer::run(::tflite::Interpreter &interp)
   for (const auto &tensor_idx : interp.inputs())
   {
     TfLiteTensor *tensor = interp.tensor(tensor_idx);
-    if (tensor->type == kTfLiteInt32)
+    switch (tensor->type)
     {
-      setValue<int32_t>(interp, tensor_idx);
-    }
-    else if (tensor->type == kTfLiteUInt8)
-    {
-      setValue<uint8_t>(interp, tensor_idx);
-    }
-    else if (tensor->type == kTfLiteInt8)
-    {
-      setValue<int8_t>(interp, tensor_idx);
-    }
-    else if (tensor->type == kTfLiteBool)
-    {
-      setValue<bool>(interp, tensor_idx);
-    }
-    else
-    {
-      assert(tensor->type == kTfLiteFloat32);
-
-      setValue<float>(interp, tensor_idx);
+      case kTfLiteInt32:
+        setValue<int32_t>(interp, tensor_idx);
+        break;
+      case kTfLiteUInt8:
+        setValue<uint8_t>(interp, tensor_idx);
+        break;
+      case kTfLiteInt8:
+        setValue<int8_t>(interp, tensor_idx);
+        break;
+      case kTfLiteBool:
+        setValue<bool>(interp, tensor_idx);
+        break;
+      case kTfLiteFloat32:
+        setValue<float>(interp, tensor_idx);
+        break;
+      default:
+        throw std::runtime_error{"Not supported input type"};
     }
   }
 }
