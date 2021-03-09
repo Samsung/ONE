@@ -19,6 +19,7 @@
 #include "helpers/NodeFiller.h"
 
 #include <luci/IR/CircleNodes.h>
+#include <luci/Profile/CircleNodeOrigin.h>
 
 namespace
 {
@@ -162,6 +163,9 @@ bool fused_batch_norm_with_tconv(luci::CircleAdd *add)
   fused_tconv->stride()->h(tconv->stride()->h());
   fused_tconv->stride()->w(tconv->stride()->w());
   fused_tconv->name(name + "/TransposeConv");
+  luci::add_origin(fused_tconv,
+                   luci::composite_origin(
+                     {luci::get_origin(add), luci::get_origin(mul), luci::get_origin(tconv)}));
 
   if (add->fusedActivationFunction() == luci::FusedActFunc::RELU6)
   {

@@ -17,6 +17,7 @@
 #include "luci/Pass/RemoveRedundantTransposePass.h"
 
 #include <luci/IR/CircleNodes.h>
+#include <luci/Profile/CircleNodeOrigin.h>
 
 namespace
 {
@@ -80,6 +81,7 @@ bool remove_consecutive_transpose_function(luci::CircleTranspose *target_node)
     new_transpose_node->a(main_node);
     new_transpose_node->perm(new_const_node);
     new_transpose_node->name(name + "/Transpose");
+    luci::add_origin(new_transpose_node, luci::get_origin(target_node));
 
     replace(target_node).with(new_transpose_node);
   }

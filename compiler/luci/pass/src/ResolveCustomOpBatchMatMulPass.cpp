@@ -19,6 +19,7 @@
 #include "flatbuffers/flexbuffers.h"
 
 #include <luci/IR/CircleNodes.h>
+#include <luci/Profile/CircleNodeOrigin.h>
 
 namespace
 {
@@ -43,6 +44,7 @@ bool resolve_custom_op(luci::CircleCustom *cop)
     batch_matmul->adj_x(map["adj_x"].AsBool());
     batch_matmul->adj_y(map["adj_y"].AsBool());
     batch_matmul->name(name + "/BatchMatMul");
+    luci::add_origin(batch_matmul, luci::get_origin(cop));
 
     auto customOut = loco::succs(cop);
     assert(customOut.size() == 1);

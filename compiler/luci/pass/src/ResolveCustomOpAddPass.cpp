@@ -20,6 +20,7 @@
 
 #include <luci/IR/CircleNodes.h>
 #include <luci/IR/AttrFusedActFunc.h>
+#include <luci/Profile/CircleNodeOrigin.h>
 
 namespace
 {
@@ -75,6 +76,8 @@ bool resolve_with_BroadcastTo(luci::CircleCustom *addv2)
   add->x(addv2->inputs(1 - broadcastTo_idx));
   add->y(broadcastTo->inputs(0));
   add->name(name + "/Add");
+  luci::add_origin(
+    add, luci::composite_origin({luci::get_origin(broadcastTo), luci::get_origin(addv2)}));
 
   auto customOut = loco::succs(addv2);
   assert(customOut.size() == 1);
@@ -122,6 +125,7 @@ bool resolve_custom_op(luci::CircleCustom *addv2)
   add->x(addv2->inputs(0));
   add->y(addv2->inputs(1));
   add->name(name + "/Add");
+  luci::add_origin(add, luci::get_origin(addv2));
 
   auto customOut = loco::succs(addv2);
   assert(customOut.size() == 1);

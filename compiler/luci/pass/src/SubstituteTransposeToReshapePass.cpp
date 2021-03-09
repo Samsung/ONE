@@ -17,6 +17,7 @@
 #include "luci/Pass/SubstituteTransposeToReshapePass.h"
 
 #include <luci/IR/CircleNodes.h>
+#include <luci/Profile/CircleNodeOrigin.h>
 
 namespace
 {
@@ -87,6 +88,7 @@ bool substitute_transpose_to_reshape(luci::CircleTranspose *node)
   new_reshape_node->tensor(input_node);
   new_reshape_node->shape(new_const_node);
   new_reshape_node->name(name + "/Reshape");
+  luci::add_origin(new_reshape_node, luci::get_origin(node));
   new_const_node->name(name + "/Reshape/shape");
 
   replace(node).with(new_reshape_node);

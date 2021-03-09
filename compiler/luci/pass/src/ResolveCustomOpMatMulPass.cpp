@@ -20,6 +20,7 @@
 #include <loco/IR/DataTypeTraits.h>
 
 #include <luci/IR/CircleNodes.h>
+#include <luci/Profile/CircleNodeOrigin.h>
 
 #include <loco.h>
 #include <oops/InternalExn.h>
@@ -130,6 +131,7 @@ bool resolve_matmul(luci::CircleCustom *cop)
     transpose_node->a(lhs);
     transpose_node->perm(perm_node);
     transpose_node->name(name + "/lhs/Transpose");
+    luci::add_origin(transpose_node, luci::get_origin(cop));
     lhs = transpose_node;
   }
 
@@ -157,6 +159,7 @@ bool resolve_matmul(luci::CircleCustom *cop)
   fc_node->bias(empty_bias);
   fc_node->fusedActivationFunction(luci::FusedActFunc::NONE);
   fc_node->name(name + "/FullyConnected");
+  luci::add_origin(fc_node, luci::get_origin(cop));
 
   auto customOut = loco::succs(cop);
   assert(customOut.size() == 1);

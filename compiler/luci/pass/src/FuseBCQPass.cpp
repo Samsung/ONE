@@ -17,6 +17,7 @@
 #include "luci/Pass/FuseBCQPass.h"
 
 #include <luci/IR/CircleNodes.h>
+#include <luci/Profile/CircleNodeOrigin.h>
 #include <luci/Log.h>
 
 #include <cassert>
@@ -160,6 +161,7 @@ public:
           assert(name.length() > 0);
 
           auto bcq_gather = g->nodes()->create<luci::CircleBCQGather>();
+          luci::add_origin(bcq_gather, luci::composite_origin({luci::get_origin(gather)}));
 
           bcq_gather->op_version(1);
           bcq_gather->input_scales(alpha(g, prefix));
@@ -195,6 +197,7 @@ public:
             perm->name(name + "/Transpose/perm");
 
             auto output_transpose = g->nodes()->create<luci::CircleTranspose>();
+            luci::add_origin(output_transpose, luci::composite_origin({luci::get_origin(gather)}));
             output_transpose->a(bcq_gather);
             output_transpose->perm(perm);
             output_transpose->name(name + "/Transpose");
@@ -219,6 +222,7 @@ public:
           assert(name.length() > 0);
 
           auto bcq_fc = g->nodes()->create<luci::CircleBCQFullyConnected>();
+          luci::add_origin(bcq_fc, luci::composite_origin({luci::get_origin(fully_connected)}));
 
           bcq_fc->op_version(1);
           bcq_fc->weights_scales(alpha(g, prefix));
@@ -247,6 +251,7 @@ public:
             new_shape->name(name + "/Reshape/shape");
 
             auto reshape = g->nodes()->create<luci::CircleReshape>();
+            luci::add_origin(reshape, luci::composite_origin({luci::get_origin(fully_connected)}));
             reshape->tensor(original_input);
             reshape->shape(new_shape);
             reshape->name(name + "/Reshape");
@@ -268,6 +273,8 @@ public:
           perm->name(name + "/Transpose/perm");
 
           auto input_transpose = g->nodes()->create<luci::CircleTranspose>();
+          luci::add_origin(input_transpose,
+                           luci::composite_origin({luci::get_origin(fully_connected)}));
           input_transpose->a(bcq_input);
           input_transpose->perm(perm);
           input_transpose->name(name + "_input/Transpose");
@@ -275,6 +282,8 @@ public:
           bcq_fc->input(input_transpose);
 
           auto output_transpose = g->nodes()->create<luci::CircleTranspose>();
+          luci::add_origin(output_transpose,
+                           luci::composite_origin({luci::get_origin(fully_connected)}));
           output_transpose->a(bcq_fc);
           output_transpose->perm(perm);
           output_transpose->name(name + "_output/Transpose");
@@ -306,11 +315,14 @@ public:
           perm->name(name + "/Transpose/perm");
 
           auto input_transpose = g->nodes()->create<luci::CircleTranspose>();
+          luci::add_origin(input_transpose,
+                           luci::composite_origin({luci::get_origin(fully_connected)}));
           input_transpose->a(fully_connected->weights());
           input_transpose->perm(perm);
           input_transpose->name(name + "/Transpose");
 
           auto bcq_fc = g->nodes()->create<luci::CircleBCQFullyConnected>();
+          luci::add_origin(bcq_fc, luci::composite_origin({luci::get_origin(fully_connected)}));
 
           assert(dynamic_cast<luci::CircleOutputExclude *>(fully_connected->bias()) != nullptr);
 
