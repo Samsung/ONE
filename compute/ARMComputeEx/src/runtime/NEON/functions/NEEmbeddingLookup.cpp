@@ -41,13 +41,12 @@
 #include "arm_compute/runtime/NEON/functions/NEEmbeddingLookup.h"
 
 #include "arm_compute/core/NEON/kernels/NEEmbeddingLookupKernel.h"
-#include "support/MemorySupport.h"
 
 using namespace arm_compute;
 
 void NEEmbeddingLookup::configure(const ITensor *input, ITensor *output, const ITensor *lookups)
 {
-  auto k = support::cpp14::make_unique<NEEmbeddingLookupKernel>();
+  auto k = std::make_unique<NEEmbeddingLookupKernel>();
   k->configure(input, output, lookups);
   _kernel = std::move(k);
 }

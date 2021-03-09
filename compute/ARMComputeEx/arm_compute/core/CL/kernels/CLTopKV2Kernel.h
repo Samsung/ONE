@@ -47,7 +47,7 @@
 #ifndef __ARM_COMPUTE_CLTOPKV2KERNEL_H__
 #define __ARM_COMPUTE_CLTOPKV2KERNEL_H__
 
-#include "arm_compute/core/CL/ICLKernel.h"
+#include "src/core/CL/ICLKernel.h"
 
 // these parameters can be changed
 #define _ITEMS 16                          // number of items in a group

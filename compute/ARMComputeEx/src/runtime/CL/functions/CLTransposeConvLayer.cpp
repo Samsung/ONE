@@ -79,7 +79,7 @@ void CLTransposeConvLayer::configure(const CLCompileContext &compile_context, IC
   {
     case DeconvolutionMethod::DIRECT:
     {
-      auto f = arm_compute::support::cpp14::make_unique<CLDirectTransposeConvLayer>();
+      auto f = std::make_unique<CLDirectTransposeConvLayer>();
       f->configure(compile_context, input, weights, bias, output, deconv_info, invalid_right,
                    invalid_bottom, weights_info);
       _function = std::move(f);
@@ -87,7 +87,7 @@ void CLTransposeConvLayer::configure(const CLCompileContext &compile_context, IC
     }
     case DeconvolutionMethod::GEMM:
     {
-      auto f = arm_compute::support::cpp14::make_unique<CLGEMMDeconvolutionLayer>(_memory_manager);
+      auto f = std::make_unique<CLGEMMDeconvolutionLayer>(_memory_manager);
       f->configure(compile_context, input, weights, bias, output, deconv_info);
       _function = std::move(f);
       break;

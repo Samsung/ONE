@@ -40,13 +40,12 @@
 #include "arm_compute/runtime/NEON/functions/NECastBool.h"
 
 #include "arm_compute/core/NEON/kernels/NECastBoolKernel.h"
-#include "support/MemorySupport.h"
 
 using namespace arm_compute;
 
 void NECastBool::configure(const ITensor *input, ITensor *output)
 {
-  auto k = arm_compute::support::cpp14::make_unique<NECastBoolKernel>();
+  auto k = std::make_unique<NECastBoolKernel>();
   k->configure(input, output);
   _kernel = std::move(k);
 }

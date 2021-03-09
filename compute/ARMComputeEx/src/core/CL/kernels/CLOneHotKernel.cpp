@@ -42,6 +42,10 @@
 #include "arm_compute/core/CL/CLKernelLibraryEx.h"
 #include "arm_compute/core/Error.h"
 #include "arm_compute/core/utils/misc/ShapeCalculatorEx.h"
+
+#include "src/core/helpers/WindowHelpers.h"
+#include "src/core/helpers/AutoConfiguration.h"
+
 #include "support/StringSupport.h"
 #include <string>
 namespace arm_compute

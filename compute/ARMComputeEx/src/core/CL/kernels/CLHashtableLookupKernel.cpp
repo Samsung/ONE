@@ -43,6 +43,7 @@
 #include "arm_compute/core/CL/CLHelpers.h"
 #include "arm_compute/core/CL/CLKernelLibraryEx.h"
 #include "arm_compute/core/CL/ICLTensor.h"
+#include "src/core/helpers/WindowHelpers.h"
 #include "support/StringSupport.h"
 
 using namespace arm_compute;
@@ -111,7 +112,7 @@ void CLHashtableLookupKernel::configure(const ICLTensor *lookups, const ICLTenso
   _hits = hits;
 
   // Make _lookup_indices tensor
-  _lookup_indices = support::cpp14::make_unique<CLTensor>();
+  _lookup_indices = std::make_unique<CLTensor>();
   _lookup_indices->allocator()->init(
     TensorInfo(lookups->info()->tensor_shape(), lookups->info()->num_channels(), DataType::S32));
   _lookup_indices->allocator()->allocate();

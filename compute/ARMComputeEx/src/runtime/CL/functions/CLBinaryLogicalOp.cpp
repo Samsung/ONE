@@ -42,13 +42,14 @@
 
 #include "arm_compute/core/CL/kernels/CLBinaryLogicalOpKernel.h"
 #include "arm_compute/core/CL/ICLTensor.h"
+#include "src/core/CL/kernels/CLFillBorderKernel.h"
 
 using namespace arm_compute;
 
 void CLBinaryLogicalOp::configure(ICLTensor *input1, ICLTensor *input2, ICLTensor *output,
                                   BinaryLogicalOperation op)
 {
-  auto k = support::cpp14::make_unique<CLBinaryLogicalOpKernel>();
+  auto k = std::make_unique<CLBinaryLogicalOpKernel>();
   k->configure(input1, input2, output, op);
   _kernel = std::move(k);
 
@@ -57,7 +58,7 @@ void CLBinaryLogicalOp::configure(ICLTensor *input1, ICLTensor *input2, ICLTenso
     ICLTensor *broadcasted_info = (input1->info()->dimension(0) == 1) ? input1 : input2;
     if (broadcasted_info->info()->dimension(0) == 1)
     {
-      _border_handler.configure(broadcasted_info, _kernel->border_size(), BorderMode::REPLICATE);
+      _border_handler->configure(broadcasted_info, _kernel->border_size(), BorderMode::REPLICATE);
     }
   }
 }

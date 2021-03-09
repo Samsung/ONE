@@ -44,11 +44,11 @@
 #include "arm_compute/core/NEON/kernels/NEQuantizationSymmetricKernel.h"
 #include "arm_compute/core/NEON/kernels/NEGEMMMatrixAccumulateBiasesKernel.h"
 #include "arm_compute/core/NEON/kernels/NEMuliplyScaleFactorKernel.h"
-#include "arm_compute/core/NEON/kernels/NETransposeKernel.h"
 #include "arm_compute/runtime/MemoryGroup.h"
 #include "arm_compute/runtime/NEON/functions/NEGEMMLowpMatrixMultiplyCore.h"
 #include "arm_compute/runtime/NEON/INESimpleFunctionNoBorder.h"
 #include "arm_compute/runtime/Tensor.h"
+#include "src/core/NEON/kernels/NETransposeKernel.h"
 
 namespace arm_compute
 {

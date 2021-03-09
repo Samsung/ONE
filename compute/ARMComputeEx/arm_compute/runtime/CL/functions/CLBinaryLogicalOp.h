@@ -43,6 +43,7 @@
 
 #include "arm_compute/runtime/CL/ICLSimpleFunction.h"
 #include "arm_compute/core/TypesEx.h"
+#include "src/core/CL/kernels/CLFillBorderKernel.h"
 
 namespace arm_compute
 {

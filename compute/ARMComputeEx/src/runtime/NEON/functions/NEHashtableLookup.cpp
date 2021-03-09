@@ -41,14 +41,13 @@
 #include "arm_compute/runtime/NEON/functions/NEHashtableLookup.h"
 
 #include "arm_compute/core/NEON/kernels/NEHashtableLookupKernel.h"
-#include "support/MemorySupport.h"
 
 using namespace arm_compute;
 
 void NEHashtableLookup::configure(const ITensor *lookups, const ITensor *keys, const ITensor *input,
                                   ITensor *output, ITensor *hits)
 {
-  auto k = support::cpp14::make_unique<NEHashtableLookupKernel>();
+  auto k = std::make_unique<NEHashtableLookupKernel>();
   k->configure(lookups, keys, input, output, hits);
   _kernel = std::move(k);
 }

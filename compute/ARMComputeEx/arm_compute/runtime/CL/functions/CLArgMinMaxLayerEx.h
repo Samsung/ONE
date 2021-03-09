@@ -41,8 +41,9 @@
 #define __ARM_COMPUTE_CLARGMINMAXLAYEREX_H__
 
 #include "arm_compute/core/CL/kernels/CLArgMinMaxLayerKernelEx.h"
-#include "arm_compute/core/CL/kernels/CLReshapeLayerKernel.h"
+
 #include "arm_compute/core/Types.h"
+#include "arm_compute/runtime/CL/functions/CLReshapeLayer.h"
 #include "arm_compute/runtime/CL/CLTensor.h"
 #include "arm_compute/runtime/IFunction.h"
 #include "arm_compute/runtime/IMemoryManager.h"
@@ -100,7 +101,7 @@ private:
   std::vector<CLTensor> _results_vector;
   CLTensor _not_reshaped_output;
   std::vector<CLArgMinMaxLayerKernelEx> _reduction_kernels_vector;
-  CLReshapeLayerKernel _reshape_kernel;
+  CLReshapeLayer _reshape_kernel;
   unsigned int _num_of_stages;
   unsigned int _reduction_axis;
 };

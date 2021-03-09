@@ -66,7 +66,7 @@ Status validate_mm(const ITensorInfo &input, const ITensorInfo &weights, const I
 
 void NEFullyConnectedHybridLayerReshapeWeights::configure(const ITensor *input, ITensor *output)
 {
-  auto k = support::cpp14::make_unique<NETransposeKernel>();
+  auto k = std::make_unique<NETransposeKernel>();
   k->configure(input, output);
   _kernel = std::move(k);
 }
@@ -80,7 +80,7 @@ Status NEFullyConnectedHybridLayerReshapeWeights::validate(const ITensorInfo *in
 NEFullyConnectedHybridLayer::NEFullyConnectedHybridLayer(
   std::shared_ptr<IMemoryManager> memory_manager)
   : _memory_group(std::move(memory_manager)), _reshape_weights_function(), _quant_input_kernel(),
-    _mm_gemmlowp(), _accumulate_biases_kernel(), _reshape_weights_output(), _quantized_input(),
+    _mm_gemmlowp(), /*_accumulate_biases_kernel(),*/ _reshape_weights_output(), _quantized_input(),
     _scale_factor(), _original_weights(nullptr), _are_weights_reshaped(false),
     _accumulate_biases(false), _is_prepared(false)
 {
@@ -116,7 +116,7 @@ void NEFullyConnectedHybridLayer::configure(const ITensor *input, const ITensor 
     _accumulate_biases = true;
 
     // Configure accumulate biases kernel
-    _accumulate_biases_kernel.configure(output, biases);
+    // _accumulate_biases_kernel.configure(output, biases);
   }
 
   // With the Fully Connected layer we can have 4 different cases:
@@ -260,7 +260,7 @@ void NEFullyConnectedHybridLayer::run()
   // Accumulate biases if provided
   if (_accumulate_biases)
   {
-    NEScheduler::get().schedule(&_accumulate_biases_kernel, Window::DimY);
+    // NEScheduler::get().schedule(&_accumulate_biases_kernel, Window::DimY);
   }
 }
 

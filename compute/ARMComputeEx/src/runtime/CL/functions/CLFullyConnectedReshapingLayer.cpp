@@ -19,6 +19,7 @@
 #include <arm_compute/runtime/CL/functions/CLFullyConnectedHybridLayer.h>
 #include <arm_compute/runtime/CL/functions/CLFullyConnectedLayer.h>
 #include <arm_compute/runtime/CL/functions/CLFullyConnectedLayerEx.h>
+#include "src/core/helpers/AutoConfiguration.h"
 
 using namespace arm_compute;
 

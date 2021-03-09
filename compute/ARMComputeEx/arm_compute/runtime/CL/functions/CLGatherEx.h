@@ -47,11 +47,14 @@
 #ifndef __ARM_COMPUTE_CLGATHEREX_H__
 #define __ARM_COMPUTE_CLGATHEREX_H__
 
+#include "arm_compute/core/Error.h"
 #include "arm_compute/runtime/CL/ICLSimpleFunction.h"
 
 namespace arm_compute
 {
+class CLCompileContext;
 class ICLTensor;
+class ITensorInfo;
 
 /**
  * @brief Class to to run @ref CLGatherKernel.

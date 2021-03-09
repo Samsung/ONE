@@ -46,6 +46,9 @@
 #include <vector>
 #include <memory>
 
+#include "arm_compute/core/CL/ICLTensor.h"
+#include "arm_compute/runtime/CPP/functions/CPPSplit.h"
+
 namespace arm_compute
 {
 class ICLTensor;

@@ -46,6 +46,7 @@
 namespace arm_compute
 {
 class ITensor;
+class ITensorInfo;
 
 /**
  * @brief Class to run @ref NECastBoolKernel.

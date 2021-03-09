@@ -40,7 +40,7 @@
 #ifndef ARM_COMPUTE_CLARGMINMAXLAYERKERNELEX_H
 #define ARM_COMPUTE_CLARGMINMAXLAYERKERNELEX_H
 
-#include "arm_compute/core/CL/ICLKernel.h"
+#include "src/core/CL/ICLKernel.h"
 #include "arm_compute/core/Types.h"
 
 namespace arm_compute

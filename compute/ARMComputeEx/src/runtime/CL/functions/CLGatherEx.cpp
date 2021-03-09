@@ -41,6 +41,8 @@
 #include "arm_compute/runtime/CL/functions/CLGatherEx.h"
 
 #include "arm_compute/core/CL/ICLTensor.h"
+#include "src/core/CL/kernels/CLGatherKernel.h"
+
 #include "arm_compute/core/CL/kernels/CLGatherExKernel.h"
 
 using namespace arm_compute;
@@ -48,7 +50,7 @@ using namespace arm_compute;
 void CLGatherEx::configure(const ICLTensor *input, const ICLTensor *indices, ICLTensor *output,
                            int axis)
 {
-  auto k = support::cpp14::make_unique<CLGatherExKernel>();
+  auto k = std::make_unique<CLGatherExKernel>();
   k->configure(input, indices, output, axis);
   _kernel = std::move(k);
 }

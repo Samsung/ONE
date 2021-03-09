@@ -41,7 +41,7 @@
 #ifndef __ARM_COMPUTE_CLNEGKERNEL_H__
 #define __ARM_COMPUTE_CLNEGKERNEL_H__
 
-#include "arm_compute/core/CL/ICLKernel.h"
+#include "src/core/CL/ICLKernel.h"
 
 namespace arm_compute
 {

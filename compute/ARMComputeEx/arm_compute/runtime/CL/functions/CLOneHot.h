@@ -39,9 +39,11 @@
  */
 #ifndef __ARM_COMPUTE_CLONEHOT_H__
 #define __ARM_COMPUTE_CLONEHOT_H__
-#include "arm_compute/core/CL/kernels/CLMemsetKernel.h"
+
 #include "arm_compute/core/CL/kernels/CLOneHotKernel.h"
+#include "arm_compute/core/CL/kernels/CLMemsetKernel.h"
 #include "arm_compute/runtime/IFunction.h"
+
 namespace arm_compute
 {
 class ICLTensor;

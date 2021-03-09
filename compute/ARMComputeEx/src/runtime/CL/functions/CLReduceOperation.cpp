@@ -61,7 +61,7 @@ Status CLReduceOperation::validate(const ITensorInfo *input, const ITensorInfo *
   ARM_COMPUTE_RETURN_ERROR_ON(num_of_kernels < 1);
 
   // Create temporary tensor infos
-  auto interm_tensors = support::cpp14::make_unique<TensorInfo[]>(num_of_interm_tensors);
+  auto interm_tensors = std::make_unique<TensorInfo[]>(num_of_interm_tensors);
 
   // Create intermediate tensor info
   TensorShape shape{input->tensor_shape()};
@@ -124,8 +124,8 @@ void CLReduceOperation::configure(ICLTensor *input, ICLTensor *output,
     throw std::runtime_error("CLReduceOperation: there is no axis to reduce");
   }
 
-  _interm_tensors = support::cpp14::make_unique<CLTensor[]>(num_of_interm_tensors);
-  _reduce_kernels = support::cpp14::make_unique<CLReduceOperationKernel[]>(num_of_kernels);
+  _interm_tensors = std::make_unique<CLTensor[]>(num_of_interm_tensors);
+  _reduce_kernels = std::make_unique<CLReduceOperationKernel[]>(num_of_kernels);
 
   // Set a vector that is ordered ICLTensors sequentially.
   std::vector<ICLTensor *> tensors;

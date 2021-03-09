@@ -45,6 +45,8 @@ namespace arm_compute
 {
 // Forward declarations
 class ITensor;
+class ITensorInfo;
+
 /** Basic function to run @ref NEOneHotKernel */
 class NEOneHot : public INESimpleFunctionNoBorder
 {

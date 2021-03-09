@@ -40,7 +40,7 @@
 #ifndef __ARM_COMPUTE_NECASTBOOLKERNEL_H__
 #define __ARM_COMPUTE_NECASTBOOLKERNEL_H__
 
-#include "arm_compute/core/NEON/INEKernel.h"
+#include "src/core/NEON/INEKernel.h"
 
 namespace arm_compute
 {

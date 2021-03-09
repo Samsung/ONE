@@ -46,7 +46,7 @@ using namespace arm_compute;
 
 void CLNeg::configure(ICLTensor *input, ICLTensor *output)
 {
-  auto k = arm_compute::support::cpp14::make_unique<CLNegKernel>();
+  auto k = std::make_unique<CLNegKernel>();
   k->configure(input, output);
   _kernel = std::move(k);
 }

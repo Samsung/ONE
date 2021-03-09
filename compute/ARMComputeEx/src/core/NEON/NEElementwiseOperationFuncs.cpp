@@ -42,7 +42,7 @@
 
 #include <algorithm>
 #include "arm_compute/core/Types.h"
-#include "arm_compute/core/NEON/NEAsymm.h"
+#include "src/core/NEON/NEAsymm.h"
 #include "arm_compute/core/ITensor.h"
 #include "arm_compute/core/Helpers.h"
 #include "arm_compute/core/Window.h"
