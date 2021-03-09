@@ -377,8 +377,6 @@ template <class T> bool convert_unary_features(T *node)
   node->features(pre_trans);
 
   // Do shape inference for this node again.
-  // TODO Remove loco::shape_erase()
-  loco::shape_erase(node);
   node->shape_status(luci::ShapeStatus::UNDEFINED);
 
   auto post_trans = create_post_transpose(node);
@@ -408,10 +406,7 @@ class ConvertNCHWToNHWC final : public luci::CircleNodeMutableVisitor<bool>
     node->dim(2) = w;
     node->dim(3) = c;
 
-    node->shape_status(luci::ShapeStatus::VALID);
-
-    // TODO Remove loco::shape_erase()
-    loco::shape_erase(node);
+    // Do shape inference for this node again.
     node->shape_status(luci::ShapeStatus::UNDEFINED);
 
     // Insert post-tranpose
@@ -436,8 +431,7 @@ class ConvertNCHWToNHWC final : public luci::CircleNodeMutableVisitor<bool>
 
     node->from(pre_trans);
 
-    // TODO Remove loco::shape_erase()
-    loco::shape_erase(node);
+    // Do shape inference for this node again.
     node->shape_status(luci::ShapeStatus::UNDEFINED);
 
     // Update graph output
@@ -488,9 +482,7 @@ class ConvertNCHWToNHWC final : public luci::CircleNodeMutableVisitor<bool>
       return false;
     }
 
-    // Make loco do shape inference for this node again.
-    // TODO Remove loco::shape_erase()
-    loco::shape_erase(node);
+    // Do shape inference for this node again.
     node->shape_status(luci::ShapeStatus::UNDEFINED);
 
     auto post_trans = create_post_transpose(node);
@@ -512,8 +504,6 @@ class ConvertNCHWToNHWC final : public luci::CircleNodeMutableVisitor<bool>
     }
 
     // Do shape inference for this node again.
-    // TODO Remove loco::shape_erase()
-    loco::shape_erase(node);
     node->shape_status(luci::ShapeStatus::UNDEFINED);
 
     node->axis(nchw_axis_to_nhwc(node->axis()));
@@ -558,9 +548,7 @@ class ConvertNCHWToNHWC final : public luci::CircleNodeMutableVisitor<bool>
       return false;
     }
 
-    // Make loco do shape inference for this node again.
-    // TODO Remove loco::shape_erase()
-    loco::shape_erase(node);
+    // Do shape inference for this node again.
     node->shape_status(luci::ShapeStatus::UNDEFINED);
 
     auto post_trans = create_post_transpose(node);
@@ -578,8 +566,6 @@ class ConvertNCHWToNHWC final : public luci::CircleNodeMutableVisitor<bool>
     node->x(pre_trans);
 
     // Do shape inference for this node again.
-    // TODO Remove loco::shape_erase()
-    loco::shape_erase(node);
     node->shape_status(luci::ShapeStatus::UNDEFINED);
 
     auto post_trans = create_post_transpose(node);
@@ -604,9 +590,7 @@ class ConvertNCHWToNHWC final : public luci::CircleNodeMutableVisitor<bool>
     const auto nhwc_paddings = create_NHWC_paddings(nchw_paddings);
     node->paddings(nhwc_paddings);
 
-    // Make loco do shape inference for this node again.
-    // TODO Remove loco::shape_erase()
-    loco::shape_erase(node);
+    // Do shape inference for this node again.
     node->shape_status(luci::ShapeStatus::UNDEFINED);
 
     auto post_trans = create_post_transpose(node);
