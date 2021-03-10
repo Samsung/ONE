@@ -105,6 +105,19 @@ private:
    */
   void handleSimpleUnaryOp(const ir::Operation &op, const ir::OperandIndex input_idx);
 
+  // in case of output tensor of an op, it is possible that
+  // the output became dynamic although it had been static before.
+  // Once a tensor becomes dynamic, it will lost memory allocated for static.
+  // Therefore once output is dynamic, it should be treated as dynamic tensor. (memory should be
+  // allocated at runtime) `previously` means `dynamic` or `static` has been set in previous loop in
+  // WHILE of previous call of `nnfw_run()`
+  bool previously_static(backend::ITensor *op_output) { return !op_output->is_dynamic(); }
+
+  // helper function that check if op's input is static
+  // Note that input of n'th op has been set to static or dynamic by (n-1)th op.
+  // That's why it is called `currently_static`
+  bool currently_static(backend::ITensor *op_input) { return !op_input->is_dynamic(); }
+
 private:
   /**
    * @brief To get operand-level info, e.g., ir::Operand::isConstant()

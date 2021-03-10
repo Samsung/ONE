@@ -157,12 +157,6 @@ template <typename T_BackendContext> void planTensors(const T_BackendContext &ct
       {
         // plan for deallocation of static tensornode
         tensor_builder->notifyLastUse(ind);
-
-        // plan for deallocation of dynamic tensor
-        auto dyn_tensor_manager = tensor_builder->dynamicTensorManager();
-        auto *tensor = ctx.tensor_registry->getITensor(ind);
-        assert(tensor);
-        dyn_tensor_manager->planDealloc(op_ind, tensor);
       }
     }
   }

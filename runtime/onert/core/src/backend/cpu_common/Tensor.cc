@@ -84,6 +84,19 @@ bool Tensor::applyShape(const ir::Shape &new_shape)
 
 ir::Shape Tensor::getShape() const { return _info.shape(); }
 
+void Tensor::deallocBuffer()
+{
+  if (_allocator)
+  {
+    _buffer = nullptr;
+    _allocator.reset();
+    if (_dynamic_mem_mgr)
+    {
+      _dynamic_mem_mgr->deallocate(this);
+    }
+  }
+}
+
 } // namespace cpu_common
 } // namespace backend
 } // namespace onert

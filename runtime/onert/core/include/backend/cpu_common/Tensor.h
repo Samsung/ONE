@@ -65,14 +65,9 @@ public:
   }
 
   /**
-   * @brief Mark this tensor does not have memory.
-   *        Real memory deallocation should be done by caller.
+   * @brief Reset the buffer and deallocate the allocation if it is managed by itself
    */
-  void resetBuffer()
-  {
-    _allocator.reset();
-    _buffer = nullptr;
-  }
+  void deallocBuffer() override;
 
 public:
   uint8_t *buffer() const override { return _buffer; }
