@@ -15,6 +15,7 @@
  */
 
 #include "luci/Importer.h"
+#include "CircleImportMetadata.h"
 #include "PostImport.h"
 
 #include "luci/Import/GraphBuilder.h"
@@ -26,6 +27,7 @@
 #include <luci/IR/Module.h>
 #include <luci/IR/CircleNodes.h>
 #include <luci/Profile/CircleNodeID.h>
+#include <luci/Profile/CircleNodeOrigin.h>
 #include <luci/Log.h>
 #include <luci/LogHelper.h>
 
@@ -51,6 +53,7 @@ void convert_graph(const luci::GraphBuilderSource &source, luci::CircleReader &r
   const auto &tensors = reader.tensors();
   auto tensors_ptr = reader.tensors_ptr();
   assert(tensors_ptr != nullptr);
+  auto circle_metadata = std::make_unique<luci::CircleImportMetadata>(reader);
 
   // build a cache to identify if a tensor is output of an operator
   // if this is set, we should not create a CircleConst for this tensor
@@ -126,6 +129,7 @@ void convert_graph(const luci::GraphBuilderSource &source, luci::CircleReader &r
   // Note that operators in model are stored in execution order. This means that when importing
   // an operator, its input operators have already been imported. We exploit this fact to set up
   // node's inputs right after creating the node.
+  auto origin_table = circle_metadata->origin_table();
   for (uint32_t i = 0; i < operators.size(); ++i)
   {
     const circle::OperatorT &op = *operators[i];
@@ -141,6 +145,10 @@ void convert_graph(const luci::GraphBuilderSource &source, luci::CircleReader &r
 
       auto built_op = builder->build(op, &gb_context);
       set_node_id(built_op, i);
+      if (origin_table.find(i) != origin_table.end())
+        add_origin(built_op, origin_table.at(i));
+      else
+        add_origin(built_op, luci::single_origin(i, built_op->name()));
     }
     else
     {
