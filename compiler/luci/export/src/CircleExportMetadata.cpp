@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-#include "SerializedData.h"
+#include "CircleExportMetadata.h"
+
+#include <luci/UserSettings.h>
 
 namespace
 {
@@ -25,6 +27,19 @@ void write_u32(std::vector<uint8_t> &to, uint32_t value)
   to.emplace_back(0xFF & (value >> 1 * 8));
   to.emplace_back(0xFF & (value >> 2 * 8));
   to.emplace_back(0xFF & (value >> 3 * 8));
+}
+
+flatbuffers::Offset<circle::Metadata> metadata_offset(flatbuffers::FlatBufferBuilder &builder,
+                                                      luci::SerializedModelData &md,
+                                                      const std::vector<uint8_t> &data,
+                                                      const std::string &metadata_name)
+{
+  auto buffer_id = static_cast<uint32_t>(md._buffers.size());
+  auto vec_offset = builder.CreateVector(data.data(), data.size());
+  md._buffers.push_back(circle::CreateBuffer(builder, vec_offset));
+  flatbuffers::Offset<circle::Metadata> metadata =
+    circle::CreateMetadata(builder, builder.CreateString(metadata_name), buffer_id);
+  return metadata;
 }
 
 } // namespace
@@ -105,6 +120,29 @@ const std::vector<uint8_t> CircleExportMetadata::encoded_op_table(void)
   }
 
   return data;
+}
+
+} // namespace luci
+
+namespace luci
+{
+
+std::vector<flatbuffers::Offset<circle::Metadata>>
+createCircleMetadataVector(flatbuffers::FlatBufferBuilder &builder, luci::SerializedModelData &md)
+{
+  std::vector<flatbuffers::Offset<circle::Metadata>> metadata_vec;
+
+  auto settings = luci::UserSettings::settings();
+  if (settings->get(luci::UserSettings::Key::ProfilingDataGen))
+  {
+    metadata_vec.emplace_back(
+      metadata_offset(builder, md, md._metadata.encoded_source_table(), "ONE_source_table"));
+
+    metadata_vec.emplace_back(
+      metadata_offset(builder, md, md._metadata.encoded_op_table(), "ONE_op_table"));
+  }
+
+  return metadata_vec;
 }
 
 } // namespace luci
