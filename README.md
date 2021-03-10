@@ -54,8 +54,3 @@ Thank you in advance!
 
 - Please post questions, issues, or suggestions into [Issues](https://github.com/Samsung/ONE/issues). This is the best way to communicate with the developer.
 - You can also have an open discussion with community members through [gitter.im](https://gitter.im/Samsung/ONE) channel.
-
-## Hall of Fame
-
-[![](https://sourcerer.io/fame/lemmaa/Samsung/ONE/images/0)](https://sourcerer.io/fame/lemmaa/Samsung/ONE/links/0)[![](https://sourcerer.io/fame/lemmaa/Samsung/ONE/images/1)](https://sourcerer.io/fame/lemmaa/Samsung/ONE/links/1)[![](https://sourcerer.io/fame/lemmaa/Samsung/ONE/images/2)](https://sourcerer.io/fame/lemmaa/Samsung/ONE/links/2)[![](https://sourcerer.io/fame/lemmaa/Samsung/ONE/images/3)](https://sourcerer.io/fame/lemmaa/Samsung/ONE/links/3)[![](https://sourcerer.io/fame/lemmaa/Samsung/ONE/images/4)](https://sourcerer.io/fame/lemmaa/Samsung/ONE/links/4)[![](https://sourcerer.io/fame/lemmaa/Samsung/ONE/images/5)](https://sourcerer.io/fame/lemmaa/Samsung/ONE/links/5)[![](https://sourcerer.io/fame/lemmaa/Samsung/ONE/images/6)](https://sourcerer.io/fame/lemmaa/Samsung/ONE/links/6)[![](https://sourcerer.io/fame/lemmaa/Samsung/ONE/images/7)](https://sourcerer.io/fame/lemmaa/Samsung/ONE/links/7)
-
