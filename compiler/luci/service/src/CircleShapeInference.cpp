@@ -15,7 +15,6 @@
  */
 
 #include "luci/Service/CircleShapeInference.h"
-#include "luci/Service/ShapeDescription.h"
 
 #include "CircleShapeInferenceHelper.h"
 
@@ -26,17 +25,6 @@
 
 #include <cassert>
 #include <iostream>
-
-namespace luci
-{
-
-ShapeDescription ShapeInference::get(loco::Node *node)
-{
-  assert(luci::shape_known(node));
-  return to_shape_description(luci::shape_get(node));
-}
-
-} // namespace luci
 
 namespace
 {

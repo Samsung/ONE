@@ -28,19 +28,6 @@
 namespace luci
 {
 
-/**
- * @brief Get the type of each node as NodeAnnotation
- *
- * HOW TO USE
- *
- *   TypeInference::get(g->nodes()->at(0));
- *   TypeInference::get(g->nodes()->at(...));
- */
-struct TypeInference
-{
-  static circle::TensorType get(loco::Node *node);
-};
-
 namespace tinf // namespace for Type Inference
 {
 
