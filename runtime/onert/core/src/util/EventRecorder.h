@@ -39,8 +39,8 @@ struct Event
 
 struct DurationEvent : public Event
 {
-  uint32_t session_index;
-  uint32_t subg_index;
+  uint32_t session_index = 0;
+  uint32_t subg_index = 0;
 
 protected:
   DurationEvent() = default;
