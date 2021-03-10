@@ -396,7 +396,7 @@ void OperationValidator::visit(const operation::Pad &node)
     const auto value_t = operandType(value_index);
     // NNAPI accepts this case. scale and zeroPoint are assumed to be the same as in input0.
     const bool cond_quant8 =
-      ((input_t == DataType::QUANT_UINT8_ASYMM || input_t == DataType::QUANT_UINT8_ASYMM) &&
+      ((input_t == DataType::QUANT_UINT8_ASYMM || input_t == DataType::QUANT_INT8_ASYMM) &&
        value_t == DataType::INT32);
     OP_REQUIRES((cond_same && cond_same_quant) || cond_quant8);
   }
