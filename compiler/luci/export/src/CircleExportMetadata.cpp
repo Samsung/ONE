@@ -35,11 +35,8 @@ flatbuffers::Offset<circle::Metadata> metadata_offset(flatbuffers::FlatBufferBui
                                                       const std::string &metadata_name)
 {
   auto buffer_id = static_cast<uint32_t>(md._buffers.size());
-  auto vec_offset = builder.CreateVector(data.data(), data.size());
-  md._buffers.push_back(circle::CreateBuffer(builder, vec_offset));
-  flatbuffers::Offset<circle::Metadata> metadata =
-    circle::CreateMetadata(builder, builder.CreateString(metadata_name), buffer_id);
-  return metadata;
+  md._buffers.push_back(circle::CreateBufferDirect(builder, &data));
+  return circle::CreateMetadataDirect(builder, metadata_name.c_str(), buffer_id);
 }
 
 } // namespace
