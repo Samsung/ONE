@@ -46,7 +46,7 @@ Next items are about implementation details to store the origin information.
 
 ### Source Table
 
-Source table includes a set of id of origin node and name of origin node.
+Source table includes a set of id and name of origin node.
 
 #### Binary format
 
@@ -54,12 +54,11 @@ Source table includes a set of id of origin node and name of origin node.
 [ entry_number : uint32_t ]
 [ id : uint32_t ][ length : uint32_t ][ data : char * length ] * entry_number
 ```
-- entry_number : The number of entry
-  - Each entry consist of id, length, and data.
+- entry_number : The number of entries
+  - Each entry consists of id, length, and data.
 - id : ID of origin node
 - length : Length of data
-- data : Name of origin node
-  - **`data` always ends with `\0` character.**
+- data : Name of origin node **(null-terminated string)**
 
 #### In-memory format
 ```cpp
@@ -92,10 +91,10 @@ Op table includes a set of id of operation and id(s) of operation's origin nodes
 Op table is stored in circle file as binary with following format.
 ```
 [ entry_number : uint32_t ]
-[ id : uint32_t ][ node_num : uint32_t ][ node_ids : node_num * uint32_t ] * entry_number
+[ id : uint32_t ][ node_num : uint32_t ][ node_ids : uint32_t * node_num ] * entry_number
 ```
-- entry_number : The number of entry
-  - Each entry consist of id, node_num, and node_ids.
+- entry_number : The number of entries
+  - Each entry consists of id, node_num, and node_ids.
 - id : ID of operation in circle model file
 - node_num : The number of operation's origin nodes
 - node_ids : Set of IDs of origin nodes
