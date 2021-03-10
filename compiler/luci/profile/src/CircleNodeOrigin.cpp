@@ -141,7 +141,13 @@ namespace luci
 
 bool has_origin(const luci::CircleNode *circle_node)
 {
-  return circle_node->annot<CircleNodeOriginAnnotation>() != nullptr;
+  if (circle_node->annot<CircleNodeOriginAnnotation>() == nullptr)
+    return false;
+
+  if (circle_node->annot<CircleNodeOriginAnnotation>()->origin() == nullptr)
+    return false;
+
+  return true;
 }
 
 void add_origin(luci::CircleNode *circle_node, const std::shared_ptr<CircleNodeOrigin> origin)
