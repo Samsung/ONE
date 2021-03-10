@@ -37,6 +37,7 @@ void LinearExecutor::executeImpl()
     ruy::profiler::ScopeLabel label(code.op->name());
 #endif
     _subject.notifyJobBegin(this, profiling_subg_index, code.op_ind, backend);
+    VERBOSE(LinearExecutor) << "Executing " << code.op_ind << std::endl;
 
     auto &fn_seq = code.fn_seq;
 

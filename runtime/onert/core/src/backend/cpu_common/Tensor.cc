@@ -18,6 +18,7 @@
 
 #include "ir/DataType.h"
 #include "backend/cpu_common/MemoryManager.h"
+#include "util/logging.h"
 
 namespace onert
 {
@@ -83,6 +84,20 @@ bool Tensor::applyShape(const ir::Shape &new_shape)
 }
 
 ir::Shape Tensor::getShape() const { return _info.shape(); }
+
+void Tensor::resetBuffer()
+{
+  if (_allocator)
+  {
+    VERBOSE() << "DEALLOCATE!!!!" << std::endl;
+    _buffer = nullptr;
+    _allocator.reset();
+    if (_dynamic_mem_mgr)
+    {
+      _dynamic_mem_mgr->deallocate(this);
+    }
+  }
+}
 
 } // namespace cpu_common
 } // namespace backend

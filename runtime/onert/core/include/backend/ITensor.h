@@ -88,6 +88,12 @@ public:
     throw std::runtime_error("This backend does not support dynamic tensor");
   }
 
+  /// @brief Reset the buffer address
+  virtual void resetBuffer()
+  {
+    throw std::runtime_error("This backend does not support resetting buffer");
+  }
+
   /**
    * @brief Set the shape of tenser to new_shape
    * @note  Higer dimension will be placed on front.

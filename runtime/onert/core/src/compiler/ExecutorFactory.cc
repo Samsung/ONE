@@ -67,6 +67,32 @@ private:
   std::shared_ptr<backend::IConfig> _config;
 };
 
+// XXX Remove OperandIndex in the entry (it was just for debugging)
+using DeallocList = std::vector<std::pair<backend::ITensor *, ir::OperandIndex>>;
+// Deallocation after execution of an operation used by Linear Executor
+class LinearDeallocFunction final : public exec::IFunction
+{
+public:
+  LinearDeallocFunction(const DeallocList &tensors) : _dealloc_list{tensors} {}
+
+  void run() override
+  {
+    for (auto pair : _dealloc_list)
+    {
+      auto tensor = pair.first;
+      VERBOSE(LinearDealloc) << "ISDYNAMIC " << tensor->is_dynamic() << std::endl;
+      if (!tensor->is_dynamic())
+        continue;
+
+      VERBOSE(LinearDealloc) << "Deallocating tensor " << pair.second << std::endl;
+      tensor->resetBuffer();
+    }
+  }
+
+private:
+  DeallocList _dealloc_list;
+};
+
 void initializeSubgraphIOTensors(compiler::LoweredGraph &lowered_graph,
                                  const backend::BackendContexts &backend_contexts,
                                  const ir::OperandIndexSequence &indices)
@@ -267,6 +293,8 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lo
                                       const compiler::CompilerOptions &options,
                                       const std::shared_ptr<exec::ExecutorMap> &executor_map)
 {
+  auto graph = lowered_graph->graph();
+
   backend::BackendContexts backend_contexts =
     createBackendContexts(*lowered_graph, options.executor == "Linear");
 
@@ -316,10 +344,66 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lo
       ordered_contexts.emplace_front(pair.first, pair.second.get());
   }
 
+  // Simulate the execution for deallocation of tensors
+  std::unordered_map<ir::OperationIndex, DeallocList> dealloc_list_map;
+  {
+    ir::OperandIndexMap<uint32_t> uses_map;
+    ir::OperandIndexSequence constants;
+
+    auto model_io =
+      (graph.getInputs() + graph.getOutputs()) | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED;
+
+    // Prepare scanning
+    graph.operands().iterate([&](const ir::OperandIndex &ind, const ir::Operand &obj) {
+      uses_map[ind] = obj.getUses().size();
+
+      if (obj.isConstant())
+        constants.append(ind);
+    });
+
+    // A trick to consider constants as an execption
+    for (const auto &ind : constants)
+    {
+      uses_map[ind]++;
+    }
+
+    for (const auto op_ind : order)
+    {
+      const auto &op = graph.operations().at(op_ind);
+      auto op_inputs = op.getInputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED;
+      auto op_outputs = op.getOutputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED;
+
+      for (const auto &ind : op_inputs)
+      {
+        const auto &operand = graph.operands().at(ind);
+        assert(uses_map.find(ind) != uses_map.end());
+        assert(uses_map[ind] > 0);
+        uses_map[ind]--;
+        if (uses_map[ind] == 0 && !operand.info().isVariable() && !model_io.contains(ind))
+        {
+          VERBOSE(DEALLOC_LIST) << op_ind << " : " << ind << "   "
+                                << (void *)tensor_regs.getITensor(ind) << std::endl;
+          dealloc_list_map[op_ind].emplace_back(tensor_regs.getITensor(ind), ind);
+        }
+      }
+    }
+
+    // Dispose and validate
+    for (const auto &ind : constants)
+    {
+      --uses_map[ind];
+    }
+
+    assert(
+      std::all_of(uses_map.begin(), uses_map.end(),
+                  [](std::pair<const ir::OperandIndex, uint32_t> it) { return it.second == 0; }));
+  }
+
   // Generate kernels
   for (auto &pair : ordered_contexts)
   {
     auto codes = pair.second->genKernels();
+
     for (auto &pair : codes)
     {
       auto &op_ind = pair.first;
@@ -328,6 +412,8 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lo
       auto lower_info = lowered_graph->lower_info().operation.getRawPtr(op_ind);
       if (options.he_profiling_mode)
         fn_seq->wrap<SyncFunction>(lower_info->backend()->config());
+      if (!dealloc_list_map[op_ind].empty())
+        fn_seq->append(std::make_unique<LinearDeallocFunction>(dealloc_list_map[op_ind]));
       builder.append(op_ind, {op_ind, &op, lower_info, std::move(fn_seq)});
     }
   }

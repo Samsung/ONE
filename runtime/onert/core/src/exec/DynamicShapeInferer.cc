@@ -48,11 +48,11 @@ void DynamicShapeInferer::handleBinaryArithmeticOp(const ir::Operation &op,
 
     So, only when all inputs are static, we can skip dynamic shape inference.
   */
-  if ((!lhs->is_dynamic()) && (!rhs->is_dynamic()))
-    return;
-
   auto output_idx = op.getOutputs().at(0);
   auto output = _tensor_registry->getITensor(output_idx);
+
+  if ((!lhs->is_dynamic()) && (!rhs->is_dynamic()) && !output->is_dynamic())
+    return;
 
   ir::Shape new_shape = shape_inference::inferEltwiseShape(lhs_shape, rhs_shape);
 
