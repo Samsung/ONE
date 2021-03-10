@@ -32,7 +32,7 @@ void write_u32(std::vector<uint8_t> &to, uint32_t value)
 namespace luci
 {
 
-// 'osource_table' is encoded to binary format.
+// 'source_table' is encoded to binary format.
 const std::vector<uint8_t> CircleExportMetadata::encoded_source_table(void)
 {
   std::vector<uint8_t> data;
