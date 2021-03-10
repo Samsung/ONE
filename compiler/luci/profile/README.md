@@ -65,7 +65,6 @@ Source table includes a set of id and name of origin node.
 // size = entry_number
 std::map<uint32_t /* id */, std::string /* name */>
 ```
-  - **`\0` chracter is not inserted to `std::string`.**
 
 #### Example
 
@@ -74,8 +73,8 @@ Following example means "Name of origin 1 is node1".
 ```
 [Binary Format]
  0x01 00 00 00 0x01 00 00 00 0x06 00 00 00 0x6e 0x6f 0x64 0x65 0x31 00
- ------------- ------------- ------------- ---------------------------
-entry_number=1      id=1        length=6          data="node1\0"
+ ------------- ------------- ------------- ---- ---- ---- ---- ---- ----
+entry_number=1      id=1        length=6   'n'  'o'  'd'  'e'  '1'  '\0'
 ```
 ```cpp
 [In-memory Format]
