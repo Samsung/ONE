@@ -64,7 +64,7 @@ int entry(int argc, char **argv)
   const std::string qwmm = "--quantize_with_minmax";
   const std::string rq = "--requantize";
 
-  const std::string pdg = "--profiling_data_gen";
+  const std::string gpd = "--generate_profile_data";
 
   arser::Arser arser("circle-quantizer provides circle model quantization");
 
@@ -102,7 +102,7 @@ int entry(int argc, char **argv)
   arser.add_argument("input").nargs(1).type(arser::DataType::STR).help("Input circle model");
   arser.add_argument("output").nargs(1).type(arser::DataType::STR).help("Output circle model");
 
-  arser.add_argument(pdg).nargs(0).required(false).default_value(false).help(
+  arser.add_argument(gpd).nargs(0).required(false).default_value(false).help(
     "This will turn on profiling data generation.");
 
   try
@@ -175,7 +175,7 @@ int entry(int argc, char **argv)
   std::string input_path = arser.get<std::string>("input");
   std::string output_path = arser.get<std::string>("output");
 
-  if (arser[pdg])
+  if (arser[gpd])
     settings->set(luci::UserSettings::Key::ProfilingDataGen, true);
 
   // Load model from the file
