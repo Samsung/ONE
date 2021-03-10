@@ -242,7 +242,10 @@ inline void initConsts(BackendContext &ctx)
     auto data = operand.shareData();
     assert(data && data->base());
     ExternalTensor *ext_tensor = dynamic_cast<ExternalTensor *>(tensor);
-    assert(ext_tensor);
+
+    if (ext_tensor == nullptr)
+      throw std::runtime_error{"This tensor is not external tensor"};
+
     ext_tensor->setData(data);
   });
 }
