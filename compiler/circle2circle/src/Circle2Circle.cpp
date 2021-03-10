@@ -268,7 +268,7 @@ int entry(int argc, char **argv)
     .default_value(false)
     .help("This will turn off operator validations. May help input model investigation.");
 
-  arser.add_argument("--profiling_data_gen")
+  arser.add_argument("--generate_profile_data")
     .nargs(0)
     .required(false)
     .default_value(false)
@@ -396,7 +396,7 @@ int entry(int argc, char **argv)
     settings->set(luci::UserSettings::Key::MuteWarnings, true);
   if (arser.get<bool>("--disable_validation"))
     settings->set(luci::UserSettings::Key::DisableValidation, true);
-  if (arser.get<bool>("--profiling_data_gen"))
+  if (arser.get<bool>("--generate_profile_data"))
     settings->set(luci::UserSettings::Key::ProfilingDataGen, true);
 
   std::string input_path = arser.get<std::string>("input");
