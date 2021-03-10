@@ -42,9 +42,13 @@ target_link_libraries(native_compiler PRIVATE ${Boost_LIBRARIES})
 
 # tests
 
-if(ENABLE_TEST)
-    nnas_find_package(GTest REQUIRED)
-    set(TEST_SOURCES KernelBuilder.test.cpp)
-    GTest_AddTest(luci_codegen_test ${TEST_SOURCES})
-    target_link_libraries(luci_codegen_test luci_codegen luci_import luci_export Halide::Halide)
-endif(ENABLE_TEST)
+if(NOT ENABLE_TEST)
+    return()
+endif(NOT ENABLE_TEST)
+
+set(TEST_SOURCES KernelBuilder.test.cpp)
+
+nnas_find_package(GTest REQUIRED)
+
+GTest_AddTest(luci_codegen_test ${TEST_SOURCES})
+target_link_libraries(luci_codegen_test luci_codegen luci_import luci_export Halide::Halide)
