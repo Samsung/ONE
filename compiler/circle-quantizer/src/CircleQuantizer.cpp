@@ -64,7 +64,7 @@ int entry(int argc, char **argv)
   const std::string qwmm = "--quantize_with_minmax";
   const std::string rq = "--requantize";
 
-  const std::string pdg = "--profiling_data_gen";
+  const std::string pdg = "--generate_profile_data";
 
   arser::Arser arser("circle-quantizer provides circle model quantization");
 
