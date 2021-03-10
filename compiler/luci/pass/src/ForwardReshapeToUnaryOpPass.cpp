@@ -79,9 +79,7 @@ bool forward_reshape(luci::CircleReshape *reshape, luci::CircleNeg *neg)
   neg->x(reshape->tensor());
   new_reshape->tensor(neg);
 
-  // need to reset shape as it leaped over Reshape
-  // TODO Remove loco::shape_erase()
-  loco::shape_erase(neg);
+  // Do shape inference for this node again.
   neg->shape_status(luci::ShapeStatus::UNDEFINED);
 
   return true;
