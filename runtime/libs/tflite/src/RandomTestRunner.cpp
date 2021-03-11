@@ -45,27 +45,24 @@ void RandomTestRunner::compile(const nnfw::tflite::Builder &builder)
   _nnapi = builder.build();
 
   _tfl_interp->UseNNAPI(false);
+  _nnapi->UseNNAPI(true);
 
   // Allocate Tensors
   _tfl_interp->AllocateTensors();
   _nnapi->AllocateTensors();
+}
 
+int RandomTestRunner::run(size_t running_count)
+{
   assert(_tfl_interp->inputs() == _nnapi->inputs());
   assert(_tfl_interp->outputs() == _nnapi->outputs());
 
   nnfw::tflite::OutputResetter resetter;
   resetter.run(*(_tfl_interp.get()));
-  resetter.run(*(_nnapi.get()));
 
   RandomInputInitializer initializer{_randgen};
   initializer.run(*(_tfl_interp.get()));
 
-  CopyInputInitializer copy_initializer{*(_tfl_interp.get())};
-  copy_initializer.run(*(_nnapi.get()));
-}
-
-int RandomTestRunner::run(size_t running_count)
-{
   std::cout << "[NNAPI TEST] Run T/F Lite Interpreter without NNAPI" << std::endl;
   _tfl_interp->Invoke();
 
@@ -73,13 +70,17 @@ int RandomTestRunner::run(size_t running_count)
 
   for (size_t i = 1; i <= running_count; ++i)
   {
+    resetter.run(*(_nnapi.get()));
+
+    CopyInputInitializer copy_initializer{*(_tfl_interp.get())};
+    copy_initializer.run(*(_nnapi.get()));
+
     std::cout << "[NNAPI TEST #" << i << "] Run T/F Lite Interpreter with NNAPI" << std::endl;
 
     char *env = getenv("UPSTREAM_DELEGATE");
 
     if (env && !std::string(env).compare("1"))
     {
-      _nnapi->UseNNAPI(true);
       _nnapi->Invoke();
     }
     else
