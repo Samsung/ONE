@@ -36,22 +36,7 @@ uint32_t read_u32(const std::vector<uint8_t> &buffer, uint32_t idx)
 namespace
 {
 
-/**
- * 'source_table' consists of following structure.
- *  - [ entry_number : uint32_t ]
- *  - [ id : uint32_t ][ length : uint32_t ][ data : char * length ] * entry_number
- *
- * This will be decoded as std::map with following key and value.
- *  - key : id of origin node
- *  - value : name of origin node
- *
- * <Example>
- *  - binary data : 0x01 00 00 00 00 00 00 00 0x04 00 00 00 0x6f 0x66 0x6d 00
- *                  ------------- ----------- ------------- -----------------
- *                 entry_number=1     id=0       length=4     data="ofm\0"
- *
- *  - decoded data : {0 : "ofm"}
- */
+// 'source_table' is decoded to std::map<uint32_t, std::string> format.
 const std::map<uint32_t, std::string>
 decoded_source_table(const std::vector<uint8_t> &source_table_data)
 {
@@ -100,22 +85,7 @@ decoded_source_table(const std::vector<uint8_t> &source_table_data)
   return source_id_name_map;
 }
 
-/**
- * 'op_table' consists of following structure.
- *  - [ entry_number : uitn32_t ]
- *  - [ id : uint32_t ][ node_num : uint32_t ][ node_ids : uint32_t * node_num ] * entry_number
- *
- * This will be decoded as std::map with following key and value.
- *  - key : id of operation
- *  - value : set of origin node id
- *
- * <Example>
- *  - binary data : 0x01 00 00 00 00 00 00 00 0x02 00 00 00 0x01 00 00 00 0x02 00 00 00
- *                  ------------- ----------- ------------- ---------------------------
- *                 entry_number=1     id=0      node_num=2        node_ids : 1, 2
- *
- *  - decoded data : {0 : [1, 2]}
- */
+// 'op_table' is decoded to std::map<uint32_t, std::set<uint32_t>> format.
 const std::map<uint32_t, std::set<uint32_t>>
 decoded_op_table(const std::vector<uint8_t> &op_table_data)
 {

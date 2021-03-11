@@ -44,19 +44,7 @@ flatbuffers::Offset<circle::Metadata> metadata_offset(flatbuffers::FlatBufferBui
 namespace luci
 {
 
-/**
- * 'source_table' consists of following key and value.
- *  - key : id of origin node
- *  - value : name of origin node
- *
- * This will be encoded with following structure.
- *  - [ entry_number : uint32_t ]
- *  - [ id : uint32_t ][ length : uint32_t ][ data : 'length' Bytes ] * entry_number
- *
- * <Example>
- *  - source table : {0 : "ofm"}
- *  - encoded data : 0x01 00 00 00 00 00 00 00 0x04 00 00 00 0x6f 0x66 0x6d 00
- */
+// 'source_table' is encoded to binary format.
 const std::vector<uint8_t> CircleExportMetadata::encoded_source_table(void)
 {
   std::vector<uint8_t> data;
@@ -82,19 +70,7 @@ const std::vector<uint8_t> CircleExportMetadata::encoded_source_table(void)
   return data;
 }
 
-/**
- * 'op_table' consists of following key and value.
- *  - key : id of operation
- *  - value : set of origin node id
- *
- * This will be encoded with following structure.
- *  - [ entry_number : uitn32_t ]
- *  - [ id : uint32_t ][ node_num : uint32_t ][ node_ids : node_num * uint32_t ] * entry_number
- *
- * <Example>
- *  - op table : {0 : [1, 2]}
- *  - encoded data : 0x01 00 00 00 00 00 00 00 0x02 00 00 00 0x01 00 00 00 0x02 00 00 00
- */
+// 'op_table' is encoded to binary format.
 const std::vector<uint8_t> CircleExportMetadata::encoded_op_table(void)
 {
   std::vector<uint8_t> data;
