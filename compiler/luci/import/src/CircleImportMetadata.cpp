@@ -85,7 +85,7 @@ decoded_source_table(const std::vector<uint8_t> &source_table_data)
   return source_id_name_map;
 }
 
-// 'source_table' is decoded to std::map<uint32_t, std::set<uint32_t>> format.
+// 'op_table' is decoded to std::map<uint32_t, std::set<uint32_t>> format.
 const std::map<uint32_t, std::set<uint32_t>>
 decoded_op_table(const std::vector<uint8_t> &op_table_data)
 {
