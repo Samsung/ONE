@@ -16,6 +16,7 @@
 
 #include "CircleExporterImpl.h"
 #include "Optimize.h"
+#include "CircleExportMetadata.h"
 #include "CircleTensorExporter.h"
 #include "CircleOperationExporter.h"
 #include "CircleExporterUtils.h"
@@ -158,12 +159,16 @@ void CircleExporterImpl::exportGraph(loco::Graph *graph)
   std::string description_str = "nnpackage";
   auto description = _builder.CreateString(description_str);
 
+  // Metadata
+  auto metadata_vec = createCircleMetadataVector(_builder, md);
+  auto metadata = _builder.CreateVector(std::vector<Offset<Metadata>>(metadata_vec));
+
   // create array of buffers
   auto buffers = _builder.CreateVector(md._buffers);
 
   // Model
   auto model_offset = CreateModel(_builder, version, operator_codes, subgraphs, description,
-                                  buffers, 0 /* metadata_buffer */);
+                                  buffers, 0 /* metadata_buffer */, metadata);
   FinishModelBuffer(_builder, model_offset);
 }
 
@@ -218,6 +223,10 @@ void CircleExporterImpl::exportModule(Module *module)
   std::string description_str = "nnpackage";
   auto description = _builder.CreateString(description_str);
 
+  // Metadata
+  auto metadata_vec = createCircleMetadataVector(_builder, md);
+  auto metadata = _builder.CreateVector(std::vector<Offset<Metadata>>(metadata_vec));
+
   // create array of buffers
   auto buffers = _builder.CreateVector(md._buffers);
 
@@ -226,7 +235,7 @@ void CircleExporterImpl::exportModule(Module *module)
 
   // Model
   auto model_offset = CreateModel(_builder, version, operator_codes, subgraphs, description,
-                                  buffers, 0 /* metadata_buffer */);
+                                  buffers, 0 /* metadata_buffer */, metadata);
   FinishModelBuffer(_builder, model_offset);
 }
 
