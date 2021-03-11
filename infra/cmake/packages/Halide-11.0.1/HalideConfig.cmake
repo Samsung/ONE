@@ -3,6 +3,9 @@ set(Halide_11_0_1_URL "https://github.com/halide/Halide/releases/download/v11.0.
 
 ExternalSource_Download(Halide DIRNAME Halide-11.0.1 "${Halide_11_0_1_URL}")
 
-set(Halide_DIR "${Halide_SOURCE_DIR}/lib/cmake/Halide")
+find_library(Halide_LIB NAMES libHalide.so PATHS "${Halide_SOURCE_DIR}/lib")
+set(Halide_INCLUDE_DIR "${Halide_SOURCE_DIR}/include")
 
-find_package(Halide REQUIRED)
+add_library(Halide::Halide SHARED IMPORTED)
+set_property(TARGET Halide::Halide PROPERTY IMPORTED_LOCATION "${Halide_LIB}")
+set_property(TARGET Halide::Halide PROPERTY INTERFACE_INCLUDE_DIRECTORIES "${Halide_INCLUDE_DIR}")

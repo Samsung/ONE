@@ -47,6 +47,7 @@ target_include_directories(native_compiler PRIVATE ${Boost_INCLUDE_DIRS})
 target_link_libraries(native_compiler PRIVATE luci_codegen)
 target_link_libraries(native_compiler PRIVATE luci_import)
 target_link_libraries(native_compiler PRIVATE luci_export)
+target_link_libraries(native_compiler PRIVATE arser)
 target_link_libraries(native_compiler PRIVATE ${Boost_LIBRARIES})
 
 # tests
