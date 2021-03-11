@@ -49,7 +49,10 @@ def _get_parser():
 
     # argument for profiling
     parser.add_argument(
-        '-p', '--profiling_data_gen', action='store_true', help='generate profiling data')
+        '-p',
+        '--generate_profile_data',
+        action='store_true',
+        help='generate profiling data')
 
     ## arguments for quantization
     quantization_group = parser.add_argument_group('arguments for quantization')
@@ -142,8 +145,8 @@ def _quantize(args):
             os.path.splitext(os.path.basename(args.input_path))[0]) + '1.circle'
         circle_quantizer_cmd.append(tmp_output_path_1)
         # profiling
-        if _utils._is_valid_attr(args, 'profiling_data_gen'):
-            circle_quantizer_cmd.append('--profiling_data_gen')
+        if _utils._is_valid_attr(args, 'generate_profile_data'):
+            circle_quantizer_cmd.append('--generate_profile_data')
 
         f.write((' '.join(circle_quantizer_cmd) + '\n').encode())
 
@@ -214,8 +217,8 @@ def _quantize(args):
         if _utils._is_valid_attr(args, 'output_path'):
             circle_quantizer_cmd.append(getattr(args, 'output_path'))
         # profiling
-        if _utils._is_valid_attr(args, 'profiling_data_gen'):
-            circle_quantizer_cmd.append('--profiling_data_gen')
+        if _utils._is_valid_attr(args, 'generate_profile_data'):
+            circle_quantizer_cmd.append('--generate_profile_data')
 
         f.write((' '.join(circle_quantizer_cmd) + '\n').encode())
 

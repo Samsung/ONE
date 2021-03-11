@@ -170,7 +170,7 @@ Current transformation options are
   Note that this pass can change the execution result of the model.
   So, use it only when the impact is known to be acceptable.
 - mute_warnings : This will turn off warning messages.
-- profiling_data_gen : This will turn on profiling data generation.
+- generate_profile_data : This will turn on profiling data generation.
 - remove_redundant_reshape : This fuses or removes redundant reshape operators.
 - remove_redundant_transpose : This fuses or removes redundant transpose operators.
 - remove_unnecessary_reshape : This removes unnecessary reshape operators.
