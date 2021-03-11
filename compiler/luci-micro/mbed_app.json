@@ -1,0 +1,7 @@
+{
+    "target_overrides": {
+        "NUCLEO_F767ZI": {
+            "platform.stdio-baud-rate": 9600
+        }
+    }
+}

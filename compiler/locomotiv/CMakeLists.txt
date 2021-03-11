@@ -13,8 +13,9 @@ target_link_libraries(locomotiv PRIVATE stdex)
 #
 # NOTE This will enable strict compilation (warnings as error).
 #      Please refer to the top-level CMakeLists.txt for details
-target_link_libraries(locomotiv PRIVATE nncc_common)
-
+if(NOT LUCI_MICRO)
+  target_link_libraries(locomotiv PRIVATE nncc_common)
+endif(NOT LUCI_MICRO)
 if(NOT ENABLE_TEST)
   return()
 endif(NOT ENABLE_TEST)

@@ -11,8 +11,10 @@ target_link_libraries(loco PRIVATE stdex)
 #
 # NOTE This will enable strict compilation (warnings as error).
 #      Please refer to the top-level CMakeLists.txt for details
-target_link_libraries(loco PRIVATE nncc_common)
-target_link_libraries(loco PUBLIC nncc_coverage)
+if(NOT LUCI_MICRO)
+	target_link_libraries(loco PRIVATE nncc_common)
+	target_link_libraries(loco PUBLIC nncc_coverage)
+endif(NOT LUCI_MICRO)
 # Q. HOW TO MAKE DEV PACKAGE(?)
 install(TARGETS loco DESTINATION lib)
 
