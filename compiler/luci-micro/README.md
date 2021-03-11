@@ -1,7 +1,8 @@
-0. install  mbed-cli https://os.mbed.com/docs/mbed-os/v6.8/build-tools/install-and-set-up.html
-1. ```bash
+install  mbed-cli https://os.mbed.com/docs/mbed-os/v6.8/build-tools/install-and-set-up.html
+```bash
 mbed deploy
 ```
-2. ```bash
+ 
+```bash
 mbed compile --source . -m DISCO_F746NG -t GCC_ARM --profile release.json --flash
 ```
