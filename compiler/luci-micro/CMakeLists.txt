@@ -61,10 +61,20 @@ SET(GCC_COVERAGE_LINK_FLAGS    "")
 SET(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}")
 SET(CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} ${GCC_COVERAGE_LINK_FLAGS}")
 
+
+
+include_directories(PUBLIC ${LIB_PATH})
+include_directories(PUBLIC ${LIB_PATH}/angkor/include)
+include_directories(PUBLIC ${LIB_PATH}/oops/include)
 include_directories(PUBLIC ${LIB_PATH}/resources)
 include_directories(PUBLIC ${LIB_PATH}/third_party/flatbuffers/include)
 include_directories(PUBLIC ${LIB_PATH}/third_party)
 include_directories(PUBLIC ${LIB_PATH}/luci/log/include)
+include_directories(PUBLIC ${LIB_PATH}/luci)
+include_directories(PUBLIC ${LIB_PATH}/luci-interpreter/include)
+include_directories(PUBLIC ${LIB_PATH}/luci-interpreter/src)
+include_directories(PUBLIC ${LIB_PATH}/luci/lang/include)
+include_directories(PUBLIC ${LIB_PATH}/loco/include)
 
 
 
@@ -109,7 +119,11 @@ target_link_libraries(${APP_TARGET} luci_import)
 target_link_libraries(${APP_TARGET} luci_env)
 
 mbed_set_post_build(${APP_TARGET})
+file(GLOB_RECURSE LUCI_INTERPRETER_SOURCES "${LIB_PATH}/luci-interpreter/src/*.cpp")
+file(GLOB_RECURSE LUCI_INTERPRETER_TESTS "${LIB_PATH}/luci-interpreter/src/*.test.cpp")
+list(REMOVE_ITEM ${LUCI_INTERPRETER_SOURCES} ${LUCI_INTERPRETER_TESTS})
 
+add_library(luci_interpreter SHARED ${LUCI_INTERPRETER_SOURCES})
 option(VERBOSE_BUILD "Have a verbose build process")
 if(VERBOSE_BUILD)
     set(CMAKE_VERBOSE_MAKEFILE ON)

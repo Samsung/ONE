@@ -12,10 +12,11 @@ shutil.copytree('../angkor', './lib/angkor', dirs_exist_ok=True)
 shutil.copytree('../luci/lang', './lib/luci/lang', dirs_exist_ok=True)
 shutil.copytree('../luci/import', './lib/luci/import', dirs_exist_ok=True)
 shutil.copytree('../luci/env', './lib/luci/env', dirs_exist_ok=True)
+
 # shutil.copytree('../luci/log', './lib/luci/log', dirs_exist_ok=True)
 
 # shutil.copytree('../mio-circle', './lib/mio-circle', dirs_exist_ok=True)
-
+shutil.copytree('./profiles/mbed-os', './mbed-os', dirs_exist_ok=True)
 # pattern  = r"target_link_libraries\(.+ (nncc_common|nncc_coverage)\)"
 # for libname in ['locomotiv', 'angkor', 'loco']:
 # 	filename = f'./lib/{libname}/CMakeLists.txt'
