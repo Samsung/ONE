@@ -34,6 +34,15 @@ def _get_parser():
 
     _utils._add_default_arg(parser)
 
+    ## utility arguments
+    utility_group = parser.add_argument_group('arguments for utility')
+
+    utility_group.add_argument(
+        '-p',
+        '--generate_profile_data',
+        action='store_true',
+        help='generate profiling data')
+
     ## circle2circle arguments
     circle2circle_group = parser.add_argument_group('arguments for optimization')
 
