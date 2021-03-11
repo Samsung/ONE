@@ -18,15 +18,15 @@
 
 #include "core\KernelParams.h"
 #include "kernels/Add.h"
-#include "kernels/AveragePool2D.h"
-#include "kernels/Concatenation.h"
+// #include "kernels/AveragePool2D.h"
+// #include "kernels/Concatenation.h"
 #include "kernels/Conv2D.h"
 #include "kernels/DepthwiseConv2D.h"
 #include "kernels/FullyConnected.h"
 #include "kernels/MaxPool2D.h"
-#include "kernels/Mul.h"
-#include "kernels/Reshape.h"
-#include "kernels/Softmax.h"
+// #include "kernels/Mul.h"
+// #include "kernels/Reshape.h"
+// #include "kernels/Softmax.h"
 
 #include <stdexcept>
 
@@ -47,38 +47,38 @@ namespace luci_interpreter
     return std::make_unique<kernels::Add>(input1, input2, output, params);
   }
 
-  std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleAveragePool2D *node)
-  {
-    assert(node->arity() == 1);
+  // std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleAveragePool2D *node)
+  // {
+  //   assert(node->arity() == 1);
 
-    const Tensor *input = getInputTensor(node->value());
-    Tensor *output = getOutputTensor(node);
+  //   const Tensor *input = getInputTensor(node->value());
+  //   Tensor *output = getOutputTensor(node);
 
-    Pool2DParams params{};
-    params.padding = node->padding();
-    params.filter_height = node->filter()->h();
-    params.filter_width = node->filter()->w();
-    params.stride_height = node->stride()->h();
-    params.stride_width = node->stride()->w();
-    params.activation = node->fusedActivationFunction();
+  //   Pool2DParams params{};
+  //   params.padding = node->padding();
+  //   params.filter_height = node->filter()->h();
+  //   params.filter_width = node->filter()->w();
+  //   params.stride_height = node->stride()->h();
+  //   params.stride_width = node->stride()->w();
+  //   params.activation = node->fusedActivationFunction();
 
-    return std::make_unique<kernels::AveragePool2D>(input, output, params);
-  }
+  //   return std::make_unique<kernels::AveragePool2D>(input, output, params);
+  // }
 
-  std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleConcatenation *node)
-  {
-    std::vector<const Tensor *> inputs(node->numValues());
-    for (uint32_t i = 0; i < node->numValues(); ++i)
-    {
-      inputs[i] = getInputTensor(node->values(i));
-    }
-    Tensor *output = getOutputTensor(node);
+  // std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleConcatenation *node)
+  // {
+  //   std::vector<const Tensor *> inputs(node->numValues());
+  //   for (uint32_t i = 0; i < node->numValues(); ++i)
+  //   {
+  //     inputs[i] = getInputTensor(node->values(i));
+  //   }
+  //   Tensor *output = getOutputTensor(node);
 
-    ConcatenationParams params{};
-    params.axis = node->axis();
+  //   ConcatenationParams params{};
+  //   params.axis = node->axis();
 
-    return std::make_unique<kernels::Concatenation>(inputs, output, params);
-  }
+  //   return std::make_unique<kernels::Concatenation>(inputs, output, params);
+  // }
 
   std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleConst *)
   {
@@ -166,51 +166,51 @@ namespace luci_interpreter
     return std::make_unique<kernels::MaxPool2D>(input, output, params);
   }
 
-  std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleMul *node)
-  {
-    assert(node->arity() == 2);
+  // std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleMul *node)
+  // {
+  //   assert(node->arity() == 2);
 
-    const Tensor *input1 = getInputTensor(node->x());
-    const Tensor *input2 = getInputTensor(node->y());
-    Tensor *output = getOutputTensor(node);
+  //   const Tensor *input1 = getInputTensor(node->x());
+  //   const Tensor *input2 = getInputTensor(node->y());
+  //   Tensor *output = getOutputTensor(node);
 
-    MulParams params{};
-    params.activation = node->fusedActivationFunction();
+  //   MulParams params{};
+  //   params.activation = node->fusedActivationFunction();
 
-    return std::make_unique<kernels::Mul>(input1, input2, output, params);
-  }
+  //   return std::make_unique<kernels::Mul>(input1, input2, output, params);
+  // }
 
   std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleOutput *)
   {
     throw std::runtime_error("Output node cannot be executed.");
   }
 
-  std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleReshape *node)
-  {
-    assert(node->arity() == 2);
+  // std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleReshape *node)
+  // {
+  //   assert(node->arity() == 2);
 
-    if (dynamic_cast<const luci::CircleConst *>(node->shape()) == nullptr)
-      throw std::runtime_error("Dynamic shape is not yet supported.");
+  //   if (dynamic_cast<const luci::CircleConst *>(node->shape()) == nullptr)
+  //     throw std::runtime_error("Dynamic shape is not yet supported.");
 
-    const Tensor *input = getInputTensor(node->tensor());
-    const Tensor *shape = getInputTensor(node->shape());
-    Tensor *output = getOutputTensor(node);
+  //   const Tensor *input = getInputTensor(node->tensor());
+  //   const Tensor *shape = getInputTensor(node->shape());
+  //   Tensor *output = getOutputTensor(node);
 
-    // NOTE 'newShape' attribute is ignored.
-    return std::make_unique<kernels::Reshape>(input, shape, output);
-  }
+  //   // NOTE 'newShape' attribute is ignored.
+  //   return std::make_unique<kernels::Reshape>(input, shape, output);
+  // }
 
-  std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleSoftmax *node)
-  {
-    assert(node->arity() == 1);
+  // std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleSoftmax *node)
+  // {
+  //   assert(node->arity() == 1);
 
-    const Tensor *input = getInputTensor(node->logits());
-    Tensor *output = getOutputTensor(node);
+  //   const Tensor *input = getInputTensor(node->logits());
+  //   Tensor *output = getOutputTensor(node);
 
-    SoftmaxParams params{};
-    params.beta = node->beta();
+  //   SoftmaxParams params{};
+  //   params.beta = node->beta();
 
-    return std::make_unique<kernels::Softmax>(input, output, params);
-  }
+  //   return std::make_unique<kernels::Softmax>(input, output, params);
+  // }
 
 } // namespace luci_interpreter

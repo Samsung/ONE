@@ -33,18 +33,18 @@ namespace luci_interpreter
     explicit KernelBuilder(TensorMap &tensor_map) : _tensor_map(tensor_map) {}
 
     std::unique_ptr<Kernel> visit(const luci::CircleAdd *node) override;
-    std::unique_ptr<Kernel> visit(const luci::CircleAveragePool2D *node) override;
-    std::unique_ptr<Kernel> visit(const luci::CircleConcatenation *node) override;
+    // std::unique_ptr<Kernel> visit(const luci::CircleAveragePool2D *node) override;
+    // std::unique_ptr<Kernel> visit(const luci::CircleConcatenation *node) override;
     std::unique_ptr<Kernel> visit(const luci::CircleConv2D *node) override;
     std::unique_ptr<Kernel> visit(const luci::CircleConst *node) override;
     std::unique_ptr<Kernel> visit(const luci::CircleDepthwiseConv2D *node) override;
     std::unique_ptr<Kernel> visit(const luci::CircleFullyConnected *node) override;
     std::unique_ptr<Kernel> visit(const luci::CircleInput *node) override;
     std::unique_ptr<Kernel> visit(const luci::CircleMaxPool2D *node) override;
-    std::unique_ptr<Kernel> visit(const luci::CircleMul *node) override;
+    // std::unique_ptr<Kernel> visit(const luci::CircleMul *node) override;
     std::unique_ptr<Kernel> visit(const luci::CircleOutput *node) override;
-    std::unique_ptr<Kernel> visit(const luci::CircleReshape *node) override;
-    std::unique_ptr<Kernel> visit(const luci::CircleSoftmax *node) override;
+    // std::unique_ptr<Kernel> visit(const luci::CircleReshape *node) override;
+    // std::unique_ptr<Kernel> visit(const luci::CircleSoftmax *node) override;
 
   private:
     const Tensor *getInputTensor(const loco::Node *node) const
