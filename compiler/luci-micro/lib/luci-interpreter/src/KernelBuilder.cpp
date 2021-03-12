@@ -16,7 +16,7 @@
 
 #include "KernelBuilder.h"
 
-#include "core\KernelParams.h"
+#include "core/KernelParams.h"
 #include "kernels/Add.h"
 // #include "kernels/AveragePool2D.h"
 // #include "kernels/Concatenation.h"

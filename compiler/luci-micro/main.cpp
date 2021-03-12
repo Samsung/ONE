@@ -3,13 +3,13 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 #include <luci_interpreter/Interpreter.h>
-#include <lib\import\include\luci\Importer.h>
+#include <lib/import/include/luci/Importer.h>
 #include <luci/IR/Module.h>
 #include <loco/IR/DataTypeTraits.h>
 #include "mbed.h"
 #include <iostream>
 #include "circlemodel.h"
-#include "resources\mio\circle\schema_generated.h"
+#include "resources/mio/circle/schema_generated.h"
 // #include "stdex/Memory.h"
 extern "C" void __sync_synchronize() {}
 
