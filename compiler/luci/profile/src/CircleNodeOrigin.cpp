@@ -146,6 +146,8 @@ bool has_origin(const luci::CircleNode *circle_node)
 
 /**
  * @brief 'origin' is added to the existing origin of circle_node.
+ * @note  If 'origin' is nullptr, nothing is changed.
+ *        For more detail, please refer to CompositeOrigin constructor.
  */
 void add_origin(luci::CircleNode *circle_node, const std::shared_ptr<CircleNodeOrigin> origin)
 {
