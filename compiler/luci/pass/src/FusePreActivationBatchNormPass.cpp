@@ -466,10 +466,12 @@ bool fuse_mul_with_conv(luci::CircleMul *mul)
 
       // Update origin
       // TODO need to remove const
-      luci::add_origin(const_cast<luci::CircleConv2D *>(conv), luci::get_origin(mul));
+      luci::add_origin(const_cast<luci::CircleConv2D *>(conv),
+                       luci::get_origin(loco::must_cast<luci::CircleNode *>(s)));
     }
 
     loco::replace(mul).with(pred_node);
+    luci::add_origin(pred_node, get_origin(mul));
     relu->features(pred_node);
 
     mul->drop();

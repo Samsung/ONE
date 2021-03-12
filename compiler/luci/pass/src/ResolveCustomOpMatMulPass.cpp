@@ -147,6 +147,7 @@ bool resolve_matmul(luci::CircleCustom *cop)
     transpose_node->a(rhs);
     transpose_node->perm(perm_node);
     transpose_node->name(name + "/rhs/Transpose");
+    luci::add_origin(transpose_node, luci::get_origin(cop));
     rhs = transpose_node;
   }
 
