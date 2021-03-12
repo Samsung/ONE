@@ -17,6 +17,7 @@
 #include "luci/Pass/FoldDequantizePass.h"
 
 #include <luci/IR/CircleNodes.h>
+#include <luci/Profile/CircleNodeOrigin.h>
 
 #include <loco/Service/TypeInference.h>
 
@@ -195,6 +196,8 @@ bool FoldDequantizePass::run(loco::Graph *g)
             if (replace_const_node(const_node_user, const_node))
             {
               loco::replace(dequant).with(const_node_user);
+              luci::add_origin(loco::must_cast<luci::CircleNode *>(const_node_user),
+                               luci::get_origin(dequant));
               changed = true;
             }
           }

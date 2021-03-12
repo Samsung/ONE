@@ -19,6 +19,7 @@
 
 #include <luci/IR/CircleNodes.h>
 #include <luci/IR/CircleNodeVisitor.h>
+#include <luci/Profile/CircleNodeOrigin.h>
 #include <luci/Log.h>
 
 #include <loco/Service/ShapeInference.h>
@@ -102,6 +103,7 @@ luci::CircleTranspose *create_4d_transpose(luci::CircleNode *node,
   auto trans = node->graph()->nodes()->create<luci::CircleTranspose>();
   trans->perm(perm);
   trans->name(name + "/Transpose_" + str_indices);
+  luci::add_origin(trans, luci::get_origin(node));
 
   return trans;
 }

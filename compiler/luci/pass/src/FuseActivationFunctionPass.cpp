@@ -19,6 +19,7 @@
 #include <luci/IR/CircleNodes.h>
 #include <luci/IR/CircleNodeMixins.h>
 #include <luci/IR/CircleOpcode.h>
+#include <luci/Profile/CircleNodeOrigin.h>
 
 namespace luci
 {
@@ -82,6 +83,7 @@ bool fuse_activation_function(luci::CircleNode *node)
     return false;
 
   node_with_fused_act->fusedActivationFunction(target_func);
+  luci::add_origin(pred_node, luci::get_origin(node));
   loco::replace(node).with(pred_node);
 
   node->drop();
