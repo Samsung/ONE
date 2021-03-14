@@ -144,13 +144,16 @@ bool has_origin(const luci::CircleNode *circle_node)
   return circle_node->annot<CircleNodeOriginAnnotation>() != nullptr;
 }
 
+/**
+ * @brief 'origin' is added to the existing origin of circle_node.
+ * @note  If 'origin' is nullptr, nothing is changed.
+ *        For more detail, please refer to CompositeOrigin constructor.
+ */
 void add_origin(luci::CircleNode *circle_node, const std::shared_ptr<CircleNodeOrigin> origin)
 {
-  if (origin == nullptr)
-    return;
-
+  auto new_origin = composite_origin({get_origin(circle_node), origin});
   circle_node->annot<CircleNodeOriginAnnotation>(nullptr);
-  circle_node->annot(std::make_unique<CircleNodeOriginAnnotation>(origin));
+  circle_node->annot(std::make_unique<CircleNodeOriginAnnotation>(new_origin));
 }
 
 const std::shared_ptr<luci::CircleNodeOrigin> get_origin(const luci::CircleNode *circle_node)
