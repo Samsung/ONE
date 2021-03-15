@@ -593,6 +593,7 @@ void fuse_instance_norm(const InstanceNormPattern &p)
   }
   if (p.version() == InstanceNormPattern::PatternVersion::Version_2)
   {
+    origin_vec.push_back(luci::get_origin(p.mean_of_ifm));
     origin_vec.push_back(luci::get_origin(p.pow));
     origin_vec.push_back(luci::get_origin(p.div));
   }

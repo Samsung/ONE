@@ -173,6 +173,7 @@ bool fused_batch_norm_with_tconv(luci::CircleAdd *add)
     auto relu = add->graph()->nodes()->create<luci::CircleRelu6>();
     relu->features(fused_tconv);
     relu->name(name + "/Relu6");
+    luci::add_origin(relu, luci::get_origin(add));
 
     replace(add).with(relu);
   }
