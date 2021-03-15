@@ -34,7 +34,7 @@ public:
   BuiltinOperator visit(const CircleRsqrt *) final { return BuiltinOperator_RSQRT; }
   BuiltinOperator visit(const CircleSqrt *) final { return BuiltinOperator_SQRT; }
 
-  // NOTE only buildin operators should be called (NOT virtual nodes)
+  // NOTE only builtin operators should be called (NOT virtual nodes)
 };
 
 } // namespace
