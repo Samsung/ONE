@@ -43,6 +43,7 @@
 #include "luci/Pass/ResolveCustomOpBatchMatMulPass.h"
 #include "luci/Pass/ResolveCustomOpMatMulPass.h"
 #include "luci/Pass/RequantizePass.h"
+#include "luci/Pass/QuantizedModelVerifyPass.h"
 #include "luci/Pass/QuantizeWithMinMaxPass.h"
 #include "luci/Pass/QuantizeDequantizeWeightsPass.h"
 #include "luci/Pass/SparsifyTensorPass.h"
@@ -378,6 +379,11 @@ void CircleOptimizer::quantize(loco::Graph *g) const
     logo::PhaseRunner<logo::PhaseStrategy::Saturate> phase_runner{g};
     phase_runner.attach(&prog);
     phase_runner.run(phase);
+
+    // Verify the type/granularity of the quantized model
+    luci::QuantizedModelVerifyPass verifier(str_to_dtype(output_dtype),
+                                            str_to_granularity(granularity));
+    verifier.run(g);
   }
 
   // Requantize
