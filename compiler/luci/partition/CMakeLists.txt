@@ -1,0 +1,24 @@
+file(GLOB_RECURSE SOURCES "src/*.cpp")
+file(GLOB_RECURSE TESTS "src/*.test.cpp")
+list(REMOVE_ITEM SOURCES ${TESTS})
+
+add_library(luci_partition SHARED ${SOURCES})
+target_include_directories(luci_partition PRIVATE src)
+target_include_directories(luci_partition PUBLIC include)
+target_link_libraries(luci_partition PUBLIC luci_lang)
+target_link_libraries(luci_partition PRIVATE luci_log)
+target_link_libraries(luci_partition PRIVATE luci_logex)
+target_link_libraries(luci_partition PRIVATE mio_circle)
+
+install(TARGETS luci_partition DESTINATION lib)
+
+if(NOT ENABLE_TEST)
+  return()
+endif(NOT ENABLE_TEST)
+
+nnas_find_package(GTest REQUIRED)
+
+GTest_AddTest(luci_partition_test ${TESTS})
+target_include_directories(luci_partition_test PRIVATE src)
+target_link_libraries(luci_partition_test luci_lang)
+target_link_libraries(luci_partition_test luci_partition)
