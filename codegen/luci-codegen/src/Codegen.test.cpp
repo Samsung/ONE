@@ -180,3 +180,33 @@ TEST_F(CodegenTest, no_scheduler_regression_test)
   fs::remove(tmp_dir_path / (compiled_subgraphs[0].get_name() + ".o"));
   fs::remove(tmp_dir_path);
 }
+
+TEST_F(CodegenTest, no_compilation_for_constant_graphs_regression)
+{
+  constexpr auto dtype = loco::DataType::FLOAT32;
+  std::vector<int> shape = {2, 2};
+
+  luci::Module module;
+  std::unique_ptr<loco::Graph> graph = std::make_unique<loco::Graph>();
+
+  auto *in = graph->nodes()->create<luci::CircleConst>();
+  constructBasicNode<dtype>(*in, shape);
+  auto *add = graph->nodes()->create<luci::CircleAdd>();
+  constructBasicNode<dtype>(*add, shape);
+  auto *out = graph->nodes()->create<luci::CircleOutput>();
+  constructBasicNode<dtype>(*out, shape);
+  out->index(graph->outputs()->create()->index());
+
+  module.add(std::move(graph));
+
+  add->x(in);
+  add->y(in);
+  out->from(add);
+
+  luci_codegen::Codegen codegen;
+  codegen.process_module(module);
+
+  auto &compiled_subgraphs = get_compiled_subgraphs(codegen);
+
+  ASSERT_EQ(compiled_subgraphs.size(), 0);
+}

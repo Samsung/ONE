@@ -104,6 +104,25 @@ std::vector<luci::CircleNode *> Codegen::gather_suitable_nodes(luci::CircleNode 
   return subgraph_nodes;
 }
 
+std::unordered_set<loco::Node *> Codegen::gather_input_nodes(const std::unordered_set<loco::Node *> &nodes)
+{
+  std::unordered_set<loco::Node *> inputs;
+  for (auto *node : nodes)
+  {
+    for (int i = 0; i < node->arity(); ++i)
+    {
+      loco::Node *prev = node->arg(i);
+      // We do not care if same input will be inserted several times, so no checks for this
+      // only first appearance will take effect
+      if (nodes.count(prev) == 0)
+      {
+        inputs.insert(prev);
+      }
+    }
+  }
+  return inputs;
+}
+
 /**
  * This function checks if there are no forbidden paths through graphs,
  * so after replacement of compiled subgraph generated node will be dependent from itself
@@ -115,20 +134,7 @@ bool Codegen::has_self_dependency_subgraph(const std::vector<luci::CircleNode *>
   std::unordered_set<loco::Node *> belong_to_subgraph;
   belong_to_subgraph.insert(nodes.begin(), nodes.end());
   // gather input nodes
-  std::unordered_set<loco::Node *> inputs;
-  for (auto *node : nodes)
-  {
-    for (int i = 0; i < node->arity(); ++i)
-    {
-      loco::Node *prev = node->arg(i);
-      // We do not care if same input will be inserted several times, so no checks for this
-      // only first appearance will take effect
-      if (belong_to_subgraph.count(prev) == 0)
-      {
-        inputs.insert(prev);
-      }
-    }
-  }
+  std::unordered_set<loco::Node *> inputs = gather_input_nodes(belong_to_subgraph);
   // gather successors of input nodes and constants belonging subgraph
   std::queue<loco::Node *> queue;
   std::unordered_set<loco::Node *> visited;
@@ -176,7 +182,7 @@ bool Codegen::has_self_dependency_subgraph(const std::vector<luci::CircleNode *>
   return false;
 }
 
-// check if we can compile found subgraph and remove redundant nodes
+// Check if we can compile found subgraph and remove redundant nodes
 // Example of problematic subgraph:
 // C - compilable node
 // N - not compilable node
@@ -193,6 +199,12 @@ bool Codegen::has_self_dependency_subgraph(const std::vector<luci::CircleNode *>
 std::vector<std::vector<luci::CircleNode *>>
 Codegen::extract_subgraphs(const std::vector<luci::CircleNode *> &nodes) const
 {
+  std::unordered_set<loco::Node *> belong_to_subgraph;
+  belong_to_subgraph.insert(nodes.begin(), nodes.end());
+  // Do not have any inputs, nodes set represents some constant subgraph
+  if (gather_input_nodes(belong_to_subgraph).size() == 0)
+    return {};
+  // Can not compile whole graph, conservatively skip it
   if (has_self_dependency_subgraph(nodes))
     return {};
   return {nodes};

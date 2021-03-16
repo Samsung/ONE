@@ -53,6 +53,8 @@ private:
 
   std::vector<luci::CircleNode *> gather_suitable_nodes(luci::CircleNode *node);
 
+  static std::unordered_set<loco::Node *> gather_input_nodes(const std::unordered_set<loco::Node *> &nodes);
+
   static bool has_self_dependency_subgraph(const std::vector<luci::CircleNode *> &nodes);
 
   std::vector<std::vector<luci::CircleNode *>>
