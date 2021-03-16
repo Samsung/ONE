@@ -216,6 +216,7 @@ void Codegen::replace_subgraph_with_generated_node(SubgraphContext *subgraph) co
 
   auto compiled_node = graph->nodes()->create<luci::CircleCustom>(num_inputs, num_outputs);
   compiled_node->custom_code("COMPILED_OP");
+  compiled_node->name(subgraph->get_name());
 
   auto options = create_custom_options(subgraph->get_name());
   compiled_node->custom_options(options);
@@ -235,6 +236,7 @@ void Codegen::replace_subgraph_with_generated_node(SubgraphContext *subgraph) co
     custom_output->index(i);
     custom_output->dtype(output.first->dtype());
     custom_output->shape_status(output.first->shape_status());
+    custom_output->name(subgraph->get_name() + "_out_" + std::to_string(i));
 
     // copy shape
     uint32_t rank = output.first->rank();
