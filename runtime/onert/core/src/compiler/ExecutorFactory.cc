@@ -420,6 +420,10 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lo
 
   auto code_map = builder.releaseCodeMap();
 
+  // Deref all graph data as LoweredGraph is no longer useful
+  lowered_graph->graph().operands().iterate(
+    [&](const ir::OperandIndex &, ir::Operand &obj) { obj.releaseData(); });
+
   auto exec = new exec::LinearExecutor{
     std::move(lowered_graph), std::move(backend_contexts), tensor_regs, std::move(code_map), order,
     options.tracing_ctx};
