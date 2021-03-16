@@ -118,23 +118,17 @@ void BackendManager::loadBackend(const std::string &backend)
   }
 
   // Save backend handle (avoid warning by handle lost without dlclose())
-
-  // NOTE This is a workaround for clang-format3.9 (seems like it does not understand
-  //      "by-copy capture with an initializer"
-  // clang-format off
   auto u_handle = std::unique_ptr<void, dlhandle_destroy_t>{
-      handle, [id = backend, filename = backend_so](void *h) {
-        if (dlclose(h) == 0)
-        {
-          VERBOSE(BackendManager) << "Successfully unloaded '" << id << "'(" << filename << ")\n";
-        }
-        else
-        {
-          VERBOSE(BackendManager)
-              << "Failed to unload backend '" << id << "'- " << dlerror() << "\n";
-        }
-      }};
-  // clang-format on
+    handle, [id = backend, filename = backend_so](void *h) {
+      if (dlclose(h) == 0)
+      {
+        VERBOSE(BackendManager) << "Successfully unloaded '" << id << "'(" << filename << ")\n";
+      }
+      else
+      {
+        VERBOSE(BackendManager) << "Failed to unload backend '" << id << "'- " << dlerror() << "\n";
+      }
+    }};
   _handle_map.emplace(backend, std::move(u_handle));
 }
 
