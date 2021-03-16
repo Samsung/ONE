@@ -20,8 +20,10 @@
 #include <luci/IR/AttrPadding.h>
 #include <luci/IR/AttrFusedActFunc.h>
 #include <luci_interpreter/core/DataType.h>
+#include <luci_interpreter/core/Tensor.h>
 
 #include <cstdint>
+#include <functional>
 #include <vector>
 
 namespace luci_interpreter
@@ -178,6 +180,28 @@ struct TransposeConvParams
 struct UnpackParams
 {
   int axis;
+};
+
+// Compiled Func parameters
+
+using CompiledFuncWrapper = int (*)(char *, void **);
+
+struct ConfiguredCompiledFunc
+{
+  CompiledFuncWrapper wrapper;
+  char *configuration;
+};
+
+using ConstructorCompiledFunc = ConfiguredCompiledFunc (*)(int ranks[], int *dims[]);
+
+using DestructorCompiledFunc = void (*)(ConfiguredCompiledFunc *func);
+
+struct CompiledParams
+{
+  ConstructorCompiledFunc constructor;
+  DestructorCompiledFunc destructor;
+  std::vector<luci_interpreter::Shape> input_shapes;
+  std::vector<luci_interpreter::Shape> output_shapes;
 };
 
 } // namespace luci_interpreter

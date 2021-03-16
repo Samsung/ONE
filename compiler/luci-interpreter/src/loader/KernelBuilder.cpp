@@ -19,6 +19,7 @@
 #include "kernels/Add.h"
 #include "kernels/ArgMax.h"
 #include "kernels/AveragePool2D.h"
+#include "kernels/Compiled.h"
 #include "kernels/Concatenation.h"
 #include "kernels/Conv2D.h"
 #include "kernels/DepthToSpace.h"
@@ -75,7 +76,13 @@
 #include "kernels/Transpose.h"
 #include "kernels/TransposeConv.h"
 
+#include "flatbuffers/flexbuffers.h"
+
 #include <stdexcept>
+
+#include <dlfcn.h>
+
+#include <iostream>
 
 namespace luci_interpreter
 {
@@ -199,6 +206,67 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleConcatenation *no
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleConst *)
 {
   throw std::runtime_error("Const node cannot be executed.");
+}
+
+static std::vector<luci_interpreter::Shape>
+get_nodes_shapes(const std::vector<const loco::Node *> &nodes)
+{
+  std::vector<luci_interpreter::Shape> shapes;
+  for (int i = 0; i < nodes.size(); ++i)
+  {
+    auto out_node = static_cast<const luci::CircleNode *>(nodes[i]);
+    luci_interpreter::Shape out_shape(out_node->rank());
+    for (int j = 0; j < out_node->rank(); ++j)
+    {
+      assert(out_node->dim(j).known());
+      out_shape.dim(j) = out_node->dim(j).value();
+    }
+    shapes.emplace_back(std::move(out_shape));
+  }
+  return shapes;
+}
+
+static std::pair<ConstructorCompiledFunc, DestructorCompiledFunc>
+get_compiled_function_handles(const luci::CircleCustom *node)
+{
+  const auto &options_buffer = node->custom_options();
+  auto options_map = flexbuffers::GetRoot(options_buffer).AsMap();
+  std::string base_func_name = options_map["func_name"].AsString().str();
+  auto cst_func_name = "create_" + base_func_name;
+  auto dest_func_name = "free_" + base_func_name;
+
+  auto handle = dlopen("libcompiled.so", RTLD_LAZY);
+  if (!handle)
+  {
+    std::cerr << dlerror();
+    exit(EXIT_FAILURE);
+  }
+
+  auto constructor =
+    reinterpret_cast<ConstructorCompiledFunc>(dlsym(handle, cst_func_name.c_str()));
+  auto destructor = reinterpret_cast<DestructorCompiledFunc>(dlsym(handle, dest_func_name.c_str()));
+
+  return {constructor, destructor};
+}
+
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleCustom *node)
+{
+  std::vector<const Tensor *> inputs(node->numInputs());
+  std::vector<const loco::Node *> input_nodes(node->numInputs());
+  for (uint32_t i = 0; i < node->numInputs(); ++i)
+  {
+    inputs[i] = getInputTensor(node->inputs(i));
+    input_nodes[i] = node->inputs(i);
+  }
+  std::vector<const loco::Node *> output_nodes = collectOutputNodes<luci::CircleCustomOut>(node);
+  std::vector<Tensor *> outputs = getOutputTensors(output_nodes);
+
+  auto handles = get_compiled_function_handles(node);
+  auto input_shapes = get_nodes_shapes(input_nodes);
+  auto output_shapes = get_nodes_shapes(output_nodes);
+  CompiledParams params{handles.first, handles.second, input_shapes, output_shapes};
+
+  return std::make_unique<kernels::Compiled>(std::move(inputs), std::move(outputs), params);
 }
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleConv2D *node)

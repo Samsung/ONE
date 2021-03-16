@@ -78,6 +78,7 @@ bool isExecutableNode(const luci::CircleNode *node)
     case luci::CircleOpcode::CIRCLEOUTPUT:
     case luci::CircleOpcode::CIRCLEOUTPUTEXCLUDE:
     // The following nodes denote outputs of multiple-output nodes.
+    case luci::CircleOpcode::CIRCLECUSTOMOUT:
     case luci::CircleOpcode::CIRCLEIFOUT:
     case luci::CircleOpcode::CIRCLESPLITOUT:
     case luci::CircleOpcode::CIRCLEUNPACKOUT:
@@ -95,6 +96,7 @@ bool isTensorProducingNode(const luci::CircleNode *node)
     case luci::CircleOpcode::CIRCLEOUTPUT:
     // The following nodes are multiple-output nodes. They do not produce tensors, the tensors
     // are produced by the corresponding *Out nodes instead.
+    case luci::CircleOpcode::CUSTOM:
     case luci::CircleOpcode::IF:
     case luci::CircleOpcode::SPLIT:
     case luci::CircleOpcode::UNPACK:
