@@ -21,13 +21,12 @@ add_library(luci_codegen SHARED ${SOURCES} ${HEADERS} ${WRAPPER_LIB})
 target_include_directories(luci_codegen PUBLIC "${LUCI_CODEGEN_INCLUDE_DIR}")
 target_include_directories(luci_codegen PRIVATE "${LUCI_CODEGEN_SOURCE_DIR}")
 target_include_directories(luci_codegen PRIVATE "${CMAKE_CURRENT_BINARY_DIR}")
-target_include_directories(luci_codegen PRIVATE ${Boost_INCLUDE_DIRS})
 
 target_link_libraries(luci_codegen PUBLIC luci_lang)
 target_link_libraries(luci_codegen PRIVATE nncc_common)
 target_link_libraries(luci_codegen PRIVATE Halide::Halide)
 target_link_libraries(luci_codegen PRIVATE flatbuffers)
-target_link_libraries(luci_codegen PRIVATE ${Boost_LIBRARIES})
+target_link_libraries(luci_codegen PRIVATE luci_codegen_filesystem)
 
 add_custom_command(OUTPUT ${WRAPPER_LIB}
         COMMAND python3 ${LUCI_CODEGEN_SUPPORT_DIR}/embed.py ${LUCI_CODEGEN_SUPPORT_DIR}/WrapperLib.h ${CMAKE_CURRENT_BINARY_DIR}/GeneratedWrapperLib.h wrapper_lib_source
@@ -42,13 +41,11 @@ set(DRIVER_SOURCE Driver.cpp)
 
 add_executable(native_compiler ${DRIVER_SOURCE})
 
-target_include_directories(native_compiler PRIVATE ${Boost_INCLUDE_DIRS})
-
 target_link_libraries(native_compiler PRIVATE luci_codegen)
 target_link_libraries(native_compiler PRIVATE luci_import)
 target_link_libraries(native_compiler PRIVATE luci_export)
 target_link_libraries(native_compiler PRIVATE arser)
-target_link_libraries(native_compiler PRIVATE ${Boost_LIBRARIES})
+target_link_libraries(native_compiler PRIVATE luci_codegen_filesystem)
 
 # tests
 

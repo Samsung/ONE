@@ -27,6 +27,8 @@
 // generated header, see CMakeLists.txt
 #include "GeneratedWrapperLib.h"
 
+#include <Filesystem.h>
+
 #include "Halide.h"
 
 #include "flatbuffers/flexbuffers.h"
@@ -34,8 +36,9 @@
 #include <map>
 #include <unordered_set>
 #include <algorithm>
-#include <boost/filesystem.hpp>
 #include <fstream>
+
+namespace fs = luci_codegen_filesystem;
 
 namespace
 {
@@ -391,9 +394,9 @@ void Codegen::emit_wrapper_library(std::string path, std::string func_name)
 void Codegen::emit_code(std::string target_dir)
 {
 
-  boost::filesystem::path package_path(target_dir);
+  fs::path package_path(target_dir);
 
-  if (boost::filesystem::exists(package_path) && !boost::filesystem::is_directory(package_path))
+  if (fs::exists(package_path) && !fs::is_directory(package_path))
   {
     throw std::runtime_error("Output path exists, but it is not directory");
   }
@@ -415,13 +418,13 @@ void Codegen::emit_code(std::string target_dir)
 
     std::map<Halide::Output, std::string> products;
 
-    boost::filesystem::path obj_name(subgraph.get_name() + ".o");
-    boost::filesystem::path header_name(subgraph.get_name() + ".h");
-    boost::filesystem::path wrapper_name(subgraph.get_name() + ".cpp");
+    fs::path obj_name(subgraph.get_name() + ".o");
+    fs::path header_name(subgraph.get_name() + ".h");
+    fs::path wrapper_name(subgraph.get_name() + ".cpp");
 
-    boost::filesystem::path obj_path = package_path / obj_name;
-    boost::filesystem::path header_path = package_path / header_name;
-    boost::filesystem::path wrapper_path = package_path / wrapper_name;
+    fs::path obj_path = package_path / obj_name;
+    fs::path header_path = package_path / header_name;
+    fs::path wrapper_path = package_path / wrapper_name;
     products[Halide::Output::object] = obj_path.string();
     products[Halide::Output::c_header] = header_path.string();
 

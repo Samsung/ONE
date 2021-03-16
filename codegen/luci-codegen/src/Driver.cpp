@@ -20,11 +20,13 @@
 #include "luci/CircleFileExpContract.h"
 #include "arser/arser.h"
 
-#include <boost/filesystem.hpp>
+#include <Filesystem.h>
 
 #include <iostream>
 #include <string>
 #include <unordered_map>
+
+namespace fs = luci_codegen_filesystem;
 
 // string constants
 static const std::string version = "0.1.0";
@@ -225,12 +227,12 @@ int main(int argc, char **argv)
   luci_codegen::Codegen codegen(options.codegen_options);
   codegen.process_module(*luci_module);
 
-  boost::filesystem::path output_package_dir(options.output_package_path);
-  if (!boost::filesystem::exists(output_package_dir))
+  fs::path output_package_dir(options.output_package_path);
+  if (!fs::exists(output_package_dir))
   {
-    boost::filesystem::create_directory(output_package_dir);
+    fs::create_directory(output_package_dir);
   }
-  boost::filesystem::path output_model_path = output_package_dir / "model.circle";
+  fs::path output_model_path = output_package_dir / "model.circle";
   luci::CircleExporter exporter;
   luci::CircleFileExpContract contract(luci_module.get(), output_model_path.string());
   exporter.invoke(&contract);
