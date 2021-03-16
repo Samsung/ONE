@@ -416,7 +416,11 @@ void Codegen::emit_code(std::string target_dir)
 
     Halide::Module module = pipeline.compile_to_module(arguments, subgraph.get_name(), target,
                                                        Halide::LinkageType::ExternalPlusMetadata);
-    module.set_auto_scheduler_results(subgraph.get_schedule());
+
+    if (subgraph.get_schedule() != nullptr)
+    {
+      module.set_auto_scheduler_results(*subgraph.get_schedule());
+    }
 
     std::map<Halide::Output, std::string> products;
 

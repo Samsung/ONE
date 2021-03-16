@@ -15,11 +15,17 @@
  */
 
 #include "Codegen.h"
+#include "SubgraphContext.h"
+#include "Filesystem.h"
 
 #include <luci/IR/Nodes/CircleInput.h>
 #include "luci/IR/CircleNodes.h"
 
 #include "gtest/gtest.h"
+
+#include <cstdlib>
+
+namespace fs = luci_codegen_filesystem;
 
 class CodegenTest : public ::testing::Test
 {
@@ -27,6 +33,11 @@ public:
   static bool has_self_dependency_subgraph(const std::vector<luci::CircleNode *> &nodes)
   {
     return luci_codegen::Codegen::has_self_dependency_subgraph(nodes);
+  }
+
+  static std::vector<luci_codegen::SubgraphContext> &get_compiled_subgraphs(luci_codegen::Codegen &c)
+  {
+    return c._compiled_subgraphs;
   }
 };
 
@@ -107,7 +118,9 @@ TEST_F(CodegenTest, self_dependency_subgraph_unsupported)
   luci::CircleAdd branch_add;
   constructBasicNode<dtype>(branch_add, shape);
 
-  luci::CircleCustom unsupported_node(1);
+  // this custom node does not have related CustomOut nodes, so this IR is incorrect
+  // but for purposes of this test it is not important
+  luci::CircleCustom unsupported_node(1, 1);
   constructBasicNode<dtype>(unsupported_node, shape);
 
   luci::CircleAdd sink;
@@ -122,4 +135,48 @@ TEST_F(CodegenTest, self_dependency_subgraph_unsupported)
   std::vector<luci::CircleNode *> nodes = {&input, &branch_add, &sink};
 
   ASSERT_TRUE(has_self_dependency_subgraph(nodes));
+}
+
+TEST_F(CodegenTest, no_scheduler_regression_test)
+{
+  fs::path tmp_dir_path = fs::temp_directory_path() / "generated-XXXXXX";
+  std::string string_path = tmp_dir_path;
+  std::vector<char> raw_path(string_path.c_str(), string_path.c_str() + string_path.length() + 1);
+  mkdtemp(raw_path.data());
+  tmp_dir_path = raw_path.data();
+
+  constexpr auto dtype = loco::DataType::FLOAT32;
+  std::vector<int> shape = {2, 2};
+
+  luci::Module module;
+  std::unique_ptr<loco::Graph> graph = std::make_unique<loco::Graph>();
+
+  auto *in = graph->nodes()->create<luci::CircleInput>();
+  constructBasicNode<dtype>(*in, shape);
+  auto *add = graph->nodes()->create<luci::CircleAdd>();
+  constructBasicNode<dtype>(*add, shape);
+  auto *out = graph->nodes()->create<luci::CircleOutput>();
+  constructBasicNode<dtype>(*out, shape);
+  in->index(graph->inputs()->create()->index());
+  out->index(graph->outputs()->create()->index());
+
+  module.add(std::move(graph));
+
+  add->x(in);
+  add->y(in);
+  out->from(add);
+
+  luci_codegen::Codegen codegen;
+  codegen.process_module(module);
+
+  auto &compiled_subgraphs = get_compiled_subgraphs(codegen);
+
+  ASSERT_EQ(compiled_subgraphs.size(), 1);
+
+  codegen.emit_code(tmp_dir_path);
+
+  fs::remove(tmp_dir_path / (compiled_subgraphs[0].get_name() + ".h"));
+  fs::remove(tmp_dir_path / (compiled_subgraphs[0].get_name() + ".cpp"));
+  fs::remove(tmp_dir_path / (compiled_subgraphs[0].get_name() + ".o"));
+  fs::remove(tmp_dir_path);
 }

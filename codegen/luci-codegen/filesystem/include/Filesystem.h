@@ -214,6 +214,10 @@ bool is_directory(const path &p);
 
 bool create_directory(const path &p);
 
+path temp_directory_path();
+
+bool remove(const path &p);
+
 } // namespace luci_codegen_filesystem
 
 #endif // LUCI_CODEGEN_FILESYSTEM_H

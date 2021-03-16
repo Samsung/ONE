@@ -65,4 +65,15 @@ bool create_directory(const path &p)
   return res == 0;
 }
 
+path temp_directory_path()
+{
+  return "/tmp";
+}
+
+bool remove(const path &p)
+{
+  int res = ::remove(p.c_str());
+  return res == 0;
+}
+
 } // namespace luci_codegen_filesystem

@@ -132,7 +132,7 @@ public:
     _schedule = std::make_unique<Halide::AutoSchedulerResults>(schedule);
   }
 
-  Halide::AutoSchedulerResults &get_schedule() { return *_schedule; }
+  Halide::AutoSchedulerResults *get_schedule() { return _schedule.get(); }
 
   void set_target(const Halide::Target &target) { _target = target; }
 

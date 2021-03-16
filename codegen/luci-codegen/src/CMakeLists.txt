@@ -56,7 +56,7 @@ endif(NOT ENABLE_TEST)
 nnas_find_package(GTest REQUIRED)
 set(TEST_SOURCES KernelBuilder.test.cpp Codegen.test.cpp)
 GTest_AddTest(luci_codegen_test ${TEST_SOURCES})
-target_link_libraries(luci_codegen_test luci_codegen luci_import luci_export Halide::Halide)
+target_link_libraries(luci_codegen_test luci_codegen luci_import luci_export luci_codegen_filesystem Halide::Halide)
 
 add_executable(simple_runner simple_runner.cpp)
 target_link_libraries(simple_runner PUBLIC Halide::Halide)
