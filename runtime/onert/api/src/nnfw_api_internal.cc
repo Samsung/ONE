@@ -285,6 +285,14 @@ NNFW_STATUS nnfw_session::load_model_from_nnpackage(const char *package_dir)
     const Json::Value &models = root["models"];
     const Json::Value &model_types = root["model-types"];
     const Json::Value &configs = root["configs"];
+    const Json::Value &partition = root["partition"];
+
+    auto n_models = models.size();
+    if (n_models != model_types.size())
+    {
+      std::cerr << "Size of models and model-types mismatch in MANIFEST" << std::endl;
+      return NNFW_STATUS_ERROR;
+    }
 
     if (!configs.empty() && !configs[0].empty())
     {
