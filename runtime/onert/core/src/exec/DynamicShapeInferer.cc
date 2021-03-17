@@ -51,7 +51,7 @@ void DynamicShapeInferer::handleBinaryArithmeticOp(const ir::Operation &op,
   auto output_idx = op.getOutputs().at(0);
   auto output = _tensor_registry->getITensor(output_idx);
 
-  if ((previously_static(lhs) && previously_static(rhs)) && currently_static(output))
+  if ((currently_static(lhs) && currently_static(rhs)) && previously_static(output))
     return;
 
   ir::Shape new_shape = shape_inference::inferEltwiseShape(lhs_shape, rhs_shape);
