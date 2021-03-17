@@ -41,33 +41,6 @@ void DynamicTensorManager::buildTensor(const ir::OperandIndex &ind,
   _tensors->setNativeTensor(ind, std::move(tensor));
 }
 
-void DynamicTensorManager::planDealloc(ir::OperationIndex op_ind, backend::ITensor *tensor)
-{
-  _dealloc_tensor_map[op_ind].emplace(tensor);
-}
-
-void DynamicTensorManager::deallocInput(ir::OperationIndex op_ind)
-{
-  auto find = _dealloc_tensor_map.find(op_ind);
-  if (find == _dealloc_tensor_map.end())
-    return;
-
-  auto &input_set = find->second;
-  for (auto *tensor : input_set)
-  {
-    if (!tensor->is_dynamic())
-      continue;
-
-    _dynamic_mem_mgr->deallocate(tensor);
-
-    auto *cpu_tensor = nnfw::misc::polymorphic_downcast<cpu_common::Tensor *>(tensor);
-    cpu_tensor->deallocBuffer();
-
-    VERBOSE(DynamicTensorManager) << "Deallocating tensor " << (void *)cpu_tensor
-                                  << " (input of op_ind: " << op_ind << ")" << std::endl;
-  }
-}
-
 const ITensor *DynamicTensorManager::getRawITensor(ir::OperandIndex ind)
 {
   auto ptr = _tensors->getITensor(ind);

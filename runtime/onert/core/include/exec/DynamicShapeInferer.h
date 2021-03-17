@@ -20,7 +20,6 @@
 #include "ir/Operands.h"
 #include "ir/OperationVisitor.h"
 #include "ir/Index.h"
-#include "backend/IDynamicTensorManager.h"
 #include "backend/ITensorRegistry.h"
 
 #include <map>

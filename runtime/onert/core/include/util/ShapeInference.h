@@ -29,7 +29,6 @@
 #include "ir/Index.h"
 #include "ir/Layout.h"
 #include "ir/OperationVisitor.h"
-#include "backend/IDynamicTensorManager.h"
 #include "backend/ITensor.h"
 #include "backend/ITensorRegistry.h"
 

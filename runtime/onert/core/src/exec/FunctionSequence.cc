@@ -17,7 +17,6 @@
 #include "exec/FunctionSequence.h"
 
 #include "ir/Operation.h"
-#include "backend/IDynamicTensorManager.h"
 #include "backend/ITensorRegistry.h"
 #include "util/logging.h"
 

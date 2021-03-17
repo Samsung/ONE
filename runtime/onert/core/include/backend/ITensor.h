@@ -32,8 +32,6 @@ namespace onert
 namespace backend
 {
 
-struct IDynamicTensorManager;
-
 class ITensor
 {
 public:

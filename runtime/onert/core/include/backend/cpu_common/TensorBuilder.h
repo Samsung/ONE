@@ -55,7 +55,7 @@ public:
 
   void allocate(void);
 
-  IDynamicTensorManager *dynamicTensorManager(void) { return _dynamic_tensor_mgr.get(); }
+  DynamicTensorManager *dynamicTensorManager(void) { return _dynamic_tensor_mgr.get(); }
 
 private:
   const std::shared_ptr<TensorRegistry> _tensor_reg;

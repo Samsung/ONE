@@ -64,7 +64,6 @@ std::unique_ptr<exec::FunctionSequence> KernelGenerator::generate(ir::OperationI
     dyn_ctx->op_ind = ind;
     dyn_ctx->operations = &_operations_ctx;
     dyn_ctx->dynamic_shape_inferer = std::move(dyn_shape_inferer);
-    dyn_ctx->dynamic_tensor_manager = _tensor_builder->dynamicTensorManager();
 
     ret->dynamic_tensor_ctx(dyn_ctx);
   }
