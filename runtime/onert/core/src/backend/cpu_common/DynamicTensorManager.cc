@@ -61,7 +61,7 @@ void DynamicTensorManager::deallocInput(ir::OperationIndex op_ind)
     _dynamic_mem_mgr->deallocate(tensor);
 
     auto *cpu_tensor = nnfw::misc::polymorphic_downcast<cpu_common::Tensor *>(tensor);
-    cpu_tensor->resetBuffer();
+    cpu_tensor->deallocBuffer();
 
     VERBOSE(DynamicTensorManager) << "Deallocating tensor " << (void *)cpu_tensor
                                   << " (input of op_ind: " << op_ind << ")" << std::endl;

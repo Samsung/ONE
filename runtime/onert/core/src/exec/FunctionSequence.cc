@@ -53,9 +53,6 @@ void FunctionSequence::run()
       // run kernel
       function->run();
     }
-
-    // deallocate input tensors which are no longer used
-    _dynamic_tensor_ctx->dynamic_tensor_manager->deallocInput(op_ind);
   }
   else
   {
