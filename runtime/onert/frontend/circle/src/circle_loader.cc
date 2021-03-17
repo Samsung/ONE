@@ -202,7 +202,7 @@ void CircleLoader::loadBCQFullyConnected(const Operator *op, ir::Graph &subg)
 
 } // namespace
 
-std::unique_ptr<ir::Subgraphs> loadModel(const char *filename)
+std::unique_ptr<ir::Subgraphs> loadModel(const std::string &filename)
 {
   auto subgraphs = std::make_unique<ir::Subgraphs>();
   CircleLoader loader(subgraphs);

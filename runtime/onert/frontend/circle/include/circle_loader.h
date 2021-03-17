@@ -25,7 +25,7 @@ namespace onert
 {
 namespace circle_loader
 {
-std::unique_ptr<ir::Subgraphs> loadModel(const char *filename);
+std::unique_ptr<ir::Subgraphs> loadModel(const std::string &filename);
 std::unique_ptr<ir::Subgraphs> loadModel(uint8_t *buffer, size_t size);
 } // namespace circle_loader
 } // namespace onert

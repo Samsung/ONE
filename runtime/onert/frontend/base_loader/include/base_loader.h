@@ -78,7 +78,7 @@ public:
    *
    * @param file_path
    */
-  void loadFromFile(const char *file_path);
+  void loadFromFile(const std::string &file_path);
   /**
    * @brief Load a model from a buffer
    *
@@ -192,19 +192,18 @@ protected:
 };
 
 template <typename LoaderDomain>
-void BaseLoader<LoaderDomain>::BaseLoader::loadFromFile(const char *file_path)
+void BaseLoader<LoaderDomain>::BaseLoader::loadFromFile(const std::string &file_path)
 {
-  _fd = open(file_path, O_RDONLY);
+  _fd = open(file_path.c_str(), O_RDONLY);
   if (_fd < 0)
   {
-    throw std::runtime_error("Failed to open file " + std::string(file_path));
+    throw std::runtime_error("Failed to open file " + file_path);
   }
 
   struct stat file_stat;
   if (fstat(_fd, &file_stat) != 0)
   {
-    throw std::runtime_error("Fstat failed or file " + std::string(file_path) +
-                             " is not a regular file");
+    throw std::runtime_error("Fstat failed or file " + file_path + " is not a regular file");
   }
   int size = file_stat.st_size;
 
