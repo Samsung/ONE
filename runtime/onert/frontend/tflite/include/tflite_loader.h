@@ -26,7 +26,7 @@ namespace onert
 namespace tflite_loader
 {
 
-std::unique_ptr<ir::Subgraphs> loadModel(const char *filename);
+std::unique_ptr<ir::Subgraphs> loadModel(const std::string &filename);
 
 } // namespace tflite_loader
 } // namespace onert

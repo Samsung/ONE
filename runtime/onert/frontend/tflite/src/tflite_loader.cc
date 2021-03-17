@@ -115,7 +115,7 @@ private:
 
 } // namespace
 
-std::unique_ptr<ir::Subgraphs> loadModel(const char *filename)
+std::unique_ptr<ir::Subgraphs> loadModel(const std::string &filename)
 {
   auto subgraphs = std::make_unique<ir::Subgraphs>();
   TFLiteLoader loader(subgraphs);

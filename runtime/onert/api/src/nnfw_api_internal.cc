@@ -274,8 +274,8 @@ NNFW_STATUS nnfw_session::load_model_from_nnpackage(const char *package_dir)
 
   try
   {
-    std::string manifest_file_name(package_dir);
-    manifest_file_name += "/metadata/MANIFEST";
+    std::string package_path(package_dir);
+    std::string manifest_file_name = package_path + "/metadata/MANIFEST";
     std::ifstream mfs(manifest_file_name);
 
     // extract the filename of the first(index 0) model
@@ -288,7 +288,7 @@ NNFW_STATUS nnfw_session::load_model_from_nnpackage(const char *package_dir)
 
     if (!configs.empty() && !configs[0].empty())
     {
-      auto filepath = package_dir + std::string("/metadata/") + configs[0].asCString();
+      auto filepath = package_path + std::string("/metadata/") + configs[0].asString();
 
       CfgKeyValues keyValues;
       if (loadConfigure(filepath, keyValues))
@@ -297,15 +297,15 @@ NNFW_STATUS nnfw_session::load_model_from_nnpackage(const char *package_dir)
       }
     }
 
-    auto model_file_path = package_dir + std::string("/") + models[0].asString(); // first model
+    auto model_file_path = package_path + std::string("/") + models[0].asString(); // first model
     auto model_type = model_types[0].asString(); // first model's type
     if (model_type == "tflite")
     {
-      _subgraphs = onert::tflite_loader::loadModel(model_file_path.c_str());
+      _subgraphs = onert::tflite_loader::loadModel(model_file_path);
     }
     else if (model_type == "circle")
     {
-      _subgraphs = onert::circle_loader::loadModel(model_file_path.c_str());
+      _subgraphs = onert::circle_loader::loadModel(model_file_path);
     }
     else
     {
