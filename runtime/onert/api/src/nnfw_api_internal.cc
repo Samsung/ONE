@@ -25,6 +25,7 @@
 #include "tflite_loader.h"
 #include "json/json.h"
 #include "ir/OpCode.h"
+#include "ir/Models.h"
 #include "util/TracingCtx.h"
 
 #include <fstream>
@@ -158,7 +159,7 @@ void setConfigKeyValues(const CfgKeyValues &keyValues)
 } // namespace
 
 nnfw_session::nnfw_session()
-  : _subgraphs{nullptr}, _execution{nullptr},
+  : _models{std::make_unique<onert::ir::Models>()}, _execution{nullptr},
     _kernel_registry{std::make_shared<onert::frontend::custom::KernelRegistry>()}, _tracing_ctx{
                                                                                      nullptr}
 {
@@ -178,9 +179,10 @@ NNFW_STATUS nnfw_session::load_circle_from_buffer(uint8_t *buffer, size_t size)
   if (size == 0)
     return NNFW_STATUS_ERROR;
 
+  auto model_index = onert::ir::ModelIndex{0};
   try
   {
-    _subgraphs = onert::circle_loader::loadModel(buffer, size);
+    _models->push(model_index, onert::circle_loader::loadModel(buffer, size));
   }
   catch (const std::exception &e)
   {
@@ -188,9 +190,11 @@ NNFW_STATUS nnfw_session::load_circle_from_buffer(uint8_t *buffer, size_t size)
     return NNFW_STATUS_ERROR;
   }
 
-  _tracing_ctx = std::make_unique<onert::util::TracingCtx>(_subgraphs.get());
+  // TODO Support multi-model
+  assert(_models->count() == 1);
+  _tracing_ctx = std::make_unique<onert::util::TracingCtx>(_models->primary().get());
 
-  _compiler = std::make_unique<onert::compiler::Compiler>(_subgraphs, _tracing_ctx.get());
+  _compiler = std::make_unique<onert::compiler::Compiler>(_models->primary(), _tracing_ctx.get());
 
   _state = State::MODEL_LOADED;
   return NNFW_STATUS_NO_ERROR;
@@ -218,13 +222,14 @@ NNFW_STATUS nnfw_session::load_model_from_modelfile(const char *model_file_path)
 
   try
   {
+    auto model_index = onert::ir::ModelIndex{0};
     if (model_type == ".tflite")
     {
-      _subgraphs = onert::tflite_loader::loadModel(filename.c_str());
+      _models->push(model_index, onert::tflite_loader::loadModel(filename.c_str()));
     }
     else if (model_type == ".circle")
     {
-      _subgraphs = onert::circle_loader::loadModel(filename.c_str());
+      _models->push(model_index, onert::circle_loader::loadModel(filename.c_str()));
     }
     else
     {
@@ -238,9 +243,11 @@ NNFW_STATUS nnfw_session::load_model_from_modelfile(const char *model_file_path)
     return NNFW_STATUS_ERROR;
   }
 
-  _tracing_ctx = std::make_unique<onert::util::TracingCtx>(_subgraphs.get());
+  // TODO Support multi-model
+  assert(_models->count() == 1);
+  _tracing_ctx = std::make_unique<onert::util::TracingCtx>(_models->primary().get());
 
-  _compiler = std::make_unique<onert::compiler::Compiler>(_subgraphs, _tracing_ctx.get());
+  _compiler = std::make_unique<onert::compiler::Compiler>(_models->primary(), _tracing_ctx.get());
 
   _state = State::MODEL_LOADED;
   return NNFW_STATUS_NO_ERROR;
@@ -294,6 +301,13 @@ NNFW_STATUS nnfw_session::load_model_from_nnpackage(const char *package_dir)
       return NNFW_STATUS_ERROR;
     }
 
+    if (partition.empty() && (n_models != 1))
+    {
+      std::cerr << "Need partition config in MANIFEST" << std::endl;
+      return NNFW_STATUS_ERROR;
+    }
+
+    // TODO Support multi model config
     if (!configs.empty() && !configs[0].empty())
     {
       auto filepath = package_path + std::string("/metadata/") + configs[0].asString();
@@ -305,22 +319,27 @@ NNFW_STATUS nnfw_session::load_model_from_nnpackage(const char *package_dir)
       }
     }
 
-    auto model_file_path = package_path + std::string("/") + models[0].asString(); // first model
-    auto model_type = model_types[0].asString(); // first model's type
-    if (model_type == "tflite")
+    for (uint32_t i = 0; i < n_models; i++)
     {
-      _subgraphs = onert::tflite_loader::loadModel(model_file_path);
+      auto model_file_path = package_path + std::string("/") + models[i].asString();
+      auto model_type = model_types[i].asString();
+      auto model_index = onert::ir::ModelIndex{i};
+      if (model_type == "tflite")
+      {
+        _models->push(model_index, onert::tflite_loader::loadModel(model_file_path));
+      }
+      else if (model_type == "circle")
+      {
+        _models->push(model_index, onert::circle_loader::loadModel(model_file_path));
+      }
+      else
+      {
+        std::cerr << "Unsupported model type in MANIFEST" << std::endl;
+        return NNFW_STATUS_ERROR;
+      }
+
+      _models->at(model_index)->primary()->bindKernelBuilder(_kernel_registry->getBuilder());
     }
-    else if (model_type == "circle")
-    {
-      _subgraphs = onert::circle_loader::loadModel(model_file_path);
-    }
-    else
-    {
-      std::cerr << "Unsupported model type in MANIFEST" << std::endl;
-      return NNFW_STATUS_ERROR;
-    }
-    _subgraphs->primary()->bindKernelBuilder(_kernel_registry->getBuilder());
   }
   catch (const std::exception &e)
   {
@@ -328,9 +347,11 @@ NNFW_STATUS nnfw_session::load_model_from_nnpackage(const char *package_dir)
     return NNFW_STATUS_ERROR;
   }
 
-  _tracing_ctx = std::make_unique<onert::util::TracingCtx>(_subgraphs.get());
+  // TODO Support multi-model
+  assert(_models->count() == 1);
+  _tracing_ctx = std::make_unique<onert::util::TracingCtx>(_models->primary().get());
 
-  _compiler = std::make_unique<onert::compiler::Compiler>(_subgraphs, _tracing_ctx.get());
+  _compiler = std::make_unique<onert::compiler::Compiler>(_models->primary(), _tracing_ctx.get());
 
   _state = State::MODEL_LOADED;
   return NNFW_STATUS_NO_ERROR;
@@ -356,7 +377,9 @@ NNFW_STATUS nnfw_session::prepare()
 
   try
   {
-    _subgraphs.reset();
+    // TODO Support multi-model
+    assert(_models->count() == 1);
+    _models->primary().reset();
     std::shared_ptr<onert::exec::ExecutorMap> executors = _compiler->compile();
     _execution = std::make_unique<onert::exec::Execution>(executors);
   }
@@ -633,7 +656,9 @@ NNFW_STATUS nnfw_session::apply_tensorinfo(uint32_t index, nnfw_tensorinfo ti)
   {
     // In this case, if we apply input shape in primary_subgraph, it will propagate after
     // compilation and excution
-    auto primary_subgraph = _subgraphs->primary();
+    // TODO Support multi-model
+    assert(_models->count() == 1);
+    auto primary_subgraph = _models->primary()->primary();
     auto ind = primary_subgraph->getInputs().at(index);
     auto &input = primary_subgraph->operands().at(ind);
 
@@ -871,10 +896,12 @@ NNFW_STATUS nnfw_session::set_config(const char *key, const char *value)
 
 const onert::ir::Graph *nnfw_session::primary_subgraph()
 {
-  if (_subgraphs)
+  // TODO Support multi-model
+  assert(_models->count() == 1);
+  if (_models)
   {
     assert(!_execution);
-    return _subgraphs->primary().get();
+    return _models->primary()->primary().get();
   }
   else
   {
@@ -937,7 +964,7 @@ bool nnfw_session::isStateInitialized()
 {
   if (_state == State::INITIALIZED)
   {
-    assert(!_subgraphs);
+    assert(_models->count() != 0);
     assert(!_compiler);
     assert(!_execution);
     return true;
@@ -952,7 +979,7 @@ bool nnfw_session::isStateModelLoaded()
 {
   if (_state == State::MODEL_LOADED)
   {
-    assert(_subgraphs);
+    assert(_models->count() != 0);
     assert(_compiler);
     assert(!_execution);
     return true;
@@ -967,7 +994,7 @@ bool nnfw_session::isStatePrepared()
 {
   if (_state == State::PREPARED)
   {
-    assert(!_subgraphs);
+    assert(_models->count() != 0);
     assert(_compiler);
     assert(_execution);
     return true;
@@ -982,7 +1009,7 @@ bool nnfw_session::isStateRunning()
 {
   if (_state == State::RUNNING)
   {
-    assert(!_subgraphs);
+    assert(_models->count() != 0);
     assert(_compiler);
     assert(_execution);
     return true;
@@ -994,7 +1021,7 @@ bool nnfw_session::isStateFinishedRun()
 {
   if (_state == State::FINISHED_RUN)
   {
-    assert(!_subgraphs);
+    assert(_models->count() != 0);
     assert(_compiler);
     assert(_execution);
     return true;
