@@ -379,7 +379,7 @@ NNFW_STATUS nnfw_session::prepare()
   {
     // TODO Support multi-model
     assert(_models->count() == 1);
-    _models->primary().reset();
+    _models->remove(onert::ir::ModelIndex{0});
     std::shared_ptr<onert::exec::ExecutorMap> executors = _compiler->compile();
     _execution = std::make_unique<onert::exec::Execution>(executors);
   }
@@ -897,8 +897,9 @@ NNFW_STATUS nnfw_session::set_config(const char *key, const char *value)
 const onert::ir::Graph *nnfw_session::primary_subgraph()
 {
   // TODO Support multi-model
-  assert(_models->count() == 1);
-  if (_models)
+  assert(_models->count() == 1 || _models->count() == 0);
+
+  if (_models->count() == 1)
   {
     assert(!_execution);
     return _models->primary()->primary().get();
@@ -964,7 +965,7 @@ bool nnfw_session::isStateInitialized()
 {
   if (_state == State::INITIALIZED)
   {
-    assert(_models->count() != 0);
+    assert(_models->count() == 0);
     assert(!_compiler);
     assert(!_execution);
     return true;
@@ -994,7 +995,7 @@ bool nnfw_session::isStatePrepared()
 {
   if (_state == State::PREPARED)
   {
-    assert(_models->count() != 0);
+    assert(_models->count() == 0);
     assert(_compiler);
     assert(_execution);
     return true;
@@ -1009,7 +1010,7 @@ bool nnfw_session::isStateRunning()
 {
   if (_state == State::RUNNING)
   {
-    assert(_models->count() != 0);
+    assert(_models->count() == 0);
     assert(_compiler);
     assert(_execution);
     return true;
@@ -1021,7 +1022,7 @@ bool nnfw_session::isStateFinishedRun()
 {
   if (_state == State::FINISHED_RUN)
   {
-    assert(_models->count() != 0);
+    assert(_models->count() == 0);
     assert(_compiler);
     assert(_execution);
     return true;
