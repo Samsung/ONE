@@ -42,7 +42,9 @@ def _get_backends_list():
 
 
 def _get_parser():
-    parser = argparse.ArgumentParser(description='command line tool for code generation')
+    codegen_usage = 'one-codegen [-h] [-v] [-C CONFIG] [-b BACKEND] -- [COMMANDS FOR BACKEND]'
+    parser = argparse.ArgumentParser(
+        description='command line tool for code generation', usage=codegen_usage)
 
     _utils._add_default_arg(parser)
 
