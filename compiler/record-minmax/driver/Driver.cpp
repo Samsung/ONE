@@ -19,6 +19,8 @@
 #include <arser/arser.h>
 #include <vconone/vconone.h>
 
+#include <luci/UserSettings.h>
+
 void print_version(void)
 {
   std::cout << "record-minmax version " << vconone::get_string() << std::endl;
@@ -74,6 +76,12 @@ int entry(const int argc, char **argv)
     .type(arser::DataType::STR)
     .help("Record mode. percentile (default) or moving_average");
 
+  arser.add_argument("--generate_profile_data")
+    .nargs(0)
+    .required(false)
+    .default_value(false)
+    .help("This will turn on profiling data generation.");
+
   try
   {
     arser.parse(argc, argv);
@@ -84,6 +92,8 @@ int entry(const int argc, char **argv)
     std::cout << arser;
     return 255;
   }
+
+  auto settings = luci::UserSettings::settings();
 
   auto input_model_path = arser.get<std::string>("--input_model");
   auto output_model_path = arser.get<std::string>("--output_model");
@@ -104,6 +114,9 @@ int entry(const int argc, char **argv)
 
   if (mode != "percentile" && mode != "moving_average")
     throw std::runtime_error("Unsupported mode");
+
+  if (arser["--generate_profile_data"])
+    settings->set(luci::UserSettings::Key::ProfilingDataGen, true);
 
   RecordMinMax rmm;
 
