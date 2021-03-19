@@ -119,8 +119,7 @@ void initializeSubgraphIOTensors(compiler::LoweredGraph &lowered_graph,
   }
 }
 
-backend::BackendContexts createBackendContexts(const compiler::LoweredGraph &lgraph,
-                                               bool linear_executor)
+backend::BackendContexts createBackendContexts(compiler::LoweredGraph &lgraph, bool linear_executor)
 {
   backend::BackendContexts contexts;
   auto &backend_manager = compiler::BackendManager::get();
@@ -138,26 +137,26 @@ backend::BackendContexts createBackendContexts(const compiler::LoweredGraph &lgr
 
   auto &whole_graph = lgraph.graph();
   // Separate operands into partial graphs
-  whole_graph.operands().iterate(
-    [&](const ir::OperandIndex &operand_ind, const ir::Operand &operand) {
-      auto &operand_li = lgraph.lower_info().operand;
-      const auto &def_factors = operand_li.at(operand_ind).def_factors();
-      if (def_factors.size() == 0) // Ignore unused tensor
-        return;
-      const auto &def_factor = def_factors.getOnlyElement();
-      const auto backend = def_factor.backend();
-      auto &partial_graph = *context_data_map[backend].graph;
-      auto &operand_layouts = context_data_map[backend].operand_layouts;
-      assert(operand_layouts.find(operand_ind) == operand_layouts.end());
-      operand_layouts[operand_ind] = def_factor.layout();
+  whole_graph.operands().iterate([&](const ir::OperandIndex &operand_ind, ir::Operand &operand) {
+    auto &operand_li = lgraph.lower_info().operand;
+    const auto &def_factors = operand_li.at(operand_ind).def_factors();
+    if (def_factors.size() == 0) // Ignore unused tensor
+      return;
+    const auto &def_factor = def_factors.getOnlyElement();
+    const auto backend = def_factor.backend();
+    auto &partial_graph = *context_data_map[backend].graph;
+    auto &operand_layouts = context_data_map[backend].operand_layouts;
+    assert(operand_layouts.find(operand_ind) == operand_layouts.end());
+    operand_layouts[operand_ind] = def_factor.layout();
 
-      // Copy the operand and insert it to the partial graph
-      auto new_operand = std::make_unique<ir::Operand>(operand);
-      new_operand->clearDefUse();
-      auto new_operand_ind = partial_graph.addOperand(operand_ind, std::move(new_operand));
-      UNUSED_RELEASE(new_operand_ind);
-      assert(new_operand_ind == operand_ind);
-    });
+    // Copy the operand and insert it to the partial graph
+    auto new_operand = std::make_unique<ir::Operand>(operand);
+    new_operand->clearDefUse();
+    operand.releaseData(); // Deref data of LoweredGraph
+    auto new_operand_ind = partial_graph.addOperand(operand_ind, std::move(new_operand));
+    UNUSED_RELEASE(new_operand_ind);
+    assert(new_operand_ind == operand_ind);
+  });
   // Separate operations into partial graphs
   whole_graph.operations().iterate(
     [&](const ir::OperationIndex &op_ind, const ir::Operation &operation) {
