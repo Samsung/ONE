@@ -42,7 +42,7 @@ def _get_backends_list():
 
 
 def _get_parser():
-    codegen_usage = 'one-codegen [-h] [-v] [-C CONFIG] [-b BACKEND] -- [COMMANDS FOR BACKEND]'
+    codegen_usage = 'one-codegen [-h] [-v] [-C CONFIG] [-b BACKEND] [--] [COMMANDS FOR BACKEND]'
     parser = argparse.ArgumentParser(
         description='command line tool for code generation', usage=codegen_usage)
 
@@ -74,27 +74,33 @@ def _verify_arg(parser, args):
 def _parse_arg(parser):
     codegen_args = []
     backend_args = []
+    unknown_args = []
     argv = copy.deepcopy(sys.argv)
     # delete file name
     del argv[0]
     # split by '--'
     args = [list(y) for x, y in itertools.groupby(argv, lambda z: z == '--') if not x]
-    if len(args) >= 1:
+    # one-codegen has two interfaces
+    # 1. one-codegen [-h] [-v] [-C CONFIG] [-b BACKEND] [COMMANDS FOR BACKEND]
+    if len(args) == 1:
         codegen_args = args[0]
+        codegen_args, unknown_args = parser.parse_known_args(codegen_args)
+    # 2. one-codegen [-h] [-v] [-C CONFIG] [-b BACKEND] -- [COMMANDS FOR BACKEND]
     if len(args) == 2:
+        codegen_args = args[0]
         backend_args = args[1]
-    codegen_args = parser.parse_args(codegen_args)
+        codegen_args = parser.parse_args(codegen_args)
     # print version
-    if codegen_args.version:
+    if len(args) and codegen_args.version:
         _utils._print_version_and_exit(__file__)
 
-    return codegen_args, backend_args
+    return codegen_args, backend_args, unknown_args
 
 
 def main():
     # parse arguments
     parser = _get_parser()
-    args, backend_args = _parse_arg(parser)
+    args, backend_args, unknown_args = _parse_arg(parser)
 
     # parse configuration file
     _utils._parse_cfg(args, 'one-codegen')
@@ -105,7 +111,7 @@ def main():
     # make a command to run given backend driver
     dir_path = os.path.dirname(os.path.realpath(__file__))
     codegen_path = os.path.join(dir_path, getattr(args, 'backend') + '-compile')
-    codegen_cmd = [codegen_path] + backend_args
+    codegen_cmd = [codegen_path] + backend_args + unknown_args
     if _utils._is_valid_attr(args, 'command'):
         codegen_cmd += getattr(args, 'command').split()
 
