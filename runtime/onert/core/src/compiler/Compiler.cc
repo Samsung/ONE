@@ -16,7 +16,6 @@
 
 #include "compiler/Compiler.h"
 
-#include "ParamChecker.h"
 #include "ExecutorFactory.h"
 #include "ShapeValidator.h"
 
@@ -205,7 +204,7 @@ std::shared_ptr<exec::ExecutorMap> Compiler::compile(void)
   // Compilable check
   // TODO: Support hybrid execution -
   //       execution between interpreter and compiled executor (including control flow)
-  if (!checkCompilable())
+  if (_options.disable_compile)
   {
     _subgraphs->iterate([&](const ir::SubgraphIndex &index, ir::Graph &subg) {
       executors->emplace(index, std::make_unique<interp::InterpExecutor>(subg));
@@ -299,32 +298,6 @@ std::shared_ptr<exec::ExecutorMap> Compiler::compile(void)
    ********************************/
   _state = State::COMPILED;
   return executors;
-}
-
-bool Compiler::checkCompilable()
-{
-  // Disable compile phase
-  // When ready to use interpreter backend, remove this config and use backend setting
-  if (_options.disable_compile)
-  {
-    return false;
-  }
-
-  // TODO check unspecified operand shape
-
-  // Check compilable parameter
-  for (uint32_t i = 0; i < _subgraphs->count(); ++i)
-  {
-    auto graph = _subgraphs->at(ir::SubgraphIndex{i});
-    ParamChecker paramChecker{graph};
-    paramChecker();
-    if (paramChecker.haveNoneConstParam())
-    {
-      return false;
-    }
-  }
-
-  return true;
 }
 
 } // namespace compiler

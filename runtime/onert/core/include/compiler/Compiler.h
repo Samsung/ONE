@@ -88,13 +88,6 @@ public:
 
   State state(void) const { return _state; }
 
-  /**
-   * @brief   Check if model can compile
-   * @return  @c true if model can compile, otherwise @c false
-   * @note    This method don't check model correctness,\n
-   *          so model verification should be done before calling this method
-   */
-  bool checkCompilable();
   CompilerOptions &options() { return _options; }
 
   /**
