@@ -17,7 +17,6 @@ target_link_libraries(nnfw_lib_tflite PUBLIC tensorflow-lite-ex)
 target_link_libraries(nnfw_lib_tflite PUBLIC nnfw_lib_misc)
 target_link_libraries(nnfw_lib_tflite PRIVATE ${LIB_PTHREAD} dl)
 target_link_libraries(nnfw_lib_tflite PRIVATE nnfw_common)
-target_link_libraries(nnfw_lib_tflite PRIVATE nnfw_coverage)
 
 if(NOT ENABLE_TEST)
   return()
