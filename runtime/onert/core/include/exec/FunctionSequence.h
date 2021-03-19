@@ -26,7 +26,6 @@
 #include "exec/DynamicShapeInferer.h"
 #include "ir/Operations.h"
 #include "backend/ITensorRegistry.h"
-#include "backend/IDynamicTensorManager.h"
 
 namespace onert
 {
@@ -79,7 +78,6 @@ public: // methods related to dynamic tensor
     ir::OperationIndex op_ind;
     const ir::Operations *operations = nullptr;
     std::shared_ptr<exec::DynamicShapeInferer> dynamic_shape_inferer = nullptr;
-    backend::IDynamicTensorManager *dynamic_tensor_manager = nullptr;
   };
 
   /**

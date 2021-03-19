@@ -20,7 +20,6 @@
 #include "MemoryManager.h"
 #include "TensorRegistry.h"
 
-#include <backend/IDynamicTensorManager.h>
 #include <ir/OperandInfo.h>
 #include <ir/Operation.h>
 #include <ir/Index.h>
@@ -37,7 +36,7 @@ namespace cpu_common
 /**
  * @brief Class to manage dynamic tensor and its memory
  */
-class DynamicTensorManager : public backend::IDynamicTensorManager
+class DynamicTensorManager
 {
 public:
   DynamicTensorManager(const std::shared_ptr<TensorRegistry> &reg);
@@ -46,9 +45,6 @@ public:
 
   void buildTensor(const ir::OperandIndex &ind, const ir::OperandInfo &tensor_info,
                    ir::Layout backend_layout);
-
-  void planDealloc(ir::OperationIndex op_ind, backend::ITensor *tensor) override;
-  void deallocInput(ir::OperationIndex op_ind) override;
 
   std::shared_ptr<DynamicMemoryManager> dynamic_mem_mgr() { return _dynamic_mem_mgr; }
 
