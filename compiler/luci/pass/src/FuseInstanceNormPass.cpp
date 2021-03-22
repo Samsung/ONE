@@ -21,7 +21,6 @@
 #include <luci/IR/CircleNodes.h>
 
 #include <luci/Profile/CircleNodeOrigin.h>
-#include <loco/Service/ShapeInference.h>
 
 #include <cassert>
 #include <set>

@@ -22,8 +22,6 @@
 #include <luci/Profile/CircleNodeOrigin.h>
 #include <luci/Log.h>
 
-#include <loco/Service/ShapeInference.h>
-
 namespace
 {
 

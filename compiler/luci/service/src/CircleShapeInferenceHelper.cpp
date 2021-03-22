@@ -16,8 +16,6 @@
 
 #include "CircleShapeInferenceHelper.h"
 
-#include <loco/Service/ShapeInference.h>
-
 namespace luci
 {
 
