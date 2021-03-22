@@ -19,7 +19,6 @@
 #include "CircleShapeInferenceHelper.h"
 
 #include <loco.h>
-#include <loco/Service/ShapeInference.h>
 
 #include <luci/Log.h>
 

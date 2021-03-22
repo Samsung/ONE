@@ -23,7 +23,6 @@
 #include <loco/IR/DataType.h>
 #include <loco/IR/NodeShape.h>
 #include <oops/InternalExn.h>
-#include <loco/Service/ShapeInference.h>
 
 #include <cmath>
 #include <cstdint>
