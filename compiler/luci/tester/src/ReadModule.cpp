@@ -16,8 +16,6 @@
 
 #include "ReadModule.h"
 
-#include <luci/Pass/ShapeInferencePass.h>
-#include <luci/Pass/TypeInferencePass.h>
 #include <luci/Pass/CircleShapeInferencePass.h>
 #include <luci/Pass/CircleTypeInferencePass.h>
 #include <luci/Service/Validate.h>
