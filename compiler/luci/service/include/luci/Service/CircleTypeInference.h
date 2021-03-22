@@ -170,7 +170,7 @@ public:
   // loco::DataType visit(const luci::CircleOutputDummy *node) final;
   // loco::DataType visit(const luci::CircleOutputExclude *node) final;
   // loco::DataType visit(const luci::CircleCustomOut *node) final;
-  // loco::DataType visit(const luci::CircleIfOut *node) final;
+  loco::DataType visit(const luci::CircleIfOut *node) final;
   // loco::DataType visit(const luci::CircleNonMaxSuppressionV4Out *node) final;
   // loco::DataType visit(const luci::CircleNonMaxSuppressionV5Out *node) final;
   // loco::DataType visit(const luci::CircleSplitOut *node) final;

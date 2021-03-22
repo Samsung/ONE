@@ -164,7 +164,7 @@ public:
 
   // Virtual
   // loco::TensorShape visit(const luci::CircleCustomOut *node) final;
-  // loco::TensorShape visit(const luci::CircleIfOut *node) final;
+  loco::TensorShape visit(const luci::CircleIfOut *node) final;
   // loco::TensorShape visit(const luci::CircleInput *node) final;
   // loco::TensorShape visit(const luci::CircleNonMaxSuppressionV4Out *node) final;
   // loco::TensorShape visit(const luci::CircleNonMaxSuppressionV5Out *node) final;
