@@ -187,7 +187,8 @@ void convert_graph(const luci::GraphBuilderSource &source, luci::CircleReader &r
     // set the graph output name and node object
     auto graph_output = graph->outputs()->create();
     std::string tname = luci::tensor_name(tensor);
-    graph_output->name("output_" + tname);
+    assert(tname.length() > 0);
+    graph_output->name(tname);
 
     luci::copy_tensor_attributes(tensor, output_node);
 
