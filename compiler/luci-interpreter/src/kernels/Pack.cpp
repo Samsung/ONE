@@ -38,11 +38,18 @@ void Pack::configure()
   const Tensor *t0 = _inputs[0];
   const int dimension_size = t0->shape().num_dims() + 1;
   int axis = params().axis;
-  while (axis < 0)
+  if (axis < 0)
   {
     axis += dimension_size;
   }
-  LUCI_INTERPRETER_CHECK(axis >= 0 && axis < t0->shape().num_dims());
+  LUCI_INTERPRETER_CHECK(axis >= 0 && axis <= t0->shape().num_dims());
+
+  if (t0->element_type() != DataType::S32 && t0->element_type() != DataType::FLOAT32 &&
+      t0->element_type() != DataType::U8 && t0->element_type() != DataType::S8 &&
+      t0->element_type() != DataType::S16 && t0->element_type() != DataType::S64)
+  {
+    throw std::runtime_error("Unsupported type.");
+  }
 
   for (uint32_t i = 1; i < _inputs.size(); ++i)
   {
@@ -55,7 +62,7 @@ void Pack::configure()
     }
   }
 
-  Shape output_shape = Shape(dimension_size);
+  Shape output_shape(dimension_size);
   int i = 0;
   for (int index = 0; index < dimension_size; ++index)
   {
@@ -69,7 +76,9 @@ void Pack::configure()
     }
   }
 
-  if (t0->quantized_dimension() != 0)
+  if (t0->element_type() == DataType::S32 || t0->element_type() == DataType::U8 ||
+      t0->element_type() == DataType::S8 || t0->element_type() == DataType::S16 ||
+      t0->element_type() == DataType::S64)
   {
     LUCI_INTERPRETER_CHECK(output()->zero_point() == t0->zero_point());
     LUCI_INTERPRETER_CHECK(output()->scale() == t0->scale());
@@ -117,7 +126,7 @@ template <typename T> void Pack::evalGeneric() const
   const Tensor *t0 = _inputs[0];
   const int dimension_size = t0->shape().num_dims() + 1;
   int axis = params().axis;
-  while (axis < 0)
+  if (axis < 0)
   {
     axis += dimension_size;
   }

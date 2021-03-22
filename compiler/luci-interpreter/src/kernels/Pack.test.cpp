@@ -36,13 +36,28 @@ void Check(std::vector<std::initializer_list<int32_t>> input_shapes,
   std::vector<Tensor> tmp_inputs;
   for (int i = 0; i < input_datas.size(); i++)
   {
-    tmp_inputs.push_back(makeInputTensor<element_type>(input_shapes[i], input_datas[i]));
+    if (std::is_same<T, float>::value)
+    {
+      tmp_inputs.push_back(Tensor(element_type, input_shapes[i], {}, ""));
+      tmp_inputs[i].writeData(input_datas[i].data(), input_datas[i].size() * sizeof(T));
+    }
+    else
+    {
+      tmp_inputs.push_back(Tensor(element_type, input_shapes[i], {{1.0f / 255}, {128}}, ""));
+      tmp_inputs[i].writeData(input_datas[i].data(), input_datas[i].size() * sizeof(T));
+    }
   }
   for (int i = 0; i < input_datas.size(); i++)
   {
     inputs[i] = &tmp_inputs[i];
   }
+
   Tensor output_tensor = makeOutputTensor(element_type);
+  if (!std::is_same<T, float>::value)
+  {
+    output_tensor = makeOutputTensor(element_type, 1.0f / 255, 128);
+  }
+
   PackParams params{};
   params.axis = axis;
   params.values_count = input_datas.size();
@@ -59,7 +74,7 @@ template <typename T> class PackTest : public ::testing::Test
 {
 };
 
-using DataTypes = ::testing::Types<float, uint8_t>;
+using DataTypes = ::testing::Types<uint8_t, float>;
 TYPED_TEST_CASE(PackTest, DataTypes);
 
 TYPED_TEST(PackTest, ThreeInputs)
@@ -69,7 +84,19 @@ TYPED_TEST(PackTest, ThreeInputs)
                    /*input_datas=*/
                    {{1, 4}, {2, 5}, {3, 6}},
                    /*output_data=*/
-                   {1, 4, 2, 5, 3, 6}, 0);
+                   {1, 4, 2, 5, 3, 6}, /*axis=*/0);
+
+  SUCCEED();
+}
+
+TYPED_TEST(PackTest, NegAxis)
+{
+  Check<TypeParam>(/*input_shapes=*/{{2}, {2}, {2}},
+                   /*output_shape=*/{2, 3},
+                   /*input_datas=*/
+                   {{1, 4}, {2, 5}, {3, 6}},
+                   /*output_data=*/
+                   {1, 2, 3, 4, 5, 6}, /*axis=*/-1);
 
   SUCCEED();
 }

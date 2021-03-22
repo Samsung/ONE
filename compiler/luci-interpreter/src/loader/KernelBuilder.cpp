@@ -629,6 +629,8 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleOutput *)
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CirclePack *node)
 {
+  assert(node->arity() == node->values_count());
+
   std::vector<const Tensor *> inputs(node->values_count());
   for (uint32_t i = 0; i < node->values_count(); ++i)
   {
