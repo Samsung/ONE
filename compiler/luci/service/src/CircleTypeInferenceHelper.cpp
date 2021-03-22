@@ -16,8 +16,6 @@
 
 #include "CircleTypeInferenceHelper.h"
 
-#include <loco/Service/TypeInference.h>
-
 namespace luci
 {
 
