@@ -31,6 +31,9 @@ function(_Xnnpack_Build)
   set(Xnnpack_FOUND TRUE PARENT_SCOPE)
 endfunction(_Xnnpack_Build)
 
+string(REGEX REPLACE "-flto" "" CMAKE_C_FLAGS "${CMAKE_C_FLAGS}")
+string(REGEX REPLACE "-flto" "" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
+
 if(BUILD_XNNPACK)
   _Xnnpack_Build()
 else(BUILD_XNNPACK)
