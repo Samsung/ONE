@@ -19,8 +19,6 @@
 #include <luci/IR/CircleNodes.h>
 #include <luci/Profile/CircleNodeOrigin.h>
 
-#include <loco/Service/TypeInference.h>
-
 namespace
 {
 

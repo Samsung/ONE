@@ -20,8 +20,6 @@
 #include <luci/Log.h>
 
 #include <loco/IR/NodeShape.h>
-#include <loco/Service/ShapeInference.h>
-#include <loco/Service/TypeInference.h>
 
 #include <cassert>
 #include <vector>
