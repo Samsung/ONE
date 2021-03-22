@@ -73,6 +73,8 @@ set(SOURCES
     Neg.cpp
     NotEqual.h
     NotEqual.cpp
+    Pack.h
+    Pack.cpp
     Pad.h
     Pad.cpp
     Pow.h
@@ -179,6 +181,7 @@ set(TEST_SOURCES
     Mul.test.cpp
     Neg.test.cpp
     NotEqual.test.cpp
+    Pack.test.cpp
     Pad.test.cpp
     Pow.test.cpp
     Prelu.test.cpp

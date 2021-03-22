@@ -78,6 +78,7 @@ public:
   std::unique_ptr<Kernel> visit(const luci::CircleNeg *node) override;
   std::unique_ptr<Kernel> visit(const luci::CircleNotEqual *node) override;
   std::unique_ptr<Kernel> visit(const luci::CircleOutput *node) override;
+  std::unique_ptr<Kernel> visit(const luci::CirclePack *node) override;
   std::unique_ptr<Kernel> visit(const luci::CirclePad *node) override;
   std::unique_ptr<Kernel> visit(const luci::CirclePow *node) override;
   std::unique_ptr<Kernel> visit(const luci::CirclePRelu *node) override;

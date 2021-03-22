@@ -52,6 +52,7 @@
 #include "kernels/Mul.h"
 #include "kernels/Neg.h"
 #include "kernels/NotEqual.h"
+#include "kernels/Pack.h"
 #include "kernels/Pad.h"
 #include "kernels/Pow.h"
 #include "kernels/Prelu.h"
@@ -624,6 +625,24 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleNotEqual *node)
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleOutput *)
 {
   throw std::runtime_error("Output node cannot be executed.");
+}
+
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CirclePack *node)
+{
+  assert(node->arity() == node->values_count());
+
+  std::vector<const Tensor *> inputs(node->values_count());
+  for (uint32_t i = 0; i < node->values_count(); ++i)
+  {
+    inputs[i] = getInputTensor(node->values(i));
+  }
+  Tensor *output = getOutputTensor(node);
+
+  PackParams params{};
+  params.axis = node->axis();
+  params.values_count = node->values_count();
+
+  return std::make_unique<kernels::Pack>(std::move(inputs), output, params);
 }
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CirclePad *node)

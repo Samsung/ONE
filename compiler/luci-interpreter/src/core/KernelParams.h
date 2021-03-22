@@ -112,6 +112,12 @@ struct MulParams
   Activation activation;
 };
 
+struct PackParams
+{
+  int32_t values_count;
+  int32_t axis;
+};
+
 struct Pool2DParams
 {
   Padding padding;
