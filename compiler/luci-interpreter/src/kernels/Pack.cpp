@@ -34,7 +34,7 @@ Pack::Pack(std::vector<const Tensor *> inputs, Tensor *output, const PackParams 
 
 void Pack::configure()
 {
-  LUCI_INTERPRETER_CHECK(_inputs.size() == params().values_count);
+  LUCI_INTERPRETER_CHECK(_inputs.size() == static_cast<uint32_t>(params().values_count));
   const Tensor *t0 = _inputs[0];
   const int dimension_size = t0->shape().num_dims() + 1;
   int axis = params().axis;
@@ -44,7 +44,7 @@ void Pack::configure()
   }
   LUCI_INTERPRETER_CHECK(axis >= 0 && axis < t0->shape().num_dims());
 
-  for (int i = 1; i < _inputs.size(); ++i)
+  for (uint32_t i = 1; i < _inputs.size(); ++i)
   {
     const Tensor *tensor = _inputs[i];
     LUCI_INTERPRETER_CHECK(tensor->element_type() == t0->element_type());
