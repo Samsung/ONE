@@ -69,4 +69,4 @@ struct PGraphs
 
 } // namespace luci
 
-#endif // __LUCI_PARTITON_IR_H__
+#endif // __LUCI_PARTITION_IR_H__
