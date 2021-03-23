@@ -65,6 +65,25 @@ struct PGraphs
 
   // id2pgraph is to find *pgraph from pgraph id
   std::map<uint32_t, PGraph *> id2pgraph;
+
+public:
+  /**
+   * @brief return a copy of PGraphs
+   */
+  std::unique_ptr<PGraphs> make_copy(void) const;
+
+  /**
+   * @brief return group of node
+   * @note  will return default group if node is NOT interest type(like CircleInput)
+   */
+  std::string group_of(luci::CircleNode *node) const;
+
+  /**
+   * @brief return holding pgraph of node, nullptr if not found
+   * @note  node maybe one of NOT interest type(like CircleInput), there will be
+   *        no pgraph holding it.
+   */
+  const PGraph *pgraph_of(luci::CircleNode *node) const;
 };
 
 } // namespace luci
