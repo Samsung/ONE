@@ -1,7 +1,7 @@
 #ifndef LUCIMICROBENCHMARK_HPP
 #define LUCIMICROBENCHMARK_HPP
 #include <luci_interpreter/Interpreter.h>
-#include <lib/import/include/luci/Importer.h>
+#include <luci/import/include/luci/Importer.h>
 #include <luci/IR/Module.h>
 #include <loco/IR/DataTypeTraits.h>
 #include <mbed.h>
