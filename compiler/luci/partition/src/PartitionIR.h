@@ -31,7 +31,7 @@ struct PGraph;
 
 /**
  * @brief Partition Node with CircleNode with group name
- * @note  node just points to source luci::CircleNode * NOT the cloned node
+ * @note  node just points to source luci::CircleNode, NOT the cloned node
  *        CloneContext is used to find cloned node from source node
  */
 struct PNode
