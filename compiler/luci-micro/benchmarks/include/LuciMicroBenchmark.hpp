@@ -1,49 +1,30 @@
-/* mbed Microcontroller Library
- * Copyright (c) 2019 ARM Limited
- * SPDX-License-Identifier: Apache-2.0
- */
+#ifndef LUCIMICROBENCHMARK_HPP
+#define LUCIMICROBENCHMARK_HPP
 #include <luci_interpreter/Interpreter.h>
 #include <lib/import/include/luci/Importer.h>
 #include <luci/IR/Module.h>
 #include <loco/IR/DataTypeTraits.h>
-#include "mbed.h"
+#include <mbed.h>
 #include <iostream>
 #include "circlemodel.h"
 #include "resources/mio/circle/schema_generated.h"
-// #include "stdex/Memory.h"
-extern "C" void __sync_synchronize() {}
 
-// Blinking rate in milliseconds
-#define BLINKING_RATE     500ms
-
-
-// int main()
-// {
-//     // Initialise the digital pin LED1 as an output
-//     DigitalOut led(LED1);
-
-//     while (true) {
-//         led = !led;
-//         ThisThread::sleep_for(BLINKING_RATE);
-//     }
-// }
 void fill_in_tensor(std::vector<char> &data, loco::DataType dtype)
 {
   switch (dtype)
   {
-  case loco::DataType::FLOAT32:
-    for (int i = 0; i < data.size() / sizeof(float); ++i)
-    {
-      reinterpret_cast<float *>(data.data())[i] = 123.f;
-    }
-    break;
-  default:
-    assert(false);
+    case loco::DataType::FLOAT32:
+      for (int i = 0; i < data.size() / sizeof(float); ++i)
+      {
+        reinterpret_cast<float *>(data.data())[i] = 123.f;
+      }
+      break;
+    default:
+      assert(false);
   }
 }
-int main()
+void run_luci_micro_benchmark(void)
 {
-// #ifdef TEST_LUCIINTERPRETER
   printf("STM32F767 SystemCoreClock %d\n", SystemCoreClock);
   printf("Model NET_0000.circle\n");
 
@@ -110,6 +91,5 @@ int main()
     printf("\rFinished in %dus   ", t.read_us());
     ThisThread::sleep_for(100ms);
   }
-// #endif
-  return 0;
 }
+#endif // LUCIMICROBENCHMARK_HPP
