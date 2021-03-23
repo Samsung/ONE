@@ -59,8 +59,7 @@ void copy_common_attributes(const luci::CircleNode *src, luci::CircleNode *dst)
   dst->rank(src->rank());
   for (uint32_t i = 0; i < src->rank(); i++)
   {
-    if (src->dim(i).known())
-      dst->dim(i).set(src->dim(i).value());
+    dst->dim(i) = src->dim(i);
   }
   dst->shape_status(src->shape_status());
 
