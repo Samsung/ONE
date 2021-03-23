@@ -1,2 +1,4 @@
 .mbedbuild
+.vscode/
 cmake_build/
+BUILD/
