@@ -18,7 +18,6 @@
 #include "Check.h"
 
 #include "CircleShapeInferenceHelper.h"
-#include "CircleInferenceHelper.h"
 #include "ShapeInfer_StridedSlice.h"
 
 #include <luci/IR/CircleNodes.h>
@@ -1751,13 +1750,6 @@ loco::NodeShape infer_output(const luci::CircleOutput *node)
   return loco::NodeShape{*output_shape};
 }
 
-loco::NodeShape infer_if_out(const luci::CircleIfOut *node)
-{
-  auto graphs = get_out_graphs(node);
-  assert(*graphs.then_graph_output->shape() == *graphs.else_graph_output->shape());
-  return loco::NodeShape{*graphs.then_graph_output->shape()};
-}
-
 loco::NodeShape infer_non_max_suppression_v4_out(const luci::CircleNonMaxSuppressionV4Out *node)
 {
   const loco::DataType S32 = loco::DataType::S32;
@@ -2452,8 +2444,6 @@ public:
   loco::NodeShape visit(const luci::CircleOutputExclude *node) final { return use_own(node); }
 
   loco::NodeShape visit(const luci::CircleCustomOut *node) final { return use_own(node); }
-
-  loco::NodeShape visit(const luci::CircleIfOut *node) final { return infer_if_out(node); }
 
   loco::NodeShape visit(const luci::CircleNonMaxSuppressionV4Out *node) final
   {

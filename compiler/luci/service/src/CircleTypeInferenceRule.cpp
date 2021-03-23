@@ -16,7 +16,6 @@
 
 #include "luci/Service/CircleTypeInferenceRule.h"
 #include "CircleTypeInferenceHelper.h"
-#include "CircleInferenceHelper.h"
 
 #include <luci/IR/CircleDialect.h>
 #include <luci/IR/CircleNodeVisitor.h>
@@ -565,13 +564,6 @@ struct TypeInferenceAlgorithm final : public luci::CircleNodeVisitor<loco::DataT
   loco::DataType visit(const luci::CircleOutputExclude *node) final { return node->dtype(); }
 
   loco::DataType visit(const luci::CircleCustomOut *node) final { return node->dtype(); }
-
-  loco::DataType visit(const luci::CircleIfOut *node) final
-  {
-    auto graphs = get_out_graphs(node);
-    assert(graphs.then_graph_output->dtype() == graphs.else_graph_output->dtype());
-    return graphs.then_graph_output->dtype();
-  }
 
   loco::DataType visit(const luci::CircleNonMaxSuppressionV4Out *node) final
   {
