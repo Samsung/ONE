@@ -31,8 +31,18 @@ class QueryOpCode final : public CircleNodeVisitor<BuiltinOperator>
 {
 public:
   // TODO add CircleNodes
+  BuiltinOperator visit(const CircleAdd *) final { return BuiltinOperator_ADD; }
+  BuiltinOperator visit(const CircleDiv *) final { return BuiltinOperator_DIV; }
+  BuiltinOperator visit(const CircleMean *) final { return BuiltinOperator_MEAN; }
+  BuiltinOperator visit(const CircleMul *) final { return BuiltinOperator_MUL; }
+  BuiltinOperator visit(const CirclePow *) final { return BuiltinOperator_POW; }
   BuiltinOperator visit(const CircleRsqrt *) final { return BuiltinOperator_RSQRT; }
   BuiltinOperator visit(const CircleSqrt *) final { return BuiltinOperator_SQRT; }
+  BuiltinOperator visit(const CircleSquaredDifference *) final
+  {
+    return BuiltinOperator_SQUARED_DIFFERENCE;
+  }
+  BuiltinOperator visit(const CircleSub *) final { return BuiltinOperator_SUB; }
 
   // NOTE only builtin operators should be called (NOT virtual nodes)
 };
