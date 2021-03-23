@@ -22,7 +22,7 @@ def copy_libs_to_local_dir():
             os.path.join(LIB_LOCAL_DIR_NAME, lib_name), dirs_exist_ok=True)
 
 def remove_tests_from_local_dir():
-    for root, dirs, files in os.walk(LIB_DIR_NAME):
+    for root, dirs, files in os.walk(LIB_LOCAL_DIR_NAME):
         path = root.split(os.sep)
         for item in files:
             if item.endswith("test.cpp"):
