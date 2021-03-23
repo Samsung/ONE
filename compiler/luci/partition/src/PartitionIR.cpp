@@ -75,11 +75,11 @@ std::string PGraphs::group_of(luci::CircleNode *node) const
 
   auto it = node2group.find(node);
   if (it == node2group.end())
+  {
     INFO(l) << "PGraphs::group_of " << node << "(" << node->name() << ") not found" << std::endl;
-  assert(it != node2group.end());
-  auto group = it->second;
-  assert(!group.empty());
-  return group;
+    return "";
+  }
+  return it->second;
 }
 
 const PGraph *PGraphs::pgraph_of(luci::CircleNode *node) const
