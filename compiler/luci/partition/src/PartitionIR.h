@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __LUCI_PARTITON_IR_H__
-#define __LUCI_PARTITON_IR_H__
+#ifndef __LUCI_PARTITION_IR_H__
+#define __LUCI_PARTITION_IR_H__
 
 #include <luci/IR/CircleNodes.h>
 
