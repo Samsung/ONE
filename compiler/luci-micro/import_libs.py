@@ -10,10 +10,12 @@ lib_list = [
     'logo-core',
     'loco',
     'locomotiv',
-    'angkor']
-    # shutil.copytree('../luci/lang', './lib/luci/lang', dirs_exist_ok=True)
-    # shutil.copytree('../luci/import', './lib/luci/import', dirs_exist_ok=True)
-    # shutil.copytree('../luci/env', './lib/luci/env', dirs_exist_ok=True)
+    'angkor'
+    # 'luci/lang',
+    # 'luci/import',
+    # 'luci/env', 
+    ]
+
 def copy_libs_to_local_dir():
     for lib_name in lib_list:
         shutil.copytree(os.path.join(LIB_DIR_NAME, lib_name), 
