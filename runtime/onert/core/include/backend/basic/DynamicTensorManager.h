@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_CPU_COMMON_DYNAMICTENSOR_MANAGER_H__
-#define __ONERT_BACKEND_CPU_COMMON_DYNAMICTENSOR_MANAGER_H__
+#ifndef __ONERT_BACKEND_BASIC_DYNAMICTENSOR_MANAGER_H__
+#define __ONERT_BACKEND_BASIC_DYNAMICTENSOR_MANAGER_H__
 
 #include "MemoryManager.h"
 #include "TensorRegistry.h"
@@ -69,4 +69,4 @@ private:
 } // namespace backend
 } // namespace onert
 
-#endif // __ONERT_BACKEND_CPU_COMMON_DYNAMICTENSOR_MANAGER_H__
+#endif // __ONERT_BACKEND_BASIC_DYNAMICTENSOR_MANAGER_H__

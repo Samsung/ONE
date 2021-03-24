@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2019 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,9 +14,12 @@
  * limitations under the License.
  */
 
-#include "backend/cpu_common/Allocator.h"
+#ifndef __ONERT_BACKEND_BASIC_MEMORY_PLANNER_FACTORY_H__
+#define __ONERT_BACKEND_BASIC_MEMORY_PLANNER_FACTORY_H__
 
-#include "util/logging.h"
+#include "backend/basic/IMemoryPlanner.h"
+
+#include <string>
 
 namespace onert
 {
@@ -25,14 +28,20 @@ namespace backend
 namespace cpu_common
 {
 
-Allocator::Allocator(uint32_t capacity)
+class MemoryPlannerFactory
 {
-  _base = std::make_unique<uint8_t[]>(capacity);
+public:
+  static MemoryPlannerFactory &get();
 
-  VERBOSE(ALLOC) << "allocation capacity: " << capacity << std::endl;
-  VERBOSE(ALLOC) << "base pointer: " << static_cast<void *>(_base.get()) << std::endl;
-}
+private:
+  MemoryPlannerFactory() = default;
+
+public:
+  IMemoryPlanner *create(const std::string &key);
+};
 
 } // namespace cpu_common
 } // namespace backend
 } // namespace onert
+
+#endif // __ONERT_BACKEND_BASIC_MEMORY_PLANNER_FACTORY_H__

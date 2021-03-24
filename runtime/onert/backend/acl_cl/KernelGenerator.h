@@ -17,7 +17,7 @@
 #ifndef __ONERT_BACKEND_ACL_CL_KERNEL_GENERATOR_H__
 #define __ONERT_BACKEND_ACL_CL_KERNEL_GENERATOR_H__
 
-#include <backend/cpu_common/KernelGeneratorBase.h>
+#include <backend/basic/KernelGeneratorBase.h>
 
 #include "TensorBuilder.h"
 #include "AclTensorRegistry.h"

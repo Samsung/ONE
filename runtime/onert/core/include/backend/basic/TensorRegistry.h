@@ -14,4 +14,23 @@
  * limitations under the License.
  */
 
-#include "backend/cpu_common/BackendContextHelpers.h"
+#ifndef __ONERT_BACKEND_BASIC_TENSOR_REGISTRY__
+#define __ONERT_BACKEND_BASIC_TENSOR_REGISTRY__
+
+#include "backend/ITensorRegistry.h"
+#include "Tensor.h"
+
+namespace onert
+{
+namespace backend
+{
+namespace cpu_common
+{
+
+using TensorRegistry = PortableTensorRegistryTemplate<cpu_common::Tensor>;
+
+} // namespace cpu_common
+} // namespace backend
+} // namespace onert
+
+#endif // __ONERT_BACKEND_BASIC_TENSOR_REGISTRY__

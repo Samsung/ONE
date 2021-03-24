@@ -17,7 +17,7 @@
 #ifndef __ONERT_BACKEND_RUY_TENSOR_BUILDER_H__
 #define __ONERT_BACKEND_RUY_TENSOR_BUILDER_H__
 
-#include <backend/cpu_common/TensorBuilder.h>
+#include <backend/basic/TensorBuilder.h>
 
 namespace onert
 {

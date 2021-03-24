@@ -14,11 +14,15 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_CPU_COMMON_TENSOR_REGISTRY__
-#define __ONERT_BACKEND_CPU_COMMON_TENSOR_REGISTRY__
+/**
+ * @file        Allocator.h
+ * @brief       This file contains Allocator related classes
+ */
 
-#include "backend/ITensorRegistry.h"
-#include "Tensor.h"
+#ifndef __ONERT_BACKEND_BASIC_ALLOCATOR_H__
+#define __ONERT_BACKEND_BASIC_ALLOCATOR_H__
+
+#include <memory>
 
 namespace onert
 {
@@ -27,10 +31,26 @@ namespace backend
 namespace cpu_common
 {
 
-using TensorRegistry = PortableTensorRegistryTemplate<cpu_common::Tensor>;
+/**
+ * @brief Class to allocate memory
+ */
+class Allocator
+{
+public:
+  Allocator(uint32_t capacity);
+  /**
+   * @brief Get memory base pointer
+   * @return base pointer
+   */
+  uint8_t *base() const { return _base.get(); }
+  void release() { _base.reset(); }
+
+private:
+  std::unique_ptr<uint8_t[]> _base;
+};
 
 } // namespace cpu_common
 } // namespace backend
 } // namespace onert
 
-#endif // __ONERT_BACKEND_CPU_COMMON_TENSOR_REGISTRY__
+#endif // __ONERT_BACKEND_BASIC_ALLOCATOR_H__

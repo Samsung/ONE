@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-#include "backend/cpu_common/Tensor.h"
+#include "backend/basic/Tensor.h"
 
 #include "ir/DataType.h"
-#include "backend/cpu_common/MemoryManager.h"
+#include "backend/basic/MemoryManager.h"
 
 namespace onert
 {

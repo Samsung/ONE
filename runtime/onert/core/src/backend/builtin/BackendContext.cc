@@ -17,7 +17,7 @@
 #include "BackendContext.h"
 
 #include "KernelGenerator.h"
-#include "backend/cpu_common/BackendContextHelpers.h"
+#include "backend/basic/BackendContextHelpers.h"
 
 namespace onert
 {

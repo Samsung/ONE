@@ -19,16 +19,16 @@
  * @brief       This file contains Memory Planning related classes
  */
 
-#ifndef __ONERT_BACKEND_CPU_COMMON_MEMORY_PLANNER_H__
-#define __ONERT_BACKEND_CPU_COMMON_MEMORY_PLANNER_H__
+#ifndef __ONERT_BACKEND_BASIC_MEMORY_PLANNER_H__
+#define __ONERT_BACKEND_BASIC_MEMORY_PLANNER_H__
 
 #include <map>
 #include <vector>
 #include <unordered_set>
 #include <memory>
 
-#include "backend/cpu_common/Allocator.h"
-#include "backend/cpu_common/IMemoryPlanner.h"
+#include "backend/basic/Allocator.h"
+#include "backend/basic/IMemoryPlanner.h"
 #include "ir/OperandIndexMap.h"
 
 namespace onert
@@ -157,4 +157,4 @@ private:
 } // namespace backend
 } // namespace onert
 
-#endif // __ONERT_BACKEND_CPU_COMMON_MEMORY_PLANNER_H__
+#endif // __ONERT_BACKEND_BASIC_MEMORY_PLANNER_H__

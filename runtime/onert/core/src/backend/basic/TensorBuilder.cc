@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <backend/cpu_common/TensorBuilder.h>
+#include <backend/basic/TensorBuilder.h>
 
 #include <util/logging.h>
 

@@ -22,7 +22,7 @@
 #include "ir/Index.h"
 #include "ir/OperandIndexMap.h"
 #include "ir/OperandIndexSequence.h"
-#include "backend/cpu_common/BackendContextHelpers.h"
+#include "backend/basic/BackendContextHelpers.h"
 
 namespace onert
 {
