@@ -24,12 +24,12 @@ namespace onert
 {
 namespace backend
 {
-namespace cpu_common
+namespace basic
 {
 
-using TensorRegistry = PortableTensorRegistryTemplate<cpu_common::Tensor>;
+using TensorRegistry = PortableTensorRegistryTemplate<basic::Tensor>;
 
-} // namespace cpu_common
+} // namespace basic
 } // namespace backend
 } // namespace onert
 

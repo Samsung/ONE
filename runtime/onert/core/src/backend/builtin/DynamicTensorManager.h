@@ -29,7 +29,7 @@ namespace backend
 namespace builtin
 {
 
-using DynamicTensorManager = cpu_common::DynamicTensorManager;
+using DynamicTensorManager = basic::DynamicTensorManager;
 
 } // namespace builtin
 } // namespace backend

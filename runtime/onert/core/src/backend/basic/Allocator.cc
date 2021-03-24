@@ -22,7 +22,7 @@ namespace onert
 {
 namespace backend
 {
-namespace cpu_common
+namespace basic
 {
 
 Allocator::Allocator(uint32_t capacity)
@@ -33,6 +33,6 @@ Allocator::Allocator(uint32_t capacity)
   VERBOSE(ALLOC) << "base pointer: " << static_cast<void *>(_base.get()) << std::endl;
 }
 
-} // namespace cpu_common
+} // namespace basic
 } // namespace backend
 } // namespace onert

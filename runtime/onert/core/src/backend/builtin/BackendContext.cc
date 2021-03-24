@@ -26,7 +26,7 @@ namespace backend
 namespace builtin
 {
 
-ITensorRegistry *BackendContext::genTensors() { return cpu_common::genTensors(*this); }
+ITensorRegistry *BackendContext::genTensors() { return basic::genTensors(*this); }
 
 FunctionMap BackendContext::genKernels()
 {
@@ -38,7 +38,7 @@ FunctionMap BackendContext::genKernels()
     ret.emplace_back(op_ind, std::move(fn_seq));
   }
 
-  cpu_common::initConsts(*this);
+  basic::initConsts(*this);
 
   // NOTE For memory optimization, we want to free some operand data
   const_cast<ir::Graph *>(graph())->operands().iterate(

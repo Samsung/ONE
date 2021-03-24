@@ -30,7 +30,7 @@ namespace backend
 namespace acl_cl
 {
 
-class KernelGenerator : public cpu_common::KernelGeneratorBase
+class KernelGenerator : public basic::KernelGeneratorBase
 {
 public:
   KernelGenerator(const ir::Graph &graph, const std::shared_ptr<TensorBuilder> &tensor_builder,

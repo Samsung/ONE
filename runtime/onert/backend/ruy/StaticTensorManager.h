@@ -26,7 +26,7 @@ namespace backend
 namespace ruy
 {
 
-using StaticTensorManager = cpu_common::StaticTensorManager;
+using StaticTensorManager = basic::StaticTensorManager;
 
 } // namespace ruy
 } // namespace backend

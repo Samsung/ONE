@@ -30,7 +30,7 @@ namespace onert
 {
 namespace backend
 {
-namespace cpu_common
+namespace basic
 {
 
 class KernelGeneratorBase : public ir::OperationVisitor
@@ -64,7 +64,7 @@ protected:
   std::unique_ptr<exec::IFunction> _return_fn;
 };
 
-} // namespace cpu_common
+} // namespace basic
 } // namespace backend
 } // namespace onert
 

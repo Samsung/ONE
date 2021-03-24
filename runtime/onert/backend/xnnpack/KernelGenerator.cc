@@ -38,10 +38,10 @@ namespace xnnpack
 
 KernelGenerator::KernelGenerator(
   const ir::Graph &graph, const std::shared_ptr<TensorBuilder> &tensor_builder,
-  const std::shared_ptr<cpu_common::TensorRegistry> &tensor_reg,
+  const std::shared_ptr<basic::TensorRegistry> &tensor_reg,
   const std::shared_ptr<backend::custom::IKernelBuilder> &kernel_builder,
   const std::shared_ptr<ExternalContext> &external_context)
-  : cpu_common::KernelGeneratorBase{graph},
+  : basic::KernelGeneratorBase{graph},
     _ctx(graph.operands()), _operations_ctx{graph.operations()}, _current_layout{graph.layout()},
     _tensor_builder(tensor_builder), _tensor_reg{tensor_reg}, _kernel_builder(kernel_builder),
     _external_context(external_context)

@@ -27,7 +27,7 @@ namespace onert
 {
 namespace backend
 {
-namespace cpu_common
+namespace basic
 {
 
 class DynamicMemoryManager;
@@ -243,7 +243,7 @@ public:
 private:
   std::shared_ptr<const ir::Data> _data;
 };
-} // namespace cpu_common
+} // namespace basic
 } // namespace backend
 } // namespace onert
 

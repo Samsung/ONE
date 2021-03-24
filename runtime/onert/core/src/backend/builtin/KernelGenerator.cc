@@ -34,7 +34,7 @@ namespace builtin
 KernelGenerator::KernelGenerator(const ir::Graph &graph, DynamicTensorManager *dyn_tensor_manager,
                                  const std::shared_ptr<TensorRegistry> &tensor_reg,
                                  const std::shared_ptr<ExternalContext> &external_context)
-  : cpu_common::KernelGeneratorBase{graph}, _dyn_tensor_manager{dyn_tensor_manager},
+  : basic::KernelGeneratorBase{graph}, _dyn_tensor_manager{dyn_tensor_manager},
     _tensor_reg{tensor_reg}, _tensor_registries{}, _executor_map{nullptr}, _external_context{
                                                                              external_context}
 {

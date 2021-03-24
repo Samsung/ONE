@@ -32,7 +32,7 @@ namespace backend
 namespace builtin
 {
 
-class KernelGenerator : public cpu_common::KernelGeneratorBase
+class KernelGenerator : public basic::KernelGeneratorBase
 {
 public:
   KernelGenerator(const ir::Graph &graph, DynamicTensorManager *dyn_tensor_manager,

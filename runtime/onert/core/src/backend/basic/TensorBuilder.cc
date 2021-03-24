@@ -24,7 +24,7 @@ namespace onert
 {
 namespace backend
 {
-namespace cpu_common
+namespace basic
 {
 
 TensorBuilder::TensorBuilder(const std::shared_ptr<TensorRegistry> &tensor_reg)
@@ -78,6 +78,6 @@ bool TensorBuilder::isRegistered(const ir::OperandIndex &ind) const
 
 void TensorBuilder::allocate(void) { _static_tensor_mgr->allocateNonconsts(); }
 
-} // namespace cpu_common
+} // namespace basic
 } // namespace backend
 } // namespace onert
