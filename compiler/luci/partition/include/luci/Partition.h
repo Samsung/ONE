@@ -36,7 +36,7 @@ struct PartitionTable
   std::string def_group;
 
   // assign by opcode: OPCODE=group
-  std::unordered_map<std::string, std::string> byopcodes;
+  std::unordered_map<std::string /* OPCODE */, std::string /* group */> byopcodes;
 
   // TODO add assign by OP name
 };
