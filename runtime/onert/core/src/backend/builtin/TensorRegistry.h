@@ -17,7 +17,7 @@
 #ifndef __ONERT_BACKEND_BUILTIN_TENSOR_REGISTRY_H__
 #define __ONERT_BACKEND_BUILTIN_TENSOR_REGISTRY_H__
 
-#include "backend/cpu_common/TensorRegistry.h"
+#include "backend/basic/TensorRegistry.h"
 #include "backend/ITensorRegistry.h"
 #include "Tensor.h"
 #include "IOTensor.h"

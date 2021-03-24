@@ -17,7 +17,7 @@
 #ifndef __ONERT_BACKEND_CPU_STATICTENSOR_MANAGER_H__
 #define __ONERT_BACKEND_CPU_STATICTENSOR_MANAGER_H__
 
-#include "backend/cpu_common/StaticTensorManager.h"
+#include "backend/basic/StaticTensorManager.h"
 
 namespace onert
 {

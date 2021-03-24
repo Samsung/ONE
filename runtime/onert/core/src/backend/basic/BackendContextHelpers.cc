@@ -14,25 +14,4 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_BUILTIN_DYNAMICTENSOR_MANAGER_H__
-#define __ONERT_BACKEND_BUILTIN_DYNAMICTENSOR_MANAGER_H__
-
-#include "TensorRegistry.h"
-#include "Tensor.h"
-
-#include <backend/basic/DynamicTensorManager.h>
-
-namespace onert
-{
-namespace backend
-{
-namespace builtin
-{
-
-using DynamicTensorManager = cpu_common::DynamicTensorManager;
-
-} // namespace builtin
-} // namespace backend
-} // namespace onert
-
-#endif // __ONERT_BACKEND_BUILTIN_DYNAMICTENSOR_MANAGER_H__
+#include "backend/basic/BackendContextHelpers.h"

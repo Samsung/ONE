@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-#include "backend/cpu_common/StaticTensorManager.h"
+#include "backend/basic/StaticTensorManager.h"
 
-#include "backend/cpu_common/DynamicTensorManager.h"
-#include "backend/cpu_common/Tensor.h"
+#include "backend/basic/DynamicTensorManager.h"
+#include "backend/basic/Tensor.h"
 #include <util/logging.h>
 
 namespace onert

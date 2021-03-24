@@ -17,9 +17,9 @@
 #ifndef __ONERT_BACKEND_BUILTIN_TENSOR_BUILDER_H__
 #define __ONERT_BACKEND_BUILTIN_TENSOR_BUILDER_H__
 
-#include <backend/cpu_common/StaticTensorManager.h>
-#include <backend/cpu_common/TensorRegistry.h>
-#include <backend/cpu_common/Tensor.h>
+#include <backend/basic/StaticTensorManager.h>
+#include <backend/basic/TensorRegistry.h>
+#include <backend/basic/Tensor.h>
 
 #include <ir/OperandIndexMap.h>
 

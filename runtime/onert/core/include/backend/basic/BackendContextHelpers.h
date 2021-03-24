@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_CPU_COMMON_BACKEND_CONTEXT_HELPERS_H__
-#define __ONERT_BACKEND_CPU_COMMON_BACKEND_CONTEXT_HELPERS_H__
+#ifndef __ONERT_BACKEND_BASIC_BACKEND_CONTEXT_HELPERS_H__
+#define __ONERT_BACKEND_BASIC_BACKEND_CONTEXT_HELPERS_H__
 
 #include <vector>
 
@@ -248,4 +248,4 @@ inline void initConsts(BackendContext &ctx)
 } // namespace backend
 } // namespace onert
 
-#endif // __ONERT_BACKEND_CPU_COMMON_BACKEND_CONTEXT_HELPERS_H__
+#endif // __ONERT_BACKEND_BASIC_BACKEND_CONTEXT_HELPERS_H__

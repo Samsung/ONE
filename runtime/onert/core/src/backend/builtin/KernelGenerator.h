@@ -22,7 +22,7 @@
 #include "ir/Graph.h"
 #include "TensorBuilder.h"
 #include "compiler/TensorRegistries.h"
-#include "backend/cpu_common/KernelGeneratorBase.h"
+#include "backend/basic/KernelGeneratorBase.h"
 #include "TensorRegistry.h"
 
 namespace onert

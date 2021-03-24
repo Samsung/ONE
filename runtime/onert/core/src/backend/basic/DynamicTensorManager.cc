@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "backend/cpu_common/DynamicTensorManager.h"
+#include "backend/basic/DynamicTensorManager.h"
 
 #include "util/logging.h"
 #include "misc/polymorphic_downcast.h"

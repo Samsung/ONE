@@ -24,7 +24,7 @@
 #include <ir/Graph.h>
 #include "../ExternalContext.h"
 
-#include "backend/cpu_common/MemoryManager.h"
+#include "backend/basic/MemoryManager.h"
 
 namespace onert
 {

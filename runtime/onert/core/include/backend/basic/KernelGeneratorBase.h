@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_CPU_COMMON_KERNEL_GENERATOR_BASE_H__
-#define __ONERT_BACKEND_CPU_COMMON_KERNEL_GENERATOR_BASE_H__
+#ifndef __ONERT_BACKEND_BASIC_KERNEL_GENERATOR_BASE_H__
+#define __ONERT_BACKEND_BASIC_KERNEL_GENERATOR_BASE_H__
 
 #include <assert.h>
 #include <memory>
@@ -68,4 +68,4 @@ protected:
 } // namespace backend
 } // namespace onert
 
-#endif // __ONERT_BACKEND_CPU_COMMON_KERNEL_GENERATOR_BASE_H__
+#endif // __ONERT_BACKEND_BASIC_KERNEL_GENERATOR_BASE_H__

@@ -19,11 +19,11 @@
 
 #include "ExternalContext.h"
 #include "TensorBuilder.h"
-#include "backend/cpu_common/TensorRegistry.h"
+#include "backend/basic/TensorRegistry.h"
 #include "Tensor.h"
 
 #include <backend/CustomKernelBuilder.h>
-#include <backend/cpu_common/KernelGeneratorBase.h>
+#include <backend/basic/KernelGeneratorBase.h>
 #include <ir/Operands.h>
 #include <ir/Operations.h>
 

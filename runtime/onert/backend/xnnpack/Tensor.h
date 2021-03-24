@@ -17,7 +17,7 @@
 #ifndef __ONERT_BACKEND_XNNPACK_TENSOR_H__
 #define __ONERT_BACKEND_XNNPACK_TENSOR_H__
 
-#include <backend/cpu_common/Tensor.h>
+#include <backend/basic/Tensor.h>
 #include <ir/Data.h>
 
 namespace onert

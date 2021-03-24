@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_CPU_COMMON_TENSOR_BUILDER_H__
-#define __ONERT_BACKEND_CPU_COMMON_TENSOR_BUILDER_H__
+#ifndef __ONERT_BACKEND_BASIC_TENSOR_BUILDER_H__
+#define __ONERT_BACKEND_BASIC_TENSOR_BUILDER_H__
 
-#include <backend/cpu_common/DynamicTensorManager.h>
-#include <backend/cpu_common/TensorRegistry.h>
-#include <backend/cpu_common/StaticTensorManager.h>
+#include <backend/basic/DynamicTensorManager.h>
+#include <backend/basic/TensorRegistry.h>
+#include <backend/basic/StaticTensorManager.h>
 
 #include <ir/OperandIndexMap.h>
 
@@ -68,4 +68,4 @@ private:
 } // namespace backend
 } // namespace onert
 
-#endif // __ONERT_BACKEND_CPU_COMMON_TENSOR_BUILDER_H__
+#endif // __ONERT_BACKEND_BASIC_TENSOR_BUILDER_H__

@@ -17,7 +17,7 @@
 #ifndef __ONERT_COMPILER_BUILTIN_CONSTANT_INITIALIZER_H__
 #define __ONERT_COMPILER_BUILTIN_CONSTANT_INITIALIZER_H__
 
-#include <backend/cpu_common/ConstantInitializer.h>
+#include <backend/basic/ConstantInitializer.h>
 
 namespace onert
 {
