@@ -5,7 +5,7 @@ test:
     testFW: GTEST
     testCaseFolder:
       - ./compute/test/cker
-      - ./runtime/onert/core/src/backend/cpu_common
+      - ./runtime/onert/core/src/backend/basic
       - ./runtime/onert/frontend/nnapi
       - ./runtime/onert/test/core/compiler
       - ./runtime/onert/test/core/exec
@@ -31,7 +31,7 @@ test:
         - functionName:
             starts:
               - TEST
- 
+
     negativeTestCase:
       - condition:
         - testName:
