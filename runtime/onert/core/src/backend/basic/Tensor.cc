@@ -23,7 +23,7 @@ namespace onert
 {
 namespace backend
 {
-namespace cpu_common
+namespace basic
 {
 
 Tensor::~Tensor() {}
@@ -97,7 +97,7 @@ void Tensor::deallocBuffer()
   }
 }
 
-} // namespace cpu_common
+} // namespace basic
 } // namespace backend
 } // namespace onert
 
@@ -107,13 +107,13 @@ namespace onert
 {
 namespace backend
 {
-namespace cpu_common
+namespace basic
 {
 
 // `dynamic_cast` not working across library boundaries on NDK
 // With this as a key function, `dynamic_cast` works across dl
 ExternalTensor::~ExternalTensor() {}
 
-} // namespace cpu_common
+} // namespace basic
 } // namespace backend
 } // namespace onert

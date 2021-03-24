@@ -24,7 +24,7 @@ namespace onert
 {
 namespace backend
 {
-namespace cpu_common
+namespace basic
 {
 
 StaticTensorManager::StaticTensorManager(const std::shared_ptr<TensorRegistry> &reg,
@@ -103,6 +103,6 @@ void StaticTensorManager::iterate(const std::function<void(const ir::OperandInde
     fn(it.first);
 }
 
-} // namespace cpu_common
+} // namespace basic
 } // namespace backend
 } // namespace onert

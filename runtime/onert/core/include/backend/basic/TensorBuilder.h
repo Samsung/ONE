@@ -31,7 +31,7 @@ namespace onert
 {
 namespace backend
 {
-namespace cpu_common
+namespace basic
 {
 
 class TensorBuilder
@@ -64,7 +64,7 @@ private:
   ir::OperandIndexMap<ir::OperandInfo> _tensor_info_map;
 };
 
-} // namespace cpu_common
+} // namespace basic
 } // namespace backend
 } // namespace onert
 

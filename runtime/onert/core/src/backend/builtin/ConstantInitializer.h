@@ -26,7 +26,7 @@ namespace backend
 namespace builtin
 {
 
-using ConstantInitializer = cpu_common::ConstantInitializer;
+using ConstantInitializer = basic::ConstantInitializer;
 
 } // namespace builtin
 } // namespace backend

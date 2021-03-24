@@ -25,7 +25,7 @@ namespace onert
 {
 namespace backend
 {
-namespace cpu_common
+namespace basic
 {
 
 class MemoryPlannerFactory
@@ -40,7 +40,7 @@ public:
   IMemoryPlanner *create(const std::string &key);
 };
 
-} // namespace cpu_common
+} // namespace basic
 } // namespace backend
 } // namespace onert
 

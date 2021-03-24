@@ -30,7 +30,7 @@ namespace builtin
 TensorBuilder::TensorBuilder(const std::shared_ptr<TensorRegistry> &tensor_reg)
   : _tensor_reg{tensor_reg}, _dynamic_tensor_mgr{new DynamicTensorManager(_tensor_reg->base_reg())},
     _static_tensor_mgr{
-      new cpu_common::StaticTensorManager(_tensor_reg->base_reg(), _dynamic_tensor_mgr.get())}
+      new basic::StaticTensorManager(_tensor_reg->base_reg(), _dynamic_tensor_mgr.get())}
 {
   /* empty */
 }
@@ -95,7 +95,7 @@ DynamicTensorManager *TensorBuilder::dynamicTensorManager(void)
   return _dynamic_tensor_mgr.get();
 }
 
-cpu_common::Tensor *TensorBuilder::nativeOwnTensorAt(const ir::OperandIndex &ind)
+basic::Tensor *TensorBuilder::nativeOwnTensorAt(const ir::OperandIndex &ind)
 {
   return _tensor_reg->getNativeOwnTensor(ind);
 }

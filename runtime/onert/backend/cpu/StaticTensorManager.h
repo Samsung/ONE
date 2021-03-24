@@ -26,7 +26,7 @@ namespace backend
 namespace cpu
 {
 
-using StaticTensorManager = cpu_common::StaticTensorManager;
+using StaticTensorManager = basic::StaticTensorManager;
 
 } // namespace cpu
 } // namespace backend

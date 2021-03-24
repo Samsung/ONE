@@ -22,7 +22,7 @@ namespace onert
 {
 namespace backend
 {
-namespace cpu_common
+namespace basic
 {
 
 MemoryPlannerFactory &MemoryPlannerFactory::get()
@@ -48,6 +48,6 @@ IMemoryPlanner *MemoryPlannerFactory::create(const std::string &key)
   return new FirstFitPlanner; // Default Planner
 }
 
-} // namespace cpu_common
+} // namespace basic
 } // namespace backend
 } // namespace onert

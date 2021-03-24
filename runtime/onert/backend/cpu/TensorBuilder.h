@@ -26,7 +26,7 @@ namespace backend
 namespace cpu
 {
 
-using TensorBuilder = cpu_common::TensorBuilder;
+using TensorBuilder = basic::TensorBuilder;
 
 } // namespace cpu
 } // namespace backend

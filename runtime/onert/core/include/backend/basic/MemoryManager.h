@@ -27,7 +27,7 @@ namespace backend
 
 class ITensor;
 
-namespace cpu_common
+namespace basic
 {
 
 class MemoryManager
@@ -68,7 +68,7 @@ private:
   std::unordered_map<const ITensor *, std::shared_ptr<Allocator>> _mem_alloc_map;
 };
 
-} // namespace cpu_common
+} // namespace basic
 } // namespace backend
 } // namespace onert
 

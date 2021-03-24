@@ -26,7 +26,7 @@ namespace backend
 namespace xnnpack
 {
 
-using TensorBuilder = cpu_common::TensorBuilder;
+using TensorBuilder = basic::TensorBuilder;
 
 } // namespace xnnpack
 } // namespace backend

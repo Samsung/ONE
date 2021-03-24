@@ -38,16 +38,16 @@ namespace builtin
  *
  * - NativeIOTensor  - @c IOTensor managed by this backend ( in @c _base_reg )
  *     - NOTE The tensor it actually points to can be from another backend
- * - NativeOwnTensor - @c cpu_common::Tensor managed by this backend ( in @c _base_reg )
+ * - NativeOwnTensor - @c basic::Tensor managed by this backend ( in @c _base_reg )
  * - MigrantTensor   - @c IPortableTensor managed by other backends
  *
- * @note @c _base_reg is used in implementation to reuse @c cpu_common::StaticTensorManager
+ * @note @c _base_reg is used in implementation to reuse @c basic::StaticTensorManager
  *
  */
 class TensorRegistry : public ITensorRegistry
 {
 public:
-  TensorRegistry() : _base_reg{new cpu_common::TensorRegistry} {}
+  TensorRegistry() : _base_reg{new basic::TensorRegistry} {}
 
   ITensor *getITensor(const ir::OperandIndex &ind) override
   {
@@ -120,10 +120,10 @@ public:
   {
     return _native_io_tensors;
   }
-  std::shared_ptr<cpu_common::TensorRegistry> base_reg() { return _base_reg; }
+  std::shared_ptr<basic::TensorRegistry> base_reg() { return _base_reg; }
 
 private:
-  std::shared_ptr<cpu_common::TensorRegistry> _base_reg;
+  std::shared_ptr<basic::TensorRegistry> _base_reg;
   ir::OperandIndexMap<std::unique_ptr<IOTensor>> _native_io_tensors;
 };
 

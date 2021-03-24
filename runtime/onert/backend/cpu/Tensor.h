@@ -27,8 +27,8 @@ namespace backend
 namespace cpu
 {
 
-using Tensor = cpu_common::Tensor;
-using ExternalTensor = cpu_common::ExternalTensor;
+using Tensor = basic::Tensor;
+using ExternalTensor = basic::ExternalTensor;
 
 } // namespace cpu
 } // namespace backend

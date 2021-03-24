@@ -30,7 +30,7 @@ namespace onert
 {
 namespace backend
 {
-namespace cpu_common
+namespace basic
 {
 
 // TODO Remove the template param BackendContext once unification of cpu backend context is done
@@ -205,7 +205,7 @@ template <typename T_BackendContext> ITensorRegistry *genTensors(T_BackendContex
   // TODO Get compiler options from compiler, and use it rather than getting it from Env
   if (util::getConfigString(util::config::EXECUTOR) == "Linear")
   {
-    cpu_common::planTensors(ctx);
+    basic::planTensors(ctx);
   }
   else
   {
@@ -244,7 +244,7 @@ inline void initConsts(BackendContext &ctx)
   });
 }
 
-} // namespace cpu_common
+} // namespace basic
 } // namespace backend
 } // namespace onert
 

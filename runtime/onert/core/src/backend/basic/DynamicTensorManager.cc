@@ -23,7 +23,7 @@ namespace onert
 {
 namespace backend
 {
-namespace cpu_common
+namespace basic
 {
 
 DynamicTensorManager::DynamicTensorManager(const std::shared_ptr<TensorRegistry> &reg)
@@ -48,6 +48,6 @@ const ITensor *DynamicTensorManager::getRawITensor(ir::OperandIndex ind)
   return ptr;
 }
 
-} // namespace cpu_common
+} // namespace basic
 } // namespace backend
 } // namespace onert

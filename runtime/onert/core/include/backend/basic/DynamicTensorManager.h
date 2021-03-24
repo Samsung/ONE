@@ -28,7 +28,7 @@ namespace onert
 {
 namespace backend
 {
-namespace cpu_common
+namespace basic
 {
 
 // TODO Find optimized algorithm to manage memory.
@@ -65,7 +65,7 @@ private:
     _dealloc_tensor_map;
 };
 
-} // namespace cpu_common
+} // namespace basic
 } // namespace backend
 } // namespace onert
 

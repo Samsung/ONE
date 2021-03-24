@@ -26,7 +26,7 @@ namespace backend
 namespace ruy
 {
 
-using TensorBuilder = cpu_common::TensorBuilder;
+using TensorBuilder = basic::TensorBuilder;
 
 } // namespace ruy
 } // namespace backend

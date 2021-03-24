@@ -26,7 +26,7 @@ namespace onert
 {
 namespace backend
 {
-namespace cpu_common
+namespace basic
 {
 
 MemoryManager::MemoryManager() : _mem_planner{createMemoryPlanner()}
@@ -40,15 +40,15 @@ MemoryManager::MemoryManager(const std::string planner_id)
   // DO NOTHING
 }
 
-cpu_common::IMemoryPlanner *MemoryManager::createMemoryPlanner()
+basic::IMemoryPlanner *MemoryManager::createMemoryPlanner()
 {
   auto planner_id = util::getConfigString(util::config::CPU_MEMORY_PLANNER);
-  return cpu_common::MemoryPlannerFactory::get().create(planner_id);
+  return basic::MemoryPlannerFactory::get().create(planner_id);
 }
 
-cpu_common::IMemoryPlanner *MemoryManager::createMemoryPlanner(const std::string planner_id)
+basic::IMemoryPlanner *MemoryManager::createMemoryPlanner(const std::string planner_id)
 {
-  return cpu_common::MemoryPlannerFactory::get().create(planner_id);
+  return basic::MemoryPlannerFactory::get().create(planner_id);
 }
 
 void MemoryManager::claimPlan(const ir::OperandIndex &ind, uint32_t size)
@@ -60,7 +60,7 @@ void MemoryManager::releasePlan(const ir::OperandIndex &ind) { _mem_planner->rel
 
 void MemoryManager::allocate(void)
 {
-  _mem_alloc = std::make_shared<cpu_common::Allocator>(_mem_planner->capacity());
+  _mem_alloc = std::make_shared<basic::Allocator>(_mem_planner->capacity());
   assert(_mem_alloc->base());
 }
 
@@ -71,14 +71,14 @@ uint8_t *MemoryManager::getBuffer(const ir::OperandIndex &ind) const
   return _mem_alloc->base() + mem_blk.offset;
 }
 
-std::shared_ptr<cpu_common::Allocator> DynamicMemoryManager::allocate(const ITensor *tensor,
-                                                                      uint32_t capacity)
+std::shared_ptr<basic::Allocator> DynamicMemoryManager::allocate(const ITensor *tensor,
+                                                                 uint32_t capacity)
 {
   auto find = _mem_alloc_map.find(tensor);
   if (find != _mem_alloc_map.end())
     throw std::runtime_error("Cannot allocate memory for a tensor. It was already allocated.");
 
-  _mem_alloc_map[tensor] = std::make_shared<cpu_common::Allocator>(capacity);
+  _mem_alloc_map[tensor] = std::make_shared<basic::Allocator>(capacity);
   return _mem_alloc_map[tensor];
 }
 
@@ -103,6 +103,6 @@ void DynamicMemoryManager::deallocate(void)
   _mem_alloc_map.clear();
 }
 
-} // namespace cpu_common
+} // namespace basic
 } // namespace backend
 } // namespace onert

@@ -35,7 +35,7 @@ namespace onert
 {
 namespace backend
 {
-namespace cpu_common
+namespace basic
 {
 
 /**
@@ -153,7 +153,7 @@ private:
   std::multimap<uint32_t, ir::OperandIndex, std::greater<uint32_t>> _operands;
 };
 
-} // namespace cpu_common
+} // namespace basic
 } // namespace backend
 } // namespace onert
 

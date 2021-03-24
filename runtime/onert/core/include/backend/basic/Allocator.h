@@ -28,7 +28,7 @@ namespace onert
 {
 namespace backend
 {
-namespace cpu_common
+namespace basic
 {
 
 /**
@@ -49,7 +49,7 @@ private:
   std::unique_ptr<uint8_t[]> _base;
 };
 
-} // namespace cpu_common
+} // namespace basic
 } // namespace backend
 } // namespace onert
 

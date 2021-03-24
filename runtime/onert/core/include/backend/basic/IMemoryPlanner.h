@@ -23,7 +23,7 @@ namespace onert
 {
 namespace backend
 {
-namespace cpu_common
+namespace basic
 {
 
 /**
@@ -67,7 +67,7 @@ struct IMemoryPlanner
   virtual ~IMemoryPlanner() = default;
 };
 
-} // namespace cpu_common
+} // namespace basic
 } // namespace backend
 } // namespace onert
 
