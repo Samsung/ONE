@@ -33,7 +33,7 @@ namespace luci
 struct PartitionTable
 {
   std::vector<std::string> groups;
-  std::string def_group;
+  std::string default_group;
 
   // assign by opcode name: OPCODENAME=group
   std::unordered_map<std::string /* OPCODENAME */, std::string /* group */> byopcodes;
