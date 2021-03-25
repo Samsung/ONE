@@ -979,24 +979,9 @@ void KernelGenerator::visit(const ir::operation::Softmax &node)
   auto output_tensor = _tensor_reg->getAclTensor(output_index);
   auto input_tensor = _tensor_reg->getAclTensor(input_index);
 
-  // Disable applied dim_correction
-  if (static_cast<size_t>(input_tensor->getShape().rank()) !=
-      input_tensor->info()->num_dimensions())
-  {
-    // This means that high dimension's value is 1 and input tensor is applied dim_correction
-    acl_common::disableDimCorrection(input_tensor);
-  }
-
-  // NOTE NESoftmaxLayer's default axis is -1
   auto fn = acl_common::generateLayer<arm_compute::NESoftmaxLayer>(
     _tensor_builder->acl_tensor_manager()->internal_buffer_manager(), input_tensor->handle(),
     output_tensor->handle(), beta);
-
-  // Revert disabling applied dim_correction
-  if (input_tensor->getShape().dim(0) == 1)
-  {
-    acl_common::disableDimCorrection(input_tensor);
-  }
 
   _return_fn = asAclFunction(std::move(fn));
 }
