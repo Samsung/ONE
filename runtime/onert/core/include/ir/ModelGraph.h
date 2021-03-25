@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_IR_MODELS_H__
-#define __ONERT_IR_MODELS_H__
+#ifndef __ONERT_IR_MODEL_GRAPH_H__
+#define __ONERT_IR_MODEL_GRAPH_H__
 
 #include <memory>
 #include <unordered_map>
@@ -30,15 +30,15 @@ namespace ir
 
 class Subgraphs;
 
-class Models
+class ModelGraph
 {
 public:
-  Models() = default;
-  Models(const Models &obj) = default;
-  Models(Models &&) = default;
-  Models &operator=(const Models &) = default;
-  Models &operator=(Models &&) = default;
-  ~Models() = default;
+  ModelGraph() = default;
+  ModelGraph(const ModelGraph &obj) = default;
+  ModelGraph(ModelGraph &&) = default;
+  ModelGraph &operator=(const ModelGraph &) = default;
+  ModelGraph &operator=(ModelGraph &&) = default;
+  ~ModelGraph() = default;
 
   /**
    * @brief Put Subgraphs in the container with a new Index for that
@@ -133,4 +133,4 @@ private:
 } // namespace ir
 } // namespace onert
 
-#endif // __ONERT_IR_MODELS_H__
+#endif // __ONERT_IR_MODEL_GRAPH_H__
