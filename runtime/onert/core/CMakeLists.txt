@@ -43,12 +43,12 @@ if(NOT ENABLE_TEST)
 endif(NOT ENABLE_TEST)
 
 # Unit Tests
-set(TEST_ONERT_BACKEND_CPU_COMMON test_onert_backend_cpu_common)
+set(TEST_ONERT_CORE test_onert_core)
 
-add_executable(${TEST_ONERT_BACKEND_CPU_COMMON} ${TESTS})
+add_executable(${TEST_ONERT_CORE} ${TESTS})
 
-target_link_libraries(${TEST_ONERT_BACKEND_CPU_COMMON} onert_core)
-target_link_libraries(${TEST_ONERT_BACKEND_CPU_COMMON} gtest gtest_main dl ${LIB_PTHREAD})
+target_link_libraries(${TEST_ONERT_CORE} onert_core)
+target_link_libraries(${TEST_ONERT_CORE} gtest gtest_main dl ${LIB_PTHREAD})
 
-add_test(${TEST_ONERT_BACKEND_CPU_COMMON} ${TEST_ONERT_BACKEND_CPU_COMMON})
-install(TARGETS ${TEST_ONERT_BACKEND_CPU_COMMON} DESTINATION unittest_standalone)
+add_test(${TEST_ONERT_CORE} ${TEST_ONERT_CORE})
+install(TARGETS ${TEST_ONERT_CORE} DESTINATION unittest_standalone)
