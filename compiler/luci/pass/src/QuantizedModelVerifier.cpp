@@ -15,414 +15,19 @@
 
 #include "QuantizedModelVerifier.h"
 
+#include "helpers/VerifyQuantizedNodeHelper.h"
+#include "helpers/VerifyQuantizedNodeLayerWiseGranularity.h"
+#include "helpers/VerifyQuantizedNodeChannelWiseGranularity.h"
+#include "helpers/VerifyQuantizedNodeU8Type.h"
+#include "helpers/VerifyQuantizedNodeS16Type.h"
+
 #include <luci/IR/CircleNodes.h>
 #include <luci/IR/CircleNodeVisitor.h>
 
-// This macro is undef at the end of the file
-#define RETURN_FALSE_UNLESS(ARG) \
-  if (not(ARG))                  \
-  {                              \
-    return false;                \
-  }
-
-namespace
-{
-
-using Granularity = luci::QuantizationGranularity;
-using Type = loco::DataType;
-
-uint32_t rank(const loco::Node *node)
-{
-  auto circle_node = loco::must_cast<const luci::CircleNode *>(node);
-  return circle_node->rank();
-}
-
-bool has_type(const loco::Node *node, Type dtype)
-{
-  auto circle_node = loco::must_cast<const luci::CircleNode *>(node);
-  return circle_node->dtype() == dtype;
-}
-
-bool is_lwq_const(const loco::Node *node)
-{
-  auto circle_node = loco::must_cast<const luci::CircleConst *>(node);
-
-  if (circle_node->quantparam()->scale.size() != 1)
-    return false;
-
-  if (circle_node->quantparam()->zerop.size() != 1)
-    return false;
-
-  return true;
-}
-
-bool is_cwq_const(const loco::Node *node, uint32_t channel_dim)
-{
-  auto circle_node = loco::must_cast<const luci::CircleConst *>(node);
-
-  assert(channel_dim < circle_node->rank()); // FIX_CALLER_UNLESS
-  auto channel_size = circle_node->dim(channel_dim).value();
-
-  if (circle_node->quantparam()->scale.size() != channel_size)
-    return false;
-
-  if (circle_node->quantparam()->zerop.size() != channel_size)
-    return false;
-
-  return true;
-}
-
-struct VerifyQuantizedNodeGranularity final : public luci::CircleNodeVisitor<bool>
-{
-public:
-  VerifyQuantizedNodeGranularity(Granularity gr) : _granularity(gr) {}
-
-private:
-  Granularity _granularity;
-
-private:
-  bool visit(const luci::CircleConv2D *node)
-  {
-    if (_granularity == Granularity::LayerWise)
-    {
-      RETURN_FALSE_UNLESS(is_lwq_const(node->filter()))
-      RETURN_FALSE_UNLESS(is_lwq_const(node->bias()))
-    }
-    else if (_granularity == Granularity::ChannelWise)
-    {
-      RETURN_FALSE_UNLESS(is_cwq_const(node->filter(), 0))
-      RETURN_FALSE_UNLESS(is_cwq_const(node->bias(), rank(node->bias()) - 1))
-    }
-
-    return true;
-  }
-
-  bool visit(const luci::CircleDepthwiseConv2D *node)
-  {
-    if (_granularity == Granularity::LayerWise)
-    {
-      RETURN_FALSE_UNLESS(is_lwq_const(node->filter()))
-      RETURN_FALSE_UNLESS(is_lwq_const(node->bias()))
-    }
-    else if (_granularity == Granularity::ChannelWise)
-    {
-      RETURN_FALSE_UNLESS(is_cwq_const(node->filter(), 3))
-      RETURN_FALSE_UNLESS(is_cwq_const(node->bias(), rank(node->bias()) - 1))
-    }
-
-    return true;
-  }
-
-  bool visit(const luci::CircleInstanceNorm *node)
-  {
-    if (_granularity == Granularity::LayerWise)
-    {
-      RETURN_FALSE_UNLESS(is_lwq_const(node->gamma()))
-      RETURN_FALSE_UNLESS(is_lwq_const(node->beta()))
-    }
-    else if (_granularity == Granularity::ChannelWise)
-    {
-      RETURN_FALSE_UNLESS(is_cwq_const(node->gamma(), rank(node->gamma()) - 1))
-      RETURN_FALSE_UNLESS(is_cwq_const(node->beta(), rank(node->beta()) - 1))
-    }
-    return true;
-  }
-
-  bool visit(const luci::CirclePRelu *node)
-  {
-    if (_granularity == Granularity::LayerWise)
-    {
-      RETURN_FALSE_UNLESS(is_lwq_const(node->alpha()))
-    }
-    else if (_granularity == Granularity::ChannelWise)
-    {
-      RETURN_FALSE_UNLESS(is_cwq_const(node->alpha(), rank(node->alpha()) - 1))
-    }
-    return true;
-  }
-
-  bool visit(const luci::CircleTransposeConv *node)
-  {
-    luci::CircleConst *bias = dynamic_cast<luci::CircleConst *>(node->bias());
-
-    if (_granularity == Granularity::LayerWise)
-    {
-      RETURN_FALSE_UNLESS(is_lwq_const(node->filter()))
-      if (bias != nullptr)
-        RETURN_FALSE_UNLESS(is_lwq_const(node->bias()))
-    }
-    else if (_granularity == Granularity::ChannelWise)
-    {
-      RETURN_FALSE_UNLESS(is_cwq_const(node->filter(), 0))
-      if (bias != nullptr)
-        RETURN_FALSE_UNLESS(is_cwq_const(node->bias(), rank(node->bias()) - 1))
-    }
-
-    return true;
-  }
-
-  bool visit(const luci::CircleFullyConnected *node)
-  {
-    if (_granularity == Granularity::LayerWise)
-    {
-      RETURN_FALSE_UNLESS(is_lwq_const(node->weights()))
-      RETURN_FALSE_UNLESS(is_lwq_const(node->bias()))
-    }
-    else if (_granularity == Granularity::ChannelWise)
-    {
-      RETURN_FALSE_UNLESS(is_cwq_const(node->weights(), 0))
-      RETURN_FALSE_UNLESS(is_cwq_const(node->bias(), rank(node->bias()) - 1))
-    }
-
-    return true;
-  }
-
-  // These operators do not have LWQ/CWQ constants
-  bool visit(const luci::CircleAdd *) { return true; }
-  bool visit(const luci::CircleAveragePool2D *) { return true; }
-  bool visit(const luci::CircleMaxPool2D *) { return true; }
-  bool visit(const luci::CircleMean *) { return true; }
-  bool visit(const luci::CircleMul *) { return true; }
-  bool visit(const luci::CircleRelu *) { return true; }
-
-  // TODO: Implement more Ops
-
-  bool visit(const luci::CircleNode *) { return true; }
-};
-
-/**
- * @brief VerifyQ8QuantizedNode verifies that a node is correctly quantized
- */
-struct VerifyQuantizedNodeType final : public luci::CircleNodeVisitor<bool>
-{
-public:
-  VerifyQuantizedNodeType(Type t) : _type(t) {}
-
-private:
-  Type _type;
-
-private:
-  bool visit(const luci::CircleConv2D *node)
-  {
-    if (_type == Type::U8)
-    {
-      RETURN_FALSE_UNLESS(has_type(node, Type::U8))
-      RETURN_FALSE_UNLESS(has_type(node->input(), Type::U8))
-      RETURN_FALSE_UNLESS(has_type(node->filter(), Type::U8))
-      RETURN_FALSE_UNLESS(has_type(node->bias(), Type::S32))
-    }
-    else if (_type == Type::S16)
-    {
-      RETURN_FALSE_UNLESS(has_type(node, Type::S16))
-      RETURN_FALSE_UNLESS(has_type(node->input(), Type::S16))
-      RETURN_FALSE_UNLESS(has_type(node->filter(), Type::S16))
-      RETURN_FALSE_UNLESS(has_type(node->bias(), Type::S64))
-    }
-    return true;
-  }
-
-  bool visit(const luci::CircleDepthwiseConv2D *node)
-  {
-    if (_type == Type::U8)
-    {
-      RETURN_FALSE_UNLESS(has_type(node, Type::U8))
-      RETURN_FALSE_UNLESS(has_type(node->input(), Type::U8))
-      RETURN_FALSE_UNLESS(has_type(node->filter(), Type::U8))
-      RETURN_FALSE_UNLESS(has_type(node->bias(), Type::S32))
-    }
-    else if (_type == Type::S16)
-    {
-      RETURN_FALSE_UNLESS(has_type(node, Type::S16))
-      RETURN_FALSE_UNLESS(has_type(node->input(), Type::S16))
-      RETURN_FALSE_UNLESS(has_type(node->filter(), Type::S16))
-      RETURN_FALSE_UNLESS(has_type(node->bias(), Type::S64))
-    }
-    return true;
-  }
-
-  bool visit(const luci::CircleInstanceNorm *node)
-  {
-    if (_type == Type::U8)
-    {
-      RETURN_FALSE_UNLESS(has_type(node, Type::U8))
-      RETURN_FALSE_UNLESS(has_type(node->input(), Type::U8))
-      RETURN_FALSE_UNLESS(has_type(node->gamma(), Type::U8))
-      RETURN_FALSE_UNLESS(has_type(node->beta(), Type::U8))
-    }
-    else if (_type == Type::S16)
-    {
-      RETURN_FALSE_UNLESS(has_type(node, Type::S16))
-      RETURN_FALSE_UNLESS(has_type(node->input(), Type::S16))
-      RETURN_FALSE_UNLESS(has_type(node->gamma(), Type::S16))
-      RETURN_FALSE_UNLESS(has_type(node->beta(), Type::S16))
-    }
-    return true;
-  }
-
-  bool visit(const luci::CirclePRelu *node)
-  {
-    if (_type == Type::U8)
-    {
-      RETURN_FALSE_UNLESS(has_type(node, Type::U8))
-      RETURN_FALSE_UNLESS(has_type(node->input(), Type::U8))
-      RETURN_FALSE_UNLESS(has_type(node->alpha(), Type::U8))
-    }
-    else if (_type == Type::S16)
-    {
-      RETURN_FALSE_UNLESS(has_type(node, Type::S16))
-      RETURN_FALSE_UNLESS(has_type(node->input(), Type::S16))
-      RETURN_FALSE_UNLESS(has_type(node->alpha(), Type::S16))
-    }
-    return true;
-  }
-
-  bool visit(const luci::CircleTransposeConv *node)
-  {
-    if (_type == Type::U8)
-    {
-      RETURN_FALSE_UNLESS(has_type(node, Type::U8))
-      RETURN_FALSE_UNLESS(has_type(node->outBackprop(), Type::U8))
-      RETURN_FALSE_UNLESS(has_type(node->filter(), Type::U8))
-      luci::CircleConst *bias = dynamic_cast<luci::CircleConst *>(node->bias());
-      if (bias != nullptr)
-        RETURN_FALSE_UNLESS(has_type(bias, Type::S32))
-    }
-    else if (_type == Type::S16)
-    {
-      RETURN_FALSE_UNLESS(has_type(node, Type::S16))
-      RETURN_FALSE_UNLESS(has_type(node->outBackprop(), Type::S16))
-      RETURN_FALSE_UNLESS(has_type(node->filter(), Type::S16))
-      luci::CircleConst *bias = dynamic_cast<luci::CircleConst *>(node->bias());
-      if (bias != nullptr)
-        RETURN_FALSE_UNLESS(has_type(bias, Type::S64))
-    }
-    return true;
-  }
-
-  bool visit(const luci::CircleFullyConnected *node)
-  {
-    if (_type == Type::U8)
-    {
-      RETURN_FALSE_UNLESS(has_type(node, Type::U8))
-      RETURN_FALSE_UNLESS(has_type(node->input(), Type::U8))
-      RETURN_FALSE_UNLESS(has_type(node->weights(), Type::U8))
-      RETURN_FALSE_UNLESS(has_type(node->bias(), Type::S32))
-    }
-    else if (_type == Type::S16)
-    {
-      RETURN_FALSE_UNLESS(has_type(node, Type::S16))
-      RETURN_FALSE_UNLESS(has_type(node->input(), Type::S16))
-      RETURN_FALSE_UNLESS(has_type(node->weights(), Type::S16))
-      RETURN_FALSE_UNLESS(has_type(node->bias(), Type::S64))
-    }
-    return true;
-  }
-
-  bool visit(const luci::CircleAdd *node)
-  {
-    if (_type == Type::U8)
-    {
-      RETURN_FALSE_UNLESS(has_type(node, Type::U8))
-      RETURN_FALSE_UNLESS(has_type(node->x(), Type::U8))
-      RETURN_FALSE_UNLESS(has_type(node->y(), Type::U8))
-    }
-    else if (_type == Type::S16)
-    {
-      RETURN_FALSE_UNLESS(has_type(node, Type::S16))
-      RETURN_FALSE_UNLESS(has_type(node->x(), Type::S16))
-      RETURN_FALSE_UNLESS(has_type(node->y(), Type::S16))
-    }
-    return true;
-  }
-
-  bool visit(const luci::CircleAveragePool2D *node)
-  {
-    if (_type == Type::U8)
-    {
-      RETURN_FALSE_UNLESS(has_type(node, Type::U8))
-      RETURN_FALSE_UNLESS(has_type(node->value(), Type::U8))
-    }
-    else if (_type == Type::S16)
-    {
-      RETURN_FALSE_UNLESS(has_type(node, Type::S16))
-      RETURN_FALSE_UNLESS(has_type(node->value(), Type::S16))
-    }
-    return true;
-  }
-
-  bool visit(const luci::CircleMaxPool2D *node)
-  {
-    if (_type == Type::U8)
-    {
-      RETURN_FALSE_UNLESS(has_type(node, Type::U8))
-      RETURN_FALSE_UNLESS(has_type(node->value(), Type::U8))
-    }
-    else if (_type == Type::S16)
-    {
-      RETURN_FALSE_UNLESS(has_type(node, Type::S16))
-      RETURN_FALSE_UNLESS(has_type(node->value(), Type::S16))
-    }
-    return true;
-  }
-
-  bool visit(const luci::CircleMean *node)
-  {
-    if (_type == Type::U8)
-    {
-      RETURN_FALSE_UNLESS(has_type(node, Type::U8))
-      RETURN_FALSE_UNLESS(has_type(node->input(), Type::U8))
-      RETURN_FALSE_UNLESS(has_type(node->reduction_indices(), Type::S32))
-    }
-    else if (_type == Type::S16)
-    {
-      RETURN_FALSE_UNLESS(has_type(node, Type::S16))
-      RETURN_FALSE_UNLESS(has_type(node->input(), Type::S16))
-      RETURN_FALSE_UNLESS(has_type(node->reduction_indices(), Type::S32))
-    }
-    return true;
-  }
-
-  bool visit(const luci::CircleMul *node)
-  {
-    if (_type == Type::U8)
-    {
-      RETURN_FALSE_UNLESS(has_type(node, Type::U8))
-      RETURN_FALSE_UNLESS(has_type(node->x(), Type::U8))
-      RETURN_FALSE_UNLESS(has_type(node->y(), Type::U8))
-    }
-    else if (_type == Type::S16)
-    {
-      RETURN_FALSE_UNLESS(has_type(node, Type::S16))
-      RETURN_FALSE_UNLESS(has_type(node->x(), Type::S16))
-      RETURN_FALSE_UNLESS(has_type(node->y(), Type::S16))
-    }
-    return true;
-  }
-
-  bool visit(const luci::CircleRelu *node)
-  {
-    if (_type == Type::U8)
-    {
-      RETURN_FALSE_UNLESS(has_type(node, Type::U8))
-      RETURN_FALSE_UNLESS(has_type(node->features(), Type::U8))
-    }
-    else if (_type == Type::S16)
-    {
-      RETURN_FALSE_UNLESS(has_type(node, Type::S16))
-      RETURN_FALSE_UNLESS(has_type(node->features(), Type::S16))
-    }
-    return true;
-  }
-
-  // TODO: Implement more Ops
-
-  bool visit(const luci::CircleNode *) { return true; }
-};
-
-} // namespace
-
 namespace luci
 {
+
+using namespace verify_quantization;
 
 void QuantizedModelVerifier::verify(loco::Graph *g)
 {
@@ -436,16 +41,32 @@ void QuantizedModelVerifier::verify(loco::Graph *g)
   {
     auto circle_node = loco::must_cast<luci::CircleNode *>(node);
 
-    VerifyQuantizedNodeType vt(_quantized_dtype);
-    if (!circle_node->accept(&vt))
+    // Verify Type
+    if (_quantized_dtype == Type::U8)
     {
-      throw std::runtime_error("Wrong data type");
+      VerifyQuantizedNodeU8Type vt;
+      if (!circle_node->accept(&vt))
+        throw std::runtime_error("Wrong data type");
+    }
+    else if (_quantized_dtype == Type::S16)
+    {
+      VerifyQuantizedNodeS16Type vt;
+      if (!circle_node->accept(&vt))
+        throw std::runtime_error("Wrong data type");
     }
 
-    VerifyQuantizedNodeGranularity vg(_granularity);
-    if (!circle_node->accept(&vg))
+    // Verify Granularity
+    if (_granularity == Granularity::LayerWise)
     {
-      throw std::runtime_error("Wrong granularity");
+      VerifyQuantizedNodeLayerWiseGranularity vg;
+      if (!circle_node->accept(&vg))
+        throw std::runtime_error("Wrong granularity");
+    }
+    else if (_granularity == Granularity::ChannelWise)
+    {
+      VerifyQuantizedNodeChannelWiseGranularity vg;
+      if (!circle_node->accept(&vg))
+        throw std::runtime_error("Wrong granularity");
     }
   }
 }

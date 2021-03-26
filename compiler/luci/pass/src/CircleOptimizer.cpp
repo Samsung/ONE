@@ -62,6 +62,7 @@
 #include "ModulePhase.h"
 #include "ProgressReporter.h"
 #include "helpers/Strings.h"
+
 #include "QuantizedModelVerifier.h"
 
 #include <luci/IR/CircleNodes.h>

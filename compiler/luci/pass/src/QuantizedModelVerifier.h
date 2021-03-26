@@ -17,8 +17,9 @@
 #ifndef __LUCI_QUANTIZED_MODEL_VERIFIER_H__
 #define __LUCI_QUANTIZED_MODEL_VERIFIER_H__
 
+#include "luci/Pass/QuantizationParameters.h"
+
 #include <loco.h>
-#include <luci/Pass/QuantizationParameters.h>
 
 namespace luci
 {
