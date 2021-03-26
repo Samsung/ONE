@@ -25,11 +25,11 @@ namespace luci
 {
 
 void dump(std::ostream &os, const PNode *pnode);
-void dump(std::ostream &os, const PGraph *pgraph);
-void dump(std::ostream &os, const PGraphs *pgraphs);
+void dump(std::ostream &os, const PGroup *pgroup);
+void dump(std::ostream &os, const PGroups *pgroups);
 
 } // namespace luci
 
-std::ostream &operator<<(std::ostream &os, const luci::PGraphs *pgraphs);
+std::ostream &operator<<(std::ostream &os, const luci::PGroups *pgroups);
 
 #endif // __LUCI_PARTITION_IR_DUMP_H__

@@ -27,7 +27,7 @@
 namespace luci
 {
 
-struct PGraph;
+struct PGroup;
 
 /**
  * @brief Partition Node with CircleNode with group name
@@ -39,13 +39,13 @@ struct PNode
   const luci::CircleNode *node = nullptr;
   std::string group;
 
-  const PGraph *pgraph = nullptr;
+  const PGroup *pgroup = nullptr;
 };
 
 /**
- * @brief Partition Graph with Partition Nodes of same group and graph I/Os
+ * @brief Partition Group with Partition Nodes of same group and I/Os nodes
  */
-struct PGraph
+struct PGroup
 {
   std::vector<std::unique_ptr<PNode>> pnodes;
   std::string group;
@@ -56,21 +56,21 @@ struct PGraph
   std::vector<luci::CircleNode *> outputs;
 };
 
-struct PGraphs
+struct PGroups
 {
-  std::vector<std::unique_ptr<PGraph>> pgraphs;
+  std::vector<std::unique_ptr<PGroup>> pgroups;
 
   // node2group is to find group key from source node
   std::map<const luci::CircleNode *, std::string> node2group;
 
-  // id2pgraph is to find *pgraph from pgraph id
-  std::map<uint32_t, PGraph *> id2pgraph;
+  // id2pngroup is to find *pngroup from pngroup id
+  std::map<uint32_t, PGroup *> id2pgroup;
 
 public:
   /**
-   * @brief return a copy of PGraphs
+   * @brief return a copy of PGroups
    */
-  std::unique_ptr<PGraphs> make_copy(void) const;
+  std::unique_ptr<PGroups> make_copy(void) const;
 
   /**
    * @brief return group key of node, empty string if not found
@@ -78,9 +78,9 @@ public:
   std::string group_of(luci::CircleNode *node) const;
 
   /**
-   * @brief return holding pgraph of node, nullptr if not found
+   * @brief return holding pgroup of node, nullptr if not found
    */
-  const PGraph *pgraph_of(luci::CircleNode *node) const;
+  const PGroup *pgroup_of(luci::CircleNode *node) const;
 };
 
 } // namespace luci
