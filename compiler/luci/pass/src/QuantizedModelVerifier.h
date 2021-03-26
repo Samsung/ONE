@@ -27,6 +27,7 @@ namespace luci
 /**
  * @brief  Class to verify quantized model
  *
+ * TODO Move this to luci/service
  */
 struct QuantizedModelVerifier
 {
