@@ -21,7 +21,6 @@
 
 namespace luci
 {
-
 namespace verify_quantization
 {
 
