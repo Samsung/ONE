@@ -177,6 +177,14 @@ private:
     return true;
   }
 
+  // These operators do not have LWQ/CWQ constants
+  bool visit(const luci::CircleAdd *) { return true; }
+  bool visit(const luci::CircleAveragePool2D *) { return true; }
+  bool visit(const luci::CircleMaxPool2D *) { return true; }
+  bool visit(const luci::CircleMean *) { return true; }
+  bool visit(const luci::CircleMul *) { return true; }
+  bool visit(const luci::CircleRelu *) { return true; }
+
   // TODO: Implement more Ops
 
   bool visit(const luci::CircleNode *) { return true; }
