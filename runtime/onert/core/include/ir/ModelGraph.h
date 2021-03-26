@@ -19,16 +19,15 @@
 
 #include <memory>
 #include <unordered_map>
+#include <vector>
 
 #include "ir/Index.h"
-#include "util/ObjectManager.h"
+#include "ir/Models.h"
 
 namespace onert
 {
 namespace ir
 {
-
-class Subgraphs;
 
 class ModelGraph
 {
@@ -120,14 +119,17 @@ public:
   size_t count() const { return _models.size(); }
 
   /**
-   * @brief Return the primary subgraph
+   * @brief Return the entry model
    *
    * @return std::shared_ptr<Subgraphs> Primary sugraph
    */
-  std::shared_ptr<Subgraphs> primary() const { return _models.at(ModelIndex{0}); }
+  std::shared_ptr<Subgraphs> entry() const { return _models.at(ModelIndex{0}); }
 
 private:
   std::unordered_map<ModelIndex, std::shared_ptr<Subgraphs>> _models;
+  Models _models2;
+  ModelOperandIndexSequence _inputs;
+  ModelOperandIndexSequence _outputs;
 };
 
 } // namespace ir

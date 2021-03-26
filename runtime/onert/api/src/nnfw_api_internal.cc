@@ -192,10 +192,10 @@ NNFW_STATUS nnfw_session::load_circle_from_buffer(uint8_t *buffer, size_t size)
 
   // TODO Support multi-model
   assert(_model_graph->count() == 1);
-  _tracing_ctx = std::make_unique<onert::util::TracingCtx>(_model_graph->primary().get());
+  _tracing_ctx = std::make_unique<onert::util::TracingCtx>(_model_graph->entry().get());
 
   _compiler =
-    std::make_unique<onert::compiler::Compiler>(_model_graph->primary(), _tracing_ctx.get());
+    std::make_unique<onert::compiler::Compiler>(_model_graph->entry(), _tracing_ctx.get());
 
   _state = State::MODEL_LOADED;
   return NNFW_STATUS_NO_ERROR;
@@ -246,10 +246,10 @@ NNFW_STATUS nnfw_session::load_model_from_modelfile(const char *model_file_path)
 
   // TODO Support multi-model
   assert(_model_graph->count() == 1);
-  _tracing_ctx = std::make_unique<onert::util::TracingCtx>(_model_graph->primary().get());
+  _tracing_ctx = std::make_unique<onert::util::TracingCtx>(_model_graph->entry().get());
 
   _compiler =
-    std::make_unique<onert::compiler::Compiler>(_model_graph->primary(), _tracing_ctx.get());
+    std::make_unique<onert::compiler::Compiler>(_model_graph->entry(), _tracing_ctx.get());
 
   _state = State::MODEL_LOADED;
   return NNFW_STATUS_NO_ERROR;
@@ -351,10 +351,10 @@ NNFW_STATUS nnfw_session::load_model_from_nnpackage(const char *package_dir)
 
   // TODO Support multi-model
   assert(_model_graph->count() == 1);
-  _tracing_ctx = std::make_unique<onert::util::TracingCtx>(_model_graph->primary().get());
+  _tracing_ctx = std::make_unique<onert::util::TracingCtx>(_model_graph->entry().get());
 
   _compiler =
-    std::make_unique<onert::compiler::Compiler>(_model_graph->primary(), _tracing_ctx.get());
+    std::make_unique<onert::compiler::Compiler>(_model_graph->entry(), _tracing_ctx.get());
 
   _state = State::MODEL_LOADED;
   return NNFW_STATUS_NO_ERROR;
@@ -661,7 +661,7 @@ NNFW_STATUS nnfw_session::apply_tensorinfo(uint32_t index, nnfw_tensorinfo ti)
     // compilation and excution
     // TODO Support multi-model
     assert(_model_graph->count() == 1);
-    auto primary_subgraph = _model_graph->primary()->primary();
+    auto primary_subgraph = _model_graph->entry()->primary();
     auto ind = primary_subgraph->getInputs().at(index);
     auto &input = primary_subgraph->operands().at(ind);
 
@@ -905,7 +905,7 @@ const onert::ir::Graph *nnfw_session::primary_subgraph()
   if (_model_graph->count() == 1)
   {
     assert(!_execution);
-    return _model_graph->primary()->primary().get();
+    return _model_graph->entry()->primary().get();
   }
   else
   {
