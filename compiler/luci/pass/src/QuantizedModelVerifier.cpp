@@ -13,8 +13,7 @@
  * limitations under the License.
  */
 
-#include "luci/Pass/QuantizedModelVerifyPass.h"
-#include "QuantizationUtils.h"
+#include "QuantizedModelVerifier.h"
 
 #include <luci/IR/CircleNodes.h>
 #include <luci/IR/CircleNodeVisitor.h>
@@ -178,9 +177,9 @@ private:
     return true;
   }
 
-  bool visit(const luci::CircleNode *) { return true; }
-
   // TODO: Implement more Ops
+
+  bool visit(const luci::CircleNode *) { return true; }
 };
 
 /**
@@ -407,20 +406,9 @@ private:
     return true;
   }
 
-  bool visit(const luci::CircleNode *node)
-  {
-    if (_type == Type::U8)
-    {
-      RETURN_FALSE_UNLESS(has_type(node, Type::U8))
-    }
-    else if (_type == Type::S16)
-    {
-      RETURN_FALSE_UNLESS(has_type(node, Type::S16))
-    }
-    return true;
-  }
-
   // TODO: Implement more Ops
+
+  bool visit(const luci::CircleNode *) { return true; }
 };
 
 } // namespace
@@ -428,7 +416,7 @@ private:
 namespace luci
 {
 
-bool QuantizedModelVerifyPass::run(loco::Graph *g)
+void QuantizedModelVerifier::verify(loco::Graph *g)
 {
   if (_quantized_dtype != Type::U8 && _quantized_dtype != Type::S16)
     throw std::runtime_error("Unsupported quantized dtype");
@@ -441,13 +429,17 @@ bool QuantizedModelVerifyPass::run(loco::Graph *g)
     auto circle_node = loco::must_cast<luci::CircleNode *>(node);
 
     VerifyQuantizedNodeType vt(_quantized_dtype);
-    RETURN_FALSE_UNLESS(circle_node->accept(&vt))
+    if (!circle_node->accept(&vt))
+    {
+      throw std::runtime_error("Wrong data type");
+    }
 
     VerifyQuantizedNodeGranularity vg(_granularity);
-    RETURN_FALSE_UNLESS(circle_node->accept(&vg))
+    if (!circle_node->accept(&vg))
+    {
+      throw std::runtime_error("Wrong granularity");
+    }
   }
-
-  return true;
 }
 
 } // namespace luci

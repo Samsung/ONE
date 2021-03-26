@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
-#ifndef __LUCI_QUANTIZED_MODEL_VERIFY_PASS_H__
-#define __LUCI_QUANTIZED_MODEL_VERIFY_PASS_H__
+#ifndef __LUCI_QUANTIZED_MODEL_VERIFIER_H__
+#define __LUCI_QUANTIZED_MODEL_VERIFIER_H__
 
-#include <logo/Pass.h>
-
+#include <loco.h>
 #include <luci/Pass/QuantizationParameters.h>
 
 namespace luci
@@ -28,17 +27,16 @@ namespace luci
  * @brief  Class to verify quantized model
  *
  */
-struct QuantizedModelVerifyPass final : public logo::Pass
+struct QuantizedModelVerifier
 {
+
 public:
-  QuantizedModelVerifyPass(loco::DataType quantized_dtype, QuantizationGranularity granularity)
+  QuantizedModelVerifier(loco::DataType quantized_dtype, QuantizationGranularity granularity)
     : _quantized_dtype(quantized_dtype), _granularity(granularity)
   {
   }
 
-  const char *name(void) const final { return "luci::QuantizedModelVerifyPass"; }
-
-  bool run(loco::Graph *g) final;
+  void verify(loco::Graph *g);
 
 private:
   loco::DataType _quantized_dtype;
@@ -47,4 +45,4 @@ private:
 
 } // namespace luci
 
-#endif // __LUCI_QUANTIZED_MODEL_VERIFY_PASS_H__
+#endif // __LUCI_QUANTIZED_MODEL_VERIFIER_H__
