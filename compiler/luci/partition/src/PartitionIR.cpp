@@ -26,48 +26,48 @@
 namespace luci
 {
 
-std::unique_ptr<PGraphs> PGraphs::make_copy(void) const
+std::unique_ptr<PGroups> PGroups::make_copy(void) const
 {
-  auto d_pgraphs = std::make_unique<luci::PGraphs>();
+  auto d_pgroups = std::make_unique<luci::PGroups>();
 
-  for (auto &s_pgraph : pgraphs)
+  for (auto &s_pgroup : pgroups)
   {
-    // make a copy of s_pgraph to d_pgraph
-    std::unique_ptr<luci::PGraph> d_pgraph = std::make_unique<luci::PGraph>();
+    // make a copy of s_pgroup to d_pgroup
+    std::unique_ptr<luci::PGroup> d_pgroup = std::make_unique<luci::PGroup>();
 
-    d_pgraph->group = s_pgraph->group;
-    d_pgraph->id = s_pgraph->id;
+    d_pgroup->group = s_pgroup->group;
+    d_pgroup->id = s_pgroup->id;
 
-    for (auto &pnode : s_pgraph->pnodes)
+    for (auto &pnode : s_pgroup->pnodes)
     {
       auto pnodec = std::make_unique<luci::PNode>();
       pnodec->node = pnode->node;
       pnodec->group = pnode->group;
-      pnodec->pgraph = d_pgraph.get();
-      d_pgraph->pnodes.push_back(std::move(pnodec));
+      pnodec->pgroup = d_pgroup.get();
+      d_pgroup->pnodes.push_back(std::move(pnodec));
     }
 
-    for (auto &input : s_pgraph->inputs)
-      d_pgraph->inputs.push_back(input);
+    for (auto &input : s_pgroup->inputs)
+      d_pgroup->inputs.push_back(input);
 
-    for (auto &output : s_pgraph->outputs)
-      d_pgraph->outputs.push_back(output);
+    for (auto &output : s_pgroup->outputs)
+      d_pgroup->outputs.push_back(output);
 
     // copy node2group
     for (auto it = node2group.begin(); it != node2group.end(); ++it)
-      d_pgraphs->node2group[it->first] = it->second;
+      d_pgroups->node2group[it->first] = it->second;
 
-    // build id2pgraph
-    d_pgraphs->id2pgraph[d_pgraph->id] = d_pgraph.get();
+    // build id2pgroup
+    d_pgroups->id2pgroup[d_pgroup->id] = d_pgroup.get();
 
-    d_pgraphs->pgraphs.push_back(std::move(d_pgraph));
-    // note: d_pgraph is now nullptr as it's moved
+    d_pgroups->pgroups.push_back(std::move(d_pgroup));
+    // note: d_pgroup is now nullptr as it's moved
   }
 
-  return std::move(d_pgraphs);
+  return std::move(d_pgroups);
 }
 
-std::string PGraphs::group_of(luci::CircleNode *node) const
+std::string PGroups::group_of(luci::CircleNode *node) const
 {
   assert(node != nullptr);
 
@@ -76,22 +76,22 @@ std::string PGraphs::group_of(luci::CircleNode *node) const
   auto it = node2group.find(node);
   if (it == node2group.end())
   {
-    INFO(l) << "PGraphs::group_of " << node << "(" << node->name() << ") not found" << std::endl;
+    INFO(l) << "PGroups::group_of " << node << "(" << node->name() << ") not found" << std::endl;
     return "";
   }
   return it->second;
 }
 
-const PGraph *PGraphs::pgraph_of(luci::CircleNode *node) const
+const PGroup *PGroups::pgroup_of(luci::CircleNode *node) const
 {
   assert(node != nullptr);
 
-  for (auto &pgraph : pgraphs)
+  for (auto &pgroup : pgroups)
   {
-    for (auto &pnode : pgraph->pnodes)
+    for (auto &pnode : pgroup->pnodes)
     {
       if (node == pnode->node)
-        return pgraph.get();
+        return pgroup.get();
     }
   }
   // node maybe graph input (CircleInput)

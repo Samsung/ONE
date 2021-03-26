@@ -29,31 +29,31 @@ void dump(std::ostream &os, const PNode *pnode)
      << ":" << pnode->node->name() << std::endl;
 }
 
-void dump(std::ostream &os, const PGraph *pgraph)
+void dump(std::ostream &os, const PGroup *pgroup)
 {
-  os << "--- PGraph: " << pgraph->group << std::endl;
+  os << "--- PGroup: " << pgroup->group << std::endl;
   os << "Input(s): ";
-  for (auto &node_in : pgraph->inputs)
+  for (auto &node_in : pgroup->inputs)
     os << node_in->name() << " ";
   os << std::endl;
-  for (auto &pnode : pgraph->pnodes)
+  for (auto &pnode : pgroup->pnodes)
   {
     dump(os, pnode.get());
   }
   os << "Output(s): ";
-  for (auto &node_out : pgraph->outputs)
+  for (auto &node_out : pgroup->outputs)
     os << node_out->name() << " ";
   os << std::endl;
 }
 
-void dump(std::ostream &os, const PGraphs *pgraphs)
+void dump(std::ostream &os, const PGroups *pgroups)
 {
-  for (auto &pgraph : pgraphs->pgraphs)
+  for (auto &pgroup : pgroups->pgroups)
   {
-    dump(os, pgraph.get());
+    dump(os, pgroup.get());
   }
   os << "--- Node2Group items: " << std::endl;
-  for (auto it = pgraphs->node2group.begin(); it != pgraphs->node2group.end(); ++it)
+  for (auto it = pgroups->node2group.begin(); it != pgroups->node2group.end(); ++it)
   {
     auto node = it->first;
     auto group = it->second;
@@ -63,8 +63,8 @@ void dump(std::ostream &os, const PGraphs *pgraphs)
 
 } // namespace luci
 
-std::ostream &operator<<(std::ostream &os, const luci::PGraphs *pgraphs)
+std::ostream &operator<<(std::ostream &os, const luci::PGroups *pgroups)
 {
-  luci::dump(os, pgraphs);
+  luci::dump(os, pgroups);
   return os;
 }
