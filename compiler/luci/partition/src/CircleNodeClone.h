@@ -28,10 +28,45 @@ namespace luci
 {
 
 /**
+ * @note MapNode2Clone is used as a map from original node to cloned node
+ *       to find input of a cloned node
+ *
+ *   (Original)              (Clone)
+ *
+ *     [A]                  [A']
+ *      |   [B]              |   [B']
+ *      |    |               |    |
+ *       \  /                 \  /
+ *        [C]                 [C']
+ *
+ *  From view of [C'] we need to find [A'] and [B']. We know [C] from [C'],
+ *  then we can get from input of [C] as [A], [B] then [A]->[A'] and [B]->[B']
+ *  from the map.
+ */
+using MapNode2Clone = std::map<const CircleNode * /* ORG */, CircleNode * /* CLONE */>;
+
+struct CloneContext
+{
+  std::pair<MapNode2Clone::iterator, bool> emplace(const CircleNode *org, CircleNode *clone)
+  {
+    return node2clone.emplace(org, clone);
+  }
+  MapNode2Clone::iterator find(const CircleNode *org) { return node2clone.find(org); }
+  MapNode2Clone::iterator end(void) { return node2clone.end(); }
+
+  MapNode2Clone node2clone;
+};
+
+/**
  * @brief Return a new cloned CircleNode object with same attributes value of node to graph.
  * @note  Each visit implementation must copy node specific attributes.
  */
 CircleNode *clone_node(const CircleNode *node, loco::Graph *graph);
+
+/**
+ * @brief Connect cloned node from input node
+ */
+void clone_connect(const CircleNode *node, CloneContext &clonecontext);
 
 /**
  * @brief Copy common attributes of CircleNode from src to dst.
