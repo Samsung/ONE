@@ -63,6 +63,8 @@
 #include "ProgressReporter.h"
 #include "helpers/Strings.h"
 
+#include "QuantizedModelVerifier.h"
+
 #include <luci/IR/CircleNodes.h>
 #include <logo/Phase.h>
 
@@ -378,6 +380,11 @@ void CircleOptimizer::quantize(loco::Graph *g) const
     logo::PhaseRunner<logo::PhaseStrategy::Saturate> phase_runner{g};
     phase_runner.attach(&prog);
     phase_runner.run(phase);
+
+    // Verify the type/granularity of the quantized model
+    luci::QuantizedModelVerifier verifier(str_to_dtype(output_dtype),
+                                          str_to_granularity(granularity));
+    verifier.verify(g);
   }
 
   // Requantize
