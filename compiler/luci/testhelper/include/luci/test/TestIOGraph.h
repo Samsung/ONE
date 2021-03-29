@@ -23,6 +23,7 @@
 #include <luci/IR/Module.h>
 
 #include <memory>
+#include <stdexcept>
 
 namespace luci
 {
@@ -49,14 +50,18 @@ public:
   }
 
 public:
-  virtual void init(loco::Graph *g, const ShapeU32 shape_in)
+  virtual void init(loco::Graph *g, const std::initializer_list<ShapeU32> shape_in)
   {
+    if (shape_in.size() != N)
+      throw std::runtime_error("Failed to init TestIsGraphlet");
+
+    auto shpin = shape_in.begin();
     for (uint32_t n = 0; n < N; ++n)
     {
       _graph_inputs[n] = g->inputs()->create();
 
       _inputs[n] = g->nodes()->create<luci::CircleInput>();
-      _inputs[n]->shape(shape_in);
+      _inputs[n]->shape(*shpin);
       _inputs[n]->shape_status(luci::ShapeStatus::VALID);
       _inputs[n]->dtype(loco::DataType::FLOAT32);
       _inputs[n]->name("input_" + std::to_string(n));
@@ -64,9 +69,11 @@ public:
       _inputs[n]->index(_graph_inputs[n]->index());
 
       auto input_shape = std::make_unique<loco::TensorShape>();
-      set_shape_vector(input_shape.get(), shape_in);
+      set_shape_vector(input_shape.get(), *shpin);
       _graph_inputs[n]->shape(std::move(input_shape));
       _graph_inputs[n]->dtype(loco::DataType::FLOAT32);
+
+      shpin++;
     }
   }
 
@@ -114,14 +121,18 @@ public:
   }
 
 public:
-  virtual void init(loco::Graph *g, const ShapeU32 shape_out)
+  virtual void init(loco::Graph *g, const std::initializer_list<ShapeU32> shape_out)
   {
+    if (shape_out.size() != N)
+      throw std::runtime_error("Failed to init TestOsGraphlet");
+
+    auto shpout = shape_out.begin();
     for (uint32_t n = 0; n < N; ++n)
     {
       _graph_outputs[n] = g->outputs()->create();
 
       _outputs[n] = g->nodes()->create<luci::CircleOutput>();
-      _outputs[n]->shape(shape_out);
+      _outputs[n]->shape(*shpout);
       _outputs[n]->shape_status(luci::ShapeStatus::VALID);
       _outputs[n]->dtype(loco::DataType::FLOAT32);
       _outputs[n]->name("output_" + std::to_string(n));
@@ -129,9 +140,11 @@ public:
       _outputs[n]->index(_graph_outputs[n]->index());
 
       auto output_shape = std::make_unique<loco::TensorShape>();
-      set_shape_vector(output_shape.get(), shape_out);
+      set_shape_vector(output_shape.get(), *shpout);
       _graph_outputs[n]->shape(std::move(output_shape));
       _graph_outputs[n]->dtype(loco::DataType::FLOAT32);
+
+      shpout++;
     }
   }
 
@@ -163,8 +176,8 @@ public:
 public:
   virtual void init(const ShapeU32 shape_in, const ShapeU32 shape_out)
   {
-    TestIsGraphlet<1>::init(g(), shape_in);
-    TestOsGraphlet<1>::init(g(), shape_out);
+    TestIsGraphlet<1>::init(g(), {shape_in});
+    TestOsGraphlet<1>::init(g(), {shape_out});
   }
 };
 
