@@ -98,7 +98,6 @@ public:
 public:
   void init(void)
   {
-
     TestIsGraphlet<2>::init(g(), {{2, 3}, {2, 3}});
     TestOsGraphlet<1>::init(g(), {{2, 3}});
     AddGraphlet::init(g());
