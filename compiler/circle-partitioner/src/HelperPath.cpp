@@ -46,11 +46,17 @@ std::string make_path(const std::string &base, const std::string &input, uint32_
 {
   auto filename_ext = get_filename_ext(input);
 
-  auto pos = filename_ext.find_last_of(".");
-  assert(pos > 0);
+  // We will assume file type .circle if not given
+  // TODO maybe throw if there is no extension?
+  std::string filename = filename_ext;
+  std::string ext = "circle";
 
-  auto filename = filename_ext.substr(0, pos);
-  auto ext = filename_ext.substr(pos + 1);
+  auto pos = filename_ext.find_last_of(".");
+  if (pos != std::string::npos)
+  {
+    filename = filename_ext.substr(0, pos);
+    ext = filename_ext.substr(pos + 1);
+  }
 
   // format idx with 5 '0' paddings like '00123'
   uint32_t length = 5;
