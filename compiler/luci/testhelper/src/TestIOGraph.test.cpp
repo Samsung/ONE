@@ -175,7 +175,7 @@ TEST(NumberOfInputTest, I3OGraph_init)
   SUCCEED();
 }
 
-TEST(NumberOfInputTest, I3OGraph_init_NEG)
+TEST(NumberOfInputTest, I3OGraph_input_number_mismatch_NEG)
 {
   FailOfTestI3OGraph fg;
   EXPECT_THROW(fg.init(), std::runtime_error);
