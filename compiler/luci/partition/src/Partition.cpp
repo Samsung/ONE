@@ -20,9 +20,6 @@
 
 #include <cassert>
 
-namespace
-{
-
 namespace luci
 {
 
