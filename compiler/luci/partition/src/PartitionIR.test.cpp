@@ -32,30 +32,30 @@ TEST(PartitionIRTest, PNode_ctor)
   pnode.node = node;
 
   ASSERT_NE(nullptr, pnode.node);
-  ASSERT_EQ(nullptr, pnode.pgraph);
+  ASSERT_EQ(nullptr, pnode.pgroup);
 }
 
 // TODO add more tests with luci::PNode
 
-TEST(PartitionIRTest, PGraph_ctor)
+TEST(PartitionIRTest, PGroup_ctor)
 {
   auto g = loco::make_graph();
   auto node = g->nodes()->create<luci::CircleAdd>();
 
-  luci::PGraph pgraph;
+  luci::PGroup pgroup;
   auto pnode = std::make_unique<luci::PNode>();
   pnode->node = node;
 
-  pgraph.pnodes.push_back(std::move(pnode));
+  pgroup.pnodes.push_back(std::move(pnode));
 
-  ASSERT_NE(pgraph.pnodes.end(), pgraph.pnodes.begin());
-  ASSERT_EQ(0, pgraph.inputs.size());
-  ASSERT_EQ(0, pgraph.outputs.size());
+  ASSERT_NE(pgroup.pnodes.end(), pgroup.pnodes.begin());
+  ASSERT_EQ(0, pgroup.inputs.size());
+  ASSERT_EQ(0, pgroup.outputs.size());
 }
 
-// TODO add more tests with luci::PGraph
+// TODO add more tests with luci::PGroup
 
-TEST(PartitionIRTest, PGraphs_ctor)
+TEST(PartitionIRTest, PGroups_ctor)
 {
   auto g = loco::make_graph();
   auto node = g->nodes()->create<luci::CircleAdd>();
@@ -63,13 +63,13 @@ TEST(PartitionIRTest, PGraphs_ctor)
   auto pnode = std::make_unique<luci::PNode>();
   pnode->node = node;
 
-  auto pgraph = std::make_unique<luci::PGraph>();
-  pgraph->pnodes.push_back(std::move(pnode));
+  auto pgroup = std::make_unique<luci::PGroup>();
+  pgroup->pnodes.push_back(std::move(pnode));
 
-  luci::PGraphs pgraphs;
-  pgraphs.pgraphs.push_back(std::move(pgraph));
+  luci::PGroups pgroups;
+  pgroups.pgroups.push_back(std::move(pgroup));
 
-  ASSERT_NE(pgraphs.pgraphs.end(), pgraphs.pgraphs.begin());
+  ASSERT_NE(pgroups.pgroups.end(), pgroups.pgroups.begin());
 }
 
-// TODO add more tests with luci::PGraphs
+// TODO add more tests with luci::PGroups
