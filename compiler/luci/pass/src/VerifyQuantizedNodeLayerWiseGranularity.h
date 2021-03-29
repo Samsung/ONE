@@ -13,13 +13,14 @@
  * limitations under the License.
  */
 
-#ifndef __LUCI_VERIFY_QUANTIZED_NODE_CHANNELWISE_GRANULARITY_H__
-#define __LUCI_VERIFY_QUANTIZED_NODE_CHANNELWISE_GRANULARITY_H__
-
-#include "VerifyQuantizedNodeHelper.h"
+#ifndef __LUCI_VERIFY_QUANTIZED_NODE_LAYERWISE_GRANULARITY_H__
+#define __LUCI_VERIFY_QUANTIZED_NODE_LAYERWISE_GRANULARITY_H__
 
 #include <luci/IR/CircleNodes.h>
 #include <luci/IR/CircleNodeVisitor.h>
+#include <luci/Pass/QuantizationParameters.h>
+
+using Granularity = luci::QuantizationGranularity;
 
 // This macro is undef at the end of the file
 #define RETURN_FALSE_UNLESS(ARG) \
@@ -30,57 +31,68 @@
 
 namespace luci
 {
-namespace verify_quantization
-{
 
-struct VerifyQuantizedNodeChannelWiseGranularity final : public luci::CircleNodeVisitor<bool>
+struct VerifyQuantizedNodeLayerWiseGranularity final : public luci::CircleNodeVisitor<bool>
 {
+private:
+  bool is_lwq_const(const loco::Node *node)
+  {
+    auto circle_node = loco::must_cast<const luci::CircleConst *>(node);
+
+    if (circle_node->quantparam()->scale.size() != 1)
+      return false;
+
+    if (circle_node->quantparam()->zerop.size() != 1)
+      return false;
+
+    return true;
+  }
+
 private:
   bool visit(const luci::CircleConv2D *node)
   {
-    RETURN_FALSE_UNLESS(is_cwq_const(node->filter(), 0))
-    RETURN_FALSE_UNLESS(is_cwq_const(node->bias(), rank(node->bias()) - 1))
+    RETURN_FALSE_UNLESS(is_lwq_const(node->filter()))
+    RETURN_FALSE_UNLESS(is_lwq_const(node->bias()))
     return true;
   }
 
   bool visit(const luci::CircleDepthwiseConv2D *node)
   {
-    RETURN_FALSE_UNLESS(is_cwq_const(node->filter(), 3))
-    RETURN_FALSE_UNLESS(is_cwq_const(node->bias(), rank(node->bias()) - 1))
+    RETURN_FALSE_UNLESS(is_lwq_const(node->filter()))
+    RETURN_FALSE_UNLESS(is_lwq_const(node->bias()))
     return true;
   }
 
   bool visit(const luci::CircleInstanceNorm *node)
   {
-    RETURN_FALSE_UNLESS(is_cwq_const(node->gamma(), rank(node->gamma()) - 1))
-    RETURN_FALSE_UNLESS(is_cwq_const(node->beta(), rank(node->beta()) - 1))
+    RETURN_FALSE_UNLESS(is_lwq_const(node->gamma()))
+    RETURN_FALSE_UNLESS(is_lwq_const(node->beta()))
     return true;
   }
 
   bool visit(const luci::CirclePRelu *node)
   {
-    RETURN_FALSE_UNLESS(is_cwq_const(node->alpha(), rank(node->alpha()) - 1))
+    RETURN_FALSE_UNLESS(is_lwq_const(node->alpha()))
     return true;
   }
 
   bool visit(const luci::CircleTransposeConv *node)
   {
-    RETURN_FALSE_UNLESS(is_cwq_const(node->filter(), 0))
+    RETURN_FALSE_UNLESS(is_lwq_const(node->filter()))
     luci::CircleConst *bias = dynamic_cast<luci::CircleConst *>(node->bias());
     if (bias != nullptr)
-      RETURN_FALSE_UNLESS(is_cwq_const(node->bias(), rank(node->bias()) - 1))
-
+      RETURN_FALSE_UNLESS(is_lwq_const(node->bias()))
     return true;
   }
 
   bool visit(const luci::CircleFullyConnected *node)
   {
-    RETURN_FALSE_UNLESS(is_cwq_const(node->weights(), 0))
-    RETURN_FALSE_UNLESS(is_cwq_const(node->bias(), rank(node->bias()) - 1))
+    RETURN_FALSE_UNLESS(is_lwq_const(node->weights()))
+    RETURN_FALSE_UNLESS(is_lwq_const(node->bias()))
     return true;
   }
 
-  // These operators do not have CWQ constants
+  // These operators do not have LWQ constants
   bool visit(const luci::CircleAdd *) { return true; }
   bool visit(const luci::CircleAveragePool2D *) { return true; }
   bool visit(const luci::CircleMaxPool2D *) { return true; }
@@ -93,9 +105,8 @@ private:
   bool visit(const luci::CircleNode *) { return true; }
 };
 
-} // namespace verify_quantization
 } // namespace luci
 
 #undef RETURN_FALSE_UNLESS
 
-#endif // __LUCI_VERIFY_QUANTIZED_NODE_CHANNELWISE_GRANULARITY_H__
+#endif // __LUCI_VERIFY_QUANTIZED_NODE_LAYERWISE_GRANULARITY_H__

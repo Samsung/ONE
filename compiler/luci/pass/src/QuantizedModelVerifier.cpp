@@ -15,19 +15,16 @@
 
 #include "QuantizedModelVerifier.h"
 
-#include "helpers/VerifyQuantizedNodeHelper.h"
-#include "helpers/VerifyQuantizedNodeLayerWiseGranularity.h"
-#include "helpers/VerifyQuantizedNodeChannelWiseGranularity.h"
-#include "helpers/VerifyQuantizedNodeU8Type.h"
-#include "helpers/VerifyQuantizedNodeS16Type.h"
+#include "VerifyQuantizedNodeLayerWiseGranularity.h"
+#include "VerifyQuantizedNodeChannelWiseGranularity.h"
+#include "VerifyQuantizedNodeU8Type.h"
+#include "VerifyQuantizedNodeS16Type.h"
 
 #include <luci/IR/CircleNodes.h>
 #include <luci/IR/CircleNodeVisitor.h>
 
 namespace luci
 {
-
-using namespace verify_quantization;
 
 void QuantizedModelVerifier::verify(loco::Graph *g)
 {
@@ -72,5 +69,3 @@ void QuantizedModelVerifier::verify(loco::Graph *g)
 }
 
 } // namespace luci
-
-#undef RETURN_FALSE_UNLESS

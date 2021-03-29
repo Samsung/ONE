@@ -16,10 +16,10 @@
 #ifndef __LUCI_VERIFY_QUANTIZED_NODE_S16_TYPE_H__
 #define __LUCI_VERIFY_QUANTIZED_NODE_S16_TYPE_H__
 
-#include "VerifyQuantizedNodeHelper.h"
-
 #include <luci/IR/CircleNodes.h>
 #include <luci/IR/CircleNodeVisitor.h>
+
+using Type = loco::DataType;
 
 // This macro is undef at the end of the file
 #define RETURN_FALSE_UNLESS(ARG) \
@@ -30,11 +30,16 @@
 
 namespace luci
 {
-namespace verify_quantization
-{
 
 struct VerifyQuantizedNodeS16Type final : public luci::CircleNodeVisitor<bool>
 {
+private:
+  bool has_type(const loco::Node *node, Type dtype)
+  {
+    auto circle_node = loco::must_cast<const luci::CircleNode *>(node);
+    return circle_node->dtype() == dtype;
+  }
+
 private:
   bool visit(const luci::CircleConv2D *node)
   {
@@ -141,7 +146,6 @@ private:
   bool visit(const luci::CircleNode *) { return true; }
 };
 
-} // namespace verify_quantization
 } // namespace luci
 
 #undef RETURN_FALSE_UNLESS
