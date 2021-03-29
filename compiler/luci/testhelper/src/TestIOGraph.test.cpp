@@ -152,7 +152,7 @@ public:
 
 } // namespace
 
-TEST(TestIOGraphTest, IOGraph_init)
+TEST(NumberOfInputTest, IOGraph_init)
 {
   TestOfTestIOGraph tg;
   tg.init();
@@ -160,7 +160,7 @@ TEST(TestIOGraphTest, IOGraph_init)
   SUCCEED();
 }
 
-TEST(TestI2OGraphTest, I2OGraph_init)
+TEST(NumberOfInputTest, I2OGraph_init)
 {
   TestOfTestI2OGraph tg;
   tg.init();
@@ -168,7 +168,7 @@ TEST(TestI2OGraphTest, I2OGraph_init)
   SUCCEED();
 }
 
-TEST(TestI3OGraphTest, I3OGraph_init)
+TEST(NumberOfInputTest, I3OGraph_init)
 {
   TestOfTestI3OGraph tg;
   tg.init();
@@ -176,7 +176,7 @@ TEST(TestI3OGraphTest, I3OGraph_init)
   SUCCEED();
 }
 
-TEST(FailI3OGraphTest, I3OGraph_init_NEG)
+TEST(NumberOfInputTest, I3OGraph_init_NEG)
 {
   FailOfTestI3OGraph fg;
   EXPECT_THROW(fg.init(), std::runtime_error);
