@@ -14,11 +14,14 @@
  * limitations under the License.
  */
 
+#include <luci/Log.h>
 #include <cstdlib>
 #include <iostream>
 
 int entry(int argc, char **argv)
 {
+  LOGGER(l);
+
   if (argc != 5)
   {
     std::cerr
@@ -26,6 +29,19 @@ int entry(int argc, char **argv)
       << " <path/to/partition/config> <num_inputs> <path/to/input/prefix> <path/to/output/file>\n";
     return EXIT_FAILURE;
   }
+
+  const char *config_filename = argv[1];
+  const int32_t num_inputs = atoi(argv[2]);
+  const char *input_prefix = argv[3];
+  const char *output_file = argv[4];
+
+  INFO(l) << "Read config file: " << config_filename << std::endl;
+
+  INFO(l) << "Read input file: " << input_prefix << ", #inputs: " << num_inputs << std::endl;
+
+  INFO(l) << "Run all partitioned models..." << std::endl;
+
+  INFO(l) << "Save output file: " << output_file << std::endl;
 
   return EXIT_SUCCESS;
 }
