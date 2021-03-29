@@ -1,3 +1,5 @@
+require("foder")
 require("safemain")
+require("mio-circle")
 require("arser")
 require("vconone")
