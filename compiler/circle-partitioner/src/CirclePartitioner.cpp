@@ -23,6 +23,10 @@
 namespace
 {
 
+const char *opt_prt = "--partition";
+const char *opt_bks = "--backends";
+const char *opt_def = "--default";
+
 void print_version(void)
 {
   std::cout << "circle-partitioner version " << vconone::get_string() << std::endl;
@@ -37,6 +41,33 @@ void build_arser(arser::Arser &arser)
     .default_value(false)
     .help("Show version information and exit")
     .exit_with(print_version);
+
+  arser.add_argument(opt_prt)
+    .nargs(1)
+    .type(arser::DataType::STR)
+    .required(true)
+    .help("Partition information file which provides backend to assign");
+
+  arser.add_argument(opt_bks)
+    .nargs(1)
+    .type(arser::DataType::STR)
+    .required(false)
+    .help("Backends in CSV to use for partitioning");
+
+  arser.add_argument(opt_def)
+    .nargs(1)
+    .type(arser::DataType::STR)
+    .required(false)
+    .help("Default backend to assign");
+
+  arser.add_argument("input")
+    .nargs(1)
+    .type(arser::DataType::STR)
+    .help("Input circle model file path");
+  arser.add_argument("output")
+    .nargs(1)
+    .type(arser::DataType::STR)
+    .help("Output parition folder path");
 }
 
 } // namespace
