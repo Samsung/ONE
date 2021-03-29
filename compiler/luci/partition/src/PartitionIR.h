@@ -66,6 +66,9 @@ struct PGroups
   // id2pngroup is to find *pngroup from pngroup id
   std::map<uint32_t, PGroup *> id2pgroup;
 
+  // default group key for reference
+  std::string default_group;
+
 public:
   /**
    * @brief return a copy of PGroups
