@@ -40,6 +40,7 @@ private:
     auto circle_node = loco::must_cast<const luci::CircleNode *>(node);
     return circle_node->rank();
   }
+
   bool is_cwq_const(const loco::Node *node, uint32_t channel_dim)
   {
     auto circle_node = loco::must_cast<const luci::CircleConst *>(node);
