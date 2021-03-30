@@ -44,7 +44,18 @@ public:
 bool check_allocate_partition(const luci::CircleNode *node)
 {
   IsVirtualNode query;
-  return not node->accept(&query);
+  if (node->accept(&query))
+    return false;
+  /**
+   * @note About CircleConst
+   *       CirleConst acts like a part of some CircleNode and managing mulitiple
+   *       used(referenced) CircleConst is a bit difficult if it's used across
+   *       different PGroup. So we treat this different to other types.
+   *       https://github.com/Samsung/ONE/issues/6230#issuecomment-809802813
+   */
+  if (dynamic_cast<const luci::CircleConst *>(node) != nullptr)
+    return false;
+  return true;
 }
 
 } // namespace
