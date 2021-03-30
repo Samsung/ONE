@@ -15,8 +15,11 @@
  */
 
 #include "PartitionIR.h"
+#include "PartitionIRDump.h"
+#include "PartitionPGroups.h"
 
 #include "luci/Partition.h"
+#include "luci/Log.h"
 
 #include <cassert>
 
@@ -30,9 +33,14 @@ PartedModules apply(Module *source, const PartitionTable &partition)
 {
   assert(source != nullptr);
 
+  LOGGER(l);
+
+  auto pgroups = produce_pgroups(source, partition);
+  INFO(l) << "--- Partition Graph (1)------------------------";
+  INFO(l) << pgroups.get();
+
   // TODO add implementation
-  (void)source;
-  (void)partition;
+  (void)pgroups;
 
   PartedModules pmodules;
 
