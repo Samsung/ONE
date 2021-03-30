@@ -113,6 +113,12 @@ void merge_into(luci::PGroup *pgroup, luci::PGroup *pgroup_i)
         break;
       }
     }
+    // skip if this input is already in the inputs
+    auto fit = std::find(pgroup_i->inputs.begin(), pgroup_i->inputs.end(), input);
+    if (fit != pgroup_i->inputs.end())
+    {
+      found_in_pgroup_i = true;
+    }
     // note: if we force found_in_pgroup_i to false, for testing there will be
     // unnecessary inputs
     if (not found_in_pgroup_i)
