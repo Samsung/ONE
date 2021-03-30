@@ -47,6 +47,17 @@ public:
   // NOTE only builtin operators should be called (NOT virtual nodes)
 };
 
+using PCSTR = const char *;
+
+class QueryCircleName final : public luci::CircleNodeVisitor<PCSTR>
+{
+public:
+  PCSTR visit(const luci::CircleConst *) final { return "CIRCLE_CONST"; }
+
+  // default is null
+  PCSTR visit(const luci::CircleNode *) final { return nullptr; }
+};
+
 } // namespace
 
 namespace luci
@@ -54,6 +65,11 @@ namespace luci
 
 std::string opcode_name(const CircleNode *node)
 {
+  QueryCircleName qcn;
+  auto cname = node->accept(&qcn);
+  if (cname != nullptr)
+    return std::string(cname);
+
   QueryOpCode qoc;
   auto opcode = node->accept(&qoc);
   auto name = circle::EnumNameBuiltinOperator(opcode);
