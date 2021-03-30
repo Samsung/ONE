@@ -18,6 +18,7 @@
 #include "PartitionIRDump.h"
 #include "PartitionPGroups.h"
 #include "PartitionMerge.h"
+#include "PartitionCleanup.h"
 
 #include "luci/Partition.h"
 #include "luci/Log.h"
@@ -42,6 +43,10 @@ PartedModules apply(Module *source, const PartitionTable &partition)
 
   auto mpgroups = merge_pgroups(pgroups.get());
   INFO(l) << "--- Partition Graph (2)------------------------";
+  INFO(l) << mpgroups.get();
+
+  remove_unused_inputoutputs(mpgroups.get(), source);
+  INFO(l) << "--- Partition Graph (3)------------------------";
   INFO(l) << mpgroups.get();
 
   // TODO add implementation
