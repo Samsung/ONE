@@ -22,7 +22,7 @@ namespace
 {
 
 /**
- * @brief return true of pgroup_i output is one of the inputs of pgroup
+ * @brief return true if pgroup_i output is one of the inputs of pgroup
  */
 bool is_input_of(const luci::PGroup *pgroup_i, const luci::PGroup *pgroup)
 {
