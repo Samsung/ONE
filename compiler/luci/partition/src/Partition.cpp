@@ -17,6 +17,7 @@
 #include "PartitionIR.h"
 #include "PartitionIRDump.h"
 #include "PartitionPGroups.h"
+#include "PartitionMerge.h"
 
 #include "luci/Partition.h"
 #include "luci/Log.h"
@@ -39,8 +40,12 @@ PartedModules apply(Module *source, const PartitionTable &partition)
   INFO(l) << "--- Partition Graph (1)------------------------";
   INFO(l) << pgroups.get();
 
+  auto mpgroups = merge_pgroups(pgroups.get());
+  INFO(l) << "--- Partition Graph (2)------------------------";
+  INFO(l) << mpgroups.get();
+
   // TODO add implementation
-  (void)pgroups;
+  (void)mpgroups;
 
   PartedModules pmodules;
 
