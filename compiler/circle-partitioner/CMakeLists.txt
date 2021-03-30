@@ -1,7 +1,10 @@
 file(GLOB_RECURSE SOURCES "src/*.cpp")
 
 add_executable(circle_partitioner "${SOURCES}")
+target_link_libraries(circle_partitioner foder)
 target_link_libraries(circle_partitioner safemain)
+target_link_libraries(circle_partitioner luci_lang)
+target_link_libraries(circle_partitioner luci_import)
 target_link_libraries(circle_partitioner arser)
 target_link_libraries(circle_partitioner vconone)
 
