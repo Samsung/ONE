@@ -80,8 +80,8 @@ TEST(ConfigIniTest, read_ini_comment)
   EXPECT_TRUE("world" == it->second);
 }
 
-TEST(ConfigIniTest, write_ini_file_error)
+TEST(ConfigIniTest, write_ini_file_error_NEG)
 {
   crew::Sections sections;
-  EXPECT_THROW(crew::write_ini("/root/cannot_access", sections), std::runtime_error);
+  EXPECT_THROW(crew::write_ini("/abc/def/cannot_access", sections), std::runtime_error);
 }
