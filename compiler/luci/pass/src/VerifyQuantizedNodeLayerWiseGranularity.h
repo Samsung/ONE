@@ -32,9 +32,30 @@ using Granularity = luci::QuantizationGranularity;
 namespace luci
 {
 
+/**
+ * @brief Verify the granualrity of layer-wise quantized node
+ * @details
+ *
+ * Targets to verify
+ * - node's output (i.e., node itself)
+ * - node's inputs
+ */
 struct VerifyQuantizedNodeLayerWiseGranularity final : public luci::CircleNodeVisitor<bool>
 {
 private:
+  bool is_lwq(const loco::Node *node)
+  {
+    auto circle_node = loco::must_cast<const luci::CircleNode *>(node);
+
+    if (circle_node->quantparam()->scale.size() != 1)
+      return false;
+
+    if (circle_node->quantparam()->zerop.size() != 1)
+      return false;
+
+    return true;
+  }
+
   bool is_lwq_const(const loco::Node *node)
   {
     auto circle_node = loco::must_cast<const luci::CircleConst *>(node);
@@ -51,6 +72,8 @@ private:
 private:
   bool visit(const luci::CircleConv2D *node)
   {
+    RETURN_FALSE_UNLESS(is_lwq(node))
+    RETURN_FALSE_UNLESS(is_lwq(node->input()))
     RETURN_FALSE_UNLESS(is_lwq_const(node->filter()))
     RETURN_FALSE_UNLESS(is_lwq_const(node->bias()))
     return true;
@@ -58,6 +81,8 @@ private:
 
   bool visit(const luci::CircleDepthwiseConv2D *node)
   {
+    RETURN_FALSE_UNLESS(is_lwq(node))
+    RETURN_FALSE_UNLESS(is_lwq(node->input()))
     RETURN_FALSE_UNLESS(is_lwq_const(node->filter()))
     RETURN_FALSE_UNLESS(is_lwq_const(node->bias()))
     return true;
@@ -65,6 +90,8 @@ private:
 
   bool visit(const luci::CircleInstanceNorm *node)
   {
+    RETURN_FALSE_UNLESS(is_lwq(node))
+    RETURN_FALSE_UNLESS(is_lwq(node->input()))
     RETURN_FALSE_UNLESS(is_lwq_const(node->gamma()))
     RETURN_FALSE_UNLESS(is_lwq_const(node->beta()))
     return true;
@@ -72,12 +99,16 @@ private:
 
   bool visit(const luci::CirclePRelu *node)
   {
+    RETURN_FALSE_UNLESS(is_lwq(node))
+    RETURN_FALSE_UNLESS(is_lwq(node->input()))
     RETURN_FALSE_UNLESS(is_lwq_const(node->alpha()))
     return true;
   }
 
   bool visit(const luci::CircleTransposeConv *node)
   {
+    RETURN_FALSE_UNLESS(is_lwq(node))
+    RETURN_FALSE_UNLESS(is_lwq(node->outBackprop()))
     RETURN_FALSE_UNLESS(is_lwq_const(node->filter()))
     luci::CircleConst *bias = dynamic_cast<luci::CircleConst *>(node->bias());
     if (bias != nullptr)
@@ -87,18 +118,56 @@ private:
 
   bool visit(const luci::CircleFullyConnected *node)
   {
+    RETURN_FALSE_UNLESS(is_lwq(node))
+    RETURN_FALSE_UNLESS(is_lwq(node->input()))
     RETURN_FALSE_UNLESS(is_lwq_const(node->weights()))
     RETURN_FALSE_UNLESS(is_lwq_const(node->bias()))
     return true;
   }
 
-  // These operators do not have LWQ constants
-  bool visit(const luci::CircleAdd *) { return true; }
-  bool visit(const luci::CircleAveragePool2D *) { return true; }
-  bool visit(const luci::CircleMaxPool2D *) { return true; }
-  bool visit(const luci::CircleMean *) { return true; }
-  bool visit(const luci::CircleMul *) { return true; }
-  bool visit(const luci::CircleRelu *) { return true; }
+  bool visit(const luci::CircleAdd *node)
+  {
+    RETURN_FALSE_UNLESS(is_lwq(node))
+    RETURN_FALSE_UNLESS(is_lwq(node->x()));
+    RETURN_FALSE_UNLESS(is_lwq(node->y()));
+    return true;
+  }
+
+  bool visit(const luci::CircleAveragePool2D *node)
+  {
+    RETURN_FALSE_UNLESS(is_lwq(node))
+    RETURN_FALSE_UNLESS(is_lwq(node->value()));
+    return true;
+  }
+
+  bool visit(const luci::CircleMaxPool2D *node)
+  {
+    RETURN_FALSE_UNLESS(is_lwq(node))
+    RETURN_FALSE_UNLESS(is_lwq(node->value()));
+    return true;
+  }
+
+  bool visit(const luci::CircleMean *node)
+  {
+    RETURN_FALSE_UNLESS(is_lwq(node))
+    RETURN_FALSE_UNLESS(is_lwq(node->input()));
+    return true;
+  }
+
+  bool visit(const luci::CircleMul *node)
+  {
+    RETURN_FALSE_UNLESS(is_lwq(node))
+    RETURN_FALSE_UNLESS(is_lwq(node->x()));
+    RETURN_FALSE_UNLESS(is_lwq(node->y()));
+    return true;
+  }
+
+  bool visit(const luci::CircleRelu *node)
+  {
+    RETURN_FALSE_UNLESS(is_lwq(node))
+    RETURN_FALSE_UNLESS(is_lwq(node->features()));
+    return true;
+  }
 
   // TODO: Implement more Ops
 

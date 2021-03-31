@@ -31,6 +31,14 @@ using Type = loco::DataType;
 namespace luci
 {
 
+/**
+ * @brief Verify the data type of INT16 quantized node
+ * @details
+ *
+ * Targets to verify
+ * - node's output (i.e., node itself)
+ * - node's inputs
+ */
 struct VerifyQuantizedNodeS16Type final : public luci::CircleNodeVisitor<bool>
 {
 private:
