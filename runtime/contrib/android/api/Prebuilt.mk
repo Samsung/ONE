@@ -5,22 +5,6 @@ ifndef ONERT_PREBUILT_LIB_DIR
 $(error ONERT_PREBUILT_LIB_DIR is not set)
 endif
 
-# libcircle_loader
-include $(CLEAR_VARS)
-LOCAL_MODULE := circle_loader
-PREBUILT_LIB += circle_loader
-LOCAL_SRC_FILES := \
-		$(ONERT_PREBUILT_LIB_DIR)/libcircle_loader.so
-include $(PREBUILT_SHARED_LIBRARY)
-
-# libtflite_loader
-include $(CLEAR_VARS)
-LOCAL_MODULE := tflite_loader
-PREBUILT_LIB += tflite_loader
-LOCAL_SRC_FILES := \
-		$(ONERT_PREBUILT_LIB_DIR)/libtflite_loader.so
-include $(PREBUILT_SHARED_LIBRARY)
-
 # libnnfw
 include $(CLEAR_VARS)
 LOCAL_MODULE := nnfw-dev
