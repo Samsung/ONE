@@ -440,14 +440,11 @@ void sym_wquant_per_channel(CircleConst *node, std::vector<float> &scaling_facto
   std::vector<int32_t> quantized_values(size);
 
   auto quantize = [&](uint32_t *indices, loco::TensorShape &dimension, int32_t channel_dim_index) {
-    // TODO remove clang-format off and fix indentation
-    // clang-format off
-          int channel_idx = indices[channel_dim_index];
-          const float scaling_factor_inv = 1.0 / scaling_factor[channel_idx];
-          auto data = node->at<loco::DataType::FLOAT32>(cal_offset(dimension, indices));
-          quantized_values[cal_offset(dimension, indices)] =
-            static_cast<int32_t>(std::round(data * scaling_factor_inv));
-    // clang-format on
+    int channel_idx = indices[channel_dim_index];
+    const float scaling_factor_inv = 1.0 / scaling_factor[channel_idx];
+    auto data = node->at<loco::DataType::FLOAT32>(cal_offset(dimension, indices));
+    quantized_values[cal_offset(dimension, indices)] =
+      static_cast<int32_t>(std::round(data * scaling_factor_inv));
   };
 
   iterate_per_channel(node, channel_dim_index, quantize);
@@ -473,14 +470,11 @@ void asym_wquant_per_channel(CircleConst *node, std::vector<float> &min,
   std::vector<int32_t> quantized_values(size);
 
   auto quantize = [&](uint32_t *indices, loco::TensorShape &dimension, int32_t channel_dim_index) {
-    // TODO remove clang-format off and fix indentation
-    // clang-format off
-          int channel_idx = indices[channel_dim_index];
-          const float scaling_factor_inv = 1.0 / scaling_factor[channel_idx];
-          auto data = node->at<loco::DataType::FLOAT32>(cal_offset(dimension, indices));
-          quantized_values[cal_offset(dimension, indices)] =
-            static_cast<int32_t>(std::round((data - min[channel_idx]) * scaling_factor_inv));
-    // clang-format on
+    int channel_idx = indices[channel_dim_index];
+    const float scaling_factor_inv = 1.0 / scaling_factor[channel_idx];
+    auto data = node->at<loco::DataType::FLOAT32>(cal_offset(dimension, indices));
+    quantized_values[cal_offset(dimension, indices)] =
+      static_cast<int32_t>(std::round((data - min[channel_idx]) * scaling_factor_inv));
   };
 
   iterate_per_channel(node, channel_dim_index, quantize);
