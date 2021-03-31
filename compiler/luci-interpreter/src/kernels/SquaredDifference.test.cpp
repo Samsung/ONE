@@ -44,6 +44,24 @@ TEST(SquaredDifferenceTest, Float)
   EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(ref_output_data));
 }
 
+TEST(SquaredDifferenceTest, FloatBroadcast)
+{
+  Shape input_shape1{3, 1, 2};
+  Shape input_shape2{1};
+  std::vector<float> input_data1{1.0, 0.0, -1.0, 11.0, -2.0, -1.44};
+  std::vector<float> input_data2{1.0};
+  Tensor input_tensor1 = makeInputTensor<DataType::FLOAT32>(input_shape1, input_data1);
+  Tensor input_tensor2 = makeInputTensor<DataType::FLOAT32>(input_shape2, input_data2);
+  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
+
+  SquaredDifference kernel(&input_tensor1, &input_tensor2, &output_tensor);
+  kernel.configure();
+  kernel.execute();
+
+  std::vector<float> ref_output_data{0.0, 1.0, 4.0, 100.0, 9.0, 5.9536};
+  EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(ref_output_data));
+}
+
 } // namespace
 } // namespace kernels
 } // namespace luci_interpreter
