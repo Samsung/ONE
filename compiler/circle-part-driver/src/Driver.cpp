@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+#include "PModelsRunner.h"
+
 #include <luci/Log.h>
 #include <cstdlib>
 #include <iostream>
@@ -35,13 +37,21 @@ int entry(int argc, char **argv)
   const char *input_prefix = argv[3];
   const char *output_file = argv[4];
 
+  prunner::PModelsRunner pmrunner;
+
   INFO(l) << "Read config file: " << config_filename << std::endl;
+  if (not pmrunner.load_config(config_filename))
+    return EXIT_FAILURE;
 
   INFO(l) << "Read input file: " << input_prefix << ", #inputs: " << num_inputs << std::endl;
+  pmrunner.load_inputs(input_prefix, num_inputs);
 
   INFO(l) << "Run all partitioned models..." << std::endl;
+  if (!pmrunner.run())
+    return EXIT_FAILURE;
 
   INFO(l) << "Save output file: " << output_file << std::endl;
+  pmrunner.save_outputs(output_file);
 
   return EXIT_SUCCESS;
 }

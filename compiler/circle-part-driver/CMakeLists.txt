@@ -1,5 +1,6 @@
 set(SRCS_PART_TESTER
       src/Driver.cpp
+      src/PModelsRunner.cpp
    )
 
 add_executable(circle_part_driver ${SRCS_PART_TESTER})
