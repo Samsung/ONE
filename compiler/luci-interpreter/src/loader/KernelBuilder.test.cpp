@@ -68,6 +68,7 @@
 #include <kernels/Split.h>
 #include <kernels/Sqrt.h>
 #include <kernels/Sub.h>
+#include <kernels/SquaredDifference.h>
 #include <kernels/Squeeze.h>
 #include <kernels/StridedSlice.h>
 #include <kernels/Tanh.h>
@@ -1086,6 +1087,23 @@ TEST_F(KernelBuilderTest, Sub)
   checkTensor(kernel->input2(), input2);
   checkTensor(kernel->output(), op);
   EXPECT_THAT(kernel->params().activation, Eq(op->fusedActivationFunction()));
+}
+
+TEST_F(KernelBuilderTest, SquaredDifference)
+{
+  auto *input1 = createInputNode();
+  auto *input2 = createInputNode();
+
+  auto *op = createNode<luci::CircleSquaredDifference>();
+  op->x(input1);
+  op->y(input2);
+
+  auto kernel = buildKernel<kernels::SquaredDifference>(op);
+  ASSERT_THAT(kernel, NotNull());
+
+  checkTensor(kernel->input1(), input1);
+  checkTensor(kernel->input2(), input2);
+  checkTensor(kernel->output(), op);
 }
 
 TEST_F(KernelBuilderTest, Squeeze)

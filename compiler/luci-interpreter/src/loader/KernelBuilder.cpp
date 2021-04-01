@@ -70,6 +70,7 @@
 #include "kernels/StridedSlice.h"
 #include "kernels/Sqrt.h"
 #include "kernels/Sub.h"
+#include "kernels/SquaredDifference.h"
 #include "kernels/Squeeze.h"
 #include "kernels/Tanh.h"
 #include "kernels/Unpack.h"
@@ -841,6 +842,17 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleSqrt *node)
   Tensor *output = getOutputTensor(node);
 
   return std::make_unique<kernels::Sqrt>(input, output);
+}
+
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleSquaredDifference *node)
+{
+  assert(node->arity() == 2);
+
+  const Tensor *input1 = getInputTensor(node->x());
+  const Tensor *input2 = getInputTensor(node->y());
+  Tensor *output = getOutputTensor(node);
+
+  return std::make_unique<kernels::SquaredDifference>(input1, input2, output);
 }
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleSqueeze *node)
