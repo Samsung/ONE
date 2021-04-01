@@ -20,22 +20,39 @@
 
 namespace onert
 {
-namespace frontend
-{
-namespace custom
+namespace api
 {
 
-void KernelRegistry::registerKernel(const std::string &id, nnfw_custom_eval evalFunction)
+class KernelBuilder : public backend::custom::IKernelBuilder
+{
+public:
+  KernelBuilder(CustomKernelRegistry *registry) : _registry(registry) {}
+
+  std::unique_ptr<exec::IFunction>
+  buildKernel(const std::string &id,
+              backend::custom::CustomKernelConfigParams &&params) const override
+  {
+    auto kernel = _registry->buildKernelForOp(id);
+    kernel->configure(std::move(params));
+
+    return kernel;
+  }
+
+private:
+  CustomKernelRegistry *_registry;
+};
+
+void CustomKernelRegistry::registerKernel(const std::string &id, nnfw_custom_eval evalFunction)
 {
   _storage.emplace(id, evalFunction);
 }
 
-std::shared_ptr<backend::custom::IKernelBuilder> KernelRegistry::getBuilder()
+std::shared_ptr<backend::custom::IKernelBuilder> CustomKernelRegistry::getBuilder()
 {
   return std::make_unique<KernelBuilder>(this);
 }
 
-std::unique_ptr<Kernel> KernelRegistry::buildKernelForOp(const std::string &id)
+std::unique_ptr<CustomKernel> CustomKernelRegistry::buildKernelForOp(const std::string &id)
 {
   auto it = _storage.find(id);
   if (it == _storage.end())
@@ -43,22 +60,8 @@ std::unique_ptr<Kernel> KernelRegistry::buildKernelForOp(const std::string &id)
     throw std::runtime_error("Unable to find associated kernel for op");
   }
 
-  return std::make_unique<Kernel>(it->second);
+  return std::make_unique<CustomKernel>(it->second);
 }
 
-// Kernel builder
-std::unique_ptr<exec::IFunction>
-KernelBuilder::buildKernel(const std::string &id,
-                           backend::custom::CustomKernelConfigParams &&params) const
-{
-  auto kernel = _registry->buildKernelForOp(id);
-  kernel->configure(std::move(params));
-
-  return kernel;
-}
-
-KernelBuilder::KernelBuilder(KernelRegistry *registry) : _registry(registry) {}
-
-} // namespace custom
-} // namespace frontend
+} // namespace api
 } // namespace onert

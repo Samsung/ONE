@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_CUSTOM_KERNEL_REGISTRY_H__
-#define __ONERT_BACKEND_CUSTOM_KERNEL_REGISTRY_H__
+#ifndef __ONERT_API_CUSTOM_KERNEL_REGISTRY_H__
+#define __ONERT_API_CUSTOM_KERNEL_REGISTRY_H__
 
 #include "CustomKernel.h"
 
@@ -27,38 +27,22 @@
 
 namespace onert
 {
-namespace frontend
-{
-namespace custom
+namespace api
 {
 
-class KernelRegistry
+class CustomKernelRegistry
 {
 public:
   void registerKernel(const std::string &id, nnfw_custom_eval evalFunction);
 
   std::shared_ptr<backend::custom::IKernelBuilder> getBuilder();
-  std::unique_ptr<Kernel> buildKernelForOp(const std::string &id);
+  std::unique_ptr<CustomKernel> buildKernelForOp(const std::string &id);
 
 private:
   std::unordered_map<std::string, nnfw_custom_eval> _storage;
 };
 
-class KernelBuilder : public backend::custom::IKernelBuilder
-{
-public:
-  KernelBuilder(KernelRegistry *registry);
-
-  std::unique_ptr<exec::IFunction>
-  buildKernel(const std::string &id,
-              backend::custom::CustomKernelConfigParams &&params) const override;
-
-private:
-  KernelRegistry *_registry;
-};
-
-} // namespace custom
-} // namespace frontend
+} // namespace api
 } // namespace onert
 
-#endif // __ONERT_BACKEND_CUSTOM_KERNEL_REGISTRY_H__
+#endif // __ONERT_API_CUSTOM_KERNEL_REGISTRY_H__
