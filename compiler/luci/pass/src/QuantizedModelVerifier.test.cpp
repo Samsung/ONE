@@ -106,7 +106,7 @@ TEST(QuantizedModelVerifierTest, Logistic)
   }
 }
 
-TEST(QuantizedModelVerifierTest, Logistic_wrong_type_N)
+TEST(QuantizedModelVerifierTest, Logistic_wrong_type_NEG)
 {
   {
     LogisticTestGraph g;
@@ -122,7 +122,7 @@ TEST(QuantizedModelVerifierTest, Logistic_wrong_type_N)
   }
 }
 
-TEST(QuantizedModelVerifierTest, Logistic_wrong_granularity_N)
+TEST(QuantizedModelVerifierTest, Logistic_wrong_granularity_NEG)
 {
   {
     LogisticTestGraph g;
