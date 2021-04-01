@@ -17,6 +17,7 @@
 #ifndef __CREW_PCONFIG_INI_H__
 #define __CREW_PCONFIG_INI_H__
 
+#include <iostream>
 #include <string>
 #include <unordered_map>
 #include <vector>
@@ -42,6 +43,25 @@ Sections read_ini(const char *data, size_t length);
  * @brief Reads Config INI from file and return Sections
  */
 Sections read_ini(const std::string &path);
+
+/**
+ * @brief Write Config INI with Sections to ostream
+ */
+void write_ini(std::ostream &os, const Sections &sections);
+/**
+ * @brief Write Config INI with Sections to file, throw if failed
+ */
+void write_ini(const std::string &path, const Sections &sections);
+
+/**
+ * @brief Find a section with name, empty section if not found
+ */
+Section find(const Sections &sections, const std::string &name);
+
+/**
+ * @brief Find a key-value pair from key and return value, empty string if not found
+ */
+std::string find(const Section &section, const std::string &key);
 
 } // namespace crew
 

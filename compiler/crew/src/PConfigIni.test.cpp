@@ -15,6 +15,7 @@
  */
 
 #include "crew/PConfigIni.h"
+#include "crew/PConfigIniDump.h"
 
 #include <gtest/gtest.h>
 
@@ -77,4 +78,10 @@ TEST(ConfigIniTest, read_ini_comment)
   ASSERT_NE(its->items.end(), it);
   EXPECT_TRUE("key" == it->first);
   EXPECT_TRUE("world" == it->second);
+}
+
+TEST(ConfigIniTest, write_ini_file_error_NEG)
+{
+  crew::Sections sections;
+  EXPECT_THROW(crew::write_ini("/abc/def/cannot_access", sections), std::runtime_error);
 }

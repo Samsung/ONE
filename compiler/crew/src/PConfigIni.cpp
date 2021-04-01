@@ -15,11 +15,15 @@
  */
 
 #include "crew/PConfigIni.h"
+#include "crew/PConfigIniDump.h"
 
 #include <foder/FileLoader.h>
 
 #include <cassert>
 #include <cstring>
+#include <fstream>
+#include <memory>
+#include <sstream>
 #include <stdexcept>
 #include <string>
 
@@ -101,6 +105,52 @@ Sections read_ini(const std::string &path)
   auto ini_data = file_loader.load();
 
   return read_ini(ini_data.data(), ini_data.size());
+}
+
+void write_ini(std::ostream &os, const Sections &sections)
+{
+  std::stringstream ss;
+
+  ss << sections;
+
+  std::string strss = ss.str();
+
+  os.write(strss.c_str(), strss.length());
+}
+
+void write_ini(const std::string &filepath, const Sections &sections)
+{
+  std::ofstream fs(filepath.c_str(), std::ofstream::binary | std::ofstream::trunc);
+  if (not fs.good())
+  {
+    std::string msg = "Failed to create file: " + filepath;
+    throw std::runtime_error(msg);
+  }
+
+  write_ini(fs, sections);
+
+  fs.close();
+}
+
+Section find(const Sections &sections, const std::string &name)
+{
+  for (auto &section : sections)
+  {
+    if (section.name == name)
+      return section;
+  }
+  Section not_found;
+  return not_found;
+}
+
+std::string find(const Section &section, const std::string &key)
+{
+  for (auto &item : section.items)
+  {
+    if (item.first == key)
+      return item.second;
+  }
+  return "";
 }
 
 } // namespace crew
