@@ -59,6 +59,43 @@ bool read_part(const crew::Section &section, crew::Part &part)
 namespace
 {
 
+void write_part(crew::JsonExport &je, const crew::Part &part)
+{
+  std::vector<std::string> graph_inputs;
+  std::vector<std::string> graph_outputs;
+
+  for (auto &input : part.inputs)
+  {
+    graph_inputs.push_back(input);
+  }
+  for (auto &output : part.outputs)
+  {
+    graph_outputs.push_back(output);
+  }
+
+  je.key_val("file", part.model_file.c_str(), true);
+  je.key_val("inputs", graph_inputs, true);
+  je.key_val("outputs", graph_outputs, false);
+}
+
+void write_parts(crew::JsonExport &je, const crew::Parts &parts)
+{
+  uint32_t idx = 1;
+  uint32_t size = parts.size();
+  for (auto &part : parts)
+  {
+    je.open_brace();
+    write_part(je, part);
+    je.close_brace(idx < size);
+    idx++;
+  }
+}
+
+} // namespace
+
+namespace
+{
+
 void part_to_section_io(const crew::Part &part, crew::Section &section)
 {
   uint32_t idx = 1;
@@ -159,6 +196,26 @@ bool write_ini(std::ostream &os, const PConfig &pconfig)
   }
 
   write_ini(os, sections);
+
+  return true;
+}
+
+bool write_json(std::ostream &os, const PConfig &pconfig)
+{
+  crew::JsonExport je(os);
+
+  je.open_brace();
+  {
+    je.open_brace("source");
+    write_part(je, pconfig.source);
+    je.close_brace(true);
+  }
+  {
+    je.open_bracket("parts");
+    write_parts(je, pconfig.parts);
+    je.close_bracket(false);
+  }
+  je.close_brace(false);
 
   return true;
 }
