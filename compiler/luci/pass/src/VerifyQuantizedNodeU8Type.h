@@ -156,6 +156,15 @@ private:
     return true;
   }
 
+  bool visit(const luci::CircleSlice *node)
+  {
+    RETURN_FALSE_UNLESS(has_type(node, Type::U8))
+    RETURN_FALSE_UNLESS(has_type(node->input(), Type::U8))
+    RETURN_FALSE_UNLESS(has_type(node->begin(), Type::S32) || has_type(node->begin(), Type::S64))
+    RETURN_FALSE_UNLESS(has_type(node->size(), Type::S32) || has_type(node->size(), Type::S64))
+    return true;
+  }
+
   // TODO: Implement more Ops
 
   bool visit(const luci::CircleNode *) { return true; }

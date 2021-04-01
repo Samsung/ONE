@@ -912,6 +912,7 @@ void quantize_const_inputs(luci::CircleNode *node, loco::DataType output_type)
     case luci::CircleOpcode::RESIZE_BILINEAR:
     case luci::CircleOpcode::RESIZE_NEAREST_NEIGHBOR:
     case luci::CircleOpcode::REVERSE_SEQUENCE:
+    case luci::CircleOpcode::SLICE:
     case luci::CircleOpcode::SUM:
     case luci::CircleOpcode::TILE:
     case luci::CircleOpcode::TOPK_V2:
