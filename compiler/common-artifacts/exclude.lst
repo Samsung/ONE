@@ -75,9 +75,6 @@ tcgenerate(Mul_U8_000)
 tcgenerate(Neg_000)
 tcgenerate(Net_BroadcastTo_AddV2_001) # luci-interpreter doesn't support custom operator
 tcgenerate(Net_Dangle_001)
-tcgenerate(Net_InstanceNorm_001)
-tcgenerate(Net_InstanceNorm_002)
-tcgenerate(Net_InstanceNorm_003)
 tcgenerate(Net_ZeroDim_001) # luci-interpreter doesn't support zero dim
 tcgenerate(OneHot_000)
 tcgenerate(OneHot_001)
@@ -134,7 +131,6 @@ tcgenerate(SpaceToBatchND_003)
 tcgenerate(SparseToDense_000)
 tcgenerate(SplitV_000)
 tcgenerate(Square_000)
-tcgenerate(SquaredDifference_000)
 tcgenerate(Sum_000)
 tcgenerate(Sum_001)
 tcgenerate(Sum_dynamic_000) # TestDataGenerator does not support unknown dimension
