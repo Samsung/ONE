@@ -47,6 +47,9 @@ private:
   {
     auto circle_node = loco::must_cast<const luci::CircleNode *>(node);
 
+    if (circle_node->quantparam() == nullptr)
+      return false;
+
     if (circle_node->quantparam()->scale.size() != 1)
       return false;
 
@@ -68,6 +71,12 @@ private:
 
     assert(channel_dim < circle_node->rank()); // FIX_CALLER_UNLESS
     auto channel_size = circle_node->dim(channel_dim).value();
+
+    if (circle_node->quantparam() == nullptr)
+      return false;
+
+    if (circle_node->quantparam()->quantized_dimension != static_cast<int32_t>(channel_dim))
+      return false;
 
     if (circle_node->quantparam()->scale.size() != channel_size)
       return false;
