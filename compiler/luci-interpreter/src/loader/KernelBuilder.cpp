@@ -69,9 +69,9 @@
 #include "kernels/Split.h"
 #include "kernels/StridedSlice.h"
 #include "kernels/Sqrt.h"
-#include "kernels/Sub.h"
 #include "kernels/SquaredDifference.h"
 #include "kernels/Squeeze.h"
+#include "kernels/Sub.h"
 #include "kernels/Tanh.h"
 #include "kernels/Unpack.h"
 #include "kernels/Transpose.h"
@@ -767,20 +767,6 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleRsqrt *node)
   return std::make_unique<kernels::Rsqrt>(input, output);
 }
 
-std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleSub *node)
-{
-  assert(node->arity() == 2);
-
-  const Tensor *input1 = getInputTensor(node->x());
-  const Tensor *input2 = getInputTensor(node->y());
-  Tensor *output = getOutputTensor(node);
-
-  SubParams params{};
-  params.activation = node->fusedActivationFunction();
-
-  return std::make_unique<kernels::Sub>(input1, input2, output, params);
-}
-
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleSlice *node)
 {
   assert(node->arity() == 3);
@@ -887,6 +873,20 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleStridedSlice *nod
   params.shrink_axis_mask = node->shrink_axis_mask();
 
   return std::make_unique<kernels::StridedSlice>(input, begin, end, strides, output, params);
+}
+
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleSub *node)
+{
+  assert(node->arity() == 2);
+
+  const Tensor *input1 = getInputTensor(node->x());
+  const Tensor *input2 = getInputTensor(node->y());
+  Tensor *output = getOutputTensor(node);
+
+  SubParams params{};
+  params.activation = node->fusedActivationFunction();
+
+  return std::make_unique<kernels::Sub>(input1, input2, output, params);
 }
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleTanh *node)
