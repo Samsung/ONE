@@ -17,10 +17,17 @@
 #ifndef __CIRCLE_PRUNNER_PMODELS_RUNNER_H__
 #define __CIRCLE_PRUNNER_PMODELS_RUNNER_H__
 
+#include <crew/PConfig.h>
+
 #include <string>
+#include <vector>
 
 namespace prunner
 {
+
+using RunModel = std::string;
+
+using RunModels = std::vector<RunModel>;
 
 /**
  * @brief PModelsRunner runs partitioned models from input data file and stores
@@ -36,6 +43,10 @@ public:
   void load_inputs(const std::string &input_prefix, int32_t num_inputs);
   bool run(void);
   void save_outputs(const std::string &output_file);
+
+private:
+  crew::PConfig _pconfig;
+  RunModels _models_to_run;
 };
 
 } // namespace prunner
