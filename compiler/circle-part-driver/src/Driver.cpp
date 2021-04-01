@@ -31,6 +31,11 @@ int entry(int argc, char **argv)
       << " <path/to/partition/config> <num_inputs> <path/to/input/prefix> <path/to/output/file>\n";
     return EXIT_FAILURE;
   }
+  // NOTE: about input/output data file name
+  // - I/O file name format is like filename.ext0, filename.ext1, ...
+  // NOTE: about output shape
+  // - file name with filename.ext0.shape, filename.ext1.shape, ...
+  //   having one line text content of CSV format(like H,W or N,C,H,W)
 
   const char *config_filename = argv[1];
   const int32_t num_inputs = atoi(argv[2]);
