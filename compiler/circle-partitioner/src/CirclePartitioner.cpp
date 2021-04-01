@@ -14,9 +14,15 @@
  * limitations under the License.
  */
 
+#include "PartitionRead.h"
+#include "HelperPath.h"
+#include "HelperStrings.h"
+
 #include <foder/FileLoader.h>
 
 #include <luci/Importer.h>
+#include <luci/Log.h>
+
 #include <arser/arser.h>
 #include <vconone/vconone.h>
 
@@ -99,10 +105,62 @@ std::unique_ptr<luci::Module> load_model(const std::string &input_path)
   return importer.importModule(circle_model);
 }
 
+bool validate_partition(luci::PartitionTable &partition)
+{
+  if (partition.groups.size() == 0)
+  {
+    std::cerr << "There is no 'backends' information";
+    return false;
+  }
+  if (partition.default_group.empty())
+  {
+    std::cerr << "There is no 'default' backend information";
+    return false;
+  }
+  if (!partee::is_one_of(partition.default_group, partition.groups))
+  {
+    std::cerr << "'default' backend is not one of 'backends' item";
+    return false;
+  }
+  for (auto &byopcode : partition.byopcodes)
+  {
+    if (!partee::is_one_of(byopcode.second, partition.groups))
+    {
+      std::cerr << "OPCODE " << byopcode.first << " is not assigned to one of 'backends' items";
+      return false;
+    }
+  }
+  return true;
+}
+
+void dump(std::ostream &os, const luci::PartitionTable &table)
+{
+  os << "Backends:";
+  for (auto &group : table.groups)
+  {
+    os << " " << group;
+    if (table.default_group == group)
+      os << "(default)";
+  }
+  os << std::endl;
+
+  os << "Assign by OPCODE: " << std::endl;
+  for (auto &item : table.byopcodes)
+    os << "  " << item.first << "=" << item.second << std::endl;
+}
+
+std::ostream &operator<<(std::ostream &os, const luci::PartitionTable &table)
+{
+  dump(os, table);
+  return os;
+}
+
 } // namespace
 
 int entry(int argc, char **argv)
 {
+  LOGGER(l);
+
   arser::Arser arser("circle-partitioner provides circle model partitioning");
 
   build_arser(arser);
@@ -118,6 +176,7 @@ int entry(int argc, char **argv)
     return 255;
   }
 
+  std::string partition_path = arser.get<std::string>(opt_prt);
   std::string input_path = arser.get<std::string>("input");
 
   auto module = load_model(input_path);
@@ -126,8 +185,33 @@ int entry(int argc, char **argv)
     return EXIT_FAILURE;
   }
 
+  // Read partition information
+  INFO(l) << "--- Read PartitionConfig-----------------------" << std::endl;
+  auto partition = partee::read(partition_path);
+  INFO(l) << partition << std::endl;
+
+  // override with command line arguments
+  {
+    if (arser[opt_bks])
+    {
+      auto backend_backends = arser.get<std::string>(opt_bks);
+      partition.groups = partee::csv_to_vector<std::string>(backend_backends);
+    }
+    if (arser[opt_def])
+    {
+      partition.default_group = arser.get<std::string>(opt_def);
+    }
+  }
+  if (!validate_partition(partition))
+  {
+    return EXIT_FAILURE;
+  }
+
+  INFO(l) << "--- PartitionConfig final----------------------" << std::endl;
+  INFO(l) << partition << std::endl;
+
   // TODO add implementation
-  (void)module;
+  (void)partition;
 
   return 0;
 }
