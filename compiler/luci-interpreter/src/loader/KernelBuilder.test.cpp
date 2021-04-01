@@ -67,10 +67,10 @@
 #include <kernels/SpaceToDepth.h>
 #include <kernels/Split.h>
 #include <kernels/Sqrt.h>
-#include <kernels/Sub.h>
 #include <kernels/SquaredDifference.h>
 #include <kernels/Squeeze.h>
 #include <kernels/StridedSlice.h>
+#include <kernels/Sub.h>
 #include <kernels/Tanh.h>
 #include <kernels/Transpose.h>
 #include <kernels/TransposeConv.h>
@@ -1069,26 +1069,6 @@ TEST_F(KernelBuilderTest, Sqrt)
   checkTensor(kernel->output(), op);
 }
 
-TEST_F(KernelBuilderTest, Sub)
-{
-  auto *input1 = createInputNode();
-  auto *input2 = createInputNode();
-
-  auto *op = createNode<luci::CircleSub>();
-  op->x(input1);
-  op->y(input2);
-
-  op->fusedActivationFunction(luci::FusedActFunc::RELU);
-
-  auto kernel = buildKernel<kernels::Sub>(op);
-  ASSERT_THAT(kernel, NotNull());
-
-  checkTensor(kernel->input1(), input1);
-  checkTensor(kernel->input2(), input2);
-  checkTensor(kernel->output(), op);
-  EXPECT_THAT(kernel->params().activation, Eq(op->fusedActivationFunction()));
-}
-
 TEST_F(KernelBuilderTest, SquaredDifference)
 {
   auto *input1 = createInputNode();
@@ -1155,6 +1135,26 @@ TEST_F(KernelBuilderTest, StridedSlice)
   EXPECT_THAT(kernel->params().end_mask, Eq(op->end_mask()));
   EXPECT_THAT(kernel->params().new_axis_mask, Eq(op->new_axis_mask()));
   EXPECT_THAT(kernel->params().shrink_axis_mask, Eq(op->shrink_axis_mask()));
+}
+
+TEST_F(KernelBuilderTest, Sub)
+{
+  auto *input1 = createInputNode();
+  auto *input2 = createInputNode();
+
+  auto *op = createNode<luci::CircleSub>();
+  op->x(input1);
+  op->y(input2);
+
+  op->fusedActivationFunction(luci::FusedActFunc::RELU);
+
+  auto kernel = buildKernel<kernels::Sub>(op);
+  ASSERT_THAT(kernel, NotNull());
+
+  checkTensor(kernel->input1(), input1);
+  checkTensor(kernel->input2(), input2);
+  checkTensor(kernel->output(), op);
+  EXPECT_THAT(kernel->params().activation, Eq(op->fusedActivationFunction()));
 }
 
 TEST_F(KernelBuilderTest, Tanh)
