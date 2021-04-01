@@ -16,13 +16,13 @@
 
 #include "nnfw_api_internal.h"
 #include "CustomKernelRegistry.h"
+#include "Loader.h"
+
 #include "compiler/Compiler.h"
 #include "util/ConfigSource.h"
 #include "util/Exceptions.h"
 #include "util/logging.h"
 #include "exec/Execution.h"
-#include "circle_loader.h"
-#include "tflite_loader.h"
 #include "json/json.h"
 #include "ir/OpCode.h"
 #include "util/TracingCtx.h"
@@ -177,15 +177,10 @@ NNFW_STATUS nnfw_session::load_circle_from_buffer(uint8_t *buffer, size_t size)
   if (size == 0)
     return NNFW_STATUS_ERROR;
 
-  try
-  {
-    _subgraphs = onert::circle_loader::loadModel(buffer, size);
-  }
-  catch (const std::exception &e)
-  {
-    std::cerr << "Error during model loading : " << e.what() << std::endl;
+  onert::api::Loader loader;
+  _subgraphs = loader.loadCircleBuffer(buffer, size);
+  if (!_subgraphs)
     return NNFW_STATUS_ERROR;
-  }
 
   _tracing_ctx = std::make_unique<onert::util::TracingCtx>(_subgraphs.get());
 
@@ -213,29 +208,12 @@ NNFW_STATUS nnfw_session::load_model_from_modelfile(const char *model_file_path)
     return NNFW_STATUS_ERROR;
   }
 
-  std::string model_type = filename.substr(filename.size() - 7, 7);
+  std::string model_type = filename.substr(filename.size() - 6, 6);
 
-  try
-  {
-    if (model_type == ".tflite")
-    {
-      _subgraphs = onert::tflite_loader::loadModel(filename.c_str());
-    }
-    else if (model_type == ".circle")
-    {
-      _subgraphs = onert::circle_loader::loadModel(filename.c_str());
-    }
-    else
-    {
-      std::cerr << "Unsupported model type" << std::endl;
-      return NNFW_STATUS_ERROR;
-    }
-  }
-  catch (const std::exception &e)
-  {
-    std::cerr << "Error during model loading : " << e.what() << std::endl;
+  onert::api::Loader loader;
+  _subgraphs = loader.loadModelFile(model_file_path, model_type);
+  if (!_subgraphs)
     return NNFW_STATUS_ERROR;
-  }
 
   _tracing_ctx = std::make_unique<onert::util::TracingCtx>(_subgraphs.get());
 
@@ -298,19 +276,11 @@ NNFW_STATUS nnfw_session::load_model_from_nnpackage(const char *package_dir)
 
     auto model_file_path = package_path + std::string("/") + models[0].asString(); // first model
     auto model_type = model_types[0].asString(); // first model's type
-    if (model_type == "tflite")
-    {
-      _subgraphs = onert::tflite_loader::loadModel(model_file_path);
-    }
-    else if (model_type == "circle")
-    {
-      _subgraphs = onert::circle_loader::loadModel(model_file_path);
-    }
-    else
-    {
-      std::cerr << "Unsupported model type in MANIFEST" << std::endl;
+    onert::api::Loader loader;
+    _subgraphs = loader.loadModelFile(model_file_path, model_type);
+    if (!_subgraphs)
       return NNFW_STATUS_ERROR;
-    }
+
     _subgraphs->primary()->bindKernelBuilder(_kernel_registry->getBuilder());
   }
   catch (const std::exception &e)
