@@ -47,6 +47,9 @@ private:
   {
     auto circle_node = loco::must_cast<const luci::CircleNode *>(node);
 
+    if (circle_node->quantparam() == nullptr)
+      return false;
+
     if (circle_node->quantparam()->scale.size() != 1)
       return false;
 
@@ -59,6 +62,9 @@ private:
   bool is_lwq_const(const loco::Node *node)
   {
     auto circle_node = loco::must_cast<const luci::CircleConst *>(node);
+
+    if (circle_node->quantparam() == nullptr)
+      return false;
 
     if (circle_node->quantparam()->scale.size() != 1)
       return false;
