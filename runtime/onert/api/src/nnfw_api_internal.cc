@@ -15,23 +15,14 @@
  */
 
 #include "nnfw_api_internal.h"
-#include "CustomKernelRegistry.h"
-#include "Loader.h"
 
-#include "compiler/Compiler.h"
-#include "util/ConfigSource.h"
 #include "util/Exceptions.h"
 #include "util/logging.h"
 #include "exec/Execution.h"
-#include "json/json.h"
-#include "ir/OpCode.h"
-#include "util/TracingCtx.h"
 
-#include <fstream>
 #include <iostream>
 #include <string>
 #include <vector>
-#include <dirent.h>
 #include <misc/string_helpers.h>
 
 /*
@@ -97,64 +88,6 @@ NNFW_STATUS getTensorIndexImpl(const onert::ir::Graph &graph, const char *tensor
   }
 }
 
-std::string trim(const std::string &value)
-{
-  std::string whitespace = " \t";
-  auto begin = value.find_first_not_of(whitespace);
-  if (begin == std::string::npos)
-    return ""; // no content
-
-  auto end = value.find_last_not_of(whitespace);
-  auto range = end - begin + 1;
-  return value.substr(begin, range);
-}
-
-using CfgKeyValues = std::unordered_map<std::string, std::string>;
-
-bool loadConfigure(const std::string cfgfile, CfgKeyValues &keyValues)
-{
-  std::ifstream ifs(cfgfile);
-  if (ifs.is_open())
-  {
-    std::string line;
-    while (std::getline(ifs, line))
-    {
-      auto cmtpos = line.find('#');
-      if (cmtpos != std::string::npos)
-      {
-        line = line.substr(0, cmtpos);
-      }
-      std::istringstream isline(line);
-      std::string key;
-      if (std::getline(isline, key, '='))
-      {
-        std::string value;
-        if (std::getline(isline, value))
-        {
-          key = trim(key);
-          keyValues[key] = trim(value);
-        }
-      }
-    }
-    ifs.close();
-    return true;
-  }
-  return false;
-}
-
-void setConfigKeyValues(const CfgKeyValues &keyValues)
-{
-  auto configsrc = std::make_unique<onert::util::GeneralConfigSource>();
-
-  for (auto it = keyValues.begin(); it != keyValues.end(); ++it)
-  {
-    VERBOSE(NNPKG_CONFIGS) << "(" << it->first << ") = (" << it->second << ")" << std::endl;
-    configsrc->set(it->first, it->second);
-  }
-
-  onert::util::config_source_ext(std::move(configsrc));
-}
-
 } // namespace
 
 nnfw_session::nnfw_session()
@@ -165,137 +98,6 @@ nnfw_session::nnfw_session()
 }
 
 nnfw_session::~nnfw_session() = default;
-
-NNFW_STATUS nnfw_session::load_circle_from_buffer(uint8_t *buffer, size_t size)
-{
-  if (!isStateInitialized())
-    return NNFW_STATUS_INVALID_STATE;
-
-  if (!buffer)
-    return NNFW_STATUS_UNEXPECTED_NULL;
-
-  if (size == 0)
-    return NNFW_STATUS_ERROR;
-
-  onert::api::Loader loader;
-  _subgraphs = loader.loadCircleBuffer(buffer, size);
-  if (!_subgraphs)
-    return NNFW_STATUS_ERROR;
-
-  _tracing_ctx = std::make_unique<onert::util::TracingCtx>(_subgraphs.get());
-
-  _compiler = std::make_unique<onert::compiler::Compiler>(_subgraphs, _tracing_ctx.get());
-
-  _state = State::MODEL_LOADED;
-  return NNFW_STATUS_NO_ERROR;
-}
-
-NNFW_STATUS nnfw_session::load_model_from_modelfile(const char *model_file_path)
-{
-  if (!isStateInitialized())
-    return NNFW_STATUS_INVALID_STATE;
-
-  if (!model_file_path)
-  {
-    std::cerr << "Model file path is null." << std::endl;
-    return NNFW_STATUS_UNEXPECTED_NULL;
-  }
-
-  std::string filename{model_file_path};
-  if (filename.size() < 8) // .tflite or .circle
-  {
-    std::cerr << "Invalid model file path." << std::endl;
-    return NNFW_STATUS_ERROR;
-  }
-
-  std::string model_type = filename.substr(filename.size() - 6, 6);
-
-  onert::api::Loader loader;
-  _subgraphs = loader.loadModelFile(model_file_path, model_type);
-  if (!_subgraphs)
-    return NNFW_STATUS_ERROR;
-
-  _tracing_ctx = std::make_unique<onert::util::TracingCtx>(_subgraphs.get());
-
-  _compiler = std::make_unique<onert::compiler::Compiler>(_subgraphs, _tracing_ctx.get());
-
-  _state = State::MODEL_LOADED;
-  return NNFW_STATUS_NO_ERROR;
-}
-
-NNFW_STATUS nnfw_session::load_model_from_nnpackage(const char *package_dir)
-{
-  if (!isStateInitialized())
-    return NNFW_STATUS_INVALID_STATE;
-
-  if (!package_dir)
-  {
-    std::cerr << "package_dir is null." << std::endl;
-    return NNFW_STATUS_UNEXPECTED_NULL;
-  }
-
-  if (!null_terminating(package_dir, MAX_PATH_LENGTH))
-  {
-    std::cerr << "nnpackage path is too long" << std::endl;
-    return NNFW_STATUS_ERROR;
-  }
-
-  // TODO : add support for zipped package file load
-  DIR *dir;
-  if (!(dir = opendir(package_dir)))
-  {
-    std::cerr << "invalid nnpackge directory: " << package_dir << std::endl;
-    return NNFW_STATUS_ERROR;
-  }
-  closedir(dir);
-
-  try
-  {
-    std::string package_path(package_dir);
-    std::string manifest_file_name = package_path + "/metadata/MANIFEST";
-    std::ifstream mfs(manifest_file_name);
-
-    // extract the filename of the first(index 0) model
-    // e.g. In MANIFEST file, { "models" : [ "firstmodel.tflite", "2nd.tflite" ] }
-    Json::Value root;
-    mfs >> root;
-    const Json::Value &models = root["models"];
-    const Json::Value &model_types = root["model-types"];
-    const Json::Value &configs = root["configs"];
-
-    if (!configs.empty() && !configs[0].empty())
-    {
-      auto filepath = package_path + std::string("/metadata/") + configs[0].asString();
-
-      CfgKeyValues keyValues;
-      if (loadConfigure(filepath, keyValues))
-      {
-        setConfigKeyValues(keyValues);
-      }
-    }
-
-    auto model_file_path = package_path + std::string("/") + models[0].asString(); // first model
-    auto model_type = model_types[0].asString(); // first model's type
-    onert::api::Loader loader;
-    _subgraphs = loader.loadModelFile(model_file_path, model_type);
-    if (!_subgraphs)
-      return NNFW_STATUS_ERROR;
-
-    _subgraphs->primary()->bindKernelBuilder(_kernel_registry->getBuilder());
-  }
-  catch (const std::exception &e)
-  {
-    std::cerr << "Error during model loading : " << e.what() << std::endl;
-    return NNFW_STATUS_ERROR;
-  }
-
-  _tracing_ctx = std::make_unique<onert::util::TracingCtx>(_subgraphs.get());
-
-  _compiler = std::make_unique<onert::compiler::Compiler>(_subgraphs, _tracing_ctx.get());
-
-  _state = State::MODEL_LOADED;
-  return NNFW_STATUS_NO_ERROR;
-}
 
 NNFW_STATUS nnfw_session::prepare()
 {

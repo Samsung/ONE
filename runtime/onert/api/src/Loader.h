@@ -17,7 +17,7 @@
 #ifndef __NNFW_API_LOADER_H__
 #define __NNFW_API_LOADER_H__
 
-#include <ir/Subgraphs.h>
+#include "nnfw_api_internal.h"
 
 namespace onert
 {
@@ -27,11 +27,20 @@ namespace api
 class Loader
 {
 public:
-  Loader() = default;
+  Loader() = delete;
+  Loader(nnfw_session *session);
 
 public:
-  std::unique_ptr<ir::Subgraphs> loadCircleBuffer(uint8_t *buffer, size_t size);
-  std::unique_ptr<ir::Subgraphs> loadModelFile(const std::string &path, const std::string &type);
+  NNFW_STATUS loadNNPackage(const char *package_dir);
+  NNFW_STATUS loadCircleFromBuffer(uint8_t *buffer, size_t size);
+  NNFW_STATUS loadModelFromModelfile(const char *model_file_path);
+
+private:
+  void loadCircleBuffer(uint8_t *buffer, size_t size);
+  void loadModelFile(const std::string &path, const std::string &type);
+
+private:
+  nnfw_session *_session;
 };
 
 } // namespace api

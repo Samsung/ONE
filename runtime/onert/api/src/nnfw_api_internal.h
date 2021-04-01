@@ -19,37 +19,20 @@
 
 #include "nnfw.h"
 #include "nnfw_experimental.h"
+#include "CustomKernelRegistry.h"
 
 #include <util/GeneralConfigSource.h>
 #include <util/TracingCtx.h>
+#include <exec/Execution.h>
+#include <ir/Subgraphs.h>
+#include <compiler/Compiler.h>
 
 #include <string>
 #include <memory>
 
-namespace onert
-{
-namespace api
-{
-class CustomKernelRegistry;
-} // namespace api
-namespace exec
-{
-class Execution;
-} // namespace exec
-namespace ir
-{
-class Graph;
-class Subgraphs;
-} // namespace ir
-namespace compiler
-{
-class Compiler;
-} // namespace compiler
-} // namespace onert
-
 struct nnfw_session
 {
-private:
+public:
   /**
    * @brief Enum class to express the session's state
    *
@@ -98,7 +81,6 @@ public:
   nnfw_session();
   ~nnfw_session();
 
-  NNFW_STATUS load_model_from_nnpackage(const char *package_file_path);
   NNFW_STATUS prepare();
   NNFW_STATUS run();
 
@@ -129,8 +111,6 @@ public:
 
   NNFW_STATUS set_config(const char *key, const char *value);
   NNFW_STATUS get_config(const char *key, char *value, size_t value_size);
-  NNFW_STATUS load_circle_from_buffer(uint8_t *buffer, size_t size);
-  NNFW_STATUS load_model_from_modelfile(const char *file_path);
 
   //
   // Experimental API
@@ -140,7 +120,7 @@ public:
   NNFW_STATUS input_tensorindex(const char *tensorname, uint32_t *index);
   NNFW_STATUS output_tensorindex(const char *tensorname, uint32_t *index);
 
-private:
+public:
   const onert::ir::Graph *primary_subgraph();
   bool isStateInitialized();
   bool isStateModelLoaded();
@@ -149,7 +129,7 @@ private:
   bool isStateFinishedRun();
   bool isStatePreparedOrFinishedRun();
 
-private:
+public:
   State _state{State::INITIALIZED};
   std::shared_ptr<onert::ir::Subgraphs> _subgraphs;
   std::unique_ptr<onert::compiler::Compiler> _compiler;

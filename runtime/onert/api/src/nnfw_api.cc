@@ -17,6 +17,8 @@
 #include "nnfw_api_internal.h"
 #include "nnfw_version.h"
 
+#include "Loader.h"
+
 // Double-check enum value changes
 
 #define STATIC_ASSERT_ENUM_CHECK(ENUM, VAL) static_assert((ENUM) == (VAL), #ENUM " has changed")
@@ -87,10 +89,10 @@ NNFW_STATUS nnfw_close_session(nnfw_session *session)
  *
  * @return NNFW_STATUS_NO_ERROR if successful
  */
-NNFW_STATUS nnfw_load_model_from_file(nnfw_session *session, const char *pacakge_file_path)
+NNFW_STATUS nnfw_load_model_from_file(nnfw_session *session, const char *package_file_path)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->load_model_from_nnpackage(pacakge_file_path);
+  return onert::api::Loader(session).loadNNPackage(package_file_path);
 }
 
 /*
@@ -347,13 +349,13 @@ NNFW_STATUS nnfw_query_info_u32(nnfw_session *session, NNFW_INFO_ID id, uint32_t
 NNFW_STATUS nnfw_load_circle_from_buffer(nnfw_session *session, uint8_t *buffer, size_t size)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->load_circle_from_buffer(buffer, size);
+  return onert::api::Loader(session).loadCircleFromBuffer(buffer, size);
 }
 
 NNFW_STATUS nnfw_load_model_from_modelfile(nnfw_session *session, const char *file_path)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->load_model_from_modelfile(file_path);
+  return onert::api::Loader(session).loadModelFromModelfile(file_path);
 }
 
 NNFW_STATUS nnfw_input_tensorindex(nnfw_session *session, const char *tensorname, uint32_t *index)
