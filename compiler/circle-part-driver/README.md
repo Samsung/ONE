@@ -1,3 +1,3 @@
-# luci-part-driver
+# circle-part-driver
 
-_luci-part-driver_ is test driver to run partitioned circle models
+_circle-part-driver_ is test driver to run partitioned circle models
