@@ -18,9 +18,7 @@
 
 namespace onert
 {
-namespace frontend
-{
-namespace custom
+namespace api
 {
 
 using namespace backend::custom;
@@ -64,12 +62,12 @@ public:
   }
 };
 
-Kernel::Kernel(const nnfw_custom_eval evalFunction)
+CustomKernel::CustomKernel(const nnfw_custom_eval evalFunction)
   : _in_params(), _userdata(nullptr), _userdata_size(0), _evalFunction(evalFunction)
 {
 }
 
-void Kernel::configure(CustomKernelConfigParams &&inParams)
+void CustomKernel::configure(CustomKernelConfigParams &&inParams)
 {
   _userdata = inParams.userdata;
   _userdata_size = inParams.userdata_size;
@@ -77,7 +75,7 @@ void Kernel::configure(CustomKernelConfigParams &&inParams)
   _in_params = std::move(inParams);
 }
 
-void Kernel::run()
+void CustomKernel::run()
 {
   nnfw_custom_kernel_params params;
 
@@ -109,6 +107,5 @@ void Kernel::run()
   delete[] params.outputs;
 }
 
-} // namespace custom
-} // namespace frontend
+} // namespace api
 } // namespace onert

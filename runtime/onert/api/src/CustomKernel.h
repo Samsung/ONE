@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_CUSTOM_KERNEL_H__
-#define __ONERT_BACKEND_CUSTOM_KERNEL_H__
+#ifndef __ONERT_API_CUSTOM_KERNEL_H__
+#define __ONERT_API_CUSTOM_KERNEL_H__
 
 #include "nnfw_experimental.h"
 
@@ -26,15 +26,13 @@
 
 namespace onert
 {
-namespace frontend
-{
-namespace custom
+namespace api
 {
 
-class Kernel : public ::onert::exec::IFunction
+class CustomKernel : public ::onert::exec::IFunction
 {
 public:
-  explicit Kernel(nnfw_custom_eval evalFunction);
+  explicit CustomKernel(nnfw_custom_eval evalFunction);
 
   backend::custom::CustomKernelConfigParams _in_params;
 
@@ -53,8 +51,7 @@ public:
   void run() override;
 };
 
-} // namespace custom
-} // namespace frontend
+} // namespace api
 } // namespace onert
 
-#endif // __ONERT_BACKEND_CUSTOM_KERNEL_H__
+#endif // __ONERT_API_CUSTOM_KERNEL_H__

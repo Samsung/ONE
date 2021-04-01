@@ -159,8 +159,7 @@ void setConfigKeyValues(const CfgKeyValues &keyValues)
 
 nnfw_session::nnfw_session()
   : _subgraphs{nullptr}, _execution{nullptr},
-    _kernel_registry{std::make_shared<onert::frontend::custom::KernelRegistry>()}, _tracing_ctx{
-                                                                                     nullptr}
+    _kernel_registry{std::make_shared<onert::api::CustomKernelRegistry>()}, _tracing_ctx{nullptr}
 {
   // DO NOTHING
 }
