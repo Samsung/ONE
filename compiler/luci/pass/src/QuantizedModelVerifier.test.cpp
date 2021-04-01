@@ -83,7 +83,47 @@ public:
   luci::CircleLogistic *_logistic = nullptr;
 };
 
+template <Type indexT> class SliceTestGraph final : public luci::test::TestIOGraph
+{
+public:
+  void init(void)
+  {
+    TestIOGraph::init({32}, {32});
+    _begin = g()->nodes()->create<luci::CircleConst>();
+    {
+      _begin->dtype(indexT);
+    }
+    _size = g()->nodes()->create<luci::CircleConst>();
+    {
+      _size->dtype(indexT);
+    }
+    _slice = g()->nodes()->create<luci::CircleSlice>();
+    {
+      _slice->input(input());
+      _slice->begin(_begin);
+      _slice->size(_size);
+    }
+    output()->from(_slice);
+
+    set_minmax_to_non_const(g(), -1, 1);
+  }
+
+public:
+  luci::CircleSlice *_slice = nullptr;
+  luci::CircleConst *_begin = nullptr;
+  luci::CircleConst *_size = nullptr;
+};
+
 } // namespace
+
+// Quantize and verify with given configurations
+#define TEST_WITH_GRAPH(graph, type, granularity)                   \
+  do                                                                \
+  {                                                                 \
+    graph g;                                                        \
+    g.init();                                                       \
+    EXPECT_NO_THROW(quantize_and_verify(g.g(), type, granularity)); \
+  } while (0)
 
 TEST(QuantizedModelVerifierTest, Logistic)
 {
@@ -137,3 +177,48 @@ TEST(QuantizedModelVerifierTest, Logistic_wrong_granularity_NEG)
     EXPECT_ANY_THROW(verifier.verify(g.g()));
   }
 }
+
+TEST(QuantizedModelVerifierTest, Slice)
+{
+  TEST_WITH_GRAPH(SliceTestGraph<Type::S32>, Type::U8, Granularity::LayerWise);
+  TEST_WITH_GRAPH(SliceTestGraph<Type::S32>, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_GRAPH(SliceTestGraph<Type::S32>, Type::S16, Granularity::ChannelWise);
+
+  TEST_WITH_GRAPH(SliceTestGraph<Type::S64>, Type::U8, Granularity::LayerWise);
+  TEST_WITH_GRAPH(SliceTestGraph<Type::S64>, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_GRAPH(SliceTestGraph<Type::S64>, Type::S16, Granularity::ChannelWise);
+}
+
+TEST(QuantizedModelVerifierTest, Slice_wrong_type_NEG)
+{
+  {
+    SliceTestGraph<Type::S32> g;
+    g.init();
+
+    luci::QuantizeWithMinMaxPass pass(Type::FLOAT32, Type::U8, Granularity::LayerWise);
+    pass.run(g.g());
+
+    g._slice->dtype(Type::S16);
+
+    luci::QuantizedModelVerifier verifier(Type::U8, Granularity::LayerWise);
+    EXPECT_ANY_THROW(verifier.verify(g.g()));
+  }
+}
+
+TEST(QuantizedModelVerifierTest, Slice_wrong_granularity_NEG)
+{
+  {
+    SliceTestGraph<Type::S32> g;
+    g.init();
+
+    luci::QuantizeWithMinMaxPass pass(Type::FLOAT32, Type::U8, Granularity::LayerWise);
+    pass.run(g.g());
+
+    insert_scale_zp(g._slice, 1.0, 1);
+
+    luci::QuantizedModelVerifier verifier(Type::U8, Granularity::LayerWise);
+    EXPECT_ANY_THROW(verifier.verify(g.g()));
+  }
+}
+
+#undef TEST_WITH_GRAPH
