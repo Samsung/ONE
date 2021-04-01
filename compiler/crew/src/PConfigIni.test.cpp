@@ -48,7 +48,7 @@ TEST(ConfigIniTest, read_ini_simple)
   EXPECT_TRUE("world" == it->second);
 }
 
-TEST(ConfigIniTest, read_ini_simple_N)
+TEST(ConfigIniTest, read_ini_simple_NEG)
 {
   std::stringstream ss;
 
