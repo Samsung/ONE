@@ -56,6 +56,29 @@ bool read_part(const crew::Section &section, crew::Part &part)
 
 } // namespace
 
+namespace
+{
+
+void part_to_section_io(const crew::Part &part, crew::Section &section)
+{
+  uint32_t idx = 1;
+  for (auto &input : part.inputs)
+  {
+    std::string key = "i" + std::to_string(idx);
+    section.items.emplace(key, input);
+    idx++;
+  }
+  idx = 1;
+  for (auto &output : part.outputs)
+  {
+    std::string key = "o" + std::to_string(idx);
+    section.items.emplace(key, output);
+    idx++;
+  }
+}
+
+} // namespace
+
 namespace crew
 {
 
@@ -98,6 +121,44 @@ bool read_ini(const std::string &path, PConfig &pconfig)
     }
     pconfig.parts.push_back(part);
   }
+
+  return true;
+}
+
+bool write_ini(std::ostream &os, const PConfig &pconfig)
+{
+  crew::Sections sections;
+
+  // make [source]
+  crew::Section section_source;
+  section_source.name = "source";
+  section_source.items["file"] = pconfig.source.model_file;
+  part_to_section_io(pconfig.source, section_source);
+  sections.push_back(section_source);
+
+  // make [models]
+  crew::Section section_models;
+  section_models.name = "models";
+  uint32_t idx = 1;
+  for (auto &part : pconfig.parts)
+  {
+    std::string key = "m" + std::to_string(idx);
+    section_models.items[key] = part.model_file;
+    idx++;
+  }
+  sections.push_back(section_models);
+
+  for (auto &part : pconfig.parts)
+  {
+    // make circle model section
+    crew::Section section_model;
+    section_model.name = part.model_file;
+    section_model.items["file"] = part.model_file;
+    part_to_section_io(part, section_model);
+    sections.push_back(section_model);
+  }
+
+  write_ini(os, sections);
 
   return true;
 }

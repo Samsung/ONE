@@ -45,6 +45,11 @@ struct PConfig
  */
 bool read_ini(const std::string &path, PConfig &config);
 
+/**
+ * @brief Write config as ini file, return false if failed
+ */
+bool write_ini(std::ostream &os, const PConfig &config);
+
 } // namespace crew
 
 #endif // __CREW_PCONFIG_H__
