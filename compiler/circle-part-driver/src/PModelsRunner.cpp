@@ -16,13 +16,27 @@
 
 #include "PModelsRunner.h"
 
+#include <crew/PConfig.h>
+
+#include <iostream>
+#include <vector>
+#include <string>
+
 namespace prunner
 {
 
 bool PModelsRunner::load_config(const std::string &filename)
 {
-  // TODO add implementation
-  (void)filename;
+  if (!crew::read_ini(filename, _pconfig))
+  {
+    std::cerr << "ERROR: Invalid config ini file: '" << filename << "'" << std::endl;
+    return false;
+  }
+
+  for (auto &part : _pconfig.parts)
+  {
+    _models_to_run.push_back(part.model_file);
+  }
   return true;
 }
 
