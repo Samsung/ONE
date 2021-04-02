@@ -79,12 +79,6 @@ public:
   nnfw_session();
   ~nnfw_session();
 
-  NNFW_STATUS prepare();
-  NNFW_STATUS run();
-
-  NNFW_STATUS run_async();
-  NNFW_STATUS await();
-
 public:
   const onert::ir::Graph *primary_subgraph();
   bool isStateInitialized();

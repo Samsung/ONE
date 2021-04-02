@@ -18,6 +18,7 @@
 #include "nnfw_version.h"
 
 #include "Config.h"
+#include "Execution.h"
 #include "Loader.h"
 #include "Helper.h"
 #include "TensorManager.h"
@@ -101,7 +102,7 @@ NNFW_STATUS nnfw_load_model_from_file(nnfw_session *session, const char *package
 NNFW_STATUS nnfw_prepare(nnfw_session *session)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->prepare();
+  return onert::api::Execution(session).prepare();
 }
 
 /*
@@ -113,19 +114,19 @@ NNFW_STATUS nnfw_prepare(nnfw_session *session)
 NNFW_STATUS nnfw_run(nnfw_session *session)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->run();
+  return onert::api::Execution(session).run();
 }
 
 NNFW_STATUS nnfw_run_async(nnfw_session *session)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->run_async();
+  return onert::api::Execution(session).runAsync();
 }
 
 NNFW_STATUS nnfw_await(nnfw_session *session)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->await();
+  return onert::api::Execution(session).await();
 }
 
 /*

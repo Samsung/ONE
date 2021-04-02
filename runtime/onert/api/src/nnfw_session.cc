@@ -16,7 +16,6 @@
 
 #include "nnfw_session.h"
 
-#include <util/Exceptions.h>
 #include <util/logging.h>
 
 #include <misc/string_helpers.h>
@@ -33,99 +32,6 @@ nnfw_session::nnfw_session()
 }
 
 nnfw_session::~nnfw_session() = default;
-
-NNFW_STATUS nnfw_session::prepare()
-{
-  // NOTE. If users want to run prepare() more than one time, this could be removed.
-  if (!isStateModelLoaded())
-  {
-    std::cerr << "Error during model prepare : ";
-    if (isStateInitialized())
-    {
-      std::cerr << "prepare should be run once";
-    }
-    else
-    {
-      std::cerr << "invalid state";
-    }
-    std::cerr << std::endl;
-    return NNFW_STATUS_INVALID_STATE;
-  }
-
-  try
-  {
-    _subgraphs.reset();
-    std::shared_ptr<onert::exec::ExecutorMap> executors = _compiler->compile();
-    _execution = std::make_unique<onert::exec::Execution>(executors);
-  }
-  catch (const std::exception &e)
-  {
-    std::cerr << "Error during model prepare : " << e.what() << std::endl;
-    return NNFW_STATUS_ERROR;
-  }
-
-  _state = State::PREPARED;
-  return NNFW_STATUS_NO_ERROR;
-}
-
-NNFW_STATUS nnfw_session::run()
-{
-  if (!isStatePreparedOrFinishedRun())
-  {
-    std::cerr << "Error during nnfw_session::run : "
-              << "run should be run after prepare" << std::endl;
-    return NNFW_STATUS_INVALID_STATE;
-  }
-
-  try
-  {
-    _execution->execute();
-  }
-  catch (const onert::InsufficientBufferSizeException &e)
-  {
-    // Currently insufficient buffer always means output buffer.
-    std::cerr << "Error during nnfw_session::run : " << e.what() << std::endl;
-    return NNFW_STATUS_INSUFFICIENT_OUTPUT_SIZE;
-  }
-  catch (const std::exception &e)
-  {
-    std::cerr << "Error during nnfw_session::run : " << e.what() << std::endl;
-    return NNFW_STATUS_ERROR;
-  }
-
-  _state = State::FINISHED_RUN;
-  return NNFW_STATUS_NO_ERROR;
-}
-
-NNFW_STATUS nnfw_session::run_async()
-{
-  if (!isStatePreparedOrFinishedRun())
-  {
-    std::cerr << "Error during nnfw_session::run_async : "
-              << "run_async should be run after prepare" << std::endl;
-    return NNFW_STATUS_INVALID_STATE;
-  }
-
-  _execution->startExecute();
-
-  _state = State::RUNNING;
-  return NNFW_STATUS_NO_ERROR;
-}
-
-NNFW_STATUS nnfw_session::await()
-{
-  if (!isStateRunning())
-  {
-    std::cerr << "Error during nnfw_session::run_await : "
-              << "run_await should be run after run_async" << std::endl;
-    return NNFW_STATUS_ERROR;
-  }
-
-  _execution->waitFinish();
-
-  _state = State::FINISHED_RUN;
-  return NNFW_STATUS_NO_ERROR;
-}
 
 const onert::ir::Graph *nnfw_session::primary_subgraph()
 {
