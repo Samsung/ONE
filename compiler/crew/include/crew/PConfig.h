@@ -50,6 +50,11 @@ bool read_ini(const std::string &path, PConfig &config);
  */
 bool write_ini(std::ostream &os, const PConfig &config);
 
+/**
+ * @brief Write config as json file, return false if failed
+ */
+bool write_json(std::ostream &os, const PConfig &config);
+
 } // namespace crew
 
 #endif // __CREW_PCONFIG_H__
