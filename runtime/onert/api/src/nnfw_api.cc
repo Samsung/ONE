@@ -17,6 +17,7 @@
 #include "nnfw_api_internal.h"
 #include "nnfw_version.h"
 
+#include "Config.h"
 #include "Loader.h"
 #include "TensorManager.h"
 
@@ -275,7 +276,7 @@ NNFW_STATUS nnfw_register_custom_op_info(nnfw_session *session, const char *id,
                                          custom_kernel_registration_info *info)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->register_custom_operation(id, info->eval_function);
+  return onert::api::Config(session).registerCustomOperation(id, info->eval_function);
 }
 
 NNFW_STATUS nnfw_apply_tensorinfo(nnfw_session *session, uint32_t index,
@@ -301,7 +302,7 @@ NNFW_STATUS nnfw_set_input_tensorinfo(nnfw_session *session, uint32_t index,
 NNFW_STATUS nnfw_set_available_backends(nnfw_session *session, const char *backends)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->set_available_backends(backends);
+  return onert::api::Config(session).setAvailableBackends(backends);
 }
 
 /*
@@ -316,7 +317,7 @@ NNFW_STATUS nnfw_set_available_backends(nnfw_session *session, const char *backe
 NNFW_STATUS nnfw_set_op_backend(nnfw_session *session, const char *op, const char *backend)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->set_op_backend(op, backend);
+  return onert::api::Config(session).setOpBackend(op, backend);
 }
 
 /*

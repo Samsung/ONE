@@ -87,22 +87,6 @@ public:
   NNFW_STATUS run_async();
   NNFW_STATUS await();
 
-  NNFW_STATUS set_available_backends(const char *backends);
-  NNFW_STATUS set_op_backend(const char *op, const char *backend);
-
-  //
-  // Internal-only API
-  //
-
-  NNFW_STATUS set_config(const char *key, const char *value);
-  NNFW_STATUS get_config(const char *key, char *value, size_t value_size);
-
-  //
-  // Experimental API
-  //
-
-  NNFW_STATUS register_custom_operation(const std::string &id, nnfw_custom_eval eval_func);
-
 public:
   const onert::ir::Graph *primary_subgraph();
   bool isStateInitialized();
