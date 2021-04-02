@@ -1,0 +1,48 @@
+operand {
+  name: "ifm1"
+  type: FLOAT32
+  shape { dim: 1 dim: 3 dim: 3 dim: 2 }
+}
+operand {
+  name: "ifm2"
+  type: FLOAT32
+  shape { dim: 1 dim: 3 dim: 3 dim: 2 }
+}
+operand {
+  name: "add"
+  type: FLOAT32
+  shape { dim: 1 dim: 3 dim: 3 dim: 2 }
+}
+operand {
+  name: "ofm1"
+  type: FLOAT32
+  shape { dim: 1 dim: 3 dim: 3 dim: 2 }
+}
+operand {
+  name: "ofm2"
+  type: FLOAT32
+  shape { dim: 1 dim: 3 dim: 3 dim: 2 }
+}
+operation {
+  type: "Add"
+  add_options {
+    activation: NONE
+  }
+  input: "ifm1"
+  input: "ifm2"
+  output: "add"
+}
+operation {
+  type: "Sqrt"
+  input: "add"
+  output: "ofm1"
+}
+operation {
+  type: "Sqrt"
+  input: "add"
+  output: "ofm2"
+}
+input: "ifm1"
+input: "ifm2"
+output: "ofm1"
+output: "ofm2"
