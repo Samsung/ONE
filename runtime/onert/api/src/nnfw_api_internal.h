@@ -87,21 +87,6 @@ public:
   NNFW_STATUS run_async();
   NNFW_STATUS await();
 
-  NNFW_STATUS set_input(uint32_t index, NNFW_TYPE type, const void *buffer, size_t length);
-  NNFW_STATUS set_output(uint32_t index, NNFW_TYPE type, void *buffer, size_t length);
-
-  NNFW_STATUS input_size(uint32_t *number);
-  NNFW_STATUS output_size(uint32_t *number);
-
-  NNFW_STATUS set_input_layout(uint32_t index, NNFW_LAYOUT layout);
-  NNFW_STATUS set_output_layout(uint32_t index, NNFW_LAYOUT layout);
-
-  NNFW_STATUS apply_tensorinfo(uint32_t index, nnfw_tensorinfo ti); // Will be deprecated
-  NNFW_STATUS set_input_tensorinfo(uint32_t index, const nnfw_tensorinfo *ti);
-
-  NNFW_STATUS input_tensorinfo(uint32_t index, nnfw_tensorinfo *ti);
-  NNFW_STATUS output_tensorinfo(uint32_t index, nnfw_tensorinfo *ti);
-
   NNFW_STATUS set_available_backends(const char *backends);
   NNFW_STATUS set_op_backend(const char *op, const char *backend);
 
@@ -117,8 +102,6 @@ public:
   //
 
   NNFW_STATUS register_custom_operation(const std::string &id, nnfw_custom_eval eval_func);
-  NNFW_STATUS input_tensorindex(const char *tensorname, uint32_t *index);
-  NNFW_STATUS output_tensorindex(const char *tensorname, uint32_t *index);
 
 public:
   const onert::ir::Graph *primary_subgraph();

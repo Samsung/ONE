@@ -18,6 +18,7 @@
 #include "nnfw_version.h"
 
 #include "Loader.h"
+#include "TensorManager.h"
 
 // Double-check enum value changes
 
@@ -148,7 +149,7 @@ NNFW_STATUS nnfw_set_input(nnfw_session *session, uint32_t index, NNFW_TYPE type
                            const void *buffer, size_t length)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->set_input(index, type, buffer, length);
+  return onert::api::TensorManager(session).setInput(index, type, buffer, length);
 }
 
 /*
@@ -167,7 +168,7 @@ NNFW_STATUS nnfw_set_output(nnfw_session *session, uint32_t index, NNFW_TYPE typ
                             size_t length)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->set_output(index, type, buffer, length);
+  return onert::api::TensorManager(session).setOutput(index, type, buffer, length);
 }
 
 /*
@@ -182,7 +183,7 @@ NNFW_STATUS nnfw_set_output(nnfw_session *session, uint32_t index, NNFW_TYPE typ
 NNFW_STATUS nnfw_input_size(nnfw_session *session, uint32_t *number)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->input_size(number);
+  return onert::api::TensorManager(session).inputSize(number);
 }
 
 /*
@@ -196,7 +197,7 @@ NNFW_STATUS nnfw_input_size(nnfw_session *session, uint32_t *number)
 NNFW_STATUS nnfw_output_size(nnfw_session *session, uint32_t *number)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->output_size(number);
+  return onert::api::TensorManager(session).outputSize(number);
 }
 
 /*
@@ -212,7 +213,7 @@ NNFW_STATUS nnfw_output_size(nnfw_session *session, uint32_t *number)
 NNFW_STATUS nnfw_set_input_layout(nnfw_session *session, uint32_t index, NNFW_LAYOUT layout)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->set_input_layout(index, layout);
+  return onert::api::TensorManager(session).setInputLayout(index, layout);
 }
 
 /*
@@ -228,7 +229,7 @@ NNFW_STATUS nnfw_set_input_layout(nnfw_session *session, uint32_t index, NNFW_LA
 NNFW_STATUS nnfw_set_output_layout(nnfw_session *session, uint32_t index, NNFW_LAYOUT layout)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->set_output_layout(index, layout);
+  return onert::api::TensorManager(session).setOutputLayout(index, layout);
 }
 
 /*
@@ -244,7 +245,7 @@ NNFW_STATUS nnfw_input_tensorinfo(nnfw_session *session, uint32_t index,
                                   nnfw_tensorinfo *tensor_info)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->input_tensorinfo(index, tensor_info);
+  return onert::api::TensorManager(session).inputTensorinfo(index, tensor_info);
 }
 
 /*
@@ -260,7 +261,7 @@ NNFW_STATUS nnfw_output_tensorinfo(nnfw_session *session, uint32_t index,
                                    nnfw_tensorinfo *tensor_info)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->output_tensorinfo(index, tensor_info);
+  return onert::api::TensorManager(session).outputTensorinfo(index, tensor_info);
 }
 
 /*
@@ -281,14 +282,14 @@ NNFW_STATUS nnfw_apply_tensorinfo(nnfw_session *session, uint32_t index,
                                   nnfw_tensorinfo tensor_info)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->apply_tensorinfo(index, tensor_info);
+  return onert::api::TensorManager(session).applyTensorinfo(index, tensor_info);
 }
 
 NNFW_STATUS nnfw_set_input_tensorinfo(nnfw_session *session, uint32_t index,
                                       const nnfw_tensorinfo *tensor_info)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->set_input_tensorinfo(index, tensor_info);
+  return onert::api::TensorManager(session).setInputTensorinfo(index, tensor_info);
 }
 
 /*
@@ -361,11 +362,11 @@ NNFW_STATUS nnfw_load_model_from_modelfile(nnfw_session *session, const char *fi
 NNFW_STATUS nnfw_input_tensorindex(nnfw_session *session, const char *tensorname, uint32_t *index)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->input_tensorindex(tensorname, index);
+  return onert::api::TensorManager(session).inputTensorindex(tensorname, index);
 }
 
 NNFW_STATUS nnfw_output_tensorindex(nnfw_session *session, const char *tensorname, uint32_t *index)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->output_tensorindex(tensorname, index);
+  return onert::api::TensorManager(session).outputTensorindex(tensorname, index);
 }
