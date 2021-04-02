@@ -18,6 +18,8 @@
 
 #include <circle_loader.h>
 #include <tflite_loader.h>
+#include <util/GeneralConfigSource.h>
+
 #include <json/json.h>
 
 #include <dirent.h>

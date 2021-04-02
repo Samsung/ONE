@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-#include "nnfw_api_internal.h"
+#include "nnfw_session.h"
 
-#include "util/Exceptions.h"
-#include "util/logging.h"
-#include "exec/Execution.h"
+#include <util/Exceptions.h>
+#include <util/logging.h>
+
+#include <misc/string_helpers.h>
 
 #include <iostream>
 #include <string>
 #include <vector>
-#include <misc/string_helpers.h>
 
 /*
  * API does not accept string argument longer than max length below

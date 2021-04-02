@@ -17,7 +17,7 @@
 #ifndef __NNFW_API_CONFIG_H__
 #define __NNFW_API_CONFIG_H__
 
-#include "nnfw_api_internal.h"
+#include "nnfw_session.h"
 
 namespace onert
 {

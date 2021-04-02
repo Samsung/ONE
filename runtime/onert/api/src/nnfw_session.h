@@ -14,14 +14,12 @@
  * limitations under the License.
  */
 
-#ifndef __API_NNFW_API_INTERNAL_H__
-#define __API_NNFW_API_INTERNAL_H__
+#ifndef __API_NNFW_SESSION_H__
+#define __API_NNFW_SESSION_H__
 
 #include "nnfw.h"
-#include "nnfw_experimental.h"
 #include "CustomKernelRegistry.h"
 
-#include <util/GeneralConfigSource.h>
 #include <util/TracingCtx.h>
 #include <exec/Execution.h>
 #include <ir/Subgraphs.h>
@@ -106,4 +104,4 @@ public:
   std::unique_ptr<onert::util::TracingCtx> _tracing_ctx;
 };
 
-#endif // __API_NNFW_API_INTERNAL_H__
+#endif // __API_NNFW_SESSION_H__

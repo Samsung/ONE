@@ -17,7 +17,7 @@
 #ifndef __NNFW_API_TENSOR_MANAGER_H__
 #define __NNFW_API_TENSOR_MANAGER_H__
 
-#include "nnfw_api_internal.h"
+#include "nnfw_session.h"
 
 namespace onert
 {

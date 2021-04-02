@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "nnfw_api_internal.h"
+#include "nnfw_session.h"
 #include "nnfw_version.h"
 
 #include "Config.h"
