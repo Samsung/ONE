@@ -15,11 +15,9 @@
  */
 
 #include "Config.h"
+#include "Helper.h"
 
 #include <misc/string_helpers.h>
-
-#define MAX_BACKEND_NAME_LENGTH 32
-#define MAX_OP_NAME_LENGTH 64
 
 namespace onert
 {
@@ -28,19 +26,6 @@ namespace api
 
 namespace
 {
-
-// Is null-terminating in length ?
-bool null_terminating(const char *str, uint32_t length)
-{
-  for (uint32_t i = 0; i < length; i++)
-  {
-    if (*(str + i) == '\0')
-    {
-      return true;
-    }
-  }
-  return false;
-}
 
 static std::string get_op_backend_string(std::string op)
 {

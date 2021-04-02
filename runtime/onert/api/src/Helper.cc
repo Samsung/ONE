@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2021 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,19 +14,24 @@
  * limitations under the License.
  */
 
-#include "Config.h"
 #include "Helper.h"
 
-#include <util/ConfigSource.h>
-
-NNFW_STATUS nnfw_set_config(nnfw_session *session, const char *key, const char *value)
+namespace onert
 {
-  NNFW_RETURN_ERROR_IF_NULL(session);
-  return onert::api::Config(session).setConfig(key, value);
+namespace api
+{
+
+bool null_terminating(const char *str, uint32_t length)
+{
+  for (uint32_t i = 0; i < length; i++)
+  {
+    if (*(str + i) == '\0')
+    {
+      return true;
+    }
+  }
+  return false;
 }
 
-NNFW_STATUS nnfw_get_config(nnfw_session *session, const char *key, char *value, size_t value_size)
-{
-  NNFW_RETURN_ERROR_IF_NULL(session);
-  return onert::api::Config(session).getConfig(key, value, value_size);
-}
+} // namespace api
+} // namespace onert

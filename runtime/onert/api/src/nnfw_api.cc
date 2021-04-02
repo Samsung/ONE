@@ -19,6 +19,7 @@
 
 #include "Config.h"
 #include "Loader.h"
+#include "Helper.h"
 #include "TensorManager.h"
 
 // Double-check enum value changes
@@ -47,13 +48,6 @@ STATIC_ASSERT_ENUM_CHECK(NNFW_LAYOUT_CHANNELS_FIRST, 2);
 STATIC_ASSERT_ENUM_CHECK(NNFW_INFO_ID_VERSION, 0);
 
 #undef STATIC_ASSERT_ENUM_CHECK
-
-#define NNFW_RETURN_ERROR_IF_NULL(p)      \
-  do                                      \
-  {                                       \
-    if ((p) == NULL)                      \
-      return NNFW_STATUS_UNEXPECTED_NULL; \
-  } while (0)
 
 /*
  * Create a new session instance

@@ -15,8 +15,7 @@
  */
 
 #include "TensorManager.h"
-
-#define MAX_TENSOR_NAME_LENGTH 64
+#include "Helper.h"
 
 namespace onert
 {
@@ -26,20 +25,7 @@ namespace api
 namespace
 {
 
-// Is null-terminating in length ?
-bool null_terminating(const char *str, uint32_t length)
-{
-  for (uint32_t i = 0; i < length; i++)
-  {
-    if (*(str + i) == '\0')
-    {
-      return true;
-    }
-  }
-  return false;
-}
-
-onert::ir::Layout convertLayout(NNFW_LAYOUT layout)
+onert::ir::Layout convert_layout(NNFW_LAYOUT layout)
 {
   if (layout == NNFW_LAYOUT_CHANNELS_LAST)
   {
@@ -52,7 +38,7 @@ onert::ir::Layout convertLayout(NNFW_LAYOUT layout)
   return onert::ir::Layout::UNKNOWN;
 }
 
-static NNFW_TYPE datatypeToNnfwDtype(onert::ir::DataType dt)
+static NNFW_TYPE datatype_to_nnfw_dtype(onert::ir::DataType dt)
 {
   using onert::ir::DataType;
   switch (dt)
@@ -223,7 +209,7 @@ NNFW_STATUS TensorManager::setInputLayout(uint32_t index, NNFW_LAYOUT layout)
       std::cerr << "Error during nnfw_session::set_input_layout, not supported layout" << std::endl;
       return NNFW_STATUS_ERROR;
     }
-    _session->_execution->setInputLayout(onert::ir::IOIndex(index), convertLayout(layout));
+    _session->_execution->setInputLayout(onert::ir::IOIndex(index), convert_layout(layout));
   }
   catch (const std::exception &e)
   {
@@ -244,7 +230,7 @@ NNFW_STATUS TensorManager::setOutputLayout(uint32_t index, NNFW_LAYOUT layout)
                 << std::endl;
       return NNFW_STATUS_ERROR;
     }
-    _session->_execution->setOutputLayout(onert::ir::IOIndex(index), convertLayout(layout));
+    _session->_execution->setOutputLayout(onert::ir::IOIndex(index), convert_layout(layout));
   }
   catch (const std::exception &e)
   {
@@ -339,7 +325,7 @@ NNFW_STATUS TensorManager::inputTensorinfo(uint32_t index, nnfw_tensorinfo *ti)
       ti->dims[j] = shape.dim(j);
     }
     ti->dtype =
-      datatypeToNnfwDtype(_session->primary_subgraph()->operands().at(opidx).typeInfo().type());
+      datatype_to_nnfw_dtype(_session->primary_subgraph()->operands().at(opidx).typeInfo().type());
   }
   catch (const std::exception &e)
   {
@@ -381,7 +367,7 @@ NNFW_STATUS TensorManager::outputTensorinfo(uint32_t index, nnfw_tensorinfo *ti)
       ti->dims[j] = shape.dim(j);
     }
     ti->dtype =
-      datatypeToNnfwDtype(_session->primary_subgraph()->operands().at(opidx).typeInfo().type());
+      datatype_to_nnfw_dtype(_session->primary_subgraph()->operands().at(opidx).typeInfo().type());
   }
   catch (const std::exception &e)
   {

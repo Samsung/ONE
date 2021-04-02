@@ -15,6 +15,7 @@
  */
 
 #include "Loader.h"
+#include "Helper.h"
 
 #include <circle_loader.h>
 #include <tflite_loader.h>
@@ -25,8 +26,6 @@
 #include <dirent.h>
 #include <fstream>
 
-#define MAX_PATH_LENGTH 1024
-
 namespace onert
 {
 namespace api
@@ -34,18 +33,6 @@ namespace api
 
 namespace
 {
-
-bool null_terminating(const char *str, uint32_t length)
-{
-  for (uint32_t i = 0; i < length; i++)
-  {
-    if (*(str + i) == '\0')
-    {
-      return true;
-    }
-  }
-  return false;
-}
 
 std::string trim(const std::string &value)
 {

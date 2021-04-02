@@ -25,14 +25,6 @@
 #include <string>
 #include <vector>
 
-/*
- * API does not accept string argument longer than max length below
- */
-#define MAX_BACKEND_NAME_LENGTH 32
-#define MAX_OP_NAME_LENGTH 64
-#define MAX_PATH_LENGTH 1024
-#define MAX_TENSOR_NAME_LENGTH 64
-
 nnfw_session::nnfw_session()
   : _subgraphs{nullptr}, _execution{nullptr},
     _kernel_registry{std::make_shared<onert::api::CustomKernelRegistry>()}, _tracing_ctx{nullptr}
