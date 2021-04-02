@@ -15,9 +15,9 @@
  */
 
 #include "PartitionPModules.h"
+#include "CircleNodeConnect.h"
 
-#include "CircleNodeClone.h"
-
+#include "luci/Service/CircleNodeClone.h"
 #include "luci/Log.h"
 
 #include <loco.h>

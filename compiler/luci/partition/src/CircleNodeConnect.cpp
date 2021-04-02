@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-#include "CircleNodeClone.h"
+#include "CircleNodeConnect.h"
 
 #include <oops/UserExn.h>
 
 namespace
 {
 
+// TODO remove CloneNode
 class CloneNode final : public luci::CircleNodeVisitor<luci::CircleNode *>
 {
 public:
@@ -279,7 +280,8 @@ void ConnectNode::visit(const luci::CircleSub *node)
 namespace luci
 {
 
-void copy_common_attributes(const luci::CircleNode *src, luci::CircleNode *dst)
+// TODO remove this
+void deprecated_copy_common_attributes(const luci::CircleNode *src, luci::CircleNode *dst)
 {
   assert(src != nullptr);
   assert(dst != nullptr);
@@ -324,12 +326,13 @@ void copy_common_attributes(const luci::CircleNode *src, luci::CircleNode *dst)
   dst->op_version(src->op_version());
 }
 
-luci::CircleNode *clone_node(const luci::CircleNode *node, loco::Graph *graph)
+// TODO remove this
+luci::CircleNode *deprecated_clone_node(const luci::CircleNode *node, loco::Graph *graph)
 {
   CloneNode cn(graph);
   auto cloned = node->accept(&cn);
   assert(cloned);
-  copy_common_attributes(node, cloned);
+  deprecated_copy_common_attributes(node, cloned);
   return cloned;
 }
 

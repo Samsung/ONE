@@ -16,8 +16,8 @@
 
 // TODO consider relocate this file
 
-#ifndef __LUCI_CIRLE_NODE_CLONE__
-#define __LUCI_CIRLE_NODE_CLONE__
+#ifndef __LUCI_CIRCLE_NODE_CONNECT__
+#define __LUCI_CIRCLE_NODE_CONNECT__
 
 #include <luci/IR/CircleNodes.h>
 #include <luci/IR/CircleNodeVisitor.h>
@@ -77,4 +77,4 @@ void copy_common_attributes(const luci::CircleNode *src, luci::CircleNode *dst);
 
 } // namespace luci
 
-#endif // __LUCI_CIRLE_NODE_CLONE__
+#endif // __LUCI_CIRCLE_NODE_CONNECT__
