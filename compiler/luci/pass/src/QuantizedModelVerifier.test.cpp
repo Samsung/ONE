@@ -54,6 +54,12 @@ void set_minmax_to_non_const(loco::Graph *g, float min, float max)
     if (const_node != nullptr)
       continue;
 
+    // Min/Max is not recorded for ArgMax
+    // See MinMaxObserver.cpp in record_minmax module
+    auto argmax_node = dynamic_cast<luci::CircleArgMax *>(node);
+    if (argmax_node != nullptr)
+      continue;
+
     auto circle_node = loco::must_cast<luci::CircleNode *>(node);
     auto qparam = std::make_unique<luci::CircleQuantParam>();
     {
@@ -112,6 +118,35 @@ public:
   luci::CircleSlice *_slice = nullptr;
   luci::CircleConst *_begin = nullptr;
   luci::CircleConst *_size = nullptr;
+};
+
+template <Type indexT> class ArgMaxTestGraph final : public luci::test::TestIOGraph
+{
+public:
+  void init(void)
+  {
+    TestIOGraph::init({32}, {1});
+    // output dtype is float by default, but ArgMax should have indexType (s32/s64)
+    output()->dtype(indexT);
+    _dimension = g()->nodes()->create<luci::CircleConst>();
+    {
+      _dimension->dtype(indexT);
+    }
+    _argmax = g()->nodes()->create<luci::CircleArgMax>();
+    {
+      _argmax->input(input());
+      _argmax->dimension(_dimension);
+      _argmax->output_type(indexT);
+      _argmax->dtype(indexT);
+    }
+    output()->from(_argmax);
+
+    set_minmax_to_non_const(g(), -1, 1);
+  }
+
+public:
+  luci::CircleArgMax *_argmax = nullptr;
+  luci::CircleConst *_dimension = nullptr;
 };
 
 } // namespace
@@ -215,6 +250,49 @@ TEST(QuantizedModelVerifierTest, Slice_wrong_granularity_NEG)
     pass.run(g.g());
 
     insert_scale_zp(g._slice, 1.0, 1);
+
+    luci::QuantizedModelVerifier verifier(Type::U8, Granularity::LayerWise);
+    EXPECT_ANY_THROW(verifier.verify(g.g()));
+  }
+}
+
+TEST(QuantizedModelVerifierTest, ArgMax)
+{
+  TEST_WITH_GRAPH(ArgMaxTestGraph<Type::S32>, Type::U8, Granularity::LayerWise);
+  TEST_WITH_GRAPH(ArgMaxTestGraph<Type::S32>, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_GRAPH(ArgMaxTestGraph<Type::S32>, Type::S16, Granularity::ChannelWise);
+
+  TEST_WITH_GRAPH(ArgMaxTestGraph<Type::S64>, Type::U8, Granularity::LayerWise);
+  TEST_WITH_GRAPH(ArgMaxTestGraph<Type::S64>, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_GRAPH(ArgMaxTestGraph<Type::S64>, Type::S16, Granularity::ChannelWise);
+}
+
+TEST(QuantizedModelVerifierTest, ArgMax_wrong_type_NEG)
+{
+  {
+    ArgMaxTestGraph<Type::S32> g;
+    g.init();
+
+    luci::QuantizeWithMinMaxPass pass(Type::FLOAT32, Type::U8, Granularity::LayerWise);
+    pass.run(g.g());
+
+    g._dimension->dtype(Type::U8);
+
+    luci::QuantizedModelVerifier verifier(Type::U8, Granularity::LayerWise);
+    EXPECT_ANY_THROW(verifier.verify(g.g()));
+  }
+}
+
+TEST(QuantizedModelVerifierTest, ArgMax_wrong_granularity_NEG)
+{
+  {
+    ArgMaxTestGraph<Type::S32> g;
+    g.init();
+
+    luci::QuantizeWithMinMaxPass pass(Type::FLOAT32, Type::U8, Granularity::LayerWise);
+    pass.run(g.g());
+
+    insert_scale_zp(loco::must_cast<luci::CircleNode *>(g._argmax->input()), 1.0, 1);
 
     luci::QuantizedModelVerifier verifier(Type::U8, Granularity::LayerWise);
     EXPECT_ANY_THROW(verifier.verify(g.g()));

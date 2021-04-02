@@ -165,6 +165,15 @@ private:
     return true;
   }
 
+  bool visit(const luci::CircleArgMax *node)
+  {
+    RETURN_FALSE_UNLESS(has_type(node, node->output_type()))
+    RETURN_FALSE_UNLESS(has_type(node->input(), Type::U8))
+    RETURN_FALSE_UNLESS(has_type(node->dimension(), Type::S32) ||
+                        has_type(node->dimension(), Type::S64))
+    return true;
+  }
+
   // TODO: Implement more Ops
 
   bool visit(const luci::CircleNode *) { return true; }
