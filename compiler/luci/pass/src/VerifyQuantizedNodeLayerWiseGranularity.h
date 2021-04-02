@@ -189,6 +189,13 @@ private:
     return true;
   }
 
+  bool visit(const luci::CircleArgMax *node)
+  {
+    // node's output is index, thus not quantized
+    RETURN_FALSE_UNLESS(is_lwq(node->input()));
+    return true;
+  }
+
   // TODO: Implement more Ops
 
   bool visit(const luci::CircleNode *) { return true; }
