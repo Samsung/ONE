@@ -16,6 +16,11 @@
 
 #include "PModelsRunner.h"
 
+#include <luci/IR/Nodes/CircleInput.h>
+#include <luci/IR/Nodes/CircleOutput.h>
+#include <luci/Log.h>
+
+#include <foder/FileLoader.h>
 #include <crew/PConfig.h>
 
 #include <iostream>
@@ -42,9 +47,22 @@ bool PModelsRunner::load_config(const std::string &filename)
 
 void PModelsRunner::load_inputs(const std::string &input_prefix, int32_t num_inputs)
 {
-  // TODO add implementation
-  (void)input_prefix;
-  (void)num_inputs;
+  LOGGER(l);
+
+  auto its = _pconfig.source.inputs.begin();
+  for (int32_t i = 0; i < num_inputs; ++i, ++its)
+  {
+    std::string filename = input_prefix + std::to_string(i);
+
+    INFO(l) << "Load input data: " << filename << std::endl;
+    foder::FileLoader file_loader{filename};
+
+    std::string input_name = *its;
+    _data_stage[input_name] = file_loader.load();
+
+    INFO(l) << "Input: [" << input_name << "], size " << _data_stage[input_name].size()
+            << std::endl;
+  }
 }
 
 bool PModelsRunner::run(void)

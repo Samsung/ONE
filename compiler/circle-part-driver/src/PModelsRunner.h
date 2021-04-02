@@ -19,11 +19,16 @@
 
 #include <crew/PConfig.h>
 
+#include <map>
 #include <string>
 #include <vector>
 
 namespace prunner
 {
+
+using Buffer = std::vector<char>;
+
+using Buffers = std::map<std::string, Buffer>;
 
 using RunModel = std::string;
 
@@ -47,6 +52,7 @@ public:
 private:
   crew::PConfig _pconfig;
   RunModels _models_to_run;
+  Buffers _data_stage;
 };
 
 } // namespace prunner
