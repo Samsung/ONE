@@ -22,6 +22,8 @@
 
 #include <luci/Importer.h>
 #include <luci/Service/Validate.h>
+#include <luci/CircleExporter.h>
+#include <luci/CircleFileExpContract.h>
 #include <luci/Log.h>
 
 #include <arser/arser.h>
@@ -179,6 +181,7 @@ int entry(int argc, char **argv)
 
   std::string partition_path = arser.get<std::string>(opt_prt);
   std::string input_path = arser.get<std::string>("input");
+  std::string output_base = arser.get<std::string>("output");
 
   auto module = load_model(input_path);
   if (module.get() == nullptr)
@@ -231,8 +234,33 @@ int entry(int argc, char **argv)
     }
   }
 
+  INFO(l) << "--- Partition Export---------------------------" << std::endl;
+  if (!partee::make_dir(output_base))
+  {
+    std::cerr << "ERROR: Failed to create folder '" << output_base << "'" << std::endl;
+    return EXIT_FAILURE;
+  }
+
+  uint32_t idx = 1;
+  for (auto &pmodule : pms.pmodules)
+  {
+    // Export to output circle file
+    luci::CircleExporter exporter;
+
+    auto output_path = partee::make_path(output_base, input_path, idx, pmodule.group);
+    pmodule.name = partee::get_filename_ext(output_path);
+    INFO(l) << "--- " << output_path << ": " << pmodule.name << std::endl;
+
+    luci::CircleFileExpContract contract(pmodule.module.get(), output_path);
+    if (!exporter.invoke(&contract))
+    {
+      std::cerr << "ERROR: Failed to export '" << output_path << "'" << std::endl;
+      return EXIT_FAILURE;
+    }
+    idx++;
+  }
+
   // TODO add implementation
-  (void)pms;
 
   return 0;
 }
