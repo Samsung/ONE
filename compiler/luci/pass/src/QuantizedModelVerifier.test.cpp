@@ -162,23 +162,9 @@ public:
 
 TEST(QuantizedModelVerifierTest, Logistic)
 {
-  {
-    LogisticTestGraph g;
-    g.init();
-    EXPECT_NO_THROW(quantize_and_verify(g.g(), Type::U8, Granularity::LayerWise));
-  }
-
-  {
-    LogisticTestGraph g;
-    g.init();
-    EXPECT_NO_THROW(quantize_and_verify(g.g(), Type::U8, Granularity::ChannelWise));
-  }
-
-  {
-    LogisticTestGraph g;
-    g.init();
-    EXPECT_NO_THROW(quantize_and_verify(g.g(), Type::S16, Granularity::ChannelWise));
-  }
+  TEST_WITH_GRAPH(LogisticTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_GRAPH(LogisticTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_GRAPH(LogisticTestGraph, Type::S16, Granularity::ChannelWise);
 }
 
 TEST(QuantizedModelVerifierTest, Logistic_wrong_type_NEG)
