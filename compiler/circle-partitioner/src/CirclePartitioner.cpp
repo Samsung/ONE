@@ -21,6 +21,7 @@
 #include <foder/FileLoader.h>
 
 #include <luci/Importer.h>
+#include <luci/Service/Validate.h>
 #include <luci/Log.h>
 
 #include <arser/arser.h>
@@ -210,8 +211,28 @@ int entry(int argc, char **argv)
   INFO(l) << "--- PartitionConfig final----------------------" << std::endl;
   INFO(l) << partition << std::endl;
 
+  // apply partition to module
+  auto pms = luci::apply(module.get(), partition);
+  for (auto &pmodule : pms.pmodules)
+  {
+    for (size_t g = 0; g < module->size(); ++g)
+    {
+      auto graph = module->graph(g);
+      if (graph == nullptr)
+      {
+        std::cerr << "ERROR: Failed to create partition model" << std::endl;
+        return EXIT_FAILURE;
+      }
+      if (!luci::validate(graph))
+      {
+        std::cerr << "ERROR: Failed to create partition model" << std::endl;
+        return EXIT_FAILURE;
+      }
+    }
+  }
+
   // TODO add implementation
-  (void)partition;
+  (void)pms;
 
   return 0;
 }
