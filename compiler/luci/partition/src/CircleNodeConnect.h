@@ -58,22 +58,9 @@ struct CloneContext
 };
 
 /**
- * @brief Return a new cloned CircleNode object with same attributes value of node to graph.
- * @note  Each visit implementation must copy node specific attributes.
- */
-CircleNode *clone_node(const CircleNode *node, loco::Graph *graph);
-
-/**
  * @brief Connect cloned node from input node
  */
 void clone_connect(const CircleNode *node, CloneContext &clonecontext);
-
-/**
- * @brief Copy common attributes of CircleNode from src to dst.
- * @note  Attributes of specific node type like keep_dims() of CircleSum are
- *        not copied.
- */
-void copy_common_attributes(const luci::CircleNode *src, luci::CircleNode *dst);
 
 } // namespace luci
 
