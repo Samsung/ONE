@@ -15,6 +15,7 @@
  */
 
 #include "PartitionRead.h"
+#include "PartitionExport.h"
 #include "HelperPath.h"
 #include "HelperStrings.h"
 
@@ -257,7 +258,17 @@ int entry(int argc, char **argv)
     idx++;
   }
 
-  // TODO add implementation
+  INFO(l) << "--- Partition connection information-----------" << std::endl;
+  if (!partee::export_part_conn_json(work_folder, input_file, module.get(), pms))
+  {
+    return EXIT_FAILURE;
+  }
+  if (!partee::export_part_conn_ini(work_folder, input_file, module.get(), pms))
+  {
+    return EXIT_FAILURE;
+  }
+
+  INFO(l) << "--- Partition done-----------------------------" << std::endl << std::endl;
 
   return 0;
 }
