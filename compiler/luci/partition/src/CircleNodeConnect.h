@@ -20,7 +20,6 @@
 #define __LUCI_CIRCLE_NODE_CONNECT__
 
 #include <luci/IR/CircleNodes.h>
-#include <luci/IR/CircleNodeVisitor.h>
 
 #include <loco/IR/Graph.h>
 

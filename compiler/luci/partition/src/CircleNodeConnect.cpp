@@ -16,6 +16,8 @@
 
 #include "CircleNodeConnect.h"
 
+#include <luci/IR/CircleNodeVisitor.h>
+
 #include <oops/UserExn.h>
 
 namespace
