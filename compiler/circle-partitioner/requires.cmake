@@ -1,7 +1,6 @@
 require("foder")
 require("crew")
 require("safemain")
-require("mio-circle")
 require("luci")
 require("arser")
 require("vconone")
