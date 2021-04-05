@@ -29,7 +29,9 @@
 
 #include <cstring>
 
-namespace
+namespace arser
+{
+namespace internal
 {
 
 template <typename T> T lexical_cast(const std::string &str)
@@ -55,7 +57,8 @@ template <> inline std::string to_string(const char *value) { return std::string
 
 template <> inline std::string to_string(const bool value) { return value ? "true" : "false"; }
 
-} // namespace
+} // namespace internal
+} // namespace arser
 
 namespace arser
 {
@@ -190,7 +193,7 @@ public:
   {
     if ((_nargs <= 1 && TypeName<T>::Get() == _type) ||
         (_nargs > 1 && TypeName<std::vector<T>>::Get() == _type))
-      _values.emplace_back(::to_string(value));
+      _values.emplace_back(internal::to_string(value));
     else
     {
       throw std::runtime_error("Type mismatch. "
@@ -207,7 +210,7 @@ public:
     if ((_nargs <= 1 && TypeName<T>::Get() == _type) ||
         (_nargs > 1 && TypeName<std::vector<T>>::Get() == _type))
     {
-      _values.emplace_back(::to_string(value));
+      _values.emplace_back(internal::to_string(value));
       default_value(values...);
     }
     else
@@ -384,7 +387,7 @@ template <typename T> T Arser::get_impl(const std::string &arg_name, T *)
                              "You must make sure that the argument is given before accessing it. "
                              "You can do it by calling arser[\"argument\"].");
 
-  return ::lexical_cast<T>(arg->second->_values[0]);
+  return internal::lexical_cast<T>(arg->second->_values[0]);
 }
 
 template <typename T> std::vector<T> Arser::get_impl(const std::string &arg_name, std::vector<T> *)
@@ -401,7 +404,7 @@ template <typename T> std::vector<T> Arser::get_impl(const std::string &arg_name
 
   std::vector<T> data;
   std::transform(arg->second->_values.begin(), arg->second->_values.end(), std::back_inserter(data),
-                 [](std::string str) -> T { return ::lexical_cast<T>(str); });
+                 [](std::string str) -> T { return internal::lexical_cast<T>(str); });
   return data;
 }
 
