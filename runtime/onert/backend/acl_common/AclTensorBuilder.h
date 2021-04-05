@@ -175,7 +175,7 @@ void AclTensorBuilder<T_ITensor, T_Tensor, T_SubTensor>::registerTensorInfo(
       offset = {offset[0], offset[3], offset[1], offset[2]};
     }
     else if (_operands.at(parent_index).shape().rank() >= 4 &&
-             frontend_layout == ir::Layout::NHWC && backend_layout == ir::Layout::NCHW)
+             frontend_layout == ir::Layout::NCHW && backend_layout == ir::Layout::NHWC)
     {
       // Permutation changing layout beyond 4-D is not supported yet
       const auto parent_rank = _operands.at(parent_index).shape().rank();
