@@ -20,6 +20,7 @@
 #include <luci/IR/Nodes/CircleOutput.h>
 #include <luci/Importer.h>
 #include <luci/Log.h>
+#include <luci_interpreter/Interpreter.h>
 
 #include <foder/FileLoader.h>
 #include <crew/PConfig.h>
@@ -75,6 +76,17 @@ void save_shape(const std::string &shape_filename, const luci::CircleOutput *out
   }
 }
 
+template <typename NodeT> size_t tensor_size(const NodeT *node)
+{
+  uint32_t tsize = loco::size(node->dtype());
+  for (uint32_t i = 0; i < node->rank(); ++i)
+  {
+    assert(node->dim(i).known());
+    tsize *= node->dim(i).value();
+  }
+  return tsize;
+}
+
 } // namespace
 
 namespace prunner
@@ -115,9 +127,100 @@ void PModelsRunner::load_inputs(const std::string &input_prefix, int32_t num_inp
   }
 }
 
+/**
+ * @brief return true if all inputs of the model is ready in _data_storage
+ */
+bool PModelsRunner::is_input_ready(const RunModel &model)
+{
+  for (auto &part : _pconfig.parts)
+  {
+    if (part.model_file != model)
+      continue;
+
+    for (auto &input : part.inputs)
+    {
+      auto it = _data_stage.find(input);
+      if (it == _data_stage.end())
+        return false;
+    }
+  }
+  return true;
+}
+
 bool PModelsRunner::run(void)
 {
-  // TODO add implementation
+  LOGGER(l);
+
+  // for each partitioned model, if the inputs of the model are ready, run the model
+  do
+  {
+    bool found_model = false;
+
+    for (auto it = _models_to_run.begin(); it != _models_to_run.end(); ++it)
+    {
+      auto model_fname = *it;
+
+      INFO(l) << "Check model input ready: " << model_fname << std::endl;
+      if (is_input_ready(model_fname))
+      {
+        found_model = true;
+
+        INFO(l) << "Run model: " << model_fname << std::endl;
+        auto module = import_circle(model_fname);
+
+        luci_interpreter::Interpreter interpreter(module.get());
+
+        // Set input
+        // TODO support multiple subgraphs
+        assert(module->size() == 1);
+        const auto input_nodes = loco::input_nodes(module->graph());
+        int32_t num_inputs = static_cast<int32_t>(input_nodes.size());
+        for (int32_t i = 0; i < num_inputs; i++)
+        {
+          const auto *input_node = loco::must_cast<const luci::CircleInput *>(input_nodes[i]);
+
+          auto input_name = input_node->name();
+          assert(_data_stage.find(input_name) != _data_stage.end());
+
+          auto input_data = _data_stage[input_name];
+
+          interpreter.writeInputTensor(input_node, input_data.data(), input_data.size());
+        }
+
+        // Run interpreter
+        interpreter.interpret();
+        INFO(l) << "Run model: " << model_fname << " done" << std::endl;
+
+        // Get output.
+        const auto output_nodes = loco::output_nodes(module->graph());
+        for (uint32_t i = 0; i < module->graph()->outputs()->size(); i++)
+        {
+          const auto *output_node = loco::must_cast<const luci::CircleOutput *>(output_nodes[i]);
+          auto output_name = output_node->name();
+
+          Buffer output_data(tensor_size(output_node));
+
+          interpreter.readOutputTensor(output_node, output_data.data(), output_data.size());
+
+          // There should not exist same output names
+          // TODO check with multiple virtual outputs
+          assert(_data_stage.find(output_name) == _data_stage.end());
+          _data_stage[output_name] = output_data;
+        }
+
+        // We've ran this model, remove from the model list
+        _models_to_run.erase(it);
+        break;
+      }
+    }
+
+    if (not found_model)
+    {
+      std::cerr << "ERROR: model partition or configuration has problems" << std::endl;
+      return false;
+    }
+  } while (not _models_to_run.empty());
+
   return true;
 }
 

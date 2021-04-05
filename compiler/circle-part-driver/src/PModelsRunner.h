@@ -50,6 +50,9 @@ public:
   void save_outputs(const std::string &output_file);
 
 private:
+  bool is_input_ready(const RunModel &model);
+
+private:
   crew::PConfig _pconfig;
   RunModels _models_to_run;
   Buffers _data_stage;
