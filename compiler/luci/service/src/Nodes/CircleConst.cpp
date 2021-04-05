@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+#include "luci/Service/CircleNodeClone.h"
+
 #include <luci/IR/Nodes/CircleConst.h>
 
 #include <loco.h>
@@ -42,15 +44,9 @@ luci::CircleConst *clone_circleconst(const luci::CircleConst *node, loco::Graph 
 {
   auto cloned = graph->nodes()->create<luci::CircleConst>();
 
-  // NOTE unique name should be assigned in export
-  cloned->name(node->name());
-
   // dtype/shape
   cloned->dtype(node->dtype());
   cloned->rank(node->rank());
-  for (uint32_t i = 0; i < node->rank(); i++)
-    cloned->dim(i).set(node->dim(i).value());
-  cloned->shape_status(luci::ShapeStatus::VALID);
 
   // values
   switch (node->dtype())
@@ -87,35 +83,6 @@ luci::CircleConst *clone_circleconst(const luci::CircleConst *node, loco::Graph 
       throw oops::UserExn("Unsupported tensor dtype");
   }
 
-  // quantparam
-  const auto *quantparam = node->quantparam();
-  if (quantparam != nullptr)
-  {
-    auto qparam = std::make_unique<luci::CircleQuantParam>();
-    qparam->scale = quantparam->scale;
-    qparam->zerop = quantparam->zerop;
-    qparam->min = quantparam->min;
-    qparam->max = quantparam->max;
-    qparam->quantized_dimension = quantparam->quantized_dimension;
-
-    cloned->quantparam(std::move(qparam));
-  }
-
-  // sparsity
-  const auto *sparsity = node->sparsityparam();
-  if (sparsity != nullptr)
-  {
-    auto sparam = std::make_unique<luci::SparsityParam>();
-    sparam->traversal_order = sparsity->traversal_order;
-    sparam->block_map = sparsity->block_map;
-    sparam->dim_metadata = sparsity->dim_metadata;
-
-    cloned->sparsityparam(std::move(sparam));
-  }
-
-  // op version
-  cloned->op_version(node->op_version());
-
   return cloned;
 }
 
@@ -126,8 +93,11 @@ namespace luci
 
 luci::CircleConst *clone(luci::CircleConst *node)
 {
-  // TODO use copy_common_attributes
-  return clone_circleconst(node, node->graph());
+  auto *cloned = clone_circleconst(node, node->graph());
+
+  copy_common_attributes(node, cloned);
+
+  return cloned;
 }
 
 } // namespace luci
