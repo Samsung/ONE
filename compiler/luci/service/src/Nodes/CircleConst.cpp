@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+#include "CircleCloneNode.h"
+
 #include "luci/Service/CircleNodeClone.h"
 
 #include <luci/IR/Nodes/CircleConst.h>
@@ -98,6 +100,16 @@ luci::CircleConst *clone(luci::CircleConst *node)
   copy_common_attributes(node, cloned);
 
   return cloned;
+}
+
+} // namespace luci
+
+namespace luci
+{
+
+luci::CircleNode *CloneNode::visit(const luci::CircleConst *node)
+{
+  return clone_circleconst(node, _graph);
 }
 
 } // namespace luci
