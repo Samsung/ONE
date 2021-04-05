@@ -18,14 +18,64 @@
 
 #include <luci/IR/Nodes/CircleInput.h>
 #include <luci/IR/Nodes/CircleOutput.h>
+#include <luci/Importer.h>
 #include <luci/Log.h>
 
 #include <foder/FileLoader.h>
 #include <crew/PConfig.h>
 
+#include <fstream>
 #include <iostream>
 #include <vector>
 #include <string>
+#include <stdexcept>
+
+namespace
+{
+
+void write_file(const std::string &filename, const char *data, size_t data_size)
+{
+  std::ofstream fs(filename, std::ofstream::binary);
+  if (fs.fail())
+    throw std::runtime_error("Cannot open file \"" + filename + "\".\n");
+  if (fs.write(data, data_size).fail())
+  {
+    throw std::runtime_error("Failed to write data to file \"" + filename + "\".\n");
+  }
+}
+
+std::unique_ptr<luci::Module> import_circle(const std::string &filename)
+{
+  std::ifstream fs(filename, std::ifstream::binary);
+  if (fs.fail())
+  {
+    throw std::runtime_error("Cannot open model file \"" + filename + "\".\n");
+  }
+  std::vector<char> model_data((std::istreambuf_iterator<char>(fs)),
+                               std::istreambuf_iterator<char>());
+
+  return luci::Importer().importModule(circle::GetModel(model_data.data()));
+}
+
+void save_shape(const std::string &shape_filename, const luci::CircleOutput *output_node)
+{
+  if (output_node->rank() == 0)
+  {
+    write_file(shape_filename, "1", 1);
+  }
+  else
+  {
+    auto shape_str = std::to_string(output_node->dim(0).value());
+    for (uint32_t j = 1; j < output_node->rank(); j++)
+    {
+      shape_str += ",";
+      shape_str += std::to_string(output_node->dim(j).value());
+    }
+    write_file(shape_filename, shape_str.c_str(), shape_str.size());
+  }
+}
+
+} // namespace
 
 namespace prunner
 {
@@ -73,8 +123,26 @@ bool PModelsRunner::run(void)
 
 void PModelsRunner::save_outputs(const std::string &output_file)
 {
-  // TODO add implementation
-  (void)output_file;
+  // load source model as we need to get both shape and node name
+  // TODO check for unknown shape
+  auto source_fname = _pconfig.source.model_file;
+
+  auto module = import_circle(source_fname);
+
+  const auto output_nodes = loco::output_nodes(module->graph());
+  for (uint32_t i = 0; i < module->graph()->outputs()->size(); i++)
+  {
+    const auto *output_node = loco::must_cast<const luci::CircleOutput *>(output_nodes[i]);
+
+    auto output_name = output_node->name();
+    assert(_data_stage.find(output_name) != _data_stage.end());
+
+    auto tensor_data = _data_stage[output_name];
+    auto output_filename = output_file + std::to_string(i);
+
+    write_file(output_filename, tensor_data.data(), tensor_data.size());
+    save_shape(output_filename + ".shape", output_node);
+  }
 }
 
 } // namespace prunner
