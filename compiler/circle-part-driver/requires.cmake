@@ -1,3 +1,5 @@
+require("foder")
+require("loco")
 require("luci")
 require("crew")
 require("safemain")
