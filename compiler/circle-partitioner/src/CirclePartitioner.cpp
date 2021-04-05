@@ -219,11 +219,13 @@ int entry(int argc, char **argv)
 
   // apply partition to module
   auto pms = luci::apply(module.get(), partition);
+
+  // validate partitioned modules
   for (auto &pmodule : pms.pmodules)
   {
-    for (size_t g = 0; g < module->size(); ++g)
+    for (size_t g = 0; g < pmodule.module->size(); ++g)
     {
-      auto graph = module->graph(g);
+      auto graph = pmodule.module->graph(g);
       if (graph == nullptr)
       {
         std::cerr << "ERROR: Failed to create partition model" << std::endl;
