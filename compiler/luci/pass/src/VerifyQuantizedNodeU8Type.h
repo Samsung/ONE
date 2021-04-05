@@ -174,6 +174,13 @@ private:
     return true;
   }
 
+  bool visit(const luci::CircleTanh *node)
+  {
+    RETURN_FALSE_UNLESS(has_type(node, Type::U8))
+    RETURN_FALSE_UNLESS(has_type(node->x(), Type::U8))
+    return true;
+  }
+
   // TODO: Implement more Ops
 
   bool visit(const luci::CircleNode *) { return true; }
