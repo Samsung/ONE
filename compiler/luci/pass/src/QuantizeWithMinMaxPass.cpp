@@ -937,6 +937,7 @@ void quantize_const_inputs(luci::CircleNode *node, loco::DataType output_type)
     case luci::CircleOpcode::MINIMUM:
     case luci::CircleOpcode::MUL:
     case luci::CircleOpcode::NOT_EQUAL:
+    case luci::CircleOpcode::SOFTMAX:
     case luci::CircleOpcode::SUB:
       // Quantize all const inputs using their values
       for (uint32_t i = 0; i < arity; i++)
