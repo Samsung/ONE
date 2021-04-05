@@ -21,6 +21,17 @@
 namespace luci
 {
 
+uint32_t CircleConst::size(void) const
+{
+  assert(_data.size() % loco::size(dtype()) == 0);
+  return _data.size() / loco::size(dtype());
+}
+
+void CircleConst::size(uint32_t size)
+{
+  _data.resize(size * loco::size(dtype()));
+}
+
 template <loco::DataType DT> uint32_t CircleConst::size(void) const
 {
   assert(dtype() == DT);
@@ -75,6 +86,10 @@ INSTANTIATE(loco::DataType::S32);
 INSTANTIATE(loco::DataType::S16);
 INSTANTIATE(loco::DataType::S8);
 INSTANTIATE(loco::DataType::FLOAT32);
+INSTANTIATE(loco::DataType::FLOAT64);
+INSTANTIATE(loco::DataType::U64);
+INSTANTIATE(loco::DataType::U32);
+INSTANTIATE(loco::DataType::U16);
 INSTANTIATE(loco::DataType::U8);
 INSTANTIATE(loco::DataType::BOOL);
 

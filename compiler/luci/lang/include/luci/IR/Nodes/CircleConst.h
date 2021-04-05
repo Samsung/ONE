@@ -37,6 +37,9 @@ public:
   CircleConst() = default;
 
 public:
+  uint32_t size(void) const;
+  void size(uint32_t size);
+
   template <loco::DataType DT> uint32_t size(void) const;
   template <loco::DataType DT> void size(uint32_t size);
   template <loco::DataType DT> const typename loco::DataTypeImpl<DT>::Type &at(uint32_t n) const;
