@@ -38,14 +38,9 @@ void copy_values(const luci::CircleConst *node, luci::CircleConst *cloned)
     cloned->at<T>(i) = node->at<T>(i);
 }
 
-} // namespace
-
-namespace luci
+luci::CircleConst *clone_circleconst(const luci::CircleConst *node, loco::Graph *graph)
 {
-
-luci::CircleConst *clone(luci::CircleConst *node)
-{
-  auto cloned = node->graph()->nodes()->create<luci::CircleConst>();
+  auto cloned = graph->nodes()->create<luci::CircleConst>();
 
   // NOTE unique name should be assigned in export
   cloned->name(node->name());
@@ -122,6 +117,17 @@ luci::CircleConst *clone(luci::CircleConst *node)
   cloned->op_version(node->op_version());
 
   return cloned;
+}
+
+} // namespace
+
+namespace luci
+{
+
+luci::CircleConst *clone(luci::CircleConst *node)
+{
+  // TODO use copy_common_attributes
+  return clone_circleconst(node, node->graph());
 }
 
 } // namespace luci
