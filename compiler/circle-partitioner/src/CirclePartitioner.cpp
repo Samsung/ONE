@@ -177,7 +177,7 @@ int entry(int argc, char **argv)
   {
     std::cerr << err.what() << std::endl;
     std::cerr << arser;
-    return 255;
+    return EXIT_FAILURE;
   }
 
   std::string partition_file = arser.get<std::string>(opt_part);
@@ -270,5 +270,5 @@ int entry(int argc, char **argv)
 
   INFO(l) << "--- Partition done-----------------------------" << std::endl << std::endl;
 
-  return 0;
+  return EXIT_SUCCESS;
 }
