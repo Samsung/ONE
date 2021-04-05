@@ -35,9 +35,11 @@
 namespace
 {
 
-const char *opt_prt = "--partition";
 const char *opt_bks = "--backends";
 const char *opt_def = "--default";
+const char *opt_part = "partition";
+const char *opt_input = "input";
+const char *opt_work = "work";
 
 void print_version(void)
 {
@@ -54,12 +56,6 @@ void build_arser(arser::Arser &arser)
     .help("Show version information and exit")
     .exit_with(print_version);
 
-  arser.add_argument(opt_prt)
-    .nargs(1)
-    .type(arser::DataType::STR)
-    .required(true)
-    .help("Partition information file which provides backend to assign");
-
   arser.add_argument(opt_bks)
     .nargs(1)
     .type(arser::DataType::STR)
@@ -72,14 +68,18 @@ void build_arser(arser::Arser &arser)
     .required(false)
     .help("Default backend to assign");
 
-  arser.add_argument("input")
+  arser.add_argument(opt_part)
     .nargs(1)
     .type(arser::DataType::STR)
-    .help("Input circle model file path");
-  arser.add_argument("output")
+    .help("Partition file which provides backend to assign");
+  arser.add_argument(opt_input)
     .nargs(1)
     .type(arser::DataType::STR)
-    .help("Output parition folder path");
+    .help("Input circle model filename");
+  arser.add_argument(opt_work)
+    .nargs(1)
+    .type(arser::DataType::STR)
+    .help("Work folder of partition, input files exist and output files are produced");
 }
 
 std::unique_ptr<luci::Module> load_model(const std::string &input_path)
@@ -179,9 +179,12 @@ int entry(int argc, char **argv)
     return 255;
   }
 
-  std::string partition_path = arser.get<std::string>(opt_prt);
-  std::string input_path = arser.get<std::string>("input");
-  std::string output_base = arser.get<std::string>("output");
+  std::string partition_file = arser.get<std::string>(opt_part);
+  std::string input_file = arser.get<std::string>(opt_input);
+  std::string work_folder = arser.get<std::string>(opt_work);
+
+  std::string partition_path = work_folder + "/" + partition_file;
+  std::string input_path = work_folder + "/" + input_file;
 
   auto module = load_model(input_path);
   if (module.get() == nullptr)
@@ -235,19 +238,13 @@ int entry(int argc, char **argv)
   }
 
   INFO(l) << "--- Partition Export---------------------------" << std::endl;
-  if (!partee::make_dir(output_base))
-  {
-    std::cerr << "ERROR: Failed to create folder '" << output_base << "'" << std::endl;
-    return EXIT_FAILURE;
-  }
-
   uint32_t idx = 1;
   for (auto &pmodule : pms.pmodules)
   {
     // Export to output circle file
     luci::CircleExporter exporter;
 
-    auto output_path = partee::make_path(output_base, input_path, idx, pmodule.group);
+    auto output_path = partee::make_path(work_folder, input_path, idx, pmodule.group);
     pmodule.name = partee::get_filename_ext(output_path);
     INFO(l) << "--- " << output_path << ": " << pmodule.name << std::endl;
 
