@@ -89,6 +89,26 @@ public:
   luci::CircleLogistic *_logistic = nullptr;
 };
 
+class SoftmaxTestGraph final : public luci::test::TestIOGraph
+{
+public:
+  void init(void)
+  {
+    TestIOGraph::init({32}, {32});
+    _softmax = g()->nodes()->create<luci::CircleSoftmax>();
+    {
+      _softmax->logits(input());
+      _softmax->beta(0.1);
+    }
+    output()->from(_softmax);
+
+    set_minmax_to_non_const(g(), -1, 1);
+  }
+
+public:
+  luci::CircleSoftmax *_softmax = nullptr;
+};
+
 template <Type indexT> class SliceTestGraph final : public luci::test::TestIOGraph
 {
 public:
@@ -197,6 +217,41 @@ TEST(QuantizedModelVerifierTest, Logistic_wrong_granularity_NEG)
     luci::QuantizedModelVerifier verifier(Type::U8, Granularity::LayerWise);
     EXPECT_ANY_THROW(verifier.verify(g.g()));
   }
+}
+
+TEST(QuantizedModelVerifierTest, Softmax)
+{
+  TEST_WITH_GRAPH(SoftmaxTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_GRAPH(SoftmaxTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_GRAPH(SoftmaxTestGraph, Type::S16, Granularity::ChannelWise);
+}
+
+TEST(QuantizedModelVerifierTest, Softmax_wrong_type_U8_LWQ_NEG)
+{
+  SoftmaxTestGraph g;
+  g.init();
+
+  luci::QuantizeWithMinMaxPass pass(Type::FLOAT32, Type::U8, Granularity::LayerWise);
+  pass.run(g.g());
+
+  g._softmax->dtype(Type::S16);
+
+  luci::QuantizedModelVerifier verifier(Type::U8, Granularity::LayerWise);
+  EXPECT_ANY_THROW(verifier.verify(g.g()));
+}
+
+TEST(QuantizedModelVerifierTest, Softmax_wrong_granularity_U8_LWQ_NEG)
+{
+  SoftmaxTestGraph g;
+  g.init();
+
+  luci::QuantizeWithMinMaxPass pass(Type::FLOAT32, Type::U8, Granularity::LayerWise);
+  pass.run(g.g());
+
+  insert_scale_zp(g._softmax, 1.0, 1);
+
+  luci::QuantizedModelVerifier verifier(Type::U8, Granularity::LayerWise);
+  EXPECT_ANY_THROW(verifier.verify(g.g()));
 }
 
 TEST(QuantizedModelVerifierTest, Slice)

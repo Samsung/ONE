@@ -195,6 +195,13 @@ private:
     return true;
   }
 
+  bool visit(const luci::CircleSoftmax *node)
+  {
+    RETURN_FALSE_UNLESS(is_lwq(node));
+    RETURN_FALSE_UNLESS(is_lwq(node->logits()));
+    return true;
+  }
+
   bool visit(const luci::CircleSlice *node)
   {
     RETURN_FALSE_UNLESS(is_lwq(node));
