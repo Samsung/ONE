@@ -383,26 +383,31 @@ TEST(QuantizedModelVerifierTest, ArgMax)
   TEST_WITH_GRAPH(ArgMaxTestGraph<Type::S64>, Type::S16, Granularity::ChannelWise);
 }
 
-TEST(QuantizedModelVerifierTest, ArgMax_wrong_type_NEG)
+TEST(QuantizedModelVerifierTest, ArgMax_wrong_dimension_type_NEG)
 {
-  TEST_WITH_WRONG_TYPE(ArgMaxTestGraph<Type::S32>, Type::U8, Granularity::LayerWise, Type::S16);
-  TEST_WITH_WRONG_TYPE(ArgMaxTestGraph<Type::S32>, Type::U8, Granularity::ChannelWise, Type::S16);
-  TEST_WITH_WRONG_TYPE(ArgMaxTestGraph<Type::S32>, Type::S16, Granularity::ChannelWise, Type::U8);
+  ArgMaxTestGraph<Type::S32> g;
+  g.init();
+  luci::QuantizeWithMinMaxPass pass(Type::FLOAT32, Type::U8, Granularity::LayerWise);
+  pass.run(g.g());
 
-  TEST_WITH_WRONG_TYPE(ArgMaxTestGraph<Type::S64>, Type::U8, Granularity::LayerWise, Type::S16);
-  TEST_WITH_WRONG_TYPE(ArgMaxTestGraph<Type::S64>, Type::U8, Granularity::ChannelWise, Type::S16);
-  TEST_WITH_WRONG_TYPE(ArgMaxTestGraph<Type::S64>, Type::S16, Granularity::ChannelWise, Type::U8);
+  g._dimension->dtype(Type::U8);
+
+  luci::QuantizedModelVerifier verifier(Type::U8, Granularity::LayerWise);
+  EXPECT_ANY_THROW(verifier.verify(g.g()));
 }
 
-TEST(QuantizedModelVerifierTest, ArgMax_wrong_granularity_NEG)
+TEST(QuantizedModelVerifierTest, ArgMax_wrong_input_granularity_NEG)
 {
-  TEST_WITH_WRONG_GRANULARITY(ArgMaxTestGraph<Type::S32>, Type::U8, Granularity::LayerWise);
-  TEST_WITH_WRONG_GRANULARITY(ArgMaxTestGraph<Type::S32>, Type::U8, Granularity::ChannelWise);
-  TEST_WITH_WRONG_GRANULARITY(ArgMaxTestGraph<Type::S32>, Type::S16, Granularity::ChannelWise);
+  ArgMaxTestGraph<Type::S32> g;
+  g.init();
 
-  TEST_WITH_WRONG_GRANULARITY(ArgMaxTestGraph<Type::S64>, Type::U8, Granularity::LayerWise);
-  TEST_WITH_WRONG_GRANULARITY(ArgMaxTestGraph<Type::S64>, Type::U8, Granularity::ChannelWise);
-  TEST_WITH_WRONG_GRANULARITY(ArgMaxTestGraph<Type::S64>, Type::S16, Granularity::ChannelWise);
+  luci::QuantizeWithMinMaxPass pass(Type::FLOAT32, Type::U8, Granularity::LayerWise);
+  pass.run(g.g());
+
+  insert_scale_zp(loco::must_cast<luci::CircleNode *>(g._argmax->input()), 1.0, 1);
+
+  luci::QuantizedModelVerifier verifier(Type::U8, Granularity::LayerWise);
+  EXPECT_ANY_THROW(verifier.verify(g.g()));
 }
 
 TEST(QuantizedModelVerifierTest, Reshape)
