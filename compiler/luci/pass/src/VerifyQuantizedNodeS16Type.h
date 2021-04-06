@@ -188,6 +188,14 @@ private:
     return true;
   }
 
+  bool visit(const luci::CircleTranspose *node)
+  {
+    RETURN_FALSE_UNLESS(has_type(node, Type::S16))
+    RETURN_FALSE_UNLESS(has_type(node->a(), Type::S16))
+    RETURN_FALSE_UNLESS(has_type(node->perm(), Type::S32))
+    return true;
+  }
+
   // TODO: Implement more Ops
 
   bool visit(const luci::CircleNode *) { return true; }
