@@ -228,7 +228,7 @@ foreach(RECIPE IN ITEMS ${RECIPES})
 
   add_custom_command(OUTPUT ${NNPKG_PATH}
     COMMAND ${MODEL2NNPKG} ${MODEL_PATH}
-    DEPENDS ${MODEL2NNPKG} ${MODEL_PATH}
+    DEPENDS ${MODEL2NNPKG}
     COMMENT "Generate ${RECIPE} nnpackage"
   )
   list(APPEND TEST_DEPS ${NNPKG_PATH})
@@ -255,20 +255,20 @@ foreach(RECIPE IN ITEMS ${RECIPES})
       COMMENT "Generate ${RECIPE} nnpackage test directory"
     )
 
-    # Move input hdf5 file to test directory
+    # Copy input hdf5 file to test directory
     set(INPUT_NNPKG_PATH "${TC_DIRECTORY}/input.h5")
     add_custom_command(OUTPUT ${INPUT_NNPKG_PATH}
-      COMMAND ${CMAKE_COMMAND} -E rename ${INPUT_BIN_PATH} ${INPUT_NNPKG_PATH}
-      DEPENDS ${INPUT_BIN_PATH} ${TC_DIRECTORY}
-      COMMENT "Move ${INPUT_HDF5_FILE} to nnpackage"
+      COMMAND ${CMAKE_COMMAND} -E copy ${INPUT_BIN_PATH} ${INPUT_NNPKG_PATH}
+      DEPENDS ${INPUT_BIN_PATH}
+      COMMENT "Copy ${INPUT_HDF5_FILE} to nnpackage"
     )
 
-    # Move expected hdf5 file to test directory
+    # Copy expected hdf5 file to test directory
     set(EXPECTED_NNPKG_PATH "${TC_DIRECTORY}/expected.h5")
     add_custom_command(OUTPUT ${EXPECTED_NNPKG_PATH}
-      COMMAND ${CMAKE_COMMAND} -E rename ${EXPECTED_BIN_PATH} ${EXPECTED_NNPKG_PATH}
-      DEPENDS ${EXPECTED_BIN_PATH} ${TC_DIRECTORY}
-      COMMENT "Move ${EXPECTED_HDF5_FILE} to nnpackage"
+      COMMAND ${CMAKE_COMMAND} -E copy ${EXPECTED_BIN_PATH} ${EXPECTED_NNPKG_PATH}
+      DEPENDS ${EXPECTED_BIN_PATH}
+      COMMENT "Copy ${EXPECTED_HDF5_FILE} to nnpackage"
     )
     list(APPEND TEST_DEPS ${TC_DIRECTORY} ${INPUT_BIN_PATH} ${EXPECTED_BIN_PATH}
                           ${INPUT_NNPKG_PATH} ${EXPECTED_NNPKG_PATH})
