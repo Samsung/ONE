@@ -188,6 +188,31 @@ public:
   luci::CircleConst *_dimension = nullptr;
 };
 
+class TransposeTestGraph final : public luci::test::TestIOGraph
+{
+public:
+  void init(void)
+  {
+    TestIOGraph::init({32}, {32});
+    _perm = g()->nodes()->create<luci::CircleConst>();
+    {
+      _perm->dtype(Type::S32);
+    }
+    _transpose = g()->nodes()->create<luci::CircleTranspose>();
+    {
+      _transpose->a(input());
+      _transpose->perm(_perm);
+    }
+    output()->from(_transpose);
+
+    set_minmax_to_non_const(g(), -1, 1);
+  }
+
+public:
+  luci::CircleTranspose *_transpose = nullptr;
+  luci::CircleConst *_perm = nullptr;
+};
+
 } // namespace
 
 // Quantize and verify with given configurations
@@ -389,6 +414,41 @@ TEST(QuantizedModelVerifierTest, Tanh_wrong_granularity_U8_LWQ_NEG)
   pass.run(g.g());
 
   insert_scale_zp(g._tanh, 1.0, 1);
+
+  luci::QuantizedModelVerifier verifier(Type::U8, Granularity::ChannelWise);
+  EXPECT_ANY_THROW(verifier.verify(g.g()));
+}
+
+TEST(QuantizedModelVerifierTest, Transpose)
+{
+  TEST_WITH_GRAPH(TransposeTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_GRAPH(TransposeTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_GRAPH(TransposeTestGraph, Type::S16, Granularity::ChannelWise);
+}
+
+TEST(QuantizedModelVerifierTest, Transpose_wrong_type_U8_CWQ_NEG)
+{
+  TransposeTestGraph g;
+  g.init();
+
+  luci::QuantizeWithMinMaxPass pass(Type::FLOAT32, Type::U8, Granularity::ChannelWise);
+  pass.run(g.g());
+
+  g._transpose->dtype(Type::S16);
+
+  luci::QuantizedModelVerifier verifier(Type::U8, Granularity::ChannelWise);
+  EXPECT_ANY_THROW(verifier.verify(g.g()));
+}
+
+TEST(QuantizedModelVerifierTest, Transpose_wrong_granularity_U8_CWQ_NEG)
+{
+  TransposeTestGraph g;
+  g.init();
+
+  luci::QuantizeWithMinMaxPass pass(Type::FLOAT32, Type::U8, Granularity::ChannelWise);
+  pass.run(g.g());
+
+  insert_scale_zp(g._transpose, 1.0, 1);
 
   luci::QuantizedModelVerifier verifier(Type::U8, Granularity::ChannelWise);
   EXPECT_ANY_THROW(verifier.verify(g.g()));
