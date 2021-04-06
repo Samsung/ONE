@@ -149,6 +149,16 @@ private:
     return true;
   }
 
+  bool visit(const luci::CircleReshape *node)
+  {
+    RETURN_FALSE_UNLESS(has_type(node, Type::S16))
+    RETURN_FALSE_UNLESS(has_type(node->tensor(), Type::S16))
+    luci::CircleConst *shape = dynamic_cast<luci::CircleConst *>(node->shape());
+    if (shape != nullptr)
+      RETURN_FALSE_UNLESS(has_type(node->shape(), Type::S32))
+    return true;
+  }
+
   bool visit(const luci::CircleLogistic *node)
   {
     RETURN_FALSE_UNLESS(has_type(node, Type::S16))
