@@ -12,5 +12,6 @@ target_link_libraries(circle_part_driver luci_log)
 target_link_libraries(circle_part_driver luci_interpreter)
 target_link_libraries(circle_part_driver crew)
 target_link_libraries(circle_part_driver safemain)
+target_link_libraries(circle_part_driver nncc_common)
 
 install(TARGETS circle_part_driver DESTINATION bin)
