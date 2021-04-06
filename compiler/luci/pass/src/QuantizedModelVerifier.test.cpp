@@ -306,34 +306,16 @@ TEST(QuantizedModelVerifierTest, Logistic)
 
 TEST(QuantizedModelVerifierTest, Logistic_wrong_type_NEG)
 {
-  {
-    LogisticTestGraph g;
-    g.init();
-
-    luci::QuantizeWithMinMaxPass pass(Type::FLOAT32, Type::U8, Granularity::LayerWise);
-    pass.run(g.g());
-
-    g._logistic->dtype(Type::S16);
-
-    luci::QuantizedModelVerifier verifier(Type::U8, Granularity::LayerWise);
-    EXPECT_ANY_THROW(verifier.verify(g.g()));
-  }
+  TEST_WITH_WRONG_TYPE(LogisticTestGraph, Type::U8, Granularity::LayerWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(LogisticTestGraph, Type::U8, Granularity::ChannelWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(LogisticTestGraph, Type::S16, Granularity::ChannelWise, Type::U8);
 }
 
 TEST(QuantizedModelVerifierTest, Logistic_wrong_granularity_NEG)
 {
-  {
-    LogisticTestGraph g;
-    g.init();
-
-    luci::QuantizeWithMinMaxPass pass(Type::FLOAT32, Type::U8, Granularity::LayerWise);
-    pass.run(g.g());
-
-    insert_scale_zp(g._logistic, 1.0, 1);
-
-    luci::QuantizedModelVerifier verifier(Type::U8, Granularity::LayerWise);
-    EXPECT_ANY_THROW(verifier.verify(g.g()));
-  }
+  TEST_WITH_WRONG_GRANULARITY(LogisticTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_WRONG_GRANULARITY(LogisticTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_WRONG_GRANULARITY(LogisticTestGraph, Type::S16, Granularity::ChannelWise);
 }
 
 TEST(QuantizedModelVerifierTest, Softmax)
@@ -343,32 +325,18 @@ TEST(QuantizedModelVerifierTest, Softmax)
   TEST_WITH_GRAPH(SoftmaxTestGraph, Type::S16, Granularity::ChannelWise);
 }
 
-TEST(QuantizedModelVerifierTest, Softmax_wrong_type_U8_LWQ_NEG)
+TEST(QuantizedModelVerifierTest, Softmax_wrong_type_NEG)
 {
-  SoftmaxTestGraph g;
-  g.init();
-
-  luci::QuantizeWithMinMaxPass pass(Type::FLOAT32, Type::U8, Granularity::LayerWise);
-  pass.run(g.g());
-
-  g._softmax->dtype(Type::S16);
-
-  luci::QuantizedModelVerifier verifier(Type::U8, Granularity::LayerWise);
-  EXPECT_ANY_THROW(verifier.verify(g.g()));
+  TEST_WITH_WRONG_TYPE(SoftmaxTestGraph, Type::U8, Granularity::LayerWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(SoftmaxTestGraph, Type::U8, Granularity::ChannelWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(SoftmaxTestGraph, Type::S16, Granularity::ChannelWise, Type::U8);
 }
 
-TEST(QuantizedModelVerifierTest, Softmax_wrong_granularity_U8_LWQ_NEG)
+TEST(QuantizedModelVerifierTest, Softmax_wrong_granularity_NEG)
 {
-  SoftmaxTestGraph g;
-  g.init();
-
-  luci::QuantizeWithMinMaxPass pass(Type::FLOAT32, Type::U8, Granularity::LayerWise);
-  pass.run(g.g());
-
-  insert_scale_zp(g._softmax, 1.0, 1);
-
-  luci::QuantizedModelVerifier verifier(Type::U8, Granularity::LayerWise);
-  EXPECT_ANY_THROW(verifier.verify(g.g()));
+  TEST_WITH_WRONG_GRANULARITY(SoftmaxTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_WRONG_GRANULARITY(SoftmaxTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_WRONG_GRANULARITY(SoftmaxTestGraph, Type::S16, Granularity::ChannelWise);
 }
 
 TEST(QuantizedModelVerifierTest, Slice)
@@ -384,34 +352,24 @@ TEST(QuantizedModelVerifierTest, Slice)
 
 TEST(QuantizedModelVerifierTest, Slice_wrong_type_NEG)
 {
-  {
-    SliceTestGraph<Type::S32> g;
-    g.init();
+  TEST_WITH_WRONG_TYPE(SliceTestGraph<Type::S32>, Type::U8, Granularity::LayerWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(SliceTestGraph<Type::S32>, Type::U8, Granularity::ChannelWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(SliceTestGraph<Type::S32>, Type::S16, Granularity::ChannelWise, Type::U8);
 
-    luci::QuantizeWithMinMaxPass pass(Type::FLOAT32, Type::U8, Granularity::LayerWise);
-    pass.run(g.g());
-
-    g._slice->dtype(Type::S16);
-
-    luci::QuantizedModelVerifier verifier(Type::U8, Granularity::LayerWise);
-    EXPECT_ANY_THROW(verifier.verify(g.g()));
-  }
+  TEST_WITH_WRONG_TYPE(SliceTestGraph<Type::S64>, Type::U8, Granularity::LayerWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(SliceTestGraph<Type::S64>, Type::U8, Granularity::ChannelWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(SliceTestGraph<Type::S64>, Type::S16, Granularity::ChannelWise, Type::U8);
 }
 
 TEST(QuantizedModelVerifierTest, Slice_wrong_granularity_NEG)
 {
-  {
-    SliceTestGraph<Type::S32> g;
-    g.init();
+  TEST_WITH_WRONG_GRANULARITY(SliceTestGraph<Type::S32>, Type::U8, Granularity::LayerWise);
+  TEST_WITH_WRONG_GRANULARITY(SliceTestGraph<Type::S32>, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_WRONG_GRANULARITY(SliceTestGraph<Type::S32>, Type::S16, Granularity::ChannelWise);
 
-    luci::QuantizeWithMinMaxPass pass(Type::FLOAT32, Type::U8, Granularity::LayerWise);
-    pass.run(g.g());
-
-    insert_scale_zp(g._slice, 1.0, 1);
-
-    luci::QuantizedModelVerifier verifier(Type::U8, Granularity::LayerWise);
-    EXPECT_ANY_THROW(verifier.verify(g.g()));
-  }
+  TEST_WITH_WRONG_GRANULARITY(SliceTestGraph<Type::S64>, Type::U8, Granularity::LayerWise);
+  TEST_WITH_WRONG_GRANULARITY(SliceTestGraph<Type::S64>, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_WRONG_GRANULARITY(SliceTestGraph<Type::S64>, Type::S16, Granularity::ChannelWise);
 }
 
 TEST(QuantizedModelVerifierTest, ArgMax)
@@ -427,34 +385,24 @@ TEST(QuantizedModelVerifierTest, ArgMax)
 
 TEST(QuantizedModelVerifierTest, ArgMax_wrong_type_NEG)
 {
-  {
-    ArgMaxTestGraph<Type::S32> g;
-    g.init();
+  TEST_WITH_WRONG_TYPE(ArgMaxTestGraph<Type::S32>, Type::U8, Granularity::LayerWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(ArgMaxTestGraph<Type::S32>, Type::U8, Granularity::ChannelWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(ArgMaxTestGraph<Type::S32>, Type::S16, Granularity::ChannelWise, Type::U8);
 
-    luci::QuantizeWithMinMaxPass pass(Type::FLOAT32, Type::U8, Granularity::LayerWise);
-    pass.run(g.g());
-
-    g._dimension->dtype(Type::U8);
-
-    luci::QuantizedModelVerifier verifier(Type::U8, Granularity::LayerWise);
-    EXPECT_ANY_THROW(verifier.verify(g.g()));
-  }
+  TEST_WITH_WRONG_TYPE(ArgMaxTestGraph<Type::S64>, Type::U8, Granularity::LayerWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(ArgMaxTestGraph<Type::S64>, Type::U8, Granularity::ChannelWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(ArgMaxTestGraph<Type::S64>, Type::S16, Granularity::ChannelWise, Type::U8);
 }
 
 TEST(QuantizedModelVerifierTest, ArgMax_wrong_granularity_NEG)
 {
-  {
-    ArgMaxTestGraph<Type::S32> g;
-    g.init();
+  TEST_WITH_WRONG_GRANULARITY(ArgMaxTestGraph<Type::S32>, Type::U8, Granularity::LayerWise);
+  TEST_WITH_WRONG_GRANULARITY(ArgMaxTestGraph<Type::S32>, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_WRONG_GRANULARITY(ArgMaxTestGraph<Type::S32>, Type::S16, Granularity::ChannelWise);
 
-    luci::QuantizeWithMinMaxPass pass(Type::FLOAT32, Type::U8, Granularity::LayerWise);
-    pass.run(g.g());
-
-    insert_scale_zp(loco::must_cast<luci::CircleNode *>(g._argmax->input()), 1.0, 1);
-
-    luci::QuantizedModelVerifier verifier(Type::U8, Granularity::LayerWise);
-    EXPECT_ANY_THROW(verifier.verify(g.g()));
-  }
+  TEST_WITH_WRONG_GRANULARITY(ArgMaxTestGraph<Type::S64>, Type::U8, Granularity::LayerWise);
+  TEST_WITH_WRONG_GRANULARITY(ArgMaxTestGraph<Type::S64>, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_WRONG_GRANULARITY(ArgMaxTestGraph<Type::S64>, Type::S16, Granularity::ChannelWise);
 }
 
 TEST(QuantizedModelVerifierTest, Reshape)
@@ -485,32 +433,18 @@ TEST(QuantizedModelVerifierTest, Tanh)
   TEST_WITH_GRAPH(TanhTestGraph, Type::S16, Granularity::ChannelWise);
 }
 
-TEST(QuantizedModelVerifierTest, Tanh_wrong_type_U8_CWQ_NEG)
+TEST(QuantizedModelVerifierTest, Tanh_wrong_type_NEG)
 {
-  TanhTestGraph g;
-  g.init();
-
-  luci::QuantizeWithMinMaxPass pass(Type::FLOAT32, Type::U8, Granularity::ChannelWise);
-  pass.run(g.g());
-
-  g._tanh->dtype(Type::S16);
-
-  luci::QuantizedModelVerifier verifier(Type::U8, Granularity::ChannelWise);
-  EXPECT_ANY_THROW(verifier.verify(g.g()));
+  TEST_WITH_WRONG_TYPE(TanhTestGraph, Type::U8, Granularity::LayerWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(TanhTestGraph, Type::U8, Granularity::ChannelWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(TanhTestGraph, Type::S16, Granularity::ChannelWise, Type::U8);
 }
 
-TEST(QuantizedModelVerifierTest, Tanh_wrong_granularity_U8_LWQ_NEG)
+TEST(QuantizedModelVerifierTest, Tanh_wrong_granularity_NEG)
 {
-  TanhTestGraph g;
-  g.init();
-
-  luci::QuantizeWithMinMaxPass pass(Type::FLOAT32, Type::U8, Granularity::ChannelWise);
-  pass.run(g.g());
-
-  insert_scale_zp(g._tanh, 1.0, 1);
-
-  luci::QuantizedModelVerifier verifier(Type::U8, Granularity::ChannelWise);
-  EXPECT_ANY_THROW(verifier.verify(g.g()));
+  TEST_WITH_WRONG_GRANULARITY(TanhTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_WRONG_GRANULARITY(TanhTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_WRONG_GRANULARITY(TanhTestGraph, Type::S16, Granularity::ChannelWise);
 }
 
 TEST(QuantizedModelVerifierTest, Transpose)
@@ -520,32 +454,18 @@ TEST(QuantizedModelVerifierTest, Transpose)
   TEST_WITH_GRAPH(TransposeTestGraph, Type::S16, Granularity::ChannelWise);
 }
 
-TEST(QuantizedModelVerifierTest, Transpose_wrong_type_U8_CWQ_NEG)
+TEST(QuantizedModelVerifierTest, Transpose_wrong_type_NEG)
 {
-  TransposeTestGraph g;
-  g.init();
-
-  luci::QuantizeWithMinMaxPass pass(Type::FLOAT32, Type::U8, Granularity::ChannelWise);
-  pass.run(g.g());
-
-  g._transpose->dtype(Type::S16);
-
-  luci::QuantizedModelVerifier verifier(Type::U8, Granularity::ChannelWise);
-  EXPECT_ANY_THROW(verifier.verify(g.g()));
+  TEST_WITH_WRONG_TYPE(TransposeTestGraph, Type::U8, Granularity::LayerWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(TransposeTestGraph, Type::U8, Granularity::ChannelWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(TransposeTestGraph, Type::S16, Granularity::ChannelWise, Type::U8);
 }
 
-TEST(QuantizedModelVerifierTest, Transpose_wrong_granularity_U8_CWQ_NEG)
+TEST(QuantizedModelVerifierTest, Transpose_wrong_granularity_NEG)
 {
-  TransposeTestGraph g;
-  g.init();
-
-  luci::QuantizeWithMinMaxPass pass(Type::FLOAT32, Type::U8, Granularity::ChannelWise);
-  pass.run(g.g());
-
-  insert_scale_zp(g._transpose, 1.0, 1);
-
-  luci::QuantizedModelVerifier verifier(Type::U8, Granularity::ChannelWise);
-  EXPECT_ANY_THROW(verifier.verify(g.g()));
+  TEST_WITH_WRONG_GRANULARITY(TransposeTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_WRONG_GRANULARITY(TransposeTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_WRONG_GRANULARITY(TransposeTestGraph, Type::S16, Granularity::ChannelWise);
 }
 
 #undef TEST_WITH_GRAPH
