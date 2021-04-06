@@ -13,7 +13,7 @@ BUILD_ITEMS="angkor cwrap pepper-str pepper-strcast pp \
 oops pepper-assert \
 hermes hermes-std \
 loco locop locomotiv logo-core logo \
-foder souschef arser vconone \
+foder souschef arser vconone crew \
 safemain mio-circle mio-tflite \
 tflite2circle \
 luci \
