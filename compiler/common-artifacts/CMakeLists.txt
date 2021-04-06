@@ -171,9 +171,9 @@ foreach(RECIPE IN ITEMS ${RECIPES})
   if(DEFINED RULE_SOURCE_PATH)
     # Copy .rule
     add_custom_command(OUTPUT ${RULE_BINARY_PATH}
-    COMMAND ${CMAKE_COMMAND} -E copy "${RULE_SOURCE_PATH}" "${RULE_BINARY_PATH}"
-    DEPENDS ${RULE_SOURCE_PATH}
-    COMMENT "Generate ${RULE_FILE}"
+      COMMAND ${CMAKE_COMMAND} -E copy "${RULE_SOURCE_PATH}" "${RULE_BINARY_PATH}"
+      DEPENDS ${RULE_SOURCE_PATH}
+      COMMENT "Generate ${RULE_FILE}"
     )
     list(APPEND TEST_DEPS ${RULE_BINARY_PATH})
   endif()
@@ -188,21 +188,21 @@ foreach(RECIPE IN ITEMS ${RECIPES})
     list(APPEND TEST_DEPS ${TFLITE_OUTPUT_PATH})
 
     if(NOT DEFINED NO_CIRCLIZE_${RECIPE})
-    # Generate .circle
-    add_custom_command(OUTPUT ${CIRCLE_OUTPUT_PATH}
-      COMMAND $<TARGET_FILE:tflite2circle> ${TFLITE_OUTPUT_PATH} ${CIRCLE_OUTPUT_PATH}
-      DEPENDS $<TARGET_FILE:tflite2circle> ${TFLITE_OUTPUT_PATH}
-      COMMENT "Generate ${CIRCLE_FILE}"
-    )
-    set(MODEL_FORMAT "circle")
-    list(APPEND TEST_DEPS ${CIRCLE_OUTPUT_PATH})
+      # Generate .circle
+      add_custom_command(OUTPUT ${CIRCLE_OUTPUT_PATH}
+        COMMAND $<TARGET_FILE:tflite2circle> ${TFLITE_OUTPUT_PATH} ${CIRCLE_OUTPUT_PATH}
+        DEPENDS $<TARGET_FILE:tflite2circle> ${TFLITE_OUTPUT_PATH}
+        COMMENT "Generate ${CIRCLE_FILE}"
+      )
+      set(MODEL_FORMAT "circle")
+      list(APPEND TEST_DEPS ${CIRCLE_OUTPUT_PATH})
     endif()
   else()
     # Generate .circle
     add_custom_command(OUTPUT ${CIRCLE_OUTPUT_PATH}
-    COMMAND $<TARGET_FILE:circlechef-file> ${RECIPE_BINARY_PATH} ${CIRCLE_OUTPUT_PATH}
-    DEPENDS $<TARGET_FILE:circlechef-file> ${RECIPE_BINARY_PATH}
-    COMMENT "Generate ${CIRCLE_FILE}"
+      COMMAND $<TARGET_FILE:circlechef-file> ${RECIPE_BINARY_PATH} ${CIRCLE_OUTPUT_PATH}
+      DEPENDS $<TARGET_FILE:circlechef-file> ${RECIPE_BINARY_PATH}
+      COMMENT "Generate ${CIRCLE_FILE}"
     )
     list(APPEND TEST_DEPS ${CIRCLE_OUTPUT_PATH})
   endif()
