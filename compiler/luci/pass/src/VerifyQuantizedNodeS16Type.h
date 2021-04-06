@@ -155,7 +155,7 @@ private:
     RETURN_FALSE_UNLESS(has_type(node->tensor(), Type::S16))
     luci::CircleConst *shape = dynamic_cast<luci::CircleConst *>(node->shape());
     if (shape != nullptr)
-      RETURN_FALSE_UNLESS(has_type(node->shape(), Type::S32))
+      RETURN_FALSE_UNLESS(has_type(shape, Type::S32))
     return true;
   }
 
