@@ -188,6 +188,13 @@ private:
     return true;
   }
 
+  bool visit(const luci::CircleReshape *node)
+  {
+    RETURN_FALSE_UNLESS(is_lwq(node))
+    RETURN_FALSE_UNLESS(is_lwq(node->tensor()));
+    return true;
+  }
+
   bool visit(const luci::CircleLogistic *node)
   {
     RETURN_FALSE_UNLESS(is_lwq(node));

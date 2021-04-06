@@ -45,6 +45,36 @@ void quantize_and_verify(loco::Graph *g, Type quantized_dtype, Granularity granu
   verifier.verify(g);
 }
 
+// Helper function to reduce duplicate test codes
+// Assumption: g->output()->from() is the target node
+void quantize_and_verify_with_wrong_type(luci::test::TestIOGraph *g, Type quantized_dtype,
+                                         Granularity granularity, Type wrong_dtype)
+{
+  luci::QuantizeWithMinMaxPass pass(Type::FLOAT32, quantized_dtype, granularity);
+  pass.run(g->g());
+
+  auto node = loco::must_cast<luci::CircleNode *>(g->output()->from());
+  node->dtype(wrong_dtype);
+
+  luci::QuantizedModelVerifier verifier(quantized_dtype, granularity);
+  verifier.verify(g->g());
+}
+
+// Helper function to reduce duplicate test codes
+// Assumption: g->output()->from() is the target node
+void quantize_and_verify_with_wrong_granularity(luci::test::TestIOGraph *g, Type quantized_dtype,
+                                                Granularity granularity)
+{
+  luci::QuantizeWithMinMaxPass pass(Type::FLOAT32, quantized_dtype, granularity);
+  pass.run(g->g());
+
+  auto node = loco::must_cast<luci::CircleNode *>(g->output()->from());
+  insert_scale_zp(node, 1.0, 1);
+
+  luci::QuantizedModelVerifier verifier(quantized_dtype, granularity);
+  verifier.verify(g->g());
+}
+
 // Set min/max for all non-const nodes in the graph
 void set_minmax_to_non_const(loco::Graph *g, float min, float max)
 {
@@ -140,6 +170,31 @@ public:
   luci::CircleConst *_size = nullptr;
 };
 
+class ReshapeTestGraph final : public luci::test::TestIOGraph
+{
+public:
+  void init(void)
+  {
+    TestIOGraph::init({32}, {32});
+    _shape = g()->nodes()->create<luci::CircleConst>();
+    {
+      _shape->dtype(Type::S32);
+    }
+    _reshape = g()->nodes()->create<luci::CircleReshape>();
+    {
+      _reshape->tensor(input());
+      _reshape->shape(_shape);
+    }
+    output()->from(_reshape);
+
+    set_minmax_to_non_const(g(), -1, 1);
+  }
+
+public:
+  luci::CircleReshape *_reshape = nullptr;
+  luci::CircleConst *_shape = nullptr;
+};
+
 class TanhTestGraph final : public luci::test::TestIOGraph
 {
 public:
@@ -222,6 +277,24 @@ public:
     graph g;                                                        \
     g.init();                                                       \
     EXPECT_NO_THROW(quantize_and_verify(g.g(), type, granularity)); \
+  } while (0)
+
+// Quantize and verify with wrong type
+#define TEST_WITH_WRONG_TYPE(graph, type, granularity, wrong_dtype)                            \
+  do                                                                                           \
+  {                                                                                            \
+    graph g;                                                                                   \
+    g.init();                                                                                  \
+    EXPECT_ANY_THROW(quantize_and_verify_with_wrong_type(&g, type, granularity, wrong_dtype)); \
+  } while (0)
+
+// Quantize and verify with wrong granularity
+#define TEST_WITH_WRONG_GRANULARITY(graph, type, granularity)                            \
+  do                                                                                     \
+  {                                                                                      \
+    graph g;                                                                             \
+    g.init();                                                                            \
+    EXPECT_ANY_THROW(quantize_and_verify_with_wrong_granularity(&g, type, granularity)); \
   } while (0)
 
 TEST(QuantizedModelVerifierTest, Logistic)
@@ -384,6 +457,27 @@ TEST(QuantizedModelVerifierTest, ArgMax_wrong_granularity_NEG)
   }
 }
 
+TEST(QuantizedModelVerifierTest, Reshape)
+{
+  TEST_WITH_GRAPH(ReshapeTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_GRAPH(ReshapeTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_GRAPH(ReshapeTestGraph, Type::S16, Granularity::ChannelWise);
+}
+
+TEST(QuantizedModelVerifierTest, Reshape_wrong_type_NEG)
+{
+  TEST_WITH_WRONG_TYPE(ReshapeTestGraph, Type::U8, Granularity::LayerWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(ReshapeTestGraph, Type::U8, Granularity::ChannelWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(ReshapeTestGraph, Type::S16, Granularity::ChannelWise, Type::U8);
+}
+
+TEST(QuantizedModelVerifierTest, Reshape_wrong_granularity_NEG)
+{
+  TEST_WITH_WRONG_GRANULARITY(ReshapeTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_WRONG_GRANULARITY(ReshapeTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_WRONG_GRANULARITY(ReshapeTestGraph, Type::S16, Granularity::ChannelWise);
+}
+
 TEST(QuantizedModelVerifierTest, Tanh)
 {
   TEST_WITH_GRAPH(TanhTestGraph, Type::U8, Granularity::LayerWise);
@@ -455,3 +549,5 @@ TEST(QuantizedModelVerifierTest, Transpose_wrong_granularity_U8_CWQ_NEG)
 }
 
 #undef TEST_WITH_GRAPH
+#undef TEST_WITH_WRONG_TYPE
+#undef TEST_WITH_WRONG_GRANULARITY
