@@ -1,0 +1,20 @@
+# Add recipe names from /res/TensorFlowLiteRecipes to test.
+# Only add items exist in common-artifacts test: tflite/circle files are copied as source.
+#
+# add(RECIPE_NAME PARTITION_NAME)
+
+add(Part_Add_Sub_000 Part_Add_Sub_000)
+add(Part_Sqrt_Rsqrt_000 Part_Sqrt_Rsqrt_000)
+add(Part_Sqrt_Rsqrt_001 Part_Sqrt_Rsqrt_001)
+add(Part_Sqrt_Rsqrt_002 Part_Sqrt_Rsqrt_002)
+add(Part_Sqrt_Rsqrt_003 Part_Sqrt_Rsqrt_003)
+add(Part_Sqrt_Rsqrt_Add_000 Part_Sqrt_Rsqrt_Add_000)
+add(Part_Sqrt_Rsqrt_Add_001 Part_Sqrt_Rsqrt_Add_001)
+add(Part_Sqrt_Rsqrt_Add_002 Part_Sqrt_Rsqrt_Add_002)
+add(Part_Sqrt_Rsqrt_Add_003 Part_Sqrt_Rsqrt_Add_003)
+add(Part_Sqrt_Rsqrt_Add_004 Part_Sqrt_Rsqrt_Add_004)
+add(Part_Add_Sqrt_000 Part_Add_Sqrt_000)
+add(Part_Add_Sqrt_Rsqrt_000 Part_Add_Sqrt_Rsqrt_000)
+add(Net_InstanceNorm_003 Net_InstanceNorm_003)
+add(Net_InstanceNorm_003 Net_InstanceNorm_003.001)
+add(Net_InstanceNorm_003 Net_InstanceNorm_003.002)
