@@ -62,7 +62,7 @@ pushd $ROOT_PATH > /dev/null
 REQUIRED_UNITS=()
 # Common Libraries
 REQUIRED_UNITS+=("angkor" "cwrap" "pepper-str" "pepper-strcast" "pp")
-REQUIRED_UNITS+=("oops" "safemain" "foder" "arser" "vconone")
+REQUIRED_UNITS+=("oops" "safemain" "foder" "crew" "arser" "vconone")
 # Hermes Logging Framework
 REQUIRED_UNITS+=("hermes" "hermes-std")
 # loco IR and related utilities
