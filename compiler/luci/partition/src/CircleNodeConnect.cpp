@@ -14,45 +14,14 @@
  * limitations under the License.
  */
 
-#include "CircleNodeConnect.h"
+#include "ConnectNode.h"
 
 #include <luci/IR/CircleNodeVisitor.h>
 
 #include <oops/UserExn.h>
 
-namespace
+namespace luci
 {
-
-class ConnectNode final : public luci::CircleNodeVisitor<void>
-{
-public:
-  ConnectNode(luci::CloneContext &clonecontext) : _clonecontext(clonecontext){};
-
-public:
-  void visit(const luci::CircleAdd *) final;
-  void visit(const luci::CircleConst *) final;
-  void visit(const luci::CircleDiv *) final;
-  void visit(const luci::CircleMean *) final;
-  void visit(const luci::CircleMul *) final;
-  void visit(const luci::CirclePow *) final;
-  void visit(const luci::CircleRsqrt *) final;
-  void visit(const luci::CircleSqrt *) final;
-  void visit(const luci::CircleSquaredDifference *) final;
-  void visit(const luci::CircleSub *) final;
-  // TODO add all nodes
-
-protected:
-  luci::CircleNode *find_clone(const luci::CircleNode *node)
-  {
-    auto it = _clonecontext.find(node);
-    if (it == _clonecontext.end())
-      throw oops::UserExn("Invalid node in ConnectNode");
-    return it->second;
-  }
-
-protected:
-  luci::CloneContext &_clonecontext;
-};
 
 void ConnectNode::visit(const luci::CircleAdd *node)
 {
@@ -136,7 +105,7 @@ void ConnectNode::visit(const luci::CircleSub *node)
   cloned->y(find_clone(in_y));
 }
 
-} // namespace
+} // namespace luci
 
 namespace luci
 {
