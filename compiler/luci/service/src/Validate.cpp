@@ -22,6 +22,7 @@
 #include <loco/IR/NodeShape.h>
 
 #include <cassert>
+#include <unordered_map>
 #include <vector>
 
 namespace
@@ -158,6 +159,34 @@ bool validate(loco::Graph *g)
     return false;
 
   // TODO add more validation
+
+  return true;
+}
+
+bool validate_unique_name(luci::Module *m)
+{
+  std::unordered_map<std::string, bool> names_col;
+
+  for (size_t g = 0; g < m->size(); ++g)
+  {
+    auto graph = m->graph(g);
+    auto nodes = graph->nodes();
+    for (uint32_t n = 0; n < nodes->size(); ++n)
+    {
+      auto node = loco::must_cast<luci::CircleNode *>(nodes->at(n));
+      // skip CircleOutput as it may have same name with from() node
+      auto output = dynamic_cast<luci::CircleOutput *>(node);
+      if (output != nullptr)
+        continue;
+
+      auto name = node->name();
+      auto it = names_col.find(name);
+      if (it != names_col.end())
+        return false;
+
+      names_col[name] = true;
+    }
+  }
 
   return true;
 }

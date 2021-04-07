@@ -17,12 +17,20 @@
 #ifndef __LUCI_SERVICE_VALIDATE_H__
 #define __LUCI_SERVICE_VALIDATE_H__
 
+#include <luci/IR/Module.h>
+
 #include <loco.h>
 
 namespace luci
 {
 
 bool validate(loco::Graph *);
+
+/**
+ * @brief Return true if all names in the Module are unique
+ * @note  CircleOutput may have duplicate name
+ */
+bool validate_unique_name(luci::Module *);
 
 } // namespace luci
 
