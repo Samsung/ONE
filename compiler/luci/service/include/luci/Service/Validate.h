@@ -27,6 +27,11 @@ namespace luci
 bool validate(loco::Graph *);
 
 /**
+ * @brief Return true if all nodes in graph have non empty name
+ */
+bool validate_name(loco::Graph *);
+
+/**
  * @brief Return true if all names in the Module are unique
  * @note  CircleOutput may have duplicate name
  */

@@ -163,6 +163,20 @@ bool validate(loco::Graph *g)
   return true;
 }
 
+bool validate_name(loco::Graph *g)
+{
+  auto nodes = g->nodes();
+  for (uint32_t n = 0; n < nodes->size(); ++n)
+  {
+    auto node = loco::must_cast<luci::CircleNode *>(nodes->at(n));
+    auto name = node->name();
+    if (name.empty())
+      return false;
+  }
+
+  return true;
+}
+
 bool validate_unique_name(luci::Module *m)
 {
   std::unordered_map<std::string, bool> names_col;
