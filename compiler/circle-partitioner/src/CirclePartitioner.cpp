@@ -119,6 +119,11 @@ bool validate_module(luci::Module *module)
       std::cerr << "ERROR: Invalid circle model" << std::endl;
       return false;
     }
+    if (!luci::validate_name(graph))
+    {
+      std::cerr << "ERROR: circle model has empty name" << std::endl;
+      return false;
+    }
   }
 
   if (!luci::validate_unique_name(module))
