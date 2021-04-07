@@ -109,6 +109,27 @@ std::unique_ptr<luci::Module> load_model(const std::string &input_path)
   return importer.importModule(circle_model);
 }
 
+bool validate_module(luci::Module *module)
+{
+  for (size_t g = 0; g < module->size(); ++g)
+  {
+    auto graph = module->graph(g);
+    if (!luci::validate(graph))
+    {
+      std::cerr << "ERROR: Invalid circle model" << std::endl;
+      return false;
+    }
+  }
+
+  if (!luci::validate_unique_name(module))
+  {
+    std::cerr << "ERROR: circle model has duplicate names" << std::endl;
+    return false;
+  }
+
+  return true;
+}
+
 bool validate_partition(luci::PartitionTable &partition)
 {
   if (partition.groups.size() == 0)
@@ -189,6 +210,10 @@ int entry(int argc, char **argv)
 
   auto module = load_model(input_path);
   if (module.get() == nullptr)
+  {
+    return EXIT_FAILURE;
+  }
+  if (!validate_module(module.get()))
   {
     return EXIT_FAILURE;
   }
