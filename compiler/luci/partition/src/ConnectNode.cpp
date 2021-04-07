@@ -14,25 +14,19 @@
  * limitations under the License.
  */
 
-// TODO consider relocate this file
-
-#ifndef __LUCI_CIRCLE_NODE_CONNECT__
-#define __LUCI_CIRCLE_NODE_CONNECT__
-
 #include "ConnectNode.h"
 
-#include <luci/IR/CircleNodes.h>
-
-#include <loco/IR/Graph.h>
+#include <oops/UserExn.h>
 
 namespace luci
 {
 
-/**
- * @brief Connect cloned node from input node
- */
-void clone_connect(const CircleNode *node, CloneContext &clonecontext);
+luci::CircleNode *ConnectNode::find_clone(const luci::CircleNode *node)
+{
+  auto it = _clonecontext.find(node);
+  if (it == _clonecontext.end())
+    throw oops::UserExn("Invalid node in ConnectNode");
+  return it->second;
+}
 
 } // namespace luci
-
-#endif // __LUCI_CIRCLE_NODE_CONNECT__
