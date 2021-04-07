@@ -12,5 +12,6 @@ target_link_libraries(circle_partitioner luci_export)
 target_link_libraries(circle_partitioner luci_partition)
 target_link_libraries(circle_partitioner arser)
 target_link_libraries(circle_partitioner vconone)
+target_link_libraries(circle_partitioner nncc_common)
 
 install(TARGETS circle_partitioner DESTINATION bin)
