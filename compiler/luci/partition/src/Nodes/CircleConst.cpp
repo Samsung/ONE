@@ -19,10 +19,9 @@
 namespace luci
 {
 
-void clone_connect(const CircleNode *node, CloneContext &clonecontext)
+void ConnectNode::visit(const luci::CircleConst *)
 {
-  ConnectNode cn(clonecontext);
-  node->accept(&cn);
+  // Nothing to do
 }
 
 } // namespace luci
