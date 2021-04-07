@@ -19,10 +19,13 @@
 namespace luci
 {
 
-void clone_connect(const CircleNode *node, CloneContext &clonecontext)
+void ConnectNode::visit(const luci::CircleMean *node)
 {
-  ConnectNode cn(clonecontext);
-  node->accept(&cn);
+  auto *cloned = loco::must_cast<luci::CircleMean *>(find_clone(node));
+  luci::CircleNode *in_i = loco::must_cast<luci::CircleNode *>(node->input());
+  luci::CircleNode *in_r = loco::must_cast<luci::CircleNode *>(node->reduction_indices());
+  cloned->input(find_clone(in_i));
+  cloned->reduction_indices(find_clone(in_r));
 }
 
 } // namespace luci
