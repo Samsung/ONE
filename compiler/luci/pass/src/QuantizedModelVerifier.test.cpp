@@ -214,6 +214,25 @@ public:
   luci::CircleTanh *_tanh = nullptr;
 };
 
+class FloorTestGraph final : public luci::test::TestIOGraph
+{
+public:
+  void init(void)
+  {
+    TestIOGraph::init({32}, {32});
+    _floor = g()->nodes()->create<luci::CircleFloor>();
+    {
+      _floor->x(input());
+    }
+    output()->from(_floor);
+
+    set_minmax_to_non_const(g(), -1, 1);
+  }
+
+public:
+  luci::CircleFloor *_floor = nullptr;
+};
+
 template <Type indexT> class ArgMaxTestGraph final : public luci::test::TestIOGraph
 {
 public:
@@ -471,6 +490,27 @@ TEST(QuantizedModelVerifierTest, Transpose_wrong_granularity_NEG)
   TEST_WITH_WRONG_GRANULARITY(TransposeTestGraph, Type::U8, Granularity::LayerWise);
   TEST_WITH_WRONG_GRANULARITY(TransposeTestGraph, Type::U8, Granularity::ChannelWise);
   TEST_WITH_WRONG_GRANULARITY(TransposeTestGraph, Type::S16, Granularity::ChannelWise);
+}
+
+TEST(QuantizedModelVerifierTest, Floor)
+{
+  TEST_WITH_GRAPH(FloorTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_GRAPH(FloorTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_GRAPH(FloorTestGraph, Type::S16, Granularity::ChannelWise);
+}
+
+TEST(QuantizedModelVerifierTest, Floor_wrong_type_NEG)
+{
+  TEST_WITH_WRONG_TYPE(FloorTestGraph, Type::U8, Granularity::LayerWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(FloorTestGraph, Type::U8, Granularity::ChannelWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(FloorTestGraph, Type::S16, Granularity::ChannelWise, Type::U8);
+}
+
+TEST(QuantizedModelVerifierTest, Floor_wrong_granularity_NEG)
+{
+  TEST_WITH_WRONG_GRANULARITY(FloorTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_WRONG_GRANULARITY(FloorTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_WRONG_GRANULARITY(FloorTestGraph, Type::S16, Granularity::ChannelWise);
 }
 
 #undef TEST_WITH_GRAPH
