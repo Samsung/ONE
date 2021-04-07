@@ -42,15 +42,20 @@ public:
   // NOTE only builtin operators should be called (NOT virtual nodes)
 };
 
-using PCSTR = const char *;
-
-class QueryCircleName final : public luci::CircleNodeVisitor<PCSTR>
+class QueryCircleName final : public luci::CircleNodeVisitor<const char *>
 {
 public:
-  PCSTR visit(const luci::CircleConst *) final { return "CIRCLE_CONST"; }
+// NOTE provide names for circle virtual nodes
+#define CIRCLE_NODE(OPCODE, CIRCLE_CLASS)
+#define CIRCLE_VNODE(OPCODE, CIRCLE_CLASS) \
+  const char *visit(const CIRCLE_CLASS *) final { return #OPCODE; }
+
+#include "luci/IR/CircleNodes.lst"
+#undef CIRCLE_VNODE
+#undef CIRCLE_NODE
 
   // default is null
-  PCSTR visit(const luci::CircleNode *) final { return nullptr; }
+  const char *visit(const luci::CircleNode *) final { return nullptr; }
 };
 
 } // namespace
