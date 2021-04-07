@@ -108,6 +108,14 @@ public:
 
 } // namespace
 
+TEST(ValidateTest, non_empty_name)
+{
+  SqrtGraph g;
+  g.init({3, 3});
+
+  ASSERT_TRUE(luci::validate_name(g.g()));
+}
+
 TEST(ValidateTest, unique_name)
 {
   luci::Module module;
