@@ -26,7 +26,7 @@ TEST(CircleBatchMatMulTest, constructor)
   luci::CircleBatchMatMul batchmatmul_node;
 
   ASSERT_EQ(luci::CircleDialect::get(), batchmatmul_node.dialect());
-  ASSERT_EQ(luci::CircleOpcode::BATCHMATMUL, batchmatmul_node.opcode());
+  ASSERT_EQ(luci::CircleOpcode::BATCH_MATMUL, batchmatmul_node.opcode());
 
   ASSERT_EQ(nullptr, batchmatmul_node.x());
   ASSERT_EQ(nullptr, batchmatmul_node.y());

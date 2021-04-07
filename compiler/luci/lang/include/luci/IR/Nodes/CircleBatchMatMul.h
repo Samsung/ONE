@@ -26,9 +26,9 @@ namespace luci
 {
 
 /**
- * @brief BATCHMATMUL in Circle
+ * @brief BATCH_MATMUL in Circle
  */
-class CircleBatchMatMul final : public FixedArityNode<2, CircleNodeImpl<CircleOpcode::BATCHMATMUL>>
+class CircleBatchMatMul final : public FixedArityNode<2, CircleNodeImpl<CircleOpcode::BATCH_MATMUL>>
 {
 public:
   loco::Node *x(void) const { return at(0)->node(); }
