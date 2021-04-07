@@ -230,7 +230,7 @@ private:
     RETURN_FALSE_UNLESS(is_lwq(node->x()));
     return true;
   }
-  
+
   // TODO: Implement more Ops
 
   bool visit(const luci::CircleNode *) { return true; }

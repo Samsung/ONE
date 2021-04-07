@@ -212,7 +212,7 @@ private:
     RETURN_FALSE_UNLESS(has_type(node->x(), Type::U8))
     return true;
   }
-  
+
   // TODO: Implement more Ops
 
   bool visit(const luci::CircleNode *) { return true; }
