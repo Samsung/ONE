@@ -15,7 +15,7 @@
  */
 
 #include "PartitionPModules.h"
-#include "CircleNodeConnect.h"
+#include "ConnectNode.h"
 
 #include "luci/Service/CircleNodeClone.h"
 #include "luci/Log.h"
@@ -73,6 +73,15 @@ void add_graph_output(loco::Graph *graph, luci::CircleOutput *output_node)
       output_shape->dim(r).set(output_node->dim(r).value());
   }
   graph_output->shape(std::move(output_shape));
+}
+
+/**
+ * @brief Connect cloned node from input node
+ */
+void clone_connect(const luci::CircleNode *node, luci::CloneContext &clonecontext)
+{
+  luci::ConnectNode cn(clonecontext);
+  node->accept(&cn);
 }
 
 /**
