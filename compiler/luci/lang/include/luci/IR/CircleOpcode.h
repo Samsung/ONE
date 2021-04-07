@@ -23,7 +23,9 @@ namespace luci
 enum class CircleOpcode
 {
 #define CIRCLE_NODE(OPCODE, CLASS) OPCODE,
+#define CIRCLE_VNODE CIRCLE_NODE
 #include "CircleNodes.lst"
+#undef CIRCLE_VNODE
 #undef CIRCLE_NODE
 };
 

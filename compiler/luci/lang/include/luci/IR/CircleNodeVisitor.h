@@ -33,8 +33,10 @@ template <typename T> struct CircleNodeVisitorBase
   virtual ~CircleNodeVisitorBase() = default;
 
 #define CIRCLE_NODE(OPCODE, CIRCLE_CLASS) virtual T visit(const CIRCLE_CLASS *) = 0;
+#define CIRCLE_VNODE CIRCLE_NODE
 
 #include "CircleNodes.lst"
+#undef CIRCLE_VNODE
 #undef CIRCLE_NODE
 };
 
@@ -44,9 +46,11 @@ template <typename T> struct CircleNodeVisitor : public CircleNodeVisitorBase<T>
 
 #define CIRCLE_NODE(OPCODE, CIRCLE_CLASS) \
   virtual T visit(const CIRCLE_CLASS *node) { return visit(static_cast<const CircleNode *>(node)); }
+#define CIRCLE_VNODE CIRCLE_NODE
 
 #include "CircleNodes.lst"
 
+#undef CIRCLE_VNODE
 #undef CIRCLE_NODE
 
   /// @brief Default fallback
@@ -61,9 +65,11 @@ template <typename T> struct CircleNodeMutableVisitorBase
   virtual ~CircleNodeMutableVisitorBase() = default;
 
 #define CIRCLE_NODE(OPCODE, CIRCLE_CLASS) virtual T visit(CIRCLE_CLASS *) = 0;
+#define CIRCLE_VNODE CIRCLE_NODE
 
 #include "CircleNodes.lst"
 
+#undef CIRCLE_VNODE
 #undef CIRCLE_NODE
 };
 
@@ -73,9 +79,11 @@ template <typename T> struct CircleNodeMutableVisitor : public CircleNodeMutable
 
 #define CIRCLE_NODE(OPCODE, CIRCLE_CLASS) \
   virtual T visit(CIRCLE_CLASS *node) { return visit(static_cast<CircleNode *>(node)); }
+#define CIRCLE_VNODE CIRCLE_NODE
 
 #include "CircleNodes.lst"
 
+#undef CIRCLE_VNODE
 #undef CIRCLE_NODE
 
   /// @brief Default fallback

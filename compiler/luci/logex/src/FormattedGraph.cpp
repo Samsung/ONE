@@ -146,7 +146,9 @@ std::string circle_opname(uint32_t opnum)
 #define CIRCLE_NODE(OPCODE, CLASS) \
   case luci::CircleOpcode::OPCODE: \
     return prefix + #OPCODE;
+#define CIRCLE_VNODE CIRCLE_NODE
 #include <luci/IR/CircleNodes.lst>
+#undef CIRCLE_VNODE
 #undef CIRCLE_NODE
     default:
       break;
@@ -175,7 +177,9 @@ protected:
     s.state(locop::NodeSummary::State::PartiallyKnown);                 \
     return true;                                                        \
   }
+#define CIRCLE_VNODE CIRCLE_NODE
 #include <luci/IR/CircleNodes.lst>
+#undef CIRCLE_VNODE
 #undef CIRCLE_NODE
 
 protected:
@@ -1293,7 +1297,9 @@ bool CircleNodeSummaryBuilderBase::build(const loco::Node *node, locop::NodeSumm
     s.comments().append("Mem = " + ptr_to_str(node));     \
     return summary(dynamic_cast<const CLASS *>(node), s); \
   }
+#define CIRCLE_VNODE CIRCLE_NODE
 #include <luci/IR/CircleNodes.lst>
+#undef CIRCLE_VNODE
 #undef CIRCLE_NODE
 
   return false;
