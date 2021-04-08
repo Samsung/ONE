@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+#include "luci/Service/CircleNodeClone.h"
+
 #include <luci/IR/CircleNodes.h>
 #include <luci/Service/CircleShapeInference.h>
 
@@ -73,4 +75,31 @@ TEST(ShapeRuleTest, simple_same_pad_avgpool2d)
   ASSERT_EQ(2, shape.dim(1).value());
   ASSERT_EQ(2, shape.dim(2).value());
   ASSERT_EQ(1, shape.dim(3).value());
+}
+
+TEST(CloneNodeTest, clone_AveragePool2D)
+{
+  auto g = loco::make_graph();
+  auto node_avgpool2d = g->nodes()->create<luci::CircleAveragePool2D>();
+  node_avgpool2d->fusedActivationFunction(luci::FusedActFunc::RELU);
+
+  auto gc = loco::make_graph();
+  auto cloned = luci::clone_node(node_avgpool2d, gc.get());
+  ASSERT_NE(nullptr, cloned);
+  ASSERT_EQ(gc.get(), cloned->graph());
+
+  auto cloned_avgpool2d = dynamic_cast<luci::CircleAveragePool2D *>(cloned);
+  ASSERT_NE(nullptr, cloned_avgpool2d);
+  ASSERT_EQ(node_avgpool2d->fusedActivationFunction(), cloned_avgpool2d->fusedActivationFunction());
+}
+
+TEST(CloneNodeTest, clone_AveragePool2D_NEG)
+{
+  auto g = loco::make_graph();
+  auto node_avgpool2d = g->nodes()->create<luci::CircleAdd>();
+  node_avgpool2d->fusedActivationFunction(luci::FusedActFunc::UNDEFINED);
+
+  auto gc = loco::make_graph();
+  auto cloned = luci::clone_node(node_avgpool2d, gc.get());
+  ASSERT_EQ(nullptr, cloned);
 }
