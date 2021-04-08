@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+#include "luci/Service/CircleNodeClone.h"
+
 #include <luci/IR/CircleNodes.h>
 #include <luci/Service/CircleShapeInference.h>
 
@@ -52,4 +54,31 @@ TEST(ShapeRuleTest, different_input_shapes_add)
   ASSERT_EQ(2, shape.dim(0).value());
   ASSERT_EQ(3, shape.dim(1).value());
   ASSERT_EQ(5, shape.dim(2).value());
+}
+
+TEST(CloneNodeTest, clone_Add)
+{
+  auto g = loco::make_graph();
+  auto node_add = g->nodes()->create<luci::CircleAdd>();
+  node_add->fusedActivationFunction(luci::FusedActFunc::RELU);
+
+  auto gc = loco::make_graph();
+  auto cloned = luci::clone_node(node_add, gc.get());
+  ASSERT_NE(nullptr, cloned);
+  ASSERT_EQ(gc.get(), cloned->graph());
+
+  auto cloned_add = dynamic_cast<luci::CircleAdd *>(cloned);
+  ASSERT_NE(nullptr, cloned_add);
+  ASSERT_EQ(node_add->fusedActivationFunction(), cloned_add->fusedActivationFunction());
+}
+
+TEST(CloneNodeTest, clone_Add_NEG)
+{
+  auto g = loco::make_graph();
+  auto node_add = g->nodes()->create<luci::CircleAdd>();
+  node_add->fusedActivationFunction(luci::FusedActFunc::UNDEFINED);
+
+  auto gc = loco::make_graph();
+  auto cloned = luci::clone_node(node_add, gc.get());
+  ASSERT_EQ(nullptr, cloned);
 }
