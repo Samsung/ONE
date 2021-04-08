@@ -142,6 +142,14 @@ private:
     return true;
   }
 
+  bool visit(const luci::CircleNotEqual *node)
+  {
+    RETURN_FALSE_UNLESS(has_type(node, Type::BOOL))
+    RETURN_FALSE_UNLESS(has_type(node->x(), Type::U8))
+    RETURN_FALSE_UNLESS(has_type(node->y(), Type::U8))
+    return true;
+  }
+
   bool visit(const luci::CircleRelu *node)
   {
     RETURN_FALSE_UNLESS(has_type(node, Type::U8))
