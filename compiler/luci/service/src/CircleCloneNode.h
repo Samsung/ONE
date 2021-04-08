@@ -49,7 +49,7 @@ public:
   // luci::CircleNode *visit(const luci::CircleDepthwiseConv2D *) final;
   // luci::CircleNode *visit(const luci::CircleDequantize *) final;
   luci::CircleNode *visit(const luci::CircleDiv *) final;
-  // luci::CircleNode *visit(const luci::CircleElu *) final;
+  luci::CircleNode *visit(const luci::CircleElu *) final;
   // luci::CircleNode *visit(const luci::CircleEqual *) final;
   // luci::CircleNode *visit(const luci::CircleExp *) final;
   // luci::CircleNode *visit(const luci::CircleExpandDims *) final;
