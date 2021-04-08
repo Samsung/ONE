@@ -21,7 +21,7 @@
 
 #include <gtest/gtest.h>
 
-TEST(CirCleConst, clone)
+TEST(CircleConstTest, clone)
 {
   auto g = loco::make_graph();
 
@@ -69,7 +69,7 @@ TEST(CirCleConst, clone)
   ASSERT_NE(nullptr, const_cloned->sparsityparam());
 }
 
-TEST(CirCleConst, clone_U8)
+TEST(CircleConstTest, clone_U8)
 {
   auto g = loco::make_graph();
 
@@ -91,7 +91,7 @@ TEST(CirCleConst, clone_U8)
   ASSERT_EQ(loco::DataType::U8, const_cloned->dtype());
 }
 
-TEST(CirCleConst, clone_S8)
+TEST(CircleConstTest, clone_S8)
 {
   auto g = loco::make_graph();
 
@@ -113,7 +113,7 @@ TEST(CirCleConst, clone_S8)
   ASSERT_EQ(loco::DataType::S8, const_cloned->dtype());
 }
 
-TEST(CirCleConst, clone_S64)
+TEST(CircleConstTest, clone_S64)
 {
   auto g = loco::make_graph();
 
@@ -135,7 +135,7 @@ TEST(CirCleConst, clone_S64)
   ASSERT_EQ(loco::DataType::S64, const_cloned->dtype());
 }
 
-TEST(CirCleConst, clone_BOOL)
+TEST(CircleConstTest, clone_BOOL)
 {
   auto g = loco::make_graph();
 
