@@ -36,7 +36,7 @@ public:
   // luci::CircleNode *visit(const luci::CircleArgMax *) final;
   // luci::CircleNode *visit(const luci::CircleArgMin *) final;
   // luci::CircleNode *visit(const luci::CircleAveragePool2D *) final;
-  // luci::CircleNode *visit(const luci::CircleBatchMatMul *) final;
+  luci::CircleNode *visit(const luci::CircleBatchMatMul *) final;
   // luci::CircleNode *visit(const luci::CircleBatchToSpaceND *) final;
   // luci::CircleNode *visit(const luci::CircleCast *) final;
   // luci::CircleNode *visit(const luci::CircleCeil *) final;
