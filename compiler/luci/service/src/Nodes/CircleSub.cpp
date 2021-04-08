@@ -25,7 +25,8 @@ luci::CircleNode *CloneNode::visit(const luci::CircleSub *node)
     return nullptr;
 
   auto *cloned = _graph->nodes()->create<luci::CircleSub>();
-  cloned->fusedActivationFunction(node->fusedActivationFunction());
+  if (cloned != nullptr)
+    cloned->fusedActivationFunction(node->fusedActivationFunction());
   return cloned;
 }
 
