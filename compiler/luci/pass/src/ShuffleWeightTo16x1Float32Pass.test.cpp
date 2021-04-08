@@ -18,7 +18,7 @@
 
 #include <luci/IR/CircleNodes.h>
 
-#include "test/TestIOGraph.h"
+#include <luci/test/TestIOGraph.h>
 #include "test/TestFirstNode.h"
 
 #include <gtest/gtest.h>
@@ -67,8 +67,8 @@ public:
 
   void init(const ShapeU32 shape, const ShapeU32 wshape)
   {
-    TestIGraphlet::init(g(), shape);
-    TestOGraphlet::init(g(), shape);
+    TestIGraphlet::init(g(), {shape});
+    TestOGraphlet::init(g(), {shape});
     FCGraphlet::init(g(), wshape);
 
     // connect graph

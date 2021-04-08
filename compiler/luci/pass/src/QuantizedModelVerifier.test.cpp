@@ -18,7 +18,7 @@
 
 #include "luci/Pass/QuantizeWithMinMaxPass.h"
 
-#include "test/TestIOGraph.h"
+#include <luci/test/TestIOGraph.h>
 
 #include <gtest/gtest.h>
 

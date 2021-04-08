@@ -17,7 +17,7 @@
 
 #include <luci/IR/CircleNodes.h>
 
-#include "test/TestIOGraph.h"
+#include <luci/test/TestIOGraph.h>
 #include "test/TestFirstNode.h"
 
 #include <gtest/gtest.h>
