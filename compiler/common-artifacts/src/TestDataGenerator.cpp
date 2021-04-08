@@ -94,6 +94,16 @@ int entry(int argc, char **argv)
 {
   arser::Arser arser;
   arser.add_argument("circle").type(arser::DataType::STR).help("Circle file you want to test");
+  arser.add_argument("--input_data")
+    .required(true)
+    .nargs(1)
+    .type(arser::DataType::STR)
+    .help("Path to generate input data h5 file");
+  arser.add_argument("--expected_data")
+    .required(true)
+    .nargs(1)
+    .type(arser::DataType::STR)
+    .help("Path to generate expected data h5 file");
   arser.add_argument("--fixed_seed")
     .required(false)
     .nargs(0)
@@ -111,8 +121,6 @@ int entry(int argc, char **argv)
   }
 
   std::string circle_file = arser.get<std::string>("circle");
-  size_t last_dot_index = circle_file.find_last_of(".");
-  std::string prefix = circle_file.substr(0, last_dot_index);
 
   // load circle file
   foder::FileLoader file_loader{circle_file};
@@ -144,13 +152,13 @@ int entry(int argc, char **argv)
    *       ㄴDATA ...
    */
   // create random data and dump into hdf5 file
-  H5::H5File input_file{prefix + ".input.h5", H5F_ACC_TRUNC};
+  H5::H5File input_file{arser.get<std::string>("--input_data"), H5F_ACC_TRUNC};
   std::unique_ptr<H5::Group> input_name_group =
     std::make_unique<H5::Group>(input_file.createGroup("name"));
   std::unique_ptr<H5::Group> input_value_group =
     std::make_unique<H5::Group>(input_file.createGroup("value"));
 
-  H5::H5File output_file{prefix + ".expected.h5", H5F_ACC_TRUNC};
+  H5::H5File output_file{arser.get<std::string>("--expected_data"), H5F_ACC_TRUNC};
   std::unique_ptr<H5::Group> output_name_group =
     std::make_unique<H5::Group>(output_file.createGroup("name"));
   std::unique_ptr<H5::Group> output_value_group =
