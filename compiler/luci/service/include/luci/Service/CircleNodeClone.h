@@ -31,6 +31,7 @@ void copy_common_attributes(const luci::CircleNode *src, luci::CircleNode *dst);
 
 /**
  * @brief Return a new cloned CircleNode object with same attributes value of node to graph.
+ * @note  Will return nullptr if clone has failed
  */
 CircleNode *clone_node(const CircleNode *node, loco::Graph *graph);
 
