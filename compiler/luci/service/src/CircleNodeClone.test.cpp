@@ -94,3 +94,15 @@ TEST(CircleNodeCloneTest, clone_add_node)
   ASSERT_EQ(node->rank(), clone->rank());
   ASSERT_EQ(node->shape_status(), clone->shape_status());
 }
+
+TEST(CircleNodeCloneTest, clone_node_NEG)
+{
+  auto g = loco::make_graph();
+  auto node = build_simple_add_graph(g.get());
+
+  auto cg = loco::make_graph();
+  auto clone = luci::clone_node(nullptr, cg.get());
+  ASSERT_EQ(nullptr, clone);
+  auto clone2 = luci::clone_node(node, nullptr);
+  ASSERT_EQ(nullptr, clone2);
+}
