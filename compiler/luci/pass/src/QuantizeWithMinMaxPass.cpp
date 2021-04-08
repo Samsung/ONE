@@ -525,26 +525,6 @@ void set_bias(luci::CircleNode *node, luci::CircleConst *bias)
                              "fully-connected layer have bias");
 }
 
-bool bool_type(luci::CircleNode *node)
-{
-  switch (node->opcode())
-  {
-    case luci::CircleOpcode::GREATER:
-    case luci::CircleOpcode::GREATER_EQUAL:
-    case luci::CircleOpcode::LESS:
-    case luci::CircleOpcode::LESS_EQUAL:
-    case luci::CircleOpcode::EQUAL:
-    case luci::CircleOpcode::NOT_EQUAL:
-    case luci::CircleOpcode::LOGICAL_AND:
-    case luci::CircleOpcode::LOGICAL_OR:
-    case luci::CircleOpcode::LOGICAL_NOT:
-      return true;
-    default:
-      break;
-  }
-  return false;
-}
-
 /**
  * @brief QuantizeActivation quantizes tensors for activations
  * @details Quantize using recorded min/max values
@@ -580,7 +560,7 @@ struct QuantizeActivation final : public luci::CircleNodeMutableVisitor<bool>
         continue;
 
       // Check if this is bool type (bool type is not quantized)
-      if (bool_type(circle_node))
+      if (circle_node->dtype() == loco::DataType::BOOL)
         continue;
 
       // Check if this is activation
