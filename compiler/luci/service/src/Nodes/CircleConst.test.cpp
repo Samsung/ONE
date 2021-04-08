@@ -15,6 +15,7 @@
  */
 
 #include "luci/Service/Nodes/CircleConst.h"
+#include "luci/Service/CircleNodeClone.h"
 
 #include <loco.h>
 #include <loco/IR/Graph.h>
@@ -151,4 +152,26 @@ TEST(CircleConstTest, clone_BOOL)
 
   // check attributes
   ASSERT_EQ(loco::DataType::BOOL, const_cloned->dtype());
+}
+
+TEST(CloneNodeTest, clone_Const)
+{
+  auto g = loco::make_graph();
+  auto node_const = new_const_s32(g.get());
+
+  auto gc = loco::make_graph();
+  auto cloned = luci::clone_node(node_const, gc.get());
+  ASSERT_NE(nullptr, cloned);
+  ASSERT_EQ(gc.get(), cloned->graph());
+
+  auto cloned_const = dynamic_cast<luci::CircleConst *>(cloned);
+  ASSERT_NE(nullptr, cloned_const);
+  ASSERT_EQ(loco::DataType::S32, cloned_const->dtype());
+  ASSERT_EQ(1, cloned_const->rank());
+  ASSERT_EQ(2, cloned_const->dim(0).value());
+  ASSERT_EQ(2, cloned_const->size<loco::DataType::S32>());
+  ASSERT_EQ(0, cloned_const->at<loco::DataType::S32>(0));
+  ASSERT_EQ(1, cloned_const->at<loco::DataType::S32>(1));
+  ASSERT_NE(nullptr, cloned_const->quantparam());
+  ASSERT_NE(nullptr, cloned_const->sparsityparam());
 }
