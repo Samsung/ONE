@@ -86,11 +86,11 @@ foreach(IDX RANGE ${RECIPE_LENGTH_M1})
   list(APPEND TEST_DEPS ${PARTITIONER_CONN_JSON})
 endforeach(IDX)
 
-add_custom_target(circle_part_eval_prepare ALL DEPENDS ${TEST_DEPS})
-add_dependencies(circle_part_eval_prepare common_artifacts_deps)
+add_custom_target(circle_part_value_test_prepare ALL DEPENDS ${TEST_DEPS})
+add_dependencies(circle_part_value_test_prepare common_artifacts_deps)
 
 # run evaluation
-add_test(NAME circle_part_eval_test
+add_test(NAME circle_part_value_test
   COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/part_eval_all.sh"
           "${CMAKE_CURRENT_BINARY_DIR}"
           "${NNCC_OVERLAY_DIR}/venv_2_3_0"

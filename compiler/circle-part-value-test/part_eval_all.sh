@@ -6,7 +6,7 @@
 #
 # ./part_eval_all.sh <path/to/work_dir> <path/to/venv_dir> <path/to/driver> <TEST 1> <TEST 2> ...
 #
-#    bin_dir  : build directory of circle-part-eval (ex: build/compiler/circle-part-eval)
+#    bin_dir  : build directory of circle-part-value-test (ex: build/compiler/circle-part-value-test)
 #    work_dir : artifacts directoy where test materials exist
 #    venv_dir : python virtual environment home directory
 

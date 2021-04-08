@@ -1,6 +1,6 @@
-# circle-part-eval
+# circle-part-value-test
 
-_circle-part-eval_ evaluates partitioned models produced by circle-partitioner.
+_circle-part-value-test_ evaluates partitioned models produced by circle-partitioner.
 
 ### Process of evaluation
 
