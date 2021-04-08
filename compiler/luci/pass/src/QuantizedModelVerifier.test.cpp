@@ -333,6 +333,40 @@ public:
   luci::CircleConst *_y = nullptr;
 };
 
+// Test graph for binary logical Ops
+// LOGICAL_OR, LOGICAL_AND
+template <class Op> class BinaryLogicalOpTestGraph final : public luci::test::TestIOGraph
+{
+public:
+  void init(void)
+  {
+    TestIOGraph::init({32}, {32});
+    input()->dtype(loco::DataType::BOOL);
+    output()->dtype(loco::DataType::BOOL);
+    _y = g()->nodes()->create<luci::CircleConst>();
+    {
+      _y->dtype(Type::BOOL);
+      _y->shape({32});
+      _y->size<Type::BOOL>(32);
+      for (int32_t i = 0; i < 32; i++)
+        _y->at<Type::BOOL>(i) = 0;
+    }
+    _op = g()->nodes()->create<Op>();
+    {
+      _op->x(input());
+      _op->y(_y);
+      _op->dtype(loco::DataType::BOOL);
+    }
+    output()->from(_op);
+
+    set_minmax_to_non_const(g(), -1, 1);
+  }
+
+public:
+  Op *_op = nullptr;
+  luci::CircleConst *_y = nullptr;
+};
+
 } // namespace
 
 // Quantize and verify with given configurations
@@ -484,6 +518,26 @@ TEST(QuantizedModelVerifierTest, ArgMax_wrong_input_granularity_NEG)
 
   luci::QuantizedModelVerifier verifier(Type::U8, Granularity::LayerWise);
   EXPECT_ANY_THROW(verifier.verify(g.g()));
+}
+
+TEST(QuantizedModelVerifierTest, LogicalOr)
+{
+  TEST_WITH_GRAPH(BinaryLogicalOpTestGraph<luci::CircleLogicalOr>, Type::U8,
+                  Granularity::LayerWise);
+  TEST_WITH_GRAPH(BinaryLogicalOpTestGraph<luci::CircleLogicalOr>, Type::U8,
+                  Granularity::ChannelWise);
+  TEST_WITH_GRAPH(BinaryLogicalOpTestGraph<luci::CircleLogicalOr>, Type::S16,
+                  Granularity::ChannelWise);
+}
+
+TEST(QuantizedModelVerifierTest, LogicalOr_wrong_type_NEG)
+{
+  TEST_WITH_WRONG_TYPE(BinaryLogicalOpTestGraph<luci::CircleLogicalOr>, Type::U8,
+                       Granularity::LayerWise, Type::U8);
+  TEST_WITH_WRONG_TYPE(BinaryLogicalOpTestGraph<luci::CircleLogicalOr>, Type::U8,
+                       Granularity::ChannelWise, Type::U8);
+  TEST_WITH_WRONG_TYPE(BinaryLogicalOpTestGraph<luci::CircleLogicalOr>, Type::S16,
+                       Granularity::ChannelWise, Type::S16);
 }
 
 TEST(QuantizedModelVerifierTest, Reshape)

@@ -159,6 +159,13 @@ private:
     return true;
   }
 
+  bool visit(const luci::CircleLogicalOr *)
+  {
+    // Logical OR has bool-type inputs and output
+    // Nothing to be checked
+    return true;
+  }
+
   bool visit(const luci::CircleMaxPool2D *node)
   {
     RETURN_FALSE_UNLESS(is_lwq(node));
