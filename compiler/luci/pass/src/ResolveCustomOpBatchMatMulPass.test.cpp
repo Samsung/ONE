@@ -21,7 +21,7 @@
 #include "flatbuffers/flatbuffers.h"
 #include "flatbuffers/flexbuffers.h"
 
-#include "test/TestIOGraph.h"
+#include <luci/test/TestIOGraph.h>
 
 #include <gtest/gtest.h>
 
@@ -99,8 +99,8 @@ public:
 
   void init(void)
   {
-    TestIsGraphlet<2>::init(g(), {N, C, H_X, W_X});
-    TestOGraphlet::init(g(), {N, C, H_X, W_Y});
+    TestIsGraphlet<2>::init(g(), {{N, C, H_X, W_X}, {N, C, H_X, W_X}});
+    TestOGraphlet::init(g(), {{N, C, H_X, W_Y}});
     BatchMatmulV2Graphlet::init(g());
 
     // TODO how set multiple of shape vector for TestIsGraphlet?
