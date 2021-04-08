@@ -59,6 +59,21 @@ luci::CircleConst *new_const_s32(loco::Graph *g)
   return circle_const;
 }
 
+template <loco::DataType DT> luci::CircleConst *new_empty_const(loco::Graph *g)
+{
+  auto circle_const = g->nodes()->create<luci::CircleConst>();
+
+  const auto size = 0;
+
+  circle_const->dtype(DT);
+  circle_const->rank(1);
+  circle_const->dim(0).set(size);
+  circle_const->shape_status(luci::ShapeStatus::VALID);
+  circle_const->size<DT>(size);
+
+  return circle_const;
+}
+
 } // namespace
 
 TEST(CircleConstTest, clone)
@@ -87,15 +102,7 @@ TEST(CircleConstTest, clone_U8)
   auto g = loco::make_graph();
 
   // prepare source CircleConst
-  auto circle_const = g->nodes()->create<luci::CircleConst>();
-
-  const auto size = 0;
-
-  circle_const->dtype(loco::DataType::U8);
-  circle_const->rank(1);
-  circle_const->dim(0).set(size);
-  circle_const->shape_status(luci::ShapeStatus::VALID);
-  circle_const->size<loco::DataType::U8>(size);
+  auto circle_const = new_empty_const<loco::DataType::U8>(g.get());
 
   // make a clone
   auto const_cloned = luci::clone(circle_const);
@@ -109,15 +116,7 @@ TEST(CircleConstTest, clone_S8)
   auto g = loco::make_graph();
 
   // prepare source CircleConst
-  auto circle_const = g->nodes()->create<luci::CircleConst>();
-
-  const auto size = 0;
-
-  circle_const->dtype(loco::DataType::S8);
-  circle_const->rank(1);
-  circle_const->dim(0).set(size);
-  circle_const->shape_status(luci::ShapeStatus::VALID);
-  circle_const->size<loco::DataType::S8>(size);
+  auto circle_const = new_empty_const<loco::DataType::S8>(g.get());
 
   // make a clone
   auto const_cloned = luci::clone(circle_const);
@@ -131,15 +130,7 @@ TEST(CircleConstTest, clone_S64)
   auto g = loco::make_graph();
 
   // prepare source CircleConst
-  auto circle_const = g->nodes()->create<luci::CircleConst>();
-
-  const auto size = 0;
-
-  circle_const->dtype(loco::DataType::S64);
-  circle_const->rank(1);
-  circle_const->dim(0).set(size);
-  circle_const->shape_status(luci::ShapeStatus::VALID);
-  circle_const->size<loco::DataType::S64>(size);
+  auto circle_const = new_empty_const<loco::DataType::S64>(g.get());
 
   // make a clone
   auto const_cloned = luci::clone(circle_const);
@@ -153,15 +144,7 @@ TEST(CircleConstTest, clone_BOOL)
   auto g = loco::make_graph();
 
   // prepare source CircleConst
-  auto circle_const = g->nodes()->create<luci::CircleConst>();
-
-  const auto size = 0;
-
-  circle_const->dtype(loco::DataType::BOOL);
-  circle_const->rank(1);
-  circle_const->dim(0).set(size);
-  circle_const->shape_status(luci::ShapeStatus::VALID);
-  circle_const->size<loco::DataType::BOOL>(size);
+  auto circle_const = new_empty_const<loco::DataType::BOOL>(g.get());
 
   // make a clone
   auto const_cloned = luci::clone(circle_const);
