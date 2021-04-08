@@ -79,10 +79,13 @@ void copy_common_attributes(const luci::CircleNode *src, luci::CircleNode *dst)
  */
 luci::CircleNode *clone_node(const luci::CircleNode *node, loco::Graph *graph)
 {
+  if (node == nullptr || graph == nullptr)
+    return nullptr;
+
   CloneNode cn(graph);
   auto cloned = node->accept(&cn);
-  assert(cloned);
-  copy_common_attributes(node, cloned);
+  if (cloned != nullptr)
+    copy_common_attributes(node, cloned);
   return cloned;
 }
 
