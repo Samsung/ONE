@@ -46,6 +46,10 @@ luci::CircleConst *clone_circleconst(const luci::CircleConst *node, loco::Graph 
 {
   auto cloned = graph->nodes()->create<luci::CircleConst>();
 
+  if (cloned != nullptr)
+  {
+    // TODO fix indentation
+    // clang-format off
   // dtype/shape
   cloned->dtype(node->dtype());
   cloned->rank(node->rank());
@@ -83,6 +87,8 @@ luci::CircleConst *clone_circleconst(const luci::CircleConst *node, loco::Graph 
 
     default:
       throw oops::UserExn("Unsupported tensor dtype");
+  }
+    // clang-format on
   }
 
   return cloned;
