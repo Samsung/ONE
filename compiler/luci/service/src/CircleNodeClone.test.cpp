@@ -33,6 +33,7 @@ luci::CircleAdd *build_simple_add_graph(loco::Graph *g)
   node->rank(1);
   node->dim(0).set(3);
   node->shape_status(luci::ShapeStatus::VALID);
+  node->fusedActivationFunction(luci::FusedActFunc::NONE);
 
   auto qparam = std::make_unique<luci::CircleQuantParam>();
   qparam->scale = {1.0};
