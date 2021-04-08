@@ -48,47 +48,44 @@ luci::CircleConst *clone_circleconst(const luci::CircleConst *node, loco::Graph 
 
   if (cloned != nullptr)
   {
-    // TODO fix indentation
-    // clang-format off
-  // dtype/shape
-  cloned->dtype(node->dtype());
-  cloned->rank(node->rank());
+    // dtype/shape
+    cloned->dtype(node->dtype());
+    cloned->rank(node->rank());
 
-  // values
-  switch (node->dtype())
-  {
-    case loco::DataType::FLOAT32:
-      copy_values<loco::DataType::FLOAT32>(node, cloned);
-      break;
+    // values
+    switch (node->dtype())
+    {
+      case loco::DataType::FLOAT32:
+        copy_values<loco::DataType::FLOAT32>(node, cloned);
+        break;
 
-    case loco::DataType::U8:
-      copy_values<loco::DataType::U8>(node, cloned);
-      break;
+      case loco::DataType::U8:
+        copy_values<loco::DataType::U8>(node, cloned);
+        break;
 
-    case loco::DataType::S8:
-      copy_values<loco::DataType::S8>(node, cloned);
-      break;
+      case loco::DataType::S8:
+        copy_values<loco::DataType::S8>(node, cloned);
+        break;
 
-    case loco::DataType::S16:
-      copy_values<loco::DataType::S16>(node, cloned);
-      break;
+      case loco::DataType::S16:
+        copy_values<loco::DataType::S16>(node, cloned);
+        break;
 
-    case loco::DataType::S32:
-      copy_values<loco::DataType::S32>(node, cloned);
-      break;
+      case loco::DataType::S32:
+        copy_values<loco::DataType::S32>(node, cloned);
+        break;
 
-    case loco::DataType::S64:
-      copy_values<loco::DataType::S64>(node, cloned);
-      break;
+      case loco::DataType::S64:
+        copy_values<loco::DataType::S64>(node, cloned);
+        break;
 
-    case loco::DataType::BOOL:
-      copy_values<loco::DataType::BOOL>(node, cloned);
-      break;
+      case loco::DataType::BOOL:
+        copy_values<loco::DataType::BOOL>(node, cloned);
+        break;
 
-    default:
-      throw oops::UserExn("Unsupported tensor dtype");
-  }
-    // clang-format on
+      default:
+        throw oops::UserExn("Unsupported tensor dtype");
+    }
   }
 
   return cloned;
