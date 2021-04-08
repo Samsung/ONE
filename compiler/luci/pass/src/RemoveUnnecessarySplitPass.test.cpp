@@ -73,8 +73,8 @@ public:
 public:
   void init()
   {
-    TestIGraphlet::init(g(), {{1}});
-    TestOGraphlet::init(g(), {{1}});
+    TestIGraphlet::init(g(), {1});
+    TestOGraphlet::init(g(), {1});
     SplitGraphlet::init(g(), 1);
 
     _split->input(input());
@@ -93,7 +93,7 @@ public:
 public:
   void init()
   {
-    TestIGraphlet::init(g(), {{1}});
+    TestIGraphlet::init(g(), {1});
     TestOsGraphlet<2>::init(g(), {{1}, {1}});
     SplitGraphlet::init(g(), 2);
 

@@ -102,6 +102,11 @@ protected:
 class TestIGraphlet : public TestIsGraphlet<1>
 {
 public:
+  virtual void init(loco::Graph *g, const ShapeU32 shape_in)
+  {
+    TestIsGraphlet<1>::init(g, {shape_in});
+  }
+
   luci::CircleInput *input() { return _inputs[0]; }
 };
 
@@ -162,6 +167,11 @@ protected:
 class TestOGraphlet : public TestOsGraphlet<1>
 {
 public:
+  virtual void init(loco::Graph *g, const ShapeU32 shape_in)
+  {
+    TestOsGraphlet<1>::init(g, {shape_in});
+  }
+
   luci::CircleOutput *output() { return _outputs[0]; }
 };
 
@@ -176,8 +186,8 @@ public:
 public:
   virtual void init(const ShapeU32 shape_in, const ShapeU32 shape_out)
   {
-    TestIsGraphlet<1>::init(g(), {shape_in});
-    TestOsGraphlet<1>::init(g(), {shape_out});
+    TestIGraphlet::init(g(), shape_in);
+    TestOGraphlet::init(g(), shape_out);
   }
 };
 

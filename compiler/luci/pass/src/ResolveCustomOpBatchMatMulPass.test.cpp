@@ -100,7 +100,7 @@ public:
   void init(void)
   {
     TestIsGraphlet<2>::init(g(), {{N, C, H_X, W_X}, {N, C, H_X, W_X}});
-    TestOGraphlet::init(g(), {{N, C, H_X, W_Y}});
+    TestOGraphlet::init(g(), {N, C, H_X, W_Y});
     BatchMatmulV2Graphlet::init(g());
 
     // TODO how set multiple of shape vector for TestIsGraphlet?
