@@ -22,7 +22,8 @@ namespace luci
 luci::CircleNode *CloneNode::visit(const luci::CircleAdd *node)
 {
   auto *cloned = _graph->nodes()->create<luci::CircleAdd>();
-  cloned->fusedActivationFunction(node->fusedActivationFunction());
+  if (cloned != nullptr)
+    cloned->fusedActivationFunction(node->fusedActivationFunction());
   return cloned;
 }
 
