@@ -929,6 +929,7 @@ void quantize_const_inputs(luci::CircleNode *node, loco::DataType output_type)
     case luci::CircleOpcode::ADD_N:
     case luci::CircleOpcode::DIV:
     case luci::CircleOpcode::EQUAL:
+    case luci::CircleOpcode::FLOOR:
     case luci::CircleOpcode::GREATER:
     case luci::CircleOpcode::GREATER_EQUAL:
     case luci::CircleOpcode::LESS:
@@ -941,7 +942,6 @@ void quantize_const_inputs(luci::CircleNode *node, loco::DataType output_type)
     case luci::CircleOpcode::SOFTMAX:
     case luci::CircleOpcode::SUB:
     case luci::CircleOpcode::TANH:
-    case luci::CircleOpcode::FLOOR:
       // Quantize all const inputs using their values
       for (uint32_t i = 0; i < arity; i++)
       {
