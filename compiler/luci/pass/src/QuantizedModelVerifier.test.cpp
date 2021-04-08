@@ -75,6 +75,19 @@ void quantize_and_verify_with_wrong_granularity(luci::test::TestIOGraph *g, Type
   verifier.verify(g->g());
 }
 
+// Helper function to reduce duplicate test codes
+void quantize_and_verify_with_wrong_granularity(luci::test::TestIOGraph *g, Type quantized_dtype,
+                                                Granularity granularity, luci::CircleNode *target)
+{
+  luci::QuantizeWithMinMaxPass pass(Type::FLOAT32, quantized_dtype, granularity);
+  pass.run(g->g());
+
+  insert_scale_zp(target, 1.0, 1);
+
+  luci::QuantizedModelVerifier verifier(quantized_dtype, granularity);
+  verifier.verify(g->g());
+}
+
 // Set min/max for all non-const nodes in the graph
 void set_minmax_to_non_const(loco::Graph *g, float min, float max)
 {
@@ -287,6 +300,39 @@ public:
   luci::CircleConst *_perm = nullptr;
 };
 
+// Test graph for comparison Ops
+// GREATER, GREATER_EQUAL, LESS, LESS_EQUAL, EQUAL, NOT_EQUAL
+template <class Op> class ComparisonOpTestGraph final : public luci::test::TestIOGraph
+{
+public:
+  void init(void)
+  {
+    TestIOGraph::init({32}, {32});
+    output()->dtype(loco::DataType::BOOL);
+    _y = g()->nodes()->create<luci::CircleConst>();
+    {
+      _y->dtype(Type::FLOAT32);
+      _y->shape({32});
+      _y->size<Type::FLOAT32>(32);
+      for (int32_t i = 0; i < 32; i++)
+        _y->at<Type::FLOAT32>(i) = static_cast<float>(i);
+    }
+    _op = g()->nodes()->create<Op>();
+    {
+      _op->x(input());
+      _op->y(_y);
+      _op->dtype(loco::DataType::BOOL);
+    }
+    output()->from(_op);
+
+    set_minmax_to_non_const(g(), -1, 1);
+  }
+
+public:
+  Op *_op = nullptr;
+  luci::CircleConst *_y = nullptr;
+};
+
 } // namespace
 
 // Quantize and verify with given configurations
@@ -314,6 +360,17 @@ public:
     graph g;                                                                             \
     g.init();                                                                            \
     EXPECT_ANY_THROW(quantize_and_verify_with_wrong_granularity(&g, type, granularity)); \
+  } while (0)
+
+// Quantize and verify with wrong granularity
+// Users can specify the test target
+#define TEST_WITH_WRONG_GRANULARITY_TARGET(graph, type, granularity, target)                   \
+  do                                                                                           \
+  {                                                                                            \
+    graph g;                                                                                   \
+    g.init();                                                                                  \
+    auto node = loco::must_cast<luci::CircleNode *>(target);                                   \
+    EXPECT_ANY_THROW(quantize_and_verify_with_wrong_granularity(&g, type, granularity, node)); \
   } while (0)
 
 TEST(QuantizedModelVerifierTest, Logistic)
@@ -511,6 +568,40 @@ TEST(QuantizedModelVerifierTest, Floor_wrong_granularity_NEG)
   TEST_WITH_WRONG_GRANULARITY(FloorTestGraph, Type::U8, Granularity::LayerWise);
   TEST_WITH_WRONG_GRANULARITY(FloorTestGraph, Type::U8, Granularity::ChannelWise);
   TEST_WITH_WRONG_GRANULARITY(FloorTestGraph, Type::S16, Granularity::ChannelWise);
+}
+
+TEST(QuantizedModelVerifierTest, Greater)
+{
+  TEST_WITH_GRAPH(ComparisonOpTestGraph<luci::CircleGreater>, Type::U8, Granularity::LayerWise);
+  TEST_WITH_GRAPH(ComparisonOpTestGraph<luci::CircleGreater>, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_GRAPH(ComparisonOpTestGraph<luci::CircleGreater>, Type::S16, Granularity::ChannelWise);
+}
+
+TEST(QuantizedModelVerifierTest, Greater_wrong_type_NEG)
+{
+  TEST_WITH_WRONG_TYPE(ComparisonOpTestGraph<luci::CircleGreater>, Type::U8, Granularity::LayerWise,
+                       Type::U8);
+  TEST_WITH_WRONG_TYPE(ComparisonOpTestGraph<luci::CircleGreater>, Type::U8,
+                       Granularity::ChannelWise, Type::U8);
+  TEST_WITH_WRONG_TYPE(ComparisonOpTestGraph<luci::CircleGreater>, Type::S16,
+                       Granularity::ChannelWise, Type::S16);
+}
+
+TEST(QuantizedModelVerifierTest, Greater_wrong_granularity_NEG)
+{
+  TEST_WITH_WRONG_GRANULARITY_TARGET(ComparisonOpTestGraph<luci::CircleGreater>, Type::U8,
+                                     Granularity::LayerWise, g._op->x());
+  TEST_WITH_WRONG_GRANULARITY_TARGET(ComparisonOpTestGraph<luci::CircleGreater>, Type::U8,
+                                     Granularity::ChannelWise, g._op->x());
+  TEST_WITH_WRONG_GRANULARITY_TARGET(ComparisonOpTestGraph<luci::CircleGreater>, Type::S16,
+                                     Granularity::ChannelWise, g._op->x());
+
+  TEST_WITH_WRONG_GRANULARITY_TARGET(ComparisonOpTestGraph<luci::CircleGreater>, Type::U8,
+                                     Granularity::LayerWise, g._y);
+  TEST_WITH_WRONG_GRANULARITY_TARGET(ComparisonOpTestGraph<luci::CircleGreater>, Type::U8,
+                                     Granularity::ChannelWise, g._y);
+  TEST_WITH_WRONG_GRANULARITY_TARGET(ComparisonOpTestGraph<luci::CircleGreater>, Type::S16,
+                                     Granularity::ChannelWise, g._y);
 }
 
 #undef TEST_WITH_GRAPH
