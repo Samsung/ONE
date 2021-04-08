@@ -30,7 +30,7 @@ public:
   CloneNode(loco::Graph *graph) : _graph(graph){};
 
 public:
-  // luci::CircleNode *visit(const luci::CircleAbs *) final;
+  luci::CircleNode *visit(const luci::CircleAbs *) final;
   luci::CircleNode *visit(const luci::CircleAdd *) final;
   // luci::CircleNode *visit(const luci::CircleAddN *) final;
   // luci::CircleNode *visit(const luci::CircleArgMax *) final;
