@@ -168,6 +168,13 @@ private:
     return true;
   }
 
+  bool visit(const luci::CircleNotEqual *node)
+  {
+    RETURN_FALSE_UNLESS(is_lwq(node->x()));
+    RETURN_FALSE_UNLESS(is_lwq(node->y()));
+    return true;
+  }
+
   bool visit(const luci::CircleRelu *node)
   {
     RETURN_FALSE_UNLESS(is_lwq(node))
