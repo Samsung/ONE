@@ -21,10 +21,11 @@
 
 #include <gtest/gtest.h>
 
-TEST(CircleConstTest, clone)
+namespace
 {
-  auto g = loco::make_graph();
 
+luci::CircleConst *new_const_s32(loco::Graph *g)
+{
   // prepare source CircleConst
   auto circle_const = g->nodes()->create<luci::CircleConst>();
 
@@ -54,6 +55,18 @@ TEST(CircleConstTest, clone)
   sparam->block_map = {1};
   sparam->dim_metadata = {};
   circle_const->sparsityparam(std::move(sparam));
+
+  return circle_const;
+}
+
+} // namespace
+
+TEST(CircleConstTest, clone)
+{
+  auto g = loco::make_graph();
+
+  // prepare source CircleConst
+  auto circle_const = new_const_s32(g.get());
 
   // make a clone
   auto const_cloned = luci::clone(circle_const);
