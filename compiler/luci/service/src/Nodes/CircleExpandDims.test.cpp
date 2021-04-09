@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+#include "luci/Service/CircleNodeClone.h"
+
 #include <luci/IR/CircleNodes.h>
 #include <luci/Service/CircleShapeInference.h>
 
@@ -47,4 +49,18 @@ TEST(ShapeRuleTest, simple_expand_dims)
   ASSERT_EQ(4, shape.dim(0).value());
   ASSERT_EQ(1, shape.dim(1).value());
   ASSERT_EQ(3, shape.dim(2).value());
+}
+
+TEST(CloneNodeTest, clone_ExpandDims)
+{
+  auto g = loco::make_graph();
+  auto node_ed = g->nodes()->create<luci::CircleExpandDims>();
+
+  auto gc = loco::make_graph();
+  auto cloned = luci::clone_node(node_ed, gc.get());
+  ASSERT_NE(nullptr, cloned);
+  ASSERT_EQ(gc.get(), cloned->graph());
+
+  auto cloned_ed = dynamic_cast<luci::CircleExpandDims *>(cloned);
+  ASSERT_NE(nullptr, cloned_ed);
 }
