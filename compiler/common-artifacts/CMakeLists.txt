@@ -224,21 +224,30 @@ foreach(RECIPE IN ITEMS ${RECIPES})
   set(MODEL_FILE "${RECIPE}${OPT_FORMAT}.${MODEL_FORMAT}")
   set(MODEL_PATH "${CMAKE_CURRENT_BINARY_DIR}/${MODEL_FILE}")
   set(NNPKG_FILE "${RECIPE}${OPT_FORMAT}")
-  set(NNPKG_PATH "${CMAKE_CURRENT_BINARY_DIR}/${NNPKG_FILE}")
+  set(NNPKG_DIR "${CMAKE_CURRENT_BINARY_DIR}/${NNPKG_FILE}")
+  set(NNPKG_MODEL "${NNPKG_DIR}/${MODEL_FILE}")
 
-  add_custom_command(OUTPUT ${NNPKG_PATH}
+  # Generate nnpackage directory
+  add_custom_command(OUTPUT ${NNPKG_DIR}
+      COMMAND ${CMAKE_COMMAND} -E make_directory ${NNPKG_DIR}
+      DEPENDS ${MODEL_PATH}
+      COMMENT "Generate ${RECIPE} nnpackage directory"
+    )
+  list(APPEND TEST_DEPS ${NNPKG_DIR})
+
+  add_custom_command(OUTPUT ${NNPKG_MODEL}
     COMMAND ${MODEL2NNPKG} ${MODEL_PATH}
-    DEPENDS ${MODEL2NNPKG} ${MODEL_PATH}
+    DEPENDS ${MODEL2NNPKG} ${MODEL_PATH} ${NNPKG_DIR}
     COMMENT "Generate ${RECIPE} nnpackage"
   )
-  list(APPEND TEST_DEPS ${NNPKG_PATH})
+  list(APPEND TEST_DEPS ${NNPKG_MODEL})
 
   if(NOT DEFINED NO_TCGEN_${RECIPE})
     # Generate test directory
-    set(TC_DIRECTORY "${NNPKG_PATH}/metadata/tc")
+    set(TC_DIRECTORY "${NNPKG_DIR}/metadata/tc")
     add_custom_command(OUTPUT ${TC_DIRECTORY}
       COMMAND ${CMAKE_COMMAND} -E make_directory ${TC_DIRECTORY}
-      DEPENDS ${NNPKG_PATH}
+      DEPENDS ${NNPKG_DIR}
       COMMENT "Generate ${RECIPE} nnpackage test directory"
     )
     list(APPEND TEST_DEPS ${TC_DIRECTORY})
