@@ -96,10 +96,10 @@ public:
   // luci::CircleNode *visit(const luci::CirclePRelu *) final;
   // luci::CircleNode *visit(const luci::CircleRange *) final;
   // luci::CircleNode *visit(const luci::CircleRank *) final;
-  // luci::CircleNode *visit(const luci::CircleReduceAny *) final;
-  // luci::CircleNode *visit(const luci::CircleReduceMax *) final;
-  // luci::CircleNode *visit(const luci::CircleReduceMin *) final;
-  // luci::CircleNode *visit(const luci::CircleReduceProd *) final;
+  luci::CircleNode *visit(const luci::CircleReduceAny *) final;
+  luci::CircleNode *visit(const luci::CircleReduceMax *) final;
+  luci::CircleNode *visit(const luci::CircleReduceMin *) final;
+  luci::CircleNode *visit(const luci::CircleReduceProd *) final;
   // luci::CircleNode *visit(const luci::CircleRelu *) final;
   // luci::CircleNode *visit(const luci::CircleRelu6 *) final;
   // luci::CircleNode *visit(const luci::CircleReluN1To1 *) final;
