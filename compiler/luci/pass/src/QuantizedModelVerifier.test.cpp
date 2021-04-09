@@ -454,6 +454,33 @@ private:
   luci::CircleConst *_const = nullptr;
 };
 
+class FloorDivTestGraph final : public luci::test::TestIOGraph
+{
+public:
+  void init(void)
+  {
+    TestIOGraph::init({32}, {32});
+
+    _const = create_dummy_const<Type::FLOAT32>(g(), {32});
+    _floor_div = g()->nodes()->create<luci::CircleFloorDiv>();
+    {
+      _floor_div->x(input());
+      _floor_div->y(_const);
+    }
+    output()->from(_floor_div);
+
+    set_minmax_to_non_const(g(), -1, 1);
+  }
+
+  loco::Node *x() { return _floor_div->x(); }
+
+  loco::Node *y() { return _floor_div->y(); }
+
+private:
+  luci::CircleFloorDiv *_floor_div = nullptr;
+  luci::CircleConst *_const = nullptr;
+};
+
 } // namespace
 
 // Quantize and verify with given configurations
@@ -868,6 +895,31 @@ TEST(QuantizedModelVerifierTest, Div_wrong_granularity_NEG)
   TEST_WITH_WRONG_GRANULARITY_TARGET(DivTestGraph, Type::U8, Granularity::LayerWise, g.y());
   TEST_WITH_WRONG_GRANULARITY_TARGET(DivTestGraph, Type::U8, Granularity::ChannelWise, g.y());
   TEST_WITH_WRONG_GRANULARITY_TARGET(DivTestGraph, Type::S16, Granularity::ChannelWise, g.y());
+}
+
+TEST(QuantizedModelVerifierTest, FloorDiv)
+{
+  TEST_WITH_GRAPH(FloorDivTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_GRAPH(FloorDivTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_GRAPH(FloorDivTestGraph, Type::S16, Granularity::ChannelWise);
+}
+
+TEST(QuantizedModelVerifierTest, FloorDiv_wrong_type_NEG)
+{
+  TEST_WITH_WRONG_TYPE(FloorDivTestGraph, Type::U8, Granularity::LayerWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(FloorDivTestGraph, Type::U8, Granularity::ChannelWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(FloorDivTestGraph, Type::S16, Granularity::ChannelWise, Type::U8);
+}
+
+TEST(QuantizedModelVerifierTest, FloorDiv_wrong_granularity_NEG)
+{
+  TEST_WITH_WRONG_GRANULARITY_TARGET(FloorDivTestGraph, Type::U8, Granularity::LayerWise, g.x());
+  TEST_WITH_WRONG_GRANULARITY_TARGET(FloorDivTestGraph, Type::U8, Granularity::ChannelWise, g.x());
+  TEST_WITH_WRONG_GRANULARITY_TARGET(FloorDivTestGraph, Type::S16, Granularity::ChannelWise, g.x());
+
+  TEST_WITH_WRONG_GRANULARITY_TARGET(FloorDivTestGraph, Type::U8, Granularity::LayerWise, g.y());
+  TEST_WITH_WRONG_GRANULARITY_TARGET(FloorDivTestGraph, Type::U8, Granularity::ChannelWise, g.y());
+  TEST_WITH_WRONG_GRANULARITY_TARGET(FloorDivTestGraph, Type::S16, Granularity::ChannelWise, g.y());
 }
 
 #undef TEST_WITH_GRAPH

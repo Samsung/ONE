@@ -261,6 +261,14 @@ private:
     return true;
   }
 
+  bool visit(const luci::CircleFloorDiv *node)
+  {
+    RETURN_FALSE_UNLESS(has_type(node, Type::S16))
+    RETURN_FALSE_UNLESS(has_type(node->x(), Type::S16))
+    RETURN_FALSE_UNLESS(has_type(node->y(), Type::S16))
+    return true;
+  }
+
   // TODO: Implement more Ops
 
   bool visit(const luci::CircleNode *) { return true; }
