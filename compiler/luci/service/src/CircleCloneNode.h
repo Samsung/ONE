@@ -45,7 +45,7 @@ public:
   luci::CircleNode *visit(const luci::CircleConv2D *) final;
   luci::CircleNode *visit(const luci::CircleCos *) final;
   // luci::CircleNode *visit(const luci::CircleCustom *) final;
-  // luci::CircleNode *visit(const luci::CircleDepthToSpace *) final;
+  luci::CircleNode *visit(const luci::CircleDepthToSpace *) final;
   // luci::CircleNode *visit(const luci::CircleDepthwiseConv2D *) final;
   // luci::CircleNode *visit(const luci::CircleDequantize *) final;
   luci::CircleNode *visit(const luci::CircleDiv *) final;
@@ -118,8 +118,8 @@ public:
   luci::CircleNode *visit(const luci::CircleSin *) final;
   // luci::CircleNode *visit(const luci::CircleSlice *) final;
   // luci::CircleNode *visit(const luci::CircleSoftmax *) final;
-  // luci::CircleNode *visit(const luci::CircleSpaceToBatchND *) final;
-  // luci::CircleNode *visit(const luci::CircleSpaceToDepth *) final;
+  luci::CircleNode *visit(const luci::CircleSpaceToBatchND *) final;
+  luci::CircleNode *visit(const luci::CircleSpaceToDepth *) final;
   // luci::CircleNode *visit(const luci::CircleSparseToDense *) final;
   // luci::CircleNode *visit(const luci::CircleSplit *) final;
   // luci::CircleNode *visit(const luci::CircleSplitV *) final;
