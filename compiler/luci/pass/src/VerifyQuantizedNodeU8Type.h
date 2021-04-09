@@ -58,6 +58,16 @@ private:
     return true;
   }
 
+  bool visit(const luci::CircleConcatenation *node)
+  {
+    RETURN_FALSE_UNLESS(has_type(node, Type::U8))
+    for (uint32_t i = 0; i < node->numValues(); i++)
+    {
+      RETURN_FALSE_UNLESS(has_type(node->values(i), Type::U8))
+    }
+    return true;
+  }
+
   bool visit(const luci::CircleDepthwiseConv2D *node)
   {
     RETURN_FALSE_UNLESS(has_type(node, Type::U8))

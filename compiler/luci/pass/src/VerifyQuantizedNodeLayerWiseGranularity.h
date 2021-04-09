@@ -85,6 +85,16 @@ private:
     return true;
   }
 
+  bool visit(const luci::CircleConcatenation *node)
+  {
+    RETURN_FALSE_UNLESS(is_lwq(node))
+    for (uint32_t i = 0; i < node->numValues(); i++)
+    {
+      RETURN_FALSE_UNLESS(is_lwq(node->values(i)));
+    }
+    return true;
+  }
+
   bool visit(const luci::CircleDepthwiseConv2D *node)
   {
     RETURN_FALSE_UNLESS(is_lwq(node))

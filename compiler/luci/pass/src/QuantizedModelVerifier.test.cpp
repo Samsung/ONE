@@ -300,6 +300,36 @@ public:
   luci::CircleConst *_perm = nullptr;
 };
 
+class ConcatenationTestGraph final : public luci::test::TestIOGraph
+{
+public:
+  void init(void)
+  {
+    TestIOGraph::init({16}, {32});
+    _param = g()->nodes()->create<luci::CircleConst>();
+    {
+      _param->dtype(Type::FLOAT32);
+      _param->shape({16});
+      _param->size<Type::FLOAT32>(16);
+      for (int16_t i = 0; i < 16; i++)
+        _param->at<Type::FLOAT32>(i) = static_cast<float>(i);
+    }
+    _concat = g()->nodes()->create<luci::CircleConcatenation>(2);
+    {
+      _concat->values(0, input());
+      _concat->values(1, _param);
+      _concat->axis(0);
+    }
+    output()->from(_concat);
+
+    set_minmax_to_non_const(g(), -1, 1);
+  }
+
+public:
+  luci::CircleConcatenation *_concat = nullptr;
+  luci::CircleConst *_param = nullptr;
+};
+
 // Test graph for comparison Ops
 // GREATER, GREATER_EQUAL, LESS, LESS_EQUAL, EQUAL, NOT_EQUAL
 template <class Op> class ComparisonOpTestGraph final : public luci::test::TestIOGraph
@@ -484,6 +514,27 @@ TEST(QuantizedModelVerifierTest, ArgMax_wrong_input_granularity_NEG)
 
   luci::QuantizedModelVerifier verifier(Type::U8, Granularity::LayerWise);
   EXPECT_ANY_THROW(verifier.verify(g.g()));
+}
+
+TEST(QuantizedModelVerifierTest, Concatenation)
+{
+  TEST_WITH_GRAPH(ConcatenationTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_GRAPH(ConcatenationTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_GRAPH(ConcatenationTestGraph, Type::S16, Granularity::ChannelWise);
+}
+
+TEST(QuantizedModelVerifierTest, Concatenation_wrong_type_NEG)
+{
+  TEST_WITH_WRONG_TYPE(ConcatenationTestGraph, Type::U8, Granularity::LayerWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(ConcatenationTestGraph, Type::U8, Granularity::ChannelWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(ConcatenationTestGraph, Type::S16, Granularity::ChannelWise, Type::U8);
+}
+
+TEST(QuantizedModelVerifierTest, Concatenation_wrong_granularity_NEG)
+{
+  TEST_WITH_WRONG_GRANULARITY(ConcatenationTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_WRONG_GRANULARITY(ConcatenationTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_WRONG_GRANULARITY(ConcatenationTestGraph, Type::S16, Granularity::ChannelWise);
 }
 
 TEST(QuantizedModelVerifierTest, Reshape)
