@@ -50,7 +50,7 @@ public:
   // luci::CircleNode *visit(const luci::CircleDequantize *) final;
   luci::CircleNode *visit(const luci::CircleDiv *) final;
   luci::CircleNode *visit(const luci::CircleElu *) final;
-  // luci::CircleNode *visit(const luci::CircleEqual *) final;
+  luci::CircleNode *visit(const luci::CircleEqual *) final;
   luci::CircleNode *visit(const luci::CircleExp *) final;
   // luci::CircleNode *visit(const luci::CircleExpandDims *) final;
   // luci::CircleNode *visit(const luci::CircleFakeQuant *) final;
@@ -61,14 +61,14 @@ public:
   // luci::CircleNode *visit(const luci::CircleFullyConnected *) final;
   // luci::CircleNode *visit(const luci::CircleGather *) final;
   // luci::CircleNode *visit(const luci::CircleGatherNd *) final;
-  // luci::CircleNode *visit(const luci::CircleGreater *) final;
-  // luci::CircleNode *visit(const luci::CircleGreaterEqual *) final;
+  luci::CircleNode *visit(const luci::CircleGreater *) final;
+  luci::CircleNode *visit(const luci::CircleGreaterEqual *) final;
   // luci::CircleNode *visit(const luci::CircleIf *) final;
   // luci::CircleNode *visit(const luci::CircleL2Normalize *) final;
   // luci::CircleNode *visit(const luci::CircleL2Pool2D *) final;
   // luci::CircleNode *visit(const luci::CircleLeakyRelu *) final;
-  // luci::CircleNode *visit(const luci::CircleLess *) final;
-  // luci::CircleNode *visit(const luci::CircleLessEqual *) final;
+  luci::CircleNode *visit(const luci::CircleLess *) final;
+  luci::CircleNode *visit(const luci::CircleLessEqual *) final;
   // luci::CircleNode *visit(const luci::CircleLocalResponseNormalization *) final;
   luci::CircleNode *visit(const luci::CircleLog *) final;
   // luci::CircleNode *visit(const luci::CircleLogicalAnd *) final;
@@ -87,7 +87,7 @@ public:
   luci::CircleNode *visit(const luci::CircleNeg *) final;
   // luci::CircleNode *visit(const luci::CircleNonMaxSuppressionV4 *) final;
   // luci::CircleNode *visit(const luci::CircleNonMaxSuppressionV5 *) final;
-  // luci::CircleNode *visit(const luci::CircleNotEqual *) final;
+  luci::CircleNode *visit(const luci::CircleNotEqual *) final;
   // luci::CircleNode *visit(const luci::CircleOneHot *) final;
   // luci::CircleNode *visit(const luci::CirclePack *) final;
   // luci::CircleNode *visit(const luci::CirclePad *) final;
