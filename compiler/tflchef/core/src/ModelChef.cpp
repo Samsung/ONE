@@ -90,6 +90,7 @@ DataChefRegistry &data_chef_registry(const tflchef::TensorType &type)
   static DataChefRegistry fp32;
   static DataChefRegistry u8;
   static DataChefRegistry boolean;
+  static DataChefRegistry s16;
 
   switch (type)
   {
@@ -103,6 +104,8 @@ DataChefRegistry &data_chef_registry(const tflchef::TensorType &type)
       return u8;
     case tflchef::BOOL:
       return boolean;
+    case tflchef::INT16:
+      return s16;
     default:
       break;
   }

@@ -19,6 +19,7 @@ enum TensorType {
   UINT8 = 3;
   INT64 = 4;
   BOOL = 6;
+  INT16 = 7;
 }
 
 enum DimensionType {

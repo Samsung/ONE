@@ -33,10 +33,11 @@ tflchef::TensorType as_tflchef_type(const tflite::TensorType type)
       return tflchef::UINT8;
     case tflite::TensorType_BOOL:
       return tflchef::BOOL;
+    case tflite::TensorType_INT16:
+      return tflchef::INT16;
     // TODO handle other types
     // TensorType_FLOAT16
     // TensorType_STRING
-    // TensorType_INT16
     // TensorType_COMPLEX64
     default:
       throw std::runtime_error{"unsupported tensor type"};
