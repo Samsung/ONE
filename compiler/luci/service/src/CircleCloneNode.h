@@ -46,7 +46,7 @@ public:
   luci::CircleNode *visit(const luci::CircleCos *) final;
   // luci::CircleNode *visit(const luci::CircleCustom *) final;
   luci::CircleNode *visit(const luci::CircleDepthToSpace *) final;
-  // luci::CircleNode *visit(const luci::CircleDepthwiseConv2D *) final;
+  luci::CircleNode *visit(const luci::CircleDepthwiseConv2D *) final;
   // luci::CircleNode *visit(const luci::CircleDequantize *) final;
   luci::CircleNode *visit(const luci::CircleDiv *) final;
   luci::CircleNode *visit(const luci::CircleElu *) final;
@@ -58,7 +58,7 @@ public:
   luci::CircleNode *visit(const luci::CircleFloor *) final;
   luci::CircleNode *visit(const luci::CircleFloorDiv *) final;
   luci::CircleNode *visit(const luci::CircleFloorMod *) final;
-  // luci::CircleNode *visit(const luci::CircleFullyConnected *) final;
+  luci::CircleNode *visit(const luci::CircleFullyConnected *) final;
   // luci::CircleNode *visit(const luci::CircleGather *) final;
   // luci::CircleNode *visit(const luci::CircleGatherNd *) final;
   // luci::CircleNode *visit(const luci::CircleGreater *) final;
