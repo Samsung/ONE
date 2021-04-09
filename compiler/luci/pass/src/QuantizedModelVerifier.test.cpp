@@ -31,7 +31,7 @@ namespace
 /**
  * @brief A helper function to create dummy const node
  */
-template <Type T> luci::CircleConst *createDummyConst(loco::Graph *g, luci::test::ShapeU32 shape)
+template <Type T> luci::CircleConst *create_dummy_const(loco::Graph *g, luci::test::ShapeU32 shape)
 {
   auto node = g->nodes()->create<luci::CircleConst>();
   {
@@ -351,7 +351,7 @@ public:
   {
     TestIOGraph::init({32}, {32});
     output()->dtype(loco::DataType::BOOL);
-    _y = createDummyConst<Type::FLOAT32>(g(), {32});
+    _y = create_dummy_const<Type::FLOAT32>(g(), {32});
     _op = g()->nodes()->create<Op>();
     {
       _op->x(input());
@@ -408,12 +408,12 @@ public:
     EXPECT_ANY_THROW(quantize_and_verify_with_wrong_granularity(&g, type, granularity, node)); \
   } while (0)
 
-// Test Local Helper Function
-TEST(QuantizedModelVerifierTest, CreateDummyConst)
+// Test a local helper function
+TEST(QuantizedModelVerifierTest, LocalCreateDummyConst)
 {
   loco::Graph g;
 
-  EXPECT_NO_THROW(createDummyConst<Type::FLOAT32>(&g, {32, 32}));
+  EXPECT_NO_THROW(create_dummy_const<Type::FLOAT32>(&g, {32, 32}));
 }
 
 TEST(QuantizedModelVerifierTest, Logistic)
