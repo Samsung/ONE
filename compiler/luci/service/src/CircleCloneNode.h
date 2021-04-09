@@ -71,9 +71,9 @@ public:
   luci::CircleNode *visit(const luci::CircleLessEqual *) final;
   // luci::CircleNode *visit(const luci::CircleLocalResponseNormalization *) final;
   luci::CircleNode *visit(const luci::CircleLog *) final;
-  // luci::CircleNode *visit(const luci::CircleLogicalAnd *) final;
-  // luci::CircleNode *visit(const luci::CircleLogicalNot *) final;
-  // luci::CircleNode *visit(const luci::CircleLogicalOr *) final;
+  luci::CircleNode *visit(const luci::CircleLogicalAnd *) final;
+  luci::CircleNode *visit(const luci::CircleLogicalNot *) final;
+  luci::CircleNode *visit(const luci::CircleLogicalOr *) final;
   // luci::CircleNode *visit(const luci::CircleLogistic *) final;
   // luci::CircleNode *visit(const luci::CircleLogSoftmax *) final;
   // luci::CircleNode *visit(const luci::CircleMatrixDiag *) final;
