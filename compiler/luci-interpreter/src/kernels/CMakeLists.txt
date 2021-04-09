@@ -99,6 +99,8 @@ set(SOURCES
     Slice.cpp
     Softmax.h
     Softmax.cpp
+    SpaceToBatchND.h
+    SpaceToBatchND.cpp
     SpaceToDepth.h
     SpaceToDepth.cpp
     Split.h
@@ -196,6 +198,7 @@ set(TEST_SOURCES
     Rsqrt.test.cpp
     Slice.test.cpp
     Softmax.test.cpp
+    SpaceToBatchND.test.cpp
     SpaceToDepth.test.cpp
     Split.test.cpp
     StridedSlice.test.cpp

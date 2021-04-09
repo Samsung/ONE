@@ -65,6 +65,7 @@
 #include "kernels/Rsqrt.h"
 #include "kernels/Slice.h"
 #include "kernels/Softmax.h"
+#include "kernels/SpaceToBatchND.h"
 #include "kernels/SpaceToDepth.h"
 #include "kernels/Split.h"
 #include "kernels/StridedSlice.h"
@@ -791,6 +792,20 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleSoftmax *node)
   params.beta = node->beta();
 
   return std::make_unique<kernels::Softmax>(input, output, params);
+}
+
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleSpaceToBatchND *node)
+{
+  assert(node->arity() == 3);
+
+  const Tensor *input = getInputTensor(node->input());
+  const Tensor *block_shape = getInputTensor(node->block_shape());
+  const Tensor *paddings = getInputTensor(node->paddings());
+
+  Tensor *output = getOutputTensor(node);
+
+  return std::make_unique<kernels::SpaceToBatchND>(input, block_shape, paddings, output);
+  ;
 }
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleSpaceToDepth *node)
