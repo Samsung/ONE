@@ -57,11 +57,11 @@ template <Type T> luci::CircleConst *create_dummy_const(loco::Graph *g, luci::te
           break;
         case Type::U8:
           // Fill with index
-          node->at<T>(i) = static_cast<int8_t>(i);
+          node->at<T>(i) = static_cast<uint8_t>(i);
           break;
         case Type::S16:
           // Fill with index
-          node->at<T>(i) = static_cast<uint8_t>(i);
+          node->at<T>(i) = static_cast<int16_t>(i);
           break;
       }
     }
