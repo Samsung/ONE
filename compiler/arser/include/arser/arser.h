@@ -261,31 +261,31 @@ public:
     return *_arg_map[arg_name];
   }
 
-  Argument &add_argument(const std::vector<std::string> &args)
+  Argument &add_argument(const std::vector<std::string> &arg_name_vec)
   {
-    _optional_arg_vec.emplace_back(args.at(0));
-    for (const auto &arg : args)
+    _optional_arg_vec.emplace_back(arg_name_vec.at(0));
+    for (const auto &arg_name : arg_name_vec)
     {
-      if (arg.at(0) != '-')
+      if (arg_name.at(0) != '-')
       {
         throw std::runtime_error("Invalid argument. "
                                  "Positional argument cannot have short option.");
       }
-      _arg_map[arg] = &_optional_arg_vec.back();
+      _arg_map[arg_name] = &_optional_arg_vec.back();
     }
     return _optional_arg_vec.back();
   }
 
-  template <typename... Ts> Argument &add_argument(const std::string &arg, Ts... args)
+  template <typename... Ts> Argument &add_argument(const std::string &arg_name, Ts... arg_names)
   {
-    if (sizeof...(args) == 0)
+    if (sizeof...(arg_names) == 0)
     {
-      return add_argument(arg);
+      return add_argument(arg_name);
     }
-    // sizeof...(args) > 0
+    // sizeof...(arg_names) > 0
     else
     {
-      return add_argument(std::vector<std::string>{arg, args...});
+      return add_argument(std::vector<std::string>{arg_name, arg_names...});
     }
   }
 
