@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+#include "luci/Service/CircleNodeClone.h"
+
 #include <luci/IR/CircleNodes.h>
 #include <luci/Service/CircleShapeInference.h>
 
@@ -94,4 +96,18 @@ TEST(ShapeRuleTest, gather_nd_NEG)
   luci::sinf::Rule shape_inf_rule;
 
   ASSERT_THROW(shape_inf_rule.infer(&gather_nd, shape), oops::InternalExn);
+}
+
+TEST(CloneNodeTest, clone_GatherNd)
+{
+  auto g = loco::make_graph();
+  auto node_gtnd = g->nodes()->create<luci::CircleGatherNd>();
+
+  auto gc = loco::make_graph();
+  auto cloned = luci::clone_node(node_gtnd, gc.get());
+  ASSERT_NE(nullptr, cloned);
+  ASSERT_EQ(gc.get(), cloned->graph());
+
+  auto cloned_gtnd = dynamic_cast<luci::CircleGatherNd *>(cloned);
+  ASSERT_NE(nullptr, cloned_gtnd);
 }
