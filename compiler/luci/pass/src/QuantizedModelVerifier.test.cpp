@@ -317,6 +317,31 @@ public:
   luci::CircleConst *_dimension = nullptr;
 };
 
+class PadTestGraph final : public luci::test::TestIOGraph
+{
+public:
+  void init(void)
+  {
+    TestIOGraph::init({32}, {32});
+    _paddings = g()->nodes()->create<luci::CircleConst>();
+    {
+      _paddings->dtype(Type::S32);
+    }
+    _pad = g()->nodes()->create<luci::CirclePad>();
+    {
+      _pad->input(input());
+      _pad->paddings(_paddings);
+    }
+    output()->from(_pad);
+
+    set_minmax_to_non_const(g(), -1, 1);
+  }
+
+public:
+  luci::CirclePad *_pad = nullptr;
+  luci::CircleConst *_paddings = nullptr;
+};
+
 class TransposeTestGraph final : public luci::test::TestIOGraph
 {
 public:
@@ -623,6 +648,27 @@ TEST(QuantizedModelVerifierTest, Tanh_wrong_granularity_NEG)
   TEST_WITH_WRONG_GRANULARITY(TanhTestGraph, Type::U8, Granularity::LayerWise);
   TEST_WITH_WRONG_GRANULARITY(TanhTestGraph, Type::U8, Granularity::ChannelWise);
   TEST_WITH_WRONG_GRANULARITY(TanhTestGraph, Type::S16, Granularity::ChannelWise);
+}
+
+TEST(QuantizedModelVerifierTest, Pad)
+{
+  TEST_WITH_GRAPH(PadTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_GRAPH(PadTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_GRAPH(PadTestGraph, Type::S16, Granularity::ChannelWise);
+}
+
+TEST(QuantizedModelVerifierTest, Pad_wrong_type_NEG)
+{
+  TEST_WITH_WRONG_TYPE(PadTestGraph, Type::U8, Granularity::LayerWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(PadTestGraph, Type::U8, Granularity::ChannelWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(PadTestGraph, Type::S16, Granularity::ChannelWise, Type::U8);
+}
+
+TEST(QuantizedModelVerifierTest, Pad_wrong_granularity_NEG)
+{
+  TEST_WITH_WRONG_GRANULARITY(PadTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_WRONG_GRANULARITY(PadTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_WRONG_GRANULARITY(PadTestGraph, Type::S16, Granularity::ChannelWise);
 }
 
 TEST(QuantizedModelVerifierTest, Transpose)
