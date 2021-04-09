@@ -86,6 +86,14 @@ private:
     return true;
   }
 
+  bool visit(const luci::CirclePad *node)
+  {
+    RETURN_FALSE_UNLESS(has_type(node, Type::S16))
+    RETURN_FALSE_UNLESS(has_type(node->input(), Type::S16))
+    RETURN_FALSE_UNLESS(has_type(node->paddings(), Type::S32))
+    return true;
+  }
+
   bool visit(const luci::CirclePRelu *node)
   {
     RETURN_FALSE_UNLESS(has_type(node, Type::S16))
@@ -126,6 +134,14 @@ private:
   {
     RETURN_FALSE_UNLESS(has_type(node, Type::S16))
     RETURN_FALSE_UNLESS(has_type(node->value(), Type::S16))
+    return true;
+  }
+
+  bool visit(const luci::CircleLogicalOr *node)
+  {
+    RETURN_FALSE_UNLESS(has_type(node, Type::BOOL))
+    RETURN_FALSE_UNLESS(has_type(node->x(), Type::BOOL))
+    RETURN_FALSE_UNLESS(has_type(node->y(), Type::BOOL))
     return true;
   }
 

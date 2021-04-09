@@ -28,6 +28,48 @@ using Granularity = luci::QuantizationGranularity;
 namespace
 {
 
+/**
+ * @brief A helper function to create dummy const node
+ */
+template <Type T> luci::CircleConst *create_dummy_const(loco::Graph *g, luci::test::ShapeU32 shape)
+{
+  auto node = g->nodes()->create<luci::CircleConst>();
+  {
+    node->dtype(T);
+    node->shape(shape);
+    node->size<T>(luci::test::num_elements(shape));
+
+    for (int32_t i = 0; i < luci::test::num_elements(shape); i++)
+    {
+      // DESIGN NOTE
+      //
+      // Filling with any random numbers are fine
+      // Q. Should it include minus numbers?
+      switch (T)
+      {
+        case Type::FLOAT32:
+          // Fill with index
+          node->at<T>(i) = static_cast<float>(i);
+          break;
+        case Type::BOOL:
+          // Fill by flip
+          node->at<T>(i) = (i % 2) ? true : false;
+          break;
+        case Type::U8:
+          // Fill with index
+          node->at<T>(i) = static_cast<uint8_t>(i);
+          break;
+        case Type::S16:
+          // Fill with index
+          node->at<T>(i) = static_cast<int16_t>(i);
+          break;
+      }
+    }
+  }
+
+  return node;
+}
+
 void insert_scale_zp(luci::CircleNode *node, float scale, int64_t zp)
 {
   auto qparam = node->quantparam();
@@ -275,6 +317,31 @@ public:
   luci::CircleConst *_dimension = nullptr;
 };
 
+class PadTestGraph final : public luci::test::TestIOGraph
+{
+public:
+  void init(void)
+  {
+    TestIOGraph::init({32}, {32});
+    _paddings = g()->nodes()->create<luci::CircleConst>();
+    {
+      _paddings->dtype(Type::S32);
+    }
+    _pad = g()->nodes()->create<luci::CirclePad>();
+    {
+      _pad->input(input());
+      _pad->paddings(_paddings);
+    }
+    output()->from(_pad);
+
+    set_minmax_to_non_const(g(), -1, 1);
+  }
+
+public:
+  luci::CirclePad *_pad = nullptr;
+  luci::CircleConst *_paddings = nullptr;
+};
+
 class TransposeTestGraph final : public luci::test::TestIOGraph
 {
 public:
@@ -339,13 +406,40 @@ public:
   {
     TestIOGraph::init({32}, {32});
     output()->dtype(loco::DataType::BOOL);
+    _y = create_dummy_const<Type::FLOAT32>(g(), {32});
+    _op = g()->nodes()->create<Op>();
+    {
+      _op->x(input());
+      _op->y(_y);
+      _op->dtype(loco::DataType::BOOL);
+    }
+    output()->from(_op);
+
+    set_minmax_to_non_const(g(), -1, 1);
+  }
+
+public:
+  Op *_op = nullptr;
+  luci::CircleConst *_y = nullptr;
+};
+
+// Test graph for binary logical Ops
+// LOGICAL_OR, LOGICAL_AND
+template <class Op> class BinaryLogicalOpTestGraph final : public luci::test::TestIOGraph
+{
+public:
+  void init(void)
+  {
+    TestIOGraph::init({32}, {32});
+    input()->dtype(loco::DataType::BOOL);
+    output()->dtype(loco::DataType::BOOL);
     _y = g()->nodes()->create<luci::CircleConst>();
     {
-      _y->dtype(Type::FLOAT32);
+      _y->dtype(Type::BOOL);
       _y->shape({32});
-      _y->size<Type::FLOAT32>(32);
+      _y->size<Type::BOOL>(32);
       for (int32_t i = 0; i < 32; i++)
-        _y->at<Type::FLOAT32>(i) = static_cast<float>(i);
+        _y->at<Type::BOOL>(i) = 0;
     }
     _op = g()->nodes()->create<Op>();
     {
@@ -402,6 +496,14 @@ public:
     auto node = loco::must_cast<luci::CircleNode *>(target);                                   \
     EXPECT_ANY_THROW(quantize_and_verify_with_wrong_granularity(&g, type, granularity, node)); \
   } while (0)
+
+// Test a local helper function
+TEST(QuantizedModelVerifierTest, LocalCreateDummyConst)
+{
+  loco::Graph g;
+
+  EXPECT_NO_THROW(create_dummy_const<Type::FLOAT32>(&g, {32, 32}));
+}
 
 TEST(QuantizedModelVerifierTest, Logistic)
 {
@@ -537,6 +639,26 @@ TEST(QuantizedModelVerifierTest, Concatenation_wrong_granularity_NEG)
   TEST_WITH_WRONG_GRANULARITY(ConcatenationTestGraph, Type::S16, Granularity::ChannelWise);
 }
 
+TEST(QuantizedModelVerifierTest, LogicalOr)
+{
+  TEST_WITH_GRAPH(BinaryLogicalOpTestGraph<luci::CircleLogicalOr>, Type::U8,
+                  Granularity::LayerWise);
+  TEST_WITH_GRAPH(BinaryLogicalOpTestGraph<luci::CircleLogicalOr>, Type::U8,
+                  Granularity::ChannelWise);
+  TEST_WITH_GRAPH(BinaryLogicalOpTestGraph<luci::CircleLogicalOr>, Type::S16,
+                  Granularity::ChannelWise);
+}
+
+TEST(QuantizedModelVerifierTest, LogicalOr_wrong_type_NEG)
+{
+  TEST_WITH_WRONG_TYPE(BinaryLogicalOpTestGraph<luci::CircleLogicalOr>, Type::U8,
+                       Granularity::LayerWise, Type::U8);
+  TEST_WITH_WRONG_TYPE(BinaryLogicalOpTestGraph<luci::CircleLogicalOr>, Type::U8,
+                       Granularity::ChannelWise, Type::U8);
+  TEST_WITH_WRONG_TYPE(BinaryLogicalOpTestGraph<luci::CircleLogicalOr>, Type::S16,
+                       Granularity::ChannelWise, Type::S16);
+}
+
 TEST(QuantizedModelVerifierTest, Reshape)
 {
   TEST_WITH_GRAPH(ReshapeTestGraph, Type::U8, Granularity::LayerWise);
@@ -577,6 +699,27 @@ TEST(QuantizedModelVerifierTest, Tanh_wrong_granularity_NEG)
   TEST_WITH_WRONG_GRANULARITY(TanhTestGraph, Type::U8, Granularity::LayerWise);
   TEST_WITH_WRONG_GRANULARITY(TanhTestGraph, Type::U8, Granularity::ChannelWise);
   TEST_WITH_WRONG_GRANULARITY(TanhTestGraph, Type::S16, Granularity::ChannelWise);
+}
+
+TEST(QuantizedModelVerifierTest, Pad)
+{
+  TEST_WITH_GRAPH(PadTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_GRAPH(PadTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_GRAPH(PadTestGraph, Type::S16, Granularity::ChannelWise);
+}
+
+TEST(QuantizedModelVerifierTest, Pad_wrong_type_NEG)
+{
+  TEST_WITH_WRONG_TYPE(PadTestGraph, Type::U8, Granularity::LayerWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(PadTestGraph, Type::U8, Granularity::ChannelWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(PadTestGraph, Type::S16, Granularity::ChannelWise, Type::U8);
+}
+
+TEST(QuantizedModelVerifierTest, Pad_wrong_granularity_NEG)
+{
+  TEST_WITH_WRONG_GRANULARITY(PadTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_WRONG_GRANULARITY(PadTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_WRONG_GRANULARITY(PadTestGraph, Type::S16, Granularity::ChannelWise);
 }
 
 TEST(QuantizedModelVerifierTest, Transpose)

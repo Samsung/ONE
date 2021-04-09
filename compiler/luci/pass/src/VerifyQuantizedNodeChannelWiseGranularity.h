@@ -125,6 +125,13 @@ private:
     return true;
   }
 
+  bool visit(const luci::CirclePad *node)
+  {
+    RETURN_FALSE_UNLESS(is_lwq(node))
+    RETURN_FALSE_UNLESS(is_lwq(node->input()))
+    return true;
+  }
+
   bool visit(const luci::CirclePRelu *node)
   {
     RETURN_FALSE_UNLESS(is_lwq(node))
@@ -166,6 +173,13 @@ private:
   {
     RETURN_FALSE_UNLESS(is_lwq(node));
     RETURN_FALSE_UNLESS(is_lwq(node->value()));
+    return true;
+  }
+
+  bool visit(const luci::CircleLogicalOr *)
+  {
+    // Logical OR has bool-type inputs and output
+    // Nothing to be checked
     return true;
   }
 
