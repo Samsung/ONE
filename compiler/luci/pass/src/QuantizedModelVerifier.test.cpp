@@ -28,6 +28,48 @@ using Granularity = luci::QuantizationGranularity;
 namespace
 {
 
+/**
+ * @brief A helper function to create dummy const node
+ */
+template <Type T> luci::CircleConst *create_dummy_const(loco::Graph *g, luci::test::ShapeU32 shape)
+{
+  auto node = g->nodes()->create<luci::CircleConst>();
+  {
+    node->dtype(T);
+    node->shape(shape);
+    node->size<T>(luci::test::num_elements(shape));
+
+    for (int32_t i = 0; i < luci::test::num_elements(shape); i++)
+    {
+      // DESIGN NOTE
+      //
+      // Filling with any random numbers are fine
+      // Q. Should it include minus numbers?
+      switch (T)
+      {
+        case Type::FLOAT32:
+          // Fill with index
+          node->at<T>(i) = static_cast<float>(i);
+          break;
+        case Type::BOOL:
+          // Fill by flip
+          node->at<T>(i) = (i % 2) ? true : false;
+          break;
+        case Type::U8:
+          // Fill with index
+          node->at<T>(i) = static_cast<uint8_t>(i);
+          break;
+        case Type::S16:
+          // Fill with index
+          node->at<T>(i) = static_cast<int16_t>(i);
+          break;
+      }
+    }
+  }
+
+  return node;
+}
+
 void insert_scale_zp(luci::CircleNode *node, float scale, int64_t zp)
 {
   auto qparam = node->quantparam();
@@ -309,14 +351,7 @@ public:
   {
     TestIOGraph::init({32}, {32});
     output()->dtype(loco::DataType::BOOL);
-    _y = g()->nodes()->create<luci::CircleConst>();
-    {
-      _y->dtype(Type::FLOAT32);
-      _y->shape({32});
-      _y->size<Type::FLOAT32>(32);
-      for (int32_t i = 0; i < 32; i++)
-        _y->at<Type::FLOAT32>(i) = static_cast<float>(i);
-    }
+    _y = create_dummy_const<Type::FLOAT32>(g(), {32});
     _op = g()->nodes()->create<Op>();
     {
       _op->x(input());
@@ -406,6 +441,14 @@ public:
     auto node = loco::must_cast<luci::CircleNode *>(target);                                   \
     EXPECT_ANY_THROW(quantize_and_verify_with_wrong_granularity(&g, type, granularity, node)); \
   } while (0)
+
+// Test a local helper function
+TEST(QuantizedModelVerifierTest, LocalCreateDummyConst)
+{
+  loco::Graph g;
+
+  EXPECT_NO_THROW(create_dummy_const<Type::FLOAT32>(&g, {32, 32}));
+}
 
 TEST(QuantizedModelVerifierTest, Logistic)
 {
