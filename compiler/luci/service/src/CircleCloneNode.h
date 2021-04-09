@@ -64,8 +64,8 @@ public:
   luci::CircleNode *visit(const luci::CircleGreater *) final;
   luci::CircleNode *visit(const luci::CircleGreaterEqual *) final;
   // luci::CircleNode *visit(const luci::CircleIf *) final;
-  // luci::CircleNode *visit(const luci::CircleL2Normalize *) final;
-  // luci::CircleNode *visit(const luci::CircleL2Pool2D *) final;
+  luci::CircleNode *visit(const luci::CircleL2Normalize *) final;
+  luci::CircleNode *visit(const luci::CircleL2Pool2D *) final;
   // luci::CircleNode *visit(const luci::CircleLeakyRelu *) final;
   luci::CircleNode *visit(const luci::CircleLess *) final;
   luci::CircleNode *visit(const luci::CircleLessEqual *) final;
