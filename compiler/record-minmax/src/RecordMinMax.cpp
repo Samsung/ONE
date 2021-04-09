@@ -39,6 +39,33 @@ namespace
 {
 
 /**
+ * @brief  genRandomData will return a vector filled with random data
+ */
+template <typename T> std::vector<T> genRandomData(std::mt19937 &gen, uint32_t num_elements)
+{
+  std::uniform_real_distribution<> dist(-5, 5);
+  std::vector<T> input_data(num_elements);
+
+  // Write random data
+  for (auto &iter : input_data)
+    iter = static_cast<T>(dist(gen));
+
+  return input_data;
+}
+
+std::vector<uint8_t> genRandomBoolData(std::mt19937 &gen, uint32_t num_elements)
+{
+  std::uniform_int_distribution<> dist(0, 1);
+  std::vector<uint8_t> input_data(num_elements);
+
+  // Write random data
+  for (auto &iter : input_data)
+    iter = static_cast<uint8_t>(dist(gen));
+
+  return input_data;
+}
+
+/**
  * @brief  getTensorSize will return size in bytes
  */
 template <typename NodeT> size_t getTensorSize(const NodeT *node)
@@ -216,7 +243,6 @@ void RecordMinMax::profileDataWithRandomInputs(const std::string &mode, float mi
 
   std::random_device rd;
   std::mt19937 gen(rd());
-  std::uniform_real_distribution<> dist(-5, 5);
 
   for (int32_t record_idx = 0; record_idx < num_records; record_idx++)
   {
@@ -226,7 +252,6 @@ void RecordMinMax::profileDataWithRandomInputs(const std::string &mode, float mi
     {
       const auto *input_node = loco::must_cast<const luci::CircleInput *>(input_nodes[input_idx]);
       assert(input_node->index() == input_idx);
-      assert(input_node->dtype() == loco::DataType::FLOAT32);
       uint32_t num_elements = 1;
       for (uint32_t i = 0; i < input_node->rank(); i++)
       {
@@ -239,16 +264,18 @@ void RecordMinMax::profileDataWithRandomInputs(const std::string &mode, float mi
       if (num_elements == 0)
         throw std::runtime_error("Only support non-zero sized inputs");
 
-      std::vector<float> input_data(num_elements);
-
-      // Write random data
-      for (auto &iter : input_data)
-        iter = static_cast<float>(dist(gen));
-
-      // TODO: Input data is copied twice (file -> buffer (input_data) -> interpreter inputs)
-      //       We can redcue the copy by directly writing data from file to interpreter inputs
-      _interpreter->writeInputTensor(input_node, input_data.data(),
-                                     input_data.size() * sizeof(float));
+      if (input_node->dtype() == DataType::FLOAT32)
+      {
+        auto input_data = genRandomData<float>(gen, num_elements);
+        _interpreter->writeInputTensor(input_node, input_data.data(),
+                                       input_data.size() * sizeof(float));
+      }
+      else if (input_node->dtype() == DataType::BOOL)
+      {
+        auto input_data = genRandomBoolData(gen, num_elements);
+        _interpreter->writeInputTensor(input_node, input_data.data(),
+                                       input_data.size() * sizeof(uint8_t));
+      }
     }
 
     _interpreter->interpret();

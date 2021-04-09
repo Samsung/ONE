@@ -39,9 +39,16 @@ for i in range(num_data):
 
     for j in range(len(input_details)):
         input_detail = input_details[j]
-        # Generate random input [-5, 5)
-        input_data = np.array(10 * np.random.random_sample(input_detail["shape"]) - 5,
-                              input_detail["dtype"])
+        print(input_detail["dtype"])
+        if input_detail["dtype"] == np.bool_:
+            # Generate random bool [0, 1]
+            input_data = np.array(
+                np.random.random_integers(0, 1, input_detail["shape"]),
+                input_detail["dtype"])
+        elif input_detail["dtype"] == np.float32:
+            # Generate random input [-5, 5)
+            input_data = np.array(10 * np.random.random_sample(input_detail["shape"]) - 5,
+                                  input_detail["dtype"])
         sample.create_dataset(str(j), data=input_data)
 
 h5_file.close()
