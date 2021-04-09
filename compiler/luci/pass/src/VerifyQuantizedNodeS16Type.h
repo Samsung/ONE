@@ -119,6 +119,14 @@ private:
     return true;
   }
 
+  bool visit(const luci::CircleLogicalOr *node)
+  {
+    RETURN_FALSE_UNLESS(has_type(node, Type::BOOL))
+    RETURN_FALSE_UNLESS(has_type(node->x(), Type::BOOL))
+    RETURN_FALSE_UNLESS(has_type(node->y(), Type::BOOL))
+    return true;
+  }
+
   bool visit(const luci::CircleMaxPool2D *node)
   {
     RETURN_FALSE_UNLESS(has_type(node, Type::S16))

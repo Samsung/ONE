@@ -904,6 +904,10 @@ void quantize_const_inputs(luci::CircleNode *node, loco::DataType output_type)
       // Handled in propagate_concat_quantparam
       break;
 
+    case luci::CircleOpcode::LOGICAL_OR:
+      // Inputs of logical Ops are bool, thus not quantized
+      break;
+
     case luci::CircleOpcode::ARG_MAX:
     case luci::CircleOpcode::ARG_MIN:
     case luci::CircleOpcode::MEAN:
