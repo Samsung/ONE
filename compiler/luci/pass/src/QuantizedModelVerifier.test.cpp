@@ -427,6 +427,33 @@ public:
   luci::CircleConst *_y = nullptr;
 };
 
+class DivTestGraph final : public luci::test::TestIOGraph
+{
+public:
+  void init(void)
+  {
+    TestIOGraph::init({32}, {32});
+
+    _const = create_dummy_const<Type::FLOAT32>(g(), {32});
+    _div = g()->nodes()->create<luci::CircleDiv>();
+    {
+      _div->x(input());
+      _div->y(_const);
+    }
+    output()->from(_div);
+
+    set_minmax_to_non_const(g(), -1, 1);
+  }
+
+  loco::Node *x() { return _div->x(); }
+
+  loco::Node *y() { return _div->y(); }
+
+private:
+  luci::CircleDiv *_div = nullptr;
+  luci::CircleConst *_const = nullptr;
+};
+
 } // namespace
 
 // Quantize and verify with given configurations
@@ -816,6 +843,31 @@ TEST(QuantizedModelVerifierTest, NotEqual_wrong_granularity_NEG)
                                      Granularity::ChannelWise, g._y);
   TEST_WITH_WRONG_GRANULARITY_TARGET(ComparisonOpTestGraph<luci::CircleNotEqual>, Type::S16,
                                      Granularity::ChannelWise, g._y);
+}
+
+TEST(QuantizedModelVerifierTest, Div)
+{
+  TEST_WITH_GRAPH(DivTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_GRAPH(DivTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_GRAPH(DivTestGraph, Type::S16, Granularity::ChannelWise);
+}
+
+TEST(QuantizedModelVerifierTest, Div_wrong_type_NEG)
+{
+  TEST_WITH_WRONG_TYPE(DivTestGraph, Type::U8, Granularity::LayerWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(DivTestGraph, Type::U8, Granularity::ChannelWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(DivTestGraph, Type::S16, Granularity::ChannelWise, Type::U8);
+}
+
+TEST(QuantizedModelVerifierTest, Div_wrong_granularity_NEG)
+{
+  TEST_WITH_WRONG_GRANULARITY_TARGET(DivTestGraph, Type::U8, Granularity::LayerWise, g.x());
+  TEST_WITH_WRONG_GRANULARITY_TARGET(DivTestGraph, Type::U8, Granularity::ChannelWise, g.x());
+  TEST_WITH_WRONG_GRANULARITY_TARGET(DivTestGraph, Type::S16, Granularity::ChannelWise, g.x());
+
+  TEST_WITH_WRONG_GRANULARITY_TARGET(DivTestGraph, Type::U8, Granularity::LayerWise, g.y());
+  TEST_WITH_WRONG_GRANULARITY_TARGET(DivTestGraph, Type::U8, Granularity::ChannelWise, g.y());
+  TEST_WITH_WRONG_GRANULARITY_TARGET(DivTestGraph, Type::S16, Granularity::ChannelWise, g.y());
 }
 
 #undef TEST_WITH_GRAPH
