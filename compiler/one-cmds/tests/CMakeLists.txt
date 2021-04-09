@@ -17,6 +17,10 @@ file(APPEND "${DRIVER_SCRIPT}" "  USER_PATH=$1\n")
 file(APPEND "${DRIVER_SCRIPT}" "  export PATH=$USER_PATH:$PATH\n")
 file(APPEND "${DRIVER_SCRIPT}" "fi\n")
 file(APPEND "${DRIVER_SCRIPT}" "\n")
+file(APPEND "${DRIVER_SCRIPT}" "# refer https://github.com/Samsung/ONE/issues/6286\n")
+file(APPEND "${DRIVER_SCRIPT}" "set -o pipefail\n\n")
+file(APPEND "${DRIVER_SCRIPT}" "fail_count=0\n")
+file(APPEND "${DRIVER_SCRIPT}" "trap \"(( fail_count++ ))\" ERR\n\n")
 
 foreach(TESTITEM IN ITEMS ${TESTITEMS})
   get_filename_component(ITEM_PREFIX ${TESTITEM} NAME_WE)
@@ -35,7 +39,16 @@ foreach(CONFIGITEM IN ITEMS ${CONFIGITEMS})
   install(FILES ${CONFIGITEM} DESTINATION test)
 endforeach(CONFIGITEM)
 
-file(APPEND "${DRIVER_SCRIPT}" "popd> /dev/null")
+file(APPEND "${DRIVER_SCRIPT}" "popd > /dev/null\n\n")
+
+file(APPEND "${DRIVER_SCRIPT}"
+"if [[ $fail_count != 0 ]]; then
+  echo \"$fail_count TESTS FAILED\"
+  exit 255
+else
+  echo \"ALL TESTS PASSED!\"
+fi\n
+")
 
 set(PREPARE_TEST_MATERIALS_SH "${CMAKE_CURRENT_SOURCE_DIR}/prepare_test_materials.sh")
 set(PREPROCESS_IMAGES_PY "${CMAKE_CURRENT_SOURCE_DIR}/preprocess_images.py")
