@@ -342,3 +342,102 @@ TEST(BasicTest, DefaultValue)
   // 1 string, 1 argument
   EXPECT_EQ("arser", arser.get<std::string>("--name"));
 }
+
+TEST(BasicTest, shortOption)
+{
+  /* arrange */
+  Arser arser;
+
+  arser.add_argument("--input_path", "-i")
+    .nargs(1)
+    .type(arser::DataType::STR)
+    .help("input path of this program.")
+    .required();
+  arser.add_argument("--output_path", "-o")
+    .nargs(1)
+    .type(arser::DataType::STR)
+    .help("output path of this program.")
+    .required(true);
+
+  Prompt prompt("./driver -i /I/am/in.put --output_path I/am/out.put");
+  /* act */
+  arser.parse(prompt.argc(), prompt.argv());
+  /* assert */
+  EXPECT_TRUE(arser["--input_path"]);
+  EXPECT_EQ("/I/am/in.put", arser.get<std::string>("--input_path"));
+  EXPECT_TRUE(arser["--output_path"]);
+  EXPECT_EQ("I/am/out.put", arser.get<std::string>("--output_path"));
+}
+
+TEST(BasicTest, shortMultipleOption)
+{
+  /* arrange */
+  Arser arser;
+
+  arser.add_argument("--input_path", "-i", "--input", "--in")
+    .nargs(1)
+    .type(arser::DataType::STR)
+    .help("input path of this program.")
+    .required();
+  arser.add_argument("--output_path", "-o")
+    .nargs(1)
+    .type(arser::DataType::STR)
+    .help("output path of this program.")
+    .required(true);
+
+  Prompt prompt("./driver --in /I/am/in.put -o I/am/out.put");
+  /* act */
+  arser.parse(prompt.argc(), prompt.argv());
+  /* assert */
+  EXPECT_TRUE(arser["--input"]);
+  EXPECT_EQ("/I/am/in.put", arser.get<std::string>("--input"));
+  EXPECT_TRUE(arser["--output_path"]);
+  EXPECT_EQ("I/am/out.put", arser.get<std::string>("--output_path"));
+}
+
+TEST(BasicTest, OptWithRequiredDuplicate)
+{
+  /* arrange */
+  Arser arser;
+
+  arser.add_argument("--input_path", "-i", "--input", "--in")
+    .nargs(1)
+    .type(arser::DataType::STR)
+    .help("input path of this program.")
+    .required();
+  arser.add_argument("--output_path", "-o")
+    .nargs(1)
+    .type(arser::DataType::STR)
+    .help("output path of this program.")
+    .required(true);
+
+  Prompt prompt("./driver --in /I/am/in.put -o I/am/out.put -i /I/am/duplicate");
+  /* act */ /* assert */
+  EXPECT_THROW(arser.parse(prompt.argc(), prompt.argv()), std::runtime_error);
+}
+
+TEST(BasicTest, OptWithNonRequiredDuplicate)
+{
+  /* arrange */
+  Arser arser;
+
+  arser.add_argument("--input_path", "-i", "--input", "--in")
+    .nargs(1)
+    .type(arser::DataType::STR)
+    .help("input path of this program.");
+  /* .required() */
+  arser.add_argument("--output_path", "-o")
+    .nargs(1)
+    .type(arser::DataType::STR)
+    .help("output path of this program.")
+    .required(true);
+
+  Prompt prompt("./driver --in /I/am/in.put -o I/am/out.put -i /I/am/duplicate");
+  /* act */
+  arser.parse(prompt.argc(), prompt.argv());
+  /* assert */
+  EXPECT_TRUE(arser["--input"]);
+  EXPECT_EQ("/I/am/duplicate", arser.get<std::string>("--input"));
+  EXPECT_TRUE(arser["--output_path"]);
+  EXPECT_EQ("I/am/out.put", arser.get<std::string>("--output_path"));
+}
