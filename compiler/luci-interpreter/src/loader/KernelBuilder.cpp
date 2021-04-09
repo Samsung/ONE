@@ -19,6 +19,7 @@
 #include "kernels/Add.h"
 #include "kernels/ArgMax.h"
 #include "kernels/AveragePool2D.h"
+#include "kernels/BatchToSpaceND.h"
 #include "kernels/Concatenation.h"
 #include "kernels/Conv2D.h"
 #include "kernels/DepthToSpace.h"
@@ -180,6 +181,18 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleAveragePool2D *no
   params.activation = node->fusedActivationFunction();
 
   return std::make_unique<kernels::AveragePool2D>(input, output, params);
+}
+
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleBatchToSpaceND *node)
+{
+  assert(node->arity() == 3);
+
+  const Tensor *input = getInputTensor(node->input());
+  const Tensor *block_shape = getInputTensor(node->block_shape());
+  const Tensor *crops = getInputTensor(node->crops());
+  Tensor *output = getOutputTensor(node);
+
+  return std::make_unique<kernels::BatchToSpaceND>(input, block_shape, crops, output);
 }
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleConcatenation *node)
