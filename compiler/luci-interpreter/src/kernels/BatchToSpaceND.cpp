@@ -28,8 +28,11 @@ namespace luci_interpreter
 namespace kernels
 {
 
+namespace
+{
 const int kInputMinDimensionNum = 3;
 const int kInputMaxDimensionNum = 4;
+} // namespace
 
 BatchToSpaceND::BatchToSpaceND(const Tensor *input, const Tensor *block_shape, const Tensor *crops,
                                Tensor *output)
