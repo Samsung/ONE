@@ -55,9 +55,9 @@ public:
   // luci::CircleNode *visit(const luci::CircleExpandDims *) final;
   // luci::CircleNode *visit(const luci::CircleFakeQuant *) final;
   // luci::CircleNode *visit(const luci::CircleFill *) final;
-  // luci::CircleNode *visit(const luci::CircleFloor *) final;
-  // luci::CircleNode *visit(const luci::CircleFloorDiv *) final;
-  // luci::CircleNode *visit(const luci::CircleFloorMod *) final;
+  luci::CircleNode *visit(const luci::CircleFloor *) final;
+  luci::CircleNode *visit(const luci::CircleFloorDiv *) final;
+  luci::CircleNode *visit(const luci::CircleFloorMod *) final;
   // luci::CircleNode *visit(const luci::CircleFullyConnected *) final;
   // luci::CircleNode *visit(const luci::CircleGather *) final;
   // luci::CircleNode *visit(const luci::CircleGatherNd *) final;
