@@ -261,6 +261,34 @@ public:
     return *_arg_map[arg_name];
   }
 
+  Argument &add_argument(const std::vector<std::string> &arg_name_vec)
+  {
+    _optional_arg_vec.emplace_back(arg_name_vec.at(0));
+    for (const auto &arg_name : arg_name_vec)
+    {
+      if (arg_name.at(0) != '-')
+      {
+        throw std::runtime_error("Invalid argument. "
+                                 "Positional argument cannot have short option.");
+      }
+      _arg_map[arg_name] = &_optional_arg_vec.back();
+    }
+    return _optional_arg_vec.back();
+  }
+
+  template <typename... Ts> Argument &add_argument(const std::string &arg_name, Ts... arg_names)
+  {
+    if (sizeof...(arg_names) == 0)
+    {
+      return add_argument(arg_name);
+    }
+    // sizeof...(arg_names) > 0
+    else
+    {
+      return add_argument(std::vector<std::string>{arg_name, arg_names...});
+    }
+  }
+
   void parse(int argc, char **argv)
   {
     _program_name = argv[0];
