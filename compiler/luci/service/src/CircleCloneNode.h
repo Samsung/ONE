@@ -69,7 +69,7 @@ public:
   // luci::CircleNode *visit(const luci::CircleLeakyRelu *) final;
   luci::CircleNode *visit(const luci::CircleLess *) final;
   luci::CircleNode *visit(const luci::CircleLessEqual *) final;
-  // luci::CircleNode *visit(const luci::CircleLocalResponseNormalization *) final;
+  luci::CircleNode *visit(const luci::CircleLocalResponseNormalization *) final;
   luci::CircleNode *visit(const luci::CircleLog *) final;
   luci::CircleNode *visit(const luci::CircleLogicalAnd *) final;
   luci::CircleNode *visit(const luci::CircleLogicalNot *) final;
