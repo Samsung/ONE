@@ -27,9 +27,11 @@ using Granularity = luci::QuantizationGranularity;
 
 namespace
 {
-// helper function to create dummy float const node at the graph
-template<Type T>
-luci::CircleConst *createDummyConst(loco::Graph *g, luci::test::ShapeU32 shape)
+
+/**
+ * @brief A helper function to create dummy const node
+ */
+template <Type T> luci::CircleConst *createDummyConst(loco::Graph *g, luci::test::ShapeU32 shape)
 {
   auto node = g->nodes()->create<luci::CircleConst>();
   {
@@ -51,7 +53,7 @@ luci::CircleConst *createDummyConst(loco::Graph *g, luci::test::ShapeU32 shape)
           break;
         case Type::BOOL:
           // Fill by flip
-          node->at<T>(i) = (i%2) ? true : false;
+          node->at<T>(i) = (i % 2) ? true : false;
           break;
         case Type::U8:
           // Fill with index
