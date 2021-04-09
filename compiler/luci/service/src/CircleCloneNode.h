@@ -39,11 +39,11 @@ public:
   luci::CircleNode *visit(const luci::CircleBatchMatMul *) final;
   luci::CircleNode *visit(const luci::CircleBatchToSpaceND *) final;
   // luci::CircleNode *visit(const luci::CircleCast *) final;
-  // luci::CircleNode *visit(const luci::CircleCeil *) final;
+  luci::CircleNode *visit(const luci::CircleCeil *) final;
   // luci::CircleNode *visit(const luci::CircleConcatenation *) final;
   luci::CircleNode *visit(const luci::CircleConst *) final;
   luci::CircleNode *visit(const luci::CircleConv2D *) final;
-  // luci::CircleNode *visit(const luci::CircleCos *) final;
+  luci::CircleNode *visit(const luci::CircleCos *) final;
   // luci::CircleNode *visit(const luci::CircleCustom *) final;
   // luci::CircleNode *visit(const luci::CircleDepthToSpace *) final;
   // luci::CircleNode *visit(const luci::CircleDepthwiseConv2D *) final;
@@ -51,7 +51,7 @@ public:
   luci::CircleNode *visit(const luci::CircleDiv *) final;
   luci::CircleNode *visit(const luci::CircleElu *) final;
   // luci::CircleNode *visit(const luci::CircleEqual *) final;
-  // luci::CircleNode *visit(const luci::CircleExp *) final;
+  luci::CircleNode *visit(const luci::CircleExp *) final;
   // luci::CircleNode *visit(const luci::CircleExpandDims *) final;
   // luci::CircleNode *visit(const luci::CircleFakeQuant *) final;
   // luci::CircleNode *visit(const luci::CircleFill *) final;
@@ -70,7 +70,7 @@ public:
   // luci::CircleNode *visit(const luci::CircleLess *) final;
   // luci::CircleNode *visit(const luci::CircleLessEqual *) final;
   // luci::CircleNode *visit(const luci::CircleLocalResponseNormalization *) final;
-  // luci::CircleNode *visit(const luci::CircleLog *) final;
+  luci::CircleNode *visit(const luci::CircleLog *) final;
   // luci::CircleNode *visit(const luci::CircleLogicalAnd *) final;
   // luci::CircleNode *visit(const luci::CircleLogicalNot *) final;
   // luci::CircleNode *visit(const luci::CircleLogicalOr *) final;
