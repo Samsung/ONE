@@ -23,10 +23,19 @@ luci::CircleNode *CloneNode::visit(const luci::CircleAveragePool2D *node)
 {
   if (node->fusedActivationFunction() == luci::FusedActFunc::UNDEFINED)
     return nullptr;
+  if (node->padding() == luci::Padding::UNDEFINED)
+    return nullptr;
 
   auto *cloned = _graph->nodes()->create<luci::CircleAveragePool2D>();
   if (cloned != nullptr)
+  {
     cloned->fusedActivationFunction(node->fusedActivationFunction());
+    cloned->padding(node->padding());
+    cloned->filter()->h(node->filter()->h());
+    cloned->filter()->w(node->filter()->w());
+    cloned->stride()->h(node->stride()->h());
+    cloned->stride()->w(node->stride()->w());
+  }
   return cloned;
 }
 
