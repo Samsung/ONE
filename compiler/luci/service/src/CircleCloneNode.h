@@ -145,7 +145,7 @@ public:
   // Circle Only
   luci::CircleNode *visit(const luci::CircleBCQFullyConnected *) final;
   luci::CircleNode *visit(const luci::CircleBCQGather *) final;
-  // luci::CircleNode *visit(const luci::CircleInstanceNorm *) final;
+  luci::CircleNode *visit(const luci::CircleInstanceNorm *) final;
 
   // Virtual
   // luci::CircleNode *visit(const luci::CircleCustomOut *) final;
