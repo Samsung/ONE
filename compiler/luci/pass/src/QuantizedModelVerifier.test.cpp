@@ -511,6 +511,25 @@ private:
   luci::CircleConst *_const = nullptr;
 };
 
+class RsqrtTestGraph final : public luci::test::TestIOGraph
+{
+public:
+  void init(void)
+  {
+    TestIOGraph::init({32}, {32});
+    _rsqrt = g()->nodes()->create<luci::CircleRsqrt>();
+    {
+      _rsqrt->x(input());
+    }
+    output()->from(_rsqrt);
+
+    set_minmax_to_non_const(g(), -1, 1);
+  }
+
+public:
+  luci::CircleRsqrt *_rsqrt = nullptr;
+};
+
 } // namespace
 
 // Quantize and verify with given configurations
@@ -971,6 +990,27 @@ TEST(QuantizedModelVerifierTest, FloorDiv_wrong_granularity_NEG)
   TEST_WITH_WRONG_GRANULARITY_TARGET(FloorDivTestGraph, Type::U8, Granularity::LayerWise, g.y());
   TEST_WITH_WRONG_GRANULARITY_TARGET(FloorDivTestGraph, Type::U8, Granularity::ChannelWise, g.y());
   TEST_WITH_WRONG_GRANULARITY_TARGET(FloorDivTestGraph, Type::S16, Granularity::ChannelWise, g.y());
+}
+
+TEST(QuantizedModelVerifierTest, Rsqrt)
+{
+  TEST_WITH_GRAPH(RsqrtTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_GRAPH(RsqrtTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_GRAPH(RsqrtTestGraph, Type::S16, Granularity::ChannelWise);
+}
+
+TEST(QuantizedModelVerifierTest, Rsqrt_wrong_type_NEG)
+{
+  TEST_WITH_WRONG_TYPE(RsqrtTestGraph, Type::U8, Granularity::LayerWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(RsqrtTestGraph, Type::U8, Granularity::ChannelWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(RsqrtTestGraph, Type::S16, Granularity::ChannelWise, Type::U8);
+}
+
+TEST(QuantizedModelVerifierTest, Rsqrt_wrong_granularity_NEG)
+{
+  TEST_WITH_WRONG_GRANULARITY(RsqrtTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_WRONG_GRANULARITY(RsqrtTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_WRONG_GRANULARITY(RsqrtTestGraph, Type::S16, Granularity::ChannelWise);
 }
 
 #undef TEST_WITH_GRAPH
