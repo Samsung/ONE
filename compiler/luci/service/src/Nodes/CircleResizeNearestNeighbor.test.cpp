@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+#include "luci/Service/CircleNodeClone.h"
+
 #include <luci/IR/CircleNodes.h>
 #include <luci/Service/CircleShapeInference.h>
 
@@ -50,4 +52,20 @@ TEST(ShapeRuleTest, resize_nearest_neighbor_simple)
   ASSERT_EQ(16, shape.dim(1).value());
   ASSERT_EQ(16, shape.dim(2).value());
   ASSERT_EQ(3, shape.dim(3).value());
+}
+
+TEST(CloneNodeTest, clone_ResizeNearestNeighbor)
+{
+  auto g = loco::make_graph();
+  auto node_rnn = g->nodes()->create<luci::CircleResizeNearestNeighbor>();
+  node_rnn->align_corners(true);
+
+  auto gc = loco::make_graph();
+  auto cloned = luci::clone_node(node_rnn, gc.get());
+  ASSERT_NE(nullptr, cloned);
+  ASSERT_EQ(gc.get(), cloned->graph());
+
+  auto cloned_rnn = dynamic_cast<luci::CircleResizeNearestNeighbor *>(cloned);
+  ASSERT_NE(nullptr, cloned_rnn);
+  ASSERT_EQ(node_rnn->align_corners(), cloned_rnn->align_corners());
 }

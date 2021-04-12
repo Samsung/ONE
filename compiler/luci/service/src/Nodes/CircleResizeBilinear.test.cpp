@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+#include "luci/Service/CircleNodeClone.h"
+
 #include <luci/IR/CircleNodes.h>
 #include <luci/Service/CircleShapeInference.h>
 
@@ -50,4 +52,22 @@ TEST(ShapeRuleTest, resize_bilinear_simple)
   ASSERT_EQ(16, shape.dim(1).value());
   ASSERT_EQ(16, shape.dim(2).value());
   ASSERT_EQ(3, shape.dim(3).value());
+}
+
+TEST(CloneNodeTest, clone_ResizeBilinear)
+{
+  auto g = loco::make_graph();
+  auto node_rb = g->nodes()->create<luci::CircleResizeBilinear>();
+  node_rb->align_corners(true);
+  node_rb->half_pixel_centers(true);
+
+  auto gc = loco::make_graph();
+  auto cloned = luci::clone_node(node_rb, gc.get());
+  ASSERT_NE(nullptr, cloned);
+  ASSERT_EQ(gc.get(), cloned->graph());
+
+  auto cloned_rb = dynamic_cast<luci::CircleResizeBilinear *>(cloned);
+  ASSERT_NE(nullptr, cloned_rb);
+  ASSERT_EQ(node_rb->align_corners(), cloned_rb->align_corners());
+  ASSERT_EQ(node_rb->half_pixel_centers(), cloned_rb->half_pixel_centers());
 }
