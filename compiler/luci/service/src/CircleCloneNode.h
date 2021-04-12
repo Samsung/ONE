@@ -78,11 +78,11 @@ public:
   // luci::CircleNode *visit(const luci::CircleLogSoftmax *) final;
   luci::CircleNode *visit(const luci::CircleMatrixDiag *) final;
   luci::CircleNode *visit(const luci::CircleMatrixSetDiag *) final;
-  // luci::CircleNode *visit(const luci::CircleMaximum *) final;
-  // luci::CircleNode *visit(const luci::CircleMaxPool2D *) final;
+  luci::CircleNode *visit(const luci::CircleMaximum *) final;
+  luci::CircleNode *visit(const luci::CircleMaxPool2D *) final;
   luci::CircleNode *visit(const luci::CircleMean *) final;
-  // luci::CircleNode *visit(const luci::CircleMinimum *) final;
-  // luci::CircleNode *visit(const luci::CircleMirrorPad *) final;
+  luci::CircleNode *visit(const luci::CircleMinimum *) final;
+  luci::CircleNode *visit(const luci::CircleMirrorPad *) final;
   luci::CircleNode *visit(const luci::CircleMul *) final;
   luci::CircleNode *visit(const luci::CircleNeg *) final;
   luci::CircleNode *visit(const luci::CircleNonMaxSuppressionV4 *) final;
