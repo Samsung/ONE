@@ -41,6 +41,7 @@ TEST(CloneNodeTest, clone_Conv2D_fusedact_NEG)
   auto g = loco::make_graph();
   auto node_conv2d = g->nodes()->create<luci::CircleConv2D>();
   node_conv2d->fusedActivationFunction(luci::FusedActFunc::UNDEFINED);
+  node_conv2d->padding(luci::Padding::SAME);
 
   auto gc = loco::make_graph();
   auto cloned = luci::clone_node(node_conv2d, gc.get());
@@ -51,6 +52,7 @@ TEST(CloneNodeTest, clone_Conv2D_padding_NEG)
 {
   auto g = loco::make_graph();
   auto node_conv2d = g->nodes()->create<luci::CircleConv2D>();
+  node_conv2d->fusedActivationFunction(luci::FusedActFunc::RELU);
   node_conv2d->padding(luci::Padding::UNDEFINED);
 
   auto gc = loco::make_graph();

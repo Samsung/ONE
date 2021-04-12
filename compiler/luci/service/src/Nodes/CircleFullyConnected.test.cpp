@@ -41,6 +41,7 @@ TEST(CloneNodeTest, clone_FullyConnected_fusedact_NEG)
   auto g = loco::make_graph();
   auto node_fc = g->nodes()->create<luci::CircleFullyConnected>();
   node_fc->fusedActivationFunction(luci::FusedActFunc::UNDEFINED);
+  node_fc->weights_format(luci::CircleFullyConnected::WeightsFormat::DEFAULT);
 
   auto gc = loco::make_graph();
   auto cloned = luci::clone_node(node_fc, gc.get());
@@ -51,6 +52,7 @@ TEST(CloneNodeTest, clone_FullyConnected_wf_NEG)
 {
   auto g = loco::make_graph();
   auto node_fc = g->nodes()->create<luci::CircleFullyConnected>();
+  node_fc->fusedActivationFunction(luci::FusedActFunc::RELU);
   node_fc->weights_format(luci::CircleFullyConnected::WeightsFormat::UNDEFINED);
 
   auto gc = loco::make_graph();
