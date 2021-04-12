@@ -18,6 +18,8 @@
 
 #include <luci/IR/CircleOpcode.h>
 
+#include <math.h>
+
 using DataType = luci_interpreter::DataType;
 
 namespace record_minmax
@@ -73,9 +75,27 @@ void MinMaxObserver::postTensorWrite(const luci::CircleNode *node,
   const auto num_elements = tensor->shape().num_elements();
 
   std::vector<float> buf(data, data + num_elements);
-  auto minmax = std::minmax_element(buf.begin(), buf.end());
-  float min = *minmax.first;
-  float max = *minmax.second;
+
+  float max = std::numeric_limits<float>::lowest();
+  float min = std::numeric_limits<float>::max();
+
+  bool all_nan = true;
+  for (auto number : buf)
+  {
+    if (isnan(number))
+      continue;
+
+    all_nan = false;
+
+    if (number > max)
+      max = number;
+
+    if (number < min)
+      min = number;
+  }
+
+  if (all_nan)
+    throw std::runtime_error("All values are NaN(Not a Number)");
 
   _minmax_data.recordMinMax(node, min, max);
 }
