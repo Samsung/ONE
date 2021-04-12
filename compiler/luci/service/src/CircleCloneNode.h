@@ -85,8 +85,8 @@ public:
   // luci::CircleNode *visit(const luci::CircleMirrorPad *) final;
   luci::CircleNode *visit(const luci::CircleMul *) final;
   luci::CircleNode *visit(const luci::CircleNeg *) final;
-  // luci::CircleNode *visit(const luci::CircleNonMaxSuppressionV4 *) final;
-  // luci::CircleNode *visit(const luci::CircleNonMaxSuppressionV5 *) final;
+  luci::CircleNode *visit(const luci::CircleNonMaxSuppressionV4 *) final;
+  luci::CircleNode *visit(const luci::CircleNonMaxSuppressionV5 *) final;
   luci::CircleNode *visit(const luci::CircleNotEqual *) final;
   // luci::CircleNode *visit(const luci::CircleOneHot *) final;
   // luci::CircleNode *visit(const luci::CirclePack *) final;
