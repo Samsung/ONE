@@ -133,8 +133,8 @@ public:
   luci::CircleNode *visit(const luci::CircleTanh *) final;
   // luci::CircleNode *visit(const luci::CircleTile *) final;
   luci::CircleNode *visit(const luci::CircleTopKV2 *) final;
-  // luci::CircleNode *visit(const luci::CircleTranspose *) final;
-  // luci::CircleNode *visit(const luci::CircleTransposeConv *) final;
+  luci::CircleNode *visit(const luci::CircleTranspose *) final;
+  luci::CircleNode *visit(const luci::CircleTransposeConv *) final;
   // luci::CircleNode *visit(const luci::CircleUnidirectionalSequenceLSTM *) final;
   // luci::CircleNode *visit(const luci::CircleUnique *) final;
   // luci::CircleNode *visit(const luci::CircleUnpack *) final;

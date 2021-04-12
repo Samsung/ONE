@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+#include "luci/Service/CircleNodeClone.h"
+
 #include <luci/IR/CircleNodes.h>
 #include <luci/Service/CircleShapeInference.h>
 
@@ -50,4 +52,18 @@ TEST(ShapeRuleTest, transpose_simple)
   ASSERT_EQ(8, shape.dim(0).value());
   ASSERT_EQ(1, shape.dim(1).value());
   ASSERT_EQ(3, shape.dim(2).value());
+}
+
+TEST(CloneNodeTest, clone_Transpose)
+{
+  auto g = loco::make_graph();
+  auto node_tr = g->nodes()->create<luci::CircleTranspose>();
+
+  auto gc = loco::make_graph();
+  auto cloned = luci::clone_node(node_tr, gc.get());
+  ASSERT_NE(nullptr, cloned);
+  ASSERT_EQ(gc.get(), cloned->graph());
+
+  auto cloned_tr = dynamic_cast<luci::CircleTranspose *>(cloned);
+  ASSERT_NE(nullptr, cloned_tr);
 }
