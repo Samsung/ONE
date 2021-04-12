@@ -154,8 +154,8 @@ public:
   luci::CircleNode *visit(const luci::CircleNonMaxSuppressionV4Out *) final;
   luci::CircleNode *visit(const luci::CircleNonMaxSuppressionV5Out *) final;
   // luci::CircleNode *visit(const luci::CircleOutput *) final;
-  // luci::CircleNode *visit(const luci::CircleOutputDummy *) final;
-  // luci::CircleNode *visit(const luci::CircleOutputExclude *) final;
+  luci::CircleNode *visit(const luci::CircleOutputDummy *) final;
+  luci::CircleNode *visit(const luci::CircleOutputExclude *) final;
   luci::CircleNode *visit(const luci::CircleSplitOut *) final;
   luci::CircleNode *visit(const luci::CircleSplitVOut *) final;
   luci::CircleNode *visit(const luci::CircleTopKV2Out *) final;
