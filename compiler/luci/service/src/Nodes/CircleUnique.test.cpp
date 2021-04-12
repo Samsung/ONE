@@ -22,7 +22,7 @@ TEST(CloneNodeTest, clone_Unique)
 {
   auto g = loco::make_graph();
   auto node_uniq = g->nodes()->create<luci::CircleUnique>();
-  node_uniq->output_type(loco::DataType::S32);
+  node_uniq->idx_out_type(loco::DataType::S32);
 
   auto gc = loco::make_graph();
   auto cloned = luci::clone_node(node_uniq, gc.get());
