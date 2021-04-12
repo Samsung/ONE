@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+#include "luci/Service/CircleNodeClone.h"
+
 #include <luci/IR/CircleNodes.h>
 #include <luci/Service/CircleShapeInference.h>
 #include <luci/Service/CircleTypeInference.h>
@@ -55,4 +57,18 @@ TEST(DataTypeRuleTest, simple_relu)
 
   ASSERT_TRUE(type_inf_rule.infer(&relu, dtype));
   ASSERT_EQ(loco::DataType::S32, dtype);
+}
+
+TEST(CloneNodeTest, clone_Relu)
+{
+  auto g = loco::make_graph();
+  auto node_relu = g->nodes()->create<luci::CircleRelu>();
+
+  auto gc = loco::make_graph();
+  auto cloned = luci::clone_node(node_relu, gc.get());
+  ASSERT_NE(nullptr, cloned);
+  ASSERT_EQ(gc.get(), cloned->graph());
+
+  auto cloned_relu = dynamic_cast<luci::CircleRelu *>(cloned);
+  ASSERT_NE(nullptr, cloned_relu);
 }
