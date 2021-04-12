@@ -53,17 +53,9 @@ void MinMaxObserver::postTensorWrite(const luci::CircleNode *node,
     return;
   }
 
-  if (node->opcode() == luci::CircleOpcode::GREATER ||
-      node->opcode() == luci::CircleOpcode::GREATER_EQUAL ||
-      node->opcode() == luci::CircleOpcode::LESS ||
-      node->opcode() == luci::CircleOpcode::LESS_EQUAL ||
-      node->opcode() == luci::CircleOpcode::LOGICAL_AND ||
-      node->opcode() == luci::CircleOpcode::LOGICAL_NOT ||
-      node->opcode() == luci::CircleOpcode::LOGICAL_OR ||
-      node->opcode() == luci::CircleOpcode::EQUAL ||
-      node->opcode() == luci::CircleOpcode::NOT_EQUAL)
+  if (node->dtype() == DataType::BOOL)
   {
-    // Output of these operators is bool type, which is not quantized
+    // Bool type tensor is not quantized
     return;
   }
 
