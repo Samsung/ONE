@@ -83,6 +83,10 @@ TEST(CloneNodeTest, clone_AveragePool2D)
   auto node_avgpool2d = g->nodes()->create<luci::CircleAveragePool2D>();
   node_avgpool2d->fusedActivationFunction(luci::FusedActFunc::RELU);
   node_avgpool2d->padding(luci::Padding::SAME);
+  node_avgpool2d->filter()->h(1);
+  node_avgpool2d->filter()->w(2);
+  node_avgpool2d->stride()->h(3);
+  node_avgpool2d->stride()->w(4);
 
   auto gc = loco::make_graph();
   auto cloned = luci::clone_node(node_avgpool2d, gc.get());
@@ -93,6 +97,10 @@ TEST(CloneNodeTest, clone_AveragePool2D)
   ASSERT_NE(nullptr, cloned_avgpool2d);
   ASSERT_EQ(node_avgpool2d->fusedActivationFunction(), cloned_avgpool2d->fusedActivationFunction());
   ASSERT_EQ(node_avgpool2d->padding(), cloned_avgpool2d->padding());
+  ASSERT_EQ(node_avgpool2d->filter()->h(), cloned_avgpool2d->filter()->h());
+  ASSERT_EQ(node_avgpool2d->filter()->w(), cloned_avgpool2d->filter()->w());
+  ASSERT_EQ(node_avgpool2d->stride()->h(), cloned_avgpool2d->stride()->h());
+  ASSERT_EQ(node_avgpool2d->stride()->w(), cloned_avgpool2d->stride()->w());
 }
 
 TEST(CloneNodeTest, clone_AveragePool2D_fusedact_NEG)
