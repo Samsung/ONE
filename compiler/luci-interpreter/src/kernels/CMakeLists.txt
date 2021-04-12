@@ -7,6 +7,8 @@ set(SOURCES
     ArgMax.cpp
     AveragePool2D.h
     AveragePool2D.cpp
+    BatchToSpaceND.h
+    BatchToSpaceND.cpp
     Concatenation.h
     Concatenation.cpp
     Conv2D.h
@@ -150,6 +152,7 @@ set(TEST_SOURCES
     Add.test.cpp
     ArgMax.test.cpp
     AveragePool2D.test.cpp
+    BatchToSpaceND.test.cpp
     Concatenation.test.cpp
     Conv2D.test.cpp
     DepthToSpace.test.cpp
