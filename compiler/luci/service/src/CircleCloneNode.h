@@ -103,9 +103,9 @@ public:
   luci::CircleNode *visit(const luci::CircleRelu *) final;
   luci::CircleNode *visit(const luci::CircleRelu6 *) final;
   luci::CircleNode *visit(const luci::CircleReluN1To1 *) final;
-  // luci::CircleNode *visit(const luci::CircleReshape *) final;
-  // luci::CircleNode *visit(const luci::CircleResizeBilinear *) final;
-  // luci::CircleNode *visit(const luci::CircleResizeNearestNeighbor *) final;
+  luci::CircleNode *visit(const luci::CircleReshape *) final;
+  luci::CircleNode *visit(const luci::CircleResizeBilinear *) final;
+  luci::CircleNode *visit(const luci::CircleResizeNearestNeighbor *) final;
   // luci::CircleNode *visit(const luci::CircleReverseSequence *) final;
   // luci::CircleNode *visit(const luci::CircleReverseV2 *) final;
   // luci::CircleNode *visit(const luci::CircleRound *) final;
@@ -114,7 +114,7 @@ public:
   luci::CircleNode *visit(const luci::CircleSegmentSum *) final;
   luci::CircleNode *visit(const luci::CircleSelect *) final;
   luci::CircleNode *visit(const luci::CircleSelectV2 *) final;
-  // luci::CircleNode *visit(const luci::CircleShape *) final;
+  luci::CircleNode *visit(const luci::CircleShape *) final;
   luci::CircleNode *visit(const luci::CircleSin *) final;
   luci::CircleNode *visit(const luci::CircleSlice *) final;
   luci::CircleNode *visit(const luci::CircleSoftmax *) final;
