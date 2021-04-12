@@ -373,14 +373,8 @@ public:
   void init(void)
   {
     TestIOGraph::init({16}, {32});
-    _param = g()->nodes()->create<luci::CircleConst>();
-    {
-      _param->dtype(Type::FLOAT32);
-      _param->shape({16});
-      _param->size<Type::FLOAT32>(16);
-      for (int16_t i = 0; i < 16; i++)
-        _param->at<Type::FLOAT32>(i) = static_cast<float>(i);
-    }
+    
+    _param = create_dummy_const<Type::FLOAT32>(g(), {16});
     _concat = g()->nodes()->create<luci::CircleConcatenation>(2);
     {
       _concat->values(0, input());
@@ -418,6 +412,9 @@ public:
     set_minmax_to_non_const(g(), -1, 1);
   }
 
+  loco::Node *x() { return _op->x(); }
+  loco::Node *y() { return _op->y(); }
+
 public:
   Op *_op = nullptr;
   luci::CircleConst *_y = nullptr;
@@ -433,14 +430,7 @@ public:
     TestIOGraph::init({32}, {32});
     input()->dtype(loco::DataType::BOOL);
     output()->dtype(loco::DataType::BOOL);
-    _y = g()->nodes()->create<luci::CircleConst>();
-    {
-      _y->dtype(Type::BOOL);
-      _y->shape({32});
-      _y->size<Type::BOOL>(32);
-      for (int32_t i = 0; i < 32; i++)
-        _y->at<Type::BOOL>(i) = 0;
-    }
+    _y = create_dummy_const<Type::BOOL>(g(), {32});
     _op = g()->nodes()->create<Op>();
     {
       _op->x(input());
@@ -451,6 +441,9 @@ public:
 
     set_minmax_to_non_const(g(), -1, 1);
   }
+
+  loco::Node *x() { return _op->x(); }
+  loco::Node *y() { return _op->y(); }
 
 public:
   Op *_op = nullptr;
@@ -476,7 +469,6 @@ public:
   }
 
   loco::Node *x() { return _div->x(); }
-
   loco::Node *y() { return _div->y(); }
 
 private:
@@ -860,18 +852,18 @@ TEST(QuantizedModelVerifierTest, GreaterEqual_wrong_type_NEG)
 TEST(QuantizedModelVerifierTest, GreaterEqual_wrong_granularity_NEG)
 {
   TEST_WITH_WRONG_GRANULARITY_TARGET(ComparisonOpTestGraph<luci::CircleGreaterEqual>, Type::U8,
-                                     Granularity::LayerWise, g._op->x());
+                                     Granularity::LayerWise, g.x());
   TEST_WITH_WRONG_GRANULARITY_TARGET(ComparisonOpTestGraph<luci::CircleGreaterEqual>, Type::U8,
-                                     Granularity::ChannelWise, g._op->x());
+                                     Granularity::ChannelWise, g.x());
   TEST_WITH_WRONG_GRANULARITY_TARGET(ComparisonOpTestGraph<luci::CircleGreaterEqual>, Type::S16,
-                                     Granularity::ChannelWise, g._op->x());
+                                     Granularity::ChannelWise, g.x());
 
   TEST_WITH_WRONG_GRANULARITY_TARGET(ComparisonOpTestGraph<luci::CircleGreaterEqual>, Type::U8,
-                                     Granularity::LayerWise, g._y);
+                                     Granularity::LayerWise, g.y());
   TEST_WITH_WRONG_GRANULARITY_TARGET(ComparisonOpTestGraph<luci::CircleGreaterEqual>, Type::U8,
-                                     Granularity::ChannelWise, g._y);
+                                     Granularity::ChannelWise, g.y());
   TEST_WITH_WRONG_GRANULARITY_TARGET(ComparisonOpTestGraph<luci::CircleGreaterEqual>, Type::S16,
-                                     Granularity::ChannelWise, g._y);
+                                     Granularity::ChannelWise, g.y());
 }
 
 TEST(QuantizedModelVerifierTest, Greater)
@@ -894,18 +886,18 @@ TEST(QuantizedModelVerifierTest, Greater_wrong_type_NEG)
 TEST(QuantizedModelVerifierTest, Greater_wrong_granularity_NEG)
 {
   TEST_WITH_WRONG_GRANULARITY_TARGET(ComparisonOpTestGraph<luci::CircleGreater>, Type::U8,
-                                     Granularity::LayerWise, g._op->x());
+                                     Granularity::LayerWise, g.x());
   TEST_WITH_WRONG_GRANULARITY_TARGET(ComparisonOpTestGraph<luci::CircleGreater>, Type::U8,
-                                     Granularity::ChannelWise, g._op->x());
+                                     Granularity::ChannelWise, g.x());
   TEST_WITH_WRONG_GRANULARITY_TARGET(ComparisonOpTestGraph<luci::CircleGreater>, Type::S16,
-                                     Granularity::ChannelWise, g._op->x());
+                                     Granularity::ChannelWise, g.x());
 
   TEST_WITH_WRONG_GRANULARITY_TARGET(ComparisonOpTestGraph<luci::CircleGreater>, Type::U8,
-                                     Granularity::LayerWise, g._y);
+                                     Granularity::LayerWise, g.y());
   TEST_WITH_WRONG_GRANULARITY_TARGET(ComparisonOpTestGraph<luci::CircleGreater>, Type::U8,
-                                     Granularity::ChannelWise, g._y);
+                                     Granularity::ChannelWise, g.y());
   TEST_WITH_WRONG_GRANULARITY_TARGET(ComparisonOpTestGraph<luci::CircleGreater>, Type::S16,
-                                     Granularity::ChannelWise, g._y);
+                                     Granularity::ChannelWise, g.y());
 }
 
 TEST(QuantizedModelVerifierTest, NotEqual)
@@ -928,18 +920,18 @@ TEST(QuantizedModelVerifierTest, NotEqual_wrong_type_NEG)
 TEST(QuantizedModelVerifierTest, NotEqual_wrong_granularity_NEG)
 {
   TEST_WITH_WRONG_GRANULARITY_TARGET(ComparisonOpTestGraph<luci::CircleNotEqual>, Type::U8,
-                                     Granularity::LayerWise, g._op->x());
+                                     Granularity::LayerWise, g.x());
   TEST_WITH_WRONG_GRANULARITY_TARGET(ComparisonOpTestGraph<luci::CircleNotEqual>, Type::U8,
-                                     Granularity::ChannelWise, g._op->x());
+                                     Granularity::ChannelWise, g.x());
   TEST_WITH_WRONG_GRANULARITY_TARGET(ComparisonOpTestGraph<luci::CircleNotEqual>, Type::S16,
-                                     Granularity::ChannelWise, g._op->x());
+                                     Granularity::ChannelWise, g.x());
 
   TEST_WITH_WRONG_GRANULARITY_TARGET(ComparisonOpTestGraph<luci::CircleNotEqual>, Type::U8,
-                                     Granularity::LayerWise, g._y);
+                                     Granularity::LayerWise, g.y());
   TEST_WITH_WRONG_GRANULARITY_TARGET(ComparisonOpTestGraph<luci::CircleNotEqual>, Type::U8,
-                                     Granularity::ChannelWise, g._y);
+                                     Granularity::ChannelWise, g.y());
   TEST_WITH_WRONG_GRANULARITY_TARGET(ComparisonOpTestGraph<luci::CircleNotEqual>, Type::S16,
-                                     Granularity::ChannelWise, g._y);
+                                     Granularity::ChannelWise, g.y());
 }
 
 TEST(QuantizedModelVerifierTest, Div)
