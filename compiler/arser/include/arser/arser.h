@@ -295,7 +295,7 @@ public:
     _program_name.erase(0, _program_name.find_last_of("/\\") + 1);
     if (argc >= 2)
     {
-      if (!std::strcmp(argv[1], "--help"))
+      if (!std::strcmp(argv[1], "--help") || !std::strcmp(argv[1], "-h"))
       {
         std::cout << *this;
         std::exit(0);
@@ -305,7 +305,7 @@ public:
         for (const auto &arg : _arg_map)
         {
           const auto &func = arg.second->_func;
-          if (func && !std::strcmp(argv[1], arg.second->_name.c_str()))
+          if (func && !std::strcmp(argv[1], arg.first.c_str()))
           {
             func();
             std::exit(0);
