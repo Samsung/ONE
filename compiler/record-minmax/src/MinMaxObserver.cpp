@@ -95,7 +95,7 @@ void MinMaxObserver::postTensorWrite(const luci::CircleNode *node,
   }
 
   if (all_nan)
-    throw std::runtime_error("All values are NAN (Not-A-Number)");
+    throw std::runtime_error("All values are NaN(Not a Number)");
 
   _minmax_data.recordMinMax(node, min, max);
 }
