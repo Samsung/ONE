@@ -2,6 +2,8 @@ if(NOT ENABLE_TEST)
   return()
 endif(NOT ENABLE_TEST)
 
+nnas_find_package(GTest REQUIRED)
+
 file(GLOB_RECURSE TESTS "src/*.test.cpp")
 
 add_library(luci_testhelper STATIC ${TESTS})
