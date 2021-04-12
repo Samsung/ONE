@@ -74,8 +74,8 @@ public:
   luci::CircleNode *visit(const luci::CircleLogicalAnd *) final;
   luci::CircleNode *visit(const luci::CircleLogicalNot *) final;
   luci::CircleNode *visit(const luci::CircleLogicalOr *) final;
-  // luci::CircleNode *visit(const luci::CircleLogistic *) final;
-  // luci::CircleNode *visit(const luci::CircleLogSoftmax *) final;
+  luci::CircleNode *visit(const luci::CircleLogistic *) final;
+  luci::CircleNode *visit(const luci::CircleLogSoftmax *) final;
   luci::CircleNode *visit(const luci::CircleMatrixDiag *) final;
   luci::CircleNode *visit(const luci::CircleMatrixSetDiag *) final;
   // luci::CircleNode *visit(const luci::CircleMaximum *) final;
@@ -116,8 +116,8 @@ public:
   luci::CircleNode *visit(const luci::CircleSelectV2 *) final;
   // luci::CircleNode *visit(const luci::CircleShape *) final;
   luci::CircleNode *visit(const luci::CircleSin *) final;
-  // luci::CircleNode *visit(const luci::CircleSlice *) final;
-  // luci::CircleNode *visit(const luci::CircleSoftmax *) final;
+  luci::CircleNode *visit(const luci::CircleSlice *) final;
+  luci::CircleNode *visit(const luci::CircleSoftmax *) final;
   luci::CircleNode *visit(const luci::CircleSpaceToBatchND *) final;
   luci::CircleNode *visit(const luci::CircleSpaceToDepth *) final;
   // luci::CircleNode *visit(const luci::CircleSparseToDense *) final;
