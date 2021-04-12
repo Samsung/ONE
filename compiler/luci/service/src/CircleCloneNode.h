@@ -143,8 +143,8 @@ public:
   // luci::CircleNode *visit(const luci::CircleZerosLike *) final;
 
   // Circle Only
-  // luci::CircleNode *visit(const luci::CircleBCQFullyConnected *) final;
-  // luci::CircleNode *visit(const luci::CircleBCQGather *) final;
+  luci::CircleNode *visit(const luci::CircleBCQFullyConnected *) final;
+  luci::CircleNode *visit(const luci::CircleBCQGather *) final;
   // luci::CircleNode *visit(const luci::CircleInstanceNorm *) final;
 
   // Virtual
