@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+#include "luci/Service/CircleNodeClone.h"
+
 #include <luci/IR/CircleNodes.h>
 #include <luci/Service/CircleShapeInference.h>
 
@@ -60,4 +62,22 @@ TEST(ShapeRuleTest, squeeze_all)
   ASSERT_EQ(2, shape.rank());
   ASSERT_EQ(4, shape.dim(0).value());
   ASSERT_EQ(3, shape.dim(1).value());
+}
+
+TEST(CloneNodeTest, clone_Squeeze)
+{
+  auto g = loco::make_graph();
+  auto node_squ = g->nodes()->create<luci::CircleSqueeze>();
+  node_squ->squeeze_dims({2, 3});
+
+  auto gc = loco::make_graph();
+  auto cloned = luci::clone_node(node_squ, gc.get());
+  ASSERT_NE(nullptr, cloned);
+  ASSERT_EQ(gc.get(), cloned->graph());
+
+  auto cloned_squ = dynamic_cast<luci::CircleSqueeze *>(cloned);
+  ASSERT_NE(nullptr, cloned_squ);
+  ASSERT_EQ(node_squ->squeeze_dims().size(), cloned_squ->squeeze_dims().size());
+  for (size_t s = 0; s < node_squ->squeeze_dims().size(); ++s)
+    ASSERT_EQ(node_squ->squeeze_dims().at(s), cloned_squ->squeeze_dims().at(s));
 }
