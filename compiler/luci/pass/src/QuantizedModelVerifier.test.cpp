@@ -418,6 +418,9 @@ public:
     set_minmax_to_non_const(g(), -1, 1);
   }
 
+  const loco::Node *x(void) const { return _op->x(); }
+  const loco::Node *y(void) const { return _op->y(); }
+
 public:
   Op *_op = nullptr;
   luci::CircleConst *_y = nullptr;
@@ -452,8 +455,8 @@ public:
     set_minmax_to_non_const(g(), -1, 1);
   }
 
-  loco::Node *x() { return _op->x(); }
-  loco::Node *y() { return _op->y(); }
+  const loco::Node *x(void) const { return _op->x(); }
+  const loco::Node *y(void) const { return _op->y(); }
 
 public:
   Op *_op = nullptr;
