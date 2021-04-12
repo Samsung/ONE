@@ -136,11 +136,11 @@ public:
   // luci::CircleNode *visit(const luci::CircleTranspose *) final;
   // luci::CircleNode *visit(const luci::CircleTransposeConv *) final;
   // luci::CircleNode *visit(const luci::CircleUnidirectionalSequenceLSTM *) final;
-  // luci::CircleNode *visit(const luci::CircleUnique *) final;
-  // luci::CircleNode *visit(const luci::CircleUnpack *) final;
-  // luci::CircleNode *visit(const luci::CircleWhere *) final;
+  luci::CircleNode *visit(const luci::CircleUnique *) final;
+  luci::CircleNode *visit(const luci::CircleUnpack *) final;
+  luci::CircleNode *visit(const luci::CircleWhere *) final;
   // luci::CircleNode *visit(const luci::CircleWhile *) final;
-  // luci::CircleNode *visit(const luci::CircleZerosLike *) final;
+  luci::CircleNode *visit(const luci::CircleZerosLike *) final;
 
   // Circle Only
   // luci::CircleNode *visit(const luci::CircleBCQFullyConnected *) final;
