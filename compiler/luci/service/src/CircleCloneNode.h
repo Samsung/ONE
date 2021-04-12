@@ -106,9 +106,9 @@ public:
   luci::CircleNode *visit(const luci::CircleReshape *) final;
   luci::CircleNode *visit(const luci::CircleResizeBilinear *) final;
   luci::CircleNode *visit(const luci::CircleResizeNearestNeighbor *) final;
-  // luci::CircleNode *visit(const luci::CircleReverseSequence *) final;
-  // luci::CircleNode *visit(const luci::CircleReverseV2 *) final;
-  // luci::CircleNode *visit(const luci::CircleRound *) final;
+  luci::CircleNode *visit(const luci::CircleReverseSequence *) final;
+  luci::CircleNode *visit(const luci::CircleReverseV2 *) final;
+  luci::CircleNode *visit(const luci::CircleRound *) final;
   luci::CircleNode *visit(const luci::CircleRsqrt *) final;
   luci::CircleNode *visit(const luci::CircleScatterNd *) final;
   luci::CircleNode *visit(const luci::CircleSegmentSum *) final;
