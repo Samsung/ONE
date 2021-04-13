@@ -155,6 +155,36 @@ void set_minmax_to_non_const(loco::Graph *g, float min, float max)
   }
 }
 
+class InstanceNormTestGraph final : public luci::test::TestIOGraph
+{
+public:
+  void init(void)
+  {
+    TestIOGraph::init({32}, {32});
+    _gamma = create_dummy_const<Type::FLOAT32>(g(), {32});
+    _beta = create_dummy_const<Type::FLOAT32>(g(), {32});
+    _instnorm = g()->nodes()->create<luci::CircleInstanceNorm>();
+    {
+      _instnorm->input(input());
+      _instnorm->gamma(_gamma);
+      _instnorm->beta(_beta);
+    }
+    output()->from(_instnorm);
+
+    set_minmax_to_non_const(g(), -1, 1);
+  }
+
+public:
+  loco::Node *gamma(void) const { return _instnorm->gamma(); }
+  loco::Node *beta(void) const { return _instnorm->beta(); }
+
+public:
+  luci::CircleInstanceNorm *_instnorm = nullptr;
+  luci::CircleConst *_input = nullptr;
+  luci::CircleConst *_gamma = nullptr;
+  luci::CircleConst *_beta = nullptr;
+};
+
 class LogisticTestGraph final : public luci::test::TestIOGraph
 {
 public:
@@ -694,6 +724,30 @@ TEST(QuantizedModelVerifierTest, LocalCreateDummyConst)
   loco::Graph g;
 
   EXPECT_NO_THROW(create_dummy_const<Type::FLOAT32>(&g, {32, 32}));
+}
+
+TEST(QuantizedModelVerifierTest, InstanceNorm)
+{
+  TEST_WITH_GRAPH(InstanceNormTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_GRAPH(InstanceNormTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_GRAPH(InstanceNormTestGraph, Type::S16, Granularity::ChannelWise);
+  SUCCEED();
+}
+
+TEST(QuantizedModelVerifierTest, InstanceNorm_wrong_type_NEG)
+{
+  TEST_WITH_WRONG_TYPE(InstanceNormTestGraph, Type::U8, Granularity::LayerWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(InstanceNormTestGraph, Type::U8, Granularity::ChannelWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(InstanceNormTestGraph, Type::S16, Granularity::ChannelWise, Type::U8);
+  SUCCEED();
+}
+
+TEST(QuantizedModelVerifierTest, InstanceNorm_wrong_granularity_NEG)
+{
+  TEST_WITH_WRONG_GRANULARITY(InstanceNormTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_WRONG_GRANULARITY(InstanceNormTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_WRONG_GRANULARITY(InstanceNormTestGraph, Type::S16, Granularity::ChannelWise);
+  SUCCEED();
 }
 
 TEST(QuantizedModelVerifierTest, Logistic)
