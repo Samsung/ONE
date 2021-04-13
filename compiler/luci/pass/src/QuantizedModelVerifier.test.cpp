@@ -418,8 +418,8 @@ public:
     set_minmax_to_non_const(g(), -1, 1);
   }
 
-  const loco::Node *x(void) const { return _op->x(); }
-  const loco::Node *y(void) const { return _op->y(); }
+  loco::Node *x(void) const { return _op->x(); }
+  loco::Node *y(void) const { return _op->y(); }
 
 public:
   Op *_op = nullptr;
@@ -455,8 +455,8 @@ public:
     set_minmax_to_non_const(g(), -1, 1);
   }
 
-  const loco::Node *x(void) const { return _op->x(); }
-  const loco::Node *y(void) const { return _op->y(); }
+  loco::Node *x(void) const { return _op->x(); }
+  loco::Node *y(void) const { return _op->y(); }
 
 public:
   Op *_op = nullptr;
