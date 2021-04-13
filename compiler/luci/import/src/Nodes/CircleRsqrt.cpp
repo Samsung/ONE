@@ -36,6 +36,8 @@ bool CircleRsqrtGraphBuilder::validate(const ValidateArgs &args) const
   const auto &tensor = tensors.at(inputs.at(0));
   switch (tensor->type)
   {
+    case circle::TensorType_UINT8:
+    case circle::TensorType_INT16:
     case circle::TensorType_FLOAT16:
     case circle::TensorType_FLOAT32:
     case circle::TensorType_COMPLEX64:
