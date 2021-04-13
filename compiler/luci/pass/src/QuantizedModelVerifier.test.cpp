@@ -678,6 +678,33 @@ public:
   luci::CircleElu *_elu = nullptr;
 };
 
+class PowTestGraph final : public luci::test::TestIOGraph
+{
+public:
+  void init(void)
+  {
+    TestIOGraph::init({32}, {32});
+
+    _const = create_dummy_const<Type::FLOAT32>(g(), {32});
+    _pow = g()->nodes()->create<luci::CirclePow>();
+    {
+      _pow->x(input());
+      _pow->y(_const);
+    }
+    output()->from(_pow);
+
+    set_minmax_to_non_const(g(), -1, 1);
+  }
+
+  loco::Node *x() { return _pow->x(); }
+
+  loco::Node *y() { return _pow->y(); }
+
+private:
+  luci::CirclePow *_pow = nullptr;
+  luci::CircleConst *_const = nullptr;
+};
+
 } // namespace
 
 // Quantize and verify with given configurations
@@ -1302,6 +1329,34 @@ TEST(QuantizedModelVerifierTest, Elu_wrong_granularity_NEG)
   TEST_WITH_WRONG_GRANULARITY(EluTestGraph, Type::U8, Granularity::LayerWise);
   TEST_WITH_WRONG_GRANULARITY(EluTestGraph, Type::U8, Granularity::ChannelWise);
   TEST_WITH_WRONG_GRANULARITY(EluTestGraph, Type::S16, Granularity::ChannelWise);
+  SUCCEED();
+}
+
+TEST(QuantizedModelVerifierTest, Pow)
+{
+  TEST_WITH_GRAPH(PowTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_GRAPH(PowTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_GRAPH(PowTestGraph, Type::S16, Granularity::ChannelWise);
+  SUCCEED();
+}
+
+TEST(QuantizedModelVerifierTest, Pow_wrong_type_NEG)
+{
+  TEST_WITH_WRONG_TYPE(PowTestGraph, Type::U8, Granularity::LayerWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(PowTestGraph, Type::U8, Granularity::ChannelWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(PowTestGraph, Type::S16, Granularity::ChannelWise, Type::U8);
+  SUCCEED();
+}
+
+TEST(QuantizedModelVerifierTest, Pow_wrong_granularity_NEG)
+{
+  TEST_WITH_WRONG_GRANULARITY_TARGET(PowTestGraph, Type::U8, Granularity::LayerWise, g.x());
+  TEST_WITH_WRONG_GRANULARITY_TARGET(PowTestGraph, Type::U8, Granularity::ChannelWise, g.x());
+  TEST_WITH_WRONG_GRANULARITY_TARGET(PowTestGraph, Type::S16, Granularity::ChannelWise, g.x());
+
+  TEST_WITH_WRONG_GRANULARITY_TARGET(PowTestGraph, Type::U8, Granularity::LayerWise, g.y());
+  TEST_WITH_WRONG_GRANULARITY_TARGET(PowTestGraph, Type::U8, Granularity::ChannelWise, g.y());
+  TEST_WITH_WRONG_GRANULARITY_TARGET(PowTestGraph, Type::S16, Granularity::ChannelWise, g.y());
   SUCCEED();
 }
 

@@ -952,6 +952,7 @@ void quantize_const_inputs(luci::CircleNode *node, loco::DataType output_type)
     case luci::CircleOpcode::MINIMUM:
     case luci::CircleOpcode::MUL:
     case luci::CircleOpcode::NOT_EQUAL:
+    case luci::CircleOpcode::POW:
     case luci::CircleOpcode::RSQRT:
     case luci::CircleOpcode::SOFTMAX:
     case luci::CircleOpcode::SQRT:
