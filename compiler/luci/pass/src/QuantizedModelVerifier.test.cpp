@@ -156,11 +156,15 @@ void set_minmax_to_non_const(loco::Graph *g, float min, float max)
   }
 }
 
+/**
+ * @brief Sample test graph
+ * @note
+ * The graphes are choosen by naive sampling.
+ * Which means, their nodes are initialized with simple shapes and values.
+ */
 class SampleTestGraph : public luci::test::TestIOGraph
 {
 public:
-  // Sample test graphes are choosen by naive sampling.
-  // They are initialized with basic shape(ex. {32}) and value(ex. val[index] = index).
   virtual void init(void) = 0;
 };
 
