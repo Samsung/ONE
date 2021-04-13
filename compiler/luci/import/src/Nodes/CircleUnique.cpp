@@ -42,7 +42,7 @@ CircleNode *CircleUniqueGraphBuilder::build_node(const BuildNodeArgs &bna) const
   node->input(bna.input_nodes[0]);
 
   const auto *options = bna.op.builtin_options.AsUniqueOptions();
-  node->output_type(luci_datatype(options->idx_out_type));
+  node->idx_out_type(luci_datatype(options->idx_out_type));
 
   return node;
 }
