@@ -572,6 +572,25 @@ public:
   luci::CircleSqrt *_sqrt = nullptr;
 };
 
+class EluTestGraph final : public luci::test::TestIOGraph
+{
+public:
+  void init(void)
+  {
+    TestIOGraph::init({32}, {32});
+    _elu = g()->nodes()->create<luci::CircleElu>();
+    {
+      _elu->features(input());
+    }
+    output()->from(_elu);
+
+    set_minmax_to_non_const(g(), -1, 1);
+  }
+
+public:
+  luci::CircleElu *_elu = nullptr;
+};
+
 } // namespace
 
 // Quantize and verify with given configurations
@@ -1101,6 +1120,27 @@ TEST(QuantizedModelVerifierTest, Sqrt_wrong_granularity_NEG)
   TEST_WITH_WRONG_GRANULARITY(SqrtTestGraph, Type::U8, Granularity::ChannelWise);
   TEST_WITH_WRONG_GRANULARITY(SqrtTestGraph, Type::S16, Granularity::ChannelWise);
   SUCCEED();
+}
+
+TEST(QuantizedModelVerifierTest, Elu)
+{
+  TEST_WITH_GRAPH(EluTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_GRAPH(EluTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_GRAPH(EluTestGraph, Type::S16, Granularity::ChannelWise);
+}
+
+TEST(QuantizedModelVerifierTest, Elu_wrong_type_NEG)
+{
+  TEST_WITH_WRONG_TYPE(EluTestGraph, Type::U8, Granularity::LayerWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(EluTestGraph, Type::U8, Granularity::ChannelWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(EluTestGraph, Type::S16, Granularity::ChannelWise, Type::U8);
+}
+
+TEST(QuantizedModelVerifierTest, Elu_wrong_granularity_NEG)
+{
+  TEST_WITH_WRONG_GRANULARITY(EluTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_WRONG_GRANULARITY(EluTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_WRONG_GRANULARITY(EluTestGraph, Type::S16, Granularity::ChannelWise);
 }
 
 #undef TEST_WITH_GRAPH
