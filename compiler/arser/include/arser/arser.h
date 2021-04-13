@@ -29,6 +29,8 @@
 
 #include <cstring>
 
+#include <cassert>
+
 namespace arser
 {
 namespace internal
@@ -56,6 +58,31 @@ template <typename T> inline std::string to_string(const T value) { return std::
 template <> inline std::string to_string(const char *value) { return std::string(value); }
 
 template <> inline std::string to_string(const bool value) { return value ? "true" : "false"; }
+
+/**
+ * @brief Returns the string with the leading dash removed.
+ *
+ * If there is no dash, it returns as it is.
+ */
+std::string remove_dash(const std::string &str)
+{
+  std::string ret{str};
+  auto pos = ret.find_first_not_of('-');
+  if (pos == std::string::npos)
+    return ret;
+  return ret.substr(pos);
+}
+
+/**
+ * @brief Returns the string that created by concatenating the elements of a vector with commas.
+ */
+std::string make_comma_concatenated(const std::vector<std::string> &vec)
+{
+  std::ostringstream oss;
+  std::copy(vec.begin(), std::prev(vec.end()), std::ostream_iterator<std::string>(oss, ", "));
+  oss << vec.back();
+  return oss.str();
+}
 
 } // namespace internal
 } // namespace arser
@@ -119,10 +146,41 @@ enum class DataType
 
 class Arser;
 
+/**
+ * Argument
+ *   ├── positional argument
+ *   └── optioanl argument  [ dash at the beginning of the string ]
+ *       ├── long option    [ two or more dashes ]
+ *       └── short option   [ one dash ]
+ *
+ * Argument has two types - positional argument, optional argument.
+ *
+ * The way to distinguish the two types is whether there is a dash('-') at the beginning of the
+ * string.
+ *
+ * And, optional argument has two types as well - long option, short option, which is distinguished
+ * by the number of dash.
+ */
 class Argument
 {
 public:
-  explicit Argument(const std::string &arg_name) : _name{arg_name} {}
+  explicit Argument(const std::string &arg_name) : _long_name{arg_name}, _names{arg_name} {}
+  explicit Argument(const std::string &short_name, const std::string &long_name)
+    : _short_name{short_name}, _long_name{long_name}, _names{short_name, long_name}
+  {
+  }
+  explicit Argument(const std::string &short_name, const std::string &long_name,
+                    const std::vector<std::string> &names)
+    : _short_name{short_name}, _long_name{long_name}, _names{names}
+  {
+    // 'names' must have 'short_name' and 'long_name'.
+    auto it = std::find(names.begin(), names.end(), short_name);
+    assert(it != names.end());
+    it = std::find(names.begin(), names.end(), long_name);
+    assert(it != names.end());
+    // for avoiding unused warning.
+    (void)it;
+  }
 
   Argument &nargs(uint32_t num)
   {
@@ -225,7 +283,11 @@ public:
   }
 
 private:
-  std::string _name;
+  // The '_names' vector contains all of the options specified by the user.
+  // And among them, '_long_name' and '_short_name' are selected.
+  std::string _long_name;
+  std::string _short_name;
+  std::vector<std::string> _names;
   std::string _type;
   std::string _help_message;
   std::function<void(void)> _func;
@@ -243,19 +305,31 @@ public:
   explicit Arser(const std::string &program_description = {})
     : _program_description{program_description}
   {
-    add_argument("--help").help("Show help message and exit").nargs(0);
+    add_argument("-h", "--help").help("Show help message and exit").nargs(0);
   }
 
   Argument &add_argument(const std::string &arg_name)
   {
-    if (arg_name.at(0) != '-')
+    if (arg_name.at(0) != '-') /* positional */
     {
       _positional_arg_vec.emplace_back(arg_name);
       _arg_map[arg_name] = &_positional_arg_vec.back();
     }
-    else
+    else /* optional */
     {
+      // The length of optional argument name must be 2 or more.
+      // And it shouldn't be hard to recognize. e.g. '-', '--'
+      if (arg_name.size() < 2)
+      {
+        throw std::runtime_error("Too short name. The length of argument name must be 2 or more.");
+      }
+      if (arg_name == "--")
+      {
+        throw std::runtime_error(
+          "Too short name. Option name must contain at least one character other than dash.");
+      }
       _optional_arg_vec.emplace_back(arg_name);
+      _optional_arg_vec.back()._short_name = arg_name;
       _arg_map[arg_name] = &_optional_arg_vec.back();
     }
     return *_arg_map[arg_name];
@@ -263,7 +337,9 @@ public:
 
   Argument &add_argument(const std::vector<std::string> &arg_name_vec)
   {
-    _optional_arg_vec.emplace_back(arg_name_vec.at(0));
+    assert(arg_name_vec.size() >= 2);
+    std::string long_opt, short_opt;
+    // find long and short option
     for (const auto &arg_name : arg_name_vec)
     {
       if (arg_name.at(0) != '-')
@@ -271,6 +347,31 @@ public:
         throw std::runtime_error("Invalid argument. "
                                  "Positional argument cannot have short option.");
       }
+      assert(arg_name.size() >= 2);
+      if (long_opt.empty() && arg_name.at(0) == '-' && arg_name.at(1) == '-')
+      {
+        long_opt = arg_name;
+      }
+      if (short_opt.empty() && arg_name.at(0) == '-' && arg_name.at(1) != '-')
+      {
+        short_opt = arg_name;
+      }
+    }
+    // If one of the two is empty, fill it with the non-empty one for pretty printing.
+    if (long_opt.empty())
+    {
+      assert(not short_opt.empty());
+      long_opt = short_opt;
+    }
+    if (short_opt.empty())
+    {
+      assert(not long_opt.empty());
+      short_opt = long_opt;
+    }
+
+    _optional_arg_vec.emplace_back(short_opt, long_opt, arg_name_vec);
+    for (const auto &arg_name : arg_name_vec)
+    {
       _arg_map[arg_name] = &_optional_arg_vec.back();
     }
     return _optional_arg_vec.back();
@@ -289,8 +390,21 @@ public:
     }
   }
 
+  void validate_arguments(void)
+  {
+    // positional argument is always required.
+    for (const auto &arg : _positional_arg_vec)
+    {
+      if (arg._is_required)
+      {
+        throw std::runtime_error("Invalid arguments. Positional argument must always be required.");
+      }
+    }
+  }
+
   void parse(int argc, char **argv)
   {
+    validate_arguments();
     _program_name = argv[0];
     _program_name.erase(0, _program_name.find_last_of("/\\") + 1);
     if (argc >= 2)
@@ -457,8 +571,8 @@ std::ostream &operator<<(std::ostream &stream, const Arser &parser)
   {
     if (!arg._is_required)
       continue;
-    stream << arg._name << " ";
-    std::string arg_name = arg._name.substr(2);
+    stream << arg._short_name << " ";
+    std::string arg_name = arser::internal::remove_dash(arg._long_name);
     std::for_each(arg_name.begin(), arg_name.end(),
                   [&stream](const char &c) { stream << static_cast<char>(::toupper(c)); });
     stream << " ";
@@ -468,11 +582,11 @@ std::ostream &operator<<(std::ostream &stream, const Arser &parser)
   {
     if (arg._is_required)
       continue;
-    stream << "[" << arg._name;
+    stream << "[" << arg._short_name;
     if (arg._nargs)
     {
       stream << " ";
-      std::string arg_name = arg._name.substr(2);
+      std::string arg_name = arser::internal::remove_dash(arg._long_name);
       std::for_each(arg_name.begin(), arg_name.end(),
                     [&stream](const char &c) { stream << static_cast<char>(::toupper(c)); });
     }
@@ -482,7 +596,7 @@ std::ostream &operator<<(std::ostream &stream, const Arser &parser)
   // positional arguement
   for (const auto &arg : parser._positional_arg_vec)
   {
-    stream << arg._name << " ";
+    stream << arg._long_name << " ";
   }
   stream << "\n\n";
   /*
@@ -492,11 +606,13 @@ std::ostream &operator<<(std::ostream &stream, const Arser &parser)
   size_t length_of_longest_arg = 0;
   for (const auto &arg : parser._positional_arg_vec)
   {
-    length_of_longest_arg = std::max(length_of_longest_arg, arg._name.length());
+    length_of_longest_arg =
+      std::max(length_of_longest_arg, arser::internal::make_comma_concatenated(arg._names).size());
   }
   for (const auto &arg : parser._optional_arg_vec)
   {
-    length_of_longest_arg = std::max(length_of_longest_arg, arg._name.length());
+    length_of_longest_arg =
+      std::max(length_of_longest_arg, arser::internal::make_comma_concatenated(arg._names).size());
   }
 
   const size_t message_width = 60;
@@ -507,7 +623,7 @@ std::ostream &operator<<(std::ostream &stream, const Arser &parser)
     for (const auto &arg : parser._positional_arg_vec)
     {
       stream.width(length_of_longest_arg);
-      stream << std::left << arg._name << "\t";
+      stream << std::left << arser::internal::make_comma_concatenated(arg._names) << "\t";
       for (size_t i = 0; i < arg._help_message.length(); i += message_width)
       {
         if (i)
@@ -524,7 +640,7 @@ std::ostream &operator<<(std::ostream &stream, const Arser &parser)
     for (const auto &arg : parser._optional_arg_vec)
     {
       stream.width(length_of_longest_arg);
-      stream << std::left << arg._name << "\t";
+      stream << std::left << arser::internal::make_comma_concatenated(arg._names) << "\t";
       for (size_t i = 0; i < arg._help_message.length(); i += message_width)
       {
         if (i)
