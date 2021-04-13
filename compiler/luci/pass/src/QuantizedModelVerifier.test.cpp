@@ -687,7 +687,6 @@ TEST(QuantizedModelVerifierTest, StridedSlice)
   TEST_WITH_GRAPH(StridedSliceTestGraph, Type::U8, Granularity::LayerWise);
   TEST_WITH_GRAPH(StridedSliceTestGraph, Type::U8, Granularity::ChannelWise);
   TEST_WITH_GRAPH(StridedSliceTestGraph, Type::S16, Granularity::ChannelWise);
-
   SUCCEED();
 }
 
@@ -696,7 +695,6 @@ TEST(QuantizedModelVerifierTest, StridedSlice_wrong_type_NEG)
   TEST_WITH_WRONG_TYPE(StridedSliceTestGraph, Type::U8, Granularity::LayerWise, Type::S16);
   TEST_WITH_WRONG_TYPE(StridedSliceTestGraph, Type::U8, Granularity::ChannelWise, Type::S16);
   TEST_WITH_WRONG_TYPE(StridedSliceTestGraph, Type::S16, Granularity::ChannelWise, Type::U8);
-
   SUCCEED();
 }
 
@@ -705,7 +703,6 @@ TEST(QuantizedModelVerifierTest, StridedSlice_wrong_granularity_NEG)
   TEST_WITH_WRONG_GRANULARITY(StridedSliceTestGraph, Type::U8, Granularity::LayerWise);
   TEST_WITH_WRONG_GRANULARITY(StridedSliceTestGraph, Type::U8, Granularity::ChannelWise);
   TEST_WITH_WRONG_GRANULARITY(StridedSliceTestGraph, Type::S16, Granularity::ChannelWise);
-
   SUCCEED();
 }
 
