@@ -216,6 +216,13 @@ private:
     return true;
   }
 
+  bool visit(const luci::CircleStridedSlice *node)
+  {
+    RETURN_FALSE_UNLESS(has_type(node, Type::S16))
+    RETURN_FALSE_UNLESS(has_type(node->input(), Type::S16))
+    return true;
+  }
+
   bool visit(const luci::CircleArgMax *node)
   {
     RETURN_FALSE_UNLESS(has_type(node, node->output_type()))
