@@ -333,6 +333,13 @@ private:
     return true;
   }
 
+  bool visit(const luci::CircleElu *node)
+  {
+    RETURN_FALSE_UNLESS(is_lwq(node));
+    RETURN_FALSE_UNLESS(is_lwq(node->features()));
+    return true;
+  }
+
   // TODO: Implement more Ops
 
   bool visit(const luci::CircleNode *) { return true; }
