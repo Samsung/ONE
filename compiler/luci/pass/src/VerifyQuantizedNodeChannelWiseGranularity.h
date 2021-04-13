@@ -107,6 +107,13 @@ private:
     return true;
   }
 
+  bool visit(const luci::CircleDepthToSpace *node)
+  {
+    RETURN_FALSE_UNLESS(is_lwq(node))
+    RETURN_FALSE_UNLESS(is_lwq(node->input()))
+    return true;
+  }
+
   bool visit(const luci::CircleDepthwiseConv2D *node)
   {
     RETURN_FALSE_UNLESS(is_lwq(node))

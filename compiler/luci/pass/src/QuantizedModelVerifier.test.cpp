@@ -385,6 +385,26 @@ public:
   luci::CircleConst *_crops = nullptr;
 };
 
+class DepthToSpaceTestGraph final : public luci::test::TestIOGraph
+{
+public:
+  void init(void)
+  {
+    TestIOGraph::init({1, 1, 1, 4}, {1, 2, 2, 1});
+    _dtos = g()->nodes()->create<luci::CircleDepthToSpace>();
+    {
+      _dtos->input(input());
+      _dtos->block_size(2);
+    }
+    output()->from(_dtos);
+
+    set_minmax_to_non_const(g(), -1, 1);
+  }
+
+public:
+  luci::CircleDepthToSpace *_dtos = nullptr;
+};
+
 class PadTestGraph final : public luci::test::TestIOGraph
 {
 public:
@@ -834,6 +854,30 @@ TEST(QuantizedModelVerifierTest, BatchToSpaceND_wrong_granularity_NEG)
   TEST_WITH_WRONG_GRANULARITY(BatchToSpaceNDTestGraph, Type::U8, Granularity::LayerWise);
   TEST_WITH_WRONG_GRANULARITY(BatchToSpaceNDTestGraph, Type::U8, Granularity::ChannelWise);
   TEST_WITH_WRONG_GRANULARITY(BatchToSpaceNDTestGraph, Type::S16, Granularity::ChannelWise);
+  SUCCEED();
+}
+
+TEST(QuantizedModelVerifierTest, DepthToSpace)
+{
+  TEST_WITH_GRAPH(DepthToSpaceTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_GRAPH(DepthToSpaceTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_GRAPH(DepthToSpaceTestGraph, Type::S16, Granularity::ChannelWise);
+  SUCCEED();
+}
+
+TEST(QuantizedModelVerifierTest, DepthToSpace_wrong_type_NEG)
+{
+  TEST_WITH_WRONG_TYPE(DepthToSpaceTestGraph, Type::U8, Granularity::LayerWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(DepthToSpaceTestGraph, Type::U8, Granularity::ChannelWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(DepthToSpaceTestGraph, Type::S16, Granularity::ChannelWise, Type::U8);
+  SUCCEED();
+}
+
+TEST(QuantizedModelVerifierTest, DepthToSpace_wrong_granularity_NEG)
+{
+  TEST_WITH_WRONG_GRANULARITY(DepthToSpaceTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_WRONG_GRANULARITY(DepthToSpaceTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_WRONG_GRANULARITY(DepthToSpaceTestGraph, Type::S16, Granularity::ChannelWise);
   SUCCEED();
 }
 

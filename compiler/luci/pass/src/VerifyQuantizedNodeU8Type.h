@@ -68,6 +68,13 @@ private:
     return true;
   }
 
+  bool visit(const luci::CircleDepthToSpace *node)
+  {
+    RETURN_FALSE_UNLESS(has_type(node, Type::U8))
+    RETURN_FALSE_UNLESS(has_type(node->input(), Type::U8))
+    return true;
+  }
+
   bool visit(const luci::CircleDepthwiseConv2D *node)
   {
     RETURN_FALSE_UNLESS(has_type(node, Type::U8))
