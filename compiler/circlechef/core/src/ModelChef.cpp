@@ -90,6 +90,7 @@ DataChefRegistry &data_chef_registry(const circlechef::TensorType &type)
   static DataChefRegistry fp32;
   static DataChefRegistry u8;
   static DataChefRegistry boolean;
+  static DataChefRegistry s16;
 
   switch (type)
   {
@@ -103,6 +104,8 @@ DataChefRegistry &data_chef_registry(const circlechef::TensorType &type)
       return u8;
     case circlechef::BOOL:
       return boolean;
+    case circlechef::INT16:
+      return s16;
     default:
       break;
   }
