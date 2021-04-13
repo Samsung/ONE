@@ -26,6 +26,44 @@
 namespace souschef
 {
 
+template <typename T>
+static std::vector<uint8_t> generate_gaussian(int32_t count, float mean, float stddev,
+                                              std::minstd_rand::result_type seed)
+{
+  std::minstd_rand rand{static_cast<std::minstd_rand::result_type>(seed)};
+  std::normal_distribution<float> dist{mean, stddev};
+
+  std::vector<uint8_t> res;
+
+  constexpr float max_cap = std::numeric_limits<T>::max();
+  constexpr float min_cap = std::numeric_limits<T>::min();
+  for (uint32_t n = 0; n < count; ++n)
+  {
+    float raw_value = dist(rand);
+    const float capped_value = std::max(min_cap, std::min(max_cap, raw_value));
+    auto const value = static_cast<T>(capped_value);
+    auto const arr = reinterpret_cast<const uint8_t *>(&value);
+
+    for (uint32_t b = 0; b < sizeof(T); ++b)
+    {
+      res.emplace_back(arr[b]);
+    }
+  }
+
+  return res;
+}
+
+template <typename T>
+static std::vector<uint8_t> generate_gaussian(int32_t count, float mean, float stddev)
+{
+  auto time_stamp = std::chrono::system_clock::now().time_since_epoch().count();
+
+  // Note this is implementation defined, change if needed.
+  auto seed = static_cast<std::minstd_rand::result_type>(time_stamp);
+
+  return generate_gaussian<T>(count, mean, stddev, seed);
+}
+
 std::vector<uint8_t> GaussianFloat32DataChef::generate(int32_t count) const
 {
   // TODO Support seed value override
