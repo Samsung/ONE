@@ -140,7 +140,7 @@ void symmetric_wquant_with_minmax_per_layer(CircleConst *node, float min, float 
 void compute_sym_scale_zp(float min, float max, float &scaling_factor, int64_t &zp,
                           float &nudged_min, float &nudged_max)
 {
-  assert(min != max);
+  assert(min <= max);
 
   const int32_t kMaxScale = std::numeric_limits<int16_t>::max();
   const int32_t kMinScale = -kMaxScale;
