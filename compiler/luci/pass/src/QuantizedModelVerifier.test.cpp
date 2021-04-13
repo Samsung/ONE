@@ -225,6 +225,43 @@ public:
   luci::CircleConst *_size = nullptr;
 };
 
+class StridedSliceTestGraph final : public luci::test::TestIOGraph
+{
+public:
+  void init(void)
+  {
+    TestIOGraph::init({32}, {32});
+    _begin = g()->nodes()->create<luci::CircleConst>();
+    {
+      _begin->dtype(Type::S32);
+    }
+    _end = g()->nodes()->create<luci::CircleConst>();
+    {
+      _end->dtype(Type::S32);
+    }
+    _strides = g()->nodes()->create<luci::CircleConst>();
+    {
+      _strides->dtype(Type::S32);
+    }
+    _slice = g()->nodes()->create<luci::CircleStridedSlice>();
+    {
+      _slice->input(input());
+      _slice->begin(_begin);
+      _slice->end(_end);
+      _slice->strides(_strides);
+    }
+    output()->from(_slice);
+
+    set_minmax_to_non_const(g(), -1, 1);
+  }
+
+public:
+  luci::CircleStridedSlice *_slice = nullptr;
+  luci::CircleConst *_begin = nullptr;
+  luci::CircleConst *_end = nullptr;
+  luci::CircleConst *_strides = nullptr;
+};
+
 class ReshapeTestGraph final : public luci::test::TestIOGraph
 {
 public:
@@ -643,6 +680,33 @@ TEST(QuantizedModelVerifierTest, Slice_wrong_granularity_NEG)
   TEST_WITH_WRONG_GRANULARITY(SliceTestGraph<Type::S64>, Type::U8, Granularity::LayerWise);
   TEST_WITH_WRONG_GRANULARITY(SliceTestGraph<Type::S64>, Type::U8, Granularity::ChannelWise);
   TEST_WITH_WRONG_GRANULARITY(SliceTestGraph<Type::S64>, Type::S16, Granularity::ChannelWise);
+}
+
+TEST(QuantizedModelVerifierTest, StridedSlice)
+{
+  TEST_WITH_GRAPH(StridedSliceTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_GRAPH(StridedSliceTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_GRAPH(StridedSliceTestGraph, Type::S16, Granularity::ChannelWise);
+
+  SUCCEED();
+}
+
+TEST(QuantizedModelVerifierTest, StridedSlice_wrong_type_NEG)
+{
+  TEST_WITH_WRONG_TYPE(StridedSliceTestGraph, Type::U8, Granularity::LayerWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(StridedSliceTestGraph, Type::U8, Granularity::ChannelWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(StridedSliceTestGraph, Type::S16, Granularity::ChannelWise, Type::U8);
+
+  SUCCEED();
+}
+
+TEST(QuantizedModelVerifierTest, StridedSlice_wrong_granularity_NEG)
+{
+  TEST_WITH_WRONG_GRANULARITY(StridedSliceTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_WRONG_GRANULARITY(StridedSliceTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_WRONG_GRANULARITY(StridedSliceTestGraph, Type::S16, Granularity::ChannelWise);
+
+  SUCCEED();
 }
 
 TEST(QuantizedModelVerifierTest, ArgMax)
