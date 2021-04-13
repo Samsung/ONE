@@ -36,8 +36,6 @@ public:
 
 public:
   loco::DataType idx_out_type(void) const { return _idx_out_type; }
-  // TODO remove output_type
-  void output_type(loco::DataType ot) { _idx_out_type = ot; }
   void idx_out_type(loco::DataType ot) { _idx_out_type = ot; }
 
 private:
