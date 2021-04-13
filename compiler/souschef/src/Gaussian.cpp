@@ -27,7 +27,8 @@ namespace souschef
 {
 
 template <typename T>
-static std::vector<uint8_t> generate_gaussian(int32_t count, float mean, float stddev, std::minstd_rand::result_type seed)
+static std::vector<uint8_t> generate_gaussian(int32_t count, float mean, float stddev,
+                                              std::minstd_rand::result_type seed)
 {
   std::minstd_rand rand{static_cast<std::minstd_rand::result_type>(seed)};
   std::normal_distribution<float> dist{mean, stddev};
