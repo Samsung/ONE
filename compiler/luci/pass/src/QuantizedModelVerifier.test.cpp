@@ -317,6 +317,37 @@ public:
   luci::CircleConst *_dimension = nullptr;
 };
 
+class BatchToSpaceNDTestGraph final : public luci::test::TestIOGraph
+{
+public:
+  void init(void)
+  {
+    TestIOGraph::init({32}, {32});
+    _block_shape = g()->nodes()->create<luci::CircleConst>();
+    {
+      _block_shape->dtype(Type::S32);
+    }
+    _crops = g()->nodes()->create<luci::CircleConst>();
+    {
+      _crops->dtype(Type::S32);
+    }
+    _btos = g()->nodes()->create<luci::CircleBatchToSpaceND>();
+    {
+      _btos->input(input());
+      _btos->block_shape(_block_shape);
+      _btos->crops(_crops);
+    }
+    output()->from(_btos);
+
+    set_minmax_to_non_const(g(), -1, 1);
+  }
+
+public:
+  luci::CircleBatchToSpaceND *_btos = nullptr;
+  luci::CircleConst *_block_shape = nullptr;
+  luci::CircleConst *_crops = nullptr;
+};
+
 class PadTestGraph final : public luci::test::TestIOGraph
 {
 public:
@@ -681,6 +712,30 @@ TEST(QuantizedModelVerifierTest, ArgMax_wrong_input_granularity_NEG)
 
   luci::QuantizedModelVerifier verifier(Type::U8, Granularity::LayerWise);
   EXPECT_ANY_THROW(verifier.verify(g.g()));
+}
+
+TEST(QuantizedModelVerifierTest, BatchToSpaceND)
+{
+  TEST_WITH_GRAPH(BatchToSpaceNDTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_GRAPH(BatchToSpaceNDTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_GRAPH(BatchToSpaceNDTestGraph, Type::S16, Granularity::ChannelWise);
+  SUCCEED();
+}
+
+TEST(QuantizedModelVerifierTest, BatchToSpaceND_wrong_type_NEG)
+{
+  TEST_WITH_WRONG_TYPE(BatchToSpaceNDTestGraph, Type::U8, Granularity::LayerWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(BatchToSpaceNDTestGraph, Type::U8, Granularity::ChannelWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(BatchToSpaceNDTestGraph, Type::S16, Granularity::ChannelWise, Type::U8);
+  SUCCEED();
+}
+
+TEST(QuantizedModelVerifierTest, BatchToSpaceND_wrong_granularity_NEG)
+{
+  TEST_WITH_WRONG_GRANULARITY(BatchToSpaceNDTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_WRONG_GRANULARITY(BatchToSpaceNDTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_WRONG_GRANULARITY(BatchToSpaceNDTestGraph, Type::S16, Granularity::ChannelWise);
+  SUCCEED();
 }
 
 TEST(QuantizedModelVerifierTest, Concatenation)
