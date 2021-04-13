@@ -156,13 +156,15 @@ void set_minmax_to_non_const(loco::Graph *g, float min, float max)
   }
 }
 
-class SingleOpTestGraph : public luci::test::TestIOGraph
+class SampleTestGraph : public luci::test::TestIOGraph
 {
 public:
+  // Sample test graphes are choosen by naive sampling.
+  // They are initialized with basic shape(ex. {32}) and value(ex. val[index] = index).
   virtual void init(void) = 0;
 };
 
-class LogisticTestGraph final : public SingleOpTestGraph
+class LogisticTestGraph final : public SampleTestGraph
 {
 public:
   void init(void)
@@ -181,7 +183,7 @@ public:
   luci::CircleLogistic *_logistic = nullptr;
 };
 
-class SoftmaxTestGraph final : public SingleOpTestGraph
+class SoftmaxTestGraph final : public SampleTestGraph
 {
 public:
   void init(void)
@@ -201,7 +203,7 @@ public:
   luci::CircleSoftmax *_softmax = nullptr;
 };
 
-template <Type indexT> class SliceTestGraph final : public SingleOpTestGraph
+template <Type indexT> class SliceTestGraph final : public SampleTestGraph
 {
 public:
   void init(void)
@@ -232,7 +234,7 @@ public:
   luci::CircleConst *_size = nullptr;
 };
 
-class ReshapeTestGraph final : public SingleOpTestGraph
+class ReshapeTestGraph final : public SampleTestGraph
 {
 public:
   void init(void)
@@ -257,7 +259,7 @@ public:
   luci::CircleConst *_shape = nullptr;
 };
 
-class TanhTestGraph final : public SingleOpTestGraph
+class TanhTestGraph final : public SampleTestGraph
 {
 public:
   void init(void)
@@ -276,7 +278,7 @@ public:
   luci::CircleTanh *_tanh = nullptr;
 };
 
-class FloorTestGraph final : public SingleOpTestGraph
+class FloorTestGraph final : public SampleTestGraph
 {
 public:
   void init(void)
@@ -295,7 +297,7 @@ public:
   luci::CircleFloor *_floor = nullptr;
 };
 
-template <Type indexT> class ArgMaxTestGraph final : public SingleOpTestGraph
+template <Type indexT> class ArgMaxTestGraph final : public SampleTestGraph
 {
 public:
   void init(void)
@@ -324,7 +326,7 @@ public:
   luci::CircleConst *_dimension = nullptr;
 };
 
-class PadTestGraph final : public SingleOpTestGraph
+class PadTestGraph final : public SampleTestGraph
 {
 public:
   void init(void)
@@ -349,7 +351,7 @@ public:
   luci::CircleConst *_paddings = nullptr;
 };
 
-class TransposeTestGraph final : public SingleOpTestGraph
+class TransposeTestGraph final : public SampleTestGraph
 {
 public:
   void init(void)
@@ -374,7 +376,7 @@ public:
   luci::CircleConst *_perm = nullptr;
 };
 
-class ConcatenationTestGraph final : public SingleOpTestGraph
+class ConcatenationTestGraph final : public SampleTestGraph
 {
 public:
   void init(void)
@@ -406,7 +408,7 @@ public:
 
 // Test graph for comparison Ops
 // GREATER, GREATER_EQUAL, LESS, LESS_EQUAL, EQUAL, NOT_EQUAL
-template <class Op> class ComparisonOpTestGraph final : public SingleOpTestGraph
+template <class Op> class ComparisonOpTestGraph final : public SampleTestGraph
 {
 public:
   void init(void)
@@ -432,7 +434,7 @@ public:
 
 // Test graph for binary logical Ops
 // LOGICAL_OR, LOGICAL_AND
-template <class Op> class BinaryLogicalOpTestGraph final : public SingleOpTestGraph
+template <class Op> class BinaryLogicalOpTestGraph final : public SampleTestGraph
 {
 public:
   void init(void)
@@ -464,7 +466,7 @@ public:
   luci::CircleConst *_y = nullptr;
 };
 
-class DivTestGraph final : public SingleOpTestGraph
+class DivTestGraph final : public SampleTestGraph
 {
 public:
   void init(void)
@@ -491,7 +493,7 @@ private:
   luci::CircleConst *_const = nullptr;
 };
 
-class FloorDivTestGraph final : public SingleOpTestGraph
+class FloorDivTestGraph final : public SampleTestGraph
 {
 public:
   void init(void)
@@ -645,52 +647,68 @@ TEST(QuantizedModelVerifierTest, LocalCreateDummyConst)
   EXPECT_NO_THROW(create_dummy_const<Type::FLOAT32>(&g, {32, 32}));
 }
 
-TEST(QuantizedModelVerifierTest, Logistic) { test_with_graph<LogisticTestGraph>(); }
+TEST(QuantizedModelVerifierTest, Logistic)
+{
+  test_with_graph<LogisticTestGraph>();
+  SUCCEED();
+}
 
 TEST(QuantizedModelVerifierTest, Logistic_wrong_type_NEG)
 {
   test_with_wrong_type<LogisticTestGraph>();
+  SUCCEED();
 }
 
 TEST(QuantizedModelVerifierTest, Logistic_wrong_granularity_NEG)
 {
   test_with_wrong_granularity<LogisticTestGraph>();
+  SUCCEED();
 }
 
-TEST(QuantizedModelVerifierTest, Softmax) { test_with_graph<SoftmaxTestGraph>(); }
+TEST(QuantizedModelVerifierTest, Softmax)
+{
+  test_with_graph<SoftmaxTestGraph>();
+  SUCCEED();
+}
 
 TEST(QuantizedModelVerifierTest, Softmax_wrong_type_NEG)
 {
   test_with_wrong_type<SoftmaxTestGraph>();
+  SUCCEED();
 }
 
 TEST(QuantizedModelVerifierTest, Softmax_wrong_granularity_NEG)
 {
   test_with_wrong_granularity<SoftmaxTestGraph>();
+  SUCCEED();
 }
 
 TEST(QuantizedModelVerifierTest, Slice)
 {
   test_with_graph<SliceTestGraph<Type::S32>>();
   test_with_graph<SliceTestGraph<Type::S64>>();
+  SUCCEED();
 }
 
 TEST(QuantizedModelVerifierTest, Slice_wrong_type_NEG)
 {
   test_with_wrong_type<SliceTestGraph<Type::S32>>();
   test_with_wrong_type<SliceTestGraph<Type::S64>>();
+  SUCCEED();
 }
 
 TEST(QuantizedModelVerifierTest, Slice_wrong_granularity_NEG)
 {
   test_with_wrong_granularity<SliceTestGraph<Type::S32>>();
   test_with_wrong_granularity<SliceTestGraph<Type::S64>>();
+  SUCCEED();
 }
 
 TEST(QuantizedModelVerifierTest, ArgMax)
 {
   test_with_graph<ArgMaxTestGraph<Type::S32>>();
   test_with_graph<ArgMaxTestGraph<Type::S64>>();
+  SUCCEED();
 }
 
 TEST(QuantizedModelVerifierTest, ArgMax_wrong_dimension_type_NEG)
@@ -720,33 +738,46 @@ TEST(QuantizedModelVerifierTest, ArgMax_wrong_input_granularity_NEG)
   EXPECT_ANY_THROW(verifier.verify(g.g()));
 }
 
-TEST(QuantizedModelVerifierTest, Concatenation) { test_with_graph<ConcatenationTestGraph>(); }
+TEST(QuantizedModelVerifierTest, Concatenation)
+{
+  test_with_graph<ConcatenationTestGraph>();
+  SUCCEED();
+}
 
 TEST(QuantizedModelVerifierTest, Concatenation_wrong_type_NEG)
 {
   test_with_wrong_type<ConcatenationTestGraph>();
+  SUCCEED();
 }
 
 TEST(QuantizedModelVerifierTest, Concatenation_wrong_granularity_NEG)
 {
   test_with_wrong_granularity<ConcatenationTestGraph>();
+  SUCCEED();
 }
 
 TEST(QuantizedModelVerifierTest, LogicalOr)
 {
   test_with_graph<BinaryLogicalOpTestGraph<luci::CircleLogicalOr>>();
+  SUCCEED();
 }
 
 TEST(QuantizedModelVerifierTest, LogicalOr_wrong_type_NEG)
 {
   test_with_wrong_type<BinaryLogicalOpTestGraph<luci::CircleLogicalOr>>();
+  SUCCEED();
 }
 
-TEST(QuantizedModelVerifierTest, Reshape) { test_with_graph<ReshapeTestGraph>(); }
+TEST(QuantizedModelVerifierTest, Reshape)
+{
+  test_with_graph<ReshapeTestGraph>();
+  SUCCEED();
+}
 
 TEST(QuantizedModelVerifierTest, Reshape_wrong_type_NEG)
 {
   test_with_wrong_type<ReshapeTestGraph>();
+  SUCCEED();
 }
 
 TEST(QuantizedModelVerifierTest, Reshape_wrong_granularity_NEG)
@@ -754,53 +785,88 @@ TEST(QuantizedModelVerifierTest, Reshape_wrong_granularity_NEG)
   test_with_wrong_granularity<ReshapeTestGraph>();
 }
 
-TEST(QuantizedModelVerifierTest, Tanh) { test_with_graph<TanhTestGraph>(); }
+TEST(QuantizedModelVerifierTest, Tanh)
+{
+  test_with_graph<TanhTestGraph>();
+  SUCCEED();
+}
 
-TEST(QuantizedModelVerifierTest, Tanh_wrong_type_NEG) { test_with_wrong_type<TanhTestGraph>(); }
+TEST(QuantizedModelVerifierTest, Tanh_wrong_type_NEG)
+{
+  test_with_wrong_type<TanhTestGraph>();
+  SUCCEED();
+}
 
 TEST(QuantizedModelVerifierTest, Tanh_wrong_granularity_NEG)
 {
   test_with_wrong_granularity<TanhTestGraph>();
+  SUCCEED();
 }
 
-TEST(QuantizedModelVerifierTest, Pad) { test_with_graph<PadTestGraph>(); }
+TEST(QuantizedModelVerifierTest, Pad)
+{
+  test_with_graph<PadTestGraph>();
+  SUCCEED();
+}
 
-TEST(QuantizedModelVerifierTest, Pad_wrong_type_NEG) { test_with_wrong_type<PadTestGraph>(); }
+TEST(QuantizedModelVerifierTest, Pad_wrong_type_NEG)
+{
+  test_with_wrong_type<PadTestGraph>();
+  SUCCEED();
+}
 
 TEST(QuantizedModelVerifierTest, Pad_wrong_granularity_NEG)
 {
   test_with_wrong_granularity<PadTestGraph>();
+  SUCCEED();
 }
 
-TEST(QuantizedModelVerifierTest, Transpose) { test_with_graph<TransposeTestGraph>(); }
+TEST(QuantizedModelVerifierTest, Transpose)
+{
+  test_with_graph<TransposeTestGraph>();
+  SUCCEED();
+}
 
 TEST(QuantizedModelVerifierTest, Transpose_wrong_type_NEG)
 {
   test_with_wrong_type<TransposeTestGraph>();
+  SUCCEED();
 }
 
 TEST(QuantizedModelVerifierTest, Transpose_wrong_granularity_NEG)
 {
   test_with_wrong_granularity<TransposeTestGraph>();
+  SUCCEED();
 }
 
-TEST(QuantizedModelVerifierTest, Floor) { test_with_graph<FloorTestGraph>(); }
+TEST(QuantizedModelVerifierTest, Floor)
+{
+  test_with_graph<FloorTestGraph>();
+  SUCCEED();
+}
 
-TEST(QuantizedModelVerifierTest, Floor_wrong_type_NEG) { test_with_wrong_type<FloorTestGraph>(); }
+TEST(QuantizedModelVerifierTest, Floor_wrong_type_NEG)
+{
+  test_with_wrong_type<FloorTestGraph>();
+  SUCCEED();
+}
 
 TEST(QuantizedModelVerifierTest, Floor_wrong_granularity_NEG)
 {
   test_with_wrong_granularity<FloorTestGraph>();
+  SUCCEED();
 }
 
 TEST(QuantizedModelVerifierTest, GreaterEqual)
 {
   test_with_graph<ComparisonOpTestGraph<luci::CircleGreaterEqual>>();
+  SUCCEED();
 }
 
 TEST(QuantizedModelVerifierTest, GreaterEqual_wrong_type_NEG)
 {
   test_with_wrong_type<ComparisonOpTestGraph<luci::CircleGreaterEqual>>();
+  SUCCEED();
 }
 
 TEST(QuantizedModelVerifierTest, GreaterEqual_wrong_granularity_NEG)
@@ -819,16 +885,19 @@ TEST(QuantizedModelVerifierTest, GreaterEqual_wrong_granularity_NEG)
                                      Granularity::ChannelWise, g._y);
   TEST_WITH_WRONG_GRANULARITY_TARGET(ComparisonOpTestGraph<luci::CircleGreaterEqual>, Type::S16,
                                      Granularity::ChannelWise, g._y);
+  SUCCEED();
 }
 
 TEST(QuantizedModelVerifierTest, Greater)
 {
   test_with_graph<ComparisonOpTestGraph<luci::CircleGreater>>();
+  SUCCEED();
 }
 
 TEST(QuantizedModelVerifierTest, Greater_wrong_type_NEG)
 {
   test_with_wrong_type<ComparisonOpTestGraph<luci::CircleGreater>>();
+  SUCCEED();
 }
 
 TEST(QuantizedModelVerifierTest, Greater_wrong_granularity_NEG)
@@ -847,16 +916,19 @@ TEST(QuantizedModelVerifierTest, Greater_wrong_granularity_NEG)
                                      Granularity::ChannelWise, g._y);
   TEST_WITH_WRONG_GRANULARITY_TARGET(ComparisonOpTestGraph<luci::CircleGreater>, Type::S16,
                                      Granularity::ChannelWise, g._y);
+  SUCCEED();
 }
 
 TEST(QuantizedModelVerifierTest, NotEqual)
 {
   test_with_graph<ComparisonOpTestGraph<luci::CircleNotEqual>>();
+  SUCCEED();
 }
 
 TEST(QuantizedModelVerifierTest, NotEqual_wrong_type_NEG)
 {
   test_with_wrong_type<ComparisonOpTestGraph<luci::CircleNotEqual>>();
+  SUCCEED();
 }
 
 TEST(QuantizedModelVerifierTest, NotEqual_wrong_granularity_NEG)
@@ -875,29 +947,45 @@ TEST(QuantizedModelVerifierTest, NotEqual_wrong_granularity_NEG)
                                      Granularity::ChannelWise, g._y);
   TEST_WITH_WRONG_GRANULARITY_TARGET(ComparisonOpTestGraph<luci::CircleNotEqual>, Type::S16,
                                      Granularity::ChannelWise, g._y);
+  SUCCEED();
 }
 
-TEST(QuantizedModelVerifierTest, Div) { test_with_graph<DivTestGraph>(); }
+TEST(QuantizedModelVerifierTest, Div)
+{
+  test_with_graph<DivTestGraph>();
+  SUCCEED();
+}
 
-TEST(QuantizedModelVerifierTest, Div_wrong_type_NEG) { test_with_wrong_type<DivTestGraph>(); }
+TEST(QuantizedModelVerifierTest, Div_wrong_type_NEG)
+{
+  test_with_wrong_type<DivTestGraph>();
+  SUCCEED();
+}
 
 TEST(QuantizedModelVerifierTest, Div_wrong_granularity_NEG)
 {
   test_with_wrong_granularity_with_target_x<DivTestGraph>();
   test_with_wrong_granularity_with_target_y<DivTestGraph>();
+  SUCCEED();
 }
 
-TEST(QuantizedModelVerifierTest, FloorDiv) { test_with_graph<FloorDivTestGraph>(); }
+TEST(QuantizedModelVerifierTest, FloorDiv)
+{
+  test_with_graph<FloorDivTestGraph>();
+  SUCCEED();
+}
 
 TEST(QuantizedModelVerifierTest, FloorDiv_wrong_type_NEG)
 {
   test_with_wrong_type<FloorDivTestGraph>();
+  SUCCEED();
 }
 
 TEST(QuantizedModelVerifierTest, FloorDiv_wrong_granularity_NEG)
 {
   test_with_wrong_granularity_with_target_x<FloorDivTestGraph>();
   test_with_wrong_granularity_with_target_y<FloorDivTestGraph>();
+  SUCCEED();
 }
 
 #undef TEST_WITH_GRAPH
