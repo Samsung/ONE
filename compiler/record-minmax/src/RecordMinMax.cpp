@@ -38,6 +38,18 @@ using DataType = luci_interpreter::DataType;
 namespace
 {
 
+std::vector<uint8_t> genRandomBoolData(std::mt19937 &gen, uint32_t num_elements)
+{
+  std::uniform_int_distribution<> dist(0, 1);
+  std::vector<uint8_t> input_data(num_elements);
+
+  // Write random data
+  for (auto &iter : input_data)
+    iter = static_cast<uint8_t>(dist(gen));
+
+  return input_data;
+}
+
 /**
  * @brief  getTensorSize will return size in bytes
  */
@@ -226,7 +238,6 @@ void RecordMinMax::profileDataWithRandomInputs(const std::string &mode, float mi
     {
       const auto *input_node = loco::must_cast<const luci::CircleInput *>(input_nodes[input_idx]);
       assert(input_node->index() == input_idx);
-      assert(input_node->dtype() == loco::DataType::FLOAT32);
       uint32_t num_elements = 1;
       for (uint32_t i = 0; i < input_node->rank(); i++)
       {
@@ -239,6 +250,13 @@ void RecordMinMax::profileDataWithRandomInputs(const std::string &mode, float mi
       if (num_elements == 0)
         throw std::runtime_error("Only support non-zero sized inputs");
 
+      // TODO Support more input data types
+      assert(input_node->dtype() == loco::DataType::FLOAT32 ||
+             input_node->dtype() == loco::DataType::BOOL);
+
+      if (input_node->dtype() == DataType::FLOAT32)
+      // clang-format off
+      {
       std::vector<float> input_data(num_elements);
 
       // Write random data
@@ -249,6 +267,14 @@ void RecordMinMax::profileDataWithRandomInputs(const std::string &mode, float mi
       //       We can redcue the copy by directly writing data from file to interpreter inputs
       _interpreter->writeInputTensor(input_node, input_data.data(),
                                      input_data.size() * sizeof(float));
+      }
+      // clang-format on
+      else if (input_node->dtype() == DataType::BOOL)
+      {
+        auto input_data = genRandomBoolData(gen, num_elements);
+        _interpreter->writeInputTensor(input_node, input_data.data(),
+                                       input_data.size() * sizeof(uint8_t));
+      }
     }
 
     _interpreter->interpret();
