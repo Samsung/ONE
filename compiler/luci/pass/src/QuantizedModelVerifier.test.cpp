@@ -1037,6 +1037,7 @@ TEST(QuantizedModelVerifierTest, Sqrt)
   TEST_WITH_GRAPH(SqrtTestGraph, Type::U8, Granularity::LayerWise);
   TEST_WITH_GRAPH(SqrtTestGraph, Type::U8, Granularity::ChannelWise);
   TEST_WITH_GRAPH(SqrtTestGraph, Type::S16, Granularity::ChannelWise);
+  SUCCEED();
 }
 
 TEST(QuantizedModelVerifierTest, Sqrt_wrong_type_NEG)
@@ -1044,6 +1045,7 @@ TEST(QuantizedModelVerifierTest, Sqrt_wrong_type_NEG)
   TEST_WITH_WRONG_TYPE(SqrtTestGraph, Type::U8, Granularity::LayerWise, Type::S16);
   TEST_WITH_WRONG_TYPE(SqrtTestGraph, Type::U8, Granularity::ChannelWise, Type::S16);
   TEST_WITH_WRONG_TYPE(SqrtTestGraph, Type::S16, Granularity::ChannelWise, Type::U8);
+  SUCCEED();
 }
 
 TEST(QuantizedModelVerifierTest, Sqrt_wrong_granularity_NEG)
@@ -1051,6 +1053,7 @@ TEST(QuantizedModelVerifierTest, Sqrt_wrong_granularity_NEG)
   TEST_WITH_WRONG_GRANULARITY(SqrtTestGraph, Type::U8, Granularity::LayerWise);
   TEST_WITH_WRONG_GRANULARITY(SqrtTestGraph, Type::U8, Granularity::ChannelWise);
   TEST_WITH_WRONG_GRANULARITY(SqrtTestGraph, Type::S16, Granularity::ChannelWise);
+  SUCCEED();
 }
 
 #undef TEST_WITH_GRAPH
