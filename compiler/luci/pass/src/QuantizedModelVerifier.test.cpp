@@ -157,18 +157,18 @@ void set_minmax_to_non_const(loco::Graph *g, float min, float max)
 }
 
 /**
- * @brief Sample test graph
+ * @brief Simple Test Graph
  * @note
- * The graphes are choosen by naive sampling.
- * Which means, their nodes are initialized with simple shapes and values.
+ * The simple test graph's nodes are initialized with 
+ * simplely-choosen shapes and values.
  */
-class SampleTestGraph : public luci::test::TestIOGraph
+class SimpleTestGraph : public luci::test::TestIOGraph
 {
 public:
   virtual void init(void) = 0;
 };
 
-class LogisticTestGraph final : public SampleTestGraph
+class LogisticTestGraph final : public SimpleTestGraph
 {
 public:
   void init(void)
@@ -187,7 +187,7 @@ public:
   luci::CircleLogistic *_logistic = nullptr;
 };
 
-class SoftmaxTestGraph final : public SampleTestGraph
+class SoftmaxTestGraph final : public SimpleTestGraph
 {
 public:
   void init(void)
@@ -207,7 +207,7 @@ public:
   luci::CircleSoftmax *_softmax = nullptr;
 };
 
-template <Type indexT> class SliceTestGraph final : public SampleTestGraph
+template <Type indexT> class SliceTestGraph final : public SimpleTestGraph
 {
 public:
   void init(void)
@@ -238,7 +238,7 @@ public:
   luci::CircleConst *_size = nullptr;
 };
 
-class ReshapeTestGraph final : public SampleTestGraph
+class ReshapeTestGraph final : public SimpleTestGraph
 {
 public:
   void init(void)
@@ -263,7 +263,7 @@ public:
   luci::CircleConst *_shape = nullptr;
 };
 
-class TanhTestGraph final : public SampleTestGraph
+class TanhTestGraph final : public SimpleTestGraph
 {
 public:
   void init(void)
@@ -282,7 +282,7 @@ public:
   luci::CircleTanh *_tanh = nullptr;
 };
 
-class FloorTestGraph final : public SampleTestGraph
+class FloorTestGraph final : public SimpleTestGraph
 {
 public:
   void init(void)
@@ -301,7 +301,7 @@ public:
   luci::CircleFloor *_floor = nullptr;
 };
 
-template <Type indexT> class ArgMaxTestGraph final : public SampleTestGraph
+template <Type indexT> class ArgMaxTestGraph final : public SimpleTestGraph
 {
 public:
   void init(void)
@@ -330,7 +330,7 @@ public:
   luci::CircleConst *_dimension = nullptr;
 };
 
-class PadTestGraph final : public SampleTestGraph
+class PadTestGraph final : public SimpleTestGraph
 {
 public:
   void init(void)
@@ -355,7 +355,7 @@ public:
   luci::CircleConst *_paddings = nullptr;
 };
 
-class TransposeTestGraph final : public SampleTestGraph
+class TransposeTestGraph final : public SimpleTestGraph
 {
 public:
   void init(void)
@@ -380,7 +380,7 @@ public:
   luci::CircleConst *_perm = nullptr;
 };
 
-class ConcatenationTestGraph final : public SampleTestGraph
+class ConcatenationTestGraph final : public SimpleTestGraph
 {
 public:
   void init(void)
@@ -412,7 +412,7 @@ public:
 
 // Test graph for comparison Ops
 // GREATER, GREATER_EQUAL, LESS, LESS_EQUAL, EQUAL, NOT_EQUAL
-template <class Op> class ComparisonOpTestGraph final : public SampleTestGraph
+template <class Op> class ComparisonOpTestGraph final : public SimpleTestGraph
 {
 public:
   void init(void)
@@ -438,7 +438,7 @@ public:
 
 // Test graph for binary logical Ops
 // LOGICAL_OR, LOGICAL_AND
-template <class Op> class BinaryLogicalOpTestGraph final : public SampleTestGraph
+template <class Op> class BinaryLogicalOpTestGraph final : public SimpleTestGraph
 {
 public:
   void init(void)
@@ -470,7 +470,7 @@ public:
   luci::CircleConst *_y = nullptr;
 };
 
-class DivTestGraph final : public SampleTestGraph
+class DivTestGraph final : public SimpleTestGraph
 {
 public:
   void init(void)
@@ -497,7 +497,7 @@ private:
   luci::CircleConst *_const = nullptr;
 };
 
-class FloorDivTestGraph final : public SampleTestGraph
+class FloorDivTestGraph final : public SimpleTestGraph
 {
 public:
   void init(void)
