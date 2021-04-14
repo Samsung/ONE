@@ -155,6 +155,18 @@ void set_minmax_to_non_const(loco::Graph *g, float min, float max)
   }
 }
 
+/**
+ * @brief Simple Test Graph
+ * @note
+ * The simple test graph's nodes are initialized with
+ * simple shapes and values.
+ */
+class SimpleTestGraph : public luci::test::TestIOGraph
+{
+public:
+  virtual void init(void) = 0;
+};
+
 class InstanceNormTestGraph final : public SimpleTestGraph
 {
 public:
@@ -183,18 +195,6 @@ public:
   luci::CircleConst *_input = nullptr;
   luci::CircleConst *_gamma = nullptr;
   luci::CircleConst *_beta = nullptr;
-};
-
-/**
- * @brief Simple Test Graph
- * @note
- * The simple test graph's nodes are initialized with
- * simple shapes and values.
- */
-class SimpleTestGraph : public luci::test::TestIOGraph
-{
-public:
-  virtual void init(void) = 0;
 };
 
 class LogisticTestGraph final : public SimpleTestGraph
