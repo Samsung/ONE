@@ -267,6 +267,29 @@ public:
   luci::CircleConst *_size = nullptr;
 };
 
+class SplitTestGraph final : public SimpleTestGraph
+{
+public:
+  void init(void)
+  {
+    // Split has the same
+    TestIOGraph::init({32}, {32});
+    _split_dim = create_dummy_const<Type::S32>(g(), {1});
+    _split = g()->nodes()->create<luci::CircleSplit>();
+    {
+      _split->input(input());
+      _split->split_dim(_split_dim);
+    }
+    output()->from(_split);
+
+    set_minmax_to_non_const(g(), -1, 1);
+  }
+
+public:
+  luci::CircleSplit *_split = nullptr;
+  luci::CircleConst *_split_dim = nullptr;
+};
+
 class StridedSliceTestGraph final : public SimpleTestGraph
 {
 public:
@@ -870,6 +893,30 @@ TEST(QuantizedModelVerifierTest, Slice_wrong_granularity_NEG)
   TEST_WITH_WRONG_GRANULARITY(SliceTestGraph<Type::S64>, Type::U8, Granularity::LayerWise);
   TEST_WITH_WRONG_GRANULARITY(SliceTestGraph<Type::S64>, Type::U8, Granularity::ChannelWise);
   TEST_WITH_WRONG_GRANULARITY(SliceTestGraph<Type::S64>, Type::S16, Granularity::ChannelWise);
+  SUCCEED();
+}
+
+TEST(QuantizedModelVerifierTest, Split)
+{
+  TEST_WITH_GRAPH(SplitTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_GRAPH(SplitTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_GRAPH(SplitTestGraph, Type::S16, Granularity::ChannelWise);
+  SUCCEED();
+}
+
+TEST(QuantizedModelVerifierTest, Split_wrong_type_NEG)
+{
+  TEST_WITH_WRONG_TYPE(SplitTestGraph, Type::U8, Granularity::LayerWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(SplitTestGraph, Type::U8, Granularity::ChannelWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(SplitTestGraph, Type::S16, Granularity::ChannelWise, Type::U8);
+  SUCCEED();
+}
+
+TEST(QuantizedModelVerifierTest, Split_wrong_granularity_NEG)
+{
+  TEST_WITH_WRONG_GRANULARITY(SplitTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_WRONG_GRANULARITY(SplitTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_WRONG_GRANULARITY(SplitTestGraph, Type::S16, Granularity::ChannelWise);
   SUCCEED();
 }
 
