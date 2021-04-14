@@ -64,6 +64,22 @@ protected:
   T *_node = nullptr;
 };
 
+template <class T> class NodeGraphletTn
+{
+public:
+  virtual void init(loco::Graph *g, uint32_t n)
+  {
+    _node = g->nodes()->create<T>(n);
+    _node->dtype(loco::DataType::S32);
+    _node->name("node");
+  }
+
+  T *node(void) const { return _node; }
+
+protected:
+  T *_node = nullptr;
+};
+
 /**
  * @brief ConnectionTestHelper provides common framework for testing
  *        cloned CircleNode connection
