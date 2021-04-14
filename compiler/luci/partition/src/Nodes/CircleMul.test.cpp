@@ -27,7 +27,7 @@ namespace
 
 using namespace luci::test;
 
-class NodeGraphlet
+class NodeGraphlet : public NodeGraphletT<luci::CircleMul>
 {
 public:
   NodeGraphlet() = default;
@@ -35,16 +35,10 @@ public:
 public:
   void init(loco::Graph *g)
   {
-    _node = g->nodes()->create<luci::CircleMul>();
-    _node->dtype(loco::DataType::S32);
-    _node->name("node");
+    NodeGraphletT<luci::CircleMul>::init(g);
+
     _node->fusedActivationFunction(luci::FusedActFunc::RELU);
   }
-
-  luci::CircleMul *node(void) const { return _node; }
-
-protected:
-  luci::CircleMul *_node = nullptr;
 };
 
 class TestNodeGraph : public TestIsOGraph<2>, public NodeGraphlet

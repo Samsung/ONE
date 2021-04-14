@@ -27,23 +27,10 @@ namespace
 
 using namespace luci::test;
 
-class NodeGraphlet
+class NodeGraphlet : public NodeGraphletT<luci::CircleMean>
 {
 public:
   NodeGraphlet() = default;
-
-public:
-  void init(loco::Graph *g)
-  {
-    _node = g->nodes()->create<luci::CircleMean>();
-    _node->dtype(loco::DataType::S32);
-    _node->name("node");
-  }
-
-  luci::CircleMean *node(void) const { return _node; }
-
-protected:
-  luci::CircleMean *_node = nullptr;
 };
 
 class TestNodeGraph : public TestIsOGraph<2>, public NodeGraphlet

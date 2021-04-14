@@ -27,23 +27,10 @@ namespace
 
 using namespace luci::test;
 
-class NodeGraphlet
+class NodeGraphlet : public NodeGraphletT<luci::CircleSquaredDifference>
 {
 public:
   NodeGraphlet() = default;
-
-public:
-  void init(loco::Graph *g)
-  {
-    _node = g->nodes()->create<luci::CircleSquaredDifference>();
-    _node->dtype(loco::DataType::S32);
-    _node->name("node");
-  }
-
-  luci::CircleSquaredDifference *node(void) const { return _node; }
-
-protected:
-  luci::CircleSquaredDifference *_node = nullptr;
 };
 
 class TestNodeGraph : public TestIsOGraph<2>, public NodeGraphlet

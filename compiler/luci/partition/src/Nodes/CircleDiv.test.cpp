@@ -27,24 +27,18 @@ namespace
 
 using namespace luci::test;
 
-class NodeGraphlet
+class NodeGraphlet : public NodeGraphletT<luci::CircleDiv>
 {
 public:
   NodeGraphlet() = default;
 
 public:
-  void init(loco::Graph *g)
+  void init(loco::Graph *g) override
   {
-    _node = g->nodes()->create<luci::CircleDiv>();
-    _node->dtype(loco::DataType::S32);
-    _node->name("node");
+    NodeGraphletT<luci::CircleDiv>::init(g);
+
     _node->fusedActivationFunction(luci::FusedActFunc::RELU);
   }
-
-  luci::CircleDiv *node(void) const { return _node; }
-
-protected:
-  luci::CircleDiv *_node = nullptr;
 };
 
 class TestNodeGraph : public TestIsOGraph<2>, public NodeGraphlet
