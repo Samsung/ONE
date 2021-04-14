@@ -155,7 +155,19 @@ void set_minmax_to_non_const(loco::Graph *g, float min, float max)
   }
 }
 
-class InstanceNormTestGraph final : public luci::test::TestIOGraph
+/**
+ * @brief Simple Test Graph
+ * @note
+ * The simple test graph's nodes are initialized with
+ * simple shapes and values.
+ */
+class SimpleTestGraph : public luci::test::TestIOGraph
+{
+public:
+  virtual void init(void) = 0;
+};
+
+class InstanceNormTestGraph final : public SimpleTestGraph
 {
 public:
   void init(void)
@@ -185,7 +197,7 @@ public:
   luci::CircleConst *_beta = nullptr;
 };
 
-class LogisticTestGraph final : public luci::test::TestIOGraph
+class LogisticTestGraph final : public SimpleTestGraph
 {
 public:
   void init(void)
@@ -204,7 +216,7 @@ public:
   luci::CircleLogistic *_logistic = nullptr;
 };
 
-class SoftmaxTestGraph final : public luci::test::TestIOGraph
+class SoftmaxTestGraph final : public SimpleTestGraph
 {
 public:
   void init(void)
@@ -224,7 +236,7 @@ public:
   luci::CircleSoftmax *_softmax = nullptr;
 };
 
-template <Type indexT> class SliceTestGraph final : public luci::test::TestIOGraph
+template <Type indexT> class SliceTestGraph final : public SimpleTestGraph
 {
 public:
   void init(void)
@@ -255,7 +267,7 @@ public:
   luci::CircleConst *_size = nullptr;
 };
 
-class StridedSliceTestGraph final : public luci::test::TestIOGraph
+class StridedSliceTestGraph final : public SimpleTestGraph
 {
 public:
   void init(void)
@@ -292,7 +304,7 @@ public:
   luci::CircleConst *_strides = nullptr;
 };
 
-class ReshapeTestGraph final : public luci::test::TestIOGraph
+class ReshapeTestGraph final : public SimpleTestGraph
 {
 public:
   void init(void)
@@ -317,7 +329,7 @@ public:
   luci::CircleConst *_shape = nullptr;
 };
 
-class TanhTestGraph final : public luci::test::TestIOGraph
+class TanhTestGraph final : public SimpleTestGraph
 {
 public:
   void init(void)
@@ -336,7 +348,7 @@ public:
   luci::CircleTanh *_tanh = nullptr;
 };
 
-class FloorTestGraph final : public luci::test::TestIOGraph
+class FloorTestGraph final : public SimpleTestGraph
 {
 public:
   void init(void)
@@ -355,7 +367,7 @@ public:
   luci::CircleFloor *_floor = nullptr;
 };
 
-template <Type indexT> class ArgMaxTestGraph final : public luci::test::TestIOGraph
+template <Type indexT> class ArgMaxTestGraph final : public SimpleTestGraph
 {
 public:
   void init(void)
@@ -384,7 +396,7 @@ public:
   luci::CircleConst *_dimension = nullptr;
 };
 
-class BatchToSpaceNDTestGraph final : public luci::test::TestIOGraph
+class BatchToSpaceNDTestGraph final : public SimpleTestGraph
 {
 public:
   void init(void)
@@ -415,7 +427,7 @@ public:
   luci::CircleConst *_crops = nullptr;
 };
 
-class DepthToSpaceTestGraph final : public luci::test::TestIOGraph
+class DepthToSpaceTestGraph final : public SimpleTestGraph
 {
 public:
   void init(void)
@@ -435,7 +447,7 @@ public:
   luci::CircleDepthToSpace *_dtos = nullptr;
 };
 
-class PadTestGraph final : public luci::test::TestIOGraph
+class PadTestGraph final : public SimpleTestGraph
 {
 public:
   void init(void)
@@ -460,7 +472,7 @@ public:
   luci::CircleConst *_paddings = nullptr;
 };
 
-class TransposeTestGraph final : public luci::test::TestIOGraph
+class TransposeTestGraph final : public SimpleTestGraph
 {
 public:
   void init(void)
@@ -485,7 +497,7 @@ public:
   luci::CircleConst *_perm = nullptr;
 };
 
-class ConcatenationTestGraph final : public luci::test::TestIOGraph
+class ConcatenationTestGraph final : public SimpleTestGraph
 {
 public:
   void init(void)
@@ -510,7 +522,7 @@ public:
 
 // Test graph for comparison Ops
 // GREATER, GREATER_EQUAL, LESS, LESS_EQUAL, EQUAL, NOT_EQUAL
-template <class Op> class ComparisonOpTestGraph final : public luci::test::TestIOGraph
+template <class Op> class ComparisonOpTestGraph final : public SimpleTestGraph
 {
 public:
   void init(void)
@@ -539,7 +551,7 @@ public:
 
 // Test graph for binary logical Ops
 // LOGICAL_OR, LOGICAL_AND
-template <class Op> class BinaryLogicalOpTestGraph final : public luci::test::TestIOGraph
+template <class Op> class BinaryLogicalOpTestGraph final : public SimpleTestGraph
 {
 public:
   void init(void)
@@ -567,7 +579,7 @@ public:
   luci::CircleConst *_y = nullptr;
 };
 
-class DivTestGraph final : public luci::test::TestIOGraph
+class DivTestGraph final : public SimpleTestGraph
 {
 public:
   void init(void)
@@ -594,7 +606,7 @@ private:
   luci::CircleConst *_const = nullptr;
 };
 
-class FloorDivTestGraph final : public luci::test::TestIOGraph
+class FloorDivTestGraph final : public SimpleTestGraph
 {
 public:
   void init(void)
