@@ -62,8 +62,9 @@ TEST(ConnectNodeTest, connect_SquaredDifference)
   cth.prepare_inputs(&tng);
 
   auto *node = tng.node();
+  ASSERT_NO_THROW(loco::must_cast<luci::CircleSquaredDifference *>(node));
+
   auto *clone = luci::clone_node(node, cth.graph_c());
-  // the test
   cth.clone_connect(node, clone);
 
   ASSERT_EQ(2, clone->arity());
