@@ -167,9 +167,9 @@ protected:
 class TestOGraphlet : public TestOsGraphlet<1>
 {
 public:
-  virtual void init(loco::Graph *g, const ShapeU32 shape_in)
+  virtual void init(loco::Graph *g, const ShapeU32 shape_out)
   {
-    TestOsGraphlet<1>::init(g, {shape_in});
+    TestOsGraphlet<1>::init(g, {shape_out});
   }
 
   luci::CircleOutput *output() { return _outputs[0]; }
