@@ -39,7 +39,7 @@ public:
   {
   }
 
-  std::unique_ptr<Kernel> visit(const luci::CircleNode *) override;
+  std::unique_ptr<Kernel> visit(const luci::CircleNode *node) override;
   std::unique_ptr<Kernel> visit(const luci::CircleAdd *node) override;
   std::unique_ptr<Kernel> visit(const luci::CircleArgMax *node) override;
   std::unique_ptr<Kernel> visit(const luci::CircleAveragePool2D *node) override;
