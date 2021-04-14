@@ -1,0 +1,85 @@
+/*
+ * Copyright (c) 2021 Samsung Electronics Co., Ltd. All Rights Reserved
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+#include "ConnectNode.h"
+
+#include "ConnectNode.test.h"
+
+#include <luci/Service/CircleNodeClone.h>
+
+#include <gtest/gtest.h>
+
+namespace
+{
+
+using namespace luci::test;
+
+class NodeGraphlet
+{
+public:
+  NodeGraphlet() = default;
+
+public:
+  void init(loco::Graph *g, const ShapeU32 input_shape)
+  {
+    _node = g->nodes()->create<luci::CircleMean>();
+    _node->dtype(loco::DataType::S32);
+    _node->name("node");
+  }
+
+  luci::CircleMean *node(void) const { return _node; }
+
+protected:
+  luci::CircleMean *_node = nullptr;
+};
+
+class TestNodeGraph : public TestI2OGraph, public NodeGraphlet
+{
+public:
+  TestNodeGraph() = default;
+
+public:
+  void init(const ShapeU32 shape)
+  {
+    TestI2OGraph::init(shape, shape);
+    NodeGraphlet::init(g(), shape);
+
+    node()->input(input(0));
+    node()->reduction_indices(input(1));
+
+    output()->from(node());
+  }
+};
+
+} // namespace
+
+TEST(ConnectNodeTest, connect_Mean)
+{
+  TestNodeGraph tng;
+  tng.init({2, 3});
+
+  ConnectionTestHelper cth;
+  cth.prepare_inputs(&tng);
+
+  auto *node = tng.node();
+  auto *clone = luci::clone_node(node, cth.graph_c());
+  // the test
+  cth.clone_connect(node, clone);
+
+  ASSERT_EQ(2, clone->arity());
+  ASSERT_EQ(cth.inputs(0), clone->arg(0));
+  ASSERT_EQ(cth.inputs(1), clone->arg(1));
+}
