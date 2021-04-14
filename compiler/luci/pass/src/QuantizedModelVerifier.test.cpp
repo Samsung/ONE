@@ -236,6 +236,26 @@ public:
   luci::CircleSoftmax *_softmax = nullptr;
 };
 
+class SpaceToDepthTestGraph final : public SimpleTestGraph
+{
+public:
+  void init(void)
+  {
+    TestIOGraph::init({1, 2, 2, 1}, {1, 1, 1, 4});
+    _stod = g()->nodes()->create<luci::CircleSpaceToDepth>();
+    {
+      _stod->input(input());
+      _stod->block_size(2);
+    }
+    output()->from(_stod);
+
+    set_minmax_to_non_const(g(), -1, 1);
+  }
+
+public:
+  luci::CircleSpaceToDepth *_stod = nullptr;
+};
+
 template <Type indexT> class SliceTestGraph final : public SimpleTestGraph
 {
 public:
@@ -829,6 +849,27 @@ TEST(QuantizedModelVerifierTest, Softmax_wrong_granularity_NEG)
   TEST_WITH_WRONG_GRANULARITY(SoftmaxTestGraph, Type::U8, Granularity::LayerWise);
   TEST_WITH_WRONG_GRANULARITY(SoftmaxTestGraph, Type::U8, Granularity::ChannelWise);
   TEST_WITH_WRONG_GRANULARITY(SoftmaxTestGraph, Type::S16, Granularity::ChannelWise);
+}
+
+TEST(QuantizedModelVerifierTest, SpaceToDepth)
+{
+  TEST_WITH_GRAPH(SpaceToDepthTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_GRAPH(SpaceToDepthTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_GRAPH(SpaceToDepthTestGraph, Type::S16, Granularity::ChannelWise);
+}
+
+TEST(QuantizedModelVerifierTest, SpaceToDepth_wrong_type_NEG)
+{
+  TEST_WITH_WRONG_TYPE(SpaceToDepthTestGraph, Type::U8, Granularity::LayerWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(SpaceToDepthTestGraph, Type::U8, Granularity::ChannelWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(SpaceToDepthTestGraph, Type::S16, Granularity::ChannelWise, Type::U8);
+}
+
+TEST(QuantizedModelVerifierTest, SpaceToDepth_wrong_granularity_NEG)
+{
+  TEST_WITH_WRONG_GRANULARITY(SpaceToDepthTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_WRONG_GRANULARITY(SpaceToDepthTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_WRONG_GRANULARITY(SpaceToDepthTestGraph, Type::S16, Granularity::ChannelWise);
 }
 
 TEST(QuantizedModelVerifierTest, Slice)

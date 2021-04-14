@@ -214,6 +214,13 @@ private:
     return true;
   }
 
+  bool visit(const luci::CircleSpaceToDepth *node)
+  {
+    RETURN_FALSE_UNLESS(has_type(node, Type::S16))
+    RETURN_FALSE_UNLESS(has_type(node->input(), Type::S16))
+    return true;
+  }
+
   bool visit(const luci::CircleSlice *node)
   {
     RETURN_FALSE_UNLESS(has_type(node, Type::S16))
