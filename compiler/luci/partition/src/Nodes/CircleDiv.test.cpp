@@ -35,16 +35,16 @@ public:
 public:
   void init(loco::Graph *g, const ShapeU32 input_shape)
   {
-    _node = g->nodes()->create<luci::CircleAdd>();
+    _node = g->nodes()->create<luci::CircleDiv>();
     _node->dtype(loco::DataType::S32);
     _node->name("node");
     _node->fusedActivationFunction(luci::FusedActFunc::RELU);
   }
 
-  luci::CircleAdd *node(void) const { return _node; }
+  luci::CircleDiv *node(void) const { return _node; }
 
 protected:
-  luci::CircleAdd *_node = nullptr;
+  luci::CircleDiv *_node = nullptr;
 };
 
 class TestNodeGraph : public TestI2OGraph, public NodeGraphlet
@@ -67,7 +67,7 @@ public:
 
 } // namespace
 
-TEST(ConnectNodeTest, connect_Add)
+TEST(ConnectNodeTest, connect_Div)
 {
   TestNodeGraph tng;
   tng.init({2, 3});
