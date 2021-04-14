@@ -955,6 +955,7 @@ void quantize_const_inputs(luci::CircleNode *node, loco::DataType output_type)
     case luci::CircleOpcode::POW:
     case luci::CircleOpcode::RSQRT:
     case luci::CircleOpcode::SOFTMAX:
+    case luci::CircleOpcode::SPACE_TO_DEPTH:
     case luci::CircleOpcode::SQRT:
     case luci::CircleOpcode::SUB:
     case luci::CircleOpcode::TANH:
