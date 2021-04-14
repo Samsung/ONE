@@ -21,6 +21,61 @@ import subprocess
 import sys
 
 
+class _CONSTANT:
+    __slots__ = ()  # This prevents access via __dict__.
+    OPTIMIZATION_OPTS = (
+        # (OPTION_NAME, HELP_MESSAGE)
+        ('O1', 'enable O1 optimization pass'),
+        ('convert_nchw_to_nhwc',
+         'Experimental: This will convert NCHW operators to NHWC under the assumption that input model is NCHW.'
+         ),
+        ('nchw_to_nhwc_preserve_input_shape',
+         'preserve the input shape of the model (argument for convert_nchw_to_nhwc)'),
+        ('nchw_to_nhwc_preserve_output_shape',
+         'preserve the output shape of the model (argument for convert_nchw_to_nhwc)'),
+        ('fold_add_v2', 'fold AddV2 op with constant inputs'),
+        ('fold_cast', 'fold Cast op with constant input'),
+        ('fold_dequantize', 'fold Dequantize op'),
+        ('fold_sparse_to_dense', 'fold SparseToDense op'),
+        ('forward_reshape_to_unaryop', 'Forward Reshape op'),
+        ('fuse_add_with_tconv', 'fuse Add op to Transposed'),
+        ('fuse_batchnorm_with_conv', 'fuse BatchNorm op to Convolution op'),
+        ('fuse_batchnorm_with_dwconv', 'fuse BatchNorm op to Depthwise Convolution op'),
+        ('fuse_batchnorm_with_tconv', 'fuse BatchNorm op to Transposed Convolution op'),
+        ('fuse_bcq', 'apply Binary Coded Quantization'),
+        ('fuse_preactivation_batchnorm',
+         'fuse BatchNorm operators of pre-activations to Convolution op'),
+        ('make_batchnorm_gamma_positive',
+         'make negative gamma of BatchNorm to a small positive value (1e-10).'
+         ' Note that this pass can change the execution result of the model.'
+         ' So, use it only when the impact is known to be acceptable.'),
+        ('fuse_activation_function', 'fuse Activation function to a preceding operator'),
+        ('fuse_instnorm', 'fuse ops to InstanceNorm operator'),
+        ('replace_cw_mul_add_with_depthwise_conv',
+         'replace channel-wise Mul/Add with DepthwiseConv2D'),
+        ('remove_redundant_reshape', 'fuse or remove subsequent Reshape ops'),
+        ('remove_redundant_transpose', 'fuse or remove subsequent Transpose ops'),
+        ('remove_unnecessary_reshape', 'remove unnecessary reshape ops'),
+        ('remove_unnecessary_slice', 'remove unnecessary slice ops'),
+        ('remove_unnecessary_strided_slice', 'remove unnecessary strided slice ops'),
+        ('remove_unnecessary_split', 'remove unnecessary split ops'),
+        ('resolve_customop_add', 'convert Custom(Add) op to Add op'),
+        ('resolve_customop_batchmatmul',
+         'convert Custom(BatchMatmul) op to BatchMatmul op'),
+        ('resolve_customop_matmul', 'convert Custom(Matmul) op to Matmul op'),
+        ('shuffle_weight_to_16x1float32',
+         'convert weight format of FullyConnected op to SHUFFLED16x1FLOAT32.'
+         ' Note that it only converts weights whose row is a multiple of 16'),
+        ('substitute_pack_to_reshape', 'convert single input Pack op to Reshape op'),
+        ('substitute_squeeze_to_reshape', 'convert certain condition Squeeze to Reshape'),
+        ('substitute_transpose_to_reshape',
+         'convert certain condition Transpose to Reshape'),
+        ('transform_min_max_to_relu6', 'transform Minimum-Maximum pattern to Relu6 op'))
+
+
+_CONSTANT = _CONSTANT()
+
+
 def _add_default_arg(parser):
     # version
     parser.add_argument(
@@ -118,72 +173,9 @@ def _make_circle2circle_cmd(args, driver_path, input_path, output_path):
     if _is_valid_attr(args, 'generate_profile_data'):
         cmd.append('--generate_profile_data')
     # optimization pass
-    if _is_valid_attr(args, 'O1'):
-        cmd.append('--O1')
-    if _is_valid_attr(args, 'convert_nchw_to_nhwc'):
-        cmd.append('--convert_nchw_to_nhwc')
-    if _is_valid_attr(args, 'nchw_to_nhwc_preserve_input_shape'):
-        cmd.append('--nchw_to_nhwc_preserve_input_shape')
-    if _is_valid_attr(args, 'nchw_to_nhwc_preserve_output_shape'):
-        cmd.append('--nchw_to_nhwc_preserve_output_shape')
-    if _is_valid_attr(args, 'fold_add_v2'):
-        cmd.append('--fold_add_v2')
-    if _is_valid_attr(args, 'fold_cast'):
-        cmd.append('--fold_cast')
-    if _is_valid_attr(args, 'fold_dequantize'):
-        cmd.append('--fold_dequantize')
-    if _is_valid_attr(args, 'fold_sparse_to_dense'):
-        cmd.append('--fold_sparse_to_dense')
-    if _is_valid_attr(args, 'forward_reshape_to_unaryop'):
-        cmd.append('--forward_reshape_to_unaryop')
-    if _is_valid_attr(args, 'fuse_add_with_tconv'):
-        cmd.append('--fuse_add_with_tconv')
-    if _is_valid_attr(args, 'fuse_batchnorm_with_conv'):
-        cmd.append('--fuse_batchnorm_with_conv')
-    if _is_valid_attr(args, 'fuse_batchnorm_with_dwconv'):
-        cmd.append('--fuse_batchnorm_with_dwconv')
-    if _is_valid_attr(args, 'fuse_batchnorm_with_tconv'):
-        cmd.append('--fuse_batchnorm_with_tconv')
-    if _is_valid_attr(args, 'fuse_bcq'):
-        cmd.append('--fuse_bcq')
-    if _is_valid_attr(args, 'fuse_preactivation_batchnorm'):
-        cmd.append('--fuse_preactivation_batchnorm')
-    if _is_valid_attr(args, 'make_batchnorm_gamma_positive'):
-        cmd.append('--make_batchnorm_gamma_positive')
-    if _is_valid_attr(args, 'fuse_activation_function'):
-        cmd.append('--fuse_activation_function')
-    if _is_valid_attr(args, 'fuse_instnorm'):
-        cmd.append('--fuse_instnorm')
-    if _is_valid_attr(args, 'replace_cw_mul_add_with_depthwise_conv'):
-        cmd.append('--replace_cw_mul_add_with_depthwise_conv')
-    if _is_valid_attr(args, 'remove_redundant_reshape'):
-        cmd.append('--remove_redundant_reshape')
-    if _is_valid_attr(args, 'remove_redundant_transpose'):
-        cmd.append('--remove_redundant_transpose')
-    if _is_valid_attr(args, 'remove_unnecessary_reshape'):
-        cmd.append('--remove_unnecessary_reshape')
-    if _is_valid_attr(args, 'remove_unnecessary_slice'):
-        cmd.append('--remove_unnecessary_slice')
-    if _is_valid_attr(args, 'remove_unnecessary_strided_slice'):
-        cmd.append('--remove_unnecessary_strided_slice')
-    if _is_valid_attr(args, 'remove_unnecessary_split'):
-        cmd.append('--remove_unnecessary_split')
-    if _is_valid_attr(args, 'resolve_customop_add'):
-        cmd.append('--resolve_customop_add')
-    if _is_valid_attr(args, 'resolve_customop_batchmatmul'):
-        cmd.append('--resolve_customop_batchmatmul')
-    if _is_valid_attr(args, 'resolve_customop_matmul'):
-        cmd.append('--resolve_customop_matmul')
-    if _is_valid_attr(args, 'shuffle_weight_to_16x1float32'):
-        cmd.append('--shuffle_weight_to_16x1float32')
-    if _is_valid_attr(args, 'substitute_pack_to_reshape'):
-        cmd.append('--substitute_pack_to_reshape')
-    if _is_valid_attr(args, 'substitute_squeeze_to_reshape'):
-        cmd.append('--substitute_squeeze_to_reshape')
-    if _is_valid_attr(args, 'substitute_transpose_to_reshape'):
-        cmd.append('--substitute_transpose_to_reshape')
-    if _is_valid_attr(args, 'transform_min_max_to_relu6'):
-        cmd.append('--transform_min_max_to_relu6')
+    for opt in _CONSTANT.OPTIMIZATION_OPTS:
+        if _is_valid_attr(args, opt[0]):
+            cmd.append('--' + opt[0])
 
     return cmd
 
