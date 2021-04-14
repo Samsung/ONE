@@ -59,7 +59,7 @@ public:
   ConnectNode(luci::CloneContext &clonecontext) : _clonecontext(clonecontext){};
 
 public:
-  // void visit(const luci::CircleAbs *) final;
+  void visit(const luci::CircleAbs *) final;
   void visit(const luci::CircleAdd *) final;
   // void visit(const luci::CircleAddN *) final;
   // void visit(const luci::CircleArgMax *) final;
