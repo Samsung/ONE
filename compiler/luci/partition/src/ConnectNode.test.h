@@ -32,16 +32,19 @@ namespace luci
 namespace test
 {
 
-class TestI2OGraph : public TestIsGraphlet<2>, public TestOGraphlet
+template <unsigned N> class TestIsOGraph : public TestIsGraphlet<N>, public TestOGraphlet
 {
 public:
-  TestI2OGraph() = default;
+  TestIsOGraph() = default;
 
 public:
-  virtual void init(const ShapeU32 shape_in, const ShapeU32 shape_out)
+  virtual void init(const std::initializer_list<ShapeU32> shape_in, const ShapeU32 shape_out)
   {
-    TestIsGraphlet<2>::init(g(), {shape_in, shape_in});
-    TestOsGraphlet<1>::init(g(), {shape_out});
+    if (shape_in.size() != N)
+      throw std::runtime_error("Failed to init TestIsOGraph");
+
+    TestIsGraphlet<N>::init(TestIsGraphlet<N>::g(), shape_in);
+    TestOGraphlet::init(TestIsGraphlet<N>::g(), shape_out);
   }
 };
 
@@ -55,13 +58,15 @@ public:
   ConnectionTestHelper() { _graph_c = loco::make_graph(); }
 
 public:
-  void prepare_inputs(TestI2OGraph *i2ograph)
+  template <unsigned N> void prepare_inputs(TestIsOGraph<N> *isograph)
   {
-    for (uint32_t i = 0; i < 2; ++i)
+    assert(N == isograph->num_inputs());
+
+    for (uint32_t i = 0; i < N; ++i)
     {
       auto *input = _graph_c->nodes()->create<luci::CircleInput>();
-      luci::copy_common_attributes(i2ograph->input(i), input);
-      _clonectx.emplace(i2ograph->input(i), input);
+      luci::copy_common_attributes(isograph->input(i), input);
+      _clonectx.emplace(isograph->input(i), input);
       _inputs.push_back(input);
     }
   }

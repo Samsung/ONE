@@ -46,7 +46,7 @@ protected:
   luci::CirclePow *_node = nullptr;
 };
 
-class TestNodeGraph : public TestI2OGraph, public NodeGraphlet
+class TestNodeGraph : public TestIsOGraph<2>, public NodeGraphlet
 {
 public:
   TestNodeGraph() = default;
@@ -54,7 +54,7 @@ public:
 public:
   void init(const ShapeU32 shape)
   {
-    TestI2OGraph::init(shape, shape);
+    TestIsOGraph<2>::init({shape, shape}, shape);
     NodeGraphlet::init(g(), shape);
 
     node()->x(input(0));
