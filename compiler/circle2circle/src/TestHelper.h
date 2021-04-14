@@ -39,7 +39,7 @@ public:
   {
     assert(_ptr < N);
     _argv[_ptr] = new char[strlen(in) + 1];
-    strcpy(_argv[_ptr], in);
+    strncpy(_argv[_ptr], in, strlen(in) + 1);
     _ptr++;
   }
 
