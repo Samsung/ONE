@@ -239,7 +239,7 @@ public:
 class SpaceToDepthTestGraph final : public SimpleTestGraph
 {
 public:
-  void init(void)
+  void init(void) override
   {
     TestIOGraph::init({1, 2, 2, 1}, {1, 1, 1, 4});
     _stod = g()->nodes()->create<luci::CircleSpaceToDepth>();
