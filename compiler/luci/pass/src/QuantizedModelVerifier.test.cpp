@@ -270,7 +270,7 @@ public:
 class SplitTestGraph final : public SimpleTestGraph
 {
 public:
-  void init(void)
+  void init(void) override
   {
     // Split has the same
     TestIOGraph::init({32}, {32});
