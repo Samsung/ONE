@@ -1,0 +1,32 @@
+operand {
+  name: "ifm1"
+  type: INT16
+  shape { dim: 1 dim: 4 dim: 4 dim: 3 }
+}
+operand {
+  name: "constant"
+  type: INT16
+  shape { dim: 1 dim: 4 dim: 3 dim: 4 }
+  filler {
+    tag: "gaussian"
+    arg: "3.0"
+    arg: "10.0"
+  }
+}
+operand {
+  name: "ofm"
+  type: INT16
+  shape { dim: 1 dim: 4 dim: 4 dim: 4 }
+}
+operation {
+  type: "BatchMatMul"
+  input: "ifm1"
+  input: "constant"
+  output: "ofm"
+  batch_matmul_options {
+    adjoint_lhs: false
+    adjoint_rhs: false
+  }
+}
+input: "ifm1"
+output: "ofm"
