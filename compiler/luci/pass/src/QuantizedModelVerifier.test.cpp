@@ -145,6 +145,12 @@ void set_minmax_to_non_const(loco::Graph *g, float min, float max)
     if (argmax_node != nullptr)
       continue;
 
+    // Min/Max is not recorded for Split
+    // See MinMaxObserver.cpp in record_minmax module
+    auto split_node = dynamic_cast<luci::CircleSplit *>(node);
+    if (split_node != nullptr)
+      continue;
+
     auto circle_node = loco::must_cast<luci::CircleNode *>(node);
     auto qparam = std::make_unique<luci::CircleQuantParam>();
     {
@@ -267,26 +273,32 @@ public:
   luci::CircleConst *_size = nullptr;
 };
 
-class SplitTestGraph final : public SimpleTestGraph
+class SplitTestGraph final : public luci::test::TestIOGraph
 {
 public:
-  void init(void) override
+  void init(void)
   {
-    // Split has the same
-    TestIOGraph::init({32}, {32});
+    TestIOGraph::init({1, 32}, {32});
     _split_dim = create_dummy_const<Type::S32>(g(), {1});
     _split = g()->nodes()->create<luci::CircleSplit>();
     {
       _split->input(input());
       _split->split_dim(_split_dim);
     }
-    output()->from(_split);
+    _split_o1 = g()->nodes()->create<luci::CircleSplitOut>();
+    {
+      _split_o1->input(_split);
+      _split_o1->index(0);
+    }
+
+    output()->from(_split_o1);
 
     set_minmax_to_non_const(g(), -1, 1);
   }
 
 public:
   luci::CircleSplit *_split = nullptr;
+  luci::CircleSplitOut *_split_o1 = nullptr;
   luci::CircleConst *_split_dim = nullptr;
 };
 

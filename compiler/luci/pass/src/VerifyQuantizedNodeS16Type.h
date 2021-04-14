@@ -225,8 +225,14 @@ private:
 
   bool visit(const luci::CircleSplit *node)
   {
-    RETURN_FALSE_UNLESS(has_type(node, Type::S16))
+    // node's output is the input of CircleSplitOut, thus not quantized
     RETURN_FALSE_UNLESS(has_type(node->input(), Type::S16))
+    return true;
+  }
+
+  bool visit(const luci::CircleSplitOut *node)
+  {
+    RETURN_FALSE_UNLESS(has_type(node, Type::S16))
     return true;
   }
 
