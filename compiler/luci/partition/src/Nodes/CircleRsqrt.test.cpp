@@ -65,7 +65,7 @@ public:
 
 } // namespace
 
-TEST(ConnectNodeTest, connect_Sqrt)
+TEST(ConnectNodeTest, connect_Rsqrt)
 {
   TestNodeGraph tng;
   tng.init({2, 3});
