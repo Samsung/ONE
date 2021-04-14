@@ -856,6 +856,7 @@ TEST(QuantizedModelVerifierTest, SpaceToDepth)
   TEST_WITH_GRAPH(SpaceToDepthTestGraph, Type::U8, Granularity::LayerWise);
   TEST_WITH_GRAPH(SpaceToDepthTestGraph, Type::U8, Granularity::ChannelWise);
   TEST_WITH_GRAPH(SpaceToDepthTestGraph, Type::S16, Granularity::ChannelWise);
+  SUCCEED();
 }
 
 TEST(QuantizedModelVerifierTest, SpaceToDepth_wrong_type_NEG)
@@ -863,6 +864,7 @@ TEST(QuantizedModelVerifierTest, SpaceToDepth_wrong_type_NEG)
   TEST_WITH_WRONG_TYPE(SpaceToDepthTestGraph, Type::U8, Granularity::LayerWise, Type::S16);
   TEST_WITH_WRONG_TYPE(SpaceToDepthTestGraph, Type::U8, Granularity::ChannelWise, Type::S16);
   TEST_WITH_WRONG_TYPE(SpaceToDepthTestGraph, Type::S16, Granularity::ChannelWise, Type::U8);
+  SUCCEED();
 }
 
 TEST(QuantizedModelVerifierTest, SpaceToDepth_wrong_granularity_NEG)
@@ -870,6 +872,7 @@ TEST(QuantizedModelVerifierTest, SpaceToDepth_wrong_granularity_NEG)
   TEST_WITH_WRONG_GRANULARITY(SpaceToDepthTestGraph, Type::U8, Granularity::LayerWise);
   TEST_WITH_WRONG_GRANULARITY(SpaceToDepthTestGraph, Type::U8, Granularity::ChannelWise);
   TEST_WITH_WRONG_GRANULARITY(SpaceToDepthTestGraph, Type::S16, Granularity::ChannelWise);
+  SUCCEED();
 }
 
 TEST(QuantizedModelVerifierTest, Slice)
