@@ -633,7 +633,7 @@ private:
   luci::CircleConst *_const = nullptr;
 };
 
-class RsqrtTestGraph final : public luci::test::TestIOGraph
+class RsqrtTestGraph final : public SimpleTestGraph
 {
 public:
   void init(void)
@@ -652,7 +652,7 @@ public:
   luci::CircleRsqrt *_rsqrt = nullptr;
 };
 
-class SqrtTestGraph final : public luci::test::TestIOGraph
+class SqrtTestGraph final : public SimpleTestGraph
 {
 public:
   void init(void)
@@ -671,7 +671,7 @@ public:
   luci::CircleSqrt *_sqrt = nullptr;
 };
 
-class EluTestGraph final : public luci::test::TestIOGraph
+class EluTestGraph final : public SimpleTestGraph
 {
 public:
   void init(void)
@@ -690,7 +690,7 @@ public:
   luci::CircleElu *_elu = nullptr;
 };
 
-class PowTestGraph final : public luci::test::TestIOGraph
+class PowTestGraph final : public SimpleTestGraph
 {
 public:
   void init(void)
