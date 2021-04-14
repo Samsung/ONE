@@ -33,10 +33,11 @@ circlechef::TensorType as_circlechef_type(const circle::TensorType type)
       return circlechef::UINT8;
     case circle::TensorType_BOOL:
       return circlechef::BOOL;
+    case circle::TensorType_INT16:
+      return circlechef::INT16;
     // TODO handle other types
     // TensorType_FLOAT16
     // TensorType_STRING
-    // TensorType_INT16
     // TensorType_COMPLEX64
     default:
       throw std::runtime_error{"unsupported tensor type"};
