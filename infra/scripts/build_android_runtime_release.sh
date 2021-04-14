@@ -5,12 +5,10 @@ ROOT_PATH="$CURRENT_PATH/../../"
 
 # prepare pre-built armcompute library
 # android build requires pre-built armcompute library
-# if [ ! -n "$EXT_ACL_FOLDER" ]; then
-#   echo "Please set EXT_ACL_FOLDER to use pre-built armcompute library"
-#   exit 1
-# fi
-
-unset EXT_ACL_FOLDER
+if [ ! -n "$EXT_ACL_FOLDER" ]; then
+  echo "Please set EXT_ACL_FOLDER to use pre-built armcompute library"
+  exit 1
+fi
 
 # prepare ndk
 if [ ! -n "$NDK_DIR" ]; then
