@@ -35,15 +35,15 @@ public:
 public:
   void init(loco::Graph *g)
   {
-    _node = g->nodes()->create<luci::CircleRsqrt>();
+    _node = g->nodes()->create<luci::CircleSqrt>();
     _node->dtype(loco::DataType::S32);
     _node->name("node");
   }
 
-  luci::CircleRsqrt *node(void) const { return _node; }
+  luci::CircleSqrt *node(void) const { return _node; }
 
 protected:
-  luci::CircleRsqrt *_node = nullptr;
+  luci::CircleSqrt *_node = nullptr;
 };
 
 class TestNodeGraph : public TestIsOGraph<1>, public NodeGraphlet
@@ -65,7 +65,7 @@ public:
 
 } // namespace
 
-TEST(ConnectNodeTest, connect_Rsqrt)
+TEST(ConnectNodeTest, connect_Sqrt)
 {
   TestNodeGraph tng;
   tng.init({2, 3});

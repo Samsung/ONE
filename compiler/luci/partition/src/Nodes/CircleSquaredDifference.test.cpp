@@ -35,18 +35,18 @@ public:
 public:
   void init(loco::Graph *g)
   {
-    _node = g->nodes()->create<luci::CircleRsqrt>();
+    _node = g->nodes()->create<luci::CircleSquaredDifference>();
     _node->dtype(loco::DataType::S32);
     _node->name("node");
   }
 
-  luci::CircleRsqrt *node(void) const { return _node; }
+  luci::CircleSquaredDifference *node(void) const { return _node; }
 
 protected:
-  luci::CircleRsqrt *_node = nullptr;
+  luci::CircleSquaredDifference *_node = nullptr;
 };
 
-class TestNodeGraph : public TestIsOGraph<1>, public NodeGraphlet
+class TestNodeGraph : public TestIsOGraph<2>, public NodeGraphlet
 {
 public:
   TestNodeGraph() = default;
@@ -54,10 +54,11 @@ public:
 public:
   void init(const ShapeU32 shape)
   {
-    TestIsOGraph<1>::init({shape}, shape);
+    TestIsOGraph<2>::init({shape, shape}, shape);
     NodeGraphlet::init(g());
 
     node()->x(input(0));
+    node()->y(input(1));
 
     output()->from(node());
   }
@@ -65,7 +66,7 @@ public:
 
 } // namespace
 
-TEST(ConnectNodeTest, connect_Rsqrt)
+TEST(ConnectNodeTest, connect_SquaredDifference)
 {
   TestNodeGraph tng;
   tng.init({2, 3});
@@ -78,6 +79,7 @@ TEST(ConnectNodeTest, connect_Rsqrt)
   // the test
   cth.clone_connect(node, clone);
 
-  ASSERT_EQ(1, clone->arity());
+  ASSERT_EQ(2, clone->arity());
   ASSERT_EQ(cth.inputs(0), clone->arg(0));
+  ASSERT_EQ(cth.inputs(1), clone->arg(1));
 }

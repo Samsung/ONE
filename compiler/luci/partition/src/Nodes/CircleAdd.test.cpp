@@ -33,7 +33,7 @@ public:
   NodeGraphlet() = default;
 
 public:
-  void init(loco::Graph *g, const ShapeU32 input_shape)
+  void init(loco::Graph *g)
   {
     _node = g->nodes()->create<luci::CircleAdd>();
     _node->dtype(loco::DataType::S32);
@@ -56,7 +56,7 @@ public:
   void init(const ShapeU32 shape)
   {
     TestIsOGraph<2>::init({shape, shape}, shape);
-    NodeGraphlet::init(g(), shape);
+    NodeGraphlet::init(g());
 
     node()->x(input(0));
     node()->y(input(1));
