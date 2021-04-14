@@ -18,12 +18,25 @@
 
 #include <cassert>
 #include <limits>
+#include <stdexcept>
 
 namespace souschef
 {
 
 template <> float to_number(const std::string &s) { return std::stof(s); }
 template <> int to_number(const std::string &s) { return std::stoi(s); }
+template <> int16_t to_number(const std::string &s)
+{
+  // There are no standard function to parse int16_t or short int
+  // This function simulates behavior similar stoi, stol and stoll
+  int res = std::stol(s);
+  // standard does not specify string in error message, this is arbitrary
+  if (res < std::numeric_limits<int16_t>::min() || res > std::numeric_limits<int16_t>::max())
+  {
+    throw std::out_of_range("to_number<int16_t>");
+  }
+  return res;
+}
 template <> int64_t to_number(const std::string &s) { return std::stoll(s); }
 template <> uint8_t to_number(const std::string &s)
 {
