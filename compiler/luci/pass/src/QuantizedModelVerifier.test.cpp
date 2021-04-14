@@ -170,7 +170,7 @@ public:
 class InstanceNormTestGraph final : public SimpleTestGraph
 {
 public:
-  void init(void)
+  void init(void) override
   {
     TestIOGraph::init({32}, {32});
     _gamma = create_dummy_const<Type::FLOAT32>(g(), {32});
@@ -200,7 +200,7 @@ public:
 class LogisticTestGraph final : public SimpleTestGraph
 {
 public:
-  void init(void)
+  void init(void) override
   {
     TestIOGraph::init({32}, {32});
     _logistic = g()->nodes()->create<luci::CircleLogistic>();
@@ -219,7 +219,7 @@ public:
 class SoftmaxTestGraph final : public SimpleTestGraph
 {
 public:
-  void init(void)
+  void init(void) override
   {
     TestIOGraph::init({32}, {32});
     _softmax = g()->nodes()->create<luci::CircleSoftmax>();
@@ -239,7 +239,7 @@ public:
 template <Type indexT> class SliceTestGraph final : public SimpleTestGraph
 {
 public:
-  void init(void)
+  void init(void) override
   {
     TestIOGraph::init({32}, {32});
     _begin = g()->nodes()->create<luci::CircleConst>();
@@ -270,7 +270,7 @@ public:
 class StridedSliceTestGraph final : public SimpleTestGraph
 {
 public:
-  void init(void)
+  void init(void) override
   {
     TestIOGraph::init({32}, {32});
     _begin = g()->nodes()->create<luci::CircleConst>();
@@ -307,7 +307,7 @@ public:
 class ReshapeTestGraph final : public SimpleTestGraph
 {
 public:
-  void init(void)
+  void init(void) override
   {
     TestIOGraph::init({32}, {32});
     _shape = g()->nodes()->create<luci::CircleConst>();
@@ -332,7 +332,7 @@ public:
 class TanhTestGraph final : public SimpleTestGraph
 {
 public:
-  void init(void)
+  void init(void) override
   {
     TestIOGraph::init({32}, {32});
     _tanh = g()->nodes()->create<luci::CircleTanh>();
@@ -351,7 +351,7 @@ public:
 class FloorTestGraph final : public SimpleTestGraph
 {
 public:
-  void init(void)
+  void init(void) override
   {
     TestIOGraph::init({32}, {32});
     _floor = g()->nodes()->create<luci::CircleFloor>();
@@ -370,7 +370,7 @@ public:
 template <Type indexT> class ArgMaxTestGraph final : public SimpleTestGraph
 {
 public:
-  void init(void)
+  void init(void) override
   {
     TestIOGraph::init({32}, {1});
     // output dtype is float by default, but ArgMax should have indexType (s32/s64)
@@ -399,7 +399,7 @@ public:
 class BatchToSpaceNDTestGraph final : public SimpleTestGraph
 {
 public:
-  void init(void)
+  void init(void) override
   {
     TestIOGraph::init({32}, {32});
     _block_shape = g()->nodes()->create<luci::CircleConst>();
@@ -430,7 +430,7 @@ public:
 class DepthToSpaceTestGraph final : public SimpleTestGraph
 {
 public:
-  void init(void)
+  void init(void) override
   {
     TestIOGraph::init({1, 1, 1, 4}, {1, 2, 2, 1});
     _dtos = g()->nodes()->create<luci::CircleDepthToSpace>();
@@ -450,7 +450,7 @@ public:
 class PadTestGraph final : public SimpleTestGraph
 {
 public:
-  void init(void)
+  void init(void) override
   {
     TestIOGraph::init({32}, {32});
     _paddings = g()->nodes()->create<luci::CircleConst>();
@@ -475,7 +475,7 @@ public:
 class TransposeTestGraph final : public SimpleTestGraph
 {
 public:
-  void init(void)
+  void init(void) override
   {
     TestIOGraph::init({32}, {32});
     _perm = g()->nodes()->create<luci::CircleConst>();
@@ -500,7 +500,7 @@ public:
 class ConcatenationTestGraph final : public SimpleTestGraph
 {
 public:
-  void init(void)
+  void init(void) override
   {
     TestIOGraph::init({16}, {32});
     _param = create_dummy_const<Type::FLOAT32>(g(), {16});
@@ -525,7 +525,7 @@ public:
 template <class Op> class ComparisonOpTestGraph final : public SimpleTestGraph
 {
 public:
-  void init(void)
+  void init(void) override
   {
     TestIOGraph::init({32}, {32});
     output()->dtype(loco::DataType::BOOL);
@@ -554,7 +554,7 @@ public:
 template <class Op> class BinaryLogicalOpTestGraph final : public SimpleTestGraph
 {
 public:
-  void init(void)
+  void init(void) override
   {
     TestIOGraph::init({32}, {32});
     input()->dtype(loco::DataType::BOOL);
@@ -582,7 +582,7 @@ public:
 class DivTestGraph final : public SimpleTestGraph
 {
 public:
-  void init(void)
+  void init(void) override
   {
     TestIOGraph::init({32}, {32});
 
@@ -609,7 +609,7 @@ private:
 class FloorDivTestGraph final : public SimpleTestGraph
 {
 public:
-  void init(void)
+  void init(void) override
   {
     TestIOGraph::init({32}, {32});
 
@@ -636,7 +636,7 @@ private:
 class RsqrtTestGraph final : public SimpleTestGraph
 {
 public:
-  void init(void)
+  void init(void) override
   {
     TestIOGraph::init({32}, {32});
     _rsqrt = g()->nodes()->create<luci::CircleRsqrt>();
@@ -655,7 +655,7 @@ public:
 class SqrtTestGraph final : public SimpleTestGraph
 {
 public:
-  void init(void)
+  void init(void) override
   {
     TestIOGraph::init({32}, {32});
     _sqrt = g()->nodes()->create<luci::CircleSqrt>();
@@ -674,7 +674,7 @@ public:
 class EluTestGraph final : public SimpleTestGraph
 {
 public:
-  void init(void)
+  void init(void) override
   {
     TestIOGraph::init({32}, {32});
     _elu = g()->nodes()->create<luci::CircleElu>();
@@ -693,7 +693,7 @@ public:
 class PowTestGraph final : public SimpleTestGraph
 {
 public:
-  void init(void)
+  void init(void) override
   {
     TestIOGraph::init({32}, {32});
 
