@@ -47,7 +47,7 @@ using namespace arm_compute;
 void CLHashtableLookup::configure(const ICLTensor *lookups, const ICLTensor *keys,
                                   const ICLTensor *input, ICLTensor *output, ICLTensor *hits)
 {
-  auto k = support::cpp14::make_unique<CLHashtableLookupKernel>();
+  auto k = std::make_unique<CLHashtableLookupKernel>();
   k->configure(lookups, keys, input, output, hits);
   _kernel = std::move(k);
 }

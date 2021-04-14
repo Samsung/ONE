@@ -47,7 +47,7 @@
 #ifndef __ARM_COMPUTE_CLCASTBOOLKERNEL_H__
 #define __ARM_COMPUTE_CLCASTBOOLKERNEL_H__
 
-#include "arm_compute/core/CL/ICLSimple3DKernel.h"
+#include "src/core/CL/ICLSimple3DKernel.h"
 
 namespace arm_compute
 {

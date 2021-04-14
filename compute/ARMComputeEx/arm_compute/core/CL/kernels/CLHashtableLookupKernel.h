@@ -47,7 +47,7 @@
 #ifndef __ARM_COMPUTE_CLHASHTABLELOOKUPKERNEL_H__
 #define __ARM_COMPUTE_CLHASHTABLELOOKUPKERNEL_H__
 
-#include "arm_compute/core/CL/ICLKernel.h"
+#include "src/core/CL/ICLKernel.h"
 #include "arm_compute/runtime/CL/CLTensor.h"
 
 namespace arm_compute

@@ -48,12 +48,14 @@
 #define __ARM_COMPUTE_NEEMBEDDINGLOOKUP_H__
 
 #include "arm_compute/runtime/NEON/INESimpleFunctionNoBorder.h"
+#include "arm_compute/core/Error.h"
 
 #include <vector>
 
 namespace arm_compute
 {
 class ITensor;
+class ITensorInfo;
 
 /**
  * @brief Class to perform EmbeddingLookup operation

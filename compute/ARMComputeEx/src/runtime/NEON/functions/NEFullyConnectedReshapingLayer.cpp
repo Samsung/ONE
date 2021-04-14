@@ -19,6 +19,8 @@
 #include <arm_compute/runtime/NEON/functions/NEFullyConnectedLayer.h>
 #include <arm_compute/runtime/NEON/functions/NEFullyConnectedHybridLayer.h>
 #include <arm_compute/runtime/NEON/functions/NEFullyConnectedLayerEx.h>
+#include "src/core/helpers/AutoConfiguration.h"
+#include <cassert>
 
 using namespace arm_compute;
 

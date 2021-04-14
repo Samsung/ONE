@@ -249,7 +249,7 @@ In your host, maybe with another terminal, download packages from
 http://download.tizen.org/releases/daily/tizen/unified/latest/repos/standard/packages/aarch64/
 
 ```
-$ wget http://download.tizen.org/releases/daily/tizen/unified/latest/repos/standard/packages/aarch64/libarmcl-v20.05-17.5.aarch64.rpm
+$ wget http://download.tizen.org/releases/daily/tizen/unified/latest/repos/standard/packages/aarch64/libarmcl-v21.02-17.5.aarch64.rpm
 
 $ wget http://download.tizen.org/releases/daily/tizen/unified/latest/repos/standard/packages/aarch64/libhdf5-101-1.10.1-3.85.aarch64.rpm
 
@@ -258,7 +258,7 @@ $ wget http://download.tizen.org/releases/daily/tizen/unified/latest/repos/stand
 
 (4) Copy to device
 ```
-$ sdb push libarmcl-v20.05-17.5.aarch64.rpm /opt/usr/home/owner/share/tmp/
+$ sdb push libarmcl-v21.02-17.5.aarch64.rpm /opt/usr/home/owner/share/tmp/
 $ sdb push libhdf5-101-1.10.1-3.85.aarch64.rpm /opt/usr/home/owner/share/tmp/
 $ sdb push libhdf5_cpp101-1.10.1-3.85.aarch64.rpm /opt/usr/home/owner/share/tmp/
 ```
@@ -275,7 +275,7 @@ Within Tizen/RPi4 shell
 ```
 sh-3.2# cd /opt/usr/home/owner/share/tmp/
 
-sh-3.2# rpm -i libarmcl-v20.05-17.5.aarch64.rpm
+sh-3.2# rpm -i libarmcl-v21.02-17.5.aarch64.rpm
 sh-3.2# rpm -i libhdf5-101-1.10.1-3.85.aarch64.rpm
 sh-3.2# rpm -i libhdf5_cpp101-1.10.1-3.85.aarch64.rpm
 ```

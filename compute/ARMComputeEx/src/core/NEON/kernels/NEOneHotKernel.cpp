@@ -38,7 +38,7 @@
  * SOFTWARE.
  */
 #include "arm_compute/core/NEON/kernels/NEOneHotKernel.h"
-#include "arm_compute/core/CPP/Validate.h"
+#include "src/core/CPP/Validate.h"
 #include "arm_compute/core/Coordinates.h"
 #include "arm_compute/core/Error.h"
 #include "arm_compute/core/Helpers.h"
@@ -47,6 +47,10 @@
 #include "arm_compute/core/Validate.h"
 #include "arm_compute/core/Window.h"
 #include "arm_compute/core/utils/misc/ShapeCalculatorEx.h"
+
+#include "src/core/helpers/WindowHelpers.h"
+#include "src/core/helpers/AutoConfiguration.h"
+
 namespace arm_compute
 {
 namespace

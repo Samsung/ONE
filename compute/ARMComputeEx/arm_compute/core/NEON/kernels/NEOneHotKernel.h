@@ -39,7 +39,7 @@
  */
 #ifndef __ARM_COMPUTE_NEONEHOTKERNEL_H__
 #define __ARM_COMPUTE_NEONEHOTKERNEL_H__
-#include "arm_compute/core/NEON/INEKernel.h"
+#include "src/core/NEON/INEKernel.h"
 #include "arm_compute/core/Types.h"
 namespace arm_compute
 {

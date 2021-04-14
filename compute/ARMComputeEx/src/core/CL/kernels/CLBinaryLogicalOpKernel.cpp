@@ -43,6 +43,8 @@
 #include "arm_compute/core/CL/CLHelpers.h"
 #include "arm_compute/core/CL/CLKernelLibraryEx.h"
 #include "arm_compute/core/CL/ICLTensor.h"
+#include "src/core/helpers/WindowHelpers.h"
+#include "src/core/AccessWindowStatic.h"
 #include "support/StringSupport.h"
 
 using namespace arm_compute;

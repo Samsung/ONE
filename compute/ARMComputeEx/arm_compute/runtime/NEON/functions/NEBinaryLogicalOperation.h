@@ -41,8 +41,10 @@
 #ifndef __ARM_COMPUTE_NEBINARYLOGICALOPERATION_H__
 #define __ARM_COMPUTE_NEBINARYLOGICALOPERATION_H__
 
+#include "arm_compute/core/Error.h"
 #include "arm_compute/core/TypesEx.h"
 #include "arm_compute/runtime/NEON/INESimpleFunction.h"
+#include "arm_compute/core/ITensorInfo.h"
 
 namespace arm_compute
 {

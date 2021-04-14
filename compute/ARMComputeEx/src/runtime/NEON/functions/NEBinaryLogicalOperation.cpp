@@ -38,11 +38,10 @@
  * SOFTWARE.
  */
 
-#include "arm_compute/runtime/NEON/functions/NEBinaryLogicalOperation.h"
 #include <arm_compute/core/NEON/kernels/NEBinaryLogicalOperationKernel.h>
+#include "arm_compute/runtime/NEON/functions/NEBinaryLogicalOperation.h"
 
 #include "arm_compute/core/ITensor.h"
-#include "support/MemorySupport.h"
 
 #include <utility>
 
@@ -53,7 +52,7 @@ template <BinaryLogicalOperation COP>
 void NEBinaryLogicalOperationStatic<COP>::configure(ITensor *input1, ITensor *input2,
                                                     ITensor *output)
 {
-  auto k = support::cpp14::make_unique<NEBinaryLogicalOperationKernel>();
+  auto k = std::make_unique<NEBinaryLogicalOperationKernel>();
   k->configure(COP, input1, input2, output);
   _kernel = std::move(k);
 }
@@ -69,7 +68,7 @@ Status NEBinaryLogicalOperationStatic<COP>::validate(const ITensorInfo *input1,
 void NEBinaryLogicalOperation::configure(ITensor *input1, ITensor *input2, ITensor *output,
                                          BinaryLogicalOperation op)
 {
-  auto k = support::cpp14::make_unique<NEBinaryLogicalOperationKernel>();
+  auto k = std::make_unique<NEBinaryLogicalOperationKernel>();
   k->configure(op, input1, input2, output);
   _kernel = std::move(k);
 }

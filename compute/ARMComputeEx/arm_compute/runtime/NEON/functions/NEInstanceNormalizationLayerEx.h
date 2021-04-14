@@ -54,6 +54,7 @@
 namespace arm_compute
 {
 class ITensor;
+class ITensorInfo;
 
 /** Basic function to perform a Instance normalization.
  *

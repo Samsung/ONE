@@ -66,12 +66,16 @@ const std::map<std::string, std::string> CLKernelLibraryEx::_kernel_program_map 
   {"gather_ex_1d", "gather_ex.cl"},
   {"gather_ex_1d_out", "gather_ex.cl"},
   {"gemmlowp_mm_midgard_ex", "gemmlowp_ex.cl"},
+  {"gemm_accumulate_biases", "gemm.cl"},
   {"hashtable_lookup", "hashtable_lookup.cl"},
   {"instance_normalization_ex", "instance_normalization_ex.cl"},
+  {"memset", "memset.cl"},
   {"multiply_scale_factor", "multiply_scale_factor.cl"},
   {"neg_tensor", "neg_tensor.cl"},
   {"one_hot", "one_hot.cl"},
   {"one_hot_only_on_value", "one_hot.cl"},
+  {"pad_layer_constant", "pad_layer.cl"},
+  {"pad_layer_symmetric_reflect", "pad_layer.cl"},
   {"quantization_symm8", "quantization_symm8.cl"},
   {"reduce_min_max", "reduce_operation.cl"},
   {"reduce_sum_mean", "reduce_operation.cl"},
@@ -90,8 +94,16 @@ const std::map<std::string, std::string> CLKernelLibraryEx::_kernel_program_map 
 const std::map<std::string, std::string> CLKernelLibraryEx::_program_source_map = {
 #ifdef EMBEDDED_KERNELS
   {
+    "activation_float_helpers.h",
+#include "./cl_kernels/activation_float_helpers.hembed"
+  },
+  {
     "arg_min_max_ex.cl",
 #include "./cl_kernels/arg_min_max_ex.clembed"
+  },
+  {
+    "binary_logical_op.cl",
+#include "./cl_kernels/binary_logical_op.clembed"
   },
   {
     "cast.cl",
@@ -110,6 +122,10 @@ const std::map<std::string, std::string> CLKernelLibraryEx::_program_source_map 
 #include "./cl_kernels/gemmlowp_ex.clembed"
   },
   {
+    "gemm_helpers.h",
+#include "./cl_kernels/gemm_helpers.hembed"
+  },
+  {
     "hashtable_lookup.cl",
 #include "./cl_kernels/hashtable_lookup.clembed"
   },
@@ -126,8 +142,12 @@ const std::map<std::string, std::string> CLKernelLibraryEx::_program_source_map 
 #include "./cl_kernels/instance_normalization_ex.clembed"
   },
   {
-    "binary_logical_op.cl",
-#include "./cl_kernels/binary_logical_op.clembed"
+    "gemm.cl",
+#include "./cl_kernels/gemm.clembed"
+  },
+  {
+    "memset.cl",
+#include "./cl_kernels/memset.clembed"
   },
   {
     "multiply_scale_factor.cl",
@@ -142,12 +162,20 @@ const std::map<std::string, std::string> CLKernelLibraryEx::_program_source_map 
 #include "./cl_kernels/one_hot.clembed"
   },
   {
+    "pad_layer.cl",
+#include "./cl_kernels/pad_layer.clembed"
+  },
+  {
     "quantization_symm8.cl",
 #include "./cl_kernels/quantization_symm8.clembed"
   },
   {
     "reduce_operation.cl",
 #include "./cl_kernels/reduce_operation.clembed"
+  },
+  {
+    "repeat.h",
+#include "./cl_kernels/repeat.hembed"
   },
   {
     "scale_factor.cl",

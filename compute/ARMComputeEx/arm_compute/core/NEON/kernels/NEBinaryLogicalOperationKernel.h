@@ -41,15 +41,19 @@
 #ifndef __ARM_COMPUTE_NEBINARYLOGICALOPERATIONKERNEL_H__
 #define __ARM_COMPUTE_NEBINARYLOGICALOPERATIONKERNEL_H__
 
-#include "arm_compute/core/NEON/kernels/NEElementwiseOperationKernel.h"
 #include "arm_compute/core/TypesEx.h"
+
+#include "src/core/cpu/kernels/CpuElementwiseKernel.h"
 
 namespace arm_compute
 {
 
-class NEBinaryLogicalOperationKernel : public NEElementwiseOperationKernel
+class NEBinaryLogicalOperationKernel : public cpu::kernels::CpuComparisonKernel
 {
 public:
+  const char *name() const override { return "NEBinaryLogicalOperationKernel"; }
+
+  NEBinaryLogicalOperationKernel() = default;
   /** Default destructor */
   ~NEBinaryLogicalOperationKernel() = default;
 
@@ -81,6 +85,10 @@ protected:
   // Inherited methods overridden:
   static Status validate_arguments(const ITensorInfo &input1, const ITensorInfo &input2,
                                    const ITensorInfo &output);
+
+  std::function<void(const ITensor *input1, const ITensor *input2, ITensor *output,
+                     const Window &window)>
+    _function;
 };
 } // namespace arm_compute
 #endif /* __ARM_COMPUTE_NEBINARYLOGICALOPERATIONKERNEL_H__ */

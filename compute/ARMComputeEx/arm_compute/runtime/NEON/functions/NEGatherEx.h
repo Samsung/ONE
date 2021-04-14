@@ -47,6 +47,7 @@
 namespace arm_compute
 {
 class ITensor;
+class ITensorInfo;
 
 /** Basic function to run @ref NEGatherKernelEx */
 class NEGatherEx : public INESimpleFunctionNoBorder

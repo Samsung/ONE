@@ -41,11 +41,14 @@
 #ifndef __ARM_COMPUTE_CLINSTANCENORMALIZATIONLAYEREX_H__
 #define __ARM_COMPUTE_CLINSTANCENORMALIZATIONLAYEREX_H__
 
+#include "arm_compute/core/Error.h"
 #include "arm_compute/runtime/CL/ICLSimpleFunction.h"
 
 namespace arm_compute
 {
+class CLCompileContext;
 class ICLTensor;
+class ITensorInfo;
 
 /** Basic function to perform a Instance normalization.
  *

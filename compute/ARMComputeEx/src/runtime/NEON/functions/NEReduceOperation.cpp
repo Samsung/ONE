@@ -40,11 +40,13 @@
 
 #include "arm_compute/runtime/NEON/functions/NEReduceOperation.h"
 
-#include "arm_compute/core/CPP/Validate.h"
+#include "arm_compute/core/Error.h"
 #include "arm_compute/core/Helpers.h"
+#include "arm_compute/core/utils/misc/ShapeCalculator.h"
 #include "arm_compute/runtime/NEON/NEScheduler.h"
-#include "arm_compute/core/TensorInfo.h"
-#include "arm_compute/runtime/Tensor.h"
+#include "src/core/CPP/Validate.h"
+#include "src/core/NEON/kernels/NEReductionOperationKernel.h"
+#include "src/core/helpers/AutoConfiguration.h"
 
 using namespace arm_compute;
 

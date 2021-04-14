@@ -66,7 +66,7 @@ Status validate_mm(const ITensorInfo &input, const ITensorInfo &weights, const I
 
 void NEFullyConnectedHybridLayerReshapeWeights::configure(const ITensor *input, ITensor *output)
 {
-  auto k = support::cpp14::make_unique<NETransposeKernel>();
+  auto k = std::make_unique<NETransposeKernel>();
   k->configure(input, output);
   _kernel = std::move(k);
 }

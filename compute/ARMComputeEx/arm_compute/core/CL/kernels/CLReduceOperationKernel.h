@@ -47,7 +47,7 @@
 #ifndef __ARM_COMPUTE_CLREDUCEOPERATIONKERNEL_H__
 #define __ARM_COMPUTE_CLREDUCEOPERATIONKERNEL_H__
 
-#include "arm_compute/core/CL/ICLKernel.h"
+#include "src/core/CL/ICLKernel.h"
 #include "arm_compute/core/Types.h"
 
 namespace arm_compute

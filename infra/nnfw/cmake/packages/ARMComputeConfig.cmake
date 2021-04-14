@@ -65,7 +65,7 @@ endfunction(_ARMCompute_Import)
 # Let's build and install ARMCompute libraries
 function(_ARMCompute_Build ARMComputeInstall_DIR)
   set(PKG_NAME "ARMCOMPUTE")
-  set(PKG_IDENTIFIER "20.05")
+  set(PKG_IDENTIFIER "21.02")
   set(INSTALL_STAMP_PATH "${ARMComputeInstall_DIR}/${PKG_NAME}.stamp")
   set(ARMComputeBuild_DIR "${CMAKE_BINARY_DIR}/externals/armcompute")
 

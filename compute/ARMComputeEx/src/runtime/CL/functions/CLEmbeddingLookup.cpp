@@ -39,7 +39,6 @@
  */
 
 #include "arm_compute/runtime/CL/functions/CLEmbeddingLookup.h"
-
 #include "arm_compute/core/CL/kernels/CLEmbeddingLookupKernel.h"
 
 using namespace arm_compute;
@@ -47,7 +46,7 @@ using namespace arm_compute;
 void CLEmbeddingLookup::configure(const ICLTensor *input, ICLTensor *output,
                                   const ICLTensor *lookups)
 {
-  auto k = support::cpp14::make_unique<CLEmbeddingLookupKernel>();
+  auto k = std::make_unique<CLEmbeddingLookupKernel>();
   k->configure(input, output, lookups);
   _kernel = std::move(k);
 }

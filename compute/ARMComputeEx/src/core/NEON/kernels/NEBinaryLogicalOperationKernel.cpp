@@ -43,10 +43,10 @@
 #include "arm_compute/core/Error.h"
 #include "arm_compute/core/Helpers.h"
 #include "arm_compute/core/ITensor.h"
-#include "arm_compute/core/NEON/wrapper/wrapper.h"
 #include "arm_compute/core/NEON/NEElementwiseOperationFuncs.h"
 #include "arm_compute/core/TensorInfo.h"
 #include "arm_compute/core/Validate.h"
+#include "src/core/NEON/wrapper/wrapper.h"
 
 #include <algorithm>
 #include <arm_neon.h>
@@ -163,7 +163,7 @@ void elementwise_logic_op(const ITensor *in1, const ITensor *in2, ITensor *out,
 
 std::function<void(const ITensor *, const ITensor *, ITensor *, const Window &)> configure_func(
   const ITensor *input1, const ITensor *input2, ITensor *output,
-  std::map<std::string, NEElementwiseOperationKernel::ElementwiseFunction *> map_function)
+  std::map<std::string, cpu::kernels::CpuElementwiseKernel::ElementwiseFunction *> map_function)
 {
   std::string function_to_call("op_");
   function_to_call += string_from_data_type(input1->info()->data_type()) + "_";
@@ -185,9 +185,9 @@ template <BinaryLogicalOperation op>
 std::function<void(const ITensor *, const ITensor *, ITensor *, const Window &)>
 configure_logic_func(const ITensor *input1, const ITensor *input2, ITensor *output)
 {
-  static std::map<std::string, NEElementwiseOperationKernel::ElementwiseFunction *> map_function = {
-    {"op_U8_U8_U8", &elementwise_logic_op<op, uint8_t, uint8x16_t>},
-    {"op_QASYMM8_QASYMM8_QASYMM8", &elementwise_logic_op<op, uint8_t, uint8x16_t>}};
+  static std::map<std::string, cpu::kernels::CpuElementwiseKernel::ElementwiseFunction *>
+    map_function = {{"op_U8_U8_U8", &elementwise_logic_op<op, uint8_t, uint8x16_t>},
+                    {"op_QASYMM8_QASYMM8_QASYMM8", &elementwise_logic_op<op, uint8_t, uint8x16_t>}};
 
   return configure_func(input1, input2, output, map_function);
 }
@@ -196,7 +196,7 @@ void NEBinaryLogicalOperationKernel::configure(BinaryLogicalOperation op, const 
                                                const ITensor *input2, ITensor *output)
 {
   ARM_COMPUTE_ERROR_THROW_ON(validate_arguments(*input1->info(), *input2->info(), *output->info()));
-  configure_common(input1, input2, output);
+  configure_common(input1->info(), input2->info(), output->info());
   switch (op)
   {
     case BinaryLogicalOperation::AND:
@@ -251,5 +251,4 @@ Status NEBinaryLogicalOperationKernel::validate(BinaryLogicalOperation op,
   ARM_COMPUTE_RETURN_ON_ERROR(validate_arguments(*input1, *input2, *output));
   return Status{};
 }
-
 } // namespace arm_compute

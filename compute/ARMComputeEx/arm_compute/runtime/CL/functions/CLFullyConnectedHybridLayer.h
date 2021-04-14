@@ -43,14 +43,14 @@
 
 #include "arm_compute/runtime/CL/ICLSimpleFunction.h"
 
-#include "arm_compute/core/CL/kernels/CLGEMMMatrixAccumulateBiasesKernel.h"
 #include "arm_compute/core/CL/kernels/CLMultiplyScaleFactorKernel.h"
 #include "arm_compute/core/CL/kernels/CLQuantizationSymmetricKernel.h"
 #include "arm_compute/core/CL/kernels/CLScaleFactorSymm8Kernel.h"
-#include "arm_compute/core/CL/kernels/CLTransposeKernel.h"
-#include "arm_compute/runtime/MemoryGroup.h"
+#include "arm_compute/core/CL/kernels/CLGEMMMatrixAccumulateBiasesKernel.h"
 #include "arm_compute/runtime/CL/CLTensor.h"
 #include "arm_compute/runtime/CL/functions/CLGEMMLowpMatrixMultiplyCore.h"
+#include "arm_compute/runtime/MemoryGroup.h"
+#include "src/core/CL/kernels/CLTransposeKernel.h"
 
 namespace arm_compute
 {

@@ -41,16 +41,17 @@
 #define __ARM_COMPUTE_NECASTBOOL_H__
 
 #include "arm_compute/core/Types.h"
-#include "arm_compute/runtime/NEON/INESimpleFunction.h"
+#include "arm_compute/runtime/NEON/INESimpleFunctionNoBorder.h"
 
 namespace arm_compute
 {
 class ITensor;
+class ITensorInfo;
 
 /**
- * @brief Class to run @ref NECastBoolKernel.
+ * @brief Class to run @ref INESimpleFunctionNoBorder.
  */
-class NECastBool : public INESimpleFunction
+class NECastBool : public INESimpleFunctionNoBorder
 {
 public:
   /** Initialize the function's source, destination

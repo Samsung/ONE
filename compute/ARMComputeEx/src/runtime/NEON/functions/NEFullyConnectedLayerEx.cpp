@@ -50,7 +50,8 @@
 #include <algorithm>
 #include <cmath>
 
-using namespace arm_compute;
+namespace arm_compute
+{
 using namespace arm_compute::misc::shape_calculator;
 
 namespace
@@ -164,9 +165,8 @@ void NEFullyConnectedLayerEx::configure(const ITensor *input, const ITensor *wei
                                         const ITensor *biases, ITensor *output,
                                         FullyConnectedLayerInfo fc_info)
 {
-  ARM_COMPUTE_ERROR_ON_NULLPTR(input, weights, output);
-
   // Perform validate step
+  ARM_COMPUTE_ERROR_ON_NULLPTR(input, weights, output);
   ARM_COMPUTE_ERROR_THROW_ON(NEFullyConnectedLayerEx::validate(
     input->info(), weights->info(), biases != nullptr ? biases->info() : nullptr, output->info(),
     fc_info));
@@ -348,7 +348,7 @@ Status NEFullyConnectedLayerEx::validate(const ITensorInfo *input, const ITensor
        (input->dimension(0) * input->dimension(1) * input->dimension(2))));
 
     // Validate flatten kernel
-    ARM_COMPUTE_RETURN_ON_ERROR(NEFlattenLayerKernel::validate(input, &flatten_input));
+    ARM_COMPUTE_RETURN_ON_ERROR(NEFlattenLayer::validate(input, &flatten_input));
     input_to_use = &flatten_input;
   }
   else
@@ -374,9 +374,13 @@ void NEFullyConnectedLayerEx::run()
   if (!_is_prepared)
   {
     if (!_are_weights_reshaped)
+    {
       _reshape_weights_output.allocator()->allocate();
+    }
     if (!_are_weights_converted)
+    {
       _converted_weights_output.allocator()->allocate();
+    }
     _is_prepared = true;
   }
 
@@ -407,7 +411,7 @@ void NEFullyConnectedLayerEx::run()
   // Linearize input if it comes from a convolutional layer
   if (_is_fc_after_conv)
   {
-    NEScheduler::get().schedule(&_flatten_kernel, Window::DimY);
+    _flatten_kernel.run();
   }
 
   // Run matrix multiply
@@ -490,3 +494,4 @@ void NEFullyConnectedLayerEx::prepare()
   }
 #endif
 }
+} // namespace arm_compute

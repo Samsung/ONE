@@ -41,7 +41,7 @@
 #include "arm_compute/core/CL/ICLTensor.h"
 #include "arm_compute/core/CL/kernels/CLOneHotKernel.h"
 #include "arm_compute/runtime/CL/CLScheduler.h"
-#include "support/MemorySupport.h"
+
 namespace arm_compute
 {
 CLOneHot::CLOneHot() : _memset_kernel(), _onehot_kernel(), _has_to_memset(false) {}

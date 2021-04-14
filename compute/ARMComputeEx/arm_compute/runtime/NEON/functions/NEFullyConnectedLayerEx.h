@@ -43,16 +43,16 @@
 
 #include "arm_compute/runtime/IFunction.h"
 
-#include "arm_compute/core/NEON/kernels/NEFlattenLayerKernel.h"
-#include "arm_compute/core/NEON/kernels/NEGEMMMatrixAccumulateBiasesKernel.h"
-#include "arm_compute/core/NEON/kernels/NETransposeKernel.h"
-#include "arm_compute/runtime/MemoryGroup.h"
+#include "arm_compute/runtime/NEON/functions/NEFlattenLayer.h"
 #include "arm_compute/runtime/NEON/functions/NEFullyConnectedLayer.h"
 #include "arm_compute/runtime/NEON/functions/NEConvertFullyConnectedWeights.h"
 #include "arm_compute/runtime/NEON/functions/NEGEMM.h"
 #include "arm_compute/runtime/NEON/functions/NEGEMMLowpMatrixMultiplyCore.h"
 #include "arm_compute/runtime/NEON/functions/NEGEMMLowpOutputStage.h"
+#include "arm_compute/runtime/MemoryGroup.h"
 #include "arm_compute/runtime/Tensor.h"
+#include "arm_compute/core/NEON/kernels/NEGEMMMatrixAccumulateBiasesKernel.h"
+#include "src/core/NEON/kernels/NETransposeKernel.h"
 
 namespace arm_compute
 {
@@ -79,11 +79,11 @@ public:
   /** Prevent instances of this class from being copied (As this class contains pointers) */
   NEFullyConnectedLayerEx(const NEFullyConnectedLayerEx &) = delete;
   /** Default move constructor */
-  NEFullyConnectedLayerEx(NEFullyConnectedLayerEx &&) = default;
+  NEFullyConnectedLayerEx(NEFullyConnectedLayerEx &&) = delete;
   /** Prevent instances of this class from being copied (As this class contains pointers) */
   NEFullyConnectedLayerEx &operator=(const NEFullyConnectedLayerEx &) = delete;
   /** Default move assignment operator */
-  NEFullyConnectedLayerEx &operator=(NEFullyConnectedLayerEx &&) = default;
+  NEFullyConnectedLayerEx &operator=(NEFullyConnectedLayerEx &&) = delete;
   /** Set the input and output tensors.
    *
    * @param[in]  input   Source tensor. Data type supported: QASYMM8/F16/F32.
@@ -141,7 +141,7 @@ private:
   void configure_mm(const ITensor *input, const ITensor *weights, ITensor *output);
 
   MemoryGroup _memory_group;
-  NEFlattenLayerKernel _flatten_kernel;
+  NEFlattenLayer _flatten_kernel;
   NEConvertFullyConnectedWeights _convert_weights;
   NEFullyConnectedLayerReshapeWeights _reshape_weights_function;
   NEGEMM _mm_gemm;
