@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+#ifndef __ARSER_H__
+#define __ARSER_H__
+
 #include <iostream>
 #include <sstream>
 
@@ -45,7 +48,7 @@ template <typename T> T lexical_cast(const std::string &str)
   return data;
 }
 
-template <> bool lexical_cast(const std::string &str)
+template <> inline bool lexical_cast(const std::string &str)
 {
   bool data = true;
   if (str == "false" || str == "False" || str == "FALSE" || str == "0")
@@ -64,7 +67,7 @@ template <> inline std::string to_string(const bool value) { return value ? "tru
  *
  * If there is no dash, it returns as it is.
  */
-std::string remove_dash(const std::string &str)
+inline std::string remove_dash(const std::string &str)
 {
   std::string ret{str};
   auto pos = ret.find_first_not_of('-');
@@ -76,7 +79,7 @@ std::string remove_dash(const std::string &str)
 /**
  * @brief Returns the string that created by concatenating the elements of a vector with commas.
  */
-std::string make_comma_concatenated(const std::vector<std::string> &vec)
+inline std::string make_comma_concatenated(const std::vector<std::string> &vec)
 {
   std::ostringstream oss;
   std::copy(vec.begin(), std::prev(vec.end()), std::ostream_iterator<std::string>(oss, ", "));
@@ -499,14 +502,111 @@ public:
 
   template <typename T> T get(const std::string &arg_name);
 
+  friend std::ostream &operator<<(std::ostream &stream, const Arser &parser)
+  {
+    // print description
+    if (!parser._program_description.empty())
+    {
+      stream << "What " << parser._program_name << " does: " << parser._program_description
+             << "\n\n";
+    }
+    /*
+    ** print usage
+    */
+    stream << "Usage: ./" << parser._program_name << " ";
+    // required optional argument
+    for (const auto &arg : parser._optional_arg_vec)
+    {
+      if (!arg._is_required)
+        continue;
+      stream << arg._short_name << " ";
+      std::string arg_name = arser::internal::remove_dash(arg._long_name);
+      std::for_each(arg_name.begin(), arg_name.end(),
+                    [&stream](const char &c) { stream << static_cast<char>(::toupper(c)); });
+      stream << " ";
+    }
+    // rest of the optional argument
+    for (const auto &arg : parser._optional_arg_vec)
+    {
+      if (arg._is_required)
+        continue;
+      stream << "[" << arg._short_name;
+      if (arg._nargs)
+      {
+        stream << " ";
+        std::string arg_name = arser::internal::remove_dash(arg._long_name);
+        std::for_each(arg_name.begin(), arg_name.end(),
+                      [&stream](const char &c) { stream << static_cast<char>(::toupper(c)); });
+      }
+      stream << "]"
+             << " ";
+    }
+    // positional arguement
+    for (const auto &arg : parser._positional_arg_vec)
+    {
+      stream << arg._long_name << " ";
+    }
+    stream << "\n\n";
+    /*
+    ** print argument list and its help message
+    */
+    // get the length of the longest argument
+    size_t length_of_longest_arg = 0;
+    for (const auto &arg : parser._positional_arg_vec)
+    {
+      length_of_longest_arg = std::max(length_of_longest_arg,
+                                       arser::internal::make_comma_concatenated(arg._names).size());
+    }
+    for (const auto &arg : parser._optional_arg_vec)
+    {
+      length_of_longest_arg = std::max(length_of_longest_arg,
+                                       arser::internal::make_comma_concatenated(arg._names).size());
+    }
+
+    const size_t message_width = 60;
+    // positional argument
+    if (!parser._positional_arg_vec.empty())
+    {
+      stream << "[Positional argument]" << std::endl;
+      for (const auto &arg : parser._positional_arg_vec)
+      {
+        stream.width(length_of_longest_arg);
+        stream << std::left << arser::internal::make_comma_concatenated(arg._names) << "\t";
+        for (size_t i = 0; i < arg._help_message.length(); i += message_width)
+        {
+          if (i)
+            stream << std::string(length_of_longest_arg, ' ') << "\t";
+          stream << arg._help_message.substr(i, message_width) << std::endl;
+        }
+      }
+      std::cout << std::endl;
+    }
+    // optional argument
+    if (!parser._optional_arg_vec.empty())
+    {
+      stream << "[Optional argument]" << std::endl;
+      for (const auto &arg : parser._optional_arg_vec)
+      {
+        stream.width(length_of_longest_arg);
+        stream << std::left << arser::internal::make_comma_concatenated(arg._names) << "\t";
+        for (size_t i = 0; i < arg._help_message.length(); i += message_width)
+        {
+          if (i)
+            stream << std::string(length_of_longest_arg, ' ') << "\t";
+          stream << arg._help_message.substr(i, message_width) << std::endl;
+        }
+      }
+    }
+
+    return stream;
+  }
+
 private:
   std::string _program_name;
   std::string _program_description;
   std::list<Argument> _positional_arg_vec;
   std::list<Argument> _optional_arg_vec;
   std::map<std::string, Argument *> _arg_map;
-
-  friend std::ostream &operator<<(std::ostream &, const Arser &);
 };
 
 template <typename T> T Arser::get_impl(const std::string &arg_name, T *)
@@ -555,102 +655,6 @@ template <typename T> T Arser::get(const std::string &arg_name)
   return get_impl(arg_name, static_cast<T *>(nullptr));
 }
 
-std::ostream &operator<<(std::ostream &stream, const Arser &parser)
-{
-  // print description
-  if (!parser._program_description.empty())
-  {
-    stream << "What " << parser._program_name << " does: " << parser._program_description << "\n\n";
-  }
-  /*
-  ** print usage
-  */
-  stream << "Usage: ./" << parser._program_name << " ";
-  // required optional argument
-  for (const auto &arg : parser._optional_arg_vec)
-  {
-    if (!arg._is_required)
-      continue;
-    stream << arg._short_name << " ";
-    std::string arg_name = arser::internal::remove_dash(arg._long_name);
-    std::for_each(arg_name.begin(), arg_name.end(),
-                  [&stream](const char &c) { stream << static_cast<char>(::toupper(c)); });
-    stream << " ";
-  }
-  // rest of the optional argument
-  for (const auto &arg : parser._optional_arg_vec)
-  {
-    if (arg._is_required)
-      continue;
-    stream << "[" << arg._short_name;
-    if (arg._nargs)
-    {
-      stream << " ";
-      std::string arg_name = arser::internal::remove_dash(arg._long_name);
-      std::for_each(arg_name.begin(), arg_name.end(),
-                    [&stream](const char &c) { stream << static_cast<char>(::toupper(c)); });
-    }
-    stream << "]"
-           << " ";
-  }
-  // positional arguement
-  for (const auto &arg : parser._positional_arg_vec)
-  {
-    stream << arg._long_name << " ";
-  }
-  stream << "\n\n";
-  /*
-  ** print argument list and its help message
-  */
-  // get the length of the longest argument
-  size_t length_of_longest_arg = 0;
-  for (const auto &arg : parser._positional_arg_vec)
-  {
-    length_of_longest_arg =
-      std::max(length_of_longest_arg, arser::internal::make_comma_concatenated(arg._names).size());
-  }
-  for (const auto &arg : parser._optional_arg_vec)
-  {
-    length_of_longest_arg =
-      std::max(length_of_longest_arg, arser::internal::make_comma_concatenated(arg._names).size());
-  }
-
-  const size_t message_width = 60;
-  // positional argument
-  if (!parser._positional_arg_vec.empty())
-  {
-    stream << "[Positional argument]" << std::endl;
-    for (const auto &arg : parser._positional_arg_vec)
-    {
-      stream.width(length_of_longest_arg);
-      stream << std::left << arser::internal::make_comma_concatenated(arg._names) << "\t";
-      for (size_t i = 0; i < arg._help_message.length(); i += message_width)
-      {
-        if (i)
-          stream << std::string(length_of_longest_arg, ' ') << "\t";
-        stream << arg._help_message.substr(i, message_width) << std::endl;
-      }
-    }
-    std::cout << std::endl;
-  }
-  // optional argument
-  if (!parser._optional_arg_vec.empty())
-  {
-    stream << "[Optional argument]" << std::endl;
-    for (const auto &arg : parser._optional_arg_vec)
-    {
-      stream.width(length_of_longest_arg);
-      stream << std::left << arser::internal::make_comma_concatenated(arg._names) << "\t";
-      for (size_t i = 0; i < arg._help_message.length(); i += message_width)
-      {
-        if (i)
-          stream << std::string(length_of_longest_arg, ' ') << "\t";
-        stream << arg._help_message.substr(i, message_width) << std::endl;
-      }
-    }
-  }
-
-  return stream;
-}
-
 } // namespace arser
+
+#endif // __ARSER_H__
