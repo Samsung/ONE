@@ -22,8 +22,8 @@ namespace luci
 void ConnectNode::visit(const luci::CircleCos *node)
 {
   auto *cloned = loco::must_cast<luci::CircleCos *>(find_clone(node));
-  luci::CircleNode *in_x = loco::must_cast<luci::CircleNode *>(node->x());
-  cloned->x(find_clone(in_x));
+  luci::CircleNode *x = loco::must_cast<luci::CircleNode *>(node->x());
+  cloned->x(find_clone(x));
 }
 
 } // namespace luci

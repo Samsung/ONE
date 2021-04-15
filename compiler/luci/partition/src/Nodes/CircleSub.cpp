@@ -22,10 +22,10 @@ namespace luci
 void ConnectNode::visit(const luci::CircleSub *node)
 {
   auto *cloned = loco::must_cast<luci::CircleSub *>(find_clone(node));
-  luci::CircleNode *in_x = loco::must_cast<luci::CircleNode *>(node->x());
-  luci::CircleNode *in_y = loco::must_cast<luci::CircleNode *>(node->y());
-  cloned->x(find_clone(in_x));
-  cloned->y(find_clone(in_y));
+  luci::CircleNode *x = loco::must_cast<luci::CircleNode *>(node->x());
+  luci::CircleNode *y = loco::must_cast<luci::CircleNode *>(node->y());
+  cloned->x(find_clone(x));
+  cloned->y(find_clone(y));
 }
 
 } // namespace luci
