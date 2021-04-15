@@ -16,18 +16,27 @@
 
 #include "ConnectNode.h"
 
-namespace luci
+namespace
 {
 
-void ConnectNode::visit(const luci::CircleBatchToSpaceND *node)
+void connect(luci::ConnectNode *cn, const luci::CircleBatchToSpaceND *node)
 {
-  auto *cloned = loco::must_cast<luci::CircleBatchToSpaceND *>(find_clone(node));
+  auto *cloned = loco::must_cast<luci::CircleBatchToSpaceND *>(cn->find_clone(node));
+
   luci::CircleNode *input = loco::must_cast<luci::CircleNode *>(node->input());
   luci::CircleNode *block_shape = loco::must_cast<luci::CircleNode *>(node->block_shape());
   luci::CircleNode *crops = loco::must_cast<luci::CircleNode *>(node->crops());
-  cloned->input(find_clone(input));
-  cloned->block_shape(find_clone(block_shape));
-  cloned->crops(find_clone(crops));
+
+  cloned->input(cn->find_clone(input));
+  cloned->block_shape(cn->find_clone(block_shape));
+  cloned->crops(cn->find_clone(crops));
 }
+
+} // namespace
+
+namespace luci
+{
+
+void ConnectNode::visit(const luci::CircleBatchToSpaceND *node) { connect(this, node); }
 
 } // namespace luci

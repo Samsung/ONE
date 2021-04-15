@@ -16,14 +16,26 @@
 
 #include "ConnectNode.h"
 
+namespace
+{
+
+/**
+ * @note This method and all other connect() are just to reduce LOC of ConnectNode class
+ */
+void connect(luci::ConnectNode *cn, const luci::CircleAbs *node)
+{
+  auto *cloned = loco::must_cast<luci::CircleAbs *>(cn->find_clone(node));
+
+  luci::CircleNode *x = loco::must_cast<luci::CircleNode *>(node->x());
+
+  cloned->x(cn->find_clone(x));
+}
+
+} // namespace
+
 namespace luci
 {
 
-void ConnectNode::visit(const luci::CircleAbs *node)
-{
-  auto *cloned = loco::must_cast<luci::CircleAbs *>(find_clone(node));
-  luci::CircleNode *x = loco::must_cast<luci::CircleNode *>(node->x());
-  cloned->x(find_clone(x));
-}
+void ConnectNode::visit(const luci::CircleAbs *node) { connect(this, node); }
 
 } // namespace luci

@@ -16,14 +16,23 @@
 
 #include "ConnectNode.h"
 
+namespace
+{
+
+void connect(luci::ConnectNode *cn, const luci::CircleRsqrt *node)
+{
+  auto *cloned = loco::must_cast<luci::CircleRsqrt *>(cn->find_clone(node));
+
+  luci::CircleNode *x = loco::must_cast<luci::CircleNode *>(node->x());
+
+  cloned->x(cn->find_clone(x));
+}
+
+} // namespace
+
 namespace luci
 {
 
-void ConnectNode::visit(const luci::CircleRsqrt *node)
-{
-  auto *cloned = loco::must_cast<luci::CircleRsqrt *>(find_clone(node));
-  luci::CircleNode *x = loco::must_cast<luci::CircleNode *>(node->x());
-  cloned->x(find_clone(x));
-}
+void ConnectNode::visit(const luci::CircleRsqrt *node) { connect(this, node); }
 
 } // namespace luci

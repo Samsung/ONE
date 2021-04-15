@@ -192,7 +192,7 @@ public:
   // void visit(const luci::CircleUnpackOut *) final;
   // void visit(const luci::CircleWhileOut *) final;
 
-protected:
+public:
   luci::CircleNode *find_clone(const luci::CircleNode *node);
 
 protected:

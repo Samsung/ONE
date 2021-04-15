@@ -16,18 +16,27 @@
 
 #include "ConnectNode.h"
 
-namespace luci
+namespace
 {
 
-void ConnectNode::visit(const luci::CircleConcatenation *node)
+void connect(luci::ConnectNode *cn, const luci::CircleConcatenation *node)
 {
-  auto *cloned = loco::must_cast<luci::CircleConcatenation *>(find_clone(node));
+  auto *cloned = loco::must_cast<luci::CircleConcatenation *>(cn->find_clone(node));
+
   uint32_t num_inputs = cloned->numValues();
   for (uint32_t i = 0; i < num_inputs; ++i)
   {
-    luci::CircleNode *in = loco::must_cast<luci::CircleNode *>(node->values(i));
-    cloned->values(i, find_clone(in));
+    luci::CircleNode *value = loco::must_cast<luci::CircleNode *>(node->values(i));
+
+    cloned->values(i, cn->find_clone(value));
   }
 }
+
+} // namespace
+
+namespace luci
+{
+
+void ConnectNode::visit(const luci::CircleConcatenation *node) { connect(this, node); }
 
 } // namespace luci
