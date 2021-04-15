@@ -139,6 +139,11 @@ RuntimeGraph *KernelBuilder::getRuntimeGraph(const loco::Graph *graph) const
   return runtime_graph;
 }
 
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleNode *)
+{
+  throw std::invalid_argument("Unsupported operator.");
+}
+
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleAdd *node)
 {
   assert(node->arity() == 2);
