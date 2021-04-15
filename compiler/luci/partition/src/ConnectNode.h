@@ -78,10 +78,10 @@ public:
   void visit(const luci::CircleDepthwiseConv2D *) final;
   void visit(const luci::CircleDequantize *) final;
   void visit(const luci::CircleDiv *) final;
-  // void visit(const luci::CircleElu *) final;
-  // void visit(const luci::CircleEqual *) final;
-  // void visit(const luci::CircleExp *) final;
-  // void visit(const luci::CircleExpandDims *) final;
+  void visit(const luci::CircleElu *) final;
+  void visit(const luci::CircleEqual *) final;
+  void visit(const luci::CircleExp *) final;
+  void visit(const luci::CircleExpandDims *) final;
   // void visit(const luci::CircleFakeQuant *) final;
   // void visit(const luci::CircleFill *) final;
   // void visit(const luci::CircleFloor *) final;
