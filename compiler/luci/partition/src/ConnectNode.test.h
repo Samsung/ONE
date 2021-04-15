@@ -87,7 +87,7 @@ protected:
 class ConnectionTestHelper
 {
 public:
-  ConnectionTestHelper() { _graph_c = loco::make_graph(); }
+  ConnectionTestHelper() { _graph_clone = loco::make_graph(); }
 
 public:
   template <unsigned N> void prepare_inputs(TestIsOGraph<N> *isograph)
@@ -96,7 +96,7 @@ public:
 
     for (uint32_t i = 0; i < N; ++i)
     {
-      auto *input = _graph_c->nodes()->create<luci::CircleInput>();
+      auto *input = _graph_clone->nodes()->create<luci::CircleInput>();
       luci::copy_common_attributes(isograph->input(i), input);
       _clonectx.emplace(isograph->input(i), input);
       _inputs.push_back(input);
@@ -111,14 +111,14 @@ public:
   }
 
 public:
-  loco::Graph *graph_c(void) { return _graph_c.get(); }
+  loco::Graph *graph_clone(void) { return _graph_clone.get(); }
 
   luci::CircleNode *inputs(uint32_t idx) { return _inputs.at(idx); }
 
 protected:
   luci::CloneContext _clonectx;
   std::vector<luci::CircleInput *> _inputs;
-  std::unique_ptr<loco::Graph> _graph_c; // new graph for clones
+  std::unique_ptr<loco::Graph> _graph_clone; // graph for clones
 };
 
 } // namespace test

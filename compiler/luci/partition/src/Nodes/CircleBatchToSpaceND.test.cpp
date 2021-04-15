@@ -65,7 +65,7 @@ TEST(ConnectNodeTest, connect_BatchToSpaceND)
   auto *node = tng.node();
   ASSERT_NO_THROW(loco::must_cast<luci::CircleBatchToSpaceND *>(node));
 
-  auto *clone = luci::clone_node(node, cth.graph_c());
+  auto *clone = luci::clone_node(node, cth.graph_clone());
   cth.clone_connect(node, clone);
 
   ASSERT_EQ(3, clone->arity());

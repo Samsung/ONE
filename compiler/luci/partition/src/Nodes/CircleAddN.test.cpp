@@ -66,7 +66,7 @@ TEST(ConnectNodeTest, connect_AddN)
   auto *node = tng.node();
   ASSERT_NO_THROW(loco::must_cast<luci::CircleAddN *>(node));
 
-  auto *clone = luci::clone_node(node, cth.graph_c());
+  auto *clone = luci::clone_node(node, cth.graph_clone());
   cth.clone_connect(node, clone);
 
   ASSERT_EQ(3, clone->arity());

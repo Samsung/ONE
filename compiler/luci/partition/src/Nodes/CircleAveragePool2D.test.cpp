@@ -72,7 +72,7 @@ TEST(ConnectNodeTest, connect_AveragePool2D)
   auto *node = tng.node();
   ASSERT_NO_THROW(loco::must_cast<luci::CircleAveragePool2D *>(node));
 
-  auto *clone = luci::clone_node(node, cth.graph_c());
+  auto *clone = luci::clone_node(node, cth.graph_clone());
   cth.clone_connect(node, clone);
 
   ASSERT_EQ(1, clone->arity());
