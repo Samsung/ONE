@@ -234,6 +234,13 @@ private:
     return true;
   }
 
+  bool visit(const luci::CircleSpaceToBatchND *node)
+  {
+    RETURN_FALSE_UNLESS(is_lwq(node));
+    RETURN_FALSE_UNLESS(is_lwq(node->input()));
+    return true;
+  }
+
   bool visit(const luci::CircleSpaceToDepth *node)
   {
     RETURN_FALSE_UNLESS(is_lwq(node));

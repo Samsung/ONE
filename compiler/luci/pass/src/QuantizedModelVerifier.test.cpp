@@ -236,6 +236,37 @@ public:
   luci::CircleSoftmax *_softmax = nullptr;
 };
 
+class SpaceToBatchNDTestGraph final : public SimpleTestGraph
+{
+public:
+  void init(void) override
+  {
+    TestIOGraph::init({1, 2, 2, 1}, {4, 1, 1, 1});
+    _block_shape = create_dummy_const<Type::S32>(g(), {2});
+    for (uint32_t i = 0; i < 2; i++)
+      _block_shape->at<Type::S32>(i) = 2;
+
+    _paddings = create_dummy_const<Type::S32>(g(), {2, 2});
+    for (uint32_t i = 0; i < 4; i++)
+      _paddings->at<Type::S32>(i) = 0;
+
+    _stob = g()->nodes()->create<luci::CircleSpaceToBatchND>();
+    {
+      _stob->input(input());
+      _stob->block_shape(_block_shape);
+      _stob->paddings(_paddings);
+    }
+    output()->from(_stob);
+
+    set_minmax_to_non_const(g(), -1, 1);
+  }
+
+public:
+  luci::CircleSpaceToBatchND *_stob = nullptr;
+  luci::CircleConst *_block_shape = nullptr;
+  luci::CircleConst *_paddings = nullptr;
+};
+
 class SpaceToDepthTestGraph final : public SimpleTestGraph
 {
 public:
@@ -854,6 +885,30 @@ TEST(QuantizedModelVerifierTest, Softmax_wrong_granularity_NEG)
   TEST_WITH_WRONG_GRANULARITY(SoftmaxTestGraph, Type::U8, Granularity::LayerWise);
   TEST_WITH_WRONG_GRANULARITY(SoftmaxTestGraph, Type::U8, Granularity::ChannelWise);
   TEST_WITH_WRONG_GRANULARITY(SoftmaxTestGraph, Type::S16, Granularity::ChannelWise);
+  SUCCEED();
+}
+
+TEST(QuantizedModelVerifierTest, SpaceToBatchND)
+{
+  TEST_WITH_GRAPH(SpaceToBatchNDTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_GRAPH(SpaceToBatchNDTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_GRAPH(SpaceToBatchNDTestGraph, Type::S16, Granularity::ChannelWise);
+  SUCCEED();
+}
+
+TEST(QuantizedModelVerifierTest, SpaceToBatchND_wrong_type_NEG)
+{
+  TEST_WITH_WRONG_TYPE(SpaceToBatchNDTestGraph, Type::U8, Granularity::LayerWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(SpaceToBatchNDTestGraph, Type::U8, Granularity::ChannelWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(SpaceToBatchNDTestGraph, Type::S16, Granularity::ChannelWise, Type::U8);
+  SUCCEED();
+}
+
+TEST(QuantizedModelVerifierTest, SpaceToBatchND_wrong_granularity_NEG)
+{
+  TEST_WITH_WRONG_GRANULARITY(SpaceToBatchNDTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_WRONG_GRANULARITY(SpaceToBatchNDTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_WRONG_GRANULARITY(SpaceToBatchNDTestGraph, Type::S16, Granularity::ChannelWise);
   SUCCEED();
 }
 
