@@ -162,14 +162,14 @@ public:
   void visit(const luci::CircleTanh *) final;
   void visit(const luci::CircleTile *) final;
   void visit(const luci::CircleTopKV2 *) final;
-  // void visit(const luci::CircleTranspose *) final;
-  // void visit(const luci::CircleTransposeConv *) final;
-  // void visit(const luci::CircleUnidirectionalSequenceLSTM *) final;
-  // void visit(const luci::CircleUnique *) final;
-  // void visit(const luci::CircleUnpack *) final;
-  // void visit(const luci::CircleWhere *) final;
+  void visit(const luci::CircleTranspose *) final;
+  void visit(const luci::CircleTransposeConv *) final;
+  void visit(const luci::CircleUnidirectionalSequenceLSTM *) final;
+  void visit(const luci::CircleUnique *) final;
+  void visit(const luci::CircleUnpack *) final;
+  void visit(const luci::CircleWhere *) final;
   // void visit(const luci::CircleWhile *) final;
-  // void visit(const luci::CircleZerosLike *) final;
+  void visit(const luci::CircleZerosLike *) final;
 
   // Circle Only
   // void visit(const luci::CircleBCQFullyConnected *) final;
