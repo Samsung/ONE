@@ -177,19 +177,19 @@ public:
   void visit(const luci::CircleInstanceNorm *) final;
 
   // Virtual
-  // void visit(const luci::CircleCustomOut *) final;
+  void visit(const luci::CircleCustomOut *) final;
   // void visit(const luci::CircleIfOut *) final;
   // void visit(const luci::CircleInput *) final;
-  // void visit(const luci::CircleNonMaxSuppressionV4Out *) final;
-  // void visit(const luci::CircleNonMaxSuppressionV5Out *) final;
+  void visit(const luci::CircleNonMaxSuppressionV4Out *) final;
+  void visit(const luci::CircleNonMaxSuppressionV5Out *) final;
   // void visit(const luci::CircleOutput *) final;
-  // void visit(const luci::CircleOutputDummy *) final;
-  // void visit(const luci::CircleOutputExclude *) final;
-  // void visit(const luci::CircleSplitOut *) final;
-  // void visit(const luci::CircleSplitVOut *) final;
-  // void visit(const luci::CircleTopKV2Out *) final;
-  // void visit(const luci::CircleUniqueOut *) final;
-  // void visit(const luci::CircleUnpackOut *) final;
+  void visit(const luci::CircleOutputDummy *) final;
+  void visit(const luci::CircleOutputExclude *) final;
+  void visit(const luci::CircleSplitOut *) final;
+  void visit(const luci::CircleSplitVOut *) final;
+  void visit(const luci::CircleTopKV2Out *) final;
+  void visit(const luci::CircleUniqueOut *) final;
+  void visit(const luci::CircleUnpackOut *) final;
   // void visit(const luci::CircleWhileOut *) final;
 
 public:
