@@ -31,9 +31,6 @@ namespace luci
 class CircleTopKV2 final : public FixedArityNode<2, CircleNodeImpl<CircleOpcode::TOPK_V2>>
 {
 public:
-  CircleTopKV2() = default;
-
-public:
   loco::Node *input(void) const { return at(0)->node(); }
   void input(loco::Node *node) { at(0)->node(node); }
 

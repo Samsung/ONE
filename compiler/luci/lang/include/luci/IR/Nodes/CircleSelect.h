@@ -31,9 +31,6 @@ namespace luci
 class CircleSelect final : public FixedArityNode<3, CircleNodeImpl<CircleOpcode::SELECT>>
 {
 public:
-  CircleSelect() = default;
-
-public:
   loco::Node *condition(void) const { return at(0)->node(); }
   void condition(loco::Node *node) { at(0)->node(node); }
 

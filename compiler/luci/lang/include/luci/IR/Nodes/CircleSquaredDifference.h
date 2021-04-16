@@ -32,9 +32,6 @@ class CircleSquaredDifference final
   : public FixedArityNode<2, CircleNodeImpl<CircleOpcode::SQUARED_DIFFERENCE>>
 {
 public:
-  CircleSquaredDifference() = default;
-
-public:
   loco::Node *x(void) const { return at(0)->node(); }
   void x(loco::Node *node) { at(0)->node(node); }
 

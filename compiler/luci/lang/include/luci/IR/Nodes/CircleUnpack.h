@@ -31,9 +31,6 @@ namespace luci
 class CircleUnpack final : public FixedArityNode<1, CircleNodeImpl<CircleOpcode::UNPACK>>
 {
 public:
-  CircleUnpack() = default;
-
-public:
   loco::Node *value(void) const { return at(0)->node(); }
   void value(loco::Node *node) { at(0)->node(node); }
 

@@ -33,9 +33,6 @@ namespace luci
 class CircleWhere final : public FixedArityNode<1, CircleNodeImpl<CircleOpcode::WHERE>>
 {
 public:
-  CircleWhere() = default;
-
-public:
   loco::Node *condition() const { return at(0)->node(); }
   void condition(loco::Node *node) { at(0)->node(node); }
 };

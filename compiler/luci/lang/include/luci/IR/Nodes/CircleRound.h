@@ -31,9 +31,6 @@ namespace luci
 class CircleRound final : public FixedArityNode<1, CircleNodeImpl<CircleOpcode::ROUND>>
 {
 public:
-  CircleRound() = default;
-
-public:
   loco::Node *x(void) const { return at(0)->node(); }
   void x(loco::Node *node) { at(0)->node(node); }
 };

@@ -32,9 +32,6 @@ namespace luci
 class CircleMirrorPad final : public FixedArityNode<2, CircleNodeImpl<CircleOpcode::MIRROR_PAD>>
 {
 public:
-  CircleMirrorPad() = default;
-
-public:
   loco::Node *input(void) const { return at(0)->node(); }
   void input(loco::Node *node) { at(0)->node(node); }
 

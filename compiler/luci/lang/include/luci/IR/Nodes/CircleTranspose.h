@@ -31,9 +31,6 @@ namespace luci
 class CircleTranspose final : public FixedArityNode<2, CircleNodeImpl<CircleOpcode::TRANSPOSE>>
 {
 public:
-  CircleTranspose() = default;
-
-public:
   /// @brief Get the input node to transpose
   loco::Node *a(void) const { return at(0)->node(); }
 

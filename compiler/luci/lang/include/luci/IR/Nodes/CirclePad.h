@@ -31,9 +31,6 @@ namespace luci
 class CirclePad final : public FixedArityNode<2, CircleNodeImpl<CircleOpcode::PAD>>
 {
 public:
-  CirclePad() = default;
-
-public:
   loco::Node *input(void) const { return at(0)->node(); }
   void input(loco::Node *node) { at(0)->node(node); }
 

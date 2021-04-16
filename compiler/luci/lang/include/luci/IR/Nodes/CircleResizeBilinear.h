@@ -32,9 +32,6 @@ class CircleResizeBilinear final
   : public FixedArityNode<2, CircleNodeImpl<CircleOpcode::RESIZE_BILINEAR>>
 {
 public:
-  CircleResizeBilinear() = default;
-
-public:
   loco::Node *input(void) const { return at(0)->node(); }
   void input(loco::Node *node) { at(0)->node(node); }
 

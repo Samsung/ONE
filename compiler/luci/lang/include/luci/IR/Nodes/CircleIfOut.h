@@ -31,9 +31,6 @@ namespace luci
 class CircleIfOut final : public FixedArityNode<1, CircleNodeImpl<CircleOpcode::CIRCLEIFOUT>>
 {
 public:
-  CircleIfOut() = default;
-
-public:
   loco::Node *input(void) const { return at(0)->node(); }
   void input(loco::Node *node) { at(0)->node(node); }
 
