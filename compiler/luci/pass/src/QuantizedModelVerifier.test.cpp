@@ -72,7 +72,6 @@ template <Type T> luci::CircleConst *create_dummy_const(loco::Graph *g, luci::te
 
 /**
  * @brief A helper function to create const node with value
- *
  */
 template <Type DT, typename T>
 luci::CircleConst *create_const(loco::Graph *g, luci::test::ShapeU32 shape,
@@ -888,16 +887,6 @@ TEST(QuantizedModelVerifierTest, LocalCreateConst)
   {
     EXPECT_EQ(node->at<Type::FLOAT32>(index++), val);
   }
-}
-
-TEST(QuantizedModelVerifierTest, LocalCreateConst_NEG)
-{
-  loco::Graph g;
-  std::initializer_list<float> values = {0.1, 0, -5, 100};
-  luci::CircleConst *node = create_const<Type::FLOAT32, float>(&g, {2, 2}, values);
-
-  // access out of bound
-  EXPECT_DEATH(node->at<Type::FLOAT32>(4), "Assertion `n < size<DT>()");
 }
 
 TEST(QuantizedModelVerifierTest, InstanceNorm)
