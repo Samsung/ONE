@@ -980,6 +980,24 @@ void quantize_const_inputs(luci::CircleNode *node, loco::DataType output_type)
         quant_const(const_node, output_type);
       break;
 
+    case luci::CircleOpcode::PADV2:
+      // Only the third input is quantized
+      // Second input should not be quantized (e.g., paddings)
+      // Quant params propagated from output range to the input
+      input_node = node->arg(2);
+      const_node = dynamic_cast<luci::CircleConst *>(input_node);
+      if (const_node != nullptr && !is_quantized(const_node))
+      {
+        auto input = dynamic_cast<luci::CircleNode *>(node->arg(0));
+        assert(input->quantparam()->scale.size() == 1); // input scale's layer-wise
+
+        luci::quant_const_values(const_node, node->quantparam()->scale.at(0),
+                                 node->quantparam()->zerop.at(0), output_type);
+        luci::overwrite_quantparam(node, const_node);
+        luci::overwrite_quantparam(node, input);
+      }
+      break;
+
     default:
       for (uint32_t i = 0; i < arity; i++)
       {
