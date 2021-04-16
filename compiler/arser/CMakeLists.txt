@@ -11,6 +11,7 @@ if(NOT ENABLE_TEST)
 endif(NOT ENABLE_TEST)
 
 nnas_find_package(GTest REQUIRED)
-set(TESTS "${CMAKE_CURRENT_SOURCE_DIR}/tests/arser.test.cpp")
+set(TESTS "${CMAKE_CURRENT_SOURCE_DIR}/tests/arser.test.cpp"
+          "${CMAKE_CURRENT_SOURCE_DIR}/tests/HelpMessage.test.cpp")
 GTest_AddTest(arser_test ${TESTS})
 target_link_libraries(arser_test arser)
