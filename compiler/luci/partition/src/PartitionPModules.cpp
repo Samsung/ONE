@@ -76,15 +76,6 @@ void add_graph_output(loco::Graph *graph, luci::CircleOutput *output_node)
 }
 
 /**
- * @brief Connect cloned node from input node
- */
-void clone_connect(const luci::CircleNode *node, luci::CloneContext &clonecontext)
-{
-  luci::ConnectNode cn(clonecontext);
-  node->accept(&cn);
-}
-
-/**
  * @brief Build loco::graph from pgroup into graph
  */
 void build_graph(loco::Graph *graph, const luci::PGroup *pgroup)
