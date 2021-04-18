@@ -32,9 +32,6 @@ class CircleReverseSequence final
   : public FixedArityNode<2, CircleNodeImpl<CircleOpcode::REVERSE_SEQUENCE>>
 {
 public:
-  CircleReverseSequence() = default;
-
-public:
   loco::Node *input(void) const { return at(0)->node(); }
   void input(loco::Node *node) { at(0)->node(node); }
 

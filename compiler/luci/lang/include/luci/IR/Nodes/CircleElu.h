@@ -31,9 +31,6 @@ namespace luci
 class CircleElu final : public FixedArityNode<1, CircleNodeImpl<CircleOpcode::ELU>>
 {
 public:
-  CircleElu() = default;
-
-public:
   loco::Node *features(void) const { return at(0)->node(); }
   void features(loco::Node *node) { at(0)->node(node); }
 };

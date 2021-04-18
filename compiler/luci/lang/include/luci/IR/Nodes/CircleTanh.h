@@ -31,9 +31,6 @@ namespace luci
 class CircleTanh final : public FixedArityNode<1, CircleNodeImpl<CircleOpcode::TANH>>
 {
 public:
-  CircleTanh() = default;
-
-public:
   loco::Node *x(void) const { return at(0)->node(); }
   void x(loco::Node *node) { at(0)->node(node); }
 };

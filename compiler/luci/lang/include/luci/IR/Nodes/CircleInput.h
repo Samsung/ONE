@@ -35,9 +35,6 @@ namespace luci
 class CircleInput final : public FixedArityNode<0, CircleNodeImpl<CircleOpcode::CIRCLEINPUT>>
 {
 public:
-  CircleInput() = default;
-
-public:
   void index(const loco::GraphInputIndex &index);
   loco::GraphInputIndex index(void) const;
 

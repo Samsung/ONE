@@ -32,9 +32,6 @@ class CircleNonMaxSuppressionV5Out final
   : public FixedArityNode<1, CircleNodeImpl<CircleOpcode::CIRCLENONMAXSUPPRESSIONV5OUT>>
 {
 public:
-  CircleNonMaxSuppressionV5Out() = default;
-
-public:
   loco::Node *input(void) const { return at(0)->node(); }
   void input(loco::Node *node) { at(0)->node(node); }
 

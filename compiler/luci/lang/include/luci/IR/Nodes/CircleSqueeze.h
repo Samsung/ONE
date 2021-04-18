@@ -31,9 +31,6 @@ namespace luci
 class CircleSqueeze final : public FixedArityNode<1, CircleNodeImpl<CircleOpcode::SQUEEZE>>
 {
 public:
-  CircleSqueeze() = default;
-
-public:
   loco::Node *input(void) const { return at(0)->node(); }
   void input(loco::Node *node) { at(0)->node(node); }
 

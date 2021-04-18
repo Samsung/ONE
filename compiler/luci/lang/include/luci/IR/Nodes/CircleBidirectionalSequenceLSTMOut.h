@@ -32,9 +32,6 @@ class CircleBidirectionalSequenceLSTMOut final
   : public FixedArityNode<1, CircleNodeImpl<CircleOpcode::CIRCLEBIDIRECTIONAL_SEQUENCE_LSTM_OUT>>
 {
 public:
-  CircleBidirectionalSequenceLSTMOut() = default;
-
-public:
   loco::Node *input(void) const { return at(0)->node(); }
   void input(loco::Node *node) { at(0)->node(node); }
 

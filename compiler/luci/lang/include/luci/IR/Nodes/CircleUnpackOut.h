@@ -32,9 +32,6 @@ class CircleUnpackOut final
   : public FixedArityNode<1, CircleNodeImpl<CircleOpcode::CIRCLEUNPACKOUT>>
 {
 public:
-  CircleUnpackOut() = default;
-
-public:
   loco::Node *input(void) const { return at(0)->node(); }
   void input(loco::Node *node) { at(0)->node(node); }
 

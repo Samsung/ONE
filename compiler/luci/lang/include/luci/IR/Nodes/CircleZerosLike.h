@@ -31,9 +31,6 @@ namespace luci
 class CircleZerosLike final : public FixedArityNode<1, CircleNodeImpl<CircleOpcode::ZEROS_LIKE>>
 {
 public:
-  CircleZerosLike() = default;
-
-public:
   /// @brief Get the input node
   loco::Node *input(void) const { return at(0)->node(); }
 

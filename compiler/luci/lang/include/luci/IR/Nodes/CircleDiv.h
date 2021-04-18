@@ -36,9 +36,6 @@ class CircleDiv final : public FixedArityNode<2, CircleNodeImpl<CircleOpcode::DI
                         public CircleNodeMixin<CircleNodeTrait::FusedActFunc>
 {
 public:
-  CircleDiv() = default;
-
-public:
   loco::Node *x(void) const { return at(0)->node(); }
   void x(loco::Node *node) { at(0)->node(node); }
 

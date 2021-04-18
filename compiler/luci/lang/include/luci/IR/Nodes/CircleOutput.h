@@ -34,8 +34,6 @@ namespace luci
 class CircleOutput final : public FixedArityNode<1, CircleNodeImpl<CircleOpcode::CIRCLEOUTPUT>>
 {
 public:
-  CircleOutput() = default;
-
   void index(const loco::GraphOutputIndex &index);
   loco::GraphOutputIndex index(void) const;
 

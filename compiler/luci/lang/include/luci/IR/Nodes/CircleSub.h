@@ -33,9 +33,6 @@ class CircleSub final : public FixedArityNode<2, CircleNodeImpl<CircleOpcode::SU
                         public CircleNodeMixin<CircleNodeTrait::FusedActFunc>
 {
 public:
-  CircleSub() = default;
-
-public:
   loco::Node *x(void) const { return at(0)->node(); }
   void x(loco::Node *node) { at(0)->node(node); }
 

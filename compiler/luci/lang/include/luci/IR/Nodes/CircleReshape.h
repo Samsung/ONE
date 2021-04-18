@@ -31,9 +31,6 @@ namespace luci
 class CircleReshape final : public FixedArityNode<2, CircleNodeImpl<CircleOpcode::RESHAPE>>
 {
 public:
-  CircleReshape() = default;
-
-public:
   loco::Node *tensor(void) const { return at(0)->node(); }
   void tensor(loco::Node *node) { at(0)->node(node); }
 

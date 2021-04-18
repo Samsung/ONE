@@ -31,9 +31,6 @@ namespace luci
 class CircleReluN1To1 final : public FixedArityNode<1, CircleNodeImpl<CircleOpcode::RELU_N1_TO_1>>
 {
 public:
-  CircleReluN1To1() = default;
-
-public:
   loco::Node *features(void) const { return at(0)->node(); }
   void features(loco::Node *node) { at(0)->node(node); }
 };

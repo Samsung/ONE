@@ -34,9 +34,6 @@ namespace luci
 class CircleConst final : public FixedArityNode<0, CircleNodeImpl<CircleOpcode::CIRCLECONST>>
 {
 public:
-  CircleConst() = default;
-
-public:
   template <loco::DataType DT> uint32_t size(void) const;
   template <loco::DataType DT> void size(uint32_t size);
   template <loco::DataType DT> const typename loco::DataTypeImpl<DT>::Type &at(uint32_t n) const;
