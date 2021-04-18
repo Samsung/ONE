@@ -70,6 +70,31 @@ template <Type T> luci::CircleConst *create_dummy_const(loco::Graph *g, luci::te
   return node;
 }
 
+/**
+ * @brief A helper function to create const node with value
+ */
+template <Type DT, typename T>
+luci::CircleConst *create_const(loco::Graph *g, luci::test::ShapeU32 shape,
+                                std::initializer_list<T> values)
+{
+  auto node = g->nodes()->create<luci::CircleConst>();
+  {
+    node->dtype(DT);
+    node->shape(shape);
+    node->size<DT>(luci::test::num_elements(shape));
+
+    assert(values.size() == node->size<DT>());
+
+    uint32_t index = 0;
+    for (auto val : values)
+    {
+      node->at<DT>(index++) = static_cast<T>(val);
+    }
+  }
+
+  return node;
+}
+
 void insert_scale_zp(luci::CircleNode *node, float scale, int64_t zp)
 {
   auto qparam = node->quantparam();
@@ -849,6 +874,19 @@ TEST(QuantizedModelVerifierTest, LocalCreateDummyConst)
   loco::Graph g;
 
   EXPECT_NO_THROW(create_dummy_const<Type::FLOAT32>(&g, {32, 32}));
+}
+
+TEST(QuantizedModelVerifierTest, LocalCreateConst)
+{
+  loco::Graph g;
+  std::initializer_list<float> values = {0.1, 0, -5, 100};
+  luci::CircleConst *node = create_const<Type::FLOAT32, float>(&g, {2, 2}, values);
+
+  uint32_t index = 0;
+  for (auto val : values)
+  {
+    EXPECT_EQ(node->at<Type::FLOAT32>(index++), val);
+  }
 }
 
 TEST(QuantizedModelVerifierTest, InstanceNorm)
