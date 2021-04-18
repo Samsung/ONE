@@ -37,14 +37,10 @@ class CircleAveragePool2D final
     public CircleNodeMixin<CircleNodeTrait::FusedActFunc>
 {
 public:
-  CircleAveragePool2D() : _padding(Padding::UNDEFINED)
-  { /* empty */
-  }
-
-public:
   loco::Node *value(void) const { return at(0)->node(); }
   void value(loco::Node *node) { at(0)->node(node); }
 
+public:
   Padding padding() const { return _padding; }
   void padding(Padding padding) { _padding = padding; }
 
@@ -55,7 +51,7 @@ public:
   Stride *stride(void) { return &_stride; }
 
 private:
-  Padding _padding;
+  Padding _padding{Padding::UNDEFINED};
   Stride _stride;
   Filter _filter;
 };

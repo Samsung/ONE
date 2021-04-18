@@ -51,8 +51,8 @@ public:
   void input_hidden_size(int32_t input_hidden_size) { _input_hidden_size = input_hidden_size; }
 
 private:
-  int32_t _axis = 0;
-  int32_t _input_hidden_size = 0;
+  int32_t _axis{0};
+  int32_t _input_hidden_size{0};
 };
 
 } // namespace luci

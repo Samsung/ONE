@@ -49,10 +49,10 @@ public:
   void narrow_range(bool narrow_range) { _narrow_range = narrow_range; }
 
 private:
-  float _min = 0.0f;
-  float _max = 0.0f;
-  int32_t _num_bits = 0;
-  bool _narrow_range = false;
+  float _min{0.0f};
+  float _max{0.0f};
+  int32_t _num_bits{0};
+  bool _narrow_range{false};
 };
 
 } // namespace luci

@@ -62,9 +62,9 @@ public:
   Dilation *dilation(void) { return &_dilation; }
 
 private:
-  Padding _padding = Padding::UNDEFINED;
+  Padding _padding{Padding::UNDEFINED};
   Stride _stride;
-  int32_t _depth_multiplier = 0;
+  int32_t _depth_multiplier{0};
   Dilation _dilation;
 };
 

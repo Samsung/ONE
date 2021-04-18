@@ -58,7 +58,7 @@ public:
   }
 
 private:
-  int32_t _weights_hidden_size = 0;
+  int32_t _weights_hidden_size{0};
 };
 
 } // namespace luci
