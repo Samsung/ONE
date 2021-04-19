@@ -24,7 +24,9 @@
 
 #include <loco/IR/Graph.h>
 
+#include <initializer_list>
 #include <memory>
+#include <stdexcept>
 #include <vector>
 
 namespace luci
@@ -61,10 +63,10 @@ public:
   T *node(void) const { return _node; }
 
 protected:
-  T *_node = nullptr;
+  T *_node{nullptr};
 };
 
-template <class T> class NodeGraphletTn
+template <class T> class NodeNGraphletT
 {
 public:
   virtual void init(loco::Graph *g, uint32_t n)
@@ -77,7 +79,7 @@ public:
   T *node(void) const { return _node; }
 
 protected:
-  T *_node = nullptr;
+  T *_node{nullptr};
 };
 
 /**

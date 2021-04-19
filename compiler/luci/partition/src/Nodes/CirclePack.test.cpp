@@ -27,7 +27,7 @@ namespace
 
 using namespace luci::test;
 
-class NodeGraphlet : public NodeGraphletTn<luci::CirclePack>
+class NodeGraphlet : public NodeNGraphletT<luci::CirclePack>
 {
 public:
   NodeGraphlet() = default;

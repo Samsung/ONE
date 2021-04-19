@@ -27,7 +27,7 @@ namespace
 
 using namespace luci::test;
 
-class NodeGraphlet : public NodeGraphletTn<luci::CircleConcatenation>
+class NodeGraphlet : public NodeNGraphletT<luci::CircleConcatenation>
 {
 public:
   NodeGraphlet() = default;
@@ -35,7 +35,7 @@ public:
 public:
   void init(loco::Graph *g, uint32_t n) override
   {
-    NodeGraphletTn<luci::CircleConcatenation>::init(g, n);
+    NodeNGraphletT<luci::CircleConcatenation>::init(g, n);
 
     _node->fusedActivationFunction(luci::FusedActFunc::RELU);
   }
