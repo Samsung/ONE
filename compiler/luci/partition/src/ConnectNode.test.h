@@ -47,6 +47,38 @@ public:
   }
 };
 
+template <class T> class NodeGraphletT
+{
+public:
+  virtual void init(loco::Graph *g)
+  {
+    _node = g->nodes()->create<T>();
+    _node->dtype(loco::DataType::S32);
+    _node->name("node");
+  }
+
+  T *node(void) const { return _node; }
+
+protected:
+  T *_node{nullptr};
+};
+
+template <class T> class NodeIsGraphletT
+{
+public:
+  virtual void init(loco::Graph *g, uint32_t n)
+  {
+    _node = g->nodes()->create<T>(n);
+    _node->dtype(loco::DataType::S32);
+    _node->name("node");
+  }
+
+  T *node(void) const { return _node; }
+
+protected:
+  T *_node{nullptr};
+};
+
 } // namespace test
 } // namespace luci
 
