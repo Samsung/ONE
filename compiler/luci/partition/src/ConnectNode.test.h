@@ -105,6 +105,23 @@ public:
     }
   }
 
+  /**
+   * @note prepare_inputs_miss is for negative testing
+   */
+  template <unsigned N> void prepare_inputs_miss(TestIsOGraph<N> *isograph)
+  {
+    assert(N == isograph->num_inputs());
+
+    for (uint32_t i = 0; i < N; ++i)
+    {
+      auto *input = _graph_clone->nodes()->create<luci::CircleInput>();
+      luci::copy_common_attributes(isograph->input(i), input);
+      if (i != 0)
+        _clonectx.emplace(isograph->input(i), input);
+      _inputs.push_back(input);
+    }
+  }
+
   void clone_connect(luci::CircleNode *node, luci::CircleNode *clone)
   {
     _clonectx.emplace(node, clone);
