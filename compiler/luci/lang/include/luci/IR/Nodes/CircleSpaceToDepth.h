@@ -36,11 +36,11 @@ public:
   void input(loco::Node *node) { at(0)->node(node); }
 
 public:
-  int block_size(void) const { return _block_size; }
-  void block_size(int block_size) { _block_size = block_size; }
+  int32_t block_size(void) const { return _block_size; }
+  void block_size(int32_t block_size) { _block_size = block_size; }
 
 private:
-  int _block_size{0};
+  int32_t _block_size{0};
 };
 
 } // namespace luci

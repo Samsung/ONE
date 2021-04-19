@@ -39,15 +39,15 @@ public:
   void seq_lengths(loco::Node *node) { at(1)->node(node); }
 
 public:
-  int seq_axis(void) const { return _seq_axis; }
-  void seq_axis(int seq_axis) { _seq_axis = seq_axis; }
+  int32_t seq_axis(void) const { return _seq_axis; }
+  void seq_axis(int32_t seq_axis) { _seq_axis = seq_axis; }
 
-  int batch_axis(void) const { return _batch_axis; }
-  void batch_axis(int batch_axis) { _batch_axis = batch_axis; }
+  int32_t batch_axis(void) const { return _batch_axis; }
+  void batch_axis(int32_t batch_axis) { _batch_axis = batch_axis; }
 
 private:
-  int _seq_axis{0};
-  int _batch_axis{0};
+  int32_t _seq_axis{0};
+  int32_t _batch_axis{0};
 };
 
 } // namespace luci
