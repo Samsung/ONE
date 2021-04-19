@@ -221,7 +221,7 @@ public:
   loco::Node *gamma(void) const { return _instnorm->gamma(); }
   loco::Node *beta(void) const { return _instnorm->beta(); }
 
-public:
+private:
   luci::CircleInstanceNorm *_instnorm = nullptr;
   luci::CircleConst *_input = nullptr;
   luci::CircleConst *_gamma = nullptr;
@@ -243,7 +243,7 @@ public:
     set_minmax_to_non_const(g(), -1, 1);
   }
 
-public:
+private:
   luci::CircleLogistic *_logistic = nullptr;
 };
 
@@ -263,7 +263,7 @@ public:
     set_minmax_to_non_const(g(), -1, 1);
   }
 
-public:
+private:
   luci::CircleSoftmax *_softmax = nullptr;
 };
 
@@ -292,7 +292,7 @@ public:
     set_minmax_to_non_const(g(), -1, 1);
   }
 
-public:
+private:
   luci::CircleSpaceToBatchND *_stob = nullptr;
   luci::CircleConst *_block_shape = nullptr;
   luci::CircleConst *_paddings = nullptr;
@@ -314,7 +314,7 @@ public:
     set_minmax_to_non_const(g(), -1, 1);
   }
 
-public:
+private:
   luci::CircleSpaceToDepth *_stod = nullptr;
 };
 
@@ -343,7 +343,7 @@ public:
     set_minmax_to_non_const(g(), -1, 1);
   }
 
-public:
+private:
   luci::CircleSlice *_slice = nullptr;
   luci::CircleConst *_begin = nullptr;
   luci::CircleConst *_size = nullptr;
@@ -372,7 +372,7 @@ public:
     set_minmax_to_non_const(g(), -1, 1);
   }
 
-public:
+private:
   luci::CircleSplit *_split = nullptr;
   luci::CircleSplitOut *_split_o1 = nullptr;
   luci::CircleConst *_split_dim = nullptr;
@@ -408,7 +408,7 @@ public:
     set_minmax_to_non_const(g(), -1, 1);
   }
 
-public:
+private:
   luci::CircleStridedSlice *_slice = nullptr;
   luci::CircleConst *_begin = nullptr;
   luci::CircleConst *_end = nullptr;
@@ -435,7 +435,7 @@ public:
     set_minmax_to_non_const(g(), -1, 1);
   }
 
-public:
+private:
   luci::CircleReshape *_reshape = nullptr;
   luci::CircleConst *_shape = nullptr;
 };
@@ -455,7 +455,7 @@ public:
     set_minmax_to_non_const(g(), -1, 1);
   }
 
-public:
+private:
   luci::CircleTanh *_tanh = nullptr;
 };
 
@@ -474,7 +474,7 @@ public:
     set_minmax_to_non_const(g(), -1, 1);
   }
 
-public:
+private:
   luci::CircleFloor *_floor = nullptr;
 };
 
@@ -506,7 +506,7 @@ public:
   // NOTE: Do not override `luci::CircleNode* input(void)` incidentally
   loco::Node *input_argmax(void) { return _argmax->input(); }
 
-public:
+private:
   luci::CircleArgMax *_argmax = nullptr;
   luci::CircleConst *_dimension = nullptr;
 };
@@ -536,7 +536,7 @@ public:
     set_minmax_to_non_const(g(), -1, 1);
   }
 
-public:
+private:
   luci::CircleBatchToSpaceND *_btos = nullptr;
   luci::CircleConst *_block_shape = nullptr;
   luci::CircleConst *_crops = nullptr;
@@ -558,7 +558,7 @@ public:
     set_minmax_to_non_const(g(), -1, 1);
   }
 
-public:
+private:
   luci::CircleDepthToSpace *_dtos = nullptr;
 };
 
@@ -582,7 +582,7 @@ public:
     set_minmax_to_non_const(g(), -1, 1);
   }
 
-public:
+private:
   luci::CirclePad *_pad = nullptr;
   luci::CircleConst *_paddings = nullptr;
 };
@@ -607,7 +607,7 @@ public:
     set_minmax_to_non_const(g(), -1, 1);
   }
 
-public:
+private:
   luci::CircleTranspose *_transpose = nullptr;
   luci::CircleConst *_perm = nullptr;
 };
@@ -630,7 +630,7 @@ public:
     set_minmax_to_non_const(g(), -1, 1);
   }
 
-public:
+private:
   luci::CircleConcatenation *_concat = nullptr;
   luci::CircleConst *_param = nullptr;
 };
@@ -659,7 +659,7 @@ public:
   loco::Node *x(void) const { return _op->x(); }
   loco::Node *y(void) const { return _op->y(); }
 
-public:
+private:
   Op *_op = nullptr;
   luci::CircleConst *_y = nullptr;
 };
@@ -689,7 +689,7 @@ public:
   loco::Node *x(void) const { return _op->x(); }
   loco::Node *y(void) const { return _op->y(); }
 
-public:
+private:
   Op *_op = nullptr;
   luci::CircleConst *_y = nullptr;
 };
@@ -763,7 +763,7 @@ public:
     set_minmax_to_non_const(g(), -1, 1);
   }
 
-public:
+private:
   luci::CircleRsqrt *_rsqrt = nullptr;
 };
 
@@ -782,7 +782,7 @@ public:
     set_minmax_to_non_const(g(), -1, 1);
   }
 
-public:
+private:
   luci::CircleSqrt *_sqrt = nullptr;
 };
 
@@ -801,7 +801,7 @@ public:
     set_minmax_to_non_const(g(), -1, 1);
   }
 
-public:
+private:
   luci::CircleElu *_elu = nullptr;
 };
 
