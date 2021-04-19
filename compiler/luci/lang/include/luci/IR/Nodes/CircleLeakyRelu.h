@@ -34,11 +34,12 @@ public:
   loco::Node *features(void) const { return at(0)->node(); }
   void features(loco::Node *node) { at(0)->node(node); }
 
+public:
   float alpha() const { return _alpha; }
   void alpha(float alpha) { _alpha = alpha; }
 
 private:
-  float _alpha = 0.2f;
+  float _alpha{0.2f};
 };
 
 } // namespace luci

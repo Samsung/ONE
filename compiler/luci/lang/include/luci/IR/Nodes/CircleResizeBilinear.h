@@ -38,6 +38,7 @@ public:
   loco::Node *size(void) const { return at(1)->node(); }
   void size(loco::Node *node) { at(1)->node(node); }
 
+public:
   bool align_corners() const { return _align_corners; }
   void align_corners(bool value) { _align_corners = value; }
 
@@ -45,8 +46,8 @@ public:
   void half_pixel_centers(bool value) { _half_pixel_centers = value; }
 
 private:
-  bool _align_corners = false;
-  bool _half_pixel_centers = false;
+  bool _align_corners{false};
+  bool _half_pixel_centers{false};
 };
 
 } // namespace luci

@@ -42,7 +42,7 @@ public:
   void axis(int32_t axis) { _axis = axis; }
 
 private:
-  int32_t _axis = 0;
+  int32_t _axis{0};
 };
 
 } // namespace luci

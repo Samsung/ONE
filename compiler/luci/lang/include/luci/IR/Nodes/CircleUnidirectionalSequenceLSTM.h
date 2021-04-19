@@ -104,10 +104,10 @@ public:
   }
 
 private:
-  float _cell_clip = 0.0f;
-  float _proj_clip = 0.0f;
-  bool _time_major = false;
-  bool _asymmetric_quantize_inputs = false;
+  float _cell_clip{0.0f};
+  float _proj_clip{0.0f};
+  bool _time_major{false};
+  bool _asymmetric_quantize_inputs{false};
 };
 
 } // namespace luci

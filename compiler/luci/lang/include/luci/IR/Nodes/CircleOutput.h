@@ -44,7 +44,7 @@ public:
   void from(loco::Node *node) { at(0)->node(node); }
 
 private:
-  int64_t _index = -1; // Uninitialized
+  int64_t _index{-1}; // Uninitialized
 };
 
 /**

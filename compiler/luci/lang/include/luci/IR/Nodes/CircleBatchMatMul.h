@@ -45,8 +45,8 @@ public:
   void adj_y(bool arg) { _adj_y = arg; }
 
 private:
-  bool _adj_x = false;
-  bool _adj_y = false;
+  bool _adj_x{false};
+  bool _adj_y{false};
 };
 
 } // namespace luci

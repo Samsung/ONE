@@ -42,7 +42,7 @@ public:
   void keep_dims(bool keep_dims) { _keep_dims = keep_dims; }
 
 private:
-  bool _keep_dims = false;
+  bool _keep_dims{false};
 };
 
 } // namespace luci

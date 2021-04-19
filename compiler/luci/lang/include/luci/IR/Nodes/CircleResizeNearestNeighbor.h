@@ -38,11 +38,12 @@ public:
   loco::Node *size(void) const { return at(1)->node(); }
   void size(loco::Node *node) { at(1)->node(node); }
 
+public:
   bool align_corners() const { return _align_corners; }
   void align_corners(bool value) { _align_corners = value; }
 
 private:
-  bool _align_corners = false;
+  bool _align_corners{false};
 };
 
 } // namespace luci

@@ -45,6 +45,7 @@ public:
   Node *inputs(uint32_t index) const { return at(index)->node(); }
   void inputs(uint32_t index, Node *node) { at(index)->node(node); }
 
+public:
   const std::vector<uint8_t> &custom_options(void) const { return _custom_options; }
   void custom_options(const std::vector<uint8_t> &custom_options)
   {

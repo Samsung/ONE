@@ -41,7 +41,7 @@ public:
   bool indexed(void) const { return _index != -1; }
 
 private:
-  int64_t _index = -1; // Uninitialized
+  int64_t _index{-1}; // Uninitialized
 };
 
 } // namespace luci

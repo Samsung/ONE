@@ -57,7 +57,7 @@ public:
   Dilation *dilation(void) { return &_dilation; }
 
 private:
-  Padding _padding = Padding::UNDEFINED;
+  Padding _padding{Padding::UNDEFINED};
   Stride _stride;
   Dilation _dilation;
 };

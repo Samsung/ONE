@@ -44,11 +44,12 @@ public:
   loco::Node *beta(void) const { return at(2)->node(); }
   void beta(loco::Node *node) { at(2)->node(node); }
 
+public:
   float epsilon() const { return _epsilon; }
   void epsilon(float epsilon) { _epsilon = epsilon; }
 
 private:
-  float _epsilon = 1e-05;
+  float _epsilon{1e-05};
 };
 
 } // namespace luci
