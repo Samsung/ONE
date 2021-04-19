@@ -502,7 +502,7 @@ public:
     set_minmax_to_non_const(g(), -1, 1);
   }
 
-public:
+private:
   luci::CircleArgMax *_argmax = nullptr;
   luci::CircleConst *_dimension = nullptr;
 };
@@ -1141,18 +1141,30 @@ TEST(QuantizedModelVerifierTest, ArgMax_wrong_dimension_type_NEG)
   EXPECT_ANY_THROW(verifier.verify(g.g()));
 }
 
-TEST(QuantizedModelVerifierTest, ArgMax_wrong_input_granularity_NEG)
+TEST(QuantizedModelVerifierTest, ArgMax_wrong_dimension_type_NEG)
 {
-  ArgMaxTestGraph<Type::S32> g;
-  g.init();
+  TEST_WITH_WRONG_TYPE(ArgMaxTestGraph<Type::S32>, Type::U8, Granularity::LayerWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(ArgMaxTestGraph<Type::S32>, Type::U8, Granularity::ChannelWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(ArgMaxTestGraph<Type::S32>, Type::S16, Granularity::ChannelWise, Type::U8);
 
-  luci::QuantizeWithMinMaxPass pass(Type::FLOAT32, Type::U8, Granularity::LayerWise);
-  pass.run(g.g());
+  TEST_WITH_WRONG_TYPE(ArgMaxTestGraph<Type::S64>, Type::U8, Granularity::LayerWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(ArgMaxTestGraph<Type::S64>, Type::U8, Granularity::ChannelWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(ArgMaxTestGraph<Type::S64>, Type::S16, Granularity::ChannelWise, Type::U8);
+  SUCCEED();
+}
 
-  insert_scale_zp(loco::must_cast<luci::CircleNode *>(g._argmax->input()), 1.0, 1);
+// TODO : Add a negative test which sets wrong dtype on dimension node
 
-  luci::QuantizedModelVerifier verifier(Type::U8, Granularity::LayerWise);
-  EXPECT_ANY_THROW(verifier.verify(g.g()));
+TEST(QuantizedModelVerifierTest, ArgMax_wrong_granularity_NEG)
+{
+  TEST_WITH_WRONG_GRANULARITY(ArgMaxTestGraph<Type::S32>, Type::U8, Granularity::LayerWise);
+  TEST_WITH_WRONG_GRANULARITY(ArgMaxTestGraph<Type::S32>, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_WRONG_GRANULARITY(ArgMaxTestGraph<Type::S32>, Type::S16, Granularity::ChannelWise);
+
+  TEST_WITH_WRONG_GRANULARITY(ArgMaxTestGraph<Type::S64>, Type::U8, Granularity::LayerWise);
+  TEST_WITH_WRONG_GRANULARITY(ArgMaxTestGraph<Type::S64>, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_WRONG_GRANULARITY(ArgMaxTestGraph<Type::S64>, Type::S16, Granularity::ChannelWise);
+  SUCCEED();
 }
 
 TEST(QuantizedModelVerifierTest, BatchToSpaceND)
