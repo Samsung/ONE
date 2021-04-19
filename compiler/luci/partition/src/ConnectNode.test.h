@@ -19,12 +19,15 @@
 
 #include "ConnectNode.h"
 
+#include <luci/Service/CircleNodeClone.h>
 #include <luci/test/TestIOGraph.h>
 
 #include <loco/IR/Graph.h>
 
 #include <initializer_list>
+#include <memory>
 #include <stdexcept>
+#include <vector>
 
 namespace luci
 {
@@ -77,6 +80,47 @@ public:
 
 protected:
   T *_node{nullptr};
+};
+
+/**
+ * @brief ConnectionTestHelper provides common framework for testing
+ *        cloned CircleNode connection
+ */
+class ConnectionTestHelper
+{
+public:
+  ConnectionTestHelper() { _graph_clone = loco::make_graph(); }
+
+public:
+  template <unsigned N> void prepare_inputs(TestIsOGraph<N> *isograph)
+  {
+    assert(N == isograph->num_inputs());
+
+    for (uint32_t i = 0; i < N; ++i)
+    {
+      auto *input = _graph_clone->nodes()->create<luci::CircleInput>();
+      luci::copy_common_attributes(isograph->input(i), input);
+      _clonectx.emplace(isograph->input(i), input);
+      _inputs.push_back(input);
+    }
+  }
+
+  void clone_connect(luci::CircleNode *node, luci::CircleNode *clone)
+  {
+    _clonectx.emplace(node, clone);
+
+    luci::clone_connect(node, _clonectx);
+  }
+
+public:
+  loco::Graph *graph_clone(void) { return _graph_clone.get(); }
+
+  luci::CircleNode *inputs(uint32_t idx) { return _inputs.at(idx); }
+
+protected:
+  luci::CloneContext _clonectx;
+  std::vector<luci::CircleInput *> _inputs;
+  std::unique_ptr<loco::Graph> _graph_clone; // graph for clones
 };
 
 } // namespace test
