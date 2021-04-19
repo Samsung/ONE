@@ -369,6 +369,13 @@ private:
     return true;
   }
 
+  bool visit(const luci::CircleResizeBilinear *node)
+  {
+    RETURN_FALSE_UNLESS(is_lwq(node));
+    RETURN_FALSE_UNLESS(is_lwq(node->input()));
+    return true;
+  }
+
   // TODO: Implement more Ops
 
   bool visit(const luci::CircleNode *) { return true; }

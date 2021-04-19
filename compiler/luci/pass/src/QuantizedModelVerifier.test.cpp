@@ -828,6 +828,32 @@ private:
   luci::CircleConst *_const = nullptr;
 };
 
+class ResizeBilinearTestGraph final : public luci::test::TestIOGraph
+{
+public:
+  void init(void)
+  {
+    TestIOGraph::init({1, 4, 4, 1}, {1, 8, 8, 1});
+
+    _size = create_const<Type::S32, int32_t>(g(), {2}, {8, 8});
+    _resizebilinear = g()->nodes()->create<luci::CircleResizeBilinear>();
+    {
+      _resizebilinear->input(input());
+      _resizebilinear->size(_size);
+    }
+    output()->from(_resizebilinear);
+
+    set_minmax_to_non_const(g(), -1, 1);
+  }
+
+  // Avoid overriding TestIOGraph::input()
+  loco::Node *input_rbl() { return _resizebilinear->input(); }
+  loco::Node *size() { return _resizebilinear->size(); }
+
+  luci::CircleResizeBilinear *_resizebilinear = nullptr;
+  luci::CircleConst *_size = nullptr;
+};
+
 } // namespace
 
 // Quantize and verify with given configurations
@@ -1613,6 +1639,30 @@ TEST(QuantizedModelVerifierTest, Pow_wrong_granularity_NEG)
   TEST_WITH_WRONG_GRANULARITY_TARGET(PowTestGraph, Type::U8, Granularity::LayerWise, g.y());
   TEST_WITH_WRONG_GRANULARITY_TARGET(PowTestGraph, Type::U8, Granularity::ChannelWise, g.y());
   TEST_WITH_WRONG_GRANULARITY_TARGET(PowTestGraph, Type::S16, Granularity::ChannelWise, g.y());
+  SUCCEED();
+}
+
+TEST(QuantizedModelVerifierTest, ResizeBilinear)
+{
+  TEST_WITH_GRAPH(ResizeBilinearTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_GRAPH(ResizeBilinearTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_GRAPH(ResizeBilinearTestGraph, Type::S16, Granularity::ChannelWise);
+  SUCCEED();
+}
+
+TEST(QuantizedModelVerifierTest, ResizeBilinear_wrong_type_NEG)
+{
+  TEST_WITH_WRONG_TYPE(ResizeBilinearTestGraph, Type::U8, Granularity::LayerWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(ResizeBilinearTestGraph, Type::U8, Granularity::ChannelWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(ResizeBilinearTestGraph, Type::S16, Granularity::ChannelWise, Type::U8);
+  SUCCEED();
+}
+
+TEST(QuantizedModelVerifierTest, ResizeBilinear_wrong_granularity_NEG)
+{
+  TEST_WITH_WRONG_GRANULARITY(ResizeBilinearTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_WRONG_GRANULARITY(ResizeBilinearTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_WRONG_GRANULARITY(ResizeBilinearTestGraph, Type::S16, Granularity::ChannelWise);
   SUCCEED();
 }
 
