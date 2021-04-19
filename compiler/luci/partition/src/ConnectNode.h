@@ -199,6 +199,11 @@ protected:
   luci::CloneContext &_clonecontext;
 };
 
+/**
+ * @brief Connect cloned node from input node
+ */
+void clone_connect(const luci::CircleNode *node, luci::CloneContext &clonecontext);
+
 } // namespace luci
 
 #endif // __LUCI_PARTITION_CONNECT_NODE_H__

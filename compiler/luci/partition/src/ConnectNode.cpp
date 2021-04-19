@@ -21,6 +21,12 @@
 namespace luci
 {
 
+void clone_connect(const luci::CircleNode *node, luci::CloneContext &clonecontext)
+{
+  ConnectNode cn(clonecontext);
+  node->accept(&cn);
+}
+
 luci::CircleNode *ConnectNode::find_clone(const luci::CircleNode *node)
 {
   auto it = _clonecontext.find(node);
