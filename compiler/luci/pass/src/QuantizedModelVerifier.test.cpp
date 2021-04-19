@@ -503,6 +503,10 @@ public:
   }
 
 public:
+  // NOTE: Do not override `luci::CircleNode* input(void)` incidentally
+  loco::Node *input_argmax(void) { return _argmax->input(); }
+
+public:
   luci::CircleArgMax *_argmax = nullptr;
   luci::CircleConst *_dimension = nullptr;
 };
@@ -1144,13 +1148,19 @@ TEST(QuantizedModelVerifierTest, ArgMax_wrong_dimension_type_NEG)
 
 TEST(QuantizedModelVerifierTest, ArgMax_wrong_granularity_NEG)
 {
-  TEST_WITH_WRONG_GRANULARITY(ArgMaxTestGraph<Type::S32>, Type::U8, Granularity::LayerWise);
-  TEST_WITH_WRONG_GRANULARITY(ArgMaxTestGraph<Type::S32>, Type::U8, Granularity::ChannelWise);
-  TEST_WITH_WRONG_GRANULARITY(ArgMaxTestGraph<Type::S32>, Type::S16, Granularity::ChannelWise);
+  TEST_WITH_WRONG_GRANULARITY_TARGET(ArgMaxTestGraph<Type::S32>, Type::U8, Granularity::LayerWise,
+                                     g.input_argmax());
+  TEST_WITH_WRONG_GRANULARITY_TARGET(ArgMaxTestGraph<Type::S32>, Type::U8, Granularity::ChannelWise,
+                                     g.input_argmax());
+  TEST_WITH_WRONG_GRANULARITY_TARGET(ArgMaxTestGraph<Type::S32>, Type::S16,
+                                     Granularity::ChannelWise, g.input_argmax());
 
-  TEST_WITH_WRONG_GRANULARITY(ArgMaxTestGraph<Type::S64>, Type::U8, Granularity::LayerWise);
-  TEST_WITH_WRONG_GRANULARITY(ArgMaxTestGraph<Type::S64>, Type::U8, Granularity::ChannelWise);
-  TEST_WITH_WRONG_GRANULARITY(ArgMaxTestGraph<Type::S64>, Type::S16, Granularity::ChannelWise);
+  TEST_WITH_WRONG_GRANULARITY_TARGET(ArgMaxTestGraph<Type::S64>, Type::U8, Granularity::LayerWise,
+                                     g.input_argmax());
+  TEST_WITH_WRONG_GRANULARITY_TARGET(ArgMaxTestGraph<Type::S64>, Type::U8, Granularity::ChannelWise,
+                                     g.input_argmax());
+  TEST_WITH_WRONG_GRANULARITY_TARGET(ArgMaxTestGraph<Type::S64>, Type::S16,
+                                     Granularity::ChannelWise, g.input_argmax());
   SUCCEED();
 }
 
