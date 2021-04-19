@@ -13,7 +13,7 @@
 
 ## ONE Runtime
 
-### Runtime backend operation supports more operations and types
+### Runtime backend supports more operations and types
 
 - CPU backend
   - Add: int8
