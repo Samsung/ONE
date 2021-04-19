@@ -16,16 +16,26 @@
 
 #include "ConnectNode.h"
 
+namespace
+{
+
+void connect(luci::ConnectNode *cn, const luci::CircleMean *node)
+{
+  auto *cloned = loco::must_cast<luci::CircleMean *>(cn->find_clone(node));
+
+  luci::CircleNode *input = loco::must_cast<luci::CircleNode *>(node->input());
+  luci::CircleNode *reduction_indices =
+    loco::must_cast<luci::CircleNode *>(node->reduction_indices());
+
+  cloned->input(cn->find_clone(input));
+  cloned->reduction_indices(cn->find_clone(reduction_indices));
+}
+
+} // namespace
+
 namespace luci
 {
 
-void ConnectNode::visit(const luci::CircleMean *node)
-{
-  auto *cloned = loco::must_cast<luci::CircleMean *>(find_clone(node));
-  luci::CircleNode *in_i = loco::must_cast<luci::CircleNode *>(node->input());
-  luci::CircleNode *in_r = loco::must_cast<luci::CircleNode *>(node->reduction_indices());
-  cloned->input(find_clone(in_i));
-  cloned->reduction_indices(find_clone(in_r));
-}
+void ConnectNode::visit(const luci::CircleMean *node) { connect(this, node); }
 
 } // namespace luci
