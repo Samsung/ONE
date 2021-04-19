@@ -80,6 +80,7 @@ public:
 public:
   loco::Graph *g(void) { return _g.get(); }
   luci::CircleInput *input(int idx) { return _inputs[idx]; }
+  uint32_t num_inputs(void) { return N; }
 
 public:
   void transfer_to(luci::Module *module)
