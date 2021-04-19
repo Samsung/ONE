@@ -836,21 +836,17 @@ public:
     TestIOGraph::init({1, 4, 4, 1}, {1, 8, 8, 1});
 
     _size = create_const<Type::S32, int32_t>(g(), {2}, {8, 8});
-    _resizebilinear = g()->nodes()->create<luci::CircleResizeBilinear>();
+    _resize_bilinear = g()->nodes()->create<luci::CircleResizeBilinear>();
     {
-      _resizebilinear->input(input());
-      _resizebilinear->size(_size);
+      _resize_bilinear->input(input());
+      _resize_bilinear->size(_size);
     }
-    output()->from(_resizebilinear);
+    output()->from(_resize_bilinear);
 
     set_minmax_to_non_const(g(), -1, 1);
   }
 
-  // Avoid overriding TestIOGraph::input()
-  loco::Node *input_rbl() { return _resizebilinear->input(); }
-  loco::Node *size() { return _resizebilinear->size(); }
-
-  luci::CircleResizeBilinear *_resizebilinear = nullptr;
+  luci::CircleResizeBilinear *_resize_bilinear = nullptr;
   luci::CircleConst *_size = nullptr;
 };
 
