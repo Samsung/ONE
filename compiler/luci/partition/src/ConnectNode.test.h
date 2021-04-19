@@ -66,7 +66,7 @@ protected:
   T *_node{nullptr};
 };
 
-template <class T> class NodeNGraphletT
+template <class T> class NodeIsGraphletT
 {
 public:
   virtual void init(loco::Graph *g, uint32_t n)
