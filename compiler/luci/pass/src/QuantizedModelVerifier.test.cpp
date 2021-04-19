@@ -828,10 +828,10 @@ private:
   luci::CircleConst *_const = nullptr;
 };
 
-class ResizeBilinearTestGraph final : public luci::test::TestIOGraph
+class ResizeBilinearTestGraph final : public SimpleTestGraph
 {
 public:
-  void init(void)
+  void init(void) override
   {
     TestIOGraph::init({1, 4, 4, 1}, {1, 8, 8, 1});
 
@@ -846,6 +846,7 @@ public:
     set_minmax_to_non_const(g(), -1, 1);
   }
 
+private:
   luci::CircleResizeBilinear *_resize_bilinear = nullptr;
   luci::CircleConst *_size = nullptr;
 };
