@@ -114,6 +114,7 @@ void quantize_and_verify(loco::Graph *g, Type quantized_dtype, Granularity granu
 
 // Helper function to reduce duplicate test codes
 // Assumption: g->output()->from() is the target node
+// TODO: Remove the function and use below function to explicit target node
 void quantize_and_verify_with_wrong_type(luci::test::TestIOGraph *g, Type quantized_dtype,
                                          Granularity granularity, Type wrong_dtype)
 {
@@ -142,6 +143,7 @@ void quantize_and_verify_with_wrong_type(luci::test::TestIOGraph *g, Type quanti
 
 // Helper function to reduce duplicate test codes
 // Assumption: g->output()->from() is the target node
+// TODO: Remove the function and use below function to explicit target node
 void quantize_and_verify_with_wrong_granularity(luci::test::TestIOGraph *g, Type quantized_dtype,
                                                 Granularity granularity)
 {
@@ -912,6 +914,18 @@ private:
     EXPECT_ANY_THROW(quantize_and_verify_with_wrong_type(&g, type, granularity, wrong_dtype)); \
   } while (0)
 
+// Quantize and verify with wrong type
+// Users can specify the test target
+#define TEST_WITH_WRONG_TYPE_TARGET(graph, type, granularity, wrong_dtype, target)    \
+  do                                                                                  \
+  {                                                                                   \
+    graph g;                                                                          \
+    g.init();                                                                         \
+    auto node = loco::must_cast<luci::CircleNode *>(target);                          \
+    EXPECT_ANY_THROW(                                                                 \
+      quantize_and_verify_with_wrong_type(&g, type, granularity, wrong_dtype, node)); \
+  } while (0)
+
 // Quantize and verify with wrong granularity
 #define TEST_WITH_WRONG_GRANULARITY(graph, type, granularity)                            \
   do                                                                                     \
@@ -1193,7 +1207,23 @@ TEST(QuantizedModelVerifierTest, ArgMax_wrong_input_type_NEG)
   SUCCEED();
 }
 
-// TODO : Add a negative test which sets wrong dtype on dimension node
+TEST(QuantizedModelVerifierTest, ArgMax_wrong_dimension_type_NEG)
+{
+  TEST_WITH_WRONG_TYPE_TARGET(ArgMaxTestGraph<Type::S32>, Type::U8, Granularity::LayerWise,
+                              Type::S16, g.dimension());
+  TEST_WITH_WRONG_TYPE_TARGET(ArgMaxTestGraph<Type::S32>, Type::U8, Granularity::ChannelWise,
+                              Type::S16, g.dimension());
+  TEST_WITH_WRONG_TYPE_TARGET(ArgMaxTestGraph<Type::S32>, Type::S16, Granularity::ChannelWise,
+                              Type::U8, g.dimension());
+
+  TEST_WITH_WRONG_TYPE_TARGET(ArgMaxTestGraph<Type::S64>, Type::U8, Granularity::LayerWise,
+                              Type::S16, g.dimension());
+  TEST_WITH_WRONG_TYPE_TARGET(ArgMaxTestGraph<Type::S64>, Type::U8, Granularity::ChannelWise,
+                              Type::S16, g.dimension());
+  TEST_WITH_WRONG_TYPE_TARGET(ArgMaxTestGraph<Type::S64>, Type::S16, Granularity::ChannelWise,
+                              Type::U8, g.dimension());
+  SUCCEED();
+}
 
 TEST(QuantizedModelVerifierTest, ArgMax_wrong_granularity_NEG)
 {
