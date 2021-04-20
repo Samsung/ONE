@@ -897,6 +897,18 @@ private:
     EXPECT_ANY_THROW(quantize_and_verify_with_wrong_granularity(&g, type, granularity)); \
   } while (0)
 
+// Quantize and verify with wrong type
+// Users can specify the test target
+#define TEST_WITH_WRONG_TYPE_TARGET(graph, type, granularity, wrong_dtype, target)    \
+  do                                                                                  \
+  {                                                                                   \
+    graph g;                                                                          \
+    g.init();                                                                         \
+    auto node = loco::must_cast<luci::CircleNode *>(target);                          \
+    EXPECT_ANY_THROW(                                                                 \
+      quantize_and_verify_with_wrong_type(&g, type, granularity, wrong_dtype, node)); \
+  } while (0)
+
 // Quantize and verify with wrong granularity
 // Users can specify the test target
 #define TEST_WITH_WRONG_GRANULARITY_TARGET(graph, type, granularity, target)                   \
