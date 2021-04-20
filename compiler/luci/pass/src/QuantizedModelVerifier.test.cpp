@@ -127,6 +127,19 @@ void quantize_and_verify_with_wrong_type(luci::test::TestIOGraph *g, Type quanti
   verifier.verify(g->g());
 }
 
+void quantize_and_verify_with_wrong_type(luci::test::TestIOGraph *g, Type quantized_dtype,
+                                         Granularity granularity, Type wrong_dtype,
+                                         luci::CircleNode *target)
+{
+  luci::QuantizeWithMinMaxPass pass(Type::FLOAT32, quantized_dtype, granularity);
+  pass.run(g->g());
+
+  target->dtype(wrong_dtype);
+
+  luci::QuantizedModelVerifier verifier(quantized_dtype, granularity);
+  verifier.verify(g->g());
+}
+
 // Helper function to reduce duplicate test codes
 // Assumption: g->output()->from() is the target node
 void quantize_and_verify_with_wrong_granularity(luci::test::TestIOGraph *g, Type quantized_dtype,
