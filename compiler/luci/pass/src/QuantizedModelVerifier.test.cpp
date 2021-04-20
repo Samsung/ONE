@@ -1157,7 +1157,7 @@ TEST(QuantizedModelVerifierTest, ArgMax)
   SUCCEED();
 }
 
-TEST(QuantizedModelVerifierTest, ArgMax_wrong_dimension_type_NEG)
+TEST(QuantizedModelVerifierTest, ArgMax_wrong_input_type_NEG)
 {
   TEST_WITH_WRONG_TYPE(ArgMaxTestGraph<Type::S32>, Type::U8, Granularity::LayerWise, Type::S16);
   TEST_WITH_WRONG_TYPE(ArgMaxTestGraph<Type::S32>, Type::U8, Granularity::ChannelWise, Type::S16);
