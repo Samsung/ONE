@@ -79,6 +79,8 @@ set(SOURCES
     Pack.cpp
     Pad.h
     Pad.cpp
+    PadV2.h
+    PadV2.cpp
     Pow.h
     Pow.cpp
     Prelu.h
@@ -190,6 +192,7 @@ set(TEST_SOURCES
     NotEqual.test.cpp
     Pack.test.cpp
     Pad.test.cpp
+    PadV2.test.cpp
     Pow.test.cpp
     Prelu.test.cpp
     Relu.test.cpp
