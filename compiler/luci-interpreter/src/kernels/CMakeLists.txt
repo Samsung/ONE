@@ -69,6 +69,8 @@ set(SOURCES
     Mean.cpp
     Minimum.h
     Minimum.cpp
+    MirrorPad.h
+    MirrorPad.cpp
     Mul.h
     Mul.cpp
     Neg.h

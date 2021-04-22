@@ -50,6 +50,7 @@
 #include "kernels/MaxPool2D.h"
 #include "kernels/Mean.h"
 #include "kernels/Minimum.h"
+#include "kernels/MirrorPad.h"
 #include "kernels/Mul.h"
 #include "kernels/Neg.h"
 #include "kernels/NotEqual.h"
@@ -687,6 +688,20 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CirclePadV2 *node)
   Tensor *output = getOutputTensor(node);
 
   return std::make_unique<kernels::PadV2>(input, paddings, constant_values, output);
+}
+
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleMirrorPad *node)
+{
+  assert(node->arity() == 2);
+
+  const Tensor *input = getInputTensor(node->input());
+  const Tensor *paddings = getInputTensor(node->paddings());
+  Tensor *output = getOutputTensor(node);
+
+  MirrorPadParams params{};
+  params.mode = node->mode();
+
+  return std::make_unique<kernels::MirrorPad>(input, paddings, output, params);
 }
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CirclePow *node)

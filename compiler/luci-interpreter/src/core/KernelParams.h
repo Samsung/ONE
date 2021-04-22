@@ -19,6 +19,7 @@
 
 #include <luci/IR/AttrPadding.h>
 #include <luci/IR/AttrFusedActFunc.h>
+#include <luci/IR/AttrMirrorPadMode.h>
 #include <luci_interpreter/core/DataType.h>
 
 #include <cstdint>
@@ -30,6 +31,7 @@ namespace luci_interpreter
 // Inject commonly used types into `luci_interpreter` namespace for convenience.
 using Activation = luci::FusedActFunc;
 using Padding = luci::Padding;
+using MirrorPadMode = luci::MirrorPadMode;
 
 struct AddParams
 {
@@ -105,6 +107,11 @@ struct LocalResponseNormalizationParams
   float bias;
   float alpha;
   float beta;
+};
+
+struct MirrorPadParams
+{
+  MirrorPadMode mode;
 };
 
 struct MulParams
