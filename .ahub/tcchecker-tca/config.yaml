@@ -4,21 +4,21 @@ test:
     testCaseLanguage: CPP
     testFW: GTEST
     testCaseFolder:
-      - ./compute/test/cker
-      - ./runtime/onert/core/src/backend/basic
-      - ./runtime/onert/frontend/nnapi
-      - ./runtime/onert/test/core/compiler
-      - ./runtime/onert/test/core/exec
-      - ./runtime/onert/test/core/interp
-      - ./runtime/onert/test/graph
-      - ./runtime/onert/test/graph/operand
-      - ./runtime/onert/test/graph/operation
-      - ./runtime/onert/test/graph/verifier
-      - ./runtime/onert/test/ir
-      - ./runtime/onert/test/util
-      - ./tests/nnapi/src
-      - ./tests/nnfw_api/src
-      - ./tests/tools/tflite_run/src
+      - /compute/test/cker
+      - /runtime/onert/core/src/backend/basic
+      - /runtime/onert/frontend/nnapi
+      - /runtime/onert/test/core/compiler
+      - /runtime/onert/test/core/exec
+      - /runtime/onert/test/core/interp
+      - /runtime/onert/test/graph
+      - /runtime/onert/test/graph/operand
+      - /runtime/onert/test/graph/operation
+      - /runtime/onert/test/graph/verifier
+      - /runtime/onert/test/ir
+      - /runtime/onert/test/util
+      - /tests/nnapi/src
+      - /tests/nnfw_api/src
+      - /tests/tools/tflite_run/src
 
     testFile:
       - extension: cpp
