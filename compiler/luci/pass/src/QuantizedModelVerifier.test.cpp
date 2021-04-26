@@ -868,6 +868,29 @@ private:
   luci::CircleConst *_size = nullptr;
 };
 
+class ResizeNearestNeighborTestGraph final : public luci::test::TestIOGraph
+{
+public:
+  void init(void)
+  {
+    TestIOGraph::init({1, 4, 4, 1}, {1, 8, 8, 1});
+
+    _size = create_const<Type::S32, int32_t>(g(), {2}, {8, 8});
+    _resize_nearest_neighbor = g()->nodes()->create<luci::CircleResizeNearestNeighbor>();
+    {
+      _resize_nearest_neighbor->input(input());
+      _resize_nearest_neighbor->size(_size);
+    }
+    output()->from(_resize_nearest_neighbor);
+
+    set_minmax_to_non_const(g(), -1, 1);
+  }
+
+private:
+  luci::CircleResizeNearestNeighbor *_resize_nearest_neighbor = nullptr;
+  luci::CircleConst *_size = nullptr;
+};
+
 } // namespace
 
 // Quantize and verify with given configurations
@@ -1694,6 +1717,32 @@ TEST(QuantizedModelVerifierTest, ResizeBilinear_wrong_granularity_NEG)
   TEST_WITH_WRONG_GRANULARITY(ResizeBilinearTestGraph, Type::U8, Granularity::LayerWise);
   TEST_WITH_WRONG_GRANULARITY(ResizeBilinearTestGraph, Type::U8, Granularity::ChannelWise);
   TEST_WITH_WRONG_GRANULARITY(ResizeBilinearTestGraph, Type::S16, Granularity::ChannelWise);
+  SUCCEED();
+}
+
+TEST(QuantizedModelVerifierTest, ResizeNearestNeighbor)
+{
+  TEST_WITH_GRAPH(ResizeNearestNeighborTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_GRAPH(ResizeNearestNeighborTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_GRAPH(ResizeNearestNeighborTestGraph, Type::S16, Granularity::ChannelWise);
+  SUCCEED();
+}
+
+TEST(QuantizedModelVerifierTest, ResizeNearestNeighbor_wrong_type_NEG)
+{
+  TEST_WITH_WRONG_TYPE(ResizeNearestNeighborTestGraph, Type::U8, Granularity::LayerWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(ResizeNearestNeighborTestGraph, Type::U8, Granularity::ChannelWise,
+                       Type::S16);
+  TEST_WITH_WRONG_TYPE(ResizeNearestNeighborTestGraph, Type::S16, Granularity::ChannelWise,
+                       Type::U8);
+  SUCCEED();
+}
+
+TEST(QuantizedModelVerifierTest, ResizeNearestNeighbor_wrong_granularity_NEG)
+{
+  TEST_WITH_WRONG_GRANULARITY(ResizeNearestNeighborTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_WRONG_GRANULARITY(ResizeNearestNeighborTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_WRONG_GRANULARITY(ResizeNearestNeighborTestGraph, Type::S16, Granularity::ChannelWise);
   SUCCEED();
 }
 
