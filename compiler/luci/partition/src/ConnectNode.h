@@ -81,9 +81,9 @@ public:
   void visit(const luci::CircleElu *) final;
   void visit(const luci::CircleEqual *) final;
   void visit(const luci::CircleExp *) final;
-  // void visit(const luci::CircleExpandDims *) final;
-  // void visit(const luci::CircleFakeQuant *) final;
-  // void visit(const luci::CircleFill *) final;
+  void visit(const luci::CircleExpandDims *) final;
+  void visit(const luci::CircleFakeQuant *) final;
+  void visit(const luci::CircleFill *) final;
   // void visit(const luci::CircleFloor *) final;
   // void visit(const luci::CircleFloorDiv *) final;
   // void visit(const luci::CircleFloorMod *) final;
