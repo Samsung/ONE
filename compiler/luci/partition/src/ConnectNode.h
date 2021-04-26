@@ -132,9 +132,9 @@ public:
   void visit(const luci::CircleRelu *) final;
   void visit(const luci::CircleRelu6 *) final;
   void visit(const luci::CircleReluN1To1 *) final;
-  // void visit(const luci::CircleReshape *) final;
-  // void visit(const luci::CircleResizeBilinear *) final;
-  // void visit(const luci::CircleResizeNearestNeighbor *) final;
+  void visit(const luci::CircleReshape *) final;
+  void visit(const luci::CircleResizeBilinear *) final;
+  void visit(const luci::CircleResizeNearestNeighbor *) final;
   // void visit(const luci::CircleReverseSequence *) final;
   // void visit(const luci::CircleReverseV2 *) final;
   // void visit(const luci::CircleRound *) final;
