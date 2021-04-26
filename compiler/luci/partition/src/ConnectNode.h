@@ -122,9 +122,9 @@ public:
   // void visit(const luci::CirclePad *) final;
   // void visit(const luci::CirclePadV2 *) final;
   void visit(const luci::CirclePow *) final;
-  // void visit(const luci::CirclePRelu *) final;
-  // void visit(const luci::CircleRange *) final;
-  // void visit(const luci::CircleRank *) final;
+  void visit(const luci::CirclePRelu *) final;
+  void visit(const luci::CircleRange *) final;
+  void visit(const luci::CircleRank *) final;
   // void visit(const luci::CircleReduceAny *) final;
   // void visit(const luci::CircleReduceMax *) final;
   // void visit(const luci::CircleReduceMin *) final;
