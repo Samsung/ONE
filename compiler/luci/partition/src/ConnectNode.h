@@ -100,9 +100,9 @@ public:
   // void visit(const luci::CircleLessEqual *) final;
   // void visit(const luci::CircleLocalResponseNormalization *) final;
   // void visit(const luci::CircleLog *) final;
-  // void visit(const luci::CircleLogicalAnd *) final;
-  // void visit(const luci::CircleLogicalNot *) final;
-  // void visit(const luci::CircleLogicalOr *) final;
+  void visit(const luci::CircleLogicalAnd *) final;
+  void visit(const luci::CircleLogicalNot *) final;
+  void visit(const luci::CircleLogicalOr *) final;
   // void visit(const luci::CircleLogistic *) final;
   void visit(const luci::CircleLogSoftmax *) final;
   void visit(const luci::CircleMatrixDiag *) final;
