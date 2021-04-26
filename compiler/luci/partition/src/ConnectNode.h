@@ -104,9 +104,9 @@ public:
   // void visit(const luci::CircleLogicalNot *) final;
   // void visit(const luci::CircleLogicalOr *) final;
   // void visit(const luci::CircleLogistic *) final;
-  // void visit(const luci::CircleLogSoftmax *) final;
-  // void visit(const luci::CircleMatrixDiag *) final;
-  // void visit(const luci::CircleMatrixSetDiag *) final;
+  void visit(const luci::CircleLogSoftmax *) final;
+  void visit(const luci::CircleMatrixDiag *) final;
+  void visit(const luci::CircleMatrixSetDiag *) final;
   void visit(const luci::CircleMaximum *) final;
   void visit(const luci::CircleMaxPool2D *) final;
   void visit(const luci::CircleMean *) final;
