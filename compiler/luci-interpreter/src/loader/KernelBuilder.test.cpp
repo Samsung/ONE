@@ -53,6 +53,7 @@
 #include <kernels/Neg.h>
 #include <kernels/NotEqual.h>
 #include <kernels/Pad.h>
+#include <kernels/PadV2.h>
 #include <kernels/Pow.h>
 #include <kernels/Prelu.h>
 #include <kernels/Relu.h>
@@ -824,6 +825,26 @@ TEST_F(KernelBuilderTest, Pad)
 
   checkTensor(kernel->input(), input);
   checkTensor(kernel->paddings(), paddings);
+  checkTensor(kernel->output(), op);
+}
+
+TEST_F(KernelBuilderTest, PadV2)
+{
+  auto *input = createInputNode();
+  auto *paddings = createInputNode();
+  auto *constant_values = createInputNode();
+
+  auto *op = createNode<luci::CirclePadV2>();
+  op->input(input);
+  op->paddings(paddings);
+  op->constant_values(constant_values);
+
+  auto kernel = buildKernel<kernels::PadV2>(op);
+  ASSERT_THAT(kernel, NotNull());
+
+  checkTensor(kernel->input(), input);
+  checkTensor(kernel->paddings(), paddings);
+  checkTensor(kernel->constant_values(), constant_values);
   checkTensor(kernel->output(), op);
 }
 

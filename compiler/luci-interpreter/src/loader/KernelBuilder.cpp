@@ -55,6 +55,7 @@
 #include "kernels/NotEqual.h"
 #include "kernels/Pack.h"
 #include "kernels/Pad.h"
+#include "kernels/PadV2.h"
 #include "kernels/Pow.h"
 #include "kernels/Prelu.h"
 #include "kernels/Relu.h"
@@ -674,6 +675,18 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CirclePad *node)
   Tensor *output = getOutputTensor(node);
 
   return std::make_unique<kernels::Pad>(input, paddings, output);
+}
+
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CirclePadV2 *node)
+{
+  assert(node->arity() == 3);
+
+  const Tensor *input = getInputTensor(node->input());
+  const Tensor *paddings = getInputTensor(node->paddings());
+  const Tensor *constant_values = getInputTensor(node->constant_values());
+  Tensor *output = getOutputTensor(node);
+
+  return std::make_unique<kernels::PadV2>(input, paddings, constant_values, output);
 }
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CirclePow *node)
