@@ -518,6 +518,7 @@ public:
 public:
   // NOTE: Do not override `luci::CircleNode* input(void)` incidentally
   loco::Node *input_argmax(void) { return _argmax->input(); }
+  loco::Node *dimension(void) { return _argmax->dimension(); }
 
 private:
   luci::CircleArgMax *_argmax = nullptr;
