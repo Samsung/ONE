@@ -93,9 +93,9 @@ public:
   // void visit(const luci::CircleGreater *) final;
   // void visit(const luci::CircleGreaterEqual *) final;
   // void visit(const luci::CircleIf *) final;
-  // void visit(const luci::CircleL2Normalize *) final;
-  // void visit(const luci::CircleL2Pool2D *) final;
-  // void visit(const luci::CircleLeakyRelu *) final;
+  void visit(const luci::CircleL2Normalize *) final;
+  void visit(const luci::CircleL2Pool2D *) final;
+  void visit(const luci::CircleLeakyRelu *) final;
   // void visit(const luci::CircleLess *) final;
   // void visit(const luci::CircleLessEqual *) final;
   // void visit(const luci::CircleLocalResponseNormalization *) final;
