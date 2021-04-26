@@ -172,9 +172,9 @@ public:
   void visit(const luci::CircleZerosLike *) final;
 
   // Circle Only
-  // void visit(const luci::CircleBCQFullyConnected *) final;
-  // void visit(const luci::CircleBCQGather *) final;
-  // void visit(const luci::CircleInstanceNorm *) final;
+  void visit(const luci::CircleBCQFullyConnected *) final;
+  void visit(const luci::CircleBCQGather *) final;
+  void visit(const luci::CircleInstanceNorm *) final;
 
   // Virtual
   // void visit(const luci::CircleCustomOut *) final;
