@@ -153,10 +153,10 @@ public:
   void visit(const luci::CircleSplit *) final;
   void visit(const luci::CircleSplitV *) final;
   void visit(const luci::CircleSqrt *) final;
-  // void visit(const luci::CircleSquare *) final;
+  void visit(const luci::CircleSquare *) final;
   void visit(const luci::CircleSquaredDifference *) final;
-  // void visit(const luci::CircleSqueeze *) final;
-  // void visit(const luci::CircleStridedSlice *) final;
+  void visit(const luci::CircleSqueeze *) final;
+  void visit(const luci::CircleStridedSlice *) final;
   void visit(const luci::CircleSub *) final;
   void visit(const luci::CircleSum *) final;
   void visit(const luci::CircleTanh *) final;
