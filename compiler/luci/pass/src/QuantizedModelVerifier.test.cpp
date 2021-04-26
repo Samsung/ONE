@@ -1193,7 +1193,23 @@ TEST(QuantizedModelVerifierTest, ArgMax_wrong_input_type_NEG)
   SUCCEED();
 }
 
-// TODO : Add a negative test which sets wrong dtype on dimension node
+TEST(QuantizedModelVerifierTest, ArgMax_wrong_dimension_type_NEG)
+{
+  TEST_WITH_WRONG_TYPE_TARGET(ArgMaxTestGraph<Type::S32>, Type::U8, Granularity::LayerWise,
+                              Type::S16, g.dimension());
+  TEST_WITH_WRONG_TYPE_TARGET(ArgMaxTestGraph<Type::S32>, Type::U8, Granularity::ChannelWise,
+                              Type::S16, g.dimension());
+  TEST_WITH_WRONG_TYPE_TARGET(ArgMaxTestGraph<Type::S32>, Type::S16, Granularity::ChannelWise,
+                              Type::U8, g.dimension());
+
+  TEST_WITH_WRONG_TYPE_TARGET(ArgMaxTestGraph<Type::S64>, Type::U8, Granularity::LayerWise,
+                              Type::S16, g.dimension());
+  TEST_WITH_WRONG_TYPE_TARGET(ArgMaxTestGraph<Type::S64>, Type::U8, Granularity::ChannelWise,
+                              Type::S16, g.dimension());
+  TEST_WITH_WRONG_TYPE_TARGET(ArgMaxTestGraph<Type::S64>, Type::S16, Granularity::ChannelWise,
+                              Type::U8, g.dimension());
+  SUCCEED();
+}
 
 TEST(QuantizedModelVerifierTest, ArgMax_wrong_granularity_NEG)
 {
