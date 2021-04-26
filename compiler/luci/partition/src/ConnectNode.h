@@ -119,8 +119,8 @@ public:
   // void visit(const luci::CircleNotEqual *) final;
   // void visit(const luci::CircleOneHot *) final;
   // void visit(const luci::CirclePack *) final;
-  // void visit(const luci::CirclePad *) final;
-  // void visit(const luci::CirclePadV2 *) final;
+  void visit(const luci::CirclePad *) final;
+  void visit(const luci::CirclePadV2 *) final;
   void visit(const luci::CirclePow *) final;
   void visit(const luci::CirclePRelu *) final;
   void visit(const luci::CircleRange *) final;
