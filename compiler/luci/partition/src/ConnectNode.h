@@ -147,9 +147,9 @@ public:
   // void visit(const luci::CircleSin *) final;
   // void visit(const luci::CircleSlice *) final;
   // void visit(const luci::CircleSoftmax *) final;
-  // void visit(const luci::CircleSpaceToBatchND *) final;
-  // void visit(const luci::CircleSpaceToDepth *) final;
-  // void visit(const luci::CircleSparseToDense *) final;
+  void visit(const luci::CircleSpaceToBatchND *) final;
+  void visit(const luci::CircleSpaceToDepth *) final;
+  void visit(const luci::CircleSparseToDense *) final;
   void visit(const luci::CircleSplit *) final;
   void visit(const luci::CircleSplitV *) final;
   void visit(const luci::CircleSqrt *) final;
