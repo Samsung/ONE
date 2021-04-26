@@ -141,9 +141,9 @@ public:
   void visit(const luci::CircleRsqrt *) final;
   void visit(const luci::CircleScatterNd *) final;
   void visit(const luci::CircleSegmentSum *) final;
-  // void visit(const luci::CircleSelect *) final;
-  // void visit(const luci::CircleSelectV2 *) final;
-  // void visit(const luci::CircleShape *) final;
+  void visit(const luci::CircleSelect *) final;
+  void visit(const luci::CircleSelectV2 *) final;
+  void visit(const luci::CircleShape *) final;
   // void visit(const luci::CircleSin *) final;
   // void visit(const luci::CircleSlice *) final;
   // void visit(const luci::CircleSoftmax *) final;
