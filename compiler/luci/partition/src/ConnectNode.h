@@ -113,9 +113,9 @@ public:
   void visit(const luci::CircleMinimum *) final;
   void visit(const luci::CircleMirrorPad *) final;
   void visit(const luci::CircleMul *) final;
-  // void visit(const luci::CircleNeg *) final;
-  // void visit(const luci::CircleNonMaxSuppressionV4 *) final;
-  // void visit(const luci::CircleNonMaxSuppressionV5 *) final;
+  void visit(const luci::CircleNeg *) final;
+  void visit(const luci::CircleNonMaxSuppressionV4 *) final;
+  void visit(const luci::CircleNonMaxSuppressionV5 *) final;
   // void visit(const luci::CircleNotEqual *) final;
   // void visit(const luci::CircleOneHot *) final;
   // void visit(const luci::CirclePack *) final;
