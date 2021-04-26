@@ -161,9 +161,9 @@ public:
   void visit(const luci::CircleSum *) final;
   void visit(const luci::CircleTanh *) final;
   void visit(const luci::CircleTile *) final;
-  // void visit(const luci::CircleTopKV2 *) final;
-  // void visit(const luci::CircleTranspose *) final;
-  // void visit(const luci::CircleTransposeConv *) final;
+  void visit(const luci::CircleTopKV2 *) final;
+  void visit(const luci::CircleTranspose *) final;
+  void visit(const luci::CircleTransposeConv *) final;
   // void visit(const luci::CircleUnidirectionalSequenceLSTM *) final;
   // void visit(const luci::CircleUnique *) final;
   void visit(const luci::CircleUnpack *) final;
