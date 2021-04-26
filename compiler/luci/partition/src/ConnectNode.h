@@ -177,11 +177,11 @@ public:
   void visit(const luci::CircleInstanceNorm *) final;
 
   // Virtual
-  // void visit(const luci::CircleCustomOut *) final;
+  void visit(const luci::CircleCustomOut *) final;
   // void visit(const luci::CircleIfOut *) final;
   // void visit(const luci::CircleInput *) final;
-  // void visit(const luci::CircleNonMaxSuppressionV4Out *) final;
-  // void visit(const luci::CircleNonMaxSuppressionV5Out *) final;
+  void visit(const luci::CircleNonMaxSuppressionV4Out *) final;
+  void visit(const luci::CircleNonMaxSuppressionV5Out *) final;
   // void visit(const luci::CircleOutput *) final;
   // void visit(const luci::CircleOutputDummy *) final;
   // void visit(const luci::CircleOutputExclude *) final;
