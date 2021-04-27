@@ -147,6 +147,9 @@ public:
   luci::CircleNode *visit(const luci::CircleBCQGather *) final;
   luci::CircleNode *visit(const luci::CircleInstanceNorm *) final;
 
+  // NOTE CircleInput and CircleOutput are not handled here as these need
+  //      link with graph I/O
+
   // Virtual
   luci::CircleNode *visit(const luci::CircleCustomOut *) final;
   // luci::CircleNode *visit(const luci::CircleIfOut *) final;
