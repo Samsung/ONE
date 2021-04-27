@@ -197,6 +197,13 @@ private:
     return true;
   }
 
+  bool visit(const luci::CircleLocalResponseNormalization *node)
+  {
+    RETURN_FALSE_UNLESS(is_lwq(node))
+    RETURN_FALSE_UNLESS(is_lwq(node->input()));
+    return true;
+  }
+
   bool visit(const luci::CircleMean *node)
   {
     RETURN_FALSE_UNLESS(is_lwq(node));

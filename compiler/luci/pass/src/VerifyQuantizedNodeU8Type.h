@@ -166,6 +166,13 @@ private:
     return true;
   }
 
+  bool visit(const luci::CircleLocalResponseNormalization *node)
+  {
+    RETURN_FALSE_UNLESS(has_type(node, Type::U8))
+    RETURN_FALSE_UNLESS(has_type(node->input(), Type::U8))
+    return true;
+  }
+
   bool visit(const luci::CircleMean *node)
   {
     RETURN_FALSE_UNLESS(has_type(node, Type::U8))
