@@ -185,8 +185,8 @@ public:
   // void visit(const luci::CircleOutput *) final;
   // void visit(const luci::CircleOutputDummy *) final;
   // void visit(const luci::CircleOutputExclude *) final;
-  // void visit(const luci::CircleSplitOut *) final;
-  // void visit(const luci::CircleSplitVOut *) final;
+  void visit(const luci::CircleSplitOut *) final;
+  void visit(const luci::CircleSplitVOut *) final;
   // void visit(const luci::CircleTopKV2Out *) final;
   // void visit(const luci::CircleUniqueOut *) final;
   // void visit(const luci::CircleUnpackOut *) final;
