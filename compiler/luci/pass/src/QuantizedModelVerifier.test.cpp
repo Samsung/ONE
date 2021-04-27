@@ -260,6 +260,25 @@ private:
   luci::CircleLogistic *_logistic = nullptr;
 };
 
+class LocalResponseNormalizationTestGraph final : public SimpleTestGraph
+{
+public:
+  void init(void) override
+  {
+    TestIOGraph::init({1, 2, 2, 32}, {1, 2, 2, 32});
+    _lrn = g()->nodes()->create<luci::CircleLocalResponseNormalization>();
+    {
+      _lrn->input(input());
+    }
+    output()->from(_lrn);
+
+    set_minmax_to_non_const(g(), -1, 1);
+  }
+
+private:
+  luci::CircleLocalResponseNormalization *_lrn = nullptr;
+};
+
 class SoftmaxTestGraph final : public SimpleTestGraph
 {
 public:
@@ -986,6 +1005,36 @@ TEST(QuantizedModelVerifierTest, InstanceNorm_wrong_granularity_NEG)
   TEST_WITH_WRONG_GRANULARITY(InstanceNormTestGraph, Type::U8, Granularity::LayerWise);
   TEST_WITH_WRONG_GRANULARITY(InstanceNormTestGraph, Type::U8, Granularity::ChannelWise);
   TEST_WITH_WRONG_GRANULARITY(InstanceNormTestGraph, Type::S16, Granularity::ChannelWise);
+  SUCCEED();
+}
+
+TEST(QuantizedModelVerifierTest, LocalResponseNormalization)
+{
+  TEST_WITH_GRAPH(LocalResponseNormalizationTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_GRAPH(LocalResponseNormalizationTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_GRAPH(LocalResponseNormalizationTestGraph, Type::S16, Granularity::ChannelWise);
+  SUCCEED();
+}
+
+TEST(QuantizedModelVerifierTest, LocalResponseNormalization_wrong_type_NEG)
+{
+  TEST_WITH_WRONG_TYPE(LocalResponseNormalizationTestGraph, Type::U8, Granularity::LayerWise,
+                       Type::S16);
+  TEST_WITH_WRONG_TYPE(LocalResponseNormalizationTestGraph, Type::U8, Granularity::ChannelWise,
+                       Type::S16);
+  TEST_WITH_WRONG_TYPE(LocalResponseNormalizationTestGraph, Type::S16, Granularity::ChannelWise,
+                       Type::U8);
+  SUCCEED();
+}
+
+TEST(QuantizedModelVerifierTest, LocalResponseNormalization_wrong_granularity_NEG)
+{
+  TEST_WITH_WRONG_GRANULARITY(LocalResponseNormalizationTestGraph, Type::U8,
+                              Granularity::LayerWise);
+  TEST_WITH_WRONG_GRANULARITY(LocalResponseNormalizationTestGraph, Type::U8,
+                              Granularity::ChannelWise);
+  TEST_WITH_WRONG_GRANULARITY(LocalResponseNormalizationTestGraph, Type::S16,
+                              Granularity::ChannelWise);
   SUCCEED();
 }
 
