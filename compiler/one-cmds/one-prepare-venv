@@ -47,7 +47,7 @@ source "${VENV_ACTIVATE}"
 python -m pip --default-timeout=1000 --trusted-host pypi.org --trusted-host files.pythonhost.org \
   install -U pip==20.2.1 setuptools==49.3.0
 python -m pip --default-timeout=1000 --trusted-host pypi.org --trusted-host files.pythonhost.org \
-  install tensorflow-cpu==2.3.0
+  install tensorflow-cpu==2.4.1
 python -m pip --default-timeout=1000 --trusted-host pypi.org --trusted-host files.pythonhost.org \
   install Pillow==6.2.2
 
@@ -56,14 +56,13 @@ python -m pip --default-timeout=1000 --trusted-host pypi.org --trusted-host file
   --trusted-host download.pytorch.org \
   install torch==1.7.0+cpu -f https://download.pytorch.org/whl/torch_stable.html
 
-# NOTE Latest onnx 1.8.1 has compatibility issue with onnx-tf 1.7.0
-#      MUST install with onnx==1.8.0
+# NOTE Assign explicit version to avoid compatibility issues if onnx is upgraded to higher version
 # Provide install of custom onnx-tf
 if [ -n "${EXT_ONNX_TF_WHL}" ]; then
-  python -m pip --default-timeout=1000 install onnx==1.8.0 ${EXT_ONNX_TF_WHL}
+  python -m pip --default-timeout=1000 install onnx==1.9.0 ${EXT_ONNX_TF_WHL}
 else
   python -m pip --default-timeout=1000 --trusted-host pypi.org --trusted-host files.pythonhost.org \
-    install onnx==1.8.0 onnx-tf==1.7.0
+    install onnx==1.9.0 onnx-tf==1.8.0
 fi
 
 # Create python symoblic link
