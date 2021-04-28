@@ -48,7 +48,7 @@ TEST_F(GenModelTest, OneOp_Add_VarToVar)
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
   _context->addTestCase(uniformTCD<float>({{1, 3, 2, 4}, {5, 4, 7, 4}}, {{6, 7, 9, 8}}));
-  _context->setBackends({"acl_cl", "acl_neon", "cpu"});
+  _context->setBackends({"acl_cl", "acl_neon", "cpu", "gpu_cl"});
 
   SUCCEED();
 }
@@ -111,7 +111,7 @@ TEST_F(GenModelTest, OneOp_Add_VarToVarSame)
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
   _context->addTestCase(uniformTCD<float>({{1, 3, 2, 4}}, {{2, 6, 4, 8}}));
-  _context->setBackends({"acl_cl", "acl_neon", "cpu"});
+  _context->setBackends({"acl_cl", "acl_neon", "cpu", "gpu_cl"});
 
   SUCCEED();
 }

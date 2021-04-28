@@ -222,7 +222,7 @@ public:
     for (auto backend : backends)
     {
 #ifdef TEST_ACL_BACKEND
-      if (backend == "acl_cl" || backend == "acl_neon")
+      if (backend == "acl_cl" || backend == "acl_neon" || backend == "gpu_cl")
       {
         _backends.push_back(backend);
       }
