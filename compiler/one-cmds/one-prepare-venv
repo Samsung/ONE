@@ -42,28 +42,30 @@ fi
 # Install tensorflow
 source "${VENV_ACTIVATE}"
 
+PIP_TRUSTED_HOST="--trusted-host pypi.org "
+PIP_TRUSTED_HOST+="--trusted-host files.pythonhost.org "
+PIP_TRUSTED_HOST+="--trusted-host download.pytorch.org "
+
+PIP_TIMEOUT="--default-timeout=1000 "
+
+PIP_OPTIONS="${PIP_TIMEOUT} ${PIP_TRUSTED_HOST}"
+
 # TODO remove version number of 'pip==20.2.1 setuptools==49.3.0'
 # NOTE adding version is for temporary hotfix of setuptools 50.x.y version
-python -m pip --default-timeout=1000 --trusted-host pypi.org --trusted-host files.pythonhost.org \
-  install -U pip==20.2.1 setuptools==49.3.0
-python -m pip --default-timeout=1000 --trusted-host pypi.org --trusted-host files.pythonhost.org \
-  install tensorflow-cpu==2.3.0
-python -m pip --default-timeout=1000 --trusted-host pypi.org --trusted-host files.pythonhost.org \
-  install Pillow==6.2.2
+python -m pip ${PIP_OPTIONS} install -U pip==20.2.1 setuptools==49.3.0
+python -m pip ${PIP_OPTIONS} install tensorflow-cpu==2.3.0
+python -m pip ${PIP_OPTIONS} install Pillow==6.2.2
 
 # Install PyTorch and ONNX related
-python -m pip --default-timeout=1000 --trusted-host pypi.org --trusted-host files.pythonhost.org \
-  --trusted-host download.pytorch.org \
-  install torch==1.7.0+cpu -f https://download.pytorch.org/whl/torch_stable.html
+python -m pip ${PIP_OPTIONS} install torch==1.7.0+cpu -f https://download.pytorch.org/whl/torch_stable.html
 
 # NOTE Latest onnx 1.8.1 has compatibility issue with onnx-tf 1.7.0
 #      MUST install with onnx==1.8.0
 # Provide install of custom onnx-tf
 if [ -n "${EXT_ONNX_TF_WHL}" ]; then
-  python -m pip --default-timeout=1000 install onnx==1.8.0 ${EXT_ONNX_TF_WHL}
+  python -m pip ${PIP_OPTIONS} install onnx==1.8.0 ${EXT_ONNX_TF_WHL}
 else
-  python -m pip --default-timeout=1000 --trusted-host pypi.org --trusted-host files.pythonhost.org \
-    install onnx==1.8.0 onnx-tf==1.7.0
+  python -m pip ${PIP_OPTIONS} install onnx==1.8.0 onnx-tf==1.7.0
 fi
 
 # Create python symoblic link
