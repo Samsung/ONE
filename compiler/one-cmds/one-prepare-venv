@@ -44,9 +44,9 @@ fi
 # - https://github.com/onnx/onnx/blob/master/docs/Versioning.md
 # - https://github.com/onnx/onnx-tensorflow/blob/master/Versioning.md
 
-VER_TENSORFLOW=2.3.0
+VER_TENSORFLOW=2.4.1
 VER_ONNX=1.8.0
-VER_ONNX_TF=1.7.0
+VER_ONNX_TF=1.8.0
 
 # Install tensorflow
 source "${VENV_ACTIVATE}"

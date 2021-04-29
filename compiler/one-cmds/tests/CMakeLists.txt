@@ -3,6 +3,7 @@
 # Gather test scripts
 file(GLOB TESTITEMS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "./*.test")
 file(GLOB CONFIGITEMS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "./*.cfg")
+file(GLOB PARTITIONITEMS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "./*.part")
 
 # Create a script to run the tests at installation folder
 set(DRIVER_SCRIPT "${CMAKE_CURRENT_BINARY_DIR}/runtestall.sh")
@@ -39,6 +40,11 @@ foreach(CONFIGITEM IN ITEMS ${CONFIGITEMS})
   install(FILES ${CONFIGITEM} DESTINATION test)
 endforeach(CONFIGITEM)
 
+foreach(PARTITIONITEM IN ITEMS ${PARTITIONITEMS})
+  get_filename_component(ITEM_PREFIX ${PARTITIONITEM} NAME_WE)
+  install(FILES ${PARTITIONITEM} DESTINATION test)
+endforeach(PARTITIONITEM)
+
 file(APPEND "${DRIVER_SCRIPT}" "popd > /dev/null\n\n")
 
 file(APPEND "${DRIVER_SCRIPT}"
@@ -51,6 +57,7 @@ fi\n
 ")
 
 set(PREPARE_TEST_MATERIALS_SH "${CMAKE_CURRENT_SOURCE_DIR}/prepare_test_materials.sh")
+set(RESAVE_SAVEDMODEL_PY "${CMAKE_CURRENT_SOURCE_DIR}/resave_savedmodel.py")
 set(PREPROCESS_IMAGES_PY "${CMAKE_CURRENT_SOURCE_DIR}/preprocess_images.py")
 
 install(FILES ${DRIVER_SCRIPT}
@@ -60,6 +67,12 @@ install(FILES ${DRIVER_SCRIPT}
         DESTINATION test)
 
 install(FILES ${PREPARE_TEST_MATERIALS_SH}
+        PERMISSIONS OWNER_WRITE OWNER_READ OWNER_EXECUTE
+                    GROUP_READ GROUP_EXECUTE
+                    WORLD_READ WORLD_EXECUTE
+        DESTINATION test)
+
+install(FILES ${RESAVE_SAVEDMODEL_PY}
         PERMISSIONS OWNER_WRITE OWNER_READ OWNER_EXECUTE
                     GROUP_READ GROUP_EXECUTE
                     WORLD_READ WORLD_EXECUTE

@@ -1,0 +1,7 @@
+[partition]
+backends=cpu,acl_cl
+default=acl_cl
+comply=opcode
+
+[OPCODE]
+CONCATENATION=cpu
