@@ -39,3 +39,5 @@ target_link_libraries(luci_interpreter
     PRIVATE nncc_common)
 
 install(TARGETS luci_interpreter DESTINATION lib)
+install(DIRECTORY include/ DESTINATION include
+        FILES_MATCHING PATTERN "*.h")
