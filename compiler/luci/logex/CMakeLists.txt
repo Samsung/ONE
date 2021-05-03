@@ -11,3 +11,5 @@ target_link_libraries(luci_logex PRIVATE hermes_std)
 target_link_libraries(luci_logex PRIVATE nncc_common)
 target_link_libraries(luci_logex PRIVATE pepper_str)
 install(TARGETS luci_logex DESTINATION lib)
+install(DIRECTORY include/ DESTINATION include
+        FILES_MATCHING PATTERN "*.h")

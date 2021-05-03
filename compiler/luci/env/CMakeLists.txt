@@ -6,6 +6,8 @@ add_library(luci_env SHARED ${SOURCES})
 target_include_directories(luci_env PUBLIC include)
 target_link_libraries(luci_env PRIVATE nncc_common)
 install(TARGETS luci_env DESTINATION lib)
+install(DIRECTORY include/ DESTINATION include
+        FILES_MATCHING PATTERN "*.h")
 
 if(NOT ENABLE_TEST)
   return()

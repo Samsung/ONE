@@ -8,3 +8,5 @@ target_link_libraries(luci_log PRIVATE hermes_std)
 target_link_libraries(luci_log PRIVATE nncc_common)
 target_link_libraries(luci_log PRIVATE luci_env)
 install(TARGETS luci_log DESTINATION lib)
+install(DIRECTORY include/ DESTINATION include
+        FILES_MATCHING PATTERN "*.h")
