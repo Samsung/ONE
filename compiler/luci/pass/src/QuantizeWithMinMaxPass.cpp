@@ -95,11 +95,11 @@ luci::CircleConst *create_empty_const_from(luci::CircleConst *node, uint32_t siz
   return new_node;
 }
 
-void overwrite_quantparam(luci::CircleConcatenation *concat, luci::CircleNode *target)
+void overwrite_quantparam(luci::CircleNode *source, luci::CircleNode *target)
 {
-  auto concat_qparam = concat->quantparam();
-  if (concat_qparam == nullptr)
-    throw std::runtime_error("quantparam of concat is not found during overwrite");
+  auto source_qparam = source->quantparam();
+  if (source_qparam == nullptr)
+    throw std::runtime_error("source quantparam is not found during overwrite");
 
   auto target_qparam = target->quantparam();
   if (target_qparam == nullptr)
@@ -111,11 +111,11 @@ void overwrite_quantparam(luci::CircleConcatenation *concat, luci::CircleNode *t
     if (target_qparam == nullptr)
       throw std::runtime_error("Creating new quant param failed");
   }
-  target_qparam->min = concat_qparam->min;
-  target_qparam->max = concat_qparam->max;
-  target_qparam->scale = concat_qparam->scale;
-  target_qparam->zerop = concat_qparam->zerop;
-  target_qparam->quantized_dimension = concat_qparam->quantized_dimension;
+  target_qparam->min = source_qparam->min;
+  target_qparam->max = source_qparam->max;
+  target_qparam->scale = source_qparam->scale;
+  target_qparam->zerop = source_qparam->zerop;
+  target_qparam->quantized_dimension = source_qparam->quantized_dimension;
 }
 
 void quant_const_values(luci::CircleConst *const_node, float scaling_factor, float zerop,
