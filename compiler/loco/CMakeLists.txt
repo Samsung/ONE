@@ -14,6 +14,8 @@ target_link_libraries(loco PRIVATE nncc_common)
 target_link_libraries(loco PUBLIC nncc_coverage)
 # Q. HOW TO MAKE DEV PACKAGE(?)
 install(TARGETS loco DESTINATION lib)
+install(DIRECTORY include/ DESTINATION include
+        FILES_MATCHING PATTERN "*.h")
 
 if(NOT ENABLE_TEST)
   return()
