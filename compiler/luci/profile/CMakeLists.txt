@@ -9,6 +9,8 @@ target_link_libraries(luci_profile PUBLIC loco)
 target_link_libraries(luci_profile PUBLIC luci_lang)
 
 install(TARGETS luci_profile DESTINATION lib)
+install(DIRECTORY include/ DESTINATION include
+        FILES_MATCHING PATTERN "*.h")
 
 if(NOT ENABLE_TEST)
   return()

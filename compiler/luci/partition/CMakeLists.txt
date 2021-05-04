@@ -14,6 +14,8 @@ target_link_libraries(luci_partition PRIVATE nncc_common)
 target_link_libraries(luci_partition PRIVATE oops)
 
 install(TARGETS luci_partition DESTINATION lib)
+install(DIRECTORY include/ DESTINATION include
+        FILES_MATCHING PATTERN "*.h")
 
 if(NOT ENABLE_TEST)
   return()

@@ -12,6 +12,8 @@ target_link_libraries(luci_lang PRIVATE logo)
 target_link_libraries(luci_lang PRIVATE nncc_common)
 
 install(TARGETS luci_lang DESTINATION lib)
+install(DIRECTORY include/ DESTINATION include
+        FILES_MATCHING PATTERN "*.h")
 
 if(NOT ENABLE_TEST)
   return()
