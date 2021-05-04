@@ -127,6 +127,14 @@ private:
     return true;
   }
 
+  bool visit(const luci::CirclePadV2 *node)
+  {
+    RETURN_FALSE_UNLESS(is_lwq(node))
+    RETURN_FALSE_UNLESS(is_lwq(node->input()))
+    RETURN_FALSE_UNLESS(is_lwq(node->constant_values()))
+    return true;
+  }
+
   bool visit(const luci::CirclePRelu *node)
   {
     RETURN_FALSE_UNLESS(is_lwq(node))
