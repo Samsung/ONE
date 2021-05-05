@@ -101,6 +101,15 @@ private:
     return true;
   }
 
+  bool visit(const luci::CirclePadV2 *node)
+  {
+    RETURN_FALSE_UNLESS(has_type(node, Type::S16))
+    RETURN_FALSE_UNLESS(has_type(node->input(), Type::S16))
+    RETURN_FALSE_UNLESS(has_type(node->paddings(), Type::S32))
+    RETURN_FALSE_UNLESS(has_type(node->constant_values(), Type::S16))
+    return true;
+  }
+
   bool visit(const luci::CirclePRelu *node)
   {
     RETURN_FALSE_UNLESS(has_type(node, Type::S16))

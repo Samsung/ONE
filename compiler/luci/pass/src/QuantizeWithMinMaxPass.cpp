@@ -980,6 +980,13 @@ void quantize_const_inputs(luci::CircleNode *node, loco::DataType output_type)
         quant_const(const_node, output_type);
       break;
 
+    case luci::CircleOpcode::PADV2:
+      // First and third constant inputs are quantized
+      // Second input should not be quantized (e.g., paddings)
+      // Quant params are propagated from output range to the non-constant input
+      propagate_pad_v2_quantparam(loco::must_cast<CirclePadV2 *>(node), output_type);
+      break;
+
     default:
       for (uint32_t i = 0; i < arity; i++)
       {
@@ -1073,6 +1080,73 @@ void propagate_concat_quantparam(luci::CircleConcatenation *concat, loco::DataTy
       overwrite_quantparam(concat, node);
     }
   }
+}
+
+/** BEFORE
+ *
+ *         [CircleNode] [CircleConst] [CircleConst]
+ *         (U8 qparam1)     (S32)       (FP32)
+ *                   \        |         /
+ *                    \       |        /
+ *                      [CirclePadV2]
+ *                       (U8 qparam2)
+ *
+ *  AFTER
+ *         [CircleNode] [CircleConst] [CircleConst]   [CircleConst] <- Dead node
+ *         (U8 qparam2)     (S32)      (U8 qparam2)       (FP32)
+ *                   \        |         /
+ *                    \       |        /
+ *                      [CirclePadV2]
+ *                       (U8 qparam2)
+ */
+void propagate_pad_v2_quantparam(luci::CirclePadV2 *pad_v2, loco::DataType quant_type)
+{
+  auto quant_input = [pad_v2, quant_type](void (CirclePadV2::*arg_setter)(loco::Node *),
+                                          uint32_t arg) {
+    auto node = loco::must_cast<luci::CircleNode *>(pad_v2->arg(arg));
+
+    // Quantize constant values
+    if (node->opcode() == luci::CircleOpcode::CIRCLECONST)
+    {
+      luci::CircleConst *const_node = loco::must_cast<luci::CircleConst *>(node);
+      if (is_quantized(const_node))
+        return;
+
+      if (const_node->dtype() != loco::DataType::FLOAT32)
+        throw std::runtime_error("Unsupported data type for constant input of PadV2 Op");
+
+      const auto pad_v2_qparam = pad_v2->quantparam();
+      if (pad_v2_qparam == nullptr)
+        throw std::runtime_error("quantparam of PadV2 is not found during propagation");
+
+      assert(pad_v2_qparam->scale.size() == 1);
+      const auto scaling_factor = pad_v2_qparam->scale.at(0);
+      const auto zerop = pad_v2_qparam->zerop.at(0);
+
+      auto new_const = luci::clone(const_node);
+      quant_const_values(new_const, scaling_factor, zerop, quant_type);
+      overwrite_quantparam(pad_v2, new_const);
+      (pad_v2->*arg_setter)(new_const);
+    }
+    // Subsequent PadV2 Ops quant params are not propagated
+    else if (node->opcode() == luci::CircleOpcode::PADV2)
+    {
+      return;
+    }
+    else
+    {
+      const auto succs = loco::succs(node);
+      if (succs.size() > 1)
+        return;
+
+      // Non-const input must have been quantized
+      assert(node->quantparam() != nullptr);
+      overwrite_quantparam(pad_v2, node);
+    }
+  };
+
+  quant_input(&CirclePadV2::input, 0);
+  quant_input(&CirclePadV2::constant_values, 2);
 }
 
 bool QuantizeWithMinMaxPass::run(loco::Graph *g)
