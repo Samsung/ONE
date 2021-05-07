@@ -31,10 +31,6 @@ void calculateActivationRange(Activation activation, float *activation_min, floa
 {
   switch (activation)
   {
-    case Activation::NONE:
-      *activation_min = std::numeric_limits<float>::lowest();
-      *activation_max = std::numeric_limits<float>::max();
-      break;
     case Activation::RELU:
       *activation_min = 0;
       *activation_max = std::numeric_limits<float>::max();
@@ -48,7 +44,9 @@ void calculateActivationRange(Activation activation, float *activation_min, floa
       *activation_max = 6;
       break;
     default:
-      throw std::runtime_error("Unsupported activation.");
+      *activation_min = std::numeric_limits<float>::lowest();
+      *activation_max = std::numeric_limits<float>::max();
+      break;
   }
 }
 
@@ -65,10 +63,6 @@ static void calculateActivationRangeQuantizedImpl(Activation activation, int32_t
 
   switch (activation)
   {
-    case Activation::NONE:
-      *activation_min = qmin;
-      *activation_max = qmax;
-      break;
     case Activation::RELU:
       *activation_min = std::max(qmin, quantize(0.0f));
       *activation_max = qmax;
@@ -82,7 +76,9 @@ static void calculateActivationRangeQuantizedImpl(Activation activation, int32_t
       *activation_max = std::min(qmax, quantize(6.0f));
       break;
     default:
-      throw std::runtime_error("Unsupported activation.");
+      *activation_min = qmin;
+      *activation_max = qmax;
+      break;
   }
 }
 
