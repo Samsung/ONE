@@ -32,6 +32,7 @@ void calculateActivationRange(Activation activation, float *activation_min, floa
   switch (activation)
   {
     case Activation::NONE:
+    case Activation::TANH:
       *activation_min = std::numeric_limits<float>::lowest();
       *activation_max = std::numeric_limits<float>::max();
       break;
@@ -66,6 +67,7 @@ static void calculateActivationRangeQuantizedImpl(Activation activation, int32_t
   switch (activation)
   {
     case Activation::NONE:
+    case Activation::TANH:
       *activation_min = qmin;
       *activation_max = qmax;
       break;
