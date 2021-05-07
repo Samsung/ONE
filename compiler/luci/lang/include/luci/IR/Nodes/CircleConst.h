@@ -44,6 +44,7 @@ public:
 
 private:
   std::vector<uint8_t> _data;
+  std::vector<std::string> _strings; // for STRING type
 };
 
 } // namespace luci

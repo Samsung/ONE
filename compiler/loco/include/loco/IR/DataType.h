@@ -44,6 +44,9 @@ enum class DataType
   // WARNING the size of Bool may vary for NN frameworks
   // TODO we need to find a way to resolve this issue
   BOOL, // Boolean
+
+  // WARNING String is NOT fully supported yet
+  STRING, // String
 };
 
 } // namespace loco

@@ -69,6 +69,9 @@ circle::TensorType to_circle_tensortype(loco::DataType type)
     case loco::DataType::BOOL:
       return circle::TensorType_BOOL;
 
+    case loco::DataType::STRING:
+      return circle::TensorType_STRING;
+
     default:
       INTERNAL_EXN_V("failed to convert unsupported loco::DataType", oops::to_uint32(type));
   }

@@ -1,0 +1,33 @@
+# This is test for import/export of STRING tensortype
+# interpreter or runtime may fail as Add won't support this
+
+operand {
+  name: "ifm"
+  type: STRING
+  shape { }
+}
+operand {
+  name: "suffix"
+  type: STRING
+  shape { }
+  filler {
+    tag: "explicit"
+    arg: "Hello"
+  }
+}
+operand {
+  name: "ofm"
+  type: STRING
+  shape { }
+}
+operation {
+  type: "Add"
+  input: "ifm"
+  input: "suffix"
+  output: "ofm"
+  add_options {
+    activation: NONE
+  }
+}
+input: "ifm"
+output: "ofm"

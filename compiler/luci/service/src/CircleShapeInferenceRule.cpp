@@ -438,12 +438,25 @@ struct OutputSize
   uint32_t width = 0;
 };
 
+bool all_known(const loco::TensorShape &shape)
+{
+  for (uint32_t i = 0; i < shape.rank(); ++i)
+  {
+    if (!shape.dim(i).known())
+      return false;
+  }
+  return true;
+}
+
 template <class Conv2DType> OutputSize infer_conv2d_type(const Conv2DType *node)
 {
   auto ifm_shape = luci::shape_get(node->input()).template as<loco::TensorShape>();
   auto ker_shape = luci::shape_get(node->filter()).template as<loco::TensorShape>();
   assert(ifm_shape.rank() == 4);
   assert(ker_shape.rank() == 4);
+
+  assert(all_known(ifm_shape));
+  assert(all_known(ker_shape));
 
   uint32_t input_height = ifm_shape.dim(1).value();
   uint32_t input_width = ifm_shape.dim(2).value();

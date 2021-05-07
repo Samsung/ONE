@@ -33,8 +33,8 @@ public:
     : VariadicArityNode<CircleNodeImpl<CircleOpcode::CUSTOM>>(arity), _output_count(out)
   {
     // TODO Support when arity is 0
-    assert(arity >= 1);
-    assert(out > 0);
+    // assert(arity >= 1);
+    // assert(out > 0);
   }
 
 public:
