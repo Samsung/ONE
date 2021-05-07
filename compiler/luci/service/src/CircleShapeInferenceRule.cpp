@@ -362,6 +362,8 @@ template <class Pool2DType> loco::NodeShape infer_pool_2d_shape(const Pool2DType
 
   if (node->padding() == luci::Padding::VALID)
   {
+    LUCI_ASSERT(input_height + stride_height > effective_window_height, "Invalid shape");
+    LUCI_ASSERT(input_width + stride_width > effective_window_width, "Invalid shape");
     output_height = (input_height + stride_height - effective_window_height) / stride_height;
     output_width = (input_width + stride_width - effective_window_width) / stride_width;
   }
@@ -459,6 +461,8 @@ template <class Conv2DType> OutputSize infer_conv2d_type(const Conv2DType *node)
 
   if (node->padding() == luci::Padding::VALID)
   {
+    LUCI_ASSERT(input_height + stride_height > effective_ker_height, "Invalid shape");
+    LUCI_ASSERT(input_width + stride_width > effective_ker_width, "Invalid shape");
     output_height = (input_height + stride_height - effective_ker_height) / stride_height;
     output_width = (input_width + stride_width - effective_ker_width) / stride_width;
   }
