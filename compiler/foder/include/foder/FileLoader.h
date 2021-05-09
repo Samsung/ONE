@@ -33,7 +33,7 @@ public:
 
 public:
   FileLoader(const FileLoader &) = delete;
-  FileLoader(FileLoader &&) = delete;
+  FileLoader &operator=(const FileLoader &) = delete;
 
 public:
   DataBuffer load(void) const
