@@ -493,7 +493,7 @@ GeneratedModel cook(const ::circlechef::ModelRecipe &model_recipe)
 #define DATA_CHEF(TYPE, NAME, FACTORY_CLASS) \
   data_chef_registry(::circlechef::TYPE)     \
     .add(#NAME, std::unique_ptr<FACTORY_CLASS>(new FACTORY_CLASS()));
-#include <souschef/DataChef.def>
+#include "DataChef.def"
 #undef DATA_CHEF
 
   //
