@@ -59,6 +59,27 @@ private:
   std::vector<T> _values;
 };
 
+template <> class ExplicitDataChef<std::string> final : public DataChef
+{
+public:
+  ExplicitDataChef()
+  {
+    // DO NOTHING
+  }
+
+public:
+  std::vector<uint8_t> generate(int32_t count) const override;
+
+public:
+  void insert(const std::string &value) { _values.emplace_back(value); }
+
+private:
+  void write_value(std::vector<uint8_t> &res, int32_t value) const;
+
+private:
+  std::vector<std::string> _values;
+};
+
 template <typename T> struct ExplicitDataChefFactory : public DataChefFactory
 {
   std::unique_ptr<DataChef> create(const Arguments &args) const
