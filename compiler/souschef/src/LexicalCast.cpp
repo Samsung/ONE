@@ -51,5 +51,6 @@ template <> bool to_number(const std::string &s)
     return true;
   return false;
 }
+template <> std::string to_number(const std::string &s) { return s; }
 
 } // namespace souschef
