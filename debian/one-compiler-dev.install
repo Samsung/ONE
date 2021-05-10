@@ -1,6 +1,5 @@
 # {FILES_TO_INSTALL} {DEST_DIR}
 # bin
-usr/bin/circle-tensordump opt/one_compiler/bin/
 usr/bin/circledump opt/one_compiler/bin/
 # include
 usr/include/* opt/one_compiler/include/

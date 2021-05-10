@@ -7,19 +7,19 @@ Standards-Version: 3.9.8
 Homepage: https://github.com/Samsung/ONE
 
 Package: one-compiler
-Architecture: any
+Architecture: amd64
 Multi-Arch: foreign
 Depends: ${misc:Depends}, ${shlibs:Depends}
 Description: on-device neural engine compiler
 
 Package: one-compiler-dev
-Architecture: any
+Architecture: amd64
 Multi-Arch: same
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends: one-compiler, ${shlibs:Depends}, ${misc:Depends}
 Description: one-compiler development package
 
 Package: one-compiler-test
-Architecture: any
+Architecture: amd64
 Multi-Arch: same
 Depends: one-compiler, ${shlibs:Depends}, ${misc:Depends}
 Description: one-compiler test package
