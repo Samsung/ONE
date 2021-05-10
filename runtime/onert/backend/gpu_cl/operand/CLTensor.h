@@ -18,6 +18,7 @@
 #define __ONERT_BACKEND_GPU_CL_OPERAND_CL_TENSOR_H__
 
 #include "ICLTensor.h"
+
 #include "../../open_cl/Buffer.h"
 #include "../../open_cl/ClContext.h"
 #include "../../open_cl/Tensor.h"
@@ -57,7 +58,6 @@ public:
 
 private:
   std::shared_ptr<Tensor> _tensor;
-  // Buffer *_buffer;
   size_t _num_uses;
 };
 

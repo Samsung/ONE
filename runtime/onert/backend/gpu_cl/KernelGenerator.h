@@ -17,10 +17,10 @@
 #ifndef __ONERT_BACKEND_GPU_CL_KERNEL_GENERATOR_H__
 #define __ONERT_BACKEND_GPU_CL_KERNEL_GENERATOR_H__
 
-#include "TensorBuilder.h"
 #include "ClTensorRegistry.h"
-#include "TensorManager.h"
 #include "backend/basic/TensorRegistry.h"
+#include "TensorBuilder.h"
+#include "TensorManager.h"
 
 #include <backend/CustomKernelBuilder.h>
 #include <backend/basic/KernelGeneratorBase.h>
@@ -51,9 +51,7 @@ private:
   const ir::Operands &_ctx;
   const ir::Operations &_operations_ctx;
   ir::Layout _current_layout;
-  // std::vector<CLNode> nodes_;
   std::shared_ptr<TensorBuilder> _tensor_builder;
-  // std::shared_ptr<TensorBuilder> _cl_node_builder;
   std::shared_ptr<ClTensorRegistry<TensorManager>> _tensor_reg;
   std::shared_ptr<CreationContext> _creation_context;
 };

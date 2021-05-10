@@ -18,6 +18,7 @@
 #define __ONERT_BACKEND_GPU_CL_OPERAND_I_CL_TENSOR_H__
 
 #include <backend/ITensor.h>
+
 #include "../../open_cl/ClCommandQueue.h"
 #include "../../open_cl/Tensor.h"
 

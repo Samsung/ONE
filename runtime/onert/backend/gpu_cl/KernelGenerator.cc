@@ -13,13 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include <stdexcept>
 
 #include <backend/basic/KernelGeneratorBase.h>
 
 #include "KernelGenerator.h"
+
 #include "ClTensorRegistry.h"
 #include "ClFunction.h"
 #include "TensorManager.h"
+
 #include "../open_cl/kernels/Elementwise.h"
 #include "../open_cl/selectors/Subgraph.h"
 #include "../open_cl/selectors/SimpleSelectors.h"
@@ -33,7 +36,6 @@
 #include "exec/FunctionSequence.h"
 #include "util/logging.h"
 #include "util/Utils.h"
-#include <stdexcept>
 
 namespace onert
 {
@@ -69,21 +71,13 @@ void KernelGenerator::visit(const ir::operation::BinaryArithmetic &node)
   const auto lhs_index{node.getInputs().at(ir::operation::BinaryArithmetic::Input::LHS)};
   const auto rhs_index{node.getInputs().at(ir::operation::BinaryArithmetic::Input::RHS)};
 
-  // const auto arithmetic_type = node.param().arithmetic_type;
+  // const auto activation = node.param().activation;
 
   OperationDef op_def;
 
-  // switch (arithmetic_type)
-  // {
-  // case ir::operation::BinaryArithmetic::ArithmeticType::ADD:
-  //   break;
-
-  // default:
-  //   break;
-  // }
-
   auto tensor_reserver = _tensor_reg->getTensorReserver();
   op_def.precision = CalculationsPrecision::F32;
+
   op_def.src_tensors.push_back(tensor_reserver.Get(lhs_index.value()).descriptor);
   auto lhs_shape = tensor_reserver.Get(lhs_index.value()).shape;
 
@@ -93,44 +87,47 @@ void KernelGenerator::visit(const ir::operation::BinaryArithmetic &node)
   op_def.dst_tensors.push_back(tensor_reserver.Get(ofm_index.value()).descriptor);
   auto out_shape = tensor_reserver.Get(ofm_index.value()).shape;
 
-  std::unique_ptr<GPUOperation> gpu_op;
-
-  std::vector<int> channels(2);
-  channels[0] = lhs_shape.c;
-  channels[1] = rhs_shape.c;
-  SelectAdd(op_def, channels, out_shape.c, &gpu_op);
-
   auto fn = std::make_unique<ClFunction>();
-  auto ofm_tensor = _tensor_reg->getClTensor(ofm_index);
-  auto lhs_tensor = _tensor_reg->getClTensor(lhs_index);
-  auto rhs_tensor = _tensor_reg->getClTensor(rhs_index);
-  gpu_op->SetSrc(lhs_tensor->handle(), 0);
-  gpu_op->SetSrc(rhs_tensor->handle(), 1);
-  gpu_op->SetDst(ofm_tensor->handle(), 0);
 
-  fn->configure(std::move(gpu_op), _creation_context);
+  std::unique_ptr<GPUOperation> gpu_op;
+  switch (node.param().arithmetic_type)
+  {
+    case ir::operation::BinaryArithmetic::ArithmeticType::ADD:
+    {
+      std::vector<int> channels(2);
+      channels[0] = lhs_shape.c;
+      channels[1] = rhs_shape.c;
+      SelectAdd(op_def, channels, out_shape.c, &gpu_op);
 
-  // TODO Add cl_node and merge..
+      auto ofm_tensor = _tensor_reg->getClTensor(ofm_index);
+      auto lhs_tensor = _tensor_reg->getClTensor(lhs_index);
+      auto rhs_tensor = _tensor_reg->getClTensor(rhs_index);
+      gpu_op->SetSrc(lhs_tensor->handle(), ir::operation::BinaryArithmetic::Input::LHS);
+      gpu_op->SetSrc(rhs_tensor->handle(), ir::operation::BinaryArithmetic::Input::RHS);
+      gpu_op->SetDst(ofm_tensor->handle(), 0);
 
-  // for (auto& gpu_op : gpu_subgraph.operations) {
-  //   CLNode cl_node;
-  //   cl_node.operation = std::move(gpu_op.operation);
-  //   cl_node.inputs.resize(gpu_op.input_ids.size());
-  //   for (int j = 0; j < gpu_op.input_ids.size(); ++j) {
-  //     int id = gpu_op.input_ids[j];
-  //     if (id >= 0) {
-  //       cl_node.inputs[j] = id;
-  //     }
-  //   }
-  //   cl_node.outputs.resize(gpu_op.output_ids.size());
-  //   for (int j = 0; j < gpu_op.output_ids.size(); ++j) {
-  //     int id = gpu_op.output_ids[j];
-  //     if (id >= 0) {
-  //       cl_node.outputs[j] = id;
-  //     }
-  //   }
-  //   nodes_.push_back(std::move(cl_node));
-  // }
+      fn->configure(std::move(gpu_op), _creation_context);
+      break;
+    }
+    case ir::operation::BinaryArithmetic::ArithmeticType::SUB:
+    {
+      // NYI
+      break;
+    }
+    case ir::operation::BinaryArithmetic::ArithmeticType::MUL:
+    {
+      // NYI
+      break;
+    }
+    case ir::operation::BinaryArithmetic::ArithmeticType::DIV:
+    {
+      // NYI
+      break;
+    }
+    default:
+      assert(false && "The BinaryArithmetic operation supports only binary arithmetic operations");
+      break;
+  }
 
   _return_fn = std::move(fn);
 }

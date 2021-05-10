@@ -20,17 +20,18 @@
 #include <memory>
 #include <queue>
 
+#include "ClTensorManager.h"
+#include "ClTensorRegistry.h"
+#include "ParentInfo.h"
+
 #include "../open_cl/TensorType.h"
 #include "../open_cl/TensorTypeUtil.h"
 #include "../open_cl/ClDevice.h"
 #include "../open_cl/InferenceContext.h"
+
 #include "ir/OperandIndexMap.h"
 #include "ir/OperandIndexSequence.h"
 #include <ir/Operands.h>
-#include "ClTensorManager.h"
-#include "ClTensorRegistry.h"
-#include <memory>
-#include "ParentInfo.h"
 #include <util/Utils.h>
 
 namespace onert

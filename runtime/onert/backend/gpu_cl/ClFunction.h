@@ -40,7 +40,7 @@ public:
                  std::shared_ptr<CreationContext> creation_context)
   {
     _gpu_operation = std::move(gpu_operation);
-    _creation_context = std::move(creation_context);
+    _creation_context = creation_context;
   }
 
   void run() override { _gpu_operation->AddToQueue(_creation_context->queue); }

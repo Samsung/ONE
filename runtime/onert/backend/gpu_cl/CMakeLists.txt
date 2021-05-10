@@ -1,11 +1,11 @@
 set(LIB_ONERT_BACKEND_GPU_CL onert_backend_gpu_cl)
 
+# TODO
+# Change find_package OPENCL header
 nnfw_find_package(ARMCompute QUIET)
 if(NOT ARMCompute_FOUND)
   return()
 endif(NOT ARMCompute_FOUND)
-
-# find_package(abseil REQUIRED)
 
 file(GLOB_RECURSE SOURCES "*.cc")
 

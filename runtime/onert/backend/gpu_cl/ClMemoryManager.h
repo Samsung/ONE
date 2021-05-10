@@ -20,12 +20,12 @@
 #include <cassert>
 
 #include "ir/OperandIndexMap.h"
+#include "ir/Shape.h"
+#include "../open_cl/ClContext.h"
 #include "../open_cl/InferenceContext.h"
 #include "../open_cl/StorageTypeUtil.h"
-#include "../open_cl/ClContext.h"
 #include "../open_cl/TensorType.h"
 #include "util/logging.h"
-#include "ir/Shape.h"
 
 namespace onert
 {
@@ -55,11 +55,7 @@ public:
 
   virtual void deallocate(void)
   {
-    // for (const auto &tensor_entry : _tensors)
-    // {
-    //   auto tensor = tensor_entry.second;
-    //   tensor->allocator()->free();
-    // }
+    // NYI
   }
 
   virtual void startLifetime(const ir::OperandIndex &)
@@ -81,19 +77,26 @@ public:
     _tensors[ind] = tensor;
 
     BHWC t_shape;
-    if (shape.rank() == 3)
+    switch (shape.rank())
     {
-      t_shape.b = 1;
-      t_shape.h = shape.dim(0);
-      t_shape.w = shape.dim(1);
-      t_shape.c = shape.dim(2);
-    }
-    else if (shape.rank() == 4)
-    {
-      t_shape.b = shape.dim(0);
-      t_shape.h = shape.dim(1);
-      t_shape.w = shape.dim(2);
-      t_shape.c = shape.dim(3);
+      case 1:
+        // B layout
+        t_shape = BHWC(shape.dim(0), 1, 1, 1);
+        break;
+      case 2:
+        // BC layout
+        t_shape = BHWC(shape.dim(0), 1, 1, shape.dim(1));
+        break;
+      case 3:
+        // BWC layout
+        t_shape = BHWC(shape.dim(0), 1, shape.dim(1), shape.dim(2));
+        break;
+      case 4:
+        // BHWC layout
+        t_shape = BHWC(shape.dim(0), shape.dim(1), shape.dim(2), shape.dim(3));
+        break;
+      default:
+        break;
     }
 
     TensorStorageType storage_type = create_info.storage_type;

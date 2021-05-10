@@ -19,9 +19,10 @@
 
 #include <backend/BackendContext.h>
 #include <util/ConfigSource.h>
+
+#include "KernelGenerator.h"
 #include "TensorBuilder.h"
 #include "../open_cl/InferenceContext.h"
-#include "KernelGenerator.h"
 
 namespace onert
 {

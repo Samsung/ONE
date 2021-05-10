@@ -18,8 +18,10 @@
 #define __ONERT_BACKEND_ACL_COMMON_TENSOR_MANAGER_H__
 
 #include "ClMemoryManager.h"
+
 #include "../open_cl/InferenceContext.h"
 #include "../open_cl/TensorType.h"
+
 #include "ir/OperandInfo.h"
 #include "ir/OperandIndexMap.h"
 
@@ -198,30 +200,7 @@ void ClTensorManager<T_ITensor, T_Tensor>::iterate(
 template <typename T_ITensor, typename T_Tensor>
 void ClTensorManager<T_ITensor, T_Tensor>::tryDeallocConstants(void)
 {
-  // TODO
-  // auto &tensors = _const_mgr->tensors();
-
-  // for (auto it = tensors.begin(); it != tensors.end();)
-  // {
-  //   const auto &ind = it->first;
-  //   auto tensor = it->second;
-  //   // NOTE The condition "tensor->num_uses() < 2" is used to prevent deallocating a constant
-  //   tensor
-  //   // used in several nodes.
-  //   if (tensor->handle() && !tensor->handle()->is_used() && tensor->num_uses() < 2)
-  //   {
-  //     VERBOSE(ClTensorManager) << "Tensor " << ind
-  //                              << " will be deallocated as an unused constant tensor" <<
-  //                              std::endl;
-  //     tensor->allocator()->free();
-  //     tensor.reset();
-  //     it = tensors.erase(it);
-  //   }
-  //   else
-  //   {
-  //     ++it;
-  //   }
-  // }
+  // NYI
 }
 
 } // namespace gpu_cl

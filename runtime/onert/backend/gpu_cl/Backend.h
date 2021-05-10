@@ -27,7 +27,7 @@
 #include "TensorManager.h"
 #include "TensorBuilder.h"
 
-#include "open_cl/Environment.h"
+#include "../open_cl/Environment.h"
 
 namespace onert
 {
