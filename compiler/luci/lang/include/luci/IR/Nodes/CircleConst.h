@@ -44,6 +44,8 @@ public:
 
 private:
   std::vector<uint8_t> _data;
+  // TODO use _data for STRING and remove _strings
+  std::vector<std::string> _strings; // for STRING type
 };
 
 } // namespace luci
