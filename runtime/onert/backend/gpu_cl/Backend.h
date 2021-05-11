@@ -27,7 +27,8 @@
 #include "TensorManager.h"
 #include "TensorBuilder.h"
 
-#include "../open_cl/Environment.h"
+#include "open_cl/Environment.h"
+#include "open_cl/Status.h"
 
 namespace onert
 {
@@ -50,7 +51,10 @@ public:
     auto context = std::make_unique<gpu_cl::BackendContext>(this, std::move(data));
 
     auto environment = std::make_unique<Environment>();
-    CreateEnvironment(environment.get());
+    if (!CreateEnvironment(environment.get()).ok())
+    {
+      return nullptr;
+    }
     auto tm = createTensorManager(&environment->context());
     auto tr = std::make_shared<ClTensorRegistry<TensorManager>>(tm);
 

@@ -19,9 +19,9 @@
 
 #include "ICLTensor.h"
 
-#include "../../open_cl/Buffer.h"
-#include "../../open_cl/ClContext.h"
-#include "../../open_cl/Tensor.h"
+#include "open_cl/Buffer.h"
+#include "open_cl/ClContext.h"
+#include "open_cl/Tensor.h"
 
 namespace onert
 {

@@ -19,8 +19,8 @@
 
 #include "ClMemoryManager.h"
 
-#include "../open_cl/InferenceContext.h"
-#include "../open_cl/TensorType.h"
+#include "open_cl/InferenceContext.h"
+#include "open_cl/TensorType.h"
 
 #include "ir/OperandInfo.h"
 #include "ir/OperandIndexMap.h"

@@ -16,7 +16,7 @@
 
 #include "ICLTensor.h"
 
-#include "../../open_cl/OpenclWrapper.h"
+#include "open_cl/OpenclWrapper.h"
 
 namespace onert
 {
@@ -41,13 +41,20 @@ void ICLTensor::enqueueWriteBuffer(const void *ptr, bool)
   {
     case TensorStorageType::BUFFER:
     case TensorStorageType::IMAGE_BUFFER:
-      _queue->EnqueueWriteBuffer(handle()->GetMemoryPtr(), total_size(), ptr);
+      if (!_queue->EnqueueWriteBuffer(handle()->GetMemoryPtr(), total_size(), ptr).ok())
+      {
+        return;
+      }
       break;
     case TensorStorageType::TEXTURE_ARRAY:
     case TensorStorageType::TEXTURE_2D:
     case TensorStorageType::TEXTURE_3D:
     case TensorStorageType::SINGLE_TEXTURE_2D:
-      _queue->EnqueueWriteImage(handle()->GetMemoryPtr(), handle()->GetFullTensorRegion(), ptr);
+      if (!_queue->EnqueueWriteImage(handle()->GetMemoryPtr(), handle()->GetFullTensorRegion(), ptr)
+             .ok())
+      {
+        return;
+      }
       break;
     default:
       break;
@@ -60,13 +67,20 @@ void ICLTensor::enqueueReadBuffer(void *ptr, bool)
   {
     case TensorStorageType::BUFFER:
     case TensorStorageType::IMAGE_BUFFER:
-      _queue->EnqueueReadBuffer(handle()->GetMemoryPtr(), total_size(), ptr);
+      if (!_queue->EnqueueReadBuffer(handle()->GetMemoryPtr(), total_size(), ptr).ok())
+      {
+        return;
+      }
       break;
     case TensorStorageType::TEXTURE_ARRAY:
     case TensorStorageType::TEXTURE_2D:
     case TensorStorageType::TEXTURE_3D:
     case TensorStorageType::SINGLE_TEXTURE_2D:
-      _queue->EnqueueReadImage(handle()->GetMemoryPtr(), handle()->GetFullTensorRegion(), ptr);
+      if (!_queue->EnqueueReadImage(handle()->GetMemoryPtr(), handle()->GetFullTensorRegion(), ptr)
+             .ok())
+      {
+        return;
+      }
       break;
     default:
       break;

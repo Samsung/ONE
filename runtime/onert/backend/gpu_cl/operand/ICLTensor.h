@@ -19,8 +19,8 @@
 
 #include <backend/ITensor.h>
 
-#include "../../open_cl/ClCommandQueue.h"
-#include "../../open_cl/Tensor.h"
+#include "open_cl/ClCommandQueue.h"
+#include "open_cl/Tensor.h"
 
 namespace onert
 {

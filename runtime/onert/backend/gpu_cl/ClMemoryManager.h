@@ -21,10 +21,11 @@
 
 #include "ir/OperandIndexMap.h"
 #include "ir/Shape.h"
-#include "../open_cl/ClContext.h"
-#include "../open_cl/InferenceContext.h"
-#include "../open_cl/StorageTypeUtil.h"
-#include "../open_cl/TensorType.h"
+#include "open_cl/ClContext.h"
+#include "open_cl/InferenceContext.h"
+#include "open_cl/Status.h"
+#include "open_cl/StorageTypeUtil.h"
+#include "open_cl/TensorType.h"
 #include "util/logging.h"
 
 namespace onert
@@ -49,7 +50,10 @@ public:
       const auto &t = tensor_reserver_.Get(tensor_entry.first.value());
       const auto &shape = t.shape;
       const auto &descriptor = t.descriptor;
-      CreateTensor(*_context, shape, descriptor, tensor->handle());
+      if (!CreateTensor(*_context, shape, descriptor, tensor->handle()).ok())
+      {
+        return;
+      }
     }
   }
 

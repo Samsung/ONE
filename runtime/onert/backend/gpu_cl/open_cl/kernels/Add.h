@@ -1,11 +1,12 @@
 /*
  * Copyright (c) 2021 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright 2019 The TensorFlow Authors. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,12 +15,14 @@
  * limitations under the License.
  */
 
-#include "CLTensor.h"
+#ifndef TENSORFLOW_LITE_DELEGATES_GPU_CL_KERNELS_ADD_H_
+#define TENSORFLOW_LITE_DELEGATES_GPU_CL_KERNELS_ADD_H_
 
-#include "open_cl/Buffer.h"
-#include "open_cl/ClContext.h"
-#include "open_cl/Tensor.h"
-#include "open_cl/TensorType.h"
+#include <string>
+#include <vector>
+
+#include "GpuOperation.h"
+#include "open_cl/Operations.h"
 
 namespace onert
 {
@@ -27,21 +30,14 @@ namespace backend
 {
 namespace gpu_cl
 {
-namespace operand
-{
 
-CLTensor::CLTensor(size_t rank, ir::Shape shape, CLCommandQueue *queue, size_t num_uses)
-  : ICLTensor{rank, shape, queue}, _tensor(std::make_shared<Tensor>()), _num_uses{num_uses}
-{
-}
+// Add operation supports not equal tensors on input (for possibility to
+// remove Padding operation with zeroes in channels dimension)
+GPUOperation CreateAdd(const OperationDef &definition, const std::vector<int> &channels,
+                       int dst_channels);
 
-const Tensor *CLTensor::handle() const { return _tensor.get(); }
-
-Tensor *CLTensor::handle() { return _tensor.get(); }
-
-void CLTensor::setBuffer(void *host_ptr) { (void)host_ptr; }
-
-} // namespace operand
 } // namespace gpu_cl
 } // namespace backend
 } // namespace onert
+
+#endif // TENSORFLOW_LITE_DELEGATES_GPU_CL_KERNELS_ADD_H_

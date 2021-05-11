@@ -1,11 +1,12 @@
 /*
  * Copyright (c) 2021 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright 2020 The TensorFlow Authors. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,12 +15,12 @@
  * limitations under the License.
  */
 
-#include "CLTensor.h"
+#include "SimpleSelectors.h"
 
-#include "open_cl/Buffer.h"
-#include "open_cl/ClContext.h"
-#include "open_cl/Tensor.h"
-#include "open_cl/TensorType.h"
+#include <memory>
+#include <set>
+
+#include "open_cl/kernels/Add.h"
 
 namespace onert
 {
@@ -27,21 +28,14 @@ namespace backend
 {
 namespace gpu_cl
 {
-namespace operand
-{
 
-CLTensor::CLTensor(size_t rank, ir::Shape shape, CLCommandQueue *queue, size_t num_uses)
-  : ICLTensor{rank, shape, queue}, _tensor(std::make_shared<Tensor>()), _num_uses{num_uses}
+void SelectAdd(const OperationDef &op_def, const std::vector<int> &channels, int dst_channels,
+               std::unique_ptr<GPUOperation> *ptr)
 {
+  GPUOperation operation = CreateAdd(op_def, channels, dst_channels);
+  *ptr = std::make_unique<GPUOperation>(std::move(operation));
 }
 
-const Tensor *CLTensor::handle() const { return _tensor.get(); }
-
-Tensor *CLTensor::handle() { return _tensor.get(); }
-
-void CLTensor::setBuffer(void *host_ptr) { (void)host_ptr; }
-
-} // namespace operand
 } // namespace gpu_cl
 } // namespace backend
 } // namespace onert

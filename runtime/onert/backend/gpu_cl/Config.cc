@@ -16,7 +16,8 @@
 
 #include "Config.h"
 
-#include "../open_cl/OpenclWrapper.h"
+#include "open_cl/OpenclWrapper.h"
+#include "open_cl/Status.h"
 
 namespace onert
 {
@@ -29,11 +30,14 @@ Config::~Config() {}
 
 bool Config::initialize()
 {
-  if (!LoadOpenCL())
+  if (LoadOpenCL().ok())
+  {
+    return true;
+  }
+  else
   {
     return false;
   }
-  return true;
 }
 
 ir::Layout Config::supportLayout(const ir::Operation &, ir::Layout) { return ir::Layout::NHWC; }

@@ -22,7 +22,7 @@
 
 #include "KernelGenerator.h"
 #include "TensorBuilder.h"
-#include "../open_cl/InferenceContext.h"
+#include "open_cl/InferenceContext.h"
 
 namespace onert
 {

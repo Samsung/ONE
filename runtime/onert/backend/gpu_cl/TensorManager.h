@@ -19,7 +19,7 @@
 
 #include "ClMemoryManager.h"
 #include "ClTensorManager.h"
-#include "../open_cl/ClContext.h"
+#include "open_cl/ClContext.h"
 #include "operand/CLTensor.h"
 #include "operand/ICLTensor.h"
 #include "util/logging.h"
