@@ -68,6 +68,8 @@ tflite::TensorType as_tflite_tensortype(const tflchef::TensorType &value)
       return tflite::TensorType_UINT8;
     case tflchef::INT64:
       return tflite::TensorType_INT64;
+    case tflchef::STRING:
+      return tflite::TensorType_STRING;
     case tflchef::BOOL:
       return tflite::TensorType_BOOL;
     case tflchef::INT16:

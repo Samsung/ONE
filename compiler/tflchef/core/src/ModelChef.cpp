@@ -89,6 +89,7 @@ DataChefRegistry &data_chef_registry(const tflchef::TensorType &type)
   static DataChefRegistry s64;
   static DataChefRegistry fp32;
   static DataChefRegistry u8;
+  static DataChefRegistry string;
   static DataChefRegistry boolean;
   static DataChefRegistry s16;
 
@@ -102,6 +103,8 @@ DataChefRegistry &data_chef_registry(const tflchef::TensorType &type)
       return fp32;
     case tflchef::UINT8:
       return u8;
+    case tflchef::STRING:
+      return string;
     case tflchef::BOOL:
       return boolean;
     case tflchef::INT16:
