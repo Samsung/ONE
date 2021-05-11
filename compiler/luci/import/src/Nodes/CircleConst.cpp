@@ -40,14 +40,10 @@ std::ostream &operator<<(std::ostream &os, const std::vector<int32_t> &vect)
   return os;
 }
 
-} // namespace
-
-namespace luci
-{
+using namespace luci;
 
 template <loco::DataType DT>
-static void copy_data(const std::vector<uint8_t> &raw_data, uint32_t num_elements,
-                      CircleConst *const_node)
+void copy_data(const std::vector<uint8_t> &raw_data, uint32_t num_elements, CircleConst *const_node)
 {
   using T = typename loco::DataTypeImpl<DT>::Type;
 
@@ -66,6 +62,11 @@ static void copy_data(const std::vector<uint8_t> &raw_data, uint32_t num_element
     const_node->at<DT>(i) = data[i];
   }
 }
+
+} // namespace
+
+namespace luci
+{
 
 CircleConst *create_circleconst(GraphBuilderContext *context, int32_t tensor_index)
 {
