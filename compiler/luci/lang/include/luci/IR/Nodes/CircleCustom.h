@@ -32,9 +32,8 @@ public:
   CircleCustom(uint32_t arity, uint32_t out)
     : VariadicArityNode<CircleNodeImpl<CircleOpcode::CUSTOM>>(arity), _output_count(out)
   {
-    // TODO Support when arity is 0
-    assert(arity >= 1);
-    assert(out > 0);
+    // NOTE Custom can have 0 input or 0 output but not both
+    assert(arity != 0 || out != 0);
   }
 
 public:

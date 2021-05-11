@@ -60,7 +60,8 @@ CircleNode *GraphBuilderMultiOutput::build(const circle::OperatorT &op,
   auto *node = build_node(bna);
 
   uint32_t output_count = outputs.size();
-  assert(output_count > 0);
+  // NOTE CustomOp inherits GraphBuilderMultiOutput and can have 0 output
+  if (output_count > 0)
   {
     // Let's use attributes from output 0 for this node
     const circle::TensorT &output_tensor = *tensors[outputs[0]];
