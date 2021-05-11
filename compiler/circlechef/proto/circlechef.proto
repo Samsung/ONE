@@ -18,6 +18,7 @@ enum TensorType {
   INT32 = 2;
   UINT8 = 3;
   INT64 = 4;
+  STRING = 5;
   BOOL = 6;
   INT16 = 7;
 }
