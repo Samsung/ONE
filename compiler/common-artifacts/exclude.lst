@@ -6,6 +6,8 @@
 #[[ optimize : Exclude from circle optimization(circle2circle) ]]
 ## TensorFlowLiteRecipes
 optimize(UnidirectionalSequenceLSTM_001) # This recipe contains is_variable Tensor
+optimize(Add_STR_000) # remove this after luci import/export supports STRING TensorType
+optimize(Add_STR_001) # remove this after luci import/export supports STRING TensorType
 
 ## CircleRecipes
 
@@ -15,6 +17,8 @@ tcgenerate(Abs_000)
 tcgenerate(AddN_000)
 tcgenerate(Add_001) # runtime doesn't support
 tcgenerate(Add_U8_000)
+tcgenerate(Add_STR_000) # STRING is not supported
+tcgenerate(Add_STR_001) # STRING is not supported
 tcgenerate(All_000)
 tcgenerate(ArgMin_000)
 tcgenerate(ArgMin_001)
