@@ -345,6 +345,8 @@ template <class Pool2DType> loco::NodeShape infer_pool_2d_shape(const Pool2DType
 {
   auto ifm_shape = luci::shape_get(node->value()).template as<loco::TensorShape>();
   assert(ifm_shape.rank() == 4);
+  assert(ifm_shape.dim(1).known());
+  assert(ifm_shape.dim(2).known());
 
   uint32_t input_height = ifm_shape.dim(1).value();
   uint32_t input_width = ifm_shape.dim(2).value();
@@ -444,6 +446,10 @@ template <class Conv2DType> OutputSize infer_conv2d_type(const Conv2DType *node)
   auto ker_shape = luci::shape_get(node->filter()).template as<loco::TensorShape>();
   assert(ifm_shape.rank() == 4);
   assert(ker_shape.rank() == 4);
+  assert(ifm_shape.dim(1).known());
+  assert(ifm_shape.dim(2).known());
+  assert(ker_shape.dim(1).known());
+  assert(ker_shape.dim(2).known());
 
   uint32_t input_height = ifm_shape.dim(1).value();
   uint32_t input_width = ifm_shape.dim(2).value();
