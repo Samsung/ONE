@@ -2,7 +2,7 @@ if(NOT TARGET mio_circle)
   return()
 endif(NOT TARGET mio_circle)
 
-nnas_find_package(HDF5 QUIET)
+nnas_find_package(HDF5 COMPONENTS STATIC QUIET)
 
 if(NOT HDF5_FOUND)
   message(STATUS "Build circle-tensordump: FAILED (missing HDF5)")
