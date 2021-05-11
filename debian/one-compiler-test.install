@@ -1,0 +1,3 @@
+# {FILES_TO_INSTALL} {DEST_DIR}
+# test
+usr/test/* opt/one_compiler/test/

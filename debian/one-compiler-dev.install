@@ -1,0 +1,5 @@
+# {FILES_TO_INSTALL} {DEST_DIR}
+# bin
+usr/bin/circledump opt/one_compiler/bin/
+# include
+usr/include/* opt/one_compiler/include/

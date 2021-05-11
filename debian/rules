@@ -1,0 +1,19 @@
+#!/usr/bin/make -f
+export DH_VERBOSE = 1
+export NNAS_BUILD_PREFIX = build/release
+export PRESET = 20210406
+export _DESTDIR = debian/tmp/usr
+
+%:
+	dh $@
+
+override_dh_auto_build:
+	./nnas create-package --preset $(PRESET) --prefix "$(_DESTDIR)"
+
+override_dh_auto_install:
+	cmake --build "$(NNAS_BUILD_PREFIX)/nncc" -- install
+
+override_dh_install:
+	dh_install
+	install -t "$(_DESTDIR)/bin" -D "tools/nnpackage_tool/model2nnpkg/model2nnpkg.sh"
+	install -T -m 755 -D "infra/packaging/res/tf2nnpkg.${PRESET}" "$(_DESTDIR)/bin/tf2nnpkg"
