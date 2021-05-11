@@ -89,6 +89,7 @@ DataChefRegistry &data_chef_registry(const circlechef::TensorType &type)
   static DataChefRegistry s64;
   static DataChefRegistry fp32;
   static DataChefRegistry u8;
+  static DataChefRegistry string;
   static DataChefRegistry boolean;
   static DataChefRegistry s16;
 
@@ -102,6 +103,8 @@ DataChefRegistry &data_chef_registry(const circlechef::TensorType &type)
       return fp32;
     case circlechef::UINT8:
       return u8;
+    case circlechef::STRING:
+      return string;
     case circlechef::BOOL:
       return boolean;
     case circlechef::INT16:
