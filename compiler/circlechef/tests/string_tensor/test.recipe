@@ -1,0 +1,31 @@
+operand {
+  name: "ifm"
+  shape { }
+  type: STRING
+}
+operand {
+  name: "constant"
+  type: STRING
+  shape { }
+  filler {
+    tag: "explicit"
+    arg: "Hello"
+  }
+}
+operand {
+  name: "ofm"
+  type: STRING
+  shape { }
+}
+operation {
+  type: "BatchMatMul"
+  input: "ifm"
+  input: "constant"
+  output: "ofm"
+  batch_matmul_options {
+    adjoint_lhs: false
+    adjoint_rhs: false
+  }
+}
+input: "ifm"
+output: "ofm"

@@ -62,6 +62,8 @@ circle::TensorType as_circle_tensortype(const circlechef::TensorType &value)
       return circle::TensorType_UINT8;
     case circlechef::INT64:
       return circle::TensorType_INT64;
+    case circlechef::STRING:
+      return circle::TensorType_STRING;
     case circlechef::BOOL:
       return circle::TensorType_BOOL;
     case circlechef::INT16:
