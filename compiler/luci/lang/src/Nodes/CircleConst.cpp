@@ -80,4 +80,48 @@ INSTANTIATE(loco::DataType::BOOL);
 
 #undef INSTANTIATE
 
+// CircleConst implementations for loco::DataType::STRING
+
+template <> uint32_t CircleConst::size<loco::DataType::STRING>(void) const
+{
+  assert(dtype() == loco::DataType::STRING);
+  assert(_data.size() == 0);
+  return _strings.size();
+}
+
+template <> void CircleConst::size<loco::DataType::STRING>(uint32_t l)
+{
+  assert(dtype() == loco::DataType::STRING);
+  assert(_data.size() == 0);
+  _strings.resize(l);
+}
+
+template <> const std::string &CircleConst::at<loco::DataType::STRING>(uint32_t n) const
+{
+  assert(dtype() == loco::DataType::STRING);
+  assert(n < _strings.size());
+  return _strings.at(n);
+}
+
+template <> std::string &CircleConst::at<loco::DataType::STRING>(uint32_t n)
+{
+  assert(dtype() == loco::DataType::STRING);
+  assert(n < _strings.size());
+  return _strings.at(n);
+}
+
+template <> const std::string &CircleConst::scalar<loco::DataType::STRING>(void) const
+{
+  assert(dtype() == loco::DataType::STRING);
+  assert(1 == _strings.size());
+  return _strings.at(0);
+}
+
+template <> std::string &CircleConst::scalar<loco::DataType::STRING>(void)
+{
+  assert(dtype() == loco::DataType::STRING);
+  assert(1 == _strings.size());
+  return _strings.at(0);
+}
+
 } // namespace luci

@@ -51,3 +51,16 @@ TEST(CircleConstTest, scalar)
   auto const &cs = const_node.scalar<loco::DataType::S32>();
   ASSERT_EQ(1, cs);
 }
+
+TEST(CircleConstTest, string)
+{
+  luci::CircleConst const_node;
+
+  const_node.dtype(loco::DataType::STRING);
+  const_node.size<loco::DataType::STRING>(1);
+  const_node.at<loco::DataType::STRING>(0) = std::string("Hello");
+
+  ASSERT_EQ(loco::DataType::STRING, const_node.dtype());
+  ASSERT_EQ(1, const_node.size<loco::DataType::STRING>());
+  EXPECT_TRUE(std::string("Hello") == const_node.at<loco::DataType::STRING>(0));
+}
