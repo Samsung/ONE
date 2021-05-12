@@ -86,7 +86,7 @@ loco::DataType luci_datatype(const circle::TensorType type)
     case circle::TensorType_INT64:
       return loco::DataType::S64;
     case circle::TensorType_STRING:
-      break;
+      return loco::DataType::STRING;
     case circle::TensorType_BOOL:
       return loco::DataType::BOOL;
     case circle::TensorType_INT16:

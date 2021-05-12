@@ -23,6 +23,9 @@
 #include <oops/UserExn.h>
 
 #include <cassert>
+#include <ostream>
+#include <string>
+#include <vector>
 
 namespace
 {
@@ -60,6 +63,41 @@ void copy_data(const std::vector<uint8_t> &raw_data, uint32_t num_elements, Circ
   for (uint32_t i = 0; i < num_elements; ++i)
   {
     const_node->at<DT>(i) = data[i];
+  }
+}
+
+template <>
+void copy_data<loco::DataType::STRING>(const std::vector<uint8_t> &raw_data, uint32_t num_elements,
+                                       CircleConst *const_node)
+{
+  assert(const_node->sparsityparam() == nullptr);
+
+  const auto *data = reinterpret_cast<const char *>(raw_data.data());
+  const auto *i32d = reinterpret_cast<const int32_t *>(raw_data.data());
+
+  // de-serialize string data
+  //   int32_t count
+  //   int32_t offsets[count + 1]
+  //   string  values[count]
+  assert(static_cast<uint32_t>(*i32d) == num_elements);
+  i32d++; // skip count
+
+  std::vector<int32_t> offsets;
+  offsets.push_back(*i32d++);
+  for (uint32_t i = 0; i < num_elements; ++i)
+  {
+    offsets.push_back(*i32d++);
+  }
+  assert(offsets.size() == num_elements + 1);
+
+  const_node->size<loco::DataType::STRING>(num_elements);
+  for (uint32_t i = 0; i < num_elements; ++i)
+  {
+    int32_t start = offsets[i];
+    int32_t next = offsets[i + 1];
+
+    std::string value(data + start, next - start);
+    const_node->at<loco::DataType::STRING>(i) = value;
   }
 }
 
@@ -140,6 +178,10 @@ CircleConst *create_circleconst(GraphBuilderContext *context, int32_t tensor_ind
 
       case loco::DataType::BOOL:
         copy_data<loco::DataType::BOOL>(buffer, num_elements, const_node);
+        break;
+
+      case loco::DataType::STRING:
+        copy_data<loco::DataType::STRING>(buffer, num_elements, const_node);
         break;
 
       default:
