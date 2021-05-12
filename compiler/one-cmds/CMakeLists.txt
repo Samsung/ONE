@@ -38,6 +38,7 @@ endforeach(ONE_COMMAND)
 set(ONE_UTILITY_FILES
     one-build.template.cfg
     utils.py
+    conv_mixin_1.8.0.patch
 )
 
 foreach(ONE_UTILITY IN ITEMS ${ONE_UTILITY_FILES})
