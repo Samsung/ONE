@@ -6,8 +6,6 @@
 #[[ optimize : Exclude from circle optimization(circle2circle) ]]
 ## TensorFlowLiteRecipes
 optimize(UnidirectionalSequenceLSTM_001) # This recipe contains is_variable Tensor
-optimize(Add_STR_000) # remove this after luci import/export supports STRING TensorType
-optimize(Add_STR_001) # remove this after luci import/export supports STRING TensorType
 
 ## CircleRecipes
 
