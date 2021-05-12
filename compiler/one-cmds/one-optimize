@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-''''export SCRIPT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"                  # '''
+''''export SCRIPT_PATH="$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")" && pwd)" # '''
 ''''export PY_PATH=${SCRIPT_PATH}/venv/bin/python                                       # '''
 ''''test -f ${PY_PATH} && exec ${PY_PATH} "$0" "$@"                                     # '''
 ''''echo "Error: Virtual environment not found. Please run 'one-prepare-venv' command." # '''
