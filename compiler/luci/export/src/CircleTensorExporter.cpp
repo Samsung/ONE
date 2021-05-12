@@ -366,6 +366,10 @@ encodeOpBufferByDType<loco::DataType::STRING>(FlatBufferBuilder &builder, luci::
     raw_size += value.length();
   }
 
+  // serialize string data
+  //   int32_t count
+  //   int32_t offsets[count + 1]
+  //   string  values[count]
   std::vector<uint8_t> raw_data;
   raw_data.reserve(raw_size);
 
