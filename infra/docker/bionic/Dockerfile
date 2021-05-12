@@ -20,6 +20,10 @@ ARG UBUNTU_MIRROR
 # Install 'add-apt-repository'
 RUN apt-get update && apt-get -qqy install software-properties-common
 
+# experiment
+RUN apt-get update && apt-get -qqy install ubuntu-snappy
+RUN snap install cmake
+
 # Build tool
 RUN apt-get update && apt-get -qqy install build-essential cmake scons git g++-arm-linux-gnueabihf g++-aarch64-linux-gnu
 
