@@ -28,6 +28,8 @@
 #include <loco/IR/DataTypeTraits.h>
 #include <oops/InternalExn.h>
 
+#include <string.h>
+
 using namespace circle;
 using namespace flatbuffers;
 
@@ -353,6 +355,54 @@ flatbuffers::Offset<circle::Buffer> encodeOpBufferByDType(FlatBufferBuilder &bui
 }
 
 template <>
+flatbuffers::Offset<circle::Buffer>
+encodeOpBufferByDType<loco::DataType::STRING>(FlatBufferBuilder &builder, luci::CircleConst *c)
+{
+  const uint32_t count = c->size<loco::DataType::STRING>();
+  uint32_t raw_size = sizeof(int32_t) * (count + 2);
+  for (uint32_t i = 0; i < count; ++i)
+  {
+    auto &value = c->at<loco::DataType::STRING>(i);
+    raw_size += value.length();
+  }
+
+  // serialize string data
+  //   int32_t count
+  //   int32_t offsets[count + 1]
+  //   string  values[count]
+  std::vector<uint8_t> raw_data;
+  raw_data.reserve(raw_size);
+
+  auto *i32d = reinterpret_cast<int32_t *>(raw_data.data());
+  int32_t start = sizeof(int32_t) * (count + 2);
+  int32_t offset = start;
+  std::vector<int32_t> offsets;
+
+  *i32d++ = count;
+  *i32d++ = start;
+  offsets.push_back(start);
+  for (uint32_t i = 0; i < count; ++i)
+  {
+    auto &value = c->at<loco::DataType::STRING>(i);
+    offset += value.length();
+    *i32d++ = offset;
+    offsets.push_back(offset);
+  }
+
+  auto *data = reinterpret_cast<uint8_t *>(i32d);
+  for (uint32_t i = 0; i < count; ++i)
+  {
+    int32_t length = offsets[i + 1] - offsets[i];
+    auto &value = c->at<loco::DataType::STRING>(i);
+    memcpy(data, value.c_str(), length);
+    data += length;
+  }
+
+  auto array_offset = builder.CreateVector(reinterpret_cast<uint8_t *>(raw_data.data()), raw_size);
+  return CreateBuffer(builder, array_offset);
+}
+
+template <>
 flatbuffers::Offset<circle::Buffer> encodeOpBuffer(FlatBufferBuilder &builder, luci::CircleConst *c)
 {
   switch (c->dtype())
@@ -371,6 +421,8 @@ flatbuffers::Offset<circle::Buffer> encodeOpBuffer(FlatBufferBuilder &builder, l
       return encodeOpBufferByDType<loco::DataType::U8>(builder, c);
     case loco::DataType::BOOL:
       return encodeOpBufferByDType<loco::DataType::BOOL>(builder, c);
+    case loco::DataType::STRING:
+      return encodeOpBufferByDType<loco::DataType::STRING>(builder, c);
     default:
       break;
   }
