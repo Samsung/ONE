@@ -19,6 +19,8 @@
 #include <luci/IR/CircleNodes.h>
 #include <luci/IR/CircleNodeVisitor.h>
 
+#include <cmath>
+
 using Type = loco::DataType;
 
 // This macro is undef at the end of the file
@@ -308,6 +310,9 @@ private:
   {
     RETURN_FALSE_UNLESS(has_type(node, Type::U8))
     RETURN_FALSE_UNLESS(has_type(node->x(), Type::U8))
+
+    // This checks the value of scale is an integer
+    RETURN_FALSE_UNLESS(std::roundf(node->quantparam()->scale[0]) == node->quantparam()->scale[0]);
     return true;
   }
 
@@ -340,6 +345,9 @@ private:
     RETURN_FALSE_UNLESS(has_type(node, Type::U8))
     RETURN_FALSE_UNLESS(has_type(node->x(), Type::U8))
     RETURN_FALSE_UNLESS(has_type(node->y(), Type::U8))
+
+    // This checks the value of scale is an integer
+    RETURN_FALSE_UNLESS(std::roundf(node->quantparam()->scale[0]) == node->quantparam()->scale[0]);
     return true;
   }
 

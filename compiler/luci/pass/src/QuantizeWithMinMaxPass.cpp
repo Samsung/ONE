@@ -590,6 +590,17 @@ struct QuantizeActivation final : public luci::CircleNodeMutableVisitor<bool>
           circle_node->dtype(loco::DataType::S16);
         }
 
+        // The output of these Ops should be integer, so scale should be integer
+        // TODO Handle cases where the integer scale needs to be propagated
+        if (circle_node->opcode() == CircleOpcode::FLOOR ||
+            circle_node->opcode() == CircleOpcode::FLOOR_DIV ||
+            circle_node->opcode() == CircleOpcode::FLOOR_MOD ||
+            circle_node->opcode() == CircleOpcode::CEIL)
+        {
+          assert(scaling_factor >= 0); // FIX_ME_UNLESS
+          scaling_factor = scaling_factor < 1 ? 1.0f : std::round(scaling_factor);
+        }
+
         circle_node->quantparam()->min.clear();
         circle_node->quantparam()->max.clear();
         circle_node->quantparam()->scale.push_back(scaling_factor);
