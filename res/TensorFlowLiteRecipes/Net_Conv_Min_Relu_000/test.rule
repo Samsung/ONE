@@ -1,0 +1,8 @@
+# To check if Minumum and ReLU are converte to Relu6 op
+
+RULE    "VERIFY_FILE_FORMAT"      $(verify_file_format) '=' 1
+
+RULE    "CONV_EXIST"              $(op_count CONV_2D) '=' 2
+RULE    "RELU6_EXIST"             $(op_count RELU6) '=' 2
+RULE    "MIN_NOT_EXIST"           $(op_count MINUMUM) '=' 0
+RULE    "RELU_NOT_EXIST"           $(op_count RELU) '=' 0
