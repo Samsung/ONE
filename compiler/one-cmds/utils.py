@@ -70,7 +70,8 @@ class _CONSTANT:
         ('substitute_squeeze_to_reshape', 'convert certain condition Squeeze to Reshape'),
         ('substitute_transpose_to_reshape',
          'convert certain condition Transpose to Reshape'),
-        ('transform_min_max_to_relu6', 'transform Minimum-Maximum pattern to Relu6 op'))
+        ('transform_min_max_to_relu6', 'transform Minimum-Maximum pattern to Relu6 op'),
+        ('transform_min_relu_to_relu6', 'transform Minimum(6)-Relu pattern to Relu6 op'))
 
 
 _CONSTANT = _CONSTANT()
