@@ -21,15 +21,13 @@
 namespace
 {
 
-bool remove_fake_quant(luci::CircleFakeQuant *fakequant)
+void remove_fake_quant(luci::CircleFakeQuant *fakequant)
 {
   assert(fakequant != nullptr);
 
   auto input_node = loco::must_cast<luci::CircleNode *>(fakequant->inputs());
 
   replace(fakequant).with(input_node);
-
-  return true;
 }
 
 } // namespace
@@ -60,8 +58,10 @@ bool RemoveFakeQuantPass::run(loco::Graph *g)
   {
     auto target_node = dynamic_cast<luci::CircleFakeQuant *>(node);
     if (target_node != nullptr)
-      if (remove_fake_quant(target_node))
-        changed = true;
+    {
+      remove_fake_quant(target_node);
+      changed = true;
+    }
   }
   return changed;
 }
