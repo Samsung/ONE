@@ -256,6 +256,12 @@ int entry(int argc, char **argv)
     .default_value(false)
     .help("Transform Minimum-Maximum pattern to Relu6 operator");
 
+  arser.add_argument("--transform_min_relu_to_relu6")
+    .nargs(0)
+    .required(false)
+    .default_value(false)
+    .help("Transform Minimum(6)-Relu pattern to Relu6 operator");
+
   arser.add_argument("--mute_warnings")
     .nargs(0)
     .required(false)
@@ -391,6 +397,8 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::SubstituteTransposeToReshape);
   if (arser.get<bool>("--transform_min_max_to_relu6"))
     options->enable(Algorithms::TransformMinMaxToRelu6Pass);
+  if (arser.get<bool>("--transform_min_relu_to_relu6"))
+    options->enable(Algorithms::TransformMinReluToRelu6Pass);
 
   if (arser.get<bool>("--mute_warnings"))
     settings->set(luci::UserSettings::Key::MuteWarnings, true);
