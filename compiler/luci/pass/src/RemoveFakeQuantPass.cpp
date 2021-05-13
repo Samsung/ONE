@@ -23,10 +23,10 @@ namespace
 
 bool remove_fake_quant(luci::CircleFakeQuant *fakequant)
 {
-  if (fakequant == nullptr)
-    return false;
+  assert(fakequant != nullptr);
 
   auto input_node = loco::must_cast<luci::CircleNode *>(fakequant->inputs());
+
   replace(fakequant).with(input_node);
 
   return true;
