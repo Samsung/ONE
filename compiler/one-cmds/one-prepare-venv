@@ -19,6 +19,7 @@ set -e
 DRIVER_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 VENV_ACTIVATE=${DRIVER_PATH}/venv/bin/activate
+VENV_PYTHON=${DRIVER_PATH}/venv/bin/python
 
 function error_no_ensurepip ()
 {
@@ -49,7 +50,6 @@ VER_ONNX=1.8.0
 VER_ONNX_TF=1.8.0
 
 # Install tensorflow
-source "${VENV_ACTIVATE}"
 
 PIP_TRUSTED_HOST="--trusted-host pypi.org "
 PIP_TRUSTED_HOST+="--trusted-host files.pythonhost.org "
@@ -61,25 +61,25 @@ PIP_OPTIONS="${PIP_TIMEOUT} ${PIP_TRUSTED_HOST}"
 
 # TODO remove version number of 'pip==20.2.1 setuptools==49.3.0'
 # NOTE adding version is for temporary hotfix of setuptools 50.x.y version
-python -m pip ${PIP_OPTIONS} install -U pip==20.2.1 setuptools==49.3.0
-python -m pip ${PIP_OPTIONS} install tensorflow-cpu==${VER_TENSORFLOW}
-python -m pip ${PIP_OPTIONS} install Pillow==6.2.2
+${VENV_PYTHON} -m pip ${PIP_OPTIONS} install -U pip==20.2.1 setuptools==49.3.0
+${VENV_PYTHON} -m pip ${PIP_OPTIONS} install tensorflow-cpu==${VER_TENSORFLOW}
+${VENV_PYTHON} -m pip ${PIP_OPTIONS} install Pillow==6.2.2
 
 # Install PyTorch and ONNX related
-python -m pip ${PIP_OPTIONS} install torch==1.7.0+cpu -f https://download.pytorch.org/whl/torch_stable.html
+${VENV_PYTHON} -m pip ${PIP_OPTIONS} install torch==1.7.0+cpu -f https://download.pytorch.org/whl/torch_stable.html
 
 # NOTE Latest onnx 1.8.1 has compatibility issue with onnx-tf 1.7.0
 #      MUST install with onnx==1.8.0
 # Provide install of custom onnx-tf
 if [ -n "${EXT_ONNX_TF_WHL}" ]; then
-  python -m pip ${PIP_OPTIONS} install onnx==${VER_ONNX} ${EXT_ONNX_TF_WHL}
+  ${VENV_PYTHON} -m pip ${PIP_OPTIONS} install onnx==${VER_ONNX} ${EXT_ONNX_TF_WHL}
 else
-  python -m pip ${PIP_OPTIONS} install onnx==${VER_ONNX} onnx-tf==${VER_ONNX_TF}
+  ${VENV_PYTHON} -m pip ${PIP_OPTIONS} install onnx==${VER_ONNX} onnx-tf==${VER_ONNX_TF}
 fi
 
 # Create python symoblic link
 rm -f ${DRIVER_PATH}/python
-ln -s venv/bin/python ${DRIVER_PATH}/python
+ln -s ${VENV_PYTHON} ${DRIVER_PATH}/python
 
 # TODO remove this patch after onnx-tf next release
 # apply patch for DWConv conversion bug: https://github.com/onnx/onnx-tensorflow/pull/905
