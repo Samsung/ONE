@@ -69,6 +69,7 @@ public:
       TransformMinReluToRelu6Pass,
       SubstituteTransposeToReshape,
       RemoveRedundantReshape,
+      RemoveFakeQuant,
     };
 
     enum AlgorithmParameters
