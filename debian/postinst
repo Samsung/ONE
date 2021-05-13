@@ -5,4 +5,4 @@
 
 set -e
 
-/opt/one_compiler/bin/one-prepare-venv
+/usr/share/one/bin/one-prepare-venv
