@@ -66,6 +66,7 @@ public:
       RemoveUnnecessarySplit,
       RemoveUnnecessaryReshape,
       TransformMinMaxToRelu6Pass,
+      TransformMinReluToRelu6Pass,
       SubstituteTransposeToReshape,
       RemoveRedundantReshape,
     };
