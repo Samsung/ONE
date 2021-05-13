@@ -46,7 +46,7 @@ fi
 
 VER_TENSORFLOW=2.3.0
 VER_ONNX=1.8.0
-VER_ONNX_TF=1.7.0
+VER_ONNX_TF=1.8.0
 
 # Install tensorflow
 source "${VENV_ACTIVATE}"
@@ -80,3 +80,17 @@ fi
 # Create python symoblic link
 rm -f ${DRIVER_PATH}/python
 ln -s venv/bin/python ${DRIVER_PATH}/python
+
+# TODO remove this patch after onnx-tf next release
+# apply patch for DWConv conversion bug: https://github.com/onnx/onnx-tensorflow/pull/905
+if [[ -z "${EXT_ONNX_TF_WHL}" ]]; then
+  PY_SITE_PACKAGES=$(python -c 'import sysconfig; print(sysconfig.get_paths()["purelib"])')
+  if [[ -d ${PY_SITE_PACKAGES} ]]; then
+    pushd ${PY_SITE_PACKAGES} > /dev/null
+    PATCH_TARGET_FILE=onnx_tf/handlers/backend/conv_mixin.py
+    if [[ -f "${PATCH_TARGET_FILE}" ]]; then
+      patch -t -p1 < ${DRIVER_PATH}/conv_mixin_1.8.0.patch
+    fi
+    popd > /dev/null
+  fi
+fi
