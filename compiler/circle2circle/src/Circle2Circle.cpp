@@ -254,7 +254,7 @@ int entry(int argc, char **argv)
     .nargs(0)
     .required(false)
     .default_value(false)
-    .help("Transform Minimum-Maximum pattern to Relu6 operator");
+    .help("Transform Minimum(6)-Maximum(0) pattern to Relu6 operator");
 
   arser.add_argument("--transform_min_relu_to_relu6")
     .nargs(0)
