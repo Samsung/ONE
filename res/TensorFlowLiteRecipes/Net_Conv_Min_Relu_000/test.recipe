@@ -1,0 +1,113 @@
+operand {
+  name: "Placeholder"
+  type: FLOAT32
+  shape { dim: 1 dim: 16 dim: 16 dim: 3 }
+}
+operand {
+  name: "Const_4"
+  type: FLOAT32
+  shape { }
+  filler { tag: "explicit" arg: "6" }
+}
+operand {
+  name: "Conv2D_1"
+  type: FLOAT32
+  shape { dim: 3 dim: 3 dim: 3 dim: 3 }
+  filler { tag: "gaussian" arg: "0.0" arg: "0.1" }
+}
+operand {
+  name: "Conv2D_2"
+  type: FLOAT32
+  shape { dim: 3 }
+  filler { tag: "gaussian" arg: "0.0" arg: "0.1" }
+}
+operand {
+  name: "Conv2D_21"
+  type: FLOAT32
+  shape { dim: 3 dim: 3 dim: 3 dim: 3 }
+  filler { tag: "gaussian" arg: "0.0" arg: "0.1" }
+}
+operand {
+  name: "Conv2D_11"
+  type: FLOAT32
+  shape { dim: 1 dim: 16 dim: 16 dim: 3 }
+}
+operand {
+  name: "Minimum"
+  type: FLOAT32
+  shape { dim: 1 dim: 16 dim: 16 dim: 3 }
+}
+operand {
+  name: "Relu"
+  type: FLOAT32
+  shape { dim: 1 dim: 16 dim: 16 dim: 3 }
+}
+operand {
+  name: "Conv2D_22"
+  type: FLOAT32
+  shape { dim: 1 dim: 16 dim: 16 dim: 3 }
+}
+operand {
+  name: "Minimum_1"
+  type: FLOAT32
+  shape { dim: 1 dim: 16 dim: 16 dim: 3 }
+}
+operand {
+  name: "Relu_1"
+  type: FLOAT32
+  shape { dim: 1 dim: 16 dim: 16 dim: 3 }
+}
+operation {
+  type: "Conv2D"
+  input: "Placeholder"
+  input: "Conv2D_1"
+  input: "Conv2D_2"
+  output: "Conv2D_11"
+  conv2d_options {
+    padding: SAME
+    stride_w: 1
+    stride_h: 1
+    activation: NONE
+    dilation_w_factor: 1
+    dilation_h_factor: 1
+  }
+}
+operation {
+  type: "Minimum"
+  input: "Conv2D_11"
+  input: "Const_4"
+  output: "Minimum"
+}
+operation {
+  type: "ReLU"
+  input: "Minimum"
+  output: "Relu"
+}
+operation {
+  type: "Conv2D"
+  input: "Relu"
+  input: "Conv2D_21"
+  input: "Conv2D_2"
+  output: "Conv2D_22"
+  conv2d_options {
+    padding: SAME
+    stride_w: 1
+    stride_h: 1
+    activation: NONE
+    dilation_w_factor: 1
+    dilation_h_factor: 1
+  }
+}
+operation {
+  type: "Minimum"
+  input: "Conv2D_22"
+  input: "Const_4"
+  output: "Minimum_1"
+}
+operation {
+  type: "ReLU"
+  input: "Minimum_1"
+  output: "Relu_1"
+}
+input: "Placeholder"
+output: "Relu_1"
