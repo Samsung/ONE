@@ -86,8 +86,8 @@ template <loco::DataType DT> bool transform_min_max_pattern(luci::CircleMaximum 
   loco::Node *mini_input = nullptr;
 
   // There are two ways Miminum takes inputs.
-  // 1. Miminum(x = CircleNode, y = CircleMinimum)
-  // 2. Miminum(x = CircleMinimum, y = CircleNode)
+  // 1. Miminum(x = CircleNode, y = CircleConst)
+  // 2. Miminum(x = CircleConst, y = CircleNode)
   if (not luci::fill(&mini_const, &mini_input).with_commutative_args_of(mini))
     return false;
 
