@@ -10,3 +10,5 @@ target_link_libraries(luci_eval_driver PRIVATE luci_export)
 target_link_libraries(luci_eval_driver PRIVATE luci_lang)
 target_link_libraries(luci_eval_driver PRIVATE luci_interpreter)
 target_link_libraries(luci_eval_driver PRIVATE safemain)
+
+install(TARGETS luci_eval_driver DESTINATION bin)
