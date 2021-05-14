@@ -79,12 +79,12 @@ fi
 
 # Create python symoblic link
 rm -f ${DRIVER_PATH}/python
-ln -s ${VENV_PYTHON} ${DRIVER_PATH}/python
+ln -s venv/bin/python ${DRIVER_PATH}/python
 
 # TODO remove this patch after onnx-tf next release
 # apply patch for DWConv conversion bug: https://github.com/onnx/onnx-tensorflow/pull/905
 if [[ -z "${EXT_ONNX_TF_WHL}" ]]; then
-  PY_SITE_PACKAGES=$(python -c 'import sysconfig; print(sysconfig.get_paths()["purelib"])')
+  PY_SITE_PACKAGES=$(${VENV_PYTHON} -c 'import sysconfig; print(sysconfig.get_paths()["purelib"])')
   if [[ -d ${PY_SITE_PACKAGES} ]]; then
     pushd ${PY_SITE_PACKAGES} > /dev/null
     PATCH_TARGET_FILE=onnx_tf/handlers/backend/conv_mixin.py
