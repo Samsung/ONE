@@ -46,10 +46,13 @@ public:
   }
 
 public:
-  uint8_t *buffer() const final { return nullptr; }
+  uint8_t *buffer() const final { return reinterpret_cast<uint8_t *>(handle()->GetMemoryPtr()); }
   size_t total_size() const final { return handle()->GetMemorySizeInBytes(); }
   size_t calcOffset(const ir::Coordinates &coords) const final
   {
+    auto rank = _rank;
+    rank = rank == 0 ? 1 : rank;
+    assert(static_cast<size_t>(rank) == coords.size());
     (void)coords;
     return 0;
   }

@@ -75,6 +75,7 @@ public:
     cc->queue = environment->queue();
     cc->cache = environment->program_cache();
     context->kernel_gen = std::make_shared<KernelGenerator>(graph, tb, tr, cc);
+    context->constant_initializer = std::make_shared<ConstantInitializer>(operands, tr);
     return context;
   }
 

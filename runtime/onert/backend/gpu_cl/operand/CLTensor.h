@@ -46,7 +46,6 @@ public:
   size_t num_uses() const { return _num_uses; }
 
 public:
-  // arm_compute::CLTensorAllocator *allocator();
   /** Set given buffer as the buffer of the tensor
    *
    * @note Ownership of the memory is not transferred to this object.

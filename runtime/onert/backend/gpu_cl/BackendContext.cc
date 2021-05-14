@@ -16,6 +16,7 @@
 
 #include "BackendContext.h"
 
+#include "ConstantInitializer.h"
 #include "TensorBuilder.h"
 #include "KernelGenerator.h"
 
@@ -31,6 +32,25 @@ namespace backend
 {
 namespace gpu_cl
 {
+
+void BackendContext::initConsts()
+{
+  _data.graph->operations().iterate([&](const ir::OperationIndex &, const ir::Operation &op) {
+    constant_initializer->setLayout(graph()->layout());
+    op.accept(*constant_initializer);
+  });
+  _data.graph->operands().iterate([&](const ir::OperandIndex &ind, const ir::Operand &operand) {
+    if (_data.external_operands.contains(ind) || !operand.isConstant())
+      return;
+    const auto &obj = graph()->operands().at(ind);
+    if (obj.isConstant() && !constant_initializer->exist(ind))
+    {
+      constant_initializer->registerDefaultInitializer(ind, obj);
+    }
+  });
+
+  constant_initializer->run();
+}
 
 void BackendContext::planTensors()
 {
@@ -195,11 +215,10 @@ FunctionMap BackendContext::genKernels()
     auto fn_seq = kernel_gen->generate(op_ind);
     ret.emplace_back(op_ind, std::move(fn_seq));
   }
-  // merge
 
   tensor_builder->allocate();
 
-  // initConsts();
+  initConsts();
 
   // NOTE For memory optimization, we want to free some operand data
   const_cast<ir::Graph &>(*_data.graph)
