@@ -1,0 +1,61 @@
+operand {
+  name: "ifm"
+  type: FLOAT32
+  shape { dim: 1 dim: 16 dim: 16 dim: 3 }
+}
+operand {
+  name: "filter"
+  type: FLOAT32
+  shape { dim: 8 dim: 1 dim: 1 dim: 3 }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "1.0"
+  }
+}
+operand {
+  name: "bias"
+  type: FLOAT32
+  shape { dim: 8 }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "1.0"
+  }
+}
+operand {
+  name: "conv"
+  type: FLOAT32
+  shape { dim: 1 dim: 16 dim: 16 dim: 8 }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 1 dim: 16 dim: 16 dim: 8 }
+}
+operation {
+  type: "Conv2D"
+  conv2d_options {
+    padding: VALID
+    stride_w: 1
+    stride_h: 1
+  }
+  input: "ifm"
+  input: "filter"
+  input: "bias"
+  output: "conv"
+}
+operation {
+  type: "FakeQuant"
+  fakequant_options {
+    min: 0.0
+    max: 1.0
+    num_bits: 8
+    narrow_range: false
+  }
+  input: "conv"
+  output: "ofm"
+}
+
+input: "ifm"
+output: "ofm"
