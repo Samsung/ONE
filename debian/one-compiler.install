@@ -6,6 +6,7 @@ usr/bin/circle-quantizer usr/share/one/bin/
 usr/bin/conv_mixin_1.8.0.patch usr/share/one/bin/
 usr/bin/generate_bcq_metadata.py usr/share/one/bin/
 usr/bin/generate_bcq_output_arrays.py usr/share/one/bin/
+usr/bin/luci_eval_driver usr/share/one/bin/
 usr/bin/one-build usr/share/one/bin/
 usr/bin/one-build.template.cfg usr/share/one/bin/
 usr/bin/one-codegen usr/share/one/bin/
