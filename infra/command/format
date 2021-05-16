@@ -109,7 +109,8 @@ function check_permission() {
   FILES_TO_CHECK_PERMISSION=()
   for f in ${FILES_TO_CHECK[@]}; do
     # Manually ignore permission checking
-    if [[ ${f} == !(nnas|nnfw|nncc|*.sh|*.py|*/gradlew) ]] || [[ ${f} == tests/nnapi/specs/**/*.py ]]; then
+    if [[ ${f} == !(nnas|nnfw|nncc|*.sh|*.py|*/gradlew|debian/rules) ]] \
+	    || [[ ${f} == tests/nnapi/specs/**/*.py ]]; then
       FILES_TO_CHECK_PERMISSION+=("${f}")
     fi
   done
