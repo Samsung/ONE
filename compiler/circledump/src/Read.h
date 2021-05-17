@@ -97,11 +97,11 @@ private:
   const CircleMetadata_t *_metadata{nullptr};
 
   uint32_t _subgraph_index = 0;
-  std::string _subgraph_name = "";
+  std::string _subgraph_name;
   std::vector<const circle::OperatorCode *> _op_codes;
   std::vector<int32_t> _inputs;
   std::vector<int32_t> _outputs;
-  circle::DataFormat _data_format;
+  circle::DataFormat _data_format = circle::DataFormat::DataFormat_CHANNELS_FIRST;
 };
 
 } // namespace circleread
