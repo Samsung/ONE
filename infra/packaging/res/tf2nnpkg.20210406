@@ -92,37 +92,16 @@ OUTPUT=$(awk -F, '/^output/ { print $2 }' ${INFO_FILE} | cut -d: -f1 | tr -d ' '
 
 INPUT_SHAPES=$(grep ^input ${INFO_FILE} | cut -d "[" -f2 | cut -d "]" -f1 | tr -d ' ' | xargs | tr ' ' ':')
 
-# Generate BCQ information metadata
-# If model has no BCQ information or invalid information, pb file is not changed.
-"${ROOT}/bin/generate_bcq_metadata" \
---input_path "${GRAPHDEF_FILE}" \
---output_path "${TMPDIR}/${MODEL_NAME}_withmeta.pb" \
---output_arrays "${OUTPUT}"
-
-# Generate BCQ information nodes as output_arrays
-# If model has no BCQ information, output_arrays would be empty.
-"${ROOT}/bin/generate_bcq_output_arrays" \
---input_path "${TMPDIR}/${MODEL_NAME}_withmeta.pb" \
---metadata_path "${TMPDIR}/${MODEL_NAME}_metadata_arrays.txt" \
---output_arrays_path "${TMPDIR}/${MODEL_NAME}_output_arrays.txt"
-
-# generate tflite file
-TF2TFLITE_CONVERT_SCRIPT="python ${ROOT}/bin/tf2tfliteV2.py ${TF_INTERFACE} "
-TF2TFLITE_CONVERT_SCRIPT+="--input_path ${TMPDIR}/${MODEL_NAME}_withmeta.pb "
-TF2TFLITE_CONVERT_SCRIPT+="--input_arrays ${INPUT} "
-TF2TFLITE_CONVERT_SCRIPT+="--output_path ${TMPDIR}/${MODEL_NAME}.tflite "
-TF2TFLITE_CONVERT_SCRIPT+="--output_arrays "
-TF2TFLITE_CONVERT_SCRIPT+="$(cat ${TMPDIR}/${MODEL_NAME}_metadata_arrays.txt)"
-TF2TFLITE_CONVERT_SCRIPT+="${OUTPUT}"
-TF2TFLITE_CONVERT_SCRIPT+="$(cat ${TMPDIR}/${MODEL_NAME}_output_arrays.txt) "
+ONE_IMPORT_BCQ_SCRIPT="${ROOT}/bin/one-import-bcq ${TF_INTERFACE} "
+ONE_IMPORT_BCQ_SCRIPT+="-i ${GRAPHDEF_FILE} "
+ONE_IMPORT_BCQ_SCRIPT+="-o ${TMPDIR}/${MODEL_NAME}.tmp.circle "
+ONE_IMPORT_BCQ_SCRIPT+="-I ${INPUT} "
+ONE_IMPORT_BCQ_SCRIPT+="-O ${OUTPUT} "
 if [ ! -z ${INPUT_SHAPES} ]; then
-  TF2TFLITE_CONVERT_SCRIPT+="--input_shapes ${INPUT_SHAPES} "
+  ONE_IMPORT_BCQ_SCRIPT+="-s ${INPUT_SHAPES} "
 fi
 
-${TF2TFLITE_CONVERT_SCRIPT}
-
-# convert .tflite to .circle
-"${ROOT}/bin/tflite2circle" "${TMPDIR}/${MODEL_NAME}.tflite" "${TMPDIR}/${MODEL_NAME}.tmp.circle"
+${ONE_IMPORT_BCQ_SCRIPT}
 
 # optimize
 "${ROOT}/bin/circle2circle" --O1 "${TMPDIR}/${MODEL_NAME}.tmp.circle" "${TMPDIR}/${MODEL_NAME}.circle"
