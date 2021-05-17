@@ -43,94 +43,25 @@ static void Init(const onert::ir::Operand &model_obj, onert::backend::ITensor &o
 {
   const auto shape = model_obj.shape();
   assert(model_obj.data());
-  auto base = reinterpret_cast<const T *>(model_obj.data()->base());
   obj.access([&](::onert::backend::ITensor &tensor) {
     switch (shape.rank())
     {
       case 0:
-      {
-        assert(model_obj.data()->size() == sizeof(T));
-        const auto value = *reinterpret_cast<const T *>(base);
-        T *into = reinterpret_cast<T *>(tensor.buffer());
-        *into = value;
-        break;
-      }
       case 1:
-      {
-        auto vec_size = shape.dim(0);
-        for (int32_t n = 0; n < vec_size; ++n)
-        {
-          const T *from = reinterpret_cast<const T *>(base) + n;
-          const auto value = *from;
-
-          T *into = reinterpret_cast<T *>(tensor.buffer()) + n;
-          *into = value;
-        }
-        break;
-      }
       case 2:
-      {
-        const int32_t copy_len = shape.dim(1);
-
-        for (auto i = 0; i < shape.dim(0); ++i)
-        {
-          ::onert::ir::Coordinates coords{i, 0};
-          memcpy(tensor.buffer() + tensor.calcOffset(coords), base + i * copy_len,
-                 copy_len * sizeof(T));
-        }
-        break;
-      }
       case 3:
-      {
-        const int32_t width = shape.dim(1);
-        const int32_t copy_len = shape.dim(2);
-
-        for (auto i = 0; i < shape.dim(0); ++i)
-        {
-          for (auto j = 0; j < shape.dim(1); ++j)
-          {
-            ::onert::ir::Coordinates coords{i, j, 0};
-            memcpy(tensor.buffer() + tensor.calcOffset(coords),
-                   base + i * width * copy_len + j * copy_len, copy_len * sizeof(T));
-          }
-        }
-        break;
-      }
       case 4:
-      {
-        const int32_t height = shape.dim(1);
-        const int32_t width = shape.dim(2);
-        const int32_t copy_len = shape.dim(3);
-        for (auto i = 0; i < shape.dim(0); ++i)
+        if (copy)
         {
-          for (auto j = 0; j < shape.dim(1); ++j)
-          {
-            for (auto k = 0; k < shape.dim(2); ++k)
-            {
-              if (copy)
-              {
-                ::onert::ir::Coordinates coords{i, j, k, 0};
-                memcpy(tensor.buffer() + tensor.calcOffset(coords),
-                       base + i * height * width * copy_len + j * width * copy_len + k * copy_len,
-                       copy_len * sizeof(T));
-              }
-              else
-              {
-                for (auto l = 0; l < shape.dim(3); ++l)
-                {
-                  const auto coords =
-                    ::onert::ir::convertCoordinates({i, j, k, l}, frontend_layout, tensor.layout());
-                  T *into = reinterpret_cast<T *>(tensor.buffer() + tensor.calcOffset(coords));
-                  T value = *(base + i * height * width * copy_len + j * width * copy_len +
-                              k * copy_len + l);
-                  *into = value;
-                }
-              }
-            }
-          }
+          tensor.enqueueWriteBuffer(model_obj.data()->base(), true);
+        }
+        else
+        {
+          // NYI
+          (void)frontend_layout;
+          throw std::runtime_error{"Not yet supported"};
         }
         break;
-      }
       default:
         throw std::runtime_error{"Not yet supported"};
     }

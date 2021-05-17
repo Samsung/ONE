@@ -50,9 +50,7 @@ public:
   size_t total_size() const final { return handle()->GetMemorySizeInBytes(); }
   size_t calcOffset(const ir::Coordinates &coords) const final
   {
-    auto rank = _rank;
-    rank = rank == 0 ? 1 : rank;
-    assert(static_cast<size_t>(rank) == coords.size());
+    // NYI
     (void)coords;
     return 0;
   }

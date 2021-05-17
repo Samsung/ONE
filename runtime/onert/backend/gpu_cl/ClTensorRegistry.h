@@ -42,7 +42,7 @@ public:
 
   auto getClTensor(const ir::OperandIndex &ind) { return _tensor_mgr->at(ind).get(); }
 
-  auto getTensorReserver() { return _tensor_mgr->getTensorReservers(); }
+  auto getClTensorReserver(const ir::OperandIndex &ind) { return _tensor_mgr->atR(ind); }
 
 private:
   T_ClTensorManager *_tensor_mgr;

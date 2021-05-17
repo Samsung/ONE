@@ -73,18 +73,16 @@ void KernelGenerator::visit(const ir::operation::BinaryArithmetic &node)
   // const auto activation = node.param().activation;
 
   OperationDef op_def;
-
-  auto tensor_reserver = _tensor_reg->getTensorReserver();
   op_def.precision = CalculationsPrecision::F32;
 
-  op_def.src_tensors.push_back(tensor_reserver.Get(lhs_index.value()).descriptor);
-  auto lhs_shape = tensor_reserver.Get(lhs_index.value()).shape;
+  op_def.src_tensors.push_back(_tensor_reg->getClTensorReserver(lhs_index).descriptor);
+  auto lhs_shape = _tensor_reg->getClTensorReserver(lhs_index).shape;
 
-  op_def.src_tensors.push_back(tensor_reserver.Get(rhs_index.value()).descriptor);
-  auto rhs_shape = tensor_reserver.Get(rhs_index.value()).shape;
+  op_def.src_tensors.push_back(_tensor_reg->getClTensorReserver(rhs_index).descriptor);
+  auto rhs_shape = _tensor_reg->getClTensorReserver(rhs_index).shape;
 
-  op_def.dst_tensors.push_back(tensor_reserver.Get(ofm_index.value()).descriptor);
-  auto out_shape = tensor_reserver.Get(ofm_index.value()).shape;
+  op_def.dst_tensors.push_back(_tensor_reg->getClTensorReserver(ofm_index).descriptor);
+  auto out_shape = _tensor_reg->getClTensorReserver(ofm_index).shape;
 
   auto fn = std::make_unique<ClFunction>();
 

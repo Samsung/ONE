@@ -92,6 +92,7 @@ public:
     }
     void Add(ValueId id, const DummyTensor &dummy) { reservations_[id] = dummy; }
     void SetNext(ValueId id) { next_ = id; }
+    bool HaveTensor(ValueId id) { return reservations_.find(id) != reservations_.end(); }
     DummyTensor Get(ValueId id) { return reservations_[id]; }
 
     std::vector<std::pair<ValueId, TensorDescriptor>> GetTensorDescs() const
