@@ -1,3 +1,5 @@
 # {FILES_TO_INSTALL} {DEST_DIR}
+# bin
+usr/bin/luci_eval_driver usr/share/one/bin/
 # test
 usr/test/* usr/share/one/test/
