@@ -75,14 +75,14 @@ void KernelGenerator::visit(const ir::operation::BinaryArithmetic &node)
   OperationDef op_def;
   op_def.precision = CalculationsPrecision::F32;
 
-  op_def.src_tensors.push_back(_tensor_reg->getClTensorReserver(lhs_index).descriptor);
-  auto lhs_shape = _tensor_reg->getClTensorReserver(lhs_index).shape;
+  op_def.src_tensors.push_back(_tensor_reg->getClTensorReserver(lhs_index)->descriptor);
+  auto lhs_shape = _tensor_reg->getClTensorReserver(lhs_index)->shape;
 
-  op_def.src_tensors.push_back(_tensor_reg->getClTensorReserver(rhs_index).descriptor);
-  auto rhs_shape = _tensor_reg->getClTensorReserver(rhs_index).shape;
+  op_def.src_tensors.push_back(_tensor_reg->getClTensorReserver(rhs_index)->descriptor);
+  auto rhs_shape = _tensor_reg->getClTensorReserver(rhs_index)->shape;
 
-  op_def.dst_tensors.push_back(_tensor_reg->getClTensorReserver(ofm_index).descriptor);
-  auto out_shape = _tensor_reg->getClTensorReserver(ofm_index).shape;
+  op_def.dst_tensors.push_back(_tensor_reg->getClTensorReserver(ofm_index)->descriptor);
+  auto out_shape = _tensor_reg->getClTensorReserver(ofm_index)->shape;
 
   auto fn = std::make_unique<ClFunction>();
 

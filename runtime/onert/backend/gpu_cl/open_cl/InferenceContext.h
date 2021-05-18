@@ -85,27 +85,30 @@ public:
   class TensorReserver
   {
   public:
-    ValueId Add(const DummyTensor &dummy)
+    ValueId Add(const std::shared_ptr<DummyTensor> dummy)
     {
-      reservations_[next_] = dummy;
+      reservations_[next_] = std::move(dummy);
       return next_++;
     }
-    void Add(ValueId id, const DummyTensor &dummy) { reservations_[id] = dummy; }
+    void Add(ValueId id, const std::shared_ptr<DummyTensor> dummy)
+    {
+      reservations_[id] = std::move(dummy);
+    }
     void SetNext(ValueId id) { next_ = id; }
     bool HaveTensor(ValueId id) { return reservations_.find(id) != reservations_.end(); }
-    DummyTensor Get(ValueId id) { return reservations_[id]; }
+    std::shared_ptr<DummyTensor> Get(ValueId id) { return reservations_[id]; }
 
     std::vector<std::pair<ValueId, TensorDescriptor>> GetTensorDescs() const
     {
       std::vector<std::pair<ValueId, TensorDescriptor>> result;
       for (auto &v : reservations_)
       {
-        TensorDescriptor desc = v.second.descriptor;
-        desc.shape.b = v.second.shape.b;
-        desc.shape.h = v.second.shape.h;
-        desc.shape.w = v.second.shape.w;
+        TensorDescriptor desc = v.second->descriptor;
+        desc.shape.b = v.second->shape.b;
+        desc.shape.h = v.second->shape.h;
+        desc.shape.w = v.second->shape.w;
         desc.shape.d = 1;
-        desc.shape.c = v.second.shape.c;
+        desc.shape.c = v.second->shape.c;
         result.push_back({v.first, desc});
       }
       return result;
@@ -115,18 +118,18 @@ public:
     {
       for (auto &v : tensors)
       {
-        DummyTensor dummy;
-        dummy.descriptor = v.second;
-        dummy.shape.b = v.second.shape.b;
-        dummy.shape.h = v.second.shape.h;
-        dummy.shape.w = v.second.shape.w;
-        dummy.shape.c = v.second.shape.c;
+        auto dummy = std::make_shared<DummyTensor>();
+        dummy->descriptor = v.second;
+        dummy->shape.b = v.second.shape.b;
+        dummy->shape.h = v.second.shape.h;
+        dummy->shape.w = v.second.shape.w;
+        dummy->shape.c = v.second.shape.c;
         Add(v.first, dummy);
       }
     }
 
   private:
-    std::unordered_map<ValueId, DummyTensor> reservations_;
+    std::unordered_map<ValueId, std::shared_ptr<DummyTensor>> reservations_;
     ValueId next_;
   };
 

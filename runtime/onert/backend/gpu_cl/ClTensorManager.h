@@ -56,7 +56,7 @@ public:
   void finishLifetime(const ir::OperandIndex &ind);
 
   std::shared_ptr<T_ITensor> at(const ir::OperandIndex &ind);
-  InferenceContext::DummyTensor atR(const ir::OperandIndex &ind);
+  std::shared_ptr<InferenceContext::DummyTensor> atR(const ir::OperandIndex &ind);
 
   InferenceContext::TensorReserver &constTensorReservers(void);
   InferenceContext::TensorReserver &nonconstTensorReservers(void);
@@ -183,10 +183,9 @@ ClTensorManager<T_ITensor, T_Tensor>::nonconstTensors(void)
 }
 
 template <typename T_ITensor, typename T_Tensor>
-InferenceContext::DummyTensor ClTensorManager<T_ITensor, T_Tensor>::atR(const ir::OperandIndex &ind)
+std::shared_ptr<InferenceContext::DummyTensor>
+ClTensorManager<T_ITensor, T_Tensor>::atR(const ir::OperandIndex &ind)
 {
-  // TODO
-  // Modify the return value to a pointer.
   if (_nonconst_mgr->tensorReservers().HaveTensor(ind.value()))
   {
     return _nonconst_mgr->tensorReservers().Get(ind.value());
@@ -195,8 +194,7 @@ InferenceContext::DummyTensor ClTensorManager<T_ITensor, T_Tensor>::atR(const ir
   {
     return _const_mgr->tensorReservers().Get(ind.value());
   }
-  InferenceContext::DummyTensor tmp;
-  return tmp;
+  return nullptr;
 }
 
 template <typename T_ITensor, typename T_Tensor>
