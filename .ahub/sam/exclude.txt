@@ -1,0 +1,25 @@
+# I hope comments works
+/ONE/compiler/ann-api/include/NeuralNetworks.h
+/ONE/compiler/ann-ref
+/ONE/compiler/nnc/backends/soft_backend/code_snippets/eigen.def
+/ONE/tests
+#
+# I hope comments works
+#
+/ONE/runtime/onert/frontend/circle_schema/include/circle_schema_generated.h
+/ONE/runtime/onert/frontend/tflite/src/tflite_schema_generated.h
+
+# Is blank possible?
+
+/ONE/runtime/nnapi-header/include/NeuralNetworks.h
+/ONE/runtime/nnapi-header/include/NeuralNetworksExtensions.h
+/ONE/runtime/libs/nnapi
+/ONE/runtime/libs/profiling
+/ONE/runtime/libs/tflite/port
+/ONE/runtime/3rdparty
+/ONE/compute
+/ONE/runtime/contrib
+/ONE/externals
+#
+# I hope comments works
+#
