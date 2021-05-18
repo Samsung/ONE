@@ -87,8 +87,11 @@ public:
       Sparsify_block_map,
 
       // convert NCHW to NHWC
+      // TODO remove preserve options
       NCHW_to_NHWC_preserve_input_shape,
       NCHW_to_NHWC_preserve_output_shape,
+      NCHW_to_NHWC_input_shape,
+      NCHW_to_NHWC_output_shape,
     };
 
     virtual ~Options() = default;
