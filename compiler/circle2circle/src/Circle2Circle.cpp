@@ -244,19 +244,6 @@ int entry(int argc, char **argv)
     .help("Experimental: This will convert NCHW operators to NHWC under the assumption that "
           "input model is NCHW.");
 
-  // TODO remove preserve options
-  arser.add_argument("--nchw_to_nhwc_preserve_input_shape")
-    .nargs(0)
-    .required(false)
-    .default_value(false)
-    .help("Preserve the input shape of the model (argument for --convert_nchw_to_nhwc).");
-
-  arser.add_argument("--nchw_to_nhwc_preserve_output_shape")
-    .nargs(0)
-    .required(false)
-    .default_value(false)
-    .help("Preserve the output shape of the model (argument for --convert_nchw_to_nhwc).");
-
   arser.add_argument("--nchw_to_nhwc_input_shape")
     .nargs(0)
     .required(false)
@@ -455,11 +442,6 @@ int entry(int argc, char **argv)
   if (arser.get<bool>("--convert_nchw_to_nhwc"))
   {
     options->enable(Algorithms::ConvertNCHWToNHWC);
-    // TODO remove preserve options
-    if (arser.get<bool>("--nchw_to_nhwc_preserve_input_shape"))
-      options->param(AlgorithmParameters::NCHW_to_NHWC_preserve_input_shape, "true");
-    if (arser.get<bool>("--nchw_to_nhwc_preserve_output_shape"))
-      options->param(AlgorithmParameters::NCHW_to_NHWC_preserve_output_shape, "true");
     if (arser.get<bool>("--nchw_to_nhwc_input_shape"))
       options->param(AlgorithmParameters::NCHW_to_NHWC_input_shape, "true");
     if (arser.get<bool>("--nchw_to_nhwc_output_shape"))
