@@ -177,8 +177,13 @@ def _make_circle2circle_cmd(args, driver_path, input_path, output_path):
     # optimization pass(only true/false options)
     # TODO support options whose number of arguments is more than zero
     for opt in _CONSTANT.OPTIMIZATION_OPTS:
-        if _is_valid_attr(args, opt[0]) and type(getattr(args, opt[0])) is str:
-            if not getattr(args, opt[0]).lower() in ['false', '0', 'n']:
+        if _is_valid_attr(args, opt[0]):
+            # ./driver --opt[0]
+            if type(getattr(args, opt[0])) is bool:
+                cmd.append('--' + opt[0])
+            # ./driver --opt[0] true/false
+            if type(getattr(args, opt[0])) is str and not getattr(
+                    args, opt[0]).lower() in ['false', '0', 'n']:
                 cmd.append('--' + opt[0])
 
     return cmd
