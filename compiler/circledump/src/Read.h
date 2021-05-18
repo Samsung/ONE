@@ -28,6 +28,11 @@ namespace circleread
 
 template <typename T> std::vector<T> as_index_vector(const flatbuffers::Vector<T> *flat_array)
 {
+  if (flat_array == nullptr)
+  {
+    throw std::runtime_error("flat array is nullptr");
+  }
+
   std::vector<T> ret(flat_array->Length());
   for (uint32_t i = 0; i < flat_array->Length(); i++)
   {
@@ -91,12 +96,12 @@ private:
   const CircleOperators_t *_operators{nullptr};
   const CircleMetadata_t *_metadata{nullptr};
 
-  uint32_t _subgraph_index;
+  uint32_t _subgraph_index = 0;
   std::string _subgraph_name;
   std::vector<const circle::OperatorCode *> _op_codes;
   std::vector<int32_t> _inputs;
   std::vector<int32_t> _outputs;
-  circle::DataFormat _data_format;
+  circle::DataFormat _data_format = circle::DataFormat::DataFormat_CHANNELS_FIRST;
 };
 
 } // namespace circleread
