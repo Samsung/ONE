@@ -1,2 +1,15 @@
 # bin
 usr/share/one/bin/one-build usr/bin/one-build
+# lib
+usr/share/one/lib/libloco.so usr/lib/libloco.so
+usr/share/one/lib/libluci_env.so usr/lib/libluci_env.so
+usr/share/one/lib/libluci_export.so usr/lib/libluci_export.so
+usr/share/one/lib/libluci_import.so usr/lib/libluci_import.so
+usr/share/one/lib/libluci_interpreter.so usr/lib/libluci_interpreter.so
+usr/share/one/lib/libluci_lang.so usr/lib/libluci_lang.so
+usr/share/one/lib/libluci_logex.so usr/lib/libluci_logex.so
+usr/share/one/lib/libluci_log.so usr/lib/libluci_log.so
+usr/share/one/lib/libluci_partition.so usr/lib/libluci_partition.so
+usr/share/one/lib/libluci_pass.so usr/lib/libluci_pass.so
+usr/share/one/lib/libluci_profile.so usr/lib/libluci_profile.so
+usr/share/one/lib/libluci_service.so usr/lib/libluci_service.so

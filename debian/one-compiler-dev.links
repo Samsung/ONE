@@ -1,3 +1,4 @@
 # bin
 usr/share/one/bin/circledump usr/bin/circledump
 usr/share/one/bin/circle-tensordump usr/bin/circle-tensordump
+usr/share/one/bin/tflchef usr/bin/tflchef

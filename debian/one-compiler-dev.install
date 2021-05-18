@@ -2,5 +2,6 @@
 # bin
 usr/bin/circledump usr/share/one/bin/
 usr/bin/circle-tensordump usr/share/one/bin/
+usr/bin/tflchef usr/share/one/bin/
 # include
 usr/include/* usr/share/one/include/
