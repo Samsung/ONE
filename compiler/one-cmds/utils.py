@@ -101,6 +101,7 @@ def _parse_cfg(args, driver_name):
        the option is processed prior to the configuration file."""
     if _is_valid_attr(args, 'config'):
         config = configparser.ConfigParser()
+        config.optionxform = str
         config.read(args.config)
         # if section is given, verify given section
         if _is_valid_attr(args, 'section'):
