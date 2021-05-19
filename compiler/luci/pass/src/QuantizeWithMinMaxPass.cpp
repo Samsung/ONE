@@ -925,6 +925,7 @@ void quantize_const_inputs(luci::CircleNode *node, loco::DataType output_type)
     case luci::CircleOpcode::LOCAL_RESPONSE_NORMALIZATION:
     case luci::CircleOpcode::MEAN:
     case luci::CircleOpcode::PAD:
+    case luci::CircleOpcode::MIRROR_PAD:
     case luci::CircleOpcode::REDUCE_ANY:
     case luci::CircleOpcode::REDUCE_PROD:
     case luci::CircleOpcode::REDUCE_MAX:
