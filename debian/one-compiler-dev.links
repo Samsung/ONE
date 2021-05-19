@@ -2,3 +2,5 @@
 usr/share/one/bin/circledump usr/bin/circledump
 usr/share/one/bin/circle-tensordump usr/bin/circle-tensordump
 usr/share/one/bin/tflchef usr/bin/tflchef
+usr/share/one/bin/tflchef-file usr/bin/tflchef-file
+usr/share/one/bin/tflchef-reverse usr/bin/tflchef-reverse

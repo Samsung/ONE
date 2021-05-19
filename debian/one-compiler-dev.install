@@ -3,5 +3,7 @@
 usr/bin/circledump usr/share/one/bin/
 usr/bin/circle-tensordump usr/share/one/bin/
 usr/bin/tflchef usr/share/one/bin/
+usr/bin/tflchef-file usr/share/one/bin/
+usr/bin/tflchef-reverse usr/share/one/bin/
 # include
 usr/include/* usr/share/one/include/
