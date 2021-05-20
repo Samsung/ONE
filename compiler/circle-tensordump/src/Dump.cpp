@@ -228,6 +228,8 @@ std::vector<hsize_t> hdf5_dims_cast(const flatbuffers::Vector<T> *data,
       ret.resize(rank);
       for (uint32_t d = 0; d < rank; d++)
       {
+        if (dims->Get(d) < 0)
+          throw std::runtime_error("negative value cannot be casted to unsigned");
         ret.at(d) = static_cast<hsize_t>(dims->Get(d));
       }
     }
@@ -306,14 +308,15 @@ void DumpTensorsToHdf5::run(std::ostream &os, const circle::Model *model,
     for (const auto &tensor : *tensors)
     {
       // If tensor does not have name, do nothing.
-      if (tensor->name() == nullptr)
+      const auto tensor_name = tensor->name();
+      if (tensor_name == nullptr)
       {
         assert(false && "There is no tensor name");
         continue;
       }
 
       // create a group for each tensor whose name is its tensor name
-      std::string group_name = ::mangle(tensor->name()->c_str());
+      std::string group_name = ::mangle(tensor_name->c_str());
       std::unique_ptr<H5::Group> tensor_group =
         std::make_unique<H5::Group>(file.createGroup(group_name));
 
