@@ -221,6 +221,7 @@ public:
       os << std::boolalpha;
       os << "align_corners(" << resize_params->align_corners() << ")";
       os << "half_pixel_centers(" << resize_params->half_pixel_centers() << ")";
+      os << std::noboolalpha;
       os << std::endl;
     }
   }
@@ -236,6 +237,7 @@ public:
       os << "    ";
       os << std::boolalpha;
       os << "align_corners(" << resize_params->align_corners() << ")";
+      os << std::noboolalpha;
       os << std::endl;
     }
   }
