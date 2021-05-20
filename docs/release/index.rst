@@ -24,3 +24,6 @@ Release
   ./1.11/index
   ./1.12/index
   ./1.13/index
+  ./1.14/index
+  ./1.15/index
+  ./1.16/index
