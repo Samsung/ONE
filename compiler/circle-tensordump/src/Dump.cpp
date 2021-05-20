@@ -113,8 +113,10 @@ void DumpTensors::run(std::ostream &os, const circle::Model *model, const std::s
     auto tensors = reader.tensors();
     for (const auto &tensor : *tensors)
     {
+      const auto tensor_name = tensor->name();
+      std::string tensor_name_str = tensor_name ? tensor_name->str() : "no_name";
       os << std::string(70, '-') << std::endl;
-      os << "[" << tensor->name()->str() << "]" << std::endl;
+      os << "[" << tensor_name_str << "]" << std::endl;
       auto buff_idx = tensor->buffer();
       auto buff_data_ptr = reader.buffers()->Get(buff_idx)->data();
       auto quant_param = tensor->quantization();
