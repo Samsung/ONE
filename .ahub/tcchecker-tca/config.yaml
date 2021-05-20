@@ -31,6 +31,63 @@ test:
         - functionName:
             starts:
               - TEST
+        - excludes :
+          - Verifier.dag_checker
+          - graph_operand_LayoutSet.layout_set_operators
+          - InterpExecutorTest.executeTwoStep
+          - InterpExecutorTest.execute
+          - InterpExecutorTest.setOutput
+          - InterpExecutorTest.create_empty
+          - InterpExecutorTest.setOutputForUnspecifiedDimensions
+          - InterpExecutorTest.setInputForUnspecifiedDimensions
+          - InterpExecutorTest.setInput
+          - InterpExecutorTest.create_simple
+          - ExecTime.structure
+          - ExecTime.roundtrip_ok
+          - SchedulerTest.branched_graph_profiling_mode
+          - SchedulerTestWithExecutorParam.straight_graph_known_exec_time
+          - SchedulerTestWithExecutorParam.branched_graph_known_exec_time
+          - TFLite_test_case.simple_test
+          - ExecInstance.simple
+          - ExecInstance.twoExecution
+          - ExecInstance.twoCompile
+          - ExecInstance.async
+          - ExecInstance.twoThreads
+          - graph_operand_usedef.usedef_test
+          - Graph.inputs_and_outputs
+          - nnfw_create_session.Test_001
+          - nnfw_create_session.Negative_001
+          - WICPlanner.claim_release_test
+          - BumpPlanner.claim_test
+          - Allocator.allocate_test
+          - FirstFitPlanner.claim_release_test
+          - graph_operation_setIO.operation_setIO_concat
+          - graph_operation_setIO.operation_setIO_conv
+          - ValidationTest.neg_prepare_001
+          - ValidationTestOneOpModelLoaded.prepare_001
+          - graph_OperandIndexSequence.replace
+          - graph_OperandIndexSequence.append
+          - MODEL.model_build
+          - graph_operation_Set.operation_test
+          - graph_operand_Set.set_test
+          - ValidationTestSessionCreated.neg_load_session_001
+          - ValidationTestSessionCreated.load_session_001
+          - ShapeInference.Pool2DNodeExplicit
+          - ShapeInference.Elementwise
+          - ShapeInference.Concat
+          - ShapeInference.Pool2DNodeSame
+          - ShapeInference.IncorrectElementwise
+          - ShapeInference.Conv2D
+          - ShapeInference.Pool2DNodeValid
+          - ShapeInference.FullyConnected
+          - ShapeInference.DepthwiseConv2D
+          - ObjectManager.non_const_iterate
+          - ObjectManager.const_iterate
+          - ObjectManager.emplace
+          - ObjectManager.remove_2
+          - ObjectManager.remove_1
+          - ObjectManager.push
+          - Index.index_test
 
     negativeTestCase:
       - condition:
