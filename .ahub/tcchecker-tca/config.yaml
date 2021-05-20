@@ -1,6 +1,6 @@
 version: 2
 test:
-  - name: NN Runtime
+  - name: NN_Runtime
     testCaseLanguage: CPP
     testFW: GTEST
     testCaseFolder:
@@ -37,6 +37,61 @@ test:
         - testName:
             starts:
               - neg_
+
+    positiveTestCase:
+      - condition:
+        - inverse: negativeTestCase
+
+  - name: NN_Compiler
+    testCaseLanguage: CPP
+    testFW: GTEST
+    testCaseFolder:
+      - /compiler/angkor
+      - /compiler/arser
+      - /compiler/circle2circle
+      - /compiler/circle-quantizer
+      - /compiler/crew
+      - /compiler/cwrap
+      - /compiler/foder
+      - /compiler/hermes
+      - /compiler/hermes-std
+      - /compiler/loco
+      - /compiler/locomotiv
+      - /compiler/locop
+      - /compiler/logo
+      - /compiler/logo-core
+      - /compiler/luci
+      - /compiler/luci-interpreter
+      - /compiler/luci-eval-driver
+      - /compiler/luci-pass-value-test
+      - /compiler/luci-value-test
+      - /compiler/mio-circle
+      - /compiler/mio-tflite
+      - /compiler/oops
+      - /compiler/pepper-assert
+      - /compiler/pepper-str
+      - /compiler/pepper-strcast
+      - /compiler/pp
+      - /compiler/record-minmax
+      - /compiler/safemain
+      - /compiler/souschef
+      - /compiler/tflite2circle
+
+    testFile:
+      - extension: .test.cpp
+        any: true
+
+    testCase:
+      - condition:
+        - functionName:
+            starts:
+              - TEST
+
+    negativeTestCase:
+      - condition:
+        - testName:
+            ends:
+              - _NEG
 
     positiveTestCase:
       - condition:
