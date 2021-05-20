@@ -229,7 +229,7 @@ std::vector<hsize_t> hdf5_dims_cast(const flatbuffers::Vector<T> *data,
       for (uint32_t d = 0; d < rank; d++)
       {
         if (dims->Get(d) < 0)
-          throw std::runtime_error("negative value cannot be casted to unsigned");
+          throw std::runtime_error("Dimensions shouldn't be negative");
         ret.at(d) = static_cast<hsize_t>(dims->Get(d));
       }
     }
