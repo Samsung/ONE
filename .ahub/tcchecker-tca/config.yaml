@@ -50,6 +50,9 @@ test:
       - /compiler/arser
       - /compiler/circle2circle
       - /compiler/circle-quantizer
+      - /compiler/circle-tensordump
+      - /compiler/circlechef
+      - /compiler/circledump
       - /compiler/crew
       - /compiler/cwrap
       - /compiler/foder
@@ -75,7 +78,9 @@ test:
       - /compiler/record-minmax
       - /compiler/safemain
       - /compiler/souschef
+      - /compiler/tflchef
       - /compiler/tflite2circle
+      - /compiler/vconone
 
     testFile:
       - extension: .test.cpp
