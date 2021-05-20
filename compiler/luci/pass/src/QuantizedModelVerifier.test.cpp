@@ -648,6 +648,34 @@ private:
   luci::CircleConst *_constant_values = nullptr;
 };
 
+class MirrorPadTestGraph final : public SimpleTestGraph
+{
+public:
+  void init(void) override
+  {
+    TestIOGraph::init({32}, {32});
+    _paddings = g()->nodes()->create<luci::CircleConst>();
+    {
+      _paddings->dtype(Type::S32);
+    }
+    _constant_values = create_dummy_const<Type::FLOAT32>(g(), {1});
+    _mirror_pad = g()->nodes()->create<luci::CircleMirrorPad>();
+    {
+      _mirror_pad->input(input());
+      _mirror_pad->paddings(_paddings);
+      _mirror_pad->mode(luci::MirrorPadMode::REFLECT);
+    }
+    output()->from(_mirror_pad);
+
+    set_minmax_to_non_const(g(), -1, 1);
+  }
+
+private:
+  luci::CircleMirrorPad *_mirror_pad = nullptr;
+  luci::CircleConst *_paddings = nullptr;
+  luci::CircleConst *_constant_values = nullptr;
+};
+
 class TransposeTestGraph final : public SimpleTestGraph
 {
 public:
@@ -1493,6 +1521,30 @@ TEST(QuantizedModelVerifierTest, PadV2_wrong_granularity_NEG)
   TEST_WITH_WRONG_GRANULARITY(PadV2TestGraph, Type::U8, Granularity::LayerWise);
   TEST_WITH_WRONG_GRANULARITY(PadV2TestGraph, Type::U8, Granularity::ChannelWise);
   TEST_WITH_WRONG_GRANULARITY(PadV2TestGraph, Type::S16, Granularity::ChannelWise);
+  SUCCEED();
+}
+
+TEST(QuantizedModelVerifierTest, MirrorPad)
+{
+  TEST_WITH_GRAPH(MirrorPadTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_GRAPH(MirrorPadTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_GRAPH(MirrorPadTestGraph, Type::S16, Granularity::ChannelWise);
+  SUCCEED();
+}
+
+TEST(QuantizedModelVerifierTest, MirrorPad_wrong_type_NEG)
+{
+  TEST_WITH_WRONG_TYPE(MirrorPadTestGraph, Type::U8, Granularity::LayerWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(MirrorPadTestGraph, Type::U8, Granularity::ChannelWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(MirrorPadTestGraph, Type::S16, Granularity::ChannelWise, Type::U8);
+  SUCCEED();
+}
+
+TEST(QuantizedModelVerifierTest, MirrorPad_wrong_granularity_NEG)
+{
+  TEST_WITH_WRONG_GRANULARITY(MirrorPadTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_WRONG_GRANULARITY(MirrorPadTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_WRONG_GRANULARITY(MirrorPadTestGraph, Type::S16, Granularity::ChannelWise);
   SUCCEED();
 }
 

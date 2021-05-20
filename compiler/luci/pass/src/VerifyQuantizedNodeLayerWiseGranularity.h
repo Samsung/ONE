@@ -135,6 +135,13 @@ private:
     return true;
   }
 
+  bool visit(const luci::CircleMirrorPad *node)
+  {
+    RETURN_FALSE_UNLESS(is_lwq(node))
+    RETURN_FALSE_UNLESS(is_lwq(node->input()))
+    return true;
+  }
+
   bool visit(const luci::CirclePRelu *node)
   {
     RETURN_FALSE_UNLESS(is_lwq(node))
