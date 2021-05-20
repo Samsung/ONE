@@ -181,7 +181,13 @@ def _make_circle2circle_cmd(args, driver_path, input_path, output_path):
             # ./driver --opt[0]
             if type(getattr(args, opt[0])) is bool:
                 cmd.append('--' + opt[0])
-            # ./driver --opt[0] true/false
+            """
+            This condition check is for config file interface, usually would be 
+             SomeOption=True 
+            but user can write as follows while development 
+             SomeOption=False 
+            instead of removing SomeOption option
+            """
             if type(getattr(args, opt[0])) is str and not getattr(
                     args, opt[0]).lower() in ['false', '0', 'n']:
                 cmd.append('--' + opt[0])
