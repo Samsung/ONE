@@ -175,10 +175,23 @@ def _make_circle2circle_cmd(args, driver_path, input_path, output_path):
     # profiling
     if _is_valid_attr(args, 'generate_profile_data'):
         cmd.append('--generate_profile_data')
-    # optimization pass
+    # optimization pass(only true/false options)
+    # TODO support options whose number of arguments is more than zero
     for opt in _CONSTANT.OPTIMIZATION_OPTS:
         if _is_valid_attr(args, opt[0]):
-            cmd.append('--' + opt[0])
+            # ./driver --opt[0]
+            if type(getattr(args, opt[0])) is bool:
+                cmd.append('--' + opt[0])
+            """
+            This condition check is for config file interface, usually would be 
+             SomeOption=True 
+            but user can write as follows while development 
+             SomeOption=False 
+            instead of removing SomeOption option
+            """
+            if type(getattr(args, opt[0])) is str and not getattr(
+                    args, opt[0]).lower() in ['false', '0', 'n']:
+                cmd.append('--' + opt[0])
 
     return cmd
 
