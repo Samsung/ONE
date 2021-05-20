@@ -47,7 +47,7 @@ public:
 
 public:
   uint8_t *buffer() const final { return reinterpret_cast<uint8_t *>(handle()->GetMemoryPtr()); }
-  size_t total_size() const final { return handle()->GetMemorySizeInBytes(); }
+  size_t total_size() const final { return _shape.num_elements() * sizeof(float); }
   size_t calcOffset(const ir::Coordinates &coords) const final
   {
     // NYI

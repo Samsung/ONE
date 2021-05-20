@@ -580,6 +580,7 @@ absl::Status TensorDescriptor::PerformGetHandleSelector(const std::vector<std::s
     case TensorStorageType::UNKNOWN:
       return absl::UnavailableError("Unknown type");
   }
+  return absl::UnavailableError("Unknown type");
 }
 
 std::string TensorDescriptor::DeclareAddress(const std::string &var_name,

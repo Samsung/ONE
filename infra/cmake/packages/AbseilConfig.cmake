@@ -27,6 +27,7 @@ function(_Abseil_import)
       absl::numeric
       absl::random_random
       absl::strings
+      absl::status
       absl::synchronization
       absl::time
       absl::utility

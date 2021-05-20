@@ -50,12 +50,13 @@ public:
     const auto &operands = data.graph->operands();
     auto context = std::make_unique<gpu_cl::BackendContext>(this, std::move(data));
 
-    auto environment = std::make_unique<Environment>();
+    auto environment = std::make_shared<Environment>();
     if (!CreateEnvironment(environment.get()).ok())
     {
       return nullptr;
     }
     auto tm = createTensorManager(&environment->context());
+
     auto tr = std::make_shared<ClTensorRegistry<TensorManager>>(tm);
 
     InferenceContext::CreateInferenceInfo create_info;
@@ -63,17 +64,19 @@ public:
                               ? CalculationsPrecision::F16
                               : CalculationsPrecision::F32;
     create_info.storage_type = GetFastestStorageType(environment->device().GetInfo());
+
     create_info.hints.Add(ModelHints::kFastestInference);
 
-    auto tb = std::make_shared<TensorBuilder>(operands, tm, create_info, environment->queue(),
-                                              environment->GetDevicePtr());
-    context->tensor_registry = tr;
-    context->tensor_builder = tb;
     auto cc = std::make_shared<CreationContext>();
     cc->device = environment->GetDevicePtr();
     cc->context = &environment->context();
     cc->queue = environment->queue();
     cc->cache = environment->program_cache();
+
+    auto tb = std::make_shared<TensorBuilder>(operands, tm, create_info, environment);
+    context->tensor_registry = tr;
+    context->tensor_builder = tb;
+
     context->kernel_gen = std::make_shared<KernelGenerator>(graph, tb, tr, cc);
     context->constant_initializer = std::make_shared<ConstantInitializer>(operands, tr);
     return context;

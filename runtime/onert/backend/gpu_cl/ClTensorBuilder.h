@@ -53,8 +53,8 @@ public:
   using T_ClTensorManager = ClTensorManager<T_ITensor, T_Tensor>;
 
   ClTensorBuilder(const ir::Operands &operands, T_ClTensorManager *tensor_mgr,
-                  InferenceContext::CreateInferenceInfo create_info, CLCommandQueue *queue,
-                  CLDevice *device);
+                  InferenceContext::CreateInferenceInfo create_info,
+                  const std::shared_ptr<Environment> &environment);
 
   /**
    * @brief     Register tensor information to allocate on ACL-CL backend
@@ -110,8 +110,8 @@ private:
 
   std::unique_ptr<T_ClTensorManager> _tensor_mgr;
   InferenceContext::CreateInferenceInfo _create_info;
-  CLCommandQueue *_queue;
-  CLDevice *_device;
+  std::shared_ptr<Environment> _environment;
+
   // for linear executor
   std::vector<std::pair<UsesType, ir::OperandIndex>> _lifetime_seq;
 
@@ -138,9 +138,10 @@ namespace gpu_cl
 template <typename T_ITensor, typename T_Tensor>
 ClTensorBuilder<T_ITensor, T_Tensor>::ClTensorBuilder(
   const ir::Operands &operands, T_ClTensorManager *tensor_mgr,
-  InferenceContext::CreateInferenceInfo create_info, CLCommandQueue *queue, CLDevice *device)
-  : _operands{operands}, _tensor_mgr{tensor_mgr},
-    _create_info{create_info}, _queue{queue}, _device{device}
+  InferenceContext::CreateInferenceInfo create_info,
+  const std::shared_ptr<Environment> &environment)
+  : _operands{operands}, _tensor_mgr{tensor_mgr}, _create_info{create_info}, _environment{
+                                                                               environment}
 {
   assert(_tensor_mgr);
 }
@@ -277,7 +278,8 @@ void ClTensorBuilder<T_ITensor, T_Tensor>::buildTensors(void)
       continue;
 
     const auto &info = entry.second;
-    _tensor_mgr->buildTensor(ind, info, _uses_count_map[ind], _create_info, _queue, _device->info_);
+    _tensor_mgr->buildTensor(ind, info, _uses_count_map[ind], _create_info, _environment->queue(),
+                             _environment->device().info_);
   }
 }
 

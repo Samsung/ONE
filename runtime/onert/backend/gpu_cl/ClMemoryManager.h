@@ -50,7 +50,8 @@ public:
       const auto &t = tensor_reserver_.Get(tensor_entry.first.value());
       const auto &shape = t->shape;
       const auto &descriptor = t->descriptor;
-      if (!CreateTensor(*_context, shape, descriptor, tensor->handle()).ok()) {
+      if (!CreateTensor(*_context, shape, descriptor, tensor->handle()).ok())
+      {
         return;
       }
     }
