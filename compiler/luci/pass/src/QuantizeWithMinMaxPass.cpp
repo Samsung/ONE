@@ -574,6 +574,13 @@ struct QuantizeActivation final : public luci::CircleNodeMutableVisitor<bool>
         auto min = quantparam->min[0];
         auto max = quantparam->max[0];
 
+        // Special values
+        if (circle_node->opcode() == luci::CircleOpcode::SOFTMAX)
+        {
+          min = 0.0f;
+          max = 1.0f;
+        }
+
         float scaling_factor{0};
         int64_t zp{0};
         float nudged_min{0};

@@ -237,6 +237,9 @@ private:
   {
     RETURN_FALSE_UNLESS(has_type(node, Type::S16))
     RETURN_FALSE_UNLESS(has_type(node->logits(), Type::S16))
+
+    RETURN_FALSE_UNLESS(node->quantparam()->scale[0] == 1.0f / 32767.0f);
+    RETURN_FALSE_UNLESS(node->quantparam()->zerop[0] == 0);
     return true;
   }
 
