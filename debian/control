@@ -9,7 +9,7 @@ Homepage: https://github.com/Samsung/ONE
 Package: one-compiler
 Architecture: amd64
 Multi-Arch: foreign
-Depends: ${misc:Depends}, ${shlibs:Depends}
+Depends: ${misc:Depends}, ${shlibs:Depends}, python3-venv, python3-pip
 Description: On-device Neural Engine compiler package
 
 Package: one-compiler-dev
