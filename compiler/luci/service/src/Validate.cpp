@@ -179,6 +179,8 @@ bool validate_name(loco::Graph *g)
 
 bool validate_unique_name(luci::Module *m)
 {
+  LOGGER(l);
+
   std::unordered_map<std::string, bool> names_col;
 
   for (size_t g = 0; g < m->size(); ++g)
@@ -196,7 +198,10 @@ bool validate_unique_name(luci::Module *m)
       auto name = node->name();
       auto it = names_col.find(name);
       if (it != names_col.end())
+      {
+        INFO(l) << "Duplicate name: " << name << std::endl;
         return false;
+      }
 
       names_col[name] = true;
     }

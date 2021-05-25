@@ -91,6 +91,67 @@ if [[ ! -s "onnx_conv2d_conv2d.onnx" ]]; then
     # https://github.com/Samsung/ONE/issues/5577#issuecomment-755078444
 fi
 
+# public TF models
+
+if [[ ! -s "lite-model_esrgan-tf2_1.tflite" ]]; then
+    wget https://tfhub.dev/captain-pool/lite-model/esrgan-tf2/1?lite-format=tflite \
+        -O lite-model_esrgan-tf2_1.tflite
+    # https://tfhub.dev/captain-pool/lite-model/esrgan-tf2/1
+fi
+
+if [[ ! -f "faster_rcnn_openimages_v4_inception_resnet_v2_1/saved_model.pb" ]]; then
+    wget https://tfhub.dev/google/faster_rcnn/openimages_v4/inception_resnet_v2/1?tf-hub-format=compressed \
+        -O faster_rcnn_openimages_v4_inception_resnet_v2_1.tar.gz
+    mkdir -p faster_rcnn_openimages_v4_inception_resnet_v2_1
+    tar zxvf faster_rcnn_openimages_v4_inception_resnet_v2_1.tar.gz \
+        -C faster_rcnn_openimages_v4_inception_resnet_v2_1/
+    # https://tfhub.dev/google/faster_rcnn/openimages_v4/inception_resnet_v2/1
+fi
+
+if [[ ! -f "faster_rcnn_openimages_v4_inception_resnet_v2_1/saved_model.pb" ]]; then
+    wget https://tfhub.dev/tensorflow/efficientnet/lite0/feature-vector/2?tf-hub-format=compressed \
+        -O efficientnet_lite0_feature-vector_2.tar.gz
+    mkdir -p efficientnet_lite0_feature-vector_2
+    tar zxvf efficientnet_lite0_feature-vector_2.tar.gz -C efficientnet_lite0_feature-vector_2/
+    # https://tfhub.dev/google/faster_rcnn/openimages_v4/inception_resnet_v2/1
+fi
+
+if [[ ! -f "experts_bit_r50x1_in21k_object_1/saved_model.pb" ]]; then
+    wget https://tfhub.dev/google/experts/bit/r50x1/in21k/object/1?tf-hub-format=compressed \
+        -O experts_bit_r50x1_in21k_object_1.tar.gz
+    mkdir -p experts_bit_r50x1_in21k_object_1
+    tar zxvf experts_bit_r50x1_in21k_object_1.tar.gz -C experts_bit_r50x1_in21k_object_1/
+    # ./resave_savedmodel.py experts_bit_r50x1_in21k_object_1
+    # https://tfhub.dev/google/experts/bit/r50x1/in21k/object/1
+fi
+
+if [[ ! -f "i3d-kinetics-400_1-resaved/saved_model.pb" ]]; then
+    wget https://tfhub.dev/deepmind/i3d-kinetics-400/1?tf-hub-format=compressed \
+        -O i3d-kinetics-400_1.tar.gz
+    mkdir i3d-kinetics-400_1
+    tar zxvf i3d-kinetics-400_1.tar.gz -C i3d-kinetics-400_1/
+    ./resave_savedmodel.py i3d-kinetics-400_1
+    # https://tfhub.dev/deepmind/i3d-kinetics-400/1
+fi
+
+if [[ ! -f "tiny_video_net_tvn3_1/saved_model.pb" ]]; then
+    wget https://tfhub.dev/google/tiny_video_net/tvn3/1?tf-hub-format=compressed \
+        -O tiny_video_net_tvn3_1.tar.gz
+    mkdir tiny_video_net_tvn3_1
+    tar zxvf tiny_video_net_tvn3_1.tar.gz -C tiny_video_net_tvn3_1/
+    # ./resave_savedmodel.py tiny_video_net_tvn3_1
+    # https://tfhub.dev/google/tiny_video_net/tvn3/1
+fi
+
+if [[ ! -f "movinet_a5_base_kinetics-600_classification_1/saved_model.pb" ]]; then
+    wget https://tfhub.dev/tensorflow/movinet/a5/base/kinetics-600/classification/1?tf-hub-format=compressed \
+        -O movinet_a5_base_kinetics-600_classification_1.tar.gz
+    mkdir movinet_a5_base_kinetics-600_classification_1
+    tar zxvf movinet_a5_base_kinetics-600_classification_1.tar.gz -C movinet_a5_base_kinetics-600_classification_1/
+    # ./resave_savedmodel.py movinet_a5_base_kinetics-600_classification_1
+    # https://tfhub.dev/tensorflow/movinet/a5/base/kinetics-600/classification/1
+fi
+
 # prepare 'inception_v3.circle' file used for quantization test
 inputfile="./inception_v3.pb"
 outputfile="./inception_v3.circle"
