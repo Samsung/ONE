@@ -24,7 +24,7 @@ RUN apt-get update && apt-get -qqy install software-properties-common
 RUN apt-get update && apt-get -qqy install build-essential cmake scons git g++-arm-linux-gnueabihf g++-aarch64-linux-gnu
 
 # Debian build tool
-RUN apt-get update && apt-get -qqy install fakeroot devscripts debhelper
+RUN apt-get update && apt-get -qqy install fakeroot devscripts debhelper python3-all
 
 # Install extra dependencies (Caffe, nnkit)
 RUN apt-get update && apt-get -qqy install libboost-all-dev libgflags-dev libgoogle-glog-dev libatlas-base-dev libhdf5-dev
