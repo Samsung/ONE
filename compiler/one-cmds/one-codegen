@@ -21,7 +21,9 @@
 
 import argparse
 import copy
+import glob
 import itertools
+import ntpath
 import os
 import subprocess
 import sys
@@ -31,17 +33,45 @@ import utils as _utils
 
 
 def _get_backends_list():
+    """
+    [one hierarchy]
+    one
+    ├── backends
+    ├── bin
+    ├── doc
+    ├── include
+    ├── lib
+    └── test
+
+    The list where `one-codegen` finds its backends
+    - `bin` folder where `one-codegen` exists
+    - `backends` folder
+
+    NOTE If there are backends of the same name in different places,
+     the closer to the top in the list, the higher the priority.
+    """
     dir_path = os.path.dirname(os.path.realpath(__file__))
-    files = [f for f in os.listdir(dir_path) if os.path.isfile(os.path.join(dir_path, f))]
+    backend_set = set()
+
+    # bin folder
+    files = [f for f in glob.glob(dir_path + '/*-compile')]
+    # backends folder
+    files += [
+        f for f in glob.glob(dir_path + '/../backends/**/*-compile', recursive=True)
+    ]
+    # TODO find backends in `$PATH`
+
     backends_list = []
     for cand in files:
-        if cand.endswith('-compile'):
-            # 8 : length of '-compile'
-            backends_list.append(cand[:-8])
+        base = ntpath.basename(cand)
+        if not base in backend_set and os.path.isfile(cand) and os.access(cand, os.X_OK):
+            backend_set.add(base)
+            backends_list.append(cand)
+
     return backends_list
 
 
-def _get_parser():
+def _get_parser(backends_list):
     codegen_usage = 'one-codegen [-h] [-v] [-C CONFIG] [-b BACKEND] [--] [COMMANDS FOR BACKEND]'
     parser = argparse.ArgumentParser(
         description='command line tool for code generation', usage=codegen_usage)
@@ -49,13 +79,13 @@ def _get_parser():
     _utils._add_default_arg(parser)
 
     # get backend list in the directory
-    backends_list = _get_backends_list()
-    if not backends_list:
-        backends_list_message = '(There is no available backend drivers)'
+    backends_name = [ntpath.basename(f) for f in backends_list]
+    if not backends_name:
+        backends_name_message = '(There is no available backend drivers)'
     else:
-        backends_list_message = '(available backend drivers: ' + '.'.join(
-            backends_list) + ')'
-    backend_help_message = 'backend name to use ' + backends_list_message
+        backends_name_message = '(available backend drivers: ' + ', '.join(
+            backends_name) + ')'
+    backend_help_message = 'backend name to use ' + backends_name_message
     parser.add_argument('-b', '--backend', type=str, help=backend_help_message)
 
     return parser
@@ -98,8 +128,11 @@ def _parse_arg(parser):
 
 
 def main():
+    # get backend list
+    backends_list = _get_backends_list()
+
     # parse arguments
-    parser = _get_parser()
+    parser = _get_parser(backends_list)
     args, backend_args, unknown_args = _parse_arg(parser)
 
     # parse configuration file
@@ -109,8 +142,13 @@ def main():
     _verify_arg(parser, args)
 
     # make a command to run given backend driver
-    dir_path = os.path.dirname(os.path.realpath(__file__))
-    codegen_path = os.path.join(dir_path, getattr(args, 'backend') + '-compile')
+    codegen_path = None
+    backend_base = getattr(args, 'backend') + '-compile'
+    for cand in backends_list:
+        if ntpath.basename(cand) == backend_base:
+            codegen_path = cand
+    if not codegen_path:
+        raise FileNotFoundError(backend_base + ' not found')
     codegen_cmd = [codegen_path] + backend_args + unknown_args
     if _utils._is_valid_attr(args, 'command'):
         codegen_cmd += getattr(args, 'command').split()
