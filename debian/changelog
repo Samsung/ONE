@@ -1,3 +1,9 @@
+one (1.16.1) bionic; urgency=medium
+
+  * Extends the point where `one-codegen` finds backends.
+
+ -- seongwoo chae <mhs4670go@naver.com>  Wed, 26 May 2021 18:06:53 +0900
+
 one (1.16.0) bionic; urgency=low
 
   * Initial release.
