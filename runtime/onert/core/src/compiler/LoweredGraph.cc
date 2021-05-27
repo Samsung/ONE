@@ -117,6 +117,85 @@ LoweredGraph::LoweredGraph(const ir::Graph &graph, const CompilerOptions &option
   }
 }
 
+LoweredGraph::LoweredGraph(const ir::Graph &parent_graph, const ir::Graph &graph,
+                           const CompilerOptions &options)
+  : _graph{graph}, _parent_graph{parent_graph}
+{
+  // set tracing_ctx for copied graph
+  if (options.tracing_ctx)
+  {
+    auto subgraph_index = options.tracing_ctx->getSubgraphIndex(&graph);
+    options.tracing_ctx->setSubgraphIndex(&_graph, subgraph_index.value());
+  }
+
+  // Build backend contexts
+  auto &backend_manager = BackendManager::get();
+  // Create contexts for other backends
+  for (auto backend_str : options.backend_list)
+  {
+    backend_manager.loadBackend(backend_str);
+    auto backend = backend_manager.get(backend_str);
+
+    // TODO As the default value of backend list contains "cpu", "acl_cl" and "acl_neon", and some
+    // are not available on x64 or some other platforms. So this may be a workaround for x64 and
+    // we should change it back(throw if backend is not loaded) later.
+    if (!backend)
+    {
+      VERBOSE(LoweredGraph) << "Cannot load backend - " << backend_str << std::endl;
+      continue;
+    }
+  }
+  if (backend_manager.num_backends() == 0)
+    throw std::runtime_error{"No available backends loaded."};
+
+  // TODO Move "schedule" phase out of here
+  // Schedule
+  std::unique_ptr<BackendResolver> backend_resolver;
+  auto all_backends = backend_manager.getAll();
+  if (options.he_scheduler)
+  {
+    auto scheduler = HEScheduler(all_backends, options);
+    backend_resolver = scheduler.schedule(_graph);
+    _indexed_ranks = scheduler.getIndexedRanks();
+  }
+  else
+  {
+    auto scheduler = ManualScheduler(all_backends, options);
+    backend_resolver = scheduler.schedule(_graph);
+  }
+
+  makeLowerInfo(*backend_resolver);
+  VERBOSE(LoweredGraph) << "dump before mandatory passes" << std::endl;
+  dumper::text::dumpLoweredGraph(*this);
+
+  // Mandatory passes - kind of legalization(?)
+  pass::PassRunner{}
+    .append(std::make_unique<pass::ConstantInsertionPass>(*this))
+    .append(std::make_unique<pass::ConstantLoweringPass>(*this))
+    .append(std::make_unique<pass::PermutationOperationPass>(*this))
+    .append(std::make_unique<pass::PermutationInsertionPass>(*this))
+    .run();
+
+  dumpLowerInfo();
+
+  // Optimization passes (optional)
+  pass::PassRunner{}.append(std::make_unique<pass::PermutationEliminationPass>(*this)).run();
+
+  VERBOSE(LoweredGraph) << "Dump after all the passes" << std::endl;
+  for (auto operand : _graph.getInputs())
+    VERBOSE(LoweredGraph) << "Graph Input : " << operand << std::endl;
+  for (auto operand : _graph.getOutputs())
+    VERBOSE(LoweredGraph) << "Graph Output : " << operand << std::endl;
+  dumper::text::dumpLoweredGraph(*this);
+
+  // Graph verifications
+  {
+    assert(ir::verifier::InputOutputChecker().verify(_graph));
+    assert(ir::verifier::DAGChecker().verify(_graph));
+    assert(ir::verifier::EdgeChecker().verify(_graph));
+  }
+}
+
 void LoweredGraph::makeLowerInfo(const compiler::BackendResolver &backend_resolver)
 {
   _graph.operands().iterate([&](const ir::OperandIndex &index, const ir::Operand &) {

@@ -73,6 +73,14 @@ public:
   std::string getModelAbsolutePath(const char *package_name);
 
   /**
+   * @brief Get the absolute of the model file to find
+   *
+   * @param package_name Package name
+   * @return std::string The absolute path of model file
+   */
+  std::string getModelAbsoluteFilePath(const char *package_name);
+
+  /**
    * @brief Save the current executable's directory based on argv[0] and CWD
    *
    * @param argv0 0th command line argument of the current process

@@ -277,6 +277,7 @@ NNFW_STATUS nnfw_session::load_model_from_nnpackage(const char *package_dir)
     std::string manifest_file_name = package_path + "/metadata/MANIFEST";
     std::ifstream mfs(manifest_file_name);
 
+    _package_file_path = package_path;
     // extract the filename of the first(index 0) model
     // e.g. In MANIFEST file, { "models" : [ "firstmodel.tflite", "2nd.tflite" ] }
     Json::Value root;
@@ -350,6 +351,45 @@ NNFW_STATUS nnfw_session::prepare()
     _subgraphs.reset();
     std::shared_ptr<onert::exec::ExecutorMap> executors = _compiler->compile();
     _execution = std::make_unique<onert::exec::Execution>(executors);
+  }
+  catch (const std::exception &e)
+  {
+    std::cerr << "Error during model prepare : " << e.what() << std::endl;
+    return NNFW_STATUS_ERROR;
+  }
+
+  _state = State::PREPARED;
+  return NNFW_STATUS_NO_ERROR;
+}
+
+NNFW_STATUS nnfw_session::prepare_pipeline(const char *map_file_path)
+{
+  // NOTE. If users want to run prepare_pipeline() more than one time, this could be removed.
+  if (!isStateModelLoaded())
+  {
+    std::cerr << "Error during model prepare pipeline : ";
+    if (isStateInitialized())
+    {
+      std::cerr << "prepare_pipeline should be run once";
+    }
+    else
+    {
+      std::cerr << "invalid state";
+    }
+    std::cerr << std::endl;
+    return NNFW_STATUS_INVALID_STATE;
+  }
+
+  try
+  {
+    _subgraphs.reset();
+    std::vector<std::shared_ptr<onert::exec::ExecutorMap>> executor_maps =
+      _compiler->compile(_package_file_path.c_str(), map_file_path);
+
+    for (auto it = executor_maps.begin(); it != executor_maps.end(); ++it)
+    {
+      _executions.push_back(std::make_shared<onert::exec::Execution>(*it));
+    }
   }
   catch (const std::exception &e)
   {
@@ -864,14 +904,19 @@ const onert::ir::Graph *nnfw_session::primary_subgraph()
 {
   if (_subgraphs)
   {
-    assert(!_execution);
+    assert(!_execution && _executions.empty());
     return _subgraphs->primary().get();
   }
   else
   {
-    assert(_execution);
+    assert(_execution || !_executions.empty());
     // TODO Remove const_cast
     // We assumed the graph will not change after compilation, but shape could change
+    if (!_executions.empty())
+    {
+      return &_executions[0]->primary_parentgraph();
+    }
+
     return &_execution->primary_subgraph();
   }
 }
@@ -930,7 +975,7 @@ bool nnfw_session::isStateInitialized()
   {
     assert(!_subgraphs);
     assert(!_compiler);
-    assert(!_execution);
+    assert(!_execution && _executions.empty());
     return true;
   }
   else
@@ -945,7 +990,7 @@ bool nnfw_session::isStateModelLoaded()
   {
     assert(_subgraphs);
     assert(_compiler);
-    assert(!_execution);
+    assert(!_execution && _executions.empty());
     return true;
   }
   else
@@ -960,7 +1005,7 @@ bool nnfw_session::isStatePrepared()
   {
     assert(!_subgraphs);
     assert(_compiler);
-    assert(_execution);
+    assert(_execution || !_executions.empty());
     return true;
   }
   else
@@ -975,7 +1020,7 @@ bool nnfw_session::isStateRunning()
   {
     assert(!_subgraphs);
     assert(_compiler);
-    assert(_execution);
+    assert(_execution || !_executions.empty());
     return true;
   }
   return false;
@@ -987,7 +1032,7 @@ bool nnfw_session::isStateFinishedRun()
   {
     assert(!_subgraphs);
     assert(_compiler);
-    assert(_execution);
+    assert(_execution || !_executions.empty());
     return true;
   }
   else

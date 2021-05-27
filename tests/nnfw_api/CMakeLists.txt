@@ -28,7 +28,7 @@ set(RUNTIME_NNFW_API_TEST_INCLUDE ${CMAKE_CURRENT_SOURCE_DIR}/include
                                   ${CMAKE_CURRENT_SOURCE_DIR}/src)
 target_include_directories(${RUNTIME_NNFW_API_TEST} PRIVATE ${RUNTIME_NNFW_API_TEST_INCLUDE})
 
-target_link_libraries(${RUNTIME_NNFW_API_TEST} nnfw-dev)
+target_link_libraries(${RUNTIME_NNFW_API_TEST} nnfw-dev jsoncpp)
 target_link_libraries(${RUNTIME_NNFW_API_TEST} gtest gmock)
 target_link_libraries(${RUNTIME_NNFW_API_TEST} ${LIB_PTHREAD} dl)
 target_link_libraries(${RUNTIME_NNFW_API_TEST} circle_schema)
@@ -56,3 +56,10 @@ install(DIRECTORY ${NNPACKAGE_MODEL_DIR} DESTINATION ${NNPACKAGE_INSTALL_TARGET}
 # Install nnpackage test model (while)
 set(NNPACKAGE_MODEL_DIR ${NNAS_PROJECT_SOURCE_DIR}/nnpackage/examples/v1.0.0/while_dynamic)
 install(DIRECTORY ${NNPACKAGE_MODEL_DIR} DESTINATION ${NNPACKAGE_INSTALL_TARGET}/while_dynamic)
+
+# Install nnpackage test model (mobilenet)
+set(NNPACKAGE_MODEL_DIR ${NNAS_PROJECT_SOURCE_DIR}/runtime/contrib/TFLiteSharp/TFLiteTestApp/res/)
+set(NNPACKAGE_INSTALL_TARGET unittest_standalone/nnfw_api_gtest_models)
+
+install(DIRECTORY ${NNPACKAGE_MODEL_DIR} DESTINATION ${NNPACKAGE_INSTALL_TARGET}/mobilenet_v1_1.0_224)
+

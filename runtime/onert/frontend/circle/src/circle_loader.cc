@@ -106,13 +106,13 @@ private:
     for (const std::int32_t input_ind : *circle_subg->inputs())
     {
       subg->addInput(tensorIdxToOperandIdx(input_ind),
-                     _tensor_names.at(_tensor_to_operand[input_ind]));
+                     _tensor_names->at(_tensor_to_operand[input_ind]));
     }
     // Set outputs
     for (const std::int32_t output_ind : *circle_subg->outputs())
     {
       subg->addOutput(tensorIdxToOperandIdx(output_ind),
-                      _tensor_names.at(_tensor_to_operand[output_ind]));
+                      _tensor_names->at(_tensor_to_operand[output_ind]));
     }
     // Create operations
     for (const auto *op : *circle_subg->operators())
