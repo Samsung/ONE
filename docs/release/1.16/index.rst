@@ -11,3 +11,4 @@
    :caption: Contents:
 
   ./release-note-1.16.0.md
+  ./release-note-1.16.1.md
