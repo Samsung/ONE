@@ -68,7 +68,8 @@ public:
    * @param graph reference on subgraphs
    */
   explicit BaseLoader(std::unique_ptr<ir::Subgraphs> &subgs)
-    : _base{nullptr}, _pagesize(getpagesize()), _fd(-1), _subgraphs(subgs), _model{nullptr}
+    : _base{nullptr}, _pagesize(getpagesize()), _fd(-1), _subgraphs(subgs), _model{nullptr},
+      _tensor_names(std::make_shared<std::unordered_map<ir::OperandIndex, std::string>>())
   {
     _use_mmaped_data = util::getConfigBool(util::config::USE_MMAPED_DATA);
   }
@@ -181,7 +182,7 @@ protected:
   const Model *_model;
   // Maps Tensor indices to onert Operands.
   std::vector<ir::OperandIndex> _tensor_to_operand;
-  std::unordered_map<ir::OperandIndex, std::string> _tensor_names;
+  std::shared_ptr<std::unordered_map<ir::OperandIndex, std::string>> _tensor_names;
   // Verifier
   std::unique_ptr<Verifier> _verifier;
   // Boolean flag to use MMAPED_DATA
@@ -387,7 +388,7 @@ ir::OperandIndex BaseLoader<LoaderDomain>::loadOperand(const Tensor *tensor, ir:
     subg.setOperandValue(operand_index, std::move(data_obj));
   }
 
-  _tensor_names.emplace(operand_index, tensor->name()->str());
+  _tensor_names->emplace(operand_index, tensor->name()->str());
 
   // Variable
   if (tensor->is_variable())

@@ -45,6 +45,11 @@ struct ManualSchedulerOptions
   std::unordered_map<ir::OperationIndex, std::string> index_to_backend;
 };
 
+struct PartialGraphOptions
+{
+  std::unordered_map<ir::OperationIndex, ir::SubgraphIndex> index_to_graph;
+};
+
 struct CompilerOptions
 {
   // GENERAL OPTIONS
@@ -59,6 +64,7 @@ struct CompilerOptions
   bool he_profiling_mode; //< Whether HEScheduler profiling mode ON/OFF
   bool disable_compile;   //< Run with Interpreter if true, try compilation otherwise
   bool fp16_enable;       //< Whether fp16 mode ON/OFF
+  PartialGraphOptions partial_graph_options;
 
   util::TracingCtx *tracing_ctx; //< Profiling information
 };
@@ -86,6 +92,9 @@ public:
    */
   std::shared_ptr<exec::ExecutorMap> compile(void);
 
+  std::vector<std::shared_ptr<exec::ExecutorMap>> compile(const char *package_file_path,
+                                                          const char *map_file_path);
+
   State state(void) const { return _state; }
 
   CompilerOptions &options() { return _options; }
@@ -94,6 +103,8 @@ public:
    * @brief   Allow to compute float32 using float16 data type
    */
   void enableToFp16();
+
+  bool buildPartialGraph(uint32_t num_graphs);
 
 private:
   void checkProfilerConditions();

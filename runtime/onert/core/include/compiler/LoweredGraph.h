@@ -36,9 +36,13 @@ class LoweredGraph
 {
 public:
   LoweredGraph(const ir::Graph &graph, const compiler::CompilerOptions &options);
+  LoweredGraph(const ir::Graph &parent_graph, const ir::Graph &graph,
+               const compiler::CompilerOptions &options);
 
   ir::Graph &graph() { return _graph; }
   const ir::Graph &graph() const { return _graph; }
+  ir::Graph &parent_graph() { return _parent_graph; }
+  const ir::Graph &parent_graph() const { return _parent_graph; }
   const compiler::GraphLowerInfo &lower_info() const { return _lower_info_map; }
   compiler::GraphLowerInfo &lower_info() { return _lower_info_map; }
   std::shared_ptr<ir::OperationIndexMap<int64_t>> indexed_ranks() { return _indexed_ranks; }
@@ -59,6 +63,7 @@ private:
 
 private:
   ir::Graph _graph;
+  ir::Graph _parent_graph;
   std::shared_ptr<ir::OperationIndexMap<int64_t>> _indexed_ranks;
   compiler::GraphLowerInfo _lower_info_map;
   ir::OperationIndexMap<bool> _has_dynamic_tensor_map;

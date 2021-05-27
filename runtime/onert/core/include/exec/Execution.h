@@ -53,6 +53,7 @@ public:
    */
   const ir::Graph &primary_subgraph() const { return primary_executor()->graph(); }
 
+  const ir::Graph &primary_parentgraph() const { return primary_executor()->parent_graph(); }
   /**
    * @brief     Change input shape
    * @param[in] index   Input index

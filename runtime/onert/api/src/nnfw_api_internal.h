@@ -100,6 +100,7 @@ public:
 
   NNFW_STATUS load_model_from_nnpackage(const char *package_file_path);
   NNFW_STATUS prepare();
+  NNFW_STATUS prepare_pipeline(const char *map_file_path);
   NNFW_STATUS run();
 
   NNFW_STATUS run_async();
@@ -122,6 +123,9 @@ public:
 
   NNFW_STATUS set_available_backends(const char *backends);
   NNFW_STATUS set_op_backend(const char *op, const char *backend);
+
+  // accessor
+  std::vector<std::shared_ptr<onert::exec::Execution>> *get_executions() { return &_executions; }
 
   //
   // Internal-only API
@@ -155,7 +159,8 @@ private:
   std::unique_ptr<onert::compiler::Compiler> _compiler;
   std::unique_ptr<onert::exec::Execution> _execution;
   std::shared_ptr<onert::api::CustomKernelRegistry> _kernel_registry;
-
+  std::vector<std::shared_ptr<onert::exec::Execution>> _executions;
+  std::string _package_file_path;
   std::unique_ptr<onert::util::TracingCtx> _tracing_ctx;
 };
 
