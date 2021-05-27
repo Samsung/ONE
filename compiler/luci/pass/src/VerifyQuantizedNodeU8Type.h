@@ -237,6 +237,9 @@ private:
   {
     RETURN_FALSE_UNLESS(has_type(node, Type::U8))
     RETURN_FALSE_UNLESS(has_type(node->x(), Type::U8))
+
+    RETURN_FALSE_UNLESS(node->quantparam()->scale[0] == 1.0f / 256.0f);
+    RETURN_FALSE_UNLESS(node->quantparam()->zerop[0] == 0);
     return true;
   }
 
@@ -306,6 +309,9 @@ private:
   {
     RETURN_FALSE_UNLESS(has_type(node, Type::U8))
     RETURN_FALSE_UNLESS(has_type(node->x(), Type::U8))
+
+    RETURN_FALSE_UNLESS(node->quantparam()->scale[0] == 2.0f / 256.0f);
+    RETURN_FALSE_UNLESS(node->quantparam()->zerop[0] == 128);
     return true;
   }
 
