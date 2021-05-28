@@ -527,6 +527,9 @@ void set_bias(luci::CircleNode *node, luci::CircleConst *bias)
 
 void set_act_qparam(luci::CircleNode *node, float scale, int64_t zp)
 {
+  assert(node);               // FIX_CALLER_UNLESS
+  assert(node->quantparam()); // FIX_CALLER_UNLESS
+
   auto qparam = node->quantparam();
   assert(qparam->scale.size() == 1); // FIX_CALLER_UNLESS
   assert(qparam->zerop.size() == 1); // FIX_CALLER_UNLESS
