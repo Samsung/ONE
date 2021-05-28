@@ -19,6 +19,7 @@
 #include <fstream>
 #include <stdio.h>
 #include <json/json.h>
+#include <thread>
 
 void build_partition_map()
 {
@@ -55,6 +56,9 @@ TEST_F(ValidationTestPipelineSession, create_pipeline_001)
 
 TEST_F(ValidationTestPipelineSession, pipeline_session_test_model)
 {
+  std::vector<void *> dummy1;
+  std::vector<uint32_t> dummy2;
+
   build_partition_map();
 
   NNFW_ENSURE_SUCCESS(nnfw_create_session(&_session));
@@ -62,6 +66,8 @@ TEST_F(ValidationTestPipelineSession, pipeline_session_test_model)
     _session, NNPackages::get().getModelAbsoluteFilePath("mobilenet_v1_1.0_224").c_str()));
   NNFW_ENSURE_SUCCESS(nnfw_set_available_backends(_session, "cpu"));
   NNFW_ENSURE_SUCCESS(nnfw_prepare_pipeline(_session, "./partition_map.json"));
+
+  NNFW_ENSURE_SUCCESS(nnfw_push_pipeline_input(_session, &dummy1, &dummy2));
   NNFW_ENSURE_SUCCESS(nnfw_close_session(_session));
 
   remove("./partition_map.json");
@@ -80,10 +86,14 @@ TEST_F(ValidationTestPipelineSession, prepare_pipeline_001)
   NNFW_ENSURE_SUCCESS(nnfw_load_model_from_modelfile(
     _session, NNPackages::get().getModelAbsoluteFilePath("mobilenet_v1_1.0_224").c_str()));
   ASSERT_EQ(nnfw_prepare_pipeline(_session, "./partition_map.json"), NNFW_STATUS_ERROR);
+  NNFW_ENSURE_SUCCESS(nnfw_close_session(_session));
 }
 
 TEST_F(ValidationTestPipelineSession, prepare_pipeline_002)
 {
+  std::vector<void *> dummy1;
+  std::vector<uint32_t> dummy2;
+
   build_partition_map();
 
   NNFW_ENSURE_SUCCESS(nnfw_create_session(&_session));
@@ -91,11 +101,16 @@ TEST_F(ValidationTestPipelineSession, prepare_pipeline_002)
     _session, NNPackages::get().getModelAbsoluteFilePath("mobilenet_v1_1.0_224").c_str()));
   NNFW_ENSURE_SUCCESS(nnfw_prepare_pipeline(_session, "./partition_map.json"));
 
+  NNFW_ENSURE_SUCCESS(nnfw_push_pipeline_input(_session, &dummy1, &dummy2));
+  NNFW_ENSURE_SUCCESS(nnfw_close_session(_session));
+
   remove("./partition_map.json");
 }
 
 TEST_F(ValidationTestPipelineSession, input_tensorinfo_pipeline)
 {
+  std::vector<void *> dummy1;
+  std::vector<uint32_t> dummy2;
   nnfw_tensorinfo t_input;
 
   build_partition_map();
@@ -107,11 +122,16 @@ TEST_F(ValidationTestPipelineSession, input_tensorinfo_pipeline)
 
   NNFW_ENSURE_SUCCESS(nnfw_input_tensorinfo(_session, 0, &t_input));
 
+  NNFW_ENSURE_SUCCESS(nnfw_push_pipeline_input(_session, &dummy1, &dummy2));
+  NNFW_ENSURE_SUCCESS(nnfw_close_session(_session));
+
   remove("./partition_map.json");
 }
 
 TEST_F(ValidationTestPipelineSession, output_tensorinfo_pipeline)
 {
+  std::vector<void *> dummy1;
+  std::vector<uint32_t> dummy2;
   nnfw_tensorinfo t_output;
 
   build_partition_map();
@@ -123,11 +143,16 @@ TEST_F(ValidationTestPipelineSession, output_tensorinfo_pipeline)
 
   NNFW_ENSURE_SUCCESS(nnfw_output_tensorinfo(_session, 0, &t_output));
 
+  NNFW_ENSURE_SUCCESS(nnfw_push_pipeline_input(_session, &dummy1, &dummy2));
+  NNFW_ENSURE_SUCCESS(nnfw_close_session(_session));
+
   remove("./partition_map.json");
 }
 
 TEST_F(ValidationTestPipelineSession, input_size_pipeline)
 {
+  std::vector<void *> dummy1;
+  std::vector<uint32_t> dummy2;
   uint32_t input_num = -1;
 
   build_partition_map();
@@ -139,6 +164,9 @@ TEST_F(ValidationTestPipelineSession, input_size_pipeline)
 
   NNFW_ENSURE_SUCCESS(nnfw_input_size(_session, &input_num));
 
+  NNFW_ENSURE_SUCCESS(nnfw_push_pipeline_input(_session, &dummy1, &dummy2));
+  NNFW_ENSURE_SUCCESS(nnfw_close_session(_session));
+
   ASSERT_EQ(input_num, 1);
 
   remove("./partition_map.json");
@@ -146,6 +174,8 @@ TEST_F(ValidationTestPipelineSession, input_size_pipeline)
 
 TEST_F(ValidationTestPipelineSession, output_size_pipeline)
 {
+  std::vector<void *> dummy1;
+  std::vector<uint32_t> dummy2;
   uint32_t output_num = -1;
 
   build_partition_map();
@@ -157,12 +187,17 @@ TEST_F(ValidationTestPipelineSession, output_size_pipeline)
 
   NNFW_ENSURE_SUCCESS(nnfw_output_size(_session, &output_num));
 
+  NNFW_ENSURE_SUCCESS(nnfw_push_pipeline_input(_session, &dummy1, &dummy2));
+  NNFW_ENSURE_SUCCESS(nnfw_close_session(_session));
+
   ASSERT_EQ(output_num, 1);
   remove("./partition_map.json");
 }
 
 TEST_F(ValidationTestPipelineSession, set_input_tensorinfo_pipeline)
 {
+  std::vector<void *> dummy1;
+  std::vector<uint32_t> dummy2;
   nnfw_tensorinfo t_input_original;
   nnfw_tensorinfo t_input_after;
   nnfw_tensorinfo t_input = {NNFW_TYPE_TENSOR_FLOAT32, 4, {1, 224, 224, 3}};
@@ -178,6 +213,9 @@ TEST_F(ValidationTestPipelineSession, set_input_tensorinfo_pipeline)
   NNFW_ENSURE_SUCCESS(nnfw_set_input_tensorinfo(_session, 0, &t_input));
   NNFW_ENSURE_SUCCESS(nnfw_input_tensorinfo(_session, 0, &t_input_after));
 
+  NNFW_ENSURE_SUCCESS(nnfw_push_pipeline_input(_session, &dummy1, &dummy2));
+  NNFW_ENSURE_SUCCESS(nnfw_close_session(_session));
+
   ASSERT_TRUE(tensorInfoEqual(t_input_original, t_input_after));
 
   remove("./partition_map.json");
@@ -185,6 +223,9 @@ TEST_F(ValidationTestPipelineSession, set_input_tensorinfo_pipeline)
 
 TEST_F(ValidationTestPipelineSession, input_output_tensorindex)
 {
+  std::vector<void *> dummy1;
+  std::vector<uint32_t> dummy2;
+
   build_partition_map();
 
   NNFW_ENSURE_SUCCESS(nnfw_create_session(&_session));
@@ -200,6 +241,9 @@ TEST_F(ValidationTestPipelineSession, input_output_tensorindex)
   NNFW_ENSURE_SUCCESS(
     nnfw_output_tensorindex(_session, "MobilenetV1/Predictions/Reshape_1", &output_index));
   ASSERT_EQ(output_index, 0);
+
+  NNFW_ENSURE_SUCCESS(nnfw_push_pipeline_input(_session, &dummy1, &dummy2));
+  NNFW_ENSURE_SUCCESS(nnfw_close_session(_session));
 
   remove("./partition_map.json");
 }
@@ -218,6 +262,7 @@ TEST_F(ValidationTestPipelineSession, neg_pipeline_session_model_load)
   ASSERT_EQ(nnfw_load_model_from_modelfile(
               nullptr, NNPackages::get().getModelAbsoluteFilePath("mobilenet_v1_1.0_224").c_str()),
             NNFW_STATUS_UNEXPECTED_NULL);
+  NNFW_ENSURE_SUCCESS(nnfw_close_session(_session));
 }
 
 TEST_F(ValidationTestPipelineSession, neg_prepare_pipeline_001)
@@ -227,6 +272,8 @@ TEST_F(ValidationTestPipelineSession, neg_prepare_pipeline_001)
 
 TEST_F(ValidationTestPipelineSession, neg_set_in_pipeline)
 {
+  std::vector<void *> dummy1;
+  std::vector<uint32_t> dummy2;
   float input_buf[1 * 224 * 224 * 3];
 
   build_partition_map();
@@ -239,11 +286,16 @@ TEST_F(ValidationTestPipelineSession, neg_set_in_pipeline)
   ASSERT_EQ(nnfw_set_input(_session, 0, NNFW_TYPE_TENSOR_FLOAT32, input_buf, sizeof(input_buf)),
             NNFW_STATUS_ERROR);
 
+  NNFW_ENSURE_SUCCESS(nnfw_push_pipeline_input(_session, &dummy1, &dummy2));
+  NNFW_ENSURE_SUCCESS(nnfw_close_session(_session));
+
   remove("./partition_map.json");
 }
 
 TEST_F(ValidationTestPipelineSession, neg_set_out_pipeline)
 {
+  std::vector<void *> dummy1;
+  std::vector<uint32_t> dummy2;
   float output_buf[1 * 1001];
 
   build_partition_map();
@@ -256,11 +308,16 @@ TEST_F(ValidationTestPipelineSession, neg_set_out_pipeline)
   ASSERT_EQ(nnfw_set_output(_session, 0, NNFW_TYPE_TENSOR_FLOAT32, output_buf, sizeof(output_buf)),
             NNFW_STATUS_ERROR);
 
+  NNFW_ENSURE_SUCCESS(nnfw_push_pipeline_input(_session, &dummy1, &dummy2));
+  NNFW_ENSURE_SUCCESS(nnfw_close_session(_session));
+
   remove("./partition_map.json");
 }
 
 TEST_F(ValidationTestPipelineSession, neg_input_tensorinfo_pipeline_001)
 {
+  std::vector<void *> dummy1;
+  std::vector<uint32_t> dummy2;
   nnfw_tensorinfo t_input;
 
   build_partition_map();
@@ -272,11 +329,16 @@ TEST_F(ValidationTestPipelineSession, neg_input_tensorinfo_pipeline_001)
 
   ASSERT_EQ(nnfw_input_tensorinfo(nullptr, 0, &t_input), NNFW_STATUS_UNEXPECTED_NULL);
 
+  NNFW_ENSURE_SUCCESS(nnfw_push_pipeline_input(_session, &dummy1, &dummy2));
+  NNFW_ENSURE_SUCCESS(nnfw_close_session(_session));
+
   remove("./partition_map.json");
 }
 
 TEST_F(ValidationTestPipelineSession, neg_input_tensorinfo_pipeline_002)
 {
+  std::vector<void *> dummy1;
+  std::vector<uint32_t> dummy2;
   nnfw_tensorinfo t_input;
 
   build_partition_map();
@@ -288,11 +350,16 @@ TEST_F(ValidationTestPipelineSession, neg_input_tensorinfo_pipeline_002)
 
   ASSERT_EQ(nnfw_input_tensorinfo(_session, 1, &t_input), NNFW_STATUS_ERROR);
 
+  NNFW_ENSURE_SUCCESS(nnfw_push_pipeline_input(_session, &dummy1, &dummy2));
+  NNFW_ENSURE_SUCCESS(nnfw_close_session(_session));
+
   remove("./partition_map.json");
 }
 
 TEST_F(ValidationTestPipelineSession, neg_output_tensorinfo_pipeline_001)
 {
+  std::vector<void *> dummy1;
+  std::vector<uint32_t> dummy2;
   nnfw_tensorinfo t_output;
 
   build_partition_map();
@@ -304,11 +371,16 @@ TEST_F(ValidationTestPipelineSession, neg_output_tensorinfo_pipeline_001)
 
   ASSERT_EQ(nnfw_output_tensorinfo(nullptr, 0, &t_output), NNFW_STATUS_UNEXPECTED_NULL);
 
+  NNFW_ENSURE_SUCCESS(nnfw_push_pipeline_input(_session, &dummy1, &dummy2));
+  NNFW_ENSURE_SUCCESS(nnfw_close_session(_session));
+
   remove("./partition_map.json");
 }
 
 TEST_F(ValidationTestPipelineSession, neg_output_tensorinfo_pipeline_002)
 {
+  std::vector<void *> dummy1;
+  std::vector<uint32_t> dummy2;
   nnfw_tensorinfo t_output;
 
   build_partition_map();
@@ -320,11 +392,16 @@ TEST_F(ValidationTestPipelineSession, neg_output_tensorinfo_pipeline_002)
 
   ASSERT_EQ(nnfw_output_tensorinfo(_session, 1, &t_output), NNFW_STATUS_ERROR);
 
+  NNFW_ENSURE_SUCCESS(nnfw_push_pipeline_input(_session, &dummy1, &dummy2));
+  NNFW_ENSURE_SUCCESS(nnfw_close_session(_session));
+
   remove("./partition_map.json");
 }
 
 TEST_F(ValidationTestPipelineSession, neg_input_output_size_pipeline)
 {
+  std::vector<void *> dummy1;
+  std::vector<uint32_t> dummy2;
   uint32_t input_num = -1;
   uint32_t output_num = -1;
 
@@ -340,11 +417,16 @@ TEST_F(ValidationTestPipelineSession, neg_input_output_size_pipeline)
   ASSERT_EQ(nnfw_output_size(nullptr, &output_num), NNFW_STATUS_UNEXPECTED_NULL);
   ASSERT_EQ(output_num, -1);
 
+  NNFW_ENSURE_SUCCESS(nnfw_push_pipeline_input(_session, &dummy1, &dummy2));
+  NNFW_ENSURE_SUCCESS(nnfw_close_session(_session));
+
   remove("./partition_map.json");
 }
 
 TEST_F(ValidationTestPipelineSession, neg_set_input_tensorinfo_pipeline)
 {
+  std::vector<void *> dummy1;
+  std::vector<uint32_t> dummy2;
   nnfw_tensorinfo t_input = {NNFW_TYPE_TENSOR_FLOAT32, 4, {1, 224, 224, 3}};
 
   build_partition_map();
@@ -356,11 +438,17 @@ TEST_F(ValidationTestPipelineSession, neg_set_input_tensorinfo_pipeline)
 
   ASSERT_EQ(nnfw_set_input_tensorinfo(nullptr, 0, &t_input), NNFW_STATUS_UNEXPECTED_NULL);
 
+  NNFW_ENSURE_SUCCESS(nnfw_push_pipeline_input(_session, &dummy1, &dummy2));
+  NNFW_ENSURE_SUCCESS(nnfw_close_session(_session));
+
   remove("./partition_map.json");
 }
 
 TEST_F(ValidationTestPipelineSession, neg_input_output_tensorindex)
 {
+  std::vector<void *> dummy1;
+  std::vector<uint32_t> dummy2;
+
   build_partition_map();
 
   NNFW_ENSURE_SUCCESS(nnfw_create_session(&_session));
@@ -376,6 +464,68 @@ TEST_F(ValidationTestPipelineSession, neg_input_output_tensorindex)
   ASSERT_EQ(nnfw_output_tensorindex(_session, "MobilenetV1/Predictions/Reshape_2", &output_index),
             NNFW_STATUS_ERROR);
   ASSERT_EQ(output_index, 100);
+
+  NNFW_ENSURE_SUCCESS(nnfw_push_pipeline_input(_session, &dummy1, &dummy2));
+  NNFW_ENSURE_SUCCESS(nnfw_close_session(_session));
+
+  remove("./partition_map.json");
+}
+
+TEST_F(ValidationTestPipelineSession, neg_run_pipeline)
+{
+  build_partition_map();
+
+  NNFW_ENSURE_SUCCESS(nnfw_create_session(&_session));
+  NNFW_ENSURE_SUCCESS(nnfw_load_model_from_modelfile(
+    _session, NNPackages::get().getModelAbsoluteFilePath("mobilenet_v1_1.0_224").c_str()));
+  NNFW_ENSURE_SUCCESS(nnfw_set_available_backends(_session, "cpu"));
+  NNFW_ENSURE_SUCCESS(nnfw_prepare_pipeline(_session, "./partition_map.json"));
+
+  auto producer = [this]() {
+    std::vector<void *> inputs;
+    std::vector<uint32_t> lengths;
+    inputs.clear();
+    lengths.clear();
+    NNFW_ENSURE_SUCCESS(nnfw_push_pipeline_input(_session, (void *)&inputs, (void *)&lengths));
+  };
+
+  auto consumer = [this]() {
+    std::vector<void *> outputs;
+    ASSERT_EQ(nnfw_pop_pipeline_output(_session, (void *)&outputs), NNFW_STATUS_ERROR);
+  };
+
+  auto producer_thread = std::thread(producer);
+  auto consumer_thread = std::thread(consumer);
+
+  producer_thread.join();
+  consumer_thread.join();
+  NNFW_ENSURE_SUCCESS(nnfw_close_session(_session));
+
+  remove("./partition_map.json");
+}
+
+TEST_F(ValidationTestPipelineSession, run_pipeline)
+{
+  build_partition_map();
+
+  NNFW_ENSURE_SUCCESS(nnfw_create_session(&_session));
+  NNFW_ENSURE_SUCCESS(nnfw_load_model_from_modelfile(
+    _session, NNPackages::get().getModelAbsoluteFilePath("mobilenet_v1_1.0_224").c_str()));
+  NNFW_ENSURE_SUCCESS(nnfw_set_available_backends(_session, "cpu"));
+  NNFW_ENSURE_SUCCESS(nnfw_prepare_pipeline(_session, "./partition_map.json"));
+
+  auto producer = [this]() {
+    std::vector<void *> inputs;
+    std::vector<uint32_t> lengths;
+    inputs.clear();
+    lengths.clear();
+    NNFW_ENSURE_SUCCESS(nnfw_push_pipeline_input(_session, (void *)&inputs, (void *)&lengths));
+  };
+
+  auto producer_thread = std::thread(producer);
+
+  producer_thread.join();
+  NNFW_ENSURE_SUCCESS(nnfw_close_session(_session));
 
   remove("./partition_map.json");
 }

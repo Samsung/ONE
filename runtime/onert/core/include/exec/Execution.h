@@ -26,6 +26,8 @@
 #include "IODescription.h"
 
 #include <thread>
+#include <deque>
+#include <semaphore.h>
 
 namespace onert
 {
@@ -70,6 +72,7 @@ public:
    */
   void setInput(const ir::IOIndex &index, const void *buffer, size_t length,
                 ir::Layout layout = ir::Layout::NHWC);
+
   /**
    * @brief     Set input data's information, especially to specify unknown dimensions on model
    * build time.
@@ -143,6 +146,102 @@ public:
   ir::Shape getInputShape(ir::IOIndex ind) const;
   ir::Shape getOutputShape(ir::IOIndex ind) const;
 
+  //
+  // Experimental API
+  //
+
+  // accessor
+  std::vector<
+    std::tuple<std::shared_ptr<onert::exec::Execution>, onert::ir::IOIndex, onert::ir::IOIndex>>
+  getNextExes()
+  {
+    return next_exes;
+  }
+  std::deque<std::pair<IODescription *, uint32_t>> *getAsyncIoDescs() { return &_async_io_descs; }
+  std::deque<std::vector<void *>> *getAsyncResults() { return &_async_results; }
+
+  /**
+   * @brief     Push IO information between related executions into next_exes
+   * @param[in] next   address of next execution
+   * @param[in] o_index  Output index of current execution (it will be the input of next execution)
+   * @param[in] i_index  Input index of next execution
+   */
+  void pushNextExe(std::shared_ptr<onert::exec::Execution> next, onert::ir::IOIndex o_index,
+                   onert::ir::IOIndex i_index)
+  {
+    next_exes.push_back({next, o_index, i_index});
+  }
+
+  /**
+   * @brief     Create New IODescription instance for new inputs outputs
+   * @param[in] index   instance count number
+   */
+  void createNewAsyncDesc(uint32_t count = 0);
+
+  /**
+   * @brief     Set async input data's information
+   * @param[in] index   Input index
+   * @param[in] buffer  Input data's buffer pointer
+   * @param[in] length  Input data's length
+   * @param[in] layout  Input data's data format
+   */
+  void executeAsyncInput(const ir::IOIndex &index, const void *buffer, size_t length,
+                         ir::Layout layout = ir::Layout::NHWC);
+
+  /**
+   * @brief     Set async output data's information
+   * @param[in] index   Output index
+   * @param[in] buffer  Output data's buffer pointer
+   * @param[in] length  Output data's length
+   * @param[in] layout  Output data's data format
+   */
+  void executeAsyncOutput(const ir::IOIndex &index, void *buffer, size_t length,
+                          ir::Layout layout = ir::Layout::NHWC);
+
+  /**
+   * @brief  Async execution
+   * @note   It should be called after setting input and output buffer
+   */
+  void AsyncExecute();
+
+  /**
+   * @brief   Set finish
+   */
+  void setFinish();
+
+  /**
+   * @brief   Check if input queue is empty
+   * @return  @c true if queue is empty, otherwise @c false
+   */
+  bool isEmptyQueue();
+
+  /**
+   * @brief   Wait semaphore to prevent race condition
+   */
+  void asyncIoDescSemWait();
+
+  /**
+   * @brief   Post semaphore to prevent race condition
+   */
+  void asyncIoDescSemPost();
+
+  /**
+   * @brief   Inference
+   * @note    this function provided to the thread for pipelining
+   */
+  void runInference();
+
+  /**
+   * @brief   Check if stop_wait is true
+   * @return  @c true if stop_wait is true, otherwise @c false
+   */
+  bool stopWait(void) const;
+
+  /**
+   * @brief   Set stop_wait to terminate consumer thread
+   */
+  void sholudStop();
+
 private:
   const std::unique_ptr<IExecutor> &primary_executor() const
   {
@@ -153,8 +252,15 @@ private:
 private:
   const std::shared_ptr<ExecutorMap> _executors;
   IODescription _io_desc;
+  std::deque<std::pair<IODescription *, uint32_t>> _async_io_descs;
+  sem_t _async_io_descs_sem;
+  std::deque<std::vector<void *>> _async_results;
+  std::vector<
+    std::tuple<std::shared_ptr<onert::exec::Execution>, onert::ir::IOIndex, onert::ir::IOIndex>>
+    next_exes;
   std::unique_ptr<std::thread> _exec_thread;
   bool finished{false};
+  bool stop_wait{false};
 };
 
 } // namespace exec

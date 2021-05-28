@@ -121,4 +121,35 @@ NNFW_STATUS nnfw_set_backends_per_operation(nnfw_session *session, const char *b
  */
 NNFW_STATUS nnfw_prepare_pipeline(nnfw_session *session, const char *map_file_path = nullptr);
 
+/**
+ * @brief     Set input buffer
+ *
+ * This function must be called after {@link nnfw_prepare_pipeline}, \p inputs given to this
+ * function can be reused for many inferences. \p lengths must be greater or equal than the operand
+ * requires. if you give empty \p inputs to this function, then this function will join all threads.
+ *
+ * @param[in] session Session to the input is to be set
+ * @param[in] inputs  Raw buffers for input, it must be \p std::vector<void *> type pointer for
+ * multiple input model
+ * @param[in] lengths Size of bytes of input buffers, it must be \p std::vector<uint32_t> type
+ * pointer for multiple input model
+ *
+ * @return    @c NNFW_STATUS_NO_ERROR if successful
+ */
+NNFW_STATUS nnfw_push_pipeline_input(nnfw_session *session, void *inputs, void *lengths);
+
+/**
+ * @brief       Get last outputs of partitioned model in session
+ *
+ * This function must be called after {@link nnfw_prepare_pipeline}, \p outputs given to this
+ * function must be cleared for memory management.
+ *
+ * @param[in]   session Session from last outputs is to be extracted
+ * @param[out]  outputs Raw buffer for outputs, it must be \p std::vector<void *> type pointer for
+ * multiple output model
+ *
+ * @return      @c NNFW_STATUS_NO_ERROR if successful
+ */
+NNFW_STATUS nnfw_pop_pipeline_output(nnfw_session *session, void *outputs);
+
 #endif // __NNFW_EXPERIMENTAL_H__

@@ -19,6 +19,7 @@
 
 #include <vector>
 #include <unordered_map>
+#include <semaphore.h>
 
 #include "ir/OperandInfo.h"
 #include "ir/Index.h"
