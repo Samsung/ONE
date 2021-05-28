@@ -525,6 +525,61 @@ void set_bias(luci::CircleNode *node, luci::CircleConst *bias)
                              "fully-connected layer have bias");
 }
 
+void set_act_qparam(luci::CircleNode *node, float scale, int64_t zp)
+{
+  assert(node);               // FIX_CALLER_UNLESS
+  assert(node->quantparam()); // FIX_CALLER_UNLESS
+
+  auto qparam = node->quantparam();
+  assert(qparam->scale.size() == 1); // FIX_CALLER_UNLESS
+  assert(qparam->zerop.size() == 1); // FIX_CALLER_UNLESS
+  qparam->scale[0] = scale;
+  qparam->zerop[0] = zp;
+}
+
+/**
+ * @brief Manually set scale/zp of output tensor of special Ops
+ */
+struct QuantizeSpecialActivation final : public luci::CircleNodeMutableVisitor<void>
+{
+  QuantizeSpecialActivation(loco::DataType input, loco::DataType output)
+    : input_type(input), output_type(output)
+  {
+  }
+
+  loco::DataType input_type;
+  loco::DataType output_type;
+
+  void visit(luci::CircleNode *)
+  {
+    // Do nothing by default
+  }
+
+  void visit(luci::CircleLogistic *node)
+  {
+    if (output_type == loco::DataType::U8)
+      set_act_qparam(node, 1.0f / 256.0f, 0);
+    else
+    {
+      assert(output_type == loco::DataType::S16);
+      set_act_qparam(node, 1.0f / 32768.0f, 0);
+    }
+  }
+
+  void visit(luci::CircleTanh *node)
+  {
+    if (output_type == loco::DataType::U8)
+      set_act_qparam(node, 2.0f / 256.0f, 128);
+    else
+    {
+      assert(output_type == loco::DataType::S16);
+      set_act_qparam(node, 1.0f / 32768.0f, 0);
+    }
+  }
+
+  // TODO Move Softmax, Floor, Ceil from QuantizeActivation to here
+};
+
 /**
  * @brief QuantizeActivation quantizes tensors for activations
  * @details Quantize using recorded min/max values
@@ -1217,6 +1272,14 @@ bool QuantizeWithMinMaxPass::run(loco::Graph *g)
   {
     auto circle_node = loco::must_cast<luci::CircleNode *>(node);
     quantize_const_inputs(circle_node, _output_dtype);
+  }
+
+  // Update qparam of output of special Ops
+  for (auto node : loco::active_nodes(loco::output_nodes(g)))
+  {
+    QuantizeSpecialActivation qsa(_input_dtype, _output_dtype);
+    auto circle_node = loco::must_cast<luci::CircleNode *>(node);
+    circle_node->accept(&qsa);
   }
 
   // Update output dtype
