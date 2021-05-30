@@ -47,19 +47,36 @@ function(ExternalSource_Download PREFIX)
     file(MAKE_DIRECTORY "${TMP_DIR}")
 
     message(STATUS "Download ${PREFIX} from ${URL}")
-    file(DOWNLOAD ${URL} "${DOWNLOAD_PATH}"
-                  STATUS status
-                  LOG log)
 
-    list(GET status 0 status_code)
-    list(GET status 1 status_string)
+    foreach(retry_count RANGE 5)
+      message(STATUS "(Trial Count : ${retry_count})")
 
-    if(NOT status_code EQUAL 0)
-      message(FATAL_ERROR "error: downloading '${URL}' failed
+      file(DOWNLOAD ${URL} "${DOWNLOAD_PATH}"
+                    STATUS status
+                    LOG log)
+
+      list(GET status 0 status_code)
+      list(GET status 1 status_string)
+
+      # Download success
+      if(status_code EQUAL 0)
+        break()
+      endif()
+
+      message(WARNING "error: downloading '${URL}' failed
               status_code: ${status_code}
               status_string: ${status_string}
               log: ${log}")
-    endif()
+
+      # Retry limit exceed
+      if(retry_count EQUAL 5)
+        message(FATAL_ERROR "Download ${PREFIX} from ${URL} - failed")
+      endif()
+      
+      # Retry after 10 seconds when download fails
+      execute_process(COMMAND sleep 10)
+    endforeach()
+
     message(STATUS "Download ${PREFIX} from ${URL} - done")
 
     # Verify checksum
