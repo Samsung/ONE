@@ -704,6 +704,12 @@ struct QuantizeBias final : public luci::CircleNodeMutableVisitor<bool>
       auto const_bias = loco::must_cast<luci::CircleConst *>(node);
       assert(const_bias->dtype() == loco::DataType::FLOAT32);
 
+      // If input is const, it is quantized here, not in QuantizeActivation
+      if (auto const_input = dynamic_cast<luci::CircleConst *>(input))
+      {
+        quant_const(const_input, output_type);
+      }
+
       CircleConst *new_bias = nullptr;
 
       if (granularity == QuantizationGranularity::ChannelWise)
