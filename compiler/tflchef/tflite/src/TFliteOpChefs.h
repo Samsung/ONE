@@ -80,6 +80,7 @@
 #include "Op/PadV2.h"
 #include "Op/Pow.h"
 #include "Op/PRelu.h"
+#include "Op/Quantize.h"
 #include "Op/Range.h"
 #include "Op/Rank.h"
 #include "Op/ReduceAny.h"
