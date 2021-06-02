@@ -6,6 +6,7 @@
 #[[ optimize : Exclude from circle optimization(circle2circle) ]]
 ## TensorFlowLiteRecipes
 optimize(UnidirectionalSequenceLSTM_001) # This recipe contains is_variable Tensor
+optimize(Quantize_000)
 
 ## CircleRecipes
 
@@ -86,6 +87,7 @@ tcgenerate(OneHot_003)
 tcgenerate(Pack_000)
 tcgenerate(Pack_U8_000)
 tcgenerate(PadV2_000)
+tcgenerate(Quantize_000)  # runtime and luci-interpreter doesn't support Quantize op yet
 tcgenerate(Range_000)
 tcgenerate(Rank_000)
 tcgenerate(ReduceAny_000)
