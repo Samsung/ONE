@@ -61,4 +61,11 @@ tar -zcf ${ARCHIVE_PATH}/nncc-package.tar.gz -C ${NNCC_INSTALL_PREFIX} \
     --exclude test --exclude tflchef* --exclude circle-tensordump --exclude circledump ./
 tar -zcf ${ARCHIVE_PATH}/nncc-test-package.tar.gz -C ${NNCC_INSTALL_PREFIX} ./test
 
+./nncc docker-run /bin/bash -c \
+        'dch -v $(dpkg-parsechangelog --show-field Version)-$(date "+%y%m%d%H") "nightly release"'
+./nncc docker-run dch -r ''
+
+./nncc docker-run debuild --preserve-env --no-lintian -us -uc \
+        -b --buildinfo-option=-ubuild --changes-option=-ubuild
+
 popd > /dev/null
