@@ -19,6 +19,9 @@ set -e
 DRIVER_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 VENV_ACTIVATE=${DRIVER_PATH}/venv/bin/activate
+# NOTE please use venv's python instead of python after `source activation`.
+# This script is called by debian maintainer script, i.e. `postinst`.
+# Since debian maintainer script is called with sudo, `source activation` is ignored.
 VENV_PYTHON=${DRIVER_PATH}/venv/bin/python
 
 function error_no_ensurepip ()
