@@ -113,6 +113,7 @@ public:
   // loco::DataType visit(const luci::CircleRank *node) final;
   // loco::DataType visit(const luci::CircleMul *node) final;
   // loco::DataType visit(const luci::CircleOneHot *node) final;
+  // loco::DataType visit(const luci::CircleQuantize *node) final;
   // loco::DataType visit(const luci::CircleReduceAny *node) final;
   // loco::DataType visit(const luci::CircleReduceMax *node) final;
   // loco::DataType visit(const luci::CircleReduceMin *node) final;

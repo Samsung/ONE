@@ -1,0 +1,163 @@
+node {
+  name: "Hole"
+  op: "Placeholder"
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+          dim {
+            size: 2
+          }
+          dim {
+            size: 3
+          }
+        }
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "shape"
+    value {
+      shape {
+        dim {
+          size: 2
+        }
+        dim {
+          size: 3
+        }
+      }
+    }
+  }
+}
+node {
+  name: "QuantizeV2/min_range"
+  op: "Const"
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+        }
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+        }
+        float_val: -1.0
+      }
+    }
+  }
+}
+node {
+  name: "QuantizeV2/max_range"
+  op: "Const"
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+        }
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+        }
+        float_val: 1.0
+      }
+    }
+  }
+}
+node {
+  name: "QuantizeV2"
+  op: "QuantizeV2"
+  input: "Hole"
+  input: "QuantizeV2/min_range"
+  input: "QuantizeV2/max_range"
+  attr {
+    key: "T"
+    value {
+      type: DT_QUINT8
+    }
+  }
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+          dim {
+            size: 2
+          }
+          dim {
+            size: 3
+          }
+        }
+        shape {
+        }
+        shape {
+        }
+      }
+    }
+  }
+  attr {
+    key: "axis"
+    value {
+      i: -1
+    }
+  }
+  attr {
+    key: "ensure_minimum_range"
+    value {
+      f: 0.009999999776482582
+    }
+  }
+  attr {
+    key: "mode"
+    value {
+      s: "MIN_COMBINED"
+    }
+  }
+  attr {
+    key: "narrow_range"
+    value {
+      b: false
+    }
+  }
+  attr {
+    key: "round_mode"
+    value {
+      s: "HALF_AWAY_FROM_ZERO"
+    }
+  }
+}
+versions {
+  producer: 440
+}

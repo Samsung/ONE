@@ -681,6 +681,7 @@ public:
   void visit(luci::CirclePadV2 *) final;
   void visit(luci::CirclePow *) final;
   void visit(luci::CirclePRelu *) final;
+  void visit(luci::CircleQuantize *) final;
   void visit(luci::CircleRange *) final;
   void visit(luci::CircleRank *) final;
   void visit(luci::CircleReduceAny *) final;
@@ -1187,6 +1188,11 @@ void OperationExporter::visit(luci::CirclePow *node)
 void OperationExporter::visit(luci::CirclePRelu *node)
 {
   export_simple(node, circle::BuiltinOperator_PRELU);
+}
+
+void OperationExporter::visit(luci::CircleQuantize *node)
+{
+  export_simple(node, circle::BuiltinOperator_QUANTIZE);
 }
 
 void OperationExporter::visit(luci::CircleRange *node)

@@ -94,6 +94,7 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   CIRCLE_NODE(PADV2, CirclePadV2GraphBuilder);                                             // 60
   CIRCLE_NODE(POW, CirclePowGraphBuilder);                                                 // 78
   CIRCLE_NODE(PRELU, CirclePReluGraphBuilder);                                             // 54,
+  CIRCLE_NODE(QUANTIZE, CircleQuantizeGraphBuilder);                                       // 114,
   CIRCLE_NODE(RANGE, CircleRangeGraphBuilder);                                             // 96
   CIRCLE_NODE(RANK, CircleRankGraphBuilder);                                               // 110
   CIRCLE_NODE(REDUCE_ANY, CircleReduceAnyGraphBuilder);                                    // 91
@@ -158,7 +159,6 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   // BuiltinOperator_BIDIRECTIONAL_SEQUENCE_RNN = 46,
   // BuiltinOperator_DELEGATE = 51,
   // BuiltinOperator_ARG_MAX = 56,
-  // BuiltinOperator_QUANTIZE = 114,
   // BuiltinOperator_HARD_SWISH = 117,
   // BuiltinOperator_DENSIFY = 124,
 }

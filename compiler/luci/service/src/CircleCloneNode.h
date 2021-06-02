@@ -94,6 +94,7 @@ public:
   luci::CircleNode *visit(const luci::CirclePadV2 *) final;
   luci::CircleNode *visit(const luci::CirclePow *) final;
   luci::CircleNode *visit(const luci::CirclePRelu *) final;
+  luci::CircleNode *visit(const luci::CircleQuantize *) final;
   luci::CircleNode *visit(const luci::CircleRange *) final;
   luci::CircleNode *visit(const luci::CircleRank *) final;
   luci::CircleNode *visit(const luci::CircleReduceAny *) final;
