@@ -314,6 +314,9 @@ struct TypeInferenceAlgorithm final : public luci::CircleNodeVisitor<loco::DataT
     return input_type;
   }
 
+  // TODO support S16
+  loco::DataType visit(const luci::CircleQuantize *) final { return loco::DataType::U8; }
+
   loco::DataType visit(const luci::CircleRange *node) final
   {
     return luci::dtype_get(node->start());
