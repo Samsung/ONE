@@ -172,6 +172,7 @@ Current transformation options are
 - mute_warnings : This will turn off warning messages.
 - generate_profile_data : This will turn on profiling data generation.
 - remove_fakequant : This will remove all fakequant operators.
+- remove_quantdequant : This will remove all Quantize-Dequantize sequence.
 - remove_redundant_reshape : This fuses or removes redundant reshape operators.
 - remove_redundant_transpose : This fuses or removes redundant transpose operators.
 - remove_unnecessary_reshape : This removes unnecessary reshape operators.
