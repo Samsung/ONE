@@ -1,0 +1,16 @@
+if(NOT BUILD_PARETO_SCHEDULER)
+  return()
+endif(NOT BUILD_PARETO_SCHEDULER)
+
+list(APPEND PARETO_SCHEDULER_SRCS "src/pareto_scheduler_app.cc")
+list(APPEND PARETO_SCHEDULER_SRCS "src/controller.cc")
+list(APPEND PARETO_SCHEDULER_SRCS "src/memory_stats.cc")
+list(APPEND PARETO_SCHEDULER_SRCS "src/pareto_lookup.cc")
+list(APPEND PARETO_SCHEDULER_SRCS "src/tracer.cc")
+list(APPEND PARETO_SCHEDULER_SRCS "src/session.cc")
+include_directories(../../../3rdparty/jsoncpp/json)
+include_directories(./include)
+add_executable(onert-run-pareto-scheduler ${PARETO_SCHEDULER_SRCS})
+target_link_libraries(onert-run-pareto-scheduler nnfw-dev pthread dl jsoncpp)
+
+install(TARGETS onert-run-pareto-scheduler DESTINATION bin)

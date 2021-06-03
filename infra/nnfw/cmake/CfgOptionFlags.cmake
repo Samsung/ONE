@@ -89,3 +89,4 @@ option(BUILD_FXDIV "Build fxdiv library from the source" ON)
 ## Default sample build configuration
 #
 option(BUILD_MINIMAL_SAMPLE "Build minimal app" OFF)
+option(BUILD_PARETO_SCHEDULER "Build pareto scheduler" OFF)

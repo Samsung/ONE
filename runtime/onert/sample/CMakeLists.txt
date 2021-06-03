@@ -1,1 +1,2 @@
 add_subdirectory(minimal)
+add_subdirectory(pareto_scheduler)

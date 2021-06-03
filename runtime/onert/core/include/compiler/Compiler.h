@@ -95,6 +95,12 @@ public:
    */
   void enableToFp16();
 
+  /**
+   * @brief   Set backends from string-encoded mappings from operation index to backend type (cpu,
+   * acl_cl)
+   */
+  void set_backend_from_str(const char *backend_settings);
+
 private:
   void checkProfilerConditions();
   std::shared_ptr<ir::Graph> &primary_subgraph() { return _subgraphs->at(ir::SubgraphIndex{0}); }
