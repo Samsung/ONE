@@ -96,4 +96,20 @@ NNFW_STATUS nnfw_input_tensorindex(nnfw_session *session, const char *tensorname
  */
 NNFW_STATUS nnfw_output_tensorindex(nnfw_session *session, const char *tensorname, uint32_t *index);
 
+/**
+ * @brief Set the backend for each operation in the session
+ *
+ * This function assigns backends (acl_cl, acl_neon, cpu) to each operation in the session.
+ * If successful,the function returns @c NNFW_STATUS_NO_ERROR. Otherwise, the function returns
+ * @c NNFW_STATUS_ERROR.
+ *
+ * @note The argument specifying backends must be in the format
+ *       "OP_BACKEND_MAP=\"0=acl_cl;1=cpu;2=acl_cl\"".
+ *
+ * @param[in]  session          the session object
+ * @param[in]  backend_settings String containing backend assignments indexed by operation sequence
+ * @return     @c NNFW_STATUS_NO_ERROR if successful
+ */
+NNFW_STATUS nnfw_set_backends_per_operation(nnfw_session *session, const char *backend_settings);
+
 #endif // __NNFW_EXPERIMENTAL_H__
