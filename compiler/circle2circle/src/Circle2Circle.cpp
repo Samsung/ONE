@@ -152,6 +152,12 @@ int entry(int argc, char **argv)
     .default_value(false)
     .help("This will remove FakeQuant operators");
 
+  arser.add_argument("--remove_quantdequant")
+    .nargs(0)
+    .required(false)
+    .default_value(false)
+    .help("This will remove Quantize-Dequantize sequence");
+
   arser.add_argument("--remove_redundant_reshape")
     .nargs(0)
     .required(false)
@@ -375,6 +381,8 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::FusePreActivationBatchNorm);
   if (arser.get<bool>("--remove_fakequant"))
     options->enable(Algorithms::RemoveFakeQuant);
+  if (arser.get<bool>("--remove_quantdequant"))
+    options->enable(Algorithms::RemoveQuantDequantSeq);
   if (arser.get<bool>("--remove_redundant_reshape"))
     options->enable(Algorithms::RemoveRedundantReshape);
   if (arser.get<bool>("--remove_redundant_transpose"))
