@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
+# Copyright (c) 2021 Samsung Electronics Co., Ltd. All Rights Reserved
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,36 +14,34 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# negative usage with invalid input shape
+# one-import-tf: intermediate file should exist
 
 filename_ext="$(basename -- $0)"
 filename="${filename_ext%.*}"
 
 trap_err_onexit()
 {
-  if grep -q "ValueError: The shape of tensor" "${filename}.log"; then
-    echo "${filename_ext} SUCCESS"
-    exit 0
-  fi
-
   echo "${filename_ext} FAILED"
   exit 255
 }
 
 trap trap_err_onexit ERR
 
-inputfile="./inception_v3.pb"
-outputfile="./inception_v3.circle"
+configfile="one-build_010.cfg"
+outputfile="inception_v3.alt.circle"
+intermfile="inception_v3.alt.tflite"
 
 rm -rf ${outputfile}
-rm -rf ${filename}.log
+rm -rf ${intermfile}
 
 # run test
-one-import tf \
---input_path ${inputfile} \
---output_path ${outputfile} \
---input_arrays input --input_shapes "1,299,299" \
---output_arrays InceptionV3/Predictions/Reshape_1 > ${filename}.log
+one-build -C ${configfile} > /dev/null
 
-echo "${filename_ext} FAILED"
-exit 255
+if [[ ! -s "${outputfile}" ]]; then
+  trap_err_onexit
+fi
+if [[ ! -s "${intermfile}" ]]; then
+  trap_err_onexit
+fi
+
+echo "${filename_ext} SUCCESS"
