@@ -54,6 +54,7 @@ class _CONSTANT:
         ('replace_cw_mul_add_with_depthwise_conv',
          'replace channel-wise Mul/Add with DepthwiseConv2D'),
         ('remove_fakequant', 'remove FakeQuant ops'),
+        ('remove_quantdequant', 'remove Quantize-Dequantize sequence'),
         ('remove_redundant_reshape', 'fuse or remove subsequent Reshape ops'),
         ('remove_redundant_transpose', 'fuse or remove subsequent Transpose ops'),
         ('remove_unnecessary_reshape', 'remove unnecessary reshape ops'),
