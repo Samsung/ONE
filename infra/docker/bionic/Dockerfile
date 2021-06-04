@@ -20,6 +20,9 @@ ARG UBUNTU_MIRROR
 # Install 'add-apt-repository'
 RUN apt-get update && apt-get -qqy install software-properties-common
 
+# Git repo for latest version (github checkout@v2 action requires v2.18)
+RUN add-apt-repository ppa:git-core/ppa -y
+
 # Build tool
 RUN apt-get update && apt-get -qqy install build-essential cmake scons git g++-arm-linux-gnueabihf g++-aarch64-linux-gnu
 
