@@ -19,7 +19,7 @@
 namespace luci
 {
 
-luci::CircleNode *CloneNode::visit(const luci::CircleCast *node)
+luci::CircleNode *CloneNodeLet<CN::ABC>::visit(const luci::CircleCast *node)
 {
   auto *cloned = _graph->nodes()->create<luci::CircleCast>();
   if (cloned != nullptr)

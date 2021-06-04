@@ -19,7 +19,7 @@
 namespace luci
 {
 
-luci::CircleNode *CloneNode::visit(const luci::CircleTopKV2 *)
+luci::CircleNode *CloneNodeLet<CN::STUV>::visit(const luci::CircleTopKV2 *)
 {
   return _graph->nodes()->create<luci::CircleTopKV2>();
 }

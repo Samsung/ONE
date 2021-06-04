@@ -19,7 +19,7 @@
 namespace luci
 {
 
-luci::CircleNode *CloneNode::visit(const luci::CircleLogSoftmax *)
+luci::CircleNode *CloneNodeLet<CN::KLMN>::visit(const luci::CircleLogSoftmax *)
 {
   return _graph->nodes()->create<luci::CircleLogSoftmax>();
 }

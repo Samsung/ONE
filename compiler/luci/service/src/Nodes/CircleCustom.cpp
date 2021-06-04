@@ -19,7 +19,7 @@
 namespace luci
 {
 
-luci::CircleNode *CloneNode::visit(const luci::CircleCustom *node)
+luci::CircleNode *CloneNodeLet<CN::ABC>::visit(const luci::CircleCustom *node)
 {
   uint32_t num_in = node->numInputs();
   uint32_t num_out = node->numOutputs();

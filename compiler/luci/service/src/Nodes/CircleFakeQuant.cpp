@@ -19,7 +19,7 @@
 namespace luci
 {
 
-luci::CircleNode *CloneNode::visit(const luci::CircleFakeQuant *node)
+luci::CircleNode *CloneNodeLet<CN::DEF>::visit(const luci::CircleFakeQuant *node)
 {
   auto *cloned = _graph->nodes()->create<luci::CircleFakeQuant>();
   if (cloned != nullptr)

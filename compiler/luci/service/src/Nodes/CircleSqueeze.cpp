@@ -19,7 +19,7 @@
 namespace luci
 {
 
-luci::CircleNode *CloneNode::visit(const luci::CircleSqueeze *node)
+luci::CircleNode *CloneNodeLet<CN::STUV>::visit(const luci::CircleSqueeze *node)
 {
   auto *cloned = _graph->nodes()->create<luci::CircleSqueeze>();
   if (cloned != nullptr)

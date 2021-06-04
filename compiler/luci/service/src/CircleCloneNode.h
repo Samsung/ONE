@@ -24,10 +24,24 @@
 namespace luci
 {
 
-class CloneNode final : public luci::CircleNodeVisitor<luci::CircleNode *>
+// CloneNode-let type
+enum class CN
+{
+  ABC,
+  DEF,
+  GHIJ,
+  KLMN,
+  OPQR,
+  STUV,
+  VWXYZ,
+};
+
+template <CN ct> class CloneNodeLet;
+
+template <> class CloneNodeLet<CN::ABC> final : public luci::CircleNodeVisitor<luci::CircleNode *>
 {
 public:
-  CloneNode(loco::Graph *graph) : _graph(graph){};
+  CloneNodeLet(loco::Graph *graph) : _graph(graph){};
 
 public:
   luci::CircleNode *visit(const luci::CircleAbs *) final;
@@ -45,6 +59,19 @@ public:
   luci::CircleNode *visit(const luci::CircleConv2D *) final;
   luci::CircleNode *visit(const luci::CircleCos *) final;
   luci::CircleNode *visit(const luci::CircleCustom *) final;
+
+  luci::CircleNode *visit(const luci::CircleNode *) final { return nullptr; }
+
+protected:
+  loco::Graph *_graph = nullptr;
+};
+
+template <> class CloneNodeLet<CN::DEF> final : public luci::CircleNodeVisitor<luci::CircleNode *>
+{
+public:
+  CloneNodeLet(loco::Graph *graph) : _graph(graph){};
+
+public:
   luci::CircleNode *visit(const luci::CircleDepthToSpace *) final;
   luci::CircleNode *visit(const luci::CircleDepthwiseConv2D *) final;
   luci::CircleNode *visit(const luci::CircleDequantize *) final;
@@ -59,11 +86,37 @@ public:
   luci::CircleNode *visit(const luci::CircleFloorDiv *) final;
   luci::CircleNode *visit(const luci::CircleFloorMod *) final;
   luci::CircleNode *visit(const luci::CircleFullyConnected *) final;
+
+  luci::CircleNode *visit(const luci::CircleNode *) final { return nullptr; }
+
+protected:
+  loco::Graph *_graph = nullptr;
+};
+
+template <> class CloneNodeLet<CN::GHIJ> final : public luci::CircleNodeVisitor<luci::CircleNode *>
+{
+public:
+  CloneNodeLet(loco::Graph *graph) : _graph(graph){};
+
+public:
   luci::CircleNode *visit(const luci::CircleGather *) final;
   luci::CircleNode *visit(const luci::CircleGatherNd *) final;
   luci::CircleNode *visit(const luci::CircleGreater *) final;
   luci::CircleNode *visit(const luci::CircleGreaterEqual *) final;
   // luci::CircleNode *visit(const luci::CircleIf *) final;
+
+  luci::CircleNode *visit(const luci::CircleNode *) final { return nullptr; }
+
+protected:
+  loco::Graph *_graph = nullptr;
+};
+
+template <> class CloneNodeLet<CN::KLMN> final : public luci::CircleNodeVisitor<luci::CircleNode *>
+{
+public:
+  CloneNodeLet(loco::Graph *graph) : _graph(graph){};
+
+public:
   luci::CircleNode *visit(const luci::CircleL2Normalize *) final;
   luci::CircleNode *visit(const luci::CircleL2Pool2D *) final;
   luci::CircleNode *visit(const luci::CircleLeakyRelu *) final;
@@ -88,6 +141,19 @@ public:
   luci::CircleNode *visit(const luci::CircleNonMaxSuppressionV4 *) final;
   luci::CircleNode *visit(const luci::CircleNonMaxSuppressionV5 *) final;
   luci::CircleNode *visit(const luci::CircleNotEqual *) final;
+
+  luci::CircleNode *visit(const luci::CircleNode *) final { return nullptr; }
+
+protected:
+  loco::Graph *_graph = nullptr;
+};
+
+template <> class CloneNodeLet<CN::OPQR> final : public luci::CircleNodeVisitor<luci::CircleNode *>
+{
+public:
+  CloneNodeLet(loco::Graph *graph) : _graph(graph){};
+
+public:
   luci::CircleNode *visit(const luci::CircleOneHot *) final;
   luci::CircleNode *visit(const luci::CirclePack *) final;
   luci::CircleNode *visit(const luci::CirclePad *) final;
@@ -111,6 +177,19 @@ public:
   luci::CircleNode *visit(const luci::CircleReverseV2 *) final;
   luci::CircleNode *visit(const luci::CircleRound *) final;
   luci::CircleNode *visit(const luci::CircleRsqrt *) final;
+
+  luci::CircleNode *visit(const luci::CircleNode *) final { return nullptr; }
+
+protected:
+  loco::Graph *_graph = nullptr;
+};
+
+template <> class CloneNodeLet<CN::STUV> final : public luci::CircleNodeVisitor<luci::CircleNode *>
+{
+public:
+  CloneNodeLet(loco::Graph *graph) : _graph(graph){};
+
+public:
   luci::CircleNode *visit(const luci::CircleScatterNd *) final;
   luci::CircleNode *visit(const luci::CircleSegmentSum *) final;
   luci::CircleNode *visit(const luci::CircleSelect *) final;
@@ -139,9 +218,36 @@ public:
   luci::CircleNode *visit(const luci::CircleUnidirectionalSequenceLSTM *) final;
   luci::CircleNode *visit(const luci::CircleUnique *) final;
   luci::CircleNode *visit(const luci::CircleUnpack *) final;
+
+  luci::CircleNode *visit(const luci::CircleNode *) final { return nullptr; }
+
+protected:
+  loco::Graph *_graph = nullptr;
+};
+
+template <> class CloneNodeLet<CN::VWXYZ> final : public luci::CircleNodeVisitor<luci::CircleNode *>
+{
+public:
+  CloneNodeLet(loco::Graph *graph) : _graph(graph){};
+
+public:
   luci::CircleNode *visit(const luci::CircleWhere *) final;
   // luci::CircleNode *visit(const luci::CircleWhile *) final;
   luci::CircleNode *visit(const luci::CircleZerosLike *) final;
+
+  luci::CircleNode *visit(const luci::CircleNode *) final { return nullptr; }
+
+protected:
+  loco::Graph *_graph = nullptr;
+};
+
+class CloneNode final : public luci::CircleNodeVisitor<luci::CircleNode *>
+{
+public:
+  CloneNode(loco::Graph *graph) : _graph(graph){};
+
+public:
+  luci::CircleNode *visit(const luci::CircleNode *) final;
 
   // Circle Only
   luci::CircleNode *visit(const luci::CircleBCQFullyConnected *) final;

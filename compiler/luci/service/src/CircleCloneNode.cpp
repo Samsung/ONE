@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -19,9 +19,25 @@
 namespace luci
 {
 
-luci::CircleNode *CloneNodeLet<CN::STUV>::visit(const luci::CircleSpaceToBatchND *)
+luci::CircleNode *CloneNode::visit(const luci::CircleNode *node)
 {
-  return _graph->nodes()->create<luci::CircleSpaceToBatchND>();
+#define CNVISIT_GRP(GRP)              \
+  {                                   \
+    CloneNodeLet<CN::GRP> cn(_graph); \
+    auto cloned = node->accept(&cn);  \
+    if (cloned != nullptr)            \
+      return cloned;                  \
+  }
+
+  CNVISIT_GRP(ABC);
+  CNVISIT_GRP(DEF);
+  CNVISIT_GRP(GHIJ);
+  CNVISIT_GRP(KLMN);
+  CNVISIT_GRP(OPQR);
+  CNVISIT_GRP(STUV);
+  CNVISIT_GRP(VWXYZ);
+
+  return nullptr;
 }
 
 } // namespace luci

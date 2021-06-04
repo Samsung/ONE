@@ -19,7 +19,7 @@
 namespace luci
 {
 
-luci::CircleNode *CloneNode::visit(const luci::CircleLessEqual *)
+luci::CircleNode *CloneNodeLet<CN::KLMN>::visit(const luci::CircleLessEqual *)
 {
   return _graph->nodes()->create<luci::CircleLessEqual>();
 }

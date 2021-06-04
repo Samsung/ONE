@@ -19,7 +19,7 @@
 namespace luci
 {
 
-luci::CircleNode *CloneNode::visit(const luci::CircleLogicalOr *)
+luci::CircleNode *CloneNodeLet<CN::KLMN>::visit(const luci::CircleLogicalOr *)
 {
   return _graph->nodes()->create<luci::CircleLogicalOr>();
 }
