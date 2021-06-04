@@ -61,6 +61,12 @@ def _get_parser():
     tf2tfliteV2_group.add_argument('--model_format', default='saved_model')
     tf2tfliteV2_group.add_argument('--converter_version', default='v2')
 
+    # save intermediate file(s)
+    parser.add_argument(
+        '--save_intermediate',
+        action='store_true',
+        help='Save intermediate files to output folder')
+
     return parser
 
 
@@ -91,6 +97,9 @@ def _convert(args):
     logfile_path = os.path.realpath(args.output_path) + '.log'
 
     with open(logfile_path, 'wb') as f, tempfile.TemporaryDirectory() as tmpdir:
+        # save intermediate
+        if _utils._is_valid_attr(args, 'save_intermediate'):
+            tmpdir = os.path.dirname(logfile_path)
         # convert onnx to tf saved model
         onnx_model = onnx.load(getattr(args, 'input_path'))
         tf_savedmodel = onnx_tf.backend.prepare(onnx_model)
