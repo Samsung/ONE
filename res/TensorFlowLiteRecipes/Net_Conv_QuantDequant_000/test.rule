@@ -1,0 +1,8 @@
+# To check if FakeQuant is removed by remove_quantdequant
+#
+
+RULE    "VERIFY_FILE_FORMAT"      $(verify_file_format) '=' 1
+
+RULE    "CONV_EXIST"              $(op_count CONV_2D) '=' 1
+RULE    "NO_QUANTIZE"             $(op_count QUANTIZE) '=' 0
+RULE    "NO_DEQUANTIZE"           $(op_count DEQUANTIZE) '=' 0
