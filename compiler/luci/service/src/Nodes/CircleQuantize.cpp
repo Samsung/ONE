@@ -19,7 +19,7 @@
 namespace luci
 {
 
-luci::CircleNode *CloneNode::visit(const luci::CircleQuantize *)
+luci::CircleNode *CloneNodeLet<CN::OPQR>::visit(const luci::CircleQuantize *)
 {
   return _graph->nodes()->create<luci::CircleQuantize>();
 }
