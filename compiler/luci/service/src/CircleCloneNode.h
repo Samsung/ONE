@@ -28,6 +28,7 @@ namespace luci
 enum class CN
 {
   ABC,
+  DEF,
 };
 
 template <CN ct> class CloneNodeLet;
@@ -60,10 +61,10 @@ protected:
   loco::Graph *_graph = nullptr;
 };
 
-class CloneNode final : public luci::CircleNodeVisitor<luci::CircleNode *>
+template <> class CloneNodeLet<CN::DEF> final : public luci::CircleNodeVisitor<luci::CircleNode *>
 {
 public:
-  CloneNode(loco::Graph *graph) : _graph(graph){};
+  CloneNodeLet(loco::Graph *graph) : _graph(graph){};
 
 public:
   luci::CircleNode *visit(const luci::CircleDepthToSpace *) final;
@@ -80,6 +81,19 @@ public:
   luci::CircleNode *visit(const luci::CircleFloorDiv *) final;
   luci::CircleNode *visit(const luci::CircleFloorMod *) final;
   luci::CircleNode *visit(const luci::CircleFullyConnected *) final;
+
+  luci::CircleNode *visit(const luci::CircleNode *) final { return nullptr; }
+
+protected:
+  loco::Graph *_graph = nullptr;
+};
+
+class CloneNode final : public luci::CircleNodeVisitor<luci::CircleNode *>
+{
+public:
+  CloneNode(loco::Graph *graph) : _graph(graph){};
+
+public:
   luci::CircleNode *visit(const luci::CircleGather *) final;
   luci::CircleNode *visit(const luci::CircleGatherNd *) final;
   luci::CircleNode *visit(const luci::CircleGreater *) final;
