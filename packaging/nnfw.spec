@@ -36,7 +36,7 @@ BuildRequires:  flatbuffers-devel
 %ifarch %{arm} aarch64
 # Require python for acl-ex library build pre-process
 BuildRequires:  python
-BuildRequires:  libarmcl-devel >= v20.05
+BuildRequires:  libarmcl-devel >= v21.02
 %endif
 
 Requires(post): /sbin/ldconfig
