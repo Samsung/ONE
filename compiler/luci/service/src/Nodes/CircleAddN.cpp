@@ -19,7 +19,7 @@
 namespace luci
 {
 
-luci::CircleNode *CloneNode::visit(const luci::CircleAddN *node)
+luci::CircleNode *CloneNodeLet<CN::ABC>::visit(const luci::CircleAddN *node)
 {
   auto arity = node->arity();
   return _graph->nodes()->create<luci::CircleAddN>(arity);

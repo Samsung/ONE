@@ -24,10 +24,18 @@
 namespace luci
 {
 
-class CloneNode final : public luci::CircleNodeVisitor<luci::CircleNode *>
+// CloneNode-let type
+enum class CN
+{
+  ABC,
+};
+
+template <CN ct> class CloneNodeLet;
+
+template <> class CloneNodeLet<CN::ABC> final : public luci::CircleNodeVisitor<luci::CircleNode *>
 {
 public:
-  CloneNode(loco::Graph *graph) : _graph(graph){};
+  CloneNodeLet(loco::Graph *graph) : _graph(graph){};
 
 public:
   luci::CircleNode *visit(const luci::CircleAbs *) final;
@@ -45,6 +53,19 @@ public:
   luci::CircleNode *visit(const luci::CircleConv2D *) final;
   luci::CircleNode *visit(const luci::CircleCos *) final;
   luci::CircleNode *visit(const luci::CircleCustom *) final;
+
+  luci::CircleNode *visit(const luci::CircleNode *) final { return nullptr; }
+
+protected:
+  loco::Graph *_graph = nullptr;
+};
+
+class CloneNode final : public luci::CircleNodeVisitor<luci::CircleNode *>
+{
+public:
+  CloneNode(loco::Graph *graph) : _graph(graph){};
+
+public:
   luci::CircleNode *visit(const luci::CircleDepthToSpace *) final;
   luci::CircleNode *visit(const luci::CircleDepthwiseConv2D *) final;
   luci::CircleNode *visit(const luci::CircleDequantize *) final;
@@ -166,6 +187,9 @@ public:
   luci::CircleNode *visit(const luci::CircleUniqueOut *) final;
   luci::CircleNode *visit(const luci::CircleUnpackOut *) final;
   // luci::CircleNode *visit(const luci::CircleWhileOut *) final;
+
+  // Handle in CircleNode
+  luci::CircleNode *visit(const luci::CircleNode *) final;
 
   // NOTE CircleNodeVisitor will throw if not supported here
 
