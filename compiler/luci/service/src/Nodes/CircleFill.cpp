@@ -19,7 +19,7 @@
 namespace luci
 {
 
-luci::CircleNode *CloneNode::visit(const luci::CircleFill *)
+luci::CircleNode *CloneNodeLet<CN::DEF>::visit(const luci::CircleFill *)
 {
   return _graph->nodes()->create<luci::CircleFill>();
 }
