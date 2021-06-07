@@ -19,7 +19,7 @@
 namespace luci
 {
 
-luci::CircleNode *CloneNode::visit(const luci::CircleTransposeConv *node)
+luci::CircleNode *CloneNodeLet<CN::STUV>::visit(const luci::CircleTransposeConv *node)
 {
   if (node->padding() == luci::Padding::UNDEFINED)
     return nullptr;
