@@ -315,6 +315,35 @@ std::unique_ptr<Module> Importer::importModule(const circle::Model *model) const
 
   post_import_graph(module.get(), reader);
 
+  // Initialize 'source_table'
+  auto circle_metadata = std::make_unique<luci::CircleImportMetadata>(reader);
+  if (circle_metadata->source_table().size() > 0)
+  {
+    // If there is 'source_table' metadata in circle model, copy the table.
+    module->source_table(circle_metadata->source_table());
+  }
+  else
+  {
+    // If there is no 'source_table' metadata in circle model,
+    // create new table with circle nodes.
+    std::map<uint32_t, std::string> table;
+
+    // NOTE Only supported for a module with single subgraph
+    for(auto node : loco::all_nodes(module->graph(0)))
+    {
+      auto circle_node = loco::must_cast<luci::CircleNode *>(node);
+      
+      // Virtual nodes may not have id
+      if (!has_node_id(circle_node))
+        continue;
+
+      assert(table.find(get_node_id(circle_node)) == table.end());
+      table.insert({get_node_id(circle_node), circle_node->name()});
+    }
+
+    module->source_table(table);
+  }
+
   return module;
 }
 
