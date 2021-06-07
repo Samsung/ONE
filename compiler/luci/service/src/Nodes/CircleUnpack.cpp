@@ -19,7 +19,7 @@
 namespace luci
 {
 
-luci::CircleNode *CloneNode::visit(const luci::CircleUnpack *node)
+luci::CircleNode *CloneNodeLet<CN::STUV>::visit(const luci::CircleUnpack *node)
 {
   auto *cloned = _graph->nodes()->create<luci::CircleUnpack>();
   if (cloned != nullptr)

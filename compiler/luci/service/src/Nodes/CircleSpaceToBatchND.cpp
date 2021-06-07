@@ -19,7 +19,7 @@
 namespace luci
 {
 
-luci::CircleNode *CloneNode::visit(const luci::CircleSpaceToBatchND *)
+luci::CircleNode *CloneNodeLet<CN::STUV>::visit(const luci::CircleSpaceToBatchND *)
 {
   return _graph->nodes()->create<luci::CircleSpaceToBatchND>();
 }

@@ -19,7 +19,7 @@
 namespace luci
 {
 
-luci::CircleNode *CloneNode::visit(const luci::CircleSub *node)
+luci::CircleNode *CloneNodeLet<CN::STUV>::visit(const luci::CircleSub *node)
 {
   if (node->fusedActivationFunction() == luci::FusedActFunc::UNDEFINED)
     return nullptr;
