@@ -19,7 +19,7 @@
 namespace luci
 {
 
-luci::CircleNode *CloneNode::visit(const luci::CircleL2Pool2D *node)
+luci::CircleNode *CloneNodeLet<CN::KLMN>::visit(const luci::CircleL2Pool2D *node)
 {
   if (node->fusedActivationFunction() == luci::FusedActFunc::UNDEFINED)
     return nullptr;

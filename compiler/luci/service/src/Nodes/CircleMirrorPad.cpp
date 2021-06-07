@@ -19,7 +19,7 @@
 namespace luci
 {
 
-luci::CircleNode *CloneNode::visit(const luci::CircleMirrorPad *node)
+luci::CircleNode *CloneNodeLet<CN::KLMN>::visit(const luci::CircleMirrorPad *node)
 {
   if (node->mode() == luci::MirrorPadMode::UNDEFINED)
     return nullptr;
