@@ -19,7 +19,7 @@
 namespace luci
 {
 
-luci::CircleNode *CloneNode::visit(const luci::CircleArgMin *node)
+luci::CircleNode *CloneNodeLet<CN::ABC>::visit(const luci::CircleArgMin *node)
 {
   auto *cloned = _graph->nodes()->create<luci::CircleArgMin>();
   if (cloned != nullptr)

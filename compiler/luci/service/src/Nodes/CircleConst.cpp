@@ -110,7 +110,7 @@ luci::CircleConst *clone(luci::CircleConst *node)
 namespace luci
 {
 
-luci::CircleNode *CloneNode::visit(const luci::CircleConst *node)
+luci::CircleNode *CloneNodeLet<CN::ABC>::visit(const luci::CircleConst *node)
 {
   return clone_circleconst(node, _graph);
 }

@@ -19,7 +19,7 @@
 namespace luci
 {
 
-luci::CircleNode *CloneNode::visit(const luci::CircleBatchMatMul *node)
+luci::CircleNode *CloneNodeLet<CN::ABC>::visit(const luci::CircleBatchMatMul *node)
 {
   auto *cloned = _graph->nodes()->create<luci::CircleBatchMatMul>();
   if (cloned != nullptr)
