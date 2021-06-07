@@ -31,6 +31,7 @@ enum class CN
   DEF,
   GHIJ,
   KLMN,
+  OPQR,
 };
 
 template <CN ct> class CloneNodeLet;
@@ -145,10 +146,10 @@ protected:
   loco::Graph *_graph = nullptr;
 };
 
-class CloneNode final : public luci::CircleNodeVisitor<luci::CircleNode *>
+template <> class CloneNodeLet<CN::OPQR> final : public luci::CircleNodeVisitor<luci::CircleNode *>
 {
 public:
-  CloneNode(loco::Graph *graph) : _graph(graph){};
+  CloneNodeLet(loco::Graph *graph) : _graph(graph){};
 
 public:
   luci::CircleNode *visit(const luci::CircleOneHot *) final;
@@ -174,6 +175,19 @@ public:
   luci::CircleNode *visit(const luci::CircleReverseV2 *) final;
   luci::CircleNode *visit(const luci::CircleRound *) final;
   luci::CircleNode *visit(const luci::CircleRsqrt *) final;
+
+  luci::CircleNode *visit(const luci::CircleNode *) final { return nullptr; }
+
+protected:
+  loco::Graph *_graph = nullptr;
+};
+
+class CloneNode final : public luci::CircleNodeVisitor<luci::CircleNode *>
+{
+public:
+  CloneNode(loco::Graph *graph) : _graph(graph){};
+
+public:
   luci::CircleNode *visit(const luci::CircleScatterNd *) final;
   luci::CircleNode *visit(const luci::CircleSegmentSum *) final;
   luci::CircleNode *visit(const luci::CircleSelect *) final;
