@@ -19,6 +19,7 @@
 
 #include <loco/IR/Graph.h>
 
+#include <map>
 #include <memory>
 #include <vector>
 
@@ -59,8 +60,27 @@ public:
 
   // TODO provide graph accessor with a name
 
+public:
+  void source_table(const std::map<uint32_t, std::string> &table) { _source_table = table; }
+
+  const std::map<uint32_t, std::string> &source_table(void) const { return _source_table; }
+
 private:
   std::vector<std::unique_ptr<loco::Graph>> _graphs;
+
+private:
+  /**
+   * @brief Metadata about source table for profiling
+   *
+   * @note  Key is ID of node and value is name of node.
+   *
+   *        If there was originally imported 'source_table' in circle model,
+   *        the table will be stored as it is.
+   *        Otherwise, new 'source_table' is created with imported nodes.
+   *
+   *        Only supported for a module with single subgraph.
+   */
+  std::map<uint32_t, std::string> _source_table;
 };
 
 std::unique_ptr<Module> make_module(void);
