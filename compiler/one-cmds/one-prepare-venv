@@ -88,7 +88,7 @@ if [[ -z "${EXT_ONNX_TF_WHL}" ]]; then
     pushd ${PY_SITE_PACKAGES} > /dev/null
     PATCH_TARGET_FILE=onnx_tf/handlers/backend/conv_mixin.py
     if [[ -f "${PATCH_TARGET_FILE}" ]]; then
-      patch -t -p1 < ${DRIVER_PATH}/conv_mixin_1.8.0.patch
+      patch -t -N -p1 < ${DRIVER_PATH}/conv_mixin_1.8.0.patch
     fi
     popd > /dev/null
   fi
