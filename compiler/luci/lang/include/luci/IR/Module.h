@@ -78,7 +78,7 @@ private:
    *        the table will be stored as it is.
    *        Otherwise, new 'source_table' is created with imported nodes.
    *
-   *        Only supported for a module with single subgraph.
+   *        Even if Module has multiple subgraphs, only first subgraph is considered.
    */
   std::map<uint32_t, std::string> _source_table;
 };
