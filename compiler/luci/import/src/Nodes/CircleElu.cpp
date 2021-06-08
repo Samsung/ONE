@@ -36,7 +36,13 @@ bool CircleEluGraphBuilder::validate(const ValidateArgs &args) const
 
   switch (tensor->type)
   {
+    case circle::TensorType_FLOAT64:
+      break;
     case circle::TensorType_FLOAT32:
+      break;
+    case circle::TensorType_INT16:
+      break;
+    case circle::TensorType_UINT8:
       break;
     default:
       return false;
