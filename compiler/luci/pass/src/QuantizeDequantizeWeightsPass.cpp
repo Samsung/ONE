@@ -124,6 +124,14 @@ void sym_wquant_per_channel(CircleConst *node, std::vector<float> &min, std::vec
 
   auto quantize = [&](uint32_t *indices, loco::TensorShape &dimension, int channel_dim_index) {
     int channel_idx = indices[channel_dim_index];
+
+    // Small scale factor produced by small weights, which can be quantized to 0 with scale 1.0f
+    // TODO find better way to fix very low scales
+    if (scaling_factor[channel_idx] < std::numeric_limits<float>::epsilon())
+    {
+      scaling_factor[channel_idx] = 1.0f;
+    }
+
     const float scaling_factor_inv = 1.0 / scaling_factor[channel_idx];
     auto data = node->at<loco::DataType::FLOAT32>(cal_offset(dimension, indices));
     data = data < nudged_min[channel_idx] ? nudged_min[channel_idx] : data;
