@@ -51,6 +51,8 @@ struct OpCode
 class CircleExportMetadata
 {
 public:
+  void source_table(const std::map<uint32_t, std::string> &table) { _source_table = table; }
+
   void add_source_table(uint32_t source_id, std::string origin_name)
   {
     // Model with multiple subgraph may have different origin_name
