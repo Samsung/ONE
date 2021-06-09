@@ -1507,7 +1507,6 @@ void exportNode(loco::Node *node, flatbuffers::FlatBufferBuilder &builder, Seria
       const auto node_id = gd._operators.size() - 1;
       for (auto source : get_origin(circle_node)->sources())
       {
-        md._metadata.add_source_table(source->id(), source->name());
         md._metadata.add_op_table(node_id, source->id());
       }
     }
