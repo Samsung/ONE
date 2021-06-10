@@ -80,8 +80,6 @@ enum class BroadcastableOpCategory : uint8_t
 
 struct PoolParams
 {
-  FusedActivationFunctionType activation;
-  PaddingType padding_type;
   PaddingValues padding_values;
   int stride_height;
   int stride_width;
