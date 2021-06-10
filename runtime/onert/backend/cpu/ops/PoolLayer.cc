@@ -72,14 +72,19 @@ PoolLayer::PoolLayer() : _input(nullptr), _output(nullptr), _kernel()
   // DO NOTHING
 }
 
-#define POOLING_PARAMETERS                              \
-  nnfw::cker::PoolParams op_params;                     \
-  op_params.stride_height = strideHeight;               \
-  op_params.stride_width = strideWidth;                 \
-  op_params.filter_height = kernelHeight;               \
-  op_params.filter_width = kernelWidth;                 \
-  op_params.padding_values.height = (int8_t)paddingTop; \
-  op_params.padding_values.width = (int8_t)paddingLeft;
+#define POOLING_PARAMETERS                                               \
+  nnfw::cker::PoolParams op_params;                                      \
+  op_params.stride_height = strideHeight;                                \
+  op_params.stride_width = strideWidth;                                  \
+  op_params.filter_height = kernelHeight;                                \
+  op_params.filter_width = kernelWidth;                                  \
+  op_params.padding_values.height = (int8_t)paddingTop;                  \
+  op_params.padding_values.width = (int8_t)paddingLeft;                  \
+  op_params.float_activation_min = 0;                                    \
+  op_params.float_activation_max = 0;                                    \
+  op_params.quantized_activation_min = 0;                                \
+  op_params.quantized_activation_max = 0;
+
 
 void PoolLayer::configure(const IPortableTensor *input, const uint32_t paddingLeft, const uint32_t,
                           const uint32_t paddingTop, const uint32_t, const uint32_t strideWidth,
