@@ -139,6 +139,7 @@ public:
   NNFW_STATUS register_custom_operation(const std::string &id, nnfw_custom_eval eval_func);
   NNFW_STATUS input_tensorindex(const char *tensorname, uint32_t *index);
   NNFW_STATUS output_tensorindex(const char *tensorname, uint32_t *index);
+  NNFW_STATUS set_backends_per_operation(const char *backend_settings);
 
 private:
   const onert::ir::Graph *primary_subgraph();
