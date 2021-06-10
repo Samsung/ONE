@@ -144,7 +144,9 @@ private:
     RETURN_FALSE_UNLESS(has_type(node, Type::S16))
     RETURN_FALSE_UNLESS(has_type(node->input(), Type::S16))
     RETURN_FALSE_UNLESS(has_type(node->weights(), Type::S16))
-    RETURN_FALSE_UNLESS(has_type(node->bias(), Type::S64))
+    luci::CircleConst *bias = dynamic_cast<luci::CircleConst *>(node->bias());
+    if (bias != nullptr)
+      RETURN_FALSE_UNLESS(has_type(bias, Type::S64))
     return true;
   }
 
