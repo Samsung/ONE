@@ -42,6 +42,11 @@ def _get_parser():
         action='store_true',
         help='generate profiling data')
 
+    utility_group.add_argument(
+        '--change_outputs',
+        type=str,
+        help='Experimental: Change first subgraph output nodes to CSV names')
+
     ## circle2circle arguments
     circle2circle_group = parser.add_argument_group('arguments for optimization')
 
@@ -91,6 +96,10 @@ def _optimize(args):
         circle2circle_cmd = _utils._make_circle2circle_cmd(args, circle2circle_path,
                                                            getattr(args, 'input_path'),
                                                            getattr(args, 'output_path'))
+
+        if _utils._is_valid_attr(args, 'change_outputs'):
+            circle2circle_cmd.append('--change_outputs')
+            circle2circle_cmd.append(getattr(args, 'change_outputs'))
 
         f.write((' '.join(circle2circle_cmd) + '\n').encode())
 
