@@ -2220,6 +2220,12 @@ public:
 
   loco::NodeShape visit(const luci::CirclePRelu *node) final { return infer_p_relu(node); }
 
+  loco::NodeShape visit(const luci::CircleQuantize *node) final
+  {
+    const auto input_shape = luci::shape_get(node->input()).as<loco::TensorShape>();
+    return loco::NodeShape{input_shape};
+  }
+
   loco::NodeShape visit(const luci::CircleRange *node) final { return infer_range(node); }
 
   loco::NodeShape visit(const luci::CircleRank *) final

@@ -19,6 +19,9 @@ set -e
 DRIVER_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 VENV_ACTIVATE=${DRIVER_PATH}/venv/bin/activate
+# NOTE please use venv's python instead of python after `source activation`.
+# This script is called by debian maintainer script, i.e. `postinst`.
+# Since debian maintainer script is called with sudo, `source activation` is ignored.
 VENV_PYTHON=${DRIVER_PATH}/venv/bin/python
 
 function error_no_ensurepip ()
@@ -77,10 +80,6 @@ else
   ${VENV_PYTHON} -m pip ${PIP_OPTIONS} install onnx==${VER_ONNX} onnx-tf==${VER_ONNX_TF}
 fi
 
-# Create python symoblic link
-rm -f ${DRIVER_PATH}/python
-ln -s venv/bin/python ${DRIVER_PATH}/python
-
 # TODO remove this patch after onnx-tf next release
 # apply patch for DWConv conversion bug: https://github.com/onnx/onnx-tensorflow/pull/905
 if [[ -z "${EXT_ONNX_TF_WHL}" ]]; then
@@ -89,7 +88,7 @@ if [[ -z "${EXT_ONNX_TF_WHL}" ]]; then
     pushd ${PY_SITE_PACKAGES} > /dev/null
     PATCH_TARGET_FILE=onnx_tf/handlers/backend/conv_mixin.py
     if [[ -f "${PATCH_TARGET_FILE}" ]]; then
-      patch -t -p1 < ${DRIVER_PATH}/conv_mixin_1.8.0.patch
+      patch -t -N -p1 < ${DRIVER_PATH}/conv_mixin_1.8.0.patch
     fi
     popd > /dev/null
   fi

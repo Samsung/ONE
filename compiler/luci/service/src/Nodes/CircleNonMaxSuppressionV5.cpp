@@ -19,7 +19,7 @@
 namespace luci
 {
 
-luci::CircleNode *CloneNode::visit(const luci::CircleNonMaxSuppressionV5 *)
+luci::CircleNode *CloneNodeLet<CN::KLMN>::visit(const luci::CircleNonMaxSuppressionV5 *)
 {
   return _graph->nodes()->create<luci::CircleNonMaxSuppressionV5>();
 }

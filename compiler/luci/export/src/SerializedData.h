@@ -51,14 +51,7 @@ struct OpCode
 class CircleExportMetadata
 {
 public:
-  void add_source_table(uint32_t source_id, std::string origin_name)
-  {
-    // Model with multiple subgraph may have different origin_name
-    // even if source_id is same. However, as we do not consider about
-    // multiple subgraph in profiling for now, just do not care those cases
-    // and support them correctly in the future.
-    _source_table.emplace(source_id, origin_name);
-  }
+  void source_table(const std::map<uint32_t, std::string> &table) { _source_table = table; }
 
   void add_op_table(uint32_t node_id, uint32_t source_id)
   {

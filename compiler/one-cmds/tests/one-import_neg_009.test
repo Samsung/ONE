@@ -35,7 +35,7 @@ trap trap_err_onexit ERR
 inputfile="./inception_v3.pb"
 outputfile="."
 
-rm -rf ${outputfile}.log
+rm -rf ${filename}.log
 
 # run test
 one-import tf \

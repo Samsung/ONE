@@ -139,6 +139,26 @@ Compiler::Compiler(const std::shared_ptr<ir::Subgraphs> &subgs, util::TracingCtx
 
 void Compiler::enableToFp16() { _options.fp16_enable = true; }
 
+void Compiler::set_backend_from_str(const char *backend_settings)
+{
+  // Backend for all
+  auto &ms_options = _options.manual_scheduler_options;
+  auto key_val_list = nnfw::misc::split(backend_settings, ';');
+  for (const auto &key_val_str : key_val_list)
+  {
+    if (key_val_str.empty())
+    {
+      continue;
+    }
+
+    auto key_val = nnfw::misc::split(key_val_str, '=');
+    const auto &key_str = key_val.at(0);
+    const auto &val = key_val.at(1);
+    auto key = static_cast<uint32_t>(std::stoi(key_str));
+    ms_options.index_to_backend.emplace(ir::OperationIndex{key}, val);
+  }
+}
+
 void Compiler::checkProfilerConditions()
 {
   if (!_options.he_scheduler)

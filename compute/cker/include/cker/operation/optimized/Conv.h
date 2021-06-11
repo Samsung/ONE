@@ -42,6 +42,8 @@ namespace cker
 namespace optimized
 {
 
+std::mutex _gemmlowp_mutex;
+
 struct GemmlowpOutputPipeline
 {
   typedef gemmlowp::VectorMap<const int32_t, gemmlowp::VectorShape::Col> ColVectorMap;
@@ -164,6 +166,8 @@ inline void Conv(const ConvParams &params, const Shape &input_shape, const uint8
   const auto &output_pipeline =
     GemmlowpOutputPipeline::MakeExp(bias_data, output_rows, output_offset, output_multiplier,
                                     output_shift, output_activation_min, output_activation_max);
+
+  std::lock_guard<std::mutex> lock_guard(_gemmlowp_mutex);
   gemmlowp::GemmWithOutputPipeline<uint8_t, uint8_t, gemmlowp::L8R8WithLhsNonzeroBitDepthParams>(
     gemm_context, filter_matrix, input_matrix, &output_matrix, filter_offset, input_offset,
     output_pipeline);

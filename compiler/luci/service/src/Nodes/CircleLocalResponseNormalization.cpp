@@ -19,7 +19,7 @@
 namespace luci
 {
 
-luci::CircleNode *CloneNode::visit(const luci::CircleLocalResponseNormalization *node)
+luci::CircleNode *CloneNodeLet<CN::KLMN>::visit(const luci::CircleLocalResponseNormalization *node)
 {
   auto *cloned = _graph->nodes()->create<luci::CircleLocalResponseNormalization>();
   if (cloned != nullptr)

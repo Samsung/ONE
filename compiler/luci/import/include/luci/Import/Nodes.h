@@ -85,6 +85,7 @@
 #include "Nodes/CirclePadV2.h"
 #include "Nodes/CirclePow.h"
 #include "Nodes/CirclePRelu.h"
+#include "Nodes/CircleQuantize.h"
 #include "Nodes/CircleRange.h"
 #include "Nodes/CircleRank.h"
 #include "Nodes/CircleReduceAny.h"

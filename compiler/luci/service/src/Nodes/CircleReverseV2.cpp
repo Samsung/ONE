@@ -19,7 +19,7 @@
 namespace luci
 {
 
-luci::CircleNode *CloneNode::visit(const luci::CircleReverseV2 *)
+luci::CircleNode *CloneNodeLet<CN::OPQR>::visit(const luci::CircleReverseV2 *)
 {
   return _graph->nodes()->create<luci::CircleReverseV2>();
 }

@@ -681,6 +681,7 @@ public:
   void visit(luci::CirclePadV2 *) final;
   void visit(luci::CirclePow *) final;
   void visit(luci::CirclePRelu *) final;
+  void visit(luci::CircleQuantize *) final;
   void visit(luci::CircleRange *) final;
   void visit(luci::CircleRank *) final;
   void visit(luci::CircleReduceAny *) final;
@@ -1189,6 +1190,11 @@ void OperationExporter::visit(luci::CirclePRelu *node)
   export_simple(node, circle::BuiltinOperator_PRELU);
 }
 
+void OperationExporter::visit(luci::CircleQuantize *node)
+{
+  export_simple(node, circle::BuiltinOperator_QUANTIZE);
+}
+
 void OperationExporter::visit(luci::CircleRange *node)
 {
   export_simple(node, circle::BuiltinOperator_RANGE, circle::BuiltinOptions_RangeOptions,
@@ -1501,7 +1507,6 @@ void exportNode(loco::Node *node, flatbuffers::FlatBufferBuilder &builder, Seria
       const auto node_id = gd._operators.size() - 1;
       for (auto source : get_origin(circle_node)->sources())
       {
-        md._metadata.add_source_table(source->id(), source->name());
         md._metadata.add_op_table(node_id, source->id());
       }
     }

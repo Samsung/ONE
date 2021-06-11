@@ -19,7 +19,7 @@
 namespace luci
 {
 
-luci::CircleNode *CloneNode::visit(const luci::CirclePack *node)
+luci::CircleNode *CloneNodeLet<CN::OPQR>::visit(const luci::CirclePack *node)
 {
   auto *cloned = _graph->nodes()->create<luci::CirclePack>(node->values_count());
   if (cloned != nullptr)

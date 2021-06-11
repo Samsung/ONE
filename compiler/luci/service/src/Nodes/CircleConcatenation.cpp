@@ -19,7 +19,7 @@
 namespace luci
 {
 
-luci::CircleNode *CloneNode::visit(const luci::CircleConcatenation *node)
+luci::CircleNode *CloneNodeLet<CN::ABC>::visit(const luci::CircleConcatenation *node)
 {
   if (node->fusedActivationFunction() == luci::FusedActFunc::UNDEFINED)
     return nullptr;

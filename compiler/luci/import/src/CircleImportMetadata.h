@@ -45,6 +45,8 @@ public:
    */
   const OriginTable origin_table(void);
 
+  const std::map<uint32_t, std::string> &source_table(void) const { return _source_table; }
+
 private:
   // Decoded metadata is stored
   std::map<uint32_t, std::string> _source_table;
