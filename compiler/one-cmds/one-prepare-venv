@@ -88,7 +88,13 @@ if [[ -z "${EXT_ONNX_TF_WHL}" ]]; then
     pushd ${PY_SITE_PACKAGES} > /dev/null
     PATCH_TARGET_FILE=onnx_tf/handlers/backend/conv_mixin.py
     if [[ -f "${PATCH_TARGET_FILE}" ]]; then
+      # if patch is already applied, error code is 1
+      # catch error code and check if this is the case
+      set +e
       patch -t -N -p1 < ${DRIVER_PATH}/conv_mixin_1.8.0.patch
+      ret_code=$?
+      [[ $ret_code -gt 1 ]] && exit $ret_code
+      set -e
     fi
     popd > /dev/null
   fi
