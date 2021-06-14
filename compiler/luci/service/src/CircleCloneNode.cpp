@@ -35,7 +35,7 @@ luci::CircleNode *CloneNode::visit(const luci::CircleNode *node)
   CNVISIT_GRP(KLMN);
   CNVISIT_GRP(OPQR);
   CNVISIT_GRP(STUV);
-  CNVISIT_GRP(VWXYZ);
+  CNVISIT_GRP(WXYZ);
 
   return nullptr;
 }

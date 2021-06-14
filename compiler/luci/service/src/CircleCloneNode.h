@@ -33,7 +33,7 @@ enum class CN
   KLMN,
   OPQR,
   STUV,
-  VWXYZ,
+  WXYZ,
 };
 
 template <CN ct> class CloneNodeLet;
@@ -225,7 +225,7 @@ protected:
   loco::Graph *_graph = nullptr;
 };
 
-template <> class CloneNodeLet<CN::VWXYZ> final : public luci::CircleNodeVisitor<luci::CircleNode *>
+template <> class CloneNodeLet<CN::WXYZ> final : public luci::CircleNodeVisitor<luci::CircleNode *>
 {
 public:
   CloneNodeLet(loco::Graph *graph) : _graph(graph){};
