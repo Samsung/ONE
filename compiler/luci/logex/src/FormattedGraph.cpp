@@ -263,8 +263,8 @@ private:
   IMPLEMENT(luci::CirclePad)
   IMPLEMENT(luci::CirclePadV2)
   IMPLEMENT(luci::CirclePow)
-  IMPLEMENT(luci::CircleQuantize)
   IMPLEMENT(luci::CirclePRelu)
+  IMPLEMENT(luci::CircleQuantize)
   IMPLEMENT(luci::CircleRange)
   IMPLEMENT(luci::CircleRank)
   IMPLEMENT(luci::CircleReduceAny)
@@ -844,12 +844,6 @@ bool summary_node(const locop::SymbolTable *tbl, const luci::CirclePRelu *node,
   s.args().append("alpha", tbl->lookup(node->alpha()));
   s.state(locop::NodeSummary::State::Complete);
   return true;
-}
-
-bool CircleNodeSummaryBuilder::summary(const luci::CircleQuantize *node,
-                                       locop::NodeSummary &s) const
-{
-  return use_input(tbl(), node, s);
 }
 
 bool summary_node(const locop::SymbolTable *tbl, const luci::CircleRange *node,
@@ -1657,6 +1651,12 @@ bool CircleNodeSummaryBuilder::summary(const luci::CirclePow *node, locop::NodeS
 bool CircleNodeSummaryBuilder::summary(const luci::CirclePRelu *node, locop::NodeSummary &s) const
 {
   return summary_node(tbl(), node, s);
+}
+
+bool CircleNodeSummaryBuilder::summary(const luci::CircleQuantize *node,
+                                       locop::NodeSummary &s) const
+{
+  return use_input(tbl(), node, s);
 }
 
 bool CircleNodeSummaryBuilder::summary(const luci::CircleRange *node, locop::NodeSummary &s) const
