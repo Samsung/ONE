@@ -201,6 +201,7 @@ public:
 
 private:
 #define IMPLEMENT(CLASS) bool summary(const CLASS *, locop::NodeSummary &) const final;
+#if 0
   IMPLEMENT(luci::CircleAbs)
   IMPLEMENT(luci::CircleAdd)
   IMPLEMENT(luci::CircleAddN)
@@ -217,6 +218,7 @@ private:
   IMPLEMENT(luci::CircleConv2D)
   IMPLEMENT(luci::CircleCos)
   IMPLEMENT(luci::CircleCustom)
+#endif
   IMPLEMENT(luci::CircleDepthToSpace)
   IMPLEMENT(luci::CircleDepthwiseConv2D)
   IMPLEMENT(luci::CircleDequantize)
@@ -1280,6 +1282,42 @@ bool summary_node(const locop::SymbolTable *tbl, const luci::CircleInstanceNorm 
   return true;
 }
 
+// SummaryBuilderLet type
+enum class SB
+{
+  ABC,
+};
+
+template <SB sb> class SummaryBuilderLet;
+
+template <> class SummaryBuilderLet<SB::ABC> final : public CircleNodeSummaryBuilderBase
+{
+public:
+  SummaryBuilderLet(const locop::SymbolTable *tbl) : CircleNodeSummaryBuilderBase(tbl)
+  {
+    // DO NOTHING
+  }
+
+private:
+#define IMPLEMENT(CLASS) bool summary(const CLASS *, locop::NodeSummary &) const final;
+  IMPLEMENT(luci::CircleAbs)
+  IMPLEMENT(luci::CircleAdd)
+  IMPLEMENT(luci::CircleAddN)
+  IMPLEMENT(luci::CircleArgMax)
+  IMPLEMENT(luci::CircleArgMin)
+  IMPLEMENT(luci::CircleAveragePool2D)
+  IMPLEMENT(luci::CircleBatchMatMul)
+  IMPLEMENT(luci::CircleBatchToSpaceND)
+  IMPLEMENT(luci::CircleBidirectionalSequenceLSTM)
+  IMPLEMENT(luci::CircleCast)
+  IMPLEMENT(luci::CircleCeil)
+  IMPLEMENT(luci::CircleConcatenation)
+  IMPLEMENT(luci::CircleConst)
+  IMPLEMENT(luci::CircleConv2D)
+  IMPLEMENT(luci::CircleCos)
+  IMPLEMENT(luci::CircleCustom)
+};
+
 bool CircleNodeSummaryBuilderBase::build(const loco::Node *node, locop::NodeSummary &s) const
 {
   if (node->dialect() != luci::CircleDialect::get())
@@ -1306,88 +1344,92 @@ bool CircleNodeSummaryBuilderBase::build(const loco::Node *node, locop::NodeSumm
   return false;
 }
 
-bool CircleNodeSummaryBuilder::summary(const luci::CircleAbs *node, locop::NodeSummary &s) const
+bool SummaryBuilderLet<SB::ABC>::summary(const luci::CircleAbs *node, locop::NodeSummary &s) const
 {
   return use_x(tbl(), node, s);
 }
 
-bool CircleNodeSummaryBuilder::summary(const luci::CircleAdd *node, locop::NodeSummary &s) const
+bool SummaryBuilderLet<SB::ABC>::summary(const luci::CircleAdd *node, locop::NodeSummary &s) const
 {
   return use_xy_act(tbl(), node, s);
 }
 
-bool CircleNodeSummaryBuilder::summary(const luci::CircleAddN *node, locop::NodeSummary &s) const
+bool SummaryBuilderLet<SB::ABC>::summary(const luci::CircleAddN *node, locop::NodeSummary &s) const
 {
   return summary_node(tbl(), node, s);
 }
 
-bool CircleNodeSummaryBuilder::summary(const luci::CircleArgMax *node, locop::NodeSummary &s) const
+bool SummaryBuilderLet<SB::ABC>::summary(const luci::CircleArgMax *node,
+                                         locop::NodeSummary &s) const
 {
   return use_ido(tbl(), node, s);
 }
 
-bool CircleNodeSummaryBuilder::summary(const luci::CircleArgMin *node, locop::NodeSummary &s) const
+bool SummaryBuilderLet<SB::ABC>::summary(const luci::CircleArgMin *node,
+                                         locop::NodeSummary &s) const
 {
   return use_ido(tbl(), node, s);
 }
 
-bool CircleNodeSummaryBuilder::summary(const luci::CircleAveragePool2D *node,
-                                       locop::NodeSummary &s) const
+bool SummaryBuilderLet<SB::ABC>::summary(const luci::CircleAveragePool2D *node,
+                                         locop::NodeSummary &s) const
 {
   return summary_node(tbl(), node, s);
 }
 
-bool CircleNodeSummaryBuilder::summary(const luci::CircleBatchMatMul *node,
-                                       locop::NodeSummary &s) const
+bool SummaryBuilderLet<SB::ABC>::summary(const luci::CircleBatchMatMul *node,
+                                         locop::NodeSummary &s) const
 {
   return summary_node(tbl(), node, s);
 }
 
-bool CircleNodeSummaryBuilder::summary(const luci::CircleBatchToSpaceND *node,
-                                       locop::NodeSummary &s) const
+bool SummaryBuilderLet<SB::ABC>::summary(const luci::CircleBatchToSpaceND *node,
+                                         locop::NodeSummary &s) const
 {
   return summary_node(tbl(), node, s);
 }
 
-bool CircleNodeSummaryBuilder::summary(const luci::CircleBidirectionalSequenceLSTM *node,
-                                       locop::NodeSummary &s) const
+bool SummaryBuilderLet<SB::ABC>::summary(const luci::CircleBidirectionalSequenceLSTM *node,
+                                         locop::NodeSummary &s) const
 {
   return summary_node(tbl(), node, s);
 }
 
-bool CircleNodeSummaryBuilder::summary(const luci::CircleCast *node, locop::NodeSummary &s) const
+bool SummaryBuilderLet<SB::ABC>::summary(const luci::CircleCast *node, locop::NodeSummary &s) const
 {
   return summary_node(tbl(), node, s);
 }
 
-bool CircleNodeSummaryBuilder::summary(const luci::CircleCeil *node, locop::NodeSummary &s) const
+bool SummaryBuilderLet<SB::ABC>::summary(const luci::CircleCeil *node, locop::NodeSummary &s) const
 {
   return use_x(tbl(), node, s);
 }
 
-bool CircleNodeSummaryBuilder::summary(const luci::CircleConcatenation *node,
-                                       locop::NodeSummary &s) const
+bool SummaryBuilderLet<SB::ABC>::summary(const luci::CircleConcatenation *node,
+                                         locop::NodeSummary &s) const
 {
   return summary_node(tbl(), node, s);
 }
 
-bool CircleNodeSummaryBuilder::summary(const luci::CircleConst *, locop::NodeSummary &s) const
+bool SummaryBuilderLet<SB::ABC>::summary(const luci::CircleConst *, locop::NodeSummary &s) const
 {
   s.state(locop::NodeSummary::State::PartiallyKnown);
   return true;
 }
 
-bool CircleNodeSummaryBuilder::summary(const luci::CircleConv2D *node, locop::NodeSummary &s) const
+bool SummaryBuilderLet<SB::ABC>::summary(const luci::CircleConv2D *node,
+                                         locop::NodeSummary &s) const
 {
   return summary_node(tbl(), node, s);
 }
 
-bool CircleNodeSummaryBuilder::summary(const luci::CircleCos *node, locop::NodeSummary &s) const
+bool SummaryBuilderLet<SB::ABC>::summary(const luci::CircleCos *node, locop::NodeSummary &s) const
 {
   return use_x(tbl(), node, s);
 }
 
-bool CircleNodeSummaryBuilder::summary(const luci::CircleCustom *node, locop::NodeSummary &s) const
+bool SummaryBuilderLet<SB::ABC>::summary(const luci::CircleCustom *node,
+                                         locop::NodeSummary &s) const
 {
   return summary_node(tbl(), node, s);
 }
@@ -2008,6 +2050,15 @@ bool NodeSummaryBuilder::build(const loco::Node *node, locop::NodeSummary &s) co
   {
     return true;
   }
+
+#define BUILD_GRP(GRP)                                   \
+  do                                                     \
+  {                                                      \
+    if (SummaryBuilderLet<SB::GRP>(_tbl).build(node, s)) \
+      return true;                                       \
+  } while (false)
+
+  BUILD_GRP(ABC);
 
   if (CircleNodeSummaryBuilder(_tbl).build(node, s))
   {
