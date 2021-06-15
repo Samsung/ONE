@@ -43,13 +43,6 @@ public:
 
   std::unique_ptr<Kernel> visit(const luci::CircleNode *node) override;
 
-  std::unique_ptr<Kernel> visit(const luci::CircleAdd *node) override;
-  std::unique_ptr<Kernel> visit(const luci::CircleArgMax *node) override;
-  std::unique_ptr<Kernel> visit(const luci::CircleAveragePool2D *node) override;
-  std::unique_ptr<Kernel> visit(const luci::CircleBatchToSpaceND *node) override;
-  std::unique_ptr<Kernel> visit(const luci::CircleConcatenation *node) override;
-  std::unique_ptr<Kernel> visit(const luci::CircleConst *node) override;
-  std::unique_ptr<Kernel> visit(const luci::CircleConv2D *node) override;
   std::unique_ptr<Kernel> visit(const luci::CircleDepthToSpace *node) override;
   std::unique_ptr<Kernel> visit(const luci::CircleDepthwiseConv2D *node) override;
   std::unique_ptr<Kernel> visit(const luci::CircleDiv *node) override;
