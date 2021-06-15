@@ -288,6 +288,10 @@ private:
   {
     RETURN_FALSE_UNLESS(has_type(node, Type::S16))
     RETURN_FALSE_UNLESS(has_type(node->input(), Type::S16))
+
+    auto input = loco::must_cast<luci::CircleNode *>(node->input());
+    RETURN_FALSE_UNLESS(node->quantparam()->scale[0] == input->quantparam()->scale[0]);
+    RETURN_FALSE_UNLESS(node->quantparam()->zerop[0] == input->quantparam()->zerop[0]);
     return true;
   }
 
