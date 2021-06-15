@@ -112,4 +112,13 @@ NNFW_STATUS nnfw_output_tensorindex(nnfw_session *session, const char *tensornam
  */
 NNFW_STATUS nnfw_set_backends_per_operation(nnfw_session *session, const char *backend_settings);
 
+/*
+ * Prepare session to be ready for inference
+ * This phase may finalize model compilation, scheduling, and additional settings.
+ *
+ * @param session the session to be prepared
+ * @return NNFW_STATUS_NO_ERROR if successful
+ */
+NNFW_STATUS nnfw_prepare_pipeline(nnfw_session *session, const char *map_file_path = nullptr);
+
 #endif // __NNFW_EXPERIMENTAL_H__

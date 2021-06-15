@@ -69,6 +69,13 @@ struct IExecutor
   virtual const ir::Graph &graph() = 0;
 
   /**
+   * @brief Returns parent graph object
+   *
+   * @return Graph object
+   */
+  virtual const ir::Graph &parent_graph() = 0;
+
+  /**
    * @brief     Set an ordering on operations
    * @param[in] ranks   The table encoding the ordering
    */
