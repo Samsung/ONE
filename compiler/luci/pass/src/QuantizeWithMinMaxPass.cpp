@@ -577,6 +577,18 @@ struct QuantizeSpecialActivation final : public luci::CircleNodeMutableVisitor<v
     }
   }
 
+  void visit(luci::CircleStridedSlice *node)
+  {
+    auto input = loco::must_cast<luci::CircleNode *>(node->input());
+    auto i_qparam = input->quantparam();
+    assert(i_qparam->scale.size() == 1); // FIX_CALLER_UNLESS
+    assert(i_qparam->zerop.size() == 1); // FIX_CALLER_UNLESS
+    auto i_scale = i_qparam->scale[0];
+    auto i_zp = i_qparam->zerop[0];
+
+    set_act_qparam(node, i_scale, i_zp);
+  }
+
   // TODO Move Softmax, Floor, Ceil from QuantizeActivation to here
 };
 
