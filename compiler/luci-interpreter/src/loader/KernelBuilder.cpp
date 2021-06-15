@@ -266,6 +266,17 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleElu *node)
   return std::make_unique<kernels::Elu>(input, output);
 }
 
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleEqual *node)
+{
+  assert(node->arity() == 2);
+
+  const Tensor *x = getInputTensor(node->x());
+  const Tensor *y = getInputTensor(node->y());
+  Tensor *output = getOutputTensor(node);
+
+  return std::make_unique<kernels::Equal>(x, y, output);
+}
+
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleExp *node)
 {
   assert(node->arity() == 1);
@@ -295,17 +306,6 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleFloorDiv *node)
   Tensor *output = getOutputTensor(node);
 
   return std::make_unique<kernels::FloorDiv>(x, y, output);
-}
-
-std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleEqual *node)
-{
-  assert(node->arity() == 2);
-
-  const Tensor *x = getInputTensor(node->x());
-  const Tensor *y = getInputTensor(node->y());
-  Tensor *output = getOutputTensor(node);
-
-  return std::make_unique<kernels::Equal>(x, y, output);
 }
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleFullyConnected *node)
@@ -574,6 +574,20 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleMinimum *node)
   return std::make_unique<kernels::Minimum>(input1, input2, output);
 }
 
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleMirrorPad *node)
+{
+  assert(node->arity() == 2);
+
+  const Tensor *input = getInputTensor(node->input());
+  const Tensor *paddings = getInputTensor(node->paddings());
+  Tensor *output = getOutputTensor(node);
+
+  MirrorPadParams params{};
+  params.mode = node->mode();
+
+  return std::make_unique<kernels::MirrorPad>(input, paddings, output, params);
+}
+
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleMul *node)
 {
   assert(node->arity() == 2);
@@ -653,20 +667,6 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CirclePadV2 *node)
   Tensor *output = getOutputTensor(node);
 
   return std::make_unique<kernels::PadV2>(input, paddings, constant_values, output);
-}
-
-std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleMirrorPad *node)
-{
-  assert(node->arity() == 2);
-
-  const Tensor *input = getInputTensor(node->input());
-  const Tensor *paddings = getInputTensor(node->paddings());
-  Tensor *output = getOutputTensor(node);
-
-  MirrorPadParams params{};
-  params.mode = node->mode();
-
-  return std::make_unique<kernels::MirrorPad>(input, paddings, output, params);
 }
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CirclePow *node)
