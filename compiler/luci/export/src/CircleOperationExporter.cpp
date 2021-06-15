@@ -606,11 +606,42 @@ void export_node(ExportContext &ctx, luci::CircleWhile *node)
   ctx.gd._operators.push_back(op_offset);
 }
 
-class OperationExporter final : public luci::CircleNodeMutableVisitor<void>,
-                                public loco::CanonicalNodeMutableVisitor<void>
+class ExportHelper
 {
 public:
-  OperationExporter(ExportContext &ctx) : _ctx{ctx}
+  ExportHelper(ExportContext &ctx) : _ctx{ctx}
+  {
+    // DO NOTHING
+  }
+
+protected:
+  /**
+   * @brief export simple nodes
+   */
+  void export_simple(loco::Node *node, circle::BuiltinOperator bop, circle::BuiltinOptions bot,
+                     flatbuffers::Offset<void> options_offset)
+  {
+    export_node(_ctx, node, bop, bot, options_offset);
+  }
+
+  /**
+   * @brief export simple nodes having void options
+   */
+  void export_simple(loco::Node *node, circle::BuiltinOperator bop)
+  {
+    export_node(_ctx, node, bop);
+  }
+
+protected:
+  ExportContext &_ctx;
+};
+
+class OperationExporter final : public luci::CircleNodeMutableVisitor<void>,
+                                public loco::CanonicalNodeMutableVisitor<void>,
+                                public ExportHelper
+{
+public:
+  OperationExporter(ExportContext &ctx) : ExportHelper(ctx)
   {
     // DO NOTHING
   }
@@ -750,34 +781,7 @@ public:
   void visit(luci::CircleUniqueOut *) final {}
   void visit(luci::CircleUnpackOut *) final {}
   void visit(luci::CircleWhileOut *) final {}
-
-private:
-  /**
-   * @brief export simple nodes
-   */
-  void export_simple(loco::Node *node, circle::BuiltinOperator bop, circle::BuiltinOptions bot,
-                     flatbuffers::Offset<void> options_offset);
-
-  /**
-   * @brief export simple nodes having void options
-   */
-  void export_simple(loco::Node *node, circle::BuiltinOperator bop);
-
-private:
-  ExportContext &_ctx;
 };
-
-void OperationExporter::export_simple(loco::Node *node, circle::BuiltinOperator bop,
-                                      circle::BuiltinOptions bot,
-                                      flatbuffers::Offset<void> options_offset)
-{
-  export_node(_ctx, node, bop, bot, options_offset);
-}
-
-void OperationExporter::export_simple(loco::Node *node, circle::BuiltinOperator bop)
-{
-  export_node(_ctx, node, bop);
-}
 
 void OperationExporter::visit(luci::CircleAbs *node)
 {
