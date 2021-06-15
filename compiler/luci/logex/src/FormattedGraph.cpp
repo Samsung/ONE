@@ -234,11 +234,13 @@ private:
   IMPLEMENT(luci::CircleFloorMod)
   IMPLEMENT(luci::CircleFullyConnected)
 #endif
+#if 0
   IMPLEMENT(luci::CircleGather)
   IMPLEMENT(luci::CircleGatherNd)
   IMPLEMENT(luci::CircleGreater)
   IMPLEMENT(luci::CircleGreaterEqual)
   IMPLEMENT(luci::CircleIf)
+#endif
   IMPLEMENT(luci::CircleL2Normalize)
   IMPLEMENT(luci::CircleLeakyRelu)
   IMPLEMENT(luci::CircleLess)
@@ -1289,6 +1291,7 @@ enum class SB
 {
   ABC,
   DEF,
+  GHIJ,
 };
 
 template <SB sb> class SummaryBuilderLet;
@@ -1344,6 +1347,23 @@ private:
   IMPLEMENT(luci::CircleFloorDiv)
   IMPLEMENT(luci::CircleFloorMod)
   IMPLEMENT(luci::CircleFullyConnected)
+};
+
+template <> class SummaryBuilderLet<SB::GHIJ> final : public CircleNodeSummaryBuilderBase
+{
+public:
+  SummaryBuilderLet(const locop::SymbolTable *tbl) : CircleNodeSummaryBuilderBase(tbl)
+  {
+    // DO NOTHING
+  }
+
+private:
+#define IMPLEMENT(CLASS) bool summary(const CLASS *, locop::NodeSummary &) const final;
+  IMPLEMENT(luci::CircleGather)
+  IMPLEMENT(luci::CircleGatherNd)
+  IMPLEMENT(luci::CircleGreater)
+  IMPLEMENT(luci::CircleGreaterEqual)
+  IMPLEMENT(luci::CircleIf)
 };
 
 bool CircleNodeSummaryBuilderBase::build(const loco::Node *node, locop::NodeSummary &s) const
@@ -1535,29 +1555,31 @@ bool SummaryBuilderLet<SB::DEF>::summary(const luci::CircleFullyConnected *node,
   return summary_node(tbl(), node, s);
 }
 
-bool CircleNodeSummaryBuilder::summary(const luci::CircleGather *node, locop::NodeSummary &s) const
+bool SummaryBuilderLet<SB::GHIJ>::summary(const luci::CircleGather *node,
+                                          locop::NodeSummary &s) const
 {
   return summary_node(tbl(), node, s);
 }
 
-bool CircleNodeSummaryBuilder::summary(const luci::CircleGatherNd *node,
-                                       locop::NodeSummary &s) const
+bool SummaryBuilderLet<SB::GHIJ>::summary(const luci::CircleGatherNd *node,
+                                          locop::NodeSummary &s) const
 {
   return summary_node(tbl(), node, s);
 }
 
-bool CircleNodeSummaryBuilder::summary(const luci::CircleGreater *node, locop::NodeSummary &s) const
+bool SummaryBuilderLet<SB::GHIJ>::summary(const luci::CircleGreater *node,
+                                          locop::NodeSummary &s) const
 {
   return use_xy(tbl(), node, s);
 }
 
-bool CircleNodeSummaryBuilder::summary(const luci::CircleGreaterEqual *node,
-                                       locop::NodeSummary &s) const
+bool SummaryBuilderLet<SB::GHIJ>::summary(const luci::CircleGreaterEqual *node,
+                                          locop::NodeSummary &s) const
 {
   return use_xy(tbl(), node, s);
 }
 
-bool CircleNodeSummaryBuilder::summary(const luci::CircleIf *node, locop::NodeSummary &s) const
+bool SummaryBuilderLet<SB::GHIJ>::summary(const luci::CircleIf *node, locop::NodeSummary &s) const
 {
   return summary_node(tbl(), node, s);
 }
