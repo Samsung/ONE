@@ -106,46 +106,6 @@ std::vector<const loco::Node *> collectOutputNodes(const luci::CircleNode *node)
 namespace luci_interpreter
 {
 
-const Tensor *KernelBuilder::getInputTensor(const loco::Node *node) const
-{
-  const Tensor *tensor = _node_to_tensor.at(node);
-  assert(tensor != nullptr);
-  return tensor;
-}
-
-const Tensor *KernelBuilder::getOptionalInputTensor(const loco::Node *node) const
-{
-  if (dynamic_cast<const luci::CircleOutputExclude *>(node))
-  {
-    return nullptr;
-  }
-  return getInputTensor(node);
-}
-
-Tensor *KernelBuilder::getOutputTensor(const loco::Node *node) const
-{
-  Tensor *tensor = _node_to_tensor.at(node);
-  assert(tensor != nullptr);
-  return tensor;
-}
-
-std::vector<Tensor *>
-KernelBuilder::getOutputTensors(const std::vector<const loco::Node *> &nodes) const
-{
-  std::vector<Tensor *> tensors;
-  tensors.reserve(nodes.size());
-  for (const loco::Node *node : nodes)
-    tensors.push_back(getOutputTensor(node));
-  return tensors;
-}
-
-RuntimeGraph *KernelBuilder::getRuntimeGraph(const loco::Graph *graph) const
-{
-  RuntimeGraph *runtime_graph = _graph_to_runtime_graph.at(graph);
-  assert(runtime_graph != nullptr);
-  return runtime_graph;
-}
-
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleNode *)
 {
   throw std::invalid_argument("Unsupported operator.");
