@@ -32,6 +32,7 @@ Source2002: nnfw-plugin.pc.in
 BuildRequires:  cmake
 # Require flatbuffers-devel for onert frontend (model loading)
 BuildRequires:  flatbuffers-devel
+BuildRequires:  abseil-cpp-devel
 
 %ifarch %{arm} aarch64
 # Require python for acl-ex library build pre-process
