@@ -845,6 +845,41 @@ private:
     }
   }
 
+  // correct low scales in order to avoid large quantization errors
+  void correct_scales(luci::CircleNode *weights, luci::CircleNode *input)
+  {
+    assert(weights->quantparam() && "weights quantparam is nullptr");
+    assert(input->quantparam() && "input quantparam is nullptr");
+    assert(input->quantparam()->scale.size() == 1);
+
+    auto &weight_scales = weights->quantparam()->scale;
+    auto const input_scale = input->quantparam()->scale.back();
+
+    float lower_bound = 0.0f;
+
+    switch (output_type)
+    {
+      case loco::DataType::U8:
+        // Not implemented, yet
+        return;
+      case loco::DataType::S16:
+        // TODO define better value
+        lower_bound = 1e-15;
+        break;
+      default:
+        throw std::runtime_error("Unsupported quantization type.");
+        break;
+    }
+
+    for (auto &wscale : weight_scales)
+    {
+      if (wscale * input_scale < lower_bound)
+      {
+        wscale = lower_bound / input_scale;
+      }
+    }
+  }
+
   bool visit(luci::CircleConv2D *node)
   {
     LOGGER(l);
@@ -854,6 +889,8 @@ private:
     if (!is_quantized(weights))
     {
       auto new_weights = luci::clone(weights);
+      auto input = loco::must_cast<luci::CircleNode *>(node->input());
+      correct_scales(new_weights, input);
       node->filter(new_weights);
       quantize_weights(new_weights);
       return true;
@@ -870,6 +907,8 @@ private:
     if (!is_quantized(weights))
     {
       auto new_weights = luci::clone(weights);
+      auto input = loco::must_cast<luci::CircleNode *>(node->input());
+      correct_scales(new_weights, input);
       node->filter(new_weights);
       quantize_weights(new_weights);
       return true;
@@ -943,6 +982,8 @@ private:
     if (!is_quantized(weights))
     {
       auto new_weights = luci::clone(weights);
+      auto input = loco::must_cast<luci::CircleNode *>(node->outBackprop());
+      correct_scales(new_weights, input);
       node->filter(new_weights);
       quantize_weights(new_weights);
       return true;
@@ -959,6 +1000,8 @@ private:
     if (!is_quantized(weights))
     {
       auto new_weights = luci::clone(weights);
+      auto input = loco::must_cast<luci::CircleNode *>(node->input());
+      correct_scales(new_weights, input);
       node->weights(new_weights);
       quantize_weights(new_weights);
       return true;
