@@ -27,6 +27,8 @@ namespace gpu_cl
 namespace operand
 {
 
+
+
 void ICLTensor::access(const std::function<void(ITensor &tensor)> &fn)
 {
   if (total_size() == 0)
@@ -51,6 +53,8 @@ void ICLTensor::enqueueWriteBuffer(const void *ptr, bool)
 
     case TensorStorageType::TEXTURE_3D:
     case TensorStorageType::SINGLE_TEXTURE_2D:
+      // TODO
+      // Change int3 {1, 1, 1} to CalculateTextureRegion.
       if (!_queue->EnqueueWriteImage(handle()->GetMemoryPtr(), int3{1, 1, 1}, ptr).ok())
       {
         return;

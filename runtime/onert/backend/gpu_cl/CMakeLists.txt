@@ -1,24 +1,27 @@
 set(LIB_ONERT_BACKEND_GPU_CL onert_backend_gpu_cl)
 
-# TODO
-# Change find_package OPENCL header
-nnfw_find_package(ARMCompute QUIET)
-if(NOT ARMCompute_FOUND)
+nnas_find_package(Opencl_Headers QUIET)
+if(NOT Opencl_Headers_FOUND)
   return()
-endif(NOT ARMCompute_FOUND)
+endif(NOT Opencl_Headers_FOUND)
 
 nnas_find_package(Farmhash QUIET)
 if(NOT Farmhash_FOUND)
   return()
 endif(NOT Farmhash_FOUND)
 
+nnas_find_package(Abseil QUIET)
+if(NOT Abseil_FOUND)
+  return()
+endif(NOT Abseil_FOUND)
+
 file(GLOB_RECURSE SOURCES "*.cc")
 
-find_package(absl)
 
 add_library(${LIB_ONERT_BACKEND_GPU_CL} SHARED ${SOURCES})
 
 target_include_directories(${LIB_ONERT_BACKEND_GPU_CL} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(${LIB_ONERT_BACKEND_GPU_CL} PRIVATE ${NNAS_EXTERNALS_DIR}/OPENCL_HEADERS)
 
 target_link_libraries(${LIB_ONERT_BACKEND_GPU_CL} PRIVATE
   absl::algorithm
@@ -36,6 +39,7 @@ target_link_libraries(${LIB_ONERT_BACKEND_GPU_CL} PRIVATE
   absl::time
   absl::utility
 )
+
 target_link_libraries(${LIB_ONERT_BACKEND_GPU_CL} PRIVATE dl)
 target_link_libraries(${LIB_ONERT_BACKEND_GPU_CL} PRIVATE farmhash)
 target_link_libraries(${LIB_ONERT_BACKEND_GPU_CL} PRIVATE onert_core)
