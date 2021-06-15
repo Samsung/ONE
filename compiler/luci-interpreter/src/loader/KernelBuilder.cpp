@@ -83,11 +83,11 @@
 
 #include <stdexcept>
 
-namespace luci_interpreter
+namespace
 {
 
 template <typename CircleNodeOut>
-static std::vector<const loco::Node *> collectOutputNodes(const luci::CircleNode *node)
+std::vector<const loco::Node *> collectOutputNodes(const luci::CircleNode *node)
 {
   std::vector<const CircleNodeOut *> output_nodes;
   for (const loco::Node *loco_node : loco::succs(node))
@@ -100,6 +100,11 @@ static std::vector<const loco::Node *> collectOutputNodes(const luci::CircleNode
             });
   return {output_nodes.cbegin(), output_nodes.cend()};
 }
+
+} // namespace
+
+namespace luci_interpreter
+{
 
 const Tensor *KernelBuilder::getInputTensor(const loco::Node *node) const
 {
