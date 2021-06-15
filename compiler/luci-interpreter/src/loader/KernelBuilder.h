@@ -17,25 +17,27 @@
 #ifndef LUCI_INTERPRETER_LOADER_KERNELBUILDER_H
 #define LUCI_INTERPRETER_LOADER_KERNELBUILDER_H
 
+#include "loader/KernelBuilderHelper.h"
+
 #include "core/Kernel.h"
 #include "core/RuntimeGraph.h"
 
 #include <luci/IR/CircleNodeVisitor.h>
 
 #include <memory>
-#include <vector>
 #include <unordered_map>
 
 namespace luci_interpreter
 {
 
-class KernelBuilder : public luci::CircleNodeVisitor<std::unique_ptr<Kernel>>
+class KernelBuilder : public luci::CircleNodeVisitor<std::unique_ptr<Kernel>>,
+                      public KernelBuilderHelper
 {
 public:
   KernelBuilder(
     const std::unordered_map<const loco::Graph *, RuntimeGraph *> &graph_to_runtime_graph,
     const std::unordered_map<const loco::Node *, Tensor *> &node_to_tensor)
-    : _graph_to_runtime_graph(graph_to_runtime_graph), _node_to_tensor(node_to_tensor)
+    : KernelBuilderHelper(graph_to_runtime_graph, node_to_tensor)
   {
   }
 
@@ -108,21 +110,6 @@ public:
   std::unique_ptr<Kernel> visit(const luci::CircleTranspose *node) override;
   std::unique_ptr<Kernel> visit(const luci::CircleTransposeConv *node) override;
   std::unique_ptr<Kernel> visit(const luci::CircleUnpack *node) override;
-
-private:
-  const Tensor *getInputTensor(const loco::Node *node) const;
-
-  const Tensor *getOptionalInputTensor(const loco::Node *node) const;
-
-  Tensor *getOutputTensor(const loco::Node *node) const;
-
-  std::vector<Tensor *> getOutputTensors(const std::vector<const loco::Node *> &nodes) const;
-
-  RuntimeGraph *getRuntimeGraph(const loco::Graph *graph) const;
-
-private:
-  const std::unordered_map<const loco::Graph *, RuntimeGraph *> &_graph_to_runtime_graph;
-  const std::unordered_map<const loco::Node *, Tensor *> &_node_to_tensor;
 };
 
 } // namespace luci_interpreter
