@@ -1,6 +1,8 @@
 set(SOURCES
     GraphLoader.h
     GraphLoader.cpp
+    KernelBuilderHelper.h
+    KernelBuilderHelper.cpp
     KernelBuilder.h
     KernelBuilder.cpp
     ModuleLoader.h
