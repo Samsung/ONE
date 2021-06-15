@@ -121,7 +121,7 @@ protected:
 
     KernelBuilder kernel_builder(graph_to_runtime_graph, _node_to_tensor);
 
-    auto kernel = op->accept(&kernel_builder);
+    auto kernel = kernel_builder.build(op);
     return std::unique_ptr<KernelT>(dynamic_cast<KernelT *>(kernel.release()));
   }
 
