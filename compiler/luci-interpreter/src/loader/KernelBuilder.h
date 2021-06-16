@@ -42,21 +42,6 @@ public:
   }
 
   std::unique_ptr<Kernel> visit(const luci::CircleNode *node) override;
-
-  std::unique_ptr<Kernel> visit(const luci::CircleSlice *node) override;
-  std::unique_ptr<Kernel> visit(const luci::CircleSoftmax *node) override;
-  std::unique_ptr<Kernel> visit(const luci::CircleSpaceToBatchND *node) override;
-  std::unique_ptr<Kernel> visit(const luci::CircleSpaceToDepth *node) override;
-  std::unique_ptr<Kernel> visit(const luci::CircleSplit *node) override;
-  std::unique_ptr<Kernel> visit(const luci::CircleSqrt *node) override;
-  std::unique_ptr<Kernel> visit(const luci::CircleSquaredDifference *node) override;
-  std::unique_ptr<Kernel> visit(const luci::CircleSqueeze *node) override;
-  std::unique_ptr<Kernel> visit(const luci::CircleStridedSlice *node) override;
-  std::unique_ptr<Kernel> visit(const luci::CircleSub *node) override;
-  std::unique_ptr<Kernel> visit(const luci::CircleTanh *node) override;
-  std::unique_ptr<Kernel> visit(const luci::CircleTranspose *node) override;
-  std::unique_ptr<Kernel> visit(const luci::CircleTransposeConv *node) override;
-  std::unique_ptr<Kernel> visit(const luci::CircleUnpack *node) override;
 };
 
 } // namespace luci_interpreter
