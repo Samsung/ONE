@@ -639,6 +639,7 @@ protected:
 enum class OE
 {
   ABC,
+  DEF,
 };
 
 class OperationExporter final : public luci::CircleNodeMutableVisitor<void>,
@@ -673,6 +674,7 @@ public:
   void visit(luci::CircleCos *) final;
   void visit(luci::CircleCustom *) final;
 #endif
+#if 0
   void visit(luci::CircleDepthToSpace *) final;
   void visit(luci::CircleDepthwiseConv2D *) final;
   void visit(luci::CircleDequantize *) final;
@@ -687,6 +689,7 @@ public:
   void visit(luci::CircleFloorDiv *) final;
   void visit(luci::CircleFloorMod *) final;
   void visit(luci::CircleFullyConnected *) final;
+#endif
   void visit(luci::CircleGather *) final;
   void visit(luci::CircleGatherNd *) final;
   void visit(luci::CircleGreater *) final;
@@ -828,6 +831,36 @@ public:
   void visit(luci::CircleCustom *) final;
 };
 
+template <>
+class OpExporterLet<OE::DEF> final : public luci::CircleNodeMutableVisitor<void>,
+                                     public ExportHelper
+{
+public:
+  OpExporterLet(ExportContext &ctx) : ExportHelper(ctx)
+  {
+    // DO NOTHING
+  }
+
+public:
+  void visit(luci::CircleNode *) final {}
+
+public:
+  void visit(luci::CircleDepthToSpace *) final;
+  void visit(luci::CircleDepthwiseConv2D *) final;
+  void visit(luci::CircleDequantize *) final;
+  void visit(luci::CircleDiv *) final;
+  void visit(luci::CircleElu *) final;
+  void visit(luci::CircleEqual *) final;
+  void visit(luci::CircleExp *) final;
+  void visit(luci::CircleExpandDims *) final;
+  void visit(luci::CircleFakeQuant *) final;
+  void visit(luci::CircleFill *) final;
+  void visit(luci::CircleFloor *) final;
+  void visit(luci::CircleFloorDiv *) final;
+  void visit(luci::CircleFloorMod *) final;
+  void visit(luci::CircleFullyConnected *) final;
+};
+
 void OperationExporter::visit(luci::CircleNode *node)
 {
   // TODO revise return type to bool and return if handled
@@ -839,6 +872,7 @@ void OperationExporter::visit(luci::CircleNode *node)
   } while (false)
 
   VISIT_OE(ABC);
+  VISIT_OE(DEF);
 }
 
 void OpExporterLet<OE::ABC>::visit(luci::CircleAbs *node)
@@ -958,14 +992,14 @@ void OpExporterLet<OE::ABC>::visit(luci::CircleCos *node)
 
 void OpExporterLet<OE::ABC>::visit(luci::CircleCustom *node) { export_node(_ctx, node); }
 
-void OperationExporter::visit(luci::CircleDepthToSpace *node)
+void OpExporterLet<OE::DEF>::visit(luci::CircleDepthToSpace *node)
 {
   export_simple(node, circle::BuiltinOperator_DEPTH_TO_SPACE,
                 circle::BuiltinOptions_DepthToSpaceOptions,
                 CreateDepthToSpaceOptions(_ctx.builder, node->block_size()).Union());
 }
 
-void OperationExporter::visit(luci::CircleDepthwiseConv2D *node)
+void OpExporterLet<OE::DEF>::visit(luci::CircleDepthwiseConv2D *node)
 {
   export_simple(
     node, circle::BuiltinOperator_DEPTHWISE_CONV_2D, circle::BuiltinOptions_DepthwiseConv2DOptions,
@@ -976,42 +1010,42 @@ void OperationExporter::visit(luci::CircleDepthwiseConv2D *node)
       .Union());
 }
 
-void OperationExporter::visit(luci::CircleDequantize *node)
+void OpExporterLet<OE::DEF>::visit(luci::CircleDequantize *node)
 {
   export_simple(node, circle::BuiltinOperator_DEQUANTIZE);
 }
 
-void OperationExporter::visit(luci::CircleDiv *node)
+void OpExporterLet<OE::DEF>::visit(luci::CircleDiv *node)
 {
   export_simple(
     node, circle::BuiltinOperator_DIV, circle::BuiltinOptions_DivOptions,
     CreateDivOptions(_ctx.builder, to_circle_actfunc(node->fusedActivationFunction())).Union());
 }
 
-void OperationExporter::visit(luci::CircleElu *node)
+void OpExporterLet<OE::DEF>::visit(luci::CircleElu *node)
 {
   export_simple(node, circle::BuiltinOperator_ELU);
 }
 
-void OperationExporter::visit(luci::CircleEqual *node)
+void OpExporterLet<OE::DEF>::visit(luci::CircleEqual *node)
 {
   export_simple(node, circle::BuiltinOperator_EQUAL, circle::BuiltinOptions_EqualOptions,
                 CreateEqualOptions(_ctx.builder).Union());
 }
 
-void OperationExporter::visit(luci::CircleExp *node)
+void OpExporterLet<OE::DEF>::visit(luci::CircleExp *node)
 {
   export_simple(node, circle::BuiltinOperator_EXP, circle::BuiltinOptions_ExpOptions,
                 CreateExpOptions(_ctx.builder).Union());
 }
 
-void OperationExporter::visit(luci::CircleExpandDims *node)
+void OpExporterLet<OE::DEF>::visit(luci::CircleExpandDims *node)
 {
   export_simple(node, circle::BuiltinOperator_EXPAND_DIMS, circle::BuiltinOptions_ExpandDimsOptions,
                 CreateExpandDimsOptions(_ctx.builder).Union());
 }
 
-void OperationExporter::visit(luci::CircleFakeQuant *node)
+void OpExporterLet<OE::DEF>::visit(luci::CircleFakeQuant *node)
 {
   export_simple(node, circle::BuiltinOperator_FAKE_QUANT, circle::BuiltinOptions_FakeQuantOptions,
                 CreateFakeQuantOptions(_ctx.builder, node->min(), node->max(), node->num_bits(),
@@ -1019,30 +1053,30 @@ void OperationExporter::visit(luci::CircleFakeQuant *node)
                   .Union());
 }
 
-void OperationExporter::visit(luci::CircleFill *node)
+void OpExporterLet<OE::DEF>::visit(luci::CircleFill *node)
 {
   export_simple(node, circle::BuiltinOperator_FILL, circle::BuiltinOptions_FillOptions,
                 CreateFillOptions(_ctx.builder).Union());
 }
 
-void OperationExporter::visit(luci::CircleFloor *node)
+void OpExporterLet<OE::DEF>::visit(luci::CircleFloor *node)
 {
   export_simple(node, circle::BuiltinOperator_FLOOR);
 }
 
-void OperationExporter::visit(luci::CircleFloorDiv *node)
+void OpExporterLet<OE::DEF>::visit(luci::CircleFloorDiv *node)
 {
   export_simple(node, circle::BuiltinOperator_FLOOR_DIV, circle::BuiltinOptions_FloorDivOptions,
                 CreateFloorDivOptions(_ctx.builder).Union());
 }
 
-void OperationExporter::visit(luci::CircleFloorMod *node)
+void OpExporterLet<OE::DEF>::visit(luci::CircleFloorMod *node)
 {
   export_simple(node, circle::BuiltinOperator_FLOOR_MOD, circle::BuiltinOptions_FloorModOptions,
                 CreateFloorModOptions(_ctx.builder).Union());
 }
 
-void OperationExporter::visit(luci::CircleFullyConnected *node)
+void OpExporterLet<OE::DEF>::visit(luci::CircleFullyConnected *node)
 {
   export_simple(
     node, circle::BuiltinOperator_FULLY_CONNECTED, circle::BuiltinOptions_FullyConnectedOptions,
