@@ -111,6 +111,8 @@ enum class KB
 {
   ABC,
   DEF,
+  GHIJ,
+  KLMN,
 };
 
 #define DECLARE_VISIT(CLASS) std::unique_ptr<Kernel> visit(const luci::CLASS *) override
@@ -169,6 +171,66 @@ public:
   DECLARE_VISIT(CircleFullyConnected);
 };
 
+template <>
+class KernelBuilderLet<KB::GHIJ> : public luci::CircleNodeVisitor<std::unique_ptr<Kernel>>,
+                                   public KernelBuilderHelper
+{
+public:
+  KernelBuilderLet(
+    const std::unordered_map<const loco::Graph *, RuntimeGraph *> &graph_to_runtime_graph,
+    const std::unordered_map<const loco::Node *, Tensor *> &node_to_tensor)
+    : KernelBuilderHelper(graph_to_runtime_graph, node_to_tensor)
+  {
+  }
+
+public:
+  std::unique_ptr<Kernel> visit(const luci::CircleNode *) { return nullptr; }
+
+public:
+  DECLARE_VISIT(CircleGreater);
+  DECLARE_VISIT(CircleGreaterEqual);
+  DECLARE_VISIT(CircleIf);
+  DECLARE_VISIT(CircleInput);
+  DECLARE_VISIT(CircleInstanceNorm);
+};
+
+template <>
+class KernelBuilderLet<KB::KLMN> : public luci::CircleNodeVisitor<std::unique_ptr<Kernel>>,
+                                   public KernelBuilderHelper
+{
+public:
+  KernelBuilderLet(
+    const std::unordered_map<const loco::Graph *, RuntimeGraph *> &graph_to_runtime_graph,
+    const std::unordered_map<const loco::Node *, Tensor *> &node_to_tensor)
+    : KernelBuilderHelper(graph_to_runtime_graph, node_to_tensor)
+  {
+  }
+
+public:
+  std::unique_ptr<Kernel> visit(const luci::CircleNode *) { return nullptr; }
+
+public:
+  DECLARE_VISIT(CircleL2Normalize);
+  DECLARE_VISIT(CircleL2Pool2D);
+  DECLARE_VISIT(CircleLeakyRelu);
+  DECLARE_VISIT(CircleLess);
+  DECLARE_VISIT(CircleLessEqual);
+  DECLARE_VISIT(CircleLocalResponseNormalization);
+  DECLARE_VISIT(CircleLogSoftmax);
+  DECLARE_VISIT(CircleLogicalAnd);
+  DECLARE_VISIT(CircleLogicalNot);
+  DECLARE_VISIT(CircleLogicalOr);
+  DECLARE_VISIT(CircleLogistic);
+  DECLARE_VISIT(CircleMaxPool2D);
+  DECLARE_VISIT(CircleMaximum);
+  DECLARE_VISIT(CircleMean);
+  DECLARE_VISIT(CircleMinimum);
+  DECLARE_VISIT(CircleMirrorPad);
+  DECLARE_VISIT(CircleMul);
+  DECLARE_VISIT(CircleNeg);
+  DECLARE_VISIT(CircleNotEqual);
+};
+
 #undef DECLARE_VISIT
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleNode *node)
@@ -184,6 +246,8 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleNode *node)
 
   VISIT_KB(ABC);
   VISIT_KB(DEF);
+  VISIT_KB(GHIJ);
+  VISIT_KB(KLMN);
 
 #undef VISIT_KB
 
@@ -402,7 +466,7 @@ std::unique_ptr<Kernel> KernelBuilderLet<KB::DEF>::visit(const luci::CircleFully
   return std::make_unique<kernels::FullyConnected>(input, weights, bias, output, params);
 }
 
-std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleGreater *node)
+std::unique_ptr<Kernel> KernelBuilderLet<KB::GHIJ>::visit(const luci::CircleGreater *node)
 {
   assert(node->arity() == 2);
 
@@ -413,7 +477,7 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleGreater *node)
   return std::make_unique<kernels::Greater>(x, y, output);
 }
 
-std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleGreaterEqual *node)
+std::unique_ptr<Kernel> KernelBuilderLet<KB::GHIJ>::visit(const luci::CircleGreaterEqual *node)
 {
   assert(node->arity() == 2);
 
@@ -424,7 +488,7 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleGreaterEqual *nod
   return std::make_unique<kernels::GreaterEqual>(x, y, output);
 }
 
-std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleIf *node)
+std::unique_ptr<Kernel> KernelBuilderLet<KB::GHIJ>::visit(const luci::CircleIf *node)
 {
   auto output_nodes = collectOutputNodes<luci::CircleIfOut>(node);
   assert(node->arity() == 1 + node->input_count());
@@ -445,7 +509,7 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleIf *node)
                                        else_graph);
 }
 
-std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleInstanceNorm *node)
+std::unique_ptr<Kernel> KernelBuilderLet<KB::GHIJ>::visit(const luci::CircleInstanceNorm *node)
 {
   assert(node->arity() == 3);
 
@@ -462,12 +526,12 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleInstanceNorm *nod
   return std::make_unique<kernels::InstanceNorm>(input, gamma, beta, output, params);
 }
 
-std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleInput *)
+std::unique_ptr<Kernel> KernelBuilderLet<KB::GHIJ>::visit(const luci::CircleInput *)
 {
   throw std::runtime_error("Input node cannot be executed.");
 }
 
-std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleL2Normalize *node)
+std::unique_ptr<Kernel> KernelBuilderLet<KB::KLMN>::visit(const luci::CircleL2Normalize *node)
 {
   assert(node->arity() == 1);
 
@@ -480,7 +544,7 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleL2Normalize *node
   return std::make_unique<kernels::L2Normalize>(input, output, params);
 }
 
-std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleL2Pool2D *node)
+std::unique_ptr<Kernel> KernelBuilderLet<KB::KLMN>::visit(const luci::CircleL2Pool2D *node)
 {
   assert(node->arity() == 1);
 
@@ -498,7 +562,7 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleL2Pool2D *node)
   return std::make_unique<kernels::L2Pool2D>(input, output, params);
 }
 
-std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleLeakyRelu *node)
+std::unique_ptr<Kernel> KernelBuilderLet<KB::KLMN>::visit(const luci::CircleLeakyRelu *node)
 {
   assert(node->arity() == 1);
   const Tensor *input = getInputTensor(node->features());
@@ -510,7 +574,7 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleLeakyRelu *node)
   return std::make_unique<kernels::LeakyRelu>(input, output, params);
 }
 
-std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleLess *node)
+std::unique_ptr<Kernel> KernelBuilderLet<KB::KLMN>::visit(const luci::CircleLess *node)
 {
   assert(node->arity() == 2);
 
@@ -521,7 +585,7 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleLess *node)
   return std::make_unique<kernels::Less>(x, y, output);
 }
 
-std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleLessEqual *node)
+std::unique_ptr<Kernel> KernelBuilderLet<KB::KLMN>::visit(const luci::CircleLessEqual *node)
 {
   assert(node->arity() == 2);
 
@@ -532,7 +596,8 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleLessEqual *node)
   return std::make_unique<kernels::LessEqual>(x, y, output);
 }
 
-std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleLocalResponseNormalization *node)
+std::unique_ptr<Kernel>
+KernelBuilderLet<KB::KLMN>::visit(const luci::CircleLocalResponseNormalization *node)
 {
   assert(node->arity() == 1);
   const Tensor *input = getInputTensor(node->input());
@@ -547,7 +612,7 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleLocalResponseNorm
   return std::make_unique<kernels::LocalResponseNormalization>(input, output, params);
 }
 
-std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleLogicalAnd *node)
+std::unique_ptr<Kernel> KernelBuilderLet<KB::KLMN>::visit(const luci::CircleLogicalAnd *node)
 {
   assert(node->arity() == 2);
 
@@ -558,7 +623,7 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleLogicalAnd *node)
   return std::make_unique<kernels::LogicalAnd>(input1, input2, output);
 }
 
-std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleLogicalNot *node)
+std::unique_ptr<Kernel> KernelBuilderLet<KB::KLMN>::visit(const luci::CircleLogicalNot *node)
 {
   assert(node->arity() == 1);
 
@@ -568,7 +633,7 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleLogicalNot *node)
   return std::make_unique<kernels::LogicalNot>(input, output);
 }
 
-std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleLogicalOr *node)
+std::unique_ptr<Kernel> KernelBuilderLet<KB::KLMN>::visit(const luci::CircleLogicalOr *node)
 {
   assert(node->arity() == 2);
 
@@ -579,7 +644,7 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleLogicalOr *node)
   return std::make_unique<kernels::LogicalOr>(input1, input2, output);
 }
 
-std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleLogistic *node)
+std::unique_ptr<Kernel> KernelBuilderLet<KB::KLMN>::visit(const luci::CircleLogistic *node)
 {
   assert(node->arity() == 1);
 
@@ -589,7 +654,7 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleLogistic *node)
   return std::make_unique<kernels::Logistic>(input, output);
 }
 
-std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleLogSoftmax *node)
+std::unique_ptr<Kernel> KernelBuilderLet<KB::KLMN>::visit(const luci::CircleLogSoftmax *node)
 {
   assert(node->arity() == 1);
 
@@ -599,7 +664,7 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleLogSoftmax *node)
   return std::make_unique<kernels::LogSoftmax>(input, output);
 }
 
-std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleMaximum *node)
+std::unique_ptr<Kernel> KernelBuilderLet<KB::KLMN>::visit(const luci::CircleMaximum *node)
 {
   assert(node->arity() == 2);
 
@@ -610,7 +675,7 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleMaximum *node)
   return std::make_unique<kernels::Maximum>(input1, input2, output);
 }
 
-std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleMaxPool2D *node)
+std::unique_ptr<Kernel> KernelBuilderLet<KB::KLMN>::visit(const luci::CircleMaxPool2D *node)
 {
   assert(node->arity() == 1);
 
@@ -628,7 +693,7 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleMaxPool2D *node)
   return std::make_unique<kernels::MaxPool2D>(input, output, params);
 }
 
-std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleMean *node)
+std::unique_ptr<Kernel> KernelBuilderLet<KB::KLMN>::visit(const luci::CircleMean *node)
 {
   assert(node->arity() == 2);
 
@@ -642,7 +707,7 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleMean *node)
   return std::make_unique<kernels::Mean>(input, axes, output, params);
 }
 
-std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleMinimum *node)
+std::unique_ptr<Kernel> KernelBuilderLet<KB::KLMN>::visit(const luci::CircleMinimum *node)
 {
   assert(node->arity() == 2);
 
@@ -653,7 +718,7 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleMinimum *node)
   return std::make_unique<kernels::Minimum>(input1, input2, output);
 }
 
-std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleMirrorPad *node)
+std::unique_ptr<Kernel> KernelBuilderLet<KB::KLMN>::visit(const luci::CircleMirrorPad *node)
 {
   assert(node->arity() == 2);
 
@@ -667,7 +732,7 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleMirrorPad *node)
   return std::make_unique<kernels::MirrorPad>(input, paddings, output, params);
 }
 
-std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleMul *node)
+std::unique_ptr<Kernel> KernelBuilderLet<KB::KLMN>::visit(const luci::CircleMul *node)
 {
   assert(node->arity() == 2);
 
@@ -681,7 +746,7 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleMul *node)
   return std::make_unique<kernels::Mul>(input1, input2, output, params);
 }
 
-std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleNeg *node)
+std::unique_ptr<Kernel> KernelBuilderLet<KB::KLMN>::visit(const luci::CircleNeg *node)
 {
   assert(node->arity() == 1);
 
@@ -691,7 +756,7 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleNeg *node)
   return std::make_unique<kernels::Neg>(input, output);
 }
 
-std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleNotEqual *node)
+std::unique_ptr<Kernel> KernelBuilderLet<KB::KLMN>::visit(const luci::CircleNotEqual *node)
 {
   assert(node->arity() == 2);
 
