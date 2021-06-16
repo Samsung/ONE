@@ -110,6 +110,7 @@ namespace luci_interpreter
 enum class KB
 {
   ABC,
+  DEF,
 };
 
 #define DECLARE_VISIT(CLASS) std::unique_ptr<Kernel> visit(const luci::CLASS *) override
@@ -141,6 +142,33 @@ public:
   DECLARE_VISIT(CircleConv2D);
 };
 
+template <>
+class KernelBuilderLet<KB::DEF> : public luci::CircleNodeVisitor<std::unique_ptr<Kernel>>,
+                                  public KernelBuilderHelper
+{
+public:
+  KernelBuilderLet(
+    const std::unordered_map<const loco::Graph *, RuntimeGraph *> &graph_to_runtime_graph,
+    const std::unordered_map<const loco::Node *, Tensor *> &node_to_tensor)
+    : KernelBuilderHelper(graph_to_runtime_graph, node_to_tensor)
+  {
+  }
+
+public:
+  std::unique_ptr<Kernel> visit(const luci::CircleNode *) { return nullptr; }
+
+public:
+  DECLARE_VISIT(CircleDepthToSpace);
+  DECLARE_VISIT(CircleDepthwiseConv2D);
+  DECLARE_VISIT(CircleDiv);
+  DECLARE_VISIT(CircleElu);
+  DECLARE_VISIT(CircleEqual);
+  DECLARE_VISIT(CircleExp);
+  DECLARE_VISIT(CircleFloor);
+  DECLARE_VISIT(CircleFloorDiv);
+  DECLARE_VISIT(CircleFullyConnected);
+};
+
 #undef DECLARE_VISIT
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleNode *node)
@@ -155,6 +183,7 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleNode *node)
   } while (false)
 
   VISIT_KB(ABC);
+  VISIT_KB(DEF);
 
 #undef VISIT_KB
 
@@ -259,7 +288,7 @@ std::unique_ptr<Kernel> KernelBuilderLet<KB::ABC>::visit(const luci::CircleConv2
   return std::make_unique<kernels::Conv2D>(input, filter, bias, output, params);
 }
 
-std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleDepthToSpace *node)
+std::unique_ptr<Kernel> KernelBuilderLet<KB::DEF>::visit(const luci::CircleDepthToSpace *node)
 {
   assert(node->arity() == 1);
 
@@ -272,7 +301,7 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleDepthToSpace *nod
   return std::make_unique<kernels::DepthToSpace>(input, output, params);
 }
 
-std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleDepthwiseConv2D *node)
+std::unique_ptr<Kernel> KernelBuilderLet<KB::DEF>::visit(const luci::CircleDepthwiseConv2D *node)
 {
   assert(node->arity() == 3);
 
@@ -293,7 +322,7 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleDepthwiseConv2D *
   return std::make_unique<kernels::DepthwiseConv2D>(input, filter, bias, output, params);
 }
 
-std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleDiv *node)
+std::unique_ptr<Kernel> KernelBuilderLet<KB::DEF>::visit(const luci::CircleDiv *node)
 {
   assert(node->arity() == 2);
   const Tensor *input1 = getInputTensor(node->x());
@@ -306,7 +335,7 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleDiv *node)
   return std::make_unique<kernels::Div>(input1, input2, output, params);
 }
 
-std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleElu *node)
+std::unique_ptr<Kernel> KernelBuilderLet<KB::DEF>::visit(const luci::CircleElu *node)
 {
   assert(node->arity() == 1);
 
@@ -316,7 +345,7 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleElu *node)
   return std::make_unique<kernels::Elu>(input, output);
 }
 
-std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleEqual *node)
+std::unique_ptr<Kernel> KernelBuilderLet<KB::DEF>::visit(const luci::CircleEqual *node)
 {
   assert(node->arity() == 2);
 
@@ -327,7 +356,7 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleEqual *node)
   return std::make_unique<kernels::Equal>(x, y, output);
 }
 
-std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleExp *node)
+std::unique_ptr<Kernel> KernelBuilderLet<KB::DEF>::visit(const luci::CircleExp *node)
 {
   assert(node->arity() == 1);
 
@@ -337,7 +366,7 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleExp *node)
   return std::make_unique<kernels::Exp>(input, output);
 }
 
-std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleFloor *node)
+std::unique_ptr<Kernel> KernelBuilderLet<KB::DEF>::visit(const luci::CircleFloor *node)
 {
   assert(node->arity() == 1);
 
@@ -347,7 +376,7 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleFloor *node)
   return std::make_unique<kernels::Floor>(input, output);
 }
 
-std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleFloorDiv *node)
+std::unique_ptr<Kernel> KernelBuilderLet<KB::DEF>::visit(const luci::CircleFloorDiv *node)
 {
   assert(node->arity() == 2);
 
@@ -358,7 +387,7 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleFloorDiv *node)
   return std::make_unique<kernels::FloorDiv>(x, y, output);
 }
 
-std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleFullyConnected *node)
+std::unique_ptr<Kernel> KernelBuilderLet<KB::DEF>::visit(const luci::CircleFullyConnected *node)
 {
   assert(node->arity() == 3);
 
