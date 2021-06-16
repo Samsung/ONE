@@ -48,6 +48,17 @@ protected:
 
   RuntimeGraph *getRuntimeGraph(const loco::Graph *graph) const;
 
+protected:
+  const std::unordered_map<const loco::Graph *, RuntimeGraph *> &graph_to_runtime_graph() const
+  {
+    return _graph_to_runtime_graph;
+  }
+
+  const std::unordered_map<const loco::Node *, Tensor *> &node_to_tensor() const
+  {
+    return _node_to_tensor;
+  }
+
 private:
   const std::unordered_map<const loco::Graph *, RuntimeGraph *> &_graph_to_runtime_graph;
   const std::unordered_map<const loco::Node *, Tensor *> &_node_to_tensor;
