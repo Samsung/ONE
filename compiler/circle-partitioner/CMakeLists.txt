@@ -19,6 +19,13 @@ install(TARGETS circle_partitioner DESTINATION bin)
 # NOTE Test below are for circle-partitioner is partitioning itself.
 #      Once this test passes, add partition to 'circle-part-value-test' for
 #      full test.
+# NOTE Test requires 'common-artifacts' but this cannot be included in release
+#      which makes a cmake configuration error.
+#      Please add -DENABLE_LOCAL_PARTITIONER_TEST to enable this test in local.
+if (NOT ENABLE_LOCAL_PARTITIONER_TEST)
+  return()
+endif(NOT ENABLE_LOCAL_PARTITIONER_TEST)
+
 if(NOT ENABLE_TEST)
   return()
 endif(NOT ENABLE_TEST)
