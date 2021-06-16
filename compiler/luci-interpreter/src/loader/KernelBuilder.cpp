@@ -113,6 +113,7 @@ enum class KB
   DEF,
   GHIJ,
   KLMN,
+  OPQR,
 };
 
 #define DECLARE_VISIT(CLASS) std::unique_ptr<Kernel> visit(const luci::CLASS *) override
@@ -231,6 +232,37 @@ public:
   DECLARE_VISIT(CircleNotEqual);
 };
 
+template <>
+class KernelBuilderLet<KB::OPQR> : public luci::CircleNodeVisitor<std::unique_ptr<Kernel>>,
+                                   public KernelBuilderHelper
+{
+public:
+  KernelBuilderLet(
+    const std::unordered_map<const loco::Graph *, RuntimeGraph *> &graph_to_runtime_graph,
+    const std::unordered_map<const loco::Node *, Tensor *> &node_to_tensor)
+    : KernelBuilderHelper(graph_to_runtime_graph, node_to_tensor)
+  {
+  }
+
+public:
+  std::unique_ptr<Kernel> visit(const luci::CircleNode *) { return nullptr; }
+
+public:
+  DECLARE_VISIT(CircleOutput);
+  DECLARE_VISIT(CirclePRelu);
+  DECLARE_VISIT(CirclePack);
+  DECLARE_VISIT(CirclePad);
+  DECLARE_VISIT(CirclePadV2);
+  DECLARE_VISIT(CirclePow);
+  DECLARE_VISIT(CircleRelu);
+  DECLARE_VISIT(CircleRelu6);
+  DECLARE_VISIT(CircleReshape);
+  DECLARE_VISIT(CircleResizeBilinear);
+  DECLARE_VISIT(CircleResizeNearestNeighbor);
+  DECLARE_VISIT(CircleReverseV2);
+  DECLARE_VISIT(CircleRsqrt);
+};
+
 #undef DECLARE_VISIT
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleNode *node)
@@ -248,6 +280,7 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleNode *node)
   VISIT_KB(DEF);
   VISIT_KB(GHIJ);
   VISIT_KB(KLMN);
+  VISIT_KB(OPQR);
 
 #undef VISIT_KB
 
@@ -767,12 +800,12 @@ std::unique_ptr<Kernel> KernelBuilderLet<KB::KLMN>::visit(const luci::CircleNotE
   return std::make_unique<kernels::NotEqual>(x, y, output);
 }
 
-std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleOutput *)
+std::unique_ptr<Kernel> KernelBuilderLet<KB::OPQR>::visit(const luci::CircleOutput *)
 {
   throw std::runtime_error("Output node cannot be executed.");
 }
 
-std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CirclePack *node)
+std::unique_ptr<Kernel> KernelBuilderLet<KB::OPQR>::visit(const luci::CirclePack *node)
 {
   assert(node->arity() == node->values_count());
 
@@ -790,7 +823,7 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CirclePack *node)
   return std::make_unique<kernels::Pack>(std::move(inputs), output, params);
 }
 
-std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CirclePad *node)
+std::unique_ptr<Kernel> KernelBuilderLet<KB::OPQR>::visit(const luci::CirclePad *node)
 {
   assert(node->arity() == 2);
 
@@ -801,7 +834,7 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CirclePad *node)
   return std::make_unique<kernels::Pad>(input, paddings, output);
 }
 
-std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CirclePadV2 *node)
+std::unique_ptr<Kernel> KernelBuilderLet<KB::OPQR>::visit(const luci::CirclePadV2 *node)
 {
   assert(node->arity() == 3);
 
@@ -813,7 +846,7 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CirclePadV2 *node)
   return std::make_unique<kernels::PadV2>(input, paddings, constant_values, output);
 }
 
-std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CirclePow *node)
+std::unique_ptr<Kernel> KernelBuilderLet<KB::OPQR>::visit(const luci::CirclePow *node)
 {
   assert(node->arity() == 2);
 
@@ -825,7 +858,7 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CirclePow *node)
   return std::make_unique<kernels::Pow>(input1, input2, output);
 }
 
-std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CirclePRelu *node)
+std::unique_ptr<Kernel> KernelBuilderLet<KB::OPQR>::visit(const luci::CirclePRelu *node)
 {
   assert(node->arity() == 2);
 
@@ -836,7 +869,7 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CirclePRelu *node)
   return std::make_unique<kernels::Prelu>(input, alpha, output);
 }
 
-std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleRelu *node)
+std::unique_ptr<Kernel> KernelBuilderLet<KB::OPQR>::visit(const luci::CircleRelu *node)
 {
   assert(node->arity() == 1);
 
@@ -846,7 +879,7 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleRelu *node)
   return std::make_unique<kernels::Relu>(input, output);
 }
 
-std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleRelu6 *node)
+std::unique_ptr<Kernel> KernelBuilderLet<KB::OPQR>::visit(const luci::CircleRelu6 *node)
 {
   assert(node->arity() == 1);
 
@@ -856,7 +889,7 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleRelu6 *node)
   return std::make_unique<kernels::Relu6>(input, output);
 }
 
-std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleReshape *node)
+std::unique_ptr<Kernel> KernelBuilderLet<KB::OPQR>::visit(const luci::CircleReshape *node)
 {
   assert(node->arity() == 2);
 
@@ -868,7 +901,7 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleReshape *node)
   return std::make_unique<kernels::Reshape>(input, shape, output);
 }
 
-std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleResizeBilinear *node)
+std::unique_ptr<Kernel> KernelBuilderLet<KB::OPQR>::visit(const luci::CircleResizeBilinear *node)
 {
   assert(node->arity() == 2);
 
@@ -883,7 +916,8 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleResizeBilinear *n
   return std::make_unique<kernels::ResizeBilinear>(input, size, output, params);
 }
 
-std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleResizeNearestNeighbor *node)
+std::unique_ptr<Kernel>
+KernelBuilderLet<KB::OPQR>::visit(const luci::CircleResizeNearestNeighbor *node)
 {
   assert(node->arity() == 2);
 
@@ -902,7 +936,7 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleResizeNearestNeig
   return std::make_unique<kernels::ResizeNearestNeighbor>(input, size, output, params);
 }
 
-std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleReverseV2 *node)
+std::unique_ptr<Kernel> KernelBuilderLet<KB::OPQR>::visit(const luci::CircleReverseV2 *node)
 {
   assert(node->arity() == 2);
 
@@ -913,7 +947,7 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleReverseV2 *node)
   return std::make_unique<kernels::Reverse>(input, axes, output);
 }
 
-std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleRsqrt *node)
+std::unique_ptr<Kernel> KernelBuilderLet<KB::OPQR>::visit(const luci::CircleRsqrt *node)
 {
   assert(node->arity() == 1);
 
