@@ -43,30 +43,6 @@ public:
 
   std::unique_ptr<Kernel> visit(const luci::CircleNode *node) override;
 
-  std::unique_ptr<Kernel> visit(const luci::CircleGreater *node) override;
-  std::unique_ptr<Kernel> visit(const luci::CircleGreaterEqual *node) override;
-  std::unique_ptr<Kernel> visit(const luci::CircleIf *node) override;
-  std::unique_ptr<Kernel> visit(const luci::CircleInput *node) override;
-  std::unique_ptr<Kernel> visit(const luci::CircleInstanceNorm *node) override;
-  std::unique_ptr<Kernel> visit(const luci::CircleL2Normalize *node) override;
-  std::unique_ptr<Kernel> visit(const luci::CircleL2Pool2D *node) override;
-  std::unique_ptr<Kernel> visit(const luci::CircleLeakyRelu *node) override;
-  std::unique_ptr<Kernel> visit(const luci::CircleLess *node) override;
-  std::unique_ptr<Kernel> visit(const luci::CircleLessEqual *node) override;
-  std::unique_ptr<Kernel> visit(const luci::CircleLocalResponseNormalization *node) override;
-  std::unique_ptr<Kernel> visit(const luci::CircleLogSoftmax *node) override;
-  std::unique_ptr<Kernel> visit(const luci::CircleLogicalAnd *node) override;
-  std::unique_ptr<Kernel> visit(const luci::CircleLogicalNot *node) override;
-  std::unique_ptr<Kernel> visit(const luci::CircleLogicalOr *node) override;
-  std::unique_ptr<Kernel> visit(const luci::CircleLogistic *node) override;
-  std::unique_ptr<Kernel> visit(const luci::CircleMaxPool2D *node) override;
-  std::unique_ptr<Kernel> visit(const luci::CircleMaximum *node) override;
-  std::unique_ptr<Kernel> visit(const luci::CircleMean *node) override;
-  std::unique_ptr<Kernel> visit(const luci::CircleMinimum *node) override;
-  std::unique_ptr<Kernel> visit(const luci::CircleMirrorPad *node) override;
-  std::unique_ptr<Kernel> visit(const luci::CircleMul *node) override;
-  std::unique_ptr<Kernel> visit(const luci::CircleNeg *node) override;
-  std::unique_ptr<Kernel> visit(const luci::CircleNotEqual *node) override;
   std::unique_ptr<Kernel> visit(const luci::CircleOutput *node) override;
   std::unique_ptr<Kernel> visit(const luci::CirclePRelu *node) override;
   std::unique_ptr<Kernel> visit(const luci::CirclePack *node) override;
