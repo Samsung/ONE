@@ -141,7 +141,7 @@ public:
   DECLARE_VISIT(CircleConv2D);
 };
 
-#undef DECLARE
+#undef DECLARE_VISIT
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleNode *node)
 {
@@ -155,6 +155,8 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleNode *node)
   } while (false)
 
   VISIT_KB(ABC);
+
+#undef VISIT_KB
 
   throw std::invalid_argument("Unsupported operator.");
 }
