@@ -44,6 +44,10 @@ bool CircleSquaredDifferenceGraphBuilder::validate(const ValidateArgs &args) con
     case circle::TensorType_COMPLEX64:
       break;
     // TODO support bfloat16, complex128
+    // Additional support for quantized tensors
+    case circle::TensorType_UINT8:
+    case circle::TensorType_INT16:
+      break;
     default:
       return false;
   }
