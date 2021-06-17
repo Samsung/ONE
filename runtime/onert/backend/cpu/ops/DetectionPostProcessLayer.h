@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_CPU_OPS_NMS_H__
-#define __ONERT_BACKEND_CPU_OPS_NMS_H__
+#ifndef __ONERT_BACKEND_CPU_OPS_DPP_H__
+#define __ONERT_BACKEND_CPU_OPS_DPP_H__
 
 #include <exec/IFunction.h>
 
@@ -30,7 +30,7 @@ namespace cpu
 namespace ops
 {
 
-class NonMaxSuppressionLayer : public ::onert::exec::IFunction
+class DetectionPostProcessLayer : public ::onert::exec::IFunction
 {
 public:
   struct CornerBox
@@ -45,7 +45,7 @@ public:
     float h, w;
   };
 
-  struct NonMaxSuppressionParameters
+  struct DetectionPostProcessParameters
   {
     const IPortableTensor *boxes_input;
     const IPortableTensor *scores_input;
@@ -79,20 +79,20 @@ public:
     // TODO move all dynamic allocations here, and into configure phase
   };
 
-  NonMaxSuppressionLayer() : _parameters{}
+  DetectionPostProcessLayer() : _parameters{}
   {
     // DO NOTHING
   }
 
-  virtual ~NonMaxSuppressionLayer();
+  virtual ~DetectionPostProcessLayer();
 
 public:
-  void configure(NonMaxSuppressionParameters parameters);
+  void configure(DetectionPostProcessParameters parameters);
 
   void run() override;
 
 private:
-  NonMaxSuppressionParameters _parameters;
+  DetectionPostProcessParameters _parameters;
 
   Allocations _allocations;
 };
@@ -102,4 +102,4 @@ private:
 } // namespace backend
 } // namespace onert
 
-#endif // __ONERT_BACKEND_CPU_OPS_NMS_H__
+#endif // __ONERT_BACKEND_CPU_OPS_DPP_H__

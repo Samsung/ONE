@@ -14,10 +14,7 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_IR_OPERATION_NON_MAX_SUPPRESSION_H__
-#define __ONERT_IR_OPERATION_NON_MAX_SUPPRESSION_H__
-
-#include "ir/operation/NonMaxSuppression.h"
+#include "ir/operation/DetectionPostProcess.h"
 #include "ir/OperationVisitor.h"
 
 namespace onert
@@ -27,16 +24,14 @@ namespace ir
 namespace operation
 {
 
-NonMaxSuppression::NonMaxSuppression(const OperandIndexSequence &inputs,
-                                     const OperandIndexSequence &outputs, const Param &param)
+DetectionPostProcess::DetectionPostProcess(const OperandIndexSequence &inputs,
+                                           const OperandIndexSequence &outputs, const Param &param)
   : Operation(OperandConstraint::createExact(3u), inputs, outputs), _param(param)
 {
 }
 
-void NonMaxSuppression::accept(OperationVisitor &v) const { v.visit(*this); }
+void DetectionPostProcess::accept(OperationVisitor &v) const { v.visit(*this); }
 
 } // namespace operation
 } // namespace ir
 } // namespace onert
-
-#endif // __ONERT_IR_OPERATION_NON_MAX_SUPPRESSION_H__

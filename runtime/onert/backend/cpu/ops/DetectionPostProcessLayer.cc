@@ -1,4 +1,4 @@
-#include "NonMaxSuppressionLayer.h"
+#include "DetectionPostProcessLayer.h"
 
 #include "ndarray/Array.h"
 
@@ -20,11 +20,11 @@ namespace
 
 using namespace ndarray;
 
-using CenterSizeBox = NonMaxSuppressionLayer::CenterSizeBox;
-using CornerBox = NonMaxSuppressionLayer::CornerBox;
+using CenterSizeBox = DetectionPostProcessLayer::CenterSizeBox;
+using CornerBox = DetectionPostProcessLayer::CornerBox;
 
-using NonMaxSuppressionParam = NonMaxSuppressionLayer::NonMaxSuppressionParameters;
-using Allocations = NonMaxSuppressionLayer::Allocations;
+using NonMaxSuppressionParam = DetectionPostProcessLayer::DetectionPostProcessParameters;
+using Allocations = DetectionPostProcessLayer::Allocations;
 
 struct OutputArrays
 {
@@ -197,9 +197,9 @@ void collectBoxes(TemporaryArrays &temporary, const Array<const CornerBox> &deco
   }
 }
 
-void NonMaxSuppression(const Array<float> &boxes_a, const Array<float> &scores_a,
-                       Array<float> &num_selected_a, const NonMaxSuppressionParam &param,
-                       const Allocations &allocations, OutputArrays &outputs)
+void DetectionPostProcess(const Array<float> &boxes_a, const Array<float> &scores_a,
+                          Array<float> &num_selected_a, const NonMaxSuppressionParam &param,
+                          const Allocations &allocations, OutputArrays &outputs)
 {
   TemporaryArrays temporary(allocations.selections_buffer, param.max_detections);
 
@@ -254,13 +254,13 @@ template <typename T> Array<T> toArray(uint8_t *ptr, std::vector<int32_t> &descr
   return Array<T>{reinterpret_cast<T *>(ptr), shape};
 }
 
-void NonMaxSuppressionLayer::configure(NonMaxSuppressionParameters parameters)
+void DetectionPostProcessLayer::configure(DetectionPostProcessParameters parameters)
 {
   _parameters = std::move(parameters);
   _allocations.selections_buffer = new int[_parameters.max_detections * 2];
 }
 
-void NonMaxSuppressionLayer::run()
+void DetectionPostProcessLayer::run()
 {
   auto nbatches = (unsigned int)_parameters.boxes_descr[0];
   // no suport for batch other than 1( it's fine since tflite does not support
@@ -279,10 +279,10 @@ void NonMaxSuppressionLayer::run()
                             reinterpret_cast<int *>(_parameters.num_selections_output->buffer()),
                             _parameters.max_detections);
 
-  NonMaxSuppression(boxes_a, scores_a, num_selected_a, _parameters, _allocations, outputArrays);
+  DetectionPostProcess(boxes_a, scores_a, num_selected_a, _parameters, _allocations, outputArrays);
 }
 
-NonMaxSuppressionLayer::~NonMaxSuppressionLayer() { delete[] _allocations.selections_buffer; }
+DetectionPostProcessLayer::~DetectionPostProcessLayer() { delete[] _allocations.selections_buffer; }
 
 } // namespace ops
 } // namespace cpu

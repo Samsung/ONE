@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __NEURUN_MODEL_OPERATION_NON_MAX_SUPPRESSION_NODE_H__
-#define __NEURUN_MODEL_OPERATION_NON_MAX_SUPPRESSION_NODE_H__
+#ifndef __NEURUN_MODEL_OPERATION_DETECTION_POST_PROCESS_NODE_H__
+#define __NEURUN_MODEL_OPERATION_DETECTION_POST_PROCESS_NODE_H__
 
 #include "ir/Operation.h"
 
@@ -26,7 +26,7 @@ namespace ir
 namespace operation
 {
 
-class NonMaxSuppression : public Operation
+class DetectionPostProcess : public Operation
 {
 public:
   enum Input
@@ -67,17 +67,17 @@ public:
   };
 
 public:
-  NonMaxSuppression(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs,
-                    const Param &param);
+  DetectionPostProcess(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs,
+                       const Param &param);
 
 public:
   void accept(OperationVisitor &v) const override;
 
-  std::string getName() const { return "NonMaxSuppression"; }
+  std::string getName() const { return "DetectionPostProcess"; }
 
 public:
   const Param &param() const { return _param; }
-  OpCode opcode() const final { return OpCode::NonMaxSuppression; }
+  OpCode opcode() const final { return OpCode::DetectionPostProcess; }
 
 private:
   Param _param;
@@ -87,4 +87,4 @@ private:
 } // namespace ir
 } // namespace onert
 
-#endif // __NEURUN_MODEL_OPERATION_NON_MAX_SUPPRESSION_NODE_H__
+#endif // __NEURUN_MODEL_OPERATION_DETECTION_POST_PROCESS_NODE_H__

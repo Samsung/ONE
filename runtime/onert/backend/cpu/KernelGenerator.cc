@@ -35,7 +35,7 @@
 #include "ops/GatherLayer.h"
 #include "ops/LSTMLayer.h"
 #include "ops/MeanLayer.h"
-#include "ops/NonMaxSuppressionLayer.h"
+#include "ops/DetectionPostProcessLayer.h"
 #include "ops/OneHotLayer.h"
 #include "ops/OperationUtils.h"
 #include "ops/PackLayer.h"
@@ -1178,11 +1178,11 @@ void KernelGenerator::visit(const ir::operation::MatrixBandPart &node)
   _return_fn = std::move(fn);
 }
 
-void KernelGenerator::visit(const ir::operation::NonMaxSuppression &node)
+void KernelGenerator::visit(const ir::operation::DetectionPostProcess &node)
 {
-  using NMS = ir::operation::NonMaxSuppression;
+  using NMS = ir::operation::DetectionPostProcess;
 
-  ops::NonMaxSuppressionLayer::NonMaxSuppressionParameters parameters;
+  ops::DetectionPostProcessLayer::DetectionPostProcessParameters parameters;
   parameters.scales.y = node.param().scale.y_scale;
   parameters.scales.x = node.param().scale.x_scale;
   parameters.scales.w = node.param().scale.w_scale;
@@ -1217,7 +1217,7 @@ void KernelGenerator::visit(const ir::operation::NonMaxSuppression &node)
   parameters.box_scores_output = _tensor_reg->getPortableTensor(o_scores_index);
   parameters.num_selections_output = _tensor_reg->getPortableTensor(o_num_selected_index);
 
-  auto fn = std::make_unique<ops::NonMaxSuppressionLayer>();
+  auto fn = std::make_unique<ops::DetectionPostProcessLayer>();
   fn->configure(std::move(parameters));
 
   _return_fn = std::move(fn);

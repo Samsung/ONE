@@ -1302,10 +1302,10 @@ void StaticShapeInferer::visit(const ir::operation::While &op)
   }
 }
 
-void StaticShapeInferer::visit(const ir::operation::NonMaxSuppression &op)
+void StaticShapeInferer::visit(const ir::operation::DetectionPostProcess &op)
 {
   //TODO: NMS supports very limited input/output size.
-  ir::operation::NonMaxSuppression::Param param = op.param();
+  ir::operation::DetectionPostProcess::Param param = op.param();
 
   const int num_detected_boxes = param.max_detections * param.max_classes_per_detection;
 
