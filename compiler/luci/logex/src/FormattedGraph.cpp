@@ -1156,6 +1156,8 @@ enum class SB
 
 template <SB sb> class SummaryBuilderLet;
 
+#define IMPLEMENT(CLASS) bool summary(const CLASS *, locop::NodeSummary &) const final;
+
 template <> class SummaryBuilderLet<SB::ABC> final : public CircleNodeSummaryBuilderBase
 {
 public:
@@ -1165,7 +1167,6 @@ public:
   }
 
 private:
-#define IMPLEMENT(CLASS) bool summary(const CLASS *, locop::NodeSummary &) const final;
   IMPLEMENT(luci::CircleAbs)
   IMPLEMENT(luci::CircleAdd)
   IMPLEMENT(luci::CircleAddN)
@@ -1193,7 +1194,6 @@ public:
   }
 
 private:
-#define IMPLEMENT(CLASS) bool summary(const CLASS *, locop::NodeSummary &) const final;
   IMPLEMENT(luci::CircleDepthToSpace)
   IMPLEMENT(luci::CircleDepthwiseConv2D)
   IMPLEMENT(luci::CircleDequantize)
@@ -1218,7 +1218,6 @@ public:
   }
 
 private:
-#define IMPLEMENT(CLASS) bool summary(const CLASS *, locop::NodeSummary &) const final;
   IMPLEMENT(luci::CircleGather)
   IMPLEMENT(luci::CircleGatherNd)
   IMPLEMENT(luci::CircleGreater)
@@ -1235,7 +1234,6 @@ public:
   }
 
 private:
-#define IMPLEMENT(CLASS) bool summary(const CLASS *, locop::NodeSummary &) const final;
   IMPLEMENT(luci::CircleL2Normalize)
   IMPLEMENT(luci::CircleLeakyRelu)
   IMPLEMENT(luci::CircleLess)
@@ -1270,7 +1268,6 @@ public:
   }
 
 private:
-#define IMPLEMENT(CLASS) bool summary(const CLASS *, locop::NodeSummary &) const final;
   IMPLEMENT(luci::CircleOneHot)
   IMPLEMENT(luci::CirclePack)
   IMPLEMENT(luci::CirclePad)
@@ -1305,7 +1302,6 @@ public:
   }
 
 private:
-#define IMPLEMENT(CLASS) bool summary(const CLASS *, locop::NodeSummary &) const final;
   IMPLEMENT(luci::CircleScatterNd)
   IMPLEMENT(luci::CircleSegmentSum)
   IMPLEMENT(luci::CircleSelect)
@@ -1345,7 +1341,6 @@ public:
   }
 
 private:
-#define IMPLEMENT(CLASS) bool summary(const CLASS *, locop::NodeSummary &) const final;
   IMPLEMENT(luci::CircleWhere)
   IMPLEMENT(luci::CircleWhile)
   IMPLEMENT(luci::CircleZerosLike)
@@ -1360,7 +1355,6 @@ public:
   }
 
 private:
-#define IMPLEMENT(CLASS) bool summary(const CLASS *, locop::NodeSummary &) const final;
   IMPLEMENT(luci::CircleBCQFullyConnected)
   IMPLEMENT(luci::CircleBCQGather)
   IMPLEMENT(luci::CircleInstanceNorm)
@@ -1375,7 +1369,6 @@ public:
   }
 
 private:
-#define IMPLEMENT(CLASS) bool summary(const CLASS *, locop::NodeSummary &) const final;
   IMPLEMENT(luci::CircleInput)
   IMPLEMENT(luci::CircleOutput)
   IMPLEMENT(luci::CircleIfOut)
@@ -1388,6 +1381,8 @@ private:
   IMPLEMENT(luci::CircleUnpackOut)
   IMPLEMENT(luci::CircleWhileOut)
 };
+
+#undef IMPLEMENT
 
 bool CircleNodeSummaryBuilderBase::build(const loco::Node *node, locop::NodeSummary &s) const
 {
