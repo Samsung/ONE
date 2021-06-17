@@ -643,6 +643,8 @@ enum class OE
   GHIJ,
   KLMN,
   OPQR,
+  STUV,
+  WXYZ,
 };
 
 class OperationExporter final : public luci::CircleNodeMutableVisitor<void>,
@@ -751,6 +753,7 @@ public:
   void visit(luci::CircleRound *) final;
   void visit(luci::CircleRsqrt *) final;
 #endif
+#if 0
   void visit(luci::CircleScatterNd *) final;
   void visit(luci::CircleSegmentSum *) final;
   void visit(luci::CircleSelect *) final;
@@ -779,9 +782,12 @@ public:
   void visit(luci::CircleUnidirectionalSequenceLSTM *) final;
   void visit(luci::CircleUnique *) final;
   void visit(luci::CircleUnpack *) final;
+#endif
+#if 0
   void visit(luci::CircleWhere *) final;
   void visit(luci::CircleWhile *) final;
   void visit(luci::CircleZerosLike *) final;
+#endif
   // Circle only
   void visit(luci::CircleBCQFullyConnected *) final;
   void visit(luci::CircleBCQGather *) final;
@@ -970,6 +976,69 @@ public:
   void visit(luci::CircleRsqrt *) final;
 };
 
+template <>
+class OpExporterLet<OE::STUV> final : public luci::CircleNodeMutableVisitor<void>,
+                                      public ExportHelper
+{
+public:
+  OpExporterLet(ExportContext &ctx) : ExportHelper(ctx)
+  {
+    // DO NOTHING
+  }
+
+public:
+  void visit(luci::CircleNode *) final {}
+
+public:
+  void visit(luci::CircleScatterNd *) final;
+  void visit(luci::CircleSegmentSum *) final;
+  void visit(luci::CircleSelect *) final;
+  void visit(luci::CircleSelectV2 *) final;
+  void visit(luci::CircleShape *) final;
+  void visit(luci::CircleSin *) final;
+  void visit(luci::CircleSlice *) final;
+  void visit(luci::CircleSoftmax *) final;
+  void visit(luci::CircleSpaceToBatchND *) final;
+  void visit(luci::CircleSpaceToDepth *) final;
+  void visit(luci::CircleSparseToDense *) final;
+  void visit(luci::CircleSplit *) final;
+  void visit(luci::CircleSplitV *) final;
+  void visit(luci::CircleSqrt *) final;
+  void visit(luci::CircleSquare *) final;
+  void visit(luci::CircleSquaredDifference *) final;
+  void visit(luci::CircleSqueeze *) final;
+  void visit(luci::CircleStridedSlice *) final;
+  void visit(luci::CircleSub *) final;
+  void visit(luci::CircleSum *) final;
+  void visit(luci::CircleTanh *) final;
+  void visit(luci::CircleTile *) final;
+  void visit(luci::CircleTopKV2 *) final;
+  void visit(luci::CircleTranspose *) final;
+  void visit(luci::CircleTransposeConv *) final;
+  void visit(luci::CircleUnidirectionalSequenceLSTM *) final;
+  void visit(luci::CircleUnique *) final;
+  void visit(luci::CircleUnpack *) final;
+};
+
+template <>
+class OpExporterLet<OE::WXYZ> final : public luci::CircleNodeMutableVisitor<void>,
+                                      public ExportHelper
+{
+public:
+  OpExporterLet(ExportContext &ctx) : ExportHelper(ctx)
+  {
+    // DO NOTHING
+  }
+
+public:
+  void visit(luci::CircleNode *) final {}
+
+public:
+  void visit(luci::CircleWhere *) final;
+  void visit(luci::CircleWhile *) final;
+  void visit(luci::CircleZerosLike *) final;
+};
+
 void OperationExporter::visit(luci::CircleNode *node)
 {
   // TODO revise return type to bool and return if handled
@@ -985,6 +1054,8 @@ void OperationExporter::visit(luci::CircleNode *node)
   VISIT_OE(GHIJ);
   VISIT_OE(KLMN);
   VISIT_OE(OPQR);
+  VISIT_OE(STUV);
+  VISIT_OE(WXYZ);
 }
 
 void OpExporterLet<OE::ABC>::visit(luci::CircleAbs *node)
@@ -1503,104 +1574,104 @@ void OpExporterLet<OE::OPQR>::visit(luci::CircleRsqrt *node)
   export_simple(node, circle::BuiltinOperator_RSQRT);
 }
 
-void OperationExporter::visit(luci::CircleScatterNd *node)
+void OpExporterLet<OE::STUV>::visit(luci::CircleScatterNd *node)
 {
   export_simple(node, circle::BuiltinOperator_SCATTER_ND, circle::BuiltinOptions_ScatterNdOptions,
                 CreateScatterNdOptions(_ctx.builder).Union());
 }
 
-void OperationExporter::visit(luci::CircleSegmentSum *node)
+void OpExporterLet<OE::STUV>::visit(luci::CircleSegmentSum *node)
 {
   export_simple(node, circle::BuiltinOperator_SEGMENT_SUM, circle::BuiltinOptions_SegmentSumOptions,
                 CreateSegmentSumOptions(_ctx.builder).Union());
 }
 
-void OperationExporter::visit(luci::CircleSelect *node)
+void OpExporterLet<OE::STUV>::visit(luci::CircleSelect *node)
 {
   export_simple(node, circle::BuiltinOperator_SELECT, circle::BuiltinOptions_SelectOptions,
                 CreateSelectOptions(_ctx.builder).Union());
 }
 
-void OperationExporter::visit(luci::CircleSelectV2 *node)
+void OpExporterLet<OE::STUV>::visit(luci::CircleSelectV2 *node)
 {
   export_simple(node, circle::BuiltinOperator_SELECT_V2, circle::BuiltinOptions_SelectV2Options,
                 CreateSelectV2Options(_ctx.builder).Union());
 }
 
-void OperationExporter::visit(luci::CircleShape *node)
+void OpExporterLet<OE::STUV>::visit(luci::CircleShape *node)
 {
   export_simple(node, circle::BuiltinOperator_SHAPE, circle::BuiltinOptions_ShapeOptions,
                 CreateShapeOptions(_ctx.builder, to_circle_tensortype(node->out_type())).Union());
 }
 
-void OperationExporter::visit(luci::CircleSin *node)
+void OpExporterLet<OE::STUV>::visit(luci::CircleSin *node)
 {
   export_simple(node, circle::BuiltinOperator_SIN);
 }
 
-void OperationExporter::visit(luci::CircleSlice *node)
+void OpExporterLet<OE::STUV>::visit(luci::CircleSlice *node)
 {
   export_simple(node, circle::BuiltinOperator_SLICE, circle::BuiltinOptions_SliceOptions,
                 CreateSliceOptions(_ctx.builder).Union());
 }
 
-void OperationExporter::visit(luci::CircleSoftmax *node)
+void OpExporterLet<OE::STUV>::visit(luci::CircleSoftmax *node)
 {
   export_simple(node, circle::BuiltinOperator_SOFTMAX, circle::BuiltinOptions_SoftmaxOptions,
                 CreateSoftmaxOptions(_ctx.builder, node->beta()).Union());
 }
 
-void OperationExporter::visit(luci::CircleSpaceToBatchND *node)
+void OpExporterLet<OE::STUV>::visit(luci::CircleSpaceToBatchND *node)
 {
   export_simple(node, circle::BuiltinOperator_SPACE_TO_BATCH_ND,
                 circle::BuiltinOptions_SpaceToBatchNDOptions,
                 CreateSpaceToBatchNDOptions(_ctx.builder).Union());
 }
 
-void OperationExporter::visit(luci::CircleSpaceToDepth *node)
+void OpExporterLet<OE::STUV>::visit(luci::CircleSpaceToDepth *node)
 {
   export_simple(node, circle::BuiltinOperator_SPACE_TO_DEPTH,
                 circle::BuiltinOptions_SpaceToDepthOptions,
                 CreateSpaceToDepthOptions(_ctx.builder, node->block_size()).Union());
 }
 
-void OperationExporter::visit(luci::CircleSparseToDense *node)
+void OpExporterLet<OE::STUV>::visit(luci::CircleSparseToDense *node)
 {
   export_simple(node, circle::BuiltinOperator_SPARSE_TO_DENSE,
                 circle::BuiltinOptions_SparseToDenseOptions,
                 CreateSparseToDenseOptions(_ctx.builder, node->validate_indices()).Union());
 }
 
-void OperationExporter::visit(luci::CircleSplit *node) { export_node(_ctx, node); }
+void OpExporterLet<OE::STUV>::visit(luci::CircleSplit *node) { export_node(_ctx, node); }
 
-void OperationExporter::visit(luci::CircleSplitV *node) { export_node(_ctx, node); }
+void OpExporterLet<OE::STUV>::visit(luci::CircleSplitV *node) { export_node(_ctx, node); }
 
-void OperationExporter::visit(luci::CircleSqrt *node)
+void OpExporterLet<OE::STUV>::visit(luci::CircleSqrt *node)
 {
   export_simple(node, circle::BuiltinOperator_SQRT);
 }
 
-void OperationExporter::visit(luci::CircleSquare *node)
+void OpExporterLet<OE::STUV>::visit(luci::CircleSquare *node)
 {
   export_simple(node, circle::BuiltinOperator_SQUARE, circle::BuiltinOptions_SquareOptions,
                 CreateSquareOptions(_ctx.builder).Union());
 }
 
-void OperationExporter::visit(luci::CircleSquaredDifference *node)
+void OpExporterLet<OE::STUV>::visit(luci::CircleSquaredDifference *node)
 {
   export_simple(node, circle::BuiltinOperator_SQUARED_DIFFERENCE,
                 circle::BuiltinOptions_SquaredDifferenceOptions,
                 CreateSquaredDifferenceOptions(_ctx.builder).Union());
 }
 
-void OperationExporter::visit(luci::CircleSqueeze *node)
+void OpExporterLet<OE::STUV>::visit(luci::CircleSqueeze *node)
 {
   auto squeeze_dims = _ctx.builder.CreateVector<int32_t>(node->squeeze_dims());
   export_simple(node, circle::BuiltinOperator_SQUEEZE, circle::BuiltinOptions_SqueezeOptions,
                 CreateSqueezeOptions(_ctx.builder, squeeze_dims).Union());
 }
 
-void OperationExporter::visit(luci::CircleStridedSlice *node)
+void OpExporterLet<OE::STUV>::visit(luci::CircleStridedSlice *node)
 {
   export_simple(node, circle::BuiltinOperator_STRIDED_SLICE,
                 circle::BuiltinOptions_StridedSliceOptions,
@@ -1610,39 +1681,39 @@ void OperationExporter::visit(luci::CircleStridedSlice *node)
                   .Union());
 }
 
-void OperationExporter::visit(luci::CircleSub *node)
+void OpExporterLet<OE::STUV>::visit(luci::CircleSub *node)
 {
   export_simple(
     node, circle::BuiltinOperator_SUB, circle::BuiltinOptions_SubOptions,
     CreateSubOptions(_ctx.builder, to_circle_actfunc(node->fusedActivationFunction())).Union());
 }
 
-void OperationExporter::visit(luci::CircleSum *node)
+void OpExporterLet<OE::STUV>::visit(luci::CircleSum *node)
 {
   export_simple(node, circle::BuiltinOperator_SUM, circle::BuiltinOptions_ReducerOptions,
                 CreateReducerOptions(_ctx.builder, node->keep_dims()).Union());
 }
 
-void OperationExporter::visit(luci::CircleTanh *node)
+void OpExporterLet<OE::STUV>::visit(luci::CircleTanh *node)
 {
   export_simple(node, circle::BuiltinOperator_TANH);
 }
 
-void OperationExporter::visit(luci::CircleTile *node)
+void OpExporterLet<OE::STUV>::visit(luci::CircleTile *node)
 {
   export_simple(node, circle::BuiltinOperator_TILE, circle::BuiltinOptions_TileOptions,
                 CreateTileOptions(_ctx.builder).Union());
 }
 
-void OperationExporter::visit(luci::CircleTopKV2 *node) { export_node(_ctx, node); }
+void OpExporterLet<OE::STUV>::visit(luci::CircleTopKV2 *node) { export_node(_ctx, node); }
 
-void OperationExporter::visit(luci::CircleTranspose *node)
+void OpExporterLet<OE::STUV>::visit(luci::CircleTranspose *node)
 {
   export_simple(node, circle::BuiltinOperator_TRANSPOSE, circle::BuiltinOptions_TransposeOptions,
                 CreateTransposeOptions(_ctx.builder).Union());
 }
 
-void OperationExporter::visit(luci::CircleTransposeConv *node)
+void OpExporterLet<OE::STUV>::visit(luci::CircleTransposeConv *node)
 {
   export_simple(node, circle::BuiltinOperator_TRANSPOSE_CONV,
                 circle::BuiltinOptions_TransposeConvOptions,
@@ -1651,7 +1722,7 @@ void OperationExporter::visit(luci::CircleTransposeConv *node)
                   .Union());
 }
 
-void OperationExporter::visit(luci::CircleUnidirectionalSequenceLSTM *node)
+void OpExporterLet<OE::STUV>::visit(luci::CircleUnidirectionalSequenceLSTM *node)
 {
   export_simple(node, circle::BuiltinOperator_UNIDIRECTIONAL_SEQUENCE_LSTM,
                 circle::BuiltinOptions_UnidirectionalSequenceLSTMOptions,
@@ -1662,19 +1733,19 @@ void OperationExporter::visit(luci::CircleUnidirectionalSequenceLSTM *node)
                   .Union());
 }
 
-void OperationExporter::visit(luci::CircleUnique *node) { export_node(_ctx, node); }
+void OpExporterLet<OE::STUV>::visit(luci::CircleUnique *node) { export_node(_ctx, node); }
 
-void OperationExporter::visit(luci::CircleUnpack *node) { export_node(_ctx, node); }
+void OpExporterLet<OE::STUV>::visit(luci::CircleUnpack *node) { export_node(_ctx, node); }
 
-void OperationExporter::visit(luci::CircleWhere *node)
+void OpExporterLet<OE::WXYZ>::visit(luci::CircleWhere *node)
 {
   export_simple(node, circle::BuiltinOperator_WHERE, circle::BuiltinOptions_WhereOptions,
                 CreateWhereOptions(_ctx.builder).Union());
 }
 
-void OperationExporter::visit(luci::CircleWhile *node) { export_node(_ctx, node); }
+void OpExporterLet<OE::WXYZ>::visit(luci::CircleWhile *node) { export_node(_ctx, node); }
 
-void OperationExporter::visit(luci::CircleZerosLike *node)
+void OpExporterLet<OE::WXYZ>::visit(luci::CircleZerosLike *node)
 {
   export_simple(node, circle::BuiltinOperator_ZEROS_LIKE, circle::BuiltinOptions_ZerosLikeOptions,
                 CreateZerosLikeOptions(_ctx.builder).Union());
