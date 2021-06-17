@@ -640,6 +640,8 @@ enum class OE
 {
   ABC,
   DEF,
+  GHIJ,
+  KLMN,
 };
 
 class OperationExporter final : public luci::CircleNodeMutableVisitor<void>,
@@ -690,11 +692,14 @@ public:
   void visit(luci::CircleFloorMod *) final;
   void visit(luci::CircleFullyConnected *) final;
 #endif
+#if 0
   void visit(luci::CircleGather *) final;
   void visit(luci::CircleGatherNd *) final;
   void visit(luci::CircleGreater *) final;
   void visit(luci::CircleGreaterEqual *) final;
   void visit(luci::CircleIf *) final;
+#endif
+#if 0
   void visit(luci::CircleL2Normalize *) final;
   void visit(luci::CircleL2Pool2D *) final;
   void visit(luci::CircleLeakyRelu *) final;
@@ -719,6 +724,7 @@ public:
   void visit(luci::CircleNonMaxSuppressionV4 *) final;
   void visit(luci::CircleNonMaxSuppressionV5 *) final;
   void visit(luci::CircleNotEqual *) final;
+#endif
   void visit(luci::CircleOneHot *) final;
   void visit(luci::CirclePack *) final;
   void visit(luci::CirclePad *) final;
@@ -861,6 +867,67 @@ public:
   void visit(luci::CircleFullyConnected *) final;
 };
 
+template <>
+class OpExporterLet<OE::GHIJ> final : public luci::CircleNodeMutableVisitor<void>,
+                                      public ExportHelper
+{
+public:
+  OpExporterLet(ExportContext &ctx) : ExportHelper(ctx)
+  {
+    // DO NOTHING
+  }
+
+public:
+  void visit(luci::CircleNode *) final {}
+
+public:
+  void visit(luci::CircleGather *) final;
+  void visit(luci::CircleGatherNd *) final;
+  void visit(luci::CircleGreater *) final;
+  void visit(luci::CircleGreaterEqual *) final;
+  void visit(luci::CircleIf *) final;
+};
+
+template <>
+class OpExporterLet<OE::KLMN> final : public luci::CircleNodeMutableVisitor<void>,
+                                      public ExportHelper
+{
+public:
+  OpExporterLet(ExportContext &ctx) : ExportHelper(ctx)
+  {
+    // DO NOTHING
+  }
+
+public:
+  void visit(luci::CircleNode *) final {}
+
+public:
+  void visit(luci::CircleL2Normalize *) final;
+  void visit(luci::CircleL2Pool2D *) final;
+  void visit(luci::CircleLeakyRelu *) final;
+  void visit(luci::CircleLess *) final;
+  void visit(luci::CircleLessEqual *) final;
+  void visit(luci::CircleLocalResponseNormalization *) final;
+  void visit(luci::CircleLog *) final;
+  void visit(luci::CircleLogicalAnd *) final;
+  void visit(luci::CircleLogicalNot *) final;
+  void visit(luci::CircleLogicalOr *) final;
+  void visit(luci::CircleLogistic *) final;
+  void visit(luci::CircleLogSoftmax *) final;
+  void visit(luci::CircleMatrixDiag *) final;
+  void visit(luci::CircleMatrixSetDiag *) final;
+  void visit(luci::CircleMaximum *) final;
+  void visit(luci::CircleMaxPool2D *) final;
+  void visit(luci::CircleMean *) final;
+  void visit(luci::CircleMinimum *) final;
+  void visit(luci::CircleMirrorPad *) final;
+  void visit(luci::CircleMul *) final;
+  void visit(luci::CircleNeg *) final;
+  void visit(luci::CircleNonMaxSuppressionV4 *) final;
+  void visit(luci::CircleNonMaxSuppressionV5 *) final;
+  void visit(luci::CircleNotEqual *) final;
+};
+
 void OperationExporter::visit(luci::CircleNode *node)
 {
   // TODO revise return type to bool and return if handled
@@ -873,6 +940,8 @@ void OperationExporter::visit(luci::CircleNode *node)
 
   VISIT_OE(ABC);
   VISIT_OE(DEF);
+  VISIT_OE(GHIJ);
+  VISIT_OE(KLMN);
 }
 
 void OpExporterLet<OE::ABC>::visit(luci::CircleAbs *node)
@@ -1085,64 +1154,64 @@ void OpExporterLet<OE::DEF>::visit(luci::CircleFullyConnected *node)
       .Union());
 }
 
-void OperationExporter::visit(luci::CircleGather *node)
+void OpExporterLet<OE::GHIJ>::visit(luci::CircleGather *node)
 {
   export_simple(node, circle::BuiltinOperator_GATHER, circle::BuiltinOptions_GatherOptions,
                 CreateGatherOptions(_ctx.builder, node->axis()).Union());
 }
 
-void OperationExporter::visit(luci::CircleGatherNd *node)
+void OpExporterLet<OE::GHIJ>::visit(luci::CircleGatherNd *node)
 {
   export_simple(node, circle::BuiltinOperator_GATHER_ND, circle::BuiltinOptions_GatherNdOptions,
                 CreateGatherNdOptions(_ctx.builder).Union());
 }
 
-void OperationExporter::visit(luci::CircleGreater *node)
+void OpExporterLet<OE::GHIJ>::visit(luci::CircleGreater *node)
 {
   export_simple(node, circle::BuiltinOperator_GREATER, circle::BuiltinOptions_GreaterOptions,
                 CreateGreaterOptions(_ctx.builder).Union());
 }
 
-void OperationExporter::visit(luci::CircleGreaterEqual *node)
+void OpExporterLet<OE::GHIJ>::visit(luci::CircleGreaterEqual *node)
 {
   export_simple(node, circle::BuiltinOperator_GREATER_EQUAL,
                 circle::BuiltinOptions_GreaterEqualOptions,
                 CreateGreaterEqualOptions(_ctx.builder).Union());
 }
 
-void OperationExporter::visit(luci::CircleIf *node) { export_node(_ctx, node); }
+void OpExporterLet<OE::GHIJ>::visit(luci::CircleIf *node) { export_node(_ctx, node); }
 
-void OperationExporter::visit(luci::CircleL2Normalize *node)
+void OpExporterLet<OE::KLMN>::visit(luci::CircleL2Normalize *node)
 {
   export_simple(
     node, circle::BuiltinOperator_L2_NORMALIZATION, circle::BuiltinOptions_L2NormOptions,
     CreateL2NormOptions(_ctx.builder, to_circle_actfunc(node->fusedActivationFunction())).Union());
 }
 
-void OperationExporter::visit(luci::CircleL2Pool2D *node)
+void OpExporterLet<OE::KLMN>::visit(luci::CircleL2Pool2D *node)
 {
   export_pool_2d<luci::CircleL2Pool2D>(_ctx, node, circle::BuiltinOperator_L2_POOL_2D);
 }
 
-void OperationExporter::visit(luci::CircleLeakyRelu *node)
+void OpExporterLet<OE::KLMN>::visit(luci::CircleLeakyRelu *node)
 {
   export_simple(node, circle::BuiltinOperator_LEAKY_RELU, circle::BuiltinOptions_LeakyReluOptions,
                 CreateLeakyReluOptions(_ctx.builder, node->alpha()).Union());
 }
 
-void OperationExporter::visit(luci::CircleLess *node)
+void OpExporterLet<OE::KLMN>::visit(luci::CircleLess *node)
 {
   export_simple(node, circle::BuiltinOperator_LESS, circle::BuiltinOptions_LessOptions,
                 CreateLessOptions(_ctx.builder).Union());
 }
 
-void OperationExporter::visit(luci::CircleLessEqual *node)
+void OpExporterLet<OE::KLMN>::visit(luci::CircleLessEqual *node)
 {
   export_simple(node, circle::BuiltinOperator_LESS_EQUAL, circle::BuiltinOptions_LessEqualOptions,
                 CreateLessEqualOptions(_ctx.builder).Union());
 }
 
-void OperationExporter::visit(luci::CircleLocalResponseNormalization *node)
+void OpExporterLet<OE::KLMN>::visit(luci::CircleLocalResponseNormalization *node)
 {
   export_simple(node, circle::BuiltinOperator_LOCAL_RESPONSE_NORMALIZATION,
                 circle::BuiltinOptions_LocalResponseNormalizationOptions,
@@ -1151,101 +1220,107 @@ void OperationExporter::visit(luci::CircleLocalResponseNormalization *node)
                   .Union());
 }
 
-void OperationExporter::visit(luci::CircleLog *node)
+void OpExporterLet<OE::KLMN>::visit(luci::CircleLog *node)
 {
   export_simple(node, circle::BuiltinOperator_LOG);
 }
 
-void OperationExporter::visit(luci::CircleLogicalAnd *node)
+void OpExporterLet<OE::KLMN>::visit(luci::CircleLogicalAnd *node)
 {
   export_simple(node, circle::BuiltinOperator_LOGICAL_AND, circle::BuiltinOptions_LogicalAndOptions,
                 CreateLogicalAndOptions(_ctx.builder).Union());
 }
 
-void OperationExporter::visit(luci::CircleLogicalNot *node)
+void OpExporterLet<OE::KLMN>::visit(luci::CircleLogicalNot *node)
 {
   export_simple(node, circle::BuiltinOperator_LOGICAL_NOT, circle::BuiltinOptions_LogicalNotOptions,
                 CreateLogicalNotOptions(_ctx.builder).Union());
 }
 
-void OperationExporter::visit(luci::CircleLogicalOr *node)
+void OpExporterLet<OE::KLMN>::visit(luci::CircleLogicalOr *node)
 {
   export_simple(node, circle::BuiltinOperator_LOGICAL_OR, circle::BuiltinOptions_LogicalOrOptions,
                 CreateLogicalOrOptions(_ctx.builder).Union());
 }
 
-void OperationExporter::visit(luci::CircleLogistic *node)
+void OpExporterLet<OE::KLMN>::visit(luci::CircleLogistic *node)
 {
   export_simple(node, circle::BuiltinOperator_LOGISTIC);
 }
 
-void OperationExporter::visit(luci::CircleLogSoftmax *node)
+void OpExporterLet<OE::KLMN>::visit(luci::CircleLogSoftmax *node)
 {
   export_simple(node, circle::BuiltinOperator_LOG_SOFTMAX, circle::BuiltinOptions_LogSoftmaxOptions,
                 CreateLogSoftmaxOptions(_ctx.builder).Union());
 }
 
-void OperationExporter::visit(luci::CircleMatrixDiag *node)
+void OpExporterLet<OE::KLMN>::visit(luci::CircleMatrixDiag *node)
 {
   export_simple(node, circle::BuiltinOperator_MATRIX_DIAG, circle::BuiltinOptions_MatrixDiagOptions,
                 CreateMatrixDiagOptions(_ctx.builder).Union());
 }
 
-void OperationExporter::visit(luci::CircleMatrixSetDiag *node)
+void OpExporterLet<OE::KLMN>::visit(luci::CircleMatrixSetDiag *node)
 {
   export_simple(node, circle::BuiltinOperator_MATRIX_SET_DIAG,
                 circle::BuiltinOptions_MatrixSetDiagOptions,
                 CreateMatrixSetDiagOptions(_ctx.builder).Union());
 }
 
-void OperationExporter::visit(luci::CircleMaximum *node)
+void OpExporterLet<OE::KLMN>::visit(luci::CircleMaximum *node)
 {
   export_simple(node, circle::BuiltinOperator_MAXIMUM, circle::BuiltinOptions_MaximumMinimumOptions,
                 CreateMaximumMinimumOptions(_ctx.builder).Union());
 }
 
-void OperationExporter::visit(luci::CircleMaxPool2D *node)
+void OpExporterLet<OE::KLMN>::visit(luci::CircleMaxPool2D *node)
 {
   export_pool_2d<luci::CircleMaxPool2D>(_ctx, node, circle::BuiltinOperator_MAX_POOL_2D);
 }
 
-void OperationExporter::visit(luci::CircleMean *node)
+void OpExporterLet<OE::KLMN>::visit(luci::CircleMean *node)
 {
   export_simple(node, circle::BuiltinOperator_MEAN, circle::BuiltinOptions_ReducerOptions,
                 CreateReducerOptions(_ctx.builder, node->keep_dims()).Union());
 }
 
-void OperationExporter::visit(luci::CircleMinimum *node)
+void OpExporterLet<OE::KLMN>::visit(luci::CircleMinimum *node)
 {
   export_simple(node, circle::BuiltinOperator_MINIMUM, circle::BuiltinOptions_MaximumMinimumOptions,
                 CreateMaximumMinimumOptions(_ctx.builder).Union());
 }
 
-void OperationExporter::visit(luci::CircleMirrorPad *node)
+void OpExporterLet<OE::KLMN>::visit(luci::CircleMirrorPad *node)
 {
   export_simple(
     node, circle::BuiltinOperator_MIRROR_PAD, circle::BuiltinOptions_MirrorPadOptions,
     CreateMirrorPadOptions(_ctx.builder, to_circle_mirrorpadmode(node->mode())).Union());
 }
 
-void OperationExporter::visit(luci::CircleMul *node)
+void OpExporterLet<OE::KLMN>::visit(luci::CircleMul *node)
 {
   export_simple(
     node, circle::BuiltinOperator_MUL, circle::BuiltinOptions_MulOptions,
     CreateMulOptions(_ctx.builder, to_circle_actfunc(node->fusedActivationFunction())).Union());
 }
 
-void OperationExporter::visit(luci::CircleNeg *node)
+void OpExporterLet<OE::KLMN>::visit(luci::CircleNeg *node)
 {
   export_simple(node, circle::BuiltinOperator_NEG, circle::BuiltinOptions_NegOptions,
                 CreateNegOptions(_ctx.builder).Union());
 }
 
-void OperationExporter::visit(luci::CircleNonMaxSuppressionV4 *node) { export_node(_ctx, node); }
+void OpExporterLet<OE::KLMN>::visit(luci::CircleNonMaxSuppressionV4 *node)
+{
+  export_node(_ctx, node);
+}
 
-void OperationExporter::visit(luci::CircleNonMaxSuppressionV5 *node) { export_node(_ctx, node); }
+void OpExporterLet<OE::KLMN>::visit(luci::CircleNonMaxSuppressionV5 *node)
+{
+  export_node(_ctx, node);
+}
 
-void OperationExporter::visit(luci::CircleNotEqual *node)
+void OpExporterLet<OE::KLMN>::visit(luci::CircleNotEqual *node)
 {
   export_simple(node, circle::BuiltinOperator_NOT_EQUAL, circle::BuiltinOptions_NotEqualOptions,
                 CreateNotEqualOptions(_ctx.builder).Union());
