@@ -106,3 +106,27 @@ TEST(LuciCircleNodeOrigin, composite_origin_empty_ctor_NEG)
 {
   ASSERT_ANY_THROW(luci::composite_origin({}));
 }
+
+TEST(LuciCircleNodeOrigin, add_null_origin_NEG)
+{
+  auto g = loco::make_graph();
+  auto add = g->nodes()->create<luci::CircleAdd>();
+
+  ASSERT_FALSE(has_origin(add));
+
+  add_origin(add, nullptr);
+
+  ASSERT_FALSE(has_origin(add));
+}
+
+TEST(LuciCircleNodeOrigin, add_empty_origin_NEG)
+{
+  auto g = loco::make_graph();
+  auto add = g->nodes()->create<luci::CircleAdd>();
+
+  ASSERT_FALSE(has_origin(add));
+
+  add_origin(add, luci::composite_origin({nullptr, nullptr}));
+
+  ASSERT_FALSE(has_origin(add));
+}
