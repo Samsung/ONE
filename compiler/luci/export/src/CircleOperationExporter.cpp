@@ -649,9 +649,7 @@ enum class OE
   VIRT, // virtual
 };
 
-class OperationExporter final : public luci::CircleNodeMutableVisitor<void>,
-                                public loco::CanonicalNodeMutableVisitor<void>,
-                                public ExportHelper
+class OperationExporter final : public ExportHelper
 {
 public:
   OperationExporter(ExportContext &ctx) : ExportHelper(ctx)
@@ -660,161 +658,7 @@ public:
   }
 
 public:
-  void visit(luci::CircleNode *) final;
-
-public:
-#if 0
-  void visit(luci::CircleAbs *) final;
-  void visit(luci::CircleAdd *) final;
-  void visit(luci::CircleAddN *) final;
-  void visit(luci::CircleArgMax *) final;
-  void visit(luci::CircleArgMin *) final;
-  void visit(luci::CircleAveragePool2D *) final;
-  void visit(luci::CircleBatchMatMul *) final;
-  void visit(luci::CircleBatchToSpaceND *) final;
-  void visit(luci::CircleBidirectionalSequenceLSTM *) final;
-  void visit(luci::CircleCast *) final;
-  void visit(luci::CircleCeil *) final;
-  void visit(luci::CircleConcatenation *) final;
-  void visit(luci::CircleConst *) final{/* skip, everything is done in exportOpDefinedTensors */};
-  void visit(luci::CircleConv2D *) final;
-  void visit(luci::CircleCos *) final;
-  void visit(luci::CircleCustom *) final;
-#endif
-#if 0
-  void visit(luci::CircleDepthToSpace *) final;
-  void visit(luci::CircleDepthwiseConv2D *) final;
-  void visit(luci::CircleDequantize *) final;
-  void visit(luci::CircleDiv *) final;
-  void visit(luci::CircleElu *) final;
-  void visit(luci::CircleEqual *) final;
-  void visit(luci::CircleExp *) final;
-  void visit(luci::CircleExpandDims *) final;
-  void visit(luci::CircleFakeQuant *) final;
-  void visit(luci::CircleFill *) final;
-  void visit(luci::CircleFloor *) final;
-  void visit(luci::CircleFloorDiv *) final;
-  void visit(luci::CircleFloorMod *) final;
-  void visit(luci::CircleFullyConnected *) final;
-#endif
-#if 0
-  void visit(luci::CircleGather *) final;
-  void visit(luci::CircleGatherNd *) final;
-  void visit(luci::CircleGreater *) final;
-  void visit(luci::CircleGreaterEqual *) final;
-  void visit(luci::CircleIf *) final;
-#endif
-#if 0
-  void visit(luci::CircleL2Normalize *) final;
-  void visit(luci::CircleL2Pool2D *) final;
-  void visit(luci::CircleLeakyRelu *) final;
-  void visit(luci::CircleLess *) final;
-  void visit(luci::CircleLessEqual *) final;
-  void visit(luci::CircleLocalResponseNormalization *) final;
-  void visit(luci::CircleLog *) final;
-  void visit(luci::CircleLogicalAnd *) final;
-  void visit(luci::CircleLogicalNot *) final;
-  void visit(luci::CircleLogicalOr *) final;
-  void visit(luci::CircleLogistic *) final;
-  void visit(luci::CircleLogSoftmax *) final;
-  void visit(luci::CircleMatrixDiag *) final;
-  void visit(luci::CircleMatrixSetDiag *) final;
-  void visit(luci::CircleMaximum *) final;
-  void visit(luci::CircleMaxPool2D *) final;
-  void visit(luci::CircleMean *) final;
-  void visit(luci::CircleMinimum *) final;
-  void visit(luci::CircleMirrorPad *) final;
-  void visit(luci::CircleMul *) final;
-  void visit(luci::CircleNeg *) final;
-  void visit(luci::CircleNonMaxSuppressionV4 *) final;
-  void visit(luci::CircleNonMaxSuppressionV5 *) final;
-  void visit(luci::CircleNotEqual *) final;
-#endif
-#if 0
-  void visit(luci::CircleOneHot *) final;
-  void visit(luci::CirclePack *) final;
-  void visit(luci::CirclePad *) final;
-  void visit(luci::CirclePadV2 *) final;
-  void visit(luci::CirclePow *) final;
-  void visit(luci::CirclePRelu *) final;
-  void visit(luci::CircleQuantize *) final;
-  void visit(luci::CircleRange *) final;
-  void visit(luci::CircleRank *) final;
-  void visit(luci::CircleReduceAny *) final;
-  void visit(luci::CircleReduceMax *) final;
-  void visit(luci::CircleReduceMin *) final;
-  void visit(luci::CircleReduceProd *) final;
-  void visit(luci::CircleRelu *) final;
-  void visit(luci::CircleRelu6 *) final;
-  void visit(luci::CircleReluN1To1 *) final;
-  void visit(luci::CircleReshape *) final;
-  void visit(luci::CircleResizeBilinear *) final;
-  void visit(luci::CircleResizeNearestNeighbor *) final;
-  void visit(luci::CircleReverseSequence *) final;
-  void visit(luci::CircleReverseV2 *) final;
-  void visit(luci::CircleRound *) final;
-  void visit(luci::CircleRsqrt *) final;
-#endif
-#if 0
-  void visit(luci::CircleScatterNd *) final;
-  void visit(luci::CircleSegmentSum *) final;
-  void visit(luci::CircleSelect *) final;
-  void visit(luci::CircleSelectV2 *) final;
-  void visit(luci::CircleShape *) final;
-  void visit(luci::CircleSin *) final;
-  void visit(luci::CircleSlice *) final;
-  void visit(luci::CircleSoftmax *) final;
-  void visit(luci::CircleSpaceToBatchND *) final;
-  void visit(luci::CircleSpaceToDepth *) final;
-  void visit(luci::CircleSparseToDense *) final;
-  void visit(luci::CircleSplit *) final;
-  void visit(luci::CircleSplitV *) final;
-  void visit(luci::CircleSqrt *) final;
-  void visit(luci::CircleSquare *) final;
-  void visit(luci::CircleSquaredDifference *) final;
-  void visit(luci::CircleSqueeze *) final;
-  void visit(luci::CircleStridedSlice *) final;
-  void visit(luci::CircleSub *) final;
-  void visit(luci::CircleSum *) final;
-  void visit(luci::CircleTanh *) final;
-  void visit(luci::CircleTile *) final;
-  void visit(luci::CircleTopKV2 *) final;
-  void visit(luci::CircleTranspose *) final;
-  void visit(luci::CircleTransposeConv *) final;
-  void visit(luci::CircleUnidirectionalSequenceLSTM *) final;
-  void visit(luci::CircleUnique *) final;
-  void visit(luci::CircleUnpack *) final;
-#endif
-#if 0
-  void visit(luci::CircleWhere *) final;
-  void visit(luci::CircleWhile *) final;
-  void visit(luci::CircleZerosLike *) final;
-#endif
-#if 0
-  // Circle only
-  void visit(luci::CircleBCQFullyConnected *) final;
-  void visit(luci::CircleBCQGather *) final;
-  void visit(luci::CircleInstanceNorm *) final;
-#endif
-#if 0
-  // Virtual
-  void visit(luci::CircleInput *) final {}
-  void visit(luci::CircleOutput *) final {}
-  void visit(luci::CircleOutputDummy *) final {}
-  void visit(luci::CircleOutputExclude *) final {}
-  // Virtual for multiple-outputs
-  void visit(luci::CircleBidirectionalSequenceLSTMOut *) final {}
-  void visit(luci::CircleCustomOut *) final {}
-  void visit(luci::CircleIfOut *) final {}
-  void visit(luci::CircleNonMaxSuppressionV4Out *) final {}
-  void visit(luci::CircleNonMaxSuppressionV5Out *) final {}
-  void visit(luci::CircleSplitOut *) final {}
-  void visit(luci::CircleSplitVOut *) final {}
-  void visit(luci::CircleTopKV2Out *) final {}
-  void visit(luci::CircleUniqueOut *) final {}
-  void visit(luci::CircleUnpackOut *) final {}
-  void visit(luci::CircleWhileOut *) final {}
-#endif
+  void export_node(luci::CircleNode *);
 };
 
 template <OE oe> class OpExporterLet;
@@ -1098,7 +942,7 @@ public:
   void visit(luci::CircleWhileOut *) final {}
 };
 
-void OperationExporter::visit(luci::CircleNode *node)
+void OperationExporter::export_node(luci::CircleNode *node)
 {
   // TODO revise return type to bool and return if handled
 #define VISIT_OE(GRP)                \
@@ -1117,6 +961,8 @@ void OperationExporter::visit(luci::CircleNode *node)
   VISIT_OE(WXYZ);
   VISIT_OE(CIRC);
   VISIT_OE(VIRT);
+
+#undef VISIT_OE
 }
 
 void OpExporterLet<OE::ABC>::visit(luci::CircleAbs *node)
@@ -1847,7 +1693,7 @@ void exportNode(loco::Node *node, flatbuffers::FlatBufferBuilder &builder, Seria
 
     const auto ops_size = gd._operators.size();
 
-    circle_node->accept(&exporter);
+    exporter.export_node(circle_node);
     if (has_origin(circle_node) && ops_size != gd._operators.size())
     {
       const auto node_id = gd._operators.size() - 1;
