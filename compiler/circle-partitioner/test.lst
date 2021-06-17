@@ -1,7 +1,0 @@
-# Add recipes in /res/TensorFlowLiteRecipes to test.
-# NOTE: only add items exist in common-artifacts test: circle files are copied
-#       from common-artifacts.
-#       Use this list file before end-to-end test in 'circle-part-value-test'.
-# add(RECIPE_NAME PART_NAME)
-
-add(Net_InstanceNorm_003 Net_InstanceNorm_003)
