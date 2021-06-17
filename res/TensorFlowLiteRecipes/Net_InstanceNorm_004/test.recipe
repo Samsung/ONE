@@ -1,0 +1,261 @@
+operand {
+  name: "Hole"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+    dim: 1
+    dim: 32
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "InstanceNorm/beta"
+  type: FLOAT32
+  shape {
+    dim: 32
+  }
+  filler {
+    tag: "constant"
+    arg: "0"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "InstanceNorm/instancenorm/add/y"
+  type: FLOAT32
+  shape {
+  }
+  filler {
+    tag: "explicit"
+    arg: "1e-06"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "InstanceNorm/moments/variance/reduction_indices"
+  type: INT32
+  shape {
+    dim: 2
+  }
+  filler {
+    tag: "explicit"
+    arg: "1"
+    arg: "2"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "InstanceNorm/moments/mean"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+    dim: 1
+    dim: 32
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "InstanceNorm/moments/SquaredDifference"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+    dim: 1
+    dim: 32
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "InstanceNorm/moments/variance"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+    dim: 1
+    dim: 32
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "InstanceNorm/instancenorm/add"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+    dim: 1
+    dim: 32
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "InstanceNorm/instancenorm/Rsqrt"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+    dim: 1
+    dim: 32
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "InstanceNorm/instancenorm/mul_1"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+    dim: 1
+    dim: 32
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "InstanceNorm/instancenorm/mul_2"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+    dim: 1
+    dim: 32
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "InstanceNorm/instancenorm/sub"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+    dim: 1
+    dim: 32
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "InstanceNorm/instancenorm/add_1"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+    dim: 1
+    dim: 32
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operation {
+  type: "Mean"
+  input: "Hole"
+  input: "InstanceNorm/moments/variance/reduction_indices"
+  output: "InstanceNorm/moments/mean"
+  mean_options {
+    keep_dims: true
+  }
+}
+operation {
+  type: "SquaredDifference"
+  input: "Hole"
+  input: "InstanceNorm/moments/mean"
+  output: "InstanceNorm/moments/SquaredDifference"
+}
+operation {
+  type: "Mean"
+  input: "InstanceNorm/moments/SquaredDifference"
+  input: "InstanceNorm/moments/variance/reduction_indices"
+  output: "InstanceNorm/moments/variance"
+  mean_options {
+    keep_dims: true
+  }
+}
+operation {
+  type: "Add"
+  input: "InstanceNorm/moments/variance"
+  input: "InstanceNorm/instancenorm/add/y"
+  output: "InstanceNorm/instancenorm/add"
+  add_options {
+    activation: NONE
+  }
+}
+operation {
+  type: "Rsqrt"
+  input: "InstanceNorm/instancenorm/add"
+  output: "InstanceNorm/instancenorm/Rsqrt"
+}
+operation {
+  type: "Mul"
+  input: "Hole"
+  input: "InstanceNorm/instancenorm/Rsqrt"
+  output: "InstanceNorm/instancenorm/mul_1"
+  mul_options {
+    activation: NONE
+  }
+}
+operation {
+  type: "Mul"
+  input: "InstanceNorm/moments/mean"
+  input: "InstanceNorm/instancenorm/Rsqrt"
+  output: "InstanceNorm/instancenorm/mul_2"
+  mul_options {
+    activation: NONE
+  }
+}
+operation {
+  type: "Sub"
+  input: "InstanceNorm/beta"
+  input: "InstanceNorm/instancenorm/mul_2"
+  output: "InstanceNorm/instancenorm/sub"
+  sub_options {
+    activation: NONE
+  }
+}
+operation {
+  type: "Add"
+  input: "InstanceNorm/instancenorm/mul_1"
+  input: "InstanceNorm/instancenorm/sub"
+  output: "InstanceNorm/instancenorm/add_1"
+  add_options {
+    activation: NONE
+  }
+}
+input: "Hole"
+output: "InstanceNorm/instancenorm/add_1"

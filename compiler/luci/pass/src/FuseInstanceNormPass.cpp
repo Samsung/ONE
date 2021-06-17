@@ -182,6 +182,7 @@ namespace
  *
  *    TODO support other semantically same patterns for instance norm
  *
+ * Version_0
  *                 [In]
  *                   |
  *                   V
@@ -216,6 +217,7 @@ namespace
  *         V
  *       [Out]
  *-------------------------------------------------------------------
+ * Version_1
  *                 [In]
  *                   |
  *                   V
@@ -256,6 +258,7 @@ namespace
  *         V
  *       [Out]
  *-------------------------------------------------------------------
+ * Version_2
  *                          [In]
  *                            |
  *                            V
@@ -288,6 +291,41 @@ namespace
  *       |
  *       V
  *     [Out]
+ *-------------------------------------------------------------------
+ * Version_3: TF 1.15.3 (https://github.com/Samsung/ONE/issues/7032)
+ *                 [In]
+ *                   |
+ *                   V
+ *     +----------- ifm -----+   (reduction indicies)
+ *     |             |       |       |
+ *     |             |       V       V
+ *     |             |      mean_of_ifm ----------------+
+ *     |             V       |                          |
+ *     |           sqdiff <--+   (reduction indicies)   |
+ *     |             |             |                    |
+ *     |             V             |                    |
+ *     |      mean_as_variance <---+  const_as_epsilon  |
+ *     |             |                 |                |
+ *     |             V                 |                |
+ *     |      add_as_variance <--------+                |
+ *     |             |                                  |
+ *     |             V                                  |
+ *     |           rsqrt                                |
+ *     |             |                                  |
+ *     |             |                                  |
+ *     |          +--+--+                               |
+ *     |          |     |                               |
+ *     V          V     V                               |
+ * mul_as_scaled_ifm   mul_as_scaled_mean <-------------+
+ *         |                   |
+ *         |   const_as_beta   |
+ *         |         |         V
+ *         |         +------> sub
+ *         V                   |
+ *  add_as_terminal <----------+
+ *         |
+ *         V
+ *       [Out]
  */
 class InstanceNormPattern final
 {
@@ -297,6 +335,7 @@ public:
     Version_0,
     Version_1,
     Version_2,
+    Version_3,
   };
 
   InstanceNormPattern(luci::CircleAdd *candidate, PatternVersion pv)
@@ -545,15 +584,18 @@ void fuse_instance_norm(const InstanceNormPattern &p)
   auto graph = p.add_as_terminal->graph();
 
   // Version 0 and 1 need to reshape
-  if (p.version() != InstanceNormPattern::Version_2)
+  switch(p.version())
   {
-    p.const_as_gamma->rank(1);
-    p.const_as_gamma->dim(0).set(p.const_as_gamma->size<loco::DataType::FLOAT32>());
-    p.const_as_beta->rank(1);
-    p.const_as_beta->dim(0).set(p.const_as_beta->size<loco::DataType::FLOAT32>());
+    case InstanceNormPattern::Version_0:
+    case InstanceNormPattern::Version_1:
+      p.const_as_gamma->rank(1);
+      p.const_as_gamma->dim(0).set(p.const_as_gamma->size<loco::DataType::FLOAT32>());
+      p.const_as_beta->rank(1);
+      p.const_as_beta->dim(0).set(p.const_as_beta->size<loco::DataType::FLOAT32>());
 
-    p.const_as_gamma->shape_status(luci::ShapeStatus::UNDEFINED);
-    p.const_as_beta->shape_status(luci::ShapeStatus::UNDEFINED);
+      p.const_as_gamma->shape_status(luci::ShapeStatus::UNDEFINED);
+      p.const_as_beta->shape_status(luci::ShapeStatus::UNDEFINED);
+      break;
   }
 
   // Make Instance Norm to replace
