@@ -30,8 +30,7 @@
 namespace luci_interpreter
 {
 
-class KernelBuilder : public luci::CircleNodeVisitor<std::unique_ptr<Kernel>>,
-                      public KernelBuilderHelper
+class KernelBuilder : public KernelBuilderHelper
 {
 public:
   KernelBuilder(
@@ -41,7 +40,7 @@ public:
   {
   }
 
-  std::unique_ptr<Kernel> visit(const luci::CircleNode *node) override;
+  std::unique_ptr<Kernel> build(const luci::CircleNode *node);
 };
 
 } // namespace luci_interpreter
