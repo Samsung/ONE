@@ -645,6 +645,8 @@ enum class OE
   OPQR,
   STUV,
   WXYZ,
+  CIRC, // circle only
+  VIRT, // virtual
 };
 
 class OperationExporter final : public luci::CircleNodeMutableVisitor<void>,
@@ -788,10 +790,13 @@ public:
   void visit(luci::CircleWhile *) final;
   void visit(luci::CircleZerosLike *) final;
 #endif
+#if 0
   // Circle only
   void visit(luci::CircleBCQFullyConnected *) final;
   void visit(luci::CircleBCQGather *) final;
   void visit(luci::CircleInstanceNorm *) final;
+#endif
+#if 0
   // Virtual
   void visit(luci::CircleInput *) final {}
   void visit(luci::CircleOutput *) final {}
@@ -809,6 +814,7 @@ public:
   void visit(luci::CircleUniqueOut *) final {}
   void visit(luci::CircleUnpackOut *) final {}
   void visit(luci::CircleWhileOut *) final {}
+#endif
 };
 
 template <OE oe> class OpExporterLet;
@@ -1039,6 +1045,59 @@ public:
   void visit(luci::CircleZerosLike *) final;
 };
 
+template <>
+class OpExporterLet<OE::CIRC> final : public luci::CircleNodeMutableVisitor<void>,
+                                      public ExportHelper
+{
+public:
+  OpExporterLet(ExportContext &ctx) : ExportHelper(ctx)
+  {
+    // DO NOTHING
+  }
+
+public:
+  void visit(luci::CircleNode *) final {}
+
+public:
+  // Circle only
+  void visit(luci::CircleBCQFullyConnected *) final;
+  void visit(luci::CircleBCQGather *) final;
+  void visit(luci::CircleInstanceNorm *) final;
+};
+
+template <>
+class OpExporterLet<OE::VIRT> final : public luci::CircleNodeMutableVisitor<void>,
+                                      public ExportHelper
+{
+public:
+  OpExporterLet(ExportContext &ctx) : ExportHelper(ctx)
+  {
+    // DO NOTHING
+  }
+
+public:
+  void visit(luci::CircleNode *) final {}
+
+public:
+  // Virtual
+  void visit(luci::CircleInput *) final {}
+  void visit(luci::CircleOutput *) final {}
+  void visit(luci::CircleOutputDummy *) final {}
+  void visit(luci::CircleOutputExclude *) final {}
+  // Virtual for multiple-outputs
+  void visit(luci::CircleBidirectionalSequenceLSTMOut *) final {}
+  void visit(luci::CircleCustomOut *) final {}
+  void visit(luci::CircleIfOut *) final {}
+  void visit(luci::CircleNonMaxSuppressionV4Out *) final {}
+  void visit(luci::CircleNonMaxSuppressionV5Out *) final {}
+  void visit(luci::CircleSplitOut *) final {}
+  void visit(luci::CircleSplitVOut *) final {}
+  void visit(luci::CircleTopKV2Out *) final {}
+  void visit(luci::CircleUniqueOut *) final {}
+  void visit(luci::CircleUnpackOut *) final {}
+  void visit(luci::CircleWhileOut *) final {}
+};
+
 void OperationExporter::visit(luci::CircleNode *node)
 {
   // TODO revise return type to bool and return if handled
@@ -1056,6 +1115,8 @@ void OperationExporter::visit(luci::CircleNode *node)
   VISIT_OE(OPQR);
   VISIT_OE(STUV);
   VISIT_OE(WXYZ);
+  VISIT_OE(CIRC);
+  VISIT_OE(VIRT);
 }
 
 void OpExporterLet<OE::ABC>::visit(luci::CircleAbs *node)
@@ -1751,7 +1812,7 @@ void OpExporterLet<OE::WXYZ>::visit(luci::CircleZerosLike *node)
                 CreateZerosLikeOptions(_ctx.builder).Union());
 }
 
-void OperationExporter::visit(luci::CircleBCQFullyConnected *node)
+void OpExporterLet<OE::CIRC>::visit(luci::CircleBCQFullyConnected *node)
 {
   export_simple(node, circle::BuiltinOperator_BCQ_FULLY_CONNECTED,
                 circle::BuiltinOptions_BCQFullyConnectedOptions,
@@ -1760,14 +1821,14 @@ void OperationExporter::visit(luci::CircleBCQFullyConnected *node)
                   .Union());
 }
 
-void OperationExporter::visit(luci::CircleBCQGather *node)
+void OpExporterLet<OE::CIRC>::visit(luci::CircleBCQGather *node)
 {
   export_simple(
     node, circle::BuiltinOperator_BCQ_GATHER, circle::BuiltinOptions_BCQGatherOptions,
     CreateBCQGatherOptions(_ctx.builder, node->input_hidden_size(), node->axis()).Union());
 }
 
-void OperationExporter::visit(luci::CircleInstanceNorm *node)
+void OpExporterLet<OE::CIRC>::visit(luci::CircleInstanceNorm *node)
 {
   export_simple(node, circle::BuiltinOperator_INSTANCE_NORM,
                 circle::BuiltinOptions_InstanceNormOptions,
