@@ -299,7 +299,7 @@ public:
 
 #undef DECLARE_VISIT
 
-std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleNode *node)
+std::unique_ptr<Kernel> KernelBuilder::build(const luci::CircleNode *node)
 {
 #define VISIT_KB(GRP)                                                          \
   do                                                                           \

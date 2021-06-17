@@ -195,7 +195,7 @@ void GraphLoader::loadOperators()
 
     if (isExecutableNode(node))
     {
-      std::unique_ptr<Kernel> kernel = node->accept(&kernel_builder);
+      std::unique_ptr<Kernel> kernel = kernel_builder.build(node);
       _runtime_to_ir.kernel_to_node.emplace(kernel.get(), node);
       _runtime_graph->addKernel(std::move(kernel));
     }
