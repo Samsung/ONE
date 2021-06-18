@@ -45,8 +45,8 @@ TEST(NodeExecution_Pull, check_data_ready)
   auto pull_data = locomotiv::make_data(pull_buf);
   locomotiv::user_data(pull, std::move(pull_data));
 
-// The behavior of Pull is now consistent with that of other nodes.
-// -  annot_data and annot_domain is available after evaluating that "pull" node.
+  // The behavior of Pull is now consistent with that of other nodes.
+  // -  annot_data and annot_domain is available after evaluating that "pull" node.
 
   // Valid run
   ASSERT_NO_THROW(locomotiv::NodeExecution::get().run(pull));
