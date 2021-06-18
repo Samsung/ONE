@@ -62,7 +62,7 @@ tar -zcf ${ARCHIVE_PATH}/nncc-package.tar.gz -C ${NNCC_INSTALL_PREFIX} \
 tar -zcf ${ARCHIVE_PATH}/nncc-test-package.tar.gz -C ${NNCC_INSTALL_PREFIX} ./test
 
 ./nncc docker-run /bin/bash -c \
-        'dch -v $(dpkg-parsechangelog --show-field Version)-$(date "+%y%m%d%H") "nightly release"'
+	'dch -v $(dpkg-parsechangelog --show-field Version)-$(date "+%y%m%d%H") "nightly release" -D $(lsb_release --short --codename)'
 ./nncc docker-run dch -r ''
 
 ./nncc docker-run debuild --preserve-env --no-lintian -us -uc \
