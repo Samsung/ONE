@@ -410,6 +410,12 @@ NNFW_STATUS nnfw_session::run()
     return NNFW_STATUS_INVALID_STATE;
   }
 
+  if (!_executions.empty())
+  {
+    std::cerr << "Error during nnfw_session::run : not supported for pipeline run" << std::endl;
+    return NNFW_STATUS_ERROR;
+  }
+
   try
   {
     _execution->execute();
@@ -439,6 +445,13 @@ NNFW_STATUS nnfw_session::run_async()
     return NNFW_STATUS_INVALID_STATE;
   }
 
+  if (!_executions.empty())
+  {
+    std::cerr << "Error during nnfw_session::run_async : not supported for pipeline run"
+              << std::endl;
+    return NNFW_STATUS_ERROR;
+  }
+
   _execution->startExecute();
 
   _state = State::RUNNING;
@@ -451,6 +464,12 @@ NNFW_STATUS nnfw_session::await()
   {
     std::cerr << "Error during nnfw_session::run_await : "
               << "run_await should be run after run_async" << std::endl;
+    return NNFW_STATUS_ERROR;
+  }
+
+  if (!_executions.empty())
+  {
+    std::cerr << "Error during nnfw_session::await : not supported for pipeline run" << std::endl;
     return NNFW_STATUS_ERROR;
   }
 
@@ -474,6 +493,13 @@ NNFW_STATUS nnfw_session::set_input(uint32_t index, NNFW_TYPE /*type*/, const vo
     std::cerr
       << "Error during nnfw_session::set_input : given buffer is NULL but the length is not 0"
       << std::endl;
+    return NNFW_STATUS_ERROR;
+  }
+
+  if (!_executions.empty())
+  {
+    std::cerr << "Error during nnfw_session::set_input : not supported for pipeline run"
+              << std::endl;
     return NNFW_STATUS_ERROR;
   }
 
@@ -503,6 +529,13 @@ NNFW_STATUS nnfw_session::set_output(uint32_t index, NNFW_TYPE /*type*/, void *b
     std::cerr
       << "Error during nnfw_session::set_output : given buffer is NULL but the length is not 0"
       << std::endl;
+    return NNFW_STATUS_ERROR;
+  }
+
+  if (!_executions.empty())
+  {
+    std::cerr << "Error during nnfw_session::set_output : not supported for pipeline run"
+              << std::endl;
     return NNFW_STATUS_ERROR;
   }
 
@@ -572,7 +605,14 @@ NNFW_STATUS nnfw_session::set_input_layout(uint32_t index, NNFW_LAYOUT layout)
       std::cerr << "Error during nnfw_session::set_input_layout, not supported layout" << std::endl;
       return NNFW_STATUS_ERROR;
     }
-    _execution->setInputLayout(onert::ir::IOIndex(index), convertLayout(layout));
+    if (_execution)
+    {
+      _execution->setInputLayout(onert::ir::IOIndex(index), convertLayout(layout));
+    }
+    else
+    {
+      _executions.at(0)->setInputLayout(onert::ir::IOIndex(index), convertLayout(layout));
+    }
   }
   catch (const std::exception &e)
   {
@@ -593,7 +633,15 @@ NNFW_STATUS nnfw_session::set_output_layout(uint32_t index, NNFW_LAYOUT layout)
                 << std::endl;
       return NNFW_STATUS_ERROR;
     }
-    _execution->setOutputLayout(onert::ir::IOIndex(index), convertLayout(layout));
+    if (_execution)
+    {
+      _execution->setOutputLayout(onert::ir::IOIndex(index), convertLayout(layout));
+    }
+    else
+    {
+      _executions.at(_executions.size() - 1)
+        ->setOutputLayout(onert::ir::IOIndex(index), convertLayout(layout));
+    }
   }
   catch (const std::exception &e)
   {
@@ -673,7 +721,14 @@ NNFW_STATUS nnfw_session::apply_tensorinfo(uint32_t index, nnfw_tensorinfo ti)
   }
   else // when called after nnfw_session::prepare()
   {
-    _execution->changeInputShape(onert::ir::IOIndex(index), new_shape);
+    if (_execution)
+    {
+      _execution->changeInputShape(onert::ir::IOIndex(index), new_shape);
+    }
+    else
+    {
+      _executions.at(0)->changeInputShape(onert::ir::IOIndex(index), new_shape);
+    }
   }
 
   return NNFW_STATUS_NO_ERROR;
@@ -707,7 +762,17 @@ NNFW_STATUS nnfw_session::input_tensorinfo(uint32_t index, nnfw_tensorinfo *ti)
     auto opidx = primary_subgraph()->getInputs().at(index);
     auto shape = primary_subgraph()->operands().at(opidx).shape();
     if (isStatePreparedOrFinishedRun())
-      shape = _execution->getInputShape(onert::ir::IOIndex{index});
+    {
+      if (_execution)
+      {
+        shape = _execution->getInputShape(onert::ir::IOIndex{index});
+      }
+      else
+      {
+        shape = _executions.at(0)->getInputShape(onert::ir::IOIndex{index});
+      }
+    }
+
     ti->rank = shape.rank();
     for (int j = 0; j < ti->rank; ++j)
     {
@@ -748,7 +813,16 @@ NNFW_STATUS nnfw_session::output_tensorinfo(uint32_t index, nnfw_tensorinfo *ti)
     auto shape = primary_subgraph()->operands().at(opidx).shape();
     // If it is called after `nnfw_run` then get the shape from Execution, not from the graph
     if (isStateFinishedRun())
-      shape = _execution->getOutputShape(onert::ir::IOIndex{index});
+    {
+      if (_execution)
+      {
+        shape = _execution->getOutputShape(onert::ir::IOIndex{index});
+      }
+      else
+      {
+        shape = _executions.at(_executions.size() - 1)->getOutputShape(onert::ir::IOIndex{index});
+      }
+    }
     ti->rank = shape.rank();
     for (int j = 0; j < ti->rank; ++j)
     {
