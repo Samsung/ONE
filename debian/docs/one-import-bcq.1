@@ -1,0 +1,56 @@
+.TH ONE-IMPORT-BCQ "1" "June 2021" "one-import-bcq version 1.16.1" "User Commands"
+.SH NAME
+one-import-bcq \- convert TensorFlow with BCQ to circle
+.SH DESCRIPTION
+usage: one\-import\-bcq [\-h] [\-v] [\-C CONFIG] [\-\-v1 | \fB\-\-v2]\fR [\-i INPUT_PATH]
+.br
+[\-o OUTPUT_PATH] [\-I INPUT_ARRAYS] [\-s INPUT_SHAPES] [\-O OUTPUT_ARRAYS]
+.PP
+\fBone\-import\-bcq\fR is a command line tool to convert TensorFlow with BCQ to circle.
+.SH OPTIONS
+.TP
+\fB\-h\fR, \fB\-\-help\fR
+show this help message and exit
+.TP
+\fB\-v\fR, \fB\-\-version\fR
+show program's version number and exit
+.TP
+\fB\-C\fR CONFIG, \fB\-\-config\fR CONFIG
+run with configuation file
+.TP
+\fB\-\-v1\fR
+use TensorFlow Lite Converter 1.x
+.TP
+\fB\-\-v2\fR
+use TensorFlow Lite Converter 2.x
+.TP
+\fB\-i\fR INPUT_PATH, \fB\-\-input_path\fR INPUT_PATH
+full filepath of the input file
+.TP
+\fB\-o\fR OUTPUT_PATH, \fB\-\-output_path\fR OUTPUT_PATH
+full filepath of the output file
+.TP
+\fB\-I\fR INPUT_ARRAYS, \fB\-\-input_arrays\fR INPUT_ARRAYS
+names of the input arrays, comma\-separated
+.TP
+\fB\-s\fR INPUT_SHAPES, \fB\-\-input_shapes\fR INPUT_SHAPES
+shapes corresponding to \fB\-\-input_arrays\fR, colonseparated (ex:"1,4,4,3:1,20,20,3")
+.TP
+\fB\-O\fR OUTPUT_ARRAYS, \fB\-\-output_arrays\fR OUTPUT_ARRAYS
+names of the output arrays, comma\-separated
+.SH COPYRIGHT
+Copyright \(co 2020\-2021 Samsung Electronics Co., Ltd. All Rights Reserved
+Licensed under the Apache License, Version 2.0
+https://github.com/Samsung/ONE
+.SH "SEE ALSO"
+The full documentation for
+.B one-import-bcq
+is maintained as a Texinfo manual.  If the
+.B info
+and
+.B one-import-bcq
+programs are properly installed at your site, the command
+.IP
+.B info one-import-bcq
+.PP
+should give you access to the complete manual.

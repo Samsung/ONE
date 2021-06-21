@@ -1,0 +1,56 @@
+.TH ONE-IMPORT-ONNX "1" "June 2021" "one-import-onnx version 1.16.1" "User Commands"
+.SH NAME
+one-import-onnx \- convert ONNX to circle
+.SH DESCRIPTION
+usage: one\-import\-onnx [\-h] [\-v] [\-C CONFIG] [\-i INPUT_PATH] [\-o OUTPUT_PATH]
+.br
+[\-I INPUT_ARRAYS] [\-O OUTPUT_ARRAYS] [\-\-model_format MODEL_FORMAT]
+.br
+[\-\-converter_version CONVERTER_VERSION] [\-\-save_intermediate]
+.PP
+\fBone\-import\-onnx\fR is a command line tool to convert ONNX to circle.
+.SH OPTIONS
+.TP
+\fB\-h\fR, \fB\-\-help\fR
+show this help message and exit
+.TP
+\fB\-v\fR, \fB\-\-version\fR
+show program's version number and exit
+.TP
+\fB\-C\fR CONFIG, \fB\-\-config\fR CONFIG
+run with configuation file
+.TP
+\fB\-\-save_intermediate\fR
+Save intermediate files to output folder
+.TP
+\fB\-i\fR INPUT_PATH, \fB\-\-input_path\fR INPUT_PATH
+full filepath of the input file
+.TP
+\fB\-o\fR OUTPUT_PATH, \fB\-\-output_path\fR OUTPUT_PATH
+full filepath of the output file
+.TP
+\fB\-I\fR INPUT_ARRAYS, \fB\-\-input_arrays\fR INPUT_ARRAYS
+names of the input arrays, comma\-separated
+.TP
+\fB\-O\fR OUTPUT_ARRAYS, \fB\-\-output_arrays\fR OUTPUT_ARRAYS
+names of the output arrays, comma\-separated
+.HP
+\fB\-\-model_format\fR MODEL_FORMAT
+.HP
+\fB\-\-converter_version\fR CONVERTER_VERSION
+.SH COPYRIGHT
+Copyright \(co 2020\-2021 Samsung Electronics Co., Ltd. All Rights Reserved
+Licensed under the Apache License, Version 2.0
+https://github.com/Samsung/ONE
+.SH "SEE ALSO"
+The full documentation for
+.B one-import-onnx
+is maintained as a Texinfo manual.  If the
+.B info
+and
+.B one-import-onnx
+programs are properly installed at your site, the command
+.IP
+.B info one-import-onnx
+.PP
+should give you access to the complete manual.

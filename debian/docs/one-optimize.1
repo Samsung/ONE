@@ -1,0 +1,195 @@
+.TH ONE-OPTIMIZE "1" "June 2021" "one-optimize version 1.16.1" "User Commands"
+.SH NAME
+one-optimize \- optimize circle model
+.SH DESCRIPTION
+usage: one\-optimize [\-h] [\-v] [\-C CONFIG] [\-p]
+.br
+[\-\-change_outputs CHANGE_OUTPUTS] [\-i INPUT_PATH] [\-o OUTPUT_PATH] [\-\-O1] [\-\-convert_nchw_to_nhwc]
+.br
+[\-\-nchw_to_nhwc_input_shape] [\-\-nchw_to_nhwc_output_shape]
+[\-\-fold_add_v2] [\-\-fold_cast] [\-\-fold_dequantize]
+[\-\-fold_sparse_to_dense] [\-\-forward_reshape_to_unaryop]
+[\-\-fuse_add_with_tconv] [\-\-fuse_batchnorm_with_conv]
+[\-\-fuse_batchnorm_with_dwconv]
+[\-\-fuse_batchnorm_with_tconv] [\-\-fuse_bcq]
+[\-\-fuse_preactivation_batchnorm]
+[\-\-make_batchnorm_gamma_positive]
+[\-\-fuse_activation_function] [\-\-fuse_instnorm]
+.br
+[\-\-replace_cw_mul_add_with_depthwise_conv]
+[\-\-remove_fakequant] [\-\-remove_quantdequant]
+[\-\-remove_redundant_reshape]
+[\-\-remove_redundant_transpose]
+[\-\-remove_unnecessary_reshape]
+[\-\-remove_unnecessary_slice]
+[\-\-remove_unnecessary_strided_slice]
+[\-\-remove_unnecessary_split] [\-\-resolve_customop_add]
+.br
+[\-\-resolve_customop_batchmatmul]
+[\-\-resolve_customop_matmul]
+[\-\-shuffle_weight_to_16x1float32]
+[\-\-substitute_pack_to_reshape]
+[\-\-substitute_squeeze_to_reshape]
+[\-\-substitute_transpose_to_reshape]
+[\-\-transform_min_max_to_relu6]
+[\-\-transform_min_relu_to_relu6]
+.PP
+\fBone\-optimize\fR is a command line tool to optimize circle model.
+.SH OPTIONS
+.TP
+\fB\-h\fR, \fB\-\-help\fR
+show this help message and exit
+.TP
+\fB\-v\fR, \fB\-\-version\fR
+show program's version number and exit
+.TP
+\fB\-C\fR CONFIG, \fB\-\-config\fR CONFIG
+run with configuation file
+.SS "arguments for utility:"
+.TP
+\fB\-p\fR, \fB\-\-generate_profile_data\fR
+generate profiling data
+.TP
+\fB\-\-change_outputs\fR CHANGE_OUTPUTS
+Experimental: Change first subgraph output nodes to
+CSV names
+.SS "arguments for optimization:"
+.TP
+\fB\-i\fR INPUT_PATH, \fB\-\-input_path\fR INPUT_PATH
+full filepath of the input file
+.TP
+\fB\-o\fR OUTPUT_PATH, \fB\-\-output_path\fR OUTPUT_PATH
+full filepath of the output file
+.TP
+\fB\-\-O1\fR
+enable O1 optimization pass
+.TP
+\fB\-\-convert_nchw_to_nhwc\fR
+Experimental: This will convert NCHW operators to NHWC
+under the assumption that input model is NCHW.
+.TP
+\fB\-\-nchw_to_nhwc_input_shape\fR
+convert the input shape of the model (argument for
+convert_nchw_to_nhwc)
+.TP
+\fB\-\-nchw_to_nhwc_output_shape\fR
+convert the output shape of the model (argument for
+convert_nchw_to_nhwc)
+.TP
+\fB\-\-fold_add_v2\fR
+fold AddV2 op with constant inputs
+.TP
+\fB\-\-fold_cast\fR
+fold Cast op with constant input
+.TP
+\fB\-\-fold_dequantize\fR
+fold Dequantize op
+.TP
+\fB\-\-fold_sparse_to_dense\fR
+fold SparseToDense op
+.TP
+\fB\-\-forward_reshape_to_unaryop\fR
+Forward Reshape op
+.TP
+\fB\-\-fuse_add_with_tconv\fR
+fuse Add op to Transposed
+.TP
+\fB\-\-fuse_batchnorm_with_conv\fR
+fuse BatchNorm op to Convolution op
+.TP
+\fB\-\-fuse_batchnorm_with_dwconv\fR
+fuse BatchNorm op to Depthwise Convolution op
+.TP
+\fB\-\-fuse_batchnorm_with_tconv\fR
+fuse BatchNorm op to Transposed Convolution op
+.TP
+\fB\-\-fuse_bcq\fR
+apply Binary Coded Quantization
+.TP
+\fB\-\-fuse_preactivation_batchnorm\fR
+fuse BatchNorm operators of pre\-activations to
+Convolution op
+.TP
+\fB\-\-make_batchnorm_gamma_positive\fR
+make negative gamma of BatchNorm to a small positive
+value (1e\-10). Note that this pass can change the
+execution result of the model. So, use it only when
+the impact is known to be acceptable.
+.TP
+\fB\-\-fuse_activation_function\fR
+fuse Activation function to a preceding operator
+.TP
+\fB\-\-fuse_instnorm\fR
+fuse ops to InstanceNorm operator
+.TP
+\fB\-\-replace_cw_mul_add_with_depthwise_conv\fR
+replace channel\-wise Mul/Add with DepthwiseConv2D
+.TP
+\fB\-\-remove_fakequant\fR
+remove FakeQuant ops
+.TP
+\fB\-\-remove_quantdequant\fR
+remove Quantize\-Dequantize sequence
+.TP
+\fB\-\-remove_redundant_reshape\fR
+fuse or remove subsequent Reshape ops
+.TP
+\fB\-\-remove_redundant_transpose\fR
+fuse or remove subsequent Transpose ops
+.TP
+\fB\-\-remove_unnecessary_reshape\fR
+remove unnecessary reshape ops
+.TP
+\fB\-\-remove_unnecessary_slice\fR
+remove unnecessary slice ops
+.TP
+\fB\-\-remove_unnecessary_strided_slice\fR
+remove unnecessary strided slice ops
+.TP
+\fB\-\-remove_unnecessary_split\fR
+remove unnecessary split ops
+.TP
+\fB\-\-resolve_customop_add\fR
+convert Custom(Add) op to Add op
+.TP
+\fB\-\-resolve_customop_batchmatmul\fR
+convert Custom(BatchMatmul) op to BatchMatmul op
+.TP
+\fB\-\-resolve_customop_matmul\fR
+convert Custom(Matmul) op to Matmul op
+.TP
+\fB\-\-shuffle_weight_to_16x1float32\fR
+convert weight format of FullyConnected op to
+SHUFFLED16x1FLOAT32. Note that it only converts
+weights whose row is a multiple of 16
+.TP
+\fB\-\-substitute_pack_to_reshape\fR
+convert single input Pack op to Reshape op
+.TP
+\fB\-\-substitute_squeeze_to_reshape\fR
+convert certain condition Squeeze to Reshape
+.TP
+\fB\-\-substitute_transpose_to_reshape\fR
+convert certain condition Transpose to Reshape
+.TP
+\fB\-\-transform_min_max_to_relu6\fR
+transform Minimum\-Maximum pattern to Relu6 op
+.TP
+\fB\-\-transform_min_relu_to_relu6\fR
+transform Minimum(6)\-Relu pattern to Relu6 op
+.SH COPYRIGHT
+Copyright \(co 2020\-2021 Samsung Electronics Co., Ltd. All Rights Reserved
+Licensed under the Apache License, Version 2.0
+https://github.com/Samsung/ONE
+.SH "SEE ALSO"
+The full documentation for
+.B one-optimize
+is maintained as a Texinfo manual.  If the
+.B info
+and
+.B one-optimize
+programs are properly installed at your site, the command
+.IP
+.B info one-optimize
+.PP
+should give you access to the complete manual.
