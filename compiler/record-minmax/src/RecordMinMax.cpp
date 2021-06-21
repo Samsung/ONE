@@ -174,8 +174,7 @@ void RecordMinMax::profileData(const std::string &mode, const std::string &input
       if (num_inputs != importer.numInputs(record_idx))
         throw std::runtime_error("Wrong number of inputs.");
 
-      if (record_idx % 100 == 0)
-        std::cout << "Recording " << record_idx << "'th data" << std::endl;
+      std::cout << "Recording " << record_idx << "'th data" << std::endl;
 
       for (int32_t input_idx = 0; input_idx < num_inputs; input_idx++)
       {
