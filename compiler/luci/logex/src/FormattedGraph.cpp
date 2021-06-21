@@ -2048,6 +2048,54 @@ bool SummaryBuilderLet<SB::WXYZ>::summary(const luci::CircleZerosLike *node,
   return use_input(tbl(), node, s);
 }
 
+bool SummaryBuilderLet<SB::CIRC>::summary(const luci::CircleBCQFullyConnected *node,
+                                          locop::NodeSummary &s) const
+{
+  return summary_node(tbl(), node, s);
+}
+
+bool SummaryBuilderLet<SB::CIRC>::summary(const luci::CircleBCQGather *node,
+                                          locop::NodeSummary &s) const
+{
+  return summary_node(tbl(), node, s);
+}
+
+bool SummaryBuilderLet<SB::CIRC>::summary(const luci::CircleInstanceNorm *node,
+                                          locop::NodeSummary &s) const
+{
+  return summary_node(tbl(), node, s);
+}
+
+bool SummaryBuilderLet<SB::VIRT>::summary(const luci::CircleInput *, locop::NodeSummary &s) const
+{
+  s.state(locop::NodeSummary::State::Complete);
+  return true;
+}
+
+bool SummaryBuilderLet<SB::VIRT>::summary(const luci::CircleOutput *node,
+                                          locop::NodeSummary &s) const
+{
+  return summary_node(tbl(), node, s);
+}
+
+bool SummaryBuilderLet<SB::VIRT>::summary(const luci::CircleIfOut *node,
+                                          locop::NodeSummary &s) const
+{
+  return use_input(tbl(), node, s);
+}
+
+bool SummaryBuilderLet<SB::VIRT>::summary(const luci::CircleNonMaxSuppressionV4Out *node,
+                                          locop::NodeSummary &s) const
+{
+  return use_input(tbl(), node, s);
+}
+
+bool SummaryBuilderLet<SB::VIRT>::summary(const luci::CircleNonMaxSuppressionV5Out *node,
+                                          locop::NodeSummary &s) const
+{
+  return use_input(tbl(), node, s);
+}
+
 bool SummaryBuilderLet<SB::VIRT>::summary(const luci::CircleSplitOut *node,
                                           locop::NodeSummary &s) const
 {
@@ -2078,55 +2126,7 @@ bool SummaryBuilderLet<SB::VIRT>::summary(const luci::CircleUnpackOut *node,
   return summary_node(tbl(), node, s);
 }
 
-bool SummaryBuilderLet<SB::VIRT>::summary(const luci::CircleIfOut *node,
-                                          locop::NodeSummary &s) const
-{
-  return use_input(tbl(), node, s);
-}
-
-bool SummaryBuilderLet<SB::VIRT>::summary(const luci::CircleNonMaxSuppressionV4Out *node,
-                                          locop::NodeSummary &s) const
-{
-  return use_input(tbl(), node, s);
-}
-
-bool SummaryBuilderLet<SB::VIRT>::summary(const luci::CircleNonMaxSuppressionV5Out *node,
-                                          locop::NodeSummary &s) const
-{
-  return use_input(tbl(), node, s);
-}
-
 bool SummaryBuilderLet<SB::VIRT>::summary(const luci::CircleWhileOut *node,
-                                          locop::NodeSummary &s) const
-{
-  return summary_node(tbl(), node, s);
-}
-
-bool SummaryBuilderLet<SB::VIRT>::summary(const luci::CircleInput *, locop::NodeSummary &s) const
-{
-  s.state(locop::NodeSummary::State::Complete);
-  return true;
-}
-
-bool SummaryBuilderLet<SB::VIRT>::summary(const luci::CircleOutput *node,
-                                          locop::NodeSummary &s) const
-{
-  return summary_node(tbl(), node, s);
-}
-
-bool SummaryBuilderLet<SB::CIRC>::summary(const luci::CircleBCQFullyConnected *node,
-                                          locop::NodeSummary &s) const
-{
-  return summary_node(tbl(), node, s);
-}
-
-bool SummaryBuilderLet<SB::CIRC>::summary(const luci::CircleBCQGather *node,
-                                          locop::NodeSummary &s) const
-{
-  return summary_node(tbl(), node, s);
-}
-
-bool SummaryBuilderLet<SB::CIRC>::summary(const luci::CircleInstanceNorm *node,
                                           locop::NodeSummary &s) const
 {
   return summary_node(tbl(), node, s);
