@@ -18,6 +18,7 @@ Source1008: FXDIV.tar.gz
 Source1009: PTHREADPOOL.tar.gz
 Source1010: PSIMD.tar.gz
 Source1011: FP16.tar.gz
+Source1012: OPENCL_HEADERS.tar.gz
 Source2001: nnfw.pc.in
 Source2002: nnfw-plugin.pc.in
 
@@ -130,6 +131,7 @@ tar -xf %{SOURCE1008} -C ./externals
 tar -xf %{SOURCE1009} -C ./externals
 tar -xf %{SOURCE1010} -C ./externals
 tar -xf %{SOURCE1011} -C ./externals
+tar -xf %{SOURCE1012} -C ./externals
 
 %build
 %ifarch arm armv7l aarch64 x86_64 %ix86
