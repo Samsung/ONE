@@ -15,3 +15,4 @@ endif(NOT GTest_FOUND)
 target_link_libraries(ndarray_test PUBLIC gtest gtest_main ${LIB_PTHREAD})
 
 add_test(ndarray_test ndarray_test)
+install(TARGETS ndarray_test DESTINATION unittest_standalone)
