@@ -222,7 +222,7 @@ public:
     for (auto backend : backends)
     {
 #ifdef TEST_ACL_BACKEND
-      if (backend == "acl_cl" || backend == "acl_neon" || backend == "gpu_cl")
+      if (backend == "acl_cl" || backend == "acl_neon")
       {
         _backends.push_back(backend);
       }
@@ -233,6 +233,12 @@ public:
       }
 #ifdef TEST_XNNPACK_BACKEND
       if (backend == "xnnpack")
+      {
+        _backends.push_back(backend);
+      }
+#endif
+#ifdef TEST_GPU_CL_BACKEND
+      if (backend == "gpu_cl")
       {
         _backends.push_back(backend);
       }
