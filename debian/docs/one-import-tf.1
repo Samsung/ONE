@@ -8,7 +8,7 @@ usage: one\-import\-tf [\-h] [\-v] [\-C CONFIG] [\-\-v1 | \-\-v2] [\-\-graph_def
 [\-s INPUT_SHAPES] [\-O OUTPUT_ARRAYS]
 [\-\-save_intermediate]
 .PP
-\fBone\-import\-tf\fR is a command line tool to convert TensorFlow to circle.
+\fBone\-import\-tf\fR is a command line tool to convert TensorFlow model to circle.
 .SH OPTIONS
 .TP
 \fB\-h\fR, \fB\-\-help\fR
@@ -48,7 +48,7 @@ full filepath of the output file
 names of the input arrays, comma\-separated
 .TP
 \fB\-s\fR INPUT_SHAPES, \fB\-\-input_shapes\fR INPUT_SHAPES
-shapes corresponding to \fB\-\-input_arrays\fR, colonseparated (ex:"1,4,4,3:1,20,20,3")
+shapes corresponding to \fB\-\-input_arrays\fR, colon\-separated (ex:"1,4,4,3:1,20,20,3")
 .TP
 \fB\-O\fR OUTPUT_ARRAYS, \fB\-\-output_arrays\fR OUTPUT_ARRAYS
 names of the output arrays, comma\-separated
