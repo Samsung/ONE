@@ -1,0 +1,72 @@
+.TH ONE-QUANTIZE "1" "June 2021" "one-quantize version 1.16.1" "User Commands"
+.SH NAME
+one-quantize \- quantize circle model
+.SH DESCRIPTION
+usage: one\-quantize [\-h] [\-v] [\-C CONFIG] [\-i INPUT_PATH] [\-d INPUT_DATA] [\-o OUTPUT_PATH]
+.br
+[\-p] [\-\-input_dtype INPUT_DTYPE] [\-\-quantized_dtype QUANTIZED_DTYPE] [\-\-granularity GRANULARITY]
+.br
+[\-\-min_percentile MIN_PERCENTILE] [\-\-max_percentile MAX_PERCENTILE] [\-\-mode MODE]
+.PP
+\fBone\-quantize\fR is a command line tool to quantize circle model.
+.SH OPTIONS
+.TP
+\fB\-h\fR, \fB\-\-help\fR
+show this help message and exit
+.TP
+\fB\-v\fR, \fB\-\-version\fR
+show program's version number and exit
+.TP
+\fB\-C\fR CONFIG, \fB\-\-config\fR CONFIG
+run with configuation file
+.TP
+\fB\-i\fR INPUT_PATH, \fB\-\-input_path\fR INPUT_PATH
+full filepath of the input file
+.TP
+\fB\-d\fR INPUT_DATA, \fB\-\-input_data\fR INPUT_DATA
+full filepath of the input data file. if not
+specified, run with random input data.
+.TP
+\fB\-o\fR OUTPUT_PATH, \fB\-\-output_path\fR OUTPUT_PATH
+full filepath of the output file
+.TP
+\fB\-p\fR, \fB\-\-generate_profile_data\fR
+generate profiling data
+.SS "arguments for quantization:"
+.TP
+\fB\-\-input_dtype\fR INPUT_DTYPE
+input data type (supported: float32, default=float32)
+.TP
+\fB\-\-quantized_dtype\fR QUANTIZED_DTYPE
+output quantized data type (supported: uint8, int16,
+default=uint8)
+.TP
+\fB\-\-granularity\fR GRANULARITY
+quantize granularity (supported: layer, channel,
+default=layer)
+.TP
+\fB\-\-min_percentile\fR MIN_PERCENTILE
+minimum percentile (0.0~100.0, default=1.0)
+.TP
+\fB\-\-max_percentile\fR MAX_PERCENTILE
+maximum percentile (0.0~100.0, default=99.0)
+.TP
+\fB\-\-mode\fR MODE
+record mode (supported: percentile/moving_average,
+default=percentile)
+.SH COPYRIGHT
+Copyright \(co 2020\-2021 Samsung Electronics Co., Ltd. All Rights Reserved
+Licensed under the Apache License, Version 2.0
+https://github.com/Samsung/ONE
+.SH "SEE ALSO"
+The full documentation for
+.B one-quantize
+is maintained as a Texinfo manual.  If the
+.B info
+and
+.B one-quantize
+programs are properly installed at your site, the command
+.IP
+.B info one-quantize
+.PP
+should give you access to the complete manual.

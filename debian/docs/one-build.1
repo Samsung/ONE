@@ -1,0 +1,93 @@
+.TH ONE-BUILD "1" "June 2021" "one-build version 1.16.1" "User Commands"
+.SH NAME
+one-build \- run ONE drivers
+.SH DESCRIPTION
+usage: one\-build [\-h] [\-v] [\-C CONFIG]
+.PP
+\fBone\-build\fR is a command line tool that runs ONE drivers in customized order.
+.SS "Configuration file:"
+\fBone\-build\fR takes input as a configuration file that supports ini format.
+A configuration file consists of sections, each led by a [section] header.
+Each section is the ONE driver you want to run, and consists of commands in a key/value combination to pass to the driver.
+.SH OPTIONS
+.TP
+\fB\-h\fR, \fB\-\-help\fR
+show this help message and exit
+.TP
+\fB\-v\fR, \fB\-\-version\fR
+show program's version number and exit
+.TP
+\fB\-C\fR CONFIG, \fB\-\-config\fR CONFIG
+run with configuation file
+.SH EXAMPLES
+Before you run \fBone\-build\fR, you must write a configuration file.
+.PP
+$ cat one-build.template.cfg
+.PP
+[one-build]
+.br
+one-import-tf=True
+.br
+one-import-tflite=False
+.br
+one-import-bcq=False
+.br
+one-import-onnx=False
+.br
+one-optimize=True
+.br
+one-quantize=False
+.br
+one-pack=True
+.br
+one-codegen=False
+.PP
+[one-import-tf]
+.br
+input_path=/path/to/inception_v3.pb
+.br
+output_path=inception_v3.circle
+.br
+input_arrays=input
+.br
+input_shapes=1,299,299,3
+.br
+output_arrays=InceptionV3/Predictions/Reshape_1
+.br
+converter_version=v1
+.br
+model_format=graph_def
+.PP
+[one-optimize]
+.br
+input_path=inception_v3.circle
+.br
+output_path=inception_v3.opt.circle
+.br
+generate_profile_data=False
+.PP
+[one-pack]
+.br
+input_path=inception_v3.opt.circle
+.br
+output_path=inception_v3_pack
+.PP
+\fBone\-build\fR section decides whether to use each driver or not.
+If the value is False, even if the corresponding section exists, the driver won't be executed.
+.SH COPYRIGHT
+Copyright \(co 2020\-2021 Samsung Electronics Co., Ltd. All Rights Reserved
+Licensed under the Apache License, Version 2.0
+https://github.com/Samsung/ONE
+.SH "SEE ALSO"
+The full documentation for
+.B one-build
+is maintained as a Texinfo manual.  If the
+.B info
+and
+.B one-build
+programs are properly installed at your site, the command
+.IP
+.B info one-build
+.PP
+should give you access to the complete manual.
+
