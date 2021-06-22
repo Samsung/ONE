@@ -185,9 +185,7 @@ protected:
 protected:
   const locop::SymbolTable *tbl(void) const { return _tbl; }
 
-  // Please do not use _tbl directly and use tbl().
-  // This will be changed to private in near future.
-protected:
+private:
   const locop::SymbolTable *_tbl;
 };
 
