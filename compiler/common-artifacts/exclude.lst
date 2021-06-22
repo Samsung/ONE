@@ -77,6 +77,7 @@ tcgenerate(Mul_U8_000)
 tcgenerate(Neg_000)
 tcgenerate(Net_BroadcastTo_AddV2_001) # luci-interpreter doesn't support custom operator
 tcgenerate(Net_Conv_FakeQuant_000) # luci-interpreter doesn't support FakeQuant yet
+tcgenerate(Net_Conv_QuantDequant_000) # luci-interpreter doesn't support Quantize/Dequantize yet
 tcgenerate(Net_Dangle_001)
 tcgenerate(Net_ZeroDim_001) # luci-interpreter doesn't support zero dim
 tcgenerate(OneHot_000)
@@ -86,6 +87,7 @@ tcgenerate(OneHot_003)
 tcgenerate(Pack_000)
 tcgenerate(Pack_U8_000)
 tcgenerate(PadV2_000)
+tcgenerate(Quantize_000)  # runtime and luci-interpreter doesn't support Quantize op yet
 tcgenerate(Range_000)
 tcgenerate(Rank_000)
 tcgenerate(ReduceAny_000)

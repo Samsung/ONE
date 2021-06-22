@@ -102,6 +102,12 @@ def _get_parser():
         type=str,
         help='names of the output arrays, comma-separated')
 
+    # save intermediate file(s)
+    parser.add_argument(
+        '--save_intermediate',
+        action='store_true',
+        help='Save intermediate files to output folder')
+
     return parser
 
 
@@ -132,6 +138,9 @@ def _convert(args):
     logfile_path = os.path.realpath(args.output_path) + '.log'
 
     with open(logfile_path, 'wb') as f, tempfile.TemporaryDirectory() as tmpdir:
+        # save intermediate
+        if _utils._is_valid_attr(args, 'save_intermediate'):
+            tmpdir = os.path.dirname(logfile_path)
         # make a command to convert from tf to tflite
         tf2tfliteV2_path = os.path.join(dir_path, 'tf2tfliteV2.py')
         tf2tfliteV2_output_path = os.path.join(
@@ -149,6 +158,7 @@ def _convert(args):
                 bufsize=1) as p:
             for line in p.stdout:
                 sys.stdout.buffer.write(line)
+                sys.stdout.buffer.flush()
                 f.write(line)
         if p.returncode != 0:
             sys.exit(p.returncode)
@@ -169,6 +179,7 @@ def _convert(args):
                 bufsize=1) as p:
             for line in p.stdout:
                 sys.stdout.buffer.write(line)
+                sys.stdout.buffer.flush()
                 f.write(line)
         if p.returncode != 0:
             sys.exit(p.returncode)

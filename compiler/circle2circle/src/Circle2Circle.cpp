@@ -18,6 +18,7 @@
 
 #include <luci/Importer.h>
 #include <luci/CircleOptimizer.h>
+#include <luci/Service/ChangeOutputs.h>
 #include <luci/Service/Validate.h>
 #include <luci/CircleExporter.h>
 #include <luci/CircleFileExpContract.h>
@@ -29,7 +30,9 @@
 
 #include <functional>
 #include <iostream>
+#include <sstream>
 #include <string>
+#include <vector>
 
 using Algorithms = luci::CircleOptimizer::Options::Algorithm;
 using AlgorithmParameters = luci::CircleOptimizer::Options::AlgorithmParameters;
@@ -38,6 +41,16 @@ void print_version(void)
 {
   std::cout << "circle2circle version " << vconone::get_string() << std::endl;
   std::cout << vconone::get_copyright() << std::endl;
+}
+
+void csv_tokenize(const std::string &data, std::vector<std::string> &result)
+{
+  const char delim = ',';
+  std::string token;
+  std::stringstream ss(data);
+
+  while (std::getline(ss, token, delim))
+    result.push_back(token);
 }
 
 int entry(int argc, char **argv)
@@ -151,6 +164,12 @@ int entry(int argc, char **argv)
     .required(false)
     .default_value(false)
     .help("This will remove FakeQuant operators");
+
+  arser.add_argument("--remove_quantdequant")
+    .nargs(0)
+    .required(false)
+    .default_value(false)
+    .help("This will remove Quantize-Dequantize sequence");
 
   arser.add_argument("--remove_redundant_reshape")
     .nargs(0)
@@ -286,6 +305,12 @@ int entry(int argc, char **argv)
     .default_value(false)
     .help("This will turn on profiling data generation.");
 
+  arser.add_argument("--change_outputs")
+    .nargs(1)
+    .type(arser::DataType::STR)
+    .required(false)
+    .help("Experimental: Change first subgraph output nodes to CSV names");
+
   arser.add_argument("input").nargs(1).type(arser::DataType::STR).help("Input circle model");
   arser.add_argument("output").nargs(1).type(arser::DataType::STR).help("Output circle model");
 
@@ -375,6 +400,8 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::FusePreActivationBatchNorm);
   if (arser.get<bool>("--remove_fakequant"))
     options->enable(Algorithms::RemoveFakeQuant);
+  if (arser.get<bool>("--remove_quantdequant"))
+    options->enable(Algorithms::RemoveQuantDequantSeq);
   if (arser.get<bool>("--remove_redundant_reshape"))
     options->enable(Algorithms::RemoveRedundantReshape);
   if (arser.get<bool>("--remove_redundant_transpose"))
@@ -448,6 +475,16 @@ int entry(int argc, char **argv)
       options->param(AlgorithmParameters::NCHW_to_NHWC_output_shape, "true");
   }
 
+  // Change output nodes
+  bool change_outputs = false;
+  std::vector<std::string> new_outputs;
+  if (arser["--change_outputs"])
+  {
+    change_outputs = true;
+    auto csv_nodes = arser.get<std::string>("--change_outputs");
+    csv_tokenize(csv_nodes, new_outputs);
+  }
+
   // Load model from the file
   foder::FileLoader file_loader{input_path};
   std::vector<char> model_data;
@@ -479,6 +516,12 @@ int entry(int argc, char **argv)
   // Import from input Circle file
   luci::Importer importer;
   auto module = importer.importModule(circle_model);
+
+  if (change_outputs)
+  {
+    auto graph = module->graph(0);
+    luci::change_outputs(graph, new_outputs);
+  }
 
   // call luci optimizations for module
   optimizer.optimize(module.get());

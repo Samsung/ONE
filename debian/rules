@@ -1,6 +1,6 @@
 #!/usr/bin/make -f
 export DH_VERBOSE = 1
-export NNAS_BUILD_PREFIX = build/release
+export NNAS_BUILD_PREFIX = build
 export PRESET = 20210406
 export _DESTDIR = debian/tmp/usr
 
@@ -17,3 +17,6 @@ override_dh_install:
 	install -t "$(_DESTDIR)/bin" -D "tools/nnpackage_tool/model2nnpkg/model2nnpkg.sh"
 	install -T -m 755 -D "infra/packaging/res/tf2nnpkg.${PRESET}" "$(_DESTDIR)/bin/tf2nnpkg"
 	dh_install
+
+override_dh_builddeb:
+	dh_builddeb --destdir=$(NNAS_BUILD_PREFIX)

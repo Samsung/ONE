@@ -367,3 +367,15 @@ NNFW_STATUS nnfw_output_tensorindex(nnfw_session *session, const char *tensornam
   NNFW_RETURN_ERROR_IF_NULL(session);
   return session->output_tensorindex(tensorname, index);
 }
+
+NNFW_STATUS nnfw_set_backends_per_operation(nnfw_session *session, const char *backend_settings)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return session->set_backends_per_operation(backend_settings);
+}
+
+NNFW_STATUS nnfw_prepare_pipeline(nnfw_session *session, const char *map_file_path)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return session->prepare_pipeline(map_file_path);
+}

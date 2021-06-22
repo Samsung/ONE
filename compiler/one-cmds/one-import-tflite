@@ -23,7 +23,6 @@ import argparse
 import os
 import subprocess
 import sys
-import tempfile
 
 import utils as _utils
 
@@ -89,6 +88,7 @@ def _convert(args):
                 bufsize=1) as p:
             for line in p.stdout:
                 sys.stdout.buffer.write(line)
+                sys.stdout.buffer.flush()
                 f.write(line)
         if p.returncode != 0:
             sys.exit(p.returncode)

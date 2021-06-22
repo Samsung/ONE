@@ -154,7 +154,7 @@ def generate_bcq_metadata_v1(flags):
     new_node.op = "Const"
     new_node.name = "one_compiler/bcqinfo_one_metadata"
     new_node.attr["dtype"].CopyFrom(
-        tf.core.framework.attr_value_pb2.AttrValue(type=tf.int32.as_datatype_enum))
+        tf.compat.v1.AttrValue(type=tf.int32.as_datatype_enum))
     new_node.attr["value"].tensor.CopyFrom(metadata_tensor)
     return new_graph_def
 

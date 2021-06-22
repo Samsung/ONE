@@ -96,6 +96,7 @@
 #include "Op/ReverseV2.h"
 #include "Op/Round.h"
 #include "Op/Rsqrt.h"
+#include "Op/Quantize.h"
 #include "Op/ScatterNd.h"
 #include "Op/SegmentSum.h"
 #include "Op/Select.h"

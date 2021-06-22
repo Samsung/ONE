@@ -19,7 +19,7 @@
 namespace luci
 {
 
-luci::CircleNode *CloneNode::visit(const luci::CircleSplit *node)
+luci::CircleNode *CloneNodeLet<CN::STUV>::visit(const luci::CircleSplit *node)
 {
   auto *cloned = _graph->nodes()->create<luci::CircleSplit>();
   if (cloned != nullptr)

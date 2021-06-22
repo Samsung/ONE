@@ -70,6 +70,7 @@ public:
       SubstituteTransposeToReshape,
       RemoveRedundantReshape,
       RemoveFakeQuant,
+      RemoveQuantDequantSeq,
     };
 
     enum AlgorithmParameters

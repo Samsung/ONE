@@ -144,7 +144,9 @@ private:
     RETURN_FALSE_UNLESS(has_type(node, Type::U8))
     RETURN_FALSE_UNLESS(has_type(node->input(), Type::U8))
     RETURN_FALSE_UNLESS(has_type(node->weights(), Type::U8))
-    RETURN_FALSE_UNLESS(has_type(node->bias(), Type::S32))
+    luci::CircleConst *bias = dynamic_cast<luci::CircleConst *>(node->bias());
+    if (bias != nullptr)
+      RETURN_FALSE_UNLESS(has_type(bias, Type::S32))
     return true;
   }
 
@@ -237,6 +239,9 @@ private:
   {
     RETURN_FALSE_UNLESS(has_type(node, Type::U8))
     RETURN_FALSE_UNLESS(has_type(node->x(), Type::U8))
+
+    RETURN_FALSE_UNLESS(node->quantparam()->scale[0] == 1.0f / 256.0f);
+    RETURN_FALSE_UNLESS(node->quantparam()->zerop[0] == 0);
     return true;
   }
 
@@ -290,6 +295,10 @@ private:
   {
     RETURN_FALSE_UNLESS(has_type(node, Type::U8))
     RETURN_FALSE_UNLESS(has_type(node->input(), Type::U8))
+
+    auto input = loco::must_cast<luci::CircleNode *>(node->input());
+    RETURN_FALSE_UNLESS(node->quantparam()->scale[0] == input->quantparam()->scale[0]);
+    RETURN_FALSE_UNLESS(node->quantparam()->zerop[0] == input->quantparam()->zerop[0]);
     return true;
   }
 
@@ -306,6 +315,9 @@ private:
   {
     RETURN_FALSE_UNLESS(has_type(node, Type::U8))
     RETURN_FALSE_UNLESS(has_type(node->x(), Type::U8))
+
+    RETURN_FALSE_UNLESS(node->quantparam()->scale[0] == 2.0f / 256.0f);
+    RETURN_FALSE_UNLESS(node->quantparam()->zerop[0] == 128);
     return true;
   }
 

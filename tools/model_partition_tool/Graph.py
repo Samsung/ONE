@@ -49,7 +49,7 @@ class ModelInfo:
         return np.prod(tensor) * tensor.itemsize
 
     def get_model_path(self):
-      return self._model_dir
+        return self._model_dir
 
 
 class GraphPartition:
@@ -447,12 +447,11 @@ class GraphTopology:
         self._Graphlogger.info("Memory overhead (bytes): %d", memory_overhead_best)
         output_data = {}
         partition_map = np.zeros(self._dag.shape[0], dtype=int)
-        with open("".join([self._modelObj.get_model_path(), "/parition_map.json"]), "w") as ofile:
-          for i in range(K):
-            for op_idx in session_ids[i]:
-              partition_map[op_idx] = i
-          output_data['partition_map'] = partition_map.tolist()
-          output_data['num_partitions'] = K
-          json.dump(output_data, ofile)
-
-
+        with open("".join([self._modelObj.get_model_path(), "/parition_map.json"]),
+                  "w") as ofile:
+            for i in range(K):
+                for op_idx in session_ids[i]:
+                    partition_map[op_idx] = i
+            output_data['partition_map'] = partition_map.tolist()
+            output_data['num_partitions'] = K
+            json.dump(output_data, ofile)

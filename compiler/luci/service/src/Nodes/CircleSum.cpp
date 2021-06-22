@@ -19,7 +19,7 @@
 namespace luci
 {
 
-luci::CircleNode *CloneNode::visit(const luci::CircleSum *node)
+luci::CircleNode *CloneNodeLet<CN::STUV>::visit(const luci::CircleSum *node)
 {
   auto *cloned = _graph->nodes()->create<luci::CircleSum>();
   if (cloned != nullptr)

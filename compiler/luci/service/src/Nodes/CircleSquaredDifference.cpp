@@ -19,7 +19,7 @@
 namespace luci
 {
 
-luci::CircleNode *CloneNode::visit(const luci::CircleSquaredDifference *)
+luci::CircleNode *CloneNodeLet<CN::STUV>::visit(const luci::CircleSquaredDifference *)
 {
   return _graph->nodes()->create<luci::CircleSquaredDifference>();
 }

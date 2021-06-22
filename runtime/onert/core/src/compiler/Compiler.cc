@@ -38,7 +38,9 @@
 #include "util/ConfigSource.h"
 #include "util/logging.h"
 #include "ir/OperationDumper.h"
+#include "ir/OperationCloner.h"
 #include "misc/string_helpers.h"
+#include "json/json.h"
 
 namespace
 {
@@ -139,6 +141,26 @@ Compiler::Compiler(const std::shared_ptr<ir::Subgraphs> &subgs, util::TracingCtx
 
 void Compiler::enableToFp16() { _options.fp16_enable = true; }
 
+void Compiler::set_backend_from_str(const char *backend_settings)
+{
+  // Backend for all
+  auto &ms_options = _options.manual_scheduler_options;
+  auto key_val_list = nnfw::misc::split(backend_settings, ';');
+  for (const auto &key_val_str : key_val_list)
+  {
+    if (key_val_str.empty())
+    {
+      continue;
+    }
+
+    auto key_val = nnfw::misc::split(key_val_str, '=');
+    const auto &key_str = key_val.at(0);
+    const auto &val = key_val.at(1);
+    auto key = static_cast<uint32_t>(std::stoi(key_str));
+    ms_options.index_to_backend.emplace(ir::OperationIndex{key}, val);
+  }
+}
+
 void Compiler::checkProfilerConditions()
 {
   if (!_options.he_scheduler)
@@ -146,6 +168,164 @@ void Compiler::checkProfilerConditions()
 
   if (_options.executor != "Dataflow")
     throw std::runtime_error("Profiling mode works only with 'Dataflow' executor");
+}
+
+bool Compiler::buildPartialGraph(uint32_t num_graphs)
+{
+  if (_subgraphs->count() > 1)
+    return false;
+
+  auto partialgraphs = std::make_shared<ir::Subgraphs>();
+
+  for (uint32_t idx = 0; idx < num_graphs; idx++)
+  {
+    auto partialgraph = std::make_unique<ir::Graph>();
+    partialgraphs->push(ir::SubgraphIndex{idx}, std::move(partialgraph));
+  }
+  _subgraphs->primary()->setPartialgraphs(partialgraphs);
+
+  auto partial_graph = primary_subgraph()->partialgraphs();
+
+  primary_subgraph()->operands().iterate(
+    [&](const ir::OperandIndex &operand_index, const ir::Operand &operand) {
+      auto use_operations = operand.getUses();
+
+      for (auto use_operation : use_operations)
+      {
+        auto graph_index = _options.partial_graph_options.index_to_graph.find(use_operation);
+        if (graph_index == _options.partial_graph_options.index_to_graph.end())
+        {
+          throw std::runtime_error("Invalid Partition Map");
+        }
+        auto partition = partial_graph->at(graph_index->second);
+
+        if (partition->operands().exist(operand_index))
+        {
+          continue;
+        }
+
+        auto new_operand = std::make_unique<ir::Operand>(operand);
+        new_operand->clearDefUse();
+        auto new_operand_ind = partition->addOperand(operand_index, std::move(new_operand));
+        UNUSED_RELEASE(new_operand_ind);
+        assert(new_operand_ind == operand_index);
+      }
+    });
+
+  primary_subgraph()->operations().iterate(
+    [&](const ir::OperationIndex &operation_index, const ir::Operation &operation) {
+      auto graph_index = _options.partial_graph_options.index_to_graph.find(operation_index);
+      if (graph_index == _options.partial_graph_options.index_to_graph.end())
+      {
+        throw std::runtime_error("Invalid Partition Map");
+      }
+      auto partition = partial_graph->at(graph_index->second);
+
+      auto operand_io = (operation.getInputs() + operation.getOutputs()) | ir::Remove::DUPLICATED |
+                        ir::Remove::UNDEFINED;
+      for (auto operand_index : operand_io)
+      {
+        if (partition->operands().exist(operand_index))
+          continue;
+
+        const auto &operand = primary_subgraph()->operands().at(operand_index);
+
+        auto new_operand = std::make_unique<ir::Operand>(operand);
+        new_operand->clearDefUse();
+
+        auto new_operand_index = partition->addOperand(operand_index, std::move(new_operand));
+        UNUSED_RELEASE(new_operand_index);
+        assert(new_operand_index == operand_index);
+      }
+
+      auto new_operation_index = partition->addOperation(operation_index, clone(operation));
+      UNUSED_RELEASE(new_operation_index);
+      assert(new_operation_index == operation_index);
+    });
+
+  for (uint32_t idx = 0; idx < partial_graph->count(); idx++)
+  {
+    auto partition = partial_graph->at(ir::SubgraphIndex{idx});
+
+    partition->operands().iterate([&](const ir::OperandIndex &operand_index,
+                                      const ir::Operand &operand) {
+      if (primary_subgraph()->getInputs().contains(operand_index) ||
+          (!operand.getDef().valid() && !operand.isConstant()))
+      {
+        partition->addInput(operand_index, primary_subgraph()->tensor_names()->at(operand_index));
+      }
+      if (primary_subgraph()->getOutputs().contains(operand_index) || operand.getUses().size() == 0)
+      {
+        partition->addOutput(operand_index, primary_subgraph()->tensor_names()->at(operand_index));
+      }
+
+      if (primary_subgraph()->operands().at(operand_index).getUses().size() > 1 &&
+          !primary_subgraph()->operands().at(operand_index).isConstant() &&
+          !partition->getInputs().contains(operand_index))
+      {
+        auto use_operations = primary_subgraph()->operands().at(operand_index).getUses();
+        auto iter = use_operations.begin();
+        ir::SubgraphIndex graph_index =
+          _options.partial_graph_options.index_to_graph.find(*iter++)->second;
+        while (iter != use_operations.end())
+        {
+          if (graph_index != _options.partial_graph_options.index_to_graph.find(*iter)->second &&
+              !partition->getOutputs().contains(operand_index))
+          {
+            partition->addOutput(operand_index,
+                                 primary_subgraph()->tensor_names()->at(operand_index));
+          }
+          iter++;
+        }
+      }
+    });
+
+    partition->verify();
+
+    bool same = true;
+    if (partition->getInputs().size() == primary_subgraph()->getInputs().size())
+    {
+      for (auto iter = partition->getInputs().begin(); iter != partition->getInputs().end(); ++iter)
+      {
+        if (!primary_subgraph()->getInputs().contains(*iter))
+        {
+          same = false;
+          break;
+        }
+      }
+      if (same == true)
+      {
+        partition->getInputs() = primary_subgraph()->getInputs();
+      }
+      else
+      {
+        partition->input_sort();
+      }
+    }
+
+    same = true;
+    if (partition->getOutputs().size() == primary_subgraph()->getOutputs().size())
+    {
+      for (auto iter = partition->getOutputs().begin(); iter != partition->getOutputs().end();
+           ++iter)
+      {
+        if (!primary_subgraph()->getOutputs().contains(*iter))
+        {
+          same = false;
+          break;
+        }
+      }
+      if (same == true)
+      {
+        partition->getOutputs() = primary_subgraph()->getOutputs();
+      }
+      else
+      {
+        partition->output_sort();
+      }
+    }
+  }
+  return true;
 }
 
 std::shared_ptr<exec::ExecutorMap> Compiler::compile(void)
@@ -297,6 +477,226 @@ std::shared_ptr<exec::ExecutorMap> Compiler::compile(void)
    * Code generation phase finished
    ********************************/
   _state = State::COMPILED;
+  return executors;
+}
+
+std::vector<std::shared_ptr<exec::ExecutorMap>> Compiler::compile(const char *package_file_path,
+                                                                  const char *map_file_path)
+{
+  std::vector<std::shared_ptr<exec::ExecutorMap>> executors;
+  auto executor_map = std::make_shared<exec::ExecutorMap>();
+
+  std::string package_path(package_file_path);
+  std::string partition_map_file;
+
+  if (map_file_path)
+  {
+    partition_map_file = map_file_path;
+  }
+  else
+  {
+    partition_map_file = package_path + "/partition_map.json";
+  }
+
+  std::ifstream pmfs(partition_map_file);
+  Json::Value root;
+  pmfs >> root;
+  const Json::Value &map = root["partition_map"];
+  const Json::Value &np = root["num_partitions"];
+
+  uint32_t num_graphs = 1;
+
+  if (pmfs.is_open())
+  {
+    num_graphs = np.asUInt();
+    for (uint32_t i = 0; i < (uint32_t)map.size(); ++i)
+    {
+      _options.partial_graph_options.index_to_graph[ir::OperationIndex{i}] =
+        ir::SubgraphIndex{map[i].asUInt()};
+    }
+  }
+  else
+  {
+    throw std::runtime_error("There is no partition map file");
+  }
+
+  if (!buildPartialGraph(num_graphs))
+  {
+    throw std::runtime_error("It doesn't support in case there are subgraphs");
+  }
+
+  // Set control flow backend for control flow operators
+  {
+    auto &builtin_id = backend::builtin::Config::ID;
+    _options.manual_scheduler_options.opcode_to_backend[ir::OpCode::If] = builtin_id;
+    _options.manual_scheduler_options.opcode_to_backend[ir::OpCode::While] = builtin_id;
+    _options.manual_scheduler_options.opcode_to_backend[ir::OpCode::Permute] = builtin_id;
+  }
+
+  // FIXME This is a workaround for bcq operations, should remove it
+  {
+    _options.manual_scheduler_options.opcode_to_backend[ir::OpCode::BCQFullyConnected] = "bcq";
+    _options.manual_scheduler_options.opcode_to_backend[ir::OpCode::BCQGather] = "bcq";
+  }
+
+  // It doesn't support tracing in case of partial graph
+  {
+    _options.tracing_ctx = nullptr;
+  }
+
+  {
+    VERBOSE(Compiler) << std::boolalpha << "==== Compiler Options ====" << std::endl;
+    VERBOSE(Compiler) << "backend_list             : "
+                      << nnfw::misc::join(_options.backend_list.begin(),
+                                          _options.backend_list.end(), "/")
+                      << std::endl;
+    VERBOSE(Compiler) << "trace_filepath           : " << _options.trace_filepath << std::endl;
+    VERBOSE(Compiler) << "graph_dump_level         : " << _options.graph_dump_level << std::endl;
+    VERBOSE(Compiler) << "executor                 : " << _options.executor << std::endl;
+    VERBOSE(Compiler) << "manual backend_for_all   : "
+                      << _options.manual_scheduler_options.backend_for_all << std::endl;
+    VERBOSE(Compiler) << "manual_scheduler_options : "
+                      << getOpBackends(_options.manual_scheduler_options.opcode_to_backend)
+                      << std::endl;
+    VERBOSE(Compiler) << "he_scheduler             : " << _options.he_scheduler << std::endl;
+    VERBOSE(Compiler) << "he_profiling_mode        : " << _options.he_profiling_mode << std::endl;
+    VERBOSE(Compiler) << "disable_compile          : " << _options.disable_compile << std::endl;
+    VERBOSE(Compiler) << "fp16_enable              : " << _options.fp16_enable << std::endl
+                      << std::noboolalpha;
+  }
+
+  _subgraphs->iterate([&](const ir::SubgraphIndex &, ir::Graph &subg) {
+    // Mandatory passes
+    auto part = subg.partialgraphs();
+    part->iterate([&](const ir::SubgraphIndex &, ir::Graph &partialgraph) {
+      pass::PassRunner{}
+        .append(std::make_unique<pass::ConstantOutputPass>(partialgraph))
+        .append(std::make_unique<pass::OddOutputPass>(partialgraph))
+        .run();
+
+      // Optimizations
+      pass::PassRunner{}
+        .append(std::make_unique<pass::UnusedOperandEliminationPass>(partialgraph))
+        .run();
+    });
+  });
+
+  /***************************************************
+   * Prepare compilation phase
+   ***************************************************/
+
+  // Compilable check
+  // TODO: Support hybrid execution -
+  //       execution between interpreter and compiled executor (including control flow)
+  if (_options.disable_compile)
+  {
+    _subgraphs->iterate([&](const ir::SubgraphIndex &index, ir::Graph &subg) {
+      executor_map->emplace(index, std::make_unique<interp::InterpExecutor>(subg));
+      executors.push_back(executor_map);
+    });
+    _state = State::COMPILED;
+    return executors;
+  }
+
+  // Mode check
+  if (_options.he_profiling_mode)
+    checkProfilerConditions();
+
+  /***************************************************
+   * Backend independent analysis & optimization phase
+   ***************************************************/
+  auto dump_level = static_cast<dumper::dot::DotDumper::Level>(_options.graph_dump_level);
+
+  // Lower: Assign backend
+  std::unordered_map<ir::SubgraphIndex, std::unique_ptr<compiler::LoweredGraph>>
+    lowered_partialgraphs;
+  _subgraphs->iterate([&](const ir::SubgraphIndex &, ir::Graph &subg) {
+    auto part = subg.partialgraphs();
+    part->iterate([&](const ir::SubgraphIndex &pindex, ir::Graph &partialgraph) {
+      onert::dumper::dot::DotDumper dot_dumper_part(partialgraph, dump_level);
+      dot_dumper_part.dump(nnfw::misc::str("before_lower_subg_partialgraph-", pindex.value()));
+
+      // // Lower: Assign backend
+      lowered_partialgraphs[pindex] =
+        std::make_unique<compiler::LoweredGraph>(subg, partialgraph, _options);
+      partialgraph.setSubgraphs(nullptr);
+    });
+  });
+
+  for (auto &pair : lowered_partialgraphs)
+  {
+
+    const auto &partialgraph_index = pair.first;
+    auto &lowered_partialgraph = pair.second;
+    onert::dumper::dot::DotDumper dot_dumper_lowered_part(lowered_partialgraph.get(), dump_level);
+    dot_dumper_lowered_part.dump("after_lower_subg_partialgraph-" +
+                                 std::to_string(partialgraph_index.value()));
+  }
+
+  // Partial Graph shape inference
+  for (auto &pair : lowered_partialgraphs)
+  {
+    const auto &partialgraph_index = pair.first;
+    auto &lowered_partialgraph = pair.second;
+    StaticShapeInferer partial_inferer(partialgraph_index, lowered_partialgraphs);
+    auto ordered_ops = lowered_partialgraph->graph().topolSortOperations();
+    for (auto op_ind : ordered_ops)
+    {
+      const auto &op = lowered_partialgraph->graph().operations().at(op_ind);
+      bool has_dynamic_tensor = partial_inferer.infer(op);
+      lowered_partialgraph->setHasDynamicTensor(op_ind, has_dynamic_tensor);
+    }
+    partial_inferer.dump();
+  }
+
+  // Shape validation
+  // TODO Move shape independent feature check from ShapeValidator to OperationValidator
+  // TODO Move ShapeValidator into shape inference
+  //      - Check input tensor shape validation
+  //      - Check parameter value validation which valid value is depend on input tensor shape
+  //      - Output tensor shape validation check is needless because
+  //        static/dynamic shape inferer will make valid output shape
+  for (auto &pair : lowered_partialgraphs)
+  {
+    auto &lowered_partialgraph = pair.second;
+    compiler::ShapeValidator{lowered_partialgraph->graph()}();
+  }
+
+  /*************************************************************
+   *  Backend independent analysis & optimization phase finished
+   *************************************************************/
+  std::map<uint32_t, std::unique_ptr<compiler::LoweredGraph>> ordered;
+  for (auto &pair : lowered_partialgraphs)
+  {
+    // const auto &partialgraph_index = pair.first;
+    auto &lowered_partialgraph = pair.second;
+
+    ordered.insert(make_pair(pair.first.value(), std::move(lowered_partialgraph)));
+  }
+
+  for (auto &pair : ordered)
+  {
+    executor_map = std::make_shared<exec::ExecutorMap>();
+    const auto &partialgraph_index = ir::SubgraphIndex(pair.first);
+    auto &lowered_partialgraph = pair.second;
+    auto indexed_ranks = lowered_partialgraph->indexed_ranks();
+    ir::OperationDumper dumper("Executor generation of Subgraph " +
+                               std::to_string(partialgraph_index.value()));
+    lowered_partialgraph->graph().operations().iterate(
+      [&](const ir::OperationIndex &, const ir::Operation &op) { op.accept(dumper); });
+    auto executor = std::unique_ptr<exec::IExecutor>{
+      ExecutorFactory::get().create(std::move(lowered_partialgraph), _options, executor_map)};
+    executor->setIndexedRanks(indexed_ranks);
+    executor_map->insert(std::make_pair(ir::SubgraphIndex{0}, std::move(executor)));
+    executors.push_back(executor_map);
+  }
+
+  _subgraphs.reset();
+  /********************************
+   * Code generation phase finished
+   ********************************/
+  _state = State::COMPILED;
+
   return executors;
 }
 

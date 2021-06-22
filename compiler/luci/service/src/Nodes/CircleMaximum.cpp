@@ -19,7 +19,7 @@
 namespace luci
 {
 
-luci::CircleNode *CloneNode::visit(const luci::CircleMaximum *)
+luci::CircleNode *CloneNodeLet<CN::KLMN>::visit(const luci::CircleMaximum *)
 {
   return _graph->nodes()->create<luci::CircleMaximum>();
 }

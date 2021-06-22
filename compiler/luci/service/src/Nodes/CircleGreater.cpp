@@ -19,7 +19,7 @@
 namespace luci
 {
 
-luci::CircleNode *CloneNode::visit(const luci::CircleGreater *)
+luci::CircleNode *CloneNodeLet<CN::GHIJ>::visit(const luci::CircleGreater *)
 {
   return _graph->nodes()->create<luci::CircleGreater>();
 }

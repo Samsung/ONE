@@ -23,7 +23,6 @@ import argparse
 import os
 import subprocess
 import sys
-import tempfile
 
 import utils as _utils
 
@@ -42,6 +41,11 @@ def _get_parser():
         '--generate_profile_data',
         action='store_true',
         help='generate profiling data')
+
+    utility_group.add_argument(
+        '--change_outputs',
+        type=str,
+        help='Experimental: Change first subgraph output nodes to CSV names')
 
     ## circle2circle arguments
     circle2circle_group = parser.add_argument_group('arguments for optimization')
@@ -93,6 +97,10 @@ def _optimize(args):
                                                            getattr(args, 'input_path'),
                                                            getattr(args, 'output_path'))
 
+        if _utils._is_valid_attr(args, 'change_outputs'):
+            circle2circle_cmd.append('--change_outputs')
+            circle2circle_cmd.append(getattr(args, 'change_outputs'))
+
         f.write((' '.join(circle2circle_cmd) + '\n').encode())
 
         # optimize
@@ -103,6 +111,7 @@ def _optimize(args):
                 bufsize=1) as p:
             for line in p.stdout:
                 sys.stdout.buffer.write(line)
+                sys.stdout.buffer.flush()
                 f.write(line)
         if p.returncode != 0:
             sys.exit(p.returncode)

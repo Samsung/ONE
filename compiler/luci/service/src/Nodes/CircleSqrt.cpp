@@ -19,7 +19,7 @@
 namespace luci
 {
 
-luci::CircleNode *CloneNode::visit(const luci::CircleSqrt *)
+luci::CircleNode *CloneNodeLet<CN::STUV>::visit(const luci::CircleSqrt *)
 {
   return _graph->nodes()->create<luci::CircleSqrt>();
 }

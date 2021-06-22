@@ -36,7 +36,7 @@ inputfile="./inception_v3.pb"
 outputfile="./inception_v3.circle"
 
 rm -rf ${outputfile}
-rm -rf ${outputfile}.log
+rm -rf ${filename}.log
 
 # run test
 one-import tf \

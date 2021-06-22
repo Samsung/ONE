@@ -224,6 +224,7 @@ void CircleExporterImpl::exportModule(Module *module)
   auto description = _builder.CreateString(description_str);
 
   // Metadata
+  md._metadata.source_table(module->source_table());
   auto metadata_vec = createCircleMetadataVector(_builder, md);
   auto metadata = _builder.CreateVector(std::vector<Offset<Metadata>>(metadata_vec));
 

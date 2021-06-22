@@ -19,7 +19,7 @@
 namespace luci
 {
 
-luci::CircleNode *CloneNode::visit(const luci::CircleMatrixDiag *)
+luci::CircleNode *CloneNodeLet<CN::KLMN>::visit(const luci::CircleMatrixDiag *)
 {
   return _graph->nodes()->create<luci::CircleMatrixDiag>();
 }

@@ -31,15 +31,6 @@ using namespace locomotiv;
 
 void execute_node(loco::Pull *pull)
 {
-// TODO Remove deprecated code
-#if 0
-  validate(annot_data(pull), "Data for Pull is not ready");
-
-  validate(annot_domain(pull) == loco::Domain::Tensor, "Domain for Pull is not Tensor");
-
-  // DO NOTHING
-#endif
-
   auto input_data = user_data(pull);
 
   validate(input_data, "Input not ready");

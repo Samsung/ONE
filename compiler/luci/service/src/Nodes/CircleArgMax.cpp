@@ -19,7 +19,7 @@
 namespace luci
 {
 
-luci::CircleNode *CloneNode::visit(const luci::CircleArgMax *node)
+luci::CircleNode *CloneNodeLet<CN::ABC>::visit(const luci::CircleArgMax *node)
 {
   auto *cloned = _graph->nodes()->create<luci::CircleArgMax>();
   if (cloned != nullptr)
