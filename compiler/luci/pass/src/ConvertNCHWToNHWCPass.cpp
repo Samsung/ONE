@@ -183,6 +183,8 @@ luci::CircleConst *create_NHWC_paddings(luci::CircleConst *paddings)
 
 luci::CircleConst *create_NHWC_rindices(luci::CircleConst *rindices)
 {
+  assert(rindices != nullptr); // FIX_CALLER_UNLESS
+
   if (rindices->dtype() != loco::DataType::S32)
     return nullptr;
 
