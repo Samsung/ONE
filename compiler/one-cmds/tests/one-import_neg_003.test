@@ -21,7 +21,15 @@ filename="${filename_ext%.*}"
 
 trap_err_onexit()
 {
+  # TODO Error message depends on TF version. Find better way.
+  # TF 2.3.0
   if grep -q "ValueError: Invalid tensors" "${filename}.log"; then
+    echo "${filename_ext} SUCCESS"
+    exit 0
+  fi
+
+  # TF 2.5.0
+  if grep -q "ConverterError: <unknown>:0: error:" "${filename}.log"; then
     echo "${filename_ext} SUCCESS"
     exit 0
   fi
