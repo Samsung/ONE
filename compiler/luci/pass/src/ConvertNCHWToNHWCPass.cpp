@@ -20,6 +20,7 @@
 #include <luci/IR/CircleNodes.h>
 #include <luci/IR/CircleNodeVisitor.h>
 #include <luci/Profile/CircleNodeOrigin.h>
+#include <luci/Service/Nodes/CircleConst.h>
 #include <luci/Log.h>
 
 namespace
@@ -178,6 +179,26 @@ luci::CircleConst *create_NHWC_paddings(luci::CircleConst *paddings)
     }
   }
   return nhwc_paddings;
+}
+
+luci::CircleConst *create_NHWC_rindices(luci::CircleConst *rindices)
+{
+  if (rindices->dtype() != loco::DataType::S32)
+    return nullptr;
+
+  auto nhwc_rindices = luci::clone(rindices);
+  auto name = rindices->name();
+  assert(name.length() > 0); // FIX_CALLER_UNLESS
+  nhwc_rindices->name(name + "_NHWC");
+
+  auto size = nhwc_rindices->size<loco::DataType::S32>();
+  for (uint32_t i = 0; i < size; i++)
+  {
+    nhwc_rindices->at<loco::DataType::S32>(i) =
+      nchw_axis_to_nhwc(rindices->at<loco::DataType::S32>(i));
+  }
+
+  return nhwc_rindices;
 }
 
 luci::CircleConst *create_NHWC_from_NCHW(luci::CircleConst *constant)
@@ -521,6 +542,37 @@ class ConvertNCHWToNHWC final : public luci::CircleNodeMutableVisitor<bool>
     return convert_unary_features<luci::CircleLeakyRelu>(node);
   }
 
+  bool visit(luci::CircleMean *node)
+  {
+    // TODO Support the case for keep_dims = false
+    if (not node->keep_dims())
+      return false;
+
+    auto rindices = dynamic_cast<luci::CircleConst *>(node->reduction_indices());
+    if (not rindices)
+      return false;
+
+    auto nhwc_rindices = create_NHWC_rindices(rindices);
+    if (not nhwc_rindices)
+      return false;
+
+    auto pre_trans = create_pre_transpose(node);
+    pre_trans->a(node->input());
+    node->input(pre_trans);
+
+    // Do shape inference for this node again.
+    node->shape_status(luci::ShapeStatus::UNDEFINED);
+
+    node->reduction_indices(nhwc_rindices);
+
+    auto post_trans = create_post_transpose(node);
+    loco::replace(node).with(post_trans);
+
+    post_trans->a(node);
+
+    return true;
+  }
+
   bool visit(luci::CircleMul *node)
   {
     LOGGER(l);
@@ -638,6 +690,7 @@ bool ConvertNCHWToNHWCPass::run(loco::Graph *g)
       case luci::CircleOpcode::ADD:
       case luci::CircleOpcode::CONCATENATION:
       case luci::CircleOpcode::LEAKY_RELU:
+      case luci::CircleOpcode::MEAN:
       case luci::CircleOpcode::MUL:
       case luci::CircleOpcode::NEG:
       case luci::CircleOpcode::PAD:

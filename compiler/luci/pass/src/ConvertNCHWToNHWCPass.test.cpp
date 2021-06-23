@@ -180,6 +180,40 @@ public:
   luci::CircleLeakyRelu *leakyrelu = nullptr;
 };
 
+class MeanGraph final : public SimpleGraph
+{
+protected:
+  loco::Node *insertGraphBody(loco::Node *input) override
+  {
+    mean = g.nodes()->create<luci::CircleMean>();
+    rindices = g.nodes()->create<luci::CircleConst>();
+
+    mean->dtype(loco::DataType::FLOAT32);
+    rindices->dtype(loco::DataType::S32);
+
+    uint32_t channel_size = 16;
+    mean->shape({1, channel_size, 1, 1});
+    rindices->shape({2});
+
+    rindices->size<loco::DataType::S32>(2);
+    rindices->at<loco::DataType::S32>(0) = 2;
+    rindices->at<loco::DataType::S32>(1) = 3;
+
+    mean->input(input);
+    mean->reduction_indices(rindices);
+    mean->keep_dims(true);
+
+    mean->name("mean");
+    rindices->name("rindices");
+
+    return mean;
+  }
+
+public:
+  luci::CircleMean *mean = nullptr;
+  luci::CircleConst *rindices = nullptr;
+};
+
 class MulGraph final : public SimpleGraph
 {
 protected:
@@ -433,6 +467,28 @@ TEST(ConvertNCHWToNHWC, LeakyRelu)
   EXPECT_EQ(4, g.leakyrelu->dim(1).value());
   EXPECT_EQ(4, g.leakyrelu->dim(2).value());
   EXPECT_EQ(16, g.leakyrelu->dim(3).value());
+}
+
+TEST(ConvertNCHWToNHWC, Mean)
+{
+  MeanGraph g;
+  g.init();
+
+  run_phase(&g.g, false, false);
+
+  check_pre_trans(g.mean->input());
+
+  auto mean_succs = loco::succs(g.mean);
+  EXPECT_EQ(1, mean_succs.size());
+  check_post_trans(*mean_succs.begin());
+
+  auto new_rindices = dynamic_cast<luci::CircleConst *>(g.mean->reduction_indices());
+  EXPECT_NE(nullptr, new_rindices);
+  EXPECT_EQ(1, new_rindices->rank());
+  EXPECT_EQ(2, new_rindices->dim(0).value());
+  EXPECT_EQ(2, new_rindices->size<loco::DataType::S32>());
+  EXPECT_EQ(1, new_rindices->at<loco::DataType::S32>(0));
+  EXPECT_EQ(2, new_rindices->at<loco::DataType::S32>(1));
 }
 
 TEST(ConvertNCHWToNHWC, Mul)
