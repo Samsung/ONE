@@ -44,3 +44,31 @@ TEST_F(GenModelTest, OneOp_DetectionPostProcess_SingleBox)
 
   SUCCEED();
 }
+
+TEST_F(GenModelTest, neg_OneOp_DetectionPostProcess_SinglBox_MultiClasses)
+{
+  CircleGen cgen;
+
+  int boxes = cgen.addTensor({{1, 1, 4}, circle::TensorType::TensorType_FLOAT32});
+  int scores = cgen.addTensor({{1, 1, 3}, circle::TensorType::TensorType_FLOAT32});
+  int anchors = cgen.addTensor({{1, 1, 4}, circle::TensorType::TensorType_FLOAT32});
+
+  int box_coors = cgen.addTensor({{1, 1, 4}, circle::TensorType::TensorType_FLOAT32});
+  int box_classes = cgen.addTensor({{1}, circle::TensorType::TensorType_FLOAT32});
+  int box_scores = cgen.addTensor({{1}, circle::TensorType::TensorType_FLOAT32});
+  int num_selected = cgen.addTensor({{1}, circle::TensorType::TensorType_FLOAT32});
+
+  cgen.addOperatorDetectionPostProcess(
+    {{boxes, scores, anchors}, {box_coors, box_classes, box_scores, num_selected}}, 2, 10, 10, 5, 5,
+    0.8, 0.5, 1, 1, 1);
+  cgen.setInputsAndOutputs({boxes, scores, anchors},
+                           {box_coors, box_classes, box_scores, num_selected});
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->addTestCase(uniformTCD<float>({{0, 0, 0, 0}, {0, 0.7, 0.9}, {0, 0, 1, 1}},
+                                          {{-0.5, -0.5, 0.5, 0.5}, {1}, {0.9}, {1}}));
+  _context->setBackends({"cpu"});
+  _context->expectFailModelLoad();
+
+  SUCCEED();
+}
