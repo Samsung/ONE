@@ -159,6 +159,12 @@ int entry(int argc, char **argv)
     .default_value(false)
     .help("This will fuse BatchNorm operators of pre-activations to Convolution operator");
 
+  arser.add_argument("--fuse_subsquare")
+    .nargs(0)
+    .required(false)
+    .default_value(false)
+    .help("This will fuse Sub-Square sequnce to SquaredDifference operator");
+
   arser.add_argument("--remove_fakequant")
     .nargs(0)
     .required(false)
@@ -398,6 +404,8 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::MakeBatchNormGammaPositive);
   if (arser.get<bool>("--fuse_preactivation_batchnorm"))
     options->enable(Algorithms::FusePreActivationBatchNorm);
+  if (arser.get<bool>("--fuse_subsquare"))
+    options->enable(Algorithms::FuseSubSquare);
   if (arser.get<bool>("--remove_fakequant"))
     options->enable(Algorithms::RemoveFakeQuant);
   if (arser.get<bool>("--remove_quantdequant"))

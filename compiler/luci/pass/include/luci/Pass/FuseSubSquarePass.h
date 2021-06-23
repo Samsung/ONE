@@ -14,31 +14,24 @@
  * limitations under the License.
  */
 
-#include "FuseInstanceNormPassInternal.h"
+#ifndef __LUCI_FUSE_SUB_SQUARE_PASS_H__
+#define __LUCI_FUSE_SUB_SQUARE_PASS_H__
 
-#include "luci/Pass/FuseInstanceNormPass.h"
+#include <logo/Pass.h>
 
-#include <vector>
-
-#include <gtest/gtest.h>
-
-namespace
+namespace luci
 {
 
-void setShape(luci::CircleNode &node, const std::vector<int> &v)
+/**
+ * @brief  Class to fuse SUB-SQUARE to SQUARED_DIFFERENCE
+ */
+struct FuseSubSquarePass final : public logo::Pass
 {
-  node.rank(v.size());
-  for (int i = 0; i < v.size(); ++i)
-  {
-    node.dim(i) = v[i];
-  }
-}
+  const char *name(void) const final { return "luci::FuseSubSquarePass"; }
 
-} // namespace
+  bool run(loco::Graph *g) final;
+};
 
-TEST(FuseInstanceNormPassTest, name)
-{
-  luci::FuseInstanceNormPass pass;
-  auto const name = pass.name();
-  ASSERT_NE(nullptr, name);
-}
+} // namespace luci
+
+#endif // __LUCI_FUSE_SUB_SQUARE_PASS_H__

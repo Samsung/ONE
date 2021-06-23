@@ -30,6 +30,7 @@
 #include "luci/Pass/FuseBCQPass.h"
 #include "luci/Pass/FuseInstanceNormPass.h"
 #include "luci/Pass/FusePreActivationBatchNormPass.h"
+#include "luci/Pass/FuseSubSquarePass.h"
 #include "luci/Pass/MakeBatchNormGammaPositivePass.h"
 #include "luci/Pass/PropagateQuantParamPass.h"
 #include "luci/Pass/RemoveFakeQuantPass.h"
@@ -225,6 +226,10 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   if (_options->query(Options::Algorithm::FusePreActivationBatchNorm))
   {
     phase.emplace_back(std::make_unique<luci::FusePreActivationBatchNormPass>());
+  }
+  if (_options->query(Options::Algorithm::FuseSubSquare))
+  {
+    phase.emplace_back(std::make_unique<luci::FuseSubSquarePass>());
   }
   if (_options->query(Options::Algorithm::MakeBatchNormGammaPositive))
   {

@@ -1,0 +1,49 @@
+operand {
+  name: "input_1"
+  type: FLOAT32
+  shape {
+    dim: 3
+    dim: 3
+  }
+}
+operand {
+  name: "input_2"
+  type: FLOAT32
+  shape {
+    dim: 3
+    dim: 3
+  }
+}
+operand {
+  name: "Square"
+  type: FLOAT32
+  shape {
+    dim: 3
+    dim: 3
+  }
+}
+operand {
+  name: "Sub"
+  type: FLOAT32
+  shape {
+    dim: 3
+    dim: 3
+  }
+}
+operation {
+  type: "Sub"
+  input: "input_1"
+  input: "input_2"
+  output: "Sub"
+  sub_options {
+    activation: NONE
+  }
+}
+operation {
+  type: "Square"
+  input: "Sub"
+  output: "Square"
+}
+input: "input_1"
+input: "input_2"
+output: "Square"

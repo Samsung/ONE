@@ -227,8 +227,14 @@ operand {
   }
 }
 operation {
-  type: "Mean"
+  type: "Reshape"
   input: "input_layer"
+  input: "sequential/instance_normalization/stack"
+  output: "sequential/instance_normalization/Reshape"
+}
+operation {
+  type: "Mean"
+  input: "sequential/instance_normalization/Reshape"
   input: "sequential/instance_normalization/moments/variance/reduction_indices"
   output: "sequential/instance_normalization/moments/mean"
   mean_options {
@@ -237,7 +243,7 @@ operation {
 }
 operation {
   type: "SquaredDifference"
-  input: "input_layer"
+  input: "sequential/instance_normalization/Reshape"
   input: "sequential/instance_normalization/moments/mean"
   output: "sequential/instance_normalization/moments/SquaredDifference"
 }
@@ -275,7 +281,7 @@ operation {
 }
 operation {
   type: "Mul"
-  input: "input_layer"
+  input: "sequential/instance_normalization/Reshape"
   input: "sequential/instance_normalization/batchnorm/mul"
   output: "sequential/instance_normalization/batchnorm/mul_1"
   mul_options {
@@ -309,5 +315,11 @@ operation {
     activation: NONE
   }
 }
+operation {
+  type: "Reshape"
+  input: "sequential/instance_normalization/batchnorm/add_1"
+  input: "sequential/instance_normalization/Shape"
+  output: "Identity"
+}
 input: "input_layer"
-output: "sequential/instance_normalization/batchnorm/add_1"
+output: "Identity"

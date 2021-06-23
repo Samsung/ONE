@@ -53,6 +53,7 @@ public:
       ForwardReshapeToUnaryOp,
       SparsifyTensorPass,
       FusePreActivationBatchNorm,
+      FuseSubSquare,
       MakeBatchNormGammaPositive,
       FuseActivationFunction,
       ShuffleWeightTo16x1Float32,

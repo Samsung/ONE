@@ -1,0 +1,7 @@
+# To check if this network is converted to circle InstanceNorm op
+
+RULE    "VERIFY_FILE_FORMAT"      $(verify_file_format) '=' 1
+
+RULE    "SQU_DIFF_EXIST"          $(op_count SQUARED_DIFFERENCE) '=' 1
+RULE    "NO_SUB"                  $(op_count SUB) '=' 0
+RULE    "NO_SQUARE"               $(op_count SQUARE) '=' 0
