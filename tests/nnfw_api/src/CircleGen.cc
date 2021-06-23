@@ -15,6 +15,7 @@
  */
 
 #include "CircleGen.h"
+#include "flatbuffers/flexbuffers.h"
 
 CircleGen::CircleGen() : _subgraph_contexts(1) // Create primary subgraph
 {
@@ -187,6 +188,35 @@ uint32_t CircleGen::addOperatorDepthwiseConv2D(const OperatorParams &params,
       .Union();
   return addOperatorWithOptions(params, circle::BuiltinOperator_DEPTHWISE_CONV_2D,
                                 circle::BuiltinOptions_DepthwiseConv2DOptions, options);
+}
+
+uint32_t CircleGen::addOperatorDetectionPostProcess(const OperatorParams &params, int num_classes,
+                                                    float y_scale, float x_scale, float h_scale,
+                                                    float w_scale, float nms_score_threshold,
+                                                    float nms_iou_threshold, int max_detections,
+                                                    int max_classes_per_detection,
+                                                    int detections_per_class)
+{
+  // flexbuffer custom_option
+  auto flex_buffers = std::make_unique<flexbuffers::Builder>();
+  size_t map_start = flex_buffers->StartMap();
+  flex_buffers->Int("num_classes", num_classes);
+  flex_buffers->Float("y_scale", y_scale);
+  flex_buffers->Float("x_scale", x_scale);
+  flex_buffers->Float("h_scale", h_scale);
+  flex_buffers->Float("w_scale", w_scale);
+  flex_buffers->Float("nms_iou_threshold", nms_iou_threshold);
+  flex_buffers->Float("nms_score_threshold", nms_score_threshold);
+  flex_buffers->Int("max_detections", max_detections);
+  flex_buffers->Int("max_classes_per_detection", max_classes_per_detection);
+  flex_buffers->Int("detections_per_class", detections_per_class);
+  flex_buffers->EndMap(map_start);
+  flex_buffers->Finish();
+
+  return addCustomOperatorWithOptions(params, "TFLite_Detection_PostProcess",
+                                      circle::BuiltinOptions_NONE, 0, &flex_buffers->GetBuffer(),
+                                      circle::CustomOptionsFormat::CustomOptionsFormat_FLEXBUFFERS,
+                                      nullptr, nullptr);
 }
 
 uint32_t CircleGen::addOperatorElu(const OperatorParams &params)
@@ -511,11 +541,37 @@ uint32_t CircleGen::addOperatorWithOptions(const OperatorParams &params,
   return ind;
 }
 
+uint32_t CircleGen::addCustomOperatorWithOptions(
+  const OperatorParams &params, std::string custom_code, circle::BuiltinOptions options_type,
+  flatbuffers::Offset<void> options, const std::vector<uint8_t> *custom_options,
+  circle::CustomOptionsFormat custom_options_format,
+  const std::vector<uint8_t> *mutating_variable_inputs, const std::vector<int32_t> *intermediates)
+
+{
+  uint32_t opcode_ind = addCustomOperatorCode(custom_code);
+  auto op = circle::CreateOperatorDirect(
+    _fbb, opcode_ind, &params.inputs, &params.outputs, options_type, options, custom_options,
+    custom_options_format, mutating_variable_inputs, intermediates);
+
+  uint32_t ind = curSubgCtx().operators.size();
+  curSubgCtx().operators.emplace_back(op);
+  return ind;
+}
+
 uint32_t CircleGen::addOperatorCode(circle::BuiltinOperator opcode)
 {
   // TODO If the same OperatorCode is registered already, just return it
   uint32_t ind = _opcodes.size();
   _opcodes.emplace_back(circle::CreateOperatorCode(_fbb, opcode));
+  return ind;
+}
+
+uint32_t CircleGen::addCustomOperatorCode(std::string custom_code)
+{
+  // TODO If the same OperatorCode is registered already, just return it
+  uint32_t ind = _opcodes.size();
+  _opcodes.emplace_back(
+    circle::CreateOperatorCodeDirect(_fbb, circle::BuiltinOperator_CUSTOM, custom_code.c_str()));
   return ind;
 }
 

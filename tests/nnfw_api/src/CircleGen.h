@@ -159,6 +159,11 @@ public:
                                       int stride_w, int stride_h, int depth_multiplier,
                                       circle::ActivationFunctionType actfn, int dilation_w = 1,
                                       int dilation_h = 1);
+  uint32_t addOperatorDetectionPostProcess(const OperatorParams &params, int num_classes,
+                                           float y_scale, float x_scale, float h_scale,
+                                           float w_scale, float nms_score_threshold,
+                                           float nms_iou_threshold, int max_detections,
+                                           int max_classes_per_detection, int detections_per_class);
   uint32_t addOperatorElu(const OperatorParams &params);
   uint32_t addOperatorEqual(const OperatorParams &params);
   uint32_t addOperatorExpandDims(const OperatorParams &params);
@@ -218,7 +223,15 @@ private:
   uint32_t addOperatorWithOptions(const OperatorParams &params, circle::BuiltinOperator opcode,
                                   circle::BuiltinOptions options_type,
                                   flatbuffers::Offset<void> options);
+  uint32_t addCustomOperatorWithOptions(const OperatorParams &params, std::string custom_code,
+                                        circle::BuiltinOptions options_type,
+                                        flatbuffers::Offset<void> options,
+                                        const std::vector<uint8_t> *custom_options,
+                                        circle::CustomOptionsFormat custom_options_format,
+                                        const std::vector<uint8_t> *mutating_variable_inputs,
+                                        const std::vector<int32_t> *intermediates);
   uint32_t addOperatorCode(circle::BuiltinOperator opcode);
+  uint32_t addCustomOperatorCode(std::string custom_code);
   flatbuffers::Offset<circle::Buffer> buildBuffer(const uint8_t *buf, size_t size);
   flatbuffers::Offset<circle::Tensor> buildTensor(const TensorParams &params);
   flatbuffers::Offset<circle::Tensor> buildTensor(const TensorParams &params, float scale,
