@@ -339,14 +339,14 @@ private:
   PatternVersion _pv;
 };
 
+#define CHECK_OR_FALSE(condition) \
+  if (not(condition))             \
+    return false;
+
 bool InstanceNormPattern::matched()
 {
   if (_matched)
     return true;
-
-#define CHECK_OR_FALSE(condition) \
-  if (not(condition))             \
-    return false;
 
   // Check order is DFS
 
@@ -518,10 +518,11 @@ bool InstanceNormPattern::matched()
     CHECK_OR_FALSE(mean_of_reshape == mean_of_reshape_should_be);
   }
 
-#undef CHECK_OR_FALSE
   _matched = true;
   return true;
 }
+
+#undef CHECK_OR_FALSE
 
 /**
  * Instance norm pattern would be fused like following diagram:
