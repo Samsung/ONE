@@ -604,6 +604,19 @@ void fuse_instance_norm(const InstanceNormPattern &p)
 
 } // namespace
 
+namespace
+{
+
+bool is_add_input_mul_const(luci::CircleAdd *add)
+{
+  luci::CircleMul *p_mul = nullptr;
+  luci::CircleConst *p_const = nullptr;
+
+  return luci::fill(&p_mul, &p_const).with_commutative_args_of(add);
+}
+
+} // namespace
+
 namespace luci
 {
 
@@ -623,12 +636,7 @@ bool FuseInstanceNormPass::run(loco::Graph *g)
         continue;
       pv = InstanceNormPattern::PatternVersion::Version_0;
 
-      auto x = loco::must_cast<luci::CircleNode *>(add->x());
-      auto y = loco::must_cast<luci::CircleNode *>(add->y());
-      if ((x->opcode() == luci::CircleOpcode::MUL &&
-           y->opcode() == luci::CircleOpcode::CIRCLECONST) ||
-          (x->opcode() == luci::CircleOpcode::CIRCLECONST &&
-           y->opcode() == luci::CircleOpcode::MUL))
+      if (is_add_input_mul_const(add))
         pv = InstanceNormPattern::PatternVersion::Version_2;
     }
     else
