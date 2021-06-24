@@ -204,6 +204,7 @@ install -m 0644 ./tests/scripts/build_path.txt %{buildroot}%{test_install_dir}/t
 %defattr(-,root,root,-)
 %ifarch arm armv7l aarch64 x86_64 %ix86
 %{_libdir}/*.so
+%exclude %{_includedir}/CL/*
 %endif
 
 %files devel
