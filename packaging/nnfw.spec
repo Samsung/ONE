@@ -19,6 +19,8 @@ Source1009: PTHREADPOOL.tar.gz
 Source1010: PSIMD.tar.gz
 Source1011: FP16.tar.gz
 Source1012: OPENCL_HEADERS.tar.gz
+Source1013: FARMHASH.tar.gz
+Source1014: ABSEIL.tar.gz
 Source2001: nnfw.pc.in
 Source2002: nnfw-plugin.pc.in
 
@@ -33,7 +35,6 @@ Source2002: nnfw-plugin.pc.in
 BuildRequires:  cmake
 # Require flatbuffers-devel for onert frontend (model loading)
 BuildRequires:  flatbuffers-devel
-BuildRequires:  abseil-cpp-devel
 
 %ifarch %{arm} aarch64
 # Require python for acl-ex library build pre-process
@@ -132,6 +133,8 @@ tar -xf %{SOURCE1009} -C ./externals
 tar -xf %{SOURCE1010} -C ./externals
 tar -xf %{SOURCE1011} -C ./externals
 tar -xf %{SOURCE1012} -C ./externals
+tar -xf %{SOURCE1013} -C ./externals
+tar -xf %{SOURCE1014} -C ./externals
 
 %build
 %ifarch arm armv7l aarch64 x86_64 %ix86
