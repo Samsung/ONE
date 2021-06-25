@@ -21,11 +21,11 @@ file(GLOB_RECURSE SOURCES "*.cc")
 add_library(${LIB_ONERT_BACKEND_GPU_CL} SHARED ${SOURCES})
 
 target_include_directories(${LIB_ONERT_BACKEND_GPU_CL} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
-target_include_directories(${LIB_ONERT_BACKEND_GPU_CL} PRIVATE ${NNAS_EXTERNALS_DIR}/OPENCL_HEADERS/)
 
 target_link_libraries(${LIB_ONERT_BACKEND_GPU_CL} PRIVATE abseil)
 target_link_libraries(${LIB_ONERT_BACKEND_GPU_CL} PRIVATE dl)
 target_link_libraries(${LIB_ONERT_BACKEND_GPU_CL} PRIVATE farmhash)
+target_link_libraries(${LIB_ONERT_BACKEND_GPU_CL} PRIVATE Headers)
 target_link_libraries(${LIB_ONERT_BACKEND_GPU_CL} PRIVATE onert_core)
 target_link_libraries(${LIB_ONERT_BACKEND_GPU_CL} PRIVATE nnfw_common)
 target_link_libraries(${LIB_ONERT_BACKEND_GPU_CL} PRIVATE nnfw_coverage)
