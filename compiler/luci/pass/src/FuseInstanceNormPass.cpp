@@ -527,16 +527,16 @@ bool InstanceNormPattern::matched()
 /**
  * Instance norm pattern would be fused like following diagram:
  *
- *    [In] --------------------------- CircleInstanceNorm --- [Out]
- *                                     / /
- *    const_as_gamma --- TFLReshape --- /
- *                                     /
- *    const_as_beta ---- TFLReshape ---
+ *    [In] -------------- CircleInstanceNorm --- [Out]
+ *                        / /
+ *    const_as_gamma ----  /
+ *                        /
+ *    const_as_beta -----
  *
  * Note
  *  - 'const_as_gamma' and 'const_as_beta' are from original graph
  *  - Value of 'const_as_epsilon' would be copied to CircleInstanceNorm's attribute
- *  - TFLReshape is added as CircleInstanceNorm only accept 1D tensor
+ *  - Two CircleConst shape is updated as CircleInstanceNorm only accept 1D tensor
  *  - 'CircleConst --- TFLReshape' is expected to be fused in constant folding for Reshape
  */
 void fuse_instance_norm(const InstanceNormPattern &p)
