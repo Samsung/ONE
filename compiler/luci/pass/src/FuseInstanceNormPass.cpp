@@ -182,6 +182,7 @@ namespace
  *
  *    TODO support other semantically same patterns for instance norm
  *
+ * Version_0
  *                 [In]
  *                   |
  *                   V
@@ -216,6 +217,7 @@ namespace
  *         V
  *       [Out]
  *-------------------------------------------------------------------
+ * Version_1
  *                 [In]
  *                   |
  *                   V
@@ -256,6 +258,7 @@ namespace
  *         V
  *       [Out]
  *-------------------------------------------------------------------
+ * Version_2
  *                          [In]
  *                            |
  *                            V
