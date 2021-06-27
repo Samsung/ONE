@@ -306,6 +306,9 @@ public:
     _pv = pv;
   }
 
+private:
+  template <enum PatternVersion> bool match();
+
 public:
   bool matched();
   bool matched() const { return _matched; }
@@ -343,6 +346,66 @@ private:
   if (not(condition))             \
     return false;
 
+template <> bool InstanceNormPattern::match<InstanceNormPattern::PatternVersion::Version_2>()
+{
+  CHECK_OR_FALSE(luci::fill(&mul_gamma, &const_as_beta).with_commutative_args_of(add_as_terminal));
+  CHECK_OR_FALSE(luci::fill(&div, &const_as_gamma).with_commutative_args_of(mul_gamma));
+
+  sub = dynamic_cast<luci::CircleSub *>(div->x());
+  CHECK_OR_FALSE(sub);
+
+  ifm = sub->x();
+  CHECK_OR_FALSE(ifm);
+
+  luci::CircleNode *ifm_node = loco::must_cast<luci::CircleNode *>(ifm);
+  CHECK_OR_FALSE(ifm_node->rank() == 4);
+  CHECK_OR_FALSE(ifm_node->dim(3).known());
+  uint32_t ifm_channel_depth = ifm_node->dim(3).value();
+
+  mean_of_ifm = dynamic_cast<luci::CircleMean *>(sub->y());
+  CHECK_OR_FALSE(mean_of_ifm);
+
+  CHECK_OR_FALSE(ifm == mean_of_ifm->input());
+
+  pow = dynamic_cast<luci::CirclePow *>(div->y());
+  CHECK_OR_FALSE(pow);
+
+  add_as_variance = dynamic_cast<luci::CircleAdd *>(pow->x());
+  CHECK_OR_FALSE(add_as_variance);
+
+  luci::CircleConst *zero_point_five = dynamic_cast<luci::CircleConst *>(pow->y());
+  CHECK_OR_FALSE(zero_point_five);
+  CHECK_OR_FALSE(zero_point_five->dtype() == loco::DataType::FLOAT32);
+  // TODO Support regarding broadcast
+  CHECK_OR_FALSE(zero_point_five->size<loco::DataType::FLOAT32>() == 1);
+  CHECK_OR_FALSE(zero_point_five->at<loco::DataType::FLOAT32>(0) == 0.5);
+
+  CHECK_OR_FALSE(
+    luci::fill(&mean_as_variance, &const_as_epsilon).with_commutative_args_of(add_as_variance));
+  CHECK_OR_FALSE(const_as_epsilon->dtype() == loco::DataType::FLOAT32);
+  // TODO Support regarding broadcast
+  CHECK_OR_FALSE(const_as_epsilon->size<loco::DataType::FLOAT32>() == 1);
+
+  CHECK_OR_FALSE(is_instance_mean_v0(mean_as_variance));
+
+  sqdiff = dynamic_cast<luci::CircleSquaredDifference *>(mean_as_variance->input());
+  CHECK_OR_FALSE(sqdiff);
+
+  loco::Node *ifm_should_be = nullptr;
+  luci::CircleMean *mean_of_ifm_should_be = nullptr;
+  CHECK_OR_FALSE(
+    luci::fill(&ifm_should_be, &mean_of_ifm_should_be).with_commutative_args_of(sqdiff));
+  CHECK_OR_FALSE(ifm == ifm_should_be);
+  CHECK_OR_FALSE(mean_of_ifm == mean_of_ifm_should_be);
+
+  // Check for channel size
+  CHECK_OR_FALSE(is_1D_float32_const(const_as_gamma, ifm_channel_depth));
+  CHECK_OR_FALSE(is_1D_float32_const(const_as_beta, ifm_channel_depth));
+
+  _matched = true;
+  return true;
+}
+
 bool InstanceNormPattern::matched()
 {
   if (_matched)
@@ -350,6 +413,17 @@ bool InstanceNormPattern::matched()
 
   // Check order is DFS
 
+  switch (_pv)
+  {
+    case PatternVersion::Version_2:
+      return match<PatternVersion::Version_2>();
+
+    default:
+      break;
+  }
+
+// TODO remove unused
+#if 0
   // Version 2 is quite different from Version 0 and 1.
   // So it is handled in the separate if statement
   if (_pv == PatternVersion::Version_2)
@@ -412,6 +486,7 @@ bool InstanceNormPattern::matched()
     _matched = true;
     return true;
   }
+#endif
 
   if (_pv == PatternVersion::Version_0)
   {
