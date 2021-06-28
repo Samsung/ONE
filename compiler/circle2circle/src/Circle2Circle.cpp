@@ -213,6 +213,12 @@ int entry(int argc, char **argv)
     .default_value(false)
     .help("This will replace channel-wise mul/add with DepthwiseConv2D operator");
 
+  arser.add_argument("--replace_sub_with_add")
+    .nargs(0)
+    .required(false)
+    .default_value(false)
+    .help("This will replace sub with add operator");
+
   arser.add_argument("--resolve_customop_add")
     .nargs(0)
     .required(false)
@@ -416,6 +422,8 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::RemoveUnnecessarySplit);
   if (arser.get<bool>("--replace_cw_mul_add_with_depthwise_conv"))
     options->enable(Algorithms::ReplaceMulAddWithDepthwiseConv);
+  if (arser.get<bool>("--replace_sub_with_add"))
+    options->enable(Algorithms::ReplaceSubWithAdd);
   if (arser.get<bool>("--resolve_customop_add"))
     options->enable(Algorithms::ResolveCustomOpAdd);
   if (arser.get<bool>("--resolve_customop_batchmatmul"))
