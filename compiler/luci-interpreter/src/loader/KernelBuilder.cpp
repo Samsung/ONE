@@ -320,8 +320,9 @@ std::unique_ptr<Kernel> KernelBuilder::build(const luci::CircleNode *node)
   VISIT_KB(STUV);
 
 #undef VISIT_KB
-
-  throw std::invalid_argument("Unsupported operator.");
+  std::string msg = "Unsupported operator: ";
+  msg += std::to_string(static_cast<uint32_t>(node->opcode())) + " " + std::string(node->name());
+  throw std::invalid_argument(msg.c_str());
 }
 
 std::unique_ptr<Kernel> KernelBuilderLet<KB::ABC>::visit(const luci::CircleAdd *node)
