@@ -644,7 +644,7 @@ void fuse_instance_norm(const InstanceNormPattern &p)
   instance_norm->epsilon(epsilon);
   instance_norm->fusedActivationFunction(p.add_as_terminal->fusedActivationFunction());
   // NOTE unique name should be assigned in export
-  instance_norm->name("InstanceNorm");
+  instance_norm->name("FusedInstNorm/" + p.add_as_terminal->name());
 
   // set origin
   std::vector<std::shared_ptr<luci::CircleNodeOrigin>> origin_vec{
