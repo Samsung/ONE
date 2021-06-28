@@ -737,75 +737,6 @@ bool FuseInstanceNorm::apply()
   return false;
 }
 
-void fuse_instance_norm(const InstanceNormPattern &p)
-{
-  assert(p.matched());
-
-  FuseInstanceNorm fuse(p);
-  if (fuse.apply())
-    return;
-
-  // TODO remove unused codes
-
-  auto graph = p.add_as_terminal->graph();
-
-  // Version 0 and 1 need to reshape
-  if (p.version() != InstanceNormPattern::Version_2)
-  {
-    p.const_as_gamma->rank(1);
-    p.const_as_gamma->dim(0).set(p.const_as_gamma->size<loco::DataType::FLOAT32>());
-    p.const_as_beta->rank(1);
-    p.const_as_beta->dim(0).set(p.const_as_beta->size<loco::DataType::FLOAT32>());
-
-    p.const_as_gamma->shape_status(luci::ShapeStatus::UNDEFINED);
-    p.const_as_beta->shape_status(luci::ShapeStatus::UNDEFINED);
-  }
-
-  // Make Instance Norm to replace
-  auto instance_norm = graph->nodes()->create<luci::CircleInstanceNorm>();
-  instance_norm->input(p.ifm);
-  instance_norm->gamma(p.const_as_gamma);
-  instance_norm->beta(p.const_as_beta);
-  float epsilon = p.const_as_epsilon->at<loco::DataType::FLOAT32>(0);
-  instance_norm->epsilon(epsilon);
-  instance_norm->fusedActivationFunction(p.add_as_terminal->fusedActivationFunction());
-  // NOTE unique name should be assigned in export
-  instance_norm->name("FusedInstNorm/" + p.add_as_terminal->name());
-
-  // set origin
-  std::vector<std::shared_ptr<luci::CircleNodeOrigin>> origin_vec{
-    luci::get_origin(p.sqdiff),
-    luci::get_origin(p.mean_as_variance),
-    luci::get_origin(p.add_as_variance),
-    luci::get_origin(p.mul_gamma),
-    luci::get_origin(p.sub),
-    luci::get_origin(p.add_as_terminal)};
-  if (p.version() == InstanceNormPattern::PatternVersion::Version_0)
-  {
-    origin_vec.push_back(luci::get_origin(p.mean_of_ifm));
-    origin_vec.push_back(luci::get_origin(p.rsqrt));
-    origin_vec.push_back(luci::get_origin(p.mul_as_scaled_ifm));
-    origin_vec.push_back(luci::get_origin(p.mul_as_scaled_mean));
-  }
-  if (p.version() == InstanceNormPattern::PatternVersion::Version_1)
-  {
-    origin_vec.push_back(luci::get_origin(p.reshape_of_ifm));
-    origin_vec.push_back(luci::get_origin(p.mean_of_reshape));
-    origin_vec.push_back(luci::get_origin(p.rsqrt));
-    origin_vec.push_back(luci::get_origin(p.mul_as_scaled_mean));
-    origin_vec.push_back(luci::get_origin(p.mul_as_scaled_reshape));
-  }
-  if (p.version() == InstanceNormPattern::PatternVersion::Version_2)
-  {
-    origin_vec.push_back(luci::get_origin(p.mean_of_ifm));
-    origin_vec.push_back(luci::get_origin(p.pow));
-    origin_vec.push_back(luci::get_origin(p.div));
-  }
-  luci::add_origin(instance_norm, luci::composite_origin(origin_vec));
-
-  replace(p.add_as_terminal).with(instance_norm);
-}
-
 } // namespace
 
 namespace
@@ -855,8 +786,9 @@ bool FuseInstanceNormPass::run(loco::Graph *g)
     if (not pattern.matched())
       continue;
 
-    fuse_instance_norm(pattern);
-    changed = true;
+    FuseInstanceNorm fuse(pattern);
+    if (fuse.apply())
+      changed = true;
   }
 
   return changed;
