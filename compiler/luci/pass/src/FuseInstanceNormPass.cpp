@@ -761,9 +761,109 @@ bool InstanceNormPattern::matched()
  *  - Two CircleConst shape is updated as CircleInstanceNorm only accept 1D tensor
  *  - 'CircleConst --- TFLReshape' is expected to be fused in constant folding for Reshape
  */
+
+class FuseInstanceNorm final
+{
+public:
+  FuseInstanceNorm(const InstanceNormPattern &p) : _p(p) {}
+
+public:
+  bool apply(void);
+
+private:
+  template <InstanceNormPattern::PatternVersion> void apply(void);
+
+private:
+  void reshape_gamma_beta(void);
+  luci::CircleInstanceNorm *create_inst_norm(loco::Graph *graph);
+
+private:
+  const InstanceNormPattern &_p;
+};
+
+void FuseInstanceNorm::reshape_gamma_beta()
+{
+  // Version 0, 1 need to reshape
+  {
+    _p.const_as_gamma->rank(1);
+    _p.const_as_gamma->dim(0).set(_p.const_as_gamma->size<loco::DataType::FLOAT32>());
+    _p.const_as_beta->rank(1);
+    _p.const_as_beta->dim(0).set(_p.const_as_beta->size<loco::DataType::FLOAT32>());
+
+    _p.const_as_gamma->shape_status(luci::ShapeStatus::UNDEFINED);
+    _p.const_as_beta->shape_status(luci::ShapeStatus::UNDEFINED);
+  }
+}
+
+luci::CircleInstanceNorm *FuseInstanceNorm::create_inst_norm(loco::Graph *graph)
+{
+  // Make Instance Norm to replace
+  auto instance_norm = graph->nodes()->create<luci::CircleInstanceNorm>();
+  instance_norm->input(_p.ifm);
+  instance_norm->gamma(_p.const_as_gamma);
+  instance_norm->beta(_p.const_as_beta);
+  float epsilon = _p.const_as_epsilon->at<loco::DataType::FLOAT32>(0);
+  instance_norm->epsilon(epsilon);
+  instance_norm->fusedActivationFunction(_p.add_as_terminal->fusedActivationFunction());
+  // NOTE unique name should be assigned in export
+  instance_norm->name("FusedInstanceNorm/" + _p.add_as_terminal->name());
+
+  return instance_norm;
+}
+
+template <> void FuseInstanceNorm::apply<InstanceNormPattern::PatternVersion::Version_0>()
+{
+  auto graph = _p.add_as_terminal->graph();
+
+  reshape_gamma_beta();
+
+  auto instance_norm = create_inst_norm(graph);
+
+  // set origin
+  std::vector<std::shared_ptr<luci::CircleNodeOrigin>> origin_vec{
+    luci::get_origin(_p.mean_of_ifm),
+    luci::get_origin(_p.sqdiff),
+    luci::get_origin(_p.mean_as_variance),
+    luci::get_origin(_p.add_as_variance),
+    luci::get_origin(_p.rsqrt),
+    luci::get_origin(_p.mul_gamma),
+    luci::get_origin(_p.mul_as_scaled_ifm),
+    luci::get_origin(_p.mul_as_scaled_mean),
+    luci::get_origin(_p.sub),
+    luci::get_origin(_p.add_as_terminal)};
+
+  luci::add_origin(instance_norm, luci::composite_origin(origin_vec));
+
+  replace(_p.add_as_terminal).with(instance_norm);
+}
+
+// TODO change return type void
+bool FuseInstanceNorm::apply()
+{
+  assert(_p.matched());
+
+  switch (_p.version())
+  {
+    case InstanceNormPattern::PatternVersion::Version_0:
+      apply<InstanceNormPattern::PatternVersion::Version_0>();
+      return true;
+
+    default:
+      break;
+  }
+
+  return false;
+}
+
 void fuse_instance_norm(const InstanceNormPattern &p)
 {
   assert(p.matched());
+
+  FuseInstanceNorm fuse(p);
+  if (fuse.apply())
+    return;
+
+  // TODO remove unused codes
 
   auto graph = p.add_as_terminal->graph();
 
