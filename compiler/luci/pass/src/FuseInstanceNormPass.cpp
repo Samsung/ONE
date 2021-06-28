@@ -663,6 +663,56 @@ template <> void FuseInstanceNorm::apply<InstanceNormPattern::PatternVersion::Ve
   replace(_p.add_as_terminal).with(instance_norm);
 }
 
+template <> void FuseInstanceNorm::apply<InstanceNormPattern::PatternVersion::Version_1>()
+{
+  auto graph = _p.add_as_terminal->graph();
+
+  reshape_gamma_beta();
+
+  auto instance_norm = create_inst_norm(graph);
+
+  // set origin
+  std::vector<std::shared_ptr<luci::CircleNodeOrigin>> origin_vec{
+    luci::get_origin(_p.reshape_of_ifm),
+    luci::get_origin(_p.mean_of_reshape),
+    luci::get_origin(_p.sqdiff),
+    luci::get_origin(_p.mean_as_variance),
+    luci::get_origin(_p.add_as_variance),
+    luci::get_origin(_p.rsqrt),
+    luci::get_origin(_p.mul_gamma),
+    luci::get_origin(_p.mul_as_scaled_mean),
+    luci::get_origin(_p.mul_as_scaled_reshape),
+    luci::get_origin(_p.sub),
+    luci::get_origin(_p.add_as_terminal)};
+
+  luci::add_origin(instance_norm, luci::composite_origin(origin_vec));
+
+  replace(_p.add_as_terminal).with(instance_norm);
+}
+
+template <> void FuseInstanceNorm::apply<InstanceNormPattern::PatternVersion::Version_2>()
+{
+  auto graph = _p.add_as_terminal->graph();
+
+  auto instance_norm = create_inst_norm(graph);
+
+  // set origin
+  std::vector<std::shared_ptr<luci::CircleNodeOrigin>> origin_vec{
+    luci::get_origin(_p.mean_of_ifm),
+    luci::get_origin(_p.sqdiff),
+    luci::get_origin(_p.mean_as_variance),
+    luci::get_origin(_p.add_as_variance),
+    luci::get_origin(_p.pow),
+    luci::get_origin(_p.sub),
+    luci::get_origin(_p.div),
+    luci::get_origin(_p.mul_gamma),
+    luci::get_origin(_p.add_as_terminal)};
+
+  luci::add_origin(instance_norm, luci::composite_origin(origin_vec));
+
+  replace(_p.add_as_terminal).with(instance_norm);
+}
+
 // TODO change return type void
 bool FuseInstanceNorm::apply()
 {
@@ -672,6 +722,12 @@ bool FuseInstanceNorm::apply()
   {
     case InstanceNormPattern::PatternVersion::Version_0:
       apply<InstanceNormPattern::PatternVersion::Version_0>();
+      return true;
+    case InstanceNormPattern::PatternVersion::Version_1:
+      apply<InstanceNormPattern::PatternVersion::Version_1>();
+      return true;
+    case InstanceNormPattern::PatternVersion::Version_2:
+      apply<InstanceNormPattern::PatternVersion::Version_2>();
       return true;
 
     default:
