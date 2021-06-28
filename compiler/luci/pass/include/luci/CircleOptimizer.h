@@ -58,6 +58,7 @@ public:
       ShuffleWeightTo16x1Float32,
       RemoveRedundantTranspose,
       ReplaceMulAddWithDepthwiseConv,
+      ReplaceSubWithAdd,
       SubstitutePackToReshape,
       SubstituteSqueezeToReshape,
       ConvertNCHWToNHWC,
