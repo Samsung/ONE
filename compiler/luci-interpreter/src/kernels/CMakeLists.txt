@@ -213,6 +213,7 @@ set(TEST_SOURCES
     Split.test.cpp
     StridedSlice.test.cpp
     Sqrt.test.cpp
+    Square.test.cpp
     SquaredDifference.test.cpp
     Squeeze.test.cpp
     Sub.test.cpp
