@@ -73,6 +73,7 @@
 #include "kernels/Split.h"
 #include "kernels/StridedSlice.h"
 #include "kernels/Sqrt.h"
+#include "kernels/Square.h"
 #include "kernels/SquaredDifference.h"
 #include "kernels/Squeeze.h"
 #include "kernels/Sub.h"
@@ -287,6 +288,7 @@ public:
   DECLARE_VISIT(CircleSpaceToDepth);
   DECLARE_VISIT(CircleSplit);
   DECLARE_VISIT(CircleSqrt);
+  DECLARE_VISIT(CircleSquare);
   DECLARE_VISIT(CircleSquaredDifference);
   DECLARE_VISIT(CircleSqueeze);
   DECLARE_VISIT(CircleStridedSlice);
@@ -1067,6 +1069,16 @@ std::unique_ptr<Kernel> KernelBuilderLet<KB::STUV>::visit(const luci::CircleSqrt
   Tensor *output = getOutputTensor(node);
 
   return std::make_unique<kernels::Sqrt>(input, output);
+}
+
+std::unique_ptr<Kernel> KernelBuilderLet<KB::STUV>::visit(const luci::CircleSquare *node)
+{
+  assert(node->arity() == 1);
+
+  const Tensor *input = getInputTensor(node->x());
+  Tensor *output = getOutputTensor(node);
+
+  return std::make_unique<kernels::Square>(input, output);
 }
 
 std::unique_ptr<Kernel> KernelBuilderLet<KB::STUV>::visit(const luci::CircleSquaredDifference *node)

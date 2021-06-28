@@ -115,6 +115,8 @@ set(SOURCES
     StridedSlice.cpp
     Sqrt.h
     Sqrt.cpp
+    Square.h
+    Square.cpp
     SquaredDifference.h
     SquaredDifference.cpp
     Squeeze.h
