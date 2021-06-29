@@ -42,32 +42,3 @@ TEST(FuseInstanceNormPassTest, name)
   auto const name = pass.name();
   ASSERT_NE(nullptr, name);
 }
-
-TEST(FuseInstanceNormPass, is_quasi_1D_with_dummy_dim)
-{
-  luci::CircleConst const_node;
-
-  setShape(const_node, {});
-  EXPECT_FALSE(is_quasi_1D_with_dummy_dim(&const_node, 8));
-
-  setShape(const_node, {1});
-  EXPECT_FALSE(is_quasi_1D_with_dummy_dim(&const_node, 8));
-
-  setShape(const_node, {8});
-  EXPECT_FALSE(is_quasi_1D_with_dummy_dim(&const_node, 8));
-
-  setShape(const_node, {1, 2, 1, 8, 1});
-  EXPECT_FALSE(is_quasi_1D_with_dummy_dim(&const_node, 8));
-
-  setShape(const_node, {8, 3});
-  EXPECT_FALSE(is_quasi_1D_with_dummy_dim(&const_node, 8));
-
-  setShape(const_node, {8, 1});
-  EXPECT_FALSE(is_quasi_1D_with_dummy_dim(&const_node, 8));
-
-  setShape(const_node, {1, 8, 1});
-  EXPECT_TRUE(is_quasi_1D_with_dummy_dim(&const_node, 8));
-
-  setShape(const_node, {1, 1, 1, 8, 1});
-  EXPECT_TRUE(is_quasi_1D_with_dummy_dim(&const_node, 8));
-}
