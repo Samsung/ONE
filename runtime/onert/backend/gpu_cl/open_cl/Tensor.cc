@@ -499,8 +499,8 @@ int Tensor::GetAlignedChannels() const
 
 uint64_t Tensor::GetMemorySizeInBytes() const
 {
-  const int flt_size = SizeOf(descriptor_.data_type);
-  const int flt4_size = 4 * flt_size;
+  const uint64_t flt_size = static_cast<uint64_t>(SizeOf(descriptor_.data_type));
+  const uint64_t flt4_size = 4 * flt_size;
   switch (descriptor_.storage_type)
   {
     case TensorStorageType::BUFFER:
