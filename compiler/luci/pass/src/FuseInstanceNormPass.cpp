@@ -605,8 +605,6 @@ template <> bool InstanceNormPattern::match<InstanceNormPattern::PatternVersion:
   luci::CircleNode *ifm_node = loco::must_cast<luci::CircleNode *>(ifm);
   CHECK_OR_FALSE(ifm_node->rank() == 4);
   CHECK_OR_FALSE(ifm_node->dim(3).known());
-  uint32_t ifm_channel_depth = ifm_node->dim(3).value();
-  CHECK_OR_FALSE(is_1D_with_dummy_dim(const_as_gamma, ifm_channel_depth));
 
   mean_of_ifm = dynamic_cast<luci::CircleMean *>(sub->y());
   CHECK_OR_FALSE(mean_of_ifm);
@@ -620,8 +618,6 @@ template <> bool InstanceNormPattern::match<InstanceNormPattern::PatternVersion:
 
   mean_as_variance = dynamic_cast<luci::CircleMean *>(sqrt->x());
   CHECK_OR_FALSE(mean_as_variance);
-
-  CHECK_OR_FALSE(is_instance_mean_v0(mean_as_variance));
 
   square = dynamic_cast<luci::CircleSquare *>(mean_as_variance->input());
   CHECK_OR_FALSE(square);
