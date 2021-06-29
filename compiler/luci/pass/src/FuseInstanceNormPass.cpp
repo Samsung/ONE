@@ -291,6 +291,45 @@ namespace
  *       |
  *       V
  *     [Out]
+ *-------------------------------------------------------------------
+ * Version_3
+ *                          [In]
+ *                            |
+ *                            V
+ *      +----+-------------- ifm ---+
+ *      |    |  (reduction    |     |  (reduction
+ *      |    |   indicies)    |     |   indicies)
+ *      |    |     |          |     |     |
+ *      |    V     V          |     V     V
+ *      |  mean_of_ifm        |   mean_of_ifm_2
+ *      |       |             |       |
+ *      V       |             V       |
+ *     sub <----+           sub_2 <---+
+ *      |                     |
+ *      |                     V
+ *      |                   square
+ *      |                     |   (reduction indicies)
+ *      |                     |            |
+ *      |                     V            |
+ *      |             mean_as_variance <---+
+ *      |                     |
+ *      |                     V
+ *      |                    sqrt    const_as_epsilon
+ *      |                     |            |
+ *      |                     V            |
+ *      |              add_as_variance <---+
+ *      |                     |
+ *      V                     |
+ *     div <------------------+    const_as_gamma
+ *      |                              |
+ *      V                              |
+ *    mul_gamma <----------------------+
+ *      |                const_as_beta
+ *      V                     |
+ *   add_as_terminal <--------+
+ *      |
+ *      V
+ *    [Out]
  */
 class InstanceNormPattern final
 {
