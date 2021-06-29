@@ -228,6 +228,41 @@ namespace
  *      |
  *      V
  *    [Out]
+ *-------------------------------------------------------------------
+ * Version_4
+ * - mul_gamma and add_as_terminal are removed for const_as_gamma = 1.0
+ *   and const_as_beta = 0.0
+ *                          [In]
+ *                            |
+ *                            V
+ *      +----+-------------- ifm ---+
+ *      |    |  (reduction    |     |  (reduction
+ *      |    |   indicies)    |     |   indicies)
+ *      |    |     |          |     |     |
+ *      |    V     V          |     V     V
+ *      |  mean_of_ifm        |   mean_of_ifm_2
+ *      |       |             |       |
+ *      V       |             V       |
+ *     sub <----+           sub_2 <---+
+ *      |                     |
+ *      |                     V
+ *      |                   square
+ *      |                     |   (reduction indicies)
+ *      |                     |            |
+ *      |                     V            |
+ *      |             mean_as_variance <---+
+ *      |                     |
+ *      |                     V
+ *      |                    sqrt    const_as_epsilon
+ *      |                     |            |
+ *      |                     V            |
+ *      |              add_as_variance <---+
+ *      |                     |
+ *      V                     |
+ *     div <------------------+
+ *      |
+ *      V
+ *    [Out]
  */
 class InstanceNormPattern final
 {
