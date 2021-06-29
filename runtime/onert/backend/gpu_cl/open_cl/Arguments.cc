@@ -165,6 +165,8 @@ std::string GetImageModifier(AccessType access)
       return "__write_only";
     case AccessType::READ_WRITE:
       return "__read_write";
+    default:
+      throw std::runtime_error("Invalid AccessType");
   }
   return "";
 }

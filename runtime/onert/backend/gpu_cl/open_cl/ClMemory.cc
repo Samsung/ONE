@@ -34,6 +34,8 @@ cl_mem_flags ToClMemFlags(AccessType access_type)
       return CL_MEM_WRITE_ONLY;
     case AccessType::READ_WRITE:
       return CL_MEM_READ_WRITE;
+    default:
+      return CL_MEM_READ_ONLY; // unreachable
   }
 
   return CL_MEM_READ_ONLY; // unreachable

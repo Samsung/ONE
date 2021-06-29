@@ -47,6 +47,7 @@ std::string VendorToString(Vendor v);
 
 enum class OpenCLVersion
 {
+  UNKNOWN,
   CL_1_0,
   CL_1_1,
   CL_1_2,
@@ -112,7 +113,7 @@ struct MaliInfo
 {
   MaliInfo() = default;
   explicit MaliInfo(const std::string &device_name);
-  MaliGPU gpu_version;
+  MaliGPU gpu_version = MaliGPU::UNKNOWN;
 
   bool IsMaliT6xx() const;
   bool IsMaliT7xx() const;
@@ -155,22 +156,22 @@ struct DeviceInfo
   bool SupportsSubGroupWithSize(int sub_group_size) const;
 
   std::vector<std::string> extensions;
-  bool supports_fp16;
-  bool supports_image3d_writes;
-  Vendor vendor;
-  OpenCLVersion cl_version;
-  int compute_units_count;
-  uint64_t buffer_max_size;
-  uint64_t image2d_max_width;
-  uint64_t image2d_max_height;
-  uint64_t image_buffer_max_size;
-  uint64_t image_array_max_layers;
-  uint64_t image3d_max_width;
-  uint64_t image3d_max_height;
-  uint64_t image3d_max_depth;
-  int max_work_group_size_x;
-  int max_work_group_size_y;
-  int max_work_group_size_z;
+  bool supports_fp16 = false;
+  bool supports_image3d_writes = false;
+  Vendor vendor = Vendor::kUnknown;
+  OpenCLVersion cl_version = OpenCLVersion::UNKNOWN;
+  int compute_units_count = 0;
+  uint64_t buffer_max_size = 0;
+  uint64_t image2d_max_width = 0;
+  uint64_t image2d_max_height = 0;
+  uint64_t image_buffer_max_size = 0;
+  uint64_t image_array_max_layers = 0;
+  uint64_t image3d_max_width = 0;
+  uint64_t image3d_max_height = 0;
+  uint64_t image3d_max_depth = 0;
+  int max_work_group_size_x = 0;
+  int max_work_group_size_y = 0;
+  int max_work_group_size_z = 0;
   std::vector<int> supported_subgroup_sizes;
 
   // rtn is ROUND_TO_NEAREST
@@ -178,8 +179,8 @@ struct DeviceInfo
   // Adreno 3xx supports only rtz, Adreno 4xx and more support rtn
   // Mali from T6xx supports rtn
   // PowerVR supports only rtz
-  bool supports_fp32_rtn;
-  bool supports_fp16_rtn;
+  bool supports_fp32_rtn = false;
+  bool supports_fp16_rtn = false;
 
   bool supports_r_f16_tex2d = false;
   bool supports_rg_f16_tex2d = false;

@@ -93,7 +93,7 @@ private:
   void Release();
 
   cl_mem buffer_ = nullptr;
-  size_t size_;
+  size_t size_ = 0;
 };
 
 absl::Status CreateReadOnlyBuffer(size_t size_in_bytes, CLContext *context, Buffer *result);

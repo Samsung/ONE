@@ -26,6 +26,7 @@ namespace gpu_cl
 {
 enum class AccessType
 {
+  UNKNOWN,
   READ,
   WRITE,
   READ_WRITE,

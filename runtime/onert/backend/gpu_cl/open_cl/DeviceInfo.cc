@@ -22,6 +22,9 @@
 #include <string>
 #include <vector>
 
+#include "absl/strings/numbers.h"
+#include "absl/strings/str_split.h"
+
 namespace onert
 {
 namespace backend
@@ -77,26 +80,27 @@ MaliGPU GetMaliGPUVersion(const std::string &device_name)
 // Returns -1 if vendor-specific information cannot be parsed
 int GetAdrenoGPUVersion(const std::string &gpu_version)
 {
-  (void)gpu_version;
-  /* TODO
-    const std::string gpu = absl::AsciiStrToLower(gpu_version);
-    const std::vector<absl::string_view> words = absl::StrSplit(gpu, ' ');
-    int i = 0;
-    for (; i < words.size(); ++i) {
-      if (words[i].find("adreno") != words[i].npos) {
-        break;
-      }
+  const std::string gpu = absl::AsciiStrToLower(gpu_version);
+  const std::vector<absl::string_view> words = absl::StrSplit(gpu, ' ');
+  size_t i = 0;
+  for (; i < words.size(); ++i)
+  {
+    if (words[i].find("adreno") != words[i].npos)
+    {
+      break;
     }
-    i += 1;
-    for (; i < words.size(); ++i) {
-      int number;
-      bool is_number = absl::SimpleAtoi(words[i], &number);
-      // Adreno GPUs starts from 2xx, but opencl support should be only from 3xx
-      if (is_number && number >= 300) {
-        return number;
-      }
+  }
+  i += 1;
+  for (; i < words.size(); ++i)
+  {
+    int number;
+    bool is_number = absl::SimpleAtoi(words[i], &number);
+    // Adreno GPUs starts from 2xx, but opencl support should be only from 3xx
+    if (is_number && number >= 300)
+    {
+      return number;
     }
-  */
+  }
   return -1;
 }
 
