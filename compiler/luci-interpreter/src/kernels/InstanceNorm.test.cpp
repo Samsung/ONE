@@ -43,6 +43,40 @@ TEST(InstanceNormTest, Simple)
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({1, 2, 2, 1}));
 }
 
+TEST(InstanceNormTest, Single_gamma_beta)
+{
+  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({1, 2, 1, 2}, {1, 1, 1, 1});
+  Tensor gamma_tensor = makeInputTensor<DataType::FLOAT32>({1}, {1});
+  Tensor beta_tensor = makeInputTensor<DataType::FLOAT32>({1}, {2});
+  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
+
+  InstanceNormParams params{};
+  params.epsilon = 0.1f;
+  params.activation = Activation::NONE;
+
+  InstanceNorm kernel(&input_tensor, &gamma_tensor, &beta_tensor, &output_tensor, params);
+  kernel.configure();
+  kernel.execute();
+
+  EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear({2, 2, 2, 2}));
+  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({1, 2, 1, 2}));
+}
+
+TEST(InstanceNormTest, Wrong_gamma_beta_dim_NEG)
+{
+  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({1, 2, 1, 2}, {1, 1, 1, 1});
+  Tensor gamma_tensor = makeInputTensor<DataType::FLOAT32>({3}, {1, 1, 1});
+  Tensor beta_tensor = makeInputTensor<DataType::FLOAT32>({3}, {2, 2, 2});
+  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
+
+  InstanceNormParams params{};
+  params.epsilon = 0.1f;
+  params.activation = Activation::NONE;
+
+  InstanceNorm kernel(&input_tensor, &gamma_tensor, &beta_tensor, &output_tensor, params);
+  EXPECT_ANY_THROW(kernel.configure());
+}
+
 } // namespace
 } // namespace kernels
 } // namespace luci_interpreter
