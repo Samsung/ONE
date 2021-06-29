@@ -709,7 +709,7 @@ private:
 
 void FuseInstanceNorm::reshape_gamma_beta()
 {
-  // Version 0, 1 need to reshape
+  // Version 0, 1 and 3 need to reshape
   {
     _p.const_as_gamma->rank(1);
     _p.const_as_gamma->dim(0).set(_p.const_as_gamma->size<loco::DataType::FLOAT32>());
@@ -813,6 +813,33 @@ template <> void FuseInstanceNorm::apply<InstanceNormPattern::PatternVersion::Ve
   replace(_p.add_as_terminal).with(instance_norm);
 }
 
+template <> void FuseInstanceNorm::apply<InstanceNormPattern::PatternVersion::Version_3>()
+{
+  auto graph = _p.add_as_terminal->graph();
+
+  reshape_gamma_beta();
+
+  auto instance_norm = create_inst_norm(graph);
+
+  // set origin
+  std::vector<std::shared_ptr<luci::CircleNodeOrigin>> origin_vec{
+    luci::get_origin(_p.mean_of_ifm),
+    luci::get_origin(_p.sub),
+    luci::get_origin(_p.mean_of_ifm_2),
+    luci::get_origin(_p.sub_2),
+    luci::get_origin(_p.square),
+    luci::get_origin(_p.mean_as_variance),
+    luci::get_origin(_p.sqrt),
+    luci::get_origin(_p.add_as_variance),
+    luci::get_origin(_p.div),
+    luci::get_origin(_p.mul_gamma),
+    luci::get_origin(_p.add_as_terminal)};
+
+  luci::add_origin(instance_norm, luci::composite_origin(origin_vec));
+
+  replace(_p.add_as_terminal).with(instance_norm);
+}
+
 // TODO change return type void
 bool FuseInstanceNorm::apply()
 {
@@ -828,6 +855,9 @@ bool FuseInstanceNorm::apply()
       return true;
     case InstanceNormPattern::PatternVersion::Version_2:
       apply<InstanceNormPattern::PatternVersion::Version_2>();
+      return true;
+    case InstanceNormPattern::PatternVersion::Version_3:
+      apply<InstanceNormPattern::PatternVersion::Version_3>();
       return true;
 
     default:
@@ -866,6 +896,18 @@ bool fuse_instance_norm(luci::CircleAdd *add, InstanceNormPattern::PatternVersio
   {
     FuseInstanceNorm fuse(pattern);
     return fuse.apply();
+  }
+
+  if (pv == InstanceNormPattern::PatternVersion::Version_2)
+  {
+    // if Version_2 failed, try with Version_3
+    pv = InstanceNormPattern::PatternVersion::Version_3;
+    InstanceNormPattern pattern(add, pv);
+    if (pattern.matched())
+    {
+      FuseInstanceNorm fuse(pattern);
+      return fuse.apply();
+    }
   }
 
   return false;
