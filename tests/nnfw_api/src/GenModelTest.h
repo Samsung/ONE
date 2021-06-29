@@ -237,6 +237,12 @@ public:
         _backends.push_back(backend);
       }
 #endif
+#ifdef TEST_GPU_CL_BACKEND
+      if (backend == "gpu_cl")
+      {
+        _backends.push_back(backend);
+      }
+#endif
     }
   }
 

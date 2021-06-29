@@ -24,6 +24,10 @@ if(Xnnpack_FOUND)
   target_compile_definitions(${RUNTIME_NNFW_API_TEST} PRIVATE TEST_XNNPACK_BACKEND)
 endif(Xnnpack_FOUND)
 
+if(Opencl_Headers_FOUND)
+  target_compile_definitions(${RUNTIME_NNFW_API_TEST} PRIVATE TEST_GPU_CL_BACKEND)
+endif(Opencl_Headers_FOUND)
+
 set(RUNTIME_NNFW_API_TEST_INCLUDE ${CMAKE_CURRENT_SOURCE_DIR}/include
                                   ${CMAKE_CURRENT_SOURCE_DIR}/src)
 target_include_directories(${RUNTIME_NNFW_API_TEST} PRIVATE ${RUNTIME_NNFW_API_TEST_INCLUDE})
