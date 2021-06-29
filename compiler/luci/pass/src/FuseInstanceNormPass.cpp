@@ -239,12 +239,20 @@ public:
     // NOTE Version_1 is deprecated
     Version_2,
     Version_3,
+    Version_4,
   };
 
   InstanceNormPattern(luci::CircleAdd *candidate, PatternVersion pv)
   {
     assert(candidate);
     add_as_terminal = candidate;
+    _pv = pv;
+  }
+
+  InstanceNormPattern(luci::CircleDiv *candidate, PatternVersion pv)
+  {
+    assert(candidate);
+    div = candidate;
     _pv = pv;
   }
 
@@ -468,6 +476,76 @@ template <> bool InstanceNormPattern::match<InstanceNormPattern::PatternVersion:
   return true;
 }
 
+luci::CircleConst *make_const_one(loco::Graph *graph, float value)
+{
+  auto const_one = graph->nodes()->create<luci::CircleConst>();
+  const_one->dtype(loco::DataType::FLOAT32);
+  const_one->rank(1);
+  const_one->size<loco::DataType::FLOAT32>(1);
+  const_one->at<loco::DataType::FLOAT32>(0) = value;
+  return const_one;
+}
+
+template <> bool InstanceNormPattern::match<InstanceNormPattern::PatternVersion::Version_4>()
+{
+  CHECK_OR_FALSE(div);
+  CHECK_OR_FALSE(luci::fill(&sub, &add_as_variance).with_commutative_args_of(div));
+
+  // check left sub
+  ifm = sub->x();
+  CHECK_OR_FALSE(ifm);
+
+  luci::CircleNode *ifm_node = loco::must_cast<luci::CircleNode *>(ifm);
+  CHECK_OR_FALSE(ifm_node->rank() == 4);
+  CHECK_OR_FALSE(ifm_node->dim(3).known());
+
+  mean_of_ifm = dynamic_cast<luci::CircleMean *>(sub->y());
+  CHECK_OR_FALSE(mean_of_ifm);
+  CHECK_OR_FALSE(ifm == mean_of_ifm->input());
+
+  // continue search from add_as_variance
+  CHECK_OR_FALSE(luci::fill(&sqrt, &const_as_epsilon).with_commutative_args_of(add_as_variance));
+  CHECK_OR_FALSE(const_as_epsilon->dtype() == loco::DataType::FLOAT32);
+  // TODO Support regarding broadcast
+  CHECK_OR_FALSE(const_as_epsilon->size<loco::DataType::FLOAT32>() == 1);
+
+  mean_as_variance = dynamic_cast<luci::CircleMean *>(sqrt->x());
+  CHECK_OR_FALSE(mean_as_variance);
+
+  square = dynamic_cast<luci::CircleSquare *>(mean_as_variance->input());
+  CHECK_OR_FALSE(square);
+
+  sub_2 = dynamic_cast<luci::CircleSub *>(square->x());
+  CHECK_OR_FALSE(sub_2);
+  CHECK_OR_FALSE(ifm == sub_2->x());
+
+  mean_of_ifm_2 = dynamic_cast<luci::CircleMean *>(sub_2->y());
+  CHECK_OR_FALSE(mean_of_ifm_2);
+  CHECK_OR_FALSE(ifm == mean_of_ifm_2->input());
+
+  loco::Node *ifm_should_be = nullptr;
+  luci::CircleMean *mean_of_ifm_2_should_be = nullptr;
+  CHECK_OR_FALSE(
+    luci::fill(&ifm_should_be, &mean_of_ifm_2_should_be).with_commutative_args_of(sub_2));
+  CHECK_OR_FALSE(ifm == ifm_should_be);
+  CHECK_OR_FALSE(mean_of_ifm_2 == mean_of_ifm_2_should_be);
+
+  assert(const_as_gamma == nullptr);
+  assert(const_as_beta == nullptr);
+  assert(mul_gamma == nullptr);
+  assert(add_as_terminal == nullptr);
+
+  // create 1.0 gamma and 0.0 beta
+  auto graph = div->graph();
+  const_as_gamma = make_const_one(graph, 1.0f);
+  const_as_beta = make_const_one(graph, 0.0f);
+  const_as_gamma->name(div->name() + "/gamma");
+  const_as_beta->name(div->name() + "/beta");
+
+  _matched = true;
+  return true;
+}
+
 bool InstanceNormPattern::matched()
 {
   if (_matched)
@@ -483,6 +561,8 @@ bool InstanceNormPattern::matched()
       return match<PatternVersion::Version_2>();
     case PatternVersion::Version_3:
       return match<PatternVersion::Version_3>();
+    case PatternVersion::Version_4:
+      return match<PatternVersion::Version_4>();
 
     default:
       break;
@@ -551,9 +631,19 @@ luci::CircleInstanceNorm *FuseInstanceNorm::create_inst_norm(loco::Graph *graph)
   instance_norm->beta(_p.const_as_beta);
   float epsilon = _p.const_as_epsilon->at<loco::DataType::FLOAT32>(0);
   instance_norm->epsilon(epsilon);
-  instance_norm->fusedActivationFunction(_p.add_as_terminal->fusedActivationFunction());
-  // NOTE unique name should be assigned in export
-  instance_norm->name("FusedInstanceNorm/" + _p.add_as_terminal->name());
+  if (_p.add_as_terminal != nullptr)
+  {
+    instance_norm->fusedActivationFunction(_p.add_as_terminal->fusedActivationFunction());
+    // NOTE unique name should be assigned in export
+    instance_norm->name("FusedInstanceNorm/" + _p.add_as_terminal->name());
+  }
+  else
+  {
+    // VERSION_4
+    assert(_p.div != nullptr);
+    instance_norm->fusedActivationFunction(_p.div->fusedActivationFunction());
+    instance_norm->name("FusedInstanceNorm/" + _p.div->name());
+  }
 
   return instance_norm;
 }
@@ -634,6 +724,29 @@ template <> void FuseInstanceNorm::apply<InstanceNormPattern::PatternVersion::Ve
   replace(_p.add_as_terminal).with(instance_norm);
 }
 
+template <> void FuseInstanceNorm::apply<InstanceNormPattern::PatternVersion::Version_4>()
+{
+  auto graph = _p.div->graph();
+
+  auto instance_norm = create_inst_norm(graph);
+
+  // set origin
+  std::vector<std::shared_ptr<luci::CircleNodeOrigin>> origin_vec{
+    luci::get_origin(_p.mean_of_ifm),
+    luci::get_origin(_p.sub),
+    luci::get_origin(_p.mean_of_ifm_2),
+    luci::get_origin(_p.sub_2),
+    luci::get_origin(_p.square),
+    luci::get_origin(_p.mean_as_variance),
+    luci::get_origin(_p.sqrt),
+    luci::get_origin(_p.add_as_variance),
+    luci::get_origin(_p.div)};
+
+  luci::add_origin(instance_norm, luci::composite_origin(origin_vec));
+
+  replace(_p.div).with(instance_norm);
+}
+
 // TODO change return type void
 bool FuseInstanceNorm::apply()
 {
@@ -649,6 +762,9 @@ bool FuseInstanceNorm::apply()
       return true;
     case InstanceNormPattern::PatternVersion::Version_3:
       apply<InstanceNormPattern::PatternVersion::Version_3>();
+      return true;
+    case InstanceNormPattern::PatternVersion::Version_4:
+      apply<InstanceNormPattern::PatternVersion::Version_4>();
       return true;
 
     default:
@@ -704,6 +820,20 @@ bool fuse_instance_norm(luci::CircleAdd *add, InstanceNormPattern::PatternVersio
   return false;
 }
 
+bool fuse_instance_norm(luci::CircleDiv *div)
+{
+  InstanceNormPattern::PatternVersion pv = InstanceNormPattern::PatternVersion::Version_4;
+
+  InstanceNormPattern pattern(div, pv);
+  if (pattern.matched())
+  {
+    FuseInstanceNorm fuse(pattern);
+    return fuse.apply();
+  }
+
+  return false;
+}
+
 } // namespace
 
 namespace luci
@@ -721,6 +851,17 @@ bool FuseInstanceNormPass::run(loco::Graph *g)
       continue;
 
     if (fuse_instance_norm(add, pv))
+      changed = true;
+  }
+
+  // Check Version_4(from DIV) if MUL-ADD pattern is not found
+  for (auto node : loco::active_nodes(loco::output_nodes(g)))
+  {
+    auto div = dynamic_cast<luci::CircleDiv *>(node);
+    if (not div)
+      continue;
+
+    if (fuse_instance_norm(div))
       changed = true;
   }
 
