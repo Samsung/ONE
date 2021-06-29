@@ -1,0 +1,224 @@
+# generated using tflchef-reverse
+# with tflite from  https://github.com/Samsung/ONE/issues/7067#issuecomment-867203553
+
+operand {
+  name: "input_1"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 16
+    dim: 16
+    dim: 3
+  }
+}
+operand {
+  name: "instance_normalization/Mean"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+    dim: 1
+    dim: 3
+  }
+}
+operand {
+  name: "instance_normalization/Mean/reduction_indices"
+  type: INT32
+  shape {
+    dim: 2
+  }
+  filler {
+    tag: "explicit"
+    arg: "1"
+    arg: "2"
+  }
+}
+operand {
+  name: "instance_normalization/add"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+    dim: 1
+    dim: 3
+  }
+}
+operand {
+  name: "instance_normalization/add/y"
+  type: FLOAT32
+  shape {
+  }
+  filler {
+    tag: "explicit"
+    arg: "1e-09"
+  }
+}
+operand {
+  name: "instance_normalization/reduce_std/Sqrt"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+    dim: 1
+    dim: 3
+  }
+}
+operand {
+  name: "instance_normalization/reduce_std/reduce_variance/Mean"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+    dim: 1
+    dim: 3
+  }
+}
+operand {
+  name: "instance_normalization/reduce_std/reduce_variance/Mean/reduction_indices"
+  type: INT32
+  shape {
+    dim: 2
+  }
+  filler {
+    tag: "explicit"
+    arg: "1"
+    arg: "2"
+  }
+}
+operand {
+  name: "instance_normalization/reduce_std/reduce_variance/Mean_1"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+    dim: 1
+    dim: 3
+  }
+}
+operand {
+  name: "instance_normalization/reduce_std/reduce_variance/Mean_1/reduction_indices"
+  type: INT32
+  shape {
+    dim: 2
+  }
+  filler {
+    tag: "explicit"
+    arg: "1"
+    arg: "2"
+  }
+}
+operand {
+  name: "instance_normalization/reduce_std/reduce_variance/Square"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 16
+    dim: 16
+    dim: 3
+  }
+}
+operand {
+  name: "instance_normalization/reduce_std/reduce_variance/sub"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 16
+    dim: 16
+    dim: 3
+  }
+}
+operand {
+  name: "instance_normalization/sub"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 16
+    dim: 16
+    dim: 3
+  }
+}
+operand {
+  name: "instance_normalization/truediv"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 16
+    dim: 16
+    dim: 3
+  }
+}
+operation {
+  type: "Mean"
+  input: "input_1"
+  input: "instance_normalization/Mean/reduction_indices"
+  output: "instance_normalization/Mean"
+  mean_options {
+    keep_dims: true
+  }
+}
+operation {
+  type: "Mean"
+  input: "input_1"
+  input: "instance_normalization/reduce_std/reduce_variance/Mean/reduction_indices"
+  output: "instance_normalization/reduce_std/reduce_variance/Mean"
+  mean_options {
+    keep_dims: true
+  }
+}
+operation {
+  type: "Sub"
+  input: "input_1"
+  input: "instance_normalization/Mean"
+  output: "instance_normalization/sub"
+  sub_options {
+    activation: NONE
+  }
+}
+operation {
+  type: "Sub"
+  input: "input_1"
+  input: "instance_normalization/reduce_std/reduce_variance/Mean"
+  output: "instance_normalization/reduce_std/reduce_variance/sub"
+  sub_options {
+    activation: NONE
+  }
+}
+operation {
+  type: "Square"
+  input: "instance_normalization/reduce_std/reduce_variance/sub"
+  output: "instance_normalization/reduce_std/reduce_variance/Square"
+}
+operation {
+  type: "Mean"
+  input: "instance_normalization/reduce_std/reduce_variance/Square"
+  input: "instance_normalization/reduce_std/reduce_variance/Mean_1/reduction_indices"
+  output: "instance_normalization/reduce_std/reduce_variance/Mean_1"
+  mean_options {
+    keep_dims: true
+  }
+}
+operation {
+  type: "Sqrt"
+  input: "instance_normalization/reduce_std/reduce_variance/Mean_1"
+  output: "instance_normalization/reduce_std/Sqrt"
+}
+operation {
+  type: "Add"
+  input: "instance_normalization/reduce_std/Sqrt"
+  input: "instance_normalization/add/y"
+  output: "instance_normalization/add"
+  add_options {
+    activation: NONE
+  }
+}
+operation {
+  type: "Div"
+  input: "instance_normalization/sub"
+  input: "instance_normalization/add"
+  output: "instance_normalization/truediv"
+  div_options {
+    activation: NONE
+  }
+}
+input: "input_1"
+output: "instance_normalization/truediv"
