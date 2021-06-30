@@ -21,6 +21,8 @@
 #include <set>
 
 #include "open_cl/kernels/Add.h"
+#include "open_cl/kernels/Softmax.h"
+#include "open_cl/kernels/Softmax1x1.h"
 
 namespace onert
 {
@@ -34,6 +36,21 @@ void SelectAdd(const OperationDef &op_def, const std::vector<int> &channels, int
 {
   GPUOperation operation = CreateAdd(op_def, channels, dst_channels);
   *ptr = std::make_unique<GPUOperation>(std::move(operation));
+}
+
+void SelectSoftmax(const BHWC &shape, const OperationDef &op_def,
+                   std::unique_ptr<GPUOperation> *ptr)
+{
+  if (shape.w == 1 && shape.h == 1)
+  {
+    Softmax1x1 operation = CreateSoftmax1x1(op_def);
+    *ptr = absl::make_unique<Softmax1x1>(std::move(operation));
+  }
+  else
+  {
+    GPUOperation operation = CreateSoftmax(op_def);
+    *ptr = absl::make_unique<GPUOperation>(std::move(operation));
+  }
 }
 
 } // namespace gpu_cl
