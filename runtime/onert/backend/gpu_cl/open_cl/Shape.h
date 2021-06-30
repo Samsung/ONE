@@ -388,7 +388,7 @@ struct DimensionGetterFunc
   template <Layout T> int32_t operator()() const
   {
     uint32_t i = GetAxisIndex<T>(axis);
-    return i >= 0 && i < l->dimensions.size() ? l->dimensions[i] : -1;
+    return i < l->dimensions.size() ? l->dimensions[i] : -1;
   }
   Axis axis;
   const Shape *l;
@@ -399,7 +399,7 @@ template <Axis A> struct DimensionSetterFixedAxisFunc
   template <Layout T> bool operator()() const
   {
     constexpr uint32_t i = GetAxisIndex<T>(A);
-    if (i >= 0 && i < l->dimensions.size())
+    if (i < l->dimensions.size())
     {
       l->dimensions[i] = v;
       return true;
@@ -415,7 +415,7 @@ struct DimensionSetterFunc
   template <Layout T> bool operator()() const
   {
     uint32_t i = GetAxisIndex<T>(axis);
-    if (i >= 0 && i < l->dimensions.size())
+    if (i < l->dimensions.size())
     {
       l->dimensions[i] = v;
       return true;

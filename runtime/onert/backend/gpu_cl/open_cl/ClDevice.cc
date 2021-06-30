@@ -24,6 +24,9 @@
 #include "Util.h"
 #include "Status.h"
 
+#include "absl/strings/numbers.h"
+#include "absl/strings/str_split.h"
+
 namespace onert
 {
 namespace backend
@@ -211,10 +214,8 @@ DeviceInfo DeviceInfoFromDeviceID(cl_device_id id)
     info.mali_info = MaliInfo(device_name);
   }
   info.cl_version = ParseCLVersion(opencl_c_version);
-  /* TODO
-    info.extensions =
-        absl::StrSplit(GetDeviceInfo<std::string>(id, CL_DEVICE_EXTENSIONS), ' ');
-  */
+  info.extensions = absl::StrSplit(GetDeviceInfo<std::string>(id, CL_DEVICE_EXTENSIONS), ' ');
+
   info.supports_fp16 = false;
   info.supports_image3d_writes = false;
   for (const auto &ext : info.extensions)

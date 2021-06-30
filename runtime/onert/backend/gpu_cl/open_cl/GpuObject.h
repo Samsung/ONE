@@ -194,7 +194,7 @@ protected:
   // friend void Decode(const data::GPUObjectDescriptor* fb_obj,
   //                    GPUObjectDescriptor* obj);
   mutable std::map<std::string, std::string> state_vars_;
-  AccessType access_type_;
+  AccessType access_type_ = AccessType::UNKNOWN;
 };
 
 using GPUObjectDescriptorPtr = std::unique_ptr<GPUObjectDescriptor>;
