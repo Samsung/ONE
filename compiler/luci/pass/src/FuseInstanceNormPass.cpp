@@ -809,16 +809,12 @@ bool is_add_input_mul_const(luci::CircleAdd *add)
   return luci::fill(&p_mul, &p_const).with_commutative_args_of(add);
 }
 
-bool fuse_instance_norm(luci::CircleAdd *add, InstanceNormPattern::PatternVersion pv)
+bool fuse_instance_norm(luci::CircleAdd *add)
 {
-  if (pv == InstanceNormPattern::PatternVersion::Version_Unknown)
-  {
-    pv = InstanceNormPattern::PatternVersion::Version_0;
+  InstanceNormPattern::PatternVersion pv = InstanceNormPattern::PatternVersion::Version_0;
 
-    if (is_add_input_mul_const(add))
-      pv = InstanceNormPattern::PatternVersion::Version_2;
-  }
-  assert(pv != InstanceNormPattern::PatternVersion::Version_Unknown);
+  if (is_add_input_mul_const(add))
+    pv = InstanceNormPattern::PatternVersion::Version_2;
 
   InstanceNormPattern pattern(add, pv);
   if (pattern.matched())
@@ -864,15 +860,15 @@ namespace luci
 bool FuseInstanceNormPass::run(loco::Graph *g)
 {
   bool changed = false;
-  InstanceNormPattern::PatternVersion pv = InstanceNormPattern::PatternVersion::Version_Unknown;
 
+  // Check Verison_0, Version_2, Version_3
   for (auto node : loco::active_nodes(loco::output_nodes(g)))
   {
     auto add = dynamic_cast<luci::CircleAdd *>(node);
     if (not add)
       continue;
 
-    if (fuse_instance_norm(add, pv))
+    if (fuse_instance_norm(add))
       changed = true;
   }
 
