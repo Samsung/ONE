@@ -337,11 +337,8 @@ private:
 
 template <> bool InstanceNormPattern::match<InstanceNormPattern::PatternVersion::Version_0>()
 {
-  // Code inside extra curly brace is different part between Version_0 and Version_1
-  {
-    CHECK_OR_FALSE(luci::fill(&mul_as_scaled_ifm, &sub).with_commutative_args_of(add_as_terminal));
-    CHECK_OR_FALSE(luci::fill(&ifm, &mul_gamma).with_commutative_args_of(mul_as_scaled_ifm));
-  }
+  CHECK_OR_FALSE(luci::fill(&mul_as_scaled_ifm, &sub).with_commutative_args_of(add_as_terminal));
+  CHECK_OR_FALSE(luci::fill(&ifm, &mul_gamma).with_commutative_args_of(mul_as_scaled_ifm));
 
   auto ifm_circle = loco::must_cast<luci::CircleNode *>(ifm);
   CHECK_OR_FALSE(ifm_circle->shape_status() == luci::ShapeStatus::VALID);
@@ -351,9 +348,7 @@ template <> bool InstanceNormPattern::match<InstanceNormPattern::PatternVersion:
 
   CHECK_OR_FALSE(luci::fill(&rsqrt, &const_as_gamma).with_commutative_args_of(mul_gamma));
 
-  {
-    CHECK_OR_FALSE(is_1D_with_dummy_dim(const_as_gamma, ifm_channel_depth));
-  }
+  CHECK_OR_FALSE(is_1D_with_dummy_dim(const_as_gamma, ifm_channel_depth));
 
   add_as_variance = dynamic_cast<luci::CircleAdd *>(rsqrt->x());
   CHECK_OR_FALSE(add_as_variance);
@@ -365,38 +360,30 @@ template <> bool InstanceNormPattern::match<InstanceNormPattern::PatternVersion:
   // TODO Support regarding broadcast
   CHECK_OR_FALSE(const_as_epsilon->size<loco::DataType::FLOAT32>() == 1);
 
-  {
-    CHECK_OR_FALSE(is_instance_mean_v0(mean_as_variance));
-  }
+  CHECK_OR_FALSE(is_instance_mean_v0(mean_as_variance));
 
   sqdiff = dynamic_cast<luci::CircleSquaredDifference *>(mean_as_variance->input());
   CHECK_OR_FALSE(sqdiff);
 
-  {
-    loco::Node *ifm_should_be = nullptr;
-    CHECK_OR_FALSE(luci::fill(&ifm_should_be, &mean_of_ifm).with_commutative_args_of(sqdiff));
-    CHECK_OR_FALSE(ifm == ifm_should_be);
-    CHECK_OR_FALSE(is_instance_mean_v0(mean_of_ifm));
-    CHECK_OR_FALSE(ifm == mean_of_ifm->input());
-  }
+  loco::Node *ifm_should_be = nullptr;
+  CHECK_OR_FALSE(luci::fill(&ifm_should_be, &mean_of_ifm).with_commutative_args_of(sqdiff));
+  CHECK_OR_FALSE(ifm == ifm_should_be);
+  CHECK_OR_FALSE(is_instance_mean_v0(mean_of_ifm));
+  CHECK_OR_FALSE(ifm == mean_of_ifm->input());
 
-  {
-    const_as_beta = dynamic_cast<luci::CircleConst *>(sub->x());
-    CHECK_OR_FALSE(const_as_beta);
-    CHECK_OR_FALSE(is_1D_with_dummy_dim(const_as_beta, ifm_channel_depth));
-  }
+  const_as_beta = dynamic_cast<luci::CircleConst *>(sub->x());
+  CHECK_OR_FALSE(const_as_beta);
+  CHECK_OR_FALSE(is_1D_with_dummy_dim(const_as_beta, ifm_channel_depth));
 
   luci::CircleMul *mul_gamma_should_be = nullptr;
   luci::CircleMean *mean_of_ifm_should_be = nullptr;
 
-  {
-    mul_as_scaled_mean = dynamic_cast<luci::CircleMul *>(sub->y());
-    CHECK_OR_FALSE(mul_as_scaled_mean);
-    CHECK_OR_FALSE(luci::fill(&mul_gamma_should_be, &mean_of_ifm_should_be)
-                     .with_commutative_args_of(mul_as_scaled_mean));
-    CHECK_OR_FALSE(mul_gamma == mul_gamma_should_be);
-    CHECK_OR_FALSE(mean_of_ifm == mean_of_ifm_should_be);
-  }
+  mul_as_scaled_mean = dynamic_cast<luci::CircleMul *>(sub->y());
+  CHECK_OR_FALSE(mul_as_scaled_mean);
+  CHECK_OR_FALSE(luci::fill(&mul_gamma_should_be, &mean_of_ifm_should_be)
+                   .with_commutative_args_of(mul_as_scaled_mean));
+  CHECK_OR_FALSE(mul_gamma == mul_gamma_should_be);
+  CHECK_OR_FALSE(mean_of_ifm == mean_of_ifm_should_be);
 
   _matched = true;
   return true;
