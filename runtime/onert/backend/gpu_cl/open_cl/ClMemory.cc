@@ -35,7 +35,7 @@ cl_mem_flags ToClMemFlags(AccessType access_type)
     case AccessType::READ_WRITE:
       return CL_MEM_READ_WRITE;
     default:
-      return CL_MEM_READ_ONLY; // unreachable
+      throw std::runtime_error("Invalid AccessType");
   }
 
   return CL_MEM_READ_ONLY; // unreachable
