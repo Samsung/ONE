@@ -78,7 +78,7 @@ TEST_F(GenModelTest, OneOp_Softmax)
   SUCCEED();
 }
 
-TEST_F(GenModelTest, OneOp_neg_Softmax_Invaild_Beta)
+TEST_F(GenModelTest, neg_OneOp_Softmax_Invaild_Beta)
 {
   CircleGen cgen;
   int lhs = cgen.addTensor({{4, 1, 1, 1}, circle::TensorType::TensorType_FLOAT32});
