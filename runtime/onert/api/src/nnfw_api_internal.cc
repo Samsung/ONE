@@ -158,7 +158,7 @@ void setConfigKeyValues(const CfgKeyValues &keyValues)
 } // namespace
 
 nnfw_session::nnfw_session()
-  : _subgraphs{nullptr}, _execution{nullptr},
+  : _subgraphs{nullptr}, _compiler{nullptr}, _execution{nullptr},
     _kernel_registry{std::make_shared<onert::api::CustomKernelRegistry>()}, _tracing_ctx{nullptr}
 {
   // DO NOTHING
@@ -389,6 +389,12 @@ NNFW_STATUS nnfw_session::prepare_pipeline(const char *map_file_path)
     for (auto it = executor_maps.begin(); it != executor_maps.end(); ++it)
     {
       _executions.push_back(std::make_shared<onert::exec::Execution>(*it));
+    }
+    make_dependency();
+    _threads.resize(_executions.size());
+    for (uint32_t i = 0; i < _threads.size(); i++)
+    {
+      _threads[i] = std::thread(&onert::exec::Execution::runInference, _executions[i].get());
     }
   }
   catch (const std::exception &e)
@@ -838,6 +844,89 @@ NNFW_STATUS nnfw_session::output_tensorinfo(uint32_t index, nnfw_tensorinfo *ti)
 
   return NNFW_STATUS_NO_ERROR;
 }
+
+void nnfw_session::make_dependency()
+{
+  for (uint32_t out_exe = 0; out_exe < _executions.size(); out_exe++)
+  {
+    auto out_graph = _executions[out_exe]->primary_subgraph();
+    for (uint32_t in_exe = 0; in_exe < _executions.size(); in_exe++)
+    {
+      if (out_exe == in_exe)
+        continue;
+      auto in_graph = _executions[in_exe]->primary_subgraph();
+      for (auto out = out_graph._name_to_output_begin(); out != out_graph._name_to_output_end();
+           out++)
+      {
+        auto out_opidx = out_graph.getOutputs().at(out->second);
+        auto out_shape = out_graph.operands().at(out_opidx).shape();
+        for (auto in = in_graph._name_to_input_begin(); in != in_graph._name_to_input_end(); in++)
+        {
+          if (out->first != in->first)
+            continue;
+
+          auto in_opidx = in_graph.getInputs().at(in->second);
+          auto in_shape = in_graph.operands().at(in_opidx).shape();
+          if (out_shape.rank() != in_shape.rank())
+            continue;
+
+          bool is_same = true;
+          for (int32_t i = 0; i < out_shape.rank(); i++)
+          {
+            if (out_shape.dim(i) != in_shape.dim(i))
+            {
+              is_same = false;
+              break;
+            }
+          }
+
+          if (is_same)
+            _executions[out_exe]->pushNextExe(_executions[in_exe], out->second, in->second);
+        }
+      }
+    }
+  }
+}
+
+NNFW_STATUS nnfw_session::push_pipeline_input(std::vector<void *> *inputs,
+                                              std::vector<uint32_t> *lengths)
+{
+  static uint32_t count = 0;
+  if (inputs->empty())
+  {
+    _executions[0]->setFinish();
+    for (uint32_t i = 0; i < _threads.size(); i++)
+    {
+      _threads[i].join();
+    }
+    return NNFW_STATUS_NO_ERROR;
+  }
+  _executions[0]->asyncIoDescSemWait();
+  _executions[0]->createNewAsyncDesc(count++);
+  for (uint32_t i = 0; i < inputs->size(); i++)
+  {
+    _executions[0]->executeAsyncInput(onert::ir::IOIndex(i), inputs->at(i), lengths->at(i));
+  }
+  _executions[0]->asyncIoDescSemPost();
+  return NNFW_STATUS_NO_ERROR;
+}
+
+NNFW_STATUS nnfw_session::pop_pipeline_output(std::vector<void *> *outputs)
+{
+  auto results = _executions[_executions.size() - 1]->getAsyncResults();
+  while (results->empty())
+  {
+    if (_executions[_executions.size() - 1]->stopWait())
+      return NNFW_STATUS_ERROR;
+  }
+
+  auto result = results->front();
+  results->pop_front();
+  for (uint32_t i = 0; i < result.size(); i++)
+    outputs->push_back(result[i]);
+  return NNFW_STATUS_NO_ERROR;
+}
+
 NNFW_STATUS nnfw_session::register_custom_operation(const std::string &id,
                                                     nnfw_custom_eval eval_func)
 {
