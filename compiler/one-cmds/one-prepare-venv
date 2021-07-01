@@ -62,6 +62,13 @@ PIP_TIMEOUT="--default-timeout=1000 "
 
 PIP_OPTIONS="${PIP_TIMEOUT} ${PIP_TRUSTED_HOST}"
 
+# NOTE $ONE_PREPVENV_PIP_OPTION is to provide additional PIP options
+# such as ceritificate file behind firewall
+# ex) ONE_PREPVENV_PIP_OPTION="--cert SomePrivateCetificate.crt" ./one-prepare-venv
+if [[ ! -z "$ONE_PREPVENV_PIP_OPTION" ]]; then
+  PIP_OPTIONS+=" ${ONE_PREPVENV_PIP_OPTION} "
+fi
+
 # TODO remove version number of 'pip==20.2.1 setuptools==49.3.0'
 # NOTE adding version is for temporary hotfix of setuptools 50.x.y version
 ${VENV_PYTHON} -m pip ${PIP_OPTIONS} install -U pip==20.2.1 setuptools==49.3.0
