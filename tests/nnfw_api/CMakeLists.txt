@@ -24,6 +24,7 @@ if(Xnnpack_FOUND)
   target_compile_definitions(${RUNTIME_NNFW_API_TEST} PRIVATE TEST_XNNPACK_BACKEND)
 endif(Xnnpack_FOUND)
 
+nnas_find_package(Opencl_Headers QUIET)
 if(Opencl_Headers_FOUND)
   target_compile_definitions(${RUNTIME_NNFW_API_TEST} PRIVATE TEST_GPU_CL_BACKEND)
 endif(Opencl_Headers_FOUND)
