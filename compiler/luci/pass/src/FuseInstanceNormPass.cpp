@@ -40,7 +40,7 @@ bool is_1D_with_dummy_dim(luci::CircleConst *node, uint32_t depth)
   return node->dim(axis).value() == depth;
 }
 
-bool is_instance_mean_v0(luci::CircleMean *mean)
+bool is_instance_mean_v1(luci::CircleMean *mean)
 {
   //
   // CHECK 1) input is rank 4
@@ -119,7 +119,7 @@ namespace
  *
  *    TODO support other semantically same patterns for instance norm
  *
- * Version_0
+ * Version_1
  *                 [In]
  *                   |
  *                   V
@@ -153,8 +153,6 @@ namespace
  *         |
  *         V
  *       [Out]
- *-------------------------------------------------------------------
- * Version_1: Deprecated
  *-------------------------------------------------------------------
  * Version_2
  *                          [In]
@@ -270,8 +268,7 @@ public:
   enum PatternVersion
   {
     Version_Unknown,
-    Version_0,
-    // NOTE Version_1 is deprecated
+    Version_1,
     Version_2,
     Version_3,
     Version_4,
@@ -335,7 +332,7 @@ private:
   if (not(condition))             \
     return false;
 
-template <> bool InstanceNormPattern::match<InstanceNormPattern::PatternVersion::Version_0>()
+template <> bool InstanceNormPattern::match<InstanceNormPattern::PatternVersion::Version_1>()
 {
   CHECK_OR_FALSE(luci::fill(&mul_as_scaled_ifm, &sub).with_commutative_args_of(add_as_terminal));
   CHECK_OR_FALSE(luci::fill(&ifm, &mul_gamma).with_commutative_args_of(mul_as_scaled_ifm));
@@ -360,7 +357,7 @@ template <> bool InstanceNormPattern::match<InstanceNormPattern::PatternVersion:
   // TODO Support regarding broadcast
   CHECK_OR_FALSE(const_as_epsilon->size<loco::DataType::FLOAT32>() == 1);
 
-  CHECK_OR_FALSE(is_instance_mean_v0(mean_as_variance));
+  CHECK_OR_FALSE(is_instance_mean_v1(mean_as_variance));
 
   sqdiff = dynamic_cast<luci::CircleSquaredDifference *>(mean_as_variance->input());
   CHECK_OR_FALSE(sqdiff);
@@ -368,7 +365,7 @@ template <> bool InstanceNormPattern::match<InstanceNormPattern::PatternVersion:
   loco::Node *ifm_should_be = nullptr;
   CHECK_OR_FALSE(luci::fill(&ifm_should_be, &mean_of_ifm).with_commutative_args_of(sqdiff));
   CHECK_OR_FALSE(ifm == ifm_should_be);
-  CHECK_OR_FALSE(is_instance_mean_v0(mean_of_ifm));
+  CHECK_OR_FALSE(is_instance_mean_v1(mean_of_ifm));
   CHECK_OR_FALSE(ifm == mean_of_ifm->input());
 
   const_as_beta = dynamic_cast<luci::CircleConst *>(sub->x());
@@ -429,7 +426,7 @@ template <> bool InstanceNormPattern::match<InstanceNormPattern::PatternVersion:
   // TODO Support regarding broadcast
   CHECK_OR_FALSE(const_as_epsilon->size<loco::DataType::FLOAT32>() == 1);
 
-  CHECK_OR_FALSE(is_instance_mean_v0(mean_as_variance));
+  CHECK_OR_FALSE(is_instance_mean_v1(mean_as_variance));
 
   sqdiff = dynamic_cast<luci::CircleSquaredDifference *>(mean_as_variance->input());
   CHECK_OR_FALSE(sqdiff);
@@ -577,8 +574,8 @@ bool InstanceNormPattern::matched()
 
   switch (_pv)
   {
-    case PatternVersion::Version_0:
-      return match<PatternVersion::Version_0>();
+    case PatternVersion::Version_1:
+      return match<PatternVersion::Version_1>();
     case PatternVersion::Version_2:
       return match<PatternVersion::Version_2>();
     case PatternVersion::Version_3:
@@ -632,7 +629,7 @@ private:
 
 void FuseInstanceNorm::reshape_gamma_beta()
 {
-  // Version 0, 1 and 3 need to reshape
+  // Version 1 and 3 need to reshape
   {
     _p.const_as_gamma->rank(1);
     _p.const_as_gamma->dim(0).set(_p.const_as_gamma->size<loco::DataType::FLOAT32>());
@@ -670,7 +667,7 @@ luci::CircleInstanceNorm *FuseInstanceNorm::create_inst_norm(loco::Graph *graph)
   return instance_norm;
 }
 
-template <> void FuseInstanceNorm::apply<InstanceNormPattern::PatternVersion::Version_0>()
+template <> void FuseInstanceNorm::apply<InstanceNormPattern::PatternVersion::Version_1>()
 {
   auto graph = _p.add_as_terminal->graph();
 
@@ -776,8 +773,8 @@ bool FuseInstanceNorm::apply()
 
   switch (_p.version())
   {
-    case InstanceNormPattern::PatternVersion::Version_0:
-      apply<InstanceNormPattern::PatternVersion::Version_0>();
+    case InstanceNormPattern::PatternVersion::Version_1:
+      apply<InstanceNormPattern::PatternVersion::Version_1>();
       return true;
     case InstanceNormPattern::PatternVersion::Version_2:
       apply<InstanceNormPattern::PatternVersion::Version_2>();
@@ -811,7 +808,7 @@ bool is_add_input_mul_const(luci::CircleAdd *add)
 
 bool fuse_instance_norm(luci::CircleAdd *add)
 {
-  InstanceNormPattern::PatternVersion pv = InstanceNormPattern::PatternVersion::Version_0;
+  InstanceNormPattern::PatternVersion pv = InstanceNormPattern::PatternVersion::Version_1;
 
   if (is_add_input_mul_const(add))
     pv = InstanceNormPattern::PatternVersion::Version_2;
@@ -861,7 +858,7 @@ bool FuseInstanceNormPass::run(loco::Graph *g)
 {
   bool changed = false;
 
-  // Check Verison_0, Version_2, Version_3
+  // Check Version_1, Version_2, Version_3
   for (auto node : loco::active_nodes(loco::output_nodes(g)))
   {
     auto add = dynamic_cast<luci::CircleAdd *>(node);
