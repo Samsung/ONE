@@ -495,13 +495,15 @@ template <> bool InstanceNormPattern::match<InstanceNormPattern::PatternVersion:
   return true;
 }
 
-luci::CircleConst *make_const_one(loco::Graph *graph, float value)
+luci::CircleConst *make_const_vector(loco::Graph *graph, uint32_t nchn, float value)
 {
   auto const_one = graph->nodes()->create<luci::CircleConst>();
   const_one->dtype(loco::DataType::FLOAT32);
   const_one->rank(1);
-  const_one->size<loco::DataType::FLOAT32>(1);
-  const_one->at<loco::DataType::FLOAT32>(0) = value;
+  const_one->dim(0).set(nchn);
+  const_one->size<loco::DataType::FLOAT32>(nchn);
+  for (uint32_t c = 0; c < nchn; ++c)
+    const_one->at<loco::DataType::FLOAT32>(c) = value;
   return const_one;
 }
 
@@ -555,9 +557,15 @@ template <> bool InstanceNormPattern::match<InstanceNormPattern::PatternVersion:
   assert(add_as_terminal == nullptr);
 
   // create 1.0 gamma and 0.0 beta
+  // set channel to same as last dim of div
+  // assume last dimension is channel
   auto graph = div->graph();
-  const_as_gamma = make_const_one(graph, 1.0f);
-  const_as_beta = make_const_one(graph, 0.0f);
+  auto div_rank = div->rank();
+  assert(div_rank > 0);
+  auto div_nchn = div->dim(div_rank - 1).value();
+  assert(div_nchn > 0);
+  const_as_gamma = make_const_vector(graph, div_nchn, 1.0f);
+  const_as_beta = make_const_vector(graph, div_nchn, 0.0f);
   const_as_gamma->name(div->name() + "/gamma");
   const_as_beta->name(div->name() + "/beta");
 
