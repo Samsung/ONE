@@ -614,7 +614,7 @@ public:
   FuseInstanceNorm(const InstanceNormPattern &p) : _p(p) {}
 
 public:
-  bool apply(void);
+  void apply(void);
 
 private:
   template <InstanceNormPattern::PatternVersion> void apply(void);
@@ -766,8 +766,7 @@ template <> void FuseInstanceNorm::apply<InstanceNormPattern::PatternVersion::Ve
   replace(_p.div).with(instance_norm);
 }
 
-// TODO change return type void
-bool FuseInstanceNorm::apply()
+void FuseInstanceNorm::apply()
 {
   assert(_p.matched());
 
@@ -775,22 +774,20 @@ bool FuseInstanceNorm::apply()
   {
     case InstanceNormPattern::PatternVersion::Version_1:
       apply<InstanceNormPattern::PatternVersion::Version_1>();
-      return true;
+      break;
     case InstanceNormPattern::PatternVersion::Version_2:
       apply<InstanceNormPattern::PatternVersion::Version_2>();
-      return true;
+      break;
     case InstanceNormPattern::PatternVersion::Version_3:
       apply<InstanceNormPattern::PatternVersion::Version_3>();
-      return true;
+      break;
     case InstanceNormPattern::PatternVersion::Version_4:
       apply<InstanceNormPattern::PatternVersion::Version_4>();
-      return true;
+      break;
 
     default:
       break;
   }
-
-  return false;
 }
 
 } // namespace
@@ -817,7 +814,8 @@ bool fuse_instance_norm(luci::CircleAdd *add)
   if (pattern.matched())
   {
     FuseInstanceNorm fuse(pattern);
-    return fuse.apply();
+    fuse.apply();
+    return true;
   }
 
   if (pv == InstanceNormPattern::PatternVersion::Version_2)
@@ -828,7 +826,8 @@ bool fuse_instance_norm(luci::CircleAdd *add)
     if (pattern.matched())
     {
       FuseInstanceNorm fuse(pattern);
-      return fuse.apply();
+      fuse.apply();
+      return true;
     }
   }
 
@@ -843,7 +842,8 @@ bool fuse_instance_norm(luci::CircleDiv *div)
   if (pattern.matched())
   {
     FuseInstanceNorm fuse(pattern);
-    return fuse.apply();
+    fuse.apply();
+    return true;
   }
 
   return false;
