@@ -798,6 +798,30 @@ bool FuseInstanceNorm::apply()
 namespace
 {
 
+class PostFusion final
+{
+public:
+  PostFusion(luci::CircleInstanceNorm *inst_norm) : _inst_norm(inst_norm) {}
+
+public:
+  bool process(void);
+
+private:
+  luci::CircleInstanceNorm *_inst_norm = nullptr;
+};
+
+bool PostFusion::process(void)
+{
+  bool changed = false;
+
+  return changed;
+}
+
+} // namespace
+
+namespace
+{
+
 bool is_add_input_mul_const(luci::CircleAdd *add)
 {
   luci::CircleMul *p_mul = nullptr;
@@ -849,6 +873,13 @@ bool fuse_instance_norm(luci::CircleDiv *div)
   return false;
 }
 
+bool post_fusion(luci::CircleInstanceNorm *inst_norm)
+{
+  PostFusion postfusion(inst_norm);
+
+  return postfusion.process();
+}
+
 } // namespace
 
 namespace luci
@@ -877,6 +908,17 @@ bool FuseInstanceNormPass::run(loco::Graph *g)
       continue;
 
     if (fuse_instance_norm(div))
+      changed = true;
+  }
+
+  // Post processing of FuseInstanceNorm
+  for (auto node : loco::active_nodes(loco::output_nodes(g)))
+  {
+    auto inst_norm = dynamic_cast<luci::CircleInstanceNorm *>(node);
+    if (not inst_norm)
+      continue;
+
+    if (post_fusion(inst_norm))
       changed = true;
   }
 
