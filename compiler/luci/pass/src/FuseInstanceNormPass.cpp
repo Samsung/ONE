@@ -21,6 +21,7 @@
 #include <luci/IR/CircleNodes.h>
 
 #include <luci/Profile/CircleNodeOrigin.h>
+#include <luci/Service/CircleNodeClone.h>
 
 #include <cassert>
 #include <set>
@@ -614,7 +615,7 @@ public:
   FuseInstanceNorm(const InstanceNormPattern &p) : _p(p) {}
 
 public:
-  bool apply(void);
+  void apply(void);
 
 private:
   template <InstanceNormPattern::PatternVersion> void apply(void);
@@ -766,8 +767,7 @@ template <> void FuseInstanceNorm::apply<InstanceNormPattern::PatternVersion::Ve
   replace(_p.div).with(instance_norm);
 }
 
-// TODO change return type void
-bool FuseInstanceNorm::apply()
+void FuseInstanceNorm::apply()
 {
   assert(_p.matched());
 
@@ -775,22 +775,143 @@ bool FuseInstanceNorm::apply()
   {
     case InstanceNormPattern::PatternVersion::Version_1:
       apply<InstanceNormPattern::PatternVersion::Version_1>();
-      return true;
+      break;
     case InstanceNormPattern::PatternVersion::Version_2:
       apply<InstanceNormPattern::PatternVersion::Version_2>();
-      return true;
+      break;
     case InstanceNormPattern::PatternVersion::Version_3:
       apply<InstanceNormPattern::PatternVersion::Version_3>();
-      return true;
+      break;
     case InstanceNormPattern::PatternVersion::Version_4:
       apply<InstanceNormPattern::PatternVersion::Version_4>();
-      return true;
+      break;
 
     default:
       break;
   }
+}
 
-  return false;
+} // namespace
+
+namespace
+{
+
+class PostFusion final
+{
+public:
+  PostFusion(luci::CircleInstanceNorm *inst_norm) : _inst_norm(inst_norm) {}
+
+private:
+  uint32_t input_channel(void);
+
+  luci::CircleConst *match_const_channel(luci::CircleConst *, uint32_t);
+  bool match_const_gamma_channel(void);
+  bool match_const_beta_channel(void);
+
+public:
+  bool process(void);
+
+private:
+  luci::CircleInstanceNorm *_inst_norm = nullptr;
+};
+
+/**
+ * @brief return C value or 0 if shape status is not valid
+ */
+uint32_t PostFusion::input_channel(void)
+{
+  auto input = dynamic_cast<luci::CircleNode *>(_inst_norm->input());
+  if (input == nullptr)
+    return 0;
+  if (input->shape_status() != luci::ShapeStatus::VALID)
+    return 0;
+
+  auto input_rank = input->rank();
+  if (input_rank < 1)
+    return 0;
+
+  // assume channel-last
+  return input->dim(input_rank - 1).value();
+}
+
+/**
+ * @brief return new CircleConst with C channel if input_const channel != C
+ */
+luci::CircleConst *PostFusion::match_const_channel(luci::CircleConst *input_const, uint32_t C)
+{
+  luci::CircleConst *new_input_const = nullptr;
+
+  auto input_chn = input_const->dim(0).value();
+  if (input_chn == 1 && input_chn != C)
+  {
+    float value = input_const->at<loco::DataType::FLOAT32>(0);
+    auto clone = luci::clone_node(input_const, input_const->graph());
+
+    new_input_const = loco::must_cast<luci::CircleConst *>(clone);
+    new_input_const->rank(1);
+    new_input_const->dim(0).set(C);
+    new_input_const->size<loco::DataType::FLOAT32>(C);
+    for (uint32_t c = 0; c < C; ++c)
+      new_input_const->at<loco::DataType::FLOAT32>(c) = value;
+  }
+
+  return new_input_const;
+}
+
+/**
+ * @brief Broadcast gamma to match input channel if CircleConst
+ */
+bool PostFusion::match_const_gamma_channel(void)
+{
+  auto const_as_gamma = dynamic_cast<luci::CircleConst *>(_inst_norm->gamma());
+  if (const_as_gamma == nullptr)
+    return false;
+
+  auto C = input_channel();
+  if (C == 0)
+    return false;
+
+  auto new_const_as_gamma = match_const_channel(const_as_gamma, C);
+  if (new_const_as_gamma == nullptr)
+    return false;
+
+  _inst_norm->gamma(new_const_as_gamma);
+
+  return true;
+}
+
+/**
+ * @brief Broadcast beta to match input channel if CircleConst
+ */
+bool PostFusion::match_const_beta_channel(void)
+{
+  auto const_as_beta = dynamic_cast<luci::CircleConst *>(_inst_norm->beta());
+  if (const_as_beta == nullptr)
+    return false;
+
+  auto C = input_channel();
+  if (C == 0)
+    return false;
+
+  auto new_const_as_beta = match_const_channel(const_as_beta, C);
+  if (new_const_as_beta == nullptr)
+    return false;
+
+  _inst_norm->beta(new_const_as_beta);
+
+  return true;
+}
+
+bool PostFusion::process(void)
+{
+  bool changed = false;
+
+  if (match_const_gamma_channel())
+    changed = true;
+  if (match_const_beta_channel())
+    changed = true;
+
+  return changed;
 }
 
 } // namespace
@@ -817,7 +938,8 @@ bool fuse_instance_norm(luci::CircleAdd *add)
   if (pattern.matched())
   {
     FuseInstanceNorm fuse(pattern);
-    return fuse.apply();
+    fuse.apply();
+    return true;
   }
 
   if (pv == InstanceNormPattern::PatternVersion::Version_2)
@@ -828,7 +950,8 @@ bool fuse_instance_norm(luci::CircleAdd *add)
     if (pattern.matched())
     {
       FuseInstanceNorm fuse(pattern);
-      return fuse.apply();
+      fuse.apply();
+      return true;
     }
   }
 
@@ -843,10 +966,18 @@ bool fuse_instance_norm(luci::CircleDiv *div)
   if (pattern.matched())
   {
     FuseInstanceNorm fuse(pattern);
-    return fuse.apply();
+    fuse.apply();
+    return true;
   }
 
   return false;
+}
+
+bool post_fusion(luci::CircleInstanceNorm *inst_norm)
+{
+  PostFusion postfusion(inst_norm);
+
+  return postfusion.process();
 }
 
 } // namespace
@@ -877,6 +1008,17 @@ bool FuseInstanceNormPass::run(loco::Graph *g)
       continue;
 
     if (fuse_instance_norm(div))
+      changed = true;
+  }
+
+  // Post processing of FuseInstanceNorm
+  for (auto node : loco::active_nodes(loco::output_nodes(g)))
+  {
+    auto inst_norm = dynamic_cast<luci::CircleInstanceNorm *>(node);
+    if (not inst_norm)
+      continue;
+
+    if (post_fusion(inst_norm))
       changed = true;
   }
 
