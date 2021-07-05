@@ -88,7 +88,7 @@ private:
 
   int binding_counter_ = -1;
 
-  std::string function_name_ = nullptr;
+  std::string function_name_ = "";
   // reference to program from which kernel was created
   cl_program program_ = nullptr;
   cl_kernel kernel_ = nullptr;
