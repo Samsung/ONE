@@ -133,6 +133,11 @@ ifneq ($(EXT_ACL_FOLDER),)
 	printf "21.02" > $(OVERLAY_FOLDER)/ARMCOMPUTE.stamp
 endif
 
+ifneq ($(DEBIAN_BUILD),)
+	test -d externals || mkdir -p externals
+	find debian/archive/ -type f | xargs -i tar xf {} -C externals
+endif
+
 	NNFW_WORKSPACE="$(WORKSPACE)" NNFW_INSTALL_PREFIX=$(INSTALL_PATH) ./nnfw configure \
 		-DCMAKE_BUILD_TYPE=$(BUILD_TYPE_LC) \
 		-DNNFW_OVERLAY_DIR=$(OVERLAY_FOLDER) \
