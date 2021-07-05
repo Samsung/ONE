@@ -1348,6 +1348,13 @@ def main(args):
     new_input_tensors = used_tensors[:]
     new_output_tensors = used_tensors[:]
 
+    # key: sample idx, value: new idx
+    used_sample_subgraph_out = []
+    for output_idx in range(sample_subgraph.OutputsLength()):
+        sample_output_tensor_idx = sample_subgraph.Outputs(output_idx)
+        if sample_output_tensor_idx in used_tensors_dic:
+            used_sample_subgraph_out.append(sample_output_tensor_idx)
+
     for operator_idx in operator_list:
         operator = sample_subgraph.Operators(operator_idx)
         for input_idx in range(operator.InputsLength()):
@@ -1355,7 +1362,8 @@ def main(args):
             if input_tensor_idx == -1:
                 continue
             if input_tensor_idx in new_output_tensors:
-                new_output_tensors.remove(input_tensor_idx)
+                if not input_tensor_idx in used_sample_subgraph_out:
+                    new_output_tensors.remove(input_tensor_idx)
             if input_tensor_idx in new_input_tensors:
                 matched_buffer_idx = sample_subgraph.Tensors(input_tensor_idx).Buffer()
                 matched_buffer = sample_model.Buffers(matched_buffer_idx)
@@ -1366,6 +1374,8 @@ def main(args):
             output_tensor_idx = operator.Outputs(output_idx)
             if output_tensor_idx in new_input_tensors:
                 new_input_tensors.remove(output_tensor_idx)
+            if output_tensor_idx in used_sample_subgraph_out:
+                continue
             if output_tensor_idx in new_output_tensors:
                 matched_buffer_idx = sample_subgraph.Tensors(output_tensor_idx).Buffer()
                 matched_buffer = sample_model.Buffers(matched_buffer_idx)
