@@ -63,7 +63,8 @@ public:
     create_info.precision = environment->IsSupported(CalculationsPrecision::F16)
                               ? CalculationsPrecision::F16
                               : CalculationsPrecision::F32;
-    create_info.storage_type = GetFastestStorageType(environment->device().GetInfo());
+    create_info.storage_type =
+      GetStorageTypeWithMinimalMemoryConsumption(environment->device().GetInfo());
 
     create_info.hints.Add(ModelHints::kFastestInference);
 
