@@ -60,11 +60,9 @@ public:
     auto tr = std::make_shared<ClTensorRegistry<TensorManager>>(tm);
 
     InferenceContext::CreateInferenceInfo create_info;
-    create_info.precision = environment->IsSupported(CalculationsPrecision::F16)
-                              ? CalculationsPrecision::F16
-                              : CalculationsPrecision::F32;
-    create_info.storage_type = GetFastestStorageType(environment->device().GetInfo());
-
+    create_info.precision = CalculationsPrecision::F32;
+    create_info.storage_type =
+      GetStorageTypeWithMinimalMemoryConsumption(environment->device().GetInfo());
     create_info.hints.Add(ModelHints::kFastestInference);
 
     auto cc = std::make_shared<CreationContext>();
