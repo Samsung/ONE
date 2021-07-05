@@ -305,7 +305,7 @@ CircleModel::CircleModel(FlatBufBuilder &fb, TFLModel &model)
                                  model._data.size()};
   if (!tflite::VerifyModelBuffer(verifier))
   {
-    throw std::runtime_error("ERROR: Failed to verify tflite");
+    throw std::runtime_error("Failed to verify tflite");
   }
 
   _operator_codes_offset =
