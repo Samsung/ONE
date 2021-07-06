@@ -268,6 +268,7 @@ ProfilingCommandQueue::GetBestWorkGroupIndex(const CLKernel &kernel, const Devic
         average_samples_count++;
       }
     }
+    assert(average_samples_count > 0);
     average_time /= average_samples_count;
     for (size_t i = 0; i < work_group_sizes.size(); ++i)
     {

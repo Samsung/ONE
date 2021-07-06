@@ -35,8 +35,8 @@ namespace gpu_cl
 
 struct KernelInfo
 {
-  int private_memory_size;
-  int max_work_group_size;
+  int private_memory_size = 0;
+  int max_work_group_size = 0;
 };
 
 // Arguments binding to CLKernel can be manual or automatic

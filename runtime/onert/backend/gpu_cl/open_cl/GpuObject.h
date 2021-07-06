@@ -80,12 +80,12 @@ std::string MemoryTypeToCLType(MemoryType type);
 
 struct GPUBufferDescriptor
 {
-  DataType data_type;
-  AccessType access_type;
-  int element_size;
+  DataType data_type = DataType::UNKNOWN;
+  AccessType access_type = AccessType::UNKNOWN;
+  int element_size = 0;
   MemoryType memory_type = MemoryType::GLOBAL;
   std::vector<std::string> attributes;
-  cl_mem memory;
+  cl_mem memory = nullptr;
 };
 
 struct GPUResources
