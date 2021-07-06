@@ -268,8 +268,15 @@ ProfilingCommandQueue::GetBestWorkGroupIndex(const CLKernel &kernel, const Devic
         average_samples_count++;
       }
     }
-    assert(average_samples_count > 0);
-    average_time /= average_samples_count;
+    if (average_samples_count == 0)
+    {
+      throw std::runtime_error("It cannot be divided by zero");
+    }
+    else
+    {
+      average_time /= average_samples_count;
+    }
+
     for (size_t i = 0; i < work_group_sizes.size(); ++i)
     {
       double time = events_[i].GetEventTimeMs();
