@@ -38,6 +38,15 @@ using DataType = luci_interpreter::DataType;
 namespace
 {
 
+void readDataFromFile(const std::string &filename, char *data, size_t data_size)
+{
+  std::ifstream fs(filename, std::ifstream::binary);
+  if (fs.fail())
+    throw std::runtime_error("Cannot open file \"" + filename + "\".\n");
+  if (fs.read(data, data_size).fail())
+    throw std::runtime_error("Failed to read data from file \"" + filename + "\".\n");
+}
+
 std::vector<uint8_t> genRandomBoolData(std::mt19937 &gen, uint32_t num_elements)
 {
   std::uniform_int_distribution<> dist(0, 1);
@@ -150,6 +159,50 @@ void RecordMinMax::initialize(const std::string &input_model_path)
   _observer = std::make_unique<MinMaxObserver>();
 
   _interpreter->attachObserver(_observer.get());
+}
+
+// input_data_path is a text file which specifies the representative data
+// The text file should contain absolute file path per line.
+// The pointed file should be a binary file containing one representative input,
+// ready to be consumed by the input circle model without any modification
+void RecordMinMax::profileRawData(const std::string &mode, const std::string &input_data_path,
+                                  float min_percentile, float max_percentile)
+{
+  std::ifstream input_file(input_data_path);
+  if (input_file.fail())
+    throw std::runtime_error("Cannot open file \"" + input_data_path + "\".\n");
+
+  std::string record;
+  uint32_t num_records = 0;
+  const auto input_nodes = loco::input_nodes(_module->graph());
+  const auto num_inputs = input_nodes.size();
+
+  while (getline(input_file, record))
+  {
+    std::cout << "Recording " << num_records << "'th data" << std::endl;
+
+    uint32_t offset = 0;
+    for (auto input : input_nodes)
+    {
+      const auto *input_node = loco::must_cast<const luci::CircleInput *>(input);
+      std::vector<char> input_data(getTensorSize(input_node));
+      readDataFromFile(record, input_data.data() + offset, input_data.size());
+      _interpreter->writeInputTensor(input_node, input_data.data() + offset, input_data.size());
+
+      offset += input_data.size();
+    }
+
+    _interpreter->interpret();
+
+    num_records++;
+  }
+
+  if (num_records == 0)
+    throw std::runtime_error("The input data file does not contain any record.");
+
+  std::cout << "Recording finished. Number of recorded data: " << num_records << std::endl;
+
+  update_quantparam(_observer.get(), mode, min_percentile, max_percentile);
 }
 
 void RecordMinMax::profileData(const std::string &mode, const std::string &input_data_path,
