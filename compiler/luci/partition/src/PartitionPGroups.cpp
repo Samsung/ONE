@@ -86,13 +86,36 @@ std::unique_ptr<luci::PGroups> produce_pgroups(const luci::Module *source,
     // check if node is normal node that we are interested
     if (check_allocate_partition(node))
     {
-      auto opcodename = luci::opcode_name(node);
-      assert(!opcodename.empty());
-
       auto group = partition.default_group;
-      auto it = partition.byopcodes.find(opcodename);
-      if (it != partition.byopcodes.end())
-        group = it->second;
+
+      std::string opcodename; // opcodename or opname
+
+      switch (partition.comply)
+      {
+        case luci::PartitionTable::COMPLY::OPCODE:
+        {
+          opcodename = luci::opcode_name(node);
+          assert(!opcodename.empty());
+
+          auto it = partition.byopcodes.find(opcodename);
+          if (it != partition.byopcodes.end())
+            group = it->second;
+          break;
+        }
+        case luci::PartitionTable::COMPLY::OPNAME:
+        {
+          opcodename = node->name();
+          assert(!opcodename.empty());
+
+          auto it = partition.byopnames.find(opcodename);
+          if (it != partition.byopnames.end())
+            group = it->second;
+          break;
+        }
+
+        default:
+          throw std::runtime_error("Unsupported partition.comply");
+      }
 
       INFO(l) << "Op: " << node->name() << ": " << opcodename << ", " << node << ", " << group
               << std::endl;
