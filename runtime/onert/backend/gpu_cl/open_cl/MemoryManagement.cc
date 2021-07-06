@@ -66,7 +66,6 @@ absl::Status AssignObjectsToTensors(const std::vector<TensorUsageRecord<size_t>>
     default:
       return absl::InternalError("MemoryStrategy is not supported with current tensor size type.");
   }
-  return absl::OkStatus();
 }
 
 template <>
@@ -81,7 +80,6 @@ absl::Status AssignObjectsToTensors(const std::vector<TensorUsageRecord<BHWC>> &
     default:
       return absl::InternalError("MemoryStrategy is not supported with current tensor size type.");
   }
-  return absl::OkStatus();
 }
 
 template <>
@@ -96,7 +94,6 @@ absl::Status AssignObjectsToTensors(const std::vector<TensorUsageRecord<uint2>> 
     default:
       return absl::InternalError("MemoryStrategy is not supported with current tensor size type.");
   }
-  return absl::OkStatus();
 }
 
 template <>
