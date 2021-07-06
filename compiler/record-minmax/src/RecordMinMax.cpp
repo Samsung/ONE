@@ -165,8 +165,10 @@ void RecordMinMax::initialize(const std::string &input_model_path)
 
 // input_data_path is a text file which specifies the representative data
 // The text file should contain absolute file path per line.
-// The pointed file should be a binary file containing one representative input,
+// The pointed file should be a binary file containing one representative data,
 // ready to be consumed by the input circle model without any modification
+// NOTE If a model has multiple inputs, the binary file should have inputs concatenated in the same
+// order with the input index of the circle model.
 void RecordMinMax::profileRawData(const std::string &mode, const std::string &input_data_path,
                                   float min_percentile, float max_percentile)
 {
@@ -191,7 +193,8 @@ void RecordMinMax::profileRawData(const std::string &mode, const std::string &in
     std::cout << "Recording " << num_records << "'th data" << std::endl;
 
     // Read data from file to buffer
-    // Assumption: input data is saved in the same order with the input index
+    // Assumption: For a multi-input model, the binary file should have inputs concatenated in the
+    // same order with the input index.
     std::vector<char> input_data(total_input_size);
     readDataFromFile(record, input_data, total_input_size);
 
