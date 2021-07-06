@@ -65,10 +65,10 @@ TEST_P(SoftmaxVariation, Test)
 TEST_F(GenModelTest, OneOp_Softmax)
 {
   CircleGen cgen;
-  int lhs = cgen.addTensor({{4, 1, 1, 1}, circle::TensorType::TensorType_FLOAT32});
+  int input = cgen.addTensor({{4, 1, 1, 1}, circle::TensorType::TensorType_FLOAT32});
   int out = cgen.addTensor({{4, 1, 1, 1}, circle::TensorType::TensorType_FLOAT32});
-  cgen.addOperatorSoftmax({{lhs}, {out}}, 1.0);
-  cgen.setInputsAndOutputs({lhs}, {out});
+  cgen.addOperatorSoftmax({{input}, {out}}, 1.0);
+  cgen.setInputsAndOutputs({input}, {out});
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
   _context->addTestCase(uniformTCD<float>(
@@ -81,10 +81,10 @@ TEST_F(GenModelTest, OneOp_Softmax)
 TEST_F(GenModelTest, neg_OneOp_Softmax_Invaild_Beta)
 {
   CircleGen cgen;
-  int lhs = cgen.addTensor({{4, 1, 1, 1}, circle::TensorType::TensorType_FLOAT32});
+  int input = cgen.addTensor({{4, 1, 1, 1}, circle::TensorType::TensorType_FLOAT32});
   int out = cgen.addTensor({{4, 1, 1, 1}, circle::TensorType::TensorType_FLOAT32});
-  cgen.addOperatorSoftmax({{lhs}, {out}}, 0.1);
-  cgen.setInputsAndOutputs({lhs}, {out});
+  cgen.addOperatorSoftmax({{input}, {out}}, 0.1);
+  cgen.setInputsAndOutputs({input}, {out});
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
   _context->addTestCase(uniformTCD<float>({{-1., 0., 1., 1.}}, {{-1., -1., -1., -1.}}));
