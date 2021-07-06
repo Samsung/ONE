@@ -35,7 +35,7 @@ std::unique_ptr<T> open_fstream(const std::string &path, std::ios_base::openmode
   auto stream = std::make_unique<T>(path.c_str(), mode);
   if (!stream->is_open())
   {
-    throw std::runtime_error{"ERROR: Failed to open " + path};
+    throw std::runtime_error{"Failed to open " + path};
   }
   return stream;
 }
