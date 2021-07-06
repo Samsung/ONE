@@ -130,7 +130,7 @@ public:
 
   private:
     std::unordered_map<ValueId, std::shared_ptr<DummyTensor>> reservations_;
-    ValueId next_;
+    ValueId next_ = 0;
   };
 
 private:
