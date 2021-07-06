@@ -134,14 +134,14 @@ void RecordMinMax::initialize(const std::string &input_model_path)
                                  model_data.size()};
   if (!circle::VerifyModelBuffer(verifier))
   {
-    throw std::runtime_error("ERROR: Failed to verify circle '" + input_model_path + "'");
+    throw std::runtime_error("Failed to verify circle '" + input_model_path + "'");
   }
 
   _module = luci::Importer().importModule(circle::GetModel(model_data.data()));
 
   if (_module == nullptr)
   {
-    throw std::runtime_error("ERROR: Failed to load '" + input_model_path + "'");
+    throw std::runtime_error("Failed to load '" + input_model_path + "'");
   }
 
   // Initialize interpreter
@@ -293,7 +293,7 @@ void RecordMinMax::saveModel(const std::string &output_model_path)
 
   if (!exporter.invoke(&contract))
   {
-    throw std::runtime_error("ERROR: Failed to export '" + output_model_path + "'");
+    throw std::runtime_error("Failed to export '" + output_model_path + "'");
   }
 }
 
