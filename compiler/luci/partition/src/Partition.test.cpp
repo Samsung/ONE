@@ -73,6 +73,7 @@ TEST(PartitionTest, simple_apply)
 
   luci::PartitionTable pt;
   pt.default_group = "A";
+  pt.comply = luci::PartitionTable::COMPLY::OPCODE;
 
   auto pms = apply(&module, pt);
 

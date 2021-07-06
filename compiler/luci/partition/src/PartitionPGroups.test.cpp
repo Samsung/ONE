@@ -73,6 +73,7 @@ TEST(PartitionPGroupsTest, simple_produce)
 
   luci::PartitionTable pt;
   pt.default_group = "A";
+  pt.comply = luci::PartitionTable::COMPLY::OPCODE;
 
   auto pgs = produce_pgroups(&module, pt);
 
