@@ -38,12 +38,14 @@ using DataType = luci_interpreter::DataType;
 namespace
 {
 
-void readDataFromFile(const std::string &filename, char *data, size_t data_size)
+void readDataFromFile(const std::string &filename, std::vector<char> &data, size_t data_size)
 {
+  assert(data.size() == data_size); // FIX_CALLER_UNLESS
+
   std::ifstream fs(filename, std::ifstream::binary);
   if (fs.fail())
     throw std::runtime_error("Cannot open file \"" + filename + "\".\n");
-  if (fs.read(data, data_size).fail())
+  if (fs.read(data.data(), data_size).fail())
     throw std::runtime_error("Failed to read data from file \"" + filename + "\".\n");
 }
 
@@ -175,21 +177,33 @@ void RecordMinMax::profileRawData(const std::string &mode, const std::string &in
   std::string record;
   uint32_t num_records = 0;
   const auto input_nodes = loco::input_nodes(_module->graph());
-  const auto num_inputs = input_nodes.size();
+
+  // Get total input size
+  uint32_t total_input_size = 0;
+  for (auto input : input_nodes)
+  {
+    const auto *input_node = loco::must_cast<const luci::CircleInput *>(input);
+    total_input_size += getTensorSize(input_node);
+  }
 
   while (getline(input_file, record))
   {
     std::cout << "Recording " << num_records << "'th data" << std::endl;
 
+    // Read data from file to buffer
+    // Assumption: input data is saved in the same order with the input index
+    std::vector<char> input_data(total_input_size);
+    readDataFromFile(record, input_data, total_input_size);
+
+    // Write data from buffer to interpreter
     uint32_t offset = 0;
     for (auto input : input_nodes)
     {
       const auto *input_node = loco::must_cast<const luci::CircleInput *>(input);
-      std::vector<char> input_data(getTensorSize(input_node));
-      readDataFromFile(record, input_data.data() + offset, input_data.size());
-      _interpreter->writeInputTensor(input_node, input_data.data() + offset, input_data.size());
+      const auto input_size = getTensorSize(input_node);
+      _interpreter->writeInputTensor(input_node, input_data.data() + offset, input_size);
 
-      offset += input_data.size();
+      offset += input_size;
     }
 
     _interpreter->interpret();
