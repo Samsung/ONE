@@ -33,6 +33,10 @@ void dump(std::ostream &os, const luci::PartitionTable &table)
   os << "Assign by OPCODE: " << std::endl;
   for (auto &item : table.byopcodes)
     os << "  " << item.first << "=" << item.second << std::endl;
+
+  os << "Assign by OPNAME: " << std::endl;
+  for (auto &item : table.byopnames)
+    os << "  " << item.first << "=" << item.second << std::endl;
 }
 
 } // namespace
