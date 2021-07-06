@@ -76,6 +76,11 @@ int entry(const int argc, char **argv)
     .type(arser::DataType::STR)
     .help("Record mode. percentile (default) or moving_average");
 
+  arser.add_argument("--input_data_format")
+    .nargs(1)
+    .type(arser::DataType::STR)
+    .help("Input data format. h5/hdf5 (default) or list/filelist");
+
   arser.add_argument("--generate_profile_data")
     .nargs(0)
     .required(false)
@@ -102,6 +107,7 @@ int entry(const int argc, char **argv)
   std::string mode("percentile");
   float min_percentile = 1.0;
   float max_percentile = 99.0;
+  std::string input_data_format("h5");
 
   if (arser["--min_percentile"])
     min_percentile = arser.get<float>("--min_percentile");
@@ -118,6 +124,9 @@ int entry(const int argc, char **argv)
   if (arser["--generate_profile_data"])
     settings->set(luci::UserSettings::Key::ProfilingDataGen, true);
 
+  if (arser["--input_data_format"])
+    input_data_format = arser.get<std::string>("--input_data_format");
+
   RecordMinMax rmm;
 
   // Initialize interpreter and observer
@@ -127,8 +136,24 @@ int entry(const int argc, char **argv)
   {
     auto input_data_path = arser.get<std::string>("--input_data");
 
-    // Profile min/max while executing the given input data
-    rmm.profileData(mode, input_data_path, min_percentile, max_percentile);
+    if (input_data_format == "h5" || input_data_format == "hdf5")
+    {
+      // Profile min/max while executing the H5 data
+      rmm.profileData(mode, input_data_path, min_percentile, max_percentile);
+    }
+    // input_data is a text file where the absolute path of each record (a representative data) is
+    // written line-by-line. Each record should contain all inputs of a model, concatenated in the
+    // same order with the input index of the model
+    else if (input_data_format == "list" || input_data_format == "filelist")
+    {
+      // Profile min/max while executing the list of Raw data
+      rmm.profileRawData(mode, input_data_path, min_percentile, max_percentile);
+    }
+    else
+    {
+      throw std::runtime_error(
+        "Unsupported input data format (supported formats: h5/hdf5 (default), list/filelist)");
+    }
   }
   else
   {
