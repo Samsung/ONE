@@ -209,9 +209,9 @@ class Hlps:
                         for i in range(self._num_backends - 1):
                             if stop_insert is True:
                                 break
-                            candidate_int = int(
-                                ''.join(str(x) for x in reversed(candidate[i])),
-                                self._num_backends)
+                            candidate_int = int(''.join(
+                                str(x) for x in reversed(candidate[i])),
+                                                self._num_backends)
                             try:
                                 if is_marked(candidate_int) == False:
                                     solution_q.put(candidate_int)
@@ -230,9 +230,8 @@ class Hlps:
                     for j in range((self._num_backends - 1) * nbits):
                         if stop_insert is True:
                             break
-                        candidate_int = int(
-                            ''.join(str(x) for x in reversed(candidate[j])),
-                            self._num_backends)
+                        candidate_int = int(''.join(
+                            str(x) for x in reversed(candidate[j])), self._num_backends)
                         if is_marked(candidate_int) == False:
                             solution_q.put(candidate_int)
                             q_add_cnt += 1

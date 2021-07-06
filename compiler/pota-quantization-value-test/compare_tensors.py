@@ -76,9 +76,9 @@ def compare_quantization(tensor, tensor_name, expect_dir):
 
             if np.allclose(
                     input_weights, expected_weights, rtol=0, atol=abs_tolerance) == False:
-                print("Quantized weights of " + tensor_name + " (" + str(input_weights) +
-                      ") do not match with expected value (" + str(expected_weights) +
-                      ").")
+                print(
+                    "Quantized weights of " + tensor_name + " (" + str(input_weights) +
+                    ") do not match with expected value (" + str(expected_weights) + ").")
                 failed_cases += 1
 
         if key == "scale":

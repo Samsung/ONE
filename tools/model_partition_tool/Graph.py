@@ -147,10 +147,12 @@ class GraphPartition:
     """
 
     def summarize(self, T):
-        self._logger.info(
-            "Session Graph:\n%s",
-            np.array2string(
-                self._session_graph, formatter={'int': lambda x: '{:>3}'.format(x)}))
+        self._logger.info("Session Graph:\n%s",
+                          np.array2string(
+                              self._session_graph,
+                              formatter={
+                                  'int': lambda x: '{:>3}'.format(x)
+                              }))
         for i in range(self._K):
             self._logger.info("Partition %d : %s, sum weight = %s", i,
                               self._session_ids[i].tolist(), self._session_weights[i])
@@ -439,10 +441,12 @@ class GraphTopology:
         for i in range(K):
             self._Graphlogger.info("Partition %d : %s, sum weight = %s", i,
                                    session_ids[i].tolist(), session_weights[i])
-        self._Graphlogger.info(
-            "Session Graph:\n%s",
-            np.array2string(
-                session_graph, formatter={'int': lambda x: '{:>3}'.format(x)}))
+        self._Graphlogger.info("Session Graph:\n%s",
+                               np.array2string(
+                                   session_graph,
+                                   formatter={
+                                       'int': lambda x: '{:>3}'.format(x)
+                                   }))
         self._Graphlogger.info("Edge cut: %d", edge_cut_best)
         self._Graphlogger.info("Memory overhead (bytes): %d", memory_overhead_best)
         output_data = {}
