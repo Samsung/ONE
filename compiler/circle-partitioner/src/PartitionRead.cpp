@@ -39,6 +39,7 @@ luci::PartitionTable parse_table(const crew::Sections &sections)
 {
   luci::PartitionTable table;
 
+  // read main '[partition]' first
   for (auto &section : sections)
   {
     if (section.name == _section_partition)
@@ -56,7 +57,12 @@ luci::PartitionTable parse_table(const crew::Sections &sections)
       table.groups = csv_to_vector<std::string>(items.at(_key_backends));
       table.default_group = items.at(_key_default);
     }
-    else if (section.name == _section_OPCODE)
+  }
+
+  // read other sections
+  for (auto &section : sections)
+  {
+    if (section.name == _section_OPCODE)
     {
       auto &items = section.items;
 
