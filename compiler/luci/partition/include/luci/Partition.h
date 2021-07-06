@@ -32,13 +32,22 @@ namespace luci
  */
 struct PartitionTable
 {
+  enum class COMPLY
+  {
+    UNDEFINED,
+    OPCODE,
+    OPNAME,
+  };
+
   std::vector<std::string> groups;
   std::string default_group;
+  COMPLY comply = COMPLY::UNDEFINED;
 
   // assign by opcode name: OPCODENAME=group
   std::unordered_map<std::string /* OPCODENAME */, std::string /* group */> byopcodes;
 
-  // TODO add assign by OP name
+  // assign by op name: OPNAME=group
+  std::unordered_map<std::string /* OPNAME */, std::string /* group */> byopnames;
 };
 
 /**
