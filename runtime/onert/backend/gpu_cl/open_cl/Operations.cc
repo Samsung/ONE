@@ -38,6 +38,7 @@ namespace backend
 namespace gpu_cl
 {
 
+#if 0
 Padding2D &Padding2D::operator=(const Padding2D &value)
 {
   prepended = value.prepended;
@@ -487,6 +488,7 @@ BHWDC CalculateOutputShape(const BHWDC &input, const Transpose3DAttributes &attr
   return BHWDC(input.get(attr.perm.b), input.get(attr.perm.h), input.get(attr.perm.w),
                input.get(attr.perm.d), input.get(attr.perm.c));
 }
+#endif
 
 } // namespace gpu_cl
 } // namespace backend

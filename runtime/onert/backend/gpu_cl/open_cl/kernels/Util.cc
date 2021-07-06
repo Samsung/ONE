@@ -77,6 +77,7 @@ std::string GetCommonDefines(CalculationsPrecision precision)
   return result;
 }
 
+#if 0
 float4 GetMaskForLastPlane(int channels)
 {
   float4 mask = float4(0.0f);
@@ -203,6 +204,7 @@ int GetRecommendedBlockSizeForConv(const DeviceInfo &device_info, CalculationsPr
   }
   return block_size;
 }
+#endif
 
 int3 GetWorkGroupsCount(const int3 &grid_size, const int3 &work_group_size)
 {

@@ -100,6 +100,7 @@ enum class OperationType
   // TRANSPOSE,
 };
 
+#if 0
 std::string ToString(enum OperationType op);
 
 OperationType OperationTypeFromString(const std::string &name);
@@ -577,6 +578,7 @@ struct QuantizeAndDequantizeAttributes
   float max = 0;
   float scale = 0;
 };
+#endif
 
 } // namespace gpu_cl
 } // namespace backend
