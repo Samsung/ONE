@@ -111,7 +111,6 @@ absl::Status AssignObjectsToTensors(const std::vector<TensorUsageRecord<uint3>> 
     default:
       return absl::InternalError("MemoryStrategy is not supported with current tensor size type.");
   }
-  return absl::OkStatus();
 }
 
 absl::Status AssignOffsetsToTensors(const std::vector<TensorUsageRecord<size_t>> &usage_records,
