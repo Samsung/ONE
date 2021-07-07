@@ -168,7 +168,6 @@ std::string GetImageModifier(AccessType access)
     default:
       throw std::runtime_error("Invalid AccessType");
   }
-  return "";
 }
 
 std::string GetDefaultSamplers(const DeviceInfo &device_info)

@@ -43,7 +43,7 @@ std::string GetWriteImageFromDataType(DataType data_type)
   }
   else
   {
-    return "error";
+    throw std::runtime_error("Not supported data type");
   }
 }
 
@@ -649,12 +649,9 @@ std::string TensorDescriptor::GetGlobalAddressNoDeclarationWHSB(const std::strin
     case TensorStorageType::TEXTURE_ARRAY:
     case TensorStorageType::TEXTURE_3D:
       return absl::Substitute("(int4)(($0) * batch + ($1), ($2), ($3), 0)", x, b, y, s);
-    case TensorStorageType::UNKNOWN:
-      return "error";
     default:
-      return "error";
+      throw std::runtime_error("Unknown storage type");
   }
-  return "error";
 }
 
 std::string TensorDescriptor::GetGlobalAddressNoDeclarationWHDS(const std::string &x,
@@ -705,12 +702,9 @@ std::string TensorDescriptor::GetGlobalAddressNoDeclarationWHDSB(const std::stri
     case TensorStorageType::TEXTURE_3D:
       return absl::Substitute("(int4)(($0) * batch + ($1), ($2), ($3) * slices + ($4), 0)", x, b, y,
                               z, s);
-    case TensorStorageType::UNKNOWN:
-      return "error";
     default:
-      return "error";
+      throw std::runtime_error("Unknown storage type");
   }
-  return "error";
 }
 
 std::string TensorDescriptor::GetGlobalAddressNoDeclaration(const std::string &xc,
@@ -737,9 +731,8 @@ std::string TensorDescriptor::GetGlobalAddressNoDeclaration(const std::string &x
   }
   else
   {
-    return "Unsupported layout";
+    throw std::runtime_error("Unsupported layout");
   }
-  return "Unsupported layout";
 }
 
 absl::Status TensorDescriptor::GetDataTypeFromTemplateArgs(const std::string &template_arg,
