@@ -61,6 +61,15 @@ Number of output circle files will depend also on the network structure.
 
 For above example, all `DIV` OPCODE nodes will be grouped to `acl_cl` backend.
 
+`[OPCODE]` can override `default` backend set from `[partition]` section by using `_`.
+
+For example, we can change default to `cpu`.
+```
+[OPCODE]
+_=cpu
+DIV=acl_cl
+```
+
 ### `circle` file
 
 Just normal `circle` file. Currently partition is supported in limited properties and
