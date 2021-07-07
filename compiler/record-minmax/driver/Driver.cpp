@@ -141,9 +141,14 @@ int entry(const int argc, char **argv)
       // Profile min/max while executing the H5 data
       rmm.profileData(mode, input_data_path, min_percentile, max_percentile);
     }
-    // input_data is a text file where the absolute path of each record (a representative data) is
-    // written line-by-line. Each record should contain all inputs of a model, concatenated in the
-    // same order with the input index of the model
+    // input_data is a text file having a file path in each line.
+    // Each data file is composed of inputs of a model, concatenated in
+    // the same order with the input index of the model
+    //
+    // For example, for a model with n inputs, the contents of each data
+    // file can be visualized as below
+    // [input 1][input 2]...[input n]
+    // |start............end of file|
     else if (input_data_format == "list" || input_data_format == "filelist")
     {
       // Profile min/max while executing the list of Raw data
