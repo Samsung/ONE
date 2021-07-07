@@ -25,6 +25,7 @@
 #include <luci/Service/Validate.h>
 #include <luci/CircleExporter.h>
 #include <luci/CircleFileExpContract.h>
+#include <luci/PartitionDump.h>
 #include <luci/Log.h>
 
 #include <arser/arser.h>
@@ -109,32 +110,6 @@ std::unique_ptr<luci::Module> load_model(const std::string &input_path)
   return importer.importModule(circle_model);
 }
 
-bool validate_module(luci::Module *module)
-{
-  for (size_t g = 0; g < module->size(); ++g)
-  {
-    auto graph = module->graph(g);
-    if (!luci::validate(graph))
-    {
-      std::cerr << "ERROR: Invalid circle model" << std::endl;
-      return false;
-    }
-    if (!luci::validate_name(graph))
-    {
-      std::cerr << "ERROR: circle model has empty name" << std::endl;
-      return false;
-    }
-  }
-
-  if (!luci::validate_unique_name(module))
-  {
-    std::cerr << "ERROR: circle model has duplicate names" << std::endl;
-    return false;
-  }
-
-  return true;
-}
-
 bool validate_partition(luci::PartitionTable &partition)
 {
   if (partition.groups.size() == 0)
@@ -161,28 +136,6 @@ bool validate_partition(luci::PartitionTable &partition)
     }
   }
   return true;
-}
-
-void dump(std::ostream &os, const luci::PartitionTable &table)
-{
-  os << "Backends:";
-  for (auto &group : table.groups)
-  {
-    os << " " << group;
-    if (table.default_group == group)
-      os << "(default)";
-  }
-  os << std::endl;
-
-  os << "Assign by OPCODE: " << std::endl;
-  for (auto &item : table.byopcodes)
-    os << "  " << item.first << "=" << item.second << std::endl;
-}
-
-std::ostream &operator<<(std::ostream &os, const luci::PartitionTable &table)
-{
-  dump(os, table);
-  return os;
 }
 
 } // namespace
@@ -218,7 +171,7 @@ int entry(int argc, char **argv)
   {
     return EXIT_FAILURE;
   }
-  if (!validate_module(module.get()))
+  if (!luci::validate(module.get()))
   {
     return EXIT_FAILURE;
   }
