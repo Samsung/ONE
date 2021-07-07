@@ -35,7 +35,6 @@
 #include "StorageTypeUtil.h"
 #include "TensorType.h"
 #include "DataType.h"
-#include "MemoryManagement.h"
 #include "Model.h"
 #include "Operations.h"
 #include "Shape.h"
