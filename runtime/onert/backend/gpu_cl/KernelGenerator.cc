@@ -23,7 +23,6 @@
 #include "ClFunction.h"
 #include "TensorManager.h"
 
-#include "open_cl/kernels/Elementwise.h"
 #include "open_cl/selectors/SimpleSelectors.h"
 
 #include "ir/Operations.h"
