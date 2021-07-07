@@ -45,6 +45,13 @@ def _get_parser():
         'full filepath of the input data file. if not specified, run with random input data.'
     )
     parser.add_argument(
+        '-f',
+        '--input_data_format',
+        type=str,
+        help=
+        'file format of input data. h5/hdf5 (default) or list/filelist (a text file where a file path of input data is written in each line)'
+    )
+    parser.add_argument(
         '-o', '--output_path', type=str, help='full filepath of the output file')
 
     # argument for profiling
@@ -177,6 +184,9 @@ def _quantize(args):
         if _utils._is_valid_attr(args, 'input_data'):
             circle_record_minmax_cmd.append('--input_data')
             circle_record_minmax_cmd.append(getattr(args, 'input_data'))
+        if _utils._is_valid_attr(args, 'input_data_format'):
+            circle_record_minmax_cmd.append('--input_data_format')
+            circle_record_minmax_cmd.append(getattr(args, 'input_data_format'))
         # min and max percentile
         if _utils._is_valid_attr(args, 'min_percentile'):
             circle_record_minmax_cmd.append('--min_percentile')
