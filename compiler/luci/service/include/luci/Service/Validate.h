@@ -37,6 +37,8 @@ bool validate_name(loco::Graph *);
  */
 bool validate_unique_name(luci::Module *);
 
+bool validate(luci::Module *);
+
 } // namespace luci
 
 #endif // __LUCI_SERVICE_VALIDATE_H__
