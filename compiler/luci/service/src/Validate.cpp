@@ -24,6 +24,7 @@
 #include <cassert>
 #include <unordered_map>
 #include <vector>
+#include <iostream>
 
 namespace
 {
@@ -200,6 +201,32 @@ bool validate_unique_name(luci::Module *m)
 
       names_col[name] = true;
     }
+  }
+
+  return true;
+}
+
+bool validate(luci::Module *module)
+{
+  for (size_t g = 0; g < module->size(); ++g)
+  {
+    auto graph = module->graph(g);
+    if (!validate(graph))
+    {
+      std::cerr << "ERROR: Invalid circle model" << std::endl;
+      return false;
+    }
+    if (!validate_name(graph))
+    {
+      std::cerr << "ERROR: circle model has empty name" << std::endl;
+      return false;
+    }
+  }
+
+  if (!validate_unique_name(module))
+  {
+    std::cerr << "ERROR: circle model has duplicate names" << std::endl;
+    return false;
   }
 
   return true;
