@@ -27,6 +27,15 @@ TEST(csv2vec, simple_string)
   ASSERT_TRUE("world" == ret.at(1));
 }
 
+TEST(csv2vec, simple_int32)
+{
+  auto ret = pepper::csv_to_vector<int32_t>("1,2,3");
+
+  ASSERT_EQ(3, ret.size());
+  ASSERT_EQ(1, ret.at(0));
+  ASSERT_EQ(3, ret.at(2));
+}
+
 TEST(csv2vec, is_one_of)
 {
   auto ret = pepper::csv_to_vector<std::string>("hello,world");
@@ -39,4 +48,11 @@ TEST(csv2vec, empty_string_NEG)
 {
   // should not abort
   EXPECT_NO_THROW(pepper::csv_to_vector<std::string>(""));
+}
+
+TEST(csv2vec, invalid_int32_NEG)
+{
+  auto ret = pepper::csv_to_vector<int32_t>("hello,world");
+
+  ASSERT_EQ(0, ret.size());
 }

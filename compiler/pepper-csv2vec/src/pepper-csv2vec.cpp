@@ -34,6 +34,22 @@ template <> std::vector<std::string> csv_to_vector(const std::string &str)
   return ret;
 }
 
+// TODO merge std::string and int32_t type
+
+template <> std::vector<int32_t> csv_to_vector(const std::string &str)
+{
+  std::vector<int32_t> ret;
+  std::istringstream is(str);
+  for (int32_t i; is >> i;)
+  {
+    assert(i != ',');
+    ret.push_back(i);
+    if (is.peek() == ',')
+      is.ignore();
+  }
+  return ret;
+}
+
 template <> bool is_one_of(const std::string &item, const std::vector<std::string> &items)
 {
   return std::find(items.begin(), items.end(), item) != items.end();
