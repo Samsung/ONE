@@ -11,6 +11,7 @@ target_link_libraries(luci_partition PRIVATE luci_log)
 target_link_libraries(luci_partition PRIVATE luci_logex)
 target_link_libraries(luci_partition PRIVATE mio_circle)
 target_link_libraries(luci_partition PRIVATE nncc_common)
+target_link_libraries(luci_partition PRIVATE pepper_csv2vec)
 target_link_libraries(luci_partition PRIVATE oops)
 
 install(TARGETS luci_partition DESTINATION lib)
