@@ -1,5 +1,7 @@
 This is benchmarks for luci-micro, tflite-micro using mbed-cli 1
 
+Install python 3.8+ version
+
 install mbed-cli https://os.mbed.com/docs/mbed-os/v6.8/build-tools/install-and-set-up.html
 
 ```bash
