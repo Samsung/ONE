@@ -37,36 +37,36 @@ namespace gpu_cl
 
 struct GPUImage2DDescriptor
 {
-  DataType data_type;
-  AccessType access_type;
-  cl_mem memory;
+  DataType data_type = DataType::UNKNOWN;
+  AccessType access_type = AccessType::UNKNOWN;
+  cl_mem memory = nullptr;
 };
 
 struct GPUImage3DDescriptor
 {
-  DataType data_type;
-  AccessType access_type;
-  cl_mem memory;
+  DataType data_type = DataType::UNKNOWN;
+  AccessType access_type = AccessType::UNKNOWN;
+  cl_mem memory = nullptr;
 };
 
 struct GPUImage2DArrayDescriptor
 {
-  DataType data_type;
-  AccessType access_type;
-  cl_mem memory;
+  DataType data_type = DataType::UNKNOWN;
+  AccessType access_type = AccessType::UNKNOWN;
+  cl_mem memory = nullptr;
 };
 
 struct GPUImageBufferDescriptor
 {
-  DataType data_type;
-  AccessType access_type;
-  cl_mem memory;
+  DataType data_type = DataType::UNKNOWN;
+  AccessType access_type = AccessType::UNKNOWN;
+  cl_mem memory = nullptr;
 };
 
 struct GPUCustomMemoryDescriptor
 {
-  std::string type_name;
-  cl_mem memory;
+  std::string type_name = "";
+  cl_mem memory = nullptr;
 };
 
 enum class MemoryType

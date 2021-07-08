@@ -63,7 +63,7 @@ void LoadOpenCLFunctions(HMODULE libopencl);
 void LoadOpenCLFunctions(void *libopencl, bool use_wrapper);
 #endif
 
-absl::Status LoadOpenCL()
+absl::Status LoadOpenCL(void *libopencl)
 {
 #ifdef __WINDOWS__
   HMODULE libopencl = LoadLibraryA("OpenCL.dll");
@@ -79,7 +79,7 @@ absl::Status LoadOpenCL()
       absl::StrCat("Can not open OpenCL library on this device, error code - ", error_code));
   }
 #else
-  void *libopencl = dlopen("libOpenCL.so", RTLD_NOW | RTLD_LOCAL);
+  libopencl = dlopen("libOpenCL.so", RTLD_NOW | RTLD_LOCAL);
   if (libopencl)
   {
     LoadOpenCLFunctions(libopencl, false);
@@ -108,13 +108,22 @@ absl::Status LoadOpenCL()
 #endif
 }
 
+void UnloadOpenCL(void *libopencl)
+{
+  if (libopencl)
+  {
+    dlclose(libopencl);
+  }
+}
+
 #ifdef __WINDOWS__
 void LoadOpenCLFunctions(HMODULE libopencl)
 {
+
 #else
+#ifdef __ANDROID__
 void LoadOpenCLFunctions(void *libopencl, bool use_wrapper)
 {
-#ifdef __ANDROID__
   typedef void *(*loadOpenCLPointer_t)(const char *name);
   loadOpenCLPointer_t loadOpenCLPointer;
   if (use_wrapper)
@@ -122,9 +131,11 @@ void LoadOpenCLFunctions(void *libopencl, bool use_wrapper)
     loadOpenCLPointer =
       reinterpret_cast<loadOpenCLPointer_t>(dlsym(libopencl, "loadOpenCLPointer"));
   }
-#endif
-  (void)(use_wrapper);
-#endif
+#else
+void LoadOpenCLFunctions(void *libopencl, bool)
+{
+#endif // __ANDROID__
+#endif // __WINDOWS__
 
   LoadFunction(clGetPlatformIDs);
   LoadFunction(clGetPlatformInfo);

@@ -16,6 +16,7 @@
 
 #include "Config.h"
 
+#include <dlfcn.h>
 #include "open_cl/OpenclWrapper.h"
 #include "open_cl/Status.h"
 
@@ -26,11 +27,11 @@ namespace backend
 namespace gpu_cl
 {
 
-Config::~Config() {}
+Config::~Config() { UnloadOpenCL(_handle); }
 
 bool Config::initialize()
 {
-  if (LoadOpenCL().ok())
+  if (LoadOpenCL(_handle).ok())
   {
     return true;
   }

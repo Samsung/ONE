@@ -172,8 +172,6 @@ int ChannelTypeToSizeInBytes(cl_channel_type type)
   }
 }
 
-bool OpenCLSupported() { return LoadOpenCL().ok(); }
-
 absl::Status CreateCLBuffer(cl_context context, int size_in_bytes, bool read_only, void *data,
                             cl_mem *result)
 {
