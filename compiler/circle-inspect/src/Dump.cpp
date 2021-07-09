@@ -17,7 +17,80 @@
 #include "Dump.h"
 #include "Reader.h"
 
+#include <luci/Importer.h>
+#include <iterator>
 #include <ostream>
+
+namespace
+{
+
+std::string dtype_name(loco::DataType dtype)
+{
+  switch (dtype)
+  {
+    case loco::DataType::FLOAT32:
+      return "float32";
+    case loco::DataType::U8:
+      return "uint8";
+    case loco::DataType::S16:
+      return "int16";
+    default:
+      // Not supported, yet
+      throw std::invalid_argument("Not supported datatype");
+  }
+}
+
+void print_shape(std::ostream &os, const luci::CircleNode *node, uint32_t yaml_depth = 2)
+{
+  for (uint32_t ax = 0; ax < node->rank(); ++ax)
+  {
+    std::fill_n(std::ostream_iterator<char>(os), yaml_depth, ' ');
+    os << "- " << node->dim(ax).value() << std::endl;
+  }
+}
+
+} // namespace
+
+namespace circleinspect
+{
+
+void DumpIONodesYaml::run(std::ostream &os, const circle::Model *model)
+{
+  auto const module = luci::Importer().importModule(model);
+
+  auto const input_nodes = loco::input_nodes(module->graph());
+  auto const output_nodes = loco::output_nodes(module->graph());
+
+  // Dump inputs info
+  os << "input:" << std::endl;
+  for (auto const node : input_nodes)
+  {
+    auto const *input_node = loco::must_cast<const luci::CircleInput *>(node);
+
+    os << "- name: " << input_node->name() << std::endl;
+
+    os << "  dtype: " << dtype_name(input_node->dtype()) << std::endl;
+
+    os << "  shape:" << std::endl;
+    print_shape(os, input_node);
+  }
+
+  // Dump outputs info
+  os << "output:" << std::endl;
+  for (auto const node : output_nodes)
+  {
+    auto const *output_node = loco::must_cast<const luci::CircleOutput *>(node);
+
+    os << "- name: " << output_node->name() << std::endl;
+
+    os << "  dtype: " << dtype_name(output_node->dtype()) << std::endl;
+
+    os << "  shape:" << std::endl;
+    print_shape(os, output_node);
+  }
+}
+
+} // namespace circleinspect
 
 namespace circleinspect
 {

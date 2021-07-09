@@ -33,6 +33,15 @@ public:
   virtual void run(std::ostream &os, const circle::Model *model) = 0;
 };
 
+class DumpIONodesYaml final : public DumpInterface
+{
+public:
+  virtual ~DumpIONodesYaml() = default;
+
+public:
+  void run(std::ostream &os, const circle::Model *model) final;
+};
+
 class DumpOperators final : public DumpInterface
 {
 public:

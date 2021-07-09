@@ -30,6 +30,9 @@ int entry(int argc, char **argv)
 {
   arser::Arser arser{
     "circle-inspect allows users to retrieve various information from a Circle model file"};
+  arser.add_argument("--input_output")
+    .nargs(0)
+    .help("Dump input/output nodes info from circle file to yaml format.");
   arser.add_argument("--operators").nargs(0).help("Dump operators in circle file");
   arser.add_argument("--conv2d_weight")
     .nargs(0)
@@ -48,7 +51,8 @@ int entry(int argc, char **argv)
     return 255;
   }
 
-  if (!arser["--operators"] && !arser["--conv2d_weight"] && !arser["--op_version"])
+  if (!arser["--operators"] && !arser["--conv2d_weight"] && !arser["--op_version"] &&
+      !arser["--input_output"])
   {
     std::cout << "At least one option must be specified" << std::endl;
     std::cout << arser;
@@ -57,6 +61,8 @@ int entry(int argc, char **argv)
 
   std::vector<std::unique_ptr<circleinspect::DumpInterface>> dumps;
 
+  if (arser["--input_output"])
+    dumps.push_back(std::make_unique<circleinspect::DumpIONodesYaml>());
   if (arser["--operators"])
     dumps.push_back(std::make_unique<circleinspect::DumpOperators>());
   if (arser["--conv2d_weight"])
