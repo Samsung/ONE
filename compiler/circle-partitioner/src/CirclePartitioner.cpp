@@ -26,6 +26,7 @@
 #include <luci/CircleExporter.h>
 #include <luci/CircleFileExpContract.h>
 #include <luci/PartitionDump.h>
+#include <luci/PartitionValidate.h>
 #include <luci/Log.h>
 
 #include <arser/arser.h>
@@ -110,34 +111,6 @@ std::unique_ptr<luci::Module> load_model(const std::string &input_path)
   return importer.importModule(circle_model);
 }
 
-bool validate_partition(luci::PartitionTable &partition)
-{
-  if (partition.groups.size() == 0)
-  {
-    std::cerr << "There is no 'backends' information";
-    return false;
-  }
-  if (partition.default_group.empty())
-  {
-    std::cerr << "There is no 'default' backend information";
-    return false;
-  }
-  if (!partee::is_one_of(partition.default_group, partition.groups))
-  {
-    std::cerr << "'default' backend is not one of 'backends' item";
-    return false;
-  }
-  for (auto &byopcode : partition.byopcodes)
-  {
-    if (!partee::is_one_of(byopcode.second, partition.groups))
-    {
-      std::cerr << "OPCODE " << byopcode.first << " is not assigned to one of 'backends' items";
-      return false;
-    }
-  }
-  return true;
-}
-
 } // namespace
 
 int entry(int argc, char **argv)
@@ -193,8 +166,9 @@ int entry(int argc, char **argv)
       partition.default_group = arser.get<std::string>(opt_def);
     }
   }
-  if (!validate_partition(partition))
+  if (!luci::validate(partition))
   {
+    // NOTE error reason/message is put to std::cerr inside validate()
     return EXIT_FAILURE;
   }
 
