@@ -17,7 +17,6 @@
 #include "PartitionRead.h"
 #include "PartitionExport.h"
 #include "HelperPath.h"
-#include "HelperStrings.h"
 
 #include <foder/FileLoader.h>
 
@@ -29,6 +28,7 @@
 #include <luci/PartitionValidate.h>
 #include <luci/Log.h>
 
+#include <pepper/csv2vec.h>
 #include <arser/arser.h>
 #include <vconone/vconone.h>
 
@@ -159,7 +159,7 @@ int entry(int argc, char **argv)
     if (arser[opt_bks])
     {
       auto backend_backends = arser.get<std::string>(opt_bks);
-      partition.groups = partee::csv_to_vector<std::string>(backend_backends);
+      partition.groups = pepper::csv_to_vector<std::string>(backend_backends);
     }
     if (arser[opt_def])
     {

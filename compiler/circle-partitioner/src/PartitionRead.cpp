@@ -15,11 +15,11 @@
  */
 
 #include "PartitionRead.h"
-#include "HelperStrings.h"
 
 #include <crew/PConfigIni.h>
 #include <crew/PConfigIniDump.h>
 #include <luci/Log.h>
+#include <pepper/csv2vec.h>
 
 #include <stdexcept>
 
@@ -62,7 +62,7 @@ luci::PartitionTable parse_table(const crew::Sections &sections)
         throw std::invalid_argument("'default' is required");
       }
 
-      table.groups = csv_to_vector<std::string>(items.at(_key_backends));
+      table.groups = pepper::csv_to_vector<std::string>(items.at(_key_backends));
       table.default_group = items.at(_key_default);
 
       auto comply = items.at(_key_comply);
