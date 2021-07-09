@@ -1,4 +1,5 @@
 require("foder")
+require("pepper-csv2vec")
 require("loco")
 require("locop")
 require("logo")
