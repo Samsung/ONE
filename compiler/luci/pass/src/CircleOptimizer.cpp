@@ -71,6 +71,7 @@
 
 #include <luci/IR/CircleNodes.h>
 #include <logo/Phase.h>
+#include <pepper/csv2vec.h>
 
 #include <memory>
 #include <sstream>
@@ -452,7 +453,7 @@ void CircleOptimizer::sparsify(loco::Graph *g) const
     std::string str_block_map = _options->param(Options::AlgorithmParameters::Sparsify_block_map);
 
     // traversal order
-    std::vector<int32_t> traversal_order = csv_to_vector<int32_t>(str_tarversal_order);
+    std::vector<int32_t> traversal_order = pepper::csv_to_vector<int32_t>(str_tarversal_order);
     // format
     std::vector<DimensionType> format;
     std::istringstream is(str_format);
@@ -467,9 +468,9 @@ void CircleOptimizer::sparsify(loco::Graph *g) const
         is.ignore();
     }
     // block size
-    std::vector<int32_t> block_size = csv_to_vector<int32_t>(str_block_size);
+    std::vector<int32_t> block_size = pepper::csv_to_vector<int32_t>(str_block_size);
     // block map
-    std::vector<int32_t> block_map = csv_to_vector<int32_t>(str_block_map);
+    std::vector<int32_t> block_map = pepper::csv_to_vector<int32_t>(str_block_map);
 
     luci::SparsifyTensorPass sparsifier{tensor_name, traversal_order, format, block_size,
                                         block_map};

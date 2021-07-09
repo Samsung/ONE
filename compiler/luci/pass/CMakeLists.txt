@@ -14,6 +14,7 @@ target_link_libraries(luci_pass PRIVATE luci_service)
 target_link_libraries(luci_pass PRIVATE luci_logex)
 target_link_libraries(luci_pass PRIVATE luci_profile)
 target_link_libraries(luci_pass PRIVATE nncc_common)
+target_link_libraries(luci_pass PRIVATE pepper_csv2vec)
 target_link_libraries(luci_pass PRIVATE oops)
 install(TARGETS luci_pass DESTINATION lib)
 install(DIRECTORY include/ DESTINATION include
