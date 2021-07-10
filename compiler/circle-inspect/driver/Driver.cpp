@@ -21,6 +21,7 @@
 
 #include <functional>
 #include <iostream>
+#include <fstream>
 #include <map>
 #include <memory>
 #include <vector>
@@ -35,6 +36,10 @@ int entry(int argc, char **argv)
     .nargs(0)
     .help("Dump Conv2D series weight operators in circle file");
   arser.add_argument("--op_version").nargs(0).help("Dump versions of the operators in circle file");
+  arser.add_argument("--output_file")
+    .nargs(1)
+    .type(arser::DataType::STR)
+    .help("Write output to file. Required argument: output_path.");
   arser.add_argument("circle").type(arser::DataType::STR).help("Circle file to inspect");
 
   try
@@ -64,6 +69,21 @@ int entry(int argc, char **argv)
   if (arser["--op_version"])
     dumps.push_back(std::make_unique<circleinspect::DumpOperatorVersion>());
 
+  // Define output stream
+  std::ofstream ofs;
+  if (arser["--output_file"])
+  {
+    auto value = arser.get<std::string>("--output_file");
+
+    ofs.open(value, std::ios::out);
+    if (not ofs.is_open())
+    {
+      std::cerr << "ERROR: Failed to open output file '" << value << "'" << std::endl;
+      return 255;
+    }
+  }
+  auto &os = ofs.is_open() ? ofs : std::cout;
+
   std::string model_file = arser.get<std::string>("circle");
 
   // Load Circle model from a circle file
@@ -78,7 +98,7 @@ int entry(int argc, char **argv)
 
   for (auto &dump : dumps)
   {
-    dump->run(std::cout, circleModel);
+    dump->run(os, circleModel);
   }
 
   return 0;
