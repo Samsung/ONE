@@ -47,8 +47,8 @@ namespace backend
 namespace gpu_cl
 {
 
-absl::Status LoadOpenCL(void *libopencl);
-void UnloadOpenCL(void *libopencl);
+absl::Status LoadOpenCL(void **libopencl);
+void UnloadOpenCL(void **libopencl);
 
 typedef cl_int(CL_API_CALL *PFN_clGetPlatformIDs)(
   cl_uint /* num_entries */, cl_platform_id * /* platforms */,

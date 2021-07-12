@@ -27,11 +27,11 @@ namespace backend
 namespace gpu_cl
 {
 
-Config::~Config() { UnloadOpenCL(_handle); }
+Config::~Config() { UnloadOpenCL(&_handle); }
 
 bool Config::initialize()
 {
-  if (LoadOpenCL(_handle).ok())
+  if (LoadOpenCL(&_handle).ok())
   {
     return true;
   }
