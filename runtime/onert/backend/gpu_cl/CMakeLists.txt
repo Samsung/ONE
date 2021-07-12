@@ -5,6 +5,10 @@ if(NOT Opencl_Headers_FOUND)
   return()
 endif(NOT Opencl_Headers_FOUND)
 
+if(NOT BUILD_GPU_CL)
+  return()
+endif(NOT BUILD_GPU_CL)
+
 nnas_find_package(Farmhash QUIET)
 if(NOT Farmhash_FOUND)
   return()
