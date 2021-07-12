@@ -27,7 +27,7 @@ show_version() {
   current_version=${version_line#"Version:"}
 
   if [ $nightly -eq 0 ]; then
-    echo $current_version-nightly-$date
+    echo $current_version-nightly
   else
     echo $current_version
   fi
