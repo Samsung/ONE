@@ -48,11 +48,3 @@ TEST(StringsTest, str_to_granularity)
 
   EXPECT_THROW(luci::str_to_granularity("foo"), std::runtime_error);
 }
-
-TEST(StringsTest, csv_to_vector_int32)
-{
-  auto ret = luci::csv_to_vector<int32_t>("1,2,3");
-  ASSERT_EQ(3, ret.size());
-  ASSERT_EQ(1, ret.at(0));
-  ASSERT_EQ(3, ret.at(2));
-}
