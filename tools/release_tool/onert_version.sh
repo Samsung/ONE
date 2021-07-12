@@ -27,11 +27,7 @@ show_version() {
   current_version=${version_line#"Version:"}
 
   if [ $nightly -eq 0 ]; then
-    # Get head commit's date
-    pushd $nnfw_root > /dev/null
-    date=$(git log -1 --format=%ad --date=format:%y%m%d)
     echo $current_version-nightly-$date
-    popd > /dev/null
   else
     echo $current_version
   fi
