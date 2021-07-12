@@ -108,11 +108,11 @@ absl::Status LoadOpenCL(void **libopencl)
 #endif
 }
 
-void UnloadOpenCL(void **libopencl)
+void UnloadOpenCL(void *libopencl)
 {
-  if (*libopencl)
+  if (libopencl)
   {
-    dlclose(*libopencl);
+    dlclose(libopencl);
   }
 }
 
