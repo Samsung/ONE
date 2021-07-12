@@ -677,6 +677,26 @@ struct QuantizeActivation final : public luci::CircleNodeMutableVisitor<bool>
           circle_node->dtype(loco::DataType::S16);
         }
 
+        // Nodes fused with activation functions which need special quantization
+        auto fused_act_node =
+          dynamic_cast<CircleNodeMixin<CircleNodeTrait::FusedActFunc> *>(circle_node);
+        if (fused_act_node != nullptr &&
+            fused_act_node->fusedActivationFunction() == FusedActFunc::TANH)
+        {
+          if (output_type == loco::DataType::U8)
+          {
+            scaling_factor = 2.0f / 256.0f;
+            zp = 128;
+          }
+          else
+          {
+            assert(output_type == loco::DataType::S16);
+            scaling_factor = 1.0f / 32768.0f;
+            zp = 0;
+          }
+          continue;
+        }
+
         // The output of these Ops should be integer, so scale should be integer
         // TODO Handle cases where the integer scale needs to be propagated
         if (circle_node->opcode() == CircleOpcode::FLOOR ||
