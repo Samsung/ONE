@@ -57,8 +57,6 @@ std::string CLErrorCodeToString(cl_int error_code);
 
 int ChannelTypeToSizeInBytes(cl_channel_type type);
 
-bool OpenCLSupported();
-
 template <DataType S, typename T>
 void CopyLinearFLT4(const InternalTensor<Linear, S> &src, absl::Span<T> dst)
 {

@@ -47,23 +47,23 @@ namespace gpu_cl
   }                                                                            \
   else                                                                         \
   {                                                                            \
-    function = reinterpret_cast<PFN_##function>(dlsym(libopencl, #function));  \
+    function = reinterpret_cast<PFN_##function>(dlsym(*libopencl, #function)); \
   }
 #elif defined(__WINDOWS__)
 #define LoadFunction(function) \
   function = reinterpret_cast<PFN_##function>(GetProcAddress(libopencl, #function));
 #else
 #define LoadFunction(function) \
-  function = reinterpret_cast<PFN_##function>(dlsym(libopencl, #function));
+  function = reinterpret_cast<PFN_##function>(dlsym(*libopencl, #function));
 #endif
 
 #ifdef __WINDOWS__
 void LoadOpenCLFunctions(HMODULE libopencl);
 #else
-void LoadOpenCLFunctions(void *libopencl, bool use_wrapper);
+void LoadOpenCLFunctions(void **libopencl, bool use_wrapper);
 #endif
 
-absl::Status LoadOpenCL()
+absl::Status LoadOpenCL(void **libopencl)
 {
 #ifdef __WINDOWS__
   HMODULE libopencl = LoadLibraryA("OpenCL.dll");
@@ -79,8 +79,8 @@ absl::Status LoadOpenCL()
       absl::StrCat("Can not open OpenCL library on this device, error code - ", error_code));
   }
 #else
-  void *libopencl = dlopen("libOpenCL.so", RTLD_NOW | RTLD_LOCAL);
-  if (libopencl)
+  *libopencl = dlopen("libOpenCL.so", RTLD_NOW | RTLD_LOCAL);
+  if (*libopencl)
   {
     LoadOpenCLFunctions(libopencl, false);
     return absl::OkStatus();
@@ -89,16 +89,16 @@ absl::Status LoadOpenCL()
   std::string error(dlerror());
 #ifdef __ANDROID__
   // Pixel phone or auto?
-  libopencl = dlopen("libOpenCL-pixel.so", RTLD_NOW | RTLD_LOCAL);
-  if (!libopencl)
+  *libopencl = dlopen("libOpenCL-pixel.so", RTLD_NOW | RTLD_LOCAL);
+  if (!*libopencl)
   {
-    libopencl = dlopen("libOpenCL-car.so", RTLD_NOW | RTLD_LOCAL);
+    *libopencl = dlopen("libOpenCL-car.so", RTLD_NOW | RTLD_LOCAL);
   }
-  if (libopencl)
+  if (*libopencl)
   {
     typedef void (*enableOpenCL_t)();
     enableOpenCL_t enableOpenCL =
-      reinterpret_cast<enableOpenCL_t>(dlsym(libopencl, "enableOpenCL"));
+      reinterpret_cast<enableOpenCL_t>(dlsym(*libopencl, "enableOpenCL"));
     enableOpenCL();
     LoadOpenCLFunctions(libopencl, true);
     return absl::OkStatus();
@@ -108,23 +108,33 @@ absl::Status LoadOpenCL()
 #endif
 }
 
+void UnloadOpenCL(void *libopencl)
+{
+  if (libopencl)
+  {
+    dlclose(libopencl);
+  }
+}
+
 #ifdef __WINDOWS__
 void LoadOpenCLFunctions(HMODULE libopencl)
 {
 #else
-void LoadOpenCLFunctions(void *libopencl, bool use_wrapper)
-{
 #ifdef __ANDROID__
+void LoadOpenCLFunctions(void **libopencl, bool use_wrapper)
+{
   typedef void *(*loadOpenCLPointer_t)(const char *name);
   loadOpenCLPointer_t loadOpenCLPointer;
   if (use_wrapper)
   {
     loadOpenCLPointer =
-      reinterpret_cast<loadOpenCLPointer_t>(dlsym(libopencl, "loadOpenCLPointer"));
+      reinterpret_cast<loadOpenCLPointer_t>(dlsym(*libopencl, "loadOpenCLPointer"));
   }
-#endif
-  (void)(use_wrapper);
-#endif
+#else
+void LoadOpenCLFunctions(void **libopencl, bool)
+{
+#endif // __ANDROID__
+#endif // __WINDOWS__
 
   LoadFunction(clGetPlatformIDs);
   LoadFunction(clGetPlatformInfo);
