@@ -29,6 +29,7 @@ option(BUILD_WITH_HDF5 "Build test tool with HDF5 library" ON)
 option(GENERATE_RUNTIME_NNAPI_TESTS "Generate NNAPI operation gtest" ON)
 option(ENVVAR_ONERT_CONFIG "Use environment variable for onert configuration" ON)
 option(INSTALL_TEST_SCRIPTS "Install test scripts" ON)
+option(BUILD_GPU_CL "Build gpu_cl backend" ON)
 #
 # Default build configuration for contrib
 #
