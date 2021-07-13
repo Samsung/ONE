@@ -50,9 +50,18 @@ bool is_input_same(const luci::PGroup *pgroup, const luci::PGroups *pgroups)
   std::string group;
   for (auto &input : pgroup->inputs)
   {
+    // We ignore below logic for CircleConst.
+    // CircleConst will be cloned if they are not found in pgroup as an input.
+    // Refer build_graph(), "add CircleConst for inputs"
+    // Reason: CircleConst can be shared as input to multiple nodes
+    //         where each node can be placed in different groups. For this case
+    //         we need to clone this CircleConst for each graph of the group.
+    if (dynamic_cast<const luci::CircleConst *>(input) != nullptr)
+      continue;
+
     auto input_group = pgroups->group_of(input);
     // NOTE: all the nodes should be registered and return should be valid group.
-    // convert_to_proups() should ensure this.
+    // produce_pgroups() should ensure this, except CircleConst, Input, Outputs.
     // assert here to find if there is any problem with this.
     assert(not input_group.empty());
     if (input_group.empty())
