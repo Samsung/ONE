@@ -180,6 +180,7 @@ private:
     RETURN_FALSE_UNLESS(is_lwq(node->input()))
     RETURN_FALSE_UNLESS(is_cwq_const(node->weights(), 0))
     luci::CircleConst *bias = dynamic_cast<luci::CircleConst *>(node->bias());
+    // Bias is optional (it can be CircleOutputExclude)
     if (bias != nullptr)
       RETURN_FALSE_UNLESS(is_cwq_const(node->bias(), rank(node->bias()) - 1))
     return true;
