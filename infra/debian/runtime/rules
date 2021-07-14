@@ -22,5 +22,4 @@ override_dh_install:
 	sed -i 's:@includedir@:\/usr\/include:g' ./packaging/nnfw.pc.in
 	sed -i 's:@version@:${DEBVER}:g' ./packaging/nnfw.pc.in
 	install -m 0644 packaging/nnfw.pc.in -T debian/tmp/usr/lib/pkgconfig/nnfw.pc
-	dh_install -p nnfw
-	dh_install -p nnfw-dev
+	dh_install
