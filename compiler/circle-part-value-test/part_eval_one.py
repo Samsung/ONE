@@ -4,6 +4,7 @@ import tensorflow as tf
 import subprocess
 import argparse
 import traceback
+import json
 
 #
 # This script compares the execution result of TFLite interpreter and
@@ -23,6 +24,32 @@ driver = args.driver
 tflite_model = args.name + ".tflite"
 circle_model = args.name + ".circle"
 partition_conn_ini = args.name + ".conn.ini"
+partition_conn_json = args.name + ".conn.json"
+expected_count = args.name + ".excnt"
+
+# Check expected count of models from partitioning
+try:
+    with open(expected_count, "r") as expected_count_file:
+        expected_count_line = expected_count_file.readline()
+        expected_count_file.close()
+
+    expected_count_line = int(expected_count_line)
+    if expected_count_line:
+        with open(partition_conn_json) as json_file:
+            json_data = json.load(json_file)
+            parts_value = json_data["parts"]
+            if len(parts_value) != expected_count_line:
+                print("Partitioned model count differs from expected:",
+                      expected_count_line)
+                quit(255)
+
+            print("Partitioned model count expected: ", expected_count_line)
+            json_file.close()
+    else:
+        print("Skip expected partitioned model count check: 0")
+
+except:
+    print("Skip expected partitioned model count check: error")
 
 # Build TFLite interpreter.
 interpreter = tf.lite.Interpreter(tflite_model)
