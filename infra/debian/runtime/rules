@@ -1,5 +1,5 @@
 #!/usr/bin/make -f
-export VERSION=1.16.0
+DEBVER := $(shell dpkg-parsechangelog -SVersion)
 export DH_VERBOSE = 1
 export _DESTDIR = debian/tmp/
 export BUILD_TYPE=release
@@ -19,7 +19,7 @@ override_dh_install:
 	cp -r Product/out/include/* debian/tmp/usr/include/
 	sed -i 's:@libdir@:\/usr\/lib:g' ./packaging/nnfw.pc.in
 	sed -i 's:@includedir@:\/usr\/include:g' ./packaging/nnfw.pc.in
-	sed -i 's:@version@:${VERSION}:g' ./packaging/nnfw.pc.in
+	sed -i 's:@version@:${DEBVER}:g' ./packaging/nnfw.pc.in
 	install -m 0644 packaging/nnfw.pc.in -T debian/tmp/usr/lib/pkgconfig/nnfw.pc
 	dh_install -p nnfw
 	dh_install -p nnfw-dev
