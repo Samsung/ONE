@@ -135,7 +135,7 @@ endif
 
 ifneq ($(DEBIAN_BUILD),)
 	test -d externals || mkdir -p externals
-	find debian/archive/ -type f | xargs -i tar xf {} -C externals
+	find packaging/ -type f -name "*.tar.gz" | xargs -i tar xf {} -C externals
 endif
 
 	NNFW_WORKSPACE="$(WORKSPACE)" NNFW_INSTALL_PREFIX=$(INSTALL_PATH) ./nnfw configure \
