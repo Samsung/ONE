@@ -31,7 +31,6 @@ expected_count = args.name + ".excnt"
 try:
     with open(expected_count, "r") as expected_count_file:
         expected_count_line = expected_count_file.readline()
-        expected_count_file.close()
 
     expected_count_line = int(expected_count_line)
     if expected_count_line:
