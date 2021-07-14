@@ -43,7 +43,6 @@ try:
                 quit(255)
 
             print("Partitioned model count expected: ", expected_count_line)
-            json_file.close()
     else:
         print("Skip expected partitioned model count check: 0")
 
