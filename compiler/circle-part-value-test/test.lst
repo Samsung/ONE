@@ -24,3 +24,6 @@ add(Net_InstanceNorm_003 Net_InstanceNorm_003.002 0)
 # comply=opname
 add(Part_Add_Sub_000 Part_Add_Sub_000.001 3)
 add(Part_Add_Sub_001 Part_Add_Sub_001 3)
+add(Part_Add_Sub_002 Part_Add_Sub_002.001 2)
+add(Part_Add_Sub_002 Part_Add_Sub_002.002 2)
+add(Net_InstanceNorm_003 Net_InstanceNorm_003.003 3)
