@@ -36,9 +36,6 @@ function error_no_ensurepip ()
 }
 
 if [ ! -f ${VENV_ACTIVATE} ]; then
-  # Install prerequisites
-  python3 -m ensurepip --version > /dev/null 2>&1 || error_no_ensurepip
-  python3 -m pip install --user -U virtualenv
   # Create python virtual enviornment
   python3 -m venv "${DRIVER_PATH}/venv"
 fi
