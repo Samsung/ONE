@@ -98,12 +98,12 @@ TEST(PropagateQuantParam, simple)
   while (pass.run(&g.g))
     ;
 
-  EXPECT_FLOAT_EQ(0.2, g.conv->quantparam()->scale[0]);
-  EXPECT_FLOAT_EQ(0.4, g.conv->quantparam()->scale[1]);
-  EXPECT_FLOAT_EQ(0.6, g.conv->quantparam()->scale[2]);
-  EXPECT_EQ(-10, g.conv->quantparam()->zerop[0]);
-  EXPECT_EQ(0, g.conv->quantparam()->zerop[1]);
-  EXPECT_EQ(10, g.conv->quantparam()->zerop[2]);
+  EXPECT_FLOAT_EQ(0.1, g.reshape->quantparam()->scale[0]);
+  EXPECT_FLOAT_EQ(0.2, g.reshape->quantparam()->scale[1]);
+  EXPECT_FLOAT_EQ(0.3, g.reshape->quantparam()->scale[2]);
+  EXPECT_EQ(0, g.reshape->quantparam()->zerop[0]);
+  EXPECT_EQ(10, g.reshape->quantparam()->zerop[1]);
+  EXPECT_EQ(20, g.reshape->quantparam()->zerop[2]);
 }
 
 TEST(PropagateQuantParam, wrong_op_NEG)
