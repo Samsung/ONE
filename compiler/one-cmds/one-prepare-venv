@@ -24,12 +24,10 @@ VENV_ACTIVATE=${DRIVER_PATH}/venv/bin/activate
 # Since debian maintainer script is called with sudo, `source activation` is ignored.
 VENV_PYTHON=${DRIVER_PATH}/venv/bin/python
 
-
 if [ ! -f ${VENV_ACTIVATE} ]; then
   # Create python virtual enviornment
   python3 -m venv "${DRIVER_PATH}/venv"
 fi
-
 
 # NOTE version
 # - https://github.com/onnx/onnx/blob/master/docs/Versioning.md
