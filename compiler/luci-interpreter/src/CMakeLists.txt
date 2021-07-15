@@ -1,31 +1,21 @@
-nnas_find_package(TensorFlowSource EXACT 2.3.0 QUIET)
-nnas_find_package(TensorFlowGEMMLowpSource EXACT 2.3.0 QUIET)
-nnas_find_package(TensorFlowEigenSource EXACT 2.3.0 QUIET)
-nnas_find_package(TensorFlowRuySource EXACT 2.3.0 QUIET)
+include(${LUCI_INTERPRETER_HAL_DIR}/hal.cmake)
 
-if (NOT TensorFlowSource_FOUND)
-  message(STATUS "Skipping luci-interpreter: TensorFlow not found")
-  return()
-endif ()
+initialize_hal()
 
-if (NOT TensorFlowGEMMLowpSource_FOUND)
-  message(STATUS "Skipping luci-interpreter: gemmlowp not found")
-  return()
-endif ()
+if (NOT HAL_INITIALIZED)
+    return()
+endif()
 
-if (NOT TensorFlowEigenSource_FOUND)
-  message(STATUS "Skipping luci-interpreter: Eigen not found")
-  return()
-endif ()
-
-if (NOT TensorFlowRuySource_FOUND)
-  message(STATUS "Skipping luci-interpreter: Ruy not found")
-  return()
-endif ()
+message("LUCI INTERPRETER BEGIN")
 
 add_subdirectory(core)
+message("LUCI INTERPRETER CORE")
 add_subdirectory(kernels)
+message("LUCI INTERPRETER KERNELS")
 add_subdirectory(loader)
+message("LUCI INTERPRETER LOADER")
+
+message("LUCI INTERPTER INITALIZED")
 
 set(SOURCES
     "${LUCI_INTERPRETER_INCLUDE_DIR}/luci_interpreter/Interpreter.h"

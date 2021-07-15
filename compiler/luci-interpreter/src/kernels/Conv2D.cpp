@@ -19,7 +19,7 @@
 
 #include "kernels/Utils.h"
 
-#include <tensorflow/lite/kernels/internal/optimized/legacy_optimized_ops.h>
+#include "HALConv2d.h"
 
 #include <stdexcept>
 #include <thread>
@@ -173,32 +173,18 @@ void Conv2D::evalFloat() const
   params.float_activation_min = activation_min;
   params.float_activation_max = activation_max;
 
-  if (_im2col)
+  float *im2col_data = nullptr;
+  try
   {
-    try
-    {
-      tflite::optimized_ops::Conv(
-        params, getTensorShape(input()), getTensorData<float>(input()), getTensorShape(filter()),
-        getTensorData<float>(filter()), getTensorShape(bias()), getTensorData<float>(bias()),
-        getTensorShape(output()), getTensorData<float>(output()), getTensorShape(_im2col.get()),
-        getTensorData<float>(_im2col.get()));
-    }
-    catch (std::bad_alloc &ba)
-    {
-      // Failed memory allocation
-      _im2col->deallocate();
-
-      tflite::reference_ops::Conv(
-        params, getTensorShape(input()), getTensorData<float>(input()), getTensorShape(filter()),
-        getTensorData<float>(filter()), getTensorShape(bias()), getTensorData<float>(bias()),
-        getTensorShape(output()), getTensorData<float>(output()), tflite::RuntimeShape(), nullptr);
-    }
+    im2col_data = _im2col->data<float>();
+  } catch (std::bad_alloc &ba)
+  {
+    _im2col->deallocate();
   }
-  else
-    tflite::reference_ops::Conv(
-      params, getTensorShape(input()), getTensorData<float>(input()), getTensorShape(filter()),
-      getTensorData<float>(filter()), getTensorShape(bias()), getTensorData<float>(bias()),
-      getTensorShape(output()), getTensorData<float>(output()), tflite::RuntimeShape(), nullptr);
+  luci_interpreter_hal::Conv(params, getTensorShape(input()), getTensorData<float>(input()), getTensorShape(filter()),
+                             getTensorData<float>(filter()), getTensorShape(bias()), getTensorData<float>(bias()),
+                             getTensorShape(output()), getTensorData<float>(output()), getTensorShape(_im2col.get()),
+                             im2col_data);
 }
 
 void Conv2D::evalQuantized() const
@@ -232,16 +218,11 @@ void Conv2D::evalQuantized() const
   params.quantized_activation_min = activation_min;
   params.quantized_activation_max = activation_max;
 
-  // TODO This should only be done once (although it takes only a few microseconds).
-  //  Also, the user should be able to adjust the number of threads.
-  auto gemmlowp_context = std::make_unique<gemmlowp::GemmContext>();
-  gemmlowp_context->set_max_num_threads(static_cast<int>(std::thread::hardware_concurrency()));
-
-  tflite::optimized_ops::Conv(
+  luci_interpreter_hal::Conv(
     params, getTensorShape(input()), getTensorData<uint8_t>(input()), getTensorShape(filter()),
     getTensorData<uint8_t>(filter()), getTensorShape(bias()), getTensorData<int32_t>(bias()),
     getTensorShape(output()), getTensorData<uint8_t>(output()), getTensorShape(_im2col.get()),
-    getTensorData<uint8_t>(_im2col.get()), gemmlowp_context.get());
+    getTensorData<uint8_t>(_im2col.get()));
 }
 
 void Conv2D::evalQuantizedPerChannel() const
