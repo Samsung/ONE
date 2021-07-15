@@ -72,7 +72,7 @@ void remove_unused_inputoutputs(luci::PGroups *pgroups, const luci::Module *sour
   LOGGER(l);
 
   // TODO support multiple subgraph
-  assert(source->size() == 1);
+  // assert(source->size() == 1);
 
   INFO(l) << "--- Cleanup unused inputs/outputs";
 

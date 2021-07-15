@@ -172,7 +172,7 @@ bool PModelsRunner::run(void)
 
         // Set input
         // TODO support multiple subgraphs
-        assert(module->size() == 1);
+        // assert(module->size() == 1);
         const auto input_nodes = loco::input_nodes(module->graph());
         int32_t num_inputs = static_cast<int32_t>(input_nodes.size());
         for (int32_t i = 0; i < num_inputs; i++)
@@ -197,6 +197,7 @@ bool PModelsRunner::run(void)
         {
           const auto *output_node = loco::must_cast<const luci::CircleOutput *>(output_nodes[i]);
           auto output_name = output_node->name();
+          INFO(l) << "output_name: " << output_name << std::endl;
 
           Buffer output_data(tensor_size(output_node));
 

@@ -1,41 +1,7 @@
+import numpy as np
 import tensorflow as tf
 
-x_ = tf.compat.v1.placeholder(dtype=tf.float32, shape=[], name="HoleX")
-y_ = tf.compat.v1.placeholder(dtype=tf.float32, shape=[], name="HoleY")
-z_ = tf.compat.v1.placeholder(dtype=tf.float32, shape=[], name="HoleZ")
-
-
-def fn01(a, b):
-    return tf.math.multiply(a, b, name="Hole0M")
-
-
-def fn02(a, b):
-    return tf.math.add(a, b, name="Hole0A")
-
-
-def fn1(c, x, y, z):
-    return tf.cond(c, lambda: fn01(x, y), lambda: fn02(y, z), name="Cond0")
-
-
-def fn2(a, b):
-    return tf.math.add(a, b, name="HoleA")
-
-
-pr_ = tf.compat.v1.placeholder(tf.bool, shape=[], name="HoleC")
-op_ = tf.cond(pr_, lambda: fn1(pr_, x_, y_, z_), lambda: fn2(y_, z_), name="Cond")
-re_ = tf.identity(op_, name="HoleR")
-'''
-# run this in TF2.3.4
-python3 ../../compiler/tf2tfliteV2/tf2tfliteV2.py --v2 --graph_def \
--i ./cond_1.pbtxt \
--o ./cond1.tflite \
--I HoleX,HoleY,HoleZ,HoleC \
--O HoleR
-'''
-'''
-import tensorflow as tf
-
-tflite_model = args.name + ".tflite"
+tflite_model = "Part_If_Add_Sub_001.tflite"
 
 interpreter = tf.lite.Interpreter(tflite_model)
 interpreter.allocate_tensors()
@@ -61,11 +27,8 @@ for i in range(num_inputs):
 
     interpreter.set_tensor(input_details["index"], input_data)
 
-
 interpreter.invoke()
 
 for idx in range(len(interpreter.get_output_details())):
     output_details = interpreter.get_output_details()[idx]
     print("output_details", idx, output_details)
-
-'''
