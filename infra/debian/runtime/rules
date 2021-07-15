@@ -1,0 +1,22 @@
+#!/usr/bin/make -f
+DEBVER := $(shell dpkg-parsechangelog -SVersion)
+export DH_VERBOSE = 1
+export _DESTDIR = debian/tmp/
+export BUILD_TYPE=release
+export OPTIONS=-DBUILD_LOGGING=0 -DBUILD_TFLITE_COMPARATOR_TEST_TOOL=0 -DBUILD_NNPACKAGE_RUN=0 -DBUILD_TFLITE_RUN=0 -DBUILD_NNAPI_TEST=0 -DBUILD_RUNTIME_NNAPI_TEST=0 -DBUILD_TFLITE_BENCHMARK_MODEL=0 -DBUILD_TFLITE_VANILLA_RUN=0 -DBUILD_TENSORFLOW_LITE_2_3_0=0 -DBUILD_TENSORFLOW_LITE=0
+export DEBIAN_BUILD=1
+export INSTALL_PATH=debian/tmp/usr/
+%:
+	dh $@
+
+override_dh_auto_build:
+	make -f Makefile.template
+override_dh_auto_install:
+	make -f Makefile.template install
+override_dh_install:
+	install -d debian/tmp/usr/lib/pkgconfig
+	sed -i 's:@libdir@:\/usr\/lib:g' ./packaging/nnfw.pc.in
+	sed -i 's:@includedir@:\/usr\/include:g' ./packaging/nnfw.pc.in
+	sed -i 's:@version@:${DEBVER}:g' ./packaging/nnfw.pc.in
+	install -m 0644 packaging/nnfw.pc.in -T debian/tmp/usr/lib/pkgconfig/nnfw.pc
+	dh_install
