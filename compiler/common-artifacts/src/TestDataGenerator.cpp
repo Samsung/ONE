@@ -166,9 +166,11 @@ int entry(int argc, char **argv)
 
   std::random_device rd; // used to obtain a seed for the random number engine
   uint32_t input_index = 0;
-  for (uint32_t g = 0; g < circle_model->subgraphs()->size(); g++)
+  // TODO remove indentation
   {
-    const auto input_nodes = loco::input_nodes(module->graph(g));
+    // NOTE we only need to prepare data for main graph (subgraph 0) as
+    // other subgraphs are invoked by the main graph
+    const auto input_nodes = loco::input_nodes(module->graph(0));
     for (const auto &node : input_nodes)
     {
       const auto *input_node = dynamic_cast<const luci::CircleInput *>(node);
@@ -220,9 +222,9 @@ int entry(int argc, char **argv)
 
   // dump output data into hdf5 file
   uint32_t output_index = 0;
-  for (uint32_t g = 0; g < circle_model->subgraphs()->size(); g++)
+  // TODO remove indentation
   {
-    const auto output_nodes = loco::output_nodes(module->graph(g));
+    const auto output_nodes = loco::output_nodes(module->graph(0));
     for (const auto &node : output_nodes)
     {
       const auto *output_node = dynamic_cast<const luci::CircleOutput *>(node);
