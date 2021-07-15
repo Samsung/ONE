@@ -65,6 +65,15 @@ template <typename T> void geneate_random_data(std::mt19937 &gen, void *data, ui
   }
 }
 
+template <> void geneate_random_data<bool>(std::mt19937 &gen, void *data, uint32_t size)
+{
+  std::normal_distribution<float> distrib(0, 2); // mean(0), stddev(2)
+  for (uint32_t i = 0; i < size; i++)
+  {
+    static_cast<bool *>(data)[i] = distrib(gen) >= 0 ? true : false;
+  }
+}
+
 void fill_random_data(void *data, uint32_t size, loco::DataType dtype, uint32_t seed)
 {
   std::mt19937 gen(seed); // standard mersenne_twister_engine seeded with rd()
@@ -83,8 +92,11 @@ void fill_random_data(void *data, uint32_t size, loco::DataType dtype, uint32_t 
     case loco::DataType::FLOAT32:
       geneate_random_data<float>(gen, data, size);
       break;
-    default:
+    case loco::DataType::BOOL:
+      geneate_random_data<bool>(gen, data, size);
       break;
+    default:
+      throw std::runtime_error("NYI data type.");
   }
 }
 
