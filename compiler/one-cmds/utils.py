@@ -70,6 +70,8 @@ class _CONSTANT:
          ' Note that it only converts weights whose row is a multiple of 16'),
         ('substitute_pack_to_reshape', 'convert single input Pack op to Reshape op'),
         ('substitute_squeeze_to_reshape', 'convert certain condition Squeeze to Reshape'),
+        ('substitute_strided_slice_to_reshape',
+         'convert StridedSlice in certain condition to Reshape'),
         ('substitute_transpose_to_reshape',
          'convert certain condition Transpose to Reshape'),
         ('transform_min_max_to_relu6', 'transform Minimum-Maximum pattern to Relu6 op'),
@@ -184,10 +186,10 @@ def _make_circle2circle_cmd(args, driver_path, input_path, output_path):
             if type(getattr(args, opt[0])) is bool:
                 cmd.append('--' + opt[0])
             """
-            This condition check is for config file interface, usually would be 
-             SomeOption=True 
-            but user can write as follows while development 
-             SomeOption=False 
+            This condition check is for config file interface, usually would be
+             SomeOption=True
+            but user can write as follows while development
+             SomeOption=False
             instead of removing SomeOption option
             """
             if type(getattr(args, opt[0])) is str and not getattr(
