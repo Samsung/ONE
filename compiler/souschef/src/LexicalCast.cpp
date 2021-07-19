@@ -47,9 +47,11 @@ template <> uint8_t to_number(const std::string &s)
 }
 template <> bool to_number(const std::string &s)
 {
-  if (std::stoi(s) || s == "T" || s == "t" || s == "TRUE" || s == "true")
+  if (s == "T" || s == "t" || s == "TRUE" || s == "true" || s == "1")
     return true;
-  return false;
+  if (s == "F" || s == "f" || s == "FALSE" || s == "false" || s == "0")
+    return false;
+  throw std::invalid_argument("Unsupported boolean argument");
 }
 template <> std::string to_number(const std::string &s) { return s; }
 
