@@ -29,6 +29,8 @@ namespace luci
 
 struct PGroup;
 
+using GroupKey = std::string;
+
 /**
  * @brief Partition Node with CircleNode with group name
  * @note  node just points to source luci::CircleNode, NOT the cloned node
@@ -37,7 +39,7 @@ struct PGroup;
 struct PNode
 {
   const luci::CircleNode *node = nullptr;
-  std::string group;
+  GroupKey group;
 
   const PGroup *pgroup = nullptr;
 };
@@ -48,7 +50,7 @@ struct PNode
 struct PGroup
 {
   std::vector<std::unique_ptr<PNode>> pnodes;
-  std::string group;
+  GroupKey group;
   uint32_t id = 0;
 
   // I/O while partitioning
@@ -61,13 +63,13 @@ struct PGroups
   std::vector<std::unique_ptr<PGroup>> pgroups;
 
   // node2group is to find group key from source node
-  std::map<const luci::CircleNode *, std::string> node2group;
+  std::map<const luci::CircleNode *, GroupKey> node2group;
 
   // id2pngroup is to find *pngroup from pngroup id
   std::map<uint32_t, PGroup *> id2pgroup;
 
   // default group key for reference
-  std::string default_group;
+  GroupKey default_group;
 
 public:
   /**
@@ -78,7 +80,7 @@ public:
   /**
    * @brief return group key of node, empty string if not found
    */
-  std::string group_of(luci::CircleNode *node) const;
+  GroupKey group_of(luci::CircleNode *node) const;
 
   /**
    * @brief return holding pgroup of node, nullptr if not found
