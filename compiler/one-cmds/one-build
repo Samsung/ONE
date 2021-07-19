@@ -28,11 +28,29 @@ import sys
 import utils as _utils
 
 
+def _get_driver_desc():
+    return {
+        'import-bcq': 'Convert TensorFlow with BCQ to circle',
+        'import-tf': 'Convert TensorFlow to circle',
+        'import-tflite': 'Convert TensorFlow lite to circle',
+        'import-onnx': 'Convert ONNX to circle',
+        'optimize': 'Optimize circle model',
+        'quantize': 'Quantize circle model',
+        'pack': 'Package circle and metadata into nnpackage',
+        'codegen': 'Code generation tool',
+    }
+
+
 def _get_parser():
     parser = argparse.ArgumentParser(
         description='command line tool to run ONE drivers in customized order')
 
     _utils._add_default_arg(parser)
+
+    # just for help message
+    driver_group = parser.add_argument_group('sub commands')
+    for driver, desc in _get_driver_desc().items():
+        driver_group.add_argument(driver, nargs='?', help=desc)
 
     return parser
 
@@ -97,7 +115,26 @@ def _verify_cfg(driver_list, config):
         raise AssertionError('Only one import-* driver can be executed')
 
 
+def _call_driver(argv):
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    driver_path = os.path.join(dir_path, 'one-' + argv[1])
+    cmd = [driver_path] + argv[2:]
+    with subprocess.Popen(
+            cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, bufsize=1) as p:
+        for line in p.stdout:
+            sys.stdout.buffer.write(line)
+    if p.returncode != 0:
+        sys.exit(p.returncode)
+
+
 def main():
+    # check sub-command
+    # argparse does not pass the help keyword to sub-command tool.
+    # so it invokes the tool directly if the tool is valid.
+    if sys.argv[1] in _get_driver_desc().keys():
+        _call_driver(sys.argv)
+        sys.exit(0)
+
     # parse arguments
     # since the configuration file path is required first,
     # parsing of the configuration file proceeds after this.
