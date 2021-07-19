@@ -222,6 +222,7 @@ TEST_F(SubstituteStridedSliceToReshapeTest, not_matching_begin_index_NEG)
   );
 
   assert_not_converted();
+  SUCCEED();
 }
 
 TEST_F(SubstituteStridedSliceToReshapeTest, not_matching_end_index_NEG)
@@ -238,6 +239,7 @@ TEST_F(SubstituteStridedSliceToReshapeTest, not_matching_end_index_NEG)
   );
 
   assert_not_converted();
+  SUCCEED();
 }
 
 TEST_F(SubstituteStridedSliceToReshapeTest, not_matching_strides_NEG)
@@ -254,6 +256,7 @@ TEST_F(SubstituteStridedSliceToReshapeTest, not_matching_strides_NEG)
   );
 
   assert_not_converted();
+  SUCCEED();
 }
 
 TEST_F(SubstituteStridedSliceToReshapeTest, not_matching_shrink_axis_mask_NEG)
@@ -270,4 +273,5 @@ TEST_F(SubstituteStridedSliceToReshapeTest, not_matching_shrink_axis_mask_NEG)
   );
 
   assert_not_converted();
+  SUCCEED();
 }
