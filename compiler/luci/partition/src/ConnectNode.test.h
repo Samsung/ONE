@@ -82,6 +82,43 @@ protected:
   T *_node{nullptr};
 };
 
+template <class T> class NodeIsOsGraphletT
+{
+public:
+  virtual void init(loco::Graph *g, uint32_t n, uint32_t m)
+  {
+    _node = g->nodes()->create<T>(n, m);
+    _node->dtype(loco::DataType::S32);
+    _node->name("node");
+  }
+
+  T *node(void) const { return _node; }
+
+protected:
+  T *_node{nullptr};
+};
+
+template <unsigned N, unsigned M>
+class TestIsOsGraph : public TestIsGraphlet<N>, public TestOsGraphlet<M>
+{
+public:
+  TestIsOsGraph() = default;
+
+public:
+  virtual void init(const std::initializer_list<ShapeU32> shape_in,
+                    const std::initializer_list<ShapeU32> shape_out)
+  {
+    if (shape_in.size() != N)
+      throw std::runtime_error("Failed to init TestIsOsGraph");
+    if (shape_out.size() != M)
+      throw std::runtime_error("Failed to init TestIsOsGraph");
+
+    auto g = TestIsGraphlet<N>::g();
+    TestIsGraphlet<N>::init(g, shape_in);
+    TestOsGraphlet<M>::init(g, shape_out);
+  }
+};
+
 /**
  * @brief ConnectionTestHelper provides common framework for testing
  *        cloned CircleNode connection
@@ -105,6 +142,20 @@ public:
     }
   }
 
+  template <unsigned N, unsigned M> void prepare_inputs(TestIsOsGraph<N, M> *isosgraph)
+  {
+    assert(N == isosgraph->num_inputs());
+    assert(M == isosgraph->num_outputs());
+
+    for (uint32_t i = 0; i < N; ++i)
+    {
+      auto *input = _graph_clone->nodes()->create<luci::CircleInput>();
+      luci::copy_common_attributes(isosgraph->input(i), input);
+      _clonectx.emplace(isosgraph->input(i), input);
+      _inputs.push_back(input);
+    }
+  }
+
   /**
    * @note although there is only one input, method name has 's' to make test simple
    */
@@ -124,6 +175,21 @@ public:
   template <unsigned N> void prepare_inputs_miss(TestIsOGraph<N> *isograph)
   {
     assert(N == isograph->num_inputs());
+
+    for (uint32_t i = 0; i < N; ++i)
+    {
+      auto *input = _graph_clone->nodes()->create<luci::CircleInput>();
+      luci::copy_common_attributes(isograph->input(i), input);
+      if (i != 0)
+        _clonectx.emplace(isograph->input(i), input);
+      _inputs.push_back(input);
+    }
+  }
+
+  template <unsigned N, unsigned M> void prepare_inputs_miss(TestIsOsGraph<N, M> *isograph)
+  {
+    assert(N == isograph->num_inputs());
+    assert(M == isograph->num_outputs());
 
     for (uint32_t i = 0; i < N; ++i)
     {
