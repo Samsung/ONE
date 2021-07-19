@@ -17,7 +17,9 @@
 #include "luci/Service/Validate.h"
 
 #include <luci/IR/Nodes/CircleOutput.h>
+#include <luci/IR/CircleNodeVisitor.h>
 #include <luci/Log.h>
+#include <luci/LogHelper.h>
 
 #include <loco/IR/NodeShape.h>
 
@@ -146,6 +148,28 @@ bool validate_shape_dtype(loco::Graph *g)
   return true;
 }
 
+class VirtualNodeDetector final : public luci::CircleNodeVisitor<bool>
+{
+public:
+  VirtualNodeDetector() {}
+
+public:
+  bool visit(const luci::CircleBidirectionalSequenceLSTMOut *) final { return true; }
+  bool visit(const luci::CircleCustomOut *) final { return true; }
+  bool visit(const luci::CircleIfOut *) final { return true; }
+  bool visit(const luci::CircleNonMaxSuppressionV4Out *) final { return true; }
+  bool visit(const luci::CircleNonMaxSuppressionV5Out *) final { return true; }
+  bool visit(const luci::CircleSplitOut *) final { return true; }
+  bool visit(const luci::CircleSplitVOut *) final { return true; }
+  bool visit(const luci::CircleTopKV2Out *) final { return true; }
+  bool visit(const luci::CircleUnpackOut *) final { return true; }
+  bool visit(const luci::CircleUniqueOut *) final { return true; }
+  bool visit(const luci::CircleWhileOut *) final { return true; }
+
+  // Return false by default
+  bool visit(const luci::CircleNode *) final { return false; }
+};
+
 } // namespace
 
 namespace luci
@@ -180,6 +204,8 @@ bool validate_name(loco::Graph *g)
 
 bool validate_unique_name(luci::Module *m)
 {
+  LOGGER(l);
+
   std::unordered_map<std::string, bool> names_col;
 
   for (size_t g = 0; g < m->size(); ++g)
@@ -193,14 +219,25 @@ bool validate_unique_name(luci::Module *m)
       auto output = dynamic_cast<luci::CircleOutput *>(node);
       if (output != nullptr)
         continue;
+      // skip virtual nodes
+      VirtualNodeDetector d;
+      if (node->accept(&d))
+        continue;
 
       auto name = node->name();
+      INFO(l) << "Node: " << name << ", " << (uint32_t)(node->opcode()) << std::endl;
       auto it = names_col.find(name);
       if (it != names_col.end())
+      {
+        INFO(l) << "validate_unique_name: found duplicate " << name << ", " << graph->name()
+                << std::endl;
         return false;
+      }
 
       names_col[name] = true;
     }
+    // There can exist same tensor name between different subgraphs.
+    names_col.clear();
   }
 
   return true;
