@@ -156,6 +156,7 @@ public:
 
 public:
   luci::CircleOutput *output(int idx) { return _outputs[idx]; }
+  uint32_t num_outputs(void) { return N; }
 
 protected:
   std::array<loco::GraphOutput *, N> _graph_outputs;
