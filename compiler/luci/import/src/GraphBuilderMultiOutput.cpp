@@ -83,6 +83,7 @@ CircleNode *GraphBuilderMultiOutput::build(const circle::OperatorT &op,
     auto *nodeout = build_out(boa);
 
     copy_tensor_attributes(output_tensor, nodeout);
+    // NOTE name of CxxxOut nodes may have same name
     // mark shape_status
     if (tensors_ptr->Get(outputs[n])->shape() == nullptr)
       nodeout->shape_status(ShapeStatus::NOSHAPE);
