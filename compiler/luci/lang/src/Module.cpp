@@ -21,12 +21,16 @@
 namespace luci
 {
 
-void Module::add(std::unique_ptr<loco::Graph> &&g)
+int32_t Module::add(std::unique_ptr<loco::Graph> &&g)
 {
   if (g.get() == nullptr)
     throw std::invalid_argument("Module: Graph cannot be null");
 
   _graphs.emplace_back(std::move(g));
+  assert(_graphs.size() > 0);
+
+  // return index (from 0) of g
+  return _graphs.size() - 1;
 }
 
 loco::Graph *Module::graph(void) const

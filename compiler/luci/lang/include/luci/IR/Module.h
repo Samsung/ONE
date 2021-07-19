@@ -44,7 +44,7 @@ public:
   size_t size(void) const { return _graphs.size(); }
 
 public:
-  void add(std::unique_ptr<loco::Graph> &&g);
+  int32_t add(std::unique_ptr<loco::Graph> &&g);
 
   /**
    * @brief provide main graph
