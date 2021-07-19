@@ -1421,15 +1421,20 @@ bool CircleNodeSummaryBuilderBase::build(const loco::Node *node, locop::NodeSumm
     return ss.str();
   };
 
-#define CIRCLE_NODE(OPCODE, CLASS)                      \
-  if (dynamic_cast<const CLASS *>(node))                \
-  {                                                     \
-    if (summary(dynamic_cast<const CLASS *>(node), s))  \
-    {                                                   \
-      s.opname(circle_opname(node->opnum()));           \
-      s.comments().append("Mem = " + ptr_to_str(node)); \
-      return true;                                      \
-    }                                                   \
+  auto add_comment = [&]() {
+    auto cnode = loco::must_cast<const luci::CircleNode *>(node);
+    s.opname(circle_opname(node->opnum()));
+    s.comments().append("[" + cnode->name() + "] = " + ptr_to_str(node));
+  };
+
+#define CIRCLE_NODE(OPCODE, CLASS)                     \
+  if (dynamic_cast<const CLASS *>(node))               \
+  {                                                    \
+    if (summary(dynamic_cast<const CLASS *>(node), s)) \
+    {                                                  \
+      add_comment();                                   \
+      return true;                                     \
+    }                                                  \
   }
 #define CIRCLE_VNODE CIRCLE_NODE
 #include <luci/IR/CircleNodes.lst>
