@@ -258,7 +258,7 @@ foreach(RECIPE IN ITEMS ${RECIPES})
     add_custom_command(OUTPUT ${INPUT_HDF5_FILE} ${EXPECTED_HDF5_FILE}
       COMMAND $<TARGET_FILE:testDataGenerator> --input_data ${INPUT_HDF5_FILE} --expected_data ${EXPECTED_HDF5_FILE} ${MODEL_FILE}
       DEPENDS $<TARGET_FILE:testDataGenerator> ${MODEL_FILE} ${TC_DIRECTORY}
-      COMMENT "Generate ${INPUT_HDF5_FILE} and ${EXPECTED_HDF5_FILE}"
+      COMMENT "Generate input.h5 and expected.h5 in ${NNPKG_FILE}/metadata/tc"
     )
     list(APPEND TEST_DEPS ${INPUT_HDF5_FILE} ${EXPECTED_HDF5_FILE})
   endif()
