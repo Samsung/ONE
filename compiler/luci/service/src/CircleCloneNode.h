@@ -103,7 +103,7 @@ public:
   luci::CircleNode *visit(const luci::CircleGatherNd *) final;
   luci::CircleNode *visit(const luci::CircleGreater *) final;
   luci::CircleNode *visit(const luci::CircleGreaterEqual *) final;
-  // luci::CircleNode *visit(const luci::CircleIf *) final;
+  luci::CircleNode *visit(const luci::CircleIf *) final;
 
   luci::CircleNode *visit(const luci::CircleNode *) final { return nullptr; }
 
@@ -257,7 +257,7 @@ public:
 
   // Virtual
   luci::CircleNode *visit(const luci::CircleCustomOut *) final;
-  // luci::CircleNode *visit(const luci::CircleIfOut *) final;
+  luci::CircleNode *visit(const luci::CircleIfOut *) final;
   // luci::CircleNode *visit(const luci::CircleInput *) final;
   luci::CircleNode *visit(const luci::CircleNonMaxSuppressionV4Out *) final;
   luci::CircleNode *visit(const luci::CircleNonMaxSuppressionV5Out *) final;
