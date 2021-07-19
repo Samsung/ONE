@@ -244,6 +244,12 @@ int entry(int argc, char **argv)
     .default_value(false)
     .help("This will convert Custom(Matmul) to Matmul operator");
 
+  arser.add_argument("--resolve_customop_max_pool_with_argmax")
+    .nargs(0)
+    .required(false)
+    .default_value(false)
+    .help("This will convert Custom(MaxPoolWithArgmax) to equivalent set of operators");
+
   arser.add_argument("--shuffle_weight_to_16x1float32")
     .nargs(0)
     .required(false)
@@ -445,6 +451,8 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::ResolveCustomOpBatchMatMul);
   if (arser.get<bool>("--resolve_customop_matmul"))
     options->enable(Algorithms::ResolveCustomOpMatMul);
+  if (arser.get<bool>("--resolve_customop_max_pool_with_argmax"))
+    options->enable(Algorithms::ResolveCustomOpMaxPoolWithArgmax);
   if (arser.get<bool>("--shuffle_weight_to_16x1float32"))
     options->enable(Algorithms::ShuffleWeightTo16x1Float32);
   if (arser.get<bool>("--substitute_pack_to_reshape"))
