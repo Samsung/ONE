@@ -113,10 +113,11 @@ bool substitute_strided_slice_to_reshape(luci::CircleStridedSlice *ss_node)
   auto begin_const = dynamic_cast<luci::CircleConst *>(ss_node->begin());
   auto strides_const = dynamic_cast<luci::CircleConst *>(ss_node->strides());
   auto end_const = dynamic_cast<luci::CircleConst *>(ss_node->end());
-  auto input_node = loco::must_cast<luci::CircleNode *>(ss_node->input());
 
-  if (not(begin_const && strides_const && end_const && input_node))
+  if (not(begin_const && strides_const && end_const))
     return false;
+
+  auto input_node = loco::must_cast<luci::CircleNode *>(ss_node->input());
 
   // condition check
   std::bitset<32> begin_mask(ss_node->begin_mask());
