@@ -184,16 +184,20 @@ luci::PartedModules produce_pmodules(const luci::PGroups *pgroups)
     pm.module = std::make_unique<luci::Module>();
     pm.group = pgroup->group;
 
+    // the main graph for this module
     auto graph = loco::make_graph();
+    auto graph_ptr = graph.get();
 
     auto graph_name = make_name(pgroup.get());
     graph->name(graph_name);
 
+    // Add main graph so that other subgraphs can be added inside build_graph
+    pm.module->add(std::move(graph));
+
     INFO(l) << "--- Partition Graph build----------------------";
     INFO(l) << "--- name: " << graph_name;
-    build_graph(graph.get(), pgroup.get());
+    build_graph(graph_ptr, pgroup.get());
 
-    pm.module->add(std::move(graph));
     pms.pmodules.emplace_back(std::move(pm));
   }
 
