@@ -45,8 +45,9 @@ public:
     if (shape_in.size() != N)
       throw std::runtime_error("Failed to init TestIsOGraph");
 
-    TestIsGraphlet<N>::init(TestIsGraphlet<N>::g(), shape_in);
-    TestOGraphlet::init(TestIsGraphlet<N>::g(), shape_out);
+    auto g = TestIsGraphlet<N>::g();
+    TestIsGraphlet<N>::init(g, shape_in);
+    TestOGraphlet::init(g, shape_out);
   }
 };
 
