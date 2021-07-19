@@ -24,14 +24,13 @@
 
 /**
  * @brief Convert strided_slice op in a certain condition to reshape op
- * @details Convert strided_slice op if it have condition below
+ * @details Convert strided_slice op if the op meets all of the following condition:
  *          For all i, 0 <= i < input.rank
  *            - begin[i] == 0
- *            - end[i] == input.shape.dim[i]
+ *            - end[i] >= input.shape.dim[i]
  *            - strides[i] == 1
- *          For some k, 0 <= k < input.rank
+ *          For all k (0 <= k < input.rank) where kth bit of shrink_axis_mask == 1
  *            - end[k] == 1
- *            - kth bit of shrink_axis_mask == 1; other bits are 0
  *
  *          Example:
  *             input.shape = [1,1,2,3]
@@ -48,7 +47,7 @@ namespace
 /**
  * @brief Return newly-created CircleConst whose rank is 1
  */
-luci::CircleConst *build_rank1_const(loco::Graph *graph, const std::vector<uint32_t> values)
+luci::CircleConst *build_rank1_const(loco::Graph *graph, const std::vector<uint32_t> &values)
 {
   auto const_node = graph->nodes()->create<luci::CircleConst>();
   const_node->dtype(loco::DataType::S32);
@@ -70,7 +69,7 @@ luci::CircleConst *build_rank1_const(loco::Graph *graph, const std::vector<uint3
  */
 luci::CircleNode *build_reshape(loco::Graph *graph, const std::string &name,
                                 const std::shared_ptr<luci::CircleNodeOrigin> &origin,
-                                luci::CircleNode *input, const std::vector<uint32_t> new_shape)
+                                luci::CircleNode *input, const std::vector<uint32_t> &new_shape)
 {
   auto reshape_node = graph->nodes()->create<luci::CircleReshape>();
   reshape_node->tensor(input);
