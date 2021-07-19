@@ -1359,7 +1359,7 @@ def main(args):
             if input_tensor_idx in new_input_tensors:
                 matched_buffer_idx = sample_subgraph.Tensors(input_tensor_idx).Buffer()
                 matched_buffer = sample_model.Buffers(matched_buffer_idx)
-                if matched_buffer_idx == 0 or matched_buffer.DataLength() != 0:
+                if matched_buffer.DataLength() != 0:
                     new_input_tensors.remove(input_tensor_idx)
 
         for output_idx in range(operator.OutputsLength()):
