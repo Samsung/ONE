@@ -131,7 +131,7 @@ bool substitute_strided_slice_to_reshape(luci::CircleStridedSlice *ss_node)
       return false;
 
     auto begin_dim = value_from_circle_const(begin_const, i);
-    if (not(begin_dim == 0 or begin_mask.test(i) == true))
+    if (begin_dim != 0 and begin_mask.test(i) == false)
       return false;
 
     // NOTE:
@@ -139,7 +139,7 @@ bool substitute_strided_slice_to_reshape(luci::CircleStridedSlice *ss_node)
     //    strided_slice.end = [10,20] (larger value than actual dim)
     //    is treated as strided_slice.end = [2,3]
     int64_t end_dim = value_from_circle_const(end_const, i);
-    if (not(end_dim >= input_node->dim(i).value() or end_mask.test(i) == true))
+    if (end_dim < input_node->dim(i).value() and end_mask.test(i) == false)
       return false;
 
     int64_t strides_value = value_from_circle_const(strides_const, i);
