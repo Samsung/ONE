@@ -5,4 +5,8 @@
 
 set -e
 
-/usr/share/one/bin/one-prepare-venv
+# This script is invoked as root except environmental variables,
+# which causes invalid permission problem.
+# e.g. When `pip` installs user packages, it proceeds based on $HOME.
+# To proper installation, $HOME should be root.
+su - $(whoami) -c '/usr/share/one/bin/one-prepare-venv' # $(whoami) = root
