@@ -256,6 +256,12 @@ int entry(int argc, char **argv)
     .default_value(false)
     .help("This will convert certain condition Squeeze to Reshape");
 
+  arser.add_argument("--substitute_strided_slice_to_reshape")
+    .nargs(0)
+    .required(false)
+    .default_value(false)
+    .help("This will convert certain condition Strided_Slice to Reshape");
+
   arser.add_argument("--substitute_transpose_to_reshape")
     .nargs(0)
     .required(false)
@@ -436,6 +442,8 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::SubstitutePackToReshape);
   if (arser.get<bool>("--substitute_squeeze_to_reshape"))
     options->enable(Algorithms::SubstituteSqueezeToReshape);
+  if (arser.get<bool>("--substitute_strided_slice_to_reshape"))
+    options->enable(Algorithms::SubstituteStridedSliceToReshape);
   if (arser.get<bool>("--substitute_transpose_to_reshape"))
     options->enable(Algorithms::SubstituteTransposeToReshape);
   if (arser.get<bool>("--transform_min_max_to_relu6"))
