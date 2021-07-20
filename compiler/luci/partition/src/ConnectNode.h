@@ -185,7 +185,7 @@ public:
 
   // Virtual
   void visit(const luci::CircleCustomOut *) final;
-  // void visit(const luci::CircleIfOut *) final;
+  void visit(const luci::CircleIfOut *) final;
   // void visit(const luci::CircleInput *) final;
   void visit(const luci::CircleNonMaxSuppressionV4Out *) final;
   void visit(const luci::CircleNonMaxSuppressionV5Out *) final;
