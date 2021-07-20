@@ -75,15 +75,112 @@ void add_graph_output(loco::Graph *graph, luci::CircleOutput *output_node)
   graph_output->shape(std::move(output_shape));
 }
 
+/**
+ * @brief make a clone of graph
+ */
+std::unique_ptr<loco::Graph> clone_graph(loco::Graph *graph_org, luci::CloneContext &clonectx)
+{
+  auto graph = loco::make_graph();
+  auto graph_clone = graph.get();
+
+  graph_clone->name(graph_org->name());
+
+  // clone inputs
+  for (uint32_t n = 0; n < graph_org->inputs()->size(); ++n)
+  {
+    auto input_org = luci::input_node(graph_org, n);
+    assert(input_org != nullptr);
+
+    auto *input_clone = graph_clone->nodes()->create<luci::CircleInput>();
+    luci::copy_common_attributes(input_org, input_clone);
+
+    add_graph_input(graph_clone, input_clone);
+    clonectx.emplace(input_org, input_clone);
+  }
+
+  // clone nodes
+  auto nodes = graph_org->nodes();
+  for (uint32_t n = 0; n < nodes->size(); ++n)
+  {
+    auto node = nodes->at(n);
+
+    // skip for CircleInput, CircleOutput
+    if (dynamic_cast<luci::CircleInput *>(node) != nullptr)
+      continue;
+    if (dynamic_cast<luci::CircleOutput *>(node) != nullptr)
+      continue;
+
+    auto node_org = loco::must_cast<luci::CircleNode *>(node);
+    assert(clonectx.find(node_org) == clonectx.end());
+
+    auto *node_clone = clone_node(node_org, graph_clone);
+    clonectx.emplace(node_org, node_clone);
+  }
+
+  // connect nodes
+  for (uint32_t n = 0; n < nodes->size(); ++n)
+  {
+    auto node = nodes->at(n);
+
+    // skip for CircleInput, CircleOutput
+    if (dynamic_cast<luci::CircleInput *>(node) != nullptr)
+      continue;
+    if (dynamic_cast<luci::CircleOutput *>(node) != nullptr)
+      continue;
+
+    auto node_org = loco::must_cast<luci::CircleNode *>(node);
+    clone_connect(node_org, clonectx);
+  }
+
+  // clone outputs
+  for (uint32_t n = 0; n < graph_org->outputs()->size(); ++n)
+  {
+    auto output_org = luci::output_node(graph_org, n);
+    assert(output_org != nullptr);
+
+    auto *output_clone = graph_clone->nodes()->create<luci::CircleOutput>();
+    luci::copy_common_attributes(output_org, output_clone);
+    // note: we don't add output_clone to clonectx.
+    // logically, output is not used as an input to any other nodes.
+    auto output_from = loco::must_cast<luci::CircleNode *>(output_org->from());
+    auto it = clonectx.find(output_from);
+    assert(it != clonectx.end());
+    output_clone->from(it->second);
+
+    add_graph_output(graph_clone, output_clone);
+  }
+
+  return std::move(graph);
+}
+
 void clone_ifnode_subgraphs(luci::PartedModule &pm, const luci::CircleIf *if_node,
                             const luci::CloneContext &clonectx)
 {
   assert(if_node != nullptr);
 
-  // TODO add implementation
-  (void)pm;
-  (void)if_node;
-  (void)clonectx;
+  auto it = clonectx.find(if_node);
+  assert(it != clonectx.end());
+  auto if_clone = loco::must_cast<luci::CircleIf *>(it->second);
+
+  luci::CloneContext then_clonectx;
+  luci::CloneContext else_clonectx;
+
+  auto then_graph = if_node->then_graph();
+  auto else_graph = if_node->else_graph();
+
+  auto then_clone = clone_graph(then_graph, then_clonectx);
+  auto else_clone = clone_graph(else_graph, else_clonectx);
+  if_clone->then_graph(then_clone.get());
+  if_clone->else_graph(else_clone.get());
+
+  pm.module->add(std::move(then_clone));
+  int32_t then_index = pm.module->size() - 1;
+  pm.module->add(std::move(else_clone));
+  int32_t else_index = pm.module->size() - 1;
+  if_clone->then_branch(then_index);
+  if_clone->else_branch(else_index);
+
+  // TODO do recursive cloning of CircleIf inside
 }
 
 /**
