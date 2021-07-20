@@ -171,8 +171,6 @@ bool PModelsRunner::run(void)
         luci_interpreter::Interpreter interpreter(module.get());
 
         // Set input
-        // TODO support multiple subgraphs
-        assert(module->size() == 1);
         const auto input_nodes = loco::input_nodes(module->graph());
         int32_t num_inputs = static_cast<int32_t>(input_nodes.size());
         for (int32_t i = 0; i < num_inputs; i++)
