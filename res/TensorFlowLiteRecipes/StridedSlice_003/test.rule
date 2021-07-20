@@ -1,0 +1,6 @@
+# To check if Add and Mul are fused to Convolution op
+
+RULE    "VERIFY_FILE_FORMAT"      $(verify_file_format) '=' 1
+
+RULE    "RESHAPE_EXIST"           $(op_count RESHAPE) '=' 1
+RULE    "NO_STRIDEDSLICE"         $(op_count STRIDEDSLICE) '=' 0
