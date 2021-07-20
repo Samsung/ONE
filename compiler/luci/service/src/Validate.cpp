@@ -245,9 +245,16 @@ bool validate_unique_name(luci::Module *m)
 
 bool validate(luci::Module *module)
 {
+  LOGGER(l);
+
+  INFO(l) << "--- validate Module -----------------------------------";
+
   for (size_t g = 0; g < module->size(); ++g)
   {
     auto graph = module->graph(g);
+
+    INFO(l) << luci::fmt(graph) << std::endl;
+
     if (!validate(graph))
     {
       std::cerr << "ERROR: Invalid circle model" << std::endl;
