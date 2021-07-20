@@ -56,7 +56,7 @@ luci::CircleConst *build_rank1_const(loco::Graph *graph, const std::vector<uint3
   const_node->rank(1);
   const_node->dim(0) = values.size();
 
-  for (int32_t i = 0; i < static_cast<uint32_t>(values.size()); i++)
+  for (size_t i = 0; i < values.size(); i++)
   {
     const_node->at<loco::DataType::S32>(i) = values.at(i);
   }
