@@ -42,6 +42,7 @@ TEST(CircleOptimizerTest, optimize_algorithms)
   options->enable(Algorithms::RemoveUnnecessarySlice);
   options->enable(Algorithms::RemoveUnnecessarySplit);
   options->enable(Algorithms::ReplaceMulAddWithDepthwiseConv);
+  options->enable(Algorithms::SubstituteStridedSliceToReshape);
   options->enable(Algorithms::SubstituteTransposeToReshape);
   options->enable(Algorithms::ConvertNCHWToNHWC);
 
