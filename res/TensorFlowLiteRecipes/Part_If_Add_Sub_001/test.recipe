@@ -107,7 +107,7 @@ graph {
   operand {
     name: "cond"
     type: BOOL
-    shape { }
+    shape { dim: 1 }
     filler {
       tag: "explicit"
       arg: "T"
@@ -148,7 +148,7 @@ operand {
 operand {
   name: "cond"
   type: BOOL
-  shape { }
+  shape { dim: 1 }
   filler {
     tag: "explicit"
     arg: "T"
