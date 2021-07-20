@@ -75,10 +75,21 @@ void add_graph_output(loco::Graph *graph, luci::CircleOutput *output_node)
   graph_output->shape(std::move(output_shape));
 }
 
+void clone_ifnode_subgraphs(luci::PartedModule &pm, const luci::CircleIf *if_node,
+                            const luci::CloneContext &clonectx)
+{
+  assert(if_node != nullptr);
+
+  // TODO add implementation
+  (void)pm;
+  (void)if_node;
+  (void)clonectx;
+}
+
 /**
  * @brief Build loco::graph from pgroup into graph
  */
-void build_graph(loco::Graph *graph, const luci::PGroup *pgroup)
+void build_graph(luci::PartedModule &pm, loco::Graph *graph, const luci::PGroup *pgroup)
 {
   LOGGER(l);
 
@@ -153,6 +164,18 @@ void build_graph(loco::Graph *graph, const luci::PGroup *pgroup)
             << "output(" << output << ") -> " << output_clone << "(" << output_clone->name() << ")"
             << ": from " << it->second << "(" << it->second->name() << ")";
   }
+
+  // TODO relocate this if needed
+  // subgraphs for IF/WHILE/... nodes
+  for (auto &pnode : pgroup->pnodes)
+  {
+    auto if_node = dynamic_cast<const luci::CircleIf *>(pnode->node);
+    if (if_node != nullptr)
+    {
+      clone_ifnode_subgraphs(pm, if_node, clonectx);
+    }
+    // TODO handle While
+  }
 }
 
 std::string make_name(const luci::PGroup *pgroup)
@@ -196,7 +219,7 @@ luci::PartedModules produce_pmodules(const luci::PGroups *pgroups)
 
     INFO(l) << "--- Partition Graph build----------------------";
     INFO(l) << "--- name: " << graph_name;
-    build_graph(graph_ptr, pgroup.get());
+    build_graph(pm, graph_ptr, pgroup.get());
 
     pms.pmodules.emplace_back(std::move(pm));
   }
