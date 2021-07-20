@@ -25,6 +25,10 @@
 namespace
 {
 
+// forward declare
+void clone_ifnode_subgraphs(luci::PartedModule &pm, const luci::CircleIf *if_node,
+                            const luci::CloneContext &clonectx);
+
 void add_graph_input(loco::Graph *graph, luci::CircleInput *input_node)
 {
   assert(graph != nullptr);
@@ -153,6 +157,21 @@ std::unique_ptr<loco::Graph> clone_graph(loco::Graph *graph_org, luci::CloneCont
   return std::move(graph);
 }
 
+void clone_recursive_subgraphs(luci::PartedModule &pm, loco::Graph *graph,
+                               const luci::CloneContext &clonectx)
+{
+  auto nodes = graph->nodes();
+  for (uint32_t n = 0; n < nodes->size(); ++n)
+  {
+    auto if_node = dynamic_cast<luci::CircleIf *>(nodes->at(n));
+    if (if_node != nullptr)
+    {
+      clone_ifnode_subgraphs(pm, if_node, clonectx);
+    }
+    // TODO handle While
+  }
+}
+
 void clone_ifnode_subgraphs(luci::PartedModule &pm, const luci::CircleIf *if_node,
                             const luci::CloneContext &clonectx)
 {
@@ -180,7 +199,10 @@ void clone_ifnode_subgraphs(luci::PartedModule &pm, const luci::CircleIf *if_nod
   if_clone->then_branch(then_index);
   if_clone->else_branch(else_index);
 
-  // TODO do recursive cloning of CircleIf inside
+  // do recursive copy subgraphs of CircleIf if there are any,
+  // inside then_graph or else_graph.
+  clone_recursive_subgraphs(pm, then_graph, then_clonectx);
+  clone_recursive_subgraphs(pm, else_graph, else_clonectx);
 }
 
 /**
