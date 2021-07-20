@@ -67,8 +67,8 @@ std::unique_ptr<luci::PGroups> produce_pgroups(const luci::Module *source,
                                                const luci::PartitionTable &partition)
 {
   assert(source != nullptr);
-  // TODO support multiple subgraphs
-  assert(source->size() == 1);
+  // NOTE Only main graph (subgraph index 0) will be partitioned.
+  // Other subgraphs will follow the owner (IF/WHILE/...) group
 
   LOGGER(l);
 
