@@ -68,6 +68,7 @@ public:
       RemoveUnnecessaryReshape,
       TransformMinMaxToRelu6Pass,
       TransformMinReluToRelu6Pass,
+      SubstituteStridedSliceToReshape,
       SubstituteTransposeToReshape,
       RemoveRedundantReshape,
       RemoveFakeQuant,
