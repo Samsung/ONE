@@ -1,0 +1,204 @@
+version: 1
+
+graph {
+  operand {
+    name: "ifm1"
+    type: FLOAT32
+    shape { dim: 2 dim: 3 }
+  }
+  operand {
+    name: "ifm2"
+    type: FLOAT32
+    shape { dim: 2 dim: 3 }
+  }
+  operand {
+    name: "ofm"
+    type: FLOAT32
+    shape { dim: 2 dim: 3 }
+  }
+  operation {
+    type: "Add"
+    input: "ifm1"
+    input: "ifm2"
+    output: "ofm"
+    add_options {
+      activation: NONE
+    }
+  }
+  input: "ifm1"
+  input: "ifm2"
+  output: "ofm"
+  name: "IF_THEN_THEN"
+}
+
+graph {
+  operand {
+    name: "ifm1"
+    type: FLOAT32
+    shape { dim: 2 dim: 3 }
+  }
+  operand {
+    name: "ifm2"
+    type: FLOAT32
+    shape { dim: 2 dim: 3 }
+  }
+  operand {
+    name: "ofm"
+    type: FLOAT32
+    shape { dim: 2 dim: 3 }
+  }
+  operation {
+    type: "Mul"
+    input: "ifm1"
+    input: "ifm2"
+    output: "ofm"
+    mul_options {
+      activation: NONE
+    }
+  }
+  input: "ifm1"
+  input: "ifm2"
+  output: "ofm"
+  name: "IF_THEN_ELSE"
+}
+
+graph {
+  operand {
+    name: "ifm1"
+    type: FLOAT32
+    shape { dim: 2 dim: 3 }
+  }
+  operand {
+    name: "ifm2"
+    type: FLOAT32
+    shape { dim: 2 dim: 3 }
+  }
+  operand {
+    name: "ofm"
+    type: FLOAT32
+    shape { dim: 2 dim: 3 }
+  }
+  operation {
+    type: "Add"
+    input: "ifm1"
+    input: "ifm2"
+    output: "ofm"
+    add_options {
+      activation: NONE
+    }
+  }
+  input: "ifm1"
+  input: "ifm2"
+  output: "ofm"
+  name: "IF_ELSE"
+}
+
+graph {
+  operand {
+    name: "ifm1"
+    type: FLOAT32
+    shape { dim: 2 dim: 3 }
+  }
+  operand {
+    name: "ifm2"
+    type: FLOAT32
+    shape { dim: 2 dim: 3 }
+  }
+  operand {
+    name: "cond"
+    type: BOOL
+    shape { }
+    filler {
+      tag: "explicit"
+      arg: "T"
+    }
+  }
+  operand {
+    name: "ofm"
+    type: FLOAT32
+    shape { dim: 2 dim: 3 }
+  }
+  operation {
+    type: "If"
+    input: "cond"
+    input: "ifm1"
+    input: "ifm2"
+    output: "ofm"
+    if_options {
+      then_subgraph_index: 1
+      else_subgraph_index: 2
+    }
+  }
+  input: "ifm1"
+  input: "ifm2"
+  output: "ofm"
+  name: "IF_THEN"
+}
+
+operand {
+  name: "ifm1"
+  type: FLOAT32
+  shape { dim: 2 dim: 3 }
+}
+operand {
+  name: "ifm2"
+  type: FLOAT32
+  shape { dim: 2 dim: 3 }
+}
+operand {
+  name: "cond"
+  type: BOOL
+  shape { }
+  filler {
+    tag: "explicit"
+    arg: "T"
+  }
+}
+operand {
+  name: "add"
+  type: FLOAT32
+  shape { dim: 2 dim: 3 }
+}
+operand {
+  name: "sub"
+  type: FLOAT32
+  shape { dim: 2 dim: 3 }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 2 dim: 3 }
+}
+operation {
+  type: "Add"
+  input: "ifm1"
+  input: "ifm2"
+  output: "add"
+  add_options {
+    activation: NONE
+  }
+}
+operation {
+  type: "Sub"
+  input: "ifm1"
+  input: "ifm2"
+  output: "sub"
+  sub_options {
+    activation: NONE
+  }
+}
+operation {
+  type: "If"
+  input: "cond"
+  input: "add"
+  input: "sub"
+  output: "ofm"
+  if_options {
+    then_subgraph_index: 4
+    else_subgraph_index: 3
+  }
+}
+input: "ifm1"
+input: "ifm2"
+output: "ofm"
+name: "Main"
