@@ -50,6 +50,9 @@ struct CloneContext
   MapNode2Clone::iterator find(const CircleNode *org) { return node2clone.find(org); }
   MapNode2Clone::iterator end(void) { return node2clone.end(); }
 
+  MapNode2Clone::const_iterator find(const CircleNode *org) const { return node2clone.find(org); }
+  MapNode2Clone::const_iterator end(void) const { return node2clone.end(); }
+
   MapNode2Clone node2clone;
 };
 
