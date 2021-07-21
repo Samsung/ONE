@@ -40,6 +40,28 @@ template <typename T> std::vector<T> to_vector(const flexbuffers::TypedVector &t
   return answer;
 }
 
+luci::Padding string_to_padding(const std::string &pad_str)
+{
+  if (pad_str == "VALID")
+    return luci::Padding::VALID;
+  if (pad_str == "SAME")
+    return luci::Padding::SAME;
+
+  return luci::Padding::UNDEFINED;
+}
+
+template <typename NodeT> void set_stride(NodeT *node, const luci::Stride &stride)
+{
+  node->stride()->h(stride.h());
+  node->stride()->w(stride.w());
+}
+
+template <typename NodeT> void set_filter(NodeT *node, const luci::Filter &filter)
+{
+  node->filter()->h(filter.h());
+  node->filter()->w(filter.w());
+}
+
 void define_max_pool_shape(const luci::CircleNode *input, luci::CircleMaxPool2D *maxpool)
 {
   auto const padding = maxpool->padding();
@@ -87,14 +109,38 @@ void copy_shape(const luci::CircleNode *src, luci::CircleNode *dst)
   dst->shape_status(luci::ShapeStatus::VALID);
 }
 
-luci::Padding string_to_padding(const std::string &pad_str)
+void init_name_and_origin(luci::CircleNode *node, const std::string &name,
+                          const std::shared_ptr<luci::CircleNodeOrigin> &origin)
 {
-  if (pad_str == "VALID")
-    return luci::Padding::VALID;
-  if (pad_str == "SAME")
-    return luci::Padding::SAME;
+  node->name(name);
+  luci::add_origin(node, origin);
+}
 
-  return luci::Padding::UNDEFINED;
+void set_shape_and_dtype_from_node(const luci::CircleNode *src, luci::CircleNode *dst)
+{
+  copy_shape(src, dst);
+  dst->dtype(src->dtype());
+}
+
+template <typename NodeT> NodeT *none_act_func(NodeT *node)
+{
+  node->fusedActivationFunction(luci::FusedActFunc::NONE);
+  return node;
+}
+
+template <loco::DataType DT> luci::CircleCast *create_cast(luci::CircleNode *input)
+{
+  auto cast = input->graph()->nodes()->create<luci::CircleCast>();
+
+  cast->in_data_type(input->dtype());
+  cast->out_data_type(DT);
+  cast->dtype(DT);
+
+  copy_shape(input, cast);
+
+  cast->x(input);
+
+  return cast;
 }
 
 template <loco::DataType DT> void fill_conv_weights(luci::CircleConst *weights)
@@ -176,7 +222,7 @@ luci::CircleConst *create_zero_bias(loco::Graph *graph, const luci::CircleConv2D
 
   assert(conv->rank() == 4);
 
-  bias->dim(0).set(conv->dim(0).value());
+  bias->dim(0).set(conv->dim(3).value());
 
   switch (bias->dtype())
   {
@@ -309,38 +355,6 @@ bool resolve_max_pool_with_argmax(luci::CircleCustom *cop)
   auto strides_param = to_vector<uint32_t>(map["strides"].AsTypedVector());
   auto padding_param = map["padding"].As<std::string>();
 
-  // input node
-  auto const input = loco::must_cast<luci::CircleNode *>(cop->inputs(0));
-  CHECK_OR_FALSE(input->rank() == 4);
-
-  // TODO support batch size > 1 and `include_batch_in_index` option
-  CHECK_OR_FALSE(input->dim(0).value() == 1);
-
-  // Depth dimension is 3 because NHWC format is used
-  auto const depth_dimension = 3;
-
-  auto const input_depth = input->dim(depth_dimension).value();
-  auto const input_height = input->dim(1).value();
-  auto const input_width = input->dim(2).value();
-
-  // outputs
-  auto const outputs = loco::succs(cop);
-  assert(outputs.size() == cop->numOutputs());
-  CHECK_OR_FALSE(outputs.size() == 2);
-
-  auto output0 = loco::must_cast<luci::CircleCustomOut *>(*outputs.begin());
-  auto output1 = loco::must_cast<luci::CircleCustomOut *>(*(++outputs.begin()));
-
-  if (output0->index() > output1->index())
-    std::swap(output0, output1);
-
-  // From TF documentation: output of maxpool must has same type as input
-  assert(output0->dtype() == input->dtype());
-  assert(output1->dtype() == loco::DataType::S64);
-
-  assert(ksize_param.size() == input->rank());
-  assert(strides_param.size() == input->rank());
-
   // Batch size and depth of ksize more than 1 is not supported.
   CHECK_OR_FALSE(ksize_param[0] == 1 && ksize_param[3] == 1);
   CHECK_OR_FALSE(strides_param[0] == 1 && strides_param[3] == 1);
@@ -358,25 +372,48 @@ bool resolve_max_pool_with_argmax(luci::CircleCustom *cop)
   stride.h(strides_param[1]);
   stride.w(strides_param[2]);
 
+  // input node
+  auto const input = loco::must_cast<luci::CircleNode *>(cop->inputs(0));
+  CHECK_OR_FALSE(input->rank() == 4);
+
+  assert(ksize_param.size() == input->rank());
+  assert(strides_param.size() == input->rank());
+
+  // TODO support batch size > 1 and `include_batch_in_index` option
+  CHECK_OR_FALSE(input->dim(0).value() == 1);
+
+  // Depth dimension is 3 because NHWC format is used
+  auto const depth_dimension = 3;
+
+  auto const input_depth = input->dim(depth_dimension).value();
+  auto const input_height = input->dim(1).value();
+  auto const input_width = input->dim(2).value();
+
+  // outputs
+  auto const outputs = loco::succs(cop);
+  assert(outputs.size() == cop->numOutputs());
+  CHECK_OR_FALSE(outputs.size() == 2);
+
+  auto output0 = loco::must_cast<luci::CircleCustomOut *>(*outputs.begin());
+  auto output1 = loco::must_cast<luci::CircleCustomOut *>(*outputs.rbegin());
+
+  // sort outputs
+  if (output0->index() > output1->index())
+    std::swap(output0, output1);
+
+  // From TF documentation: output of maxpool must has same type as input
+  assert(output0->dtype() == input->dtype());
+  assert(output1->dtype() == loco::DataType::S64);
+
   // Create MaxPool
-  auto maxpool = graph->nodes()->create<luci::CircleMaxPool2D>();
+  auto maxpool = none_act_func(graph->nodes()->create<luci::CircleMaxPool2D>());
   {
-    maxpool->name(name + "/MaxPool2D");
-    luci::add_origin(maxpool, origin);
+    init_name_and_origin(maxpool, name + "/MaxPool2D", origin);
+    set_shape_and_dtype_from_node(input, maxpool);
 
-    maxpool->stride()->h(stride.h());
-    maxpool->stride()->w(stride.w());
-
-    maxpool->filter()->h(filter.h());
-    maxpool->filter()->w(filter.w());
-
+    set_stride(maxpool, stride);
+    set_filter(maxpool, filter);
     maxpool->padding(padding);
-
-    maxpool->fusedActivationFunction(luci::FusedActFunc::NONE);
-
-    // dtype of first output of MaxPoolWithArgmax is same as input's
-    maxpool->dtype(input->dtype());
-    define_max_pool_shape(input, maxpool);
 
     maxpool->value(input);
   }
@@ -384,19 +421,13 @@ bool resolve_max_pool_with_argmax(luci::CircleCustom *cop)
   // Create Split
   auto split = graph->nodes()->create<luci::CircleSplit>();
   {
-    split->name(name + "/Split");
-    luci::add_origin(split, origin);
+    init_name_and_origin(split, name + "/Split", origin);
+    set_shape_and_dtype_from_node(input, split);
 
     // Create split_dim
     auto split_dim = create_scalar<loco::DataType::S32>(graph, depth_dimension);
-    {
-      split_dim->name(split->name() + "/Dim");
-      luci::add_origin(split_dim, origin);
-    }
+    init_name_and_origin(split_dim, split->name() + "/Dim", origin);
 
-    // Split input feature map to FM's with depth equal to 1
-    split->dtype(input->dtype());
-    copy_shape(input, split);
     split->num_split(int32_t(input_depth));
 
     split->split_dim(split_dim);
@@ -404,12 +435,9 @@ bool resolve_max_pool_with_argmax(luci::CircleCustom *cop)
   }
 
   // Create Concatenation
-  auto concat = graph->nodes()->create<luci::CircleConcatenation>(input_depth);
+  auto concat = none_act_func(graph->nodes()->create<luci::CircleConcatenation>(input_depth));
   {
-    concat->name(name + "/Concatenation");
-    luci::add_origin(concat, origin);
-
-    concat->fusedActivationFunction(luci::FusedActFunc::NONE);
+    init_name_and_origin(concat, name + "/Concatenation", origin);
 
     // Output of branches is FLOAT32
     concat->dtype(loco::DataType::FLOAT32);
@@ -426,17 +454,17 @@ bool resolve_max_pool_with_argmax(luci::CircleCustom *cop)
   // create branches
   for (uint32_t br_n = 0; br_n < input_depth; ++br_n)
   {
+    auto const branch_name = name + "/depth_" + std::to_string(br_n);
+
     // Create CircleSplitOut
     auto split_out = graph->nodes()->create<luci::CircleSplitOut>();
     {
-      split_out->name(name + "/SplitOut_" + std::to_string(br_n));
-      luci::add_origin(split_out, origin);
+      init_name_and_origin(split_out, branch_name + "/SplitOut", origin);
+      set_shape_and_dtype_from_node(split, split_out);
 
-      split_out->index(br_n);
-      split_out->dtype(split->dtype());
+      split_out->index(int32_t(br_n));
 
       // shape of split out equal to shape of split except split_dim, which equal to 1
-      copy_shape(split, split_out);
       split_out->dim(depth_dimension).set(1);
 
       split_out->input(split);
@@ -444,43 +472,31 @@ bool resolve_max_pool_with_argmax(luci::CircleCustom *cop)
 
     // Define idx of max element in Window:
     // Create Conv2D
-    auto conv = graph->nodes()->create<luci::CircleConv2D>();
+    auto conv = none_act_func(graph->nodes()->create<luci::CircleConv2D>());
     {
-      conv->name(name + "/Conv2d");
-      luci::add_origin(conv, origin);
+      init_name_and_origin(conv, branch_name + "/Conv2D", origin);
 
       // Padding, Stride and kernel size equal to MaxPool's
+      set_stride(conv, stride);
       conv->padding(padding);
-      conv->stride()->w(stride.w());
-      conv->stride()->h(stride.h());
 
+      // depth of kernel is equal to square size
       auto const kh = filter.h();
       auto const kw = filter.w();
+      auto const kd = kh * kw;
 
-      conv->fusedActivationFunction(luci::FusedActFunc::NONE);
+      // shape of Plane is same as MaxPool's,
+      set_shape_and_dtype_from_node(maxpool, conv);
+      conv->dim(depth_dimension).set(kd);
 
-      // dilation is default
-
-      conv->dtype(split_out->dtype());
-
-      // shape of Plane is same as MaxPool's, depth is equal to square size of kernel
-      copy_shape(maxpool, conv);
-      conv->dim(depth_dimension).set(kh * kw);
-
-      // use no bias
+      // use zero bias
       auto bias = create_zero_bias(graph, conv);
-      {
-        bias->name(conv->name() + "/Bias");
-        luci::add_origin(bias, origin);
-      }
+      init_name_and_origin(bias, conv->name() + "/Bias", origin);
 
       // create filter
       // TODO make shared
-      auto weights = create_conv_filter(conv, kh, kw, kh * kw);
-      {
-        weights->name(conv->name() + "/Weights");
-        luci::add_origin(weights, origin);
-      }
+      auto weights = create_conv_filter(conv, kh, kw, kd);
+      init_name_and_origin(weights, conv->name() + "/Weights", origin);
 
       conv->bias(bias);
       conv->filter(weights);
@@ -490,8 +506,7 @@ bool resolve_max_pool_with_argmax(luci::CircleCustom *cop)
     // Create ArgMax
     auto argmax = graph->nodes()->create<luci::CircleArgMax>();
     {
-      argmax->name(name + "/ArgMax");
-      add_origin(argmax, origin);
+      init_name_and_origin(argmax, branch_name + "/ArgMax", origin);
 
       argmax->output_type(loco::DataType::S32);
       argmax->dtype(argmax->output_type());
@@ -502,46 +517,25 @@ bool resolve_max_pool_with_argmax(luci::CircleCustom *cop)
 
       // Create argmax_dim
       auto argmax_dim = create_scalar<loco::DataType::S32>(graph, depth_dimension);
-      {
-        argmax_dim->name(argmax->name() + "/Dimension");
-        luci::add_origin(argmax_dim, origin);
-      }
+      init_name_and_origin(argmax_dim, argmax->name() + "/Dimension", origin);
 
       argmax->dimension(argmax_dim);
       argmax->input(conv);
     }
 
     // Create Cast to use float32 instead int32
-    auto argmax_cast = graph->nodes()->create<luci::CircleCast>();
-    {
-      argmax_cast->name(argmax->name() + "/Cast");
-      luci::add_origin(argmax_cast, origin);
-
-      argmax_cast->in_data_type(argmax->dtype());
-      argmax_cast->out_data_type(loco::DataType::FLOAT32);
-      argmax_cast->dtype(argmax_cast->out_data_type());
-
-      copy_shape(argmax, argmax_cast);
-
-      argmax_cast->x(argmax);
-    }
+    auto argmax_cast = create_cast<loco::DataType::FLOAT32>(argmax);
+    ;
+    init_name_and_origin(argmax_cast, argmax->name() + "/Cast", origin);
 
     // Create Div through Mul
-    auto div = graph->nodes()->create<luci::CircleMul>();
+    auto div = none_act_func(graph->nodes()->create<luci::CircleMul>());
     {
-      div->name(name + "/Div");
-      luci::add_origin(div, origin);
-
-      div->fusedActivationFunction(luci::FusedActFunc::NONE);
-
-      div->dtype(argmax_cast->dtype());
-      copy_shape(argmax_cast, div);
+      init_name_and_origin(div, branch_name + "/Div", origin);
+      set_shape_and_dtype_from_node(argmax_cast, div);
 
       auto divider = create_scalar<loco::DataType::FLOAT32>(graph, 1.0f / filter.w());
-      {
-        divider->name(div->name() + "/Divider");
-        luci::add_origin(divider, origin);
-      }
+      init_name_and_origin(divider, div->name() + "/Divider", origin);
 
       div->x(argmax_cast);
       div->y(divider);
@@ -549,48 +543,29 @@ bool resolve_max_pool_with_argmax(luci::CircleCustom *cop)
 
     auto floor = graph->nodes()->create<luci::CircleFloor>();
     {
-      floor->name(name + "/Floor");
-      luci::add_origin(floor, origin);
-
-      floor->dtype(div->dtype());
-      copy_shape(div, floor);
+      init_name_and_origin(floor, branch_name + "/Floor", origin);
+      set_shape_and_dtype_from_node(div, floor);
 
       floor->x(div);
     }
 
-    auto mod = graph->nodes()->create<luci::CircleAdd>();
+    auto mod = none_act_func(graph->nodes()->create<luci::CircleAdd>());
     {
-      mod->name(name + "/Mod");
-      luci::add_origin(mod, origin);
-
-      mod->fusedActivationFunction(luci::FusedActFunc::NONE);
-
-      mod->dtype(floor->dtype());
-      copy_shape(floor, mod);
+      init_name_and_origin(mod, branch_name + "/Mod", origin);
+      set_shape_and_dtype_from_node(floor, mod);
 
       auto neg = graph->nodes()->create<luci::CircleNeg>();
       {
-        neg->name(mod->name() + "/Neg");
-        luci::add_origin(neg, origin);
+        init_name_and_origin(neg, mod->name() + "/Neg", origin);
+        set_shape_and_dtype_from_node(floor, neg);
 
-        neg->dtype(mod->dtype());
-        copy_shape(floor, mod);
-
-        auto mul = graph->nodes()->create<luci::CircleMul>();
+        auto mul = none_act_func(graph->nodes()->create<luci::CircleMul>());
         {
-          mul->name(neg->name() + "/Mul");
-          luci::add_origin(mul, origin);
-
-          mul->fusedActivationFunction(luci::FusedActFunc::NONE);
-
-          mul->dtype(floor->dtype());
-          copy_shape(floor, mul);
+          init_name_and_origin(mul, neg->name() + "/Neg", origin);
+          set_shape_and_dtype_from_node(floor, mul);
 
           auto multipler = create_scalar<loco::DataType::FLOAT32>(graph, filter.w());
-          {
-            multipler->name(mul->name() + "/Multipler");
-            luci::add_origin(multipler, origin);
-          }
+          init_name_and_origin(multipler, mul->name() + "/Multipler", origin);
 
           mul->x(floor);
           mul->y(multipler);
@@ -611,47 +586,26 @@ bool resolve_max_pool_with_argmax(luci::CircleCustom *cop)
     // This tensor contains coords of left top corners for each window from input tensor
     auto cords =
       create_coords_addition(padding, stride, filter, input_height, input_width, argmax_cast);
-    {
-      cords->name(name + "/Const");
-      luci::add_origin(cords, origin);
-    }
+    init_name_and_origin(cords, branch_name + "/Const", origin);
 
     // Create Add
-    auto add = graph->nodes()->create<luci::CircleAdd>();
+    auto add = none_act_func(graph->nodes()->create<luci::CircleAdd>());
     {
-      add->name(name + "/Add");
-      luci::add_origin(add, origin);
+      init_name_and_origin(add, branch_name + "/Add", origin);
+      set_shape_and_dtype_from_node(cords, add);
 
-      add->fusedActivationFunction(luci::FusedActFunc::NONE);
-
-      add->dtype(cords->dtype());
-      copy_shape(cords, add);
-
-      auto addition = graph->nodes()->create<luci::CircleAdd>();
+      auto addition = none_act_func(graph->nodes()->create<luci::CircleAdd>());
       {
-        addition->name(add->name() + "/Add");
-        luci::add_origin(addition, origin);
+        init_name_and_origin(addition, add->name() + "/Add", origin);
+        set_shape_and_dtype_from_node(window_x_coord, addition);
 
-        addition->fusedActivationFunction(luci::FusedActFunc::NONE);
-
-        addition->dtype(window_x_coord->dtype());
-        copy_shape(window_x_coord, addition);
-
-        auto y_addition = graph->nodes()->create<luci::CircleMul>();
+        auto y_addition = none_act_func(graph->nodes()->create<luci::CircleMul>());
         {
-          y_addition->name(addition->name() + "/Mul");
-          luci::add_origin(y_addition, origin);
-
-          y_addition->fusedActivationFunction(luci::FusedActFunc::NONE);
-
-          y_addition->dtype(window_y_coord->dtype());
-          copy_shape(window_y_coord, add);
+          init_name_and_origin(y_addition, addition->name() + "/Mul", origin);
+          set_shape_and_dtype_from_node(window_y_coord, y_addition);
 
           auto width_scalar = create_scalar<loco::DataType::FLOAT32>(graph, input_width);
-          {
-            width_scalar->name(y_addition->name() + "/Const");
-            luci::add_origin(width_scalar, origin);
-          }
+          init_name_and_origin(width_scalar, y_addition->name() + "/Const", origin);
 
           y_addition->x(window_y_coord);
           y_addition->y(width_scalar);
@@ -667,21 +621,13 @@ bool resolve_max_pool_with_argmax(luci::CircleCustom *cop)
 
     // Define volume coords
     // Create Mul
-    auto mul = graph->nodes()->create<luci::CircleMul>();
+    auto mul = none_act_func(graph->nodes()->create<luci::CircleMul>());
     {
-      mul->name(name + "/Mul");
-      luci::add_origin(mul, origin);
-
-      mul->fusedActivationFunction(luci::FusedActFunc::NONE);
-
-      mul->dtype(add->dtype());
-      copy_shape(add, mul);
+      init_name_and_origin(mul, branch_name + "/Mul", origin);
+      set_shape_and_dtype_from_node(add, mul);
 
       auto depth_scalar = create_scalar<loco::DataType::FLOAT32>(graph, input_depth);
-      {
-        depth_scalar->name(mul->name() + "/Const");
-        luci::add_origin(depth_scalar, origin);
-      }
+      init_name_and_origin(depth_scalar, mul->name() + "/Const", origin);
 
       mul->x(add);
       mul->y(depth_scalar);
@@ -692,21 +638,13 @@ bool resolve_max_pool_with_argmax(luci::CircleCustom *cop)
     if (br_n > 0)
     {
       // Create Add
-      auto add_ch = graph->nodes()->create<luci::CircleAdd>();
+      auto add_ch = none_act_func(graph->nodes()->create<luci::CircleAdd>());
       {
-        add_ch->name(name + "/Add_Channel");
-        luci::add_origin(add_ch, origin);
-
-        add_ch->fusedActivationFunction(luci::FusedActFunc::NONE);
-
-        add_ch->dtype(mul->dtype());
-        copy_shape(mul, add_ch);
+        init_name_and_origin(add_ch, branch_name + "/Add_Channel", origin);
+        set_shape_and_dtype_from_node(mul, add_ch);
 
         auto channel_scalar = create_scalar<loco::DataType::FLOAT32>(graph, br_n);
-        {
-          channel_scalar->name(add_ch->name() + "/Const");
-          luci::add_origin(channel_scalar, origin);
-        }
+        init_name_and_origin(channel_scalar, add_ch->name() + "/Const", origin);
 
         add_ch->x(mul);
         add_ch->y(channel_scalar);
@@ -723,19 +661,8 @@ bool resolve_max_pool_with_argmax(luci::CircleCustom *cop)
   }
 
   // Output of argmax_with_maxpool should be S64
-  auto output_cast = graph->nodes()->create<luci::CircleCast>();
-  {
-    output_cast->name(name + "/Cast");
-    luci::add_origin(output_cast, origin);
-
-    output_cast->in_data_type(concat->dtype());
-    output_cast->out_data_type(loco::DataType::S64);
-    output_cast->dtype(output_cast->out_data_type());
-
-    copy_shape(concat, output_cast);
-
-    output_cast->x(concat);
-  }
+  auto output_cast = create_cast<loco::DataType::S64>(concat);
+  init_name_and_origin(output_cast, name + "/Cast", origin);
 
   // replace old node with new subgraph
   cop->inputs(0, nullptr);
