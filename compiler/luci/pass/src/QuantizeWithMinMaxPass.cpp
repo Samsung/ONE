@@ -694,7 +694,6 @@ struct QuantizeActivation final : public luci::CircleNodeMutableVisitor<bool>
             scaling_factor = 1.0f / 32768.0f;
             zp = 0;
           }
-          continue;
         }
 
         // The output of these Ops should be integer, so scale should be integer
