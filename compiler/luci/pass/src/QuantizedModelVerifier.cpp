@@ -38,18 +38,25 @@ void QuantizedModelVerifier::verify(loco::Graph *g)
   {
     auto circle_node = loco::must_cast<luci::CircleNode *>(node);
 
+    auto node_name = [&circle_node]() {
+      if (circle_node->name().length() == 0)
+        return std::string("Node with no name");
+
+      return circle_node->name();
+    };
+
     // Verify Type
     if (_quantized_dtype == Type::U8)
     {
       VerifyQuantizedNodeU8Type vt;
       if (!circle_node->accept(&vt))
-        throw std::runtime_error("Wrong data type");
+        throw std::runtime_error("Wrong data type detected in " + node_name());
     }
     else if (_quantized_dtype == Type::S16)
     {
       VerifyQuantizedNodeS16Type vt;
       if (!circle_node->accept(&vt))
-        throw std::runtime_error("Wrong data type");
+        throw std::runtime_error("Wrong data type detected in " + node_name());
     }
 
     // Verify Granularity
@@ -57,13 +64,13 @@ void QuantizedModelVerifier::verify(loco::Graph *g)
     {
       VerifyQuantizedNodeLayerWiseGranularity vg;
       if (!circle_node->accept(&vg))
-        throw std::runtime_error("Wrong granularity");
+        throw std::runtime_error("Wrong granularity detected in " + node_name());
     }
     else if (_granularity == Granularity::ChannelWise)
     {
       VerifyQuantizedNodeChannelWiseGranularity vg;
       if (!circle_node->accept(&vg))
-        throw std::runtime_error("Wrong granularity");
+        throw std::runtime_error("Wrong granularity detected in " + node_name());
     }
   }
 }
