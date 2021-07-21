@@ -62,40 +62,6 @@ template <typename NodeT> void set_filter(NodeT *node, const luci::Filter &filte
   node->filter()->w(filter.w());
 }
 
-void define_max_pool_shape(const luci::CircleNode *input, luci::CircleMaxPool2D *maxpool)
-{
-  auto const padding = maxpool->padding();
-  auto const stride = maxpool->stride();
-  auto const filter = maxpool->filter();
-
-  assert(input->rank() == 4);
-  maxpool->rank(input->rank());
-
-  // batch and depth is same
-  maxpool->dim(0).set(input->dim(0).value());
-  maxpool->dim(3).set(input->dim(3).value());
-
-  // For VALID padding
-  auto padded_height = input->dim(1).value();
-  auto padded_width = input->dim(2).value();
-
-  assert(padding != luci::Padding::UNDEFINED);
-
-  if (padding == luci::Padding::SAME)
-  {
-    padded_height += filter->h() - 1;
-    padded_width += filter->w() - 1;
-  }
-
-  auto const output_height = (padded_height - filter->h()) / stride->h() + 1;
-  auto const output_width = (padded_width - filter->w()) / stride->w() + 1;
-
-  maxpool->dim(1).set(output_height);
-  maxpool->dim(2).set(output_width);
-
-  maxpool->shape_status(luci::ShapeStatus::VALID);
-}
-
 void copy_shape(const luci::CircleNode *src, luci::CircleNode *dst)
 {
   assert(src->shape_status() == luci::ShapeStatus::VALID);
@@ -409,7 +375,7 @@ bool resolve_max_pool_with_argmax(luci::CircleCustom *cop)
   auto maxpool = none_act_func(graph->nodes()->create<luci::CircleMaxPool2D>());
   {
     init_name_and_origin(maxpool, name + "/MaxPool2D", origin);
-    set_shape_and_dtype_from_node(input, maxpool);
+    set_shape_and_dtype_from_node(output0, maxpool);
 
     set_stride(maxpool, stride);
     set_filter(maxpool, filter);
@@ -578,10 +544,11 @@ bool resolve_max_pool_with_argmax(luci::CircleCustom *cop)
       mod->y(neg);
     }
 
-    // Define idx of max element in Plane
+    // aliases for window coords
     auto const window_y_coord = floor;
     auto const window_x_coord = mod;
 
+    // Define idx of max element in Plane
     // Create Const
     // This tensor contains coords of left top corners for each window from input tensor
     auto cords =
