@@ -43,6 +43,12 @@ struct ArgMaxParams
   DataType output_type;
 };
 
+struct CastParams
+{
+  DataType in_data_type;
+  DataType out_data_type;
+};
+
 struct ConcatenationParams
 {
   int axis;
