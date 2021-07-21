@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2021 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,26 +14,20 @@
  * limitations under the License.
  */
 
-#include "loader/KernelBuilder.h"
 #include "loader/KernelBuilderVisitor.h"
-
-#include <stdexcept>
-
-
+#include "kernels/Exp.h"
 
 namespace luci_interpreter
 {
 
-std::unique_ptr<Kernel> KernelBuilder::build(const luci::CircleNode *node)
+std::unique_ptr<Kernel> KernelBuilderVisitor::visit(const luci::CircleExp *node)
 {
-  KernelBuilderVisitor kbv(graph_to_runtime_graph(), node_to_tensor());
-  auto ret = node->accept(&kbv);
-  if(ret != nullptr)
-    return ret;
+  assert(node->arity() == 1);
 
-  std::string msg = "Unsupported operator: ";
-  msg += std::to_string(static_cast<uint32_t>(node->opcode())) + " " + std::string(node->name());
-  throw std::invalid_argument(msg.c_str());
+  const Tensor *input = getInputTensor(node->x());
+  Tensor *output = getOutputTensor(node);
+
+  return std::make_unique<kernels::Exp>(input, output);
 }
 
 } // namespace luci_interpreter

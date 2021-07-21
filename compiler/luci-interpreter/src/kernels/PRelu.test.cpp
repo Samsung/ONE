@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-#include "kernels/Prelu.h"
+#include "kernels/PRelu.h"
 #include "kernels/TestUtils.h"
 
 namespace luci_interpreter
@@ -37,7 +37,7 @@ void Check(std::initializer_list<int32_t> input_shape, std::initializer_list<int
   Tensor alpha_tensor = makeInputTensor<element_type>(alpha_shape, alpha_data);
   Tensor output_tensor = makeOutputTensor(element_type);
 
-  Prelu kernel(&input_tensor, &alpha_tensor, &output_tensor);
+  PRelu kernel(&input_tensor, &alpha_tensor, &output_tensor);
 
   kernel.configure();
   kernel.execute();
@@ -46,7 +46,7 @@ void Check(std::initializer_list<int32_t> input_shape, std::initializer_list<int
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(output_shape));
 }
 
-TEST(PreluTest, FloatSimple)
+TEST(PReluTest, FloatSimple)
 {
   Check<float>(/*input_shape=*/{2, 3}, /*alpha_shape=*/{2, 3},
                /*output_shape=*/{2, 3},
@@ -69,7 +69,7 @@ TEST(PreluTest, FloatSimple)
   SUCCEED();
 }
 
-TEST(PreluTest, FloatBroadcast)
+TEST(PReluTest, FloatBroadcast)
 {
   Check<float>(/*input_shape=*/{1, 2, 2, 3}, /*alpha_shape=*/{1, 1, 3},
                /*output_shape=*/{1, 2, 2, 3},
@@ -95,7 +95,7 @@ TEST(PreluTest, FloatBroadcast)
 
 float GetTolerance(float min, float max) { return (max - min) / 255.0; }
 
-TEST(PreluTest, Uint8Simple)
+TEST(PReluTest, Uint8Simple)
 {
   std::vector<float> input_data{-0.8f, 0.2f, 0.9f, 0.7f, 0.1f, -0.4f};
   std::vector<float> alpha_data{0.5f, 0.5f, 0.5f, 0.25f, 1.0f, 0.25f};
@@ -110,7 +110,7 @@ TEST(PreluTest, Uint8Simple)
     makeInputTensor<DataType::U8>({1, 2, 3, 1}, quant_param.first, quant_param.second, alpha_data);
   Tensor output_tensor = makeOutputTensor(DataType::U8, quant_param.first, quant_param.second);
 
-  Prelu kernel(&input_tensor, &alpha_tensor, &output_tensor);
+  PRelu kernel(&input_tensor, &alpha_tensor, &output_tensor);
   kernel.configure();
   kernel.execute();
 
@@ -121,7 +121,7 @@ TEST(PreluTest, Uint8Simple)
   SUCCEED();
 }
 
-TEST(PreluTest, Uint8Broadcast)
+TEST(PReluTest, Uint8Broadcast)
 {
   std::vector<float> input_data{
     0.0f,   0.0f,   0.0f,   // Row 1, Column 1
@@ -153,7 +153,7 @@ TEST(PreluTest, Uint8Broadcast)
     makeInputTensor<DataType::U8>({1, 1, 3}, quant_param.first, quant_param.second, alpha_data);
   Tensor output_tensor = makeOutputTensor(DataType::U8, quant_param.first, quant_param.second);
 
-  Prelu kernel(&input_tensor, &alpha_tensor, &output_tensor);
+  PRelu kernel(&input_tensor, &alpha_tensor, &output_tensor);
   kernel.configure();
   kernel.execute();
 
@@ -164,7 +164,7 @@ TEST(PreluTest, Uint8Broadcast)
               ::testing::ElementsAreArray(ref_quant_output_data));
 }
 
-TEST(PreluTest, SInt16_LWQ_NEG)
+TEST(PReluTest, SInt16_LWQ_NEG)
 {
   // Rewrite this test in case layer-wise quantization for sint16 is supported
   std::vector<float> input_data(6); // data is not important
@@ -174,11 +174,11 @@ TEST(PreluTest, SInt16_LWQ_NEG)
   Tensor alpha_tensor = makeInputTensor<DataType::S16>({1, 2, 3, 1}, 0.1, 0, alpha_data);
   Tensor output_tensor = makeOutputTensor(DataType::S16, 0.1, 0);
 
-  Prelu kernel(&input_tensor, &alpha_tensor, &output_tensor);
+  PRelu kernel(&input_tensor, &alpha_tensor, &output_tensor);
   EXPECT_ANY_THROW(kernel.configure());
 }
 
-TEST(PreluTest, SInt16_CWQ_Simple)
+TEST(PReluTest, SInt16_CWQ_Simple)
 {
   std::vector<float> input_data{-0.8f, 0.2f, 0.9f, -0.7f, 0.1f, -0.4f};
   std::vector<float> alpha_data{0.5f, 0.25f};
@@ -190,7 +190,7 @@ TEST(PreluTest, SInt16_CWQ_Simple)
   Tensor alpha_tensor = makeInputTensor<DataType::S16>({2}, alpha_scales, zerop, 0, alpha_data);
   Tensor output_tensor = makeOutputTensor(DataType::S16, 0.025, 0);
 
-  Prelu kernel(&input_tensor, &alpha_tensor, &output_tensor);
+  PRelu kernel(&input_tensor, &alpha_tensor, &output_tensor);
   kernel.configure();
   kernel.execute();
 
@@ -198,7 +198,7 @@ TEST(PreluTest, SInt16_CWQ_Simple)
   EXPECT_THAT(dequantizeTensorData(output_tensor), FloatArrayNear(ref_output_data));
 }
 
-TEST(PreluTest, SInt16_CWQ_spatial_alpha_NEG)
+TEST(PReluTest, SInt16_CWQ_spatial_alpha_NEG)
 {
   std::vector<float> input_data(6); // data is not important
   std::vector<float> alpha_data(6);
@@ -210,11 +210,11 @@ TEST(PreluTest, SInt16_CWQ_spatial_alpha_NEG)
     makeInputTensor<DataType::S16>({1, 1, 3, 2}, alpha_scales, zerop, 3, alpha_data);
   Tensor output_tensor = makeOutputTensor(DataType::S16, 0.1, 0);
 
-  Prelu kernel(&input_tensor, &alpha_tensor, &output_tensor);
+  PRelu kernel(&input_tensor, &alpha_tensor, &output_tensor);
   EXPECT_ANY_THROW(kernel.configure());
 }
 
-TEST(PreluTest, SInt16_CWQ_wrong_dim_quant_NEG)
+TEST(PReluTest, SInt16_CWQ_wrong_dim_quant_NEG)
 {
   std::vector<float> input_data(6); // data is not important
   std::vector<float> alpha_data(6);
@@ -226,11 +226,11 @@ TEST(PreluTest, SInt16_CWQ_wrong_dim_quant_NEG)
     makeInputTensor<DataType::S16>({1, 1, 1, 2}, alpha_scales, zerop, 1, alpha_data);
   Tensor output_tensor = makeOutputTensor(DataType::S16, 0.1, 0);
 
-  Prelu kernel(&input_tensor, &alpha_tensor, &output_tensor);
+  PRelu kernel(&input_tensor, &alpha_tensor, &output_tensor);
   EXPECT_ANY_THROW(kernel.configure());
 }
 
-TEST(PreluTest, SInt16_CWQ_uneven_shape1)
+TEST(PReluTest, SInt16_CWQ_uneven_shape1)
 {
   std::vector<float> input_data{-0.8f, 0.2f, 0.9f, -0.7f, 0.1f, -0.4f};
   std::vector<float> alpha_data{0.5f, 0.25f};
@@ -243,7 +243,7 @@ TEST(PreluTest, SInt16_CWQ_uneven_shape1)
     makeInputTensor<DataType::S16>({1, 1, 2}, alpha_scales, zerop, 2, alpha_data);
   Tensor output_tensor = makeOutputTensor(DataType::S16, 0.025, 0);
 
-  Prelu kernel(&input_tensor, &alpha_tensor, &output_tensor);
+  PRelu kernel(&input_tensor, &alpha_tensor, &output_tensor);
   kernel.configure();
   kernel.execute();
 
@@ -251,7 +251,7 @@ TEST(PreluTest, SInt16_CWQ_uneven_shape1)
   EXPECT_THAT(dequantizeTensorData(output_tensor), FloatArrayNear(ref_output_data));
 }
 
-TEST(PreluTest, SInt16_CWQ_uneven_shape2)
+TEST(PReluTest, SInt16_CWQ_uneven_shape2)
 {
   std::vector<float> input_data{
     0.0f,   0.0f,   0.0f,   // Row 1, Column 1
@@ -274,7 +274,7 @@ TEST(PreluTest, SInt16_CWQ_uneven_shape2)
     makeInputTensor<DataType::S16>({1, 1, 1, 3}, alpha_scales, zerop, 3, alpha_data);
   Tensor output_tensor = makeOutputTensor(DataType::S16, 0.001, 0);
 
-  Prelu kernel(&input_tensor, &alpha_tensor, &output_tensor);
+  PRelu kernel(&input_tensor, &alpha_tensor, &output_tensor);
   kernel.configure();
   kernel.execute();
 
@@ -282,38 +282,38 @@ TEST(PreluTest, SInt16_CWQ_uneven_shape2)
   EXPECT_THAT(dequantizeTensorData(output_tensor), FloatArrayNear(ref_output_data));
 }
 
-TEST(PreluTest, Input_Output_Type_NEG)
+TEST(PReluTest, Input_Output_Type_NEG)
 {
   Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({1}, {1.f});
   Tensor alpha_tensor = makeInputTensor<DataType::FLOAT32>({1}, {1.f});
   Tensor output_tensor = makeOutputTensor(DataType::U8);
 
-  Prelu kernel(&input_tensor, &alpha_tensor, &output_tensor);
+  PRelu kernel(&input_tensor, &alpha_tensor, &output_tensor);
   EXPECT_ANY_THROW(kernel.configure());
 }
 
-TEST(PreluTest, Input_Alpha_Type_NEG)
+TEST(PReluTest, Input_Alpha_Type_NEG)
 {
   Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({1}, {1.f});
   Tensor alpha_tensor = makeInputTensor<DataType::U8>({1}, {1});
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
-  Prelu kernel(&input_tensor, &alpha_tensor, &output_tensor);
+  PRelu kernel(&input_tensor, &alpha_tensor, &output_tensor);
   EXPECT_ANY_THROW(kernel.configure());
 }
 
-TEST(PreluTest, Invalid_Input_Type_NEG)
+TEST(PReluTest, Invalid_Input_Type_NEG)
 {
   Tensor input_tensor = makeInputTensor<DataType::S64>({1}, {1});
   Tensor alpha_tensor = makeInputTensor<DataType::S64>({1}, {1});
   Tensor output_tensor = makeOutputTensor(DataType::S64);
 
-  Prelu kernel(&input_tensor, &alpha_tensor, &output_tensor);
+  PRelu kernel(&input_tensor, &alpha_tensor, &output_tensor);
   kernel.configure();
   EXPECT_ANY_THROW(kernel.execute());
 }
 
-TEST(PreluTest, Input_Output_U8_CWQ_NEG)
+TEST(PReluTest, Input_Output_U8_CWQ_NEG)
 {
   std::vector<float> scales{1.f, 1.f};
   std::vector<int32_t> zerop{0, 0};
@@ -322,11 +322,11 @@ TEST(PreluTest, Input_Output_U8_CWQ_NEG)
   Tensor alpha_tensor = makeInputTensor<DataType::U8>({2, 2}, scales, zerop, 0, dummy_data);
   Tensor output_tensor = makeInputTensor<DataType::U8>({2, 2}, scales, zerop, 0, dummy_data);
 
-  Prelu kernel(&input_tensor, &alpha_tensor, &output_tensor);
+  PRelu kernel(&input_tensor, &alpha_tensor, &output_tensor);
   EXPECT_ANY_THROW(kernel.configure());
 }
 
-TEST(PreluTest, Input_Output_S16_CWQ_NEG)
+TEST(PReluTest, Input_Output_S16_CWQ_NEG)
 {
   std::vector<float> scales{1.f, 1.f};
   std::vector<int32_t> zerop{0, 0};
@@ -335,18 +335,18 @@ TEST(PreluTest, Input_Output_S16_CWQ_NEG)
   Tensor alpha_tensor = makeInputTensor<DataType::S16>({2, 2}, scales, zerop, 0, dummy_data);
   Tensor output_tensor = makeInputTensor<DataType::S16>({2, 2}, scales, zerop, 0, dummy_data);
 
-  Prelu kernel(&input_tensor, &alpha_tensor, &output_tensor);
+  PRelu kernel(&input_tensor, &alpha_tensor, &output_tensor);
   EXPECT_ANY_THROW(kernel.configure());
 }
 
-TEST(PreluTest, Mixing_U8_S16_NEG)
+TEST(PReluTest, Mixing_U8_S16_NEG)
 {
   std::vector<float> dummy_data(4, 0.f);
   Tensor input_tensor = makeInputTensor<DataType::U8>({2, 2}, 1.f, 0, dummy_data);
   Tensor alpha_tensor = makeInputTensor<DataType::S16>({2, 2}, 1.f, 0, dummy_data);
   Tensor output_tensor = makeInputTensor<DataType::U8>({2, 2}, 1.f, 0, dummy_data);
 
-  Prelu kernel(&input_tensor, &alpha_tensor, &output_tensor);
+  PRelu kernel(&input_tensor, &alpha_tensor, &output_tensor);
   EXPECT_ANY_THROW(kernel.configure());
 }
 

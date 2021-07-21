@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "kernels/Prelu.h"
+#include "kernels/PRelu.h"
 
 #include "kernels/BinaryOpCommon.h"
 #include "kernels/Utils.h"
@@ -29,17 +29,17 @@ namespace luci_interpreter
 namespace kernels
 {
 
-Prelu::Prelu(const Tensor *input, const Tensor *alpha, Tensor *output)
+PRelu::PRelu(const Tensor *input, const Tensor *alpha, Tensor *output)
   : Kernel({input, alpha}, {output})
 {
 }
 
-Prelu::~Prelu()
+PRelu::~PRelu()
 {
   // Destructor declared to delete vector of alpha quantized data properly
 }
 
-void Prelu::configure()
+void PRelu::configure()
 {
   LUCI_INTERPRETER_CHECK(input()->element_type() == output()->element_type());
   LUCI_INTERPRETER_CHECK(alpha()->element_type() == output()->element_type());
@@ -64,7 +64,7 @@ void Prelu::configure()
     {
       LUCI_INTERPRETER_CHECK(alpha()->zero_points()[channel] == 0);
     }
-    // Prelu specific checks for CWQ
+    // PRelu specific checks for CWQ
     LUCI_INTERPRETER_CHECK(alpha()->quantized_dimension() == alpha()->shape().num_dims() - 1);
     LUCI_INTERPRETER_CHECK(static_cast<int32_t>(alpha()->scales().size()) ==
                            alpha()->shape().dim(alpha()->quantized_dimension()));
@@ -88,7 +88,7 @@ void Prelu::configure()
   output()->resize(calculateShapeForBroadcast(input()->shape(), alpha()->shape()));
 }
 
-void Prelu::execute() const
+void PRelu::execute() const
 {
   switch (input()->element_type())
   {
@@ -106,21 +106,21 @@ void Prelu::execute() const
   }
 }
 
-void Prelu::evalFloat() const
+void PRelu::evalFloat() const
 {
   const auto input_data = getTensorData<float>(input());
   const auto alpha_data = getTensorData<float>(alpha());
   const auto size = getTensorShape(input()).FlatSize();
   auto output_data = getTensorData<float>(output());
 
-  auto PreluFunc = [](float input, float alpha) { return input >= 0.0 ? input : input * alpha; };
+  auto PReluFunc = [](float input, float alpha) { return input >= 0.0 ? input : input * alpha; };
 
   if (input()->shape() != alpha()->shape())
   {
     tflite::reference_ops::BroadcastBinaryFunction4DSlow<float, float, float>(
       getTensorShape(input()), getTensorData<float>(input()), getTensorShape(alpha()),
       getTensorData<float>(alpha()), getTensorShape(output()), getTensorData<float>(output()),
-      PreluFunc);
+      PReluFunc);
   }
   else
   {
@@ -134,7 +134,7 @@ void Prelu::evalFloat() const
   }
 }
 
-void Prelu::evalQuantized() const
+void PRelu::evalQuantized() const
 {
   tflite::PreluParams op_params{};
 
@@ -160,7 +160,7 @@ void Prelu::evalQuantized() const
   }
 }
 
-static inline int16_t evalElemS16Prelu(int16_t input_val, int16_t alpha_val,
+static inline int16_t evalElemS16PRelu(int16_t input_val, int16_t alpha_val,
                                        const ChannelQuantMultipliers &identity_mult,
                                        const ChannelQuantMultipliers &alpha_mult)
 {
@@ -176,7 +176,7 @@ static inline int16_t evalElemS16Prelu(int16_t input_val, int16_t alpha_val,
   return clamped_output;
 }
 
-void Prelu::evalQuantizedS16() const
+void PRelu::evalQuantizedS16() const
 {
   // Note that this kernel assumes alpha is CWQ
   tflite::RuntimeShape input_shape = getTensorShape(input());
@@ -201,7 +201,7 @@ void Prelu::evalQuantizedS16() const
       offset += quant_channel;
 
       output_data[offset] =
-        evalElemS16Prelu(input_data[offset], alpha_data[quant_channel], pos_mult, neg_mult);
+        evalElemS16PRelu(input_data[offset], alpha_data[quant_channel], pos_mult, neg_mult);
     }
 }
 

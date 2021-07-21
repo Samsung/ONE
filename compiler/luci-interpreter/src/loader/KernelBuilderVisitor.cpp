@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2021 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,27 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-#include "loader/KernelBuilder.h"
 #include "loader/KernelBuilderVisitor.h"
-
-#include <stdexcept>
-
-
 
 namespace luci_interpreter
 {
 
-std::unique_ptr<Kernel> KernelBuilder::build(const luci::CircleNode *node)
+std::unique_ptr<Kernel> KernelBuilderVisitor::visit(const luci::CircleNode *)
 {
-  KernelBuilderVisitor kbv(graph_to_runtime_graph(), node_to_tensor());
-  auto ret = node->accept(&kbv);
-  if(ret != nullptr)
-    return ret;
+  return nullptr;
+}
 
-  std::string msg = "Unsupported operator: ";
-  msg += std::to_string(static_cast<uint32_t>(node->opcode())) + " " + std::string(node->name());
-  throw std::invalid_argument(msg.c_str());
+std::unique_ptr<Kernel> KernelBuilderVisitor::visit(const luci::CircleConst *)
+{
+  throw std::runtime_error("Const node cannot be executed.");
+}
+
+std::unique_ptr<Kernel> KernelBuilderVisitor::visit(const luci::CircleInput *)
+{
+  throw std::runtime_error("Input node cannot be executed.");
+}
+
+std::unique_ptr<Kernel> KernelBuilderVisitor::visit(const luci::CircleOutput *)
+{
+  throw std::runtime_error("Output node cannot be executed.");
 }
 
 } // namespace luci_interpreter

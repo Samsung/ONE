@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2021 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-#ifndef LUCI_INTERPRETER_LOADER_KERNELBUILDER_H
-#define LUCI_INTERPRETER_LOADER_KERNELBUILDER_H
+#ifndef LUCI_INTERPRETER_LOADER_KERNELBUILDERVISITOR_H
+#define LUCI_INTERPRETER_LOADER_KERNELBUILDERVISITOR_H
 
 #include "loader/KernelBuilderHelper.h"
 
 #include "core/Kernel.h"
 #include "core/RuntimeGraph.h"
 
-#include <luci/IR/CircleNode.h>
+#include <luci/IR/CircleNodeVisitor.h>
 
 #include <memory>
 #include <unordered_map>
@@ -30,19 +30,35 @@
 namespace luci_interpreter
 {
 
-class KernelBuilder : public KernelBuilderHelper
+class KernelBuilderVisitor : public luci::CircleNodeVisitor<std::unique_ptr<Kernel>>,
+                             public KernelBuilderHelper
 {
 public:
-  KernelBuilder(
+  KernelBuilderVisitor(
     const std::unordered_map<const loco::Graph *, RuntimeGraph *> &graph_to_runtime_graph,
     const std::unordered_map<const loco::Node *, Tensor *> &node_to_tensor)
     : KernelBuilderHelper(graph_to_runtime_graph, node_to_tensor)
   {
   }
 
-  std::unique_ptr<Kernel> build(const luci::CircleNode *node);
+public:
+  std::unique_ptr<Kernel> visit(const luci::CircleNode *) override;
+
+public:
+  std::unique_ptr<Kernel> visit(const luci::CircleConst *) override;
+  std::unique_ptr<Kernel> visit(const luci::CircleInput *) override;
+  std::unique_ptr<Kernel> visit(const luci::CircleOutput *) override;
+
+public:
+#define REGISTER_KERNEL(NODE) \
+  std::unique_ptr<Kernel> visit(const luci::Circle##NODE *) override;
+
+#include "KernelsToBuild.lst"
+
+#undef REGISTER_KERNEL
+
 };
 
 } // namespace luci_interpreter
 
-#endif // LUCI_INTERPRETER_LOADER_KERNELBUILDER_H
+#endif // LUCI_INTERPRETER_LOADER_KERNELBUILDERVISITOR_H

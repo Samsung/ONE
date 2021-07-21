@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2021 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,26 +14,24 @@
  * limitations under the License.
  */
 
-#include "loader/KernelBuilder.h"
 #include "loader/KernelBuilderVisitor.h"
-
-#include <stdexcept>
-
-
+#include "kernels/Mean.h"
 
 namespace luci_interpreter
 {
 
-std::unique_ptr<Kernel> KernelBuilder::build(const luci::CircleNode *node)
+std::unique_ptr<Kernel> KernelBuilderVisitor::visit(const luci::CircleMean *node)
 {
-  KernelBuilderVisitor kbv(graph_to_runtime_graph(), node_to_tensor());
-  auto ret = node->accept(&kbv);
-  if(ret != nullptr)
-    return ret;
+  assert(node->arity() == 2);
 
-  std::string msg = "Unsupported operator: ";
-  msg += std::to_string(static_cast<uint32_t>(node->opcode())) + " " + std::string(node->name());
-  throw std::invalid_argument(msg.c_str());
+  const Tensor *input = getInputTensor(node->input());
+  const Tensor *axes = getInputTensor(node->reduction_indices());
+  Tensor *output = getOutputTensor(node);
+
+  ReducerParams params{};
+  params.keep_dims = node->keep_dims();
+
+  return std::make_unique<kernels::Mean>(input, axes, output, params);
 }
 
 } // namespace luci_interpreter

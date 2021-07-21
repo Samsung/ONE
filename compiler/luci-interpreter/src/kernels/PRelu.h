@@ -14,30 +14,46 @@
  * limitations under the License.
  */
 
-#ifndef LUCI_INTERPRETER_KERNELS_REVERSE_H
-#define LUCI_INTERPRETER_KERNELS_REVERSE_H
+#ifndef LUCI_INTERPRETER_KERNELS_PRELU_H
+#define LUCI_INTERPRETER_KERNELS_PRELU_H
 
 #include "core/Kernel.h"
+#include <vector>
 
 namespace luci_interpreter
 {
 namespace kernels
 {
 
-class Reverse : public Kernel
+class ChannelQuantMultipliers;
+
+class PRelu : public Kernel
 {
 public:
-  Reverse(const Tensor *input, const Tensor *axes, Tensor *output);
+  PRelu(const Tensor *input, const Tensor *alpha, Tensor *output);
+
+  ~PRelu();
 
   const Tensor *input() const { return _inputs[0]; }
-  const Tensor *axes() const { return _inputs[1]; }
+  const Tensor *alpha() const { return _inputs[1]; }
   Tensor *output() const { return _outputs[0]; }
 
   void configure() override;
   void execute() const override;
+
+private:
+  void evalFloat() const;
+  void evalQuantized() const;
+  void evalQuantizedS16() const;
+
+private:
+  std::vector<ChannelQuantMultipliers> _alpha_multipliers;
+  // TODO merge this into one ChannelQuantMultiplier object
+  int32_t _output_multiplier_identity = 0;
+  int32_t _output_shift_identity = 0;
 };
 
 } // namespace kernels
 } // namespace luci_interpreter
 
-#endif // LUCI_INTERPRETER_KERNELS_REVERSE_H
+#endif // LUCI_INTERPRETER_KERNELS_PRELU_H
