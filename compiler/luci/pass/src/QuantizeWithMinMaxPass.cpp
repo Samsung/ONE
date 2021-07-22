@@ -581,6 +581,7 @@ struct QuantizeSpecialActivation final : public luci::CircleNodeMutableVisitor<v
   {
     auto input = loco::must_cast<luci::CircleNode *>(node->input());
     auto i_qparam = input->quantparam();
+    assert(i_qparam);
     assert(i_qparam->scale.size() == 1); // FIX_CALLER_UNLESS
     assert(i_qparam->zerop.size() == 1); // FIX_CALLER_UNLESS
     auto i_scale = i_qparam->scale[0];
@@ -664,6 +665,7 @@ struct QuantizeActivation final : public luci::CircleNodeMutableVisitor<bool>
       {
         // Quantize using recorded min/max
         auto quantparam = circle_node->quantparam();
+        assert(quantparam);
         assert(quantparam->min.size() == 1); // only support layer-wise quant
         assert(quantparam->max.size() == 1); // only support layer-wise quant
         auto min = quantparam->min[0];
@@ -773,8 +775,10 @@ struct QuantizeBias final : public luci::CircleNodeMutableVisitor<bool>
 
       if (granularity == QuantizationGranularity::ChannelWise)
       {
-        assert(input->quantparam()->scale.size() == 1); // input scale's layer-wise
-        auto input_scale = input->quantparam()->scale[0];
+        auto input_q = input->quantparam();
+        assert(input_q);
+        assert(input_q->scale.size() == 1); // input scale's layer-wise
+        auto input_scale = input_q->scale[0];
 
         assert(weight->quantparam() != nullptr); // weight scale's channel-wise
         auto weight_scale = weight->quantparam()->scale;
@@ -809,11 +813,15 @@ struct QuantizeBias final : public luci::CircleNodeMutableVisitor<bool>
       }
       else
       {
-        assert(input->quantparam()->scale.size() == 1); // Only support per-layer quant
-        auto input_scale = input->quantparam()->scale[0];
+        auto input_q = input->quantparam();
+        assert(input_q);
+        assert(input_q->scale.size() == 1); // Only support per-layer quant
+        auto input_scale = input_q->scale[0];
 
-        assert(weight->quantparam()->scale.size() == 1); // Only support per-layer quant
-        auto weight_scale = weight->quantparam()->scale[0];
+        auto weight_q = weight->quantparam();
+        assert(weight_q);
+        assert(weight_q->scale.size() == 1); // Only support per-layer quant
+        auto weight_scale = weight_q->scale[0];
 
         float scaling_factor{0};
         int64_t zp{0};
