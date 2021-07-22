@@ -594,6 +594,21 @@ struct QuantizeSpecialActivation final : public luci::CircleNodeMutableVisitor<v
     auto split = loco::must_cast<luci::CircleSplit *>(node->input());
     auto input = loco::must_cast<luci::CircleNode *>(split->input());
     auto i_qparam = input->quantparam();
+    assert(i_qparam);
+    assert(i_qparam->scale.size() == 1); // FIX_CALLER_UNLESS
+    assert(i_qparam->zerop.size() == 1); // FIX_CALLER_UNLESS
+    auto i_scale = i_qparam->scale[0];
+    auto i_zp = i_qparam->zerop[0];
+
+    set_act_qparam(node, i_scale, i_zp);
+  }
+
+  void visit(luci::CircleUnpackOut *node)
+  {
+    auto unpack = loco::must_cast<luci::CircleUnpack *>(node->input());
+    auto input = loco::must_cast<luci::CircleNode *>(unpack->value());
+    auto i_qparam = input->quantparam();
+    assert(i_qparam);
     assert(i_qparam->scale.size() == 1); // FIX_CALLER_UNLESS
     assert(i_qparam->zerop.size() == 1); // FIX_CALLER_UNLESS
     auto i_scale = i_qparam->scale[0];
@@ -1085,6 +1100,7 @@ void quantize_const_inputs(luci::CircleNode *node, loco::DataType output_type)
     case luci::CircleOpcode::SQRT:
     case luci::CircleOpcode::SUB:
     case luci::CircleOpcode::TANH:
+    case luci::CircleOpcode::UNPACK:
       // Quantize all const inputs using their values
       for (uint32_t i = 0; i < arity; i++)
       {

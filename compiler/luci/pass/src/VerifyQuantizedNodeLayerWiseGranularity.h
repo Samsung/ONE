@@ -405,6 +405,19 @@ private:
     return true;
   }
 
+  bool visit(const luci::CircleUnpack *node)
+  {
+    // node's output is the input of CircleUnpackOut, thus not quantized
+    RETURN_FALSE_UNLESS(is_lwq(node->value()));
+    return true;
+  }
+
+  bool visit(const luci::CircleUnpackOut *node)
+  {
+    RETURN_FALSE_UNLESS(is_lwq(node));
+    return true;
+  }
+
   // TODO: Implement more Ops
 
   bool visit(const luci::CircleNode *) { return true; }

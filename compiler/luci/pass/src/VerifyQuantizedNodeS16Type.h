@@ -423,6 +423,26 @@ private:
     return true;
   }
 
+  bool visit(const luci::CircleUnpack *node)
+  {
+    // node's output is the input of CircleUnpackOut, thus not quantized
+    RETURN_FALSE_UNLESS(has_type(node->value(), Type::S16))
+    return true;
+  }
+
+  bool visit(const luci::CircleUnpackOut *node)
+  {
+    RETURN_FALSE_UNLESS(has_type(node, Type::S16))
+
+    // UnpackOut has the same qparam with the input of Unpack
+    auto Unpack = loco::must_cast<luci::CircleUnpack *>(node->input());
+    auto input = loco::must_cast<luci::CircleNode *>(Unpack->value());
+    assert(node->quantparam() && input->quantparam());
+    RETURN_FALSE_UNLESS(node->quantparam()->scale[0] == input->quantparam()->scale[0]);
+    RETURN_FALSE_UNLESS(node->quantparam()->zerop[0] == input->quantparam()->zerop[0]);
+    return true;
+  }
+
   // TODO: Implement more Ops
 
   bool visit(const luci::CircleNode *) { return true; }
