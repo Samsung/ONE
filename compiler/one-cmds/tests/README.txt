@@ -11,12 +11,12 @@ Steps:
 bin/one-prepare-venv
 ----------------------------------------------
 
-2) run 'test/prepare_test_materials.sh' to download test material models
+2) run 'tests/prepare_test_materials.sh' to download test material models
   - you need to run this only once
   - you need internet connection to download files
   - you may need to install 'wget' and 'unzip' packages
 ----------------------------------------------
-test/prepare_test_materials.sh
+tests/prepare_test_materials.sh
 ----------------------------------------------
 
 3) run 'test/runtestall.sh' to run the test
