@@ -594,6 +594,7 @@ struct QuantizeSpecialActivation final : public luci::CircleNodeMutableVisitor<v
     auto split = loco::must_cast<luci::CircleSplit *>(node->input());
     auto input = loco::must_cast<luci::CircleNode *>(split->input());
     auto i_qparam = input->quantparam();
+    assert(i_qparam);
     assert(i_qparam->scale.size() == 1); // FIX_CALLER_UNLESS
     assert(i_qparam->zerop.size() == 1); // FIX_CALLER_UNLESS
     auto i_scale = i_qparam->scale[0];
@@ -607,6 +608,7 @@ struct QuantizeSpecialActivation final : public luci::CircleNodeMutableVisitor<v
     auto unpack = loco::must_cast<luci::CircleUnpack *>(node->input());
     auto input = loco::must_cast<luci::CircleNode *>(unpack->value());
     auto i_qparam = input->quantparam();
+    assert(i_qparam);
     assert(i_qparam->scale.size() == 1); // FIX_CALLER_UNLESS
     assert(i_qparam->zerop.size() == 1); // FIX_CALLER_UNLESS
     auto i_scale = i_qparam->scale[0];
