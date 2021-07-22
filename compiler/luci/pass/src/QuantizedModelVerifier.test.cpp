@@ -967,6 +967,35 @@ private:
   luci::CircleConst *_size = nullptr;
 };
 
+class UnpackTestGraph final : public luci::test::TestIOGraph
+{
+public:
+  void init(void)
+  {
+    TestIOGraph::init({1, 32}, {32});
+    _unpack = g()->nodes()->create<luci::CircleUnpack>();
+    {
+      _unpack->value(input());
+      _unpack->axis(0);
+      _unpack->num(1);
+    }
+    _unpack_o1 = g()->nodes()->create<luci::CircleUnpackOut>();
+    {
+      _unpack_o1->input(_unpack);
+      _unpack_o1->index(0);
+    }
+
+    output()->from(_unpack_o1);
+
+    set_minmax_to_non_const(g(), -1, 1);
+  }
+
+private:
+  luci::CircleUnpack *_unpack = nullptr;
+  luci::CircleUnpackOut *_unpack_o1 = nullptr;
+  luci::CircleConst *_unpack_dim = nullptr;
+};
+
 } // namespace
 
 // Quantize and verify with given configurations
@@ -1913,6 +1942,30 @@ TEST(QuantizedModelVerifierTest, ResizeNearestNeighbor_wrong_granularity_NEG)
   TEST_WITH_WRONG_GRANULARITY(ResizeNearestNeighborTestGraph, Type::U8, Granularity::LayerWise);
   TEST_WITH_WRONG_GRANULARITY(ResizeNearestNeighborTestGraph, Type::U8, Granularity::ChannelWise);
   TEST_WITH_WRONG_GRANULARITY(ResizeNearestNeighborTestGraph, Type::S16, Granularity::ChannelWise);
+  SUCCEED();
+}
+
+TEST(QuantizedModelVerifierTest, Unpack)
+{
+  TEST_WITH_GRAPH(UnpackTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_GRAPH(UnpackTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_GRAPH(UnpackTestGraph, Type::S16, Granularity::ChannelWise);
+  SUCCEED();
+}
+
+TEST(QuantizedModelVerifierTest, Unpack_wrong_type_NEG)
+{
+  TEST_WITH_WRONG_TYPE(UnpackTestGraph, Type::U8, Granularity::LayerWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(UnpackTestGraph, Type::U8, Granularity::ChannelWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(UnpackTestGraph, Type::S16, Granularity::ChannelWise, Type::U8);
+  SUCCEED();
+}
+
+TEST(QuantizedModelVerifierTest, Unpack_wrong_granularity_NEG)
+{
+  TEST_WITH_WRONG_GRANULARITY(UnpackTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_WRONG_GRANULARITY(UnpackTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_WRONG_GRANULARITY(UnpackTestGraph, Type::S16, Granularity::ChannelWise);
   SUCCEED();
 }
 
