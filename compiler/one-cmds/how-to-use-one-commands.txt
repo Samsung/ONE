@@ -126,7 +126,7 @@ one-import-tf
 This will convert TensorFlow model (.pb) file to our circle model. You can also
 directly call this command. one-import-tf invokes tf2tfliteV2.py script that
 will internally use TensorFlow lite converter and then invoke tflite2circle
-converter to convert tflite model to circle model. 
+converter to convert tflite model to circle model.
 
 As tf2tfliteV2.py runs TensorFlow lite converter, you need to have TensorFlow
 installed in your system. We recommand to use 2.3.0 for now.

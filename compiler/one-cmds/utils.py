@@ -184,10 +184,10 @@ def _make_circle2circle_cmd(args, driver_path, input_path, output_path):
             if type(getattr(args, opt[0])) is bool:
                 cmd.append('--' + opt[0])
             """
-            This condition check is for config file interface, usually would be 
-             SomeOption=True 
-            but user can write as follows while development 
-             SomeOption=False 
+            This condition check is for config file interface, usually would be
+             SomeOption=True
+            but user can write as follows while development
+             SomeOption=False
             instead of removing SomeOption option
             """
             if type(getattr(args, opt[0])) is str and not getattr(
