@@ -39,7 +39,7 @@ public:
   {
   }
 
-protected:
+public:
   const Tensor *getInputTensor(const loco::Node *node) const;
   const Tensor *getOptionalInputTensor(const loco::Node *node) const;
 
@@ -48,7 +48,7 @@ protected:
 
   RuntimeGraph *getRuntimeGraph(const loco::Graph *graph) const;
 
-protected:
+public:
   const std::unordered_map<const loco::Graph *, RuntimeGraph *> &graph_to_runtime_graph() const
   {
     return _graph_to_runtime_graph;
