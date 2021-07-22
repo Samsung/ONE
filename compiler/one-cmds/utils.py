@@ -70,6 +70,8 @@ class _CONSTANT:
          ' Note that it only converts weights whose row is a multiple of 16'),
         ('substitute_pack_to_reshape', 'convert single input Pack op to Reshape op'),
         ('substitute_squeeze_to_reshape', 'convert certain condition Squeeze to Reshape'),
+        ('substitute_strided_slice_to_reshape',
+         'convert certain condition StridedSlice to Reshape'),
         ('substitute_transpose_to_reshape',
          'convert certain condition Transpose to Reshape'),
         ('transform_min_max_to_relu6', 'transform Minimum-Maximum pattern to Relu6 op'),
