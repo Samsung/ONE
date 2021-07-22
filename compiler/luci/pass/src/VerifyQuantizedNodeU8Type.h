@@ -240,6 +240,7 @@ private:
     RETURN_FALSE_UNLESS(has_type(node, Type::U8))
     RETURN_FALSE_UNLESS(has_type(node->x(), Type::U8))
 
+    RETURN_FALSE_UNLESS(node->quantparam());
     RETURN_FALSE_UNLESS(node->quantparam()->scale[0] == 1.0f / 256.0f);
     RETURN_FALSE_UNLESS(node->quantparam()->zerop[0] == 0);
     return true;
@@ -250,6 +251,7 @@ private:
     RETURN_FALSE_UNLESS(has_type(node, Type::U8))
     RETURN_FALSE_UNLESS(has_type(node->logits(), Type::U8))
 
+    RETURN_FALSE_UNLESS(node->quantparam());
     RETURN_FALSE_UNLESS(node->quantparam()->scale[0] == 1.0f / 255.0f);
     RETURN_FALSE_UNLESS(node->quantparam()->zerop[0] == 0);
     return true;
@@ -292,6 +294,7 @@ private:
     // SplitOut has the same qparam with the input of Split
     auto split = loco::must_cast<luci::CircleSplit *>(node->input());
     auto input = loco::must_cast<luci::CircleNode *>(split->input());
+    RETURN_FALSE_UNLESS(node->quantparam());
     RETURN_FALSE_UNLESS(node->quantparam()->scale[0] == input->quantparam()->scale[0]);
     RETURN_FALSE_UNLESS(node->quantparam()->zerop[0] == input->quantparam()->zerop[0]);
     return true;
@@ -303,6 +306,7 @@ private:
     RETURN_FALSE_UNLESS(has_type(node->input(), Type::U8))
 
     auto input = loco::must_cast<luci::CircleNode *>(node->input());
+    RETURN_FALSE_UNLESS(node->quantparam());
     RETURN_FALSE_UNLESS(node->quantparam()->scale[0] == input->quantparam()->scale[0]);
     RETURN_FALSE_UNLESS(node->quantparam()->zerop[0] == input->quantparam()->zerop[0]);
     return true;
@@ -322,6 +326,7 @@ private:
     RETURN_FALSE_UNLESS(has_type(node, Type::U8))
     RETURN_FALSE_UNLESS(has_type(node->x(), Type::U8))
 
+    RETURN_FALSE_UNLESS(node->quantparam());
     RETURN_FALSE_UNLESS(node->quantparam()->scale[0] == 2.0f / 256.0f);
     RETURN_FALSE_UNLESS(node->quantparam()->zerop[0] == 128);
     return true;
@@ -341,6 +346,7 @@ private:
     RETURN_FALSE_UNLESS(has_type(node->x(), Type::U8))
 
     // This checks the value of scale is an integer
+    RETURN_FALSE_UNLESS(node->quantparam());
     RETURN_FALSE_UNLESS(std::roundf(node->quantparam()->scale[0]) == node->quantparam()->scale[0]);
     return true;
   }
@@ -376,6 +382,7 @@ private:
     RETURN_FALSE_UNLESS(has_type(node->y(), Type::U8))
 
     // This checks the value of scale is an integer
+    RETURN_FALSE_UNLESS(node->quantparam());
     RETURN_FALSE_UNLESS(std::roundf(node->quantparam()->scale[0]) == node->quantparam()->scale[0]);
     return true;
   }
@@ -437,7 +444,7 @@ private:
     // UnpackOut has the same qparam with the input of Unpack
     auto Unpack = loco::must_cast<luci::CircleUnpack *>(node->input());
     auto input = loco::must_cast<luci::CircleNode *>(Unpack->value());
-    assert(node->quantparam() && input->quantparam());
+    RETURN_FALSE_UNLESS(node->quantparam() && input->quantparam());
     RETURN_FALSE_UNLESS(node->quantparam()->scale[0] == input->quantparam()->scale[0]);
     RETURN_FALSE_UNLESS(node->quantparam()->zerop[0] == input->quantparam()->zerop[0]);
     return true;
