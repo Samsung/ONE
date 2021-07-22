@@ -40,7 +40,7 @@ void QuantizedModelVerifier::verify(loco::Graph *g)
 
     auto node_name = [&circle_node]() {
       if (circle_node->name().length() == 0)
-        return std::string("Node with no name");
+        return std::string("(noname)");
 
       return circle_node->name();
     };
