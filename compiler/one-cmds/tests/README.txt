@@ -1,6 +1,8 @@
 one-cmds testing
 ================
 
+NOTE. `one-compiler` should be installed before testing.
+
 Run 'runtestall.sh' program to test ONE command line programs, all at once.
 
 Steps:
