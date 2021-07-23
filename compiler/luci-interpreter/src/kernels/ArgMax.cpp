@@ -16,7 +16,7 @@
 
 #include "kernels/ArgMax.h"
 #include "kernels/Utils.h"
-#include <tensorflow/lite/kernels/internal/optimized/optimized_ops.h>
+#include "PALArgMax.h"
 
 namespace luci_interpreter
 {
@@ -61,7 +61,7 @@ void ArgMax::execute() const
 {
 
 #define TF_LITE_ARG_MAX(data_type, axis_type, output_type)                                        \
-  tflite::optimized_ops::ArgMinMax(                                                               \
+    luci_interpreter_pal::ArgMinMax(                                                               \
     getTensorShape(input()), getTensorData<data_type>(input()), getTensorData<axis_type>(axis()), \
     getTensorShape(output()), getTensorData<output_type>(output()), std::greater<data_type>())
   if (axis()->element_type() == DataType::S32)

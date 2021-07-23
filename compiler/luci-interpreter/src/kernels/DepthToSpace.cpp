@@ -16,7 +16,7 @@
 
 #include "DepthToSpace.h"
 #include "Utils.h"
-#include <tensorflow/lite/kernels/internal/optimized/optimized_ops.h>
+#include "PALDepthToSpace.h"
 
 namespace luci_interpreter
 {
@@ -62,12 +62,12 @@ void DepthToSpace::execute() const
   switch (input()->element_type())
   {
     case DataType::FLOAT32:
-      tflite::optimized_ops::DepthToSpace(op_params, getTensorShape(input()),
+      luci_interpreter_pal::DepthToSpace(op_params, getTensorShape(input()),
                                           getTensorData<float>(input()), getTensorShape(output()),
                                           getTensorData<float>(output()));
       break;
     case DataType::U8:
-      tflite::optimized_ops::DepthToSpace(op_params, getTensorShape(input()),
+      luci_interpreter_pal::DepthToSpace(op_params, getTensorShape(input()),
                                           getTensorData<uint8_t>(input()), getTensorShape(output()),
                                           getTensorData<uint8_t>(output()));
       break;

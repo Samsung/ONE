@@ -19,7 +19,7 @@
 
 #include "kernels/Utils.h"
 
-#include <tensorflow/lite/kernels/internal/optimized/optimized_ops.h>
+#include "PALL2Pool2D.h"
 
 #include <stdexcept>
 
@@ -75,7 +75,7 @@ void L2Pool2D::execute() const
       op_params.padding_values.width = _padding_width;
       op_params.float_activation_min = activation_min;
       op_params.float_activation_max = activation_max;
-      tflite::optimized_ops::L2Pool(op_params, getTensorShape(input()),
+      luci_interpreter_pal::L2Pool(op_params, getTensorShape(input()),
                                     getTensorData<float>(input()), getTensorShape(output()),
                                     getTensorData<float>(output()));
       break;

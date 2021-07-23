@@ -20,7 +20,7 @@
 #include "kernels/BinaryOpCommon.h"
 #include "kernels/Utils.h"
 
-#include <tensorflow/lite/kernels/internal/optimized/optimized_ops.h>
+#include "PALMul.h"
 
 #include <stdexcept>
 
@@ -77,13 +77,13 @@ void Mul::evalFloat() const
 
   if (need_broadcast)
   {
-    tflite::optimized_ops::BroadcastMul4DSlow(
+    luci_interpreter_pal::BroadcastMul4DSlow(
       params, getTensorShape(input1()), getTensorData<float>(input1()), getTensorShape(input2()),
       getTensorData<float>(input2()), getTensorShape(output()), getTensorData<float>(output()));
   }
   else
   {
-    tflite::optimized_ops::Mul(params, getTensorShape(input1()), getTensorData<float>(input1()),
+    luci_interpreter_pal::Mul(params, getTensorShape(input1()), getTensorData<float>(input1()),
                                getTensorShape(input2()), getTensorData<float>(input2()),
                                getTensorShape(output()), getTensorData<float>(output()));
   }

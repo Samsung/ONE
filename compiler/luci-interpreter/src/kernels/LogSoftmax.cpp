@@ -20,7 +20,7 @@
 
 #include <tensorflow/lite/kernels/internal/reference/reference_ops.h>
 
-#include <tensorflow/lite/kernels/internal/optimized/optimized_ops.h>
+#include "PALLogSoftmax.h"
 
 namespace luci_interpreter
 {
@@ -42,7 +42,7 @@ void LogSoftmax::configure()
     params.table = _table;
     params.beta = 1.0;
 
-    tflite::optimized_ops::PopulateSoftmaxLookupTable(&params, input()->scale(), params.beta);
+    luci_interpreter_pal::PopulateSoftmaxLookupTable(&params, input()->scale(), params.beta);
   }
   output()->resize(input()->shape());
 }
@@ -83,7 +83,7 @@ void LogSoftmax::evalQuantized() const
   params.zero_point = output()->zero_point();
   params.scale = output()->scale();
 
-  tflite::optimized_ops::LogSoftmax(params, input_scale, input_shape, input_data, output_shape,
+  luci_interpreter_pal::LogSoftmax(params, input_scale, input_shape, input_data, output_shape,
                                     output_data);
 }
 

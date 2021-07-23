@@ -1,5 +1,3 @@
-find_package(Threads REQUIRED)
-
 set(SOURCES
     Add.h
     Add.cpp
@@ -137,20 +135,17 @@ set(SOURCES
 list(APPEND SOURCES
     BinaryOpCommon.h
     Utils.h
-    Utils.cpp
-    ${TensorFlowSource_DIR}/tensorflow/lite/kernels/internal/quantization_util.cc)
+    Utils.cpp)
 
 add_library(luci_interpreter_kernels STATIC ${SOURCES})
 set_target_properties(luci_interpreter_kernels PROPERTIES POSITION_INDEPENDENT_CODE ON)
 target_include_directories(luci_interpreter_kernels PUBLIC ${LUCI_INTERPRETER_SOURCE_DIR})
-target_include_directories(luci_interpreter_kernels SYSTEM PRIVATE
-    "${TensorFlowRuySource_DIR}"
-    "${TensorFlowGEMMLowpSource_DIR}"
-    "${TensorFlowEigenSource_DIR}"
-    "${TensorFlowSource_DIR}")
+
 target_link_libraries(luci_interpreter_kernels
     PUBLIC luci_interpreter_core
-    PRIVATE nncc_common Threads::Threads)
+    PRIVATE nncc_common)
+
+add_pal_to_target(luci_interpreter_kernels)
 
 if(NOT ENABLE_TEST)
   return()

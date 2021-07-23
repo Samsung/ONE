@@ -17,7 +17,7 @@
 #include "kernels/Neg.h"
 #include "kernels/Utils.h"
 
-#include <tensorflow/lite/kernels/internal/optimized/optimized_ops.h>
+#include "PALNeg.h"
 
 #include <stdexcept>
 
@@ -50,7 +50,7 @@ void Neg::execute() const
 
 void Neg::evalFloat() const
 {
-  tflite::reference_ops::Negate(getTensorShape(input()), getTensorData<float>(input()),
+  luci_interpreter_pal::Negate(getTensorShape(input()), getTensorData<float>(input()),
                                 getTensorShape(output()), getTensorData<float>(output()));
 }
 

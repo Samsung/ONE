@@ -19,7 +19,7 @@
 #include "kernels/Utils.h"
 
 #include <tensorflow/lite/kernels/internal/reference/softmax.h>
-#include <tensorflow/lite/kernels/internal/optimized/optimized_ops.h>
+#include "PALSoftmax.h"
 
 #include <stdexcept>
 
@@ -43,7 +43,7 @@ void Softmax::configure()
     LUCI_INTERPRETER_CHECK(output()->zero_point() == 0);
     tflite::SoftmaxParams op_params{};
     op_params.table = _table;
-    tflite::optimized_ops::PopulateSoftmaxLookupTable(&op_params, input()->scale(), params().beta);
+    luci_interpreter_pal::PopulateSoftmaxLookupTable(&op_params, input()->scale(), params().beta);
   }
   output()->resize(input()->shape());
 }
@@ -82,7 +82,7 @@ template <typename T> void Softmax::evalQuantized() const
   op_params.zero_point = output()->zero_point();
   op_params.scale = output()->scale();
 
-  tflite::optimized_ops::Softmax(op_params, getTensorShape(input()), getTensorData<T>(input()),
+  luci_interpreter_pal::Softmax(op_params, getTensorShape(input()), getTensorData<T>(input()),
                                  getTensorShape(output()), getTensorData<T>(output()));
 }
 

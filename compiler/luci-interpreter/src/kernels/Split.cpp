@@ -18,7 +18,7 @@
 
 #include "Utils.h"
 
-#include <tensorflow/lite/kernels/internal/optimized/optimized_ops.h>
+#include "PALSplit.h"
 
 namespace luci_interpreter
 {
@@ -59,7 +59,7 @@ void Split::execute() const
 #define TF_LITE_SPLIT(scalar)                                                                     \
   {                                                                                               \
     VectorOfTensors<scalar, false> all_outputs(_outputs);                                         \
-    tflite::optimized_ops::Split(params, getTensorShape(input()), getTensorData<scalar>(input()), \
+    luci_interpreter_pal::Split(params, getTensorShape(input()), getTensorData<scalar>(input()), \
                                  all_outputs.shapes(), all_outputs.data());                       \
   }
 
