@@ -20,6 +20,7 @@
 #include <kernels/Add.h>
 #include <kernels/ArgMax.h>
 #include <kernels/AveragePool2D.h>
+#include <kernels/Cast.h>
 #include <kernels/Concatenation.h>
 #include <kernels/Conv2D.h>
 #include <kernels/DepthToSpace.h>
@@ -200,6 +201,19 @@ TEST_F(KernelBuilderTest, AveragePool2D)
   EXPECT_THAT(kernel->params().stride_height, Eq(op->stride()->h()));
   EXPECT_THAT(kernel->params().stride_width, Eq(op->stride()->w()));
   EXPECT_THAT(kernel->params().activation, Eq(op->fusedActivationFunction()));
+}
+
+TEST_F(KernelBuilderTest, Cast)
+{
+  auto *input = createInputNode();
+
+  auto *op = createNode<luci::CircleCast>();
+  op->x(input);
+
+  auto kernel = buildKernel<kernels::Cast>(op);
+
+  checkTensor(kernel->input(), input);
+  checkTensor(kernel->output(), op);
 }
 
 TEST_F(KernelBuilderTest, Concatenation)

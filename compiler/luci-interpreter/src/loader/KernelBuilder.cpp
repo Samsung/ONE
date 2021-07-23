@@ -20,6 +20,7 @@
 #include "kernels/ArgMax.h"
 #include "kernels/AveragePool2D.h"
 #include "kernels/BatchToSpaceND.h"
+#include "kernels/Cast.h"
 #include "kernels/Concatenation.h"
 #include "kernels/Conv2D.h"
 #include "kernels/DepthToSpace.h"
@@ -143,6 +144,7 @@ public:
   DECLARE_VISIT(CircleArgMax);
   DECLARE_VISIT(CircleAveragePool2D);
   DECLARE_VISIT(CircleBatchToSpaceND);
+  DECLARE_VISIT(CircleCast);
   DECLARE_VISIT(CircleConcatenation);
   DECLARE_VISIT(CircleConst);
   DECLARE_VISIT(CircleConv2D);
@@ -380,6 +382,16 @@ std::unique_ptr<Kernel> KernelBuilderLet<KB::ABC>::visit(const luci::CircleBatch
   Tensor *output = getOutputTensor(node);
 
   return std::make_unique<kernels::BatchToSpaceND>(input, block_shape, crops, output);
+}
+
+std::unique_ptr<Kernel> KernelBuilderLet<KB::ABC>::visit(const luci::CircleCast *node)
+{
+  assert(node->arity() == 1);
+
+  const Tensor *input = getInputTensor(node->x());
+  Tensor *output = getOutputTensor(node);
+
+  return std::make_unique<kernels::Cast>(input, output);
 }
 
 std::unique_ptr<Kernel> KernelBuilderLet<KB::ABC>::visit(const luci::CircleConcatenation *node)
