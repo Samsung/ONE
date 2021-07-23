@@ -29,6 +29,8 @@ else ()
           PUBLIC ${LUCI_INTERPRETER_CORE})
 endif()
 
+add_pal_to_target(${LUCI_INTERPRETER_KERNELS})
+
 if(NOT ENABLE_TEST)
   return()
 endif(NOT ENABLE_TEST)
