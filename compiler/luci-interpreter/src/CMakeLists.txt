@@ -23,6 +23,8 @@ if (NOT TensorFlowRuySource_FOUND)
   return()
 endif ()
 
+set(KERNEL_REGISTER_FILE "${LUCI_INTERPRETER_SOURCE_DIR}/KernelsToBuild.lst")
+
 add_subdirectory(core)
 add_subdirectory(kernels)
 add_subdirectory(loader)
