@@ -10,6 +10,7 @@ set(ONE_COMMAND_FILES
     one-pack
     one-codegen
     one-prepare-venv
+    onecc
 )
 
 foreach(ONE_COMMAND IN ITEMS ${ONE_COMMAND_FILES})
