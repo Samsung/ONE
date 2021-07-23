@@ -99,7 +99,7 @@ template <unsigned N> struct FixedArity
     virtual ~Mixin() = default;
 
   public:
-    unsigned arity(void) const final { return N; }
+    uint32_t arity(void) const final { return N; }
 
     Node *arg(uint32_t n) const final { return _args.at(n)->node(); }
 

@@ -171,7 +171,7 @@ public:
 
 protected:
 #define CIRCLE_NODE(OPCODE, CLASS) \
-  virtual bool summary(const CLASS *, locop::NodeSummary &) const { return false; }
+  virtual bool summary(const luci::CLASS *, locop::NodeSummary &) const { return false; }
 #define CIRCLE_VNODE CIRCLE_NODE
 #include <luci/IR/CircleNodes.lst>
 #undef CIRCLE_VNODE
@@ -1427,14 +1427,14 @@ bool CircleNodeSummaryBuilderBase::build(const loco::Node *node, locop::NodeSumm
     s.comments().append("[" + cnode->name() + "] = " + ptr_to_str(node));
   };
 
-#define CIRCLE_NODE(OPCODE, CLASS)                     \
-  if (dynamic_cast<const CLASS *>(node))               \
-  {                                                    \
-    if (summary(dynamic_cast<const CLASS *>(node), s)) \
-    {                                                  \
-      add_comment();                                   \
-      return true;                                     \
-    }                                                  \
+#define CIRCLE_NODE(OPCODE, CLASS)                           \
+  if (dynamic_cast<const luci::CLASS *>(node))               \
+  {                                                          \
+    if (summary(dynamic_cast<const luci::CLASS *>(node), s)) \
+    {                                                        \
+      add_comment();                                         \
+      return true;                                           \
+    }                                                        \
   }
 #define CIRCLE_VNODE CIRCLE_NODE
 #include <luci/IR/CircleNodes.lst>

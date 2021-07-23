@@ -1,3 +1,5 @@
+set(KERNEL_REGISTER_FILE "${LUCI_INTERPRETER_SOURCE_DIR}/KernelsToBuild.lst")
+
 set(SOURCES
     GraphLoader.h
     GraphLoader.cpp
@@ -7,7 +9,16 @@ set(SOURCES
     KernelBuilder.cpp
     ModuleLoader.h
     ModuleLoader.cpp
-    RuntimeToIR.h)
+    RuntimeToIR.h
+    ${KERNEL_REGISTER_FILE})
+
+macro(REGISTER_KERNEL NODE)
+  list(APPEND SOURCES "${LUCI_INTERPRETER_SOURCE_DIR}/loader/visitors/${NODE}.cpp")
+endmacro(REGISTER_KERNEL)
+
+if(EXISTS "${KERNEL_REGISTER_FILE}")
+  include(${KERNEL_REGISTER_FILE})
+endif(EXISTS "${KERNEL_REGISTER_FILE}")
 
 add_library(luci_interpreter_loader STATIC ${SOURCES})
 set_target_properties(luci_interpreter_loader PROPERTIES POSITION_INDEPENDENT_CODE ON)

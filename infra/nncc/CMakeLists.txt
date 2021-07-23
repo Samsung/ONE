@@ -1,5 +1,11 @@
 cmake_minimum_required(VERSION 3.1)
 
+if (LUCI_MICRO)
+  add_library(nncc_common INTERFACE)
+  add_library(nncc_coverage INTERFACE)
+  return()
+endif ()
+
 project(nncc)
 
 enable_testing()
@@ -19,15 +25,15 @@ set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 set(NNAS_PROJECT_SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/../.." CACHE
-  INTERNAL "Where to find nnas top-level source directory"
-)
+        INTERNAL "Where to find nnas top-level source directory"
+        )
 
 set(NNAS_EXTERNALS_DIR
-  "${NNAS_PROJECT_SOURCE_DIR}/externals" CACHE
-  INTERNAL "Where to download external dependencies"
-)
+        "${NNAS_PROJECT_SOURCE_DIR}/externals" CACHE
+        INTERNAL "Where to download external dependencies"
+        )
 set(NNCC_OVERLAY_DIR "${CMAKE_BINARY_DIR}/overlay" CACHE
-    INTERNAL "Where locally built external dependencies are installed")
+        INTERNAL "Where locally built external dependencies are installed")
 
 # Share package build script with runtime
 set(EXT_OVERLAY_DIR ${NNCC_OVERLAY_DIR})
@@ -41,9 +47,9 @@ endmacro(nnas_include)
 
 macro(nnas_find_package PREFIX)
   find_package(${PREFIX} CONFIG NO_DEFAULT_PATH
-    PATHS ${NNAS_PROJECT_SOURCE_DIR}/infra/cmake/packages
-    ${ARGN}
-  )
+          PATHS ${NNAS_PROJECT_SOURCE_DIR}/infra/cmake/packages
+          ${ARGN}
+          )
 endmacro(nnas_find_package)
 
 # nncc_find_resource(NAME) will update the following variables

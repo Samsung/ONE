@@ -1,7 +1,11 @@
 # TODO Find how to test logging framework
 file(GLOB_RECURSE SOURCES "src/*.cpp")
+if (NOT LUCI_MICRO)
+    add_library(luci_log SHARED ${SOURCES})
+else ()
+    add_library(luci_log STATIC ${SOURCES})
+endif ()
 
-add_library(luci_log SHARED ${SOURCES})
 target_include_directories(luci_log PUBLIC include)
 target_link_libraries(luci_log PUBLIC hermes)
 target_link_libraries(luci_log PRIVATE hermes_std)
