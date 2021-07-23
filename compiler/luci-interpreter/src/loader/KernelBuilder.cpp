@@ -1230,7 +1230,9 @@ std::unique_ptr<Kernel> build_kernel_CircleUnpack(const luci::CircleNode *circle
 
 class KernelBuilderRegistry
 {
-  using KernelBuilderFunc = std::unique_ptr<Kernel> (const luci::CircleNode *, KernelBuilderHelper &);
+  using KernelBuilderFunc = std::unique_ptr<Kernel>(const luci::CircleNode *,
+                                                    KernelBuilderHelper &);
+
 public:
   KernelBuilderRegistry(
     const std::unordered_map<const loco::Graph *, RuntimeGraph *> &graph_to_runtime_graph,
@@ -1241,12 +1243,15 @@ public:
     register_kernel_builder(luci::CircleOpcode::ADD, build_kernel_CircleAdd);
     register_kernel_builder(luci::CircleOpcode::ARG_MAX, build_kernel_CircleArgMax);
     register_kernel_builder(luci::CircleOpcode::AVERAGE_POOL_2D, build_kernel_CircleAveragePool2D);
-    register_kernel_builder(luci::CircleOpcode::BATCH_TO_SPACE_ND, build_kernel_CircleBatchToSpaceND);
+    register_kernel_builder(luci::CircleOpcode::BATCH_TO_SPACE_ND,
+                            build_kernel_CircleBatchToSpaceND);
     register_kernel_builder(luci::CircleOpcode::CONCATENATION, build_kernel_CircleConcatenation);
-//    register_kernel_builder(luci::CircleOpcode::CIRCLECONST, build_kernel_CircleConst); // special
+    //    register_kernel_builder(luci::CircleOpcode::CIRCLECONST, build_kernel_CircleConst); //
+    //    special
     register_kernel_builder(luci::CircleOpcode::CONV_2D, build_kernel_CircleConv2D);
     register_kernel_builder(luci::CircleOpcode::DEPTH_TO_SPACE, build_kernel_CircleDepthToSpace);
-    register_kernel_builder(luci::CircleOpcode::DEPTHWISE_CONV_2D, build_kernel_CircleDepthwiseConv2D);
+    register_kernel_builder(luci::CircleOpcode::DEPTHWISE_CONV_2D,
+                            build_kernel_CircleDepthwiseConv2D);
     register_kernel_builder(luci::CircleOpcode::DIV, build_kernel_CircleDiv);
     register_kernel_builder(luci::CircleOpcode::ELU, build_kernel_CircleElu);
     register_kernel_builder(luci::CircleOpcode::EQUAL, build_kernel_CircleEqual);
@@ -1257,14 +1262,16 @@ public:
     register_kernel_builder(luci::CircleOpcode::GREATER, build_kernel_CircleGreater);
     register_kernel_builder(luci::CircleOpcode::GREATER_EQUAL, build_kernel_CircleGreaterEqual);
     register_kernel_builder(luci::CircleOpcode::IF, build_kernel_CircleIf);
-//    register_kernel_builder(luci::CircleOpcode::CIRCLEINPUT, build_kernel_CircleInput);  //special
+    //    register_kernel_builder(luci::CircleOpcode::CIRCLEINPUT, build_kernel_CircleInput);
+    //    //special
     register_kernel_builder(luci::CircleOpcode::INSTANCE_NORM, build_kernel_CircleInstanceNorm);
     register_kernel_builder(luci::CircleOpcode::L2_NORMALIZATION, build_kernel_CircleL2Normalize);
     register_kernel_builder(luci::CircleOpcode::L2_POOL_2D, build_kernel_CircleL2Pool2D);
     register_kernel_builder(luci::CircleOpcode::LEAKY_RELU, build_kernel_CircleLeakyRelu);
     register_kernel_builder(luci::CircleOpcode::LESS, build_kernel_CircleLess);
     register_kernel_builder(luci::CircleOpcode::LESS_EQUAL, build_kernel_CircleLessEqual);
-    register_kernel_builder(luci::CircleOpcode::LOCAL_RESPONSE_NORMALIZATION, build_kernel_CircleLocalResponseNormalization);
+    register_kernel_builder(luci::CircleOpcode::LOCAL_RESPONSE_NORMALIZATION,
+                            build_kernel_CircleLocalResponseNormalization);
     register_kernel_builder(luci::CircleOpcode::LOG_SOFTMAX, build_kernel_CircleLogSoftmax);
     register_kernel_builder(luci::CircleOpcode::LOGICAL_AND, build_kernel_CircleLogicalAnd);
     register_kernel_builder(luci::CircleOpcode::LOGICAL_NOT, build_kernel_CircleLogicalNot);
@@ -1278,7 +1285,8 @@ public:
     register_kernel_builder(luci::CircleOpcode::MUL, build_kernel_CircleMul);
     register_kernel_builder(luci::CircleOpcode::NEG, build_kernel_CircleNeg);
     register_kernel_builder(luci::CircleOpcode::NOT_EQUAL, build_kernel_CircleNotEqual);
-//    register_kernel_builder(luci::CircleOpcode::CIRCLEOUTPUT, build_kernel_CircleOutput);  // special
+    //    register_kernel_builder(luci::CircleOpcode::CIRCLEOUTPUT, build_kernel_CircleOutput);  //
+    //    special
     register_kernel_builder(luci::CircleOpcode::PRELU, build_kernel_CirclePRelu);
     register_kernel_builder(luci::CircleOpcode::PACK, build_kernel_CirclePack);
     register_kernel_builder(luci::CircleOpcode::PAD, build_kernel_CirclePad);
@@ -1288,17 +1296,20 @@ public:
     register_kernel_builder(luci::CircleOpcode::RELU6, build_kernel_CircleRelu6);
     register_kernel_builder(luci::CircleOpcode::RESHAPE, build_kernel_CircleReshape);
     register_kernel_builder(luci::CircleOpcode::RESIZE_BILINEAR, build_kernel_CircleResizeBilinear);
-    register_kernel_builder(luci::CircleOpcode::RESIZE_NEAREST_NEIGHBOR, build_kernel_CircleResizeNearestNeighbor);
+    register_kernel_builder(luci::CircleOpcode::RESIZE_NEAREST_NEIGHBOR,
+                            build_kernel_CircleResizeNearestNeighbor);
     register_kernel_builder(luci::CircleOpcode::REVERSE_V2, build_kernel_CircleReverseV2);
     register_kernel_builder(luci::CircleOpcode::RSQRT, build_kernel_CircleRsqrt);
     register_kernel_builder(luci::CircleOpcode::SLICE, build_kernel_CircleSlice);
     register_kernel_builder(luci::CircleOpcode::SOFTMAX, build_kernel_CircleSoftmax);
-    register_kernel_builder(luci::CircleOpcode::SPACE_TO_BATCH_ND, build_kernel_CircleSpaceToBatchND);
+    register_kernel_builder(luci::CircleOpcode::SPACE_TO_BATCH_ND,
+                            build_kernel_CircleSpaceToBatchND);
     register_kernel_builder(luci::CircleOpcode::SPACE_TO_DEPTH, build_kernel_CircleSpaceToDepth);
     register_kernel_builder(luci::CircleOpcode::SPLIT, build_kernel_CircleSplit);
     register_kernel_builder(luci::CircleOpcode::SQRT, build_kernel_CircleSqrt);
     register_kernel_builder(luci::CircleOpcode::SQUARE, build_kernel_CircleSquare);
-    register_kernel_builder(luci::CircleOpcode::SQUARED_DIFFERENCE, build_kernel_CircleSquaredDifference);
+    register_kernel_builder(luci::CircleOpcode::SQUARED_DIFFERENCE,
+                            build_kernel_CircleSquaredDifference);
     register_kernel_builder(luci::CircleOpcode::SQUEEZE, build_kernel_CircleSqueeze);
     register_kernel_builder(luci::CircleOpcode::STRIDED_SLICE, build_kernel_CircleStridedSlice);
     register_kernel_builder(luci::CircleOpcode::SUB, build_kernel_CircleSub);
@@ -1306,13 +1317,12 @@ public:
     register_kernel_builder(luci::CircleOpcode::TRANSPOSE, build_kernel_CircleTranspose);
     register_kernel_builder(luci::CircleOpcode::TRANSPOSE_CONV, build_kernel_CircleTransposeConv);
     register_kernel_builder(luci::CircleOpcode::UNPACK, build_kernel_CircleUnpack);
-
   }
 
   std::unique_ptr<Kernel> build_kernel(const luci::CircleNode *node)
   {
     auto opcode = static_cast<int>(node->opcode());
-    if (opcode >= _operator_builders.size())
+    if (opcode >= static_cast<int64_t>(_operator_builders.size()))
       return nullptr;
     if (_operator_builders[opcode] == nullptr)
       return nullptr;
@@ -1322,12 +1332,12 @@ public:
 private:
   KernelBuilderHelper _helper;
 
-    std::vector<KernelBuilderFunc *> _operator_builders;
+  std::vector<KernelBuilderFunc *> _operator_builders;
 
   void register_kernel_builder(luci::CircleOpcode opc, KernelBuilderFunc *func)
   {
     auto opcode = static_cast<int>(opc);
-    if (opcode >= _operator_builders.size())
+    if (opcode >= static_cast<int64_t>(_operator_builders.size()))
       _operator_builders.resize(opcode + 1);
     _operator_builders[opcode] = func;
   }
