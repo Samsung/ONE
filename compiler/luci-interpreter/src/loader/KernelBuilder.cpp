@@ -1243,42 +1243,43 @@ enum class BuilderId
 #undef CIRCLE_VNODE
 #undef CIRCLE_NODE
 
+/**
+ * @brief Registry of kernel builders
+ *
+ * This class contains mapping from Opcodes to kernel builder functions
+ */
 class KernelBuilderRegistry
 {
+public:
+
   using KernelBuilderFunc = std::unique_ptr<Kernel>(const luci::CircleNode *,
                                                     KernelBuilderHelper &);
 
-public:
-  KernelBuilderRegistry(
-    const std::unordered_map<const loco::Graph *, RuntimeGraph *> &graph_to_runtime_graph,
-    const std::unordered_map<const loco::Node *, Tensor *> &node_to_tensor)
-    : _helper(graph_to_runtime_graph, node_to_tensor)
+  KernelBuilderRegistry()
   {
 #define REGISTER_KERNEL(name) \
- register_kernel_builder(BuilderId::Circle##name, build_kernel_Circle##name);
+    register_kernel_builder(BuilderId::Circle##name, build_kernel_Circle##name);
 
 #include "KernelsToBuild.lst"
 
 #undef REGISTER_KERNEL
   }
 
-  std::unique_ptr<Kernel> build_kernel(const luci::CircleNode *node)
+  KernelBuilderFunc *get_kernel_builder_func(luci::CircleOpcode opcode)
   {
-    auto opcode = static_cast<int>(node->opcode());
-    if (opcode >= static_cast<int64_t>(_operator_builders.size()))
+    auto opcode_int = static_cast<int>(opcode);
+    if (opcode_int >= static_cast<int64_t>(_operator_builders.size()))
       return nullptr;
-    if (_operator_builders[opcode] == nullptr)
-      return nullptr;
-    return _operator_builders[opcode](node, _helper);
+    return _operator_builders[opcode_int];
   }
 
 private:
-  KernelBuilderHelper _helper;
-
   std::vector<KernelBuilderFunc *> _operator_builders;
 
   void register_kernel_builder(BuilderId id, KernelBuilderFunc *func)
   {
+    // Using BuilderId is a duplicate of luci::CirclreOpcode,
+    // static_cast<int>(id) is equal to static_cast<int>(corresponding operation opcode).
     auto opcode = static_cast<int>(id);
     if (opcode >= static_cast<int64_t>(_operator_builders.size()))
       _operator_builders.resize(opcode + 1);
@@ -1288,7 +1289,7 @@ private:
 
 KernelBuilder::KernelBuilder(const std::unordered_map<const loco::Graph *, RuntimeGraph *> &graph_to_runtime_graph, const std::unordered_map<const loco::Node *, Tensor *> &node_to_tensor): KernelBuilderHelper(graph_to_runtime_graph, node_to_tensor)
 {
-  _builder_registry = std::make_unique<KernelBuilderRegistry>(graph_to_runtime_graph, node_to_tensor);
+  _builder_registry = std::make_unique<KernelBuilderRegistry>();
 }
 
 KernelBuilder::~KernelBuilder()
@@ -1299,9 +1300,9 @@ KernelBuilder::~KernelBuilder()
 
 std::unique_ptr<Kernel> KernelBuilder::build(const luci::CircleNode *node)
 {
-  auto ret = _builder_registry->build_kernel(node);
-  if (ret != nullptr)
-    return ret;
+  auto specific_builder = _builder_registry->get_kernel_builder_func(node->opcode());
+  if (specific_builder != nullptr)
+    return specific_builder(node, *this);
 
   std::string msg = "Unsupported operator: ";
   msg += std::to_string(static_cast<uint32_t>(node->opcode())) + " " + std::string(node->name());
