@@ -135,6 +135,6 @@
 #include "CustomOp/BroadcastTo.h"
 #include "CustomOp/MatMul.h"
 #include "CustomOp/MatrixBandPart.h"
-#include "CustomOp/MaxPoolWithArgMax.h"
+#include "CustomOp/MaxPoolWithArgmax.h"
 
 #endif // __OP_CHEFS_H__

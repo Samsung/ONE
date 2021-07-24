@@ -15,21 +15,21 @@
  * limitations under the License.
  */
 
-#include "MaxPoolWithArgMax.h"
+#include "MaxPoolWithArgmax.h"
 
 #include "flatbuffers/flexbuffers.h"
 
-flatbuffers::Offset<void> MaxPoolWithArgMaxChef::value(flatbuffers::FlatBufferBuilder &fbb) const
+flatbuffers::Offset<void> MaxPoolWithArgmaxChef::value(flatbuffers::FlatBufferBuilder &fbb) const
 {
   return flatbuffers::Offset<void>();
 }
 
 flatbuffers::Offset<flatbuffers::Vector<uint8_t>>
-MaxPoolWithArgMaxChef::custom_value(flatbuffers::FlatBufferBuilder &fbb) const
+MaxPoolWithArgmaxChef::custom_value(flatbuffers::FlatBufferBuilder &fbb) const
 {
   auto &operation = (*_operation);
 
-  assert(operation.type() == "MaxPoolWithArgMax");
+  assert(operation.type() == "MaxPoolWithArgmax");
 
   /**
    * REGISTER_OP("MaxPoolWithArgmax")
@@ -80,7 +80,7 @@ MaxPoolWithArgMaxChef::custom_value(flatbuffers::FlatBufferBuilder &fbb) const
 }
 
 std::unique_ptr<OpChef>
-MaxPoolWithArgMaxChefFactory::create(const tflchef::Operation *operation) const
+MaxPoolWithArgmaxChefFactory::create(const tflchef::Operation *operation) const
 {
-  return std::unique_ptr<OpChef>{new MaxPoolWithArgMaxChef{operation}};
+  return std::unique_ptr<OpChef>{new MaxPoolWithArgmaxChef{operation}};
 }

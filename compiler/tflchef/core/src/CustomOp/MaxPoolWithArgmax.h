@@ -19,10 +19,10 @@
 
 #include "OpChef.h"
 
-class MaxPoolWithArgMaxChef final : public OpChef
+class MaxPoolWithArgmaxChef final : public OpChef
 {
 public:
-  explicit MaxPoolWithArgMaxChef(const tflchef::Operation *operation) : _operation{operation}
+  explicit MaxPoolWithArgmaxChef(const tflchef::Operation *operation) : _operation{operation}
   {
     // DO NOTHING
   }
@@ -41,7 +41,7 @@ private:
   const tflchef::Operation *_operation;
 };
 
-struct MaxPoolWithArgMaxChefFactory final : public OpChefFactory
+struct MaxPoolWithArgmaxChefFactory final : public OpChefFactory
 {
   std::unique_ptr<OpChef> create(const tflchef::Operation *operation) const override;
 };

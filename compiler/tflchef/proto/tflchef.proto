@@ -510,7 +510,7 @@ message DequantizeOptions {
   // NONE
 }
 
-message MaxPoolWithArgMaxOptions {
+message MaxPoolWithArgmaxOptions {
   optional Padding padding = 1 [default = VALID];
   optional int32 stride_w = 2 [default = 1];
   optional int32 stride_h = 3 [default = 1];
@@ -642,7 +642,7 @@ message Operation {
   optional SegmentSumOptions segment_sum_options = 206;
   optional AddNOptions add_n_options = 207;
   optional MatMulOptions matmul_options = 208;
-  optional MaxPoolWithArgMaxOptions max_pool_with_argmax_options = 209;
+  optional MaxPoolWithArgmaxOptions max_pool_with_argmax_options = 209;
   // NOTE if there are more than two options with same type of Options
   // use the number not listed in the above reserve list
 }
