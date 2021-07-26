@@ -93,7 +93,9 @@ private:
     RETURN_FALSE_UNLESS(is_lwq(node))
     RETURN_FALSE_UNLESS(is_lwq(node->input()))
     RETURN_FALSE_UNLESS(is_cwq_const(node->filter(), 0))
-    RETURN_FALSE_UNLESS(is_cwq_const(node->bias(), rank(node->bias()) - 1))
+    luci::CircleConst *bias = dynamic_cast<luci::CircleConst *>(node->bias());
+    if (bias != nullptr)
+      RETURN_FALSE_UNLESS(is_cwq_const(node->bias(), rank(node->bias()) - 1))
     return true;
   }
 
@@ -119,7 +121,9 @@ private:
     RETURN_FALSE_UNLESS(is_lwq(node))
     RETURN_FALSE_UNLESS(is_lwq(node->input()))
     RETURN_FALSE_UNLESS(is_cwq_const(node->filter(), 3))
-    RETURN_FALSE_UNLESS(is_cwq_const(node->bias(), rank(node->bias()) - 1))
+    luci::CircleConst *bias = dynamic_cast<luci::CircleConst *>(node->bias());
+    if (bias != nullptr)
+      RETURN_FALSE_UNLESS(is_cwq_const(node->bias(), rank(node->bias()) - 1))
     return true;
   }
 
