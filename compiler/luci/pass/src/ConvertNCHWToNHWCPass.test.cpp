@@ -448,6 +448,23 @@ public:
   luci::CircleRsqrt *rsqrt = nullptr;
 };
 
+class SquaredDifferenceGraph final : public SimpleGraph
+{
+protected:
+  loco::Node *insertGraphBody(loco::Node *input) override
+  {
+    sqdiff = g.nodes()->create<luci::CircleSquaredDifference>();
+    sqdiff->x(input);
+    sqdiff->y(input);
+    sqdiff->name("sqdiff");
+
+    return sqdiff;
+  }
+
+public:
+  luci::CircleSquaredDifference *sqdiff = nullptr;
+};
+
 void check_pre_trans(loco::Node *node)
 {
   auto pre_trans = dynamic_cast<luci::CircleTranspose *>(node);
@@ -866,4 +883,19 @@ TEST(ConvertNCHWToNHWC, Rsqrt)
   EXPECT_EQ(4, g.rsqrt->dim(1).value());
   EXPECT_EQ(4, g.rsqrt->dim(2).value());
   EXPECT_EQ(16, g.rsqrt->dim(3).value());
+}
+
+TEST(ConvertNCHWToNHWC, SquaredDifference)
+{
+  SquaredDifferenceGraph g;
+  g.init();
+
+  run_phase(&g.g, true, true);
+
+  check_pre_trans(g.sqdiff->x());
+  check_pre_trans(g.sqdiff->y());
+
+  auto sqdiff_succs = loco::succs(g.sqdiff);
+  EXPECT_EQ(1, sqdiff_succs.size());
+  check_post_trans(*sqdiff_succs.begin());
 }
