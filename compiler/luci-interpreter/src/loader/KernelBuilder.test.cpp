@@ -211,6 +211,7 @@ TEST_F(KernelBuilderTest, Cast)
   op->x(input);
 
   auto kernel = buildKernel<kernels::Cast>(op);
+  ASSERT_THAT(kernel, NotNull());
 
   checkTensor(kernel->input(), input);
   checkTensor(kernel->output(), op);
