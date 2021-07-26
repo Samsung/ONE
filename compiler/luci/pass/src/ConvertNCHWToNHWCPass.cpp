@@ -286,6 +286,34 @@ bool is_NCHW(const luci::CirclePad *node)
   return true;
 }
 
+// NOTE Copied from is_NCHW(CirclePad)
+bool is_NCHW(const luci::CirclePadV2 *node)
+{
+  const auto paddings = dynamic_cast<luci::CircleConst *>(node->paddings());
+  // Non-const paddings is not supported
+  if (paddings == nullptr)
+    return false;
+
+  if (paddings->rank() != 2)
+    return false;
+
+  if (paddings->dim(0).value() != 4 || paddings->dim(1).value() != 2)
+    return false;
+
+  // Only check the first two dimensions
+  for (uint32_t dim = 0; dim < 2; dim++)
+  {
+    for (uint32_t i = 0; i < 2; i++)
+    {
+      auto data = paddings->at<loco::DataType::S32>(dim * 2 + i);
+      if (data != 0)
+        return false;
+    }
+  }
+
+  return true;
+}
+
 // NOTE Following conditions can be extended later
 //
 // Find MUL with an NCHW pattern described below
@@ -655,6 +683,31 @@ class ConvertNCHWToNHWC final : public luci::CircleNodeMutableVisitor<bool>
     return true;
   }
 
+  bool visit(luci::CirclePadV2 *node)
+  {
+    if (!is_NCHW(node))
+      return false;
+
+    const auto pred_node = loco::must_cast<luci::CircleNode *>(node->input());
+    auto pre_trans = create_pre_transpose(node);
+    pre_trans->a(pred_node);
+    node->input(pre_trans);
+
+    auto nchw_paddings = loco::must_cast<luci::CircleConst *>(node->paddings());
+    const auto nhwc_paddings = create_NHWC_paddings(nchw_paddings);
+    node->paddings(nhwc_paddings);
+
+    // Do shape inference for this node again.
+    node->shape_status(luci::ShapeStatus::UNDEFINED);
+
+    auto post_trans = create_post_transpose(node);
+    loco::replace(node).with(post_trans);
+
+    post_trans->a(node);
+
+    return true;
+  }
+
   bool visit(luci::CircleRelu *node) { return convert_unary_features<luci::CircleRelu>(node); }
 
   bool visit(luci::CircleRelu6 *node) { return convert_unary_features<luci::CircleRelu6>(node); }
@@ -696,6 +749,7 @@ bool ConvertNCHWToNHWCPass::run(loco::Graph *g)
       case luci::CircleOpcode::MUL:
       case luci::CircleOpcode::NEG:
       case luci::CircleOpcode::PAD:
+      case luci::CircleOpcode::PADV2:
       case luci::CircleOpcode::RELU:
       case luci::CircleOpcode::RELU6:
         if (!has_data_format(node))
