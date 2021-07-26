@@ -593,9 +593,21 @@ class ConvertNCHWToNHWC final : public luci::CircleNodeMutableVisitor<bool>
     }
     else if (multiplier == nullptr)
     {
-      // TODO : Implement this case.
-      INFO(l) << "Not yet implemented. Both inputs of MUL are non-const." << std::endl;
-      return false;
+      // Only support for input rank 4
+      auto input_x = loco::must_cast<luci::CircleNode *>(node->x());
+      if (input_x->rank() != 4)
+        return false;
+      auto input_y = loco::must_cast<luci::CircleNode *>(node->y());
+      if (input_y->rank() != 4)
+        return false;
+
+      auto pre_trans_x = create_pre_transpose(node);
+      pre_trans_x->a(input_x);
+      node->x(pre_trans_x);
+
+      auto pre_trans_y = create_pre_transpose(node);
+      pre_trans_y->a(input_y);
+      node->y(pre_trans_y);
     }
     else
     {

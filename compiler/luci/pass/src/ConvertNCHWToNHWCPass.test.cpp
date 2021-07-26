@@ -249,6 +249,30 @@ public:
   luci::CircleConst *multiplier = nullptr;
 };
 
+class MulBothNormGraph final : public SimpleGraph
+{
+protected:
+  loco::Node *insertGraphBody(loco::Node *input) override
+  {
+    mul = g.nodes()->create<luci::CircleMul>();
+
+    mul->dtype(loco::DataType::FLOAT32);
+
+    uint32_t channel_size = 16;
+    mul->shape({1, channel_size, 4, 4});
+
+    mul->x(input);
+    mul->y(input);
+
+    mul->name("mul");
+
+    return mul;
+  }
+
+public:
+  luci::CircleMul *mul = nullptr;
+};
+
 class NegGraph final : public SimpleGraph
 {
 protected:
@@ -516,6 +540,27 @@ TEST(ConvertNCHWToNHWC, Mul)
   EXPECT_EQ(1, new_multiplier->dim(1).value());
   EXPECT_EQ(1, new_multiplier->dim(2).value());
   EXPECT_EQ(channel_size, new_multiplier->dim(3).value());
+
+  check_pre_trans(g.output->from());
+}
+
+TEST(ConvertNCHWToNHWC, MulBothNorm)
+{
+  MulBothNormGraph g;
+  g.init();
+
+  run_phase(&g.g, false, false);
+
+  auto input_succs = loco::succs(g.input);
+  EXPECT_EQ(1, input_succs.size());
+  check_post_trans(*input_succs.begin());
+
+  check_pre_trans(g.mul->x());
+  check_pre_trans(g.mul->y());
+
+  auto mul_succs = loco::succs(g.mul);
+  EXPECT_EQ(1, mul_succs.size());
+  check_post_trans(*mul_succs.begin());
 
   check_pre_trans(g.output->from());
 }
