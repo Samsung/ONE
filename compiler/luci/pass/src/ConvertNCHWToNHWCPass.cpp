@@ -466,6 +466,45 @@ bool is_NCHW_with_const(const luci::CircleAdd *node, luci::CircleNode *&pred_nod
     return false;
 }
 
+// We assume SUB with const input is NCHW if,
+// Input shape: (N, C, H, W)
+// Output shape: (N, C, H, W)
+// 1. Const shape is (1, C, 1, 1)
+// 2. Input, Output, Const have the same C.
+bool is_NCHW_with_const(const luci::CircleSub *node, const luci::CircleNode *pred_node,
+                        const luci::CircleConst *subtract)
+{
+  assert(pred_node != nullptr);
+  assert(subtract != nullptr);
+
+  if (pred_node->rank() != 4)
+    return false;
+
+  const auto const_rank = subtract->rank();
+  if (const_rank != 4)
+    return false;
+
+  // Check the shape is (1, C, 1, 1)
+  for (uint32_t i = 0; i < const_rank; i++)
+  {
+    if (i == 1)
+      continue;
+
+    if (subtract->dim(i).value() != 1)
+      return false;
+  }
+
+  const auto input_cdim = pred_node->dim(1);
+  const auto output_cdim = node->dim(1);
+  const auto const_cdim = subtract->dim(1);
+
+  // Check Input, Output, Const have the same channel size
+  if (const_cdim == input_cdim && input_cdim == output_cdim)
+    return true;
+  else
+    return false;
+}
+
 template <class T> bool convert_unary_features(T *node)
 {
   const auto pred_node = loco::must_cast<luci::CircleNode *>(node->features());
@@ -823,6 +862,84 @@ class ConvertNCHWToNHWC final : public luci::CircleNodeMutableVisitor<bool>
     post_trans->a(node);
     return true;
   }
+
+  bool visit(luci::CircleSub *node)
+  {
+    luci::CircleNode *pred_node = nullptr;
+    luci::CircleConst *subtract = nullptr;
+
+    auto const_x = dynamic_cast<luci::CircleConst *>(node->x());
+    auto const_y = dynamic_cast<luci::CircleConst *>(node->y());
+
+    if (const_x != nullptr && const_y == nullptr)
+    {
+      // case of subtract - pred_node
+      pred_node = loco::must_cast<luci::CircleNode *>(node->y());
+      subtract = const_x;
+
+      if (!is_NCHW_with_const(node, pred_node, subtract))
+        return false;
+
+      auto pre_trans = create_pre_transpose(node);
+      pre_trans->a(pred_node);
+
+      auto nhwc_const = create_NHWC_from_NCHW(subtract);
+      if (nhwc_const == nullptr)
+        return false;
+
+      node->x(nhwc_const);
+      node->y(pre_trans);
+    }
+    else if (const_x == nullptr && const_y != nullptr)
+    {
+      // case of pred_node - subtract
+      pred_node = loco::must_cast<luci::CircleNode *>(node->x());
+      subtract = const_y;
+
+      if (!is_NCHW_with_const(node, pred_node, subtract))
+        return false;
+
+      auto pre_trans = create_pre_transpose(node);
+      pre_trans->a(pred_node);
+
+      auto nhwc_const = create_NHWC_from_NCHW(subtract);
+      if (nhwc_const == nullptr)
+        return false;
+
+      node->x(pre_trans);
+      node->y(nhwc_const);
+    }
+    else if (const_x == nullptr && const_y == nullptr)
+    {
+      // Both inputs are not constant.
+      // In this case, we cannot distinguish NCHW from NHWC,
+      // so just insert Transpose Ops.
+      // Only support for input rank 4.
+      auto input_x = loco::must_cast<luci::CircleNode *>(node->x());
+      if (input_x->rank() != 4)
+        return false;
+      auto input_y = loco::must_cast<luci::CircleNode *>(node->y());
+      if (input_y->rank() != 4)
+        return false;
+
+      auto pre_trans_x = create_pre_transpose(node);
+      pre_trans_x->a(input_x);
+      node->x(pre_trans_x);
+
+      auto pre_trans_y = create_pre_transpose(node);
+      pre_trans_y->a(input_y);
+      node->y(pre_trans_y);
+    }
+
+    // Do shape inference for this node again.
+    node->shape_status(luci::ShapeStatus::UNDEFINED);
+
+    auto post_trans = create_post_transpose(node);
+    loco::replace(node).with(post_trans);
+
+    post_trans->a(node);
+    return true;
+  }
 };
 
 } // namespace
@@ -895,6 +1012,7 @@ bool ConvertNCHWToNHWCPass::run(loco::Graph *g)
       case luci::CircleOpcode::RELU6:
       case luci::CircleOpcode::RSQRT:
       case luci::CircleOpcode::SQUARED_DIFFERENCE:
+      case luci::CircleOpcode::SUB:
         if (!has_data_format(node))
         {
           set_data_format(node, DataFormat::NCHW);
