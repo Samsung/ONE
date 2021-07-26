@@ -134,6 +134,38 @@ public:
   luci::CircleConst *beta = nullptr;
 };
 
+class AddScalarGraph final : public SimpleGraph
+{
+protected:
+  loco::Node *insertGraphBody(loco::Node *input) override
+  {
+    add = g.nodes()->create<luci::CircleAdd>();
+    beta = g.nodes()->create<luci::CircleConst>();
+
+    add->dtype(loco::DataType::FLOAT32);
+    beta->dtype(loco::DataType::FLOAT32);
+
+    uint32_t channel_size = 16;
+    add->shape({1, channel_size, 4, 4});
+    beta->shape({1});
+
+    beta->size<loco::DataType::FLOAT32>(1);
+    beta->at<loco::DataType::FLOAT32>(0) = 3.14;
+
+    add->x(input);
+    add->y(beta);
+
+    add->name("add");
+    beta->name("beta");
+
+    return add;
+  }
+
+public:
+  luci::CircleAdd *add = nullptr;
+  luci::CircleConst *beta = nullptr;
+};
+
 class ConcatenationGraph final : public SimpleGraph
 {
 protected:
@@ -423,6 +455,31 @@ TEST(ConvertNCHWToNHWC, Add)
   EXPECT_EQ(1, new_beta->dim(1).value());
   EXPECT_EQ(1, new_beta->dim(2).value());
   EXPECT_EQ(channel_size, new_beta->dim(3).value());
+
+  check_pre_trans(g.output->from());
+}
+
+TEST(ConvertNCHWToNHWC, AddScalar)
+{
+  AddScalarGraph g;
+  g.init();
+
+  run_phase(&g.g, false, false);
+
+  auto input_succs = loco::succs(g.input);
+  EXPECT_EQ(1, input_succs.size());
+  check_post_trans(*input_succs.begin());
+
+  check_pre_trans(g.add->x());
+
+  auto add_succs = loco::succs(g.add);
+  EXPECT_EQ(1, add_succs.size());
+  check_post_trans(*add_succs.begin());
+
+  auto new_beta = dynamic_cast<luci::CircleConst *>(g.add->y());
+  EXPECT_NE(nullptr, new_beta);
+  EXPECT_EQ(1, new_beta->rank());
+  EXPECT_EQ(1, new_beta->dim(0).value());
 
   check_pre_trans(g.output->from());
 }
