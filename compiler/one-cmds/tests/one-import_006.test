@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# import onnx model with cfg file
+# import onnx model
 
 filename_ext="$(basename -- $0)"
 filename="${filename_ext%.*}"
@@ -27,13 +27,13 @@ trap_err_onexit()
 
 trap trap_err_onexit ERR
 
-configfile="one-import_005.cfg"
+inputfile="test_onnx_model.onnx"
 outputfile="test_onnx_model.circle"
 
 rm -f ${outputfile}
 
 # run test
-one-import onnx -C ${configfile} > ${filename}.log 2>&1
+one-import onnx -i ${inputfile} -o ${outputfile} > ${filename}.log 2>&1
 
 if [[ ! -s "${outputfile}" ]]; then
   trap_err_onexit
