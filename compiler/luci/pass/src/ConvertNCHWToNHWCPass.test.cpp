@@ -432,6 +432,22 @@ public:
   luci::CircleRelu6 *relu6 = nullptr;
 };
 
+class RsqrtGraph final : public SimpleGraph
+{
+protected:
+  loco::Node *insertGraphBody(loco::Node *input) override
+  {
+    rsqrt = g.nodes()->create<luci::CircleRsqrt>();
+    rsqrt->x(input);
+    rsqrt->name("rsqrt");
+
+    return rsqrt;
+  }
+
+public:
+  luci::CircleRsqrt *rsqrt = nullptr;
+};
+
 void check_pre_trans(loco::Node *node)
 {
   auto pre_trans = dynamic_cast<luci::CircleTranspose *>(node);
@@ -830,4 +846,24 @@ TEST(ConvertNCHWToNHWC, Relu6)
   EXPECT_EQ(4, g.relu6->dim(1).value());
   EXPECT_EQ(4, g.relu6->dim(2).value());
   EXPECT_EQ(16, g.relu6->dim(3).value());
+}
+
+TEST(ConvertNCHWToNHWC, Rsqrt)
+{
+  RsqrtGraph g;
+  g.init();
+
+  run_phase(&g.g, true, true);
+
+  check_pre_trans(g.rsqrt->x());
+
+  auto rsqrt_succs = loco::succs(g.rsqrt);
+  EXPECT_EQ(1, rsqrt_succs.size());
+  check_post_trans(*rsqrt_succs.begin());
+
+  // Check rsqrt shape
+  EXPECT_EQ(1, g.rsqrt->dim(0).value());
+  EXPECT_EQ(4, g.rsqrt->dim(1).value());
+  EXPECT_EQ(4, g.rsqrt->dim(2).value());
+  EXPECT_EQ(16, g.rsqrt->dim(3).value());
 }
