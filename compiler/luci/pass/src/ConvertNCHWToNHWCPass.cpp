@@ -790,6 +790,39 @@ class ConvertNCHWToNHWC final : public luci::CircleNodeMutableVisitor<bool>
 
     return true;
   }
+
+  bool visit(luci::CircleSquaredDifference *node)
+  {
+    // TODO support CircleConst input
+    if (dynamic_cast<luci::CircleConst *>(node->x()) != nullptr)
+      return false;
+    if (dynamic_cast<luci::CircleConst *>(node->y()) != nullptr)
+      return false;
+
+    auto input_x = loco::must_cast<luci::CircleNode *>(node->x());
+    if (input_x->rank() != 4)
+      return false;
+    auto input_y = loco::must_cast<luci::CircleNode *>(node->y());
+    if (input_y->rank() != 4)
+      return false;
+
+    auto pre_trans_x = create_pre_transpose(node);
+    pre_trans_x->a(input_x);
+    node->x(pre_trans_x);
+
+    auto pre_trans_y = create_pre_transpose(node);
+    pre_trans_y->a(input_y);
+    node->y(pre_trans_y);
+
+    // Do shape inference for this node again.
+    node->shape_status(luci::ShapeStatus::UNDEFINED);
+
+    auto post_trans = create_post_transpose(node);
+    loco::replace(node).with(post_trans);
+
+    post_trans->a(node);
+    return true;
+  }
 };
 
 } // namespace
@@ -861,6 +894,7 @@ bool ConvertNCHWToNHWCPass::run(loco::Graph *g)
       case luci::CircleOpcode::RELU:
       case luci::CircleOpcode::RELU6:
       case luci::CircleOpcode::RSQRT:
+      case luci::CircleOpcode::SQUARED_DIFFERENCE:
         if (!has_data_format(node))
         {
           set_data_format(node, DataFormat::NCHW);
