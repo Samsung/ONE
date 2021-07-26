@@ -58,7 +58,7 @@ def _call_driver(driver_name, options):
 def _check_subtool_exists():
     """verify given arguments"""
     subtool_keys = [n for k, v in subtool_list.items() for n in v.keys()]
-    if sys.argv[1] in subtool_keys:
+    if len(sys.argv) > 1 and sys.argv[1] in subtool_keys:
         driver_name = 'one-' + sys.argv[1]
         options = sys.argv[2:]
         _call_driver(driver_name, options)
@@ -74,15 +74,15 @@ def _get_parser():
     # just for help message
     compile_group = parser.add_argument_group('compile to circle model')
     for tool, desc in subtool_list['compile'].items():
-        compile_group.add_argument(tool, nargs='?', help=desc)
+        compile_group.add_argument(tool, action='store_true', help=desc)
 
     package_group = parser.add_argument_group('package circle model')
     for tool, desc in subtool_list['package'].items():
-        package_group.add_argument(tool, nargs='?', help=desc)
+        package_group.add_argument(tool, action='store_true', help=desc)
 
     backend_group = parser.add_argument_group('run backend tools')
     for tool, desc in subtool_list['backend'].items():
-        backend_group.add_argument(tool, nargs='?', help=desc)
+        backend_group.add_argument(tool, action='store_true', help=desc)
 
     return parser
 
@@ -100,7 +100,7 @@ def _verify_arg(parser, args):
     """verify given arguments"""
     # check if required arguments is given
     if not _utils._is_valid_attr(args, 'config'):
-        parser.error('unrecognized arguments: ' + sys.argv[1])
+        parser.error('-C/--config argument is required')
 
 
 def _get_driver_name(driver_name):
