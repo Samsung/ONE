@@ -67,6 +67,37 @@ DataFormat get_data_format(loco::Node *node)
 
 bool has_data_format(loco::Node *node) { return node->annot<DataFormatAnnotation>() != nullptr; }
 
+bool check_4d_transpose(loco::Node *node, const std::vector<int32_t> indices)
+{
+  assert(indices.size() == 4);
+
+  auto trans = dynamic_cast<luci::CircleTranspose *>(node);
+  if (not trans)
+    return false;
+
+  if (not trans->perm())
+    return false;
+
+  auto perm = dynamic_cast<luci::CircleConst *>(trans->perm());
+  // Only const perm is supported
+  if (not perm)
+    return false;
+
+  if (perm->dtype() != loco::DataType::S32)
+    return false;
+
+  if (perm->size<loco::DataType::S32>() != 4)
+    return false;
+
+  for (uint32_t i = 0; i < 4; i++)
+  {
+    if (perm->at<loco::DataType::S32>(i) != indices[i])
+      return false;
+  }
+
+  return true;
+}
+
 luci::CircleTranspose *create_4d_transpose(luci::CircleNode *node,
                                            const std::vector<int32_t> indices)
 {
@@ -125,6 +156,10 @@ luci::CircleTranspose *create_pre_transpose(luci::CircleNode *node)
 {
   return create_4d_transpose(node, {0, 2, 3, 1});
 }
+
+bool is_post_transpose(loco::Node *node) { return check_4d_transpose(node, {0, 3, 1, 2}); }
+
+bool is_pre_transpose(loco::Node *node) { return check_4d_transpose(node, {0, 2, 3, 1}); }
 
 uint32_t cal_offset(const loco::TensorShape &dimension, const uint32_t *indices)
 {
@@ -736,6 +771,35 @@ bool ConvertNCHWToNHWCPass::run(loco::Graph *g)
 {
   LOGGER(l);
   INFO(l) << "ConvertNCHWToNHWCPass Start" << std::endl;
+
+  // Annotate NHWC operators
+  // NHWC operators are detected by pattern matching
+  // Pattern: pre-Transose + [chain of Ops] + post-Transpose
+  // [chain of Ops] are annotated as NHWC
+  for (auto node : loco::postorder_traversal(loco::output_nodes(g)))
+  {
+    if (has_data_format(node))
+      continue;
+
+    if (is_pre_transpose(node))
+    {
+      loco::Node *succ = node;
+      while (true)
+      {
+        auto succs = loco::succs(succ);
+        if (succs.size() != 1)
+          break;
+
+        succ = *succs.begin();
+
+        if (is_post_transpose(succ))
+          break;
+
+        if (not has_data_format(succ))
+          set_data_format(succ, DataFormat::NHWC);
+      }
+    }
+  }
 
   // Annotate NCHW operators
   for (auto node : loco::active_nodes(loco::output_nodes(g)))
