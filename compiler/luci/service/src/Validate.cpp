@@ -194,6 +194,11 @@ bool validate_name(loco::Graph *g)
   for (uint32_t n = 0; n < nodes->size(); ++n)
   {
     auto node = loco::must_cast<luci::CircleNode *>(nodes->at(n));
+    // skip virtual nodes
+    VirtualNodeDetector d;
+    if (node->accept(&d))
+      continue;
+
     auto name = node->name();
     if (name.empty())
       return false;
