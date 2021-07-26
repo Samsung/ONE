@@ -165,6 +165,8 @@ public:
   bool visit(const luci::CircleUnpackOut *) final { return true; }
   bool visit(const luci::CircleUniqueOut *) final { return true; }
   bool visit(const luci::CircleWhileOut *) final { return true; }
+  bool visit(const luci::CircleOutputDummy *) final { return true; }
+  bool visit(const luci::CircleOutputExclude *) final { return true; }
 
   // Return false by default
   bool visit(const luci::CircleNode *) final { return false; }
