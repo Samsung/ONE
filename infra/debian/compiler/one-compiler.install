@@ -8,7 +8,6 @@ usr/bin/generate_bcq_metadata.py usr/share/one/bin/
 usr/bin/generate_bcq_output_arrays.py usr/share/one/bin/
 usr/bin/model2nnpkg.sh usr/share/one/bin/
 usr/bin/onecc usr/share/one/bin/
-usr/bin/onecc.template.cfg usr/share/one/bin/
 usr/bin/one-build usr/share/one/bin/
 usr/bin/one-build.template.cfg usr/share/one/bin/
 usr/bin/one-codegen usr/share/one/bin/
