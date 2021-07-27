@@ -41,7 +41,6 @@ void LogSoftmax::configure()
 
     params.table = _table;
     params.beta = 1.0;
-
     luci_interpreter_pal::PopulateSoftmaxLookupTable(&params, input()->scale(), params.beta);
   }
   output()->resize(input()->shape());
@@ -76,6 +75,7 @@ void LogSoftmax::evalQuantized() const
   const auto input_scale = input()->scale();
   uint8_t *output_data = getTensorData<uint8_t>(output());
   const uint8_t *input_data = getTensorData<uint8_t>(input());
+  const float beta = 1.0;
 
   tflite::SoftmaxParams params{};
 
@@ -83,6 +83,7 @@ void LogSoftmax::evalQuantized() const
   params.zero_point = output()->zero_point();
   params.scale = output()->scale();
 
+  luci_interpreter_pal::InitializeParams(&params, input_scale, beta);
   luci_interpreter_pal::LogSoftmax(params, input_scale, input_shape, input_data, output_shape,
                                     output_data);
 }

@@ -81,7 +81,7 @@ template <typename T> void Softmax::evalQuantized() const
   op_params.table = const_cast<float *>(_table);
   op_params.zero_point = output()->zero_point();
   op_params.scale = output()->scale();
-
+  luci_interpreter_pal::InitializeParams(&op_params, input()->scale(), params().beta);
   luci_interpreter_pal::Softmax(op_params, getTensorShape(input()), getTensorData<T>(input()),
                                  getTensorShape(output()), getTensorData<T>(output()));
 }

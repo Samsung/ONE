@@ -17,27 +17,37 @@
 #ifndef LUCI_INTERPRETER_PAL_SOFTMAX_H
 #define LUCI_INTERPRETER_PAL_SOFTMAX_H
 
-#include <tensorflow/lite/kernels/internal/optimized/optimized_ops.h>
+#include <tensorflow/lite/kernels/internal/reference/reference_ops.h>
 
 namespace luci_interpreter_pal
 {
 static inline void PopulateSoftmaxLookupTable(tflite::SoftmaxParams* data, float input_scale,
                                               float beta)
 {
-  tflite::optimized_ops::PopulateSoftmaxLookupTable(data, input_scale, beta);
+  //Do nothing for mcu
 }
 
 static inline void InitializeParams(tflite::SoftmaxParams* params, float input_scale, float beta)
 {
-  //Do nothing for linux
+  int32 input_beta_multiplier;
+  int input_beta_left_shift;
+  static const int kScaledDiffIntegerBits = 5;
+  tflite::PreprocessSoftmaxScaling(
+    beta, input_scale, kScaledDiffIntegerBits, &input_beta_multiplier,
+    &input_beta_left_shift);
+
+  params->input_multiplier = input_beta_multiplier;
+  params->input_left_shift = input_beta_left_shift;
+  params->diff_min = - tflite::CalculateInputRadius(kScaledDiffIntegerBits,
+                                                   params->input_left_shift);
 }
 
-template <typename In, typename Out>
+template <typename T>
 static inline void Softmax(const tflite::SoftmaxParams& params,
-                    const tflite::RuntimeShape& input_shape, const In* input_data,
-                    const tflite::RuntimeShape& output_shape, Out* output_data)
+                    const tflite::RuntimeShape& input_shape, const T* input_data,
+                    const tflite::RuntimeShape& output_shape, T* output_data)
 {
-  tflite::optimized_ops::Softmax(params, input_shape, input_data, output_shape, output_data);
+  //MARK: At this moment this operation doesn't support on mcu
 }
 }
 

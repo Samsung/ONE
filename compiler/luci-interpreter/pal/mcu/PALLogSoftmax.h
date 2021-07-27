@@ -17,27 +17,34 @@
 #ifndef LUCI_INTERPRETER_PAL_LOGSOFTMAX_H
 #define LUCI_INTERPRETER_PAL_LOGSOFTMAX_H
 
-#include <tensorflow/lite/kernels/internal/optimized/optimized_ops.h>
+#include <tensorflow/lite/kernels/internal/reference/reference_ops.h>
+
 
 namespace luci_interpreter_pal
 {
 static inline void PopulateSoftmaxLookupTable(tflite::SoftmaxParams* data, float input_scale,
                                               float beta)
 {
-  tflite::optimized_ops::PopulateSoftmaxLookupTable(data, input_scale, beta);
+  //Do nothing for MCU
 }
 
 static inline void InitializeParams(tflite::SoftmaxParams* params, float input_scale, float beta)
 {
-  //Do nothing for linux
+  static const int kScaledDiffIntegerBits = 5;
+  tflite::PreprocessLogSoftmaxScalingExp(
+    beta, input_scale, kScaledDiffIntegerBits, &params->input_multiplier,
+    &params->input_left_shift, &params->reverse_scaling_divisor,
+    &params->reverse_scaling_right_shift);
+  params->reverse_scaling_right_shift *= -1;
+  params->diff_min = -tflite::CalculateInputRadius(kScaledDiffIntegerBits,
+                                                   params->input_left_shift);
 }
 
-static inline void LogSoftmax(const tflite::SoftmaxParams& params, float input_scale,
+static inline void LogSoftmax(tflite::SoftmaxParams& params, float input_scale,
                        const tflite::RuntimeShape& input_shape, const uint8* input_data,
                        const tflite::RuntimeShape& output_shape, uint8* output_data)
 {
-  tflite::optimized_ops::LogSoftmax(params, input_scale,
-                                    input_shape, input_data,
+  tflite::reference_ops::LogSoftmax(params, input_shape, input_data,
                                     output_shape, output_data);
 }
 }
