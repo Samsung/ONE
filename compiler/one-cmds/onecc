@@ -27,12 +27,62 @@ import sys
 
 import utils as _utils
 
+subtool_list = {
+    'compile': {
+        'import': 'Convert given model to circle',
+        'optimize': 'Optimize circle model',
+        'quantize': 'Quantize circle model',
+    },
+    'package': {
+        'pack': 'Package circle and metadata into nnpackage',
+    },
+    'backend': {
+        'codegen': 'Code generation tool',
+    },
+}
+
+
+def _call_driver(driver_name, options):
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    driver_path = os.path.join(dir_path, driver_name)
+    cmd = [driver_path] + options
+    with subprocess.Popen(
+            cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, bufsize=1) as p:
+        for line in p.stdout:
+            sys.stdout.buffer.write(line)
+            sys.stdout.buffer.flush()
+    if p.returncode != 0:
+        sys.exit(p.returncode)
+
+
+def _check_subtool_exists():
+    """verify given arguments"""
+    subtool_keys = [n for k, v in subtool_list.items() for n in v.keys()]
+    if len(sys.argv) > 1 and sys.argv[1] in subtool_keys:
+        driver_name = 'one-' + sys.argv[1]
+        options = sys.argv[2:]
+        _call_driver(driver_name, options)
+        sys.exit(0)
+
 
 def _get_parser():
     parser = argparse.ArgumentParser(
         description='command line tool to run ONE drivers in customized order')
 
     _utils._add_default_arg(parser)
+
+    # just for help message
+    compile_group = parser.add_argument_group('compile to circle model')
+    for tool, desc in subtool_list['compile'].items():
+        compile_group.add_argument(tool, action='store_true', help=desc)
+
+    package_group = parser.add_argument_group('package circle model')
+    for tool, desc in subtool_list['package'].items():
+        package_group.add_argument(tool, action='store_true', help=desc)
+
+    backend_group = parser.add_argument_group('run backend tools')
+    for tool, desc in subtool_list['backend'].items():
+        backend_group.add_argument(tool, action='store_true', help=desc)
 
     return parser
 
@@ -98,6 +148,15 @@ def _verify_cfg(driver_list, config):
 
 
 def main():
+    # check if there is subtool argument
+    # if true, it executes subtool with argv
+    # NOTE:
+    # Why call subtool directly without using Argparse?
+    # Because if Argparse is used, options equivalent to onecc including
+    # '--help', '-C' are processed directly onecc itself.
+    # So options cannot be delivered to subtool.
+    _check_subtool_exists()
+
     # parse arguments
     # since the configuration file path is required first,
     # parsing of the configuration file proceeds after this.
@@ -126,15 +185,9 @@ def main():
     # run
     dir_path = os.path.dirname(os.path.realpath(__file__))
     for section in section_to_run:
-        driver_path = os.path.join(dir_path, _get_driver_name(section))
-        cmd = [driver_path, '--config', getattr(args, 'config'), '--section', section]
-        with subprocess.Popen(
-                cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, bufsize=1) as p:
-            for line in p.stdout:
-                sys.stdout.buffer.write(line)
-                sys.stdout.buffer.flush()
-        if p.returncode != 0:
-            sys.exit(p.returncode)
+        driver_name = _get_driver_name(section)
+        options = ['--config', getattr(args, 'config'), '--section', section]
+        _call_driver(driver_name, options)
 
 
 if __name__ == '__main__':
