@@ -18,6 +18,7 @@
 
 #include "OperationUtils.h"
 
+#include <cker/operation/FloorDiv.h>
 #include <cker/operation/LogicalAnd.h>
 #include <cker/operation/LogicalOr.h>
 #include <cker/operation/MaxMin.h>
@@ -33,6 +34,22 @@ namespace ops
 
 namespace
 {
+template <typename T>
+void FloorDivGeneric(const IPortableTensor *lhs, const IPortableTensor *rhs,
+                     IPortableTensor *output)
+{
+  if (!HaveSameShapes(lhs, rhs))
+  {
+    nnfw::cker::FloorDivBroadcast<T>(getShape(lhs), getBuffer<T>(lhs), getShape(rhs),
+                                     getBuffer<T>(rhs), getShape(output), getBuffer<T>(output));
+  }
+  else
+  {
+    nnfw::cker::FloorDivElementwise<T>(getShape(lhs), getBuffer<T>(lhs), getBuffer<T>(rhs),
+                                       getBuffer<T>(output));
+  }
+}
+
 template <typename T>
 void logicalAndGeneric(const IPortableTensor *lhs, const IPortableTensor *rhs,
                        IPortableTensor *output)
@@ -101,6 +118,20 @@ void ElementwiseBinaryLayer::configure(const IPortableTensor *lhs, const IPortab
 
   switch (op_type)
   {
+    case ElementwiseBinaryType::kFloorDiv:
+      if (_lhs->data_type() == OperandType::FLOAT32)
+      {
+        _kernel = FloorDivGeneric<float>;
+      }
+      else if (_lhs->data_type() == OperandType::INT32)
+      {
+        _kernel = FloorDivGeneric<int32_t>;
+      }
+      else
+      {
+        throw std::runtime_error{"Max: unsupported data type"};
+      }
+      break;
     case ElementwiseBinaryType::kLogicalAnd:
       if ((_lhs->data_type() == OperandType::BOOL8) && (_rhs->data_type() == OperandType::BOOL8))
       {

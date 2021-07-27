@@ -130,6 +130,8 @@ convertElementwiseBinaryType(ir::operation::ElementwiseBinary::ElementwiseBinary
 {
   switch (type_ir)
   {
+    case ir::operation::ElementwiseBinary::ElementwiseBinaryType::FLOOR_DIV:
+      return ops::ElementwiseBinaryType::kFloorDiv;
     case ir::operation::ElementwiseBinary::ElementwiseBinaryType::LOGICAL_AND:
       return ops::ElementwiseBinaryType::kLogicalAnd;
     case ir::operation::ElementwiseBinary::ElementwiseBinaryType::LOGICAL_OR:

@@ -1493,6 +1493,10 @@ void BaseLoader<LoaderDomain>::loadOperation(const Operator *op, ir::Graph &subg
     case BuiltinOperator::BuiltinOperator_UNPACK:
       loadUnpack(op, subg);
       return;
+    case BuiltinOperator::BuiltinOperator_FLOOR_DIV:
+      loadElementwiseBinary(op, subg,
+                            ir::operation::ElementwiseBinary::ElementwiseBinaryType::FLOOR_DIV);
+      return;
     case BuiltinOperator::BuiltinOperator_MINIMUM:
       loadElementwiseBinary(op, subg, ir::operation::ElementwiseBinary::ElementwiseBinaryType::MIN);
       return;
