@@ -98,20 +98,18 @@ bool check_4d_transpose(loco::Node *node, const std::vector<int32_t> indices)
   return true;
 }
 
-luci::CircleTranspose *create_4d_transpose(luci::CircleNode *node,
+luci::CircleTranspose *create_Nd_transpose(luci::CircleNode *node,
                                            const std::vector<int32_t> indices)
 {
-  assert(indices.size() == 4);
-
   auto name = node->name();
   assert(name.length() > 0);
 
   auto perm = node->graph()->nodes()->create<luci::CircleConst>();
   perm->dtype(loco::DataType::S32);
-  perm->size<loco::DataType::S32>(4);
+  perm->size<loco::DataType::S32>(indices.size());
   perm->rank(1);
-  perm->dim(0) = 4;
-  for (uint32_t i = 0; i < 4; i++)
+  perm->dim(0) = indices.size();
+  for (uint32_t i = 0; i < indices.size(); i++)
     perm->at<loco::DataType::S32>(i) = indices[i];
   perm->shape_status(luci::ShapeStatus::VALID);
 
@@ -149,12 +147,17 @@ int32_t nchw_axis_to_nhwc(int32_t axis)
 
 luci::CircleTranspose *create_post_transpose(luci::CircleNode *node)
 {
-  return create_4d_transpose(node, {0, 3, 1, 2});
+  return create_Nd_transpose(node, {0, 3, 1, 2});
 }
 
 luci::CircleTranspose *create_pre_transpose(luci::CircleNode *node)
 {
-  return create_4d_transpose(node, {0, 2, 3, 1});
+  return create_Nd_transpose(node, {0, 2, 3, 1});
+}
+
+luci::CircleTranspose *create_post_transpose_3d(luci::CircleNode *node)
+{
+  return create_Nd_transpose(node, {0, 2, 1});
 }
 
 bool is_post_transpose(loco::Node *node) { return check_4d_transpose(node, {0, 3, 1, 2}); }
@@ -662,8 +665,8 @@ class ConvertNCHWToNHWC final : public luci::CircleNodeMutableVisitor<bool>
 
   bool visit(luci::CircleMean *node)
   {
-    // TODO Support the case for keep_dims = false
-    if (not node->keep_dims())
+    auto input = loco::must_cast<luci::CircleNode *>(node->input());
+    if (input->rank() != 4)
       return false;
 
     auto rindices = dynamic_cast<luci::CircleConst *>(node->reduction_indices());
@@ -675,7 +678,7 @@ class ConvertNCHWToNHWC final : public luci::CircleNodeMutableVisitor<bool>
       return false;
 
     auto pre_trans = create_pre_transpose(node);
-    pre_trans->a(node->input());
+    pre_trans->a(input);
     node->input(pre_trans);
 
     // Do shape inference for this node again.
@@ -683,7 +686,27 @@ class ConvertNCHWToNHWC final : public luci::CircleNodeMutableVisitor<bool>
 
     node->reduction_indices(nhwc_rindices);
 
-    auto post_trans = create_post_transpose(node);
+    if (node->keep_dims())
+    {
+      auto post_trans = create_post_transpose(node);
+      loco::replace(node).with(post_trans);
+
+      post_trans->a(node);
+
+      return true;
+    }
+
+    // node->keep_dims() == false
+    // Only a 3d output requires a transpose afterwards
+    if (node->rank() != 3)
+      return true;
+
+    // if channel dimension has been reduced, do nothing
+    if (nhwc_rindices->scalar<loco::DataType::S32>() == 3)
+      return true;
+
+    // if space dimension has been reduced, insert a transpose
+    auto post_trans = create_post_transpose_3d(node);
     loco::replace(node).with(post_trans);
 
     post_trans->a(node);
@@ -1047,7 +1070,11 @@ bool ConvertNCHWToNHWCPass::run(loco::Graph *g)
       ConvertNCHWToNHWC converter;
       auto circle_node = loco::must_cast<luci::CircleNode *>(node);
       if (circle_node->rank() != 4)
-        continue;
+      {
+        // Q(kvochko) What will happen if we remove rank-4 check?
+        if (not dynamic_cast<luci::CircleMean *>(node))
+          continue;
+      }
 
       if (circle_node->accept(&converter))
       {

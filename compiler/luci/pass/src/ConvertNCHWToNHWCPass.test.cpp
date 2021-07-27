@@ -224,7 +224,11 @@ protected:
     rindices->dtype(loco::DataType::S32);
 
     uint32_t channel_size = 16;
-    mean->shape({1, channel_size, 1, 1});
+    if (keep_dims)
+      mean->shape({1, channel_size, 1, 1});
+    else
+      mean->shape({1, channel_size});
+
     rindices->shape({2});
 
     rindices->size<loco::DataType::S32>(2);
@@ -233,7 +237,7 @@ protected:
 
     mean->input(input);
     mean->reduction_indices(rindices);
-    mean->keep_dims(true);
+    mean->keep_dims(keep_dims);
 
     mean->name("mean");
     rindices->name("rindices");
@@ -244,6 +248,7 @@ protected:
 public:
   luci::CircleMean *mean = nullptr;
   luci::CircleConst *rindices = nullptr;
+  bool keep_dims = true;
 };
 
 class MulGraph final : public SimpleGraph
@@ -686,6 +691,30 @@ TEST(ConvertNCHWToNHWC, Mean)
   auto mean_succs = loco::succs(g.mean);
   EXPECT_EQ(1, mean_succs.size());
   check_post_trans(*mean_succs.begin());
+
+  auto new_rindices = dynamic_cast<luci::CircleConst *>(g.mean->reduction_indices());
+  EXPECT_NE(nullptr, new_rindices);
+  EXPECT_EQ(1, new_rindices->rank());
+  EXPECT_EQ(2, new_rindices->dim(0).value());
+  EXPECT_EQ(2, new_rindices->size<loco::DataType::S32>());
+  EXPECT_EQ(1, new_rindices->at<loco::DataType::S32>(0));
+  EXPECT_EQ(2, new_rindices->at<loco::DataType::S32>(1));
+}
+
+TEST(ConvertNCHWToNHWC, Mean_keep_dims_false)
+{
+  MeanGraph g;
+  g.keep_dims = false;
+  g.init();
+
+  run_phase(&g.g, false, true);
+
+  check_pre_trans(g.mean->input());
+
+  auto mean_succs = loco::succs(g.mean);
+  EXPECT_EQ(1, mean_succs.size());
+  auto out = dynamic_cast<luci::CircleOutput *>(*mean_succs.begin());
+  EXPECT_NE(out, nullptr);
 
   auto new_rindices = dynamic_cast<luci::CircleConst *>(g.mean->reduction_indices());
   EXPECT_NE(nullptr, new_rindices);
