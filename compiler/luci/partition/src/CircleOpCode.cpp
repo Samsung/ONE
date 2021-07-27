@@ -32,7 +32,7 @@ class QueryOpCode final : public CircleNodeVisitor<BuiltinOperator>
 public:
 // NOTE only circle operator may have BuiltinOperator_XXX
 #define CIRCLE_NODE(OPCODE, CIRCLE_CLASS) \
-  BuiltinOperator visit(const CIRCLE_CLASS *) final { return BuiltinOperator_##OPCODE; }
+  BuiltinOperator visit(const luci::CIRCLE_CLASS *) final { return BuiltinOperator_##OPCODE; }
 #define CIRCLE_VNODE(OPCODE, CIRCLE_CLASS)
 
 #include "luci/IR/CircleNodes.lst"
@@ -48,7 +48,7 @@ public:
 // NOTE provide names for circle virtual nodes
 #define CIRCLE_NODE(OPCODE, CIRCLE_CLASS)
 #define CIRCLE_VNODE(OPCODE, CIRCLE_CLASS) \
-  const char *visit(const CIRCLE_CLASS *) final { return #OPCODE; }
+  const char *visit(const luci::CIRCLE_CLASS *) final { return #OPCODE; }
 
 #include "luci/IR/CircleNodes.lst"
 #undef CIRCLE_VNODE

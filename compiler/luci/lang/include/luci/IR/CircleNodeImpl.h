@@ -33,7 +33,7 @@ template <typename T> T CircleNode::accept(CircleNodeVisitorBase<T> *v) const
 #define CIRCLE_NODE(OPCODE, CLASS) \
                                    \
   case CircleOpcode::OPCODE:       \
-    return v->visit(dynamic_cast<const CLASS *>(this));
+    return v->visit(dynamic_cast<const luci::CLASS *>(this));
 #define CIRCLE_VNODE CIRCLE_NODE
 
 #include "CircleNodes.lst"
@@ -54,7 +54,7 @@ template <typename T> T CircleNode::accept(CircleNodeMutableVisitorBase<T> *v)
 #define CIRCLE_NODE(OPCODE, CLASS) \
                                    \
   case CircleOpcode::OPCODE:       \
-    return v->visit(dynamic_cast<CLASS *>(this));
+    return v->visit(dynamic_cast<luci::CLASS *>(this));
 #define CIRCLE_VNODE CIRCLE_NODE
 
 #include "CircleNodes.lst"

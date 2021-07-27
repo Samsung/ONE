@@ -32,7 +32,7 @@ template <typename T> struct CircleNodeVisitorBase
 {
   virtual ~CircleNodeVisitorBase() = default;
 
-#define CIRCLE_NODE(OPCODE, CIRCLE_CLASS) virtual T visit(const CIRCLE_CLASS *) = 0;
+#define CIRCLE_NODE(OPCODE, CIRCLE_CLASS) virtual T visit(const luci::CIRCLE_CLASS *) = 0;
 #define CIRCLE_VNODE CIRCLE_NODE
 
 #include "CircleNodes.lst"
@@ -44,8 +44,11 @@ template <typename T> struct CircleNodeVisitor : public CircleNodeVisitorBase<T>
 {
   virtual ~CircleNodeVisitor() = default;
 
-#define CIRCLE_NODE(OPCODE, CIRCLE_CLASS) \
-  virtual T visit(const CIRCLE_CLASS *node) { return visit(static_cast<const CircleNode *>(node)); }
+#define CIRCLE_NODE(OPCODE, CIRCLE_CLASS)                \
+  virtual T visit(const luci::CIRCLE_CLASS *node)        \
+  {                                                      \
+    return visit(static_cast<const CircleNode *>(node)); \
+  }
 #define CIRCLE_VNODE CIRCLE_NODE
 
 #include "CircleNodes.lst"
@@ -64,7 +67,7 @@ template <typename T> struct CircleNodeMutableVisitorBase
 {
   virtual ~CircleNodeMutableVisitorBase() = default;
 
-#define CIRCLE_NODE(OPCODE, CIRCLE_CLASS) virtual T visit(CIRCLE_CLASS *) = 0;
+#define CIRCLE_NODE(OPCODE, CIRCLE_CLASS) virtual T visit(luci::CIRCLE_CLASS *) = 0;
 #define CIRCLE_VNODE CIRCLE_NODE
 
 #include "CircleNodes.lst"
