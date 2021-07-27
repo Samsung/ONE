@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "kernels/Prelu.h"
+#include "kernels/PRelu.h"
 
 #include "kernels/BinaryOpCommon.h"
 #include "kernels/Utils.h"
@@ -29,17 +29,17 @@ namespace luci_interpreter
 namespace kernels
 {
 
-Prelu::Prelu(const Tensor *input, const Tensor *alpha, Tensor *output)
+PRelu::PRelu(const Tensor *input, const Tensor *alpha, Tensor *output)
   : Kernel({input, alpha}, {output})
 {
 }
 
-Prelu::~Prelu()
+PRelu::~PRelu()
 {
   // Destructor declared to delete vector of alpha quantized data properly
 }
 
-void Prelu::configure()
+void PRelu::configure()
 {
   LUCI_INTERPRETER_CHECK(input()->element_type() == output()->element_type());
   LUCI_INTERPRETER_CHECK(alpha()->element_type() == output()->element_type());
@@ -88,7 +88,7 @@ void Prelu::configure()
   output()->resize(calculateShapeForBroadcast(input()->shape(), alpha()->shape()));
 }
 
-void Prelu::execute() const
+void PRelu::execute() const
 {
   switch (input()->element_type())
   {
@@ -106,7 +106,7 @@ void Prelu::execute() const
   }
 }
 
-void Prelu::evalFloat() const
+void PRelu::evalFloat() const
 {
   const auto input_data = getTensorData<float>(input());
   const auto alpha_data = getTensorData<float>(alpha());
@@ -134,7 +134,7 @@ void Prelu::evalFloat() const
   }
 }
 
-void Prelu::evalQuantized() const
+void PRelu::evalQuantized() const
 {
   tflite::PreluParams op_params{};
 
@@ -176,7 +176,7 @@ static inline int16_t evalElemS16Prelu(int16_t input_val, int16_t alpha_val,
   return clamped_output;
 }
 
-void Prelu::evalQuantizedS16() const
+void PRelu::evalQuantizedS16() const
 {
   // Note that this kernel assumes alpha is CWQ
   tflite::RuntimeShape input_shape = getTensorShape(input());

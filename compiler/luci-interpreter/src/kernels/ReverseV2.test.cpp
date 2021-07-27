@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-#include "kernels/Reverse.h"
+#include "kernels/ReverseV2.h"
 #include "kernels/TestUtils.h"
 
 namespace luci_interpreter
@@ -52,7 +52,7 @@ TYPED_TEST(ReverseTest, MultiDimensions)
 
   Tensor output_tensor = makeOutputTensor(getElementType<TypeParam>());
 
-  Reverse kernel = Reverse(&input_tensor, &axis_tensor, &output_tensor);
+  ReverseV2 kernel = ReverseV2(&input_tensor, &axis_tensor, &output_tensor);
   kernel.configure();
   kernel.execute();
 
