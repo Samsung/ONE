@@ -27,6 +27,10 @@ import sys
 
 import utils as _utils
 
+# TODO Find better way to suppress trackback on error
+# This suppression is applied only to `one-build`
+sys.tracebacklimit = 0
+
 
 def _get_parser():
     parser = argparse.ArgumentParser(
