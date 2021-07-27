@@ -27,6 +27,11 @@ static inline void LocalResponseNormalization(const tflite::LocalResponseNormali
                                               const tflite::RuntimeShape& output_shape, float* output_data)
 {
   //MARK: At this moment this operation doesn't support on mcu
+  (void)op_params;
+  (void)input_shape;
+  (void)input_data;
+  (void)output_shape;
+  (void)output_data;
 }
 }
 

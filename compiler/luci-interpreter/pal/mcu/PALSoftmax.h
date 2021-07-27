@@ -25,6 +25,9 @@ static inline void PopulateSoftmaxLookupTable(tflite::SoftmaxParams* data, float
                                               float beta)
 {
   //Do nothing for mcu
+  (void)data;
+  (void)input_scale;
+  (void)beta;
 }
 
 static inline void InitializeParams(tflite::SoftmaxParams* params, float input_scale, float beta)
@@ -48,6 +51,11 @@ static inline void Softmax(const tflite::SoftmaxParams& params,
                     const tflite::RuntimeShape& output_shape, T* output_data)
 {
   //MARK: At this moment this operation doesn't support on mcu
+  (void)params;
+  (void)input_shape;
+  (void)input_data;
+  (void)output_shape;
+  (void)output_data;
 }
 }
 

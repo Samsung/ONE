@@ -30,6 +30,9 @@ static inline void PopulateSoftmaxLookupTable(tflite::SoftmaxParams* data, float
 static inline void InitializeParams(tflite::SoftmaxParams* params, float input_scale, float beta)
 {
   //Do nothing for linux
+  (void)params;
+  (void)input_scale;
+  (void)beta;
 }
 
 static inline void LogSoftmax(const tflite::SoftmaxParams& params, float input_scale,
