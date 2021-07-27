@@ -1,5 +1,6 @@
 # bin
 usr/share/one/bin/one-build usr/bin/one-build
+usr/share/one/bin/onecc usr/bin/onecc
 # lib
 usr/share/one/lib/libloco.so usr/lib/libloco.so
 usr/share/one/lib/libluci_env.so usr/lib/libluci_env.so
