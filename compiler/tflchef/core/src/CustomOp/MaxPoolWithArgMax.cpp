@@ -29,7 +29,7 @@ MaxPoolWithArgMaxChef::custom_value(flatbuffers::FlatBufferBuilder &fbb) const
 {
   auto &operation = (*_operation);
 
-  assert(operation.type() == "MaxPoolWithArgMax");
+  assert(operation.type() == "MaxPoolWithArgMax" || operation.type() == "MaxPoolWithArgmax");
 
   /**
    * REGISTER_OP("MaxPoolWithArgmax")
