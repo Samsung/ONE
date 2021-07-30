@@ -21,6 +21,7 @@ Source1011: FP16.tar.gz
 Source1012: OPENCL_HEADERS.tar.gz
 Source1013: FARMHASH.tar.gz
 Source1014: ABSEIL.tar.gz
+Source1015: oourafft.tar.gz
 Source2001: nnfw.pc.in
 Source2002: nnfw-plugin.pc.in
 
@@ -135,6 +136,7 @@ tar -xf %{SOURCE1011} -C ./externals
 tar -xf %{SOURCE1012} -C ./externals
 tar -xf %{SOURCE1013} -C ./externals
 tar -xf %{SOURCE1014} -C ./externals
+tar -xf %{SOURCE1015} -C ./externals
 
 %build
 %ifarch arm armv7l aarch64 x86_64 %ix86
