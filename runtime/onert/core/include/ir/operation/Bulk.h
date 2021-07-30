@@ -28,7 +28,7 @@ namespace operation
 
 class Bulk : public Operation
 {
-
+public:
   struct Param
   {
     std::string path;
