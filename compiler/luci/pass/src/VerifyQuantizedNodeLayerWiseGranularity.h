@@ -124,6 +124,16 @@ private:
     return true;
   }
 
+  bool visit(const luci::CirclePack *node)
+  {
+    RETURN_FALSE_UNLESS(is_lwq(node))
+    for (uint32_t i = 0; i < node->values_count(); i++)
+    {
+      RETURN_FALSE_UNLESS(is_lwq(node->values(i)));
+    }
+    return true;
+  }
+
   bool visit(const luci::CirclePad *node)
   {
     RETURN_FALSE_UNLESS(is_lwq(node))

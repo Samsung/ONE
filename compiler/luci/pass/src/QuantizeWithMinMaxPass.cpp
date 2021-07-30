@@ -1024,6 +1024,74 @@ private:
   bool visit(luci::CircleNode *) { return false; }
 };
 
+/** EXAMPLE
+ *
+ * BEFORE
+ *
+ *         [CircleNode]       [CircleConst]
+ *           (qparam1)           (FP32)
+ *                   \            /
+ *                    \          /
+ *                    [CirclePack]
+ *                     (qparam2)
+ *
+ *  AFTER
+ *
+ *         [CircleNode]        [CircleConst]   [CircleConst] <- Dead node
+ *           (qparam2)           (qparam2)         (FP32)
+ *                   \            /
+ *                    \          /
+ *                    [CirclePack]
+ *                     (qparam2)
+ */
+void propagate_pack_quantparam(luci::CirclePack *pack, loco::DataType quant_type)
+{
+  assert(pack->quantparam() != nullptr);
+
+  const auto num_inputs = pack->values_count();
+
+  for (uint32_t i = 0; i < num_inputs; i++)
+  {
+    auto node = loco::must_cast<luci::CircleNode *>(pack->arg(i));
+
+    // Skip if this input is CONCAT Op
+    if (node->opcode() == luci::CircleOpcode::PACK)
+      continue;
+
+    // Quantize constant values
+    if (node->opcode() == luci::CircleOpcode::CIRCLECONST)
+    {
+      luci::CircleConst *const_node = loco::must_cast<luci::CircleConst *>(node);
+      if (const_node->dtype() != loco::DataType::FLOAT32)
+        throw std::runtime_error("Unsupported data type for constant input of pack Op");
+
+      const auto pack_qparam = pack->quantparam();
+      if (pack_qparam == nullptr)
+        throw std::runtime_error("quantparam of pack is not found during propagation");
+
+      assert(pack_qparam->scale.size() == 1);
+      assert(pack_qparam->zerop.size() == 1);
+      const auto scaling_factor = pack_qparam->scale[0];
+      const auto zerop = pack_qparam->zerop[0];
+
+      auto new_const = luci::clone(const_node);
+      quant_const_values(new_const, scaling_factor, zerop, quant_type);
+      pack->values(i, new_const);
+      overwrite_quantparam(pack, new_const);
+    }
+    else
+    {
+      const auto succs = loco::succs(node);
+      if (succs.size() > 1)
+        continue;
+
+      // Non-const input must have been quantized
+      assert(node->quantparam() != nullptr);
+      overwrite_quantparam(pack, node);
+    }
+  }
+}
+
 /**
  * @brief Quantize const input tensors using min/max of const values
  */
@@ -1133,6 +1201,11 @@ void quantize_const_inputs(luci::CircleNode *node, loco::DataType output_type)
       // Second input should not be quantized (e.g., paddings)
       // Quant params are propagated from output range to the non-constant input
       propagate_pad_v2_quantparam(loco::must_cast<CirclePadV2 *>(node), output_type);
+      break;
+
+    case luci::CircleOpcode::PACK:
+      // Quant param is propagated from output to inputs
+      propagate_pack_quantparam(loco::must_cast<CirclePack *>(node), output_type);
       break;
 
     default:
