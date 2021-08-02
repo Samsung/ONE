@@ -26,14 +26,8 @@ target_include_directories(luci_interpreter_kernels SYSTEM PRIVATE
         "${TensorFlowEigenSource_DIR}"
         "${TensorFlowSource_DIR}")
 
-if (NOT LUCI_MICRO)
-  target_link_libraries(luci_interpreter_kernels
-          PUBLIC luci_interpreter_core
-          PRIVATE nncc_common Threads::Threads)
-else ()
-  target_link_libraries(luci_interpreter_kernels
-          PUBLIC luci_interpreter_core)
-endif ()
+target_link_libraries(luci_interpreter_kernels
+        PUBLIC luci_interpreter_core)
 
 if(NOT ENABLE_TEST)
   return()

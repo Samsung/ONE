@@ -1,5 +1,12 @@
+cmake_minimum_required(VERSION 3.10)
+project(luci_interpreter_micro_cross)
+
+set(ONE_INFRA_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../../infra CACHE INTERNAL "")
 set(ONE_COMPILER_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../ CACHE INTERNAL "")
 
+set(NNCC_SKIP_BUILD ON)
+set(ENABLE_TEST OFF)
+add_subdirectory(${ONE_INFRA_SRC_DIR}/nncc ${CMAKE_CURRENT_BINARY_DIR}/nncc)
 add_subdirectory(${ONE_COMPILER_SRC_DIR}/luci/lang ${CMAKE_CURRENT_BINARY_DIR}/luci/lang)
 add_subdirectory(${ONE_COMPILER_SRC_DIR}/loco ${CMAKE_CURRENT_BINARY_DIR}/loco)
 add_subdirectory(${ONE_COMPILER_SRC_DIR}/angkor ${CMAKE_CURRENT_BINARY_DIR}/angkor)
@@ -8,5 +15,4 @@ add_subdirectory(${ONE_COMPILER_SRC_DIR}/pepper-str ${CMAKE_CURRENT_BINARY_DIR}/
 add_subdirectory(${ONE_COMPILER_SRC_DIR}/logo ${CMAKE_CURRENT_BINARY_DIR}/logo)
 add_subdirectory(${ONE_COMPILER_SRC_DIR}/logo-core ${CMAKE_CURRENT_BINARY_DIR}/logo-core)
 add_subdirectory(${ONE_COMPILER_SRC_DIR}/locomotiv ${CMAKE_CURRENT_BINARY_DIR}/locomotiv)
-add_subdirectory(${ONE_INFRA_SRC_DIR}/nncc ${CMAKE_CURRENT_BINARY_DIR}/nncc)
 add_subdirectory(${ONE_COMPILER_SRC_DIR}/luci-interpreter ${CMAKE_CURRENT_BINARY_DIR}/luci-interpreter)

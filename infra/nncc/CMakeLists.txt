@@ -1,11 +1,5 @@
 cmake_minimum_required(VERSION 3.1)
 
-if (LUCI_MICRO)
-  add_library(nncc_common INTERFACE)
-  add_library(nncc_coverage INTERFACE)
-  return()
-endif ()
-
 project(nncc)
 
 enable_testing()
@@ -157,5 +151,9 @@ endif(ENABLE_COVERAGE)
 # TODO Remove this nnas_include
 nnas_include(OptionalTargetTools)
 nnas_include(AddSubdirectories)
+
+if(${NNCC_SKIP_BUILD})
+  return()
+endif()
 
 add_subdirectory("${NNAS_PROJECT_SOURCE_DIR}/compiler" "${CMAKE_BINARY_DIR}/compiler")

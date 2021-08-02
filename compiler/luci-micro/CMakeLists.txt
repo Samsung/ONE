@@ -22,7 +22,7 @@
 # Do not use external variables itself, to prevent caching problems
 macro(set_var_with_default DST_VAR SRC_VAR DEFAULT_VALUE)
   if (NOT DEFINED SRC_VAR)
-    set(DST_VAR DEFAULT_VALUE)
+    set(${DST_VAR} ${DEFAULT_VALUE})
   else()
     set(DST_VAR ${SRC_VAR})
   endif()
@@ -30,7 +30,7 @@ macro(set_var_with_default DST_VAR SRC_VAR DEFAULT_VALUE)
 endmacro()
 
 set_var_with_default(LUCI_MICRO_ LUCI_MICRO ON)
-set_var_with_default(LUCI_MICRO_ARM_BUILD_ LUCI_MICRO_ARM_BUILD OFF)
+set_var_with_default(LUCI_MICRO_ARM_BUILD_ LUCI_MICRO_ARM_BUILD ON)
 set_var_with_default(LUCI_MICRO_DOWNLOAD_ARM_COMPILER_ LUCI_MICRO_DOWNLOAD_ARM_COMPILER ON)
 set_var_with_default(LUCI_MICRO_MBEDOS_APP_ LUCI_MICRO_MBEDOS_APP OFF)
 
@@ -84,9 +84,13 @@ set(MICRO_HOST_BUILD_DIR "${CMAKE_CURRENT_BINARY_DIR}/host/")
 set(MICRO_HOST_BUILD_DEPENDENCY "${MICRO_HOST_BUILD_DIR}/CMakeCache.txt")
 
 # TODO set PAl for this build
+set(CMAKE_HOST_OPTIONS
+        -DLUCI_INTERPRETER_STATIC=ON
+        -DLUCI_STATIC=ON
+        -DEXTERNALS_BUILD_THREADS=${CPU_COUNT})
 file(MAKE_DIRECTORY "${MICRO_HOST_BUILD_DIR}")
 add_custom_command(OUTPUT "${MICRO_HOST_BUILD_DEPENDENCY}"
-        COMMAND "${CMAKE_COMMAND}" "${CMAKE_SOURCE_DIR}" -DLUCI_INTERPRETER_STATIC=ON -DLUCI_STATIC=ON "-DBUILD_WHITELIST=${MICRO_DEPENDENCIES_HOST}"
+        COMMAND "${CMAKE_COMMAND}" "${CMAKE_SOURCE_DIR}" ${CMAKE_HOST_OPTIONS} "-DBUILD_WHITELIST=${MICRO_DEPENDENCIES_HOST}"
         WORKING_DIRECTORY "${MICRO_HOST_BUILD_DIR}"
         DEPENDS luci_interpreter
         VERBATIM)
@@ -98,8 +102,7 @@ set(MICRO_HOST_BINARY "${MICRO_HOST_BUILD_DIR}/compiler/luci-interpreter/src/lib
 add_custom_command(OUTPUT "${MICRO_HOST_BINARY}"
         COMMAND "${CMAKE_MAKE_PROGRAM}" luci_interpreter -j ${CPU_COUNT}
         WORKING_DIRECTORY "${MICRO_HOST_BUILD_DIR}"
-        DEPENDS luci_interpreter_micro_host_prepare
-        VERBATIM)
+        DEPENDS luci_interpreter_micro_host_prepare)
 
 add_custom_target(luci_interpreter_micro_host DEPENDS "${MICRO_HOST_BINARY}")
 
@@ -114,13 +117,11 @@ endif()
 # Configure toolchain
 if (${LUCI_MICRO_DOWNLOAD_ARM_COMPILER_})
   # Download ARM none EABI toolchain
-  nnas_find_package(ArmNoneEabiToolchain)
-  set(COMPILERS_DIR_PATH "${ArmNoneEabiToolchain_BINARY_DIR}")
-
-  set(ARM_C_COMPILER "${COMPILERS_DIR_PATH}/arm-none-eabi-gcc")
-  set(ARM_ASM_COMPILER "${COMPILERS_DIR_PATH}/arm-none-eabi-gcc")
-  set(ARM_CXX_COMPILER "${COMPILERS_DIR_PATH}/arm-none-eabi-g++")
-  set(ARM_OBJCOPY "${COMPILERS_DIR_PATH}/arm-none-eabi-objcopy")
+  nnas_find_package(ArmNoneEabiToolchain REQUIRED)
+  set(ARM_C_COMPILER "${ArmNoneEabiToolchain_BINARY_DIR}/arm-none-eabi-gcc")
+  set(ARM_ASM_COMPILER "${ArmNoneEabiToolchain_BINARY_DIR}/arm-none-eabi-gcc")
+  set(ARM_CXX_COMPILER "${ArmNoneEabiToolchain_BINARY_DIR}/arm-none-eabi-g++")
+  set(ARM_OBJCOPY "${ArmNoneEabiToolchain_BINARY_DIR}/arm-none-eabi-objcopy")
 else()
   set(ARM_C_COMPILER "arm-none-eabi-gcc")
   set(ARM_ASM_COMPILER "arm-none-eabi-gcc")
@@ -135,24 +136,22 @@ set(MICRO_ARM_BUILD_DEPENDENCY "${MICRO_ARM_BUILD_DIR}/CMakeCache.txt")
 set(CMAKE_ARM_OPTIONS
         -DLUCI_INTERPRETER_STATIC=ON
         -DLUCI_STATIC=ON
-        "-DBUILD_COMPONENTS=${MICRO_DEPENDENCIES_COMMON}"
         -DCMAKE_TOOLCHAIN_FILE=${CMAKE_CURRENT_SOURCE_DIR}/CrossCompile/Toolchain.cmake
         -DCPU_ARCH=arm
         -DC_COMPILER=${ARM_C_COMPILER}
         -DCXX_COMPILER=${ARM_CXX_COMPILER}
         -DASM_COMPILER=${ARM_ASM_COMPILER}
-        -DOBJCOPY=${ARM_OBJCOPY}
-        )
+        -DOBJCOPY=${ARM_OBJCOPY})
 file(MAKE_DIRECTORY "${MICRO_ARM_BUILD_DIR}")
 add_custom_command(OUTPUT "${MICRO_ARM_BUILD_DEPENDENCY}"
-        COMMAND "${CMAKE_COMMAND}" "${CMAKE_CURRENT_SOURCE_DIR}/CrossCompile" ${CMAKE_ARM_OPTIONS}
+        COMMAND "${CMAKE_COMMAND}" "${CMAKE_CURRENT_SOURCE_DIR}/CrossCompile" ${CMAKE_ARM_OPTIONS} "-DBUILD_COMPONENTS=${MICRO_DEPENDENCIES_COMMON}"
         WORKING_DIRECTORY "${MICRO_ARM_BUILD_DIR}"
         DEPENDS luci_interpreter
         VERBATIM)
 
 add_custom_target(luci_interpreter_micro_arm_prepare DEPENDS "${MICRO_ARM_BUILD_DEPENDENCY}")
 
-set(MICRO_ARM_BINARY "${MICRO_ARM_BUILD_DIR}/compiler/luci-interpreter/src/libluci_interpreter.a")
+set(MICRO_ARM_BINARY "${MICRO_ARM_BUILD_DIR}/luci-interpreter/src/libluci_interpreter.a")
 
 add_custom_command(OUTPUT "${MICRO_ARM_BINARY}"
         COMMAND "${CMAKE_MAKE_PROGRAM}" luci_interpreter -j ${CPU_COUNT}
