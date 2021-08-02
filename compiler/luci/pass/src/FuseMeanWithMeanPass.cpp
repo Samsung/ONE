@@ -46,6 +46,7 @@ luci::CircleConst *create_fused_indices(luci::CircleConst *indices,
   auto fused_indices_const = indices->graph()->nodes()->create<luci::CircleConst>();
   fused_indices_const->dtype(indices->dtype());
   fused_indices_const->rank(1);
+  fused_indices_const->dim(0) = indices_set.size();
   fused_indices_const->size<loco::DataType::S32>(indices_set.size());
   fused_indices_const->shape_status(luci::ShapeStatus::VALID);
   fused_indices_const->name(name);
