@@ -595,6 +595,39 @@ private:
   luci::CircleDepthToSpace *_dtos = nullptr;
 };
 
+class PackTestGraph final : public SimpleTestGraph
+{
+public:
+  void init(void) override
+  {
+    TestIOGraph::init({16}, {32});
+    _param = create_dummy_const<Type::FLOAT32>(g(), {16});
+    _pack = g()->nodes()->create<luci::CirclePack>(2);
+    {
+      _pack->values(0, input());
+      _pack->values(1, _param);
+      _pack->axis(0);
+    }
+    output()->from(_pack);
+
+    set_minmax_to_non_const(g(), -1, 1);
+
+    // Set min/max of the input
+    // pack's qparam will be propagted, overwritten to the input
+    auto input = loco::must_cast<luci::CircleNode *>(pack()->values(0));
+    auto qp = input->quantparam();
+    qp->min[0] = -0.5;
+    qp->max[0] = 0.5;
+  }
+
+public:
+  luci::CirclePack *pack(void) { return _pack; }
+
+private:
+  luci::CirclePack *_pack = nullptr;
+  luci::CircleConst *_param = nullptr;
+};
+
 class PadTestGraph final : public SimpleTestGraph
 {
 public:
@@ -1502,6 +1535,41 @@ TEST(QuantizedModelVerifierTest, Tanh_wrong_granularity_NEG)
   TEST_WITH_WRONG_GRANULARITY(TanhTestGraph, Type::U8, Granularity::LayerWise);
   TEST_WITH_WRONG_GRANULARITY(TanhTestGraph, Type::U8, Granularity::ChannelWise);
   TEST_WITH_WRONG_GRANULARITY(TanhTestGraph, Type::S16, Granularity::ChannelWise);
+  SUCCEED();
+}
+
+TEST(QuantizedModelVerifierTest, Pack)
+{
+  TEST_WITH_GRAPH(PackTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_GRAPH(PackTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_GRAPH(PackTestGraph, Type::S16, Granularity::ChannelWise);
+
+  // Test if Pack's qparam is propagated to the input
+  {
+    PackTestGraph g;
+    g.init();
+    quantize_and_verify(g.g(), Type::U8, Granularity::ChannelWise);
+    auto input = loco::must_cast<luci::CircleNode *>(g.pack()->values(0));
+    auto qp = input->quantparam();
+    EXPECT_FLOAT_EQ(2.0 / 255.0, qp->scale[0]);
+    EXPECT_FLOAT_EQ(128, qp->zerop[0]);
+  }
+  SUCCEED();
+}
+
+TEST(QuantizedModelVerifierTest, Pack_wrong_type_NEG)
+{
+  TEST_WITH_WRONG_TYPE(PackTestGraph, Type::U8, Granularity::LayerWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(PackTestGraph, Type::U8, Granularity::ChannelWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(PackTestGraph, Type::S16, Granularity::ChannelWise, Type::U8);
+  SUCCEED();
+}
+
+TEST(QuantizedModelVerifierTest, Pack_wrong_granularity_NEG)
+{
+  TEST_WITH_WRONG_GRANULARITY(PackTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_WRONG_GRANULARITY(PackTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_WRONG_GRANULARITY(PackTestGraph, Type::S16, Granularity::ChannelWise);
   SUCCEED();
 }
 
