@@ -62,29 +62,49 @@ luci::CircleConst *create_fused_indices(luci::CircleConst *indices,
 
 bool fuse_mean_with_mean(luci::CircleMean *mean)
 {
-  // Check whether input rank of current CircleMean operation is less 2 or not.
-  // This optimization works only if doesn't.
-  auto input = loco::must_cast<luci::CircleNode *>(mean->input());
-  if (input->shape_status() != luci::ShapeStatus::VALID)
-    return false;
-  auto input_rank = input->rank();
-  if (input_rank < 2)
-    return false;
-
   // Get reduction indices of current CircleMean operation.
   auto indices = dynamic_cast<luci::CircleConst *>(mean->reduction_indices());
   if (not indices)
     return false;
   assert(indices->dtype() == loco::DataType::S32);
 
-  // Get set of indices in current CircleMean operation.
+  // Check whether previous node is CircleMean operation or not.
+  auto prev_mean = dynamic_cast<luci::CircleMean *>(mean->input());
+  if (not prev_mean)
+    return false;
+
+  // Check whether input rank of previous CircleMean operation is less 2 or not.
+  // This optimization works only if doesn't.
+  auto input = loco::must_cast<luci::CircleNode *>(prev_mean->input());
+  if (input->shape_status() != luci::ShapeStatus::VALID)
+    return false;
+  auto input_rank = input->rank();
+  if (input_rank < 2)
+    return false;
+
+  // Check whether current CircleMean and next CircleMean
+  // has the same keep_dims parameter or not.
+  // If it doesn't, keep the graph unchanged.
+  if (mean->keep_dims() != prev_mean->keep_dims())
+    return false;
+
+  // Get reduction indices of previous CircleMean operation.
+  auto prev_indices = dynamic_cast<luci::CircleConst *>(prev_mean->reduction_indices());
+  if (not prev_indices)
+    return false;
+  assert(prev_indices->dtype() == loco::DataType::S32);
+
+  // Get sizes of indices of current CircleMean operation and previous CircleMean operation.
   auto indices_size = indices->size<loco::DataType::S32>();
+  auto prev_indices_size = prev_indices->size<loco::DataType::S32>();
+
+  // Get set of indices of current CircleMean operation.
   std::set<uint32_t> indices_set;
-  for (uint32_t i = 0; i < indices_size; i++)
+  for (uint32_t i = 0; i < prev_indices_size; i++)
   {
-    auto index = indices->at<loco::DataType::S32>(i);
+    auto index = prev_indices->at<loco::DataType::S32>(i);
     if (index < 0)
-      return false;
+      index += input_rank;
     indices_set.insert(index);
   }
 
@@ -97,34 +117,12 @@ bool fuse_mean_with_mean(luci::CircleMean *mean)
       input_indices_vector.push_back(i);
   }
 
-  // Get next node after current CircleMean operation.
-  auto next_nodes = loco::succs(mean);
-  if (next_nodes.size() != 1)
-    return false;
-
-  // Check whether next node is CircleMean operation or not.
-  auto next_mean = dynamic_cast<luci::CircleMean *>(*next_nodes.begin());
-  if (not next_mean)
-    return false;
-
-  // Check whether current CircleMean and next CircleMean
-  // has the same keep_dims parameter or not.
-  // If it doesn't, keep the graph unchanged.
-  if (mean->keep_dims() != next_mean->keep_dims())
-    return false;
-
-  // Do the same checks as before for next_mean CircleMean operation.
-  auto next_indices = dynamic_cast<luci::CircleConst *>(next_mean->reduction_indices());
-  if (not next_indices)
-    return false;
-  assert(next_indices->dtype() == loco::DataType::S32);
-
-  auto next_indices_size = next_indices->size<loco::DataType::S32>();
-
   // Get final set of merged indices.
-  for (uint32_t i = 0; i < next_indices_size; i++)
+  for (uint32_t i = 0; i < indices_size; i++)
   {
-    auto index = next_indices->at<loco::DataType::S32>(i);
+    auto index = indices->at<loco::DataType::S32>(i);
+    if (index < 0)
+      index += input_rank;
     indices_set.insert(input_indices_vector.at(index));
   }
 
@@ -137,14 +135,14 @@ bool fuse_mean_with_mean(luci::CircleMean *mean)
   // Create and configure new CircleMean operation.
   auto fused_mean = mean->graph()->nodes()->create<luci::CircleMean>();
   fused_mean->reduction_indices(fused_indices_const);
-  fused_mean->input(mean->input());
-  fused_mean->keep_dims(next_mean->keep_dims());
+  fused_mean->input(prev_mean->input());
+  fused_mean->keep_dims(mean->keep_dims());
   fused_mean->name(name + "/Mean");
 
   // Replace old CircleMeans operations with new CircleMean operation with merged indices.
-  replace(next_mean).with(fused_mean);
+  replace(mean).with(fused_mean);
   luci::add_origin(fused_mean,
-                   luci::composite_origin({luci::get_origin(mean), luci::get_origin(next_mean)}));
+                   luci::composite_origin({luci::get_origin(mean), luci::get_origin(prev_mean)}));
 
   return true;
 }
