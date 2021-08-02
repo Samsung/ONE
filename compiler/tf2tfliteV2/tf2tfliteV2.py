@@ -16,8 +16,27 @@
 # limitations under the License.
 
 import tensorflow as tf
-import argparse
+
+# NOTE
+# TF_CPP_MIN_LOG_LEVEL
+#   0 : INFO + WARNING + ERROR + FATAL
+#   1 : WARNING + ERROR + FATAL
+#   2 : ERROR + FATAL
+#   3 : FETAL
+#
+# tracebacklimit
+#   The default is 1000.
+#   When set to 0 or less, all traceback information is suppressed
+import os
 import sys
+if os.getenv('ONE_IMPORT_TF_VERBOSE') == '1':
+    os.environ['TF_CPP_MIN_LOG_LEVEL'] = '0'
+    sys.tracebacklimit = 1000
+else:
+    os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+    sys.tracebacklimit = 0
+
+import argparse
 
 from google.protobuf.message import DecodeError
 from google.protobuf import text_format as _text_format

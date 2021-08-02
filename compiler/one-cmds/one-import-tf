@@ -123,11 +123,18 @@ def _verify_arg(parser, args):
         parser.error('the following arguments are required: ' + ' '.join(missing))
 
 
+def _set_verbose_level(level):
+    """set verbose environment"""
+    os.environ['ONE_IMPORT_TF_VERBOSE'] = str(level)
+
+
 def _parse_arg(parser):
     args = parser.parse_args()
     # print version
     if args.version:
         _utils._print_version_and_exit(__file__)
+    # set verbose level
+    _set_verbose_level(args.verbose)
 
     return args
 
