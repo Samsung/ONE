@@ -23,7 +23,7 @@ namespace luci
 {
 
 /**
- * @brief  Class to fuse two Me operations follow one by one into one Mean
+ * @brief  Class to fuse two Mean operations follow one by one into one Mean
  * with merge reduction indices
  */
 struct FuseMeanWithMeanPass final : public logo::Pass

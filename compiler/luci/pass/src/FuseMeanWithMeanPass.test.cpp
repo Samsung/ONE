@@ -34,13 +34,14 @@ using namespace luci::test;
  *                  |
  *          [CircleMean, axis<1>]
  *                  |
- *         [CircleMean, axis<1>]
+ *          [CircleMean, axis<1>]
  *                  |
  *
  *  AFTER
  *                  |
- *          [CircleMean, axis<1,2>]
- *                  |
+ *          [CircleMean, axis<1,2>]     [CircleMean, axis<1>]
+ *                  |                            |
+ *                                      [CircleMean, axis<1>]
  *
  */
 class MeansGraphlet
@@ -72,10 +73,10 @@ protected:
   luci::CircleConst *_indices2 = nullptr;
 };
 
-class FuseActTestGraph : public TestIOGraph, public MeansGraphlet
+class FuseMeanWithMeanTestGraph : public TestIOGraph, public MeansGraphlet
 {
 public:
-  FuseActTestGraph() = default;
+  FuseMeanWithMeanTestGraph() = default;
 
   void init(void)
   {
@@ -115,7 +116,7 @@ TEST(FuseMeanWithMeanPassTest, name)
 
 TEST(FuseMeanWithMeanPassTest, fuse_mean_with_mean)
 {
-  FuseActTestGraph g;
+  FuseMeanWithMeanTestGraph g;
   luci::FuseMeanWithMeanPass pass;
 
   g.init();
@@ -125,7 +126,7 @@ TEST(FuseMeanWithMeanPassTest, fuse_mean_with_mean)
 
 TEST(FuseMeanWithMeanPassTest, fus_mean_with_mean_NEG)
 {
-  FuseActTestGraph g;
+  FuseMeanWithMeanTestGraph g;
   luci::FuseMeanWithMeanPass pass;
 
   g.init();

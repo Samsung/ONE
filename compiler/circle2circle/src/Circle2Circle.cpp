@@ -145,13 +145,6 @@ int entry(int argc, char **argv)
     .default_value(false)
     .help("This will fuse operators to InstanceNorm operator");
 
-  arser.add_argument("--fuse_mean_with_mean")
-    .nargs(0)
-    .required(false)
-    .default_value(false)
-    .help("This will fuse two Mean operations when they follow one by one."
-          "This will fold them into one operation and merge reduction indices.");
-
   arser.add_argument("--make_batchnorm_gamma_positive")
     .nargs(0)
     .required(false)
@@ -413,8 +406,6 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::FuseBCQ);
   if (arser.get<bool>("--fuse_instnorm"))
     options->enable(Algorithms::FuseInstanceNorm);
-  if (arser.get<bool>("--fuse_mean_with_mean"))
-    options->enable(Algorithms::FuseMeanWithMean);
   if (arser.get<bool>("--make_batchnorm_gamma_positive"))
     options->enable(Algorithms::MakeBatchNormGammaPositive);
   if (arser.get<bool>("--fuse_preactivation_batchnorm"))
