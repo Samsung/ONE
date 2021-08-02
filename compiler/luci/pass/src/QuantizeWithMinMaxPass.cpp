@@ -1043,6 +1043,8 @@ private:
  *                    \          /
  *                    [CirclePack]
  *                     (qparam2)
+ *
+ * NOTE Quantization parameter of CirclePack (qparam2) is propagated to the inputs.
  */
 void propagate_pack_quantparam(luci::CirclePack *pack, loco::DataType quant_type)
 {
