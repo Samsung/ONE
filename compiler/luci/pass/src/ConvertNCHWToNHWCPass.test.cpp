@@ -764,7 +764,7 @@ TEST(ConvertNCHWToNHWC, Mean_keep_dims_false)
   }
 }
 
-TEST(ConvertNCHWToNHWC, ConvertNCHWToNHWC_Mean_keep_dims_false_N)
+TEST(ConvertNCHWToNHWC, ConvertNCHWToNHWC_Mean_keep_dims_false_NEG)
 {
   loco::Graph g;
   auto input = g.nodes()->create<luci::CircleInput>();
