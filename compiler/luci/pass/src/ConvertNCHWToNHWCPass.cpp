@@ -138,6 +138,44 @@ luci::CircleTranspose *create_4d_transpose(luci::CircleNode *node,
   return trans;
 }
 
+luci::CircleTranspose *create_Nd_transpose(luci::CircleNode *node,
+                                           const std::vector<int32_t> indices)
+{
+  auto name = node->name();
+  assert(name.length() > 0);
+
+  auto perm = node->graph()->nodes()->create<luci::CircleConst>();
+  perm->dtype(loco::DataType::S32);
+  perm->size<loco::DataType::S32>(indices.size());
+  perm->rank(1);
+  perm->dim(0) = indices.size();
+  for (uint32_t i = 0; i < indices.size(); i++)
+    perm->at<loco::DataType::S32>(i) = indices[i];
+  perm->shape_status(luci::ShapeStatus::VALID);
+
+  auto make_string = [](const std::vector<int32_t> &nums) {
+    std::string str;
+    for (auto num : nums)
+    {
+      if (str.length() > 0)
+        str += ".";
+      str += std::to_string(num);
+    }
+    return str;
+  };
+
+  auto str_indices = make_string(indices);
+
+  perm->name(name + "/Transpose_" + str_indices + "/perm");
+
+  auto trans = node->graph()->nodes()->create<luci::CircleTranspose>();
+  trans->perm(perm);
+  trans->name(name + "/Transpose_" + str_indices);
+  luci::add_origin(trans, luci::get_origin(node));
+
+  return trans;
+}
+
 int32_t nchw_axis_to_nhwc(int32_t axis)
 {
   uint32_t pos_axis = axis >= 0 ? static_cast<uint32_t>(axis) : static_cast<uint32_t>(axis + 4);
@@ -662,8 +700,8 @@ class ConvertNCHWToNHWC final : public luci::CircleNodeMutableVisitor<bool>
 
   bool visit(luci::CircleMean *node)
   {
-    // TODO Support the case for keep_dims = false
-    if (not node->keep_dims())
+    auto input = loco::must_cast<luci::CircleNode *>(node->input());
+    if (input->rank() != 4)
       return false;
 
     auto rindices = dynamic_cast<luci::CircleConst *>(node->reduction_indices());
@@ -675,7 +713,7 @@ class ConvertNCHWToNHWC final : public luci::CircleNodeMutableVisitor<bool>
       return false;
 
     auto pre_trans = create_pre_transpose(node);
-    pre_trans->a(node->input());
+    pre_trans->a(input);
     node->input(pre_trans);
 
     // Do shape inference for this node again.
@@ -683,7 +721,51 @@ class ConvertNCHWToNHWC final : public luci::CircleNodeMutableVisitor<bool>
 
     node->reduction_indices(nhwc_rindices);
 
-    auto post_trans = create_post_transpose(node);
+    if (node->keep_dims())
+    {
+      auto post_trans = create_post_transpose(node);
+      loco::replace(node).with(post_trans);
+
+      post_trans->a(node);
+
+      return true;
+    }
+
+    // node->keep_dims() == false
+    // 1D output never needs a transpose
+    if (node->rank() <= 1)
+      return true;
+
+    std::vector<bool> reduced_dims_nhwc(4, false);
+    uint32_t num_reduced_indices = nhwc_rindices->size<loco::DataType::S32>();
+
+    for (uint32_t ri = 0; ri < num_reduced_indices; ++ri)
+    {
+      reduced_dims_nhwc[nhwc_rindices->at<loco::DataType::S32>(ri)] = true;
+    }
+
+    // if channel dimension has been reduced, we don't need a transpose
+    if (reduced_dims_nhwc[3])
+      return true;
+
+    // likewise, if both space dimensions are reduced, no transpose is needed
+    if (reduced_dims_nhwc[1] && reduced_dims_nhwc[2])
+      return true;
+
+    std::vector<int32_t> post_trans_ind;
+    // case 1: only N is reduced
+    if (num_reduced_indices == 1 && reduced_dims_nhwc[0])
+      post_trans_ind = {2, 0, 1};
+
+    // case 2: only H or W is reduced
+    if (num_reduced_indices == 1 && (reduced_dims_nhwc[1] || reduced_dims_nhwc[2]))
+      post_trans_ind = {0, 2, 1};
+
+    // case 3: N and either H or W are reduced
+    if (num_reduced_indices == 2)
+      post_trans_ind = {1, 0};
+
+    auto post_trans = create_Nd_transpose(node, post_trans_ind);
     loco::replace(node).with(post_trans);
 
     post_trans->a(node);
@@ -1047,7 +1129,11 @@ bool ConvertNCHWToNHWCPass::run(loco::Graph *g)
       ConvertNCHWToNHWC converter;
       auto circle_node = loco::must_cast<luci::CircleNode *>(node);
       if (circle_node->rank() != 4)
-        continue;
+      {
+        // TODO replace the check above with the input rank check, and remove the condition below
+        if (not dynamic_cast<luci::CircleMean *>(node))
+          continue;
+      }
 
       if (circle_node->accept(&converter))
       {

@@ -223,17 +223,18 @@ protected:
     mean->dtype(loco::DataType::FLOAT32);
     rindices->dtype(loco::DataType::S32);
 
-    uint32_t channel_size = 16;
-    mean->shape({1, channel_size, 1, 1});
-    rindices->shape({2});
+    mean->shape(_shape);
+    rindices->shape({static_cast<uint32_t>(_axes.size())});
 
-    rindices->size<loco::DataType::S32>(2);
-    rindices->at<loco::DataType::S32>(0) = 2;
-    rindices->at<loco::DataType::S32>(1) = 3;
+    rindices->size<loco::DataType::S32>(_axes.size());
+    for (uint32_t i = 0; i < _axes.size(); ++i)
+    {
+      rindices->at<loco::DataType::S32>(i) = _axes[i];
+    }
 
     mean->input(input);
     mean->reduction_indices(rindices);
-    mean->keep_dims(true);
+    mean->keep_dims(_keep_dims);
 
     mean->name("mean");
     rindices->name("rindices");
@@ -242,8 +243,18 @@ protected:
   }
 
 public:
+  void keep_dims(bool val) { _keep_dims = val; }
+  void axes(std::vector<int32_t> val) { _axes = val; }
+  void shape(std::initializer_list<uint32_t> val) { _shape = val; }
+
+public:
   luci::CircleMean *mean = nullptr;
   luci::CircleConst *rindices = nullptr;
+
+private:
+  bool _keep_dims = true;
+  std::vector<int32_t> _axes = {2, 3};
+  std::initializer_list<uint32_t> _shape = {1, 16, 1, 1};
 };
 
 class MulGraph final : public SimpleGraph
@@ -688,6 +699,120 @@ TEST(ConvertNCHWToNHWC, Mean)
   check_post_trans(*mean_succs.begin());
 
   auto new_rindices = dynamic_cast<luci::CircleConst *>(g.mean->reduction_indices());
+  EXPECT_NE(nullptr, new_rindices);
+  EXPECT_EQ(1, new_rindices->rank());
+  EXPECT_EQ(2, new_rindices->dim(0).value());
+  EXPECT_EQ(2, new_rindices->size<loco::DataType::S32>());
+  EXPECT_EQ(1, new_rindices->at<loco::DataType::S32>(0));
+  EXPECT_EQ(2, new_rindices->at<loco::DataType::S32>(1));
+}
+
+TEST(ConvertNCHWToNHWC, Mean_keep_dims_false)
+{
+  struct TC
+  {
+    std::vector<int32_t> nchw_ind;
+    std::vector<int32_t> nhwc_ind;
+    std::initializer_list<uint32_t> shape;
+    bool needs_transpose = false;
+  };
+
+  uint32_t n = 1;
+  uint32_t c = 16;
+  uint32_t h = 4;
+  uint32_t w = 4;
+
+  std::vector<TC> test_cases{{{0}, {0}, {c, h, w}, true},       {{1}, {3}, {n, h, w}, false},
+                             {{2}, {1}, {n, c, w}, true},       {{3}, {2}, {n, c, h}, true},
+                             {{0, 1}, {0, 3}, {h, w}, false},   {{0, 2}, {0, 1}, {c, w}, true},
+                             {{0, 3}, {0, 2}, {c, h}, true},    {{1, 2}, {3, 1}, {n, w}, false},
+                             {{1, 3}, {3, 2}, {n, h}, false},   {{2, 3}, {1, 2}, {n, c}, false},
+                             {{0, 1, 2}, {0, 3, 1}, {w}, false}};
+
+  for (auto &tc : test_cases)
+  {
+    MeanGraph g;
+    g.keep_dims(false);
+    g.axes(tc.nchw_ind);
+    g.shape(tc.shape);
+    g.init();
+
+    run_phase(&g.g, false, true);
+
+    check_pre_trans(g.mean->input());
+
+    auto mean_succs = loco::succs(g.mean);
+    EXPECT_EQ(1, mean_succs.size());
+    if (tc.needs_transpose)
+    {
+      EXPECT_NE(nullptr, dynamic_cast<luci::CircleTranspose *>(*mean_succs.begin()));
+    }
+    else
+    {
+      EXPECT_NE(nullptr, dynamic_cast<luci::CircleOutput *>(*mean_succs.begin()));
+    }
+
+    auto new_rindices = dynamic_cast<luci::CircleConst *>(g.mean->reduction_indices());
+    EXPECT_NE(nullptr, new_rindices);
+    EXPECT_EQ(1, new_rindices->rank());
+    EXPECT_EQ(tc.nhwc_ind.size(), new_rindices->dim(0).value());
+    EXPECT_EQ(tc.nhwc_ind.size(), new_rindices->size<loco::DataType::S32>());
+    for (uint32_t i = 0; i < tc.nhwc_ind.size(); ++i)
+    {
+      EXPECT_EQ(tc.nhwc_ind[i], new_rindices->at<loco::DataType::S32>(i));
+    }
+  }
+}
+
+TEST(ConvertNCHWToNHWC, ConvertNCHWToNHWC_Mean_keep_dims_false_NEG)
+{
+  loco::Graph g;
+  auto input = g.nodes()->create<luci::CircleInput>();
+  auto output = g.nodes()->create<luci::CircleOutput>();
+  input->name("input");
+  output->name("output");
+
+  auto graph_input = g.inputs()->create();
+  input->index(graph_input->index());
+  auto graph_output = g.outputs()->create();
+  output->index(graph_output->index());
+
+  graph_input->dtype(loco::DataType::FLOAT32);
+  input->dtype(loco::DataType::FLOAT32);
+  output->dtype(loco::DataType::FLOAT32);
+  graph_output->dtype(loco::DataType::FLOAT32);
+
+  uint32_t channel_size = 16;
+  graph_input->shape({channel_size, 4, 4});
+  input->shape({channel_size, 4, 4});
+  output->shape({channel_size});
+  graph_output->shape({channel_size});
+
+  auto mean = g.nodes()->create<luci::CircleMean>();
+  auto rindices = g.nodes()->create<luci::CircleConst>();
+
+  mean->dtype(loco::DataType::FLOAT32);
+  rindices->dtype(loco::DataType::S32);
+
+  mean->shape({channel_size});
+  rindices->shape({2});
+
+  rindices->size<loco::DataType::S32>(2);
+  rindices->at<loco::DataType::S32>(0) = 1;
+  rindices->at<loco::DataType::S32>(1) = 2;
+
+  mean->input(input);
+  mean->reduction_indices(rindices);
+  mean->keep_dims(false);
+
+  mean->name("mean");
+  rindices->name("rindices");
+
+  output->from(mean);
+
+  run_phase(&g, true, true);
+
+  auto new_rindices = dynamic_cast<luci::CircleConst *>(mean->reduction_indices());
   EXPECT_NE(nullptr, new_rindices);
   EXPECT_EQ(1, new_rindices->rank());
   EXPECT_EQ(2, new_rindices->dim(0).value());
