@@ -1,5 +1,18 @@
-
-cmake_minimum_required(VERSION 3.19.0)
+# OVERVIEW
+#
+# build luci_micro for x86
+# if MICRO_INTERPRETER_ARM_BUILD
+#   if MICRO_INTERPRETER_DOWNLOAD_COMPILER
+#     download compiler
+#     set downloaded compiler as target
+#
+#   set toolchain cmake
+#   build_arm_luci_micro
+#   if MICRO_INTERPRETER_MBEDOS_APP
+#     download mdebos
+#     copy toolchain file to mbedos
+#     build mbed_os app
+#
 
 set(LUCI_MICRO ON CACHE BOOL "LUCI_MICRO BUILD FLAG")
 set(MBED_PATH ${CMAKE_CURRENT_SOURCE_DIR}/mbed-os CACHE INTERNAL "")
