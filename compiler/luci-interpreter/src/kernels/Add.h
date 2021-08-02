@@ -39,6 +39,7 @@ public:
 
 private:
   void evalFloat() const;
+  void evalInt32() const;
   void evalQuantized() const;
   void evalQuantizedS16() const;
 };

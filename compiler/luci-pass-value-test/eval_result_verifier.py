@@ -33,6 +33,10 @@ for i in range(num_inputs):
         input_data = np.array(
             np.random.randint(0, 256, size=input_details["shape"]),
             input_details["dtype"])
+    elif input_details["dtype"] == np.int32:
+        input_data = np.array(
+            np.random.randint(-65536, 65535, size=input_details["shape"]),
+            input_details["dtype"])
     elif input_details["dtype"] == np.bool_:
         input_data = np.array(
             np.random.choice(a=[True, False], size=input_details["shape"]),

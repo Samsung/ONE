@@ -214,6 +214,50 @@ TEST(AddTest, SInt16)
   }
 }
 
+TEST(AddTest, SInt32)
+{
+  // Do simple addition
+  Shape base_shape = {2, 3};
+  std::vector<Shape> test_shapes{{1, 3}, {2, 1}, {2, 3}};
+  std::vector<std::vector<int32_t>> test_outputs = {
+    {2, 4, 6, 5, 7, 9}, {2, 3, 4, 6, 7, 8}, {2, 4, 6, 8, 10, 12}};
+  std::vector<int32_t> input1_data{1, 2, 3, 4, 5, 6};
+  std::vector<std::vector<int32_t>> input2_data{{1, 2, 3}, {1, 2}, {1, 2, 3, 4, 5, 6}};
+  for (size_t i = 0; i < test_shapes.size(); ++i)
+  {
+    Tensor input1_tensor = makeInputTensor<DataType::S32>(base_shape, input1_data);
+    Tensor input2_tensor = makeInputTensor<DataType::S32>(test_shapes[i], input2_data[i]);
+    Tensor output_tensor = makeOutputTensor(DataType::S32);
+
+    AddParams params{};
+    params.activation = Activation::NONE;
+
+    Add kernel(&input1_tensor, &input2_tensor, &output_tensor, params);
+    kernel.configure();
+    kernel.execute();
+
+    EXPECT_THAT(extractTensorData<int32_t>(output_tensor), test_outputs[i])
+      << "With shape number " << i;
+  }
+  // Re-run with exchanged inputs.
+  for (size_t i = 0; i < test_shapes.size(); ++i)
+  {
+    Tensor input1_tensor = makeInputTensor<DataType::S32>(test_shapes[i], input2_data[i]);
+    Tensor input2_tensor = makeInputTensor<DataType::S32>(base_shape, input1_data);
+    Tensor output_tensor = makeOutputTensor(DataType::S32);
+
+    AddParams params{};
+    params.activation = Activation::NONE;
+
+    Add kernel(&input1_tensor, &input2_tensor, &output_tensor, params);
+    kernel.configure();
+    kernel.execute();
+
+    EXPECT_THAT(extractTensorData<int32_t>(output_tensor), test_outputs[i])
+      << "With shape number " << i;
+  }
+}
+
 TEST(AddTest, Input_Output_Type_NEG)
 {
   Tensor input1_tensor = makeInputTensor<DataType::FLOAT32>({1}, {1.f});

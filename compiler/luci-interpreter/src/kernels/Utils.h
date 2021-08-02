@@ -77,6 +77,8 @@ inline int32_t calcOffset(const Shape &shape, int32_t d0, int32_t d1, int32_t d2
 }
 
 void calculateActivationRange(Activation activation, float *activation_min, float *activation_max);
+void calculateActivationRange(Activation activation, int32_t *activation_min,
+                              int32_t *activation_max);
 
 void calculateActivationRangeQuantized(Activation activation, const Tensor *output,
                                        int32_t *activation_min, int32_t *activation_max);

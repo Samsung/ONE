@@ -83,6 +83,26 @@ TEST(WhileTest, FloatLoop10)
   EXPECT_THAT(extractTensorData<float>(output), FloatArrayNear({10}));
 }
 
+TEST(WhileTest, Int32Loop10)
+{
+  Tensor input = makeInputTensor<DataType::S32>({1}, {1});
+  Tensor output = makeOutputTensor(DataType::S32);
+
+  Tensor input_cond = makeInputTensor<DataType::S32>({1}, {10});
+  Tensor input_add = makeInputTensor<DataType::S32>({1}, {1});
+
+  RuntimeModule module(nullptr);
+  RuntimeGraph *cond_graph = buildCondSubgraph(&module, DataType::S32, &input_cond);
+  RuntimeGraph *body_graph = buildBodySubgraph(&module, DataType::S32, &input_add);
+
+  While kernel({&input}, {&output}, cond_graph, body_graph);
+  kernel.configure();
+  kernel.execute();
+
+  std::vector<int32_t> expected{10};
+  EXPECT_THAT(extractTensorData<int32_t>(output), expected);
+}
+
 } // namespace
 } // namespace kernels
 } // namespace luci_interpreter

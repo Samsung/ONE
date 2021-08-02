@@ -5,3 +5,6 @@
 # add(RECIPE_NAME PART_NAME)
 
 add(Net_InstanceNorm_003 Net_InstanceNorm_003)
+
+add(Part_While_000 Part_While_000)
+add(Part_While_001 Part_While_001)

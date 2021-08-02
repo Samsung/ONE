@@ -60,6 +60,9 @@ void Add::execute() const
     case DataType::S16:
       evalQuantizedS16();
       break;
+    case DataType::S32:
+      evalInt32();
+      break;
     default:
       throw std::runtime_error("Unsupported type.");
   }
@@ -89,6 +92,34 @@ void Add::evalFloat() const
     tflite::reference_ops::Add(params, getTensorShape(input1()), getTensorData<float>(input1()),
                                getTensorShape(input2()), getTensorData<float>(input2()),
                                getTensorShape(output()), getTensorData<float>(output()));
+  }
+}
+
+void Add::evalInt32() const
+{
+  int32_t activation_min{};
+  int32_t activation_max{};
+  calculateActivationRange(_params.activation, &activation_min, &activation_max);
+
+  // int32_t uses quantized_activation_min/max
+  tflite::ArithmeticParams params{};
+  params.quantized_activation_min = activation_min;
+  params.quantized_activation_max = activation_max;
+
+  const bool need_broadcast = tflite::reference_ops::ProcessBroadcastShapes(
+    getTensorShape(input1()), getTensorShape(input2()), &params);
+
+  if (need_broadcast)
+  {
+    tflite::reference_ops::BroadcastAdd4DSlow(
+      params, getTensorShape(input1()), getTensorData<int32_t>(input1()), getTensorShape(input2()),
+      getTensorData<int32_t>(input2()), getTensorShape(output()), getTensorData<int32_t>(output()));
+  }
+  else
+  {
+    tflite::reference_ops::Add(params, getTensorShape(input1()), getTensorData<int32_t>(input1()),
+                               getTensorShape(input2()), getTensorData<int32_t>(input2()),
+                               getTensorShape(output()), getTensorData<int32_t>(output()));
   }
 }
 

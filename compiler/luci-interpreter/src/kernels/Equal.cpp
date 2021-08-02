@@ -49,6 +49,9 @@ void Equal::execute() const
     case DataType::FLOAT32:
       evalFloat();
       break;
+    case DataType::S32:
+      evalInt32();
+      break;
     case DataType::U8:
       evalQuantized();
       break;
@@ -76,6 +79,29 @@ void Equal::evalFloat() const
   {
     tflite::reference_ops::Equal(op_params, getTensorShape(x()), x_data, getTensorShape(y()),
                                  y_data, getTensorShape(output()), output_data);
+  }
+}
+
+void Equal::evalInt32() const
+{
+  const auto x_data = getTensorData<int32_t>(x());
+  const auto y_data = getTensorData<int32_t>(y());
+  auto output_data = getTensorData<bool>(output());
+
+  tflite::ComparisonParams op_params;
+  op_params.is_broadcast = x()->shape() != y()->shape();
+
+  if (op_params.is_broadcast)
+  {
+    tflite::reference_ops::Broadcast4DSlowEqualNoScaling<int32_t>(
+      op_params, getTensorShape(x()), x_data, getTensorShape(y()), y_data, getTensorShape(output()),
+      output_data);
+  }
+  else
+  {
+    tflite::reference_ops::EqualNoScaling<int32_t>(op_params, getTensorShape(x()), x_data,
+                                                   getTensorShape(y()), y_data,
+                                                   getTensorShape(output()), output_data);
   }
 }
 

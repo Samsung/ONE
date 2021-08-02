@@ -53,6 +53,33 @@ void calculateActivationRange(Activation activation, float *activation_min, floa
   }
 }
 
+void calculateActivationRange(Activation activation, int32_t *activation_min,
+                              int32_t *activation_max)
+{
+  switch (activation)
+  {
+    case Activation::NONE:
+    case Activation::TANH:
+      *activation_min = std::numeric_limits<int32_t>::lowest();
+      *activation_max = std::numeric_limits<int32_t>::max();
+      break;
+    case Activation::RELU:
+      *activation_min = 0;
+      *activation_max = std::numeric_limits<int32_t>::max();
+      break;
+    case Activation::RELU_N1_TO_1:
+      *activation_min = -1;
+      *activation_max = 1;
+      break;
+    case Activation::RELU6:
+      *activation_min = 0;
+      *activation_max = 6;
+      break;
+    default:
+      throw std::runtime_error("Unsupported activation.");
+  }
+}
+
 static void calculateActivationRangeQuantizedImpl(Activation activation, int32_t qmin, int32_t qmax,
                                                   const Tensor *output, int32_t *activation_min,
                                                   int32_t *activation_max)
