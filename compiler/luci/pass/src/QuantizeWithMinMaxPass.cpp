@@ -1054,7 +1054,7 @@ void propagate_pack_quantparam(luci::CirclePack *pack, loco::DataType quant_type
   {
     auto node = loco::must_cast<luci::CircleNode *>(pack->arg(i));
 
-    // Skip if this input is CONCAT Op
+    // Skip if this input is PACK Op
     if (node->opcode() == luci::CircleOpcode::PACK)
       continue;
 

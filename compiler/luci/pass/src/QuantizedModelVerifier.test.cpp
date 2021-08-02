@@ -611,7 +611,17 @@ public:
     output()->from(_pack);
 
     set_minmax_to_non_const(g(), -1, 1);
+
+    // Set min/max of the input
+    // pack's qparam will be propagted, overwritten to the input
+    auto input = loco::must_cast<luci::CircleNode *>(pack()->values(0));
+    auto qp = input->quantparam();
+    qp->min[0] = -0.5;
+    qp->max[0] = 0.5;
   }
+
+public:
+  luci::CirclePack *pack(void) { return _pack; }
 
 private:
   luci::CirclePack *_pack = nullptr;
@@ -1533,6 +1543,17 @@ TEST(QuantizedModelVerifierTest, Pack)
   TEST_WITH_GRAPH(PackTestGraph, Type::U8, Granularity::LayerWise);
   TEST_WITH_GRAPH(PackTestGraph, Type::U8, Granularity::ChannelWise);
   TEST_WITH_GRAPH(PackTestGraph, Type::S16, Granularity::ChannelWise);
+
+  // Test if Pack's qparam is propagated to the input
+  {
+    PackTestGraph g;
+    g.init();
+    quantize_and_verify(g.g(), Type::U8, Granularity::ChannelWise);
+    auto input = loco::must_cast<luci::CircleNode *>(g.pack()->values(0));
+    auto qp = input->quantparam();
+    EXPECT_FLOAT_EQ(2.0 / 255.0, qp->scale[0]);
+    EXPECT_FLOAT_EQ(128, qp->zerop[0]);
+  }
   SUCCEED();
 }
 
