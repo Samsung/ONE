@@ -16,6 +16,7 @@
  */
 #include "kernels/L2Normalize.h"
 #include "kernels/TestUtils.h"
+#include "luci_interpreter/SimpleMemoryManager.h"
 
 namespace luci_interpreter
 {
@@ -30,7 +31,9 @@ template <typename T>
 void Check(std::initializer_list<int32_t> input_shape, std::initializer_list<int32_t> output_shape,
            std::initializer_list<float> input_data, std::initializer_list<float> output_data)
 {
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
+  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+  Tensor input_tensor =
+    makeInputTensor<DataType::FLOAT32>(input_shape, input_data, memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   L2NormParams params{};
@@ -38,6 +41,7 @@ void Check(std::initializer_list<int32_t> input_shape, std::initializer_list<int
 
   L2Normalize kernel(&input_tensor, &output_tensor, params);
   kernel.configure();
+  memory_manager->allocate_memory(&output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(output_data));
@@ -50,12 +54,13 @@ void Check<uint8_t>(std::initializer_list<int32_t> input_shape,
                     std::initializer_list<float> input_data,
                     std::initializer_list<float> output_data)
 {
+  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
   std::pair<float, int32_t> quant_param =
     quantizationParams<uint8_t>(std::min(input_data) < 0 ? std::min(input_data) : 0.f,
                                 std::max(input_data) > 0 ? std::max(input_data) : 0.f);
 
-  Tensor input_tensor =
-    makeInputTensor<DataType::U8>(input_shape, quant_param.first, quant_param.second, input_data);
+  Tensor input_tensor = makeInputTensor<DataType::U8>(
+    input_shape, quant_param.first, quant_param.second, input_data, memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::U8, 1. / 128., 128);
 
   L2NormParams params{};
@@ -63,6 +68,7 @@ void Check<uint8_t>(std::initializer_list<int32_t> input_shape,
 
   L2Normalize kernel(&input_tensor, &output_tensor, params);
   kernel.configure();
+  memory_manager->allocate_memory(&output_tensor);
   kernel.execute();
 
   EXPECT_THAT(dequantizeTensorData(output_tensor),
@@ -85,9 +91,11 @@ TYPED_TEST(L2NormalizeTest, Simple)
 
 TEST(L2NormalizeTest, ActivationType_NEG)
 {
+  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
   std::vector<float> input_data = {-1.1, 0.6, 0.7, 1.2, -0.7, 0.1};
 
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({1, 1, 1, 6}, input_data);
+  Tensor input_tensor =
+    makeInputTensor<DataType::FLOAT32>({1, 1, 1, 6}, input_data, memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   L2NormParams params{};
@@ -99,9 +107,11 @@ TEST(L2NormalizeTest, ActivationType_NEG)
 
 TEST(L2NormalizeTest, InvalidOutputQuantParam_NEG)
 {
+  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
   std::vector<float> input_data = {-1.1, 0.6, 0.7, 1.2, -0.7, 0.1};
 
-  Tensor input_tensor = makeInputTensor<DataType::U8>({1, 1, 1, 6}, 1. / 64., 127, input_data);
+  Tensor input_tensor =
+    makeInputTensor<DataType::U8>({1, 1, 1, 6}, 1. / 64., 127, input_data, memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::U8, 1. / 64., 127);
 
   L2NormParams params{};

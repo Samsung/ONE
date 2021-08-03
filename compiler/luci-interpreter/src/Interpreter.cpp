@@ -69,13 +69,14 @@ private:
 
 } // namespace
 
-Interpreter::Interpreter(const luci::Module *module)
+Interpreter::Interpreter(const luci::Module *module, luci_interpreter::MManager *memory_manager)
 {
   _runtime_to_ir = std::make_unique<RuntimeToIR>();
   _event_notifier = std::make_unique<EventNotifierImpl>(*_runtime_to_ir, _observers);
   _runtime_module = std::make_unique<RuntimeModule>(_event_notifier.get());
   ModuleLoader loader(module, _runtime_module.get(), *_runtime_to_ir, _node_to_tensor);
-  loader.load();
+  loader.load(memory_manager);
+  _memory_manager = memory_manager;
 }
 
 Interpreter::~Interpreter() = default;
@@ -90,7 +91,8 @@ void Interpreter::writeInputTensor(const luci::CircleInput *input_node, const vo
     throw std::runtime_error("Cannot find tensor for input node named \"" + name + "\".");
   }
   if (data != nullptr)
-    tensor->writeData(data, data_size);
+    _memory_manager->allocate_memory(tensor);
+  tensor->writeData(data, data_size);
 }
 
 void Interpreter::readOutputTensor(const luci::CircleOutput *output_node, void *data,

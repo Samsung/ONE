@@ -16,6 +16,7 @@
 
 #include "kernels/Sqrt.h"
 #include "kernels/TestUtils.h"
+#include "luci_interpreter/SimpleMemoryManager.h"
 
 namespace luci_interpreter
 {
@@ -29,11 +30,15 @@ using namespace testing;
 void Check(std::initializer_list<int32_t> input_shape, std::initializer_list<int32_t> output_shape,
            std::initializer_list<float> input_data, std::initializer_list<float> output_data)
 {
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
+  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+
+  Tensor input_tensor =
+    makeInputTensor<DataType::FLOAT32>(input_shape, input_data, memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   Sqrt kernel(&input_tensor, &output_tensor);
   kernel.configure();
+  memory_manager->allocate_memory(&output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(output_data));
@@ -58,20 +63,25 @@ TEST(SqrtTest, SimpleSqrt)
 
 TEST(SqrtTest, Input_Output_Type_NEG)
 {
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({1}, {1.f});
+  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+
+  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({1}, {1.f}, memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::S32);
 
   Sqrt kernel(&input_tensor, &output_tensor);
   EXPECT_ANY_THROW(kernel.configure());
 }
 
-TEST(AddTest, Invalid_Input_Type_NEG)
+TEST(SqrtTest, Invalid_Input_Type_NEG)
 {
-  Tensor input_tensor = makeInputTensor<DataType::S64>({1}, {1});
+  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+
+  Tensor input_tensor = makeInputTensor<DataType::S64>({1}, {1}, memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::S64);
 
   Sqrt kernel(&input_tensor, &output_tensor);
   kernel.configure();
+  memory_manager->allocate_memory(&output_tensor);
   EXPECT_ANY_THROW(kernel.execute());
 }
 

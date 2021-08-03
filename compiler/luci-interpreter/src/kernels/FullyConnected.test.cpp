@@ -16,6 +16,7 @@
 
 #include "kernels/FullyConnected.h"
 #include "kernels/TestUtils.h"
+#include "luci_interpreter/SimpleMemoryManager.h"
 
 namespace luci_interpreter
 {
@@ -32,9 +33,13 @@ void Check(std::initializer_list<int32_t> input_shape, std::initializer_list<int
            std::initializer_list<float> input_data, std::initializer_list<float> weights_data,
            std::initializer_list<float> bias_data, std::initializer_list<float> output_data)
 {
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
-  Tensor weights_tensor = makeInputTensor<DataType::FLOAT32>(weights_shape, weights_data);
-  Tensor bias_tensor = makeInputTensor<DataType::FLOAT32>(bias_shape, bias_data);
+  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+  Tensor input_tensor =
+    makeInputTensor<DataType::FLOAT32>(input_shape, input_data, memory_manager.get());
+  Tensor weights_tensor =
+    makeInputTensor<DataType::FLOAT32>(weights_shape, weights_data, memory_manager.get());
+  Tensor bias_tensor =
+    makeInputTensor<DataType::FLOAT32>(bias_shape, bias_data, memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   FullyConnectedParams params{};
@@ -42,6 +47,7 @@ void Check(std::initializer_list<int32_t> input_shape, std::initializer_list<int
 
   FullyConnected kernel(&input_tensor, &weights_tensor, &bias_tensor, &output_tensor, params);
   kernel.configure();
+  memory_manager->allocate_memory(&output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(output_shape));
@@ -55,15 +61,19 @@ void Check<uint8_t>(
   std::initializer_list<float> input_data, std::initializer_list<float> weights_data,
   std::initializer_list<float> bias_data, std::initializer_list<float> output_data)
 {
+  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
   const float quantized_tolerance = getTolerance(-127, 128, 255);
   std::pair<float, int32_t> input_quant_param = quantizationParams<uint8_t>(-63.5, 64);
   std::pair<float, int32_t> output_quant_param = quantizationParams<uint8_t>(-127, 128);
-  Tensor input_tensor = makeInputTensor<DataType::U8>(input_shape, input_quant_param.first,
-                                                      input_quant_param.second, input_data);
-  Tensor weights_tensor = makeInputTensor<DataType::U8>(weights_shape, input_quant_param.first,
-                                                        input_quant_param.second, weights_data);
-  Tensor bias_tensor = makeInputTensor<DataType::S32>(
-    bias_shape, input_quant_param.first * input_quant_param.first, 0, bias_data);
+  Tensor input_tensor =
+    makeInputTensor<DataType::U8>(input_shape, input_quant_param.first, input_quant_param.second,
+                                  input_data, memory_manager.get());
+  Tensor weights_tensor =
+    makeInputTensor<DataType::U8>(weights_shape, input_quant_param.first, input_quant_param.second,
+                                  weights_data, memory_manager.get());
+  Tensor bias_tensor =
+    makeInputTensor<DataType::S32>(bias_shape, input_quant_param.first * input_quant_param.first, 0,
+                                   bias_data, memory_manager.get());
   Tensor output_tensor =
     makeOutputTensor(DataType::U8, output_quant_param.first, output_quant_param.second);
 
@@ -72,6 +82,7 @@ void Check<uint8_t>(
 
   FullyConnected kernel(&input_tensor, &weights_tensor, &bias_tensor, &output_tensor, params);
   kernel.configure();
+  memory_manager->allocate_memory(&output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(output_shape));
@@ -121,9 +132,13 @@ TEST(FullyConnectedTest, InvalidBiasType_NEG)
   Shape bias_shape{3};
   std::vector<int32_t> bias_data{-1, -5, -8};
 
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
-  Tensor weights_tensor = makeInputTensor<DataType::FLOAT32>(weights_shape, weights_data);
-  Tensor bias_tensor = makeInputTensor<DataType::S32>(bias_shape, bias_data);
+  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+
+  Tensor input_tensor =
+    makeInputTensor<DataType::FLOAT32>(input_shape, input_data, memory_manager.get());
+  Tensor weights_tensor =
+    makeInputTensor<DataType::FLOAT32>(weights_shape, weights_data, memory_manager.get());
+  Tensor bias_tensor = makeInputTensor<DataType::S32>(bias_shape, bias_data, memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   FullyConnectedParams params{};
@@ -149,9 +164,14 @@ TEST(FullyConnectedTest, InvalidWeightShapeDim_NEG)
   Shape bias_shape{3};
   std::vector<float> bias_data{-1, -5, -8};
 
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
-  Tensor weights_tensor = makeInputTensor<DataType::FLOAT32>(weights_shape, weights_data);
-  Tensor bias_tensor = makeInputTensor<DataType::FLOAT32>(bias_shape, bias_data);
+  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+
+  Tensor input_tensor =
+    makeInputTensor<DataType::FLOAT32>(input_shape, input_data, memory_manager.get());
+  Tensor weights_tensor =
+    makeInputTensor<DataType::FLOAT32>(weights_shape, weights_data, memory_manager.get());
+  Tensor bias_tensor =
+    makeInputTensor<DataType::FLOAT32>(bias_shape, bias_data, memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   FullyConnectedParams params{};
@@ -180,9 +200,14 @@ TEST(FullyConnectedTest, BiasElementNumWeightDimMismatch_NEG)
   Shape bias_shape{3};
   std::vector<float> bias_data{-1, -5, -8};
 
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
-  Tensor weights_tensor = makeInputTensor<DataType::FLOAT32>(weights_shape, weights_data);
-  Tensor bias_tensor = makeInputTensor<DataType::FLOAT32>(bias_shape, bias_data);
+  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+
+  Tensor input_tensor =
+    makeInputTensor<DataType::FLOAT32>(input_shape, input_data, memory_manager.get());
+  Tensor weights_tensor =
+    makeInputTensor<DataType::FLOAT32>(weights_shape, weights_data, memory_manager.get());
+  Tensor bias_tensor =
+    makeInputTensor<DataType::FLOAT32>(bias_shape, bias_data, memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   FullyConnectedParams params{};

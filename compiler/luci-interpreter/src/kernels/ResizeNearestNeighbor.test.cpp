@@ -17,6 +17,7 @@
 
 #include "kernels/ResizeNearestNeighbor.h"
 #include "kernels/TestUtils.h"
+#include "luci_interpreter/SimpleMemoryManager.h"
 
 namespace luci_interpreter
 {
@@ -33,8 +34,11 @@ void Check(std::initializer_list<int32_t> input_shape, std::initializer_list<int
            std::initializer_list<int32_t> size_data, std::initializer_list<float> output_data,
            bool align_corners, bool half_pixel_centers)
 {
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
-  Tensor size_tensor = makeInputTensor<DataType::S32>(size_shape, size_data);
+  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+
+  Tensor input_tensor =
+    makeInputTensor<DataType::FLOAT32>(input_shape, input_data, memory_manager.get());
+  Tensor size_tensor = makeInputTensor<DataType::S32>(size_shape, size_data, memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   ResizeNearestNeighborParams params{};
@@ -43,6 +47,7 @@ void Check(std::initializer_list<int32_t> input_shape, std::initializer_list<int
 
   ResizeNearestNeighbor kernel(&input_tensor, &size_tensor, &output_tensor, params);
   kernel.configure();
+  memory_manager->allocate_memory(&output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(output_shape));
@@ -58,12 +63,14 @@ void Check<uint8_t>(std::initializer_list<int32_t> input_shape,
                     std::initializer_list<float> output_data, bool align_corners,
                     bool half_pixel_centers)
 {
+  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+
   std::pair<float, int32_t> quant_param =
     quantizationParams<uint8_t>(std::min(input_data) < 0 ? std::min(input_data) : 0.f,
                                 std::max(input_data) > 0 ? std::max(input_data) : 0.f);
-  Tensor input_tensor =
-    makeInputTensor<DataType::U8>(input_shape, quant_param.first, quant_param.second, input_data);
-  Tensor size_tensor = makeInputTensor<DataType::S32>(size_shape, size_data);
+  Tensor input_tensor = makeInputTensor<DataType::U8>(
+    input_shape, quant_param.first, quant_param.second, input_data, memory_manager.get());
+  Tensor size_tensor = makeInputTensor<DataType::S32>(size_shape, size_data, memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::U8, quant_param.first, quant_param.first);
 
   ResizeNearestNeighborParams params{};
@@ -72,6 +79,7 @@ void Check<uint8_t>(std::initializer_list<int32_t> input_shape,
 
   ResizeNearestNeighbor kernel(&input_tensor, &size_tensor, &output_tensor, params);
   kernel.configure();
+  memory_manager->allocate_memory(&output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(output_shape));
@@ -151,13 +159,17 @@ TYPED_TEST(ResizeNearestNeighborTest, HalfPixelCenterTest)
 
 TEST(ResizeNearestNeighborTest, InputShapeInvalid_NEG)
 {
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({2, 2, 2}, {
-                                                                        3, 6,  //
-                                                                        9, 12, //
-                                                                        4, 10, //
-                                                                        10, 16 //
-                                                                      });
-  Tensor size_tensor = makeInputTensor<DataType::S32>({2}, {3, 3});
+  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+
+  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({2, 2, 2},
+                                                           {
+                                                             3, 6,  //
+                                                             9, 12, //
+                                                             4, 10, //
+                                                             10, 16 //
+                                                           },
+                                                           memory_manager.get());
+  Tensor size_tensor = makeInputTensor<DataType::S32>({2}, {3, 3}, memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   ResizeNearestNeighborParams params{};
@@ -170,13 +182,17 @@ TEST(ResizeNearestNeighborTest, InputShapeInvalid_NEG)
 
 TEST(ResizeNearestNeighborTest, SizeShapeInvalid_NEG)
 {
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({2, 2, 2, 1}, {
-                                                                           3, 6,  //
-                                                                           9, 12, //
-                                                                           4, 10, //
-                                                                           10, 16 //
-                                                                         });
-  Tensor size_tensor = makeInputTensor<DataType::S32>({2, 1}, {3, 3});
+  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+
+  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({2, 2, 2, 1},
+                                                           {
+                                                             3, 6,  //
+                                                             9, 12, //
+                                                             4, 10, //
+                                                             10, 16 //
+                                                           },
+                                                           memory_manager.get());
+  Tensor size_tensor = makeInputTensor<DataType::S32>({2, 1}, {3, 3}, memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   ResizeNearestNeighborParams params{};
@@ -189,13 +205,17 @@ TEST(ResizeNearestNeighborTest, SizeShapeInvalid_NEG)
 
 TEST(ResizeNearestNeighborTest, SizeDimInvalid_NEG)
 {
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({2, 2, 2, 1}, {
-                                                                           3, 6,  //
-                                                                           9, 12, //
-                                                                           4, 10, //
-                                                                           10, 16 //
-                                                                         });
-  Tensor size_tensor = makeInputTensor<DataType::S32>({3}, {3, 3, 1});
+  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+
+  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({2, 2, 2, 1},
+                                                           {
+                                                             3, 6,  //
+                                                             9, 12, //
+                                                             4, 10, //
+                                                             10, 16 //
+                                                           },
+                                                           memory_manager.get());
+  Tensor size_tensor = makeInputTensor<DataType::S32>({3}, {3, 3, 1}, memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   ResizeNearestNeighborParams params{};
