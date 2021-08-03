@@ -16,6 +16,7 @@
 
 #include "kernels/DepthToSpace.h"
 #include "kernels/TestUtils.h"
+#include "luci_interpreter/SimpleMemoryManager.h"
 
 namespace luci_interpreter
 {
@@ -35,12 +36,14 @@ TYPED_TEST_CASE(DepthToSpaceTest, DataTypes);
 
 TYPED_TEST(DepthToSpaceTest, SimpleCase)
 {
+  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
   std::vector<TypeParam> input_data{1, 2, 3, 4, 5, 6, 7, 8};
   Shape input_shape{1, 1, 2, 4};
   std::vector<TypeParam> output_data{1, 2, 5, 6, 3, 4, 7, 8};
   std::vector<int32_t> output_shape{1, 2, 4, 1};
 
-  Tensor input_tensor = makeInputTensor<getElementType<TypeParam>()>(input_shape, input_data);
+  Tensor input_tensor =
+    makeInputTensor<getElementType<TypeParam>()>(input_shape, input_data, memory_manager.get());
   Tensor output_tensor = makeOutputTensor(getElementType<TypeParam>());
 
   DepthToSpaceParams params{};
@@ -48,6 +51,7 @@ TYPED_TEST(DepthToSpaceTest, SimpleCase)
 
   DepthToSpace kernel = DepthToSpace(&input_tensor, &output_tensor, params);
   kernel.configure();
+  memory_manager->allocate_memory(&output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorData<TypeParam>(output_tensor),
@@ -57,10 +61,12 @@ TYPED_TEST(DepthToSpaceTest, SimpleCase)
 
 TEST(DepthToSpaceTest, InvalidInputShape_NEG)
 {
+  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
   std::vector<float> input_data{1, 2, 3, 4, 5, 6, 7, 8};
   Shape input_shape{1, 2, 4};
 
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
+  Tensor input_tensor =
+    makeInputTensor<DataType::FLOAT32>(input_shape, input_data, memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   DepthToSpaceParams params{};
@@ -72,10 +78,12 @@ TEST(DepthToSpaceTest, InvalidInputShape_NEG)
 
 TEST(DepthToSpaceTest, InOutTypeMismatch_NEG)
 {
+  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
   std::vector<float> input_data{1, 2, 3, 4, 5, 6, 7, 8};
   Shape input_shape{1, 1, 2, 4};
 
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
+  Tensor input_tensor =
+    makeInputTensor<DataType::FLOAT32>(input_shape, input_data, memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::U8);
 
   DepthToSpaceParams params{};
@@ -87,10 +95,12 @@ TEST(DepthToSpaceTest, InOutTypeMismatch_NEG)
 
 TEST(DepthToSpaceTest, InvalidBlockSize_NEG)
 {
+  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
   std::vector<float> input_data{1, 2, 3, 4, 5, 6, 7, 8};
   Shape input_shape{1, 1, 2, 4};
 
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
+  Tensor input_tensor =
+    makeInputTensor<DataType::FLOAT32>(input_shape, input_data, memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   DepthToSpaceParams params{};

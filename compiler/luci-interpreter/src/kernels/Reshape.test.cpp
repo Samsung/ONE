@@ -16,6 +16,7 @@
 
 #include "kernels/Reshape.h"
 #include "kernels/TestUtils.h"
+#include "luci_interpreter/SimpleMemoryManager.h"
 
 namespace luci_interpreter
 {
@@ -26,37 +27,51 @@ namespace
 
 using namespace testing;
 
+class ReshapeTest : public ::testing::Test
+{
+protected:
+  void SetUp() override { _memory_manager = std::make_unique<SimpleMManager>(); }
+
+  std::unique_ptr<MManager> _memory_manager;
+};
+
 // TODO Test types other than FLOAT32.
 
-TEST(ReshapeTest, Regular)
+TEST_F(ReshapeTest, Regular)
 {
   Shape input_shape{1, 2, 2, 3};
   std::vector<float> input_data{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
   Shape shape_shape{2};
   std::vector<int32_t> shape_data{3, 4};
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
-  Tensor shape_tensor = makeInputTensor<DataType::S32>(shape_shape, shape_data);
+  Tensor input_tensor =
+    makeInputTensor<DataType::FLOAT32>(input_shape, input_data, _memory_manager.get());
+  Tensor shape_tensor =
+    makeInputTensor<DataType::S32>(shape_shape, shape_data, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   Reshape kernel(&input_tensor, &shape_tensor, &output_tensor);
   kernel.configure();
+  _memory_manager->allocate_memory(&output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(input_data));
 }
 
-TEST(ReshapeTest, UnknownDimension)
+TEST_F(ReshapeTest, UnknownDimension)
 {
   Shape input_shape{2, 1, 2, 3};
   std::vector<float> input_data{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
   Shape shape_shape{3};
   std::vector<int32_t> shape_data{2, -1, 2};
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
-  Tensor shape_tensor = makeInputTensor<DataType::S32>(shape_shape, shape_data);
+  Tensor input_tensor =
+    makeInputTensor<DataType::FLOAT32>(input_shape, input_data, _memory_manager.get());
+  Tensor shape_tensor =
+    makeInputTensor<DataType::S32>(shape_shape, shape_data, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   Reshape kernel(&input_tensor, &shape_tensor, &output_tensor);
   kernel.configure();
+  _memory_manager->allocate_memory(&output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(input_data));

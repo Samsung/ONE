@@ -17,6 +17,7 @@
 
 #include "kernels/L2Pool2D.h"
 #include "kernels/TestUtils.h"
+#include "luci_interpreter/SimpleMemoryManager.h"
 
 namespace luci_interpreter
 {
@@ -27,14 +28,23 @@ namespace
 
 using namespace testing;
 
-TEST(L2Pool2DTest, FloatNone)
+class L2Pool2DTest : public ::testing::Test
+{
+protected:
+  void SetUp() override { _memory_manager = std::make_unique<SimpleMManager>(); }
+
+  std::unique_ptr<MManager> _memory_manager;
+};
+
+TEST_F(L2Pool2DTest, FloatNone)
 {
   Shape input_shape{1, 2, 4, 1};
   std::vector<float> input_data{
     0, 6, 2,  4, //
     3, 2, 10, 7, //
   };
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
+  Tensor input_tensor =
+    makeInputTensor<DataType::FLOAT32>(input_shape, input_data, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   Pool2DParams params{};
@@ -47,6 +57,7 @@ TEST(L2Pool2DTest, FloatNone)
 
   L2Pool2D kernel(&input_tensor, &output_tensor, params);
   kernel.configure();
+  _memory_manager->allocate_memory(&output_tensor);
   kernel.execute();
 
   std::vector<float> ref_output_data{3.5, 6.5};
@@ -54,14 +65,15 @@ TEST(L2Pool2DTest, FloatNone)
   // TODO make a Shape checking of output_tensor.
 }
 
-TEST(L2Pool2DTest, FloatRelu)
+TEST_F(L2Pool2DTest, FloatRelu)
 {
   Shape input_shape{1, 2, 4, 1};
   std::vector<float> input_data{
     -1, -6, 2,  4, //
     -3, -2, 10, 7, //
   };
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
+  Tensor input_tensor =
+    makeInputTensor<DataType::FLOAT32>(input_shape, input_data, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   Pool2DParams params{};
@@ -74,6 +86,7 @@ TEST(L2Pool2DTest, FloatRelu)
 
   L2Pool2D kernel(&input_tensor, &output_tensor, params);
   kernel.configure();
+  _memory_manager->allocate_memory(&output_tensor);
   kernel.execute();
 
   std::vector<float> ref_output_data{3.53553, 6.5};
@@ -81,14 +94,15 @@ TEST(L2Pool2DTest, FloatRelu)
   // TODO make a Shape checking of output_tensor.
 }
 
-TEST(L2Pool2DTest, FloatRelu1)
+TEST_F(L2Pool2DTest, FloatRelu1)
 {
   Shape input_shape{1, 2, 4, 1};
   std::vector<float> input_data{
     -0.1, -0.6, 2,  4, //
     -0.3, -0.2, 10, 7, //
   };
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
+  Tensor input_tensor =
+    makeInputTensor<DataType::FLOAT32>(input_shape, input_data, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   Pool2DParams params{};
@@ -101,6 +115,7 @@ TEST(L2Pool2DTest, FloatRelu1)
 
   L2Pool2D kernel(&input_tensor, &output_tensor, params);
   kernel.configure();
+  _memory_manager->allocate_memory(&output_tensor);
   kernel.execute();
 
   std::vector<float> ref_output_data{0.353553, 1.0};
@@ -108,14 +123,15 @@ TEST(L2Pool2DTest, FloatRelu1)
   // TODO make a Shape checking of output_tensor.
 }
 
-TEST(L2Pool2DTest, FloatRelu6)
+TEST_F(L2Pool2DTest, FloatRelu6)
 {
   Shape input_shape{1, 2, 4, 1};
   std::vector<float> input_data{
     -0.1, -0.6, 2,  4, //
     -0.3, -0.2, 10, 7, //
   };
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
+  Tensor input_tensor =
+    makeInputTensor<DataType::FLOAT32>(input_shape, input_data, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   Pool2DParams params{};
@@ -128,6 +144,7 @@ TEST(L2Pool2DTest, FloatRelu6)
 
   L2Pool2D kernel(&input_tensor, &output_tensor, params);
   kernel.configure();
+  _memory_manager->allocate_memory(&output_tensor);
   kernel.execute();
 
   std::vector<float> ref_output_data{0.353553, 6.0};
@@ -135,14 +152,15 @@ TEST(L2Pool2DTest, FloatRelu6)
   // TODO make a Shape checking of output_tensor.
 }
 
-TEST(L2Pool2DTest, FloatPaddingSame)
+TEST_F(L2Pool2DTest, FloatPaddingSame)
 {
   Shape input_shape{1, 2, 4, 1};
   std::vector<float> input_data{
     0, 6, 2,  4, //
     3, 2, 10, 7, //
   };
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
+  Tensor input_tensor =
+    makeInputTensor<DataType::FLOAT32>(input_shape, input_data, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   Pool2DParams params{};
@@ -155,6 +173,7 @@ TEST(L2Pool2DTest, FloatPaddingSame)
 
   L2Pool2D kernel(&input_tensor, &output_tensor, params);
   kernel.configure();
+  _memory_manager->allocate_memory(&output_tensor);
   kernel.execute();
 
   std::vector<float> ref_output_data{3.5, 6.5};
@@ -162,14 +181,15 @@ TEST(L2Pool2DTest, FloatPaddingSame)
   // TODO make a Shape checking of output_tensor.
 }
 
-TEST(L2Pool2DTest, FloatPaddingSameStride)
+TEST_F(L2Pool2DTest, FloatPaddingSameStride)
 {
   Shape input_shape{1, 2, 4, 1};
   std::vector<float> input_data{
     0, 6, 2,  4, //
     3, 2, 10, 7, //
   };
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
+  Tensor input_tensor =
+    makeInputTensor<DataType::FLOAT32>(input_shape, input_data, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   Pool2DParams params{};
@@ -182,6 +202,7 @@ TEST(L2Pool2DTest, FloatPaddingSameStride)
 
   L2Pool2D kernel(&input_tensor, &output_tensor, params);
   kernel.configure();
+  _memory_manager->allocate_memory(&output_tensor);
   kernel.execute();
 
   std::vector<float> ref_output_data{3.5, 6.0, 6.5, 5.70088, 2.54951, 7.2111, 8.63134, 7.0};
@@ -189,14 +210,15 @@ TEST(L2Pool2DTest, FloatPaddingSameStride)
   // TODO make a Shape checking of output_tensor.
 }
 
-TEST(L2Pool2DTest, FloatPaddingValidStride)
+TEST_F(L2Pool2DTest, FloatPaddingValidStride)
 {
   Shape input_shape{1, 2, 4, 1};
   std::vector<float> input_data{
     0, 6, 2,  4, //
     3, 2, 10, 7, //
   };
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
+  Tensor input_tensor =
+    makeInputTensor<DataType::FLOAT32>(input_shape, input_data, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   Pool2DParams params{};
@@ -209,6 +231,7 @@ TEST(L2Pool2DTest, FloatPaddingValidStride)
 
   L2Pool2D kernel(&input_tensor, &output_tensor, params);
   kernel.configure();
+  _memory_manager->allocate_memory(&output_tensor);
   kernel.execute();
 
   std::vector<float> ref_output_data{3.5, 6.0, 6.5};
@@ -216,14 +239,15 @@ TEST(L2Pool2DTest, FloatPaddingValidStride)
   // TODO make a Shape checking of output_tensor.
 }
 
-TEST(L2Pool2DTest, InvalidInputShape_NEG)
+TEST_F(L2Pool2DTest, InvalidInputShape_NEG)
 {
   Shape input_shape{1, 2, 4};
   std::vector<float> input_data{
     0, 6, 2,  4, //
     3, 2, 10, 7, //
   };
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
+  Tensor input_tensor =
+    makeInputTensor<DataType::FLOAT32>(input_shape, input_data, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   Pool2DParams params{};
@@ -238,14 +262,15 @@ TEST(L2Pool2DTest, InvalidInputShape_NEG)
   EXPECT_ANY_THROW(kernel.configure());
 }
 
-TEST(L2Pool2DTest, InvalidInputOutputType_NEG)
+TEST_F(L2Pool2DTest, InvalidInputOutputType_NEG)
 {
   Shape input_shape{1, 2, 4};
   std::vector<float> input_data{
     0, 6, 2,  4, //
     3, 2, 10, 7, //
   };
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
+  Tensor input_tensor =
+    makeInputTensor<DataType::FLOAT32>(input_shape, input_data, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::U8);
 
   Pool2DParams params{};

@@ -22,6 +22,7 @@
 #include <luci/IR/Nodes/CircleInput.h>
 #include <luci/IR/Nodes/CircleOutput.h>
 
+#include <luci_interpreter/MemoryManager.h>
 #include <luci/IR/Module.h>
 
 #include <memory>
@@ -49,7 +50,7 @@ public:
 class Interpreter
 {
 public:
-  explicit Interpreter(const luci::Module *module);
+  explicit Interpreter(const luci::Module *module, MManager *memory_manager = nullptr);
 
   ~Interpreter();
 
@@ -65,6 +66,7 @@ public:
 
 private:
   std::unique_ptr<class RuntimeModule> _runtime_module;
+  MManager *_memory_manager;
 
   // Observer functionality support.
   std::unique_ptr<struct RuntimeToIR> _runtime_to_ir;

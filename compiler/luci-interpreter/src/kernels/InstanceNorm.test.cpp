@@ -15,6 +15,7 @@
  */
 #include "kernels/InstanceNorm.h"
 #include "kernels/TestUtils.h"
+#include "luci_interpreter/SimpleMemoryManager.h"
 
 namespace luci_interpreter
 {
@@ -24,11 +25,21 @@ namespace
 {
 
 using namespace testing;
-TEST(InstanceNormTest, Simple)
+
+class InstanceNormTest : public ::testing::Test
 {
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({1, 2, 2, 1}, {1, 1, 1, 1});
-  Tensor gamma_tensor = makeInputTensor<DataType::FLOAT32>({1}, {1});
-  Tensor beta_tensor = makeInputTensor<DataType::FLOAT32>({1}, {2});
+protected:
+  void SetUp() override { _memory_manager = std::make_unique<SimpleMManager>(); }
+
+  std::unique_ptr<MManager> _memory_manager;
+};
+
+TEST_F(InstanceNormTest, Simple)
+{
+  Tensor input_tensor =
+    makeInputTensor<DataType::FLOAT32>({1, 2, 2, 1}, {1, 1, 1, 1}, _memory_manager.get());
+  Tensor gamma_tensor = makeInputTensor<DataType::FLOAT32>({1}, {1}, _memory_manager.get());
+  Tensor beta_tensor = makeInputTensor<DataType::FLOAT32>({1}, {2}, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   InstanceNormParams params{};
@@ -37,17 +48,19 @@ TEST(InstanceNormTest, Simple)
 
   InstanceNorm kernel(&input_tensor, &gamma_tensor, &beta_tensor, &output_tensor, params);
   kernel.configure();
+  _memory_manager->allocate_memory(&output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear({2, 2, 2, 2}));
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({1, 2, 2, 1}));
 }
 
-TEST(InstanceNormTest, Single_gamma_beta)
+TEST_F(InstanceNormTest, Single_gamma_beta)
 {
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({1, 2, 1, 2}, {1, 1, 1, 1});
-  Tensor gamma_tensor = makeInputTensor<DataType::FLOAT32>({1}, {1});
-  Tensor beta_tensor = makeInputTensor<DataType::FLOAT32>({1}, {2});
+  Tensor input_tensor =
+    makeInputTensor<DataType::FLOAT32>({1, 2, 1, 2}, {1, 1, 1, 1}, _memory_manager.get());
+  Tensor gamma_tensor = makeInputTensor<DataType::FLOAT32>({1}, {1}, _memory_manager.get());
+  Tensor beta_tensor = makeInputTensor<DataType::FLOAT32>({1}, {2}, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   InstanceNormParams params{};
@@ -56,17 +69,19 @@ TEST(InstanceNormTest, Single_gamma_beta)
 
   InstanceNorm kernel(&input_tensor, &gamma_tensor, &beta_tensor, &output_tensor, params);
   kernel.configure();
+  _memory_manager->allocate_memory(&output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear({2, 2, 2, 2}));
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({1, 2, 1, 2}));
 }
 
-TEST(InstanceNormTest, Wrong_gamma_beta_dim_NEG)
+TEST_F(InstanceNormTest, Wrong_gamma_beta_dim_NEG)
 {
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({1, 2, 1, 2}, {1, 1, 1, 1});
-  Tensor gamma_tensor = makeInputTensor<DataType::FLOAT32>({3}, {1, 1, 1});
-  Tensor beta_tensor = makeInputTensor<DataType::FLOAT32>({3}, {2, 2, 2});
+  Tensor input_tensor =
+    makeInputTensor<DataType::FLOAT32>({1, 2, 1, 2}, {1, 1, 1, 1}, _memory_manager.get());
+  Tensor gamma_tensor = makeInputTensor<DataType::FLOAT32>({3}, {1, 1, 1}, _memory_manager.get());
+  Tensor beta_tensor = makeInputTensor<DataType::FLOAT32>({3}, {2, 2, 2}, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   InstanceNormParams params{};

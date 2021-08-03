@@ -16,6 +16,7 @@
 
 #include "kernels/Elu.h"
 #include "kernels/TestUtils.h"
+#include "luci_interpreter/SimpleMemoryManager.h"
 
 namespace luci_interpreter
 {
@@ -29,11 +30,14 @@ using namespace testing;
 void Check(std::initializer_list<int32_t> input_shape, std::initializer_list<int32_t> output_shape,
            std::initializer_list<float> input_data, std::initializer_list<float> output_data)
 {
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
+  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+  Tensor input_tensor =
+    makeInputTensor<DataType::FLOAT32>(input_shape, input_data, memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   Elu kernel(&input_tensor, &output_tensor);
   kernel.configure();
+  memory_manager->allocate_memory(&output_tensor);
   kernel.execute();
 
   (void)output_shape;
@@ -58,12 +62,14 @@ TEST(EluTest, SimpleElu)
 
 TEST(EluTest, InOutTypeMismatch_NEG)
 {
+  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
   Shape input_shape{1, 2, 4, 1};
   std::vector<float> input_data{
     0, -6, 2,  -4,   //
     3, -2, 10, -0.1, //
   };
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
+  Tensor input_tensor =
+    makeInputTensor<DataType::FLOAT32>(input_shape, input_data, memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::U8);
 
   Elu kernel(&input_tensor, &output_tensor);

@@ -16,6 +16,7 @@
 
 #include "kernels/Cast.h"
 #include "kernels/TestUtils.h"
+#include "luci_interpreter/SimpleMemoryManager.h"
 
 namespace luci_interpreter
 {
@@ -30,14 +31,16 @@ template <typename T1, typename T2>
 void Check(std::initializer_list<int32_t> shape, std::initializer_list<T1> input_data,
            std::initializer_list<T2> output_data)
 {
+  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
   constexpr DataType input_type = getElementType<T1>();
   constexpr DataType output_type = getElementType<T2>();
 
-  Tensor input_tensor = makeInputTensor<input_type>(shape, input_data);
+  Tensor input_tensor = makeInputTensor<input_type>(shape, input_data, memory_manager.get());
   Tensor output_tensor = makeOutputTensor(output_type);
 
   Cast kernel(&input_tensor, &output_tensor);
   kernel.configure();
+  memory_manager->allocate_memory(&output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorData<T2>(output_tensor), ::testing::ElementsAreArray(output_data));
@@ -206,10 +209,13 @@ TEST(CastTest, BoolToBool)
 
 TEST(CastTest, UnsupportedType_NEG)
 {
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({1, 1, 2, 4}, {
-                                                                           1, 2, 7, 8, //
-                                                                           1, 9, 7, 3, //
-                                                                         });
+  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({1, 1, 2, 4},
+                                                           {
+                                                             1, 2, 7, 8, //
+                                                             1, 9, 7, 3, //
+                                                           },
+                                                           memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::Unknown);
 
   Cast kernel(&input_tensor, &output_tensor);

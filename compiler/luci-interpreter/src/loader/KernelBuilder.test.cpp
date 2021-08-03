@@ -16,6 +16,7 @@
 
 #include "loader/GraphLoader.h"
 #include "loader/KernelBuilder.h"
+#include "luci_interpreter/SimpleMemoryManager.h"
 
 #include <kernels/Add.h>
 #include <kernels/ArgMax.h>
@@ -91,6 +92,9 @@ class KernelBuilderTest : public Test
 {
 protected:
   luci::CircleInput *createInputNode() { return createNode<luci::CircleInput>(); }
+  void SetUp() override { _memory_manager = std::make_unique<SimpleMManager>(); }
+
+  std::unique_ptr<MManager> _memory_manager;
 
   template <typename NodeT, typename... Args> NodeT *createNode(Args &&... args)
   {
@@ -114,10 +118,11 @@ protected:
   {
     std::unordered_map<const loco::Graph *, RuntimeGraph *> graph_to_runtime_graph;
 
-    RuntimeGraph runtime_graph(nullptr);
+    RuntimeGraph runtime_graph(nullptr, _memory_manager.get());
+    graph_to_runtime_graph[&_graph] = &runtime_graph;
     RuntimeToIR runtime_to_ir;
     GraphLoader graph_loader(&_graph, &runtime_graph, runtime_to_ir, graph_to_runtime_graph,
-                             _node_to_tensor);
+                             _node_to_tensor, _memory_manager.get());
     graph_loader.loadTensors();
 
     KernelBuilder kernel_builder(graph_to_runtime_graph, _node_to_tensor);

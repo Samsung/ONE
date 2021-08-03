@@ -16,6 +16,7 @@
 
 #include "kernels/Logistic.h"
 #include "kernels/TestUtils.h"
+#include "luci_interpreter/SimpleMemoryManager.h"
 
 namespace luci_interpreter
 {
@@ -30,11 +31,15 @@ template <typename T>
 void Check(std::initializer_list<int32_t> input_shape, std::initializer_list<int32_t> output_shape,
            std::initializer_list<float> input_data, std::initializer_list<float> output_data)
 {
-  Tensor input_tensor = makeInputTensor<getElementType<T>()>(input_shape, input_data);
+  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+
+  Tensor input_tensor =
+    makeInputTensor<getElementType<T>()>(input_shape, input_data, memory_manager.get());
   Tensor output_tensor = makeOutputTensor(getElementType<T>());
 
   Logistic kernel(&input_tensor, &output_tensor);
   kernel.configure();
+  memory_manager->allocate_memory(&output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(output_data));
@@ -47,14 +52,18 @@ void Check<uint8_t>(std::initializer_list<int32_t> input_shape,
                     std::initializer_list<float> input_data,
                     std::initializer_list<float> output_data)
 {
+  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+
   std::pair<float, int32_t> input_quant_param =
     quantizationParams<uint8_t>(std::min(input_data), std::max(input_data));
-  Tensor input_tensor = makeInputTensor<DataType::U8>(input_shape, input_quant_param.first,
-                                                      input_quant_param.second, input_data);
+  Tensor input_tensor =
+    makeInputTensor<DataType::U8>(input_shape, input_quant_param.first, input_quant_param.second,
+                                  input_data, memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::U8, 1. / 256, 0);
 
   Logistic kernel(&input_tensor, &output_tensor);
   kernel.configure();
+  memory_manager->allocate_memory(&output_tensor);
   kernel.execute();
 
   EXPECT_THAT(dequantizeTensorData(output_tensor),
@@ -107,9 +116,12 @@ TYPED_TEST(LogisticTest, Simple)
 
 TEST(LogisticTest, IvalidInputOutputType_NEG)
 {
+  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+
   Shape input_shape = {1};
   std::vector<float> input_data{10};
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
+  Tensor input_tensor =
+    makeInputTensor<DataType::FLOAT32>(input_shape, input_data, memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::U8, 1. / 256, 0);
 
   Logistic kernel(&input_tensor, &output_tensor);
@@ -118,11 +130,13 @@ TEST(LogisticTest, IvalidInputOutputType_NEG)
 
 TEST(LogisticTest, IvalidQuantParam_NEG)
 {
+  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
   Shape input_shape = {2};
   std::vector<float> input_data{-10, 10};
   std::pair<float, int32_t> input_quant_param = quantizationParams<uint8_t>(-10, 10);
-  Tensor input_tensor = makeInputTensor<DataType::U8>(input_shape, input_quant_param.first,
-                                                      input_quant_param.second, input_data);
+  Tensor input_tensor =
+    makeInputTensor<DataType::U8>(input_shape, input_quant_param.first, input_quant_param.second,
+                                  input_data, memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::U8, 1. / 255, 0);
 
   Logistic kernel(&input_tensor, &output_tensor);

@@ -17,6 +17,7 @@
 
 #include "kernels/LocalResponseNormalization.h"
 #include "kernels/TestUtils.h"
+#include "luci_interpreter/SimpleMemoryManager.h"
 
 namespace luci_interpreter
 {
@@ -27,10 +28,18 @@ namespace
 
 using namespace testing;
 
-TEST(LocalResponseNormalizationTest, SameAsL2Norm)
+class LocalResponseNormalizationTest : public ::testing::Test
 {
-  Tensor input_tensor =
-    makeInputTensor<DataType::FLOAT32>({1, 1, 1, 6}, {-1.1, 0.6, 0.7, 1.2, -0.7, 0.1});
+protected:
+  void SetUp() override { _memory_manager = std::make_unique<SimpleMManager>(); }
+
+  std::unique_ptr<MManager> _memory_manager;
+};
+
+TEST_F(LocalResponseNormalizationTest, SameAsL2Norm)
+{
+  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(
+    {1, 1, 1, 6}, {-1.1, 0.6, 0.7, 1.2, -0.7, 0.1}, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   LocalResponseNormalizationParams params{};
@@ -41,16 +50,17 @@ TEST(LocalResponseNormalizationTest, SameAsL2Norm)
 
   LocalResponseNormalization kernel(&input_tensor, &output_tensor, params);
   kernel.configure();
+  _memory_manager->allocate_memory(&output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorData<float>(output_tensor),
               FloatArrayNear({-0.55, 0.3, 0.35, 0.6, -0.35, 0.05}));
 }
 
-TEST(LocalResponseNormalizationTest, WithAlpha)
+TEST_F(LocalResponseNormalizationTest, WithAlpha)
 {
-  Tensor input_tensor =
-    makeInputTensor<DataType::FLOAT32>({1, 1, 1, 6}, {-1.1, 0.6, 0.7, 1.2, -0.7, 0.1});
+  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(
+    {1, 1, 1, 6}, {-1.1, 0.6, 0.7, 1.2, -0.7, 0.1}, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   LocalResponseNormalizationParams params{};
@@ -61,16 +71,17 @@ TEST(LocalResponseNormalizationTest, WithAlpha)
 
   LocalResponseNormalization kernel(&input_tensor, &output_tensor, params);
   kernel.configure();
+  _memory_manager->allocate_memory(&output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorData<float>(output_tensor),
               FloatArrayNear({-0.275, 0.15, 0.175, 0.3, -0.175, 0.025}));
 }
 
-TEST(LocalResponseNormalizationTest, WithBias)
+TEST_F(LocalResponseNormalizationTest, WithBias)
 {
-  Tensor input_tensor =
-    makeInputTensor<DataType::FLOAT32>({1, 1, 1, 6}, {-1.1, 0.6, 0.7, 1.2, -0.7, 0.1});
+  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(
+    {1, 1, 1, 6}, {-1.1, 0.6, 0.7, 1.2, -0.7, 0.1}, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   LocalResponseNormalizationParams params{};
@@ -81,16 +92,17 @@ TEST(LocalResponseNormalizationTest, WithBias)
 
   LocalResponseNormalization kernel(&input_tensor, &output_tensor, params);
   kernel.configure();
+  _memory_manager->allocate_memory(&output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorData<float>(output_tensor),
               FloatArrayNear({-0.22, 0.12, 0.14, 0.24, -0.14, 0.02}));
 }
 
-TEST(LocalResponseNormalizationTest, SmallRadius)
+TEST_F(LocalResponseNormalizationTest, SmallRadius)
 {
-  Tensor input_tensor =
-    makeInputTensor<DataType::FLOAT32>({1, 1, 1, 6}, {-1.1, 0.6, 0.7, 1.2, -0.7, 0.1});
+  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(
+    {1, 1, 1, 6}, {-1.1, 0.6, 0.7, 1.2, -0.7, 0.1}, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   LocalResponseNormalizationParams params{};
@@ -101,16 +113,17 @@ TEST(LocalResponseNormalizationTest, SmallRadius)
 
   LocalResponseNormalization kernel(&input_tensor, &output_tensor, params);
   kernel.configure();
+  _memory_manager->allocate_memory(&output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorData<float>(output_tensor),
               FloatArrayNear({-0.264926, 0.125109, 0.140112, 0.267261, -0.161788, 0.0244266}));
 }
 
-TEST(LocalResponseNormalizationTest, InvalidInputDimension_NEG)
+TEST_F(LocalResponseNormalizationTest, InvalidInputDimension_NEG)
 {
-  Tensor input_tensor =
-    makeInputTensor<DataType::FLOAT32>({1, 1, 6}, {-1.1, 0.6, 0.7, 1.2, -0.7, 0.1});
+  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(
+    {1, 1, 6}, {-1.1, 0.6, 0.7, 1.2, -0.7, 0.1}, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   LocalResponseNormalizationParams params{};
@@ -123,10 +136,10 @@ TEST(LocalResponseNormalizationTest, InvalidInputDimension_NEG)
   EXPECT_ANY_THROW(kernel.configure());
 }
 
-TEST(LocalResponseNormalizationTest, InvalidInputOutputType_NEG)
+TEST_F(LocalResponseNormalizationTest, InvalidInputOutputType_NEG)
 {
-  Tensor input_tensor =
-    makeInputTensor<DataType::FLOAT32>({1, 1, 1, 6}, {-1.1, 0.6, 0.7, 1.2, -0.7, 0.1});
+  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(
+    {1, 1, 1, 6}, {-1.1, 0.6, 0.7, 1.2, -0.7, 0.1}, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::U8);
 
   LocalResponseNormalizationParams params{};
