@@ -21,6 +21,9 @@ import tensorflow as tf
 import argparse
 import sys
 
+# TODO Find better way to suppress trackback on error
+sys.tracebacklimit = 0
+
 ONE_START_MAGICNUM = int(-2e9 + 27)
 ONE_END_MAGICNUM = int(2e9 - 27)
 
