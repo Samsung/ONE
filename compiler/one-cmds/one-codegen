@@ -31,6 +31,9 @@ import tempfile
 
 import utils as _utils
 
+# TODO Find better way to suppress trackback on error
+sys.tracebacklimit = 0
+
 
 def _get_backends_list():
     """

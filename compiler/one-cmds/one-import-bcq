@@ -28,6 +28,9 @@ import tempfile
 import utils as _utils
 import generate_bcq_output_arrays as _bcq_info_gen
 
+# TODO Find better way to suppress trackback on error
+sys.tracebacklimit = 0
+
 
 def _get_parser():
     parser = argparse.ArgumentParser(
