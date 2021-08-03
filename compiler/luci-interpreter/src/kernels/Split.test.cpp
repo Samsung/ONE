@@ -17,6 +17,7 @@
 
 #include "kernels/Split.h"
 #include "kernels/TestUtils.h"
+#include "luci_interpreter/SimpleMemoryManager.h"
 
 namespace luci_interpreter
 {
@@ -32,9 +33,12 @@ void Check(int axis, int num_splits, std::initializer_list<int32_t> input_shape,
            std::initializer_list<int32_t> output_shape, std::initializer_list<T> input_data,
            std::vector<std::vector<T>> output_data)
 {
+  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+
   constexpr DataType element_type = getElementType<T>();
-  Tensor axis_tensor = makeInputTensor<DataType::S32>({}, {axis});
-  Tensor input_tensor = makeInputTensor<element_type>(input_shape, input_data);
+  Tensor axis_tensor = makeInputTensor<DataType::S32>({}, {axis}, memory_manager.get());
+  Tensor input_tensor =
+    makeInputTensor<element_type>(input_shape, input_data, memory_manager.get());
 
   std::vector<Tensor> output_tensors;
   output_tensors.reserve(num_splits);
@@ -51,6 +55,10 @@ void Check(int axis, int num_splits, std::initializer_list<int32_t> input_shape,
 
   Split kernel(&axis_tensor, &input_tensor, std::move(output_tensor_ptrs));
   kernel.configure();
+  for (int i = 0; i < num_splits; ++i)
+  {
+    memory_manager->allocate_memory(&output_tensors[i]);
+  }
   kernel.execute();
 
   for (int i = 0; i < num_splits; ++i)

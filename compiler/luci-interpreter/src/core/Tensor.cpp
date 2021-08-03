@@ -29,21 +29,6 @@ Tensor::Tensor(DataType element_type, Shape shape, AffineQuantization quantizati
 {
 }
 
-void Tensor::allocate()
-{
-  deallocate();
-  const size_t element_size = getDataTypeSize(_element_type);
-  const int32_t num_elements = _shape.num_elements();
-  _data = std::make_unique<uint8_t[]>(num_elements * element_size);
-  _data_allocated = true;
-}
-
-void Tensor::deallocate()
-{
-  _data_allocated = false;
-  _data.reset();
-}
-
 void Tensor::readData(void *data_ptr, size_t data_size) const
 {
   const size_t element_size = getDataTypeSize(element_type());
@@ -68,10 +53,6 @@ void Tensor::writeData(const void *data_ptr, size_t data_size)
   std::memcpy(data<void>(), data_ptr, data_size);
 }
 
-void Tensor::resize(const Shape &new_shape)
-{
-  deallocate();
-  _shape = new_shape;
-}
+void Tensor::resize(const Shape &new_shape) { _shape = new_shape; }
 
 } // namespace luci_interpreter

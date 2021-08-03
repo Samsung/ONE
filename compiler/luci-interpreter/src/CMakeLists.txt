@@ -24,7 +24,7 @@ message(STATUS "LUCI INTERPTER INITALIZED")
 
 set(SOURCES
     "${LUCI_INTERPRETER_INCLUDE_DIR}/luci_interpreter/Interpreter.h"
-    Interpreter.cpp)
+    Interpreter.cpp "${LUCI_INTERPRETER_INCLUDE_DIR}/luci_interpreter/SimpleMemoryManager.h" SimpleMemoryManager.cpp)
 
 if (NOT LUCI_INTERPRETER_STATIC)
   add_library(${LUCI_INTERPRETER_BINARY} SHARED ${SOURCES})

@@ -16,6 +16,7 @@
 
 #include "kernels/MaxPool2D.h"
 #include "kernels/TestUtils.h"
+#include "luci_interpreter/SimpleMemoryManager.h"
 
 namespace luci_interpreter
 {
@@ -26,7 +27,15 @@ namespace
 
 using namespace testing;
 
-TEST(MaxPool2DTest, Float)
+class MaxPool2DTest : public ::testing::Test
+{
+protected:
+  void SetUp() override { _memory_manager = std::make_unique<SimpleMManager>(); }
+
+  std::unique_ptr<MManager> _memory_manager;
+};
+
+TEST_F(MaxPool2DTest, Float)
 {
   Shape input_shape{1, 3, 5, 1};
   std::vector<float> input_data{
@@ -34,7 +43,8 @@ TEST(MaxPool2DTest, Float)
     -7, -6, -5, -4, -3, //
     5,  4,  3,  6,  7,  //
   };
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
+  Tensor input_tensor =
+    makeInputTensor<DataType::FLOAT32>(input_shape, input_data, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   Pool2DParams params{};
@@ -47,6 +57,7 @@ TEST(MaxPool2DTest, Float)
 
   MaxPool2D kernel(&input_tensor, &output_tensor, params);
   kernel.configure();
+  _memory_manager->allocate_memory(&output_tensor);
   kernel.execute();
 
   std::vector<float> ref_output_data{
@@ -58,15 +69,15 @@ TEST(MaxPool2DTest, Float)
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
 }
 
-TEST(MaxPool2DTest, Uint8)
+TEST_F(MaxPool2DTest, Uint8)
 {
   std::pair<float, int32_t> quant_param = quantizationParams<uint8_t>(-15.9375, 15.9375);
   std::vector<float> input_data{
     0,  -6, 12, 4, //
     -3, -2, 10, 7, //
   };
-  Tensor input_tensor =
-    makeInputTensor<DataType::U8>({1, 2, 4, 1}, quant_param.first, quant_param.second, input_data);
+  Tensor input_tensor = makeInputTensor<DataType::U8>(
+    {1, 2, 4, 1}, quant_param.first, quant_param.second, input_data, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::U8, quant_param.first, quant_param.second);
 
   Pool2DParams params{};
@@ -79,6 +90,7 @@ TEST(MaxPool2DTest, Uint8)
 
   MaxPool2D kernel(&input_tensor, &output_tensor, params);
   kernel.configure();
+  _memory_manager->allocate_memory(&output_tensor);
   kernel.execute();
 
   std::vector<float> ref_output_data{0.0, 6.0};
@@ -87,7 +99,7 @@ TEST(MaxPool2DTest, Uint8)
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
 }
 
-TEST(MaxPool2DTest, SInt16)
+TEST_F(MaxPool2DTest, SInt16)
 {
   Shape input_shape{1, 3, 5, 1};
   std::vector<int32_t> ref_output_shape{1, 2, 2, 1};
@@ -101,7 +113,8 @@ TEST(MaxPool2DTest, SInt16)
     5, 6, //
   };
 
-  Tensor input_tensor = makeInputTensor<DataType::S16>(input_shape, 0.2, 0, input_data);
+  Tensor input_tensor =
+    makeInputTensor<DataType::S16>(input_shape, 0.2, 0, input_data, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::S16, 0.2, 0);
 
   Pool2DParams params{};
@@ -114,6 +127,7 @@ TEST(MaxPool2DTest, SInt16)
 
   MaxPool2D kernel(&input_tensor, &output_tensor, params);
   kernel.configure();
+  _memory_manager->allocate_memory(&output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));

@@ -29,14 +29,21 @@ class RuntimeGraph::TensorAllocPlan
   std::vector<std::vector<Tensor *>> _alloc_plan;
   std::vector<std::vector<Tensor *>> _dealloc_plan;
   bool _valid = false;
+  MManager *_memory_manager;
 
 public:
+  explicit TensorAllocPlan(MManager *memory_manager);
   void invalidate() { _valid = false; }
   bool isValid() const { return _valid; }
   void build(const RuntimeGraph &graph);
   void allocate(size_t kernel_index) const;
   void deallocate(size_t kernel_index) const;
 };
+
+RuntimeGraph::TensorAllocPlan::TensorAllocPlan(MManager *memory_manager)
+  : _memory_manager(memory_manager)
+{
+}
 
 void RuntimeGraph::TensorAllocPlan::build(const RuntimeGraph &graph)
 {
@@ -80,7 +87,7 @@ void RuntimeGraph::TensorAllocPlan::allocate(size_t kernel_index) const
   assert(_valid && kernel_index < _alloc_plan.size());
   for (Tensor *tensor : _alloc_plan[kernel_index])
   {
-    tensor->allocate();
+    _memory_manager->allocate_memory(tensor);
   }
 }
 
@@ -89,12 +96,13 @@ void RuntimeGraph::TensorAllocPlan::deallocate(size_t kernel_index) const
   assert(_valid && kernel_index < _dealloc_plan.size());
   for (Tensor *tensor : _dealloc_plan[kernel_index])
   {
-    tensor->deallocate();
+    _memory_manager->release_memory(tensor);
   }
 }
 
-RuntimeGraph::RuntimeGraph(RuntimeModule *owning_module)
-  : _owning_module(owning_module), _tensor_alloc_plan(std::make_unique<TensorAllocPlan>())
+RuntimeGraph::RuntimeGraph(RuntimeModule *owning_module, MManager *memory_manager)
+  : _owning_module(owning_module),
+    _tensor_alloc_plan(std::make_unique<TensorAllocPlan>(memory_manager))
 {
 }
 
@@ -155,11 +163,10 @@ void RuntimeGraph::execute() const
     // TODO The `configure` method should only be called if the outputs of an operator need to be
     //  resized.
     kernel->configure();
-// TODO decide where to allocate memory, and uncomment/remove this if
-#if 0
-    _tensor_alloc_plan->allocate(
-        index); // Preallocate outputs in advance instead of relying on automatic allocation
-#endif
+
+    // Preallocate outputs in advance instead of relying on automatic allocation
+    _tensor_alloc_plan->allocate(index);
+
     kernel->execute();
 
     if (event_notifier != nullptr)

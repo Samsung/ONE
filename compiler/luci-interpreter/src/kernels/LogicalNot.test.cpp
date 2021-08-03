@@ -17,6 +17,7 @@
 
 #include "kernels/LogicalNot.h"
 #include "kernels/TestUtils.h"
+#include "luci_interpreter/SimpleMemoryManager.h"
 
 namespace luci_interpreter
 {
@@ -27,14 +28,24 @@ namespace
 
 using namespace testing;
 
-TEST(LogicalNotTest, Basic)
+class LogicalNotTest : public ::testing::Test
+{
+protected:
+  void SetUp() override { _memory_manager = std::make_unique<SimpleMManager>(); }
+
+  std::unique_ptr<MManager> _memory_manager;
+};
+
+TEST_F(LogicalNotTest, Basic)
 {
   Shape input_shape{1, 1, 1, 4};
-  Tensor input_tensor = makeInputTensor<DataType::BOOL>(input_shape, {true, false, false, true});
+  Tensor input_tensor =
+    makeInputTensor<DataType::BOOL>(input_shape, {true, false, false, true}, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::BOOL);
 
   LogicalNot kernel(&input_tensor, &output_tensor);
   kernel.configure();
+  _memory_manager->allocate_memory(&output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorData<bool>(output_tensor),
@@ -42,18 +53,20 @@ TEST(LogicalNotTest, Basic)
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAre(1, 1, 1, 4));
 }
 
-TEST(LogicalNotTest, OutputTypeInvalid_NEG)
+TEST_F(LogicalNotTest, OutputTypeInvalid_NEG)
 {
-  Tensor input_tensor = makeInputTensor<DataType::BOOL>({1, 1, 1, 4}, {true, false, false, true});
+  Tensor input_tensor = makeInputTensor<DataType::BOOL>({1, 1, 1, 4}, {true, false, false, true},
+                                                        _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::S32);
 
   LogicalNot kernel(&input_tensor, &output_tensor);
   EXPECT_ANY_THROW(kernel.configure());
 }
 
-TEST(LogicalNotTest, InputTypeInvalid_NEG)
+TEST_F(LogicalNotTest, InputTypeInvalid_NEG)
 {
-  Tensor input_tensor = makeInputTensor<DataType::S32>({1, 1, 1, 4}, {1, 0, 0, 1});
+  Tensor input_tensor =
+    makeInputTensor<DataType::S32>({1, 1, 1, 4}, {1, 0, 0, 1}, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::BOOL);
 
   LogicalNot kernel(&input_tensor, &output_tensor);

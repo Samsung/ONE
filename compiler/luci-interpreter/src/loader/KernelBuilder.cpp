@@ -445,6 +445,10 @@ std::unique_ptr<Kernel> KernelBuilderLet<KB::ABC>::visit(const luci::CircleConv2
   const Tensor *bias = getInputTensor(node->bias());
   Tensor *output = getOutputTensor(node);
 
+  auto im2col =
+    std::make_unique<Tensor>(input->element_type(), Shape({}), AffineQuantization{}, "");
+  Tensor *tmp = getRuntimeGraph(node->graph())->addTensor(std::move(im2col));
+
   Conv2DParams params{};
   params.padding = node->padding();
   params.stride_height = node->stride()->h();
@@ -453,7 +457,7 @@ std::unique_ptr<Kernel> KernelBuilderLet<KB::ABC>::visit(const luci::CircleConv2
   params.dilation_width_factor = node->dilation()->w();
   params.activation = node->fusedActivationFunction();
 
-  return std::make_unique<kernels::Conv2D>(input, filter, bias, output, params);
+  return std::make_unique<kernels::Conv2D>(input, filter, bias, output, tmp, params);
 }
 
 std::unique_ptr<Kernel> KernelBuilderLet<KB::DEF>::visit(const luci::CircleDepthToSpace *node)
@@ -805,10 +809,24 @@ std::unique_ptr<Kernel> KernelBuilderLet<KB::KLMN>::visit(const luci::CircleMean
   const Tensor *axes = getInputTensor(node->reduction_indices());
   Tensor *output = getOutputTensor(node);
 
+  auto temp_index_unique =
+    std::make_unique<Tensor>(DataType::S32, Shape({}), AffineQuantization{}, "");
+  Tensor *temp_index = getRuntimeGraph(node->graph())->addTensor(std::move(temp_index_unique));
+
+  auto resolved_axes_unique =
+    std::make_unique<Tensor>(DataType::S32, Shape({}), AffineQuantization{}, "");
+  Tensor *resolved_axes =
+    getRuntimeGraph(node->graph())->addTensor(std::move(resolved_axes_unique));
+
+  auto temp_sum_unique =
+    std::make_unique<Tensor>(input->element_type(), Shape({}), AffineQuantization{}, "");
+  Tensor *temp_sum = getRuntimeGraph(node->graph())->addTensor(std::move(temp_sum_unique));
+
   ReducerParams params{};
   params.keep_dims = node->keep_dims();
 
-  return std::make_unique<kernels::Mean>(input, axes, output, params);
+  return std::make_unique<kernels::Mean>(input, axes, output, temp_index, resolved_axes, temp_sum,
+                                         params);
 }
 
 std::unique_ptr<Kernel> KernelBuilderLet<KB::KLMN>::visit(const luci::CircleMinimum *node)
@@ -1206,13 +1224,20 @@ std::unique_ptr<Kernel> KernelBuilderLet<KB::STUV>::visit(const luci::CircleTran
 
   Tensor *output = getOutputTensor(node);
 
+  DataType scratch_data_type =
+    getInputTensor(node)->element_type() == DataType::S16 ? DataType::S64 : DataType::S32;
+
+  auto scratch_tensor =
+    std::make_unique<Tensor>(scratch_data_type, Shape({}), AffineQuantization{}, "");
+  Tensor *tmp = getRuntimeGraph(node->graph())->addTensor(std::move(scratch_tensor));
+
   TransposeConvParams params{};
   params.padding = node->padding();
   params.stride_height = node->stride()->h();
   params.stride_width = node->stride()->w();
 
   return std::make_unique<kernels::TransposeConv>(input_sizes, filter, out_backprop, bias, output,
-                                                  params);
+                                                  tmp, params);
 }
 
 std::unique_ptr<Kernel> KernelBuilderLet<KB::STUV>::visit(const luci::CircleUnpack *node)

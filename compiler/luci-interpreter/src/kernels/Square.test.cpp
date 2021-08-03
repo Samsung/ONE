@@ -17,6 +17,7 @@
 
 #include "kernels/Square.h"
 #include "kernels/TestUtils.h"
+#include "luci_interpreter/SimpleMemoryManager.h"
 
 namespace luci_interpreter
 {
@@ -29,13 +30,17 @@ using namespace testing;
 
 TEST(SquareTest, Float)
 {
+  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+
   Shape input_shape{3, 1, 2};
   std::vector<float> input_data1{1.0, 0.0, -1.0, 11.0, -2.0, -1.44};
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data1);
+  Tensor input_tensor =
+    makeInputTensor<DataType::FLOAT32>(input_shape, input_data1, memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   Square kernel(&input_tensor, &output_tensor);
   kernel.configure();
+  memory_manager->allocate_memory(&output_tensor);
   kernel.execute();
 
   std::vector<float> ref_output_data{1.0, 0.0, 1.0, 121.0, 4.0, 2.0736};

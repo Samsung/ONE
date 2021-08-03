@@ -16,6 +16,7 @@
 
 #include "kernels/Pow.h"
 #include "kernels/TestUtils.h"
+#include "luci_interpreter/SimpleMemoryManager.h"
 
 namespace luci_interpreter
 {
@@ -26,7 +27,15 @@ namespace
 
 using namespace testing;
 
-TEST(PowTest, SimplePow)
+class PowTest : public ::testing::Test
+{
+protected:
+  void SetUp() override { _memory_manager = std::make_unique<SimpleMManager>(); }
+
+  std::unique_ptr<MManager> _memory_manager;
+};
+
+TEST_F(PowTest, SimplePow)
 {
   std::initializer_list<int32_t> base_shape = {1, 1, 3, 2};
 
@@ -34,19 +43,22 @@ TEST(PowTest, SimplePow)
   std::vector<float> input2_data{0.2f, 0.3f, -0.4f, 0.5f, 1.0f, 0.9f};
   std::vector<float> test_outputs{0.786f, 1.2838f, 1.043f, 0.7071f, 0.8f, 1.08956f};
 
-  Tensor input1_tensor = makeInputTensor<DataType::FLOAT32>(base_shape, input1_data);
-  Tensor input2_tensor = makeInputTensor<DataType::FLOAT32>(base_shape, input2_data);
+  Tensor input1_tensor =
+    makeInputTensor<DataType::FLOAT32>(base_shape, input1_data, _memory_manager.get());
+  Tensor input2_tensor =
+    makeInputTensor<DataType::FLOAT32>(base_shape, input2_data, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   Pow kernel(&input1_tensor, &input2_tensor, &output_tensor);
   kernel.configure();
+  _memory_manager->allocate_memory(&output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(test_outputs, 0.0001f));
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(base_shape));
 }
 
-TEST(PowTest, FloatBroadcastPow)
+TEST_F(PowTest, FloatBroadcastPow)
 {
   std::initializer_list<int32_t> input1_shape = {1, 3};
   std::initializer_list<int32_t> input2_shape = {3, 1};
@@ -56,60 +68,66 @@ TEST(PowTest, FloatBroadcastPow)
   std::vector<float> test_outputs{0.786f,   1.18126f, 0.9791f, 0.6968f, 1.28386f,
                                   0.96888f, 0.6178f,  1.3953f, 0.9587f};
 
-  Tensor input1_tensor = makeInputTensor<DataType::FLOAT32>(input1_shape, input1_data);
-  Tensor input2_tensor = makeInputTensor<DataType::FLOAT32>(input2_shape, input2_data);
+  Tensor input1_tensor =
+    makeInputTensor<DataType::FLOAT32>(input1_shape, input1_data, _memory_manager.get());
+  Tensor input2_tensor =
+    makeInputTensor<DataType::FLOAT32>(input2_shape, input2_data, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   Pow kernel(&input1_tensor, &input2_tensor, &output_tensor);
   kernel.configure();
+  _memory_manager->allocate_memory(&output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(test_outputs, 0.0001f));
 }
 
-TEST(PowTest, IntPow)
+TEST_F(PowTest, IntPow)
 {
   std::initializer_list<int32_t> base_shape = {1, 3};
 
   std::vector<int32_t> input_data{2, 3, 4};
   std::vector<int32_t> test_outputs{4, 27, 256};
 
-  Tensor input1_tensor = makeInputTensor<DataType::S32>(base_shape, input_data);
-  Tensor input2_tensor = makeInputTensor<DataType::S32>(base_shape, input_data);
+  Tensor input1_tensor =
+    makeInputTensor<DataType::S32>(base_shape, input_data, _memory_manager.get());
+  Tensor input2_tensor =
+    makeInputTensor<DataType::S32>(base_shape, input_data, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::S32);
 
   Pow kernel(&input1_tensor, &input2_tensor, &output_tensor);
   kernel.configure();
+  _memory_manager->allocate_memory(&output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorData<int32_t>(output_tensor), ::testing::ElementsAreArray(test_outputs));
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(base_shape));
 }
 
-TEST(PowTest, Input_Output_Type_NEG)
+TEST_F(PowTest, Input_Output_Type_NEG)
 {
-  Tensor input1_tensor = makeInputTensor<DataType::FLOAT32>({1}, {1.0f});
-  Tensor input2_tensor = makeInputTensor<DataType::FLOAT32>({1}, {1.0f});
+  Tensor input1_tensor = makeInputTensor<DataType::FLOAT32>({1}, {1.0f}, _memory_manager.get());
+  Tensor input2_tensor = makeInputTensor<DataType::FLOAT32>({1}, {1.0f}, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::BOOL);
 
   Pow kernel(&input1_tensor, &input2_tensor, &output_tensor);
   EXPECT_ANY_THROW(kernel.configure());
 }
 
-TEST(PowTest, Input_Type_Mismatch_NEG)
+TEST_F(PowTest, Input_Type_Mismatch_NEG)
 {
-  Tensor input1_tensor = makeInputTensor<DataType::FLOAT32>({1}, {1.0f});
-  Tensor input2_tensor = makeInputTensor<DataType::S32>({1}, {4});
+  Tensor input1_tensor = makeInputTensor<DataType::FLOAT32>({1}, {1.0f}, _memory_manager.get());
+  Tensor input2_tensor = makeInputTensor<DataType::S32>({1}, {4}, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   Pow kernel(&input1_tensor, &input2_tensor, &output_tensor);
   EXPECT_ANY_THROW(kernel.configure());
 }
 
-TEST(PowTest, Invalid_Input_Type_NEG)
+TEST_F(PowTest, Invalid_Input_Type_NEG)
 {
-  Tensor input1_tensor = makeInputTensor<DataType::S64>({1}, {1});
-  Tensor input2_tensor = makeInputTensor<DataType::S64>({1}, {1});
+  Tensor input1_tensor = makeInputTensor<DataType::S64>({1}, {1}, _memory_manager.get());
+  Tensor input2_tensor = makeInputTensor<DataType::S64>({1}, {1}, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::S64);
 
   Pow kernel(&input1_tensor, &input2_tensor, &output_tensor);
