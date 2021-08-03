@@ -67,6 +67,7 @@ DataFormat get_data_format(loco::Node *node)
 
 bool has_data_format(loco::Node *node) { return node->annot<DataFormatAnnotation>() != nullptr; }
 
+#ifdef FIX_ME_ANNOTATE_NHWC_OPS
 bool check_4d_transpose(loco::Node *node, const std::vector<int32_t> indices)
 {
   assert(indices.size() == 4);
@@ -97,6 +98,7 @@ bool check_4d_transpose(loco::Node *node, const std::vector<int32_t> indices)
 
   return true;
 }
+#endif // FIX_ME_ANNOTATE_NHWC_OPS
 
 luci::CircleTranspose *create_4d_transpose(luci::CircleNode *node,
                                            const std::vector<int32_t> indices)
@@ -157,9 +159,11 @@ luci::CircleTranspose *create_pre_transpose(luci::CircleNode *node)
   return create_4d_transpose(node, {0, 2, 3, 1});
 }
 
+#ifdef FIX_ME_ANNOTATE_NHWC_OPS
 bool is_post_transpose(loco::Node *node) { return check_4d_transpose(node, {0, 3, 1, 2}); }
 
 bool is_pre_transpose(loco::Node *node) { return check_4d_transpose(node, {0, 2, 3, 1}); }
+#endif // FIX_ME_ANNOTATE_NHWC_OPS
 
 uint32_t cal_offset(const loco::TensorShape &dimension, const uint32_t *indices)
 {
@@ -952,6 +956,8 @@ bool ConvertNCHWToNHWCPass::run(loco::Graph *g)
   LOGGER(l);
   INFO(l) << "ConvertNCHWToNHWCPass Start" << std::endl;
 
+#ifdef FIX_ME_ANNOTATE_NHWC_OPS
+  // TODO Fix this
   // Annotate NHWC operators
   // NHWC operators are detected by pattern matching
   // Pattern: pre-Transose + [chain of Ops] + post-Transpose
@@ -980,6 +986,7 @@ bool ConvertNCHWToNHWCPass::run(loco::Graph *g)
       }
     }
   }
+#endif // FIX_ME_ANNOTATE_NHWC_OPS
 
   // Annotate NCHW operators
   for (auto node : loco::active_nodes(loco::output_nodes(g)))
