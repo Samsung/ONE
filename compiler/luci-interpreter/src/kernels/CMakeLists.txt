@@ -17,17 +17,17 @@ if(EXISTS "${KERNEL_REGISTER_FILE}")
   include(${KERNEL_REGISTER_FILE})
 endif(EXISTS "${KERNEL_REGISTER_FILE}")
 
-add_library(luci_interpreter_kernels STATIC ${SOURCES})
-set_target_properties(luci_interpreter_kernels PROPERTIES POSITION_INDEPENDENT_CODE ON)
-target_include_directories(luci_interpreter_kernels PUBLIC ${LUCI_INTERPRETER_SOURCE_DIR})
-target_include_directories(luci_interpreter_kernels SYSTEM PRIVATE
+add_library(${LUCI_INTERPRETER_KERNELS} STATIC ${SOURCES})
+set_target_properties(${LUCI_INTERPRETER_KERNELS} PROPERTIES POSITION_INDEPENDENT_CODE ON)
+target_include_directories(${LUCI_INTERPRETER_KERNELS} PUBLIC ${LUCI_INTERPRETER_SOURCE_DIR})
+target_include_directories(${LUCI_INTERPRETER_KERNELS} SYSTEM PRIVATE
         "${TensorFlowRuySource_DIR}"
         "${TensorFlowGEMMLowpSource_DIR}"
         "${TensorFlowEigenSource_DIR}"
         "${TensorFlowSource_DIR}")
 
-target_link_libraries(luci_interpreter_kernels
-        PUBLIC luci_interpreter_core)
+target_link_libraries(${LUCI_INTERPRETER_KERNELS}
+        PUBLIC ${LUCI_INTERPRETER_CORE})
 
 if(NOT ENABLE_TEST)
   return()
@@ -45,5 +45,5 @@ endif(EXISTS "${KERNEL_REGISTER_FILE}")
 
 list(APPEND TEST_SOURCES TestUtils.h TestUtils.cpp)
 
-GTest_AddTest(luci_interpreter_kernels_test ${TEST_SOURCES})
-target_link_libraries(luci_interpreter_kernels_test luci_interpreter_kernels)
+GTest_AddTest(${LUCI_INTERPRETER_KERNELS}_test ${TEST_SOURCES})
+target_link_libraries(${LUCI_INTERPRETER_KERNELS}_test ${LUCI_INTERPRETER_KERNELS})

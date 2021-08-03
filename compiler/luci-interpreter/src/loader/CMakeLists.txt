@@ -20,12 +20,12 @@ if(EXISTS "${KERNEL_REGISTER_FILE}")
   include(${KERNEL_REGISTER_FILE})
 endif(EXISTS "${KERNEL_REGISTER_FILE}")
 
-add_library(luci_interpreter_loader STATIC ${SOURCES})
-set_target_properties(luci_interpreter_loader PROPERTIES POSITION_INDEPENDENT_CODE ON)
-target_include_directories(luci_interpreter_loader PUBLIC "${LUCI_INTERPRETER_SOURCE_DIR}")
-target_link_libraries(luci_interpreter_loader
-    PUBLIC luci_lang luci_interpreter_core
-    PRIVATE luci_interpreter_kernels nncc_common)
+add_library(${LUCI_INTERPRETER_LOADER} STATIC ${SOURCES})
+set_target_properties(${LUCI_INTERPRETER_LOADER} PROPERTIES POSITION_INDEPENDENT_CODE ON)
+target_include_directories(${LUCI_INTERPRETER_LOADER} PUBLIC "${LUCI_INTERPRETER_SOURCE_DIR}")
+target_link_libraries(${LUCI_INTERPRETER_LOADER}
+    PUBLIC luci_lang ${LUCI_INTERPRETER_CORE}
+    PRIVATE ${LUCI_INTERPRETER_KERNELS} nncc_common)
 
 if(NOT ENABLE_TEST)
   return()
@@ -35,5 +35,5 @@ nnas_find_package(GTest REQUIRED)
 
 set(TEST_SOURCES KernelBuilder.test.cpp)
 
-GTest_AddTest(luci_interpreter_loader_test ${TEST_SOURCES})
-target_link_libraries(luci_interpreter_loader_test luci_interpreter_loader)
+GTest_AddTest(${LUCI_INTERPRETER_LOADER}_test ${TEST_SOURCES})
+target_link_libraries(${LUCI_INTERPRETER_LOADER}_test ${LUCI_INTERPRETER_LOADER})

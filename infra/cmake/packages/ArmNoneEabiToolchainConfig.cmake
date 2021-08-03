@@ -5,7 +5,11 @@ function(_ArmNoneEabiToolchain_import)
 
   if (NOT EXISTS "${ARM_NONE_EABI_GCC_TOOLCHAIN_PATH}")
     file(DOWNLOAD ${ARM_NONE_EABI_URL} "${ARM_NONE_EABI_GCC_TOOLCHAIN_PATH}.tar.bz2"
-           EXPECTED_MD5 2b9eeccc33470f9d3cda26983b9d2dc6)
+           EXPECTED_MD5 2b9eeccc33470f9d3cda26983b9d2dc6 STATUS result)
+    if (NOT ${STATUS} EQUAL 0)
+      set(ArmNoneEabiToolchain_FOUND FALSE PARENT_SCOPE)
+      return()
+    endif()
     execute_process(COMMAND tar -xjf "${ARM_NONE_EABI_GCC_TOOLCHAIN_PATH}.tar.bz2" -C "${NNAS_EXTERNALS_DIR}")
     # Q(binarman) Should add stamp here?
     # Network errors sometimes lead to inconsitensies of stamp and actual downloaded content, what do we need it for?

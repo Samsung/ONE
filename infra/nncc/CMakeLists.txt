@@ -152,7 +152,7 @@ endif(ENABLE_COVERAGE)
 nnas_include(OptionalTargetTools)
 nnas_include(AddSubdirectories)
 
-if(${NNCC_SKIP_BUILD})
+if (NNCC_SKIP_BUILD)
   return()
 endif()
 
