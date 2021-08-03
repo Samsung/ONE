@@ -17,6 +17,7 @@
 
 #include "kernels/Mul.h"
 #include "kernels/TestUtils.h"
+#include "luci_interpreter/SimpleMemoryManager.h"
 
 namespace luci_interpreter
 {
@@ -27,7 +28,15 @@ namespace
 
 using namespace testing;
 
-TEST(MulTest, Float)
+class MulTest : public ::testing::Test
+{
+protected:
+  void SetUp() override { _memory_manager = std::make_unique<SimpleMemoryManager>(); }
+
+  std::unique_ptr<IMemoryManager> _memory_manager;
+};
+
+TEST_F(MulTest, Float)
 {
   Shape base_shape = {2, 3, 1, 2};
   std::vector<Shape> test_shapes{{1, 1, 3, 2}, {1, 3, 1, 2}, {2, 1, 3, 1}, {2, 3, 1, 1}};
@@ -45,8 +54,10 @@ TEST(MulTest, Float)
   std::vector<float> input2_data{0.2f, 0.3f, -0.4f, 0.5f, 1.0f, 0.9f};
   for (size_t i = 0; i < test_shapes.size(); ++i)
   {
-    Tensor input1_tensor = makeInputTensor<DataType::FLOAT32>(base_shape, input1_data);
-    Tensor input2_tensor = makeInputTensor<DataType::FLOAT32>(test_shapes[i], input2_data);
+    Tensor input1_tensor =
+      makeInputTensor<DataType::FLOAT32>(base_shape, input1_data, _memory_manager.get());
+    Tensor input2_tensor =
+      makeInputTensor<DataType::FLOAT32>(test_shapes[i], input2_data, _memory_manager.get());
     Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
     MulParams params{};
@@ -54,6 +65,7 @@ TEST(MulTest, Float)
 
     Mul kernel(&input1_tensor, &input2_tensor, &output_tensor, params);
     kernel.configure();
+    _memory_manager->allocate_memory(output_tensor);
     kernel.execute();
 
     EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(test_outputs[i], 0.0001f))
@@ -62,8 +74,10 @@ TEST(MulTest, Float)
   // Re-run with exchanged inputs.
   for (size_t i = 0; i < test_shapes.size(); ++i)
   {
-    Tensor input1_tensor = makeInputTensor<DataType::FLOAT32>(test_shapes[i], input2_data);
-    Tensor input2_tensor = makeInputTensor<DataType::FLOAT32>(base_shape, input1_data);
+    Tensor input1_tensor =
+      makeInputTensor<DataType::FLOAT32>(test_shapes[i], input2_data, _memory_manager.get());
+    Tensor input2_tensor =
+      makeInputTensor<DataType::FLOAT32>(base_shape, input1_data, _memory_manager.get());
     Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
     MulParams params{};
@@ -71,6 +85,7 @@ TEST(MulTest, Float)
 
     Mul kernel(&input1_tensor, &input2_tensor, &output_tensor, params);
     kernel.configure();
+    _memory_manager->allocate_memory(output_tensor);
     kernel.execute();
 
     EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(test_outputs[i], 0.0001f))
@@ -78,7 +93,7 @@ TEST(MulTest, Float)
   }
 }
 
-TEST(MulTest, SInt16)
+TEST_F(MulTest, SInt16)
 {
   Shape base_shape = {2, 3, 1, 2};
   std::vector<Shape> test_shapes{{1, 1, 3, 2}, {1, 3, 1, 2}, {2, 1, 3, 1}, {2, 3, 1, 1}};
@@ -99,9 +114,10 @@ TEST(MulTest, SInt16)
     {0.00f, 0.46f, 0.27f, 0.15f, 0.00f, 0.44f, 0.60f, 1.40f, 0.00f, 0.00f, 0.63f, 0.00f}};
   for (size_t i = 0; i < test_shapes.size(); ++i)
   {
-    Tensor input1_tensor = makeInputTensor<DataType::S16>(base_shape, 3.0 / 32767, 0, input1_data);
-    Tensor input2_tensor =
-      makeInputTensor<DataType::S16>(test_shapes[i], 1.0 / 32767, 0, input2_data);
+    Tensor input1_tensor = makeInputTensor<DataType::S16>(base_shape, 3.0 / 32767, 0, input1_data,
+                                                          _memory_manager.get());
+    Tensor input2_tensor = makeInputTensor<DataType::S16>(test_shapes[i], 1.0 / 32767, 0,
+                                                          input2_data, _memory_manager.get());
     Tensor output_tensor = makeOutputTensor(DataType::S16, 4.0 / 32767, 0);
     const float tolerance = output_tensor.scale() * 2;
 
@@ -110,6 +126,7 @@ TEST(MulTest, SInt16)
 
     Mul kernel(&input1_tensor, &input2_tensor, &output_tensor, params);
     kernel.configure();
+    _memory_manager->allocate_memory(output_tensor);
     kernel.execute();
 
     EXPECT_THAT(extractTensorShape(output_tensor),
@@ -121,9 +138,10 @@ TEST(MulTest, SInt16)
   // Re-run with exchanged inputs and different scales.
   for (size_t i = 0; i < test_shapes.size(); ++i)
   {
-    Tensor input1_tensor =
-      makeInputTensor<DataType::S16>(test_shapes[i], 2.0 / 32767, 0, input2_data);
-    Tensor input2_tensor = makeInputTensor<DataType::S16>(base_shape, 4.0 / 32767, 0, input1_data);
+    Tensor input1_tensor = makeInputTensor<DataType::S16>(test_shapes[i], 2.0 / 32767, 0,
+                                                          input2_data, _memory_manager.get());
+    Tensor input2_tensor = makeInputTensor<DataType::S16>(base_shape, 4.0 / 32767, 0, input1_data,
+                                                          _memory_manager.get());
     Tensor output_tensor = makeOutputTensor(DataType::S16, 3.0 / 32767, 0);
     const float tolerance = output_tensor.scale() * 2;
 
@@ -132,6 +150,7 @@ TEST(MulTest, SInt16)
 
     Mul kernel(&input1_tensor, &input2_tensor, &output_tensor, params);
     kernel.configure();
+    _memory_manager->allocate_memory(output_tensor);
     kernel.execute();
 
     EXPECT_THAT(extractTensorShape(output_tensor),

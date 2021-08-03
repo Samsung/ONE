@@ -22,6 +22,7 @@
 #include <luci/IR/Nodes/CircleInput.h>
 #include <luci/IR/Nodes/CircleOutput.h>
 
+#include "luci_interpreter/MemoryManager.h"
 #include <luci/IR/Module.h>
 
 #include <memory>
@@ -49,7 +50,7 @@ public:
 class Interpreter
 {
 public:
-  explicit Interpreter(const luci::Module *module);
+  explicit Interpreter(const luci::Module *module, IMemoryManager *memory_manager = nullptr);
 
   ~Interpreter();
 
@@ -64,7 +65,11 @@ public:
   const Tensor *getTensor(const loco::Node *node) { return _node_to_tensor[node]; }
 
 private:
+  //_default_memory_manager should be before _runtime_module due to
+  // the order of deletion in the destructor
+  std::unique_ptr<IMemoryManager> _default_memory_manager = nullptr;
   std::unique_ptr<class RuntimeModule> _runtime_module;
+  IMemoryManager *_memory_manager;
 
   // Observer functionality support.
   std::unique_ptr<struct RuntimeToIR> _runtime_to_ir;

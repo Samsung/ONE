@@ -17,6 +17,7 @@
 
 #include "kernels/ResizeBilinear.h"
 #include "kernels/TestUtils.h"
+#include "luci_interpreter/SimpleMemoryManager.h"
 
 namespace luci_interpreter
 {
@@ -33,8 +34,10 @@ void Check(std::initializer_list<int32_t> input_shape, std::initializer_list<int
            std::initializer_list<int32_t> size_data, std::initializer_list<float> output_data,
            bool align_corners, bool half_pixel_centers)
 {
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
-  Tensor size_tensor = makeInputTensor<DataType::S32>(size_shape, size_data);
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<SimpleMemoryManager>();
+  Tensor input_tensor =
+    makeInputTensor<DataType::FLOAT32>(input_shape, input_data, memory_manager.get());
+  Tensor size_tensor = makeInputTensor<DataType::S32>(size_shape, size_data, memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   ResizeBilinearParams params{};
@@ -43,6 +46,7 @@ void Check(std::initializer_list<int32_t> input_shape, std::initializer_list<int
 
   ResizeBilinear kernel(&input_tensor, &size_tensor, &output_tensor, params);
   kernel.configure();
+  memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(output_shape));
@@ -60,8 +64,11 @@ void Check<uint8_t>(std::initializer_list<int32_t> input_shape,
 {
   // On TFlite example use Uint8 value it self, so this means quant param scale 1.0f and zero
   // point 0.
-  Tensor input_tensor = makeInputTensor<DataType::U8>(input_shape, 1.0, 0, input_data);
-  Tensor size_tensor = makeInputTensor<DataType::S32>(size_shape, size_data);
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<SimpleMemoryManager>();
+
+  Tensor input_tensor =
+    makeInputTensor<DataType::U8>(input_shape, 1.0, 0, input_data, memory_manager.get());
+  Tensor size_tensor = makeInputTensor<DataType::S32>(size_shape, size_data, memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::U8, 1.0, 0);
 
   ResizeBilinearParams params{};
@@ -70,6 +77,7 @@ void Check<uint8_t>(std::initializer_list<int32_t> input_shape,
 
   ResizeBilinear kernel(&input_tensor, &size_tensor, &output_tensor, params);
   kernel.configure();
+  memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(output_shape));
@@ -152,13 +160,17 @@ TEST(ResizeBilinearTest, HalfPixelCenterUint8Test)
 
 TEST(ResizeBilinearTest, InputShapeInvalid_NEG)
 {
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({2, 2, 2}, {
-                                                                        3, 6,  //
-                                                                        9, 12, //
-                                                                        4, 10, //
-                                                                        10, 16 //
-                                                                      });
-  Tensor size_tensor = makeInputTensor<DataType::S32>({2}, {3, 3});
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<SimpleMemoryManager>();
+
+  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({2, 2, 2},
+                                                           {
+                                                             3, 6,  //
+                                                             9, 12, //
+                                                             4, 10, //
+                                                             10, 16 //
+                                                           },
+                                                           memory_manager.get());
+  Tensor size_tensor = makeInputTensor<DataType::S32>({2}, {3, 3}, memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   ResizeBilinearParams params{};
@@ -171,13 +183,17 @@ TEST(ResizeBilinearTest, InputShapeInvalid_NEG)
 
 TEST(ResizeBilinearTest, SizeShapeInvalid_NEG)
 {
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({2, 2, 2, 1}, {
-                                                                           3, 6,  //
-                                                                           9, 12, //
-                                                                           4, 10, //
-                                                                           10, 16 //
-                                                                         });
-  Tensor size_tensor = makeInputTensor<DataType::S32>({2, 1}, {3, 3});
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<SimpleMemoryManager>();
+
+  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({2, 2, 2, 1},
+                                                           {
+                                                             3, 6,  //
+                                                             9, 12, //
+                                                             4, 10, //
+                                                             10, 16 //
+                                                           },
+                                                           memory_manager.get());
+  Tensor size_tensor = makeInputTensor<DataType::S32>({2, 1}, {3, 3}, memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   ResizeBilinearParams params{};
@@ -190,13 +206,17 @@ TEST(ResizeBilinearTest, SizeShapeInvalid_NEG)
 
 TEST(ResizeBilinearTest, SizeDimInvalid_NEG)
 {
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({2, 2, 2, 1}, {
-                                                                           3, 6,  //
-                                                                           9, 12, //
-                                                                           4, 10, //
-                                                                           10, 16 //
-                                                                         });
-  Tensor size_tensor = makeInputTensor<DataType::S32>({3}, {3, 3, 1});
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<SimpleMemoryManager>();
+
+  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({2, 2, 2, 1},
+                                                           {
+                                                             3, 6,  //
+                                                             9, 12, //
+                                                             4, 10, //
+                                                             10, 16 //
+                                                           },
+                                                           memory_manager.get());
+  Tensor size_tensor = makeInputTensor<DataType::S32>({3}, {3, 3, 1}, memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   ResizeBilinearParams params{};
@@ -209,13 +229,17 @@ TEST(ResizeBilinearTest, SizeDimInvalid_NEG)
 
 TEST(ResizeBilinearTest, InvalidParams_NEG)
 {
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({2, 2, 2, 1}, {
-                                                                           3, 6,  //
-                                                                           9, 12, //
-                                                                           4, 10, //
-                                                                           10, 16 //
-                                                                         });
-  Tensor size_tensor = makeInputTensor<DataType::S32>({2}, {3, 3});
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<SimpleMemoryManager>();
+
+  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({2, 2, 2, 1},
+                                                           {
+                                                             3, 6,  //
+                                                             9, 12, //
+                                                             4, 10, //
+                                                             10, 16 //
+                                                           },
+                                                           memory_manager.get());
+  Tensor size_tensor = makeInputTensor<DataType::S32>({2}, {3, 3}, memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   ResizeBilinearParams params{};

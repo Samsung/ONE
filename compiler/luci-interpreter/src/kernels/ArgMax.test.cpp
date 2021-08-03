@@ -16,6 +16,7 @@
 
 #include "kernels/ArgMax.h"
 #include "kernels/TestUtils.h"
+#include "luci_interpreter/SimpleMemoryManager.h"
 
 namespace luci_interpreter
 {
@@ -32,15 +33,19 @@ void Check(std::initializer_list<int32_t> input_shape,
            std::initializer_list<int32_t> output_shape, std::initializer_list<T1> input_data,
            std::initializer_list<int32_t> dimension_data, std::initializer_list<T2> output_data)
 {
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<SimpleMemoryManager>();
   constexpr DataType element_type = getElementType<T1>();
-  Tensor input_tensor = makeInputTensor<element_type>(input_shape, input_data);
-  Tensor dimension_tensor = makeInputTensor<DataType::S32>(dimension_shape, dimension_data);
+  Tensor input_tensor =
+    makeInputTensor<element_type>(input_shape, input_data, memory_manager.get());
+  Tensor dimension_tensor =
+    makeInputTensor<DataType::S32>(dimension_shape, dimension_data, memory_manager.get());
   Tensor output_tensor = makeOutputTensor(getElementType<T2>());
 
   ArgMaxParams params{};
   params.output_type = getElementType<T2>();
   ArgMax kernel(&input_tensor, &dimension_tensor, &output_tensor, params);
   kernel.configure();
+  memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorData<T2>(output_tensor), ::testing::ElementsAreArray(output_data));
@@ -94,17 +99,21 @@ TYPED_TEST(ArgMaxTest, MultiDimensions)
 
 TEST(ArgMaxTest, UnsupportedType_NEG)
 {
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({1, 1, 2, 4}, {
-                                                                           1, 2, 7, 8, //
-                                                                           1, 9, 7, 3, //
-                                                                         });
-  Tensor dimension_tensor = makeInputTensor<DataType::S32>({}, {3});
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<SimpleMemoryManager>();
+  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({1, 1, 2, 4},
+                                                           {
+                                                             1, 2, 7, 8, //
+                                                             1, 9, 7, 3, //
+                                                           },
+                                                           memory_manager.get());
+  Tensor dimension_tensor = makeInputTensor<DataType::S32>({}, {3}, memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::U8);
 
   ArgMaxParams params{};
   params.output_type = DataType::U8;
   ArgMax kernel(&input_tensor, &dimension_tensor, &output_tensor, params);
   kernel.configure();
+  memory_manager->allocate_memory(output_tensor);
   EXPECT_ANY_THROW(kernel.execute());
 }
 

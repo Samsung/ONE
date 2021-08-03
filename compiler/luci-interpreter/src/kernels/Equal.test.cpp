@@ -17,6 +17,7 @@
 
 #include "kernels/Equal.h"
 #include "kernels/TestUtils.h"
+#include "luci_interpreter/SimpleMemoryManager.h"
 
 namespace luci_interpreter
 {
@@ -27,7 +28,15 @@ namespace
 
 using namespace testing;
 
-TEST(EqualTest, FloatSimple)
+class EqualTest : public ::testing::Test
+{
+protected:
+  void SetUp() override { _memory_manager = std::make_unique<SimpleMemoryManager>(); }
+
+  std::unique_ptr<IMemoryManager> _memory_manager;
+};
+
+TEST_F(EqualTest, FloatSimple)
 {
   std::vector<float> x_data{
     0.5, 0.7, 0.9, // Row 1
@@ -44,19 +53,20 @@ TEST(EqualTest, FloatSimple)
     false, true, false, // Row 2
   };
 
-  Tensor x_tensor = makeInputTensor<DataType::FLOAT32>({2, 3}, x_data);
-  Tensor y_tensor = makeInputTensor<DataType::FLOAT32>({2, 3}, y_data);
+  Tensor x_tensor = makeInputTensor<DataType::FLOAT32>({2, 3}, x_data, _memory_manager.get());
+  Tensor y_tensor = makeInputTensor<DataType::FLOAT32>({2, 3}, y_data, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::BOOL);
 
   Equal kernel(&x_tensor, &y_tensor, &output_tensor);
   kernel.configure();
+  _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorData<bool>(output_tensor), ::testing::ElementsAreArray(ref_output_data));
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({2, 3}));
 }
 
-TEST(EqualTest, FloatBroardcast)
+TEST_F(EqualTest, FloatBroardcast)
 {
   std::vector<float> x_data{
     0.5, 0.7, 0.9, // Row 1
@@ -76,12 +86,13 @@ TEST(EqualTest, FloatBroardcast)
     true,  true,  true,  // Row 4
   };
 
-  Tensor x_tensor = makeInputTensor<DataType::FLOAT32>({4, 3}, x_data);
-  Tensor y_tensor = makeInputTensor<DataType::FLOAT32>({1, 3}, y_data);
+  Tensor x_tensor = makeInputTensor<DataType::FLOAT32>({4, 3}, x_data, _memory_manager.get());
+  Tensor y_tensor = makeInputTensor<DataType::FLOAT32>({1, 3}, y_data, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::BOOL);
 
   Equal kernel(&x_tensor, &y_tensor, &output_tensor);
   kernel.configure();
+  _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorData<bool>(output_tensor), ::testing::ElementsAreArray(ref_output_data));
@@ -92,7 +103,7 @@ TEST(EqualTest, FloatBroardcast)
 const float F_MIN = -128.0 / 128.0;
 const float F_MAX = 127.0 / 128.0;
 
-TEST(EqualTest, Uint8Quantized)
+TEST_F(EqualTest, Uint8Quantized)
 {
   std::vector<float> x_data{
     0.5, 0.5, 0.7,  0.9, // Row 1
@@ -110,24 +121,25 @@ TEST(EqualTest, Uint8Quantized)
   };
 
   std::pair<float, int32_t> x_quant_param = quantizationParams<uint8_t>(F_MIN, F_MAX);
-  Tensor x_tensor =
-    makeInputTensor<DataType::U8>({1, 2, 4, 1}, x_quant_param.first, x_quant_param.second, x_data);
+  Tensor x_tensor = makeInputTensor<DataType::U8>(
+    {1, 2, 4, 1}, x_quant_param.first, x_quant_param.second, x_data, _memory_manager.get());
 
   std::pair<float, int32_t> y_quant_param = quantizationParams<uint8_t>(F_MIN * 2, F_MAX * 2);
-  Tensor y_tensor =
-    makeInputTensor<DataType::U8>({1, 2, 4, 1}, y_quant_param.first, y_quant_param.second, y_data);
+  Tensor y_tensor = makeInputTensor<DataType::U8>(
+    {1, 2, 4, 1}, y_quant_param.first, y_quant_param.second, y_data, _memory_manager.get());
 
   Tensor output_tensor = makeOutputTensor(DataType::BOOL);
 
   Equal kernel(&x_tensor, &y_tensor, &output_tensor);
   kernel.configure();
+  _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({1, 2, 4, 1}));
   EXPECT_THAT(extractTensorData<bool>(output_tensor), ::testing::ElementsAreArray(ref_output_data));
 }
 
-TEST(EqualTest, Uint8QuantizedBroadcast)
+TEST_F(EqualTest, Uint8QuantizedBroadcast)
 {
   std::vector<float> x_data{
     0.4,  -0.8, 0.7,  0.3, // Row 1
@@ -148,34 +160,35 @@ TEST(EqualTest, Uint8QuantizedBroadcast)
   };
 
   std::pair<float, int32_t> quant_param = quantizationParams<uint8_t>(F_MIN, F_MAX);
-  Tensor x_tensor =
-    makeInputTensor<DataType::U8>({1, 4, 4, 1}, quant_param.first, quant_param.second, x_data);
-  Tensor y_tensor =
-    makeInputTensor<DataType::U8>({1, 1, 4, 1}, quant_param.first, quant_param.second, y_data);
+  Tensor x_tensor = makeInputTensor<DataType::U8>(
+    {1, 4, 4, 1}, quant_param.first, quant_param.second, x_data, _memory_manager.get());
+  Tensor y_tensor = makeInputTensor<DataType::U8>(
+    {1, 1, 4, 1}, quant_param.first, quant_param.second, y_data, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::BOOL);
 
   Equal kernel(&x_tensor, &y_tensor, &output_tensor);
   kernel.configure();
+  _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({1, 4, 4, 1}));
   EXPECT_THAT(extractTensorData<bool>(output_tensor), ::testing::ElementsAreArray(ref_output_data));
 }
 
-TEST(EqualTest, Input_Type_Mismatch_NEG)
+TEST_F(EqualTest, Input_Type_Mismatch_NEG)
 {
-  Tensor x_tensor = makeInputTensor<DataType::FLOAT32>({1}, {1.f});
-  Tensor y_tensor = makeInputTensor<DataType::U8>({1}, {1});
+  Tensor x_tensor = makeInputTensor<DataType::FLOAT32>({1}, {1.f}, _memory_manager.get());
+  Tensor y_tensor = makeInputTensor<DataType::U8>({1}, {1}, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::BOOL);
 
   Equal kernel(&x_tensor, &y_tensor, &output_tensor);
   EXPECT_ANY_THROW(kernel.configure());
 }
 
-TEST(EqualTest, Input_Output_Type_NEG)
+TEST_F(EqualTest, Input_Output_Type_NEG)
 {
-  Tensor x_tensor = makeInputTensor<DataType::FLOAT32>({1}, {1.f});
-  Tensor y_tensor = makeInputTensor<DataType::FLOAT32>({1}, {1.f});
+  Tensor x_tensor = makeInputTensor<DataType::FLOAT32>({1}, {1.f}, _memory_manager.get());
+  Tensor y_tensor = makeInputTensor<DataType::FLOAT32>({1}, {1.f}, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   Equal kernel(&x_tensor, &y_tensor, &output_tensor);

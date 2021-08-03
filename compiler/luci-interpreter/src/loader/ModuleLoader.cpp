@@ -29,20 +29,20 @@ ModuleLoader::ModuleLoader(const luci::Module *module, RuntimeModule *runtime_mo
 {
 }
 
-void ModuleLoader::load()
+void ModuleLoader::load(IMemoryManager *memory_manager)
 {
   // Runtime graphs have to be created in advance, because they will be needed during the loading
   // process for control flow nodes.
   for (size_t i = 0; i < _module->size(); ++i)
   {
-    _graph_to_runtime_graph.emplace(_module->graph(i), _runtime_module->addGraph());
+    _graph_to_runtime_graph.emplace(_module->graph(i), _runtime_module->addGraph(memory_manager));
   }
   for (size_t i = 0; i < _module->size(); ++i)
   {
     const loco::Graph *graph = _module->graph(i);
     RuntimeGraph *runtime_graph = _graph_to_runtime_graph.at(graph);
     GraphLoader loader(graph, runtime_graph, _runtime_to_ir, _graph_to_runtime_graph,
-                       _node_to_tensor);
+                       _node_to_tensor, memory_manager);
     loader.loadTensors();
     loader.initInputOutputTensors();
     loader.loadOperators();

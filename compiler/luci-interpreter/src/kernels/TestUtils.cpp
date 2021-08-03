@@ -31,6 +31,14 @@ using ::testing::Matcher;
 
 Tensor makeOutputTensor(DataType element_type) { return Tensor(element_type, {}, {}, ""); }
 
+Tensor makeOutputTensor(DataType element_type, float scale, int32_t zero_point,
+                        IMemoryManager *memory_manager)
+{
+  Tensor tensor = Tensor(element_type, {}, {{scale}, {zero_point}}, "");
+  memory_manager->allocate_memory(tensor);
+  return tensor;
+}
+
 Tensor makeOutputTensor(DataType element_type, float scale, int32_t zero_point)
 {
   return Tensor(element_type, {}, {{scale}, {zero_point}}, "");

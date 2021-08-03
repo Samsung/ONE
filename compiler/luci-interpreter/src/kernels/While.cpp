@@ -49,6 +49,12 @@ void copy(const std::vector<Tensor *> &src, const std::vector<Tensor *> &dst)
   copy(const_src, dst);
 }
 
+void configureTensorsAllocations(const std::vector<Tensor *> &tensors, RuntimeGraph *run_graph)
+{
+  for (auto tensor : tensors)
+    run_graph->configureAllocations(tensor);
+}
+
 } // namespace
 
 While::While(std::vector<const Tensor *> inputs, std::vector<Tensor *> outputs,
@@ -78,10 +84,14 @@ void While::execute() const
   const auto &cond_inputs = _cond_graph->getInputTensors();
   const auto &cond_outputs = _cond_graph->getOutputTensors();
 
+  configureTensorsAllocations(cond_inputs, _cond_graph);
+
   copy(getInputTensors(), cond_inputs);
 
   const auto &body_inputs = _body_graph->getInputTensors();
   const auto &body_outputs = _body_graph->getOutputTensors();
+
+  configureTensorsAllocations(body_inputs, _body_graph);
 
   while (true)
   {

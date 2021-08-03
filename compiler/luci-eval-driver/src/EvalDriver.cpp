@@ -18,6 +18,7 @@
 #include <luci_interpreter/Interpreter.h>
 #include <luci/CircleExporter.h>
 #include <luci/CircleFileExpContract.h>
+#include <luci_interpreter/SimpleMemoryManager.h>
 
 #include <cstdlib>
 #include <fstream>
@@ -98,8 +99,9 @@ int entry(int argc, char **argv)
     return EXIT_FAILURE;
   }
 
+  luci_interpreter::SimpleMemoryManager memory_manager;
   // Create interpreter.
-  luci_interpreter::Interpreter interpreter(module.get());
+  luci_interpreter::Interpreter interpreter(module.get(), &memory_manager);
 
   // Set input.
   // Data for n'th input is read from ${input_prefix}n

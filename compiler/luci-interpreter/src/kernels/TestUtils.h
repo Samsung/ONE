@@ -19,6 +19,7 @@
 #define LUCI_INTERPRETER_KERNELS_TESTUTILS_H
 
 #include "luci_interpreter/core/Tensor.h"
+#include "luci_interpreter/MemoryManager.h"
 
 #include <type_traits>
 
@@ -34,6 +35,16 @@ namespace testing
 
 template <typename T>
 std::vector<T> quantize(const float *data, size_t num_elements, float scale, int32_t zero_point);
+
+template <DataType DT>
+Tensor makeInputTensor(const Shape &shape, const std::vector<typename DataTypeImpl<DT>::Type> &data,
+                       IMemoryManager *memory_manager)
+{
+  Tensor tensor(DT, shape, {}, "");
+  memory_manager->allocate_memory(tensor);
+  tensor.writeData(data.data(), data.size() * sizeof(typename DataTypeImpl<DT>::Type));
+  return tensor;
+}
 
 template <DataType DT>
 Tensor makeInputTensor(const Shape &shape, const std::vector<typename DataTypeImpl<DT>::Type> &data)
@@ -52,6 +63,19 @@ Tensor makeInputTensor(const Shape &shape, const std::vector<typename DataTypeIm
  * @param data floating point data for quantization
  * @return created tensor
  */
+template <DataType DT>
+Tensor makeInputTensor(const Shape &shape, float scale, int32_t zero_point,
+                       const std::vector<float> &data, IMemoryManager *memory_manager)
+{
+  using NativeT = typename DataTypeImpl<DT>::Type;
+  Tensor tensor(DT, shape, {{scale}, {zero_point}}, "");
+  std::vector<NativeT> quantized_data =
+    quantize<NativeT>(data.data(), data.size(), scale, zero_point);
+  memory_manager->allocate_memory(tensor);
+  tensor.writeData(quantized_data.data(), quantized_data.size() * sizeof(NativeT));
+  return tensor;
+}
+
 template <DataType DT>
 Tensor makeInputTensor(const Shape &shape, float scale, int32_t zero_point,
                        const std::vector<float> &data)
@@ -77,7 +101,7 @@ Tensor makeInputTensor(const Shape &shape, float scale, int32_t zero_point,
 template <DataType DT>
 Tensor makeInputTensor(const Shape &shape, const std::vector<float> &scales,
                        const std::vector<int32_t> &zero_points, int quantized_dimension,
-                       const std::vector<float> &data)
+                       const std::vector<float> &data, IMemoryManager *memory_manager = nullptr)
 {
   using NativeT = typename DataTypeImpl<DT>::Type;
   assert(quantized_dimension < shape.num_dims());
@@ -113,6 +137,7 @@ Tensor makeInputTensor(const Shape &shape, const std::vector<float> &scales,
                             part_quantized_data.end());
     }
   assert(quantized_data.size() == shape.num_elements());
+  memory_manager->allocate_memory(tensor);
   tensor.writeData(quantized_data.data(), quantized_data.size() * sizeof(NativeT));
   return tensor;
 }

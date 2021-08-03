@@ -17,6 +17,7 @@
 
 #include "kernels/ReverseV2.h"
 #include "kernels/TestUtils.h"
+#include "luci_interpreter/SimpleMemoryManager.h"
 
 namespace luci_interpreter
 {
@@ -36,6 +37,8 @@ TYPED_TEST_CASE(ReverseV2Test, DataTypes);
 
 TYPED_TEST(ReverseV2Test, MultiDimensions)
 {
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<SimpleMemoryManager>();
+
   // TypeParam
   std::vector<TypeParam> input_data{1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12,
                                     13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24};
@@ -47,13 +50,15 @@ TYPED_TEST(ReverseV2Test, MultiDimensions)
                                      17, 18, 15, 16, 13, 14, 23, 24, 21, 22, 19, 20};
   std::vector<int32_t> output_shape{4, 3, 2};
 
-  Tensor input_tensor = makeInputTensor<getElementType<TypeParam>()>(input_shape, input_data);
-  Tensor axis_tensor = makeInputTensor<DataType::S32>(axis_shape, axis_data);
+  Tensor input_tensor =
+    makeInputTensor<getElementType<TypeParam>()>(input_shape, input_data, memory_manager.get());
+  Tensor axis_tensor = makeInputTensor<DataType::S32>(axis_shape, axis_data, memory_manager.get());
 
   Tensor output_tensor = makeOutputTensor(getElementType<TypeParam>());
 
   ReverseV2 kernel = ReverseV2(&input_tensor, &axis_tensor, &output_tensor);
   kernel.configure();
+  memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorData<TypeParam>(output_tensor),

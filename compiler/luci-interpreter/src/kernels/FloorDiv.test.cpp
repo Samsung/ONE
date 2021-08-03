@@ -17,6 +17,7 @@
 
 #include "kernels/FloorDiv.h"
 #include "kernels/TestUtils.h"
+#include "luci_interpreter/SimpleMemoryManager.h"
 
 namespace luci_interpreter
 {
@@ -27,7 +28,15 @@ namespace
 
 using namespace testing;
 
-TEST(FloorDivTest, FloatSimple)
+class FloorDivTest : public ::testing::Test
+{
+protected:
+  void SetUp() override { _memory_manager = std::make_unique<SimpleMemoryManager>(); }
+
+  std::unique_ptr<IMemoryManager> _memory_manager;
+};
+
+TEST_F(FloorDivTest, FloatSimple)
 {
   Shape x_shape{2, 3};
   std::vector<float> x_data{
@@ -47,12 +56,13 @@ TEST(FloorDivTest, FloatSimple)
     1, 1, 1, // Row 2
   };
 
-  Tensor x_tensor = makeInputTensor<DataType::FLOAT32>(x_shape, x_data);
-  Tensor y_tensor = makeInputTensor<DataType::FLOAT32>(y_shape, y_data);
+  Tensor x_tensor = makeInputTensor<DataType::FLOAT32>(x_shape, x_data, _memory_manager.get());
+  Tensor y_tensor = makeInputTensor<DataType::FLOAT32>(y_shape, y_data, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   FloorDiv kernel(&x_tensor, &y_tensor, &output_tensor);
   kernel.configure();
+  _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorData<float>(output_tensor),
@@ -60,7 +70,7 @@ TEST(FloorDivTest, FloatSimple)
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
 }
 
-TEST(FloorDivTest, FloatBroadcast)
+TEST_F(FloorDivTest, FloatBroadcast)
 {
   Shape x_shape{1, 3};
   std::vector<float> x_data{
@@ -81,12 +91,13 @@ TEST(FloorDivTest, FloatBroadcast)
     1, 3,  -4, // Row 3
   };
 
-  Tensor x_tensor = makeInputTensor<DataType::FLOAT32>(x_shape, x_data);
-  Tensor y_tensor = makeInputTensor<DataType::FLOAT32>(y_shape, y_data);
+  Tensor x_tensor = makeInputTensor<DataType::FLOAT32>(x_shape, x_data, _memory_manager.get());
+  Tensor y_tensor = makeInputTensor<DataType::FLOAT32>(y_shape, y_data, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   FloorDiv kernel(&x_tensor, &y_tensor, &output_tensor);
   kernel.configure();
+  _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorData<float>(output_tensor),
@@ -94,36 +105,37 @@ TEST(FloorDivTest, FloatBroadcast)
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
 }
 
-TEST(FloorDivTest, DivByZero_NEG)
+TEST_F(FloorDivTest, DivByZero_NEG)
 {
   Shape shape{3};
   std::vector<float> x_data{1, 0, -1};
   std::vector<float> y_data{0, 0, 0};
 
-  Tensor x_tensor = makeInputTensor<DataType::FLOAT32>(shape, x_data);
-  Tensor y_tensor = makeInputTensor<DataType::FLOAT32>(shape, y_data);
+  Tensor x_tensor = makeInputTensor<DataType::FLOAT32>(shape, x_data, _memory_manager.get());
+  Tensor y_tensor = makeInputTensor<DataType::FLOAT32>(shape, y_data, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   FloorDiv kernel(&x_tensor, &y_tensor, &output_tensor);
   kernel.configure();
+  _memory_manager->allocate_memory(output_tensor);
 
   EXPECT_ANY_THROW(kernel.execute());
 }
 
-TEST(FloorDivTest, Input_Output_Type_Mismatch_NEG)
+TEST_F(FloorDivTest, Input_Output_Type_Mismatch_NEG)
 {
-  Tensor x_tensor = makeInputTensor<DataType::FLOAT32>({1}, {1.f});
-  Tensor y_tensor = makeInputTensor<DataType::FLOAT32>({1}, {1.f});
+  Tensor x_tensor = makeInputTensor<DataType::FLOAT32>({1}, {1.f}, _memory_manager.get());
+  Tensor y_tensor = makeInputTensor<DataType::FLOAT32>({1}, {1.f}, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::U8);
 
   FloorDiv kernel(&x_tensor, &y_tensor, &output_tensor);
   EXPECT_ANY_THROW(kernel.configure());
 }
 
-TEST(FloorDivTest, Input_Type_Mismatch_NEG)
+TEST_F(FloorDivTest, Input_Type_Mismatch_NEG)
 {
-  Tensor x_tensor = makeInputTensor<DataType::FLOAT32>({1}, {1});
-  Tensor y_tensor = makeInputTensor<DataType::U8>({1}, {1});
+  Tensor x_tensor = makeInputTensor<DataType::FLOAT32>({1}, {1}, _memory_manager.get());
+  Tensor y_tensor = makeInputTensor<DataType::U8>({1}, {1}, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   FloorDiv kernel(&x_tensor, &y_tensor, &output_tensor);
