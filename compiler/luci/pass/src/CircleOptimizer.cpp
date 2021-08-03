@@ -29,6 +29,7 @@
 #include "luci/Pass/FuseBatchNormWithTConvPass.h"
 #include "luci/Pass/FuseBCQPass.h"
 #include "luci/Pass/FuseInstanceNormPass.h"
+#include "luci/Pass/FuseMeanWithMeanPass.h"
 #include "luci/Pass/FusePreActivationBatchNormPass.h"
 #include "luci/Pass/MakeBatchNormGammaPositivePass.h"
 #include "luci/Pass/PropagateQuantParamPass.h"
@@ -180,6 +181,10 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   if (_options->query(Options::Algorithm::ResolveCustomOpMatMul))
   {
     phase.emplace_back(std::make_unique<luci::ResolveCustomOpMatMulPass>());
+  }
+  if (_options->query(Options::Algorithm::FuseMeanWithMean))
+  {
+    phase.emplace_back(std::make_unique<FuseMeanWithMeanPass>());
   }
   if (_options->query(Options::Algorithm::FuseInstanceNorm))
   {
