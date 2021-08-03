@@ -26,6 +26,9 @@ import sys
 from google.protobuf.message import DecodeError
 from google.protobuf import text_format as _text_format
 
+# TODO Find better way to suppress trackback on error
+sys.tracebacklimit = 0
+
 
 def wrap_frozen_graph(graph_def, inputs, outputs):
     def _imports_graph_def():
