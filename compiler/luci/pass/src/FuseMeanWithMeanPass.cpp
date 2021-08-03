@@ -83,7 +83,7 @@ bool fuse_mean_with_mean(luci::CircleMean *mean)
   if (input_rank < 2)
     return false;
 
-  // Check whether current CircleMean and next CircleMean
+  // Check whether current CircleMean and previous CircleMean
   // has the same keep_dims parameter or not.
   // If it doesn't, keep the graph unchanged.
   if (mean->keep_dims() != prev_mean->keep_dims())
@@ -99,7 +99,7 @@ bool fuse_mean_with_mean(luci::CircleMean *mean)
   auto indices_size = indices->size<loco::DataType::S32>();
   auto prev_indices_size = prev_indices->size<loco::DataType::S32>();
 
-  // Get set of indices of current CircleMean operation.
+  // Get set of indices of previous CircleMean operation.
   std::set<uint32_t> indices_set;
   for (uint32_t i = 0; i < prev_indices_size; i++)
   {
@@ -140,7 +140,7 @@ bool fuse_mean_with_mean(luci::CircleMean *mean)
   fused_mean->keep_dims(mean->keep_dims());
   fused_mean->name(name + "/Mean");
 
-  // Replace old CircleMeans operations with new CircleMean operation with merged indices.
+  // Replace old CircleMean operations with new CircleMean operation with merged indices.
   replace(mean).with(fused_mean);
   luci::add_origin(fused_mean,
                    luci::composite_origin({luci::get_origin(mean), luci::get_origin(prev_mean)}));
