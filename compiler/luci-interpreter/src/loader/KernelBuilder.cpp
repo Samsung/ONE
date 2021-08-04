@@ -82,6 +82,7 @@
 #include "kernels/Unpack.h"
 #include "kernels/Transpose.h"
 #include "kernels/TransposeConv.h"
+#include "kernels/While.h"
 
 #include <stdexcept>
 
@@ -117,7 +118,7 @@ enum class KB
   KLMN,
   OPQR,
   STUV,
-  WXYZ, // Not used
+  WXYZ,
 };
 
 #define DECLARE_VISIT(CLASS) std::unique_ptr<Kernel> visit(const luci::CLASS *) override
@@ -301,6 +302,25 @@ public:
   DECLARE_VISIT(CircleUnpack);
 };
 
+template <>
+class KernelBuilderLet<KB::WXYZ> : public luci::CircleNodeVisitor<std::unique_ptr<Kernel>>,
+                                   public KernelBuilderHelper
+{
+public:
+  KernelBuilderLet(
+    const std::unordered_map<const loco::Graph *, RuntimeGraph *> &graph_to_runtime_graph,
+    const std::unordered_map<const loco::Node *, Tensor *> &node_to_tensor)
+    : KernelBuilderHelper(graph_to_runtime_graph, node_to_tensor)
+  {
+  }
+
+public:
+  std::unique_ptr<Kernel> visit(const luci::CircleNode *) { return nullptr; }
+
+public:
+  DECLARE_VISIT(CircleWhile);
+};
+
 #undef DECLARE_VISIT
 
 std::unique_ptr<Kernel> KernelBuilder::build(const luci::CircleNode *node)
@@ -320,6 +340,7 @@ std::unique_ptr<Kernel> KernelBuilder::build(const luci::CircleNode *node)
   VISIT_KB(KLMN);
   VISIT_KB(OPQR);
   VISIT_KB(STUV);
+  VISIT_KB(WXYZ);
 
 #undef VISIT_KB
   std::string msg = "Unsupported operator: ";
@@ -1208,6 +1229,26 @@ std::unique_ptr<Kernel> KernelBuilderLet<KB::STUV>::visit(const luci::CircleUnpa
 
   // NOTE 'num' attribute is ignored.
   return std::make_unique<kernels::Unpack>(input, std::move(outputs), params);
+}
+
+std::unique_ptr<Kernel> KernelBuilderLet<KB::WXYZ>::visit(const luci::CircleWhile *node)
+{
+  auto output_nodes = collectOutputNodes<luci::CircleWhileOut>(node);
+  assert(node->arity() == node->input_count());
+  assert(output_nodes.size() == static_cast<size_t>(node->output_count()));
+
+  std::vector<const Tensor *> inputs(node->input_count());
+  for (uint32_t i = 0; i < node->input_count(); ++i)
+  {
+    inputs[i] = getInputTensor(node->input(i));
+  }
+  std::vector<Tensor *> outputs = getOutputTensors(output_nodes);
+
+  RuntimeGraph *cond_graph = getRuntimeGraph(node->cond_graph());
+  RuntimeGraph *body_graph = getRuntimeGraph(node->body_graph());
+
+  return std::make_unique<kernels::While>(std::move(inputs), std::move(outputs), cond_graph,
+                                          body_graph);
 }
 
 } // namespace luci_interpreter
