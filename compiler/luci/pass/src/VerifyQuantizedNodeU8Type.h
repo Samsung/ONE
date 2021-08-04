@@ -237,8 +237,15 @@ private:
 
   bool visit(const luci::CircleReshape *node)
   {
-    RETURN_FALSE_UNLESS(has_type(node, Type::U8))
-    RETURN_FALSE_UNLESS(has_type(node->tensor(), Type::U8))
+    if (node->quantparam())
+    {
+      RETURN_FALSE_UNLESS(has_type(node, Type::U8))
+      RETURN_FALSE_UNLESS(has_type(node->tensor(), Type::U8))
+    }
+    else
+    {
+      RETURN_FALSE_UNLESS(has_type(node->tensor(), node->dtype()))
+    }
     luci::CircleConst *shape = dynamic_cast<luci::CircleConst *>(node->shape());
     if (shape != nullptr)
       RETURN_FALSE_UNLESS(has_type(shape, Type::S32))
