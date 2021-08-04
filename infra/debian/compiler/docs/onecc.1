@@ -1,0 +1,156 @@
+.\" Manpage for onecc.
+.\" Contact nnfw@samsung.com to correct errors or typos.
+.TH ONECC "1" "August 2021" "onecc version 1.16.1" "User Commands"
+.SH NAME
+onecc \- run ONE driver via several commands or configuration file
+.SH SYNOPSIS
+\fBonecc\fR [\-h] [\-v] [\-C CONFIG] [COMMAND <args>]
+.SH DESCRIPTION
+\fBonecc\fR is a command line tool to execute ONE driver via several commands or configuration file.
+.SS "Configuration file:"
+\fBonecc\fR takes input as a configuration file that supports ini format.
+A configuration file consists of sections, each led by a [section] header.
+Each section is the ONE driver you want to run, and consists of commands in a key/value combination to pass to the driver.
+.SH OPTIONS
+.TP
+\fB\-h\fR, \fB\-\-help\fR
+show this help message and exit
+.TP
+\fB\-v\fR, \fB\-\-version\fR
+show program's version number and exit
+.TP
+\fB\-V\fR, \fB\-\-verbose\fR
+output additional information to stdout or stderr
+.TP
+\fB\-C\fR CONFIG, \fB\-\-config\fR CONFIG
+run with configuation file
+.SS compile to circle model
+.TP
+\fBimport\fR
+Convert given model to circle. See one\-import(1) for details.
+.TP
+\fBoptimize\fR
+Optimize circle model. See one-optimize(1) for details.
+.TP
+\fBquantize\fR
+Quantize circle model. See one-quantize(1) for details.
+.SS package circle model
+.TP
+\fBpack\fR
+Package circle and metadata into nnpackage. See one-pack(1) for details.
+.SS run backend tools
+.TP
+\fBcodegen\fR
+Code generation tool. See one-codegen(1) for details.
+.SH EXAMPLES
+.SS Use command line interface
+.TP
+\fBonecc import tf --v1 -i\fR \fIinput path\fR \fB-o\fR \fIoutput path\fR \fB-I\fR \fIinput arrays\fR \fB-s\fR \fIinput shapes\fR \fB-O\fR \fIoutput arrays\fR
+import tf model
+.TP
+\fBonecc import tflite -i\fR \fIinput path\fR \fB-o\fR \fIoutput path\fR
+import tflite model
+.TP
+\fBonecc import onnx -i\fR \fIinput path\fR \fB-o\fR \fIoutput path\fR
+import onnx model
+.TP
+\fBonecc optimize -i\fR \fIinput path\fR \fB-o\fR \fIoutput path\fR \fIoptimize arguments\fR
+optimize circle model
+.TP
+\fBonecc quantize -i\fR \fIinput path\fR \fB-o\fR \fIoutput path\fR \fB-d\fR \fIinput data\fR
+quantize circle model
+.TP
+\fBonecc pack -i\fR \fIinput path\fR \fB-o\fR \fIoutput path\fR
+package circle and metadata into nnpackage
+.TP
+\fBonecc codegen -b\fR \fIbackend\fR \fB--\fR \fIbackends arguments\fR
+generate backend code
+.PP
+.SS Use configuration file
+.PP
+The configuration file should be written in the following format:
+.IP
+[onecc]
+.br
+one-import-tf=True
+.br
+one-import-tflite=False
+.br
+one-import-bcq=False
+.br
+one-import-onnx=False
+.br
+one-optimize=True
+.br
+one-quantize=True
+.br
+one-pack=True
+.br
+one-codegen=True
+.IP
+[one-import-tf]
+.br
+input_path=/path/to/inception_v3.pb
+.br
+output_path=inception_v3.circle
+.br
+input_arrays=input
+.br
+input_shapes=1,299,299,3
+.br
+output_arrays=InceptionV3/Predictions/Reshape_1
+.br
+converter_version=v1
+.br
+model_format=graph_def
+.IP
+[one-optimize]
+.br
+input_path=inception_v3.circle
+.br
+output_path=inception_v3.opt.circle
+.br
+generate_profile_data=False
+.IP
+[one-quantize]
+.br
+input_path=inception_v3.opt.circle
+.br
+output_path=inception_v3.quantized.circle
+.br
+input_data=inception_v3_test_data.h5
+.IP
+[one-pack]
+.br
+input_path=inception_v3.quantized.circle
+.br
+output_path=inception_v3_pack
+.IP
+[one-codegen]
+.br
+backend=dummy
+.br
+command=-o sample.out inception_v3.quantized.circle
+.TP
+\fBonecc -C\fR \fIconfiguration file\fR
+Run ONE driver according to configuration section parameter
+.PP
+\fBonecc\fR section decides whether to use each driver or not.
+If the value is False, even if the corresponding section exists, the driver won't be executed.
+.SH COPYRIGHT
+Copyright \(co 2020\-2021 Samsung Electronics Co., Ltd. All Rights Reserved
+Licensed under the Apache License, Version 2.0
+https://github.com/Samsung/ONE
+.SH "SEE ALSO"
+The full documentation for
+.B onecc
+is maintained as a Texinfo manual. If the
+.B info
+and
+.B onecc
+programs are properly installed at your site, the command
+.IP
+.B info onecc
+.PP
+should give you access to the complete manual.
+
