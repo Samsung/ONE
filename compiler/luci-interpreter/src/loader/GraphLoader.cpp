@@ -83,6 +83,7 @@ bool isExecutableNode(const luci::CircleNode *node)
     case luci::CircleOpcode::CIRCLEIFOUT:
     case luci::CircleOpcode::CIRCLESPLITOUT:
     case luci::CircleOpcode::CIRCLEUNPACKOUT:
+    case luci::CircleOpcode::CIRCLEWHILEOUT:
       return false;
     default:
       return true;
