@@ -69,8 +69,9 @@ def _check_subtool_exists():
 
 
 def _get_parser():
-    parser = argparse.ArgumentParser(
-        description='command line tool to run ONE drivers in customized order')
+    onecc_usage = 'onecc [-h] [-v] [-C CONFIG] [COMMAND <args>]'
+    onecc_desc = 'Run ONE driver via several commands or configuration file'
+    parser = argparse.ArgumentParser(description=onecc_desc, usage=onecc_usage)
 
     _utils._add_default_arg(parser)
 
