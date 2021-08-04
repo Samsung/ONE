@@ -88,6 +88,8 @@ tcgenerate(OneHot_003)
 tcgenerate(Pack_000)
 tcgenerate(Pack_U8_000)
 tcgenerate(PadV2_000)
+tcgenerate(Part_While_000) # TODO remove this after WHILE is supported
+tcgenerate(Part_While_001) # TODO remove this after WHILE is supported
 tcgenerate(Quantize_000)  # runtime and luci-interpreter doesn't support Quantize op yet
 tcgenerate(Range_000)
 tcgenerate(Rank_000)
