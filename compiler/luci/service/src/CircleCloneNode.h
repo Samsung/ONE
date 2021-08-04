@@ -232,7 +232,7 @@ public:
 
 public:
   luci::CircleNode *visit(const luci::CircleWhere *) final;
-  // luci::CircleNode *visit(const luci::CircleWhile *) final;
+  luci::CircleNode *visit(const luci::CircleWhile *) final;
   luci::CircleNode *visit(const luci::CircleZerosLike *) final;
 
   luci::CircleNode *visit(const luci::CircleNode *) final { return nullptr; }
@@ -269,7 +269,7 @@ public:
   luci::CircleNode *visit(const luci::CircleTopKV2Out *) final;
   luci::CircleNode *visit(const luci::CircleUniqueOut *) final;
   luci::CircleNode *visit(const luci::CircleUnpackOut *) final;
-  // luci::CircleNode *visit(const luci::CircleWhileOut *) final;
+  luci::CircleNode *visit(const luci::CircleWhileOut *) final;
 
   // Handle in CircleNode
   luci::CircleNode *visit(const luci::CircleNode *) final;
