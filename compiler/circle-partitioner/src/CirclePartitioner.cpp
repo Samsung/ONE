@@ -24,6 +24,7 @@
 #include <luci/Service/Validate.h>
 #include <luci/CircleExporter.h>
 #include <luci/CircleFileExpContract.h>
+#include <luci/CircleOptimizer.h>
 #include <luci/PartitionDump.h>
 #include <luci/PartitionValidate.h>
 #include <luci/Log.h>
@@ -143,6 +144,16 @@ int entry(int argc, char **argv)
   if (module.get() == nullptr)
   {
     return EXIT_FAILURE;
+  }
+  // Run default shape/dtype inference before validation
+  // NOTE CircleWhileOut default shape is INVALID as it needs initial shape
+  //      inference. This is cause of WHILE may have dynamic shape.
+  luci::CircleOptimizer optimizer;
+  (void)optimizer.options(); // need to call this to make internal member
+  for (size_t g = 0; g < module->size(); ++g)
+  {
+    auto graph = module->graph(g);
+    optimizer.optimize(graph);
   }
   if (!luci::validate(module.get()))
   {
