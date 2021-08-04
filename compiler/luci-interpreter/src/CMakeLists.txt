@@ -50,6 +50,6 @@ target_link_libraries(${LUCI_INTERPRETER_BINARY}
     PUBLIC luci_lang ${LUCI_INTERPRETER_LOADER} ${LUCI_INTERPRETER_CORE}
     PRIVATE nncc_common)
 
-install(TARGETS luci_interpreter DESTINATION lib)
+install(TARGETS ${LUCI_INTERPRETER_BINARY} DESTINATION lib)
 install(DIRECTORY include/ DESTINATION include
         FILES_MATCHING PATTERN "*.h")
