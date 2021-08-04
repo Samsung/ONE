@@ -23,6 +23,8 @@
 #include <luci/Service/Nodes/CircleConst.h>
 #include <luci/Log.h>
 
+#include <functional>
+
 namespace
 {
 
@@ -194,6 +196,38 @@ luci::CircleTranspose *create_pre_transpose(luci::CircleNode *node)
 {
   return create_4d_transpose(node, {0, 2, 3, 1});
 }
+
+bool check_4d_reshape(loco::Node *node, const std::vector<int32_t> indices)
+{
+  assert(indices.size() == 4); // FIX_CALLER_UNLESS
+
+  auto reshape = dynamic_cast<luci::CircleReshape *>(node);
+  if (not reshape)
+    return false;
+
+  if (reshape->rank() != 4)
+    return false;
+
+  auto input = loco::must_cast<luci::CircleNode *>(reshape->tensor());
+  if (input->shape_status() != luci::ShapeStatus::VALID)
+    return false;
+
+  if (reshape->shape_status() != luci::ShapeStatus::VALID)
+    return false;
+
+  if (!(input->dim(0) == reshape->dim(indices[0])) ||
+      !(input->dim(1) == reshape->dim(indices[1])) ||
+      !(input->dim(2) == reshape->dim(indices[2])) || !(input->dim(3) == reshape->dim(indices[3])))
+    return false;
+
+  return true;
+}
+
+// Check if Reshape that converts NCHW -> NHWC
+bool is_pre_reshape(loco::Node *node) { return check_4d_reshape(node, {0, 3, 1, 2}); }
+
+// Check if Reshape that converts NHWC -> NCHW
+bool is_post_reshape(loco::Node *node) { return check_4d_reshape(node, {0, 2, 3, 1}); }
 
 bool is_post_transpose(loco::Node *node) { return check_4d_transpose(node, {0, 3, 1, 2}); }
 
@@ -1036,30 +1070,43 @@ bool ConvertNCHWToNHWCPass::run(loco::Graph *g)
 
   // Annotate NHWC operators
   // NHWC operators are detected by pattern matching
-  // Pattern: pre-Transose + [chain of Ops] + post-Transpose
-  // [chain of Ops] are annotated as NHWC
+  //
+  // Pattern
+  //    pre-Transose (or pre-Reshape) + [intermediate Ops] + post-Transpose (or post-Reshape)
+  //
+  // [intermediate Ops] are annotated as NHWC
+  //
+  // NOTE A single pre-Transpose/Reshape can have multiple post-Transpose/Reshape.
+  // For example,
+  // pre-Transpose --- [intermediate Ops] --- post-Transpose
+  //                |
+  //                +--[intermediate Ops] --- post-Transpose
   for (auto node : loco::postorder_traversal(loco::output_nodes(g)))
   {
     if (has_data_format(node))
       continue;
 
-    if (is_pre_transpose(node))
+    if (is_pre_transpose(node) || is_pre_reshape(node))
     {
-      loco::Node *succ = node;
-      while (true)
-      {
-        auto succs = loco::succs(succ);
-        if (succs.size() != 1)
-          break;
+      // For recursive call of lambda
+      std::function<void(loco::Node *)> set_data_format_to_succs;
+      set_data_format_to_succs = [&](loco::Node *n) {
+        for (auto succ : loco::succs(n))
+        {
+          // Exit condition
+          if (is_post_transpose(succ) || is_post_reshape(succ))
+            continue;
 
-        succ = *succs.begin();
+          if (not has_data_format(succ))
+          {
+            set_data_format(succ, DataFormat::NHWC);
+          }
 
-        if (is_post_transpose(succ))
-          break;
+          set_data_format_to_succs(succ);
+        }
+      };
 
-        if (not has_data_format(succ))
-          set_data_format(succ, DataFormat::NHWC);
-      }
+      set_data_format_to_succs(node);
     }
   }
 
