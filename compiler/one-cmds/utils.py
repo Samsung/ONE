@@ -89,6 +89,15 @@ def _add_default_arg(parser):
         action='store_true',
         help='show program\'s version number and exit')
 
+    # verbose
+    parser.add_argument(
+        '-V',
+        '--verbose',
+        action='store_const',
+        default='0',
+        const='1',
+        help='output additional information to stdout or stderr')
+
     # configuration file
     parser.add_argument('-C', '--config', type=str, help='run with configuation file')
     # section name that you want to run in configuration file
