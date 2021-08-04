@@ -125,6 +125,23 @@ bool OptimizeOptionsImpl::query(Algorithm algo)
   return true;
 }
 
+void convert_nchw_to_nhwc(loco::Graph *g, bool preserve_input, bool preserve_output)
+{
+  logo::Phase phase;
+
+  phase.emplace_back(std::make_unique<logo::RemoveDeadNodeWithQueryPass>());
+  phase.emplace_back(std::make_unique<luci::CircleShapeInferencePass>());
+  phase.emplace_back(std::make_unique<luci::CircleTypeInferencePass>());
+
+  phase.emplace_back(
+    std::make_unique<luci::ConvertNCHWToNHWCPass>(preserve_input, preserve_output));
+
+  ProgressReporter prog(g, logo::PhaseStrategy::Restart);
+  logo::PhaseRunner<logo::PhaseStrategy::Restart> phase_runner{g};
+  phase_runner.attach(&prog);
+  phase_runner.run(phase);
+}
+
 } // namespace
 
 namespace luci
@@ -162,6 +179,17 @@ void CircleOptimizer::optimize(luci::Module *m) const
 void CircleOptimizer::optimize(loco::Graph *g) const
 {
   logo::Phase phase;
+
+  // Conversion from NCHW to NHWC is done first to avoid interference with other optimizations.
+  if (_options->query(Options::Algorithm::ConvertNCHWToNHWC))
+  {
+    bool preserve_input =
+      _options->param(Options::AlgorithmParameters::NCHW_to_NHWC_input_shape) != "true";
+    bool preserve_output =
+      _options->param(Options::AlgorithmParameters::NCHW_to_NHWC_output_shape) != "true";
+
+    convert_nchw_to_nhwc(g, preserve_input, preserve_output);
+  }
 
   /* TRANSFORM DECLARATION BEGIN */
   phase.emplace_back(std::make_unique<logo::RemoveDeadNodeWithQueryPass>());
@@ -305,16 +333,6 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   if (_options->query(Options::Algorithm::TransformMinReluToRelu6Pass))
   {
     phase.emplace_back(std::make_unique<luci::TransformMinReluToRelu6Pass>());
-  }
-  if (_options->query(Options::Algorithm::ConvertNCHWToNHWC))
-  {
-    bool preserve_input =
-      _options->param(Options::AlgorithmParameters::NCHW_to_NHWC_input_shape) != "true";
-    bool preserve_output =
-      _options->param(Options::AlgorithmParameters::NCHW_to_NHWC_output_shape) != "true";
-
-    phase.emplace_back(
-      std::make_unique<luci::ConvertNCHWToNHWCPass>(preserve_input, preserve_output));
   }
 
   /* TRANSFORM DECLARATION END */
