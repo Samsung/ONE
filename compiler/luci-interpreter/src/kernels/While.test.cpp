@@ -18,7 +18,6 @@
 #include "core/RuntimeModule.h"
 #include "kernels/Add.h"
 #include "kernels/Less.h"
-#include "kernels/Minimum.h"
 #include "kernels/While.h"
 #include "kernels/TestUtils.h"
 
