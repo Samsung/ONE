@@ -172,7 +172,7 @@ public:
   void visit(const luci::CircleUnique *) final;
   void visit(const luci::CircleUnpack *) final;
   void visit(const luci::CircleWhere *) final;
-  // void visit(const luci::CircleWhile *) final;
+  void visit(const luci::CircleWhile *) final;
   void visit(const luci::CircleZerosLike *) final;
 
   // Circle Only
@@ -197,7 +197,7 @@ public:
   void visit(const luci::CircleTopKV2Out *) final;
   void visit(const luci::CircleUniqueOut *) final;
   void visit(const luci::CircleUnpackOut *) final;
-  // void visit(const luci::CircleWhileOut *) final;
+  void visit(const luci::CircleWhileOut *) final;
 
 public:
   luci::CircleNode *find_clone(const luci::CircleNode *node);
