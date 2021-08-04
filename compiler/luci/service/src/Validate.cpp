@@ -102,6 +102,9 @@ bool validate_shape_dtype(loco::Graph *g)
     // Shape and dtype validation for CiecleOutputExclude is not needed
     if (dynamic_cast<luci::CircleOutputExclude *>(circle_node))
       continue;
+    // Skip as initial status is UNDEFINED for CircleWhileOut
+    if (dynamic_cast<luci::CircleWhileOut *>(circle_node))
+      continue;
 
     assert(circle_node->shape_status() != luci::ShapeStatus::UNDEFINED);
 
