@@ -1,0 +1,5 @@
+# To check if this network is converted to circle InstanceNorm op
+
+RULE    "VERIFY_FILE_FORMAT"      $(verify_file_format) '=' 1
+
+RULE    "WHILE_EXIST"             $(op_count WHILE) '=' 1
