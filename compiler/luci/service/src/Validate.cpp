@@ -99,7 +99,7 @@ bool validate_shape_dtype(loco::Graph *g)
     assert(circle_output->from() != nullptr);
     auto circle_node = loco::must_cast<luci::CircleNode *>(circle_output->from());
 
-    // Shape and dtype validation for CiecleOutputExclude is not needed
+    // Shape and dtype validation for CircleOutputExclude is not needed
     if (dynamic_cast<luci::CircleOutputExclude *>(circle_node))
       continue;
 
