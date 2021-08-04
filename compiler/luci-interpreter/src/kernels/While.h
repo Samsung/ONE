@@ -38,8 +38,8 @@ public:
   void execute() const override;
 
 private:
-  RuntimeGraph *const _cond_graph;
-  RuntimeGraph *const _body_graph;
+  RuntimeGraph *const _cond_graph = nullptr;
+  RuntimeGraph *const _body_graph = nullptr;
 };
 
 } // namespace kernels
