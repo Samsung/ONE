@@ -163,10 +163,12 @@ void clone_recursive_subgraphs(luci::PartedModule &pm, loco::Graph *graph,
   auto nodes = graph->nodes();
   for (uint32_t n = 0; n < nodes->size(); ++n)
   {
-    auto if_node = dynamic_cast<luci::CircleIf *>(nodes->at(n));
-    if (if_node != nullptr)
     {
-      clone_ifnode_subgraphs(pm, if_node, clonectx);
+      auto if_node = dynamic_cast<luci::CircleIf *>(nodes->at(n));
+      if (if_node != nullptr)
+      {
+        clone_ifnode_subgraphs(pm, if_node, clonectx);
+      }
     }
     // TODO handle While
   }
@@ -288,10 +290,12 @@ void build_graph(luci::PartedModule &pm, loco::Graph *graph, const luci::PGroup 
   // subgraphs for IF/WHILE/... nodes
   for (auto &pnode : pgroup->pnodes)
   {
-    auto if_node = dynamic_cast<const luci::CircleIf *>(pnode->node);
-    if (if_node != nullptr)
     {
-      clone_ifnode_subgraphs(pm, if_node, clonectx);
+      auto if_node = dynamic_cast<const luci::CircleIf *>(pnode->node);
+      if (if_node != nullptr)
+      {
+        clone_ifnode_subgraphs(pm, if_node, clonectx);
+      }
     }
     // TODO handle While
   }
