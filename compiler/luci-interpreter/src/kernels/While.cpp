@@ -25,6 +25,32 @@ namespace luci_interpreter
 namespace kernels
 {
 
+namespace
+{
+
+void copy(const std::vector<const Tensor *> &src, const std::vector<Tensor *> &dst)
+{
+  for (size_t i = 0; i < src.size(); ++i)
+  {
+    LUCI_INTERPRETER_CHECK(dst[i]->element_type() == src[i]->element_type());
+    dst[i]->resize(src[i]->shape());
+
+    const int32_t num_elements = src[i]->shape().num_elements();
+    const std::size_t element_size = getDataTypeSize(src[i]->element_type());
+    std::memcpy(dst[i]->data<void>(), src[i]->data<void>(), num_elements * element_size);
+  }
+}
+
+void copy(const std::vector<Tensor *> &src, const std::vector<Tensor *> &dst)
+{
+  std::vector<const Tensor *> const_src;
+  for (const auto &t : src)
+    const_src.push_back(t);
+  copy(const_src, dst);
+}
+
+} // namespace
+
 While::While(std::vector<const Tensor *> inputs, std::vector<Tensor *> outputs,
              RuntimeGraph *cond_graph, RuntimeGraph *body_graph)
   : Kernel(std::move(inputs), std::move(outputs)), _cond_graph(cond_graph), _body_graph(body_graph)
@@ -52,16 +78,7 @@ void While::execute() const
   const auto &cond_inputs = _cond_graph->getInputTensors();
   const auto &cond_outputs = _cond_graph->getOutputTensors();
 
-  // Copy initial kernel inputs to condition graph inputs.
-  for (size_t i = 0; i < getInputTensors().size(); ++i)
-  {
-    LUCI_INTERPRETER_CHECK(cond_inputs[i]->element_type() == input(i)->element_type());
-    cond_inputs[i]->resize(input(i)->shape());
-
-    const int32_t num_elements = input(i)->shape().num_elements();
-    const std::size_t element_size = getDataTypeSize(input(i)->element_type());
-    std::memcpy(cond_inputs[i]->data<void>(), input(i)->data<void>(), num_elements * element_size);
-  }
+  copy(getInputTensors(), cond_inputs);
 
   const auto &body_inputs = _body_graph->getInputTensors();
   const auto &body_outputs = _body_graph->getOutputTensors();
@@ -74,43 +91,14 @@ void While::execute() const
     if (!cond_value)
       break;
 
-    // Copy cond subgraph inputs to body subgraph inputs.
-    for (size_t i = 0; i < _cond_graph->getInputTensors().size(); ++i)
-    {
-      LUCI_INTERPRETER_CHECK(body_inputs[i]->element_type() == cond_inputs[i]->element_type());
-      body_inputs[i]->resize(cond_inputs[i]->shape());
-
-      const int32_t num_elements = cond_inputs[i]->shape().num_elements();
-      const std::size_t element_size = getDataTypeSize(cond_inputs[i]->element_type());
-      std::memcpy(body_inputs[i]->data<void>(), cond_inputs[i]->data<void>(),
-                  num_elements * element_size);
-    }
+    copy(cond_inputs, body_inputs);
 
     _body_graph->execute();
 
-    // Copy body subgraph outputs to cond subgraph inputs
-    for (size_t i = 0; i < _cond_graph->getInputTensors().size(); ++i)
-    {
-      LUCI_INTERPRETER_CHECK(body_outputs[i]->element_type() == cond_inputs[i]->element_type());
-      cond_inputs[i]->resize(body_outputs[i]->shape());
-
-      const int32_t num_elements = body_outputs[i]->shape().num_elements();
-      const std::size_t element_size = getDataTypeSize(body_outputs[i]->element_type());
-      std::memcpy(cond_inputs[i]->data<void>(), body_outputs[i]->data<void>(),
-                  num_elements * element_size);
-    }
+    copy(body_outputs, cond_inputs);
   }
 
-  // Copy cond subgraph outputs to this kernel outputs.
-  for (size_t i = 0; i < getOutputTensors().size(); ++i)
-  {
-    LUCI_INTERPRETER_CHECK(cond_inputs[i]->element_type() == output(i)->element_type());
-    output(i)->resize(cond_inputs[i]->shape());
-
-    const int32_t num_elements = output(i)->shape().num_elements();
-    const std::size_t element_size = getDataTypeSize(output(i)->element_type());
-    std::memcpy(output(i)->data<void>(), cond_inputs[i]->data<void>(), num_elements * element_size);
-  }
+  copy(cond_inputs, getOutputTensors());
 }
 
 } // namespace kernels
