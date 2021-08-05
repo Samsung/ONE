@@ -42,6 +42,9 @@ public:
   void profileRawData(const std::string &mode, const std::string &input_data_path,
                       float min_percentile, float max_percentile);
 
+  void profileRawDataDirectory(const std::string &mode, const std::string &input_data_path,
+                               float min_percentile, float max_percentile);
+
   void profileDataWithRandomInputs(const std::string &mode, float min_percentile,
                                    float max_percentile);
 

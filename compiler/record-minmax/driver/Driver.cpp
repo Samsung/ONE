@@ -154,6 +154,12 @@ int entry(const int argc, char **argv)
       // Profile min/max while executing the list of Raw data
       rmm.profileRawData(mode, input_data_path, min_percentile, max_percentile);
     }
+    else if (input_data_format == "directory" || input_data_format == "dir")
+    {
+      // Profile min/max while executing all files under the given directory
+      // The contents of each file is same as the raw data in the 'list' type
+      rmm.profileRawDataDirectory(mode, input_data_path, min_percentile, max_percentile);
+    }
     else
     {
       throw std::runtime_error(
