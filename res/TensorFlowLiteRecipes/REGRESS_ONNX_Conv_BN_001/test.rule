@@ -1,0 +1,9 @@
+# To check ONNX conversion is OK
+
+RULE    "VERIFY_FILE_FORMAT"      $(verify_file_format) '=' 1
+
+RULE    "CONV_EXIST"              $(op_count CONV_2D) '=' 2
+RULE    "NO_MUL"                  $(op_count MUL) '=' 0
+RULE    "NO_ADD"                  $(op_count ADD) '=' 0
+RULE    "NO_RESHAPE"              $(op_count RESHAPE) '=' 0
+RULE    "NO_TRANSPOSE"            $(op_count TRANSPOSE) '=' 0
