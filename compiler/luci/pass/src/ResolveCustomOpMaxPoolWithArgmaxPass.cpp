@@ -135,6 +135,7 @@ luci::CircleConst *create_conv_filter(luci::CircleConv2D *conv, const uint32_t k
 template <loco::DataType DT> void fill_zero_bias(luci::CircleConst *bias)
 {
   assert(bias->rank() == 1);
+
   auto const depth = bias->dim(0).value();
 
   bias->size<DT>(depth);
@@ -674,6 +675,53 @@ bool resolve_max_pool_with_argmax(luci::CircleCustom *cop)
 namespace luci
 {
 
+/**
+ * BEFORE
+ *                 |
+ *            [CircleNode]
+ *                 |
+ *     [CUSTOM(MaxPoolWithArgmax]
+ *         |              |
+ *  [MaxPool output]  [Argmax output]
+ *
+ * AFTER
+ *                         |
+ *                    [CircleNode]
+ *                    /          \
+ *       [Split over channels]  [MaxPool2D]
+ *             /   |   \              \
+ *       [Conv2D] ...  ...      [MaxPool output]
+ *           |
+ *       [ArgMax]
+ *           |
+ *     [Reshape to 4d]
+ *           |
+ *     [Cast to fp32]
+ *      /        |
+ *     |  [Mul 1/<window width>]
+ *     |                \
+ *     |              [Floor]
+ *     |              /     \
+ *     | [Mul window width] |
+ *     \       /           /
+ *      \   [Neg] [Mul input width]
+ *       \   /    /
+ *       [Add]   /
+ *           \  /
+ *          [Add]
+ *            |
+ *       [Add const]
+ *            |
+ *   [Mul number of channels]
+ *             \
+ * [Optional Add with channels id]   ...  ...
+ *                            \      |     /
+ *                           [Concatenation]
+ *                                 |
+ *                           [Cast to int]
+ *                                 |
+ *                          [Argmax output]
+ */
 bool ResolveCustomOpMaxPoolWithArgmaxPass::run(loco::Graph *g)
 {
   bool changed = false;
