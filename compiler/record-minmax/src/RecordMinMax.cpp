@@ -24,6 +24,7 @@
 #include <luci/CircleFileExpContract.h>
 #include <luci/IR/CircleQuantParam.h>
 
+#include <dirent.h>
 #include <algorithm>
 #include <cmath>
 #include <fstream>
@@ -161,6 +162,74 @@ void RecordMinMax::initialize(const std::string &input_model_path)
   _observer = std::make_unique<MinMaxObserver>();
 
   _interpreter->attachObserver(_observer.get());
+}
+
+// input_data_path is a path to the directory
+// The directory should contain binary files each of which is a raw data,
+// ready to be consumed by the input circle model without any modification
+// TODO reduce duplicate codes with profileRawData
+void RecordMinMax::profileRawDataDirectory(const std::string &mode,
+                                           const std::string &input_data_path, float min_percentile,
+                                           float max_percentile)
+{
+  struct dirent *entry = nullptr;
+  DIR *dp = nullptr;
+
+  dp = opendir(input_data_path.c_str());
+  if (not dp)
+    throw std::runtime_error("Cannot open directory. Please check \"" + input_data_path +
+                             "\" is a directory.\n");
+
+  uint32_t num_records = 0;
+  const auto input_nodes = loco::input_nodes(_module->graph());
+
+  // Get total input size
+  uint32_t total_input_size = 0;
+  for (auto input : input_nodes)
+  {
+    const auto *input_node = loco::must_cast<const luci::CircleInput *>(input);
+    total_input_size += getTensorSize(input_node);
+  }
+
+  while (entry = readdir(dp))
+  {
+    // Skip if the entry is not a regular file
+    if (entry->d_type != DT_REG)
+      continue;
+
+    const std::string filename = entry->d_name;
+    std::cout << "Recording " << num_records << "'th data" << std::endl;
+
+    // Read data from file to buffer
+    // Assumption: For a multi-input model, the binary file should have inputs concatenated in the
+    // same order with the input index.
+    std::vector<char> input_data(total_input_size);
+    readDataFromFile(input_data_path + "/" + filename, input_data, total_input_size);
+
+    // Write data from buffer to interpreter
+    uint32_t offset = 0;
+    for (auto input : input_nodes)
+    {
+      const auto *input_node = loco::must_cast<const luci::CircleInput *>(input);
+      const auto input_size = getTensorSize(input_node);
+      _interpreter->writeInputTensor(input_node, input_data.data() + offset, input_size);
+
+      offset += input_size;
+    }
+
+    _interpreter->interpret();
+
+    num_records++;
+  }
+
+  closedir(dp);
+
+  if (num_records == 0)
+    throw std::runtime_error("The input data file does not contain any record.");
+
+  std::cout << "Recording finished. Number of recorded data: " << num_records << std::endl;
+
+  update_quantparam(_observer.get(), mode, min_percentile, max_percentile);
 }
 
 // input_data_path is a text file which specifies the representative data
