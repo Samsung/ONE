@@ -237,8 +237,15 @@ private:
 
   bool visit(const luci::CircleReshape *node)
   {
-    RETURN_FALSE_UNLESS(has_type(node, Type::U8))
-    RETURN_FALSE_UNLESS(has_type(node->tensor(), Type::U8))
+    if (node->quantparam())
+    {
+      RETURN_FALSE_UNLESS(has_type(node, Type::U8))
+      RETURN_FALSE_UNLESS(has_type(node->tensor(), Type::U8))
+    }
+    else
+    {
+      RETURN_FALSE_UNLESS(has_type(node->tensor(), node->dtype()))
+    }
     luci::CircleConst *shape = dynamic_cast<luci::CircleConst *>(node->shape());
     if (shape != nullptr)
       RETURN_FALSE_UNLESS(has_type(shape, Type::S32))
@@ -457,6 +464,25 @@ private:
     RETURN_FALSE_UNLESS(node->quantparam() && input->quantparam());
     RETURN_FALSE_UNLESS(node->quantparam()->scale[0] == input->quantparam()->scale[0]);
     RETURN_FALSE_UNLESS(node->quantparam()->zerop[0] == input->quantparam()->zerop[0]);
+    return true;
+  }
+
+  bool visit(const luci::CircleCast *node)
+  {
+    auto *input = loco::must_cast<luci::CircleNode *>(node->x());
+    bool input_quantized = input->quantparam() != nullptr;
+    if (input_quantized)
+    {
+      RETURN_FALSE_UNLESS(has_type(input, node->in_data_type()))
+      RETURN_FALSE_UNLESS(has_type(input, Type::U8))
+    }
+
+    bool node_quantized = node->quantparam() != nullptr;
+    if (node_quantized)
+    {
+      RETURN_FALSE_UNLESS(has_type(node, node->out_data_type()))
+      RETURN_FALSE_UNLESS(has_type(node, Type::U8))
+    }
     return true;
   }
 
