@@ -1,0 +1,16 @@
+# To check if MaxPoolWithArgmax is transformed to MaxPool, ArgMax and index computation network
+
+RULE    "VERIFY_FILE_FORMAT"      $(verify_file_format) '=' 1
+
+RULE    "ARG_MAX_COUNT"           $(op_count ARG_MAX) '=' 1
+RULE    "ARG_MAX_COUNT"           $(op_count MAX_POOL_2D) '=' 1
+RULE    "CONV_COUNT"              $(op_count CONV_2D) '=' 1
+RULE    "SPLIT_COUNT"             $(op_count SPLIT) '=' 1
+RULE    "RESHAPE_COUNT"           $(op_count RESHAPE) '=' 1
+RULE    "CAST_COUNT"              $(op_count CAST) '=' 2
+RULE    "ADD_COUNT"               $(op_count ADD) '=' 3
+RULE    "MUL_COUNT"               $(op_count MUL) '=' 4
+RULE    "FLOOR_COUNT"             $(op_count FLOOR) '=' 1
+RULE    "NEG_COUNT"               $(op_count NEG) '=' 1
+RULE    "CONCATENATION_COUNT"     $(op_count CONCATENATION) '=' 1
+RULE    "CUSTOM_COUNT"            $(op_count 'CUSTOM(MaxPoolWithArgmax)') '=' 0
