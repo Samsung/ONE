@@ -589,8 +589,9 @@ luci::CircleNode *argmax_branch(luci::Padding padding, const luci::Stride &strid
     }
   }
 
-  // Output of argmax_with_maxpool should be S64
-  auto output_cast = create_cast(concat, loco::DataType::FLOAT32, loco::DataType::S64);
+  // Output of argmax_with_maxpool should be S64 or S32
+  loco::DataType output_dtype = get_custom_output(cop, 1)->dtype();
+  auto output_cast = create_cast(concat, loco::DataType::FLOAT32, output_dtype);
   init_name_and_origin(output_cast, name + "/Cast", origin);
 
   return output_cast;
@@ -651,11 +652,14 @@ bool resolve_max_pool_with_argmax(luci::CircleCustom *cop)
 
   // From TF documentation: output of maxpool must has same type as input
   assert(output0->dtype() == input->dtype());
-  assert(output1->dtype() == loco::DataType::S64);
+  assert(output1->dtype() == loco::DataType::S64 || output1->dtype() == loco::DataType::S32);
 
   // Create MaxPool
   auto maxpool = max_pool_branch(padding, stride, filter, cop);
   auto argmax = argmax_branch(padding, stride, filter, cop);
+
+  // last argmax branch op is cast, it should have dtype initialized
+  assert(argmax->dtype() == output1->dtype());
 
   // replace old node with new subgraph
   cop->inputs(0, nullptr);
