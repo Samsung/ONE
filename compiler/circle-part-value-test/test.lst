@@ -31,3 +31,7 @@ add(Net_InstanceNorm_003 Net_InstanceNorm_003.003 3)
 # IF with subgraphs
 add(Part_If_Add_Sub_000 Part_If_Add_Sub_000.001 3)
 add(Part_If_Add_Sub_001 Part_If_Add_Sub_001.001 3)
+
+# WHILE with subgraphs
+add(Part_While_000 Part_While_000 3)
+add(Part_While_001 Part_While_001 3)
