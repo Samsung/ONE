@@ -1,0 +1,19 @@
+{
+  "type" : "dlib",
+  "inputs"  : [
+    {
+      "shape" : [1],
+      "type"  : "float"
+    },
+    {
+      "shape" : [1],
+      "type"  : "float"
+    }
+  ],
+  "outputs" : [
+    {
+      "shape" : [1],
+      "type"  : "float"
+    }
+  ]
+}

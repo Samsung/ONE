@@ -19,6 +19,7 @@ nnpackage
 ├── custom_op
 ├── metadata
 │   ├── MANIFEST
+│   ├── mymodel.json
 │   └── config.cfg
 └── mymodel.model
 ```
@@ -26,6 +27,7 @@ nnpackage
 - `mymodel.model` is a model file that has computation graph and weights.
 - `config.cfg` is a configuration file that has parameters to configure onert.
 - `metadata` is a directory that contains all metadata including `MANIFEST`.
+- `mymodel.json` is optional file that has model's information.
 - `MANIFEST` is a collection of attributes about this package.
 - `custom_op` is a directory that contains implementation objects.
 
@@ -79,10 +81,11 @@ The first element from the array will be the default model to be executed.
 
 It can have the values (case-sensitive) in following table.
 
-| name   | description            |
-|--------|------------------------|
-| tflite | tensorflow lite schema |
-| circle | nnpackage schema       |
+| name   | description              |
+|--------|--------------------------|
+| tflite | tensorflow lite schema   |
+| circle | nnpackage schema         |
+| bin    | backend dependent binary |
 
 ### Example
 
@@ -94,8 +97,8 @@ Here is an example of `MANIFEST`.
     "minor-version" : "1",
     "patch-version" : "0",
     "configs"     : [ "model.cfg" ],
-    "models"      : [ "mymodel.model", "yourmodel.model" ],
-    "model-types" : [ "tflite", "circle" ]
+    "models"      : [ "mymodel.model", "yourmodel.model", "pre-compiled.model ],
+    "model-types" : [ "tflite", "circle", "bin" ]
 }
 ```
 

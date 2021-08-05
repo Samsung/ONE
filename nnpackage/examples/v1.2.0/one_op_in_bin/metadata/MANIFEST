@@ -1,0 +1,9 @@
+{
+  "major-version" : "1",
+  "minor-version" : "2",
+  "patch-version" : "0",
+  "configs"     : [ "config.cfg" ],
+  "models"      : [ "add.so" ],
+  "model-infos" : [ "add.json" ],
+  "model-types" : [ "bin" ]
+}

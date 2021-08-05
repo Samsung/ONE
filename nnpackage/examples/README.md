@@ -1,5 +1,12 @@
 # NNPackage example
 
+## Package version 1.2.0
+
+### one_op_in_bin
+
+- Model file: pre-compiled dynamic library (TBD)
+- Only one `ADD` operation (TBD)
+
 ## Package version 1.1.0
 
 ### one_op_in_tflite
