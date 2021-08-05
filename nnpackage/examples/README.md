@@ -5,7 +5,7 @@
 ### one_op_in_bin
 
 - Model file: pre-compiled dynamic library (TBD)
-- Only one `ADD` operation (TBD)
+- Compiled model has only one `ADD` operation (TBD)
 
 ## Package version 1.1.0
 
@@ -36,4 +36,3 @@
 
 - Model file: TensorFlow Lite model
 - `WHILE` operation example with input and output example
-
