@@ -467,6 +467,25 @@ private:
     return true;
   }
 
+  bool visit(const luci::CircleCast *node)
+  {
+    auto *input = loco::must_cast<luci::CircleNode *>(node->x());
+    bool input_quantized = input->quantparam() != nullptr;
+    if (input_quantized)
+    {
+      RETURN_FALSE_UNLESS(has_type(input, node->in_data_type()))
+      RETURN_FALSE_UNLESS(has_type(input, Type::U8))
+    }
+
+    bool node_quantized = node->quantparam() != nullptr;
+    if (node_quantized)
+    {
+      RETURN_FALSE_UNLESS(has_type(node, node->out_data_type()))
+      RETURN_FALSE_UNLESS(has_type(node, Type::U8))
+    }
+    return true;
+  }
+
   // TODO: Implement more Ops
 
   bool visit(const luci::CircleNode *) { return true; }
