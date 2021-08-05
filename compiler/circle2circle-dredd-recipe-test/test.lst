@@ -67,3 +67,12 @@ Add(REGRESS_ONNX_Conv_BN_Relu6_001 PASS
       transform_min_max_to_relu6
       fuse_batchnorm_with_conv
       fuse_activation_function)
+
+Add(REGRESS_ONNX_Conv_BN_MeanMean_001 PASS
+      convert_nchw_to_nhwc
+      nchw_to_nhwc_input_shape
+      nchw_to_nhwc_output_shape
+      remove_redundant_transpose
+      fuse_batchnorm_with_conv
+      fuse_activation_function
+      fuse_mean_with_mean)

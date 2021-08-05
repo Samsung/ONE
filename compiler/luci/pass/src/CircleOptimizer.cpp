@@ -78,6 +78,8 @@
 #include <memory>
 #include <sstream>
 
+#define FIX_ME_NCHW_TO_NHWC
+
 namespace
 {
 
@@ -125,6 +127,7 @@ bool OptimizeOptionsImpl::query(Algorithm algo)
   return true;
 }
 
+#ifdef FIX_ME_NCHW_TO_NHWC
 void convert_nchw_to_nhwc(loco::Graph *g, bool preserve_input, bool preserve_output)
 {
   logo::Phase phase;
@@ -141,6 +144,7 @@ void convert_nchw_to_nhwc(loco::Graph *g, bool preserve_input, bool preserve_out
   phase_runner.attach(&prog);
   phase_runner.run(phase);
 }
+#endif
 
 } // namespace
 
@@ -180,6 +184,7 @@ void CircleOptimizer::optimize(loco::Graph *g) const
 {
   logo::Phase phase;
 
+#ifdef FIX_ME_NCHW_TO_NHWC
   // Conversion from NCHW to NHWC is done first to avoid interference with other optimizations.
   if (_options->query(Options::Algorithm::ConvertNCHWToNHWC))
   {
@@ -190,6 +195,7 @@ void CircleOptimizer::optimize(loco::Graph *g) const
 
     convert_nchw_to_nhwc(g, preserve_input, preserve_output);
   }
+#endif
 
   /* TRANSFORM DECLARATION BEGIN */
   phase.emplace_back(std::make_unique<logo::RemoveDeadNodeWithQueryPass>());
@@ -334,6 +340,18 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   {
     phase.emplace_back(std::make_unique<luci::TransformMinReluToRelu6Pass>());
   }
+#ifndef FIX_ME_NCHW_TO_NHWC
+  if (_options->query(Options::Algorithm::ConvertNCHWToNHWC))
+  {
+    bool preserve_input =
+      _options->param(Options::AlgorithmParameters::NCHW_to_NHWC_input_shape) != "true";
+    bool preserve_output =
+      _options->param(Options::AlgorithmParameters::NCHW_to_NHWC_output_shape) != "true";
+
+    phase.emplace_back(
+      std::make_unique<luci::ConvertNCHWToNHWCPass>(preserve_input, preserve_output));
+  }
+#endif
 
   /* TRANSFORM DECLARATION END */
 
