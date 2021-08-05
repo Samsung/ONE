@@ -30,27 +30,28 @@ class BulkLoader
 {
 public:
   BulkLoader(std::unique_ptr<ir::Subgraphs> &subgraphs) : _subgraphs{subgraphs} {}
-  void loadFromFile(const std::string &file_path);
+  void loadFromFile(const std::string &file_path, const std::string &info_path);
 
 private:
   std::unique_ptr<ir::Subgraphs> &_subgraphs;
 };
 
-void BulkLoader::loadFromFile(const std::string &file_path)
+void BulkLoader::loadFromFile(const std::string &file_path, const std::string &info_path)
 {
   auto subgraphs = std::make_unique<ir::Subgraphs>();
 
   ir::operation::Bulk::Param param;
-  param.path = file_path;
+  param.binary_path = file_path;
+  param.info_path = info_path;
 
   // TODO: need I/O information for bulk
 }
 
-std::unique_ptr<ir::Subgraphs> loadModel(const std::string &filename)
+std::unique_ptr<ir::Subgraphs> loadModel(const std::string &filename, const std::string &infopath)
 {
   auto subgraphs = std::make_unique<ir::Subgraphs>();
   BulkLoader loader(subgraphs);
-  loader.loadFromFile(filename);
+  loader.loadFromFile(filename, infopath);
   return subgraphs;
 }
 

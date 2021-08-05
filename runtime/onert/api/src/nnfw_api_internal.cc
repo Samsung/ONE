@@ -285,6 +285,7 @@ NNFW_STATUS nnfw_session::load_model_from_nnpackage(const char *package_dir)
     mfs >> root;
     const Json::Value &models = root["models"];
     const Json::Value &model_types = root["model-types"];
+    const Json::Value &model_infos = root["model-infos"];
     const Json::Value &configs = root["configs"];
 
     if (!configs.empty() && !configs[0].empty())
@@ -296,6 +297,13 @@ NNFW_STATUS nnfw_session::load_model_from_nnpackage(const char *package_dir)
       {
         setConfigKeyValues(keyValues);
       }
+    }
+
+
+    std::string model_info_path;
+    if (!model_infos.empty())
+    {
+      model_info_path = package_path + std::string("/metadata/") + model_infos[0].asString();
     }
 
     auto model_file_path = package_path + std::string("/") + models[0].asString(); // first model
@@ -310,7 +318,7 @@ NNFW_STATUS nnfw_session::load_model_from_nnpackage(const char *package_dir)
     }
     else if (model_type == "bin")
     {
-      _subgraphs = onert::bulk_loader::loadModel(model_file_path);
+      _subgraphs = onert::bulk_loader::loadModel(model_file_path, model_info_path);
     }
     else
     {
