@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-#include "kernels/Reverse.h"
+#include "kernels/ReverseV2.h"
 #include "kernels/TestUtils.h"
 
 namespace luci_interpreter
@@ -27,14 +27,14 @@ namespace
 
 using namespace testing;
 
-template <typename T> class ReverseTest : public ::testing::Test
+template <typename T> class ReverseV2Test : public ::testing::Test
 {
 };
 
 using DataTypes = ::testing::Types<float, uint8_t>;
-TYPED_TEST_CASE(ReverseTest, DataTypes);
+TYPED_TEST_CASE(ReverseV2Test, DataTypes);
 
-TYPED_TEST(ReverseTest, MultiDimensions)
+TYPED_TEST(ReverseV2Test, MultiDimensions)
 {
   // TypeParam
   std::vector<TypeParam> input_data{1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12,
@@ -52,7 +52,7 @@ TYPED_TEST(ReverseTest, MultiDimensions)
 
   Tensor output_tensor = makeOutputTensor(getElementType<TypeParam>());
 
-  Reverse kernel = Reverse(&input_tensor, &axis_tensor, &output_tensor);
+  ReverseV2 kernel = ReverseV2(&input_tensor, &axis_tensor, &output_tensor);
   kernel.configure();
   kernel.execute();
 

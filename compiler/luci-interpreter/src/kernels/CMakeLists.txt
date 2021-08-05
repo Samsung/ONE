@@ -36,7 +36,9 @@ endif(NOT ENABLE_TEST)
 nnas_find_package(GTest REQUIRED)
 
 macro(REGISTER_KERNEL NODE)
-  list(APPEND TEST_SOURCES "${NODE}.test.cpp")
+  if(EXISTS "${NODE}.test.cpp")
+    list(APPEND TEST_SOURCES "${NODE}.test.cpp")
+  endif(EXISTS "${NODE}.test.cpp")
 endmacro(REGISTER_KERNEL)
 
 if(EXISTS "${KERNEL_REGISTER_FILE}")

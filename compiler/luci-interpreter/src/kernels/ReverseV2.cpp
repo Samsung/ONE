@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "kernels/Reverse.h"
+#include "kernels/ReverseV2.h"
 #include "kernels/Utils.h"
 #include <tensorflow/lite/kernels/internal/reference/reference_ops.h>
 
@@ -24,12 +24,12 @@ namespace luci_interpreter
 namespace kernels
 {
 
-Reverse::Reverse(const Tensor *input, const Tensor *axes, Tensor *output)
+ReverseV2::ReverseV2(const Tensor *input, const Tensor *axes, Tensor *output)
   : Kernel({input, axes}, {output})
 {
 }
 
-void Reverse::configure()
+void ReverseV2::configure()
 {
   assert(axes()->shape().num_dims() == 1);
   assert(input()->shape().num_dims() >= axes()->shape().num_elements());
@@ -57,7 +57,7 @@ void Reverse::configure()
   output()->resize(input()->shape());
 }
 
-void Reverse::execute() const
+void ReverseV2::execute() const
 {
   int axis_value = getTensorData<int32_t>(axes())[0];
   switch (output()->element_type())
