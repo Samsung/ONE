@@ -44,7 +44,7 @@ void BulkLoader::loadFromFile(const std::string &file_path, const std::string &i
   param.binary_path = file_path;
   param.info_path = info_path;
 
-  // TODO: need I/O information for bulk
+  // TODO: Construct Graph from info_path
 }
 
 std::unique_ptr<ir::Subgraphs> loadModel(const std::string &filename, const std::string &infopath)
