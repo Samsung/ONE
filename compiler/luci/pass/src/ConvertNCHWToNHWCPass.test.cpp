@@ -267,6 +267,37 @@ public:
   luci::CircleLeakyRelu *leakyrelu = nullptr;
 };
 
+class MaximumGraph final : public SimpleGraph
+{
+protected:
+  loco::Node *insertGraphBody(loco::Node *input) override
+  {
+    max = g.nodes()->create<luci::CircleMaximum>();
+    limit = g.nodes()->create<luci::CircleConst>();
+
+    max->dtype(loco::DataType::FLOAT32);
+    limit->dtype(loco::DataType::FLOAT32);
+
+    max->shape({1, 16, 4, 4});
+    limit->shape({});
+
+    limit->size<loco::DataType::FLOAT32>(1);
+    limit->at<loco::DataType::FLOAT32>(0) = 100;
+
+    max->x(input);
+    max->y(limit);
+
+    max->name("max");
+    limit->name("limit");
+
+    return max;
+  }
+
+public:
+  luci::CircleMaximum *max = nullptr;
+  luci::CircleConst *limit = nullptr;
+};
+
 class MeanGraph final : public SimpleGraph
 {
 protected:
@@ -310,6 +341,37 @@ private:
   bool _keep_dims = true;
   std::vector<int32_t> _axes = {2, 3};
   std::initializer_list<uint32_t> _shape = {1, 16, 1, 1};
+};
+
+class MinimumGraph final : public SimpleGraph
+{
+protected:
+  loco::Node *insertGraphBody(loco::Node *input) override
+  {
+    min = g.nodes()->create<luci::CircleMinimum>();
+    limit = g.nodes()->create<luci::CircleConst>();
+
+    min->dtype(loco::DataType::FLOAT32);
+    limit->dtype(loco::DataType::FLOAT32);
+
+    min->shape({1, 16, 4, 4});
+    limit->shape({});
+
+    limit->size<loco::DataType::FLOAT32>(1);
+    limit->at<loco::DataType::FLOAT32>(0) = 100;
+
+    min->x(input);
+    min->y(limit);
+
+    min->name("min");
+    limit->name("limit");
+
+    return min;
+  }
+
+public:
+  luci::CircleMinimum *min = nullptr;
+  luci::CircleConst *limit = nullptr;
 };
 
 class MulGraph final : public SimpleGraph
@@ -756,6 +818,26 @@ TEST(ConvertNCHWToNHWC, LeakyRelu)
   EXPECT_EQ(16, g.leakyrelu->dim(3).value());
 }
 
+TEST(ConvertNCHWToNHWC, Maximum)
+{
+  MaximumGraph g;
+  g.init();
+
+  run_phase(&g.g, false, false);
+
+  auto input_succs = loco::succs(g.input);
+  EXPECT_EQ(1, input_succs.size());
+  check_post_trans(*input_succs.begin());
+
+  check_pre_trans(g.max->x());
+
+  auto max_succs = loco::succs(g.max);
+  EXPECT_EQ(1, max_succs.size());
+  check_post_trans(*max_succs.begin());
+
+  check_pre_trans(g.output->from());
+}
+
 TEST(ConvertNCHWToNHWC, Mean)
 {
   MeanGraph g;
@@ -890,6 +972,26 @@ TEST(ConvertNCHWToNHWC, ConvertNCHWToNHWC_Mean_keep_dims_false_NEG)
   EXPECT_EQ(2, new_rindices->size<loco::DataType::S32>());
   EXPECT_EQ(1, new_rindices->at<loco::DataType::S32>(0));
   EXPECT_EQ(2, new_rindices->at<loco::DataType::S32>(1));
+}
+
+TEST(ConvertNCHWToNHWC, Minimum)
+{
+  MinimumGraph g;
+  g.init();
+
+  run_phase(&g.g, false, false);
+
+  auto input_succs = loco::succs(g.input);
+  EXPECT_EQ(1, input_succs.size());
+  check_post_trans(*input_succs.begin());
+
+  check_pre_trans(g.min->x());
+
+  auto min_succs = loco::succs(g.min);
+  EXPECT_EQ(1, min_succs.size());
+  check_post_trans(*min_succs.begin());
+
+  check_pre_trans(g.output->from());
 }
 
 TEST(ConvertNCHWToNHWC, Mul)
