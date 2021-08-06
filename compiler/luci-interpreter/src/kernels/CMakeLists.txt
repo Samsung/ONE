@@ -1,7 +1,9 @@
 if (NOT LUCI_MICRO)
   find_package(Threads REQUIRED)
+  set(KERNEL_REGISTER_FILE "${LUCI_INTERPRETER_SOURCE_DIR}/KernelsToBuild.lst")
+else ()
+  set(KERNEL_REGISTER_FILE "${LUCI_INTERPRETER_SOURCE_DIR}/micro/KernelsToBuild.lst")
 endif ()
-set(KERNEL_REGISTER_FILE "${LUCI_INTERPRETER_SOURCE_DIR}/KernelsToBuild.lst")
 set(APPEND SOURCES
         BinaryOpCommon.h
         Utils.h
