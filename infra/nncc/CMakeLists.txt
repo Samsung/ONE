@@ -36,14 +36,14 @@ set(EXT_OVERLAY_DIR ${NNCC_OVERLAY_DIR})
 list(APPEND CMAKE_PREFIX_PATH "${EXT_OVERLAY_DIR}")
 
 macro(nnas_include PREFIX)
-  include("${NNAS_PROJECT_SOURCE_DIR}/infra/cmake/modules/${PREFIX}.cmake")
+    include("${NNAS_PROJECT_SOURCE_DIR}/infra/cmake/modules/${PREFIX}.cmake")
 endmacro(nnas_include)
 
 macro(nnas_find_package PREFIX)
-  find_package(${PREFIX} CONFIG NO_DEFAULT_PATH
-          PATHS ${NNAS_PROJECT_SOURCE_DIR}/infra/cmake/packages
-          ${ARGN}
-          )
+    find_package(${PREFIX} CONFIG NO_DEFAULT_PATH
+            PATHS ${NNAS_PROJECT_SOURCE_DIR}/infra/cmake/packages
+            ${ARGN}
+            )
 endmacro(nnas_find_package)
 
 # nncc_find_resource(NAME) will update the following variables
@@ -53,23 +53,23 @@ endmacro(nnas_find_package)
 #
 # TODO Explain how to add a resource in README.md
 function(nncc_find_resource NAME)
-  set(RESOURCE_DIR "${NNAS_PROJECT_SOURCE_DIR}/res/${NAME}")
+    set(RESOURCE_DIR "${NNAS_PROJECT_SOURCE_DIR}/res/${NAME}")
 
-  if(NOT IS_DIRECTORY ${RESOURCE_DIR})
-    set(${NAME}_FOUND FALSE PARENT_SCOPE)
-    return()
-  endif(NOT IS_DIRECTORY ${RESOURCE_DIR})
+    if (NOT IS_DIRECTORY ${RESOURCE_DIR})
+        set(${NAME}_FOUND FALSE PARENT_SCOPE)
+        return()
+    endif (NOT IS_DIRECTORY ${RESOURCE_DIR})
 
-  set(${NAME}_DIR ${RESOURCE_DIR} PARENT_SCOPE)
-  set(${NAME}_FOUND TRUE PARENT_SCOPE)
+    set(${NAME}_DIR ${RESOURCE_DIR} PARENT_SCOPE)
+    set(${NAME}_FOUND TRUE PARENT_SCOPE)
 endfunction(nncc_find_resource)
 
 ###
 ### CMake configuration
 ###
-if(NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Type of build" FORCE)
-endif(NOT CMAKE_BUILD_TYPE)
+if (NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Type of build" FORCE)
+endif (NOT CMAKE_BUILD_TYPE)
 message(STATUS "Use '${CMAKE_BUILD_TYPE}' configuration")
 
 # Prefer -pthread to -lpthread for find_package(Threads ...)
@@ -111,18 +111,18 @@ nnas_find_package(GTest QUIET)
 
 option(ENABLE_TEST "Build Tests using Google Test" ${GTest_FOUND})
 
-if(${ENABLE_TEST} AND NOT ${GTest_FOUND})
-  message(FATAL_ERROR "Google Test is required to enable test")
-endif(${ENABLE_TEST} AND NOT ${GTest_FOUND})
+if (${ENABLE_TEST} AND NOT ${GTest_FOUND})
+    message(FATAL_ERROR "Google Test is required to enable test")
+endif (${ENABLE_TEST} AND NOT ${GTest_FOUND})
 
 option(ENABLE_COVERAGE "Build for coverage test" OFF)
-if(${ENABLE_COVERAGE} AND NOT ${ENABLE_TEST})
-  message(FATAL_ERROR "Test should be enabled to measure test coverage")
-endif(${ENABLE_COVERAGE} AND NOT ${ENABLE_TEST})
+if (${ENABLE_COVERAGE} AND NOT ${ENABLE_TEST})
+    message(FATAL_ERROR "Test should be enabled to measure test coverage")
+endif (${ENABLE_COVERAGE} AND NOT ${ENABLE_TEST})
 
-if(${ENABLE_TEST})
-  include(CTest)
-endif(${ENABLE_TEST})
+if (${ENABLE_TEST})
+    include(CTest)
+endif (${ENABLE_TEST})
 
 option(ENABLE_STRICT_BUILD "Treat warning as error" OFF)
 
@@ -134,16 +134,16 @@ option(USE_PROTOBUF_LEGACY_IMPORT "Use legacy MODULE mode import rather than CON
 ### Target
 ###
 add_library(nncc_common INTERFACE)
-if(ENABLE_STRICT_BUILD)
-  # TODO Remove -Wno-reoder
-  target_compile_options(nncc_common INTERFACE -Werror -Wall -Wextra -Wno-reorder)
-endif(ENABLE_STRICT_BUILD)
+if (ENABLE_STRICT_BUILD)
+    # TODO Remove -Wno-reoder
+    target_compile_options(nncc_common INTERFACE -Werror -Wall -Wextra -Wno-reorder)
+endif (ENABLE_STRICT_BUILD)
 
 add_library(nncc_coverage INTERFACE)
-if(ENABLE_COVERAGE)
-  target_compile_options(nncc_coverage INTERFACE -g -O0 -fprofile-arcs -ftest-coverage)
-  target_link_libraries(nncc_coverage INTERFACE gcov)
-endif(ENABLE_COVERAGE)
+if (ENABLE_COVERAGE)
+    target_compile_options(nncc_coverage INTERFACE -g -O0 -fprofile-arcs -ftest-coverage)
+    target_link_libraries(nncc_coverage INTERFACE gcov)
+endif (ENABLE_COVERAGE)
 
 ###
 ### Function
@@ -153,7 +153,7 @@ nnas_include(OptionalTargetTools)
 nnas_include(AddSubdirectories)
 
 if (NNCC_SKIP_BUILD)
-  return()
-endif()
+    return()
+endif ()
 
 add_subdirectory("${NNAS_PROJECT_SOURCE_DIR}/compiler" "${CMAKE_BINARY_DIR}/compiler")
