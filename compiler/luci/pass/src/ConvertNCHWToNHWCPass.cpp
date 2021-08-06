@@ -422,6 +422,46 @@ bool is_NCHW(const luci::CirclePadV2 *node)
 }
 
 // NOTE Following conditions can be extended later
+// NOTE Used for Maximum, Miminum as ReLU/ReLU6
+//
+// Find T with an NCHW pattern described below
+//   - Input (non-constant) shape : [N, C, H, W]
+//   - Input (constant) shape : [1] or []
+//   - Output shape : [N, C, H, W]
+template <class T>
+bool is_NCHW_with_s_const(const T *node, luci::CircleNode *&pred_node,
+                          luci::CircleConst *&comp_const)
+{
+  auto x = dynamic_cast<luci::CircleConst *>(node->x());
+  auto y = dynamic_cast<luci::CircleConst *>(node->y());
+
+  if (x != nullptr && y == nullptr)
+  {
+    pred_node = loco::must_cast<luci::CircleNode *>(node->y());
+    comp_const = x;
+  }
+  else if (x == nullptr && y != nullptr)
+  {
+    pred_node = loco::must_cast<luci::CircleNode *>(node->x());
+    comp_const = y;
+  }
+  else
+  {
+    // Ignore if T does not have a comp_const input.
+    return false;
+  }
+
+  if (pred_node->rank() != 4)
+    return false;
+
+  // Check if scalar
+  const auto const_rank = comp_const->rank();
+  if (const_rank == 0 || (const_rank == 1 && comp_const->dim(0).value() == 1))
+    return true;
+  return false;
+}
+
+// NOTE Following conditions can be extended later
 //
 // Find MUL with an NCHW pattern described below
 //   - Input (non-constant) shape : [N, C, H, W]
@@ -732,6 +772,33 @@ class ConvertNCHWToNHWC final : public luci::CircleNodeMutableVisitor<bool>
     return convert_unary_features<luci::CircleLeakyRelu>(node);
   }
 
+  bool visit(luci::CircleMaximum *node)
+  {
+    luci::CircleNode *pred_node = nullptr;
+    luci::CircleConst *comp_constant = nullptr;
+
+    if (is_NCHW_with_s_const<luci::CircleMaximum>(node, pred_node, comp_constant))
+    {
+      auto pre_trans = create_pre_transpose(node);
+      pre_trans->a(pred_node);
+      node->x(pre_trans);
+    }
+    else
+    {
+      // TODO support other cases
+      return false;
+    }
+
+    // Do shape inference for this node again.
+    node->shape_status(luci::ShapeStatus::UNDEFINED);
+
+    auto post_trans = create_post_transpose(node);
+    loco::replace(node).with(post_trans);
+
+    post_trans->a(node);
+    return true;
+  }
+
   bool visit(luci::CircleMean *node)
   {
     auto input = loco::must_cast<luci::CircleNode *>(node->input());
@@ -804,6 +871,33 @@ class ConvertNCHWToNHWC final : public luci::CircleNodeMutableVisitor<bool>
 
     post_trans->a(node);
 
+    return true;
+  }
+
+  bool visit(luci::CircleMinimum *node)
+  {
+    luci::CircleNode *pred_node = nullptr;
+    luci::CircleConst *comp_constant = nullptr;
+
+    if (is_NCHW_with_s_const<luci::CircleMinimum>(node, pred_node, comp_constant))
+    {
+      auto pre_trans = create_pre_transpose(node);
+      pre_trans->a(pred_node);
+      node->x(pre_trans);
+    }
+    else
+    {
+      // TODO support other cases
+      return false;
+    }
+
+    // Do shape inference for this node again.
+    node->shape_status(luci::ShapeStatus::UNDEFINED);
+
+    auto post_trans = create_post_transpose(node);
+    loco::replace(node).with(post_trans);
+
+    post_trans->a(node);
     return true;
   }
 
@@ -1132,7 +1226,9 @@ bool ConvertNCHWToNHWCPass::run(loco::Graph *g)
       case luci::CircleOpcode::ADD:
       case luci::CircleOpcode::CONCATENATION:
       case luci::CircleOpcode::LEAKY_RELU:
+      case luci::CircleOpcode::MAXIMUM:
       case luci::CircleOpcode::MEAN:
+      case luci::CircleOpcode::MINIMUM:
       case luci::CircleOpcode::MUL:
       case luci::CircleOpcode::NEG:
       case luci::CircleOpcode::PAD:
