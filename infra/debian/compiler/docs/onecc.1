@@ -45,25 +45,25 @@ Code generation tool. See one-codegen(1) for details.
 .SH EXAMPLES
 .SS Use command line interface
 .TP
-\fBonecc import tf --v1 -i\fR \fIinput path\fR \fB-o\fR \fIoutput path\fR \fB-I\fR \fIinput arrays\fR \fB-s\fR \fIinput shapes\fR \fB-O\fR \fIoutput arrays\fR
+\fBonecc import tf --v1 -i\fR \fIinput_path\fR \fB-o\fR \fIoutput_path\fR \fB-I\fR \fIinput_arrays\fR \fB-s\fR \fIinput_shapes\fR \fB-O\fR \fIoutput_arrays\fR
 import tf model
 .TP
-\fBonecc import tflite -i\fR \fIinput path\fR \fB-o\fR \fIoutput path\fR
+\fBonecc import tflite -i\fR \fIinput_path\fR \fB-o\fR \fIoutput_path\fR
 import tflite model
 .TP
-\fBonecc import onnx -i\fR \fIinput path\fR \fB-o\fR \fIoutput path\fR
+\fBonecc import onnx -i\fR \fIinput_path\fR \fB-o\fR \fIoutput_path\fR
 import onnx model
 .TP
-\fBonecc optimize -i\fR \fIinput path\fR \fB-o\fR \fIoutput path\fR \fIoptimize arguments\fR
+\fBonecc optimize -i\fR \fIinput_path\fR \fB-o\fR \fIoutput_path\fR \fIoptimize_arguments\fR
 optimize circle model
 .TP
-\fBonecc quantize -i\fR \fIinput path\fR \fB-o\fR \fIoutput path\fR \fB-d\fR \fIinput data\fR
+\fBonecc quantize -i\fR \fIinput_path\fR \fB-o\fR \fIoutput_path\fR \fB-d\fR \fIinput_data\fR
 quantize circle model
 .TP
-\fBonecc pack -i\fR \fIinput path\fR \fB-o\fR \fIoutput path\fR
+\fBonecc pack -i\fR \fIinput_path\fR \fB-o\fR \fIoutput_path\fR
 package circle and metadata into nnpackage
 .TP
-\fBonecc codegen -b\fR \fIbackend\fR \fB--\fR \fIbackends arguments\fR
+\fBonecc codegen -b\fR \fIbackend\fR \fB--\fR \fIbackends_arguments\fR
 generate backend code
 .PP
 .SS Use configuration file
