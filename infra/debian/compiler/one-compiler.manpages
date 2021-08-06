@@ -7,3 +7,4 @@ debian/docs/one-import-tflite.1
 debian/docs/one-optimize.1
 debian/docs/one-pack.1
 debian/docs/one-quantize.1
+debian/docs/onecc.1
