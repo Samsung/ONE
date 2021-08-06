@@ -46,13 +46,6 @@ void MinMaxObserver::postTensorWrite(const luci::CircleNode *node,
     return;
   }
 
-  if (node->opcode() == luci::CircleOpcode::ARG_MAX)
-  {
-    // Output of arg_max is the index of the largest value across axes of a tensor
-    // this should not be quantized
-    return;
-  }
-
   if (node->dtype() == DataType::BOOL)
   {
     // Bool type tensor is not quantized
@@ -61,7 +54,23 @@ void MinMaxObserver::postTensorWrite(const luci::CircleNode *node,
 
   // Only support recording of float32 values
   if (tensor->element_type() != DataType::FLOAT32)
-    throw std::runtime_error("Tensor's data type is not float");
+  {
+    // Exceptions that should be processed in backends
+    switch (node->opcode())
+    {
+      case luci::CircleOpcode::ARG_MAX:
+        // Output of arg_max is the index of the largest value across axes of a tensor.
+        // It always has integer type.
+      case luci::CircleOpcode::CAST:
+        // Cast is quantized only if it converts <type> -> float.
+        // Other cases should be processed in backends.
+      case luci::CircleOpcode::RESHAPE:
+        // Reshape changes only shape of input tensor, efficiently is it a no-op.
+        return;
+      default:
+        throw std::runtime_error("Tensor's data type is not float");
+    }
+  }
 
   const auto data = tensor->data<float>();
   const auto num_elements = tensor->shape().num_elements();
