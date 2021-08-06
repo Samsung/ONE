@@ -734,6 +734,9 @@ struct QuantizeActivation final : public luci::CircleNodeMutableVisitor<bool>
       {
         auto *cast = loco::must_cast<luci::CircleCast *>(circle_node);
         auto *cast_input = loco::must_cast<luci::CircleNode *>(cast->x());
+
+        // make sure that cast_input is already quantized
+        assert(cast_input->dtype() != loco::DataType::FLOAT32);
         cast->in_data_type(cast_input->dtype());
         cast->out_data_type(cast->dtype());
       }
