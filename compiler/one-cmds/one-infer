@@ -1,0 +1,168 @@
+#!/usr/bin/env bash
+''''export SCRIPT_PATH="$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")" && pwd)" # '''
+''''export PY_PATH=${SCRIPT_PATH}/venv/bin/python                                       # '''
+''''test -f ${PY_PATH} && exec ${PY_PATH} "$0" "$@"                                     # '''
+''''echo "Error: Virtual environment not found. Please run 'one-prepare-venv' command." # '''
+''''exit 255                                                                            # '''
+
+# Copyright (c) 2021 Samsung Electronics Co., Ltd. All Rights Reserved
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import argparse
+import copy
+import glob
+import itertools
+import ntpath
+import os
+import subprocess
+import sys
+import tempfile
+
+import utils as _utils
+
+# TODO Find better way to suppress trackback on error
+sys.tracebacklimit = 0
+
+
+def _get_backends_list():
+    """
+    [one hierarchy]
+    one
+    ├── backends
+    ├── bin
+    ├── doc
+    ├── include
+    ├── lib
+    └── test
+
+    The list where `one-infer` finds its backends
+    - `bin` folder where `one-infer` exists
+    - `backends` folder
+
+    NOTE If there are backends of the same name in different places,
+     the closer to the top in the list, the higher the priority.
+    """
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    backend_set = set()
+
+    # bin folder
+    files = [f for f in glob.glob(dir_path + '/*-infer')]
+    # backends folder
+    files += [f for f in glob.glob(dir_path + '/../backends/**/*-infer', recursive=True)]
+    # TODO find backends in `$PATH`
+
+    backends_list = []
+    for cand in files:
+        base = ntpath.basename(cand)
+        if not base in backend_set and os.path.isfile(cand) and os.access(cand, os.X_OK):
+            backend_set.add(base)
+            backends_list.append(cand)
+
+    return backends_list
+
+
+def _get_parser(backends_list):
+    infer_usage = 'one-infer [-h] [-v] [-C CONFIG] [-b BACKEND] [--] [COMMANDS FOR BACKEND]'
+    parser = argparse.ArgumentParser(
+        description='command line tool for backend model inference', usage=infer_usage)
+
+    _utils._add_default_arg(parser)
+
+    # get backend list in the directory
+    backends_name = [ntpath.basename(f) for f in backends_list]
+    if not backends_name:
+        backends_name_message = '(There is no available backend drivers)'
+    else:
+        backends_name_message = '(available backend drivers: ' + ', '.join(
+            backends_name) + ')'
+    backend_help_message = 'backend name to use ' + backends_name_message
+    parser.add_argument('-b', '--backend', type=str, help=backend_help_message)
+
+    return parser
+
+
+def _verify_arg(parser, args):
+    """verify given arguments"""
+    # check if required arguments is given
+    missing = []
+    if not _utils._is_valid_attr(args, 'backend'):
+        missing.append('-b/--backend')
+    if len(missing):
+        parser.error('the following arguments are required: ' + ' '.join(missing))
+
+
+def _parse_arg(parser):
+    infer_args = []
+    backend_args = []
+    unknown_args = []
+    argv = copy.deepcopy(sys.argv)
+    # delete file name
+    del argv[0]
+    # split by '--'
+    args = [list(y) for x, y in itertools.groupby(argv, lambda z: z == '--') if not x]
+    # one-infer has two interfaces
+    # 1. one-infer [-h] [-v] [-C CONFIG] [-b BACKEND] [COMMANDS FOR BACKEND]
+    if len(args) == 1:
+        infer_args = args[0]
+        infer_args, unknown_args = parser.parse_known_args(infer_args)
+    # 2. one-infer [-h] [-v] [-C CONFIG] [-b BACKEND] -- [COMMANDS FOR BACKEND]
+    if len(args) == 2:
+        infer_args = args[0]
+        backend_args = args[1]
+        infer_args = parser.parse_args(infer_args)
+    # print version
+    if len(args) and infer_args.version:
+        _utils._print_version_and_exit(__file__)
+
+    return infer_args, backend_args, unknown_args
+
+
+def main():
+    # get backend list
+    backends_list = _get_backends_list()
+
+    # parse arguments
+    parser = _get_parser(backends_list)
+    args, backend_args, unknown_args = _parse_arg(parser)
+
+    # parse configuration file
+    _utils._parse_cfg(args, 'one-infer')
+
+    # verify arguments
+    _verify_arg(parser, args)
+
+    # make a command to run given backend driver
+    infer_path = None
+    backend_base = getattr(args, 'backend') + '-infer'
+    for cand in backends_list:
+        if ntpath.basename(cand) == backend_base:
+            infer_path = cand
+    if not infer_path:
+        raise FileNotFoundError(backend_base + ' not found')
+    infer_cmd = [infer_path] + backend_args + unknown_args
+    if _utils._is_valid_attr(args, 'command'):
+        infer_cmd += getattr(args, 'command').split()
+
+    # run backend driver
+    with subprocess.Popen(
+            infer_cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, bufsize=1) as p:
+        for line in p.stdout:
+            sys.stdout.buffer.write(line)
+            sys.stdout.buffer.flush()
+    if p.returncode != 0:
+        sys.exit(p.returncode)
+
+
+if __name__ == '__main__':
+    main()

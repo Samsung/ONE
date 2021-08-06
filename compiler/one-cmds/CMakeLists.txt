@@ -9,6 +9,7 @@ set(ONE_COMMAND_FILES
     one-quantize
     one-pack
     one-codegen
+    one-infer
     one-prepare-venv
     onecc
 )
