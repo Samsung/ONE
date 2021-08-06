@@ -111,8 +111,8 @@ int entry(int argc, char **argv)
   }
   catch (const std::runtime_error &err)
   {
-    std::cout << err.what() << std::endl;
-    std::cout << arser;
+    std::cerr << "circle-quantizer: " << err.what() << std::endl;
+    std::cerr << arser;
     return 255;
   }
 
@@ -180,7 +180,16 @@ int entry(int argc, char **argv)
 
   // Load model from the file
   foder::FileLoader file_loader{input_path};
-  std::vector<char> model_data = file_loader.load();
+  std::vector<char> model_data;
+  try
+  {
+    model_data = file_loader.load();
+  }
+  catch (const std::runtime_error &err)
+  {
+    std::cerr << "circle-quantizer: ERROR: " << err.what() << std::endl;
+    return 255;
+  }
 
   // Verify flatbuffers
   flatbuffers::Verifier verifier{reinterpret_cast<uint8_t *>(model_data.data()), model_data.size()};

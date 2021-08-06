@@ -52,7 +52,7 @@ def _call_driver(driver_name, options):
     with subprocess.Popen(
             cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, bufsize=1) as p:
         for line in p.stdout:
-            sys.stdout.buffer.write(f"{driver_name}: ".encode() + line)
+            sys.stdout.buffer.write(line)
             sys.stdout.buffer.flush()
     if p.returncode != 0:
         sys.exit(p.returncode)
