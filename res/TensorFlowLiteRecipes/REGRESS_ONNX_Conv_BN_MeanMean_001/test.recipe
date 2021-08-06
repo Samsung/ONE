@@ -1,0 +1,309 @@
+operand {
+  name: "Mean_4/reduction_indices"
+  type: INT32
+  shape {
+  }
+  filler {
+    tag: "explicit"
+    arg: "3"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "Mean_5/reduction_indices"
+  type: INT32
+  shape {
+  }
+  filler {
+    tag: "explicit"
+    arg: "2"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "transpose_73/perm"
+  type: INT32
+  shape {
+    dim: 4
+  }
+  filler {
+    tag: "explicit"
+    arg: "0"
+    arg: "2"
+    arg: "3"
+    arg: "1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "transpose_8/perm"
+  type: INT32
+  shape {
+    dim: 4
+  }
+  filler {
+    tag: "explicit"
+    arg: "0"
+    arg: "3"
+    arg: "1"
+    arg: "2"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "batchnorm_24/mul"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 256
+    dim: 1
+    dim: 1
+  }
+  filler {
+    tag: "explicit"
+    arg: "1.0"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "batchnorm_24/sub"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 256
+    dim: 1
+    dim: 1
+  }
+  filler {
+    tag: "explicit"
+    arg: "0.0"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "convolution_12"
+  type: FLOAT32
+  shape {
+    dim: 256
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "convolution_121"
+  type: FLOAT32
+  shape {
+    dim: 256
+    dim: 1
+    dim: 1
+    dim: 256
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "Relu_23"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 256
+    dim: 5
+    dim: 5
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "transpose_73"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 5
+    dim: 5
+    dim: 256
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "convolution_122"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 5
+    dim: 5
+    dim: 256
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "transpose_74"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 256
+    dim: 5
+    dim: 5
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "batchnorm_24/mul_1"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 256
+    dim: 5
+    dim: 5
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "Relu_24"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 256
+    dim: 5
+    dim: 5
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "Mean_4"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 256
+    dim: 5
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "Mean_5"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 256
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operation {
+  type: "Transpose"
+  input: "Relu_23"
+  input: "transpose_73/perm"
+  output: "transpose_73"
+}
+operation {
+  type: "Conv2D"
+  input: "transpose_73"
+  input: "convolution_121"
+  input: "convolution_12"
+  output: "convolution_122"
+  conv2d_options {
+    padding: VALID
+    stride_w: 1
+    stride_h: 1
+    activation: NONE
+    dilation_w_factor: 1
+    dilation_h_factor: 1
+  }
+}
+operation {
+  type: "Transpose"
+  input: "convolution_122"
+  input: "transpose_8/perm"
+  output: "transpose_74"
+}
+operation {
+  type: "Mul"
+  input: "transpose_74"
+  input: "batchnorm_24/mul"
+  output: "batchnorm_24/mul_1"
+  mul_options {
+    activation: NONE
+  }
+}
+operation {
+  type: "Add"
+  input: "batchnorm_24/mul_1"
+  input: "batchnorm_24/sub"
+  output: "Relu_24"
+  add_options {
+    activation: RELU
+  }
+}
+operation {
+  type: "Mean"
+  input: "Relu_24"
+  input: "Mean_4/reduction_indices"
+  output: "Mean_4"
+  mean_options {
+    keep_dims: false
+  }
+}
+operation {
+  type: "Mean"
+  input: "Mean_4"
+  input: "Mean_5/reduction_indices"
+  output: "Mean_5"
+  mean_options {
+    keep_dims: false
+  }
+}
+input: "Relu_23"
+output: "Mean_5"
