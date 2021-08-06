@@ -4,6 +4,7 @@ if (NOT LUCI_MICRO)
 else ()
   set(KERNEL_REGISTER_FILE "${LUCI_INTERPRETER_SOURCE_DIR}/micro/KernelsToBuild.lst")
 endif ()
+
 set(APPEND SOURCES
         BinaryOpCommon.h
         Utils.h
