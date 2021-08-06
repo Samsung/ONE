@@ -178,7 +178,7 @@ def _convert(args):
                 stderr=subprocess.STDOUT,
                 bufsize=1) as p:
             for line in p.stdout:
-                sys.stdout.buffer.write(line)
+                sys.stdout.buffer.write("tflite2circle: ".encode() + line)
                 sys.stdout.buffer.flush()
                 f.write(line)
         if p.returncode != 0:
@@ -201,4 +201,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    _utils._safemain(main, __file__)

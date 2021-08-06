@@ -216,3 +216,13 @@ def _print_version_and_exit(file_path):
     # run one-version
     subprocess.call([os.path.join(dir_path, 'one-version'), script_name])
     sys.exit()
+
+
+def _safemain(main, mainpath):
+    """execute given method and print with program name for all uncaught exceptions"""
+    try:
+        main()
+    except Exception as e:
+        prog_name = os.path.basename(mainpath)
+        print(f"{prog_name}: {type(e).__name__}: " + str(e))
+        sys.exit(-1)
