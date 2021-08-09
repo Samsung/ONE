@@ -62,6 +62,23 @@ TEST_P(SoftmaxVariation, Test)
   SUCCEED();
 }
 
+TEST_F(GenModelTest, OneOp_Softmax)
+{
+  CircleGen cgen;
+  int lhs = cgen.addTensor({{1, 1, 1, 4}, circle::TensorType::TensorType_FLOAT32});
+  int out = cgen.addTensor({{1, 1, 1, 4}, circle::TensorType::TensorType_FLOAT32});
+  cgen.addOperatorSoftmax({{lhs}, {out}}, 1.0);
+  cgen.setInputsAndOutputs({lhs}, {out});
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->addTestCase(uniformTCD<float>(
+    {{-1., 0., 1., 1.}},
+    {{0.054064586758613586, 0.14696279168128967, 0.39948627352714539, 0.39948627352714539}}));
+  _context->setBackends({"acl_cl", "cpu", "gpu_cl"});
+
+  SUCCEED();
+}
+
 // Test with different value type
 INSTANTIATE_TEST_CASE_P(
   GenModelTest, SoftmaxVariation,
