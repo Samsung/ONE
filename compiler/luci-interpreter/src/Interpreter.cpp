@@ -40,7 +40,8 @@ public:
     assert(tensor != nullptr);
     for (const auto &observer : _observers)
     {
-      observer->postTensorWrite(_runtime_to_ir.tensor_to_node.at(tensor), tensor);
+      if (tensor->is_observable())
+        observer->postTensorWrite(_runtime_to_ir.tensor_to_node.at(tensor), tensor);
     }
   }
 
@@ -80,10 +81,12 @@ Interpreter::Interpreter(const luci::Module *module, luci_interpreter::MManager 
   {
     _default_memory_manager = std::make_unique<SimpleMManager>();
     _memory_manager = _default_memory_manager.get();
+  } else
+  {
+    _memory_manager = memory_manager;
   }
 
-  loader.load(memory_manager);
-  _memory_manager = memory_manager;
+  loader.load(_memory_manager);
 }
 
 Interpreter::~Interpreter() = default;

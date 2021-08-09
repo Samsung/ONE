@@ -157,8 +157,10 @@ void GraphLoader::loadTensors()
       size_t data_size{};
       const void *const_data = getNodeData(const_node, &data_size);
       if (const_data != nullptr)
+      {
         _memory_manager->allocate_memory(tensor.get());
-      tensor->writeData(const_data, data_size);
+        tensor->writeData(const_data, data_size);
+      }
     }
 
     _node_to_tensor.emplace(node, tensor.get());
