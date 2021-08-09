@@ -107,9 +107,6 @@ public:
     return _quantization.zero_point[0];
   }
 
-  void allocate();
-  void deallocate();
-
   const std::vector<float> &scales() const { return _quantization.scale; }
 
   const std::vector<int32_t> &zero_points() const { return _quantization.zero_point; }
@@ -124,8 +121,7 @@ public:
 
   template <typename T> T *data()
   {
-    if (!_data_allocated)
-      allocate();
+    assert(_data_allocated);
     return reinterpret_cast<T *>(_data.get());
   }
 
@@ -139,8 +135,15 @@ public:
 
   void set_data_buffer(uint8_t *buffer)
   {
-    // It will be implemented when _data changes from unique ptr to raw ptr in next PR
-    (void)buffer;
+    if (buffer == nullptr)
+    {
+      _data_allocated = false;
+    }
+    else
+    {
+      _data_allocated = true;
+    }
+    _data.reset(buffer);
   }
 
   bool is_observable() const { return _is_observable; }
