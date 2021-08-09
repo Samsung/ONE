@@ -22,7 +22,7 @@
 #include <luci/IR/Nodes/CircleInput.h>
 #include <luci/IR/Nodes/CircleOutput.h>
 
-#include <luci_interpreter/MemoryManager.h>
+#include <luci_interpreter/SimpleMemoryManager.h>
 #include <luci/IR/Module.h>
 
 #include <memory>
@@ -67,6 +67,7 @@ public:
 private:
   std::unique_ptr<class RuntimeModule> _runtime_module;
   MManager *_memory_manager;
+  std::unique_ptr<MManager> _default_memory_manager = nullptr;
 
   // Observer functionality support.
   std::unique_ptr<struct RuntimeToIR> _runtime_to_ir;
