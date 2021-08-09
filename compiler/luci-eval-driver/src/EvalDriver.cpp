@@ -99,9 +99,9 @@ int entry(int argc, char **argv)
     return EXIT_FAILURE;
   }
 
-  auto memory_manager = std::make_unique<luci_interpreter::SimpleMManager>();
+  luci_interpreter::SimpleMManager memory_manager;
   // Create interpreter.
-  luci_interpreter::Interpreter interpreter(module.get(), memory_manager.get());
+  luci_interpreter::Interpreter interpreter(module.get(), &memory_manager);
 
   // Set input.
   // Data for n'th input is read from ${input_prefix}n
