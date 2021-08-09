@@ -146,6 +146,16 @@ public:
     _data.reset(buffer);
   }
 
+  bool is_observable() const
+  {
+    return _is_observable;
+  }
+
+  void make_unobservable()
+  {
+    _is_observable = false;
+  }
+
 private:
   DataType _element_type;
   Shape _shape;
@@ -153,6 +163,7 @@ private:
   std::unique_ptr<uint8_t[]> _data;
   std::string _name;
   bool _data_allocated;
+  bool _is_observable = true;
 };
 
 } // namespace luci_interpreter
