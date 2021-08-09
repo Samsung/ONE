@@ -24,8 +24,8 @@ namespace luci_interpreter
 
 class SimpleMManager : public MManager
 {
-  void allocate_memory(luci_interpreter::Tensor *tensor);
-  void release_memory(luci_interpreter::Tensor *tensor);
+  void allocate_memory(luci_interpreter::Tensor *tensor) final;
+  void release_memory(luci_interpreter::Tensor *tensor) final;
 };
 
 } // namespace luci_interpreter
