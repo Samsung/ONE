@@ -52,7 +52,7 @@ def _get_parser():
         '--input_data_format',
         type=str,
         help=
-        'file format of input data. h5/hdf5 (default) or list/filelist (a text file where a file path of input data is written in each line)'
+        'file format of input data. h5/hdf5 (default), list/filelist (a text file where a file path of input data is written in each line), or dir/directory (a directory where input data are saved)'
     )
     parser.add_argument(
         '-o', '--output_path', type=str, help='full filepath of the output file')
