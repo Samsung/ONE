@@ -15,6 +15,7 @@
  */
 
 #include <iostream>
+#include <fstream>
 #include "common.h"
 #include "session.h"
 #include "memory_stats.h"
@@ -87,6 +88,46 @@ void RunSession::load_session(void)
                             std::to_string(res_usage_begin.ru_maxrss) + ")");
 }
 
+void RunSession::reconfigure_for_smallest_exec(void)
+{
+  std::string setting_old = get_pareto_setting();
+  std::string best_config;
+  best_config = opt->fetch_config_with_smallest_exec();
+  auto currently_available_memory = get_meminfo(MEM_AVAILABLE);
+  if (opt->get_pareto_rss() > currently_available_memory)
+  {
+    std::cout << "Available memory = " << std::to_string(currently_available_memory) << std::endl;
+    best_config = opt->fetch_config_within_memory_bound(currently_available_memory * 2 / 3);
+    std::cout << "after initial reconfig: " << opt->get_current_setting() << std::endl;
+  }
+  std::string pattern = "OP_BACKEND_MAP=\"";
+  std::string backend_setting =
+    best_config.substr(best_config.find(pattern) + pattern.size(),
+                       best_config.size() - 1 - (best_config.find(pattern) + pattern.size()));
+  json->add_timed_record("session reconfig", "B");
+  auto mem1 = get_meminfo(MEM_AVAILABLE);
+  auto free1 = get_meminfo(MEM_FREE);
+  double rss1, vm1;
+  double rss2, vm2;
+
+  process_mem_usage(vm1, rss1);
+  nnfw_close_session(_session);
+  nnfw_create_session(&_session);
+  nnfw_load_model_from_file(_session, _model.c_str());
+  nnfw_set_backends_per_operation(_session, backend_setting.c_str());
+  nnfw_prepare(_session);
+  prepare_output();
+  process_mem_usage(vm2, rss2);
+  auto mem2 = get_meminfo(MEM_AVAILABLE);
+  auto free2 = get_meminfo(MEM_FREE);
+  json->add_instance_record(setting_old + " --> " + get_pareto_setting() + "meminfo increase: (" +
+                            std::to_string(mem1) + ":" + std::to_string(free1) + ", " +
+                            std::to_string(mem2) + ":" + std::to_string(free2) + ")");
+  json->add_instance_record("controller RSS (b4, after) : " + std::to_string(rss1) + ":" +
+                            std::to_string(rss2));
+  json->add_timed_record("session reconfig", "E");
+}
+
 bool RunSession::latency_increased(float exec_time) { return opt->exec_time_increased(exec_time); }
 
 bool RunSession::memory_improved(int32_t memory_diff)
@@ -94,12 +135,16 @@ bool RunSession::memory_improved(int32_t memory_diff)
   return opt->feasible_memory_increase(memory_diff);
 }
 
-void RunSession::reconfigure_within_exec_time(float exec_time)
+bool RunSession::reconfigure_within_exec_time(float exec_time)
 {
   double vm1, rss1;
   double vm2, rss2;
   std::string setting_old = get_pareto_setting();
   std::string best_config = opt->fetch_config_within_exectime(exec_time);
+  if (best_config.empty())
+  {
+    return false;
+  }
   std::string pattern = "OP_BACKEND_MAP=\"";
   std::string backend_setting =
     best_config.substr(best_config.find(pattern) + pattern.size(),
@@ -125,6 +170,7 @@ void RunSession::reconfigure_within_exec_time(float exec_time)
     std::to_string(mem1) + ", " + std::to_string(free1) + ":" + std::to_string(rss1) + ", " +
     std::to_string(mem2) + ", " + std::to_string(free2) + ":" + std::to_string(rss2) + ")");
   json->add_timed_record("session reconfig", "E");
+  return true;
 }
 
 void RunSession::reconfigure_within_memory(int32_t memory_val)
@@ -171,7 +217,7 @@ int64_t RunSession::run_inference(void)
 
 void RunSession::close(void) { nnfw_close_session(_session); }
 
-void RunSession::initialize_inputs(void)
+void RunSession::initialize_inputs(std::ifstream &ifile)
 {
   uint32_t n_inputs;
   nnfw_tensorinfo ti;
@@ -194,14 +240,13 @@ void RunSession::initialize_inputs(void)
         {
           input = static_cast<float *>(_inputs[i]);
         }
-        random_input_float(input, input_elements);
+        ifile.read(reinterpret_cast<char *>(input), input_elements * sizeof(float));
         nnfw_set_input(_session, i, ti.dtype, input, sizeof(float) * input_elements);
         break;
       }
       case NNFW_TYPE_TENSOR_INT32:
       {
         int32_t *input;
-        random_input_int(input, input_elements);
         if (_inputs_initialized == false)
         {
           input = new int32_t[input_elements];
@@ -211,7 +256,7 @@ void RunSession::initialize_inputs(void)
         {
           input = static_cast<int32_t *>(_inputs[i]);
         }
-        random_input_int<int32_t, uint32_t>(input, input_elements);
+        ifile.read(reinterpret_cast<char *>(input), input_elements * sizeof(int32_t));
         nnfw_set_input(_session, i, ti.dtype, input, sizeof(int32_t) * input_elements);
         break;
       }
@@ -229,7 +274,7 @@ void RunSession::initialize_inputs(void)
         {
           input = static_cast<uint8_t *>(_inputs[i]);
         }
-        random_input_int<uint8_t, uint32_t>(input, input_elements);
+        ifile.read(reinterpret_cast<char *>(input), input_elements * sizeof(uint8_t));
         nnfw_set_input(_session, i, ti.dtype, input, sizeof(uint8_t) * input_elements);
         break;
       }
@@ -238,14 +283,14 @@ void RunSession::initialize_inputs(void)
         int8_t *input;
         if (_inputs_initialized == false)
         {
-          int8_t *input = new int8_t[input_elements];
+          input = new int8_t[input_elements];
           _inputs.emplace_back(static_cast<void *>(input));
         }
         else
         {
           input = static_cast<int8_t *>(_inputs[i]);
         }
-        random_input_int<int8_t, uint32_t>(input, input_elements);
+        ifile.read(reinterpret_cast<char *>(input), input_elements * sizeof(int8_t));
         nnfw_set_input(_session, i, ti.dtype, input, sizeof(int8_t) * input_elements);
         break;
       }
@@ -254,14 +299,14 @@ void RunSession::initialize_inputs(void)
         int64_t *input;
         if (_inputs_initialized == false)
         {
-          int64_t *input = new int64_t[input_elements];
+          input = new int64_t[input_elements];
           _inputs.emplace_back(static_cast<void *>(input));
         }
         else
         {
           input = static_cast<int64_t *>(_inputs[i]);
         }
-        random_input_int<int64_t, uint32_t>(input, input_elements);
+        ifile.read(reinterpret_cast<char *>(input), input_elements * sizeof(int64_t));
         nnfw_set_input(_session, i, ti.dtype, input, sizeof(int64_t) * input_elements);
         break;
       }
@@ -327,3 +372,119 @@ void RunSession::prepare_output(void)
 }
 
 std::string RunSession::get_pareto_setting(void) { return opt->get_current_setting(); }
+
+std::string RunSession::get_model(void) { return _model; }
+
+void RunSession::prepare_bulk_data(int n_iterations)
+{
+  uint32_t n_inputs;
+  nnfw_tensorinfo ti;
+  nnfw_input_size(_session, &n_inputs);
+
+  for (auto i = 0; i < n_inputs; i++)
+  {
+    std::string basename = _model.substr(_model.find_last_of("/\\") + 1);
+    std::string filename = "/tmp/bulkdata_" + basename + "_" + std::to_string(i) + ".dat";
+    std::ofstream ofile(filename, std::ios::binary);
+    nnfw_input_tensorinfo(_session, i, &ti);
+    uint32_t input_elements = num_elems(&ti);
+    for (auto n = 0; n < n_iterations; n++)
+    {
+      switch (ti.dtype)
+      {
+        case NNFW_TYPE_TENSOR_FLOAT32:
+        {
+          float *input;
+          if (_inputs_initialized == false)
+          {
+            input = new float[input_elements];
+            _inputs.emplace_back(static_cast<void *>(input));
+          }
+          else
+          {
+            input = static_cast<float *>(_inputs[i]);
+          }
+
+          random_input_float(input, input_elements);
+          ofile.write(reinterpret_cast<char *>(input), input_elements * sizeof(float));
+          break;
+        }
+        case NNFW_TYPE_TENSOR_INT32:
+        {
+          int32_t *input;
+          random_input_int(input, input_elements);
+          if (_inputs_initialized == false)
+          {
+            input = new int32_t[input_elements];
+            _inputs.emplace_back(static_cast<void *>(input));
+          }
+          else
+          {
+            input = static_cast<int32_t *>(_inputs[i]);
+          }
+          random_input_int<int32_t, uint32_t>(input, input_elements);
+          ofile.write(reinterpret_cast<char *>(input), input_elements * sizeof(int32_t));
+          break;
+        }
+        case NNFW_TYPE_TENSOR_QUANT8_ASYMM:
+        case NNFW_TYPE_TENSOR_BOOL:
+        case NNFW_TYPE_TENSOR_UINT8:
+        {
+          uint8_t *input;
+          if (_inputs_initialized == false)
+          {
+            input = new uint8_t[input_elements];
+            _inputs.emplace_back(static_cast<void *>(input));
+          }
+          else
+          {
+            input = static_cast<uint8_t *>(_inputs[i]);
+          }
+          random_input_int<uint8_t, uint32_t>(input, input_elements);
+          ofile.write(reinterpret_cast<char *>(input), input_elements * sizeof(uint8_t));
+          break;
+        }
+        case NNFW_TYPE_TENSOR_QUANT8_ASYMM_SIGNED:
+        {
+          int8_t *input;
+          if (_inputs_initialized == false)
+          {
+            int8_t *input = new int8_t[input_elements];
+            _inputs.emplace_back(static_cast<void *>(input));
+          }
+          else
+          {
+            input = static_cast<int8_t *>(_inputs[i]);
+          }
+          random_input_int<int8_t, uint32_t>(input, input_elements);
+          ofile.write(reinterpret_cast<char *>(input), input_elements * sizeof(int8_t));
+          break;
+        }
+        case NNFW_TYPE_TENSOR_INT64:
+        {
+          int64_t *input;
+          if (_inputs_initialized == false)
+          {
+            int64_t *input = new int64_t[input_elements];
+            _inputs.emplace_back(static_cast<void *>(input));
+          }
+          else
+          {
+            input = static_cast<int64_t *>(_inputs[i]);
+          }
+          random_input_int<int64_t, uint32_t>(input, input_elements);
+          ofile.write(reinterpret_cast<char *>(input), input_elements * sizeof(int64_t));
+          break;
+        }
+        default:
+          std::cout << "Uknown input data type " << ti.dtype << std::endl;
+          break;
+      }
+      if (_inputs_initialized == false)
+      {
+        _inputs_initialized = true;
+      }
+    }
+    ofile.close();
+  }
+}

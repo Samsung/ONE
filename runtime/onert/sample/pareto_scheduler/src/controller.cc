@@ -29,16 +29,22 @@ ParetoScheduler::ParetoScheduler(RunSession *session)
 
 void ParetoScheduler::latency_monitoring(float exec_time, int inference_cnt)
 {
-  if (_transient_lock == T_DISABLED && _session->latency_increased(exec_time))
+  if (_transient_lock != T_ENABLED_FOR_MEMORY && _session->latency_increased(exec_time))
   {
     // Enable here
-    _session->reconfigure_within_exec_time(exec_time);
-
-    ; // Enable all from here
-    _reference_memory = get_meminfo(MEM_AVAILABLE);
-    _available_memory = _reference_memory;
-    _transient_lock = T_ENABLED_FOR_TIME;
-    json->add_instance_record("T lock enabled (available): " + std::to_string(_available_memory));
+    bool reconfig_success = _session->reconfigure_within_exec_time(exec_time);
+    if (reconfig_success == true)
+    {
+      ; // Enable all from here
+      _reference_memory = get_meminfo(MEM_AVAILABLE);
+      _available_memory = _reference_memory;
+      _transient_lock = T_ENABLED_FOR_TIME;
+      json->add_instance_record("T lock enabled (available): " + std::to_string(_available_memory));
+    }
+    else
+    {
+      _available_memory = get_meminfo(MEM_AVAILABLE);
+    }
   }
   else
   {
@@ -47,8 +53,11 @@ void ParetoScheduler::latency_monitoring(float exec_time, int inference_cnt)
   // Track any changes in memory for post processing
   if (inference_cnt % TRACE_INTERVAL == 0)
   {
+    double rss, vm;
+    process_mem_usage(vm, rss);
     json->add_instance_record("Mem (available, free) check: " + std::to_string(_available_memory) +
-                              ", " + std::to_string(get_meminfo(MEM_FREE)));
+                              ", " + std::to_string(get_meminfo(MEM_FREE)) + ": " +
+                              std::to_string(rss));
   }
   // Enable controller again when the transient phase has ended
   if ((_transient_lock == T_ENABLED_FOR_TIME) || (_transient_lock == T_ENABLED_FOR_MEMORY))
@@ -69,7 +78,8 @@ void ParetoScheduler::memory_monitoring(void)
       _session->memory_improved(_available_memory - _reference_memory))
   {
     // Enable here
-    _session->reconfigure_within_memory(2 * (_available_memory - _reference_memory));
+    // _session->reconfigure_within_memory(3 * (_available_memory - _reference_memory));
+    _session->reconfigure_for_smallest_exec();
     ; // Enable all from here
     _reference_memory = get_meminfo(MEM_AVAILABLE);
     _transient_lock = T_ENABLED_FOR_MEMORY;

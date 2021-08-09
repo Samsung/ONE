@@ -168,6 +168,10 @@ std::string ParetoOptimizer::fetch_config_within_exectime(float exec_time_limit)
       }
     }
   }
+  if (_current_reference_time == std::get<0>(_solution_map[min_id]))
+  {
+    return std::string();
+  }
   _current_reference_time = std::get<0>(_solution_map[min_id]);
   _threshold_time_check = _threshold_margin_latency * _current_reference_time / 100;
   _current_reference_memory = std::get<1>(_solution_map[min_id]);
@@ -233,9 +237,7 @@ bool ParetoOptimizer::exec_time_increased(float exec_time)
 
 bool ParetoOptimizer::feasible_memory_increase(int32_t memory_diff)
 {
-  if ((memory_diff > _threshold_memory_check) &&
-      (_current_reference_memory != _largest_rss_value) &&
-      (_current_reference_memory + memory_diff > _largest_rss_value))
+  if ((memory_diff > _threshold_memory_check) && (_current_reference_memory != _largest_rss_value))
     return true;
   return false;
 }

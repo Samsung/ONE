@@ -77,15 +77,19 @@ public:
    * time bounds
    * @param[in] float exec_time_limit execution time upper bound in milliseconds
    */
-  void reconfigure_within_exec_time(float exec_time);
+  bool reconfigure_within_exec_time(float exec_time);
   /**
    * @brief     reconfigure backends configuration such that resulting memory usage is within
    * allowable limit
    * @param[in] int32_t memory_diff allowable memory increase in MB
    *
-   * @return    std::string mapping model operation indexes to their assigned backends (cpu, acl_cl)
    */
   void reconfigure_within_memory(int32_t memory_val);
+  /**
+   * @brief     reconfigure backends such that resulting latency is close to and within the shortest
+   * execution time from the pareto front
+   */
+  void reconfigure_for_smallest_exec(void);
   /**
    * @brief     run inference
    *
@@ -99,7 +103,7 @@ public:
   /**
    * @brief     initialize input tensors
    */
-  void initialize_inputs(void);
+  void initialize_inputs(std::ifstream &ifile);
   /**
    * @brief     initialize output tensors
    */
@@ -110,5 +114,18 @@ public:
    * @return    std::string tuple in the format (reference execution time, reference RSS memory)
    */
   std::string get_pareto_setting(void);
+  /**
+   * @brief     get the model name from session
+   *
+   * @return    std::string indicating model name
+   */
+  std::string get_model(void);
+  /**
+   * @brief     prepare input tensor data for all inference iterations.
+   *            Result is stored under /tmp_bulkdata_<model>_<input_index>.dat
+   *
+   * @param[in] int n_iterations, number of inference rounds
+   */
+  void prepare_bulk_data(int n_iterations);
 };
 #endif

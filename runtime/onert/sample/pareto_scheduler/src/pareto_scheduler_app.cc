@@ -43,14 +43,14 @@ void initialize_globals(std::string config_file, std::string dumpfile)
   opt->initialize_maps();
 }
 
-void runtime_thread(std::string model)
+void runtime_thread(RunSession &my_session, int control_enable)
 {
+  std::string modelname = my_session.get_model();
   json->add_timed_record("Runtime", "B");
 
   json->add_timed_record("session prepare", "B");
 
   // Prepare session.
-  RunSession my_session(model);
   ParetoScheduler p_sched(&my_session);
   my_session.load_session();
   // Prepare output
@@ -60,13 +60,11 @@ void runtime_thread(std::string model)
   mq.msg_queue.push("loaded");
   pthread_mutex_unlock(&mq.msgq_mutex);
   pthread_cond_signal(&mq.msgq_condition);
-
+  std::string basename = modelname.substr(modelname.find_last_of("/\\") + 1);
+  std::string filename = "/tmp/bulkdata_" + basename + "_0.dat";
+  std::ifstream ifile(filename, std::ios::binary);
   int inference_cnt = 0;
-  bool controls_enabled = true;
   float exec_time;
-  unsigned long free_mem;
-  unsigned long mem_diff;
-  float cumulative_exec_time = 0;
   while (1)
   {
     pthread_mutex_lock(&mq.msgq_mutex);
@@ -83,19 +81,20 @@ void runtime_thread(std::string model)
       {
         // Initialize inputs.
         json->add_timed_record("session initialize", "B");
-        my_session.initialize_inputs();
+        my_session.initialize_inputs(ifile);
         json->add_timed_record("session initialize", "E");
         // Do inference
         exec_time = my_session.run_inference();
         std::cout << "Inference iteration: " << inference_cnt++ << " done" << std::endl;
         exec_time /= 1000.0;
+        if (control_enable)
+        {
+          // Run Latency Monitoring
+          p_sched.latency_monitoring(exec_time, inference_cnt);
 
-        // Run Latency Monitoring
-        p_sched.latency_monitoring(exec_time, inference_cnt);
-
-        // Run memory monitoring
-        p_sched.memory_monitoring();
-
+          // Run memory monitoring
+          p_sched.memory_monitoring();
+        }
         json->add_timed_record("session sync", "B");
         mq.msg_queue.push("inferDone");
         usleep(500);
@@ -115,7 +114,7 @@ void runtime_thread(std::string model)
   my_session.close();
   json->add_timed_record("Runtime", "E");
   json->write_and_close_file();
-  std::cout << "nnpackage " << model << " runs successfully." << std::endl;
+  std::cout << "nnpackage " << modelname << " runs successfully." << std::endl;
 }
 
 int main(const int argc, char **argv)
@@ -126,23 +125,34 @@ int main(const int argc, char **argv)
   signal(SIGTERM, signalHandler);
   initialize_globals(argv[2], argv[3]);
 
-  std::thread runtime(runtime_thread, argv[1]);
+  RunSession my_session(argv[1]);
+  auto control_enable = std::stoi(argv[5]);
+  auto bulkdata_prepare = std::stoi(argv[6]);
+  std::thread runtime(runtime_thread, std::ref(my_session), control_enable);
   pthread_cond_wait(&mq.msgq_condition, &mq.msgq_mutex);
   ;
   mq.msg_queue.pop();
   pthread_mutex_unlock(&mq.msgq_mutex);
   auto n_iterations = std::stoi(argv[4]);
-  for (auto i = 0; i < n_iterations; i++)
+  if (bulkdata_prepare)
   {
-    mq.msg_queue.push("infer");
-    usleep(500);
-    pthread_cond_signal(&mq.msgq_condition);
-    pthread_mutex_lock(&mq.msgq_mutex);
-    pthread_cond_wait(&mq.msgq_condition, &mq.msgq_mutex);
-    pthread_mutex_unlock(&mq.msgq_mutex);
-    mq.msg_queue.pop();
+    json->add_timed_record("Runtime PrepareData", "B");
+    my_session.prepare_bulk_data(n_iterations);
+    json->add_timed_record("Runtime PrepareData", "E");
   }
-
+  else
+  {
+    for (auto i = 0; i < n_iterations; i++)
+    {
+      mq.msg_queue.push("infer");
+      usleep(500);
+      pthread_cond_signal(&mq.msgq_condition);
+      pthread_mutex_lock(&mq.msgq_mutex);
+      pthread_cond_wait(&mq.msgq_condition, &mq.msgq_mutex);
+      pthread_mutex_unlock(&mq.msgq_mutex);
+      mq.msg_queue.pop();
+    }
+  }
   std::cout << "main calling runtime to exit.." << std::endl;
   std::string msg = "exit";
   pthread_mutex_lock(&mq.msgq_mutex);
