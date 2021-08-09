@@ -341,6 +341,18 @@ uint32_t CircleGen::addOperatorReduce(const OperatorParams &params,
   return addOperatorWithOptions(params, reduce_op, circle::BuiltinOptions_ReducerOptions, options);
 }
 
+uint32_t CircleGen::addOperatorRelu(const OperatorParams &params)
+{
+  return addOperatorWithOptions(params, circle::BuiltinOperator_RELU, circle::BuiltinOptions_NONE,
+                                0);
+}
+
+uint32_t CircleGen::addOperatorRelu6(const OperatorParams &params)
+{
+  return addOperatorWithOptions(params, circle::BuiltinOperator_RELU6, circle::BuiltinOptions_NONE,
+                                0);
+}
+
 uint32_t CircleGen::addOperatorReshape(const OperatorParams &params, const Shape *new_shape)
 {
   auto options = circle::CreateReshapeOptionsDirect(_fbb, new_shape).Union();

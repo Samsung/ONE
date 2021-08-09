@@ -46,6 +46,7 @@ public:
 
 private:
   void visit(const ir::operation::BinaryArithmetic &) override;
+  void visit(const ir::operation::ElementwiseActivation &) override;
 
 private:
   const ir::Operands &_ctx;
