@@ -71,7 +71,6 @@ public:
   int Channels() const { return shape_.c; }
   int Slices() const { return DivideRoundUp(shape_.c, 4); }
   int Batch() const { return shape_.b; }
-  int3 GetFullTensorRegion() const;
   TensorDescriptor GetDescriptor() const { return descriptor_; }
   DataType GetDataType() const { return descriptor_.data_type; }
   TensorStorageType GetStorageType() const { return descriptor_.storage_type; }
@@ -85,6 +84,15 @@ public:
   // memory ptr.
   cl_mem GetMemoryPtrForWriting() const;
 
+  absl::Status WriteData(CLCommandQueue *queue, const TensorFloat32 &src);
+  absl::Status WriteData(CLCommandQueue *queue,
+                         const InternalTensor<Linear, DataType::FLOAT32> &src);
+  absl::Status WriteData(CLCommandQueue *queue, const InternalTensor<HWC, DataType::FLOAT32> &src);
+
+  absl::Status WriteData(CLCommandQueue *queue, const Tensor5DFloat32 &src);
+  absl::Status ReadData(CLCommandQueue *queue, TensorFloat32 *dst) const;
+  absl::Status ReadData(CLCommandQueue *queue, Tensor5DFloat32 *dst) const;
+
   absl::Status CreateFromDescriptor(const TensorDescriptor &desc, CLContext *context);
 
 private:
@@ -94,6 +102,10 @@ private:
   int GetChannelsAlignment() const;
   int GetAlignedChannels() const;
 
+  absl::Status WriteDataBHWDC(absl::Span<const float> in, CLCommandQueue *queue);
+  absl::Status ReadDataBHWDC(absl::Span<float> out, CLCommandQueue *queue) const;
+
+  int3 GetFullTensorRegion() const;
   void Release();
 
   cl_mem memory_;

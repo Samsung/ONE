@@ -37,55 +37,60 @@ void ICLTensor::access(const std::function<void(ITensor &tensor)> &fn)
 
 void ICLTensor::enqueueWriteBuffer(const void *ptr, bool)
 {
-  switch (handle()->GetStorageType())
-  {
-    case TensorStorageType::BUFFER:
-    case TensorStorageType::IMAGE_BUFFER:
-      if (!_queue->EnqueueWriteBuffer(handle()->GetMemoryPtr(), total_size(), ptr).ok())
-      {
-        return;
-      }
-      break;
-    case TensorStorageType::TEXTURE_ARRAY:
-    case TensorStorageType::TEXTURE_2D:
 
-    case TensorStorageType::TEXTURE_3D:
-    case TensorStorageType::SINGLE_TEXTURE_2D:
-      // TODO
-      // Change int3 {1, 1, 1} to CalculateTextureRegion.
-      if (!_queue->EnqueueWriteImage(handle()->GetMemoryPtr(), int3{1, 1, 1}, ptr).ok())
-      {
-        return;
-      }
+  TensorFloat32 src_tensor;
+
+  switch (_shape.rank())
+  {
+    case 1:
+      src_tensor.shape = BHWC(_shape.dim(0), 1, 1, 1);
       break;
-    default:
+    case 2:
+      src_tensor.shape = BHWC(_shape.dim(0), 1, 1, _shape.dim(1));
       break;
+    case 3:
+      src_tensor.shape = BHWC(_shape.dim(0), 1, _shape.dim(1), _shape.dim(2));
+      break;
+    case 4:
+      src_tensor.shape = BHWC(_shape.dim(0), _shape.dim(1), _shape.dim(2), _shape.dim(3));
+      break;
+  }
+
+  src_tensor.data = std::vector<float>((float *)ptr, (float *)ptr + _shape.num_elements());
+
+  if (!handle()->WriteData(_queue, src_tensor).ok())
+  {
+    throw std::runtime_error("Failed to WriteData.");
   }
 }
 
 void ICLTensor::enqueueReadBuffer(void *ptr, bool)
 {
-  switch (handle()->GetStorageType())
+  TensorFloat32 dst_tensor;
+
+  switch (_shape.rank())
   {
-    case TensorStorageType::BUFFER:
-    case TensorStorageType::IMAGE_BUFFER:
-      if (!_queue->EnqueueReadBuffer(handle()->GetMemoryPtr(), total_size(), ptr).ok())
-      {
-        return;
-      }
+    case 1:
+      dst_tensor.shape = BHWC(_shape.dim(0), 1, 1, 1);
       break;
-    case TensorStorageType::TEXTURE_ARRAY:
-    case TensorStorageType::TEXTURE_2D:
-    case TensorStorageType::TEXTURE_3D:
-    case TensorStorageType::SINGLE_TEXTURE_2D:
-      if (!_queue->EnqueueReadImage(handle()->GetMemoryPtr(), int3{1, 1, 1}, ptr).ok())
-      {
-        return;
-      }
+    case 2:
+      dst_tensor.shape = BHWC(_shape.dim(0), 1, 1, _shape.dim(1));
       break;
-    default:
+    case 3:
+      dst_tensor.shape = BHWC(_shape.dim(0), 1, _shape.dim(1), _shape.dim(2));
+      break;
+    case 4:
+      dst_tensor.shape = BHWC(_shape.dim(0), _shape.dim(1), _shape.dim(2), _shape.dim(3));
       break;
   }
+  dst_tensor.data = std::vector<float>(_shape.num_elements(), 0);
+
+  if (!handle()->ReadData(_queue, &dst_tensor).ok())
+  {
+    throw std::runtime_error("Failed to ReadData.");
+  }
+
+  memcpy(ptr, dst_tensor.data.data(), total_size());
 }
 
 } // namespace operand
