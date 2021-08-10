@@ -41,6 +41,9 @@ std::unique_ptr<GPUOperation>
 SelectDWConvolutionDynamicWeights(const DepthwiseConvolution2DAttributes &attr,
                                   const DeviceInfo &device_info, const OperationDef &op_def);
 
+std::unique_ptr<GPUOperation> SelectPooling(const Pooling2DAttributes &attr,
+                                            const OperationDef &op_def);
+
 } // namespace gpu_cl
 } // namespace backend
 } // namespace onert
