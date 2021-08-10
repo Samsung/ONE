@@ -33,7 +33,7 @@ void Check(std::initializer_list<int32_t> input_shape, std::initializer_list<int
            std::initializer_list<int32_t> output_shape, std::initializer_list<T> input_data,
            std::initializer_list<T> alpha_data, std::initializer_list<T> output_data)
 {
-  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<SimpleMemoryManager>();
   constexpr DataType element_type = getElementType<T>();
   Tensor input_tensor =
     makeInputTensor<element_type>(input_shape, input_data, memory_manager.get());
@@ -102,7 +102,7 @@ float GetTolerance(float min, float max) { return (max - min) / 255.0; }
 
 TEST(PReluTest, Uint8Simple)
 {
-  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<SimpleMemoryManager>();
   std::vector<float> input_data{-0.8f, 0.2f, 0.9f, 0.7f, 0.1f, -0.4f};
   std::vector<float> alpha_data{0.5f, 0.5f, 0.5f, 0.25f, 1.0f, 0.25f};
   std::vector<float> ref_output_data{-0.4f, 0.2f, 0.9f, 0.7f, 0.1f, -0.1f};
@@ -154,7 +154,7 @@ TEST(PReluTest, Uint8Broadcast)
   const float kMax = 127.f / 128.f;
   std::pair<float, int32_t> quant_param = quantizationParams<uint8_t>(kMin, kMax);
 
-  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<SimpleMemoryManager>();
   Tensor input_tensor = makeInputTensor<DataType::U8>(
     {1, 2, 2, 3}, quant_param.first, quant_param.second, input_data, memory_manager.get());
   Tensor alpha_tensor = makeInputTensor<DataType::U8>(
@@ -175,7 +175,7 @@ TEST(PReluTest, Uint8Broadcast)
 
 TEST(PReluTest, SInt16_LWQ_NEG)
 {
-  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<SimpleMemoryManager>();
   // Rewrite this test in case layer-wise quantization for sint16 is supported
   std::vector<float> input_data(6); // data is not important
   std::vector<float> alpha_data(6);
@@ -192,7 +192,7 @@ TEST(PReluTest, SInt16_LWQ_NEG)
 
 TEST(PReluTest, SInt16_CWQ_Simple)
 {
-  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<SimpleMemoryManager>();
   std::vector<float> input_data{-0.8f, 0.2f, 0.9f, -0.7f, 0.1f, -0.4f};
   std::vector<float> alpha_data{0.5f, 0.25f};
   std::vector<float> ref_output_data{-0.4f, 0.2f, 0.9f, -0.175f, 0.1f, -0.1f};
@@ -216,7 +216,7 @@ TEST(PReluTest, SInt16_CWQ_Simple)
 
 TEST(PReluTest, SInt16_CWQ_spatial_alpha_NEG)
 {
-  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<SimpleMemoryManager>();
   std::vector<float> input_data(6); // data is not important
   std::vector<float> alpha_data(6);
 
@@ -234,7 +234,7 @@ TEST(PReluTest, SInt16_CWQ_spatial_alpha_NEG)
 
 TEST(PReluTest, SInt16_CWQ_wrong_dim_quant_NEG)
 {
-  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<SimpleMemoryManager>();
   std::vector<float> input_data(6); // data is not important
   std::vector<float> alpha_data(6);
 
@@ -252,7 +252,7 @@ TEST(PReluTest, SInt16_CWQ_wrong_dim_quant_NEG)
 
 TEST(PReluTest, SInt16_CWQ_uneven_shape1)
 {
-  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<SimpleMemoryManager>();
   std::vector<float> input_data{-0.8f, 0.2f, 0.9f, -0.7f, 0.1f, -0.4f};
   std::vector<float> alpha_data{0.5f, 0.25f};
   std::vector<float> ref_output_data{-0.4f, 0.2f, 0.9f, -0.175f, 0.1f, -0.1f};
@@ -276,7 +276,7 @@ TEST(PReluTest, SInt16_CWQ_uneven_shape1)
 
 TEST(PReluTest, SInt16_CWQ_uneven_shape2)
 {
-  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<SimpleMemoryManager>();
   std::vector<float> input_data{
     0.0f,   0.0f,   0.0f,   // Row 1, Column 1
     0.5f,   0.5f,   0.5f,   // Row 1, Column 2
@@ -310,7 +310,7 @@ TEST(PReluTest, SInt16_CWQ_uneven_shape2)
 
 TEST(PReluTest, Input_Output_Type_NEG)
 {
-  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<SimpleMemoryManager>();
   Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({1}, {1.f}, memory_manager.get());
   Tensor alpha_tensor = makeInputTensor<DataType::FLOAT32>({1}, {1.f}, memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::U8);
@@ -321,7 +321,7 @@ TEST(PReluTest, Input_Output_Type_NEG)
 
 TEST(PReluTest, Input_Alpha_Type_NEG)
 {
-  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<SimpleMemoryManager>();
   Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({1}, {1.f}, memory_manager.get());
   Tensor alpha_tensor = makeInputTensor<DataType::U8>({1}, {1}, memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
@@ -332,7 +332,7 @@ TEST(PReluTest, Input_Alpha_Type_NEG)
 
 TEST(PReluTest, Invalid_Input_Type_NEG)
 {
-  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<SimpleMemoryManager>();
   Tensor input_tensor = makeInputTensor<DataType::S64>({1}, {1}, memory_manager.get());
   Tensor alpha_tensor = makeInputTensor<DataType::S64>({1}, {1}, memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::S64);
@@ -345,7 +345,7 @@ TEST(PReluTest, Invalid_Input_Type_NEG)
 
 TEST(PReluTest, Input_Output_U8_CWQ_NEG)
 {
-  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<SimpleMemoryManager>();
   std::vector<float> scales{1.f, 1.f};
   std::vector<int32_t> zerop{0, 0};
   std::vector<float> dummy_data(4, 0.f);
@@ -362,7 +362,7 @@ TEST(PReluTest, Input_Output_U8_CWQ_NEG)
 
 TEST(PReluTest, Input_Output_S16_CWQ_NEG)
 {
-  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<SimpleMemoryManager>();
   std::vector<float> scales{1.f, 1.f};
   std::vector<int32_t> zerop{0, 0};
   std::vector<float> dummy_data(4, 0.f);
@@ -379,7 +379,7 @@ TEST(PReluTest, Input_Output_S16_CWQ_NEG)
 
 TEST(PReluTest, Mixing_U8_S16_NEG)
 {
-  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<SimpleMemoryManager>();
   std::vector<float> dummy_data(4, 0.f);
   Tensor input_tensor =
     makeInputTensor<DataType::U8>({2, 2}, 1.f, 0, dummy_data, memory_manager.get());

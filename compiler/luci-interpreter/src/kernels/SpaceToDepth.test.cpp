@@ -36,7 +36,7 @@ TYPED_TEST_CASE(SpaceToDepthTest, DataTypes);
 
 TYPED_TEST(SpaceToDepthTest, SimpleCase)
 {
-  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<SimpleMemoryManager>();
 
   constexpr DataType element_type = getElementType<TypeParam>();
   std::vector<TypeParam> input_data{1, 5, 6, 7, 2, 3, 4, 8};

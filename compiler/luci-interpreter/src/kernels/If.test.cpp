@@ -35,12 +35,12 @@ using namespace testing;
 class IfTest : public ::testing::Test
 {
 protected:
-  void SetUp() override { _memory_manager = std::make_unique<SimpleMManager>(); }
+  void SetUp() override { _memory_manager = std::make_unique<SimpleMemoryManager>(); }
 
-  std::unique_ptr<MManager> _memory_manager;
+  std::unique_ptr<IMemoryManager> _memory_manager;
 };
 
-RuntimeGraph *buildAddSubgraph(RuntimeModule *module, MManager *memory_manager)
+RuntimeGraph *buildAddSubgraph(RuntimeModule *module, IMemoryManager *memory_manager)
 {
   RuntimeGraph *graph = module->addGraph(memory_manager);
   Tensor *input1 = graph->addTensor(
@@ -64,7 +64,7 @@ RuntimeGraph *buildAddSubgraph(RuntimeModule *module, MManager *memory_manager)
   return graph;
 }
 
-RuntimeGraph *buildMulSubgraph(RuntimeModule *module, MManager *memory_manager)
+RuntimeGraph *buildMulSubgraph(RuntimeModule *module, IMemoryManager *memory_manager)
 {
   RuntimeGraph *graph = module->addGraph(memory_manager);
   Tensor *input1 = graph->addTensor(

@@ -33,7 +33,7 @@ void Check(std::initializer_list<int32_t> input_shape, std::initializer_list<int
            std::initializer_list<float> input_data, std::initializer_list<float> weights_data,
            std::initializer_list<float> bias_data, std::initializer_list<float> output_data)
 {
-  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<SimpleMemoryManager>();
   Tensor input_tensor =
     makeInputTensor<DataType::FLOAT32>(input_shape, input_data, memory_manager.get());
   Tensor weights_tensor =
@@ -61,7 +61,7 @@ void Check<uint8_t>(
   std::initializer_list<float> input_data, std::initializer_list<float> weights_data,
   std::initializer_list<float> bias_data, std::initializer_list<float> output_data)
 {
-  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<SimpleMemoryManager>();
   const float quantized_tolerance = getTolerance(-127, 128, 255);
   std::pair<float, int32_t> input_quant_param = quantizationParams<uint8_t>(-63.5, 64);
   std::pair<float, int32_t> output_quant_param = quantizationParams<uint8_t>(-127, 128);
@@ -132,7 +132,7 @@ TEST(FullyConnectedTest, InvalidBiasType_NEG)
   Shape bias_shape{3};
   std::vector<int32_t> bias_data{-1, -5, -8};
 
-  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<SimpleMemoryManager>();
 
   Tensor input_tensor =
     makeInputTensor<DataType::FLOAT32>(input_shape, input_data, memory_manager.get());
@@ -164,7 +164,7 @@ TEST(FullyConnectedTest, InvalidWeightShapeDim_NEG)
   Shape bias_shape{3};
   std::vector<float> bias_data{-1, -5, -8};
 
-  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<SimpleMemoryManager>();
 
   Tensor input_tensor =
     makeInputTensor<DataType::FLOAT32>(input_shape, input_data, memory_manager.get());
@@ -200,7 +200,7 @@ TEST(FullyConnectedTest, BiasElementNumWeightDimMismatch_NEG)
   Shape bias_shape{3};
   std::vector<float> bias_data{-1, -5, -8};
 
-  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<SimpleMemoryManager>();
 
   Tensor input_tensor =
     makeInputTensor<DataType::FLOAT32>(input_shape, input_data, memory_manager.get());

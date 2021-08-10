@@ -36,7 +36,7 @@ TYPED_TEST_CASE(DepthToSpaceTest, DataTypes);
 
 TYPED_TEST(DepthToSpaceTest, SimpleCase)
 {
-  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<SimpleMemoryManager>();
   std::vector<TypeParam> input_data{1, 2, 3, 4, 5, 6, 7, 8};
   Shape input_shape{1, 1, 2, 4};
   std::vector<TypeParam> output_data{1, 2, 5, 6, 3, 4, 7, 8};
@@ -61,7 +61,7 @@ TYPED_TEST(DepthToSpaceTest, SimpleCase)
 
 TEST(DepthToSpaceTest, InvalidInputShape_NEG)
 {
-  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<SimpleMemoryManager>();
   std::vector<float> input_data{1, 2, 3, 4, 5, 6, 7, 8};
   Shape input_shape{1, 2, 4};
 
@@ -78,7 +78,7 @@ TEST(DepthToSpaceTest, InvalidInputShape_NEG)
 
 TEST(DepthToSpaceTest, InOutTypeMismatch_NEG)
 {
-  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<SimpleMemoryManager>();
   std::vector<float> input_data{1, 2, 3, 4, 5, 6, 7, 8};
   Shape input_shape{1, 1, 2, 4};
 
@@ -95,7 +95,7 @@ TEST(DepthToSpaceTest, InOutTypeMismatch_NEG)
 
 TEST(DepthToSpaceTest, InvalidBlockSize_NEG)
 {
-  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<SimpleMemoryManager>();
   std::vector<float> input_data{1, 2, 3, 4, 5, 6, 7, 8};
   Shape input_shape{1, 1, 2, 4};
 

@@ -92,9 +92,9 @@ class KernelBuilderTest : public Test
 {
 protected:
   luci::CircleInput *createInputNode() { return createNode<luci::CircleInput>(); }
-  void SetUp() override { _memory_manager = std::make_unique<SimpleMManager>(); }
+  void SetUp() override { _memory_manager = std::make_unique<SimpleMemoryManager>(); }
 
-  std::unique_ptr<MManager> _memory_manager;
+  std::unique_ptr<IMemoryManager> _memory_manager;
 
   template <typename NodeT, typename... Args> NodeT *createNode(Args &&... args)
   {

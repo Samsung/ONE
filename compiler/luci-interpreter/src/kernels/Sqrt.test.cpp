@@ -30,7 +30,7 @@ using namespace testing;
 void Check(std::initializer_list<int32_t> input_shape, std::initializer_list<int32_t> output_shape,
            std::initializer_list<float> input_data, std::initializer_list<float> output_data)
 {
-  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<SimpleMemoryManager>();
 
   Tensor input_tensor =
     makeInputTensor<DataType::FLOAT32>(input_shape, input_data, memory_manager.get());
@@ -63,7 +63,7 @@ TEST(SqrtTest, SimpleSqrt)
 
 TEST(SqrtTest, Input_Output_Type_NEG)
 {
-  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<SimpleMemoryManager>();
 
   Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({1}, {1.f}, memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::S32);
@@ -74,7 +74,7 @@ TEST(SqrtTest, Input_Output_Type_NEG)
 
 TEST(SqrtTest, Invalid_Input_Type_NEG)
 {
-  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<SimpleMemoryManager>();
 
   Tensor input_tensor = makeInputTensor<DataType::S64>({1}, {1}, memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::S64);

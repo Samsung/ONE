@@ -29,7 +29,7 @@ ModuleLoader::ModuleLoader(const luci::Module *module, RuntimeModule *runtime_mo
 {
 }
 
-void ModuleLoader::load(MManager *memory_manager)
+void ModuleLoader::load(IMemoryManager *memory_manager)
 {
   // Runtime graphs have to be created in advance, because they will be needed during the loading
   // process for control flow nodes.

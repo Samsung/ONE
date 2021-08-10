@@ -32,7 +32,7 @@ namespace
 using namespace testing;
 
 RuntimeGraph *buildCondSubgraph(RuntimeModule *module, DataType dtype, Tensor *input_cond,
-                                MManager *memory_manager)
+                                IMemoryManager *memory_manager)
 {
   RuntimeGraph *graph = module->addGraph(memory_manager);
   Tensor *input =
@@ -52,7 +52,7 @@ RuntimeGraph *buildCondSubgraph(RuntimeModule *module, DataType dtype, Tensor *i
 }
 
 RuntimeGraph *buildBodySubgraph(RuntimeModule *module, DataType dtype, Tensor *input_add,
-                                MManager *memory_manager)
+                                IMemoryManager *memory_manager)
 {
   RuntimeGraph *graph = module->addGraph(memory_manager);
   Tensor *input =
@@ -75,7 +75,7 @@ RuntimeGraph *buildBodySubgraph(RuntimeModule *module, DataType dtype, Tensor *i
 
 TEST(WhileTest, FloatLoop10)
 {
-  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<SimpleMemoryManager>();
   Tensor input = makeInputTensor<DataType::FLOAT32>({1}, {1}, memory_manager.get());
   Tensor output = makeOutputTensor(DataType::FLOAT32);
 

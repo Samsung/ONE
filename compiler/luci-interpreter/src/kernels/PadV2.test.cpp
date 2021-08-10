@@ -31,7 +31,7 @@ float GetTolerance(float min, float max) { return (max - min) / 255.0; }
 
 TEST(PadV2, Uint8)
 {
-  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<SimpleMemoryManager>();
   float kQuantizedTolerance = GetTolerance(-1.0, 1.0);
   std::pair<float, int32_t> quant_param = quantizationParams<uint8_t>(-1.0f, 1.0f);
   std::vector<float> input_data{-0.8, 0.2, 0.9, 0.7, 0.1, -0.3};
@@ -60,7 +60,7 @@ TEST(PadV2, Uint8)
 
 TEST(PadV2, Float)
 {
-  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<SimpleMemoryManager>();
   std::vector<float> input_data{1, 2, 3, 4, 5, 6};
   std::vector<int32_t> paddings_data{1, 0, 0, 2, 0, 3, 0, 0};
   std::vector<float> constant_values_data{7};

@@ -34,7 +34,7 @@ void Check(std::initializer_list<int32_t> input_shape, std::initializer_list<int
            std::initializer_list<int32_t> size_data, std::initializer_list<float> output_data,
            bool align_corners, bool half_pixel_centers)
 {
-  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<SimpleMemoryManager>();
   Tensor input_tensor =
     makeInputTensor<DataType::FLOAT32>(input_shape, input_data, memory_manager.get());
   Tensor size_tensor = makeInputTensor<DataType::S32>(size_shape, size_data, memory_manager.get());
@@ -64,7 +64,7 @@ void Check<uint8_t>(std::initializer_list<int32_t> input_shape,
 {
   // On TFlite example use Uint8 value it self, so this means quant param scale 1.0f and zero
   // point 0.
-  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<SimpleMemoryManager>();
 
   Tensor input_tensor =
     makeInputTensor<DataType::U8>(input_shape, 1.0, 0, input_data, memory_manager.get());
@@ -160,7 +160,7 @@ TEST(ResizeBilinearTest, HalfPixelCenterUint8Test)
 
 TEST(ResizeBilinearTest, InputShapeInvalid_NEG)
 {
-  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<SimpleMemoryManager>();
 
   Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({2, 2, 2},
                                                            {
@@ -183,7 +183,7 @@ TEST(ResizeBilinearTest, InputShapeInvalid_NEG)
 
 TEST(ResizeBilinearTest, SizeShapeInvalid_NEG)
 {
-  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<SimpleMemoryManager>();
 
   Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({2, 2, 2, 1},
                                                            {
@@ -206,7 +206,7 @@ TEST(ResizeBilinearTest, SizeShapeInvalid_NEG)
 
 TEST(ResizeBilinearTest, SizeDimInvalid_NEG)
 {
-  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<SimpleMemoryManager>();
 
   Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({2, 2, 2, 1},
                                                            {
@@ -229,7 +229,7 @@ TEST(ResizeBilinearTest, SizeDimInvalid_NEG)
 
 TEST(ResizeBilinearTest, InvalidParams_NEG)
 {
-  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<SimpleMemoryManager>();
 
   Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({2, 2, 2, 1},
                                                            {

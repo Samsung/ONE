@@ -30,7 +30,7 @@ using namespace testing;
 
 TEST(ExpTest, Float)
 {
-  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<SimpleMemoryManager>();
   Shape input_shape{1, 1, 7};
   std::vector<float> input_data{0.0f, 1.0f, -1.0f, 100.0f, -100.0f, 0.01f, -0.01f};
   Tensor input_tensor =

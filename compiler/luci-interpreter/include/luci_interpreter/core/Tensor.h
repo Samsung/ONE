@@ -115,11 +115,13 @@ public:
 
   template <typename T> const T *data() const
   {
+    static_assert(std::is_same<uint8_t, char>::value or std::is_same<uint8_t, unsigned char>::value);
     return reinterpret_cast<const T *>(_data);
   }
 
   template <typename T> T *data()
   {
+    static_assert(std::is_same<uint8_t, char>::value or std::is_same<uint8_t, unsigned char>::value);
     return reinterpret_cast<T *>(_data);
   }
 

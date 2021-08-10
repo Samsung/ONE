@@ -31,9 +31,9 @@ using namespace testing;
 class LogicalOrTest : public ::testing::Test
 {
 protected:
-  void SetUp() override { _memory_manager = std::make_unique<SimpleMManager>(); }
+  void SetUp() override { _memory_manager = std::make_unique<SimpleMemoryManager>(); }
 
-  std::unique_ptr<MManager> _memory_manager;
+  std::unique_ptr<IMemoryManager> _memory_manager;
 };
 
 TEST_F(LogicalOrTest, Basic)
