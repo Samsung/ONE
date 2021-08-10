@@ -102,11 +102,19 @@ void RuntimeGraph::TensorAllocPlan::deallocate(size_t kernel_index) const
 
 RuntimeGraph::RuntimeGraph(RuntimeModule *owning_module, MManager *memory_manager)
   : _owning_module(owning_module),
+    _memory_manager(memory_manager),
     _tensor_alloc_plan(std::make_unique<TensorAllocPlan>(memory_manager))
 {
 }
 
-RuntimeGraph::~RuntimeGraph() {}
+RuntimeGraph::~RuntimeGraph()
+{
+  for (int i = 0; i < _tensors.size(); i++)
+  {
+    if (_tensors[i]->data<uint8_t>() != nullptr)
+      _memory_manager->release_memory(_tensors[i].get());
+  }
+}
 
 Tensor *RuntimeGraph::addTensor(std::unique_ptr<Tensor> &&tensor)
 {

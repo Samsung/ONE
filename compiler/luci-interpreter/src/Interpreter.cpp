@@ -101,8 +101,10 @@ void Interpreter::writeInputTensor(const luci::CircleInput *input_node, const vo
     throw std::runtime_error("Cannot find tensor for input node named \"" + name + "\".");
   }
   if (data != nullptr)
+  {
     _memory_manager->allocate_memory(tensor);
-  tensor->writeData(data, data_size);
+    tensor->writeData(data, data_size);
+  }
 }
 
 void Interpreter::readOutputTensor(const luci::CircleOutput *output_node, void *data,
