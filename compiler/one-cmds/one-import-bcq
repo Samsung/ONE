@@ -202,7 +202,7 @@ def _convert(args):
                 stderr=subprocess.STDOUT,
                 bufsize=1) as p:
             for line in p.stdout:
-                sys.stdout.buffer.write(line)
+                sys.stdout.buffer.write("tflite2circle: ".encode() + line)
                 f.write(line)
         if p.returncode != 0:
             sys.exit(p.returncode)

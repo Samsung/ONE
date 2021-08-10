@@ -98,7 +98,7 @@ def _pack(args):
                 model2nnpkg_cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
                 bufsize=1) as p:
             for line in p.stdout:
-                sys.stdout.buffer.write(line)
+                sys.stdout.buffer.write("model2nnpkg.sh: ".encode() + line)
                 sys.stdout.buffer.flush()
                 f.write(line)
         if p.returncode != 0:
