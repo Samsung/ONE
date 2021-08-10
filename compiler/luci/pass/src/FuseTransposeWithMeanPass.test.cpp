@@ -86,7 +86,6 @@ public:
     _mean->input(_transpose);
     _mean->reduction_indices(_indices);
 
-
     output()->from(_mean);
   }
 
