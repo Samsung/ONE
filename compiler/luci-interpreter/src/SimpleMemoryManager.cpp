@@ -21,7 +21,6 @@ namespace luci_interpreter
 
 void SimpleMManager::allocate_memory(luci_interpreter::Tensor *tensor)
 {
-  release_memory(tensor);
   const size_t element_size = getDataTypeSize(tensor->element_type());
   const int32_t num_elements = tensor->shape().num_elements();
   uint8_t *data = new uint8_t[num_elements * element_size];
@@ -30,6 +29,8 @@ void SimpleMManager::allocate_memory(luci_interpreter::Tensor *tensor)
 
 void SimpleMManager::release_memory(luci_interpreter::Tensor *tensor)
 {
+  auto data = tensor->data<uint8_t>();
+  delete data;
   tensor->set_data_buffer(nullptr);
 }
 

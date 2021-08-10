@@ -115,14 +115,12 @@ public:
 
   template <typename T> const T *data() const
   {
-    assert(_data_allocated);
-    return reinterpret_cast<const T *>(_data.get());
+    return reinterpret_cast<const T *>(_data);
   }
 
   template <typename T> T *data()
   {
-    assert(_data_allocated);
-    return reinterpret_cast<T *>(_data.get());
+    return reinterpret_cast<T *>(_data);
   }
 
   const std::string &name() const { return _name; }
@@ -143,7 +141,7 @@ public:
     {
       _data_allocated = true;
     }
-    _data.reset(buffer);
+    _data = buffer;
   }
 
   bool is_observable() const
@@ -160,7 +158,7 @@ private:
   DataType _element_type;
   Shape _shape;
   AffineQuantization _quantization;
-  std::unique_ptr<uint8_t[]> _data;
+  uint8_t *_data;
   std::string _name;
   bool _data_allocated;
   bool _is_observable = true;
