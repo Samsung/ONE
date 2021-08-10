@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2021 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,31 +16,30 @@
 
 #include "GenModelTest.h"
 
-TEST_F(GenModelTest, OneOp_Cos)
+TEST_F(GenModelTest, OneOp_Abs_Float32)
 {
   CircleGen cgen;
   int in = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_FLOAT32});
   int out = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_FLOAT32});
-  cgen.addOperatorCos({{in}, {out}});
+  cgen.addOperatorAbs({{in}, {out}});
   cgen.setInputsAndOutputs({in}, {out});
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
-  const float pi = 3.141592653589793;
-  _context->addTestCase(uniformTCD<float>({{0, pi / 2, pi, 7}}, {{1, 0, -1, 0.75390225434}}));
+  _context->addTestCase(uniformTCD<float>({{1.1, -2.2, 3.3, -4.4}}, {{1.1, 2.2, 3.3, 4.4}}));
   _context->setBackends({"cpu", "gpu_cl"});
 
   SUCCEED();
 }
 
-TEST_F(GenModelTest, neg_OneOp_Cos_TwoOperand)
+TEST_F(GenModelTest, neg_OneOp_Abs_Float32_TwoOperand)
 {
   CircleGen cgen;
-  int lhs = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_FLOAT32});
-  int rhs = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_FLOAT32});
+  int in1 = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_FLOAT32});
+  int in2 = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_FLOAT32});
   int out1 = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_FLOAT32});
   int out2 = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_FLOAT32});
-  cgen.addOperatorCos({{lhs, rhs}, {out1, out2}});
-  cgen.setInputsAndOutputs({lhs, rhs}, {out1, out2});
+  cgen.addOperatorAbs({{in1, in2}, {out1, out2}});
+  cgen.setInputsAndOutputs({in1, in2}, {out1, out2});
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
   _context->setBackends({"cpu", "gpu_cl"});

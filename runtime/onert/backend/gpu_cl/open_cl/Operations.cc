@@ -38,6 +38,51 @@ namespace backend
 namespace gpu_cl
 {
 
+std::string ToString(enum OperationType op)
+{
+  switch (op)
+  {
+    case OperationType::ABS:
+      return "abs";
+    case OperationType::ADD:
+      return "add";
+    case OperationType::COS:
+      return "cos";
+    case OperationType::EXP:
+      return "exp";
+    case OperationType::LOG:
+      return "log";
+    case OperationType::NEG:
+      return "neg";
+    case OperationType::RSQRT:
+      return "rsqrt";
+    case OperationType::SQRT:
+      return "sqrt";
+    case OperationType::SQUARE:
+      return "square";
+    case OperationType::UNKNOWN:
+      return "unknown_operation";
+  }
+  return "";
+}
+
+OperationType OperationTypeFromString(const std::string &name)
+{
+  static const auto operations = new std::unordered_map<std::string, OperationType>({
+    {"abs", OperationType::ABS},
+    {"add", OperationType::ADD},
+    {"cos", OperationType::COS},
+    {"exp", OperationType::EXP},
+    {"log", OperationType::LOG},
+    {"neg", OperationType::NEG},
+    {"rsqrt", OperationType::RSQRT},
+    {"sqrt", OperationType::SQRT},
+    {"square", OperationType::SQUARE},
+  });
+  auto op = operations->find(name);
+  return op == operations->end() ? OperationType::UNKNOWN : op->second;
+}
+
 #if 0
 Padding2D &Padding2D::operator=(const Padding2D &value)
 {
@@ -85,27 +130,6 @@ Padding3D &Padding3D::operator-(const Padding3D &value)
   appended.w -= value.appended.w;
   appended.d -= value.appended.d;
   return *this;
-}
-
-std::string ToString(enum OperationType op)
-{
-  switch (op)
-  {
-    case OperationType::ADD:
-      return "add";
-    case OperationType::UNKNOWN:
-      return "unknown_operation";
-  }
-  return "";
-}
-
-OperationType OperationTypeFromString(const std::string &name)
-{
-  static const auto operations = new std::unordered_map<std::string, OperationType>({
-    {"add", OperationType::ADD},
-  });
-  auto op = operations->find(name);
-  return op == operations->end() ? OperationType::UNKNOWN : op->second;
 }
 
 namespace

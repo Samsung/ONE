@@ -40,7 +40,7 @@ namespace gpu_cl
 enum class OperationType
 {
   UNKNOWN = 0,
-  // ABS,
+  ABS,
   ADD,
   // BATCH_TO_SPACE,
   // BATCH_NORMALIZATION,
@@ -50,19 +50,19 @@ enum class OperationType
   // CONVOLUTION_2D,
   // CONVOLUTION_TRANSPOSED,
   // COPY,
-  // COS,
+  COS,
   // DEPTHWISE_CONVOLUTION,
   // DIV,
   // ELU,
   // EQUAL,
-  // EXP,
+  EXP,
   // FULLY_CONNECTED,
   // GREATER,
   // GREATER_EQUAL,
   // HARD_SWISH,
   // LESS,
   // LESS_EQUAL,
-  // LOG,
+  LOG,
   // LSTM,
   // MAXIMUM,
   // MAX_UNPOOLING_2D,
@@ -70,7 +70,7 @@ enum class OperationType
   // MEAN_STDDEV_NORMALIZATION,
   // MINIMUM,
   // MUL,
-  // NEG,
+  NEG,
   // NOT_EQUAL,
   // PAD,
   // POOLING_2D,
@@ -85,26 +85,26 @@ enum class OperationType
   // RELU,
   // RESHAPE,
   // RESIZE,
-  // RSQRT,
+  RSQRT,
   // SIGMOID,
   // SIN,
   // SLICE,
   // SOFTMAX,
   // SPACE_TO_BATCH,
   // SPACE_TO_DEPTH,
-  // SQRT,
-  // SQUARE,
+  SQRT,
+  SQUARE,
   // SQUARED_DIFF,
   // SUB,
   // TANH,
   // TRANSPOSE,
 };
 
-#if 0
 std::string ToString(enum OperationType op);
 
 OperationType OperationTypeFromString(const std::string &name);
 
+#if 0
 typedef absl::variant<absl::monostate, InternalTensor<HWC, DataType::FLOAT32>,
                       InternalTensor<Linear, DataType::FLOAT32>, float>
   TensorOrScalar;

@@ -93,6 +93,13 @@ CircleBuffer CircleGen::finish()
 
 // ===== Add Operator methods begin =====
 
+uint32_t CircleGen::addOperatorAbs(const OperatorParams &params)
+{
+  auto options = circle::CreateAbsOptions(_fbb).Union();
+  return addOperatorWithOptions(params, circle::BuiltinOperator_ABS,
+                                circle::BuiltinOptions_AbsOptions, options);
+}
+
 uint32_t CircleGen::addOperatorAdd(const OperatorParams &params,
                                    circle::ActivationFunctionType actfn)
 {
@@ -200,6 +207,13 @@ uint32_t CircleGen::addOperatorEqual(const OperatorParams &params)
   auto options = circle::CreateEqualOptions(_fbb).Union();
   return addOperatorWithOptions(params, circle::BuiltinOperator_EQUAL,
                                 circle::BuiltinOptions_EqualOptions, options);
+}
+
+uint32_t CircleGen::addOperatorExp(const OperatorParams &params)
+{
+  auto options = circle::CreateExpOptions(_fbb).Union();
+  return addOperatorWithOptions(params, circle::BuiltinOperator_EXP,
+                                circle::BuiltinOptions_ExpOptions, options);
 }
 
 uint32_t CircleGen::addOperatorExpandDims(const OperatorParams &params)

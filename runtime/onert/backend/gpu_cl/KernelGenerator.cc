@@ -25,6 +25,8 @@
 
 #include "open_cl/selectors/SimpleSelectors.h"
 
+#include "open_cl/kernels/Elementwise.h"
+
 #include "ir/Operations.h"
 #include "ir/Operations.Include.h"
 #include "ir/Index.h"
@@ -41,6 +43,27 @@ namespace backend
 {
 namespace gpu_cl
 {
+
+gpu_cl::OperationType convertElementwiseUnaryType(ir::operation::ElementwiseUnary::Type op_type)
+{
+  switch (op_type)
+  {
+    case ir::operation::ElementwiseUnary::Type::ABS:
+      return gpu_cl::OperationType::ABS;
+    case ir::operation::ElementwiseUnary::Type::COS:
+      return gpu_cl::OperationType::COS;
+    case ir::operation::ElementwiseUnary::Type::EXP:
+      return gpu_cl::OperationType::EXP;
+    case ir::operation::ElementwiseUnary::Type::NEG:
+      return gpu_cl::OperationType::NEG;
+    case ir::operation::ElementwiseUnary::Type::SQRT:
+      return gpu_cl::OperationType::SQRT;
+    case ir::operation::ElementwiseUnary::Type::SQUARE:
+      return gpu_cl::OperationType::SQUARE;
+    default:
+      throw("gpu_Cl KernelGenerator : Not supported operation yet");
+  }
+}
 
 KernelGenerator::KernelGenerator(const ir::Graph &graph,
                                  const std::shared_ptr<TensorBuilder> &tensor_builder,
@@ -125,6 +148,59 @@ void KernelGenerator::visit(const ir::operation::BinaryArithmetic &node)
       assert(false && "The BinaryArithmetic operation supports only binary arithmetic operations");
       break;
   }
+
+  _return_fn = std::move(fn);
+}
+
+void KernelGenerator::visit(const ir::operation::ElementwiseUnary &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(ir::operation::ElementwiseUnary::Input::INPUT)};
+
+  OperationDef op_def;
+  op_def.precision = CalculationsPrecision::F32;
+  op_def.src_tensors.push_back(_tensor_reg->getClTensorReserver(input_index)->descriptor);
+  op_def.dst_tensors.push_back(_tensor_reg->getClTensorReserver(output_index)->descriptor);
+
+  auto fn = std::make_unique<ClFunction>();
+  std::unique_ptr<GPUOperation> gpu_op;
+
+  switch (node.param().op_type)
+  {
+    case ir::operation::ElementwiseUnary::Type::ABS:
+    case ir::operation::ElementwiseUnary::Type::COS:
+    case ir::operation::ElementwiseUnary::Type::EXP:
+    case ir::operation::ElementwiseUnary::Type::NEG:
+    case ir::operation::ElementwiseUnary::Type::SQRT:
+    case ir::operation::ElementwiseUnary::Type::SQUARE:
+    {
+      if (_ctx.at(input_index).typeInfo().type() == ir::DataType::FLOAT32)
+      {
+        auto op_type = convertElementwiseUnaryType(node.param().op_type);
+        GPUOperation operation = CreateElementwiseOneInput(op_def, op_type);
+        gpu_op = std::make_unique<GPUOperation>(std::move(operation));
+      }
+      else
+      {
+        throw std::runtime_error{"Unsupported data type"};
+      }
+      break;
+    }
+    default:
+    {
+      throw std::runtime_error("gpu_cl KernelGenerator : " + node.name() + "is not supported yet");
+      break;
+    }
+  }
+
+  auto input_tensor = _tensor_reg->getClTensor(input_index);
+  auto output_tensor = _tensor_reg->getClTensor(output_index);
+
+  gpu_op->SetSrc(input_tensor->handle(), ir::operation::ElementwiseUnary::Input::INPUT);
+  gpu_op->SetDst(output_tensor->handle(), 0);
+
+  fn->configure(_creation_context);
+  fn->add_operation(std::move(gpu_op));
 
   _return_fn = std::move(fn);
 }
