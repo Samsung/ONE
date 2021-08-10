@@ -37,7 +37,7 @@ TYPED_TEST_CASE(ReverseV2Test, DataTypes);
 
 TYPED_TEST(ReverseV2Test, MultiDimensions)
 {
-  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<SimpleMemoryManager>();
 
   // TypeParam
   std::vector<TypeParam> input_data{1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12,

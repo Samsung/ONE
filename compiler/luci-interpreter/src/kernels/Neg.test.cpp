@@ -32,7 +32,7 @@ template <typename T>
 void Check(std::initializer_list<int32_t> input_shape, std::initializer_list<int32_t> output_shape,
            std::initializer_list<T> input_data, std::initializer_list<T> output_data)
 {
-  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<SimpleMemoryManager>();
   constexpr DataType element_type = getElementType<T>();
   Tensor input_tensor =
     makeInputTensor<element_type>(input_shape, input_data, memory_manager.get());

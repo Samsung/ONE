@@ -33,7 +33,7 @@ void Check(int axis, int num_splits, std::initializer_list<int32_t> input_shape,
            std::initializer_list<int32_t> output_shape, std::initializer_list<T> input_data,
            std::vector<std::vector<T>> output_data)
 {
-  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<SimpleMemoryManager>();
 
   constexpr DataType element_type = getElementType<T>();
   Tensor axis_tensor = makeInputTensor<DataType::S32>({}, {axis}, memory_manager.get());

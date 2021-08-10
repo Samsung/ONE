@@ -34,7 +34,7 @@ void Check(std::initializer_list<int32_t> input_shape, std::initializer_list<int
            std::initializer_list<int32_t> size_data, std::initializer_list<float> output_data,
            bool align_corners, bool half_pixel_centers)
 {
-  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<SimpleMemoryManager>();
 
   Tensor input_tensor =
     makeInputTensor<DataType::FLOAT32>(input_shape, input_data, memory_manager.get());
@@ -63,7 +63,7 @@ void Check<uint8_t>(std::initializer_list<int32_t> input_shape,
                     std::initializer_list<float> output_data, bool align_corners,
                     bool half_pixel_centers)
 {
-  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<SimpleMemoryManager>();
 
   std::pair<float, int32_t> quant_param =
     quantizationParams<uint8_t>(std::min(input_data) < 0 ? std::min(input_data) : 0.f,
@@ -159,7 +159,7 @@ TYPED_TEST(ResizeNearestNeighborTest, HalfPixelCenterTest)
 
 TEST(ResizeNearestNeighborTest, InputShapeInvalid_NEG)
 {
-  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<SimpleMemoryManager>();
 
   Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({2, 2, 2},
                                                            {
@@ -182,7 +182,7 @@ TEST(ResizeNearestNeighborTest, InputShapeInvalid_NEG)
 
 TEST(ResizeNearestNeighborTest, SizeShapeInvalid_NEG)
 {
-  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<SimpleMemoryManager>();
 
   Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({2, 2, 2, 1},
                                                            {
@@ -205,7 +205,7 @@ TEST(ResizeNearestNeighborTest, SizeShapeInvalid_NEG)
 
 TEST(ResizeNearestNeighborTest, SizeDimInvalid_NEG)
 {
-  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<SimpleMemoryManager>();
 
   Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({2, 2, 2, 1},
                                                            {

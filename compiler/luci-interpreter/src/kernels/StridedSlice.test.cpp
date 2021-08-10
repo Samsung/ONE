@@ -29,7 +29,7 @@ using namespace testing;
 
 TEST(StridedSliceTest, Float)
 {
-  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<SimpleMemoryManager>();
 
   Shape input_shape{2, 3, 2};
   std::vector<float> input_data{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
@@ -69,7 +69,7 @@ TEST(StridedSliceTest, Float)
 
 TEST(StridedSliceTest, Uint8)
 {
-  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<SimpleMemoryManager>();
 
   Shape input_shape{2, 3, 2};
   std::vector<float> input_data{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};

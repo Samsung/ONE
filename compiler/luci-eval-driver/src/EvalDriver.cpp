@@ -99,7 +99,7 @@ int entry(int argc, char **argv)
     return EXIT_FAILURE;
   }
 
-  luci_interpreter::SimpleMManager memory_manager;
+  luci_interpreter::SimpleMemoryManager memory_manager;
   // Create interpreter.
   luci_interpreter::Interpreter interpreter(module.get(), &memory_manager);
 

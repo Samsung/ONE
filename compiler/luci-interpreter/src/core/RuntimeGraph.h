@@ -36,7 +36,7 @@ private:
   friend class TensorAllocPlan;
 
 public:
-  explicit RuntimeGraph(RuntimeModule *owning_module, MManager *memory_manager);
+  explicit RuntimeGraph(RuntimeModule *owning_module, IMemoryManager *memory_manager);
   ~RuntimeGraph();
 
   Tensor *addTensor(std::unique_ptr<Tensor> &&tensor);
@@ -52,7 +52,7 @@ public:
   void execute() const;
 
 private:
-  MManager* _memory_manager;
+  IMemoryManager* _memory_manager;
   RuntimeModule *_owning_module;
   std::vector<std::unique_ptr<Tensor>> _tensors;
   std::vector<Tensor *> _input_tensors;

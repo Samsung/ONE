@@ -33,7 +33,7 @@ void Check(int axis, Shape input_shape, std::initializer_list<T> input_data,
            const std::vector<std::initializer_list<int32_t>> &exp_output_shape,
            std::vector<std::initializer_list<T>> exp_output_data)
 {
-  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<SimpleMemoryManager>();
   constexpr DataType element_type = getElementType<T>();
   const int num_outputs = input_shape.dim(axis < 0 ? axis + input_shape.num_dims() : axis);
 

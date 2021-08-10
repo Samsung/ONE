@@ -32,7 +32,7 @@ void Check(std::vector<std::initializer_list<int32_t>> input_shapes,
            std::initializer_list<int32_t> output_shape, std::vector<std::vector<T>> input_datas,
            std::initializer_list<T> output_data, int32_t axis)
 {
-  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<SimpleMemoryManager>();
   constexpr DataType element_type = getElementType<T>();
   std::vector<const Tensor *> inputs(input_datas.size());
   std::vector<Tensor> tmp_inputs;
@@ -108,7 +108,7 @@ TYPED_TEST(PackTest, NegAxis)
 
 TEST(Pack, MismatchingInputValuesCount_NEG)
 {
-  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<SimpleMemoryManager>();
   std::vector<float> input1_data{1, 4};
   std::vector<float> input2_data{2, 5};
   std::vector<float> input3_data{3, 6};
@@ -128,7 +128,7 @@ TEST(Pack, MismatchingInputValuesCount_NEG)
 
 TEST(Pack, InvalidInputAxis_NEG)
 {
-  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<SimpleMemoryManager>();
   std::vector<float> input1_data{1, 4};
   std::vector<float> input2_data{2, 5};
   std::vector<float> input3_data{3, 6};

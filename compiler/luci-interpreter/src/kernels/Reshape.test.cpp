@@ -30,9 +30,9 @@ using namespace testing;
 class ReshapeTest : public ::testing::Test
 {
 protected:
-  void SetUp() override { _memory_manager = std::make_unique<SimpleMManager>(); }
+  void SetUp() override { _memory_manager = std::make_unique<SimpleMemoryManager>(); }
 
-  std::unique_ptr<MManager> _memory_manager;
+  std::unique_ptr<IMemoryManager> _memory_manager;
 };
 
 // TODO Test types other than FLOAT32.

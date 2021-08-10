@@ -50,7 +50,7 @@ public:
 class Interpreter
 {
 public:
-  explicit Interpreter(const luci::Module *module, MManager *memory_manager = nullptr);
+  explicit Interpreter(const luci::Module *module, IMemoryManager *memory_manager = nullptr);
 
   ~Interpreter();
 
@@ -65,9 +65,11 @@ public:
   const Tensor *getTensor(const loco::Node *node) { return _node_to_tensor[node]; }
 
 private:
+  //_default_memory_manager should be before _runtime_module due to
+  // the order of deletion in the destructor
+  std::unique_ptr<IMemoryManager> _default_memory_manager = nullptr;
   std::unique_ptr<class RuntimeModule> _runtime_module;
-  MManager *_memory_manager;
-  std::unique_ptr<MManager> _default_memory_manager = nullptr;
+  IMemoryManager *_memory_manager;
 
   // Observer functionality support.
   std::unique_ptr<struct RuntimeToIR> _runtime_to_ir;

@@ -34,7 +34,7 @@ public:
   GraphLoader(const loco::Graph *graph, RuntimeGraph *runtime_graph, RuntimeToIR &runtime_to_ir,
               const std::unordered_map<const loco::Graph *, RuntimeGraph *> &graph_to_runtime_graph,
               std::unordered_map<const loco::Node *, Tensor *> &node_to_tensor,
-              MManager *memory_manager);
+              IMemoryManager *memory_manager);
 
   void loadTensors();
   void initInputOutputTensors() const;
@@ -44,7 +44,7 @@ private:
   const loco::Graph *_graph;
   RuntimeGraph *_runtime_graph;
   RuntimeToIR &_runtime_to_ir;
-  MManager *_memory_manager;
+  IMemoryManager *_memory_manager;
 
   const std::unordered_map<const loco::Graph *, RuntimeGraph *> &_graph_to_runtime_graph;
   std::unordered_map<const loco::Node *, Tensor *> &_node_to_tensor;

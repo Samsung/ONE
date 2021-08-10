@@ -35,7 +35,7 @@ public:
                RuntimeToIR &runtime_to_ir,
                std::unordered_map<const loco::Node *, Tensor *> &node_to_tensor);
 
-  void load(MManager *memory_manager);
+  void load(IMemoryManager *memory_manager);
 
 private:
   const luci::Module *_module;
