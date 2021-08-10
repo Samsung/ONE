@@ -15,8 +15,8 @@
  * limitations under the License.
  */
 
-#ifndef TENSORFLOW_LITE_DELEGATES_GPU_SPI_H_
-#define TENSORFLOW_LITE_DELEGATES_GPU_SPI_H_
+#ifndef __ONERT_BACKEND_GPU_CL_OPENCL_SPI_H__
+#define __ONERT_BACKEND_GPU_CL_OPENCL_SPI_H__
 
 #include <cstdint>
 
@@ -91,4 +91,4 @@ private:
 } // namespace backend
 } // namespace onert
 
-#endif // TENSORFLOW_LITE_DELEGATES_GPU_SPI_H_
+#endif // __ONERT_BACKEND_GPU_CL_OPENCL_SPI_H__

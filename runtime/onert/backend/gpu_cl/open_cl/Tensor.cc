@@ -594,7 +594,6 @@ absl::Status Tensor::ReadDataBHWDC(absl::Span<float> out, CLCommandQueue *queue)
     case TensorStorageType::BUFFER:
     case TensorStorageType::IMAGE_BUFFER:
       RETURN_IF_ERROR(queue->EnqueueReadBuffer(memory_, data_size, data_ptr));
-      RETURN_IF_ERROR(queue->WaitForCompletion());
       break;
     case TensorStorageType::TEXTURE_ARRAY:
     case TensorStorageType::TEXTURE_2D:

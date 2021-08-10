@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_GPU_CL_CL_FUNCTION_H__
-#define __ONERT_GPU_CL_CL_FUNCTION_H__
+#ifndef __ONERT_GPU_CL_OPEN_CL_FUNCTION_H__
+#define __ONERT_GPU_CL_OPEN_CL_FUNCTION_H__
 
 #include <exec/IFunction.h>
 
@@ -85,4 +85,4 @@ private:
 } // namespace backend
 } // namespace onert
 
-#endif // __ONERT_GPU_CL_CL_FUNCTION_H__
+#endif // __ONERT_GPU_CL_OPEN_CL_FUNCTION_H__
