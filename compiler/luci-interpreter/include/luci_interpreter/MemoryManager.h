@@ -17,7 +17,6 @@
 #ifndef LUCI_INTERPRETER_MEMORY_MANAGER_H
 #define LUCI_INTERPRETER_MEMORY_MANAGER_H
 
-#include "luci_interpreter/core/DataType.h"
 #include "luci_interpreter/core/Tensor.h"
 
 namespace luci_interpreter
