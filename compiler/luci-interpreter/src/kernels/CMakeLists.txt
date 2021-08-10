@@ -87,8 +87,8 @@ set(SOURCES
     PadV2.cpp
     Pow.h
     Pow.cpp
-    Prelu.h
-    Prelu.cpp
+    PRelu.h
+    PRelu.cpp
     Relu.h
     Relu.cpp
     Relu6.h
@@ -203,7 +203,7 @@ set(TEST_SOURCES
     Pad.test.cpp
     PadV2.test.cpp
     Pow.test.cpp
-    Prelu.test.cpp
+    PRelu.test.cpp
     Relu.test.cpp
     Relu6.test.cpp
     Reshape.test.cpp

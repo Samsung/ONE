@@ -56,7 +56,7 @@
 #include <kernels/Pad.h>
 #include <kernels/PadV2.h>
 #include <kernels/Pow.h>
-#include <kernels/Prelu.h>
+#include <kernels/PRelu.h>
 #include <kernels/Relu.h>
 #include <kernels/Relu6.h>
 #include <kernels/Reshape.h>
@@ -880,7 +880,7 @@ TEST_F(KernelBuilderTest, Pow)
   checkTensor(kernel->output(), op);
 }
 
-TEST_F(KernelBuilderTest, Prelu)
+TEST_F(KernelBuilderTest, PRelu)
 {
   auto *input = createInputNode();
   auto *alpha = createInputNode();
@@ -889,7 +889,7 @@ TEST_F(KernelBuilderTest, Prelu)
   op->input(input);
   op->alpha(alpha);
 
-  auto kernel = buildKernel<kernels::Prelu>(op);
+  auto kernel = buildKernel<kernels::PRelu>(op);
   ASSERT_THAT(kernel, NotNull());
 
   checkTensor(kernel->input(), input);
