@@ -136,4 +136,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    _utils._safemain(main, __file__)
