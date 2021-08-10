@@ -24,10 +24,10 @@ namespace luci_interpreter
 namespace kernels
 {
 
-class Reverse : public Kernel
+class ReverseV2 : public Kernel
 {
 public:
-  Reverse(const Tensor *input, const Tensor *axes, Tensor *output);
+  ReverseV2(const Tensor *input, const Tensor *axes, Tensor *output);
 
   const Tensor *input() const { return _inputs[0]; }
   const Tensor *axes() const { return _inputs[1]; }

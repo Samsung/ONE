@@ -99,8 +99,8 @@ set(SOURCES
     ResizeBilinear.cpp
     ResizeNearestNeighbor.h
     ResizeNearestNeighbor.cpp
-    Reverse.h
-    Reverse.cpp
+    ReverseV2.h
+    ReverseV2.cpp
     Rsqrt.h
     Rsqrt.cpp
     Slice.h
@@ -209,7 +209,7 @@ set(TEST_SOURCES
     Reshape.test.cpp
     ResizeBilinear.test.cpp
     ResizeNearestNeighbor.test.cpp
-    Reverse.test.cpp
+    ReverseV2.test.cpp
     Rsqrt.test.cpp
     Slice.test.cpp
     Softmax.test.cpp

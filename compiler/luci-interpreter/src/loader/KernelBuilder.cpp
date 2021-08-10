@@ -65,7 +65,7 @@
 #include "kernels/Reshape.h"
 #include "kernels/ResizeBilinear.h"
 #include "kernels/ResizeNearestNeighbor.h"
-#include "kernels/Reverse.h"
+#include "kernels/ReverseV2.h"
 #include "kernels/Rsqrt.h"
 #include "kernels/Slice.h"
 #include "kernels/Softmax.h"
@@ -1015,7 +1015,7 @@ std::unique_ptr<Kernel> KernelBuilderLet<KB::OPQR>::visit(const luci::CircleReve
   const Tensor *axes = getInputTensor(node->axis());
   Tensor *output = getOutputTensor(node);
 
-  return std::make_unique<kernels::Reverse>(input, axes, output);
+  return std::make_unique<kernels::ReverseV2>(input, axes, output);
 }
 
 std::unique_ptr<Kernel> KernelBuilderLet<KB::OPQR>::visit(const luci::CircleRsqrt *node)
