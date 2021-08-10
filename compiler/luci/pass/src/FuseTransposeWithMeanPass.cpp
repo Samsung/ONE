@@ -34,7 +34,7 @@ namespace
  *                  |
  *
  *  AFTER
- *                  |
+ *                  |                            |
  *          [CircleMean, axis<1>]       [CircleTranspose, perm<0, 2, 3, 1>]
  *                  |                            |
  *                                      [CircleMean, axis<3>]
@@ -53,7 +53,7 @@ luci::CircleConst *create_fused_indices(luci::CircleConst *rindices,
   auto fused_rindices_const = luci::clone(rindices);
   auto name = rindices->name();
   assert(name.length() > 0); // FIX_CALLER_UNLESS
-  fused_rindices_const->name(name + "_orig");
+  fused_rindices_const->name(name + "_fused");
 
   for (uint32_t i = 0; i < fused_rindices.size(); ++i)
   {
