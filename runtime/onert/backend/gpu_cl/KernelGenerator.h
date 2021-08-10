@@ -46,6 +46,8 @@ public:
 
 private:
   void visit(const ir::operation::BinaryArithmetic &) override;
+  void visit(const ir::operation::ResizeBilinear &) override;
+  void visit(const ir::operation::ResizeNearestNeighbor &) override;
 
 private:
   const ir::Operands &_ctx;

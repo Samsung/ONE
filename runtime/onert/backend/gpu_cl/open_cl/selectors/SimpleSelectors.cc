@@ -21,6 +21,7 @@
 #include <set>
 
 #include "open_cl/kernels/Add.h"
+#include "open_cl/kernels/Resize.h"
 
 namespace onert
 {
@@ -34,6 +35,13 @@ void SelectAdd(const OperationDef &op_def, const std::vector<int> &channels, int
 {
   GPUOperation operation = CreateAdd(op_def, channels, dst_channels);
   *ptr = std::make_unique<GPUOperation>(std::move(operation));
+}
+
+void SelectResize(const OperationDef &op_def, const Resize2DAttributes &attr,
+                  std::unique_ptr<GPUOperation> *ptr)
+{
+  Resize operation = CreateResize(op_def, attr);
+  *ptr = absl::make_unique<Resize>(std::move(operation));
 }
 
 } // namespace gpu_cl

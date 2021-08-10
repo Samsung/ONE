@@ -99,3 +99,62 @@ TEST_F(GenModelTest, neg_OneOp_ResizeBilinear_InvalidSizeVal)
 
   SUCCEED();
 }
+
+TEST_F(GenModelTest, OneOp_ResizeBilinearAligned_Float32)
+{
+  CircleGen cgen;
+  int in = cgen.addTensor({{1, 2, 3, 1}, circle::TensorType::TensorType_FLOAT32});
+  std::vector<int32_t> size_data{4, 4};
+  uint32_t size_buf = cgen.addBuffer(size_data);
+  int size = cgen.addTensor({{2}, circle::TensorType::TensorType_INT32, size_buf});
+  int out = cgen.addTensor({{1, 4, 4, 1}, circle::TensorType::TensorType_FLOAT32});
+  cgen.addOperatorResizeBilinear({{in, size}, {out}}, true);
+  cgen.setInputsAndOutputs({in}, {out});
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->addTestCase(
+    uniformTCD<float>({{0.0f, 1.0f, 2.0f, 3.0f, 4.0f, 5.0f}},
+                      {{0.0f, 0.666667f, 1.33333f, 2.0f, 1.0f, 1.66667f, 2.33333f, 3.0f, 2.0f,
+                        2.66667f, 3.33333f, 4.0f, 3.0f, 3.66667f, 4.33333f, 5.0f}}));
+  _context->setBackends({"gpu_cl"});
+
+  SUCCEED();
+}
+
+TEST_F(GenModelTest, OneOp_ResizeBilinearNonAligned_Float32)
+{
+  CircleGen cgen;
+  int in = cgen.addTensor({{1, 2, 3, 1}, circle::TensorType::TensorType_FLOAT32});
+  std::vector<int32_t> size_data{4, 4};
+  uint32_t size_buf = cgen.addBuffer(size_data);
+  int size = cgen.addTensor({{2}, circle::TensorType::TensorType_INT32, size_buf});
+  int out = cgen.addTensor({{1, 4, 4, 1}, circle::TensorType::TensorType_FLOAT32});
+  cgen.addOperatorResizeBilinear({{in, size}, {out}});
+  cgen.setInputsAndOutputs({in}, {out});
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->addTestCase(uniformTCD<float>({{0.0f, 1.0f, 2.0f, 3.0f, 4.0f, 5.0f}},
+                                          {{0.0f, 0.75f, 1.5f, 2.0f, 1.5f, 2.25f, 3.0f, 3.5f, 3.0f,
+                                            3.75f, 4.5f, 5.0f, 3.0f, 3.75f, 4.5f, 5.0f}}));
+  _context->setBackends({"gpu_cl"});
+
+  SUCCEED();
+}
+
+TEST_F(GenModelTest, neg_OneOp_ResizeBilinearNonAligned_InvalidSizeVal)
+{
+  CircleGen cgen;
+  std::vector<int32_t> size_data{-4, 4};
+  uint32_t size_buf = cgen.addBuffer(size_data);
+  int size = cgen.addTensor({{2}, circle::TensorType::TensorType_INT32, size_buf});
+  int in = cgen.addTensor({{1, 2, 3, 1}, circle::TensorType::TensorType_FLOAT32});
+  int out = cgen.addTensor({{1, 4, 4, 1}, circle::TensorType::TensorType_FLOAT32});
+  cgen.addOperatorResizeBilinear({{in, size}, {out}});
+  cgen.setInputsAndOutputs({in}, {out});
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->setBackends({"gpu_cl"});
+  _context->expectFailCompile();
+
+  SUCCEED();
+}

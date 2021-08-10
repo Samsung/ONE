@@ -35,6 +35,9 @@ namespace gpu_cl
 void SelectAdd(const OperationDef &op_def, const std::vector<int> &channels, int dst_channels,
                std::unique_ptr<GPUOperation> *ptr);
 
+void SelectResize(const OperationDef &op_def, const Resize2DAttributes &attr,
+                  std::unique_ptr<GPUOperation> *ptr);
+
 } // namespace gpu_cl
 } // namespace backend
 } // namespace onert

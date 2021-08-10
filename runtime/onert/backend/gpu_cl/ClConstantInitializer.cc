@@ -70,6 +70,26 @@ void ClConstantInitializer::registerCopyInitializer(const ir::OperandIndex &inde
     case DataType::FLOAT32:
       _init_map[index] = copyInit<float>;
       break;
+    case DataType::INT32:
+      _init_map[index] = copyInit<int32_t>;
+      break;
+    case DataType::UINT32:
+      _init_map[index] = copyInit<uint32_t>;
+      break;
+    case DataType::BOOL8:
+    case DataType::QUANT_UINT8_ASYMM:
+      _init_map[index] = copyInit<uint8_t>;
+      break;
+    case DataType::QUANT_INT8_SYMM:
+    case DataType::QUANT_INT8_ASYMM:
+      _init_map[index] = copyInit<int8_t>;
+      break;
+    case DataType::FLOAT16:
+      _init_map[index] = copyInit<float16>;
+      break;
+    case DataType::INT64:
+      _init_map[index] = copyInit<int64_t>;
+      break;
     default:
       throw std::runtime_error("Not supported, yet");
       break;
@@ -92,6 +112,26 @@ void ClConstantInitializer::registerPermuteInitializer(const ir::OperandIndex &i
   {
     case DataType::FLOAT32:
       _init_map[index] = std::bind(permuteInit<float>, _1, _2, _current_layout);
+      break;
+    case DataType::INT32:
+      _init_map[index] = std::bind(permuteInit<int32_t>, _1, _2, _current_layout);
+      break;
+    case DataType::UINT32:
+      _init_map[index] = std::bind(permuteInit<uint32_t>, _1, _2, _current_layout);
+      break;
+    case DataType::BOOL8:
+    case DataType::QUANT_UINT8_ASYMM:
+      _init_map[index] = std::bind(permuteInit<uint8_t>, _1, _2, _current_layout);
+      break;
+    case DataType::QUANT_INT8_SYMM:
+    case DataType::QUANT_INT8_ASYMM:
+      _init_map[index] = std::bind(permuteInit<int8_t>, _1, _2, _current_layout);
+      break;
+    case DataType::FLOAT16:
+      _init_map[index] = std::bind(permuteInit<float16>, _1, _2, _current_layout);
+      break;
+    case DataType::INT64:
+      _init_map[index] = std::bind(permuteInit<int64_t>, _1, _2, _current_layout);
       break;
     default:
       throw std::runtime_error("Not supported, yet");

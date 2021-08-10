@@ -37,3 +37,41 @@ TEST_F(GenModelTest, OneOp_ResizeNearestNeighbor)
 
   SUCCEED();
 }
+
+TEST_F(GenModelTest, OneOp_ResizeNearestNeighbor_Float32)
+{
+  CircleGen cgen;
+  int in = cgen.addTensor({{1, 1, 2, 1}, circle::TensorType::TensorType_FLOAT32});
+  std::vector<int32_t> size_data{2, 4};
+  uint32_t size_buf = cgen.addBuffer(size_data);
+  int size = cgen.addTensor({{2}, circle::TensorType::TensorType_INT32, size_buf});
+  int out = cgen.addTensor({{1, 2, 4, 1}, circle::TensorType::TensorType_FLOAT32});
+
+  cgen.addOperatorResizeNearestNeighbor({{in, size}, {out}});
+  cgen.setInputsAndOutputs({in}, {out});
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->addTestCase(
+    uniformTCD<float>({{1.0f, 2.0f}}, {{1.0f, 1.0f, 2.0f, 2.0f, 1.0f, 1.0f, 2.0f, 2.0f}}));
+  _context->setBackends({"gpu_cl"});
+
+  SUCCEED();
+}
+
+TEST_F(GenModelTest, neg_OneOp_ResizeNearestNeighbor_InvalidSizeVal)
+{
+  CircleGen cgen;
+  std::vector<int32_t> size_data{-4, 4};
+  uint32_t size_buf = cgen.addBuffer(size_data);
+  int size = cgen.addTensor({{2}, circle::TensorType::TensorType_INT32, size_buf});
+  int in = cgen.addTensor({{1, 2, 3, 1}, circle::TensorType::TensorType_FLOAT32});
+  int out = cgen.addTensor({{1, 4, 4, 1}, circle::TensorType::TensorType_FLOAT32});
+  cgen.addOperatorResizeNearestNeighbor({{in, size}, {out}});
+  cgen.setInputsAndOutputs({in}, {out});
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->setBackends({"gpu_cl"});
+  _context->expectFailCompile();
+
+  SUCCEED();
+}

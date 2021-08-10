@@ -38,6 +38,13 @@ namespace backend
 namespace gpu_cl
 {
 
+float CalculateResizeScale(int32_t input_size, int32_t output_size, const Resize2DAttributes &attr)
+{
+  return attr.align_corners && input_size > 1 && output_size > 1
+           ? static_cast<float>(input_size - 1) / (output_size - 1)
+           : static_cast<float>(input_size) / output_size;
+}
+
 #if 0
 Padding2D &Padding2D::operator=(const Padding2D &value)
 {
@@ -451,13 +458,6 @@ absl::Status CalculateOutputShape(const std::vector<BHWDC> &input, const ConcatA
   }
   *output_shape = new_shape;
   return absl::OkStatus();
-}
-
-float CalculateResizeScale(int32_t input_size, int32_t output_size, const Resize2DAttributes &attr)
-{
-  return attr.align_corners && input_size > 1 && output_size > 1
-           ? static_cast<float>(input_size - 1) / (output_size - 1)
-           : static_cast<float>(input_size) / output_size;
 }
 
 float CalculateResizeScale(int32_t input_size, int32_t output_size, const Resize3DAttributes &attr)

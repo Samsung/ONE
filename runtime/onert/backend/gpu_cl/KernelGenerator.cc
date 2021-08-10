@@ -128,6 +128,142 @@ void KernelGenerator::visit(const ir::operation::BinaryArithmetic &node)
 
   _return_fn = std::move(fn);
 }
+void KernelGenerator::visit(const ir::operation::ResizeBilinear &node)
+{
+  const auto input_index{node.getInputs().at(ir::operation::ResizeBilinear::Input::INPUT)};
+  const auto output_index{node.getOutputs().at(0)};
+
+  Resize2DAttributes attr;
+  attr.type = onert::backend::gpu_cl::SamplingType::BILINEAR;
+  attr.align_corners = node.param().align_corners;
+  attr.half_pixel_centers = node.param().half_pixel_centers;
+
+  if (node.getInputs().size() == 1)
+  {
+    if (node.param().height_out < 0)
+    {
+      throw std::runtime_error{
+        "ResizeBilinear: size value must be positive value, output_height = " +
+        std::to_string(node.param().height_out)};
+    }
+    if (node.param().width_out < 0)
+    {
+      throw std::runtime_error{
+        "ResizeBilinear: size value must be positive value, output_width = " +
+        std::to_string(node.param().width_out)};
+    }
+    attr.new_shape = HW(node.param().height_out, node.param().width_out);
+  }
+  else
+  {
+    assert(node.getInputs().size() == 2);
+    const auto size_index{node.getInputs().at(ir::operation::ResizeBilinear::Input::SIZE)};
+    auto size_vec = _ctx.at(size_index).asVector<int32_t>();
+    if (size_vec[0] < 0)
+    {
+      throw std::runtime_error{
+        "ResizeBilinear: size value must be positive value, output_height = " +
+        std::to_string(size_vec[0])};
+    }
+    if (size_vec[1] < 0)
+    {
+      throw std::runtime_error{
+        "ResizeBilinear: size value must be positive value, output_width = " +
+        std::to_string(size_vec[1])};
+    }
+    attr.new_shape = HW(size_vec[0], size_vec[1]);
+  }
+
+  OperationDef op_def;
+  op_def.precision = CalculationsPrecision::F32;
+
+  op_def.src_tensors.push_back(_tensor_reg->getClTensorReserver(input_index)->descriptor);
+  op_def.dst_tensors.push_back(_tensor_reg->getClTensorReserver(output_index)->descriptor);
+
+  auto fn = std::make_unique<ClFunction>();
+
+  std::unique_ptr<GPUOperation> gpu_op;
+  SelectResize(op_def, attr, &gpu_op);
+
+  auto input_tensor = _tensor_reg->getClTensor(input_index);
+  auto output_tensor = _tensor_reg->getClTensor(output_index);
+
+  gpu_op->SetSrc(input_tensor->handle(), ir::operation::ResizeBilinear::Input::INPUT);
+  gpu_op->SetDst(output_tensor->handle(), 0);
+
+  fn->configure(_creation_context);
+  fn->add_operation(std::move(gpu_op));
+
+  _return_fn = std::move(fn);
+}
+
+void KernelGenerator::visit(const ir::operation::ResizeNearestNeighbor &node)
+{
+  const auto input_index{node.getInputs().at(ir::operation::ResizeNearestNeighbor::Input::INPUT)};
+  const auto output_index{node.getOutputs().at(0)};
+
+  Resize2DAttributes attr;
+  attr.type = onert::backend::gpu_cl::SamplingType::NEAREST;
+  attr.align_corners = node.param().align_corners;
+
+  if (node.getInputs().size() == 1)
+  {
+    if (node.param().height_out < 0)
+    {
+      throw std::runtime_error{
+        "ResizeNearestNeighbor: size value must be positive value, output_height = " +
+        std::to_string(node.param().height_out)};
+    }
+    if (node.param().width_out < 0)
+    {
+      throw std::runtime_error{
+        "ResizeNearestNeighbor: size value must be positive value, output_width = " +
+        std::to_string(node.param().width_out)};
+    }
+    attr.new_shape = HW(node.param().height_out, node.param().width_out);
+  }
+  else
+  {
+    assert(node.getInputs().size() == 2);
+    const auto size_index{node.getInputs().at(ir::operation::ResizeNearestNeighbor::Input::SIZE)};
+    auto size_vec = _ctx.at(size_index).asVector<int32_t>();
+    if (size_vec[0] < 0)
+    {
+      throw std::runtime_error{
+        "ResizeNearestNeighbor: size value must be positive value, output_height = " +
+        std::to_string(size_vec[0])};
+    }
+    if (size_vec[1] < 0)
+    {
+      throw std::runtime_error{
+        "ResizeNearestNeighbor: size value must be positive value, output_width = " +
+        std::to_string(size_vec[1])};
+    }
+    attr.new_shape = HW(size_vec[0], size_vec[1]);
+  }
+
+  OperationDef op_def;
+  op_def.precision = CalculationsPrecision::F32;
+
+  op_def.src_tensors.push_back(_tensor_reg->getClTensorReserver(input_index)->descriptor);
+  op_def.dst_tensors.push_back(_tensor_reg->getClTensorReserver(output_index)->descriptor);
+
+  auto fn = std::make_unique<ClFunction>();
+
+  std::unique_ptr<GPUOperation> gpu_op;
+  SelectResize(op_def, attr, &gpu_op);
+
+  auto input_tensor = _tensor_reg->getClTensor(input_index);
+  auto output_tensor = _tensor_reg->getClTensor(output_index);
+
+  gpu_op->SetSrc(input_tensor->handle(), ir::operation::ResizeNearestNeighbor::Input::INPUT);
+  gpu_op->SetDst(output_tensor->handle(), 0);
+
+  fn->configure(_creation_context);
+  fn->add_operation(std::move(gpu_op));
+
+  _return_fn = std::move(fn);
+}
 
 } // namespace gpu_cl
 } // namespace backend

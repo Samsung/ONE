@@ -100,6 +100,28 @@ enum class OperationType
   // TRANSPOSE,
 };
 
+enum class SamplingType
+{
+  UNKNOWN = 0,
+  NEAREST = 1,
+  BILINEAR = 2,
+};
+
+struct Resize2DAttributes
+{
+  HW new_shape;
+
+  SamplingType type = SamplingType::UNKNOWN;
+
+  // If true, the centers of the 4 corner pixels of the input and output tensors
+  // are aligned, preserving the values at the corner pixels. Defaults to false.
+  bool align_corners = false;
+
+  bool half_pixel_centers = false;
+};
+
+float CalculateResizeScale(int32_t input_size, int32_t output_size, const Resize2DAttributes &attr);
+
 #if 0
 std::string ToString(enum OperationType op);
 
@@ -409,19 +431,6 @@ enum class SamplingType
   BILINEAR = 2,
 };
 
-struct Resize2DAttributes
-{
-  HW new_shape;
-
-  SamplingType type = SamplingType::UNKNOWN;
-
-  // If true, the centers of the 4 corner pixels of the input and output tensors
-  // are aligned, preserving the values at the corner pixels. Defaults to false.
-  bool align_corners = false;
-
-  bool half_pixel_centers = false;
-};
-
 // TODO(b/147771327): rename to Resize3D
 struct Resize3DAttributes
 {
@@ -435,8 +444,6 @@ struct Resize3DAttributes
 
   bool half_pixel_centers = false;
 };
-
-float CalculateResizeScale(int32_t input_size, int32_t output_size, const Resize2DAttributes &attr);
 
 float CalculateResizeScale(int32_t input_size, int32_t output_size, const Resize3DAttributes &attr);
 
