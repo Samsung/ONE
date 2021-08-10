@@ -93,7 +93,7 @@ protected:
   ir::Shape _shape;
   std::shared_ptr<Environment> _environment;
   std::unique_ptr<TensorObjectConverterBuilder> _converter_builder;
-  CLMemory cl_memory_;
+  CLMemory _cl_memory;
   std::unique_ptr<TensorObjectConverter> _converter_cpu;
   std::unique_ptr<TensorObjectConverter> _converter_bhwc;
 };

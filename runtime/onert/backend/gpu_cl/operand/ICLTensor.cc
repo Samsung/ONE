@@ -85,18 +85,18 @@ void ICLTensor::enqueueWriteBuffer(const void *ptr, bool)
     tmp_def.object_def.data_type,
     ToTensorStorageType(tmp_def.object_def.object_type, tmp_def.object_def.data_layout),
     Layout::BHWC};
-  if (!AllocateTensorMemory(_environment->context(), shape, desc, &cl_memory_).ok())
+  if (!AllocateTensorMemory(_environment->context(), shape, desc, &_cl_memory).ok())
   {
-    throw std::runtime_error("AllocateTensorMemory error");
+    throw std::runtime_error("AllocateTensorMemory error.");
   }
   TensorObject tmp_obj;
   if (tmp_def.object_def.object_type == ObjectType::OPENCL_TEXTURE)
   {
-    tmp_obj = OpenClTexture{cl_memory_.memory()};
+    tmp_obj = OpenClTexture{_cl_memory.memory()};
   }
   else
   {
-    tmp_obj = OpenClBuffer{cl_memory_.memory()};
+    tmp_obj = OpenClBuffer{_cl_memory.memory()};
   }
 
   TensorObjectDef output_def = input_def;
@@ -111,20 +111,20 @@ void ICLTensor::enqueueWriteBuffer(const void *ptr, bool)
   _converter_builder = NewConverterBuilder(_environment.get());
   if (!_converter_builder->MakeConverter(input_def, tmp_def, &_converter_cpu).ok())
   {
-    throw std::runtime_error("MakeConverter error");
+    throw std::runtime_error("MakeConverter<_converter_cpu> error.");
   }
   if (!_converter_builder->MakeConverter(tmp_def, output_def, &_converter_bhwc).ok())
   {
-    throw std::runtime_error("MakeConverter error");
+    throw std::runtime_error("MakeConverter<_converter_bhwc> error.");
   }
 
   if (!_converter_cpu->Convert(input_obj, tmp_obj).ok())
   {
-    throw std::runtime_error("[w] _converter_cpu Convert error");
+    throw std::runtime_error("[w] _converter_cpu Convert error.");
   }
   if (!_converter_bhwc->Convert(tmp_obj, output_obj).ok())
   {
-    throw std::runtime_error("[w] _converter_bhwc Convert error");
+    throw std::runtime_error("[w] _converter_bhwc Convert error.");
   }
 }
 
@@ -174,18 +174,18 @@ void ICLTensor::enqueueReadBuffer(void *ptr, bool)
     tmp_def.object_def.data_type,
     ToTensorStorageType(tmp_def.object_def.object_type, tmp_def.object_def.data_layout),
     Layout::BHWC};
-  if (!AllocateTensorMemory(_environment->context(), shape, desc, &cl_memory_).ok())
+  if (!AllocateTensorMemory(_environment->context(), shape, desc, &_cl_memory).ok())
   {
-    throw std::runtime_error("AllocateTensorMemory error");
+    throw std::runtime_error("AllocateTensorMemory error.");
   }
   TensorObject tmp_obj;
   if (tmp_def.object_def.object_type == ObjectType::OPENCL_TEXTURE)
   {
-    tmp_obj = OpenClTexture{cl_memory_.memory()};
+    tmp_obj = OpenClTexture{_cl_memory.memory()};
   }
   else
   {
-    tmp_obj = OpenClBuffer{cl_memory_.memory()};
+    tmp_obj = OpenClBuffer{_cl_memory.memory()};
   }
   TensorObjectDef output_def = input_def;
   output_def.dimensions.b = handle()->Batch();
@@ -200,20 +200,20 @@ void ICLTensor::enqueueReadBuffer(void *ptr, bool)
   _converter_builder = NewConverterBuilder(_environment.get());
   if (!_converter_builder->MakeConverter(input_def, tmp_def, &_converter_bhwc).ok())
   {
-    throw std::runtime_error("MakeConverter error");
+    throw std::runtime_error("MakeConverter<_converter_bhwc> error.");
   }
   if (!_converter_builder->MakeConverter(tmp_def, output_def, &_converter_cpu).ok())
   {
-    throw std::runtime_error("MakeConverter error");
+    throw std::runtime_error("MakeConverter<_converter_cpu> error.");
   }
 
   if (!_converter_bhwc->Convert(input_obj, tmp_obj).ok())
   {
-    throw std::runtime_error("[r] _converter_bhwc Convert error");
+    throw std::runtime_error("[r] _converter_bhwc Convert error.");
   }
   if (!_converter_cpu->Convert(tmp_obj, output_obj).ok())
   {
-    throw std::runtime_error("[r] _converter_cpu Convert error");
+    throw std::runtime_error("[r] _converter_cpu Convert error.");
   }
 }
 
