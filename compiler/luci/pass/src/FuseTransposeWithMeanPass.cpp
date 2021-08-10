@@ -22,6 +22,24 @@
 
 namespace
 {
+
+/**
+ *  Create a const for fused reduction indices
+ *
+ *  BEFORE
+ *                  |
+ *          [CircleTranspose, perm<0, 2, 3, 1>]
+ *                  |
+ *          [CircleMean, axis<3>]
+ *                  |
+ *
+ *  AFTER
+ *                  |
+ *          [CircleMean, axis<1>]       [CircleTranspose, perm<0, 2, 3, 1>]
+ *                  |                            |
+ *                                      [CircleMean, axis<3>]
+ *
+ */
 luci::CircleConst *create_fused_indices(luci::CircleConst *rindices,
                                         const std::vector<uint32_t> &fused_rindices)
 {
@@ -71,7 +89,8 @@ bool fuse_transpose_with_mean(luci::CircleMean *mean)
   if (not rindices)
     return false;
 
-  assert(rindices->dtype() == loco::DataType::S32);
+  if (rindices->dtype() != loco::DataType::S32)
+    return false;
 
   if (mean->keep_dims() != false)
     return false;
@@ -98,9 +117,13 @@ bool fuse_transpose_with_mean(luci::CircleMean *mean)
   if (not std::is_sorted(axes_after_reduction.begin(), axes_after_reduction.end()))
     return false;
 
+  auto fused_rindices = create_fused_indices(rindices, orig_reduced_axes);
+  if (not fused_rindices)
+    return false;
+
   // Create and configure new CircleMean operation.
   auto fused_mean = mean->graph()->nodes()->create<luci::CircleMean>();
-  fused_mean->reduction_indices(create_fused_indices(rindices, orig_reduced_axes));
+  fused_mean->reduction_indices(fused_rindices);
   fused_mean->input(transpose->a());
   fused_mean->keep_dims(false);
   fused_mean->name(mean->name() + "/Transpose");
