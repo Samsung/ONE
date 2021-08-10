@@ -18,21 +18,6 @@
 #ifndef __ONERT_BACKEND_GPU_CL_OPENCL_WRAPPERE_H__
 #define __ONERT_BACKEND_GPU_CL_OPENCL_WRAPPERE_H__
 
-#ifndef CL_HPP_ENABLE_EXCEPTIONS
-#define CL_HPP_ENABLE_EXCEPTIONS
-#endif // CL_HPP_ENABLE_EXCEPTIONS
-#define CL_TARGET_OPENCL_VERSION 200
-#define CL_HPP_TARGET_OPENCL_VERSION 110
-#define CL_HPP_MINIMUM_OPENCL_VERSION 110
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Weffc++"
-#pragma GCC diagnostic ignored "-Wignored-qualifiers"
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-#if defined(__GNUG__) && __GNUG__ >= 8
-#pragma GCC diagnostic ignored "-Wcatch-value"
-#endif // defined(__GNUG__) && __GNUG__ >= 8
-#pragma GCC diagnostic pop
-
 #include "CL/cl.h"
 #include "CL/cl_egl.h"
 #include "CL/cl_ext.h"

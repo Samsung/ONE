@@ -102,7 +102,8 @@ void KernelGenerator::visit(const ir::operation::BinaryArithmetic &node)
       gpu_op->SetSrc(rhs_tensor->handle(), ir::operation::BinaryArithmetic::Input::RHS);
       gpu_op->SetDst(ofm_tensor->handle(), 0);
 
-      fn->configure(std::move(gpu_op), _creation_context);
+      fn->configure(_creation_context);
+      fn->add_operation(std::move(gpu_op));
       break;
     }
     case ir::operation::BinaryArithmetic::ArithmeticType::SUB:

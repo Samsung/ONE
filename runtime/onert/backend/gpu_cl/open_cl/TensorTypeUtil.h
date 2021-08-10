@@ -18,6 +18,7 @@
 #ifndef __ONERT_BACKEND_GPU_CL_OPENCL_TENSOR_TYPE_UTIL_H__
 #define __ONERT_BACKEND_GPU_CL_OPENCL_TENSOR_TYPE_UTIL_H__
 
+#include "Api.h"
 #include "TensorType.h"
 
 namespace onert

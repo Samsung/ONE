@@ -42,27 +42,6 @@ enum class TextureAddressMode
 
 std::string TextureAddressModeToString(TextureAddressMode address_mode);
 
-enum class DataLayout
-{
-  UNKNOWN,
-  BHWC,
-  DHWC4,
-  HWDC4,
-  HDWC4,
-};
-
-enum class ObjectType
-{
-  UNKNOWN,
-  OPENGL_SSBO,
-  OPENGL_TEXTURE,
-  CPU_MEMORY,
-  OPENCL_TEXTURE,
-  OPENCL_BUFFER,
-  VULKAN_BUFFER,
-  VULKAN_TEXTURE
-};
-
 enum class TensorStorageType
 {
   UNKNOWN,
@@ -110,8 +89,8 @@ struct TensorDescriptor : public GPUObjectDescriptor
                                                   std::string *value_name, std::string *x_coord,
                                                   std::string *y_coord, std::string *s_coord) const;
 
-  // void UploadData(const InternalTensor<HWC, DataType::FLOAT32> &src);
-  // void UploadData(const InternalTensor<Linear, DataType::FLOAT32> &src);
+  void UploadData(const InternalTensor<HWC, DataType::FLOAT32> &src);
+  void UploadData(const InternalTensor<Linear, DataType::FLOAT32> &src);
 
   bool SupportsZeroClamp(const Axis &axis) const;
   bool CanReadOutOfBorder(const Axis &axis) const;
@@ -188,7 +167,17 @@ private:
   bool ParseCoordsFromArgs(const std::vector<std::string> &args, int offset, std::string *xc,
                            std::string *yc, std::string *zc, std::string *sc,
                            std::string *bc) const;
+
+  void UploadData(absl::Span<const float> src);
 };
+
+template <typename T>
+void DataFromBHWDC(absl::Span<const float> src, const BHWDC &shape, const TensorDescriptor &desc,
+                   absl::Span<T> dst);
+
+template <typename T>
+void DataToBHWDC(absl::Span<const T> src, const BHWDC &shape, const TensorDescriptor &desc,
+                 absl::Span<float> dst);
 
 std::string ToString(TensorStorageType type);
 

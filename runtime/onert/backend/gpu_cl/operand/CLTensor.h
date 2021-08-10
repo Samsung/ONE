@@ -38,12 +38,11 @@ public:
   CLTensor() = delete;
 
 public:
-  CLTensor(size_t rank, ir::Shape shape, CLCommandQueue *queue, size_t num_uses);
+  CLTensor(size_t rank, ir::Shape shape, std::shared_ptr<Environment> environment);
 
 public:
   const Tensor *handle() const override;
   Tensor *handle() override;
-  size_t num_uses() const { return _num_uses; }
 
 public:
   /** Set given buffer as the buffer of the tensor
@@ -57,7 +56,6 @@ public:
 
 private:
   std::shared_ptr<Tensor> _tensor;
-  size_t _num_uses;
 };
 
 } // namespace operand
