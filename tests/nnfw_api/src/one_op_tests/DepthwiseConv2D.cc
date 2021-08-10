@@ -39,6 +39,75 @@ TEST_F(GenModelTest, OneOp_DepthwiseConv2D)
   SUCCEED();
 }
 
+TEST_F(GenModelTest, OneOp_DepthwiseConv2D_No_Multiplier)
+{
+  CircleGen cgen;
+  std::vector<float> weight_data{0.0f, 1.0f, 2.0f, 3.0f, 4.0f, 5.0f};
+  uint32_t weight_buf = cgen.addBuffer(weight_data);
+  std::vector<float> bias_data{0.5f, -0.5f};
+  uint32_t bias_buf = cgen.addBuffer(bias_data);
+  int in = cgen.addTensor({{1, 2, 2, 2}, circle::TensorType::TensorType_FLOAT32});
+  int weight = cgen.addTensor({{1, 3, 1, 2}, circle::TensorType::TensorType_FLOAT32, weight_buf});
+  int bias = cgen.addTensor({{1, 1, 1, 2}, circle::TensorType::TensorType_FLOAT32, bias_buf});
+  int out = cgen.addTensor({{1, 2, 2, 2}, circle::TensorType::TensorType_FLOAT32});
+  cgen.addOperatorDepthwiseConv2D({{in, weight, bias}, {out}}, circle::Padding_SAME, 1, 1, 1,
+                                  circle::ActivationFunctionType_NONE);
+  cgen.setInputsAndOutputs({in}, {out});
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->addTestCase(
+    uniformTCD<float>({{0.0f, 1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f}},
+                      {{16.5f, 27.5f, 28.5f, 43.5f, 8.5f, 15.5f, 12.5f, 23.5f}}));
+  _context->setBackends({"acl_cl", "acl_neon", "cpu", "gpu_cl"});
+  SUCCEED();
+}
+
+TEST_F(GenModelTest, OneOp_DepthwiseConv2D_No_Multiplier_RELU6)
+{
+  CircleGen cgen;
+  std::vector<float> weight_data{0.0f, 1.0f, 2.0f, 3.0f, 4.0f, 5.0f};
+  uint32_t weight_buf = cgen.addBuffer(weight_data);
+  std::vector<float> bias_data{0.5f, -0.5f};
+  uint32_t bias_buf = cgen.addBuffer(bias_data);
+  int in = cgen.addTensor({{1, 2, 2, 2}, circle::TensorType::TensorType_FLOAT32});
+  int weight = cgen.addTensor({{1, 3, 1, 2}, circle::TensorType::TensorType_FLOAT32, weight_buf});
+  int bias = cgen.addTensor({{1, 1, 1, 2}, circle::TensorType::TensorType_FLOAT32, bias_buf});
+  int out = cgen.addTensor({{1, 2, 2, 2}, circle::TensorType::TensorType_FLOAT32});
+  cgen.addOperatorDepthwiseConv2D({{in, weight, bias}, {out}}, circle::Padding_SAME, 1, 1, 1,
+                                  circle::ActivationFunctionType_RELU6);
+  cgen.setInputsAndOutputs({in}, {out});
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->addTestCase(uniformTCD<float>({{0.0f, 1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f}},
+                                          {{6.0f, 6.0f, 6.0f, 6.0f, 6.0f, 6.0f, 6.0f, 6.0f}}));
+  _context->setBackends({"acl_cl", "acl_neon", "cpu", "gpu_cl"});
+  SUCCEED();
+}
+
+TEST_F(GenModelTest, OneOp_DepthwiseConv2D_3x3)
+{
+  CircleGen cgen;
+  std::vector<float> weight_data{0.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f,
+                                 1.0f, 1.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f};
+  uint32_t weight_buf = cgen.addBuffer(weight_data);
+  std::vector<float> bias_data{0.0f, 0.0f};
+  uint32_t bias_buf = cgen.addBuffer(bias_data);
+  int in = cgen.addTensor({{1, 2, 2, 2}, circle::TensorType::TensorType_FLOAT32});
+  int weight = cgen.addTensor({{1, 3, 3, 2}, circle::TensorType::TensorType_FLOAT32, weight_buf});
+  int bias = cgen.addTensor({{1, 1, 1, 2}, circle::TensorType::TensorType_FLOAT32, bias_buf});
+  int out = cgen.addTensor({{1, 2, 2, 2}, circle::TensorType::TensorType_FLOAT32});
+  cgen.addOperatorDepthwiseConv2D({{in, weight, bias}, {out}}, circle::Padding_SAME, 1, 1, 1,
+                                  circle::ActivationFunctionType_NONE);
+  cgen.setInputsAndOutputs({in}, {out});
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->addTestCase(
+    uniformTCD<float>({{0.0f, 1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f}},
+                      {{6.0f, 16.0f, 8.0f, 16.0f, 10.0f, 16.0f, 12.0f, 16.0f}}));
+  _context->setBackends({"acl_cl", "acl_neon", "cpu", "gpu_cl"});
+  SUCCEED();
+}
+
 TEST_F(GenModelTest, OneOp_DepthwiseConv2D_Dilation)
 {
   CircleGen cgen;
@@ -84,7 +153,7 @@ TEST_F(GenModelTest, OneOp_DepthwiseConv2D_Dilation_N_Stride)
   _context->addTestCase(uniformTCD<float>({{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0,
                                             0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}},
                                           {{4, 0, 3, 0, 0, 0, 2, 0, 1}}));
-  _context->setBackends({"acl_cl", "acl_neon", "cpu", "xnnpack"});
+  _context->setBackends({"acl_cl", "acl_neon", "cpu", "xnnpack", "gpu_cl"});
 
   SUCCEED();
 }

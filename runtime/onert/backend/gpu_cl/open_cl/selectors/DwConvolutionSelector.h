@@ -15,15 +15,14 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_GPU_CL_OPENCL_SELECTORS_SIMPLE_SELECTORS_H__
-#define __ONERT_BACKEND_GPU_CL_OPENCL_SELECTORS_SIMPLE_SELECTORS_H__
+#ifndef __ONERT_BACKEND_GPU_CL_OPENCL_SELECTORS_DW_CONVOLUTION_SELECTOR_H__
+#define __ONERT_BACKEND_GPU_CL_OPENCL_SELECTORS_DW_CONVOLUTION_SELECTOR_H__
 
 #include <memory>
 
-#include "open_cl/ClDevice.h"
 #include "open_cl/kernels/GpuOperation.h"
 #include "open_cl/Operations.h"
-#include "open_cl/Shape.h"
+#include "open_cl/Status.h"
 
 namespace onert
 {
@@ -32,17 +31,12 @@ namespace backend
 namespace gpu_cl
 {
 
-void SelectAdd(const OperationDef &op_def, const std::vector<int> &channels, int dst_channels,
-               std::unique_ptr<GPUOperation> *ptr);
-
-std::unique_ptr<GPUOperation> SelectReLU(const ReLUAttributes &attr, const OperationDef &op_def);
-
-std::unique_ptr<GPUOperation>
-SelectDWConvolutionDynamicWeights(const DepthwiseConvolution2DAttributes &attr,
-                                  const DeviceInfo &device_info, const OperationDef &op_def);
+std::unique_ptr<GPUOperation> SelectDWConvolution(const DepthwiseConvolution2DAttributes &attr,
+                                                  const DeviceInfo &device_info,
+                                                  const OperationDef &op_def);
 
 } // namespace gpu_cl
 } // namespace backend
 } // namespace onert
 
-#endif // __ONERT_BACKEND_GPU_CL_OPENCL_SELECTORS_SIMPLE_SELECTORS_H__
+#endif // __ONERT_BACKEND_GPU_CL_OPENCL_SELECTORS_DW_CONVOLUTION_SELECTOR_H__

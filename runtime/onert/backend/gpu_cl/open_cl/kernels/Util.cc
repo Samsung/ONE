@@ -22,6 +22,8 @@
 #include <string>
 #include <vector>
 
+#include "absl/strings/str_cat.h"
+#include "absl/strings/substitute.h"
 #include "open_cl/Precision.h"
 #include "open_cl/DataType.h"
 
@@ -77,7 +79,16 @@ std::string GetCommonDefines(CalculationsPrecision precision)
   return result;
 }
 
-#if 0
+std::string GetXStrideCorrectedV2(const std::string &src_x, const std::string &batch_size,
+                                  const std::string &stride_x, const std::string &padding_x)
+{
+  // int p0 = src_x / batch_size;\n";
+  // int b0 = src_x % batch_size;\n";
+  // return (p0 * stride_x + padding_x) * batch_size + b0;\n";
+  return absl::Substitute("(((($0) / $1) * $2 + $3) * $1 + ($0) % $1)", src_x, batch_size, stride_x,
+                          padding_x);
+}
+
 float4 GetMaskForLastPlane(int channels)
 {
   float4 mask = float4(0.0f);
@@ -204,7 +215,6 @@ int GetRecommendedBlockSizeForConv(const DeviceInfo &device_info, CalculationsPr
   }
   return block_size;
 }
-#endif
 
 int3 GetWorkGroupsCount(const int3 &grid_size, const int3 &work_group_size)
 {

@@ -16,6 +16,7 @@
  */
 
 #include "Operations.h"
+#include "open_cl/Operations.h"
 
 #include <algorithm>
 #include <cstdint>
@@ -38,7 +39,6 @@ namespace backend
 namespace gpu_cl
 {
 
-#if 0
 Padding2D &Padding2D::operator=(const Padding2D &value)
 {
   prepended = value.prepended;
@@ -91,8 +91,40 @@ std::string ToString(enum OperationType op)
 {
   switch (op)
   {
+    case OperationType::ABS:
+      return "abs";
     case OperationType::ADD:
       return "add";
+    case OperationType::CONCAT:
+      return "concat";
+    case OperationType::COS:
+      return "cos";
+    case OperationType::EXP:
+      return "exp";
+    case OperationType::LOG:
+      return "log";
+    case OperationType::NEG:
+      return "neg";
+    case OperationType::POOLING_2D:
+      return "pooling_2d";
+    case OperationType::REDUCE_MAXIMUM:
+      return "reduce_maximum";
+    case OperationType::REDUCE_MINIMUM:
+      return "reduce_minimum";
+    case OperationType::REDUCE_PRODUCT:
+      return "reduce_product";
+    case OperationType::REDUCE_SUM:
+      return "reduce_sum";
+    case OperationType::RESIZE:
+      return "resize";
+    case OperationType::RELU:
+      return "relu";
+    case OperationType::RSQRT:
+      return "rsqrt";
+    case OperationType::SQRT:
+      return "sqrt";
+    case OperationType::SQUARE:
+      return "square";
     case OperationType::UNKNOWN:
       return "unknown_operation";
   }
@@ -102,7 +134,23 @@ std::string ToString(enum OperationType op)
 OperationType OperationTypeFromString(const std::string &name)
 {
   static const auto operations = new std::unordered_map<std::string, OperationType>({
+    {"abs", OperationType::ABS},
     {"add", OperationType::ADD},
+    {"concat", OperationType::CONCAT},
+    {"cos", OperationType::COS},
+    {"exp", OperationType::EXP},
+    {"log", OperationType::LOG},
+    {"neg", OperationType::NEG},
+    {"pooling_2d", OperationType::POOLING_2D},
+    {"reduce_maximum", OperationType::REDUCE_MAXIMUM},
+    {"reduce_minimum", OperationType::REDUCE_MINIMUM},
+    {"reduce_product", OperationType::REDUCE_PRODUCT},
+    {"reduce_sum", OperationType::REDUCE_SUM},
+    {"relu", OperationType::RELU},
+    {"resize", OperationType::RESIZE},
+    {"rsqrt", OperationType::RSQRT},
+    {"sqrt", OperationType::SQRT},
+    {"square", OperationType::SQUARE},
   });
   auto op = operations->find(name);
   return op == operations->end() ? OperationType::UNKNOWN : op->second;
@@ -185,6 +233,118 @@ template <Axis AxisT, typename AttrT> int32_t CalculateOutput(const BHWDC &input
 {
   return StridedSize(CalculateOutputWithoutStrides<AxisT>(input, attr),
                      attr.strides.template get<AxisT>());
+}
+
+int32_t CalculateSamePadding(int32_t input, int32_t kernel, int32_t dilation, int32_t stride)
+{
+  const int32_t dilated_kernel = (kernel - 1) * dilation + 1;
+  return std::max(0, dilated_kernel - (input - 1) % stride - 1);
+}
+
+// Returns a padding that should be present to make sure image size stays
+// the same.
+template <Axis AxisT>
+int32_t CalculateSamePadding(const BHWC &input, const Convolution2DAttributes &attr)
+{
+  return CalculateSamePadding(input.get<AxisT>(), attr.weights.shape.get<AxisT>(),
+                              attr.dilations.get<AxisT>(), attr.strides.get<AxisT>());
+}
+
+// Returns a padding that should be present to make sure image size stays
+// the same.
+template <Axis AxisT>
+int32_t CalculateSamePadding(const BHWDC &input, const Convolution3DAttributes &attr)
+{
+  return CalculateSamePadding(input.get<AxisT>(), attr.weights.shape.get<AxisT>(),
+                              attr.dilations.get<AxisT>(), attr.strides.get<AxisT>());
+}
+
+template <Axis AxisT>
+int32_t CalculateSamePadding(const BHWC &input, const ConvolutionTransposedAttributes &attr)
+{
+  return CalculateSamePadding(input.get<AxisT>(), attr.weights.shape.get<AxisT>(),
+                              /*dilation=*/1, attr.stride.get<AxisT>());
+}
+
+template <Axis AxisT>
+int32_t CalculateSamePadding(const BHWDC &input, const ConvolutionTransposed3DAttributes &attr)
+{
+  return CalculateSamePadding(input.get<AxisT>(), attr.weights.shape.get<AxisT>(),
+                              /*dilation=*/1, attr.stride.get<AxisT>());
+}
+
+template <Axis AxisT>
+int32_t CalculateSamePadding(const BHWC &input, const Pooling2DAttributes &attr)
+{
+  return CalculateSamePadding(input.get<AxisT>(), attr.kernel.get<AxisT>(),
+                              /*dilation=*/1, attr.strides.get<AxisT>());
+}
+
+template <Axis AxisT>
+int32_t CalculateSamePadding(const BHWDC &input, const Pooling3DAttributes &attr)
+{
+  return CalculateSamePadding(input.get<AxisT>(), attr.kernel.get<AxisT>(),
+                              /*dilation=*/1, attr.strides.get<AxisT>());
+}
+
+template <Axis AxisT>
+int32_t CalculateSamePadding(const BHWC &input, const MaxUnpooling2DAttributes &attr)
+{
+  return CalculateSamePadding(input.get<AxisT>(), attr.kernel.get<AxisT>(),
+                              /*dilation=*/1, attr.strides.get<AxisT>());
+}
+
+template <Axis AxisT>
+int32_t CalculateSamePadding(const BHWDC &input, const MaxUnpooling3DAttributes &attr)
+{
+  return CalculateSamePadding(input.get<AxisT>(), attr.kernel.get<AxisT>(),
+                              /*dilation=*/1, attr.strides.get<AxisT>());
+}
+
+Padding2D MakeSamePadding(const BHWC &input, const ConvolutionTransposedAttributes &attr)
+{
+  int32_t padding_height = CalculateSamePadding<Axis::HEIGHT>(input, attr);
+  int32_t padding_width = CalculateSamePadding<Axis::WIDTH>(input, attr);
+  Padding2D padding;
+  padding.prepended = HW(padding_height / 2, padding_width / 2);
+  padding.appended = HW(padding_height - padding_height / 2, padding_width - padding_width / 2);
+  return padding;
+}
+
+Padding3D MakeSamePadding(const BHWDC &input, const ConvolutionTransposed3DAttributes &attr)
+{
+  int32_t padding_height = CalculateSamePadding<Axis::HEIGHT>(input, attr);
+  int32_t padding_width = CalculateSamePadding<Axis::WIDTH>(input, attr);
+  int32_t padding_depth = CalculateSamePadding<Axis::DEPTH>(input, attr);
+  Padding3D padding;
+  padding.prepended = HWD(padding_height / 2, padding_width / 2, padding_depth / 2);
+  padding.appended = HWD(padding_height - padding_height / 2, padding_width - padding_width / 2,
+                         padding_depth - padding_depth / 2);
+  return padding;
+}
+
+// If padding depends on input, convert it into fixed padding.
+template <class AttrT> Padding2D MakeSamePadding(const BHWC &input, const AttrT &attr)
+{
+  int32_t padding_height = CalculateSamePadding<Axis::HEIGHT>(input, attr);
+  int32_t padding_width = CalculateSamePadding<Axis::WIDTH>(input, attr);
+  Padding2D padding;
+  padding.prepended = HW(padding_height / 2, padding_width / 2);
+  padding.appended = HW(padding_height - padding_height / 2, padding_width - padding_width / 2);
+  return padding;
+}
+
+// If padding depends on input, convert it into fixed padding.
+template <class AttrT> Padding3D MakeSamePadding(const BHWDC &input, const AttrT &attr)
+{
+  int32_t padding_height = CalculateSamePadding<Axis::HEIGHT>(input, attr);
+  int32_t padding_width = CalculateSamePadding<Axis::WIDTH>(input, attr);
+  int32_t padding_depth = CalculateSamePadding<Axis::DEPTH>(input, attr);
+  Padding3D padding;
+  padding.prepended = HWD(padding_height / 2, padding_width / 2, padding_depth / 2);
+  padding.appended = HWD(padding_height - padding_height / 2, padding_width - padding_width / 2,
+                         padding_depth - padding_depth / 2);
+  return padding;
 }
 
 } // namespace
@@ -453,6 +613,56 @@ absl::Status CalculateOutputShape(const std::vector<BHWDC> &input, const ConcatA
   return absl::OkStatus();
 }
 
+Padding2D CalculateSamePadding(const BHWC &input, const Convolution2DAttributes &attr)
+{
+  return MakeSamePadding(input, attr);
+}
+
+Padding3D CalculateSamePadding(const BHWDC &input, const Convolution3DAttributes &attr)
+{
+  return MakeSamePadding(input, attr);
+}
+
+Padding2D CalculateSamePadding(const BHWC &input, const ConvolutionTransposedAttributes &attr)
+{
+  return MakeSamePadding(input, attr);
+}
+
+Padding3D CalculateSamePadding(const BHWDC &input, const ConvolutionTransposed3DAttributes &attr)
+{
+  return MakeSamePadding(input, attr);
+}
+
+Padding2D CalculateSamePadding(const BHWC &input, const DepthwiseConvolution2DAttributes &attr)
+{
+  return MakeSamePadding(input, attr);
+}
+
+Padding3D CalculateSamePadding(const BHWDC &input, const DepthwiseConvolution3DAttributes &attr)
+{
+  return MakeSamePadding(input, attr);
+}
+
+Padding2D CalculateSamePadding(const BHWC &input, const Pooling2DAttributes &attr)
+{
+  return MakeSamePadding(input, attr);
+}
+
+Padding3D CalculateSamePadding(const BHWDC &input, const Pooling3DAttributes &attr)
+{
+  return MakeSamePadding(input, attr);
+}
+
+Padding2D CalculateSamePadding(const BHWC &input, const MaxUnpooling2DAttributes &attr)
+{
+  return MakeSamePadding(input, attr);
+}
+
+Padding3D CalculateSamePadding(const BHWDC &input, const MaxUnpooling3DAttributes &attr)
+{
+  return MakeSamePadding(input, attr);
+}
+
 float CalculateResizeScale(int32_t input_size, int32_t output_size, const Resize2DAttributes &attr)
 {
   return attr.align_corners && input_size > 1 && output_size > 1
@@ -488,7 +698,6 @@ BHWDC CalculateOutputShape(const BHWDC &input, const Transpose3DAttributes &attr
   return BHWDC(input.get(attr.perm.b), input.get(attr.perm.h), input.get(attr.perm.w),
                input.get(attr.perm.d), input.get(attr.perm.c));
 }
-#endif
 
 } // namespace gpu_cl
 } // namespace backend

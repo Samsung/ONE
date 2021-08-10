@@ -41,7 +41,6 @@
 
 #include "absl/types/span.h"
 #include "absl/types/variant.h"
-// #include <CL/cl.h>
 #include "DataType.h"
 #include "Status.h"
 #include "Util.h"

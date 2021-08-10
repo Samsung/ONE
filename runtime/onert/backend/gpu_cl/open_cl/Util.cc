@@ -18,6 +18,7 @@
 #include "Util.h"
 
 #include "absl/strings/str_cat.h"
+#include "absl/strings/substitute.h"
 #include "Status.h"
 namespace onert
 {
@@ -245,6 +246,17 @@ absl::Status CreateRGBAImage2D(cl_context context, int width, int height,
                                            CLErrorCodeToString(error_code)));
   }
   return absl::OkStatus();
+}
+
+std::string GetXStrideCorrected(const std::string &src_x, const std::string &batch_size,
+                                const std::string &stride_x, const std::string &padding_x)
+{
+  // TODO(sorokin) check perf and optimize with floor() if needed
+  // int p0 = src_x / batch_size;\n";
+  // int b0 = src_x % batch_size;\n";
+  // return p0 * stride_x * batch_size + b0 + padding_x;\n";
+  return absl::Substitute("((($0) / $1) * $2 * $1 + (($0) % $1) + $3)", src_x, batch_size, stride_x,
+                          padding_x);
 }
 
 } // namespace gpu_cl

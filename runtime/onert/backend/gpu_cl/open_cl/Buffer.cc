@@ -84,6 +84,77 @@ GPUResources BufferDescriptor::GetGPUResources() const
   return resources;
 }
 
+absl::Status BufferDescriptor::PerformSelector(const std::string &selector,
+                                               const std::vector<std::string> &args,
+                                               const std::vector<std::string> &template_args,
+                                               std::string *result) const
+{
+  if (selector == "Read")
+  {
+    return PerformReadSelector(args, result);
+  }
+  else if (selector == "GetPtr")
+  {
+    return PerformGetPtrSelector(args, template_args, result);
+  }
+  else
+  {
+    return absl::NotFoundError(
+      absl::StrCat("BufferDescriptor don't have selector with name - ", selector));
+  }
+}
+
+absl::Status BufferDescriptor::PerformReadSelector(const std::vector<std::string> &args,
+                                                   std::string *result) const
+{
+  if (args.size() != 1)
+  {
+    return absl::NotFoundError(
+      absl::StrCat("BufferDescriptor Read require one argument, but ", args.size(), " was passed"));
+  }
+  *result = absl::StrCat("buffer[", args[0], "]");
+  return absl::OkStatus();
+}
+
+absl::Status BufferDescriptor::PerformGetPtrSelector(const std::vector<std::string> &args,
+                                                     const std::vector<std::string> &template_args,
+                                                     std::string *result) const
+{
+  if (args.size() > 1)
+  {
+    return absl::NotFoundError(absl::StrCat(
+      "BufferDescriptor GetPtr require one or zero arguments, but ", args.size(), " was passed"));
+  }
+  if (template_args.size() > 1)
+  {
+    return absl::NotFoundError(absl::StrCat("BufferDescriptor GetPtr require one or zero teemplate "
+                                            "arguments, but ",
+                                            template_args.size(), " was passed"));
+  }
+  std::string conversion;
+  if (template_args.size() == 1)
+  {
+    const std::string type_name = ToCLDataType(element_type, element_size);
+    if (type_name != template_args[0])
+    {
+      conversion = absl::StrCat("(", MemoryTypeToCLType(memory_type), " ", template_args[0], "*)&");
+    }
+  }
+  if (args.empty())
+  {
+    *result = absl::StrCat(conversion, "buffer");
+  }
+  else if (conversion.empty())
+  {
+    *result = absl::StrCat("(buffer + ", args[0], ")");
+  }
+  else
+  {
+    *result = absl::StrCat(conversion, "buffer[", args[0], "]");
+  }
+  return absl::OkStatus();
+}
+
 absl::Status BufferDescriptor::CreateGPUObject(CLContext *context, GPUObjectPtr *result) const
 {
   Buffer gpu_buffer;

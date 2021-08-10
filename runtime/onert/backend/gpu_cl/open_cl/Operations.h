@@ -40,29 +40,29 @@ namespace gpu_cl
 enum class OperationType
 {
   UNKNOWN = 0,
-  // ABS,
+  ABS,
   ADD,
   // BATCH_TO_SPACE,
   // BATCH_NORMALIZATION,
   // BATCHED_MATMUL,
-  // CONCAT,
+  CONCAT,
   // CONST,
   // CONVOLUTION_2D,
   // CONVOLUTION_TRANSPOSED,
   // COPY,
-  // COS,
+  COS,
   // DEPTHWISE_CONVOLUTION,
   // DIV,
   // ELU,
   // EQUAL,
-  // EXP,
+  EXP,
   // FULLY_CONNECTED,
   // GREATER,
   // GREATER_EQUAL,
   // HARD_SWISH,
   // LESS,
   // LESS_EQUAL,
-  // LOG,
+  LOG,
   // LSTM,
   // MAXIMUM,
   // MAX_UNPOOLING_2D,
@@ -70,54 +70,36 @@ enum class OperationType
   // MEAN_STDDEV_NORMALIZATION,
   // MINIMUM,
   // MUL,
-  // NEG,
+  NEG,
   // NOT_EQUAL,
   // PAD,
-  // POOLING_2D,
+  POOLING_2D,
   // POW,
   // PRELU,
   // Used to accurately run inference on quantized models.
   // QUANTIZE_AND_DEQUANTIZE,
-  // REDUCE_MAXIMUM,
-  // REDUCE_MINIMUM,
-  // REDUCE_PRODUCT,
-  // REDUCE_SUM,
+  REDUCE_MAXIMUM,
+  REDUCE_MINIMUM,
+  REDUCE_PRODUCT,
+  REDUCE_SUM,
   RELU,
   // RESHAPE,
-  // RESIZE,
-  // RSQRT,
+  RESIZE,
+  RSQRT,
   // SIGMOID,
   // SIN,
   // SLICE,
   // SOFTMAX,
   // SPACE_TO_BATCH,
   // SPACE_TO_DEPTH,
-  // SQRT,
-  // SQUARE,
+  SQRT,
+  SQUARE,
   // SQUARED_DIFF,
   // SUB,
   // TANH,
   // TRANSPOSE,
 };
 
-// f(x):= {
-//   if x < 0  : x -> alpha * x
-//   if x >= 0 : x -> min(clip, x)
-// }
-//
-// Examples:
-//   - ReLU: clip = 0, alpha = 0
-//   - ReLU6: clip = 6, alpha = 0
-//   - Leaky ReLU: clip = 0, alpha = a
-struct ReLUAttributes
-{
-  // clip <= 0 mean it is not set.
-  float clip = 0;
-
-  float alpha = 0;
-};
-
-#if 0 // NYI
 std::string ToString(enum OperationType op);
 
 OperationType OperationTypeFromString(const std::string &name);
@@ -129,6 +111,7 @@ typedef absl::variant<absl::monostate, InternalTensor<HWC, DataType::FLOAT32>,
 struct Padding2D
 {
   Padding2D() = default;
+  Padding2D(const Padding2D &);
   Padding2D &operator=(const Padding2D &value);
   bool operator==(const Padding2D &value);
   bool operator!=(const Padding2D &value);
@@ -144,11 +127,11 @@ struct Padding2D
 struct Padding3D
 {
   Padding3D() = default;
+  Padding3D(const Padding3D &);
   Padding3D &operator=(const Padding3D &value);
   bool operator==(const Padding3D &value);
   bool operator!=(const Padding3D &value);
   Padding3D &operator-(const Padding3D &value);
-
   // Padding values for every axis (if needed), where 'prepended' defines
   // padding for the beginning of each axis and 'appended' represents end part
   // of the corresponding axis.
@@ -370,6 +353,23 @@ Padding2D CalculateSamePadding(const BHWC &input, const DepthwiseConvolution2DAt
 // the same shape as the given input.
 Padding3D CalculateSamePadding(const BHWDC &input, const DepthwiseConvolution3DAttributes &attr);
 
+// f(x):= {
+//   if x < 0  : x -> alpha * x
+//   if x >= 0 : x -> min(clip, x)
+// }
+//
+// Examples:
+//   - ReLU: clip = 0, alpha = 0
+//   - ReLU6: clip = 6, alpha = 0
+//   - Leaky ReLU: clip = 0, alpha = a
+struct ReLUAttributes
+{
+  // clip <= 0 mean it is not set.
+  float clip = 0;
+
+  float alpha = 0;
+};
+
 struct PReLUAttributes
 {
   // clip <= 0 mean it is not set.
@@ -578,7 +578,6 @@ struct QuantizeAndDequantizeAttributes
   float max = 0;
   float scale = 0;
 };
-#endif
 
 } // namespace gpu_cl
 } // namespace backend

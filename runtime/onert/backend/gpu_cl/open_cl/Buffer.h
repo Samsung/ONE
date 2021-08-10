@@ -18,6 +18,9 @@
 #ifndef __ONERT_BACKEND_GPU_CL_OPENCL_BUFFER_H__
 #define __ONERT_BACKEND_GPU_CL_OPENCL_BUFFER_H__
 
+#include "absl/strings/str_cat.h"
+#include "absl/types/span.h"
+
 #include "ClCommandQueue.h"
 #include "ClContext.h"
 #include "GpuObject.h"
@@ -50,7 +53,15 @@ struct BufferDescriptor : public GPUObjectDescriptor
   BufferDescriptor(BufferDescriptor &&desc);
   BufferDescriptor &operator=(BufferDescriptor &&desc);
 
+  absl::Status PerformSelector(const std::string &selector, const std::vector<std::string> &args,
+                               const std::vector<std::string> &template_args,
+                               std::string *result) const override;
+
   GPUResources GetGPUResources() const override;
+  absl::Status PerformReadSelector(const std::vector<std::string> &args, std::string *result) const;
+  absl::Status PerformGetPtrSelector(const std::vector<std::string> &args,
+                                     const std::vector<std::string> &template_args,
+                                     std::string *result) const;
 
   absl::Status CreateGPUObject(CLContext *context, GPUObjectPtr *result) const override;
   void Release() override;
