@@ -23,13 +23,13 @@
 namespace luci_interpreter
 {
 
-class MManager
+class IMemoryManager
 {
 public:
   virtual void allocate_memory(luci_interpreter::Tensor *tensor) = 0;
   virtual void release_memory(luci_interpreter::Tensor *tensor) = 0;
 
-  virtual ~MManager() = default;
+  virtual ~IMemoryManager() = default;
 };
 
 } // namespace luci_interpreter

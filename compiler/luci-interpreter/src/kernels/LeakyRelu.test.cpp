@@ -32,7 +32,7 @@ void Check(std::initializer_list<int32_t> input_shape, std::initializer_list<int
            std::initializer_list<float> input_data, std::initializer_list<float> output_data,
            float alpha)
 {
-  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<SimpleMemoryManager>();
   constexpr DataType element_type = getElementType<T>();
   Tensor input_tensor =
     makeInputTensor<element_type>(input_shape, input_data, memory_manager.get());
@@ -57,7 +57,7 @@ void Check<uint8_t>(std::initializer_list<int32_t> input_shape,
                     std::initializer_list<float> input_data,
                     std::initializer_list<float> output_data, float alpha)
 {
-  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<SimpleMemoryManager>();
   const float quantized_tolerance = getTolerance(-8, 127.f / 16.f, 255);
   std::pair<float, int32_t> quant_param = quantizationParams<uint8_t>(-8, 127.f / 16.f);
   Tensor input_tensor = makeInputTensor<DataType::U8>(
@@ -105,7 +105,7 @@ TYPED_TEST(LeakReluTest, Simple)
 
 TEST(LeakReluTest, IvalidInputOutputType_NEG)
 {
-  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<SimpleMemoryManager>();
   Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({2, 3},
                                                            {
                                                              0.0f, 1.0f, 3.0f,   // Row 1

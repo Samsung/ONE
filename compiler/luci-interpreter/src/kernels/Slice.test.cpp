@@ -36,7 +36,7 @@ TYPED_TEST_CASE(SliceTest, DataTypes);
 
 TYPED_TEST(SliceTest, SimpleTest)
 {
-  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<SimpleMemoryManager>();
 
   std::vector<TypeParam> input_data{1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5, 6, 6, 6};
   Shape input_shape{3, 2, 3, 1};

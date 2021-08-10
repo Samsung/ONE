@@ -70,7 +70,7 @@ private:
 
 } // namespace
 
-Interpreter::Interpreter(const luci::Module *module, luci_interpreter::MManager *memory_manager)
+Interpreter::Interpreter(const luci::Module *module, luci_interpreter::IMemoryManager *memory_manager)
 {
   _runtime_to_ir = std::make_unique<RuntimeToIR>();
   _event_notifier = std::make_unique<EventNotifierImpl>(*_runtime_to_ir, _observers);
@@ -79,7 +79,7 @@ Interpreter::Interpreter(const luci::Module *module, luci_interpreter::MManager 
 
   if (memory_manager == nullptr)
   {
-    _default_memory_manager = std::make_unique<SimpleMManager>();
+    _default_memory_manager = std::make_unique<SimpleMemoryManager>();
     _memory_manager = _default_memory_manager.get();
   } else
   {

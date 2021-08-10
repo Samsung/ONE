@@ -38,7 +38,7 @@ std::vector<T> quantize(const float *data, size_t num_elements, float scale, int
 
 template <DataType DT>
 Tensor makeInputTensor(const Shape &shape, const std::vector<typename DataTypeImpl<DT>::Type> &data,
-                       MManager *memory_manager)
+                       IMemoryManager *memory_manager)
 {
   Tensor tensor(DT, shape, {}, "");
   memory_manager->allocate_memory(&tensor);
@@ -65,7 +65,7 @@ Tensor makeInputTensor(const Shape &shape, const std::vector<typename DataTypeIm
  */
 template <DataType DT>
 Tensor makeInputTensor(const Shape &shape, float scale, int32_t zero_point,
-                       const std::vector<float> &data, MManager *memory_manager)
+                       const std::vector<float> &data, IMemoryManager *memory_manager)
 {
   using NativeT = typename DataTypeImpl<DT>::Type;
   Tensor tensor(DT, shape, {{scale}, {zero_point}}, "");
@@ -101,7 +101,7 @@ Tensor makeInputTensor(const Shape &shape, float scale, int32_t zero_point,
 template <DataType DT>
 Tensor makeInputTensor(const Shape &shape, const std::vector<float> &scales,
                        const std::vector<int32_t> &zero_points, int quantized_dimension,
-                       const std::vector<float> &data, MManager *memory_manager = nullptr)
+                       const std::vector<float> &data, IMemoryManager *memory_manager = nullptr)
 {
   using NativeT = typename DataTypeImpl<DT>::Type;
   assert(quantized_dimension < shape.num_dims());

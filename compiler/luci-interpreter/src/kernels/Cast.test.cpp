@@ -31,7 +31,7 @@ template <typename T1, typename T2>
 void Check(std::initializer_list<int32_t> shape, std::initializer_list<T1> input_data,
            std::initializer_list<T2> output_data)
 {
-  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<SimpleMemoryManager>();
   constexpr DataType input_type = getElementType<T1>();
   constexpr DataType output_type = getElementType<T2>();
 
@@ -78,7 +78,7 @@ TYPED_TEST(CastTest, FloatToInt)
 
 TEST(CastTest, UnsupportedType_NEG)
 {
-  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<SimpleMemoryManager>();
   Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({1, 1, 2, 4},
                                                            {
                                                              1, 2, 7, 8, //

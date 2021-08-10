@@ -31,7 +31,7 @@ template <typename T>
 void Check(std::initializer_list<int32_t> input_shape, std::initializer_list<int32_t> output_shape,
            std::initializer_list<float> input_data, std::initializer_list<float> output_data)
 {
-  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<SimpleMemoryManager>();
   Tensor input_tensor =
     makeInputTensor<DataType::FLOAT32>(input_shape, input_data, memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
@@ -54,7 +54,7 @@ void Check<uint8_t>(std::initializer_list<int32_t> input_shape,
                     std::initializer_list<float> input_data,
                     std::initializer_list<float> output_data)
 {
-  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<SimpleMemoryManager>();
   std::pair<float, int32_t> quant_param =
     quantizationParams<uint8_t>(std::min(input_data) < 0 ? std::min(input_data) : 0.f,
                                 std::max(input_data) > 0 ? std::max(input_data) : 0.f);
@@ -91,7 +91,7 @@ TYPED_TEST(L2NormalizeTest, Simple)
 
 TEST(L2NormalizeTest, ActivationType_NEG)
 {
-  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<SimpleMemoryManager>();
   std::vector<float> input_data = {-1.1, 0.6, 0.7, 1.2, -0.7, 0.1};
 
   Tensor input_tensor =
@@ -107,7 +107,7 @@ TEST(L2NormalizeTest, ActivationType_NEG)
 
 TEST(L2NormalizeTest, InvalidOutputQuantParam_NEG)
 {
-  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<SimpleMemoryManager>();
   std::vector<float> input_data = {-1.1, 0.6, 0.7, 1.2, -0.7, 0.1};
 
   Tensor input_tensor =

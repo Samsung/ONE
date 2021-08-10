@@ -36,7 +36,7 @@ void Check(std::initializer_list<int32_t> output_shape_shape,
            std::initializer_list<T> output_data, luci::Padding padding, int32_t stride_height,
            int32_t stride_width)
 {
-  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<SimpleMemoryManager>();
 
   constexpr DataType element_type = getElementType<T>();
   Tensor output_shape_tensor =
@@ -127,7 +127,7 @@ TEST(TransposeConvTest, SimpleBiasTest)
 
 TEST(TransposeConvTest, UInt8)
 {
-  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<SimpleMemoryManager>();
 
   std::vector<float> input_data{1, 2, 3, 4};
   std::vector<float> filter_data{1, 3, 5, 7, 9, 11, 13, 15, 17, 2, 4, 6, 8, 10, 12, 14, 16, 18};
@@ -178,7 +178,7 @@ TEST(TransposeConvTest, UInt8)
 
 TEST(TransposeConvTest, UInt8_CWQ)
 {
-  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<SimpleMemoryManager>();
 
   const int32_t output_channels = 2;
   std::vector<float> input_data{1, 2, 3, 4};
@@ -246,7 +246,7 @@ TEST(TransposeConvTest, UInt8_CWQ)
 
 TEST(TransposeConvTest, SInt16)
 {
-  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<SimpleMemoryManager>();
 
   std::vector<float> input_data{1, 2, 3, 4};
   std::vector<float> filter_data{1, 3, 5, 7, 9, 11, 13, 15, 17, 2, 4, 6, 8, 10, 12, 14, 16, 18};
@@ -292,7 +292,7 @@ TEST(TransposeConvTest, SInt16)
 
 TEST(TransposeConvTest, SInt16_CWQ_weights)
 {
-  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<SimpleMemoryManager>();
 
   const int output_channels = 2;
   const Shape input_shape{1, 2, 2, 1};

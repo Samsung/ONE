@@ -30,7 +30,7 @@ using namespace testing;
 
 TEST(SquareTest, Float)
 {
-  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<SimpleMemoryManager>();
 
   Shape input_shape{3, 1, 2};
   std::vector<float> input_data1{1.0, 0.0, -1.0, 11.0, -2.0, -1.44};

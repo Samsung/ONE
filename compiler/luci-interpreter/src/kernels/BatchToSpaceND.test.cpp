@@ -34,7 +34,7 @@ void Check(std::initializer_list<int32_t> input_shape,
            std::initializer_list<T> input_data, std::initializer_list<int32_t> block_shape_data,
            std::initializer_list<int32_t> crops_data, std::initializer_list<T> output_data)
 {
-  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<SimpleMemoryManager>();
   constexpr DataType element_type = getElementType<T>();
   Tensor input_tensor =
     makeInputTensor<element_type>(input_shape, input_data, memory_manager.get());
@@ -71,7 +71,7 @@ TYPED_TEST(BatchToSpaceNDTest, Simple)
 
 TEST(BatchToSpaceNDTest, Invalid_Shape_NEG)
 {
-  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<SimpleMemoryManager>();
   Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(
     {3, 2, 2, 1}, {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12}, memory_manager.get());
   Tensor block_shape_tensor = makeInputTensor<DataType::S32>({2}, {2, 2}, memory_manager.get());
@@ -84,7 +84,7 @@ TEST(BatchToSpaceNDTest, Invalid_Shape_NEG)
 
 TEST(BatchToSpaceNDTest, Invalid_Crops_NEG)
 {
-  std::unique_ptr<MManager> memory_manager = std::make_unique<SimpleMManager>();
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<SimpleMemoryManager>();
   Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(
     {4, 2, 2, 1}, {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16}, memory_manager.get());
   Tensor block_shape_tensor = makeInputTensor<DataType::S32>({2}, {2, 2}, memory_manager.get());

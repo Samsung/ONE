@@ -34,7 +34,7 @@ public:
 
   EventNotifier *getEventNotifier() const { return _event_notifier; }
 
-  RuntimeGraph *addGraph(MManager *memory_manager)
+  RuntimeGraph *addGraph(IMemoryManager *memory_manager)
   {
     _graphs.push_back(std::make_unique<RuntimeGraph>(this, memory_manager));
     return _graphs.back().get();
