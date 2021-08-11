@@ -658,6 +658,24 @@ template <class T> bool convert_unary_features(T *node)
   return true;
 }
 
+template <class T> bool convert_unary_x(T *node)
+{
+  const auto pred_node = loco::must_cast<luci::CircleNode *>(node->x());
+  auto pre_trans = create_pre_transpose(node);
+  pre_trans->a(pred_node);
+  node->x(pre_trans);
+
+  // Do shape inference for this node again.
+  node->shape_status(luci::ShapeStatus::UNDEFINED);
+
+  auto post_trans = create_post_transpose(node);
+  loco::replace(node).with(post_trans);
+
+  post_trans->a(node);
+
+  return true;
+}
+
 class ConvertNCHWToNHWC final : public luci::CircleNodeMutableVisitor<bool>
 {
   // Default
@@ -794,6 +812,8 @@ class ConvertNCHWToNHWC final : public luci::CircleNodeMutableVisitor<bool>
   {
     return convert_unary_features<luci::CircleLeakyRelu>(node);
   }
+
+  bool visit(luci::CircleLogistic *node) { return convert_unary_x<luci::CircleLogistic>(node); }
 
   bool visit(luci::CircleMaximum *node)
   {
@@ -1257,6 +1277,7 @@ bool ConvertNCHWToNHWCPass::run(loco::Graph *g)
       case luci::CircleOpcode::ADD:
       case luci::CircleOpcode::CONCATENATION:
       case luci::CircleOpcode::LEAKY_RELU:
+      case luci::CircleOpcode::LOGISTIC:
       case luci::CircleOpcode::MAXIMUM:
       case luci::CircleOpcode::MEAN:
       case luci::CircleOpcode::MINIMUM:
