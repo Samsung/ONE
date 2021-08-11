@@ -267,6 +267,22 @@ public:
   luci::CircleLeakyRelu *leakyrelu = nullptr;
 };
 
+class LogisticGraph final : public SimpleGraph
+{
+protected:
+  loco::Node *insertGraphBody(loco::Node *input) override
+  {
+    logistic = g.nodes()->create<luci::CircleLogistic>();
+    logistic->x(input);
+    logistic->name("logistic");
+
+    return logistic;
+  }
+
+public:
+  luci::CircleLogistic *logistic = nullptr;
+};
+
 class MaximumGraph final : public SimpleGraph
 {
 protected:
@@ -816,6 +832,26 @@ TEST(ConvertNCHWToNHWC, LeakyRelu)
   EXPECT_EQ(4, g.leakyrelu->dim(1).value());
   EXPECT_EQ(4, g.leakyrelu->dim(2).value());
   EXPECT_EQ(16, g.leakyrelu->dim(3).value());
+}
+
+TEST(ConvertNCHWToNHWC, Logistic)
+{
+  LogisticGraph g;
+  g.init();
+
+  run_phase(&g.g, true, true);
+
+  check_pre_trans(g.logistic->x());
+
+  auto logistic_succs = loco::succs(g.logistic);
+  EXPECT_EQ(1, logistic_succs.size());
+  check_post_trans(*logistic_succs.begin());
+
+  // Check logistic shape
+  EXPECT_EQ(1, g.logistic->dim(0).value());
+  EXPECT_EQ(4, g.logistic->dim(1).value());
+  EXPECT_EQ(4, g.logistic->dim(2).value());
+  EXPECT_EQ(16, g.logistic->dim(3).value());
 }
 
 TEST(ConvertNCHWToNHWC, Maximum)
