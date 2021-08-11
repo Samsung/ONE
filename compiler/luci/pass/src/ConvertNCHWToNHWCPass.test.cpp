@@ -267,6 +267,22 @@ public:
   luci::CircleLeakyRelu *leakyrelu = nullptr;
 };
 
+class LogisticGraph final : public SimpleGraph
+{
+protected:
+  loco::Node *insertGraphBody(loco::Node *input) override
+  {
+    logistic = g.nodes()->create<luci::CircleLogistic>();
+    logistic->x(input);
+    logistic->name("logistic");
+
+    return logistic;
+  }
+
+public:
+  luci::CircleLogistic *logistic = nullptr;
+};
+
 class MaximumGraph final : public SimpleGraph
 {
 protected:
@@ -394,6 +410,38 @@ protected:
     {
       multiplier->at<loco::DataType::FLOAT32>(i) = i;
     }
+
+    mul->x(input);
+    mul->y(multiplier);
+
+    mul->name("mul");
+    multiplier->name("multiplier");
+
+    return mul;
+  }
+
+public:
+  luci::CircleMul *mul = nullptr;
+  luci::CircleConst *multiplier = nullptr;
+};
+
+class MulScalarGraph final : public SimpleGraph
+{
+protected:
+  loco::Node *insertGraphBody(loco::Node *input) override
+  {
+    mul = g.nodes()->create<luci::CircleMul>();
+    multiplier = g.nodes()->create<luci::CircleConst>();
+
+    mul->dtype(loco::DataType::FLOAT32);
+    multiplier->dtype(loco::DataType::FLOAT32);
+
+    uint32_t channel_size = 16;
+    mul->shape({1, channel_size, 4, 4});
+    multiplier->shape({1});
+
+    multiplier->size<loco::DataType::FLOAT32>(1);
+    multiplier->at<loco::DataType::FLOAT32>(0) = 2;
 
     mul->x(input);
     mul->y(multiplier);
@@ -818,6 +866,26 @@ TEST(ConvertNCHWToNHWC, LeakyRelu)
   EXPECT_EQ(16, g.leakyrelu->dim(3).value());
 }
 
+TEST(ConvertNCHWToNHWC, Logistic)
+{
+  LogisticGraph g;
+  g.init();
+
+  run_phase(&g.g, true, true);
+
+  check_pre_trans(g.logistic->x());
+
+  auto logistic_succs = loco::succs(g.logistic);
+  EXPECT_EQ(1, logistic_succs.size());
+  check_post_trans(*logistic_succs.begin());
+
+  // Check logistic shape
+  EXPECT_EQ(1, g.logistic->dim(0).value());
+  EXPECT_EQ(4, g.logistic->dim(1).value());
+  EXPECT_EQ(4, g.logistic->dim(2).value());
+  EXPECT_EQ(16, g.logistic->dim(3).value());
+}
+
 TEST(ConvertNCHWToNHWC, Maximum)
 {
   MaximumGraph g;
@@ -1019,6 +1087,31 @@ TEST(ConvertNCHWToNHWC, Mul)
   EXPECT_EQ(1, new_multiplier->dim(1).value());
   EXPECT_EQ(1, new_multiplier->dim(2).value());
   EXPECT_EQ(channel_size, new_multiplier->dim(3).value());
+
+  check_pre_trans(g.output->from());
+}
+
+TEST(ConvertNCHWToNHWC, MulScalar)
+{
+  MulScalarGraph g;
+  g.init();
+
+  run_phase(&g.g, false, false);
+
+  auto input_succs = loco::succs(g.input);
+  EXPECT_EQ(1, input_succs.size());
+  check_post_trans(*input_succs.begin());
+
+  check_pre_trans(g.mul->x());
+
+  auto mul_succs = loco::succs(g.mul);
+  EXPECT_EQ(1, mul_succs.size());
+  check_post_trans(*mul_succs.begin());
+
+  auto new_multiplier = dynamic_cast<luci::CircleConst *>(g.mul->y());
+  EXPECT_NE(nullptr, new_multiplier);
+  EXPECT_EQ(1, new_multiplier->rank());
+  EXPECT_EQ(1, new_multiplier->dim(0).value());
 
   check_pre_trans(g.output->from());
 }

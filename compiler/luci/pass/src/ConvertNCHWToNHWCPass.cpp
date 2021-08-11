@@ -465,7 +465,7 @@ bool is_NCHW_with_s_const(const T *node, luci::CircleNode *&pred_node,
 //
 // Find MUL with an NCHW pattern described below
 //   - Input (non-constant) shape : [N, C, H, W]
-//   - Input (constant) shape : [1, C, 1, 1]
+//   - Input (constant) shape : [1, C, 1, 1] or a scalar (1)
 //   - Output shape : [N, C, H, W]
 bool is_NCHW_with_const(const luci::CircleMul *node, luci::CircleNode *&pred_node,
                         luci::CircleConst *&multiplier)
@@ -493,20 +493,32 @@ bool is_NCHW_with_const(const luci::CircleMul *node, luci::CircleNode *&pred_nod
     return false;
 
   const auto const_rank = multiplier->rank();
-  if (const_rank != 4)
+  // Support Rank 4 or scalar (rank 0 or 1)
+  if (const_rank != 4 && const_rank != 0 && const_rank != 1)
     return false;
 
-  for (uint32_t i = 0; i < const_rank; i++)
+  if (const_rank == 4)
   {
-    if (i != 1 && multiplier->dim(i).value() != 1)
-      return false;
+    for (uint32_t i = 0; i < const_rank; i++)
+    {
+      if (i != 1 && multiplier->dim(i).value() != 1)
+        return false;
+    }
   }
 
-  const auto const_cdim = multiplier->dim(1);
   const auto input_cdim = pred_node->dim(1);
   const auto output_cdim = node->dim(1);
 
-  if (const_cdim == input_cdim && input_cdim == output_cdim)
+  if (const_rank == 4)
+  {
+    const auto const_cdim = multiplier->dim(1);
+    // Check Input, Output, Const have the same channel size
+    if (const_cdim == input_cdim && input_cdim == output_cdim)
+      return true;
+    else
+      return false;
+  }
+  if (input_cdim == output_cdim)
     return true;
   else
     return false;
@@ -623,6 +635,24 @@ template <class T> bool convert_unary_features(T *node)
   auto pre_trans = create_pre_transpose(node);
   pre_trans->a(pred_node);
   node->features(pre_trans);
+
+  // Do shape inference for this node again.
+  node->shape_status(luci::ShapeStatus::UNDEFINED);
+
+  auto post_trans = create_post_transpose(node);
+  loco::replace(node).with(post_trans);
+
+  post_trans->a(node);
+
+  return true;
+}
+
+template <class T> bool convert_unary_x(T *node)
+{
+  const auto pred_node = loco::must_cast<luci::CircleNode *>(node->x());
+  auto pre_trans = create_pre_transpose(node);
+  pre_trans->a(pred_node);
+  node->x(pre_trans);
 
   // Do shape inference for this node again.
   node->shape_status(luci::ShapeStatus::UNDEFINED);
@@ -772,6 +802,8 @@ class ConvertNCHWToNHWC final : public luci::CircleNodeMutableVisitor<bool>
     return convert_unary_features<luci::CircleLeakyRelu>(node);
   }
 
+  bool visit(luci::CircleLogistic *node) { return convert_unary_x<luci::CircleLogistic>(node); }
+
   bool visit(luci::CircleMaximum *node)
   {
     luci::CircleNode *pred_node = nullptr;
@@ -914,8 +946,11 @@ class ConvertNCHWToNHWC final : public luci::CircleNodeMutableVisitor<bool>
       pre_trans->a(pred_node);
       node->x(pre_trans);
 
-      auto nhwc_const = create_NHWC_from_NCHW(multiplier);
-      node->y(nhwc_const);
+      if (multiplier->rank() == 4)
+      {
+        auto nhwc_const = create_NHWC_from_NCHW(multiplier);
+        node->y(nhwc_const);
+      }
     }
     else if (multiplier == nullptr)
     {
@@ -1226,6 +1261,7 @@ bool ConvertNCHWToNHWCPass::run(loco::Graph *g)
       case luci::CircleOpcode::ADD:
       case luci::CircleOpcode::CONCATENATION:
       case luci::CircleOpcode::LEAKY_RELU:
+      case luci::CircleOpcode::LOGISTIC:
       case luci::CircleOpcode::MAXIMUM:
       case luci::CircleOpcode::MEAN:
       case luci::CircleOpcode::MINIMUM:
