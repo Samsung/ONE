@@ -24,6 +24,8 @@
 #include "open_cl/kernels/DepthwiseConv.h"
 #include "open_cl/kernels/Pooling.h"
 #include "open_cl/kernels/Relu.h"
+#include "open_cl/kernels/Reshape.h"
+#include "open_cl/kernels/Reshapex4.h"
 #include "open_cl/kernels/Softmax.h"
 #include "open_cl/kernels/Softmax1x1.h"
 
@@ -59,6 +61,21 @@ std::unique_ptr<GPUOperation> SelectPooling(const Pooling2DAttributes &attr,
 std::unique_ptr<GPUOperation> SelectReLU(const ReLUAttributes &attr, const OperationDef &op_def)
 {
   return absl::make_unique<GPUOperation>(CreateReLU(op_def, attr));
+}
+
+void SelectReshape(int src_channels, int dst_channels, const OperationDef &op_def,
+                   std::unique_ptr<GPUOperation> *ptr)
+{
+  if (src_channels % 4 == 0 && dst_channels % 4 == 0)
+  {
+    GPUOperation operation = CreateReshapex4(op_def);
+    *ptr = std::make_unique<GPUOperation>(std::move(operation));
+  }
+  else
+  {
+    GPUOperation operation = CreateReshape(op_def);
+    *ptr = std::make_unique<GPUOperation>(std::move(operation));
+  }
 }
 
 void SelectSoftmax(const BHWC &shape, const OperationDef &op_def,
