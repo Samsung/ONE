@@ -24,7 +24,7 @@ namespace
 {
 
 /**
- *  Create a const for fused reduction indices
+ *  Fuse Transpose with Mean if possible
  *
  *  BEFORE
  *                  |
@@ -39,6 +39,10 @@ namespace
  *                  |                            |
  *                                      [CircleMean, axis<3>]
  *
+ */
+
+/**
+ * @brief Create a const for fused reduction indices
  */
 luci::CircleConst *create_fused_indices(luci::CircleConst *rindices,
                                         const std::vector<uint32_t> &fused_rindices)
@@ -128,7 +132,7 @@ bool fuse_transpose_with_mean(luci::CircleMean *mean)
   fused_mean->keep_dims(false);
   fused_mean->name(mean->name() + "/Transpose");
 
-  // Replace old CircleMean operations with new CircleMean operation with merged indices.
+  // Replace old CircleMean operation with new CircleMean operation with merged indices.
   replace(mean).with(fused_mean);
   luci::add_origin(fused_mean,
                    luci::composite_origin({luci::get_origin(mean), luci::get_origin(transpose)}));

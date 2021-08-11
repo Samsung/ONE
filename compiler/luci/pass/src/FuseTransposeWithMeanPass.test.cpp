@@ -108,7 +108,7 @@ TEST(FuseTransposeWithMeanPassTest, name)
   ASSERT_NE(nullptr, name);
 }
 
-TEST(FuseTransposeWithMeanPassTest, fuse_mean_with_mean)
+TEST(FuseTransposeWithMeanPassTest, fuse_transpose_with_mean)
 {
   FuseTransposeWithMeanTestGraph g;
   luci::FuseTransposeWithMeanPass pass;
@@ -116,16 +116,27 @@ TEST(FuseTransposeWithMeanPassTest, fuse_mean_with_mean)
   g.init();
 
   EXPECT_TRUE(pass.run(g.g()));
+
+  auto fused_mean = dynamic_cast<luci::CircleMean *>(g.output()->from());
+  EXPECT_NE(nullptr, fused_mean);
+
+  auto rindices = dynamic_cast<luci::CircleConst *>(fused_mean->reduction_indices());
+  EXPECT_NE(nullptr, rindices);
+
+  EXPECT_EQ(1, rindices->rank());
+  EXPECT_EQ(1, rindices->dim(0));
+  EXPECT_EQ(1, rindices->size<loco::DataType::S32>());
+  EXPECT_EQ(1, rindices->at<loco::DataType::S32>(0));
 }
 
-TEST(FuseTransposeWithMeanPassTest, fus_mean_with_mean_NEG)
+TEST(FuseTransposeWithMeanPassTest, fuse_transpose_with_mean_NEG)
 {
   FuseTransposeWithMeanTestGraph g;
   luci::FuseTransposeWithMeanPass pass;
 
   g.init();
 
-  // Add CircleRelu operation between CircleMeans operations
+  // Add CircleRelu operation between CircleMean and Transpose
   auto relu = g.g()->nodes()->create<luci::CircleRelu>();
   relu->name("relu");
   relu->features(g.transpose());
