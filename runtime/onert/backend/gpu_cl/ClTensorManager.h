@@ -46,9 +46,9 @@ public:
   void deallocateConsts(void);
   void deallocateNonconsts(void);
 
-  void buildTensor(const ir::OperandIndex &ind, const ir::OperandInfo &info, size_t num_use,
-                   InferenceContext::CreateInferenceInfo create_info, CLCommandQueue *queue,
-                   DeviceInfo &device_info);
+  void buildTensor(const ir::OperandIndex &ind, const ir::OperandInfo &info,
+                   InferenceContext::CreateInferenceInfo create_info,
+                   std::shared_ptr<Environment> environment, DeviceInfo &device_info);
 
   std::shared_ptr<T_ITensor> findTensorAsParent(const ir::OperandIndex &ind);
 
@@ -122,19 +122,20 @@ void ClTensorManager<T_ITensor, T_Tensor>::deallocateNonconsts(void)
 
 template <typename T_ITensor, typename T_Tensor>
 void ClTensorManager<T_ITensor, T_Tensor>::buildTensor(
-  const ir::OperandIndex &ind, const ir::OperandInfo &info, size_t num_use,
-  InferenceContext::CreateInferenceInfo create_info, CLCommandQueue *queue, DeviceInfo &device_info)
+  const ir::OperandIndex &ind, const ir::OperandInfo &info,
+  InferenceContext::CreateInferenceInfo create_info, std::shared_ptr<Environment> environment,
+  DeviceInfo &device_info)
 {
   assert(_ind_to_mgr.find(ind) == _ind_to_mgr.end());
 
   if (info.isConstant())
   {
-    _const_mgr->buildTensor(ind, info, num_use, create_info, queue, device_info);
+    _const_mgr->buildTensor(ind, info, create_info, environment, device_info);
     _ind_to_mgr.insert({ind, *_const_mgr});
   }
   else
   {
-    _nonconst_mgr->buildTensor(ind, info, num_use, create_info, queue, device_info);
+    _nonconst_mgr->buildTensor(ind, info, create_info, environment, device_info);
     _ind_to_mgr.insert({ind, *_nonconst_mgr});
   }
 }

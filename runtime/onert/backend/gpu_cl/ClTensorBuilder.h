@@ -278,8 +278,7 @@ void ClTensorBuilder<T_ITensor, T_Tensor>::buildTensors(void)
       continue;
 
     const auto &info = entry.second;
-    _tensor_mgr->buildTensor(ind, info, _uses_count_map[ind], _create_info, _environment->queue(),
-                             _environment->device().info_);
+    _tensor_mgr->buildTensor(ind, info, _create_info, _environment, _environment->device().info_);
   }
 }
 

@@ -69,15 +69,15 @@ public:
   { /* DO NOTHING */
   }
 
-  void buildTensor(const ir::OperandIndex &ind, const ir::OperandInfo &info, size_t num_use,
-                   InferenceContext::CreateInferenceInfo create_info, CLCommandQueue *queue,
-                   DeviceInfo &device_info)
+  void buildTensor(const ir::OperandIndex &ind, const ir::OperandInfo &info,
+                   InferenceContext::CreateInferenceInfo create_info,
+                   std::shared_ptr<Environment> environment, DeviceInfo &device_info)
   {
     ValueId max_id = 0;
     auto data_type = DeduceDataTypeFromPrecision(create_info.precision);
     const auto shape = info.shape();
 
-    auto tensor = std::make_shared<T_Tensor>(shape.rank(), shape, queue, num_use);
+    auto tensor = std::make_shared<T_Tensor>(shape.rank(), shape, environment);
     _tensors[ind] = tensor;
 
     BHWC t_shape;
