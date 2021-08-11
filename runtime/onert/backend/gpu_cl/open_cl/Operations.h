@@ -82,7 +82,7 @@ enum class OperationType
   // REDUCE_MINIMUM,
   // REDUCE_PRODUCT,
   // REDUCE_SUM,
-  // RELU,
+  RELU,
   // RESHAPE,
   // RESIZE,
   // RSQRT,
@@ -100,7 +100,24 @@ enum class OperationType
   // TRANSPOSE,
 };
 
-#if 0
+// f(x):= {
+//   if x < 0  : x -> alpha * x
+//   if x >= 0 : x -> min(clip, x)
+// }
+//
+// Examples:
+//   - ReLU: clip = 0, alpha = 0
+//   - ReLU6: clip = 6, alpha = 0
+//   - Leaky ReLU: clip = 0, alpha = a
+struct ReLUAttributes
+{
+  // clip <= 0 mean it is not set.
+  float clip = 0;
+
+  float alpha = 0;
+};
+
+#if 0 // NYI
 std::string ToString(enum OperationType op);
 
 OperationType OperationTypeFromString(const std::string &name);
@@ -352,23 +369,6 @@ Padding2D CalculateSamePadding(const BHWC &input, const DepthwiseConvolution2DAt
 // @return padding for depthwise convolution operation to make sure output keep
 // the same shape as the given input.
 Padding3D CalculateSamePadding(const BHWDC &input, const DepthwiseConvolution3DAttributes &attr);
-
-// f(x):= {
-//   if x < 0  : x -> alpha * x
-//   if x >= 0 : x -> min(clip, x)
-// }
-//
-// Examples:
-//   - ReLU: clip = 0, alpha = 0
-//   - ReLU6: clip = 6, alpha = 0
-//   - Leaky ReLU: clip = 0, alpha = a
-struct ReLUAttributes
-{
-  // clip <= 0 mean it is not set.
-  float clip = 0;
-
-  float alpha = 0;
-};
 
 struct PReLUAttributes
 {

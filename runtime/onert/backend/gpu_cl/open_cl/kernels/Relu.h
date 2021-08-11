@@ -15,14 +15,15 @@
  * limitations under the License.
  */
 
-#include "SimpleSelectors.h"
+#ifndef __ONERT_BACKEND_GPU_CL_OPEN_CL_KERNELS_RELU_H__
+#define __ONERT_BACKEND_GPU_CL_OPEN_CL_KERNELS_RELU_H__
 
-#include <memory>
-#include <set>
-
-#include "open_cl/kernels/Add.h"
-#include "open_cl/kernels/Relu.h"
-
+#include "open_cl/ClKernel.h"
+#include "GpuOperation.h"
+#include "open_cl/Precision.h"
+#include "open_cl/Tensor.h"
+#include "open_cl/Types.h"
+#include "open_cl/Operations.h"
 namespace onert
 {
 namespace backend
@@ -30,18 +31,10 @@ namespace backend
 namespace gpu_cl
 {
 
-void SelectAdd(const OperationDef &op_def, const std::vector<int> &channels, int dst_channels,
-               std::unique_ptr<GPUOperation> *ptr)
-{
-  GPUOperation operation = CreateAdd(op_def, channels, dst_channels);
-  *ptr = std::make_unique<GPUOperation>(std::move(operation));
-}
-
-std::unique_ptr<GPUOperation> SelectReLU(const ReLUAttributes &attr, const OperationDef &op_def)
-{
-  return absl::make_unique<GPUOperation>(CreateReLU(op_def, attr));
-}
+GPUOperation CreateReLU(const OperationDef &definition, const ReLUAttributes &attr);
 
 } // namespace gpu_cl
 } // namespace backend
 } // namespace onert
+
+#endif // __ONERT_BACKEND_GPU_CL_OPEN_CL_KERNELS_RELU_H__

@@ -15,8 +15,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_GPU_CL_OPENCL_SPI_H__
-#define __ONERT_BACKEND_GPU_CL_OPENCL_SPI_H__
+#ifndef __ONERT_BACKEND_GPU_CL_OPEN_CL_SPI_H__
+#define __ONERT_BACKEND_GPU_CL_OPEN_CL_SPI_H__
 
 #include <cstdint>
 
@@ -91,4 +91,4 @@ private:
 } // namespace backend
 } // namespace onert
 
-#endif // __ONERT_BACKEND_GPU_CL_OPENCL_SPI_H__
+#endif // __ONERT_BACKEND_GPU_CL_OPEN_CL_SPI_H__

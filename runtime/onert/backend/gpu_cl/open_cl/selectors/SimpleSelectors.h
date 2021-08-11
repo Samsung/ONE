@@ -35,6 +35,8 @@ namespace gpu_cl
 void SelectAdd(const OperationDef &op_def, const std::vector<int> &channels, int dst_channels,
                std::unique_ptr<GPUOperation> *ptr);
 
+std::unique_ptr<GPUOperation> SelectReLU(const ReLUAttributes &attr, const OperationDef &op_def);
+
 } // namespace gpu_cl
 } // namespace backend
 } // namespace onert

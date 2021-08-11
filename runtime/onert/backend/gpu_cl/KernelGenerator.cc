@@ -129,6 +129,52 @@ void KernelGenerator::visit(const ir::operation::BinaryArithmetic &node)
   _return_fn = std::move(fn);
 }
 
+void KernelGenerator::visit(const ir::operation::ElementwiseActivation &node)
+{
+  std::unique_ptr<GPUOperation> gpu_op;
+  auto fn = std::make_unique<ClFunction>();
+
+  switch (node.param().op_type)
+  {
+    case ir::operation::ElementwiseActivation::Type::LEAKY_RELU:
+    case ir::operation::ElementwiseActivation::Type::RELU:
+    {
+      const auto output_index{node.getOutputs().at(0)};
+      const auto input_index{
+        node.getInputs().at(ir::operation::ElementwiseActivation::Input::INPUT)};
+
+      OperationDef op_def;
+      op_def.precision = CalculationsPrecision::F32;
+      auto output_tensor = _tensor_reg->getClTensor(output_index);
+      auto input_tensor = _tensor_reg->getClTensor(input_index);
+      op_def.dst_tensors.push_back(_tensor_reg->getClTensorReserver(output_index)->descriptor);
+      op_def.src_tensors.push_back(_tensor_reg->getClTensorReserver(input_index)->descriptor);
+
+      ReLUAttributes attr;
+      if (ir::operation::ElementwiseActivation::Type::LEAKY_RELU == node.param().op_type)
+      {
+        attr.alpha = node.param().alpha;
+        attr.clip = 0;
+      }
+      else
+      {
+        attr.alpha = node.param().beta;
+        attr.clip = node.param().alpha;
+      }
+      gpu_op = SelectReLU(attr, op_def);
+      gpu_op->SetSrc(input_tensor->handle(), ir::operation::ElementwiseActivation::Input::INPUT);
+      gpu_op->SetDst(output_tensor->handle(), 0);
+      fn->configure(_creation_context);
+      fn->add_operation(std::move(gpu_op));
+
+      _return_fn = std::move(fn);
+      break;
+    }
+    default:
+      throw std::runtime_error("gpu_cl KernelGenerator : Not supported operation yet");
+  }
+}
+
 } // namespace gpu_cl
 } // namespace backend
 } // namespace onert
