@@ -31,6 +31,7 @@
 #include "luci/Pass/FuseInstanceNormPass.h"
 #include "luci/Pass/FuseMeanWithMeanPass.h"
 #include "luci/Pass/FusePreActivationBatchNormPass.h"
+#include "luci/Pass/FuseTransposeWithMeanPass.h"
 #include "luci/Pass/MakeBatchNormGammaPositivePass.h"
 #include "luci/Pass/PropagateQuantParamPass.h"
 #include "luci/Pass/RemoveFakeQuantPass.h"
@@ -237,6 +238,10 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   if (_options->query(Options::Algorithm::FuseActivationFunction))
   {
     phase.emplace_back(std::make_unique<FuseActivationFunctionPass>());
+  }
+  if (_options->query(Options::Algorithm::FuseTransposeWithMean))
+  {
+    phase.emplace_back(std::make_unique<FuseTransposeWithMeanPass>());
   }
   if (_options->query(Options::Algorithm::FoldAddV2))
   {
