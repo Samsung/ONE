@@ -231,7 +231,7 @@ void fill_coords_addition(luci::Padding padding, const luci::Stride &stride,
     for (int32_t x_o = 0, x_i = start_y; x_o < output_width; ++x_o, x_i += step_x)
     {
       auto const output_idx = y_o * output_width + x_o;
-      auto const input_idx = y_i * input_width + x_i;
+      auto const input_idx = y_i * static_cast<int32_t>(input_width) + x_i;
 
       cords->at<DT>(output_idx) = input_idx;
     }
