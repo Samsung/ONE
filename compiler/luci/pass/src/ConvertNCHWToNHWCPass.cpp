@@ -581,7 +581,7 @@ bool is_NCHW_with_const(const luci::CircleAdd *node, luci::CircleNode *&pred_nod
 // We assume SUB with const input is NCHW if,
 // Input shape: (N, C, H, W)
 // Output shape: (N, C, H, W)
-// 1. Const shape is (1, C, 1, 1)
+// 1. Const shape is (1, C, 1, 1) or a scalar (1)
 // 2. Input, Output, Const have the same C.
 bool is_NCHW_with_const(const luci::CircleSub *node, const luci::CircleNode *pred_node,
                         const luci::CircleConst *subtract)
@@ -593,25 +593,36 @@ bool is_NCHW_with_const(const luci::CircleSub *node, const luci::CircleNode *pre
     return false;
 
   const auto const_rank = subtract->rank();
-  if (const_rank != 4)
+  // Support Rank 4 or scalar (rank 0 or 1)
+  if (const_rank != 4 && const_rank != 0 && const_rank != 1)
     return false;
 
-  // Check the shape is (1, C, 1, 1)
-  for (uint32_t i = 0; i < const_rank; i++)
+  if (const_rank == 4)
   {
-    if (i == 1)
-      continue;
+    // Check the shape is (1, C, 1, 1)
+    for (uint32_t i = 0; i < const_rank; i++)
+    {
+      if (i == 1)
+        continue;
 
-    if (subtract->dim(i).value() != 1)
-      return false;
+      if (subtract->dim(i).value() != 1)
+        return false;
+    }
   }
 
   const auto input_cdim = pred_node->dim(1);
   const auto output_cdim = node->dim(1);
-  const auto const_cdim = subtract->dim(1);
 
-  // Check Input, Output, Const have the same channel size
-  if (const_cdim == input_cdim && input_cdim == output_cdim)
+  if (const_rank == 4)
+  {
+    const auto const_cdim = subtract->dim(1);
+    // Check Input, Output, Const have the same channel size
+    if (const_cdim == input_cdim && input_cdim == output_cdim)
+      return true;
+    else
+      return false;
+  }
+  if (input_cdim == output_cdim)
     return true;
   else
     return false;
@@ -1093,11 +1104,13 @@ class ConvertNCHWToNHWC final : public luci::CircleNodeMutableVisitor<bool>
       auto pre_trans = create_pre_transpose(node);
       pre_trans->a(pred_node);
 
-      auto nhwc_const = create_NHWC_from_NCHW(subtract);
-      if (nhwc_const == nullptr)
-        return false;
-
-      node->x(nhwc_const);
+      if (subtract->rank() == 4)
+      {
+        auto nhwc_const = create_NHWC_from_NCHW(subtract);
+        if (nhwc_const == nullptr)
+          return false;
+        node->x(nhwc_const);
+      }
       node->y(pre_trans);
     }
     else if (const_x == nullptr && const_y != nullptr)
@@ -1112,12 +1125,15 @@ class ConvertNCHWToNHWC final : public luci::CircleNodeMutableVisitor<bool>
       auto pre_trans = create_pre_transpose(node);
       pre_trans->a(pred_node);
 
-      auto nhwc_const = create_NHWC_from_NCHW(subtract);
-      if (nhwc_const == nullptr)
-        return false;
+      if (subtract->rank() == 4)
+      {
+        auto nhwc_const = create_NHWC_from_NCHW(subtract);
+        if (nhwc_const == nullptr)
+          return false;
+        node->y(nhwc_const);
+      }
 
       node->x(pre_trans);
-      node->y(nhwc_const);
     }
     else if (const_x == nullptr && const_y == nullptr)
     {

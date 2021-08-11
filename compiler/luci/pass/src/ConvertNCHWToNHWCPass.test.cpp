@@ -652,6 +652,38 @@ public:
   luci::CircleConst *beta = nullptr;
 };
 
+class SubScalarGraph final : public SimpleGraph
+{
+protected:
+  loco::Node *insertGraphBody(loco::Node *input) override
+  {
+    sub = g.nodes()->create<luci::CircleSub>();
+    beta = g.nodes()->create<luci::CircleConst>();
+
+    sub->dtype(loco::DataType::FLOAT32);
+    beta->dtype(loco::DataType::FLOAT32);
+
+    uint32_t channel_size = 16;
+    sub->shape({1, channel_size, 4, 4});
+    beta->shape({1});
+
+    beta->size<loco::DataType::FLOAT32>(1);
+    beta->at<loco::DataType::FLOAT32>(0) = 5;
+
+    sub->x(beta);
+    sub->y(input);
+
+    sub->name("sub");
+    beta->name("beta");
+
+    return sub;
+  }
+
+public:
+  luci::CircleSub *sub = nullptr;
+  luci::CircleConst *beta = nullptr;
+};
+
 void check_pre_trans(loco::Node *node)
 {
   auto pre_trans = dynamic_cast<luci::CircleTranspose *>(node);
@@ -1303,6 +1335,30 @@ TEST(ConvertNCHWToNHWC, Sub)
   EXPECT_EQ(1, new_beta->dim(1).value());
   EXPECT_EQ(1, new_beta->dim(2).value());
   EXPECT_EQ(channel_size, new_beta->dim(3).value());
+
+  check_pre_trans(g.output->from());
+}
+
+TEST(ConvertNCHWToNHWC, SubScalar)
+{
+  SubScalarGraph g;
+  g.init();
+
+  run_phase(&g.g, false, false);
+
+  auto input_succs = loco::succs(g.input);
+  EXPECT_EQ(1, input_succs.size());
+  check_post_trans(*input_succs.begin());
+
+  check_pre_trans(g.sub->y());
+
+  auto add_succs = loco::succs(g.sub);
+  EXPECT_EQ(1, add_succs.size());
+  check_post_trans(*add_succs.begin());
+
+  auto new_beta = dynamic_cast<luci::CircleConst *>(g.sub->x());
+  EXPECT_NE(nullptr, new_beta);
+  EXPECT_EQ(1, new_beta->rank());
 
   check_pre_trans(g.output->from());
 }
