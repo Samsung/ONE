@@ -25,8 +25,6 @@
 #include "open_cl/TensorType.h"
 #include "open_cl/Util.h"
 
-#define UNUSED_PARAM(x) (void)x
-
 namespace onert
 {
 namespace backend
@@ -39,10 +37,8 @@ namespace
 std::unique_ptr<GPUOperation> SelectConvolutionAdreno(const Convolution2DAttributes &attr,
                                                       const BHWC &dst_shape,
                                                       const DeviceInfo &device_info,
-                                                      const OperationDef &op_def, ModelHints hints)
+                                                      const OperationDef &op_def, ModelHints)
 {
-
-  UNUSED_PARAM(hints);
   if (IsConvConstantsSupported(device_info, op_def, attr))
   {
     GPUOperation conv = CreateConvConstants(device_info, op_def, attr);
@@ -59,9 +55,8 @@ std::unique_ptr<GPUOperation> SelectConvolutionWinogradAdreno(const Convolution2
                                                               const BHWC &dst_shape,
                                                               const DeviceInfo &device_info,
                                                               const OperationDef &op_def,
-                                                              ModelHints hints)
+                                                              ModelHints)
 {
-  UNUSED_PARAM(hints);
   ConvPowerVR conv = CreateConvPowerVRWino4x4To6x6(device_info, op_def, attr, &dst_shape);
   return absl::make_unique<ConvPowerVR>(std::move(conv));
 }
@@ -70,10 +65,8 @@ std::unique_ptr<GPUOperation>
 SelectConvolutionDynamicWeightsAdreno(const Convolution2DAttributes &attr,
                                       const BHWC &weights_shape, const BHWC &dst_shape,
                                       const DeviceInfo &device_info, const OperationDef &op_def,
-                                      ModelHints hints, ConvWeightsDescription *weights_desc)
+                                      ModelHints, ConvWeightsDescription *weights_desc)
 {
-
-  UNUSED_PARAM(hints);
   ConvPowerVR conv =
     CreateConvPowerVRDynamicWeights(device_info, op_def, attr, weights_shape, &dst_shape);
   *weights_desc = conv.GetConvWeightsDescription();
@@ -143,10 +136,9 @@ std::unique_ptr<GPUOperation> SelectConvolutionWinogradMali(const Convolution2DA
 std::unique_ptr<GPUOperation>
 SelectConvolutionDynamicWeightsMali(const Convolution2DAttributes &attr, const BHWC &weights_shape,
                                     const BHWC &dst_shape, const DeviceInfo &device_info,
-                                    const OperationDef &op_def, ModelHints hints,
+                                    const OperationDef &op_def, ModelHints,
                                     ConvWeightsDescription *weights_desc)
 {
-  UNUSED_PARAM(hints);
   if (op_def.src_tensors[0].storage_type == TensorStorageType::BUFFER &&
       IsConvBuffer1x1Supported(op_def, weights_shape, attr))
   {
@@ -246,9 +238,8 @@ SelectConvolutionWithDynamicWeights(const Convolution2DAttributes &attr, const B
 
 std::unique_ptr<GPUOperation>
 SelectConverterToConvWeights(const ConvWeightsDescription &weights_desc, const OperationDef &op_def,
-                             ModelHints hints)
+                             ModelHints)
 {
-  UNUSED_PARAM(hints);
   ConverterToConvWeights converter = ConverterToConvWeights(op_def, weights_desc);
   return absl::make_unique<ConverterToConvWeights>(std::move(converter));
 }

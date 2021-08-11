@@ -91,40 +91,40 @@ std::string ToString(enum OperationType op)
 {
   switch (op)
   {
-    case OperationType::ABS:
-      return "abs";
+    // case OperationType::ABS:
+    //   return "abs";
     case OperationType::ADD:
       return "add";
-    case OperationType::CONCAT:
-      return "concat";
-    case OperationType::COS:
-      return "cos";
-    case OperationType::EXP:
-      return "exp";
-    case OperationType::LOG:
-      return "log";
-    case OperationType::NEG:
-      return "neg";
-    case OperationType::POOLING_2D:
-      return "pooling_2d";
-    case OperationType::REDUCE_MAXIMUM:
-      return "reduce_maximum";
-    case OperationType::REDUCE_MINIMUM:
-      return "reduce_minimum";
-    case OperationType::REDUCE_PRODUCT:
-      return "reduce_product";
-    case OperationType::REDUCE_SUM:
-      return "reduce_sum";
-    case OperationType::RESIZE:
-      return "resize";
-    case OperationType::RELU:
-      return "relu";
-    case OperationType::RSQRT:
-      return "rsqrt";
-    case OperationType::SQRT:
-      return "sqrt";
-    case OperationType::SQUARE:
-      return "square";
+    // case OperationType::CONCAT:
+    //   return "concat";
+    // case OperationType::COS:
+    //   return "cos";
+    // case OperationType::EXP:
+    //   return "exp";
+    // case OperationType::LOG:
+    //   return "log";
+    // case OperationType::NEG:
+    //   return "neg";
+    // case OperationType::POOLING_2D:
+    //   return "pooling_2d";
+    // case OperationType::REDUCE_MAXIMUM:
+    //   return "reduce_maximum";
+    // case OperationType::REDUCE_MINIMUM:
+    //   return "reduce_minimum";
+    // case OperationType::REDUCE_PRODUCT:
+    //   return "reduce_product";
+    // case OperationType::REDUCE_SUM:
+    //   return "reduce_sum";
+    // case OperationType::RESIZE:
+    //   return "resize";
+    // case OperationType::RELU:
+    //   return "relu";
+    // case OperationType::RSQRT:
+    //   return "rsqrt";
+    // case OperationType::SQRT:
+    //   return "sqrt";
+    // case OperationType::SQUARE:
+    //   return "square";
     case OperationType::UNKNOWN:
       return "unknown_operation";
   }
@@ -134,23 +134,23 @@ std::string ToString(enum OperationType op)
 OperationType OperationTypeFromString(const std::string &name)
 {
   static const auto operations = new std::unordered_map<std::string, OperationType>({
-    {"abs", OperationType::ABS},
+    // {"abs", OperationType::ABS},
     {"add", OperationType::ADD},
-    {"concat", OperationType::CONCAT},
-    {"cos", OperationType::COS},
-    {"exp", OperationType::EXP},
-    {"log", OperationType::LOG},
-    {"neg", OperationType::NEG},
-    {"pooling_2d", OperationType::POOLING_2D},
-    {"reduce_maximum", OperationType::REDUCE_MAXIMUM},
-    {"reduce_minimum", OperationType::REDUCE_MINIMUM},
-    {"reduce_product", OperationType::REDUCE_PRODUCT},
-    {"reduce_sum", OperationType::REDUCE_SUM},
-    {"relu", OperationType::RELU},
-    {"resize", OperationType::RESIZE},
-    {"rsqrt", OperationType::RSQRT},
-    {"sqrt", OperationType::SQRT},
-    {"square", OperationType::SQUARE},
+    // {"concat", OperationType::CONCAT},
+    // {"cos", OperationType::COS},
+    // {"exp", OperationType::EXP},
+    // {"log", OperationType::LOG},
+    // {"neg", OperationType::NEG},
+    // {"pooling_2d", OperationType::POOLING_2D},
+    // {"reduce_maximum", OperationType::REDUCE_MAXIMUM},
+    // {"reduce_minimum", OperationType::REDUCE_MINIMUM},
+    // {"reduce_product", OperationType::REDUCE_PRODUCT},
+    // {"reduce_sum", OperationType::REDUCE_SUM},
+    // {"relu", OperationType::RELU},
+    // {"resize", OperationType::RESIZE},
+    // {"rsqrt", OperationType::RSQRT},
+    // {"sqrt", OperationType::SQRT},
+    // {"square", OperationType::SQUARE},
   });
   auto op = operations->find(name);
   return op == operations->end() ? OperationType::UNKNOWN : op->second;

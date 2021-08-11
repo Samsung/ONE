@@ -28,8 +28,6 @@
 #include "open_cl/TensorType.h"
 #include "open_cl/Status.h"
 
-#define UNUSED_PARAM(x) (void)x
-
 namespace onert
 {
 namespace backend
@@ -94,13 +92,9 @@ std::string GetComputationPart(const int3 &block_size, int element_size,
 }
 
 ConvBuffer1x1::ConvParams GetBestParams(const DeviceInfo &device_info,
-                                        const OperationDef &definition, const BHWC &shape,
-                                        int src_depth, int dst_depth)
+                                        const OperationDef &definition, const BHWC &shape, int,
+                                        int dst_depth)
 {
-
-  UNUSED_PARAM(src_depth);
-  UNUSED_PARAM(dst_depth);
-
   ConvBuffer1x1::ConvParams conv_params;
   conv_params.element_size = 4;
   conv_params.block_size = int3(1, 1, 1);
@@ -165,11 +159,8 @@ ConvBuffer1x1::ConvParams GetBestParams(const DeviceInfo &device_info,
 }
 
 ConvBuffer1x1::ConvParams GetBestParams(const DeviceInfo &device_info,
-                                        const OperationDef &definition, int src_depth,
-                                        int dst_depth)
+                                        const OperationDef &definition, int, int)
 {
-  UNUSED_PARAM(src_depth);
-  UNUSED_PARAM(dst_depth);
   ConvBuffer1x1::ConvParams conv_params;
   conv_params.element_size = 4;
   conv_params.block_size = int3(1, 1, 1);
@@ -207,9 +198,8 @@ ConvBuffer1x1 &ConvBuffer1x1::operator=(ConvBuffer1x1 &&operation)
 
 std::string ConvBuffer1x1::GenerateConvBuffer1x1(const OperationDef &op_def,
                                                  const ConvBuffer1x1::ConvParams &conv_params,
-                                                 Arguments *args)
+                                                 Arguments *)
 {
-  UNUSED_PARAM(args);
   auto src_desc = op_def.src_tensors[0];
   if (op_def.IsBatchSupported())
   {
