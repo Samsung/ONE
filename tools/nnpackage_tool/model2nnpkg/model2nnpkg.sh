@@ -27,7 +27,7 @@ usage() {
 }
 
 if [ $# -eq 0 ]; then
-  echo "For help, type $progname -h"
+  >&2 echo "For help, type $progname -h"
   exit 1
 fi
 
@@ -44,21 +44,21 @@ done
 shift $((OPTIND-1))
 
 if [ $# -ne 1 ]; then
-  echo "error: wrong argument (no argument or too many arguments)."
-  echo "For help, type $progname -h"
+  >&2 echo "error: wrong argument (no argument or too many arguments)."
+  >&2 echo "For help, type $progname -h"
   exit 1
 fi
 
 modelfile=$(basename "$1")
 
 if [[ "$modelfile" != *.* ]]; then
-  echo "error: modelfile does not have extension."
-  echo "Please provide extension so that $progname can identify what type of model you use."
+  >&2 echo "error: modelfile does not have extension."
+  >&2 echo "Please provide extension so that $progname can identify what type of model you use."
   exit 1
 fi
 
 if [ ! -e $1 ]; then
-  echo "error: "$1" does not exist."
+  >&2 echo "error: "$1" does not exist."
   exit 1
 fi
 
