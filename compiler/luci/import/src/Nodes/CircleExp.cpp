@@ -38,6 +38,10 @@ bool CircleExpGraphBuilder::validate(const ValidateArgs &args) const
     case circle::TensorType_FLOAT32:
     case circle::TensorType_FLOAT64:
       break;
+    // Additional support for quantized tensors
+    case circle::TensorType_UINT8:
+    case circle::TensorType_INT16:
+      break;
     // TODO support TensorType_COMPLEX64, complex128, bfloat16
     default:
       return false;
