@@ -465,7 +465,7 @@ bool is_NCHW_with_s_const(const T *node, luci::CircleNode *&pred_node,
 //
 // Find MUL with an NCHW pattern described below
 //   - Input (non-constant) shape : [N, C, H, W]
-//   - Input (constant) shape : [1, C, 1, 1]
+//   - Input (constant) shape : [1, C, 1, 1] or a scalar (1)
 //   - Output shape : [N, C, H, W]
 bool is_NCHW_with_const(const luci::CircleMul *node, luci::CircleNode *&pred_node,
                         luci::CircleConst *&multiplier)
@@ -493,20 +493,32 @@ bool is_NCHW_with_const(const luci::CircleMul *node, luci::CircleNode *&pred_nod
     return false;
 
   const auto const_rank = multiplier->rank();
-  if (const_rank != 4)
+  // Support Rank 4 or scalar (rank 0 or 1)
+  if (const_rank != 4 && const_rank != 0 && const_rank != 1)
     return false;
 
-  for (uint32_t i = 0; i < const_rank; i++)
+  if (const_rank == 4)
   {
-    if (i != 1 && multiplier->dim(i).value() != 1)
-      return false;
+    for (uint32_t i = 0; i < const_rank; i++)
+    {
+      if (i != 1 && multiplier->dim(i).value() != 1)
+        return false;
+    }
   }
 
-  const auto const_cdim = multiplier->dim(1);
   const auto input_cdim = pred_node->dim(1);
   const auto output_cdim = node->dim(1);
 
-  if (const_cdim == input_cdim && input_cdim == output_cdim)
+  if (const_rank == 4)
+  {
+    const auto const_cdim = multiplier->dim(1);
+    // Check Input, Output, Const have the same channel size
+    if (const_cdim == input_cdim && input_cdim == output_cdim)
+      return true;
+    else
+      return false;
+  }
+  if (input_cdim == output_cdim)
     return true;
   else
     return false;
@@ -914,8 +926,11 @@ class ConvertNCHWToNHWC final : public luci::CircleNodeMutableVisitor<bool>
       pre_trans->a(pred_node);
       node->x(pre_trans);
 
-      auto nhwc_const = create_NHWC_from_NCHW(multiplier);
-      node->y(nhwc_const);
+      if (multiplier->rank() == 4)
+      {
+        auto nhwc_const = create_NHWC_from_NCHW(multiplier);
+        node->y(nhwc_const);
+      }
     }
     else if (multiplier == nullptr)
     {
