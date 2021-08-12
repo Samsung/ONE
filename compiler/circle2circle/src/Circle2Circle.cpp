@@ -152,6 +152,12 @@ int entry(int argc, char **argv)
     .help("This will fuse two Mean operations when they follow one by one."
           "This will fold them into one operation and merge reduction indices.");
 
+  arser.add_argument("--fuse_transpose_with_mean")
+    .nargs(0)
+    .required(false)
+    .default_value(false)
+    .help("This will fuse Mean operation with a preceding Transpose under certain conditions.");
+
   arser.add_argument("--make_batchnorm_gamma_positive")
     .nargs(0)
     .required(false)
@@ -419,6 +425,8 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::MakeBatchNormGammaPositive);
   if (arser.get<bool>("--fuse_preactivation_batchnorm"))
     options->enable(Algorithms::FusePreActivationBatchNorm);
+  if (arser.get<bool>("--fuse_transpose_with_mean"))
+    options->enable(Algorithms::FuseTransposeWithMean);
   if (arser.get<bool>("--remove_fakequant"))
     options->enable(Algorithms::RemoveFakeQuant);
   if (arser.get<bool>("--remove_quantdequant"))
