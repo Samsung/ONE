@@ -157,14 +157,7 @@ def main():
         codegen_cmd += getattr(args, 'command').split()
 
     # run backend driver
-    with subprocess.Popen(
-            codegen_cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
-            bufsize=1) as p:
-        for line in p.stdout:
-            sys.stdout.buffer.write(f"{backend_base}: ".encode() + line)
-            sys.stdout.buffer.flush()
-    if p.returncode != 0:
-        sys.exit(p.returncode)
+    _utils._run(codegen_cmd, err_prefix=backend_base)
 
 
 if __name__ == '__main__':

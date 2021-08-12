@@ -229,3 +229,43 @@ def _safemain(main, mainpath):
         prog_name = os.path.basename(mainpath)
         print(f"{prog_name}: {type(e).__name__}: " + str(e))
         sys.exit(255)
+
+
+def _run(cmd, err_prefix=None, logfile=None):
+    """Execute command in subprocess
+
+    Args:
+        cmd: command to be executed in subprocess
+        err_prefix: prefix to be put before every stderr lines
+        logfile: file stream to which both of stdout and stderr lines will be written
+    """
+    if logfile == None:
+        with subprocess.Popen(cmd, stderr=subprocess.PIPE, bufsize=1) as p:
+            for line in p.stderr:
+                if err_prefix:
+                    line = f"{err_prefix}: ".encode() + line
+                sys.stderr.buffer.write(line)
+                sys.stderr.buffer.flush()
+    else:
+        with subprocess.Popen(
+                cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, bufsize=1) as p:
+            import select
+            inputs = set([p.stdout, p.stderr])
+            while inputs:
+                readable, _, _ = select.select(inputs, [], [])
+                for x in readable:
+                    line = x.readline()
+                    if len(line) == 0:
+                        inputs.discard(x)
+                        continue
+                    if x == p.stdout:
+                        out = sys.stdout
+                    if x == p.stderr:
+                        out = sys.stderr
+                        if err_prefix:
+                            line = f"{err_prefix}: ".encode() + line
+                    out.buffer.write(line)
+                    out.buffer.flush()
+                    logfile.write(line)
+    if p.returncode != 0:
+        sys.exit(p.returncode)

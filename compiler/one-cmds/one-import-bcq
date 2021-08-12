@@ -143,17 +143,7 @@ def _convert(args):
         f.write((' '.join(generate_bcq_metadata_cmd) + '\n').encode())
 
         # generate BCQ information metadata
-        with subprocess.Popen(
-                generate_bcq_metadata_cmd,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.STDOUT,
-                bufsize=1) as p:
-            for line in p.stdout:
-                sys.stdout.buffer.write(line)
-                sys.stdout.buffer.flush()
-                f.write(line)
-        if p.returncode != 0:
-            sys.exit(p.returncode)
+        _utils._run(generate_bcq_metadata_cmd, logfile=f)
 
         # get output_arrays with BCQ
         bcq_output_arrays = _bcq_info_gen.get_bcq_output_arrays(
@@ -177,15 +167,7 @@ def _convert(args):
         f.write((' '.join(tf2tfliteV2_cmd) + '\n').encode())
 
         # convert tf to tflite
-        with subprocess.Popen(
-                tf2tfliteV2_cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
-                bufsize=1) as p:
-            for line in p.stdout:
-                sys.stdout.buffer.write(line)
-                sys.stdout.buffer.flush()
-                f.write(line)
-        if p.returncode != 0:
-            sys.exit(p.returncode)
+        _utils._run(tf2tfliteV2_cmd, logfile=f)
 
         # make a command to convert from tflite to circle
         tflite2circle_path = os.path.join(dir_path, 'tflite2circle')
@@ -196,16 +178,7 @@ def _convert(args):
         f.write((' '.join(tflite2circle_cmd) + '\n').encode())
 
         # convert tflite to circle
-        with subprocess.Popen(
-                tflite2circle_cmd,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.STDOUT,
-                bufsize=1) as p:
-            for line in p.stdout:
-                sys.stdout.buffer.write("tflite2circle: ".encode() + line)
-                f.write(line)
-        if p.returncode != 0:
-            sys.exit(p.returncode)
+        _utils._run(tflite2circle_cmd, logfile=f)
 
 
 def main():

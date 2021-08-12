@@ -132,13 +132,7 @@ def main():
     for section in section_to_run:
         driver_path = os.path.join(dir_path, _get_driver_name(section))
         cmd = [driver_path, '--config', getattr(args, 'config'), '--section', section]
-        with subprocess.Popen(
-                cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, bufsize=1) as p:
-            for line in p.stdout:
-                sys.stdout.buffer.write(line)
-                sys.stdout.buffer.flush()
-        if p.returncode != 0:
-            sys.exit(p.returncode)
+        _utils._run(cmd)
 
 
 if __name__ == '__main__':
