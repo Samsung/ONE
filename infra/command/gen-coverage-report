@@ -67,7 +67,7 @@ done
   "${CANDIDATES[@]}"
 
 
-opencl_files=($(find ./runtime/onert/backend/gpu_cl/open_cl/ -maxdepth 1 \( -name "*.cc" -o -name "*.h" \) -exec realpath {} \; ))
+opencl_files=($(find ./runtime/onert/backend/gpu_cl/open_cl/ \( -name "*.cc" -o -name "*.h" \) -exec realpath {} \; ))
 
 # Exclude *.test.cpp files from coverage report
 # Exclude flatbuffer generated files from coverage report
