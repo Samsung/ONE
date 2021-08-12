@@ -757,30 +757,34 @@ namespace luci
  *                    [CircleNode]
  *                    /          \
  *       [Split over channels]  [MaxPool2D]
- *             /   |   \              \
- *       [Conv2D] ...  ...      [MaxPool output]
+ *         /       |      \              \
+ *   [Requantize] ...     ...      [MaxPool output]
+ *         |
+ *      [PadV2]
+ *         |
+ *      [Conv2D]
+ *         |
+ *      [ArgMax]
+ *         |
+ *    [Reshape to 4d]
+ *         |
+ *   [Cast to fp32]
+ *    /        |
+ *   |  [Mul 1/<window width>]
+ *   |                \
+ *   |              [Floor]
+ *   |              /     \
+ *   | [Mul window width] |
+ *   \       /           /
+ *    \   [Neg] [Mul input width]
+ *     \   /    /
+ *     [Add]   /
+ *         \  /
+ *        [Add]
+ *          |
+ *     [Add const]
  *           |
- *       [ArgMax]
- *           |
- *     [Reshape to 4d]
- *           |
- *     [Cast to fp32]
- *      /        |
- *     |  [Mul 1/<window width>]
- *     |                \
- *     |              [Floor]
- *     |              /     \
- *     | [Mul window width] |
- *     \       /           /
- *      \   [Neg] [Mul input width]
- *       \   /    /
- *       [Add]   /
- *           \  /
- *          [Add]
- *            |
- *       [Add const]
- *            |
- *   [Mul number of channels]
+ * [Mul number of channels]
  *             \
  * [Optional Add with channels id]   ...  ...
  *                            \      |     /
