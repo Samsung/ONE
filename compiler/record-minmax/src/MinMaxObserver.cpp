@@ -86,6 +86,10 @@ void MinMaxObserver::postTensorWrite(const luci::CircleNode *node,
     if (isnan(number))
       continue;
 
+    // TODO use metadata hints to detect such cases
+    if (number == std::numeric_limits<float>::lowest())
+      continue;
+
     all_nan = false;
 
     if (number > max)
