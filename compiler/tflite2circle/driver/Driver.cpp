@@ -55,7 +55,7 @@ int entry(int argc, char **argv)
   }
   catch (const std::runtime_error &err)
   {
-    std::cout << err.what() << std::endl;
+    std::cerr << err.what() << std::endl;
     std::cout << arser;
     return 255;
   }
