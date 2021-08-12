@@ -1,0 +1,66 @@
+operand {
+  name: "ifm"
+  type: FLOAT32
+  shape { dim: 3 dim: 8 dim: 8 dim: 4 }
+}
+operand {
+  name: "inner1"
+  type: FLOAT32
+  shape { dim: 3 dim: 8 dim: 1 dim: 4 }
+}
+operand {
+  name: "inner2"
+  type: FLOAT32
+  shape { dim: 3 dim: 1 dim: 4 dim: 8 }
+}
+operand {
+  name: "reduction_indices1"
+  type: INT32
+  shape { dim: 1 }
+  filler { tag: "explicit" arg: "2" }
+}
+operand {
+  name: "reduction_indices2"
+  type: INT32
+  shape { dim: 1 }
+  filler { tag: "explicit" arg: "3"}
+}
+operand {
+  name: "perm"
+  type: INT32
+  shape { dim: 4 }
+  filler { tag: "explicit" arg: "0" arg: "2" arg: "3" arg: "1" }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 3 dim: 1 dim: 4 dim: 1 }
+}
+operation {
+  type: "Mean"
+  mean_options {
+    keep_dims: true
+  }
+  input: "ifm"
+  input: "reduction_indices1"
+  output: "inner1"
+}
+operation {
+  type: "Transpose"
+  transpose_options {
+  }
+  input: "inner1"
+  input: "perm"
+  output: "inner2"
+}
+operation {
+  type: "Mean"
+  mean_options {
+    keep_dims: true
+  }
+  input: "inner2"
+  input: "reduction_indices2"
+  output: "ofm"
+}
+input: "ifm"
+output: "ofm"
