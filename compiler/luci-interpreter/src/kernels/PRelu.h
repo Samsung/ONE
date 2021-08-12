@@ -27,12 +27,12 @@ namespace kernels
 
 class ChannelQuantMultipliers;
 
-class Prelu : public Kernel
+class PRelu : public Kernel
 {
 public:
-  Prelu(const Tensor *input, const Tensor *alpha, Tensor *output);
+  PRelu(const Tensor *input, const Tensor *alpha, Tensor *output);
 
-  ~Prelu();
+  ~PRelu();
 
   const Tensor *input() const { return _inputs[0]; }
   const Tensor *alpha() const { return _inputs[1]; }

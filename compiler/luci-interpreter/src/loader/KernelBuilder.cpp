@@ -59,7 +59,7 @@
 #include "kernels/Pad.h"
 #include "kernels/PadV2.h"
 #include "kernels/Pow.h"
-#include "kernels/Prelu.h"
+#include "kernels/PRelu.h"
 #include "kernels/Relu.h"
 #include "kernels/Relu6.h"
 #include "kernels/Reshape.h"
@@ -937,7 +937,7 @@ std::unique_ptr<Kernel> KernelBuilderLet<KB::OPQR>::visit(const luci::CirclePRel
   const Tensor *alpha = getInputTensor(node->alpha());
   Tensor *output = getOutputTensor(node);
 
-  return std::make_unique<kernels::Prelu>(input, alpha, output);
+  return std::make_unique<kernels::PRelu>(input, alpha, output);
 }
 
 std::unique_ptr<Kernel> KernelBuilderLet<KB::OPQR>::visit(const luci::CircleRelu *node)
