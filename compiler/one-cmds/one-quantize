@@ -167,7 +167,7 @@ def _quantize(args):
                 stderr=subprocess.STDOUT,
                 bufsize=1) as p:
             for line in p.stdout:
-                sys.stdout.buffer.write(line)
+                sys.stdout.buffer.write("circle_quantizer: ".encode() + line)
                 sys.stdout.buffer.flush()
                 f.write(line)
         if p.returncode != 0:
@@ -214,7 +214,7 @@ def _quantize(args):
                 stderr=subprocess.STDOUT,
                 bufsize=1) as p:
             for line in p.stdout:
-                sys.stdout.buffer.write(line)
+                sys.stdout.buffer.write("record_minmax: ".encode() + line)
                 sys.stdout.buffer.flush()
                 f.write(line)
         if p.returncode != 0:
@@ -247,7 +247,7 @@ def _quantize(args):
                 stderr=subprocess.STDOUT,
                 bufsize=1) as p:
             for line in p.stdout:
-                sys.stdout.buffer.write(line)
+                sys.stdout.buffer.write("circle_quantizer: ".encode() + line)
                 sys.stdout.buffer.flush()
                 f.write(line)
         if p.returncode != 0:
