@@ -351,10 +351,21 @@ luci::CircleNode *window_flattened_coord(const std::string &name, luci::Padding 
   luci::CircleNode *conv_input = input;
   if (padding == luci::Padding::SAME)
   {
+    // Create redundant add to combine two nodes with special quantization restrictions:
+    // PadV2 and Split in this case
+    // TODO Introduce special requantize node and fix quantizer?
+    auto requantize = none_act_func(graph->nodes()->create<luci::CircleMul>());
+    init_name_and_origin(requantize, name + "/Requantize", origin);
+    auto zero_const = create_scalar<loco::DataType::FLOAT32>(graph, 1.0f);
+    init_name_and_origin(zero_const, name + "Requantize_const", origin);
+
+    requantize->x(input);
+    requantize->y(zero_const);
+
     auto pad = graph->nodes()->create<luci::CirclePadV2>();
     init_name_and_origin(pad, name + "/Pad", origin);
 
-    pad->input(input);
+    pad->input(requantize);
 
     int32_t full_w_pad = compute_full_padding(input_width, output_width, stride.w(), filter.w());
     int32_t full_h_pad = compute_full_padding(input_height, output_height, stride.h(), filter.h());
