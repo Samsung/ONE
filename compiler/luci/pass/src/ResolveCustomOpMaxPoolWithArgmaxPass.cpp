@@ -113,10 +113,10 @@ template <loco::DataType DT> void fill_conv_weights(luci::CircleConst *weights)
   }
 }
 
-luci::CircleConst *create_conv_filter(luci::CircleConv2D *conv, const uint32_t kh,
+luci::CircleConst *create_conv_filter(loco::Graph *graph, const uint32_t kh,
                                       const uint32_t kw, const uint32_t kn)
 {
-  auto weights = conv->graph()->nodes()->create<luci::CircleConst>();
+  auto weights = graph->nodes()->create<luci::CircleConst>();
 
   weights->dtype(loco::DataType::FLOAT32);
 
@@ -158,6 +158,33 @@ luci::CircleConst *create_zero_bias(loco::Graph *graph, uint32_t depth)
   fill_zero_bias<loco::DataType::FLOAT32>(bias);
 
   return bias;
+}
+
+luci::CircleConst *create_padding_const(loco::Graph *graph, int32_t left_pad, int32_t right_pad, int32_t top_pad, int32_t bottom_pad)
+{
+  auto paddings = graph->nodes()->create<luci::CircleConst>();
+
+  paddings->dtype(loco::DataType::S32);
+
+  paddings->rank(2);
+  paddings->dim(0).set(4);
+  paddings->dim(1).set(2);
+  paddings->size<loco::DataType::S32>(8);
+  paddings->shape_status(luci::ShapeStatus::VALID);
+
+  paddings->at<loco::DataType::S32>(0) = 0;
+  paddings->at<loco::DataType::S32>(1) = 0;
+
+  paddings->at<loco::DataType::S32>(2) = left_pad;
+  paddings->at<loco::DataType::S32>(3) = right_pad;
+
+  paddings->at<loco::DataType::S32>(4) = top_pad;
+  paddings->at<loco::DataType::S32>(5) = bottom_pad;
+
+  paddings->at<loco::DataType::S32>(6) = 0;
+  paddings->at<loco::DataType::S32>(7) = 0;
+
+  return paddings;
 }
 
 template <loco::DataType DT, typename Numeric>
@@ -308,6 +335,7 @@ luci::CircleNode *max_pool_branch(luci::Padding padding, const luci::Stride &str
 
 luci::CircleNode *window_flattened_coord(const std::string &name, luci::Padding padding,
                                          const luci::Stride &stride, const luci::Filter filter,
+                                         int32_t input_height, int32_t input_width,
                                          uint32_t output_height, uint32_t output_width,
                                          luci::CircleNode *input)
 {
@@ -316,14 +344,40 @@ luci::CircleNode *window_flattened_coord(const std::string &name, luci::Padding 
 
   auto const depth_dimension = 3;
 
-  // Create Conv2D
+  // Create pad in case of SAME padding
+  luci::CircleNode *conv_input = input;
+  if (padding == luci::Padding::SAME)
+  {
+    auto pad = graph->nodes()->create<luci::CirclePadV2>();
+    init_name_and_origin(pad, name + "/Pad", origin);
+
+    pad->input(input);
+
+    int32_t full_w_pad = compute_full_padding(input_width, output_width, stride.w(), filter.w());
+    int32_t full_h_pad = compute_full_padding(input_height, output_height, stride.h(), filter.h());
+    int32_t left_pad = full_w_pad / 2;
+    int32_t right_pad = full_w_pad - left_pad;
+    int32_t top_pad = full_h_pad / 2;
+    int32_t bottom_pad = full_h_pad - top_pad;
+    auto padding_const = create_padding_const(graph, left_pad, right_pad, top_pad, bottom_pad);
+    init_name_and_origin(padding_const, name + "/Pad_shape", origin);
+    pad->paddings(padding_const);
+
+    auto padding_value = create_scalar<loco::DataType::FLOAT32, float>(
+      graph, std::numeric_limits<float>::lowest());
+    init_name_and_origin(padding_value, name + "/Pad_value", origin);
+    pad->constant_values(padding_value);
+
+    conv_input = pad;
+  }
+  // Create Conv2D to move spatial dimensions to depth
   auto conv = none_act_func(graph->nodes()->create<luci::CircleConv2D>());
   {
     init_name_and_origin(conv, name + "/Conv2D", origin);
 
     // Padding, Stride and kernel size equal to MaxPool's
     set_stride(conv, stride);
-    conv->padding(padding);
+    conv->padding(luci::Padding::VALID);
 
     // depth of kernel is equal to square size
     auto const kh = filter.h();
@@ -336,12 +390,12 @@ luci::CircleNode *window_flattened_coord(const std::string &name, luci::Padding 
 
     // create filter
     // TODO make shared
-    auto weights = create_conv_filter(conv, kh, kw, kd);
+    auto weights = create_conv_filter(graph, kh, kw, kd);
     init_name_and_origin(weights, conv->name() + "/Weights", origin);
 
     conv->bias(bias);
     conv->filter(weights);
-    conv->input(input);
+    conv->input(conv_input);
   }
 
   // Create ArgMax
@@ -568,7 +622,7 @@ luci::CircleNode *argmax_branch(luci::Padding padding, const luci::Stride &strid
 
     // Define idx of max element in Window:
     auto window_coords = window_flattened_coord(branch_name + "/WindowFlat", padding, stride,
-                                                filter, output_height, output_width, split_out);
+                                                filter, input_height, input_width, output_height, output_width, split_out);
 
     auto const window_y = window_y_coord(branch_name + "/WindowY", filter.w(), window_coords);
     auto const window_x =
