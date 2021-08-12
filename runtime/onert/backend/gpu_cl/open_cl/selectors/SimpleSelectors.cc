@@ -22,6 +22,7 @@
 
 #include "open_cl/kernels/Add.h"
 #include "open_cl/kernels/Relu.h"
+#include "open_cl/kernels/DepthwiseConv.h"
 
 namespace onert
 {
@@ -40,6 +41,14 @@ void SelectAdd(const OperationDef &op_def, const std::vector<int> &channels, int
 std::unique_ptr<GPUOperation> SelectReLU(const ReLUAttributes &attr, const OperationDef &op_def)
 {
   return absl::make_unique<GPUOperation>(CreateReLU(op_def, attr));
+}
+
+std::unique_ptr<GPUOperation>
+SelectDWConvolutionDynamicWeights(const DepthwiseConvolution2DAttributes &attr,
+                                  const DeviceInfo &device_info, const OperationDef &op_def)
+{
+  return absl::make_unique<GPUOperation>(
+    CreateDepthwiseConvolution2DDynamicWeights(device_info, op_def, attr));
 }
 
 } // namespace gpu_cl

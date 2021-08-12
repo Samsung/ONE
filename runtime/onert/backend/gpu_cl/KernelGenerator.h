@@ -46,6 +46,8 @@ public:
 
 private:
   void visit(const ir::operation::BinaryArithmetic &) override;
+  void visit(const ir::operation::Conv2D &) override;
+  void visit(const ir::operation::DepthwiseConv2D &) override;
   void visit(const ir::operation::ElementwiseActivation &) override;
 
 private:
@@ -55,6 +57,7 @@ private:
   std::shared_ptr<TensorBuilder> _tensor_builder;
   std::shared_ptr<ClTensorRegistry<TensorManager>> _tensor_reg;
   std::shared_ptr<CreationContext> _creation_context;
+  ir::OperandIndexMap<std::shared_ptr<Tensor>> _new_tensors;
 };
 
 } // namespace gpu_cl

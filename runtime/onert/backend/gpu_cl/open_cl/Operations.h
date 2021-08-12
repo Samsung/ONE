@@ -82,7 +82,7 @@ enum class OperationType
   // REDUCE_MINIMUM,
   // REDUCE_PRODUCT,
   // REDUCE_SUM,
-  RELU,
+  // RELU,
   // RESHAPE,
   // RESIZE,
   // RSQRT,
@@ -100,24 +100,6 @@ enum class OperationType
   // TRANSPOSE,
 };
 
-// f(x):= {
-//   if x < 0  : x -> alpha * x
-//   if x >= 0 : x -> min(clip, x)
-// }
-//
-// Examples:
-//   - ReLU: clip = 0, alpha = 0
-//   - ReLU6: clip = 6, alpha = 0
-//   - Leaky ReLU: clip = 0, alpha = a
-struct ReLUAttributes
-{
-  // clip <= 0 mean it is not set.
-  float clip = 0;
-
-  float alpha = 0;
-};
-
-#if 0 // NYI
 std::string ToString(enum OperationType op);
 
 OperationType OperationTypeFromString(const std::string &name);
@@ -129,6 +111,7 @@ typedef absl::variant<absl::monostate, InternalTensor<HWC, DataType::FLOAT32>,
 struct Padding2D
 {
   Padding2D() = default;
+  Padding2D(const Padding2D &);
   Padding2D &operator=(const Padding2D &value);
   bool operator==(const Padding2D &value);
   bool operator!=(const Padding2D &value);
@@ -144,11 +127,11 @@ struct Padding2D
 struct Padding3D
 {
   Padding3D() = default;
+  Padding3D(const Padding3D &);
   Padding3D &operator=(const Padding3D &value);
   bool operator==(const Padding3D &value);
   bool operator!=(const Padding3D &value);
   Padding3D &operator-(const Padding3D &value);
-
   // Padding values for every axis (if needed), where 'prepended' defines
   // padding for the beginning of each axis and 'appended' represents end part
   // of the corresponding axis.
@@ -370,6 +353,23 @@ Padding2D CalculateSamePadding(const BHWC &input, const DepthwiseConvolution2DAt
 // the same shape as the given input.
 Padding3D CalculateSamePadding(const BHWDC &input, const DepthwiseConvolution3DAttributes &attr);
 
+// f(x):= {
+//   if x < 0  : x -> alpha * x
+//   if x >= 0 : x -> min(clip, x)
+// }
+//
+// Examples:
+//   - ReLU: clip = 0, alpha = 0
+//   - ReLU6: clip = 6, alpha = 0
+//   - Leaky ReLU: clip = 0, alpha = a
+struct ReLUAttributes
+{
+  // clip <= 0 mean it is not set.
+  float clip = 0;
+
+  float alpha = 0;
+};
+
 struct PReLUAttributes
 {
   // clip <= 0 mean it is not set.
@@ -578,7 +578,6 @@ struct QuantizeAndDequantizeAttributes
   float max = 0;
   float scale = 0;
 };
-#endif
 
 } // namespace gpu_cl
 } // namespace backend

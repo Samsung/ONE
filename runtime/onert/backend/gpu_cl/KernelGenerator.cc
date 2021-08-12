@@ -23,6 +23,8 @@
 #include "ClFunction.h"
 #include "TensorManager.h"
 
+#include "open_cl/selectors/ConvolutionSelector.h"
+#include "open_cl/selectors/DwConvolutionSelector.h"
 #include "open_cl/selectors/SimpleSelectors.h"
 
 #include "ir/Operations.h"
@@ -41,6 +43,22 @@ namespace backend
 {
 namespace gpu_cl
 {
+
+HW ToHW(int32_t h, int32_t w) { return HW(h > 0 ? h : 1, w > 0 ? w : 1); }
+
+template <typename AttrT>
+void UpdatePadding(const ir::PaddingType type, const BHWC &input_shape, AttrT *attr)
+{
+  if (type == ir::PaddingType::SAME)
+  {
+    attr->padding = CalculateSamePadding(input_shape, *attr);
+  }
+  else
+  {
+    attr->padding.prepended = HW(0, 0);
+    attr->padding.appended = HW(0, 0);
+  }
+}
 
 KernelGenerator::KernelGenerator(const ir::Graph &graph,
                                  const std::shared_ptr<TensorBuilder> &tensor_builder,
@@ -124,6 +142,269 @@ void KernelGenerator::visit(const ir::operation::BinaryArithmetic &node)
     default:
       assert(false && "The BinaryArithmetic operation supports only binary arithmetic operations");
       break;
+  }
+
+  _return_fn = std::move(fn);
+}
+
+void KernelGenerator::visit(const ir::operation::Conv2D &node)
+{
+  auto output{node.getOutputs().at(0)};
+
+  auto input{node.getInputs().at(ir::operation::Conv2D::INPUT)};
+  auto kernel{node.getInputs().at(ir::operation::Conv2D::KERNEL)};
+  auto bias{node.getInputs().at(ir::operation::Conv2D::BIAS)};
+
+  const auto param = node.param();
+
+  OperationDef op_def;
+  op_def.precision = CalculationsPrecision::F32;
+
+  op_def.src_tensors.push_back(_tensor_reg->getClTensorReserver(input)->descriptor);
+
+  auto input_shape = _tensor_reg->getClTensorReserver(input)->shape;
+  auto kernel_shape = _tensor_reg->getClTensorReserver(kernel)->shape;
+  auto output_shape = _tensor_reg->getClTensorReserver(output)->shape;
+  auto bias_shape = _tensor_reg->getClTensorReserver(bias)->shape;
+
+  op_def.dst_tensors.push_back(_tensor_reg->getClTensorReserver(output)->descriptor);
+
+  ModelHints hints;
+  std::unique_ptr<GPUOperation> gpu_op; // = InitSingleOpSubgraph(inputs, outputs, gpu_subgraph);
+
+  auto input_tensor = _tensor_reg->getClTensor(input);
+  auto kernel_tensor = _tensor_reg->getClTensor(kernel);
+  auto bias_tensor = _tensor_reg->getClTensor(bias);
+  auto output_tensor = _tensor_reg->getClTensor(output);
+
+  gpu_cl::Convolution2DAttributes attr;
+  attr.strides = ToHW(param.stride.vertical, param.stride.horizontal);
+  attr.dilations = HW(std::max(static_cast<u_int32_t>(1), param.dilation.height_factor),
+                      std::max(static_cast<u_int32_t>(1), param.dilation.width_factor));
+
+  bool is_weight = (_ctx.at(kernel).isConstant() ? true : false);
+
+  if (is_weight)
+  {
+    attr.weights.id = kernel.value();
+    attr.weights.shape.o = kernel_shape.b;
+    attr.weights.shape.h = kernel_shape.h;
+    attr.weights.shape.w = kernel_shape.w;
+    attr.weights.shape.i = kernel_shape.c;
+    attr.weights.data.resize(kernel_shape.DimensionsProduct());
+    memcpy(attr.weights.data.data(), _ctx.at(kernel).data()->base(), kernel_tensor->total_size());
+  }
+
+  attr.bias.id = bias.value();
+  // TODO Modify
+  attr.bias.shape.v = bias_shape.b != 1 ? bias_shape.b : bias_shape.c;
+  attr.bias.data.resize(bias_shape.DimensionsProduct());
+  memcpy(attr.bias.data.data(), _ctx.at(bias).data()->base(), bias_tensor->total_size());
+
+  UpdatePadding(param.padding.type, input_shape, &attr);
+
+  gpu_op = SelectConvolution(attr, output_shape, _creation_context->GetDeviceInfo(), op_def, hints);
+  gpu_op->SetSrc(input_tensor->handle(), ir::operation::Conv2D::INPUT);
+
+  auto fn = std::make_unique<ClFunction>();
+
+  fn->configure(_creation_context);
+
+  const auto activation = node.param().activation;
+
+  switch (activation)
+  {
+    case ir::Activation::NONE:
+    {
+      gpu_op->SetDst(output_tensor->handle(), 0);
+      fn->add_operation(std::move(gpu_op));
+      break;
+    }
+    case ir::Activation::RELU6:
+    {
+      std::unique_ptr<GPUOperation> gpu_op_1;
+      OperationDef op_def_1;
+      std::shared_ptr<Tensor> new_tensor = std::make_shared<Tensor>();
+
+      _new_tensors[output] = new_tensor;
+      if (!CreateTensor(*_creation_context->context, output_shape,
+                        _tensor_reg->getClTensorReserver(output)->descriptor, new_tensor.get())
+             .ok())
+      {
+        throw std::runtime_error("Error CreateTensor.");
+      }
+
+      gpu_op->SetDst(new_tensor.get(), 0);
+      fn->add_operation(std::move(gpu_op));
+      op_def_1.precision = CalculationsPrecision::F32;
+      op_def_1.src_tensors.push_back(_tensor_reg->getClTensorReserver(output)->descriptor);
+      op_def_1.dst_tensors.push_back(_tensor_reg->getClTensorReserver(output)->descriptor);
+
+      //   - ReLU6: clip = 6, alpha = 0
+      ReLUAttributes attr_1;
+      attr_1.clip = 6;
+      attr_1.alpha = 0;
+      gpu_op_1 = SelectReLU(attr_1, op_def_1);
+
+      gpu_op_1->SetSrc(new_tensor.get(), 0);
+      gpu_op_1->SetDst(output_tensor->handle(), 0);
+      fn->add_operation(std::move(gpu_op_1));
+      break;
+    }
+    default:
+    {
+      throw std::runtime_error("gpu_cl KernelGenerator : Not supported operation yet");
+    }
+  }
+
+  _return_fn = std::move(fn);
+}
+
+void KernelGenerator::visit(const ir::operation::DepthwiseConv2D &node)
+{
+  using ir::operation::DepthwiseConv2D;
+
+  const auto ofm_index{node.getOutputs().at(0)};
+  const auto ifm_index{node.getInputs().at(DepthwiseConv2D::Input::INPUT)};
+  const auto ker_index{node.getInputs().at(DepthwiseConv2D::Input::KERNEL)};
+  const auto bias_index{node.getInputs().at(DepthwiseConv2D::Input::BIAS)};
+
+  const auto stride = node.param().stride;
+  const auto dilation = node.param().dilation;
+  const auto padding = node.param().padding;
+
+  const auto multiplier = node.param().multiplier;
+
+  auto ofm_tensor = _tensor_reg->getClTensor(ofm_index);
+  auto ifm_tensor = _tensor_reg->getClTensor(ifm_index);
+  auto ker_tensor = _tensor_reg->getClTensor(ker_index);
+  auto bias_tensor = _tensor_reg->getClTensor(bias_index);
+
+  bool is_weight = (_ctx.at(ker_index).isConstant() ? true : false);
+  OperationDef op_def;
+  op_def.precision = CalculationsPrecision::F32;
+
+  op_def.src_tensors.push_back(_tensor_reg->getClTensorReserver(ifm_index)->descriptor);
+  auto input_shape = _tensor_reg->getClTensorReserver(ifm_index)->shape;
+
+  auto ker_shape = _tensor_reg->getClTensorReserver(ker_index)->shape;
+
+  op_def.dst_tensors.push_back(_tensor_reg->getClTensorReserver(ofm_index)->descriptor);
+  auto out_shape = _tensor_reg->getClTensorReserver(ofm_index)->shape;
+  auto bias_shape = _tensor_reg->getClTensorReserver(bias_index)->shape;
+
+  DepthwiseConvolution2DAttributes attr;
+  attr.strides = ToHW(stride.vertical, stride.horizontal);
+  attr.dilations = HW(std::max(static_cast<u_int32_t>(1), dilation.height_factor),
+                      std::max(static_cast<u_int32_t>(1), dilation.width_factor));
+
+  if (is_weight)
+  {
+    attr.weights.id = ker_index.value();
+    attr.weights.shape.o = ker_shape.b;
+    attr.weights.shape.h = ker_shape.h;
+    attr.weights.shape.w = ker_shape.w;
+    attr.weights.shape.i = ker_shape.c;
+    attr.weights.data.resize(ker_shape.DimensionsProduct());
+    memcpy(attr.weights.data.data(), _ctx.at(ker_index).data()->base(), ker_tensor->total_size());
+  }
+  attr.bias.id = bias_index.value();
+  attr.bias.shape.v = bias_shape.b != 1 ? bias_shape.b : bias_shape.c;
+  attr.bias.data.resize(bias_shape.DimensionsProduct());
+  memcpy(attr.bias.data.data(), _ctx.at(bias_index).data()->base(), bias_tensor->total_size());
+  UpdatePadding(padding.type, input_shape, &attr);
+
+  if (multiplier != 1)
+  {
+    const int input_depth = input_shape.c;
+    const int filter_height = ker_shape.h;
+    const int filter_width = ker_shape.w;
+    const int output_depth = out_shape.c;
+
+    InternalTensor<OHWI, DataType::FLOAT32> weights;
+    weights.id = attr.weights.id;
+    weights.shape = OHWI(output_depth, filter_height, filter_width, input_depth);
+    weights.data.resize(weights.shape.DimensionsProduct());
+    float *dst = &weights.data[0];
+    for (int j = 0; j < output_depth; ++j)
+    {
+      const float *src = attr.weights.data.data() + j;
+      for (int i = 0; i < filter_height * filter_width; ++i)
+      {
+        *dst = *src;
+        dst++;
+        src += output_depth;
+      }
+    }
+    attr.weights = std::move(weights);
+  }
+
+  auto fn = std::make_unique<ClFunction>();
+  std::unique_ptr<GPUOperation> gpu_op;
+
+  if (is_weight)
+  {
+    gpu_op = SelectDWConvolution(attr, _creation_context->GetDeviceInfo(), op_def);
+  }
+  else
+  {
+    if (ker_shape.b != 1)
+    {
+      throw std::runtime_error(
+        "No support of depthwise runtime weights with channel multiplier != 1");
+    }
+    gpu_op = SelectDWConvolutionDynamicWeights(attr, _creation_context->GetDeviceInfo(), op_def);
+  }
+
+  gpu_op->SetSrc(ifm_tensor->handle(), ir::operation::DepthwiseConv2D::Input::INPUT);
+
+  fn->configure(_creation_context);
+
+  const auto activation = node.param().activation;
+
+  switch (activation)
+  {
+    case ir::Activation::NONE:
+    {
+      gpu_op->SetDst(ofm_tensor->handle(), 0);
+      fn->add_operation(std::move(gpu_op));
+      break;
+    }
+    case ir::Activation::RELU6:
+    {
+      std::unique_ptr<GPUOperation> gpu_op_1;
+      OperationDef op_def_1;
+      std::shared_ptr<Tensor> new_tensor = std::make_shared<Tensor>();
+
+      _new_tensors[ofm_index] = new_tensor;
+      if (!CreateTensor(*_creation_context->context, out_shape,
+                        _tensor_reg->getClTensorReserver(ofm_index)->descriptor, new_tensor.get())
+             .ok())
+      {
+        throw std::runtime_error("Error CreateTensor.");
+      }
+
+      gpu_op->SetDst(new_tensor.get(), 0);
+      fn->add_operation(std::move(gpu_op));
+      op_def_1.precision = CalculationsPrecision::F32;
+      op_def_1.src_tensors.push_back(_tensor_reg->getClTensorReserver(ofm_index)->descriptor);
+      op_def_1.dst_tensors.push_back(_tensor_reg->getClTensorReserver(ofm_index)->descriptor);
+
+      //   - ReLU6: clip = 6, alpha = 0
+      ReLUAttributes attr_1;
+      attr_1.clip = 6;
+      attr_1.alpha = 0;
+      gpu_op_1 = SelectReLU(attr_1, op_def_1);
+
+      gpu_op_1->SetSrc(new_tensor.get(), 0);
+      gpu_op_1->SetDst(ofm_tensor->handle(), 0);
+      fn->add_operation(std::move(gpu_op_1));
+      break;
+    }
+    default:
+    {
+      throw std::runtime_error("gpu_cl KernelGenerator : Not supported operation yet");
+    }
   }
 
   _return_fn = std::move(fn);
