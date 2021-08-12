@@ -196,9 +196,19 @@ luci::CircleConst *create_shape_tensor(loco::Graph *graph, const std::vector<uin
   return shape;
 }
 
+int32_t compute_full_padding(int32_t input_size, int32_t output_size, int32_t stride, int32_t filter_size)
+{
+  int32_t effective_input = (output_size - 1) * stride + filter_size;
+  int32_t full = effective_input - input_size;
+  // some extreme cases when part of input was not used in computations
+  if (full < 0)
+    full = 0;
+  return full;
+}
+
 template <loco::DataType DT>
 void fill_coords_addition(luci::Padding padding, const luci::Stride &stride,
-                          const luci::Filter &filter, uint32_t input_width,
+                          const luci::Filter &filter, uint32_t input_height, uint32_t input_width,
                           luci::CircleConst *cords)
 {
   assert(cords->rank() == 4);
@@ -219,8 +229,8 @@ void fill_coords_addition(luci::Padding padding, const luci::Stride &stride,
   // For SAME padding:
   if (padding == luci::Padding::SAME)
   {
-    start_y -= static_cast<int32_t>(filter.h() - 1) / 2;
-    start_x -= static_cast<int32_t>(filter.w() - 1) / 2;
+    start_y = -compute_full_padding(input_height, output_height, stride.h(), filter.h()) / 2;
+    start_x = -compute_full_padding(input_width, output_width, stride.w(), filter.w()) / 2;
   }
 
   auto const step_y = static_cast<int32_t>(stride.h());
@@ -228,7 +238,7 @@ void fill_coords_addition(luci::Padding padding, const luci::Stride &stride,
 
   for (int32_t y_o = 0, y_i = start_y; y_o < output_height; ++y_o, y_i += step_y)
   {
-    for (int32_t x_o = 0, x_i = start_y; x_o < output_width; ++x_o, x_i += step_x)
+    for (int32_t x_o = 0, x_i = start_x; x_o < output_width; ++x_o, x_i += step_x)
     {
       auto const output_idx = y_o * output_width + x_o;
       auto const input_idx = y_i * static_cast<int32_t>(input_width) + x_i;
@@ -240,7 +250,7 @@ void fill_coords_addition(luci::Padding padding, const luci::Stride &stride,
 
 luci::CircleConst *create_coords_addition(loco::Graph *graph, luci::Padding padding,
                                           const luci::Stride &stride, const luci::Filter &filter,
-                                          uint32_t, uint32_t input_width, uint32_t output_height,
+                                          uint32_t input_height, uint32_t input_width, uint32_t output_height,
                                           uint32_t output_width)
 {
   auto cords = graph->nodes()->create<luci::CircleConst>();
@@ -253,7 +263,7 @@ luci::CircleConst *create_coords_addition(loco::Graph *graph, luci::Padding padd
   cords->dim(2).set(output_width);
   cords->dim(3).set(1);
 
-  fill_coords_addition<loco::DataType::FLOAT32>(padding, stride, filter, input_width, cords);
+  fill_coords_addition<loco::DataType::FLOAT32>(padding, stride, filter, input_height, input_width, cords);
 
   return cords;
 }
