@@ -49,13 +49,7 @@ def _call_driver(driver_name, options):
     dir_path = os.path.dirname(os.path.realpath(__file__))
     driver_path = os.path.join(dir_path, driver_name)
     cmd = [driver_path] + options
-    with subprocess.Popen(
-            cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, bufsize=1) as p:
-        for line in p.stdout:
-            sys.stdout.buffer.write(line)
-            sys.stdout.buffer.flush()
-    if p.returncode != 0:
-        sys.exit(p.returncode)
+    _utils._run(cmd)
 
 
 def _check_subtool_exists():

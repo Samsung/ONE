@@ -161,17 +161,7 @@ def _quantize(args):
         f.write((' '.join(circle_quantizer_cmd) + '\n').encode())
 
         # run circle-quantizer
-        with subprocess.Popen(
-                circle_quantizer_cmd,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.STDOUT,
-                bufsize=1) as p:
-            for line in p.stdout:
-                sys.stdout.buffer.write("circle_quantizer: ".encode() + line)
-                sys.stdout.buffer.flush()
-                f.write(line)
-        if p.returncode != 0:
-            sys.exit(p.returncode)
+        _utils._run(circle_quantizer_cmd, err_prefix="circle_quantizer", logfile=f)
 
         ## make a command to record min-max value of each tensor while running the representative dataset
         circle_record_minmax_cmd = [record_minmax_path]
@@ -208,17 +198,7 @@ def _quantize(args):
         f.write((' '.join(circle_record_minmax_cmd) + '\n').encode())
 
         # run record-minmax
-        with subprocess.Popen(
-                circle_record_minmax_cmd,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.STDOUT,
-                bufsize=1) as p:
-            for line in p.stdout:
-                sys.stdout.buffer.write("record_minmax: ".encode() + line)
-                sys.stdout.buffer.flush()
-                f.write(line)
-        if p.returncode != 0:
-            sys.exit(p.returncode)
+        _utils._run(circle_record_minmax_cmd, err_prefix="record_minmax", logfile=f)
 
         ## make a second command to quantize the model using the embedded information
         circle_quantizer_cmd = [circle_quantizer_path]
@@ -241,17 +221,7 @@ def _quantize(args):
         f.write((' '.join(circle_quantizer_cmd) + '\n').encode())
 
         # run circle-quantizer
-        with subprocess.Popen(
-                circle_quantizer_cmd,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.STDOUT,
-                bufsize=1) as p:
-            for line in p.stdout:
-                sys.stdout.buffer.write("circle_quantizer: ".encode() + line)
-                sys.stdout.buffer.flush()
-                f.write(line)
-        if p.returncode != 0:
-            sys.exit(p.returncode)
+        _utils._run(circle2circle_cmd, err_prefix="circle_quantizer", logfile=f)
 
 
 def main():

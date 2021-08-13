@@ -94,15 +94,7 @@ def _pack(args):
         f.write((' '.join(model2nnpkg_cmd) + '\n').encode())
 
         # convert tflite to circle
-        with subprocess.Popen(
-                model2nnpkg_cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
-                bufsize=1) as p:
-            for line in p.stdout:
-                sys.stdout.buffer.write("model2nnpkg.sh: ".encode() + line)
-                sys.stdout.buffer.flush()
-                f.write(line)
-        if p.returncode != 0:
-            sys.exit(p.returncode)
+        _utils._run(model2nnpkg_cmd, err_prefix="model2nnpkg.sh", logfile=f)
 
 
 def main():

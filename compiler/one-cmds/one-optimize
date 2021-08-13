@@ -107,17 +107,7 @@ def _optimize(args):
         f.write((' '.join(circle2circle_cmd) + '\n').encode())
 
         # optimize
-        with subprocess.Popen(
-                circle2circle_cmd,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.STDOUT,
-                bufsize=1) as p:
-            for line in p.stdout:
-                sys.stdout.buffer.write("circle2circle: ".encode() + line)
-                sys.stdout.buffer.flush()
-                f.write(line)
-        if p.returncode != 0:
-            sys.exit(p.returncode)
+        _utils._run(circle2circle_cmd, err_prefix="circle2circle", logfile=f)
 
 
 def main():
