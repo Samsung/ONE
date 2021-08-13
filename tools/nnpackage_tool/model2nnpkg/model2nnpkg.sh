@@ -67,7 +67,7 @@ if [ -z "$name" ]; then
 fi
 extension=${modelfile##*.}
 
-echo "Generating nnpackage "$name" in "$outdir""
+echo "$progname: Generating nnpackage "$name" in "$outdir""
 mkdir -p "$outdir"/"$name"/metadata
 
 if [ -s "$config_src" ]; then
