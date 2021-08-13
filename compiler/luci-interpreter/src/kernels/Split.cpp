@@ -71,6 +71,9 @@ void Split::execute() const
     case DataType::U8:
       TF_LITE_SPLIT(uint8_t);
       break;
+    case DataType::S16:
+      TF_LITE_SPLIT(int16_t);
+      break;
     default:
       throw std::runtime_error("Unsupported type.");
   }

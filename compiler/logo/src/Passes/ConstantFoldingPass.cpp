@@ -86,7 +86,7 @@ bool foldable(const loco::Node *node)
       return false;
 
     // When all args are ConstGen, let's do Constant Folding Transforms
-    for (int i = 0; i < node->arity(); i++)
+    for (uint32_t i = 0; i < node->arity(); i++)
     {
       if (node->arg(i)->opnum() != static_cast<uint32_t>(loco::CanonicalOpcode::ConstGen))
         return false;
@@ -120,7 +120,7 @@ void fold(loco::Graph *graph, loco::Node *node)
     new_const->dtype(dtype);
 
     new_const->rank(shape->rank());
-    for (int d = 0; d < shape->rank(); d++)
+    for (uint32_t d = 0; d < shape->rank(); d++)
       new_const->dim(d) = shape->dim(d);
 
     auto count = num_elements(*new_const);
@@ -130,7 +130,7 @@ void fold(loco::Graph *graph, loco::Node *node)
       new_const->size<loco::DataType::FLOAT32>(count);
 
       auto const_buf = data->as_f32_bufptr()->base();
-      for (int x = 0; x < count; x++)
+      for (uint32_t x = 0; x < count; x++)
         new_const->at<loco::DataType::FLOAT32>(x) = const_buf[x];
     }
     else if (dtype == loco::DataType::S32)
@@ -138,7 +138,7 @@ void fold(loco::Graph *graph, loco::Node *node)
       new_const->size<loco::DataType::S32>(count);
 
       auto const_buf = data->as_s32_bufptr()->base();
-      for (int x = 0; x < count; x++)
+      for (uint32_t x = 0; x < count; x++)
         new_const->at<loco::DataType::S32>(x) = const_buf[x];
     }
   }

@@ -38,6 +38,7 @@ public:
 
 private:
   void evalFloat() const;
+  void evalQ16() const;
 };
 
 } // namespace kernels

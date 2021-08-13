@@ -663,7 +663,7 @@ luci::CircleNode *argmax_branch(luci::Padding padding, const luci::Stride &strid
     init_name_and_origin(concat, name + "/Concatenation", origin);
     concat->axis(depth_dimension);
 
-    for (int32_t i = 0; i < input_depth; ++i)
+    for (uint32_t i = 0; i < input_depth; ++i)
     {
       concat->values(i, branch_outputs[i]);
     }

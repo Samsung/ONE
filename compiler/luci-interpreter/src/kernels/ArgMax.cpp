@@ -77,6 +77,9 @@ void ArgMax::execute() const
           case DataType::U8:
             TF_LITE_ARG_MAX(uint8_t, int32_t, int32_t);
             break;
+          case DataType::S16:
+            TF_LITE_ARG_MAX(int16_t, int32_t, int32_t);
+            break;
           default:
             throw std::runtime_error("Unsupported input type.");
         }
@@ -89,6 +92,9 @@ void ArgMax::execute() const
             break;
           case DataType::U8:
             TF_LITE_ARG_MAX(uint8_t, int32_t, int64_t);
+            break;
+          case DataType::S16:
+            TF_LITE_ARG_MAX(int16_t, int32_t, int64_t);
             break;
           default:
             throw std::runtime_error("Unsupported input type.");
@@ -111,6 +117,9 @@ void ArgMax::execute() const
           case DataType::U8:
             TF_LITE_ARG_MAX(uint8_t, int64_t, int32_t);
             break;
+          case DataType::S16:
+            TF_LITE_ARG_MAX(int16_t, int64_t, int32_t);
+            break;
           default:
             throw std::runtime_error("Unsupported input type.");
         }
@@ -123,6 +132,9 @@ void ArgMax::execute() const
             break;
           case DataType::U8:
             TF_LITE_ARG_MAX(uint8_t, int64_t, int64_t);
+            break;
+          case DataType::S16:
+            TF_LITE_ARG_MAX(int16_t, int64_t, int64_t);
             break;
           default:
             throw std::runtime_error("Unsupported input type.");

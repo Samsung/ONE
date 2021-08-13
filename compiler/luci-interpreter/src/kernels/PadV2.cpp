@@ -97,6 +97,15 @@ void PadV2::execute() const
                                  getTensorData<uint8_t>(output()));
       break;
     }
+    case DataType::S16:
+    {
+      assert(output()->zero_point() == 0);
+      const auto pad_value = getTensorData<uint8_t>(constant_values())[0];
+      tflite::reference_ops::Pad(params, getTensorShape(input()), getTensorData<int16_t>(input()),
+                                 &pad_value, getTensorShape(output()),
+                                 getTensorData<int16_t>(output()));
+      break;
+    }
     default:
       throw std::runtime_error("Unsupported type.");
   }

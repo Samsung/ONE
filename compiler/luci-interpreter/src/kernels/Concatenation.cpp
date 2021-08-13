@@ -90,6 +90,9 @@ void Concatenation::execute() const
     case DataType::S8:
       evalGeneric<int8_t>();
       break;
+    case DataType::S16:
+      evalGeneric<int16_t>();
+      break;
     case DataType::S32:
       evalGeneric<int32_t>();
       break;

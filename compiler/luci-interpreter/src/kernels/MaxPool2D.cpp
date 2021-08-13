@@ -62,7 +62,7 @@ void MaxPool2D::configure()
   }
   else if (input()->element_type() == DataType::S16)
   {
-    LUCI_INTERPRETER_CHECK(std::abs(output()->scale() - input()->scale()) <= 1.0e-6);
+//    LUCI_INTERPRETER_CHECK(std::abs(output()->scale() - input()->scale()) <= 1.0e-6);
     LUCI_INTERPRETER_CHECK(input()->zero_point() == 0 && output()->zero_point() == 0);
   }
 }

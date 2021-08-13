@@ -43,6 +43,9 @@ void Neg::execute() const
     case DataType::FLOAT32:
       evalFloat();
       break;
+    case DataType::S16:
+      evalQ16();
+      break;
     default:
       throw std::runtime_error("Unsupported type.");
   }
@@ -52,6 +55,14 @@ void Neg::evalFloat() const
 {
   tflite::reference_ops::Negate(getTensorShape(input()), getTensorData<float>(input()),
                                 getTensorShape(output()), getTensorData<float>(output()));
+}
+
+void Neg::evalQ16() const
+{
+  auto input_shape = getTensorShape(input());
+
+  for (int i = 0; i < input_shape.FlatSize(); ++i)
+    output()->data<int16_t>()[i] = -input()->data<int16_t>()[i];
 }
 
 } // namespace kernels

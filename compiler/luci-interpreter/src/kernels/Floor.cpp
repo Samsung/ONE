@@ -41,7 +41,9 @@ void Floor::execute() const
     case DataType::FLOAT32:
       evalFloat();
       break;
-
+    case DataType::S16:
+      evalQ16();
+      break;
     default:
       throw std::runtime_error("Unsupported type.");
   }
@@ -51,6 +53,30 @@ void Floor::evalFloat() const
 {
   tflite::reference_ops::Floor(getTensorShape(input()), getTensorData<float>(input()),
                                getTensorShape(output()), getTensorData<float>(output()));
+}
+
+void Floor::evalQ16() const
+{
+  auto input_shape = getTensorShape(input());
+  auto output_shape = getTensorShape(output());
+
+  std::vector<float> input_data(input_shape.FlatSize());
+  std::vector<float> output_data(output_shape.FlatSize());
+
+  float input_scale = input()->scale();
+  int32_t input_zpoint = input()->zero_point();
+
+  float output_scale = output()->scale();
+  int32_t output_zpoint = output()->zero_point();
+
+  for (int i = 0; i < input_shape.FlatSize(); ++i)
+    input_data[i] = (input()->data<int16_t>()[i] - input_zpoint) * input_scale;
+
+  tflite::reference_ops::Floor(input_shape, input_data.data(),
+                               output_shape, output_data.data());
+
+  for (int i = 0; i < input_shape.FlatSize(); ++i)
+    output()->data<int16_t>()[i] = std::round(output_data[i]/output_scale) + output_zpoint;
 }
 
 } // namespace kernels
