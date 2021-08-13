@@ -519,6 +519,42 @@ void KernelGenerator::visit(const ir::operation::Pool2D &node)
   _return_fn = std::move(fn);
 }
 
+void KernelGenerator::visit(const ir::operation::Softmax &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(ir::operation::Softmax::Input::INPUT)};
+
+  const auto beta = node.param().beta;
+
+  if (beta != 1.0)
+  {
+    throw std::runtime_error("Softmax.beta != 1 is not supported in gpu_cl");
+  }
+
+  OperationDef op_def;
+  op_def.precision = CalculationsPrecision::F32;
+
+  op_def.dst_tensors.push_back(_tensor_reg->getClTensorReserver(output_index)->descriptor);
+
+  op_def.src_tensors.push_back(_tensor_reg->getClTensorReserver(input_index)->descriptor);
+  auto input_shape = _tensor_reg->getClTensorReserver(input_index)->shape;
+
+  auto fn = std::make_unique<ClFunction>();
+
+  std::unique_ptr<GPUOperation> gpu_op;
+  SelectSoftmax(input_shape, op_def, &gpu_op);
+  auto output_tensor = _tensor_reg->getClTensor(output_index);
+  auto input_tensor = _tensor_reg->getClTensor(input_index);
+
+  gpu_op->SetSrc(input_tensor->handle(), ir::operation::Softmax::Input::INPUT);
+  gpu_op->SetDst(output_tensor->handle(), 0);
+
+  fn->configure(_creation_context);
+  fn->add_operation(std::move(gpu_op));
+
+  _return_fn = std::move(fn);
+}
+
 } // namespace gpu_cl
 } // namespace backend
 } // namespace onert

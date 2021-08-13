@@ -43,6 +43,8 @@ SelectDWConvolutionDynamicWeights(const DepthwiseConvolution2DAttributes &attr,
 
 std::unique_ptr<GPUOperation> SelectPooling(const Pooling2DAttributes &attr,
                                             const OperationDef &op_def);
+void SelectSoftmax(const BHWC &shape, const OperationDef &op_def,
+                   std::unique_ptr<GPUOperation> *ptr);
 
 } // namespace gpu_cl
 } // namespace backend

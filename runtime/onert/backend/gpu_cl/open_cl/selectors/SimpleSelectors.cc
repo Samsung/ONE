@@ -21,9 +21,11 @@
 #include <set>
 
 #include "open_cl/kernels/Add.h"
-#include "open_cl/kernels/Relu.h"
 #include "open_cl/kernels/DepthwiseConv.h"
 #include "open_cl/kernels/Pooling.h"
+#include "open_cl/kernels/Relu.h"
+#include "open_cl/kernels/Softmax.h"
+#include "open_cl/kernels/Softmax1x1.h"
 
 namespace onert
 {
@@ -39,11 +41,6 @@ void SelectAdd(const OperationDef &op_def, const std::vector<int> &channels, int
   *ptr = std::make_unique<GPUOperation>(std::move(operation));
 }
 
-std::unique_ptr<GPUOperation> SelectReLU(const ReLUAttributes &attr, const OperationDef &op_def)
-{
-  return absl::make_unique<GPUOperation>(CreateReLU(op_def, attr));
-}
-
 std::unique_ptr<GPUOperation>
 SelectDWConvolutionDynamicWeights(const DepthwiseConvolution2DAttributes &attr,
                                   const DeviceInfo &device_info, const OperationDef &op_def)
@@ -57,6 +54,26 @@ std::unique_ptr<GPUOperation> SelectPooling(const Pooling2DAttributes &attr,
 {
   GPUOperation operation = CreatePooling(op_def, attr);
   return absl::make_unique<GPUOperation>(std::move(operation));
+}
+
+std::unique_ptr<GPUOperation> SelectReLU(const ReLUAttributes &attr, const OperationDef &op_def)
+{
+  return absl::make_unique<GPUOperation>(CreateReLU(op_def, attr));
+}
+
+void SelectSoftmax(const BHWC &shape, const OperationDef &op_def,
+                   std::unique_ptr<GPUOperation> *ptr)
+{
+  if (shape.w == 1 && shape.h == 1)
+  {
+    Softmax1x1 operation = CreateSoftmax1x1(op_def);
+    *ptr = absl::make_unique<Softmax1x1>(std::move(operation));
+  }
+  else
+  {
+    GPUOperation operation = CreateSoftmax(op_def);
+    *ptr = absl::make_unique<GPUOperation>(std::move(operation));
+  }
 }
 
 } // namespace gpu_cl

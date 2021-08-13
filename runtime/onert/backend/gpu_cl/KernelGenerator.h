@@ -50,6 +50,7 @@ private:
   void visit(const ir::operation::DepthwiseConv2D &) override;
   void visit(const ir::operation::ElementwiseActivation &) override;
   void visit(const ir::operation::Pool2D &) override;
+  void visit(const ir::operation::Softmax &) override;
 
 private:
   const ir::Operands &_ctx;
