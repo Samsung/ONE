@@ -34,7 +34,7 @@ struct AvgPool2DParam
     float scale;
     int64_t zero_point;
   } type = {circle::TensorType::TensorType_FLOAT32, 0.0f, 0};
-  std::vector<std::string> backend = {"acl_cl", "acl_neon", "cpu"};
+  std::vector<std::string> backend = {"acl_cl", "acl_neon", "cpu", "gpu_cl"};
 };
 
 class AveragePool2DVariation : public GenModelTest,
@@ -80,14 +80,16 @@ INSTANTIATE_TEST_CASE_P(
                    {1, 2, 2, 1},
                    {1, 1, 1, 1},
                    {2, 2, 2, 2},
-                   {circle::TensorType::TensorType_UINT8, 1.2, 3}},
+                   {circle::TensorType::TensorType_UINT8, 1.2, 3},
+                   {"acl_cl", "acl_neon", "cpu"}},
     // uint8_t data -large
     AvgPool2DParam{
       uniformTCD<uint8_t>({{std::vector<uint8_t>(18 * 36 * 2, 99)}}, {{99, 99, 99, 99}}),
       {1, 18, 36, 2},
       {1, 1, 2, 2},
       {18, 18, 18, 18},
-      {circle::TensorType::TensorType_UINT8, 1.2, 3}},
+      {circle::TensorType::TensorType_UINT8, 1.2, 3},
+      {"acl_cl", "acl_neon", "cpu"}},
     // int8_t data
     // TODO enable acl-cl, acl-neon backend
     AvgPool2DParam{uniformTCD<int8_t>({{2, -6, 4, -8}}, {{-2}}),
@@ -117,7 +119,7 @@ TEST_F(GenModelTest, neg_OneOp_AvgPool2D_3DInput)
   cgen.setInputsAndOutputs({in}, {out});
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
-  _context->setBackends({"acl_cl", "acl_neon", "cpu"});
+  _context->setBackends({"acl_cl", "acl_neon", "cpu", "gpu_cl"});
   _context->expectFailCompile();
 
   SUCCEED();
@@ -134,7 +136,7 @@ TEST_F(GenModelTest, neg_OneOp_AvgPool2D_2DInput)
   cgen.setInputsAndOutputs({in}, {out});
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
-  _context->setBackends({"acl_cl", "acl_neon", "cpu"});
+  _context->setBackends({"acl_cl", "acl_neon", "cpu", "gpu_cl"});
   _context->expectFailCompile();
 
   SUCCEED();

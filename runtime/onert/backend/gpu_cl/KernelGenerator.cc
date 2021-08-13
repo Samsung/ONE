@@ -60,6 +60,19 @@ void UpdatePadding(const ir::PaddingType type, const BHWC &input_shape, AttrT *a
   }
 }
 
+gpu_cl::PoolingType convertPoolType(ir::operation::Pool2D::PoolType type_ir)
+{
+  switch (type_ir)
+  {
+    case ir::operation::Pool2D::PoolType::AVG:
+      return gpu_cl::PoolingType::AVERAGE;
+    case ir::operation::Pool2D::PoolType::MAX:
+      return gpu_cl::PoolingType::MAX;
+    default:
+      throw std::runtime_error("gpu_Cl KernelGenerator : Not supported operation yet");
+  }
+}
+
 KernelGenerator::KernelGenerator(const ir::Graph &graph,
                                  const std::shared_ptr<TensorBuilder> &tensor_builder,
                                  const std::shared_ptr<ClTensorRegistry<TensorManager>> &tensor_reg,
@@ -454,6 +467,56 @@ void KernelGenerator::visit(const ir::operation::ElementwiseActivation &node)
     default:
       throw std::runtime_error("gpu_cl KernelGenerator : Not supported operation yet");
   }
+}
+
+void KernelGenerator::visit(const ir::operation::Pool2D &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(ir::operation::Pool2D::Input::INPUT)};
+
+  OperationDef op_def;
+  op_def.precision = CalculationsPrecision::F32;
+
+  op_def.src_tensors.push_back(_tensor_reg->getClTensorReserver(input_index)->descriptor);
+  auto input_shape = _tensor_reg->getClTensorReserver(input_index)->shape;
+
+  op_def.dst_tensors.push_back(_tensor_reg->getClTensorReserver(output_index)->descriptor);
+
+  const auto kh = node.param().kh;
+  const auto kw = node.param().kw;
+  const auto stride = node.param().stride;
+  const auto op_type = convertPoolType(node.param().op_type);
+
+  Pooling2DAttributes attributes;
+  attributes.type = op_type;
+  attributes.kernel = HW(kh > 0 ? kh : 1, kw > 0 ? kw : 1);
+  attributes.strides =
+    HW(stride.vertical > 0 ? stride.vertical : 1, stride.horizontal > 0 ? stride.horizontal : 1);
+
+  if (node.param().padding.type == ir::PaddingType::SAME)
+  {
+    attributes.padding = CalculateSamePadding(input_shape, attributes);
+  }
+  else
+  {
+    attributes.padding.prepended = HW(0, 0);
+    attributes.padding.appended = HW(0, 0);
+  }
+
+  auto fn = std::make_unique<ClFunction>();
+  std::unique_ptr<GPUOperation> gpu_op;
+  gpu_op = SelectPooling(attributes, op_def);
+
+  auto input_tensor = _tensor_reg->getClTensor(input_index);
+  auto output_tensor = _tensor_reg->getClTensor(output_index);
+
+  gpu_op->SetSrc(input_tensor->handle(), ir::operation::Pool2D::Input::INPUT);
+  gpu_op->SetDst(output_tensor->handle(), 0);
+
+  fn->configure(_creation_context);
+  fn->add_operation(std::move(gpu_op));
+
+  _return_fn = std::move(fn);
 }
 
 } // namespace gpu_cl
