@@ -519,18 +519,6 @@ void KernelGenerator::visit(const ir::operation::Pool2D &node)
   _return_fn = std::move(fn);
 }
 
-// void visit(const ir::operation::Reshape &)
-// {
-//   // NYI
-//   throw std::runtime_error("gpu_cl KernelGenerator : Not supported operation yet");
-// }
-
-// void visit(const ir::operation::Softmax &)
-// {
-//   // NYI
-//   throw std::runtime_error("gpu_cl KernelGenerator : Not supported operation yet");
-// }
-
 } // namespace gpu_cl
 } // namespace backend
 } // namespace onert
