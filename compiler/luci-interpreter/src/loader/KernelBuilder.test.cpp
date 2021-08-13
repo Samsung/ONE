@@ -62,7 +62,7 @@
 #include <kernels/Reshape.h>
 #include <kernels/ResizeBilinear.h>
 #include <kernels/ResizeNearestNeighbor.h>
-#include <kernels/Reverse.h>
+#include <kernels/ReverseV2.h>
 #include <kernels/Rsqrt.h>
 #include <kernels/Slice.h>
 #include <kernels/Softmax.h>
@@ -993,7 +993,7 @@ TEST_F(KernelBuilderTest, ReverseV2)
   op->tensor(input);
   op->axis(axes);
 
-  auto kernel = buildKernel<kernels::Reverse>(op);
+  auto kernel = buildKernel<kernels::ReverseV2>(op);
   ASSERT_THAT(kernel, NotNull());
 
   checkTensor(kernel->input(), input);
