@@ -114,6 +114,71 @@ void cast_from_tensor_to_tensor(const Tensor *in_tensor, Tensor *out_tensor)
   }
 }
 
+bool is_quantized(const Tensor *t)
+{
+  return t->scales().size() != 0;
+}
+
+template <typename InT, typename OutT>
+void cast_to_quant_data(const InT *in_data, OutT *out_data, uint32_t elements_count, float scale, int32_t zerop)
+{
+  std::transform(in_data, in_data + elements_count, out_data,
+                 [scale, zerop](InT a) { return static_cast<OutT>(static_cast<OutT>(static_cast<float>(a)/scale + zerop)); });
+}
+
+template <typename InT> void cast_to_quant_from_pointer_to_tensor(const InT *in_data, Tensor *out_tensor)
+{
+  auto const out_type = out_tensor->element_type();
+  auto const elements_count = out_tensor->shape().num_elements();
+  float scale = out_tensor->scale();
+  int32_t zerop = out_tensor->zero_point();
+
+  switch (out_type)
+  {
+    case loco::DataType::U8:
+      cast_to_quant_data(in_data, getTensorData<uint8_t>(out_tensor), elements_count, scale, zerop);
+      break;
+    case loco::DataType::U16:
+      cast_to_quant_data(in_data, getTensorData<uint16_t>(out_tensor), elements_count, scale, zerop);
+      break;
+  }
+}
+
+void cast_to_quant(const Tensor *in_tensor, Tensor *out_tensor)
+{
+  auto in_type = in_tensor->element_type();
+
+  switch (in_type)
+  {
+    case loco::DataType::U8:
+      cast_to_quant_from_pointer_to_tensor(getTensorData<uint8_t>(in_tensor), out_tensor);
+      break;
+    case loco::DataType::U16:
+      cast_to_quant_from_pointer_to_tensor(getTensorData<uint16_t>(in_tensor), out_tensor);
+      break;
+    case loco::DataType::U32:
+      cast_to_quant_from_pointer_to_tensor(getTensorData<uint32_t>(in_tensor), out_tensor);
+      break;
+    case loco::DataType::U64:
+      cast_to_quant_from_pointer_to_tensor(getTensorData<uint64_t>(in_tensor), out_tensor);
+      break;
+    case loco::DataType::S8:
+      cast_to_quant_from_pointer_to_tensor(getTensorData<int8_t>(in_tensor), out_tensor);
+      break;
+    case loco::DataType::S16:
+      cast_to_quant_from_pointer_to_tensor(getTensorData<int16_t>(in_tensor), out_tensor);
+      break;
+    case loco::DataType::S32:
+      cast_to_quant_from_pointer_to_tensor(getTensorData<int32_t>(in_tensor), out_tensor);
+      break;
+    case loco::DataType::S64:
+      cast_to_quant_from_pointer_to_tensor(getTensorData<int64_t>(in_tensor), out_tensor);
+      break;
+    default:
+      throw std::runtime_error("Unsupported input type");
+  }
+}
+
 } // namespace
 
 namespace luci_interpreter
@@ -136,7 +201,13 @@ void Cast::execute() const
 {
   assert(input()->shape().num_elements() == output()->shape().num_elements());
 
-  cast_from_tensor_to_tensor(input(), output());
+  if (is_quantized(output()) && !is_quantized(input()))
+  {
+    cast_to_quant(input(), output());
+  } else
+  {
+    cast_from_tensor_to_tensor(input(), output());
+  }
 }
 
 } // namespace kernels
