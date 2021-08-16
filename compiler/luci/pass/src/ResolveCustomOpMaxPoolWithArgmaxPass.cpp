@@ -237,7 +237,7 @@ int32_t compute_full_padding(int32_t input_size, int32_t output_size, int32_t st
 
 template <loco::DataType DT>
 void fill_coords_addition(luci::Padding padding, const luci::Stride &stride,
-                          const luci::Filter &filter, uint32_t input_height, uint32_t input_width,
+                          const luci::Filter &filter, uint32_t input_height, uint32_t input_width, uint32_t depth,
                           luci::CircleConst *cords)
 {
   assert(cords->rank() == 4);
@@ -272,14 +272,18 @@ void fill_coords_addition(luci::Padding padding, const luci::Stride &stride,
       auto const output_idx = y_o * output_width + x_o;
       auto const input_idx = y_i * static_cast<int32_t>(input_width) + x_i;
 
-      cords->at<DT>(output_idx) = input_idx;
+      // Add this value because cast to int could decrease index by i
+      // For example: output value 1.9996 should be reported as 2, but is casted to 1.
+      const float round_adjustment = 1.0f/(depth+1);
+
+      cords->at<DT>(output_idx) = input_idx + round_adjustment;
     }
   }
 }
 
 luci::CircleConst *create_coords_addition(loco::Graph *graph, luci::Padding padding,
                                           const luci::Stride &stride, const luci::Filter &filter,
-                                          uint32_t input_height, uint32_t input_width,
+                                          uint32_t input_height, uint32_t input_width, uint32_t depth,
                                           uint32_t output_height, uint32_t output_width)
 {
   auto cords = graph->nodes()->create<luci::CircleConst>();
@@ -292,7 +296,7 @@ luci::CircleConst *create_coords_addition(loco::Graph *graph, luci::Padding padd
   cords->dim(2).set(output_width);
   cords->dim(3).set(1);
 
-  fill_coords_addition<loco::DataType::FLOAT32>(padding, stride, filter, input_height, input_width,
+  fill_coords_addition<loco::DataType::FLOAT32>(padding, stride, filter, input_height, input_width, depth,
                                                 cords);
 
   return cords;
@@ -313,7 +317,7 @@ luci::CircleNode *get_custom_output(const luci::CircleCustom *cop, int32_t idx)
 }
 
 luci::CircleNode *max_pool_branch(luci::Padding padding, const luci::Stride &stride,
-                                  const luci::Filter filter, luci::CircleCustom *cop)
+                                  const luci::Filter &filter, luci::CircleCustom *cop)
 {
   auto graph = cop->graph();
   auto input = cop->inputs(0);
@@ -446,7 +450,7 @@ luci::CircleNode *window_flattened_coord(const std::string &name, luci::Padding 
   return argmax_cast;
 }
 
-luci::CircleNode *window_y_coord(const std::string &name, float filter_width,
+luci::CircleNode *window_y_coord(const std::string &name, luci::Filter filter,
                                  luci::CircleNode *flattened)
 {
   auto const graph = flattened->graph();
@@ -456,7 +460,11 @@ luci::CircleNode *window_y_coord(const std::string &name, float filter_width,
   {
     init_name_and_origin(div, name + "/Div", origin);
 
-    auto divider = create_scalar<loco::DataType::FLOAT32>(graph, 1.0f / filter_width);
+    // adjustment_coeff is needed to fight quantization error, which can lead to wrong floor execution.
+    // value is small enough, so it should not affect fp version
+    const float rounding_adjustment = 1.0f/(filter.w()*filter.h());
+    const float divider_value = filter.w() - rounding_adjustment;
+    auto divider = create_scalar<loco::DataType::FLOAT32>(graph, 1.0f / divider_value);
     init_name_and_origin(divider, div->name() + "/Divider", origin);
 
     div->x(flattened);
@@ -509,7 +517,7 @@ luci::CircleNode *window_x_coord(const std::string &name, float filter_width,
 
 luci::CircleNode *plane_flattened_coord(const std::string &name, uint32_t input_width,
                                         luci::CircleNode *y_coord, luci::CircleNode *x_coord,
-                                        luci::CircleNode *corners)
+                                        const luci::Filter &filter, luci::CircleNode *corners)
 {
   auto const graph = corners->graph();
   auto const origin = luci::get_origin(corners);
@@ -526,7 +534,10 @@ luci::CircleNode *plane_flattened_coord(const std::string &name, uint32_t input_
       {
         init_name_and_origin(y_addition, addition->name() + "/Mul", origin);
 
-        auto width_scalar = create_scalar<loco::DataType::FLOAT32>(graph, input_width);
+        const float rounding_adjustment = 1/filter.h();
+        const float multiplier_value = input_width + rounding_adjustment;
+
+        auto width_scalar = create_scalar<loco::DataType::FLOAT32>(graph, multiplier_value);
         init_name_and_origin(width_scalar, y_addition->name() + "/Const", origin);
 
         y_addition->x(y_coord);
@@ -639,18 +650,18 @@ luci::CircleNode *argmax_branch(luci::Padding padding, const luci::Stride &strid
       window_flattened_coord(branch_name + "/WindowFlat", padding, stride, filter, input_height,
                              input_width, output_height, output_width, split_out);
 
-    auto const window_y = window_y_coord(branch_name + "/WindowY", filter.w(), window_coords);
+    auto const window_y = window_y_coord(branch_name + "/WindowY", filter, window_coords);
     auto const window_x =
       window_x_coord(branch_name + "/WindowX", filter.w(), window_coords, window_y);
 
     // Define idx of max element in Plane
     // This tensor contains coords of left top corners for each window from input tensor
-    auto corners = create_coords_addition(graph, padding, stride, filter, input_height, input_width,
+    auto corners = create_coords_addition(graph, padding, stride, filter, input_height, input_width, input_depth,
                                           output_height, output_width);
     init_name_and_origin(corners, branch_name + "/Const", origin);
 
     auto plane_coord =
-      plane_flattened_coord(branch_name + "/PlaneFlat", input_width, window_y, window_x, corners);
+      plane_flattened_coord(branch_name + "/PlaneFlat", input_width, window_y, window_x, filter, corners);
 
     // Define volume coords as final value
     branch_outputs[br_n] =
