@@ -460,8 +460,12 @@ luci::CircleNode *window_y_coord(const std::string &name, luci::Filter filter,
   {
     init_name_and_origin(div, name + "/Div", origin);
 
-    // adjustment_coeff is needed to fight quantization error, which can lead to wrong floor execution.
-    // value is small enough, so it should not affect fp version
+    // Adjustment_coeff is needed to prevent loss of value in
+    // quantizer version of floor operation below.
+    //
+    // On the other hand, adjustment value should be small enough.
+    // 1.0/filter_width*filter_height is one such value,
+    // it does not affect floating point model inference results
     const float rounding_adjustment = 1.0f/(filter.w()*filter.h());
     const float divider_value = filter.w() - rounding_adjustment;
     auto divider = create_scalar<loco::DataType::FLOAT32>(graph, 1.0f / divider_value);
@@ -517,7 +521,7 @@ luci::CircleNode *window_x_coord(const std::string &name, float filter_width,
 
 luci::CircleNode *plane_flattened_coord(const std::string &name, uint32_t input_width,
                                         luci::CircleNode *y_coord, luci::CircleNode *x_coord,
-                                        const luci::Filter &filter, luci::CircleNode *corners)
+                                        luci::CircleNode *corners)
 {
   auto const graph = corners->graph();
   auto const origin = luci::get_origin(corners);
@@ -534,10 +538,7 @@ luci::CircleNode *plane_flattened_coord(const std::string &name, uint32_t input_
       {
         init_name_and_origin(y_addition, addition->name() + "/Mul", origin);
 
-        const float rounding_adjustment = 1/filter.h();
-        const float multiplier_value = input_width + rounding_adjustment;
-
-        auto width_scalar = create_scalar<loco::DataType::FLOAT32>(graph, multiplier_value);
+        auto width_scalar = create_scalar<loco::DataType::FLOAT32>(graph, input_width);
         init_name_and_origin(width_scalar, y_addition->name() + "/Const", origin);
 
         y_addition->x(y_coord);
@@ -595,7 +596,7 @@ luci::CircleNode *volume_flattened_coords(const std::string &name, uint32_t chan
 }
 
 luci::CircleNode *argmax_branch(luci::Padding padding, const luci::Stride &stride,
-                                const luci::Filter filter, luci::CircleCustom *cop)
+                                const luci::Filter &filter, luci::CircleCustom *cop)
 {
   auto graph = cop->graph();
   auto input = loco::must_cast<luci::CircleNode *>(cop->inputs(0));
@@ -661,7 +662,7 @@ luci::CircleNode *argmax_branch(luci::Padding padding, const luci::Stride &strid
     init_name_and_origin(corners, branch_name + "/Const", origin);
 
     auto plane_coord =
-      plane_flattened_coord(branch_name + "/PlaneFlat", input_width, window_y, window_x, filter, corners);
+      plane_flattened_coord(branch_name + "/PlaneFlat", input_width, window_y, window_x, corners);
 
     // Define volume coords as final value
     branch_outputs[br_n] =
