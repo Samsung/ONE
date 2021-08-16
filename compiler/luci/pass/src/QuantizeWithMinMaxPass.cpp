@@ -1366,7 +1366,6 @@ void propagate_pad_v2_quantparam(luci::CirclePadV2 *pad_v2, loco::DataType quant
   if (ignore_pad_v2_const_quantization(pad_v2))
   {
     // propagate input quantization paramters from input to output and padding const value
-    float padding_value = const_value_node->at<loco::DataType::FLOAT32>(0);
     auto pad_v2_input = loco::must_cast<luci::CircleNode *>(pad_v2->arg(0));
     overwrite_quantparam(pad_v2_input, pad_v2);
 
