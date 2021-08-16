@@ -122,8 +122,13 @@ bool is_quantized(const Tensor *t)
 template <typename InT, typename OutT>
 void cast_to_quant_data(const InT *in_data, OutT *out_data, uint32_t elements_count, float scale, int32_t zerop)
 {
-  std::transform(in_data, in_data + elements_count, out_data,
-                 [scale, zerop](InT a) { return static_cast<OutT>(static_cast<OutT>(static_cast<float>(a)/scale + zerop)); });
+  for (uint32_t i = 0; i < elements_count; ++i)
+  {
+    int64_t value = static_cast<float>(in_data[i])/scale + zerop;
+    value = std::min(value, static_cast<int64_t>(std::numeric_limits<OutT>::max()));
+    value = std::max(value, static_cast<int64_t>(std::numeric_limits<OutT>::min()));
+    out_data[i] = value;
+  }
 }
 
 template <typename InT> void cast_to_quant_from_pointer_to_tensor(const InT *in_data, Tensor *out_tensor)
