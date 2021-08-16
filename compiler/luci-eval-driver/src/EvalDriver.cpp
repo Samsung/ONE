@@ -69,6 +69,50 @@ template <typename NodeT> size_t getTensorSize(const NodeT *node)
 
 } // namespace
 
+class TensorPrinter : public luci_interpreter::ExecutionObserver
+{
+public:
+  // Called when the value of a tensor has been updated during execution.
+  virtual void postTensorWrite(const luci::CircleNode *node, const luci_interpreter::Tensor *tensor)
+  {
+    std::cout << "Tensor " << tensor->name() << "\n";
+    if (tensor->scales().size() != 0)
+    {
+      switch (tensor->element_type())
+      {
+        case loco::DataType::S16:
+          for (int i = 0; i < tensor->shape().num_elements(); ++i)
+            std::cout << tensor->data<int16_t>()[i]*tensor->scale() << ", ";
+          break;
+        default:
+          assert(false);
+      }
+    }
+    else
+    {
+      for (int i = 0; i < tensor->shape().num_elements(); ++i)
+      {
+        switch (tensor->element_type())
+        {
+          case loco::DataType::S32:
+            std::cout << tensor->data<int32_t>()[i] << ", ";
+            break;
+          case loco::DataType::S64:
+            std::cout << tensor->data<int64_t>()[i] << ", ";
+            break;
+          case loco::DataType::FLOAT32:
+            std::cout << tensor->data<float>()[i] << ", ";
+            break;
+          default:
+            assert(false);
+        }
+      }
+    }
+    std::cout << "\n\n";
+  }
+
+};
+
 /*
  * @brief EvalDriver main
  *
@@ -100,6 +144,8 @@ int entry(int argc, char **argv)
 
   // Create interpreter.
   luci_interpreter::Interpreter interpreter(module.get());
+  TensorPrinter tp;
+  interpreter.attachObserver(&tp);
 
   // Set input.
   // Data for n'th input is read from ${input_prefix}n
