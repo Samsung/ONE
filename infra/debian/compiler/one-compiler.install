@@ -20,6 +20,7 @@ usr/bin/one-import-tflite usr/share/one/bin/
 usr/bin/one-optimize usr/share/one/bin/
 usr/bin/one-pack usr/share/one/bin/
 usr/bin/one-prepare-venv usr/share/one/bin/
+usr/bin/one-profile usr/share/one/bin/
 usr/bin/one-quantize usr/share/one/bin/
 usr/bin/one-version usr/share/one/bin/
 usr/bin/rawdata2hdf5 usr/share/one/bin/
