@@ -33,6 +33,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <cstdlib>
 
 using Algorithms = luci::CircleOptimizer::Options::Algorithm;
 using AlgorithmParameters = luci::CircleOptimizer::Options::AlgorithmParameters;
@@ -69,6 +70,12 @@ int entry(int argc, char **argv)
     .default_value(false)
     .help("Show version information and exit")
     .exit_with(print_version);
+
+  arser.add_argument("-V", "--verbose")
+    .nargs(0)
+    .required(false)
+    .default_value(false)
+    .help("output additional information to stdout or stderr");
 
   arser.add_argument("--O1").nargs(0).required(false).default_value(false).help(
     "Enable O1 optimize options");
@@ -384,6 +391,11 @@ int entry(int argc, char **argv)
     std::cout << arser;
     return 255;
   }
+
+  if (arser.get<bool>("--verbose"))
+    setenv("LUCI_LOG", "100", true);
+  else
+    setenv("LUCI_LOG", "0", true);
 
   if (arser.get<bool>("--O1"))
   {
