@@ -83,7 +83,7 @@ private:
   std::vector<Dimension> _dims;
 };
 
-template <unsigned N> struct FixedArity
+template <uint32_t N> struct FixedArity
 {
   template <typename Base> class Mixin : public virtual Base
   {
@@ -99,7 +99,7 @@ template <unsigned N> struct FixedArity
     virtual ~Mixin() = default;
 
   public:
-    unsigned arity(void) const final { return N; }
+    uint32_t arity(void) const final { return N; }
 
     Node *arg(uint32_t n) const final { return _args.at(n)->node(); }
 
@@ -113,7 +113,7 @@ template <unsigned N> struct FixedArity
 
   protected:
     // This API allows inherited classes to access "_args" field.
-    Use *at(unsigned n) const { return _args.at(n).get(); }
+    Use *at(uint32_t n) const { return _args.at(n).get(); }
 
   private:
     std::array<std::unique_ptr<Use>, N> _args{};
