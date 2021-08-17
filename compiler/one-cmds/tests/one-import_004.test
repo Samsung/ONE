@@ -33,7 +33,7 @@ outputfile="test_keras_model.circle"
 rm -f ${outputfile}
 
 # run test
-one-import tf -C ${configfile} > /dev/null
+one-import tf -C ${configfile} > /dev/null 2>&1
 
 if [[ ! -s "${outputfile}" ]]; then
   trap_err_onexit

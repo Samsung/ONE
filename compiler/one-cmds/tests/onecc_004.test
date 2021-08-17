@@ -37,7 +37,7 @@ rm -rf ${outputfile}
 cp dummy-compile ../bin/dummy-compile
 
 # run test
-onecc -C ${configfile} > /dev/null
+onecc -C ${configfile} > /dev/null 2>&1
 
 if [[ ! -s "${outputfile}" ]]; then
   trap_err_onexit

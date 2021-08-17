@@ -37,7 +37,7 @@ one-quantize \
 --input_path ./inception_v3.circle \
 --input_data ./datalist.txt \
 --input_data_format list \
---output_path ${outputfile} >> /dev/null
+--output_path ${outputfile} > /dev/null 2>&1
 
 if [[ ! -s "${outputfile}" ]]; then
   trap_err_onexit

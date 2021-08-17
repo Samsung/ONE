@@ -39,7 +39,7 @@ fi
 rm -rf ${outputfile}
 
 # run test
-onecc quantize -i ${inputfile} -o ${outputfile} -d ${inputdata} > /dev/null
+onecc quantize -i ${inputfile} -o ${outputfile} -d ${inputdata} > /dev/null 2>&1
 
 if [[ ! -s "${outputfile}" ]]; then
   trap_err_onexit
