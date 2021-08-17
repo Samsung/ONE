@@ -28,7 +28,7 @@ trap_err_onexit()
 trap trap_err_onexit ERR
 
 # run test
-one-codegen -h > ${filename}.log
+one-codegen -h > ${filename}.log 2>&1
 
 if grep -q "command line tool for code generation" "${filename}.log"; then
   echo "${filename_ext} SUCCESS"

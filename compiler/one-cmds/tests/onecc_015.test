@@ -33,7 +33,7 @@ outputfile="bcq.circle"
 rm -rf ${outputfile}
 
 # run test
-onecc import bcq -C ${configfile} > /dev/null
+onecc import bcq -C ${configfile} > /dev/null 2>&1
 
 if [[ ! -s "${outputfile}" ]]; then
   trap_err_onexit

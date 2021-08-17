@@ -42,7 +42,7 @@ rm -rf ${filename}.log
 one-optimize --O1 \
 --change_outputs non_existing_node_name \
 --input_path ${inputfile} \
---output_path ${outputfile} > ${filename}.log
+--output_path ${outputfile} > ${filename}.log 2>&1
 
 echo "${filename_ext} FAILED"
 exit 255

@@ -37,7 +37,7 @@ one-quantize \
 --input_path ${inputfile} \
 --input_data ./raw_files \
 --input_data_format directory \
---output_path ${outputfile} >> /dev/null
+--output_path ${outputfile} > /dev/null 2>&1
 
 if [[ ! -s "${outputfile}" ]]; then
   trap_err_onexit

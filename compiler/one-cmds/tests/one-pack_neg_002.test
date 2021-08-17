@@ -41,7 +41,7 @@ touch ./sample
 # run test
 one-pack \
 -i ./sample \
--o nnpack > ${filename}.log
+-o nnpack > ${filename}.log 2>&1
 
 echo "${filename_ext} FAILED"
 exit 255

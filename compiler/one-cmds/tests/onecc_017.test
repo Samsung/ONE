@@ -38,7 +38,7 @@ fi
 rm -rf ${outputfile}
 
 # run test
-onecc optimize -i ${inputfile} -o ${outputfile} > /dev/null
+onecc optimize -i ${inputfile} -o ${outputfile} > /dev/null 2>&1
 
 if [[ ! -s "${outputfile}" ]]; then
   trap_err_onexit

@@ -55,7 +55,7 @@ one-quantize \
 --quantized_dtype uint8 \
 --input_path ${inputfile} \
 --input_data ${inputdata} \
---output_path ${outputfile} > ${filename}.log
+--output_path ${outputfile} > ${filename}.log 2>&1
 
 echo "${filename_ext} FAILED"
 exit 255

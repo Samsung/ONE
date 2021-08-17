@@ -46,7 +46,7 @@ one-quantize \
 --input_data ${inputdata} \
 --input_data_format list \
 --granularity channel \
---output_path ${outputfile} > ${filename}.log
+--output_path ${outputfile} > ${filename}.log 2>&1
 
 echo "${filename_ext} FAILED"
 exit 255

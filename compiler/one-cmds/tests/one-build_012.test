@@ -33,7 +33,7 @@ outputfile="inception_v3.list.quantized.circle"
 rm -rf ${outputfile}
 
 # run test
-one-build -C ${configfile} > /dev/null
+one-build -C ${configfile} > /dev/null 2>&1
 
 if [[ ! -s "${outputfile}" ]]; then
   trap_err_onexit

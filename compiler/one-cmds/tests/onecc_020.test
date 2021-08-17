@@ -44,7 +44,7 @@ rm -rf ${outputfile}
 cp dummy-compile ../bin/dummy-compile
 
 # run test
-onecc codegen -b dummy -o ${outputfile} ${inputfile} > /dev/null
+onecc codegen -b dummy -o ${outputfile} ${inputfile} > /dev/null 2>&1
 
 if [[ ! -s "${outputfile}" ]]; then
   trap_err_onexit
