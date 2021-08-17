@@ -19,6 +19,7 @@ import numpy as np
 import tensorflow as tf
 
 import argparse
+import os
 import sys
 
 # TODO Find better way to suppress trackback on error
