@@ -139,6 +139,9 @@ def _quantize(args):
 
         ## make a command to quantize and dequantize the weights of the model
         circle_quantizer_cmd = [circle_quantizer_path]
+        # verbose
+        if _utils._is_valid_attr(args, 'verbose'):
+            circle_quantizer_cmd.append('--verbose')
         # quantize_dequantize_weights
         circle_quantizer_cmd.append('--quantize_dequantize_weights')
         if _utils._is_valid_attr(args, 'input_dtype'):
@@ -202,6 +205,9 @@ def _quantize(args):
 
         ## make a second command to quantize the model using the embedded information
         circle_quantizer_cmd = [circle_quantizer_path]
+        # verbose
+        if _utils._is_valid_attr(args, 'verbose'):
+            circle_quantizer_cmd.append('--verbose')
         # quantize_dequantize_weights
         circle_quantizer_cmd.append('--quantize_with_minmax')
         if _utils._is_valid_attr(args, 'input_dtype'):
