@@ -1,5 +1,6 @@
 set(SRCS_EVAL_TESTER
       src/EvalDriver.cpp
+        src/SimpleMemoryPlanner.h src/SimpleMemoryPlanner.cpp
    )
 
 add_executable(luci_eval_driver ${SRCS_EVAL_TESTER})

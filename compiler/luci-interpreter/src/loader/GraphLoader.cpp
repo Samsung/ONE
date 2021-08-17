@@ -17,6 +17,7 @@
 #include "loader/GraphLoader.h"
 
 #include "loader/KernelBuilder.h"
+#include <luci_interpreter/CircleNodeMemoryPlan.h>
 
 #include <loco/IR/Algorithm.h>
 
@@ -151,6 +152,12 @@ void GraphLoader::loadTensors()
 
     auto tensor = std::make_unique<Tensor>(node->dtype(), std::move(shape), std::move(quantization),
                                            node->name());
+    if (luci::has_memory_plan(node))
+    {
+      auto memory_plan = luci::get_memory_plan(node);
+      tensor->set_offset(memory_plan.offset()[0]);
+    } else {
+    }
 
     if (const auto *const_node = dynamic_cast<const luci::CircleConst *>(node))
     {
@@ -195,18 +202,46 @@ void GraphLoader::loadOperators()
 {
   KernelBuilder kernel_builder(_graph_to_runtime_graph, _node_to_tensor);
 
-  // Create kernels for executable nodes. This has to be done in execution order.
-  for (const loco::Node *loco_node :
-       loco::postorder_traversal(loco::output_nodes(const_cast<loco::Graph *>(_graph))))
-  {
-    const auto *node = loco::must_cast<const luci::CircleNode *>(loco_node);
+  auto graph = const_cast<loco::Graph *>(_graph);
+  std::vector<const luci::CircleNode *> ordered_nodes(loco::all_nodes(graph).size());
 
-    if (isExecutableNode(node))
+  bool has_memory_annotation = true;
+
+  for (const loco::Node *loco_node : loco::all_nodes(graph))
+  {
+    auto current_node = dynamic_cast<const luci::CircleNode *>(loco_node);
+    if (!luci::has_memory_plan(current_node))
     {
-      std::unique_ptr<Kernel> kernel = kernel_builder.build(node);
-      _runtime_to_ir.kernel_to_node.emplace(kernel.get(), node);
-      _runtime_graph->addKernel(std::move(kernel));
+      has_memory_annotation = false;
+      break;
     }
+    auto memory_plan = luci::get_memory_plan(current_node);
+    ordered_nodes.at(memory_plan.order_in_plan()) = current_node;
+  }
+
+  if (has_memory_annotation)
+  {
+    for (auto node : ordered_nodes)
+    {
+      if (isExecutableNode(node))
+      {
+        std::unique_ptr<Kernel> kernel = kernel_builder.build(node);
+        _runtime_to_ir.kernel_to_node.emplace(kernel.get(), node);
+        _runtime_graph->addKernel(std::move(kernel));
+      }
+    }
+  } else {
+     for (const loco::Node *loco_node :
+          loco::postorder_traversal(loco::output_nodes(const_cast<loco::Graph *>(_graph))))
+     {
+       const auto *node = loco::must_cast<const luci::CircleNode *>(loco_node);
+       if (isExecutableNode(node))
+       {
+         std::unique_ptr<Kernel> kernel = kernel_builder.build(node);
+         _runtime_to_ir.kernel_to_node.emplace(kernel.get(), node);
+         _runtime_graph->addKernel(std::move(kernel));
+       }
+     }
   }
 }
 

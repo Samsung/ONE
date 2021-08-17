@@ -111,6 +111,7 @@ void Conv2D::configure()
     Shape im2col_shape{batches, output_height, output_width,
                        input_depth * filter_height * filter_width};
     auto im2col = getOutputTensors()[1];
+
     im2col->resize(im2col_shape);
   }
   else

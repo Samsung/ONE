@@ -158,6 +158,16 @@ public:
 
   bool is_data_allocated() { return _data_allocated; }
 
+  int32_t get_offset()
+  {
+    return _offset;
+  }
+
+  void set_offset(int32_t offset)
+  {
+    _offset = offset;
+  }
+
 private:
   DataType _element_type;
   Shape _shape;
@@ -172,6 +182,7 @@ private:
   // Kernel configuration could disable allocation of some tensors if they are not needed for
   // particular operation.
   bool _is_allocatable = true;
+  int32_t _offset = -1;
 };
 
 } // namespace luci_interpreter

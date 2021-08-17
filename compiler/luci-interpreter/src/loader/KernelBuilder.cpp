@@ -15,6 +15,7 @@
  */
 
 #include "loader/KernelBuilder.h"
+#include <luci_interpreter/CircleNodeMemoryPlan.h>
 
 #include "kernels/Add.h"
 #include "kernels/ArgMax.h"
@@ -449,6 +450,8 @@ std::unique_ptr<Kernel> KernelBuilderLet<KB::ABC>::visit(const luci::CircleConv2
     std::make_unique<Tensor>(input->element_type(), Shape({}), AffineQuantization{}, "");
   im2col->make_unobservable();
   im2col->set_data_buffer(nullptr);
+  auto memory_plan = luci::get_memory_plan(node);
+  im2col->set_offset(memory_plan.offset()[1]);
   Tensor *tmp = getRuntimeGraph(node->graph())->addTensor(std::move(im2col));
 
   Conv2DParams params{};
