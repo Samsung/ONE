@@ -96,9 +96,7 @@ def _add_default_arg(parser):
     parser.add_argument(
         '-V',
         '--verbose',
-        action='store_const',
-        default='0',
-        const='1',
+        action='store_true',
         help='output additional information to stdout or stderr')
 
     # configuration file
