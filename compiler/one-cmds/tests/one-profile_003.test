@@ -30,7 +30,7 @@ trap trap_err_onexit ERR
 # run test
 one-profile -h > ${filename}.log
 
-if grep -q "command line tool for profile backend model" "${filename}.log"; then
+if grep -q "command line tool for profiling backend model" "${filename}.log"; then
   echo "${filename_ext} SUCCESS"
   exit 0
 fi
