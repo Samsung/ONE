@@ -221,7 +221,7 @@ def _quantize(args):
         f.write((' '.join(circle_quantizer_cmd) + '\n').encode())
 
         # run circle-quantizer
-        _utils._run(circle2circle_cmd, err_prefix="circle_quantizer", logfile=f)
+        _utils._run(circle_quantizer_cmd, err_prefix="circle_quantizer", logfile=f)
 
 
 def main():

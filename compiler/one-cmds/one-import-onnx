@@ -135,7 +135,7 @@ def _convert(args):
         f.write((' '.join(tflite2circle_cmd) + '\n').encode())
 
         # convert tflite to circle
-        _util._run(tflite2circle_cmd, err_prefix="tflite2circle", logfile=f)
+        _utils._run(tflite2circle_cmd, err_prefix="tflite2circle", logfile=f)
 
 
 def main():
