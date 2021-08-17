@@ -35,14 +35,18 @@ namespace gpu_cl
 void SelectAdd(const OperationDef &op_def, const std::vector<int> &channels, int dst_channels,
                std::unique_ptr<GPUOperation> *ptr);
 
-std::unique_ptr<GPUOperation> SelectReLU(const ReLUAttributes &attr, const OperationDef &op_def);
-
 std::unique_ptr<GPUOperation>
 SelectDWConvolutionDynamicWeights(const DepthwiseConvolution2DAttributes &attr,
                                   const DeviceInfo &device_info, const OperationDef &op_def);
 
 std::unique_ptr<GPUOperation> SelectPooling(const Pooling2DAttributes &attr,
                                             const OperationDef &op_def);
+
+std::unique_ptr<GPUOperation> SelectReLU(const ReLUAttributes &attr, const OperationDef &op_def);
+
+void SelectReshape(int src_channels, int dst_channels, const OperationDef &op_def,
+                   std::unique_ptr<GPUOperation> *ptr);
+
 void SelectSoftmax(const BHWC &shape, const OperationDef &op_def,
                    std::unique_ptr<GPUOperation> *ptr);
 
