@@ -77,7 +77,7 @@ def _get_backends_list():
 def _get_parser(backends_list):
     profile_usage = 'one-profile [-h] [-v] [-C CONFIG] [-b BACKEND] [--] [COMMANDS FOR BACKEND]'
     parser = argparse.ArgumentParser(
-        description='command line tool for profile backend model', usage=profile_usage)
+        description='command line tool for profiling backend model', usage=profile_usage)
 
     _utils._add_default_arg(parser)
 
