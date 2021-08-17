@@ -47,6 +47,7 @@
 #include "luci/Pass/ResolveCustomOpAddPass.h"
 #include "luci/Pass/ResolveCustomOpBatchMatMulPass.h"
 #include "luci/Pass/ResolveCustomOpMatMulPass.h"
+#include "luci/Pass/ResolveCustomOpMaxPoolWithArgmaxPass.h"
 #include "luci/Pass/RequantizePass.h"
 #include "luci/Pass/QuantizeWithMinMaxPass.h"
 #include "luci/Pass/QuantizeDequantizeWeightsPass.h"
@@ -214,6 +215,10 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   if (_options->query(Options::Algorithm::FuseMeanWithMean))
   {
     phase.emplace_back(std::make_unique<FuseMeanWithMeanPass>());
+  }
+  if (_options->query(Options::Algorithm::ResolveCustomOpMaxPoolWithArgmax))
+  {
+    phase.emplace_back(std::make_unique<luci::ResolveCustomOpMaxPoolWithArgmaxPass>());
   }
   if (_options->query(Options::Algorithm::FuseInstanceNorm))
   {
