@@ -94,7 +94,22 @@ def _parse_arg(parser):
     return args
 
 
+def _apply_verbosity(verbosity):
+    # NOTE
+    # TF_CPP_MIN_LOG_LEVEL
+    #   0 : INFO + WARNING + ERROR + FATAL
+    #   1 : WARNING + ERROR + FATAL
+    #   2 : ERROR + FATAL
+    #   3 : FATAL
+    if verbosity:
+        os.environ['TF_CPP_MIN_LOG_LEVEL'] = '0'
+    else:
+        os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+
+
 def _convert(args):
+    _apply_verbosity(args.verbose)
+
     # get file path to log
     dir_path = os.path.dirname(os.path.realpath(__file__))
     logfile_path = os.path.realpath(args.output_path) + '.log'
