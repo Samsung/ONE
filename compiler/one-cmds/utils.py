@@ -225,7 +225,7 @@ def _safemain(main, mainpath):
         main()
     except Exception as e:
         prog_name = os.path.basename(mainpath)
-        print(f"{prog_name}: {type(e).__name__}: " + str(e))
+        print(f"{prog_name}: {type(e).__name__}: " + str(e), file=sys.stderr)
         sys.exit(255)
 
 
