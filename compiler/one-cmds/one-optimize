@@ -100,6 +100,9 @@ def _optimize(args):
                                                            getattr(args, 'input_path'),
                                                            getattr(args, 'output_path'))
 
+        # verbose
+        if _utils._is_valid_attr(args, 'verbose'):
+            circle2circle_cmd.append('--verbose')
         if _utils._is_valid_attr(args, 'change_outputs'):
             circle2circle_cmd.append('--change_outputs')
             circle2circle_cmd.append(getattr(args, 'change_outputs'))
