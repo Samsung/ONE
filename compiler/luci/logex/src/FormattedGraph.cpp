@@ -25,6 +25,7 @@
 #include <sstream>
 #include <vector>
 
+using namespace luci;
 /**
  * @brief dump std::vector<int64_t> values to stream
  */
