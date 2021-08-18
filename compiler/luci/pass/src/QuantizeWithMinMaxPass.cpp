@@ -1364,9 +1364,11 @@ bool ignore_pad_v2_const_quantization(luci::CirclePadV2 *pad)
  *
  *  AFTER (case 2)
  *
- *  qparam is propagated from input to output and constant if padded value is the lowest float value.
- *  This is a special case for optimization constructed pad,
- *  needed to guarantee that extremely large negative constant do not stretch output quantization range.
+ * In case padded value is the lowest float value
+ * Qparam is propagated from input to output and constant.
+ *
+ * This is a special case for optimization constructed pad, needed to guarantee that
+ * extremely large negative constant do not stretch output quantization range.
  *
  *         [CircleNode] [CircleConst] [CircleConst]   [CircleConst] <- Dead node
  *         (U8 qparam1)     (S32)      (U8 qparam1)       (FP32)
