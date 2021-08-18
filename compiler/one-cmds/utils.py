@@ -68,6 +68,8 @@ class _CONSTANT:
         ('resolve_customop_batchmatmul',
          'convert Custom(BatchMatmul) op to BatchMatmul op'),
         ('resolve_customop_matmul', 'convert Custom(Matmul) op to Matmul op'),
+        ('resolve_customop_max_pool_with_argmax',
+         'convert Custom(MaxPoolWithArgmax) to net of builtin operators'),
         ('shuffle_weight_to_16x1float32',
          'convert weight format of FullyConnected op to SHUFFLED16x1FLOAT32.'
          ' Note that it only converts weights whose row is a multiple of 16'),
