@@ -1,17 +1,17 @@
 operand {
   name: "ifm"
   type: FLOAT32
-  shape { dim: 1 dim: 18 dim: 18 dim: 1 }
+  shape { dim: 1 dim: 18 dim: 18 dim: 2 }
 }
 operand {
   name: "ofm"
   type: FLOAT32
-  shape { dim: 1 dim: 8 dim: 8 dim: 1 }
+  shape { dim: 1 dim: 8 dim: 8 dim: 2 }
 }
 operand {
   name: "argmax"
   type: INT64
-  shape { dim: 1 dim: 8 dim: 8 dim: 1 }
+  shape { dim: 1 dim: 8 dim: 8 dim: 2 }
 }
 operation {
   type: "MaxPoolWithArgmax"
