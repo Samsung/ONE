@@ -41,6 +41,12 @@ int entry(const int argc, char **argv)
     .help("Show version information and exit")
     .exit_with(print_version);
 
+  arser.add_argument("-V", "--verbose")
+    .nargs(0)
+    .required(false)
+    .default_value(false)
+    .help("output additional information to stdout or stderr");
+
   arser.add_argument("--input_model")
     .nargs(1)
     .type(arser::DataType::STR)
@@ -97,6 +103,11 @@ int entry(const int argc, char **argv)
     std::cout << arser;
     return 255;
   }
+
+  if (arser.get<bool>("--verbose"))
+    setenv("LUCI_LOG", "100", true);
+  else
+    setenv("LUCI_LOG", "0", true);
 
   auto settings = luci::UserSettings::settings();
 
