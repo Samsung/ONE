@@ -446,6 +446,43 @@ luci::CircleNode *window_flattened_coord(const std::string &name, luci::Padding 
   return argmax_cast;
 }
 
+// Creates dummy operation after floor to force circle-quantizer requantize tensor with scale << 1
+// Dealing with values of extremely different scales
+// in following binary operations hurts backend precision.
+luci::CircleNode *create_post_floor_requantize_node(luci::CircleFloor *floor)
+{
+  auto graph = floor->graph();
+  auto const origin = luci::get_origin(floor);
+  auto name = floor->name();
+
+  auto requantizer = none_act_func(graph->nodes()->create<luci::CircleDepthwiseConv2D>());
+  init_name_and_origin(requantizer, name + "/Requantizer", origin);
+
+  requantizer->input(floor);
+
+  auto requantizer_filter = create_scalar<loco::DataType::FLOAT32>(graph, 1.0f);
+  init_name_and_origin(requantizer_filter, name + "/Requantizer/filter", origin);
+  requantizer_filter->rank(4);
+  for (uint32_t i = 0; i < 4; ++i)
+  {
+    requantizer_filter->dim(i) = 1;
+  }
+  requantizer->filter(requantizer_filter);
+
+  auto requantizer_bias = create_zero_bias(graph, 1);
+  init_name_and_origin(requantizer_bias, name + "/Requantizer/bias", origin);
+  requantizer->bias(requantizer_bias);
+
+  requantizer->padding(luci::Padding::VALID);
+  requantizer->stride()->w(1);
+  requantizer->stride()->h(1);
+  requantizer->depthMultiplier(1);
+  requantizer->dilation()->w(1);
+  requantizer->dilation()->h(1);
+
+  return requantizer;
+}
+
 luci::CircleNode *window_y_coord(const std::string &name, float filter_width,
                                  luci::CircleNode *flattened)
 {
@@ -469,7 +506,9 @@ luci::CircleNode *window_y_coord(const std::string &name, float filter_width,
     floor->x(div);
   }
 
-  return floor;
+  auto requantizer = create_post_floor_requantize_node(floor);
+
+  return requantizer;
 }
 
 luci::CircleNode *window_x_coord(const std::string &name, float filter_width,
@@ -784,6 +823,8 @@ namespace luci
  *   |  [Mul 1/<window width>]
  *   |                \
  *   |              [Floor]
+ *   |                 |
+ *   |            [Requantize]
  *   |              /     \
  *   | [Mul window width] |
  *   \       /           /
