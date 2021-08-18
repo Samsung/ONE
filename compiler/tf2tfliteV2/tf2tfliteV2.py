@@ -16,18 +16,12 @@
 # limitations under the License.
 
 import os
-
-os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
-
 import tensorflow as tf
 import argparse
 import sys
 
 from google.protobuf.message import DecodeError
 from google.protobuf import text_format as _text_format
-
-# TODO Find better way to suppress trackback on error
-sys.tracebacklimit = 0
 
 
 def wrap_frozen_graph(graph_def, inputs, outputs):
@@ -47,6 +41,13 @@ def _get_parser():
   """
     parser = argparse.ArgumentParser(
         description=("Command line tool to run TensorFlow Lite Converter."))
+
+    # Verbose
+    parser.add_argument(
+        "-V",
+        "--verbose",
+        action="store_true",
+        help="output additional information to stdout or stderr")
 
     # Converter version.
     converter_version = parser.add_mutually_exclusive_group(required=True)
@@ -236,7 +237,29 @@ def _v2_convert(flags):
     open(flags.output_path, "wb").write(tflite_model)
 
 
+def _apply_verbosity(verbosity):
+    # NOTE
+    # TF_CPP_MIN_LOG_LEVEL
+    #   0 : INFO + WARNING + ERROR + FATAL
+    #   1 : WARNING + ERROR + FATAL
+    #   2 : ERROR + FATAL
+    #   3 : FATAL
+    #
+    # TODO Find better way to suppress trackback on error
+    # tracebacklimit
+    #   The default is 1000.
+    #   When set to 0 or less, all traceback information is suppressed
+    if verbosity:
+        os.environ['TF_CPP_MIN_LOG_LEVEL'] = '0'
+        sys.tracebacklimit = 1000
+    else:
+        os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+        sys.tracebacklimit = 0
+
+
 def _convert(flags):
+    _apply_verbosity(flags.verbose)
+
     if (flags.v1):
         _v1_convert(flags)
     else:
