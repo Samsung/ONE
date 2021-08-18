@@ -75,6 +75,12 @@ int entry(int argc, char **argv)
     .help("Show version information and exit")
     .exit_with(print_version);
 
+  arser.add_argument("-V", "--verbose")
+    .nargs(0)
+    .required(false)
+    .default_value(false)
+    .help("output additional information to stdout or stderr");
+
   arser.add_argument(qdqw)
     .nargs(3)
     .type(arser::DataType::STR_VEC)
@@ -127,6 +133,11 @@ int entry(int argc, char **argv)
       return 255;
     }
   }
+
+  if (arser.get<bool>("--verbose"))
+    setenv("LUCI_LOG", "100", true);
+  else
+    setenv("LUCI_LOG", "0", true);
 
   if (arser[qdqw])
   {
