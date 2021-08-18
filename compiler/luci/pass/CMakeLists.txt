@@ -21,6 +21,14 @@ install(TARGETS luci_pass DESTINATION lib)
 install(DIRECTORY include/ DESTINATION include
         FILES_MATCHING PATTERN "*.h")
 
+nnas_find_package(TensorFlowSource EXACT 2.3.0 QUIET)
+nnas_find_package(TensorFlowGEMMLowpSource EXACT 2.3.0 QUIET)
+
+target_include_directories(luci_pass SYSTEM PRIVATE
+  "${TensorFlowSource_DIR}"
+  "${TensorFlowGEMMLowpSource_DIR}"
+)
+
 if(NOT ENABLE_TEST)
   return()
 endif(NOT ENABLE_TEST)

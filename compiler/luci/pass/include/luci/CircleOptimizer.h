@@ -51,6 +51,7 @@ public:
       Requantize,
       FoldAddV2,
       FoldCast,
+      FoldDepthwiseConv2D,
       FoldDequantize,
       FoldSparseToDense,
       ForwardReshapeToUnaryOp,

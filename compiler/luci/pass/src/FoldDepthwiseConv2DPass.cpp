@@ -1,0 +1,176 @@
+/*
+ * Copyright (c) 2021 Samsung Electronics Co., Ltd. All Rights Reserved
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+#include "luci/Pass/FoldDepthwiseConv2DPass.h"
+
+#include <tensorflow/lite/kernels/internal/reference/depthwiseconv_float.h>
+
+#include <luci/IR/CircleNodes.h>
+#include <luci/IR/AttrFusedActFunc.h>
+
+bool fold_depthwise_conv_2d(luci::CircleDepthwiseConv2D *node)
+{
+  auto const input = dynamic_cast<luci::CircleConst *>(node->input());
+
+  if (input == nullptr)
+    return false; // Constant input is required for folding
+
+  auto const filter = dynamic_cast<luci::CircleConst *>(node->filter());
+
+  if (filter == nullptr)
+    return false; // Constant filter is required for folding
+
+  if (filter->dim(0).value() != 1)
+    return false; // Unsupported batch size
+
+  auto const bias = dynamic_cast<luci::CircleConst *>(node->bias());
+
+  if (bias == nullptr)
+    return false; // Constant bias is required for folding
+
+  auto const input_batches = input->dim(0).value();
+  auto const input_height = input->dim(1).value();
+  auto const input_width = input->dim(2).value();
+
+  auto const filter_height = filter->dim(1).value();
+  auto const filter_width = filter->dim(2).value();
+  auto const filter_channels_out = filter->dim(3).value();
+
+  if (bias->rank() != 1 || bias->dim(0).value() != filter_channels_out)
+    return false; // Unsupported bias value
+
+  tflite::DepthwiseParams params{};
+
+  // TODO Share activation mix/max and compute_input/output code with luci-interpreter
+
+  switch (node->fusedActivationFunction())
+  {
+    case luci::FusedActFunc::NONE:
+    case luci::FusedActFunc::TANH:
+      params.float_activation_min = std::numeric_limits<float>::lowest();
+      params.float_activation_max = std::numeric_limits<float>::max();
+      break;
+    case luci::FusedActFunc::RELU:
+      params.float_activation_min = 0;
+      params.float_activation_max = std::numeric_limits<float>::max();
+      break;
+    case luci::FusedActFunc::RELU_N1_TO_1:
+      params.float_activation_min = -1;
+      params.float_activation_max = 1;
+      break;
+    case luci::FusedActFunc::RELU6:
+      params.float_activation_min = 0;
+      params.float_activation_max = 6;
+      break;
+    default:
+      throw std::runtime_error("Unsupported activation");
+  }
+
+  auto compute_output = [](luci::Padding padding, int32_t image_size, int32_t filter_size,
+                           int32_t stride, int32_t dilation_rate) {
+    auto const effective_filter_size = (filter_size - 1) * dilation_rate + 1;
+    switch (padding)
+    {
+      case luci::Padding::SAME:
+        return (image_size + stride - 1) / stride;
+      case luci::Padding::VALID:
+        return (image_size + stride - effective_filter_size) / stride;
+      default:
+        throw std::runtime_error("Unsupported padding");
+        return 0;
+    }
+  };
+
+  auto compute_padding = [](int32_t stride, int32_t dilation_rate, int32_t in_size,
+                            int32_t filter_size, int32_t out_size) {
+    auto const effective_filter_size = (filter_size - 1) * dilation_rate + 1;
+    auto const padding = ((out_size - 1) * stride + effective_filter_size - in_size) / 2;
+    return padding > 0 ? padding : 0;
+  };
+
+  auto tensor_shape = [](luci::CircleNode *node) {
+    tflite::RuntimeShape runtime_shape(node->rank());
+    for (uint32_t i = 0; i < node->rank(); ++i)
+      runtime_shape.SetDim(i, node->dim(i).value());
+    return runtime_shape;
+  };
+
+  auto const output_height = compute_output(node->padding(), input_height, filter_height,
+                                            node->stride()->h(), node->dilation()->h());
+  auto const output_width = compute_output(node->padding(), input_width, filter_width,
+                                           node->stride()->w(), node->dilation()->w());
+
+  params.padding_values.height = compute_padding(node->stride()->h(), node->dilation()->h(),
+                                                 input_height, filter_height, output_height);
+  params.padding_values.width = compute_padding(node->stride()->h(), node->dilation()->h(),
+                                                input_width, filter_width, output_width);
+
+  params.stride_height = node->stride()->h();
+  params.stride_width = node->stride()->w();
+  params.dilation_height_factor = node->dilation()->h();
+  params.dilation_width_factor = node->dilation()->w();
+  params.depth_multiplier = node->depthMultiplier();
+
+  auto constant = node->graph()->nodes()->create<luci::CircleConst>();
+  constant->name(node->name());
+  constant->dtype(node->dtype());
+  constant->rank(node->rank());
+  constant->shape_status(luci::ShapeStatus::VALID);
+  for (uint32_t i = 0; i < node->rank(); ++i)
+    constant->dim(i).set(node->dim(i).value());
+
+  constant->size<loco::DataType::FLOAT32>(input_batches * output_height * output_width *
+                                          filter_channels_out);
+
+  auto const input_data = &input->at<loco::DataType::FLOAT32>(0);
+  auto const filter_data = &filter->at<loco::DataType::FLOAT32>(0);
+  auto const bias_data = &bias->at<loco::DataType::FLOAT32>(0);
+  auto const constant_data = &constant->at<loco::DataType::FLOAT32>(0);
+
+  tflite::reference_ops::DepthwiseConv(params, tensor_shape(input), input_data,
+                                       tensor_shape(filter), filter_data, tensor_shape(bias),
+                                       bias_data, tensor_shape(constant), constant_data);
+
+  loco::replace(node).with(constant);
+
+  return true;
+}
+
+/**
+ * Constant Folding for DepthwiseConv2D Op
+ **/
+bool luci::FoldDepthwiseConv2DPass::run(loco::Graph *g)
+{
+  bool changed = false;
+  for (auto node : loco::active_nodes(loco::output_nodes(g)))
+  {
+    auto depthwise_conv2d = dynamic_cast<luci::CircleDepthwiseConv2D *>(node);
+
+    if (depthwise_conv2d == nullptr)
+      continue;
+
+    switch (depthwise_conv2d->dtype())
+    {
+      case loco::DataType::FLOAT32:
+        changed = fold_depthwise_conv_2d(depthwise_conv2d);
+        break;
+      default:
+        break;
+    }
+  }
+
+  return changed;
+}
