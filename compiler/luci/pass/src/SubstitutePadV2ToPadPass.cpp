@@ -23,31 +23,52 @@
 
 /**
  * @brief Convert PadV2 op in a certain condition to Pad
- * @details Convert PadV2 op in a certain condition to Pad if the following conditions are true:
+ * @details Convert PadV2 op in a certain condition to Pad.
+ *
+ * Basic Condition)
  *
  *    C1) For all i, PadV2.input[i] >= 0
  *    C2) For all c, PadV2.constant_values[c] <= 0
  *    C3) PadV2 == MaxPool2D.value()
  *    C4) number of padded values at left < MaxPool2D.Filter.W
- *       number of padded values at right < MaxPool2D.Filter.W
- *       number of padded values at top < MaxPool2D.Filter.H
- *       number of padded values at bottom < MaxPool2D.Filter.H
+ *        number of padded values at right < MaxPool2D.Filter.W
+ *        number of padded values at top < MaxPool2D.Filter.H
+ *        number of padded values at bottom < MaxPool2D.Filter.H
  *
- * In this case, it's OK to pad with const value 0, which is what Pad op does.
+ *    Example graph is as follows:
  *
- * Note1: PadV2.input could be 'reshaping op' (op that does not change the value of tensor
- *        but changes position of tensor value)
- *        Examples are Transpose, Reshape, StridedSlice, etc.
- *        In such case, to see condition C1 we have to check if each value of input of
- *        'reshaping op' >= 0
+ *        %1 = CircleRelu                  # relu_output[i] >= 0
+ *        %2 = CirclePadV2(%1, constant_values <= 0)
+ *        %3 = CircleMaxPool2D(%2, ...)    # output will be chosen from relu_output
  *
- * Note2: Between PadV2 and MaxPool2D, there can be 'reshaping op'.
- *        In this case, considition C4 should be met against output of 'reshaping op'.
+ * In this case, it's OK to replace PadV2 with Pad, which uses 0 as padding constant.
  *
- * Why this pass is required?
+ * Optional Condition)
  *
- *        When PyTorch model is converted into Circle model, some model contain
- *        PadV2 like below:
+ *    Terminology)
+ *        - 'reshaping op' : op that does not change the value of tensor
+ *           but changes position of tensor value, e.g., Transpose, Reshape, Slice, etc.
+ *
+ *    C5) Input of PadV2 could be 'reshaping op'. Example is as follow:
+ *
+ *        %1 = CircleRelu           # output[i] >= 0
+ *        %2 = CircleTranspose(%1)  # reshaping op
+ *        ...                       # more reshaping ops
+ *        %n = CirclePadV2(%n-1, constant_values <= 0)
+ *        %n+1 = CircleMaxPool2D(%n, ...)
+ *
+ *    C6) PadV2 could be an input of 'reshaping op'. Example is as follow:
+ *
+ *        %1 = CircleRelu
+ *        %2 = CirclePadV2(%1, constant_values <= 0)
+ *        %3 = CircleTranspose(%2)  # reshaping op
+ *        ...                       # more reshaping ops
+ *        %n = CircleMaxPool2D(%n-1, ...)
+ *
+ * Why is this pass required?
+ *
+ *        When PyTorch model is converted into Circle model, sometimes PadV2 is inserted with
+ *        the following pattern:
  *
  *        %1 = Circle.Conv2D(..., activation = Relu)
  *        %2 = Circle.Transpose(%1, perm=[0,3,1,2])
@@ -56,8 +77,8 @@
  *        %5 = Circle.MaxPool2D(%4, filter=[3,3], padding="VALID")
  *
  *        Large negative padding constant of %3 caused problem when we quantized this model.
- *        So we need to convert the negative number to some number in reasonable range, e.g., zero.
- *        (Transpose was inserted to convert NCHW to NHWC.)
+ *        So we need to convert the negative number to some number in reasonable range for
+ *        quantization, e.g., zero.
  */
 namespace
 {
@@ -85,7 +106,7 @@ struct ReshapingNode
   }
 };
 
-// Check condition C1)
+// Check condition C1) and C5)
 bool positive_or_zero(loco::Node *ifm)
 {
   assert(ifm);
@@ -138,10 +159,9 @@ bool has_all_positive_values(luci::CircleConst *node)
   throw std::runtime_error("Not yet supported datatype");
 }
 
-// Check condition C3) and C4)
-bool used_by_maxpool_only(luci::CirclePadV2 *node)
+// Check condition C3), C4) and C6)
+bool used_by_maxpool_only(luci::CirclePadV2 *)
 {
-
   //
   // TODO Implement this
   //
@@ -257,11 +277,10 @@ namespace luci
  *         [CircleMaxPool2D]
  *                 |
  *
- * Case 2) Model in Pytorch can be converted to circle (via Onnx)
- * In such case, it is common that seme 'Reshaping op', e.g., CircleTranspose,
- * are inserted in-between operations. This pass also needs to handle such situation.
- *
- * BEFORE
+ * Case 2) During conversion from a PyTorch model into a Circle model,
+ * it is common that some 'Reshaping op', e.g., CircleTranspose,
+ * are inserted in-between operations to swith NCHW into NHWC and vice versa.
+ * This pass also needs to handle such situation.
  *
  * BEFORE
  *     [CircleRelu]
