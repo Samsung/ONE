@@ -281,6 +281,23 @@ void fill_coords_addition(luci::Padding padding, const luci::Stride &stride,
   }
 }
 
+void create_debug_output(luci::CircleNode *node, loco::DataType dtype, const std::vector<int> &dims)
+{
+  auto g = node->graph();
+
+  auto graph_output = g->outputs()->create();
+  auto shape = std::make_unique<loco::TensorShape>();
+  shape->rank(dims.size());
+  for (int i = 0; i < dims.size(); ++i)
+    shape->dim(i) = dims[i];
+  graph_output->shape(std::move(shape));
+  graph_output->dtype(dtype);
+
+  auto output_node = g->nodes()->create<luci::CircleOutput>();
+  init_name_and_origin(output_node, node->name() + "/Output", luci::get_origin(node));
+  output_node->index(graph_output->index());
+}
+
 luci::CircleConst *create_coords_addition(loco::Graph *graph, luci::Padding padding,
                                           const luci::Stride &stride, const luci::Filter &filter,
                                           uint32_t input_height, uint32_t input_width, uint32_t depth,
@@ -481,7 +498,32 @@ luci::CircleNode *window_y_coord(const std::string &name, luci::Filter filter,
     floor->x(div);
   }
 
-  return floor;
+  auto requantizer = none_act_func(graph->nodes()->create<luci::CircleDepthwiseConv2D>());
+  init_name_and_origin(requantizer, name + "/FloorRequantizer", origin);
+
+  requantizer->input(floor);
+
+  auto requantizer_filter = create_scalar<loco::DataType::FLOAT32>(graph, 1.0f);
+  init_name_and_origin(requantizer_filter, name + "/FloorRequantizer/filter", origin);
+  requantizer_filter->rank(4);
+  for (uint32_t i = 0; i < 4; ++i)
+  {
+    requantizer_filter->dim(i) = 1;
+  }
+  requantizer->filter(requantizer_filter);
+
+  auto requantizer_bias = create_zero_bias(graph, 1);
+  init_name_and_origin(requantizer_bias, name + "/FloorRequantizer/bias", origin);
+  requantizer->bias(requantizer_bias);
+
+  requantizer->padding(luci::Padding::VALID);
+  requantizer->stride()->w(1);
+  requantizer->stride()->h(1);
+  requantizer->depthMultiplier(1);
+  requantizer->dilation()->w(1);
+  requantizer->dilation()->h(1);
+
+  return requantizer;
 }
 
 luci::CircleNode *window_x_coord(const std::string &name, float filter_width,
