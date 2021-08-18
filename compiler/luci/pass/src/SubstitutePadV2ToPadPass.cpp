@@ -23,7 +23,7 @@
 
 /**
  * @brief Convert PadV2 op in a certain condition to Pad
- * @details Convert PadV2 op in a certain condition to Pad.
+ * @details Condition to convert PadV2 to Pad is like below:
  *
  * Basic Condition)
  *
