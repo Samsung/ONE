@@ -238,7 +238,7 @@ int32_t compute_full_padding(int32_t input_size, int32_t output_size, int32_t st
 template <loco::DataType DT>
 void fill_coords_addition(luci::Padding padding, const luci::Stride &stride,
                           const luci::Filter &filter, uint32_t input_height, uint32_t input_width,
-                          luci::CircleConst *cords)
+                          uint32_t depth, luci::CircleConst *cords)
 {
   assert(cords->rank() == 4);
 
@@ -272,7 +272,19 @@ void fill_coords_addition(luci::Padding padding, const luci::Stride &stride,
       auto const output_idx = y_o * output_width + x_o;
       auto const input_idx = y_i * static_cast<int32_t>(input_width) + x_i;
 
-      cords->at<DT>(output_idx) = input_idx;
+      // Add small adjustment value to fix cast operation result that follows "coord addition"
+      // in generated subgraph.
+      //
+      // Cast operation discards fractional part of value, so 1.9996 will be transformed to 1
+      // This is not a problem when working with fp23, because fp represents integers precisely,
+      // but leads to wrong results, when working with quantized numbers.
+      //
+      // This value is larger than quantization error,
+      // and small nough to not affect following computations
+      // (in particular multiplication with depth)
+      const float round_adjustment = 1.0f / (depth + 1);
+
+      cords->at<DT>(output_idx) = input_idx + round_adjustment;
     }
   }
 }
@@ -280,7 +292,8 @@ void fill_coords_addition(luci::Padding padding, const luci::Stride &stride,
 luci::CircleConst *create_coords_addition(loco::Graph *graph, luci::Padding padding,
                                           const luci::Stride &stride, const luci::Filter &filter,
                                           uint32_t input_height, uint32_t input_width,
-                                          uint32_t output_height, uint32_t output_width)
+                                          uint32_t depth, uint32_t output_height,
+                                          uint32_t output_width)
 {
   auto cords = graph->nodes()->create<luci::CircleConst>();
 
@@ -293,7 +306,7 @@ luci::CircleConst *create_coords_addition(loco::Graph *graph, luci::Padding padd
   cords->dim(3).set(1);
 
   fill_coords_addition<loco::DataType::FLOAT32>(padding, stride, filter, input_height, input_width,
-                                                cords);
+                                                depth, cords);
 
   return cords;
 }
@@ -446,7 +459,7 @@ luci::CircleNode *window_flattened_coord(const std::string &name, luci::Padding 
   return argmax_cast;
 }
 
-luci::CircleNode *window_y_coord(const std::string &name, float filter_width,
+luci::CircleNode *window_y_coord(const std::string &name, const luci::Filter &filter,
                                  luci::CircleNode *flattened)
 {
   auto const graph = flattened->graph();
@@ -456,7 +469,19 @@ luci::CircleNode *window_y_coord(const std::string &name, float filter_width,
   {
     init_name_and_origin(div, name + "/Div", origin);
 
-    auto divider = create_scalar<loco::DataType::FLOAT32>(graph, 1.0f / filter_width);
+    // Adjustment_coeff is needed to fix computation of quantized tensors
+    //
+    // For example Fp32 value 2.0 could be quantized to 1.996
+    // after floor it will be transformed to 1.0, but desired answer is still something close to 2.0
+    //
+    // rounding_adjustment is chosen so it is small enough to not affect fp32 computations,
+    // but "Div" change is larger then potential quantization error.
+    //
+    // This computation exploits the fact that div is an x coord in maxpool window,
+    // and lies in defined range [0, filter.h())
+    const float rounding_adjustment = 1.0f / (filter.w() * filter.h());
+    const float divider_value = filter.w() - rounding_adjustment;
+    auto divider = create_scalar<loco::DataType::FLOAT32>(graph, 1.0f / divider_value);
     init_name_and_origin(divider, div->name() + "/Divider", origin);
 
     div->x(flattened);
@@ -639,14 +664,14 @@ luci::CircleNode *argmax_branch(luci::Padding padding, const luci::Stride &strid
       window_flattened_coord(branch_name + "/WindowFlat", padding, stride, filter, input_height,
                              input_width, output_height, output_width, split_out);
 
-    auto const window_y = window_y_coord(branch_name + "/WindowY", filter.w(), window_coords);
+    auto const window_y = window_y_coord(branch_name + "/WindowY", filter, window_coords);
     auto const window_x =
       window_x_coord(branch_name + "/WindowX", filter.w(), window_coords, window_y);
 
     // Define idx of max element in Plane
     // This tensor contains coords of left top corners for each window from input tensor
     auto corners = create_coords_addition(graph, padding, stride, filter, input_height, input_width,
-                                          output_height, output_width);
+                                          input_depth, output_height, output_width);
     init_name_and_origin(corners, branch_name + "/Const", origin);
 
     auto plane_coord =
