@@ -759,7 +759,7 @@ namespace luci
  *                 |
  *            [CircleNode]
  *                 |
- *     [CUSTOM(MaxPoolWithArgmax]
+ *     [CUSTOM(MaxPoolWithArgmax)]
  *         |              |
  *  [MaxPool output]  [Argmax output]
  *
