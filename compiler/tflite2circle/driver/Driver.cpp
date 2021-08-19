@@ -43,6 +43,12 @@ int entry(int argc, char **argv)
     .help("Show version information and exit")
     .exit_with(print_version);
 
+  arser.add_argument("-V", "--verbose")
+    .nargs(0)
+    .required(false)
+    .default_value(false)
+    .help("output additional information to stdout or stderr");
+
   arser.add_argument("tflite")
     .nargs(1)
     .type(arser::DataType::STR)
