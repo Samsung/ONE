@@ -82,6 +82,10 @@ void TransposeConv::configure()
       getQuantizedConvolutionMultiplers(input()->scale(), filter()->scales(), output()->scale());
 
     _quant_multipliers = quantizeMultipliers(real_multipliers);
+  } else
+  {
+    auto scratch_tensor = getOutputTensors()[1];
+    scratch_tensor->make_unallocatable();
   }
 }
 
