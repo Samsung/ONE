@@ -105,9 +105,11 @@ int entry(const int argc, char **argv)
   }
 
   if (arser.get<bool>("--verbose"))
-    setenv("LUCI_LOG", "100", true);
-  else
-    setenv("LUCI_LOG", "0", true);
+  {
+    // The third parameter of setenv means REPLACE.
+    // If REPLACE is zero, it does not overwrite an existing value.
+    setenv("LUCI_LOG", "100", 0);
+  }
 
   auto settings = luci::UserSettings::settings();
 
