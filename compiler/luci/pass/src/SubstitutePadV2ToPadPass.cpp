@@ -83,6 +83,92 @@
 namespace
 {
 
+struct Paddings
+{
+  struct Pad
+  {
+    int32_t front;
+    int32_t end;
+  };
+  /**
+   * @brief Store paddings position information.
+   * @details _padding_pos[k] stores Pad object at axis k
+   *
+   * @note  Paddings must be for rank 4 tensor
+   */
+  std::vector<Pad> _padding_pos;
+
+  Paddings(luci::CircleConst *paddings)
+  {
+    assert(paddings->dtype() == loco::DataType::S32);
+    assert(paddings->rank() == 2);
+    assert(paddings->dim(1).value() == 2);
+    assert(paddings->size<loco::DataType::S32>() == paddings->rank() * 4);
+
+    for (uint32_t i = 0; i < paddings->dim(0).value(); i++)
+    {
+      Pad pad{.front = paddings->at<loco::DataType::S32>(i * 2),
+              .end = paddings->at<loco::DataType::S32>(i * 2 + 1)};
+      _padding_pos.emplace_back(pad);
+    }
+
+    assert(_padding_pos.size() == 4);
+  }
+
+  /**
+   * @brief Check if this padding area is covered by filter
+   *
+   * @note This is to check condition C4).
+   *       _padding_pos should store values according to NHWC.
+   */
+  bool smaller_than(int32_t filter_h, int32_t filter_w)
+  {
+    auto &pad_H = _padding_pos.at(1);
+    auto &pad_W = _padding_pos.at(2);
+
+    return (pad_H.front < filter_h) && (pad_H.end < filter_h) && (pad_W.front < filter_w) &&
+           (pad_W.end < filter_w);
+  }
+
+  /**
+   * @brief Track how paddings change after CircleTranspose
+   * @details Consider the following graph,
+   *
+   *   %1 = Circle.Input
+   *   %2 = Circle.PadV2(%1,
+   *                     paddings=[[0, 0], [0, 0], [2, 3], [4, 5]],
+   *                     padding_value = -100)
+   *   %3 = Circle.Transpose(%2, perm[0, 2, 3, 1])
+   *
+   *   Output of %3 has padding constant value(-100) from %2 at position below:
+   *
+   *    - axis | front | end
+   *     ------|-------|-----
+   *       0   |   0   |   0
+   *       1   |   2   |   3
+   *       2   |   4   |   5
+   *       3   |   0   |   0
+   *
+   *   This method keeps track of such change of padding position.
+   */
+  void apply(luci::CircleTranspose *transpose)
+  {
+    assert(transpose);
+    luci::CircleConst *perm = loco::must_cast<luci::CircleConst *>(transpose->perm());
+
+    std::vector<Pad> transposed_pos;
+    transposed_pos.resize(4);
+
+    for (uint32_t to = 0; to < 4; to++)
+    {
+      int32_t from = perm->at<loco::DataType::S32>(to);
+      transposed_pos.at(to) = _padding_pos.at(from);
+    }
+
+    _padding_pos = transposed_pos;
+  }
+};
+
 struct ReshapingNode
 {
   /// @brief Check if node is 'reshaping op'
@@ -105,6 +191,18 @@ struct ReshapingNode
     throw std::runtime_error("Not yet supported reshaping op");
   }
 };
+
+/// @brief Get only successor node
+loco::Node *get_only_succ(loco::Node *parent)
+{
+  assert(parent);
+
+  auto successors = loco::succs(parent);
+  if (successors.size() != 1)
+    return nullptr;
+
+  return *successors.begin();
+}
 
 // Check condition C1) and C5)
 bool positive_or_zero(loco::Node *ifm)
@@ -159,14 +257,52 @@ bool has_all_positive_values(luci::CircleConst *node)
   throw std::runtime_error("Not yet supported datatype");
 }
 
-// Check condition C3), C4) and C6)
-bool used_by_maxpool_only(luci::CirclePadV2 *)
+bool used_by_maxpool_only(luci::CircleNode *node, Paddings &paddings)
 {
-  //
-  // TODO Implement this
-  //
+  auto successor = get_only_succ(node);
+
+  // when successor is not only-succ
+  if (successor == nullptr)
+    return false;
+
+  if (auto maxpool = dynamic_cast<luci::CircleMaxPool2D *>(successor))
+  {
+    // Let's check condition C4)
+    return paddings.smaller_than(maxpool->filter()->h(), maxpool->filter()->w());
+  }
+
+  // Let's check condition C6)
+  if (auto transpose = dynamic_cast<luci::CircleTranspose *>(successor))
+  {
+    auto appropriate = [](luci::CircleTranspose *transpose) {
+      luci::CircleConst *perm = loco::must_cast<luci::CircleConst *>(transpose->perm());
+
+      // For Transpose to be an input for MaxPool2D
+      return (transpose->rank() == 4) && (perm && perm->dtype() == loco::DataType::S32) &&
+             (perm->size<loco::DataType::S32>() == 4);
+    };
+
+    if (not appropriate(transpose))
+      return false;
+
+    paddings.apply(transpose);
+    return used_by_maxpool_only(transpose, paddings);
+  }
+  // Support more 'reshaping op' later
 
   return false;
+}
+
+// Check condition C3), C4) and C6)
+bool used_by_maxpool_only(luci::CirclePadV2 *pad_v2)
+{
+  // For PadV2 to be an input for MaxPool2D
+  if (pad_v2->rank() != 4)
+    return false;
+
+  Paddings paddings(loco::must_cast<luci::CircleConst *>(pad_v2->paddings()));
+
+  return used_by_maxpool_only(pad_v2, paddings);
 }
 
 loco::Node *build_pad_from(luci::CirclePadV2 *pad_v2)
