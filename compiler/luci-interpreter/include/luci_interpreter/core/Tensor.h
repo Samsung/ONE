@@ -156,6 +156,21 @@ public:
     _is_observable = false;
   }
 
+  bool is_allocatable() const
+  {
+    return _is_allocatable;
+  }
+
+  void make_unallocatable()
+  {
+    _is_allocatable = false;
+  }
+
+  bool is_data_allocated()
+  {
+    return _data_allocated;
+  }
+
 private:
   DataType _element_type;
   Shape _shape;
@@ -164,6 +179,7 @@ private:
   std::string _name;
   bool _data_allocated;
   bool _is_observable = true;
+  bool _is_allocatable = true;
 };
 
 } // namespace luci_interpreter

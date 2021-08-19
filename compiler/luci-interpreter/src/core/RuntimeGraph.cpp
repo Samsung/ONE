@@ -109,10 +109,10 @@ RuntimeGraph::RuntimeGraph(RuntimeModule *owning_module, IMemoryManager *memory_
 
 RuntimeGraph::~RuntimeGraph()
 {
-  for (auto & _tensor : _tensors)
+  for (auto & tensor : _tensors)
   {
-    if (_tensor->data<uint8_t>() != nullptr)
-      _memory_manager->release_memory(_tensor.get());
+    if (tensor->is_data_allocated())
+      _memory_manager->release_memory(tensor.get());
   }
 }
 
@@ -135,6 +135,11 @@ void RuntimeGraph::setOutputTensors(const std::vector<Tensor *> &output_tensors)
   assert(std::all_of(output_tensors.cbegin(), output_tensors.cend(),
                      [](Tensor *tensor) { return tensor != nullptr; }));
   _output_tensors = output_tensors;
+}
+
+void RuntimeGraph::configureAllocations(Tensor *tensor)
+{
+  _memory_manager->allocate_memory(tensor);
 }
 
 void RuntimeGraph::addKernel(std::unique_ptr<Kernel> &&kernel)
