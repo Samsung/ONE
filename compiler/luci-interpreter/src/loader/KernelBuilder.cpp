@@ -290,6 +290,7 @@ public:
   DECLARE_VISIT(CircleSpaceToBatchND);
   DECLARE_VISIT(CircleSpaceToDepth);
   DECLARE_VISIT(CircleSplit);
+  DECLARE_VISIT(CircleSplitV);
   DECLARE_VISIT(CircleSqrt);
   DECLARE_VISIT(CircleSquare);
   DECLARE_VISIT(CircleSquaredDifference);
@@ -1085,6 +1086,20 @@ std::unique_ptr<Kernel> KernelBuilderLet<KB::STUV>::visit(const luci::CircleSpli
 {
   auto output_nodes = collectOutputNodes<luci::CircleSplitOut>(node);
   assert(node->arity() == 2);
+  assert(output_nodes.size() == static_cast<size_t>(node->num_split()));
+
+  const Tensor *axis = getInputTensor(node->split_dim());
+  const Tensor *input = getInputTensor(node->input());
+  std::vector<Tensor *> outputs = getOutputTensors(output_nodes);
+
+  // NOTE 'num_splits' attribute is ignored.
+  return std::make_unique<kernels::Split>(axis, input, std::move(outputs));
+}
+
+std::unique_ptr<Kernel> KernelBuilderLet<KB::STUV>::visit(const luci::CircleSplitV *node)
+{
+  auto output_nodes = collectOutputNodes<luci::CircleSplitVOut>(node);
+  assert(node->arity() == 3);
   assert(output_nodes.size() == static_cast<size_t>(node->num_split()));
 
   const Tensor *axis = getInputTensor(node->split_dim());

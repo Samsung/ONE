@@ -153,7 +153,12 @@ loco::TensorShape expand_dimension(const loco::TensorShape &x, const loco::Tenso
 
     // each dimension of x and y should be same or one must be 1 if different
     if (!((x_dim == y_dim) || (x_dim == 1 || y_dim == 1)))
+    {
+      LOGGER(l);
+      INFO(l) << "expand_dimension: x=" << x << ", y=" << y;
+      INFO(l) << "axis=" << axis << ", x_dim=" << x_dim << ", y_dim=" << y_dim;
       INTERNAL_EXN("Cannot produce expand_dimension of two shapes");
+    }
 
     output_shape.dim(axis) = std::max(x_dim, y_dim);
   }
@@ -188,8 +193,12 @@ template <loco::DataType T> std::vector<int64_t> vector_from_constant(luci::Circ
 
 template <class CIRCLENODE> loco::NodeShape broadcast_xy(const CIRCLENODE *node)
 {
+  LOGGER(l);
+
   auto x_shape = luci::shape_get(node->x()).template as<loco::TensorShape>();
   auto y_shape = luci::shape_get(node->y()).template as<loco::TensorShape>();
+
+  INFO(l) << "broadcast_xy: " << node->name();
 
   auto output_shape = broadcast_shape(x_shape, y_shape);
 

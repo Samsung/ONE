@@ -179,11 +179,19 @@ namespace luci
 
 bool validate(loco::Graph *g)
 {
+  LOGGER(l);
+
   if (!loco::valid(g))
+  {
+    INFO(l) << "luci::validate(), loco::valid() failed";
     return false;
+  }
 
   if (!validate_shape_dtype(g))
+  {
+    INFO(l) << "luci::validate(), validate_shape_dtype() failed";
     return false;
+  }
 
   // TODO add more validation
 

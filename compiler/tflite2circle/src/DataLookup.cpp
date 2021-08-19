@@ -17,6 +17,8 @@
 #include "DataLookup.h"
 #include "BuildBuiltinOptions.h"
 
+#include <string>
+
 namespace tflite2circle
 {
 
@@ -30,7 +32,11 @@ circle::BuiltinOperator get_circle_builtin_code(tflite::BuiltinOperator tfl_bop)
 #include "TFLOperator.lst"
 #undef TFL_OPERATOR
     default:
-      throw std::runtime_error("tflite2circle: wrong op");
+    {
+      std::string msg = "tflite2circle: wrong op ";
+      msg = msg + std::to_string(int(tfl_bop));
+      throw std::runtime_error(msg);
+    }
   }
 }
 

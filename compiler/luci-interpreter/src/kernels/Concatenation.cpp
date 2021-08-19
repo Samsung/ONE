@@ -61,6 +61,8 @@ void Concatenation::configure()
       }
       else
       {
+        fprintf(stdout, "!!! %d, %d, %d\r\n", d, tensor->shape().dim(d), t0->shape().dim(d));
+        fflush(stdout);
         LUCI_INTERPRETER_CHECK(tensor->shape().dim(d) == t0->shape().dim(d));
       }
     }
