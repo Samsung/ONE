@@ -93,6 +93,8 @@ struct Paddings
   /**
    * @brief Store paddings position information.
    * @details _padding_pos[k] stores Pad object at axis k
+   *
+   * @note  Paddings must be for rank 4 tensor
    */
   std::vector<Pad> _padding_pos;
 
@@ -109,6 +111,8 @@ struct Paddings
               .end = paddings->at<loco::DataType::S32>(i * 2 + 1)};
       _padding_pos.emplace_back(pad);
     }
+
+    assert(_padding_pos.size() == 4);
   }
 
   /**
@@ -119,8 +123,6 @@ struct Paddings
    */
   bool smaller_than(int32_t filter_h, int32_t filter_w)
   {
-    assert(_padding_pos.size() == 4);
-
     auto &pad_H = _padding_pos.at(1);
     auto &pad_W = _padding_pos.at(2);
 
@@ -153,10 +155,6 @@ struct Paddings
   {
     assert(transpose);
     luci::CircleConst *perm = loco::must_cast<luci::CircleConst *>(transpose->perm());
-
-    assert(perm && perm->dtype() == loco::DataType::S32);
-    assert(_padding_pos.size() == 4);
-    assert(perm->size<loco::DataType::S32>() == 4);
 
     std::vector<Pad> transposed_pos;
     transposed_pos.resize(4);
@@ -276,6 +274,17 @@ bool used_by_maxpool_only(luci::CircleNode *node, Paddings &paddings)
   // Let's check condition C6)
   if (auto transpose = dynamic_cast<luci::CircleTranspose *>(successor))
   {
+    auto appropriate = [](luci::CircleTranspose *transpose) {
+      luci::CircleConst *perm = loco::must_cast<luci::CircleConst *>(transpose->perm());
+
+      // For Transpose to be an input for MaxPool2D
+      return (transpose->rank() == 4) && (perm && perm->dtype() == loco::DataType::S32) &&
+             (perm->size<loco::DataType::S32>() == 4);
+    };
+
+    if (not appropriate(transpose))
+      return false;
+
     paddings.apply(transpose);
     return used_by_maxpool_only(transpose, paddings);
   }
@@ -287,6 +296,10 @@ bool used_by_maxpool_only(luci::CircleNode *node, Paddings &paddings)
 // Check condition C3), C4) and C6)
 bool used_by_maxpool_only(luci::CirclePadV2 *pad_v2)
 {
+  // For PadV2 to be an input for MaxPool2D
+  if (pad_v2->rank() != 4)
+    return false;
+
   Paddings paddings(loco::must_cast<luci::CircleConst *>(pad_v2->paddings()));
 
   return used_by_maxpool_only(pad_v2, paddings);
