@@ -285,11 +285,11 @@ bool used_by_maxpool_only(luci::CircleNode *node, Paddings &paddings)
 }
 
 // Check condition C3), C4) and C6)
-bool used_by_maxpool_only(luci::CirclePadV2 *node)
+bool used_by_maxpool_only(luci::CirclePadV2 *pad_v2)
 {
-  Paddings paddings(loco::must_cast<luci::CircleConst *>(node->paddings()));
+  Paddings paddings(loco::must_cast<luci::CircleConst *>(pad_v2->paddings()));
 
-  return used_by_maxpool_only(node, paddings);
+  return used_by_maxpool_only(pad_v2, paddings);
 }
 
 loco::Node *build_pad_from(luci::CirclePadV2 *pad_v2)
