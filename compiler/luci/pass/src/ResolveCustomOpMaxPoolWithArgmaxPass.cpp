@@ -824,7 +824,7 @@ namespace luci
  *   |                \
  *   |              [Floor]
  *   |                 |
- *   |            [Requantize]
+ *   |    [DepthwiseConv2D for requantize]
  *   |              /     \
  *   | [Mul window width] |
  *   \       /           /
