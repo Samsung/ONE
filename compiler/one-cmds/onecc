@@ -185,6 +185,8 @@ def main():
     for section in section_to_run:
         driver_name = _get_driver_name(section)
         options = ['--config', getattr(args, 'config'), '--section', section]
+        if _utils._is_valid_attr(args, 'verbose'):
+            options.append('--verbose')
         _call_driver(driver_name, options)
 
 
