@@ -459,6 +459,51 @@ luci::CircleNode *window_flattened_coord(const std::string &name, luci::Padding 
   return argmax_cast;
 }
 
+// Creates "identity operation" after Floor
+// to force circle-quantizer requantize output tensor with scale << 1.
+//
+// Dealing with values of extremely different scales
+// in following binary operations hurts backend precision.
+luci::CircleNode *create_post_floor_requantize_node(luci::CircleFloor *floor)
+{
+  auto graph = floor->graph();
+  auto const origin = luci::get_origin(floor);
+  auto name = floor->name();
+
+  // Use DepthwiseConv2D with identity filter as an "identity operation".
+  //
+  // This operation do not change values, but forces circle-quantizer to use
+  // statistics to compute qparam scale instead of fixed scale == 1.0 after floor.
+  // DepthwiseConv2d is not eliminated by optimizations,
+  // so desired scale will reach backend.
+  auto requantizer = none_act_func(graph->nodes()->create<luci::CircleDepthwiseConv2D>());
+  init_name_and_origin(requantizer, name + "/Requantizer", origin);
+
+  requantizer->input(floor);
+
+  auto requantizer_filter = create_scalar<loco::DataType::FLOAT32>(graph, 1.0f);
+  init_name_and_origin(requantizer_filter, name + "/Requantizer/filter", origin);
+  requantizer_filter->rank(4);
+  for (uint32_t i = 0; i < 4; ++i)
+  {
+    requantizer_filter->dim(i) = 1;
+  }
+  requantizer->filter(requantizer_filter);
+
+  auto requantizer_bias = create_zero_bias(graph, 1);
+  init_name_and_origin(requantizer_bias, name + "/Requantizer/bias", origin);
+  requantizer->bias(requantizer_bias);
+
+  requantizer->padding(luci::Padding::VALID);
+  requantizer->stride()->w(1);
+  requantizer->stride()->h(1);
+  requantizer->depthMultiplier(1);
+  requantizer->dilation()->w(1);
+  requantizer->dilation()->h(1);
+
+  return requantizer;
+}
+
 luci::CircleNode *window_y_coord(const std::string &name, const luci::Filter &filter,
                                  luci::CircleNode *flattened)
 {
@@ -494,7 +539,9 @@ luci::CircleNode *window_y_coord(const std::string &name, const luci::Filter &fi
     floor->x(div);
   }
 
-  return floor;
+  auto requantizer = create_post_floor_requantize_node(floor);
+
+  return requantizer;
 }
 
 luci::CircleNode *window_x_coord(const std::string &name, float filter_width,
@@ -809,6 +856,8 @@ namespace luci
  *   |  [Mul 1/<window width>]
  *   |                \
  *   |              [Floor]
+ *   |                 |
+ *   |    [DepthwiseConv2D for requantize]
  *   |              /     \
  *   | [Mul window width] |
  *   \       /           /
