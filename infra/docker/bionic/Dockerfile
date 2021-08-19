@@ -26,6 +26,9 @@ RUN add-apt-repository ppa:git-core/ppa -y
 # Build tool
 RUN apt-get update && apt-get -qqy install build-essential cmake scons git g++-arm-linux-gnueabihf g++-aarch64-linux-gnu
 
+# ARM none eabi build tool
+RUN apt-get update && apt-get -qqy install gcc-arm-none-eabi
+
 # Debian build tool
 RUN apt-get update && apt-get -qqy install fakeroot devscripts debhelper python3-all
 

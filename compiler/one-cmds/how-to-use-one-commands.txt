@@ -187,6 +187,8 @@ Current transformation options are
   normal BatchMatMul operator
 - resolve_customop_matmul: This will convert Custom(MatMul) to normal MatMul
   operator
+- resolve_customop_max_pool_with_argmax: This will convert Custom(MaxPoolWithArgmax)
+  to net of builtin operators.
 - shuffle_weight_to_16x1float32 : This will convert weight format of FullyConnected to SHUFFLED16x1FLOAT32.
   Note that it only converts weights whose row is a multiple of 16.
 - substitute_pack_to_reshape : This will convert single input Pack to Reshape.

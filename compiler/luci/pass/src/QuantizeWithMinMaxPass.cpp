@@ -127,8 +127,13 @@ void quant_const_values(luci::CircleConst *const_node, float scaling_factor, flo
   std::vector<int32_t> quantized_values(size);
   for (uint32_t i = 0; i < size; ++i)
   {
-    auto data = const_node->at<loco::DataType::FLOAT32>(i);
-    quantized_values[i] = static_cast<int32_t>(std::round(data * scaling_factor_inv) + zerop);
+    auto data = static_cast<double>(const_node->at<loco::DataType::FLOAT32>(i));
+    double quantized_float = std::round(data * scaling_factor_inv) + zerop;
+    constexpr auto int_max = static_cast<double>(std::numeric_limits<int32_t>::max());
+    constexpr auto int_min = static_cast<double>(std::numeric_limits<int32_t>::min());
+    quantized_float = std::min(int_max, std::max(int_min, quantized_float));
+
+    quantized_values[i] = static_cast<int32_t>(quantized_float);
   }
 
   switch (quant_type)
@@ -1212,7 +1217,8 @@ void quantize_const_inputs(luci::CircleNode *node, loco::DataType output_type)
     case luci::CircleOpcode::PADV2:
       // First and third constant inputs are quantized
       // Second input should not be quantized (e.g., paddings)
-      // Quant params are propagated from output range to the non-constant input
+      // Quant params are propagated either from output range to the non-constant input
+      // or from input to output and constant values
       propagate_pad_v2_quantparam(loco::must_cast<CirclePadV2 *>(node), output_type);
       break;
 
@@ -1316,6 +1322,26 @@ void propagate_concat_quantparam(luci::CircleConcatenation *concat, loco::DataTy
   }
 }
 
+/**
+ * tells if pad_v2 quantization should ignore padding value
+ * In that case padding const will be quantized with input parameters, and probably clipped
+ */
+bool ignore_pad_v2_const_quantization(luci::CirclePadV2 *pad)
+{
+  // This is a workaround to quantize pad generated from MaxPoolWithArgmax operation properly
+  // TODO use metadata hints to detect this case
+  auto const_value_node = dynamic_cast<luci::CircleConst *>(pad->arg(2));
+  if (!const_value_node)
+    return false;
+  if (const_value_node->dtype() == loco::DataType::FLOAT32)
+  {
+    float const_value = const_value_node->at<loco::DataType::FLOAT32>(0);
+    if (const_value == std::numeric_limits<float>::lowest())
+      return true;
+  }
+  return false;
+}
+
 /** BEFORE
  *
  *         [CircleNode] [CircleConst] [CircleConst]
@@ -1325,16 +1351,57 @@ void propagate_concat_quantparam(luci::CircleConcatenation *concat, loco::DataTy
  *                      [CirclePadV2]
  *                       (U8 qparam2)
  *
- *  AFTER
+ *  AFTER (case 1)
+ *
+ *  By default qparam is propagated from output to inputs to meet backend requirements.
+ *
  *         [CircleNode] [CircleConst] [CircleConst]   [CircleConst] <- Dead node
  *         (U8 qparam2)     (S32)      (U8 qparam2)       (FP32)
  *                   \        |         /
  *                    \       |        /
  *                      [CirclePadV2]
  *                       (U8 qparam2)
+ *
+ *  AFTER (case 2)
+ *
+ * In case padded value is the lowest float value
+ * Qparam is propagated from input to output and constant.
+ *
+ * This is a special case for optimization constructed pad, needed to guarantee that
+ * extremely large negative constant do not stretch output quantization range.
+ *
+ *         [CircleNode] [CircleConst] [CircleConst]   [CircleConst] <- Dead node
+ *         (U8 qparam1)     (S32)      (U8 qparam1)       (FP32)
+ *                   \        |         /
+ *                    \       |        /
+ *                      [CirclePadV2]
+ *                       (U8 qparam1)
  */
 void propagate_pad_v2_quantparam(luci::CirclePadV2 *pad_v2, loco::DataType quant_type)
 {
+  if (ignore_pad_v2_const_quantization(pad_v2))
+  {
+    // propagate input quantization paramters from input to output and padding const value
+    auto pad_v2_input = loco::must_cast<luci::CircleNode *>(pad_v2->arg(0));
+    overwrite_quantparam(pad_v2_input, pad_v2);
+
+    auto const_value_node = dynamic_cast<luci::CircleConst *>(pad_v2->arg(2));
+    auto new_const = luci::clone(const_value_node);
+
+    const auto pad_v2_input_qparam = pad_v2_input->quantparam();
+    assert(pad_v2_input_qparam != nullptr);
+    assert(pad_v2_input_qparam->scale.size() == 1);
+    const auto scaling_factor = pad_v2_input_qparam->scale.at(0);
+    const auto zerop = pad_v2_input_qparam->zerop.at(0);
+
+    quant_const_values(new_const, scaling_factor, zerop, quant_type);
+    overwrite_quantparam(pad_v2_input, new_const);
+    pad_v2->constant_values(new_const);
+    return;
+  }
+
+  // Propagate quantization paramters from output to inputs,
+  // to fit both input and counstant_value in one quant range.
   auto quant_input = [pad_v2, quant_type](void (CirclePadV2::*arg_setter)(loco::Node *),
                                           uint32_t arg) {
     auto node = loco::must_cast<luci::CircleNode *>(pad_v2->arg(arg));
