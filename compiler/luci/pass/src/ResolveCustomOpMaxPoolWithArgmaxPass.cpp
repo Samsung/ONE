@@ -276,7 +276,7 @@ void fill_coords_addition(luci::Padding padding, const luci::Stride &stride,
       // in generated subgraph.
       //
       // Cast operation discards fractional part of value, so 1.9996 will be transformed to 1
-      // This is not a problem when working with fp23, because fp represents integers precisely,
+      // This is not a problem when working with float32, because it represents integers precisely,
       // but leads to wrong results, when working with quantized numbers.
       //
       // This value is larger than quantization error,
@@ -516,10 +516,10 @@ luci::CircleNode *window_y_coord(const std::string &name, const luci::Filter &fi
 
     // Adjustment_coeff is needed to fix computation of quantized tensors
     //
-    // For example Fp32 value 2.0 could be quantized to 1.996
+    // For example float32 value 2.0 could be quantized to 1.996
     // after floor it will be transformed to 1.0, but desired answer is still something close to 2.0
     //
-    // rounding_adjustment is chosen so it is small enough to not affect fp32 computations,
+    // rounding_adjustment is chosen so it is small enough to not affect float32 computations,
     // but "Div" change is larger then potential quantization error.
     //
     // This computation exploits the fact that div is an x coord in maxpool window,
@@ -851,7 +851,7 @@ namespace luci
  *         |
  *    [Reshape to 4d]
  *         |
- *   [Cast to fp32]
+ *  [Cast to float32]
  *    /        |
  *   |  [Mul 1/<window width>]
  *   |                \
