@@ -1,6 +1,6 @@
 Name:    nnfw
 Summary: nnfw
-Version: 1.16.0
+Version: 1.17.0
 Release: 1
 Group:   Development
 License: Apache-2.0 and MIT and BSD-2-Clause
