@@ -68,6 +68,8 @@ void If::execute() const
 
     const int32_t num_elements = input(i)->shape().num_elements();
     const std::size_t element_size = getDataTypeSize(input(i)->element_type());
+
+    active_graph->configureAllocations(graph_inputs[i]);
     std::memcpy(graph_inputs[i]->data<void>(), input(i)->data<void>(), num_elements * element_size);
   }
 
@@ -78,6 +80,8 @@ void If::execute() const
   {
     LUCI_INTERPRETER_CHECK(graph_outputs[i]->element_type() == output(i)->element_type());
     output(i)->resize(graph_outputs[i]->shape());
+    // TODO: Think about how allocate memory for output in main graph
+    active_graph->configureAllocations(output(i));
 
     const int32_t num_elements = output(i)->shape().num_elements();
     const std::size_t element_size = getDataTypeSize(output(i)->element_type());

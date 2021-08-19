@@ -21,16 +21,29 @@ namespace luci_interpreter
 
 void SimpleMemoryManager::allocate_memory(luci_interpreter::Tensor *tensor)
 {
+  if (!tensor->is_allocatable()) {
+    return;
+  }
+  if (tensor->is_data_allocated())
+  {
+    release_memory(tensor);
+  }
   const auto element_size = getDataTypeSize(tensor->element_type());
   const auto num_elements = tensor->shape().num_elements();
-  uint8_t *data = new uint8_t[num_elements * element_size];
+
+  auto *data = new uint8_t[num_elements * element_size];
   tensor->set_data_buffer(data);
 }
 
 void SimpleMemoryManager::release_memory(luci_interpreter::Tensor *tensor)
 {
+  if (!tensor->is_data_allocated())
+  {
+    tensor->set_data_buffer(nullptr);
+    return;
+  }
   auto data = tensor->data<uint8_t>();
-  delete data;
+  delete[] data;
   tensor->set_data_buffer(nullptr);
 }
 

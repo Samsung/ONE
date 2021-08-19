@@ -102,7 +102,6 @@ void Interpreter::writeInputTensor(const luci::CircleInput *input_node, const vo
   }
   if (data != nullptr)
   {
-    _memory_manager->allocate_memory(tensor);
     tensor->writeData(data, data_size);
   }
 }

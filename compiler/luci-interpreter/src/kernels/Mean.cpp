@@ -163,6 +163,15 @@ void Mean::configure()
     temp_index->resize(Shape(input_num_dims));
     resolved_axes->resize(Shape(num_axes));
     temp_sum->resize(output()->shape());
+  } else
+  {
+    auto temp_index = getOutputTensors()[1];
+    auto resolved_axes = getOutputTensors()[2];
+    auto temp_sum = getOutputTensors()[3];
+
+    temp_index->make_unallocatable();
+    resolved_axes->make_unallocatable();
+    temp_sum->make_unallocatable();
   }
 }
 

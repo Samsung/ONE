@@ -177,6 +177,7 @@ void GraphLoader::initInputOutputTensors() const
   for (size_t i = 0; i < input_nodes.size(); ++i)
   {
     input_tensors[i] = _node_to_tensor.at(input_nodes[i]);
+    _memory_manager->allocate_memory(input_tensors[i]);
   }
   _runtime_graph->setInputTensors(input_tensors);
 
@@ -186,6 +187,7 @@ void GraphLoader::initInputOutputTensors() const
   {
     const auto *node = loco::must_cast<const luci::CircleOutput *>(output_nodes[i]);
     output_tensors[i] = _node_to_tensor.at(node->from());
+    _memory_manager->allocate_memory(output_tensors[i]);
   }
   _runtime_graph->setOutputTensors(output_tensors);
 }

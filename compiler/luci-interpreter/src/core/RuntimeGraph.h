@@ -44,6 +44,8 @@ public:
   void setInputTensors(const std::vector<Tensor *> &input_tensors);
   void setOutputTensors(const std::vector<Tensor *> &output_tensors);
 
+  void configureAllocations(Tensor* tensor);
+
   const std::vector<Tensor *> &getInputTensors() const { return _input_tensors; }
   const std::vector<Tensor *> &getOutputTensors() const { return _output_tensors; }
 
