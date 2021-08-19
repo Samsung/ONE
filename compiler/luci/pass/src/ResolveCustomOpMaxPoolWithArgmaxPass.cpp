@@ -280,7 +280,7 @@ void fill_coords_addition(luci::Padding padding, const luci::Stride &stride,
       // but leads to wrong results, when working with quantized numbers.
       //
       // This value is larger than quantization error,
-      // and small nough to not affect following computations
+      // and small enough to not affect following computations
       // (in particular multiplication with depth)
       const float round_adjustment = 1.0f / (depth + 1);
 
