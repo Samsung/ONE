@@ -41,6 +41,7 @@ subtool_list = {
     },
     'backend': {
         'codegen': 'Code generation tool',
+        'profile': 'Profile backend model file',
     },
 }
 
@@ -110,7 +111,8 @@ def _get_driver_name(driver_name):
         'one-optimize': 'one-optimize',
         'one-quantize': 'one-quantize',
         'one-pack': 'one-pack',
-        'one-codegen': 'one-codegen'
+        'one-codegen': 'one-codegen',
+        'one-profile': 'one-profile'
     }[driver_name]
 
 
@@ -170,7 +172,7 @@ def main():
     # verify configuration file
     drivers = [
         'one-import-tf', 'one-import-tflite', 'one-import-bcq', 'one-import-onnx',
-        'one-optimize', 'one-quantize', 'one-pack', 'one-codegen'
+        'one-optimize', 'one-quantize', 'one-pack', 'one-codegen', 'one-profile'
     ]
     _verify_cfg(drivers, config)
 
