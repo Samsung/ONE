@@ -95,22 +95,28 @@ static int test(bool useCpuOnly, Execution::ComputeMode computeMode, bool allowS
     return RUN_ALL_TESTS();
 }
 
+// FIX for onert: disable argument
+#if 0
 void checkArgs(int argc, char** argv, int nextArg) {
     if (nextArg != argc) {
         std::cerr << "Unexpected argument: " << argv[nextArg] << std::endl;
         exit(1);
     }
 }
+#endif
 
 int main(int argc, char** argv) {
     ::testing::InitGoogleTest(&argc, argv);
 
+    // FIX for onert: disable argument
+#if 0
     if ((argc > 1) && std::isdigit(argv[1][0])) {
         allowedPasses = std::stoull(argv[1]);
         checkArgs(argc, argv, 2);
     } else {
         checkArgs(argc, argv, 1);
     }
+#endif
 
 #ifndef NNTEST_ONLY_PUBLIC_API
     android::nn::initVLogMask();
