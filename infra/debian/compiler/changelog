@@ -1,3 +1,13 @@
+one (1.17.0) bionic; urgency=medium
+
+  * More optimization pass
+  * Add new InstanceNorm pattern in `FuseInstanceNormPass`
+  * Add verbose option
+  * Introduce `onecc` driver to `one-cmds`
+  * Introduce `one-profile` driver to `one-cmds`
+
+ -- seongwoo <mhs4670go@naver.com>  Fri, 20 Aug 2021 17:50:20 +0900
+
 one (1.16.1) bionic; urgency=medium
 
   * Extends the point where `one-codegen` finds backends.
