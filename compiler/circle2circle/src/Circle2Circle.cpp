@@ -276,6 +276,12 @@ int entry(int argc, char **argv)
     .default_value(false)
     .help("This will convert single input Pack to Reshape");
 
+  arser.add_argument("--substitute_padv2_to_pad")
+    .nargs(0)
+    .required(false)
+    .default_value(false)
+    .help("This will convert certain condition PadV2 to Pad");
+
   arser.add_argument("--substitute_squeeze_to_reshape")
     .nargs(0)
     .required(false)
@@ -478,6 +484,8 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::ShuffleWeightTo16x1Float32);
   if (arser.get<bool>("--substitute_pack_to_reshape"))
     options->enable(Algorithms::SubstitutePackToReshape);
+  if (arser.get<bool>("--substitute_padv2_to_pad"))
+    options->enable(Algorithms::SubstitutePadV2ToPad);
   if (arser.get<bool>("--substitute_squeeze_to_reshape"))
     options->enable(Algorithms::SubstituteSqueezeToReshape);
   if (arser.get<bool>("--substitute_strided_slice_to_reshape"))
