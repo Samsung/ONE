@@ -67,7 +67,7 @@ tar -zcf ${ARCHIVE_PATH}/nncc-test-package.tar.gz -C ${NNCC_INSTALL_PREFIX} ./te
 
 if [ -z ${RELEASE_VERSION} ] || [ ${RELEASE_VERSION} == "nightly" ]; then
   ./nncc docker-run /bin/bash -c \
-	'dch -v $(dpkg-parsechangelog --show-field Version)-$(date "+%y%m%d%H") "nightly release" -D $(lsb_release --short --codename)'
+	'dch -v $(dpkg-parsechangelog --show-field Version)~$(date "+%y%m%d%H") "nightly release" -D $(lsb_release --short --codename)'
   ./nncc docker-run dch -r ''
 fi
 
