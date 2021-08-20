@@ -1,11 +1,15 @@
-.TH ONE-IMPORT-TF "1" "June 2021" "one-import-tf version 1.16.1" "User Commands"
+.TH ONE-IMPORT-TF "1" "August 2021" "one-import-tf version 1.17.0" "User Commands"
 .SH NAME
 one-import-tf \- convert TensorFlow to circle
 .SH DESCRIPTION
-usage: one\-import\-tf [\-h] [\-v] [\-C CONFIG] [\-\-v1 | \-\-v2] [\-\-graph_def | \-\-saved_model | \-\-keras_model]
+usage: one\-import\-tf [\-h] [\-v] [\-V] [\-C CONFIG] [\-\-v1 | \-\-v2]
+.br
+[\-\-graph_def | \-\-saved_model | \-\-keras_model]
 .br
 [\-i INPUT_PATH] [\-o OUTPUT_PATH] [\-I INPUT_ARRAYS]
+.br
 [\-s INPUT_SHAPES] [\-O OUTPUT_ARRAYS]
+.br
 [\-\-save_intermediate]
 .PP
 \fBone\-import\-tf\fR is a command line tool to convert TensorFlow model to circle.
@@ -16,6 +20,9 @@ show this help message and exit
 .TP
 \fB\-v\fR, \fB\-\-version\fR
 show program's version number and exit
+.TP
+\fB\-V\fR, \fB\-\-verbose\fR
+output additional information to stdout or stderr
 .TP
 \fB\-C\fR CONFIG, \fB\-\-config\fR CONFIG
 run with configuation file

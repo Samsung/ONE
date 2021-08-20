@@ -1,37 +1,61 @@
-.TH ONE-OPTIMIZE "1" "June 2021" "one-optimize version 1.16.1" "User Commands"
+.TH ONE-OPTIMIZE "1" "August 2021" "one-optimize version 1.17.0" "User Commands"
 .SH NAME
 one-optimize \- optimize circle model
 .SH DESCRIPTION
-usage: one\-optimize [\-h] [\-v] [\-C CONFIG] [\-p]
+usage: one\-optimize [\-h] [\-v] [\-V] [\-C CONFIG] [\-p]
 .br
-[\-\-change_outputs CHANGE_OUTPUTS] [\-i INPUT_PATH] [\-o OUTPUT_PATH] [\-\-O1] [\-\-convert_nchw_to_nhwc]
+[\-\-change_outputs CHANGE_OUTPUTS] [\-i INPUT_PATH]
+.br
+[\-o OUTPUT_PATH] [\-\-O1] [\-\-convert_nchw_to_nhwc]
 .br
 [\-\-nchw_to_nhwc_input_shape] [\-\-nchw_to_nhwc_output_shape]
+.br
 [\-\-fold_add_v2] [\-\-fold_cast] [\-\-fold_dequantize]
+.br
 [\-\-fold_sparse_to_dense] [\-\-forward_reshape_to_unaryop]
+.br
 [\-\-fuse_add_with_tconv] [\-\-fuse_batchnorm_with_conv]
+.br
 [\-\-fuse_batchnorm_with_dwconv]
+.br
 [\-\-fuse_batchnorm_with_tconv] [\-\-fuse_bcq]
+.br
 [\-\-fuse_preactivation_batchnorm]
+.br
 [\-\-make_batchnorm_gamma_positive]
+.br
 [\-\-fuse_activation_function] [\-\-fuse_instnorm]
 .br
 [\-\-replace_cw_mul_add_with_depthwise_conv]
+.br
 [\-\-remove_fakequant] [\-\-remove_quantdequant]
+.br
 [\-\-remove_redundant_reshape]
+.br
 [\-\-remove_redundant_transpose]
+.br
 [\-\-remove_unnecessary_reshape]
+.br
 [\-\-remove_unnecessary_slice]
+.br
 [\-\-remove_unnecessary_strided_slice]
+.br
 [\-\-remove_unnecessary_split] [\-\-resolve_customop_add]
 .br
 [\-\-resolve_customop_batchmatmul]
+.br
 [\-\-resolve_customop_matmul]
+.br
 [\-\-shuffle_weight_to_16x1float32]
+.br
 [\-\-substitute_pack_to_reshape]
+.br
 [\-\-substitute_squeeze_to_reshape]
+.br
 [\-\-substitute_transpose_to_reshape]
+.br
 [\-\-transform_min_max_to_relu6]
+.br
 [\-\-transform_min_relu_to_relu6]
 .PP
 \fBone\-optimize\fR is a command line tool to optimize circle model.
@@ -42,6 +66,9 @@ show this help message and exit
 .TP
 \fB\-v\fR, \fB\-\-version\fR
 show program's version number and exit
+.TP
+\fB\-V\fR, \fB\-\-verbose\fR
+output additional information to stdout or stderr
 .TP
 \fB\-C\fR CONFIG, \fB\-\-config\fR CONFIG
 run with configuation file
