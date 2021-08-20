@@ -63,6 +63,7 @@ public:
       ReplaceMulAddWithDepthwiseConv,
       ReplaceSubWithAdd,
       SubstitutePackToReshape,
+      SubstitutePadV2ToPad,
       SubstituteSqueezeToReshape,
       ConvertNCHWToNHWC,
       RemoveUnnecessarySlice,

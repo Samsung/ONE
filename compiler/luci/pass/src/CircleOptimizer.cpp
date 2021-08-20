@@ -54,6 +54,7 @@
 #include "luci/Pass/SparsifyTensorPass.h"
 #include "luci/Pass/ShuffleWeightTo16x1Float32Pass.h"
 #include "luci/Pass/SubstitutePackToReshapePass.h"
+#include "luci/Pass/SubstitutePadV2ToPadPass.h"
 #include "luci/Pass/SubstituteSqueezeToReshapePass.h"
 #include "luci/Pass/SubstituteStridedSliceToReshapePass.h"
 #include "luci/Pass/SubstituteTransposeToReshapePass.h"
@@ -323,6 +324,10 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   if (_options->query(Options::Algorithm::SubstitutePackToReshape))
   {
     phase.emplace_back(std::make_unique<luci::SubstitutePackToReshapePass>());
+  }
+  if (_options->query(Options::Algorithm::SubstitutePadV2ToPad))
+  {
+    phase.emplace_back(std::make_unique<luci::SubstitutePadV2ToPadPass>());
   }
   if (_options->query(Options::Algorithm::SubstituteSqueezeToReshape))
   {
