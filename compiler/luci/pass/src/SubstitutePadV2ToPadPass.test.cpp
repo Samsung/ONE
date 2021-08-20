@@ -205,7 +205,6 @@ public:
   }
 
 protected:
-  TestGraph *_graph;
   luci::SubstitutePadV2ToPadPass _pad_pass;
   luci::CircleShapeInferencePass _shapeinf_pass;
 };
