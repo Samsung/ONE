@@ -1,12 +1,16 @@
-.TH ONE-IMPORT-ONNX "1" "June 2021" "one-import-onnx version 1.16.1" "User Commands"
+.TH ONE-IMPORT-ONNX "1" "August 2021" "one-import-onnx version 1.17.0" "User Commands"
 .SH NAME
 one-import-onnx \- convert ONNX to circle
 .SH DESCRIPTION
-usage: one\-import\-onnx [\-h] [\-v] [\-C CONFIG] [\-i INPUT_PATH] [\-o OUTPUT_PATH]
+usage: one\-import\-onnx [\-h] [\-v] [\-V] [\-C CONFIG] [\-i INPUT_PATH]
 .br
-[\-I INPUT_ARRAYS] [\-O OUTPUT_ARRAYS] [\-\-model_format MODEL_FORMAT]
+[\-o OUTPUT_PATH] [\-I INPUT_ARRAYS] [\-O OUTPUT_ARRAYS]
 .br
-[\-\-converter_version CONVERTER_VERSION] [\-\-save_intermediate]
+[\-\-model_format MODEL_FORMAT]
+.br
+[\-\-converter_version CONVERTER_VERSION]
+.br
+[\-\-save_intermediate]
 .PP
 \fBone\-import\-onnx\fR is a command line tool to convert ONNX to circle.
 .SH OPTIONS
@@ -16,6 +20,9 @@ show this help message and exit
 .TP
 \fB\-v\fR, \fB\-\-version\fR
 show program's version number and exit
+.TP
+\fB\-V\fR, \fB\-\-verbose\fR
+output additional information to stdout or stderr
 .TP
 \fB\-C\fR CONFIG, \fB\-\-config\fR CONFIG
 run with configuation file

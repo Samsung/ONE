@@ -1,8 +1,10 @@
-.TH ONE-IMPORT-TFLITE "1" "June 2021" "one-import-tflite version 1.16.1" "User Commands"
+.TH ONE-IMPORT-TFLITE "1" "August 2021" "one-import-tflite version 1.17.0" "User Commands"
 .SH NAME
 one-import-tflite \- convert TensorFlow lite to circle
 .SH DESCRIPTION
-usage: one\-import\-tflite [\-h] [\-v] [\-C CONFIG] [\-i INPUT_PATH] [\-o OUTPUT_PATH]
+usage: one\-import\-tflite [\-h] [\-v] [\-V] [\-C CONFIG] [\-i INPUT_PATH]
+.br
+[\-o OUTPUT_PATH]
 .PP
 \fBone\-import\-tflite\fR is a command line tool to convert TensorFlow lite to circle.
 .SH OPTIONS
@@ -12,6 +14,9 @@ show this help message and exit
 .TP
 \fB\-v\fR, \fB\-\-version\fR
 show program's version number and exit
+.TP
+\fB\-V\fR, \fB\-\-verbose\fR
+output additional information to stdout or stderr
 .TP
 \fB\-C\fR CONFIG, \fB\-\-config\fR CONFIG
 run with configuation file

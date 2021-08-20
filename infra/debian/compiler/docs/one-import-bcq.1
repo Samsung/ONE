@@ -1,10 +1,12 @@
-.TH ONE-IMPORT-BCQ "1" "June 2021" "one-import-bcq version 1.16.1" "User Commands"
+.TH ONE-IMPORT-BCQ "1" "August 2021" "one-import-bcq version 1.17.0" "User Commands"
 .SH NAME
 one-import-bcq \- convert TensorFlow with BCQ to circle
 .SH DESCRIPTION
-usage: one\-import\-bcq [\-h] [\-v] [\-C CONFIG] [\-\-v1 | \-\-v2] [\-i INPUT_PATH]
+usage: one\-import\-bcq [\-h] [\-v] [\-V] [\-C CONFIG] [\-\-v1 | \-\-v2] [\-i INPUT_PATH]
 .br
-[\-o OUTPUT_PATH] [\-I INPUT_ARRAYS] [\-s INPUT_SHAPES] [\-O OUTPUT_ARRAYS]
+[\-o OUTPUT_PATH] [\-I INPUT_ARRAYS] [\-s INPUT_SHAPES]
+.br
+[\-O OUTPUT_ARRAYS]
 .PP
 \fBone\-import\-bcq\fR is a command line tool to convert TensorFlow with BCQ to circle.
 .SH OPTIONS
@@ -14,6 +16,9 @@ show this help message and exit
 .TP
 \fB\-v\fR, \fB\-\-version\fR
 show program's version number and exit
+.TP
+\fB\-V\fR, \fB\-\-verbose\fR
+output additional information to stdout or stderr
 .TP
 \fB\-C\fR CONFIG, \fB\-\-config\fR CONFIG
 run with configuation file
