@@ -25,7 +25,21 @@ test:
         any: true
       - extension: cc
         any: true
-
+      - excludes :
+        - DepthwiseConv2D.cc
+        - ArgMinMax.cc
+        - AveragePool2D.cc
+        - Concat.cc
+        - DepthToSpace.cc
+        - DepthwiseConv2D.cc
+        - Fill.cc
+        - If.cc
+        - Pad.cc
+        - Reduce.cc
+        - ResizeBilinear.c
+        - Slice.cc
+        - Softmax.cc
+        - While.cc
     testCase:
       - condition:
         - functionName:
