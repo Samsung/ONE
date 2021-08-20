@@ -2,6 +2,10 @@
 
 [[ "${BASH_SOURCE[0]}" != "${0}" ]] && echo "Please don't source ${BASH_SOURCE[0]}, execute it" && return
 
+unset RELEASE_VERSION
+# TODO need more better argument parsing
+RELEASE_VERSION="$1"
+
 CURRENT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_PATH="$CURRENT_PATH/../../"
 
@@ -61,9 +65,11 @@ tar -zcf ${ARCHIVE_PATH}/nncc-package.tar.gz -C ${NNCC_INSTALL_PREFIX} \
     --exclude test --exclude tflchef* --exclude circle-tensordump --exclude circledump ./
 tar -zcf ${ARCHIVE_PATH}/nncc-test-package.tar.gz -C ${NNCC_INSTALL_PREFIX} ./test
 
-./nncc docker-run /bin/bash -c \
-	'dch -v $(dpkg-parsechangelog --show-field Version)-$(date "+%y%m%d%H") "nightly release" -D $(lsb_release --short --codename)'
-./nncc docker-run dch -r ''
+if [ -z ${RELEASE_VERSION} ] || [ ${RELEASE_VERSION} == "nightly" ]; then
+  ./nncc docker-run /bin/bash -c \
+	'dch -v $(dpkg-parsechangelog --show-field Version)~$(date "+%y%m%d%H") "nightly release" -D $(lsb_release --short --codename)'
+  ./nncc docker-run dch -r ''
+fi
 
 ./nncc docker-run debuild --preserve-env --no-lintian -us -uc \
         -b --buildinfo-option=-ubuild --changes-option=-ubuild
