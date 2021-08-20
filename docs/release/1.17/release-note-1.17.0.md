@@ -21,4 +21,4 @@
 ### gpu_cl backend added
 
 - New backend(gpu_cl) added. This backend exploits tensorflow lite's gpu delegate.
-- This backends supports the following operations : Add, Convolution, Depthwise Convolution, Pooling, Reshape, Relu, Softmax 
+- This backend supports the following operations : Add, Convolution, Depthwise Convolution, Pooling, Reshape, Relu, Softmax 
