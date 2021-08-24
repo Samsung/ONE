@@ -157,14 +157,7 @@ def main():
         profile_cmd += getattr(args, 'command').split()
 
     # run backend driver
-    with subprocess.Popen(
-            profile_cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
-            bufsize=1) as p:
-        for line in p.stdout:
-            sys.stdout.buffer.write(line)
-            sys.stdout.buffer.flush()
-    if p.returncode != 0:
-        sys.exit(p.returncode)
+    _utils._run(profile_cmd, err_prefix=backend_base)
 
 
 if __name__ == '__main__':
