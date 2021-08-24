@@ -14,6 +14,7 @@ endif()
 
 target_link_libraries(ndarray PRIVATE nnfw_common)
 target_link_libraries(ndarray PRIVATE nnfw_coverage)
+
 if(NOT ENABLE_TEST)
   return()
 endif(NOT ENABLE_TEST)
