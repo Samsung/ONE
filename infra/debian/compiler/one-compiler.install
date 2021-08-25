@@ -3,7 +3,6 @@
 usr/bin/circle2circle usr/share/one/bin/
 usr/bin/circle_partitioner usr/share/one/bin/
 usr/bin/circle-quantizer usr/share/one/bin/
-usr/bin/conv_mixin_1.8.0.patch usr/share/one/bin/
 usr/bin/generate_bcq_metadata.py usr/share/one/bin/
 usr/bin/generate_bcq_output_arrays.py usr/share/one/bin/
 usr/bin/model2nnpkg.sh usr/share/one/bin/
