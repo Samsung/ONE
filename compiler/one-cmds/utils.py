@@ -243,33 +243,26 @@ def _run(cmd, err_prefix=None, logfile=None):
         err_prefix: prefix to be put before every stderr lines
         logfile: file stream to which both of stdout and stderr lines will be written
     """
-    if logfile == None:
-        with subprocess.Popen(cmd, stderr=subprocess.PIPE, bufsize=1) as p:
-            for line in p.stderr:
-                if err_prefix:
-                    line = f"{err_prefix}: ".encode() + line
-                sys.stderr.buffer.write(line)
-                sys.stderr.buffer.flush()
-    else:
-        with subprocess.Popen(
-                cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, bufsize=1) as p:
-            import select
-            inputs = set([p.stdout, p.stderr])
-            while inputs:
-                readable, _, _ = select.select(inputs, [], [])
-                for x in readable:
-                    line = x.readline()
-                    if len(line) == 0:
-                        inputs.discard(x)
-                        continue
-                    if x == p.stdout:
-                        out = sys.stdout
-                    if x == p.stderr:
-                        out = sys.stderr
-                        if err_prefix:
-                            line = f"{err_prefix}: ".encode() + line
-                    out.buffer.write(line)
-                    out.buffer.flush()
+    with subprocess.Popen(
+            cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, bufsize=1) as p:
+        import select
+        inputs = set([p.stdout, p.stderr])
+        while inputs:
+            readable, _, _ = select.select(inputs, [], [])
+            for x in readable:
+                line = x.readline()
+                if len(line) == 0:
+                    inputs.discard(x)
+                    continue
+                if x == p.stdout:
+                    out = sys.stdout
+                if x == p.stderr:
+                    out = sys.stderr
+                    if err_prefix:
+                        line = f"{err_prefix}: ".encode() + line
+                out.buffer.write(line)
+                out.buffer.flush()
+                if logfile != None:
                     logfile.write(line)
     if p.returncode != 0:
         sys.exit(p.returncode)
