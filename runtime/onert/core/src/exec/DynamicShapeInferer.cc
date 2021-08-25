@@ -601,9 +601,12 @@ void DynamicShapeInferer::visit(const ir::operation::MatrixBandPart &op)
   handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::MatrixBandPart::INPUT));
 }
 
-void DynamicShapeInferer::visit(const ir::operation::DetectionPostProcess &op)
+void DynamicShapeInferer::visit(const ir::operation::DetectionPostProcess & /* op */)
 {
-  UNUSED_RELEASE(op);
+  // NOTE DetectionPostProcess's undefined outputs' shape are decided on compile time
+  //      by static shape inferer.
+  //      DetectionPostProcess's outputs' shape are independent with input shape
+  //      and decided by parameter value.
 }
 
 void DynamicShapeInferer::visit(const ir::operation::OneHot &op)
