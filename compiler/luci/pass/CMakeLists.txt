@@ -2,9 +2,16 @@ file(GLOB_RECURSE SOURCES "src/*.cpp")
 file(GLOB_RECURSE TESTS "src/*.test.cpp")
 list(REMOVE_ITEM SOURCES ${TESTS})
 
+nnas_find_package(TensorFlowSource EXACT 2.3.0 QUIET)
+nnas_find_package(TensorFlowGEMMLowpSource EXACT 2.3.0 QUIET)
+
 add_library(luci_pass SHARED ${SOURCES})
 target_include_directories(luci_pass PRIVATE src)
 target_include_directories(luci_pass PUBLIC include)
+target_include_directories(luci_pass SYSTEM PRIVATE
+  "${TensorFlowSource_DIR}"
+  "${TensorFlowGEMMLowpSource_DIR}"
+)
 target_link_libraries(luci_pass PUBLIC loco)
 target_link_libraries(luci_pass PUBLIC logo_core)
 target_link_libraries(luci_pass PRIVATE logo)
@@ -20,14 +27,6 @@ target_link_libraries(luci_pass PRIVATE oops)
 install(TARGETS luci_pass DESTINATION lib)
 install(DIRECTORY include/ DESTINATION include
         FILES_MATCHING PATTERN "*.h")
-
-nnas_find_package(TensorFlowSource EXACT 2.3.0 QUIET)
-nnas_find_package(TensorFlowGEMMLowpSource EXACT 2.3.0 QUIET)
-
-target_include_directories(luci_pass SYSTEM PRIVATE
-  "${TensorFlowSource_DIR}"
-  "${TensorFlowGEMMLowpSource_DIR}"
-)
 
 if(NOT ENABLE_TEST)
   return()
