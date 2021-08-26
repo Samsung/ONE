@@ -26,6 +26,79 @@
 namespace
 {
 
+// TODO Share activation mix/max and compute_input/output code with luci-interpreter
+
+bool compute_output(uint32_t *output_size, luci::Padding padding, int32_t image_size,
+                    int32_t filter_size, int32_t stride, int32_t dilation_rate)
+{
+  auto const effective_filter_size = (filter_size - 1) * dilation_rate + 1;
+  switch (padding)
+  {
+    case luci::Padding::SAME:
+      *output_size = (image_size + stride - 1) / stride;
+      return true;
+
+    case luci::Padding::VALID:
+      *output_size = (image_size + stride - effective_filter_size) / stride;
+      return true;
+
+    default: {
+      LOGGER(l);
+      WARN(l) << "Unsupported padding: " << uint32_t(padding);
+      return false;
+    }
+  }
+}
+
+uint32_t compute_padding(int32_t stride, int32_t dilation_rate, int32_t in_size,
+                         int32_t filter_size, int32_t out_size)
+{
+  auto const effective_filter_size = (filter_size - 1) * dilation_rate + 1;
+  auto const padding = ((out_size - 1) * stride + effective_filter_size - in_size) / 2;
+  return padding > 0 ? padding : 0;
+}
+
+bool set_kernel_parameters(tflite::DepthwiseParams *params, luci::CircleDepthwiseConv2D *node,
+                           uint32_t padding_height, uint32_t padding_width)
+{
+  switch (node->fusedActivationFunction())
+  {
+    case luci::FusedActFunc::NONE:
+    case luci::FusedActFunc::TANH:
+      params->float_activation_min = std::numeric_limits<float>::lowest();
+      params->float_activation_max = std::numeric_limits<float>::max();
+      break;
+    case luci::FusedActFunc::RELU:
+      params->float_activation_min = 0;
+      params->float_activation_max = std::numeric_limits<float>::max();
+      break;
+    case luci::FusedActFunc::RELU_N1_TO_1:
+      params->float_activation_min = -1;
+      params->float_activation_max = 1;
+      break;
+    case luci::FusedActFunc::RELU6:
+      params->float_activation_min = 0;
+      params->float_activation_max = 6;
+      break;
+    default: {
+      LOGGER(l);
+      WARN(l) << "Unsupported activation: " << uint32_t(node->fusedActivationFunction());
+      return false;
+    }
+  }
+
+  params->stride_height = node->stride()->h();
+  params->stride_width = node->stride()->w();
+  params->dilation_height_factor = node->dilation()->h();
+  params->dilation_width_factor = node->dilation()->w();
+  params->depth_multiplier = node->depthMultiplier();
+
+  params->padding_values.height = padding_height;
+  params->padding_values.width = padding_width;
+
+  return true;
+}
+
 bool fold_depthwise_conv_2d(luci::CircleDepthwiseConv2D *node)
 {
   LOGGER(l);
@@ -59,81 +132,26 @@ bool fold_depthwise_conv_2d(luci::CircleDepthwiseConv2D *node)
   if (bias->rank() != 1 || bias->dim(0).value() != filter_channels_out)
     return false; // Unsupported bias value
 
+  uint32_t output_height = 0;
+  uint32_t output_width = 0;
+
+  if (!compute_output(&output_height, node->padding(), input_height, filter_height,
+                      node->stride()->h(), node->dilation()->h()))
+    return false; // Unsupported output parameters
+
+  if (!compute_output(&output_width, node->padding(), input_width, filter_width,
+                      node->stride()->h(), node->dilation()->h()))
+    return false; // Unsupported output parameters
+
+  auto const padding_height = compute_padding(node->stride()->h(), node->dilation()->h(),
+                                              input_height, filter_height, output_height);
+  auto const padding_width = compute_padding(node->stride()->h(), node->dilation()->h(),
+                                             input_width, filter_width, output_width);
+
   tflite::DepthwiseParams params{};
 
-  // TODO Share activation mix/max and compute_input/output code with luci-interpreter
-
-  switch (node->fusedActivationFunction())
-  {
-    case luci::FusedActFunc::NONE:
-    case luci::FusedActFunc::TANH:
-      params.float_activation_min = std::numeric_limits<float>::lowest();
-      params.float_activation_max = std::numeric_limits<float>::max();
-      break;
-    case luci::FusedActFunc::RELU:
-      params.float_activation_min = 0;
-      params.float_activation_max = std::numeric_limits<float>::max();
-      break;
-    case luci::FusedActFunc::RELU_N1_TO_1:
-      params.float_activation_min = -1;
-      params.float_activation_max = 1;
-      break;
-    case luci::FusedActFunc::RELU6:
-      params.float_activation_min = 0;
-      params.float_activation_max = 6;
-      break;
-    default:
-      WARN(l) << "Unsupported activation: " << uint32_t(node->fusedActivationFunction());
-      return false;
-  }
-
-  auto compute_output = [&l](luci::Padding padding, int32_t image_size, int32_t filter_size,
-                             int32_t stride, int32_t dilation_rate) {
-    auto const effective_filter_size = (filter_size - 1) * dilation_rate + 1;
-    switch (padding)
-    {
-      case luci::Padding::SAME:
-        return (image_size + stride - 1) / stride;
-      case luci::Padding::VALID:
-        return (image_size + stride - effective_filter_size) / stride;
-      default:
-        WARN(l) << "Unsupported padding: " << uint32_t(padding);
-        return 0;
-    }
-  };
-
-  auto compute_padding = [](int32_t stride, int32_t dilation_rate, int32_t in_size,
-                            int32_t filter_size, int32_t out_size) {
-    auto const effective_filter_size = (filter_size - 1) * dilation_rate + 1;
-    auto const padding = ((out_size - 1) * stride + effective_filter_size - in_size) / 2;
-    return padding > 0 ? padding : 0;
-  };
-
-  auto tensor_shape = [](luci::CircleNode *node) {
-    tflite::RuntimeShape runtime_shape(node->rank());
-    for (uint32_t i = 0; i < node->rank(); ++i)
-      runtime_shape.SetDim(i, node->dim(i).value());
-    return runtime_shape;
-  };
-
-  auto const output_height = compute_output(node->padding(), input_height, filter_height,
-                                            node->stride()->h(), node->dilation()->h());
-  auto const output_width = compute_output(node->padding(), input_width, filter_width,
-                                           node->stride()->w(), node->dilation()->w());
-
-  if (output_height == 0 || output_width == 0)
-    return false;
-
-  params.padding_values.height = compute_padding(node->stride()->h(), node->dilation()->h(),
-                                                 input_height, filter_height, output_height);
-  params.padding_values.width = compute_padding(node->stride()->h(), node->dilation()->h(),
-                                                input_width, filter_width, output_width);
-
-  params.stride_height = node->stride()->h();
-  params.stride_width = node->stride()->w();
-  params.dilation_height_factor = node->dilation()->h();
-  params.dilation_width_factor = node->dilation()->w();
-  params.depth_multiplier = node->depthMultiplier();
+  if (!set_kernel_parameters(&params, node, padding_height, padding_width))
+    return false; // Unsupported kernel parameter values
 
   auto constant = node->graph()->nodes()->create<luci::CircleConst>();
   constant->name(node->name());
@@ -150,6 +168,13 @@ bool fold_depthwise_conv_2d(luci::CircleDepthwiseConv2D *node)
   auto const filter_data = &filter->at<loco::DataType::FLOAT32>(0);
   auto const bias_data = &bias->at<loco::DataType::FLOAT32>(0);
   auto const constant_data = &constant->at<loco::DataType::FLOAT32>(0);
+
+  auto tensor_shape = [](luci::CircleNode *node) {
+    tflite::RuntimeShape runtime_shape(node->rank());
+    for (uint32_t i = 0; i < node->rank(); ++i)
+      runtime_shape.SetDim(i, node->dim(i).value());
+    return runtime_shape;
+  };
 
   tflite::reference_ops::DepthwiseConv(params, tensor_shape(input), input_data,
                                        tensor_shape(filter), filter_data, tensor_shape(bias),
