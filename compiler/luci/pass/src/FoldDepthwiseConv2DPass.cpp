@@ -21,8 +21,15 @@
 #include <luci/IR/CircleNodes.h>
 #include <luci/IR/AttrFusedActFunc.h>
 
+#include <luci/Log.h>
+
+namespace
+{
+
 bool fold_depthwise_conv_2d(luci::CircleDepthwiseConv2D *node)
 {
+  LOGGER(l);
+
   auto const input = dynamic_cast<luci::CircleConst *>(node->input());
 
   if (input == nullptr)
@@ -76,11 +83,12 @@ bool fold_depthwise_conv_2d(luci::CircleDepthwiseConv2D *node)
       params.float_activation_max = 6;
       break;
     default:
-      throw std::runtime_error("Unsupported activation");
+      WARN(l) << "Unsupported activation: " << uint32_t(node->fusedActivationFunction());
+      return false;
   }
 
-  auto compute_output = [](luci::Padding padding, int32_t image_size, int32_t filter_size,
-                           int32_t stride, int32_t dilation_rate) {
+  auto compute_output = [&l](luci::Padding padding, int32_t image_size, int32_t filter_size,
+                             int32_t stride, int32_t dilation_rate) {
     auto const effective_filter_size = (filter_size - 1) * dilation_rate + 1;
     switch (padding)
     {
@@ -89,7 +97,7 @@ bool fold_depthwise_conv_2d(luci::CircleDepthwiseConv2D *node)
       case luci::Padding::VALID:
         return (image_size + stride - effective_filter_size) / stride;
       default:
-        throw std::runtime_error("Unsupported padding");
+        WARN(l) << "Unsupported padding: " << uint32_t(padding);
         return 0;
     }
   };
@@ -112,6 +120,9 @@ bool fold_depthwise_conv_2d(luci::CircleDepthwiseConv2D *node)
                                             node->stride()->h(), node->dilation()->h());
   auto const output_width = compute_output(node->padding(), input_width, filter_width,
                                            node->stride()->w(), node->dilation()->w());
+
+  if (output_height == 0 || output_width == 0)
+    return false;
 
   params.padding_values.height = compute_padding(node->stride()->h(), node->dilation()->h(),
                                                  input_height, filter_height, output_height);
@@ -149,15 +160,20 @@ bool fold_depthwise_conv_2d(luci::CircleDepthwiseConv2D *node)
   return true;
 }
 
+} // namespace
+
+namespace luci
+{
+
 /**
  * Constant Folding for DepthwiseConv2D Op
  **/
-bool luci::FoldDepthwiseConv2DPass::run(loco::Graph *g)
+bool FoldDepthwiseConv2DPass::run(loco::Graph *g)
 {
   bool changed = false;
   for (auto node : loco::active_nodes(loco::output_nodes(g)))
   {
-    auto depthwise_conv2d = dynamic_cast<luci::CircleDepthwiseConv2D *>(node);
+    auto depthwise_conv2d = dynamic_cast<CircleDepthwiseConv2D *>(node);
 
     if (depthwise_conv2d == nullptr)
       continue;
@@ -174,3 +190,5 @@ bool luci::FoldDepthwiseConv2DPass::run(loco::Graph *g)
 
   return changed;
 }
+
+} // namespace luci
