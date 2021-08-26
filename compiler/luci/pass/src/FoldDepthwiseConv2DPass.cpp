@@ -99,6 +99,19 @@ bool set_kernel_parameters(tflite::DepthwiseParams *params, luci::CircleDepthwis
   return true;
 }
 
+/**
+ * Fold DepthwiseConv2D with constant input and filter into a constant tensor
+ *
+ *    BEFORE
+ *
+ *    [CircleConst] [CircleConst]
+ *               |   |
+ *       [CircleDepthwiseConv2D]
+ *
+ *    AFTER
+ *
+ *           [CircleConst]
+ */
 bool fold_depthwise_conv_2d(luci::CircleDepthwiseConv2D *node)
 {
   LOGGER(l);
