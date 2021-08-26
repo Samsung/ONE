@@ -112,6 +112,7 @@ private:
   void visit(const ir::operation::Transpose &op) override;
   void visit(const ir::operation::Unpack &op) override;
   void visit(const ir::operation::While &op) override;
+  void visit(const ir::operation::DetectionPostProcess &op) override;
 
 private:
   /**

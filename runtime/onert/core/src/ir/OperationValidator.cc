@@ -211,6 +211,14 @@ void OperationValidator::visit(const operation::DepthToSpace &node)
   OP_REQUIRES(block_size > 0);
 }
 
+void OperationValidator::visit(const operation::DetectionPostProcess &node)
+{
+  auto param = node.param();
+
+  // FIXME: number of classes should be 1 for now.
+  OP_REQUIRES(param.num_classes == 1);
+}
+
 void OperationValidator::visit(const operation::DepthwiseConv2D &node)
 {
   const auto input_index{node.getInputs().at(operation::DepthwiseConv2D::Input::INPUT)};
