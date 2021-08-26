@@ -42,7 +42,8 @@ bool compute_output(uint32_t *output_size, luci::Padding padding, int32_t image_
       *output_size = (image_size + stride - effective_filter_size) / stride;
       return true;
 
-    default: {
+    default:
+    {
       LOGGER(l);
       WARN(l) << "Unsupported padding: " << uint32_t(padding);
       return false;
@@ -80,7 +81,8 @@ bool set_kernel_parameters(tflite::DepthwiseParams *params, luci::CircleDepthwis
       params->float_activation_min = 0;
       params->float_activation_max = 6;
       break;
-    default: {
+    default:
+    {
       LOGGER(l);
       WARN(l) << "Unsupported activation: " << uint32_t(node->fusedActivationFunction());
       return false;
