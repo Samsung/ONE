@@ -115,13 +115,15 @@ public:
 
   template <typename T> const T *data() const
   {
-    static_assert(std::is_same<uint8_t, char>::value or std::is_same<uint8_t, unsigned char>::value);
+    static_assert(std::is_same<uint8_t, char>::value or
+                  std::is_same<uint8_t, unsigned char>::value);
     return reinterpret_cast<const T *>(_data);
   }
 
   template <typename T> T *data()
   {
-    static_assert(std::is_same<uint8_t, char>::value or std::is_same<uint8_t, unsigned char>::value);
+    static_assert(std::is_same<uint8_t, char>::value or
+                  std::is_same<uint8_t, unsigned char>::value);
     return reinterpret_cast<T *>(_data);
   }
 
@@ -146,30 +148,15 @@ public:
     _data = buffer;
   }
 
-  bool is_observable() const
-  {
-    return _is_observable;
-  }
+  bool is_observable() const { return _is_observable; }
 
-  void make_unobservable()
-  {
-    _is_observable = false;
-  }
+  void make_unobservable() { _is_observable = false; }
 
-  bool is_allocatable() const
-  {
-    return _is_allocatable;
-  }
+  bool is_allocatable() const { return _is_allocatable; }
 
-  void make_unallocatable()
-  {
-    _is_allocatable = false;
-  }
+  void make_unallocatable() { _is_allocatable = false; }
 
-  bool is_data_allocated()
-  {
-    return _data_allocated;
-  }
+  bool is_data_allocated() { return _data_allocated; }
 
 private:
   DataType _element_type;
@@ -182,7 +169,8 @@ private:
   // This is needed for tensors used in kernel implementation, but not present in original model.
   bool _is_observable = true;
   // Memory manager is called for tensor only if it is "allocatable".
-  // Kernel configuration could disable allocation of some tensors if they are not needed for particular operation.
+  // Kernel configuration could disable allocation of some tensors if they are not needed for
+  // particular operation.
   bool _is_allocatable = true;
 };
 

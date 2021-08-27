@@ -163,7 +163,8 @@ void Mean::configure()
     temp_index->resize(Shape(input_num_dims));
     resolved_axes->resize(Shape(num_axes));
     temp_sum->resize(output()->shape());
-  } else
+  }
+  else
   {
     auto temp_index = getOutputTensors()[1];
     auto resolved_axes = getOutputTensors()[2];

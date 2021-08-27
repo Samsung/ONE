@@ -49,7 +49,7 @@ void copy(const std::vector<Tensor *> &src, const std::vector<Tensor *> &dst)
   copy(const_src, dst);
 }
 
-void configureTensorsAllocations(const std::vector<Tensor *>& tensors, RuntimeGraph *run_graph)
+void configureTensorsAllocations(const std::vector<Tensor *> &tensors, RuntimeGraph *run_graph)
 {
   for (auto tensor : tensors)
     run_graph->configureAllocations(tensor);

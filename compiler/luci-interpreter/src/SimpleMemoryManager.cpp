@@ -21,7 +21,8 @@ namespace luci_interpreter
 
 void SimpleMemoryManager::allocate_memory(luci_interpreter::Tensor &tensor)
 {
-  if (!tensor.is_allocatable()) {
+  if (!tensor.is_allocatable())
+  {
     return;
   }
   if (tensor.is_data_allocated())
