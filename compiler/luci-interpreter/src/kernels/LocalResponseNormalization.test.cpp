@@ -50,7 +50,7 @@ TEST_F(LocalResponseNormalizationTest, SameAsL2Norm)
 
   LocalResponseNormalization kernel(&input_tensor, &output_tensor, params);
   kernel.configure();
-  _memory_manager->allocate_memory(&output_tensor);
+  _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorData<float>(output_tensor),
@@ -71,7 +71,7 @@ TEST_F(LocalResponseNormalizationTest, WithAlpha)
 
   LocalResponseNormalization kernel(&input_tensor, &output_tensor, params);
   kernel.configure();
-  _memory_manager->allocate_memory(&output_tensor);
+  _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorData<float>(output_tensor),
@@ -92,7 +92,7 @@ TEST_F(LocalResponseNormalizationTest, WithBias)
 
   LocalResponseNormalization kernel(&input_tensor, &output_tensor, params);
   kernel.configure();
-  _memory_manager->allocate_memory(&output_tensor);
+  _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorData<float>(output_tensor),
@@ -113,7 +113,7 @@ TEST_F(LocalResponseNormalizationTest, SmallRadius)
 
   LocalResponseNormalization kernel(&input_tensor, &output_tensor, params);
   kernel.configure();
-  _memory_manager->allocate_memory(&output_tensor);
+  _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorData<float>(output_tensor),

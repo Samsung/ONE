@@ -39,7 +39,7 @@ void Check(std::initializer_list<int32_t> input_shape, std::initializer_list<int
 
   Logistic kernel(&input_tensor, &output_tensor);
   kernel.configure();
-  memory_manager->allocate_memory(&output_tensor);
+  memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(output_data));
@@ -63,7 +63,7 @@ void Check<uint8_t>(std::initializer_list<int32_t> input_shape,
 
   Logistic kernel(&input_tensor, &output_tensor);
   kernel.configure();
-  memory_manager->allocate_memory(&output_tensor);
+  memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   EXPECT_THAT(dequantizeTensorData(output_tensor),

@@ -47,7 +47,7 @@ TEST_F(LogicalAndTest, Basic)
 
   LogicalAnd kernel(&input_tensor1, &input_tensor2, &output_tensor);
   kernel.configure();
-  _memory_manager->allocate_memory(&output_tensor);
+  _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorData<bool>(output_tensor),
@@ -65,7 +65,7 @@ TEST_F(LogicalAndTest, Broadcast)
 
   LogicalAnd kernel(&input_tensor1, &input_tensor2, &output_tensor);
   kernel.configure();
-  _memory_manager->allocate_memory(&output_tensor);
+  _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorData<bool>(output_tensor),

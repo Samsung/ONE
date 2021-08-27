@@ -72,8 +72,8 @@ TEST_F(Conv2DTest, Float)
 
   Conv2D kernel(&input_tensor, &filter_tensor, &bias_tensor, &output_tensor, &im2col, params);
   kernel.configure();
-  _memory_manager->allocate_memory(&im2col);
-  _memory_manager->allocate_memory(&output_tensor);
+  _memory_manager->allocate_memory(im2col);
+  _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   std::vector<float> ref_output_data{
@@ -123,8 +123,8 @@ TEST_F(Conv2DTest, FloatCheck)
 
   Conv2D kernel(&input_tensor, &filter_tensor, &bias_tensor, &output_tensor, &im2col, params);
   kernel.configure();
-  _memory_manager->allocate_memory(&output_tensor);
-  _memory_manager->allocate_memory(&im2col);
+  _memory_manager->allocate_memory(output_tensor);
+  _memory_manager->allocate_memory(im2col);
   kernel.execute();
 
   std::vector<float> ref_output_data{
@@ -180,8 +180,8 @@ TEST_F(Conv2DTest, Uint8)
 
   Conv2D kernel(&input_tensor, &filter_tensor, &bias_tensor, &output_tensor, &im2col, params);
   kernel.configure();
-  _memory_manager->allocate_memory(&output_tensor);
-  _memory_manager->allocate_memory(&im2col);
+  _memory_manager->allocate_memory(output_tensor);
+  _memory_manager->allocate_memory(im2col);
   kernel.execute();
 
   std::vector<float> ref_output_data{
@@ -256,8 +256,8 @@ TEST_F(Conv2DTest, Uint8_CWQ)
 
   Conv2D kernel(&input_tensor, &filter_tensor, &bias_tensor, &output_tensor, &im2col, params);
   kernel.configure();
-  _memory_manager->allocate_memory(&output_tensor);
-  _memory_manager->allocate_memory(&im2col);
+  _memory_manager->allocate_memory(output_tensor);
+  _memory_manager->allocate_memory(im2col);
   kernel.execute();
 
   std::vector<float> ref_output_data{
@@ -315,8 +315,8 @@ TEST_F(Conv2DTest, SInt16)
 
   Conv2D kernel(&input_tensor, &filter_tensor, &bias_tensor, &output_tensor, &im2col, params);
   kernel.configure();
-  _memory_manager->allocate_memory(&output_tensor);
-  _memory_manager->allocate_memory(&im2col);
+  _memory_manager->allocate_memory(output_tensor);
+  _memory_manager->allocate_memory(im2col);
   kernel.execute();
 
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
@@ -376,8 +376,8 @@ TEST_F(Conv2DTest, SInt16_CWQ_weights)
 
   Conv2D kernel(&input_tensor, &filter_tensor, &bias_tensor, &output_tensor, &im2col, params);
   kernel.configure();
-  _memory_manager->allocate_memory(&output_tensor);
-  _memory_manager->allocate_memory(&im2col);
+  _memory_manager->allocate_memory(output_tensor);
+  _memory_manager->allocate_memory(im2col);
   kernel.execute();
 
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));

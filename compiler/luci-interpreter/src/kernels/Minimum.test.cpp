@@ -49,7 +49,7 @@ TEST_F(MinimumTest, Float)
 
   Minimum kernel(&input_tensor1, &input_tensor2, &output_tensor);
   kernel.configure();
-  _memory_manager->allocate_memory(&output_tensor);
+  _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   std::vector<float> ref_output_data{-1.0, 0.0, -1.0, 11.0, -3.0, -1.44};
@@ -69,7 +69,7 @@ TEST_F(MinimumTest, Uint8)
 
   Minimum kernel(&input_tensor1, &input_tensor2, &output_tensor);
   kernel.configure();
-  _memory_manager->allocate_memory(&output_tensor);
+  _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   std::vector<int32_t> ref_output_shape{2, 4};

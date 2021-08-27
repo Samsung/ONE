@@ -52,7 +52,7 @@ TYPED_TEST(SpaceToDepthTest, SimpleCase)
 
   SpaceToDepth kernel(&input_tensor, &output_tensor, params);
   kernel.configure();
-  memory_manager->allocate_memory(&output_tensor);
+  memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorData<TypeParam>(output_tensor),

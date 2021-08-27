@@ -39,7 +39,7 @@ TEST(ExpTest, Float)
 
   Exp kernel(&input_tensor, &output_tensor);
   kernel.configure();
-  memory_manager->allocate_memory(&output_tensor);
+  memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   std::vector<int32_t> ref_output_shape{1, 1, 7};

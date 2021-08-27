@@ -49,7 +49,7 @@ TEST_F(LogSoftmaxTest, Float)
 
   LogSoftmax kernel(&input_tensor, &output_tensor);
   kernel.configure();
-  _memory_manager->allocate_memory(&output_tensor);
+  _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   std::vector<float> ref_output_data{
@@ -75,7 +75,7 @@ TEST_F(LogSoftmaxTest, Uint8)
 
   LogSoftmax kernel(&input_tensor, &output_tensor);
   kernel.configure();
-  _memory_manager->allocate_memory(&output_tensor);
+  _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   std::vector<float> ref_output_data{

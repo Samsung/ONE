@@ -178,7 +178,11 @@ private:
   uint8_t *_data;
   std::string _name;
   bool _data_allocated;
+  // Write of tensor is reported to registered Observers only if this tensor is observable
+  // This is needed for tensors used in kernel implementation, but not present in original model.
   bool _is_observable = true;
+  // Memory manager is called for tensor only if it is "allocatable".
+  // Kernel configuration could disable allocation of some tensors if they are not needed for particular operation.
   bool _is_allocatable = true;
 };
 

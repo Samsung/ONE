@@ -49,7 +49,7 @@ TEST_F(TanhTest, Float)
 
   Tanh kernel(&input_tensor, &output_tensor);
   kernel.configure();
-  _memory_manager->allocate_memory(&output_tensor);
+  _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   std::vector<float> ref_output_data{
@@ -88,7 +88,7 @@ TEST_F(TanhTest, Uint8)
 
   Tanh kernel(&input_tensor, &output_tensor);
   kernel.configure();
-  _memory_manager->allocate_memory(&output_tensor);
+  _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   std::vector<float> ref_output_data{
@@ -131,7 +131,7 @@ TEST_F(TanhTest, InputTypeInvalid_NEG)
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   Tanh kernel(&input_tensor, &output_tensor);
-  _memory_manager->allocate_memory(&output_tensor);
+  _memory_manager->allocate_memory(output_tensor);
   EXPECT_ANY_THROW(kernel.execute());
 }
 

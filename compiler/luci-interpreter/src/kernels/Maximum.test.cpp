@@ -49,7 +49,7 @@ TEST_F(MaximumTest, Float)
 
   Maximum kernel(&input_tensor1, &input_tensor2, &output_tensor);
   kernel.configure();
-  _memory_manager->allocate_memory(&output_tensor);
+  _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   std::vector<float> ref_output_data{1.0, 0.0, 1.0, 12.0, -2.0, -1.43};
@@ -69,7 +69,7 @@ TEST_F(MaximumTest, Uint8)
 
   Maximum kernel(&input_tensor1, &input_tensor2, &output_tensor);
   kernel.configure();
-  _memory_manager->allocate_memory(&output_tensor);
+  _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   std::vector<int32_t> ref_output_shape{2, 4};

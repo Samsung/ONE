@@ -57,7 +57,7 @@ TYPED_TEST(SliceTest, SimpleTest)
 
   Slice kernel(&input_tensor, &begin_tensor, &size_tensor, &output_tensor);
   kernel.configure();
-  memory_manager->allocate_memory(&output_tensor);
+  memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorData<TypeParam>(output_tensor),

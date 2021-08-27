@@ -57,7 +57,7 @@ void Check(int axis, int num_splits, std::initializer_list<int32_t> input_shape,
   kernel.configure();
   for (int i = 0; i < num_splits; ++i)
   {
-    memory_manager->allocate_memory(&output_tensors[i]);
+    memory_manager->allocate_memory(output_tensors[i]);
   }
   kernel.execute();
 

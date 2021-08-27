@@ -57,10 +57,10 @@ TEST_F(MeanTest, FloatKeepDims)
   Mean kernel(&input_tensor, &axis_tensor, &output_tensor, &temp_index, &resolved_axes, &temp_sum,
               params);
   kernel.configure();
-  _memory_manager->allocate_memory(&temp_index);
-  _memory_manager->allocate_memory(&resolved_axes);
-  _memory_manager->allocate_memory(&temp_sum);
-  _memory_manager->allocate_memory(&output_tensor);
+  _memory_manager->allocate_memory(temp_index);
+  _memory_manager->allocate_memory(resolved_axes);
+  _memory_manager->allocate_memory(temp_sum);
+  _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   std::vector<float> ref_output_data{10.5, 12.5, 14.5};
@@ -90,10 +90,10 @@ TEST_F(MeanTest, FloatKeepDims4DMean)
   Mean kernel(&input_tensor, &axis_tensor, &output_tensor, &temp_index, &resolved_axes, &temp_sum,
               params);
   kernel.configure();
-  _memory_manager->allocate_memory(&temp_index);
-  _memory_manager->allocate_memory(&resolved_axes);
-  _memory_manager->allocate_memory(&temp_sum);
-  _memory_manager->allocate_memory(&output_tensor);
+  _memory_manager->allocate_memory(temp_index);
+  _memory_manager->allocate_memory(resolved_axes);
+  _memory_manager->allocate_memory(temp_sum);
+  _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   std::vector<float> ref_output_data{6, 7, 18, 19};
@@ -123,10 +123,10 @@ TEST_F(MeanTest, FloatNotKeepDims)
   Mean kernel(&input_tensor, &axis_tensor, &output_tensor, &temp_index, &resolved_axes, &temp_sum,
               params);
   kernel.configure();
-  _memory_manager->allocate_memory(&temp_index);
-  _memory_manager->allocate_memory(&resolved_axes);
-  _memory_manager->allocate_memory(&temp_sum);
-  _memory_manager->allocate_memory(&output_tensor);
+  _memory_manager->allocate_memory(temp_index);
+  _memory_manager->allocate_memory(resolved_axes);
+  _memory_manager->allocate_memory(temp_sum);
+  _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   std::vector<float> ref_output_data{12, 13};
@@ -156,10 +156,10 @@ TEST_F(MeanTest, Uint8KeepDims)
   Mean kernel(&input_tensor, &axis_tensor, &output_tensor, &temp_index, &resolved_axes, &temp_sum,
               params);
   kernel.configure();
-  _memory_manager->allocate_memory(&temp_index);
-  _memory_manager->allocate_memory(&resolved_axes);
-  _memory_manager->allocate_memory(&temp_sum);
-  _memory_manager->allocate_memory(&output_tensor);
+  _memory_manager->allocate_memory(temp_index);
+  _memory_manager->allocate_memory(resolved_axes);
+  _memory_manager->allocate_memory(temp_sum);
+  _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   std::vector<float> ref_output_data{0.3, 0.35, 0.55};
@@ -190,10 +190,10 @@ TEST_F(MeanTest, Uint8NotKeepDims)
   Mean kernel(&input_tensor, &axis_tensor, &output_tensor, &temp_index, &resolved_axes, &temp_sum,
               params);
   kernel.configure();
-  _memory_manager->allocate_memory(&temp_index);
-  _memory_manager->allocate_memory(&resolved_axes);
-  _memory_manager->allocate_memory(&temp_sum);
-  _memory_manager->allocate_memory(&output_tensor);
+  _memory_manager->allocate_memory(temp_index);
+  _memory_manager->allocate_memory(resolved_axes);
+  _memory_manager->allocate_memory(temp_sum);
+  _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   std::vector<float> ref_output_data{0.4, 0.4};
@@ -225,10 +225,10 @@ TEST_F(MeanTest, SInt16KeepDims4D)
   Mean kernel(&input_tensor, &axes_tensor, &output_tensor, &temp_index, &resolved_axes, &temp_sum,
               params);
   kernel.configure();
-  _memory_manager->allocate_memory(&temp_index);
-  _memory_manager->allocate_memory(&resolved_axes);
-  _memory_manager->allocate_memory(&temp_sum);
-  _memory_manager->allocate_memory(&output_tensor);
+  _memory_manager->allocate_memory(temp_index);
+  _memory_manager->allocate_memory(resolved_axes);
+  _memory_manager->allocate_memory(temp_sum);
+  _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({2, 1, 1, 2}));

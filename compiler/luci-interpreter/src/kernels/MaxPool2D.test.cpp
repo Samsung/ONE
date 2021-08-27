@@ -57,7 +57,7 @@ TEST_F(MaxPool2DTest, Float)
 
   MaxPool2D kernel(&input_tensor, &output_tensor, params);
   kernel.configure();
-  _memory_manager->allocate_memory(&output_tensor);
+  _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   std::vector<float> ref_output_data{
@@ -90,7 +90,7 @@ TEST_F(MaxPool2DTest, Uint8)
 
   MaxPool2D kernel(&input_tensor, &output_tensor, params);
   kernel.configure();
-  _memory_manager->allocate_memory(&output_tensor);
+  _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   std::vector<float> ref_output_data{0.0, 6.0};
@@ -127,7 +127,7 @@ TEST_F(MaxPool2DTest, SInt16)
 
   MaxPool2D kernel(&input_tensor, &output_tensor, params);
   kernel.configure();
-  _memory_manager->allocate_memory(&output_tensor);
+  _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));

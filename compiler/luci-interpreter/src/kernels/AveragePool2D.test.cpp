@@ -57,7 +57,7 @@ TEST_F(AveragePool2DTest, Float)
 
   AveragePool2D kernel(&input_tensor, &output_tensor, params);
   kernel.configure();
-  _memory_manager->allocate_memory(&output_tensor);
+  _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   std::vector<float> ref_output_data{
@@ -89,7 +89,7 @@ TEST_F(AveragePool2DTest, Uint8_0)
 
   AveragePool2D kernel(&input_tensor, &output_tensor, params);
   kernel.configure();
-  _memory_manager->allocate_memory(&output_tensor);
+  _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   EXPECT_THAT(dequantizeTensorData(output_tensor), FloatArrayNear({0.0, 6.0}));
@@ -118,7 +118,7 @@ TEST_F(AveragePool2DTest, Uint8_1)
 
   AveragePool2D kernel(&input_tensor, &output_tensor, params);
   kernel.configure();
-  _memory_manager->allocate_memory(&output_tensor);
+  _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   EXPECT_THAT(dequantizeTensorData(output_tensor), FloatArrayNear({2.75, 6.0}));
@@ -152,7 +152,7 @@ TEST_F(AveragePool2DTest, SInt16)
 
   AveragePool2D kernel(&input_tensor, &output_tensor, params);
   kernel.configure();
-  _memory_manager->allocate_memory(&output_tensor);
+  _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));

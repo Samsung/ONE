@@ -46,7 +46,7 @@ void Check(std::initializer_list<int32_t> input_shape,
 
   BatchToSpaceND kernel(&input_tensor, &block_shape_tensor, &crops_tensor, &output_tensor);
   kernel.configure();
-  memory_manager->allocate_memory(&output_tensor);
+  memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorData<T>(output_tensor), ::testing::ElementsAreArray(output_data));

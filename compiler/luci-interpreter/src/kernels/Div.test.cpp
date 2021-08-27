@@ -65,7 +65,7 @@ TEST_F(DivTest, Float)
 
   Div kernel(&input1_tensor, &input2_tensor, &output_tensor, params);
   kernel.configure();
-  _memory_manager->allocate_memory(&output_tensor);
+  _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(test_outputs, 0.0001f));
@@ -93,7 +93,7 @@ TEST_F(DivTest, FloatBroadcast)
 
   Div kernel(&input1_tensor, &input2_tensor, &output_tensor, params);
   kernel.configure();
-  _memory_manager->allocate_memory(&output_tensor);
+  _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(test_outputs, 0.0001f));
@@ -126,7 +126,7 @@ TEST_F(DivTest, Uint8)
 
   Div kernel(&input1_tensor, &input2_tensor, &output_tensor, params);
   kernel.configure();
-  _memory_manager->allocate_memory(&output_tensor);
+  _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   EXPECT_THAT(dequantizeTensorData(output_tensor),
@@ -158,7 +158,7 @@ TEST_F(DivTest, Invalid_Input_Type_NEG)
 
   Div kernel(&input1_tensor, &input2_tensor, &output_tensor, params);
   kernel.configure();
-  _memory_manager->allocate_memory(&output_tensor);
+  _memory_manager->allocate_memory(output_tensor);
   EXPECT_ANY_THROW(kernel.execute());
 }
 
