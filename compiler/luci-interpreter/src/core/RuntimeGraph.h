@@ -44,7 +44,7 @@ public:
   void setInputTensors(const std::vector<Tensor *> &input_tensors);
   void setOutputTensors(const std::vector<Tensor *> &output_tensors);
 
-  void configureAllocations(Tensor* tensor);
+  void configureAllocations(Tensor *tensor);
 
   const std::vector<Tensor *> &getInputTensors() const { return _input_tensors; }
   const std::vector<Tensor *> &getOutputTensors() const { return _output_tensors; }
@@ -54,7 +54,7 @@ public:
   void execute() const;
 
 private:
-  IMemoryManager* _memory_manager;
+  IMemoryManager *_memory_manager;
   RuntimeModule *_owning_module;
   std::vector<std::unique_ptr<Tensor>> _tensors;
   std::vector<Tensor *> _input_tensors;

@@ -112,10 +112,11 @@ void Conv2D::configure()
                        input_depth * filter_height * filter_width};
     auto im2col = getOutputTensors()[1];
     im2col->resize(im2col_shape);
-  } else
+  }
+  else
   {
     auto im2col = getOutputTensors()[1];
-    im2col->make_unallocatable();
+    im2col->set_allocatable(false);
   }
 }
 
