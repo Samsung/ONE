@@ -44,7 +44,7 @@ TEST(Pad, Uint8)
 
   Pad kernel(&input_tensor, &paddings_tensor, &output_tensor);
   kernel.configure();
-  memory_manager->allocate_memory(&output_tensor);
+  memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   std::vector<float> ref_output_data{0, -0.8, 0.2, 0.9, 0, 0, 0, 0, 0.7, 0.1, -0.3, 0, 0, 0,
@@ -67,7 +67,7 @@ TEST(Pad, Float)
 
   Pad kernel(&input_tensor, &paddings_tensor, &output_tensor);
   kernel.configure();
-  memory_manager->allocate_memory(&output_tensor);
+  memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   std::vector<float> ref_output_data{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,

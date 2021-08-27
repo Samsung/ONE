@@ -58,7 +58,7 @@ TYPED_TEST(ReverseV2Test, MultiDimensions)
 
   ReverseV2 kernel = ReverseV2(&input_tensor, &axis_tensor, &output_tensor);
   kernel.configure();
-  memory_manager->allocate_memory(&output_tensor);
+  memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorData<TypeParam>(output_tensor),

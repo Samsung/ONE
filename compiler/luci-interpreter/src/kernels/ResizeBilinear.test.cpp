@@ -46,7 +46,7 @@ void Check(std::initializer_list<int32_t> input_shape, std::initializer_list<int
 
   ResizeBilinear kernel(&input_tensor, &size_tensor, &output_tensor, params);
   kernel.configure();
-  memory_manager->allocate_memory(&output_tensor);
+  memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(output_shape));
@@ -77,7 +77,7 @@ void Check<uint8_t>(std::initializer_list<int32_t> input_shape,
 
   ResizeBilinear kernel(&input_tensor, &size_tensor, &output_tensor, params);
   kernel.configure();
-  memory_manager->allocate_memory(&output_tensor);
+  memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(output_shape));

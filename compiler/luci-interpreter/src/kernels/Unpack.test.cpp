@@ -59,7 +59,7 @@ void Check(int axis, Shape input_shape, std::initializer_list<T> input_data,
   kernel.configure();
   for (int i = 0; i < num_outputs; i++)
   {
-    memory_manager->allocate_memory(&output_tensors[i]);
+    memory_manager->allocate_memory(output_tensors[i]);
   }
   kernel.execute();
 

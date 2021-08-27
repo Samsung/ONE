@@ -43,7 +43,7 @@ TEST(SquaredDifferenceTest, Float)
 
   SquaredDifference kernel(&input_tensor1, &input_tensor2, &output_tensor);
   kernel.configure();
-  memory_manager->allocate_memory(&output_tensor);
+  memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   std::vector<float> ref_output_data{4.0, 0.0, 4.0, 1.0, 1.0, 0.0001};
@@ -66,7 +66,7 @@ TEST(SquaredDifferenceTest, FloatBroadcast)
 
   SquaredDifference kernel(&input_tensor1, &input_tensor2, &output_tensor);
   kernel.configure();
-  memory_manager->allocate_memory(&output_tensor);
+  memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   std::vector<float> ref_output_data{0.0, 1.0, 4.0, 100.0, 9.0, 5.9536};

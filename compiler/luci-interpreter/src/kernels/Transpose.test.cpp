@@ -41,7 +41,7 @@ void Check(std::initializer_list<int32_t> input_shape, std::initializer_list<int
 
   Transpose kernel(&input_tensor, &perm_tensor, &output_tensor);
   kernel.configure();
-  memory_manager->allocate_memory(&output_tensor);
+  memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorData<T>(output_tensor), ::testing::ElementsAreArray(output_data));

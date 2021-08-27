@@ -45,7 +45,7 @@ void Check(std::initializer_list<int32_t> input_shape,
   params.output_type = getElementType<T2>();
   ArgMax kernel(&input_tensor, &dimension_tensor, &output_tensor, params);
   kernel.configure();
-  memory_manager->allocate_memory(&output_tensor);
+  memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorData<T2>(output_tensor), ::testing::ElementsAreArray(output_data));
@@ -113,7 +113,7 @@ TEST(ArgMaxTest, UnsupportedType_NEG)
   params.output_type = DataType::U8;
   ArgMax kernel(&input_tensor, &dimension_tensor, &output_tensor, params);
   kernel.configure();
-  memory_manager->allocate_memory(&output_tensor);
+  memory_manager->allocate_memory(output_tensor);
   EXPECT_ANY_THROW(kernel.execute());
 }
 

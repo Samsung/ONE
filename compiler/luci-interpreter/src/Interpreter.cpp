@@ -17,6 +17,7 @@
 #include "luci_interpreter/Interpreter.h"
 
 #include "loader/ModuleLoader.h"
+#include <luci_interpreter/SimpleMemoryManager.h>
 
 #include <stdexcept>
 

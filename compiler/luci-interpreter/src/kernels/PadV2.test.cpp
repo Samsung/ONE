@@ -47,7 +47,7 @@ TEST(PadV2, Uint8)
 
   PadV2 kernel(&input_tensor, &paddings_tensor, &constant_values, &output_tensor);
   kernel.configure();
-  memory_manager->allocate_memory(&output_tensor);
+  memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   std::vector<float> ref_output_data = {
@@ -74,7 +74,7 @@ TEST(PadV2, Float)
 
   PadV2 kernel(&input_tensor, &paddings_tensor, &constant_values, &output_tensor);
   kernel.configure();
-  memory_manager->allocate_memory(&output_tensor);
+  memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   std::vector<float> ref_output_data{7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,

@@ -51,7 +51,7 @@ TEST_F(ReshapeTest, Regular)
 
   Reshape kernel(&input_tensor, &shape_tensor, &output_tensor);
   kernel.configure();
-  _memory_manager->allocate_memory(&output_tensor);
+  _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(input_data));
@@ -71,7 +71,7 @@ TEST_F(ReshapeTest, UnknownDimension)
 
   Reshape kernel(&input_tensor, &shape_tensor, &output_tensor);
   kernel.configure();
-  _memory_manager->allocate_memory(&output_tensor);
+  _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(input_data));

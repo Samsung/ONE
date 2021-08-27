@@ -41,13 +41,13 @@ void Check(std::vector<std::initializer_list<int32_t>> input_shapes,
     if (std::is_same<T, float>::value)
     {
       tmp_inputs.push_back(Tensor(element_type, input_shapes[i], {}, ""));
-      memory_manager->allocate_memory(&tmp_inputs[i]);
+      memory_manager->allocate_memory(tmp_inputs[i]);
       tmp_inputs[i].writeData(input_datas[i].data(), input_datas[i].size() * sizeof(T));
     }
     else
     {
       tmp_inputs.push_back(Tensor(element_type, input_shapes[i], {{1.0f / 255}, {128}}, ""));
-      memory_manager->allocate_memory(&tmp_inputs[i]);
+      memory_manager->allocate_memory(tmp_inputs[i]);
       tmp_inputs[i].writeData(input_datas[i].data(), input_datas[i].size() * sizeof(T));
     }
   }
@@ -68,7 +68,7 @@ void Check(std::vector<std::initializer_list<int32_t>> input_shapes,
   Pack kernel(inputs, &output_tensor, params);
 
   kernel.configure();
-  memory_manager->allocate_memory(&output_tensor);
+  memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorData<T>(output_tensor), ::testing::ElementsAreArray(output_data));

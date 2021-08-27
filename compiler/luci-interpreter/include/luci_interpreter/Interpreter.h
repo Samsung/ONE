@@ -22,7 +22,7 @@
 #include <luci/IR/Nodes/CircleInput.h>
 #include <luci/IR/Nodes/CircleOutput.h>
 
-#include <luci_interpreter/SimpleMemoryManager.h>
+#include "luci_interpreter/MemoryManager.h"
 #include <luci/IR/Module.h>
 
 #include <memory>

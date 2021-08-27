@@ -58,7 +58,7 @@ TEST(StridedSliceTest, Float)
   StridedSlice kernel(&input_tensor, &begin_tensor, &end_tensor, &strides_tensor, &output_tensor,
                       params);
   kernel.configure();
-  memory_manager->allocate_memory(&output_tensor);
+  memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   std::vector<int32_t> output_shape{3, 2};
@@ -98,7 +98,7 @@ TEST(StridedSliceTest, Uint8)
   StridedSlice kernel(&input_tensor, &begin_tensor, &end_tensor, &strides_tensor, &output_tensor,
                       params);
   kernel.configure();
-  memory_manager->allocate_memory(&output_tensor);
+  memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   std::vector<int32_t> output_shape{3, 2};

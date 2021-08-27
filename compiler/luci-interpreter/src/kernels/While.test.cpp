@@ -40,8 +40,8 @@ RuntimeGraph *buildCondSubgraph(RuntimeModule *module, DataType dtype, Tensor *i
   Tensor *output =
     graph->addTensor(std::make_unique<Tensor>(DataType::BOOL, Shape{}, AffineQuantization{}, ""));
 
-  memory_manager->allocate_memory(input);
-  memory_manager->allocate_memory(output);
+  memory_manager->allocate_memory(*input);
+  memory_manager->allocate_memory(*output);
 
   graph->setInputTensors({input});
   graph->setOutputTensors({output});
@@ -60,8 +60,8 @@ RuntimeGraph *buildBodySubgraph(RuntimeModule *module, DataType dtype, Tensor *i
   Tensor *output =
     graph->addTensor(std::make_unique<Tensor>(dtype, Shape{}, AffineQuantization{}, ""));
 
-  memory_manager->allocate_memory(input);
-  memory_manager->allocate_memory(output);
+  memory_manager->allocate_memory(*input);
+  memory_manager->allocate_memory(*output);
 
   graph->setInputTensors({input});
   graph->setOutputTensors({output});
@@ -90,7 +90,7 @@ TEST(WhileTest, FloatLoop10)
 
   While kernel({&input}, {&output}, cond_graph, body_graph);
   kernel.configure();
-  memory_manager->allocate_memory(&output);
+  memory_manager->allocate_memory(output);
   kernel.execute();
 
   EXPECT_THAT(extractTensorData<float>(output), FloatArrayNear({10}));

@@ -51,7 +51,7 @@ TEST_F(PowTest, SimplePow)
 
   Pow kernel(&input1_tensor, &input2_tensor, &output_tensor);
   kernel.configure();
-  _memory_manager->allocate_memory(&output_tensor);
+  _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(test_outputs, 0.0001f));
@@ -76,7 +76,7 @@ TEST_F(PowTest, FloatBroadcastPow)
 
   Pow kernel(&input1_tensor, &input2_tensor, &output_tensor);
   kernel.configure();
-  _memory_manager->allocate_memory(&output_tensor);
+  _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(test_outputs, 0.0001f));
@@ -97,7 +97,7 @@ TEST_F(PowTest, IntPow)
 
   Pow kernel(&input1_tensor, &input2_tensor, &output_tensor);
   kernel.configure();
-  _memory_manager->allocate_memory(&output_tensor);
+  _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorData<int32_t>(output_tensor), ::testing::ElementsAreArray(test_outputs));

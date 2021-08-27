@@ -45,7 +45,7 @@ TEST_F(LogicalNotTest, Basic)
 
   LogicalNot kernel(&input_tensor, &output_tensor);
   kernel.configure();
-  _memory_manager->allocate_memory(&output_tensor);
+  _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorData<bool>(output_tensor),

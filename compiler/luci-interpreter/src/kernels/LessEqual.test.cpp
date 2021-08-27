@@ -59,7 +59,7 @@ TEST_F(LessEqualTest, FloatSimple)
 
   LessEqual kernel(&x_tensor, &y_tensor, &output_tensor);
   kernel.configure();
-  _memory_manager->allocate_memory(&output_tensor);
+  _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorData<bool>(output_tensor), ::testing::ElementsAreArray(ref_output_data));
@@ -90,7 +90,7 @@ TEST_F(LessEqualTest, FloatBroardcast)
 
   LessEqual kernel(&x_tensor, &y_tensor, &output_tensor);
   kernel.configure();
-  _memory_manager->allocate_memory(&output_tensor);
+  _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorData<bool>(output_tensor), ::testing::ElementsAreArray(ref_output_data));
@@ -127,7 +127,7 @@ TEST_F(LessEqualTest, Uint8Quantized)
 
   LessEqual kernel(&x_tensor, &y_tensor, &output_tensor);
   kernel.configure();
-  _memory_manager->allocate_memory(&output_tensor);
+  _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({1, 2, 4, 1}));
@@ -162,7 +162,7 @@ TEST_F(LessEqualTest, Uint8QuantizedRescale)
 
   LessEqual kernel(&x_tensor, &y_tensor, &output_tensor);
   kernel.configure();
-  _memory_manager->allocate_memory(&output_tensor);
+  _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({1, 2, 4, 1}));
@@ -196,7 +196,7 @@ TEST_F(LessEqualTest, Uint8QuantizedBroadcast)
 
   LessEqual kernel(&x_tensor, &y_tensor, &output_tensor);
   kernel.configure();
-  _memory_manager->allocate_memory(&output_tensor);
+  _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({1, 3, 4, 1}));

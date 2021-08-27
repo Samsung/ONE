@@ -38,7 +38,7 @@ void Check(std::initializer_list<int32_t> input_shape, std::initializer_list<int
 
   Rsqrt kernel(&input_tensor, &output_tensor);
   kernel.configure();
-  memory_manager->allocate_memory(&output_tensor);
+  memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(output_data));
@@ -81,7 +81,7 @@ TEST(RsqrtTest, Invalid_Input_Type_NEG)
 
   Rsqrt kernel(&input_tensor, &output_tensor);
   kernel.configure();
-  memory_manager->allocate_memory(&output_tensor);
+  memory_manager->allocate_memory(output_tensor);
   EXPECT_ANY_THROW(kernel.execute());
 }
 

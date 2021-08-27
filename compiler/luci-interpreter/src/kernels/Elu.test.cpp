@@ -37,7 +37,7 @@ void Check(std::initializer_list<int32_t> input_shape, std::initializer_list<int
 
   Elu kernel(&input_tensor, &output_tensor);
   kernel.configure();
-  memory_manager->allocate_memory(&output_tensor);
+  memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   (void)output_shape;

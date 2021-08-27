@@ -62,7 +62,7 @@ TEST_F(FloorDivTest, FloatSimple)
 
   FloorDiv kernel(&x_tensor, &y_tensor, &output_tensor);
   kernel.configure();
-  _memory_manager->allocate_memory(&output_tensor);
+  _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorData<float>(output_tensor),
@@ -97,7 +97,7 @@ TEST_F(FloorDivTest, FloatBroadcast)
 
   FloorDiv kernel(&x_tensor, &y_tensor, &output_tensor);
   kernel.configure();
-  _memory_manager->allocate_memory(&output_tensor);
+  _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorData<float>(output_tensor),
@@ -117,7 +117,7 @@ TEST_F(FloorDivTest, DivByZero_NEG)
 
   FloorDiv kernel(&x_tensor, &y_tensor, &output_tensor);
   kernel.configure();
-  _memory_manager->allocate_memory(&output_tensor);
+  _memory_manager->allocate_memory(output_tensor);
 
   EXPECT_ANY_THROW(kernel.execute());
 }

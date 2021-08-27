@@ -55,7 +55,7 @@ TEST_F(FloorTest, SimpleFloat)
 
   Floor kernel(&input_tensor, &output_tensor);
   kernel.configure();
-  _memory_manager->allocate_memory(&output_tensor);
+  _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(ref_output_data));

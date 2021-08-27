@@ -87,7 +87,7 @@ void RuntimeGraph::TensorAllocPlan::allocate(size_t kernel_index) const
   assert(_valid && kernel_index < _alloc_plan.size());
   for (Tensor *tensor : _alloc_plan[kernel_index])
   {
-    _memory_manager->allocate_memory(tensor);
+    _memory_manager->allocate_memory(*tensor);
   }
 }
 
@@ -96,7 +96,7 @@ void RuntimeGraph::TensorAllocPlan::deallocate(size_t kernel_index) const
   assert(_valid && kernel_index < _dealloc_plan.size());
   for (Tensor *tensor : _dealloc_plan[kernel_index])
   {
-    _memory_manager->release_memory(tensor);
+    _memory_manager->release_memory(*tensor);
   }
 }
 
@@ -112,7 +112,7 @@ RuntimeGraph::~RuntimeGraph()
   for (auto & tensor : _tensors)
   {
     if (tensor->is_data_allocated())
-      _memory_manager->release_memory(tensor.get());
+      _memory_manager->release_memory(*tensor);
   }
 }
 
@@ -139,7 +139,7 @@ void RuntimeGraph::setOutputTensors(const std::vector<Tensor *> &output_tensors)
 
 void RuntimeGraph::configureAllocations(Tensor *tensor)
 {
-  _memory_manager->allocate_memory(tensor);
+  _memory_manager->allocate_memory(*tensor);
 }
 
 void RuntimeGraph::addKernel(std::unique_ptr<Kernel> &&kernel)

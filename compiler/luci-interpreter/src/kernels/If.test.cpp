@@ -50,9 +50,9 @@ RuntimeGraph *buildAddSubgraph(RuntimeModule *module, IMemoryManager *memory_man
   Tensor *output = graph->addTensor(
     std::make_unique<Tensor>(DataType::FLOAT32, Shape{}, AffineQuantization{}, ""));
 
-  memory_manager->allocate_memory(input1);
-  memory_manager->allocate_memory(input2);
-  memory_manager->allocate_memory(output);
+  memory_manager->allocate_memory(*input1);
+  memory_manager->allocate_memory(*input2);
+  memory_manager->allocate_memory(*output);
 
   graph->setInputTensors({input1, input2});
   graph->setOutputTensors({output});
@@ -74,9 +74,9 @@ RuntimeGraph *buildMulSubgraph(RuntimeModule *module, IMemoryManager *memory_man
   Tensor *output = graph->addTensor(
     std::make_unique<Tensor>(DataType::FLOAT32, Shape{}, AffineQuantization{}, ""));
 
-  memory_manager->allocate_memory(input1);
-  memory_manager->allocate_memory(input2);
-  memory_manager->allocate_memory(output);
+  memory_manager->allocate_memory(*input1);
+  memory_manager->allocate_memory(*input2);
+  memory_manager->allocate_memory(*output);
 
   graph->setInputTensors({input1, input2});
   graph->setOutputTensors({output});
@@ -101,7 +101,7 @@ TEST_F(IfTest, CondTrue)
 
   If kernel(&cond, {&input1, &input2}, {&output}, then_graph, else_graph);
   kernel.configure();
-  _memory_manager->allocate_memory(&output);
+  _memory_manager->allocate_memory(output);
   kernel.execute();
 
   EXPECT_THAT(extractTensorData<float>(output), FloatArrayNear({6, 9}));
@@ -120,7 +120,7 @@ TEST_F(IfTest, CondFalse)
 
   If kernel(&cond, {&input1, &input2}, {&output}, then_graph, else_graph);
   kernel.configure();
-  _memory_manager->allocate_memory(&output);
+  _memory_manager->allocate_memory(output);
   kernel.execute();
 
   EXPECT_THAT(extractTensorData<float>(output), FloatArrayNear({5, 14}));

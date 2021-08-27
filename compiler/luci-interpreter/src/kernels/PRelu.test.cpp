@@ -44,7 +44,7 @@ void Check(std::initializer_list<int32_t> input_shape, std::initializer_list<int
   PRelu kernel(&input_tensor, &alpha_tensor, &output_tensor);
 
   kernel.configure();
-  memory_manager->allocate_memory(&output_tensor);
+  memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorData<T>(output_tensor), ::testing::ElementsAreArray(output_data));
@@ -118,7 +118,7 @@ TEST(PReluTest, Uint8Simple)
 
   PRelu kernel(&input_tensor, &alpha_tensor, &output_tensor);
   kernel.configure();
-  memory_manager->allocate_memory(&output_tensor);
+  memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   EXPECT_THAT(dequantizeTensorData(output_tensor),
@@ -163,7 +163,7 @@ TEST(PReluTest, Uint8Broadcast)
 
   PRelu kernel(&input_tensor, &alpha_tensor, &output_tensor);
   kernel.configure();
-  memory_manager->allocate_memory(&output_tensor);
+  memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   EXPECT_THAT(dequantizeTensorData(output_tensor),
@@ -207,7 +207,7 @@ TEST(PReluTest, SInt16_CWQ_Simple)
 
   PRelu kernel(&input_tensor, &alpha_tensor, &output_tensor);
   kernel.configure();
-  memory_manager->allocate_memory(&output_tensor);
+  memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({1, 1, 3, 2}));
@@ -267,7 +267,7 @@ TEST(PReluTest, SInt16_CWQ_uneven_shape1)
 
   PRelu kernel(&input_tensor, &alpha_tensor, &output_tensor);
   kernel.configure();
-  memory_manager->allocate_memory(&output_tensor);
+  memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({1, 1, 3, 2}));
@@ -301,7 +301,7 @@ TEST(PReluTest, SInt16_CWQ_uneven_shape2)
 
   PRelu kernel(&input_tensor, &alpha_tensor, &output_tensor);
   kernel.configure();
-  memory_manager->allocate_memory(&output_tensor);
+  memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({1, 2, 2, 3}));
@@ -339,7 +339,7 @@ TEST(PReluTest, Invalid_Input_Type_NEG)
 
   PRelu kernel(&input_tensor, &alpha_tensor, &output_tensor);
   kernel.configure();
-  memory_manager->allocate_memory(&output_tensor);
+  memory_manager->allocate_memory(output_tensor);
   EXPECT_ANY_THROW(kernel.execute());
 }
 

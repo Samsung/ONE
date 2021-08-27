@@ -55,7 +55,7 @@ TEST_F(ConcatenationTest, Float)
     kernel.configure();
     for (auto t : kernel.getOutputTensors())
     {
-      _memory_manager->allocate_memory(t);
+      _memory_manager->allocate_memory(*t);
     }
     kernel.execute();
 
@@ -68,7 +68,7 @@ TEST_F(ConcatenationTest, Float)
 
     Concatenation kernel({&input1_tensor, &input2_tensor}, &output_tensor, params);
     kernel.configure();
-    _memory_manager->allocate_memory(&output_tensor);
+    _memory_manager->allocate_memory(output_tensor);
     kernel.execute();
 
     EXPECT_THAT(extractTensorData<float>(output_tensor),
@@ -80,7 +80,7 @@ TEST_F(ConcatenationTest, Float)
 
     Concatenation kernel({&input1_tensor, &input2_tensor}, &output_tensor, params);
     kernel.configure();
-    _memory_manager->allocate_memory(&output_tensor);
+    _memory_manager->allocate_memory(output_tensor);
     kernel.execute();
 
     EXPECT_THAT(extractTensorData<float>(output_tensor),
@@ -92,7 +92,7 @@ TEST_F(ConcatenationTest, Float)
 
     Concatenation kernel({&input1_tensor, &input2_tensor}, &output_tensor, params);
     kernel.configure();
-    _memory_manager->allocate_memory(&output_tensor);
+    _memory_manager->allocate_memory(output_tensor);
     kernel.execute();
 
     EXPECT_THAT(extractTensorData<float>(output_tensor),

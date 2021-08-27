@@ -40,7 +40,7 @@ TEST(SquareTest, Float)
 
   Square kernel(&input_tensor, &output_tensor);
   kernel.configure();
-  memory_manager->allocate_memory(&output_tensor);
+  memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   std::vector<float> ref_output_data{1.0, 0.0, 1.0, 121.0, 4.0, 2.0736};

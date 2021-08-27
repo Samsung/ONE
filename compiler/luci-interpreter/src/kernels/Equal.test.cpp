@@ -59,7 +59,7 @@ TEST_F(EqualTest, FloatSimple)
 
   Equal kernel(&x_tensor, &y_tensor, &output_tensor);
   kernel.configure();
-  _memory_manager->allocate_memory(&output_tensor);
+  _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorData<bool>(output_tensor), ::testing::ElementsAreArray(ref_output_data));
@@ -92,7 +92,7 @@ TEST_F(EqualTest, FloatBroardcast)
 
   Equal kernel(&x_tensor, &y_tensor, &output_tensor);
   kernel.configure();
-  _memory_manager->allocate_memory(&output_tensor);
+  _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorData<bool>(output_tensor), ::testing::ElementsAreArray(ref_output_data));
@@ -132,7 +132,7 @@ TEST_F(EqualTest, Uint8Quantized)
 
   Equal kernel(&x_tensor, &y_tensor, &output_tensor);
   kernel.configure();
-  _memory_manager->allocate_memory(&output_tensor);
+  _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({1, 2, 4, 1}));
@@ -168,7 +168,7 @@ TEST_F(EqualTest, Uint8QuantizedBroadcast)
 
   Equal kernel(&x_tensor, &y_tensor, &output_tensor);
   kernel.configure();
-  _memory_manager->allocate_memory(&output_tensor);
+  _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({1, 4, 4, 1}));

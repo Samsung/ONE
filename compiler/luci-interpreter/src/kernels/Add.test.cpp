@@ -78,7 +78,7 @@ TEST_F(AddTest, Uint8)
 
     Add kernel(&input1_tensor, &input2_tensor, &output_tensor, params);
     kernel.configure();
-    _memory_manager->allocate_memory(&output_tensor);
+    _memory_manager->allocate_memory(output_tensor);
     kernel.execute();
 
     EXPECT_THAT(dequantizeTensorData(output_tensor),
@@ -100,7 +100,7 @@ TEST_F(AddTest, Uint8)
 
     Add kernel(&input1_tensor, &input2_tensor, &output_tensor, params);
     kernel.configure();
-    _memory_manager->allocate_memory(&output_tensor);
+    _memory_manager->allocate_memory(output_tensor);
     kernel.execute();
 
     EXPECT_THAT(dequantizeTensorData(output_tensor),
@@ -138,7 +138,7 @@ TEST_F(AddTest, Float)
 
     Add kernel(&input1_tensor, &input2_tensor, &output_tensor, params);
     kernel.configure();
-    _memory_manager->allocate_memory(&output_tensor);
+    _memory_manager->allocate_memory(output_tensor);
     kernel.execute();
 
     EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(test_outputs[i], 0.0001f))
@@ -158,7 +158,7 @@ TEST_F(AddTest, Float)
 
     Add kernel(&input1_tensor, &input2_tensor, &output_tensor, params);
     kernel.configure();
-    _memory_manager->allocate_memory(&output_tensor);
+    _memory_manager->allocate_memory(output_tensor);
     kernel.execute();
 
     EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(test_outputs[i], 0.0001f))
@@ -200,7 +200,7 @@ TEST_F(AddTest, SInt16)
 
     Add kernel(&input1_tensor, &input2_tensor, &output_tensor, params);
     kernel.configure();
-    _memory_manager->allocate_memory(&output_tensor);
+    _memory_manager->allocate_memory(output_tensor);
     kernel.execute();
 
     EXPECT_THAT(extractTensorShape(output_tensor),
@@ -224,7 +224,7 @@ TEST_F(AddTest, SInt16)
 
     Add kernel(&input1_tensor, &input2_tensor, &output_tensor, params);
     kernel.configure();
-    _memory_manager->allocate_memory(&output_tensor);
+    _memory_manager->allocate_memory(output_tensor);
     kernel.execute();
 
     EXPECT_THAT(extractTensorShape(output_tensor),
@@ -259,7 +259,7 @@ TEST_F(AddTest, Invalid_Input_Type_NEG)
 
   Add kernel(&input1_tensor, &input2_tensor, &output_tensor, params);
   kernel.configure();
-  _memory_manager->allocate_memory(&output_tensor);
+  _memory_manager->allocate_memory(output_tensor);
   EXPECT_ANY_THROW(kernel.execute());
 }
 

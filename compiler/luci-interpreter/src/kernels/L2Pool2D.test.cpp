@@ -57,7 +57,7 @@ TEST_F(L2Pool2DTest, FloatNone)
 
   L2Pool2D kernel(&input_tensor, &output_tensor, params);
   kernel.configure();
-  _memory_manager->allocate_memory(&output_tensor);
+  _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   std::vector<float> ref_output_data{3.5, 6.5};
@@ -86,7 +86,7 @@ TEST_F(L2Pool2DTest, FloatRelu)
 
   L2Pool2D kernel(&input_tensor, &output_tensor, params);
   kernel.configure();
-  _memory_manager->allocate_memory(&output_tensor);
+  _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   std::vector<float> ref_output_data{3.53553, 6.5};
@@ -115,7 +115,7 @@ TEST_F(L2Pool2DTest, FloatRelu1)
 
   L2Pool2D kernel(&input_tensor, &output_tensor, params);
   kernel.configure();
-  _memory_manager->allocate_memory(&output_tensor);
+  _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   std::vector<float> ref_output_data{0.353553, 1.0};
@@ -144,7 +144,7 @@ TEST_F(L2Pool2DTest, FloatRelu6)
 
   L2Pool2D kernel(&input_tensor, &output_tensor, params);
   kernel.configure();
-  _memory_manager->allocate_memory(&output_tensor);
+  _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   std::vector<float> ref_output_data{0.353553, 6.0};
@@ -173,7 +173,7 @@ TEST_F(L2Pool2DTest, FloatPaddingSame)
 
   L2Pool2D kernel(&input_tensor, &output_tensor, params);
   kernel.configure();
-  _memory_manager->allocate_memory(&output_tensor);
+  _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   std::vector<float> ref_output_data{3.5, 6.5};
@@ -202,7 +202,7 @@ TEST_F(L2Pool2DTest, FloatPaddingSameStride)
 
   L2Pool2D kernel(&input_tensor, &output_tensor, params);
   kernel.configure();
-  _memory_manager->allocate_memory(&output_tensor);
+  _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   std::vector<float> ref_output_data{3.5, 6.0, 6.5, 5.70088, 2.54951, 7.2111, 8.63134, 7.0};
@@ -231,7 +231,7 @@ TEST_F(L2Pool2DTest, FloatPaddingValidStride)
 
   L2Pool2D kernel(&input_tensor, &output_tensor, params);
   kernel.configure();
-  _memory_manager->allocate_memory(&output_tensor);
+  _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   std::vector<float> ref_output_data{3.5, 6.0, 6.5};
