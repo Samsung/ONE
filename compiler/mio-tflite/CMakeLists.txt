@@ -36,3 +36,13 @@ target_link_libraries(mio_tflite_example mio_tflite)
 # TODO provide full tflite validation with runtime/interpreter
 add_executable(mio_tflite_validate example.cpp)
 target_link_libraries(mio_tflite_validate mio_tflite)
+
+nnas_find_package(TensorFlowGEMMLowpSource EXACT 2.3.0 QUIET)
+
+if(NOT TensorFlowGEMMLowpSource_FOUND)
+  return()
+endif(NOT TensorFlowGEMMLowpSource_FOUND)
+
+add_library(mio_tflite_inc INTERFACE)
+target_include_directories(mio_tflite_inc SYSTEM INTERFACE "${TensorFlowSource_DIR}")
+target_include_directories(mio_tflite_inc SYSTEM INTERFACE "${TensorFlowGEMMLowpSource_DIR}")
