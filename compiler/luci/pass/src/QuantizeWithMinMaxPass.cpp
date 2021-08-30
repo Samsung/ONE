@@ -1176,6 +1176,7 @@ void quantize_const_inputs(luci::CircleNode *node, loco::DataType output_type)
     case luci::CircleOpcode::DIV:
     case luci::CircleOpcode::ELU:
     case luci::CircleOpcode::EQUAL:
+    case luci::CircleOpcode::EXP:
     case luci::CircleOpcode::FLOOR:
     case luci::CircleOpcode::FLOOR_DIV:
     case luci::CircleOpcode::GREATER:
