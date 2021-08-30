@@ -139,10 +139,17 @@ bool fold_depthwise_conv_2d(luci::CircleDepthwiseConv2D *node)
   auto const input_batches = input->dim(0).value();
   auto const input_height = input->dim(1).value();
   auto const input_width = input->dim(2).value();
+  auto const input_depth = input->dim(3).value();
 
   auto const filter_height = filter->dim(1).value();
   auto const filter_width = filter->dim(2).value();
   auto const filter_channels_out = filter->dim(3).value();
+
+  if (filter_channels_out % input_depth != 0)
+    return false; // Wrong input/output depth ratio
+
+  if (node->depthMultiplier() != filter_channels_out / input_depth)
+    return false; // Wrong depth multiplier value
 
   if (bias->rank() != 1 || bias->dim(0).value() != filter_channels_out)
     return false; // Unsupported bias value
