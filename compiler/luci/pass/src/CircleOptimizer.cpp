@@ -35,6 +35,7 @@
 #include "luci/Pass/FuseTransposeWithMeanPass.h"
 #include "luci/Pass/MakeBatchNormGammaPositivePass.h"
 #include "luci/Pass/PropagateQuantParamPass.h"
+#include "luci/Pass/RemoveBroadcastPass.h"
 #include "luci/Pass/RemoveFakeQuantPass.h"
 #include "luci/Pass/RemoveQuantDequantSeqPass.h"
 #include "luci/Pass/RemoveRedundantReshapePass.h"
@@ -285,6 +286,10 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   if (_options->query(Options::Algorithm::ShuffleWeightTo16x1Float32))
   {
     phase.emplace_back(std::make_unique<luci::ShuffleWeightTo16x1Float32Pass>());
+  }
+  if (_options->query(Options::Algorithm::RemoveBroadcast))
+  {
+    phase.emplace_back(std::make_unique<luci::RemoveBroadcastPass>());
   }
   if (_options->query(Options::Algorithm::RemoveFakeQuant))
   {

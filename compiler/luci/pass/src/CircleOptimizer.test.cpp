@@ -39,6 +39,7 @@ TEST(CircleOptimizerTest, optimize_algorithms)
   options->enable(Algorithms::FusePreActivationBatchNorm);
   options->enable(Algorithms::MakeBatchNormGammaPositive);
   options->enable(Algorithms::ShuffleWeightTo16x1Float32);
+  options->enable(Algorithms::RemoveBroadcast);
   options->enable(Algorithms::RemoveUnnecessaryReshape);
   options->enable(Algorithms::RemoveUnnecessarySlice);
   options->enable(Algorithms::RemoveUnnecessarySplit);
