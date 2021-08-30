@@ -247,16 +247,6 @@ template <typename T> struct DepthwiseConv2DQuantTestParam
   std::vector<T> ref_output;
 };
 
-template <typename T>
-class DepthwiseConv2DQuantTest
-  : public GenModelTest,
-    public ::testing::WithParamInterface<DepthwiseConv2DQuantTestParam<T>>
-{
-};
-
-using DepthwiseConv2DQuantTestParamU8 = DepthwiseConv2DQuantTestParam<uint8_t>;
-using DepthwiseConv2DQuantTestU8 = DepthwiseConv2DQuantTest<uint8_t>;
-
 CircleBuffer genDepthwiseConv2DQuantU8Model(int stride, int input_depth, int depth_multiplier)
 {
   assert(1 <= stride && stride <= 2);
@@ -284,28 +274,17 @@ CircleBuffer genDepthwiseConv2DQuantU8Model(int stride, int input_depth, int dep
   return cgen.finish();
 }
 
-TEST_P(DepthwiseConv2DQuantTestU8, Test)
+TEST_F(GenModelTest, OneOp_DepthwiseConv2D_U8)
 {
   // Same input is used for all tests but output differs
   static const std::vector<uint8_t> input64{
     0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 5, 4, 3, 2, 5, 4, 3, 2, 5, 4, 3, 2, 5, 4, 3, 2,
     2, 4, 6, 8, 2, 4, 6, 8, 2, 4, 6, 8, 2, 4, 6, 8, 2, 3, 5, 8, 8, 5, 3, 2, 1, 2, 3, 4, 5, 4, 3, 2};
 
-  auto &param = GetParam();
-  _context = std::make_unique<GenModelTestContext>(
-    genDepthwiseConv2DQuantU8Model(param.stride, param.input_depth, param.depth_multiplier));
-  std::vector<uint8_t> ref_input(input64.begin(), input64.begin() + param.input_depth * 4);
-  _context->addTestCase(uniformTCD<uint8_t>({ref_input}, {param.ref_output}));
-  _context->setBackends({"acl_cl", "acl_neon", "cpu"});
-
-  SUCCEED();
-}
-
-// Test with different InputDepth and DepthMultiplier. The values are intended to test optimized CPU
-// kernels.
-INSTANTIATE_TEST_CASE_P(
-  GenModelTest, DepthwiseConv2DQuantTestU8,
-  ::testing::Values(
+  // Test with different InputDepth and DepthMultiplier. The values are intended to test optimized
+  // CPU kernels.
+  using DepthwiseConv2DQuantTestParamU8 = DepthwiseConv2DQuantTestParam<uint8_t>;
+  static const std::vector<DepthwiseConv2DQuantTestParamU8> examples{
     // Stride == 1
     DepthwiseConv2DQuantTestParamU8{1, 8, 1, std::vector<uint8_t>{0, 3, 5, 8, 0, 3, 5, 8}},
     DepthwiseConv2DQuantTestParamU8{1, 4, 2, std::vector<uint8_t>{0, 0, 2, 3, 0, 2, 6, 9}},
@@ -335,10 +314,19 @@ INSTANTIATE_TEST_CASE_P(
     DepthwiseConv2DQuantTestParamU8{
       2, 8, 2, std::vector<uint8_t>{0, 3, 5, 8, 0, 3, 5, 8, 0, 3, 5, 8, 0, 3, 5, 8}},
     DepthwiseConv2DQuantTestParamU8{
-      2, 16, 1, std::vector<uint8_t>{0, 3, 8, 16, 0, 4, 7, 12, 0, 3, 7, 13, 0, 4, 7, 12}}));
+      2, 16, 1, std::vector<uint8_t>{0, 3, 8, 16, 0, 4, 7, 12, 0, 3, 7, 13, 0, 4, 7, 12}}};
 
-using DepthwiseConv2DQuantTestParamI8 = DepthwiseConv2DQuantTestParam<int8_t>;
-using DepthwiseConv2DQuantTestI8 = DepthwiseConv2DQuantTest<int8_t>;
+  for (auto example : examples)
+  {
+    _context = std::make_unique<GenModelTestContext>(genDepthwiseConv2DQuantU8Model(
+      example.stride, example.input_depth, example.depth_multiplier));
+    std::vector<uint8_t> ref_input(input64.begin(), input64.begin() + example.input_depth * 4);
+    _context->addTestCase(uniformTCD<uint8_t>({ref_input}, {example.ref_output}));
+    _context->setBackends({"acl_cl", "acl_neon", "cpu"});
+  }
+
+  SUCCEED();
+}
 
 CircleBuffer genDepthwiseConv2DQuantI8Model(int stride, int input_depth, int depth_multiplier)
 {
@@ -367,28 +355,17 @@ CircleBuffer genDepthwiseConv2DQuantI8Model(int stride, int input_depth, int dep
   return cgen.finish();
 }
 
-TEST_P(DepthwiseConv2DQuantTestI8, Test)
+TEST_F(GenModelTest, OneOp_DepthwiseConv2D_I8)
 {
   // Same input is used for all tests but output differs
   static const std::vector<int8_t> input64{
     0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 5, 4, 3, 2, 5, 4, 3, 2, 5, 4, 3, 2, 5, 4, 3, 2,
     2, 4, 6, 8, 2, 4, 6, 8, 2, 4, 6, 8, 2, 4, 6, 8, 2, 3, 5, 8, 8, 5, 3, 2, 1, 2, 3, 4, 5, 4, 3, 2};
 
-  auto &param = GetParam();
-  _context = std::make_unique<GenModelTestContext>(
-    genDepthwiseConv2DQuantI8Model(param.stride, param.input_depth, param.depth_multiplier));
-  std::vector<int8_t> ref_input(input64.begin(), input64.begin() + param.input_depth * 4);
-  _context->addTestCase(uniformTCD<int8_t>({ref_input}, {param.ref_output}));
-  _context->setBackends({"acl_cl", "acl_neon", "cpu"});
-
-  SUCCEED();
-}
-
-// Test with different InputDepth and DepthMultiplier. The values are intended to test optimized CPU
-// kernels.
-INSTANTIATE_TEST_CASE_P(
-  GenModelTest, DepthwiseConv2DQuantTestI8,
-  ::testing::Values(
+  // Test with different InputDepth and DepthMultiplier. The values are intended to test optimized
+  // CPU kernels.
+  using DepthwiseConv2DQuantTestParamI8 = DepthwiseConv2DQuantTestParam<int8_t>;
+  static const std::vector<DepthwiseConv2DQuantTestParamI8> examples{
     // Stride == 1
     DepthwiseConv2DQuantTestParamI8{1, 8, 1, std::vector<int8_t>{0, 3, 5, 8, 0, 3, 5, 8}},
     DepthwiseConv2DQuantTestParamI8{1, 4, 2, std::vector<int8_t>{0, 0, 2, 3, 0, 2, 6, 9}},
@@ -418,7 +395,19 @@ INSTANTIATE_TEST_CASE_P(
     DepthwiseConv2DQuantTestParamI8{
       2, 8, 2, std::vector<int8_t>{0, 3, 5, 8, 0, 3, 5, 8, 0, 3, 5, 8, 0, 3, 5, 8}},
     DepthwiseConv2DQuantTestParamI8{
-      2, 16, 1, std::vector<int8_t>{0, 3, 8, 16, 0, 4, 7, 12, 0, 3, 7, 13, 0, 4, 7, 12}}));
+      2, 16, 1, std::vector<int8_t>{0, 3, 8, 16, 0, 4, 7, 12, 0, 3, 7, 13, 0, 4, 7, 12}}};
+
+  for (auto example : examples)
+  {
+    _context = std::make_unique<GenModelTestContext>(genDepthwiseConv2DQuantI8Model(
+      example.stride, example.input_depth, example.depth_multiplier));
+    std::vector<int8_t> ref_input(input64.begin(), input64.begin() + example.input_depth * 4);
+    _context->addTestCase(uniformTCD<int8_t>({ref_input}, {example.ref_output}));
+    _context->setBackends({"acl_cl", "acl_neon", "cpu"});
+  }
+
+  SUCCEED();
+}
 
 TEST_F(GenModelTest, neg_OneOp_DepthwiseConv2D_InvalidPaddingType)
 {
