@@ -162,12 +162,12 @@ bool fold_depthwise_conv_2d(luci::CircleDepthwiseConv2D *node)
     return false; // Unsupported output parameters
 
   if (!compute_output(&output_width, node->padding(), input_width, filter_width,
-                      node->stride()->h(), node->dilation()->h()))
+                      node->stride()->w(), node->dilation()->w()))
     return false; // Unsupported output parameters
 
   auto const padding_height = compute_padding(node->stride()->h(), node->dilation()->h(),
                                               input_height, filter_height, output_height);
-  auto const padding_width = compute_padding(node->stride()->h(), node->dilation()->h(),
+  auto const padding_width = compute_padding(node->stride()->w(), node->dilation()->w(),
                                              input_width, filter_width, output_width);
 
   tflite::DepthwiseParams params{};
