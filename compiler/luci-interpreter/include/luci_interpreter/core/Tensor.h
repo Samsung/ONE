@@ -137,6 +137,22 @@ public:
 
   void resize(const Shape &new_shape);
 
+  void set_data_buffer(uint8_t *buffer)
+  {
+    // It will be implemented when _data changes from unique ptr to raw ptr in next PR
+    (void)buffer;
+  }
+
+  bool is_observable() const { return _is_observable; }
+
+  void make_unobservable() { _is_observable = false; }
+
+  bool is_allocatable() const { return _is_allocatable; }
+
+  void make_unallocatable() { _is_allocatable = false; }
+
+  bool is_data_allocated() const { return _data_allocated; }
+
 private:
   DataType _element_type;
   Shape _shape;
@@ -144,6 +160,13 @@ private:
   std::unique_ptr<uint8_t[]> _data;
   std::string _name;
   bool _data_allocated;
+  // Write of tensor is reported to registered Observers only if this tensor is observable
+  // This is needed for tensors used in kernel implementation, but not present in original model.
+  bool _is_observable = true;
+  // Memory manager is called for tensor only if it is "allocatable".
+  // Kernel configuration could disable allocation of some tensors if they are not needed for
+  // particular operation.
+  bool _is_allocatable = true;
 };
 
 } // namespace luci_interpreter
