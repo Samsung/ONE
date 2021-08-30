@@ -86,10 +86,10 @@ protected:
   }
 
 protected:
-  luci::CircleDepthwiseConv2D *_dconv;
-  luci::CircleConst *_dconv_input;
-  luci::CircleConst *_dconv_filter;
-  luci::CircleConst *_dconv_bias;
+  luci::CircleDepthwiseConv2D *_dconv = nullptr;
+  luci::CircleConst *_dconv_input = nullptr;
+  luci::CircleConst *_dconv_filter = nullptr;
+  luci::CircleConst *_dconv_bias = nullptr;
 };
 
 } // namespace
