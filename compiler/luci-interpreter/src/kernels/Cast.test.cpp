@@ -44,33 +44,164 @@ void Check(std::initializer_list<int32_t> shape, std::initializer_list<T1> input
   EXPECT_THAT(extractTensorShape(output_tensor), shape);
 }
 
+template <typename T>
+void CheckBoolTo(std::initializer_list<int32_t> shape, std::initializer_list<bool> input_data,
+                 std::initializer_list<T> output_data)
+{
+  constexpr DataType input_type = loco::DataType::BOOL;
+  constexpr DataType output_type = getElementType<T>();
+  std::vector<typename DataTypeImpl<input_type>::Type> input_data_converted;
+  for (auto elem : input_data)
+  {
+    input_data_converted.push_back(elem);
+  }
+
+  Tensor input_tensor = makeInputTensor<input_type>(shape, input_data_converted);
+  Tensor output_tensor = makeOutputTensor(output_type);
+
+  Cast kernel(&input_tensor, &output_tensor);
+  kernel.configure();
+  kernel.execute();
+
+  EXPECT_THAT(extractTensorData<T>(output_tensor), ::testing::ElementsAreArray(output_data));
+  EXPECT_THAT(extractTensorShape(output_tensor), shape);
+}
+
 template <typename T> class CastTest : public ::testing::Test
 {
 };
 
-using DataTypes = ::testing::Types<uint8_t, int32_t, int64_t>;
-TYPED_TEST_CASE(CastTest, DataTypes);
+using IntDataTypes =
+  ::testing::Types<uint8_t, uint16_t, uint32_t, uint64_t, int8_t, int16_t, int32_t, int64_t>;
+TYPED_TEST_CASE(CastTest, IntDataTypes);
 
 TYPED_TEST(CastTest, FloatToInt)
 {
   Check<float, TypeParam>(/*shape=*/{1, 1, 1, 4},
                           /*input_data=*/
                           {
-                            1.43f, 9.99f, 7.0f, 3.12f, //
+                            1.0f, 9.0f, 7.0f, 3.0f, //
                           },
                           /*output_data=*/
                           {
                             1, 9, 7, 3, //
                           });
-  Check<TypeParam, TypeParam>(/*shape=*/{1, 1, 1, 4},
-                              /*input_data=*/
-                              {
-                                1, 9, 7, 3, //
-                              },
-                              /*output_data=*/
-                              {
-                                1, 9, 7, 3, //
-                              });
+}
+
+TYPED_TEST(CastTest, IntToFloat)
+{
+  Check<TypeParam, float>(/*shape=*/{1, 1, 1, 4},
+                          /*input_data=*/
+                          {
+                            1, 9, 7, 3, //
+                          },
+                          /*output_data=*/
+                          {
+                            1.0f, 9.0f, 7.0f, 3.0f, //
+                          });
+}
+
+template <typename T1, typename T2> void check_int()
+{
+  Check<T1, T2>(/*shape=*/{1, 1, 1, 4},
+                /*input_data=*/
+                {
+                  1, 9, 7, 3, //
+                },
+                /*output_data=*/
+                {
+                  1, 9, 7, 3, //
+                });
+}
+
+TYPED_TEST(CastTest, IntToInt)
+{
+  check_int<TypeParam, uint8_t>();
+  check_int<TypeParam, uint16_t>();
+  check_int<TypeParam, uint32_t>();
+  check_int<TypeParam, uint64_t>();
+  check_int<TypeParam, int8_t>();
+  check_int<TypeParam, int16_t>();
+  check_int<TypeParam, int32_t>();
+  check_int<TypeParam, int64_t>();
+}
+
+TYPED_TEST(CastTest, IntToBool)
+{
+  Check<TypeParam, bool>(/*shape=*/{1, 1, 1, 4},
+                         /*input_data=*/
+                         {
+                           1, 0, 7, 0, //
+                         },
+                         /*output_data=*/
+                         {
+                           true, false, true, false, //
+                         });
+}
+
+TYPED_TEST(CastTest, BoolToInt)
+{
+  CheckBoolTo<TypeParam>(/*shape=*/{1, 1, 1, 4},
+                         /*input_data=*/
+                         {
+                           true, false, false, true, //
+                         },
+                         /*output_data=*/
+                         {
+                           1, 0, 0, 1, //
+                         });
+}
+
+TEST(CastTest, FloatToBool)
+{
+  Check<float, bool>(/*shape=*/{1, 1, 1, 4},
+                     /*input_data=*/
+                     {
+                       1.0f, 0.0f, 7.0f, 0.0f, //
+                     },
+                     /*output_data=*/
+                     {
+                       true, false, true, false, //
+                     });
+}
+
+TEST(CastTest, BoolToFloat)
+{
+  CheckBoolTo<float>(/*shape=*/{1, 1, 1, 4},
+                     /*input_data=*/
+                     {
+                       true, false, false, true, //
+                     },
+                     /*output_data=*/
+                     {
+                       1.0f, 0.0f, 0.0f, 1.0f, //
+                     });
+}
+
+TEST(CastTest, FloatToFloat)
+{
+  Check<float, float>(/*shape=*/{1, 1, 1, 4},
+                      /*input_data=*/
+                      {
+                        1.0f, 0.0f, 7.0f, 0.0f, //
+                      },
+                      /*output_data=*/
+                      {
+                        1.0f, 0.0f, 7.0f, 0.0f, //
+                      });
+}
+
+TEST(CastTest, BoolToBool)
+{
+  CheckBoolTo<bool>(/*shape=*/{1, 1, 1, 4},
+                    /*input_data=*/
+                    {
+                      true, true, false, false, //
+                    },
+                    /*output_data=*/
+                    {
+                      true, true, false, false, //
+                    });
 }
 
 TEST(CastTest, UnsupportedType_NEG)

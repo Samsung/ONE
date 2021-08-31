@@ -127,12 +127,26 @@ template <typename T> constexpr DataType getElementType()
 {
   if (std::is_same<T, float>::value)
     return DataType::FLOAT32;
+  if (std::is_same<T, double>::value)
+    return DataType::FLOAT64;
   if (std::is_same<T, uint8_t>::value)
     return DataType::U8;
+  if (std::is_same<T, uint16_t>::value)
+    return DataType::U16;
+  if (std::is_same<T, uint32_t>::value)
+    return DataType::U32;
+  if (std::is_same<T, uint64_t>::value)
+    return DataType::U64;
+  if (std::is_same<T, int8_t>::value)
+    return DataType::S8;
+  if (std::is_same<T, int16_t>::value)
+    return DataType::S16;
   if (std::is_same<T, int32_t>::value)
     return DataType::S32;
   if (std::is_same<T, int64_t>::value)
     return DataType::S64;
+  if (std::is_same<T, bool>::value)
+    return DataType::BOOL;
   return DataType::Unknown;
 }
 
