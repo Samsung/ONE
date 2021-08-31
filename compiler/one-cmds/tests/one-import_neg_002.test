@@ -21,7 +21,13 @@ filename="${filename_ext%.*}"
 
 trap_err_onexit()
 {
+  # TF2.3.0
   if grep -q "is incompatible with result type" "${filename}.log"; then
+    echo "${filename_ext} SUCCESS"
+    exit 0
+  fi
+  # TF2.6.0
+  if grep -q "is incompatible with body result type" "${filename}.log"; then
     echo "${filename_ext} SUCCESS"
     exit 0
   fi
