@@ -33,7 +33,7 @@ fi
 # - https://github.com/onnx/onnx/blob/master/docs/Versioning.md
 # - https://github.com/onnx/onnx-tensorflow/blob/master/Versioning.md
 
-VER_TENSORFLOW=2.3.0
+VER_TENSORFLOW=2.6.0
 VER_ONNX=1.10.1
 VER_ONNX_TF=1.9.0
 
