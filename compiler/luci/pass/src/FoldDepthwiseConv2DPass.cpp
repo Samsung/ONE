@@ -148,7 +148,7 @@ bool fold_depthwise_conv_2d(luci::CircleDepthwiseConv2D *node)
   if (filter_channels_out % input_depth != 0)
     return false; // Wrong input/output depth ratio
 
-  if (node->depthMultiplier() != filter_channels_out / input_depth)
+  if (node->depthMultiplier() != static_cast<int32_t>(filter_channels_out / input_depth))
     return false; // Wrong depth multiplier value
 
   if (bias->rank() != 1 || bias->dim(0).value() != filter_channels_out)
