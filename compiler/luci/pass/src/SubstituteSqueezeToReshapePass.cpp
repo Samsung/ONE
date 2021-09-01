@@ -76,6 +76,18 @@ std::vector<uint32_t> node_shape(const luci::CircleNode *input)
 }
 
 /**
+ * @brief copy quantparam of src to dst
+ */
+void copy_quantparam(luci::CircleNode *dst, const luci::CircleNode *src)
+{
+  auto q = src->quantparam();
+  if (q == nullptr)
+    dst->quantparam(nullptr);
+  else
+    dst->quantparam(std::make_unique<luci::CircleQuantParam>(*q));
+}
+
+/**
  * @brief return CircleConst ptr with values of new_shape
  */
 luci::CircleConst *create_shape_const(loco::Graph *graph, const std::vector<uint32_t> &new_shape)
@@ -130,6 +142,7 @@ bool substitute_squeeze_to_reshape(luci::CircleSqueeze *squeeze)
   auto graph = squeeze->graph();
   auto reshape = graph->nodes()->create<luci::CircleReshape>();
   auto shape_const = create_shape_const(graph, reshape_shape);
+  copy_quantparam(reshape, squeeze);
   reshape->name(name + "/Reshape");
   luci::add_origin(reshape, luci::get_origin(squeeze));
   shape_const->name(name + "/Reshape/shape");
