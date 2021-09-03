@@ -19,7 +19,9 @@
 namespace luci_interpreter
 {
 
-std::unique_ptr<Kernel> build_kernel_CircleResizeNearestNeighbor(const luci::CircleNode *circle_node, KernelBuilderHelper &helper)
+std::unique_ptr<Kernel>
+build_kernel_CircleResizeNearestNeighbor(const luci::CircleNode *circle_node,
+                                         KernelBuilderHelper &helper)
 {
   const auto *node = dynamic_cast<const luci::CircleResizeNearestNeighbor *>(circle_node);
   if (node == nullptr)

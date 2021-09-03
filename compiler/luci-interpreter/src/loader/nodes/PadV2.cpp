@@ -19,7 +19,8 @@
 namespace luci_interpreter
 {
 
-std::unique_ptr<Kernel> build_kernel_CirclePadV2(const luci::CircleNode *circle_node, KernelBuilderHelper &helper)
+std::unique_ptr<Kernel> build_kernel_CirclePadV2(const luci::CircleNode *circle_node,
+                                                 KernelBuilderHelper &helper)
 {
   const auto *node = dynamic_cast<const luci::CirclePadV2 *>(circle_node);
   if (node == nullptr)

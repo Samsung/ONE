@@ -19,7 +19,8 @@
 namespace luci_interpreter
 {
 
-std::unique_ptr<Kernel> build_kernel_CircleGreaterEqual(const luci::CircleNode *circle_node, KernelBuilderHelper &helper)
+std::unique_ptr<Kernel> build_kernel_CircleGreaterEqual(const luci::CircleNode *circle_node,
+                                                        KernelBuilderHelper &helper)
 {
   const auto *node = dynamic_cast<const luci::CircleGreaterEqual *>(circle_node);
   if (node == nullptr)

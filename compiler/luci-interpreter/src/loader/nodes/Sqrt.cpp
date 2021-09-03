@@ -19,7 +19,8 @@
 namespace luci_interpreter
 {
 
-std::unique_ptr<Kernel> build_kernel_CircleSqrt(const luci::CircleNode *circle_node, KernelBuilderHelper &helper)
+std::unique_ptr<Kernel> build_kernel_CircleSqrt(const luci::CircleNode *circle_node,
+                                                KernelBuilderHelper &helper)
 {
   const auto *node = dynamic_cast<const luci::CircleSqrt *>(circle_node);
   if (node == nullptr)
