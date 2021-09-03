@@ -39,3 +39,4 @@ public:
 } // namespace opselector
 
 #endif // __CIRCLE_OPSELECTOR_SELECT_PASS__
+

@@ -33,3 +33,4 @@ public:
 }
 
 #endif // __CIRCLE_OPSELECTOR_SELECT_PASS__FUNCTION1__
+
