@@ -1,5 +1,3 @@
-set(KERNEL_REGISTER_FILE ${LUCI_INTERPRETER_PAL_DIR}/KernelsToBuild.lst)
-
 set(SOURCES
         BinaryOpCommon.h
         Utils.h
