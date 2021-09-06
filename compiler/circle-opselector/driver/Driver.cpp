@@ -39,7 +39,7 @@ void print_version(void)
 
 bool check_input(std::string str)
 {
-  bool check_hyphen;
+  bool check_hyphen=false;
 
   for(char c : str)
   {
@@ -49,8 +49,7 @@ bool check_input(std::string str)
 	    std::cout << "Too many '-' in str." << std::endl;
       exit(0);
     }
-    else if('-') check_hyphen=true;
-    else if(',') continue;
+    else if(c=='-') check_hyphen=true;
     else // when user enter not allowed character, print alert msg.
     {
       std::cout << "To select operator by id, please use these args: [0-9], '-', ','" << std::endl;
@@ -68,7 +67,7 @@ void split_id_input(const std::string &str, std::vector<int> &by_id)
 
   while(getline(ss, str_buf, ','))
   {
-    if(check_input) // input validation
+    if(str_buf.length() && check_input(str_buf)) // input validation
     {
       if(str_buf.find('-')==std::string::npos)  // if token has no '-'
         by_id.push_back(stoi(str_buf));
