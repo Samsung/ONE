@@ -37,68 +37,55 @@ void print_version(void)
   std::cout << vconone::get_copyright() << std::endl;
 }
 
-void split_id_input(const std::string &str, std::vector<int> &by_id)
+bool check_input(std::string str)
 {
-  int input_length = str.length();
-  int first = 0, last = 0;
-  bool is_range = false;
-  
-  for(int cur = 0; cur < input_length; cur++)
+  bool check_hyphen;
+
+  for(char c : str)
   {
-    switch(str[cur])
+    if('0'<= c && c<='9') continue;
+    else if(check_hyphen) // when user enter '-' more than 2.
     {
-      case '0':
-      case '1':
-      case '2':
-      case '3':
-      case '4':
-      case '5':
-      case '6':
-      case '7':
-      case '8':
-      case '9':
-        // a to i
-        if(!is_range)
-        {
-          first *= 10;
-          first += str[cur] - '0';
-        }
-        else
-        {
-          last *= 10;
-          last += str[cur] - '0';
-        }
-        break;
-
-      case '-':
-        // range expression like '1-3', which means '1,2,3'
-        if(is_range) // if '-' exist in splited token more than 1
-        {
-          std::cout << "Too many '-' in str." << std::endl;  
-          exit(0);
-        }
-        is_range = true;
-        break;
-
-      case ',':
-        // split by ','
-        by_id.push_back(first++);
-        while(first <= last)    // if there exist range expression, exec while loop.
-          by_id.push_back(first++);
-
-        first = last = 0;
-        is_range = false;
-        break;
-        
-      default:
-        // when input not allowed character, print alert msg.
-        std::cout << "To select operator by id, please use these params: [0-9], '-', ','" << std::endl;
-        exit(0);
+	    std::cout << "Too many '-' in str." << std::endl;
+      exit(0);
+    }
+    else if('-') check_hyphen=true;
+    else if(',') continue;
+    else // when user enter not allowed character, print alert msg.
+    {
+      std::cout << "To select operator by id, please use these args: [0-9], '-', ','" << std::endl;
+      exit(0);      
     }
   }
-  by_id.push_back(first++);
-  while(first <= last)
-    by_id.push_back(first++);
+  return true;
+}
+
+void split_id_input(const std::string &str, std::vector<int> &by_id)
+{
+  std::istringstream ss;
+  ss.str(str);
+  std::string str_buf;
+
+  while(getline(ss, str_buf, ','))
+  {
+    if(check_input) // input validation
+    {
+      if(str_buf.find('-')==std::string::npos)  // if token has no '-'
+        by_id.push_back(stoi(str_buf));
+      else // tokenize again by '-'
+      {
+        std::istringstream ss2(str_buf);
+        std::string token;
+        int from_to[2], top=0;
+
+        while(getline(ss2, token, '-'))
+          from_to[top++]=stoi(token);
+
+        for(int number = from_to[0]; number <= from_to[1]; number++)
+          by_id.push_back(number);
+      }
+    }
+  }
 }
 
 void split_name_input(const std::string &str, std::vector<std::string> &by_name)
