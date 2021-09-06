@@ -64,6 +64,22 @@ private:
   const std::unordered_map<const loco::Node *, Tensor *> &_node_to_tensor;
 };
 
+template <typename CircleNodeOut>
+
+std::vector<const loco::Node *> collectOutputNodes(const loco::Node *node)
+{
+  std::vector<const CircleNodeOut *> output_nodes;
+  for (const loco::Node *loco_node : loco::succs(node))
+  {
+    output_nodes.push_back(loco::must_cast<const CircleNodeOut *>(loco_node));
+  }
+  std::sort(output_nodes.begin(), output_nodes.end(),
+            [](const CircleNodeOut *node1, const CircleNodeOut *node2) {
+              return node1->index() < node2->index();
+            });
+  return {output_nodes.cbegin(), output_nodes.cend()};
+}
+
 } // namespace luci_interpreter
 
 #endif // LUCI_INTERPRETER_LOADER_KERNELBUILDER_HELPER_H
