@@ -28,6 +28,22 @@
 namespace
 {
 
+bool check_shape(const luci::CircleNode *node, const std::vector<loco::Dimension> &shape)
+{
+  if (not node)
+    return false;
+
+  if (shape.size() != node->rank())
+    return false;
+
+  for (uint32_t i = 0; i < shape.size(); i++)
+  {
+    if (not(node->dim(i) == shape[i]))
+      return false;
+  }
+  return true;
+}
+
 enum class DataFormat
 {
   NCHW,
@@ -465,7 +481,7 @@ bool is_NCHW_with_s_const(const T *node, luci::CircleNode *&pred_node,
 //
 // Find MUL with an NCHW pattern described below
 //   - Input (non-constant) shape : [N, C, H, W]
-//   - Input (constant) shape : [1, C, 1, 1] or a scalar (1)
+//   - Input (constant) shape : [1, C, 1, 1], [N, C, H, W] or a scalar (1)
 //   - Output shape : [N, C, H, W]
 bool is_NCHW_with_const(const luci::CircleMul *node, luci::CircleNode *&pred_node,
                         luci::CircleConst *&multiplier)
@@ -497,26 +513,22 @@ bool is_NCHW_with_const(const luci::CircleMul *node, luci::CircleNode *&pred_nod
   if (const_rank != 4 && const_rank != 0 && const_rank != 1)
     return false;
 
-  if (const_rank == 4)
-  {
-    for (uint32_t i = 0; i < const_rank; i++)
-    {
-      if (i != 1 && multiplier->dim(i).value() != 1)
-        return false;
-    }
-  }
-
   const auto input_cdim = pred_node->dim(1);
   const auto output_cdim = node->dim(1);
 
   if (const_rank == 4)
   {
-    const auto const_cdim = multiplier->dim(1);
-    // Check Input, Output, Const have the same channel size
-    if (const_cdim == input_cdim && input_cdim == output_cdim)
-      return true;
-    else
-      return false;
+    bool supported_shape = false;
+
+    // Check multiplier is (1, C, 1, 1)
+    if (check_shape(multiplier, {1, node->dim(1), 1, 1}))
+      supported_shape = true;
+
+    // Check multiplier is (N, C, H, W)
+    if (check_shape(multiplier, {node->dim(0), node->dim(1), node->dim(2), node->dim(3)}))
+      supported_shape = true;
+
+    return supported_shape;
   }
   if (input_cdim == output_cdim)
     return true;
@@ -527,7 +539,7 @@ bool is_NCHW_with_const(const luci::CircleMul *node, luci::CircleNode *&pred_nod
 // We assume ADD with const input is NCHW if,
 // Input shape: (N, C, H, W)
 // Output shape: (N, C, H, W)
-// 1. Const shape is (1, C, 1, 1) or a scalar (1)
+// 1. Const shape is (1, C, 1, 1), (N, C, H, W) or a scalar (1)
 // 2. Input, Output, Const have the same C.
 bool is_NCHW_with_const(const luci::CircleAdd *node, luci::CircleNode *&pred_node,
                         luci::CircleConst *&beta)
@@ -559,30 +571,22 @@ bool is_NCHW_with_const(const luci::CircleAdd *node, luci::CircleNode *&pred_nod
   if (const_rank != 4 && const_rank != 0 && const_rank != 1)
     return false;
 
-  if (const_rank == 4)
-  {
-    // Check the shape is (1, C, 1, 1)
-    for (uint32_t i = 0; i < const_rank; i++)
-    {
-      if (i == 1)
-        continue;
-
-      if (beta->dim(i).value() != 1)
-        return false;
-    }
-  }
-
   const auto input_cdim = pred_node->dim(1);
   const auto output_cdim = node->dim(1);
 
   if (const_rank == 4)
   {
-    const auto const_cdim = beta->dim(1);
-    // Check Input, Output, Const have the same channel size
-    if (const_cdim == input_cdim && input_cdim == output_cdim)
-      return true;
-    else
-      return false;
+    bool supported_shape = false;
+
+    // Check beta is (1, C, 1, 1)
+    if (check_shape(beta, {1, node->dim(1), 1, 1}))
+      supported_shape = true;
+
+    // Check beta is (N, C, H, W)
+    if (check_shape(beta, {node->dim(0), node->dim(1), node->dim(2), node->dim(3)}))
+      supported_shape = true;
+
+    return supported_shape;
   }
   if (input_cdim == output_cdim)
     return true;
@@ -593,7 +597,7 @@ bool is_NCHW_with_const(const luci::CircleAdd *node, luci::CircleNode *&pred_nod
 // We assume SUB with const input is NCHW if,
 // Input shape: (N, C, H, W)
 // Output shape: (N, C, H, W)
-// 1. Const shape is (1, C, 1, 1) or a scalar (1)
+// 1. Const shape is (1, C, 1, 1), (N, C, H, W) or a scalar (1)
 // 2. Input, Output, Const have the same C.
 bool is_NCHW_with_const(const luci::CircleSub *node, const luci::CircleNode *pred_node,
                         const luci::CircleConst *subtract)
@@ -609,30 +613,22 @@ bool is_NCHW_with_const(const luci::CircleSub *node, const luci::CircleNode *pre
   if (const_rank != 4 && const_rank != 0 && const_rank != 1)
     return false;
 
-  if (const_rank == 4)
-  {
-    // Check the shape is (1, C, 1, 1)
-    for (uint32_t i = 0; i < const_rank; i++)
-    {
-      if (i == 1)
-        continue;
-
-      if (subtract->dim(i).value() != 1)
-        return false;
-    }
-  }
-
   const auto input_cdim = pred_node->dim(1);
   const auto output_cdim = node->dim(1);
 
   if (const_rank == 4)
   {
-    const auto const_cdim = subtract->dim(1);
-    // Check Input, Output, Const have the same channel size
-    if (const_cdim == input_cdim && input_cdim == output_cdim)
-      return true;
-    else
-      return false;
+    bool supported_shape = false;
+
+    // Check subtract is (1, C, 1, 1)
+    if (check_shape(subtract, {1, node->dim(1), 1, 1}))
+      supported_shape = true;
+
+    // Check subtract is (N, C, H, W)
+    if (check_shape(subtract, {node->dim(0), node->dim(1), node->dim(2), node->dim(3)}))
+      supported_shape = true;
+
+    return supported_shape;
   }
   if (input_cdim == output_cdim)
     return true;
