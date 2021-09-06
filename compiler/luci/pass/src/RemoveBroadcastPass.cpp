@@ -159,7 +159,8 @@ bool RemoveBroadcastPass::run(loco::Graph *g)
     if (const_node == nullptr)
       continue;
 
-    changed = changed || expand_broadcast_const(const_node);
+    if (expand_broadcast_const(const_node))
+      changed = true;
   }
   return changed;
 }
