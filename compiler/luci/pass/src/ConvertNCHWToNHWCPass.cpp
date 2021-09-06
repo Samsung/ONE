@@ -28,7 +28,7 @@
 namespace
 {
 
-bool check_shape(const luci::CircleNode *node, const std::vector<loco::Dimension> &shape)
+bool is_same_shape(const luci::CircleNode *node, const std::vector<loco::Dimension> &shape)
 {
   if (not node)
     return false;
@@ -521,11 +521,11 @@ bool is_NCHW_with_const(const luci::CircleMul *node, luci::CircleNode *&pred_nod
     bool supported_shape = false;
 
     // Check multiplier is (1, C, 1, 1)
-    if (check_shape(multiplier, {1, node->dim(1), 1, 1}))
+    if (is_same_shape(multiplier, {1, node->dim(1), 1, 1}))
       supported_shape = true;
 
     // Check multiplier is (N, C, H, W)
-    if (check_shape(multiplier, {node->dim(0), node->dim(1), node->dim(2), node->dim(3)}))
+    if (is_same_shape(multiplier, {node->dim(0), node->dim(1), node->dim(2), node->dim(3)}))
       supported_shape = true;
 
     return supported_shape;
@@ -579,11 +579,11 @@ bool is_NCHW_with_const(const luci::CircleAdd *node, luci::CircleNode *&pred_nod
     bool supported_shape = false;
 
     // Check beta is (1, C, 1, 1)
-    if (check_shape(beta, {1, node->dim(1), 1, 1}))
+    if (is_same_shape(beta, {1, node->dim(1), 1, 1}))
       supported_shape = true;
 
     // Check beta is (N, C, H, W)
-    if (check_shape(beta, {node->dim(0), node->dim(1), node->dim(2), node->dim(3)}))
+    if (is_same_shape(beta, {node->dim(0), node->dim(1), node->dim(2), node->dim(3)}))
       supported_shape = true;
 
     return supported_shape;
@@ -621,11 +621,11 @@ bool is_NCHW_with_const(const luci::CircleSub *node, const luci::CircleNode *pre
     bool supported_shape = false;
 
     // Check subtract is (1, C, 1, 1)
-    if (check_shape(subtract, {1, node->dim(1), 1, 1}))
+    if (is_same_shape(subtract, {1, node->dim(1), 1, 1}))
       supported_shape = true;
 
     // Check subtract is (N, C, H, W)
-    if (check_shape(subtract, {node->dim(0), node->dim(1), node->dim(2), node->dim(3)}))
+    if (is_same_shape(subtract, {node->dim(0), node->dim(1), node->dim(2), node->dim(3)}))
       supported_shape = true;
 
     return supported_shape;
