@@ -77,23 +77,24 @@ template <typename N> bool expand_node_input(luci::CircleConst *node, luci::Circ
   static_assert(std::is_base_of<luci::CircleNode, N>::value,
                 "Successor node should have CircleNode base");
 
-  auto successor_node = loco::must_cast<N *>(successor);
+  auto const successor_node = loco::must_cast<N *>(successor);
+  auto const successor_x = loco::must_cast<luci::CircleNode *>(successor_node->x());
+  auto const successor_y = loco::must_cast<luci::CircleNode *>(successor_node->y());
+
   luci::CircleConst *expanded_const;
 
-  if (node == successor_node->x())
+  if (node == successor_x)
   {
-    expanded_const =
-      create_expanded_constant(node, loco::must_cast<luci::CircleNode *>(successor_node->y()));
+    expanded_const = create_expanded_constant(node, successor_y);
 
     if (expanded_const == nullptr)
       return false;
 
     successor_node->x(expanded_const);
   }
-  else if (node == successor_node->y())
+  else if (node == successor_y)
   {
-    expanded_const =
-      create_expanded_constant(node, loco::must_cast<luci::CircleNode *>(successor_node->x()));
+    expanded_const = create_expanded_constant(node, successor_x);
 
     if (expanded_const == nullptr)
       return false;
