@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-#include "FullyConnected.h"
+#include "Builders.h"
+
+#include "kernels/FullyConnected.h"
 
 namespace luci_interpreter
 {

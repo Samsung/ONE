@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-#include "Maximum.h"
+#include "Builders.h"
+
+#include "kernels/Maximum.h"
 
 namespace luci_interpreter
 {

@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-#include "L2Normalize.h"
+#include "Builders.h"
+
+#include "kernels/L2Normalize.h"
 
 namespace luci_interpreter
 {

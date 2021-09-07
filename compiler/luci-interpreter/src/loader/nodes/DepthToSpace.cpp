@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-#include "DepthToSpace.h"
+#include "Builders.h"
+
+#include "kernels/DepthToSpace.h"
 
 namespace luci_interpreter
 {

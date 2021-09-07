@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-#include "Floor.h"
+#include "Builders.h"
+
+#include "kernels/Floor.h"
 
 namespace luci_interpreter
 {

@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-#include "SquaredDifference.h"
+#include "Builders.h"
+
+#include "kernels/SquaredDifference.h"
 
 namespace luci_interpreter
 {

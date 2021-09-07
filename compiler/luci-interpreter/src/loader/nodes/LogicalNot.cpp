@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-#include "LogicalNot.h"
+#include "Builders.h"
+
+#include "kernels/LogicalNot.h"
 
 namespace luci_interpreter
 {

@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-#include "If.h"
+#include "Builders.h"
+
+#include "kernels/If.h"
 
 namespace luci_interpreter
 {

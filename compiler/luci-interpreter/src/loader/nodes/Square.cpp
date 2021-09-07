@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-#include "Square.h"
+#include "Builders.h"
+
+#include "kernels/Square.h"
 
 namespace luci_interpreter
 {

@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-#include "MaxPool2D.h"
+#include "Builders.h"
+
+#include "kernels/MaxPool2D.h"
 
 namespace luci_interpreter
 {

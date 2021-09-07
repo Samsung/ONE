@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-#include "LeakyRelu.h"
+#include "Builders.h"
+
+#include "kernels/LeakyRelu.h"
 
 namespace luci_interpreter
 {

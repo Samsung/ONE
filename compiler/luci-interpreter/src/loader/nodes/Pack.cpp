@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-#include "Pack.h"
+#include "Builders.h"
+
+#include "kernels/Pack.h"
 
 namespace luci_interpreter
 {

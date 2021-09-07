@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-#include "Mean.h"
+#include "Builders.h"
+
+#include "kernels/Mean.h"
 
 namespace luci_interpreter
 {

@@ -14,20 +14,24 @@
  * limitations under the License.
  */
 
-#ifndef LUCI_INTERPRETER_LOADER_NODES_L2NORMALIZE_H
-#define LUCI_INTERPRETER_LOADER_NODES_L2NORMALIZE_H
+#ifndef LUCI_INTERPRETER_LOADER_NODES_BUILDERS_H
+#define LUCI_INTERPRETER_LOADER_NODES_BUILDERS_H
 
-#include "kernels/L2Normalize.h"
 #include "loader/KernelBuilderHelper.h"
 
-#include <luci/IR/CircleNodeVisitor.h>
+#include "luci/IR/CircleNodes.h"
 
 namespace luci_interpreter
 {
 
-std::unique_ptr<Kernel> build_kernel_CircleL2Normalize(const luci::CircleNode *circle_node,
-                                                       KernelBuilderHelper &helper);
+#define REGISTER_KERNEL(name)                                                            \
+  std::unique_ptr<Kernel> build_kernel_Circle##name(const luci::CircleNode *circle_node, \
+                                                    KernelBuilderHelper &helper);
+
+#include "KernelsToBuild.lst"
+
+#undef REGISTER_KERNEL
 
 } // namespace luci_interpreter
 
-#endif // LUCI_INTERPRETER_LOADER_NODES_L2NORMALIZE_H
+#endif // LUCI_INTERPRETER_LOADER_NODES_BUILDERS_H

@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-#include "ReverseV2.h"
+#include "Builders.h"
+
+#include "kernels/ReverseV2.h"
 
 namespace luci_interpreter
 {

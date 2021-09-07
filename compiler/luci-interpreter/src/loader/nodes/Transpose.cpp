@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-#include "Transpose.h"
+#include "Builders.h"
+
+#include "kernels/Transpose.h"
 
 namespace luci_interpreter
 {

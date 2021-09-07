@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-#include "StridedSlice.h"
+#include "Builders.h"
+
+#include "kernels/StridedSlice.h"
 
 namespace luci_interpreter
 {

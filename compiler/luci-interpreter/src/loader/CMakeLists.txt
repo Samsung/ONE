@@ -7,11 +7,11 @@ set(SOURCES
     KernelBuilder.cpp
     ModuleLoader.h
     ModuleLoader.cpp
-    RuntimeToIR.h)
+    RuntimeToIR.h
+    nodes/Builders.h)
 
 # include kernel specific builders
 macro(REGISTER_KERNEL NODE)
-  list(APPEND SOURCES "nodes/${NODE}.h")
   list(APPEND SOURCES "nodes/${NODE}.cpp")
 endmacro(REGISTER_KERNEL)
 include(${KERNEL_REGISTER_FILE})

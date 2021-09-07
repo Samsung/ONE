@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-#include "InstanceNorm.h"
+#include "Builders.h"
+
+#include "kernels/InstanceNorm.h"
 
 namespace luci_interpreter
 {

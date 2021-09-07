@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-#include "ResizeBilinear.h"
+#include "Builders.h"
+
+#include "kernels/ResizeBilinear.h"
 
 namespace luci_interpreter
 {

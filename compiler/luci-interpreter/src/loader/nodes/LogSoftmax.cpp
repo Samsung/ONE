@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-#include "LogSoftmax.h"
+#include "Builders.h"
+
+#include "kernels/LogSoftmax.h"
 
 namespace luci_interpreter
 {

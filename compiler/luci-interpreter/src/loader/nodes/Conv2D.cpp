@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-#include "Conv2D.h"
+#include "Builders.h"
+
+#include "kernels/Conv2D.h"
 
 namespace luci_interpreter
 {

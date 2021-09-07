@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-#include "Div.h"
+#include "Builders.h"
+
+#include "kernels/Div.h"
 
 namespace luci_interpreter
 {

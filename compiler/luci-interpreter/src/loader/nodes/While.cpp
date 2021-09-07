@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-#include "While.h"
+#include "Builders.h"
+
+#include "kernels/While.h"
 
 namespace luci_interpreter
 {
