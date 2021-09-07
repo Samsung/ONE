@@ -35,7 +35,7 @@ class _CONSTANT:
          'convert the output shape of the model (argument for convert_nchw_to_nhwc)'),
         ('fold_add_v2', 'fold AddV2 op with constant inputs'),
         ('fold_cast', 'fold Cast op with constant input'),
-        ('fold_depthwise_conv_2d', 'fold DepthwiseConv2D op with constant inputs'),
+        ('fold_dwconv', 'fold Depthwise Convolution op with constant inputs'),
         ('fold_dequantize', 'fold Dequantize op'),
         ('fold_sparse_to_dense', 'fold SparseToDense op'),
         ('forward_reshape_to_unaryop', 'Forward Reshape op'),
