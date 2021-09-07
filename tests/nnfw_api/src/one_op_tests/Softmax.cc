@@ -30,6 +30,23 @@ class SoftmaxVariation : public GenModelTest, public ::testing::WithParamInterfa
 {
 };
 
+// Test with different value type
+INSTANTIATE_TEST_CASE_P(
+  GenModelTest, SoftmaxVariation,
+  ::testing::Values(
+    // float value
+    SoftmaxParam{
+      uniformTCD<float>({{0, -6, 2, 4, 3, -2, 10, 1}},
+                        {{.23463, .12877, .28658, .35003, .22528, .13664, .45365, .18443}})},
+    // uint8 value
+    SoftmaxParam{
+      uniformTCD<uint8_t>({{10, 4, 12, 14, 13, 8, 20, 11}}, {{60, 33, 73, 90, 58, 35, 116, 47}}),
+      circle::TensorType::TensorType_UINT8, 1.0, 10},
+    // int8 value
+    SoftmaxParam{
+      uniformTCD<int8_t>({{0, -6, 2, 4, 3, -2, 10, 1}}, {{-68, -95, -55, -38, -70, -93, -12, -81}}),
+      circle::TensorType::TensorType_INT8, 1.0, 0}));
+
 TEST_P(SoftmaxVariation, Test)
 {
   auto &param = GetParam();
@@ -95,28 +112,14 @@ TEST_F(GenModelTest, OneOp_Softmax)
   SUCCEED();
 }
 
-// Test with different value type
-INSTANTIATE_TEST_CASE_P(
-  GenModelTest, SoftmaxVariation,
-  ::testing::Values(
-    // float value
-    SoftmaxParam{
-      uniformTCD<float>({{0, -6, 2, 4, 3, -2, 10, 1}},
-                        {{.23463, .12877, .28658, .35003, .22528, .13664, .45365, .18443}})},
-    // uint8 value
-    SoftmaxParam{
-      uniformTCD<uint8_t>({{10, 4, 12, 14, 13, 8, 20, 11}}, {{60, 33, 73, 90, 58, 35, 116, 47}}),
-      circle::TensorType::TensorType_UINT8, 1.0, 10},
-    // int8 value
-    SoftmaxParam{
-      uniformTCD<int8_t>({{0, -6, 2, 4, 3, -2, 10, 1}}, {{-68, -95, -55, -38, -70, -93, -12, -81}}),
-      circle::TensorType::TensorType_INT8, 1.0, 0}));
-
-TEST_F(GenModelTest, neg_OneOp_Softmax_Type)
+TEST_P(SoftmaxVariation, neg_Type)
 {
+  auto &param = GetParam();
+
   CircleGen cgen;
-  int input = cgen.addTensor({{1, 2, 1, 4}, circle::TensorType::TensorType_FLOAT32});
-  int out = cgen.addTensor({{1, 2, 1, 4}, circle::TensorType::TensorType_INT8}, 1.0, 0);
+  int input =
+    cgen.addTensor({{1, 2, 1, 4}, param.data_type}, param.input_scale, param.input_zero_point);
+  int out = cgen.addTensor({{1, 2, 1, 4}, circle::TensorType::TensorType_BOOL});
   cgen.addOperatorSoftmax({{input}, {out}}, 0.1);
   cgen.setInputsAndOutputs({input}, {out});
 
