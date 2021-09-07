@@ -98,9 +98,9 @@ TEST_F(RemoveBroadcastTest, remove_broadcast)
   ASSERT_NE(broadcasted_const, nullptr);
 
   EXPECT_EQ(broadcasted_const->dtype(), loco::DataType::FLOAT32);
-  EXPECT_EQ(broadcasted_const->dim(1), H);
-  EXPECT_EQ(broadcasted_const->dim(2), W);
-  EXPECT_EQ(broadcasted_const->dim(3), D);
+  EXPECT_EQ(broadcasted_const->dim(1).value(), H);
+  EXPECT_EQ(broadcasted_const->dim(2).value(), W);
+  EXPECT_EQ(broadcasted_const->dim(3).value(), D);
   EXPECT_EQ(broadcasted_const->size<loco::DataType::FLOAT32>(), H * W * D);
 
   for (uint32_t i = 0; i < H * W; ++i)
@@ -111,6 +111,31 @@ TEST_F(RemoveBroadcastTest, remove_broadcast)
                   static_cast<float>(i), std::numeric_limits<float>::min());
     }
   }
+}
+
+TEST_F(RemoveBroadcastTest, remove_broadcast_multiple_successors)
+{
+  auto const circle_sqrt = _g.nodes()->create<luci::CircleSqrt>();
+  circle_sqrt->dtype(loco::DataType::FLOAT32);
+  circle_sqrt->shape({1, H, W, 1});
+  circle_sqrt->x(_y);
+
+  luci::RemoveBroadcastPass pass;
+  ASSERT_TRUE(pass.run(&_g));
+
+  auto broadcasted_const = dynamic_cast<luci::CircleConst *>(_add->y());
+  auto original_const = dynamic_cast<luci::CircleConst *>(circle_sqrt->x());
+
+  ASSERT_NE(broadcasted_const, nullptr);
+  EXPECT_EQ(broadcasted_const->dtype(), loco::DataType::FLOAT32);
+  EXPECT_EQ(broadcasted_const->dim(3).value(), D);
+  EXPECT_EQ(broadcasted_const->size<loco::DataType::FLOAT32>(), H * W * D);
+
+  // Check if another successor's node was left intact
+  ASSERT_NE(original_const, nullptr);
+  EXPECT_EQ(original_const->dtype(), loco::DataType::FLOAT32);
+  EXPECT_EQ(original_const->dim(3).value(), 1);
+  EXPECT_EQ(original_const->size<loco::DataType::FLOAT32>(), H * W * 1);
 }
 
 TEST_F(RemoveBroadcastTest, broadcast_impossible_NEG)
