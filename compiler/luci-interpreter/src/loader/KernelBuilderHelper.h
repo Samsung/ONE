@@ -65,7 +65,6 @@ private:
 };
 
 template <typename CircleNodeOut>
-
 std::vector<const loco::Node *> collectOutputNodes(const loco::Node *node)
 {
   std::vector<const CircleNodeOut *> output_nodes;
