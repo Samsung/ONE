@@ -152,6 +152,7 @@ Current transformation options are
 - disable_validation : This will turn off operator validations.
 - fold_add_v2 : This removes AddV2 operation which can be folded
 - fold_cast : This removes Cast operation which can be folded
+- fold_dwconv : This folds Depthwise Convolution operation which can be folded
 - fold_dequantize : This removes Dequantize operation which can be folded
 - fold_sparse_to_dense : This removes SparseToDense operation which can be folded
 - forward_reshape_to_unaryop: This will move Reshape after UnaryOp for centain condition
