@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-#include "Tanh.h"
+#include "Builders.h"
+
+#include "kernels/Tanh.h"
 
 namespace luci_interpreter
 {

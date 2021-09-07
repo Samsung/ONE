@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-#include "LogicalOr.h"
+#include "Builders.h"
+
+#include "kernels/LogicalOr.h"
 
 namespace luci_interpreter
 {

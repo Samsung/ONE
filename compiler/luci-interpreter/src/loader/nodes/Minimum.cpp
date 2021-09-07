@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-#include "Minimum.h"
+#include "Builders.h"
+
+#include "kernels/Minimum.h"
 
 namespace luci_interpreter
 {

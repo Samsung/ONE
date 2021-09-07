@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-#include "Rsqrt.h"
+#include "Builders.h"
+
+#include "kernels/Rsqrt.h"
 
 namespace luci_interpreter
 {

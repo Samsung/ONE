@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-#include "Relu.h"
+#include "Builders.h"
+
+#include "kernels/Relu.h"
 
 namespace luci_interpreter
 {

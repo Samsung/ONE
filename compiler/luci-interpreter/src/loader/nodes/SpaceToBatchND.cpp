@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-#include "SpaceToBatchND.h"
+#include "Builders.h"
+
+#include "kernels/SpaceToBatchND.h"
 
 namespace luci_interpreter
 {

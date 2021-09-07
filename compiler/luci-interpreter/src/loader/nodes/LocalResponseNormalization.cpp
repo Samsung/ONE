@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-#include "LocalResponseNormalization.h"
+#include "Builders.h"
+
+#include "kernels/LocalResponseNormalization.h"
 
 namespace luci_interpreter
 {

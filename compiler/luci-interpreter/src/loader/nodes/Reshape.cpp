@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-#include "Reshape.h"
+#include "Builders.h"
+
+#include "kernels/Reshape.h"
 
 namespace luci_interpreter
 {

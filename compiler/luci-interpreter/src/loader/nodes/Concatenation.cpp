@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-#include "Concatenation.h"
+#include "Builders.h"
+
+#include "kernels/Concatenation.h"
 
 namespace luci_interpreter
 {

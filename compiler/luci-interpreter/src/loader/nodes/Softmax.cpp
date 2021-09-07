@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-#include "Softmax.h"
+#include "Builders.h"
+
+#include "kernels/Softmax.h"
 
 namespace luci_interpreter
 {

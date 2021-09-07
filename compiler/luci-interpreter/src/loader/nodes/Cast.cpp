@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-#include "Cast.h"
+#include "Builders.h"
+
+#include "kernels/Cast.h"
 
 namespace luci_interpreter
 {

@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-#include "Sqrt.h"
+#include "Builders.h"
+
+#include "kernels/Sqrt.h"
 
 namespace luci_interpreter
 {

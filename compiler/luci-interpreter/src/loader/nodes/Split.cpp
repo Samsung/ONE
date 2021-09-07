@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-#include "Split.h"
+#include "Builders.h"
+
+#include "kernels/Split.h"
 
 namespace luci_interpreter
 {

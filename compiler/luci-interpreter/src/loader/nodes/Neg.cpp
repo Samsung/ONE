@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-#include "Neg.h"
+#include "Builders.h"
+
+#include "kernels/Neg.h"
 
 namespace luci_interpreter
 {

@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-#include "MirrorPad.h"
+#include "Builders.h"
+
+#include "kernels/MirrorPad.h"
 
 namespace luci_interpreter
 {

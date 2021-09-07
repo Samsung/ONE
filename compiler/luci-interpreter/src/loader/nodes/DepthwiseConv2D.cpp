@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-#include "DepthwiseConv2D.h"
+#include "Builders.h"
+
+#include "kernels/DepthwiseConv2D.h"
 
 namespace luci_interpreter
 {

@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-#include "PadV2.h"
+#include "Builders.h"
+
+#include "kernels/PadV2.h"
 
 namespace luci_interpreter
 {

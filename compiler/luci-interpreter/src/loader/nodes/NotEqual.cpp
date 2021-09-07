@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-#include "NotEqual.h"
+#include "Builders.h"
+
+#include "kernels/NotEqual.h"
 
 namespace luci_interpreter
 {

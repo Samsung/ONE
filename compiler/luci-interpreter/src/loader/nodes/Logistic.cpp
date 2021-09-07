@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-#include "Logistic.h"
+#include "Builders.h"
+
+#include "kernels/Logistic.h"
 
 namespace luci_interpreter
 {

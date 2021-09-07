@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-#include "Slice.h"
+#include "Builders.h"
+
+#include "kernels/Slice.h"
 
 namespace luci_interpreter
 {

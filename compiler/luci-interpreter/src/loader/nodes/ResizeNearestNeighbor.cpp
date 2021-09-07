@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-#include "ResizeNearestNeighbor.h"
+#include "Builders.h"
+
+#include "kernels/ResizeNearestNeighbor.h"
 
 namespace luci_interpreter
 {

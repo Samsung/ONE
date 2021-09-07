@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-#include "Pow.h"
+#include "Builders.h"
+
+#include "kernels/Pow.h"
 
 namespace luci_interpreter
 {

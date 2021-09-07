@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-#include "Squeeze.h"
+#include "Builders.h"
+
+#include "kernels/Squeeze.h"
 
 namespace luci_interpreter
 {

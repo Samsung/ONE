@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-#include "AveragePool2D.h"
+#include "Builders.h"
+
+#include "kernels/AveragePool2D.h"
 
 namespace luci_interpreter
 {

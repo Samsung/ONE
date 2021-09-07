@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-#include "ArgMax.h"
+#include "Builders.h"
+
+#include "kernels/ArgMax.h"
 
 namespace luci_interpreter
 {
