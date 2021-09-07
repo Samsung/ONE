@@ -145,11 +145,11 @@ public:
 
   bool is_observable() const { return _is_observable; }
 
-  void make_unobservable() { _is_observable = false; }
+  void set_observable(bool value) { _is_observable = value; }
 
   bool is_allocatable() const { return _is_allocatable; }
 
-  void make_unallocatable() { _is_allocatable = false; }
+  void set_allocatable(bool value) { _is_allocatable = value; }
 
   bool is_data_allocated() const { return _data_allocated; }
 
