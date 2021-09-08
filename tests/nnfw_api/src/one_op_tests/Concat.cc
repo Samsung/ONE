@@ -59,25 +59,6 @@ class ConcatVariation : public GenModelTest,
 
 // Input shape: {2, 3} / {2, 3}
 // Output shape: {4, 3}
-TEST_P(ConcatVariation, Test)
-{
-  auto &param = GetParam();
-
-  CircleGen cgen;
-  int input1 = cgen.addTensor({{2, 3}, param.type}, param.scale, param.zero_point);
-  int input2 = cgen.addTensor({{2, 3}, param.type}, param.scale, param.zero_point);
-  int output = cgen.addTensor({{4, 3}, param.type}, param.scale, param.zero_point);
-  cgen.addOperatorConcatenation({{input1, input2}, {output}}, 0,
-                                circle::ActivationFunctionType_NONE);
-  cgen.setInputsAndOutputs({input1, input2}, {output});
-
-  _context = std::make_unique<GenModelTestContext>(cgen.finish());
-  _context->addTestCase(param.tcd);
-  _context->setBackends({"acl_cl", "acl_neon", "cpu"});
-
-  SUCCEED();
-}
-
 INSTANTIATE_TEST_CASE_P(
   GenModelTest, ConcatVariation,
   ::testing::Values(
@@ -106,6 +87,25 @@ INSTANTIATE_TEST_CASE_P(
     ConcatVariationParam{uniformTCD<int64_t>({{1, 2, 3, 4, 5, 6}, {7, 8, 9, 10, 11, 12}},
                                              {{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12}}),
                          circle::TensorType::TensorType_INT64}));
+
+TEST_P(ConcatVariation, Test)
+{
+  auto &param = GetParam();
+
+  CircleGen cgen;
+  int input1 = cgen.addTensor({{2, 3}, param.type}, param.scale, param.zero_point);
+  int input2 = cgen.addTensor({{2, 3}, param.type}, param.scale, param.zero_point);
+  int output = cgen.addTensor({{4, 3}, param.type}, param.scale, param.zero_point);
+  cgen.addOperatorConcatenation({{input1, input2}, {output}}, 0,
+                                circle::ActivationFunctionType_NONE);
+  cgen.setInputsAndOutputs({input1, input2}, {output});
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->addTestCase(param.tcd);
+  _context->setBackends({"acl_cl", "acl_neon", "cpu"});
+
+  SUCCEED();
+}
 
 TEST_F(GenModelTest, OneOp_Concat_Subtensor_4D)
 {
@@ -180,13 +180,14 @@ TEST_F(GenModelTest, OneOp_Concat_Subtensor_4D)
   SUCCEED();
 }
 
-TEST_F(GenModelTest, neg_OneOp_Concat_InvalidAxis)
+TEST_P(ConcatVariation, neg_InvalidAxis)
 {
-  CircleGen cgen;
+  auto &param = GetParam();
 
-  int input1 = cgen.addTensor({{2, 3}, circle::TensorType::TensorType_FLOAT32});
-  int input2 = cgen.addTensor({{2, 3}, circle::TensorType::TensorType_FLOAT32});
-  int output = cgen.addTensor({{4, 3}, circle::TensorType::TensorType_FLOAT32});
+  CircleGen cgen;
+  int input1 = cgen.addTensor({{2, 3}, param.type}, param.scale, param.zero_point);
+  int input2 = cgen.addTensor({{2, 3}, param.type}, param.scale, param.zero_point);
+  int output = cgen.addTensor({{4, 3}, param.type}, param.scale, param.zero_point);
   int axis = 2;
 
   cgen.addOperatorConcatenation({{input1, input2}, {output}}, axis,
@@ -200,13 +201,14 @@ TEST_F(GenModelTest, neg_OneOp_Concat_InvalidAxis)
   SUCCEED();
 }
 
-TEST_F(GenModelTest, neg_OneOp_Concat_InvalidRank)
+TEST_P(ConcatVariation, neg_InvalidRank)
 {
-  CircleGen cgen;
+  auto &param = GetParam();
 
-  int input1 = cgen.addTensor({{2, 3}, circle::TensorType::TensorType_FLOAT32});
-  int input2 = cgen.addTensor({{1, 2, 3}, circle::TensorType::TensorType_FLOAT32});
-  int output = cgen.addTensor({{1, 2, 3}, circle::TensorType::TensorType_FLOAT32});
+  CircleGen cgen;
+  int input1 = cgen.addTensor({{2, 3}, param.type}, param.scale, param.zero_point);
+  int input2 = cgen.addTensor({{1, 2, 3}, param.type}, param.scale, param.zero_point);
+  int output = cgen.addTensor({{1, 4, 3}, param.type}, param.scale, param.zero_point);
   int axis = 0;
 
   cgen.addOperatorConcatenation({{input1, input2}, {output}}, axis,
@@ -220,13 +222,14 @@ TEST_F(GenModelTest, neg_OneOp_Concat_InvalidRank)
   SUCCEED();
 }
 
-TEST_F(GenModelTest, neg_OneOp_Concat_InvalidDimension)
+TEST_P(ConcatVariation, neg_InvalidDimension)
 {
-  CircleGen cgen;
+  auto &param = GetParam();
 
-  int input1 = cgen.addTensor({{2, 3}, circle::TensorType::TensorType_FLOAT32});
-  int input2 = cgen.addTensor({{3, 2}, circle::TensorType::TensorType_FLOAT32});
-  int output = cgen.addTensor({{4, 3}, circle::TensorType::TensorType_FLOAT32});
+  CircleGen cgen;
+  int input1 = cgen.addTensor({{2, 3}, param.type}, param.scale, param.zero_point);
+  int input2 = cgen.addTensor({{3, 2}, param.type}, param.scale, param.zero_point);
+  int output = cgen.addTensor({{4, 3}, param.type}, param.scale, param.zero_point);
   int axis = 0;
 
   cgen.addOperatorConcatenation({{input1, input2}, {output}}, axis,
