@@ -34,7 +34,6 @@ test:
         - Reduce.cc
         - ResizeBilinear.c
         - Slice.cc
-        - Softmax.cc
         - While.cc
     testCase:
       - condition:
