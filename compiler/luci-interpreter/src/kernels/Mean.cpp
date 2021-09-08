@@ -170,9 +170,9 @@ void Mean::configure()
     auto resolved_axes = getOutputTensors()[2];
     auto temp_sum = getOutputTensors()[3];
 
-    temp_index->make_unallocatable();
-    resolved_axes->make_unallocatable();
-    temp_sum->make_unallocatable();
+    temp_index->set_allocatable(false);
+    resolved_axes->set_allocatable(false);
+    temp_sum->set_allocatable(false);
   }
 }
 

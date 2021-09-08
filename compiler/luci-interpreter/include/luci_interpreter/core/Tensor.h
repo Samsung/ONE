@@ -150,13 +150,17 @@ public:
 
   bool is_observable() const { return _is_observable; }
 
-  void make_unobservable() { _is_observable = false; }
+  void set_observable(bool value) { _is_observable = value; }
 
   bool is_allocatable() const { return _is_allocatable; }
 
-  void make_unallocatable() { _is_allocatable = false; }
+  void set_allocatable(bool value) { _is_allocatable = value; }
 
   bool is_data_allocated() { return _data_allocated; }
+
+  bool is_constant() { return _is_const; }
+
+  bool set_constant(bool value) { return _is_const = value; }
 
 private:
   DataType _element_type;
@@ -172,6 +176,8 @@ private:
   // Kernel configuration could disable allocation of some tensors if they are not needed for
   // particular operation.
   bool _is_allocatable = true;
+  // If passed data beffer is constant is true, false otherwise
+  bool _is_const = false;
 };
 
 } // namespace luci_interpreter

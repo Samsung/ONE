@@ -86,7 +86,7 @@ void TransposeConv::configure()
   else
   {
     auto scratch_tensor = getOutputTensors()[1];
-    scratch_tensor->make_unallocatable();
+    scratch_tensor->set_allocatable(false);
   }
 }
 

@@ -116,7 +116,7 @@ void Conv2D::configure()
   else
   {
     auto im2col = getOutputTensors()[1];
-    im2col->make_unallocatable();
+    im2col->set_allocatable(false);
   }
 }
 

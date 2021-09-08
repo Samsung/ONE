@@ -110,7 +110,7 @@ RuntimeGraph::~RuntimeGraph()
 {
   for (auto &tensor : _tensors)
   {
-    if (tensor->is_data_allocated())
+    if (tensor->is_data_allocated() && !tensor->is_constant())
       _memory_manager->release_memory(*tensor);
   }
 }

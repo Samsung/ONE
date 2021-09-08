@@ -22,7 +22,7 @@
 #include <luci/IR/Nodes/CircleInput.h>
 #include <luci/IR/Nodes/CircleOutput.h>
 
-#include "luci_interpreter/MemoryManager.h"
+#include "luci_interpreter/Params.h"
 #include <luci/IR/Module.h>
 
 #include <memory>
@@ -50,7 +50,8 @@ public:
 class Interpreter
 {
 public:
-  explicit Interpreter(const luci::Module *module, IMemoryManager *memory_manager = nullptr);
+  explicit Interpreter(const luci::Module *module,
+                       const InterpreterParams &params = InterpreterParams());
 
   ~Interpreter();
 

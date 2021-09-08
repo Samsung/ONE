@@ -72,24 +72,24 @@ private:
 } // namespace
 
 Interpreter::Interpreter(const luci::Module *module,
-                         luci_interpreter::IMemoryManager *memory_manager)
+                         const luci_interpreter::InterpreterParams &params)
 {
   _runtime_to_ir = std::make_unique<RuntimeToIR>();
   _event_notifier = std::make_unique<EventNotifierImpl>(*_runtime_to_ir, _observers);
   _runtime_module = std::make_unique<RuntimeModule>(_event_notifier.get());
   ModuleLoader loader(module, _runtime_module.get(), *_runtime_to_ir, _node_to_tensor);
 
-  if (memory_manager == nullptr)
+  if (params.memory_manager == nullptr)
   {
     _default_memory_manager = std::make_unique<SimpleMemoryManager>();
     _memory_manager = _default_memory_manager.get();
   }
   else
   {
-    _memory_manager = memory_manager;
+    _memory_manager = params.memory_manager;
   }
 
-  loader.load(_memory_manager);
+  loader.load(params);
 }
 
 Interpreter::~Interpreter() = default;

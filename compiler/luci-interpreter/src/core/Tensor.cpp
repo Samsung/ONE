@@ -43,6 +43,7 @@ void Tensor::readData(void *data_ptr, size_t data_size) const
 
 void Tensor::writeData(const void *data_ptr, size_t data_size)
 {
+  assert(_is_const == false);
   const size_t element_size = getDataTypeSize(element_type());
   const int32_t num_elements = shape().num_elements();
   if (data_size != num_elements * element_size)

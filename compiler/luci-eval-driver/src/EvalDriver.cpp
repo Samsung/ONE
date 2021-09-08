@@ -101,7 +101,7 @@ int entry(int argc, char **argv)
 
   luci_interpreter::SimpleMemoryManager memory_manager;
   // Create interpreter.
-  luci_interpreter::Interpreter interpreter(module.get(), &memory_manager);
+  luci_interpreter::Interpreter interpreter(module.get(), {&memory_manager, true});
 
   // Set input.
   // Data for n'th input is read from ${input_prefix}n

@@ -19,7 +19,7 @@
 
 #include "core/RuntimeModule.h"
 #include "loader/RuntimeToIR.h"
-#include "luci_interpreter/MemoryManager.h"
+#include "luci_interpreter/Params.h"
 
 #include <luci/IR/Module.h>
 
@@ -35,7 +35,7 @@ public:
                RuntimeToIR &runtime_to_ir,
                std::unordered_map<const loco::Node *, Tensor *> &node_to_tensor);
 
-  void load(IMemoryManager *memory_manager);
+  void load(const InterpreterParams &memory_manager);
 
 private:
   const luci::Module *_module;

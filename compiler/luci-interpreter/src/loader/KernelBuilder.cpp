@@ -212,9 +212,9 @@ std::unique_ptr<Kernel> build_kernel_CircleConv2D(const luci::CircleNode *circle
 
   auto im2col =
     std::make_unique<Tensor>(input->element_type(), Shape({}), AffineQuantization{}, "");
-  im2col->make_unobservable();
+  im2col->set_observable(false);
   im2col->set_data_buffer(nullptr);
-  Tensor *tmp = getRuntimeGraph(node->graph())->addTensor(std::move(im2col));
+  Tensor *tmp = helper.getRuntimeGraph(node->graph())->addTensor(std::move(im2col));
 
   Conv2DParams params{};
   params.padding = node->padding();
@@ -681,22 +681,23 @@ std::unique_ptr<Kernel> build_kernel_CircleMean(const luci::CircleNode *circle_n
 
   auto temp_index_unique =
     std::make_unique<Tensor>(DataType::S32, Shape({}), AffineQuantization{}, "");
-  temp_index_unique->make_unobservable();
+  temp_index_unique->set_observable(false);
   temp_index_unique->set_data_buffer(nullptr);
-  Tensor *temp_index = getRuntimeGraph(node->graph())->addTensor(std::move(temp_index_unique));
+  Tensor *temp_index =
+    helper.getRuntimeGraph(node->graph())->addTensor(std::move(temp_index_unique));
 
   auto resolved_axes_unique =
     std::make_unique<Tensor>(DataType::S32, Shape({}), AffineQuantization{}, "");
-  resolved_axes_unique->make_unobservable();
+  resolved_axes_unique->set_observable(false);
   resolved_axes_unique->set_data_buffer(nullptr);
   Tensor *resolved_axes =
-    getRuntimeGraph(node->graph())->addTensor(std::move(resolved_axes_unique));
+    helper.getRuntimeGraph(node->graph())->addTensor(std::move(resolved_axes_unique));
 
   auto temp_sum_unique =
     std::make_unique<Tensor>(input->element_type(), Shape({}), AffineQuantization{}, "");
-  temp_sum_unique->make_unobservable();
+  temp_sum_unique->set_observable(false);
   temp_sum_unique->set_data_buffer(nullptr);
-  Tensor *temp_sum = getRuntimeGraph(node->graph())->addTensor(std::move(temp_sum_unique));
+  Tensor *temp_sum = helper.getRuntimeGraph(node->graph())->addTensor(std::move(temp_sum_unique));
 
   ReducerParams params{};
   params.keep_dims = node->keep_dims();
@@ -1219,13 +1220,13 @@ std::unique_ptr<Kernel> build_kernel_CircleTransposeConv(const luci::CircleNode 
   Tensor *output = helper.getOutputTensor(node);
 
   DataType scratch_data_type =
-    getInputTensor(node)->element_type() == DataType::S16 ? DataType::S64 : DataType::S32;
+    helper.getInputTensor(node)->element_type() == DataType::S16 ? DataType::S64 : DataType::S32;
 
   auto scratch_tensor =
     std::make_unique<Tensor>(scratch_data_type, Shape({}), AffineQuantization{}, "");
-  scratch_tensor->make_unobservable();
+  scratch_tensor->set_observable(false);
   scratch_tensor->set_data_buffer(nullptr);
-  Tensor *tmp = getRuntimeGraph(node->graph())->addTensor(std::move(scratch_tensor));
+  Tensor *tmp = helper.getRuntimeGraph(node->graph())->addTensor(std::move(scratch_tensor));
 
   TransposeConvParams params{};
   params.padding = node->padding();

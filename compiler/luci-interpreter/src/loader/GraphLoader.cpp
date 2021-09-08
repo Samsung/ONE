@@ -112,10 +112,10 @@ bool isTensorProducingNode(const luci::CircleNode *node)
 GraphLoader::GraphLoader(
   const loco::Graph *graph, RuntimeGraph *runtime_graph, RuntimeToIR &runtime_to_ir,
   const std::unordered_map<const loco::Graph *, RuntimeGraph *> &graph_to_runtime_graph,
-  std::unordered_map<const loco::Node *, Tensor *> &node_to_tensor, IMemoryManager *memory_manager)
+  std::unordered_map<const loco::Node *, Tensor *> &node_to_tensor, const InterpreterParams &params)
   : _graph(graph), _runtime_graph(runtime_graph), _runtime_to_ir(runtime_to_ir),
     _graph_to_runtime_graph(graph_to_runtime_graph), _node_to_tensor(node_to_tensor),
-    _memory_manager(memory_manager)
+    _params(params)
 {
 }
 
@@ -158,8 +158,18 @@ void GraphLoader::loadTensors()
       const void *const_data = getNodeData(const_node, &data_size);
       if (const_data != nullptr)
       {
-        _memory_manager->allocate_memory(*tensor);
-        tensor->writeData(const_data, data_size);
+        if (_params.copy_luci_constants)
+        {
+          _params.memory_manager->allocate_memory(*tensor);
+          tensor->writeData(const_data, data_size);
+          tensor->set_constant(false);
+        }
+        else
+        {
+          tensor->set_data_buffer(
+            const_cast<uint8_t *>(reinterpret_cast<const uint8_t *>(const_data)));
+          tensor->set_constant(true);
+        }
       }
     }
 
@@ -177,7 +187,7 @@ void GraphLoader::initInputOutputTensors() const
   for (size_t i = 0; i < input_nodes.size(); ++i)
   {
     input_tensors[i] = _node_to_tensor.at(input_nodes[i]);
-    _memory_manager->allocate_memory(*input_tensors[i]);
+    _params.memory_manager->allocate_memory(*input_tensors[i]);
   }
   _runtime_graph->setInputTensors(input_tensors);
 
