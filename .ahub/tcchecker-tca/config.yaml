@@ -26,7 +26,6 @@ test:
       - extension: cc
         any: true
       - excludes :
-        - AveragePool2D.cc
         - Concat.cc
         - DepthToSpace.cc
         - Fill.cc
