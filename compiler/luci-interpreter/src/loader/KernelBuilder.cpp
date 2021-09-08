@@ -86,26 +86,6 @@
 
 #include <stdexcept>
 
-namespace
-{
-
-template <typename CircleNodeOut>
-std::vector<const loco::Node *> collectOutputNodes(const luci::CircleNode *node)
-{
-  std::vector<const CircleNodeOut *> output_nodes;
-  for (const loco::Node *loco_node : loco::succs(node))
-  {
-    output_nodes.push_back(loco::must_cast<const CircleNodeOut *>(loco_node));
-  }
-  std::sort(output_nodes.begin(), output_nodes.end(),
-            [](const CircleNodeOut *node1, const CircleNodeOut *node2) {
-              return node1->index() < node2->index();
-            });
-  return {output_nodes.cbegin(), output_nodes.cend()};
-}
-
-} // namespace
-
 namespace luci_interpreter
 {
 
