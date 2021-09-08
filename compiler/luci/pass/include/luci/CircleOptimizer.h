@@ -65,6 +65,7 @@ public:
       ReplaceSubWithAdd,
       SubstitutePackToReshape,
       SubstitutePadV2ToPad,
+      SubstituteSplitVToSplit,
       SubstituteSqueezeToReshape,
       ConvertNCHWToNHWC,
       RemoveUnnecessarySlice,
