@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "luci/Pass/RemoveBroadcastPass.h"
+#include "luci/Pass/ExpandBroadcastConstPass.h"
 
 #include <luci/IR/CircleNodes.h>
 #include <luci/Log.h>
@@ -151,7 +151,7 @@ namespace luci
 /**
  * Broadcast expanding for Const nodes
  **/
-bool RemoveBroadcastPass::run(loco::Graph *g)
+bool ExpandBroadcastConstPass::run(loco::Graph *g)
 {
   bool changed = false;
   for (auto node : loco::active_nodes(loco::output_nodes(g)))

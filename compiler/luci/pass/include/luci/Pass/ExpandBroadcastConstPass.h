@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __LUCI_REMOVE_BROADCAST_PASS_H__
-#define __LUCI_REMOVE_BROADCAST_PASS_H__
+#ifndef __LUCI_EXPAND_BROADCAST_CONST_PASS_H__
+#define __LUCI_EXPAND_BROADCAST_CONST_PASS_H__
 
 #include <logo/Pass.h>
 
@@ -25,13 +25,13 @@ namespace luci
 /**
  * @brief  Class to remove broadcasts of Const nodes.
  */
-struct RemoveBroadcastPass final : public logo::Pass
+struct ExpandBroadcastConstPass final : public logo::Pass
 {
-  const char *name(void) const final { return "luci::RemoveBroadcastPass"; }
+  const char *name(void) const final { return "luci::ExpandBroadcastConstPass"; }
 
   bool run(loco::Graph *g) final;
 };
 
 } // namespace luci
 
-#endif // __LUCI_REMOVE_BROADCAST_PASS_H__
+#endif // __LUCI_EXPAND_BROADCAST_CONST_PASS_H__

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "luci/Pass/RemoveBroadcastPass.h"
+#include "luci/Pass/ExpandBroadcastConstPass.h"
 #include "PassTestGraphs.h"
 
 #include <luci/IR/CircleNodes.h>
@@ -24,10 +24,10 @@
 namespace
 {
 
-class RemoveBroadcastTest : public ::testing::Test
+class ExpandBroadcastConstTest : public ::testing::Test
 {
 public:
-  RemoveBroadcastTest()
+  ExpandBroadcastConstTest()
   {
     _x = _g.nodes()->create<luci::CircleInput>();
     _y = _g.nodes()->create<luci::CircleConst>();
@@ -79,19 +79,19 @@ protected:
 
 } // namespace
 
-TEST_F(RemoveBroadcastTest, name)
+TEST_F(ExpandBroadcastConstTest, name)
 {
-  luci::RemoveBroadcastPass pass;
+  luci::ExpandBroadcastConstPass pass;
   auto const name = pass.name();
   ASSERT_NE(nullptr, name);
 }
 
-TEST_F(RemoveBroadcastTest, remove_broadcast)
+TEST_F(ExpandBroadcastConstTest, remove_broadcast)
 {
   for (uint32_t i = 0; i < H * W; ++i)
     _y->at<loco::DataType::FLOAT32>(i) = static_cast<float>(i);
 
-  luci::RemoveBroadcastPass pass;
+  luci::ExpandBroadcastConstPass pass;
   ASSERT_TRUE(pass.run(&_g));
 
   auto broadcasted_const = dynamic_cast<luci::CircleConst *>(_add->y());
@@ -113,14 +113,14 @@ TEST_F(RemoveBroadcastTest, remove_broadcast)
   }
 }
 
-TEST_F(RemoveBroadcastTest, remove_broadcast_multiple_successors)
+TEST_F(ExpandBroadcastConstTest, remove_broadcast_multiple_successors)
 {
   auto const circle_sqrt = _g.nodes()->create<luci::CircleSqrt>();
   circle_sqrt->dtype(loco::DataType::FLOAT32);
   circle_sqrt->shape({1, H, W, 1});
   circle_sqrt->x(_y);
 
-  luci::RemoveBroadcastPass pass;
+  luci::ExpandBroadcastConstPass pass;
   ASSERT_TRUE(pass.run(&_g));
 
   auto broadcasted_const = dynamic_cast<luci::CircleConst *>(_add->y());
@@ -138,11 +138,11 @@ TEST_F(RemoveBroadcastTest, remove_broadcast_multiple_successors)
   EXPECT_EQ(original_const->size<loco::DataType::FLOAT32>(), H * W * 1);
 }
 
-TEST_F(RemoveBroadcastTest, broadcast_impossible_NEG)
+TEST_F(ExpandBroadcastConstTest, broadcast_impossible_NEG)
 {
   _y->shape({1, H, W, 2});
   _y->size<loco::DataType::FLOAT32>(H * W * (D - 1));
 
-  luci::RemoveBroadcastPass pass;
+  luci::ExpandBroadcastConstPass pass;
   ASSERT_FALSE(pass.run(&_g));
 }
