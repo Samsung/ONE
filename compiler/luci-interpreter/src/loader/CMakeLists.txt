@@ -7,7 +7,8 @@ set(SOURCES
     KernelBuilder.cpp
     ModuleLoader.h
     ModuleLoader.cpp
-    RuntimeToIR.h)
+    RuntimeToIR.h
+    nodes/Builders.h)
 
 add_library(${LUCI_INTERPRETER_LOADER} STATIC ${SOURCES})
 set_target_properties(${LUCI_INTERPRETER_LOADER} PROPERTIES POSITION_INDEPENDENT_CODE ON)

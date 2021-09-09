@@ -16,6 +16,8 @@
 
 #include "loader/KernelBuilder.h"
 
+#include "loader/nodes/Builders.h"
+
 #include "kernels/Add.h"
 #include "kernels/ArgMax.h"
 #include "kernels/AveragePool2D.h"
