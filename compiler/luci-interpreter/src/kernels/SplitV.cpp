@@ -48,7 +48,7 @@ void SplitV::configure()
          input()->shape().dim(_axis_value));
 
   auto output_shape = input()->shape();
-  for (int32 i = 0; i < num_split; ++i)
+  for (int32_t i = 0; i < num_split; ++i)
   {
     output_shape.dim(_axis_value) = sizes_data[i];
     _outputs[i]->resize(output_shape);
