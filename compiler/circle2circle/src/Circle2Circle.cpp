@@ -312,6 +312,12 @@ int entry(int argc, char **argv)
     .default_value(false)
     .help("This will convert single input Transpose to Reshape");
 
+  arser.add_argument("--expand_broadcast_const")
+    .nargs(0)
+    .required(false)
+    .default_value(false)
+    .help("This will expand broadcastable constant inputs");
+
   arser.add_argument("--convert_nchw_to_nhwc")
     .nargs(0)
     .required(false)
@@ -512,6 +518,8 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::TransformMinMaxToRelu6Pass);
   if (arser.get<bool>("--transform_min_relu_to_relu6"))
     options->enable(Algorithms::TransformMinReluToRelu6Pass);
+  if (arser.get<bool>("--expand_broadcast_const"))
+    options->enable(Algorithms::ExpandBroadcastConst);
 
   if (arser.get<bool>("--mute_warnings"))
     settings->set(luci::UserSettings::Key::MuteWarnings, true);
