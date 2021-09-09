@@ -67,6 +67,7 @@ public:
       SubstitutePadV2ToPad,
       SubstituteSplitVToSplit,
       SubstituteSqueezeToReshape,
+      ExpandBroadcastConst,
       ConvertNCHWToNHWC,
       RemoveUnnecessarySlice,
       RemoveUnnecessaryStridedSlice,

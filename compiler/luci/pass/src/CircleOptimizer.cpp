@@ -17,6 +17,7 @@
 #include "luci/CircleOptimizer.h"
 
 #include "luci/Pass/ConvertNCHWToNHWCPass.h"
+#include "luci/Pass/ExpandBroadcastConstPass.h"
 #include "luci/Pass/FoldAddV2Pass.h"
 #include "luci/Pass/FoldCastPass.h"
 #include "luci/Pass/FoldDepthwiseConv2DPass.h"
@@ -286,6 +287,10 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   if (_options->query(Options::Algorithm::ShuffleWeightTo16x1Float32))
   {
     phase.emplace_back(std::make_unique<luci::ShuffleWeightTo16x1Float32Pass>());
+  }
+  if (_options->query(Options::Algorithm::ExpandBroadcastConst))
+  {
+    phase.emplace_back(std::make_unique<luci::ExpandBroadcastConstPass>());
   }
   if (_options->query(Options::Algorithm::RemoveFakeQuant))
   {

@@ -46,6 +46,7 @@ TEST(CircleOptimizerTest, optimize_algorithms)
   options->enable(Algorithms::SubstituteStridedSliceToReshape);
   options->enable(Algorithms::SubstituteTransposeToReshape);
   options->enable(Algorithms::ConvertNCHWToNHWC);
+  options->enable(Algorithms::ExpandBroadcastConst);
 
   o.optimize(&g);
 
