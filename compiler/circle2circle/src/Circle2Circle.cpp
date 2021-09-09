@@ -288,6 +288,12 @@ int entry(int argc, char **argv)
     .default_value(false)
     .help("This will convert certain condition PadV2 to Pad");
 
+  arser.add_argument("--substitute_splitv_to_split")
+    .nargs(0)
+    .required(false)
+    .default_value(false)
+    .help("This will convert certain condition SplitV to Split operator");
+
   arser.add_argument("--substitute_squeeze_to_reshape")
     .nargs(0)
     .required(false)
@@ -494,6 +500,8 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::SubstitutePackToReshape);
   if (arser.get<bool>("--substitute_padv2_to_pad"))
     options->enable(Algorithms::SubstitutePadV2ToPad);
+  if (arser.get<bool>("--substitute_splitv_to_split"))
+    options->enable(Algorithms::SubstituteSplitVToSplit);
   if (arser.get<bool>("--substitute_squeeze_to_reshape"))
     options->enable(Algorithms::SubstituteSqueezeToReshape);
   if (arser.get<bool>("--substitute_strided_slice_to_reshape"))
