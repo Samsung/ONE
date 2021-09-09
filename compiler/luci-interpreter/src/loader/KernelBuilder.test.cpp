@@ -68,6 +68,7 @@
 #include <kernels/Softmax.h>
 #include <kernels/SpaceToDepth.h>
 #include <kernels/Split.h>
+#include <kernels/SplitV.h>
 #include <kernels/Sqrt.h>
 #include <kernels/SquaredDifference.h>
 #include <kernels/Squeeze.h>
@@ -1089,6 +1090,31 @@ TEST_F(KernelBuilderTest, Split)
   checkTensor(kernel->input(), input);
   checkTensor(kernel->output(0), output1);
   checkTensor(kernel->output(1), output2);
+}
+
+TEST_F(KernelBuilderTest, SplitV)
+{
+  auto *input = createInputNode();
+  auto *size_splits = createInputNode();
+  auto *axis = createInputNode();
+  auto *op = createNode<luci::CircleSplitV>();
+  auto *output0 = createNodeOut<luci::CircleSplitVOut>(op, 0);
+  auto *output1 = createNodeOut<luci::CircleSplitVOut>(op, 1);
+
+  op->input(input);
+  op->size_splits(size_splits);
+  op->split_dim(axis);
+
+  op->num_split(2);
+
+  auto kernel = buildKernel<kernels::SplitV>(op);
+  ASSERT_THAT(kernel, NotNull());
+
+  checkTensor(kernel->input(), input);
+  checkTensor(kernel->size_splits(), size_splits);
+  checkTensor(kernel->axis(), axis);
+  checkTensor(kernel->output(0), output0);
+  checkTensor(kernel->output(1), output1);
 }
 
 TEST_F(KernelBuilderTest, Sqrt)
