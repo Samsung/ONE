@@ -29,6 +29,9 @@ class DepthToSpaceVariation : public GenModelTest,
 {
 };
 
+// Input shape: {1, 1, 2, 4}
+// Block size: 2
+// Output shape: {1, 2, 4, 1}
 INSTANTIATE_TEST_CASE_P(
   GenModelTest, DepthToSpaceVariation,
   ::testing::Values(
@@ -52,9 +55,6 @@ INSTANTIATE_TEST_CASE_P(
       uniformTCD<int8_t>({{1, 2, 3, 4, 5, 6, 7, 8}}, {{1, 2, 5, 6, 3, 4, 7, 8}}),
       circle::TensorType::TensorType_INT8, 1.0f, -2}));
 
-// Input shape: {1, 1, 2, 4}
-// Block size: 2
-// Output shape: {1, 2, 4, 1}
 TEST_P(DepthToSpaceVariation, Test)
 {
   auto &param = GetParam();
@@ -72,12 +72,13 @@ TEST_P(DepthToSpaceVariation, Test)
   SUCCEED();
 }
 
-TEST_F(GenModelTest, neg_OneOp_DepthToSpace_Blocksize)
+TEST_P(DepthToSpaceVariation, neg_Blocksize)
 {
+  auto &param = GetParam();
+
   CircleGen cgen;
-  circle::TensorType data_type = circle::TensorType::TensorType_FLOAT32;
-  int in = cgen.addTensor({{1, 1, 2, 4}, data_type});
-  int out = cgen.addTensor({{1, 2, 4, 1}, data_type});
+  int in = cgen.addTensor({{1, 1, 2, 4}, param.type}, param.scale, param.zero_point);
+  int out = cgen.addTensor({{1, 2, 4, 1}, param.type}, param.scale, param.zero_point);
   cgen.addOperatorDepthToSpace({{in}, {out}}, -2);
   cgen.setInputsAndOutputs({in}, {out});
 
