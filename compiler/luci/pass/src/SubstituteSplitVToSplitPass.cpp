@@ -1,4 +1,3 @@
-
 /*
  * Copyright (c) 2021 Samsung Electronics Co., Ltd. All Rights Reserved
  *
@@ -34,6 +33,10 @@ void copy_quantparam(luci::CircleNode *dst, const luci::CircleNode *src)
     dst->quantparam(std::make_unique<luci::CircleQuantParam>(*q));
 }
 
+// SplitV is substituted to Split if the contents of size_splits are all same
+// For example,
+// size_splits = [32, 32] -> substitute
+// size_splits = [31, 33] -> do not substitute
 bool resolve_splitv(luci::CircleSplitV *sv)
 {
   auto size_splits = dynamic_cast<luci::CircleConst *>(sv->size_splits());
