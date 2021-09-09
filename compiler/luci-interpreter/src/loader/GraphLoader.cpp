@@ -82,6 +82,7 @@ bool isExecutableNode(const luci::CircleNode *node)
     // The following nodes denote outputs of multiple-output nodes.
     case luci::CircleOpcode::CIRCLEIFOUT:
     case luci::CircleOpcode::CIRCLESPLITOUT:
+    case luci::CircleOpcode::CIRCLESPLITVOUT:
     case luci::CircleOpcode::CIRCLEUNPACKOUT:
     case luci::CircleOpcode::CIRCLEWHILEOUT:
       return false;
