@@ -28,7 +28,6 @@ test:
       - excludes :
         - Fill.cc
         - If.cc
-        - Pad.cc
         - Reduce.cc
         - ResizeBilinear.c
         - While.cc
