@@ -25,12 +25,6 @@ test:
         any: true
       - extension: cc
         any: true
-      - excludes :
-        - Fill.cc
-        - If.cc
-        - Reduce.cc
-        - ResizeBilinear.c
-        - While.cc
     testCase:
       - condition:
         - functionName:
