@@ -32,7 +32,6 @@ test:
         - Pad.cc
         - Reduce.cc
         - ResizeBilinear.c
-        - Slice.cc
         - While.cc
     testCase:
       - condition:
