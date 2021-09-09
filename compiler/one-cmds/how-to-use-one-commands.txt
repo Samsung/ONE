@@ -194,6 +194,7 @@ Current transformation options are
   Note that it only converts weights whose row is a multiple of 16.
 - substitute_pack_to_reshape : This will convert single input Pack to Reshape.
 - substitute_padv2_to_pad : This will convert certain condition PadV2 to Pad.
+- substitute_splitv_to_split : This will convert certain condition SplitV to Split.
 - substitute_squeeze_to_reshape : This will convert certain condition Squeeze to Reshape.
 - substitute_strided_slice_to_reshape : This will convert certain condition StridedSlice to Reshape.
 - substitute_transpose_to_reshape : This will convert certain condition Transpose to Reshape.
