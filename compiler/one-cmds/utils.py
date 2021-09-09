@@ -76,6 +76,7 @@ class _CONSTANT:
          ' Note that it only converts weights whose row is a multiple of 16'),
         ('substitute_pack_to_reshape', 'convert single input Pack op to Reshape op'),
         ('substitute_padv2_to_pad', 'convert certain condition PadV2 to Pad'),
+        ('substitute_splitv_to_split', 'convert certain condition SplitV to Split'),
         ('substitute_squeeze_to_reshape', 'convert certain condition Squeeze to Reshape'),
         ('substitute_strided_slice_to_reshape',
          'convert certain condition StridedSlice to Reshape'),
