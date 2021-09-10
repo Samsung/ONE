@@ -29,14 +29,21 @@ class RuntimeGraph::TensorAllocPlan
   std::vector<std::vector<Tensor *>> _alloc_plan;
   std::vector<std::vector<Tensor *>> _dealloc_plan;
   bool _valid = false;
+  IMemoryManager *_memory_manager;
 
 public:
+  explicit TensorAllocPlan(IMemoryManager *memory_manager);
   void invalidate() { _valid = false; }
   bool isValid() const { return _valid; }
   void build(const RuntimeGraph &graph);
   void allocate(size_t kernel_index) const;
   void deallocate(size_t kernel_index) const;
 };
+
+RuntimeGraph::TensorAllocPlan::TensorAllocPlan(IMemoryManager *memory_manager)
+  : _memory_manager(memory_manager)
+{
+}
 
 void RuntimeGraph::TensorAllocPlan::build(const RuntimeGraph &graph)
 {
@@ -93,8 +100,9 @@ void RuntimeGraph::TensorAllocPlan::deallocate(size_t kernel_index) const
   }
 }
 
-RuntimeGraph::RuntimeGraph(RuntimeModule *owning_module)
-  : _owning_module(owning_module), _tensor_alloc_plan(std::make_unique<TensorAllocPlan>())
+RuntimeGraph::RuntimeGraph(RuntimeModule *owning_module, IMemoryManager *memory_manager)
+  : _owning_module(owning_module), _memory_manager(memory_manager),
+    _tensor_alloc_plan(std::make_unique<TensorAllocPlan>(memory_manager))
 {
 }
 
@@ -140,7 +148,8 @@ void RuntimeGraph::execute() const
   {
     for (const Tensor *input_tensor : getInputTensors())
     {
-      event_notifier->postTensorWrite(input_tensor);
+      if (input_tensor->is_observable())
+        event_notifier->postTensorWrite(input_tensor);
     }
   }
 
@@ -169,7 +178,7 @@ void RuntimeGraph::execute() const
 
     for (const Tensor *tensor : kernel->getOutputTensors())
     {
-      if (event_notifier != nullptr)
+      if (event_notifier != nullptr && tensor->is_observable())
       {
         event_notifier->postTensorWrite(tensor);
       }

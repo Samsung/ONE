@@ -23,9 +23,10 @@ namespace luci_interpreter
 
 ModuleLoader::ModuleLoader(const luci::Module *module, RuntimeModule *runtime_module,
                            RuntimeToIR &runtime_to_ir,
-                           std::unordered_map<const loco::Node *, Tensor *> &node_to_tensor)
+                           std::unordered_map<const loco::Node *, Tensor *> &node_to_tensor,
+                           IMemoryManager *memory_manager)
   : _module(module), _runtime_module(runtime_module), _runtime_to_ir(runtime_to_ir),
-    _node_to_tensor(node_to_tensor)
+    _node_to_tensor(node_to_tensor), _memory_manager(memory_manager)
 {
 }
 
@@ -35,14 +36,14 @@ void ModuleLoader::load()
   // process for control flow nodes.
   for (size_t i = 0; i < _module->size(); ++i)
   {
-    _graph_to_runtime_graph.emplace(_module->graph(i), _runtime_module->addGraph());
+    _graph_to_runtime_graph.emplace(_module->graph(i), _runtime_module->addGraph(_memory_manager));
   }
   for (size_t i = 0; i < _module->size(); ++i)
   {
     const loco::Graph *graph = _module->graph(i);
     RuntimeGraph *runtime_graph = _graph_to_runtime_graph.at(graph);
     GraphLoader loader(graph, runtime_graph, _runtime_to_ir, _graph_to_runtime_graph,
-                       _node_to_tensor);
+                       _node_to_tensor, _memory_manager);
     loader.loadTensors();
     loader.initInputOutputTensors();
     loader.loadOperators();

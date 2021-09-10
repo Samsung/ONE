@@ -18,6 +18,7 @@
 #define LUCI_INTERPRETER_CORE_RUNTIMEGRAPH_H
 
 #include "luci_interpreter/core/Tensor.h"
+#include "luci_interpreter/MemoryManager.h"
 #include "core/Kernel.h"
 
 #include <memory>
@@ -35,7 +36,7 @@ private:
   friend class TensorAllocPlan;
 
 public:
-  explicit RuntimeGraph(RuntimeModule *owning_module);
+  explicit RuntimeGraph(RuntimeModule *owning_module, IMemoryManager *memory_manager);
   ~RuntimeGraph();
 
   Tensor *addTensor(std::unique_ptr<Tensor> &&tensor);
@@ -51,6 +52,7 @@ public:
   void execute() const;
 
 private:
+  IMemoryManager *_memory_manager;
   RuntimeModule *_owning_module;
   std::vector<std::unique_ptr<Tensor>> _tensors;
   std::vector<Tensor *> _input_tensors;
