@@ -103,7 +103,7 @@ void getOplist(std::string op, std::vector<int> &oplist)
 {
   char op_buf[1000];
   strcpy(op_buf, op.c_str());
-  char* op_next = op_buf;
+  char *op_next = op_buf;
 
   // tokenize by ,
   char *tok_comma = strtok_r(op_buf, ",", &op_next);
@@ -111,7 +111,7 @@ void getOplist(std::string op, std::vector<int> &oplist)
   {
     char buf[100];
     strcpy(buf, tok_comma);
-    char* buf_next = buf;
+    char *buf_next = buf;
 
     if (isdigit(tok_comma[0]))
     {
@@ -138,10 +138,11 @@ void getOplist(std::string op, std::vector<int> &oplist)
         oplist.push_back(-1);
       }
       // "n" : select n
-      else {
+      else
+      {
         oplist.push_back(start);
       }
-    }  
+    }
     // ":-n" : select 0~n
     else if (tok_comma[0] == ':')
     {
@@ -158,18 +159,17 @@ void getOplist(std::string op, std::vector<int> &oplist)
     {
       std::cout << "Error: Cannot get operators" << std::endl;
     }
-    
+
     tok_comma = strtok_r(nullptr, ",", &op_next);
   }
 
   sort(oplist.begin(), oplist.end());
 
   std::cout << "result: ";
-  for (int i=0; i<oplist.size(); i++)
+  for (int i = 0; i < oplist.size(); i++)
     std::cout << oplist[i] << " ";
   std::cout << std::endl;
 }
-
 
 int entry(int argc, char **argv)
 {
