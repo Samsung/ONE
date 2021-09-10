@@ -30,8 +30,9 @@ public:
   ~OpSelector() = default;
 
 public:
-  std::unique_ptr<luci::Module> select_nodes(const circle::Model *circle_model,
-                                       std::map<uint32_t, std::string> &id_name_selected_nodes);
+  std::unique_ptr<luci::Module>
+  select_nodes(const circle::Model *circle_model,
+               std::map<uint32_t, std::string> &id_name_selected_nodes);
 };
 
 } // namespace opselector
