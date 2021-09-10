@@ -10,6 +10,13 @@ set(SOURCES
     RuntimeToIR.h
     nodes/Builders.h)
 
+# include kernel specific builders
+macro(REGISTER_KERNEL NODE)
+  list(APPEND SOURCES "nodes/${NODE}.cpp")
+endmacro(REGISTER_KERNEL)
+include(${KERNEL_REGISTER_FILE})
+message("SOURCES" ${SOURCES})
+
 add_library(${LUCI_INTERPRETER_LOADER} STATIC ${SOURCES})
 set_target_properties(${LUCI_INTERPRETER_LOADER} PROPERTIES POSITION_INDEPENDENT_CODE ON)
 target_include_directories(${LUCI_INTERPRETER_LOADER} PUBLIC "${LUCI_INTERPRETER_PAL_DIR}")
