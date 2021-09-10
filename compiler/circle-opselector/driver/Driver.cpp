@@ -99,6 +99,78 @@ void split_name_input(const std::string &str, std::vector<std::string> &by_name)
     by_name.push_back(str_buf);
 }
 
+void getOplist(std::string op, std::vector<int> &oplist)
+{
+  char op_buf[1000];
+  strcpy(op_buf, op.c_str());
+  char* op_next = op_buf;
+
+  // tokenize by ,
+  char *tok_comma = strtok_r(op_buf, ",", &op_next);
+  while (tok_comma != nullptr)
+  {
+    char buf[100];
+    strcpy(buf, tok_comma);
+    char* buf_next = buf;
+
+    if (isdigit(tok_comma[0]))
+    {
+      int start, end;
+      // "n-m" : select n~m
+      char *tok_hypen = strtok_r(buf, "-", &buf_next);
+      if (tok_hypen && isdigit(tok_hypen[0]))
+      {
+        start = atoi(tok_hypen);
+      }
+
+      tok_hypen = strtok_r(nullptr, "-", &buf_next);
+      // "n-m" : select n~m
+      if (tok_hypen && isdigit(tok_hypen[0]))
+      {
+        end = atoi(tok_hypen);
+        for (int i = start; i <= end; i++)
+          oplist.push_back(i);
+      }
+      // "n-:" : select n~
+      else if (tok_hypen && tok_hypen[0] == ':')
+      {
+        oplist.push_back(start);
+        oplist.push_back(-1);
+      }
+      // "n" : select n
+      else {
+        oplist.push_back(start);
+      }
+    }  
+    // ":-n" : select 0~n
+    else if (tok_comma[0] == ':')
+    {
+      char *tok_hypen = strtok_r(buf, "-", &buf_next);
+      tok_hypen = strtok_r(nullptr, "-", &buf_next);
+      if (tok_hypen && isdigit(tok_hypen[0]))
+      {
+        int end = atoi(tok_hypen);
+        for (int i = 0; i <= end; i++)
+          oplist.push_back(i);
+      }
+    }
+    else
+    {
+      std::cout << "Error: Cannot get operators" << std::endl;
+    }
+    
+    tok_comma = strtok_r(nullptr, ",", &op_next);
+  }
+
+  sort(oplist.begin(), oplist.end());
+
+  std::cout << "result: ";
+  for (int i=0; i<oplist.size(); i++)
+    std::cout << oplist[i] << " ";
+  std::cout << std::endl;
+}
+
+
 int entry(int argc, char **argv)
 {
   // TODO Add new option names!
@@ -126,6 +198,14 @@ int entry(int argc, char **argv)
     .nargs(1)
     .type(arser::DataType::STR)
     .help("Input operation name to select nodes.");
+  arser.add_argument("--select")
+    .nargs(1)
+    .type(arser::DataType::STR)
+    .help("Selecte opeartors from the input circle");
+  arser.add_argument("--deselect")
+    .nargs(1)
+    .type(arser::DataType::STR)
+    .help("Exclude operators from the input circle");
 
   try
   {
@@ -145,6 +225,9 @@ int entry(int argc, char **argv)
 
   std::vector<int> by_id;
   std::vector<std::string> by_name;
+  std::string op;
+  std::vector<int> oplist;
+  int select_mode = -1;
 
   if (arser["--by_id"])
   {
@@ -155,6 +238,18 @@ int entry(int argc, char **argv)
   {
     operator_input = arser.get<std::string>("--by_name");
     split_name_input(operator_input, by_name);
+  }
+  if (arser["--select"])
+  {
+    op = arser.get<std::string>("--select");
+    select_mode = 0;
+    getOplist(op, oplist);
+  }
+  if (arser["--deselect"])
+  {
+    op = arser.get<std::string>("--deselect");
+    select_mode = 1;
+    getOplist(op, oplist);
   }
 
   // option parsing test code.
