@@ -1,7 +1,7 @@
 nnas_include(TargetRequire)
 
 unset(REQUIRED_TARGETS)
-list(APPEND REQUIRED_TARGETS mio_tflite260)
+list(APPEND REQUIRED_TARGETS mio_tflite)
 list(APPEND REQUIRED_TARGETS mio_circle)
 TargetRequire_Return(${REQUIRED_TARGETS})
 
@@ -12,7 +12,7 @@ target_include_directories(tflite2circle PRIVATE include)
 target_include_directories(tflite2circle PRIVATE src)
 target_link_libraries(tflite2circle arser)
 target_link_libraries(tflite2circle safemain)
-target_link_libraries(tflite2circle mio_tflite260)
+target_link_libraries(tflite2circle mio_tflite)
 target_link_libraries(tflite2circle mio_circle)
 target_link_libraries(tflite2circle vconone)
 target_link_libraries(tflite2circle nncc_coverage)
