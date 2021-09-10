@@ -1,6 +1,6 @@
 # Circle Op-Selector
 
-`Circle Op-Selector` is a tool for creating new circle model by various methods to select nodes .
+`Circle Op-Selector` is a tool for creating new circle model by various methods to select nodes.
 
 ## Example
 
