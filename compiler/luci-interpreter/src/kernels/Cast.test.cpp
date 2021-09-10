@@ -51,6 +51,7 @@ template <typename T>
 void CheckBoolTo(std::initializer_list<int32_t> shape, std::initializer_list<bool> input_data,
                  std::initializer_list<T> output_data)
 {
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<SimpleMemoryManager>();
   constexpr DataType input_type = loco::DataType::BOOL;
   constexpr DataType output_type = getElementType<T>();
   std::vector<typename DataTypeImpl<input_type>::Type> input_data_converted;
@@ -59,11 +60,13 @@ void CheckBoolTo(std::initializer_list<int32_t> shape, std::initializer_list<boo
     input_data_converted.push_back(elem);
   }
 
-  Tensor input_tensor = makeInputTensor<input_type>(shape, input_data_converted);
+  Tensor input_tensor =
+    makeInputTensor<input_type>(shape, input_data_converted, memory_manager.get());
   Tensor output_tensor = makeOutputTensor(output_type);
 
   Cast kernel(&input_tensor, &output_tensor);
   kernel.configure();
+  memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorData<T>(output_tensor), ::testing::ElementsAreArray(output_data));

@@ -685,7 +685,8 @@ std::unique_ptr<Kernel> build_kernel_CircleMean(const luci::CircleNode *circle_n
     std::make_unique<Tensor>(DataType::S32, Shape({}), AffineQuantization{}, "");
   temp_index_unique->set_observable(false);
   temp_index_unique->set_data_buffer(nullptr);
-  Tensor *temp_index = helper.getRuntimeGraph(node->graph())->addTensor(std::move(temp_index_unique));
+  Tensor *temp_index =
+    helper.getRuntimeGraph(node->graph())->addTensor(std::move(temp_index_unique));
 
   auto resolved_axes_unique =
     std::make_unique<Tensor>(DataType::S32, Shape({}), AffineQuantization{}, "");
