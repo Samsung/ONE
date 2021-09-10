@@ -14,23 +14,26 @@
  * limitations under the License.
  */
 
-#ifndef __CIRCLE_OPSELECTOR_SELECT_PASS__FUNCTION1__
-#define __CIRCLE_OPSELECTOR_SELECT_PASS__FUNCTION1__
-
-#include "SinglePass.h"
+#ifndef __CIRCLE_OPSELECTOR_SELECT_PASS__OPSELECTOR__
+#define __CIRCLE_OPSELECTOR_SELECT_PASS__OPSELECTOR__
 
 #include <luci/IR/Module.h>
+
+#include <luci/Importer.h>
 
 namespace opselector
 {
 
-class Function1:public SinglePass
+class OpSelector
 {
 public:
-    virtual bool run(luci::Module *module);
+  ~OpSelector() = default;
+
+public:
+  std::unique_ptr<luci::Module> select_nodes(const circle::Model *circle_model,
+                                       std::map<uint32_t, std::string> &id_name_selected_nodes);
 };
 
-}
+} // namespace opselector
 
-#endif // __CIRCLE_OPSELECTOR_SELECT_PASS__FUNCTION1__
-
+#endif // __CIRCLE_OPSELECTOR_SELECT_PASS__OPSELECTOR__

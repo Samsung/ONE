@@ -13,13 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "Function1.h"
+
+#include "OpSelector.h"
 
 namespace opselector
 {
-    bool Function1::run(luci::Module* module)
-    {
-        return false;
-    }
+
+std::unique_ptr<luci::Module> select_nodes(const circle::Model *circle_model,
+                                     std::map<uint32_t, std::string> &id_name_selected_nodes)
+{
+  auto module = luci::make_module();
+  return module;
 }
 
+} // namespace opselector
