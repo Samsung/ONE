@@ -13,13 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "Function1.h"
+
+#ifndef __CIRCLE_OPSELECTOR_SELECT_PASS__OPSELECTOR__
+#define __CIRCLE_OPSELECTOR_SELECT_PASS__OPSELECTOR__
+
+#include <luci/IR/Module.h>
+
+#include <luci/Importer.h>
 
 namespace opselector
 {
-    bool Function1::run(luci::Module* module)
-    {
-        return false;
-    }
-}
 
+class OpSelector
+{
+public:
+  ~OpSelector() = default;
+
+public:
+  std::unique_ptr<Module> select_nodes(const circle::Model *circle_model,
+                                       std::map<uint32_t, std::string> &id_name_selected_nodes);
+};
+
+} // namespace opselector
+
+#endif // __CIRCLE_OPSELECTOR_SELECT_PASS__OPSELECTOR__

@@ -12,4 +12,6 @@ target_link_libraries(opselector luci_export)
 target_link_libraries(opselector arser)
 target_link_libraries(opselector vconone)
 
+target_link_libraries(opselector luci_service)
+
 install(TARGETS opselector DESTINATION bin)
