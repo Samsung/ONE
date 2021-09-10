@@ -45,5 +45,8 @@ one-import tf \
 --input_arrays input --input_shapes "0,299,299,3" \
 --output_arrays InceptionV3/Predictions/Reshape_1 > ${filename}.log 2>&1
 
-echo "${filename_ext} FAILED"
-exit 255
+# NOTE TF2.3.0 fails(which is expected) but doesn't for TF2.5(4?) and above
+# https://github.com/tensorflow/tensorflow/issues/51756 for details
+# TODO exit 255
+echo "${filename_ext} SKIPPED"
+exit 0
