@@ -1,3 +1,3 @@
 require("arser")
-require("mio-tflite260")
+require("mio-tflite")
 require("safemain")
