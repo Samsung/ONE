@@ -1157,6 +1157,7 @@ void quantize_const_inputs(luci::CircleNode *node, loco::DataType output_type)
     case luci::CircleOpcode::REVERSE_SEQUENCE:
     case luci::CircleOpcode::SLICE:
     case luci::CircleOpcode::SPACE_TO_BATCH_ND:
+    case luci::CircleOpcode::SPLIT_V:
     case luci::CircleOpcode::STRIDED_SLICE:
     case luci::CircleOpcode::SUM:
     case luci::CircleOpcode::TILE:

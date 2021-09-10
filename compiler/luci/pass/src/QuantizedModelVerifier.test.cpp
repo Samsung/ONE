@@ -189,6 +189,12 @@ void set_minmax_to_non_const(loco::Graph *g, float min, float max)
     if (split_node != nullptr)
       continue;
 
+    // Min/Max is not recorded for SplitV
+    // See MinMaxObserver.cpp in record_minmax module
+    auto splitv_node = dynamic_cast<luci::CircleSplitV *>(node);
+    if (splitv_node != nullptr)
+      continue;
+
     auto circle_node = loco::must_cast<luci::CircleNode *>(node);
     auto qparam = std::make_unique<luci::CircleQuantParam>();
     {
@@ -407,6 +413,38 @@ public:
 private:
   luci::CircleSplit *_split = nullptr;
   luci::CircleSplitOut *_split_o1 = nullptr;
+  luci::CircleConst *_split_dim = nullptr;
+};
+
+class SplitVTestGraph final : public luci::test::TestIOGraph
+{
+public:
+  void init(void)
+  {
+    TestIOGraph::init({1, 32}, {32});
+    _size_splits = create_dummy_const<Type::S32>(g(), {1});
+    _split_dim = create_dummy_const<Type::S32>(g(), {1});
+    _splitv = g()->nodes()->create<luci::CircleSplitV>();
+    {
+      _splitv->input(input());
+      _splitv->size_splits(_size_splits);
+      _splitv->split_dim(_split_dim);
+    }
+    _splitv_o1 = g()->nodes()->create<luci::CircleSplitVOut>();
+    {
+      _splitv_o1->input(_splitv);
+      _splitv_o1->index(0);
+    }
+
+    output()->from(_splitv_o1);
+
+    set_minmax_to_non_const(g(), -1, 1);
+  }
+
+private:
+  luci::CircleSplitV *_splitv = nullptr;
+  luci::CircleSplitVOut *_splitv_o1 = nullptr;
+  luci::CircleConst *_size_splits = nullptr;
   luci::CircleConst *_split_dim = nullptr;
 };
 
@@ -1309,6 +1347,30 @@ TEST(QuantizedModelVerifierTest, Split_wrong_granularity_NEG)
   TEST_WITH_WRONG_GRANULARITY(SplitTestGraph, Type::U8, Granularity::LayerWise);
   TEST_WITH_WRONG_GRANULARITY(SplitTestGraph, Type::U8, Granularity::ChannelWise);
   TEST_WITH_WRONG_GRANULARITY(SplitTestGraph, Type::S16, Granularity::ChannelWise);
+  SUCCEED();
+}
+
+TEST(QuantizedModelVerifierTest, SplitV)
+{
+  TEST_WITH_GRAPH(SplitVTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_GRAPH(SplitVTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_GRAPH(SplitVTestGraph, Type::S16, Granularity::ChannelWise);
+  SUCCEED();
+}
+
+TEST(QuantizedModelVerifierTest, SplitV_wrong_type_NEG)
+{
+  TEST_WITH_WRONG_TYPE(SplitVTestGraph, Type::U8, Granularity::LayerWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(SplitVTestGraph, Type::U8, Granularity::ChannelWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(SplitVTestGraph, Type::S16, Granularity::ChannelWise, Type::U8);
+  SUCCEED();
+}
+
+TEST(QuantizedModelVerifierTest, SplitV_wrong_granularity_NEG)
+{
+  TEST_WITH_WRONG_GRANULARITY(SplitVTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_WRONG_GRANULARITY(SplitVTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_WRONG_GRANULARITY(SplitVTestGraph, Type::S16, Granularity::ChannelWise);
   SUCCEED();
 }
 

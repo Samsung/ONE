@@ -317,6 +317,26 @@ private:
     return true;
   }
 
+  bool visit(const luci::CircleSplitV *node)
+  {
+    // node's output is the input of CircleSplitVOut, thus not quantized
+    RETURN_FALSE_UNLESS(has_type(node->input(), Type::U8))
+    return true;
+  }
+
+  bool visit(const luci::CircleSplitVOut *node)
+  {
+    RETURN_FALSE_UNLESS(has_type(node, Type::U8))
+
+    // SplitVOut has the same qparam with the input of SplitV
+    auto splitv = loco::must_cast<luci::CircleSplitV *>(node->input());
+    auto input = loco::must_cast<luci::CircleNode *>(splitv->input());
+    RETURN_FALSE_UNLESS(node->quantparam());
+    RETURN_FALSE_UNLESS(node->quantparam()->scale[0] == input->quantparam()->scale[0]);
+    RETURN_FALSE_UNLESS(node->quantparam()->zerop[0] == input->quantparam()->zerop[0]);
+    return true;
+  }
+
   bool visit(const luci::CircleStridedSlice *node)
   {
     RETURN_FALSE_UNLESS(has_type(node, Type::U8))
