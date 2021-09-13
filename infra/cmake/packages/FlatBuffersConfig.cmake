@@ -5,6 +5,7 @@ endfunction(_FlatBuffers_import)
 
 function(_FlatBuffers_build)
   if(NOT BUILD_FLATBUFFERS)
+    message(STATUS "FlatBuffersConfig skip: BUILD_FLATBUFFERS OFF")
     return()
   endif(NOT BUILD_FLATBUFFERS)
 
@@ -12,6 +13,7 @@ function(_FlatBuffers_build)
 
   if(NOT FlatBuffersSource_FOUND)
     # Source is not available
+    message(STATUS "FlatBuffersConfig skip: FlatBuffersSource not found")
     return()
   endif(NOT FlatBuffersSource_FOUND)
 
