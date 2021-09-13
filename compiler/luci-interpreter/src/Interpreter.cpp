@@ -77,7 +77,6 @@ Interpreter::Interpreter(const luci::Module *module,
   _event_notifier = std::make_unique<EventNotifierImpl>(*_runtime_to_ir, _observers);
   _runtime_module = std::make_unique<RuntimeModule>(_event_notifier.get());
 
-
   if (memory_manager == nullptr)
   {
     _default_memory_manager = std::make_unique<SimpleMemoryManager>();
@@ -88,7 +87,8 @@ Interpreter::Interpreter(const luci::Module *module,
     _memory_manager = memory_manager;
   }
 
-  ModuleLoader loader(module, _runtime_module.get(), *_runtime_to_ir, _node_to_tensor, _memory_manager);
+  ModuleLoader loader(module, _runtime_module.get(), *_runtime_to_ir, _node_to_tensor,
+                      _memory_manager);
   loader.load();
 }
 
