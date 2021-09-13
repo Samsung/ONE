@@ -26,7 +26,7 @@ function(_FlatBuffers_build)
                       INSTALL_DIR ${EXT_OVERLAY_DIR}
                       BUILD_FLAGS ${ADDITIONAL_CXX_FLAGS}
                       IDENTIFIER  "1.10-fix2"
-                      EXTRA_OPTS "-DFLATBUFFERS_BUILD_TESTS:BOOL=OFF"
+                      EXTRA_OPTS "-DFLATBUFFERS_BUILD_TESTS:BOOL=OFF -DPOSITION_INDEPENDENT_CODE:BOOL=ON"
                       PKG_NAME    "FLATBUFFERS")
 
 endfunction(_FlatBuffers_build)
