@@ -324,6 +324,19 @@ private:
     return true;
   }
 
+  bool visit(const luci::CircleSplitV *node)
+  {
+    // node's output is the input of CircleSplitVOut, thus not quantized
+    RETURN_FALSE_UNLESS(is_lwq(node->input()));
+    return true;
+  }
+
+  bool visit(const luci::CircleSplitVOut *node)
+  {
+    RETURN_FALSE_UNLESS(is_lwq(node));
+    return true;
+  }
+
   bool visit(const luci::CircleStridedSlice *node)
   {
     RETURN_FALSE_UNLESS(is_lwq(node));
