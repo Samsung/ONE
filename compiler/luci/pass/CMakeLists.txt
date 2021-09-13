@@ -17,6 +17,7 @@ target_link_libraries(luci_pass PRIVATE mio_tflite_inc)
 target_link_libraries(luci_pass PRIVATE nncc_common)
 target_link_libraries(luci_pass PRIVATE pepper_csv2vec)
 target_link_libraries(luci_pass PRIVATE oops)
+set_property(TARGET luci_pass PROPERTY POSITION_INDEPENDENT_CODE ON)
 install(TARGETS luci_pass DESTINATION lib)
 install(DIRECTORY include/ DESTINATION include
         FILES_MATCHING PATTERN "*.h")
