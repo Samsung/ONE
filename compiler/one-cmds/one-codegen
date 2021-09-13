@@ -28,6 +28,7 @@ import os
 import subprocess
 import sys
 import tempfile
+import shutil
 
 import utils as _utils
 
@@ -49,6 +50,7 @@ def _get_backends_list():
     The list where `one-codegen` finds its backends
     - `bin` folder where `one-codegen` exists
     - `backends` folder
+    - System path
 
     NOTE If there are backends of the same name in different places,
      the closer to the top in the list, the higher the priority.
@@ -150,6 +152,10 @@ def main():
     for cand in backends_list:
         if ntpath.basename(cand) == backend_base:
             codegen_path = cand
+    if not codegen_path:
+        # Find backend from system path
+        codegen_path = shutil.which(backend_base)
+
     if not codegen_path:
         raise FileNotFoundError(backend_base + ' not found')
     codegen_cmd = [codegen_path] + backend_args + unknown_args
