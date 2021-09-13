@@ -150,6 +150,7 @@ one-optimize provides network or operator transformation shown below.
 
 Current transformation options are
 - disable_validation : This will turn off operator validations.
+- expand_broadcast_const : This will expand broadcastable constant node inputs
 - fold_add_v2 : This removes AddV2 operation which can be folded
 - fold_cast : This removes Cast operation which can be folded
 - fold_dequantize : This removes Dequantize operation which can be folded
