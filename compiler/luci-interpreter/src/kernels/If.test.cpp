@@ -32,7 +32,7 @@ using namespace testing;
 
 RuntimeGraph *buildAddSubgraph(RuntimeModule *module)
 {
-  RuntimeGraph *graph = module->addGraph();
+  RuntimeGraph *graph = module->addGraph(nullptr);
   Tensor *input1 = graph->addTensor(
     std::make_unique<Tensor>(DataType::FLOAT32, Shape{}, AffineQuantization{}, ""));
   Tensor *input2 = graph->addTensor(
@@ -52,7 +52,7 @@ RuntimeGraph *buildAddSubgraph(RuntimeModule *module)
 
 RuntimeGraph *buildMulSubgraph(RuntimeModule *module)
 {
-  RuntimeGraph *graph = module->addGraph();
+  RuntimeGraph *graph = module->addGraph(nullptr);
   Tensor *input1 = graph->addTensor(
     std::make_unique<Tensor>(DataType::FLOAT32, Shape{}, AffineQuantization{}, ""));
   Tensor *input2 = graph->addTensor(

@@ -32,7 +32,7 @@ using namespace testing;
 
 RuntimeGraph *buildCondSubgraph(RuntimeModule *module, DataType dtype, Tensor *input_cond)
 {
-  RuntimeGraph *graph = module->addGraph();
+  RuntimeGraph *graph = module->addGraph(nullptr);
   Tensor *input =
     graph->addTensor(std::make_unique<Tensor>(dtype, Shape{}, AffineQuantization{}, ""));
   Tensor *output =
@@ -48,7 +48,7 @@ RuntimeGraph *buildCondSubgraph(RuntimeModule *module, DataType dtype, Tensor *i
 
 RuntimeGraph *buildBodySubgraph(RuntimeModule *module, DataType dtype, Tensor *input_add)
 {
-  RuntimeGraph *graph = module->addGraph();
+  RuntimeGraph *graph = module->addGraph(nullptr);
   Tensor *input =
     graph->addTensor(std::make_unique<Tensor>(dtype, Shape{}, AffineQuantization{}, ""));
   Tensor *output =
