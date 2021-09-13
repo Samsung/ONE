@@ -45,7 +45,7 @@ void Conv2D::configure()
   // (3) | uint8 uint8  int32 uint8  | quantized
   // (4) | int8  int8   int32 int8   | quantized per channel
   //
-  // We only support (1) and (3) for now, and additionally the following:
+  // We only support (1), (3) and (4) for now, and additionally the following:
   //     | input filter bias  output |
   // ----+---------------------------+
   // (5) | int16 int16  int64 int16  |
@@ -57,6 +57,18 @@ void Conv2D::configure()
   else if (input()->element_type() == DataType::U8 && filter()->element_type() == DataType::U8)
   {
     LUCI_INTERPRETER_CHECK(bias() == nullptr || bias()->element_type() == DataType::S32);
+  }
+  else if (input()->element_type() == DataType::S8 && filter()->element_type() == DataType::S8)
+  {
+    LUCI_INTERPRETER_CHECK(bias() == nullptr || bias()->element_type() == DataType::S32);
+    LUCI_INTERPRETER_CHECK(filter()->shape().num_dims() == 4);
+    LUCI_INTERPRETER_CHECK(filter()->scales().size() ==
+                           static_cast<size_t>(filter()->shape().dim(0)));
+    LUCI_INTERPRETER_CHECK(filter()->shape().dim(0) == filter()->scales().size());
+    for (auto zerop : filter()->zero_points())
+    {
+      LUCI_INTERPRETER_CHECK(zerop == 0);
+    }
   }
   else if (input()->element_type() == DataType::S16 && filter()->element_type() == DataType::S16)
   {
@@ -146,6 +158,9 @@ void Conv2D::execute() const
                                static_cast<size_t>(filter()->shape().dim(0)));
         evalQuantizedPerChannel();
       }
+      break;
+    case DataType::S8:
+      evalQuantizedS8PerChannel();
       break;
     case DataType::S16:
       evalQuantizedS16();
@@ -315,6 +330,47 @@ void Conv2D::evalQuantizedPerChannel() const
       }
     }
   }
+}
+
+void Conv2D::evalQuantizedS8PerChannel() const
+{
+  int32_t activation_min{};
+  int32_t activation_max{};
+  calculateActivationRangeQuantized(_params.activation, output(), &activation_min, &activation_max);
+
+  tflite::ConvParams params{};
+  params.padding_values.height = _padding_height;
+  params.padding_values.width = _padding_width;
+  params.stride_height = _params.stride_height;
+  params.stride_width = _params.stride_width;
+  params.dilation_height_factor = _params.dilation_height_factor;
+  params.dilation_width_factor = _params.dilation_width_factor;
+  // The kernel expects filter zero points to be negated.
+  params.input_offset = -input()->zero_point(); // Note the '-'.
+  params.weights_offset = 0;                    // Unused in tflite code
+  params.output_offset = output()->zero_point();
+  params.quantized_activation_min = activation_min;
+  params.quantized_activation_max = activation_max;
+
+  const std::vector<double> effective_output_scales =
+    getQuantizedConvolutionMultiplers(input()->scale(), filter()->scales(), output()->scale());
+
+  std::vector<ChannelQuantMultipliers> quant_multipliers =
+    quantizeMultipliers(effective_output_scales);
+
+  std::vector<int> shifts;
+  std::transform(quant_multipliers.begin(), quant_multipliers.end(), std::back_inserter(shifts),
+                 [](ChannelQuantMultipliers cm) { return cm.shift; });
+  std::vector<int> multipliers;
+  std::transform(quant_multipliers.begin(), quant_multipliers.end(),
+                 std::back_inserter(multipliers),
+                 [](ChannelQuantMultipliers cm) { return cm.multiplier; });
+
+  tflite::reference_integer_ops::ConvPerChannel(
+    params, multipliers.data(), shifts.data(), getTensorShape(input()),
+    getTensorData<int8_t>(input()), getTensorShape(filter()), getTensorData<int8_t>(filter()),
+    getTensorShape(bias()), getTensorData<int32_t>(bias()), getTensorShape(output()),
+    getTensorData<int8_t>(output()));
 }
 
 void Conv2D::evalQuantizedS16() const
