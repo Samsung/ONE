@@ -49,6 +49,39 @@ void Check(std::initializer_list<int32_t> input_shape, std::initializer_list<int
 }
 
 template <>
+void Check<int8_t>(std::initializer_list<int32_t> input_shape,
+                   std::initializer_list<int32_t> weights_shape,
+                   std::initializer_list<int32_t> bias_shape,
+                   std::initializer_list<int32_t> output_shape,
+                   std::initializer_list<float> input_data,
+                   std::initializer_list<float> weights_data,
+                   std::initializer_list<float> bias_data, std::initializer_list<float> output_data)
+{
+  const float quantized_tolerance = getTolerance(-127, 128, 255);
+  std::pair<float, int32_t> input_quant_param = quantizationParams<int8_t>(-63.5, 64);
+  std::pair<float, int32_t> output_quant_param = quantizationParams<int8_t>(-127, 128);
+  Tensor input_tensor = makeInputTensor<DataType::S8>(input_shape, input_quant_param.first,
+                                                      input_quant_param.second, input_data);
+  Tensor weights_tensor = makeInputTensor<DataType::S8>(weights_shape, input_quant_param.first,
+                                                        input_quant_param.second, weights_data);
+  Tensor bias_tensor = makeInputTensor<DataType::S32>(
+    bias_shape, input_quant_param.first * input_quant_param.first, 0, bias_data);
+  Tensor output_tensor =
+    makeOutputTensor(DataType::S8, output_quant_param.first, output_quant_param.second);
+
+  FullyConnectedParams params{};
+  params.activation = Activation::RELU;
+
+  FullyConnected kernel(&input_tensor, &weights_tensor, &bias_tensor, &output_tensor, params);
+  kernel.configure();
+  kernel.execute();
+
+  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(output_shape));
+  EXPECT_THAT(dequantizeTensorData(output_tensor),
+              FloatArrayNear(output_data, quantized_tolerance));
+}
+
+template <>
 void Check<uint8_t>(
   std::initializer_list<int32_t> input_shape, std::initializer_list<int32_t> weights_shape,
   std::initializer_list<int32_t> bias_shape, std::initializer_list<int32_t> output_shape,
@@ -83,7 +116,7 @@ template <typename T> class FullyConnectedTest : public ::testing::Test
 {
 };
 
-using DataTypes = ::testing::Types<float, uint8_t>;
+using DataTypes = ::testing::Types<float, uint8_t, int8_t>;
 TYPED_TEST_CASE(FullyConnectedTest, DataTypes);
 
 TYPED_TEST(FullyConnectedTest, Simple)
