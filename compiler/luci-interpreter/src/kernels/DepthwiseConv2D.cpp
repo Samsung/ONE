@@ -62,7 +62,7 @@ void DepthwiseConv2D::configure()
   else if (input()->element_type() == DataType::S8 && filter()->element_type() == DataType::S8)
   {
     LUCI_INTERPRETER_CHECK(filter()->shape().num_dims() == 4);
-    LUCI_INTERPRETER_CHECK(filter()->shape().dim(3) == filter()->scales().size());
+    LUCI_INTERPRETER_CHECK(static_cast<uint32_t>(filter()->shape().dim(3)) == filter()->scales().size());
     for (auto zerop : filter()->zero_points())
     {
       LUCI_INTERPRETER_CHECK(zerop == 0);
