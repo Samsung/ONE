@@ -67,7 +67,6 @@ void DepthwiseConv2D::configure()
     {
       LUCI_INTERPRETER_CHECK(zerop == 0);
     }
-    LUCI_INTERPRETER_CHECK(filter()->shape().dim(0) == 1);
     LUCI_INTERPRETER_CHECK(bias() == nullptr || bias()->element_type() == DataType::S32);
   }
   else if (input()->element_type() == DataType::S16 && filter()->element_type() == DataType::S16)
@@ -136,7 +135,6 @@ void DepthwiseConv2D::execute() const
       }
       break;
     case DataType::S8:
-      LUCI_INTERPRETER_CHECK(filter()->shape().num_dims() == 4);
       evalQuantizedS8PerChannel();
       break;
     case DataType::S16:
