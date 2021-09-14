@@ -18,7 +18,7 @@
 #include "kernels/Sub.h"
 #include "kernels/Utils.h"
 
-#include <tensorflow/lite/kernels/internal/optimized/legacy_optimized_ops.h>
+#include "PALSub.h"
 
 #include <stdexcept>
 
@@ -74,9 +74,9 @@ void Sub::evalFloat() const
   }
   else
   {
-    tflite::optimized_ops::Sub(params, getTensorShape(input1()), getTensorData<float>(input1()),
-                               getTensorShape(input2()), getTensorData<float>(input2()),
-                               getTensorShape(output()), getTensorData<float>(output()));
+    luci_interpreter_pal::Sub(params, getTensorShape(input1()), getTensorData<float>(input1()),
+                              getTensorShape(input2()), getTensorData<float>(input2()),
+                              getTensorShape(output()), getTensorData<float>(output()));
   }
 }
 

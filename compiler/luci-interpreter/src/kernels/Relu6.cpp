@@ -17,7 +17,7 @@
 #include "kernels/Relu6.h"
 #include "kernels/Utils.h"
 
-#include <tensorflow/lite/kernels/internal/optimized/optimized_ops.h>
+#include "PALRelu6.h"
 
 #include <stdexcept>
 
@@ -63,7 +63,7 @@ void Relu6::evalFloat() const
   auto output_data = getTensorData<float>(output());
   auto output_shape = getTensorShape(output());
 
-  tflite::optimized_ops::Relu6(input_shape, input_data, output_shape, output_data);
+  luci_interpreter_pal::Relu6(input_shape, input_data, output_shape, output_data);
 }
 
 void Relu6::evalQuantized() const
@@ -80,8 +80,8 @@ void Relu6::evalQuantized() const
     std::min(static_cast<int32_t>(std::numeric_limits<uint8_t>::max()),
              params.output_offset + static_cast<int32>(roundf(6.f / output()->scale())));
 
-  tflite::optimized_ops::ReluX(params, getTensorShape(input()), getTensorData<uint8_t>(input()),
-                               getTensorShape(output()), getTensorData<uint8_t>(output()));
+  luci_interpreter_pal::ReluX(params, getTensorShape(input()), getTensorData<uint8_t>(input()),
+                              getTensorShape(output()), getTensorData<uint8_t>(output()));
 }
 
 } // namespace kernels

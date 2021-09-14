@@ -18,7 +18,7 @@
 
 #include "kernels/Utils.h"
 
-#include <tensorflow/lite/kernels/internal/optimized/optimized_ops.h>
+#include "PALLocalResponseNormalization.h"
 
 #include <stdexcept>
 
@@ -52,7 +52,7 @@ void LocalResponseNormalization::execute() const
       op_params.bias = params().bias;
       op_params.alpha = params().alpha;
       op_params.beta = params().beta;
-      tflite::optimized_ops::LocalResponseNormalization(
+      luci_interpreter_pal::LocalResponseNormalization(
         op_params, getTensorShape(input()), getTensorData<float>(input()), getTensorShape(output()),
         getTensorData<float>(output()));
       break;

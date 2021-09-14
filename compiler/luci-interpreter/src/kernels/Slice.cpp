@@ -16,7 +16,7 @@
 
 #include "kernels/Slice.h"
 #include "Utils.h"
-#include <tensorflow/lite/kernels/internal/optimized/optimized_ops.h>
+#include "PALSlice.h"
 
 #include <cassert>
 #include <cstring>
@@ -131,14 +131,13 @@ void Slice::execute() const
   switch (input()->element_type())
   {
     case DataType::FLOAT32:
-      tflite::optimized_ops::Slice(op_params, getTensorShape(input()),
-                                   getTensorData<float>(input()), getTensorShape(output()),
-                                   getTensorData<float>(output()));
+      luci_interpreter_pal::Slice(op_params, getTensorShape(input()), getTensorData<float>(input()),
+                                  getTensorShape(output()), getTensorData<float>(output()));
       break;
     case DataType::U8:
-      tflite::optimized_ops::Slice(op_params, getTensorShape(input()),
-                                   getTensorData<uint8_t>(input()), getTensorShape(output()),
-                                   getTensorData<uint8_t>(output()));
+      luci_interpreter_pal::Slice(op_params, getTensorShape(input()),
+                                  getTensorData<uint8_t>(input()), getTensorShape(output()),
+                                  getTensorData<uint8_t>(output()));
       break;
     default:
       throw std::runtime_error("Unsupported input type.");
