@@ -133,13 +133,19 @@ bool expand_broadcast_const(luci::CircleConst *node)
     switch (circle_successor->opcode())
     {
       case luci::CircleOpcode::ADD:
-        changed = changed || expand_node_input<luci::CircleAdd>(node, circle_successor);
+        if (expand_node_input<luci::CircleAdd>(node, circle_successor))
+          changed = true;
+        break;
       case luci::CircleOpcode::MUL:
-        changed = changed || expand_node_input<luci::CircleMul>(node, circle_successor);
+        if (expand_node_input<luci::CircleMul>(node, circle_successor))
+          changed = true;
+        break;
       case luci::CircleOpcode::DIV:
-        changed = changed || expand_node_input<luci::CircleDiv>(node, circle_successor);
+        if (expand_node_input<luci::CircleDiv>(node, circle_successor))
+          changed = true;
+        break;
       default:
-        continue; // Unsupported successor node
+        break; // Unsupported successor node
     }
   }
 
