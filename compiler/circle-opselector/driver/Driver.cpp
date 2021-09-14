@@ -306,10 +306,21 @@ int entry(int argc, char **argv)
   luci::Importer importer;
   auto module = importer.importModule(circle_model);
 
-  std::unique_ptr<luci::Module> module2 = luci::make_module();
   // TODO Add function
   if (by_id.size())
   {
+    opselector::OpSelector *selector = new opselector::OpSelector();
+    std::map<uint32_t, std::string> _source_table = module.get()->source_table();
+    std::map<uint32_t, std::string> id_name_selected_nodes;
+
+    for(auto id : by_id)
+    {
+      for(auto iter=_source_table.begin();iter!=_source_table.end();iter++)
+        if(iter->first == id)
+          id_name_selected_nodes[iter->first] = iter->second; // {id : name} mapping
+    }
+
+    module = selector->select_nodes(circle_model, id_name_selected_nodes);
   }
   if(by_name.size())
   {
