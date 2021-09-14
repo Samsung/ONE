@@ -238,6 +238,18 @@ public:
     return *this;
   }
 
+  Argument &accumulated(void)
+  {
+    _is_accumulated = true;
+    return *this;
+  }
+
+  Argument &accumulated(bool value)
+  {
+    _is_accumulated = value;
+    return *this;
+  }
+
   Argument &help(std::string help_message)
   {
     _help_message = help_message;
@@ -296,7 +308,9 @@ private:
   std::function<void(void)> _func;
   uint32_t _nargs{1};
   bool _is_required{false};
+  bool _is_accumulated{false};
   std::vector<std::string> _values;
+  std::vector<std::vector<std::string>> _accum_values;
 
   friend class Arser;
   friend std::ostream &operator<<(std::ostream &, const Arser &);
@@ -475,6 +489,11 @@ public:
                                      "You must have missed some argument.");
           arg->second->_values.emplace_back(argv[c++]);
         }
+        // accumulate values
+        if (arg->second->_is_accumulated)
+        {
+          arg->second->_accum_values.emplace_back(arg->second->_values);
+        }
         if (arg->second->_nargs == 0)
         {
           // TODO std::boolalpha for true or false
@@ -493,12 +512,18 @@ public:
     if (arg == _arg_map.end())
       return false;
 
+    if (arg->second->_is_accumulated)
+      return arg->second->_accum_values.size() > 0 ? true : false;
+
     return arg->second->_values.size() > 0 ? true : false;
   }
 
   template <typename T> T get_impl(const std::string &arg_name, T *);
 
   template <typename T> std::vector<T> get_impl(const std::string &arg_name, std::vector<T> *);
+
+  template <typename T>
+  std::vector<std::vector<T>> get_impl(const std::string &arg_name, std::vector<std::vector<T>> *);
 
   template <typename T> T get(const std::string &arg_name);
 
@@ -640,6 +665,23 @@ template <typename T> std::vector<T> Arser::get_impl(const std::string &arg_name
                              "There is no argument you are looking for: " +
                              arg_name);
 
+  // Accumulated arguments with scalar type (e.g., STR)
+  if (arg->second->_is_accumulated)
+  {
+    if (arg->second->_type != TypeName<T>::Get())
+      throw std::runtime_error(
+        "Type mismatch. "
+        "You called get using a type different from the one you specified. "
+        "Accumulated argument is returned as std::vector of the specified type");
+
+    std::vector<T> data;
+    for (auto values : arg->second->_accum_values)
+    {
+      data.emplace_back(internal::lexical_cast<T>(values[0]));
+    }
+    return data;
+  }
+
   if (arg->second->_type != TypeName<std::vector<T>>::Get())
     throw std::runtime_error("Type mismatch. "
                              "You called get using a type different from the one you specified.");
@@ -648,6 +690,41 @@ template <typename T> std::vector<T> Arser::get_impl(const std::string &arg_name
   std::transform(arg->second->_values.begin(), arg->second->_values.end(), std::back_inserter(data),
                  [](std::string str) -> T { return internal::lexical_cast<T>(str); });
   return data;
+}
+
+// Accumulated arguments with vector type (e.g., STR_VEC)
+template <typename T>
+std::vector<std::vector<T>> Arser::get_impl(const std::string &arg_name,
+                                            std::vector<std::vector<T>> *)
+{
+  auto arg = _arg_map.find(arg_name);
+  if (arg == _arg_map.end())
+    throw std::runtime_error("Invalid argument. "
+                             "There is no argument you are looking for: " +
+                             arg_name);
+
+  if (not arg->second->_is_accumulated)
+    throw std::runtime_error(
+      "Type mismatch. "
+      "You called get using a type different from the one you specified."
+      "Accumulated argument is returned as std::vector of the specified type");
+
+  if (arg->second->_type != TypeName<std::vector<T>>::Get())
+    throw std::runtime_error(
+      "Type mismatch. "
+      "You called get using a type different from the one you specified."
+      "Accumulated argument is returned as std::vector of the specified type");
+
+  std::vector<std::vector<T>> result;
+  for (auto values : arg->second->_accum_values)
+  {
+    std::vector<T> data;
+    std::transform(values.begin(), values.end(), std::back_inserter(data),
+                   [](std::string str) -> T { return internal::lexical_cast<T>(str); });
+    result.emplace_back(data);
+  }
+
+  return result;
 }
 
 template <typename T> T Arser::get(const std::string &arg_name)
