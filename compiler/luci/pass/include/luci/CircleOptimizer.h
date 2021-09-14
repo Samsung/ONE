@@ -107,6 +107,8 @@ public:
     virtual bool query(Algorithm) = 0;
     virtual void param(AlgorithmParameters, const std::string &) = 0;
     virtual const std::string param(AlgorithmParameters) const = 0;
+    virtual void params(AlgorithmParameters, std::vector<std::string> &) = 0;
+    virtual std::vector<std::string> params(AlgorithmParameters) const = 0;
   };
 
 public:
