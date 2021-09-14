@@ -144,6 +144,38 @@ TEST(AveragePool2DTest, SInt16)
   EXPECT_THAT(dequantizeTensorData(output_tensor), FloatArrayNear(ref_output_data));
 }
 
+TEST(AveragePool2DTest, SInt8)
+{
+  Shape input_shape{1, 4, 5, 1};
+  std::vector<int32_t> ref_output_shape{1, 2, 2, 1};
+  std::vector<float> input_data{-7, -3, 0,  2, -5, 12, -15, 3,  10, 5,
+                                7,  -6, -1, 9, -2, 0,  -5,  11, -1, -7};
+  std::vector<float> ref_output_data{
+    0, 2.5, //
+    1, 1.5, //
+  };
+
+  std::pair<float, int32_t> quant_param = quantizationParams<int8_t>(-15.9375f, 15.9375f);
+  Tensor input_tensor =
+    makeInputTensor<DataType::S8>(input_shape, quant_param.first, quant_param.second, input_data);
+  Tensor output_tensor = makeOutputTensor(DataType::S8, quant_param.first, quant_param.second);
+
+  Pool2DParams params{};
+  params.padding = Padding::VALID;
+  params.filter_height = 2;
+  params.filter_width = 3;
+  params.stride_height = 2;
+  params.stride_width = 2;
+  params.activation = Activation::RELU6;
+
+  AveragePool2D kernel(&input_tensor, &output_tensor, params);
+  kernel.configure();
+  kernel.execute();
+
+  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
+  EXPECT_THAT(dequantizeTensorData(output_tensor), FloatArrayNear(ref_output_data));
+}
+
 TEST(AveragePool2DTest, Invalid_Input_Shape_NEG)
 {
   Shape input_shape{1, 3, 5};

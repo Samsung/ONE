@@ -170,8 +170,6 @@ std::vector<T> quantize(const float *data, size_t num_elements, float scale, int
   float q_min{}, q_max{};
   if (std::is_signed<T>::value)
   {
-    // For now, assume that signed type implies signed symmetric quantization.
-    assert(zero_point == 0);
     q_min = -std::numeric_limits<T>::max();
     q_max = std::numeric_limits<T>::max();
   }
