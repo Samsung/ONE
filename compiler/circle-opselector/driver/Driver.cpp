@@ -41,6 +41,12 @@ bool check_input(std::string str)
 {
   bool check_hyphen = false;
 
+  if (str[0] == '-' || str[str.size()-1] == '-')
+  {
+    std::cout << "Invalid input." << std::endl;
+    exit(0);
+  }
+
   for (char c : str)
   {
     if ('0' <= c && c <= '9')
@@ -71,19 +77,37 @@ void split_id_input(const std::string &str, std::vector<int> &by_id)
   {
     if (str_buf.length() && check_input(str_buf)) // input validation
     {
-      if (str_buf.find('-') == std::string::npos) // if token has no '-'
-        by_id.push_back(stoi(str_buf));
-      else // tokenize again by '-'
+      try
       {
-        std::istringstream ss2(str_buf);
-        std::string token;
-        int from_to[2], top = 0;
+        if (str_buf.find('-') == std::string::npos) // if token has no '-'
+          by_id.push_back(stoi(str_buf));
+        else // tokenize again by '-'
+        {
+          std::istringstream ss2(str_buf);
+          std::string token;
+          int from_to[2], top = 0;
 
-        while (getline(ss2, token, '-'))
-          from_to[top++] = stoi(token);
+          while (getline(ss2, token, '-'))
+            from_to[top++] = stoi(token);
 
-        for (int number = from_to[0]; number <= from_to[1]; number++)
-          by_id.push_back(number);
+          for (int number = from_to[0]; number <= from_to[1]; number++)
+            by_id.push_back(number);
+        }
+      }
+      catch (std::invalid_argument &error)
+      {
+        std::cerr << "ERROR: [circle-opselector] Invalid argument.(stoi)" << std::endl;
+        exit(0);
+      }
+      catch (std::out_of_range)
+      {
+        std::cout << "ERROR: [circle-opselector] Argument is out of range(stoi)\n";
+        exit(0);
+      }
+      catch (...)
+      {
+        std::cout << "ERROR: [circle-opselector] Unknown error(stoi)\n";
+        exit(0);
       }
     }
   }
@@ -287,7 +311,7 @@ int entry(int argc, char **argv)
   if (by_id.size())
   {
   }
-  if (by_name.size())
+  if(by_name.size())
   {
   }
 
