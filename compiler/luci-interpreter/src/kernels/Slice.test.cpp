@@ -16,6 +16,7 @@
 
 #include "kernels/Slice.h"
 #include "kernels/TestUtils.h"
+#include "luci_interpreter/TestMemoryManager.h"
 
 namespace luci_interpreter
 {
@@ -35,6 +36,8 @@ TYPED_TEST_CASE(SliceTest, DataTypes);
 
 TYPED_TEST(SliceTest, SimpleTest)
 {
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<TestMemoryManager>();
+
   std::vector<TypeParam> input_data{1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5, 6, 6, 6};
   Shape input_shape{3, 2, 3, 1};
   std::vector<int32_t> begin_data{1, 0, 0, 0};
@@ -44,14 +47,17 @@ TYPED_TEST(SliceTest, SimpleTest)
   std::vector<TypeParam> output_data{3, 3, 3, 5, 5, 5};
   std::vector<int32_t> output_shape{2, 1, 3, 1};
 
-  Tensor input_tensor = makeInputTensor<getElementType<TypeParam>()>(input_shape, input_data);
-  Tensor begin_tensor = makeInputTensor<DataType::S32>(begin_shape, begin_data);
-  Tensor size_tensor = makeInputTensor<DataType::S32>(size_shape, size_data);
+  Tensor input_tensor =
+    makeInputTensor<getElementType<TypeParam>()>(input_shape, input_data, memory_manager.get());
+  Tensor begin_tensor =
+    makeInputTensor<DataType::S32>(begin_shape, begin_data, memory_manager.get());
+  Tensor size_tensor = makeInputTensor<DataType::S32>(size_shape, size_data, memory_manager.get());
 
   Tensor output_tensor = makeOutputTensor(getElementType<TypeParam>());
 
   Slice kernel(&input_tensor, &begin_tensor, &size_tensor, &output_tensor);
   kernel.configure();
+  memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorData<TypeParam>(output_tensor),

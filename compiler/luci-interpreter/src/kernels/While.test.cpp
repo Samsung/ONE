@@ -20,6 +20,7 @@
 #include "kernels/Less.h"
 #include "kernels/While.h"
 #include "kernels/TestUtils.h"
+#include "luci_interpreter/TestMemoryManager.h"
 
 namespace luci_interpreter
 {
@@ -30,13 +31,17 @@ namespace
 
 using namespace testing;
 
-RuntimeGraph *buildCondSubgraph(RuntimeModule *module, DataType dtype, Tensor *input_cond)
+RuntimeGraph *buildCondSubgraph(RuntimeModule *module, DataType dtype, Tensor *input_cond,
+                                IMemoryManager *memory_manager)
 {
-  RuntimeGraph *graph = module->addGraph(nullptr);
+  RuntimeGraph *graph = module->addGraph(memory_manager);
   Tensor *input =
     graph->addTensor(std::make_unique<Tensor>(dtype, Shape{}, AffineQuantization{}, ""));
   Tensor *output =
     graph->addTensor(std::make_unique<Tensor>(DataType::BOOL, Shape{}, AffineQuantization{}, ""));
+
+  memory_manager->allocate_memory(*input);
+  memory_manager->allocate_memory(*output);
 
   graph->setInputTensors({input});
   graph->setOutputTensors({output});
@@ -46,13 +51,17 @@ RuntimeGraph *buildCondSubgraph(RuntimeModule *module, DataType dtype, Tensor *i
   return graph;
 }
 
-RuntimeGraph *buildBodySubgraph(RuntimeModule *module, DataType dtype, Tensor *input_add)
+RuntimeGraph *buildBodySubgraph(RuntimeModule *module, DataType dtype, Tensor *input_add,
+                                IMemoryManager *memory_manager)
 {
-  RuntimeGraph *graph = module->addGraph(nullptr);
+  RuntimeGraph *graph = module->addGraph(memory_manager);
   Tensor *input =
     graph->addTensor(std::make_unique<Tensor>(dtype, Shape{}, AffineQuantization{}, ""));
   Tensor *output =
     graph->addTensor(std::make_unique<Tensor>(dtype, Shape{}, AffineQuantization{}, ""));
+
+  memory_manager->allocate_memory(*input);
+  memory_manager->allocate_memory(*output);
 
   graph->setInputTensors({input});
   graph->setOutputTensors({output});
@@ -66,18 +75,22 @@ RuntimeGraph *buildBodySubgraph(RuntimeModule *module, DataType dtype, Tensor *i
 
 TEST(WhileTest, FloatLoop10)
 {
-  Tensor input = makeInputTensor<DataType::FLOAT32>({1}, {1});
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<TestMemoryManager>();
+  Tensor input = makeInputTensor<DataType::FLOAT32>({1}, {1}, memory_manager.get());
   Tensor output = makeOutputTensor(DataType::FLOAT32);
 
-  Tensor input_cond = makeInputTensor<DataType::FLOAT32>({1}, {10});
-  Tensor input_add = makeInputTensor<DataType::FLOAT32>({1}, {1});
+  Tensor input_cond = makeInputTensor<DataType::FLOAT32>({1}, {10}, memory_manager.get());
+  Tensor input_add = makeInputTensor<DataType::FLOAT32>({1}, {1}, memory_manager.get());
 
   RuntimeModule module(nullptr);
-  RuntimeGraph *cond_graph = buildCondSubgraph(&module, DataType::FLOAT32, &input_cond);
-  RuntimeGraph *body_graph = buildBodySubgraph(&module, DataType::FLOAT32, &input_add);
+  RuntimeGraph *cond_graph =
+    buildCondSubgraph(&module, DataType::FLOAT32, &input_cond, memory_manager.get());
+  RuntimeGraph *body_graph =
+    buildBodySubgraph(&module, DataType::FLOAT32, &input_add, memory_manager.get());
 
   While kernel({&input}, {&output}, cond_graph, body_graph);
   kernel.configure();
+  memory_manager->allocate_memory(output);
   kernel.execute();
 
   EXPECT_THAT(extractTensorData<float>(output), FloatArrayNear({10}));

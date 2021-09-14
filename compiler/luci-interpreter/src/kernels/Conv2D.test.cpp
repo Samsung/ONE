@@ -16,6 +16,7 @@
 
 #include "kernels/Conv2D.h"
 #include "kernels/TestUtils.h"
+#include "luci_interpreter/TestMemoryManager.h"
 
 namespace luci_interpreter
 {
@@ -26,7 +27,15 @@ namespace
 
 using namespace testing;
 
-TEST(Conv2DTest, Float)
+class Conv2DTest : public ::testing::Test
+{
+protected:
+  void SetUp() override { _memory_manager = std::make_unique<TestMemoryManager>(); }
+
+  std::unique_ptr<IMemoryManager> _memory_manager;
+};
+
+TEST_F(Conv2DTest, Float)
 {
   Shape input_shape{1, 4, 3, 2};
   Shape filter_shape{2, 2, 2, 2};
@@ -44,9 +53,13 @@ TEST(Conv2DTest, Float)
     -8, -6, 7,  5,  // out = 1, row = 1
   };
   std::vector<float> bias_data{1, 2};
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
-  Tensor filter_tensor = makeInputTensor<DataType::FLOAT32>(filter_shape, filter_data);
-  Tensor bias_tensor = makeInputTensor<DataType::FLOAT32>(bias_shape, bias_data);
+  Tensor input_tensor =
+    makeInputTensor<DataType::FLOAT32>(input_shape, input_data, _memory_manager.get());
+  Tensor filter_tensor =
+    makeInputTensor<DataType::FLOAT32>(filter_shape, filter_data, _memory_manager.get());
+  Tensor bias_tensor =
+    makeInputTensor<DataType::FLOAT32>(bias_shape, bias_data, _memory_manager.get());
+  Tensor im2col(DataType::FLOAT32, Shape({}), {}, "");
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   Conv2DParams params{};
@@ -57,8 +70,10 @@ TEST(Conv2DTest, Float)
   params.dilation_width_factor = 1;
   params.activation = Activation::RELU;
 
-  Conv2D kernel(&input_tensor, &filter_tensor, &bias_tensor, &output_tensor, params);
+  Conv2D kernel(&input_tensor, &filter_tensor, &bias_tensor, &output_tensor, &im2col, params);
   kernel.configure();
+  _memory_manager->allocate_memory(im2col);
+  _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   std::vector<float> ref_output_data{
@@ -70,49 +85,7 @@ TEST(Conv2DTest, Float)
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
 }
 
-TEST(Conv2DTest, FloatPointwise)
-{
-  Shape input_shape{1, 2, 2, 2};
-  Shape filter_shape{2, 1, 1, 2};
-  Shape bias_shape{2};
-  std::vector<float> input_data{
-    1, 2, // row = 0, col = 0
-    3, 4, // row = 0, col = 1
-    5, 6, // row = 1, col = 0
-    7, 8, // row = 1, col = 1
-  };
-  std::vector<float> filter_data{
-    -1, 2, // out = 0
-    -3, 4, // out = 1
-  };
-  std::vector<float> bias_data{1, 2};
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
-  Tensor filter_tensor = makeInputTensor<DataType::FLOAT32>(filter_shape, filter_data);
-  Tensor bias_tensor = makeInputTensor<DataType::FLOAT32>(bias_shape, bias_data);
-  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
-
-  Conv2DParams params{};
-  params.padding = Padding::VALID;
-  params.stride_height = 1;
-  params.stride_width = 1;
-  params.dilation_height_factor = 1;
-  params.dilation_width_factor = 1;
-  params.activation = Activation::RELU;
-
-  Conv2D kernel(&input_tensor, &filter_tensor, &bias_tensor, &output_tensor, params);
-  kernel.configure();
-  kernel.execute();
-
-  std::vector<float> ref_output_data{
-    4, 7,  6,  9,  // row = 0
-    8, 11, 10, 13, // row = 1
-  };
-  std::vector<int32_t> ref_output_shape{1, 2, 2, 2};
-  EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(ref_output_data));
-  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
-}
-
-TEST(Conv2DTest, FloatCheck)
+TEST_F(Conv2DTest, FloatCheck)
 {
   Shape input_shape{2, 2, 4, 1};
   Shape filter_shape{3, 2, 2, 1};
@@ -131,9 +104,13 @@ TEST(Conv2DTest, FloatCheck)
     -1, -1, 1,  1, // third 2x2 filter
   };
   std::vector<float> bias_data{1, 2, 3};
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
-  Tensor filter_tensor = makeInputTensor<DataType::FLOAT32>(filter_shape, filter_data);
-  Tensor bias_tensor = makeInputTensor<DataType::FLOAT32>(bias_shape, bias_data);
+  Tensor input_tensor =
+    makeInputTensor<DataType::FLOAT32>(input_shape, input_data, _memory_manager.get());
+  Tensor filter_tensor =
+    makeInputTensor<DataType::FLOAT32>(filter_shape, filter_data, _memory_manager.get());
+  Tensor bias_tensor =
+    makeInputTensor<DataType::FLOAT32>(bias_shape, bias_data, _memory_manager.get());
+  Tensor im2col(DataType::FLOAT32, Shape({}), {}, "");
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   Conv2DParams params{};
@@ -144,8 +121,10 @@ TEST(Conv2DTest, FloatCheck)
   params.dilation_width_factor = 1;
   params.activation = Activation::NONE;
 
-  Conv2D kernel(&input_tensor, &filter_tensor, &bias_tensor, &output_tensor, params);
+  Conv2D kernel(&input_tensor, &filter_tensor, &bias_tensor, &output_tensor, &im2col, params);
   kernel.configure();
+  _memory_manager->allocate_memory(output_tensor);
+  _memory_manager->allocate_memory(im2col);
   kernel.execute();
 
   std::vector<float> ref_output_data{
@@ -159,7 +138,7 @@ TEST(Conv2DTest, FloatCheck)
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
 }
 
-TEST(Conv2DTest, Uint8)
+TEST_F(Conv2DTest, Uint8)
 {
   std::vector<float> input_data{
     // First batch
@@ -179,12 +158,15 @@ TEST(Conv2DTest, Uint8)
   std::pair<float, int32_t> input_quant_param = quantizationParams<uint8_t>(-63.5, 64);
   std::pair<float, int32_t> output_quant_param = quantizationParams<uint8_t>(-127, 128);
 
-  Tensor input_tensor = makeInputTensor<DataType::U8>({2, 2, 4, 1}, input_quant_param.first,
-                                                      input_quant_param.second, input_data);
-  Tensor filter_tensor = makeInputTensor<DataType::U8>({3, 2, 2, 1}, input_quant_param.first,
-                                                       input_quant_param.second, filter_data);
+  Tensor input_tensor =
+    makeInputTensor<DataType::U8>({2, 2, 4, 1}, input_quant_param.first, input_quant_param.second,
+                                  input_data, _memory_manager.get());
+  Tensor filter_tensor =
+    makeInputTensor<DataType::U8>({3, 2, 2, 1}, input_quant_param.first, input_quant_param.second,
+                                  filter_data, _memory_manager.get());
   Tensor bias_tensor = makeInputTensor<DataType::S32>(
-    {3}, input_quant_param.first * input_quant_param.first, 0, bias_data);
+    {3}, input_quant_param.first * input_quant_param.first, 0, bias_data, _memory_manager.get());
+  Tensor im2col(DataType::FLOAT32, Shape({}), {}, "");
   Tensor output_tensor =
     makeOutputTensor(DataType::U8, output_quant_param.first, output_quant_param.second);
 
@@ -196,8 +178,10 @@ TEST(Conv2DTest, Uint8)
   params.dilation_width_factor = 1;
   params.activation = Activation::NONE;
 
-  Conv2D kernel(&input_tensor, &filter_tensor, &bias_tensor, &output_tensor, params);
+  Conv2D kernel(&input_tensor, &filter_tensor, &bias_tensor, &output_tensor, &im2col, params);
   kernel.configure();
+  _memory_manager->allocate_memory(output_tensor);
+  _memory_manager->allocate_memory(im2col);
   kernel.execute();
 
   std::vector<float> ref_output_data{
@@ -211,7 +195,7 @@ TEST(Conv2DTest, Uint8)
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
 }
 
-TEST(Conv2DTest, Uint8_CWQ)
+TEST_F(Conv2DTest, Uint8_CWQ)
 {
   const int output_channels = 3;
   std::vector<float> input_data{
@@ -251,12 +235,14 @@ TEST(Conv2DTest, Uint8_CWQ)
     bias_scales.push_back(filter_quant_params[i].first * input_quant_param.first);
   std::vector<int32_t> zerop(output_channels, 0);
 
-  Tensor input_tensor = makeInputTensor<DataType::U8>({2, 2, 4, 1}, input_quant_param.first,
-                                                      input_quant_param.second, input_data);
-  Tensor filter_tensor =
-    makeInputTensor<DataType::U8>(filter_shape, filter_scales, filter_zerops, 0, filter_data);
-  Tensor bias_tensor =
-    makeInputTensor<DataType::S32>({output_channels}, bias_scales, zerop, 0, bias_data);
+  Tensor input_tensor =
+    makeInputTensor<DataType::U8>({2, 2, 4, 1}, input_quant_param.first, input_quant_param.second,
+                                  input_data, _memory_manager.get());
+  Tensor filter_tensor = makeInputTensor<DataType::U8>(filter_shape, filter_scales, filter_zerops,
+                                                       0, filter_data, _memory_manager.get());
+  Tensor bias_tensor = makeInputTensor<DataType::S32>({output_channels}, bias_scales, zerop, 0,
+                                                      bias_data, _memory_manager.get());
+  Tensor im2col(DataType::FLOAT32, Shape({}), {}, "");
   Tensor output_tensor =
     makeOutputTensor(DataType::U8, output_quant_param.first, output_quant_param.second);
 
@@ -268,8 +254,10 @@ TEST(Conv2DTest, Uint8_CWQ)
   params.dilation_width_factor = 1;
   params.activation = Activation::NONE;
 
-  Conv2D kernel(&input_tensor, &filter_tensor, &bias_tensor, &output_tensor, params);
+  Conv2D kernel(&input_tensor, &filter_tensor, &bias_tensor, &output_tensor, &im2col, params);
   kernel.configure();
+  _memory_manager->allocate_memory(output_tensor);
+  _memory_manager->allocate_memory(im2col);
   kernel.execute();
 
   std::vector<float> ref_output_data{
@@ -283,7 +271,7 @@ TEST(Conv2DTest, Uint8_CWQ)
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
 }
 
-TEST(Conv2DTest, SInt16)
+TEST_F(Conv2DTest, SInt16)
 {
   Shape input_shape{1, 4, 3, 2};
   Shape filter_shape{2, 2, 2, 2};
@@ -308,9 +296,13 @@ TEST(Conv2DTest, SInt16)
     0,  40, 0, 44, // row = 1
   };
 
-  Tensor input_tensor = makeInputTensor<DataType::S16>(input_shape, 0.25, 0, input_data);
-  Tensor filter_tensor = makeInputTensor<DataType::S16>(filter_shape, 0.2, 0, filter_data);
-  Tensor bias_tensor = makeInputTensor<DataType::S64>(bias_shape, 0.25 * 0.2, 0, bias_data);
+  Tensor input_tensor =
+    makeInputTensor<DataType::S16>(input_shape, 0.25, 0, input_data, _memory_manager.get());
+  Tensor filter_tensor =
+    makeInputTensor<DataType::S16>(filter_shape, 0.2, 0, filter_data, _memory_manager.get());
+  Tensor bias_tensor =
+    makeInputTensor<DataType::S64>(bias_shape, 0.25 * 0.2, 0, bias_data, _memory_manager.get());
+  Tensor im2col(DataType::FLOAT32, Shape({}), {}, "");
   Tensor output_tensor = makeOutputTensor(DataType::S16, 0.5, 0);
 
   Conv2DParams params{};
@@ -321,15 +313,17 @@ TEST(Conv2DTest, SInt16)
   params.dilation_width_factor = 1;
   params.activation = Activation::RELU;
 
-  Conv2D kernel(&input_tensor, &filter_tensor, &bias_tensor, &output_tensor, params);
+  Conv2D kernel(&input_tensor, &filter_tensor, &bias_tensor, &output_tensor, &im2col, params);
   kernel.configure();
+  _memory_manager->allocate_memory(output_tensor);
+  _memory_manager->allocate_memory(im2col);
   kernel.execute();
 
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
   EXPECT_THAT(dequantizeTensorData(output_tensor), FloatArrayNear(ref_output_data));
 }
 
-TEST(Conv2DTest, SInt16_CWQ_weights)
+TEST_F(Conv2DTest, SInt16_CWQ_weights)
 {
   Shape input_shape{1, 2, 2, 2};  // Batch x H x W x C
   Shape filter_shape{3, 1, 1, 2}; // Out channels x H x W x In Channels
@@ -363,10 +357,13 @@ TEST(Conv2DTest, SInt16_CWQ_weights)
     bias_scales.push_back(filter_scales[i] * input_scale);
   std::vector<int32_t> zerop = {0, 0, 0};
 
-  Tensor input_tensor = makeInputTensor<DataType::S16>(input_shape, input_scale, 0, input_data);
-  Tensor filter_tensor =
-    makeInputTensor<DataType::S16>(filter_shape, filter_scales, zerop, 0, filter_data);
-  Tensor bias_tensor = makeInputTensor<DataType::S64>(bias_shape, bias_scales, zerop, 0, bias_data);
+  Tensor input_tensor =
+    makeInputTensor<DataType::S16>(input_shape, input_scale, 0, input_data, _memory_manager.get());
+  Tensor filter_tensor = makeInputTensor<DataType::S16>(filter_shape, filter_scales, zerop, 0,
+                                                        filter_data, _memory_manager.get());
+  Tensor bias_tensor = makeInputTensor<DataType::S64>(bias_shape, bias_scales, zerop, 0, bias_data,
+                                                      _memory_manager.get());
+  Tensor im2col(DataType::FLOAT32, Shape({}), {}, "");
   Tensor output_tensor = makeOutputTensor(DataType::S16, output_scale, 0);
 
   Conv2DParams params{};
@@ -377,15 +374,17 @@ TEST(Conv2DTest, SInt16_CWQ_weights)
   params.dilation_width_factor = 1;
   params.activation = Activation::RELU;
 
-  Conv2D kernel(&input_tensor, &filter_tensor, &bias_tensor, &output_tensor, params);
+  Conv2D kernel(&input_tensor, &filter_tensor, &bias_tensor, &output_tensor, &im2col, params);
   kernel.configure();
+  _memory_manager->allocate_memory(output_tensor);
+  _memory_manager->allocate_memory(im2col);
   kernel.execute();
 
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
   EXPECT_THAT(dequantizeTensorData(output_tensor), FloatArrayNear(ref_output_data));
 }
 
-TEST(Conv2DTest, Unsupported_Type_Configure_NEG)
+TEST_F(Conv2DTest, Unsupported_Type_Configure_NEG)
 {
   Shape input_shape{1, 4, 3, 2};
   Shape filter_shape{2, 2, 2, 2};
@@ -403,9 +402,13 @@ TEST(Conv2DTest, Unsupported_Type_Configure_NEG)
     -8, -6, 7,  5,  // out = 1, row = 1
   };
   std::vector<float> bias_data{1, 2};
-  Tensor input_tensor = makeInputTensor<DataType::S32>(input_shape, input_data);
-  Tensor filter_tensor = makeInputTensor<DataType::FLOAT32>(filter_shape, filter_data);
-  Tensor bias_tensor = makeInputTensor<DataType::FLOAT32>(bias_shape, bias_data);
+  Tensor input_tensor =
+    makeInputTensor<DataType::S32>(input_shape, input_data, _memory_manager.get());
+  Tensor filter_tensor =
+    makeInputTensor<DataType::FLOAT32>(filter_shape, filter_data, _memory_manager.get());
+  Tensor bias_tensor =
+    makeInputTensor<DataType::FLOAT32>(bias_shape, bias_data, _memory_manager.get());
+  Tensor im2col(DataType::FLOAT32, Shape({}), {}, "");
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   Conv2DParams params{};
@@ -416,11 +419,11 @@ TEST(Conv2DTest, Unsupported_Type_Configure_NEG)
   params.dilation_width_factor = 1;
   params.activation = Activation::RELU;
 
-  Conv2D kernel(&input_tensor, &filter_tensor, &bias_tensor, &output_tensor, params);
+  Conv2D kernel(&input_tensor, &filter_tensor, &bias_tensor, &output_tensor, &im2col, params);
   EXPECT_ANY_THROW(kernel.configure());
 }
 
-TEST(Conv2DTest, Invalid_Bias_Type_NEG)
+TEST_F(Conv2DTest, Invalid_Bias_Type_NEG)
 {
   Shape input_shape{1, 4, 3, 2};
   Shape filter_shape{2, 2, 2, 2};
@@ -438,9 +441,12 @@ TEST(Conv2DTest, Invalid_Bias_Type_NEG)
     -8, -6, 7,  5,  // out = 1, row = 1
   };
   std::vector<uint8_t> bias_data{1, 2};
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
-  Tensor filter_tensor = makeInputTensor<DataType::FLOAT32>(filter_shape, filter_data);
-  Tensor bias_tensor = makeInputTensor<DataType::U8>(bias_shape, bias_data);
+  Tensor input_tensor =
+    makeInputTensor<DataType::FLOAT32>(input_shape, input_data, _memory_manager.get());
+  Tensor filter_tensor =
+    makeInputTensor<DataType::FLOAT32>(filter_shape, filter_data, _memory_manager.get());
+  Tensor bias_tensor = makeInputTensor<DataType::U8>(bias_shape, bias_data, _memory_manager.get());
+  Tensor im2col(DataType::FLOAT32, Shape({}), {}, "");
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   Conv2DParams params{};
@@ -451,11 +457,11 @@ TEST(Conv2DTest, Invalid_Bias_Type_NEG)
   params.dilation_width_factor = 1;
   params.activation = Activation::RELU;
 
-  Conv2D kernel(&input_tensor, &filter_tensor, &bias_tensor, &output_tensor, params);
+  Conv2D kernel(&input_tensor, &filter_tensor, &bias_tensor, &output_tensor, &im2col, params);
   EXPECT_ANY_THROW(kernel.configure());
 }
 
-TEST(Conv2DTest, Invalid_Bias_Data_NEG)
+TEST_F(Conv2DTest, Invalid_Bias_Data_NEG)
 {
   Shape input_shape{1, 4, 3, 2};
   Shape filter_shape{2, 2, 2, 2};
@@ -473,9 +479,13 @@ TEST(Conv2DTest, Invalid_Bias_Data_NEG)
     -8, -6, 7,  5,  // out = 1, row = 1
   };
   std::vector<float> bias_data{1, 2, 3};
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
-  Tensor filter_tensor = makeInputTensor<DataType::FLOAT32>(filter_shape, filter_data);
-  Tensor bias_tensor = makeInputTensor<DataType::FLOAT32>(bias_shape, bias_data);
+  Tensor input_tensor =
+    makeInputTensor<DataType::FLOAT32>(input_shape, input_data, _memory_manager.get());
+  Tensor filter_tensor =
+    makeInputTensor<DataType::FLOAT32>(filter_shape, filter_data, _memory_manager.get());
+  Tensor bias_tensor =
+    makeInputTensor<DataType::FLOAT32>(bias_shape, bias_data, _memory_manager.get());
+  Tensor im2col(DataType::FLOAT32, Shape({}), {}, "");
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   Conv2DParams params{};
@@ -486,11 +496,11 @@ TEST(Conv2DTest, Invalid_Bias_Data_NEG)
   params.dilation_width_factor = 1;
   params.activation = Activation::RELU;
 
-  Conv2D kernel(&input_tensor, &filter_tensor, &bias_tensor, &output_tensor, params);
+  Conv2D kernel(&input_tensor, &filter_tensor, &bias_tensor, &output_tensor, &im2col, params);
   EXPECT_ANY_THROW(kernel.configure());
 }
 
-TEST(Conv2DTest, Invalid_Input_Shape_NEG)
+TEST_F(Conv2DTest, Invalid_Input_Shape_NEG)
 {
   Shape input_shape{1, 4, 6, 1};
   Shape filter_shape{2, 2, 2, 2};
@@ -508,9 +518,13 @@ TEST(Conv2DTest, Invalid_Input_Shape_NEG)
     -8, -6, 7,  5,  // out = 1, row = 1
   };
   std::vector<float> bias_data{1, 2};
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
-  Tensor filter_tensor = makeInputTensor<DataType::FLOAT32>(filter_shape, filter_data);
-  Tensor bias_tensor = makeInputTensor<DataType::FLOAT32>(bias_shape, bias_data);
+  Tensor input_tensor =
+    makeInputTensor<DataType::FLOAT32>(input_shape, input_data, _memory_manager.get());
+  Tensor filter_tensor =
+    makeInputTensor<DataType::FLOAT32>(filter_shape, filter_data, _memory_manager.get());
+  Tensor bias_tensor =
+    makeInputTensor<DataType::FLOAT32>(bias_shape, bias_data, _memory_manager.get());
+  Tensor im2col(DataType::FLOAT32, Shape({}), {}, "");
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   Conv2DParams params{};
@@ -521,7 +535,7 @@ TEST(Conv2DTest, Invalid_Input_Shape_NEG)
   params.dilation_width_factor = 1;
   params.activation = Activation::RELU;
 
-  Conv2D kernel(&input_tensor, &filter_tensor, &bias_tensor, &output_tensor, params);
+  Conv2D kernel(&input_tensor, &filter_tensor, &bias_tensor, &output_tensor, &im2col, params);
   EXPECT_ANY_THROW(kernel.configure());
 }
 

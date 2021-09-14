@@ -30,8 +30,8 @@ namespace kernels
 {
 
 Conv2D::Conv2D(const Tensor *input, const Tensor *filter, const Tensor *bias, Tensor *output,
-               const Conv2DParams &params)
-  : KernelWithParams<Conv2DParams>({input, filter, bias}, {output}, params)
+               Tensor *im2col, const Conv2DParams &params)
+  : KernelWithParams<Conv2DParams>({input, filter, bias}, {output, im2col}, params)
 {
 }
 
@@ -103,23 +103,20 @@ void Conv2D::configure()
     _params.dilation_height_factor != 1 || _params.dilation_width_factor != 1;
   const bool need_non_dilated_im2col = _params.stride_height != 1 || _params.stride_width != 1 ||
                                        filter_height != 1 || filter_width != 1;
-  const bool need_im2col =
+  _need_im2col =
     input()->element_type() != DataType::S16 && (need_dilated_im2col || need_non_dilated_im2col);
-  if (need_im2col)
+  if (_need_im2col)
   {
     const int input_depth = input_shape.dim(3);
     Shape im2col_shape{batches, output_height, output_width,
                        input_depth * filter_height * filter_width};
-    try
-    {
-      _im2col =
-        std::make_unique<Tensor>(input()->element_type(), im2col_shape, AffineQuantization{}, "");
-    }
-    catch (std::bad_alloc &ba)
-    {
-      // Failed memory allocation
-      _im2col = nullptr;
-    }
+    auto im2col = getOutputTensors()[1];
+    im2col->resize(im2col_shape);
+  }
+  else
+  {
+    auto im2col = getOutputTensors()[1];
+    im2col->set_allocatable(false);
   }
 }
 
@@ -153,8 +150,6 @@ void Conv2D::execute() const
     default:
       throw std::runtime_error("Unsupported type.");
   }
-  if (!!_im2col)
-    _im2col->deallocate();
 }
 
 void Conv2D::evalFloat() const
@@ -174,23 +169,15 @@ void Conv2D::evalFloat() const
   params.float_activation_max = activation_max;
 
   float *im2col_data = nullptr;
-  if (_im2col)
+  auto im2col = getOutputTensors()[1];
+  if (_need_im2col)
   {
-    try
-    {
-      im2col_data = _im2col->data<float>();
-    }
-    catch (std::bad_alloc &ba)
-    {
-      // Failed memory allocation
-      _im2col->deallocate();
-    }
+    im2col_data = im2col->data<float>();
   }
-  luci_interpreter_pal::Conv(params, getTensorShape(input()), getTensorData<float>(input()),
-                             getTensorShape(filter()), getTensorData<float>(filter()),
-                             getTensorShape(bias()), getTensorData<float>(bias()),
-                             getTensorShape(output()), getTensorData<float>(output()),
-                             getTensorShape(_im2col.get()), im2col_data);
+  luci_interpreter_pal::Conv(
+    params, getTensorShape(input()), getTensorData<float>(input()), getTensorShape(filter()),
+    getTensorData<float>(filter()), getTensorShape(bias()), getTensorData<float>(bias()),
+    getTensorShape(output()), getTensorData<float>(output()), getTensorShape(im2col), im2col_data);
 }
 
 void Conv2D::evalQuantized() const
@@ -224,11 +211,12 @@ void Conv2D::evalQuantized() const
   params.quantized_activation_min = activation_min;
   params.quantized_activation_max = activation_max;
 
+  auto im2col = getOutputTensors()[1];
   luci_interpreter_pal::Conv(params, getTensorShape(input()), getTensorData<uint8_t>(input()),
                              getTensorShape(filter()), getTensorData<uint8_t>(filter()),
                              getTensorShape(bias()), getTensorData<int32_t>(bias()),
                              getTensorShape(output()), getTensorData<uint8_t>(output()),
-                             getTensorShape(_im2col.get()), getTensorData<uint8_t>(_im2col.get()));
+                             getTensorShape(im2col), getTensorData<uint8_t>(im2col));
 }
 
 void Conv2D::evalQuantizedPerChannel() const

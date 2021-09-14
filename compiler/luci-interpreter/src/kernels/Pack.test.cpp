@@ -16,6 +16,7 @@
 
 #include "kernels/Pack.h"
 #include "kernels/TestUtils.h"
+#include "luci_interpreter/TestMemoryManager.h"
 
 namespace luci_interpreter
 {
@@ -31,6 +32,7 @@ void Check(std::vector<std::initializer_list<int32_t>> input_shapes,
            std::initializer_list<int32_t> output_shape, std::vector<std::vector<T>> input_datas,
            std::initializer_list<T> output_data, int32_t axis)
 {
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<TestMemoryManager>();
   constexpr DataType element_type = getElementType<T>();
   std::vector<const Tensor *> inputs(input_datas.size());
   std::vector<Tensor> tmp_inputs;
@@ -39,11 +41,13 @@ void Check(std::vector<std::initializer_list<int32_t>> input_shapes,
     if (std::is_same<T, float>::value)
     {
       tmp_inputs.push_back(Tensor(element_type, input_shapes[i], {}, ""));
+      memory_manager->allocate_memory(tmp_inputs[i]);
       tmp_inputs[i].writeData(input_datas[i].data(), input_datas[i].size() * sizeof(T));
     }
     else
     {
       tmp_inputs.push_back(Tensor(element_type, input_shapes[i], {{1.0f / 255}, {128}}, ""));
+      memory_manager->allocate_memory(tmp_inputs[i]);
       tmp_inputs[i].writeData(input_datas[i].data(), input_datas[i].size() * sizeof(T));
     }
   }
@@ -64,6 +68,7 @@ void Check(std::vector<std::initializer_list<int32_t>> input_shapes,
   Pack kernel(inputs, &output_tensor, params);
 
   kernel.configure();
+  memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorData<T>(output_tensor), ::testing::ElementsAreArray(output_data));
@@ -103,12 +108,13 @@ TYPED_TEST(PackTest, NegAxis)
 
 TEST(Pack, MismatchingInputValuesCount_NEG)
 {
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<TestMemoryManager>();
   std::vector<float> input1_data{1, 4};
   std::vector<float> input2_data{2, 5};
   std::vector<float> input3_data{3, 6};
-  Tensor input1_tensor = makeInputTensor<DataType::FLOAT32>({2}, input1_data);
-  Tensor input2_tensor = makeInputTensor<DataType::FLOAT32>({2}, input2_data);
-  Tensor input3_tensor = makeInputTensor<DataType::FLOAT32>({2}, input3_data);
+  Tensor input1_tensor = makeInputTensor<DataType::FLOAT32>({2}, input1_data, memory_manager.get());
+  Tensor input2_tensor = makeInputTensor<DataType::FLOAT32>({2}, input2_data, memory_manager.get());
+  Tensor input3_tensor = makeInputTensor<DataType::FLOAT32>({2}, input3_data, memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
   PackParams params{};
   {
@@ -122,12 +128,13 @@ TEST(Pack, MismatchingInputValuesCount_NEG)
 
 TEST(Pack, InvalidInputAxis_NEG)
 {
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<TestMemoryManager>();
   std::vector<float> input1_data{1, 4};
   std::vector<float> input2_data{2, 5};
   std::vector<float> input3_data{3, 6};
-  Tensor input1_tensor = makeInputTensor<DataType::FLOAT32>({2}, input1_data);
-  Tensor input2_tensor = makeInputTensor<DataType::FLOAT32>({2}, input2_data);
-  Tensor input3_tensor = makeInputTensor<DataType::FLOAT32>({2}, input3_data);
+  Tensor input1_tensor = makeInputTensor<DataType::FLOAT32>({2}, input1_data, memory_manager.get());
+  Tensor input2_tensor = makeInputTensor<DataType::FLOAT32>({2}, input2_data, memory_manager.get());
+  Tensor input3_tensor = makeInputTensor<DataType::FLOAT32>({2}, input3_data, memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
   PackParams params{};
   {

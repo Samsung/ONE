@@ -17,6 +17,7 @@
 
 #include "kernels/Add.h"
 #include "kernels/TestUtils.h"
+#include "luci_interpreter/TestMemoryManager.h"
 
 namespace luci_interpreter
 {
@@ -27,6 +28,14 @@ namespace
 
 using namespace testing;
 
+class AddTest : public ::testing::Test
+{
+protected:
+  void SetUp() override { _memory_manager = std::make_unique<TestMemoryManager>(); }
+
+  std::unique_ptr<IMemoryManager> _memory_manager;
+};
+
 // for quantized Add, the error shouldn't exceed step
 float GetTolerance(float min, float max)
 {
@@ -34,7 +43,7 @@ float GetTolerance(float min, float max)
   return kQuantizedStep;
 }
 
-TEST(AddTest, Uint8)
+TEST_F(AddTest, Uint8)
 {
   std::initializer_list<int32_t> base_shape = {2, 3, 1, 2};
   std::initializer_list<float> base_data = {-0.3f, 2.3f, 0.9f,  0.5f, 0.8f, -1.1f,
@@ -57,10 +66,10 @@ TEST(AddTest, Uint8)
   std::pair<float, int32_t> quant_param = quantizationParams<uint8_t>(-3.f, 3.f);
   for (int i = 0; i < output_data.size(); i++)
   {
-    Tensor input1_tensor =
-      makeInputTensor<DataType::U8>(base_shape, quant_param.first, quant_param.second, base_data);
-    Tensor input2_tensor = makeInputTensor<DataType::U8>(test_shapes[i], quant_param.first,
-                                                         quant_param.second, test_data);
+    Tensor input1_tensor = makeInputTensor<DataType::U8>(
+      base_shape, quant_param.first, quant_param.second, base_data, _memory_manager.get());
+    Tensor input2_tensor = makeInputTensor<DataType::U8>(
+      test_shapes[i], quant_param.first, quant_param.second, test_data, _memory_manager.get());
     Tensor output_tensor =
       makeOutputTensor(getElementType<uint8_t>(), quant_param.first, quant_param.second);
 
@@ -69,6 +78,7 @@ TEST(AddTest, Uint8)
 
     Add kernel(&input1_tensor, &input2_tensor, &output_tensor, params);
     kernel.configure();
+    _memory_manager->allocate_memory(output_tensor);
     kernel.execute();
 
     EXPECT_THAT(dequantizeTensorData(output_tensor),
@@ -78,10 +88,10 @@ TEST(AddTest, Uint8)
   // Re-run with exchanged inputs.
   for (int i = 0; i < output_data.size(); i++)
   {
-    Tensor input1_tensor = makeInputTensor<DataType::U8>(test_shapes[i], quant_param.first,
-                                                         quant_param.second, test_data);
-    Tensor input2_tensor =
-      makeInputTensor<DataType::U8>(base_shape, quant_param.first, quant_param.second, base_data);
+    Tensor input1_tensor = makeInputTensor<DataType::U8>(
+      test_shapes[i], quant_param.first, quant_param.second, test_data, _memory_manager.get());
+    Tensor input2_tensor = makeInputTensor<DataType::U8>(
+      base_shape, quant_param.first, quant_param.second, base_data, _memory_manager.get());
     Tensor output_tensor =
       makeOutputTensor(getElementType<uint8_t>(), quant_param.first, quant_param.second);
 
@@ -90,6 +100,7 @@ TEST(AddTest, Uint8)
 
     Add kernel(&input1_tensor, &input2_tensor, &output_tensor, params);
     kernel.configure();
+    _memory_manager->allocate_memory(output_tensor);
     kernel.execute();
 
     EXPECT_THAT(dequantizeTensorData(output_tensor),
@@ -98,7 +109,7 @@ TEST(AddTest, Uint8)
   }
 }
 
-TEST(AddTest, Float)
+TEST_F(AddTest, Float)
 {
   Shape base_shape = {2, 3, 1, 2};
   std::vector<Shape> test_shapes{{1, 1, 3, 2}, {1, 3, 1, 2}, {2, 1, 3, 1}, {2, 3, 1, 1}};
@@ -116,8 +127,10 @@ TEST(AddTest, Float)
   std::vector<float> input2_data{0.2f, 0.3f, -0.4f, 0.5f, 1.0f, 0.9f};
   for (size_t i = 0; i < test_shapes.size(); ++i)
   {
-    Tensor input1_tensor = makeInputTensor<DataType::FLOAT32>(base_shape, input1_data);
-    Tensor input2_tensor = makeInputTensor<DataType::FLOAT32>(test_shapes[i], input2_data);
+    Tensor input1_tensor =
+      makeInputTensor<DataType::FLOAT32>(base_shape, input1_data, _memory_manager.get());
+    Tensor input2_tensor =
+      makeInputTensor<DataType::FLOAT32>(test_shapes[i], input2_data, _memory_manager.get());
     Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
     AddParams params{};
@@ -125,6 +138,7 @@ TEST(AddTest, Float)
 
     Add kernel(&input1_tensor, &input2_tensor, &output_tensor, params);
     kernel.configure();
+    _memory_manager->allocate_memory(output_tensor);
     kernel.execute();
 
     EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(test_outputs[i], 0.0001f))
@@ -133,8 +147,10 @@ TEST(AddTest, Float)
   // Re-run with exchanged inputs.
   for (size_t i = 0; i < test_shapes.size(); ++i)
   {
-    Tensor input1_tensor = makeInputTensor<DataType::FLOAT32>(test_shapes[i], input2_data);
-    Tensor input2_tensor = makeInputTensor<DataType::FLOAT32>(base_shape, input1_data);
+    Tensor input1_tensor =
+      makeInputTensor<DataType::FLOAT32>(test_shapes[i], input2_data, _memory_manager.get());
+    Tensor input2_tensor =
+      makeInputTensor<DataType::FLOAT32>(base_shape, input1_data, _memory_manager.get());
     Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
     AddParams params{};
@@ -142,6 +158,7 @@ TEST(AddTest, Float)
 
     Add kernel(&input1_tensor, &input2_tensor, &output_tensor, params);
     kernel.configure();
+    _memory_manager->allocate_memory(output_tensor);
     kernel.execute();
 
     EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(test_outputs[i], 0.0001f))
@@ -149,7 +166,7 @@ TEST(AddTest, Float)
   }
 }
 
-TEST(AddTest, SInt16)
+TEST_F(AddTest, SInt16)
 {
   Shape base_shape = {2, 3, 1, 2};
   std::vector<Shape> test_shapes{{1, 1, 3, 2}, {1, 3, 1, 2}, {2, 1, 3, 1}, {2, 3, 1, 1}};
@@ -171,9 +188,10 @@ TEST(AddTest, SInt16)
 
   for (size_t i = 0; i < test_shapes.size(); ++i)
   {
-    Tensor input1_tensor = makeInputTensor<DataType::S16>(base_shape, 3.0 / 32767, 0, input1_data);
-    Tensor input2_tensor =
-      makeInputTensor<DataType::S16>(test_shapes[i], 1.0 / 32767, 0, input2_data);
+    Tensor input1_tensor = makeInputTensor<DataType::S16>(base_shape, 3.0 / 32767, 0, input1_data,
+                                                          _memory_manager.get());
+    Tensor input2_tensor = makeInputTensor<DataType::S16>(test_shapes[i], 1.0 / 32767, 0,
+                                                          input2_data, _memory_manager.get());
     Tensor output_tensor = makeOutputTensor(DataType::S16, 4.0 / 32767, 0);
     const float tolerance = output_tensor.scale();
 
@@ -182,6 +200,7 @@ TEST(AddTest, SInt16)
 
     Add kernel(&input1_tensor, &input2_tensor, &output_tensor, params);
     kernel.configure();
+    _memory_manager->allocate_memory(output_tensor);
     kernel.execute();
 
     EXPECT_THAT(extractTensorShape(output_tensor),
@@ -193,9 +212,10 @@ TEST(AddTest, SInt16)
   // Re-run with exchanged inputs and different scales.
   for (size_t i = 0; i < test_shapes.size(); ++i)
   {
-    Tensor input1_tensor =
-      makeInputTensor<DataType::S16>(test_shapes[i], 2.0 / 32767, 0, input2_data);
-    Tensor input2_tensor = makeInputTensor<DataType::S16>(base_shape, 4.0 / 32767, 0, input1_data);
+    Tensor input1_tensor = makeInputTensor<DataType::S16>(test_shapes[i], 2.0 / 32767, 0,
+                                                          input2_data, _memory_manager.get());
+    Tensor input2_tensor = makeInputTensor<DataType::S16>(base_shape, 4.0 / 32767, 0, input1_data,
+                                                          _memory_manager.get());
     Tensor output_tensor = makeOutputTensor(DataType::S16, 5.0 / 32767, 0);
     const float tolerance = output_tensor.scale();
 
@@ -204,6 +224,7 @@ TEST(AddTest, SInt16)
 
     Add kernel(&input1_tensor, &input2_tensor, &output_tensor, params);
     kernel.configure();
+    _memory_manager->allocate_memory(output_tensor);
     kernel.execute();
 
     EXPECT_THAT(extractTensorShape(output_tensor),
@@ -214,10 +235,10 @@ TEST(AddTest, SInt16)
   }
 }
 
-TEST(AddTest, Input_Output_Type_NEG)
+TEST_F(AddTest, Input_Output_Type_NEG)
 {
-  Tensor input1_tensor = makeInputTensor<DataType::FLOAT32>({1}, {1.f});
-  Tensor input2_tensor = makeInputTensor<DataType::S32>({1}, {2});
+  Tensor input1_tensor = makeInputTensor<DataType::FLOAT32>({1}, {1.f}, _memory_manager.get());
+  Tensor input2_tensor = makeInputTensor<DataType::S32>({1}, {2}, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   AddParams params{};
@@ -227,10 +248,10 @@ TEST(AddTest, Input_Output_Type_NEG)
   EXPECT_ANY_THROW(kernel.configure());
 }
 
-TEST(AddTest, Invalid_Input_Type_NEG)
+TEST_F(AddTest, Invalid_Input_Type_NEG)
 {
-  Tensor input1_tensor = makeInputTensor<DataType::S64>({1}, {1});
-  Tensor input2_tensor = makeInputTensor<DataType::S64>({1}, {2});
+  Tensor input1_tensor = makeInputTensor<DataType::S64>({1}, {1}, _memory_manager.get());
+  Tensor input2_tensor = makeInputTensor<DataType::S64>({1}, {2}, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::S64);
 
   AddParams params{};
@@ -238,6 +259,7 @@ TEST(AddTest, Invalid_Input_Type_NEG)
 
   Add kernel(&input1_tensor, &input2_tensor, &output_tensor, params);
   kernel.configure();
+  _memory_manager->allocate_memory(output_tensor);
   EXPECT_ANY_THROW(kernel.execute());
 }
 

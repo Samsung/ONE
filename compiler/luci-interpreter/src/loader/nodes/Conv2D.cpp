@@ -34,6 +34,12 @@ std::unique_ptr<Kernel> build_kernel_CircleConv2D(const luci::CircleNode *circle
   const Tensor *bias = helper.getInputTensor(node->bias());
   Tensor *output = helper.getOutputTensor(node);
 
+  auto im2col =
+    std::make_unique<Tensor>(input->element_type(), Shape({}), AffineQuantization{}, "");
+  im2col->set_observable(false);
+  im2col->set_data_buffer(nullptr);
+  Tensor *tmp = helper.getRuntimeGraph(node->graph())->addTensor(std::move(im2col));
+
   Conv2DParams params{};
   params.padding = node->padding();
   params.stride_height = node->stride()->h();
@@ -42,7 +48,7 @@ std::unique_ptr<Kernel> build_kernel_CircleConv2D(const luci::CircleNode *circle
   params.dilation_width_factor = node->dilation()->w();
   params.activation = node->fusedActivationFunction();
 
-  return std::make_unique<kernels::Conv2D>(input, filter, bias, output, params);
+  return std::make_unique<kernels::Conv2D>(input, filter, bias, output, tmp, params);
 }
 
 } // namespace luci_interpreter
