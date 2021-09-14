@@ -50,6 +50,7 @@ static inline void Softmax(const tflite::SoftmaxParams &params,
                            const tflite::RuntimeShape &output_shape, T *output_data)
 {
   // MARK: At this moment this operation doesn't support on mcu
+  assert(false && "Softmax NYI");
   (void)params;
   (void)input_shape;
   (void)input_data;
