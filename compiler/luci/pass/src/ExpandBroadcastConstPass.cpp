@@ -125,22 +125,31 @@ bool expand_broadcast_const(luci::CircleConst *node)
   if (node->dtype() != loco::DataType::FLOAT32)
     return false; // Unsupported data type
 
+  bool changed = false;
+
   for (auto successor : loco::succs(node))
   {
     auto const circle_successor = loco::must_cast<luci::CircleNode *>(successor);
     switch (circle_successor->opcode())
     {
       case luci::CircleOpcode::ADD:
-        return expand_node_input<luci::CircleAdd>(node, circle_successor);
+        if (expand_node_input<luci::CircleAdd>(node, circle_successor))
+          changed = true;
+        break;
       case luci::CircleOpcode::MUL:
-        return expand_node_input<luci::CircleMul>(node, circle_successor);
+        if (expand_node_input<luci::CircleMul>(node, circle_successor))
+          changed = true;
+        break;
       case luci::CircleOpcode::DIV:
-        return expand_node_input<luci::CircleDiv>(node, circle_successor);
+        if (expand_node_input<luci::CircleDiv>(node, circle_successor))
+          changed = true;
+        break;
       default:
-        return false; // Unsupported successor node
+        break; // Unsupported successor node
     }
   }
-  return false;
+
+  return changed;
 }
 
 } // namespace
