@@ -88,6 +88,17 @@ def _get_parser():
         type=str,
         help='record mode (supported: percentile/moving_average, default=percentile)')
 
+    # arguments for force_quantparam
+    parser.add_argument(
+        '--force_quantparam',
+        action='store_true',
+        help='write quantparam to the specified tensor')
+    parser.add_argument(
+        '--tensor_name', type=str, action='append', help='tensor name (string)')
+    parser.add_argument('--scale', type=float, action='append', help='scale (float)')
+    parser.add_argument(
+        '--zero_point', type=int, action='append', help='zero point (int)')
+
     return parser
 
 
@@ -114,8 +125,22 @@ def _verify_arg(parser, args):
         missing.append('-i/--input_path')
     if not _utils._is_valid_attr(args, 'output_path'):
         missing.append('-o/--output_path')
+    if _utils._is_valid_attr(args, 'force_quantparam'):
+        if not _utils._is_valid_attr(args, 'tensor_name'):
+            missing.append('--tensor_name')
+        if not _utils._is_valid_attr(args, 'scale'):
+            missing.append('--scale')
+        if not _utils._is_valid_attr(args, 'zero_point'):
+            missing.append('--zero_point')
     if len(missing):
         parser.error('the following arguments are required: ' + ' '.join(missing))
+    if _utils._is_valid_attr(args, 'force_quantparam'):
+        tensors = getattr(args, 'tensor_name')
+        scales = getattr(args, 'scale')
+        zerops = getattr(args, 'zero_point')
+        if len(tensors) != len(scales) or len(tensors) != len(zerops):
+            parser.error(
+                'tensor_name, scale, and zero_point should have the same length.')
 
 
 def _parse_arg(parser):
@@ -233,6 +258,43 @@ def _quantize(args):
         _utils._run(circle_quantizer_cmd, err_prefix="circle_quantizer", logfile=f)
 
 
+def _write_qparam(args):
+    # get file path to log
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    logfile_path = os.path.realpath(args.output_path) + '.log'
+
+    with open(logfile_path, 'wb') as f:
+        # get driver path
+        circle_quantizer_path = os.path.join(dir_path, 'circle-quantizer')
+
+        ## make a command to quantize and dequantize the weights of the model
+        circle_quantizer_cmd = [circle_quantizer_path]
+        # verbose
+        if _utils._is_valid_attr(args, 'verbose'):
+            circle_quantizer_cmd.append('--verbose')
+        if _utils._is_valid_attr(args, 'tensor_name'):
+            tensor_name = getattr(args, 'tensor_name')
+        if _utils._is_valid_attr(args, 'scale'):
+            scale = getattr(args, 'scale')
+        if _utils._is_valid_attr(args, 'zero_point'):
+            zero_point = getattr(args, 'zero_point')
+        for (t, s, zp) in zip(tensor_name, scale, zero_point):
+            circle_quantizer_cmd.append('--force_quantparam')
+            circle_quantizer_cmd.append(t)
+            circle_quantizer_cmd.append(str(s))
+            circle_quantizer_cmd.append(str(zp))
+        # input and output path
+        if _utils._is_valid_attr(args, 'input_path'):
+            circle_quantizer_cmd.append(getattr(args, 'input_path'))
+        if _utils._is_valid_attr(args, 'output_path'):
+            circle_quantizer_cmd.append(getattr(args, 'output_path'))
+
+        f.write((' '.join(circle_quantizer_cmd) + '\n').encode())
+
+        # run circle-quantizer
+        _utils._run(circle_quantizer_cmd, err_prefix="circle_quantizer", logfile=f)
+
+
 def main():
     # parse arguments
     parser = _get_parser()
@@ -247,8 +309,11 @@ def main():
     # verify arguments
     _verify_arg(parser, args)
 
-    # quantize
-    _quantize(args)
+    if _utils._is_valid_attr(args, 'force_quantparam'):
+        _write_qparam(args)
+    else:
+        # quantize
+        _quantize(args)
 
 
 if __name__ == '__main__':

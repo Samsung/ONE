@@ -38,6 +38,8 @@ loco::DataType str_to_dtype(const std::string &);
 
 QuantizationGranularity str_to_granularity(const std::string &);
 
+std::vector<std::string> split(const std::string &, const std::string &);
+
 } // namespace luci
 
 #endif // __LUCI_PASS_HELPERS_STRINGS_H__

@@ -54,6 +54,7 @@ public:
       FoldDepthwiseConv2D,
       FoldDequantize,
       FoldSparseToDense,
+      ForceQuantParam,
       ForwardReshapeToUnaryOp,
       SparsifyTensorPass,
       FusePreActivationBatchNorm,
@@ -84,10 +85,15 @@ public:
 
     enum AlgorithmParameters
     {
+      // common
+      Common_tensors,
+
       // quantize
       Quantize_input_dtype,
       Quantize_output_dtype,
       Quantize_granularity, // layer-wise or channel-wise
+      Quantize_scales,
+      Quantize_zero_points,
 
       // sparsify
       Sparsify_tensor_name,
@@ -107,6 +113,8 @@ public:
     virtual bool query(Algorithm) = 0;
     virtual void param(AlgorithmParameters, const std::string &) = 0;
     virtual const std::string param(AlgorithmParameters) const = 0;
+    virtual void params(AlgorithmParameters, std::vector<std::string> &) = 0;
+    virtual std::vector<std::string> params(AlgorithmParameters) const = 0;
   };
 
 public:

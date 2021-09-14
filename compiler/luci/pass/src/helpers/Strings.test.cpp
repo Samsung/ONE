@@ -48,3 +48,13 @@ TEST(StringsTest, str_to_granularity)
 
   EXPECT_THROW(luci::str_to_granularity("foo"), std::runtime_error);
 }
+
+TEST(StringsTest, split)
+{
+  std::string s = "234;22;2,2";
+
+  auto sv = luci::split(s, ";");
+  EXPECT_EQ("234", sv[0]);
+  EXPECT_EQ("22", sv[1]);
+  EXPECT_EQ("2,2", sv[2]);
+}

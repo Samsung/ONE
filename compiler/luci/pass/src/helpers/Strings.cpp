@@ -21,6 +21,23 @@
 namespace luci
 {
 
+std::vector<std::string> split(const std::string &input, const std::string &delimiter)
+{
+  std::vector<std::string> res;
+  auto start = 0;
+  auto end = input.find(delimiter);
+  while (end != std::string::npos)
+  {
+    auto token = input.substr(start, end - start);
+    res.emplace_back(token);
+    start = end + delimiter.length();
+    end = input.find(delimiter, start);
+  }
+  res.emplace_back(input.substr(start, end));
+
+  return res;
+}
+
 bool in_array(const std::string &str, const std::vector<std::string> &array)
 {
   return std::find(array.begin(), array.end(), str) != array.end();
