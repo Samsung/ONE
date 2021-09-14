@@ -4,6 +4,11 @@ list(REMOVE_ITEM SOURCES ${TESTS})
 
 add_library(luci_pass SHARED ${SOURCES})
 target_include_directories(luci_pass PRIVATE src)
+target_include_directories(luci_pass SYSTEM PRIVATE 
+        "${TensorFlowRuySource_DIR}"
+        "${TensorFlowGEMMLowpSource_DIR}"
+        "${TensorFlowEigenSource_DIR}"
+        "${TensorFlowSource_DIR}")
 target_include_directories(luci_pass PUBLIC include)
 target_link_libraries(luci_pass PUBLIC loco)
 target_link_libraries(luci_pass PUBLIC logo_core)
