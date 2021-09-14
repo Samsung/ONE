@@ -41,6 +41,12 @@ bool check_input(std::string str)
 {
   bool check_hyphen = false;
 
+  if (str[0] == '-' || str[str.size()-1] == '-')
+  {
+    std::cout << "Invalid input." << std::endl;
+    exit(0);
+  }
+
   for (char c : str)
   {
     if ('0' <= c && c <= '9')
@@ -71,19 +77,37 @@ void split_id_input(const std::string &str, std::vector<int> &by_id)
   {
     if (str_buf.length() && check_input(str_buf)) // input validation
     {
-      if (str_buf.find('-') == std::string::npos) // if token has no '-'
-        by_id.push_back(stoi(str_buf));
-      else // tokenize again by '-'
+      try
       {
-        std::istringstream ss2(str_buf);
-        std::string token;
-        int from_to[2], top = 0;
+        if (str_buf.find('-') == std::string::npos) // if token has no '-'
+          by_id.push_back(stoi(str_buf));
+        else // tokenize again by '-'
+        {
+          std::istringstream ss2(str_buf);
+          std::string token;
+          int from_to[2], top = 0;
 
-        while (getline(ss2, token, '-'))
-          from_to[top++] = stoi(token);
+          while (getline(ss2, token, '-'))
+            from_to[top++] = stoi(token);
 
-        for (int number = from_to[0]; number <= from_to[1]; number++)
-          by_id.push_back(number);
+          for (int number = from_to[0]; number <= from_to[1]; number++)
+            by_id.push_back(number);
+        }
+      }
+      catch (std::invalid_argument &error)
+      {
+        std::cerr << "ERROR: [circle-opselector] Invalid argument.(stoi)" << std::endl;
+        exit(0);
+      }
+      catch (std::out_of_range)
+      {
+        std::cout << "ERROR: [circle-opselector] Argument is out of range(stoi)\n";
+        exit(0);
+      }
+      catch (...)
+      {
+        std::cout << "ERROR: [circle-opselector] Unknown error(stoi)\n";
+        exit(0);
       }
     }
   }
@@ -282,12 +306,23 @@ int entry(int argc, char **argv)
   luci::Importer importer;
   auto module = importer.importModule(circle_model);
 
-  std::unique_ptr<luci::Module> module2 = luci::make_module();
   // TODO Add function
   if (by_id.size())
   {
+    opselector::OpSelector *selector = new opselector::OpSelector();
+    std::map<uint32_t, std::string> _source_table = module.get()->source_table();
+    std::map<uint32_t, std::string> id_name_selected_nodes;
+
+    for(auto id : by_id)
+    {
+      for(auto iter=_source_table.begin();iter!=_source_table.end();iter++)
+        if(iter->first == id)
+          id_name_selected_nodes[iter->first] = iter->second; // {id : name} mapping
+    }
+
+    module = selector->select_nodes(circle_model, id_name_selected_nodes);
   }
-  if (by_name.size())
+  if(by_name.size())
   {
   }
 
