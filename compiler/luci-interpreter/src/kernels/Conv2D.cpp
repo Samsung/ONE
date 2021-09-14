@@ -358,19 +358,20 @@ void Conv2D::evalQuantizedS8PerChannel() const
   std::vector<ChannelQuantMultipliers> quant_multipliers =
     quantizeMultipliers(effective_output_scales);
 
-  std::vector<int> shifts;
+  std::vector<int32_t> shifts;
   std::transform(quant_multipliers.begin(), quant_multipliers.end(), std::back_inserter(shifts),
                  [](ChannelQuantMultipliers cm) { return cm.shift; });
-  std::vector<int> multipliers;
+  std::vector<int32_t> multipliers;
   std::transform(quant_multipliers.begin(), quant_multipliers.end(),
                  std::back_inserter(multipliers),
                  [](ChannelQuantMultipliers cm) { return cm.multiplier; });
 
-  tflite::reference_integer_ops::ConvPerChannel(
+  luci_interpreter_pal::ConvPerChannel(
     params, multipliers.data(), shifts.data(), getTensorShape(input()),
     getTensorData<int8_t>(input()), getTensorShape(filter()), getTensorData<int8_t>(filter()),
     getTensorShape(bias()), getTensorData<int32_t>(bias()), getTensorShape(output()),
-    getTensorData<int8_t>(output()));
+    getTensorData<int8_t>(output()), getTensorShape(_im2col.get()),
+    getTensorData<int8_t>(_im2col.get()));
 }
 
 void Conv2D::evalQuantizedS16() const
