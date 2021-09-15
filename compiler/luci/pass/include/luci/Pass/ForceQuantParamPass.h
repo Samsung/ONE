@@ -21,10 +21,6 @@
 
 #include <logo/Pass.h>
 
-using TensorVector = std::vector<std::string>;
-using ScaleVector = std::vector<float>;
-using ZPVector = std::vector<int64_t>;
-
 namespace luci
 {
 
@@ -33,6 +29,11 @@ namespace luci
  */
 class ForceQuantParamPass : public logo::Pass
 {
+public:
+  using TensorVector = std::vector<std::string>;
+  using ScaleVector = std::vector<float>;
+  using ZPVector = std::vector<int64_t>;
+
 public:
   ForceQuantParamPass(TensorVector &tensors, ScaleVector &scales, ZPVector &zerops)
     : _tensors{tensors}, _scales{scales}, _zerops{zerops}

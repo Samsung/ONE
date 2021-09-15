@@ -23,6 +23,10 @@
 namespace
 {
 
+using TensorVector = luci::ForceQuantParamPass::TensorVector;
+using ScaleVector = luci::ForceQuantParamPass::ScaleVector;
+using ZPVector = luci::ForceQuantParamPass::ZPVector;
+
 std::unique_ptr<luci::CircleQuantParam> make_qparam(float scale, int64_t zp)
 {
   auto qparam = std::make_unique<luci::CircleQuantParam>();
