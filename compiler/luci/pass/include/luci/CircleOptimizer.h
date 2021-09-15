@@ -54,6 +54,7 @@ public:
       FoldDepthwiseConv2D,
       FoldDequantize,
       FoldSparseToDense,
+      ForceQuantParam,
       ForwardReshapeToUnaryOp,
       SparsifyTensorPass,
       FusePreActivationBatchNorm,
@@ -88,6 +89,9 @@ public:
       Quantize_input_dtype,
       Quantize_output_dtype,
       Quantize_granularity, // layer-wise or channel-wise
+      Quantize_tensor_names,
+      Quantize_scales,
+      Quantize_zero_points,
 
       // sparsify
       Sparsify_tensor_name,
