@@ -95,11 +95,14 @@ public:
   void enable(Algorithm) final;
   void param(AlgorithmParameters, const std::string &) final;
   const std::string param(AlgorithmParameters) const final;
+  void params(AlgorithmParameters, std::vector<std::string> &) final;
+  std::vector<std::string> params(AlgorithmParameters) const final;
   bool query(Algorithm) final;
 
 private:
   std::vector<Algorithm> _algorithms;
   std::map<AlgorithmParameters, const std::string> _algorithm_params;
+  std::map<AlgorithmParameters, std::vector<std::string>> _multiple_params;
 };
 
 void OptimizeOptionsImpl::enable(Algorithm algo) { _algorithms.push_back(algo); }
@@ -119,6 +122,24 @@ const std::string OptimizeOptionsImpl::param(AlgorithmParameters param) const
   else
   {
     return std::string();
+  }
+}
+
+void OptimizeOptionsImpl::params(AlgorithmParameters param, std::vector<std::string> &vec)
+{
+  _multiple_params[param] = vec;
+}
+
+std::vector<std::string> OptimizeOptionsImpl::params(AlgorithmParameters param) const
+{
+  auto param_vec = _multiple_params.find(param);
+  if (param_vec != _multiple_params.end())
+  {
+    return param_vec->second;
+  }
+  else
+  {
+    return std::vector<std::string>();
   }
 }
 
