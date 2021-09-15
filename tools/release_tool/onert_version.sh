@@ -27,7 +27,7 @@ show_version() {
   current_version=${version_line#"Version:"}
 
   if [ $nightly -eq 0 ]; then
-    echo $current_version~$(date "+%y%m%d%H")
+    echo $current_version~$(date -u "+%y%m%d%H")
   else
     echo $current_version
   fi
