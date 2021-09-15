@@ -66,6 +66,8 @@ static inline void ConvPerChannel(const tflite::ConvParams &params, const int32_
                                   int8 *output_data, const tflite::RuntimeShape &im2col_shape,
                                   int8 *im2col_data)
 {
+  (void)im2col_shape;
+  (void)im2col_data;
   // TODO enable optimized version
   tflite::reference_integer_ops::ConvPerChannel(params, mult, shifts, input_shape, input_data,
                                                 filter_shape, filter_data, bias_shape, bias_data,
