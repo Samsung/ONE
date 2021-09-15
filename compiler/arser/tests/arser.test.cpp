@@ -441,3 +441,61 @@ TEST(BasicTest, OptWithNonRequiredDuplicate)
   EXPECT_TRUE(arser["--output_path"]);
   EXPECT_EQ("I/am/out.put", arser.get<std::string>("--output_path"));
 }
+
+TEST(BasicTest, AccumulateVectorOptions)
+{
+  /* arrange */
+  Arser arser;
+
+  arser.add_argument("--specify").nargs(3).accumulated(true).type(arser::DataType::STR_VEC);
+
+  Prompt prompt("./driver --specify a b c --specify 1 2 3");
+  /* act */
+  arser.parse(prompt.argc(), prompt.argv());
+  /* assert */
+  EXPECT_TRUE(arser["--specify"]);
+
+  auto specify = arser.get<std::vector<std::vector<std::string>>>("--specify");
+  auto first = specify[0];
+  EXPECT_EQ("a", first.at(0));
+  EXPECT_EQ("b", first.at(1));
+  EXPECT_EQ("c", first.at(2));
+  auto second = specify[1];
+  EXPECT_EQ("1", second.at(0));
+  EXPECT_EQ("2", second.at(1));
+  EXPECT_EQ("3", second.at(2));
+}
+
+TEST(BasicTest, AccumulateScalarOptions)
+{
+  /* arrange */
+  Arser arser;
+
+  arser.add_argument("--specify").nargs(1).accumulated(true).type(arser::DataType::FLOAT);
+
+  Prompt prompt("./driver --specify 1 --specify 2");
+  /* act */
+  arser.parse(prompt.argc(), prompt.argv());
+  /* assert */
+  EXPECT_TRUE(arser["--specify"]);
+
+  auto specify = arser.get<std::vector<float>>("--specify");
+  EXPECT_EQ(1, specify.at(0));
+  EXPECT_EQ(2, specify.at(1));
+}
+
+TEST(BasicTest, AccumulateScalarOptions_WrongType_NEG)
+{
+  /* arrange */
+  Arser arser;
+
+  arser.add_argument("--specify").nargs(1).accumulated(true).type(arser::DataType::FLOAT);
+
+  Prompt prompt("./driver --specify 1 --specify 2");
+  /* act */
+  arser.parse(prompt.argc(), prompt.argv());
+  /* assert */
+  EXPECT_TRUE(arser["--specify"]);
+
+  EXPECT_THROW(arser.get<float>("--specify"), std::runtime_error);
+}
