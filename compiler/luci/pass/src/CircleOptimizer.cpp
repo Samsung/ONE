@@ -24,6 +24,7 @@
 #include "luci/Pass/FoldDequantizePass.h"
 #include "luci/Pass/FoldSparseToDensePass.h"
 #include "luci/Pass/ForwardReshapeToUnaryOpPass.h"
+#include "luci/Pass/ForceQuantParamPass.h"
 #include "luci/Pass/FuseActivationFunctionPass.h"
 #include "luci/Pass/FuseAddWithTConvPass.h"
 #include "luci/Pass/FuseBatchNormWithConvPass.h"
@@ -88,6 +89,23 @@ namespace
 {
 
 using namespace luci;
+
+template <typename T> T lexical_cast(const std::string &str)
+{
+  std::istringstream ss;
+  ss.str(str);
+  T data;
+  ss >> data;
+  return data;
+}
+
+template <typename T> std::vector<T> lexical_cast(std::vector<std::string> &sv)
+{
+  std::vector<T> result;
+  std::transform(sv.begin(), sv.end(), std::back_inserter(result),
+                 [](std::string str) -> T { return lexical_cast<T>(str); });
+  return result;
+}
 
 class OptimizeOptionsImpl final : public luci::CircleOptimizer::Options
 {
@@ -506,6 +524,23 @@ void CircleOptimizer::quantize(loco::Graph *g) const
 
     luci::RequantizePass requantizer(str_to_dtype(input_dtype), str_to_dtype(output_dtype));
     requantizer.run(g);
+  }
+
+  // Force to write quantparam to specified tensors
+  // NOTE Only per-tensor (not per-channel) qparam can be written
+  if (_options->query(Options::Algorithm::ForceQuantParam))
+  {
+    ForceQuantParamPass::TensorVector tensors =
+      _options->params(Options::AlgorithmParameters::Quantize_tensor_names);
+    auto str_scales = _options->params(Options::AlgorithmParameters::Quantize_scales);
+    auto str_zero_points = _options->params(Options::AlgorithmParameters::Quantize_zero_points);
+
+    // Cast scales/zero_points to proper types
+    ForceQuantParamPass::ScaleVector scales = lexical_cast<float>(str_scales);
+    ForceQuantParamPass::ZPVector zero_points = lexical_cast<int64_t>(str_zero_points);
+
+    ForceQuantParamPass fq(tensors, scales, zero_points);
+    fq.run(g);
   }
 
   logo::Phase phase;
