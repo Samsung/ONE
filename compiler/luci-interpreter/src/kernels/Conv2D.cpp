@@ -64,7 +64,6 @@ void Conv2D::configure()
     LUCI_INTERPRETER_CHECK(filter()->shape().num_dims() == 4);
     LUCI_INTERPRETER_CHECK(filter()->scales().size() ==
                            static_cast<size_t>(filter()->shape().dim(0)));
-    LUCI_INTERPRETER_CHECK(filter()->shape().dim(0) == filter()->scales().size());
     for (auto zerop : filter()->zero_points())
     {
       LUCI_INTERPRETER_CHECK(zerop == 0);
