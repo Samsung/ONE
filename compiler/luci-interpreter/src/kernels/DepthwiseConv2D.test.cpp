@@ -293,6 +293,79 @@ TEST(DepthwiseConv2DTest, Uint8_CWQ_weights)
               FloatArrayNear(ref_output_data, output_quant_param.first));
 }
 
+TEST(DepthwiseConv2DTest, SInt8_CWQ_weights)
+{
+  const int output_channels = 4;
+  Shape input_shape{1, 3, 2, 2};
+  Shape filter_shape{1, 2, 2, output_channels};
+  Shape bias_shape{4};
+  std::vector<int32_t> ref_output_shape{1, 2, 1, output_channels};
+
+  std::vector<float> input_data{
+    1, 2, 7,  8,  //
+    3, 4, 9,  10, //
+    5, 6, 11, 12, //
+  };
+  std::vector<float> filter_data{
+    1,  2,   3,   4,   //
+    -9, 10,  -11, 12,  //
+    5,  6,   7,   8,   //
+    13, -14, 15,  -16, //
+  };
+  std::vector<float> bias_data{1, 2, 3, 4};
+  std::vector<float> ref_output_data{
+    71, -34, 99,  -20, //
+    91, -26, 127, -4,  //
+  };
+
+  std::pair<float, int32_t> input_quant_param = quantizationParams<int8_t>(-128, 127);
+  std::pair<float, int32_t> output_quant_param = quantizationParams<int8_t>(-127, 128);
+
+  std::vector<std::pair<float, int32_t>> filter_quant_params;
+  filter_quant_params.push_back(std::pair<float, int32_t>(0.5, 0));
+  filter_quant_params.push_back(std::pair<float, int32_t>(0.25, 0));
+  filter_quant_params.push_back(std::pair<float, int32_t>(1, 0));
+  filter_quant_params.push_back(std::pair<float, int32_t>(0.125, 0));
+
+  std::vector<float> filter_scales;
+  std::vector<int32_t> filter_zerops;
+  for (auto iter : filter_quant_params)
+  {
+    filter_scales.push_back(iter.first);
+    filter_zerops.push_back(iter.second);
+  }
+
+  std::vector<float> bias_scales;
+  for (int i = 0; i < output_channels; ++i)
+    bias_scales.push_back(filter_quant_params[i].first * input_quant_param.first);
+  std::vector<int32_t> zerop(output_channels, 0);
+
+  Tensor input_tensor = makeInputTensor<DataType::S8>(input_shape, input_quant_param.first,
+                                                      input_quant_param.second, input_data);
+  Tensor filter_tensor =
+    makeInputTensor<DataType::S8>(filter_shape, filter_scales, filter_zerops, 3, filter_data);
+  Tensor bias_tensor = makeInputTensor<DataType::S32>(bias_shape, bias_scales, zerop, 0, bias_data);
+  Tensor output_tensor =
+    makeOutputTensor(DataType::S8, output_quant_param.first, output_quant_param.second);
+
+  DepthwiseConv2DParams params{};
+  params.padding = Padding::VALID;
+  params.depth_multiplier = 2;
+  params.stride_height = 1;
+  params.stride_width = 1;
+  params.dilation_height_factor = 1;
+  params.dilation_width_factor = 1;
+  params.activation = Activation::NONE;
+
+  DepthwiseConv2D kernel(&input_tensor, &filter_tensor, &bias_tensor, &output_tensor, params);
+  kernel.configure();
+  kernel.execute();
+
+  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
+  EXPECT_THAT(dequantizeTensorData(output_tensor),
+              FloatArrayNear(ref_output_data, output_quant_param.first));
+}
+
 TEST(DepthwiseConv2DTest, InvalidBiasType_NEG)
 {
   Shape input_shape{1, 4, 2, 2};
