@@ -483,3 +483,19 @@ TEST(BasicTest, AccumulateScalarOptions)
   EXPECT_EQ(1, specify.at(0));
   EXPECT_EQ(2, specify.at(1));
 }
+
+TEST(BasicTest, AccumulateScalarOptions_WrongType_NEG)
+{
+  /* arrange */
+  Arser arser;
+
+  arser.add_argument("--specify").nargs(1).accumulated(true).type(arser::DataType::FLOAT);
+
+  Prompt prompt("./driver --specify 1 --specify 2");
+  /* act */
+  arser.parse(prompt.argc(), prompt.argv());
+  /* assert */
+  EXPECT_TRUE(arser["--specify"]);
+
+  EXPECT_THROW(arser.get<float>("--specify"), std::runtime_error);
+}
