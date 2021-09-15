@@ -118,6 +118,7 @@ void convert_graph(const luci::GraphBuilderSource &source, luci::CircleReader &r
   }
 
   // Create CircleConst nodes for constant tensors.
+  // NOTE Origin is intentionally not provided for constants.
   for (uint32_t i = 0; i < tensors.size(); ++i)
   {
     luci::CircleConst *const_node = luci::create_circleconst(&gb_context, i);
