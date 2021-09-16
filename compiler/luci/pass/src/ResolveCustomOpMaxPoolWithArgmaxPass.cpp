@@ -16,7 +16,6 @@
 
 #include "luci/Pass/ResolveCustomOpMaxPoolWithArgmaxPass.h"
 
-#include "flatbuffers/flexbuffers.h"
 #include <loco/IR/DataTypeTraits.h>
 
 #include <luci/IR/CircleNodes.h>
@@ -24,6 +23,8 @@
 
 #include <loco.h>
 #include <oops/InternalExn.h>
+
+#include <flatbuffers/flexbuffers.h>
 
 namespace
 {
