@@ -61,7 +61,7 @@ public:
 
   KernelBuilderFunc *get_kernel_builder_func(luci::CircleOpcode opcode) const
   {
-    return _operator_builders[size_t(opcode)];
+    return _operator_builders.at(size_t(opcode));
   }
 
 private:
@@ -71,6 +71,7 @@ private:
   {
     // Using BuilderId is a duplicate of luci::CirclreOpcode,
     // size_t(id) is equal to size_t(corresponding operation opcode).
+    assert(size_t(id) < _operator_builders.size());
     _operator_builders[size_t(id)] = func;
   }
 };
