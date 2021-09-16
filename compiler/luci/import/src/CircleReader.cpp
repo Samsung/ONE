@@ -26,13 +26,34 @@ namespace luci
 bool is_valid(const circle::OperatorCodeT &opcode)
 {
   circle::BuiltinOperator code = opcode.builtin_code;
-  return (circle::BuiltinOperator_MIN <= code && code <= circle::BuiltinOperator_MAX);
+  circle::DeprecatedBuiltinOperator deprecated_code = opcode.deprecated_builtin_code;
+
+  if (!(circle::BuiltinOperator_MIN <= code && code <= circle::BuiltinOperator_MAX))
+    return false;
+
+  if (!(circle::DeprecatedBuiltinOperator_MIN <= deprecated_code &&
+        deprecated_code <= circle::DeprecatedBuiltinOperator_MAX))
+    return false;
+
+  if (code == circle::BuiltinOperator_PLACEHOLDER_FOR_GREATER_OP_CODES)
+    return false;
+
+  return true;
 }
 
 bool is_custom(const circle::OperatorCodeT &opcode)
 {
   circle::BuiltinOperator code = opcode.builtin_code;
-  return (code == circle::BuiltinOperator_CUSTOM);
+  circle::DeprecatedBuiltinOperator deprecated_code = opcode.deprecated_builtin_code;
+
+  if (deprecated_code == circle::DeprecatedBuiltinOperator_CUSTOM)
+    return true;
+
+  if (deprecated_code == circle::DeprecatedBuiltinOperator_PLACEHOLDER_FOR_GREATER_OP_CODES &&
+      code == circle::BuiltinOperator_CUSTOM)
+    return true;
+
+  return false;
 }
 
 std::string opcode_name(const circle::OperatorCodeT &opcode)
@@ -53,7 +74,12 @@ std::string opcode_name(const circle::OperatorCodeT &opcode)
   }
 
   circle::BuiltinOperator code = opcode.builtin_code;
-  return circle::EnumNameBuiltinOperator(code);
+  circle::DeprecatedBuiltinOperator deprecated_builtin_code = opcode.deprecated_builtin_code;
+
+  if (deprecated_builtin_code == circle::DeprecatedBuiltinOperator_PLACEHOLDER_FOR_GREATER_OP_CODES)
+    return circle::EnumNameBuiltinOperator(code);
+  else
+    return circle::EnumNameDeprecatedBuiltinOperator(deprecated_builtin_code);
 }
 
 const char *tensor_name(const circle::TensorT &tensor)
@@ -299,7 +325,11 @@ circle::BuiltinOperator CircleReader::builtin_code(const circle::OperatorT &op) 
   assert(index < op_codes.size());
   const circle::OperatorCodeT &opcode = *op_codes[index];
 
-  return opcode.builtin_code;
+  if (opcode.deprecated_builtin_code ==
+      circle::DeprecatedBuiltinOperator_PLACEHOLDER_FOR_GREATER_OP_CODES)
+    return opcode.builtin_code;
+  else
+    return circle::BuiltinOperator(opcode.deprecated_builtin_code);
 }
 
 std::string CircleReader::opcode_name(const circle::OperatorT &op) const

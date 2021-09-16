@@ -520,8 +520,13 @@ GeneratedModel cook(const ::circlechef::ModelRecipe &model_recipe)
   for (auto const &opcode : builtin_code_map)
   {
     circle::OperatorCodeBuilder code_builder{*flatbuffer_builder};
-    code_builder.add_builtin_code(opcode.first);
+    if ((int)opcode.first < (int)circle::DeprecatedBuiltinOperator_PLACEHOLDER_FOR_GREATER_OP_CODES)
+      code_builder.add_deprecated_builtin_code(circle::DeprecatedBuiltinOperator(opcode.first));
+    else
+      code_builder.add_deprecated_builtin_code(
+        circle::DeprecatedBuiltinOperator_PLACEHOLDER_FOR_GREATER_OP_CODES);
     code_builder.add_version(opcode.second);
+    code_builder.add_builtin_code(opcode.first);
     auto code = code_builder.Finish();
     // Update OperatorCode vector
     code_vec.emplace_back(code);
@@ -537,8 +542,9 @@ GeneratedModel cook(const ::circlechef::ModelRecipe &model_recipe)
   {
     auto custom_code = flatbuffer_builder->CreateString(opcode);
     circle::OperatorCodeBuilder code_builder{*flatbuffer_builder};
-    code_builder.add_builtin_code(circle::BuiltinOperator_CUSTOM);
+    code_builder.add_deprecated_builtin_code(circle::DeprecatedBuiltinOperator_CUSTOM);
     code_builder.add_custom_code(custom_code);
+    code_builder.add_builtin_code(circle::BuiltinOperator_CUSTOM);
     auto code = code_builder.Finish();
     // Update OperatorCode vector
     code_vec.emplace_back(code);

@@ -5,7 +5,7 @@ if(NOT FlatBuffers_FOUND)
   return()
 endif(NOT FlatBuffers_FOUND)
 
-nnas_find_package(TensorFlowSource EXACT 2.3.0 QUIET)
+nnas_find_package(TensorFlowSource EXACT 2.6.0 QUIET)
 
 if(NOT TensorFlowSource_FOUND)
   return()
@@ -37,7 +37,7 @@ target_link_libraries(mio_tflite_example mio_tflite)
 add_executable(mio_tflite_validate example.cpp)
 target_link_libraries(mio_tflite_validate mio_tflite)
 
-nnas_find_package(TensorFlowGEMMLowpSource EXACT 2.3.0 QUIET)
+nnas_find_package(TensorFlowGEMMLowpSource EXACT 2.6.0 QUIET)
 
 if(NOT TensorFlowGEMMLowpSource_FOUND)
   return()

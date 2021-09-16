@@ -287,9 +287,17 @@ Offset<OperatorCodeLink>::Offset(FlatBufBuilder &fb, const TFLFlatBufVec *tflite
   {
     auto custom_code = fb->CreateString(it->custom_code());
     circle::OperatorCodeBuilder operator_code_builder{*fb};
-    operator_code_builder.add_builtin_code(get_circle_builtin_code(it->builtin_code()));
+    if (it->deprecated_builtin_code() <
+        (int8_t)tflite::BuiltinOperator_PLACEHOLDER_FOR_GREATER_OP_CODES)
+      operator_code_builder.add_deprecated_builtin_code(
+        circle::DeprecatedBuiltinOperator(it->deprecated_builtin_code()));
+    else
+      operator_code_builder.add_deprecated_builtin_code(
+        circle::DeprecatedBuiltinOperator_PLACEHOLDER_FOR_GREATER_OP_CODES);
     operator_code_builder.add_custom_code(custom_code);
     operator_code_builder.add_version(it->version());
+    operator_code_builder.add_builtin_code(get_circle_builtin_code(it->builtin_code()));
+
     auto code = operator_code_builder.Finish();
     operator_code_vec.emplace_back(code);
   }

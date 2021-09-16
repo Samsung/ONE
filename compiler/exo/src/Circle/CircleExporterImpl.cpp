@@ -76,11 +76,7 @@ encodeOperatorCodes(FlatBufferBuilder &builder, std::unordered_map<OpCode, uint3
   for (auto it : opcodes)
   {
     uint32_t idx = it.second;
-    if (it.first.opcode != BuiltinOperator_CUSTOM)
-    {
-      operator_codes_vec[idx] = CreateOperatorCode(builder, it.first.opcode);
-    }
-    else // custom op
+    if (it.first.opcode == BuiltinOperator_CUSTOM)
     {
       auto opCode = it.first;
       auto custom_code = custom_opcodes.find(opCode);
@@ -88,7 +84,18 @@ encodeOperatorCodes(FlatBufferBuilder &builder, std::unordered_map<OpCode, uint3
         INTERNAL_EXN("Cannot find code for customop even though opcode is BuiltinOperator_CUSTOM");
 
       operator_codes_vec[idx] =
-        CreateOperatorCode(builder, it.first.opcode, builder.CreateString(custom_code->second));
+        CreateOperatorCode(builder, DeprecatedBuiltinOperator_PLACEHOLDER_FOR_GREATER_OP_CODES,
+                           builder.CreateString(custom_code->second), 1, BuiltinOperator_CUSTOM);
+    }
+    else if (it.first.opcode < BuiltinOperator_PLACEHOLDER_FOR_GREATER_OP_CODES)
+    {
+      operator_codes_vec[idx] = CreateOperatorCode(
+        builder, DeprecatedBuiltinOperator(it.first.opcode), 0, 1, it.first.opcode);
+    }
+    else
+    {
+      operator_codes_vec[idx] = CreateOperatorCode(
+        builder, DeprecatedBuiltinOperator_PLACEHOLDER_FOR_GREATER_OP_CODES, 0, 1, it.first.opcode);
     }
   }
   return builder.CreateVector(operator_codes_vec);

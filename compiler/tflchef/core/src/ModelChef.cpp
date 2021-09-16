@@ -582,8 +582,13 @@ GeneratedModel cook(const ::tflchef::ModelRecipe &model_recipe)
   for (auto const &opcode : builtin_code_map)
   {
     tflite::OperatorCodeBuilder code_builder{*flatbuffer_builder};
-    code_builder.add_builtin_code(opcode.first);
+    if (opcode.first < tflite::BuiltinOperator_PLACEHOLDER_FOR_GREATER_OP_CODES)
+      code_builder.add_deprecated_builtin_code(opcode.first);
+    else
+      code_builder.add_deprecated_builtin_code(
+        tflite::BuiltinOperator_PLACEHOLDER_FOR_GREATER_OP_CODES);
     code_builder.add_version(opcode.second);
+    code_builder.add_builtin_code(opcode.first);
     auto code = code_builder.Finish();
     // Update OperatorCode vector
     code_vec.emplace_back(code);
@@ -597,8 +602,9 @@ GeneratedModel cook(const ::tflchef::ModelRecipe &model_recipe)
   {
     auto custom_code = flatbuffer_builder->CreateString(opcode);
     tflite::OperatorCodeBuilder code_builder{*flatbuffer_builder};
-    code_builder.add_builtin_code(tflite::BuiltinOperator_CUSTOM);
+    code_builder.add_deprecated_builtin_code(tflite::BuiltinOperator_CUSTOM);
     code_builder.add_custom_code(custom_code);
+    code_builder.add_builtin_code(tflite::BuiltinOperator_CUSTOM);
     auto code = code_builder.Finish();
     // Update OperatorCode vector
     code_vec.emplace_back(code);

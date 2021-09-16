@@ -25,13 +25,27 @@ namespace tflinspect
 bool is_valid(const tflite::OperatorCode *opcode)
 {
   tflite::BuiltinOperator code = opcode->builtin_code();
-  return (tflite::BuiltinOperator_MIN <= code && code <= tflite::BuiltinOperator_MAX);
+  int8_t deprecated_code = opcode->deprecated_builtin_code();
+
+  if (!(tflite::BuiltinOperator_MIN <= code && code <= tflite::BuiltinOperator_MAX))
+    return false;
+
+  if (!(0 <= deprecated_code &&
+        deprecated_code < (int8_t)tflite::BuiltinOperator_PLACEHOLDER_FOR_GREATER_OP_CODES))
+    return false;
+
+  if (code == tflite::BuiltinOperator_PLACEHOLDER_FOR_GREATER_OP_CODES)
+    return false;
+
+  return true;
 }
 
 bool is_custom(const tflite::OperatorCode *opcode)
 {
   tflite::BuiltinOperator code = opcode->builtin_code();
-  return (code == tflite::BuiltinOperator_CUSTOM);
+  int8_t deprecated_code = opcode->deprecated_builtin_code();
+  return (deprecated_code == (int8_t)tflite::BuiltinOperator_CUSTOM ||
+          code == tflite::BuiltinOperator_CUSTOM);
 }
 
 std::string opcode_name(const tflite::OperatorCode *opcode)
@@ -57,7 +71,12 @@ std::string opcode_name(const tflite::OperatorCode *opcode)
   }
 
   tflite::BuiltinOperator code = opcode->builtin_code();
-  return tflite::EnumNameBuiltinOperator(code);
+  int8_t deprecated_code = opcode->deprecated_builtin_code();
+
+  if (deprecated_code == (int8_t)tflite::BuiltinOperator_PLACEHOLDER_FOR_GREATER_OP_CODES)
+    return tflite::EnumNameBuiltinOperator(code);
+  else
+    return tflite::EnumNameBuiltinOperator(tflite::BuiltinOperator(deprecated_code));
 }
 
 const char *tensor_type(const tflite::Tensor *tensor)
@@ -122,7 +141,11 @@ tflite::BuiltinOperator Reader::builtin_code(const tflite::Operator *op) const
   assert(index < _op_codes.size());
   const tflite::OperatorCode *opcode = _op_codes.at(index);
 
-  return opcode->builtin_code();
+  if (opcode->deprecated_builtin_code() ==
+      (int8_t)tflite::BuiltinOperator_PLACEHOLDER_FOR_GREATER_OP_CODES)
+    return opcode->builtin_code();
+  else
+    return tflite::BuiltinOperator(opcode->deprecated_builtin_code());
 }
 
 std::string Reader::opcode_name(const tflite::Operator *op) const
