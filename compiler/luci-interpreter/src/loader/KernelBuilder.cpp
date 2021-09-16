@@ -31,6 +31,7 @@ namespace luci_interpreter
 enum class BuilderId
 {
 #include <luci/IR/CircleNodes.lst>
+  size // casts to count of values in BuilderId enum
 };
 
 #undef CIRCLE_VNODE
@@ -48,7 +49,7 @@ public:
   using KernelBuilderFunc = std::unique_ptr<Kernel>(const luci::CircleNode *,
                                                     KernelBuilderHelper &);
 
-  KernelBuilderRegistry()
+  KernelBuilderRegistry() : _operator_builders(size_t(BuilderId::size), nullptr)
   {
 #define REGISTER_KERNEL(name) \
   register_kernel_builder(BuilderId::Circle##name, build_kernel_Circle##name);
@@ -58,12 +59,9 @@ public:
 #undef REGISTER_KERNEL
   }
 
-  KernelBuilderFunc *get_kernel_builder_func(luci::CircleOpcode opcode)
+  KernelBuilderFunc *get_kernel_builder_func(luci::CircleOpcode opcode) const
   {
-    auto opcode_int = static_cast<int>(opcode);
-    if (opcode_int >= static_cast<int64_t>(_operator_builders.size()))
-      return nullptr;
-    return _operator_builders[opcode_int];
+    return _operator_builders[size_t(opcode)];
   }
 
 private:
@@ -72,11 +70,8 @@ private:
   void register_kernel_builder(BuilderId id, KernelBuilderFunc *func)
   {
     // Using BuilderId is a duplicate of luci::CirclreOpcode,
-    // static_cast<int>(id) is equal to static_cast<int>(corresponding operation opcode).
-    auto opcode = static_cast<int>(id);
-    if (opcode >= static_cast<int64_t>(_operator_builders.size()))
-      _operator_builders.resize(opcode + 1);
-    _operator_builders[opcode] = func;
+    // size_t(id) is equal to size_t(corresponding operation opcode).
+    _operator_builders[size_t(id)] = func;
   }
 };
 
