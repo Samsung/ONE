@@ -31,7 +31,7 @@ namespace luci_interpreter
 enum class BuilderId
 {
 #include <luci/IR/CircleNodes.lst>
-  size // casts to count of values in BuilderId enum
+  Size // casts to count of values in BuilderId enum
 };
 
 #undef CIRCLE_VNODE
@@ -49,7 +49,7 @@ public:
   using KernelBuilderFunc = std::unique_ptr<Kernel>(const luci::CircleNode *,
                                                     KernelBuilderHelper &);
 
-  KernelBuilderRegistry() : _operator_builders(size_t(BuilderId::size), nullptr)
+  KernelBuilderRegistry() : _operator_builders(size_t(BuilderId::Size), nullptr)
   {
 #define REGISTER_KERNEL(name) \
   register_kernel_builder(BuilderId::Circle##name, build_kernel_Circle##name);
