@@ -18,6 +18,7 @@
 #define LUCI_INTERPRETER_PAL_CONV2D_H
 
 #include <tensorflow/lite/kernels/internal/reference/reference_ops.h>
+#include <tensorflow/lite/kernels/internal/reference/integer_ops/conv.h>
 
 namespace luci_interpreter_pal
 {
@@ -43,6 +44,21 @@ static inline void Conv(const tflite::ConvParams &params, const tflite::RuntimeS
   tflite::reference_ops::Conv(params, input_shape, input_data, filter_shape, filter_data,
                               bias_shape, bias_data, output_shape, output_data, im2col_shape,
                               im2col_data, nullptr);
+}
+
+static inline void ConvPerChannel(const tflite::ConvParams &params, const int32_t *mult,
+                                  const int32_t *shifts, const tflite::RuntimeShape &input_shape,
+                                  const int8 *input_data, const tflite::RuntimeShape &filter_shape,
+                                  const int8 *filter_data, const tflite::RuntimeShape &bias_shape,
+                                  const int32 *bias_data, const tflite::RuntimeShape &output_shape,
+                                  int8 *output_data, const tflite::RuntimeShape &im2col_shape,
+                                  int8 *im2col_data)
+{
+  (void)im2col_shape;
+  (void)im2col_data;
+  tflite::reference_integer_ops::ConvPerChannel(params, mult, shifts, input_shape, input_data,
+                                                filter_shape, filter_data, bias_shape, bias_data,
+                                                output_shape, output_data);
 }
 
 } // namespace luci_interpreter_pal

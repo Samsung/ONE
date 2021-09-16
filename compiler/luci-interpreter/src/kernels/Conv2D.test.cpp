@@ -214,7 +214,7 @@ TEST_F(Conv2DTest, Uint8)
                                   filter_data, _memory_manager.get());
   Tensor bias_tensor = makeInputTensor<DataType::S32>(
     {3}, input_quant_param.first * input_quant_param.first, 0, bias_data, _memory_manager.get());
-  Tensor im2col(DataType::FLOAT32, Shape({}), {}, "");
+  Tensor im2col(DataType::U8, Shape({}), {}, "");
   Tensor output_tensor =
     makeOutputTensor(DataType::U8, output_quant_param.first, output_quant_param.second);
 
@@ -290,9 +290,85 @@ TEST_F(Conv2DTest, Uint8_CWQ)
                                                        0, filter_data, _memory_manager.get());
   Tensor bias_tensor = makeInputTensor<DataType::S32>({output_channels}, bias_scales, zerop, 0,
                                                       bias_data, _memory_manager.get());
-  Tensor im2col(DataType::FLOAT32, Shape({}), {}, "");
+  Tensor im2col(DataType::U8, Shape({}), {}, "");
   Tensor output_tensor =
     makeOutputTensor(DataType::U8, output_quant_param.first, output_quant_param.second);
+
+  Conv2DParams params{};
+  params.padding = Padding::VALID;
+  params.stride_height = 2;
+  params.stride_width = 2;
+  params.dilation_height_factor = 1;
+  params.dilation_width_factor = 1;
+  params.activation = Activation::NONE;
+
+  Conv2D kernel(&input_tensor, &filter_tensor, &bias_tensor, &output_tensor, &im2col, params);
+  kernel.configure();
+  _memory_manager->allocate_memory(output_tensor);
+  _memory_manager->allocate_memory(im2col);
+  kernel.execute();
+
+  std::vector<float> ref_output_data{
+    18, 2, 5, // first batch, left
+    18, 2, 5, // first batch, right
+    17, 4, 3, // second batch, left
+    37, 4, 3, // second batch, right
+  };
+  std::vector<int32_t> ref_output_shape{2, 1, 2, 3};
+  EXPECT_THAT(dequantizeTensorData(output_tensor), FloatArrayNear(ref_output_data));
+  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
+}
+
+TEST_F(Conv2DTest, SInt8_CWQ)
+{
+  const int output_channels = 3;
+  std::vector<float> input_data{
+    // First batch
+    1, 1, 1, 1, // row = 1
+    2, 2, 2, 2, // row = 2
+                // Second batch
+    1, 2, 3, 4, // row = 1
+    1, 2, 3, 4, // row = 2
+  };
+  std::vector<float> filter_data{
+    1,  2,  3,  4, // first 2x2 filter
+    -1, 1,  -1, 1, // second 2x2 filter
+    -1, -1, 1,  1, // third 2x2 filter
+  };
+  std::vector<float> bias_data{1, 2, 3};
+  Shape filter_shape{output_channels, 2, 2, 1};
+
+  std::pair<float, int32_t> input_quant_param = quantizationParams<int8_t>(0, 4);
+  std::pair<float, int32_t> output_quant_param = quantizationParams<int8_t>(-127, 128);
+
+  std::vector<std::pair<float, int32_t>> filter_quant_params;
+  filter_quant_params.push_back(std::pair<float, int32_t>(0.5, 0));
+  filter_quant_params.push_back(std::pair<float, int32_t>(0.25, 0));
+  filter_quant_params.push_back(std::pair<float, int32_t>(0.125, 0));
+
+  std::vector<float> filter_scales;
+  std::vector<int32_t> filter_zerops;
+  for (auto iter : filter_quant_params)
+  {
+    filter_scales.push_back(iter.first);
+    filter_zerops.push_back(iter.second);
+  }
+
+  std::vector<float> bias_scales;
+  for (int i = 0; i < output_channels; ++i)
+    bias_scales.push_back(filter_quant_params[i].first * input_quant_param.first);
+  std::vector<int32_t> zerop(output_channels, 0);
+
+  Tensor input_tensor =
+    makeInputTensor<DataType::S8>({2, 2, 4, 1}, input_quant_param.first, input_quant_param.second,
+                                  input_data, _memory_manager.get());
+  Tensor filter_tensor = makeInputTensor<DataType::S8>(filter_shape, filter_scales, filter_zerops,
+                                                       0, filter_data, _memory_manager.get());
+  Tensor bias_tensor = makeInputTensor<DataType::S32>({output_channels}, bias_scales, zerop, 0,
+                                                      bias_data, _memory_manager.get());
+  Tensor im2col(DataType::S8, Shape({}), {}, "");
+  Tensor output_tensor =
+    makeOutputTensor(DataType::S8, output_quant_param.first, output_quant_param.second);
 
   Conv2DParams params{};
   params.padding = Padding::VALID;
@@ -350,7 +426,7 @@ TEST_F(Conv2DTest, SInt16)
     makeInputTensor<DataType::S16>(filter_shape, 0.2, 0, filter_data, _memory_manager.get());
   Tensor bias_tensor =
     makeInputTensor<DataType::S64>(bias_shape, 0.25 * 0.2, 0, bias_data, _memory_manager.get());
-  Tensor im2col(DataType::FLOAT32, Shape({}), {}, "");
+  Tensor im2col(DataType::S16, Shape({}), {}, "");
   Tensor output_tensor = makeOutputTensor(DataType::S16, 0.5, 0);
 
   Conv2DParams params{};
@@ -411,7 +487,7 @@ TEST_F(Conv2DTest, SInt16_CWQ_weights)
                                                         filter_data, _memory_manager.get());
   Tensor bias_tensor = makeInputTensor<DataType::S64>(bias_shape, bias_scales, zerop, 0, bias_data,
                                                       _memory_manager.get());
-  Tensor im2col(DataType::FLOAT32, Shape({}), {}, "");
+  Tensor im2col(DataType::S16, Shape({}), {}, "");
   Tensor output_tensor = makeOutputTensor(DataType::S16, output_scale, 0);
 
   Conv2DParams params{};
