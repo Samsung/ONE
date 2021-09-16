@@ -17,6 +17,7 @@
 
 #include "kernels/SplitV.h"
 #include "kernels/TestUtils.h"
+#include "luci_interpreter/TestMemoryManager.h"
 
 namespace luci_interpreter
 {
@@ -32,12 +33,15 @@ void Check(int axis, std::initializer_list<int32_t> splits_size,
            std::initializer_list<int32_t> input_shape, std::initializer_list<T> input_data,
            std::vector<std::vector<T>> output_data)
 {
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<TestMemoryManager>();
   constexpr DataType element_type = getElementType<T>();
 
   auto num_splits = static_cast<int32_t>(splits_size.size());
-  Tensor input_tensor = makeInputTensor<element_type>(input_shape, input_data);
-  Tensor sizes_tensor = makeInputTensor<DataType::S32>({num_splits}, splits_size);
-  Tensor axis_tensor = makeInputTensor<DataType::S32>({}, {axis});
+  Tensor input_tensor =
+    makeInputTensor<element_type>(input_shape, input_data, memory_manager.get());
+  Tensor sizes_tensor =
+    makeInputTensor<DataType::S32>({num_splits}, splits_size, memory_manager.get());
+  Tensor axis_tensor = makeInputTensor<DataType::S32>({}, {axis}, memory_manager.get());
 
   std::vector<Tensor> output_tensors;
   output_tensors.reserve(num_splits);
@@ -54,6 +58,10 @@ void Check(int axis, std::initializer_list<int32_t> splits_size,
 
   SplitV kernel(&input_tensor, &sizes_tensor, &axis_tensor, std::move(output_tensor_ptrs));
   kernel.configure();
+  for (int i = 0; i < num_splits; ++i)
+  {
+    memory_manager->allocate_memory(output_tensors[i]);
+  }
   kernel.execute();
 
   for (int i = 0; i < num_splits; ++i)

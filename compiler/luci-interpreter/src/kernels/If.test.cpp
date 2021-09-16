@@ -21,6 +21,8 @@
 #include "kernels/Mul.h"
 #include "kernels/TestUtils.h"
 
+#include "luci_interpreter/TestMemoryManager.h"
+
 namespace luci_interpreter
 {
 namespace kernels
@@ -30,15 +32,27 @@ namespace
 
 using namespace testing;
 
-RuntimeGraph *buildAddSubgraph(RuntimeModule *module)
+class IfTest : public ::testing::Test
 {
-  RuntimeGraph *graph = module->addGraph(nullptr);
+protected:
+  void SetUp() override { _memory_manager = std::make_unique<TestMemoryManager>(); }
+
+  std::unique_ptr<IMemoryManager> _memory_manager;
+};
+
+RuntimeGraph *buildAddSubgraph(RuntimeModule *module, IMemoryManager *memory_manager)
+{
+  RuntimeGraph *graph = module->addGraph(memory_manager);
   Tensor *input1 = graph->addTensor(
     std::make_unique<Tensor>(DataType::FLOAT32, Shape{}, AffineQuantization{}, ""));
   Tensor *input2 = graph->addTensor(
     std::make_unique<Tensor>(DataType::FLOAT32, Shape{}, AffineQuantization{}, ""));
   Tensor *output = graph->addTensor(
     std::make_unique<Tensor>(DataType::FLOAT32, Shape{}, AffineQuantization{}, ""));
+
+  memory_manager->allocate_memory(*input1);
+  memory_manager->allocate_memory(*input2);
+  memory_manager->allocate_memory(*output);
 
   graph->setInputTensors({input1, input2});
   graph->setOutputTensors({output});
@@ -50,15 +64,19 @@ RuntimeGraph *buildAddSubgraph(RuntimeModule *module)
   return graph;
 }
 
-RuntimeGraph *buildMulSubgraph(RuntimeModule *module)
+RuntimeGraph *buildMulSubgraph(RuntimeModule *module, IMemoryManager *memory_manager)
 {
-  RuntimeGraph *graph = module->addGraph(nullptr);
+  RuntimeGraph *graph = module->addGraph(memory_manager);
   Tensor *input1 = graph->addTensor(
     std::make_unique<Tensor>(DataType::FLOAT32, Shape{}, AffineQuantization{}, ""));
   Tensor *input2 = graph->addTensor(
     std::make_unique<Tensor>(DataType::FLOAT32, Shape{}, AffineQuantization{}, ""));
   Tensor *output = graph->addTensor(
     std::make_unique<Tensor>(DataType::FLOAT32, Shape{}, AffineQuantization{}, ""));
+
+  memory_manager->allocate_memory(*input1);
+  memory_manager->allocate_memory(*input2);
+  memory_manager->allocate_memory(*output);
 
   graph->setInputTensors({input1, input2});
   graph->setOutputTensors({output});
@@ -70,67 +88,69 @@ RuntimeGraph *buildMulSubgraph(RuntimeModule *module)
   return graph;
 }
 
-TEST(IfTest, CondTrue)
+TEST_F(IfTest, CondTrue)
 {
-  Tensor cond = makeInputTensor<DataType::BOOL>({1}, {true});
-  Tensor input1 = makeInputTensor<DataType::FLOAT32>({2}, {5, 7});
-  Tensor input2 = makeInputTensor<DataType::FLOAT32>({1, 2}, {1, 2});
+  Tensor cond = makeInputTensor<DataType::BOOL>({1}, {true}, _memory_manager.get());
+  Tensor input1 = makeInputTensor<DataType::FLOAT32>({2}, {5, 7}, _memory_manager.get());
+  Tensor input2 = makeInputTensor<DataType::FLOAT32>({1, 2}, {1, 2}, _memory_manager.get());
   Tensor output = makeOutputTensor(DataType::FLOAT32);
 
   RuntimeModule module(nullptr);
-  RuntimeGraph *then_graph = buildAddSubgraph(&module);
-  RuntimeGraph *else_graph = buildMulSubgraph(&module);
+  RuntimeGraph *then_graph = buildAddSubgraph(&module, _memory_manager.get());
+  RuntimeGraph *else_graph = buildMulSubgraph(&module, _memory_manager.get());
 
   If kernel(&cond, {&input1, &input2}, {&output}, then_graph, else_graph);
   kernel.configure();
+  _memory_manager->allocate_memory(output);
   kernel.execute();
 
   EXPECT_THAT(extractTensorData<float>(output), FloatArrayNear({6, 9}));
 }
 
-TEST(IfTest, CondFalse)
+TEST_F(IfTest, CondFalse)
 {
-  Tensor cond = makeInputTensor<DataType::BOOL>({1}, {false});
-  Tensor input1 = makeInputTensor<DataType::FLOAT32>({2}, {5, 7});
-  Tensor input2 = makeInputTensor<DataType::FLOAT32>({1, 2}, {1, 2});
+  Tensor cond = makeInputTensor<DataType::BOOL>({1}, {false}, _memory_manager.get());
+  Tensor input1 = makeInputTensor<DataType::FLOAT32>({2}, {5, 7}, _memory_manager.get());
+  Tensor input2 = makeInputTensor<DataType::FLOAT32>({1, 2}, {1, 2}, _memory_manager.get());
   Tensor output = makeOutputTensor(DataType::FLOAT32);
 
   RuntimeModule module(nullptr);
-  RuntimeGraph *then_graph = buildAddSubgraph(&module);
-  RuntimeGraph *else_graph = buildMulSubgraph(&module);
+  RuntimeGraph *then_graph = buildAddSubgraph(&module, _memory_manager.get());
+  RuntimeGraph *else_graph = buildMulSubgraph(&module, _memory_manager.get());
 
   If kernel(&cond, {&input1, &input2}, {&output}, then_graph, else_graph);
   kernel.configure();
+  _memory_manager->allocate_memory(output);
   kernel.execute();
 
   EXPECT_THAT(extractTensorData<float>(output), FloatArrayNear({5, 14}));
 }
 
-TEST(IfTest, InvalidCondType_NEG)
+TEST_F(IfTest, InvalidCondType_NEG)
 {
-  Tensor cond = makeInputTensor<DataType::FLOAT32>({1}, {1});
-  Tensor input1 = makeInputTensor<DataType::FLOAT32>({2}, {5, 7});
-  Tensor input2 = makeInputTensor<DataType::FLOAT32>({1, 2}, {1, 2});
+  Tensor cond = makeInputTensor<DataType::FLOAT32>({1}, {1}, _memory_manager.get());
+  Tensor input1 = makeInputTensor<DataType::FLOAT32>({2}, {5, 7}, _memory_manager.get());
+  Tensor input2 = makeInputTensor<DataType::FLOAT32>({1, 2}, {1, 2}, _memory_manager.get());
   Tensor output = makeOutputTensor(DataType::FLOAT32);
 
   RuntimeModule module(nullptr);
-  RuntimeGraph *then_graph = buildAddSubgraph(&module);
-  RuntimeGraph *else_graph = buildMulSubgraph(&module);
+  RuntimeGraph *then_graph = buildAddSubgraph(&module, _memory_manager.get());
+  RuntimeGraph *else_graph = buildMulSubgraph(&module, _memory_manager.get());
 
   If kernel(&cond, {&input1, &input2}, {&output}, then_graph, else_graph);
   EXPECT_ANY_THROW(kernel.configure());
 }
 
-TEST(IfTest, InvalidCondElementNum_NEG)
+TEST_F(IfTest, InvalidCondElementNum_NEG)
 {
-  Tensor cond = makeInputTensor<DataType::BOOL>({2}, {false, true});
-  Tensor input1 = makeInputTensor<DataType::FLOAT32>({2}, {5, 7});
-  Tensor input2 = makeInputTensor<DataType::FLOAT32>({1, 2}, {1, 2});
+  Tensor cond = makeInputTensor<DataType::BOOL>({2}, {false, true}, _memory_manager.get());
+  Tensor input1 = makeInputTensor<DataType::FLOAT32>({2}, {5, 7}, _memory_manager.get());
+  Tensor input2 = makeInputTensor<DataType::FLOAT32>({1, 2}, {1, 2}, _memory_manager.get());
   Tensor output = makeOutputTensor(DataType::FLOAT32);
 
   RuntimeModule module(nullptr);
-  RuntimeGraph *then_graph = buildAddSubgraph(&module);
-  RuntimeGraph *else_graph = buildMulSubgraph(&module);
+  RuntimeGraph *then_graph = buildAddSubgraph(&module, _memory_manager.get());
+  RuntimeGraph *else_graph = buildMulSubgraph(&module, _memory_manager.get());
 
   If kernel(&cond, {&input1, &input2}, {&output}, then_graph, else_graph);
   EXPECT_ANY_THROW(kernel.configure());

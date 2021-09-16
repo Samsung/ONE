@@ -17,6 +17,7 @@
 
 #include "kernels/LogicalAnd.h"
 #include "kernels/TestUtils.h"
+#include "luci_interpreter/TestMemoryManager.h"
 
 namespace luci_interpreter
 {
@@ -27,15 +28,26 @@ namespace
 
 using namespace testing;
 
-TEST(LogicalAndTest, Basic)
+class LogicalAndTest : public ::testing::Test
+{
+protected:
+  void SetUp() override { _memory_manager = std::make_unique<TestMemoryManager>(); }
+
+  std::unique_ptr<IMemoryManager> _memory_manager;
+};
+
+TEST_F(LogicalAndTest, Basic)
 {
   Shape input_shape{1, 1, 1, 4};
-  Tensor input_tensor1 = makeInputTensor<DataType::BOOL>(input_shape, {true, false, false, true});
-  Tensor input_tensor2 = makeInputTensor<DataType::BOOL>(input_shape, {true, false, true, false});
+  Tensor input_tensor1 =
+    makeInputTensor<DataType::BOOL>(input_shape, {true, false, false, true}, _memory_manager.get());
+  Tensor input_tensor2 =
+    makeInputTensor<DataType::BOOL>(input_shape, {true, false, true, false}, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::BOOL);
 
   LogicalAnd kernel(&input_tensor1, &input_tensor2, &output_tensor);
   kernel.configure();
+  _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorData<bool>(output_tensor),
@@ -43,14 +55,17 @@ TEST(LogicalAndTest, Basic)
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAre(1, 1, 1, 4));
 }
 
-TEST(LogicalAndTest, Broadcast)
+TEST_F(LogicalAndTest, Broadcast)
 {
-  Tensor input_tensor1 = makeInputTensor<DataType::BOOL>({1, 1, 1, 4}, {true, false, false, true});
-  Tensor input_tensor2 = makeInputTensor<DataType::BOOL>({1, 1, 1, 1}, {true});
+  Tensor input_tensor1 = makeInputTensor<DataType::BOOL>({1, 1, 1, 4}, {true, false, false, true},
+                                                         _memory_manager.get());
+  Tensor input_tensor2 =
+    makeInputTensor<DataType::BOOL>({1, 1, 1, 1}, {true}, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::BOOL);
 
   LogicalAnd kernel(&input_tensor1, &input_tensor2, &output_tensor);
   kernel.configure();
+  _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorData<bool>(output_tensor),
@@ -58,20 +73,23 @@ TEST(LogicalAndTest, Broadcast)
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAre(1, 1, 1, 4));
 }
 
-TEST(LogicalAndTest, MismatchInputType_NEG)
+TEST_F(LogicalAndTest, MismatchInputType_NEG)
 {
-  Tensor input1_tensor = makeInputTensor<DataType::S32>({1, 1, 1, 4}, {1, 0, 0, 1});
-  Tensor input2_tensor = makeInputTensor<DataType::BOOL>({1, 1, 1, 1}, {false});
+  Tensor input1_tensor =
+    makeInputTensor<DataType::S32>({1, 1, 1, 4}, {1, 0, 0, 1}, _memory_manager.get());
+  Tensor input2_tensor =
+    makeInputTensor<DataType::BOOL>({1, 1, 1, 1}, {false}, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::S32);
 
   LogicalAnd kernel(&input1_tensor, &input2_tensor, &output_tensor);
   EXPECT_ANY_THROW(kernel.configure());
 }
 
-TEST(LogicalAndTest, InputTypeInvalid_NEG)
+TEST_F(LogicalAndTest, InputTypeInvalid_NEG)
 {
-  Tensor input1_tensor = makeInputTensor<DataType::S32>({1, 1, 1, 4}, {1, 0, 0, 1});
-  Tensor input2_tensor = makeInputTensor<DataType::S32>({1, 1, 1, 1}, {0});
+  Tensor input1_tensor =
+    makeInputTensor<DataType::S32>({1, 1, 1, 4}, {1, 0, 0, 1}, _memory_manager.get());
+  Tensor input2_tensor = makeInputTensor<DataType::S32>({1, 1, 1, 1}, {0}, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::BOOL);
 
   LogicalAnd kernel(&input1_tensor, &input2_tensor, &output_tensor);

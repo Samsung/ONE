@@ -16,6 +16,7 @@
 
 #include "kernels/DepthwiseConv2D.h"
 #include "kernels/TestUtils.h"
+#include "luci_interpreter/TestMemoryManager.h"
 
 namespace luci_interpreter
 {
@@ -26,7 +27,15 @@ namespace
 
 using namespace testing;
 
-TEST(DepthwiseConv2DTest, Float)
+class DepthwiseConv2DTest : public ::testing::Test
+{
+protected:
+  void SetUp() override { _memory_manager = std::make_unique<TestMemoryManager>(); }
+
+  std::unique_ptr<IMemoryManager> _memory_manager;
+};
+
+TEST_F(DepthwiseConv2DTest, Float)
 {
   Shape input_shape{1, 4, 2, 2};
   Shape filter_shape{1, 2, 2, 4};
@@ -44,9 +53,12 @@ TEST(DepthwiseConv2DTest, Float)
     13, -14, 15,  -16, //
   };
   std::vector<float> bias_data{1, 2, 3, 4};
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
-  Tensor filter_tensor = makeInputTensor<DataType::FLOAT32>(filter_shape, filter_data);
-  Tensor bias_tensor = makeInputTensor<DataType::FLOAT32>(bias_shape, bias_data);
+  Tensor input_tensor =
+    makeInputTensor<DataType::FLOAT32>(input_shape, input_data, _memory_manager.get());
+  Tensor filter_tensor =
+    makeInputTensor<DataType::FLOAT32>(filter_shape, filter_data, _memory_manager.get());
+  Tensor bias_tensor =
+    makeInputTensor<DataType::FLOAT32>(bias_shape, bias_data, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   DepthwiseConv2DParams params{};
@@ -60,6 +72,7 @@ TEST(DepthwiseConv2DTest, Float)
 
   DepthwiseConv2D kernel(&input_tensor, &filter_tensor, &bias_tensor, &output_tensor, params);
   kernel.configure();
+  _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   std::vector<float> ref_output_data{
@@ -70,7 +83,7 @@ TEST(DepthwiseConv2DTest, Float)
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({1, 2, 1, 4}));
 }
 
-TEST(DepthwiseConv2DTest, Uint8)
+TEST_F(DepthwiseConv2DTest, Uint8)
 {
   std::vector<float> input_data{
     1, 2, 7,  8,  // column 1
@@ -88,12 +101,14 @@ TEST(DepthwiseConv2DTest, Uint8)
   std::pair<float, int32_t> input_quant_param = quantizationParams<uint8_t>(-63.5, 64);
   std::pair<float, int32_t> output_quant_param = quantizationParams<uint8_t>(-127, 128);
 
-  Tensor input_tensor = makeInputTensor<DataType::U8>({1, 3, 2, 2}, input_quant_param.first,
-                                                      input_quant_param.second, input_data);
-  Tensor filter_tensor = makeInputTensor<DataType::U8>({1, 2, 2, 4}, input_quant_param.first,
-                                                       input_quant_param.second, filter_data);
+  Tensor input_tensor =
+    makeInputTensor<DataType::U8>({1, 3, 2, 2}, input_quant_param.first, input_quant_param.second,
+                                  input_data, _memory_manager.get());
+  Tensor filter_tensor =
+    makeInputTensor<DataType::U8>({1, 2, 2, 4}, input_quant_param.first, input_quant_param.second,
+                                  filter_data, _memory_manager.get());
   Tensor bias_tensor = makeInputTensor<DataType::S32>(
-    {4}, input_quant_param.first * input_quant_param.first, 0, bias_data);
+    {4}, input_quant_param.first * input_quant_param.first, 0, bias_data, _memory_manager.get());
   Tensor output_tensor =
     makeOutputTensor(DataType::U8, output_quant_param.first, output_quant_param.second);
 
@@ -108,6 +123,7 @@ TEST(DepthwiseConv2DTest, Uint8)
 
   DepthwiseConv2D kernel(&input_tensor, &filter_tensor, &bias_tensor, &output_tensor, params);
   kernel.configure();
+  _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   std::vector<float> ref_output_data{
@@ -118,7 +134,7 @@ TEST(DepthwiseConv2DTest, Uint8)
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({1, 2, 1, 4}));
 }
 
-TEST(DepthwiseConv2DTest, SInt16)
+TEST_F(DepthwiseConv2DTest, SInt16)
 {
   Shape input_shape{1, 4, 2, 2};
   Shape filter_shape{1, 2, 2, 4};
@@ -143,9 +159,12 @@ TEST(DepthwiseConv2DTest, SInt16)
     167, 0, 227, 28, //
   };
 
-  Tensor input_tensor = makeInputTensor<DataType::S16>(input_shape, 0.25, 0, input_data);
-  Tensor filter_tensor = makeInputTensor<DataType::S16>(filter_shape, 0.2, 0, filter_data);
-  Tensor bias_tensor = makeInputTensor<DataType::S64>(bias_shape, 0.25 * 0.2, 0, bias_data);
+  Tensor input_tensor =
+    makeInputTensor<DataType::S16>(input_shape, 0.25, 0, input_data, _memory_manager.get());
+  Tensor filter_tensor =
+    makeInputTensor<DataType::S16>(filter_shape, 0.2, 0, filter_data, _memory_manager.get());
+  Tensor bias_tensor =
+    makeInputTensor<DataType::S64>(bias_shape, 0.25 * 0.2, 0, bias_data, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::S16, 0.5, 0);
 
   DepthwiseConv2DParams params{};
@@ -159,13 +178,14 @@ TEST(DepthwiseConv2DTest, SInt16)
 
   DepthwiseConv2D kernel(&input_tensor, &filter_tensor, &bias_tensor, &output_tensor, params);
   kernel.configure();
+  _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
   EXPECT_THAT(dequantizeTensorData(output_tensor), FloatArrayNear(ref_output_data));
 }
 
-TEST(DepthwiseConv2DTest, SInt16_CWQ_weights)
+TEST_F(DepthwiseConv2DTest, SInt16_CWQ_weights)
 {
   const int output_channels = 4;
   Shape input_shape{1, 4, 2, 2};
@@ -197,10 +217,12 @@ TEST(DepthwiseConv2DTest, SInt16_CWQ_weights)
   for (int i = 0; i < output_channels; ++i)
     bias_scales.push_back(filter_scales[i] * input_scale);
   std::vector<int32_t> zerop(4, 0);
-  Tensor input_tensor = makeInputTensor<DataType::S16>(input_shape, input_scale, 0, input_data);
-  Tensor filter_tensor =
-    makeInputTensor<DataType::S16>(filter_shape, filter_scales, zerop, 3, filter_data);
-  Tensor bias_tensor = makeInputTensor<DataType::S64>(bias_shape, bias_scales, zerop, 0, bias_data);
+  Tensor input_tensor =
+    makeInputTensor<DataType::S16>(input_shape, input_scale, 0, input_data, _memory_manager.get());
+  Tensor filter_tensor = makeInputTensor<DataType::S16>(filter_shape, filter_scales, zerop, 3,
+                                                        filter_data, _memory_manager.get());
+  Tensor bias_tensor = makeInputTensor<DataType::S64>(bias_shape, bias_scales, zerop, 0, bias_data,
+                                                      _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::S16, 0.5, 0);
 
   DepthwiseConv2DParams params{};
@@ -214,13 +236,14 @@ TEST(DepthwiseConv2DTest, SInt16_CWQ_weights)
 
   DepthwiseConv2D kernel(&input_tensor, &filter_tensor, &bias_tensor, &output_tensor, params);
   kernel.configure();
+  _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
   EXPECT_THAT(dequantizeTensorData(output_tensor), FloatArrayNear(ref_output_data));
 }
 
-TEST(DepthwiseConv2DTest, Uint8_CWQ_weights)
+TEST_F(DepthwiseConv2DTest, Uint8_CWQ_weights)
 {
   const int output_channels = 4;
   Shape input_shape{1, 3, 2, 2};
@@ -267,11 +290,13 @@ TEST(DepthwiseConv2DTest, Uint8_CWQ_weights)
     bias_scales.push_back(filter_quant_params[i].first * input_quant_param.first);
   std::vector<int32_t> zerop(output_channels, 0);
 
-  Tensor input_tensor = makeInputTensor<DataType::U8>(input_shape, input_quant_param.first,
-                                                      input_quant_param.second, input_data);
-  Tensor filter_tensor =
-    makeInputTensor<DataType::U8>(filter_shape, filter_scales, filter_zerops, 3, filter_data);
-  Tensor bias_tensor = makeInputTensor<DataType::S32>(bias_shape, bias_scales, zerop, 0, bias_data);
+  Tensor input_tensor =
+    makeInputTensor<DataType::U8>(input_shape, input_quant_param.first, input_quant_param.second,
+                                  input_data, _memory_manager.get());
+  Tensor filter_tensor = makeInputTensor<DataType::U8>(filter_shape, filter_scales, filter_zerops,
+                                                       3, filter_data, _memory_manager.get());
+  Tensor bias_tensor = makeInputTensor<DataType::S32>(bias_shape, bias_scales, zerop, 0, bias_data,
+                                                      _memory_manager.get());
   Tensor output_tensor =
     makeOutputTensor(DataType::U8, output_quant_param.first, output_quant_param.second);
 
@@ -286,6 +311,7 @@ TEST(DepthwiseConv2DTest, Uint8_CWQ_weights)
 
   DepthwiseConv2D kernel(&input_tensor, &filter_tensor, &bias_tensor, &output_tensor, params);
   kernel.configure();
+  _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
@@ -293,7 +319,7 @@ TEST(DepthwiseConv2DTest, Uint8_CWQ_weights)
               FloatArrayNear(ref_output_data, output_quant_param.first));
 }
 
-TEST(DepthwiseConv2DTest, SInt8_CWQ_weights)
+TEST_F(DepthwiseConv2DTest, SInt8_CWQ_weights)
 {
   const int output_channels = 4;
   Shape input_shape{1, 3, 2, 2};
@@ -340,11 +366,13 @@ TEST(DepthwiseConv2DTest, SInt8_CWQ_weights)
     bias_scales.push_back(filter_quant_params[i].first * input_quant_param.first);
   std::vector<int32_t> zerop(output_channels, 0);
 
-  Tensor input_tensor = makeInputTensor<DataType::S8>(input_shape, input_quant_param.first,
-                                                      input_quant_param.second, input_data);
-  Tensor filter_tensor =
-    makeInputTensor<DataType::S8>(filter_shape, filter_scales, filter_zerops, 3, filter_data);
-  Tensor bias_tensor = makeInputTensor<DataType::S32>(bias_shape, bias_scales, zerop, 0, bias_data);
+  Tensor input_tensor =
+    makeInputTensor<DataType::S8>(input_shape, input_quant_param.first, input_quant_param.second,
+                                  input_data, _memory_manager.get());
+  Tensor filter_tensor = makeInputTensor<DataType::S8>(filter_shape, filter_scales, filter_zerops,
+                                                       3, filter_data, _memory_manager.get());
+  Tensor bias_tensor = makeInputTensor<DataType::S32>(bias_shape, bias_scales, zerop, 0, bias_data,
+                                                      _memory_manager.get());
   Tensor output_tensor =
     makeOutputTensor(DataType::S8, output_quant_param.first, output_quant_param.second);
 
@@ -359,6 +387,7 @@ TEST(DepthwiseConv2DTest, SInt8_CWQ_weights)
 
   DepthwiseConv2D kernel(&input_tensor, &filter_tensor, &bias_tensor, &output_tensor, params);
   kernel.configure();
+  _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
@@ -366,7 +395,7 @@ TEST(DepthwiseConv2DTest, SInt8_CWQ_weights)
               FloatArrayNear(ref_output_data, output_quant_param.first));
 }
 
-TEST(DepthwiseConv2DTest, InvalidBiasType_NEG)
+TEST_F(DepthwiseConv2DTest, InvalidBiasType_NEG)
 {
   Shape input_shape{1, 4, 2, 2};
   Shape filter_shape{1, 2, 2, 4};
@@ -384,9 +413,11 @@ TEST(DepthwiseConv2DTest, InvalidBiasType_NEG)
     13, -14, 15,  -16, //
   };
   std::vector<int32_t> bias_data{1, 2, 3, 4};
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
-  Tensor filter_tensor = makeInputTensor<DataType::FLOAT32>(filter_shape, filter_data);
-  Tensor bias_tensor = makeInputTensor<DataType::S32>(bias_shape, bias_data);
+  Tensor input_tensor =
+    makeInputTensor<DataType::FLOAT32>(input_shape, input_data, _memory_manager.get());
+  Tensor filter_tensor =
+    makeInputTensor<DataType::FLOAT32>(filter_shape, filter_data, _memory_manager.get());
+  Tensor bias_tensor = makeInputTensor<DataType::S32>(bias_shape, bias_data, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   DepthwiseConv2DParams params{};
@@ -402,7 +433,7 @@ TEST(DepthwiseConv2DTest, InvalidBiasType_NEG)
   EXPECT_ANY_THROW(kernel.configure());
 }
 
-TEST(DepthwiseConv2DTest, InOutTypeMismatch_NEG)
+TEST_F(DepthwiseConv2DTest, InOutTypeMismatch_NEG)
 {
   Shape input_shape{1, 4, 2, 2};
   Shape filter_shape{1, 2, 2, 4};
@@ -420,9 +451,12 @@ TEST(DepthwiseConv2DTest, InOutTypeMismatch_NEG)
     13, -14, 15,  -16, //
   };
   std::vector<float> bias_data{1, 2, 3, 4};
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
-  Tensor filter_tensor = makeInputTensor<DataType::FLOAT32>(filter_shape, filter_data);
-  Tensor bias_tensor = makeInputTensor<DataType::FLOAT32>(bias_shape, bias_data);
+  Tensor input_tensor =
+    makeInputTensor<DataType::FLOAT32>(input_shape, input_data, _memory_manager.get());
+  Tensor filter_tensor =
+    makeInputTensor<DataType::FLOAT32>(filter_shape, filter_data, _memory_manager.get());
+  Tensor bias_tensor =
+    makeInputTensor<DataType::FLOAT32>(bias_shape, bias_data, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::U8);
 
   DepthwiseConv2DParams params{};
@@ -438,7 +472,7 @@ TEST(DepthwiseConv2DTest, InOutTypeMismatch_NEG)
   EXPECT_ANY_THROW(kernel.configure());
 }
 
-TEST(DepthwiseConv2DTest, InvalidInputShape_NEG)
+TEST_F(DepthwiseConv2DTest, InvalidInputShape_NEG)
 {
   Shape input_shape{4, 2, 2};
   Shape filter_shape{2, 2, 4};
@@ -456,9 +490,12 @@ TEST(DepthwiseConv2DTest, InvalidInputShape_NEG)
     13, -14, 15,  -16, //
   };
   std::vector<float> bias_data{1, 2, 3, 4};
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
-  Tensor filter_tensor = makeInputTensor<DataType::FLOAT32>(filter_shape, filter_data);
-  Tensor bias_tensor = makeInputTensor<DataType::FLOAT32>(bias_shape, bias_data);
+  Tensor input_tensor =
+    makeInputTensor<DataType::FLOAT32>(input_shape, input_data, _memory_manager.get());
+  Tensor filter_tensor =
+    makeInputTensor<DataType::FLOAT32>(filter_shape, filter_data, _memory_manager.get());
+  Tensor bias_tensor =
+    makeInputTensor<DataType::FLOAT32>(bias_shape, bias_data, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   DepthwiseConv2DParams params{};
@@ -474,7 +511,7 @@ TEST(DepthwiseConv2DTest, InvalidInputShape_NEG)
   EXPECT_ANY_THROW(kernel.configure());
 }
 
-TEST(DepthwiseConv2DTest, InvalidFilterShape_NEG)
+TEST_F(DepthwiseConv2DTest, InvalidFilterShape_NEG)
 {
   Shape input_shape{1, 4, 2, 2};
   Shape filter_shape{2, 1, 2, 4};
@@ -492,9 +529,12 @@ TEST(DepthwiseConv2DTest, InvalidFilterShape_NEG)
     13, -14, 15,  -16, //
   };
   std::vector<float> bias_data{1, 2, 3, 4};
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
-  Tensor filter_tensor = makeInputTensor<DataType::FLOAT32>(filter_shape, filter_data);
-  Tensor bias_tensor = makeInputTensor<DataType::FLOAT32>(bias_shape, bias_data);
+  Tensor input_tensor =
+    makeInputTensor<DataType::FLOAT32>(input_shape, input_data, _memory_manager.get());
+  Tensor filter_tensor =
+    makeInputTensor<DataType::FLOAT32>(filter_shape, filter_data, _memory_manager.get());
+  Tensor bias_tensor =
+    makeInputTensor<DataType::FLOAT32>(bias_shape, bias_data, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   DepthwiseConv2DParams params{};
@@ -510,7 +550,7 @@ TEST(DepthwiseConv2DTest, InvalidFilterShape_NEG)
   EXPECT_ANY_THROW(kernel.configure());
 }
 
-TEST(DepthwiseConv2DTest, InvalidBiasDim_NEG)
+TEST_F(DepthwiseConv2DTest, InvalidBiasDim_NEG)
 {
   Shape input_shape{1, 4, 2, 2};
   Shape filter_shape{1, 2, 4, 2};
@@ -528,9 +568,12 @@ TEST(DepthwiseConv2DTest, InvalidBiasDim_NEG)
     13, -14, 15,  -16, //
   };
   std::vector<float> bias_data{1, 2, 3, 4};
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
-  Tensor filter_tensor = makeInputTensor<DataType::FLOAT32>(filter_shape, filter_data);
-  Tensor bias_tensor = makeInputTensor<DataType::FLOAT32>(bias_shape, bias_data);
+  Tensor input_tensor =
+    makeInputTensor<DataType::FLOAT32>(input_shape, input_data, _memory_manager.get());
+  Tensor filter_tensor =
+    makeInputTensor<DataType::FLOAT32>(filter_shape, filter_data, _memory_manager.get());
+  Tensor bias_tensor =
+    makeInputTensor<DataType::FLOAT32>(bias_shape, bias_data, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   DepthwiseConv2DParams params{};

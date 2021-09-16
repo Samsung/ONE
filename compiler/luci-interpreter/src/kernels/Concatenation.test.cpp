@@ -16,6 +16,7 @@
 
 #include "kernels/Concatenation.h"
 #include "kernels/TestUtils.h"
+#include "luci_interpreter/TestMemoryManager.h"
 
 namespace luci_interpreter
 {
@@ -26,12 +27,22 @@ namespace
 
 using namespace testing;
 
-TEST(ConcatenationTest, Float)
+class ConcatenationTest : public ::testing::Test
+{
+protected:
+  void SetUp() override { _memory_manager = std::make_unique<TestMemoryManager>(); }
+
+  std::unique_ptr<IMemoryManager> _memory_manager;
+};
+
+TEST_F(ConcatenationTest, Float)
 {
   std::vector<float> input1_data{1, 2, 3, 4, 5, 6};
   std::vector<float> input2_data{7, 8, 9, 10, 11, 12};
-  Tensor input1_tensor = makeInputTensor<DataType::FLOAT32>({2, 3}, input1_data);
-  Tensor input2_tensor = makeInputTensor<DataType::FLOAT32>({2, 3}, input2_data);
+  Tensor input1_tensor =
+    makeInputTensor<DataType::FLOAT32>({2, 3}, input1_data, _memory_manager.get());
+  Tensor input2_tensor =
+    makeInputTensor<DataType::FLOAT32>({2, 3}, input2_data, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
   ConcatenationParams params{};
 
@@ -42,6 +53,10 @@ TEST(ConcatenationTest, Float)
 
     Concatenation kernel({&input1_tensor, &input2_tensor}, &output_tensor, params);
     kernel.configure();
+    for (auto t : kernel.getOutputTensors())
+    {
+      _memory_manager->allocate_memory(*t);
+    }
     kernel.execute();
 
     EXPECT_THAT(extractTensorData<float>(output_tensor),
@@ -53,6 +68,7 @@ TEST(ConcatenationTest, Float)
 
     Concatenation kernel({&input1_tensor, &input2_tensor}, &output_tensor, params);
     kernel.configure();
+    _memory_manager->allocate_memory(output_tensor);
     kernel.execute();
 
     EXPECT_THAT(extractTensorData<float>(output_tensor),
@@ -64,6 +80,7 @@ TEST(ConcatenationTest, Float)
 
     Concatenation kernel({&input1_tensor, &input2_tensor}, &output_tensor, params);
     kernel.configure();
+    _memory_manager->allocate_memory(output_tensor);
     kernel.execute();
 
     EXPECT_THAT(extractTensorData<float>(output_tensor),
@@ -75,6 +92,7 @@ TEST(ConcatenationTest, Float)
 
     Concatenation kernel({&input1_tensor, &input2_tensor}, &output_tensor, params);
     kernel.configure();
+    _memory_manager->allocate_memory(output_tensor);
     kernel.execute();
 
     EXPECT_THAT(extractTensorData<float>(output_tensor),
@@ -82,7 +100,7 @@ TEST(ConcatenationTest, Float)
   }
 }
 
-TEST(ConcatenationTest, Input_Number_Check_NEG)
+TEST_F(ConcatenationTest, Input_Number_Check_NEG)
 {
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
   ConcatenationParams params{};
@@ -94,12 +112,14 @@ TEST(ConcatenationTest, Input_Number_Check_NEG)
   EXPECT_ANY_THROW(kernel.configure());
 }
 
-TEST(ConcatenationTest, Invalid_Axis_NEG)
+TEST_F(ConcatenationTest, Invalid_Axis_NEG)
 {
   std::vector<float> input1_data{1, 2, 3, 4, 5, 6};
   std::vector<float> input2_data{7, 8, 9, 10, 11, 12};
-  Tensor input1_tensor = makeInputTensor<DataType::FLOAT32>({2, 3}, input1_data);
-  Tensor input2_tensor = makeInputTensor<DataType::FLOAT32>({2, 3}, input2_data);
+  Tensor input1_tensor =
+    makeInputTensor<DataType::FLOAT32>({2, 3}, input1_data, _memory_manager.get());
+  Tensor input2_tensor =
+    makeInputTensor<DataType::FLOAT32>({2, 3}, input2_data, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
   ConcatenationParams params{};
 
@@ -110,12 +130,13 @@ TEST(ConcatenationTest, Invalid_Axis_NEG)
   EXPECT_ANY_THROW(kernel.configure());
 }
 
-TEST(ConcatenationTest, Mismatching_Input_Type_NEG)
+TEST_F(ConcatenationTest, Mismatching_Input_Type_NEG)
 {
   std::vector<float> input1_data{1, 2, 3, 4, 5, 6};
   std::vector<uint8_t> input2_data{7, 8, 9, 10, 11, 12};
-  Tensor input1_tensor = makeInputTensor<DataType::FLOAT32>({2, 3}, input1_data);
-  Tensor input2_tensor = makeInputTensor<DataType::U8>({2, 3}, input2_data);
+  Tensor input1_tensor =
+    makeInputTensor<DataType::FLOAT32>({2, 3}, input1_data, _memory_manager.get());
+  Tensor input2_tensor = makeInputTensor<DataType::U8>({2, 3}, input2_data, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
   ConcatenationParams params{};
 
@@ -126,12 +147,14 @@ TEST(ConcatenationTest, Mismatching_Input_Type_NEG)
   EXPECT_ANY_THROW(kernel.configure());
 }
 
-TEST(ConcatenationTest, Mismatching_Input_Dimension_Num_NEG)
+TEST_F(ConcatenationTest, Mismatching_Input_Dimension_Num_NEG)
 {
   std::vector<float> input1_data{1, 2, 3, 4, 5, 6};
   std::vector<float> input2_data{7, 8, 9, 10, 11, 12};
-  Tensor input1_tensor = makeInputTensor<DataType::FLOAT32>({2, 3}, input1_data);
-  Tensor input2_tensor = makeInputTensor<DataType::FLOAT32>({1, 2, 3}, input2_data);
+  Tensor input1_tensor =
+    makeInputTensor<DataType::FLOAT32>({2, 3}, input1_data, _memory_manager.get());
+  Tensor input2_tensor =
+    makeInputTensor<DataType::FLOAT32>({1, 2, 3}, input2_data, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
   ConcatenationParams params{};
 
@@ -142,12 +165,14 @@ TEST(ConcatenationTest, Mismatching_Input_Dimension_Num_NEG)
   EXPECT_ANY_THROW(kernel.configure());
 }
 
-TEST(ConcatenationTest, Mismatching_Input_Dimension_NEG)
+TEST_F(ConcatenationTest, Mismatching_Input_Dimension_NEG)
 {
   std::vector<float> input1_data{1, 2, 3, 4, 5, 6};
   std::vector<float> input2_data{7, 8, 9, 10, 11, 12, 13, 14, 15};
-  Tensor input1_tensor = makeInputTensor<DataType::FLOAT32>({2, 3}, input1_data);
-  Tensor input2_tensor = makeInputTensor<DataType::FLOAT32>({3, 3}, input2_data);
+  Tensor input1_tensor =
+    makeInputTensor<DataType::FLOAT32>({2, 3}, input1_data, _memory_manager.get());
+  Tensor input2_tensor =
+    makeInputTensor<DataType::FLOAT32>({3, 3}, input2_data, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
   ConcatenationParams params{};
 
@@ -158,12 +183,12 @@ TEST(ConcatenationTest, Mismatching_Input_Dimension_NEG)
   EXPECT_ANY_THROW(kernel.configure());
 }
 
-TEST(ConcatenationTest, Unsupported_Configure_Type_NEG)
+TEST_F(ConcatenationTest, Unsupported_Configure_Type_NEG)
 {
   std::vector<int8_t> input1_data{1, 2, 3, 4, 5, 6};
   std::vector<int8_t> input2_data{7, 8, 9, 10, 11, 12};
-  Tensor input1_tensor = makeInputTensor<DataType::S8>({2, 3}, input1_data);
-  Tensor input2_tensor = makeInputTensor<DataType::S8>({2, 3}, input2_data);
+  Tensor input1_tensor = makeInputTensor<DataType::S8>({2, 3}, input1_data, _memory_manager.get());
+  Tensor input2_tensor = makeInputTensor<DataType::S8>({2, 3}, input2_data, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::S8);
   ConcatenationParams params{};
 
@@ -175,12 +200,14 @@ TEST(ConcatenationTest, Unsupported_Configure_Type_NEG)
 }
 
 // TODO: Remove this test when concat w/ fused_activation is supported
-TEST(ConcatenationTest, With_Fused_Activation_NEG)
+TEST_F(ConcatenationTest, With_Fused_Activation_NEG)
 {
   std::vector<float> input1_data{1, 2, 3, 4, 5, 6};
   std::vector<float> input2_data{7, 8, 9, 10, 11, 12};
-  Tensor input1_tensor = makeInputTensor<DataType::FLOAT32>({2, 3}, input1_data);
-  Tensor input2_tensor = makeInputTensor<DataType::FLOAT32>({2, 3}, input2_data);
+  Tensor input1_tensor =
+    makeInputTensor<DataType::FLOAT32>({2, 3}, input1_data, _memory_manager.get());
+  Tensor input2_tensor =
+    makeInputTensor<DataType::FLOAT32>({2, 3}, input2_data, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
   ConcatenationParams params{};
 

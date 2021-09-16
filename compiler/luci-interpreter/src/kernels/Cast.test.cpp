@@ -16,6 +16,7 @@
 
 #include "kernels/Cast.h"
 #include "kernels/TestUtils.h"
+#include "luci_interpreter/TestMemoryManager.h"
 
 namespace luci_interpreter
 {
@@ -30,14 +31,16 @@ template <typename T1, typename T2>
 void Check(std::initializer_list<int32_t> shape, std::initializer_list<T1> input_data,
            std::initializer_list<T2> output_data)
 {
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<TestMemoryManager>();
   constexpr DataType input_type = getElementType<T1>();
   constexpr DataType output_type = getElementType<T2>();
 
-  Tensor input_tensor = makeInputTensor<input_type>(shape, input_data);
+  Tensor input_tensor = makeInputTensor<input_type>(shape, input_data, memory_manager.get());
   Tensor output_tensor = makeOutputTensor(output_type);
 
   Cast kernel(&input_tensor, &output_tensor);
   kernel.configure();
+  memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorData<T2>(output_tensor), ::testing::ElementsAreArray(output_data));
@@ -48,6 +51,7 @@ template <typename T>
 void CheckBoolTo(std::initializer_list<int32_t> shape, std::initializer_list<bool> input_data,
                  std::initializer_list<T> output_data)
 {
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<TestMemoryManager>();
   constexpr DataType input_type = loco::DataType::BOOL;
   constexpr DataType output_type = getElementType<T>();
   std::vector<typename DataTypeImpl<input_type>::Type> input_data_converted;
@@ -56,11 +60,13 @@ void CheckBoolTo(std::initializer_list<int32_t> shape, std::initializer_list<boo
     input_data_converted.push_back(elem);
   }
 
-  Tensor input_tensor = makeInputTensor<input_type>(shape, input_data_converted);
+  Tensor input_tensor =
+    makeInputTensor<input_type>(shape, input_data_converted, memory_manager.get());
   Tensor output_tensor = makeOutputTensor(output_type);
 
   Cast kernel(&input_tensor, &output_tensor);
   kernel.configure();
+  memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorData<T>(output_tensor), ::testing::ElementsAreArray(output_data));
@@ -206,10 +212,13 @@ TEST(CastTest, BoolToBool)
 
 TEST(CastTest, UnsupportedType_NEG)
 {
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({1, 1, 2, 4}, {
-                                                                           1, 2, 7, 8, //
-                                                                           1, 9, 7, 3, //
-                                                                         });
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<TestMemoryManager>();
+  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({1, 1, 2, 4},
+                                                           {
+                                                             1, 2, 7, 8, //
+                                                             1, 9, 7, 3, //
+                                                           },
+                                                           memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::Unknown);
 
   Cast kernel(&input_tensor, &output_tensor);
