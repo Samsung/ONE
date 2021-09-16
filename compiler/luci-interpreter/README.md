@@ -124,4 +124,4 @@ TBD when it is merged
 
 ### Further reading
 
-If you want to participate in development, please read DEVELOPER.md for SW architecture details.
+If you want to participate in development, please read `DEVELOPER.md` for SW architecture details.
