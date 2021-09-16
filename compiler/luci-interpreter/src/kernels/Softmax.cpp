@@ -40,7 +40,9 @@ void Softmax::configure()
   LUCI_INTERPRETER_CHECK(input()->shape().num_dims() >= 1);
   if (input()->element_type() == DataType::U8 || input()->element_type() == DataType::S8)
   {
-    LUCI_INTERPRETER_CHECK(output()->zero_point() == 0);
+    LUCI_INTERPRETER_CHECK(input()->element_type() == DataType::S8 || output()->zero_point() == 0);
+    LUCI_INTERPRETER_CHECK(input()->element_type() == DataType::U8 ||
+                           output()->zero_point() == std::numeric_limits<int8_t>::min());
     tflite::SoftmaxParams op_params{};
     op_params.table = _table;
     luci_interpreter_pal::PopulateSoftmaxLookupTable(&op_params, input()->scale(), params().beta);
