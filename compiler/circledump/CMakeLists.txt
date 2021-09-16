@@ -11,6 +11,6 @@ target_include_directories(circledump PRIVATE include)
 target_link_libraries(circledump arser)
 target_link_libraries(circledump mio_circle)
 target_link_libraries(circledump safemain)
-target_link_libraries(circledump flatbuffers)
+target_link_libraries(circledump flatbuffers-1.10)
 
 install(TARGETS circledump DESTINATION bin)
