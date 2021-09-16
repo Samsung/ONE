@@ -1,29 +1,38 @@
 # luci-interpreter
 
-`luci-interpreter` is an interpreter engine for luci IR models (see compiler/luci module for details).
+`luci-interpreter` is an inference engine for neural networks represented by luci IR.
+See `compiler/luci/lang` directory for details about IR.
+You can find useful infrastructure, like importer/exporter, optimizations in `compiler/luci`.
 
-It provides:
-- Basic inference interfaces, setting input and getting output data
-- Basic analysis interfaces, like getting intermediate actiavation data
-- Customization mechanisms to adopt interpreter to specific platforms, like MCUs
+luci-interpreter provides:
+- Basic inference functionality, input setters and output getters
+- Interface for inspecting hidden interpreter state, like activation values during inference
+- Customization mechanisms to adaptate interpreter to specific platforms, like MCUs
 
-Public interface headers placed in `luci-interpreter/include/luci_interpreter` directory
+Public interface headers are placed in `luci-interpreter/include/luci_interpreter` directory
 
 ### Basic usage
 
-Minimal usage requires:
+Minimal usage includes:
 - Setting input data
-- Inference
-- Getting inference results
+- Run inference
+- Fetching inference results
 
 Interpreter object is reusable and can run multiple inferences.
+Elements in tensors (input/output/internal) are stored contiguously and has C-like layout:
+This means for tensor t=[[0, 1],[2, 3]], t[0,1] == 1.
 
-Usage example (assuming model has only one input and output):
+Input and output tensors are enumerated and have same order in origianl luci model. 
 
+Usage example:
 ``` c++
+// Note getTensorSize is a function that computes tensor size,
+// it is not part of interpreter and should be implemented by user 
+
 luci_interpreter::Interpreter interpreter(luci_module);
 
 // Set inputs
+// assuming model has only one input and one output
 const auto input_nodes = loco::input_nodes(module->graph());
 
 const auto *input_node = dynamic_cast<const luci::CircleInput *>(input_nodes[0]);
@@ -46,16 +55,16 @@ interpreter.readOutputTensor(output_node, output_data.data(), output_data.size()
 
 Interpreter provides interfaces to investigate internal state of interpreter during inference.
 
-This is done by "Observer" mechanism:
+This is done by "observer" mechanism:
 - `Interpreter` class has `attachObserver` method, which takes pointer to `ExecutionObserver` object
-- `ExecutionObserver` defines several callback methods which user can override to inject custom code
+- `ExecutionObserver` defines several callback methods user can override to inject custom code
 
 ExecutionObserver provides three callbacks:
 - `postTensorWrite` checks contents of output tensor after operation execution
-- `preOperatorExecute` notifies that operation is going to execute
-- `postOperatorExecute` notifies that operation is finished execution
+- `preOperatorExecute` notifies that interpreter is going to execute operation
+- `postOperatorExecute` notifies that interpreter finished operation execution
 
-See `luci-interpreter/include/luci_interpreter/Interpreter.h` for implementation details.
+See `luci-interpreter/include/luci_interpreter/Interpreter.h` for this interface details.
 
 Usage example:
 ``` c++
@@ -79,7 +88,7 @@ public:
 
 luci_interpreter::Interpreter interpreter(module);
 CustomExecutionObserver observer;
-interpreter.attachObserver(observer);
+interpreter.attachObserver(&observer);
 
 // initialize input_data
 interpreter.writeInputTensor(input_node, input_data.data(), input_data.size());
@@ -93,17 +102,17 @@ interpreter.interpret();
 
 Interpreter provides handle to alter default memory management mechanisms.
 
-This is done by MemoryManger interface, see `luci-interpreter/include/luci_interpreter/MemoryManager.h` for details.
+This is done by `MemoryManger` interface, see `luci-interpreter/include/luci_interpreter/MemoryManager.h` for implementation details.
 
-This header contains IMemoryManamger abstract class which is responsible for allocation and dealocation of tensors memory.
+Header contains `IMemoryManager` abstract class which is responsible for allocation and dealocation of tensors memory.
 
-User can construct interpreter with one of predefined Memory managers or it's own custom memory manager.
+User can construct interpreter with one of predefined memory mmanagers or it's own custom memory manager.
 
-List of existing memory managers:
-- `SimpleMemoryManager` This is simple wrapper around new/delete, default manager.
-- `TestMemoryManager` Memorizing all allocated memory and releases it in Manager desctuctor. Used in kernel tests.
-- `BuddyMemoryManager` Implements Buddy algorithm, uses beffer for tensor data allocations.
-- `StaticMemoryManger` Requires models preparation with MemoryPlanner. Could improve memory consumption in restricted environments, like MCUs.
+List of predefined memory managers:
+- `SimpleMemoryManager` This is simple wrapper around new/delete, default one.
+- `TestMemoryManager` Memorizing all allocated memory and releases it in Manager desctuctor, used in kernel unit tests.
+- `BuddyMemoryManager` Implements Buddy algorithm, uses external buffer for tensor data allocations, do not need new/delete.
+- `StaticMemoryManger` Uses precomputed memory allocation plan. Requires preparation with MemoryPlanner, but could improve memory consumption in restricted environments (like MCUs).
 
 Usage example:
 ``` c++
@@ -115,6 +124,7 @@ luci_interpreter::Interpreter interpreter(module, &mm);
 interpreter.writeInputTensor(input_node, input_data.data(), input_data.size());
 
 interpreter.interpret();
+...
 ```
 
 StaticMemoryManager usage example:
