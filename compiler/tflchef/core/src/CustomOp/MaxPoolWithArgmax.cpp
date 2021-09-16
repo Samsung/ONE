@@ -17,7 +17,7 @@
 
 #include "MaxPoolWithArgmax.h"
 
-#include "flatbuffers/flexbuffers.h"
+#include <flatbuffers/flexbuffers.h>
 
 flatbuffers::Offset<void> MaxPoolWithArgmaxChef::value(flatbuffers::FlatBufferBuilder &fbb) const
 {
