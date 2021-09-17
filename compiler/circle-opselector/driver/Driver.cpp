@@ -44,7 +44,7 @@ bool check_input(std::string str)
   if (str[0] == '-' || str[str.size()-1] == '-')
   {
     std::cout << "Invalid input." << std::endl;
-    exit(0);
+    exit(1);
   }
 
   for (char c : str)
@@ -54,14 +54,14 @@ bool check_input(std::string str)
     else if (check_hyphen) // when user enter '-' more than 2.
     {
       std::cout << "Too many '-' in str." << std::endl;
-      exit(0);
+      exit(1);
     }
     else if (c == '-')
       check_hyphen = true;
     else // when user enter not allowed character, print alert msg.
     {
       std::cout << "To select operator by id, please use these args: [0-9], '-', ','" << std::endl;
-      exit(0);
+      exit(1);
     }
   }
   return true;
@@ -97,17 +97,17 @@ void split_id_input(const std::string &str, std::vector<int> &by_id)
       catch (std::invalid_argument &error)
       {
         std::cerr << "ERROR: [circle-opselector] Invalid argument.(stoi)" << std::endl;
-        exit(0);
+        exit(1);
       }
       catch (std::out_of_range)
       {
         std::cout << "ERROR: [circle-opselector] Argument is out of range(stoi)\n";
-        exit(0);
+        exit(1);
       }
       catch (...)
       {
         std::cout << "ERROR: [circle-opselector] Unknown error(stoi)\n";
-        exit(0);
+        exit(1);
       }
     }
   }
