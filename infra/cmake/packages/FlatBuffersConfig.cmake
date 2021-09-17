@@ -30,14 +30,6 @@ function(_FlatBuffers_build)
                       IDENTIFIER  "1.10-fix4"
                       EXTRA_OPTS "-DFLATBUFFERS_BUILD_TESTS:BOOL=OFF -DPOSITION_INDEPENDENT_CODE:BOOL=ON"
                       PKG_NAME    "FLATBUFFERS-1.10")
-  # TODO remove this
-  ExternalBuild_CMake(CMAKE_DIR   ${FlatBuffersSource_DIR}
-                      BUILD_DIR   ${CMAKE_BINARY_DIR}/externals/FLATBUFFERS/build
-                      INSTALL_DIR ${EXT_OVERLAY_DIR}
-                      BUILD_FLAGS ${ADDITIONAL_CXX_FLAGS}
-                      IDENTIFIER  "1.10-fix3"
-                      EXTRA_OPTS "-DFLATBUFFERS_BUILD_TESTS:BOOL=OFF -DPOSITION_INDEPENDENT_CODE:BOOL=ON"
-                      PKG_NAME    "FLATBUFFERS")
 
 endfunction(_FlatBuffers_build)
 
@@ -50,12 +42,6 @@ if(FlatBuffers_FOUND)
     target_link_libraries(flatbuffers-1.10 INTERFACE flatbuffers::flatbuffers)
     message(STATUS "Found FlatBuffers-1.10: TRUE")
   endif(NOT TARGET flatbuffers-1.10)
-  # TODO remove this
-  if(NOT TARGET flatbuffers)
-    add_library(flatbuffers INTERFACE)
-    target_link_libraries(flatbuffers INTERFACE flatbuffers::flatbuffers)
-    message(STATUS "Found FlatBuffers: TRUE")
-  endif(NOT TARGET flatbuffers)
 
   function(FlatBuffers_Generate PREFIX OUTPUT_DIR SCHEMA_DIR)
     get_filename_component(abs_output_dir ${OUTPUT_DIR} ABSOLUTE)
