@@ -27,12 +27,17 @@ namespace opselector
 class OpSelector
 {
 public:
+  OpSelector() = default;
+  OpSelector(const circle::Model *model) : _src_model(model) { assert(_reader.parse(_src_model)); }
   ~OpSelector() = default;
 
 public:
   std::unique_ptr<luci::Module>
-  select_nodes(const circle::Model *circle_model,
-               std::map<uint32_t, std::string> &id_name_selected_nodes);
+  select_nodes(std::map<uint32_t, std::string> &id_name_selected_nodes);
+
+private:
+  luci::CircleReader _reader;
+  const circle::Model *_src_model;
 };
 
 } // namespace opselector
