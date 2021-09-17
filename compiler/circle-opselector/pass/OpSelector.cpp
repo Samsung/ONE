@@ -18,16 +18,20 @@
 // #include "luci/../../src/CircleImportMetadata.h"
 // #include "luci/../../src/PostImport.h"
 
-#include "luci/Service/ChangeOutputs.h"
+#include <luci/Service/ChangeOutputs.h>
 
-#include "luci/Import/GraphBuilder.h"
-#include "luci/Import/GraphBuilderContext.h"
-#include "luci/Import/GraphBuilderRegistry.h"
-#include "luci/Import/CircleReader.h"
-#include "luci/Import/Nodes/CircleConst.h"
+#include <luci/Import/GraphBuilder.h>
+#include <luci/Import/GraphBuilderContext.h>
+#include <luci/Import/GraphBuilderRegistry.h>
+#include <luci/Import/CircleReader.h>
+#include <luci/Import/Nodes/CircleConst.h>
+
+#include <luci/Profile/CircleNodeID.h>
+#include <luci/Profile/CircleNodeOrigin.h>
 
 #include <loco/IR/Graph.h>
 #include <luci/IR/CircleNode.h>
+#include <loco/IR/Node.h>
 
 #include <oops/UserExn.h>
 
