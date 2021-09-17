@@ -213,7 +213,7 @@ void convert_graph(const luci::GraphBuilderSource &source, luci::CircleReader &r
   }
 }
 
-std::unique_ptr<luci::Module> select_nodes(const circle::Model *circle_model,
+std::unique_ptr<luci::Module> OpSelector::select_nodes(const circle::Model *circle_model,
                                            std::map<uint32_t, std::string> &id_name_selected_nodes)
 {
   auto module = luci::make_module();
