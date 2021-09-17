@@ -11,7 +11,7 @@ luci-interpreter provides:
 
 Public interface headers are placed in `luci-interpreter/include/luci_interpreter` directory
 
-### Basic usage
+## Basic usage
 
 Minimal usage includes:
 - Setting input data
@@ -22,9 +22,9 @@ Interpreter object is reusable and can run multiple inferences.
 Elements in tensors (input/output/internal) are stored contiguously and has C-like layout:
 This means for tensor t=[[0, 1],[2, 3]], t[0,1] == 1.
 
-Input and output tensors are enumerated and have same order in origianl luci model. 
+Input and output tensors are enumerated and have same order in original luci model. 
 
-Usage example:
+**Usage example:**
 ``` c++
 // Note getTensorSize is a function that computes tensor size,
 // it is not part of interpreter and should be implemented by user 
@@ -51,7 +51,7 @@ std::vector<char> output_data(getTensorSize(output_node));
 interpreter.readOutputTensor(output_node, output_data.data(), output_data.size());
 ```
 
-### Inspecting intermediate state
+## Inspecting intermediate state
 
 Interpreter provides interfaces to investigate internal state of interpreter during inference.
 
@@ -66,7 +66,7 @@ ExecutionObserver provides three callbacks:
 
 See `luci-interpreter/include/luci_interpreter/Interpreter.h` for this interface details.
 
-Usage example:
+**Usage example:**
 ``` c++
 class CustomExecutionObserver: public luci_interpreter::ExecutionObserver
 {
@@ -96,9 +96,9 @@ interpreter.writeInputTensor(input_node, input_data.data(), input_data.size());
 interpreter.interpret();
 ```
 
-### Customizing inference
+## Customizing inference
 
-#### Memory manager
+### Memory manager
 
 Interpreter provides handle to alter default memory management mechanisms.
 
@@ -107,6 +107,7 @@ This is done by `MemoryManger` interface, see `luci-interpreter/include/luci_int
 Header contains `IMemoryManager` abstract class which is responsible for allocation and dealocation of tensors memory.
 
 User can construct interpreter with one of predefined memory mmanagers or it's own custom memory manager.
+Note that one memory manager could be shared between multiple interpreter instances, because interpreter does not own manager object. 
 
 List of predefined memory managers:
 - `SimpleMemoryManager` This is simple wrapper around new/delete, default one.
@@ -114,24 +115,30 @@ List of predefined memory managers:
 - `BuddyMemoryManager` Implements Buddy algorithm, uses external buffer for tensor data allocations, do not need new/delete.
 - `StaticMemoryManger` Uses precomputed memory allocation plan. Requires preparation with MemoryPlanner, but could improve memory consumption in restricted environments (like MCUs).
 
-Usage example:
+**SimpleMemoryManager usage example:**
+
+No need to select anything, to use this memory manager.
 ``` c++
-luci_interpreter::BuddyMemoryManager mm;
-
-luci_interpreter::Interpreter interpreter(module, &mm);
-
-// initialize input_data
-interpreter.writeInputTensor(input_node, input_data.data(), input_data.size());
-
-interpreter.interpret();
-...
+luci_interpreter::Interpreter interpreter(module);
 ```
 
-StaticMemoryManager usage example:
+**TestMemoryManager usage example:**
+
+``` c++
+luci_interpreter::TestMemoryManager mm;
+luci_interpreter::Interpreter interpreter(module, &mm);
+```
+
+**BuddyMemoryManager usage example:**
 ``` c++
 TBD when it is merged
 ```
 
-### Further reading
+**StaticMemoryManager usage example:**
+``` c++
+TBD when it is merged
+```
+
+## Further reading
 
 If you want to participate in development, please read `DEVELOPER.md` for SW architecture details.
