@@ -15,7 +15,6 @@
  */
 
 #include "OpSelector.h"
-// TODO Add new pass headers
 
 #include <foder/FileLoader.h>
 
@@ -41,10 +40,10 @@ bool check_input(std::string str)
 {
   bool check_hyphen = false;
 
-  if (str[0] == '-' || str[str.size()-1] == '-')
+  if (str[0] == '-' || str[str.size() - 1] == '-')
   {
     std::cout << "Invalid input." << std::endl;
-    exit(0);
+    exit(1);
   }
 
   for (char c : str)
@@ -54,14 +53,14 @@ bool check_input(std::string str)
     else if (check_hyphen) // when user enter '-' more than 2.
     {
       std::cout << "Too many '-' in str." << std::endl;
-      exit(0);
+      exit(1);
     }
     else if (c == '-')
       check_hyphen = true;
     else // when user enter not allowed character, print alert msg.
     {
       std::cout << "To select operator by id, please use these args: [0-9], '-', ','" << std::endl;
-      exit(0);
+      exit(1);
     }
   }
   return true;
@@ -97,17 +96,17 @@ void split_id_input(const std::string &str, std::vector<int> &by_id)
       catch (std::invalid_argument &error)
       {
         std::cerr << "ERROR: [circle-opselector] Invalid argument.(stoi)" << std::endl;
-        exit(0);
+        exit(1);
       }
       catch (std::out_of_range)
       {
         std::cout << "ERROR: [circle-opselector] Argument is out of range(stoi)\n";
-        exit(0);
+        exit(1);
       }
       catch (...)
       {
         std::cout << "ERROR: [circle-opselector] Unknown error(stoi)\n";
-        exit(0);
+        exit(1);
       }
     }
   }
@@ -121,78 +120,6 @@ void split_name_input(const std::string &str, std::vector<std::string> &by_name)
 
   while (getline(ss, str_buf, ','))
     by_name.push_back(str_buf);
-}
-
-void getOplist(std::string op, std::vector<int> &oplist)
-{
-  char op_buf[1000];
-  strcpy(op_buf, op.c_str());
-  char *op_next = op_buf;
-
-  // tokenize by ,
-  char *tok_comma = strtok_r(op_buf, ",", &op_next);
-  while (tok_comma != nullptr)
-  {
-    char buf[100];
-    strcpy(buf, tok_comma);
-    char *buf_next = buf;
-
-    if (isdigit(tok_comma[0]))
-    {
-      int start, end;
-      // "n-m" : select n~m
-      char *tok_hypen = strtok_r(buf, "-", &buf_next);
-      if (tok_hypen && isdigit(tok_hypen[0]))
-      {
-        start = atoi(tok_hypen);
-      }
-
-      tok_hypen = strtok_r(nullptr, "-", &buf_next);
-      // "n-m" : select n~m
-      if (tok_hypen && isdigit(tok_hypen[0]))
-      {
-        end = atoi(tok_hypen);
-        for (int i = start; i <= end; i++)
-          oplist.push_back(i);
-      }
-      // "n-:" : select n~
-      else if (tok_hypen && tok_hypen[0] == ':')
-      {
-        oplist.push_back(start);
-        oplist.push_back(-1);
-      }
-      // "n" : select n
-      else
-      {
-        oplist.push_back(start);
-      }
-    }
-    // ":-n" : select 0~n
-    else if (tok_comma[0] == ':')
-    {
-      char *tok_hypen = strtok_r(buf, "-", &buf_next);
-      tok_hypen = strtok_r(nullptr, "-", &buf_next);
-      if (tok_hypen && isdigit(tok_hypen[0]))
-      {
-        int end = atoi(tok_hypen);
-        for (int i = 0; i <= end; i++)
-          oplist.push_back(i);
-      }
-    }
-    else
-    {
-      std::cout << "Error: Cannot get operators" << std::endl;
-    }
-
-    tok_comma = strtok_r(nullptr, ",", &op_next);
-  }
-
-  sort(oplist.begin(), oplist.end());
-
-  std::cout << "result: ";
-  for (int i = 0; i < oplist.size(); i++)
-    std::cout << oplist[i] << " ";
-  std::cout << std::endl;
 }
 
 int entry(int argc, char **argv)
@@ -249,6 +176,7 @@ int entry(int argc, char **argv)
 
   std::vector<int> by_id;
   std::vector<std::string> by_name;
+
   std::string op;
   std::vector<int> oplist;
   int select_mode = -1;
@@ -265,15 +193,9 @@ int entry(int argc, char **argv)
   }
   if (arser["--select"])
   {
-    op = arser.get<std::string>("--select");
-    select_mode = 0;
-    getOplist(op, oplist);
   }
   if (arser["--deselect"])
   {
-    op = arser.get<std::string>("--deselect");
-    select_mode = 1;
-    getOplist(op, oplist);
   }
 
   // option parsing test code.
@@ -306,14 +228,32 @@ int entry(int argc, char **argv)
   luci::Importer importer;
   auto module = importer.importModule(circle_model);
 
-  std::unique_ptr<luci::Module> module2 = luci::make_module();
-  // TODO Add function
+  // Select and Import from user input.
+  opselector::OpSelector *selector = new opselector::OpSelector(circle_model);
+  std::map<uint32_t, std::string> _source_table = module.get()->source_table();
+  std::map<uint32_t, std::string> id_name_selected_nodes;
+
+  // put selected nodes into map.
   if (by_id.size())
   {
+    for (auto id : by_id)
+    {
+      for (auto iter = _source_table.begin(); iter != _source_table.end(); iter++)
+        if (iter->first == id)
+          id_name_selected_nodes[iter->first] = iter->second; // {id : name} mapping
+    }
   }
-  if(by_name.size())
+  if (by_name.size())
   {
+    for (auto id : by_name)
+    {
+      for (auto iter = _source_table.begin(); iter != _source_table.end(); iter++)
+        if (iter->second.find(id) != std::string::npos)
+          id_name_selected_nodes[iter->first] = iter->second; // {id : name} mapping
+    }
   }
+  // Import selected nodes.
+  module = selector->select_nodes(id_name_selected_nodes);
 
   // Export to output Circle file
   luci::CircleExporter exporter;
