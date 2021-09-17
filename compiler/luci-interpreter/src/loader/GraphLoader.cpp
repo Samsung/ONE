@@ -160,7 +160,10 @@ void GraphLoader::loadTensors()
       size_t data_size{};
       const void *const_data = getNodeData(const_node, &data_size);
       if (const_data != nullptr)
+      {
+        _memory_manager->allocate_memory(*tensor);
         tensor->writeData(const_data, data_size);
+      }
     }
 
     _node_to_tensor.emplace(node, tensor.get());
@@ -177,6 +180,7 @@ void GraphLoader::initInputOutputTensors() const
   for (size_t i = 0; i < input_nodes.size(); ++i)
   {
     input_tensors[i] = _node_to_tensor.at(input_nodes[i]);
+    _memory_manager->allocate_memory(*input_tensors[i]);
   }
   _runtime_graph->setInputTensors(input_tensors);
 

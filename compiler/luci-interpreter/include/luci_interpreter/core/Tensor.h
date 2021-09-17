@@ -107,9 +107,6 @@ public:
     return _quantization.zero_point[0];
   }
 
-  void allocate();
-  void deallocate();
-
   const std::vector<float> &scales() const { return _quantization.scale; }
 
   const std::vector<int32_t> &zero_points() const { return _quantization.zero_point; }
@@ -118,15 +115,16 @@ public:
 
   template <typename T> const T *data() const
   {
-    assert(_data_allocated);
-    return reinterpret_cast<const T *>(_data.get());
+    static_assert(std::is_same<uint8_t, char>::value or
+                  std::is_same<uint8_t, unsigned char>::value);
+    return reinterpret_cast<const T *>(_data);
   }
 
   template <typename T> T *data()
   {
-    if (!_data_allocated)
-      allocate();
-    return reinterpret_cast<T *>(_data.get());
+    static_assert(std::is_same<uint8_t, char>::value or
+                  std::is_same<uint8_t, unsigned char>::value);
+    return reinterpret_cast<T *>(_data);
   }
 
   const std::string &name() const { return _name; }
@@ -139,8 +137,15 @@ public:
 
   void set_data_buffer(uint8_t *buffer)
   {
-    // It will be implemented when _data changes from unique ptr to raw ptr in next PR
-    (void)buffer;
+    if (buffer == nullptr)
+    {
+      _data_allocated = false;
+    }
+    else
+    {
+      _data_allocated = true;
+    }
+    _data = buffer;
   }
 
   bool is_observable() const { return _is_observable; }
@@ -157,7 +162,7 @@ private:
   DataType _element_type;
   Shape _shape;
   AffineQuantization _quantization;
-  std::unique_ptr<uint8_t[]> _data;
+  uint8_t *_data;
   std::string _name;
   bool _data_allocated;
   // Write of tensor is reported to registered Observers only if this tensor is observable

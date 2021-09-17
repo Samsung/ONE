@@ -152,6 +152,7 @@ TEST_F(AveragePool2DTest, SInt16)
 
   AveragePool2D kernel(&input_tensor, &output_tensor, params);
   kernel.configure();
+  _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
