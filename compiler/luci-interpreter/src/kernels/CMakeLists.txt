@@ -18,20 +18,8 @@ include(${KERNEL_REGISTER_FILE})
 add_library(${LUCI_INTERPRETER_KERNELS} STATIC ${SOURCES})
 set_target_properties(${LUCI_INTERPRETER_KERNELS} PROPERTIES POSITION_INDEPENDENT_CODE ON)
 target_include_directories(${LUCI_INTERPRETER_KERNELS} PUBLIC ${LUCI_INTERPRETER_SOURCE_DIR})
-target_include_directories(${LUCI_INTERPRETER_KERNELS} SYSTEM PRIVATE
-        "${TensorFlowRuySource_DIR}"
-        "${TensorFlowGEMMLowpSource_DIR}"
-        "${TensorFlowEigenSource_DIR}"
-        "${TensorFlowSource_DIR}")
 
-if (NOT LUCI_MICRO)
-  target_link_libraries(${LUCI_INTERPRETER_KERNELS}
-          PUBLIC ${LUCI_INTERPRETER_CORE}
-          PRIVATE nncc_common Threads::Threads)
-else ()
-  target_link_libraries(${LUCI_INTERPRETER_KERNELS}
-          PUBLIC ${LUCI_INTERPRETER_CORE})
-endif()
+target_link_libraries(${LUCI_INTERPRETER_KERNELS} PUBLIC ${LUCI_INTERPRETER_CORE})
 
 add_pal_to_target(${LUCI_INTERPRETER_KERNELS})
 

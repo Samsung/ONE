@@ -1,8 +1,9 @@
-include(${LUCI_INTERPRETER_PAL_DIR}/pal.cmake)
+include("${LUCI_INTERPRETER_PAL_DIR}/pal.cmake")
 
 initialize_pal()
 
 if (NOT PAL_INITIALIZED)
+  message("PAL Failed to initialize, skip luci-interpreter")
   return()
 endif()
 
