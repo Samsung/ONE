@@ -243,7 +243,7 @@ int entry(int argc, char **argv)
           id_name_selected_nodes[iter->first] = iter->second; // {id : name} mapping
     }
   }
-  if(by_name.size())
+  if (by_name.size())
   {
     for (auto id : by_name)
     {
