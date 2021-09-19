@@ -36,31 +36,31 @@ void print_version(void)
   std::cout << vconone::get_copyright() << std::endl;
 }
 
-bool check_input(std::string str)
+bool check_input(const std::string str)
 {
   bool check_hyphen = false;
 
   if (str[0] == '-' || str[str.size() - 1] == '-')
   {
     std::cout << "Invalid input." << std::endl;
-    exit(EXIT_FAILURE);
+    return false;
   }
 
   for (char c : str)
   {
     if ('0' <= c && c <= '9')
       continue;
-    else if (check_hyphen) // when user enter '-' more than 2.
+    else if (check_hyphen && c == '-') // when user enter '-' more than 2.
     {
       std::cout << "Too many '-' in str." << std::endl;
-      exit(EXIT_FAILURE);
+      return false;
     }
     else if (c == '-')
       check_hyphen = true;
     else // when user enter not allowed character, print alert msg.
     {
       std::cout << "To select operator by id, please use these args: [0-9], '-', ','" << std::endl;
-      exit(EXIT_FAILURE);
+      return false;
     }
   }
   return true;
@@ -108,6 +108,11 @@ void split_id_input(const std::string &str, std::vector<int> &by_id)
         std::cout << "ERROR: [circle-opselector] Unknown error(stoi)\n";
         exit(EXIT_FAILURE);
       }
+    }
+    else // Input validation failed
+    {
+      std::cerr << "ERROR: [circle-opselector] Input validation failed" << std::endl;
+      exit(EXIT_FAILURE);
     }
   }
 }
