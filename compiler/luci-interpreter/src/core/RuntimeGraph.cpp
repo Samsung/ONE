@@ -87,7 +87,7 @@ void RuntimeGraph::TensorAllocPlan::allocate(size_t kernel_index) const
   assert(_valid && kernel_index < _alloc_plan.size());
   for (Tensor *tensor : _alloc_plan[kernel_index])
   {
-    tensor->allocate();
+    _memory_manager->allocate_memory(*tensor);
   }
 }
 
@@ -96,7 +96,7 @@ void RuntimeGraph::TensorAllocPlan::deallocate(size_t kernel_index) const
   assert(_valid && kernel_index < _dealloc_plan.size());
   for (Tensor *tensor : _dealloc_plan[kernel_index])
   {
-    tensor->deallocate();
+    _memory_manager->release_memory(*tensor);
   }
 }
 
@@ -106,7 +106,14 @@ RuntimeGraph::RuntimeGraph(RuntimeModule *owning_module, IMemoryManager *memory_
 {
 }
 
-RuntimeGraph::~RuntimeGraph() {}
+RuntimeGraph::~RuntimeGraph()
+{
+  for (auto &tensor : _tensors)
+  {
+    if (tensor->is_data_allocated())
+      _memory_manager->release_memory(*tensor);
+  }
+}
 
 Tensor *RuntimeGraph::addTensor(std::unique_ptr<Tensor> &&tensor)
 {
@@ -127,6 +134,11 @@ void RuntimeGraph::setOutputTensors(const std::vector<Tensor *> &output_tensors)
   assert(std::all_of(output_tensors.cbegin(), output_tensors.cend(),
                      [](Tensor *tensor) { return tensor != nullptr; }));
   _output_tensors = output_tensors;
+}
+
+void RuntimeGraph::configureAllocations(Tensor *tensor)
+{
+  _memory_manager->allocate_memory(*tensor);
 }
 
 void RuntimeGraph::addKernel(std::unique_ptr<Kernel> &&kernel)
@@ -164,11 +176,10 @@ void RuntimeGraph::execute() const
     // TODO The `configure` method should only be called if the outputs of an operator need to be
     //  resized.
     kernel->configure();
-// TODO decide where to allocate memory, and uncomment/remove this if
-#if 0
-    _tensor_alloc_plan->allocate(
-        index); // Preallocate outputs in advance instead of relying on automatic allocation
-#endif
+
+    // Preallocate outputs in advance instead of relying on automatic allocation
+    _tensor_alloc_plan->allocate(index);
+
     kernel->execute();
 
     if (event_notifier != nullptr)
