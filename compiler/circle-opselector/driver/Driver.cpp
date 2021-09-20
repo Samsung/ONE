@@ -30,6 +30,9 @@
 #include <string>
 #include <vector>
 
+#define MODE_SELECT true
+#define MODE_DESELECT false
+
 void print_version(void)
 {
   std::cout << "circle-opselector version " << vconone::get_string() << std::endl;
@@ -155,12 +158,10 @@ int entry(int argc, char **argv)
     .type(arser::DataType::STR)
     .help("Input operation name to select nodes.");
   arser.add_argument("--select")
-    .nargs(1)
-    .type(arser::DataType::STR)
-    .help("Selecte opeartors from the input circle");
+    .nargs(0)
+    .help("Select opeartors from the input circle");
   arser.add_argument("--deselect")
-    .nargs(1)
-    .type(arser::DataType::STR)
+    .nargs(0)
     .help("Exclude operators from the input circle");
 
   try
@@ -184,8 +185,20 @@ int entry(int argc, char **argv)
 
   std::string op;
   std::vector<int> oplist;
-  int select_mode = -1;
+  bool select_mode = false;
 
+  if (!arser["--by_id"] && !arser["--by_name"] || arser["--by_id"] && arser["--by_name"])
+  {
+    std::cout << "Either option '--by_id' or '--by_name' must be specified" << std::endl;
+    std::cout << arser;
+    return EXIT_FAILURE;
+  }
+  if (!arser["--select"] && !arser["--deselect"] || arser["--select"] && arser["--deselect"])
+  {
+    std::cout << "Either option '--select' or '--deselect' must be specified" << std::endl;
+    std::cout << arser;
+    return EXIT_FAILURE;
+  }
   if (arser["--by_id"])
   {
     operator_input = arser.get<std::string>("--by_id");
@@ -197,11 +210,9 @@ int entry(int argc, char **argv)
     split_name_input(operator_input, by_name);
   }
   if (arser["--select"])
-  {
-  }
+    select_mode = MODE_SELECT;
   if (arser["--deselect"])
-  {
-  }
+    select_mode = MODE_DESELECT;
 
   // option parsing test code.
   for (int x : by_id)
