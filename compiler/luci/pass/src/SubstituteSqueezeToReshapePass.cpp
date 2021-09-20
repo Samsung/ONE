@@ -136,7 +136,6 @@ bool substitute_squeeze_to_reshape(luci::CircleSqueeze *squeeze)
     throw std::runtime_error("Invalid values in squeeze_dims: " + squeeze->name());
 
   auto name = squeeze->name();
-  assert(name.length() > 0);
 
   auto reshape_shape = node_shape(squeeze);
   auto graph = squeeze->graph();
