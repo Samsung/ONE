@@ -147,6 +147,8 @@ class FuseSiblings final : public luci::CircleNodeMutableVisitor<bool>
       CONTINUE_UNLESS((l_stride->h() == r_stride->h()) && (l_stride->w() == r_stride->w()));
 
       CONTINUE_UNLESS(node->fusedActivationFunction() == r_conv->fusedActivationFunction());
+
+      break;
     }
 
     if (not r_conv)
@@ -266,7 +268,8 @@ class FuseSiblings final : public luci::CircleNodeMutableVisitor<bool>
       size_splits->shape({2});
       size_splits->at<loco::DataType::S32>(0) = node->dim(3).value();
       size_splits->at<loco::DataType::S32>(1) = r_conv->dim(3).value();
-      assert(size_splits->at<loco::DataType::S32>(0) + size_splits->at<loco::DataType::S32>(1) ==
+      assert(static_cast<uint32_t>(size_splits->at<loco::DataType::S32>(0) +
+                                   size_splits->at<loco::DataType::S32>(1)) ==
              fused_filter->dim(0).value());
       size_splits->name(splitv->name() + "/size_splits");
 

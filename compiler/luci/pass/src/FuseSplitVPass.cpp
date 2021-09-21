@@ -108,7 +108,7 @@ bool fuse_splitv(luci::CircleSplitV *child_splitv)
   auto const child_split_dim = dynamic_cast<luci::CircleConst *>(child_splitv->split_dim());
   RETURN_UNLESS(child_split_dim);
 
-  auto const idx = parent_vout->index();
+  auto const idx = static_cast<uint32_t>(parent_vout->index());
 
   auto parent_splitv = dynamic_cast<luci::CircleSplitV *>(parent_vout->input());
   RETURN_UNLESS(parent_splitv);
@@ -164,7 +164,7 @@ bool fuse_splitv(luci::CircleSplitV *child_splitv)
     auto old_parent_svo = dynamic_cast<luci::CircleSplitVOut *>(old_parent_svo_node);
     RETURN_UNLESS(old_parent_svo);
 
-    if (old_parent_svo->index() < idx)
+    if (static_cast<uint32_t>(old_parent_svo->index()) < idx)
     {
       auto clone_svo =
         loco::must_cast<luci::CircleSplitVOut *>(luci::clone_node(old_parent_svo, graph));
@@ -172,7 +172,7 @@ bool fuse_splitv(luci::CircleSplitV *child_splitv)
       clone_svo->index(old_parent_svo->index());
       loco::replace(old_parent_svo).with(clone_svo);
     }
-    else if (old_parent_svo->index() == idx)
+    else if (static_cast<uint32_t>(old_parent_svo->index()) == idx)
     {
       for (auto old_child_svo_node : loco::succs(child_splitv))
       {
@@ -195,6 +195,8 @@ bool fuse_splitv(luci::CircleSplitV *child_splitv)
       loco::replace(old_parent_svo).with(clone_svo);
     }
   }
+
+  return true;
 }
 } // namespace
 
@@ -211,10 +213,10 @@ bool FuseSplitVPass::run(loco::Graph *g)
       continue;
 
     if (fuse_splitv(splitv))
-      return true;
+      changed = true;
   }
 
-  return false;
+  return changed;
 }
 
 } // namespace luci
