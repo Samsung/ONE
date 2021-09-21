@@ -36,5 +36,4 @@ struct FuseSiblingsPass final : public logo::Pass
 
 } // namespace luci
 
-
 #endif //__LUCI_FUSE_SIBLINGS_PASS_H__
