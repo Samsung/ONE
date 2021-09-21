@@ -232,22 +232,11 @@ public:
 namespace luci
 {
 
-Importer::Importer()
-{
-  // DO NOTHING
-}
-
 std::unique_ptr<loco::Graph> Importer::import(const circle::Model *model) const
 {
   auto graph = loco::make_graph();
 
   const GraphBuilderSource *source_ptr = &GraphBuilderRegistry::get();
-
-  if (_source != nullptr)
-  {
-    // Use user-defined GraphBuilderSource
-    source_ptr = _source;
-  }
 
   CircleReader reader;
   if (!reader.parse(model))
@@ -279,12 +268,6 @@ std::unique_ptr<Module> Importer::importModule(const circle::Model *model) const
   auto module = make_module();
 
   const GraphBuilderSource *source_ptr = &GraphBuilderRegistry::get();
-
-  if (_source != nullptr)
-  {
-    // Use user-defined GraphBuilderSource
-    source_ptr = _source;
-  }
 
   CircleReader reader;
   if (!reader.parse(model))

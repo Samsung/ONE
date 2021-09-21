@@ -33,10 +33,7 @@ namespace luci
 class Importer final
 {
 public:
-  Importer();
-
-public:
-  explicit Importer(const GraphBuilderSource *source) : _source{source}
+  explicit Importer(bool copy_const_tensors = false) : _copy_const_tensors(copy_const_tensors)
   {
     // DO NOTHING
   }
@@ -46,7 +43,7 @@ public:
   std::unique_ptr<Module> importModule(const circle::Model *model) const;
 
 private:
-  const GraphBuilderSource *_source = nullptr;
+  const bool _copy_const_tensors = false;
 };
 
 } // namespace luci

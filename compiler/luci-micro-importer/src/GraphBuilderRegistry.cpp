@@ -23,7 +23,7 @@
 namespace luci
 {
 
-GraphBuilderRegistry::GraphBuilderRegistry()
+GraphBuilderRegistry::GraphBuilderRegistry() : _op2builder(circle::BuiltinOperator_MAX + 1)
 {
 #define CIRCLE_NODE(OPCODE, CLASS) add(circle::BuiltinOperator_##OPCODE, std::make_unique<CLASS>());
 

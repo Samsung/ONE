@@ -19,7 +19,7 @@
 
 #include "GraphBuilderBase.h"
 
-#include <map>
+#include <vector>
 
 namespace luci
 {
@@ -31,7 +31,7 @@ struct GraphBuilderSource
   /**
    * @brief Returns registered GraphBuilder pointer for operator (nullptr if not present)
    */
-  virtual const GraphBuilderBase *lookup(const circle::BuiltinOperator &op) const = 0;
+  virtual const GraphBuilderBase *lookup(circle::BuiltinOperator op) const = 0;
 };
 
 /**
@@ -43,22 +43,13 @@ public:
   GraphBuilderRegistry();
 
 public:
-  GraphBuilderRegistry(const GraphBuilderSource *parent) : _parent{parent}
-  {
-    // DO NOTHING
-  }
-
-public:
   /**
    * @brief Returns registered GraphBuilder pointer for operator or
    *        nullptr if not registered
    */
-  const GraphBuilderBase *lookup(const circle::BuiltinOperator &op) const final
+  const GraphBuilderBase *lookup(circle::BuiltinOperator op) const final
   {
-    if (_builder_map.find(op) == _builder_map.end())
-      return (_parent == nullptr) ? nullptr : _parent->lookup(op);
-
-    return _builder_map.at(op).get();
+    return _op2builder.at(uint32_t(op)).get();
   }
 
   static GraphBuilderRegistry &get()
@@ -70,14 +61,11 @@ public:
 public:
   void add(const circle::BuiltinOperator op, std::unique_ptr<GraphBuilderBase> &&builder)
   {
-    _builder_map[op] = std::move(builder);
+    _op2builder[uint32_t(op)] = std::move(builder);
   }
 
 private:
-  const GraphBuilderSource *_parent = nullptr;
-
-private:
-  std::map<const circle::BuiltinOperator, std::unique_ptr<GraphBuilderBase>> _builder_map;
+  std::vector<std::unique_ptr<GraphBuilderBase>> _op2builder;
 };
 
 } // namespace luci
