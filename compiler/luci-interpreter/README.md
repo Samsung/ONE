@@ -1,13 +1,13 @@
 # luci-interpreter
 
-`luci-interpreter` is an inference engine for neural networks represented by luci IR.
+`luci-interpreter` is an inference engine for neural networks represented in luci IR.
 See `compiler/luci/lang` directory for details about IR.
 You can find useful infrastructure, like importer/exporter, optimizations in `compiler/luci`.
 
-luci-interpreter provides:
+`luci-interpreter` provides:
 - Basic inference functionality, input setters and output getters
 - Interface for inspecting hidden interpreter state, like activation values during inference
-- Customization mechanisms to adaptate interpreter to specific platforms, like MCUs
+- Customization mechanisms to fit the interpreter to specific platforms, like MCUs
 
 Public interface headers are placed in `luci-interpreter/include/luci_interpreter` directory
 
@@ -15,14 +15,14 @@ Public interface headers are placed in `luci-interpreter/include/luci_interprete
 
 Minimal usage includes:
 - Setting input data
-- Run inference
+- Running inference
 - Fetching inference results
 
 Interpreter object is reusable and can run multiple inferences.
-Elements in tensors (input/output/internal) are stored contiguously and has C-like layout:
+Elements in tensors (input/output/internal) are stored contiguously and have C-like layout:
 This means for tensor t=[[0, 1],[2, 3]], t[0,1] == 1.
 
-Input and output tensors are enumerated and have same order in original luci model. 
+Input and output tensors have the same indexes as in original luci model. 
 
 **Usage example:**
 ``` c++
@@ -62,7 +62,7 @@ This is done by "observer" mechanism:
 ExecutionObserver provides three callbacks:
 - `postTensorWrite` checks contents of output tensor after operation execution
 - `preOperatorExecute` notifies that interpreter is going to execute operation
-- `postOperatorExecute` notifies that interpreter finished operation execution
+- `postOperatorExecute` notifies that interpreter has finished execution of an operation
 
 See `luci-interpreter/include/luci_interpreter/Interpreter.h` for this interface details.
 
@@ -100,20 +100,20 @@ interpreter.interpret();
 
 ### Memory manager
 
-Interpreter provides handle to alter default memory management mechanisms.
+Interpreter provides a handle for altering default memory management mechanisms.
 
 This is done by `MemoryManger` interface, see `luci-interpreter/include/luci_interpreter/MemoryManager.h` for implementation details.
 
-Header contains `IMemoryManager` abstract class which is responsible for allocation and dealocation of tensors memory.
+This header contains `IMemoryManager` abstract class which is responsible for allocation and dealocation of tensors' memory.
 
-User can construct interpreter with one of predefined memory mmanagers or it's own custom memory manager.
-Note that one memory manager could be shared between multiple interpreter instances, because interpreter does not own manager object. 
+User can construct an interpreter with one of predefined memory managers or their own custom memory manager.
+Note that one memory manager could be shared between multiple interpreter instances, because an interpreter does not own the manager object. 
 
 List of predefined memory managers:
-- `SimpleMemoryManager` This is simple wrapper around new/delete, default one.
-- `TestMemoryManager` Memorizing all allocated memory and releases it in Manager desctuctor, used in kernel unit tests.
-- `BuddyMemoryManager` Implements Buddy algorithm, uses external buffer for tensor data allocations, do not need new/delete.
-- `StaticMemoryManger` Uses precomputed memory allocation plan. Requires preparation with MemoryPlanner, but could improve memory consumption in restricted environments (like MCUs).
+- `SimpleMemoryManager` This is a simple wrapper around new/delete, default one.
+- `TestMemoryManager` Memorizes all allocated memory and releases it in Manager desctuctor, used in kernel unit tests.
+- `BuddyMemoryManager` Implements Buddy algorithm, uses external buffer for tensor data allocations, does not need new/delete.
+- `StaticMemoryManger` Uses precomputed memory allocation plan. Requires preparation with MemoryPlanner, but could reduce memory consumption in restricted environments (like MCUs).
 
 **SimpleMemoryManager usage example:**
 
