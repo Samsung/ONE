@@ -24,20 +24,20 @@ namespace
 
 using namespace testing;
 
-TEST(BuddyMemoryManager, BuddyMemoryManager)
+TEST(BuddyMemoryManager, basic)
 {
-  uint8_t *memPool = new uint8_t[200];
-  auto buddy_memory_manager = std::make_unique<BuddyMemoryManager>(memPool, 130);
-  Tensor first_tensor(DataType::U8, Shape({5}), AffineQuantization{}, "first_tensor");
+  auto mem_pool = std::make_unique<uint8_t[]>(200);
+  auto buddy_memory_manager = std::make_unique<BuddyMemoryManager>(mem_pool.get(), 130);
+  Tensor first_tensor(DataType::U8, Shape({8}), AffineQuantization{}, "first_tensor");
 
   buddy_memory_manager->allocate_memory(first_tensor);
 
-  uint8_t data_1[] = {1, 2, 3, 4, 5};
+  uint8_t data_1[] = {1, 2, 3, 4, 5, 6, 7, 8};
 
-  first_tensor.writeData(data_1, 5);
-  uint8_t array_1[5];
-  first_tensor.readData(array_1, 5);
-  for (int i = 0; i < 5; i++)
+  first_tensor.writeData(data_1, 8);
+  uint8_t array_1[8];
+  first_tensor.readData(array_1, 8);
+  for (int i = 0; i < 8; i++)
   {
     EXPECT_EQ(data_1[i], array_1[i]);
   }

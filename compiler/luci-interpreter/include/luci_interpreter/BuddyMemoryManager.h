@@ -33,9 +33,10 @@ private:
   struct Block
   {
     Block *next_free;
-    Block *self;
     bool is_free;
     uint32_t size;
+    // debug field
+    Block *self;
   };
 
   Block *_start_block;
@@ -43,7 +44,7 @@ private:
   uint32_t _size;
   Block *_free_blocks[32]{};
 
-  static int32_t powOf2(uint32_t val)
+  static int32_t lowerLog2(uint32_t val)
   {
     int32_t i = 0;
     while (val >>= 1)
@@ -61,7 +62,7 @@ private:
     _free_blocks[l] = block;
   }
 
-  void removeFromBlocks(Block *block, int32_t l)
+  void removeFromBlocks(const Block *block, int32_t l)
   {
     if (!block)
       return;
@@ -77,18 +78,22 @@ private:
     while (tmp)
     {
       if (tmp->next_free == block)
+      {
         tmp->next_free = block->next_free;
+        return;
+      }
 
       tmp = tmp->next_free;
     }
   }
 
-  Block *divideBlock(Block *block, int32_t l)
+  void divideBlock(Block *block, int32_t l)
   {
     int32_t size = ((block->size + sizeof(Block)) / 2) - sizeof(Block);
 
     removeFromBlocks(block, l);
 
+    // there is no need to add to the free_blocks list here
     block->is_free = true;
     block->size = size;
     block->self = block;
@@ -100,18 +105,16 @@ private:
     buddy->self = buddy;
 
     addToBlocks(buddy, l - 1);
-
-    return block;
   }
 
   Block *mergeBlock(Block *block)
   {
     Block *buddy;
 
-    int32_t l = powOf2(block->size + sizeof(Block));
+    const int32_t l = lowerLog2(block->size + sizeof(Block));
 
-    int64_t address = ((uint8_t *)block - (uint8_t *)_start_block);
-    buddy = (Block *)((address ^= (1 << l)) + (size_t)_start_block);
+    const int64_t address = ((uint8_t *)block - (uint8_t *)_start_block);
+    buddy = (Block *)((address ^ (1 << l)) + (uint8_t *)_start_block);
 
     if (!buddy->is_free || buddy->size != block->size)
       return nullptr;

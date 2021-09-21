@@ -21,10 +21,10 @@ namespace luci_interpreter
 
 BuddyMemoryManager::BuddyMemoryManager(uint8_t *memory_start, int32_t memSize)
 {
-  int32_t p = powOf2(memSize);
+  int32_t p = lowerLog2(memSize);
   memSize = 1 << p;
 
-  _start_block = (Block *)memory_start;
+  _start_block = reinterpret_cast<Block *>(memory_start);
   _start_block->size = memSize - sizeof(Block);
   _start_block->is_free = true;
   _start_block->self = _start_block;
@@ -39,11 +39,13 @@ BuddyMemoryManager::BuddyMemoryManager(uint8_t *memory_start, int32_t memSize)
 
 void BuddyMemoryManager::allocate_memory(luci_interpreter::Tensor &tensor)
 {
-  tensor.set_data_buffer(nullptr);
   const size_t element_size = getDataTypeSize(tensor.element_type());
   const int32_t num_elements = tensor.shape().num_elements();
   auto size = num_elements * element_size;
-  int32_t l = powOf2(size + sizeof(Block)) + 1;
+  auto footprint = size + sizeof(Block);
+  auto l = (footprint & (footprint - 1)) == 0
+             ? lowerLog2(footprint)
+             : lowerLog2(footprint) + 1; // check footprint is pow_of_2
 
   while (!_free_blocks[l] && l < 32)
     l++;
@@ -56,7 +58,7 @@ void BuddyMemoryManager::allocate_memory(luci_interpreter::Tensor &tensor)
 
   while ((tmp->size + sizeof(Block)) / 2 >= size + sizeof(Block))
   {
-    tmp = divideBlock(tmp, l);
+    divideBlock(tmp, l);
     l--;
   }
 
@@ -76,7 +78,7 @@ void BuddyMemoryManager::release_memory(luci_interpreter::Tensor &tensor)
   assert(tmp->self == tmp);
 
   tmp->is_free = true;
-  addToBlocks(tmp, powOf2(tmp->size + sizeof(Block)));
+  addToBlocks(tmp, lowerLog2(tmp->size + sizeof(Block)));
 
   while (tmp)
     if (tmp->size == _size)
