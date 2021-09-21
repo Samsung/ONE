@@ -1,5 +1,6 @@
 require("oops")
 require("loco")
 require("luci")
+require("luci-micro-importer")
 require("luci-interpreter")
 require("safemain")
