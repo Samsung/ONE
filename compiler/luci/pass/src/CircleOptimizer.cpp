@@ -32,6 +32,8 @@
 #include "luci/Pass/FuseBCQPass.h"
 #include "luci/Pass/FuseInstanceNormPass.h"
 #include "luci/Pass/FuseMeanWithMeanPass.h"
+#include "luci/Pass/FuseSiblingsPass.h"
+#include "luci/Pass/FuseSplitVPass.h"
 #include "luci/Pass/FusePreActivationBatchNormPass.h"
 #include "luci/Pass/FuseTransposeWithMeanPass.h"
 #include "luci/Pass/MakeBatchNormGammaPositivePass.h"
@@ -364,7 +366,14 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   {
     phase.emplace_back(std::make_unique<luci::TransformMinReluToRelu6Pass>());
   }
-
+  if (_options->query(Options::Algorithm::FuseSiblings))
+  {
+    phase.emplace_back(std::make_unique<FuseSiblingsPass>());
+  }
+  if (_options->query(Options::Algorithm::FuseSplitV))
+  {
+    phase.emplace_back(std::make_unique<FuseSplitVPass>());
+  }
   /* TRANSFORM DECLARATION END */
 
   ProgressReporter prog(g, logo::PhaseStrategy::Restart);

@@ -171,6 +171,18 @@ int entry(int argc, char **argv)
     .default_value(false)
     .help("This will fuse Mean operation with a preceding Transpose under certain conditions.");
 
+  arser.add_argument("--fuse_siblings")
+    .nargs(0)
+    .required(false)
+    .default_value(false)
+    .help("This will enable horizontal layer fusion.");
+
+  arser.add_argument("--fuse_splitv")
+    .nargs(0)
+    .required(false)
+    .default_value(false)
+    .help("This will enable horizontal layer fusion.");
+
   arser.add_argument("--make_batchnorm_gamma_positive")
     .nargs(0)
     .required(false)
@@ -466,6 +478,10 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::FuseInstanceNorm);
   if (arser.get<bool>("--fuse_mean_with_mean"))
     options->enable(Algorithms::FuseMeanWithMean);
+  if (arser.get<bool>("--fuse_siblings"))
+    options->enable(Algorithms::FuseSiblings);
+  if (arser.get<bool>("--fuse_splitv"))
+    options->enable(Algorithms::FuseSplitV);
   if (arser.get<bool>("--make_batchnorm_gamma_positive"))
     options->enable(Algorithms::MakeBatchNormGammaPositive);
   if (arser.get<bool>("--fuse_preactivation_batchnorm"))
