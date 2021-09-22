@@ -2,7 +2,6 @@ set(SOURCES
         BinaryOpCommon.h
         Utils.h
         Utils.cpp
-        ${TensorFlowSource_DIR}/tensorflow/lite/kernels/internal/quantization_util.cc
         "${LUCI_INTERPRETER_INCLUDE_DIR}/luci_interpreter/TestMemoryManager.h"
         ${LUCI_INTERPRETER_SOURCE_DIR}/TestMemoryManager.cpp
         "${LUCI_INTERPRETER_INCLUDE_DIR}/luci_interpreter/SimpleMemoryManager.h"

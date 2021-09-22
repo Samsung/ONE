@@ -50,7 +50,7 @@ private:
   std::vector<ChannelQuantMultipliers> _alpha_multipliers;
   // TODO merge this into one ChannelQuantMultiplier object
   int32_t _output_multiplier_identity = 0;
-  int32_t _output_shift_identity = 0;
+  int _output_shift_identity = 0;
 };
 
 } // namespace kernels

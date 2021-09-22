@@ -30,10 +30,10 @@ endmacro()
 macro(add_pal_to_target TGT)
     target_include_directories(${TGT} PRIVATE "${PAL}")
     target_include_directories(${TGT} PRIVATE
-      "${TensorFlowRuySource_DIR}"
-      "${TensorFlowGEMMLowpSource_DIR}"
-      "${TensorFlowEigenSource_DIR}"
-      "${TensorFlowSource_DIR}"
+        "${TensorFlowRuySource_DIR}"
+        "${TensorFlowGEMMLowpSource_DIR}"
+        "${TensorFlowEigenSource_DIR}"
+        "${TensorFlowSource_DIR}"
     )
     target_include_directories(${TGT} PRIVATE ${LUCI_INTERPRETER_PAL_DIR})
 
@@ -41,10 +41,10 @@ macro(add_pal_to_target TGT)
     add_library(luci_interpreter_mcu_pal STATIC ${PAL_SOURCES})
     set_target_properties(luci_interpreter_mcu_pal PROPERTIES POSITION_INDEPENDENT_CODE ON)
     target_include_directories(luci_interpreter_mcu_pal PRIVATE
-      "${TensorFlowRuySource_DIR}"
-      "${TensorFlowGEMMLowpSource_DIR}"
-      "${TensorFlowEigenSource_DIR}"
-      "${TensorFlowSource_DIR}"
+        "${TensorFlowRuySource_DIR}"
+        "${TensorFlowGEMMLowpSource_DIR}"
+        "${TensorFlowEigenSource_DIR}"
+        "${TensorFlowSource_DIR}"
     )
 
     target_link_libraries(${TGT} PRIVATE luci_interpreter_mcu_pal)

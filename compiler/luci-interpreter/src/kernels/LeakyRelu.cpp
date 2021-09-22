@@ -18,7 +18,7 @@
 
 #include "kernels/Utils.h"
 
-#include <tensorflow/lite/kernels/internal/reference/reference_ops.h>
+#include <tensorflow/lite/kernels/internal/reference/leaky_relu.h>
 
 #include "PALLeakyRelu.h"
 

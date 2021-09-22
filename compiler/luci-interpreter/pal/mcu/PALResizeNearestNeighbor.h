@@ -17,7 +17,7 @@
 #ifndef LUCI_INTERPRETER_PAL_RESIZENEARESTNEIGHBOR_H
 #define LUCI_INTERPRETER_PAL_RESIZENEARESTNEIGHBOR_H
 
-#include <tensorflow/lite/kernels/internal/reference/reference_ops.h>
+#include <tensorflow/lite/kernels/internal/reference/resize_nearest_neighbor.h>
 
 namespace luci_interpreter_pal
 {

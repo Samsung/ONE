@@ -19,7 +19,7 @@
 
 #include "kernels/Utils.h"
 
-#include <tensorflow/lite/kernels/internal/reference/reference_ops.h>
+#include <tensorflow/lite/kernels/internal/reference/reduce.h>
 
 #include <stdexcept>
 
@@ -28,7 +28,7 @@ namespace luci_interpreter
 namespace kernels
 {
 
-static void resolveAxes(const int *axes_data, int num_axes, tflite::MeanParams *params)
+static void resolveAxes(const int32_t *axes_data, int num_axes, tflite::MeanParams *params)
 {
   params->axis_count = num_axes;
   for (int i = 0; i < num_axes; ++i)
@@ -42,7 +42,7 @@ static void resolveAxes(const int *axes_data, int num_axes, tflite::MeanParams *
 }
 
 // Returns the number of axes that will be reduced. Removes duplicates.
-static int getAxisReductionCount(const int *axes_data, int num_axes, int input_num_dims)
+static int getAxisReductionCount(const int32_t *axes_data, int num_axes, int input_num_dims)
 {
   int reduction_count = num_axes;
   for (int i = 0; i < num_axes; ++i)
@@ -63,7 +63,7 @@ static int getAxisReductionCount(const int *axes_data, int num_axes, int input_n
   return reduction_count;
 }
 
-static Shape getOutputShape(const Shape &input_shape, const int *axes_data, int num_axes,
+static Shape getOutputShape(const Shape &input_shape, const int32_t *axes_data, int num_axes,
                             bool keep_dims)
 {
   int input_num_dims = input_shape.num_dims();

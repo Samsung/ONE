@@ -17,7 +17,7 @@
 #ifndef LUCI_INTERPRETER_PAL_RESIZEBILINEAR_H
 #define LUCI_INTERPRETER_PAL_RESIZEBILINEAR_H
 
-#include <tensorflow/lite/kernels/internal/optimized/optimized_ops.h>
+#include <tensorflow/lite/kernels/internal/optimized/resize_bilinear.h>
 
 namespace luci_interpreter_pal
 {

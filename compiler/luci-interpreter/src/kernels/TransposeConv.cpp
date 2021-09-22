@@ -19,7 +19,7 @@
 
 #include "kernels/Utils.h"
 
-#include <tensorflow/lite/kernels/internal/reference/reference_ops.h>
+#include <tensorflow/lite/kernels/internal/reference/transpose_conv.h>
 
 #include <stdexcept>
 

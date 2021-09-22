@@ -17,7 +17,7 @@
 #ifndef LUCI_INTERPRETER_PAL_ARGMAX_H
 #define LUCI_INTERPRETER_PAL_ARGMAX_H
 
-#include <tensorflow/lite/kernels/internal/optimized/optimized_ops.h>
+#include <tensorflow/lite/kernels/internal/reference/arg_min_max.h>
 
 namespace luci_interpreter_pal
 {
@@ -26,7 +26,7 @@ static inline void ArgMinMax(const tflite::RuntimeShape &input1_shape, const T1 
                              const T2 *axis, const tflite::RuntimeShape &output_shape,
                              T3 *output_data, const std::greater<T1> cmp)
 {
-  tflite::optimized_ops::ArgMinMax(input1_shape, input1_data, axis, output_shape, output_data, cmp);
+  tflite::reference_ops::ArgMinMax(input1_shape, input1_data, axis, output_shape, output_data, cmp);
 }
 } // namespace luci_interpreter_pal
 

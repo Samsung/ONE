@@ -18,7 +18,8 @@
 
 #include "kernels/Utils.h"
 
-#include <tensorflow/lite/kernels/internal/reference/reference_ops.h>
+#include <tensorflow/lite/kernels/internal/reference/div.h>
+#include <tensorflow/lite/kernels/internal/reference/process_broadcast_shapes.h>
 
 namespace luci_interpreter
 {
