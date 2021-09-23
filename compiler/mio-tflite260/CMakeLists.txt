@@ -1,12 +1,11 @@
-nnas_find_package(FlatBuffers QUIET)
+nnas_find_package(FlatBuffers EXACT 1.12 QUIET)
 
 if(NOT FlatBuffers_FOUND)
-  message(STATUS "Build mio-tflite260: FAILED (missing Flatbuffers)")
+  message(STATUS "Build mio-tflite260: FAILED (missing Flatbuffers 1.12)")
   return()
 endif(NOT FlatBuffers_FOUND)
 
-# TODO change to 2.6.0
-nnas_find_package(TensorFlowSource EXACT 2.3.0 QUIET)
+nnas_find_package(TensorFlowSource EXACT 2.6.0 QUIET)
 
 if(NOT TensorFlowSource_FOUND)
   message(STATUS "Build mio-tflite260: FAILED (missing TensorFlowSource 2.6.0)")
@@ -39,8 +38,7 @@ target_link_libraries(mio_tflite260_example mio_tflite260)
 add_executable(mio_tflite260_validate example.cpp)
 target_link_libraries(mio_tflite260_validate mio_tflite260)
 
-# TODO change to 2.6.0
-nnas_find_package(TensorFlowGEMMLowpSource EXACT 2.3.0 QUIET)
+nnas_find_package(TensorFlowGEMMLowpSource EXACT 2.6.0 QUIET)
 
 if(NOT TensorFlowGEMMLowpSource_FOUND)
   return()
