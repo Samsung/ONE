@@ -44,8 +44,9 @@ void print_version(void)
 bool check_input(const std::string str)
 {
   bool check_hyphen = false;
-  
-  if (not str.size()) return false;
+
+  if (not str.size())
+    return false;
   if (str.at(0) == '-' || str[str.size() - 1] == '-')
   {
     std::cout << "Invalid input." << std::endl;
@@ -190,7 +191,6 @@ int entry(int argc, char **argv)
     std::cout << arser;
     return EXIT_FAILURE;
   }
-
   if (arser["--by_id"])
   {
     operator_input = arser.get<std::string>("--by_id");
@@ -243,7 +243,7 @@ int entry(int argc, char **argv)
 
     for (auto node : loco::all_nodes(graph))
     {
-      auto cnode = loco::must_cast<const luci::CircleNode *> (node);
+      auto cnode = loco::must_cast<const luci::CircleNode *>(node);
 
       try
       {
@@ -265,7 +265,7 @@ int entry(int argc, char **argv)
 
     for (auto node : loco::all_nodes(graph))
     {
-      auto cnode = loco::must_cast<const luci::CircleNode *> (node);
+      auto cnode = loco::must_cast<const luci::CircleNode *>(node);
       std::string node_name = cnode->name();
 
       try

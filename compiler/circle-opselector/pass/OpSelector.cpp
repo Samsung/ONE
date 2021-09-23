@@ -252,8 +252,7 @@ OpSelector::select_nodes(std::vector<const luci::CircleNode *> selected_nodes)
       std::string node_name = cnode->name();
 
       selected_operators.push_back(operators[node_id].get()); // put selected nodes in vector.
-      std::cout << "============== Operator Name: " << node_name
-                << " ==============" << std::endl;
+      std::cout << "============== Operator Name: " << node_name << " ==============" << std::endl;
       std::cout << "    <INPUT>" << std::endl;
       for (auto node : operators[node_id].get()->inputs)
         std::cout << "operator[" << node_id << "] id: " << node << " "
