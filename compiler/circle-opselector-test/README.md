@@ -1,4 +1,4 @@
-# Circle-OpSelector-test
+# circle-opselector-test
 
 ## Usage
 
