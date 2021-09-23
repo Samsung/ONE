@@ -157,12 +157,6 @@ int entry(int argc, char **argv)
     .nargs(1)
     .type(arser::DataType::STR)
     .help("Input operation name to select nodes.");
-  arser.add_argument("--select")
-    .nargs(0)
-    .help("Select opeartors from the input circle");
-  arser.add_argument("--deselect")
-    .nargs(0)
-    .help("Exclude operators from the input circle");
 
   try
   {
@@ -193,12 +187,7 @@ int entry(int argc, char **argv)
     std::cout << arser;
     return EXIT_FAILURE;
   }
-  if (!arser["--select"] && !arser["--deselect"] || arser["--select"] && arser["--deselect"])
-  {
-    std::cout << "Either option '--select' or '--deselect' must be specified" << std::endl;
-    std::cout << arser;
-    return EXIT_FAILURE;
-  }
+
   if (arser["--by_id"])
   {
     operator_input = arser.get<std::string>("--by_id");
@@ -209,10 +198,6 @@ int entry(int argc, char **argv)
     operator_input = arser.get<std::string>("--by_name");
     split_name_input(operator_input, by_name);
   }
-  if (arser["--select"])
-    select_mode = MODE_SELECT;
-  if (arser["--deselect"])
-    select_mode = MODE_DESELECT;
 
   // option parsing test code.
   for (int x : by_id)
