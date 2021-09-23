@@ -1,6 +1,6 @@
 #!/bin/bash
-# compiler/circle-opselector/test/opselector_test.sh while_dynamic.tflite "1 2 3 4"
-# compiler/circle-opselector/test/opselector_test.sh tflite_files/Part_Sqrt_Rsqrt_001.tflite "0 1 2"
+# compiler/circle-opselector-test/opselector_test.sh while_dynamic.tflite "1 2 3 4"
+# compiler/circle-opselector-test/opselector_test.sh tflite_files/Part_Sqrt_Rsqrt_001.tflite "0 1 2"
 
 red=`tput setaf 1`
 blue=`tput setaf 4`
