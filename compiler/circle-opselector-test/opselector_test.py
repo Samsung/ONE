@@ -9,7 +9,7 @@ os.chdir(script_path)
 with open('test.lst') as f:
     tflite_files = f.readlines()
 TFLITE_FILES_FOLDER = '../../build/compiler/common-artifacts/'
-tflite_files = [x.strip()+'.tflite' for x in tflite_files]
+tflite_files = [x.strip() + '.tflite' for x in tflite_files]
 
 
 def get_operator_num(tflite_file):
@@ -21,14 +21,15 @@ def get_operator_num(tflite_file):
     op_num = tensor_count - input_tensor_count
     return op_num
 
+
 # Check case 1 (continuous select)
 def gen_continuos_cases(op_num):
     """
     if op_num : 4, return generator [0, 1], [0, 1, 2], [0, 1, 2, 3], [1, 2], ... [2, 3]
     """
     for i in range(op_num):
-        for j in range(i+1, op_num):
-            select_nodes = list(range(i, j+1))
+        for j in range(i + 1, op_num):
+            select_nodes = list(range(i, j + 1))
             select_nodes_str = ' '.join([str(x) for x in select_nodes])
             select_nodes_str = '\"' + select_nodes_str + '\"'
             yield select_nodes_str
