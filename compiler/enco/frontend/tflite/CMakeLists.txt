@@ -1,4 +1,4 @@
-nnas_find_package(FlatBuffers QUIET)
+nnas_find_package(FlatBuffers EXACT 1.10 QUIET)
 
 if(NOT FlatBuffers_FOUND)
   return()
