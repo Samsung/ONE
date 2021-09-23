@@ -2,7 +2,7 @@
 
 ## Usage
 
-- This test didn't consider **if** and **while** nodes yet. 
+- This test doesn't consider **if** and **while** nodes yet. 
 
 **Single file test**
 
