@@ -30,6 +30,13 @@ ModuleLoader::ModuleLoader(const luci::Module *module, RuntimeModule *runtime_mo
 {
 }
 
+void ModuleLoader::allocate_input_tensors() const
+{
+  auto const &input_tensors = _runtime_module->getInputTensors();
+  for (auto tensor : input_tensors)
+    _memory_manager->allocate_memory(*tensor);
+}
+
 void ModuleLoader::load()
 {
   // Runtime graphs have to be created in advance, because they will be needed during the loading
@@ -48,6 +55,8 @@ void ModuleLoader::load()
     loader.initInputOutputTensors();
     loader.loadOperators();
   }
+  // allocate only module inputs
+  allocate_input_tensors();
 }
 
 } // namespace luci_interpreter

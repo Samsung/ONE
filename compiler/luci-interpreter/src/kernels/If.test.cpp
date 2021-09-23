@@ -50,10 +50,6 @@ RuntimeGraph *buildAddSubgraph(RuntimeModule *module, IMemoryManager *memory_man
   Tensor *output = graph->addTensor(
     std::make_unique<Tensor>(DataType::FLOAT32, Shape{}, AffineQuantization{}, ""));
 
-  memory_manager->allocate_memory(*input1);
-  memory_manager->allocate_memory(*input2);
-  memory_manager->allocate_memory(*output);
-
   graph->setInputTensors({input1, input2});
   graph->setOutputTensors({output});
 
@@ -73,10 +69,6 @@ RuntimeGraph *buildMulSubgraph(RuntimeModule *module, IMemoryManager *memory_man
     std::make_unique<Tensor>(DataType::FLOAT32, Shape{}, AffineQuantization{}, ""));
   Tensor *output = graph->addTensor(
     std::make_unique<Tensor>(DataType::FLOAT32, Shape{}, AffineQuantization{}, ""));
-
-  memory_manager->allocate_memory(*input1);
-  memory_manager->allocate_memory(*input2);
-  memory_manager->allocate_memory(*output);
 
   graph->setInputTensors({input1, input2});
   graph->setOutputTensors({output});

@@ -39,6 +39,9 @@ public:
   void load();
 
 private:
+  void allocate_input_tensors() const;
+
+private:
   IMemoryManager *_memory_manager;
   const luci::Module *_module;
   RuntimeModule *_runtime_module;

@@ -180,7 +180,6 @@ void GraphLoader::initInputOutputTensors() const
   for (size_t i = 0; i < input_nodes.size(); ++i)
   {
     input_tensors[i] = _node_to_tensor.at(input_nodes[i]);
-    _memory_manager->allocate_memory(*input_tensors[i]);
   }
   _runtime_graph->setInputTensors(input_tensors);
 

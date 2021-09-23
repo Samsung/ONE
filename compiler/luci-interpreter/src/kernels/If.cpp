@@ -60,34 +60,35 @@ void If::execute() const
   const auto &graph_inputs = active_graph->getInputTensors();
   const auto &graph_outputs = active_graph->getOutputTensors();
 
-  // Copy kernel inputs to active graph inputs.
+  // share kernel inputs to active graph inputs.
   for (size_t i = 0; i < getInputTensors().size() - 1; ++i)
   {
     LUCI_INTERPRETER_CHECK(graph_inputs[i]->element_type() == input(i)->element_type());
     graph_inputs[i]->resize(input(i)->shape());
 
-    const int32_t num_elements = input(i)->shape().num_elements();
-    const std::size_t element_size = getDataTypeSize(input(i)->element_type());
-    // TODO: Think about how allocate memory for output in main graph
-    active_graph->configureAllocations(graph_inputs[i]);
-    std::memcpy(graph_inputs[i]->data<void>(), input(i)->data<void>(), num_elements * element_size);
+    // Note: usage of operation input's memory buffer as subgraph input's buffer is safe since
+    // runtime graph not release input and output tensors itself
+    graph_inputs[i]->set_data_buffer(const_cast<uint8_t *>(input(i)->data<uint8_t>()));
   }
 
   active_graph->execute();
 
-  // Copy graph outputs to kernel outputs.
+  // share graph outputs to kernel outputs.
   for (size_t i = 0; i < getOutputTensors().size(); ++i)
   {
     LUCI_INTERPRETER_CHECK(graph_outputs[i]->element_type() == output(i)->element_type());
     output(i)->resize(graph_outputs[i]->shape());
-    // TODO: Think about how allocate memory for output in main graph
-    active_graph->configureAllocations(output(i));
 
-    const int32_t num_elements = output(i)->shape().num_elements();
-    const std::size_t element_size = getDataTypeSize(output(i)->element_type());
-    std::memcpy(output(i)->data<void>(), graph_outputs[i]->data<void>(),
-                num_elements * element_size);
+    // Note: usage of subgraph output's buffer as operation output's memory buffer is safe since
+    // runtime graph not release input and output tensors itself
+    output(i)->set_data_buffer(graph_outputs[i]->data<uint8_t>());
   }
+
+  // release subgraph's input and outputs
+  for (auto tensor : graph_inputs)
+    tensor->set_data_buffer(nullptr);
+  for (auto tensor : graph_outputs)
+    tensor->set_data_buffer(nullptr);
 }
 
 } // namespace kernels
