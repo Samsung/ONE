@@ -130,8 +130,22 @@ luci_interpreter::Interpreter interpreter(module, &mm);
 ```
 
 **BuddyMemoryManager usage example:**
+
+`BuddyMemoryManager` implements classic allocation algorithm: https://en.wikipedia.org/wiki/Buddy_memory_allocation.
+
+This allocator uses external buffer as a memory pool. That allows to use static memory arrays for allocations.
+
+Limitations
+- Current implementation uses only lower power-of-two bytes part of given buffer.
+
+  For example from 1000 bytes buffer only lower 512 bytes will be used.
+- Current implementation can handle maximum 4 gigabyte memory pool
+
 ``` c++
-TBD when it is merged
+  constexpr int buffer_size = 2048;
+  static uint8_t buffer[buffer_size];
+  luci_interpreter::BuddyMemoryManager memory_manager(buffer, buffer_size);
+  luci_interpreter::Interpreter interpreter(module.get(), &memory_manager);
 ```
 
 **StaticMemoryManager usage example:**
