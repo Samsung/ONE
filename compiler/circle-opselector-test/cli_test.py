@@ -32,7 +32,7 @@ options = {
     '--by_id "1-2"': 0,
     '--by_id "3, 1"': 0,
     '--by_id "1 - 2"': 0,
-    '--by_id "0, 0, 1"': 0,  # duplicaged nodes -> 0, 1
+    '--by_id "0, 0, 1"': 0,  # duplicate nodes -> 0, 1
     '--by_id "1,4"': 1,  # out of range operator
     '--by_id "0-5"': 1,  # out of range operator
     '--by_id "a,b"': 1,  # not integer 
