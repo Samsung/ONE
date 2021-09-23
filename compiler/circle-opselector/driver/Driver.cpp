@@ -30,6 +30,9 @@
 #include <string>
 #include <vector>
 
+#define MODE_SELECT true
+#define MODE_DESELECT false
+
 void print_version(void)
 {
   std::cout << "circle-opselector version " << vconone::get_string() << std::endl;
@@ -39,8 +42,9 @@ void print_version(void)
 bool check_input(const std::string str)
 {
   bool check_hyphen = false;
-
-  if (str[0] == '-' || str[str.size() - 1] == '-')
+  
+  if (not str.size()) return false;
+  if (str.at(0) == '-' || str[str.size() - 1] == '-')
   {
     std::cout << "Invalid input." << std::endl;
     return false;
@@ -142,8 +146,8 @@ int entry(int argc, char **argv)
 
   // TODO Add new options!
 
-  arser.add_argument("--input").nargs(1).type(arser::DataType::STR).help("Input circle model");
-  arser.add_argument("--output").nargs(1).type(arser::DataType::STR).help("Output circle model");
+  arser.add_argument("input").nargs(1).type(arser::DataType::STR).help("Input circle model");
+  arser.add_argument("output").nargs(1).type(arser::DataType::STR).help("Output circle model");
 
   // select option
   arser.add_argument("--by_id")
@@ -154,14 +158,6 @@ int entry(int argc, char **argv)
     .nargs(1)
     .type(arser::DataType::STR)
     .help("Input operation name to select nodes.");
-  arser.add_argument("--select")
-    .nargs(1)
-    .type(arser::DataType::STR)
-    .help("Selecte opeartors from the input circle");
-  arser.add_argument("--deselect")
-    .nargs(1)
-    .type(arser::DataType::STR)
-    .help("Exclude operators from the input circle");
 
   try
   {
@@ -174,8 +170,8 @@ int entry(int argc, char **argv)
     return EXIT_FAILURE;
   }
 
-  std::string input_path = arser.get<std::string>("--input");
-  std::string output_path = arser.get<std::string>("--output");
+  std::string input_path = arser.get<std::string>("input");
+  std::string output_path = arser.get<std::string>("output");
 
   std::string operator_input;
 
@@ -184,7 +180,14 @@ int entry(int argc, char **argv)
 
   std::string op;
   std::vector<int> oplist;
-  int select_mode = -1;
+  bool select_mode = false;
+
+  if (!arser["--by_id"] && !arser["--by_name"] || arser["--by_id"] && arser["--by_name"])
+  {
+    std::cout << "Either option '--by_id' or '--by_name' must be specified" << std::endl;
+    std::cout << arser;
+    return EXIT_FAILURE;
+  }
 
   if (arser["--by_id"])
   {
@@ -195,12 +198,6 @@ int entry(int argc, char **argv)
   {
     operator_input = arser.get<std::string>("--by_name");
     split_name_input(operator_input, by_name);
-  }
-  if (arser["--select"])
-  {
-  }
-  if (arser["--deselect"])
-  {
   }
 
   // option parsing test code.
@@ -234,7 +231,8 @@ int entry(int argc, char **argv)
   auto module = importer.importModule(circle_model);
 
   // Select and Import from user input.
-  opselector::OpSelector *selector = new opselector::OpSelector(circle_model);
+  auto selector = std::make_unique<opselector::OpSelector>(circle_model);
+  //opselector::OpSelector *selector = new opselector::OpSelector(circle_model);
   std::map<uint32_t, std::string> _source_table = module.get()->source_table();
   std::map<uint32_t, std::string> id_name_selected_nodes;
 
