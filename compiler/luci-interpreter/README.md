@@ -138,7 +138,7 @@ This allocator uses external buffer as a memory pool. That allows to use static 
 Limitations
 - Current implementation uses only lower power-of-two bytes part of given buffer.
 
-  For example from 1000 bytes buffer only lower 512 bytes will be used.
+  For example for 1000 bytes buffer, only lower 512 bytes will be used.
 - Current implementation can handle maximum 4 gigabyte memory pool
 
 ``` c++
