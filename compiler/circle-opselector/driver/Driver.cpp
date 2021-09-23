@@ -245,7 +245,8 @@ int entry(int argc, char **argv)
   auto module = importer.importModule(circle_model);
 
   // Select and Import from user input.
-  opselector::OpSelector *selector = new opselector::OpSelector(circle_model);
+  auto selector = std::make_unique<opselector::OpSelector>(circle_model);
+  //opselector::OpSelector *selector = new opselector::OpSelector(circle_model);
   std::map<uint32_t, std::string> _source_table = module.get()->source_table();
   std::map<uint32_t, std::string> id_name_selected_nodes;
 
