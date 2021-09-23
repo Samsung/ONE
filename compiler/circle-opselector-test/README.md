@@ -6,7 +6,7 @@
 
 **Single file test**
 
-- `tflite-file-name` must be contained in [tflite receipes](https://github.com/Samsung/ONE/tree/master/res/TensorFlowLiteRecipes)
+- `tflite-file-name` must be contained in [tflite receipes](https://github.com/Samsung/ONE/tree/5e53631d84a05467547296dd2f948b8a7e907161/res/TensorFlowLiteRecipes)
 - `selected nodes` format is `"0 1 3"`
 
 ```
