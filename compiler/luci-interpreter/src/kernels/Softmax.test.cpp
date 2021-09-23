@@ -27,15 +27,23 @@ namespace
 
 using namespace testing;
 
-template <typename T>
+template <typename T> constexpr loco::DataType toLocoDataType();
+
+template <> constexpr loco::DataType toLocoDataType<float>() { return loco::DataType::FLOAT32; }
+
+template <> constexpr loco::DataType toLocoDataType<uint8_t>() { return loco::DataType::U8; }
+
+template <> constexpr loco::DataType toLocoDataType<int8_t>() { return loco::DataType::S8; }
+
+template <typename T, std::enable_if_t<std::is_floating_point<T>::value, bool> = true>
 void Check(std::initializer_list<int32_t> input_shape, std::initializer_list<int32_t> output_shape,
            std::initializer_list<float> input_data, std::initializer_list<float> output_data)
 {
   std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<TestMemoryManager>();
 
   Tensor input_tensor =
-    makeInputTensor<DataType::FLOAT32>(input_shape, input_data, memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
+    makeInputTensor<toLocoDataType<T>()>(input_shape, input_data, memory_manager.get());
+  Tensor output_tensor = makeOutputTensor(toLocoDataType<T>());
 
   SoftmaxParams params{};
   params.beta = 0.1;
@@ -49,25 +57,23 @@ void Check(std::initializer_list<int32_t> input_shape, std::initializer_list<int
   EXPECT_THAT(extractTensorShape(output_tensor), output_shape);
 }
 
-template <>
-void Check<uint8_t>(std::initializer_list<int32_t> input_shape,
-                    std::initializer_list<int32_t> output_shape,
-                    std::initializer_list<float> input_data,
-                    std::initializer_list<float> output_data)
+template <typename T, std::enable_if_t<std::is_integral<T>::value, bool> = true>
+void Check(std::initializer_list<int32_t> input_shape, std::initializer_list<int32_t> output_shape,
+           std::initializer_list<float> input_data, std::initializer_list<float> output_data)
 {
   std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<TestMemoryManager>();
 
   std::pair<float, int32_t> input_quant_param =
-    quantizationParams<uint8_t>(std::min<float>(std::min<float>(input_data), 0.f),
-                                std::max<float>(std::max<float>(input_data), 0.f));
+    quantizationParams<T>(std::min<float>(std::min<float>(input_data), 0.f),
+                          std::max<float>(std::max<float>(input_data), 0.f));
   std::pair<float, int32_t> output_quant_param =
-    quantizationParams<uint8_t>(std::min<float>(std::min<float>(output_data), 0.f),
-                                std::max<float>(std::max<float>(output_data), 0.f));
-  Tensor input_tensor =
-    makeInputTensor<DataType::U8>(input_shape, input_quant_param.first, input_quant_param.second,
-                                  input_data, memory_manager.get());
+    quantizationParams<T>(std::min<float>(std::min<float>(output_data), 0.f),
+                          std::max<float>(std::max<float>(output_data), 0.f));
+  Tensor input_tensor = makeInputTensor<toLocoDataType<T>()>(input_shape, input_quant_param.first,
+                                                             input_quant_param.second, input_data,
+                                                             memory_manager.get());
   Tensor output_tensor =
-    makeOutputTensor(DataType::U8, output_quant_param.first, output_quant_param.second);
+    makeOutputTensor(toLocoDataType<T>(), output_quant_param.first, output_quant_param.second);
 
   SoftmaxParams params{};
   params.beta = 0.1;
@@ -86,7 +92,7 @@ template <typename T> class SoftmaxTest : public ::testing::Test
 {
 };
 
-using DataTypes = ::testing::Types<float, uint8_t>;
+using DataTypes = ::testing::Types<float, uint8_t, int8_t>;
 TYPED_TEST_CASE(SoftmaxTest, DataTypes);
 
 TYPED_TEST(SoftmaxTest, Simple)
