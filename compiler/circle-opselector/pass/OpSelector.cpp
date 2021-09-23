@@ -212,7 +212,7 @@ void convert_graph(const luci::GraphBuilderSource &source, luci::CircleReader &r
 }
 
 std::unique_ptr<luci::Module>
-OpSelector::select_nodes(std::map<uint32_t, std::string> &id_name_selected_nodes)
+OpSelector::select_nodes(std::vector<const luci::CircleNode *> selected_nodes)
 {
   auto module = luci::make_module();
 
@@ -246,18 +246,21 @@ OpSelector::select_nodes(std::map<uint32_t, std::string> &id_name_selected_nodes
 
     // print selected operator's detail.
     std::cout << "Subgraph Name: " << _reader.name() << std::endl;
-    for (auto iter = id_name_selected_nodes.begin(); iter != id_name_selected_nodes.end(); iter++)
+    for (auto cnode : selected_nodes)
     {
-      selected_operators.push_back(operators[iter->first].get()); // put selected nodes in vector.
-      std::cout << "============== Type: " << tensors[operators[iter->first]->outputs[0]]->type
+      uint32_t node_id = luci::get_node_id(cnode);
+      std::string node_name = cnode->name();
+
+      selected_operators.push_back(operators[node_id].get()); // put selected nodes in vector.
+      std::cout << "============== Operator Name: " << node_name
                 << " ==============" << std::endl;
       std::cout << "    <INPUT>" << std::endl;
-      for (auto node : operators[iter->first].get()->inputs)
-        std::cout << "operator[" << iter->first << "] id: " << node << " "
+      for (auto node : operators[node_id].get()->inputs)
+        std::cout << "operator[" << node_id << "] id: " << node << " "
                   << "input: " << tensors[node]->name << std::endl;
       std::cout << "    <OUTPUT>" << std::endl;
-      for (auto node : operators[iter->first].get()->outputs)
-        std::cout << "operator[" << iter->first << "] id: " << node << " "
+      for (auto node : operators[node_id].get()->outputs)
+        std::cout << "operator[" << node_id << "] id: " << node << " "
                   << "output: " << tensors[node]->name << std::endl;
       std::cout << std::endl;
     }

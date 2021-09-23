@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __CIRCLE_OPSELECTOR_SELECT_PASS_OPSELECTOR__
-#define __CIRCLE_OPSELECTOR_SELECT_PASS_OPSELECTOR__
+#ifndef __CIRCLE_OPSELECTOR_SELECT_PASS__OPSELECTOR__
+#define __CIRCLE_OPSELECTOR_SELECT_PASS__OPSELECTOR__
 
 #include <luci/IR/Module.h>
 
@@ -33,7 +33,7 @@ public:
 
 public:
   std::unique_ptr<luci::Module>
-  select_nodes(std::map<uint32_t, std::string> &id_name_selected_nodes);
+  select_nodes(std::vector<const luci::CircleNode *> selected_nodes);
 
 private:
   luci::CircleReader _reader;
