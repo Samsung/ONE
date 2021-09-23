@@ -22,7 +22,7 @@ The detailed process is as follows
 1. Prepare a `tflite` model.
 2. Create a `circle` version of that `tflite` model using 'tflite2circle`.
 3. Create a `tflite` subgraph using `select_operator.py`.
-4. Create a `circle` subgraph using `Circle-OpSelector`.
+4. Create a `circle` subgraph using `circle-opselector`.
 5. Run `nnpckgtc` with input as the `tflite` subgraph to get the golden value and the package.
 6. Modify the **package** so that it contains the `circle` subgraph, not the `tflite` subgraph. This step is due to the fact that the circle model can't be an input of `nnpckgtc`.
 7. Run the **package** in **runtime** to get the output of the `circle` subgraph package, with the same input used for getting the golden value.
