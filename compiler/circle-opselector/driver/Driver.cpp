@@ -42,8 +42,9 @@ void print_version(void)
 bool check_input(const std::string str)
 {
   bool check_hyphen = false;
-
-  if (str[0] == '-' || str[str.size() - 1] == '-')
+  
+  if (not str.size()) return false;
+  if (str.at(0) == '-' || str[str.size() - 1] == '-')
   {
     std::cout << "Invalid input." << std::endl;
     return false;
