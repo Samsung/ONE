@@ -1,7 +1,7 @@
 unset(QUANTIZATION_VALUE_TEST)
 unset(QUANTIZATION_VALUE_TEST_WITH_PARAM)
 
-nnas_find_package(FlatBuffers QUIET)
+nnas_find_package(FlatBuffers EXACT 1.10 QUIET)
 if(NOT FlatBuffers_FOUND)
   message(STATUS "Build pota-quantization-value-test: FAILED (missing FlatBuffers)")
   return()
