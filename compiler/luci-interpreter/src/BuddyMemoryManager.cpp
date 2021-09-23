@@ -22,6 +22,9 @@ namespace luci_interpreter
 BuddyMemoryManager::BuddyMemoryManager(uint8_t *memory_start, int32_t memSize)
 {
   int32_t p = lowerLog2(memSize);
+
+  // We assume that the requested size of memory does not exceed 4 GB
+  assert(p < 32);
   memSize = 1 << p;
 
   _start_block = reinterpret_cast<Block *>(memory_start);
