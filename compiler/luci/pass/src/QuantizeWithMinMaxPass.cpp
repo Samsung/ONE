@@ -1401,7 +1401,8 @@ void propagate_pad_v2_quantparam(luci::CirclePadV2 *pad_v2, loco::DataType quant
     auto pad_v2_input = loco::must_cast<luci::CircleNode *>(pad_v2->arg(0));
     overwrite_quantparam(pad_v2_input, pad_v2);
 
-    auto const_value_node = dynamic_cast<luci::CircleConst *>(pad_v2->arg(2));
+    auto const_value_node = loco::must_cast<luci::CircleConst *>(
+      pad_v2->arg(2)); // FIX ignore_pad_v2_const_quantization UNLESS
     auto new_const = luci::clone(const_value_node);
 
     const auto pad_v2_input_qparam = pad_v2_input->quantparam();
