@@ -145,8 +145,8 @@ int entry(int argc, char **argv)
 
   // TODO Add new options!
 
-  arser.add_argument("--input").nargs(1).type(arser::DataType::STR).help("Input circle model");
-  arser.add_argument("--output").nargs(1).type(arser::DataType::STR).help("Output circle model");
+  arser.add_argument("input").nargs(1).type(arser::DataType::STR).help("Input circle model");
+  arser.add_argument("output").nargs(1).type(arser::DataType::STR).help("Output circle model");
 
   // select option
   arser.add_argument("--by_id")
@@ -175,8 +175,8 @@ int entry(int argc, char **argv)
     return EXIT_FAILURE;
   }
 
-  std::string input_path = arser.get<std::string>("--input");
-  std::string output_path = arser.get<std::string>("--output");
+  std::string input_path = arser.get<std::string>("input");
+  std::string output_path = arser.get<std::string>("output");
 
   std::string operator_input;
 
