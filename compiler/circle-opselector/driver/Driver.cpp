@@ -56,14 +56,14 @@ bool check_input(const std::string str)
       continue;
     else if (has_hyphen && c == '-') // when user enter '-' more than 2.
     {
-      std::cout << "Too many '-' in str." << std::endl;
+      std::cerr << "Too many '-' in str." << std::endl;
       return false;
     }
     else if (c == '-')
       has_hyphen = true;
     else // when user enter not allowed character, print alert msg.
     {
-      std::cout << "To select operator by id, please use these args: [0-9], '-', ','" << std::endl;
+      std::cerr << "To select operator by id, please use these args: [0-9], '-', ','" << std::endl;
       return false;
     }
   }
@@ -104,12 +104,12 @@ void split_id_input(const std::string &str, std::vector<int> &by_id)
       }
       catch (std::out_of_range)
       {
-        std::cout << "ERROR: [circle-opselector] Argument is out of range(stoi)\n";
+        std::cerr << "ERROR: [circle-opselector] Argument is out of range(stoi)\n";
         exit(EXIT_FAILURE);
       }
       catch (...)
       {
-        std::cout << "ERROR: [circle-opselector] Unknown error(stoi)\n";
+        std::cerr << "ERROR: [circle-opselector] Unknown error(stoi)\n";
         exit(EXIT_FAILURE);
       }
     }
@@ -184,8 +184,8 @@ int entry(int argc, char **argv)
 
   if (!arser["--by_id"] && !arser["--by_name"] || arser["--by_id"] && arser["--by_name"])
   {
-    std::cout << "Either option '--by_id' or '--by_name' must be specified" << std::endl;
-    std::cout << arser;
+    std::cerr << "Either option '--by_id' or '--by_name' must be specified" << std::endl;
+    std::cerr << arser;
     return EXIT_FAILURE;
   }
 
