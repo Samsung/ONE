@@ -41,6 +41,7 @@ class _CONSTANT:
         ('fold_sparse_to_dense', 'fold SparseToDense op'),
         ('forward_reshape_to_unaryop', 'Forward Reshape op'),
         ('fuse_add_with_tconv', 'fuse Add op to Transposed'),
+        ('fuse_add_with_fully_connected', 'fuse Add op to FullyConnected op'),
         ('fuse_batchnorm_with_conv', 'fuse BatchNorm op to Convolution op'),
         ('fuse_batchnorm_with_dwconv', 'fuse BatchNorm op to Depthwise Convolution op'),
         ('fuse_batchnorm_with_tconv', 'fuse BatchNorm op to Transposed Convolution op'),
