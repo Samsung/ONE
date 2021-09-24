@@ -113,7 +113,6 @@ void split_id_input(const std::string &str, std::vector<int> &by_id)
         exit(EXIT_FAILURE);
       }
     }
-  
     else // Input validation failed
     {
       std::cerr << "ERROR: [circle-opselector] Input validation failed" << std::endl;
