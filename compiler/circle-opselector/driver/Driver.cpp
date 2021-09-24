@@ -73,6 +73,65 @@ bool check_input(const std::string str)
   return true;
 }
 
+// Dash seperated vector
+template <> std::vector<std::string> dsv_to_vector(const std::string &str)
+{
+  std::vector<std::string> ret;
+  std::istringstream is(str);
+  for (std::string item; std::getline(is, item, '-');)
+  {
+    ret.push_back(item);
+  }
+  return ret;
+}
+
+template <> std::vector<int32_t> dsv_to_vector(const std::string &str)
+{
+  std::vector<int32_t> ret;
+  std::istringstream is(str);
+  for (int32_t i; is >> i;)
+  {
+    assert(i != '-');
+    ret.push_back(i);
+    if (is.peek() == '-')
+      is.ignore();
+  }
+  return ret;
+}
+
+// Comma seperated vector
+template <> std::vector<std::string> csv_to_vector(const std::string &str)
+{
+  std::vector<std::string> ret;
+  std::istringstream is(str);
+  for (std::string item; std::getline(is, item, ',');)
+  {
+    ret.push_back(item);
+  }
+  return ret;
+}
+
+// TODO merge std::string and int32_t type
+
+template <> std::vector<int32_t> csv_to_vector(const std::string &str)
+{
+  std::vector<int32_t> ret;
+  std::istringstream is(str);
+  for (int32_t i; is >> i;)
+  {
+    assert(i != ',');
+    ret.push_back(i);
+    if (is.peek() == ',')
+      is.ignore();
+  }
+  return ret;
+}
+
+void split_id(const std::string &str, std::vector<int> &by_id)
+{
+  auto ret = csv_to_vector<int32_t>
+}
+
 void split_id_input(const std::string &str, std::vector<int> &by_id)
 {
   std::istringstream ss;
