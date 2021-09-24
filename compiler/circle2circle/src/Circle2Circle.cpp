@@ -126,7 +126,7 @@ int entry(int argc, char **argv)
     .nargs(0)
     .required(false)
     .default_value(false)
-    .help("This will fuse Add operator to Fully Connected operator");
+    .help("This will fuse Add operator to FullyConnected operator");
 
   arser.add_argument("--fuse_add_with_tconv")
     .nargs(0)
