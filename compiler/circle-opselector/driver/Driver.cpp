@@ -191,6 +191,7 @@ int entry(int argc, char **argv)
     std::cout << arser;
     return EXIT_FAILURE;
   }
+
   if (arser["--by_id"])
   {
     operator_input = arser.get<std::string>("--by_id");
