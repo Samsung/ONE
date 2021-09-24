@@ -41,4 +41,4 @@ private:
 
 } // namespace opselector
 
-#endif // __CIRCLE_OPSELECTOR_SELECT_PASS__OPSELECTOR__
+#endif // __CIRCLE_OPSELECTOR_SELECT_PASS_OPSELECTOR__
