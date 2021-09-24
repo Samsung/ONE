@@ -1,9 +1,9 @@
 set(DRIVER "driver/Driver.cpp")
 
-file(GLOB_RECURSE SOURCES "pass/*.cpp")
+file(GLOB_RECURSE SOURCES "src/*.cpp")
 
 add_executable(circle-opselector ${DRIVER} ${SOURCES})
-target_include_directories(circle-opselector PRIVATE pass)
+target_include_directories(circle-opselector PRIVATE src)
 target_link_libraries(circle-opselector foder)
 target_link_libraries(circle-opselector safemain)
 target_link_libraries(circle-opselector loco)

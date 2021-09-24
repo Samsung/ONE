@@ -23,6 +23,8 @@
 #include <luci/CircleFileExpContract.h>
 #include <luci/Import/CircleReader.h>
 
+#include <luci/Profile/CircleNodeID.h>
+
 #include <arser/arser.h>
 #include <vconone/vconone.h>
 
@@ -189,11 +191,11 @@ int entry(int argc, char **argv)
     std::cout << arser;
     return EXIT_FAILURE;
   }
-
   if (arser["--by_id"])
   {
     operator_input = arser.get<std::string>("--by_id");
     split_id_input(operator_input, by_id);
+    //split_id(operator_input, by_id);
   }
   if (arser["--by_name"])
   {
@@ -233,30 +235,56 @@ int entry(int argc, char **argv)
 
   // Select and Import from user input.
   auto selector = std::make_unique<opselector::OpSelector>(circle_model);
-  std::map<uint32_t, std::string> _source_table = module.get()->source_table();
-  std::map<uint32_t, std::string> id_name_selected_nodes;
+  std::vector<const luci::CircleNode *> selected_nodes;
 
   // put selected nodes into map.
   if (by_id.size())
   {
-    for (auto id : by_id)
+    loco::Graph *graph = module.get()->graph(0); // get main subgraph.
+
+    for (auto node : loco::all_nodes(graph))
     {
-      for (auto iter = _source_table.begin(); iter != _source_table.end(); iter++)
-        if (iter->first == id)
-          id_name_selected_nodes[iter->first] = iter->second; // {id : name} mapping
+      auto cnode = loco::must_cast<const luci::CircleNode *>(node);
+
+      try
+      {
+        auto node_id = luci::get_node_id(cnode); // if the node is not operator, throw runtime_error
+
+        for (auto selected_id : by_id)
+          if (selected_id == node_id) // find the selected id
+            selected_nodes.emplace_back(cnode);
+      }
+      catch (std::runtime_error)
+      {
+        continue;
+      }
     }
   }
   if (by_name.size())
   {
-    for (auto id : by_name)
+    loco::Graph *graph = module.get()->graph(0); // get main subgraph.
+
+    for (auto node : loco::all_nodes(graph))
     {
-      for (auto iter = _source_table.begin(); iter != _source_table.end(); iter++)
-        if (iter->second.find(id) != std::string::npos)
-          id_name_selected_nodes[iter->first] = iter->second; // {id : name} mapping
+      auto cnode = loco::must_cast<const luci::CircleNode *>(node);
+      std::string node_name = cnode->name();
+
+      try
+      {
+        luci::get_node_id(cnode); // if the node is not operator, throw runtime_error
+
+        for (auto selected_name : by_name)
+          if (selected_name.compare(node_name) == 0) // find the selected id
+            selected_nodes.emplace_back(cnode);
+      }
+      catch (std::runtime_error)
+      {
+        continue;
+      }
     }
   }
   // Import selected nodes.
-  module = selector->select_nodes(id_name_selected_nodes);
+  module = selector->select_nodes(selected_nodes);
 
   // Export to output Circle file
   luci::CircleExporter exporter;

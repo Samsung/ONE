@@ -32,8 +32,7 @@ public:
   ~OpSelector() = default;
 
 public:
-  std::unique_ptr<luci::Module>
-  select_nodes(std::map<uint32_t, std::string> &id_name_selected_nodes);
+  std::unique_ptr<luci::Module> select_nodes(std::vector<const luci::CircleNode *> selected_nodes);
 
 private:
   luci::CircleReader _reader;
@@ -42,4 +41,4 @@ private:
 
 } // namespace opselector
 
-#endif // __CIRCLE_OPSELECTOR_SELECT_PASS__OPSELECTOR__
+#endif // __CIRCLE_OPSELECTOR_SELECT_PASS_OPSELECTOR__
