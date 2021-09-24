@@ -153,14 +153,14 @@ def _parse_arg(parser):
 
 
 def _quantize(args):
-    # get file path to log
-    dir_path = os.path.dirname(os.path.realpath(__file__))
-    logfile_path = os.path.realpath(args.output_path) + '.log'
-
     if _utils._is_valid_attr(args, 'force_quantparam'):
         # write quantization parameters
         _write_qparam(args)
         return
+
+    # get file path to log
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    logfile_path = os.path.realpath(args.output_path) + '.log'
 
     with open(logfile_path, 'wb') as f, tempfile.TemporaryDirectory() as tmpdir:
         # get driver path
