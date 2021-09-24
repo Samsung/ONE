@@ -11,7 +11,6 @@ target_link_libraries(circle-opselector luci_import)
 target_link_libraries(circle-opselector luci_export)
 target_link_libraries(circle-opselector arser)
 target_link_libraries(circle-opselector vconone)
-
 target_link_libraries(circle-opselector luci_service)
 target_link_libraries(circle-opselector luci_profile)
 
