@@ -350,6 +350,7 @@ void dump_model(std::ostream &os, const tflite::Model *model)
   auto opcodes = reader.opcodes();
   auto buffers = reader.buffers();
   auto metadata = reader.metadata();
+  auto signaturedefs = reader.signaturedefs();
 
   // dump operator_codes
   os << "Operator Codes: [order] OpCodeName (OpCode Enum)" << std::endl;
@@ -391,7 +392,38 @@ void dump_model(std::ostream &os, const tflite::Model *model)
     os << "metadata : B(index) name" << std::endl;
     for (uint32_t i = 0; i < metadata->Length(); ++i)
     {
-      os << "B(" << metadata->Get(i)->buffer() << ") " << metadata->Get(i)->name()->c_str();
+      os << "B(" << metadata->Get(i)->buffer() << ") " << metadata->Get(i)->name()->c_str()
+         << std::endl;
+    }
+    os << std::endl;
+  }
+
+  // dump signaturedef
+  if (signaturedefs != nullptr)
+  {
+    os << "SignatureDef" << std::endl;
+    for (uint32_t i = 0; i < signaturedefs->Length(); ++i)
+    {
+      auto sign_i = signaturedefs->Get(i);
+      os << "S(" << i << ") " << sign_i->method_name()->c_str() << ", key("
+         << sign_i->key()->c_str() << "), sub_graph(" << sign_i->subgraph_index() << ")"
+         << std::endl;
+
+      auto inputs_i = sign_i->inputs();
+      for (uint32_t t = 0; t < inputs_i->Length(); ++t)
+      {
+        auto inputs_i_t = inputs_i->Get(t);
+        os << "    I T(" << t << ") " << inputs_i_t->name()->c_str() << ": "
+           << inputs_i_t->tensor_index() << std::endl;
+      }
+
+      auto outputs_i = sign_i->outputs();
+      for (uint32_t t = 0; t < outputs_i->Length(); ++t)
+      {
+        auto outputs_i_t = outputs_i->Get(t);
+        os << "    O T(" << t << ") " << outputs_i_t->name()->c_str() << ": "
+           << outputs_i_t->tensor_index() << std::endl;
+      }
     }
     os << std::endl;
   }
