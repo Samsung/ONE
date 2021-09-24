@@ -32,9 +32,6 @@
 #include <string>
 #include <vector>
 
-#define MODE_SELECT true
-#define MODE_DESELECT false
-
 void print_version(void)
 {
   std::cout << "circle-opselector version " << vconone::get_string() << std::endl;
