@@ -111,6 +111,14 @@ def _add_default_arg(parser):
     parser.add_argument('-S', '--section', type=str, help=argparse.SUPPRESS)
 
 
+def is_accumulated_arg(arg, driver):
+    if driver == "one-quantize":
+        if arg == "tensor_name" or arg == "scale" or arg == "zero_point":
+            return True
+
+    return False
+
+
 def _is_valid_attr(args, attr):
     return hasattr(args, attr) and getattr(args, attr)
 
@@ -128,6 +136,12 @@ def _parse_cfg(args, driver_name):
                 raise AssertionError('configuration file must have \'' + driver_name +
                                      '\' section')
             for key in config[args.section]:
+                if is_accumulated_arg(key, driver_name):
+                    if not _is_valid_attr(args, key):
+                        setattr(args, key, [config[args.section][key]])
+                    else:
+                        getattr(args, key).append(config[args.section][key])
+                    continue
                 if not _is_valid_attr(args, key):
                     setattr(args, key, config[args.section][key])
         # if section is not given, section name is same with its driver name
@@ -137,6 +151,12 @@ def _parse_cfg(args, driver_name):
                                      '\' section')
             secton_to_run = driver_name
             for key in config[secton_to_run]:
+                if is_accumulated_arg(key, driver_name):
+                    if not _is_valid_attr(args, key):
+                        setattr(args, key, [config[secton_to_run][key]])
+                    else:
+                        getattr(args, key).append(config[secton_to_run][key])
+                    continue
                 if not _is_valid_attr(args, key):
                     setattr(args, key, config[secton_to_run][key])
 
