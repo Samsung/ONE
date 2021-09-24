@@ -22,6 +22,8 @@
 
 #include "PALMul.h"
 
+#include <tensorflow/lite/kernels/internal/reference/process_broadcast_shapes.h>
+
 #include <stdexcept>
 
 namespace luci_interpreter

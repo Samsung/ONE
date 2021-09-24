@@ -329,10 +329,10 @@ void DepthwiseConv2D::evalQuantizedS8PerChannel() const
   std::vector<ChannelQuantMultipliers> quant_multipliers =
     quantizeMultipliers(effective_output_scales);
 
-  std::vector<int> shifts;
+  std::vector<int32_t> shifts;
   std::transform(quant_multipliers.begin(), quant_multipliers.end(), std::back_inserter(shifts),
                  [](ChannelQuantMultipliers cm) { return cm.shift; });
-  std::vector<int> multipliers;
+  std::vector<int32_t> multipliers;
   std::transform(quant_multipliers.begin(), quant_multipliers.end(),
                  std::back_inserter(multipliers),
                  [](ChannelQuantMultipliers cm) { return cm.multiplier; });

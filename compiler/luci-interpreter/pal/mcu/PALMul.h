@@ -17,7 +17,7 @@
 #ifndef LUCI_INTERPRETER_PAL_MUL_H
 #define LUCI_INTERPRETER_PAL_MUL_H
 
-#include <tensorflow/lite/kernels/internal/reference/reference_ops.h>
+#include <tensorflow/lite/kernels/internal/reference/mul.h>
 
 namespace luci_interpreter_pal
 {

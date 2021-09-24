@@ -17,7 +17,7 @@
 #ifndef LUCI_INTERPRETER_PAL_SPACETOBATCHND_H
 #define LUCI_INTERPRETER_PAL_SPACETOBATCHND_H
 
-#include <tensorflow/lite/kernels/internal/reference/reference_ops.h>
+#include <tensorflow/lite/kernels/internal/reference/space_to_batch_nd.h>
 
 namespace luci_interpreter_pal
 {
