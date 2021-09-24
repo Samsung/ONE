@@ -1,1 +1,1 @@
-require("luci")
+require("luci-interpreter")
