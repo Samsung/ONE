@@ -40,27 +40,27 @@ void print_version(void)
 
 bool check_input(const std::string str)
 {
-  bool check_hyphen = false;
+  bool has_hyphen = false;
 
-  if (not str.size())
+  if (str.empty())
     return false;
   if (str.at(0) == '-' || str[str.size() - 1] == '-')
   {
-    std::cout << "Invalid input." << std::endl;
+    std::cerr << "Invalid input." << std::endl;
     return false;
   }
 
   for (char c : str)
   {
-    if ('0' <= c && c <= '9')
+    if (isdigit(c))
       continue;
-    else if (check_hyphen && c == '-') // when user enter '-' more than 2.
+    else if (has_hyphen && c == '-') // when user enter '-' more than 2.
     {
       std::cout << "Too many '-' in str." << std::endl;
       return false;
     }
     else if (c == '-')
-      check_hyphen = true;
+      has_hyphen = true;
     else // when user enter not allowed character, print alert msg.
     {
       std::cout << "To select operator by id, please use these args: [0-9], '-', ','" << std::endl;
