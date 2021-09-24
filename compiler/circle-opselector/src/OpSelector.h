@@ -14,16 +14,31 @@
  * limitations under the License.
  */
 
-#include "OpSelector.h"
+#ifndef __CIRCLE_OPSELECTOR_SELECT_PASS_OPSELECTOR__
+#define __CIRCLE_OPSELECTOR_SELECT_PASS_OPSELECTOR__
+
+#include <luci/IR/Module.h>
+
+#include <luci/Importer.h>
 
 namespace opselector
 {
 
-std::unique_ptr<luci::Module> select_nodes(const circle::Model *circle_model,
-                                           std::map<uint32_t, std::string> &id_name_selected_nodes)
+class OpSelector
 {
-  auto module = luci::make_module();
-  return module;
-}
+public:
+  OpSelector() = default;
+  OpSelector(const circle::Model *model) : _src_model(model) { assert(_reader.parse(_src_model)); }
+  ~OpSelector() = default;
+
+public:
+  std::unique_ptr<luci::Module> select_nodes(std::vector<const luci::CircleNode *> selected_nodes);
+
+private:
+  luci::CircleReader _reader;
+  const circle::Model *_src_model;
+};
 
 } // namespace opselector
+
+#endif // __CIRCLE_OPSELECTOR_SELECT_PASS_OPSELECTOR__
