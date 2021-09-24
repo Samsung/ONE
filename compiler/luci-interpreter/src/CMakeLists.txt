@@ -10,10 +10,13 @@ endif()
 message(STATUS "LUCI INTERPRETER BEGIN")
 
 set(LUCI_INTERPRETER_BINARY "luci_interpreter${LUCI_INTERPRETER_SUFFIX}")
+set(LUCI_INTERPRETER_LUCI_EXTENSION luci_interpreter_luci_extension${LUCI_INTERPRETER_SUFFIX})
 set(LUCI_INTERPRETER_CORE "luci_interpreter_core${LUCI_INTERPRETER_SUFFIX}")
 set(LUCI_INTERPRETER_KERNELS "luci_interpreter_kernels${LUCI_INTERPRETER_SUFFIX}")
 set(LUCI_INTERPRETER_LOADER "luci_interpreter_loader${LUCI_INTERPRETER_SUFFIX}")
 
+add_subdirectory(luci_extension)
+message(STATUS "LUCI INTERPRETER LUCI EXTENSION")
 add_subdirectory(core)
 message(STATUS "LUCI INTERPRETER CORE")
 add_subdirectory(kernels)
@@ -41,7 +44,7 @@ set(TEST_SOURCES BuddyMemoryManager.test.cpp)
 target_include_directories(${LUCI_INTERPRETER_BINARY} PUBLIC "${LUCI_INTERPRETER_INCLUDE_DIR}")
 target_include_directories(${LUCI_INTERPRETER_BINARY} PRIVATE "${LUCI_INTERPRETER_SOURCE_DIR}")
 target_link_libraries(${LUCI_INTERPRETER_BINARY}
-    PUBLIC luci_lang ${LUCI_INTERPRETER_LOADER} ${LUCI_INTERPRETER_CORE}
+    PUBLIC luci_lang ${LUCI_INTERPRETER_LUCI_EXTENSION} ${LUCI_INTERPRETER_LOADER} ${LUCI_INTERPRETER_CORE}
     PRIVATE nncc_common)
 
 install(TARGETS ${LUCI_INTERPRETER_BINARY} DESTINATION lib)
