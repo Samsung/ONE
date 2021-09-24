@@ -3,7 +3,7 @@ file(GLOB_RECURSE SOURCES "src/*.cpp")
 #file(GLOB_RECURSE TESTS "src/*.test.cpp")
 #list(REMOVE_ITEM SOURCES ${TESTS})
 
-add_library(luci_export SHARED ${SOURCES})
+add_library(luci_export ${LIBRARY_TYPE} ${SOURCES})
 target_include_directories(luci_export PRIVATE src)
 target_include_directories(luci_export PUBLIC include)
 target_link_libraries(luci_export PRIVATE luci_lang)

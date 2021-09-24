@@ -1,3 +1,9 @@
+if (STATIC_LUCI)
+  set(LIBRARY_TYPE "STATIC")
+else()
+  set(LIBRARY_TYPE "SHARED")
+endif()
+
 add_subdirectory(env)
 add_subdirectory(log)
 add_subdirectory(lang)
