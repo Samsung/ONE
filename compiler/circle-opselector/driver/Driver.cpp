@@ -79,7 +79,7 @@ void split_id_input(const std::string &str, std::vector<int> &by_id)
   while (getline(ss, str_buf, ','))
   {
     if (str_buf.length() && check_input(str_buf)) // input validation
-    {
+    
       try
       {
         if (str_buf.find('-') == std::string::npos) // if token has no '-'
@@ -193,7 +193,6 @@ int entry(int argc, char **argv)
   {
     operator_input = arser.get<std::string>("--by_id");
     split_id_input(operator_input, by_id);
-    //split_id(operator_input, by_id);
   }
   if (arser["--by_name"])
   {
