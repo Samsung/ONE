@@ -357,11 +357,13 @@ void dump_model(std::ostream &os, const tflite::Model *model)
   for (auto opcode : opcodes)
   {
     tflite::BuiltinOperator op_code = opcode->builtin_code();
+    tflite::BuiltinOperator dp_code = tflite::BuiltinOperator(opcode->deprecated_builtin_code());
+
     auto op_name = tflread::opcode_name(opcode);
     auto op_version = opcode->version();
 
     os << "[" << opcode_index << "] " << op_name << " (code: " << op_code
-       << ", version: " << op_version << ")" << std::endl;
+       << ", dep_code: " << dp_code << ", version: " << op_version << ")" << std::endl;
 
     opcode_index++;
   }
