@@ -122,6 +122,12 @@ int entry(int argc, char **argv)
     .default_value(false)
     .help("This will fuse Activation function to a preceding operator");
 
+  arser.add_argument("--fuse_add_with_fully_connected")
+    .nargs(0)
+    .required(false)
+    .default_value(false)
+    .help("This will fuse Add operator to FullyConnected operator");
+
   arser.add_argument("--fuse_add_with_tconv")
     .nargs(0)
     .required(false)
@@ -454,6 +460,8 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::FuseActivationFunction);
   if (arser.get<bool>("--fuse_batchnorm_with_conv"))
     options->enable(Algorithms::FuseBatchNormWithConv);
+  if (arser.get<bool>("--fuse_add_with_fully_connected"))
+    options->enable(Algorithms::FuseAddWithFullyConnected);
   if (arser.get<bool>("--fuse_add_with_tconv"))
     options->enable(Algorithms::FuseAddWithTConv);
   if (arser.get<bool>("--fuse_batchnorm_with_dwconv"))
