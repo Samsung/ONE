@@ -44,9 +44,9 @@ namespace opselector
 {
 
 void OpSelector::check_connected(std::vector<const luci::CircleNode *> &selected_nodes,
-                                std::set<uint32_t> &used_output_tensors,
-                                std::set<uint32_t> &graph_inputs,
-                                std::set<uint32_t> &graph_outputs)
+                                 std::set<uint32_t> &used_output_tensors,
+                                 std::set<uint32_t> &graph_inputs,
+                                 std::set<uint32_t> &graph_outputs)
 {
   const auto &operators = _reader.operators();
 
@@ -70,7 +70,7 @@ void OpSelector::check_connected(std::vector<const luci::CircleNode *> &selected
     selected_operators.push_back(operators[node_id].get()); // put selected nodes in vector.
 
     if (cnode->name().find("while") != std::string::npos ||
-          cnode->name().find("if") != std::string::npos) // if has while of if node,
+        cnode->name().find("if") != std::string::npos) // if has while of if node,
       _has_subgraph = true; // A flag indicating whether to copy the subgraph or not,
   }
 
@@ -124,7 +124,8 @@ void OpSelector::print_selected_nodes(std::vector<const luci::CircleNode *> sele
     uint32_t node_id = luci::get_node_id(cnode);
     std::string node_name = cnode->name();
 
-    std::cout << "============== Operator[" << node_id << "] Name: " << node_name << " ==============" << std::endl;
+    std::cout << "============== Operator[" << node_id << "] Name: " << node_name
+              << " ==============" << std::endl;
     std::cout << "    <INPUT>" << std::endl;
     for (auto node : operators[node_id].get()->inputs)
       std::cout << "id: " << node << " "
@@ -158,8 +159,7 @@ void OpSelector::build_cache_outputs(luci::GraphBuilderContext &gb_context)
   }
 }
 
-void OpSelector::create_graph_inputs(luci::GraphBuilderContext &gb_context,
-                                    uint32_t input)
+void OpSelector::create_graph_inputs(luci::GraphBuilderContext &gb_context, uint32_t input)
 {
   auto graph = gb_context.graph();
   auto nodefinder = gb_context.nodefinder();
@@ -200,7 +200,7 @@ void OpSelector::create_graph_inputs(luci::GraphBuilderContext &gb_context,
   graph_input->dtype(input_node->dtype());
 
   assert(tensor.shape_signature.size() == 0 ||
-          tensor.shape_signature.size() == tensor.shape.size());
+         tensor.shape_signature.size() == tensor.shape.size());
 
   // Shape of GraphInput
   auto input_shape = std::make_unique<loco::TensorShape>();
@@ -265,8 +265,7 @@ void OpSelector::import_operators(luci::GraphBuilderContext &gb_context)
   }
 }
 
-void OpSelector::create_graph_outputs(luci::GraphBuilderContext &gb_context,
-                                    uint32_t output)
+void OpSelector::create_graph_outputs(luci::GraphBuilderContext &gb_context, uint32_t output)
 {
   auto graph = gb_context.graph();
   auto nodefinder = gb_context.nodefinder();
@@ -311,7 +310,7 @@ void OpSelector::create_graph_outputs(luci::GraphBuilderContext &gb_context,
   output_node->index(graph_output->index());
 
   assert(tensor.shape_signature.size() == 0 ||
-          tensor.shape_signature.size() == tensor.shape.size());
+         tensor.shape_signature.size() == tensor.shape.size());
 
   // Shape of Output
   auto output_shape = std::make_unique<loco::TensorShape>();
@@ -343,7 +342,7 @@ OpSelector::select_nodes(std::vector<const luci::CircleNode *> selected_nodes)
     std::unique_ptr<loco::Graph> graph = loco::make_graph(); // create new empty graph
 
     assert(_reader.select_subgraph(g)); // select subgraph. usually, 0 is main
-    graph->name(_reader.name()); // set name of graph (if it has one graph, name is empty.)
+    graph->name(_reader.name());        // set name of graph (if it has one graph, name is empty.)
 
     auto nodefinder = std::make_unique<luci::IndexNodeFinder>();
     auto tensoroutputs = std::make_unique<luci::IndexTensorOutputs>();
@@ -361,7 +360,8 @@ OpSelector::select_nodes(std::vector<const luci::CircleNode *> selected_nodes)
       build_cache_outputs(gb_context);
 
       for (auto input : graph_inputs)
-        if (used_output_tensors.find(input) != used_output_tensors.end()) // if it is virtual node, never used before.
+        if (used_output_tensors.find(input) !=
+            used_output_tensors.end()) // if it is virtual node, never used before.
           create_graph_inputs(gb_context, input);
 
       create_circle_const(gb_context);
@@ -373,7 +373,8 @@ OpSelector::select_nodes(std::vector<const luci::CircleNode *> selected_nodes)
 
       module->add(std::move(graph)); // add graph in module
     }
-    else if(_has_subgraph) // g is not main, and main graph has while or if node, copy all input, output nodes.
+    else if (_has_subgraph) // g is not main, and main graph has while or if node, copy all input,
+                            // output nodes.
     {
       build_cache_outputs(gb_context);
 
