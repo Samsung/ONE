@@ -15,8 +15,6 @@
  */
 
 #include "OpSelector.h"
-// #include "luci/../../src/CircleImportMetadata.h"
-// #include "luci/../../src/PostImport.h"
 
 #include <luci/Service/ChangeOutputs.h>
 
@@ -39,21 +37,111 @@
 #include <iostream>
 #include <map>
 
+#define MAIN_SUBGRAPH 0
+
+// TODO: Re-implement to use just module.
 namespace opselector
 {
 
-void convert_graph(const luci::GraphBuilderSource &source, luci::CircleReader &reader,
-                   loco::Graph *graph)
+void OpSelector::check_connected(std::vector<const luci::CircleNode *> &selected_nodes,
+                                std::set<uint32_t> &used_output_tensors,
+                                std::set<uint32_t> &graph_inputs,
+                                std::set<uint32_t> &graph_outputs)
 {
-  auto nodefinder = std::make_unique<luci::IndexNodeFinder>();
-  auto tensoroutputs = std::make_unique<luci::IndexTensorOutputs>();
+  const auto &operators = _reader.operators();
 
-  luci::GraphBuilderContext gb_context(graph, &reader, nodefinder.get(), tensoroutputs.get());
+  std::set<uint32_t> selected_input_tensors;
+  std::set<uint32_t> selected_output_tensors;
 
-  const auto &operators = reader.operators();
-  const auto &tensors = reader.tensors();
-  auto tensors_ptr = reader.tensors_ptr();
-  assert(tensors_ptr != nullptr);
+  std::vector<const circle::OperatorT *> selected_operators;
+
+  // enroll all output nodes.
+  for (auto &op : operators)
+    for (auto output : op.get()->outputs)
+      used_output_tensors.insert(output);
+
+  for (auto input : _reader.inputs()) // graph's input must not have preceding node.
+    used_output_tensors.insert(input);
+
+  // select operators.
+  for (auto cnode : selected_nodes)
+  {
+    uint32_t node_id = luci::get_node_id(cnode);
+    selected_operators.push_back(operators[node_id].get()); // put selected nodes in vector.
+
+    if (cnode->name().find("while") != std::string::npos ||
+          cnode->name().find("if") != std::string::npos) // if has while of if node,
+      _has_subgraph = true; // A flag indicating whether to copy the subgraph or not,
+  }
+
+  print_selected_nodes(selected_nodes);
+
+  // add all selected tensors.
+  for (auto op : selected_operators)
+  {
+    for (auto input : op->inputs)
+      selected_input_tensors.insert(input);
+    for (auto output : op->outputs)
+      selected_output_tensors.insert(output);
+  }
+  // find and add unconnected node's output
+  for (auto op : selected_operators)
+  {
+    bool output_connected = false;
+
+    for (auto output : op->outputs) // check connection
+      if (selected_input_tensors.find(output) != selected_input_tensors.end())
+        output_connected = true;
+
+    if (not output_connected) // if not connected other selected nodes, add all outputs
+      for (auto output : op->outputs)
+        graph_outputs.insert(output);
+  }
+  // find and add unconnected node's input
+  for (auto op : selected_operators)
+  {
+    bool input_connected = false;
+
+    for (auto input : op->inputs)
+      if (selected_output_tensors.find(input) != selected_output_tensors.end())
+        input_connected = true;
+
+    if (not input_connected) // if not connected other selected nodes, add all inputs
+      for (auto input : op->inputs)
+        graph_inputs.insert(input);
+  }
+}
+
+void OpSelector::print_selected_nodes(std::vector<const luci::CircleNode *> selected_nodes)
+{
+  const auto &operators = _reader.operators();
+  const auto &tensors = _reader.tensors();
+
+  // print selected operator's input, output nodes.
+  std::cout << "Subgraph Name: " << _reader.name() << std::endl;
+  for (auto cnode : selected_nodes)
+  {
+    uint32_t node_id = luci::get_node_id(cnode);
+    std::string node_name = cnode->name();
+
+    std::cout << "============== Operator[" << node_id << "] Name: " << node_name << " ==============" << std::endl;
+    std::cout << "    <INPUT>" << std::endl;
+    for (auto node : operators[node_id].get()->inputs)
+      std::cout << "id: " << node << " "
+                << "input: " << tensors[node]->name << std::endl;
+    std::cout << "    <OUTPUT>" << std::endl;
+    for (auto node : operators[node_id].get()->outputs)
+      std::cout << "id: " << node << " "
+                << "output: " << tensors[node]->name << std::endl;
+    std::cout << std::endl;
+  }
+}
+
+void OpSelector::build_cache_outputs(luci::GraphBuilderContext &gb_context)
+{
+  auto tensoroutputs = gb_context.tensoroutputs();
+
+  const auto &operators = _reader.operators();
 
   // build a cache to identify if a tensor is output of an operator
   // if this is set, we should not create a CircleConst for this tensor
@@ -68,53 +156,71 @@ void convert_graph(const luci::GraphBuilderSource &source, luci::CircleReader &r
       tensoroutputs->enroll(tidx);
     }
   }
+}
 
-  // graph inputs; there are no input nodes in TFlite but just Tensors
+void OpSelector::create_graph_inputs(luci::GraphBuilderContext &gb_context,
+                                    uint32_t input)
+{
+  auto graph = gb_context.graph();
+  auto nodefinder = gb_context.nodefinder();
+  auto tensoroutputs = gb_context.tensoroutputs();
+
+  const auto &tensors = _reader.tensors();
+  auto tensors_ptr = _reader.tensors_ptr();
+  assert(tensors_ptr != nullptr);
+
+  // graph inputs;
   // creating virtual input nodes will make possible to connect nodes that uses them
   // all attributes of tensor should be copied to CircleInput node
-  for (const auto input : reader.inputs())
+  auto input_node = graph->nodes()->create<luci::CircleInput>();
+
+  assert(input_node != nullptr);
+  const circle::TensorT &tensor = *tensors[input];
+
+  luci::copy_tensor_attributes(tensor, input_node);
+
+  if (tensors_ptr->Get(input)->shape() == nullptr)
+    input_node->shape_status(luci::ShapeStatus::NOSHAPE);
+  else
+    input_node->shape_status(luci::ShapeStatus::VALID);
+
+  nodefinder->enroll(input, input_node);
+
+  // input_node is also an output to a tensor
+  tensoroutputs->enroll(input);
+
+  // Name
+  auto graph_input = graph->inputs()->create();
+  graph_input->name(input_node->name());
+
+  // Set GraphInputOutputIndex for graph
+  input_node->index(graph_input->index());
+
+  // Data type
+  graph_input->dtype(input_node->dtype());
+
+  assert(tensor.shape_signature.size() == 0 ||
+          tensor.shape_signature.size() == tensor.shape.size());
+
+  // Shape of GraphInput
+  auto input_shape = std::make_unique<loco::TensorShape>();
+  const std::vector<int32_t> &input_dims = tensor.shape; // in NHWC
+  input_shape->rank(input_dims.size());
+  for (uint32_t r = 0; r < input_dims.size(); ++r)
   {
-    auto input_node = graph->nodes()->create<luci::CircleInput>();
-    assert(input_node != nullptr);
-    const circle::TensorT &tensor = *tensors[input];
-
-    luci::copy_tensor_attributes(tensor, input_node);
-    if (tensors_ptr->Get(input)->shape() == nullptr)
-      input_node->shape_status(luci::ShapeStatus::NOSHAPE);
+    if (tensor.shape_signature.size() > 0 && tensor.shape_signature.at(r) == -1)
+      input_shape->dim(r).unset();
     else
-      input_node->shape_status(luci::ShapeStatus::VALID);
-
-    nodefinder->enroll(input, input_node);
-
-    // input_node is also an output to a tensor
-    tensoroutputs->enroll(input);
-
-    // Name
-    auto graph_input = graph->inputs()->create();
-    graph_input->name(input_node->name());
-
-    // Set GraphInputOutputIndex for graph
-    input_node->index(graph_input->index());
-
-    // Data type
-    graph_input->dtype(input_node->dtype());
-
-    assert(tensor.shape_signature.size() == 0 ||
-           tensor.shape_signature.size() == tensor.shape.size());
-
-    // Shape of GraphInput
-    auto input_shape = std::make_unique<loco::TensorShape>();
-    const std::vector<int32_t> &input_dims = tensor.shape; // in NHWC
-    input_shape->rank(input_dims.size());
-    for (uint32_t r = 0; r < input_dims.size(); ++r)
-    {
-      if (tensor.shape_signature.size() > 0 && tensor.shape_signature.at(r) == -1)
-        input_shape->dim(r).unset();
-      else
-        input_shape->dim(r).set(input_dims[r]);
-    }
-    graph_input->shape(std::move(input_shape));
+      input_shape->dim(r).set(input_dims[r]);
   }
+  graph_input->shape(std::move(input_shape));
+}
+
+void OpSelector::create_circle_const(luci::GraphBuilderContext &gb_context)
+{
+  auto nodefinder = gb_context.nodefinder();
+
+  const auto &tensors = _reader.tensors();
 
   // Create CircleConst nodes for constant tensors.
   for (uint32_t i = 0; i < tensors.size(); ++i)
@@ -123,6 +229,12 @@ void convert_graph(const luci::GraphBuilderSource &source, luci::CircleReader &r
     if (const_node != nullptr)
       nodefinder->enroll(i, const_node);
   }
+}
+
+void OpSelector::import_operators(luci::GraphBuilderContext &gb_context)
+{
+  const luci::GraphBuilderSource *source_ptr = &luci::GraphBuilderRegistry::get();
+  const auto &operators = _reader.operators();
 
   // Import the operators.
   // Note that operators in model are stored in execution order. This means that when importing
@@ -131,84 +243,92 @@ void convert_graph(const luci::GraphBuilderSource &source, luci::CircleReader &r
   for (uint32_t i = 0; i < operators.size(); ++i)
   {
     const circle::OperatorT &op = *operators[i];
-    circle::BuiltinOperator builtincode = reader.builtin_code(op);
+    circle::BuiltinOperator builtincode = _reader.builtin_code(op);
 
-    if (const auto *builder = source.lookup(builtincode))
+    if (const auto *builder = source_ptr->lookup(builtincode))
     {
-      luci::GraphBuilder::ValidateArgs args(op, reader);
+      luci::GraphBuilder::ValidateArgs args(op, _reader);
       if (!builder->validate(args))
       {
-        throw oops::UserExn("Invalid operator", reader.opcode_name(op));
+        throw oops::UserExn("Invalid operator", _reader.opcode_name(op));
       }
 
       auto built_op = builder->build(op, &gb_context);
-      set_node_id(built_op, i);
+      luci::set_node_id(built_op, i);
 
       add_origin(built_op, luci::single_origin(i, built_op->name()));
     }
     else
     {
-      throw oops::UserExn("Not supported", reader.opcode_name(op));
+      throw oops::UserExn("Not supported", _reader.opcode_name(op));
     }
   }
+}
+
+void OpSelector::create_graph_outputs(luci::GraphBuilderContext &gb_context,
+                                    uint32_t output)
+{
+  auto graph = gb_context.graph();
+  auto nodefinder = gb_context.nodefinder();
+
+  const auto &tensors = _reader.tensors();
+  auto tensors_ptr = _reader.tensors_ptr();
+  assert(tensors_ptr != nullptr);
 
   // graph outputs
-  for (auto output : reader.outputs())
+  const circle::TensorT &tensor = *tensors[output];
+
+  auto output_node = graph->nodes()->create<luci::CircleOutput>();
+  assert(output_node != nullptr);
+  auto output_from = nodefinder->node(output);
+  if (output_from != nullptr)
+    output_node->from(output_from);
+  else
   {
-    const circle::TensorT &tensor = *tensors[output];
+    // NOTE loco::Graph requires all input node(s) to a node should exist.
+    //      Here, CircleOutput needs an input node.
+    //      We add a dummy node to make it happy.
+    auto output_dummy = graph->nodes()->create<luci::CircleOutputDummy>();
+    assert(output_dummy != nullptr);
+    output_node->from(output_dummy);
 
-    auto output_node = graph->nodes()->create<luci::CircleOutput>();
-    assert(output_node != nullptr);
-    auto output_from = nodefinder->node(output);
-    if (output_from != nullptr)
-      output_node->from(output_from);
+    luci::copy_tensor_attributes(tensor, output_dummy);
+    if (tensors_ptr->Get(output)->shape() == nullptr)
+      output_dummy->shape_status(luci::ShapeStatus::NOSHAPE);
     else
-    {
-      // NOTE loco::Graph requires all input node(s) to a node should exist.
-      //      Here, CircleOutput needs an input node.
-      //      We add a dummy node to make it happy.
-      auto output_dummy = graph->nodes()->create<luci::CircleOutputDummy>();
-      assert(output_dummy != nullptr);
-      output_node->from(output_dummy);
-
-      luci::copy_tensor_attributes(tensor, output_dummy);
-      if (tensors_ptr->Get(output)->shape() == nullptr)
-        output_dummy->shape_status(luci::ShapeStatus::NOSHAPE);
-      else
-        output_dummy->shape_status(luci::ShapeStatus::VALID);
-    }
-
-    // set the graph output name and node object
-    auto graph_output = graph->outputs()->create();
-    std::string tname = luci::tensor_name(tensor);
-    assert(tname.length() > 0);
-    graph_output->name(tname);
-
-    luci::copy_tensor_attributes(tensor, output_node);
-
-    // Set GraphInputOutputIndex for graph
-    output_node->index(graph_output->index());
-
-    assert(tensor.shape_signature.size() == 0 ||
-           tensor.shape_signature.size() == tensor.shape.size());
-
-    // Shape of Output
-    auto output_shape = std::make_unique<loco::TensorShape>();
-    const std::vector<int32_t> &output_dims = tensor.shape; // in NHWC
-    output_shape->rank(output_dims.size());
-    for (uint32_t r = 0; r < output_dims.size(); ++r)
-    {
-      if (tensor.shape_signature.size() > 0 && tensor.shape_signature.at(r) == -1)
-        output_shape->dim(r).unset();
-      else
-        output_shape->dim(r).set(output_dims[r]);
-    }
-    graph_output->shape(std::move(output_shape));
-
-    // Data type
-    auto dtype = luci::luci_datatype(tensor.type);
-    graph_output->dtype(dtype);
+      output_dummy->shape_status(luci::ShapeStatus::VALID);
   }
+
+  // set the graph output name and node object
+  auto graph_output = graph->outputs()->create();
+  std::string tname = luci::tensor_name(tensor);
+  assert(tname.length() > 0);
+  graph_output->name(tname);
+
+  luci::copy_tensor_attributes(tensor, output_node);
+
+  // Set GraphInputOutputIndex for graph
+  output_node->index(graph_output->index());
+
+  assert(tensor.shape_signature.size() == 0 ||
+          tensor.shape_signature.size() == tensor.shape.size());
+
+  // Shape of Output
+  auto output_shape = std::make_unique<loco::TensorShape>();
+  const std::vector<int32_t> &output_dims = tensor.shape; // in NHWC
+  output_shape->rank(output_dims.size());
+  for (uint32_t r = 0; r < output_dims.size(); ++r)
+  {
+    if (tensor.shape_signature.size() > 0 && tensor.shape_signature.at(r) == -1)
+      output_shape->dim(r).unset();
+    else
+      output_shape->dim(r).set(output_dims[r]);
+  }
+  graph_output->shape(std::move(output_shape));
+
+  // Data type
+  auto dtype = luci::luci_datatype(tensor.type);
+  graph_output->dtype(dtype);
 }
 
 std::unique_ptr<luci::Module>
@@ -218,287 +338,61 @@ OpSelector::select_nodes(std::vector<const luci::CircleNode *> selected_nodes)
 
   const luci::GraphBuilderSource *source_ptr = &luci::GraphBuilderRegistry::get();
 
-  for (uint32_t g = 0; g < 1; ++g)
+  for (uint32_t g = 0; g < _reader.num_subgraph(); ++g)
   {
     std::unique_ptr<loco::Graph> graph = loco::make_graph(); // create new empty graph
 
-    std::vector<const circle::OperatorT *> selected_operators; // nodes that user want to select
-    std::vector<const circle::OperatorT *>
-      input_nodes; // the nodes that one's input is not connected with other node's output
-    std::vector<const circle::OperatorT *>
-      output_nodes; // the nodes that one's output is not connected with other node's input
-
-    _reader.select_subgraph(g); // select subgraph. usually, 0 is main
-
+    assert(_reader.select_subgraph(g)); // select subgraph. usually, 0 is main
     graph->name(_reader.name()); // set name of graph (if it has one graph, name is empty.)
 
-    const auto &operators = _reader.operators(); // operator is the nodes that we can see in netron.
-                                                 // It has node's input, output, etc..
-    const auto &tensors = _reader.tensors();     // tensor is operator's input or output node.
-    auto tensors_ptr = _reader.tensors_ptr();
-    assert(tensors_ptr != nullptr);
-
-    auto nodefinder = std::make_unique<luci::IndexNodeFinder>(); // node find helper
+    auto nodefinder = std::make_unique<luci::IndexNodeFinder>();
     auto tensoroutputs = std::make_unique<luci::IndexTensorOutputs>();
 
     luci::GraphBuilderContext gb_context(graph.get(), &_reader, nodefinder.get(),
                                          tensoroutputs.get()); // graph build helper.
-
-    // print selected operator's detail.
-    std::cout << "Subgraph Name: " << _reader.name() << std::endl;
-    for (auto cnode : selected_nodes)
+    if (g == MAIN_SUBGRAPH) // g is main subgraph, copy selected input, output nodes.
     {
-      uint32_t node_id = luci::get_node_id(cnode);
-      std::string node_name = cnode->name();
+      std::set<uint32_t> used_output_tensors;
+      std::set<uint32_t> graph_inputs;
+      std::set<uint32_t> graph_outputs;
 
-      selected_operators.push_back(operators[node_id].get()); // put selected nodes in vector.
-      std::cout << "============== Operator Name: " << node_name << " ==============" << std::endl;
-      std::cout << "    <INPUT>" << std::endl;
-      for (auto node : operators[node_id].get()->inputs)
-        std::cout << "operator[" << node_id << "] id: " << node << " "
-                  << "input: " << tensors[node]->name << std::endl;
-      std::cout << "    <OUTPUT>" << std::endl;
-      for (auto node : operators[node_id].get()->outputs)
-        std::cout << "operator[" << node_id << "] id: " << node << " "
-                  << "output: " << tensors[node]->name << std::endl;
-      std::cout << std::endl;
+      check_connected(selected_nodes, used_output_tensors, graph_inputs, graph_outputs);
+
+      build_cache_outputs(gb_context);
+
+      for (auto input : graph_inputs)
+        if (used_output_tensors.find(input) != used_output_tensors.end()) // if it is virtual node, never used before.
+          create_graph_inputs(gb_context, input);
+
+      create_circle_const(gb_context);
+
+      import_operators(gb_context);
+
+      for (auto output : graph_outputs)
+        create_graph_outputs(gb_context, output);
+
+      module->add(std::move(graph)); // add graph in module
     }
-
-    // find the node that has no preceding node
-    input_nodes.push_back(selected_operators[0]); // first node must not have preceding node.
-    for (uint32_t node1 = 1; node1 < selected_operators.size(); ++node1)
+    else if(_has_subgraph) // g is not main, and main graph has while or if node, copy all input, output nodes.
     {
-      bool input_connected = false;
+      build_cache_outputs(gb_context);
 
-      for (uint32_t node2 = 0; node2 < selected_operators.size(); ++node2)
-      {
-        if (node1 == node2)
-          continue;
-        // find input
-        for (auto input : selected_operators[node1]->inputs)
-        {
-          for (auto output : selected_operators[node2]->outputs)
-          {
-            if (input == output)
-              input_connected = true;
-          }
-        }
-      }
+      for (const auto input : _reader.inputs())
+        create_graph_inputs(gb_context, input);
 
-      if (!input_connected)
-        input_nodes.push_back(selected_operators[node1]);
+      create_circle_const(gb_context);
+
+      import_operators(gb_context);
+
+      for (auto output : _reader.outputs())
+        create_graph_outputs(gb_context, output);
+
+      module->add(std::move(graph)); // add graph in module
     }
-
-    // find the node that has no trailing node
-    output_nodes.push_back(
-      selected_operators[selected_operators.size() - 1]); // last node must not have trailing node
-    for (uint32_t node1 = 0; node1 < selected_operators.size() - 1; ++node1)
-    {
-      bool output_connected = false;
-
-      for (uint32_t node2 = 0; node2 < selected_operators.size(); ++node2)
-      {
-        if (node1 == node2)
-          continue;
-        // find input
-        for (auto output : selected_operators[node1]->outputs)
-        {
-          for (auto input : selected_operators[node2]->inputs)
-          {
-            if (input == output)
-              output_connected = true;
-          }
-        }
-      }
-
-      if (!output_connected)
-        output_nodes.push_back(selected_operators[node1]);
-    }
-
-    // build a cache to identify if a tensor is output of an operator
-    // if this is set, we should not create a CircleConst for this tensor
-    for (uint32_t i = 0; i < operators.size(); ++i)
-    {
-      const circle::OperatorT &op = *operators[i];
-      const auto &outputs = op.outputs;
-
-      for (uint32_t j = 0; j < outputs.size(); ++j)
-      {
-        auto tidx = outputs[j];
-        tensoroutputs->enroll(tidx);
-      }
-    }
-
-    // graph inputs; there are no input nodes in TFlite but just Tensors
-    // creating virtual input nodes will make possible to connect nodes that uses them
-    // all attributes of tensor should be copied to CircleInput node
-    for (auto node : input_nodes)
-    {
-      int input = node->inputs[0];
-      auto input_node = graph->nodes()->create<luci::CircleInput>();
-
-      assert(input_node != nullptr);
-      const circle::TensorT &tensor = *tensors[input];
-
-      luci::copy_tensor_attributes(tensor, input_node);
-
-      if (tensors_ptr->Get(input)->shape() == nullptr)
-        input_node->shape_status(luci::ShapeStatus::NOSHAPE);
-      else
-        input_node->shape_status(luci::ShapeStatus::VALID);
-
-      nodefinder->enroll(input, input_node);
-
-      // input_node is also an output to a tensor
-      tensoroutputs->enroll(input);
-
-      // Name
-      auto graph_input = graph->inputs()->create();
-      graph_input->name(input_node->name());
-
-      // Set GraphInputOutputIndex for graph
-      input_node->index(graph_input->index());
-
-      // Data type
-      graph_input->dtype(input_node->dtype());
-
-      assert(tensor.shape_signature.size() == 0 ||
-             tensor.shape_signature.size() == tensor.shape.size());
-
-      // Shape of GraphInput
-      auto input_shape = std::make_unique<loco::TensorShape>();
-      const std::vector<int32_t> &input_dims = tensor.shape; // in NHWC
-      input_shape->rank(input_dims.size());
-      for (uint32_t r = 0; r < input_dims.size(); ++r)
-      {
-        if (tensor.shape_signature.size() > 0 && tensor.shape_signature.at(r) == -1)
-          input_shape->dim(r).unset();
-        else
-          input_shape->dim(r).set(input_dims[r]);
-      }
-      graph_input->shape(std::move(input_shape));
-    }
-    // Create CircleConst nodes for constant tensors.
-    for (uint32_t i = 0; i < tensors.size(); ++i)
-    {
-      luci::CircleConst *const_node = luci::create_circleconst(&gb_context, i);
-      if (const_node != nullptr)
-        nodefinder->enroll(i, const_node);
-    }
-
-    // Import the operators.
-    // Note that operators in model are stored in execution order. This means that when importing
-    // an operator, its input operators have already been imported. We exploit this fact to set up
-    // node's inputs right after creating the node.
-    for (uint32_t i = 0; i < operators.size(); ++i)
-    {
-      const circle::OperatorT &op = *operators[i];
-      circle::BuiltinOperator builtincode = _reader.builtin_code(op);
-
-      if (const auto *builder = source_ptr->lookup(builtincode))
-      {
-        luci::GraphBuilder::ValidateArgs args(op, _reader);
-        if (!builder->validate(args))
-        {
-          throw oops::UserExn("Invalid operator", _reader.opcode_name(op));
-        }
-
-        auto built_op = builder->build(op, &gb_context);
-        luci::set_node_id(built_op, i);
-
-        add_origin(built_op, luci::single_origin(i, built_op->name()));
-      }
-      else
-      {
-        throw oops::UserExn("Not supported", _reader.opcode_name(op));
-      }
-    }
-
-    // graph outputs
-    for (auto node : output_nodes)
-    {
-      for (auto output : node->outputs)
-      {
-        const circle::TensorT &tensor = *tensors[output];
-
-        auto output_node = graph->nodes()->create<luci::CircleOutput>();
-        assert(output_node != nullptr);
-        auto output_from = nodefinder->node(output);
-        if (output_from != nullptr)
-          output_node->from(output_from);
-        else
-        {
-          // NOTE loco::Graph requires all input node(s) to a node should exist.
-          //      Here, CircleOutput needs an input node.
-          //      We add a dummy node to make it happy.
-          auto output_dummy = graph->nodes()->create<luci::CircleOutputDummy>();
-          assert(output_dummy != nullptr);
-          output_node->from(output_dummy);
-
-          luci::copy_tensor_attributes(tensor, output_dummy);
-          if (tensors_ptr->Get(output)->shape() == nullptr)
-            output_dummy->shape_status(luci::ShapeStatus::NOSHAPE);
-          else
-            output_dummy->shape_status(luci::ShapeStatus::VALID);
-        }
-
-        // set the graph output name and node object
-        auto graph_output = graph->outputs()->create();
-        std::string tname = luci::tensor_name(tensor);
-        assert(tname.length() > 0);
-        graph_output->name(tname);
-
-        luci::copy_tensor_attributes(tensor, output_node);
-
-        // Set GraphInputOutputIndex for graph
-        output_node->index(graph_output->index());
-
-        assert(tensor.shape_signature.size() == 0 ||
-               tensor.shape_signature.size() == tensor.shape.size());
-
-        // Shape of Output
-        auto output_shape = std::make_unique<loco::TensorShape>();
-        const std::vector<int32_t> &output_dims = tensor.shape; // in NHWC
-        output_shape->rank(output_dims.size());
-        for (uint32_t r = 0; r < output_dims.size(); ++r)
-        {
-          if (tensor.shape_signature.size() > 0 && tensor.shape_signature.at(r) == -1)
-            output_shape->dim(r).unset();
-          else
-            output_shape->dim(r).set(output_dims[r]);
-        }
-        graph_output->shape(std::move(output_shape));
-
-        // Data type
-        auto dtype = luci::luci_datatype(tensor.type);
-        graph_output->dtype(dtype);
-      }
-    }
-
-    module->add(std::move(graph)); // add graph in module
-  }
-  for (uint32_t g = 1; g < _reader.num_subgraph(); ++g)
-  {
-    auto graph = loco::make_graph();
-
-    if (!_reader.select_subgraph(g))
-      return nullptr;
-
-    graph->name(_reader.name());
-
-    // Convert circle::Model to loco::Graph
-    convert_graph(*source_ptr, _reader, graph.get());
-
-    module->add(std::move(graph));
   }
 
-  // luci::post_import_graph(module.get(), _reader); // No this function, can't select if and while
-  // node.
-  // err msg:
-  // opselector:
-  // /home/dongyoon/SOSCON/ONE/compiler/luci/service/src/CircleShapeInferenceRule.cpp:1990:
-  // loco::NodeShape {anonymous}::infer_while_out(const luci::CircleWhileOut*): Assertion
-  // `cond_graph != nullptr' failed
+  luci::post_import_graph(module.get(), _reader); // No this function, can't select if and while
+
   return module;
 }
 
