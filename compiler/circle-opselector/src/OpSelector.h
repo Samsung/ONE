@@ -21,6 +21,11 @@
 
 #include <luci/Importer.h>
 
+namespace luci
+{
+  void post_import_graph(luci::Module *module, const luci::CircleReader &reader);
+}
+
 namespace opselector
 {
 
@@ -32,11 +37,26 @@ public:
   ~OpSelector() = default;
 
 public:
+  void check_connected(std::vector<const luci::CircleNode *> &selected_nodes,
+                        std::set<uint32_t> &used_output_tensors,
+                        std::set<uint32_t> &graph_inputs,
+                        std::set<uint32_t> &graph_outputs);
+  void print_selected_nodes(std::vector<const luci::CircleNode *> selected_nodes);
   std::unique_ptr<luci::Module> select_nodes(std::vector<const luci::CircleNode *> selected_nodes);
+
+private:
+  void build_cache_outputs(luci::GraphBuilderContext &gb_context);
+  void create_graph_inputs(luci::GraphBuilderContext &gb_context,
+                                    uint32_t input);
+  void create_circle_const(luci::GraphBuilderContext &gb_context);
+  void import_operators(luci::GraphBuilderContext &gb_context);
+  void create_graph_outputs(luci::GraphBuilderContext &gb_context,
+                                    uint32_t output);
 
 private:
   luci::CircleReader _reader;
   const circle::Model *_src_model;
+  bool _has_subgraph; // A flag indicating whether to copy the subgraph or not,
 };
 
 } // namespace opselector
