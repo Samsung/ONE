@@ -78,7 +78,7 @@ void split_id_input(const std::string &str, std::vector<int> &by_id)
 
   while (getline(ss, str_buf, ','))
   {
-    if (str_buf.length() && check_input(str_buf)) // input validation
+    if (check_input(str_buf)) // input validation
     {
       try
       {
