@@ -53,7 +53,7 @@ private:
 private:
   luci::CircleReader _reader;
   const circle::Model *_src_model;
-  bool _has_subgraph; // A flag indicating whether to copy the subgraph or not,
+  bool _has_subgraph = false; // A flag indicating whether to copy the subgraph or not,
 };
 
 } // namespace opselector

@@ -71,7 +71,9 @@ void OpSelector::check_connected(std::vector<const luci::CircleNode *> &selected
 
     if (cnode->name().find("while") != std::string::npos ||
         cnode->name().find("if") != std::string::npos) // if has while of if node,
+    {
       _has_subgraph = true; // A flag indicating whether to copy the subgraph or not,
+    }
   }
 
   print_selected_nodes(selected_nodes);
@@ -103,12 +105,11 @@ void OpSelector::check_connected(std::vector<const luci::CircleNode *> &selected
     bool input_connected = false;
 
     for (auto input : op->inputs)
+    {
+      graph_inputs.insert(input);
       if (selected_output_tensors.find(input) != selected_output_tensors.end())
-        input_connected = true;
-
-    if (not input_connected) // if not connected other selected nodes, add all inputs
-      for (auto input : op->inputs)
-        graph_inputs.insert(input);
+        graph_inputs.erase(input);
+    }
   }
 }
 
