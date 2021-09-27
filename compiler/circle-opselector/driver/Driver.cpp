@@ -78,7 +78,7 @@ void split_id_input(const std::string &str, std::vector<int> &by_id)
 
   while (getline(ss, str_buf, ','))
   {
-    if (str_buf.length() && check_input(str_buf)) // input validation
+    if (check_input(str_buf)) // input validation
     {
       try
       {
@@ -99,23 +99,23 @@ void split_id_input(const std::string &str, std::vector<int> &by_id)
       }
       catch (std::invalid_argument &error)
       {
-        std::cerr << "ERROR: [circle-opselector] Invalid argument.(stoi)" << std::endl;
+        std::cerr << "ERROR: Invalid argument." << std::endl;
         exit(EXIT_FAILURE);
       }
       catch (std::out_of_range)
       {
-        std::cerr << "ERROR: [circle-opselector] Argument is out of range(stoi)\n";
+        std::cerr << "ERROR: Argument is out of range." << std::endl;
         exit(EXIT_FAILURE);
       }
       catch (...)
       {
-        std::cerr << "ERROR: [circle-opselector] Unknown error(stoi)\n";
+        std::cerr << "ERROR: Unknown error." << std::endl;
         exit(EXIT_FAILURE);
       }
     }
     else // Input validation failed
     {
-      std::cerr << "ERROR: [circle-opselector] Input validation failed" << std::endl;
+      std::cerr << "ERROR: Input validation failed." << std::endl;
       exit(EXIT_FAILURE);
     }
   }
