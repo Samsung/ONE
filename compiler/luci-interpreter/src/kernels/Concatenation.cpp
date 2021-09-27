@@ -18,7 +18,7 @@
 #include "kernels/Concatenation.h"
 #include "kernels/Utils.h"
 
-#include <tensorflow/lite/kernels/internal/reference/reference_ops.h>
+#include <tensorflow/lite/kernels/internal/reference/concatenation.h>
 
 #include <stdexcept>
 

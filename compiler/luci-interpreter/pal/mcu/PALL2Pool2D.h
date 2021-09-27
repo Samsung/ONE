@@ -17,7 +17,7 @@
 #ifndef LUCI_INTERPRETER_PAL_L2POOL2D_H
 #define LUCI_INTERPRETER_PAL_L2POOL2D_H
 
-#include <tensorflow/lite/kernels/internal/reference/reference_ops.h>
+#include <tensorflow/lite/kernels/internal/reference/pooling.h>
 
 namespace luci_interpreter_pal
 {

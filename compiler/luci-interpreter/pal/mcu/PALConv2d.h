@@ -17,7 +17,7 @@
 #ifndef LUCI_INTERPRETER_PAL_CONV2D_H
 #define LUCI_INTERPRETER_PAL_CONV2D_H
 
-#include <tensorflow/lite/kernels/internal/reference/reference_ops.h>
+#include <tensorflow/lite/kernels/internal/reference/conv.h>
 #include <tensorflow/lite/kernels/internal/reference/integer_ops/conv.h>
 
 namespace luci_interpreter_pal

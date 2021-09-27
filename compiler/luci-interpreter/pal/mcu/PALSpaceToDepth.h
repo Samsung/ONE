@@ -17,7 +17,7 @@
 #ifndef LUCI_INTERPRETER_PAL_SPACETODEPTH_H
 #define LUCI_INTERPRETER_PAL_SPACETODEPTH_H
 
-#include <tensorflow/lite/kernels/internal/reference/reference_ops.h>
+#include <tensorflow/lite/kernels/internal/reference/space_to_depth.h>
 
 namespace luci_interpreter_pal
 {
