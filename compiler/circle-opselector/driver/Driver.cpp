@@ -32,13 +32,114 @@
 #include <string>
 #include <vector>
 
+#define MODE_SELECT false
+#define MODE_DESELECT true
+
 void print_version(void)
 {
   std::cout << "circle-opselector version " << vconone::get_string() << std::endl;
   std::cout << vconone::get_copyright() << std::endl;
 }
 
-bool check_input(const std::string str)
+void select_id(loco::Graph *graph, std::vector<const luci::CircleNode *> &selected_nodes,
+               std::vector<int> &by_id)
+{
+  for (auto node : loco::all_nodes(graph))
+  {
+    auto cnode = loco::must_cast<const luci::CircleNode *>(node);
+
+    try
+    {
+      auto node_id = luci::get_node_id(cnode); // if the node is not operator, throw runtime_error
+
+      for (auto selected_id : by_id)
+        if (selected_id == node_id) // find the selected id
+          selected_nodes.emplace_back(cnode);
+    }
+    catch (std::runtime_error)
+    {
+      continue;
+    }
+  }
+}
+
+void select_name(loco::Graph *graph, std::vector<const luci::CircleNode *> &selected_nodes,
+                 std::vector<std::string> &by_name)
+{
+  for (auto node : loco::all_nodes(graph))
+  {
+    auto cnode = loco::must_cast<const luci::CircleNode *>(node);
+    std::string node_name = cnode->name();
+
+    try
+    {
+      luci::get_node_id(cnode); // if the node is not operator, throw runtime_error
+
+      for (auto selected_name : by_name)
+        if (selected_name.compare(node_name) == 0) // find the selected id
+          selected_nodes.emplace_back(cnode);
+    }
+    catch (std::runtime_error)
+    {
+      continue;
+    }
+  }
+}
+
+void deselect_id(loco::Graph *graph, std::vector<const luci::CircleNode *> &selected_nodes,
+                 std::vector<int> &by_id)
+{
+  for (auto node : loco::all_nodes(graph))
+  {
+    auto cnode = loco::must_cast<const luci::CircleNode *>(node);
+
+    try
+    {
+      auto node_id = luci::get_node_id(cnode); // if the node is not operator, throw runtime_error
+      bool is_ok = true;
+
+      for (auto selected_id : by_id)
+        if (selected_id == node_id) // find the selected id
+          is_ok = false;
+
+      if (is_ok)
+        selected_nodes.emplace_back(cnode);
+    }
+    catch (std::runtime_error)
+    {
+      continue;
+    }
+  }
+}
+
+void deselect_name(loco::Graph *graph, std::vector<const luci::CircleNode *> &selected_nodes,
+                   std::vector<std::string> &by_name)
+{
+  for (auto node : loco::all_nodes(graph))
+  {
+    auto cnode = loco::must_cast<const luci::CircleNode *>(node);
+    std::string node_name = cnode->name();
+
+    try
+    {
+      luci::get_node_id(cnode); // if the node is not operator, throw runtime_error
+      bool is_ok = true;
+
+      for (auto selected_name : by_name)
+        if (selected_name.compare(node_name) == 0) // find the selected id
+          is_ok = false;
+
+      if (is_ok)
+        selected_nodes.emplace_back(cnode);
+    }
+    catch (std::runtime_error)
+    {
+      continue;
+    }
+  }
+}
+
+bool check_input(const std::string &str)
 {
   bool has_hyphen = false;
 
@@ -160,6 +261,10 @@ int entry(int argc, char **argv)
     .type(arser::DataType::STR)
     .help("Input operation name to select nodes.");
 
+  // select mode
+  arser.add_argument("--select").nargs(0).help("Select operators from the input circle");
+  arser.add_argument("--deselect").nargs(0).help("Exclude operators from the input circle");
+
   try
   {
     arser.parse(argc, argv);
@@ -181,11 +286,17 @@ int entry(int argc, char **argv)
 
   std::string op;
   std::vector<int> oplist;
-  bool select_mode = false;
+  bool select_mode = MODE_SELECT;
 
   if (!arser["--by_id"] && !arser["--by_name"] || arser["--by_id"] && arser["--by_name"])
   {
     std::cerr << "ERROR: Either option '--by_id' or '--by_name' must be specified" << std::endl;
+    std::cerr << arser;
+    return EXIT_FAILURE;
+  }
+  if (!arser["--select"] && !arser["--deselect"] || arser["--select"] && arser["--deselect"])
+  {
+    std::cerr << "Either option '--select' or '--deselect' must be specified" << std::endl;
     std::cerr << arser;
     return EXIT_FAILURE;
   }
@@ -200,13 +311,10 @@ int entry(int argc, char **argv)
     operator_input = arser.get<std::string>("--by_name");
     split_name_input(operator_input, by_name);
   }
-
-  // option parsing test code.
-  for (int x : by_id)
-    std::cout << "by_id: " << x << std::endl;
-
-  for (std::string line : by_name)
-    std::cout << "by_name: " << line << std::endl;
+  if (arser["--select"])
+    select_mode = MODE_SELECT;
+  if (arser["--deselect"])
+    select_mode = MODE_DESELECT;
 
   // Load model from the file
   foder::FileLoader file_loader{input_path};
@@ -240,46 +348,26 @@ int entry(int argc, char **argv)
   {
     loco::Graph *graph = module.get()->graph(0); // get main subgraph.
 
-    for (auto node : loco::all_nodes(graph))
-    {
-      auto cnode = loco::must_cast<const luci::CircleNode *>(node);
+    if (select_mode == MODE_SELECT)
+      select_id(graph, selected_nodes, by_id);
 
-      try
-      {
-        auto node_id = luci::get_node_id(cnode); // if the node is not operator, throw runtime_error
-
-        for (auto selected_id : by_id)
-          if (selected_id == node_id) // find the selected id
-            selected_nodes.emplace_back(cnode);
-      }
-      catch (std::runtime_error)
-      {
-        continue;
-      }
-    }
+    else if (select_mode == MODE_DESELECT)
+      deselect_id(graph, selected_nodes, by_id);
   }
   if (by_name.size())
   {
     loco::Graph *graph = module.get()->graph(0); // get main subgraph.
 
-    for (auto node : loco::all_nodes(graph))
-    {
-      auto cnode = loco::must_cast<const luci::CircleNode *>(node);
-      std::string node_name = cnode->name();
+    if (select_mode == MODE_SELECT)
+      select_name(graph, selected_nodes, by_name);
 
-      try
-      {
-        luci::get_node_id(cnode); // if the node is not operator, throw runtime_error
-
-        for (auto selected_name : by_name)
-          if (selected_name.compare(node_name) == 0) // find the selected id
-            selected_nodes.emplace_back(cnode);
-      }
-      catch (std::runtime_error)
-      {
-        continue;
-      }
-    }
+    else if (select_mode == MODE_DESELECT)
+      deselect_name(graph, selected_nodes, by_name);
+  }
+  if (selected_nodes.size() == 0)
+  {
+    std::cerr << "ERROR: No operator selected" << std::endl;
+    exit(EXIT_FAILURE);
   }
   // Import selected nodes.
   module = selector->select_nodes(selected_nodes);
