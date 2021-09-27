@@ -131,7 +131,7 @@ option(ENABLE_STRICT_BUILD "Treat warning as error" OFF)
 option(USE_PROTOBUF_LEGACY_IMPORT "Use legacy MODULE mode import rather than CONFIG mode" OFF)
 
 # This option might be turned ON for MCU builds of luci related components.
-# It controls what library type to use for build:
+# It specify which library type to use for build:
 # if set ON - luci libraries are static, otherwise - shared.
 option(STATIC_LUCI "Build luci as a static libraries" OFF)
 

@@ -1,3 +1,8 @@
+# Some targets do not support dynamic linking: MCU, TrustZone applications, etc.
+# STATIC_LUCI option allows us to compile luci and luci related components safely
+# and suppress various cmake warnings.
+#
+# Currently this feature is used for luci-interpreter MCU builds.
 if (STATIC_LUCI)
   set(LIBRARY_TYPE "STATIC")
 else()
