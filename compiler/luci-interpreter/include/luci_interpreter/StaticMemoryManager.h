@@ -22,15 +22,13 @@
 namespace luci_interpreter
 {
 
-// Used for allocations in static buffer, using offsets.
+// Used for allocations in static buffer, using offsets defined in luci model.
 class StaticMemoryManager : public IMemoryManager
 {
 public:
   StaticMemoryManager() = delete;
 
   explicit StaticMemoryManager(uint8_t *buffer_ptr) { _buffer_ptr = buffer_ptr; }
-
-  ~StaticMemoryManager() override { delete[] _buffer_ptr; }
 
   void allocate_memory(luci_interpreter::Tensor &tensor) final;
   void release_memory(luci_interpreter::Tensor &tensor) final;
