@@ -36,9 +36,6 @@ endif ()
 
 set(TEST_SOURCES BuddyMemoryManager.test.cpp)
 
-GTest_AddTest(${LUCI_INTERPRETER_BUDDY_MANAGER}buddy_manager_test ${TEST_SOURCES})
-target_link_libraries(${LUCI_INTERPRETER_BUDDY_MANAGER}buddy_manager_test ${LUCI_INTERPRETER_BINARY})
-
 target_include_directories(${LUCI_INTERPRETER_BINARY} PUBLIC "${LUCI_INTERPRETER_INCLUDE_DIR}")
 target_include_directories(${LUCI_INTERPRETER_BINARY} PRIVATE "${LUCI_INTERPRETER_SOURCE_DIR}")
 target_link_libraries(${LUCI_INTERPRETER_BINARY}
@@ -54,3 +51,6 @@ if(NOT ENABLE_TEST)
 endif(NOT ENABLE_TEST)
 
 nnas_find_package(GTest REQUIRED)
+
+GTest_AddTest(buddy_manager_test ${TEST_SOURCES})
+target_link_libraries(buddy_manager_test ${LUCI_INTERPRETER_BINARY})
