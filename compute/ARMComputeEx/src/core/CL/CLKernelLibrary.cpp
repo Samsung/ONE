@@ -83,10 +83,6 @@ const std::map<std::string, std::string> CLKernelLibraryEx::_kernel_program_map 
   {"topkv2_find_first_negative", "topkv2.cl"},
   {"topkv2_reorder_negatives", "topkv2.cl"},
   {"topkv2_store", "topkv2.cl"},
-  {"radixsort_histogram", "topkv2_radixsort.cl"},
-  {"radixsort_scanhistograms", "topkv2_radixsort.cl"},
-  {"radixsort_pastehistograms", "topkv2_radixsort.cl"},
-  {"radixsort_reorder", "topkv2_radixsort.cl"},
   {"topkv2_quicksort", "topkv2_quicksort.cl"},
   {"scale_factor_symm8", "scale_factor.cl"},
 };
@@ -184,10 +180,6 @@ const std::map<std::string, std::string> CLKernelLibraryEx::_program_source_map 
   {
     "topkv2.cl",
 #include "./cl_kernels/topkv2.clembed"
-  },
-  {
-    "topkv2_radixsort.cl",
-#include "./cl_kernels/topkv2_radixsort.clembed"
   },
   {
     "topkv2_quicksort.cl",
