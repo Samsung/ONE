@@ -23,6 +23,8 @@
 #include <luci/CircleFileExpContract.h>
 #include <luci/Import/CircleReader.h>
 
+#include <luci/Profile/CircleNodeID.h>
+
 #include <arser/arser.h>
 #include <vconone/vconone.h>
 
@@ -30,8 +32,8 @@
 #include <string>
 #include <vector>
 
-#define MODE_SELECT true
-#define MODE_DESELECT false
+#define MODE_SELECT false
+#define MODE_DESELECT true
 
 void print_version(void)
 {
@@ -39,30 +41,131 @@ void print_version(void)
   std::cout << vconone::get_copyright() << std::endl;
 }
 
-bool check_input(const std::string str)
+void select_id(loco::Graph *graph, std::vector<const luci::CircleNode *> &selected_nodes,
+               std::vector<int> &by_id)
 {
-  bool check_hyphen = false;
-
-  if (str[0] == '-' || str[str.size() - 1] == '-')
+  for (auto node : loco::all_nodes(graph))
   {
-    std::cout << "Invalid input." << std::endl;
+    auto cnode = loco::must_cast<const luci::CircleNode *>(node);
+
+    try
+    {
+      auto node_id = luci::get_node_id(cnode); // if the node is not operator, throw runtime_error
+
+      for (auto selected_id : by_id)
+        if (selected_id == node_id) // find the selected id
+          selected_nodes.emplace_back(cnode);
+    }
+    catch (std::runtime_error)
+    {
+      continue;
+    }
+  }
+}
+
+void select_name(loco::Graph *graph, std::vector<const luci::CircleNode *> &selected_nodes,
+                 std::vector<std::string> &by_name)
+{
+  for (auto node : loco::all_nodes(graph))
+  {
+    auto cnode = loco::must_cast<const luci::CircleNode *>(node);
+    std::string node_name = cnode->name();
+
+    try
+    {
+      luci::get_node_id(cnode); // if the node is not operator, throw runtime_error
+
+      for (auto selected_name : by_name)
+        if (selected_name.compare(node_name) == 0) // find the selected id
+          selected_nodes.emplace_back(cnode);
+    }
+    catch (std::runtime_error)
+    {
+      continue;
+    }
+  }
+}
+
+void deselect_id(loco::Graph *graph, std::vector<const luci::CircleNode *> &selected_nodes,
+                 std::vector<int> &by_id)
+{
+  for (auto node : loco::all_nodes(graph))
+  {
+    auto cnode = loco::must_cast<const luci::CircleNode *>(node);
+
+    try
+    {
+      auto node_id = luci::get_node_id(cnode); // if the node is not operator, throw runtime_error
+      bool is_ok = true;
+
+      for (auto selected_id : by_id)
+        if (selected_id == node_id) // find the selected id
+          is_ok = false;
+
+      if (is_ok)
+        selected_nodes.emplace_back(cnode);
+    }
+    catch (std::runtime_error)
+    {
+      continue;
+    }
+  }
+}
+
+void deselect_name(loco::Graph *graph, std::vector<const luci::CircleNode *> &selected_nodes,
+                   std::vector<std::string> &by_name)
+{
+  for (auto node : loco::all_nodes(graph))
+  {
+    auto cnode = loco::must_cast<const luci::CircleNode *>(node);
+    std::string node_name = cnode->name();
+
+    try
+    {
+      luci::get_node_id(cnode); // if the node is not operator, throw runtime_error
+      bool is_ok = true;
+
+      for (auto selected_name : by_name)
+        if (selected_name.compare(node_name) == 0) // find the selected id
+          is_ok = false;
+
+      if (is_ok)
+        selected_nodes.emplace_back(cnode);
+    }
+    catch (std::runtime_error)
+    {
+      continue;
+    }
+  }
+}
+
+bool check_input(const std::string &str)
+{
+  bool has_hyphen = false;
+
+  if (str.empty())
+    return false;
+  if (str.at(0) == '-' || str[str.size() - 1] == '-')
+  {
+    std::cerr << "ERROR: Invalid input. Please make sure - is between the numbers" << std::endl;
     return false;
   }
 
   for (char c : str)
   {
-    if ('0' <= c && c <= '9')
+    if (isdigit(c))
       continue;
-    else if (check_hyphen && c == '-') // when user enter '-' more than 2.
+    else if (has_hyphen && c == '-') // when user enter '-' more than 2.
     {
-      std::cout << "Too many '-' in str." << std::endl;
+      std::cerr << "ERROR: Too many '-' in str." << std::endl;
       return false;
     }
     else if (c == '-')
-      check_hyphen = true;
+      has_hyphen = true;
     else // when user enter not allowed character, print alert msg.
     {
-      std::cout << "To select operator by id, please use these args: [0-9], '-', ','" << std::endl;
+      std::cerr << "ERROR: To select operator by id, please use these args: [0-9], '-', ','"
+                << std::endl;
       return false;
     }
   }
@@ -77,7 +180,7 @@ void split_id_input(const std::string &str, std::vector<int> &by_id)
 
   while (getline(ss, str_buf, ','))
   {
-    if (str_buf.length() && check_input(str_buf)) // input validation
+    if (check_input(str_buf)) // input validation
     {
       try
       {
@@ -98,23 +201,24 @@ void split_id_input(const std::string &str, std::vector<int> &by_id)
       }
       catch (std::invalid_argument &error)
       {
-        std::cerr << "ERROR: [circle-opselector] Invalid argument.(stoi)" << std::endl;
+        std::cerr << "ERROR: Invalid argument. Please make sure your input is number." << std::endl;
         exit(EXIT_FAILURE);
       }
       catch (std::out_of_range)
       {
-        std::cout << "ERROR: [circle-opselector] Argument is out of range(stoi)\n";
+        std::cerr << "ERROR: Argument is out of range." << std::endl;
         exit(EXIT_FAILURE);
       }
       catch (...)
       {
-        std::cout << "ERROR: [circle-opselector] Unknown error(stoi)\n";
+        std::cerr << "ERROR: Unknown error" << std::endl;
         exit(EXIT_FAILURE);
       }
     }
     else // Input validation failed
     {
-      std::cerr << "ERROR: [circle-opselector] Input validation failed" << std::endl;
+      std::cerr << "ERROR: Input validation failed. Please make sure your input is number."
+                << std::endl;
       exit(EXIT_FAILURE);
     }
   }
@@ -138,7 +242,6 @@ int entry(int argc, char **argv)
 
   arser.add_argument("--version")
     .nargs(0)
-    .required(false)
     .default_value(false)
     .help("Show version information and exit")
     .exit_with(print_version);
@@ -157,12 +260,10 @@ int entry(int argc, char **argv)
     .nargs(1)
     .type(arser::DataType::STR)
     .help("Input operation name to select nodes.");
-  arser.add_argument("--select")
-    .nargs(0)
-    .help("Select opeartors from the input circle");
-  arser.add_argument("--deselect")
-    .nargs(0)
-    .help("Exclude operators from the input circle");
+
+  // select mode
+  arser.add_argument("--select").nargs(0).help("Select operators from the input circle");
+  arser.add_argument("--deselect").nargs(0).help("Exclude operators from the input circle");
 
   try
   {
@@ -185,20 +286,21 @@ int entry(int argc, char **argv)
 
   std::string op;
   std::vector<int> oplist;
-  bool select_mode = false;
+  bool select_mode = MODE_SELECT;
 
   if (!arser["--by_id"] && !arser["--by_name"] || arser["--by_id"] && arser["--by_name"])
   {
-    std::cout << "Either option '--by_id' or '--by_name' must be specified" << std::endl;
-    std::cout << arser;
+    std::cerr << "ERROR: Either option '--by_id' or '--by_name' must be specified" << std::endl;
+    std::cerr << arser;
     return EXIT_FAILURE;
   }
   if (!arser["--select"] && !arser["--deselect"] || arser["--select"] && arser["--deselect"])
   {
-    std::cout << "Either option '--select' or '--deselect' must be specified" << std::endl;
-    std::cout << arser;
+    std::cerr << "Either option '--select' or '--deselect' must be specified" << std::endl;
+    std::cerr << arser;
     return EXIT_FAILURE;
   }
+
   if (arser["--by_id"])
   {
     operator_input = arser.get<std::string>("--by_id");
@@ -213,13 +315,6 @@ int entry(int argc, char **argv)
     select_mode = MODE_SELECT;
   if (arser["--deselect"])
     select_mode = MODE_DESELECT;
-
-  // option parsing test code.
-  for (int x : by_id)
-    std::cout << "by_id: " << x << std::endl;
-
-  for (std::string line : by_name)
-    std::cout << "by_name: " << line << std::endl;
 
   // Load model from the file
   foder::FileLoader file_loader{input_path};
@@ -246,31 +341,36 @@ int entry(int argc, char **argv)
 
   // Select and Import from user input.
   auto selector = std::make_unique<opselector::OpSelector>(circle_model);
-  //opselector::OpSelector *selector = new opselector::OpSelector(circle_model);
-  std::map<uint32_t, std::string> _source_table = module.get()->source_table();
-  std::map<uint32_t, std::string> id_name_selected_nodes;
+  std::vector<const luci::CircleNode *> selected_nodes;
 
   // put selected nodes into map.
   if (by_id.size())
   {
-    for (auto id : by_id)
-    {
-      for (auto iter = _source_table.begin(); iter != _source_table.end(); iter++)
-        if (iter->first == id)
-          id_name_selected_nodes[iter->first] = iter->second; // {id : name} mapping
-    }
+    loco::Graph *graph = module.get()->graph(0); // get main subgraph.
+
+    if (select_mode == MODE_SELECT)
+      select_id(graph, selected_nodes, by_id);
+
+    else if (select_mode == MODE_DESELECT)
+      deselect_id(graph, selected_nodes, by_id);
   }
   if (by_name.size())
   {
-    for (auto id : by_name)
-    {
-      for (auto iter = _source_table.begin(); iter != _source_table.end(); iter++)
-        if (iter->second.find(id) != std::string::npos)
-          id_name_selected_nodes[iter->first] = iter->second; // {id : name} mapping
-    }
+    loco::Graph *graph = module.get()->graph(0); // get main subgraph.
+
+    if (select_mode == MODE_SELECT)
+      select_name(graph, selected_nodes, by_name);
+
+    else if (select_mode == MODE_DESELECT)
+      deselect_name(graph, selected_nodes, by_name);
+  }
+  if (selected_nodes.size() == 0)
+  {
+    std::cerr << "ERROR: No operator selected" << std::endl;
+    exit(EXIT_FAILURE);
   }
   // Import selected nodes.
-  module = selector->select_nodes(id_name_selected_nodes);
+  module = selector->select_nodes(selected_nodes);
 
   // Export to output Circle file
   luci::CircleExporter exporter;
