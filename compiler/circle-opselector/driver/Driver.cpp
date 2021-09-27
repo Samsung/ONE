@@ -46,7 +46,7 @@ bool check_input(const std::string str)
     return false;
   if (str.at(0) == '-' || str[str.size() - 1] == '-')
   {
-    std::cerr << "Invalid input." << std::endl;
+    std::cerr << "ERROR: Invalid input. Please make sure - is between the numbers" << std::endl;
     return false;
   }
 
@@ -56,14 +56,14 @@ bool check_input(const std::string str)
       continue;
     else if (has_hyphen && c == '-') // when user enter '-' more than 2.
     {
-      std::cerr << "Too many '-' in str." << std::endl;
+      std::cerr << "ERROR: Too many '-' in str." << std::endl;
       return false;
     }
     else if (c == '-')
       has_hyphen = true;
     else // when user enter not allowed character, print alert msg.
     {
-      std::cerr << "To select operator by id, please use these args: [0-9], '-', ','" << std::endl;
+      std::cerr << "ERROR: To select operator by id, please use these args: [0-9], '-', ','" << std::endl;
       return false;
     }
   }
@@ -99,23 +99,23 @@ void split_id_input(const std::string &str, std::vector<int> &by_id)
       }
       catch (std::invalid_argument &error)
       {
-        std::cerr << "ERROR: [circle-opselector] Invalid argument.(stoi)" << std::endl;
+        std::cerr << "ERROR: Invalid argument. Please make sure your input is number." << std::endl;
         exit(EXIT_FAILURE);
       }
       catch (std::out_of_range)
       {
-        std::cerr << "ERROR: [circle-opselector] Argument is out of range(stoi)\n";
+        std::cerr << "ERROR: Argument is out of range." << std::endl;
         exit(EXIT_FAILURE);
       }
       catch (...)
       {
-        std::cerr << "ERROR: [circle-opselector] Unknown error(stoi)\n";
+        std::cerr << "ERROR: Unknown error" << std::endl;
         exit(EXIT_FAILURE);
       }
     }
     else // Input validation failed
     {
-      std::cerr << "ERROR: [circle-opselector] Input validation failed" << std::endl;
+      std::cerr << "ERROR: Input validation failed. Please make sure your input is number." << std::endl;
       exit(EXIT_FAILURE);
     }
   }
@@ -139,7 +139,6 @@ int entry(int argc, char **argv)
 
   arser.add_argument("--version")
     .nargs(0)
-    .required(false)
     .default_value(false)
     .help("Show version information and exit")
     .exit_with(print_version);
@@ -184,7 +183,7 @@ int entry(int argc, char **argv)
 
   if (!arser["--by_id"] && !arser["--by_name"] || arser["--by_id"] && arser["--by_name"])
   {
-    std::cerr << "Either option '--by_id' or '--by_name' must be specified" << std::endl;
+    std::cerr << "ERROR: Either option '--by_id' or '--by_name' must be specified" << std::endl;
     std::cerr << arser;
     return EXIT_FAILURE;
   }
