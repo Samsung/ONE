@@ -38,7 +38,7 @@ void print_version(void)
   std::cout << vconone::get_copyright() << std::endl;
 }
 
-bool check_input(const std::string str)
+bool check_input(const std::string &str)
 {
   bool has_hyphen = false;
 
