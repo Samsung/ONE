@@ -63,7 +63,8 @@ bool check_input(const std::string str)
       has_hyphen = true;
     else // when user enter not allowed character, print alert msg.
     {
-      std::cerr << "ERROR: To select operator by id, please use these args: [0-9], '-', ','" << std::endl;
+      std::cerr << "ERROR: To select operator by id, please use these args: [0-9], '-', ','"
+                << std::endl;
       return false;
     }
   }
@@ -115,7 +116,8 @@ void split_id_input(const std::string &str, std::vector<int> &by_id)
     }
     else // Input validation failed
     {
-      std::cerr << "ERROR: Input validation failed. Please make sure your input is number." << std::endl;
+      std::cerr << "ERROR: Input validation failed. Please make sure your input is number."
+                << std::endl;
       exit(EXIT_FAILURE);
     }
   }
