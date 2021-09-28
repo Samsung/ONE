@@ -29,6 +29,8 @@ static inline void Conv(const tflite::ConvParams &params, const tflite::RuntimeS
                         float *output_data, const tflite::RuntimeShape &im2col_shape,
                         float *im2col_data)
 {
+  (void)im2col_shape;
+  (void)im2col_data;
   tflite::reference_ops::Conv(params, input_shape, input_data, filter_shape, filter_data,
                               bias_shape, bias_data, output_shape, output_data,
                               tflite::RuntimeShape(), nullptr);
@@ -41,6 +43,8 @@ static inline void Conv(const tflite::ConvParams &params, const tflite::RuntimeS
                         uint8 *output_data, const tflite::RuntimeShape &im2col_shape,
                         uint8 *im2col_data)
 {
+  (void)im2col_shape;
+  (void)im2col_data;
   tflite::reference_ops::Conv(params, input_shape, input_data, filter_shape, filter_data,
                               bias_shape, bias_data, output_shape, output_data, im2col_shape,
                               im2col_data, nullptr);
