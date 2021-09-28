@@ -14,7 +14,6 @@ include("test.local.lst" OPTIONAL)
 
 get_target_property(ARTIFACTS_BIN_PATH testDataGenerator BINARY_DIR)
 
-
 add_test(NAME arg_validity_test
   COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/arg_validity_check.sh"
 )
