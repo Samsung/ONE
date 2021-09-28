@@ -98,6 +98,12 @@ int entry(int argc, char **argv)
     .default_value(false)
     .help("This will fold dequantize op");
 
+  arser.add_argument("--fold_dwconv")
+    .nargs(0)
+    .required(false)
+    .default_value(false)
+    .help("This will fold Depthwise Convolution operator with constant inputs");
+
   arser.add_argument("--fold_sparse_to_dense")
     .nargs(0)
     .required(false)
@@ -115,6 +121,12 @@ int entry(int argc, char **argv)
     .required(false)
     .default_value(false)
     .help("This will fuse Activation function to a preceding operator");
+
+  arser.add_argument("--fuse_add_with_fully_connected")
+    .nargs(0)
+    .required(false)
+    .default_value(false)
+    .help("This will fuse Add operator to FullyConnected operator");
 
   arser.add_argument("--fuse_add_with_tconv")
     .nargs(0)
@@ -282,6 +294,12 @@ int entry(int argc, char **argv)
     .default_value(false)
     .help("This will convert certain condition PadV2 to Pad");
 
+  arser.add_argument("--substitute_splitv_to_split")
+    .nargs(0)
+    .required(false)
+    .default_value(false)
+    .help("This will convert certain condition SplitV to Split operator");
+
   arser.add_argument("--substitute_squeeze_to_reshape")
     .nargs(0)
     .required(false)
@@ -299,6 +317,12 @@ int entry(int argc, char **argv)
     .required(false)
     .default_value(false)
     .help("This will convert single input Transpose to Reshape");
+
+  arser.add_argument("--expand_broadcast_const")
+    .nargs(0)
+    .required(false)
+    .default_value(false)
+    .help("This will expand broadcastable constant inputs");
 
   arser.add_argument("--convert_nchw_to_nhwc")
     .nargs(0)
@@ -426,6 +450,8 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::FoldCast);
   if (arser.get<bool>("--fold_dequantize"))
     options->enable(Algorithms::FoldDequantize);
+  if (arser.get<bool>("--fold_dwconv"))
+    options->enable(Algorithms::FoldDepthwiseConv2D);
   if (arser.get<bool>("--fold_sparse_to_dense"))
     options->enable(Algorithms::FoldSparseToDense);
   if (arser.get<bool>("--forward_reshape_to_unaryop"))
@@ -434,6 +460,8 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::FuseActivationFunction);
   if (arser.get<bool>("--fuse_batchnorm_with_conv"))
     options->enable(Algorithms::FuseBatchNormWithConv);
+  if (arser.get<bool>("--fuse_add_with_fully_connected"))
+    options->enable(Algorithms::FuseAddWithFullyConnected);
   if (arser.get<bool>("--fuse_add_with_tconv"))
     options->enable(Algorithms::FuseAddWithTConv);
   if (arser.get<bool>("--fuse_batchnorm_with_dwconv"))
@@ -486,6 +514,8 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::SubstitutePackToReshape);
   if (arser.get<bool>("--substitute_padv2_to_pad"))
     options->enable(Algorithms::SubstitutePadV2ToPad);
+  if (arser.get<bool>("--substitute_splitv_to_split"))
+    options->enable(Algorithms::SubstituteSplitVToSplit);
   if (arser.get<bool>("--substitute_squeeze_to_reshape"))
     options->enable(Algorithms::SubstituteSqueezeToReshape);
   if (arser.get<bool>("--substitute_strided_slice_to_reshape"))
@@ -496,6 +526,8 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::TransformMinMaxToRelu6Pass);
   if (arser.get<bool>("--transform_min_relu_to_relu6"))
     options->enable(Algorithms::TransformMinReluToRelu6Pass);
+  if (arser.get<bool>("--expand_broadcast_const"))
+    options->enable(Algorithms::ExpandBroadcastConst);
 
   if (arser.get<bool>("--mute_warnings"))
     settings->set(luci::UserSettings::Key::MuteWarnings, true);

@@ -17,7 +17,7 @@
 
 #include "MatrixBandPart.h"
 
-#include "flatbuffers/flexbuffers.h"
+#include <flatbuffers/flexbuffers.h>
 
 flatbuffers::Offset<void> MatrixBandPartChef::value(flatbuffers::FlatBufferBuilder &fbb) const
 {

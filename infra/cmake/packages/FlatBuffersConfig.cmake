@@ -5,6 +5,7 @@ endfunction(_FlatBuffers_import)
 
 function(_FlatBuffers_build)
   if(NOT BUILD_FLATBUFFERS)
+    message(STATUS "FlatBuffersConfig skip: BUILD_FLATBUFFERS OFF")
     return()
   endif(NOT BUILD_FLATBUFFERS)
 
@@ -12,6 +13,7 @@ function(_FlatBuffers_build)
 
   if(NOT FlatBuffersSource_FOUND)
     # Source is not available
+    message(STATUS "FlatBuffersConfig skip: FlatBuffersSource not found")
     return()
   endif(NOT FlatBuffersSource_FOUND)
 
@@ -22,12 +24,12 @@ function(_FlatBuffers_build)
 
   nnas_include(ExternalBuildTools)
   ExternalBuild_CMake(CMAKE_DIR   ${FlatBuffersSource_DIR}
-                      BUILD_DIR   ${CMAKE_BINARY_DIR}/externals/FLATBUFFERS/build
-                      INSTALL_DIR ${EXT_OVERLAY_DIR}
+                      BUILD_DIR   ${CMAKE_BINARY_DIR}/externals/FLATBUFFERS-1.10/build
+                      INSTALL_DIR ${EXT_OVERLAY_DIR}/FLATBUFFERS-1.10
                       BUILD_FLAGS ${ADDITIONAL_CXX_FLAGS}
-                      IDENTIFIER  "1.10-fix2"
-                      EXTRA_OPTS "-DFLATBUFFERS_BUILD_TESTS:BOOL=OFF"
-                      PKG_NAME    "FLATBUFFERS")
+                      IDENTIFIER  "1.10-fix4"
+                      EXTRA_OPTS "-DFLATBUFFERS_BUILD_TESTS:BOOL=OFF -DPOSITION_INDEPENDENT_CODE:BOOL=ON"
+                      PKG_NAME    "FLATBUFFERS-1.10")
 
 endfunction(_FlatBuffers_build)
 
@@ -35,11 +37,11 @@ _FlatBuffers_build()
 _FlatBuffers_import()
 
 if(FlatBuffers_FOUND)
-  if(NOT TARGET flatbuffers)
-    add_library(flatbuffers INTERFACE)
-    target_link_libraries(flatbuffers INTERFACE flatbuffers::flatbuffers)
-    message(STATUS "Found FlatBuffers: TRUE")
-  endif(NOT TARGET flatbuffers)
+  if(NOT TARGET flatbuffers-1.10)
+    add_library(flatbuffers-1.10 INTERFACE)
+    target_link_libraries(flatbuffers-1.10 INTERFACE flatbuffers::flatbuffers)
+    message(STATUS "Found FlatBuffers-1.10: TRUE")
+  endif(NOT TARGET flatbuffers-1.10)
 
   function(FlatBuffers_Generate PREFIX OUTPUT_DIR SCHEMA_DIR)
     get_filename_component(abs_output_dir ${OUTPUT_DIR} ABSOLUTE)
@@ -111,6 +113,6 @@ if(FlatBuffers_FOUND)
     add_library(${TGT} STATIC ${OUTPUT_FILES})
     set_target_properties(${TGT} PROPERTIES LINKER_LANGUAGE CXX)
     target_include_directories(${TGT} PUBLIC "${ARG_INCLUDE_DIR}")
-    target_link_libraries(${TGT} PUBLIC flatbuffers)
+    target_link_libraries(${TGT} PUBLIC flatbuffers-1.10)
   endfunction(FlatBuffers_Target)
 endif(FlatBuffers_FOUND)

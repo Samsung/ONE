@@ -33,6 +33,7 @@ TEST(CircleOptimizerTest, optimize_algorithms)
   // TODO add more if needed
   options->enable(Algorithms::FoldAddV2);
   options->enable(Algorithms::FoldCast);
+  options->enable(Algorithms::FoldDepthwiseConv2D);
   options->enable(Algorithms::FoldDequantize);
   options->enable(Algorithms::FoldSparseToDense);
   options->enable(Algorithms::FusePreActivationBatchNorm);
@@ -45,6 +46,7 @@ TEST(CircleOptimizerTest, optimize_algorithms)
   options->enable(Algorithms::SubstituteStridedSliceToReshape);
   options->enable(Algorithms::SubstituteTransposeToReshape);
   options->enable(Algorithms::ConvertNCHWToNHWC);
+  options->enable(Algorithms::ExpandBroadcastConst);
 
   o.optimize(&g);
 

@@ -30,17 +30,21 @@
 namespace luci_interpreter
 {
 
+class KernelBuilderRegistry;
+
 class KernelBuilder : public KernelBuilderHelper
 {
 public:
   KernelBuilder(
     const std::unordered_map<const loco::Graph *, RuntimeGraph *> &graph_to_runtime_graph,
-    const std::unordered_map<const loco::Node *, Tensor *> &node_to_tensor)
-    : KernelBuilderHelper(graph_to_runtime_graph, node_to_tensor)
-  {
-  }
+    const std::unordered_map<const loco::Node *, Tensor *> &node_to_tensor);
+
+  ~KernelBuilder();
 
   std::unique_ptr<Kernel> build(const luci::CircleNode *node);
+
+private:
+  std::unique_ptr<KernelBuilderRegistry> _builder_registry;
 };
 
 } // namespace luci_interpreter

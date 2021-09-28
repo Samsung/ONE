@@ -31,7 +31,7 @@ class Conv2D : public KernelWithParams<Conv2DParams>
 {
 public:
   Conv2D(const Tensor *input, const Tensor *filter, const Tensor *bias, Tensor *output,
-         const Conv2DParams &params);
+         Tensor *im2col, const Conv2DParams &params);
 
   const Tensor *input() const { return _inputs[0]; }
   const Tensor *filter() const { return _inputs[1]; }
@@ -45,10 +45,11 @@ private:
   void evalFloat() const;
   void evalQuantized() const;
   void evalQuantizedPerChannel() const;
+  void evalQuantizedS8PerChannel() const;
   void evalQuantizedS16() const;
 
 private:
-  std::unique_ptr<Tensor> _im2col;
+  bool _need_im2col = false;
   int32_t _padding_height{};
   int32_t _padding_width{};
 };

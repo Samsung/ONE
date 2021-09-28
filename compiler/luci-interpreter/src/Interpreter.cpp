@@ -15,6 +15,7 @@
  */
 
 #include "luci_interpreter/Interpreter.h"
+#include "luci_interpreter/SimpleMemoryManager.h"
 
 #include "loader/ModuleLoader.h"
 
@@ -69,12 +70,25 @@ private:
 
 } // namespace
 
-Interpreter::Interpreter(const luci::Module *module)
+Interpreter::Interpreter(const luci::Module *module,
+                         luci_interpreter::IMemoryManager *memory_manager)
 {
   _runtime_to_ir = std::make_unique<RuntimeToIR>();
   _event_notifier = std::make_unique<EventNotifierImpl>(*_runtime_to_ir, _observers);
   _runtime_module = std::make_unique<RuntimeModule>(_event_notifier.get());
-  ModuleLoader loader(module, _runtime_module.get(), *_runtime_to_ir, _node_to_tensor);
+
+  if (memory_manager == nullptr)
+  {
+    _default_memory_manager = std::make_unique<SimpleMemoryManager>();
+    _memory_manager = _default_memory_manager.get();
+  }
+  else
+  {
+    _memory_manager = memory_manager;
+  }
+
+  ModuleLoader loader(module, _runtime_module.get(), *_runtime_to_ir, _node_to_tensor,
+                      _memory_manager);
   loader.load();
 }
 

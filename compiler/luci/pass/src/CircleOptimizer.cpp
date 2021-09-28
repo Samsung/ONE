@@ -17,12 +17,16 @@
 #include "luci/CircleOptimizer.h"
 
 #include "luci/Pass/ConvertNCHWToNHWCPass.h"
+#include "luci/Pass/ExpandBroadcastConstPass.h"
 #include "luci/Pass/FoldAddV2Pass.h"
 #include "luci/Pass/FoldCastPass.h"
+#include "luci/Pass/FoldDepthwiseConv2DPass.h"
 #include "luci/Pass/FoldDequantizePass.h"
 #include "luci/Pass/FoldSparseToDensePass.h"
 #include "luci/Pass/ForwardReshapeToUnaryOpPass.h"
+#include "luci/Pass/ForceQuantParamPass.h"
 #include "luci/Pass/FuseActivationFunctionPass.h"
+#include "luci/Pass/FuseAddWithFullyConnectedPass.h"
 #include "luci/Pass/FuseAddWithTConvPass.h"
 #include "luci/Pass/FuseBatchNormWithConvPass.h"
 #include "luci/Pass/FuseBatchNormWithDwConvPass.h"
@@ -55,6 +59,7 @@
 #include "luci/Pass/ShuffleWeightTo16x1Float32Pass.h"
 #include "luci/Pass/SubstitutePackToReshapePass.h"
 #include "luci/Pass/SubstitutePadV2ToPadPass.h"
+#include "luci/Pass/SubstituteSplitVToSplitPass.h"
 #include "luci/Pass/SubstituteSqueezeToReshapePass.h"
 #include "luci/Pass/SubstituteStridedSliceToReshapePass.h"
 #include "luci/Pass/SubstituteTransposeToReshapePass.h"
@@ -86,17 +91,37 @@ namespace
 
 using namespace luci;
 
+template <typename T> T lexical_cast(const std::string &str)
+{
+  std::istringstream ss;
+  ss.str(str);
+  T data;
+  ss >> data;
+  return data;
+}
+
+template <typename T> std::vector<T> lexical_cast(std::vector<std::string> &sv)
+{
+  std::vector<T> result;
+  std::transform(sv.begin(), sv.end(), std::back_inserter(result),
+                 [](std::string str) -> T { return lexical_cast<T>(str); });
+  return result;
+}
+
 class OptimizeOptionsImpl final : public luci::CircleOptimizer::Options
 {
 public:
   void enable(Algorithm) final;
   void param(AlgorithmParameters, const std::string &) final;
   const std::string param(AlgorithmParameters) const final;
+  void params(AlgorithmParameters, std::vector<std::string> &) final;
+  std::vector<std::string> params(AlgorithmParameters) const final;
   bool query(Algorithm) final;
 
 private:
   std::vector<Algorithm> _algorithms;
   std::map<AlgorithmParameters, const std::string> _algorithm_params;
+  std::map<AlgorithmParameters, std::vector<std::string>> _multiple_params;
 };
 
 void OptimizeOptionsImpl::enable(Algorithm algo) { _algorithms.push_back(algo); }
@@ -116,6 +141,24 @@ const std::string OptimizeOptionsImpl::param(AlgorithmParameters param) const
   else
   {
     return std::string();
+  }
+}
+
+void OptimizeOptionsImpl::params(AlgorithmParameters param, std::vector<std::string> &vec)
+{
+  _multiple_params[param] = vec;
+}
+
+std::vector<std::string> OptimizeOptionsImpl::params(AlgorithmParameters param) const
+{
+  auto param_vec = _multiple_params.find(param);
+  if (param_vec != _multiple_params.end())
+  {
+    return param_vec->second;
+  }
+  else
+  {
+    return std::vector<std::string>();
   }
 }
 
@@ -237,6 +280,10 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   {
     phase.emplace_back(std::make_unique<FuseBatchNormWithTConvPass>());
   }
+  if (_options->query(Options::Algorithm::FuseAddWithFullyConnected))
+  {
+    phase.emplace_back(std::make_unique<FuseAddWithFullyConnectedPass>());
+  }
   if (_options->query(Options::Algorithm::FuseAddWithTConv))
   {
     phase.emplace_back(std::make_unique<FuseAddWithTConvPass>());
@@ -256,6 +303,10 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   if (_options->query(Options::Algorithm::FoldCast))
   {
     phase.emplace_back(std::make_unique<luci::FoldCastPass>());
+  }
+  if (_options->query(Options::Algorithm::FoldDepthwiseConv2D))
+  {
+    phase.emplace_back(std::make_unique<luci::FoldDepthwiseConv2DPass>());
   }
   if (_options->query(Options::Algorithm::FoldDequantize))
   {
@@ -280,6 +331,10 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   if (_options->query(Options::Algorithm::ShuffleWeightTo16x1Float32))
   {
     phase.emplace_back(std::make_unique<luci::ShuffleWeightTo16x1Float32Pass>());
+  }
+  if (_options->query(Options::Algorithm::ExpandBroadcastConst))
+  {
+    phase.emplace_back(std::make_unique<luci::ExpandBroadcastConstPass>());
   }
   if (_options->query(Options::Algorithm::RemoveFakeQuant))
   {
@@ -328,6 +383,10 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   if (_options->query(Options::Algorithm::SubstitutePadV2ToPad))
   {
     phase.emplace_back(std::make_unique<luci::SubstitutePadV2ToPadPass>());
+  }
+  if (_options->query(Options::Algorithm::SubstituteSplitVToSplit))
+  {
+    phase.emplace_back(std::make_unique<luci::SubstituteSplitVToSplitPass>());
   }
   if (_options->query(Options::Algorithm::SubstituteSqueezeToReshape))
   {
@@ -470,6 +529,23 @@ void CircleOptimizer::quantize(loco::Graph *g) const
 
     luci::RequantizePass requantizer(str_to_dtype(input_dtype), str_to_dtype(output_dtype));
     requantizer.run(g);
+  }
+
+  // Force to write quantparam to specified tensors
+  // NOTE Only per-tensor (not per-channel) qparam can be written
+  if (_options->query(Options::Algorithm::ForceQuantParam))
+  {
+    ForceQuantParamPass::TensorVector tensors =
+      _options->params(Options::AlgorithmParameters::Quantize_tensor_names);
+    auto str_scales = _options->params(Options::AlgorithmParameters::Quantize_scales);
+    auto str_zero_points = _options->params(Options::AlgorithmParameters::Quantize_zero_points);
+
+    // Cast scales/zero_points to proper types
+    ForceQuantParamPass::ScaleVector scales = lexical_cast<float>(str_scales);
+    ForceQuantParamPass::ZPVector zero_points = lexical_cast<int64_t>(str_zero_points);
+
+    ForceQuantParamPass fq(tensors, scales, zero_points);
+    fq.run(g);
   }
 
   logo::Phase phase;

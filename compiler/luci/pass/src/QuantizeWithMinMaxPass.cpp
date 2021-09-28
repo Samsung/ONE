@@ -609,6 +609,20 @@ struct QuantizeSpecialActivation final : public luci::CircleNodeMutableVisitor<v
     set_act_qparam(node, i_scale, i_zp);
   }
 
+  void visit(luci::CircleSplitVOut *node)
+  {
+    auto splitv = loco::must_cast<luci::CircleSplitV *>(node->input());
+    auto input = loco::must_cast<luci::CircleNode *>(splitv->input());
+    auto i_qparam = input->quantparam();
+    assert(i_qparam);
+    assert(i_qparam->scale.size() == 1); // FIX_CALLER_UNLESS
+    assert(i_qparam->zerop.size() == 1); // FIX_CALLER_UNLESS
+    auto i_scale = i_qparam->scale[0];
+    auto i_zp = i_qparam->zerop[0];
+
+    set_act_qparam(node, i_scale, i_zp);
+  }
+
   void visit(luci::CircleUnpackOut *node)
   {
     auto unpack = loco::must_cast<luci::CircleUnpack *>(node->input());
@@ -1157,6 +1171,7 @@ void quantize_const_inputs(luci::CircleNode *node, loco::DataType output_type)
     case luci::CircleOpcode::REVERSE_SEQUENCE:
     case luci::CircleOpcode::SLICE:
     case luci::CircleOpcode::SPACE_TO_BATCH_ND:
+    case luci::CircleOpcode::SPLIT_V:
     case luci::CircleOpcode::STRIDED_SLICE:
     case luci::CircleOpcode::SUM:
     case luci::CircleOpcode::TILE:
@@ -1176,6 +1191,7 @@ void quantize_const_inputs(luci::CircleNode *node, loco::DataType output_type)
     case luci::CircleOpcode::DIV:
     case luci::CircleOpcode::ELU:
     case luci::CircleOpcode::EQUAL:
+    case luci::CircleOpcode::EXP:
     case luci::CircleOpcode::FLOOR:
     case luci::CircleOpcode::FLOOR_DIV:
     case luci::CircleOpcode::GREATER:
@@ -1385,7 +1401,8 @@ void propagate_pad_v2_quantparam(luci::CirclePadV2 *pad_v2, loco::DataType quant
     auto pad_v2_input = loco::must_cast<luci::CircleNode *>(pad_v2->arg(0));
     overwrite_quantparam(pad_v2_input, pad_v2);
 
-    auto const_value_node = dynamic_cast<luci::CircleConst *>(pad_v2->arg(2));
+    auto const_value_node = loco::must_cast<luci::CircleConst *>(
+      pad_v2->arg(2)); // FIX ignore_pad_v2_const_quantization UNLESS
     auto new_const = luci::clone(const_value_node);
 
     const auto pad_v2_input_qparam = pad_v2_input->quantparam();

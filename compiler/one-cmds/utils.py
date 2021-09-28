@@ -29,6 +29,7 @@ class _CONSTANT:
         ('convert_nchw_to_nhwc',
          'Experimental: This will convert NCHW operators to NHWC under the assumption that input model is NCHW.'
          ),
+        ('expand_broadcast_const', 'expand broadcastable constant node inputs'),
         ('nchw_to_nhwc_input_shape',
          'convert the input shape of the model (argument for convert_nchw_to_nhwc)'),
         ('nchw_to_nhwc_output_shape',
@@ -36,9 +37,11 @@ class _CONSTANT:
         ('fold_add_v2', 'fold AddV2 op with constant inputs'),
         ('fold_cast', 'fold Cast op with constant input'),
         ('fold_dequantize', 'fold Dequantize op'),
+        ('fold_dwconv', 'fold Depthwise Convolution op with constant inputs'),
         ('fold_sparse_to_dense', 'fold SparseToDense op'),
         ('forward_reshape_to_unaryop', 'Forward Reshape op'),
         ('fuse_add_with_tconv', 'fuse Add op to Transposed'),
+        ('fuse_add_with_fully_connected', 'fuse Add op to FullyConnected op'),
         ('fuse_batchnorm_with_conv', 'fuse BatchNorm op to Convolution op'),
         ('fuse_batchnorm_with_dwconv', 'fuse BatchNorm op to Depthwise Convolution op'),
         ('fuse_batchnorm_with_tconv', 'fuse BatchNorm op to Transposed Convolution op'),
@@ -75,6 +78,7 @@ class _CONSTANT:
          ' Note that it only converts weights whose row is a multiple of 16'),
         ('substitute_pack_to_reshape', 'convert single input Pack op to Reshape op'),
         ('substitute_padv2_to_pad', 'convert certain condition PadV2 to Pad'),
+        ('substitute_splitv_to_split', 'convert certain condition SplitV to Split'),
         ('substitute_squeeze_to_reshape', 'convert certain condition Squeeze to Reshape'),
         ('substitute_strided_slice_to_reshape',
          'convert certain condition StridedSlice to Reshape'),
@@ -108,6 +112,14 @@ def _add_default_arg(parser):
     parser.add_argument('-S', '--section', type=str, help=argparse.SUPPRESS)
 
 
+def is_accumulated_arg(arg, driver):
+    if driver == "one-quantize":
+        if arg == "tensor_name" or arg == "scale" or arg == "zero_point":
+            return True
+
+    return False
+
+
 def _is_valid_attr(args, attr):
     return hasattr(args, attr) and getattr(args, attr)
 
@@ -125,6 +137,12 @@ def _parse_cfg(args, driver_name):
                 raise AssertionError('configuration file must have \'' + driver_name +
                                      '\' section')
             for key in config[args.section]:
+                if is_accumulated_arg(key, driver_name):
+                    if not _is_valid_attr(args, key):
+                        setattr(args, key, [config[args.section][key]])
+                    else:
+                        getattr(args, key).append(config[args.section][key])
+                    continue
                 if not _is_valid_attr(args, key):
                     setattr(args, key, config[args.section][key])
         # if section is not given, section name is same with its driver name
@@ -134,6 +152,12 @@ def _parse_cfg(args, driver_name):
                                      '\' section')
             secton_to_run = driver_name
             for key in config[secton_to_run]:
+                if is_accumulated_arg(key, driver_name):
+                    if not _is_valid_attr(args, key):
+                        setattr(args, key, [config[secton_to_run][key]])
+                    else:
+                        getattr(args, key).append(config[secton_to_run][key])
+                    continue
                 if not _is_valid_attr(args, key):
                     setattr(args, key, config[secton_to_run][key])
 

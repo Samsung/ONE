@@ -17,6 +17,7 @@
 
 #include "kernels/Unpack.h"
 #include "kernels/TestUtils.h"
+#include "luci_interpreter/TestMemoryManager.h"
 
 namespace luci_interpreter
 {
@@ -32,10 +33,12 @@ void Check(int axis, Shape input_shape, std::initializer_list<T> input_data,
            const std::vector<std::initializer_list<int32_t>> &exp_output_shape,
            std::vector<std::initializer_list<T>> exp_output_data)
 {
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<TestMemoryManager>();
   constexpr DataType element_type = getElementType<T>();
   const int num_outputs = input_shape.dim(axis < 0 ? axis + input_shape.num_dims() : axis);
 
-  Tensor input_tensor = makeInputTensor<element_type>(input_shape, input_data);
+  Tensor input_tensor =
+    makeInputTensor<element_type>(input_shape, input_data, memory_manager.get());
   std::vector<Tensor> output_tensors;
   output_tensors.reserve(num_outputs);
   for (int i = 0; i < num_outputs; ++i)
@@ -54,6 +57,10 @@ void Check(int axis, Shape input_shape, std::initializer_list<T> input_data,
 
   Unpack kernel(&input_tensor, std::move(output_tensor_ptrs), params);
   kernel.configure();
+  for (int i = 0; i < num_outputs; i++)
+  {
+    memory_manager->allocate_memory(output_tensors[i]);
+  }
   kernel.execute();
 
   for (int i = 0; i < num_outputs; ++i)

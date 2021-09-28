@@ -20,8 +20,6 @@
 #include "kernels/Utils.h"
 #include "kernels/BinaryOpCommon.h"
 
-#include <tensorflow/lite/kernels/internal/reference/reference_ops.h>
-
 namespace luci_interpreter
 {
 namespace kernels

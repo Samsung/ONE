@@ -18,7 +18,7 @@
 #include "kernels/SpaceToBatchND.h"
 #include "kernels/Utils.h"
 
-#include <tensorflow/lite/kernels/internal/optimized/optimized_ops.h>
+#include "PALSpaceToBatchND.h"
 
 #include <stdexcept>
 
@@ -80,7 +80,7 @@ void SpaceToBatchND::execute() const
     tflite::SpaceToBatchParams op_params;
     case DataType::FLOAT32:
       op_params.output_offset = 0;
-      tflite::optimized_ops::SpaceToBatchND(
+      luci_interpreter_pal::SpaceToBatchND(
         op_params, getTensorShape(input()), getTensorData<float>(input()),
         getTensorShape(block_shape()), getTensorData<int32_t>(block_shape()),
         getTensorShape(paddings()), getTensorData<int32_t>(paddings()), getTensorShape(output()),
@@ -88,7 +88,7 @@ void SpaceToBatchND::execute() const
       break;
     case DataType::U8:
       op_params.output_offset = output()->zero_point();
-      tflite::optimized_ops::SpaceToBatchND(
+      luci_interpreter_pal::SpaceToBatchND(
         op_params, getTensorShape(input()), getTensorData<uint8_t>(input()),
         getTensorShape(block_shape()), getTensorData<int32_t>(block_shape()),
         getTensorShape(paddings()), getTensorData<int32_t>(paddings()), getTensorShape(output()),

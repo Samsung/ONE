@@ -8,7 +8,7 @@ if [[ -z "${NNAS_PROJECT_PATH}" ]]; then
 fi
 
 # The default preset
-PRESET="20210706"
+PRESET="20210910"
 
 EXTRA_OPTIONS=()
 while [ "$#" -ne 0 ]; do

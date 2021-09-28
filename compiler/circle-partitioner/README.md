@@ -49,8 +49,8 @@ DIV=acl_cl
 - `backends`: Existing partition group names which nodes should be placed, in CSV format.
 - `default`: Default group name which should be one of `backends` item.
 - `comply`: How to group nodes of the model.
-   - currently `opcode` is supported
-   - future work: set group by node name or sequence number.
+   - currently `opcode` and `opname` are supported
+   - future work: set group by sequence number.
 
 ##### `[OPCODE`] section
 

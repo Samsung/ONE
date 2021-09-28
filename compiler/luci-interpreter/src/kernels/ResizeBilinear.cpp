@@ -19,7 +19,7 @@
 
 #include "kernels/Utils.h"
 
-#include <tensorflow/lite/kernels/internal/optimized/optimized_ops.h>
+#include "PALResizeBilinear.h"
 
 namespace luci_interpreter
 {
@@ -56,12 +56,12 @@ void ResizeBilinear::execute() const
   switch (output()->element_type())
   {
     case DataType::FLOAT32:
-      tflite::optimized_ops::ResizeBilinear(
+      luci_interpreter_pal::ResizeBilinear(
         op_params, getTensorShape(input()), getTensorData<float>(input()), getTensorShape(size()),
         getTensorData<int32_t>(size()), getTensorShape(output()), getTensorData<float>(output()));
       break;
     case DataType::U8:
-      tflite::optimized_ops::ResizeBilinear(
+      luci_interpreter_pal::ResizeBilinear(
         op_params, getTensorShape(input()), getTensorData<uint8_t>(input()), getTensorShape(size()),
         getTensorData<int32_t>(size()), getTensorShape(output()), getTensorData<uint8_t>(output()));
       break;

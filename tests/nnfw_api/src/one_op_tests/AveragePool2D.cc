@@ -42,27 +42,6 @@ class AveragePool2DVariation : public GenModelTest,
 {
 };
 
-TEST_P(AveragePool2DVariation, Test)
-{
-  auto &param = GetParam();
-  CircleGen cgen;
-
-  int in = cgen.addTensor({param.input_shape, param.type.data_type}, param.type.scale,
-                          param.type.zero_point);
-  int out = cgen.addTensor({param.output_shape, param.type.data_type}, param.type.scale,
-                           param.type.zero_point);
-  cgen.addOperatorAveragePool2D({{in}, {out}}, circle::Padding_SAME, param.param.stride_w,
-                                param.param.stride_h, param.param.filter_w, param.param.filter_h,
-                                circle::ActivationFunctionType_NONE);
-  cgen.setInputsAndOutputs({in}, {out});
-
-  _context = std::make_unique<GenModelTestContext>(cgen.finish());
-  _context->addTestCase(param.tcd);
-  _context->setBackends(param.backend);
-
-  SUCCEED();
-}
-
 // Test with different input type and value
 INSTANTIATE_TEST_CASE_P(
   GenModelTest, AveragePool2DVariation,
@@ -108,6 +87,27 @@ INSTANTIATE_TEST_CASE_P(
       {circle::TensorType::TensorType_INT8, 2.0, -1},
       {"cpu"}}));
 
+TEST_P(AveragePool2DVariation, Test)
+{
+  auto &param = GetParam();
+  CircleGen cgen;
+
+  int in = cgen.addTensor({param.input_shape, param.type.data_type}, param.type.scale,
+                          param.type.zero_point);
+  int out = cgen.addTensor({param.output_shape, param.type.data_type}, param.type.scale,
+                           param.type.zero_point);
+  cgen.addOperatorAveragePool2D({{in}, {out}}, circle::Padding_SAME, param.param.stride_w,
+                                param.param.stride_h, param.param.filter_w, param.param.filter_h,
+                                circle::ActivationFunctionType_NONE);
+  cgen.setInputsAndOutputs({in}, {out});
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->addTestCase(param.tcd);
+  _context->setBackends(param.backend);
+
+  SUCCEED();
+}
+
 TEST_F(GenModelTest, neg_OneOp_AvgPool2D_3DInput)
 {
   // 3D Tensors are not supported
@@ -142,12 +142,37 @@ TEST_F(GenModelTest, neg_OneOp_AvgPool2D_2DInput)
   SUCCEED();
 }
 
-TEST_F(GenModelTest, neg_OneOp_AvgPool2D_InvalidPaddingType)
+TEST_P(AveragePool2DVariation, neg_InvalidPaddingType)
 {
+  auto &param = GetParam();
   CircleGen cgen;
-  int in = cgen.addTensor({{2, 2, 1}, circle::TensorType::TensorType_FLOAT32});
-  int out = cgen.addTensor({{1, 1, 1}, circle::TensorType::TensorType_FLOAT32});
-  cgen.addOperatorAveragePool2D({{in}, {out}}, static_cast<circle::Padding>(99), 2, 2, 2, 2,
+
+  int in = cgen.addTensor({param.input_shape, param.type.data_type}, param.type.scale,
+                          param.type.zero_point);
+  int out = cgen.addTensor({param.output_shape, param.type.data_type}, param.type.scale,
+                           param.type.zero_point);
+  cgen.addOperatorAveragePool2D({{in}, {out}}, static_cast<circle::Padding>(99),
+                                param.param.stride_w, param.param.stride_h, param.param.filter_w,
+                                param.param.filter_h, circle::ActivationFunctionType_NONE);
+  cgen.setInputsAndOutputs({in}, {out});
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->expectFailModelLoad();
+
+  SUCCEED();
+}
+
+TEST_P(AveragePool2DVariation, neg_InvalidFilterSize_1)
+{
+  auto &param = GetParam();
+  CircleGen cgen;
+
+  int in = cgen.addTensor({param.input_shape, param.type.data_type}, param.type.scale,
+                          param.type.zero_point);
+  int out = cgen.addTensor({param.output_shape, param.type.data_type}, param.type.scale,
+                           param.type.zero_point);
+  cgen.addOperatorAveragePool2D({{in}, {out}}, circle::Padding_SAME, param.param.stride_w,
+                                param.param.stride_h, -1, param.param.filter_h,
                                 circle::ActivationFunctionType_NONE);
   cgen.setInputsAndOutputs({in}, {out});
 
@@ -157,12 +182,17 @@ TEST_F(GenModelTest, neg_OneOp_AvgPool2D_InvalidPaddingType)
   SUCCEED();
 }
 
-TEST_F(GenModelTest, neg_OneOp_AvgPool2D_InvalidFilterSize_1)
+TEST_P(AveragePool2DVariation, neg_InvalidFilterSize_2)
 {
+  auto &param = GetParam();
   CircleGen cgen;
-  int in = cgen.addTensor({{2, 2, 1}, circle::TensorType::TensorType_FLOAT32});
-  int out = cgen.addTensor({{1, 1, 1}, circle::TensorType::TensorType_FLOAT32});
-  cgen.addOperatorAveragePool2D({{in}, {out}}, circle::Padding_SAME, 2, 2, -1, 2,
+
+  int in = cgen.addTensor({param.input_shape, param.type.data_type}, param.type.scale,
+                          param.type.zero_point);
+  int out = cgen.addTensor({param.output_shape, param.type.data_type}, param.type.scale,
+                           param.type.zero_point);
+  cgen.addOperatorAveragePool2D({{in}, {out}}, circle::Padding_SAME, param.param.stride_w,
+                                param.param.stride_h, param.param.filter_w, 0,
                                 circle::ActivationFunctionType_NONE);
   cgen.setInputsAndOutputs({in}, {out});
 
@@ -172,12 +202,17 @@ TEST_F(GenModelTest, neg_OneOp_AvgPool2D_InvalidFilterSize_1)
   SUCCEED();
 }
 
-TEST_F(GenModelTest, neg_OneOp_AvgPool2D_InvalidFilterSize_2)
+TEST_P(AveragePool2DVariation, neg_InvalidStrides_1)
 {
+  auto &param = GetParam();
   CircleGen cgen;
-  int in = cgen.addTensor({{2, 2, 1}, circle::TensorType::TensorType_FLOAT32});
-  int out = cgen.addTensor({{1, 1, 1}, circle::TensorType::TensorType_FLOAT32});
-  cgen.addOperatorAveragePool2D({{in}, {out}}, circle::Padding_SAME, 2, 2, 2, 0,
+
+  int in = cgen.addTensor({param.input_shape, param.type.data_type}, param.type.scale,
+                          param.type.zero_point);
+  int out = cgen.addTensor({param.output_shape, param.type.data_type}, param.type.scale,
+                           param.type.zero_point);
+  cgen.addOperatorAveragePool2D({{in}, {out}}, circle::Padding_SAME, 0, param.param.stride_h,
+                                param.param.filter_w, param.param.filter_h,
                                 circle::ActivationFunctionType_NONE);
   cgen.setInputsAndOutputs({in}, {out});
 
@@ -187,27 +222,17 @@ TEST_F(GenModelTest, neg_OneOp_AvgPool2D_InvalidFilterSize_2)
   SUCCEED();
 }
 
-TEST_F(GenModelTest, neg_OneOp_AvgPool2D_InvalidStrides_1)
+TEST_P(AveragePool2DVariation, neg_InvalidStrides_2)
 {
+  auto &param = GetParam();
   CircleGen cgen;
-  int in = cgen.addTensor({{2, 2, 1}, circle::TensorType::TensorType_FLOAT32});
-  int out = cgen.addTensor({{1, 1, 1}, circle::TensorType::TensorType_FLOAT32});
-  cgen.addOperatorAveragePool2D({{in}, {out}}, circle::Padding_SAME, 0, 2, 2, 2,
-                                circle::ActivationFunctionType_NONE);
-  cgen.setInputsAndOutputs({in}, {out});
 
-  _context = std::make_unique<GenModelTestContext>(cgen.finish());
-  _context->expectFailModelLoad();
-
-  SUCCEED();
-}
-
-TEST_F(GenModelTest, neg_OneOp_AvgPool2D_InvalidStrides_2)
-{
-  CircleGen cgen;
-  int in = cgen.addTensor({{2, 2, 1}, circle::TensorType::TensorType_FLOAT32});
-  int out = cgen.addTensor({{1, 1, 1}, circle::TensorType::TensorType_FLOAT32});
-  cgen.addOperatorAveragePool2D({{in}, {out}}, circle::Padding_SAME, 1, -100, 2, 2,
+  int in = cgen.addTensor({param.input_shape, param.type.data_type}, param.type.scale,
+                          param.type.zero_point);
+  int out = cgen.addTensor({param.output_shape, param.type.data_type}, param.type.scale,
+                           param.type.zero_point);
+  cgen.addOperatorAveragePool2D({{in}, {out}}, circle::Padding_SAME, param.param.stride_w, -100,
+                                param.param.filter_w, param.param.filter_h,
                                 circle::ActivationFunctionType_NONE);
   cgen.setInputsAndOutputs({in}, {out});
 

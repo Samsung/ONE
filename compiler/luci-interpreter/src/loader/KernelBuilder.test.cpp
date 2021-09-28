@@ -16,6 +16,7 @@
 
 #include "loader/GraphLoader.h"
 #include "loader/KernelBuilder.h"
+#include "luci_interpreter/SimpleMemoryManager.h"
 
 #include <kernels/Add.h>
 #include <kernels/ArgMax.h>
@@ -68,6 +69,7 @@
 #include <kernels/Softmax.h>
 #include <kernels/SpaceToDepth.h>
 #include <kernels/Split.h>
+#include <kernels/SplitV.h>
 #include <kernels/Sqrt.h>
 #include <kernels/SquaredDifference.h>
 #include <kernels/Squeeze.h>
@@ -91,6 +93,9 @@ class KernelBuilderTest : public Test
 {
 protected:
   luci::CircleInput *createInputNode() { return createNode<luci::CircleInput>(); }
+  void SetUp() override { _memory_manager = std::make_unique<SimpleMemoryManager>(); }
+
+  std::unique_ptr<IMemoryManager> _memory_manager;
 
   template <typename NodeT, typename... Args> NodeT *createNode(Args &&... args)
   {
@@ -114,10 +119,11 @@ protected:
   {
     std::unordered_map<const loco::Graph *, RuntimeGraph *> graph_to_runtime_graph;
 
-    RuntimeGraph runtime_graph(nullptr);
+    RuntimeGraph runtime_graph(nullptr, _memory_manager.get());
+    graph_to_runtime_graph[&_graph] = &runtime_graph;
     RuntimeToIR runtime_to_ir;
     GraphLoader graph_loader(&_graph, &runtime_graph, runtime_to_ir, graph_to_runtime_graph,
-                             _node_to_tensor);
+                             _node_to_tensor, _memory_manager.get());
     graph_loader.loadTensors();
 
     KernelBuilder kernel_builder(graph_to_runtime_graph, _node_to_tensor);
@@ -1089,6 +1095,31 @@ TEST_F(KernelBuilderTest, Split)
   checkTensor(kernel->input(), input);
   checkTensor(kernel->output(0), output1);
   checkTensor(kernel->output(1), output2);
+}
+
+TEST_F(KernelBuilderTest, SplitV)
+{
+  auto *input = createInputNode();
+  auto *size_splits = createInputNode();
+  auto *axis = createInputNode();
+  auto *op = createNode<luci::CircleSplitV>();
+  auto *output0 = createNodeOut<luci::CircleSplitVOut>(op, 0);
+  auto *output1 = createNodeOut<luci::CircleSplitVOut>(op, 1);
+
+  op->input(input);
+  op->size_splits(size_splits);
+  op->split_dim(axis);
+
+  op->num_split(2);
+
+  auto kernel = buildKernel<kernels::SplitV>(op);
+  ASSERT_THAT(kernel, NotNull());
+
+  checkTensor(kernel->input(), input);
+  checkTensor(kernel->size_splits(), size_splits);
+  checkTensor(kernel->axis(), axis);
+  checkTensor(kernel->output(0), output0);
+  checkTensor(kernel->output(1), output1);
 }
 
 TEST_F(KernelBuilderTest, Sqrt)

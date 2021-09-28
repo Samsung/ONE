@@ -22,15 +22,25 @@
 namespace tflread
 {
 
+// This will provide v3/v3a format neutral BuiltinOperator
+tflite::BuiltinOperator builtin_code_neutral(const tflite::OperatorCode *opcode)
+{
+  assert(opcode != nullptr);
+  int8_t dp_code = opcode->deprecated_builtin_code();
+  if (dp_code < 127 && dp_code >= 0)
+    return tflite::BuiltinOperator(dp_code);
+  return opcode->builtin_code();
+}
+
 bool is_valid(const tflite::OperatorCode *opcode)
 {
-  tflite::BuiltinOperator code = opcode->builtin_code();
+  tflite::BuiltinOperator code = builtin_code_neutral(opcode);
   return (tflite::BuiltinOperator_MIN <= code && code <= tflite::BuiltinOperator_MAX);
 }
 
 bool is_custom(const tflite::OperatorCode *opcode)
 {
-  tflite::BuiltinOperator code = opcode->builtin_code();
+  tflite::BuiltinOperator code = builtin_code_neutral(opcode);
   return (code == tflite::BuiltinOperator_CUSTOM);
 }
 
@@ -56,7 +66,7 @@ std::string opcode_name(const tflite::OperatorCode *opcode)
     return custom_op;
   }
 
-  tflite::BuiltinOperator code = opcode->builtin_code();
+  tflite::BuiltinOperator code = builtin_code_neutral(opcode);
   return tflite::EnumNameBuiltinOperator(code);
 }
 
@@ -82,6 +92,7 @@ Reader::Reader(const tflite::Model *model)
   _subgraphs = model->subgraphs();
   _buffers = model->buffers();
   _metadata = model->metadata();
+  _signaturedefs = model->signature_defs();
 
   auto opcodes = model->operator_codes();
   for (const ::tflite::OperatorCode *opcode : *opcodes)
@@ -118,7 +129,7 @@ tflite::BuiltinOperator Reader::builtin_code(const tflite::Operator *op) const
   assert(index < _op_codes.size());
   const tflite::OperatorCode *opcode = _op_codes.at(index);
 
-  return opcode->builtin_code();
+  return tflread::builtin_code_neutral(opcode);
 }
 
 std::string Reader::opcode_name(const tflite::Operator *op) const

@@ -18,8 +18,9 @@
 
 #include "kernels/Utils.h"
 
-#include <tensorflow/lite/kernels/internal/reference/reference_ops.h>
-#include <tensorflow/lite/kernels/internal/optimized/optimized_ops.h>
+#include <tensorflow/lite/kernels/internal/reference/leaky_relu.h>
+
+#include "PALLeakyRelu.h"
 
 #include <stdexcept>
 
@@ -66,9 +67,8 @@ void LeakyRelu::evalFloat() const
 {
   tflite::LeakyReluParams op_params{};
   op_params.alpha = params().alpha;
-  tflite::optimized_ops::LeakyRelu(op_params, getTensorShape(input()),
-                                   getTensorData<float>(input()), getTensorShape(output()),
-                                   getTensorData<float>(output()));
+  luci_interpreter_pal::LeakyRelu(op_params, getTensorShape(input()), getTensorData<float>(input()),
+                                  getTensorShape(output()), getTensorData<float>(output()));
 }
 
 void LeakyRelu::evalQuantized() const

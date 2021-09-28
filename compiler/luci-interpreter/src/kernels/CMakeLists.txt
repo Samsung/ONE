@@ -1,10 +1,12 @@
-set(KERNEL_REGISTER_FILE ${LUCI_INTERPRETER_PAL_DIR}/KernelsToBuild.lst)
-
 set(SOURCES
         BinaryOpCommon.h
         Utils.h
         Utils.cpp
-        ${TensorFlowSource_DIR}/tensorflow/lite/kernels/internal/quantization_util.cc)
+        ${TensorFlowSource_DIR}/tensorflow/lite/kernels/internal/quantization_util.cc
+        "${LUCI_INTERPRETER_INCLUDE_DIR}/luci_interpreter/TestMemoryManager.h"
+        ${LUCI_INTERPRETER_SOURCE_DIR}/TestMemoryManager.cpp
+        "${LUCI_INTERPRETER_INCLUDE_DIR}/luci_interpreter/SimpleMemoryManager.h"
+        ${LUCI_INTERPRETER_SOURCE_DIR}/SimpleMemoryManager.cpp)
 
 macro(REGISTER_KERNEL NODE)
   list(APPEND SOURCES "${NODE}.h")
@@ -30,6 +32,8 @@ else ()
   target_link_libraries(${LUCI_INTERPRETER_KERNELS}
           PUBLIC ${LUCI_INTERPRETER_CORE})
 endif()
+
+add_pal_to_target(${LUCI_INTERPRETER_KERNELS})
 
 if(NOT ENABLE_TEST)
   return()

@@ -57,6 +57,8 @@ const void *getNodeData(const luci::CircleConst *node, size_t *data_size)
       return getNodeDataImpl<DataType::U8>(node, data_size);
     case DataType::FLOAT32:
       return getNodeDataImpl<DataType::FLOAT32>(node, data_size);
+    case DataType::S8:
+      return getNodeDataImpl<DataType::S8>(node, data_size);
     case DataType::S16:
       return getNodeDataImpl<DataType::S16>(node, data_size);
     case DataType::S32:
@@ -82,6 +84,7 @@ bool isExecutableNode(const luci::CircleNode *node)
     // The following nodes denote outputs of multiple-output nodes.
     case luci::CircleOpcode::CIRCLEIFOUT:
     case luci::CircleOpcode::CIRCLESPLITOUT:
+    case luci::CircleOpcode::CIRCLESPLITVOUT:
     case luci::CircleOpcode::CIRCLEUNPACKOUT:
     case luci::CircleOpcode::CIRCLEWHILEOUT:
       return false;
@@ -112,9 +115,10 @@ bool isTensorProducingNode(const luci::CircleNode *node)
 GraphLoader::GraphLoader(
   const loco::Graph *graph, RuntimeGraph *runtime_graph, RuntimeToIR &runtime_to_ir,
   const std::unordered_map<const loco::Graph *, RuntimeGraph *> &graph_to_runtime_graph,
-  std::unordered_map<const loco::Node *, Tensor *> &node_to_tensor)
+  std::unordered_map<const loco::Node *, Tensor *> &node_to_tensor, IMemoryManager *memory_manager)
   : _graph(graph), _runtime_graph(runtime_graph), _runtime_to_ir(runtime_to_ir),
-    _graph_to_runtime_graph(graph_to_runtime_graph), _node_to_tensor(node_to_tensor)
+    _graph_to_runtime_graph(graph_to_runtime_graph), _node_to_tensor(node_to_tensor),
+    _memory_manager(memory_manager)
 {
 }
 
@@ -156,7 +160,10 @@ void GraphLoader::loadTensors()
       size_t data_size{};
       const void *const_data = getNodeData(const_node, &data_size);
       if (const_data != nullptr)
+      {
+        _memory_manager->allocate_memory(*tensor);
         tensor->writeData(const_data, data_size);
+      }
     }
 
     _node_to_tensor.emplace(node, tensor.get());
@@ -173,6 +180,7 @@ void GraphLoader::initInputOutputTensors() const
   for (size_t i = 0; i < input_nodes.size(); ++i)
   {
     input_tensors[i] = _node_to_tensor.at(input_nodes[i]);
+    _memory_manager->allocate_memory(*input_tensors[i]);
   }
   _runtime_graph->setInputTensors(input_tensors);
 
