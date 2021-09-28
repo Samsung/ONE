@@ -27,7 +27,8 @@ set(SOURCES
     "${LUCI_INTERPRETER_INCLUDE_DIR}/luci_interpreter/Interpreter.h"
     Interpreter.cpp "${LUCI_INTERPRETER_INCLUDE_DIR}/luci_interpreter/SimpleMemoryManager.h" SimpleMemoryManager.cpp
         "${LUCI_INTERPRETER_INCLUDE_DIR}/luci_interpreter/TestMemoryManager.h" TestMemoryManager.cpp
-        "${LUCI_INTERPRETER_INCLUDE_DIR}/luci_interpreter/BuddyMemoryManager.h" BuddyMemoryManager.cpp)
+        "${LUCI_INTERPRETER_INCLUDE_DIR}/luci_interpreter/BuddyMemoryManager.h" BuddyMemoryManager.cpp
+        "${LUCI_INTERPRETER_INCLUDE_DIR}/luci_interpreter/StaticMemoryManager.h" StaticMemoryManager.cpp)
 
 if (NOT LUCI_INTERPRETER_STATIC)
   add_library(${LUCI_INTERPRETER_BINARY} SHARED ${SOURCES})
