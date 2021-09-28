@@ -25,10 +25,6 @@ void StaticMemoryManager::allocate_memory(luci_interpreter::Tensor &tensor)
   {
     return;
   }
-  if (tensor.is_data_allocated())
-  {
-    release_memory(tensor);
-  }
   int32_t offset = tensor.get_offset();
   assert(offset >= 0);
   auto tensor_ptr = _buffer_ptr + offset;

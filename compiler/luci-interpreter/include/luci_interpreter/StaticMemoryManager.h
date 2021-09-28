@@ -28,7 +28,9 @@ class StaticMemoryManager : public IMemoryManager
 public:
   StaticMemoryManager() = delete;
 
-  explicit StaticMemoryManager(uint8_t *buffer_ptr) { _buffer_ptr = buffer_ptr; }
+  explicit StaticMemoryManager(uint8_t *buffer_ptr) : _buffer_ptr(buffer_ptr)
+  { /* Do nothing */
+  }
 
   void allocate_memory(luci_interpreter::Tensor &tensor) final;
   void release_memory(luci_interpreter::Tensor &tensor) final;

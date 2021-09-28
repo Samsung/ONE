@@ -158,7 +158,7 @@ public:
 
   bool is_data_allocated() const { return _data_allocated; }
 
-  int32_t get_offset() { return _offset; }
+  int32_t get_offset() const { return _offset; }
 
   void set_offset(int32_t offset) { _offset = offset; }
 
