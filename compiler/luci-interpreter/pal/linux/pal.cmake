@@ -43,7 +43,12 @@ macro(add_pal_to_target TGT)
     set(PAL_SOURCES ${TensorFlowSource_DIR}/tensorflow/lite/kernels/internal/quantization_util.cc)
     add_library(luci_interpreter_linux_pal STATIC ${PAL_SOURCES})
     set_target_properties(luci_interpreter_linux_pal PROPERTIES POSITION_INDEPENDENT_CODE ON)
-    target_include_directories(luci_interpreter_linux_pal SYSTEM PRIVATE "${TensorFlowSource_DIR}")
+    target_include_directories(luci_interpreter_linux_pal SYSTEM PRIVATE
+            "${TensorFlowRuySource_DIR}"
+            "${TensorFlowGEMMLowpSource_DIR}"
+            "${TensorFlowEigenSource_DIR}"
+            "${TensorFlowSource_DIR}"
+    )
 
     target_link_libraries(${TGT} PRIVATE Threads::Threads luci_interpreter_linux_pal)
 endmacro()
