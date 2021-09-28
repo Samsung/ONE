@@ -18,7 +18,6 @@ add_test(NAME arg_validity_test
   COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/arg_validity_check.sh"
 )
 
-
 add_test(NAME circle_opselector_test
   COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/compare_circles.sh"
           "${CIRCLE_ORIGIN}"
