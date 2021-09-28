@@ -3,6 +3,13 @@ set(ARM_ASM_COMPILER "arm-none-eabi-gcc")
 set(ARM_CXX_COMPILER "arm-none-eabi-g++")
 set(ARM_OBJCOPY "arm-none-eabi-objcopy")
 
+find_program(ARM_C_COMPILER_PATH ${ARM_C_COMPILER})
+
+if(NOT ARM_C_COMPILER_PATH)
+  message(WARNING "ARM compiler is NOT FOUND, skipping luci-micro build")
+  return()
+endif()
+
 set(CMAKE_ARM_OPTIONS
   -DLUCI_INTERPRETER_STATIC=ON
   -DLUCI_STATIC=ON
