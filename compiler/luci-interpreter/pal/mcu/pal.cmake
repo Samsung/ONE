@@ -30,7 +30,7 @@ endmacro()
 
 macro(add_pal_to_target TGT)
     target_include_directories(${TGT} PRIVATE "${PAL}")
-    target_include_directories(${TGT} SYSTEM PRIVATE
+    target_include_directories(${TGT} PRIVATE
             "${TensorFlowRuySource_DIR}"
             "${TensorFlowGEMMLowpSource_DIR}"
             "${TensorFlowEigenSource_DIR}"
@@ -42,7 +42,7 @@ macro(add_pal_to_target TGT)
     set(PAL_SOURCES ${TensorFlowSource_DIR}/tensorflow/lite/kernels/internal/quantization_util.cc)
     add_library(luci_interpreter_mcu_pal STATIC ${PAL_SOURCES})
     set_target_properties(luci_interpreter_mcu_pal PROPERTIES POSITION_INDEPENDENT_CODE ON)
-    target_include_directories(luci_interpreter_mcu_pal SYSTEM PRIVATE
+    target_include_directories(luci_interpreter_mcu_pal PRIVATE
             "${TensorFlowRuySource_DIR}"
             "${TensorFlowGEMMLowpSource_DIR}"
             "${TensorFlowEigenSource_DIR}"
