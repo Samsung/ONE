@@ -63,13 +63,22 @@ public:
     _op_table.at(node_id).emplace(source_id);
   }
 
+  void add_memory_plan_table(uint32_t node_id, const std::vector<uint32_t> &memory_plan_inform)
+  {
+    _memory_plan_table[node_id] = memory_plan_inform;
+  }
+
 public:
   const std::vector<uint8_t> encoded_source_table(void);
   const std::vector<uint8_t> encoded_op_table(void);
+  const std::vector<uint8_t> encoded_memory_plan_table(void);
 
 private:
   std::map<uint32_t, std::string> _source_table;
   std::map<uint32_t, std::set<uint32_t>> _op_table;
+  // _memory_plan_table stores for node with node_id order of execution, and offsets:
+  // first go offset of current node and then offsets of temporary nodes if needed
+  std::map<uint32_t, std::vector<uint32_t>> _memory_plan_table;
 };
 
 } // namespace luci

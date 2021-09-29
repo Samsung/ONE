@@ -17,6 +17,7 @@
 #include "Builders.h"
 
 #include "kernels/Conv2D.h"
+#include <luci/Profile/CircleNodeMemoryPlan.h>
 
 namespace luci_interpreter
 {
@@ -38,6 +39,12 @@ std::unique_ptr<Kernel> build_kernel_CircleConv2D(const luci::CircleNode *circle
     std::make_unique<Tensor>(input->element_type(), Shape({}), AffineQuantization{}, "");
   im2col->set_observable(false);
   im2col->set_data_buffer(nullptr);
+  if (luci::has_memory_plan(node))
+  {
+    auto memory_plan = luci::get_memory_plan(node);
+    if (memory_plan.offsets().size() > 1)
+      im2col->set_offset(memory_plan.offsets()[1]);
+  }
   Tensor *tmp = helper.getRuntimeGraph(node->graph())->addTensor(std::move(im2col));
 
   Conv2DParams params{};

@@ -315,8 +315,14 @@ std::unique_ptr<Module> Importer::importModule(const circle::Model *model) const
 
   post_import_graph(module.get(), reader);
 
-  // Initialize 'source_table'
+  // Initialize 'memory_plan_table'
   auto circle_metadata = std::make_unique<luci::CircleImportMetadata>(reader);
+  if (circle_metadata->memory_plan_table().size() > 0)
+  {
+    module->memory_plan(circle_metadata->memory_plan_table());
+  }
+
+  // Initialize 'source_table'
   if (circle_metadata->source_table().size() > 0)
   {
     // If there is 'source_table' metadata in circle model, copy the table.

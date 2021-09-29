@@ -47,10 +47,18 @@ public:
 
   const std::map<uint32_t, std::string> &source_table(void) const { return _source_table; }
 
+  const std::map<uint32_t, std::vector<uint32_t>> &memory_plan_table(void) const
+  {
+    return _memory_plan_table;
+  }
+
 private:
   // Decoded metadata is stored
   std::map<uint32_t, std::string> _source_table;
   std::map<uint32_t, std::set<uint32_t>> _op_table;
+  // _memory_plan_table stores for node with node_id order of execution, and offsets:
+  // first go offset of current node and then offsets of temporary nodes if needed
+  std::map<uint32_t, std::vector<uint32_t>> _memory_plan_table;
 };
 
 } // namespace luci

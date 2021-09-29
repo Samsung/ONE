@@ -65,6 +65,13 @@ public:
 
   const std::map<uint32_t, std::string> &source_table(void) const { return _source_table; }
 
+  void memory_plan(const std::map<uint32_t, std::vector<uint32_t>> &memory_plan)
+  {
+    _memory_plan = memory_plan;
+  }
+
+  const std::map<uint32_t, std::vector<uint32_t>> &memory_plan(void) const { return _memory_plan; }
+
 private:
   std::vector<std::unique_ptr<loco::Graph>> _graphs;
 
@@ -81,6 +88,8 @@ private:
    *        Even if Module has multiple subgraphs, only first subgraph is considered.
    */
   std::map<uint32_t, std::string> _source_table;
+
+  std::map<uint32_t, std::vector<uint32_t>> _memory_plan;
 };
 
 std::unique_ptr<Module> make_module(void);
