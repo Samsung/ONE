@@ -47,11 +47,11 @@ add_custom_target(luci_interpreter_micro_arm_cmake DEPENDS "${MICRO_ARM_BUILD_DE
 set(MICRO_ARM_BINARY "${MICRO_ARM_BUILD_DIR}/compiler/luci-interpreter/src/libluci_interpreter.a")
 
 add_custom_command(
-        OUTPUT "${MICRO_ARM_BINARY}"
-        COMMAND "${CMAKE_MAKE_PROGRAM}" luci_interpreter -j ${CPU_COUNT}
-        WORKING_DIRECTORY "${MICRO_ARM_BUILD_DIR}"
-        DEPENDS luci_interpreter_micro_arm_cmake
-        VERBATIM
+  OUTPUT "${MICRO_ARM_BINARY}"
+  COMMAND "${CMAKE_MAKE_PROGRAM}" luci_interpreter -j ${CPU_COUNT}
+  WORKING_DIRECTORY "${MICRO_ARM_BUILD_DIR}"
+  DEPENDS luci_interpreter_micro_arm_cmake
+  VERBATIM
 )
 
 add_custom_target(luci_interpreter_micro_arm DEPENDS "${MICRO_ARM_BINARY}")

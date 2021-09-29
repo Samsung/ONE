@@ -28,6 +28,7 @@ $ sudo apt-get install gcc-arm-none-eabi
 ``` bash
 $ cd <path to ONE>
 $ mkdir build
+# cd build
 $ cmake ../infra/nncc
 $ make -j$(nproc) luci_interpreter_micro_arm
 ```
