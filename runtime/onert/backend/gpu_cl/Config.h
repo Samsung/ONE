@@ -31,7 +31,7 @@ namespace gpu_cl
 class Config : public IConfig
 {
 public:
-  virtual ~Config();
+  virtual ~Config() {}
 
 public:
   std::string id() override { return "gpu_cl"; }

@@ -21,12 +21,15 @@
 
 #include "ir/OperandIndexMap.h"
 #include "ir/Shape.h"
-#include "open_cl/ClContext.h"
-#include "open_cl/InferenceContext.h"
-#include "open_cl/Status.h"
-#include "open_cl/StorageTypeUtil.h"
-#include "open_cl/TensorType.h"
+#include "tensorflow/lite/delegates/gpu/cl/cl_context.h"
+#include "tensorflow/lite/delegates/gpu/common/status.h"
+#include "tensorflow/lite/delegates/gpu/cl/storage_type_util.h"
+#include "tensorflow/lite/delegates/gpu/cl/tensor_type.h"
 #include "util/logging.h"
+#include "ex/InferenceContextEx.h"
+
+using namespace tflite::gpu;
+using namespace tflite::gpu::cl;
 
 namespace onert
 {
@@ -47,12 +50,29 @@ public:
     for (const auto &tensor_entry : _tensors)
     {
       auto tensor = tensor_entry.second;
+      auto type = tensor->get_type();
+
+      // if (type == TensorType::TENSOR_TYPE_DELETE) {
+      //   continue;
+      // }
+
       const auto &t = tensor_reserver_.Get(tensor_entry.first.value());
       const auto &shape = t->shape;
       const auto &descriptor = t->descriptor;
       if (!CreateTensor(*_context, shape, descriptor, tensor->handle()).ok())
       {
-        return;
+        std::runtime_error("Failed to CreateTensor");
+      }
+      switch (type)
+      {
+        case TensorType::TENSOR_TYPE_INPUT:
+          tensor->writeConvertInit();
+          break;
+        case TensorType::TENSOR_TYPE_OUTPUT:
+          tensor->readConvertInit();
+          break;
+        default:
+          break;
       }
     }
   }
@@ -71,15 +91,15 @@ public:
 
   void buildTensor(const ir::OperandIndex &ind, const ir::OperandInfo &info,
                    InferenceContext::CreateInferenceInfo create_info,
-                   std::shared_ptr<Environment> environment, DeviceInfo &device_info)
+                   std::shared_ptr<Environment> environment, DeviceInfo &device_info,
+                   TensorType type)
   {
     ValueId max_id = 0;
     auto data_type = DeduceDataTypeFromPrecision(create_info.precision);
     const auto shape = info.shape();
 
-    auto tensor = std::make_shared<T_Tensor>(shape.rank(), shape, environment);
+    auto tensor = std::make_shared<T_Tensor>(shape.rank(), shape, environment, type);
     _tensors[ind] = tensor;
-
     BHWC t_shape;
     switch (shape.rank())
     {
@@ -108,7 +128,7 @@ public:
 
     ValueId id = ind.value();
     storage_type = SelectBestStorageType(device_info, t_shape, storage_type, data_type, layout);
-    auto dummy = std::make_shared<InferenceContext::DummyTensor>();
+    auto dummy = std::make_shared<InferenceContextEx::DummyTensor>();
     dummy->shape = t_shape;
     dummy->descriptor = TensorDescriptor{data_type, storage_type, layout};
     tensor_reserver_.Add(id, dummy);
@@ -120,11 +140,11 @@ public:
 
   ir::OperandIndexMap<std::shared_ptr<T_Tensor>> &tensors(void) { return _tensors; }
 
-  InferenceContext::TensorReserver &tensorReservers(void) { return tensor_reserver_; }
+  InferenceContextEx::TensorReserverEx &tensorReservers(void) { return tensor_reserver_; }
 
 private:
   ir::OperandIndexMap<std::shared_ptr<T_Tensor>> _tensors;
-  InferenceContext::TensorReserver tensor_reserver_;
+  InferenceContextEx::TensorReserverEx tensor_reserver_;
   CLContext *_context;
 };
 

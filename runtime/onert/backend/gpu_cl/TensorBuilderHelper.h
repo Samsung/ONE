@@ -14,15 +14,13 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_CL_TENSOR_MANAGER_H__
-#define __ONERT_BACKEND_CL_TENSOR_MANAGER_H__
+#ifndef __ONERT_BACKEND_GPU_CL_TENSOR_BUILDER_HELPER_H__
+#define __ONERT_BACKEND_GPU_CL_TENSOR_BUILDER_HELPER_H__
 
-#include "ClMemoryManager.h"
-#include "ClTensorManager.h"
-#include "tensorflow/lite/delegates/gpu/cl/cl_context.h"
-#include "operand/CLTensor.h"
-#include "operand/ICLTensor.h"
-#include "util/logging.h"
+#include "absl/status/status.h"
+#include "tensorflow/lite/delegates/gpu/common/shape.h"
+
+using namespace tflite::gpu;
 
 namespace onert
 {
@@ -31,18 +29,18 @@ namespace backend
 namespace gpu_cl
 {
 
-using MemoryManager = ClMemoryManager<operand::ICLTensor, operand::CLTensor>;
-
-using TensorManager = ClTensorManager<operand::ICLTensor, operand::CLTensor>;
-
-inline TensorManager *createTensorManager(CLContext *context)
+enum TensorType
 {
-  VERBOSE(createTensorManager) << "ClTensorManager" << std::endl;
-  return new TensorManager(new MemoryManager(context), new MemoryManager(context));
-}
+  TENSOR_TYPE_VALID = 0,
+  TENSOR_TYPE_INPUT = 1,
+  TENSOR_TYPE_OUTPUT = 2,
+  TENSOR_TYPE_DELETE = 3
+};
+
+absl::Status ExtractAxisFromIndex(int dims, int index, Axis *axis);
 
 } // namespace gpu_cl
 } // namespace backend
 } // namespace onert
 
-#endif // __ONERT_BACKEND_ACL_CL_TENSOR_MANAGER_H__
+#endif // __ONERT_BACKEND_GPU_CL_TENSOR_BUILDER_HELPER_H__

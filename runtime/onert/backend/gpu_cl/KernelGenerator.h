@@ -22,6 +22,8 @@
 #include "TensorBuilder.h"
 #include "TensorManager.h"
 
+#include "tensorflow/lite/delegates/gpu/api.h"
+
 #include <backend/CustomKernelBuilder.h>
 #include <backend/basic/KernelGeneratorBase.h>
 #include <ir/Operands.h>
@@ -60,7 +62,7 @@ private:
   std::shared_ptr<TensorBuilder> _tensor_builder;
   std::shared_ptr<ClTensorRegistry<TensorManager>> _tensor_reg;
   std::shared_ptr<CreationContext> _creation_context;
-  ir::OperandIndexMap<std::shared_ptr<Tensor>> _new_tensors;
+  ir::OperandIndexMap<std::shared_ptr<tflite::gpu::cl::Tensor>> _new_tensors;
 };
 
 } // namespace gpu_cl

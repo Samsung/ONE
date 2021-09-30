@@ -22,9 +22,11 @@
 #include <vector>
 #include <memory>
 
-#include "open_cl/kernels/GpuOperation.h"
-#include "open_cl/ClCommandQueue.h"
-#include "open_cl/Status.h"
+#include "tensorflow/lite/delegates/gpu/cl/kernels/gpu_operation.h"
+#include "tensorflow/lite/delegates/gpu/cl/cl_command_queue.h"
+#include "tensorflow/lite/delegates/gpu/common/status.h"
+
+using namespace tflite::gpu::cl;
 
 namespace onert
 {
@@ -56,6 +58,10 @@ public:
       if (!gpu_operation->AddToQueue(_creation_context->queue).ok())
       {
         throw std::runtime_error("Failed to AddToQueue.");
+      }
+      if (!_creation_context->queue->WaitForCompletion().ok())
+      {
+        throw std::runtime_error("Failed to WaitForCompletion.");
       }
     }
   }

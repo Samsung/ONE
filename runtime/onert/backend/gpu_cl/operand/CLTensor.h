@@ -19,9 +19,11 @@
 
 #include "ICLTensor.h"
 
-#include "open_cl/Buffer.h"
-#include "open_cl/ClContext.h"
-#include "open_cl/Tensor.h"
+#include "tensorflow/lite/delegates/gpu/cl/buffer.h"
+#include "tensorflow/lite/delegates/gpu/cl/cl_context.h"
+#include "tensorflow/lite/delegates/gpu/cl/tensor.h"
+
+using namespace tflite::gpu::cl;
 
 namespace onert
 {
@@ -38,11 +40,11 @@ public:
   CLTensor() = delete;
 
 public:
-  CLTensor(size_t rank, ir::Shape shape, std::shared_ptr<Environment> environment);
+  CLTensor(size_t rank, ir::Shape shape, std::shared_ptr<Environment> environment, TensorType type);
 
 public:
-  const Tensor *handle() const override;
-  Tensor *handle() override;
+  const tflite::gpu::cl::Tensor *handle() const override;
+  tflite::gpu::cl::Tensor *handle() override;
 
 public:
   /** Set given buffer as the buffer of the tensor
@@ -55,7 +57,7 @@ public:
   void setBuffer(void *host_ptr);
 
 private:
-  std::shared_ptr<Tensor> _tensor;
+  std::shared_ptr<tflite::gpu::cl::Tensor> _tensor;
 };
 
 } // namespace operand

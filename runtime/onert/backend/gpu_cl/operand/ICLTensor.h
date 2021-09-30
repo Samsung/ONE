@@ -19,11 +19,17 @@
 
 #include <backend/ITensor.h>
 
-#include "open_cl/Api.h"
-#include "open_cl/Spi.h"
-#include "open_cl/ClCommandQueue.h"
-#include "open_cl/kernels/Converter.h"
-#include "open_cl/Tensor.h"
+#include "tensorflow/lite/delegates/gpu/api.h"
+#include "tensorflow/lite/delegates/gpu/spi.h"
+#include "tensorflow/lite/delegates/gpu/cl/cl_command_queue.h"
+#include "tensorflow/lite/delegates/gpu/cl/kernels/converter.h"
+#include "tensorflow/lite/delegates/gpu/cl/tensor.h"
+#include "tensorflow/lite/delegates/gpu/cl/environment.h"
+
+#include "TensorBuilderHelper.h"
+
+using namespace tflite::gpu;
+using namespace tflite::gpu::cl;
 
 namespace onert
 {
@@ -43,19 +49,17 @@ public:
   ICLTensor(ICLTensor &&) = default;
   ICLTensor &operator=(ICLTensor &&) = default;
 
-  ICLTensor(size_t rank, ir::Shape shape, std::shared_ptr<Environment> environment)
-    : _rank{rank}, _shape{shape}, _environment(environment)
+  ICLTensor(size_t rank, ir::Shape shape, std::shared_ptr<Environment> environment, TensorType type)
+    : _rank{rank}, _shape{shape}, _environment(environment), _type(type)
   {
   }
 
 public:
   uint8_t *buffer() const final { return reinterpret_cast<uint8_t *>(handle()->GetMemoryPtr()); }
   size_t total_size() const final { return _shape.num_elements() * sizeof(float); }
-  size_t calcOffset(const ir::Coordinates &coords) const final
+  size_t calcOffset(const ir::Coordinates &) const final
   {
-    // NYI
-    (void)coords;
-    return 0;
+    throw std::runtime_error("ICLTensor::calcOffset() is not supported.");
   }
   ir::Layout layout() const final { return ir::Layout::NHWC; }
   ir::DataType data_type() const final { return ir::DataType::FLOAT32; }
@@ -83,19 +87,24 @@ public:
   void enqueueWriteBuffer(const void *ptr, bool blocking = true) final;
   void enqueueReadBuffer(void *ptr, bool blocking = true) final;
 
+  void writeConvertInit();
+  void readConvertInit();
+  TensorType get_type() { return _type; }
+
 public:
-  virtual const Tensor *handle() const = 0;
-  virtual Tensor *handle() = 0;
+  virtual const tflite::gpu::cl::Tensor *handle() const = 0;
+  virtual tflite::gpu::cl::Tensor *handle() = 0;
 
 private:
 protected:
   size_t _rank; // Actual rank (reflects extended rank)
   ir::Shape _shape;
   std::shared_ptr<Environment> _environment;
+  TensorType _type;
   std::unique_ptr<TensorObjectConverterBuilder> _converter_builder;
   CLMemory _cl_memory;
-  std::unique_ptr<TensorObjectConverter> _converter_cpu;
-  std::unique_ptr<TensorObjectConverter> _converter_bhwc;
+  std::unique_ptr<TensorObjectConverter> _converter_to;
+  std::unique_ptr<TensorObjectConverter> _converter_from;
 };
 
 } // namespace operand

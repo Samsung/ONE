@@ -24,10 +24,10 @@
 #include "ClTensorRegistry.h"
 #include "ParentInfo.h"
 
-#include "open_cl/TensorType.h"
-#include "open_cl/TensorTypeUtil.h"
-#include "open_cl/ClDevice.h"
-#include "open_cl/InferenceContext.h"
+#include "tensorflow/lite/delegates/gpu/cl/tensor_type.h"
+#include "tensorflow/lite/delegates/gpu/cl/tensor_type_util.h"
+#include "tensorflow/lite/delegates/gpu/cl/cl_device.h"
+#include "tensorflow/lite/delegates/gpu/cl/inference_context.h"
 
 #include "ir/OperandIndexMap.h"
 #include "ir/OperandIndexSequence.h"
@@ -63,7 +63,7 @@ public:
    * @param[in] layout Tensor data layout
    */
   void registerTensorInfo(const ir::OperandIndex &ind, const ir::OperandInfo &info,
-                          ir::Layout backend_layout);
+                          ir::Layout backend_layout, TensorType type);
 
   void notifyFirstUse(const ir::OperandIndex &);
   void notifyLastUse(const ir::OperandIndex &);
@@ -106,6 +106,7 @@ private:
   const ir::Operands &_operands;
   ir::OperandIndexMap<ir::OperandInfo> _tensor_info_map;
   ir::OperandIndexMap<ir::Layout> _tensor_layout_map;
+  ir::OperandIndexMap<TensorType> _tensor_type_map;
   ir::OperandIndexMap<size_t> _uses_count_map;
 
   std::unique_ptr<T_ClTensorManager> _tensor_mgr;
@@ -149,7 +150,8 @@ ClTensorBuilder<T_ITensor, T_Tensor>::ClTensorBuilder(
 template <typename T_ITensor, typename T_Tensor>
 void ClTensorBuilder<T_ITensor, T_Tensor>::registerTensorInfo(const ir::OperandIndex &ind,
                                                               const ir::OperandInfo &info,
-                                                              ir::Layout backend_layout)
+                                                              ir::Layout backend_layout,
+                                                              TensorType type)
 {
   assert(_tensor_mgr->constTensors().size() == 0);
   assert(_tensor_mgr->nonconstTensors().size() == 0);
@@ -157,6 +159,8 @@ void ClTensorBuilder<T_ITensor, T_Tensor>::registerTensorInfo(const ir::OperandI
   _uses_count_map[ind] = _operands.at(ind).getUses().size();
 
   _tensor_info_map.emplace(ind, info);
+  _tensor_type_map.emplace(ind, type);
+
   _tensor_layout_map.insert({ind, backend_layout});
 }
 
@@ -276,9 +280,10 @@ void ClTensorBuilder<T_ITensor, T_Tensor>::buildTensors(void)
     auto ind = entry.first;
     if (_parent_map.count(ind) > 0)
       continue;
-
+    auto type = _tensor_type_map.at(ind);
     const auto &info = entry.second;
-    _tensor_mgr->buildTensor(ind, info, _create_info, _environment, _environment->device().info_);
+    _tensor_mgr->buildTensor(ind, info, _create_info, _environment, _environment->device().info_,
+                             type);
   }
 }
 

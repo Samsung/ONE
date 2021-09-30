@@ -19,11 +19,13 @@
 
 #include "ClMemoryManager.h"
 
-#include "open_cl/InferenceContext.h"
-#include "open_cl/TensorType.h"
+#include "tensorflow/lite/delegates/gpu/cl/inference_context.h"
+#include "tensorflow/lite/delegates/gpu/cl/tensor_type.h"
 
 #include "ir/OperandInfo.h"
 #include "ir/OperandIndexMap.h"
+
+using namespace tflite::gpu::cl;
 
 namespace onert
 {
@@ -48,7 +50,8 @@ public:
 
   void buildTensor(const ir::OperandIndex &ind, const ir::OperandInfo &info,
                    InferenceContext::CreateInferenceInfo create_info,
-                   std::shared_ptr<Environment> environment, DeviceInfo &device_info);
+                   std::shared_ptr<Environment> environment, DeviceInfo &device_info,
+                   TensorType type);
 
   std::shared_ptr<T_ITensor> findTensorAsParent(const ir::OperandIndex &ind);
 
@@ -56,10 +59,10 @@ public:
   void finishLifetime(const ir::OperandIndex &ind);
 
   std::shared_ptr<T_ITensor> at(const ir::OperandIndex &ind);
-  std::shared_ptr<InferenceContext::DummyTensor> atR(const ir::OperandIndex &ind);
+  std::shared_ptr<InferenceContextEx::DummyTensor> atR(const ir::OperandIndex &ind);
 
-  InferenceContext::TensorReserver &constTensorReservers(void);
-  InferenceContext::TensorReserver &nonconstTensorReservers(void);
+  InferenceContextEx::TensorReserver &constTensorReservers(void);
+  InferenceContextEx::TensorReserver &nonconstTensorReservers(void);
 
   ir::OperandIndexMap<std::shared_ptr<T_Tensor>> &constTensors(void);
   ir::OperandIndexMap<std::shared_ptr<T_Tensor>> &nonconstTensors(void);
@@ -124,18 +127,18 @@ template <typename T_ITensor, typename T_Tensor>
 void ClTensorManager<T_ITensor, T_Tensor>::buildTensor(
   const ir::OperandIndex &ind, const ir::OperandInfo &info,
   InferenceContext::CreateInferenceInfo create_info, std::shared_ptr<Environment> environment,
-  DeviceInfo &device_info)
+  DeviceInfo &device_info, TensorType type)
 {
   assert(_ind_to_mgr.find(ind) == _ind_to_mgr.end());
 
   if (info.isConstant())
   {
-    _const_mgr->buildTensor(ind, info, create_info, environment, device_info);
+    _const_mgr->buildTensor(ind, info, create_info, environment, device_info, type);
     _ind_to_mgr.insert({ind, *_const_mgr});
   }
   else
   {
-    _nonconst_mgr->buildTensor(ind, info, create_info, environment, device_info);
+    _nonconst_mgr->buildTensor(ind, info, create_info, environment, device_info, type);
     _ind_to_mgr.insert({ind, *_nonconst_mgr});
   }
 }
@@ -184,7 +187,7 @@ ClTensorManager<T_ITensor, T_Tensor>::nonconstTensors(void)
 }
 
 template <typename T_ITensor, typename T_Tensor>
-std::shared_ptr<InferenceContext::DummyTensor>
+std::shared_ptr<InferenceContextEx::DummyTensor>
 ClTensorManager<T_ITensor, T_Tensor>::atR(const ir::OperandIndex &ind)
 {
   if (_nonconst_mgr->tensorReservers().HaveTensor(ind.value()))
@@ -199,13 +202,13 @@ ClTensorManager<T_ITensor, T_Tensor>::atR(const ir::OperandIndex &ind)
 }
 
 template <typename T_ITensor, typename T_Tensor>
-InferenceContext::TensorReserver &ClTensorManager<T_ITensor, T_Tensor>::constTensorReservers(void)
+InferenceContextEx::TensorReserver &ClTensorManager<T_ITensor, T_Tensor>::constTensorReservers(void)
 {
   return _const_mgr->tensorReservers();
 }
 
 template <typename T_ITensor, typename T_Tensor>
-InferenceContext::TensorReserver &
+InferenceContextEx::TensorReserver &
 ClTensorManager<T_ITensor, T_Tensor>::nonconstTensorReservers(void)
 {
   return _nonconst_mgr->tensorReservers();

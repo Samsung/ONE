@@ -27,8 +27,8 @@
 #include "TensorManager.h"
 #include "TensorBuilder.h"
 
-#include "open_cl/Environment.h"
-#include "open_cl/Status.h"
+#include "tensorflow/lite/delegates/gpu/cl/environment.h"
+#include "tensorflow/lite/delegates/gpu/common/status.h"
 
 namespace onert
 {
