@@ -73,7 +73,13 @@ struct PropagateQuantParam final : public luci::CircleNodeMutableVisitor<bool>
     return copy_qparam(input_node, node);
   }
 
-  // TODO : Add more Ops (e.g., Transpose)
+  bool visit(luci::CircleTranspose *node)
+  {
+    auto input_node = loco::must_cast<luci::CircleNode *>(node->a());
+    return copy_qparam(input_node, node);
+  }
+
+  // TODO : Add more Ops (e.g., layout-changing Ops)
 };
 
 } // namespace
