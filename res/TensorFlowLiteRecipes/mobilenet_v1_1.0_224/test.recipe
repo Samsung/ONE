@@ -1,0 +1,1908 @@
+operand {
+  name: "MobilenetV1/Conv2d_0/weights"
+  type: FLOAT32
+  shape {
+    dim: 32
+    dim: 3
+    dim: 3
+    dim: 3
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/Conv2d_10_depthwise/depthwise_weights"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 3
+    dim: 3
+    dim: 512
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/Conv2d_10_pointwise/weights"
+  type: FLOAT32
+  shape {
+    dim: 512
+    dim: 1
+    dim: 1
+    dim: 512
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/Conv2d_11_depthwise/depthwise_weights"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 3
+    dim: 3
+    dim: 512
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/Conv2d_11_pointwise/weights"
+  type: FLOAT32
+  shape {
+    dim: 512
+    dim: 1
+    dim: 1
+    dim: 512
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/Conv2d_12_depthwise/depthwise_weights"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 3
+    dim: 3
+    dim: 512
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/Conv2d_12_pointwise/weights"
+  type: FLOAT32
+  shape {
+    dim: 1024
+    dim: 1
+    dim: 1
+    dim: 512
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/Conv2d_13_depthwise/depthwise_weights"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 3
+    dim: 3
+    dim: 1024
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/Conv2d_13_pointwise/weights"
+  type: FLOAT32
+  shape {
+    dim: 1024
+    dim: 1
+    dim: 1
+    dim: 1024
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/Conv2d_1_depthwise/depthwise_weights"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 3
+    dim: 3
+    dim: 32
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/Conv2d_1_pointwise/weights"
+  type: FLOAT32
+  shape {
+    dim: 64
+    dim: 1
+    dim: 1
+    dim: 32
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/Conv2d_2_depthwise/depthwise_weights"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 3
+    dim: 3
+    dim: 64
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/Conv2d_2_pointwise/weights"
+  type: FLOAT32
+  shape {
+    dim: 128
+    dim: 1
+    dim: 1
+    dim: 64
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/Conv2d_3_depthwise/depthwise_weights"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 3
+    dim: 3
+    dim: 128
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/Conv2d_3_pointwise/weights"
+  type: FLOAT32
+  shape {
+    dim: 128
+    dim: 1
+    dim: 1
+    dim: 128
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/Conv2d_4_depthwise/depthwise_weights"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 3
+    dim: 3
+    dim: 128
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/Conv2d_4_pointwise/weights"
+  type: FLOAT32
+  shape {
+    dim: 256
+    dim: 1
+    dim: 1
+    dim: 128
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/Conv2d_5_depthwise/depthwise_weights"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 3
+    dim: 3
+    dim: 256
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/Conv2d_5_pointwise/weights"
+  type: FLOAT32
+  shape {
+    dim: 256
+    dim: 1
+    dim: 1
+    dim: 256
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/Conv2d_6_depthwise/depthwise_weights"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 3
+    dim: 3
+    dim: 256
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/Conv2d_6_pointwise/weights"
+  type: FLOAT32
+  shape {
+    dim: 512
+    dim: 1
+    dim: 1
+    dim: 256
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/Conv2d_7_depthwise/depthwise_weights"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 3
+    dim: 3
+    dim: 512
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/Conv2d_7_pointwise/weights"
+  type: FLOAT32
+  shape {
+    dim: 512
+    dim: 1
+    dim: 1
+    dim: 512
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/Conv2d_8_depthwise/depthwise_weights"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 3
+    dim: 3
+    dim: 512
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/Conv2d_8_pointwise/weights"
+  type: FLOAT32
+  shape {
+    dim: 512
+    dim: 1
+    dim: 1
+    dim: 512
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/Conv2d_9_depthwise/depthwise_weights"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 3
+    dim: 3
+    dim: 512
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/Conv2d_9_pointwise/weights"
+  type: FLOAT32
+  shape {
+    dim: 512
+    dim: 1
+    dim: 1
+    dim: 512
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/Logits/AvgPool_1a/AvgPool"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+    dim: 1
+    dim: 1024
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/Logits/Conv2d_1c_1x1/BiasAdd"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+    dim: 1
+    dim: 1001
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/Logits/Conv2d_1c_1x1/convolution_bias"
+  type: FLOAT32
+  shape {
+    dim: 1001
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/Logits/Conv2d_1c_1x1/weights"
+  type: FLOAT32
+  shape {
+    dim: 1001
+    dim: 1
+    dim: 1
+    dim: 1024
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/MobilenetV1/Conv2d_0/Relu6"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 112
+    dim: 112
+    dim: 32
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/MobilenetV1/Conv2d_0/convolution_bias"
+  type: FLOAT32
+  shape {
+    dim: 32
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/MobilenetV1/Conv2d_10_depthwise/Relu6"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 14
+    dim: 14
+    dim: 512
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/MobilenetV1/Conv2d_10_depthwise/depthwise_bias"
+  type: FLOAT32
+  shape {
+    dim: 512
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/MobilenetV1/Conv2d_10_pointwise/Relu6"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 14
+    dim: 14
+    dim: 512
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/MobilenetV1/Conv2d_10_pointwise/convolution_bias"
+  type: FLOAT32
+  shape {
+    dim: 512
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/MobilenetV1/Conv2d_11_depthwise/Relu6"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 14
+    dim: 14
+    dim: 512
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/MobilenetV1/Conv2d_11_depthwise/depthwise_bias"
+  type: FLOAT32
+  shape {
+    dim: 512
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/MobilenetV1/Conv2d_11_pointwise/Relu6"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 14
+    dim: 14
+    dim: 512
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/MobilenetV1/Conv2d_11_pointwise/convolution_bias"
+  type: FLOAT32
+  shape {
+    dim: 512
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/MobilenetV1/Conv2d_12_depthwise/Relu6"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 7
+    dim: 7
+    dim: 512
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/MobilenetV1/Conv2d_12_depthwise/depthwise_bias"
+  type: FLOAT32
+  shape {
+    dim: 512
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/MobilenetV1/Conv2d_12_pointwise/Relu6"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 7
+    dim: 7
+    dim: 1024
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/MobilenetV1/Conv2d_12_pointwise/convolution_bias"
+  type: FLOAT32
+  shape {
+    dim: 1024
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/MobilenetV1/Conv2d_13_depthwise/Relu6"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 7
+    dim: 7
+    dim: 1024
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/MobilenetV1/Conv2d_13_depthwise/depthwise_bias"
+  type: FLOAT32
+  shape {
+    dim: 1024
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/MobilenetV1/Conv2d_13_pointwise/Relu6"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 7
+    dim: 7
+    dim: 1024
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/MobilenetV1/Conv2d_13_pointwise/convolution_bias"
+  type: FLOAT32
+  shape {
+    dim: 1024
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/MobilenetV1/Conv2d_1_depthwise/Relu6"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 112
+    dim: 112
+    dim: 32
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/MobilenetV1/Conv2d_1_depthwise/depthwise_bias"
+  type: FLOAT32
+  shape {
+    dim: 32
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/MobilenetV1/Conv2d_1_pointwise/Relu6"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 112
+    dim: 112
+    dim: 64
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/MobilenetV1/Conv2d_1_pointwise/convolution_bias"
+  type: FLOAT32
+  shape {
+    dim: 64
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/MobilenetV1/Conv2d_2_depthwise/Relu6"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 56
+    dim: 56
+    dim: 64
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/MobilenetV1/Conv2d_2_depthwise/depthwise_bias"
+  type: FLOAT32
+  shape {
+    dim: 64
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/MobilenetV1/Conv2d_2_pointwise/Relu6"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 56
+    dim: 56
+    dim: 128
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/MobilenetV1/Conv2d_2_pointwise/convolution_bias"
+  type: FLOAT32
+  shape {
+    dim: 128
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/MobilenetV1/Conv2d_3_depthwise/Relu6"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 56
+    dim: 56
+    dim: 128
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/MobilenetV1/Conv2d_3_depthwise/depthwise_bias"
+  type: FLOAT32
+  shape {
+    dim: 128
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/MobilenetV1/Conv2d_3_pointwise/Relu6"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 56
+    dim: 56
+    dim: 128
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/MobilenetV1/Conv2d_3_pointwise/convolution_bias"
+  type: FLOAT32
+  shape {
+    dim: 128
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/MobilenetV1/Conv2d_4_depthwise/Relu6"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 28
+    dim: 28
+    dim: 128
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/MobilenetV1/Conv2d_4_depthwise/depthwise_bias"
+  type: FLOAT32
+  shape {
+    dim: 128
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/MobilenetV1/Conv2d_4_pointwise/Relu6"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 28
+    dim: 28
+    dim: 256
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/MobilenetV1/Conv2d_4_pointwise/convolution_bias"
+  type: FLOAT32
+  shape {
+    dim: 256
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/MobilenetV1/Conv2d_5_depthwise/Relu6"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 28
+    dim: 28
+    dim: 256
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/MobilenetV1/Conv2d_5_depthwise/depthwise_bias"
+  type: FLOAT32
+  shape {
+    dim: 256
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/MobilenetV1/Conv2d_5_pointwise/Relu6"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 28
+    dim: 28
+    dim: 256
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/MobilenetV1/Conv2d_5_pointwise/convolution_bias"
+  type: FLOAT32
+  shape {
+    dim: 256
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/MobilenetV1/Conv2d_6_depthwise/Relu6"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 14
+    dim: 14
+    dim: 256
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/MobilenetV1/Conv2d_6_depthwise/depthwise_bias"
+  type: FLOAT32
+  shape {
+    dim: 256
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/MobilenetV1/Conv2d_6_pointwise/Relu6"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 14
+    dim: 14
+    dim: 512
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/MobilenetV1/Conv2d_6_pointwise/convolution_bias"
+  type: FLOAT32
+  shape {
+    dim: 512
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/MobilenetV1/Conv2d_7_depthwise/Relu6"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 14
+    dim: 14
+    dim: 512
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/MobilenetV1/Conv2d_7_depthwise/depthwise_bias"
+  type: FLOAT32
+  shape {
+    dim: 512
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/MobilenetV1/Conv2d_7_pointwise/Relu6"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 14
+    dim: 14
+    dim: 512
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/MobilenetV1/Conv2d_7_pointwise/convolution_bias"
+  type: FLOAT32
+  shape {
+    dim: 512
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/MobilenetV1/Conv2d_8_depthwise/Relu6"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 14
+    dim: 14
+    dim: 512
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/MobilenetV1/Conv2d_8_depthwise/depthwise_bias"
+  type: FLOAT32
+  shape {
+    dim: 512
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/MobilenetV1/Conv2d_8_pointwise/Relu6"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 14
+    dim: 14
+    dim: 512
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/MobilenetV1/Conv2d_8_pointwise/convolution_bias"
+  type: FLOAT32
+  shape {
+    dim: 512
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/MobilenetV1/Conv2d_9_depthwise/Relu6"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 14
+    dim: 14
+    dim: 512
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/MobilenetV1/Conv2d_9_depthwise/depthwise_bias"
+  type: FLOAT32
+  shape {
+    dim: 512
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/MobilenetV1/Conv2d_9_pointwise/Relu6"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 14
+    dim: 14
+    dim: 512
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/MobilenetV1/Conv2d_9_pointwise/convolution_bias"
+  type: FLOAT32
+  shape {
+    dim: 512
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/Predictions/Reshape"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1001
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/Predictions/Reshape/shape"
+  type: INT32
+  shape {
+    dim: 2
+  }
+  filler {
+    tag: "explicit"
+    arg: "-1"
+    arg: "1001"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/Predictions/Reshape_1"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1001
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "input"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 224
+    dim: 224
+    dim: 3
+  }
+  quant {
+    min: 0
+    max: 255
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operation {
+  type: "Conv2D"
+  input: "input"
+  input: "MobilenetV1/Conv2d_0/weights"
+  input: "MobilenetV1/MobilenetV1/Conv2d_0/convolution_bias"
+  output: "MobilenetV1/MobilenetV1/Conv2d_0/Relu6"
+  conv2d_options {
+    padding: SAME
+    stride_w: 2
+    stride_h: 2
+    activation: RELU6
+    dilation_w_factor: 1
+    dilation_h_factor: 1
+  }
+}
+operation {
+  type: "DepthwiseConv2D"
+  input: "MobilenetV1/MobilenetV1/Conv2d_0/Relu6"
+  input: "MobilenetV1/Conv2d_1_depthwise/depthwise_weights"
+  input: "MobilenetV1/MobilenetV1/Conv2d_1_depthwise/depthwise_bias"
+  output: "MobilenetV1/MobilenetV1/Conv2d_1_depthwise/Relu6"
+  depthwiseconv2d_options {
+    padding: SAME
+    stride_w: 1
+    stride_h: 1
+    depth_multiplier: 1
+    activation: RELU6
+    dilation_w_factor: 1
+    dilation_h_factor: 1
+  }
+}
+operation {
+  type: "Conv2D"
+  input: "MobilenetV1/MobilenetV1/Conv2d_1_depthwise/Relu6"
+  input: "MobilenetV1/Conv2d_1_pointwise/weights"
+  input: "MobilenetV1/MobilenetV1/Conv2d_1_pointwise/convolution_bias"
+  output: "MobilenetV1/MobilenetV1/Conv2d_1_pointwise/Relu6"
+  conv2d_options {
+    padding: SAME
+    stride_w: 1
+    stride_h: 1
+    activation: RELU6
+    dilation_w_factor: 1
+    dilation_h_factor: 1
+  }
+}
+operation {
+  type: "DepthwiseConv2D"
+  input: "MobilenetV1/MobilenetV1/Conv2d_1_pointwise/Relu6"
+  input: "MobilenetV1/Conv2d_2_depthwise/depthwise_weights"
+  input: "MobilenetV1/MobilenetV1/Conv2d_2_depthwise/depthwise_bias"
+  output: "MobilenetV1/MobilenetV1/Conv2d_2_depthwise/Relu6"
+  depthwiseconv2d_options {
+    padding: SAME
+    stride_w: 2
+    stride_h: 2
+    depth_multiplier: 1
+    activation: RELU6
+    dilation_w_factor: 1
+    dilation_h_factor: 1
+  }
+}
+operation {
+  type: "Conv2D"
+  input: "MobilenetV1/MobilenetV1/Conv2d_2_depthwise/Relu6"
+  input: "MobilenetV1/Conv2d_2_pointwise/weights"
+  input: "MobilenetV1/MobilenetV1/Conv2d_2_pointwise/convolution_bias"
+  output: "MobilenetV1/MobilenetV1/Conv2d_2_pointwise/Relu6"
+  conv2d_options {
+    padding: SAME
+    stride_w: 1
+    stride_h: 1
+    activation: RELU6
+    dilation_w_factor: 1
+    dilation_h_factor: 1
+  }
+}
+operation {
+  type: "DepthwiseConv2D"
+  input: "MobilenetV1/MobilenetV1/Conv2d_2_pointwise/Relu6"
+  input: "MobilenetV1/Conv2d_3_depthwise/depthwise_weights"
+  input: "MobilenetV1/MobilenetV1/Conv2d_3_depthwise/depthwise_bias"
+  output: "MobilenetV1/MobilenetV1/Conv2d_3_depthwise/Relu6"
+  depthwiseconv2d_options {
+    padding: SAME
+    stride_w: 1
+    stride_h: 1
+    depth_multiplier: 1
+    activation: RELU6
+    dilation_w_factor: 1
+    dilation_h_factor: 1
+  }
+}
+operation {
+  type: "Conv2D"
+  input: "MobilenetV1/MobilenetV1/Conv2d_3_depthwise/Relu6"
+  input: "MobilenetV1/Conv2d_3_pointwise/weights"
+  input: "MobilenetV1/MobilenetV1/Conv2d_3_pointwise/convolution_bias"
+  output: "MobilenetV1/MobilenetV1/Conv2d_3_pointwise/Relu6"
+  conv2d_options {
+    padding: SAME
+    stride_w: 1
+    stride_h: 1
+    activation: RELU6
+    dilation_w_factor: 1
+    dilation_h_factor: 1
+  }
+}
+operation {
+  type: "DepthwiseConv2D"
+  input: "MobilenetV1/MobilenetV1/Conv2d_3_pointwise/Relu6"
+  input: "MobilenetV1/Conv2d_4_depthwise/depthwise_weights"
+  input: "MobilenetV1/MobilenetV1/Conv2d_4_depthwise/depthwise_bias"
+  output: "MobilenetV1/MobilenetV1/Conv2d_4_depthwise/Relu6"
+  depthwiseconv2d_options {
+    padding: SAME
+    stride_w: 2
+    stride_h: 2
+    depth_multiplier: 1
+    activation: RELU6
+    dilation_w_factor: 1
+    dilation_h_factor: 1
+  }
+}
+operation {
+  type: "Conv2D"
+  input: "MobilenetV1/MobilenetV1/Conv2d_4_depthwise/Relu6"
+  input: "MobilenetV1/Conv2d_4_pointwise/weights"
+  input: "MobilenetV1/MobilenetV1/Conv2d_4_pointwise/convolution_bias"
+  output: "MobilenetV1/MobilenetV1/Conv2d_4_pointwise/Relu6"
+  conv2d_options {
+    padding: SAME
+    stride_w: 1
+    stride_h: 1
+    activation: RELU6
+    dilation_w_factor: 1
+    dilation_h_factor: 1
+  }
+}
+operation {
+  type: "DepthwiseConv2D"
+  input: "MobilenetV1/MobilenetV1/Conv2d_4_pointwise/Relu6"
+  input: "MobilenetV1/Conv2d_5_depthwise/depthwise_weights"
+  input: "MobilenetV1/MobilenetV1/Conv2d_5_depthwise/depthwise_bias"
+  output: "MobilenetV1/MobilenetV1/Conv2d_5_depthwise/Relu6"
+  depthwiseconv2d_options {
+    padding: SAME
+    stride_w: 1
+    stride_h: 1
+    depth_multiplier: 1
+    activation: RELU6
+    dilation_w_factor: 1
+    dilation_h_factor: 1
+  }
+}
+operation {
+  type: "Conv2D"
+  input: "MobilenetV1/MobilenetV1/Conv2d_5_depthwise/Relu6"
+  input: "MobilenetV1/Conv2d_5_pointwise/weights"
+  input: "MobilenetV1/MobilenetV1/Conv2d_5_pointwise/convolution_bias"
+  output: "MobilenetV1/MobilenetV1/Conv2d_5_pointwise/Relu6"
+  conv2d_options {
+    padding: SAME
+    stride_w: 1
+    stride_h: 1
+    activation: RELU6
+    dilation_w_factor: 1
+    dilation_h_factor: 1
+  }
+}
+operation {
+  type: "DepthwiseConv2D"
+  input: "MobilenetV1/MobilenetV1/Conv2d_5_pointwise/Relu6"
+  input: "MobilenetV1/Conv2d_6_depthwise/depthwise_weights"
+  input: "MobilenetV1/MobilenetV1/Conv2d_6_depthwise/depthwise_bias"
+  output: "MobilenetV1/MobilenetV1/Conv2d_6_depthwise/Relu6"
+  depthwiseconv2d_options {
+    padding: SAME
+    stride_w: 2
+    stride_h: 2
+    depth_multiplier: 1
+    activation: RELU6
+    dilation_w_factor: 1
+    dilation_h_factor: 1
+  }
+}
+operation {
+  type: "Conv2D"
+  input: "MobilenetV1/MobilenetV1/Conv2d_6_depthwise/Relu6"
+  input: "MobilenetV1/Conv2d_6_pointwise/weights"
+  input: "MobilenetV1/MobilenetV1/Conv2d_6_pointwise/convolution_bias"
+  output: "MobilenetV1/MobilenetV1/Conv2d_6_pointwise/Relu6"
+  conv2d_options {
+    padding: SAME
+    stride_w: 1
+    stride_h: 1
+    activation: RELU6
+    dilation_w_factor: 1
+    dilation_h_factor: 1
+  }
+}
+operation {
+  type: "DepthwiseConv2D"
+  input: "MobilenetV1/MobilenetV1/Conv2d_6_pointwise/Relu6"
+  input: "MobilenetV1/Conv2d_7_depthwise/depthwise_weights"
+  input: "MobilenetV1/MobilenetV1/Conv2d_7_depthwise/depthwise_bias"
+  output: "MobilenetV1/MobilenetV1/Conv2d_7_depthwise/Relu6"
+  depthwiseconv2d_options {
+    padding: SAME
+    stride_w: 1
+    stride_h: 1
+    depth_multiplier: 1
+    activation: RELU6
+    dilation_w_factor: 1
+    dilation_h_factor: 1
+  }
+}
+operation {
+  type: "Conv2D"
+  input: "MobilenetV1/MobilenetV1/Conv2d_7_depthwise/Relu6"
+  input: "MobilenetV1/Conv2d_7_pointwise/weights"
+  input: "MobilenetV1/MobilenetV1/Conv2d_7_pointwise/convolution_bias"
+  output: "MobilenetV1/MobilenetV1/Conv2d_7_pointwise/Relu6"
+  conv2d_options {
+    padding: SAME
+    stride_w: 1
+    stride_h: 1
+    activation: RELU6
+    dilation_w_factor: 1
+    dilation_h_factor: 1
+  }
+}
+operation {
+  type: "DepthwiseConv2D"
+  input: "MobilenetV1/MobilenetV1/Conv2d_7_pointwise/Relu6"
+  input: "MobilenetV1/Conv2d_8_depthwise/depthwise_weights"
+  input: "MobilenetV1/MobilenetV1/Conv2d_8_depthwise/depthwise_bias"
+  output: "MobilenetV1/MobilenetV1/Conv2d_8_depthwise/Relu6"
+  depthwiseconv2d_options {
+    padding: SAME
+    stride_w: 1
+    stride_h: 1
+    depth_multiplier: 1
+    activation: RELU6
+    dilation_w_factor: 1
+    dilation_h_factor: 1
+  }
+}
+operation {
+  type: "Conv2D"
+  input: "MobilenetV1/MobilenetV1/Conv2d_8_depthwise/Relu6"
+  input: "MobilenetV1/Conv2d_8_pointwise/weights"
+  input: "MobilenetV1/MobilenetV1/Conv2d_8_pointwise/convolution_bias"
+  output: "MobilenetV1/MobilenetV1/Conv2d_8_pointwise/Relu6"
+  conv2d_options {
+    padding: SAME
+    stride_w: 1
+    stride_h: 1
+    activation: RELU6
+    dilation_w_factor: 1
+    dilation_h_factor: 1
+  }
+}
+operation {
+  type: "DepthwiseConv2D"
+  input: "MobilenetV1/MobilenetV1/Conv2d_8_pointwise/Relu6"
+  input: "MobilenetV1/Conv2d_9_depthwise/depthwise_weights"
+  input: "MobilenetV1/MobilenetV1/Conv2d_9_depthwise/depthwise_bias"
+  output: "MobilenetV1/MobilenetV1/Conv2d_9_depthwise/Relu6"
+  depthwiseconv2d_options {
+    padding: SAME
+    stride_w: 1
+    stride_h: 1
+    depth_multiplier: 1
+    activation: RELU6
+    dilation_w_factor: 1
+    dilation_h_factor: 1
+  }
+}
+operation {
+  type: "Conv2D"
+  input: "MobilenetV1/MobilenetV1/Conv2d_9_depthwise/Relu6"
+  input: "MobilenetV1/Conv2d_9_pointwise/weights"
+  input: "MobilenetV1/MobilenetV1/Conv2d_9_pointwise/convolution_bias"
+  output: "MobilenetV1/MobilenetV1/Conv2d_9_pointwise/Relu6"
+  conv2d_options {
+    padding: SAME
+    stride_w: 1
+    stride_h: 1
+    activation: RELU6
+    dilation_w_factor: 1
+    dilation_h_factor: 1
+  }
+}
+operation {
+  type: "DepthwiseConv2D"
+  input: "MobilenetV1/MobilenetV1/Conv2d_9_pointwise/Relu6"
+  input: "MobilenetV1/Conv2d_10_depthwise/depthwise_weights"
+  input: "MobilenetV1/MobilenetV1/Conv2d_10_depthwise/depthwise_bias"
+  output: "MobilenetV1/MobilenetV1/Conv2d_10_depthwise/Relu6"
+  depthwiseconv2d_options {
+    padding: SAME
+    stride_w: 1
+    stride_h: 1
+    depth_multiplier: 1
+    activation: RELU6
+    dilation_w_factor: 1
+    dilation_h_factor: 1
+  }
+}
+operation {
+  type: "Conv2D"
+  input: "MobilenetV1/MobilenetV1/Conv2d_10_depthwise/Relu6"
+  input: "MobilenetV1/Conv2d_10_pointwise/weights"
+  input: "MobilenetV1/MobilenetV1/Conv2d_10_pointwise/convolution_bias"
+  output: "MobilenetV1/MobilenetV1/Conv2d_10_pointwise/Relu6"
+  conv2d_options {
+    padding: SAME
+    stride_w: 1
+    stride_h: 1
+    activation: RELU6
+    dilation_w_factor: 1
+    dilation_h_factor: 1
+  }
+}
+operation {
+  type: "DepthwiseConv2D"
+  input: "MobilenetV1/MobilenetV1/Conv2d_10_pointwise/Relu6"
+  input: "MobilenetV1/Conv2d_11_depthwise/depthwise_weights"
+  input: "MobilenetV1/MobilenetV1/Conv2d_11_depthwise/depthwise_bias"
+  output: "MobilenetV1/MobilenetV1/Conv2d_11_depthwise/Relu6"
+  depthwiseconv2d_options {
+    padding: SAME
+    stride_w: 1
+    stride_h: 1
+    depth_multiplier: 1
+    activation: RELU6
+    dilation_w_factor: 1
+    dilation_h_factor: 1
+  }
+}
+operation {
+  type: "Conv2D"
+  input: "MobilenetV1/MobilenetV1/Conv2d_11_depthwise/Relu6"
+  input: "MobilenetV1/Conv2d_11_pointwise/weights"
+  input: "MobilenetV1/MobilenetV1/Conv2d_11_pointwise/convolution_bias"
+  output: "MobilenetV1/MobilenetV1/Conv2d_11_pointwise/Relu6"
+  conv2d_options {
+    padding: SAME
+    stride_w: 1
+    stride_h: 1
+    activation: RELU6
+    dilation_w_factor: 1
+    dilation_h_factor: 1
+  }
+}
+operation {
+  type: "DepthwiseConv2D"
+  input: "MobilenetV1/MobilenetV1/Conv2d_11_pointwise/Relu6"
+  input: "MobilenetV1/Conv2d_12_depthwise/depthwise_weights"
+  input: "MobilenetV1/MobilenetV1/Conv2d_12_depthwise/depthwise_bias"
+  output: "MobilenetV1/MobilenetV1/Conv2d_12_depthwise/Relu6"
+  depthwiseconv2d_options {
+    padding: SAME
+    stride_w: 2
+    stride_h: 2
+    depth_multiplier: 1
+    activation: RELU6
+    dilation_w_factor: 1
+    dilation_h_factor: 1
+  }
+}
+operation {
+  type: "Conv2D"
+  input: "MobilenetV1/MobilenetV1/Conv2d_12_depthwise/Relu6"
+  input: "MobilenetV1/Conv2d_12_pointwise/weights"
+  input: "MobilenetV1/MobilenetV1/Conv2d_12_pointwise/convolution_bias"
+  output: "MobilenetV1/MobilenetV1/Conv2d_12_pointwise/Relu6"
+  conv2d_options {
+    padding: SAME
+    stride_w: 1
+    stride_h: 1
+    activation: RELU6
+    dilation_w_factor: 1
+    dilation_h_factor: 1
+  }
+}
+operation {
+  type: "DepthwiseConv2D"
+  input: "MobilenetV1/MobilenetV1/Conv2d_12_pointwise/Relu6"
+  input: "MobilenetV1/Conv2d_13_depthwise/depthwise_weights"
+  input: "MobilenetV1/MobilenetV1/Conv2d_13_depthwise/depthwise_bias"
+  output: "MobilenetV1/MobilenetV1/Conv2d_13_depthwise/Relu6"
+  depthwiseconv2d_options {
+    padding: SAME
+    stride_w: 1
+    stride_h: 1
+    depth_multiplier: 1
+    activation: RELU6
+    dilation_w_factor: 1
+    dilation_h_factor: 1
+  }
+}
+operation {
+  type: "Conv2D"
+  input: "MobilenetV1/MobilenetV1/Conv2d_13_depthwise/Relu6"
+  input: "MobilenetV1/Conv2d_13_pointwise/weights"
+  input: "MobilenetV1/MobilenetV1/Conv2d_13_pointwise/convolution_bias"
+  output: "MobilenetV1/MobilenetV1/Conv2d_13_pointwise/Relu6"
+  conv2d_options {
+    padding: SAME
+    stride_w: 1
+    stride_h: 1
+    activation: RELU6
+    dilation_w_factor: 1
+    dilation_h_factor: 1
+  }
+}
+operation {
+  type: "AveragePool2D"
+  input: "MobilenetV1/MobilenetV1/Conv2d_13_pointwise/Relu6"
+  output: "MobilenetV1/Logits/AvgPool_1a/AvgPool"
+  averagepool2d_options {
+    padding: VALID
+    stride_w: 2
+    stride_h: 2
+    filter_width: 7
+    filter_height: 7
+    activation: NONE
+  }
+}
+operation {
+  type: "Conv2D"
+  input: "MobilenetV1/Logits/AvgPool_1a/AvgPool"
+  input: "MobilenetV1/Logits/Conv2d_1c_1x1/weights"
+  input: "MobilenetV1/Logits/Conv2d_1c_1x1/convolution_bias"
+  output: "MobilenetV1/Logits/Conv2d_1c_1x1/BiasAdd"
+  conv2d_options {
+    padding: SAME
+    stride_w: 1
+    stride_h: 1
+    activation: NONE
+    dilation_w_factor: 1
+    dilation_h_factor: 1
+  }
+}
+operation {
+  type: "Reshape"
+  input: "MobilenetV1/Logits/Conv2d_1c_1x1/BiasAdd"
+  input: "MobilenetV1/Predictions/Reshape/shape"
+  output: "MobilenetV1/Predictions/Reshape"
+  reshape_options {
+    new_shape: -1
+    new_shape: 1001
+  }
+}
+operation {
+  type: "Softmax"
+  input: "MobilenetV1/Predictions/Reshape"
+  output: "MobilenetV1/Predictions/Reshape_1"
+  softmax_options {
+    beta: 1
+  }
+}
+input: "input"
+output: "MobilenetV1/Predictions/Reshape_1"

@@ -1,0 +1,544 @@
+operand {
+  name: "InceptionV3/InceptionV3/Conv2d_4a_3x3/Relu"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 71
+    dim: 71
+    dim: 192
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "InceptionV3/InceptionV3/MaxPool_5a_3x3/MaxPool"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 35
+    dim: 35
+    dim: 192
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "InceptionV3/InceptionV3/Mixed_5b/Branch_0/Conv2d_0a_1x1/Conv2D_bias"
+  type: FLOAT32
+  shape {
+    dim: 64
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "InceptionV3/InceptionV3/Mixed_5b/Branch_0/Conv2d_0a_1x1/Relu"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 35
+    dim: 35
+    dim: 64
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "InceptionV3/InceptionV3/Mixed_5b/Branch_1/Conv2d_0a_1x1/Conv2D_bias"
+  type: FLOAT32
+  shape {
+    dim: 48
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "InceptionV3/InceptionV3/Mixed_5b/Branch_1/Conv2d_0a_1x1/Relu"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 35
+    dim: 35
+    dim: 48
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "InceptionV3/InceptionV3/Mixed_5b/Branch_1/Conv2d_0b_5x5/Conv2D_bias"
+  type: FLOAT32
+  shape {
+    dim: 64
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "InceptionV3/InceptionV3/Mixed_5b/Branch_1/Conv2d_0b_5x5/Relu"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 35
+    dim: 35
+    dim: 64
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "InceptionV3/InceptionV3/Mixed_5b/Branch_2/Conv2d_0a_1x1/Conv2D_bias"
+  type: FLOAT32
+  shape {
+    dim: 64
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "InceptionV3/InceptionV3/Mixed_5b/Branch_2/Conv2d_0a_1x1/Relu"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 35
+    dim: 35
+    dim: 64
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "InceptionV3/InceptionV3/Mixed_5b/Branch_2/Conv2d_0b_3x3/Conv2D_bias"
+  type: FLOAT32
+  shape {
+    dim: 96
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "InceptionV3/InceptionV3/Mixed_5b/Branch_2/Conv2d_0b_3x3/Relu"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 35
+    dim: 35
+    dim: 96
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "InceptionV3/InceptionV3/Mixed_5b/Branch_2/Conv2d_0c_3x3/Conv2D_bias"
+  type: FLOAT32
+  shape {
+    dim: 96
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "InceptionV3/InceptionV3/Mixed_5b/Branch_2/Conv2d_0c_3x3/Relu"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 35
+    dim: 35
+    dim: 96
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "InceptionV3/InceptionV3/Mixed_5b/Branch_3/AvgPool_0a_3x3/AvgPool"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 35
+    dim: 35
+    dim: 192
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "InceptionV3/InceptionV3/Mixed_5b/Branch_3/Conv2d_0b_1x1/Conv2D_bias"
+  type: FLOAT32
+  shape {
+    dim: 32
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "InceptionV3/InceptionV3/Mixed_5b/Branch_3/Conv2d_0b_1x1/Relu"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 35
+    dim: 35
+    dim: 32
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "InceptionV3/InceptionV3/Mixed_5b/concat"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 35
+    dim: 35
+    dim: 256
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "InceptionV3/Mixed_5b/Branch_0/Conv2d_0a_1x1/weights"
+  type: FLOAT32
+  shape {
+    dim: 64
+    dim: 1
+    dim: 1
+    dim: 192
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "InceptionV3/Mixed_5b/Branch_1/Conv2d_0a_1x1/weights"
+  type: FLOAT32
+  shape {
+    dim: 48
+    dim: 1
+    dim: 1
+    dim: 192
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "InceptionV3/Mixed_5b/Branch_1/Conv2d_0b_5x5/weights"
+  type: FLOAT32
+  shape {
+    dim: 64
+    dim: 5
+    dim: 5
+    dim: 48
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "InceptionV3/Mixed_5b/Branch_2/Conv2d_0a_1x1/weights"
+  type: FLOAT32
+  shape {
+    dim: 64
+    dim: 1
+    dim: 1
+    dim: 192
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "InceptionV3/Mixed_5b/Branch_2/Conv2d_0b_3x3/weights"
+  type: FLOAT32
+  shape {
+    dim: 96
+    dim: 3
+    dim: 3
+    dim: 64
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "InceptionV3/Mixed_5b/Branch_2/Conv2d_0c_3x3/weights"
+  type: FLOAT32
+  shape {
+    dim: 96
+    dim: 3
+    dim: 3
+    dim: 96
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "InceptionV3/Mixed_5b/Branch_3/Conv2d_0b_1x1/weights"
+  type: FLOAT32
+  shape {
+    dim: 32
+    dim: 1
+    dim: 1
+    dim: 192
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operation {
+  type: "MaxPool2D"
+  input: "InceptionV3/InceptionV3/Conv2d_4a_3x3/Relu"
+  output: "InceptionV3/InceptionV3/MaxPool_5a_3x3/MaxPool"
+  maxpool2d_options {
+    padding: VALID
+    stride_w: 2
+    stride_h: 2
+    filter_width: 3
+    filter_height: 3
+    activation: NONE
+  }
+}
+operation {
+  type: "Conv2D"
+  input: "InceptionV3/InceptionV3/MaxPool_5a_3x3/MaxPool"
+  input: "InceptionV3/Mixed_5b/Branch_0/Conv2d_0a_1x1/weights"
+  input: "InceptionV3/InceptionV3/Mixed_5b/Branch_0/Conv2d_0a_1x1/Conv2D_bias"
+  output: "InceptionV3/InceptionV3/Mixed_5b/Branch_0/Conv2d_0a_1x1/Relu"
+  conv2d_options {
+    padding: SAME
+    stride_w: 1
+    stride_h: 1
+    activation: RELU
+    dilation_w_factor: 1
+    dilation_h_factor: 1
+  }
+}
+operation {
+  type: "Conv2D"
+  input: "InceptionV3/InceptionV3/MaxPool_5a_3x3/MaxPool"
+  input: "InceptionV3/Mixed_5b/Branch_1/Conv2d_0a_1x1/weights"
+  input: "InceptionV3/InceptionV3/Mixed_5b/Branch_1/Conv2d_0a_1x1/Conv2D_bias"
+  output: "InceptionV3/InceptionV3/Mixed_5b/Branch_1/Conv2d_0a_1x1/Relu"
+  conv2d_options {
+    padding: SAME
+    stride_w: 1
+    stride_h: 1
+    activation: RELU
+    dilation_w_factor: 1
+    dilation_h_factor: 1
+  }
+}
+operation {
+  type: "Conv2D"
+  input: "InceptionV3/InceptionV3/Mixed_5b/Branch_1/Conv2d_0a_1x1/Relu"
+  input: "InceptionV3/Mixed_5b/Branch_1/Conv2d_0b_5x5/weights"
+  input: "InceptionV3/InceptionV3/Mixed_5b/Branch_1/Conv2d_0b_5x5/Conv2D_bias"
+  output: "InceptionV3/InceptionV3/Mixed_5b/Branch_1/Conv2d_0b_5x5/Relu"
+  conv2d_options {
+    padding: SAME
+    stride_w: 1
+    stride_h: 1
+    activation: RELU
+    dilation_w_factor: 1
+    dilation_h_factor: 1
+  }
+}
+operation {
+  type: "Conv2D"
+  input: "InceptionV3/InceptionV3/MaxPool_5a_3x3/MaxPool"
+  input: "InceptionV3/Mixed_5b/Branch_2/Conv2d_0a_1x1/weights"
+  input: "InceptionV3/InceptionV3/Mixed_5b/Branch_2/Conv2d_0a_1x1/Conv2D_bias"
+  output: "InceptionV3/InceptionV3/Mixed_5b/Branch_2/Conv2d_0a_1x1/Relu"
+  conv2d_options {
+    padding: SAME
+    stride_w: 1
+    stride_h: 1
+    activation: RELU
+    dilation_w_factor: 1
+    dilation_h_factor: 1
+  }
+}
+operation {
+  type: "Conv2D"
+  input: "InceptionV3/InceptionV3/Mixed_5b/Branch_2/Conv2d_0a_1x1/Relu"
+  input: "InceptionV3/Mixed_5b/Branch_2/Conv2d_0b_3x3/weights"
+  input: "InceptionV3/InceptionV3/Mixed_5b/Branch_2/Conv2d_0b_3x3/Conv2D_bias"
+  output: "InceptionV3/InceptionV3/Mixed_5b/Branch_2/Conv2d_0b_3x3/Relu"
+  conv2d_options {
+    padding: SAME
+    stride_w: 1
+    stride_h: 1
+    activation: RELU
+    dilation_w_factor: 1
+    dilation_h_factor: 1
+  }
+}
+operation {
+  type: "Conv2D"
+  input: "InceptionV3/InceptionV3/Mixed_5b/Branch_2/Conv2d_0b_3x3/Relu"
+  input: "InceptionV3/Mixed_5b/Branch_2/Conv2d_0c_3x3/weights"
+  input: "InceptionV3/InceptionV3/Mixed_5b/Branch_2/Conv2d_0c_3x3/Conv2D_bias"
+  output: "InceptionV3/InceptionV3/Mixed_5b/Branch_2/Conv2d_0c_3x3/Relu"
+  conv2d_options {
+    padding: SAME
+    stride_w: 1
+    stride_h: 1
+    activation: RELU
+    dilation_w_factor: 1
+    dilation_h_factor: 1
+  }
+}
+operation {
+  type: "AveragePool2D"
+  input: "InceptionV3/InceptionV3/MaxPool_5a_3x3/MaxPool"
+  output: "InceptionV3/InceptionV3/Mixed_5b/Branch_3/AvgPool_0a_3x3/AvgPool"
+  averagepool2d_options {
+    padding: SAME
+    stride_w: 1
+    stride_h: 1
+    filter_width: 3
+    filter_height: 3
+    activation: NONE
+  }
+}
+operation {
+  type: "Conv2D"
+  input: "InceptionV3/InceptionV3/Mixed_5b/Branch_3/AvgPool_0a_3x3/AvgPool"
+  input: "InceptionV3/Mixed_5b/Branch_3/Conv2d_0b_1x1/weights"
+  input: "InceptionV3/InceptionV3/Mixed_5b/Branch_3/Conv2d_0b_1x1/Conv2D_bias"
+  output: "InceptionV3/InceptionV3/Mixed_5b/Branch_3/Conv2d_0b_1x1/Relu"
+  conv2d_options {
+    padding: SAME
+    stride_w: 1
+    stride_h: 1
+    activation: RELU
+    dilation_w_factor: 1
+    dilation_h_factor: 1
+  }
+}
+operation {
+  type: "Concatenation"
+  input: "InceptionV3/InceptionV3/Mixed_5b/Branch_0/Conv2d_0a_1x1/Relu"
+  input: "InceptionV3/InceptionV3/Mixed_5b/Branch_1/Conv2d_0b_5x5/Relu"
+  input: "InceptionV3/InceptionV3/Mixed_5b/Branch_2/Conv2d_0c_3x3/Relu"
+  input: "InceptionV3/InceptionV3/Mixed_5b/Branch_3/Conv2d_0b_1x1/Relu"
+  output: "InceptionV3/InceptionV3/Mixed_5b/concat"
+  concatenation_options {
+    axis: 3
+    activation: NONE
+  }
+}
+input: "InceptionV3/InceptionV3/Conv2d_4a_3x3/Relu"
+output: "InceptionV3/InceptionV3/Mixed_5b/concat"

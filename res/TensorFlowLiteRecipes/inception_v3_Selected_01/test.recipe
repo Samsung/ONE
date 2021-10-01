@@ -1,0 +1,82 @@
+operand {
+  name: "InceptionV3/Conv2d_1a_3x3/weights"
+  type: FLOAT32
+  shape {
+    dim: 32
+    dim: 3
+    dim: 3
+    dim: 3
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "InceptionV3/InceptionV3/Conv2d_1a_3x3/Conv2D_bias"
+  type: FLOAT32
+  shape {
+    dim: 32
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "InceptionV3/InceptionV3/Conv2d_1a_3x3/Relu"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 149
+    dim: 149
+    dim: 32
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "input"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 299
+    dim: 299
+    dim: 3
+  }
+  quant {
+    min: 0
+    max: 255
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operation {
+  type: "Conv2D"
+  input: "input"
+  input: "InceptionV3/Conv2d_1a_3x3/weights"
+  input: "InceptionV3/InceptionV3/Conv2d_1a_3x3/Conv2D_bias"
+  output: "InceptionV3/InceptionV3/Conv2d_1a_3x3/Relu"
+  conv2d_options {
+    padding: VALID
+    stride_w: 2
+    stride_h: 2
+    activation: RELU
+    dilation_w_factor: 1
+    dilation_h_factor: 1
+  }
+}
+input: "input"
+output: "InceptionV3/InceptionV3/Conv2d_1a_3x3/Relu"

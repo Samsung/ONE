@@ -1,0 +1,27 @@
+operand {
+  name: "rsqrt"
+  type: FLOAT32
+  shape { dim: 1 dim: 3 dim: 3 dim: 2 }
+}
+operand {
+  name: "sqrt2"
+  type: FLOAT32
+  shape { dim: 1 dim: 3 dim: 3 dim: 2 }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 1 dim: 3 dim: 3 dim: 2 }
+}
+operation {
+  type: "Sqrt"
+  input: "rsqrt"
+  output: "sqrt2"
+}
+operation {
+  type: "Rsqrt"
+  input: "sqrt2"
+  output: "ofm"
+}
+input: "rsqrt"
+output: "ofm"

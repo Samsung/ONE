@@ -1,0 +1,45 @@
+operand {
+  name: "InceptionV3/InceptionV3/Conv2d_2b_3x3/Relu"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 147
+    dim: 147
+    dim: 64
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "InceptionV3/InceptionV3/MaxPool_3a_3x3/MaxPool"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 73
+    dim: 73
+    dim: 64
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operation {
+  type: "MaxPool2D"
+  input: "InceptionV3/InceptionV3/Conv2d_2b_3x3/Relu"
+  output: "InceptionV3/InceptionV3/MaxPool_3a_3x3/MaxPool"
+  maxpool2d_options {
+    padding: VALID
+    stride_w: 2
+    stride_h: 2
+    filter_width: 3
+    filter_height: 3
+    activation: NONE
+  }
+  is_variable: false
+}
+input: "InceptionV3/InceptionV3/Conv2d_2b_3x3/Relu"
+output: "InceptionV3/InceptionV3/MaxPool_3a_3x3/MaxPool"
+

@@ -1,0 +1,229 @@
+operand {
+  name: "MobilenetV1/Conv2d_13_pointwise/weights"
+  type: FLOAT32
+  shape {
+    dim: 1024
+    dim: 1
+    dim: 1
+    dim: 1024
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/Logits/AvgPool_1a/AvgPool"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+    dim: 1
+    dim: 1024
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/Logits/Conv2d_1c_1x1/BiasAdd"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+    dim: 1
+    dim: 1001
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/Logits/Conv2d_1c_1x1/convolution_bias"
+  type: FLOAT32
+  shape {
+    dim: 1001
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/Logits/Conv2d_1c_1x1/weights"
+  type: FLOAT32
+  shape {
+    dim: 1001
+    dim: 1
+    dim: 1
+    dim: 1024
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/MobilenetV1/Conv2d_13_depthwise/Relu6"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 7
+    dim: 7
+    dim: 1024
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/MobilenetV1/Conv2d_13_pointwise/Relu6"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 7
+    dim: 7
+    dim: 1024
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/MobilenetV1/Conv2d_13_pointwise/convolution_bias"
+  type: FLOAT32
+  shape {
+    dim: 1024
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/Predictions/Reshape"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1001
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/Predictions/Reshape/shape"
+  type: INT32
+  shape {
+    dim: 2
+  }
+  filler {
+    tag: "explicit"
+    arg: "-1"
+    arg: "1001"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "MobilenetV1/Predictions/Reshape_1"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1001
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operation {
+  type: "Conv2D"
+  input: "MobilenetV1/MobilenetV1/Conv2d_13_depthwise/Relu6"
+  input: "MobilenetV1/Conv2d_13_pointwise/weights"
+  input: "MobilenetV1/MobilenetV1/Conv2d_13_pointwise/convolution_bias"
+  output: "MobilenetV1/MobilenetV1/Conv2d_13_pointwise/Relu6"
+  conv2d_options {
+    padding: SAME
+    stride_w: 1
+    stride_h: 1
+    activation: RELU6
+    dilation_w_factor: 1
+    dilation_h_factor: 1
+  }
+}
+operation {
+  type: "AveragePool2D"
+  input: "MobilenetV1/MobilenetV1/Conv2d_13_pointwise/Relu6"
+  output: "MobilenetV1/Logits/AvgPool_1a/AvgPool"
+  averagepool2d_options {
+    padding: VALID
+    stride_w: 2
+    stride_h: 2
+    filter_width: 7
+    filter_height: 7
+    activation: NONE
+  }
+}
+operation {
+  type: "Conv2D"
+  input: "MobilenetV1/Logits/AvgPool_1a/AvgPool"
+  input: "MobilenetV1/Logits/Conv2d_1c_1x1/weights"
+  input: "MobilenetV1/Logits/Conv2d_1c_1x1/convolution_bias"
+  output: "MobilenetV1/Logits/Conv2d_1c_1x1/BiasAdd"
+  conv2d_options {
+    padding: SAME
+    stride_w: 1
+    stride_h: 1
+    activation: NONE
+    dilation_w_factor: 1
+    dilation_h_factor: 1
+  }
+}
+operation {
+  type: "Reshape"
+  input: "MobilenetV1/Logits/Conv2d_1c_1x1/BiasAdd"
+  input: "MobilenetV1/Predictions/Reshape/shape"
+  output: "MobilenetV1/Predictions/Reshape"
+  reshape_options {
+    new_shape: -1
+    new_shape: 1001
+  }
+}
+operation {
+  type: "Softmax"
+  input: "MobilenetV1/Predictions/Reshape"
+  output: "MobilenetV1/Predictions/Reshape_1"
+  softmax_options {
+    beta: 1
+  }
+}
+input: "MobilenetV1/MobilenetV1/Conv2d_13_depthwise/Relu6"
+output: "MobilenetV1/Predictions/Reshape_1"
