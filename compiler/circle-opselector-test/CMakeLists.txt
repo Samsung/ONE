@@ -14,11 +14,11 @@ include("test.local.lst" OPTIONAL)
 
 get_target_property(ARTIFACTS_BIN_PATH testDataGenerator BINARY_DIR)
 
-add_test(NAME arg_validity_test
+add_test(NAME circle_opselector_arg_validity_test
   COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/arg_validity_check.sh"
 )
 
-add_test(NAME circle_opselector_test
+add_test(NAME circle_opselector_value_test
   COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/compare_circles.sh"
           "${CIRCLE_ORIGIN}"
           "${CIRCLE_SELECTED}"
