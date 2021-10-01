@@ -28,3 +28,4 @@ Then, output.circle which has node Add_1, Sub_1 and Concat_2 will be created.
 ```
 
 Then, output.circle which except node 1, 2, 3 and 5 will be created.
+Also It can deselect with option `by_name`
