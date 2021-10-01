@@ -5,7 +5,7 @@
 #
 # HOW TO USE
 #
-# ./compare_circle.sh <path/to/bin_dir> <path/to/work_dir> <path/to/venv_dir> <path/to/circle-opselector-dir> <TEST 1> <TEST 2> ...
+# ./value_test.sh <path/to/bin_dir> <path/to/work_dir> <path/to/venv_dir> <path/to/circle-opselector-dir> <TEST 1> <TEST 2> ...
 LUCI_VERIFY_SOURCE_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")"/../luci-value-test/ && pwd)"
 LUCI_VERIFY_SCRIPT_PATH="${LUCI_VERIFY_SOURCE_PATH}/luci_eval_verifier.py"
 BINDIR="$1"; shift
