@@ -2,10 +2,8 @@ unset(CIRCLE_ORIGIN)
 unset(CIRCLE_SELECTED)
 unset(NODES_LIST)
 
-macro(addeval CIRCLE1 CIRCLE2 NODES)
-  list(APPEND CIRCLE_ORIGIN ${CIRCLE1})
-  list(APPEND CIRCLE_SELECTED ${CIRCLE2})
-  list(APPEND NODES_LIST ${NODES})
+macro(addeval NAME)
+  list(APPEND CIRCLE_OPSELECTOR_TEST ${NAME})
 endmacro(addeval)
 
 # Read "test.lst"
@@ -20,7 +18,10 @@ add_test(NAME circle_opselector_arg_validity_test
 
 add_test(NAME circle_opselector_value_test
   COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/compare_circles.sh"
-          "${CIRCLE_ORIGIN}"
-          "${CIRCLE_SELECTED}"
-          "${NODES_LIST}"
+          "${CMAKE_CURRENT_BINARY_DIR}"
+          "${ARTIFACTS_BIN_PATH}"
+          "${NNCC_OVERLAY_DIR}/venv_2_3_0"
+          "$<TARGET_FILE:luci_eval_driver>"
+          "$<TARGET_FILE:circle-opselector>"
+          "${CIRCLE_OPSELECTOR_TEST}"
 )
