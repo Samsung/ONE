@@ -50,7 +50,7 @@ std::unique_ptr<luci::Module> getModule(std::string &input_path)
 
   // Import from input Circle file
   luci::Importer importer;
-  
+
   return importer.importModule(circle_model);
 }
 
@@ -69,4 +69,4 @@ bool exportModule(luci::Module *module, std::string &output_path)
   return true;
 }
 
-}
+} // namespace opselector

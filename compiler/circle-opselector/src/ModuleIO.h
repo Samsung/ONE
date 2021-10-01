@@ -17,13 +17,10 @@
 #ifndef __CIRCLE_OPSELECTOR_MODULEIO_H__
 #define __CIRCLE_OPSELECTOR_MODULEIO_H__
 
-#include <luci/Importer.h>
-
-#include <luci/Importer.h>
-#include <luci/CircleExporter.h>
-
 #include <luci/IR/Module.h>
 
+#include <string>
+#include <memory>
 
 namespace opselector
 {

@@ -244,18 +244,9 @@ int entry(int argc, char **argv)
       auto cnode = loco::must_cast<const luci::CircleNode *>(node);
       std::string node_name = cnode->name();
 
-      try
-      {
-        luci::get_node_id(cnode); // if the node is not operator, throw runtime_error
-
-        for (auto selected_name : by_name)
-          if (selected_name.compare(node_name) == 0) // find the selected id
-            selected_nodes.emplace_back(cnode);
-      }
-      catch (std::runtime_error)
-      {
-        continue;
-      }
+      for (auto selected_name : by_name)
+        if (selected_name.compare(node_name) == 0) // find the selected name
+          selected_nodes.emplace_back(cnode);
     }
   }
   if (selected_nodes.size() == 0)
