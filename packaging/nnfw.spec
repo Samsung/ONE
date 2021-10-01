@@ -3,7 +3,7 @@ Summary: nnfw
 Version: 1.18.0
 Release: 1
 Group:   Development
-License: Apache-2.0 and MIT and BSD-2-Clause
+License: Apache-2.0 and MIT and BSD-2-Clause and MPL-2.0
 
 Source0: %{name}-%{version}.tar.gz
 Source1: %{name}.manifest
