@@ -5,5 +5,5 @@
 #
 # HOW TO USE(Not defined definitely yet)
 #
-# ./arg_validity_check.sh
+# ./arg_validity_test.sh
 exit 0
