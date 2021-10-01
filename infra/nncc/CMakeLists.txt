@@ -101,6 +101,7 @@ option(DOWNLOAD_ONNX "Download ONNX source" ON)
 option(DOWNLOAD_ABSEIL "Download Abseil-cpp source" ON)
 option(DOWNLOAD_OPENCL_HEADERS "Download OpenCl Header source" ON)
 option(DOWNLOAD_PYBIND11 "Download Pybind11 source" ON)
+option(DOWNLOAD_MBEDOS "Download MbedOS source" ON)
 
 option(DOWNLOAD_GTEST "Download Google Test source" ON)
 option(BUILD_GTEST "Build Google Test from the downloaded source" ON)
