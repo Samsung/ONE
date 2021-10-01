@@ -14,14 +14,7 @@
  * limitations under the License.
  */
 
-// #include "OpSelector.h"
-
-#include <foder/FileLoader.h>
-
-#include <luci/Importer.h>
-#include <luci/CircleExporter.h>
-#include <luci/CircleFileExpContract.h>
-#include <luci/Import/CircleReader.h>
+#include "ModuleIO.h"
 
 #include <luci/Profile/CircleNodeID.h>
 
@@ -38,28 +31,38 @@ void print_version(void)
   std::cout << vconone::get_copyright() << std::endl;
 }
 
+/**
+ * @brief  Validation function for user input
+ *
+ * @note   This function checks for inappropriate data in str.
+ *         param str is the tokenized value of the user's input as ','.
+ *         If str has values other than [0-9] and '-' or doesn't have
+ *         data like '', it return false.
+ *         And if str has multiple '-' such as '1--2', '1-2-3',
+ *         or invalid '-' position like '-1', '1-', it return false too.
+ */
 bool check_input(const std::string &str)
 {
-  bool has_hyphen = false;
-
-  if (str.empty())
+  if (str.empty()) // if str is empty, exit.
     return false;
-  if (str.at(0) == '-' || str[str.size() - 1] == '-')
+  if (str.at(0) == '-' || str[str.size() - 1] == '-') // if '-' is inappropriate
   {
     std::cerr << "ERROR: Invalid input. Please make sure - is between the numbers" << std::endl;
     return false;
   }
 
+  bool has_hyphen = false; // '-' check flag. if '-' more than 2 in string, return false.
+
   for (char c : str)
   {
-    if (isdigit(c))
+    if (isdigit(c)) // Make sure the data is in 0-9.
       continue;
     else if (has_hyphen && c == '-') // when user enter '-' more than 2.
     {
       std::cerr << "ERROR: Too many '-' in str." << std::endl;
       return false;
     }
-    else if (c == '-')
+    else if (c == '-') // found first '-' char.
       has_hyphen = true;
     else // when user enter not allowed character, print alert msg.
     {
@@ -71,6 +74,15 @@ bool check_input(const std::string &str)
   return true;
 }
 
+/**
+ * @brief  Segmentation function for user's '--by_id' input
+ *
+ * @note   This function tokenizes the input data.
+ *         First, divide it into ',', and if token has '-', devide it once more into '-'.
+ *         For example, if user input is '12,34,56', it is devided into [12,34,56].
+ *         If input is '1-2,34,56', it is devided into [[1,2],34,56].
+ *         And '-' means range so, if input is '2-7', it means all integer between 2-7.
+ */
 void split_id_input(const std::string &str, std::vector<int> &by_id)
 {
   std::istringstream ss;
@@ -89,8 +101,9 @@ void split_id_input(const std::string &str, std::vector<int> &by_id)
         {
           std::istringstream ss2(str_buf);
           std::string token;
-          int from_to[2], top = 0;
+          int from_to[2], top = 0; // In input '1-5', put 1 in from_to[0], put 5 in from_to[1].
 
+          // Because check_input handle multiple '-' inputs, top is less than 3.
           while (getline(ss2, token, '-'))
             from_to[top++] = stoi(token);
 
@@ -98,13 +111,9 @@ void split_id_input(const std::string &str, std::vector<int> &by_id)
             by_id.push_back(number);
         }
       }
-      catch (std::invalid_argument &error)
-      {
-        std::cerr << "ERROR: Invalid argument. Please make sure your input is number." << std::endl;
-        exit(EXIT_FAILURE);
-      }
       catch (std::out_of_range)
       {
+        // if input is big integer like '123467891234', stoi throw this exception.
         std::cerr << "ERROR: Argument is out of range." << std::endl;
         exit(EXIT_FAILURE);
       }
@@ -197,34 +206,13 @@ int entry(int argc, char **argv)
     split_name_input(operator_input, by_name);
   }
 
-  // Load model from the file
-  foder::FileLoader file_loader{input_path};
-  std::vector<char> model_data = file_loader.load();
+  // Import original circle file.
+  auto module = opselector::getModule(input_path);
 
-  // Verify flatbuffers
-  flatbuffers::Verifier verifier{reinterpret_cast<uint8_t *>(model_data.data()), model_data.size()};
-  if (!circle::VerifyModelBuffer(verifier))
-  {
-    std::cerr << "ERROR: Invalid input file '" << input_path << "'" << std::endl;
-    return EXIT_FAILURE;
-  }
-
-  const circle::Model *circle_model = circle::GetModel(model_data.data());
-  if (circle_model == nullptr)
-  {
-    std::cerr << "ERROR: Failed to load circle '" << input_path << "'" << std::endl;
-    return EXIT_FAILURE;
-  }
-
-  // Import from input Circle file
-  luci::Importer importer;
-  auto module = importer.importModule(circle_model);
-
-  // Select and Import from user input.
-  // auto selector = std::make_unique<opselector::OpSelector>(circle_model);
+  // Select nodes from user input.
   std::vector<const luci::CircleNode *> selected_nodes;
 
-  // put selected nodes into map.
+  // put selected nodes into vector.
   if (by_id.size())
   {
     loco::Graph *graph = module.get()->graph(0); // get main subgraph.
@@ -275,19 +263,10 @@ int entry(int argc, char **argv)
     std::cerr << "ERROR: No operator selected" << std::endl;
     exit(EXIT_FAILURE);
   }
-  // Import selected nodes.
-  // module = selector->select_nodes(selected_nodes); // copy selected nodes and create new module.
+  // TODO implement node selections
 
   // Export to output Circle file
-  luci::CircleExporter exporter;
-
-  luci::CircleFileExpContract contract(module.get(), output_path);
-
-  if (!exporter.invoke(&contract))
-  {
-    std::cerr << "ERROR: Failed to export '" << output_path << "'" << std::endl;
-    return EXIT_FAILURE;
-  }
+  assert(opselector::exportModule(module.get(), output_path));
 
   return 0;
 }
