@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-#include "OpSelector.h"
-
 #include <foder/FileLoader.h>
 
 #include <luci/Importer.h>
@@ -369,10 +367,9 @@ int entry(int argc, char **argv)
     std::cerr << "ERROR: No operator selected" << std::endl;
     exit(EXIT_FAILURE);
   }
-  // Import selected nodes.
-  module = selector->select_nodes(selected_nodes);
+  
+  // TODO implement node selections
 
-  // Export to output Circle file
   luci::CircleExporter exporter;
 
   luci::CircleFileExpContract contract(module.get(), output_path);
