@@ -9,8 +9,8 @@ function(_TensorFlowEigenSource_import)
 
   # Exact version used by TensorFlow v2.3.0.
   # See tensorflow/tensorflow/workspace.bzl.
-  envoption(EXTERNAL_DOWNLOAD_SERVER "https://gitlab.com")
-  envoption(TENSORFLOW_2_3_0_EIGEN_URL ${EXTERNAL_DOWNLOAD_SERVER}/libeigen/eigen/-/archive/386d809bde475c65b7940f290efe80e6a05878c4/eigen-386d809bde475c65b7940f290efe80e6a05878c4.tar.gz)
+  envoption(EXTERNAL_DOWNLOAD_SERVER "https://eigen.googlesource.com")
+  envoption(TENSORFLOW_2_3_0_EIGEN_URL ${EXTERNAL_DOWNLOAD_SERVER}/mirror/+archive/386d809bde475c65b7940f290efe80e6a05878c4.tar.gz)
 
   ExternalSource_Download(EIGEN DIRNAME TENSORFLOW-2.3.0-EIGEN ${TENSORFLOW_2_3_0_EIGEN_URL})
 
