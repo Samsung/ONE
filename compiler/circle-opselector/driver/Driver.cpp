@@ -24,6 +24,10 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <algorithm>
+#include <cctype>
+#include <numeric>
+#include <sstream>
 
 void print_version(void)
 {
@@ -31,43 +35,34 @@ void print_version(void)
   std::cout << vconone::get_copyright() << std::endl;
 }
 
-/**
- * @brief  Validation function for user input
- *
- * @note   This function checks for inappropriate data in str.
- *         param str is the tokenized value of the user's input as ','.
- *         If str has values other than [0-9] and '-' or doesn't have
- *         data like '', it return false.
- *         And if str has multiple '-' such as '1--2', '1-2-3',
- *         or invalid '-' position like '-1', '1-', it return false too.
- */
-bool check_input(const std::string &str)
+std::vector<std::string> split_into_vector(const std::string &str, const char &delim)
 {
-  if (str.empty()) // if str is empty, exit.
-    return false;
-  if (str.at(0) == '-' || str[str.size() - 1] == '-') // if '-' is inappropriate
+  std::vector<std::string> ret;
+  std::istringstream is(str);
+  for (std::string item; std::getline(is, item, delim);)
   {
-    std::cerr << "ERROR: Invalid input. Please make sure - is between the numbers" << std::endl;
-    return false;
+    ret.push_back(item);
   }
 
-  bool has_hyphen = false; // '-' check flag. if '-' more than 2 in string, return false.
+  // remove empty string
+  ret.erase(std::remove_if(ret.begin(), ret.end(), [](const std::string &s) { return s.empty(); }),
+            ret.end());
 
-  for (char c : str)
+  return ret;
+}
+
+bool is_number(const std::string &s)
+{
+  return !s.empty() && std::find_if(s.begin(), s.end(),
+                                    [](unsigned char c) { return !std::isdigit(c); }) == s.end();
+}
+
+bool is_number(const std::vector<std::string> &vec)
+{
+  for (const auto &s : vec)
   {
-    if (isdigit(c)) // Make sure the data is in 0-9.
-      continue;
-    else if (has_hyphen && c == '-') // when user enter '-' more than 2.
+    if (not::is_number(s))
     {
-      std::cerr << "ERROR: Too many '-' in str." << std::endl;
-      return false;
-    }
-    else if (c == '-') // found first '-' char.
-      has_hyphen = true;
-    else // when user enter not allowed character, print alert msg.
-    {
-      std::cerr << "ERROR: To select operator by id, please use these args: [0-9], '-', ','"
-                << std::endl;
       return false;
     }
   }
@@ -77,69 +72,85 @@ bool check_input(const std::string &str)
 /**
  * @brief  Segmentation function for user's '--by_id' input
  *
- * @note   This function tokenizes the input data.
+ * @note   This function tokenizes the input data.s
  *         First, divide it into ',', and if token has '-', devide it once more into '-'.
  *         For example, if user input is '12,34,56', it is devided into [12,34,56].
  *         If input is '1-2,34,56', it is devided into [[1,2],34,56].
  *         And '-' means range so, if input is '2-7', it means all integer between 2-7.
  */
-void split_id_input(const std::string &str, std::vector<int> &by_id)
+std::vector<uint32_t> split_id_input(const std::string &str)
 {
-  std::istringstream ss;
-  ss.str(str);
-  std::string str_buf;
+  std::vector<uint32_t> by_id;
 
-  while (getline(ss, str_buf, ','))
+  // tokize colon-separated string
+  auto colon_tokens = ::split_into_vector(str, ',');
+  if (colon_tokens.empty()) // input empty line like "".
   {
-    if (check_input(str_buf)) // input validation
+    std::cerr << "ERROR: Nothing was entered." << std::endl;
+    exit(EXIT_FAILURE);
+  }
+  for (const auto &ctok : colon_tokens)
+  {
+    auto dash_tokens = ::split_into_vector(ctok, '-');
+    if (not::is_number(dash_tokens))
     {
-      try
-      {
-        if (str_buf.find('-') == std::string::npos) // if token has no '-'
-          by_id.push_back(stoi(str_buf));
-        else // tokenize again by '-'
-        {
-          std::istringstream ss2(str_buf);
-          std::string token;
-          int from_to[2], top = 0; // In input '1-5', put 1 in from_to[0], put 5 in from_to[1].
-
-          // Because check_input handle multiple '-' inputs, top is less than 3.
-          while (getline(ss2, token, '-'))
-            from_to[top++] = stoi(token);
-
-          for (int number = from_to[0]; number <= from_to[1]; number++)
-            by_id.push_back(number);
-        }
-      }
-      catch (std::out_of_range)
-      {
-        // if input is big integer like '123467891234', stoi throw this exception.
-        std::cerr << "ERROR: Argument is out of range." << std::endl;
-        exit(EXIT_FAILURE);
-      }
-      catch (...)
-      {
-        std::cerr << "ERROR: Unknown error" << std::endl;
-        exit(EXIT_FAILURE);
-      }
-    }
-    else // Input validation failed
-    {
-      std::cerr << "ERROR: Input validation failed. Please make sure your input is number."
+      std::cerr << "ERROR: To select operator by id, please use these args: [0-9], '-', ','"
                 << std::endl;
       exit(EXIT_FAILURE);
     }
+    // convert string into integer
+    std::vector<uint32_t> int_tokens;
+    try
+    {
+      std::transform(dash_tokens.begin(), dash_tokens.end(), std::back_inserter(int_tokens),
+                     [](const std::string &str) { return static_cast<uint32_t>(std::stoi(str)); });
+    }
+    catch (const std::out_of_range &)
+    {
+      // if input is big integer like '123467891234', stoi throw this exception.
+      std::cerr << "ERROR: Argument is out of range." << std::endl;
+      exit(EXIT_FAILURE);
+    }
+    catch (...)
+    {
+      std::cerr << "ERROR: Unknown error" << std::endl;
+      exit(EXIT_FAILURE);
+    }
+
+    switch (int_tokens.size())
+    {
+      case 1: // inputs like "1", "2"
+      {
+        by_id.push_back(int_tokens.at(0));
+        break;
+      }
+      case 2: // inputs like "1-2", "11-50"
+      {
+        for (uint32_t i = int_tokens.at(0); i <= int_tokens.at(1); i++)
+        {
+          by_id.push_back(i);
+        }
+        break;
+      }
+      case 0: // inputs like "-"
+      {
+        std::cerr << "ERROR: Nothing was entered" << std::endl;
+        exit(EXIT_FAILURE);
+      }
+      default: // inputs like "1-2-3"
+      {
+        std::cerr << "ERROR: Too many '-' in str." << std::endl;
+        exit(EXIT_FAILURE);
+      }
+    }
   }
+
+  return by_id;
 }
 
-void split_name_input(const std::string &str, std::vector<std::string> &by_name)
+std::vector<std::string> split_name_input(const std::string &str)
 {
-  std::istringstream ss;
-  ss.str(str);
-  std::string str_buf;
-
-  while (getline(ss, str_buf, ','))
-    by_name.push_back(str_buf);
+  return ::split_into_vector(str, ',');
 }
 
 int entry(int argc, char **argv)
@@ -185,7 +196,7 @@ int entry(int argc, char **argv)
 
   std::string operator_input;
 
-  std::vector<int> by_id;
+  std::vector<uint32_t> by_id;
   std::vector<std::string> by_name;
 
   if (!arser["--by_id"] && !arser["--by_name"] || arser["--by_id"] && arser["--by_name"])
@@ -198,12 +209,12 @@ int entry(int argc, char **argv)
   if (arser["--by_id"])
   {
     operator_input = arser.get<std::string>("--by_id");
-    split_id_input(operator_input, by_id);
+    by_id = split_id_input(operator_input);
   }
   if (arser["--by_name"])
   {
     operator_input = arser.get<std::string>("--by_name");
-    split_name_input(operator_input, by_name);
+    by_name = split_name_input(operator_input);
   }
 
   // Import original circle file.
