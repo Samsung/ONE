@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "ModuleIO.h"
+#include "TestHelper.h"
 
 #include <gtest/gtest.h>
 

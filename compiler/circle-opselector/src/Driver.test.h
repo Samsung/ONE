@@ -14,47 +14,13 @@
  * limitations under the License.
  */
 
-#ifndef __CIRCLE_OPSELECTOR_TEST_HELPER_H__
-#define __CIRCLE_OPSELECTOR_TEST_HELPER_H__
+#ifndef __CIRCLE_OPSELECTOR_DRIVER_TEST_H__
+#define __CIRCLE_OPSELECTOR_DRIVER_TEST_H__
 
-#include <string.h>
-
-#include <cassert>
-#include <cstdio>
-#include <vector>
-#include <string>
+#include "TestHelper.h"
 
 int entry(int argc, char **argv);
 bool is_number(const std::string &s);
 std::vector<uint32_t> split_id_input(const std::string &str);
 
-template <size_t N> class Argv
-{
-public:
-  typedef char *pchar_t;
-
-public:
-  ~Argv()
-  {
-    for (size_t n = 0; n < _ptr; ++n)
-      delete _argv[n];
-  }
-
-  void add(const char *in)
-  {
-    assert(_ptr < N);
-    _argv[_ptr] = new char[strlen(in) + 1];
-    strncpy(_argv[_ptr], in, strlen(in) + 1);
-    _ptr++;
-  }
-
-  pchar_t *argv(void) { return _argv; }
-
-private:
-  pchar_t _argv[N] = {
-    nullptr,
-  };
-  size_t _ptr = 0;
-};
-
-#endif // __CIRCLE_OPSELECTOR_TEST_HELPER_H__
+#endif // __CIRCLE_OPSELECTOR_DRIVER_TEST_H__
