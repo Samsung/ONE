@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2021 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,17 +14,13 @@
  * limitations under the License.
  */
 
-#include "TestHelper.h"
+#include "ModuleIO.h"
 
 #include <gtest/gtest.h>
 
-TEST(ModuleIOTest, Export)
+TEST(ModuleIOTest, Export_nullptr)
 {
-  std::string input_path = "../common-artifacts/Part_Sqrt_Rsqrt_002.circle";
   std::string output_path = "./test.out.circle";
 
-  auto module = opselector::getModule(input_path);
-
-  ASSERT_EQ(true, opselector::exportModule(module.get(), output_path));
   ASSERT_EQ(false, opselector::exportModule(nullptr, output_path));
 }

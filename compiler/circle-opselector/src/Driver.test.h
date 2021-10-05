@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2021 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,16 +14,14 @@
  * limitations under the License.
  */
 
-#ifndef __CIRCLE2CIRCLE_TEST_HELPER_H__
-#define __CIRCLE2CIRCLE_TEST_HELPER_H__
+#ifndef __CIRCLE_OPSELECTOR_TEST_HELPER_H__
+#define __CIRCLE_OPSELECTOR_TEST_HELPER_H__
 
-#include <luci/IR/Module.h>
-#include "ModuleIO.h"
+#include <string.h>
 
 #include <cassert>
 #include <cstdio>
 #include <vector>
-#include <string.h>
 #include <string>
 
 int entry(int argc, char **argv);
@@ -59,4 +57,4 @@ private:
   size_t _ptr = 0;
 };
 
-#endif // __CIRCLE2CIRCLE_TEST_HELPER_H__
+#endif // __CIRCLE_OPSELECTOR_TEST_HELPER_H__
