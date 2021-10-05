@@ -103,7 +103,13 @@ function(ExternalSource_Download PREFIX)
 
     message(STATUS "Extract ${PREFIX}")
     execute_process(COMMAND ${CMAKE_COMMAND} -E tar xfz "${DOWNLOAD_PATH}"
+                    RESULT_VARIABLE EXITCODE
                     WORKING_DIRECTORY "${TMP_DIR}")
+
+    if(NOT EXITCODE EQUAL 0)
+      message(FATAL_ERROR "Extract ${PREFIX} - fail")
+    endif(NOT EXITCODE EQUAL 0)
+
     file(REMOVE "${DOWNLOAD_PATH}")
     message(STATUS "Extract ${PREFIX} - done")
 
