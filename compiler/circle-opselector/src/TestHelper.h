@@ -15,15 +15,10 @@
  */
 
 #ifndef __CIRCLE_OPSELECTOR_TEST_HELPER_H__
-#define __CIRCLE2CIRCLE_TEST_HELPER_H__
-
-#include "ModuleIO.h"
+#define __CIRCLE_OPSELECTOR_TEST_HELPER_H__
 
 #include <cassert>
-#include <cstdio>
-#include <vector>
 #include <string.h>
-#include <string>
 
 template <size_t N> class Argv
 {
@@ -54,4 +49,4 @@ private:
   size_t _ptr = 0;
 };
 
-#endif // __CIRCLE2CIRCLE_TEST_HELPER_H__
+#endif // __CIRCLE_OPSELECTOR_TEST_HELPER_H__

@@ -17,7 +17,8 @@
 #ifndef __CIRCLE_OPSELECTOR_DRIVER_TEST_H__
 #define __CIRCLE_OPSELECTOR_DRIVER_TEST_H__
 
-#include "TestHelper.h"
+#include <vector>
+#include <string>
 
 int entry(int argc, char **argv);
 bool is_number(const std::string &s);

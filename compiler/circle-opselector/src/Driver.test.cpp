@@ -15,6 +15,7 @@
  */
 
 #include "Driver.test.h"
+#include "TestHelper.h"
 
 #include <gtest/gtest.h>
 
