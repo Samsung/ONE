@@ -1,6 +1,6 @@
 # circle-opselector
 
-`circle-opselector` is a tool for creating new circle model by various methods to select nodes.
+`circle-opselector` is a tool for creating new circle models by selecting nodes from a model.
 
 ## Example
 

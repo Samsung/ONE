@@ -82,7 +82,7 @@ std::vector<uint32_t> split_id_input(const std::string &str)
 {
   std::vector<uint32_t> by_id;
 
-  // tokize colon-separated string
+  // tokenize colon-separated string
   auto colon_tokens = ::split_into_vector(str, ',');
   if (colon_tokens.empty()) // input empty line like "".
   {
