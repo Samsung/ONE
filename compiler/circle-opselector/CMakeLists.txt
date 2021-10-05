@@ -1,0 +1,36 @@
+set(DRIVER "driver/Driver.cpp")
+
+file(GLOB_RECURSE SOURCES "src/*.cpp")
+file(GLOB_RECURSE TESTS "src/*.test.cpp")
+list(REMOVE_ITEM SOURCES ${TESTS})
+
+add_executable(circle-opselector ${DRIVER} ${SOURCES})
+target_include_directories(circle-opselector PRIVATE src)
+target_link_libraries(circle-opselector foder)
+target_link_libraries(circle-opselector safemain)
+target_link_libraries(circle-opselector loco)
+target_link_libraries(circle-opselector luci_import)
+target_link_libraries(circle-opselector luci_export)
+target_link_libraries(circle-opselector arser)
+target_link_libraries(circle-opselector vconone)
+target_link_libraries(circle-opselector luci_service)
+target_link_libraries(circle-opselector luci_profile)
+
+install(TARGETS circle-opselector DESTINATION bin)
+
+if(NOT ENABLE_TEST)
+  return()
+endif(NOT ENABLE_TEST)
+
+nnas_find_package(GTest REQUIRED)
+
+GTest_AddTest(circle-opselector-test ${TESTS} ${SOURCES} ${DRIVER})
+target_include_directories(circle-opselector-test PRIVATE src)
+target_link_libraries(circle-opselector-test foder)
+target_link_libraries(circle-opselector-test loco)
+target_link_libraries(circle-opselector-test luci_import)
+target_link_libraries(circle-opselector-test luci_export)
+target_link_libraries(circle-opselector-test arser)
+target_link_libraries(circle-opselector-test vconone)
+target_link_libraries(circle-opselector-test luci_service)
+target_link_libraries(circle-opselector-test luci_profile)
