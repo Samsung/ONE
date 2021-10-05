@@ -15,6 +15,7 @@
  */
 
 #include "ModuleIO.h"
+#include "OpSelector.h"
 
 #include <luci/Profile/CircleNodeID.h>
 
@@ -265,7 +266,13 @@ int entry(int argc, char **argv)
     std::cerr << "ERROR: No operator selected" << std::endl;
     exit(EXIT_FAILURE);
   }
-  // TODO implement node selections
+  // Select nodes.
+  // To avoid error, I declare model_data in Driver.cpp
+  // Otherwise 'CircleReader' throw an error when use select_subgraph.
+  std::vector<char> model_data = opselector::getModelData(input_path);
+  auto selector = std::make_unique<opselector::OpSelector>(model_data);
+
+  module = selector.get()->select_nodes(selected_nodes);
 
   // Export to output Circle file
   assert(opselector::exportModule(module.get(), output_path));
