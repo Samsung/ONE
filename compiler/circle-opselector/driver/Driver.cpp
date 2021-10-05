@@ -119,6 +119,11 @@ std::vector<uint32_t> split_id_input(const std::string &str)
 
     switch (int_tokens.size())
     {
+      case 0: // inputs like "-"
+      {
+        std::cerr << "ERROR: Nothing was entered" << std::endl;
+        exit(EXIT_FAILURE);
+      }
       case 1: // inputs like "1", "2"
       {
         by_id.push_back(int_tokens.at(0));
@@ -131,11 +136,6 @@ std::vector<uint32_t> split_id_input(const std::string &str)
           by_id.push_back(i);
         }
         break;
-      }
-      case 0: // inputs like "-"
-      {
-        std::cerr << "ERROR: Nothing was entered" << std::endl;
-        exit(EXIT_FAILURE);
       }
       default: // inputs like "1-2-3"
       {
