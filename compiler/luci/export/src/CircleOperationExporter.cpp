@@ -22,6 +22,8 @@
 #include <luci/IR/CircleNodes.h>
 #include <luci/IR/CircleNodeVisitor.h>
 #include <luci/Profile/CircleNodeOrigin.h>
+#include <luci/Plan/CircleNodeExecutionPlan.h>
+
 #include <luci/UserSettings.h>
 #include <luci/Log.h>
 
@@ -1684,7 +1686,7 @@ void OpExporterLet<OE::CIRC>::visit(luci::CircleInstanceNorm *node)
 }
 
 void exportNode(loco::Node *node, flatbuffers::FlatBufferBuilder &builder, SerializedModelData &md,
-                SerializedGraphData &gd)
+                SerializedGraphData &gd, uint32_t node_position)
 {
   if (auto circle_node = dynamic_cast<luci::CircleNode *>(node))
   {
@@ -1702,6 +1704,20 @@ void exportNode(loco::Node *node, flatbuffers::FlatBufferBuilder &builder, Seria
         md._metadata.add_op_table(node_id, source->id());
       }
     }
+    if (has_execution_plan(circle_node))
+    {
+      // Add to node (in node_position) metadata vector with execution_plan information:
+      // order of execution, and offsets (first go offset of current node
+      // and then offsets of temporary nodes if needed)
+      const auto execution_plan = get_execution_plan(circle_node);
+      std::vector<uint32_t> execution_plan_vector;
+      execution_plan_vector.push_back(execution_plan.order_in_plan());
+      for (auto offset : execution_plan.offsets())
+      {
+        execution_plan_vector.push_back(offset);
+      }
+      md._metadata.add_execution_plan_table(node_position, execution_plan_vector);
+    }
   }
   else
   {
@@ -1717,9 +1733,11 @@ namespace luci
 void exportNodes(loco::Graph *g, FlatBufferBuilder &builder, SerializedModelData &md,
                  SerializedGraphData &gd)
 {
+  uint32_t node_position = 0;
   for (auto node : loco::postorder_traversal(loco::output_nodes(g)))
   {
-    exportNode(node, builder, md, gd);
+    exportNode(node, builder, md, gd, node_position);
+    node_position++;
   }
 }
 

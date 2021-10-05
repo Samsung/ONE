@@ -14,34 +14,14 @@
  * limitations under the License.
  */
 
-#ifndef __LUCI_USER_SETTINGS__
-#define __LUCI_USER_SETTINGS__
-
-// NOTE Revise the logic if we find a better way not using global status
+#ifndef __LUCI_EXECUTION_PLAN_TABLE_H__
+#define __LUCI_EXECUTION_PLAN_TABLE_H__
 
 namespace luci
 {
 
-/**
- * @brief UserSettings provides user settings by key-value
- */
-struct UserSettings
-{
-  enum Key
-  {
-    Undefined,
-    MuteWarnings,
-    DisableValidation,
-    ProfilingDataGen,
-    ExecutionPlanGen,
-  };
-
-  static UserSettings *settings();
-
-  virtual void set(const Key key, bool value) = 0;
-  virtual bool get(const Key key) const = 0;
-};
+using ExecutionPlanTable = std::map<uint32_t, std::vector<uint32_t>>;
 
 } // namespace luci
 
-#endif // __LUCI_USER_SETTINGS__
+#endif // __LUCI_EXECUTION_PLAN_TABLE_H__

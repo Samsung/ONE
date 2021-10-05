@@ -20,6 +20,7 @@
 #include <mio/circle/schema_generated.h>
 
 #include <luci/IR/CircleNodes.h>
+#include <luci/IR/ExecutionPlanTable.h>
 
 #include <vector>
 
@@ -63,13 +64,24 @@ public:
     _op_table.at(node_id).emplace(source_id);
   }
 
+  void add_execution_plan_table(uint32_t node_id,
+                                const std::vector<uint32_t> &execution_plan_inform)
+  {
+    _execution_plan_table[node_id] = execution_plan_inform;
+  }
+
 public:
   const std::vector<uint8_t> encoded_source_table(void);
   const std::vector<uint8_t> encoded_op_table(void);
+  const std::vector<uint8_t> encoded_execution_plan_table(void);
 
 private:
   std::map<uint32_t, std::string> _source_table;
   std::map<uint32_t, std::set<uint32_t>> _op_table;
+  // _exec_plan_table stores for node with node_id order of execution, and offsets:
+  // first go execution order, then offset of current node
+  // and then offsets of temporary nodes if needed
+  luci::ExecutionPlanTable _execution_plan_table;
 };
 
 } // namespace luci

@@ -134,6 +134,55 @@ decoded_op_table(const std::vector<uint8_t> &op_table_data)
   return node_source_ids_map;
 }
 
+// 'execution_plan_table' is decoded to std::map<uint32_t, std::vector<uint32_t>> format.
+const luci::ExecutionPlanTable
+decoded_execution_plan(const std::vector<uint8_t> &execution_plan_data)
+{
+  luci::ExecutionPlanTable execution_plan_table;
+  uint32_t idx = 0;
+
+  if (execution_plan_data.size() < 4)
+    throw std::runtime_error("Op table decode error : invalid entry number");
+
+  uint32_t entry_number = read_u32(execution_plan_data, idx);
+  idx += sizeof(uint32_t);
+
+  while (idx < execution_plan_data.size())
+  {
+    if (idx + 2 * sizeof(uint32_t) > execution_plan_data.size())
+      throw std::runtime_error("Op table decode error : invalid entry item");
+
+    uint32_t id = read_u32(execution_plan_data, idx);
+    idx += sizeof(uint32_t);
+
+    uint32_t size = read_u32(execution_plan_data, idx);
+    idx += sizeof(uint32_t);
+
+    if (idx + sizeof(uint32_t) * size > execution_plan_data.size())
+      throw std::runtime_error("Source table decode error : invalid entry data");
+
+    std::vector<uint32_t> execution_plan_vector;
+    for (uint32_t j = 0; j < size; ++j)
+    {
+      uint32_t execution_plan_inform = read_u32(execution_plan_data, idx);
+      idx += sizeof(uint32_t);
+
+      execution_plan_vector.push_back(execution_plan_inform);
+    }
+
+    if (execution_plan_table.insert({id, execution_plan_vector}).second == false)
+      throw std::runtime_error("Op table decode error : duplicated origin ID");
+  }
+
+  if (idx != execution_plan_data.size())
+    throw std::runtime_error("Op table decode error : data size invalid");
+
+  if (execution_plan_table.size() != entry_number)
+    throw std::runtime_error("Op table decode error : entry number invalid");
+
+  return execution_plan_table;
+}
+
 } // namespace
 
 namespace luci
@@ -153,6 +202,8 @@ CircleImportMetadata::CircleImportMetadata(const luci::CircleReader &reader)
       _op_table = decoded_op_table(buffer);
     else if (meta.name.compare("ONE_source_table") == 0)
       _source_table = decoded_source_table(buffer);
+    else if (meta.name.compare("ONE_execution_plan_table") == 0)
+      _execution_plan_table = decoded_execution_plan(buffer);
   }
 }
 
