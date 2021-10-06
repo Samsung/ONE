@@ -267,8 +267,7 @@ int entry(int argc, char **argv)
     exit(EXIT_FAILURE);
   }
   // Select nodes.
-  // To avoid error, I declare model_data in Driver.cpp
-  // Otherwise 'CircleReader' throw an error when use select_subgraph.
+  // model_data is used to prevent error when calling select_subgraph()
   std::vector<char> model_data = opselector::getModelData(input_path);
   auto selector = std::make_unique<opselector::OpSelector>(model_data);
 

@@ -27,6 +27,7 @@
 namespace opselector
 {
 
+// return circle model data.
 std::vector<char> getModelData(std::string &input_path)
 {
   // Load model from the file
@@ -46,7 +47,6 @@ std::vector<char> getModelData(std::string &input_path)
 
 std::unique_ptr<luci::Module> getModule(std::string &input_path)
 {
-  // Load model
   std::vector<char> model_data = getModelData(input_path);
 
   const circle::Model *circle_model = circle::GetModel(model_data.data());

@@ -25,12 +25,19 @@
 
 namespace luci
 {
+
 void post_import_graph(luci::Module *module, const luci::CircleReader &reader);
+
 }
 
 namespace opselector
 {
 
+/**
+ * @brief  OpSelector creates a new graph consisting of the selected nodes.
+ *
+ * @note   It find graph's input and output node, and build graph.
+ */
 class OpSelector
 {
 public:
@@ -39,9 +46,9 @@ public:
   ~OpSelector() = default;
 
 public:
-  void check_connected(std::vector<const luci::CircleNode *> &selected_nodes,
-                       std::set<uint32_t> &used_output_tensors, std::set<uint32_t> &graph_inputs,
-                       std::set<uint32_t> &graph_outputs);
+  void find_unconnected_nodes(std::vector<const luci::CircleNode *> &selected_nodes,
+                              std::set<uint32_t> &used_output_tensors,
+                              std::set<uint32_t> &graph_inputs, std::set<uint32_t> &graph_outputs);
   void print_selected_nodes(std::vector<const luci::CircleNode *> selected_nodes);
   std::unique_ptr<luci::Module> select_nodes(std::vector<const luci::CircleNode *> selected_nodes);
 
@@ -54,7 +61,6 @@ private:
 
 private:
   luci::CircleReader _reader;
-  const circle::Model *_src_model;
   bool _has_subgraph = false; // A flag indicating whether to copy the subgraph or not,
 };
 

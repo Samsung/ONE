@@ -39,10 +39,10 @@
 namespace opselector
 {
 
-void OpSelector::check_connected(std::vector<const luci::CircleNode *> &selected_nodes,
-                                 std::set<uint32_t> &used_output_tensors,
-                                 std::set<uint32_t> &graph_inputs,
-                                 std::set<uint32_t> &graph_outputs)
+void OpSelector::find_unconnected_nodes(std::vector<const luci::CircleNode *> &selected_nodes,
+                                        std::set<uint32_t> &used_output_tensors,
+                                        std::set<uint32_t> &graph_inputs,
+                                        std::set<uint32_t> &graph_outputs)
 {
   const auto &operators = _reader.operators();
 
@@ -53,11 +53,17 @@ void OpSelector::check_connected(std::vector<const luci::CircleNode *> &selected
 
   // enroll all output nodes.
   for (auto &op : operators)
+  {
     for (auto output : op.get()->outputs)
+    {
       used_output_tensors.insert(output);
+    }
+  }
 
   for (auto input : _reader.inputs()) // graph's input must not have preceding node.
+  {
     used_output_tensors.insert(input);
+  }
 
   // select operators.
   for (auto cnode : selected_nodes)
@@ -78,9 +84,13 @@ void OpSelector::check_connected(std::vector<const luci::CircleNode *> &selected
   for (auto op : selected_operators)
   {
     for (auto input : op->inputs)
+    {
       selected_input_tensors.insert(input);
+    }
     for (auto output : op->outputs)
+    {
       selected_output_tensors.insert(output);
+    }
   }
   // find and add unconnected node's output
   for (auto op : selected_operators)
@@ -88,12 +98,20 @@ void OpSelector::check_connected(std::vector<const luci::CircleNode *> &selected
     bool output_connected = false;
 
     for (auto output : op->outputs) // check connection
+    {
       if (selected_input_tensors.find(output) != selected_input_tensors.end())
+      {
         output_connected = true;
+      }
+    }
 
     if (not output_connected) // if not connected other selected nodes, add all outputs
+    {
       for (auto output : op->outputs)
+      {
         graph_outputs.insert(output);
+      }
+    }
   }
   // find and add unconnected node's input
   for (auto op : selected_operators)
@@ -104,7 +122,9 @@ void OpSelector::check_connected(std::vector<const luci::CircleNode *> &selected
     {
       graph_inputs.insert(input);
       if (selected_output_tensors.find(input) != selected_output_tensors.end())
+      {
         graph_inputs.erase(input);
+      }
     }
   }
 }
@@ -124,12 +144,16 @@ void OpSelector::print_selected_nodes(std::vector<const luci::CircleNode *> sele
               << " ==============" << std::endl;
     std::cout << "    <INPUT>" << std::endl;
     for (auto node : operators[node_id].get()->inputs)
+    {
       std::cout << "id: " << node << " "
                 << "input: " << tensors[node]->name << std::endl;
+    }
     std::cout << "    <OUTPUT>" << std::endl;
     for (auto node : operators[node_id].get()->outputs)
+    {
       std::cout << "id: " << node << " "
                 << "output: " << tensors[node]->name << std::endl;
+    }
     std::cout << std::endl;
   }
 }
@@ -176,9 +200,13 @@ void OpSelector::create_graph_inputs(luci::GraphBuilderContext &gb_context, uint
   luci::copy_tensor_attributes(tensor, input_node);
 
   if (tensors_ptr->Get(input)->shape() == nullptr)
+  {
     input_node->shape_status(luci::ShapeStatus::NOSHAPE);
+  }
   else
+  {
     input_node->shape_status(luci::ShapeStatus::VALID);
+  }
 
   nodefinder->enroll(input, input_node);
 
@@ -205,9 +233,13 @@ void OpSelector::create_graph_inputs(luci::GraphBuilderContext &gb_context, uint
   for (uint32_t r = 0; r < input_dims.size(); ++r)
   {
     if (tensor.shape_signature.size() > 0 && tensor.shape_signature.at(r) == -1)
+    {
       input_shape->dim(r).unset();
+    }
     else
+    {
       input_shape->dim(r).set(input_dims[r]);
+    }
   }
   graph_input->shape(std::move(input_shape));
 }
@@ -223,7 +255,9 @@ void OpSelector::create_circle_const(luci::GraphBuilderContext &gb_context)
   {
     luci::CircleConst *const_node = luci::create_circleconst(&gb_context, i);
     if (const_node != nullptr)
+    {
       nodefinder->enroll(i, const_node);
+    }
   }
 }
 
@@ -277,7 +311,9 @@ void OpSelector::create_graph_outputs(luci::GraphBuilderContext &gb_context, uin
   assert(output_node != nullptr);
   auto output_from = nodefinder->node(output);
   if (output_from != nullptr)
+  {
     output_node->from(output_from);
+  }
   else
   {
     // NOTE loco::Graph requires all input node(s) to a node should exist.
@@ -289,9 +325,13 @@ void OpSelector::create_graph_outputs(luci::GraphBuilderContext &gb_context, uin
 
     luci::copy_tensor_attributes(tensor, output_dummy);
     if (tensors_ptr->Get(output)->shape() == nullptr)
+    {
       output_dummy->shape_status(luci::ShapeStatus::NOSHAPE);
+    }
     else
+    {
       output_dummy->shape_status(luci::ShapeStatus::VALID);
+    }
   }
 
   // set the graph output name and node object
@@ -315,9 +355,13 @@ void OpSelector::create_graph_outputs(luci::GraphBuilderContext &gb_context, uin
   for (uint32_t r = 0; r < output_dims.size(); ++r)
   {
     if (tensor.shape_signature.size() > 0 && tensor.shape_signature.at(r) == -1)
+    {
       output_shape->dim(r).unset();
+    }
     else
+    {
       output_shape->dim(r).set(output_dims[r]);
+    }
   }
   graph_output->shape(std::move(output_shape));
 
@@ -356,16 +400,22 @@ OpSelector::select_nodes(std::vector<const luci::CircleNode *> selected_nodes)
       build_cache_outputs(gb_context);
 
       for (auto input : graph_inputs)
+      {
         if (used_output_tensors.find(input) !=
             used_output_tensors.end()) // if it is virtual node, never used before.
+        {
           create_graph_inputs(gb_context, input);
+        }
+      }
 
       create_circle_const(gb_context);
 
       import_operators(gb_context);
 
       for (auto output : graph_outputs)
+      {
         create_graph_outputs(gb_context, output);
+      }
 
       module->add(std::move(graph)); // add graph in module
     }
@@ -375,14 +425,18 @@ OpSelector::select_nodes(std::vector<const luci::CircleNode *> selected_nodes)
       build_cache_outputs(gb_context);
 
       for (const auto input : _reader.inputs())
+      {
         create_graph_inputs(gb_context, input);
+      }
 
       create_circle_const(gb_context);
 
       import_operators(gb_context);
 
       for (auto output : _reader.outputs())
+      {
         create_graph_outputs(gb_context, output);
+      }
 
       module->add(std::move(graph)); // add graph in module
     }
