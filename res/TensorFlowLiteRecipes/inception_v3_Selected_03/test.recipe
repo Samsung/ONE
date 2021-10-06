@@ -10,7 +10,6 @@ operand {
   quant {
     quantized_dimension: 0
   }
-  is_variable: false
 }
 operand {
   name: "InceptionV3/InceptionV3/MaxPool_5a_3x3/MaxPool"
@@ -24,7 +23,6 @@ operand {
   quant {
     quantized_dimension: 0
   }
-  is_variable: false
 }
 operand {
   name: "InceptionV3/InceptionV3/Mixed_5b/Branch_0/Conv2d_0a_1x1/Conv2D_bias"
@@ -33,14 +31,13 @@ operand {
     dim: 64
   }
   filler {
-    tag: "gaussian"
+    tag: "explicit"
     arg: "0.0"
     arg: "0.1"
   }
   quant {
     quantized_dimension: 0
   }
-  is_variable: false
 }
 operand {
   name: "InceptionV3/InceptionV3/Mixed_5b/Branch_0/Conv2d_0a_1x1/Relu"
@@ -54,7 +51,6 @@ operand {
   quant {
     quantized_dimension: 0
   }
-  is_variable: false
 }
 operand {
   name: "InceptionV3/InceptionV3/Mixed_5b/Branch_1/Conv2d_0a_1x1/Conv2D_bias"
@@ -63,14 +59,13 @@ operand {
     dim: 48
   }
   filler {
-    tag: "gaussian"
+    tag: "explicit"
     arg: "0.0"
     arg: "0.1"
   }
   quant {
     quantized_dimension: 0
   }
-  is_variable: false
 }
 operand {
   name: "InceptionV3/InceptionV3/Mixed_5b/Branch_1/Conv2d_0a_1x1/Relu"
@@ -84,7 +79,6 @@ operand {
   quant {
     quantized_dimension: 0
   }
-  is_variable: false
 }
 operand {
   name: "InceptionV3/InceptionV3/Mixed_5b/Branch_1/Conv2d_0b_5x5/Conv2D_bias"
@@ -93,14 +87,13 @@ operand {
     dim: 64
   }
   filler {
-    tag: "gaussian"
+    tag: "explicit"
     arg: "0.0"
     arg: "0.1"
   }
   quant {
     quantized_dimension: 0
   }
-  is_variable: false
 }
 operand {
   name: "InceptionV3/InceptionV3/Mixed_5b/Branch_1/Conv2d_0b_5x5/Relu"
@@ -114,7 +107,6 @@ operand {
   quant {
     quantized_dimension: 0
   }
-  is_variable: false
 }
 operand {
   name: "InceptionV3/InceptionV3/Mixed_5b/Branch_2/Conv2d_0a_1x1/Conv2D_bias"
@@ -123,14 +115,13 @@ operand {
     dim: 64
   }
   filler {
-    tag: "gaussian"
+    tag: "explicit"
     arg: "0.0"
     arg: "0.1"
   }
   quant {
     quantized_dimension: 0
   }
-  is_variable: false
 }
 operand {
   name: "InceptionV3/InceptionV3/Mixed_5b/Branch_2/Conv2d_0a_1x1/Relu"
@@ -144,7 +135,6 @@ operand {
   quant {
     quantized_dimension: 0
   }
-  is_variable: false
 }
 operand {
   name: "InceptionV3/InceptionV3/Mixed_5b/Branch_2/Conv2d_0b_3x3/Conv2D_bias"
@@ -153,14 +143,13 @@ operand {
     dim: 96
   }
   filler {
-    tag: "gaussian"
+    tag: "explicit"
     arg: "0.0"
     arg: "0.1"
   }
   quant {
     quantized_dimension: 0
   }
-  is_variable: false
 }
 operand {
   name: "InceptionV3/InceptionV3/Mixed_5b/Branch_2/Conv2d_0b_3x3/Relu"
@@ -174,7 +163,6 @@ operand {
   quant {
     quantized_dimension: 0
   }
-  is_variable: false
 }
 operand {
   name: "InceptionV3/InceptionV3/Mixed_5b/Branch_2/Conv2d_0c_3x3/Conv2D_bias"
@@ -183,14 +171,13 @@ operand {
     dim: 96
   }
   filler {
-    tag: "gaussian"
+    tag: "explicit"
     arg: "0.0"
     arg: "0.1"
   }
   quant {
     quantized_dimension: 0
   }
-  is_variable: false
 }
 operand {
   name: "InceptionV3/InceptionV3/Mixed_5b/Branch_2/Conv2d_0c_3x3/Relu"
@@ -204,7 +191,6 @@ operand {
   quant {
     quantized_dimension: 0
   }
-  is_variable: false
 }
 operand {
   name: "InceptionV3/InceptionV3/Mixed_5b/Branch_3/AvgPool_0a_3x3/AvgPool"
@@ -218,7 +204,6 @@ operand {
   quant {
     quantized_dimension: 0
   }
-  is_variable: false
 }
 operand {
   name: "InceptionV3/InceptionV3/Mixed_5b/Branch_3/Conv2d_0b_1x1/Conv2D_bias"
@@ -227,14 +212,13 @@ operand {
     dim: 32
   }
   filler {
-    tag: "gaussian"
+    tag: "explicit"
     arg: "0.0"
     arg: "0.1"
   }
   quant {
     quantized_dimension: 0
   }
-  is_variable: false
 }
 operand {
   name: "InceptionV3/InceptionV3/Mixed_5b/Branch_3/Conv2d_0b_1x1/Relu"
@@ -248,7 +232,6 @@ operand {
   quant {
     quantized_dimension: 0
   }
-  is_variable: false
 }
 operand {
   name: "InceptionV3/InceptionV3/Mixed_5b/concat"
@@ -262,7 +245,6 @@ operand {
   quant {
     quantized_dimension: 0
   }
-  is_variable: false
 }
 operand {
   name: "InceptionV3/Mixed_5b/Branch_0/Conv2d_0a_1x1/weights"
@@ -274,14 +256,13 @@ operand {
     dim: 192
   }
   filler {
-    tag: "gaussian"
+    tag: "explicit"
     arg: "0.0"
     arg: "0.1"
   }
   quant {
     quantized_dimension: 0
   }
-  is_variable: false
 }
 operand {
   name: "InceptionV3/Mixed_5b/Branch_1/Conv2d_0a_1x1/weights"
@@ -293,14 +274,13 @@ operand {
     dim: 192
   }
   filler {
-    tag: "gaussian"
+    tag: "explicit"
     arg: "0.0"
     arg: "0.1"
   }
   quant {
     quantized_dimension: 0
   }
-  is_variable: false
 }
 operand {
   name: "InceptionV3/Mixed_5b/Branch_1/Conv2d_0b_5x5/weights"
@@ -312,14 +292,13 @@ operand {
     dim: 48
   }
   filler {
-    tag: "gaussian"
+    tag: "explicit"
     arg: "0.0"
     arg: "0.1"
   }
   quant {
     quantized_dimension: 0
   }
-  is_variable: false
 }
 operand {
   name: "InceptionV3/Mixed_5b/Branch_2/Conv2d_0a_1x1/weights"
@@ -331,14 +310,13 @@ operand {
     dim: 192
   }
   filler {
-    tag: "gaussian"
+    tag: "explicit"
     arg: "0.0"
     arg: "0.1"
   }
   quant {
     quantized_dimension: 0
   }
-  is_variable: false
 }
 operand {
   name: "InceptionV3/Mixed_5b/Branch_2/Conv2d_0b_3x3/weights"
@@ -350,14 +328,13 @@ operand {
     dim: 64
   }
   filler {
-    tag: "gaussian"
+    tag: "explicit"
     arg: "0.0"
     arg: "0.1"
   }
   quant {
     quantized_dimension: 0
   }
-  is_variable: false
 }
 operand {
   name: "InceptionV3/Mixed_5b/Branch_2/Conv2d_0c_3x3/weights"
@@ -369,14 +346,13 @@ operand {
     dim: 96
   }
   filler {
-    tag: "gaussian"
+    tag: "explicit"
     arg: "0.0"
     arg: "0.1"
   }
   quant {
     quantized_dimension: 0
   }
-  is_variable: false
 }
 operand {
   name: "InceptionV3/Mixed_5b/Branch_3/Conv2d_0b_1x1/weights"
@@ -388,14 +364,13 @@ operand {
     dim: 192
   }
   filler {
-    tag: "gaussian"
+    tag: "explicit"
     arg: "0.0"
     arg: "0.1"
   }
   quant {
     quantized_dimension: 0
   }
-  is_variable: false
 }
 operation {
   type: "MaxPool2D"

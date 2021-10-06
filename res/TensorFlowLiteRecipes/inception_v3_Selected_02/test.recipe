@@ -10,7 +10,6 @@ operand {
   quant {
     quantized_dimension: 0
   }
-  is_variable: false
 }
 operand {
   name: "InceptionV3/InceptionV3/MaxPool_3a_3x3/MaxPool"
@@ -24,7 +23,6 @@ operand {
   quant {
     quantized_dimension: 0
   }
-  is_variable: false
 }
 operation {
   type: "MaxPool2D"
@@ -38,7 +36,6 @@ operation {
     filter_height: 3
     activation: NONE
   }
-  is_variable: false
 }
 input: "InceptionV3/InceptionV3/Conv2d_2b_3x3/Relu"
 output: "InceptionV3/InceptionV3/MaxPool_3a_3x3/MaxPool"

@@ -8,7 +8,7 @@ operand {
     dim: 32
   }
   filler {
-    tag: "gaussian"
+    tag: "explicit"
     arg: "0.0"
     arg: "0.1"
   }
@@ -27,7 +27,7 @@ operand {
     dim: 32
   }
   filler {
-    tag: "gaussian"
+    tag: "explicit"
     arg: "0.0"
     arg: "0.1"
   }
@@ -46,7 +46,7 @@ operand {
     dim: 64
   }
   filler {
-    tag: "gaussian"
+    tag: "explicit"
     arg: "0.0"
     arg: "0.1"
   }
@@ -65,7 +65,7 @@ operand {
     dim: 64
   }
   filler {
-    tag: "gaussian"
+    tag: "explicit"
     arg: "0.0"
     arg: "0.1"
   }
@@ -109,7 +109,7 @@ operand {
     dim: 32
   }
   filler {
-    tag: "gaussian"
+    tag: "explicit"
     arg: "0.0"
     arg: "0.1"
   }
@@ -139,7 +139,7 @@ operand {
     dim: 64
   }
   filler {
-    tag: "gaussian"
+    tag: "explicit"
     arg: "0.0"
     arg: "0.1"
   }
@@ -169,7 +169,7 @@ operand {
     dim: 64
   }
   filler {
-    tag: "gaussian"
+    tag: "explicit"
     arg: "0.0"
     arg: "0.1"
   }
@@ -199,7 +199,7 @@ operand {
     dim: 128
   }
   filler {
-    tag: "gaussian"
+    tag: "explicit"
     arg: "0.0"
     arg: "0.1"
   }

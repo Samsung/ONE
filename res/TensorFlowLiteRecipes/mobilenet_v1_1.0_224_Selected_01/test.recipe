@@ -8,7 +8,7 @@ operand {
     dim: 1024
   }
   filler {
-    tag: "gaussian"
+    tag: "explicit"
     arg: "0.0"
     arg: "0.1"
   }
@@ -52,7 +52,7 @@ operand {
     dim: 1001
   }
   filler {
-    tag: "gaussian"
+    tag: "explicit"
     arg: "0.0"
     arg: "0.1"
   }
@@ -71,7 +71,7 @@ operand {
     dim: 1024
   }
   filler {
-    tag: "gaussian"
+    tag: "explicit"
     arg: "0.0"
     arg: "0.1"
   }
@@ -115,7 +115,7 @@ operand {
     dim: 1024
   }
   filler {
-    tag: "gaussian"
+    tag: "explicit"
     arg: "0.0"
     arg: "0.1"
   }

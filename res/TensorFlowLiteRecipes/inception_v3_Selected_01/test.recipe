@@ -8,14 +8,13 @@ operand {
     dim: 3
   }
   filler {
-    tag: "gaussian"
+    tag: "explicit"
     arg: "0.0"
     arg: "0.1"
   }
   quant {
     quantized_dimension: 0
   }
-  is_variable: false
 }
 operand {
   name: "InceptionV3/InceptionV3/Conv2d_1a_3x3/Conv2D_bias"
@@ -24,14 +23,13 @@ operand {
     dim: 32
   }
   filler {
-    tag: "gaussian"
+    tag: "explicit"
     arg: "0.0"
     arg: "0.1"
   }
   quant {
     quantized_dimension: 0
   }
-  is_variable: false
 }
 operand {
   name: "InceptionV3/InceptionV3/Conv2d_1a_3x3/Relu"
@@ -45,7 +43,6 @@ operand {
   quant {
     quantized_dimension: 0
   }
-  is_variable: false
 }
 operand {
   name: "input"
@@ -61,7 +58,6 @@ operand {
     max: 255
     quantized_dimension: 0
   }
-  is_variable: false
 }
 operation {
   type: "Conv2D"
