@@ -311,7 +311,7 @@ Offset<OperatorCodeLink>::Offset(FlatBufBuilder &fb, const TFLFlatBufVec *tflite
 }
 
 CircleModel::CircleModel(FlatBufBuilder &fb, TFLModel &model)
-  : _version{0}, _description{fb->CreateString("nnpackage")}, _fb{fb}
+  : _version{0}, _description{fb->CreateString("ONE-tflite2circle")}, _fb{fb}
 {
   const tflite::Model *tfl_model = model.load_model();
   // verify flatbuffers
