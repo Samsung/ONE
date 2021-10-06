@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+#include <cassert>
 #include <iostream>
 #include <memory>
 
@@ -278,6 +279,17 @@ Offset<SubGraphLink>::Offset(FlatBufBuilder &fb, const TFLFlatBufVec *tflite_fla
   _circle_flatbuffer_vec_offset = fb->CreateVector(subgprahs_vec);
 }
 
+tflite::BuiltinOperator builtin_code_neutral(const tflite::OperatorCode *opcode)
+{
+  assert(opcode != nullptr);
+  int8_t dp_code = opcode->deprecated_builtin_code();
+  // 127 is max of int8_t which is upper bound of v3 builtin_code
+  // NOTE TensorFlow uses 'BuiltinOperator_PLACEHOLDER_FOR_GREATER_OP_CODES' for 127
+  if (dp_code < 127 && dp_code >= 0)
+    return tflite::BuiltinOperator(dp_code);
+  return opcode->builtin_code();
+}
+
 template <>
 Offset<OperatorCodeLink>::Offset(FlatBufBuilder &fb, const TFLFlatBufVec *tflite_flatbuffer_vec)
 {
@@ -287,7 +299,9 @@ Offset<OperatorCodeLink>::Offset(FlatBufBuilder &fb, const TFLFlatBufVec *tflite
   {
     auto custom_code = fb->CreateString(it->custom_code());
     circle::OperatorCodeBuilder operator_code_builder{*fb};
-    operator_code_builder.add_builtin_code(get_circle_builtin_code(it->builtin_code()));
+    // TODO support circle deprecated_builtin_code
+    auto bt_code = builtin_code_neutral(it);
+    operator_code_builder.add_builtin_code(get_circle_builtin_code(bt_code));
     operator_code_builder.add_custom_code(custom_code);
     operator_code_builder.add_version(it->version());
     auto code = operator_code_builder.Finish();
