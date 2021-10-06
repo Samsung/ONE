@@ -42,7 +42,7 @@ public:
   }
 
 public:
-  luci::CircleNodeExecutionPlan execution_plan(void) const { return _execution_plan; }
+  const luci::CircleNodeExecutionPlan &execution_plan(void) const { return _execution_plan; }
   // No setter
 
 private:

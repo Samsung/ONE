@@ -42,7 +42,7 @@ public:
   void offsets(const std::vector<uint32_t> &offsets) { _offsets = offsets; }
 
 private:
-  uint32_t _order_in_plan;
+  uint32_t _order_in_plan = 0;
   std::vector<uint32_t> _offsets;
 };
 
