@@ -36,6 +36,7 @@ using TFliteOperators_t = flatbuffers::Vector<flatbuffers::Offset<tflite::Operat
 
 const char *tensor_type(const tflite::Tensor *tensor);
 const char *tensor_name(const tflite::Tensor *tensor);
+tflite::BuiltinOperator builtin_code_neutral(const tflite::OperatorCode *opcode);
 bool is_valid(const tflite::OperatorCode *opcode);
 bool is_custom(const tflite::OperatorCode *opcode);
 
