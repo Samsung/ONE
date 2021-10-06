@@ -16,21 +16,30 @@
 
 #include "Reader.h"
 
+#include <cassert>
 #include <sstream>
 #include <string>
 
 namespace tflinspect
 {
 
+// This will provide v3/v3a format neutral BuiltinOperator
+tflite::BuiltinOperator builtin_code_neutral(const tflite::OperatorCode *opcode)
+{
+  assert(opcode != nullptr);
+  // TODO support v3a
+  return opcode->builtin_code();
+}
+
 bool is_valid(const tflite::OperatorCode *opcode)
 {
-  tflite::BuiltinOperator code = opcode->builtin_code();
+  tflite::BuiltinOperator code = builtin_code_neutral(opcode);
   return (tflite::BuiltinOperator_MIN <= code && code <= tflite::BuiltinOperator_MAX);
 }
 
 bool is_custom(const tflite::OperatorCode *opcode)
 {
-  tflite::BuiltinOperator code = opcode->builtin_code();
+  tflite::BuiltinOperator code = builtin_code_neutral(opcode);
   return (code == tflite::BuiltinOperator_CUSTOM);
 }
 
@@ -56,7 +65,7 @@ std::string opcode_name(const tflite::OperatorCode *opcode)
     return custom_op;
   }
 
-  tflite::BuiltinOperator code = opcode->builtin_code();
+  tflite::BuiltinOperator code = builtin_code_neutral(opcode);
   return tflite::EnumNameBuiltinOperator(code);
 }
 
@@ -122,7 +131,7 @@ tflite::BuiltinOperator Reader::builtin_code(const tflite::Operator *op) const
   assert(index < _op_codes.size());
   const tflite::OperatorCode *opcode = _op_codes.at(index);
 
-  return opcode->builtin_code();
+  return tflinspect::builtin_code_neutral(opcode);
 }
 
 std::string Reader::opcode_name(const tflite::Operator *op) const
