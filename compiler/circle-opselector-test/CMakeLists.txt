@@ -21,5 +21,5 @@ add_test(NAME circle_opselector_value_test
           "${NNCC_OVERLAY_DIR}/venv_2_6_0"
           "$<TARGET_FILE:luci_eval_driver>"
           "$<TARGET_FILE:circle-opselector>"
-          "${CIRCLE_OPSELECTOR_TEST}"
+          ${CIRCLE_OPSELECTOR_TEST}
 )
