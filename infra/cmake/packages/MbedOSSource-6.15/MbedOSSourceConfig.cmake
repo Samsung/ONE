@@ -1,9 +1,4 @@
 function(_MbedOSSource_import)
-  if(NOT DOWNLOAD_MBEDOS)
-    set(MbedOSSource_FOUND FALSE PARENT_SCOPE)
-    return()
-  endif(NOT DOWNLOAD_MBEDOS)
-
   nnas_include(ExternalSourceTools)
   nnas_include(OptionTools)
 
