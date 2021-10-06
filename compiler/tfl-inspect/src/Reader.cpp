@@ -27,7 +27,11 @@ namespace tflinspect
 tflite::BuiltinOperator builtin_code_neutral(const tflite::OperatorCode *opcode)
 {
   assert(opcode != nullptr);
-  // TODO support v3a
+  int8_t dp_code = opcode->deprecated_builtin_code();
+  // 127 is max of int8_t which is upper bound of v3 builtin_code
+  // NOTE TensorFlow uses 'BuiltinOperator_PLACEHOLDER_FOR_GREATER_OP_CODES' for 127
+  if (dp_code < 127 && dp_code >= 0)
+    return tflite::BuiltinOperator(dp_code);
   return opcode->builtin_code();
 }
 
