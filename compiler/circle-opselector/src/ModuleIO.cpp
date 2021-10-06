@@ -27,7 +27,8 @@
 namespace opselector
 {
 
-std::unique_ptr<luci::Module> getModule(std::string &input_path)
+// return circle model data.
+std::vector<char> getModelData(std::string &input_path)
 {
   // Load model from the file
   foder::FileLoader file_loader{input_path};
@@ -40,6 +41,13 @@ std::unique_ptr<luci::Module> getModule(std::string &input_path)
     std::cerr << "ERROR: Invalid input file '" << input_path << "'" << std::endl;
     exit(EXIT_FAILURE);
   }
+
+  return model_data;
+}
+
+std::unique_ptr<luci::Module> getModule(std::string &input_path)
+{
+  std::vector<char> model_data = getModelData(input_path);
 
   const circle::Model *circle_model = circle::GetModel(model_data.data());
   if (circle_model == nullptr)
