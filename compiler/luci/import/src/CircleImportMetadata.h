@@ -20,6 +20,7 @@
 #include "luci/Import/CircleReader.h"
 
 #include <luci/Profile/CircleNodeOrigin.h>
+#include <luci/IR/ExecutionPlanTable.h>
 
 #include <map>
 #include <set>
@@ -47,10 +48,15 @@ public:
 
   const std::map<uint32_t, std::string> &source_table(void) const { return _source_table; }
 
+  const luci::ExecutionPlanTable &execution_plan_table(void) const { return _execution_plan_table; }
+
 private:
   // Decoded metadata is stored
   std::map<uint32_t, std::string> _source_table;
   std::map<uint32_t, std::set<uint32_t>> _op_table;
+  // _execution_plan_table stores for node with node_id order of execution,
+  // and offsets output tensors
+  luci::ExecutionPlanTable _execution_plan_table;
 };
 
 } // namespace luci

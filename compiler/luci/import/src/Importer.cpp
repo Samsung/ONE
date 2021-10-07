@@ -28,6 +28,7 @@
 #include <luci/IR/CircleNodes.h>
 #include <luci/Profile/CircleNodeID.h>
 #include <luci/Profile/CircleNodeOrigin.h>
+#include <luci/Plan/CircleNodeExecutionPlan.h>
 #include <luci/Log.h>
 #include <luci/LogHelper.h>
 
@@ -342,6 +343,25 @@ std::unique_ptr<Module> Importer::importModule(const circle::Model *model) const
     }
 
     module->source_table(table);
+  }
+
+  // Add execution_plan annotations
+  if (circle_metadata->execution_plan_table().size() > 0)
+  {
+    auto execution_plan_table = circle_metadata->execution_plan_table();
+    auto node_position = 0;
+    for (auto node : loco::postorder_traversal(loco::output_nodes(module->graph())))
+    {
+      if (auto circle_node = dynamic_cast<luci::CircleNode *>(node))
+      {
+        auto node_plan = execution_plan_table[node_position];
+        luci::add_execution_plan(
+          circle_node,
+          luci::CircleNodeExecutionPlan(
+            node_plan[0], std::vector<uint32_t>(node_plan.begin() + 1, node_plan.end())));
+      }
+      node_position++;
+    }
   }
 
   return module;
