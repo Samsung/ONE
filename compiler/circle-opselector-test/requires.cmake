@@ -1,3 +1,3 @@
 require("common-artifacts")
 require("circle-opselector")
-require("luci-interpreter")
+require("luci-eval-driver")
