@@ -13,4 +13,5 @@ usr/share/one/lib/libluci_log.so usr/lib/libluci_log.so
 usr/share/one/lib/libluci_partition.so usr/lib/libluci_partition.so
 usr/share/one/lib/libluci_pass.so usr/lib/libluci_pass.so
 usr/share/one/lib/libluci_profile.so usr/lib/libluci_profile.so
+usr/share/one/lib/libluci_plan.so usr/lib/libluci_plan.so
 usr/share/one/lib/libluci_service.so usr/lib/libluci_service.so
