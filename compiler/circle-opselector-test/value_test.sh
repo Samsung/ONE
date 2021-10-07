@@ -6,8 +6,8 @@
 # HOW TO USE
 #
 # ./value_test.sh <path/to/bin_dir> <path/to/work_dir> <path/to/venv_dir> <path/to/circle-opselector-dir> <TEST 1> <TEST 2> ...
-LUCI_VERIFY_SOURCE_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")"/../luci-value-test/ && pwd)"
-LUCI_VERIFY_SCRIPT_PATH="${LUCI_VERIFY_SOURCE_PATH}/luci_eval_verifier.py"
+VERIFY_SOURCE_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+VERIFY_SCRIPT_PATH="${VERIFY_SOURCE_PATH}/luci_eval_verifier.py"
 BINDIR="$1"; shift
 ARTIFACTS_DIR="$1"; shift
 VIRTUALENV="$1"; shift
@@ -44,7 +44,7 @@ for TESTCASE in "$@"; do
     exec 2>&1
     set -ex
     source "${VIRTUALENV}/bin/activate"
-    "${VIRTUALENV}/bin/python" "${LUCI_VERIFY_SCRIPT_PATH}" \
+    "${VIRTUALENV}/bin/python" "${VERIFY_SCRIPT_PATH}" \
     --driver "${INTERPRETER_DRIVER_PATH}" \
     --model "${TESTCASE_FILE}"
     if [[ $? -eq 0 ]]; then
