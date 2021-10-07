@@ -17,6 +17,7 @@
 #include "ModuleIO.h"
 #include "OpSelector.h"
 
+
 #include <luci/Profile/CircleNodeID.h>
 
 #include <arser/arser.h>
@@ -266,6 +267,7 @@ int entry(int argc, char **argv)
     std::cerr << "ERROR: No operator selected" << std::endl;
     exit(EXIT_FAILURE);
   }
+
   // Select nodes.
   // model_data is used to prevent error when calling select_subgraph()
   std::vector<char> model_data = opselector::getModelData(input_path);
