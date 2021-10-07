@@ -1,0 +1,37 @@
+operand {
+  name: "ifm"
+  type: FLOAT32
+  shape { dim: 1 dim: 3 dim: 3 dim: 2 }
+}
+operand {
+  name: "rsqrt"
+  type: FLOAT32
+  shape { dim: 1 dim: 3 dim: 3 dim: 2 }
+}
+operand {
+  name: "rsqrt2"
+  type: FLOAT32
+  shape { dim: 1 dim: 3 dim: 3 dim: 2 }
+}
+operand {
+  name: "rsqrt4"
+  type: FLOAT32
+  shape { dim: 1 dim: 3 dim: 3 dim: 2 }
+}
+operation {
+  type: "Rsqrt"
+  input: "ifm"
+  output: "rsqrt"
+}
+operation {
+  type: "Rsqrt"
+  input: "rsqrt"
+  output: "rsqrt2"
+}
+operation {
+  type: "Rsqrt"
+  input: "rsqrt2"
+  output: "rsqrt4"
+}
+input: "ifm"
+output: "rsqrt4"
