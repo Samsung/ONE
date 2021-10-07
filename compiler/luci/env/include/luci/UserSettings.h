@@ -33,6 +33,7 @@ struct UserSettings
     MuteWarnings,
     DisableValidation,
     ProfilingDataGen,
+    ExecutionPlanGen,
   };
 
   static UserSettings *settings();
