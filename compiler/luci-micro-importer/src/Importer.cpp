@@ -51,9 +51,9 @@ void convert_graph(const luci::GraphBuilderSource &source, luci::CircleReader &r
 
   const auto &operators = reader.operators();
   const auto &tensors = reader.tensors();
-  auto tensors_ptr = reader.tensors_ptr();
-  assert(tensors_ptr != nullptr);
   auto circle_metadata = std::make_unique<luci::CircleImportMetadata>(reader);
+  auto const tensors_ptr = reader.native_tensors();
+  assert(not tensors_ptr.is_null());
 
   // build a cache to identify if a tensor is output of an operator
   // if this is set, we should not create a CircleConst for this tensor
@@ -79,7 +79,7 @@ void convert_graph(const luci::GraphBuilderSource &source, luci::CircleReader &r
     const circle::TensorT &tensor = *tensors[input];
 
     luci::copy_tensor_attributes(tensor, input_node);
-    if (tensors_ptr->Get(input)->shape() == nullptr)
+    if (tensors_ptr.at(input)->shape() == nullptr)
       input_node->shape_status(luci::ShapeStatus::NOSHAPE);
     else
       input_node->shape_status(luci::ShapeStatus::VALID);
@@ -176,7 +176,7 @@ void convert_graph(const luci::GraphBuilderSource &source, luci::CircleReader &r
       output_node->from(output_dummy);
 
       luci::copy_tensor_attributes(tensor, output_dummy);
-      if (tensors_ptr->Get(output)->shape() == nullptr)
+      if (tensors_ptr.at(output)->shape() == nullptr)
         output_dummy->shape_status(luci::ShapeStatus::NOSHAPE);
       else
         output_dummy->shape_status(luci::ShapeStatus::VALID);

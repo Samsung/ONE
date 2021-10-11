@@ -32,8 +32,8 @@ CircleNode *GraphBuilderMultiOutput::build(const circle::OperatorT &op,
   const std::vector<int32_t> &outputs = op.outputs;
   const auto &tensors = context->reader()->tensors();
   const auto &opcodes = context->reader()->opcodes();
-  auto tensors_ptr = context->reader()->tensors_ptr();
-  assert(tensors_ptr != nullptr);
+  auto const tensors_ptr = context->reader()->native_tensors();
+  assert(not tensors_ptr.is_null());
 
   std::vector<CircleNode *> input_nodes;
   for (const int32_t input_tensor_index : inputs)
@@ -85,7 +85,7 @@ CircleNode *GraphBuilderMultiOutput::build(const circle::OperatorT &op,
     copy_tensor_attributes(output_tensor, nodeout);
     // NOTE name of CxxxOut nodes may have same name
     // mark shape_status
-    if (tensors_ptr->Get(outputs[n])->shape() == nullptr)
+    if (tensors_ptr.at(outputs[n])->shape() == nullptr)
       nodeout->shape_status(ShapeStatus::NOSHAPE);
     else
       nodeout->shape_status(ShapeStatus::VALID);
