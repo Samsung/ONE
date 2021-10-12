@@ -49,7 +49,7 @@ void convert_graph(const luci::GraphBuilderSource &source, luci::CircleReader &r
 
   luci::GraphBuilderContext gb_context(graph, &reader, nodefinder.get(), tensoroutputs.get());
 
-  const auto &operators = reader.operators();
+  const auto operators = reader.native_operators();
   const auto &tensors = reader.tensors();
   auto circle_metadata = std::make_unique<luci::CircleImportMetadata>(reader);
   auto const tensors_ptr = reader.native_tensors();
@@ -57,14 +57,12 @@ void convert_graph(const luci::GraphBuilderSource &source, luci::CircleReader &r
 
   // build a cache to identify if a tensor is output of an operator
   // if this is set, we should not create a CircleConst for this tensor
-  for (uint32_t i = 0; i < operators.size(); ++i)
+  for (auto const op : operators)
   {
-    const circle::OperatorT &op = *operators[i];
-    const auto &outputs = op.outputs;
+    const auto &outputs = luci::wrap(op->outputs());
 
-    for (uint32_t j = 0; j < outputs.size(); ++j)
+    for (auto const tidx : outputs)
     {
-      auto tidx = outputs[j];
       tensoroutputs->enroll(tidx);
     }
   }
@@ -132,18 +130,22 @@ void convert_graph(const luci::GraphBuilderSource &source, luci::CircleReader &r
   auto origin_table = circle_metadata->origin_table();
   for (uint32_t i = 0; i < operators.size(); ++i)
   {
-    const circle::OperatorT &op = *operators[i];
+    auto const op = operators[i];
     circle::BuiltinOperator builtincode = reader.builtin_code(op);
 
     if (const auto *builder = source.lookup(builtincode))
     {
-      luci::GraphBuilder::ValidateArgs args(op, reader);
+      // Make temporary unpacked API object to easy node build
+      circle::OperatorT oper;
+      op->UnPackTo(&oper);
+
+      luci::GraphBuilder::ValidateArgs args(oper, reader);
       if (!builder->validate(args))
       {
         throw oops::UserExn("Invalid operator", reader.opcode_name(op));
       }
 
-      auto built_op = builder->build(op, &gb_context);
+      auto built_op = builder->build(oper, &gb_context);
       set_node_id(built_op, i);
       if (origin_table.find(i) != origin_table.end())
         add_origin(built_op, origin_table.at(i));
