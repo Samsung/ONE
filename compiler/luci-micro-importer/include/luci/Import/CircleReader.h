@@ -39,7 +39,6 @@ bool is_valid(const circle::OperatorCodeT &opcode);
 bool is_valid(const circle::OperatorCode *opcode);
 bool is_custom(const circle::OperatorCodeT &opcode);
 bool is_custom(const circle::OperatorCode *opcode);
-std::string opcode_name(const circle::OperatorCodeT &opcode);
 std::string opcode_name(const circle::OperatorCode *opcode);
 const char *tensor_name(const circle::TensorT &tensor);
 const char *tensor_name(const circle::Tensor *tensor);

@@ -39,13 +39,16 @@ CircleNode *CircleCustomGraphBuilder::build_node(const BuildNodeArgs &bna) const
     node->inputs(idx, bna.input_nodes[idx]);
   }
 
-  const auto &opcodes = bna.context->reader()->opcodes();
+  const auto &opcodes = bna.context->reader()->native_opcodes();
   const uint32_t opcode_index = bna.op.opcode_index;
-  const circle::OperatorCodeT &opcode = *opcodes[opcode_index];
+  const auto opcode = opcodes[opcode_index];
+  assert(opcode != nullptr);
 
   node->custom_options(
     std::vector<uint8_t>{bna.op.custom_options.begin(), bna.op.custom_options.end()});
-  node->custom_code(opcode.custom_code);
+
+  assert(opcode->custom_code() != nullptr);
+  node->custom_code(opcode->custom_code()->c_str());
 
   // NOTE Operator version of custom is always 1
 

@@ -68,7 +68,8 @@ CircleNode *CircleWhileGraphBuilder::build(const circle::OperatorT &op,
   const std::vector<int32_t> &inputs = op.inputs;
   const std::vector<int32_t> &outputs = op.outputs;
   const auto &tensors = context->reader()->tensors();
-  const auto &opcodes = context->reader()->opcodes();
+  const auto opcodes = context->reader()->native_opcodes();
+  assert(opcodes[op.opcode_index] != nullptr);
 
   std::vector<CircleNode *> input_nodes;
   for (const int32_t input_tensor_index : inputs)
@@ -98,7 +99,7 @@ CircleNode *CircleWhileGraphBuilder::build(const circle::OperatorT &op,
     // Lets use name of output 0 as While name
     const circle::TensorT &output_tensor = *tensors[outputs[0]];
     node->name(tensor_name(output_tensor));
-    node->op_version(opcodes[op.opcode_index].get()->version);
+    node->op_version(opcodes[op.opcode_index]->version());
 
     // NOTE We don't set quantization for While itself but to virtual outputs
   }
