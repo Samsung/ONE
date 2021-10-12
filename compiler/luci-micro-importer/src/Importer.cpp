@@ -72,7 +72,7 @@ void convert_graph(const luci::GraphBuilderSource &source, luci::CircleReader &r
   // graph inputs; there are no input nodes in TFlite but just Tensors
   // creating virtual input nodes will make possible to connect nodes that uses them
   // all attributes of tensor should be copied to CircleInput node
-  for (const auto input : reader.inputs())
+  for (const auto input : reader.native_inputs())
   {
     auto input_node = graph->nodes()->create<luci::CircleInput>();
     assert(input_node != nullptr);
@@ -157,7 +157,7 @@ void convert_graph(const luci::GraphBuilderSource &source, luci::CircleReader &r
   }
 
   // graph outputs
-  for (auto output : reader.outputs())
+  for (auto output : reader.native_outputs())
   {
     const circle::TensorT &tensor = *tensors[output];
 
@@ -280,7 +280,7 @@ std::unique_ptr<Module> Importer::importModule(const circle::Model *model) const
     if (!reader.select_subgraph(g))
       return nullptr;
 
-    graph->name(reader.name());
+    graph->name(reader.native_name());
 
     // Convert circle::Model to loco::Graph
     convert_graph(*source_ptr, reader, graph.get());
