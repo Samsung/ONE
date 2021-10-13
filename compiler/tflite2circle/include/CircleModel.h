@@ -79,7 +79,7 @@ private:
 
 public:
   CircleModel(void) = delete;
-  CircleModel(FlatBufBuilder &fb, TFLModel &tfl_model);
+  CircleModel(FlatBufBuilder &fb, const tflite::Model *tfl_model);
 
 public:
   void model_build(void) const;

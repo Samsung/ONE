@@ -16,6 +16,8 @@
 
 #include <iostream>
 
+#include <foder/FileLoader.h>
+
 #include "TFLModel.h"
 
 namespace tflite2circle
@@ -23,21 +25,17 @@ namespace tflite2circle
 
 TFLModel::TFLModel(const std::string &path)
 {
-  _infile.open(path, std::ios::binary | std::ios::in);
-  _valid = _infile.good();
+  foder::FileLoader file_loader{path};
+  _data = file_loader.load();
+
+  // verify flatbuffers
+  flatbuffers::Verifier verifier{reinterpret_cast<const uint8_t *>(_data.data()), _data.size()};
+  if (!tflite::VerifyModelBuffer(verifier))
+  {
+    throw std::runtime_error("Failed to verify tflite");
+  }
 }
 
-const tflite::Model *TFLModel::load_model(void)
-{
-  assert(_valid == true);
-  _infile.seekg(0, std::ios::end);
-  auto fileSize = _infile.tellg();
-  _infile.seekg(0, std::ios::beg);
-  _data.resize(fileSize);
-  _infile.read(_data.data(), fileSize);
-  _infile.close();
-
-  return tflite::GetModel(_data.data());
-}
+const tflite::Model *TFLModel::get_model(void) { return tflite::GetModel(_data.data()); }
 
 } // namespace tflite2circle

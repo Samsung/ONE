@@ -70,17 +70,12 @@ int entry(int argc, char **argv)
   std::string circle_path = arser.get<std::string>("circle");
   // read tflite file
   tflite2circle::TFLModel tfl_model(tfl_path);
-  if (!tfl_model.is_valid())
-  {
-    std::cerr << "ERROR: Failed to load tflite '" << tfl_path << "'" << std::endl;
-    return 255;
-  }
 
   // create flatbuffer builder
   auto flatbuffer_builder = std::make_unique<flatbuffers::FlatBufferBuilder>(1024);
 
   // convert tflite to circle
-  tflite2circle::CircleModel circle_model{flatbuffer_builder, tfl_model};
+  tflite2circle::CircleModel circle_model{flatbuffer_builder, tfl_model.get_model()};
 
   std::ofstream outfile{circle_path, std::ios::binary};
 
