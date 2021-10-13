@@ -47,7 +47,7 @@ void writeDataToFile(const std::string &filename, const char *data, size_t data_
   }
 }
 
-std::unique_ptr<luci::Module> importModel(const std::string &filename)
+std::vector<char> getModelData(const std::string &filename)
 {
   std::ifstream fs(filename, std::ifstream::binary);
   if (fs.fail())
@@ -56,7 +56,7 @@ std::unique_ptr<luci::Module> importModel(const std::string &filename)
   }
   std::vector<char> model_data((std::istreambuf_iterator<char>(fs)),
                                std::istreambuf_iterator<char>());
-  return luci::Importer().importModule(circle::GetModel(model_data.data()));
+  return model_data;
 }
 
 template <typename NodeT> size_t getTensorSize(const NodeT *node)
@@ -91,7 +91,9 @@ int entry(int argc, char **argv)
   const char *output_file = argv[4];
 
   // Load model from the file
-  std::unique_ptr<luci::Module> module = importModel(filename);
+  auto const model_data = getModelData(filename);
+  std::unique_ptr<luci::Module> module =
+    luci::Importer(true).importModule(circle::GetModel(model_data.data()));
   if (module == nullptr)
   {
     std::cerr << "ERROR: Failed to load '" << filename << "'" << std::endl;
