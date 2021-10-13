@@ -18,6 +18,8 @@
 
 #include "loader/KernelBuilder.h"
 
+#include "luci/IR/Nodes/CircleRemoteConst.h"
+
 #include <loco/IR/Algorithm.h>
 
 namespace luci_interpreter
@@ -70,6 +72,12 @@ const void *getNodeData(const luci::CircleConst *node, size_t *data_size)
     default:
       throw std::runtime_error("Unsupported type.");
   }
+}
+
+const void *getNodeData(const luci::CircleRemoteConst *node, size_t &data_size)
+{
+  data_size = node->buffer_size();
+  return node->data();
 }
 
 bool isExecutableNode(const luci::CircleNode *node)
@@ -142,6 +150,11 @@ void GraphLoader::loadTensors()
       shape = getNodeShape(const_node);
     }
 
+    else if (const auto *const_node = dynamic_cast<const luci::CircleRemoteConst *>(node))
+    {
+      shape = getNodeShape(const_node);
+    }
+
     AffineQuantization quantization;
     if (node->quantparam() != nullptr)
     {
@@ -159,6 +172,16 @@ void GraphLoader::loadTensors()
     {
       size_t data_size{};
       const void *const_data = getNodeData(const_node, &data_size);
+      if (const_data != nullptr)
+      {
+        _memory_manager->allocate_memory(*tensor);
+        tensor->writeData(const_data, data_size);
+      }
+    }
+    else if (const auto *remote_const_node = dynamic_cast<const luci::CircleRemoteConst *>(node))
+    {
+      size_t data_size = 0;
+      const void *const_data = getNodeData(remote_const_node, data_size);
       if (const_data != nullptr)
       {
         _memory_manager->allocate_memory(*tensor);

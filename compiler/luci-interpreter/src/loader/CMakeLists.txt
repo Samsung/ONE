@@ -23,7 +23,7 @@ target_include_directories(${LUCI_INTERPRETER_LOADER} PUBLIC "${LUCI_INTERPRETER
 
 target_link_libraries(${LUCI_INTERPRETER_LOADER}
         PUBLIC luci_lang ${LUCI_INTERPRETER_CORE}
-        PRIVATE ${LUCI_INTERPRETER_KERNELS} nncc_common)
+        PRIVATE ${LUCI_INTERPRETER_KERNELS} ${LUCI_INTERPRETER_LUCI_EXTENSION} nncc_common)
 
 if(NOT ENABLE_TEST)
   return()
