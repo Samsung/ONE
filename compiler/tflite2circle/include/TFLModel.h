@@ -37,15 +37,14 @@ public:
   TFLModel(const std::string &path);
 
 public:
-  bool is_valid(void) { return _valid; }
+  const tflite::Model *get_model(void);
 
-private:
-  const tflite::Model *load_model(void);
+public:
+  bool verify_data(void);
 
 private:
   std::ifstream _infile;
   DataBuffer _data;
-  bool _valid;
 
   friend class CircleModel;
 };
