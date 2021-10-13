@@ -93,7 +93,7 @@ int entry(int argc, char **argv)
   // Load model from the file
   auto const model_data = getModelData(filename);
   std::unique_ptr<luci::Module> module =
-    luci::Importer(true).importModule(circle::GetModel(model_data.data()));
+    luci::Importer(false).importModule(circle::GetModel(model_data.data()));
   if (module == nullptr)
   {
     std::cerr << "ERROR: Failed to load '" << filename << "'" << std::endl;
