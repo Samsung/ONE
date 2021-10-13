@@ -37,7 +37,7 @@ bool CircleGreaterGraphBuilder::validate(const ValidateArgs &args) const
 
   const auto &inputs = args.op.inputs;
   const auto &outputs = args.op.outputs;
-  const auto tensors = args.reader.native_tensors();
+  const auto tensors = args.reader.tensors();
 
   if (tensors[inputs.at(0)]->type() != tensors[inputs.at(1)]->type())
     return false;

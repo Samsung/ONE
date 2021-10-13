@@ -32,7 +32,7 @@ bool CircleLogGraphBuilder::validate(const ValidateArgs &args) const
   // input type check
   // Must be one of bfloat16, half, float32, float64, complex64, complex128.
   // Currently circle supports half(float16), float32, float64, complex64.
-  const auto tensors = args.reader.native_tensors();
+  const auto tensors = args.reader.tensors();
   const auto &tensor = tensors.at(inputs.at(0));
   switch (tensor->type())
   {

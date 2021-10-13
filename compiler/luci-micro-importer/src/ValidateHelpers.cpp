@@ -26,7 +26,7 @@ bool validate_batch_space_nd(const GraphBuilderBase::ValidateArgs &args)
     return false;
 
   // input 1 and 2 should have INT32/INT64 type
-  const auto &tensors = args.reader.native_tensors();
+  const auto &tensors = args.reader.tensors();
   const auto tensor_1 = tensors.at(inputs.at(1));
   assert(tensor_1 != nullptr);
   switch (tensor_1->type())
@@ -71,7 +71,7 @@ bool validate_minmax(const GraphBuilderBase::ValidateArgs &args)
   if (outputs.size() != 1)
     return false;
 
-  const auto &tensors = args.reader.native_tensors();
+  const auto &tensors = args.reader.tensors();
   const auto tensor = tensors.at(inputs.at(0));
   assert(tensor != nullptr);
 
@@ -110,7 +110,7 @@ bool validate_reduce_minmax(const GraphBuilderBase::ValidateArgs &args)
   if (outputs.size() != 1)
     return false;
 
-  const auto tensors = args.reader.native_tensors();
+  const auto tensors = args.reader.tensors();
   const auto &tensor_axis = tensors.at(inputs.at(1));
   assert(tensor_axis != nullptr);
 

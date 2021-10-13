@@ -35,7 +35,7 @@ bool CircleTopKV2GraphBuilder::validate(const ValidateArgs &args) const
   if (outputs.size() != 2)
     return false;
 
-  const auto tensors = args.reader.native_tensors();
+  const auto tensors = args.reader.tensors();
   const auto &tensor = tensors.at(inputs.at(1));
   if (tensor->type() != circle::TensorType_INT32)
     return false;

@@ -31,7 +31,7 @@ bool CircleTransposeConvGraphBuilder::validate(const ValidateArgs &args) const
     return false;
 
   const auto &inputs = args.op.inputs;
-  const auto tensors = args.reader.native_tensors();
+  const auto tensors = args.reader.tensors();
   const auto filter_tensor = tensors.at(inputs.at(1));
   const auto &ifm_tensor = tensors.at(inputs.at(2));
   assert(filter_tensor != nullptr);

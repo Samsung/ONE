@@ -31,7 +31,7 @@ bool CircleGatherNdGraphBuilder::validate(const ValidateArgs &args) const
     return false;
 
   const auto &inputs = args.op.inputs;
-  auto const indices_tensor = args.reader.native_tensors()[inputs.at(1)];
+  auto const indices_tensor = args.reader.tensors()[inputs.at(1)];
 
   if (!(indices_tensor->type() == circle::TensorType::TensorType_INT32 ||
         indices_tensor->type() == circle::TensorType::TensorType_INT64))

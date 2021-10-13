@@ -46,7 +46,7 @@ bool CircleUnpackGraphBuilder::validate(const ValidateArgs &args) const
   {
     if (settings->get(luci::UserSettings::Key::DisableValidation))
     {
-      const auto tensors = args.reader.native_tensors();
+      const auto tensors = args.reader.tensors();
       const auto output_tensor = tensors[outputs[0]];
       auto name = tensor_name(output_tensor);
       WARN(l) << "Warning: import Unpack(" << name << ") 'num' is not same as outputs used";
@@ -58,7 +58,7 @@ bool CircleUnpackGraphBuilder::validate(const ValidateArgs &args) const
   if (options->num < 0)
     return false;
 
-  const auto tensors = args.reader.native_tensors();
+  const auto tensors = args.reader.tensors();
   const auto tensor = tensors.at(inputs.at(0));
   const auto &shape = wrap(tensor->shape());
   auto shape_size = static_cast<int32_t>(shape.size());

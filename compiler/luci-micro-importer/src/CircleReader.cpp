@@ -23,13 +23,6 @@
 namespace luci
 {
 
-// unpacked
-bool is_valid(const circle::OperatorCodeT &opcode)
-{
-  circle::BuiltinOperator code = opcode.builtin_code;
-  return (circle::BuiltinOperator_MIN <= code && code <= circle::BuiltinOperator_MAX);
-}
-
 bool is_valid(const circle::OperatorCode *opcode)
 {
   assert(opcode != nullptr);
@@ -37,40 +30,11 @@ bool is_valid(const circle::OperatorCode *opcode)
   return (circle::BuiltinOperator_MIN <= code && code <= circle::BuiltinOperator_MAX);
 }
 
-// unpacked
-bool is_custom(const circle::OperatorCodeT &opcode)
-{
-  circle::BuiltinOperator code = opcode.builtin_code;
-  return (code == circle::BuiltinOperator_CUSTOM);
-}
-
 bool is_custom(const circle::OperatorCode *opcode)
 {
   assert(opcode != nullptr);
   circle::BuiltinOperator code = opcode->builtin_code();
   return (code == circle::BuiltinOperator_CUSTOM);
-}
-
-// unpacked
-std::string opcode_name(const circle::OperatorCodeT &opcode)
-{
-  if (!is_valid(opcode))
-  {
-    std::ostringstream oss;
-    oss << "(invalid)";
-    return oss.str();
-  }
-
-  if (is_custom(opcode))
-  {
-    if (opcode.custom_code.empty())
-      return "(invalid custom)";
-
-    return opcode.custom_code;
-  }
-
-  circle::BuiltinOperator code = opcode.builtin_code;
-  return circle::EnumNameBuiltinOperator(code);
 }
 
 std::string opcode_name(const circle::OperatorCode *opcode)
@@ -97,17 +61,6 @@ std::string opcode_name(const circle::OperatorCode *opcode)
   return circle::EnumNameBuiltinOperator(code);
 }
 
-// unpacked
-const char *tensor_name(const circle::TensorT &tensor)
-{
-  static const char *kEmptyTensorName = "(noname)";
-
-  if (!tensor.name.empty())
-    return tensor.name.c_str();
-
-  return kEmptyTensorName;
-}
-
 const char *tensor_name(const circle::Tensor *tensor)
 {
   assert(tensor != nullptr);
@@ -119,17 +72,6 @@ const char *tensor_name(const circle::Tensor *tensor)
     return tensor_name;
 
   return kEmptyTensorName;
-}
-
-const circle::QuantizationParametersT *tensor_quantization(const circle::TensorT &tensor)
-{
-  return tensor.quantization.get();
-}
-
-const circle::QuantizationParameters *tensor_quantization(const circle::Tensor *tensor)
-{
-  assert(tensor != nullptr);
-  return tensor->quantization();
 }
 
 loco::DataType luci_datatype(const circle::TensorType type)
@@ -340,41 +282,6 @@ std::unique_ptr<SparsityParam> luci_sparsityparam(const circle::SparsityParamete
   return luci_sparsityparam(&sparsity);
 }
 
-void copy_tensor_attributes(const circle::TensorT &tensor, CircleNode *node)
-{
-  node->name(tensor_name(tensor));
-  node->dtype(luci_datatype(tensor.type));
-
-  assert(tensor.shape_signature.size() == 0 ||
-         tensor.shape_signature.size() == tensor.shape.size());
-
-  std::vector<int32_t> dims = tensor.shape; // in NHWC
-  node->rank(dims.size());
-  for (uint32_t r = 0; r < dims.size(); ++r)
-  {
-    if (tensor.shape_signature.size() > 0 && tensor.shape_signature.at(r) == -1)
-      node->dim(r).unset();
-    else
-      node->dim(r).set(dims[r]);
-  }
-
-  const auto *quantization = tensor.quantization.get();
-  if (quantization != nullptr)
-  {
-    auto quantparam = luci_quantparam(quantization);
-    if (quantparam)
-      node->quantparam(std::move(quantparam));
-  }
-
-  const auto *sparsity = tensor.sparsity.get();
-  if (sparsity != nullptr)
-  {
-    auto sparsityparam = luci_sparsityparam(sparsity);
-    if (sparsityparam)
-      node->sparsityparam(std::move(sparsityparam));
-  }
-}
-
 void copy_tensor_attributes(const circle::Tensor *tensor, CircleNode *node)
 {
   assert(tensor != nullptr);
@@ -417,7 +324,7 @@ circle::BuiltinOperator CircleReader::builtin_code(const circle::Operator *op) c
 {
   assert(op != nullptr);
 
-  const auto op_codes = native_opcodes();
+  const auto op_codes = opcodes();
   uint32_t index = op->opcode_index();
   assert(index < op_codes.size());
   const auto opcode = op_codes[index];
@@ -430,7 +337,7 @@ std::string CircleReader::opcode_name(const circle::Operator *op) const
 {
   assert(op != nullptr);
 
-  const auto op_codes = native_opcodes();
+  const auto op_codes = opcodes();
   uint32_t index = op->opcode_index();
   assert(index < op_codes.size());
 
@@ -450,26 +357,21 @@ std::string CircleReader::opcode_name(const circle::Operator *op) const
 bool CircleReader::parse(const circle::Model *model)
 {
   assert(model != nullptr);
-
-  _model.reset(model->UnPack());
-
-  // for direct pointer access
-  _native_model = model;
+  _model = model;
 
   return true;
 }
 
 bool CircleReader::select_subgraph(uint32_t sgindex)
 {
-  if (_model->subgraphs.size() <= sgindex)
+  assert(_model->subgraphs() != nullptr);
+  if (_model->subgraphs()->size() <= sgindex)
   {
     assert(false);
     return false;
   }
 
-  _current_subgraph = _model->subgraphs[sgindex].get();
-  _native_subgraph = _native_model->subgraphs()->Get(sgindex);
-
+  _current_subgraph = wrap(_model->subgraphs()).at(sgindex);
   return true;
 }
 

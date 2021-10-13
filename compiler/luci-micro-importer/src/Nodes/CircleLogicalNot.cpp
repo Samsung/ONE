@@ -30,7 +30,7 @@ bool CircleLogicalNotGraphBuilder::validate(const ValidateArgs &args) const
 
   // Only BOOL type is allowed for the input
   const auto &inputs = args.op.inputs;
-  const auto tensors = args.reader.native_tensors();
+  const auto tensors = args.reader.tensors();
   const auto &tensor = tensors.at(inputs.at(0));
   if (tensor->type() != circle::TensorType::TensorType_BOOL)
     return false;

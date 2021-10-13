@@ -32,7 +32,7 @@ bool CircleDepthwiseConv2DGraphBuilder::validate(const ValidateArgs &args) const
   if (args.op.outputs.size() != 1)
     return false;
 
-  const auto tensors = args.reader.native_tensors();
+  const auto tensors = args.reader.tensors();
 
   // input shape
   const auto &input = tensors.at(args.op.inputs.at(0));

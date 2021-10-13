@@ -28,7 +28,7 @@ bool CircleReduceAnyGraphBuilder::validate(const ValidateArgs &args) const
 
   const auto &inputs = args.op.inputs;
   const auto &outputs = args.op.outputs;
-  const auto tensors = args.reader.native_tensors();
+  const auto tensors = args.reader.tensors();
   const auto &tensor_0 = tensors.at(inputs.at(0));
   const auto &tensor_1 = tensors.at(inputs.at(1));
   const auto &tensor_o = tensors.at(outputs[0]);

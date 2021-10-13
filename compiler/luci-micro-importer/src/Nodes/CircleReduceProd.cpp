@@ -27,7 +27,7 @@ bool CircleReduceProdGraphBuilder::validate(const ValidateArgs &args) const
     return false;
 
   const auto &inputs = args.op.inputs;
-  const auto tensors = args.reader.native_tensors();
+  const auto tensors = args.reader.tensors();
   const auto &tensor_1 = tensors.at(inputs.at(1));
 
   // TODO check input types

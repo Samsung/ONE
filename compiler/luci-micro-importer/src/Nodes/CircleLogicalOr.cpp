@@ -30,7 +30,7 @@ bool CircleLogicalOrGraphBuilder::validate(const ValidateArgs &args) const
 
   // Only BOOL type is allowed for inputs
   const auto &inputs = args.op.inputs;
-  const auto tensors = args.reader.native_tensors();
+  const auto tensors = args.reader.tensors();
   for (auto input : inputs)
   {
     const auto &tensor = tensors.at(input);

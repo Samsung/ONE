@@ -39,7 +39,7 @@ CircleNode *CircleCustomGraphBuilder::build_node(const BuildNodeArgs &bna) const
     node->inputs(idx, bna.input_nodes[idx]);
   }
 
-  const auto &opcodes = bna.context->reader()->native_opcodes();
+  const auto &opcodes = bna.context->reader()->opcodes();
   const uint32_t opcode_index = bna.op.opcode_index;
   const auto opcode = opcodes[opcode_index];
   assert(opcode != nullptr);

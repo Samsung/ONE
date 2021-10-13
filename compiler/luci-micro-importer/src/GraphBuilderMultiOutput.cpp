@@ -30,8 +30,8 @@ CircleNode *GraphBuilderMultiOutput::build(const circle::OperatorT &op,
 
   const std::vector<int32_t> &inputs = op.inputs;
   const std::vector<int32_t> &outputs = op.outputs;
-  const auto tensors = context->reader()->native_tensors();
-  const auto &opcodes = context->reader()->native_opcodes();
+  const auto tensors = context->reader()->tensors();
+  const auto &opcodes = context->reader()->opcodes();
   assert(not tensors.is_null());
 
   std::vector<CircleNode *> input_nodes;

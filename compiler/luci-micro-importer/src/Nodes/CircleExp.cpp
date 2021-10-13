@@ -30,7 +30,7 @@ bool CircleExpGraphBuilder::validate(const ValidateArgs &args) const
 
   const auto &inputs = args.op.inputs;
   // input type check
-  const auto tensors = args.reader.native_tensors();
+  const auto tensors = args.reader.tensors();
   const auto &tensor = tensors.at(inputs.at(0));
   switch (tensor->type())
   {

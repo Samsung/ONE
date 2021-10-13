@@ -30,7 +30,7 @@ bool CircleMatrixDiagGraphBuilder::validate(const ValidateArgs &args) const
 
   const auto &inputs = args.op.inputs;
   const auto &outputs = args.op.outputs;
-  const auto tensors = args.reader.native_tensors();
+  const auto tensors = args.reader.tensors();
   const auto &tensor = tensors.at(inputs.at(0));
 
   if (tensors[outputs[0]]->type() != tensor->type())

@@ -35,7 +35,7 @@ bool CircleNonMaxSuppressionV4GraphBuilder::validate(const ValidateArgs &args) c
   if (outputs.size() != 2)
     return false;
 
-  const auto tensors = args.reader.native_tensors();
+  const auto tensors = args.reader.tensors();
   const auto boxes_tensor = tensors.at(inputs[0]);
   const auto boxes_tensor_shape = wrap(boxes_tensor->shape());
   if (boxes_tensor_shape.size() != 2)

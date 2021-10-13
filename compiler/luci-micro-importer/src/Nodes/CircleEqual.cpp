@@ -29,7 +29,7 @@ bool CircleEqualGraphBuilder::validate(const ValidateArgs &args) const
     return false;
 
   const auto &inputs = args.op.inputs;
-  const auto tensors = args.reader.native_tensors();
+  const auto tensors = args.reader.tensors();
 
   return tensors[inputs.at(0)]->type() == tensors[inputs.at(1)]->type();
 }

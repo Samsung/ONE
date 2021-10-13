@@ -147,13 +147,13 @@ namespace luci
 
 CircleImportMetadata::CircleImportMetadata(const luci::CircleReader &reader)
 {
-  const auto &metadata = reader.native_metadata();
+  const auto &metadata = reader.metadata();
   for (auto const meta : metadata)
   {
     assert(meta != nullptr);
-    assert(meta->buffer() < reader.native_buffers().size());
-    assert(reader.native_buffers()[meta->buffer()] != nullptr);
-    auto const buffer = wrap(reader.native_buffers()[meta->buffer()]->data());
+    assert(meta->buffer() < reader.buffers().size());
+    assert(reader.buffers()[meta->buffer()] != nullptr);
+    auto const buffer = wrap(reader.buffers()[meta->buffer()]->data());
 
     assert(meta->name() != nullptr);
     if (meta->name()->str().compare("ONE_op_table") == 0)

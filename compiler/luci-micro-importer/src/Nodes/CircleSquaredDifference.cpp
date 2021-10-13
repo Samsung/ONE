@@ -32,7 +32,7 @@ bool CircleSquaredDifferenceGraphBuilder::validate(const ValidateArgs &args) con
   const auto &outputs = args.op.outputs;
   // Inputs must be one of the following types
   // bfloat16, half(float16), float32, float64, int32, int64, complex64, complex128
-  const auto tensors = args.reader.native_tensors();
+  const auto tensors = args.reader.tensors();
   const auto &tensor = tensors.at(inputs.at(0));
   switch (tensor->type())
   {
