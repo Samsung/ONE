@@ -27,13 +27,17 @@ TFLModel::TFLModel(const std::string &path)
 {
   foder::FileLoader file_loader{path};
   _data = file_loader.load();
+}
 
+bool TFLModel::verify_data(void)
+{
   // verify flatbuffers
   flatbuffers::Verifier verifier{reinterpret_cast<const uint8_t *>(_data.data()), _data.size()};
-  if (!tflite::VerifyModelBuffer(verifier))
+  if (not tflite::VerifyModelBuffer(verifier))
   {
-    throw std::runtime_error("Failed to verify tflite");
+    return false;
   }
+  return true;
 }
 
 const tflite::Model *TFLModel::get_model(void) { return tflite::GetModel(_data.data()); }

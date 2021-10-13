@@ -39,6 +39,9 @@ public:
 public:
   const tflite::Model *get_model(void);
 
+public:
+  bool verify_data(void);
+
 private:
   std::ifstream _infile;
   DataBuffer _data;

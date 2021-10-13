@@ -70,6 +70,11 @@ int entry(int argc, char **argv)
   std::string circle_path = arser.get<std::string>("circle");
   // read tflite file
   tflite2circle::TFLModel tfl_model(tfl_path);
+  if (not tfl_model.verify_data())
+  {
+    std::cerr << "ERROR: Failed to verify tflite '" << tfl_path << "'" << std::endl;
+    return 255;
+  }
 
   // create flatbuffer builder
   auto flatbuffer_builder = std::make_unique<flatbuffers::FlatBufferBuilder>(1024);
