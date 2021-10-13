@@ -37,17 +37,19 @@ bool CircleGreaterGraphBuilder::validate(const ValidateArgs &args) const
 
   const auto &inputs = args.op.inputs;
   const auto &outputs = args.op.outputs;
-  const auto &tensors = args.reader.tensors();
+  const auto tensors = args.reader.native_tensors();
 
-  if (tensors[inputs.at(0)]->type != tensors[inputs.at(1)]->type)
+  if (tensors[inputs.at(0)]->type() != tensors[inputs.at(1)]->type())
     return false;
 
   // NOTE: real models do have output dtype NOT BOOL
-  if (tensors[outputs[0]]->type != circle::TensorType_BOOL)
+  if (tensors[outputs[0]]->type() != circle::TensorType_BOOL)
   {
     if (settings->get(luci::UserSettings::Key::DisableValidation))
     {
-      const circle::TensorT &output_tensor = *tensors[outputs[0]];
+      auto const output_tensor = tensors[outputs[0]];
+      assert(output_tensor != nullptr);
+
       auto name = tensor_name(output_tensor);
       WARN(l) << "Warning: import Greater(" << name << ") output dtype is not boolean";
     }

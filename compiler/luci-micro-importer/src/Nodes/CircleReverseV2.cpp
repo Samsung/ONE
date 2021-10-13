@@ -30,12 +30,12 @@ bool CircleReverseV2GraphBuilder::validate(const ValidateArgs &args) const
 
   const auto &inputs = args.op.inputs;
   const auto &outputs = args.op.outputs;
-  const auto &tensors = args.reader.tensors();
+  const auto tensors = args.reader.native_tensors();
   const auto &tensor_in = tensors.at(inputs.at(0));
   const auto &tensor_axis = tensors.at(inputs.at(1));
   const auto &tensor_out = tensors.at(outputs[0]);
 
-  switch (tensor_axis->type)
+  switch (tensor_axis->type())
   {
     case circle::TensorType_INT32:
     case circle::TensorType_INT64:
@@ -44,7 +44,7 @@ bool CircleReverseV2GraphBuilder::validate(const ValidateArgs &args) const
       return false;
   }
 
-  if (tensor_out->type != tensor_in->type)
+  if (tensor_out->type() != tensor_in->type())
     return false;
 
   return true;

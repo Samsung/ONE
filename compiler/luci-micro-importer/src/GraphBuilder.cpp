@@ -29,10 +29,9 @@ CircleNode *GraphBuilder::build(const circle::OperatorT &op, GraphBuilderContext
 
   const std::vector<int32_t> &inputs = op.inputs;
   const std::vector<int32_t> &outputs = op.outputs;
-  const auto &tensors = context->reader()->tensors();
+  const auto tensors = context->reader()->native_tensors();
   const auto opcodes = context->reader()->native_opcodes();
-  auto const tensors_ptr = context->reader()->native_tensors();
-  assert(not tensors_ptr.is_null());
+  assert(not tensors.is_null());
 
   std::vector<CircleNode *> input_nodes;
   for (const int32_t input_tensor_index : inputs)
@@ -60,10 +59,12 @@ CircleNode *GraphBuilder::build(const circle::OperatorT &op, GraphBuilderContext
   // Set up node parameters.
   assert(outputs.size() == 1);
   {
-    const circle::TensorT &output_tensor = *tensors[outputs[0]];
+    auto const output_tensor = tensors[outputs[0]];
+    assert(output_tensor != nullptr);
     copy_tensor_attributes(output_tensor, node);
+
     // mark shape_status
-    if (tensors_ptr.at(outputs[0])->shape() == nullptr)
+    if (output_tensor->shape() == nullptr)
       node->shape_status(ShapeStatus::NOSHAPE);
     else
       node->shape_status(ShapeStatus::VALID);

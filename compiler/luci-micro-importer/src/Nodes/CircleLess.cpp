@@ -30,10 +30,10 @@ bool CircleLessGraphBuilder::validate(const ValidateArgs &args) const
 
   const auto &inputs = args.op.inputs;
   const auto &outputs = args.op.outputs;
-  const auto &tensors = args.reader.tensors();
+  const auto tensors = args.reader.native_tensors();
   const auto &tensor = tensors.at(inputs.at(0));
 
-  switch (tensor->type)
+  switch (tensor->type())
   {
     case circle::TensorType_FLOAT32:
     case circle::TensorType_FLOAT64:
@@ -48,12 +48,12 @@ bool CircleLessGraphBuilder::validate(const ValidateArgs &args) const
       return false;
   }
 
-  if (tensors[inputs.at(1)]->type != tensor->type)
+  if (tensors[inputs.at(1)]->type() != tensor->type())
   {
     return false;
   }
 
-  return tensors[outputs[0]]->type == circle::TensorType_BOOL;
+  return tensors[outputs[0]]->type() == circle::TensorType_BOOL;
 }
 
 CircleNode *CircleLessGraphBuilder::build_node(const circle::OperatorT &,

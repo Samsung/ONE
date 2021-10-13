@@ -29,9 +29,9 @@ bool CircleSelectGraphBuilder::validate(const ValidateArgs &args) const
     return false;
 
   const auto &inputs = args.op.inputs;
-  const auto &tensors = args.reader.tensors();
+  const auto tensors = args.reader.native_tensors();
   const auto &tensor = tensors.at(inputs.at(0));
-  if (tensor->type != circle::TensorType_BOOL)
+  if (tensor->type() != circle::TensorType_BOOL)
     return false;
   // TODO check dtypes for input 1, 2
 

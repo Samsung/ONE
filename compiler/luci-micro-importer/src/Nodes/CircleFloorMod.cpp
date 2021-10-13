@@ -29,10 +29,10 @@ bool CircleFloorModGraphBuilder::validate(const ValidateArgs &args) const
     return false;
 
   const auto &inputs = args.op.inputs;
-  const auto &tensors = args.reader.tensors();
+  const auto tensors = args.reader.native_tensors();
   const auto &tensor_in_0 = tensors.at(inputs.at(0));
   const auto &tensor_in_1 = tensors.at(inputs.at(1));
-  if (tensor_in_0->type != tensor_in_1->type)
+  if (tensor_in_0->type() != tensor_in_1->type())
     return false;
 
   // TODO dtype check

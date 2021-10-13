@@ -30,10 +30,9 @@ CircleNode *GraphBuilderMultiOutput::build(const circle::OperatorT &op,
 
   const std::vector<int32_t> &inputs = op.inputs;
   const std::vector<int32_t> &outputs = op.outputs;
-  const auto &tensors = context->reader()->tensors();
+  const auto tensors = context->reader()->native_tensors();
   const auto &opcodes = context->reader()->native_opcodes();
-  auto const tensors_ptr = context->reader()->native_tensors();
-  assert(not tensors_ptr.is_null());
+  assert(not tensors.is_null());
 
   std::vector<CircleNode *> input_nodes;
   for (const int32_t input_tensor_index : inputs)
@@ -64,9 +63,11 @@ CircleNode *GraphBuilderMultiOutput::build(const circle::OperatorT &op,
   if (output_count > 0)
   {
     // Let's use attributes from output 0 for this node
-    const circle::TensorT &output_tensor = *tensors[outputs[0]];
+    auto const output_tensor = tensors[outputs[0]];
+    assert(output_tensor != nullptr);
+
     node->name(tensor_name(output_tensor));
-    node->dtype(luci_datatype(output_tensor.type));
+    node->dtype(luci_datatype(output_tensor->type()));
 
     // mark operator version
     assert(opcodes[op.opcode_index] != nullptr);
@@ -78,7 +79,8 @@ CircleNode *GraphBuilderMultiOutput::build(const circle::OperatorT &op,
   // Create virtual outputs of Virtual Output node(s)
   for (uint32_t n = 0; n < output_count; ++n)
   {
-    const circle::TensorT &output_tensor = *tensors[outputs[n]];
+    auto const output_tensor = tensors[outputs[n]];
+    assert(output_tensor != nullptr);
 
     BuildOutArgs boa(node, n);
     auto *nodeout = build_out(boa);
@@ -86,7 +88,7 @@ CircleNode *GraphBuilderMultiOutput::build(const circle::OperatorT &op,
     copy_tensor_attributes(output_tensor, nodeout);
     // NOTE name of CxxxOut nodes may have same name
     // mark shape_status
-    if (tensors_ptr.at(outputs[n])->shape() == nullptr)
+    if (output_tensor->shape() == nullptr)
       nodeout->shape_status(ShapeStatus::NOSHAPE);
     else
       nodeout->shape_status(ShapeStatus::VALID);

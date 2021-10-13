@@ -30,11 +30,12 @@ bool CircleLogicalAndGraphBuilder::validate(const ValidateArgs &args) const
 
   // Only BOOL type is allowed for inputs
   const auto &inputs = args.op.inputs;
-  const auto &tensors = args.reader.tensors();
+  const auto &tensors = args.reader.native_tensors();
   for (auto input : inputs)
   {
     const auto &tensor = tensors.at(input);
-    if (tensor->type != circle::TensorType::TensorType_BOOL)
+    assert(tensor != nullptr);
+    if (tensor->type() != circle::TensorType::TensorType_BOOL)
       return false;
   }
 

@@ -30,14 +30,14 @@ bool CircleScatterNdGraphBuilder::validate(const ValidateArgs &args) const
 
   const auto &inputs = args.op.inputs;
   // indices must have the same type as shape
-  const auto &tensors = args.reader.tensors();
+  const auto tensors = args.reader.native_tensors();
 
-  if (tensors[inputs.at(0)]->type != tensors[inputs.at(2)]->type)
+  if (tensors[inputs.at(0)]->type() != tensors[inputs.at(2)]->type())
     return false;
 
   // indices must be either int32 or int64
-  if (tensors[inputs.at(0)]->type != circle::TensorType_INT32 &&
-      tensors[inputs.at(0)]->type != circle::TensorType_INT64)
+  if (tensors[inputs.at(0)]->type() != circle::TensorType_INT32 &&
+      tensors[inputs.at(0)]->type() != circle::TensorType_INT64)
     return false;
 
   return true;

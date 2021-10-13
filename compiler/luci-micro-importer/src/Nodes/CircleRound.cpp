@@ -33,11 +33,11 @@ bool CircleRoundGraphBuilder::validate(const ValidateArgs &args) const
   // Must be one of the following types
   // bfloat16, half (float16), float32, float64, complex64, complex128
   // Currently, circle supports float16, float32, complex64
-  const auto &tensors = args.reader.tensors();
+  const auto tensors = args.reader.native_tensors();
   const auto &tensor_in = tensors.at(inputs.at(0));
   const auto &tensor_out = tensors.at(outputs[0]);
 
-  switch (tensor_in->type)
+  switch (tensor_in->type())
   {
     case circle::TensorType_FLOAT16:
     case circle::TensorType_FLOAT32:
@@ -49,7 +49,7 @@ bool CircleRoundGraphBuilder::validate(const ValidateArgs &args) const
       return false;
   }
 
-  if (tensor_out->type != tensor_in->type)
+  if (tensor_out->type() != tensor_in->type())
     return false;
 
   return true;

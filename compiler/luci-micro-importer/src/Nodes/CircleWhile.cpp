@@ -67,7 +67,7 @@ CircleNode *CircleWhileGraphBuilder::build(const circle::OperatorT &op,
 
   const std::vector<int32_t> &inputs = op.inputs;
   const std::vector<int32_t> &outputs = op.outputs;
-  const auto &tensors = context->reader()->tensors();
+  const auto tensors = context->reader()->native_tensors();
   const auto opcodes = context->reader()->native_opcodes();
   assert(opcodes[op.opcode_index] != nullptr);
 
@@ -97,7 +97,9 @@ CircleNode *CircleWhileGraphBuilder::build(const circle::OperatorT &op,
   assert(outputs.size() > 0);
   {
     // Lets use name of output 0 as While name
-    const circle::TensorT &output_tensor = *tensors[outputs[0]];
+    const auto output_tensor = tensors[outputs[0]];
+    assert(output_tensor != nullptr);
+
     node->name(tensor_name(output_tensor));
     node->op_version(opcodes[op.opcode_index]->version());
 
@@ -107,7 +109,8 @@ CircleNode *CircleWhileGraphBuilder::build(const circle::OperatorT &op,
   // Create virtual outputs of While
   for (uint32_t n = 0; n < output_count; ++n)
   {
-    const circle::TensorT &output_tensor = *tensors[outputs[n]];
+    const auto output_tensor = tensors[outputs[0]];
+    assert(output_tensor != nullptr);
 
     auto *nodeout = graph->nodes()->create<CircleWhileOut>();
 

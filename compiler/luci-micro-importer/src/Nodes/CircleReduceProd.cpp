@@ -27,13 +27,13 @@ bool CircleReduceProdGraphBuilder::validate(const ValidateArgs &args) const
     return false;
 
   const auto &inputs = args.op.inputs;
-  const auto &tensors = args.reader.tensors();
+  const auto tensors = args.reader.native_tensors();
   const auto &tensor_1 = tensors.at(inputs.at(1));
 
   // TODO check input types
 
   // Check for reduction_indices types
-  switch (tensor_1->type)
+  switch (tensor_1->type())
   {
     case circle::TensorType_INT32:
     case circle::TensorType_INT64:

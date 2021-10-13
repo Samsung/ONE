@@ -30,14 +30,14 @@ bool CircleWhereGraphBuilder::validate(const ValidateArgs &args) const
 
   const auto &inputs = args.op.inputs;
   const auto &outputs = args.op.outputs;
-  const auto &tensors = args.reader.tensors();
+  const auto tensors = args.reader.native_tensors();
   const auto &tensor_condition = tensors.at(inputs.at(0));
   const auto &tensor_out = tensors.at(outputs[0]);
 
-  if (tensor_condition->type != circle::TensorType_BOOL)
+  if (tensor_condition->type() != circle::TensorType_BOOL)
     return false;
 
-  if (tensor_out->type != circle::TensorType_INT64)
+  if (tensor_out->type() != circle::TensorType_INT64)
     return false;
 
   return true;

@@ -35,20 +35,21 @@ bool CircleNonMaxSuppressionV4GraphBuilder::validate(const ValidateArgs &args) c
   if (outputs.size() != 2)
     return false;
 
-  const auto &tensors = args.reader.tensors();
-  const auto &boxes_tensor = tensors.at(inputs[0]);
-  if (boxes_tensor->shape.size() != 2)
+  const auto tensors = args.reader.native_tensors();
+  const auto boxes_tensor = tensors.at(inputs[0]);
+  const auto boxes_tensor_shape = wrap(boxes_tensor->shape());
+  if (boxes_tensor_shape.size() != 2)
     return false;
-  if (boxes_tensor->shape.at(1) != 4)
+  if (boxes_tensor_shape.at(1) != 4)
     return false;
-  if (boxes_tensor->shape.at(0) != tensors.at(inputs[1])->shape.at(0))
+  if (boxes_tensor_shape.at(0) != wrap(tensors.at(inputs[1])->shape()).at(0))
     return false;
 
-  if (tensors.at(inputs[2])->type != circle::TensorType_INT32)
+  if (tensors.at(inputs[2])->type() != circle::TensorType_INT32)
     return false;
-  if (tensors.at(inputs[3])->type != circle::TensorType_FLOAT32)
+  if (tensors.at(inputs[3])->type() != circle::TensorType_FLOAT32)
     return false;
-  if (tensors.at(inputs[4])->type != circle::TensorType_FLOAT32)
+  if (tensors.at(inputs[4])->type() != circle::TensorType_FLOAT32)
     return false;
 
   return true;

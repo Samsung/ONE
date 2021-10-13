@@ -31,11 +31,14 @@ bool CircleTransposeConvGraphBuilder::validate(const ValidateArgs &args) const
     return false;
 
   const auto &inputs = args.op.inputs;
-  const auto &tensors = args.reader.tensors();
-  const auto &filter_tensor = tensors.at(inputs.at(1));
-  const auto &filter_shape = filter_tensor.get()->shape;
+  const auto tensors = args.reader.native_tensors();
+  const auto filter_tensor = tensors.at(inputs.at(1));
   const auto &ifm_tensor = tensors.at(inputs.at(2));
-  const auto &ifm_shape = ifm_tensor.get()->shape;
+  assert(filter_tensor != nullptr);
+  assert(ifm_tensor != nullptr);
+
+  const auto filter_shape = wrap(filter_tensor->shape());
+  const auto ifm_shape = wrap(ifm_tensor->shape());
 
   // ifm and filters must be 4-D tensor
   if (ifm_shape.size() != 4)
@@ -45,7 +48,7 @@ bool CircleTransposeConvGraphBuilder::validate(const ValidateArgs &args) const
 
   // input shape : [batch, height, width, in_channels]
   // filters shape : [output_channels, height, weight, in_channels]
-  if (ifm_tensor.get()->shape.at(3) != filter_tensor.get()->shape.at(3))
+  if (ifm_shape.at(3) != filter_shape.at(3))
     return false;
 
   return true;

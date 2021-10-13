@@ -42,12 +42,15 @@ bool CircleCastGraphBuilder::validate(const ValidateArgs &args) const
   const auto *options = args.op.builtin_options.AsCastOptions();
   if (options != nullptr)
   {
-    const auto &tensors = args.reader.tensors();
-    const circle::TensorT &output_tensor = *tensors[outputs[0]];
+    const auto &tensors = args.reader.native_tensors();
+    auto const output_tensor = tensors[outputs[0]];
+    assert(output_tensor != nullptr);
+
     auto name = tensor_name(output_tensor);
 
     const auto &tensor_in = tensors.at(inputs.at(0));
-    if (tensor_in->type != options->in_data_type)
+    assert(tensor_in != nullptr);
+    if (tensor_in->type() != options->in_data_type)
     {
       if (settings->get(luci::UserSettings::Key::DisableValidation))
       {
@@ -57,7 +60,8 @@ bool CircleCastGraphBuilder::validate(const ValidateArgs &args) const
         return false;
     }
     const auto &tensor_out = tensors.at(outputs[0]);
-    if (tensor_out->type != options->out_data_type)
+    assert(tensor_out != nullptr);
+    if (tensor_out->type() != options->out_data_type)
     {
       if (settings->get(luci::UserSettings::Key::DisableValidation))
       {

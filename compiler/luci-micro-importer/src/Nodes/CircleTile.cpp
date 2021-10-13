@@ -32,9 +32,9 @@ bool CircleTileGraphBuilder::validate(const ValidateArgs &args) const
   auto outputs = args.op.outputs;
   // Multiples (inputs.at(1)) must be one of the following types
   // int32, int64
-  const auto &tensors = args.reader.tensors();
+  const auto tensors = args.reader.native_tensors();
   const auto &tensor = tensors.at(inputs.at(1));
-  switch (tensor->type)
+  switch (tensor->type())
   {
     case circle::TensorType_INT32:
     case circle::TensorType_INT64:
@@ -44,7 +44,7 @@ bool CircleTileGraphBuilder::validate(const ValidateArgs &args) const
   }
 
   // Type of input and output must be the same
-  if (tensors.at(inputs.at(0))->type != tensors.at(outputs[0])->type)
+  if (tensors.at(inputs.at(0))->type() != tensors.at(outputs[0])->type())
     return false;
 
   return true;

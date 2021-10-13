@@ -30,12 +30,12 @@ bool CircleSegmentSumGraphBuilder::validate(const ValidateArgs &args) const
 
   const auto &inputs = args.op.inputs;
   const auto &outputs = args.op.outputs;
-  const auto &tensors = args.reader.tensors();
+  const auto tensors = args.reader.native_tensors();
   const auto &tensor_in = tensors.at(inputs.at(0));
   const auto &tensor_out = tensors.at(outputs[0]);
   const auto &tensor_ids = tensors.at(inputs.at(1));
 
-  switch (tensor_ids->type)
+  switch (tensor_ids->type())
   {
     case circle::TensorType_INT32:
     case circle::TensorType_INT64:
@@ -44,7 +44,7 @@ bool CircleSegmentSumGraphBuilder::validate(const ValidateArgs &args) const
       return false;
   }
 
-  if (tensor_out->type != tensor_in->type)
+  if (tensor_out->type() != tensor_in->type())
   {
     return false;
   }

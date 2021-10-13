@@ -30,9 +30,9 @@ bool CircleSinGraphBuilder::validate(const ValidateArgs &args) const
 
   const auto &inputs = args.op.inputs;
   // input type check
-  const auto &tensors = args.reader.tensors();
+  const auto tensors = args.reader.native_tensors();
   const auto &tensor = tensors.at(inputs.at(0));
-  switch (tensor->type)
+  switch (tensor->type())
   {
     case circle::TensorType_FLOAT16:
     case circle::TensorType_FLOAT32:

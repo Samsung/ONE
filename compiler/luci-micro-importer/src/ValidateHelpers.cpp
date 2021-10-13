@@ -26,9 +26,10 @@ bool validate_batch_space_nd(const GraphBuilderBase::ValidateArgs &args)
     return false;
 
   // input 1 and 2 should have INT32/INT64 type
-  const auto &tensors = args.reader.tensors();
-  const auto &tensor_1 = tensors.at(inputs.at(1));
-  switch (tensor_1->type)
+  const auto &tensors = args.reader.native_tensors();
+  const auto tensor_1 = tensors.at(inputs.at(1));
+  assert(tensor_1 != nullptr);
+  switch (tensor_1->type())
   {
     case circle::TensorType_INT32:
     case circle::TensorType_INT64:
@@ -36,8 +37,9 @@ bool validate_batch_space_nd(const GraphBuilderBase::ValidateArgs &args)
     default:
       return false;
   }
-  const auto &tensor_2 = tensors.at(inputs.at(2));
-  switch (tensor_2->type)
+  const auto tensor_2 = tensors.at(inputs.at(2));
+  assert(tensor_2 != nullptr);
+  switch (tensor_2->type())
   {
     case circle::TensorType_INT32:
     case circle::TensorType_INT64:
@@ -48,7 +50,8 @@ bool validate_batch_space_nd(const GraphBuilderBase::ValidateArgs &args)
 
   // Only support input shape dimension 3 and 4 only
   const auto &tensor_0 = tensors.at(inputs.at(0));
-  const auto t_0_s = tensor_0->shape.size();
+  assert(tensor_0 != nullptr);
+  const auto t_0_s = wrap(tensor_0->shape()).size();
   if (t_0_s != 3 && t_0_s != 4)
     return false;
 
@@ -68,10 +71,11 @@ bool validate_minmax(const GraphBuilderBase::ValidateArgs &args)
   if (outputs.size() != 1)
     return false;
 
-  const auto &tensors = args.reader.tensors();
-  const auto &tensor = tensors.at(inputs.at(0));
+  const auto &tensors = args.reader.native_tensors();
+  const auto tensor = tensors.at(inputs.at(0));
+  assert(tensor != nullptr);
 
-  switch (tensor->type)
+  switch (tensor->type())
   {
     case circle::TensorType_FLOAT16:
     case circle::TensorType_FLOAT32:
@@ -84,10 +88,12 @@ bool validate_minmax(const GraphBuilderBase::ValidateArgs &args)
       return false;
   }
 
-  if (tensors[inputs.at(1)]->type != tensor->type)
+  assert(tensors[inputs.at(1)] != nullptr);
+  if (tensors[inputs.at(1)]->type() != tensor->type())
     return false;
 
-  if (tensors[outputs[0]]->type != tensor->type)
+  assert(tensors[outputs[0]] != nullptr);
+  if (tensors[outputs[0]]->type() != tensor->type())
     return false;
 
   return true;
@@ -104,10 +110,11 @@ bool validate_reduce_minmax(const GraphBuilderBase::ValidateArgs &args)
   if (outputs.size() != 1)
     return false;
 
-  const auto &tensors = args.reader.tensors();
+  const auto tensors = args.reader.native_tensors();
   const auto &tensor_axis = tensors.at(inputs.at(1));
+  assert(tensor_axis != nullptr);
 
-  switch (tensor_axis->type)
+  switch (tensor_axis->type())
   {
     case circle::TensorType_INT32:
     case circle::TensorType_INT64:

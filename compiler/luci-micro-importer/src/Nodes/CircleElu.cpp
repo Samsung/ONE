@@ -31,10 +31,10 @@ bool CircleEluGraphBuilder::validate(const ValidateArgs &args) const
   const auto &inputs = args.op.inputs;
   const auto &outputs = args.op.outputs;
 
-  const auto &tensors = args.reader.tensors();
+  const auto tensors = args.reader.native_tensors();
   const auto &tensor = tensors.at(inputs.at(0));
 
-  switch (tensor->type)
+  switch (tensor->type())
   {
     case circle::TensorType_FLOAT64:
       break;
@@ -48,7 +48,7 @@ bool CircleEluGraphBuilder::validate(const ValidateArgs &args) const
       return false;
   }
 
-  if (tensors[outputs[0]]->type != tensor->type)
+  if (tensors[outputs[0]]->type() != tensor->type())
     return false;
 
   return true;

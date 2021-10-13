@@ -32,9 +32,9 @@ bool CircleSquareGraphBuilder::validate(const ValidateArgs &args) const
   // Must be one of the following types
   // bfloat16, half (float16), float32, float64, complex64, complex128
   // Currently, circle supports float16, float32, complex64
-  const auto &tensors = args.reader.tensors();
+  const auto tensors = args.reader.native_tensors();
   const auto &tensor = tensors.at(inputs.at(0));
-  switch (tensor->type)
+  switch (tensor->type())
   {
     case circle::TensorType_INT32:
     case circle::TensorType_INT64:

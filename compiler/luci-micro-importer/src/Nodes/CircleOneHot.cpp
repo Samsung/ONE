@@ -32,21 +32,21 @@ bool CircleOneHotGraphBuilder::validate(const ValidateArgs &args) const
 
   const auto &inputs = args.op.inputs;
   const auto *options = args.op.builtin_options.AsOneHotOptions();
-  const auto &tensors = args.reader.tensors();
+  const auto tensors = args.reader.native_tensors();
   const auto &indices = tensors.at(inputs.at(0));
   const auto &depth = tensors.at(inputs.at(1));
   const auto &on_value = tensors.at(inputs.at(2));
   const auto &off_value = tensors.at(inputs.at(3));
 
-  if (options->axis < -1 || options->axis > static_cast<int32_t>(indices->shape.size()))
+  if (options->axis < -1 || options->axis > static_cast<int32_t>(wrap(indices->shape()).size()))
     return false;
-  if (depth->shape.size() != 0)
+  if (wrap(depth->shape()).size() != 0)
     return false;
-  if (on_value->shape.size() != 0)
+  if (wrap(on_value->shape()).size() != 0)
     return false;
-  if (off_value->shape.size() != 0)
+  if (wrap(off_value->shape()).size() != 0)
     return false;
-  if (on_value->type != off_value->type)
+  if (on_value->type() != off_value->type())
     return false;
 
   return true;

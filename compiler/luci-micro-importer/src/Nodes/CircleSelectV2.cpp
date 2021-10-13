@@ -29,14 +29,14 @@ bool CircleSelectV2GraphBuilder::validate(const ValidateArgs &args) const
     return false;
 
   const auto &inputs = args.op.inputs;
-  const auto &tensors = args.reader.tensors();
+  const auto tensors = args.reader.native_tensors();
   const auto &condition = tensors.at(inputs.at(0));
-  if (condition->type != circle::TensorType_BOOL)
+  if (condition->type() != circle::TensorType_BOOL)
     return false;
 
   const auto &t = tensors.at(inputs.at(1));
   const auto &e = tensors.at(inputs.at(2));
-  if (t->type != e->type)
+  if (t->type() != e->type())
     return false;
 
   return true;
