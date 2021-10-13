@@ -26,6 +26,7 @@ namespace tflite2circle
 
 template <>
 Offset<MetaDataBufferLink>::Offset(FlatBufBuilder &fb, const TFLFlatBufVec *tflite_flatbuffer_vec)
+  : _fb{fb}
 {
   if (tflite_flatbuffer_vec == nullptr)
     return;
@@ -35,7 +36,7 @@ Offset<MetaDataBufferLink>::Offset(FlatBufBuilder &fb, const TFLFlatBufVec *tfli
 }
 
 template <>
-Offset<BufferLink>::Offset(FlatBufBuilder &fb, const TFLFlatBufVec *tflite_flatbuffer_vec)
+Offset<BufferLink>::Offset(FlatBufBuilder &fb, const TFLFlatBufVec *tflite_flatbuffer_vec) : _fb{fb}
 {
   std::vector<flatbuffers::Offset<circle::Buffer>> buffers_vec;
 
@@ -57,6 +58,7 @@ Offset<BufferLink>::Offset(FlatBufBuilder &fb, const TFLFlatBufVec *tflite_flatb
 
 template <>
 Offset<SubGraphLink>::Offset(FlatBufBuilder &fb, const TFLFlatBufVec *tflite_flatbuffer_vec)
+  : _fb{fb}
 {
   std::vector<flatbuffers::Offset<circle::SubGraph>> subgprahs_vec;
 
@@ -292,6 +294,7 @@ tflite::BuiltinOperator builtin_code_neutral(const tflite::OperatorCode *opcode)
 
 template <>
 Offset<OperatorCodeLink>::Offset(FlatBufBuilder &fb, const TFLFlatBufVec *tflite_flatbuffer_vec)
+  : _fb{fb}
 {
   std::vector<flatbuffers::Offset<circle::OperatorCode>> operator_code_vec;
 
