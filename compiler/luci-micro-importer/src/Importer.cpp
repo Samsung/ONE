@@ -23,6 +23,7 @@
 #include "luci/Import/GraphBuilderRegistry.h"
 #include "luci/Import/CircleReader.h"
 #include "luci/Import/Nodes/CircleConst.h"
+#include "luci/Import/Nodes/CircleRemoteConst.h"
 
 #include <luci/IR/Module.h>
 #include <luci/IR/CircleNodes.h>
@@ -40,7 +41,7 @@ namespace
 {
 
 void convert_graph(const luci::GraphBuilderSource &source, luci::CircleReader &reader,
-                   loco::Graph *graph)
+                   loco::Graph *graph, bool copy_consts)
 {
   LOGGER(l);
 
@@ -121,7 +122,12 @@ void convert_graph(const luci::GraphBuilderSource &source, luci::CircleReader &r
   // Create CircleConst nodes for constant tensors.
   for (uint32_t i = 0; i < tensors.size(); ++i)
   {
-    luci::CircleConst *const_node = luci::create_circleconst(&gb_context, i);
+    luci::CircleNode *const_node = nullptr;
+    if (copy_consts)
+      const_node = luci::create_circleconst(&gb_context, i);
+    else
+      const_node = luci::create_circle_remote_const(&gb_context, i);
+
     if (const_node != nullptr)
       nodefinder->enroll(i, const_node);
   }
@@ -258,7 +264,7 @@ std::unique_ptr<loco::Graph> Importer::import(const circle::Model *model) const
     return nullptr;
 
   // Convert circle::Model to loco::Graph
-  convert_graph(*source_ptr, reader, graph.get());
+  convert_graph(*source_ptr, reader, graph.get(), _copy_const_tensors);
 
   LOGGER(l);
   VERBOSE(l, 3) << "--- graph dump begin -------------------------------------------";
@@ -291,7 +297,7 @@ std::unique_ptr<Module> Importer::importModule(const circle::Model *model) const
     graph->name(reader.name());
 
     // Convert circle::Model to loco::Graph
-    convert_graph(*source_ptr, reader, graph.get());
+    convert_graph(*source_ptr, reader, graph.get(), _copy_const_tensors);
 
     LOGGER(l);
     VERBOSE(l, 3) << "--- graph dump begin -------------------------------------------";
