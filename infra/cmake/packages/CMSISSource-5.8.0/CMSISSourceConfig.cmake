@@ -1,9 +1,4 @@
 function(_CMSISSource_import)
-  if(NOT DOWNLOAD_CMSIS)
-    set(CMSIS_FOUND FALSE PARENT_SCOPE)
-    return()
-  endif(NOT DOWNLOAD_CMSIS)
-
   nnas_include(ExternalSourceTools)
   nnas_include(OptionTools)
 
