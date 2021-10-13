@@ -30,14 +30,27 @@ TFLModel::TFLModel(const std::string &path)
 const tflite::Model *TFLModel::load_model(void)
 {
   assert(_valid == true);
-  _infile.seekg(0, std::ios::end);
-  auto fileSize = _infile.tellg();
-  _infile.seekg(0, std::ios::beg);
-  _data.resize(fileSize);
-  _infile.read(_data.data(), fileSize);
-  _infile.close();
+
+  if (!_loaded)
+  {
+    _infile.seekg(0, std::ios::end);
+    auto fileSize = _infile.tellg();
+    _infile.seekg(0, std::ios::beg);
+    _data.resize(fileSize);
+    _infile.read(_data.data(), fileSize);
+    _infile.close();
+  }
+  _loaded = true;
 
   return tflite::GetModel(_data.data());
+}
+
+bool TFLModel::verify_model(void)
+{
+  load_model();
+
+  flatbuffers::Verifier verifier{reinterpret_cast<const uint8_t *>(_data.data()), _data.size()};
+  return tflite::VerifyModelBuffer(verifier);
 }
 
 } // namespace tflite2circle

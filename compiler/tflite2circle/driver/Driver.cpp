@@ -75,6 +75,11 @@ int entry(int argc, char **argv)
     std::cerr << "ERROR: Failed to load tflite '" << tfl_path << "'" << std::endl;
     return 255;
   }
+  if (!tfl_model.verify_model())
+  {
+    std::cerr << "ERROR: Failed to verify tflite '" << tfl_path << "'" << std::endl;
+    return 255;
+  }
 
   // create flatbuffer builder
   auto flatbuffer_builder = std::make_unique<flatbuffers::FlatBufferBuilder>(1024);

@@ -38,6 +38,7 @@ public:
 
 public:
   bool is_valid(void) { return _valid; }
+  bool verify_model(void);
 
 private:
   const tflite::Model *load_model(void);
@@ -46,6 +47,7 @@ private:
   std::ifstream _infile;
   DataBuffer _data;
   bool _valid;
+  bool _loaded = false;
 
   friend class CircleModel;
 };
