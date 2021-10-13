@@ -21,8 +21,10 @@
 namespace
 {
 
-uint32_t read_u32(const std::vector<uint8_t> &buffer, uint32_t idx)
+template <typename VectorType> uint32_t read_u32(const VectorType &buffer, uint32_t idx)
 {
+  static_assert(std::is_same<typename VectorType::value_type, uint8_t>::value);
+
   uint32_t val = 0;
   val += (buffer.at(idx + 0) << 0 * 8);
   val += (buffer.at(idx + 1) << 1 * 8);
@@ -37,9 +39,11 @@ namespace
 {
 
 // 'source_table' is decoded to std::map<uint32_t, std::string> format.
-const std::map<uint32_t, std::string>
-decoded_source_table(const std::vector<uint8_t> &source_table_data)
+template <typename VectorType>
+const std::map<uint32_t, std::string> decoded_source_table(const VectorType &source_table_data)
 {
+  static_assert(std::is_same<typename VectorType::value_type, uint8_t>::value);
+
   std::map<uint32_t, std::string> source_id_name_map;
   uint32_t idx = 0;
 
@@ -86,9 +90,11 @@ decoded_source_table(const std::vector<uint8_t> &source_table_data)
 }
 
 // 'op_table' is decoded to std::map<uint32_t, std::set<uint32_t>> format.
-const std::map<uint32_t, std::set<uint32_t>>
-decoded_op_table(const std::vector<uint8_t> &op_table_data)
+template <typename VectorType>
+const std::map<uint32_t, std::set<uint32_t>> decoded_op_table(const VectorType &op_table_data)
 {
+  static_assert(std::is_same<typename VectorType::value_type, uint8_t>::value);
+
   std::map<uint32_t, std::set<uint32_t>> node_source_ids_map;
   uint32_t idx = 0;
 
@@ -145,8 +151,9 @@ CircleImportMetadata::CircleImportMetadata(const luci::CircleReader &reader)
   for (auto const meta : metadata)
   {
     assert(meta != nullptr);
-    assert(meta->buffer() < reader.buffers().size());
-    const std::vector<uint8_t> &buffer = reader.buffers()[meta->buffer()]->data;
+    assert(meta->buffer() < reader.native_buffers().size());
+    assert(reader.native_buffers()[meta->buffer()] != nullptr);
+    auto const buffer = wrap(reader.native_buffers()[meta->buffer()]->data());
 
     assert(meta->name() != nullptr);
     if (meta->name()->str().compare("ONE_op_table") == 0)

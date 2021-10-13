@@ -45,9 +45,10 @@ std::ostream &operator<<(std::ostream &os, luci::VectorWrapper<int32_t> vect)
 
 using namespace luci;
 
-template <loco::DataType DT>
-void copy_data(const std::vector<uint8_t> &raw_data, uint32_t num_elements, CircleConst *const_node)
+template <loco::DataType DT, typename VectorType>
+void copy_data(const VectorType &raw_data, uint32_t num_elements, CircleConst *const_node)
 {
+  static_assert(std::is_same<typename VectorType::value_type, uint8_t>::value);
   using T = typename loco::DataTypeImpl<DT>::Type;
 
   // TODO calculate the exact buffer size of sparse tensor
@@ -66,10 +67,10 @@ void copy_data(const std::vector<uint8_t> &raw_data, uint32_t num_elements, Circ
   }
 }
 
-template <>
-void copy_data<loco::DataType::STRING>(const std::vector<uint8_t> &raw_data, uint32_t num_elements,
-                                       CircleConst *const_node)
+template <typename VectorType>
+void copy_string(const VectorType &raw_data, uint32_t num_elements, CircleConst *const_node)
 {
+  static_assert(std::is_same<typename VectorType::value_type, uint8_t>::value);
   assert(const_node->sparsityparam() == nullptr);
 
   const auto *data = reinterpret_cast<const char *>(raw_data.data());
@@ -116,7 +117,8 @@ CircleConst *create_circleconst(GraphBuilderContext *context, int32_t tensor_ind
   auto const const_tensor = tensors[tensor_index];
   assert(const_tensor != nullptr);
 
-  const std::vector<uint8_t> &buffer = reader->buffers()[const_tensor->buffer()]->data;
+  assert(reader->native_buffers()[const_tensor->buffer()] != nullptr);
+  auto const buffer = wrap(reader->native_buffers()[const_tensor->buffer()]->data());
   auto const const_dims = wrap(const_tensor->shape()); // in NHWC
   if (const_dims.size() == 0 && buffer.empty())
   {
@@ -182,7 +184,7 @@ CircleConst *create_circleconst(GraphBuilderContext *context, int32_t tensor_ind
         break;
 
       case loco::DataType::STRING:
-        copy_data<loco::DataType::STRING>(buffer, num_elements, const_node);
+        copy_string(buffer, num_elements, const_node);
         break;
 
       default:
