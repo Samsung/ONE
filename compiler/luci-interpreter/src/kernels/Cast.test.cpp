@@ -92,6 +92,7 @@ TYPED_TEST(CastTest, FloatToInt)
                           {
                             1, 9, 7, 3, //
                           });
+  SUCCEED();
 }
 
 TYPED_TEST(CastTest, IntToFloat)
@@ -105,6 +106,7 @@ TYPED_TEST(CastTest, IntToFloat)
                           {
                             1.0f, 9.0f, 7.0f, 3.0f, //
                           });
+  SUCCEED();
 }
 
 template <typename T1, typename T2> void check_int()
@@ -118,6 +120,7 @@ template <typename T1, typename T2> void check_int()
                 {
                   1, 9, 7, 3, //
                 });
+  SUCCEED();
 }
 
 TYPED_TEST(CastTest, IntToInt)
@@ -130,6 +133,7 @@ TYPED_TEST(CastTest, IntToInt)
   check_int<TypeParam, int16_t>();
   check_int<TypeParam, int32_t>();
   check_int<TypeParam, int64_t>();
+  SUCCEED();
 }
 
 TYPED_TEST(CastTest, IntToBool)
@@ -143,6 +147,7 @@ TYPED_TEST(CastTest, IntToBool)
                          {
                            true, false, true, false, //
                          });
+  SUCCEED();
 }
 
 TYPED_TEST(CastTest, BoolToInt)
@@ -156,6 +161,7 @@ TYPED_TEST(CastTest, BoolToInt)
                          {
                            1, 0, 0, 1, //
                          });
+  SUCCEED();
 }
 
 TEST(CastTest, FloatToBool)
@@ -169,6 +175,7 @@ TEST(CastTest, FloatToBool)
                      {
                        true, false, true, false, //
                      });
+  SUCCEED();
 }
 
 TEST(CastTest, BoolToFloat)
@@ -182,6 +189,7 @@ TEST(CastTest, BoolToFloat)
                      {
                        1.0f, 0.0f, 0.0f, 1.0f, //
                      });
+  SUCCEED();
 }
 
 TEST(CastTest, FloatToFloat)
@@ -195,6 +203,7 @@ TEST(CastTest, FloatToFloat)
                       {
                         1.0f, 0.0f, 7.0f, 0.0f, //
                       });
+  SUCCEED();
 }
 
 TEST(CastTest, BoolToBool)
@@ -208,6 +217,7 @@ TEST(CastTest, BoolToBool)
                     {
                       true, true, false, false, //
                     });
+  SUCCEED();
 }
 
 TEST(CastTest, UnsupportedType_NEG)
@@ -223,6 +233,7 @@ TEST(CastTest, UnsupportedType_NEG)
 
   Cast kernel(&input_tensor, &output_tensor);
   EXPECT_ANY_THROW(kernel.configure());
+  SUCCEED();
 }
 
 } // namespace
