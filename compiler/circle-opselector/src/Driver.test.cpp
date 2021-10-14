@@ -31,7 +31,7 @@ TEST(DriverTest, NoArg_NEG)
   ASSERT_EQ(EXIT_FAILURE, result);
 }
 
-TEST(DriverTest, Wrong_ID)
+TEST(DriverTest, Wrong_ID_NEG)
 {
   std::string str1 = "1";
   std::string empty = "";
