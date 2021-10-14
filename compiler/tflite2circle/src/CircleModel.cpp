@@ -25,8 +25,8 @@ namespace tflite2circle
 {
 
 template <>
-Offset<MetaDataBufferLink>::Offset(FlatBufBuilder &fb, const TFLFlatBufVec *tflite_flatbuffer_vec)
-  : _fb{fb}
+void Offset<MetaDataBufferLink>::build(FlatBufBuilder &fb,
+                                       const TFLFlatBufVec *tflite_flatbuffer_vec)
 {
   if (tflite_flatbuffer_vec == nullptr)
     return;
@@ -36,7 +36,7 @@ Offset<MetaDataBufferLink>::Offset(FlatBufBuilder &fb, const TFLFlatBufVec *tfli
 }
 
 template <>
-Offset<BufferLink>::Offset(FlatBufBuilder &fb, const TFLFlatBufVec *tflite_flatbuffer_vec) : _fb{fb}
+void Offset<BufferLink>::build(FlatBufBuilder &fb, const TFLFlatBufVec *tflite_flatbuffer_vec)
 {
   std::vector<flatbuffers::Offset<circle::Buffer>> buffers_vec;
 
@@ -57,8 +57,7 @@ Offset<BufferLink>::Offset(FlatBufBuilder &fb, const TFLFlatBufVec *tflite_flatb
 }
 
 template <>
-Offset<SubGraphLink>::Offset(FlatBufBuilder &fb, const TFLFlatBufVec *tflite_flatbuffer_vec)
-  : _fb{fb}
+void Offset<SubGraphLink>::build(FlatBufBuilder &fb, const TFLFlatBufVec *tflite_flatbuffer_vec)
 {
   std::vector<flatbuffers::Offset<circle::SubGraph>> subgprahs_vec;
 
@@ -293,8 +292,7 @@ tflite::BuiltinOperator builtin_code_neutral(const tflite::OperatorCode *opcode)
 }
 
 template <>
-Offset<OperatorCodeLink>::Offset(FlatBufBuilder &fb, const TFLFlatBufVec *tflite_flatbuffer_vec)
-  : _fb{fb}
+void Offset<OperatorCodeLink>::build(FlatBufBuilder &fb, const TFLFlatBufVec *tflite_flatbuffer_vec)
 {
   std::vector<flatbuffers::Offset<circle::OperatorCode>> operator_code_vec;
 
@@ -316,12 +314,16 @@ Offset<OperatorCodeLink>::Offset(FlatBufBuilder &fb, const TFLFlatBufVec *tflite
 CircleModel::CircleModel(FlatBufBuilder &fb, const tflite::Model *tfl_model)
   : _version{0}, _description{fb->CreateString("ONE-tflite2circle")}, _fb{fb}
 {
-  _operator_codes_offset =
-    std::make_unique<Offset<OperatorCodeLink>>(fb, tfl_model->operator_codes());
-  _subGraphs_offset = std::make_unique<Offset<SubGraphLink>>(fb, tfl_model->subgraphs());
-  _buffers_offset = std::make_unique<Offset<BufferLink>>(fb, tfl_model->buffers());
-  _metadata_buffer_offset =
-    std::make_unique<Offset<MetaDataBufferLink>>(fb, tfl_model->metadata_buffer());
+  _operator_codes_offset = std::make_unique<Offset<OperatorCodeLink>>(fb);
+  _subGraphs_offset = std::make_unique<Offset<SubGraphLink>>(fb);
+  _buffers_offset = std::make_unique<Offset<BufferLink>>(fb);
+  _metadata_buffer_offset = std::make_unique<Offset<MetaDataBufferLink>>(fb);
+
+  _operator_codes_offset->build(fb, tfl_model->operator_codes());
+  _subGraphs_offset->build(fb, tfl_model->subgraphs());
+  _buffers_offset->build(fb, tfl_model->buffers());
+  _metadata_buffer_offset->build(fb, tfl_model->metadata_buffer());
+
   model_build();
 }
 
