@@ -84,9 +84,10 @@ private:
 
 public:
   CircleModel(void) = delete;
-  CircleModel(FlatBufBuilder &fb, const tflite::Model *tfl_model);
+  CircleModel(FlatBufBuilder &fb);
 
 public:
+  void load_offsets(FlatBufBuilder &fb, const tflite::Model *tfl_model);
   void model_build(void) const;
   const char *base(void) const;
   size_t size(void) const;
