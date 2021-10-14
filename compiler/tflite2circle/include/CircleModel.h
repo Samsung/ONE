@@ -63,12 +63,14 @@ private:
 
 public:
   Offset(void) = delete;
+  Offset(FlatBufBuilder &fb) : _fb{fb} {};
   Offset(FlatBufBuilder &fb, const TFLFlatBufVec *tflite_flatbuffer_vec);
 
 public:
   CIRFlatBufVecOffset offset(void) const { return _circle_flatbuffer_vec_offset; }
 
 private:
+  FlatBufBuilder &_fb;
   CIRFlatBufVecOffset _circle_flatbuffer_vec_offset;
 };
 
