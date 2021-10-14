@@ -50,7 +50,7 @@ void BuddyMemoryManager::allocate_memory(luci_interpreter::Tensor &tensor)
              ? lowerLog2(footprint)
              : lowerLog2(footprint) + 1; // check footprint is pow_of_2
 
-  while (!_free_blocks[l] && l < 32)
+  while (l < 32 && !_free_blocks[l])
     l++;
 
   assert(l < 32);
