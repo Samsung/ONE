@@ -1,5 +1,9 @@
 file(GLOB_RECURSE SOURCES "src/*.cpp")
 
+if (NOT LIBRARY_TYPE)
+    set(LIBRARY_TYPE "SHARED")
+endif(NOT LIBRARY_TYPE)
+
 add_library(luci_plan ${LIBRARY_TYPE} ${SOURCES})
 target_include_directories(luci_plan PRIVATE src)
 target_include_directories(luci_plan PUBLIC include)

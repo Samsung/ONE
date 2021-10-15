@@ -2,6 +2,10 @@ file(GLOB_RECURSE SOURCES "src/*.cpp")
 file(GLOB_RECURSE TESTS "src/*.test.cpp")
 list(REMOVE_ITEM SOURCES ${TESTS})
 
+if (NOT LIBRARY_TYPE)
+  set(LIBRARY_TYPE "SHARED")
+endif(NOT LIBRARY_TYPE)
+
 add_library(luci_env ${LIBRARY_TYPE} ${SOURCES})
 target_include_directories(luci_env PUBLIC include)
 target_link_libraries(luci_env PRIVATE nncc_common)
