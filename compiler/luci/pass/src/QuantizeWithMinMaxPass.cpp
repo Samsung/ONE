@@ -63,6 +63,52 @@ void iterate_per_channel(CircleConst *node, int32_t &channel_dim_index, IterFunc
   }
 }
 
+// Create a Quantize Op whose
+// dtype is out_type
+// shape is the same with node
+// qparam is computed using node's min/max
+luci::CircleQuantize *create_quantize_op(luci::CircleNode *node, loco::DataType out_type)
+{
+  auto quantize = node->graph()->nodes()->create<CircleQuantize>();
+  quantize->name(node->name() + "_Quantize");
+  quantize->dtype(out_type);
+  quantize->rank(node->rank());
+  for (uint32_t i = 0; i < node->rank(); i++)
+    quantize->dim(i).set(node->dim(i).value());
+
+  quantize->shape_status(luci::ShapeStatus::VALID);
+
+  auto qparam = node->quantparam();
+  assert(qparam);                  // FIX_CALLER_UNLESS
+  assert(qparam->min.size() == 1); // FIX_CALLER_UNLESS
+  assert(qparam->max.size() == 1); // FIX_CALLER_UNLESS
+  auto min = qparam->min[0];
+  auto max = qparam->max[0];
+
+  float scaling_factor{0};
+  int64_t zp{0};
+  float nudged_min{0};
+  float nudged_max{0};
+
+  if (out_type == loco::DataType::U8)
+  {
+    compute_asym_scale_zp(min, max, scaling_factor, zp, nudged_min, nudged_max);
+  }
+  else
+  {
+    assert(out_type == loco::DataType::S16);
+    compute_sym_scale_zp(min, max, scaling_factor, zp, nudged_min, nudged_max);
+  }
+
+  auto quantparam = std::make_unique<CircleQuantParam>();
+  quantparam->scale.push_back(scaling_factor);
+  quantparam->zerop.push_back(zp);
+
+  quantize->quantparam(std::move(quantparam));
+
+  return quantize;
+}
+
 } // namespace
 
 namespace luci
@@ -743,8 +789,6 @@ struct QuantizeActivation final : public luci::CircleNodeMutableVisitor<bool>
           scaling_factor = scaling_factor < 1 ? 1.0f : std::round(scaling_factor);
         }
 
-        circle_node->quantparam()->min.clear();
-        circle_node->quantparam()->max.clear();
         circle_node->quantparam()->scale.push_back(scaling_factor);
         circle_node->quantparam()->zerop.push_back(zp);
       }
@@ -1467,6 +1511,86 @@ void propagate_pad_v2_quantparam(luci::CirclePadV2 *pad_v2, loco::DataType quant
   quant_input(&CirclePadV2::constant_values, 2);
 }
 
+void QuantizeWithMinMaxPass::set_input_type(loco::Graph *g) const
+{
+  auto inputs = g->inputs();
+  for (auto node : loco::input_nodes(g))
+  {
+    auto input = loco::must_cast<luci::CircleInput *>(node);
+    if (input->dtype() == _input_type)
+      continue;
+
+    // Bool type is not quantizable
+    if (input->dtype() == loco::DataType::BOOL)
+      continue;
+
+    // Insert Quantize Op
+    auto quant_op = create_quantize_op(input, input->dtype());
+    loco::replace(input).with(quant_op);
+    quant_op->input(input);
+
+    // Requantize input
+    {
+      auto quantparam = input->quantparam();
+      assert(quantparam);
+      assert(quantparam->min.size() == 1); // only support layer-wise quant
+      assert(quantparam->max.size() == 1); // only support layer-wise quant
+      auto min = quantparam->min[0];
+      auto max = quantparam->max[0];
+
+      float scaling_factor{0};
+      int64_t zp{0};
+      float nudged_min{0};
+      float nudged_max{0};
+
+      if (_input_type == loco::DataType::U8)
+      {
+        compute_asym_scale_zp(min, max, scaling_factor, zp, nudged_min, nudged_max);
+      }
+      else
+      {
+        assert(_input_type == loco::DataType::S16);
+        compute_sym_scale_zp(min, max, scaling_factor, zp, nudged_min, nudged_max);
+      }
+      input->dtype(_input_type);
+      input->quantparam()->scale[0] = scaling_factor;
+      input->quantparam()->zerop[0] = zp;
+    }
+
+    auto graph_input = inputs->at(input->index());
+    graph_input->dtype(_input_type);
+  }
+}
+
+void QuantizeWithMinMaxPass::set_output_type(loco::Graph *g) const
+{
+  auto outputs = g->outputs();
+  for (auto node : loco::output_nodes(g))
+  {
+    auto output = loco::must_cast<luci::CircleOutput *>(node);
+    if (output->dtype() == _output_type)
+      continue;
+
+    // Bool type is not quantizable
+    if (output->dtype() == loco::DataType::BOOL)
+      continue;
+
+    auto from = loco::must_cast<luci::CircleNode *>(output->from());
+
+    // The last Op is not quantizable Op (ex: ArgMax)
+    if (not from->quantparam())
+      continue;
+
+    // Insert Quantize Op
+    auto quant_op = create_quantize_op(from, _output_type);
+    loco::replace(from).with(quant_op);
+    quant_op->input(from);
+
+    auto graph_output = outputs->at(output->index());
+    graph_output->dtype(_output_type);
+  }
+}
+
 bool QuantizeWithMinMaxPass::run(loco::Graph *g)
 {
   LOGGER(l);
@@ -1536,6 +1660,23 @@ bool QuantizeWithMinMaxPass::run(loco::Graph *g)
       circle_node->dtype(_output_model_dtype);
       auto graph_output = graph_outputs->at(circle_node->index());
       graph_output->dtype(_output_model_dtype);
+    }
+  }
+
+  // Set input type
+  set_input_type(g);
+
+  // Set output type
+  set_output_type(g);
+
+  // Remove min/max values
+  for (auto node : loco::active_nodes(loco::output_nodes(g)))
+  {
+    auto circle_node = loco::must_cast<luci::CircleNode *>(node);
+    if (auto qparam = circle_node->quantparam())
+    {
+      qparam->min.clear();
+      qparam->max.clear();
     }
   }
 
