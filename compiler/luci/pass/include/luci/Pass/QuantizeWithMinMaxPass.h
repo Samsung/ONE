@@ -32,9 +32,10 @@ namespace luci
 class QuantizeWithMinMaxPass : public logo::Pass
 {
 public:
-  QuantizeWithMinMaxPass(loco::DataType input_dtype, loco::DataType output_dtype,
+  QuantizeWithMinMaxPass(loco::DataType input_model_dtype, loco::DataType output_model_dtype,
                          QuantizationGranularity granularity)
-    : _input_dtype{input_dtype}, _output_dtype{output_dtype}, _granularity{granularity}
+    : _input_model_dtype{input_model_dtype}, _output_model_dtype{output_model_dtype}, _granularity{
+                                                                                        granularity}
   {
     // DO NOTHING
   }
@@ -44,8 +45,8 @@ public:
   bool run(loco::Graph *graph);
 
 private:
-  loco::DataType _input_dtype;
-  loco::DataType _output_dtype;
+  loco::DataType _input_model_dtype;
+  loco::DataType _output_model_dtype;
   QuantizationGranularity _granularity;
 };
 

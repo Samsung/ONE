@@ -1475,7 +1475,7 @@ bool QuantizeWithMinMaxPass::run(loco::Graph *g)
   // Quantize activation
   for (auto node : loco::active_nodes(loco::output_nodes(g)))
   {
-    QuantizeActivation qa(_input_dtype, _output_dtype);
+    QuantizeActivation qa(_input_model_dtype, _output_model_dtype);
     auto circle_node = loco::must_cast<luci::CircleNode *>(node);
     circle_node->accept(&qa);
   }
@@ -1483,7 +1483,7 @@ bool QuantizeWithMinMaxPass::run(loco::Graph *g)
   // Quantize weights
   for (auto node : loco::active_nodes(loco::output_nodes(g)))
   {
-    QuantizeWeights qw(_input_dtype, _output_dtype, _granularity);
+    QuantizeWeights qw(_input_model_dtype, _output_model_dtype, _granularity);
     auto circle_node = loco::must_cast<luci::CircleNode *>(node);
     circle_node->accept(&qw);
   }
@@ -1491,7 +1491,7 @@ bool QuantizeWithMinMaxPass::run(loco::Graph *g)
   // Quantize bias
   for (auto node : loco::active_nodes(loco::output_nodes(g)))
   {
-    QuantizeBias qb(_input_dtype, _output_dtype, _granularity);
+    QuantizeBias qb(_input_model_dtype, _output_model_dtype, _granularity);
     auto circle_node = loco::must_cast<luci::CircleNode *>(node);
     circle_node->accept(&qb);
   }
@@ -1508,20 +1508,20 @@ bool QuantizeWithMinMaxPass::run(loco::Graph *g)
     // (2) concat has no fused activation function
     // (3) the input is not concatenation Op
     // (4) the input is not produced to Ops other than concat
-    propagate_concat_quantparam(concat, _output_dtype);
+    propagate_concat_quantparam(concat, _output_model_dtype);
   }
 
   // Quantize const inputs other than weights and bias
   for (auto node : loco::active_nodes(loco::output_nodes(g)))
   {
     auto circle_node = loco::must_cast<luci::CircleNode *>(node);
-    quantize_const_inputs(circle_node, _output_dtype);
+    quantize_const_inputs(circle_node, _output_model_dtype);
   }
 
   // Update qparam of output of special Ops
   for (auto node : loco::active_nodes(loco::output_nodes(g)))
   {
-    QuantizeSpecialActivation qsa(_input_dtype, _output_dtype);
+    QuantizeSpecialActivation qsa(_input_model_dtype, _output_model_dtype);
     auto circle_node = loco::must_cast<luci::CircleNode *>(node);
     circle_node->accept(&qsa);
   }
@@ -1531,11 +1531,11 @@ bool QuantizeWithMinMaxPass::run(loco::Graph *g)
   for (auto node : loco::output_nodes(g))
   {
     auto circle_node = loco::must_cast<luci::CircleOutput *>(node);
-    if (static_cast<luci::CircleNode *>(circle_node->from())->dtype() == _output_dtype)
+    if (static_cast<luci::CircleNode *>(circle_node->from())->dtype() == _output_model_dtype)
     {
-      circle_node->dtype(_output_dtype);
+      circle_node->dtype(_output_model_dtype);
       auto graph_output = graph_outputs->at(circle_node->index());
-      graph_output->dtype(_output_dtype);
+      graph_output->dtype(_output_model_dtype);
     }
   }
 
