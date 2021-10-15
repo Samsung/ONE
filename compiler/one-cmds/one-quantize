@@ -249,6 +249,12 @@ def _quantize(args):
             circle_quantizer_cmd.append(getattr(args, 'quantized_dtype'))
         if _utils._is_valid_attr(args, 'granularity'):
             circle_quantizer_cmd.append(getattr(args, 'granularity'))
+        if _utils._is_valid_attr(args, 'input_type'):
+            circle_quantizer_cmd.append('--input_type')
+            circle_quantizer_cmd.append(getattr(args, 'input_type'))
+        if _utils._is_valid_attr(args, 'output_type'):
+            circle_quantizer_cmd.append('--output_type')
+            circle_quantizer_cmd.append(getattr(args, 'output_type'))
         # input and output path
         circle_quantizer_cmd.append(tmp_output_path_2)
         if _utils._is_valid_attr(args, 'output_path'):

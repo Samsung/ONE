@@ -116,6 +116,18 @@ int entry(int argc, char **argv)
           "Three arguments required: tensor_name(string), "
           "scale(float) zero_point(int)");
 
+  arser.add_argument("--input_type")
+    .nargs(1)
+    .type(arser::DataType::STR)
+    .required(false)
+    .help("Input type of quantized model (uint8 or int16)");
+
+  arser.add_argument("--output_type")
+    .nargs(1)
+    .type(arser::DataType::STR)
+    .required(false)
+    .help("Output type of quantized model (uint8 or int16)");
+
   arser.add_argument("input").nargs(1).type(arser::DataType::STR).help("Input circle model");
   arser.add_argument("output").nargs(1).type(arser::DataType::STR).help("Output circle model");
 
@@ -181,6 +193,14 @@ int entry(int argc, char **argv)
     options->param(AlgorithmParameters::Quantize_input_dtype, values.at(0));
     options->param(AlgorithmParameters::Quantize_output_dtype, values.at(1));
     options->param(AlgorithmParameters::Quantize_granularity, values.at(2));
+
+    if (arser["--input_type"])
+      options->param(AlgorithmParameters::Quantize_input_type,
+                     arser.get<std::string>("--input_type"));
+
+    if (arser["--output_type"])
+      options->param(AlgorithmParameters::Quantize_output_type,
+                     arser.get<std::string>("--output_type"));
   }
 
   if (arser[rq])

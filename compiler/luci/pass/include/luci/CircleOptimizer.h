@@ -93,6 +93,8 @@ public:
       Quantize_tensor_names,
       Quantize_scales,
       Quantize_zero_points,
+      Quantize_input_type,  // TODO Rename input_dtype to avoid confusion
+      Quantize_output_type, // TODO Rename output_dtype to avoid confusion
 
       // sparsify
       Sparsify_tensor_name,
