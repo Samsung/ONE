@@ -87,8 +87,8 @@ public:
     enum AlgorithmParameters
     {
       // quantize
-      Quantize_input_dtype,
-      Quantize_output_dtype,
+      Quantize_input_model_dtype,
+      Quantize_output_model_dtype,
       Quantize_granularity, // layer-wise or channel-wise
       Quantize_tensor_names,
       Quantize_scales,
@@ -104,6 +104,9 @@ public:
       // convert NCHW to NHWC
       NCHW_to_NHWC_input_shape,
       NCHW_to_NHWC_output_shape,
+
+      Quantize_input_dtype = Quantize_input_model_dtype,   // TODO Remove this
+      Quantize_output_dtype = Quantize_output_model_dtype, // TODO Remove this
     };
 
     virtual ~Options() = default;

@@ -358,7 +358,7 @@ bool QuantizeDequantizeWeightsPass::run(loco::Graph *g)
   // Quantize weights
   for (auto node : loco::active_nodes(loco::output_nodes(g)))
   {
-    QuantizeDequantizeWeights qw(_input_dtype, _output_dtype, _granularity);
+    QuantizeDequantizeWeights qw(_input_model_dtype, _output_model_dtype, _granularity);
     auto circle_node = loco::must_cast<luci::CircleNode *>(node);
     circle_node->accept(&qw);
   }

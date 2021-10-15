@@ -422,28 +422,30 @@ void CircleOptimizer::quantize(loco::Graph *g) const
   // Fake quantization of weights
   if (_options->query(Options::Algorithm::QuantizeDequantizeWeights))
   {
-    static const std::vector<std::string> fakeq_supported_input_dtype{"float32"};
-    static const std::vector<std::string> fakeq_supported_output_dtype{"uint8", "int16"};
+    static const std::vector<std::string> fakeq_supported_input_model_dtype{"float32"};
+    static const std::vector<std::string> fakeq_supported_output_model_dtype{"uint8", "int16"};
     static const std::vector<std::string> fakeq_supported_granularity{"layer", "channel"};
 
-    auto input_dtype = _options->param(Options::AlgorithmParameters::Quantize_input_dtype);
-    auto output_dtype = _options->param(Options::AlgorithmParameters::Quantize_output_dtype);
+    auto input_model_dtype =
+      _options->param(Options::AlgorithmParameters::Quantize_input_model_dtype);
+    auto output_model_dtype =
+      _options->param(Options::AlgorithmParameters::Quantize_output_model_dtype);
     auto granularity = _options->param(Options::AlgorithmParameters::Quantize_granularity);
 
-    if (!in_array(to_lower_case(input_dtype), fakeq_supported_input_dtype))
+    if (!in_array(to_lower_case(input_model_dtype), fakeq_supported_input_model_dtype))
       throw std::runtime_error("Unsupported input type. List of supported input type: " +
-                               to_string(fakeq_supported_input_dtype));
+                               to_string(fakeq_supported_input_model_dtype));
 
-    if (!in_array(to_lower_case(output_dtype), fakeq_supported_output_dtype))
+    if (!in_array(to_lower_case(output_model_dtype), fakeq_supported_output_model_dtype))
       throw std::runtime_error("Unsupported output type. List of supported output type: " +
-                               to_string(fakeq_supported_output_dtype));
+                               to_string(fakeq_supported_output_model_dtype));
 
     if (!in_array(to_lower_case(granularity), fakeq_supported_granularity))
       throw std::runtime_error("Unsupported granularity. List of supported granularity: " +
                                to_string(fakeq_supported_granularity));
 
     if (str_to_granularity(granularity) == QuantizationGranularity::LayerWise &&
-        str_to_dtype(output_dtype) != loco::DataType::U8)
+        str_to_dtype(output_model_dtype) != loco::DataType::U8)
       throw std::runtime_error("Layer-wise quantization only supports uint8 dtype.");
 
     // Clear existing quantparams before doing fake quantization
@@ -454,39 +456,43 @@ void CircleOptimizer::quantize(loco::Graph *g) const
         circle_node->quantparam(nullptr);
     }
 
-    luci::QuantizeDequantizeWeightsPass fake_quantizer(
-      str_to_dtype(input_dtype), str_to_dtype(output_dtype), str_to_granularity(granularity));
+    luci::QuantizeDequantizeWeightsPass fake_quantizer(str_to_dtype(input_model_dtype),
+                                                       str_to_dtype(output_model_dtype),
+                                                       str_to_granularity(granularity));
     fake_quantizer.run(g);
   }
 
   // Actual quantization of weights, bias, and activation
   if (_options->query(Options::Algorithm::QuantizeWithMinMax))
   {
-    static const std::vector<std::string> qwmm_supported_input_dtype{"float32"};
-    static const std::vector<std::string> qwmm_supported_output_dtype{"uint8", "int16"};
+    static const std::vector<std::string> qwmm_supported_input_model_dtype{"float32"};
+    static const std::vector<std::string> qwmm_supported_output_model_dtype{"uint8", "int16"};
     static const std::vector<std::string> qwmm_supported_granularity{"layer", "channel"};
 
-    auto input_dtype = _options->param(Options::AlgorithmParameters::Quantize_input_dtype);
-    auto output_dtype = _options->param(Options::AlgorithmParameters::Quantize_output_dtype);
+    auto input_model_dtype =
+      _options->param(Options::AlgorithmParameters::Quantize_input_model_dtype);
+    auto output_model_dtype =
+      _options->param(Options::AlgorithmParameters::Quantize_output_model_dtype);
     auto granularity = _options->param(Options::AlgorithmParameters::Quantize_granularity);
 
-    if (!in_array(to_lower_case(input_dtype), qwmm_supported_input_dtype))
+    if (!in_array(to_lower_case(input_model_dtype), qwmm_supported_input_model_dtype))
       throw std::runtime_error("Unsupported input type. List of supported input types: " +
-                               to_string(qwmm_supported_input_dtype));
+                               to_string(qwmm_supported_input_model_dtype));
 
-    if (!in_array(to_lower_case(output_dtype), qwmm_supported_output_dtype))
+    if (!in_array(to_lower_case(output_model_dtype), qwmm_supported_output_model_dtype))
       throw std::runtime_error("Unsupported output type. List of supported output types: " +
-                               to_string(qwmm_supported_output_dtype));
+                               to_string(qwmm_supported_output_model_dtype));
 
     if (!in_array(to_lower_case(granularity), qwmm_supported_granularity))
       throw std::runtime_error("Unsupported granularity. List of supported granularity: " +
                                to_string(qwmm_supported_granularity));
 
     if (str_to_granularity(granularity) == QuantizationGranularity::LayerWise &&
-        str_to_dtype(output_dtype) != loco::DataType::U8)
+        str_to_dtype(output_model_dtype) != loco::DataType::U8)
       throw std::runtime_error("Layer-wise quantization only supports uint8 dtype.");
 
-    luci::QuantizeWithMinMaxPass quantizer(str_to_dtype(input_dtype), str_to_dtype(output_dtype),
+    luci::QuantizeWithMinMaxPass quantizer(str_to_dtype(input_model_dtype),
+                                           str_to_dtype(output_model_dtype),
                                            str_to_granularity(granularity));
     quantizer.run(g);
 
@@ -505,7 +511,7 @@ void CircleOptimizer::quantize(loco::Graph *g) const
     phase_runner.run(phase);
 
     // Verify the type/granularity of the quantized model
-    luci::QuantizedModelVerifier verifier(str_to_dtype(output_dtype),
+    luci::QuantizedModelVerifier verifier(str_to_dtype(output_model_dtype),
                                           str_to_granularity(granularity));
     verifier.verify(g);
   }
@@ -513,21 +519,24 @@ void CircleOptimizer::quantize(loco::Graph *g) const
   // Requantize
   if (_options->query(Options::Algorithm::Requantize))
   {
-    static const std::vector<std::string> rq_supported_input_dtype{"int8"};
-    static const std::vector<std::string> rq_supported_output_dtype{"uint8"};
+    static const std::vector<std::string> rq_supported_input_model_dtype{"int8"};
+    static const std::vector<std::string> rq_supported_output_model_dtype{"uint8"};
 
-    auto input_dtype = _options->param(Options::AlgorithmParameters::Quantize_input_dtype);
-    auto output_dtype = _options->param(Options::AlgorithmParameters::Quantize_output_dtype);
+    auto input_model_dtype =
+      _options->param(Options::AlgorithmParameters::Quantize_input_model_dtype);
+    auto output_model_dtype =
+      _options->param(Options::AlgorithmParameters::Quantize_output_model_dtype);
 
-    if (!in_array(to_lower_case(input_dtype), rq_supported_input_dtype))
+    if (!in_array(to_lower_case(input_model_dtype), rq_supported_input_model_dtype))
       throw std::runtime_error("Unsupported input type. List of supported input types: " +
-                               to_string(rq_supported_input_dtype));
+                               to_string(rq_supported_input_model_dtype));
 
-    if (!in_array(to_lower_case(output_dtype), rq_supported_output_dtype))
+    if (!in_array(to_lower_case(output_model_dtype), rq_supported_output_model_dtype))
       throw std::runtime_error("Unsupported output type. List of supported output types: " +
-                               to_string(rq_supported_output_dtype));
+                               to_string(rq_supported_output_model_dtype));
 
-    luci::RequantizePass requantizer(str_to_dtype(input_dtype), str_to_dtype(output_dtype));
+    luci::RequantizePass requantizer(str_to_dtype(input_model_dtype),
+                                     str_to_dtype(output_model_dtype));
     requantizer.run(g);
   }
 
