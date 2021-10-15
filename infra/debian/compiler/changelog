@@ -1,3 +1,9 @@
+one (1.18.0) bionic; urgency=medium
+
+  * More optimization pass
+
+ -- seongwoo <mhs4670go@naver.com>  Fri, 15 Oct 2021 15:23:20 +0900
+
 one (1.17.0) bionic; urgency=medium
 
   * More optimization pass
