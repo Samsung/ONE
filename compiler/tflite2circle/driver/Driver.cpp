@@ -82,7 +82,7 @@ int entry(int argc, char **argv)
   // convert tflite to circle
   tflite2circle::CircleModel circle_model{flatbuffer_builder};
 
-  circle_model.load_offsets(flatbuffer_builder, tfl_model.get_model());
+  circle_model.load_offsets(tfl_model.get_model());
   circle_model.model_build();
 
   std::ofstream outfile{circle_path, std::ios::binary};
