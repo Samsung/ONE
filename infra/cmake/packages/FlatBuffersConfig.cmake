@@ -27,8 +27,8 @@ function(_FlatBuffers_build)
                       BUILD_DIR   ${CMAKE_BINARY_DIR}/externals/FLATBUFFERS-1.10/build
                       INSTALL_DIR ${EXT_OVERLAY_DIR}/FLATBUFFERS-1.10
                       BUILD_FLAGS ${ADDITIONAL_CXX_FLAGS}
-                      IDENTIFIER  "1.10-fix4"
-                      EXTRA_OPTS "-DFLATBUFFERS_BUILD_TESTS:BOOL=OFF -DPOSITION_INDEPENDENT_CODE:BOOL=ON"
+                      IDENTIFIER  "1.10-fix5"
+                      EXTRA_OPTS "-DFLATBUFFERS_BUILD_TESTS:BOOL=OFF -DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=ON"
                       PKG_NAME    "FLATBUFFERS-1.10")
 
 endfunction(_FlatBuffers_build)
