@@ -67,7 +67,7 @@ public:
 
 public:
   // TODO use _fb
-  void build(FlatBufBuilder &fb, const TFLFlatBufVec *tflite_flatbuffer_vec);
+  void build(const TFLFlatBufVec *tflite_flatbuffer_vec);
 
 public:
   CIRFlatBufVecOffset offset(void) const { return _circle_flatbuffer_vec_offset; }
@@ -87,7 +87,7 @@ public:
   CircleModel(FlatBufBuilder &fb);
 
 public:
-  void load_offsets(FlatBufBuilder &fb, const tflite::Model *tfl_model);
+  void load_offsets(const tflite::Model *tfl_model);
   void model_build(void) const;
   const char *base(void) const;
   size_t size(void) const;

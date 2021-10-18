@@ -24,19 +24,16 @@
 namespace tflite2circle
 {
 
-template <>
-void Offset<MetaDataBufferLink>::build(FlatBufBuilder &fb,
-                                       const TFLFlatBufVec *tflite_flatbuffer_vec)
+template <> void Offset<MetaDataBufferLink>::build(const TFLFlatBufVec *tflite_flatbuffer_vec)
 {
   if (tflite_flatbuffer_vec == nullptr)
     return;
   std::vector<int32_t> metadata_buffer_vec{tflite_flatbuffer_vec->begin(),
                                            tflite_flatbuffer_vec->end()};
-  _circle_flatbuffer_vec_offset = fb->CreateVector(metadata_buffer_vec);
+  _circle_flatbuffer_vec_offset = _fb->CreateVector(metadata_buffer_vec);
 }
 
-template <>
-void Offset<BufferLink>::build(FlatBufBuilder &fb, const TFLFlatBufVec *tflite_flatbuffer_vec)
+template <> void Offset<BufferLink>::build(const TFLFlatBufVec *tflite_flatbuffer_vec)
 {
   std::vector<flatbuffers::Offset<circle::Buffer>> buffers_vec;
 
@@ -46,18 +43,17 @@ void Offset<BufferLink>::build(FlatBufBuilder &fb, const TFLFlatBufVec *tflite_f
     if (it->data())
     {
       std::vector<uint8_t> data_vec{it->data()->begin(), it->data()->end()};
-      buffer_data = fb->CreateVector(data_vec);
+      buffer_data = _fb->CreateVector(data_vec);
     }
-    circle::BufferBuilder circle_buffer_builder{*fb};
+    circle::BufferBuilder circle_buffer_builder{*_fb};
     circle_buffer_builder.add_data(buffer_data);
     auto circle_buffers = circle_buffer_builder.Finish();
     buffers_vec.emplace_back(circle_buffers);
   }
-  _circle_flatbuffer_vec_offset = fb->CreateVector(buffers_vec);
+  _circle_flatbuffer_vec_offset = _fb->CreateVector(buffers_vec);
 }
 
-template <>
-void Offset<SubGraphLink>::build(FlatBufBuilder &fb, const TFLFlatBufVec *tflite_flatbuffer_vec)
+template <> void Offset<SubGraphLink>::build(const TFLFlatBufVec *tflite_flatbuffer_vec)
 {
   std::vector<flatbuffers::Offset<circle::SubGraph>> subgprahs_vec;
 
@@ -74,12 +70,12 @@ void Offset<SubGraphLink>::build(FlatBufBuilder &fb, const TFLFlatBufVec *tflite
       if (it->shape())
       {
         auto shape_vec = std::vector<int32_t>({it->shape()->begin(), it->shape()->end()});
-        shape = fb->CreateVector(shape_vec);
+        shape = _fb->CreateVector(shape_vec);
       }
       // name
       flatbuffers::Offset<flatbuffers::String> name;
       if (it->name())
-        name = fb->CreateString(it->name()->str());
+        name = _fb->CreateString(it->name()->str());
       // quantization
       flatbuffers::Offset<circle::QuantizationParameters> quantization;
       if (it->quantization())
@@ -100,8 +96,8 @@ void Offset<SubGraphLink>::build(FlatBufBuilder &fb, const TFLFlatBufVec *tflite
           auto rmax = it->quantization()->max();
           tfmin = std::vector<float>{rmin->begin(), rmin->end()};
           tfmax = std::vector<float>{rmax->begin(), rmax->end()};
-          min = fb->CreateVector(tfmin);
-          max = fb->CreateVector(tfmax);
+          min = _fb->CreateVector(tfmin);
+          max = _fb->CreateVector(tfmax);
         }
 
         if (it->quantization()->scale() && it->quantization()->zero_point())
@@ -110,11 +106,11 @@ void Offset<SubGraphLink>::build(FlatBufBuilder &fb, const TFLFlatBufVec *tflite
           auto rz = it->quantization()->zero_point();
           tfscale = std::vector<float>{rs->begin(), rs->end()};
           tfzerop = std::vector<int64_t>{rz->begin(), rz->end()};
-          scale = fb->CreateVector(tfscale);
-          zero_point = fb->CreateVector(tfzerop);
+          scale = _fb->CreateVector(tfscale);
+          zero_point = _fb->CreateVector(tfzerop);
         }
 
-        quantization = circle::CreateQuantizationParameters(*fb, min, max, scale, zero_point,
+        quantization = circle::CreateQuantizationParameters(*_fb, min, max, scale, zero_point,
                                                             circle::QuantizationDetails_NONE, 0,
                                                             quantized_dimension);
       }
@@ -135,7 +131,7 @@ void Offset<SubGraphLink>::build(FlatBufBuilder &fb, const TFLFlatBufVec *tflite
         {
           auto traversal_order_vec = std::vector<int32_t>{
             it->sparsity()->traversal_order()->begin(), it->sparsity()->traversal_order()->end()};
-          traversal_order = fb->CreateVector(traversal_order_vec);
+          traversal_order = _fb->CreateVector(traversal_order_vec);
         }
 
         // block_map
@@ -143,7 +139,7 @@ void Offset<SubGraphLink>::build(FlatBufBuilder &fb, const TFLFlatBufVec *tflite
         {
           auto block_map_vec = std::vector<int32_t>{it->sparsity()->block_map()->begin(),
                                                     it->sparsity()->block_map()->end()};
-          block_map = fb->CreateVector(block_map_vec);
+          block_map = _fb->CreateVector(block_map_vec);
         }
 
         // dim_metadata
@@ -154,18 +150,18 @@ void Offset<SubGraphLink>::build(FlatBufBuilder &fb, const TFLFlatBufVec *tflite
           // array_segments
           auto tflite_array_segments_type = it->array_segments_type();
           auto circle_array_segments =
-            get_circle_sparse_index_vector(*fb, it->array_segments(), tflite_array_segments_type);
+            get_circle_sparse_index_vector(*_fb, it->array_segments(), tflite_array_segments_type);
           auto circle_array_segments_type =
             get_circle_sparse_index_vector_type(tflite_array_segments_type);
 
           // array_indices
           auto tflite_array_indices_type = it->array_indices_type();
           auto circle_array_indices =
-            get_circle_sparse_index_vector(*fb, it->array_indices(), tflite_array_indices_type);
+            get_circle_sparse_index_vector(*_fb, it->array_indices(), tflite_array_indices_type);
           auto circle_array_indices_type =
             get_circle_sparse_index_vector_type(tflite_array_indices_type);
 
-          auto circle_dim_metadata_builder = circle::DimensionMetadataBuilder{*fb};
+          auto circle_dim_metadata_builder = circle::DimensionMetadataBuilder{*_fb};
 
           circle_dim_metadata_builder.add_format(get_circle_dimension_type(it->format()));
           circle_dim_metadata_builder.add_dense_size(it->dense_size());
@@ -176,9 +172,9 @@ void Offset<SubGraphLink>::build(FlatBufBuilder &fb, const TFLFlatBufVec *tflite
           auto dim_metadata = circle_dim_metadata_builder.Finish();
           dim_metadata_vec.emplace_back(dim_metadata);
         }
-        dim_metadata = fb->CreateVector(dim_metadata_vec);
+        dim_metadata = _fb->CreateVector(dim_metadata_vec);
 
-        sparsity = circle::CreateSparsityParameters(*fb, traversal_order, block_map, dim_metadata);
+        sparsity = circle::CreateSparsityParameters(*_fb, traversal_order, block_map, dim_metadata);
       }
 
       // shape signature
@@ -187,10 +183,10 @@ void Offset<SubGraphLink>::build(FlatBufBuilder &fb, const TFLFlatBufVec *tflite
       {
         auto shape_signature_vec =
           std::vector<int32_t>({it->shape_signature()->begin(), it->shape_signature()->end()});
-        shape_signature = fb->CreateVector(shape_signature_vec);
+        shape_signature = _fb->CreateVector(shape_signature_vec);
       }
 
-      circle::TensorBuilder tensor_builder{*fb};
+      circle::TensorBuilder tensor_builder{*_fb};
       tensor_builder.add_shape(shape);
       tensor_builder.add_type(get_circle_tensortype(it->type()));
       tensor_builder.add_buffer(it->buffer());
@@ -202,19 +198,19 @@ void Offset<SubGraphLink>::build(FlatBufBuilder &fb, const TFLFlatBufVec *tflite
       auto tensor = tensor_builder.Finish();
       tensor_vec.emplace_back(tensor);
     }
-    auto circle_tensors = fb->CreateVector(tensor_vec);
+    auto circle_tensors = _fb->CreateVector(tensor_vec);
 
     // inputs of subgraph
     auto tflite_inputs = it_sg->inputs();
     std::vector<int32_t> input_vec{tflite_inputs->begin(), tflite_inputs->end()};
 
-    auto circle_inputs = fb->CreateVector(input_vec);
+    auto circle_inputs = _fb->CreateVector(input_vec);
 
     // outputs of subgraph
     auto tflite_outputs = it_sg->outputs();
     std::vector<int32_t> output_vec{tflite_outputs->begin(), tflite_outputs->end()};
 
-    auto circle_outputs = fb->CreateVector(output_vec);
+    auto circle_outputs = _fb->CreateVector(output_vec);
 
     // operators of subgraph
     std::vector<flatbuffers::Offset<circle::Operator>> operator_vec;
@@ -226,12 +222,12 @@ void Offset<SubGraphLink>::build(FlatBufBuilder &fb, const TFLFlatBufVec *tflite
       {
         // inputs
         std::vector<int32_t> input_vec{it->inputs()->begin(), it->inputs()->end()};
-        auto circle_inputs = fb->CreateVector(input_vec);
+        auto circle_inputs = _fb->CreateVector(input_vec);
         // outputs
         std::vector<int32_t> output_vec{it->outputs()->begin(), it->outputs()->end()};
-        auto circle_outputs = fb->CreateVector(output_vec);
+        auto circle_outputs = _fb->CreateVector(output_vec);
         // builtin options
-        auto circle_builtin_options = get_circle_builtin_options(*fb, it);
+        auto circle_builtin_options = get_circle_builtin_options(*_fb, it);
         auto circle_builtin_options_type = get_circle_builtin_options_type(it);
         // custom options
         flatbuffers::Offset<flatbuffers::Vector<uint8_t>> circle_custom_options;
@@ -239,14 +235,14 @@ void Offset<SubGraphLink>::build(FlatBufBuilder &fb, const TFLFlatBufVec *tflite
         {
           std::vector<uint8_t> custom_options_vec{it->custom_options()->begin(),
                                                   it->custom_options()->end()};
-          circle_custom_options = fb->CreateVector(custom_options_vec);
+          circle_custom_options = _fb->CreateVector(custom_options_vec);
         }
         // custom options format
         // TODO Make get_circle_custom_options_format
         assert(it->custom_options_format() == tflite::CustomOptionsFormat_FLEXBUFFERS);
         auto circle_custom_options_format = circle::CustomOptionsFormat_FLEXBUFFERS;
 
-        circle::OperatorBuilder operator_builder{*fb};
+        circle::OperatorBuilder operator_builder{*_fb};
         operator_builder.add_opcode_index(it->opcode_index());
         operator_builder.add_inputs(circle_inputs);
         operator_builder.add_outputs(circle_outputs);
@@ -259,13 +255,13 @@ void Offset<SubGraphLink>::build(FlatBufBuilder &fb, const TFLFlatBufVec *tflite
         operator_vec.emplace_back(opeartor);
       }
     }
-    auto circle_operators = fb->CreateVector(operator_vec);
+    auto circle_operators = _fb->CreateVector(operator_vec);
 
     // name of subgraph
-    auto subgraphs_name = fb->CreateString(it_sg->name());
+    auto subgraphs_name = _fb->CreateString(it_sg->name());
 
     // subgraphs
-    auto circle_subgraph_builder = circle::SubGraphBuilder{*fb};
+    auto circle_subgraph_builder = circle::SubGraphBuilder{*_fb};
 
     circle_subgraph_builder.add_tensors(circle_tensors);
     circle_subgraph_builder.add_inputs(circle_inputs);
@@ -277,7 +273,7 @@ void Offset<SubGraphLink>::build(FlatBufBuilder &fb, const TFLFlatBufVec *tflite
     auto circle_subgraph = circle_subgraph_builder.Finish();
     subgprahs_vec.emplace_back(circle_subgraph);
   }
-  _circle_flatbuffer_vec_offset = fb->CreateVector(subgprahs_vec);
+  _circle_flatbuffer_vec_offset = _fb->CreateVector(subgprahs_vec);
 }
 
 tflite::BuiltinOperator builtin_code_neutral(const tflite::OperatorCode *opcode)
@@ -291,15 +287,14 @@ tflite::BuiltinOperator builtin_code_neutral(const tflite::OperatorCode *opcode)
   return opcode->builtin_code();
 }
 
-template <>
-void Offset<OperatorCodeLink>::build(FlatBufBuilder &fb, const TFLFlatBufVec *tflite_flatbuffer_vec)
+template <> void Offset<OperatorCodeLink>::build(const TFLFlatBufVec *tflite_flatbuffer_vec)
 {
   std::vector<flatbuffers::Offset<circle::OperatorCode>> operator_code_vec;
 
   for (auto it : *tflite_flatbuffer_vec)
   {
-    auto custom_code = fb->CreateString(it->custom_code());
-    circle::OperatorCodeBuilder operator_code_builder{*fb};
+    auto custom_code = _fb->CreateString(it->custom_code());
+    circle::OperatorCodeBuilder operator_code_builder{*_fb};
     // TODO support circle deprecated_builtin_code
     auto bt_code = builtin_code_neutral(it);
     operator_code_builder.add_builtin_code(get_circle_builtin_code(bt_code));
@@ -308,7 +303,7 @@ void Offset<OperatorCodeLink>::build(FlatBufBuilder &fb, const TFLFlatBufVec *tf
     auto code = operator_code_builder.Finish();
     operator_code_vec.emplace_back(code);
   }
-  _circle_flatbuffer_vec_offset = fb->CreateVector(operator_code_vec);
+  _circle_flatbuffer_vec_offset = _fb->CreateVector(operator_code_vec);
 }
 
 CircleModel::CircleModel(FlatBufBuilder &fb)
@@ -317,17 +312,17 @@ CircleModel::CircleModel(FlatBufBuilder &fb)
   // NOTHING TODO
 }
 
-void CircleModel::load_offsets(FlatBufBuilder &fb, const tflite::Model *tfl_model)
+void CircleModel::load_offsets(const tflite::Model *tfl_model)
 {
-  _operator_codes_offset = std::make_unique<Offset<OperatorCodeLink>>(fb);
-  _subGraphs_offset = std::make_unique<Offset<SubGraphLink>>(fb);
-  _buffers_offset = std::make_unique<Offset<BufferLink>>(fb);
-  _metadata_buffer_offset = std::make_unique<Offset<MetaDataBufferLink>>(fb);
+  _operator_codes_offset = std::make_unique<Offset<OperatorCodeLink>>(_fb);
+  _subGraphs_offset = std::make_unique<Offset<SubGraphLink>>(_fb);
+  _buffers_offset = std::make_unique<Offset<BufferLink>>(_fb);
+  _metadata_buffer_offset = std::make_unique<Offset<MetaDataBufferLink>>(_fb);
 
-  _operator_codes_offset->build(fb, tfl_model->operator_codes());
-  _subGraphs_offset->build(fb, tfl_model->subgraphs());
-  _buffers_offset->build(fb, tfl_model->buffers());
-  _metadata_buffer_offset->build(fb, tfl_model->metadata_buffer());
+  _operator_codes_offset->build(tfl_model->operator_codes());
+  _subGraphs_offset->build(tfl_model->subgraphs());
+  _buffers_offset->build(tfl_model->buffers());
+  _metadata_buffer_offset->build(tfl_model->metadata_buffer());
 }
 
 void CircleModel::model_build(void) const
