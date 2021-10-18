@@ -20,6 +20,7 @@
 #include <luci/IR/CircleNodes.h>
 #include <luci/IR/CircleNodeVisitor.h>
 #include <luci/Service/Nodes/CircleConst.h>
+#include <luci/Profile/CircleNodeOrigin.h>
 #include <luci/Log.h>
 
 #include <oops/UserExn.h>
@@ -1600,6 +1601,14 @@ bool QuantizeWithMinMaxPass::run(loco::Graph *g)
     loco::replace(input).with(quant_op);
     quant_op->input(input);
 
+    // TODO Set a proper origin (Quantize should have its own Origin)
+    {
+      auto succs = loco::succs(quant_op);
+      assert(succs.size() > 0);
+      auto succ = loco::must_cast<luci::CircleNode *>(*succs.begin());
+      luci::add_origin(quant_op, luci::get_origin(succ));
+    }
+
     // Requantize input
     {
       auto quantparam = input->quantparam();
@@ -1654,6 +1663,9 @@ bool QuantizeWithMinMaxPass::run(loco::Graph *g)
     auto quant_op = create_quantize_op(from, _output_type);
     loco::replace(from).with(quant_op);
     quant_op->input(from);
+
+    // TODO Set a proper origin (Quantize should have its own Origin)
+    luci::add_origin(quant_op, luci::get_origin(from));
 
     auto graph_output = outputs->at(output->index());
     graph_output->dtype(_output_type);
