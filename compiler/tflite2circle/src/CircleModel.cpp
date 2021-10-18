@@ -311,8 +311,13 @@ void Offset<OperatorCodeLink>::build(FlatBufBuilder &fb, const TFLFlatBufVec *tf
   _circle_flatbuffer_vec_offset = fb->CreateVector(operator_code_vec);
 }
 
-CircleModel::CircleModel(FlatBufBuilder &fb, const tflite::Model *tfl_model)
+CircleModel::CircleModel(FlatBufBuilder &fb)
   : _version{0}, _description{fb->CreateString("ONE-tflite2circle")}, _fb{fb}
+{
+  // NOTHING TODO
+}
+
+void CircleModel::load_offsets(FlatBufBuilder &fb, const tflite::Model *tfl_model)
 {
   _operator_codes_offset = std::make_unique<Offset<OperatorCodeLink>>(fb);
   _subGraphs_offset = std::make_unique<Offset<SubGraphLink>>(fb);
@@ -323,8 +328,6 @@ CircleModel::CircleModel(FlatBufBuilder &fb, const tflite::Model *tfl_model)
   _subGraphs_offset->build(fb, tfl_model->subgraphs());
   _buffers_offset->build(fb, tfl_model->buffers());
   _metadata_buffer_offset->build(fb, tfl_model->metadata_buffer());
-
-  model_build();
 }
 
 void CircleModel::model_build(void) const
