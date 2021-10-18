@@ -93,6 +93,8 @@ public:
       Quantize_tensor_names,
       Quantize_scales,
       Quantize_zero_points,
+      Quantize_input_type,
+      Quantize_output_type,
 
       // sparsify
       Sparsify_tensor_name,

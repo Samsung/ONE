@@ -31,11 +31,23 @@ namespace luci
  */
 class QuantizeWithMinMaxPass : public logo::Pass
 {
+  // For backward-compatibility
+  // TODO Remove this constructor
 public:
   QuantizeWithMinMaxPass(loco::DataType input_model_dtype, loco::DataType output_model_dtype,
                          QuantizationGranularity granularity)
-    : _input_model_dtype{input_model_dtype}, _output_model_dtype{output_model_dtype}, _granularity{
-                                                                                        granularity}
+    : _input_model_dtype{input_model_dtype}, _output_model_dtype{output_model_dtype},
+      _granularity{granularity}, _input_type{output_model_dtype}, _output_type{output_model_dtype}
+  {
+    // DO NOTHING
+  }
+
+public:
+  QuantizeWithMinMaxPass(loco::DataType input_model_dtype, loco::DataType output_model_dtype,
+                         QuantizationGranularity granularity, loco::DataType input_type,
+                         loco::DataType output_type)
+    : _input_model_dtype{input_model_dtype}, _output_model_dtype{output_model_dtype},
+      _granularity{granularity}, _input_type{input_type}, _output_type{output_type}
   {
     // DO NOTHING
   }
@@ -45,9 +57,15 @@ public:
   bool run(loco::Graph *graph);
 
 private:
+  void set_input_type(loco::Graph *graph) const;
+  void set_output_type(loco::Graph *graph) const;
+
+private:
   loco::DataType _input_model_dtype;
   loco::DataType _output_model_dtype;
   QuantizationGranularity _granularity;
+  loco::DataType _input_type;
+  loco::DataType _output_type;
 };
 
 } // namespace luci
