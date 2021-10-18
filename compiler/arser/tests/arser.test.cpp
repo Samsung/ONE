@@ -93,7 +93,7 @@ TEST(BasicTest, OptionalArgument)
   EXPECT_THROW(arser.get<bool>("--volume"), std::runtime_error);
 }
 
-TEST(BasicTest, NonRequiredOptionalArgument)
+TEST(BasicTest, NonRequiredOptionalArgument_NEG)
 {
   /* arrange */
   Arser arser;
@@ -111,7 +111,7 @@ TEST(BasicTest, NonRequiredOptionalArgument)
   EXPECT_THROW(arser.get<int>("--weight"), std::runtime_error);
 }
 
-TEST(BasicTest, RequiredOptionalArgument)
+TEST(BasicTest, RequiredOptionalArgument_NEG)
 {
   /* arrange */
   Arser arser;
@@ -395,7 +395,7 @@ TEST(BasicTest, shortMultipleOption)
   EXPECT_EQ("I/am/out.put", arser.get<std::string>("--output_path"));
 }
 
-TEST(BasicTest, OptWithRequiredDuplicate)
+TEST(BasicTest, OptWithRequiredDuplicate_NEG)
 {
   /* arrange */
   Arser arser;
