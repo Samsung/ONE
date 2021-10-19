@@ -1,0 +1,12 @@
+name: Check PR commit
+
+on:
+  pull_request:
+    branches: [ master, release/* ]
+
+jobs:
+  check-commit-message:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - run: echo "TBD"
