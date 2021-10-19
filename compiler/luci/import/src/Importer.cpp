@@ -149,7 +149,11 @@ void convert_graph(const luci::GraphBuilderSource &source, luci::CircleReader &r
       if (origin_table.find(i) != origin_table.end())
         add_origin(built_op, origin_table.at(i));
       else
-        add_origin(built_op, luci::single_origin(i, built_op->name()));
+      {
+        auto const new_origin = luci::single_origin(origin_table.size(), built_op->name());
+        add_origin(built_op, new_origin);
+        origin_table.insert({i, {new_origin}});
+      }
     }
     else
     {
