@@ -57,6 +57,8 @@ template <> void Offset<SubGraphLink>::build(const TFLFlatBufVec *tflite_flatbuf
 {
   std::vector<flatbuffers::Offset<circle::SubGraph>> subgprahs_vec;
 
+  int32_t subgraph_index = 0;
+
   for (auto it_sg : *tflite_flatbuffer_vec)
   {
     // tensors of subgraph
@@ -204,11 +206,48 @@ template <> void Offset<SubGraphLink>::build(const TFLFlatBufVec *tflite_flatbuf
     auto tflite_inputs = it_sg->inputs();
     std::vector<int32_t> input_vec{tflite_inputs->begin(), tflite_inputs->end()};
 
+    // apply signature_def to input tensor index so that input orders are correct
+    // NOTE we do not need this when circle format supports signature_def
+    if (_tfl_signature_def_offsets != nullptr)
+    {
+      for (auto it_signdef : *_tfl_signature_def_offsets)
+      {
+        if (it_signdef->subgraph_index() == subgraph_index)
+        {
+          auto inputs = it_signdef->inputs();
+          assert(inputs->size() == input_vec.size());
+          uint32_t input_vec_idx = 0;
+          for (auto it_tm : *inputs)
+          {
+            input_vec[input_vec_idx++] = static_cast<int32_t>(it_tm->tensor_index());
+          }
+        }
+      }
+    }
+
     auto circle_inputs = _fb->CreateVector(input_vec);
 
     // outputs of subgraph
     auto tflite_outputs = it_sg->outputs();
     std::vector<int32_t> output_vec{tflite_outputs->begin(), tflite_outputs->end()};
+
+    if (_tfl_signature_def_offsets != nullptr)
+    {
+      // apply SignatureDef
+      for (auto it_signdef : *_tfl_signature_def_offsets)
+      {
+        if (it_signdef->subgraph_index() == subgraph_index)
+        {
+          auto outputs = it_signdef->outputs();
+          assert(outputs->size() == output_vec.size());
+          uint32_t output_vec_idx = 0;
+          for (auto it_tm : *outputs)
+          {
+            output_vec[output_vec_idx++] = static_cast<int32_t>(it_tm->tensor_index());
+          }
+        }
+      }
+    }
 
     auto circle_outputs = _fb->CreateVector(output_vec);
 
@@ -272,6 +311,9 @@ template <> void Offset<SubGraphLink>::build(const TFLFlatBufVec *tflite_flatbuf
 
     auto circle_subgraph = circle_subgraph_builder.Finish();
     subgprahs_vec.emplace_back(circle_subgraph);
+
+    // next subgraph
+    subgraph_index = subgraph_index + 1;
   }
   _circle_flatbuffer_vec_offset = _fb->CreateVector(subgprahs_vec);
 }
@@ -318,6 +360,8 @@ void CircleModel::load_offsets(const tflite::Model *tfl_model)
   _subGraphs_offset = std::make_unique<Offset<SubGraphLink>>(_fb);
   _buffers_offset = std::make_unique<Offset<BufferLink>>(_fb);
   _metadata_buffer_offset = std::make_unique<Offset<MetaDataBufferLink>>(_fb);
+
+  _subGraphs_offset->set_signature_defs(tfl_model->signature_defs());
 
   _operator_codes_offset->build(tfl_model->operator_codes());
   _subGraphs_offset->build(tfl_model->subgraphs());
