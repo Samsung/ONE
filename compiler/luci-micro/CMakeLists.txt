@@ -56,3 +56,37 @@ add_custom_command(
 )
 
 add_custom_target(luci_interpreter_micro_arm DEPENDS "${MICRO_ARM_BINARY}")
+
+nnas_find_package(MbedOSSource EXACT 6.15 QUIET)
+
+if (NOT MbedOSSource_FOUND)
+  message(STATUS "Skipping luci-micro: MbedOSSource not found")
+  return()
+endif ()
+
+set(MBED_OS_BUILD_DIR "${CMAKE_CURRENT_BINARY_DIR}/mbed-os")
+file(MAKE_DIRECTORY "${MBED_OS_BUILD_DIR}")
+
+set(MBED_OS_BUILD_DEPENDENCY "${MBED_OS_BUILD_DIR}/CMakeCache.txt")
+
+add_custom_command(
+        OUTPUT "${MBED_OS_BUILD_DEPENDENCY}"
+        COMMAND "${CMAKE_COMMAND}" "${CMAKE_CURRENT_SOURCE_DIR}/mbed-os" -DMbedOSSource_DIR=${MbedOSSource_DIR}
+        WORKING_DIRECTORY "${MBED_OS_BUILD_DIR}"
+        DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/mbed-os/CMakeLists.txt"
+        VERBATIM
+)
+
+add_custom_target(mbed_os_cmake DEPENDS "${MBED_OS_BUILD_DEPENDENCY}")
+
+set(MBED_OS_BINARY "${MBED_OS_BUILD_DIR}/libmbed_os.a")
+
+add_custom_command(
+        OUTPUT "${MBED_OS_BINARY}"
+        COMMAND "${CMAKE_MAKE_PROGRAM}" mbed_os -j ${CPU_COUNT}
+        WORKING_DIRECTORY "${MBED_OS_BUILD_DIR}"
+        DEPENDS mbed_os_cmake
+        VERBATIM
+)
+
+add_custom_target(mbed_os_arm DEPENDS mbed_os_cmake)
