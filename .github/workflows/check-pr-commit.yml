@@ -2,11 +2,50 @@ name: Check PR commit
 
 on:
   pull_request:
-    branches: [ master, release/* ]
+    branches:
+      - master
+      - release/*
+
+defaults:
+  run:
+    shell: bash
 
 jobs:
   check-commit-message:
+    name: Check commit message
     runs-on: ubuntu-20.04
 
     steps:
-      - run: echo "TBD"
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          # Checkout PR head commit
+          # Checkout Action use merge commit as default
+          ref: ${{ github.event.pull_request.head.sha }}
+          # Fetch all history and branch (default: 1)
+          fetch-depth: 0
+
+      - name: Get commit body
+        run: |
+          git log origin/${GITHUB_BASE_REF}..HEAD --format=%b > commit_msg.txt
+          sed '/^$/d' commit_msg.txt > commit_body.txt
+
+      - name: Check signed-off
+        run: |
+          # Check string starting from "Signed-off-by:"
+          count=$(cat commit_body.txt | grep '^Signed-off-by:' | wc -l)
+          if [[ ! "$count" -ge "1" ]]; then
+            exit 1
+          fi
+
+          echo "Signed-off-by is OK"
+
+      - name: Check body words
+        # Run if check_signed_off step is failed
+        if: ${{ always() }}
+        run: |
+          count=$(cat commit_body.txt | sed '/Signed-off-by:/d' | wc -w)
+          echo "Commit body word check: $count words"
+          if [[ "$count" -lt "5" ]]; then
+            exit 1
+          fi
