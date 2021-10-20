@@ -125,6 +125,11 @@ function(_ARMCompute_Build ARMComputeInstall_DIR)
   list(APPEND SCONS_OPTIONS "Werror=0")
   list(APPEND SCONS_OPTIONS "os=${TARGET_OS}")
 
+  #### Disable test build
+  list(APPEND SCONS_OPTIONS "benchmark_tests=0")
+  list(APPEND SCONS_OPTIONS "validation_tests=0")
+  list(APPEND SCONS_OPTIONS "benchmark_examples=0")
+
   if(DEFINED EXTERNALS_BUILD_THREADS)
     set(N ${EXTERNALS_BUILD_THREADS})
   else(DEFINED EXTERNALS_BUILD_THREADS)
