@@ -64,6 +64,9 @@ def _get_parser():
         # opt = (option_name, help_message)
         circle2circle_group.add_argument('--' + opt[0], action='store_true', help=opt[1])
 
+    # optimization option from one-build
+    parser.add_argument('-O', type=str, help=argparse.SUPPRESS)
+
     return parser
 
 
@@ -113,6 +116,15 @@ def _optimize(args):
         _utils._run(circle2circle_cmd, err_prefix="circle2circle", logfile=f)
 
 
+def _parse_opt(args):
+    if _utils._is_valid_attr(args, 'O'):
+        opt_name_path_dic = dict(
+            zip(_utils._get_optimization_list(get_name=True),
+                _utils._get_optimization_list()))
+        config_path = opt_name_path_dic['O' + getattr(args, 'O')]
+        _utils._parse_cfg_and_overwrite(config_path, 'one-optimize', args)
+
+
 def main():
     # parse arguments
     parser = _get_parser()
@@ -120,6 +132,10 @@ def main():
 
     # parse configuration file
     _utils._parse_cfg(args, 'one-optimize')
+
+    # parse optimization file
+    # NOTE if there is a `one-optimize` section in above configuration file, it will be overwritten
+    _parse_opt(args)
 
     # verify arguments
     _verify_arg(parser, args)
