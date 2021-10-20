@@ -351,14 +351,19 @@ protected:
   std::string _original_profiling_mode;
 };
 
+//
+// HEScheduler tests
+//
+
 class HESchedulerTestWithExecutorParam : public HESchedulerTest,
                                          public testing::WithParamInterface<std::string>
 {
 };
 
-//
-// HEScheduler tests
-//
+// SchedulerTestWithExecutorParam tests are parameterized with executor name and runs three times -
+// one time for each executor
+INSTANTIATE_TEST_CASE_P(AllExecutors, HESchedulerTestWithExecutorParam,
+                        testing::Values(LINEAR, DATAFLOW, PARALLEL));
 
 // Test scheduler behavior for straight graph with known execution time of all nodes and permutes.
 TEST_P(HESchedulerTestWithExecutorParam, straight_graph_known_exec_time)
@@ -489,11 +494,6 @@ TEST_P(HESchedulerTestWithExecutorParam, branched_graph_known_exec_time)
     ASSERT_EQ(br->getBackend(sub_op_idx)->config()->id(), "npu");
   }
 }
-
-// SchedulerTestWithExecutorParam tests are parameterized with executor name and runs three times -
-// one time for each executor
-INSTANTIATE_TEST_CASE_P(AllExecutors, HESchedulerTestWithExecutorParam,
-                        testing::Values(LINEAR, DATAFLOW, PARALLEL));
 
 // Test scheduler behavior for branched graph and enabled profiling mode
 TEST_F(HESchedulerTest, branched_graph_profiling_mode)
