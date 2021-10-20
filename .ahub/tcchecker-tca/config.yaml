@@ -16,9 +16,7 @@ test:
       - /runtime/onert/test/graph/verifier
       - /runtime/onert/test/ir
       - /runtime/onert/test/util
-      - /tests/nnapi/src
       - /tests/nnfw_api/src
-      - /tests/tools/tflite_run/src
 
     testFile:
       - extension: cpp
