@@ -38,6 +38,16 @@ def _get_parser():
 
     _utils._add_default_arg(parser)
 
+    opt_name_list = _utils._get_optimization_list(get_name=True)
+    opt_name_list = ['-' + s for s in opt_name_list]
+    if not opt_name_list:
+        opt_help_message = '(No available optimization options)'
+    else:
+        opt_help_message = '(Available optimization options: ' + ', '.join(
+            opt_name_list) + ')'
+    opt_help_message = 'optimization name to use ' + opt_help_message
+    parser.add_argument('-O', type=str, metavar='OPTIMIZATION', help=opt_help_message)
+
     return parser
 
 
@@ -55,6 +65,12 @@ def _verify_arg(parser, args):
     # check if required arguments is given
     if not _utils._is_valid_attr(args, 'config'):
         parser.error('-C/--config argument is required')
+    # check if given optimization option exists
+    opt_name_list = _utils._get_optimization_list(get_name=True)
+    opt_name_list = [_utils._remove_prefix(s, 'O') for s in opt_name_list]
+    if _utils._is_valid_attr(args, 'O'):
+        if not getattr(args, 'O') in opt_name_list:
+            parser.error('Invalid optimization option')
 
 
 def _get_driver_name(driver_name):
@@ -101,6 +117,27 @@ def _verify_cfg(driver_list, config):
         raise AssertionError('Only one import-* driver can be executed')
 
 
+# verify given optimization option file
+def _verify_opt(args):
+    if _utils._is_valid_attr(args, 'O'):
+        config = configparser.ConfigParser()
+        config.optionxform = str
+        opt_name_path_dic = dict(
+            zip(_utils._get_optimization_list(get_name=True),
+                _utils._get_optimization_list()))
+        parsed = config.read(opt_name_path_dic['O' + getattr(args, 'O')])
+        # check if given optimization option file exists
+        if not parsed:
+            raise FileNotFoundError('Not found given optimization configuration file')
+        # check if given optimization option file only has `one-optimize` section
+        if len(config.sections()) == 1 and config.sections()[0] == 'one-optimize':
+            pass
+        else:
+            raise AssertionError(
+                'Optimization configuration file only allowed to have a \'one-optimize\' section'
+            )
+
+
 def main():
     # parse arguments
     # since the configuration file path is required first,
@@ -121,6 +158,9 @@ def main():
     ]
     _verify_cfg(drivers, config)
 
+    # verify optimization option file
+    _verify_opt(args)
+
     # get sections to run
     section_to_run = []
     for d in drivers:
@@ -132,6 +172,8 @@ def main():
     for section in section_to_run:
         driver_path = os.path.join(dir_path, _get_driver_name(section))
         cmd = [driver_path, '--config', getattr(args, 'config'), '--section', section]
+        if section == 'one-optimize' and _utils._is_valid_attr(args, 'O'):
+            cmd += ['-O', getattr(args, 'O')]
         _utils._run(cmd)
 
 
