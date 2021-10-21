@@ -16,6 +16,8 @@
 
 import argparse
 import configparser
+import glob
+import ntpath
 import os
 import subprocess
 import sys
@@ -290,3 +292,52 @@ def _run(cmd, err_prefix=None, logfile=None):
                     logfile.write(line)
     if p.returncode != 0:
         sys.exit(p.returncode)
+
+
+def _remove_prefix(str, prefix):
+    if str.startswith(prefix):
+        return str[len(prefix):]
+    return str
+
+
+def _remove_suffix(str, suffix):
+    if str.endswith(suffix):
+        return str[:-len(suffix)]
+    return str
+
+
+def _get_optimization_list(get_name=False):
+    """
+    returns a list of optimization. If `get_name` is True,
+    only basename without extension is returned rather than full file path.
+
+    [one hierarchy]
+    one
+    ├── backends
+    ├── bin
+    ├── doc
+    ├── include
+    ├── lib
+    ├── optimization
+    └── test
+
+    Optimization options must be placed in `optimization` folder
+    """
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+
+    # optimization folder
+    files = [f for f in glob.glob(dir_path + '/../optimization/O*.cfg', recursive=True)]
+
+    opt_list = []
+    for cand in files:
+        base = ntpath.basename(cand)
+        if os.path.isfile(cand) and os.access(cand, os.R_OK):
+            opt_list.append(cand)
+
+    if get_name == True:
+        # NOTE the name includes prefix 'O'
+        # e.g. O1, O2, ONCHW not just 1, 2, NCHW
+        opt_list = [ntpath.basename(f) for f in opt_list]
+        opt_list = [_remove_suffix(s, '.cfg') for s in opt_list]
+
+    return opt_list
