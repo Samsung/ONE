@@ -33,7 +33,7 @@ jobs:
       - name: Check signed-off
         run: |
           # Check string starting from "Signed-off-by:"
-          count=$(cat commit_body.txt | grep '^Signed-off-by:' | wc -l)
+          count=$(cat commit_body.txt | grep 'Signed-off-by:' | wc -l)
           if [[ ! "$count" -ge "1" ]]; then
             exit 1
           fi
