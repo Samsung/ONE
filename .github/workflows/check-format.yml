@@ -1,0 +1,49 @@
+name: Check code format
+
+on:
+  push:
+    branches:
+      - master
+      - release/*
+  pull_request:
+    branches:
+      - master
+      - release/*
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  check-format:
+    name: Check format
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      # C format: clang-format-8
+      # Python format: yapf==0.22.0
+      - name: Install packages
+        run: |
+          sudo apt-get install -y clang-format-8
+          python -m pip install --upgrade pip
+          pip install yapf==0.22.0
+
+      - name: Check
+        run: ./nnas format
+
+      # Upload patch file if failed
+      - name: Store archive
+        uses: actions/upload-artifact@v2
+        if: failure()
+        with:
+          name: format-patch
+          path: format.patch
+          retention-days: 3
