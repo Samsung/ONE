@@ -18,6 +18,7 @@
 #define LUCI_INTERPRETER_PAL_SOFTMAX_H
 
 #include <tensorflow/lite/kernels/internal/reference/softmax.h>
+#include <arm_nnfunctions.h>
 
 namespace luci_interpreter_pal
 {
@@ -56,6 +57,21 @@ static inline void Softmax(const tflite::SoftmaxParams &params,
   (void)input_data;
   (void)output_shape;
   (void)output_data;
+}
+
+template <>
+inline void Softmax<int8_t>(const tflite::SoftmaxParams &params,
+                            const tflite::RuntimeShape &input_shape, const int8_t *input_data,
+                            const tflite::RuntimeShape &output_shape, int8_t *output_data)
+{
+  const int trailing_dim = input_shape.DimensionsCount() - 1;
+  const int outer_size = tflite::MatchingFlatSizeSkipDim(input_shape, trailing_dim, output_shape);
+  const int depth = tflite::MatchingDim(input_shape, trailing_dim, output_shape, trailing_dim);
+  const int32_t mult = params.input_multiplier;
+  const int32_t shift = params.input_left_shift;
+  const int32_t diff_min = params.diff_min;
+
+  arm_softmax_s8(input_data, outer_size, depth, mult, shift, diff_min, output_data);
 }
 } // namespace luci_interpreter_pal
 
