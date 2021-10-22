@@ -18,8 +18,7 @@
 
 #include "kernels/Utils.h"
 
-#include <tensorflow/lite/kernels/internal/reference/fully_connected.h>
-#include <tensorflow/lite/kernels/internal/reference/integer_ops/fully_connected.h>
+#include "PALFullyConnected.h"
 
 #include <stdexcept>
 
@@ -172,7 +171,7 @@ void FullyConnected::evalQuantizedS8() const
   op_params.quantized_activation_max = output_activation_max;
   op_params.lhs_cacheable = false;
   op_params.rhs_cacheable = false;
-  tflite::reference_integer_ops::FullyConnected(
+  luci_interpreter_pal::FullyConnected<int8_t>(
     op_params, getTensorShape(input()), getTensorData<int8_t>(input()), getTensorShape(weights()),
     getTensorData<int8_t>(weights()), getTensorShape(bias()), getTensorData<int32_t>(bias()),
     getTensorShape(output()), getTensorData<int8_t>(output()));
