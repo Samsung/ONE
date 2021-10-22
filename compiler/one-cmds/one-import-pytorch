@@ -27,6 +27,7 @@ import tempfile
 import torch
 import onnx
 import onnx_tf
+import numpy as np
 
 import utils as _utils
 
@@ -40,7 +41,7 @@ def _get_parser():
 
     _utils._add_default_arg(parser)
 
-    ## tf2tfliteV2 arguments
+    ## converter arguments
     converter_group = parser.add_argument_group('converter arguments')
 
     # input and output path.
@@ -49,21 +50,22 @@ def _get_parser():
     converter_group.add_argument(
         '-o', '--output_path', type=str, help='full filepath of the output file')
 
-    # input and output arrays.
+    # input arrays.
     converter_group.add_argument(
-        '-I',
-        '--input_arrays',
+        '-s',
+        '--input_shapes',
         type=str,
-        help='names of the input arrays, comma-separated')
+        help='Shapes corresponding to --input_arrays, colon-separated.(ex:\"1,4,4,3:1,20,20,3\")')
     converter_group.add_argument(
-        '-O',
-        '--output_arrays',
+        '-t',
+        '--input_types',
         type=str,
-        help='names of the output arrays, comma-separated')
+        help='data types of input tensors, colon-separated (ex: float32, uint8, int32)')
 
     # fixed options
-    converter_group.add_argument('--model_format', default='saved_model')
-    converter_group.add_argument('--converter_version', default='v2')
+    tf2tflite_group = parser.add_argument_group('tf2tfliteV2 arguments')
+    tf2tflite_group.add_argument('--model_format', default='saved_model')
+    tf2tflite_group.add_argument('--converter_version', default='v2')
 
     # save intermediate file(s)
     parser.add_argument(
@@ -82,6 +84,11 @@ def _verify_arg(parser, args):
         missing.append('-i/--input_path')
     if not _utils._is_valid_attr(args, 'output_path'):
         missing.append('-o/--output_path')
+    if not _utils._is_valid_attr(args, 'input_shapes'):
+        missing.append('-s/--input_shapes')
+    if not _utils._is_valid_attr(args, 'input_types'):
+        missing.append('-t/--input_types')
+
     if len(missing):
         parser.error('the following arguments are required: ' + ' '.join(missing))
 
@@ -108,6 +115,35 @@ def _apply_verbosity(verbosity):
         os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 
+def _parse_shapes(shapes_str):
+    array = shapes_str.split(":")
+    shapes = [
+        list(map(int, shape.split(",")))
+        for shape in array
+    ]
+    return shapes
+
+
+def _parse_types(types_str):
+    # There are no convenient way to create torch from string ot numpy dtype, so using this workaround
+    dtype_dict = {
+        "bool"       : torch.bool,
+        "uint8"      : torch.uint8,
+        "int8"       : torch.int8,
+        "int16"      : torch.int16,
+        "int32"      : torch.int32,
+        "int64"      : torch.int64,
+        "float16"    : torch.float16,
+        "float32"    : torch.float32,
+        "float64"    : torch.float64,
+        "complex64"  : torch.complex64,
+        "complex128" : torch.complex128
+    }
+    array = types_str.split(",")
+    types = [dtype_dict[type_str.strip()] for type_str in array]
+    return types
+
+
 def _convert(args):
     _apply_verbosity(args.verbose)
 
@@ -119,8 +155,29 @@ def _convert(args):
         # save intermediate
         if _utils._is_valid_attr(args, 'save_intermediate'):
             tmpdir = os.path.dirname(logfile_path)
-        # convert onnx to tf saved model
-        onnx_model = onnx.load(getattr(args, 'input_path'))
+        # convert pytorch to onnx model
+        pytorch_model = torch.load(getattr(args, 'input_path'))
+
+        input_shapes = _parse_shapes(getattr(args, 'input_shapes'))
+        input_types = _parse_types(getattr(args, 'input_types'))
+
+        if len(input_shapes) != len(input_types):
+            raise ValueError("number of input shapes and input types must be equal")
+
+        sample_inputs = []
+        for input_spec in zip(input_shapes, input_types):
+           sample_inputs += torch.ones(input_spec[0], dtype = input_spec[1])
+
+        sample_outputs = pytorch_model(*sample_inputs)
+
+        onnx_output_name = os.path.splitext(os.path.basename(
+                                    args.output_path))[0] + '.onnx'
+        onnx_output_path = os.path.join(tmpdir, onnx_output_name)
+
+        torch.onnx.export(pytorch_model, sample_inputs, onnx_output_path, example_outputs=sample_outputs)
+
+        # convert onnx to tf saved mode
+        onnx_model = onnx.load(onnx_output_path)
         tf_savedmodel = onnx_tf.backend.prepare(onnx_model)
 
         savedmodel_name = os.path.splitext(os.path.basename(
@@ -134,6 +191,11 @@ def _convert(args):
             args.output_path))[0] + '.tflite'
         tf2tfliteV2_output_path = os.path.join(tmpdir, tf2tfliteV2_output_name)
 
+        print(args)
+        print(dir(args))
+        print(type(args))
+
+        del args.input_shapes
         tf2tfliteV2_cmd = _utils._make_tf2tfliteV2_cmd(
             args, tf2tfliteV2_path, savedmodel_output_path, tf2tfliteV2_output_path)
 
