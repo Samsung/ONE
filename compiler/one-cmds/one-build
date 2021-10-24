@@ -69,6 +69,8 @@ def _verify_arg(parser, args):
     opt_name_list = _utils._get_optimization_list(get_name=True)
     opt_name_list = [_utils._remove_prefix(s, 'O') for s in opt_name_list]
     if _utils._is_valid_attr(args, 'O'):
+        if ' ' in getattr(args, 'O'):
+            parser.error('Not allowed to have space in the optimization name')
         if not getattr(args, 'O') in opt_name_list:
             parser.error('Invalid optimization option')
 

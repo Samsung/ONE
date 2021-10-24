@@ -352,6 +352,8 @@ def _get_optimization_list(get_name=False):
 
     # optimization folder
     files = [f for f in glob.glob(dir_path + '/../optimization/O*.cfg', recursive=True)]
+    # exclude if the name has space
+    files = [s for s in files if not ' ' in s]
 
     opt_list = []
     for cand in files:
