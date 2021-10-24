@@ -88,7 +88,7 @@ int entry(int argc, char **argv)
     .type(arser::DataType::STR_VEC)
     .required(false)
     .help("Quantize-dequantize weight values required action before quantization. "
-          "Three arguments required: input_dtype(float32) "
+          "Three arguments required: input_model_dtype(float32) "
           "output_dtype(uint8) granularity(layer, channel)");
 
   arser.add_argument(qwmm)
@@ -96,7 +96,7 @@ int entry(int argc, char **argv)
     .type(arser::DataType::STR_VEC)
     .required(false)
     .help("Quantize with min/max values. "
-          "Three arguments required: input_dtype(float32) "
+          "Three arguments required: input_model_dtype(float32) "
           "output_dtype(uint8) granularity(layer, channel)");
 
   arser.add_argument(rq)
@@ -104,7 +104,7 @@ int entry(int argc, char **argv)
     .type(arser::DataType::STR_VEC)
     .required(false)
     .help("Requantize a quantized model. "
-          "Two arguments required: input_dtype(int8) "
+          "Two arguments required: input_model_dtype(int8) "
           "output_dtype(uint8)");
 
   arser.add_argument(fq)
@@ -175,7 +175,7 @@ int entry(int argc, char **argv)
     }
     options->enable(Algorithms::QuantizeDequantizeWeights);
 
-    options->param(AlgorithmParameters::Quantize_input_dtype, values.at(0));
+    options->param(AlgorithmParameters::Quantize_input_model_dtype, values.at(0));
     options->param(AlgorithmParameters::Quantize_output_dtype, values.at(1));
     options->param(AlgorithmParameters::Quantize_granularity, values.at(2));
   }
@@ -190,7 +190,7 @@ int entry(int argc, char **argv)
     }
     options->enable(Algorithms::QuantizeWithMinMax);
 
-    options->param(AlgorithmParameters::Quantize_input_dtype, values.at(0));
+    options->param(AlgorithmParameters::Quantize_input_model_dtype, values.at(0));
     options->param(AlgorithmParameters::Quantize_output_dtype, values.at(1));
     options->param(AlgorithmParameters::Quantize_granularity, values.at(2));
 
@@ -213,7 +213,7 @@ int entry(int argc, char **argv)
     }
     options->enable(Algorithms::Requantize);
 
-    options->param(AlgorithmParameters::Quantize_input_dtype, values.at(0));
+    options->param(AlgorithmParameters::Quantize_input_model_dtype, values.at(0));
     options->param(AlgorithmParameters::Quantize_output_dtype, values.at(1));
   }
 
