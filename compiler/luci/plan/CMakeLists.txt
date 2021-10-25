@@ -1,4 +1,6 @@
 file(GLOB_RECURSE SOURCES "src/*.cpp")
+file(GLOB_RECURSE TESTS "src/*.test.cpp")
+list(REMOVE_ITEM SOURCES ${TESTS})
 
 if (NOT LIBRARY_TYPE)
     set(LIBRARY_TYPE "SHARED")
@@ -13,3 +15,12 @@ target_link_libraries(luci_plan PUBLIC luci_lang)
 install(TARGETS luci_plan DESTINATION lib)
 install(DIRECTORY include/ DESTINATION include
         FILES_MATCHING PATTERN "*.h")
+
+if(NOT ENABLE_TEST)
+    return()
+endif(NOT ENABLE_TEST)
+
+nnas_find_package(GTest REQUIRED)
+
+GTest_AddTest(luci_plan_test ${TESTS})
+target_link_libraries(luci_plan_test luci_plan)
