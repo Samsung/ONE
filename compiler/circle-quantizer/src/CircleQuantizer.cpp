@@ -89,7 +89,7 @@ int entry(int argc, char **argv)
     .required(false)
     .help("Quantize-dequantize weight values required action before quantization. "
           "Three arguments required: input_model_dtype(float32) "
-          "output_dtype(uint8) granularity(layer, channel)");
+          "output_model_dtype(uint8) granularity(layer, channel)");
 
   arser.add_argument(qwmm)
     .nargs(3)
@@ -97,7 +97,7 @@ int entry(int argc, char **argv)
     .required(false)
     .help("Quantize with min/max values. "
           "Three arguments required: input_model_dtype(float32) "
-          "output_dtype(uint8) granularity(layer, channel)");
+          "output_model_dtype(uint8) granularity(layer, channel)");
 
   arser.add_argument(rq)
     .nargs(2)
@@ -105,7 +105,7 @@ int entry(int argc, char **argv)
     .required(false)
     .help("Requantize a quantized model. "
           "Two arguments required: input_model_dtype(int8) "
-          "output_dtype(uint8)");
+          "output_model_dtype(uint8)");
 
   arser.add_argument(fq)
     .nargs(3)
@@ -176,7 +176,7 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::QuantizeDequantizeWeights);
 
     options->param(AlgorithmParameters::Quantize_input_model_dtype, values.at(0));
-    options->param(AlgorithmParameters::Quantize_output_dtype, values.at(1));
+    options->param(AlgorithmParameters::Quantize_output_model_dtype, values.at(1));
     options->param(AlgorithmParameters::Quantize_granularity, values.at(2));
   }
 
@@ -191,7 +191,7 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::QuantizeWithMinMax);
 
     options->param(AlgorithmParameters::Quantize_input_model_dtype, values.at(0));
-    options->param(AlgorithmParameters::Quantize_output_dtype, values.at(1));
+    options->param(AlgorithmParameters::Quantize_output_model_dtype, values.at(1));
     options->param(AlgorithmParameters::Quantize_granularity, values.at(2));
 
     if (arser["--input_type"])
@@ -214,7 +214,7 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::Requantize);
 
     options->param(AlgorithmParameters::Quantize_input_model_dtype, values.at(0));
-    options->param(AlgorithmParameters::Quantize_output_dtype, values.at(1));
+    options->param(AlgorithmParameters::Quantize_output_model_dtype, values.at(1));
   }
 
   if (arser[fq])
