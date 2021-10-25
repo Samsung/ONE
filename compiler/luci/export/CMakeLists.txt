@@ -1,7 +1,6 @@
 file(GLOB_RECURSE SOURCES "src/*.cpp")
-# TODO enable tests
-#file(GLOB_RECURSE TESTS "src/*.test.cpp")
-#list(REMOVE_ITEM SOURCES ${TESTS})
+file(GLOB_RECURSE TESTS "src/*.test.cpp")
+list(REMOVE_ITEM SOURCES ${TESTS})
 
 if (NOT LIBRARY_TYPE)
     set(LIBRARY_TYPE "SHARED")
@@ -26,13 +25,17 @@ install(TARGETS luci_export DESTINATION lib)
 install(DIRECTORY include/ DESTINATION include
         FILES_MATCHING PATTERN "*.h")
 
-#if(NOT ENABLE_TEST)
-#  return()
-#endif(NOT ENABLE_TEST)
-#
-#nnas_find_package(GTest REQUIRED)
-#
-#GTest_AddTest(luci_export_test ${TESTS})
-#target_include_directories(luci_export_test PRIVATE src)
-#target_link_libraries(luci_export_test luci_export)
-#target_link_libraries(luci_export_test oops)
+if(NOT ENABLE_TEST)
+  return()
+endif(NOT ENABLE_TEST)
+
+nnas_find_package(GTest REQUIRED)
+
+GTest_AddTest(luci_export_test ${TESTS})
+target_include_directories(luci_export_test PRIVATE src)
+target_link_libraries(luci_export_test luci_export)
+target_link_libraries(luci_export_test luci_plan)
+target_link_libraries(luci_export_test luci_lang)
+target_link_libraries(luci_export_test mio_circle)
+target_link_libraries(luci_export_test luci_env)
+target_link_libraries(luci_export_test oops)
