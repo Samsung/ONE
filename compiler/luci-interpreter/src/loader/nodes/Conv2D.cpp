@@ -42,6 +42,7 @@ std::unique_ptr<Kernel> build_kernel_CircleConv2D(const luci::CircleNode *circle
   // If node has execution plan then read memory offsets for im2col temporary tensor
   // from the beginning of shared memory buffer.
   // Used in Static Memory Manager.
+  // TODO move tensors offset initialization to one place
   if (luci::has_execution_plan(node))
   {
     auto memory_plan = luci::get_execution_plan(node);

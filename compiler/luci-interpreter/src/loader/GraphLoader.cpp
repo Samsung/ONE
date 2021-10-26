@@ -17,8 +17,8 @@
 #include "loader/GraphLoader.h"
 
 #include "loader/KernelBuilder.h"
-#include <luci/Plan/CircleNodeExecutionPlan.h>
 
+#include <luci/Plan/CircleNodeExecutionPlan.h>
 #include <loco/IR/Algorithm.h>
 
 namespace luci_interpreter
