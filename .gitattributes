@@ -1,1 +1,2 @@
 tests/nnapi/specs/* linguist-detectable=false
+res/* linguist-detectable=false
