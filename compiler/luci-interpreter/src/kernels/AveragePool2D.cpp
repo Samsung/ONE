@@ -18,8 +18,7 @@
 
 #include "kernels/Utils.h"
 
-#include <tensorflow/lite/kernels/internal/reference/integer_ops/pooling.h>
-#include <tensorflow/lite/kernels/internal/reference/pooling.h>
+#include "PALAveragePool2d.h"
 
 #include <stdexcept>
 
@@ -155,7 +154,7 @@ void AveragePool2D::evalSInt8() const
   params.quantized_activation_min = activation_min;
   params.quantized_activation_max = activation_max;
 
-  tflite::reference_integer_ops::AveragePool(
+  luci_interpreter_pal::AveragePool<int8_t>(
     params, getTensorShape(input()), getTensorData<int8_t>(input()), getTensorShape(output()),
     getTensorData<int8_t>(output()));
 }
