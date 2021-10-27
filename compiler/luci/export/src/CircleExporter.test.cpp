@@ -30,7 +30,7 @@
 class SampleGraphContract : public luci::CircleExporter::Contract
 {
 public:
-  SampleGraphContract() : luci::CircleExporter::Contract()
+  SampleGraphContract() : luci::CircleExporter::Contract(), _buffer(new std::vector<char>)
   {
     // create needed entities
     _g = loco::make_graph();
@@ -64,11 +64,12 @@ public:
 public:
   bool store(const char *ptr, const size_t size) const override
   {
-    _buffer.resize(size);
-    std::copy(ptr, ptr + size, _buffer.begin());
+    _buffer->resize(size);
+    std::copy(ptr, ptr + size, _buffer->begin());
+    return true;
   }
 
-  std::vector<char> get_buffer() { return _buffer; }
+  const std::vector<char> &get_buffer() { return *_buffer; }
 
 public:
   luci::CircleInput *input_node;
@@ -77,7 +78,7 @@ public:
 
 private:
   std::unique_ptr<loco::Graph> _g;
-  mutable std::vector<char> _buffer;
+  std::unique_ptr<std::vector<char>> _buffer;
 };
 
 TEST(CircleExport, export_execution_plan)
