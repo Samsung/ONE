@@ -5,6 +5,7 @@ Release: 1
 Group:   Development
 License: Apache-2.0 and MIT and BSD-2-Clause and MPL-2.0
 
+
 Source0: %{name}-%{version}.tar.gz
 Source1: %{name}.manifest
 Source1001: nnapi_test_generated.tar.gz
