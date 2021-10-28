@@ -65,7 +65,7 @@ fi
 cp OONE-BUILD_014.cfg ../optimization
 
 # run test
-LUCI_LOG=1 one-build -C ${configfile} -OONE-BUILD_014 > ${filename}.log 2>&1
+LUCI_LOG=5 one-build -C ${configfile} -OONE-BUILD_014 > ${filename}.log 2>&1
 
 clean_envir
 
