@@ -18,9 +18,7 @@
 
 #include "kernels/Utils.h"
 
-#include <tensorflow/lite/kernels/internal/reference/depthwiseconv_float.h>
-#include <tensorflow/lite/kernels/internal/reference/depthwiseconv_uint8.h>
-#include <tensorflow/lite/kernels/internal/reference/integer_ops/depthwise_conv.h>
+#include "PALDepthwiseConv2d.h"
 
 #include <stdexcept>
 
@@ -337,7 +335,7 @@ void DepthwiseConv2D::evalQuantizedS8PerChannel() const
                  std::back_inserter(multipliers),
                  [](ChannelQuantMultipliers cm) { return cm.multiplier; });
 
-  tflite::reference_integer_ops::DepthwiseConvPerChannel(
+  luci_interpreter_pal::DepthwiseConvPerChannel<int8_t>(
     params, multipliers.data(), shifts.data(), getTensorShape(input()),
     getTensorData<int8_t>(input()), getTensorShape(filter()), getTensorData<int8_t>(filter()),
     getTensorShape(bias()), getTensorData<int32_t>(bias()), getTensorShape(output()),
