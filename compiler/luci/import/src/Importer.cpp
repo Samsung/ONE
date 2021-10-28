@@ -50,7 +50,7 @@ void convert_graph(const luci::GraphBuilderSource &source, luci::CircleReader &r
 
   luci::GraphBuilderContext gb_context(graph, &reader, nodefinder.get(), tensoroutputs.get());
 
-  const auto &operators = reader.operators();
+  const auto operators = reader.native_operators();
   const auto &tensors = reader.tensors();
   auto tensors_ptr = reader.tensors_ptr();
   assert(tensors_ptr != nullptr);
@@ -60,8 +60,9 @@ void convert_graph(const luci::GraphBuilderSource &source, luci::CircleReader &r
   // if this is set, we should not create a CircleConst for this tensor
   for (uint32_t i = 0; i < operators.size(); ++i)
   {
-    const circle::OperatorT &op = *operators[i];
-    const auto &outputs = op.outputs;
+    const auto op = operators[i];
+    assert(op != nullptr);
+    const auto outputs = luci::wrap(op->outputs());
 
     for (uint32_t j = 0; j < outputs.size(); ++j)
     {
@@ -134,18 +135,22 @@ void convert_graph(const luci::GraphBuilderSource &source, luci::CircleReader &r
   auto origin_table = circle_metadata->origin_table();
   for (uint32_t i = 0; i < operators.size(); ++i)
   {
-    const circle::OperatorT &op = *operators[i];
+    const auto op = operators[i];
+    assert(op != nullptr);
     circle::BuiltinOperator builtincode = reader.builtin_code(op);
-
     if (const auto *builder = source.lookup(builtincode))
     {
-      luci::GraphBuilder::ValidateArgs args(op, reader);
+      // create temporary unpack API obj
+      circle::OperatorT oper_t;
+      op->UnPackTo(&oper_t);
+
+      luci::GraphBuilder::ValidateArgs args(oper_t, reader);
       if (!builder->validate(args))
       {
         throw oops::UserExn("Invalid operator", reader.opcode_name(op));
       }
 
-      auto built_op = builder->build(op, &gb_context);
+      auto built_op = builder->build(oper_t, &gb_context);
       set_node_id(built_op, i);
       if (origin_table.find(i) != origin_table.end())
         add_origin(built_op, origin_table.at(i));
