@@ -32,7 +32,6 @@ void calculateActivationRange(Activation activation, float *activation_min, floa
   switch (activation)
   {
     case Activation::NONE:
-    case Activation::TANH:
       *activation_min = std::numeric_limits<float>::lowest();
       *activation_max = std::numeric_limits<float>::max();
       break;
