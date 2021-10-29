@@ -129,6 +129,17 @@ void Conv2D::configure()
     auto im2col = getOutputTensors()[1];
     im2col->set_allocatable(false);
   }
+
+  switch (_params.activation)
+  {
+    case Activation::NONE:
+    case Activation::RELU:
+    case Activation::RELU6:
+    case Activation::RELU_N1_TO_1:
+      break;
+    default:
+      throw std::runtime_error("Unsupported fused activation");
+  }
 }
 
 void Conv2D::execute() const
