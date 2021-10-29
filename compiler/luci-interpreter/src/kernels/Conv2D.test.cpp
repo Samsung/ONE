@@ -663,7 +663,7 @@ TEST_F(Conv2DTest, Invalid_Input_Shape_NEG)
   EXPECT_ANY_THROW(kernel.configure());
 }
 
-TEST_F(Conv2DTest, Invalid_fused_act_tanh)
+TEST_F(Conv2DTest, Invalid_fused_act_tanh_NEG)
 {
   Shape input_shape{1, 4, 3, 2};
   Shape filter_shape{2, 2, 2, 2};
