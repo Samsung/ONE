@@ -29,9 +29,10 @@ bool CircleExpandDimsGraphBuilder::validate(const ValidateArgs &args) const
     return false;
 
   const auto &inputs = args.op.inputs;
-  const auto &tensors = args.reader.tensors();
+  const auto tensors = args.reader.native_tensors();
 
-  return tensors[inputs.at(1)]->type == circle::TensorType_INT32;
+  assert(tensors[inputs.at(1)] != nullptr);
+  return tensors[inputs.at(1)]->type() == circle::TensorType_INT32;
 }
 
 CircleNode *CircleExpandDimsGraphBuilder::build_node(const circle::OperatorT &,
