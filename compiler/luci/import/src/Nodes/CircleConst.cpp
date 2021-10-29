@@ -46,7 +46,8 @@ std::ostream &operator<<(std::ostream &os, const luci::VectorWrapper<int32_t> &v
 using namespace luci;
 
 template <loco::DataType DT>
-void copy_data(const std::vector<uint8_t> &raw_data, uint32_t num_elements, CircleConst *const_node)
+void copy_data(const VectorWrapper<uint8_t> &raw_data, uint32_t num_elements,
+               CircleConst *const_node)
 {
   using T = typename loco::DataTypeImpl<DT>::Type;
 
@@ -67,8 +68,8 @@ void copy_data(const std::vector<uint8_t> &raw_data, uint32_t num_elements, Circ
 }
 
 template <>
-void copy_data<loco::DataType::STRING>(const std::vector<uint8_t> &raw_data, uint32_t num_elements,
-                                       CircleConst *const_node)
+void copy_data<loco::DataType::STRING>(const VectorWrapper<uint8_t> &raw_data,
+                                       uint32_t num_elements, CircleConst *const_node)
 {
   assert(const_node->sparsityparam() == nullptr);
 
@@ -112,11 +113,12 @@ CircleConst *create_circleconst(GraphBuilderContext *context, int32_t tensor_ind
 
   auto graph = context->graph();
   auto reader = context->reader();
-  const auto tensors = reader->native_tensors();
+  const auto tensors = reader->tensors();
   const auto const_tensor = tensors[tensor_index];
   assert(const_tensor != nullptr);
 
-  const std::vector<uint8_t> &buffer = reader->buffers()[const_tensor->buffer()]->data;
+  assert(reader->buffers()[const_tensor->buffer()] != nullptr);
+  const auto buffer = wrap(reader->buffers()[const_tensor->buffer()]->data());
   const auto const_dims = wrap(const_tensor->shape()); // in NHWC
   if (const_dims.size() == 0 && buffer.empty())
   {
