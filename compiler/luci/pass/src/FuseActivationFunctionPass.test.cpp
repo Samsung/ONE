@@ -86,6 +86,47 @@ protected:
   luci::CircleConst *_conv2_b = nullptr;
 };
 
+class ConvTanhConvGraphlet
+{
+public:
+  ConvTanhConvGraphlet() = default;
+
+  void init(loco::Graph *g)
+  {
+    _conv1 = g->nodes()->create<luci::CircleConv2D>();
+    _conv2 = g->nodes()->create<luci::CircleConv2D>();
+    _tanh = g->nodes()->create<luci::CircleTanh>();
+    _conv1_f = g->nodes()->create<luci::CircleConst>();
+    _conv1_b = g->nodes()->create<luci::CircleConst>();
+    _conv2_f = g->nodes()->create<luci::CircleConst>();
+    _conv2_b = g->nodes()->create<luci::CircleConst>();
+
+    _conv1->fusedActivationFunction(luci::FusedActFunc::NONE);
+
+    _conv1->name("conv1");
+    _conv2->name("conv2");
+    _tanh->name("tanh");
+    _conv1_f->name("conv1f");
+    _conv1_b->name("conv1b");
+    _conv2_f->name("conv2f");
+    _conv2_b->name("conv2b");
+  }
+
+public:
+  luci::CircleTanh *tanh() { return _tanh; }
+  luci::CircleConv2D *conv1() { return _conv1; }
+  luci::CircleConv2D *conv2() { return _conv2; }
+
+protected:
+  luci::CircleConv2D *_conv1 = nullptr;
+  luci::CircleConv2D *_conv2 = nullptr;
+  luci::CircleTanh *_tanh = nullptr;
+  luci::CircleConst *_conv1_f = nullptr;
+  luci::CircleConst *_conv1_b = nullptr;
+  luci::CircleConst *_conv2_f = nullptr;
+  luci::CircleConst *_conv2_b = nullptr;
+};
+
 class FuseActTestGraph : public TestIOGraph, public ConvReluConvGraphlet
 {
 public:
@@ -103,6 +144,30 @@ public:
     _relu->features(_conv1);
 
     _conv2->input(_relu);
+    _conv2->filter(_conv2_f);
+    _conv2->bias(_conv2_b);
+
+    output()->from(_conv2);
+  }
+};
+
+class FuseTanhActTestGraph : public TestIOGraph, public ConvTanhConvGraphlet
+{
+public:
+  FuseTanhActTestGraph() = default;
+
+  void init(void)
+  {
+    TestIOGraph::init({1}, {1});
+    ConvTanhConvGraphlet::init(g());
+
+    _conv1->input(input());
+    _conv1->filter(_conv1_f);
+    _conv1->bias(_conv1_b);
+
+    _tanh->x(_conv1);
+
+    _conv2->input(_tanh);
     _conv2->filter(_conv2_f);
     _conv2->bias(_conv2_b);
 
@@ -188,5 +253,17 @@ TEST(FusePreActivationBatchNorm, fuse_activation_function_tanh_NEG)
   g.conv1()->fusedActivationFunction(luci::FusedActFunc::TANH);
 
   // Relu input Conv2D already has activation function
+  EXPECT_FALSE(pass.run(g.g()));
+}
+
+TEST(FusePreActivationBatchNorm, fuse_tanh_NEG)
+{
+  FuseTanhActTestGraph g;
+  luci::FuseActivationFunctionPass pass;
+
+  g.init();
+
+  // Tanh should not be fused
+  // This can be changed when CONV+TANH is supported by luci-interpreter
   EXPECT_FALSE(pass.run(g.g()));
 }
