@@ -72,13 +72,6 @@ bool fuse_activation_function(luci::CircleNode *node)
     else
       return false;
   }
-  else if (opcode == luci::CircleOpcode::TANH)
-  {
-    if (fused_act == luci::FusedActFunc::NONE)
-      target_func = luci::FusedActFunc::TANH;
-    else
-      return false;
-  }
   else
     return false;
 
@@ -98,8 +91,9 @@ bool FuseActivationFunctionPass::run(loco::Graph *g)
   {
     auto circle_node = static_cast<luci::CircleNode *>(node);
     auto opcode = circle_node->opcode();
+    // TANH is not supported as CONV fused with TANH is not supported in luci-interpreter
     if (opcode == luci::CircleOpcode::RELU || opcode == luci::CircleOpcode::RELU6 ||
-        opcode == luci::CircleOpcode::RELU_N1_TO_1 || opcode == luci::CircleOpcode::TANH)
+        opcode == luci::CircleOpcode::RELU_N1_TO_1)
     {
       if (fuse_activation_function(circle_node))
         changed = true;
