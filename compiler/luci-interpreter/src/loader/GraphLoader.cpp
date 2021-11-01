@@ -18,6 +18,7 @@
 
 #include "loader/KernelBuilder.h"
 
+#include <luci/Plan/CircleNodeExecutionPlan.h>
 #include <loco/IR/Algorithm.h>
 
 namespace luci_interpreter
@@ -155,6 +156,15 @@ void GraphLoader::loadTensors()
     auto tensor = std::make_unique<Tensor>(node->dtype(), std::move(shape), std::move(quantization),
                                            node->name());
 
+    // If node has execution plan then read memory offsets for nodes
+    // from the beginning of shared memory buffer. Used in Static Memory Manager.
+    if (luci::has_execution_plan(node))
+    {
+      auto execution_plan = luci::get_execution_plan(node);
+      assert(!execution_plan.offsets().empty());
+      tensor->set_offset(execution_plan.offsets().front());
+    }
+
     if (const auto *const_node = dynamic_cast<const luci::CircleConst *>(node))
     {
       size_t data_size{};
@@ -199,16 +209,54 @@ void GraphLoader::loadOperators()
   KernelBuilder kernel_builder(_graph_to_runtime_graph, _node_to_tensor);
 
   // Create kernels for executable nodes. This has to be done in execution order.
-  for (const loco::Node *loco_node :
-       loco::postorder_traversal(loco::output_nodes(const_cast<loco::Graph *>(_graph))))
-  {
-    const auto *node = loco::must_cast<const luci::CircleNode *>(loco_node);
+  auto graph = const_cast<loco::Graph *>(_graph);
 
-    if (isExecutableNode(node))
+  auto const graph_nodes = loco::all_nodes(graph);
+
+  // Checking for execution plan in node annotations.
+  bool has_execution_annotation = true;
+  auto const checking_exec_plan = [&has_execution_annotation](auto const node) {
+    const auto *circle_node = loco::must_cast<const luci::CircleNode *>(node);
+    if (!luci::has_execution_plan(circle_node))
+      has_execution_annotation = false;
+  };
+  std::for_each(begin(graph_nodes), end(graph_nodes), checking_exec_plan);
+
+  if (has_execution_annotation)
+  {
+    // Build ordered_nodes vector that stores the order of execution of graph nodes.
+    std::vector<const luci::CircleNode *> ordered_nodes(graph_nodes.size());
+
+    auto const filler = [&ordered_nodes](auto const node) {
+      const auto *circle_node = loco::must_cast<const luci::CircleNode *>(node);
+      auto const position = luci::get_execution_plan(circle_node).order_in_plan();
+      ordered_nodes.at(position) = circle_node;
+    };
+    std::for_each(begin(graph_nodes), end(graph_nodes), filler);
+
+    for (auto node : ordered_nodes)
     {
-      std::unique_ptr<Kernel> kernel = kernel_builder.build(node);
-      _runtime_to_ir.kernel_to_node.emplace(kernel.get(), node);
-      _runtime_graph->addKernel(std::move(kernel));
+      if (isExecutableNode(node))
+      {
+        std::unique_ptr<Kernel> kernel = kernel_builder.build(node);
+        _runtime_to_ir.kernel_to_node.emplace(kernel.get(), node);
+        _runtime_graph->addKernel(std::move(kernel));
+      }
+    }
+  }
+  else
+  {
+    // If it is impossible to build the execution order plan,
+    // then we use the default postorder_traversal approach.
+    for (const loco::Node *loco_node : loco::postorder_traversal(loco::output_nodes(graph)))
+    {
+      const auto *node = loco::must_cast<const luci::CircleNode *>(loco_node);
+      if (isExecutableNode(node))
+      {
+        std::unique_ptr<Kernel> kernel = kernel_builder.build(node);
+        _runtime_to_ir.kernel_to_node.emplace(kernel.get(), node);
+        _runtime_graph->addKernel(std::move(kernel));
+      }
     }
   }
 }

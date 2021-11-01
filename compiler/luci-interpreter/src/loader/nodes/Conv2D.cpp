@@ -17,6 +17,7 @@
 #include "Builders.h"
 
 #include "kernels/Conv2D.h"
+#include <luci/Plan/CircleNodeExecutionPlan.h>
 
 namespace luci_interpreter
 {
@@ -38,6 +39,18 @@ std::unique_ptr<Kernel> build_kernel_CircleConv2D(const luci::CircleNode *circle
     std::make_unique<Tensor>(input->element_type(), Shape({}), AffineQuantization{}, "");
   im2col->set_observable(false);
   im2col->set_data_buffer(nullptr);
+  // If node has execution plan then read memory offsets for im2col temporary tensor
+  // from the beginning of shared memory buffer.
+  // Used in Static Memory Manager.
+  // TODO move tensors offset initialization to one place
+  if (luci::has_execution_plan(node))
+  {
+    const auto execution_plan = luci::get_execution_plan(node);
+    // Check whether the offset for the current CircleConv2D temporary was found.
+    if (execution_plan.offsets().size() > 1)
+      // If this is true, then we keep this offset in im2col.
+      im2col->set_offset(execution_plan.offsets().at(1));
+  }
   Tensor *tmp = helper.getRuntimeGraph(node->graph())->addTensor(std::move(im2col));
 
   Conv2DParams params{};
