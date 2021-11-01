@@ -210,27 +210,30 @@ void GraphLoader::loadOperators()
 
   // Create kernels for executable nodes. This has to be done in execution order.
   auto graph = const_cast<loco::Graph *>(_graph);
-  std::vector<const luci::CircleNode *> ordered_nodes(loco::all_nodes(graph).size());
+
+  auto const graph_nodes = loco::all_nodes(graph);
 
   // Checking for execution plan in node annotations.
-  // Build ordered_nodes vector that stores the order of execution of graph nodes.
   bool has_execution_annotation = true;
-  for (const loco::Node *loco_node : loco::all_nodes(graph))
-  {
-    auto circle_node = dynamic_cast<const luci::CircleNode *>(loco_node);
+  auto const checking_exec_plan = [&has_execution_annotation](auto const node) {
+    const auto *circle_node = loco::must_cast<const luci::CircleNode *>(node);
     if (!luci::has_execution_plan(circle_node))
-    {
-      // If execution plan is not stored for the current circle node,
-      // then it will be impossible to build a execution order plan for the graph.
       has_execution_annotation = false;
-      break;
-    }
-    auto execution_plan = luci::get_execution_plan(circle_node);
-    ordered_nodes.at(execution_plan.order_in_plan()) = circle_node;
-  }
+  };
+  std::for_each(begin(graph_nodes), end(graph_nodes), checking_exec_plan);
 
   if (has_execution_annotation)
   {
+    // Build ordered_nodes vector that stores the order of execution of graph nodes.
+    std::vector<const luci::CircleNode *> ordered_nodes(graph_nodes.size());
+
+    auto const filler = [&ordered_nodes](auto const node) {
+      const auto *circle_node = loco::must_cast<const luci::CircleNode *>(node);
+      auto const position = luci::get_execution_plan(circle_node).order_in_plan();
+      ordered_nodes.at(position) = circle_node;
+    };
+    std::for_each(begin(graph_nodes), end(graph_nodes), filler);
+
     for (auto node : ordered_nodes)
     {
       if (isExecutableNode(node))
@@ -245,7 +248,6 @@ void GraphLoader::loadOperators()
   {
     // If it is impossible to build the execution order plan,
     // then we use the default postorder_traversal approach.
-    ordered_nodes.clear();
     for (const loco::Node *loco_node : loco::postorder_traversal(loco::output_nodes(graph)))
     {
       const auto *node = loco::must_cast<const luci::CircleNode *>(loco_node);

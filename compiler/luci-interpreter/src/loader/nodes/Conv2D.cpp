@@ -45,11 +45,11 @@ std::unique_ptr<Kernel> build_kernel_CircleConv2D(const luci::CircleNode *circle
   // TODO move tensors offset initialization to one place
   if (luci::has_execution_plan(node))
   {
-    auto memory_plan = luci::get_execution_plan(node);
+    const auto execution_plan = luci::get_execution_plan(node);
     // Check whether the offset for the current CircleConv2D temporary was found.
-    if (memory_plan.offsets().size() > 1)
+    if (execution_plan.offsets().size() > 1)
       // If this is true, then we keep this offset in im2col.
-      im2col->set_offset(memory_plan.offsets().at(1));
+      im2col->set_offset(execution_plan.offsets().at(1));
   }
   Tensor *tmp = helper.getRuntimeGraph(node->graph())->addTensor(std::move(im2col));
 
