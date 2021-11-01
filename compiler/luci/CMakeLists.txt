@@ -4,9 +4,9 @@
 #
 # Currently this feature is used for luci-interpreter MCU builds.
 if (STATIC_LUCI)
-  set(LIBRARY_TYPE "STATIC")
+  set(LUCI_LIBRARY_TYPE "STATIC")
 else()
-  set(LIBRARY_TYPE "SHARED")
+  set(LUCI_LIBRARY_TYPE "SHARED")
 endif()
 
 add_subdirectory(env)
