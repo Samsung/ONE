@@ -32,7 +32,7 @@ std::unique_ptr<Kernel> build_kernel_CircleConv2D(const luci::CircleNode *circle
 
   const Tensor *input = helper.getInputTensor(node->input());
   const Tensor *filter = helper.getInputTensor(node->filter());
-  const Tensor *bias = helper.getInputTensor(node->bias());
+  const Tensor *bias = helper.getOptionalInputTensor(node->bias());
   Tensor *output = helper.getOutputTensor(node);
 
   auto im2col =
