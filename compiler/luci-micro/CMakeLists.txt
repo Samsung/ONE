@@ -89,7 +89,7 @@ add_custom_command(
         VERBATIM
 )
 
-add_custom_target(mbed_os_arm DEPENDS mbed_os_cmake)
+add_custom_target(mbed_os_arm DEPENDS "${MBED_OS_BINARY}")
 
 set(BENCHMARK_BINARY "${MBED_OS_BUILD_DIR}/benchmark.bin")
 
@@ -100,4 +100,4 @@ add_custom_command(
         DEPENDS mbed_os_cmake
         VERBATIM
 )
-add_custom_target(luci_micro_benchmark_arm DEPENDS mbed_os_cmake)
+add_custom_target(luci_micro_benchmark_arm DEPENDS "${BENCHMARK_BINARY}")
