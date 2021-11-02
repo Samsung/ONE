@@ -97,7 +97,7 @@ add_custom_command(
         OUTPUT "${BENCHMARK_BINARY}"
         COMMAND "${CMAKE_MAKE_PROGRAM}" benchmark -j ${CPU_COUNT}
         WORKING_DIRECTORY "${MBED_OS_BUILD_DIR}"
-        DEPENDS mbed_os_cmake
+        DEPENDS mbed_os_arm
         VERBATIM
 )
 add_custom_target(luci_micro_benchmark_arm DEPENDS "${BENCHMARK_BINARY}")
