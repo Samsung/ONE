@@ -8,11 +8,11 @@ License: Apache-2.0 and MIT and BSD-2-Clause and MPL-2.0
 Source0: %{name}-%{version}.tar.gz
 Source1: %{name}.manifest
 Source1001: nnapi_test_generated.tar.gz
-Source1002: gtest.tar.gz
-Source1003: eigen.tar.gz
-Source1004: gemmlowp.tar.gz
-Source1005: ruy.tar.gz
-Source1006: cpuinfo.tar.gz
+Source1002: GTEST.tar.gz
+Source1003: TENSORFLOW-2.3.0-EIGEN.tar.gz
+Source1004: GEMMLOWP.tar.gz
+Source1005: RUY.tar.gz
+Source1006: CPUINFO.tar.gz
 Source1007: XNNPACK.tar.gz
 Source1008: FXDIV.tar.gz
 Source1009: PTHREADPOOL.tar.gz
@@ -21,7 +21,7 @@ Source1011: FP16.tar.gz
 Source1012: OPENCL_HEADERS.tar.gz
 Source1013: FARMHASH.tar.gz
 Source1014: ABSEIL.tar.gz
-Source1015: oourafft.tar.gz
+Source1015: OOURAFFT.tar.gz
 Source2001: nnfw.pc.in
 Source2002: nnfw-plugin.pc.in
 
