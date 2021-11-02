@@ -20,6 +20,7 @@
 # limitations under the License.
 
 import argparse
+import importlib
 import os
 import subprocess
 import sys
@@ -47,6 +48,8 @@ def _get_parser():
     # input and output path.
     converter_group.add_argument(
         '-i', '--input_path', type=str, help='full filepath of the input file')
+    converter_group.add_argument(
+        '-p', '--python_path', type=str, help='full filepath of the python model file')
     converter_group.add_argument(
         '-o', '--output_path', type=str, help='full filepath of the output file')
 
@@ -144,19 +147,42 @@ def _parse_types(types_str):
     return types
 
 
+# merge contents of module into global namespace
+def _merge_module(module):
+    # is there an __all__?  if so respect it
+    if "__all__" in module.__dict__:
+        names = module.__dict__["__all__"]
+    else:
+        # otherwise we import all names that don't begin with _
+        names = [x for x in module.__dict__ if not x.startswith("_")]
+    globals().update({k: getattr(module, k) for k in names})
+
+
 def _convert(args):
     _apply_verbosity(args.verbose)
 
     # get file path to log
     dir_path = os.path.dirname(os.path.realpath(__file__))
     logfile_path = os.path.realpath(args.output_path) + '.log'
-
     with open(logfile_path, 'wb') as f, tempfile.TemporaryDirectory() as tmpdir:
         # save intermediate
         if _utils._is_valid_attr(args, 'save_intermediate'):
             tmpdir = os.path.dirname(logfile_path)
         # convert pytorch to onnx model
-        pytorch_model = torch.load(getattr(args, 'input_path'))
+        input_path = getattr(args, 'input_path')
+        if getattr(args, 'python_path') is None:
+            # assuming this is a pytorch script
+            try:
+                pytorch_model = torch.jit.load(input_path)
+            except RuntimeError as e:
+                f.write(str(e))
+                f.write('Failed to import input file. Maybe this it contains only weights? Try pass "python_path" argument')
+                raise
+        else:
+            model_module = importlib.import_module(getattr(args, 'python_path'))
+            _merge_module(model_module)
+            # questionable construction
+            pytorch_model = torch.load(input_path)()
 
         input_shapes = _parse_shapes(getattr(args, 'input_shapes'))
         input_types = _parse_types(getattr(args, 'input_types'))
@@ -173,8 +199,7 @@ def _convert(args):
         onnx_output_name = os.path.splitext(os.path.basename(
                                     args.output_path))[0] + '.onnx'
         onnx_output_path = os.path.join(tmpdir, onnx_output_name)
-
-        torch.onnx.export(pytorch_model, sample_inputs, onnx_output_path, example_outputs=sample_outputs)
+        torch.onnx.export(pytorch_model, tuple(sample_inputs), onnx_output_path, example_outputs=sample_outputs)
 
         # convert onnx to tf saved mode
         onnx_model = onnx.load(onnx_output_path)
@@ -190,10 +215,6 @@ def _convert(args):
         tf2tfliteV2_output_name = os.path.splitext(os.path.basename(
             args.output_path))[0] + '.tflite'
         tf2tfliteV2_output_path = os.path.join(tmpdir, tf2tfliteV2_output_name)
-
-        print(args)
-        print(dir(args))
-        print(type(args))
 
         del args.input_shapes
         tf2tfliteV2_cmd = _utils._make_tf2tfliteV2_cmd(
