@@ -102,15 +102,21 @@ def _get_parser():
         type=str,
         help='record mode (supported: percentile/moving_average, default=percentile)')
 
-    # arguments for force_quantparam
-    parser.add_argument(
+    # arguments for force_quantparam option
+    force_quantparam_group = parser.add_argument_group(
+        'arguments for force_quantparam option')
+
+    force_quantparam_group.add_argument(
         '--force_quantparam',
         action='store_true',
-        help='write quantparam to the specified tensor')
-    parser.add_argument(
+        help=
+        'force_quantparam option is turned on. You can overwrite quantparam (scale, zero_point) to the specified tensor in the quantized model.'
+    )
+    force_quantparam_group.add_argument(
         '--tensor_name', type=str, action='append', help='tensor name (string)')
-    parser.add_argument('--scale', type=float, action='append', help='scale (float)')
-    parser.add_argument(
+    force_quantparam_group.add_argument(
+        '--scale', type=float, action='append', help='scale (float)')
+    force_quantparam_group.add_argument(
         '--zero_point', type=int, action='append', help='zero point (int)')
 
     return parser
