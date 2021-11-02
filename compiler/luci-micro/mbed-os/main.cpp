@@ -15,7 +15,9 @@
  */
 
 #include "mbed.h"
+#undef ARG_MAX
 
+#include "luci_interpreter/Interpreter.h"
 // Maximum number of element the application buffer can contain
 #define MAXIMUM_BUFFER_SIZE 32
 

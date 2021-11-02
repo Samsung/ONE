@@ -71,7 +71,7 @@ set(MBED_OS_BUILD_DEPENDENCY "${MBED_OS_BUILD_DIR}/CMakeCache.txt")
 
 add_custom_command(
         OUTPUT "${MBED_OS_BUILD_DEPENDENCY}"
-        COMMAND "${CMAKE_COMMAND}" "${CMAKE_CURRENT_SOURCE_DIR}/mbed-os" -DMbedOSSource_DIR=${MbedOSSource_DIR}
+        COMMAND "${CMAKE_COMMAND}" "${CMAKE_CURRENT_SOURCE_DIR}/mbed-os" -DMbedOSSource_DIR=${MbedOSSource_DIR} -DLUCI_INTERPRETER_BINARY=${MICRO_ARM_BINARY}
         WORKING_DIRECTORY "${MBED_OS_BUILD_DIR}"
         DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/mbed-os/CMakeLists.txt"
         VERBATIM
@@ -97,7 +97,7 @@ add_custom_command(
         OUTPUT "${BENCHMARK_BINARY}"
         COMMAND "${CMAKE_MAKE_PROGRAM}" benchmark -j ${CPU_COUNT}
         WORKING_DIRECTORY "${MBED_OS_BUILD_DIR}"
-        DEPENDS mbed_os_arm
+        DEPENDS mbed_os_arm luci_interpreter_micro_arm
         VERBATIM
 )
 add_custom_target(luci_micro_benchmark_arm DEPENDS "${BENCHMARK_BINARY}")
