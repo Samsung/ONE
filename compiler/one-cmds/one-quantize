@@ -70,7 +70,13 @@ def _get_parser():
     quantization_group.add_argument(
         '--input_dtype',
         type=str,
-        help='input data type (supported: float32, default=float32)')
+        help=
+        'input model data type (supported: float32, default=float32). Deprecated (Use input_model_dtype)'
+    )
+    quantization_group.add_argument(
+        '--input_model_dtype',
+        type=str,
+        help='input model data type (supported: float32, default=float32)')
     quantization_group.add_argument(
         '--quantized_dtype',
         type=str,
@@ -111,8 +117,9 @@ def _get_parser():
 
 
 def _set_default_values(args):
-    if not _utils._is_valid_attr(args, 'input_dtype'):
-        setattr(args, 'input_dtype', 'float32')
+    if not _utils._is_valid_attr(args, 'input_model_dtype') and not _utils._is_valid_attr(
+            args, 'input_dtype'):
+        setattr(args, 'input_model_dtype', 'float32')
     if not _utils._is_valid_attr(args, 'quantized_dtype'):
         setattr(args, 'quantized_dtype', 'uint8')
     if not _utils._is_valid_attr(args, 'granularity'):
@@ -182,7 +189,10 @@ def _quantize(args):
             circle_quantizer_cmd.append('--verbose')
         # quantize_dequantize_weights
         circle_quantizer_cmd.append('--quantize_dequantize_weights')
-        if _utils._is_valid_attr(args, 'input_dtype'):
+        # Use input_model_dtype if it exists. Use input_dtype otherwise.
+        if _utils._is_valid_attr(args, 'input_model_dtype'):
+            circle_quantizer_cmd.append(getattr(args, 'input_model_dtype'))
+        elif _utils._is_valid_attr(args, 'input_dtype'):
             circle_quantizer_cmd.append(getattr(args, 'input_dtype'))
         if _utils._is_valid_attr(args, 'quantized_dtype'):
             circle_quantizer_cmd.append(getattr(args, 'quantized_dtype'))
@@ -251,7 +261,10 @@ def _quantize(args):
             circle_quantizer_cmd.append('--verbose')
         # quantize_dequantize_weights
         circle_quantizer_cmd.append('--quantize_with_minmax')
-        if _utils._is_valid_attr(args, 'input_dtype'):
+        # Use input_model_dtype if it exists. Use input_dtype otherwise.
+        if _utils._is_valid_attr(args, 'input_model_dtype'):
+            circle_quantizer_cmd.append(getattr(args, 'input_model_dtype'))
+        elif _utils._is_valid_attr(args, 'input_dtype'):
             circle_quantizer_cmd.append(getattr(args, 'input_dtype'))
         if _utils._is_valid_attr(args, 'quantized_dtype'):
             circle_quantizer_cmd.append(getattr(args, 'quantized_dtype'))
