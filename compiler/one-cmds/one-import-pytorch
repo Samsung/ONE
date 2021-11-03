@@ -181,9 +181,19 @@ def _convert(args):
                 f.write('Failed to import input file. Maybe this it contains only weights? Try pass "python_path" argument')
                 raise
         else:
-            model_module = importlib.import_module(getattr(args, 'python_path'))
-            _merge_module(model_module)
+            python_model_path = getattr(args, 'python_path')
+            module_name = os.path.basename(python_model_path)
+            module_loader = importlib.machinery.SourceFileLoader(module_name, python_model_path)
+            module_spec = importlib.util.spec_from_loader(module_name, module_loader)
+            python_model_module = importlib.util.module_from_spec(module_spec)
+
+            try:
+                module_loader.exec_module(python_model_module)
+            except:
+                raise ValueError("Failed to execute given python model file")
+
             # questionable construction
+            _merge_module(python_model_module)
             pytorch_model = torch.load(input_path)()
 
         input_shapes = _parse_shapes(getattr(args, 'input_shapes'))
