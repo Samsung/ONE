@@ -105,7 +105,7 @@ def _get_parser():
         '--min_percentile',
         type=str,
         help=
-        'minimum percentile (0.0~100.0, default=1.0). Algorithm parameter for calibration. This is valid when record mode is percentile.'
+        'minimum percentile (0.0~100.0, default=1.0). Algorithm parameter for calibration. This is valid when calibration algorithm is percentile.'
     )
     quantization_group.add_argument(
         '--max_percentile',
