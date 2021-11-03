@@ -21,6 +21,11 @@ import ntpath
 import os
 import subprocess
 import sys
+from enum import Enum
+
+
+class DriverType(Enum):
+    IMPORTER = 1
 
 
 class _CONSTANT:
