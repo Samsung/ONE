@@ -54,13 +54,30 @@ add_custom_command(
   DEPENDS luci_interpreter_micro_arm_cmake
   VERBATIM
 )
-
 add_custom_target(luci_interpreter_micro_arm DEPENDS "${MICRO_ARM_BINARY}")
 
+set(MICRO_LUCI_IMPORT_ARM_BINARY "${MICRO_ARM_BUILD_DIR}/compiler/luci/import/libluci_import.a")
+
+add_custom_command(
+        OUTPUT "${MICRO_LUCI_IMPORT_ARM_BINARY}"
+        COMMAND "${CMAKE_MAKE_PROGRAM}" luci_import -j ${CPU_COUNT}
+        WORKING_DIRECTORY "${MICRO_ARM_BUILD_DIR}"
+        DEPENDS luci_interpreter_micro_arm_cmake
+        VERBATIM
+)
+
+add_custom_target(luci_import_micro_arm DEPENDS "${MICRO_LUCI_IMPORT_ARM_BINARY}")
+
 nnas_find_package(MbedOSSource EXACT 6.15 QUIET)
+nnas_find_package(FlatBuffersSource EXACT 1.10 QUIET)
 
 if (NOT MbedOSSource_FOUND)
   message(STATUS "Skipping luci-micro: MbedOSSource not found")
+  return()
+endif ()
+
+if (NOT FlatBuffersSource_FOUND)
+  message(STATUS "Skipping luci-micro: FlatBuffersSource not found")
   return()
 endif ()
 
@@ -71,7 +88,7 @@ set(MBED_OS_BUILD_DEPENDENCY "${MBED_OS_BUILD_DIR}/CMakeCache.txt")
 
 add_custom_command(
         OUTPUT "${MBED_OS_BUILD_DEPENDENCY}"
-        COMMAND "${CMAKE_COMMAND}" "${CMAKE_CURRENT_SOURCE_DIR}/mbed-os" -DMbedOSSource_DIR=${MbedOSSource_DIR} -DLUCI_INTERPRETER_BINARY=${MICRO_ARM_BINARY}
+        COMMAND "${CMAKE_COMMAND}" "${CMAKE_CURRENT_SOURCE_DIR}/mbed-os" -DMbedOSSource_DIR=${MbedOSSource_DIR} -DLUCI_INTERPRETER_BINARY=${MICRO_ARM_BINARY} -DFlatBuffersSource_DIR=${FlatBuffersSource_DIR}
         WORKING_DIRECTORY "${MBED_OS_BUILD_DIR}"
         DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/mbed-os/CMakeLists.txt"
         VERBATIM
@@ -97,7 +114,7 @@ add_custom_command(
         OUTPUT "${BENCHMARK_BINARY}"
         COMMAND "${CMAKE_MAKE_PROGRAM}" benchmark -j ${CPU_COUNT}
         WORKING_DIRECTORY "${MBED_OS_BUILD_DIR}"
-        DEPENDS mbed_os_arm luci_interpreter_micro_arm
+        DEPENDS mbed_os_arm luci_interpreter_micro_arm luci_import_micro_arm
         VERBATIM
 )
 add_custom_target(luci_micro_benchmark_arm DEPENDS "${BENCHMARK_BINARY}")

@@ -119,6 +119,21 @@ target_include_directories_mbed(benchmark ${MbedOSSource_DIR})
 set(ONE_COMPILER_SRC_DIR "/home/username/SlavikMIPT/ONE/compiler")
 target_link_libraries(benchmark mbed_os)
 target_link_libraries(benchmark "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/luci-interpreter/src/libluci_interpreter.a")
+target_link_libraries(benchmark "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/loco/libloco.a")
+target_link_libraries(benchmark "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/locomotiv/liblocomotiv.a")
+target_link_libraries(benchmark "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/logo/liblogo.a")
+target_link_libraries(benchmark "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/logo-core/liblogo_core.a")
+target_link_libraries(benchmark "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/luci/import/libluci_import.a")
+target_link_libraries(benchmark "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/luci/lang/libluci_lang.a")
+target_link_libraries(benchmark "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/luci/env/libluci_env.a")
+target_link_libraries(benchmark "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/luci/log/libluci_log.a")
+target_link_libraries(benchmark "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/luci/logex/libluci_logex.a")
+target_link_libraries(benchmark "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/luci/plan/libluci_plan.a")
+target_link_libraries(benchmark "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/luci/profile/libluci_profile.a")
+target_link_libraries(benchmark "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/locop/liblocop.a")
+target_link_libraries(benchmark "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/pp/libpp.a")
+
+
 target_include_directories(benchmark PRIVATE
         ${ONE_COMPILER_SRC_DIR}/loco/include
         ${ONE_COMPILER_SRC_DIR}/angkor/include
@@ -127,10 +142,17 @@ target_include_directories(benchmark PRIVATE
         ${ONE_COMPILER_SRC_DIR}/logo/include
         ${ONE_COMPILER_SRC_DIR}/logo-core/include
         ${ONE_COMPILER_SRC_DIR}/locomotiv/include
+        ${ONE_COMPILER_SRC_DIR}/luci/import/include
         ${ONE_COMPILER_SRC_DIR}/luci/lang/include
         ${ONE_COMPILER_SRC_DIR}/luci/lang/include/luci/IR
         ${ONE_COMPILER_SRC_DIR}/luci/lang/include/luci/IR/Nodes
         ${ONE_COMPILER_SRC_DIR}/luci-interpreter/include
+        ${CMAKE_CURRENT_BINARY_DIR}/luci/profile/include
+        ${CMAKE_CURRENT_BINARY_DIR}/luci/env/include
+        ${CMAKE_CURRENT_BINARY_DIR}/luci/plan/include
+        ${CMAKE_CURRENT_BINARY_DIR}/luci/log/include
+        ${CMAKE_CURRENT_SOURCE_DIR}
+        ${FlatBuffersSource_DIR}/include
         )
 
 add_custom_command(TARGET benchmark PRE_LINK
