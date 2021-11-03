@@ -99,7 +99,7 @@ def _get_parser():
         '--output_type',
         type=str,
         help=
-        'data type of outputs of quantized model (supported: uint8, int16, default=quantized_dtype). Quantize Op will be inserted at the end of the quantized model if output_type is different from quantized_dtype.'
+        'data type of outputs of quantized model (supported: uint8, int16, default=quantized_dtype). QUANTIZE Op will be inserted at the end of the quantized model if output_type is different from quantized_dtype.'
     )
     quantization_group.add_argument(
         '--min_percentile',
