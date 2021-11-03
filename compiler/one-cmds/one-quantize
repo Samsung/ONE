@@ -117,7 +117,7 @@ def _get_parser():
         '--mode',
         type=str,
         help=
-        'calibration algorithm for post-training quantization (supported: percentile/moving_average, default=percentile). percentile mode uses the n-th percentiles as min/max values. moving_average mode records the moving average of min/max.'
+        "calibration algorithm for post-training quantization (supported: percentile/moving_average, default=percentile). 'percentile' mode uses the n-th percentiles as min/max values. 'moving_average' mode records the moving average of min/max."
     )
 
     # arguments for force_quantparam
