@@ -120,15 +120,21 @@ def _get_parser():
         "calibration algorithm for post-training quantization (supported: percentile/moving_average, default=percentile). 'percentile' mode uses the n-th percentiles as min/max values. 'moving_average' mode records the moving average of min/max."
     )
 
-    # arguments for force_quantparam
-    parser.add_argument(
+    # arguments for force_quantparam option
+    force_quantparam_group = parser.add_argument_group(
+        'arguments for force_quantparam option')
+
+    force_quantparam_group.add_argument(
         '--force_quantparam',
         action='store_true',
-        help='write quantparam to the specified tensor')
-    parser.add_argument(
+        help=
+        'overwrite quantparam (scale, zero_point) to the specified tensor in the quantized model.'
+    )
+    force_quantparam_group.add_argument(
         '--tensor_name', type=str, action='append', help='tensor name (string)')
-    parser.add_argument('--scale', type=float, action='append', help='scale (float)')
-    parser.add_argument(
+    force_quantparam_group.add_argument(
+        '--scale', type=float, action='append', help='scale (float)')
+    force_quantparam_group.add_argument(
         '--zero_point', type=int, action='append', help='zero point (int)')
 
     return parser
