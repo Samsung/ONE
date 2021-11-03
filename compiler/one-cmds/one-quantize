@@ -110,7 +110,7 @@ def _get_parser():
         '--force_quantparam',
         action='store_true',
         help=
-        'force_quantparam option is turned on. You can overwrite quantparam (scale, zero_point) to the specified tensor in the quantized model.'
+        'overwrite quantparam (scale, zero_point) to the specified tensor in the quantized model.'
     )
     force_quantparam_group.add_argument(
         '--tensor_name', type=str, action='append', help='tensor name (string)')
