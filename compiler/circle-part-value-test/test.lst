@@ -35,3 +35,7 @@ add(Part_If_Add_Sub_001 Part_If_Add_Sub_001.001 3)
 # WHILE with subgraphs
 add(Part_While_000 Part_While_000 3)
 add(Part_While_001 Part_While_001 3)
+
+# FC with nobias testing
+add(Part_Tanh_FC_nobias Part_Tanh_FC_nobias 1)
+add(Part_Tanh_FC_nobias Part_Tanh_FC_nobias_001 2)

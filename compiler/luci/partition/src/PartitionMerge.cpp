@@ -58,6 +58,9 @@ bool is_input_same(const luci::PGroup *pgroup, const luci::PGroups *pgroups)
     //         we need to clone this CircleConst for each graph of the group.
     if (dynamic_cast<const luci::CircleConst *>(input) != nullptr)
       continue;
+    // Skip also for OutputExclude
+    if (dynamic_cast<const luci::CircleOutputExclude *>(input) != nullptr)
+      continue;
 
     auto input_group = pgroups->group_of(input);
     // NOTE: all the nodes should be registered and return should be valid group.
