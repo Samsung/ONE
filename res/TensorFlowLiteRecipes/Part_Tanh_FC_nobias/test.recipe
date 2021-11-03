@@ -1,0 +1,42 @@
+operand {
+  name: "in"
+  type: FLOAT32
+  shape { dim: 4 dim: 1536 }
+}
+operand {
+  name: "Tanh"
+  type: FLOAT32
+  shape { dim: 4 dim: 1536 }
+}
+operand {
+  name: "weight"
+  type: FLOAT32
+  shape { dim: 4362 dim: 1536 }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "1.0"
+  }
+}
+operand {
+  name: "out"
+  type: FLOAT32
+  shape { dim: 4 dim: 4362 }
+}
+operation {
+  type: "Tanh"
+  input: "in"
+  output: "Tanh"
+}
+operation {
+  type: "FullyConnected"
+  fullyconnected_options {
+    activation: NONE
+  }
+  input: "Tanh"
+  input: "weight"
+  input: ""
+  output: "out"
+}
+input: "in"
+output: "out"
