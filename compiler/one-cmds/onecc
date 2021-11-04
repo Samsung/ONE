@@ -126,7 +126,8 @@ def _verify_cfg(driver_list, config):
         driver_spec = driver_list[driver_path]
         driver_name = driver_spec[0]
         driver_type = driver_spec[1]
-        if driver_type == _utils.DriverType.IMPORTER and _is_available_driver(config, driver_name):
+        if driver_type == _utils.DriverType.IMPORTER and _is_available_driver(
+                config, driver_name):
             import_driver_cnt += 1
     if import_driver_cnt > 1:
         raise AssertionError('Only one import-* driver can be executed')
@@ -175,7 +176,9 @@ def main():
     config = _parse_cfg(args)
 
     # verify configuration file
-    driver_types = [_utils.DriverType.IMPORTER, _utils.DriverType.MISC, _utils.DriverType.PROFILER]
+    driver_types = [
+        _utils.DriverType.IMPORTER, _utils.DriverType.MISC, _utils.DriverType.PROFILER
+    ]
     drivers = _collect_available_drivers(driver_types)
     _verify_cfg(drivers, config)
 
