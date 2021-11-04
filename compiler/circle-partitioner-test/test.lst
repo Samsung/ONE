@@ -5,3 +5,6 @@
 # add(RECIPE_NAME PART_NAME)
 
 add(Net_InstanceNorm_003 Net_InstanceNorm_003)
+add(Net_UnpackAdd_001 Net_UnpackAdd_001)
+add(Net_UnpackAdd_001 Net_UnpackAdd_001.001)
+add(Net_UnpackAdd_001 Net_UnpackAdd_001.002)
