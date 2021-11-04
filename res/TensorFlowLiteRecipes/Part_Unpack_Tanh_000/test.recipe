@@ -1,0 +1,70 @@
+operand {
+  name: "ifm"
+  type: FLOAT32
+  shape { dim: 4 dim: 2 dim: 3 dim: 4 }
+}
+operand {
+  name: "unpack1"
+  type: FLOAT32
+  shape { dim: 4 dim: 3 dim: 4 }
+}
+operand {
+  name: "unpack2"
+  type: FLOAT32
+  shape { dim: 4 dim: 3 dim: 4 }
+}
+operation {
+  type: "Unpack"
+  input: "ifm"
+  output: "unpack1"
+  output: "unpack2"
+  unpack_options {
+    num: 2
+    axis: 1
+  }
+}
+operand {
+  name: "ofm1"
+  type: FLOAT32
+  shape { dim: 4 dim: 3 dim: 4 }
+}
+operand {
+  name: "ofm2"
+  type: FLOAT32
+  shape { dim: 4 dim: 3 dim: 4 }
+}
+operand {
+  name: "ofm3"
+  type: FLOAT32
+  shape { dim: 4 dim: 3 dim: 4 }
+}
+operand {
+  name: "ofm4"
+  type: FLOAT32
+  shape { dim: 4 dim: 3 dim: 4 }
+}
+operation {
+  type: "Tanh"
+  input: "unpack1"
+  output: "ofm1"
+}
+operation {
+  type: "Tanh"
+  input: "unpack1"
+  output: "ofm2"
+}
+operation {
+  type: "Tanh"
+  input: "unpack2"
+  output: "ofm3"
+}
+operation {
+  type: "Tanh"
+  input: "unpack2"
+  output: "ofm4"
+}
+input: "ifm"
+output: "ofm1"
+output: "ofm2"
+output: "ofm3"
+output: "ofm4"
