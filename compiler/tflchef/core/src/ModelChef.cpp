@@ -207,7 +207,7 @@ struct CookParams
   std::string noname;
 };
 
-template <typename T> void cook_graph(const T &graph, CookParams &cp)
+template <typename T> std::map<std::string, int32_t> cook_graph(const T &graph, CookParams &cp)
 {
   LOGGER(l);
 
@@ -537,6 +537,8 @@ template <typename T> void cook_graph(const T &graph, CookParams &cp)
   subgraph_builder.add_name(name);
 
   subgraph_vec.emplace_back(subgraph_builder.Finish());
+
+  return symbol_table;
 }
 
 } // namespace
@@ -617,13 +619,18 @@ GeneratedModel cook(const ::tflchef::ModelRecipe &model_recipe)
     buffer_vec.emplace_back(buffer_builder.Finish());
   }
 
+  // symbol_tables stores symbol_table of each sub graph
+  // this is used to find tensor ID(index) with tensor name
+  std::vector<std::map<std::string, int32_t>> symbol_tables;
+
   //
   // Create Main graph
   //
   CookParams cp{buffer_vec,       code_vec,        subgraph_vec, flatbuffer_builder,
                 builtin_code_map, custom_code_vec, "main"};
 
-  cook_graph<::tflchef::ModelRecipe>(model_recipe, cp);
+  auto table = cook_graph<::tflchef::ModelRecipe>(model_recipe, cp);
+  symbol_tables.push_back(table);
 
   //
   // Create subgraphs if exist
@@ -638,7 +645,8 @@ GeneratedModel cook(const ::tflchef::ModelRecipe &model_recipe)
     CookParams cp{buffer_vec,       code_vec,        subgraph_vec,      flatbuffer_builder,
                   builtin_code_map, custom_code_vec, stringStream.str()};
 
-    cook_graph<::tflchef::Graph>(graph, cp);
+    auto table = cook_graph<::tflchef::Graph>(graph, cp);
+    symbol_tables.push_back(table);
   }
 
   // Create "Model" arguments
