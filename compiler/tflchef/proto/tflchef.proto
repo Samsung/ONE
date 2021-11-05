@@ -649,7 +649,7 @@ message Operation {
 
 message TensorMap {
   optional string name = 4;
-  // use tensor to find tensor index from name or use tensor_index with index.
+  // use tensor as name of the Operand or use tensor_index as order number.
   // either one should exist.
   optional string tensor = 5;
   optional uint32 tensor_index = 6;
