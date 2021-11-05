@@ -647,6 +647,22 @@ message Operation {
   // use the number not listed in the above reserve list
 }
 
+message TensorMap {
+  optional string name = 4;
+  // use tensor to find tensor index from name or use tensor_index with index.
+  // either one should exist.
+  optional string tensor = 5;
+  optional uint32 tensor_index = 6;
+}
+
+message SignatureDef {
+  repeated TensorMap inputs = 4;
+  repeated TensorMap outputs = 5;
+  optional string method_name = 6;
+  optional string key = 10;
+  optional uint32 subgraph_index = 12;
+}
+
 // For additional subgraphs
 message Graph {
   repeated Operand operand = 1;
@@ -664,4 +680,5 @@ message ModelRecipe {
   optional string name = 5;
   optional uint32 version = 6 [default = 1];
   repeated Graph graph = 7;
+  repeated SignatureDef signature_def = 8;
 }
