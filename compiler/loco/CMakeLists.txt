@@ -1,8 +1,8 @@
 file(GLOB_RECURSE SOURCES "src/*.cpp")
 file(GLOB_RECURSE TESTS "src/*.test.cpp")
 list(REMOVE_ITEM SOURCES ${TESTS})
-
-add_library(loco SHARED ${SOURCES})
+message(${SOURCES})
+add_library(loco STATIC ${SOURCES})
 target_include_directories(loco PUBLIC include)
 # TODO Remove dependencies on angkor library
 target_link_libraries(loco PUBLIC angkor)

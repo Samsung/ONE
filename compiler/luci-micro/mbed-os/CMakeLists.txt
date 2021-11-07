@@ -28,10 +28,10 @@ PROJECT(mbed-os-example-blinky C CXX ASM)
 
 SET(LD_SYS_LIBS "-Wl,--start-group -lstdc++ -lsupc++ -lm -lc -lgcc -lnosys  -Wl,--end-group")
 
-SET(CMAKE_C_FLAGS "-g3 -std=gnu11 -Wall -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -fmessage-length=0 -fno-exceptions -ffunction-sections -fdata-sections -funsigned-char -MMD -fomit-frame-pointer -Og -DMBED_DEBUG -DMBED_TRAP_ERRORS_ENABLED=1 -DMBED_MINIMAL_PRINTF -mcpu=cortex-m7 -mthumb -mfpu=fpv5-sp-d16 -mfloat-abi=softfp -DMBED_ROM_START=0x8000000 -DMBED_ROM_SIZE=0x100000 -DMBED_ROM1_START=0x200000 -DMBED_ROM1_SIZE=0x100000 -DMBED_RAM_START=0x20010000 -DMBED_RAM_SIZE=0x40000 -DMBED_RAM1_START=0x20000000 -DMBED_RAM1_SIZE=0x10000 -include ${CMAKE_CURRENT_SOURCE_DIR}/mbed_config.h")
-SET(CMAKE_CXX_FLAGS "-g3 -std=gnu++14 -frtti -Wvla -Wall -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -fmessage-length=0 -fexceptions -ffunction-sections -fdata-sections -funsigned-char -MMD -fomit-frame-pointer -Og -DMBED_DEBUG -DMBED_TRAP_ERRORS_ENABLED=1 -DMBED_MINIMAL_PRINTF -mcpu=cortex-m7 -mthumb -mfpu=fpv5-sp-d16 -mfloat-abi=softfp -DMBED_ROM_START=0x8000000 -DMBED_ROM_SIZE=0x100000 -DMBED_ROM1_START=0x200000 -DMBED_ROM1_SIZE=0x100000 -DMBED_RAM_START=0x20010000 -DMBED_RAM_SIZE=0x40000 -DMBED_RAM1_START=0x20000000 -DMBED_RAM1_SIZE=0x10000  -include ${CMAKE_CURRENT_SOURCE_DIR}/mbed_config.h")
-SET(CMAKE_ASM_FLAGS "-g3 -x assembler-with-cpp -Wall -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -fmessage-length=0 -fexceptions -ffunction-sections -fdata-sections -funsigned-char -MMD -fomit-frame-pointer -Og -DMBED_DEBUG -DMBED_TRAP_ERRORS_ENABLED=1 -DMBED_MINIMAL_PRINTF -mcpu=cortex-m7 -mthumb -mfpu=fpv5-sp-d16 -mfloat-abi=softfp  -include ${CMAKE_CURRENT_SOURCE_DIR}/mbed_config.h ")
-SET(CMAKE_CXX_LINK_FLAGS "-Wl,--gc-sections -Wl,--wrap,main -Wl,--wrap,__malloc_r -Wl,--wrap,__free_r -Wl,--wrap,__realloc_r -Wl,--wrap,__memalign_r -Wl,--wrap,__calloc_r -Wl,--wrap,exit -Wl,--wrap,atexit -Wl,-n -Wl,--wrap,printf -Wl,--wrap,sprintf -Wl,--wrap,snprintf -Wl,--wrap,vprintf -Wl,--wrap,vsprintf -Wl,--wrap,vsnprintf -Wl,--wrap,fprintf -Wl,--wrap,vfprintf -mcpu=cortex-m7 -mthumb -mfpu=fpv5-sp-d16 -mfloat-abi=softfp -Wall -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -fmessage-length=0 -fexceptions -ffunction-sections -fdata-sections -funsigned-char -MMD -fomit-frame-pointer -Og -DMBED_DEBUG -DMBED_TRAP_ERRORS_ENABLED=1 -DMBED_MINIMAL_PRINTF -mcpu=cortex-m7 -mthumb -mfpu=fpv5-sp-d16 -mfloat-abi=softfp -DMBED_ROM_START=0x8000000 -DMBED_ROM_SIZE=0x100000 -DMBED_ROM1_START=0x200000 -DMBED_ROM1_SIZE=0x100000 -DMBED_RAM_START=0x20010000 -DMBED_RAM_SIZE=0x40000 -DMBED_RAM1_START=0x20000000 -DMBED_RAM1_SIZE=0x10000 -DMBED_BOOT_STACK_SIZE=1024 -DXIP_ENABLE=0 ")
+SET(CMAKE_C_FLAGS "-g3 -std=gnu11 -Wall -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -fmessage-length=0 -fno-exceptions -ffunction-sections -fdata-sections -funsigned-char -MMD -fomit-frame-pointer -Os -DMBED_DEBUG -DMBED_TRAP_ERRORS_ENABLED=1 -DMBED_MINIMAL_PRINTF -mcpu=cortex-m7 -mthumb -mfpu=fpv5-sp-d16 -mfloat-abi=softfp -DMBED_ROM_START=0x8000000 -DMBED_ROM_SIZE=0x200000 -DMBED_ROM1_START=0x200000 -DMBED_ROM1_SIZE=0x200000 -DMBED_RAM_START=0x20010000 -DMBED_RAM_SIZE=0x40000 -DMBED_RAM1_START=0x20000000 -DMBED_RAM1_SIZE=0x10000 -include ${CMAKE_CURRENT_SOURCE_DIR}/mbed_config.h")
+SET(CMAKE_CXX_FLAGS "-g3 -std=gnu++14 -frtti -Wvla -Wall -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -fmessage-length=0 -fexceptions -ffunction-sections -fdata-sections -funsigned-char -MMD -fomit-frame-pointer -Os -DMBED_DEBUG -DMBED_TRAP_ERRORS_ENABLED=1 -DMBED_MINIMAL_PRINTF -mcpu=cortex-m7 -mthumb -mfpu=fpv5-sp-d16 -mfloat-abi=softfp -DMBED_ROM_START=0x8000000 -DMBED_ROM_SIZE=0x200000 -DMBED_ROM1_START=0x200000 -DMBED_ROM1_SIZE=0x200000 -DMBED_RAM_START=0x20010000 -DMBED_RAM_SIZE=0x40000 -DMBED_RAM1_START=0x20000000 -DMBED_RAM1_SIZE=0x10000  -include ${CMAKE_CURRENT_SOURCE_DIR}/mbed_config.h")
+SET(CMAKE_ASM_FLAGS "-g3 -x assembler-with-cpp -Wall -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -fmessage-length=0 -fexceptions -ffunction-sections -fdata-sections -funsigned-char -MMD -fomit-frame-pointer -Os -DMBED_DEBUG -DMBED_TRAP_ERRORS_ENABLED=1 -DMBED_MINIMAL_PRINTF -mcpu=cortex-m7 -mthumb -mfpu=fpv5-sp-d16 -mfloat-abi=softfp  -include ${CMAKE_CURRENT_SOURCE_DIR}/mbed_config.h ")
+SET(CMAKE_CXX_LINK_FLAGS "-Wl,--gc-sections -Wl,--wrap,main -Wl,--wrap,__malloc_r -Wl,--wrap,__free_r -Wl,--wrap,__realloc_r -Wl,--wrap,__memalign_r -Wl,--wrap,__calloc_r -Wl,--wrap,exit -Wl,--wrap,atexit -Wl,-n -Wl,--wrap,printf -Wl,--wrap,sprintf -Wl,--wrap,snprintf -Wl,--wrap,vprintf -Wl,--wrap,vsprintf -Wl,--wrap,vsnprintf -Wl,--wrap,fprintf -Wl,--wrap,vfprintf -mcpu=cortex-m7 -mthumb -mfpu=fpv5-sp-d16 -mfloat-abi=softfp -Wall -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -fmessage-length=0 -fexceptions -ffunction-sections -fdata-sections -funsigned-char -MMD -fomit-frame-pointer -Os -DMBED_DEBUG -DMBED_TRAP_ERRORS_ENABLED=1 -DMBED_MINIMAL_PRINTF -mcpu=cortex-m7 -mthumb -mfpu=fpv5-sp-d16 -mfloat-abi=softfp -DMBED_ROM_START=0x8000000 -DMBED_ROM_SIZE=0x200000 -DMBED_ROM1_START=0x200000 -DMBED_ROM1_SIZE=0x200000 -DMBED_RAM_START=0x20010000 -DMBED_RAM_SIZE=0x40000 -DMBED_RAM1_START=0x20000000 -DMBED_RAM1_SIZE=0x10000 -DMBED_BOOT_STACK_SIZE=1024 -DXIP_ENABLE=0 ")
 SET(CMAKE_CXX_LINK_FLAGS "${CMAKE_CXX_LINK_FLAGS} ${LD_SYS_LIBS} -T ${CMAKE_BINARY_DIR}/benchmark_pp.link_script.ld")
 
 ADD_DEFINITIONS(
@@ -70,7 +70,7 @@ ADD_DEFINITIONS(
         -DEXTRA_IDLE_STACK_REQUIRED
         -DMBED_BUILD_TIMESTAMP=1634136677.02
         -DMBED_TICKLESS
-        -DSTM32F746xx
+        -DSTM32F767xx
         -DTARGET_CORTEX
         -DTARGET_CORTEX_M
         -DTARGET_FF_ARDUINO_UNO
@@ -79,14 +79,14 @@ ADD_DEFINITIONS(
         -DTARGET_M7
         -DTARGET_MCU_STM32
         -DTARGET_MCU_STM32F7
-        -DTARGET_NAME=NUCLEO_F746ZG
-        -DTARGET_NUCLEO_F746ZG
+        -DTARGET_NAME=NUCLEO_F767ZI
+        -DTARGET_NUCLEO_F767ZI
         -DTARGET_RELEASE
         -DTARGET_RTOS_M4_M7
         -DTARGET_STM
         -DTARGET_STM32F7
-        -DTARGET_STM32F746ZG
-        -DTARGET_STM32F746xG
+        -DTARGET_STM32F767ZI
+        -DTARGET_STM32F767xI
         -DTOOLCHAIN_GCC
         -DTOOLCHAIN_GCC_ARM
         -DTRANSACTION_QUEUE_SIZE_SPI=2
@@ -117,9 +117,13 @@ target_link_libraries(benchmark mbed_os)
 target_include_directories_mbed(benchmark ${MbedOSSource_DIR})
 
 set(ONE_COMPILER_SRC_DIR "/home/username/SlavikMIPT/ONE/compiler")
-target_link_libraries(benchmark mbed_os)
 target_link_libraries(benchmark "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/luci-interpreter/src/libluci_interpreter.a")
-target_link_libraries(benchmark "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/loco/libloco.a")
+target_link_libraries(benchmark "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/luci-interpreter/src/kernels/libluci_interpreter_kernels.a")
+target_link_libraries(benchmark "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/luci-interpreter/src/kernels/libluci_interpreter_mcu_pal.a")
+target_link_libraries(benchmark "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/luci-interpreter/src/loader/libluci_interpreter_loader.a")
+target_link_libraries(benchmark "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/luci-interpreter/src/core/libluci_interpreter_core.a")
+
+target_link_libraries(mbed_os "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/loco/libloco.a")
 target_link_libraries(benchmark "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/locomotiv/liblocomotiv.a")
 target_link_libraries(benchmark "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/logo/liblogo.a")
 target_link_libraries(benchmark "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/logo-core/liblogo_core.a")
@@ -156,7 +160,7 @@ target_include_directories(benchmark PRIVATE
         )
 
 add_custom_command(TARGET benchmark PRE_LINK
-        COMMAND "arm-none-eabi-cpp" -E -P -Wl,--gc-sections -Wl,--wrap,main -Wl,--wrap,_malloc_r -Wl,--wrap,_free_r -Wl,--wrap,_realloc_r -Wl,--wrap,_memalign_r -Wl,--wrap,_calloc_r -Wl,--wrap,exit -Wl,--wrap,atexit -Wl,-n -Wl,--wrap,printf -Wl,--wrap,sprintf -Wl,--wrap,snprintf -Wl,--wrap,vprintf -Wl,--wrap,vsprintf -Wl,--wrap,vsnprintf -Wl,--wrap,fprintf -Wl,--wrap,vfprintf -mcpu=cortex-m7 -mthumb -mfpu=fpv5-sp-d16 -mfloat-abi=softfp -Wall -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -fmessage-length=0 -fexceptions -ffunction-sections -fdata-sections -funsigned-char -MMD -fomit-frame-pointer -Og -DMBED_DEBUG -DMBED_TRAP_ERRORS_ENABLED=1 -DMBED_MINIMAL_PRINTF -mcpu=cortex-m7 -mthumb -mfpu=fpv5-sp-d16 -mfloat-abi=softfp -DMBED_ROM_START=0x8000000 -DMBED_ROM_SIZE=0x100000 -DMBED_ROM1_START=0x200000 -DMBED_ROM1_SIZE=0x100000 -DMBED_RAM_START=0x20010000 -DMBED_RAM_SIZE=0x40000 -DMBED_RAM1_START=0x20000000 -DMBED_RAM1_SIZE=0x10000 -DMBED_BOOT_STACK_SIZE=1024 -DXIP_ENABLE=0 ${MbedOSSource_DIR}/targets/TARGET_STM/TARGET_STM32F7/TARGET_STM32F746xG/TOOLCHAIN_GCC_ARM/STM32F746xG.ld -o ${CMAKE_CURRENT_BINARY_DIR}/benchmark_pp.link_script.ld
+        COMMAND "arm-none-eabi-cpp" -E -P -Wl,--gc-sections -Wl,--wrap,main -Wl,--wrap,_malloc_r -Wl,--wrap,_free_r -Wl,--wrap,_realloc_r -Wl,--wrap,_memalign_r -Wl,--wrap,_calloc_r -Wl,--wrap,exit -Wl,--wrap,atexit -Wl,-n -Wl,--wrap,printf -Wl,--wrap,sprintf -Wl,--wrap,snprintf -Wl,--wrap,vprintf -Wl,--wrap,vsprintf -Wl,--wrap,vsnprintf -Wl,--wrap,fprintf -Wl,--wrap,vfprintf -mcpu=cortex-m7 -mthumb -mfpu=fpv5-sp-d16 -mfloat-abi=softfp -Wall -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -fmessage-length=0 -fexceptions -ffunction-sections -fdata-sections -funsigned-char -MMD -fomit-frame-pointer -Os -DMBED_DEBUG -DMBED_TRAP_ERRORS_ENABLED=1 -DMBED_MINIMAL_PRINTF -mcpu=cortex-m7 -mthumb -mfpu=fpv5-sp-d16 -mfloat-abi=softfp -DMBED_ROM_START=0x8000000 -DMBED_ROM_SIZE=0x200000 -DMBED_ROM1_START=0x200000 -DMBED_ROM1_SIZE=0x200000 -DMBED_RAM_START=0x20010000 -DMBED_RAM_SIZE=0x40000 -DMBED_RAM1_START=0x20000000 -DMBED_RAM1_SIZE=0x10000 -DMBED_BOOT_STACK_SIZE=1024 -DXIP_ENABLE=0 ${MbedOSSource_DIR}/targets/TARGET_STM/TARGET_STM32F7/TARGET_STM32F767xI/TOOLCHAIN_GCC_ARM/STM32F767xI.ld -o ${CMAKE_CURRENT_BINARY_DIR}/benchmark_pp.link_script.ld
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
         BYPRODUCTS "${CMAKE_CURRENT_BINARY_DIR}/benchmark_pp.link_script.ld"
         )
