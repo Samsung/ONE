@@ -18,14 +18,13 @@
 
 #include <gtest/gtest.h>
 
-TEST(VectorWrapperTest, basic_pattern_P)
+TEST(VectorWrapperTest, basic_pattern)
 {
   auto fb_builder = flatbuffers::FlatBufferBuilder();
 
   const std::vector<int32_t> data = {1, 4, 2, 0, 7};
   auto const vec_offset = fb_builder.CreateVector(data.data(), data.size());
   auto const vec_pointer = GetTemporaryPointer(fb_builder, vec_offset);
-  assert(vec_pointer != nullptr);
 
   auto const wrapper = luci::wrap(vec_pointer);
 
@@ -33,7 +32,7 @@ TEST(VectorWrapperTest, basic_pattern_P)
   ASSERT_TRUE(std::equal(wrapper.begin(), wrapper.end(), data.begin()));
 }
 
-TEST(VectorWrapperTest, null_pointer_P)
+TEST(VectorWrapperTest, null_pointer)
 {
   flatbuffers::Vector<int32_t> *vec_pointer = nullptr;
   auto const wrapper = luci::wrap(vec_pointer);
@@ -42,7 +41,7 @@ TEST(VectorWrapperTest, null_pointer_P)
   ASSERT_TRUE(wrapper.empty());
 }
 
-TEST(VectorWrapperTest, prohibited_access_N)
+TEST(VectorWrapperTest, prohibited_access_NEG)
 {
   flatbuffers::Vector<uint8_t> *vec_pointer = nullptr;
   auto const wrapper = luci::wrap(vec_pointer);
