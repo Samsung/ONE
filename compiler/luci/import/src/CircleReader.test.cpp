@@ -32,6 +32,23 @@ TEST(VectorWrapperTest, basic_pattern)
   ASSERT_TRUE(std::equal(wrapper.begin(), wrapper.end(), data.begin()));
 }
 
+TEST(VectorWrapperTest, wrong_data_NEG)
+{
+  auto fb_builder = flatbuffers::FlatBufferBuilder();
+
+  std::vector<int32_t> data = {1, 4, 2, 0, 7};
+  auto const vec_offset = fb_builder.CreateVector(data.data(), data.size());
+  auto const vec_pointer = GetTemporaryPointer(fb_builder, vec_offset);
+
+  auto const wrapper = luci::wrap(vec_pointer);
+
+  // change data
+  std::reverse(data.begin(), data.end());
+
+  ASSERT_EQ(wrapper.size(), data.size());
+  ASSERT_FALSE(std::equal(wrapper.begin(), wrapper.end(), data.begin()));
+}
+
 TEST(VectorWrapperTest, null_pointer)
 {
   flatbuffers::Vector<int32_t> *vec_pointer = nullptr;
