@@ -405,7 +405,7 @@ void dump_model(std::ostream &os, const tflite::Model *model)
     for (uint32_t i = 0; i < signaturedefs->Length(); ++i)
     {
       auto sign_i = signaturedefs->Get(i);
-      os << "S(" << i << ") " << sign_i->method_name()->c_str() << ", key("
+      os << "S(" << i << ") method_name(" << sign_i->method_name()->c_str() << "), key("
          << sign_i->key()->c_str() << "), sub_graph(" << sign_i->subgraph_index() << ")"
          << std::endl;
 
@@ -413,16 +413,18 @@ void dump_model(std::ostream &os, const tflite::Model *model)
       for (uint32_t t = 0; t < inputs_i->Length(); ++t)
       {
         auto inputs_i_t = inputs_i->Get(t);
-        os << "    I T(" << t << ") " << inputs_i_t->name()->c_str() << ": "
-           << inputs_i_t->tensor_index() << std::endl;
+        os << "    I(" << t << ")"
+           << " T(" << sign_i->subgraph_index() << ":" << inputs_i_t->tensor_index() << ") "
+           << inputs_i_t->name()->c_str() << std::endl;
       }
 
       auto outputs_i = sign_i->outputs();
       for (uint32_t t = 0; t < outputs_i->Length(); ++t)
       {
         auto outputs_i_t = outputs_i->Get(t);
-        os << "    O T(" << t << ") " << outputs_i_t->name()->c_str() << ": "
-           << outputs_i_t->tensor_index() << std::endl;
+        os << "    O(" << t << ")"
+           << " T(" << sign_i->subgraph_index() << ":" << outputs_i_t->tensor_index() << ") "
+           << outputs_i_t->name()->c_str() << std::endl;
       }
     }
     os << std::endl;
