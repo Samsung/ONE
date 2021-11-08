@@ -97,8 +97,9 @@ private:
   std::unique_ptr<const circle::ModelT> _model;
   const circle::SubGraphT *_current_subgraph{nullptr};
 
-  const circle::Model *_model_ptr{nullptr};
+  const circle::Model *_native_model{nullptr};
   const CircleTensorsPtr_t *_tensors_ptr{nullptr};
+  const circle::SubGraph *_native_subgraph{nullptr};
 };
 
 } // namespace luci
