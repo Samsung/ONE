@@ -41,14 +41,14 @@ struct BasicCircleModel
   BasicCircleModel()
   {
     model = std::make_unique<circle::ModelT>();
-    model->buffers.emplace_back(new circle::BufferT);
+    model->buffers.push_back(std::make_unique<circle::BufferT>());
     model->description = "nnpackage";
     model->version = 0;
   }
 
   uint32_t add_subgraph()
   {
-    model->subgraphs.emplace_back(new circle::SubGraphT);
+    model->subgraphs.push_back(std::make_unique<circle::SubGraphT>());
     model->subgraphs.back()->name = "";
     model->subgraphs.back()->data_format = circle::DataFormat_CHANNELS_LAST;
     return model->subgraphs.size() - 1;
@@ -67,7 +67,7 @@ struct BasicCircleModel
   uint32_t add_builtin_opcode(circle::BuiltinOperator opcode)
   {
     uint32_t id = model->operator_codes.size();
-    model->operator_codes.emplace_back(new circle::OperatorCodeT);
+    model->operator_codes.push_back(std::make_unique<circle::OperatorCodeT>());
     model->operator_codes[id]->builtin_code = opcode;
     model->operator_codes[id]->version = 1;
     return id;
@@ -75,7 +75,7 @@ struct BasicCircleModel
 
   uint32_t add_buffer()
   {
-    model->buffers.emplace_back(new circle::BufferT);
+    model->buffers.push_back(std::make_unique<circle::BufferT>());
     return model->buffers.size() - 1;
   }
 
@@ -84,7 +84,7 @@ struct BasicCircleModel
   {
     auto &graph = model->subgraphs[graph_id];
     uint32_t idx = graph->tensors.size();
-    graph->tensors.emplace_back(new circle::TensorT);
+    graph->tensors.push_back(std::make_unique<circle::TensorT>());
     graph->tensors[idx]->shape = shape;
     graph->tensors[idx]->type = circle::TensorType_FLOAT32;
     graph->tensors[idx]->buffer = buffer_id;
@@ -102,7 +102,7 @@ struct BasicCircleModel
   {
     auto &graph = model->subgraphs[graph_id];
     auto idx = graph->operators.size();
-    graph->operators.emplace_back(new circle::OperatorT);
+    graph->operators.push_back(std::make_unique<circle::OperatorT>());
     graph->operators[idx]->opcode_index = opcode_id;
     graph->operators[idx]->inputs.assign(inputs.begin(), inputs.end());
     graph->operators[idx]->outputs.assign(outputs.begin(), outputs.end());
@@ -116,11 +116,14 @@ struct BasicCircleModel
 
   uint32_t add_plan_metadata(uint32_t buffer_id)
   {
+    static_assert(sizeof(uint32_t) == 4, "metadata is stored in blocks of 32 bit unsiged ints");
     uint32_t idx = model->metadata.size();
-    model->metadata.emplace_back(new circle::MetadataT);
+    model->metadata.push_back(std::make_unique<circle::MetadataT>());
     model->metadata[idx]->name = "ONE_execution_plan_table";
     model->metadata[idx]->buffer = buffer_id;
     model->buffers[buffer_id]->data.resize(4);
+    auto &entries_count = *reinterpret_cast<uint32_t *>(model->buffers[buffer_id]->data.data());
+    entries_count = 0;
     return idx;
   }
 
@@ -132,9 +135,11 @@ struct BasicCircleModel
     assert(old_size % 4 == 0);
     assert(old_size > 0);
 
-    // Allocate space for new entry
-    // +4 from entry id, +4 from entry size, +4 from execution order + offsets.size() * 4 for
-    // offsets
+    // Allocate space for new entry:
+    // 4 bytes for entry id
+    // 4 bytes for entry size
+    // 4 bytes for execution order
+    // offsets.size() * 4 bytes for offsets
     buffer.resize(old_size + 12 + offsets.size() * 4);
     uint32_t *number_of_entries_ptr = reinterpret_cast<uint32_t *>(buffer.data());
     *number_of_entries_ptr += 1;
@@ -143,7 +148,7 @@ struct BasicCircleModel
 
     entry_data_ptr[0] = *number_of_entries_ptr - 1; // entry id
     entry_data_ptr[1] = 1 + offsets.size();         // entry size
-    entry_data_ptr[2] = execution_order;            // entry size
+    entry_data_ptr[2] = execution_order;            // execution order
     std::copy(offsets.begin(), offsets.end(), entry_data_ptr + 3);
   }
 };
@@ -226,6 +231,8 @@ TEST(TensorFlowLiteImporter, simple_plan)
         ASSERT_EQ(plan.offsets()[0], 300);
         break;
       }
+      default:
+        FAIL();
     }
   }
 }
@@ -266,13 +273,13 @@ TEST(TensorFlowLiteImporter, DISABLED_incomplete_plan_NEG)
         break;
       }
       case luci::CircleOpcode::CIRCLEOUTPUT:
+      case luci::CircleOpcode::RELU:
       {
-        case luci::CircleOpcode::RELU:
-        {
-          ASSERT_FALSE(luci::has_execution_plan(node));
-          break;
-        }
+        ASSERT_FALSE(luci::has_execution_plan(node));
+        break;
       }
+      default:
+        FAIL();
     }
   }
 }
