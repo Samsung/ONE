@@ -326,7 +326,7 @@ bool CircleReader::parse(const circle::Model *model)
   _model.reset(model->UnPack());
 
   // for direct pointer access
-  _model_ptr = model;
+  _native_model = model;
 
   return true;
 }
@@ -342,10 +342,13 @@ bool CircleReader::select_subgraph(uint32_t sgindex)
   _current_subgraph = _model->subgraphs[sgindex].get();
 
   // for direct pointer access
-  auto subgraphs = _model_ptr->subgraphs();
-  const circle::SubGraph *subgraph = (*subgraphs)[sgindex];
+  auto subgraphs = _native_model->subgraphs();
+  assert(subgraphs != nullptr);
 
-  _tensors_ptr = subgraph->tensors();
+  _native_subgraph = subgraphs->Get(sgindex);
+  assert(_native_subgraph != nullptr);
+
+  _tensors_ptr = _native_subgraph->tensors();
 
   return true;
 }
