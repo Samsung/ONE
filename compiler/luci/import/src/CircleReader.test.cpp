@@ -44,7 +44,7 @@ TEST(VectorWrapperTest, null_pointer_P)
 
 TEST(VectorWrapperTest, prohibited_access_N)
 {
-  flatbuffers::Vector<uint8_t > *vec_pointer = nullptr;
+  flatbuffers::Vector<uint8_t> *vec_pointer = nullptr;
   auto const wrapper = luci::wrap(vec_pointer);
 
   ASSERT_ANY_THROW(wrapper.at(0));
