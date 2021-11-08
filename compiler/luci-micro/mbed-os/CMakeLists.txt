@@ -117,13 +117,33 @@ target_link_libraries(benchmark mbed_os)
 target_include_directories_mbed(benchmark ${MbedOSSource_DIR})
 
 set(ONE_COMPILER_SRC_DIR "/home/username/SlavikMIPT/ONE/compiler")
+target_link_libraries(mbed_os "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/luci-interpreter/src/libluci_interpreter.a")
+target_link_libraries(mbed_os "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/luci-interpreter/src/kernels/libluci_interpreter_kernels.a")
+target_link_libraries(mbed_os "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/luci-interpreter/src/kernels/libluci_interpreter_mcu_pal.a")
+target_link_libraries(mbed_os "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/luci-interpreter/src/loader/libluci_interpreter_loader.a")
+target_link_libraries(mbed_os "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/luci-interpreter/src/core/libluci_interpreter_core.a")
+
+target_link_libraries(mbed_os "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/loco/libloco.a")
+target_link_libraries(mbed_os "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/locomotiv/liblocomotiv.a")
+target_link_libraries(mbed_os "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/logo/liblogo.a")
+target_link_libraries(mbed_os "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/logo-core/liblogo_core.a")
+target_link_libraries(mbed_os "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/luci/import/libluci_import.a")
+target_link_libraries(mbed_os "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/luci/lang/libluci_lang.a")
+target_link_libraries(mbed_os "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/luci/env/libluci_env.a")
+target_link_libraries(mbed_os "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/luci/log/libluci_log.a")
+target_link_libraries(mbed_os "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/luci/logex/libluci_logex.a")
+target_link_libraries(mbed_os "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/luci/plan/libluci_plan.a")
+target_link_libraries(mbed_os "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/luci/profile/libluci_profile.a")
+target_link_libraries(mbed_os "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/locop/liblocop.a")
+target_link_libraries(mbed_os "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/pp/libpp.a")
+
 target_link_libraries(benchmark "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/luci-interpreter/src/libluci_interpreter.a")
 target_link_libraries(benchmark "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/luci-interpreter/src/kernels/libluci_interpreter_kernels.a")
 target_link_libraries(benchmark "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/luci-interpreter/src/kernels/libluci_interpreter_mcu_pal.a")
 target_link_libraries(benchmark "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/luci-interpreter/src/loader/libluci_interpreter_loader.a")
 target_link_libraries(benchmark "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/luci-interpreter/src/core/libluci_interpreter_core.a")
 
-target_link_libraries(mbed_os "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/loco/libloco.a")
+target_link_libraries(benchmark "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/loco/libloco.a")
 target_link_libraries(benchmark "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/locomotiv/liblocomotiv.a")
 target_link_libraries(benchmark "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/logo/liblogo.a")
 target_link_libraries(benchmark "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/logo-core/liblogo_core.a")
@@ -136,7 +156,6 @@ target_link_libraries(benchmark "/home/username/SlavikMIPT/ONE/build/compiler/lu
 target_link_libraries(benchmark "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/luci/profile/libluci_profile.a")
 target_link_libraries(benchmark "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/locop/liblocop.a")
 target_link_libraries(benchmark "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/pp/libpp.a")
-
 
 target_include_directories(benchmark PRIVATE
         ${ONE_COMPILER_SRC_DIR}/loco/include

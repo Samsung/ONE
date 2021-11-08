@@ -18,10 +18,12 @@
 #undef ARG_MAX
 
 #include <luci_interpreter/Interpreter.h>
+#include <luci_interpreter/StaticMemoryManager.h>
+
 #include <luci/Importer.h>
 #include <luci/IR/Module.h>
 #include <loco/IR/DataTypeTraits.h>
-#include <circlemodel.h>
+#include <circlemodel_sin.h>
 #include <iostream>
 // Maximum number of element the application buffer can contain
 #define MAXIMUM_BUFFER_SIZE 32
@@ -58,58 +60,73 @@ int main()
     std::cout << "ERROR: Failed to verify circle\n";
   }
   std::cout << "OK\n";
+  std::cout << "circle::GetModel(circle_model_raw)\n";
+  ThisThread::sleep_for(1000);
+  auto model = circle::GetModel(circle_model_raw);
   std::cout << "luci::Importer().importModule\n";
   ThisThread::sleep_for(1000);
 
-  auto module = luci::Importer().importModule(circle::GetModel(circle_model_raw));
-//  auto interpreter = std::make_unique<luci_interpreter::Interpreter>(module.get());
+  auto module = luci::Importer().importModule(model);
+  ThisThread::sleep_for(1000);
+
+  std::cout << "OK\n";
+  ThisThread::sleep_for(1000);
+  std::cout << "std::make_unique<luci_interpreter::Interpreter>(module.get())\n";
+
+//  uint8_t *bufmm = new uint8_t[100000];
+//  luci_interpreter::StaticMemoryManager static_memory_manager(bufmm);
+//  auto interpreter = std::make_unique<luci_interpreter::Interpreter>(module.get(),&static_memory_manager);
+  auto interpreter = std::make_unique<luci_interpreter::Interpreter>(module.get());
+
+  std::cout << "OK\n";
+  ThisThread::sleep_for(1000);
 //  for(int i = 0; i < sizeof(module);++i)
 //  {
 //    std::cout << std::hex << *(reinterpret_cast<char*>(&module) + i);
 //  }
-//  auto nodes = module->graph()->nodes();
-//  auto nodes_count = nodes->size();
-//  std::cout <<  "nodes_count: %d\n";
+  auto nodes = module->graph()->nodes();
+  auto nodes_count = nodes->size();
+  std::cout <<  "nodes_count: %d\n";
   // Fill input tensors with some garbage
-//  while (true)
-//  {
-//    Timer t;
-//    t.start();
-//    for (int i = 0; i < nodes_count; ++i)
-//    {
-//      auto *node = dynamic_cast<luci::CircleNode *>(nodes->at(i));
-//      assert(node);
-//      if (node->opcode() == luci::CircleOpcode::CIRCLEINPUT)
-//      {
-//        auto *input_node = static_cast<luci::CircleInput *>(node);
-//        loco::GraphInput *g_input = module->graph()->inputs()->at(input_node->index());
-//        const loco::TensorShape *shape = g_input->shape();
-//        size_t data_size = 1;
-//        for (int d = 0; d < shape->rank(); ++d)
-//        {
-//          assert(shape->dim(d).known());
-//          data_size *= shape->dim(d).value();
-//        }
-//        data_size *= loco::size(g_input->dtype());
-//        std::vector<char> data(data_size);
-//        fill_in_tensor(data, g_input->dtype());
-//
-//        interpreter->writeInputTensor(static_cast<luci::CircleInput *>(node), data.data(),
-//                                      data_size);
-//      }
-//    }
+  while (true)
+  {
+    Timer t;
+    t.start();
+    for (int i = 0; i < nodes_count; ++i)
+    {
+      auto *node = dynamic_cast<luci::CircleNode *>(nodes->at(i));
+      assert(node);
+      if (node->opcode() == luci::CircleOpcode::CIRCLEINPUT)
+      {
+        auto *input_node = static_cast<luci::CircleInput *>(node);
+        loco::GraphInput *g_input = module->graph()->inputs()->at(input_node->index());
+        const loco::TensorShape *shape = g_input->shape();
+        size_t data_size = 1;
+        for (int d = 0; d < shape->rank(); ++d)
+        {
+          assert(shape->dim(d).known());
+          data_size *= shape->dim(d).value();
+        }
+        data_size *= loco::size(g_input->dtype());
+        std::vector<char> data(data_size);
+        fill_in_tensor(data, g_input->dtype());
 
-//    interpreter->interpret();
-//    t.stop();
-//    std::cout << "\rFinished in " << t.read_us();
+        interpreter->writeInputTensor(static_cast<luci::CircleInput *>(node), data.data(),
+                                      data_size);
+      }
+    }
+
+    interpreter->interpret();
+    t.stop();
+    std::cout << "\rFinished in " << t.read_us();
     ThisThread::sleep_for(10);
-//  }
-  // Set desired properties (9600-8-N-1).
-  serial_port.set_baud(9600);
-  serial_port.set_format(
-    /* bits */ 8,
-    /* parity */ BufferedSerial::None,
-    /* stop bit */ 1);
+  }
+//  // Set desired properties (9600-8-N-1).
+//  serial_port.set_baud(9600);
+//  serial_port.set_format(
+//    /* bits */ 8,
+//    /* parity */ BufferedSerial::None,
+//    /* stop bit */ 1);
 
   // Application buffer to receive the data
 //  char buf[MAXIMUM_BUFFER_SIZE] = {0};

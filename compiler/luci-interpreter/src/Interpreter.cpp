@@ -18,7 +18,7 @@
 #include "luci_interpreter/SimpleMemoryManager.h"
 
 #include "loader/ModuleLoader.h"
-
+#include <iostream>
 #include <stdexcept>
 
 namespace luci_interpreter
@@ -86,10 +86,15 @@ Interpreter::Interpreter(const luci::Module *module,
   {
     _memory_manager = memory_manager;
   }
+  std::cout<< "ModuleLoader loader\n";
 
-  ModuleLoader loader(module, _runtime_module.get(), *_runtime_to_ir, _node_to_tensor,
+  ModuleLoader *loader = new ModuleLoader(module, _runtime_module.get(), *_runtime_to_ir, _node_to_tensor,
                       _memory_manager);
-  loader.load();
+  std::cout << "loader.load()\n";
+
+  loader->load();
+  std::cout << "Interpreter::Interpreter return\n";
+delete loader;
 }
 
 Interpreter::~Interpreter() = default;
