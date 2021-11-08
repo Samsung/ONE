@@ -353,4 +353,61 @@ bool CircleReader::select_subgraph(uint32_t sgindex)
   return true;
 }
 
+template <typename T>
+VectorWrapper<T>::VectorWrapper(const flatbuffers::Vector<T> *ptr) : _vector(ptr)
+{
+  // Do nothing
+}
+
+template <typename T> uint32_t VectorWrapper<T>::size() const
+{
+  return null() ? 0 : _vector->size();
+}
+
+template <typename T> const T *VectorWrapper<T>::data() const
+{
+  return null() ? nullptr : _vector->data();
+}
+
+template <typename T> typename VectorWrapper<T>::iterator VectorWrapper<T>::begin() const
+{
+  return null() ? iterator(nullptr, 0) : _vector->begin();
+}
+
+template <typename T> typename VectorWrapper<T>::iterator VectorWrapper<T>::end() const
+{
+  return null() ? begin() : _vector->end();
+}
+
+template <typename T> typename VectorWrapper<T>::value_type VectorWrapper<T>::at(uint32_t i) const
+{
+  if (i >= size())
+  {
+    // TODO find better error message
+    throw std::range_error("Access to prohibited vector element");
+  }
+
+  return _vector->Get(i);
+}
+
+template <typename T>
+typename VectorWrapper<T>::value_type VectorWrapper<T>::operator[](uint32_t i) const
+{
+  return at(i);
+}
+
+template <typename T> bool VectorWrapper<T>::null() const { return _vector == nullptr; }
+template <typename T> bool VectorWrapper<T>::empty() const { return size() == 0; }
+
+#define REGISTER_WRAPPER(T) template class VectorWrapper<T>
+REGISTER_WRAPPER(flatbuffers::Offset<circle::SubGraph>);
+REGISTER_WRAPPER(flatbuffers::Offset<circle::Buffer>);
+REGISTER_WRAPPER(flatbuffers::Offset<circle::Tensor>);
+REGISTER_WRAPPER(flatbuffers::Offset<circle::Operator>);
+REGISTER_WRAPPER(flatbuffers::Offset<circle::OperatorCode>);
+REGISTER_WRAPPER(flatbuffers::Offset<circle::Metadata>);
+REGISTER_WRAPPER(int32_t);
+REGISTER_WRAPPER(uint8_t);
+#undef REGISTER_WRAPPER
+
 } // namespace luci

@@ -54,6 +54,37 @@ luci_quantparam(const circle::QuantizationParametersT *quantization);
 void copy_tensor_attributes(const circle::TensorT &tensor, CircleNode *node);
 
 /**
+ * @brief Wrapper to use flatbuffers::Vector pointer as std::vector entity
+ */
+template <typename T> class VectorWrapper
+{
+public:
+  explicit VectorWrapper(const flatbuffers::Vector<T> *ptr);
+
+  const T *data() const;
+  uint32_t size() const;
+
+  using iterator = typename flatbuffers::Vector<T>::const_iterator;
+  iterator begin() const;
+  iterator end() const;
+
+  using value_type = typename flatbuffers::Vector<T>::return_type;
+  value_type at(uint32_t i) const;
+  value_type operator[](uint32_t i) const;
+
+  bool null() const;
+  bool empty() const;
+
+private:
+  const flatbuffers::Vector<T> *_vector;
+};
+
+template <typename T> VectorWrapper<T> wrap(const flatbuffers::Vector<T> *vec)
+{
+  return VectorWrapper<T>(vec);
+}
+
+/**
  * @brief Loads Circle file and provides helpers to access attributes
  */
 class CircleReader
