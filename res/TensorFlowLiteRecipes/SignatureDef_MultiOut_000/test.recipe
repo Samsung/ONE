@@ -1,0 +1,82 @@
+operand {
+  name: "ifm1"
+  type: FLOAT32
+  shape { dim: 1 dim: 3 dim: 3 dim: 2 }
+}
+operand {
+  name: "ifm2"
+  type: FLOAT32
+  shape { dim: 1 dim: 3 dim: 3 dim: 2 }
+}
+operand {
+  name: "ofm1"
+  type: FLOAT32
+  shape { dim: 1 dim: 3 dim: 3 dim: 2 }
+}
+operand {
+  name: "ofm2"
+  type: FLOAT32
+  shape { dim: 1 dim: 3 dim: 3 dim: 2 }
+}
+operand {
+  name: "ofm3"
+  type: FLOAT32
+  shape { dim: 1 dim: 3 dim: 3 dim: 2 }
+}
+operation {
+  type: "Add"
+  input: "ifm1"
+  input: "ifm2"
+  output: "ofm1"
+  add_options {
+    activation: NONE
+  }
+}
+operation {
+  type: "Mul"
+  input: "ifm1"
+  input: "ifm2"
+  output: "ofm2"
+  mul_options {
+    activation: 0
+  }
+}
+operation {
+  type: "Sub"
+  input: "ifm1"
+  input: "ifm2"
+  output: "ofm3"
+  sub_options {
+    activation: 0
+  }
+}
+signature_def {
+  inputs: {
+    name: "ifm1"
+    tensor_index: 0
+  }
+  inputs: {
+    name: "ifm2"
+    tensor_index: 1
+  }
+  outputs {
+    name: "ofm2"
+    tensor_index: 3
+  }
+  outputs {
+    name: "ofm3"
+    tensor_index: 4
+  }
+  outputs {
+    name: "ofm1"
+    tensor_index: 2
+  }
+  method_name: "serving_default"
+  key: "serv"
+  subgraph_index: 0
+}
+input: "ifm1"
+input: "ifm2"
+output: "ofm3"
+output: "ofm1"
+output: "ofm2"
