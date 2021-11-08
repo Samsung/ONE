@@ -1,0 +1,60 @@
+operand {
+  name: "ifm"
+  type: FLOAT32
+  shape { dim: 1 dim: 3 dim: 3 dim: 2 }
+}
+operand {
+  name: "ofm1"
+  type: FLOAT32
+  shape { dim: 1 dim: 3 dim: 3 dim: 2 }
+}
+operand {
+  name: "ofm2"
+  type: FLOAT32
+  shape { dim: 1 dim: 3 dim: 3 dim: 2 }
+}
+operand {
+  name: "ofm3"
+  type: FLOAT32
+  shape { dim: 1 dim: 3 dim: 3 dim: 2 }
+}
+operation {
+  type: "ReLU"
+  input: "ifm"
+  output: "ofm1"
+}
+operation {
+  type: "ReLU"
+  input: "ifm"
+  output: "ofm2"
+}
+operation {
+  type: "ReLU"
+  input: "ifm"
+  output: "ofm3"
+}
+signature_def {
+  inputs: {
+    name: "ifm"
+    tensor_index: 0
+  }
+  outputs {
+    name: "out2"
+    tensor: "ofm2"
+  }
+  outputs {
+    name: "out3"
+    tensor: "ofm3"
+  }
+  outputs {
+    name: "out1"
+    tensor: "ofm1"
+  }
+  method_name: "serving_default"
+  key: "serv"
+  subgraph_index: 0
+}
+input: "ifm"
+output: "ofm3"
+output: "ofm1"
+output: "ofm2"
