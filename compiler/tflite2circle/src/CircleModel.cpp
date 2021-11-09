@@ -16,6 +16,7 @@
 
 #include <cassert>
 #include <iostream>
+#include <map>
 #include <memory>
 
 #include "CircleModel.h"
@@ -206,7 +207,8 @@ template <> void Offset<SubGraphLink>::build(const TFLFlatBufVec *tflite_flatbuf
     auto tflite_inputs = it_sg->inputs();
     std::vector<int32_t> input_vec{tflite_inputs->begin(), tflite_inputs->end()};
 
-    // apply signature_def to input tensor index so that input orders are correct
+    // apply signature_def to input tensor index so that input orders follow like tensorflow lite
+    // interpreter._get_full_signature_list() method, which is ordered(sorted) in name
     // NOTE we do not need this when circle format supports signature_def
     if (_tfl_signature_def_offsets != nullptr)
     {
@@ -216,10 +218,16 @@ template <> void Offset<SubGraphLink>::build(const TFLFlatBufVec *tflite_flatbuf
         {
           auto inputs = it_signdef->inputs();
           assert(inputs->size() == input_vec.size());
-          uint32_t input_vec_idx = 0;
+
+          std::map<std::string, uint32_t> map_name_index;
           for (auto it_tm : *inputs)
           {
-            input_vec[input_vec_idx++] = static_cast<int32_t>(it_tm->tensor_index());
+            map_name_index[it_tm->name()->str()] = it_tm->tensor_index();
+          }
+          uint32_t input_vec_idx = 0;
+          for (auto &item : map_name_index)
+          {
+            input_vec[input_vec_idx++] = item.second;
           }
         }
       }
@@ -240,10 +248,16 @@ template <> void Offset<SubGraphLink>::build(const TFLFlatBufVec *tflite_flatbuf
         {
           auto outputs = it_signdef->outputs();
           assert(outputs->size() == output_vec.size());
-          uint32_t output_vec_idx = 0;
+
+          std::map<std::string, uint32_t> map_name_index;
           for (auto it_tm : *outputs)
           {
-            output_vec[output_vec_idx++] = static_cast<int32_t>(it_tm->tensor_index());
+            map_name_index[it_tm->name()->str()] = it_tm->tensor_index();
+          }
+          uint32_t output_vec_idx = 0;
+          for (auto &item : map_name_index)
+          {
+            output_vec[output_vec_idx++] = item.second;
           }
         }
       }
