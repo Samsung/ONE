@@ -179,7 +179,7 @@ struct SimpleRELUModel : public BasicCircleModel
 /**
  * This test checks that one op RELU model with execution plan is successfully imported
  */
-TEST(TensorFlowLiteImporter, simple_plan)
+TEST(TensorFlowLiteImport, simple_plan)
 {
   SimpleRELUModel model;
   auto metadata_buffer_id = model.add_buffer();
@@ -240,7 +240,7 @@ TEST(TensorFlowLiteImporter, simple_plan)
 /**
  * This test checks that model with incomplete execution plan is successfully imported
  */
-TEST(TensorFlowLiteImporter, DISABLED_incomplete_plan_NEG)
+TEST(TensorFlowLiteImport, DISABLED_incomplete_plan_NEG)
 {
   SimpleRELUModel model;
   auto metadata_buffer_id = model.add_buffer();
@@ -287,7 +287,7 @@ TEST(TensorFlowLiteImporter, DISABLED_incomplete_plan_NEG)
 /**
  * This test checks that corrupted execution plan induce exception
  */
-TEST(TensorFlowLiteImporter, corrupted_plan_NEG)
+TEST(TensorFlowLiteImport, corrupted_plan_NEG)
 {
   SimpleRELUModel model;
   auto metadata_buffer_id = model.add_buffer();

@@ -36,6 +36,3 @@ target_link_libraries(luci_import_test oops)
 target_link_libraries(luci_import_test luci_plan)
 target_link_libraries(luci_import_test luci_lang)
 target_link_libraries(luci_import_test mio_circle)
-
-nnas_find_package(GTest REQUIRED)
-
