@@ -408,6 +408,11 @@ void copy_tensor_attributes(const circle::Tensor *tensor, CircleNode *node)
   }
 }
 
+std::string fb_string2std_string(const flatbuffers::String *fb_str)
+{
+  return fb_str == nullptr ? "" : fb_str->str();
+}
+
 circle::BuiltinOperator CircleReader::builtin_code(const circle::OperatorT &op) const
 {
   const auto &op_codes = opcodes();
