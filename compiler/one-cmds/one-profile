@@ -35,6 +35,10 @@ import utils as _utils
 sys.tracebacklimit = 0
 
 
+def get_driver_spec():
+    return ("one-profile", _utils.DriverType.PROFILER)
+
+
 def _get_backends_list():
     """
     [one hierarchy]

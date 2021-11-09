@@ -21,6 +21,7 @@
 
 import argparse
 import configparser
+import importlib
 import os
 import subprocess
 import sys
@@ -75,19 +76,6 @@ def _verify_arg(parser, args):
             parser.error('Invalid optimization option')
 
 
-def _get_driver_name(driver_name):
-    return {
-        'one-import-bcq': 'one-import-bcq',
-        'one-import-tf': 'one-import-tf',
-        'one-import-tflite': 'one-import-tflite',
-        'one-import-onnx': 'one-import-onnx',
-        'one-optimize': 'one-optimize',
-        'one-quantize': 'one-quantize',
-        'one-pack': 'one-pack',
-        'one-codegen': 'one-codegen'
-    }[driver_name]
-
-
 def _parse_cfg(args):
     config = configparser.ConfigParser()
     config.optionxform = str
@@ -107,14 +95,13 @@ def _verify_cfg(driver_list, config):
         raise ImportError('[one-build] section is required in configuraion file')
 
     import_driver_cnt = 0
-    if _is_available_driver(config, 'one-import-tf'):
-        import_driver_cnt += 1
-    if _is_available_driver(config, 'one-import-tflite'):
-        import_driver_cnt += 1
-    if _is_available_driver(config, 'one-import-bcq'):
-        import_driver_cnt += 1
-    if _is_available_driver(config, 'one-import-onnx'):
-        import_driver_cnt += 1
+    for driver_path in driver_list:
+        driver_spec = driver_list[driver_path]
+        driver_name = driver_spec[0]
+        driver_type = driver_spec[1]
+        if driver_type == _utils.DriverType.IMPORTER and _is_available_driver(
+                config, driver_name):
+            import_driver_cnt += 1
     if import_driver_cnt > 1:
         raise AssertionError('Only one import-* driver can be executed')
 
@@ -140,6 +127,26 @@ def _verify_opt(args):
             )
 
 
+def _collect_available_drivers(accepted_types):
+    drivers = {}
+    for driver_path in os.listdir():
+        module_name = os.path.basename(driver_path)
+        module_loader = importlib.machinery.SourceFileLoader(module_name, driver_path)
+        module_spec = importlib.util.spec_from_loader(module_name, module_loader)
+        module = importlib.util.module_from_spec(module_spec)
+        try:
+            module_loader.exec_module(module)
+        except:
+            pass
+        else:
+            if hasattr(module, "get_driver_spec"):
+                spec = module.get_driver_spec()
+                if spec[1] in accepted_types:
+                    drivers[driver_path] = spec
+
+    return drivers
+
+
 def main():
     # parse arguments
     # since the configuration file path is required first,
@@ -154,25 +161,26 @@ def main():
     config = _parse_cfg(args)
 
     # verify configuration file
-    drivers = [
-        'one-import-tf', 'one-import-tflite', 'one-import-bcq', 'one-import-onnx',
-        'one-optimize', 'one-quantize', 'one-pack', 'one-codegen'
-    ]
+    driver_types = [_utils.DriverType.IMPORTER, _utils.DriverType.MISC]
+    drivers = _collect_available_drivers(driver_types)
     _verify_cfg(drivers, config)
 
     # verify optimization option file
     _verify_opt(args)
 
-    # get sections to run
-    section_to_run = []
-    for d in drivers:
-        if _is_available_driver(config, d):
-            section_to_run.append(d)
+    # get drivers to run
+    driver_to_run = []
+    for driver_path in drivers:
+        driver_spec = drivers[driver_path]
+        driver_name = driver_spec[0]
+        if _is_available_driver(config, driver_name):
+            driver_to_run.append(driver_path)
 
     # run
     dir_path = os.path.dirname(os.path.realpath(__file__))
-    for section in section_to_run:
-        driver_path = os.path.join(dir_path, _get_driver_name(section))
+    for driver_path in driver_to_run:
+        section = drivers[driver_path][0]
+        driver_path = os.path.join(dir_path, driver_path)
         cmd = [driver_path, '--config', getattr(args, 'config'), '--section', section]
         if section == 'one-optimize' and _utils._is_valid_attr(args, 'O'):
             cmd += ['-O', getattr(args, 'O')]

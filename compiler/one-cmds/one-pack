@@ -31,6 +31,10 @@ import utils as _utils
 sys.tracebacklimit = 0
 
 
+def get_driver_spec():
+    return ("one-pack", _utils.DriverType.MISC)
+
+
 def _get_parser():
     parser = argparse.ArgumentParser(
         description='command line tool to package circle and metadata into nnpackage')
