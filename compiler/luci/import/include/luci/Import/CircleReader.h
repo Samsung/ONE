@@ -89,12 +89,19 @@ template <typename T> VectorWrapper<T> wrap(const flatbuffers::Vector<T> *vec)
  */
 class CircleReader
 {
-private:
+private: // unpack API
   using CircleBuffers_t = std::vector<std::unique_ptr<circle::BufferT>>;
   using CircleTensors_t = std::vector<std::unique_ptr<circle::TensorT>>;
   using CircleOperators_t = std::vector<std::unique_ptr<circle::OperatorT>>;
   using CircleOperatorCodes_t = std::vector<std::unique_ptr<circle::OperatorCodeT>>;
   using CircleMetadata_t = std::vector<std::unique_ptr<circle::MetadataT>>;
+
+private: // direct API
+  using CircleBuffers = VectorWrapper<flatbuffers::Offset<circle::Buffer>>;
+  using CircleTensors = VectorWrapper<flatbuffers::Offset<circle::Tensor>>;
+  using CircleOperators = VectorWrapper<flatbuffers::Offset<circle::Operator>>;
+  using CircleOperatorCodes = VectorWrapper<flatbuffers::Offset<circle::OperatorCode>>;
+  using CircleMetadataSet = VectorWrapper<flatbuffers::Offset<circle::Metadata>>;
 
   using CircleSubGraphsPtr_t = flatbuffers::Vector<flatbuffers::Offset<circle::SubGraph>>;
   using CircleTensorsPtr_t = flatbuffers::Vector<flatbuffers::Offset<circle::Tensor>>;
@@ -102,7 +109,7 @@ private:
 public:
   CircleReader() = default;
 
-public:
+public: // unpack API
   const CircleOperatorCodes_t &opcodes() const { return _model->operator_codes; }
   const CircleBuffers_t &buffers() const { return _model->buffers; }
   const CircleTensors_t &tensors() const { return _current_subgraph->tensors; }
@@ -119,6 +126,20 @@ public:
 
   circle::BuiltinOperator builtin_code(const circle::OperatorT &op) const;
   std::string opcode_name(const circle::OperatorT &op) const;
+
+public: // direct API
+  CircleOperatorCodes native_opcodes() const { return wrap(_native_model->operator_codes()); }
+  CircleBuffers native_buffers() const { return wrap(_native_model->buffers()); }
+  CircleTensors native_tensors() const { return wrap(_native_subgraph->tensors()); }
+  CircleOperators native_operators() const { return wrap(_native_subgraph->operators()); }
+  VectorWrapper<int32_t> native_inputs() const { return wrap(_native_subgraph->inputs()); }
+  VectorWrapper<int32_t> native_outputs() const { return wrap(_native_subgraph->outputs()); }
+  std::string native_name() const { return _native_subgraph->name()->str(); }
+  circle::DataFormat native_data_format() const { return _native_subgraph->data_format(); }
+  CircleMetadataSet native_metadata() const { return wrap(_native_model->metadata()); }
+
+  circle::BuiltinOperator builtin_code(const circle::Operator *op) const;
+  std::string opcode_name(const circle::Operator *op) const;
 
 public:
   bool parse(const circle::Model *model);
