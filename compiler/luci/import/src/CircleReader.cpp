@@ -418,12 +418,44 @@ circle::BuiltinOperator CircleReader::builtin_code(const circle::OperatorT &op) 
   return opcode.builtin_code;
 }
 
+circle::BuiltinOperator CircleReader::builtin_code(const circle::Operator *op) const
+{
+  assert(op != nullptr);
+
+  const auto op_codes = native_opcodes();
+  uint32_t index = op->opcode_index();
+  assert(index < op_codes.size());
+  const auto opcode = op_codes[index];
+  assert(opcode != nullptr);
+
+  return opcode->builtin_code();
+}
+
 std::string CircleReader::opcode_name(const circle::OperatorT &op) const
 {
   const auto &op_codes = opcodes();
   uint32_t index = op.opcode_index;
   assert(index < op_codes.size());
   const circle::OperatorCodeT &opcode = *op_codes[index];
+
+  if (!is_valid(opcode))
+  {
+    std::ostringstream oss;
+    oss << "(invalid: " << index << ")";
+    return oss.str();
+  }
+
+  return ::luci::opcode_name(opcode);
+}
+
+std::string CircleReader::opcode_name(const circle::Operator *op) const
+{
+  assert(op != nullptr);
+
+  const auto op_codes = native_opcodes();
+  uint32_t index = op->opcode_index();
+  assert(index < op_codes.size());
+  const auto opcode = op_codes[index];
 
   if (!is_valid(opcode))
   {
