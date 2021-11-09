@@ -361,7 +361,12 @@ std::unique_ptr<Module> Importer::importModule(const circle::Model *model) const
     {
       if (auto circle_node = dynamic_cast<luci::CircleNode *>(node))
       {
+        if (execution_plan_table.count(node_position) == 0)
+          continue;
+
         auto node_plan = execution_plan_table[node_position];
+        assert(node_plan.size() > 0);
+
         luci::add_execution_plan(
           circle_node,
           luci::CircleNodeExecutionPlan(

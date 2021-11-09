@@ -240,7 +240,7 @@ TEST(TensorFlowLiteImport, simple_plan)
 /**
  * This test checks that model with incomplete execution plan is successfully imported
  */
-TEST(TensorFlowLiteImport, DISABLED_incomplete_plan_NEG)
+TEST(TensorFlowLiteImport, incomplete_plan_NEG)
 {
   SimpleRELUModel model;
   auto metadata_buffer_id = model.add_buffer();
@@ -299,6 +299,47 @@ TEST(TensorFlowLiteImport, corrupted_plan_NEG)
 
   // corrupt data
   *reinterpret_cast<uint32_t *>(model.model->buffers[metadata_buffer_id]->data.data()) = 4;
+
+  flatbuffers::FlatBufferBuilder fbb;
+  auto model_offset = circle::Model::Pack(fbb, model.model.get(), nullptr);
+  circle::FinishModelBuffer(fbb, model_offset);
+
+  auto model_ptr = circle::GetModel(fbb.GetBufferPointer());
+  luci::Importer import;
+
+  ASSERT_ANY_THROW(import.importModule(model_ptr));
+}
+
+/**
+ * This test checks that empty execution plan entry induce exception
+ */
+TEST(TensorFlowLiteImport, corrupted_plan_entry_NEG)
+{
+  SimpleRELUModel model;
+  auto metadata_buffer_id = model.add_buffer();
+  model.add_plan_metadata(metadata_buffer_id);
+
+  model.add_plan_entry(metadata_buffer_id, 1, {100});
+
+  // add corrupted entry with 0 size
+  {
+    auto &buffer = model.model->buffers[metadata_buffer_id]->data;
+    auto old_size = buffer.size();
+
+    // Allocate space for new entry:
+    // 4 bytes for entry id
+    // 4 bytes for entry size
+    buffer.resize(old_size + 8);
+    uint32_t *number_of_entries_ptr = reinterpret_cast<uint32_t *>(buffer.data());
+    *number_of_entries_ptr += 1;
+
+    uint32_t *entry_data_ptr = reinterpret_cast<uint32_t *>(buffer.data() + old_size);
+
+    entry_data_ptr[0] = *number_of_entries_ptr - 1; // entry id
+    entry_data_ptr[1] = 0;                          // entry size
+  }
+
+  model.add_plan_entry(metadata_buffer_id, 3, {200});
 
   flatbuffers::FlatBufferBuilder fbb;
   auto model_offset = circle::Model::Pack(fbb, model.model.get(), nullptr);
