@@ -52,8 +52,8 @@ void convert_graph(const luci::GraphBuilderSource &source, luci::CircleReader &r
 
   const auto operators = reader.native_operators();
   const auto tensors = reader.native_tensors();
-  auto circle_metadata = std::make_unique<luci::CircleImportMetadata>(reader);
   assert(!tensors.null());
+  auto circle_metadata = std::make_unique<luci::CircleImportMetadata>(reader);
 
   // build a cache to identify if a tensor is output of an operator
   // if this is set, we should not create a CircleConst for this tensor
