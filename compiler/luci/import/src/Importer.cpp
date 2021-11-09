@@ -109,7 +109,7 @@ void convert_graph(const luci::GraphBuilderSource &source, luci::CircleReader &r
 
     // Shape of GraphInput
     auto input_shape = std::make_unique<loco::TensorShape>();
-    const auto input_dims = tensor_shape; // in NHWC
+    const auto &input_dims = tensor_shape; // in NHWC
     input_shape->rank(input_dims.size());
     for (uint32_t r = 0; r < input_dims.size(); ++r)
     {
