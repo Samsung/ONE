@@ -29,10 +29,9 @@ bool CircleEqualGraphBuilder::validate(const ValidateArgs &args) const
     return false;
 
   const auto &inputs = args.op.inputs;
-  const auto tensors = args.reader.native_tensors();
+  const auto &tensors = args.reader.tensors();
 
-  assert(tensors[inputs.at(0)] != nullptr && tensors[inputs.at(1)] != nullptr);
-  return tensors[inputs.at(0)]->type() == tensors[inputs.at(1)]->type();
+  return tensors[inputs.at(0)]->type == tensors[inputs.at(1)]->type;
 }
 
 CircleNode *CircleEqualGraphBuilder::build_node(const circle::OperatorT &,

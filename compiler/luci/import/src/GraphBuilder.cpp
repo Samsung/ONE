@@ -29,9 +29,10 @@ CircleNode *GraphBuilder::build(const circle::OperatorT &op, GraphBuilderContext
 
   const std::vector<int32_t> &inputs = op.inputs;
   const std::vector<int32_t> &outputs = op.outputs;
-  const auto tensors = context->reader()->native_tensors();
-  const auto opcodes = context->reader()->native_opcodes();
-  assert(!tensors.null());
+  const auto &tensors = context->reader()->tensors();
+  const auto &opcodes = context->reader()->opcodes();
+  auto tensors_ptr = context->reader()->tensors_ptr();
+  assert(tensors_ptr != nullptr);
 
   std::vector<CircleNode *> input_nodes;
   for (const int32_t input_tensor_index : inputs)
@@ -59,18 +60,16 @@ CircleNode *GraphBuilder::build(const circle::OperatorT &op, GraphBuilderContext
   // Set up node parameters.
   assert(outputs.size() == 1);
   {
-    const auto output_tensor = tensors[outputs[0]];
-    assert(output_tensor != nullptr);
+    const circle::TensorT &output_tensor = *tensors[outputs[0]];
     copy_tensor_attributes(output_tensor, node);
     // mark shape_status
-    if (output_tensor->shape() == nullptr)
+    if (tensors_ptr->Get(outputs[0])->shape() == nullptr)
       node->shape_status(ShapeStatus::NOSHAPE);
     else
       node->shape_status(ShapeStatus::VALID);
 
     // mark operator version
-    assert(opcodes[op.opcode_index] != nullptr);
-    node->op_version(opcodes[op.opcode_index]->version());
+    node->op_version(opcodes[op.opcode_index].get()->version);
   }
 
   // Register node's only output.

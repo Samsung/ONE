@@ -65,8 +65,6 @@ luci_quantparam(const circle::QuantizationParameters *quantization);
 void copy_tensor_attributes(const circle::TensorT &tensor, CircleNode *node);
 void copy_tensor_attributes(const circle::Tensor *tensor, CircleNode *node);
 
-std::string fb_string2std_string(const flatbuffers::String *fb_str);
-
 /**
  * @brief Wrapper to use flatbuffers::Vector pointer as std::vector entity
  */
@@ -148,7 +146,7 @@ public: // direct API
   CircleOperators native_operators() const { return wrap(_native_subgraph->operators()); }
   VectorWrapper<int32_t> native_inputs() const { return wrap(_native_subgraph->inputs()); }
   VectorWrapper<int32_t> native_outputs() const { return wrap(_native_subgraph->outputs()); }
-  std::string native_name() const { return fb_string2std_string(_native_subgraph->name()); }
+  std::string native_name() const { return _native_subgraph->name()->str(); }
   circle::DataFormat native_data_format() const { return _native_subgraph->data_format(); }
   CircleMetadataSet native_metadata() const { return wrap(_native_model->metadata()); }
 

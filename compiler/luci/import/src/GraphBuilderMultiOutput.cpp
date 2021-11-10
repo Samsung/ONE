@@ -30,9 +30,10 @@ CircleNode *GraphBuilderMultiOutput::build(const circle::OperatorT &op,
 
   const std::vector<int32_t> &inputs = op.inputs;
   const std::vector<int32_t> &outputs = op.outputs;
-  const auto tensors = context->reader()->native_tensors();
-  const auto opcodes = context->reader()->native_opcodes();
-  assert(!tensors.null());
+  const auto &tensors = context->reader()->tensors();
+  const auto &opcodes = context->reader()->opcodes();
+  auto tensors_ptr = context->reader()->tensors_ptr();
+  assert(tensors_ptr != nullptr);
 
   std::vector<CircleNode *> input_nodes;
   for (const int32_t input_tensor_index : inputs)
@@ -63,14 +64,12 @@ CircleNode *GraphBuilderMultiOutput::build(const circle::OperatorT &op,
   if (output_count > 0)
   {
     // Let's use attributes from output 0 for this node
-    const auto output_tensor = tensors[outputs[0]];
-    assert(output_tensor != nullptr);
+    const circle::TensorT &output_tensor = *tensors[outputs[0]];
     node->name(tensor_name(output_tensor));
-    node->dtype(luci_datatype(output_tensor->type()));
+    node->dtype(luci_datatype(output_tensor.type));
 
     // mark operator version
-    assert(opcodes[op.opcode_index] != nullptr);
-    node->op_version(opcodes[op.opcode_index]->version());
+    node->op_version(opcodes[op.opcode_index].get()->version);
 
     // NOTE We don't set quantization for multiple output nodes but to virtual outputs
   }
@@ -78,8 +77,7 @@ CircleNode *GraphBuilderMultiOutput::build(const circle::OperatorT &op,
   // Create virtual outputs of Virtual Output node(s)
   for (uint32_t n = 0; n < output_count; ++n)
   {
-    const auto output_tensor = tensors[outputs[n]];
-    assert(output_tensor != nullptr);
+    const circle::TensorT &output_tensor = *tensors[outputs[n]];
 
     BuildOutArgs boa(node, n);
     auto *nodeout = build_out(boa);
@@ -87,7 +85,7 @@ CircleNode *GraphBuilderMultiOutput::build(const circle::OperatorT &op,
     copy_tensor_attributes(output_tensor, nodeout);
     // NOTE name of CxxxOut nodes may have same name
     // mark shape_status
-    if (output_tensor->shape() == nullptr)
+    if (tensors_ptr->Get(outputs[n])->shape() == nullptr)
       nodeout->shape_status(ShapeStatus::NOSHAPE);
     else
       nodeout->shape_status(ShapeStatus::VALID);
