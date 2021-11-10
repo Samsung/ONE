@@ -1,3 +1,10 @@
+one (1.19.0) bionic; urgency=medium
+
+  * `circle-quantizer` supports input/output type option
+  * Introduce configuration file for optimization options
+
+ -- seongwoo <mhs4670go@naver.com>  Wed, 10 Nov 2021 15:53:39 +0900
+
 one (1.18.0) bionic; urgency=medium
 
   * More optimization pass
