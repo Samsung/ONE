@@ -190,21 +190,19 @@ namespace luci
 
 CircleImportMetadata::CircleImportMetadata(const luci::CircleReader &reader)
 {
-  const auto metadata = reader.native_metadata();
+  const auto &metadata = reader.metadata();
   for (uint32_t i = 0; i < metadata.size(); ++i)
   {
-    const auto *meta = metadata[i];
-    assert(meta != nullptr);
+    const circle::MetadataT &meta = *metadata[i];
 
-    assert(meta->buffer() < reader.buffers().size());
-    const std::vector<uint8_t> &buffer = reader.buffers()[meta->buffer()]->data;
+    assert(meta.buffer < reader.buffers().size());
+    const std::vector<uint8_t> &buffer = reader.buffers()[meta.buffer]->data;
 
-    assert(meta->name() != nullptr);
-    if (meta->name()->str().compare("ONE_op_table") == 0)
+    if (meta.name.compare("ONE_op_table") == 0)
       _op_table = decoded_op_table(buffer);
-    else if (meta->name()->str().compare("ONE_source_table") == 0)
+    else if (meta.name.compare("ONE_source_table") == 0)
       _source_table = decoded_source_table(buffer);
-    else if (meta->name()->str().compare("ONE_execution_plan_table") == 0)
+    else if (meta.name.compare("ONE_execution_plan_table") == 0)
       _execution_plan_table = decoded_execution_plan(buffer);
   }
 }

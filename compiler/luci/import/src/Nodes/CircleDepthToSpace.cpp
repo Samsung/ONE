@@ -34,10 +34,9 @@ bool CircleDepthToSpaceGraphBuilder::validate(const ValidateArgs &args) const
   const auto &outputs = args.op.outputs;
 
   const auto *options = args.op.builtin_options.AsDepthToSpaceOptions();
-  const auto tensors = args.reader.native_tensors();
-  assert(tensors[outputs[0]] != nullptr && tensors[inputs.at(0)] != nullptr);
+  const auto &tensors = args.reader.tensors();
 
-  if (tensors[outputs[0]]->type() != tensors[inputs.at(0)]->type())
+  if (tensors[outputs[0]]->type != tensors[inputs.at(0)]->type)
   {
     return false;
   }

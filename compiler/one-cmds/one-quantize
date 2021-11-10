@@ -31,10 +31,6 @@ import utils as _utils
 sys.tracebacklimit = 0
 
 
-def get_driver_spec():
-    return ("one-quantize", _utils.DriverType.MISC)
-
-
 def _get_parser():
     parser = argparse.ArgumentParser(
         description='command line tool to quantize circle model')
