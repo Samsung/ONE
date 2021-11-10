@@ -217,35 +217,6 @@ std::unique_ptr<luci::PGroups> produce_pgroups(const luci::Module *source,
               << std::endl;
 
       append(node, pgroups.get(), group, idx);
-#if 0
-      auto pgroup = std::make_unique<luci::PGroup>();
-      pgroup->group = group;
-      pgroup->id = idx + 1;
-
-      auto pnode = std::make_unique<luci::PNode>();
-      pnode->node = node;
-      pnode->group = group;
-      pnode->pgroup = pgroup.get();
-
-      pgroup->pnodes.push_back(std::move(pnode));
-
-      // Set input of PGroup
-      for (uint32_t in = 0; in < node->arity(); ++in)
-      {
-        auto input = loco::must_cast<luci::CircleNode *>(node->arg(in));
-        // this input maybe CircleInput in source graph
-        // --> not confident this is safe
-        pgroup->inputs.push_back(input);
-      }
-      // Set output of PGroup: node itself or multiple virtual outputs
-      // TODO support multiple virtual outputs
-      pgroup->outputs.push_back(node);
-
-      pgroups->node2group[node] = group;
-      pgroups->id2pgroup[pgroup->id] = pgroup.get();
-
-      pgroups->pgroups.push_back(std::move(pgroup));
-#endif
     }
     else
     {
