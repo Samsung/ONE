@@ -1,3 +1,9 @@
+one (1.19.0) bionic; urgency=low
+
+  * Synch up version with ONE Compiler
+
+ --  Chunseok Lee <chunseok.lee@samsung.com>  Wed, 10 Nov 2021 14:23:00 +0900
+
 one (1.18.0) bionic; urgency=low
 
   * Synch up version with ONE Compiler
