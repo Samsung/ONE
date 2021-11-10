@@ -28,6 +28,10 @@ namespace hermes
 struct ConsoleReporter final : public hermes::Sink
 {
   void notify(const Message *m) final;
+  void set_colored_mode(bool is_colored) { _is_colored = is_colored; }
+
+private:
+  bool _is_colored = false;
 };
 
 } // namespace hermes
