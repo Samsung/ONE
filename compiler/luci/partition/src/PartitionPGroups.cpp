@@ -35,6 +35,17 @@ class IsVirtualNode final : public luci::CircleNodeVisitor<bool>
 public:
   bool visit(const luci::CircleInput *) final { return true; }
   bool visit(const luci::CircleOutput *) final { return true; }
+  // For multiple outputs
+  bool visit(const luci::CircleCustomOut *) final { return true; }
+  bool visit(const luci::CircleIfOut *) final { return true; }
+  bool visit(const luci::CircleNonMaxSuppressionV4Out *) final { return true; }
+  bool visit(const luci::CircleNonMaxSuppressionV5Out *) final { return true; }
+  bool visit(const luci::CircleSplitOut *) final { return true; }
+  bool visit(const luci::CircleSplitVOut *) final { return true; }
+  bool visit(const luci::CircleTopKV2Out *) final { return true; }
+  bool visit(const luci::CircleUniqueOut *) final { return true; }
+  bool visit(const luci::CircleUnpackOut *) final { return true; }
+  bool visit(const luci::CircleWhileOut *) final { return true; }
   // TODO add all virtual nodes
 
   // default is false
