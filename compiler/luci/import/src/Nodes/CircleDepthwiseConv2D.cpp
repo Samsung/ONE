@@ -32,19 +32,21 @@ bool CircleDepthwiseConv2DGraphBuilder::validate(const ValidateArgs &args) const
   if (args.op.outputs.size() != 1)
     return false;
 
-  const auto &tensors = args.reader.tensors();
+  const auto tensors = args.reader.native_tensors();
 
   // input shape
-  const auto &input = tensors.at(args.op.inputs.at(0));
-  const auto &input_shape = input->shape;
+  const auto input = tensors.at(args.op.inputs.at(0));
+  assert(input != nullptr);
+  const auto input_shape = wrap(input->shape());
 
   // input shape must be rank 4
   if (input_shape.size() != 4)
     return false;
 
   // filter shape
-  const auto &filter = tensors.at(args.op.inputs.at(1));
-  const auto &filter_shape = filter->shape;
+  const auto filter = tensors.at(args.op.inputs.at(1));
+  assert(filter != nullptr);
+  const auto filter_shape = wrap(filter->shape());
 
   // filter shape must be rank 4
   if (filter_shape.size() != 4)
