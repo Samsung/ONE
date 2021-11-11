@@ -53,6 +53,18 @@ except:
 interpreter = tf.lite.Interpreter(tflite_model)
 interpreter.allocate_tensors()
 
+# Read SignatureDef and get output tensor id orders for remapping
+full_signatures = interpreter._get_full_signature_list()
+full_signatures_outputs_remap = None
+if full_signatures != None:
+    signature_serving_default = full_signatures.get('serving_default', None)
+    if signature_serving_default != None:
+        signature_outputs = signature_serving_default['outputs']
+
+        full_signatures_outputs_remap = []
+        for index, (key, value) in enumerate(signature_outputs.items()):
+            full_signatures_outputs_remap.append(value)
+
 # Generate random input data.
 num_inputs = len(interpreter.get_input_details())
 for i in range(num_inputs):
@@ -100,6 +112,8 @@ for idx in range(len(inpt_output_details)):
     output_shape = [int(i) for i in shape_file.read().split(',')]
     luci_output_data = np.reshape(output_data, output_shape)
     output_tensor = output_details["index"]
+    if full_signatures_outputs_remap != None:
+        output_tensor = full_signatures_outputs_remap[idx]
     intp_output_data = interpreter.get_tensor(output_tensor)
     try:
         if output_dtype == np.uint8:
