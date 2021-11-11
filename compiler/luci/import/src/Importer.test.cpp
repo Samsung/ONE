@@ -23,7 +23,7 @@
 #include <mio/circle/schema_generated.h>
 #include <flatbuffers/flatbuffers.h>
 
-TEST(TensorFlowLiteImport, Dummy)
+TEST(CircleImport, Dummy)
 {
   luci::Importer import;
 
@@ -179,7 +179,7 @@ struct SimpleRELUModel : public BasicCircleModel
 /**
  * This test checks that one op RELU model with execution plan is successfully imported
  */
-TEST(TensorFlowLiteImport, simple_plan)
+TEST(CircleImport, simple_plan)
 {
   SimpleRELUModel model;
   auto metadata_buffer_id = model.add_buffer();
@@ -240,7 +240,7 @@ TEST(TensorFlowLiteImport, simple_plan)
 /**
  * This test checks that model with incomplete execution plan is successfully imported
  */
-TEST(TensorFlowLiteImport, incomplete_plan_NEG)
+TEST(CircleImport, incomplete_plan_NEG)
 {
   SimpleRELUModel model;
   auto metadata_buffer_id = model.add_buffer();
@@ -287,7 +287,7 @@ TEST(TensorFlowLiteImport, incomplete_plan_NEG)
 /**
  * This test checks that corrupted execution plan induce exception
  */
-TEST(TensorFlowLiteImport, corrupted_plan_NEG)
+TEST(CircleImport, corrupted_plan_NEG)
 {
   SimpleRELUModel model;
   auto metadata_buffer_id = model.add_buffer();
@@ -313,7 +313,7 @@ TEST(TensorFlowLiteImport, corrupted_plan_NEG)
 /**
  * This test checks that empty execution plan entry induce exception
  */
-TEST(TensorFlowLiteImport, corrupted_plan_entry_NEG)
+TEST(CircleImport, corrupted_plan_entry_NEG)
 {
   SimpleRELUModel model;
   auto metadata_buffer_id = model.add_buffer();
