@@ -55,48 +55,32 @@ subprocess.run(
     check=True)
 
 # Compare the results.
-for idx in range(len(interpreter.get_output_details())):
-    output_details = interpreter.get_output_details()[idx]
+inpt_output_details = interpreter.get_output_details()
+for idx in range(len(inpt_output_details)):
+    output_details = inpt_output_details[idx]
     output_data = np.fromfile(circle_model + ".output" + str(idx),
                               output_details["dtype"])
     shape_file = open(circle_model + ".output" + str(idx) + ".shape", 'r')
     output_shape = [int(i) for i in shape_file.read().split(',')]
     luci_output_data = np.reshape(output_data, output_shape)
+    output_tensor = output_details["index"]
+    intp_output_data = interpreter.get_tensor(output_tensor)
     try:
         if output_details["dtype"] == np.uint8:
-            if np.allclose(
-                    luci_output_data,
-                    interpreter.get_tensor(
-                        interpreter.get_output_details()[idx]["index"]),
-                    rtol=0,
-                    atol=0) == False:
+            if np.allclose(luci_output_data, intp_output_data, rtol=0, atol=0) == False:
                 raise SystemExit("Execution result of " + tflite_model +
                                  " does not match with " + circle_model)
         elif output_details["dtype"] == np.float32:
             if np.allclose(
-                    luci_output_data,
-                    interpreter.get_tensor(
-                        interpreter.get_output_details()[idx]["index"]),
-                    rtol=1.e-5,
-                    atol=1.e-5) == False:
+                    luci_output_data, intp_output_data, rtol=1.e-5, atol=1.e-5) == False:
                 raise SystemExit("Execution result of " + tflite_model +
                                  " does not match with " + circle_model)
         elif output_details["dtype"] == np.int64:
-            if np.allclose(
-                    luci_output_data,
-                    interpreter.get_tensor(
-                        interpreter.get_output_details()[idx]["index"]),
-                    rtol=0,
-                    atol=0) == False:
+            if np.allclose(luci_output_data, intp_output_data, rtol=0, atol=0) == False:
                 raise SystemExit("Execution result of " + tflite_model +
                                  " does not match with " + circle_model)
         elif output_details["dtype"] == np.int32:
-            if np.allclose(
-                    luci_output_data,
-                    interpreter.get_tensor(
-                        interpreter.get_output_details()[idx]["index"]),
-                    rtol=0,
-                    atol=0) == False:
+            if np.allclose(luci_output_data, intp_output_data, rtol=0, atol=0) == False:
                 raise SystemExit("Execution result of " + tflite_model +
                                  " does not match with " + circle_model)
         else:
