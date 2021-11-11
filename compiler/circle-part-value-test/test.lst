@@ -43,3 +43,7 @@ add(Net_UnpackAdd_001 Net_UnpackAdd_001.002 2)
 
 # Other multiple outputs
 add(Part_Split_Add_000 Part_Split_Add_000 2)
+
+# test SignatureDef, with any OPCODE
+add(SignatureDef_MultiOut_000 SignatureDef_MultiOut_000 0)
+add(SignatureDef_MultiOut_001 SignatureDef_MultiOut_001 0)
