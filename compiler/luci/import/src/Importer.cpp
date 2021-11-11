@@ -50,18 +50,18 @@ void convert_graph(const luci::GraphBuilderSource &source, luci::CircleReader &r
 
   luci::GraphBuilderContext gb_context(graph, &reader, nodefinder.get(), tensoroutputs.get());
 
-  const auto &operators = reader.operators();
-  const auto &tensors = reader.tensors();
-  auto tensors_ptr = reader.tensors_ptr();
-  assert(tensors_ptr != nullptr);
+  const auto operators = reader.native_operators();
+  const auto tensors = reader.native_tensors();
+  assert(!tensors.null());
   auto circle_metadata = std::make_unique<luci::CircleImportMetadata>(reader);
 
   // build a cache to identify if a tensor is output of an operator
   // if this is set, we should not create a CircleConst for this tensor
   for (uint32_t i = 0; i < operators.size(); ++i)
   {
-    const circle::OperatorT &op = *operators[i];
-    const auto &outputs = op.outputs;
+    const auto op = operators[i];
+    assert(op != nullptr);
+    const auto outputs = luci::wrap(op->outputs());
 
     for (uint32_t j = 0; j < outputs.size(); ++j)
     {
@@ -73,14 +73,15 @@ void convert_graph(const luci::GraphBuilderSource &source, luci::CircleReader &r
   // graph inputs; there are no input nodes in TFlite but just Tensors
   // creating virtual input nodes will make possible to connect nodes that uses them
   // all attributes of tensor should be copied to CircleInput node
-  for (const auto input : reader.inputs())
+  for (const auto input : reader.native_inputs())
   {
     auto input_node = graph->nodes()->create<luci::CircleInput>();
     assert(input_node != nullptr);
-    const circle::TensorT &tensor = *tensors[input];
+    const auto tensor = tensors[input];
+    assert(tensor != nullptr);
 
     luci::copy_tensor_attributes(tensor, input_node);
-    if (tensors_ptr->Get(input)->shape() == nullptr)
+    if (tensor->shape() == nullptr)
       input_node->shape_status(luci::ShapeStatus::NOSHAPE);
     else
       input_node->shape_status(luci::ShapeStatus::VALID);
@@ -101,16 +102,18 @@ void convert_graph(const luci::GraphBuilderSource &source, luci::CircleReader &r
     // Data type
     graph_input->dtype(input_node->dtype());
 
-    assert(tensor.shape_signature.size() == 0 ||
-           tensor.shape_signature.size() == tensor.shape.size());
+    const auto tensor_shape_signature = luci::wrap(tensor->shape_signature());
+    const auto tensor_shape = luci::wrap(tensor->shape());
+    assert(tensor_shape_signature.size() == 0 ||
+           tensor_shape_signature.size() == tensor_shape.size());
 
     // Shape of GraphInput
     auto input_shape = std::make_unique<loco::TensorShape>();
-    const std::vector<int32_t> &input_dims = tensor.shape; // in NHWC
+    const auto &input_dims = tensor_shape; // in NHWC
     input_shape->rank(input_dims.size());
     for (uint32_t r = 0; r < input_dims.size(); ++r)
     {
-      if (tensor.shape_signature.size() > 0 && tensor.shape_signature.at(r) == -1)
+      if (tensor_shape_signature.size() > 0 && tensor_shape_signature.at(r) == -1)
         input_shape->dim(r).unset();
       else
         input_shape->dim(r).set(input_dims[r]);
@@ -134,18 +137,23 @@ void convert_graph(const luci::GraphBuilderSource &source, luci::CircleReader &r
   auto origin_table = circle_metadata->origin_table();
   for (uint32_t i = 0; i < operators.size(); ++i)
   {
-    const circle::OperatorT &op = *operators[i];
+    const auto op = operators[i];
+    assert(op != nullptr);
     circle::BuiltinOperator builtincode = reader.builtin_code(op);
 
     if (const auto *builder = source.lookup(builtincode))
     {
-      luci::GraphBuilder::ValidateArgs args(op, reader);
+      // create temporary unpack API obj
+      circle::OperatorT oper_t;
+      op->UnPackTo(&oper_t);
+
+      luci::GraphBuilder::ValidateArgs args(oper_t, reader);
       if (!builder->validate(args))
       {
         throw oops::UserExn("Invalid operator", reader.opcode_name(op));
       }
 
-      auto built_op = builder->build(op, &gb_context);
+      auto built_op = builder->build(oper_t, &gb_context);
       set_node_id(built_op, i);
       if (origin_table.find(i) != origin_table.end())
         add_origin(built_op, origin_table.at(i));
@@ -159,9 +167,10 @@ void convert_graph(const luci::GraphBuilderSource &source, luci::CircleReader &r
   }
 
   // graph outputs
-  for (auto output : reader.outputs())
+  for (auto output : reader.native_outputs())
   {
-    const circle::TensorT &tensor = *tensors[output];
+    const auto tensor = tensors[output];
+    assert(tensor != nullptr);
 
     auto output_node = graph->nodes()->create<luci::CircleOutput>();
     assert(output_node != nullptr);
@@ -178,7 +187,7 @@ void convert_graph(const luci::GraphBuilderSource &source, luci::CircleReader &r
       output_node->from(output_dummy);
 
       luci::copy_tensor_attributes(tensor, output_dummy);
-      if (tensors_ptr->Get(output)->shape() == nullptr)
+      if (tensor->shape() == nullptr)
         output_dummy->shape_status(luci::ShapeStatus::NOSHAPE);
       else
         output_dummy->shape_status(luci::ShapeStatus::VALID);
@@ -197,16 +206,18 @@ void convert_graph(const luci::GraphBuilderSource &source, luci::CircleReader &r
     // Set GraphInputOutputIndex for graph
     output_node->index(graph_output->index());
 
-    assert(tensor.shape_signature.size() == 0 ||
-           tensor.shape_signature.size() == tensor.shape.size());
+    const auto tensor_shape_signature = luci::wrap(tensor->shape_signature());
+    const auto tensor_shape = luci::wrap(tensor->shape());
+    assert(tensor_shape_signature.size() == 0 ||
+           tensor_shape_signature.size() == tensor_shape.size());
 
     // Shape of Output
     auto output_shape = std::make_unique<loco::TensorShape>();
-    const std::vector<int32_t> &output_dims = tensor.shape; // in NHWC
+    const auto &output_dims = tensor_shape; // in NHWC
     output_shape->rank(output_dims.size());
     for (uint32_t r = 0; r < output_dims.size(); ++r)
     {
-      if (tensor.shape_signature.size() > 0 && tensor.shape_signature.at(r) == -1)
+      if (tensor_shape_signature.size() > 0 && tensor_shape_signature.at(r) == -1)
         output_shape->dim(r).unset();
       else
         output_shape->dim(r).set(output_dims[r]);
@@ -214,7 +225,7 @@ void convert_graph(const luci::GraphBuilderSource &source, luci::CircleReader &r
     graph_output->shape(std::move(output_shape));
 
     // Data type
-    auto dtype = luci::luci_datatype(tensor.type);
+    auto dtype = luci::luci_datatype(tensor->type());
     graph_output->dtype(dtype);
   }
 }
@@ -299,7 +310,7 @@ std::unique_ptr<Module> Importer::importModule(const circle::Model *model) const
     if (!reader.select_subgraph(g))
       return nullptr;
 
-    graph->name(reader.name());
+    graph->name(reader.native_name());
 
     // Convert circle::Model to loco::Graph
     convert_graph(*source_ptr, reader, graph.get());
