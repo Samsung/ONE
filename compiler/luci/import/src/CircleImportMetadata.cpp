@@ -156,6 +156,10 @@ decoded_execution_plan(const std::vector<uint8_t> &execution_plan_data)
     idx += sizeof(uint32_t);
 
     uint32_t size = read_u32(execution_plan_data, idx);
+
+    if (size == 0)
+      throw std::runtime_error("Op table decode error : empty execution plan entry");
+
     idx += sizeof(uint32_t);
 
     if (idx + sizeof(uint32_t) * size > execution_plan_data.size())
