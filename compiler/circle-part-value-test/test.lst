@@ -35,3 +35,11 @@ add(Part_If_Add_Sub_001 Part_If_Add_Sub_001.001 3)
 # WHILE with subgraphs
 add(Part_While_000 Part_While_000 3)
 add(Part_While_001 Part_While_001 3)
+
+# UNPACK with multiple outputs
+add(Net_UnpackAdd_001 Net_UnpackAdd_001 2)
+add(Net_UnpackAdd_001 Net_UnpackAdd_001.001 2)
+add(Net_UnpackAdd_001 Net_UnpackAdd_001.002 2)
+
+# Other multiple outputs
+add(Part_Split_Add_000 Part_Split_Add_000 2)
