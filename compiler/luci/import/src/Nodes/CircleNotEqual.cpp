@@ -30,14 +30,16 @@ bool CircleNotEqualGraphBuilder::validate(const ValidateArgs &args) const
 
   const auto &inputs = args.op.inputs;
   const auto &outputs = args.op.outputs;
-  const auto &tensors = args.reader.tensors();
+  const auto tensors = args.reader.native_tensors();
 
-  if (tensors[inputs.at(0)]->type != tensors[inputs.at(1)]->type)
+  assert(tensors[inputs.at(0)] != nullptr && tensors[inputs.at(1)] != nullptr);
+  if (tensors[inputs.at(0)]->type() != tensors[inputs.at(1)]->type())
   {
     return false;
   }
 
-  return tensors[outputs[0]]->type == circle::TensorType::TensorType_BOOL;
+  assert(tensors[outputs[0]] != nullptr);
+  return tensors[outputs[0]]->type() == circle::TensorType::TensorType_BOOL;
 }
 
 CircleNode *CircleNotEqualGraphBuilder::build_node(const circle::OperatorT &,
