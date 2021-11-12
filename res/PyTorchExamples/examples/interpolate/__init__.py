@@ -16,6 +16,9 @@ class net_interpolate(nn.Module):
             align_corners=True,
             recompute_scale_factor=True)
 
+    def onnx_opset_version(self):
+        return 11
+
 
 _model_ = net_interpolate([2, 2])
 
