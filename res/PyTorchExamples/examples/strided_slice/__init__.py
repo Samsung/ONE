@@ -12,6 +12,9 @@ class net_strided_slice(nn.Module):
         # this is general way to do input[:, :, 1:5:2, 0:5:2]
         return input[self.key]
 
+    def onnx_opset_version(self):
+        return 10
+
 
 _model_ = net_strided_slice([0, 0, 1, 0], [1, 3, 5, 5], [1, 1, 2, 2])
 
