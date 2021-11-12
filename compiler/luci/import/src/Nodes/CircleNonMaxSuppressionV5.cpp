@@ -35,22 +35,29 @@ bool CircleNonMaxSuppressionV5GraphBuilder::validate(const ValidateArgs &args) c
   if (outputs.size() != 3)
     return false;
 
-  const auto &tensors = args.reader.tensors();
-  const auto &boxes_tensor = tensors.at(inputs[0]);
-  if (boxes_tensor->shape.size() != 2)
+  const auto tensors = args.reader.native_tensors();
+  const auto boxes_tensor = tensors.at(inputs[0]);
+  assert(boxes_tensor != nullptr);
+  const auto boxes_tensor_shape = wrap(boxes_tensor->shape());
+  if (boxes_tensor_shape.size() != 2)
     return false;
-  if (boxes_tensor->shape.at(1) != 4)
+  if (boxes_tensor_shape.at(1) != 4)
     return false;
-  if (boxes_tensor->shape.at(0) != tensors.at(inputs[1])->shape.at(0))
+  assert(tensors.at(inputs[1]) != nullptr);
+  if (boxes_tensor_shape.at(0) != wrap(tensors.at(inputs[1])->shape()).at(0))
     return false;
 
-  if (tensors.at(inputs[2])->type != circle::TensorType_INT32)
+  assert(tensors.at(inputs[2]) != nullptr);
+  if (tensors.at(inputs[2])->type() != circle::TensorType_INT32)
     return false;
-  if (tensors.at(inputs[3])->type != circle::TensorType_FLOAT32)
+  assert(tensors.at(inputs[3]) != nullptr);
+  if (tensors.at(inputs[3])->type() != circle::TensorType_FLOAT32)
     return false;
-  if (tensors.at(inputs[4])->type != circle::TensorType_FLOAT32)
+  assert(tensors.at(inputs[4]) != nullptr);
+  if (tensors.at(inputs[4])->type() != circle::TensorType_FLOAT32)
     return false;
-  if (tensors.at(inputs[5])->type != circle::TensorType_FLOAT32)
+  assert(tensors.at(inputs[5]) != nullptr);
+  if (tensors.at(inputs[5])->type() != circle::TensorType_FLOAT32)
     return false;
 
   return true;
