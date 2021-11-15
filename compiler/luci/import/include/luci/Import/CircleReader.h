@@ -131,8 +131,6 @@ public: // unpack API
   const circle::DataFormat &data_format() const { return _current_subgraph->data_format; }
   const CircleMetadata_t &metadata() const { return _model->metadata; }
 
-  uint32_t num_subgraph() const { return _model->subgraphs.size(); }
-
   circle::BuiltinOperator builtin_code(const circle::OperatorT &op) const;
   std::string opcode_name(const circle::OperatorT &op) const;
 
@@ -146,6 +144,8 @@ public: // direct API
   std::string native_name() const { return fb_string2std_string(_native_subgraph->name()); }
   circle::DataFormat native_data_format() const { return _native_subgraph->data_format(); }
   CircleMetadataSet native_metadata() const { return wrap(_native_model->metadata()); }
+
+  uint32_t num_subgraph() const { return wrap(_native_model->subgraphs()).size(); }
 
   circle::BuiltinOperator builtin_code(const circle::Operator *op) const;
   std::string opcode_name(const circle::Operator *op) const;
