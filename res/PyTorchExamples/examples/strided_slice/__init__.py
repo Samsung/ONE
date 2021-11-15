@@ -3,6 +3,9 @@ import torch.nn as nn
 
 
 # model
+#
+# Notes:
+# - This model requires opset version 10+. Previous version does not support strides.
 class net_strided_slice(nn.Module):
     def __init__(self, begin, end, stride):
         super().__init__()
