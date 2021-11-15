@@ -48,8 +48,16 @@ for example in args.examples:
     torch.save(module._model_, output_folder + example + ".pth")
     print("Generate '" + example + ".pth' - Done")
 
+    opset_version = 9
+    if hasattr(module._model_, 'onnx_opset_version'):
+        opset_version = module._model_.onnx_opset_version()
+
     torch.onnx.export(
-        module._model_, module._dummy_, output_folder + example + ".onnx", verbose=True)
+        module._model_,
+        module._dummy_,
+        output_folder + example + ".onnx",
+        verbose=True,
+        opset_version=opset_version)
     print("Generate '" + example + ".onnx' - Done")
 
     onnx_model = onnx.load(output_folder + example + ".onnx")
