@@ -97,7 +97,7 @@ int main()
   while (true)
   {
     Timer t;
-    t.start();
+//    t.start();
     for (int i = 0; i < nodes_count; ++i)
     {
       auto *node = dynamic_cast<luci::CircleNode *>(nodes->at(i));

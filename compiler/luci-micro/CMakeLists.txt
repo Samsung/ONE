@@ -56,6 +56,17 @@ add_custom_command(
 )
 add_custom_target(luci_interpreter_micro_arm DEPENDS "${MICRO_ARM_BINARY}")
 
+set(CMSISNNSupport_BINARY "${MICRO_ARM_BUILD_DIR}/luci-interpreter/src/kernels/CMSISNN/Source/NNSupportFunctions/libCMSISNNSupport.a")
+
+add_custom_command(
+        OUTPUT "${CMSISNNSupport_BINARY}"
+        COMMAND "${CMAKE_MAKE_PROGRAM}" -j ${CPU_COUNT}
+        WORKING_DIRECTORY "${MICRO_ARM_BUILD_DIR}/luci-interpreter/src/kernels/CMSISNN"
+        DEPENDS luci_interpreter_micro_arm_cmake
+        VERBATIM
+)
+add_custom_target(CMSISNNSupport DEPENDS "${CMSISNNSupport_BINARY}")
+
 set(MICRO_LUCI_IMPORT_ARM_BINARY "${MICRO_ARM_BUILD_DIR}/compiler/luci/import/libluci_import.a")
 
 add_custom_command(

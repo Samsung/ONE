@@ -42,7 +42,8 @@ macro(add_pal_to_target TGT)
             "${TensorFlowSource_DIR}")
     target_include_directories(${TGT} PRIVATE ${LUCI_INTERPRETER_PAL_DIR})
 
-    set(PAL_SOURCES ${TensorFlowSource_DIR}/tensorflow/lite/kernels/internal/quantization_util.cc)
+    file(GLOB_RECURSE PAL_SOURCES "${CMSISSource_DIR}/CMSIS/NN/Source/*.c")
+    list(APPEND PAL_SOURCES ${TensorFlowSource_DIR}/tensorflow/lite/kernels/internal/quantization_util.cc)
     add_library(luci_interpreter_cmsisnn_pal STATIC ${PAL_SOURCES})
 #    set_target_properties(luci_interpreter_cmsisnn_pal PROPERTIES POSITION_INDEPENDENT_CODE ON)
     target_include_directories(luci_interpreter_cmsisnn_pal PRIVATE

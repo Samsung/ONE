@@ -122,6 +122,12 @@ target_link_libraries(mbed_os "/home/username/SlavikMIPT/ONE/build/compiler/luci
 target_link_libraries(mbed_os "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/luci-interpreter/src/kernels/libluci_interpreter_cmsisnn_pal.a")
 #target_link_libraries(mbed_os "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/luci-interpreter/src/loader/libluci_interpreter_loader.a")
 #target_link_libraries(mbed_os "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/luci-interpreter/src/core/libluci_interpreter_core.a")
+#target_link_libraries(luci_interpreter_cmsisnn_pal "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/luci-interpreter/src/kernels/CMSISNN/Source/NNSupportFunctions/libCMSISNNSupport.a")
+#target_link_libraries(luci_interpreter_cmsisnn_pal "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/luci-interpreter/src/kernels/CMSISNN/Source/ConvolutionFunctions/libCMSISNNConvolutions.a")
+#target_link_libraries(luci_interpreter_cmsisnn_pal "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/luci-interpreter/src/kernels/CMSISNN/Source/BasicMathFunctions/libCMSISNNBasicMaths.a")
+#target_link_libraries(luci_interpreter_cmsisnn_pal "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/luci-interpreter/src/kernels/CMSISNN/Source/SVDFunctions/libCMSISNNSVDF.a")
+#target_link_libraries(luci_interpreter_cmsisnn_pal "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/luci-interpreter/src/kernels/CMSISNN/Source/ActivationFunctions/libCMSISNNActivation.a")
+
 
 target_link_libraries(mbed_os "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/loco/libloco.a")
 target_link_libraries(mbed_os "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/locomotiv/liblocomotiv.a")
@@ -145,6 +151,12 @@ target_link_libraries(benchmark "/home/username/SlavikMIPT/ONE/build/compiler/lu
 #target_link_libraries(benchmark "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/luci-interpreter/src/kernels/libluci_interpreter_cmsisnn_pal.a")
 target_link_libraries(benchmark "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/luci-interpreter/src/loader/libluci_interpreter_loader.a")
 target_link_libraries(benchmark "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/luci-interpreter/src/core/libluci_interpreter_core.a")
+
+#target_link_libraries(benchmark "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/luci-interpreter/src/kernels/CMSISNN/Source/NNSupportFunctions/libCMSISNNSupport.a")
+#target_link_libraries(benchmark "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/luci-interpreter/src/kernels/CMSISNN/Source/ConvolutionFunctions/libCMSISNNConvolutions.a")
+#target_link_libraries(benchmark "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/luci-interpreter/src/kernels/CMSISNN/Source/BasicMathFunctions/libCMSISNNBasicMaths.a")
+#target_link_libraries(benchmark "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/luci-interpreter/src/kernels/CMSISNN/Source/SVDFunctions/libCMSISNNSVDF.a")
+#target_link_libraries(benchmark "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/luci-interpreter/src/kernels/CMSISNN/Source/ActivationFunctions/libCMSISNNActivation.a")
 
 target_link_libraries(benchmark "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/loco/libloco.a")
 target_link_libraries(benchmark "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/locomotiv/liblocomotiv.a")
