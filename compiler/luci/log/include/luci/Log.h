@@ -16,54 +16,53 @@
 
 #ifndef __LUCI_LOG_H__
 #define __LUCI_LOG_H__
+
+#include <hermes.h>
+
+namespace luci
+{
+
+/**
+ * @brief Logger Implementation
+ */
+class Logger final : public hermes::Source
+{
+public:
+  Logger(hermes::Context *ctx);
+  ~Logger();
+};
+
+/**
+ * @brief Logger Configuration
+ *
+ * Users are able to turn logging on/off via LUCI_LOG environment variable.
+ */
+class LoggerConfig final : public hermes::Config
+{
+public:
+  LoggerConfig();
+
+public:
+  void configure(const hermes::Source *, hermes::Source::Setting &) const final;
+  void configure(const Logger *, hermes::Source::Setting &) const;
+
+private:
+  bool _show_warn = true;
+  int _show_verbose = 0;
+};
+
+} // namespace luci
+
+#include "luci/LoggingContext.h"
 #include <iostream>
-//#include <hermes.h>
-//
-//namespace luci
-//{
-//
-///**
-// * @brief Logger Implementation
-// */
-//class Logger final : public hermes::Source
-//{
-//public:
-//  Logger(hermes::Context *ctx);
-//  ~Logger();
-//};
-//
-///**
-// * @brief Logger Configuration
-// *
-// * Users are able to turn logging on/off via LUCI_LOG environment variable.
-// */
-//class LoggerConfig final : public hermes::Config
-//{
-//public:
-//  LoggerConfig();
-//
-//public:
-//  void configure(const hermes::Source *, hermes::Source::Setting &) const final;
-//  void configure(const Logger *, hermes::Source::Setting &) const;
-//
-//private:
-//  bool _show_warn = true;
-//  bool _show_info = false;
-//  int _show_verbose = 0;
-//};
-//
-//} // namespace luci
-//
-//#include "luci/LoggingContext.h"
-//
-///**
-// * HOW TO USE:
-// *
-// *   LOGGER(l);
-// *
-// *   INFO(l) << "Hello, World" << std::endl;
-// *
-// */
+/**
+ * HOW TO USE:
+ *
+ *   LOGGER(l);
+ *
+ *   INFO(l) << "Hello, World" << std::endl;
+ *
+ */
 #define LOGGER(name)
 
 // TODO Support FATAL, ERROR

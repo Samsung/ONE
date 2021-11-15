@@ -81,7 +81,7 @@ bool isExecutableNode(const luci::CircleNode *node)
     case luci::CircleOpcode::CIRCLEINPUT:
     case luci::CircleOpcode::CIRCLEOUTPUT:
     case luci::CircleOpcode::CIRCLEOUTPUTEXCLUDE:
-    // The following nodes denote outputs of multiple-output nodes.
+      // The following nodes denote outputs of multiple-output nodes.
     case luci::CircleOpcode::CIRCLEIFOUT:
     case luci::CircleOpcode::CIRCLESPLITOUT:
     case luci::CircleOpcode::CIRCLESPLITVOUT:
@@ -99,8 +99,8 @@ bool isTensorProducingNode(const luci::CircleNode *node)
   {
     // Output nodes do not produce tensors.
     case luci::CircleOpcode::CIRCLEOUTPUT:
-    // The following nodes are multiple-output nodes. They do not produce tensors, the tensors
-    // are produced by the corresponding *Out nodes instead.
+      // The following nodes are multiple-output nodes. They do not produce tensors, the tensors
+      // are produced by the corresponding *Out nodes instead.
     case luci::CircleOpcode::IF:
     case luci::CircleOpcode::SPLIT:
     case luci::CircleOpcode::UNPACK:
@@ -200,7 +200,7 @@ void GraphLoader::loadOperators()
 
   // Create kernels for executable nodes. This has to be done in execution order.
   for (const loco::Node *loco_node :
-       loco::postorder_traversal(loco::output_nodes(const_cast<loco::Graph *>(_graph))))
+    loco::postorder_traversal(loco::output_nodes(const_cast<loco::Graph *>(_graph))))
   {
     const auto *node = loco::must_cast<const luci::CircleNode *>(loco_node);
 

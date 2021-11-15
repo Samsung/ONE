@@ -16,15 +16,19 @@
 
 #include "mbed.h"
 #undef ARG_MAX
-
+#define LUCI_LOG 0
 #include <luci_interpreter/Interpreter.h>
 #include <luci_interpreter/StaticMemoryManager.h>
 
 #include <luci/Importer.h>
 #include <luci/IR/Module.h>
 #include <loco/IR/DataTypeTraits.h>
-#include <circlemodel_sin.h>
+//#include <circlemodel_sin.h>
+#include <circlemodel.h2>
+
 #include <iostream>
+#include <luci/Log.h>
+//#include <luci/LogHelper.h>
 // Maximum number of element the application buffer can contain
 #define MAXIMUM_BUFFER_SIZE 32
 
@@ -54,6 +58,8 @@ int main()
 //  std::vector<char> &model_data = *buf;
   // Verify flatbuffers
   flatbuffers::Verifier verifier{reinterpret_cast<const uint8_t *>(circle_model_raw), sizeof(circle_model_raw) / sizeof(circle_model_raw[0])};
+//  flatbuffers::Verifier verifier{static_cast<const uint8_t *>(static_cast<void *>(model_data.data())), model_data.size()};
+
   std::cout << "circle::VerifyModelBuffer\n";
   if (!circle::VerifyModelBuffer(verifier))
   {
@@ -61,16 +67,16 @@ int main()
   }
   std::cout << "OK\n";
   std::cout << "circle::GetModel(circle_model_raw)\n";
-  ThisThread::sleep_for(1000);
+//  ThisThread::sleep_for(1000);
   auto model = circle::GetModel(circle_model_raw);
   std::cout << "luci::Importer().importModule\n";
-  ThisThread::sleep_for(1000);
+//  ThisThread::sleep_for(1000);
 
   auto module = luci::Importer().importModule(model);
-  ThisThread::sleep_for(1000);
+//  ThisThread::sleep_for(1000);
 
   std::cout << "OK\n";
-  ThisThread::sleep_for(1000);
+//  ThisThread::sleep_for(1000);
   std::cout << "std::make_unique<luci_interpreter::Interpreter>(module.get())\n";
 
 //  uint8_t *bufmm = new uint8_t[100000];
@@ -79,14 +85,14 @@ int main()
   auto interpreter = std::make_unique<luci_interpreter::Interpreter>(module.get());
 
   std::cout << "OK\n";
-  ThisThread::sleep_for(1000);
+//  ThisThread::sleep_for(1000);
 //  for(int i = 0; i < sizeof(module);++i)
 //  {
 //    std::cout << std::hex << *(reinterpret_cast<char*>(&module) + i);
 //  }
   auto nodes = module->graph()->nodes();
   auto nodes_count = nodes->size();
-  std::cout <<  "nodes_count: %d\n";
+//  std::cout <<  "nodes_count: %d\n";
   // Fill input tensors with some garbage
   while (true)
   {
@@ -109,12 +115,18 @@ int main()
         }
         data_size *= loco::size(g_input->dtype());
         std::vector<char> data(data_size);
+//        std::cout <<  "fill_in_tensor(data, g_input->dtype());\n";
+
         fill_in_tensor(data, g_input->dtype());
+//        std::cout <<  "interpreter->writeInputTensor\n";
+
 
         interpreter->writeInputTensor(static_cast<luci::CircleInput *>(node), data.data(),
                                       data_size);
       }
     }
+//    std::cout <<  "    interpreter->interpret();\n";
+    t.start();
 
     interpreter->interpret();
     t.stop();

@@ -16,7 +16,7 @@ set(CMAKE_ARM_OPTIONS
   -DBUILD_CMSIS_NN_FUNCTIONS=ON
   -DTARGET_CPU=cortex-m7
   "-DCMAKE_TOOLCHAIN_FILE=${CMAKE_CURRENT_SOURCE_DIR}/standalone/Toolchain.cmake"
-  "-DLUCI_INTERPRETER_PAL_DIR=${CMAKE_CURRENT_SOURCE_DIR}/../luci-interpreter/pal/mcu"
+  "-DLUCI_INTERPRETER_PAL_DIR=${CMAKE_CURRENT_SOURCE_DIR}/../luci-interpreter/pal/cmsisnn"
   "-DNNAS_PROJECT_SOURCE_DIR=${NNAS_PROJECT_SOURCE_DIR}"
   "-DNNAS_EXTERNALS_DIR=${NNAS_EXTERNALS_DIR}"
   -DC_COMPILER=${ARM_C_COMPILER}
@@ -114,7 +114,7 @@ add_custom_command(
         OUTPUT "${BENCHMARK_BINARY}"
         COMMAND "${CMAKE_MAKE_PROGRAM}" benchmark -j ${CPU_COUNT}
         WORKING_DIRECTORY "${MBED_OS_BUILD_DIR}"
-        DEPENDS mbed_os_arm luci_interpreter_micro_arm luci_import_micro_arm "${CMAKE_CURRENT_SOURCE_DIR}/mbed-os/main.cpp"
+        DEPENDS mbed_os_arm luci_interpreter_micro_arm luci_import_micro_arm "${CMAKE_CURRENT_SOURCE_DIR}/mbed-os/main.cpp" ${MICRO_ARM_BINARY}
         VERBATIM
 )
 add_custom_target(luci_micro_benchmark_arm DEPENDS "${BENCHMARK_BINARY}")

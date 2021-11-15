@@ -117,11 +117,11 @@ target_link_libraries(benchmark mbed_os)
 target_include_directories_mbed(benchmark ${MbedOSSource_DIR})
 
 set(ONE_COMPILER_SRC_DIR "/home/username/SlavikMIPT/ONE/compiler")
-target_link_libraries(mbed_os "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/luci-interpreter/src/libluci_interpreter.a")
+#target_link_libraries(mbed_os "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/luci-interpreter/src/libluci_interpreter.a")
 target_link_libraries(mbed_os "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/luci-interpreter/src/kernels/libluci_interpreter_kernels.a")
-target_link_libraries(mbed_os "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/luci-interpreter/src/kernels/libluci_interpreter_mcu_pal.a")
-target_link_libraries(mbed_os "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/luci-interpreter/src/loader/libluci_interpreter_loader.a")
-target_link_libraries(mbed_os "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/luci-interpreter/src/core/libluci_interpreter_core.a")
+target_link_libraries(mbed_os "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/luci-interpreter/src/kernels/libluci_interpreter_cmsisnn_pal.a")
+#target_link_libraries(mbed_os "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/luci-interpreter/src/loader/libluci_interpreter_loader.a")
+#target_link_libraries(mbed_os "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/luci-interpreter/src/core/libluci_interpreter_core.a")
 
 target_link_libraries(mbed_os "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/loco/libloco.a")
 target_link_libraries(mbed_os "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/locomotiv/liblocomotiv.a")
@@ -136,10 +136,13 @@ target_link_libraries(mbed_os "/home/username/SlavikMIPT/ONE/build/compiler/luci
 target_link_libraries(mbed_os "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/luci/profile/libluci_profile.a")
 target_link_libraries(mbed_os "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/locop/liblocop.a")
 target_link_libraries(mbed_os "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/pp/libpp.a")
+target_link_libraries(mbed_os "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/hermes-std/libhermes_std.a")
+target_link_libraries(mbed_os "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/hermes/libhermes.a")
+target_link_libraries(mbed_os "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/pepper-strcast/libpepper_strcast.a")
 
 target_link_libraries(benchmark "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/luci-interpreter/src/libluci_interpreter.a")
-target_link_libraries(benchmark "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/luci-interpreter/src/kernels/libluci_interpreter_kernels.a")
-target_link_libraries(benchmark "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/luci-interpreter/src/kernels/libluci_interpreter_mcu_pal.a")
+#target_link_libraries(benchmark "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/luci-interpreter/src/kernels/libluci_interpreter_kernels.a")
+#target_link_libraries(benchmark "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/luci-interpreter/src/kernels/libluci_interpreter_cmsisnn_pal.a")
 target_link_libraries(benchmark "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/luci-interpreter/src/loader/libluci_interpreter_loader.a")
 target_link_libraries(benchmark "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/luci-interpreter/src/core/libluci_interpreter_core.a")
 
@@ -156,6 +159,10 @@ target_link_libraries(benchmark "/home/username/SlavikMIPT/ONE/build/compiler/lu
 target_link_libraries(benchmark "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/luci/profile/libluci_profile.a")
 target_link_libraries(benchmark "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/locop/liblocop.a")
 target_link_libraries(benchmark "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/pp/libpp.a")
+target_link_libraries(benchmark "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/hermes-std/libhermes_std.a")
+target_link_libraries(benchmark "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/hermes/libhermes.a")
+target_link_libraries(benchmark "/home/username/SlavikMIPT/ONE/build/compiler/luci-micro/standalone_arm/pepper-strcast/libpepper_strcast.a")
+
 
 target_include_directories(benchmark PRIVATE
         ${ONE_COMPILER_SRC_DIR}/loco/include
@@ -170,6 +177,12 @@ target_include_directories(benchmark PRIVATE
         ${ONE_COMPILER_SRC_DIR}/luci/lang/include/luci/IR
         ${ONE_COMPILER_SRC_DIR}/luci/lang/include/luci/IR/Nodes
         ${ONE_COMPILER_SRC_DIR}/luci-interpreter/include
+        ${ONE_COMPILER_SRC_DIR}/hermes-std/include
+        ${ONE_COMPILER_SRC_DIR}/hermes/include
+        ${ONE_COMPILER_SRC_DIR}/pepper-strcast/include
+        ${ONE_COMPILER_SRC_DIR}/luci/log/include
+        ${ONE_COMPILER_SRC_DIR}/luci/logex/include
+        ${ONE_COMPILER_SRC_DIR}/luci/locop/include
         ${CMAKE_CURRENT_BINARY_DIR}/luci/profile/include
         ${CMAKE_CURRENT_BINARY_DIR}/luci/env/include
         ${CMAKE_CURRENT_BINARY_DIR}/luci/plan/include
@@ -179,7 +192,7 @@ target_include_directories(benchmark PRIVATE
         )
 
 add_custom_command(TARGET benchmark PRE_LINK
-        COMMAND "arm-none-eabi-cpp" -E -P -Wl,--gc-sections -Wl,--wrap,main -Wl,--wrap,_malloc_r -Wl,--wrap,_free_r -Wl,--wrap,_realloc_r -Wl,--wrap,_memalign_r -Wl,--wrap,_calloc_r -Wl,--wrap,exit -Wl,--wrap,atexit -Wl,-n -Wl,--wrap,printf -Wl,--wrap,sprintf -Wl,--wrap,snprintf -Wl,--wrap,vprintf -Wl,--wrap,vsprintf -Wl,--wrap,vsnprintf -Wl,--wrap,fprintf -Wl,--wrap,vfprintf -mcpu=cortex-m7 -mthumb -mfpu=fpv5-sp-d16 -mfloat-abi=softfp -Wall -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -fmessage-length=0 -fexceptions -ffunction-sections -fdata-sections -funsigned-char -MMD -fomit-frame-pointer -Os -DMBED_DEBUG -DMBED_TRAP_ERRORS_ENABLED=1 -DMBED_MINIMAL_PRINTF -mcpu=cortex-m7 -mthumb -mfpu=fpv5-sp-d16 -mfloat-abi=softfp -DMBED_ROM_START=0x8000000 -DMBED_ROM_SIZE=0x200000 -DMBED_ROM1_START=0x200000 -DMBED_ROM1_SIZE=0x200000 -DMBED_RAM_START=0x20010000 -DMBED_RAM_SIZE=0x40000 -DMBED_RAM1_START=0x20000000 -DMBED_RAM1_SIZE=0x10000 -DMBED_BOOT_STACK_SIZE=1024 -DXIP_ENABLE=0 ${MbedOSSource_DIR}/targets/TARGET_STM/TARGET_STM32F7/TARGET_STM32F767xI/TOOLCHAIN_GCC_ARM/STM32F767xI.ld -o ${CMAKE_CURRENT_BINARY_DIR}/benchmark_pp.link_script.ld
+        COMMAND "arm-none-eabi-cpp" -E -P -Wl,--gc-sections -Wl,--wrap,main -Wl,--wrap,_malloc_r -Wl,--wrap,_free_r -Wl,--wrap,_realloc_r -Wl,--wrap,_memalign_r -Wl,--wrap,_calloc_r -Wl,--wrap,exit -Wl,--wrap,atexit -Wl,-n -Wl,--wrap,printf -Wl,--wrap,sprintf -Wl,--wrap,snprintf -Wl,--wrap,vprintf -Wl,--wrap,vsprintf -Wl,--wrap,vsnprintf -Wl,--wrap,fprintf -Wl,--wrap,vfprintf -mcpu=cortex-m7 -mthumb -mfpu=fpv5-sp-d16 -mfloat-abi=softfp -Wall -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -fmessage-length=0 -fexceptions -fno-function-sections -fno-data-sections -funsigned-char -MMD -fomit-frame-pointer -Os -DMBED_DEBUG -DMBED_TRAP_ERRORS_ENABLED=1 -DMBED_MINIMAL_PRINTF -mcpu=cortex-m7 -mthumb -mfpu=fpv5-sp-d16 -mfloat-abi=softfp -DMBED_ROM_START=0x8000000 -DMBED_ROM_SIZE=0x200000 -DMBED_ROM1_START=0x200000 -DMBED_ROM1_SIZE=0x200000 -DMBED_RAM_START=0x20010000 -DMBED_RAM_SIZE=0x40000 -DMBED_RAM1_START=0x20000000 -DMBED_RAM1_SIZE=0x10000 -DMBED_BOOT_STACK_SIZE=1024 -DXIP_ENABLE=0 ${MbedOSSource_DIR}/targets/TARGET_STM/TARGET_STM32F7/TARGET_STM32F767xI/TOOLCHAIN_GCC_ARM/STM32F767xI.ld -o ${CMAKE_CURRENT_BINARY_DIR}/benchmark_pp.link_script.ld
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
         BYPRODUCTS "${CMAKE_CURRENT_BINARY_DIR}/benchmark_pp.link_script.ld"
         )
