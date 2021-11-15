@@ -501,8 +501,6 @@ bool CircleReader::select_subgraph(uint32_t sgindex)
   _native_subgraph = subgraphs->Get(sgindex);
   assert(_native_subgraph != nullptr);
 
-  _tensors_ptr = _native_subgraph->tensors();
-
   return true;
 }
 

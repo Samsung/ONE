@@ -117,9 +117,6 @@ private: // direct API
   using CircleOperatorCodes = VectorWrapper<flatbuffers::Offset<circle::OperatorCode>>;
   using CircleMetadataSet = VectorWrapper<flatbuffers::Offset<circle::Metadata>>;
 
-  using CircleSubGraphsPtr_t = flatbuffers::Vector<flatbuffers::Offset<circle::SubGraph>>;
-  using CircleTensorsPtr_t = flatbuffers::Vector<flatbuffers::Offset<circle::Tensor>>;
-
 public:
   CircleReader() = default;
 
@@ -133,8 +130,6 @@ public: // unpack API
   const std::string &name() const { return _current_subgraph->name; }
   const circle::DataFormat &data_format() const { return _current_subgraph->data_format; }
   const CircleMetadata_t &metadata() const { return _model->metadata; }
-
-  const CircleTensorsPtr_t *tensors_ptr() const { return _tensors_ptr; }
 
   uint32_t num_subgraph() const { return _model->subgraphs.size(); }
 
@@ -164,7 +159,6 @@ private:
   const circle::SubGraphT *_current_subgraph{nullptr};
 
   const circle::Model *_native_model{nullptr};
-  const CircleTensorsPtr_t *_tensors_ptr{nullptr};
   const circle::SubGraph *_native_subgraph{nullptr};
 };
 
