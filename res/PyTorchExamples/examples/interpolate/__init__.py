@@ -3,6 +3,10 @@ import torch.nn as nn
 
 
 # model
+#
+# Notes:
+# - This operation requires minimum 11 onnx opset version
+# - tf_onnx 1.9 fails to convert this model using opcode version 13+, because unsqueeze operation is not supported yet
 class net_interpolate(nn.Module):
     def __init__(self, scale_factor):
         super().__init__()
