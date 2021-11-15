@@ -6,7 +6,7 @@ if (NOT LIBRARY_TYPE)
   set(LIBRARY_TYPE "SHARED")
 endif(NOT LIBRARY_TYPE)
 
-add_library(luci_lang ${LIBRARY_TYPE} ${SOURCES})
+add_library(luci_lang STATIC ${SOURCES})
 target_include_directories(luci_lang PRIVATE src)
 target_include_directories(luci_lang PUBLIC include)
 target_link_libraries(luci_lang PUBLIC loco)

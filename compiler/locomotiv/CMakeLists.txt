@@ -3,7 +3,7 @@ file(GLOB_RECURSE TESTS "src/*.test.cpp")
 list(REMOVE_ITEM SOURCES ${TESTS})
 
 add_library(locomotiv STATIC ${SOURCES})
-set_target_properties(locomotiv PROPERTIES POSITION_INDEPENDENT_CODE ON)
+#set_target_properties(locomotiv PROPERTIES POSITION_INDEPENDENT_CODE ON)
 target_include_directories(locomotiv PUBLIC include)
 target_include_directories(locomotiv PRIVATE src)
 target_link_libraries(locomotiv PUBLIC loco)

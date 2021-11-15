@@ -3,7 +3,7 @@ file(GLOB_RECURSE TESTS "src/*.test.cpp")
 list(REMOVE_ITEM SOURCES ${TESTS})
 
 add_library(hermes_std STATIC ${SOURCES})
-set_target_properties(hermes_std PROPERTIES POSITION_INDEPENDENT_CODE ON)
+#set_target_properties(hermes_std PROPERTIES POSITION_INDEPENDENT_CODE ON)
 target_include_directories(hermes_std PUBLIC include)
 target_link_libraries(hermes_std PUBLIC hermes)
 target_link_libraries(hermes_std PRIVATE pepper_strcast)

@@ -3,7 +3,7 @@ file(GLOB_RECURSE TESTS "src/*.test.cpp")
 list(REMOVE_ITEM SOURCES ${TESTS})
 
 add_library(logo_core STATIC ${SOURCES})
-set_target_properties(logo_core PROPERTIES POSITION_INDEPENDENT_CODE ON)
+#set_target_properties(logo_core PROPERTIES POSITION_INDEPENDENT_CODE ON)
 target_include_directories(logo_core PRIVATE src)
 target_include_directories(logo_core PUBLIC include)
 target_link_libraries(logo_core PUBLIC loco)

@@ -3,7 +3,7 @@ file(GLOB_RECURSE TESTS "src/*.test.cpp")
 list(REMOVE_ITEM SOURCES ${TESTS})
 
 add_library(locop STATIC ${SOURCES})
-set_target_properties(locop PROPERTIES POSITION_INDEPENDENT_CODE ON)
+#set_target_properties(locop PROPERTIES POSITION_INDEPENDENT_CODE ON)
 target_include_directories(locop PUBLIC include)
 target_link_libraries(locop PUBLIC loco)
 # Let's apply nncc common compile options

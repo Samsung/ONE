@@ -3,7 +3,7 @@ file(GLOB_RECURSE TESTS "src/*.test.cpp")
 list(REMOVE_ITEM SOURCES ${TESTS})
 
 add_library(pepper_env STATIC ${SOURCES})
-set_target_properties(pepper_env PROPERTIES POSITION_INDEPENDENT_CODE ON)
+#set_target_properties(pepper_env PROPERTIES POSITION_INDEPENDENT_CODE ON)
 target_include_directories(pepper_env PUBLIC include)
 target_link_libraries(pepper_env PRIVATE nncc_common)
 target_link_libraries(pepper_env PUBLIC nncc_coverage)
