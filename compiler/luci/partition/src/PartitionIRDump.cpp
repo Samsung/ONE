@@ -32,18 +32,18 @@ void dump(std::ostream &os, const PNode *pnode)
 void dump(std::ostream &os, const PGroup *pgroup)
 {
   os << "--- PGroup: " << pgroup->group << std::endl;
-  os << "Input(s): ";
+  os << "Input(s): [ ";
   for (auto &node_in : pgroup->inputs)
     os << node_in->name() << " ";
-  os << std::endl;
+  os << "]" << std::endl;
   for (auto &pnode : pgroup->pnodes)
   {
     dump(os, pnode.get());
   }
-  os << "Output(s): ";
+  os << "Output(s): [ ";
   for (auto &node_out : pgroup->outputs)
     os << node_out->name() << " ";
-  os << std::endl;
+  os << "]" << std::endl;
 }
 
 void dump(std::ostream &os, const PGroups *pgroups)
@@ -57,7 +57,8 @@ void dump(std::ostream &os, const PGroups *pgroups)
   {
     auto node = it->first;
     auto group = it->second;
-    os << "  Node: " << node << "(" << node->name() << "): " << group << std::endl;
+    os << "  Node: " << node << "(" << luci::opcode_name(node) << "," << node->name()
+       << "): " << group << std::endl;
   }
 }
 
