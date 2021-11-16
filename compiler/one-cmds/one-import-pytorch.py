@@ -28,7 +28,8 @@ import tempfile
 import torch
 import onnx
 import onnx_tf
-import numpy as np
+import json
+import zipfile
 
 import utils as _utils
 
@@ -172,11 +173,26 @@ def _convert(args):
             tmpdir = os.path.dirname(logfile_path)
         # convert pytorch to onnx model
         input_path = getattr(args, 'input_path')
-        if getattr(args, 'python_path') is None:
+        if input_path[-4:] == '.mar':
+            mar_dir_path = os.path.join(tmpdir, 'mar')
+            with zipfile.ZipFile(input_path) as zip_input:
+                zip_input.extractall(path = mar_dir_path)
+            manifest_path = os.path.join(mar_dir_path, 'MAR-INF/MANIFEST.json')
+            with open(manifest_path) as manifest_file:
+                manifest = json.load(manifest_file)
+            serialized_file = os.path.join(mar_dir_path, manifest['model']['serializedFile'])
+            model_file = None
+            if 'modelFile' in manifest['model']:
+                model_file = os.path.join(mar_dir_path, manifest['model']['modelFile'])
+        else:
+            serialized_file = input_path
+            model_file = getattr(args, 'python_path')
+
+        if model_file is None:
             # assuming this is a pytorch script
             f.write(('Trying to load TorchScript model\n').encode())
             try:
-                pytorch_model = torch.jit.load(input_path)
+                pytorch_model = torch.jit.load(serialized_file)
             except RuntimeError as e:
                 f.write((str(e) + '\n').encode())
                 f.write('Failed to import input file. Maybe this it contains only weights? Try pass "python_path" argument\n'.encode())
@@ -184,7 +200,7 @@ def _convert(args):
             f.write(('TorchScript model is loaded\n').encode())
         else:
             f.write(('Trying to load saved model\n').encode())
-            python_model_path = os.path.abspath(getattr(args, 'python_path'))
+            python_model_path = os.path.abspath(model_file)
             module_name = os.path.basename(python_model_path)
             module_dir = os.path.dirname(python_model_path)
             sys.path.append(module_dir)
@@ -202,7 +218,7 @@ def _convert(args):
             # questionable construction
             _merge_module(python_model_module)
             f.write(('Model python module is merged into main environment\n').encode())
-            pytorch_model = torch.load(input_path)
+            pytorch_model = torch.load(serialized_file)
             f.write(('Pytorch model loaded\n').encode())
 
         input_shapes = _parse_shapes(getattr(args, 'input_shapes'))
@@ -211,9 +227,12 @@ def _convert(args):
         if len(input_shapes) != len(input_types):
             raise ValueError('number of input shapes and input types must be equal')
 
+        print(zip(input_shapes, input_types))
         sample_inputs = []
         for input_spec in zip(input_shapes, input_types):
-           sample_inputs += torch.ones(input_spec[0], dtype = input_spec[1])
+            print(input_spec)
+            sample_inputs += [torch.ones(input_spec[0], dtype = input_spec[1])]
+        print(len(sample_inputs))
 
         sample_outputs = pytorch_model(*sample_inputs)
         f.write(('Acquired sample outputs\n').encode())
@@ -235,6 +254,7 @@ def _convert(args):
                     opset_version=onnx_opset_version
                 )
                 onnx_saved = True
+                break
             except:
                 f.write(('attempt failed\n').encode())
 
