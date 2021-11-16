@@ -154,25 +154,30 @@ def main():
     config = _parse_cfg(args)
 
     # verify configuration file
-    drivers = [
-        'one-import-tf', 'one-import-tflite', 'one-import-bcq', 'one-import-onnx',
-        'one-optimize', 'one-quantize', 'one-pack', 'one-codegen'
+    import_drivers_dict = _utils._detect_one_import_drivers()
+    other_drivers = [
+        'one-optimize', 'one-quantize', 'one-pack', 'one-codegen', 'one-profile'
     ]
-    _verify_cfg(drivers, config)
+    _verify_cfg(import_drivers_dict, config)
 
     # verify optimization option file
     _verify_opt(args)
 
     # get sections to run
     section_to_run = []
-    for d in drivers:
+    for d in list(import_drivers_dict) + other_drivers:
         if _is_available_driver(config, d):
             section_to_run.append(d)
 
     # run
     dir_path = os.path.dirname(os.path.realpath(__file__))
     for section in section_to_run:
-        driver_path = os.path.join(dir_path, _get_driver_name(section))
+        if section in import_drivers_dict:
+            # we already has driver name in dict
+            driver_name = import_drivers_dict[section]
+        else:
+            driver_name = _get_driver_name(section)
+        driver_path = os.path.join(dir_path, driver_name)
         cmd = [driver_path, '--config', getattr(args, 'config'), '--section', section]
         if section == 'one-optimize' and _utils._is_valid_attr(args, 'O'):
             cmd += ['-O', getattr(args, 'O')]

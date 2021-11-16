@@ -33,6 +33,10 @@ import utils as _utils
 sys.tracebacklimit = 0
 
 
+def get_driver_cfg_section():
+    return "one-import-onnx"
+
+
 def _get_parser():
     parser = argparse.ArgumentParser(
         description='command line tool to convert ONNX to circle')

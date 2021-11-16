@@ -104,10 +104,6 @@ def _verify_arg(parser, args):
 
 def _get_driver_name(driver_name):
     return {
-        'one-import-bcq': 'one-import-bcq',
-        'one-import-tf': 'one-import-tf',
-        'one-import-tflite': 'one-import-tflite',
-        'one-import-onnx': 'one-import-onnx',
         'one-optimize': 'one-optimize',
         'one-quantize': 'one-quantize',
         'one-pack': 'one-pack',
@@ -130,19 +126,15 @@ def _is_available_driver(config, driver_name):
         'onecc', driver_name)
 
 
-def _verify_cfg(driver_list, config):
+def _verify_cfg(import_driver_list, config):
     if not config.has_section('onecc'):
         raise ImportError('[onecc] section is required in configuration file')
 
     import_driver_cnt = 0
-    if _is_available_driver(config, 'one-import-tf'):
-        import_driver_cnt += 1
-    if _is_available_driver(config, 'one-import-tflite'):
-        import_driver_cnt += 1
-    if _is_available_driver(config, 'one-import-bcq'):
-        import_driver_cnt += 1
-    if _is_available_driver(config, 'one-import-onnx'):
-        import_driver_cnt += 1
+    for d in import_driver_list:
+        if _is_available_driver(config, d):
+            import_driver_cnt += 1
+
     if import_driver_cnt > 1:
         raise AssertionError('Only one import-* driver can be executed')
 
@@ -170,22 +162,26 @@ def main():
     config = _parse_cfg(args)
 
     # verify configuration file
-    drivers = [
-        'one-import-tf', 'one-import-tflite', 'one-import-bcq', 'one-import-onnx',
+    import_drivers_dict = _utils._detect_one_import_drivers()
+    other_drivers = [
         'one-optimize', 'one-quantize', 'one-pack', 'one-codegen', 'one-profile'
     ]
-    _verify_cfg(drivers, config)
+    _verify_cfg(import_drivers_dict, config)
 
     # get sections to run
     section_to_run = []
-    for d in drivers:
+    for d in list(import_drivers_dict) + other_drivers:
         if _is_available_driver(config, d):
             section_to_run.append(d)
 
     # run
     dir_path = os.path.dirname(os.path.realpath(__file__))
     for section in section_to_run:
-        driver_name = _get_driver_name(section)
+        if section in import_drivers_dict:
+            # we already has driver name in dict
+            driver_name = import_drivers_dict[section]
+        else:
+            driver_name = _get_driver_name(section)
         options = ['--config', getattr(args, 'config'), '--section', section]
         if _utils._is_valid_attr(args, 'verbose'):
             options.append('--verbose')
