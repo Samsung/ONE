@@ -103,13 +103,6 @@ template <typename T> VectorWrapper<T> wrap(const flatbuffers::Vector<T> *vec)
  */
 class CircleReader
 {
-private: // unpack API
-  using CircleBuffers_t = std::vector<std::unique_ptr<circle::BufferT>>;
-  using CircleTensors_t = std::vector<std::unique_ptr<circle::TensorT>>;
-  using CircleOperators_t = std::vector<std::unique_ptr<circle::OperatorT>>;
-  using CircleOperatorCodes_t = std::vector<std::unique_ptr<circle::OperatorCodeT>>;
-  using CircleMetadata_t = std::vector<std::unique_ptr<circle::MetadataT>>;
-
 private: // direct API
   using CircleBuffers = VectorWrapper<flatbuffers::Offset<circle::Buffer>>;
   using CircleTensors = VectorWrapper<flatbuffers::Offset<circle::Tensor>>;
@@ -119,20 +112,6 @@ private: // direct API
 
 public:
   CircleReader() = default;
-
-public: // unpack API
-  const CircleOperatorCodes_t &opcodes() const { return _model->operator_codes; }
-  const CircleBuffers_t &buffers() const { return _model->buffers; }
-  const CircleTensors_t &tensors() const { return _current_subgraph->tensors; }
-  const CircleOperators_t &operators() const { return _current_subgraph->operators; }
-  const std::vector<int32_t> &inputs() const { return _current_subgraph->inputs; }
-  const std::vector<int32_t> &outputs() const { return _current_subgraph->outputs; }
-  const std::string &name() const { return _current_subgraph->name; }
-  const circle::DataFormat &data_format() const { return _current_subgraph->data_format; }
-  const CircleMetadata_t &metadata() const { return _model->metadata; }
-
-  circle::BuiltinOperator builtin_code(const circle::OperatorT &op) const;
-  std::string opcode_name(const circle::OperatorT &op) const;
 
 public: // direct API
   CircleOperatorCodes native_opcodes() const { return wrap(_native_model->operator_codes()); }
@@ -155,9 +134,6 @@ public:
   bool select_subgraph(uint32_t subgraph);
 
 private:
-  std::unique_ptr<const circle::ModelT> _model;
-  const circle::SubGraphT *_current_subgraph{nullptr};
-
   const circle::Model *_native_model{nullptr};
   const circle::SubGraph *_native_subgraph{nullptr};
 };
