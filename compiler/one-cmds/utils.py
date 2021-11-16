@@ -372,6 +372,13 @@ def _get_optimization_list(get_name=False):
 
 
 def _detect_one_import_drivers():
+    """Looks for available import drivers
+
+    Returns:
+    dict: each entry is related to single detected driver,
+          key is a config section name, value is a driver name
+
+    """
     import_drivers_dict = {}
     bin_dir = os.path.dirname(os.path.realpath(__file__))
     for module_name in os.listdir(bin_dir):
