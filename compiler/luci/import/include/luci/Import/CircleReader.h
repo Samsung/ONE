@@ -35,19 +35,10 @@
 namespace luci
 {
 
-bool is_valid(const circle::OperatorCodeT &opcode);
 bool is_valid(const circle::OperatorCode *opcode);
-
-bool is_custom(const circle::OperatorCodeT &opcode);
 bool is_custom(const circle::OperatorCode *opcode);
-
-std::string opcode_name(const circle::OperatorCodeT &opcode);
 std::string opcode_name(const circle::OperatorCode *opcode);
-
-const char *tensor_name(const circle::TensorT &tensor);
 const char *tensor_name(const circle::Tensor *tensor);
-
-const circle::QuantizationParametersT *tensor_quantization(const circle::TensorT &tensor);
 const circle::QuantizationParameters *tensor_quantization(const circle::Tensor *tensor);
 
 loco::DataType luci_datatype(circle::TensorType type);
@@ -57,12 +48,9 @@ MirrorPadMode luci_mirrorpad_mode(const circle::MirrorPadMode mode);
 luci::CircleFullyConnected::WeightsFormat
 luci_weights_format(const circle::FullyConnectedOptionsWeightsFormat weights_format);
 std::unique_ptr<CircleQuantParam>
-luci_quantparam(const circle::QuantizationParametersT *quantization);
-std::unique_ptr<CircleQuantParam>
 luci_quantparam(const circle::QuantizationParameters *quantization);
 
 /// @brief Copy common tensor attributes such as name, type, etc. to node.
-void copy_tensor_attributes(const circle::TensorT &tensor, CircleNode *node);
 void copy_tensor_attributes(const circle::Tensor *tensor, CircleNode *node);
 
 std::string fb_string2std_string(const flatbuffers::String *fb_str);
