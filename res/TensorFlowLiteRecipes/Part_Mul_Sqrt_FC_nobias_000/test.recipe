@@ -1,0 +1,63 @@
+operand {
+  name: "in1"
+  type: FLOAT32
+  shape { dim: 2 dim: 4 }
+}
+operand {
+  name: "in2"
+  type: FLOAT32
+  shape { dim: 2 dim: 4 }
+}
+operand {
+  name: "mul"
+  type: FLOAT32
+  shape { dim: 2 dim: 4 }
+}
+operand {
+  name: "weight"
+  type: FLOAT32
+  shape { dim: 4 dim: 4 }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "1.0"
+  }
+}
+operand {
+  name: "sqrtout"
+  type: FLOAT32
+  shape { dim: 2 dim: 4 }
+}
+operand {
+  name: "fcout"
+  type: FLOAT32
+  shape { dim: 2 dim: 4 }
+}
+operation {
+  type: "Mul"
+  input: "in1"
+  input: "in2"
+  output: "mul"
+  mul_options {
+    activation: NONE
+  }
+}
+operation {
+  type: "Sqrt"
+  input: "mul"
+  output: "sqrtout"
+}
+operation {
+  type: "FullyConnected"
+  fullyconnected_options {
+    activation: NONE
+  }
+  input: "mul"
+  input: "weight"
+  input: ""
+  output: "fcout"
+}
+input: "in1"
+input: "in2"
+output: "fcout"
+output: "sqrtout"
