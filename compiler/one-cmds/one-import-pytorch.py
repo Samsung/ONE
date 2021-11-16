@@ -174,15 +174,21 @@ def _convert(args):
         input_path = getattr(args, 'input_path')
         if getattr(args, 'python_path') is None:
             # assuming this is a pytorch script
+            f.write(('Trying to load TorchScript model\n').encode())
             try:
                 pytorch_model = torch.jit.load(input_path)
             except RuntimeError as e:
-                f.write(str(e))
-                f.write('Failed to import input file. Maybe this it contains only weights? Try pass "python_path" argument')
+                f.write((str(e) + '\n').encode())
+                f.write('Failed to import input file. Maybe this it contains only weights? Try pass "python_path" argument\n'.encode())
                 raise
+            f.write(('TorchScript model is loaded\n').encode())
         else:
-            python_model_path = getattr(args, 'python_path')
+            f.write(('Trying to load saved model\n').encode())
+            python_model_path = os.path.abspath(getattr(args, 'python_path'))
             module_name = os.path.basename(python_model_path)
+            module_dir = os.path.dirname(python_model_path)
+            sys.path.append(module_dir)
+            f.write(('Trying to load given python module\n').encode())
             module_loader = importlib.machinery.SourceFileLoader(module_name, python_model_path)
             module_spec = importlib.util.spec_from_loader(module_name, module_loader)
             python_model_module = importlib.util.module_from_spec(module_spec)
@@ -190,28 +196,50 @@ def _convert(args):
             try:
                 module_loader.exec_module(python_model_module)
             except:
-                raise ValueError("Failed to execute given python model file")
+                raise ValueError('Failed to execute given python model file')
 
+            f.write(('Model python module is loaded\n').encode())
             # questionable construction
             _merge_module(python_model_module)
-            pytorch_model = torch.load(input_path)()
+            f.write(('Model python module is merged into main environment\n').encode())
+            pytorch_model = torch.load(input_path)
+            f.write(('Pytorch model loaded\n').encode())
 
         input_shapes = _parse_shapes(getattr(args, 'input_shapes'))
         input_types = _parse_types(getattr(args, 'input_types'))
 
         if len(input_shapes) != len(input_types):
-            raise ValueError("number of input shapes and input types must be equal")
+            raise ValueError('number of input shapes and input types must be equal')
 
         sample_inputs = []
         for input_spec in zip(input_shapes, input_types):
            sample_inputs += torch.ones(input_spec[0], dtype = input_spec[1])
 
         sample_outputs = pytorch_model(*sample_inputs)
+        f.write(('Acquired sample outputs\n').encode())
 
         onnx_output_name = os.path.splitext(os.path.basename(
                                     args.output_path))[0] + '.onnx'
         onnx_output_path = os.path.join(tmpdir, onnx_output_name)
-        torch.onnx.export(pytorch_model, tuple(sample_inputs), onnx_output_path, example_outputs=sample_outputs)
+
+        onnx_saved = False
+        # some operations are not supported in early opset versions, try several
+        for onnx_opset_version in range(9, 15):
+            f.write(('Trying to save onnx model using opset version ' + str(onnx_opset_version) + '\n').encode())
+            try:
+                torch.onnx.export(
+                    pytorch_model,
+                    tuple(sample_inputs),
+                    onnx_output_path,
+                    example_outputs=sample_outputs,
+                    opset_version=onnx_opset_version
+                )
+                onnx_saved = True
+            except:
+                f.write(('attempt failed\n').encode())
+
+        if not onnx_saved:
+            raise ValueError('Failed to save temporary onnx model')
 
         # convert onnx to tf saved mode
         onnx_model = onnx.load(onnx_output_path)
@@ -265,4 +293,5 @@ def main():
 
 
 if __name__ == '__main__':
-    _utils._safemain(main, __file__)
+    main()
+    # _utils._safemain(main, __file__)
