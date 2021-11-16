@@ -48,6 +48,18 @@ void fill_in_tensor(std::vector<char> &data, loco::DataType dtype)
         reinterpret_cast<float *>(data.data())[i] = 123.f;
       }
       break;
+    case loco::DataType::S8:
+      for (int i = 0; i < data.size() / sizeof(int8_t); ++i)
+      {
+        reinterpret_cast<int8_t *>(data.data())[i] = 123;
+      }
+      break;
+    case loco::DataType::U8:
+      for (int i = 0; i < data.size() / sizeof(uint8_t); ++i)
+      {
+        reinterpret_cast<uint8_t *>(data.data())[i] = 123;
+      }
+      break;
     default:
       assert(false);
   }
@@ -155,9 +167,9 @@ int main()
 //    if (uint32_t num = serial_port.read(buf, sizeof(buf)))
 //    {
 //      // Toggle the LED.
-      led = !led;
+    led = !led;
 
-      // Echo the input back to the terminal.
+    // Echo the input back to the terminal.
 //      serial_port.write(buf, num);
 //    }
   }
