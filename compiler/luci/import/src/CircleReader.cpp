@@ -413,16 +413,6 @@ std::string fb_string2std_string(const flatbuffers::String *fb_str)
   return fb_str == nullptr ? "" : fb_str->str();
 }
 
-circle::BuiltinOperator CircleReader::builtin_code(const circle::OperatorT &op) const
-{
-  const auto &op_codes = opcodes();
-  uint32_t index = op.opcode_index;
-  assert(index < op_codes.size());
-  const circle::OperatorCodeT &opcode = *op_codes[index];
-
-  return opcode.builtin_code;
-}
-
 circle::BuiltinOperator CircleReader::builtin_code(const circle::Operator *op) const
 {
   assert(op != nullptr);
@@ -434,23 +424,6 @@ circle::BuiltinOperator CircleReader::builtin_code(const circle::Operator *op) c
   assert(opcode != nullptr);
 
   return opcode->builtin_code();
-}
-
-std::string CircleReader::opcode_name(const circle::OperatorT &op) const
-{
-  const auto &op_codes = opcodes();
-  uint32_t index = op.opcode_index;
-  assert(index < op_codes.size());
-  const circle::OperatorCodeT &opcode = *op_codes[index];
-
-  if (!is_valid(opcode))
-  {
-    std::ostringstream oss;
-    oss << "(invalid: " << index << ")";
-    return oss.str();
-  }
-
-  return ::luci::opcode_name(opcode);
 }
 
 std::string CircleReader::opcode_name(const circle::Operator *op) const
@@ -476,8 +449,6 @@ bool CircleReader::parse(const circle::Model *model)
 {
   assert(model != nullptr);
 
-  _model.reset(model->UnPack());
-
   // for direct pointer access
   _native_model = model;
 
@@ -486,13 +457,11 @@ bool CircleReader::parse(const circle::Model *model)
 
 bool CircleReader::select_subgraph(uint32_t sgindex)
 {
-  if (_model->subgraphs.size() <= sgindex)
+  if (num_subgraph() <= sgindex)
   {
     assert(false);
     return false;
   }
-
-  _current_subgraph = _model->subgraphs[sgindex].get();
 
   // for direct pointer access
   auto subgraphs = _native_model->subgraphs();
