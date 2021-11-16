@@ -123,6 +123,48 @@ private:
 namespace
 {
 
+std::string group_from_partition(const luci::CircleNode *node,
+                                 const luci::PartitionTable &partition)
+{
+  LOGGER(l);
+
+  auto group = partition.default_group;
+
+  std::string opcodename; // opcodename or opname
+
+  switch (partition.comply)
+  {
+    case luci::PartitionTable::COMPLY::OPCODE:
+    {
+      opcodename = luci::opcode_name(node);
+      assert(!opcodename.empty());
+
+      auto it = partition.byopcodes.find(opcodename);
+      if (it != partition.byopcodes.end())
+        group = it->second;
+      break;
+    }
+    case luci::PartitionTable::COMPLY::OPNAME:
+    {
+      opcodename = node->name();
+      assert(!opcodename.empty());
+
+      auto it = partition.byopnames.find(opcodename);
+      if (it != partition.byopnames.end())
+        group = it->second;
+      break;
+    }
+
+    default:
+      throw std::runtime_error("Unsupported partition.comply");
+  }
+
+  INFO(l) << "Op: " << node->name() << ": " << opcodename << ", " << node << ", " << group
+          << std::endl;
+
+  return group;
+}
+
 void append(luci::CircleNode *node, luci::PGroups *pgroups, const std::string &group, uint32_t idx)
 {
   auto pgroup = std::make_unique<luci::PGroup>();
@@ -182,39 +224,7 @@ std::unique_ptr<luci::PGroups> produce_pgroups(const luci::Module *source,
     // check if node is normal node that we are interested
     if (check_allocate_partition(node))
     {
-      auto group = partition.default_group;
-
-      std::string opcodename; // opcodename or opname
-
-      switch (partition.comply)
-      {
-        case luci::PartitionTable::COMPLY::OPCODE:
-        {
-          opcodename = luci::opcode_name(node);
-          assert(!opcodename.empty());
-
-          auto it = partition.byopcodes.find(opcodename);
-          if (it != partition.byopcodes.end())
-            group = it->second;
-          break;
-        }
-        case luci::PartitionTable::COMPLY::OPNAME:
-        {
-          opcodename = node->name();
-          assert(!opcodename.empty());
-
-          auto it = partition.byopnames.find(opcodename);
-          if (it != partition.byopnames.end())
-            group = it->second;
-          break;
-        }
-
-        default:
-          throw std::runtime_error("Unsupported partition.comply");
-      }
-
-      INFO(l) << "Op: " << node->name() << ": " << opcodename << ", " << node << ", " << group
-              << std::endl;
+      auto group = group_from_partition(node, partition);
 
       append(node, pgroups.get(), group, idx);
     }
