@@ -30,7 +30,7 @@ bool CircleScatterNdGraphBuilder::validate(const ValidateArgs &args) const
 
   const auto &inputs = args.op.inputs;
   // indices must have the same type as shape
-  const auto tensors = args.reader.native_tensors();
+  const auto tensors = args.reader.tensors();
 
   assert(tensors[inputs.at(0)] != nullptr && tensors[inputs.at(2)] != nullptr);
   if (tensors[inputs.at(0)]->type() != tensors[inputs.at(2)]->type())

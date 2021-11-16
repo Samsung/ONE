@@ -42,7 +42,7 @@ bool CircleCastGraphBuilder::validate(const ValidateArgs &args) const
   const auto *options = args.op.builtin_options.AsCastOptions();
   if (options != nullptr)
   {
-    const auto tensors = args.reader.native_tensors();
+    const auto tensors = args.reader.tensors();
     const auto output_tensor = tensors[outputs[0]];
     assert(output_tensor != nullptr);
     auto name = tensor_name(output_tensor);

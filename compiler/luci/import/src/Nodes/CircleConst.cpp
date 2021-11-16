@@ -113,7 +113,7 @@ CircleConst *create_circleconst(GraphBuilderContext *context, int32_t tensor_ind
 
   auto graph = context->graph();
   auto reader = context->reader();
-  const auto tensors = reader->native_tensors();
+  const auto tensors = reader->tensors();
   const auto const_tensor = tensors[tensor_index];
   assert(const_tensor != nullptr);
 
