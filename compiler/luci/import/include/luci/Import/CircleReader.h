@@ -104,7 +104,7 @@ public:
 public: // direct API
   CircleOperatorCodes native_opcodes() const { return wrap(_native_model->operator_codes()); }
   CircleBuffers native_buffers() const { return wrap(_native_model->buffers()); }
-  CircleTensors native_tensors() const { return wrap(_native_subgraph->tensors()); }
+  CircleTensors tensors() const { return wrap(_native_subgraph->tensors()); }
   CircleOperators native_operators() const { return wrap(_native_subgraph->operators()); }
   VectorWrapper<int32_t> native_inputs() const { return wrap(_native_subgraph->inputs()); }
   VectorWrapper<int32_t> native_outputs() const { return wrap(_native_subgraph->outputs()); }

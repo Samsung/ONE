@@ -51,7 +51,7 @@ void convert_graph(const luci::GraphBuilderSource &source, luci::CircleReader &r
   luci::GraphBuilderContext gb_context(graph, &reader, nodefinder.get(), tensoroutputs.get());
 
   const auto operators = reader.native_operators();
-  const auto tensors = reader.native_tensors();
+  const auto tensors = reader.tensors();
   assert(!tensors.null());
   auto circle_metadata = std::make_unique<luci::CircleImportMetadata>(reader);
 

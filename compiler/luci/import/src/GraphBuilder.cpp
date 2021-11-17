@@ -29,7 +29,7 @@ CircleNode *GraphBuilder::build(const circle::OperatorT &op, GraphBuilderContext
 
   const std::vector<int32_t> &inputs = op.inputs;
   const std::vector<int32_t> &outputs = op.outputs;
-  const auto tensors = context->reader()->native_tensors();
+  const auto tensors = context->reader()->tensors();
   const auto opcodes = context->reader()->native_opcodes();
   assert(!tensors.null());
 
