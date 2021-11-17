@@ -21,8 +21,8 @@
 
 import argparse
 import importlib
+import inspect
 import os
-import subprocess
 import sys
 import tempfile
 import torch
@@ -161,6 +161,30 @@ def _merge_module(module):
     globals().update({k: getattr(module, k) for k in names})
 
 
+def list_classes_from_module(module, parent_class=None):
+    """
+    Parse user defined module to get all model service classes in it.
+    :param module:
+    :param parent_class:
+    :return: List of model service class definitions
+    """
+
+    # Parsing the module to get all defined classes
+    classes = [
+        cls[1]
+        for cls in inspect.getmembers(
+            module,
+            lambda member: inspect.isclass(member)
+            and member.__module__ == module.__name__,
+        )
+    ]
+    # filter classes that is subclass of parent_class
+    if parent_class is not None:
+        return [c for c in classes if issubclass(c, parent_class)]
+
+    return classes
+
+
 def _convert(args):
     _apply_verbosity(args.verbose)
 
@@ -234,6 +258,21 @@ def _convert(args):
             sample_inputs += [torch.ones(input_spec[0], dtype = input_spec[1])]
         print(len(sample_inputs))
 
+        if not callable(pytorch_model):
+            f.write(('Trying to find model class and fill it`s state dict\n').encode())
+            model_class_definitions = list_classes_from_module(python_model_module)
+            if len(model_class_definitions) != 1:
+                raise ValueError(
+                    "Expected only one class as model definition. {}".format(
+                    model_class_definitions
+                )
+            )
+            pytorch_model_class = model_class_definitions[0]
+            model = pytorch_model_class()
+            model.load_state_dict(pytorch_model)
+            pytorch_model = model
+
+        f.write(('Trying to inference loaded model').encode())
         sample_outputs = pytorch_model(*sample_inputs)
         f.write(('Acquired sample outputs\n').encode())
 
