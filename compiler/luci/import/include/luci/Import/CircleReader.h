@@ -102,15 +102,15 @@ public:
   CircleReader() = default;
 
 public: // direct API
-  CircleOperatorCodes native_opcodes() const { return wrap(_native_model->operator_codes()); }
-  CircleBuffers native_buffers() const { return wrap(_native_model->buffers()); }
+  CircleOperatorCodes opcodes() const { return wrap(_native_model->operator_codes()); }
+  CircleBuffers buffers() const { return wrap(_native_model->buffers()); }
   CircleTensors tensors() const { return wrap(_native_subgraph->tensors()); }
-  CircleOperators native_operators() const { return wrap(_native_subgraph->operators()); }
+  CircleOperators operators() const { return wrap(_native_subgraph->operators()); }
   VectorWrapper<int32_t> inputs() const { return wrap(_native_subgraph->inputs()); }
   VectorWrapper<int32_t> outputs() const { return wrap(_native_subgraph->outputs()); }
   std::string name() const { return fb_string2std_string(_native_subgraph->name()); }
   circle::DataFormat data_format() const { return _native_subgraph->data_format(); }
-  CircleMetadataSet native_metadata() const { return wrap(_native_model->metadata()); }
+  CircleMetadataSet metadata() const { return wrap(_native_model->metadata()); }
 
   uint32_t num_subgraph() const { return wrap(_native_model->subgraphs()).size(); }
 
