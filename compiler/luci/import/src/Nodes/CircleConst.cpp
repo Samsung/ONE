@@ -117,8 +117,8 @@ CircleConst *create_circleconst(GraphBuilderContext *context, int32_t tensor_ind
   const auto const_tensor = tensors[tensor_index];
   assert(const_tensor != nullptr);
 
-  assert(reader->native_buffers()[const_tensor->buffer()] != nullptr);
-  const auto buffer = wrap(reader->native_buffers()[const_tensor->buffer()]->data());
+  assert(reader->buffers()[const_tensor->buffer()] != nullptr);
+  const auto buffer = wrap(reader->buffers()[const_tensor->buffer()]->data());
   const auto const_dims = wrap(const_tensor->shape()); // in NHWC
   if (const_dims.size() == 0 && buffer.empty())
   {

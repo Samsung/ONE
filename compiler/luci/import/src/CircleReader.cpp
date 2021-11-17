@@ -334,7 +334,7 @@ circle::BuiltinOperator CircleReader::builtin_code(const circle::Operator *op) c
 {
   assert(op != nullptr);
 
-  const auto op_codes = native_opcodes();
+  const auto op_codes = opcodes();
   uint32_t index = op->opcode_index();
   assert(index < op_codes.size());
   const auto opcode = op_codes[index];
@@ -347,7 +347,7 @@ std::string CircleReader::opcode_name(const circle::Operator *op) const
 {
   assert(op != nullptr);
 
-  const auto op_codes = native_opcodes();
+  const auto op_codes = opcodes();
   uint32_t index = op->opcode_index();
   assert(index < op_codes.size());
   const auto opcode = op_codes[index];
