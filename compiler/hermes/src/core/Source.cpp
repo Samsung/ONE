@@ -60,10 +60,9 @@ void Source::deactivate(void)
 
 void Source::reload(const Config *c) { c->configure(this, _setting); }
 
-std::unique_ptr<MessageBuffer> Source::buffer(const Severity &) const
+std::unique_ptr<MessageBuffer> Source::buffer(const Severity &severity) const
 {
-  // TODO Pass Severity
-  return std::make_unique<MessageBuffer>(_bus);
+  return std::make_unique<MessageBuffer>(_bus, severity.category());
 }
 
 } // namespace hermes
