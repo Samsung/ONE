@@ -96,6 +96,48 @@ bool is_input_same(const luci::PGroup *pgroup, const luci::PGroups *pgroups)
 }
 
 /**
+ * @brief return true if there is only one output and is fed to same group of nodes
+ * @note  pgroups is used to find group of pgroup
+ *        ex)
+ *                     /-- pgroup_user_1 (grp_1)
+ *           --- pgroup
+ *                     \-- pgroup_user_2 (grp_2)
+ *
+ *           return false if grp_1 != grp_2
+ */
+bool is_output_same(const luci::PGroup *pgroup, const luci::PGroups *pgroups)
+{
+  assert(pgroups != nullptr);
+  assert(pgroup != nullptr);
+
+  std::string group;
+  for (auto &output : pgroup->outputs)
+  {
+    // get output_group
+    auto output_group = pgroups->group_of(output);
+    assert(not output_group.empty());
+    if (output_group.empty())
+      output_group = pgroups->default_group;
+
+    // find all PGroup that uses output
+    for (auto &pgroup_user : pgroups->pgroups)
+    {
+      for (auto &user_inputs : pgroup_user->inputs)
+      {
+        if (output == user_inputs)
+        {
+          // OK, these are connected, check group is same
+          if (pgroup_user->group != output_group)
+            return false;
+        }
+      }
+    }
+  }
+
+  return true;
+}
+
+/**
  * @brief merge pgroup into pgroup_i
  * @note  output of pgroup_i should be input of pgroup
  */
@@ -190,6 +232,9 @@ std::unique_ptr<luci::PGroups> merge_pgroups(const luci::PGroups *s_pgroups)
           continue;
         // skip if there are multiple inputs but inputs differ in group
         if (!is_input_same(pgroup.get(), d_pgroups.get()))
+          continue;
+        // skip if pgroup has different group for other users of pgroup_i
+        if (!is_output_same(pgroup_i.get(), d_pgroups.get()))
           continue;
         // TODO add more condition may be needed
 
