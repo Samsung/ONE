@@ -102,17 +102,17 @@ public:
   CircleReader() = default;
 
 public: // direct API
-  CircleOperatorCodes opcodes() const { return wrap(_native_model->operator_codes()); }
-  CircleBuffers buffers() const { return wrap(_native_model->buffers()); }
-  CircleTensors tensors() const { return wrap(_native_subgraph->tensors()); }
-  CircleOperators operators() const { return wrap(_native_subgraph->operators()); }
-  VectorWrapper<int32_t> inputs() const { return wrap(_native_subgraph->inputs()); }
-  VectorWrapper<int32_t> outputs() const { return wrap(_native_subgraph->outputs()); }
-  std::string name() const { return fb_string2std_string(_native_subgraph->name()); }
-  circle::DataFormat data_format() const { return _native_subgraph->data_format(); }
-  CircleMetadataSet metadata() const { return wrap(_native_model->metadata()); }
+  CircleOperatorCodes opcodes() const { return wrap(_model->operator_codes()); }
+  CircleBuffers buffers() const { return wrap(_model->buffers()); }
+  CircleTensors tensors() const { return wrap(_current_subgraph->tensors()); }
+  CircleOperators operators() const { return wrap(_current_subgraph->operators()); }
+  VectorWrapper<int32_t> inputs() const { return wrap(_current_subgraph->inputs()); }
+  VectorWrapper<int32_t> outputs() const { return wrap(_current_subgraph->outputs()); }
+  std::string name() const { return fb_string2std_string(_current_subgraph->name()); }
+  circle::DataFormat data_format() const { return _current_subgraph->data_format(); }
+  CircleMetadataSet metadata() const { return wrap(_model->metadata()); }
 
-  uint32_t num_subgraph() const { return wrap(_native_model->subgraphs()).size(); }
+  uint32_t num_subgraph() const { return wrap(_model->subgraphs()).size(); }
 
   circle::BuiltinOperator builtin_code(const circle::Operator *op) const;
   std::string opcode_name(const circle::Operator *op) const;
@@ -122,8 +122,8 @@ public:
   bool select_subgraph(uint32_t subgraph);
 
 private:
-  const circle::Model *_native_model{nullptr};
-  const circle::SubGraph *_native_subgraph{nullptr};
+  const circle::Model *_model{nullptr};
+  const circle::SubGraph *_current_subgraph{nullptr};
 };
 
 } // namespace luci
