@@ -3,7 +3,6 @@
 # Gather test scripts
 set(EXAMPLES_DIR "${NNAS_PROJECT_SOURCE_DIR}/res/PyTorchExamples/examples")
 file(GLOB TEST_EXAMPLES RELATIVE "${EXAMPLES_DIR}" "${EXAMPLES_DIR}/*")
-message(${TEST_EXAMPLES})
 
 set(TEST_DST test/onnx-operations)
 
@@ -11,7 +10,6 @@ install(DIRECTORY "${NNAS_PROJECT_SOURCE_DIR}/res/PyTorchExamples/" DESTINATION 
 
 foreach(TEST_ITEM IN ITEMS ${TEST_EXAMPLES})
   set(TEST_SCRIPT "${CMAKE_CURRENT_BINARY_DIR}/${TEST_ITEM}.test")
-  set(TEST_CONFIG "${CMAKE_CURRENT_BINARY_DIR}/${TEST_ITEM}.cfg")
 
   # generate test script
   file(WRITE  "${TEST_SCRIPT}" "#!/bin/bash\n\n")
@@ -23,7 +21,6 @@ foreach(TEST_ITEM IN ITEMS ${TEST_EXAMPLES})
   file(APPEND "${TEST_SCRIPT}" "exit 255\n")
   file(APPEND "${TEST_SCRIPT}" "}\n")
   file(APPEND "${TEST_SCRIPT}" "trap trap_err_onexit ERR\n")
-  file(APPEND "${TEST_SCRIPT}" "configfile=\"${TEST_CONFIG}\"\n")
   file(APPEND "${TEST_SCRIPT}" "outputfile=\"${TEST_ITEM}.circle\"\n")
   file(APPEND "${TEST_SCRIPT}" "one-import-onnx --input_path=${TEST_ITEM}.onnx --output_path=${TEST_ITEM}.circle > /dev/null 2>&1\n")
   file(APPEND "${TEST_SCRIPT}" "if [[ ! -s \"\${outputfile}\" ]]; then\n")
@@ -31,15 +28,7 @@ foreach(TEST_ITEM IN ITEMS ${TEST_EXAMPLES})
   file(APPEND "${TEST_SCRIPT}" "fi\n")
   file(APPEND "${TEST_SCRIPT}" "echo \"\${filename_ext} SUCCESS\"\n")
 
-  # generate test config
-  file(WRITE  "${TEST_CONFIG}" "[one-build]\n")
-  file(APPEND "${TEST_CONFIG}" "one-import-onnx=True\n\n")
-  file(APPEND "${TEST_CONFIG}" "[one-import-onnx]\n")
-  file(APPEND "${TEST_CONFIG}" "input_path=${TEST_ITEM}.onnx\n")
-  file(APPEND "${TEST_CONFIG}" "output_path=${TEST_ITEM}.circle\n")
-
   install(FILES "${TEST_SCRIPT}" DESTINATION "${TEST_DST}")
-  install(FILES "${TEST_CONFIG}" DESTINATION "${TEST_DST}")
 endforeach(TEST_ITEM)
 
 
