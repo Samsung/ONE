@@ -46,6 +46,8 @@ public:
   bool visit(const luci::CircleUniqueOut *) final { return true; }
   bool visit(const luci::CircleUnpackOut *) final { return true; }
   bool visit(const luci::CircleWhileOut *) final { return true; }
+  // For inputs not used
+  bool visit(const luci::CircleOutputExclude *) final { return true; }
   // TODO add all virtual nodes
 
   // default is false
