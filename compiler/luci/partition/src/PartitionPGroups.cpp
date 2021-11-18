@@ -165,6 +165,23 @@ std::string group_from_partition(const luci::CircleNode *node,
   return group;
 }
 
+class IsMultiOutputNode final : public luci::CircleNodeVisitor<bool>
+{
+public:
+  bool visit(const luci::CircleCustom *) final { return true; }
+  bool visit(const luci::CircleIf *) final { return true; }
+  bool visit(const luci::CircleNonMaxSuppressionV4 *) final { return true; }
+  bool visit(const luci::CircleNonMaxSuppressionV5 *) final { return true; }
+  bool visit(const luci::CircleSplit *) final { return true; }
+  bool visit(const luci::CircleSplitV *) final { return true; }
+  bool visit(const luci::CircleTopKV2 *) final { return true; }
+  bool visit(const luci::CircleUnique *) final { return true; }
+  bool visit(const luci::CircleUnpack *) final { return true; }
+  bool visit(const luci::CircleWhile *) final { return true; }
+  // default is false
+  bool visit(const luci::CircleNode *) final { return false; }
+};
+
 void append(luci::CircleNode *node, luci::PGroups *pgroups, const std::string &group, uint32_t idx)
 {
   auto pgroup = std::make_unique<luci::PGroup>();
@@ -182,13 +199,51 @@ void append(luci::CircleNode *node, luci::PGroups *pgroups, const std::string &g
   for (uint32_t in = 0; in < node->arity(); ++in)
   {
     auto input = loco::must_cast<luci::CircleNode *>(node->arg(in));
-    // this input maybe CircleInput in source graph
-    // --> not confident this is safe
-    pgroup->inputs.push_back(input);
+    if (dynamic_cast<const luci::CircleOutputExclude *>(input) != nullptr)
+    {
+      auto pnode = std::make_unique<luci::PNode>();
+      pnode->node = input;
+      pnode->group = group;
+      pnode->pgroup = pgroup.get();
+
+      pgroup->pnodes.push_back(std::move(pnode));
+
+      pgroups->node2group[input] = group;
+    }
+    else
+    {
+      // this input maybe CircleInput in source graph
+      // --> not confident this is safe
+      pgroup->inputs.push_back(input);
+    }
   }
-  // Set output of PGroup: node itself or multiple virtual outputs
-  // TODO support multiple virtual outputs
-  pgroup->outputs.push_back(node);
+
+  IsMultiOutputNode query;
+  if (node->accept(&query))
+  {
+    // Include CircleXXXOut virtual nodes in this group
+    auto succs = loco::succs(node);
+    for (auto &succ_node : succs)
+    {
+      auto nodeout = loco::must_cast<luci::CircleNode *>(succ_node);
+
+      auto pnode = std::make_unique<luci::PNode>();
+      pnode->node = nodeout;
+      pnode->group = group;
+      pnode->pgroup = pgroup.get();
+
+      pgroup->pnodes.push_back(std::move(pnode));
+
+      pgroups->node2group[nodeout] = group;
+
+      pgroup->outputs.push_back(nodeout);
+    }
+  }
+  else
+  {
+    // Set output of PGroup: node itself
+    pgroup->outputs.push_back(node);
+  }
 
   pgroups->node2group[node] = group;
   pgroups->id2pgroup[pgroup->id] = pgroup.get();
@@ -233,22 +288,6 @@ std::unique_ptr<luci::PGroups> produce_pgroups(const luci::Module *source,
       INFO(l) << "Skip Op: " << node->name() << std::endl;
       // record as default group
       pgroups->node2group[node] = partition.default_group;
-    }
-  }
-
-  // handle for virtual nodes like multiple outputs
-  // these nodes should follow group of the input
-  for (uint32_t idx = 0; idx < nodes->size(); ++idx)
-  {
-    auto node = loco::must_cast<luci::CircleNode *>(nodes->at(idx));
-
-    // for virtual nodes like CircleUnpackOut should follow it's input (owner)
-    // or just set to default
-    FindGroupToFollow query(partition, pgroups.get());
-    const auto &group = node->accept(&query);
-    if (not group.empty())
-    {
-      append(node, pgroups.get(), group, idx);
     }
   }
 
