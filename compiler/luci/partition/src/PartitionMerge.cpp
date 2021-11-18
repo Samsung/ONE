@@ -87,7 +87,7 @@ bool is_input_same(const luci::PGroup *pgroup, const luci::PGroups *pgroups)
         input_pgroup = pgroup_input;
       else
       {
-        if (input_pgroup != pgroup_input)
+        if (input_pgroup->group != pgroup_input->group)
           return false;
       }
     }
