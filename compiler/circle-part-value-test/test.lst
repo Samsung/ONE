@@ -47,3 +47,12 @@ add(Part_Split_Add_000 Part_Split_Add_000 2)
 # test SignatureDef, with any OPCODE
 add(SignatureDef_MultiOut_000 SignatureDef_MultiOut_000 0)
 add(SignatureDef_MultiOut_001 SignatureDef_MultiOut_001 0)
+
+# FC with nobias
+add(Part_Tanh_FC_nobias Part_Tanh_FC_nobias 1)
+add(Part_Tanh_FC_nobias Part_Tanh_FC_nobias_001 2)
+add(Part_Tanh_FC_nobias Part_Tanh_FC_nobias_002 2)
+add(Part_Tanh_FC_nobias Part_Tanh_FC_nobias_003 2)
+add(Part_Mul_Sqrt_FC_nobias_000 Part_Mul_Sqrt_FC_nobias_000_000 0)
+add(Part_Mul_Sqrt_FC_nobias_000 Part_Mul_Sqrt_FC_nobias_000_001 0)
+add(Part_Mul_Sqrt_FC_nobias_000 Part_Mul_Sqrt_FC_nobias_000_002 0)
