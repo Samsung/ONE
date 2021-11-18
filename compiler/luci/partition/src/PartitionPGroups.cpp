@@ -69,55 +69,6 @@ bool check_allocate_partition(const luci::CircleNode *node)
   return true;
 }
 
-class FindGroupToFollow final : public luci::CircleNodeVisitor<const std::string &>
-{
-public:
-  FindGroupToFollow(const luci::PartitionTable &partition, luci::PGroups *pgroups)
-    : _partition(partition), _pgroups(pgroups)
-  {
-    // NOTHING TODO
-  }
-
-private:
-  const std::string &groupof(const luci::CircleNode *input) const
-  {
-    auto group = _pgroups->node2group[input];
-    assert(not group.empty());
-    if (group.empty())
-      return _partition.default_group;
-    return _pgroups->node2group[input];
-  }
-
-public:
-#define IMPLEMENT(CLASS)                                             \
-  const std::string &visit(const luci::CLASS *node) final            \
-  {                                                                  \
-    auto input = loco::must_cast<luci::CircleNode *>(node->input()); \
-    return groupof(input);                                           \
-  }
-
-  IMPLEMENT(CircleCustomOut);
-  IMPLEMENT(CircleIfOut);
-  IMPLEMENT(CircleNonMaxSuppressionV4Out);
-  IMPLEMENT(CircleNonMaxSuppressionV5Out);
-  IMPLEMENT(CircleSplitOut);
-  IMPLEMENT(CircleSplitVOut);
-  IMPLEMENT(CircleTopKV2Out);
-  IMPLEMENT(CircleUniqueOut);
-  IMPLEMENT(CircleUnpackOut);
-  IMPLEMENT(CircleWhileOut);
-
-#undef IMPLEMENT
-
-  // return empty for nothing to do
-  const std::string &visit(const luci::CircleNode *) final { return _empty_str; }
-
-private:
-  const luci::PartitionTable &_partition;
-  luci::PGroups *_pgroups = nullptr;
-  std::string _empty_str;
-};
-
 } // namespace
 
 namespace
