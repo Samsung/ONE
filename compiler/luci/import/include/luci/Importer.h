@@ -36,7 +36,12 @@ public:
   Importer();
 
 public:
-  explicit Importer(const GraphBuilderSource *source) : _source{source}
+  explicit Importer(const GraphBuilderSource *source) : _source(source)
+  {
+    // DO NOTHING
+  }
+
+  explicit Importer(const std::shared_ptr<uint8_t[]> &model_buffer) : _model_buffer(model_buffer)
   {
     // DO NOTHING
   }
@@ -47,6 +52,7 @@ public:
 
 private:
   const GraphBuilderSource *_source = nullptr;
+  const std::shared_ptr<uint8_t[]> _model_buffer = nullptr;
 };
 
 } // namespace luci
