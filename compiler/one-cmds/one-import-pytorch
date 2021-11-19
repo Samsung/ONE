@@ -122,11 +122,12 @@ def _apply_verbosity(verbosity):
 
 
 def _parse_shapes(shapes_str):
-    array = shapes_str.split(":")
-    shapes = [
-        list(map(int, shape.split(",")))
-        for shape in array
-    ]
+    shapes = []
+    for shape_str in shapes_str.split(":"):
+        if shape_str != "":
+            shapes += [list(map(int, shape_str.split(",")))]
+        else:
+            shapes += [[]]
     return shapes
 
 
