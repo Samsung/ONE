@@ -26,14 +26,14 @@ static inline void Conv(const tflite::ConvParams &params, const tflite::RuntimeS
                         const float *input_data, const tflite::RuntimeShape &filter_shape,
                         const float *filter_data, const tflite::RuntimeShape &bias_shape,
                         const float *bias_data, const tflite::RuntimeShape &output_shape,
-                        float *output_data, const tflite::RuntimeShape &im2col_shape,
-                        float *im2col_data)
+                        float *output_data, const tflite::RuntimeShape &scratchpad_shape,
+                        float *scratchpad_data)
 {
-  if (im2col_data)
+  if (scratchpad_data)
   {
     tflite::optimized_ops::Conv(params, input_shape, input_data, filter_shape, filter_data,
-                                bias_shape, bias_data, output_shape, output_data, im2col_shape,
-                                im2col_data);
+                                bias_shape, bias_data, output_shape, output_data, scratchpad_shape,
+                                scratchpad_data);
   }
   else
     tflite::reference_ops::Conv(params, input_shape, input_data, filter_shape, filter_data,
@@ -45,8 +45,8 @@ static inline void Conv(const tflite::ConvParams &params, const tflite::RuntimeS
                         const uint8 *input_data, const tflite::RuntimeShape &filter_shape,
                         const uint8 *filter_data, const tflite::RuntimeShape &bias_shape,
                         const int32 *bias_data, const tflite::RuntimeShape &output_shape,
-                        uint8 *output_data, const tflite::RuntimeShape &im2col_shape,
-                        uint8 *im2col_data)
+                        uint8 *output_data, const tflite::RuntimeShape &scratchpad_shape,
+                        uint8 *scratchpad_data)
 {
   // TODO This should only be done once (although it takes only a few microseconds).
   //  Also, the user should be able to adjust the number of threads.
@@ -54,8 +54,8 @@ static inline void Conv(const tflite::ConvParams &params, const tflite::RuntimeS
   gemmlowp_context->set_max_num_threads(static_cast<int>(std::thread::hardware_concurrency()));
 
   tflite::reference_ops::Conv(params, input_shape, input_data, filter_shape, filter_data,
-                              bias_shape, bias_data, output_shape, output_data, im2col_shape,
-                              im2col_data, gemmlowp_context.get());
+                              bias_shape, bias_data, output_shape, output_data, scratchpad_shape,
+                              scratchpad_data, gemmlowp_context.get());
 }
 
 static inline void ConvPerChannel(const tflite::ConvParams &params, const int32_t *mult,
@@ -63,15 +63,51 @@ static inline void ConvPerChannel(const tflite::ConvParams &params, const int32_
                                   const int8 *input_data, const tflite::RuntimeShape &filter_shape,
                                   const int8 *filter_data, const tflite::RuntimeShape &bias_shape,
                                   const int32 *bias_data, const tflite::RuntimeShape &output_shape,
-                                  int8 *output_data, const tflite::RuntimeShape &im2col_shape,
-                                  int8 *im2col_data)
+                                  int8 *output_data, const tflite::RuntimeShape &scratchpad_shape,
+                                  int8 *scratchpad_data)
 {
-  (void)im2col_shape;
-  (void)im2col_data;
+  (void)scratchpad_shape;
+  (void)scratchpad_data;
   // TODO enable optimized version
   tflite::reference_integer_ops::ConvPerChannel(params, mult, shifts, input_shape, input_data,
                                                 filter_shape, filter_data, bias_shape, bias_data,
                                                 output_shape, output_data);
+}
+
+static inline void SetupScratchpadTensor(luci_interpreter::Tensor *scratchpad,
+                                         const luci_interpreter::DataType &data_type,
+                                         const tflite::ConvParams &params,
+                                         const tflite::RuntimeShape &input_shape,
+                                         const tflite::RuntimeShape &filter_shape,
+                                         const tflite::RuntimeShape &output_shape)
+{
+  const int32_t filter_height = filter_shape.Dims(1);
+  const int32_t filter_width = filter_shape.Dims(2);
+
+  // Allocate tensor for scratchpad, if needed.
+  // The checks here should be aligned with the actual implementation.
+  const bool need_dilated_scratchpad =
+    params.dilation_height_factor != 1 || params.dilation_width_factor != 1;
+  const bool need_non_dilated_scratchpad = params.stride_height != 1 || params.stride_width != 1 ||
+                                           filter_height != 1 || filter_width != 1;
+  auto _need_scratchpad = data_type != luci_interpreter::DataType::S16 &&
+                          (need_dilated_scratchpad || need_non_dilated_scratchpad);
+
+  if (_need_scratchpad)
+  {
+    const int32_t batches = tflite::MatchingDim(input_shape, 0, output_shape, 0);
+    const int32_t input_depth = tflite::MatchingDim(input_shape, 3, filter_shape, 3);
+    const int32_t output_height = output_shape.Dims(1);
+    const int32_t output_width = output_shape.Dims(2);
+
+    luci_interpreter::Shape scratchpad_shape{batches, output_height, output_width,
+                                             input_depth * filter_height * filter_width};
+    scratchpad->resize(scratchpad_shape);
+  }
+  else
+  {
+    scratchpad->set_allocatable(false);
+  }
 }
 
 } // namespace luci_interpreter_pal

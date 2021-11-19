@@ -26,11 +26,11 @@ static inline void Conv(const tflite::ConvParams &params, const tflite::RuntimeS
                         const float *input_data, const tflite::RuntimeShape &filter_shape,
                         const float *filter_data, const tflite::RuntimeShape &bias_shape,
                         const float *bias_data, const tflite::RuntimeShape &output_shape,
-                        float *output_data, const tflite::RuntimeShape &im2col_shape,
-                        float *im2col_data)
+                        float *output_data, const tflite::RuntimeShape &scratchpad_shape,
+                        float *scratchpad_data)
 {
-  (void)im2col_shape;
-  (void)im2col_data;
+  (void)scratchpad_shape;
+  (void)scratchpad_data;
   tflite::reference_ops::Conv(params, input_shape, input_data, filter_shape, filter_data,
                               bias_shape, bias_data, output_shape, output_data,
                               tflite::RuntimeShape(), nullptr);
@@ -40,14 +40,14 @@ static inline void Conv(const tflite::ConvParams &params, const tflite::RuntimeS
                         const uint8 *input_data, const tflite::RuntimeShape &filter_shape,
                         const uint8 *filter_data, const tflite::RuntimeShape &bias_shape,
                         const int32 *bias_data, const tflite::RuntimeShape &output_shape,
-                        uint8 *output_data, const tflite::RuntimeShape &im2col_shape,
-                        uint8 *im2col_data)
+                        uint8 *output_data, const tflite::RuntimeShape &scratchpad_shape,
+                        uint8 *scratchpad_data)
 {
-  (void)im2col_shape;
-  (void)im2col_data;
+  (void)scratchpad_shape;
+  (void)scratchpad_data;
   tflite::reference_ops::Conv(params, input_shape, input_data, filter_shape, filter_data,
-                              bias_shape, bias_data, output_shape, output_data, im2col_shape,
-                              im2col_data, nullptr);
+                              bias_shape, bias_data, output_shape, output_data, scratchpad_shape,
+                              scratchpad_data, nullptr);
 }
 
 static inline void ConvPerChannel(const tflite::ConvParams &params, const int32_t *mult,
@@ -55,14 +55,29 @@ static inline void ConvPerChannel(const tflite::ConvParams &params, const int32_
                                   const int8 *input_data, const tflite::RuntimeShape &filter_shape,
                                   const int8 *filter_data, const tflite::RuntimeShape &bias_shape,
                                   const int32 *bias_data, const tflite::RuntimeShape &output_shape,
-                                  int8 *output_data, const tflite::RuntimeShape &im2col_shape,
-                                  int8 *im2col_data)
+                                  int8 *output_data, const tflite::RuntimeShape &scratchpad_shape,
+                                  int8 *scratchpad_data)
 {
-  (void)im2col_shape;
-  (void)im2col_data;
+  (void)scratchpad_shape;
+  (void)scratchpad_data;
   tflite::reference_integer_ops::ConvPerChannel(params, mult, shifts, input_shape, input_data,
                                                 filter_shape, filter_data, bias_shape, bias_data,
                                                 output_shape, output_data);
+}
+
+static inline void SetupScratchpadTensor(luci_interpreter::Tensor *scratchpad,
+                                         const luci_interpreter::DataType &data_type,
+                                         const tflite::ConvParams &params,
+                                         const tflite::RuntimeShape &input_shape,
+                                         const tflite::RuntimeShape &filter_shape,
+                                         const tflite::RuntimeShape &output_shape)
+{
+  (void)data_type;
+  (void)params;
+  (void)input_shape;
+  (void)filter_shape;
+  (void)output_shape;
+  scratchpad->set_allocatable(false);
 }
 
 } // namespace luci_interpreter_pal

@@ -28,11 +28,11 @@ static inline void Conv(const tflite::ConvParams &params, const tflite::RuntimeS
                         const float *input_data, const tflite::RuntimeShape &filter_shape,
                         const float *filter_data, const tflite::RuntimeShape &bias_shape,
                         const float *bias_data, const tflite::RuntimeShape &output_shape,
-                        float *output_data, const tflite::RuntimeShape &im2col_shape,
-                        float *im2col_data)
+                        float *output_data, const tflite::RuntimeShape &scratchpad_shape,
+                        float *scratchpad_data)
 {
-  (void)im2col_shape;
-  (void)im2col_data;
+  (void)scratchpad_shape;
+  (void)scratchpad_data;
   tflite::reference_ops::Conv(params, input_shape, input_data, filter_shape, filter_data,
                               bias_shape, bias_data, output_shape, output_data,
                               tflite::RuntimeShape(), nullptr);
@@ -42,14 +42,14 @@ static inline void Conv(const tflite::ConvParams &params, const tflite::RuntimeS
                         const uint8 *input_data, const tflite::RuntimeShape &filter_shape,
                         const uint8 *filter_data, const tflite::RuntimeShape &bias_shape,
                         const int32 *bias_data, const tflite::RuntimeShape &output_shape,
-                        uint8 *output_data, const tflite::RuntimeShape &im2col_shape,
-                        uint8 *im2col_data)
+                        uint8 *output_data, const tflite::RuntimeShape &scratchpad_shape,
+                        uint8 *scratchpad_data)
 {
-  (void)im2col_shape;
-  (void)im2col_data;
+  (void)scratchpad_shape;
+  (void)scratchpad_data;
   tflite::reference_ops::Conv(params, input_shape, input_data, filter_shape, filter_data,
-                              bias_shape, bias_data, output_shape, output_data, im2col_shape,
-                              im2col_data, nullptr);
+                              bias_shape, bias_data, output_shape, output_data, scratchpad_shape,
+                              scratchpad_data, nullptr);
 }
 
 static inline void ConvPerChannel(const tflite::ConvParams &params, const int32_t *mult,
@@ -57,18 +57,18 @@ static inline void ConvPerChannel(const tflite::ConvParams &params, const int32_
                                   const int8 *input_data, const tflite::RuntimeShape &filter_shape,
                                   const int8 *filter_data, const tflite::RuntimeShape &bias_shape,
                                   const int32 *bias_data, const tflite::RuntimeShape &output_shape,
-                                  int8 *output_data, const tflite::RuntimeShape &im2col_shape,
-                                  int8 *im2col_data)
+                                  int8 *output_data, const tflite::RuntimeShape &scratchpad_shape,
+                                  int8 *scratchpad_data)
 {
-  (void)im2col_shape;
-  (void)im2col_data;
-
-  cmsis_nn_conv_params conv_params;
-  conv_params.dilation.h = params.dilation_height_factor;
-  conv_params.dilation.w = params.dilation_width_factor;
-
-  if (conv_params.dilation.h == 1 && conv_params.dilation.w == 1)
+  if (scratchpad_data)
   {
+    cmsis_nn_conv_params conv_params;
+    conv_params.dilation.h = params.dilation_height_factor;
+    conv_params.dilation.w = params.dilation_width_factor;
+
+    assert(conv_params.dilation.h == 1);
+    assert(conv_params.dilation.w == 1);
+
     conv_params.input_offset = params.input_offset;
     conv_params.output_offset = params.output_offset;
     conv_params.stride.h = params.stride_height;
@@ -118,14 +118,9 @@ static inline void ConvPerChannel(const tflite::ConvParams &params, const int32_
     output_dims.w = output_shape.Dims(2);
     output_dims.c = output_depth;
 
-    const int32_t buf_size = arm_convolve_wrapper_s8_get_buffer_size(&conv_params, &input_dims,
-                                                                     &filter_dims, &output_dims);
-    auto buffer = std::make_unique<int8_t[]>(buf_size);
-    assert(buffer != nullptr);
-
     cmsis_nn_context ctx;
-    ctx.buf = buffer.get();
-    ctx.size = buf_size;
+    ctx.buf = scratchpad_data;
+    ctx.size = scratchpad_shape.Dims(0);
 
     auto res = arm_convolve_wrapper_s8(&ctx, &conv_params, &quant_params, &input_dims, input_data,
                                        &filter_dims, filter_data, &bias_dims, bias_data,
@@ -137,6 +132,64 @@ static inline void ConvPerChannel(const tflite::ConvParams &params, const int32_
     tflite::reference_integer_ops::ConvPerChannel(params, mult, shifts, input_shape, input_data,
                                                   filter_shape, filter_data, bias_shape, bias_data,
                                                   output_shape, output_data);
+  }
+}
+
+static inline void SetupScratchpadTensor(luci_interpreter::Tensor *scratchpad,
+                                         const luci_interpreter::DataType &data_type,
+                                         const tflite::ConvParams &params,
+                                         const tflite::RuntimeShape &input_shape,
+                                         const tflite::RuntimeShape &filter_shape,
+                                         const tflite::RuntimeShape &output_shape)
+{
+  cmsis_nn_conv_params conv_params;
+  conv_params.dilation.h = params.dilation_height_factor;
+  conv_params.dilation.w = params.dilation_width_factor;
+
+  if (conv_params.dilation.h == 1 && conv_params.dilation.w == 1)
+  {
+    const int32_t batches = tflite::MatchingDim(input_shape, 0, output_shape, 0);
+    const int32_t input_depth = tflite::MatchingDim(input_shape, 3, filter_shape, 3);
+    const int32_t output_depth = tflite::MatchingDim(filter_shape, 0, output_shape, 3);
+    const int32_t filter_height = filter_shape.Dims(1);
+    const int32_t filter_width = filter_shape.Dims(2);
+    const int32_t output_height = output_shape.Dims(1);
+    const int32_t output_width = output_shape.Dims(2);
+
+    conv_params.input_offset = params.input_offset;
+    conv_params.output_offset = params.output_offset;
+    conv_params.stride.h = params.stride_height;
+    conv_params.stride.w = params.stride_width;
+    conv_params.padding.h = params.padding_values.height;
+    conv_params.padding.w = params.padding_values.width;
+
+    cmsis_nn_dims input_dims;
+    input_dims.n = batches;
+    input_dims.h = input_shape.Dims(1);
+    input_dims.w = input_shape.Dims(2);
+    input_dims.c = input_depth;
+
+    cmsis_nn_dims filter_dims;
+    filter_dims.n = output_depth;
+    filter_dims.h = filter_height;
+    filter_dims.w = filter_width;
+    filter_dims.c = input_depth;
+
+    cmsis_nn_dims output_dims;
+    output_dims.n = batches;
+    output_dims.h = output_height;
+    output_dims.w = output_width;
+    output_dims.c = output_depth;
+
+    const int32_t buf_size = arm_convolve_wrapper_s8_get_buffer_size(&conv_params, &input_dims,
+                                                                     &filter_dims, &output_dims);
+
+    luci_interpreter::Shape scratchpad_shape{buf_size};
+    scratchpad->resize(scratchpad_shape);
+  }
+  else
+  {
+    scratchpad->set_allocatable(false);
   }
 }
 
