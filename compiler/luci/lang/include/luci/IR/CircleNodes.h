@@ -92,6 +92,7 @@
 #include "Nodes/CircleRelu.h"
 #include "Nodes/CircleRelu6.h"
 #include "Nodes/CircleReluN1To1.h"
+#include "Nodes/CircleConstReference.h"
 #include "Nodes/CircleReshape.h"
 #include "Nodes/CircleResizeBilinear.h"
 #include "Nodes/CircleResizeNearestNeighbor.h"
