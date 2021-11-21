@@ -33,7 +33,7 @@ fi
 # - https://github.com/onnx/onnx/blob/master/docs/Versioning.md
 # - https://github.com/onnx/onnx-tensorflow/blob/master/Versioning.md
 
-VER_TENSORFLOW=2.3.0
+VER_TENSORFLOW=2.6.0
 VER_ONNX=1.10.1
 VER_ONNX_TF=1.9.0
 
@@ -62,6 +62,10 @@ ${VENV_PYTHON} -m pip ${PIP_OPTIONS} install Pillow==6.2.2
 
 # Install PyTorch and ONNX related
 ${VENV_PYTHON} -m pip ${PIP_OPTIONS} install torch==1.8.1+cpu -f https://download.pytorch.org/whl/torch_stable.html
+
+# Fix for error with keras > 2.6.0 with VER_TENSORFLOW=2.6.0
+# TODO remove this when VER_TENSORFLOW > 2.6.0
+${VENV_PYTHON} -m pip ${PIP_OPTIONS} install keras==2.6.0
 
 # Provide install of custom onnx-tf
 if [ -n "${EXT_ONNX_TF_WHL}" ]; then
