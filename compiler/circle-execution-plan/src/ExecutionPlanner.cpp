@@ -18,22 +18,22 @@
 #include <loco/IR/Algorithm.h>
 #include <luci/UserSettings.h>
 
-namespace luci
+namespace circle_planner
 {
 namespace
 {
 
-constexpr uint32_t nodeNotAssigned = std::numeric_limits<int32_t>::max();
+constexpr uint32_t node_not_assigned = std::numeric_limits<int32_t>::max();
 
-uint32_t compute_output_size(Padding padding, uint32_t image_size, uint32_t filter_size,
+uint32_t compute_output_size(luci::Padding padding, uint32_t image_size, uint32_t filter_size,
                              uint32_t stride, uint32_t dilation_rate = 1)
 {
   const int32_t effective_filter_size = (filter_size - 1) * dilation_rate + 1;
   switch (padding)
   {
-    case Padding::SAME:
+    case luci::Padding::SAME:
       return (image_size + stride - 1) / stride;
-    case Padding::VALID:
+    case luci::Padding::VALID:
       return (image_size + stride - effective_filter_size) / stride;
     default:
       assert(false);
@@ -83,7 +83,7 @@ uint32_t compute_im2col_size(const luci::CircleConv2D *conv)
 
 } // namespace
 
-void ExecutionPlanner::get_execution_plan()
+void ExecutionPlanner::make_execution_plan()
 {
   get_default_execution_order_plan();
   _required_size = get_offsets_with_greedy_by_size();
@@ -106,23 +106,23 @@ void ExecutionPlanner::get_default_execution_order_plan()
 void ExecutionPlanner::get_usage_interval()
 {
   // Initialize vectors of first and last nodes for usage interval
-  _alloc_node.assign(_ordered_nodes.size(), nodeNotAssigned);
-  _dealloc_node.assign(_ordered_nodes.size(), nodeNotAssigned);
+  _alloc_node.assign(_ordered_nodes.size(), node_not_assigned);
+  _dealloc_node.assign(_ordered_nodes.size(), node_not_assigned);
 
   // Vector for count usages
   std::vector<int> usages_counts(_ordered_nodes.size(), 0);
 
   auto allocate = [this](uint32_t node, uint32_t tensor) {
-    if (_alloc_node[tensor] != nodeNotAssigned)
+    if (_alloc_node[tensor] != node_not_assigned)
     {
       return;
     }
-    assert(_dealloc_node[tensor] == nodeNotAssigned);
+    assert(_dealloc_node[tensor] == node_not_assigned);
     _alloc_node[tensor] = node;
   };
 
   auto deallocate = [this](uint32_t node, uint32_t tensor) {
-    assert(_dealloc_node[tensor] == nodeNotAssigned);
+    assert(_dealloc_node[tensor] == node_not_assigned);
     _dealloc_node[tensor] = node;
   };
 
@@ -257,15 +257,15 @@ void ExecutionPlanner::create_alloc_node_inform_vector(bool null_consts, bool nu
     auto idx1 = alloc_1.node_num;
     auto idx2 = alloc_2.node_num;
 
-    if (this->_alloc_node[idx1] == 0 && this->_dealloc_node[idx1] == nodeNotAssigned)
+    if (this->_alloc_node[idx1] == 0 && this->_dealloc_node[idx1] == node_not_assigned)
     {
-      if (this->_alloc_node[idx2] == 0 && this->_dealloc_node[idx2] == nodeNotAssigned)
+      if (this->_alloc_node[idx2] == 0 && this->_dealloc_node[idx2] == node_not_assigned)
       {
         return idx1 < idx2;
       }
       return true;
     }
-    if (this->_alloc_node[idx2] == 0 && this->_dealloc_node[idx2] == nodeNotAssigned)
+    if (this->_alloc_node[idx2] == 0 && this->_dealloc_node[idx2] == node_not_assigned)
     {
       return false;
     }
@@ -352,7 +352,7 @@ void ExecutionPlanner::dump_inform()
   {
     auto current_node_it = std::find_if(
       _alloc_node_inform_vector.begin(), _alloc_node_inform_vector.end(),
-      [this, i](const AllocationNodeInformation &x) { return x.node_num == i && !x.is_temp; });
+      [i](const AllocationNodeInformation &x) { return x.node_num == i && !x.is_temp; });
     for (uint32_t j = 0; j < _ordered_nodes.size(); j++)
     {
       auto first_node = _alloc_node[j];
@@ -360,7 +360,7 @@ void ExecutionPlanner::dump_inform()
 
       auto it = std::find_if(
         _alloc_node_inform_vector.begin(), _alloc_node_inform_vector.end(),
-        [this, j](const AllocationNodeInformation &x) { return x.node_num == j && !x.is_temp; });
+        [j](const AllocationNodeInformation &x) { return x.node_num == j && !x.is_temp; });
       if (i >= first_node && i <= last_node)
       {
         current_node_it->breadth += it->size;
@@ -386,4 +386,4 @@ void ExecutionPlanner::dump_inform()
             });
 }
 
-} // namespace luci
+} // namespace circle_planner

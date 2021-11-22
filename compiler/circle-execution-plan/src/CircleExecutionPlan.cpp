@@ -82,8 +82,8 @@ int entry(int argc, char **argv)
   auto module = importer.importModule(circle_model);
 
   // Do main job
-  luci::ExecutionPlanner execution_planner(module->graph());
-  execution_planner.get_execution_plan();
+  circle_planner::ExecutionPlanner execution_planner(module->graph());
+  execution_planner.make_execution_plan();
 
   // Export to output Circle file
   luci::CircleExporter exporter;
