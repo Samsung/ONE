@@ -25,7 +25,8 @@ namespace luci_interpreter_pal
 template <typename T>
 static inline void AveragePool(const tflite::PoolParams &params,
                                const tflite::RuntimeShape &input_shape, const T *input_data,
-                               const tflite::RuntimeShape &output_shape, T *output_data)
+                               const tflite::RuntimeShape &output_shape, T *output_data,
+                               const tflite::RuntimeShape &scratchpad_shape, T *scratchpad_data)
 {
   {
     // MARK: At this moment this operation doesn't support
@@ -35,16 +36,34 @@ static inline void AveragePool(const tflite::PoolParams &params,
     (void)input_data;
     (void)output_shape;
     (void)output_data;
+    (void)scratchpad_shape;
+    (void)scratchpad_data;
   }
 }
 
 template <>
 inline void AveragePool<int8_t>(const tflite::PoolParams &params,
                                 const tflite::RuntimeShape &input_shape, const int8_t *input_data,
-                                const tflite::RuntimeShape &output_shape, int8_t *output_data)
+                                const tflite::RuntimeShape &output_shape, int8_t *output_data,
+                                const tflite::RuntimeShape &scratchpad_shape,
+                                int8_t *scratchpad_data)
 {
+  (void)scratchpad_shape;
+  (void)scratchpad_data;
+
   tflite::reference_integer_ops::AveragePool(params, input_shape, input_data, output_shape,
                                              output_data);
+}
+
+static inline void SetupScratchpadTensor(luci_interpreter::Tensor *scratchpad,
+                                         const tflite::RuntimeShape &input_shape,
+                                         const tflite::RuntimeShape &output_shape)
+
+{
+  (void)input_shape;
+  (void)output_shape;
+
+  scratchpad->set_allocatable(false);
 }
 
 } // namespace luci_interpreter_pal
