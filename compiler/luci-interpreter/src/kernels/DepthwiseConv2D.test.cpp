@@ -59,6 +59,7 @@ TEST_F(DepthwiseConv2DTest, Float)
     makeInputTensor<DataType::FLOAT32>(filter_shape, filter_data, _memory_manager.get());
   Tensor bias_tensor =
     makeInputTensor<DataType::FLOAT32>(bias_shape, bias_data, _memory_manager.get());
+  Tensor scratchpad(DataType::FLOAT32, Shape({}), {}, "");
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   DepthwiseConv2DParams params{};
@@ -70,8 +71,10 @@ TEST_F(DepthwiseConv2DTest, Float)
   params.dilation_width_factor = 1;
   params.activation = Activation::RELU;
 
-  DepthwiseConv2D kernel(&input_tensor, &filter_tensor, &bias_tensor, &output_tensor, params);
+  DepthwiseConv2D kernel(&input_tensor, &filter_tensor, &bias_tensor, &output_tensor, &scratchpad,
+                         params);
   kernel.configure();
+  _memory_manager->allocate_memory(scratchpad);
   _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
@@ -111,6 +114,7 @@ TEST_F(DepthwiseConv2DTest, Uint8)
     {4}, input_quant_param.first * input_quant_param.first, 0, bias_data, _memory_manager.get());
   Tensor output_tensor =
     makeOutputTensor(DataType::U8, output_quant_param.first, output_quant_param.second);
+  Tensor scratchpad(DataType::FLOAT32, Shape({}), {}, "");
 
   DepthwiseConv2DParams params{};
   params.padding = Padding::VALID;
@@ -121,9 +125,11 @@ TEST_F(DepthwiseConv2DTest, Uint8)
   params.dilation_width_factor = 1;
   params.activation = Activation::NONE;
 
-  DepthwiseConv2D kernel(&input_tensor, &filter_tensor, &bias_tensor, &output_tensor, params);
+  DepthwiseConv2D kernel(&input_tensor, &filter_tensor, &bias_tensor, &output_tensor, &scratchpad,
+                         params);
   kernel.configure();
   _memory_manager->allocate_memory(output_tensor);
+  _memory_manager->allocate_memory(scratchpad);
   kernel.execute();
 
   std::vector<float> ref_output_data{
@@ -166,6 +172,7 @@ TEST_F(DepthwiseConv2DTest, SInt16)
   Tensor bias_tensor =
     makeInputTensor<DataType::S64>(bias_shape, 0.25 * 0.2, 0, bias_data, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::S16, 0.5, 0);
+  Tensor scratchpad(DataType::S64, Shape({}), {}, "");
 
   DepthwiseConv2DParams params{};
   params.padding = Padding::VALID;
@@ -176,9 +183,11 @@ TEST_F(DepthwiseConv2DTest, SInt16)
   params.dilation_width_factor = 1;
   params.activation = Activation::RELU;
 
-  DepthwiseConv2D kernel(&input_tensor, &filter_tensor, &bias_tensor, &output_tensor, params);
+  DepthwiseConv2D kernel(&input_tensor, &filter_tensor, &bias_tensor, &output_tensor, &scratchpad,
+                         params);
   kernel.configure();
   _memory_manager->allocate_memory(output_tensor);
+  _memory_manager->allocate_memory(scratchpad);
   kernel.execute();
 
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
@@ -224,6 +233,7 @@ TEST_F(DepthwiseConv2DTest, SInt16_CWQ_weights)
   Tensor bias_tensor = makeInputTensor<DataType::S64>(bias_shape, bias_scales, zerop, 0, bias_data,
                                                       _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::S16, 0.5, 0);
+  Tensor scratchpad(DataType::S16, Shape({}), {}, "");
 
   DepthwiseConv2DParams params{};
   params.padding = Padding::VALID;
@@ -234,9 +244,11 @@ TEST_F(DepthwiseConv2DTest, SInt16_CWQ_weights)
   params.dilation_width_factor = 1;
   params.activation = Activation::RELU;
 
-  DepthwiseConv2D kernel(&input_tensor, &filter_tensor, &bias_tensor, &output_tensor, params);
+  DepthwiseConv2D kernel(&input_tensor, &filter_tensor, &bias_tensor, &output_tensor, &scratchpad,
+                         params);
   kernel.configure();
   _memory_manager->allocate_memory(output_tensor);
+  _memory_manager->allocate_memory(scratchpad);
   kernel.execute();
 
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
@@ -299,6 +311,7 @@ TEST_F(DepthwiseConv2DTest, Uint8_CWQ_weights)
                                                       _memory_manager.get());
   Tensor output_tensor =
     makeOutputTensor(DataType::U8, output_quant_param.first, output_quant_param.second);
+  Tensor scratchpad(DataType::U8, Shape({}), {}, "");
 
   DepthwiseConv2DParams params{};
   params.padding = Padding::VALID;
@@ -309,9 +322,11 @@ TEST_F(DepthwiseConv2DTest, Uint8_CWQ_weights)
   params.dilation_width_factor = 1;
   params.activation = Activation::NONE;
 
-  DepthwiseConv2D kernel(&input_tensor, &filter_tensor, &bias_tensor, &output_tensor, params);
+  DepthwiseConv2D kernel(&input_tensor, &filter_tensor, &bias_tensor, &output_tensor, &scratchpad,
+                         params);
   kernel.configure();
   _memory_manager->allocate_memory(output_tensor);
+  _memory_manager->allocate_memory(scratchpad);
   kernel.execute();
 
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
@@ -375,6 +390,7 @@ TEST_F(DepthwiseConv2DTest, SInt8_CWQ_weights)
                                                       _memory_manager.get());
   Tensor output_tensor =
     makeOutputTensor(DataType::S8, output_quant_param.first, output_quant_param.second);
+  Tensor scratchpad(DataType::S8, Shape({}), {}, "");
 
   DepthwiseConv2DParams params{};
   params.padding = Padding::VALID;
@@ -385,9 +401,11 @@ TEST_F(DepthwiseConv2DTest, SInt8_CWQ_weights)
   params.dilation_width_factor = 1;
   params.activation = Activation::NONE;
 
-  DepthwiseConv2D kernel(&input_tensor, &filter_tensor, &bias_tensor, &output_tensor, params);
+  DepthwiseConv2D kernel(&input_tensor, &filter_tensor, &bias_tensor, &output_tensor, &scratchpad,
+                         params);
   kernel.configure();
   _memory_manager->allocate_memory(output_tensor);
+  _memory_manager->allocate_memory(scratchpad);
   kernel.execute();
 
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
@@ -419,6 +437,7 @@ TEST_F(DepthwiseConv2DTest, InvalidBiasType_NEG)
     makeInputTensor<DataType::FLOAT32>(filter_shape, filter_data, _memory_manager.get());
   Tensor bias_tensor = makeInputTensor<DataType::S32>(bias_shape, bias_data, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
+  Tensor scratchpad(DataType::FLOAT32, Shape({}), {}, "");
 
   DepthwiseConv2DParams params{};
   params.padding = Padding::VALID;
@@ -429,7 +448,8 @@ TEST_F(DepthwiseConv2DTest, InvalidBiasType_NEG)
   params.dilation_width_factor = 1;
   params.activation = Activation::RELU;
 
-  DepthwiseConv2D kernel(&input_tensor, &filter_tensor, &bias_tensor, &output_tensor, params);
+  DepthwiseConv2D kernel(&input_tensor, &filter_tensor, &bias_tensor, &output_tensor, &scratchpad,
+                         params);
   EXPECT_ANY_THROW(kernel.configure());
 }
 
@@ -458,6 +478,7 @@ TEST_F(DepthwiseConv2DTest, InOutTypeMismatch_NEG)
   Tensor bias_tensor =
     makeInputTensor<DataType::FLOAT32>(bias_shape, bias_data, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::U8);
+  Tensor scratchpad(DataType::U8, Shape({}), {}, "");
 
   DepthwiseConv2DParams params{};
   params.padding = Padding::VALID;
@@ -468,7 +489,8 @@ TEST_F(DepthwiseConv2DTest, InOutTypeMismatch_NEG)
   params.dilation_width_factor = 1;
   params.activation = Activation::RELU;
 
-  DepthwiseConv2D kernel(&input_tensor, &filter_tensor, &bias_tensor, &output_tensor, params);
+  DepthwiseConv2D kernel(&input_tensor, &filter_tensor, &bias_tensor, &output_tensor, &scratchpad,
+                         params);
   EXPECT_ANY_THROW(kernel.configure());
 }
 
@@ -497,6 +519,7 @@ TEST_F(DepthwiseConv2DTest, InvalidInputShape_NEG)
   Tensor bias_tensor =
     makeInputTensor<DataType::FLOAT32>(bias_shape, bias_data, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
+  Tensor scratchpad(DataType::FLOAT32, Shape({}), {}, "");
 
   DepthwiseConv2DParams params{};
   params.padding = Padding::VALID;
@@ -507,7 +530,8 @@ TEST_F(DepthwiseConv2DTest, InvalidInputShape_NEG)
   params.dilation_width_factor = 1;
   params.activation = Activation::RELU;
 
-  DepthwiseConv2D kernel(&input_tensor, &filter_tensor, &bias_tensor, &output_tensor, params);
+  DepthwiseConv2D kernel(&input_tensor, &filter_tensor, &bias_tensor, &output_tensor, &scratchpad,
+                         params);
   EXPECT_ANY_THROW(kernel.configure());
 }
 
@@ -536,6 +560,7 @@ TEST_F(DepthwiseConv2DTest, InvalidFilterShape_NEG)
   Tensor bias_tensor =
     makeInputTensor<DataType::FLOAT32>(bias_shape, bias_data, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
+  Tensor scratchpad(DataType::FLOAT32, Shape({}), {}, "");
 
   DepthwiseConv2DParams params{};
   params.padding = Padding::VALID;
@@ -546,7 +571,8 @@ TEST_F(DepthwiseConv2DTest, InvalidFilterShape_NEG)
   params.dilation_width_factor = 1;
   params.activation = Activation::RELU;
 
-  DepthwiseConv2D kernel(&input_tensor, &filter_tensor, &bias_tensor, &output_tensor, params);
+  DepthwiseConv2D kernel(&input_tensor, &filter_tensor, &bias_tensor, &output_tensor, &scratchpad,
+                         params);
   EXPECT_ANY_THROW(kernel.configure());
 }
 
@@ -575,6 +601,7 @@ TEST_F(DepthwiseConv2DTest, InvalidBiasDim_NEG)
   Tensor bias_tensor =
     makeInputTensor<DataType::FLOAT32>(bias_shape, bias_data, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
+  Tensor scratchpad(DataType::FLOAT32, Shape({}), {}, "");
 
   DepthwiseConv2DParams params{};
   params.padding = Padding::VALID;
@@ -585,7 +612,8 @@ TEST_F(DepthwiseConv2DTest, InvalidBiasDim_NEG)
   params.dilation_width_factor = 1;
   params.activation = Activation::RELU;
 
-  DepthwiseConv2D kernel(&input_tensor, &filter_tensor, &bias_tensor, &output_tensor, params);
+  DepthwiseConv2D kernel(&input_tensor, &filter_tensor, &bias_tensor, &output_tensor, &scratchpad,
+                         params);
   EXPECT_ANY_THROW(kernel.configure());
 }
 

@@ -124,7 +124,6 @@ inline void DepthwiseConvPerChannel<int8_t>(
     cmsis_nn_context ctx;
     ctx.buf = scratchpad_data;
     ctx.size = scratchpad_shape.Dims(0);
-    ;
 
     auto res = arm_depthwise_conv_wrapper_s8(&ctx, &dw_conv_params, &quant_params, &input_dims,
                                              input_data, &filter_dims, filter_data, &bias_dims,
