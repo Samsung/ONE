@@ -28,8 +28,9 @@ namespace kernels
 {
 
 DepthwiseConv2D::DepthwiseConv2D(const Tensor *input, const Tensor *filter, const Tensor *bias,
-                                 Tensor *output, const DepthwiseConv2DParams &params)
-  : KernelWithParams<DepthwiseConv2DParams>({input, filter, bias}, {output}, params)
+                                 Tensor *output, Tensor *scratchpad,
+                                 const DepthwiseConv2DParams &params)
+  : KernelWithParams<DepthwiseConv2DParams>({input, filter, bias}, {output, scratchpad}, params)
 {
 }
 
@@ -107,6 +108,15 @@ void DepthwiseConv2D::configure()
                                   filter_width, output_width);
 
   output()->resize({batches, output_height, output_width, channels_out});
+
+  tflite::DepthwiseParams params{};
+
+  params.dilation_height_factor = _params.dilation_height_factor;
+  params.dilation_width_factor = _params.dilation_width_factor;
+
+  auto scratchpad = getOutputTensors()[1];
+  luci_interpreter_pal::SetupScratchpadTensor(scratchpad, params, getTensorShape(input()),
+                                              getTensorShape(filter()), getTensorShape(output()));
 }
 
 void DepthwiseConv2D::execute() const
@@ -335,11 +345,16 @@ void DepthwiseConv2D::evalQuantizedS8PerChannel() const
                  std::back_inserter(multipliers),
                  [](ChannelQuantMultipliers cm) { return cm.multiplier; });
 
+  auto scratchpad = getOutputTensors()[1];
+  int8_t *scratchpad_data = nullptr;
+  if (scratchpad->is_allocatable())
+    scratchpad_data = scratchpad->data<int8_t>();
+
   luci_interpreter_pal::DepthwiseConvPerChannel<int8_t>(
     params, multipliers.data(), shifts.data(), getTensorShape(input()),
     getTensorData<int8_t>(input()), getTensorShape(filter()), getTensorData<int8_t>(filter()),
     getTensorShape(bias()), getTensorData<int32_t>(bias()), getTensorShape(output()),
-    getTensorData<int8_t>(output()));
+    getTensorData<int8_t>(output()), getTensorShape(scratchpad), scratchpad_data);
 }
 
 void DepthwiseConv2D::evalQuantizedS16() const

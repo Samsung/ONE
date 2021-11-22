@@ -30,7 +30,8 @@ DepthwiseConvPerChannel(const tflite::DepthwiseParams &params, const int32_t *ou
                         const T *input_data, const tflite::RuntimeShape &filter_shape,
                         const T *filter_data, const tflite::RuntimeShape &bias_shape,
                         const int32_t *bias_data, const tflite::RuntimeShape &output_shape,
-                        T *output_data)
+                        T *output_data, const tflite::RuntimeShape &scratchpad_shape,
+                        T *scratchpad_data)
 {
   {
     // MARK: At this moment this operation is not supported
@@ -47,22 +48,42 @@ DepthwiseConvPerChannel(const tflite::DepthwiseParams &params, const int32_t *ou
     (void)bias_data;
     (void)output_shape;
     (void)output_data;
+    (void)scratchpad_shape;
+    (void)scratchpad_data;
   }
 }
 
 template <>
-inline void
-DepthwiseConvPerChannel<int8_t>(const tflite::DepthwiseParams &params,
-                                const int32_t *output_multiplier, const int32_t *output_shift,
-                                const tflite::RuntimeShape &input_shape, const int8_t *input_data,
-                                const tflite::RuntimeShape &filter_shape, const int8_t *filter_data,
-                                const tflite::RuntimeShape &bias_shape, const int32_t *bias_data,
-                                const tflite::RuntimeShape &output_shape, int8_t *output_data)
+inline void DepthwiseConvPerChannel<int8_t>(
+  const tflite::DepthwiseParams &params, const int32_t *output_multiplier,
+  const int32_t *output_shift, const tflite::RuntimeShape &input_shape, const int8_t *input_data,
+  const tflite::RuntimeShape &filter_shape, const int8_t *filter_data,
+  const tflite::RuntimeShape &bias_shape, const int32_t *bias_data,
+  const tflite::RuntimeShape &output_shape, int8_t *output_data,
+  const tflite::RuntimeShape &scratchpad_shape, int8_t *scratchpad_data)
 {
+  (void)scratchpad_shape;
+  (void)scratchpad_data;
   tflite::reference_integer_ops::DepthwiseConvPerChannel(
     params, output_multiplier, output_shift, input_shape, input_data, filter_shape, filter_data,
     bias_shape, bias_data, output_shape, output_data);
 }
+
+static inline void SetupScratchpadTensor(luci_interpreter::Tensor *scratchpad,
+                                         const tflite::DepthwiseParams &params,
+                                         const tflite::RuntimeShape &input_shape,
+                                         const tflite::RuntimeShape &filter_shape,
+                                         const tflite::RuntimeShape &output_shape)
+
+{
+  (void)params;
+  (void)input_shape;
+  (void)filter_shape;
+  (void)output_shape;
+
+  scratchpad->set_allocatable(false);
+}
+
 } // namespace luci_interpreter_pal
 
 #endif // LUCI_INTERPRETER_PAL_DEPTHWISECONV2D_H
