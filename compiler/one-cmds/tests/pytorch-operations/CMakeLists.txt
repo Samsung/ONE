@@ -57,10 +57,10 @@ foreach(TEST_ITEM IN ITEMS ${TEST_EXAMPLES})
   file(APPEND "${DRIVER_SCRIPT}" "/bin/bash \"${TEST_ITEM}.test\" | tee -a runtestall.log\n")
 endforeach(TEST_ITEM)
 
-file(APPEND "${DRIVER_SCRIPT}" "\necho \"special test items\" > runtestall.log\n\n")
+file(APPEND "${DRIVER_SCRIPT}" "\necho \"special test items\" | tee -a runtestall.log\n\n")
 
 foreach(TEST_ITEM IN ITEMS ${SPECIAL_TEST_ITEMS})
-  file(APPEND "${DRIVER_SCRIPT}" "/bin/bash \"${TEST_ITEM}.test\" | tee -a runtestall.log\n")
+  file(APPEND "${DRIVER_SCRIPT}" "/bin/bash \"${TEST_ITEM}\" | tee -a runtestall.log\n")
 endforeach(TEST_ITEM)
 
 file(APPEND "${DRIVER_SCRIPT}" "popd > /dev/null\n\n")
