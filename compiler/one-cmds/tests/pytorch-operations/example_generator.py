@@ -19,6 +19,7 @@
 import torch
 import importlib
 import argparse
+import os
 
 from pathlib import Path
 
@@ -49,7 +50,13 @@ class JitWrapper(torch.nn.Module):
 for example in args.examples:
     print("Generate '" + example + ".pth'", end = '')
     # load example code
-    module = importlib.import_module("examples." + example)
+    # replace - with _ in name, otherwise pytorch generates invalid torchscript
+    module_name = "examples."+ example.replace('-', '_')
+    module_loader = importlib.machinery.SourceFileLoader(module_name, os.path.join("examples", example, "__init__.py"))
+    module_spec = importlib.util.spec_from_loader(module_name, module_loader)
+    module = importlib.util.module_from_spec(module_spec)
+    module_loader.exec_module(module)
+
     jittable_model = JitWrapper(module._model_)
 
     traced_model = torch.jit.trace(jittable_model, module._dummy_)
@@ -58,26 +65,18 @@ for example in args.examples:
 
     input_shapes = ""
     input_types = ""
-    for inp_idx in range(len(module._dummy_)):
-        input_data = module._dummy_[inp_idx]
+
+    input_samples = module._dummy_
+    if isinstance(input_samples, torch.Tensor):
+        input_samples = [input_samples]
+    for inp_idx in range(len(input_samples)):
+        input_data = input_samples[inp_idx]
 
         shape = input_data.shape
         for dim in range(len(shape)):
             input_shapes += str(shape[dim])
             if dim != len(shape) - 1:
                 input_shapes += ","
-
-        "bool"       : torch.bool,
-        "uint8"      : torch.uint8,
-        "int8"       : torch.int8,
-        "int16"      : torch.int16,
-        "int32"      : torch.int32,
-        "int64"      : torch.int64,
-        "float16"    : torch.float16,
-        "float32"    : torch.float32,
-        "float64"    : torch.float64,
-        "complex64"  : torch.complex64,
-        "complex128" : torch.complex128
 
         if input_data.dtype == torch.bool:
             input_types += "bool"
@@ -104,7 +103,7 @@ for example in args.examples:
         else:
             raise ValueError('unsupported dtype')
 
-        if inp_idx != len(module._dummy_) - 1:
+        if inp_idx != len(input_samples) - 1:
             input_shapes += ":"
             input_types += ","
 
