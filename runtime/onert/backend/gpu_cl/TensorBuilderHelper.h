@@ -20,8 +20,6 @@
 #include "absl/status/status.h"
 #include "tensorflow/lite/delegates/gpu/common/shape.h"
 
-using namespace tflite::gpu;
-
 namespace onert
 {
 namespace backend
@@ -37,7 +35,7 @@ enum TensorType
   TENSOR_TYPE_DELETE = 3
 };
 
-absl::Status ExtractAxisFromIndex(int dims, int index, Axis *axis);
+absl::Status ExtractAxisFromIndex(int dims, int index, tflite::gpu::Axis *axis);
 
 } // namespace gpu_cl
 } // namespace backend

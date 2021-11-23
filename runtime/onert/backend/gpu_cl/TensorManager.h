@@ -35,7 +35,7 @@ using MemoryManager = ClMemoryManager<operand::ICLTensor, operand::CLTensor>;
 
 using TensorManager = ClTensorManager<operand::ICLTensor, operand::CLTensor>;
 
-inline TensorManager *createTensorManager(CLContext *context)
+inline TensorManager *createTensorManager(tflite::gpu::cl::CLContext *context)
 {
   VERBOSE(createTensorManager) << "ClTensorManager" << std::endl;
   return new TensorManager(new MemoryManager(context), new MemoryManager(context));

@@ -31,6 +31,10 @@ namespace gpu_cl
 namespace operand
 {
 
+using namespace tflite::gpu;
+using namespace tflite::gpu::cl;
+using namespace tflite::gpu::internal_tensor;
+
 void ICLTensor::access(const std::function<void(ITensor &tensor)> &fn)
 {
   if (total_size() == 0)

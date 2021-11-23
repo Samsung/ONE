@@ -42,7 +42,7 @@ class KernelGenerator : public basic::KernelGeneratorBase
 public:
   KernelGenerator(const ir::Graph &graph, const std::shared_ptr<TensorBuilder> &tensor_builder,
                   const std::shared_ptr<ClTensorRegistry<TensorManager>> &tensor_reg,
-                  const std::shared_ptr<CreationContext> &creation_context);
+                  const std::shared_ptr<tflite::gpu::cl::CreationContext> &creation_context);
 
   std::unique_ptr<exec::FunctionSequence> generate(ir::OperationIndex ind) override;
 
@@ -61,7 +61,7 @@ private:
   ir::Layout _current_layout;
   std::shared_ptr<TensorBuilder> _tensor_builder;
   std::shared_ptr<ClTensorRegistry<TensorManager>> _tensor_reg;
-  std::shared_ptr<CreationContext> _creation_context;
+  std::shared_ptr<tflite::gpu::cl::CreationContext> _creation_context;
   ir::OperandIndexMap<std::shared_ptr<tflite::gpu::cl::Tensor>> _new_tensors;
 };
 

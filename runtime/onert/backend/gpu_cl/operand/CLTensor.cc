@@ -32,9 +32,9 @@ namespace gpu_cl
 namespace operand
 {
 
-CLTensor::CLTensor(size_t rank, ir::Shape shape, std::shared_ptr<Environment> environment,
-                   TensorType type)
-  : ICLTensor{rank, shape, environment, type}, _tensor(std::make_shared<tflite::gpu::cl::Tensor>())
+CLTensor::CLTensor(size_t rank, ir::Shape shape,
+                   std::shared_ptr<tflite::gpu::cl::Environment> environment, TensorType type)
+  : ICLTensor{rank, shape, environment, type}, _tensor(std::make_shared<Tensor>())
 {
 }
 

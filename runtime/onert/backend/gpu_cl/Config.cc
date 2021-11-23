@@ -20,7 +20,6 @@
 
 #include "tensorflow/lite/delegates/gpu/common/status.h"
 #include "tensorflow/lite/delegates/gpu/cl/opencl_wrapper.h"
-// #include "ex/OpenClWrapperEx.h"
 
 using namespace tflite::gpu::cl;
 

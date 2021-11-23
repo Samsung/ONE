@@ -53,8 +53,8 @@ public:
   using T_ClTensorManager = ClTensorManager<T_ITensor, T_Tensor>;
 
   ClTensorBuilder(const ir::Operands &operands, T_ClTensorManager *tensor_mgr,
-                  InferenceContext::CreateInferenceInfo create_info,
-                  const std::shared_ptr<Environment> &environment);
+                  tflite::gpu::cl::InferenceContext::CreateInferenceInfo create_info,
+                  const std::shared_ptr<tflite::gpu::cl::Environment> &environment);
 
   /**
    * @brief     Register tensor information to allocate on ACL-CL backend
@@ -110,8 +110,8 @@ private:
   ir::OperandIndexMap<size_t> _uses_count_map;
 
   std::unique_ptr<T_ClTensorManager> _tensor_mgr;
-  InferenceContext::CreateInferenceInfo _create_info;
-  std::shared_ptr<Environment> _environment;
+  tflite::gpu::cl::InferenceContext::CreateInferenceInfo _create_info;
+  std::shared_ptr<tflite::gpu::cl::Environment> _environment;
 
   // for linear executor
   std::vector<std::pair<UsesType, ir::OperandIndex>> _lifetime_seq;
@@ -139,8 +139,8 @@ namespace gpu_cl
 template <typename T_ITensor, typename T_Tensor>
 ClTensorBuilder<T_ITensor, T_Tensor>::ClTensorBuilder(
   const ir::Operands &operands, T_ClTensorManager *tensor_mgr,
-  InferenceContext::CreateInferenceInfo create_info,
-  const std::shared_ptr<Environment> &environment)
+  tflite::gpu::cl::InferenceContext::CreateInferenceInfo create_info,
+  const std::shared_ptr<tflite::gpu::cl::Environment> &environment)
   : _operands{operands}, _tensor_mgr{tensor_mgr}, _create_info{create_info}, _environment{
                                                                                environment}
 {

@@ -28,9 +28,6 @@
 #include "util/logging.h"
 #include "ex/InferenceContextEx.h"
 
-using namespace tflite::gpu;
-using namespace tflite::gpu::cl;
-
 namespace onert
 {
 namespace backend
@@ -41,7 +38,7 @@ namespace gpu_cl
 template <typename T_ITensor, typename T_Tensor> class ClMemoryManager
 {
 public:
-  ClMemoryManager(CLContext *context) : _context{context} {}
+  ClMemoryManager(tflite::gpu::cl::CLContext *context) : _context{context} {}
 
   virtual ~ClMemoryManager() = default;
 
@@ -90,47 +87,49 @@ public:
   }
 
   void buildTensor(const ir::OperandIndex &ind, const ir::OperandInfo &info,
-                   InferenceContext::CreateInferenceInfo create_info,
-                   std::shared_ptr<Environment> environment, DeviceInfo &device_info,
-                   TensorType type)
+                   tflite::gpu::cl::InferenceContext::CreateInferenceInfo create_info,
+                   std::shared_ptr<tflite::gpu::cl::Environment> environment,
+                   tflite::gpu::cl::DeviceInfo &device_info, TensorType type)
   {
-    ValueId max_id = 0;
+    tflite::gpu::ValueId max_id = 0;
     auto data_type = DeduceDataTypeFromPrecision(create_info.precision);
     const auto shape = info.shape();
 
     auto tensor = std::make_shared<T_Tensor>(shape.rank(), shape, environment, type);
     _tensors[ind] = tensor;
-    BHWC t_shape;
+    tflite::gpu::BHWC t_shape;
     switch (shape.rank())
     {
       case 1:
         // B layout
-        t_shape = BHWC(shape.dim(0), 1, 1, 1);
+        t_shape = tflite::gpu::BHWC(shape.dim(0), 1, 1, 1);
         break;
       case 2:
         // BC layout
-        t_shape = BHWC(shape.dim(0), 1, 1, shape.dim(1));
+        t_shape = tflite::gpu::BHWC(shape.dim(0), 1, 1, shape.dim(1));
         break;
       case 3:
         // BWC layout
-        t_shape = BHWC(shape.dim(0), 1, shape.dim(1), shape.dim(2));
+        t_shape = tflite::gpu::BHWC(shape.dim(0), 1, shape.dim(1), shape.dim(2));
         break;
       case 4:
         // BHWC layout
-        t_shape = BHWC(shape.dim(0), shape.dim(1), shape.dim(2), shape.dim(3));
+        t_shape = tflite::gpu::BHWC(shape.dim(0), shape.dim(1), shape.dim(2), shape.dim(3));
         break;
       default:
         break;
     }
 
-    TensorStorageType storage_type = create_info.storage_type;
-    Layout layout = t_shape.b == 1 ? Layout::HWC : Layout::BHWC;
+    tflite::gpu::cl::TensorStorageType storage_type = create_info.storage_type;
+    tflite::gpu::Layout layout =
+      t_shape.b == 1 ? tflite::gpu::Layout::HWC : tflite::gpu::Layout::BHWC;
 
-    ValueId id = ind.value();
-    storage_type = SelectBestStorageType(device_info, t_shape, storage_type, data_type, layout);
+    tflite::gpu::ValueId id = ind.value();
+    storage_type =
+      tflite::gpu::cl::SelectBestStorageType(device_info, t_shape, storage_type, data_type, layout);
     auto dummy = std::make_shared<InferenceContextEx::DummyTensor>();
     dummy->shape = t_shape;
-    dummy->descriptor = TensorDescriptor{data_type, storage_type, layout};
+    dummy->descriptor = tflite::gpu::cl::TensorDescriptor{data_type, storage_type, layout};
     tensor_reserver_.Add(id, dummy);
 
     max_id = std::max(max_id, id);
@@ -145,7 +144,7 @@ public:
 private:
   ir::OperandIndexMap<std::shared_ptr<T_Tensor>> _tensors;
   InferenceContextEx::TensorReserverEx tensor_reserver_;
-  CLContext *_context;
+  tflite::gpu::cl::CLContext *_context;
 };
 
 } // namespace gpu_cl

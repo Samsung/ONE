@@ -22,9 +22,6 @@
 #include "tensorflow/lite/delegates/gpu/common/model.h"
 #include "absl/strings/str_cat.h"
 
-using namespace tflite::gpu;
-using namespace tflite::gpu::cl;
-
 namespace onert
 {
 namespace backend
@@ -32,12 +29,12 @@ namespace backend
 namespace gpu_cl
 {
 
-class InferenceContextEx : public InferenceContext
+class InferenceContextEx : public tflite::gpu::cl::InferenceContext
 {
   struct DummyTensor
   {
-    BHWC shape;
-    TensorDescriptor descriptor;
+    tflite::gpu::BHWC shape;
+    tflite::gpu::cl::TensorDescriptor descriptor;
 
     bool operator==(const DummyTensor &b) const
     {
@@ -48,22 +45,29 @@ class InferenceContextEx : public InferenceContext
   class TensorReserverEx
   {
   public:
-    ValueId Add(const std::shared_ptr<DummyTensor> &dummy)
+    tflite::gpu::ValueId Add(const std::shared_ptr<DummyTensor> &dummy)
     {
       reservations_[next_] = dummy;
       return next_++;
     }
-    void Add(ValueId id, const std::shared_ptr<DummyTensor> &dummy) { reservations_[id] = dummy; }
-    void SetNext(ValueId id) { next_ = id; }
-    bool HaveTensor(ValueId id) { return reservations_.find(id) != reservations_.end(); }
-    std::shared_ptr<DummyTensor> Get(ValueId id) { return reservations_[id]; }
-
-    std::vector<std::pair<ValueId, TensorDescriptor>> GetTensorDescs() const
+    void Add(tflite::gpu::ValueId id, const std::shared_ptr<DummyTensor> &dummy)
     {
-      std::vector<std::pair<ValueId, TensorDescriptor>> result;
+      reservations_[id] = dummy;
+    }
+    void SetNext(tflite::gpu::ValueId id) { next_ = id; }
+    bool HaveTensor(tflite::gpu::ValueId id)
+    {
+      return reservations_.find(id) != reservations_.end();
+    }
+    std::shared_ptr<DummyTensor> Get(tflite::gpu::ValueId id) { return reservations_[id]; }
+
+    std::vector<std::pair<tflite::gpu::ValueId, tflite::gpu::cl::TensorDescriptor>>
+    GetTensorDescs() const
+    {
+      std::vector<std::pair<tflite::gpu::ValueId, tflite::gpu::cl::TensorDescriptor>> result;
       for (auto &v : reservations_)
       {
-        TensorDescriptor desc = v.second->descriptor;
+        tflite::gpu::cl::TensorDescriptor desc = v.second->descriptor;
         desc.shape.b = v.second->shape.b;
         desc.shape.h = v.second->shape.h;
         desc.shape.w = v.second->shape.w;
@@ -74,7 +78,8 @@ class InferenceContextEx : public InferenceContext
       return result;
     }
 
-    void Add(const std::vector<std::pair<ValueId, TensorDescriptor>> &tensors)
+    void Add(const std::vector<std::pair<tflite::gpu::ValueId, tflite::gpu::cl::TensorDescriptor>>
+               &tensors)
     {
       for (auto &v : tensors)
       {
@@ -90,8 +95,8 @@ class InferenceContextEx : public InferenceContext
 
   private:
     // absl::flat_hash_map<ValueId, DummyTensor> reservations_;
-    std::unordered_map<ValueId, std::shared_ptr<DummyTensor>> reservations_;
-    ValueId next_ = 0;
+    std::unordered_map<tflite::gpu::ValueId, std::shared_ptr<DummyTensor>> reservations_;
+    tflite::gpu::ValueId next_ = 0;
   };
 };
 

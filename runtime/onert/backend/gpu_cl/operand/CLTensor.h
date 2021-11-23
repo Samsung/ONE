@@ -23,8 +23,6 @@
 #include "tensorflow/lite/delegates/gpu/cl/cl_context.h"
 #include "tensorflow/lite/delegates/gpu/cl/tensor.h"
 
-using namespace tflite::gpu::cl;
-
 namespace onert
 {
 namespace backend
@@ -40,7 +38,8 @@ public:
   CLTensor() = delete;
 
 public:
-  CLTensor(size_t rank, ir::Shape shape, std::shared_ptr<Environment> environment, TensorType type);
+  CLTensor(size_t rank, ir::Shape shape, std::shared_ptr<tflite::gpu::cl::Environment> environment,
+           TensorType type);
 
 public:
   const tflite::gpu::cl::Tensor *handle() const override;

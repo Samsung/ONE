@@ -28,9 +28,6 @@
 
 #include "TensorBuilderHelper.h"
 
-using namespace tflite::gpu;
-using namespace tflite::gpu::cl;
-
 namespace onert
 {
 namespace backend
@@ -49,7 +46,8 @@ public:
   ICLTensor(ICLTensor &&) = default;
   ICLTensor &operator=(ICLTensor &&) = default;
 
-  ICLTensor(size_t rank, ir::Shape shape, std::shared_ptr<Environment> environment, TensorType type)
+  ICLTensor(size_t rank, ir::Shape shape, std::shared_ptr<tflite::gpu::cl::Environment> environment,
+            TensorType type)
     : _rank{rank}, _shape{shape}, _environment(environment), _type(type)
   {
   }
@@ -99,12 +97,12 @@ private:
 protected:
   size_t _rank; // Actual rank (reflects extended rank)
   ir::Shape _shape;
-  std::shared_ptr<Environment> _environment;
+  std::shared_ptr<tflite::gpu::cl::Environment> _environment;
   TensorType _type;
-  std::unique_ptr<TensorObjectConverterBuilder> _converter_builder;
-  CLMemory _cl_memory;
-  std::unique_ptr<TensorObjectConverter> _converter_to;
-  std::unique_ptr<TensorObjectConverter> _converter_from;
+  std::unique_ptr<tflite::gpu::TensorObjectConverterBuilder> _converter_builder;
+  tflite::gpu::cl::CLMemory _cl_memory;
+  std::unique_ptr<tflite::gpu::TensorObjectConverter> _converter_to;
+  std::unique_ptr<tflite::gpu::TensorObjectConverter> _converter_from;
 };
 
 } // namespace operand

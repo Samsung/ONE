@@ -25,8 +25,6 @@
 #include "ir/OperandInfo.h"
 #include "ir/OperandIndexMap.h"
 
-using namespace tflite::gpu::cl;
-
 namespace onert
 {
 namespace backend
@@ -49,9 +47,9 @@ public:
   void deallocateNonconsts(void);
 
   void buildTensor(const ir::OperandIndex &ind, const ir::OperandInfo &info,
-                   InferenceContext::CreateInferenceInfo create_info,
-                   std::shared_ptr<Environment> environment, DeviceInfo &device_info,
-                   TensorType type);
+                   tflite::gpu::cl::InferenceContext::CreateInferenceInfo create_info,
+                   std::shared_ptr<tflite::gpu::cl::Environment> environment,
+                   tflite::gpu::cl::DeviceInfo &device_info, TensorType type);
 
   std::shared_ptr<T_ITensor> findTensorAsParent(const ir::OperandIndex &ind);
 
@@ -126,8 +124,9 @@ void ClTensorManager<T_ITensor, T_Tensor>::deallocateNonconsts(void)
 template <typename T_ITensor, typename T_Tensor>
 void ClTensorManager<T_ITensor, T_Tensor>::buildTensor(
   const ir::OperandIndex &ind, const ir::OperandInfo &info,
-  InferenceContext::CreateInferenceInfo create_info, std::shared_ptr<Environment> environment,
-  DeviceInfo &device_info, TensorType type)
+  tflite::gpu::cl::InferenceContext::CreateInferenceInfo create_info,
+  std::shared_ptr<tflite::gpu::cl::Environment> environment,
+  tflite::gpu::cl::DeviceInfo &device_info, TensorType type)
 {
   assert(_ind_to_mgr.find(ind) == _ind_to_mgr.end());
 

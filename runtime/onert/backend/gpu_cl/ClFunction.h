@@ -26,27 +26,24 @@
 #include "tensorflow/lite/delegates/gpu/cl/cl_command_queue.h"
 #include "tensorflow/lite/delegates/gpu/common/status.h"
 
-using namespace tflite::gpu::cl;
-
 namespace onert
 {
 namespace backend
 {
 namespace gpu_cl
 {
-
 class ClFunction : public ::onert::exec::IFunction
 {
 public:
   ClFunction() : _gpu_operations(), _creation_context() {}
 
 public:
-  void configure(std::shared_ptr<CreationContext> creation_context)
+  void configure(std::shared_ptr<tflite::gpu::cl::CreationContext> creation_context)
   {
     _creation_context = creation_context;
   }
 
-  void add_operation(std::unique_ptr<GPUOperation> gpu_operation)
+  void add_operation(std::unique_ptr<tflite::gpu::cl::GPUOperation> gpu_operation)
   {
     _gpu_operations.push_back(std::move(gpu_operation));
   }
@@ -83,8 +80,8 @@ public:
   }
 
 private:
-  std::vector<std::unique_ptr<GPUOperation>> _gpu_operations;
-  std::shared_ptr<CreationContext> _creation_context;
+  std::vector<std::unique_ptr<tflite::gpu::cl::GPUOperation>> _gpu_operations;
+  std::shared_ptr<tflite::gpu::cl::CreationContext> _creation_context;
 };
 
 } // namespace gpu_cl
