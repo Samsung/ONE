@@ -46,6 +46,7 @@ TEST_F(AveragePool2DTest, Float)
   Tensor input_tensor =
     makeInputTensor<DataType::FLOAT32>(input_shape, input_data, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
+  Tensor scratchpad(DataType::FLOAT32, Shape({}), {}, "");
 
   Pool2DParams params{};
   params.padding = Padding::VALID;
@@ -55,8 +56,9 @@ TEST_F(AveragePool2DTest, Float)
   params.stride_width = 2;
   params.activation = Activation::RELU6;
 
-  AveragePool2D kernel(&input_tensor, &output_tensor, params);
+  AveragePool2D kernel(&input_tensor, &output_tensor, &scratchpad, params);
   kernel.configure();
+  _memory_manager->allocate_memory(scratchpad);
   _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
@@ -78,6 +80,7 @@ TEST_F(AveragePool2DTest, Uint8_0)
   Tensor input_tensor = makeInputTensor<DataType::U8>(
     {1, 2, 4, 1}, quant_param.first, quant_param.second, input_data, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::U8, quant_param.first, quant_param.second);
+  Tensor scratchpad(DataType::U8, Shape({}), {}, "");
 
   Pool2DParams params{};
   params.padding = Padding::VALID;
@@ -87,8 +90,9 @@ TEST_F(AveragePool2DTest, Uint8_0)
   params.stride_width = 2;
   params.activation = Activation::RELU6;
 
-  AveragePool2D kernel(&input_tensor, &output_tensor, params);
+  AveragePool2D kernel(&input_tensor, &output_tensor, &scratchpad, params);
   kernel.configure();
+  _memory_manager->allocate_memory(scratchpad);
   _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
@@ -107,6 +111,7 @@ TEST_F(AveragePool2DTest, Uint8_1)
   Tensor input_tensor = makeInputTensor<DataType::U8>(
     {1, 2, 4, 1}, quant_param.first, quant_param.second, input_data, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::U8, quant_param.first, quant_param.second);
+  Tensor scratchpad(DataType::U8, Shape({}), {}, "");
 
   Pool2DParams params{};
   params.padding = Padding::VALID;
@@ -116,9 +121,10 @@ TEST_F(AveragePool2DTest, Uint8_1)
   params.stride_width = 2;
   params.activation = Activation::RELU6;
 
-  AveragePool2D kernel(&input_tensor, &output_tensor, params);
+  AveragePool2D kernel(&input_tensor, &output_tensor, &scratchpad, params);
   kernel.configure();
   _memory_manager->allocate_memory(output_tensor);
+  _memory_manager->allocate_memory(scratchpad);
   kernel.execute();
 
   EXPECT_THAT(dequantizeTensorData(output_tensor), FloatArrayNear({2.75, 6.0}));
@@ -141,6 +147,7 @@ TEST_F(AveragePool2DTest, SInt16)
   Tensor input_tensor =
     makeInputTensor<DataType::S16>(input_shape, 0.5, 0, input_data, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::S16, 0.5, 0);
+  Tensor scratchpad(DataType::S16, Shape({}), {}, "");
 
   Pool2DParams params{};
   params.padding = Padding::VALID;
@@ -150,8 +157,9 @@ TEST_F(AveragePool2DTest, SInt16)
   params.stride_width = 2;
   params.activation = Activation::RELU6;
 
-  AveragePool2D kernel(&input_tensor, &output_tensor, params);
+  AveragePool2D kernel(&input_tensor, &output_tensor, &scratchpad, params);
   kernel.configure();
+  _memory_manager->allocate_memory(scratchpad);
   _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
@@ -174,6 +182,7 @@ TEST_F(AveragePool2DTest, SInt8)
   Tensor input_tensor = makeInputTensor<DataType::S8>(
     input_shape, quant_param.first, quant_param.second, input_data, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::S8, quant_param.first, quant_param.second);
+  Tensor scratchpad(DataType::S8, Shape({}), {}, "");
 
   Pool2DParams params{};
   params.padding = Padding::VALID;
@@ -183,8 +192,9 @@ TEST_F(AveragePool2DTest, SInt8)
   params.stride_width = 2;
   params.activation = Activation::RELU6;
 
-  AveragePool2D kernel(&input_tensor, &output_tensor, params);
+  AveragePool2D kernel(&input_tensor, &output_tensor, &scratchpad, params);
   kernel.configure();
+  _memory_manager->allocate_memory(scratchpad);
   _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
@@ -203,6 +213,7 @@ TEST_F(AveragePool2DTest, Invalid_Input_Shape_NEG)
   Tensor input_tensor =
     makeInputTensor<DataType::FLOAT32>(input_shape, input_data, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
+  Tensor scratchpad(DataType::FLOAT32, Shape({}), {}, "");
 
   Pool2DParams params{};
   params.padding = Padding::VALID;
@@ -212,7 +223,7 @@ TEST_F(AveragePool2DTest, Invalid_Input_Shape_NEG)
   params.stride_width = 2;
   params.activation = Activation::RELU6;
 
-  AveragePool2D kernel(&input_tensor, &output_tensor, params);
+  AveragePool2D kernel(&input_tensor, &output_tensor, &scratchpad, params);
   EXPECT_ANY_THROW(kernel.configure());
 }
 
@@ -227,6 +238,7 @@ TEST_F(AveragePool2DTest, In_Out_Type_NEG)
   Tensor input_tensor =
     makeInputTensor<DataType::FLOAT32>(input_shape, input_data, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::U8);
+  Tensor scratchpad(DataType::FLOAT32, Shape({}), {}, "");
 
   Pool2DParams params{};
   params.padding = Padding::VALID;
@@ -236,7 +248,7 @@ TEST_F(AveragePool2DTest, In_Out_Type_NEG)
   params.stride_width = 2;
   params.activation = Activation::RELU6;
 
-  AveragePool2D kernel(&input_tensor, &output_tensor, params);
+  AveragePool2D kernel(&input_tensor, &output_tensor, &scratchpad, params);
   EXPECT_ANY_THROW(kernel.configure());
 }
 
@@ -252,6 +264,7 @@ TEST_F(AveragePool2DTest, Quant_Param_NEG)
   Tensor input_tensor = makeInputTensor<DataType::U8>(
     {1, 2, 4, 1}, quant_param1.first, quant_param1.second, input_data, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::U8, quant_param2.first, quant_param2.second);
+  Tensor scratchpad(DataType::U8, Shape({}), {}, "");
 
   Pool2DParams params{};
   params.padding = Padding::VALID;
@@ -261,7 +274,7 @@ TEST_F(AveragePool2DTest, Quant_Param_NEG)
   params.stride_width = 2;
   params.activation = Activation::RELU6;
 
-  AveragePool2D kernel(&input_tensor, &output_tensor, params);
+  AveragePool2D kernel(&input_tensor, &output_tensor, &scratchpad, params);
   EXPECT_ANY_THROW(kernel.configure());
 }
 
