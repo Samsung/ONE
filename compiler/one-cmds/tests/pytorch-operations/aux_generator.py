@@ -38,11 +38,11 @@ if __name__ == '__main__':
     # save "entire" model for entire_model.test
     torch.save(model, 'entire_model.pth')
 
-    # save state_dict file for state_dict.test
-    state_dict_path = 'dict_model.pth'
+    # save state_dict file for state_dict_model.test
+    state_dict_path = 'state_dict_model.pth'
     torch.save(model.state_dict(), state_dict_path)
 
-    # create files for mar_torchscript.test
+    # create files for mar_torchscript_model.test
     torchscript_path = 'torchscript_model.pth'
     inp = torch.randn(1, 2, 3, 3)
     traced_model = torch.jit.trace(model, inp)
@@ -58,12 +58,12 @@ if __name__ == '__main__':
     manifest['model']['modelVersion'] = '1.0'
     manifest['archiverVersion'] = '0.4.2'
 
-    with zipfile.ZipFile('mar_torchscript.mar', 'w') as mar_file:
+    with zipfile.ZipFile('mar_torchscript_model.mar', 'w') as mar_file:
         with mar_file.open('MAR-INF/MANIFEST.json', 'w') as manifest_file:
             manifest_file.write(json.dumps(manifest).encode())
         mar_file.write(torchscript_path)
 
-    # create files for mar_state_dict.test
+    # create files for mar_state_dict_model.test
     model_file_path = os.path.basename(__file__)
     # create manifest
     manifest = {}
@@ -77,7 +77,7 @@ if __name__ == '__main__':
     manifest['model']['modelVersion'] = '1.0'
     manifest['archiverVersion'] = '0.4.2'
 
-    with zipfile.ZipFile('mar_state_dict.mar', 'w') as mar_file:
+    with zipfile.ZipFile('mar_state_dict_model.mar', 'w') as mar_file:
         with mar_file.open('MAR-INF/MANIFEST.json', 'w') as manifest_file:
             manifest_file.write(json.dumps(manifest).encode())
         mar_file.write(state_dict_path)

@@ -3,6 +3,7 @@
 # Gather test scripts
 set(EXAMPLES_DIR "${NNAS_PROJECT_SOURCE_DIR}/res/PyTorchExamples/examples")
 file(GLOB TEST_EXAMPLES RELATIVE "${EXAMPLES_DIR}" "${EXAMPLES_DIR}/*")
+file(GLOB SPECIAL_TEST_ITEMS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "./*.test")
 
 set(TEST_DST test/pytorch-operations)
 
@@ -56,6 +57,12 @@ foreach(TEST_ITEM IN ITEMS ${TEST_EXAMPLES})
   file(APPEND "${DRIVER_SCRIPT}" "/bin/bash \"${TEST_ITEM}.test\" | tee -a runtestall.log\n")
 endforeach(TEST_ITEM)
 
+file(APPEND "${DRIVER_SCRIPT}" "\necho \"special test items\" > runtestall.log\n\n")
+
+foreach(TEST_ITEM IN ITEMS ${SPECIAL_TEST_ITEMS})
+  file(APPEND "${DRIVER_SCRIPT}" "/bin/bash \"${TEST_ITEM}.test\" | tee -a runtestall.log\n")
+endforeach(TEST_ITEM)
+
 file(APPEND "${DRIVER_SCRIPT}" "popd > /dev/null\n\n")
 
 file(APPEND "${DRIVER_SCRIPT}"
@@ -84,6 +91,12 @@ install(FILES "${PREPARE_TEST_MATERIALS_SH}"
         DESTINATION "${TEST_DST}")
 
 install(FILES "${EXAMPLE_GENERATOR}" "${AUX_GENERATOR}"
+        PERMISSIONS OWNER_WRITE OWNER_READ OWNER_EXECUTE
+        GROUP_READ GROUP_EXECUTE
+        WORLD_READ WORLD_EXECUTE
+        DESTINATION "${TEST_DST}")
+
+install(FILES ${SPECIAL_TEST_ITEMS}
         PERMISSIONS OWNER_WRITE OWNER_READ OWNER_EXECUTE
         GROUP_READ GROUP_EXECUTE
         WORLD_READ WORLD_EXECUTE
