@@ -17,9 +17,10 @@
 # PyTorch aux tests generator
 
 import torch
-import torch.nn
+import torch.nn as nn
 import json
 import zipfile
+import os
 
 
 # model
@@ -38,42 +39,46 @@ if __name__ == '__main__':
     torch.save(model, 'entire_model.pth')
 
     # save state_dict file for state_dict.test
-    torch.save(model.state_dict(), 'dict_model.pth')
+    state_dict_path = 'dict_model.pth'
+    torch.save(model.state_dict(), state_dict_path)
 
-    # create MAR with torchscript
-    # create torchscript for MAR_torchscript test
+    # create files for mar_torchscript.test
+    torchscript_path = 'torchscript_model.pth'
     inp = torch.randn(1, 2, 3, 3)
     traced_model = torch.jit.trace(model, inp)
-    torch.jit.save(traced_model, 'torchscript_model.pth')
-    # TBD create manifest
-    # example
-    # MAR-INF/MANIFEST.json
-    # {
-    #     "createdOn": "16/11/2021 22:57:14",
-    #     "runtime": "python",
-    #     "model": {
-    #         "modelName": "alexnet",
-    #         "serializedFile": "alexnet.pt",
-    #         "handler": "image_classifier",
-    #         "modelVersion": "1.0"
-    #     },
-    #     "archiverVersion": "0.4.2"
-    # }
-    # TBD zip
+    torch.jit.save(traced_model, torchscript_path)
+    # create manifest
+    manifest = {}
+    manifest['createdOn'] ='11/11/1111 11:11:11'
+    manifest['runtime'] = 'python'
+    manifest['model'] = {}
+    manifest['model']['modelName'] = 'torchscript_model',
+    manifest['model']['serializedFile'] = torchscript_path
+    manifest['model']['handler'] = 'image_classifier'
+    manifest['model']['modelVersion'] = '1.0'
+    manifest['archiverVersion'] = '0.4.2'
 
+    with zipfile.ZipFile('mar_torchscript.mar', 'w') as mar_file:
+        with mar_file.open('MAR-INF/MANIFEST.json', 'w') as manifest_file:
+            manifest_file.write(json.dumps(manifest).encode())
+        mar_file.write(torchscript_path)
 
-    # create MAR with state_dict
-    #TBD
-    # MAR-INF/MANIFEST.json example
-    # {
-    #     "createdOn": "17/11/2021 13:09:26",
-    #     "runtime": "python",
-    #     "model": {
-    #         "modelName": "strided_slice_eager",
-    #         "serializedFile": "strided_slice_dict.pth",
-    #         "handler": "image_classifier",
-    #         "modelFile": "strided_slice.py",
-    #         "modelVersion": "1.0"
-    #     },
-    #     "archiverVersion": "0.4.2"
-    # }
+    # create files for mar_state_dict.test
+    model_file_path = os.path.basename(__file__)
+    # create manifest
+    manifest = {}
+    manifest['createdOn'] ='11/11/1111 11:11:11'
+    manifest['runtime'] = 'python'
+    manifest['model'] = {}
+    manifest['model']['modelName'] = 'state_dict_model',
+    manifest['model']['serializedFile'] = state_dict_path
+    manifest['model']['handler'] = 'image_classifier'
+    manifest['model']['modelFile'] = model_file_path
+    manifest['model']['modelVersion'] = '1.0'
+    manifest['archiverVersion'] = '0.4.2'
+
+    with zipfile.ZipFile('mar_state_dict.mar', 'w') as mar_file:
+        with mar_file.open('MAR-INF/MANIFEST.json', 'w') as manifest_file:
+            manifest_file.write(json.dumps(manifest).encode())
+        mar_file.write(state_dict_path)
+        mar_file.write(model_file_path)
