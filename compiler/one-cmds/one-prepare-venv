@@ -61,7 +61,7 @@ ${VENV_PYTHON} -m pip ${PIP_OPTIONS} install tensorflow-cpu==${VER_TENSORFLOW}
 ${VENV_PYTHON} -m pip ${PIP_OPTIONS} install Pillow==6.2.2
 
 # Install PyTorch and ONNX related
-${VENV_PYTHON} -m pip ${PIP_OPTIONS} install torch==1.8.1+cpu -f https://download.pytorch.org/whl/torch_stable.html
+${VENV_PYTHON} -m pip ${PIP_OPTIONS} install torch==1.10.0+cpu -f https://download.pytorch.org/whl/torch_stable.html
 
 # Fix for error with keras > 2.6.0 with VER_TENSORFLOW=2.6.0
 # TODO remove this when VER_TENSORFLOW > 2.6.0
