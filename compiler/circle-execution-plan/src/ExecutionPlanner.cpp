@@ -203,7 +203,7 @@ uint32_t ExecutionPlanner::get_offsets_with_greedy_by_size()
 uint32_t ExecutionPlanner::greedy_by_size_approach()
 {
   size_t result_size = 0;
-  create_alloc_node_inform_vector(false, false, false);
+  create_alloc_node_inform_vector(_is_null_consts, _is_null_inputs, _is_null_scratchpads);
   std::vector<AllocationNodeInformation> ordered_alloc_inform;
   for (auto &current_node : _alloc_node_inform_vector)
   {
