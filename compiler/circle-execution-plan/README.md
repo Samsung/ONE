@@ -10,13 +10,12 @@ The output circle file contains plan (`CircleNodeMemoryPlan`) information for ev
 - number which determines order in which nodes will be executed
 - memory offsets for node output tensors from the beginning of shared memory buffer
 
-In order to record and read this metadata, we use `CircleImportMetadata` and `CircleExportMetadata`.
-For this purpose we use `std::map<uint32_t, std::vector<uint32_t>> _memory_plan_table` which for each node with key ID contains encoded `CircleNodeMemoryPlan` data.
+In order to record and read this data, we use `luci::CircleNodeExecutionPlan`.
 
 ### Execution plan building
 
 In order to build "execution plan" we use `ExecutionPlanner` class.
-The main method is `get_execution_plan()` which for each node finds and writes to its annotations 
+The main method is `make_execution_plan()` which for each node finds and writes to its annotations 
 "execution plan". For this purpose there are two steps:
 - determining the order of execution of nodes, which is stored in `_ordered_nodes` vector.
 Now for this purpose there is only one default method `get_default_execution_order_plan()` that uses `loco::postorder_traversal(const std::vector<loco::Node *> &roots)`.

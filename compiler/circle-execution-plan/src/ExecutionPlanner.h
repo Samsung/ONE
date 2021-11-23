@@ -20,7 +20,7 @@
 #include <luci/IR/Module.h>
 #include <luci/Plan/CircleNodeExecutionPlan.h>
 
-namespace luci
+namespace circle_planner
 {
 // struct for additional information for the node. it helps build allocations plan for nodes.
 struct AllocationNodeInformation
@@ -50,7 +50,7 @@ struct AllocationNodeInformation
   uint32_t last_node;
   // is the current node temporary or not
   bool is_temp;
-  // operation breadth of current node
+  // Breadth is a sum of live tensors sizes at the moment of execution of given node
   uint32_t breadth;
 
   bool operator<(const AllocationNodeInformation &other) const { return offset < other.offset; }
@@ -65,7 +65,7 @@ public:
   // Method provides execution plan, which contains execution order and
   // memory offsets for all nodes in _graph.
   // This plan writes in nodes annotation information with help of CircleNodeExecutionPlan class.
-  void get_execution_plan();
+  void make_execution_plan();
 
 private:
   // Method gets default execution order plan and saves it in _ordered_nodes vector.
@@ -83,7 +83,8 @@ private:
   // Return: required size of buffer.
   uint32_t get_offsets_with_greedy_by_size();
 
-  // Realization of greedy by size approach to find offsets for nodes.
+  // Realization of greedy by size approach (algorithm is mentioned in
+  // "EFFICIENT MEMORY MANAGEMENT FOR DEEP NEURAL NET INFERENCE" paper) to find offsets for nodes.
   uint32_t greedy_by_size_approach();
 
   // Method creates and fills _alloc_node_inform_vector with usage interval inform and node's sizes.
@@ -125,6 +126,6 @@ private:
   uint32_t _required_size = 0;
 };
 
-} // namespace luci
+} // namespace circle_planner
 
 #endif // CIRCLE_EXECUTION_PLANNER_H
