@@ -21,4 +21,6 @@ for test_case in examples/*; do
   python3 example_generator.py $(basename ${test_case})
 done
 
+python3 aux_generator.py
+
 popd > /dev/null
