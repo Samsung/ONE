@@ -162,28 +162,80 @@ def _merge_module(module):
     globals().update({k: getattr(module, k) for k in names})
 
 
-def list_classes_from_module(module, parent_class=None):
-    """
-    Parse user defined module to get all model service classes in it.
-    :param module:
-    :param parent_class:
-    :return: List of model service class definitions
-    """
-
+def _list_classes_from_module(module):
     # Parsing the module to get all defined classes
-    classes = [
-        cls[1]
-        for cls in inspect.getmembers(
-            module,
-            lambda member: inspect.isclass(member)
-            and member.__module__ == module.__name__,
-        )
-    ]
-    # filter classes that is subclass of parent_class
-    if parent_class is not None:
-        return [c for c in classes if issubclass(c, parent_class)]
-
+    is_member = lambda member: inspect.isclass(member) and member.__module__ == module.__name__
+    classes = [cls[1] for cls in inspect.getmembers(module, is_member)]
     return classes
+
+
+def _extract_pytorch_model(log_file, parameters_path, python_path):
+    log_file.write(('Trying to load saved model\n').encode())
+    python_model_path = os.path.abspath(python_path)
+    module_name = os.path.basename(python_model_path)
+    module_dir = os.path.dirname(python_model_path)
+    sys.path.append(module_dir)
+    log_file.write(('Trying to load given python module\n').encode())
+    module_loader = importlib.machinery.SourceFileLoader(module_name, python_model_path)
+    module_spec = importlib.util.spec_from_loader(module_name, module_loader)
+    python_model_module = importlib.util.module_from_spec(module_spec)
+
+    try:
+        module_loader.exec_module(python_model_module)
+    except:
+        raise ValueError('Failed to execute given python model file')
+
+    log_file.write(('Model python module is loaded\n').encode())
+    try:
+        # this branch assumes this parameters_path contains state_dict
+        state_dict = torch.load(parameters_path)
+        log_file.write(('Trying to find model class and fill it`s state dict\n').encode())
+        model_class_definitions = _list_classes_from_module(python_model_module)
+        if len(model_class_definitions) != 1:
+            raise ValueError(
+                "Expected only one class as model definition. {}".format(
+                    model_class_definitions
+                )
+            )
+        pytorch_model_class = model_class_definitions[0]
+        model = pytorch_model_class()
+        model.load_state_dict(state_dict)
+        return model
+    except:
+        # this branch assumes this parameters_path contains "entire" model
+        _merge_module(python_model_module)
+        log_file.write(('Model python module is merged into main environment\n').encode())
+        model = torch.load(parameters_path)
+        log_file.write(('Pytorch model loaded\n').encode())
+        return model
+
+
+def _extract_torchscript_model(log_file, input_path):
+    # assuming this is a pytorch script
+    log_file.write(('Trying to load TorchScript model\n').encode())
+    try:
+        pytorch_model = torch.jit.load(input_path)
+        return pytorch_model
+    except RuntimeError as e:
+        log_file.write((str(e) + '\n').encode())
+        log_file.write('Failed to import input file. Maybe this it contains only weights? Try pass "python_path" argument\n'.encode())
+        raise
+    log_file.write(('TorchScript model is loaded\n').encode())
+
+
+def _extract_mar_model(log_file, tmpdir, input_path):
+    mar_dir_path = os.path.join(tmpdir, 'mar')
+    with zipfile.ZipFile(input_path) as zip_input:
+        zip_input.extractall(path = mar_dir_path)
+    manifest_path = os.path.join(mar_dir_path, 'MAR-INF/MANIFEST.json')
+    with open(manifest_path) as manifest_file:
+        manifest = json.load(manifest_file)
+    serialized_file = os.path.join(mar_dir_path, manifest['model']['serializedFile'])
+    if 'modelFile' in manifest['model']:
+        model_file = os.path.join(mar_dir_path, manifest['model']['modelFile'])
+        return _extract_pytorch_model(log_file, serialized_file, model_file)
+    else:
+        return _extract_torchscript_model(log_file, serialized_file)
 
 
 def _convert(args):
@@ -198,53 +250,14 @@ def _convert(args):
             tmpdir = os.path.dirname(logfile_path)
         # convert pytorch to onnx model
         input_path = getattr(args, 'input_path')
+        model_file = getattr(args, 'python_path')
+
         if input_path[-4:] == '.mar':
-            mar_dir_path = os.path.join(tmpdir, 'mar')
-            with zipfile.ZipFile(input_path) as zip_input:
-                zip_input.extractall(path = mar_dir_path)
-            manifest_path = os.path.join(mar_dir_path, 'MAR-INF/MANIFEST.json')
-            with open(manifest_path) as manifest_file:
-                manifest = json.load(manifest_file)
-            serialized_file = os.path.join(mar_dir_path, manifest['model']['serializedFile'])
-            model_file = None
-            if 'modelFile' in manifest['model']:
-                model_file = os.path.join(mar_dir_path, manifest['model']['modelFile'])
+            pytorch_model = _extract_mar_model(f, tmpdir, input_path)
+        elif model_file is None:
+            pytorch_model = _extract_torchscript_model(f, input_path)
         else:
-            serialized_file = input_path
-            model_file = getattr(args, 'python_path')
-
-        if model_file is None:
-            # assuming this is a pytorch script
-            f.write(('Trying to load TorchScript model\n').encode())
-            try:
-                pytorch_model = torch.jit.load(serialized_file)
-            except RuntimeError as e:
-                f.write((str(e) + '\n').encode())
-                f.write('Failed to import input file. Maybe this it contains only weights? Try pass "python_path" argument\n'.encode())
-                raise
-            f.write(('TorchScript model is loaded\n').encode())
-        else:
-            f.write(('Trying to load saved model\n').encode())
-            python_model_path = os.path.abspath(model_file)
-            module_name = os.path.basename(python_model_path)
-            module_dir = os.path.dirname(python_model_path)
-            sys.path.append(module_dir)
-            f.write(('Trying to load given python module\n').encode())
-            module_loader = importlib.machinery.SourceFileLoader(module_name, python_model_path)
-            module_spec = importlib.util.spec_from_loader(module_name, module_loader)
-            python_model_module = importlib.util.module_from_spec(module_spec)
-
-            try:
-                module_loader.exec_module(python_model_module)
-            except:
-                raise ValueError('Failed to execute given python model file')
-
-            f.write(('Model python module is loaded\n').encode())
-            # questionable construction
-            _merge_module(python_model_module)
-            f.write(('Model python module is merged into main environment\n').encode())
-            pytorch_model = torch.load(serialized_file)
-            f.write(('Pytorch model loaded\n').encode())
+            pytorch_model = _extract_pytorch_model(f, input_path, model_file)
 
         input_shapes = _parse_shapes(getattr(args, 'input_shapes'))
         input_types = _parse_types(getattr(args, 'input_types'))
@@ -252,26 +265,9 @@ def _convert(args):
         if len(input_shapes) != len(input_types):
             raise ValueError('number of input shapes and input types must be equal')
 
-        print(zip(input_shapes, input_types))
         sample_inputs = []
         for input_spec in zip(input_shapes, input_types):
-            print(input_spec)
             sample_inputs += [torch.ones(input_spec[0], dtype = input_spec[1])]
-        print(len(sample_inputs))
-
-        if not callable(pytorch_model):
-            f.write(('Trying to find model class and fill it`s state dict\n').encode())
-            model_class_definitions = list_classes_from_module(python_model_module)
-            if len(model_class_definitions) != 1:
-                raise ValueError(
-                    "Expected only one class as model definition. {}".format(
-                    model_class_definitions
-                )
-            )
-            pytorch_model_class = model_class_definitions[0]
-            model = pytorch_model_class()
-            model.load_state_dict(pytorch_model)
-            pytorch_model = model
 
         f.write(('Trying to inference loaded model').encode())
         sample_outputs = pytorch_model(*sample_inputs)
