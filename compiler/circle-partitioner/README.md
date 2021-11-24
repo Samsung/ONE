@@ -163,3 +163,131 @@ as the `source` model: `[ "Input" ]`.
 `Net_InstanceNorm_003.00002_acl_cl.circle` which they should be connected.
 - And `outputs` `[ "Div" ]` should be connected to `inputs` of
 third model `Net_InstanceNorm_003.00003_cpu.circle`.
+
+### Execution example
+
+Consider partitioning with backends of OneRT
+- `cpu`, `acl_cl`, `acl_neon`, `ruy`, `xnnpack`
+
+Let's try with this command:
+```
+circle_partitioner \
+   --partition Net_InstanceNorm_003.part \
+   --backends cpu,acl_cl \
+   --default cpu \
+   Net_InstanceNorm_003.circle Net_InstanceNorm_003
+```
+
+where `Net_InstanceNorm_003.part` is like this for initial design
+```
+[partition]
+backends=cpu,acl_cl
+default=cpu
+comply=opcode
+
+[OPCODE]
+ADD=acl_cl
+```
+where in `[partition]` section,
+- `backends` is available backends and can be overridden by `--backends`
+- `default` is default backend for OpCodes not assigned in `[OPCODE]` section can be overridden by `--default`
+- `comply` is which rule to apply, where only `opcode` is available for now
+
+#### Use Op name to assign backend
+
+```
+[OP]
+Reduction_indices=GPU
+```
+- there are very long names that may be inconvenient
+
+### Partitioned output
+
+#### Output files
+
+After partition is applied, output files will look something like these
+- `Net_InstanceNorm_003.part.00001_cpu.circle`
+- `Net_InstanceNorm_003.part.00002_acl_cl.circle`
+- `Net_InstanceNorm_003.part.00003_cpu.circle`
+- `Net_InstanceNorm_003.part.conn.ini`
+- `Net_InstanceNorm_003.part.conn.json`
+
+Assume only `Div` node is assigned to `acl_cl`
+
+#### Connection information of partitioned circle files
+
+##### Format with ini
+- `Net_InstanceNorm_003.conn.ini` provides connection of each circle files.
+```
+[source]
+file=Net_InstanceNorm_003.circle
+i1=Input
+o1=Add_as_terminal
+
+[models]
+m1=Net_InstanceNorm_003.part.00001_cpu.circle
+m2=Net_InstanceNorm_003.part.00002_acl_cl.circle
+m3=Net_InstanceNorm_003.part.00003_cpu.circle
+
+[Net_InstanceNorm_003.part.00001_cpu.circle]
+file=Net_InstanceNorm_003.part.00001_cpu.circle
+i1=Input
+o1=Pow
+o2=Sub
+
+[Net_InstanceNorm_003.part.00002_acl_cl.circle]
+file=Net_InstanceNorm_003.part.00002_acl_cl.circle
+i1=Sub
+i2=Pow
+o1=Div
+
+[Net_InstanceNorm_003.part.00003_cpu.circle]
+file=Net_InstanceNorm_003.part.00003_cpu.circle
+i1=Div
+o1=Add_as_terminal
+```
+
+Predefined section
+- `source`: Source circle model information. Has `file` as filename, `iN` for inputs and `oN` for outputs.
+- `models`: Partitioned circle models. Has `mN` for model filename.
+
+Partitioned Model section
+- `iN`: inputs of this model
+- `oN`: outputs of this model
+
+In graph diagram, output order of `Net_InstanceNorm_003.part.00001_cpu.circle`
+looks like `Pow,Sub` but `Div` Op in `Net_InstanceNorm_003.part.00002_acl_cl.circle`
+requires order of `Sub,Pow`.
+
+##### Format with JSON
+- Use JSON format, `Net_InstanceNorm_003.part.conn.json`
+```json
+{
+  "source" : {
+    "file" : "Net_InstanceNorm_003.circle",
+    "inputs" : [ "Input" ],
+    "outputs" : [ "Add_as_terminal" ]
+  },
+  "parts" : [
+    {
+      "file" : "Net_InstanceNorm_003.part.00001_cpu.circle",
+      "inputs" : [ "Input" ],
+      "outputs" : [ "Pow", "Sub" ],
+    },
+    {
+      "file" : "Net_InstanceNorm_003.part.00002_acl_cl.circle",
+      "inputs" : [ "Pow", "Sub" ],
+      "outputs" : [ "Div" ]
+    },
+    {
+      "file" : "Net_InstanceNorm_003.part.00003_cpu.circle",
+      "inputs" : [ "Div" ],
+      "outputs" : [ "Add_as_terminal" ]
+    }
+  ]
+}
+```
+
+### Future works
+
+How to partition with multiple inputs?
