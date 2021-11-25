@@ -81,6 +81,17 @@ private:
    *        Even if Module has multiple subgraphs, only first subgraph is considered.
    */
   std::map<uint32_t, std::string> _source_table;
+
+public:
+  void model_buffer(const std::shared_ptr<uint8_t[]> &buffer) { _model_buffer = buffer; }
+
+private:
+  /**
+   * @brief Pointer to model's buffer
+   *
+   * @note Shared pointer guarantees provided model's buffer alive longer than luci::Module is used.
+   */
+  std::shared_ptr<uint8_t[]> _model_buffer = nullptr;
 };
 
 std::unique_ptr<Module> make_module(void);
