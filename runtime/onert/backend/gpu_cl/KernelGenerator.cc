@@ -23,9 +23,11 @@
 #include "ClFunction.h"
 #include "TensorManager.h"
 
-#include "open_cl/selectors/ConvolutionSelector.h"
-#include "open_cl/selectors/DwConvolutionSelector.h"
-#include "open_cl/selectors/SimpleSelectors.h"
+#include "tensorflow/lite/delegates/gpu/common/shape.h"
+#include "tensorflow/lite/delegates/gpu/cl/tensor.h"
+#include "tensorflow/lite/delegates/gpu/cl/selectors/convolution_selector.h"
+#include "tensorflow/lite/delegates/gpu/cl/selectors/dw_convolution_selector.h"
+#include "tensorflow/lite/delegates/gpu/cl/selectors/simple_selectors.h"
 
 #include "ir/Operations.h"
 #include "ir/Operations.Include.h"
@@ -36,6 +38,9 @@
 #include "exec/FunctionSequence.h"
 #include "util/logging.h"
 #include "util/Utils.h"
+
+using namespace tflite::gpu;
+using namespace tflite::gpu::cl;
 
 namespace onert
 {
@@ -60,14 +65,14 @@ void UpdatePadding(const ir::PaddingType type, const BHWC &input_shape, AttrT *a
   }
 }
 
-gpu_cl::PoolingType convertPoolType(ir::operation::Pool2D::PoolType type_ir)
+PoolingType convertPoolType(ir::operation::Pool2D::PoolType type_ir)
 {
   switch (type_ir)
   {
     case ir::operation::Pool2D::PoolType::AVG:
-      return gpu_cl::PoolingType::AVERAGE;
+      return PoolingType::AVERAGE;
     case ir::operation::Pool2D::PoolType::MAX:
-      return gpu_cl::PoolingType::MAX;
+      return PoolingType::MAX;
     default:
       throw std::runtime_error("gpu_Cl KernelGenerator : Not supported operation yet");
   }
@@ -190,7 +195,7 @@ void KernelGenerator::visit(const ir::operation::Conv2D &node)
   auto bias_tensor = _tensor_reg->getClTensor(bias);
   auto output_tensor = _tensor_reg->getClTensor(output);
 
-  gpu_cl::Convolution2DAttributes attr;
+  Convolution2DAttributes attr;
   attr.strides = ToHW(param.stride.vertical, param.stride.horizontal);
   attr.dilations = HW(std::max(static_cast<u_int32_t>(1), param.dilation.height_factor),
                       std::max(static_cast<u_int32_t>(1), param.dilation.width_factor));
@@ -237,7 +242,7 @@ void KernelGenerator::visit(const ir::operation::Conv2D &node)
     {
       std::unique_ptr<GPUOperation> gpu_op_1;
       OperationDef op_def_1;
-      std::shared_ptr<Tensor> new_tensor = std::make_shared<Tensor>();
+      std::shared_ptr<cl::Tensor> new_tensor = std::make_shared<cl::Tensor>();
 
       _new_tensors[output] = new_tensor;
       if (!CreateTensor(*_creation_context->context, output_shape,
@@ -334,9 +339,9 @@ void KernelGenerator::visit(const ir::operation::DepthwiseConv2D &node)
     const int filter_width = ker_shape.w;
     const int output_depth = out_shape.c;
 
-    InternalTensor<OHWI, DataType::FLOAT32> weights;
+    tflite::gpu::Tensor<OHWI, DataType::FLOAT32> weights;
     weights.id = attr.weights.id;
-    weights.shape = OHWI(output_depth, filter_height, filter_width, input_depth);
+    weights.shape = tflite::gpu::OHWI(output_depth, filter_height, filter_width, input_depth);
     weights.data.resize(weights.shape.DimensionsProduct());
     float *dst = &weights.data[0];
     for (int j = 0; j < output_depth; ++j)
@@ -387,7 +392,7 @@ void KernelGenerator::visit(const ir::operation::DepthwiseConv2D &node)
     {
       std::unique_ptr<GPUOperation> gpu_op_1;
       OperationDef op_def_1;
-      std::shared_ptr<Tensor> new_tensor = std::make_shared<Tensor>();
+      std::shared_ptr<cl::Tensor> new_tensor = std::make_shared<cl::Tensor>();
 
       _new_tensors[ofm_index] = new_tensor;
       if (!CreateTensor(*_creation_context->context, out_shape,

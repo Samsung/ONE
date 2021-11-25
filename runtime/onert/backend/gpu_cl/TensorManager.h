@@ -19,7 +19,7 @@
 
 #include "ClMemoryManager.h"
 #include "ClTensorManager.h"
-#include "open_cl/ClContext.h"
+#include "tensorflow/lite/delegates/gpu/cl/cl_context.h"
 #include "operand/CLTensor.h"
 #include "operand/ICLTensor.h"
 #include "util/logging.h"
@@ -35,7 +35,7 @@ using MemoryManager = ClMemoryManager<operand::ICLTensor, operand::CLTensor>;
 
 using TensorManager = ClTensorManager<operand::ICLTensor, operand::CLTensor>;
 
-inline TensorManager *createTensorManager(CLContext *context)
+inline TensorManager *createTensorManager(tflite::gpu::cl::CLContext *context)
 {
   VERBOSE(createTensorManager) << "ClTensorManager" << std::endl;
   return new TensorManager(new MemoryManager(context), new MemoryManager(context));

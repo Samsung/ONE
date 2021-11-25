@@ -93,6 +93,9 @@ void ClConstantInitializer::registerPermuteInitializer(const ir::OperandIndex &i
     case DataType::FLOAT32:
       _init_map[index] = std::bind(permuteInit<float>, _1, _2, _current_layout);
       break;
+    case DataType::INT32:
+      _init_map[index] = std::bind(permuteInit<int32_t>, _1, _2, _current_layout);
+      break;
     default:
       throw std::runtime_error("Not supported, yet");
       break;

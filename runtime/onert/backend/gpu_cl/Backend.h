@@ -27,8 +27,8 @@
 #include "TensorManager.h"
 #include "TensorBuilder.h"
 
-#include "open_cl/Environment.h"
-#include "open_cl/Status.h"
+#include "tensorflow/lite/delegates/gpu/cl/environment.h"
+#include "tensorflow/lite/delegates/gpu/common/status.h"
 
 namespace onert
 {
@@ -50,7 +50,7 @@ public:
     const auto &operands = data.graph->operands();
     auto context = std::make_unique<gpu_cl::BackendContext>(this, std::move(data));
 
-    auto environment = std::make_shared<Environment>();
+    auto environment = std::make_shared<tflite::gpu::cl::Environment>();
     if (!CreateEnvironment(environment.get()).ok())
     {
       return nullptr;
@@ -59,13 +59,13 @@ public:
 
     auto tr = std::make_shared<ClTensorRegistry<TensorManager>>(tm);
 
-    InferenceContext::CreateInferenceInfo create_info;
-    create_info.precision = CalculationsPrecision::F32;
+    tflite::gpu::cl::InferenceContext::CreateInferenceInfo create_info;
+    create_info.precision = tflite::gpu::cl::CalculationsPrecision::F32;
     create_info.storage_type =
-      GetStorageTypeWithMinimalMemoryConsumption(environment->device().GetInfo());
-    create_info.hints.Add(ModelHints::kFastestInference);
+      tflite::gpu::cl::GetStorageTypeWithMinimalMemoryConsumption(environment->device().GetInfo());
+    create_info.hints.Add(tflite::gpu::cl::ModelHints::kFastestInference);
 
-    auto cc = std::make_shared<CreationContext>();
+    auto cc = std::make_shared<tflite::gpu::cl::CreationContext>();
     cc->device = environment->GetDevicePtr();
     cc->context = &environment->context();
     cc->queue = environment->queue();

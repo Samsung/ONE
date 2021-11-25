@@ -74,7 +74,8 @@ void BackendContext::planTensors()
       const auto info = obj.info();
       const auto layout = _data.operand_layouts.at(ind);
       // TODO Change tensor info to have permuted shape
-      tensor_builder->registerTensorInfo(ind, info, layout);
+      TensorType type = TensorType::TENSOR_TYPE_VALID;
+      tensor_builder->registerTensorInfo(ind, info, layout, type);
     }
   });
 
@@ -130,7 +131,6 @@ void BackendContext::planTensors()
         tensor_builder->notifyFirstUse(ind);
       }
     }
-
     for (const auto &ind : op_inputs)
     {
       if (!tensor_builder->isRegistered(ind))
@@ -145,7 +145,6 @@ void BackendContext::planTensors()
       }
     }
   }
-
   _data.graph->operands().iterate([&](const ir::OperandIndex &ind, const ir::Operand &) {
     if (uses_map[ind] == 0)
     {
@@ -162,7 +161,6 @@ void BackendContext::planTensors()
       tensor_builder->notifyLastUse(ind);
     }
   }
-
   assert(
     std::all_of(uses_map.begin(), uses_map.end(),
                 [](std::pair<const ir::OperandIndex, uint32_t> it) { return it.second == 0; }));
@@ -174,6 +172,17 @@ void BackendContext::planTensors()
 
 ITensorRegistry *BackendContext::genTensors()
 {
+  ir::OperandIndexMap<TensorType> type_map;
+
+  for (const auto &ind : graph()->getInputs())
+  {
+    type_map[ind] = TensorType::TENSOR_TYPE_INPUT;
+  }
+
+  for (const auto &ind : graph()->getOutputs())
+  {
+    type_map[ind] = TensorType::TENSOR_TYPE_OUTPUT;
+  }
   graph()->operands().iterate([&](const ir::OperandIndex &ind, const ir::Operand &obj) {
     if (external_operands().contains(ind))
       return;
@@ -182,7 +191,11 @@ ITensorRegistry *BackendContext::genTensors()
     const auto backend_layout = operand_layouts().at(ind);
     ir::OperandInfo backend_info{permuteShape(obj.shape(), frontend_layout, backend_layout),
                                  obj.typeInfo(), obj.info().memAllocType(), obj.isConstant()};
-    tensor_builder->registerTensorInfo(ind, backend_info, backend_layout);
+    if (obj.isConstant())
+    {
+      type_map[ind] = TensorType::TENSOR_TYPE_INPUT;
+    }
+    tensor_builder->registerTensorInfo(ind, backend_info, backend_layout, type_map[ind]);
   });
 
   // TODO Get compiler options from compiler, and use it rather than getting it from Env
@@ -199,9 +212,7 @@ ITensorRegistry *BackendContext::genTensors()
         tensor_builder->notifyFirstUse(ind);
     });
   }
-
   tensor_builder->prepare();
-
   return tensor_registry.get();
 }
 

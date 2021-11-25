@@ -17,8 +17,11 @@
 #include "Config.h"
 
 #include <dlfcn.h>
-#include "open_cl/OpenclWrapper.h"
-#include "open_cl/Status.h"
+
+#include "tensorflow/lite/delegates/gpu/common/status.h"
+#include "tensorflow/lite/delegates/gpu/cl/opencl_wrapper.h"
+
+using namespace tflite::gpu::cl;
 
 namespace onert
 {
@@ -26,12 +29,9 @@ namespace backend
 {
 namespace gpu_cl
 {
-
-Config::~Config() { UnloadOpenCL(_handle); }
-
 bool Config::initialize()
 {
-  if (LoadOpenCL(&_handle).ok())
+  if (LoadOpenCL().ok())
   {
     return true;
   }

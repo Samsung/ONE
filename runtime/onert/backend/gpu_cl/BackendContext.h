@@ -23,7 +23,7 @@
 #include "ConstantInitializer.h"
 #include "KernelGenerator.h"
 #include "TensorBuilder.h"
-#include "open_cl/InferenceContext.h"
+#include "tensorflow/lite/delegates/gpu/cl/inference_context.h"
 
 namespace onert
 {

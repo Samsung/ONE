@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_GPU_CL_CONFIG_H__
-#define __ONERT_BACKEND_GPU_CL_CONFIG_H__
+#ifndef __ONERT_BACKEND_GPU_CL_TENSOR_BUILDER_HELPER_H__
+#define __ONERT_BACKEND_GPU_CL_TENSOR_BUILDER_HELPER_H__
 
-#include <backend/IConfig.h>
-#include <memory>
-#include <util/ITimer.h>
+#include "absl/status/status.h"
+#include "tensorflow/lite/delegates/gpu/common/shape.h"
 
 namespace onert
 {
@@ -28,26 +27,18 @@ namespace backend
 namespace gpu_cl
 {
 
-class Config : public IConfig
+enum TensorType
 {
-public:
-  virtual ~Config() {}
-
-public:
-  std::string id() override { return "gpu_cl"; }
-  bool initialize() override;
-  ir::Layout supportLayout(const ir::Operation &node, ir::Layout frontend_layout) override;
-  bool supportPermutation() override { return true; }
-  bool supportDynamicTensor() override { return false; }
-  bool supportFP16() override { return true; }
-  std::unique_ptr<util::ITimer> timer() override { return std::make_unique<util::CPUTimer>(); }
-
-private:
-  void *_handle = nullptr;
+  TENSOR_TYPE_VALID = 0,
+  TENSOR_TYPE_INPUT = 1,
+  TENSOR_TYPE_OUTPUT = 2,
+  TENSOR_TYPE_DELETE = 3
 };
+
+absl::Status ExtractAxisFromIndex(int dims, int index, tflite::gpu::Axis *axis);
 
 } // namespace gpu_cl
 } // namespace backend
 } // namespace onert
 
-#endif // __ONERT_BACKEND_GPU_CL_CONFIG_H__
+#endif // __ONERT_BACKEND_GPU_CL_TENSOR_BUILDER_HELPER_H__

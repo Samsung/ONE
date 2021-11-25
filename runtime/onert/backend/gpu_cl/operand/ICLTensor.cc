@@ -16,11 +16,11 @@
 
 #include "ICLTensor.h"
 
-#include "open_cl/Api.h"
-#include "open_cl/Spi.h"
-#include "open_cl/OpenclWrapper.h"
-#include "open_cl/TensorTypeUtil.h"
-#include "open_cl/kernels/Converter.h"
+#include "tensorflow/lite/delegates/gpu/api.h"
+#include "tensorflow/lite/delegates/gpu/spi.h"
+#include "tensorflow/lite/delegates/gpu/cl/opencl_wrapper.h"
+#include "tensorflow/lite/delegates/gpu/cl/tensor_type_util.h"
+#include "tensorflow/lite/delegates/gpu/cl/kernels/converter.h"
 
 namespace onert
 {
@@ -31,6 +31,10 @@ namespace gpu_cl
 namespace operand
 {
 
+using namespace tflite::gpu;
+using namespace tflite::gpu::cl;
+using namespace tflite::gpu::internal_tensor;
+
 void ICLTensor::access(const std::function<void(ITensor &tensor)> &fn)
 {
   if (total_size() == 0)
@@ -39,12 +43,107 @@ void ICLTensor::access(const std::function<void(ITensor &tensor)> &fn)
   fn(*this);
 }
 
+void ICLTensor::writeConvertInit()
+{
+  TensorObjectDef input_def;
+  input_def.dimensions.b = handle()->Batch();
+  input_def.dimensions.h = handle()->Height();
+  input_def.dimensions.w = handle()->Width();
+  input_def.dimensions.c = handle()->Channels();
+  input_def.object_def.data_layout = DataLayout::BHWC;
+  input_def.object_def.data_type = DataType::FLOAT32;
+  input_def.object_def.object_type = ObjectType::CPU_MEMORY;
+  input_def.object_def.user_provided = true;
+
+  TensorObjectDef permute_def = input_def;
+  permute_def.object_def.object_type = ToObjectType(handle()->GetStorageType());
+
+  auto dims = permute_def.dimensions;
+  const BHWC shape(dims.b, dims.h, dims.w, dims.c);
+  const TensorDescriptor desc{
+    permute_def.object_def.data_type,
+    ToTensorStorageType(permute_def.object_def.object_type, permute_def.object_def.data_layout),
+    Layout::BHWC};
+  if (!AllocateTensorMemory(_environment->context(), shape, desc, &_cl_memory).ok())
+  {
+    throw std::runtime_error("Failed to AllocateTensorMemory");
+  }
+
+  TensorObjectDef output_def = permute_def;
+  output_def.object_def.data_layout = ToDataLayout(handle()->GetStorageType());
+  output_def.object_def.data_type = handle()->GetDataType();
+  input_def.object_def.user_provided = false;
+
+  _converter_builder = NewConverterBuilder(_environment.get());
+  if (!_converter_builder->MakeConverter(input_def, permute_def, &_converter_to).ok())
+  {
+    throw std::runtime_error("Failed to make converter_to");
+  }
+  if (!_converter_builder->MakeConverter(permute_def, output_def, &_converter_from).ok())
+  {
+    throw std::runtime_error("Failed to make converter_from");
+  }
+}
+
+void ICLTensor::readConvertInit()
+{
+  _converter_builder = NewConverterBuilder(_environment.get());
+
+  TensorObjectDef input_def;
+  input_def.dimensions.b = handle()->Batch();
+  input_def.dimensions.h = handle()->Height();
+  input_def.dimensions.w = handle()->Width();
+  input_def.dimensions.c = handle()->Channels();
+  input_def.object_def.data_layout = ToDataLayout(handle()->GetStorageType());
+  input_def.object_def.data_type = handle()->GetDataType();
+  input_def.object_def.object_type = ToObjectType(handle()->GetStorageType());
+  input_def.object_def.user_provided = false;
+
+  TensorObjectDef permute_def = input_def;
+  permute_def.object_def.data_layout = DataLayout::BHWC;
+  permute_def.object_def.data_type = DataType::FLOAT32;
+  permute_def.object_def.user_provided = true;
+
+  auto dims = permute_def.dimensions;
+  const BHWC shape(dims.b, dims.h, dims.w, dims.c);
+  const TensorDescriptor desc{
+    permute_def.object_def.data_type,
+    ToTensorStorageType(permute_def.object_def.object_type, permute_def.object_def.data_layout),
+    Layout::BHWC};
+  if (!AllocateTensorMemory(_environment->context(), shape, desc, &_cl_memory).ok())
+  {
+    throw std::runtime_error("Failed to AllocateTensorMemory");
+  }
+
+  TensorObjectDef output_def = permute_def;
+  output_def.object_def.object_type = ObjectType::CPU_MEMORY;
+
+  if (!_converter_builder->MakeConverter(input_def, permute_def, &_converter_from).ok())
+  {
+    throw std::runtime_error("Failed to make converter_from");
+  }
+  if (!_converter_builder->MakeConverter(permute_def, output_def, &_converter_to).ok())
+  {
+    throw std::runtime_error("Failed to make converter_to");
+  }
+}
+
 void ICLTensor::enqueueWriteBuffer(const void *ptr, bool)
 {
-  const float *arr = (float *)ptr;
-  TensorObject input_obj = MakeReadableCpuMemory(absl::MakeSpan(arr, total_size() / 4));
+  TensorObject input_obj =
+    MakeReadableCpuMemory(absl::MakeSpan(static_cast<const float *>(ptr), _shape.num_elements()));
 
   TensorObject output_obj;
+
+  TensorObject permute_obj;
+  if (ToObjectType(handle()->GetStorageType()) == ObjectType::OPENCL_TEXTURE)
+  {
+    permute_obj = OpenClTexture{_cl_memory.memory()};
+  }
+  else
+  {
+    permute_obj = OpenClBuffer{_cl_memory.memory()};
+  }
 
   if (handle()->GetStorageType() == TensorStorageType::BUFFER)
   {
@@ -59,80 +158,18 @@ void ICLTensor::enqueueWriteBuffer(const void *ptr, bool)
     output_obj = OpenClTexture{handle()->GetMemoryPtr()};
   }
 
-  TensorObjectDef input_def;
-  input_def.dimensions.b = handle()->Batch();
-  input_def.dimensions.h = handle()->Height();
-  input_def.dimensions.w = handle()->Width();
-  input_def.dimensions.c = handle()->Channels();
-  input_def.object_def.data_layout = DataLayout::BHWC;
-  input_def.object_def.data_type = DataType::FLOAT32;
-  input_def.object_def.object_type = ObjectType::CPU_MEMORY;
-  input_def.object_def.user_provided = true;
-
-  TensorObjectDef tmp_def;
-  tmp_def.dimensions.b = handle()->Batch();
-  tmp_def.dimensions.h = handle()->Height();
-  tmp_def.dimensions.w = handle()->Width();
-  tmp_def.dimensions.c = handle()->Channels();
-  tmp_def.object_def.data_layout = DataLayout::BHWC;
-  tmp_def.object_def.data_type = DataType::FLOAT32;
-  tmp_def.object_def.object_type = ToObjectType(handle()->GetStorageType());
-  tmp_def.object_def.user_provided = true;
-
-  auto dims = tmp_def.dimensions;
-  const BHWC shape(dims.b, dims.h, dims.w, dims.c);
-  const TensorDescriptor desc{
-    tmp_def.object_def.data_type,
-    ToTensorStorageType(tmp_def.object_def.object_type, tmp_def.object_def.data_layout),
-    Layout::BHWC};
-  if (!AllocateTensorMemory(_environment->context(), shape, desc, &_cl_memory).ok())
+  if (!_converter_to->Convert(input_obj, permute_obj).ok())
   {
-    throw std::runtime_error("AllocateTensorMemory error.");
+    throw std::runtime_error("Failed to write cl buffer from cpu memory");
   }
-  TensorObject tmp_obj;
-  if (tmp_def.object_def.object_type == ObjectType::OPENCL_TEXTURE)
+  if (!_converter_from->Convert(permute_obj, output_obj).ok())
   {
-    tmp_obj = OpenClTexture{_cl_memory.memory()};
-  }
-  else
-  {
-    tmp_obj = OpenClBuffer{_cl_memory.memory()};
-  }
-
-  TensorObjectDef output_def = input_def;
-  output_def.dimensions.b = handle()->Batch();
-  output_def.dimensions.h = handle()->Height();
-  output_def.dimensions.w = handle()->Width();
-  output_def.dimensions.c = handle()->Channels();
-  output_def.object_def.data_layout = ToDataLayout(handle()->GetStorageType());
-  output_def.object_def.data_type = handle()->GetDataType();
-  output_def.object_def.object_type = ToObjectType(handle()->GetStorageType());
-
-  _converter_builder = NewConverterBuilder(_environment.get());
-  if (!_converter_builder->MakeConverter(input_def, tmp_def, &_converter_cpu).ok())
-  {
-    throw std::runtime_error("MakeConverter<_converter_cpu> error.");
-  }
-  if (!_converter_builder->MakeConverter(tmp_def, output_def, &_converter_bhwc).ok())
-  {
-    throw std::runtime_error("MakeConverter<_converter_bhwc> error.");
-  }
-
-  if (!_converter_cpu->Convert(input_obj, tmp_obj).ok())
-  {
-    throw std::runtime_error("[w] _converter_cpu Convert error.");
-  }
-  if (!_converter_bhwc->Convert(tmp_obj, output_obj).ok())
-  {
-    throw std::runtime_error("[w] _converter_bhwc Convert error.");
+    throw std::runtime_error("Failed to change layout");
   }
 }
 
 void ICLTensor::enqueueReadBuffer(void *ptr, bool)
 {
-  float *arr = (float *)ptr;
-  TensorObject output_obj = MakeCpuMemory(absl::MakeSpan(arr, total_size() / 4));
-
   TensorObject input_obj;
 
   if (handle()->GetStorageType() == TensorStorageType::BUFFER)
@@ -148,72 +185,26 @@ void ICLTensor::enqueueReadBuffer(void *ptr, bool)
     input_obj = OpenClTexture{handle()->GetMemoryPtr()};
   }
 
-  TensorObjectDef input_def;
-  input_def.dimensions.b = handle()->Batch();
-  input_def.dimensions.h = handle()->Height();
-  input_def.dimensions.w = handle()->Width();
-  input_def.dimensions.c = handle()->Channels();
-  input_def.object_def.data_layout = ToDataLayout(handle()->GetStorageType());
-  input_def.object_def.data_type = handle()->GetDataType();
-  input_def.object_def.object_type = ToObjectType(handle()->GetStorageType());
-  input_def.object_def.user_provided = false;
-
-  TensorObjectDef tmp_def;
-  tmp_def.dimensions.b = handle()->Batch();
-  tmp_def.dimensions.h = handle()->Height();
-  tmp_def.dimensions.w = handle()->Width();
-  tmp_def.dimensions.c = handle()->Channels();
-  tmp_def.object_def.data_layout = DataLayout::BHWC;
-  tmp_def.object_def.data_type = DataType::FLOAT32;
-  tmp_def.object_def.object_type = ToObjectType(handle()->GetStorageType());
-  tmp_def.object_def.user_provided = true;
-
-  auto dims = tmp_def.dimensions;
-  const BHWC shape(dims.b, dims.h, dims.w, dims.c);
-  const TensorDescriptor desc{
-    tmp_def.object_def.data_type,
-    ToTensorStorageType(tmp_def.object_def.object_type, tmp_def.object_def.data_layout),
-    Layout::BHWC};
-  if (!AllocateTensorMemory(_environment->context(), shape, desc, &_cl_memory).ok())
+  TensorObject permute_obj;
+  if (ToObjectType(handle()->GetStorageType()) == ObjectType::OPENCL_TEXTURE)
   {
-    throw std::runtime_error("AllocateTensorMemory error.");
-  }
-  TensorObject tmp_obj;
-  if (tmp_def.object_def.object_type == ObjectType::OPENCL_TEXTURE)
-  {
-    tmp_obj = OpenClTexture{_cl_memory.memory()};
+    permute_obj = OpenClTexture{_cl_memory.memory()};
   }
   else
   {
-    tmp_obj = OpenClBuffer{_cl_memory.memory()};
-  }
-  TensorObjectDef output_def = input_def;
-  output_def.dimensions.b = handle()->Batch();
-  output_def.dimensions.h = handle()->Height();
-  output_def.dimensions.w = handle()->Width();
-  output_def.dimensions.c = handle()->Channels();
-  output_def.object_def.data_layout = DataLayout::BHWC;
-  output_def.object_def.data_type = DataType::FLOAT32;
-  output_def.object_def.object_type = ObjectType::CPU_MEMORY;
-  output_def.object_def.user_provided = true;
-
-  _converter_builder = NewConverterBuilder(_environment.get());
-  if (!_converter_builder->MakeConverter(input_def, tmp_def, &_converter_bhwc).ok())
-  {
-    throw std::runtime_error("MakeConverter<_converter_bhwc> error.");
-  }
-  if (!_converter_builder->MakeConverter(tmp_def, output_def, &_converter_cpu).ok())
-  {
-    throw std::runtime_error("MakeConverter<_converter_cpu> error.");
+    permute_obj = OpenClBuffer{_cl_memory.memory()};
   }
 
-  if (!_converter_bhwc->Convert(input_obj, tmp_obj).ok())
+  TensorObject output_obj =
+    MakeCpuMemory(absl::MakeSpan(static_cast<float *>(ptr), _shape.num_elements()));
+
+  if (!_converter_from->Convert(input_obj, permute_obj).ok())
   {
-    throw std::runtime_error("[r] _converter_bhwc Convert error.");
+    throw std::runtime_error("Failed to change layout");
   }
-  if (!_converter_cpu->Convert(tmp_obj, output_obj).ok())
+  if (!_converter_to->Convert(permute_obj, output_obj).ok())
   {
-    throw std::runtime_error("[r] _converter_cpu Convert error.");
+    throw std::runtime_error("Failed to read cl buffer");
   }
 }
 

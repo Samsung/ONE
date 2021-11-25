@@ -16,10 +16,12 @@
 
 #include "CLTensor.h"
 
-#include "open_cl/Buffer.h"
-#include "open_cl/ClContext.h"
-#include "open_cl/Tensor.h"
-#include "open_cl/TensorType.h"
+#include "tensorflow/lite/delegates/gpu/cl/buffer.h"
+#include "tensorflow/lite/delegates/gpu/cl/cl_context.h"
+#include "tensorflow/lite/delegates/gpu/cl/tensor.h"
+#include "tensorflow/lite/delegates/gpu/cl/tensor_type.h"
+
+using namespace tflite::gpu::cl;
 
 namespace onert
 {
@@ -30,16 +32,15 @@ namespace gpu_cl
 namespace operand
 {
 
-CLTensor::CLTensor(size_t rank, ir::Shape shape, std::shared_ptr<Environment> environment)
-  : ICLTensor{rank, shape, environment}, _tensor(std::make_shared<Tensor>())
+CLTensor::CLTensor(size_t rank, ir::Shape shape,
+                   std::shared_ptr<tflite::gpu::cl::Environment> environment, TensorType type)
+  : ICLTensor{rank, shape, environment, type}, _tensor(std::make_shared<Tensor>())
 {
 }
 
-const Tensor *CLTensor::handle() const { return _tensor.get(); }
+const tflite::gpu::cl::Tensor *CLTensor::handle() const { return _tensor.get(); }
 
-Tensor *CLTensor::handle() { return _tensor.get(); }
-
-void CLTensor::setBuffer(void *host_ptr) { (void)host_ptr; }
+tflite::gpu::cl::Tensor *CLTensor::handle() { return _tensor.get(); }
 
 } // namespace operand
 } // namespace gpu_cl
