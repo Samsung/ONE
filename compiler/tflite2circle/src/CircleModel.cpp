@@ -22,6 +22,8 @@
 #include "CircleModel.h"
 #include "DataLookup.h"
 
+#include <mio_tflite260/Helper.h>
+
 namespace tflite2circle
 {
 
@@ -332,17 +334,6 @@ template <> void Offset<SubGraphLink>::build(const TFLFlatBufVec *tflite_flatbuf
   _circle_flatbuffer_vec_offset = _fb->CreateVector(subgprahs_vec);
 }
 
-tflite::BuiltinOperator builtin_code_neutral(const tflite::OperatorCode *opcode)
-{
-  assert(opcode != nullptr);
-  int8_t dp_code = opcode->deprecated_builtin_code();
-  // 127 is max of int8_t which is upper bound of v3 builtin_code
-  // NOTE TensorFlow uses 'BuiltinOperator_PLACEHOLDER_FOR_GREATER_OP_CODES' for 127
-  if (dp_code < 127 && dp_code >= 0)
-    return tflite::BuiltinOperator(dp_code);
-  return opcode->builtin_code();
-}
-
 template <> void Offset<OperatorCodeLink>::build(const TFLFlatBufVec *tflite_flatbuffer_vec)
 {
   std::vector<flatbuffers::Offset<circle::OperatorCode>> operator_code_vec;
@@ -352,7 +343,7 @@ template <> void Offset<OperatorCodeLink>::build(const TFLFlatBufVec *tflite_fla
     auto custom_code = _fb->CreateString(it->custom_code());
     circle::OperatorCodeBuilder operator_code_builder{*_fb};
     // TODO support circle deprecated_builtin_code
-    auto bt_code = builtin_code_neutral(it);
+    auto bt_code = mio::tflite::builtin_code_neutral(it);
     operator_code_builder.add_builtin_code(get_circle_builtin_code(bt_code));
     operator_code_builder.add_custom_code(custom_code);
     operator_code_builder.add_version(it->version());

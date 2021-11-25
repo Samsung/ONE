@@ -30,7 +30,7 @@ int main(int argc, char **argv)
 
   flatbuffers::Verifier verifier{reinterpret_cast<uint8_t *>(buf.data()), buf.size()};
 
-  if (!tflite::VerifyModelBuffer(verifier))
+  if (!::tflite::VerifyModelBuffer(verifier))
   {
     std::cout << "Fail" << std::endl;
     return 255;
