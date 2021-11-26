@@ -491,6 +491,9 @@ std::unique_ptr<Module> Importer::importModule(const circle::Model *model) const
 {
   auto module = make_module();
 
+  // set provided model's buffer in order to use ConstReference safety
+  module->model_buffer(_model_buffer);
+
   const GraphBuilderSource *source_ptr = &GraphBuilderRegistry::get();
 
   if (_source != nullptr)
