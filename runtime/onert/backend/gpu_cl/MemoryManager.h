@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_ACL_COMMON_MEMORY_MANAGER_H__
-#define __ONERT_BACKEND_ACL_COMMON_MEMORY_MANAGER_H__
+#ifndef __ONERT_BACKEND_GPU_CL_MEMORY_MANAGER_H__
+#define __ONERT_BACKEND_GPU_CL_MEMORY_MANAGER_H__
 
 #include <cassert>
 
@@ -35,14 +35,14 @@ namespace backend
 namespace gpu_cl
 {
 
-template <typename T_ITensor, typename T_Tensor> class ClMemoryManager
+class MemoryManager
 {
 public:
-  ClMemoryManager(tflite::gpu::cl::CLContext *context) : _context{context} {}
+  MemoryManager(tflite::gpu::cl::CLContext *context) : _context{context} {}
 
-  virtual ~ClMemoryManager() = default;
+  ~MemoryManager() = default;
 
-  virtual void allocate(void)
+  void allocate(void)
   {
     for (const auto &tensor_entry : _tensors)
     {
@@ -74,15 +74,15 @@ public:
     }
   }
 
-  virtual void deallocate(void)
+  void deallocate(void)
   {
     // NYI
   }
 
-  virtual void startLifetime(const ir::OperandIndex &)
+  void startLifetime(const ir::OperandIndex &)
   { /* DO NOTHING */
   }
-  virtual void finishLifetime(const ir::OperandIndex &)
+  void finishLifetime(const ir::OperandIndex &)
   { /* DO NOTHING */
   }
 
@@ -95,7 +95,7 @@ public:
     auto data_type = DeduceDataTypeFromPrecision(create_info.precision);
     const auto shape = info.shape();
 
-    auto tensor = std::make_shared<T_Tensor>(shape.rank(), shape, environment, type);
+    auto tensor = std::make_shared<operand::CLTensor>(shape.rank(), shape, environment, type);
     _tensors[ind] = tensor;
     tflite::gpu::BHWC t_shape;
     switch (shape.rank())
@@ -137,12 +137,12 @@ public:
     tensor_reserver_.SetNext(max_id + 1);
   }
 
-  ir::OperandIndexMap<std::shared_ptr<T_Tensor>> &tensors(void) { return _tensors; }
+  ir::OperandIndexMap<std::shared_ptr<operand::CLTensor>> &tensors(void) { return _tensors; }
 
   InferenceContextEx::TensorReserverEx &tensorReservers(void) { return tensor_reserver_; }
 
 private:
-  ir::OperandIndexMap<std::shared_ptr<T_Tensor>> _tensors;
+  ir::OperandIndexMap<std::shared_ptr<operand::CLTensor>> _tensors;
   InferenceContextEx::TensorReserverEx tensor_reserver_;
   tflite::gpu::cl::CLContext *_context;
 };
@@ -151,4 +151,4 @@ private:
 } // namespace backend
 } // namespace onert
 
-#endif // __ONERT_BACKEND_ACL_COMMON_MEMORY_MANAGER_H__
+#endif // __ONERT_BACKEND_GPU_CL_MEMORY_MANAGER_H__

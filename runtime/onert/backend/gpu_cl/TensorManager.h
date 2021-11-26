@@ -17,7 +17,7 @@
 #ifndef __ONERT_BACKEND_CL_TENSOR_MANAGER_H__
 #define __ONERT_BACKEND_CL_TENSOR_MANAGER_H__
 
-#include "ClMemoryManager.h"
+#include "MemoryManager.h"
 #include "ClTensorManager.h"
 #include "tensorflow/lite/delegates/gpu/cl/cl_context.h"
 #include "operand/CLTensor.h"
@@ -30,8 +30,6 @@ namespace backend
 {
 namespace gpu_cl
 {
-
-using MemoryManager = ClMemoryManager<operand::ICLTensor, operand::CLTensor>;
 
 using TensorManager = ClTensorManager<operand::ICLTensor, operand::CLTensor>;
 
