@@ -73,12 +73,19 @@ const void *getNodeData(const luci::CircleConst *node, size_t *data_size)
   }
 }
 
+const void *getNodeData(const luci::CircleConstReference *node, size_t &data_size)
+{
+  data_size = node->buffer_size();
+  return node->data();
+}
+
 bool isExecutableNode(const luci::CircleNode *node)
 {
   switch (node->opcode())
   {
     // These nodes denote inputs / outputs of a graph.
     case luci::CircleOpcode::CIRCLECONST:
+    case luci::CircleOpcode::CIRCLECONSTREFERENCE:
     case luci::CircleOpcode::CIRCLEINPUT:
     case luci::CircleOpcode::CIRCLEOUTPUT:
     case luci::CircleOpcode::CIRCLEOUTPUTEXCLUDE:
@@ -142,6 +149,10 @@ void GraphLoader::loadTensors()
     {
       shape = getNodeShape(const_node);
     }
+    else if (const auto *reference_node = dynamic_cast<const luci::CircleConstReference *>(node))
+    {
+      shape = getNodeShape(reference_node);
+    }
 
     AffineQuantization quantization;
     if (node->quantparam() != nullptr)
@@ -169,6 +180,16 @@ void GraphLoader::loadTensors()
     {
       size_t data_size{};
       const void *const_data = getNodeData(const_node, &data_size);
+      if (const_data != nullptr)
+      {
+        _memory_manager->allocate_memory(*tensor);
+        tensor->writeData(const_data, data_size);
+      }
+    }
+    else if (const auto *remote_const_node = dynamic_cast<const luci::CircleConstReference *>(node))
+    {
+      size_t data_size = 0;
+      const void *const_data = getNodeData(remote_const_node, data_size);
       if (const_data != nullptr)
       {
         _memory_manager->allocate_memory(*tensor);
