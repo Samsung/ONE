@@ -29,7 +29,6 @@ struct PropagateQuantParamPass final : public logo::Pass
 {
   PropagateQuantParamPass(bool TF_style_maxpool) : _TF_style_maxpool(TF_style_maxpool) {}
 
-  // For backward compatibility
   PropagateQuantParamPass() {}
 
   const char *name(void) const final { return "luci::PropagateQuantParamPass"; }
