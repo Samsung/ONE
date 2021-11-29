@@ -67,6 +67,17 @@ public:
   // This plan writes in nodes annotation information with help of CircleNodeExecutionPlan class.
   void make_execution_plan();
 
+  // Method change planning mode:
+  // is_null_consts = true - constants are no longer taken into account when planning
+  // is_null_inputs = true - input are no longer taken into account when planning
+  // is_null_scratchpads = true - scratchpads are no longer taken into account when planning
+  void change_planning_mode(bool is_null_consts, bool is_null_inputs, bool is_null_scratchpads)
+  {
+    _is_null_consts = is_null_consts;
+    _is_null_inputs = is_null_inputs;
+    _is_null_scratchpads = is_null_scratchpads;
+  };
+
 private:
   // Method gets default execution order plan and saves it in _ordered_nodes vector.
   // There can be different variants of execution order and this method provides main one.
@@ -124,6 +135,14 @@ private:
 
   // Required memory size.
   uint32_t _required_size = 0;
+
+  // Flags for choosing different planning modes:
+  // _is_null_consts = true - constants are no longer taken into account when planning
+  // _is_null_inputs = true - input are no longer taken into account when planning
+  // _is_null_scratchpads = true - scratchpads are no longer taken into account when planning
+  bool _is_null_consts = false;
+  bool _is_null_inputs = false;
+  bool _is_null_scratchpads = false;
 };
 
 } // namespace circle_planner
