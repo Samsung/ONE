@@ -35,6 +35,7 @@ output_folder = "./"
 
 Path(output_folder).mkdir(parents=True, exist_ok=True)
 
+
 class JitWrapper(torch.nn.Module):
     def __init__(self, model):
         super().__init__()
@@ -48,11 +49,12 @@ class JitWrapper(torch.nn.Module):
 
 
 for example in args.examples:
-    print("Generate '" + example + ".pth'", end = '')
+    print("Generate '" + example + ".pth'", end='')
     # load example code
     # replace - with _ in name, otherwise pytorch generates invalid torchscript
-    module_name = "examples."+ example.replace('-', '_')
-    module_loader = importlib.machinery.SourceFileLoader(module_name, os.path.join("examples", example, "__init__.py"))
+    module_name = "examples." + example.replace('-', '_')
+    module_loader = importlib.machinery.SourceFileLoader(
+        module_name, os.path.join("examples", example, "__init__.py"))
     module_spec = importlib.util.spec_from_loader(module_name, module_loader)
     module = importlib.util.module_from_spec(module_spec)
     module_loader.exec_module(module)
@@ -108,7 +110,7 @@ for example in args.examples:
             input_types += ","
 
     with open(example + ".spec", "w") as spec_file:
-        print(input_shapes, file = spec_file)
-        print(input_types, file = spec_file)
+        print(input_shapes, file=spec_file)
+        print(input_types, file=spec_file)
 
     print(" - Done")

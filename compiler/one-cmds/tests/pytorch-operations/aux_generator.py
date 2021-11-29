@@ -28,7 +28,6 @@ class net_abs(nn.Module):
     def __init__(self):
         super().__init__()
 
-
     def forward(self, input):
         return torch.abs(input)
 
@@ -49,7 +48,7 @@ if __name__ == '__main__':
     torch.jit.save(traced_model, torchscript_path)
     # create manifest
     manifest = {}
-    manifest['createdOn'] ='11/11/1111 11:11:11'
+    manifest['createdOn'] = '11/11/1111 11:11:11'
     manifest['runtime'] = 'python'
     manifest['model'] = {}
     manifest['model']['modelName'] = 'torchscript_model',
@@ -67,7 +66,7 @@ if __name__ == '__main__':
     model_file_path = os.path.basename(__file__)
     # create manifest
     manifest = {}
-    manifest['createdOn'] ='11/11/1111 11:11:11'
+    manifest['createdOn'] = '11/11/1111 11:11:11'
     manifest['runtime'] = 'python'
     manifest['model'] = {}
     manifest['model']['modelName'] = 'state_dict_model',
