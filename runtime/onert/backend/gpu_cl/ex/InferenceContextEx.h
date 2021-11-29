@@ -31,6 +31,7 @@ namespace gpu_cl
 
 class InferenceContextEx : public tflite::gpu::cl::InferenceContext
 {
+public:
   struct DummyTensor
   {
     tflite::gpu::BHWC shape;

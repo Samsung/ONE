@@ -17,7 +17,7 @@
 #ifndef __ONERT_BACKEND_ACL_COMMON_TENSOR_MANAGER_H__
 #define __ONERT_BACKEND_ACL_COMMON_TENSOR_MANAGER_H__
 
-#include "ClMemoryManager.h"
+#include "MemoryManager.h"
 
 #include "tensorflow/lite/delegates/gpu/cl/inference_context.h"
 #include "tensorflow/lite/delegates/gpu/cl/tensor_type.h"
@@ -35,9 +35,7 @@ namespace gpu_cl
 template <typename T_ITensor, typename T_Tensor> class ClTensorManager
 {
 public:
-  using T_ClMemoryManager = ClMemoryManager<T_ITensor, T_Tensor>;
-
-  ClTensorManager(T_ClMemoryManager *const_mgr, T_ClMemoryManager *nonconst_mgr);
+  ClTensorManager(MemoryManager *const_mgr, MemoryManager *nonconst_mgr);
 
   virtual ~ClTensorManager() = default;
 
@@ -59,8 +57,8 @@ public:
   std::shared_ptr<T_ITensor> at(const ir::OperandIndex &ind);
   std::shared_ptr<InferenceContextEx::DummyTensor> atR(const ir::OperandIndex &ind);
 
-  InferenceContextEx::TensorReserver &constTensorReservers(void);
-  InferenceContextEx::TensorReserver &nonconstTensorReservers(void);
+  InferenceContextEx::TensorReserverEx &constTensorReservers(void);
+  InferenceContextEx::TensorReserverEx &nonconstTensorReservers(void);
 
   ir::OperandIndexMap<std::shared_ptr<T_Tensor>> &constTensors(void);
   ir::OperandIndexMap<std::shared_ptr<T_Tensor>> &nonconstTensors(void);
@@ -70,9 +68,9 @@ public:
   void tryDeallocConstants(void);
 
 private:
-  std::unique_ptr<T_ClMemoryManager> _const_mgr;
-  std::unique_ptr<T_ClMemoryManager> _nonconst_mgr;
-  ir::OperandIndexMap<T_ClMemoryManager &> _ind_to_mgr;
+  std::unique_ptr<MemoryManager> _const_mgr;
+  std::unique_ptr<MemoryManager> _nonconst_mgr;
+  ir::OperandIndexMap<MemoryManager &> _ind_to_mgr;
 };
 
 } // namespace gpu_cl
@@ -90,8 +88,8 @@ namespace gpu_cl
 {
 
 template <typename T_ITensor, typename T_Tensor>
-ClTensorManager<T_ITensor, T_Tensor>::ClTensorManager(T_ClMemoryManager *const_mgr,
-                                                      T_ClMemoryManager *nonconst_mgr)
+ClTensorManager<T_ITensor, T_Tensor>::ClTensorManager(MemoryManager *const_mgr,
+                                                      MemoryManager *nonconst_mgr)
   : _const_mgr{const_mgr}, _nonconst_mgr{nonconst_mgr}
 {
   // DO NOTHING
@@ -201,13 +199,14 @@ ClTensorManager<T_ITensor, T_Tensor>::atR(const ir::OperandIndex &ind)
 }
 
 template <typename T_ITensor, typename T_Tensor>
-InferenceContextEx::TensorReserver &ClTensorManager<T_ITensor, T_Tensor>::constTensorReservers(void)
+InferenceContextEx::TensorReserverEx &
+ClTensorManager<T_ITensor, T_Tensor>::constTensorReservers(void)
 {
   return _const_mgr->tensorReservers();
 }
 
 template <typename T_ITensor, typename T_Tensor>
-InferenceContextEx::TensorReserver &
+InferenceContextEx::TensorReserverEx &
 ClTensorManager<T_ITensor, T_Tensor>::nonconstTensorReservers(void)
 {
   return _nonconst_mgr->tensorReservers();
