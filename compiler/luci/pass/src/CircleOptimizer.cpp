@@ -483,6 +483,9 @@ void CircleOptimizer::quantize(loco::Graph *g) const
     if (output_type.empty())
       output_type = output_model_dtype;
 
+    bool TF_style_maxpool =
+      _options->param(Options::AlgorithmParameters::Quantize_TF_style_maxpool) == "True";
+
     if (!in_array(to_lower_case(input_model_dtype), qwmm_supported_input_model_dtype))
       throw std::runtime_error("Unsupported input type. List of supported input types: " +
                                to_string(qwmm_supported_input_model_dtype));
@@ -515,7 +518,7 @@ void CircleOptimizer::quantize(loco::Graph *g) const
     // Post-quantization optimizations
     logo::Phase phase;
 
-    phase.emplace_back(std::make_unique<luci::PropagateQuantParamPass>());
+    phase.emplace_back(std::make_unique<luci::PropagateQuantParamPass>(TF_style_maxpool));
 
     phase.emplace_back(std::make_unique<luci::CircleShapeInferencePass>());
     phase.emplace_back(std::make_unique<luci::CircleTypeInferencePass>());

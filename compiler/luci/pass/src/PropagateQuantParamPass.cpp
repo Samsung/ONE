@@ -120,6 +120,15 @@ bool PropagateQuantParamPass::run(loco::Graph *g)
     PropagateQuantParam pqp;
     if (circle_node->accept(&pqp))
       changed = true;
+
+    if (_TF_style_maxpool)
+    {
+      if (auto maxpool = dynamic_cast<luci::CircleMaxPool2D *>(node))
+      {
+        auto input = loco::must_cast<luci::CircleNode *>(maxpool->value());
+        copy_qparam(input, maxpool);
+      }
+    }
   }
 
   return changed;
