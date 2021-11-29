@@ -35,11 +35,11 @@ std::unique_ptr<Kernel> build_kernel_CircleConv2D(const luci::CircleNode *circle
   const Tensor *bias = helper.getOptionalInputTensor(node->bias());
   Tensor *output = helper.getOutputTensor(node);
 
-  auto im2col =
+  auto scratchpad =
     std::make_unique<Tensor>(input->element_type(), Shape({}), AffineQuantization{}, "");
-  im2col->set_observable(false);
-  im2col->set_data_buffer(nullptr);
-  // If node has execution plan then read memory offsets for im2col temporary tensor
+  scratchpad->set_observable(false);
+  scratchpad->set_data_buffer(nullptr);
+  // If node has execution plan then read memory offsets for scratchpad temporary tensor
   // from the beginning of shared memory buffer.
   // Used in Static Memory Manager.
   // TODO move tensors offset initialization to one place
@@ -48,10 +48,10 @@ std::unique_ptr<Kernel> build_kernel_CircleConv2D(const luci::CircleNode *circle
     const auto execution_plan = luci::get_execution_plan(node);
     // Check whether the offset for the current CircleConv2D temporary was found.
     if (execution_plan.offsets().size() > 1)
-      // If this is true, then we keep this offset in im2col.
-      im2col->set_offset(execution_plan.offsets().at(1));
+      // If this is true, then we keep this offset in scratchpad.
+      scratchpad->set_offset(execution_plan.offsets().at(1));
   }
-  Tensor *tmp = helper.getRuntimeGraph(node->graph())->addTensor(std::move(im2col));
+  Tensor *tmp = helper.getRuntimeGraph(node->graph())->addTensor(std::move(scratchpad));
 
   Conv2DParams params{};
   params.padding = node->padding();

@@ -30,8 +30,8 @@ namespace kernels
 {
 
 Conv2D::Conv2D(const Tensor *input, const Tensor *filter, const Tensor *bias, Tensor *output,
-               Tensor *im2col, const Conv2DParams &params)
-  : KernelWithParams<Conv2DParams>({input, filter, bias}, {output, im2col}, params)
+               Tensor *scratchpad, const Conv2DParams &params)
+  : KernelWithParams<Conv2DParams>({input, filter, bias}, {output, scratchpad}, params)
 {
 }
 
@@ -108,27 +108,18 @@ void Conv2D::configure()
 
   output()->resize({batches, output_height, output_width, output_depth});
 
-  // Allocate tensor for Im2Col, if needed.
-  // The checks here should be aligned with the actual implementation.
-  const bool need_dilated_im2col =
-    _params.dilation_height_factor != 1 || _params.dilation_width_factor != 1;
-  const bool need_non_dilated_im2col = _params.stride_height != 1 || _params.stride_width != 1 ||
-                                       filter_height != 1 || filter_width != 1;
-  _need_im2col =
-    input()->element_type() != DataType::S16 && (need_dilated_im2col || need_non_dilated_im2col);
-  if (_need_im2col)
-  {
-    const int input_depth = input_shape.dim(3);
-    Shape im2col_shape{batches, output_height, output_width,
-                       input_depth * filter_height * filter_width};
-    auto im2col = getOutputTensors()[1];
-    im2col->resize(im2col_shape);
-  }
-  else
-  {
-    auto im2col = getOutputTensors()[1];
-    im2col->set_allocatable(false);
-  }
+  // Allocate tensor for scratchpad, if needed.
+  tflite::ConvParams params{};
+  params.padding_values.height = _padding_height;
+  params.padding_values.width = _padding_width;
+  params.stride_height = _params.stride_height;
+  params.stride_width = _params.stride_width;
+  params.dilation_height_factor = _params.dilation_height_factor;
+  params.dilation_width_factor = _params.dilation_width_factor;
+  auto scratchpad = getOutputTensors()[1];
+  luci_interpreter_pal::SetupScratchpadTensor(scratchpad, input()->element_type(), params,
+                                              getTensorShape(input()), getTensorShape(filter()),
+                                              getTensorShape(output()));
 
   switch (_params.activation)
   {
@@ -193,16 +184,16 @@ void Conv2D::evalFloat() const
   params.float_activation_min = activation_min;
   params.float_activation_max = activation_max;
 
-  float *im2col_data = nullptr;
-  auto im2col = getOutputTensors()[1];
-  if (_need_im2col)
-  {
-    im2col_data = im2col->data<float>();
-  }
-  luci_interpreter_pal::Conv(
-    params, getTensorShape(input()), getTensorData<float>(input()), getTensorShape(filter()),
-    getTensorData<float>(filter()), getTensorShape(bias()), getTensorData<float>(bias()),
-    getTensorShape(output()), getTensorData<float>(output()), getTensorShape(im2col), im2col_data);
+  auto scratchpad = getOutputTensors()[1];
+  float *scratchpad_data = nullptr;
+  if (scratchpad->is_allocatable())
+    scratchpad_data = scratchpad->data<float>();
+
+  luci_interpreter_pal::Conv(params, getTensorShape(input()), getTensorData<float>(input()),
+                             getTensorShape(filter()), getTensorData<float>(filter()),
+                             getTensorShape(bias()), getTensorData<float>(bias()),
+                             getTensorShape(output()), getTensorData<float>(output()),
+                             getTensorShape(scratchpad), scratchpad_data);
 }
 
 void Conv2D::evalQuantized() const
@@ -236,12 +227,12 @@ void Conv2D::evalQuantized() const
   params.quantized_activation_min = activation_min;
   params.quantized_activation_max = activation_max;
 
-  auto im2col = getOutputTensors()[1];
+  auto scratchpad = getOutputTensors()[1];
   luci_interpreter_pal::Conv(params, getTensorShape(input()), getTensorData<uint8_t>(input()),
                              getTensorShape(filter()), getTensorData<uint8_t>(filter()),
                              getTensorShape(bias()), getTensorData<int32_t>(bias()),
                              getTensorShape(output()), getTensorData<uint8_t>(output()),
-                             getTensorShape(im2col), getTensorData<uint8_t>(im2col));
+                             getTensorShape(scratchpad), getTensorData<uint8_t>(scratchpad));
 }
 
 void Conv2D::evalQuantizedPerChannel() const
@@ -364,18 +355,16 @@ void Conv2D::evalQuantizedS8PerChannel() const
                  std::back_inserter(multipliers),
                  [](ChannelQuantMultipliers cm) { return cm.multiplier; });
 
-  int8_t *im2col_data = nullptr;
-  auto im2col = getOutputTensors()[1];
-  if (_need_im2col)
-  {
-    im2col_data = im2col->data<int8_t>();
-  }
+  auto scratchpad = getOutputTensors()[1];
+  int8_t *scratchpad_data = nullptr;
+  if (scratchpad->is_allocatable())
+    scratchpad_data = scratchpad->data<int8_t>();
 
   luci_interpreter_pal::ConvPerChannel(
     params, multipliers.data(), shifts.data(), getTensorShape(input()),
     getTensorData<int8_t>(input()), getTensorShape(filter()), getTensorData<int8_t>(filter()),
     getTensorShape(bias()), getTensorData<int32_t>(bias()), getTensorShape(output()),
-    getTensorData<int8_t>(output()), getTensorShape(im2col), im2col_data);
+    getTensorData<int8_t>(output()), getTensorShape(scratchpad), scratchpad_data);
 }
 
 void Conv2D::evalQuantizedS16() const

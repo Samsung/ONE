@@ -31,7 +31,7 @@ class Conv2D : public KernelWithParams<Conv2DParams>
 {
 public:
   Conv2D(const Tensor *input, const Tensor *filter, const Tensor *bias, Tensor *output,
-         Tensor *im2col, const Conv2DParams &params);
+         Tensor *scratchpad, const Conv2DParams &params);
 
   const Tensor *input() const { return _inputs[0]; }
   const Tensor *filter() const { return _inputs[1]; }
@@ -49,7 +49,6 @@ private:
   void evalQuantizedS16() const;
 
 private:
-  bool _need_im2col = false;
   int32_t _padding_height{};
   int32_t _padding_width{};
 };
