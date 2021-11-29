@@ -31,7 +31,8 @@ DepthwiseConvPerChannel(const tflite::DepthwiseParams &params, const int32_t *ou
                         const T *input_data, const tflite::RuntimeShape &filter_shape,
                         const T *filter_data, const tflite::RuntimeShape &bias_shape,
                         const int32_t *bias_data, const tflite::RuntimeShape &output_shape,
-                        T *output_data)
+                        T *output_data, const tflite::RuntimeShape &scratchpad_shape,
+                        T *scratchpad_data)
 {
   {
     // MARK: At this moment this operation is not supported
@@ -48,24 +49,28 @@ DepthwiseConvPerChannel(const tflite::DepthwiseParams &params, const int32_t *ou
     (void)bias_data;
     (void)output_shape;
     (void)output_data;
+    (void)scratchpad_shape;
+    (void)scratchpad_data;
   }
 }
 
 template <>
-inline void
-DepthwiseConvPerChannel<int8_t>(const tflite::DepthwiseParams &params,
-                                const int32_t *output_multiplier, const int32_t *output_shift,
-                                const tflite::RuntimeShape &input_shape, const int8_t *input_data,
-                                const tflite::RuntimeShape &filter_shape, const int8_t *filter_data,
-                                const tflite::RuntimeShape &bias_shape, const int32_t *bias_data,
-                                const tflite::RuntimeShape &output_shape, int8_t *output_data)
+inline void DepthwiseConvPerChannel<int8_t>(
+  const tflite::DepthwiseParams &params, const int32_t *output_multiplier,
+  const int32_t *output_shift, const tflite::RuntimeShape &input_shape, const int8_t *input_data,
+  const tflite::RuntimeShape &filter_shape, const int8_t *filter_data,
+  const tflite::RuntimeShape &bias_shape, const int32_t *bias_data,
+  const tflite::RuntimeShape &output_shape, int8_t *output_data,
+  const tflite::RuntimeShape &scratchpad_shape, int8_t *scratchpad_data)
 {
-  cmsis_nn_dw_conv_params dw_conv_params;
-  dw_conv_params.dilation.h = params.dilation_height_factor;
-  dw_conv_params.dilation.w = params.dilation_width_factor;
-
-  if (dw_conv_params.dilation.h == 1 && dw_conv_params.dilation.w == 1)
+  if (scratchpad_data)
   {
+    cmsis_nn_dw_conv_params dw_conv_params;
+    dw_conv_params.dilation.h = params.dilation_height_factor;
+    dw_conv_params.dilation.w = params.dilation_width_factor;
+    assert(dw_conv_params.dilation.h == 1);
+    assert(dw_conv_params.dilation.w == 1);
+
     dw_conv_params.input_offset = params.input_offset;
     dw_conv_params.output_offset = params.output_offset;
     dw_conv_params.stride.h = params.stride_height;
@@ -116,15 +121,9 @@ DepthwiseConvPerChannel<int8_t>(const tflite::DepthwiseParams &params,
     output_dims.w = output_shape.Dims(2);
     output_dims.c = output_depth;
 
-    const int32_t buf_size = arm_depthwise_conv_wrapper_s8_get_buffer_size(
-      &dw_conv_params, &input_dims, &filter_dims, &output_dims);
-
-    auto buffer = std::make_unique<int8_t[]>(buf_size);
-    assert(buffer != nullptr);
-
     cmsis_nn_context ctx;
-    ctx.buf = buffer.get();
-    ctx.size = buf_size;
+    ctx.buf = scratchpad_data;
+    ctx.size = scratchpad_shape.Dims(0);
 
     auto res = arm_depthwise_conv_wrapper_s8(&ctx, &dw_conv_params, &quant_params, &input_dims,
                                              input_data, &filter_dims, filter_data, &bias_dims,
@@ -138,6 +137,52 @@ DepthwiseConvPerChannel<int8_t>(const tflite::DepthwiseParams &params,
       bias_shape, bias_data, output_shape, output_data);
   }
 }
+
+static inline void SetupScratchpadTensor(luci_interpreter::Tensor *scratchpad,
+                                         const tflite::DepthwiseParams &params,
+                                         const tflite::RuntimeShape &input_shape,
+                                         const tflite::RuntimeShape &filter_shape,
+                                         const tflite::RuntimeShape &output_shape)
+{
+  cmsis_nn_dw_conv_params dw_conv_params;
+  dw_conv_params.dilation.h = params.dilation_height_factor;
+  dw_conv_params.dilation.w = params.dilation_width_factor;
+
+  if (dw_conv_params.dilation.h == 1 && dw_conv_params.dilation.w == 1)
+  {
+    const int batch_size = tflite::MatchingDim(input_shape, 0, output_shape, 0);
+    const int output_depth = tflite::MatchingDim(filter_shape, 3, output_shape, 3);
+
+    cmsis_nn_dims input_dims;
+    input_dims.n = batch_size;
+    input_dims.h = input_shape.Dims(1);
+    input_dims.w = input_shape.Dims(2);
+    input_dims.c = input_shape.Dims(3);
+
+    cmsis_nn_dims filter_dims;
+    filter_dims.n = filter_shape.Dims(0);
+    filter_dims.h = filter_shape.Dims(1);
+    filter_dims.w = filter_shape.Dims(2);
+    filter_dims.c = output_depth;
+
+    cmsis_nn_dims output_dims;
+    output_dims.n = batch_size;
+    output_dims.h = output_shape.Dims(1);
+    output_dims.w = output_shape.Dims(2);
+    output_dims.c = output_depth;
+
+    const int32_t buf_size = arm_depthwise_conv_wrapper_s8_get_buffer_size(
+      &dw_conv_params, &input_dims, &filter_dims, &output_dims);
+
+    luci_interpreter::Shape scratchpad_shape{buf_size};
+    scratchpad->resize(scratchpad_shape);
+  }
+  else
+  {
+    scratchpad->set_allocatable(false);
+  }
+}
+
 } // namespace luci_interpreter_pal
 
 #endif // LUCI_INTERPRETER_PAL_DEPTHWISECONV2D_H

@@ -29,7 +29,7 @@ class DepthwiseConv2D : public KernelWithParams<DepthwiseConv2DParams>
 {
 public:
   DepthwiseConv2D(const Tensor *input, const Tensor *filter, const Tensor *bias, Tensor *output,
-                  const DepthwiseConv2DParams &params);
+                  Tensor *scratchpad, const DepthwiseConv2DParams &params);
 
   const Tensor *input() const { return _inputs[0]; }
   const Tensor *filter() const { return _inputs[1]; }

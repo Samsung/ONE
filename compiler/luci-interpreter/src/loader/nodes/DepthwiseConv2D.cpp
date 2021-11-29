@@ -17,6 +17,7 @@
 #include "Builders.h"
 
 #include "kernels/DepthwiseConv2D.h"
+#include <luci/Plan/CircleNodeExecutionPlan.h>
 
 namespace luci_interpreter
 {
@@ -43,7 +44,25 @@ std::unique_ptr<Kernel> build_kernel_CircleDepthwiseConv2D(const luci::CircleNod
   params.dilation_width_factor = node->dilation()->w();
   params.activation = node->fusedActivationFunction();
 
-  return std::make_unique<kernels::DepthwiseConv2D>(input, filter, bias, output, params);
+  auto scratchpad =
+    std::make_unique<Tensor>(input->element_type(), Shape({}), AffineQuantization{}, "");
+  scratchpad->set_observable(false);
+  scratchpad->set_data_buffer(nullptr);
+  // If node has execution plan then read memory offsets for scratchpad temporary tensor
+  // from the beginning of shared memory buffer.
+  // Used in Static Memory Manager.
+  // TODO move tensors offset initialization to one place
+  if (luci::has_execution_plan(node))
+  {
+    const auto execution_plan = luci::get_execution_plan(node);
+    // Check whether the offset for the current CircleConv2D temporary was found.
+    if (execution_plan.offsets().size() > 1)
+      // If this is true, then we keep this offset in scratchpad.
+      scratchpad->set_offset(execution_plan.offsets().at(1));
+  }
+  Tensor *tmp = helper.getRuntimeGraph(node->graph())->addTensor(std::move(scratchpad));
+
+  return std::make_unique<kernels::DepthwiseConv2D>(input, filter, bias, output, tmp, params);
 }
 
 } // namespace luci_interpreter
