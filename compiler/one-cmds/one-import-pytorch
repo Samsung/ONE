@@ -36,8 +36,10 @@ import utils as _utils
 # TODO Find better way to suppress trackback on error
 sys.tracebacklimit = 0
 
+
 def get_driver_spec():
-  return ("one-import-pytorch", _utils.DriverType.IMPORTER)
+    return ("one-import-pytorch", _utils.DriverType.IMPORTER)
+
 
 def _get_parser():
     parser = argparse.ArgumentParser(
@@ -61,7 +63,9 @@ def _get_parser():
         '-s',
         '--input_shapes',
         type=str,
-        help='Shapes corresponding to --input_arrays, colon-separated.(ex:\"1,4,4,3:1,20,20,3\")')
+        help=
+        'Shapes corresponding to --input_arrays, colon-separated.(ex:\"1,4,4,3:1,20,20,3\")'
+    )
     converter_group.add_argument(
         '-t',
         '--input_types',
@@ -134,17 +138,17 @@ def _parse_shapes(shapes_str):
 def _parse_types(types_str):
     # There are no convenient way to create torch from string ot numpy dtype, so using this workaround
     dtype_dict = {
-        "bool"       : torch.bool,
-        "uint8"      : torch.uint8,
-        "int8"       : torch.int8,
-        "int16"      : torch.int16,
-        "int32"      : torch.int32,
-        "int64"      : torch.int64,
-        "float16"    : torch.float16,
-        "float32"    : torch.float32,
-        "float64"    : torch.float64,
-        "complex64"  : torch.complex64,
-        "complex128" : torch.complex128
+        "bool": torch.bool,
+        "uint8": torch.uint8,
+        "int8": torch.int8,
+        "int16": torch.int16,
+        "int32": torch.int32,
+        "int64": torch.int64,
+        "float16": torch.float16,
+        "float32": torch.float32,
+        "float64": torch.float64,
+        "complex64": torch.complex64,
+        "complex128": torch.complex128
     }
     array = types_str.split(",")
     types = [dtype_dict[type_str.strip()] for type_str in array]
@@ -192,11 +196,8 @@ def _extract_pytorch_model(log_file, parameters_path, python_path):
         log_file.write(('Trying to find model class and fill it`s state dict\n').encode())
         model_class_definitions = _list_classes_from_module(python_model_module)
         if len(model_class_definitions) != 1:
-            raise ValueError(
-                "Expected only one class as model definition. {}".format(
-                    model_class_definitions
-                )
-            )
+            raise ValueError("Expected only one class as model definition. {}".format(
+                model_class_definitions))
         pytorch_model_class = model_class_definitions[0]
         model = pytorch_model_class()
         model.load_state_dict(state_dict)
@@ -218,7 +219,9 @@ def _extract_torchscript_model(log_file, input_path):
         return pytorch_model
     except RuntimeError as e:
         log_file.write((str(e) + '\n').encode())
-        log_file.write('Failed to import input file. Maybe this it contains only weights? Try pass "python_path" argument\n'.encode())
+        log_file.write(
+            'Failed to import input file. Maybe this it contains only weights? Try pass "python_path" argument\n'.
+            encode())
         raise
     log_file.write(('TorchScript model is loaded\n').encode())
 
@@ -226,7 +229,7 @@ def _extract_torchscript_model(log_file, input_path):
 def _extract_mar_model(log_file, tmpdir, input_path):
     mar_dir_path = os.path.join(tmpdir, 'mar')
     with zipfile.ZipFile(input_path) as zip_input:
-        zip_input.extractall(path = mar_dir_path)
+        zip_input.extractall(path=mar_dir_path)
     manifest_path = os.path.join(mar_dir_path, 'MAR-INF/MANIFEST.json')
     with open(manifest_path) as manifest_file:
         manifest = json.load(manifest_file)
@@ -267,28 +270,28 @@ def _convert(args):
 
         sample_inputs = []
         for input_spec in zip(input_shapes, input_types):
-            sample_inputs += [torch.ones(input_spec[0], dtype = input_spec[1])]
+            sample_inputs += [torch.ones(input_spec[0], dtype=input_spec[1])]
 
         f.write(('Trying to inference loaded model').encode())
         sample_outputs = pytorch_model(*sample_inputs)
         f.write(('Acquired sample outputs\n').encode())
 
         onnx_output_name = os.path.splitext(os.path.basename(
-                                    args.output_path))[0] + '.onnx'
+            args.output_path))[0] + '.onnx'
         onnx_output_path = os.path.join(tmpdir, onnx_output_name)
 
         onnx_saved = False
         # some operations are not supported in early opset versions, try several
         for onnx_opset_version in range(9, 15):
-            f.write(('Trying to save onnx model using opset version ' + str(onnx_opset_version) + '\n').encode())
+            f.write(('Trying to save onnx model using opset version ' +
+                     str(onnx_opset_version) + '\n').encode())
             try:
                 torch.onnx.export(
                     pytorch_model,
                     tuple(sample_inputs),
                     onnx_output_path,
                     example_outputs=sample_outputs,
-                    opset_version=onnx_opset_version
-                )
+                    opset_version=onnx_opset_version)
                 onnx_saved = True
                 break
             except:
