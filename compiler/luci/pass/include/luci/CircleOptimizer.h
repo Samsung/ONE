@@ -95,6 +95,7 @@ public:
       Quantize_zero_points,
       Quantize_input_type,
       Quantize_output_type,
+      Quantize_TF_style_maxpool,
 
       // sparsify
       Sparsify_tensor_name,

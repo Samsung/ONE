@@ -66,6 +66,8 @@ int entry(int argc, char **argv)
   const std::string rq = "--requantize";
   const std::string fq = "--force_quantparam";
 
+  const std::string tf_maxpool = "--TF-style_maxpool";
+
   const std::string gpd = "--generate_profile_data";
 
   arser::Arser arser("circle-quantizer provides circle model quantization");
@@ -98,6 +100,13 @@ int entry(int argc, char **argv)
     .help("Quantize with min/max values. "
           "Three arguments required: input_model_dtype(float32) "
           "output_model_dtype(uint8) granularity(layer, channel)");
+
+  arser.add_argument(tf_maxpool)
+    .nargs(0)
+    .required(false)
+    .default_value(false)
+    .help("Force MaxPool Op to have the same input/output quantparams. NOTE: This feature can "
+          "degrade accuracy of some models");
 
   arser.add_argument(rq)
     .nargs(2)
@@ -201,6 +210,9 @@ int entry(int argc, char **argv)
     if (arser["--output_type"])
       options->param(AlgorithmParameters::Quantize_output_type,
                      arser.get<std::string>("--output_type"));
+
+    if (arser[tf_maxpool] and arser.get<bool>(tf_maxpool))
+      options->param(AlgorithmParameters::Quantize_TF_style_maxpool, "True");
   }
 
   if (arser[rq])

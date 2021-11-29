@@ -27,9 +27,17 @@ namespace luci
  */
 struct PropagateQuantParamPass final : public logo::Pass
 {
+  PropagateQuantParamPass(bool TF_style_maxpool) : _TF_style_maxpool(TF_style_maxpool) {}
+
+  // For backward compatibility
+  PropagateQuantParamPass() {}
+
   const char *name(void) const final { return "luci::PropagateQuantParamPass"; }
 
   bool run(loco::Graph *g) final;
+
+private:
+  bool _TF_style_maxpool = false;
 };
 
 } // namespace luci
