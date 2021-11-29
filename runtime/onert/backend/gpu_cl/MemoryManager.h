@@ -17,16 +17,19 @@
 #ifndef __ONERT_BACKEND_GPU_CL_MEMORY_MANAGER_H__
 #define __ONERT_BACKEND_GPU_CL_MEMORY_MANAGER_H__
 
-#include <cassert>
+#include "ex/InferenceContextEx.h"
+#include "operand/CLTensor.h"
 
 #include "ir/OperandIndexMap.h"
-#include "ir/Shape.h"
+#include "ir/OperandInfo.h"
+#include "util/logging.h"
+
 #include "tensorflow/lite/delegates/gpu/cl/cl_context.h"
 #include "tensorflow/lite/delegates/gpu/common/status.h"
 #include "tensorflow/lite/delegates/gpu/cl/storage_type_util.h"
 #include "tensorflow/lite/delegates/gpu/cl/tensor_type.h"
-#include "util/logging.h"
-#include "ex/InferenceContextEx.h"
+
+#include <cassert>
 
 namespace onert
 {

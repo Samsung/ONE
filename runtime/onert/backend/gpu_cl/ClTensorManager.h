@@ -14,8 +14,12 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_ACL_COMMON_TENSOR_MANAGER_H__
-#define __ONERT_BACKEND_ACL_COMMON_TENSOR_MANAGER_H__
+#ifndef __ONERT_BACKEND_GPU_CL_TENSOR_MANAGER_H__
+#define __ONERT_BACKEND_GPU_CL_TENSOR_MANAGER_H__
+
+// TODO Change file name:
+//   TensorManager.h  -> TensorManager.h
+//   TensorManager.cc -> TensorManager.cc
 
 #include "MemoryManager.h"
 
@@ -32,12 +36,12 @@ namespace backend
 namespace gpu_cl
 {
 
-template <typename T_ITensor, typename T_Tensor> class ClTensorManager
+class TensorManager
 {
 public:
-  ClTensorManager(MemoryManager *const_mgr, MemoryManager *nonconst_mgr);
+  TensorManager(MemoryManager *const_mgr, MemoryManager *nonconst_mgr);
 
-  virtual ~ClTensorManager() = default;
+  virtual ~TensorManager() = default;
 
   void allocateConsts(void);
   void allocateNonconsts(void);
@@ -49,19 +53,19 @@ public:
                    std::shared_ptr<tflite::gpu::cl::Environment> environment,
                    tflite::gpu::cl::DeviceInfo &device_info, TensorType type);
 
-  std::shared_ptr<T_ITensor> findTensorAsParent(const ir::OperandIndex &ind);
+  std::shared_ptr<operand::ICLTensor> findTensorAsParent(const ir::OperandIndex &ind);
 
   void startLifetime(const ir::OperandIndex &ind);
   void finishLifetime(const ir::OperandIndex &ind);
 
-  std::shared_ptr<T_ITensor> at(const ir::OperandIndex &ind);
+  std::shared_ptr<operand::ICLTensor> at(const ir::OperandIndex &ind);
   std::shared_ptr<InferenceContextEx::DummyTensor> atR(const ir::OperandIndex &ind);
 
   InferenceContextEx::TensorReserverEx &constTensorReservers(void);
   InferenceContextEx::TensorReserverEx &nonconstTensorReservers(void);
 
-  ir::OperandIndexMap<std::shared_ptr<T_Tensor>> &constTensors(void);
-  ir::OperandIndexMap<std::shared_ptr<T_Tensor>> &nonconstTensors(void);
+  ir::OperandIndexMap<std::shared_ptr<operand::CLTensor>> &constTensors(void);
+  ir::OperandIndexMap<std::shared_ptr<operand::CLTensor>> &nonconstTensors(void);
 
   void iterate(const std::function<void(const ir::OperandIndex &)> &fn);
 
@@ -73,10 +77,18 @@ private:
   ir::OperandIndexMap<MemoryManager &> _ind_to_mgr;
 };
 
+inline TensorManager *createTensorManager(tflite::gpu::cl::CLContext *context)
+{
+  VERBOSE(createTensorManager) << "GPU-CL TensorManager" << std::endl;
+  return new TensorManager(new MemoryManager(context), new MemoryManager(context));
+}
+
 } // namespace gpu_cl
 } // namespace backend
 } // namespace onert
 
+// TODO Remove below
+#if 0
 #include <cassert>
 #include "util/logging.h"
 
@@ -232,5 +244,6 @@ void ClTensorManager<T_ITensor, T_Tensor>::tryDeallocConstants(void)
 } // namespace gpu_cl
 } // namespace backend
 } // namespace onert
+#endif
 
-#endif // __ONERT_BACKEND_ACL_COMMON_TENSOR_MANAGER_H__
+#endif // __ONERT_BACKEND_GPU_CL_TENSOR_MANAGER_H__

@@ -50,9 +50,7 @@ enum class UsesType
 template <typename T_ITensor, typename T_Tensor> class ClTensorBuilder
 {
 public:
-  using T_ClTensorManager = ClTensorManager<T_ITensor, T_Tensor>;
-
-  ClTensorBuilder(const ir::Operands &operands, T_ClTensorManager *tensor_mgr,
+  ClTensorBuilder(const ir::Operands &operands, TensorManager *tensor_mgr,
                   tflite::gpu::cl::InferenceContext::CreateInferenceInfo create_info,
                   const std::shared_ptr<tflite::gpu::cl::Environment> &environment);
 
@@ -74,7 +72,7 @@ public:
   void allocate();
   void postFunctionPrepare();
 
-  T_ClTensorManager *cl_tensor_manager(void) { return _tensor_mgr.get(); }
+  TensorManager *cl_tensor_manager(void) { return _tensor_mgr.get(); }
 
   void setUsesCount(const ir::OperandIndex &index, size_t num_uses)
   {
@@ -109,7 +107,7 @@ private:
   ir::OperandIndexMap<TensorType> _tensor_type_map;
   ir::OperandIndexMap<size_t> _uses_count_map;
 
-  std::unique_ptr<T_ClTensorManager> _tensor_mgr;
+  std::unique_ptr<TensorManager> _tensor_mgr;
   tflite::gpu::cl::InferenceContext::CreateInferenceInfo _create_info;
   std::shared_ptr<tflite::gpu::cl::Environment> _environment;
 
@@ -138,7 +136,7 @@ namespace gpu_cl
 
 template <typename T_ITensor, typename T_Tensor>
 ClTensorBuilder<T_ITensor, T_Tensor>::ClTensorBuilder(
-  const ir::Operands &operands, T_ClTensorManager *tensor_mgr,
+  const ir::Operands &operands, TensorManager *tensor_mgr,
   tflite::gpu::cl::InferenceContext::CreateInferenceInfo create_info,
   const std::shared_ptr<tflite::gpu::cl::Environment> &environment)
   : _operands{operands}, _tensor_mgr{tensor_mgr}, _create_info{create_info}, _environment{

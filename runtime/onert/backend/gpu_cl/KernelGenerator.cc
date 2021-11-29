@@ -21,7 +21,7 @@
 
 #include "ClTensorRegistry.h"
 #include "ClFunction.h"
-#include "TensorManager.h"
+#include "ClTensorManager.h"
 
 #include "tensorflow/lite/delegates/gpu/common/shape.h"
 #include "tensorflow/lite/delegates/gpu/cl/tensor.h"
