@@ -135,6 +135,15 @@ option(USE_PROTOBUF_LEGACY_IMPORT "Use legacy MODULE mode import rather than CON
 # if set ON - luci libraries are static, otherwise - shared.
 option(STATIC_LUCI "Build luci as a static libraries" OFF)
 
+# Disable PIC(Position-Independent Code) option for luci related components.
+# This option might be turned ON for MCU builds.
+#
+# Enabled PIC requires additional efforts for correct linkage, such as
+# implementation of trampoline functions and support of various address tables.
+# PIC is used for dynamic libraries, MCU builds of interpreter
+# do not benefit from it, so we prefer to disable PIC.
+option(ONE_LIBRARY_NO_PIC "Disable PIC option for libraries" OFF)
+
 ###
 ### Target
 ###
