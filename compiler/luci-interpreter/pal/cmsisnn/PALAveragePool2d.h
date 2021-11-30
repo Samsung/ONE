@@ -27,7 +27,8 @@ namespace luci_interpreter_pal
 template <typename T>
 static inline void AveragePool(const tflite::PoolParams &params,
                                const tflite::RuntimeShape &input_shape, const T *input_data,
-                               const tflite::RuntimeShape &output_shape, T *output_data)
+                               const tflite::RuntimeShape &output_shape, T *output_data,
+                               const tflite::RuntimeShape &scratchpad_shape, T *scratchpad_data)
 {
   {
     // MARK: At this moment this operation is not supported
@@ -37,16 +38,21 @@ static inline void AveragePool(const tflite::PoolParams &params,
     (void)input_data;
     (void)output_shape;
     (void)output_data;
+    (void)scratchpad_shape;
+    (void)scratchpad_data;
   }
 }
 
 template <>
 inline void AveragePool<int8_t>(const tflite::PoolParams &params,
                                 const tflite::RuntimeShape &input_shape, const int8_t *input_data,
-                                const tflite::RuntimeShape &output_shape, int8_t *output_data)
+                                const tflite::RuntimeShape &output_shape, int8_t *output_data,
+                                const tflite::RuntimeShape &scratchpad_shape,
+                                int8_t *scratchpad_data)
 {
   assert(input_shape.DimensionsCount() == 4);
   assert(output_shape.DimensionsCount() == 4);
+  assert(scratchpad_data != nullptr);
 
   const int32_t batches = tflite::MatchingDim(input_shape, 0, output_shape, 0);
   assert(batches == 1);
@@ -79,18 +85,28 @@ inline void AveragePool<int8_t>(const tflite::PoolParams &params,
   filter_dims.w = params.filter_width;
   filter_dims.c = 1;
 
-  const int output_width = output_shape.Dims(2);
-  const int32_t buf_size = arm_avgpool_s8_get_buffer_size(output_width, depth);
-
-  auto buffer = std::make_unique<int8_t[]>(buf_size);
-  assert(buffer != nullptr);
-
   cmsis_nn_context ctx;
-  ctx.buf = buffer.get();
-  ctx.size = buf_size;
+  ctx.buf = scratchpad_data;
+  ctx.size = scratchpad_shape.Dims(0);
   auto res = arm_avgpool_s8(&ctx, &pool_params, &input_dims, input_data, &filter_dims, &output_dims,
                             output_data);
   assert(res == ARM_MATH_SUCCESS);
+}
+
+static inline void SetupScratchpadTensor(luci_interpreter::Tensor *scratchpad,
+                                         const tflite::RuntimeShape &input_shape,
+                                         const tflite::RuntimeShape &output_shape)
+
+{
+  assert(input_shape.DimensionsCount() == 4);
+  assert(output_shape.DimensionsCount() == 4);
+
+  const int32_t output_width = output_shape.Dims(2);
+  const int32_t depth = tflite::MatchingDim(input_shape, 3, output_shape, 3);
+
+  const int32_t buf_size = arm_avgpool_s8_get_buffer_size(output_width, depth);
+  luci_interpreter::Shape scratchpad_shape{buf_size};
+  scratchpad->resize(scratchpad_shape);
 }
 
 } // namespace luci_interpreter_pal

@@ -28,7 +28,8 @@ namespace kernels
 class AveragePool2D : public KernelWithParams<Pool2DParams>
 {
 public:
-  AveragePool2D(const Tensor *input, Tensor *output, const Pool2DParams &params);
+  AveragePool2D(const Tensor *input, Tensor *output, Tensor *scratchpad,
+                const Pool2DParams &params);
 
   const Tensor *input() const { return _inputs[0]; }
   Tensor *output() const { return _outputs[0]; }
