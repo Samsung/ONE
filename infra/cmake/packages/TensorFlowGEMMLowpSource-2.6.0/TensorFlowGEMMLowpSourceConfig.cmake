@@ -7,7 +7,7 @@ function(_TensorFlowGEMMLowpSource_import)
   nnas_include(ExternalSourceTools)
   nnas_include(OptionTools)
 
-  # Exact version used by TensorFlow v2.6.0.
+  # Exact version used by TensorFlow v2.6.0 and v2.7.0.
   # See tensorflow/third_party/gemmlowp/workspace.bzl.
   envoption(TENSORFLOW_2_6_0_GEMMLOWP_URL https://github.com/google/gemmlowp/archive/fda83bdc38b118cc6b56753bd540caa49e570745.zip)
 

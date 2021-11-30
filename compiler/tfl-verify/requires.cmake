@@ -1,5 +1,5 @@
 require("arser")
 require("foder")
-require("mio-tflite260")
+require("mio-tflite270")
 require("safemain")
 require("cwrap")
