@@ -65,3 +65,12 @@ class OptionPrinter(object):
                 "Padding = {}".format(self.GetPadding()),
                 "DepthMultiplier = {}".format(self.options.DepthMultiplier()))
             # yapf: enable
+        elif (self.op_name == "STRIDED_SLICE"):
+            # yapf: disable
+            return "{}, {}, {}, {}, {}".format(
+                "begin_mask({})".format(self.options.BeginMask()),
+                "end_mask({})".format(self.options.EndMask()),
+                "ellipsis_mask({})".format(self.options.EllipsisMask()),
+                "new_axis_mask({})".format(self.options.NewAxisMask()),
+                "shrink_axis_mask({})".format(self.options.ShrinkAxisMask()))
+            # yapf: enable
