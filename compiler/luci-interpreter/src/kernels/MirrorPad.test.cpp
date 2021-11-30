@@ -14,4 +14,58 @@
  * limitations under the License.
  */
 
-// TODO: Add tests for MirrorPad
+#include "kernels/MirrorPad.h"
+#include "kernels/TestUtils.h"
+#include "luci_interpreter/TestMemoryManager.h"
+
+namespace luci_interpreter
+{
+namespace kernels
+{
+namespace
+{
+
+using namespace testing;
+
+class MirrorPadTest : public ::testing::Test
+{
+protected:
+  void SetUp() override { _memory_manager = std::make_unique<TestMemoryManager>(); }
+
+  std::unique_ptr<IMemoryManager> _memory_manager;
+};
+
+TEST_F(MirrorPadTest, Float)
+{
+  Shape input_shape = {1, 2, 2, 1};
+  Shape padding_shape = {4, 2};
+
+  std::vector<float> input_data{1.0f, 2.0f, 3.0f, 4.0f};
+  std::vector<int> padding_data{0, 0, 1, 1, 1, 1, 0, 0};
+
+  Tensor input_tensor =
+    makeInputTensor<DataType::FLOAT32>(input_shape, input_data, _memory_manager.get());
+  Tensor padding_tensor =
+    makeInputTensor<DataType::S32>(padding_shape, padding_data, _memory_manager.get());
+
+  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
+
+  MirrorPadParams params{};
+  params.mode = MirrorPadMode::REFLECT;
+
+  MirrorPad kernel(&input_tensor, &padding_tensor, &output_tensor, params);
+  kernel.configure();
+  _memory_manager->allocate_memory(output_tensor);
+  kernel.execute();
+
+  std::vector<float> ref_output_data{4.0f, 3.0f, 4.0f, 3.0f, 2.0f, 1.0f, 2.0f, 1.0f,
+                                     4.0f, 3.0f, 4.0f, 3.0f, 2.0f, 1.0f, 2.0f, 1.0f};
+  std::initializer_list<int32_t> ref_output_shape{1, 4, 4, 1};
+
+  EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(ref_output_data));
+  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
+}
+
+} // namespace
+} // namespace kernels
+} // namespace luci_interpreter
