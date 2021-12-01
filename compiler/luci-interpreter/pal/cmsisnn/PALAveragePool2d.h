@@ -94,6 +94,7 @@ inline void AveragePool<int8_t>(const tflite::PoolParams &params,
 }
 
 static inline void SetupScratchpadTensor(luci_interpreter::Tensor *scratchpad,
+                                         const luci_interpreter::DataType &input_data_type,
                                          const tflite::RuntimeShape &input_shape,
                                          const tflite::RuntimeShape &output_shape)
 
@@ -105,7 +106,9 @@ static inline void SetupScratchpadTensor(luci_interpreter::Tensor *scratchpad,
   const int32_t depth = tflite::MatchingDim(input_shape, 3, output_shape, 3);
 
   const int32_t buf_size = arm_avgpool_s8_get_buffer_size(output_width, depth);
-  luci_interpreter::Shape scratchpad_shape{buf_size};
+  auto data_type_size = static_cast<int32_t>(luci_interpreter::getDataTypeSize(input_data_type));
+
+  luci_interpreter::Shape scratchpad_shape{buf_size * data_type_size};
   scratchpad->resize(scratchpad_shape);
 }
 

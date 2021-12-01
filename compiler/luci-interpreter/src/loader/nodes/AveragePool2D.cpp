@@ -41,8 +41,9 @@ std::unique_ptr<Kernel> build_kernel_CircleAveragePool2D(const luci::CircleNode 
   params.stride_width = node->stride()->w();
   params.activation = node->fusedActivationFunction();
 
-  auto scratchpad =
-    std::make_unique<Tensor>(input->element_type(), Shape({}), AffineQuantization{}, "");
+  // It is unknown what data will be stored in scratchpad tensor,
+  // using UINT8 as a most general option
+  auto scratchpad = std::make_unique<Tensor>(DataType::U8, Shape({}), AffineQuantization{}, "");
   scratchpad->set_observable(false);
   scratchpad->set_data_buffer(nullptr);
   // If node has execution plan then read memory offsets for scratchpad temporary tensor

@@ -80,8 +80,8 @@ void AveragePool2D::configure()
   if (input()->element_type() == DataType::S8)
   {
     auto scratchpad = getOutputTensors()[1];
-    luci_interpreter_pal::SetupScratchpadTensor(scratchpad, getTensorShape(input()),
-                                                getTensorShape(output()));
+    luci_interpreter_pal::SetupScratchpadTensor(scratchpad, input()->element_type(),
+                                                getTensorShape(input()), getTensorShape(output()));
   }
 }
 
