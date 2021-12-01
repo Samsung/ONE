@@ -50,7 +50,9 @@ public:
 class Interpreter
 {
 public:
-  explicit Interpreter(const luci::Module *module, IMemoryManager *memory_manager = nullptr);
+  explicit Interpreter(const luci::Module *module);
+
+  explicit Interpreter(const luci::Module *module, IMemoryManager *memory_manager);
 
   ~Interpreter();
 
