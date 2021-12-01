@@ -139,6 +139,11 @@ void Slice::execute() const
                                   getTensorData<uint8_t>(input()), getTensorShape(output()),
                                   getTensorData<uint8_t>(output()));
       break;
+    case DataType::S8:
+      luci_interpreter_pal::Slice(op_params, getTensorShape(input()),
+                                  getTensorData<int8_t>(input()), getTensorShape(output()),
+                                  getTensorData<int8_t>(output()));
+      break;
     default:
       throw std::runtime_error("Unsupported input type.");
   }
