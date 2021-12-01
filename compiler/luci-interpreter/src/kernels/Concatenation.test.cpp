@@ -183,13 +183,58 @@ TEST_F(ConcatenationTest, Mismatching_Input_Dimension_NEG)
   EXPECT_ANY_THROW(kernel.configure());
 }
 
-TEST_F(ConcatenationTest, Unsupported_Configure_Type_NEG)
+TEST_F(ConcatenationTest, Int8_Mismatching_Input_Type_NEG)
 {
-  std::vector<int8_t> input1_data{1, 2, 3, 4, 5, 6};
-  std::vector<int8_t> input2_data{7, 8, 9, 10, 11, 12};
-  Tensor input1_tensor = makeInputTensor<DataType::S8>({2, 3}, input1_data, _memory_manager.get());
-  Tensor input2_tensor = makeInputTensor<DataType::S8>({2, 3}, input2_data, _memory_manager.get());
+  std::vector<uint8_t> input1_data{1, 2, 3, 4};
+  std::vector<int8_t> input2_data{5, 6, 7, 8};
+  Tensor input1_tensor = makeInputTensor<DataType::U8>({2, 2}, input1_data, _memory_manager.get());
+  Tensor input2_tensor = makeInputTensor<DataType::S8>({2, 2}, input2_data, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::S8);
+  ConcatenationParams params{};
+
+  params.axis = -1;
+  params.activation = luci::FusedActFunc::NONE;
+
+  Concatenation kernel({&input1_tensor, &input2_tensor}, &output_tensor, params);
+  EXPECT_ANY_THROW(kernel.configure());
+}
+
+TEST_F(ConcatenationTest, Int8_Mismatching_Input_Output_Quant_Params_NEG)
+{
+  std::vector<float> input1_data{1, 2, 3, 4, 5, 6};
+  std::vector<float> input2_data{7, 8, 9, 10, 11, 12};
+  int quantized_dimension = 3;
+  std::vector<float> scales{0.1, 0.2, 0.3};
+  std::vector<int32_t> zero_points{1, -1, 1};
+
+  Tensor input1_tensor = makeInputTensor<DataType::S8>(
+    {1, 1, 2, 3}, scales, zero_points, quantized_dimension, input1_data, _memory_manager.get());
+  Tensor input2_tensor = makeInputTensor<DataType::S8>(
+    {1, 1, 2, 3}, scales, zero_points, quantized_dimension, input2_data, _memory_manager.get());
+  Tensor output_tensor = makeOutputTensor(DataType::S8, scales.at(0), zero_points.at(0));
+  ConcatenationParams params{};
+
+  params.axis = -1;
+  params.activation = luci::FusedActFunc::NONE;
+
+  Concatenation kernel({&input1_tensor, &input2_tensor}, &output_tensor, params);
+  EXPECT_ANY_THROW(kernel.configure());
+}
+
+TEST_F(ConcatenationTest, Int8_Mismatching_Zero_Point_NEG)
+{
+  std::vector<float> input1_data{1, 2, 3, 4};
+  std::vector<float> input2_data{5, 6, 7, 8};
+  float scale = 0.1;
+  int32_t zero_point_1 = 1;
+  int32_t zero_point_2 = -1;
+
+  Tensor input1_tensor =
+    makeInputTensor<DataType::S8>({2, 2}, scale, zero_point_1, input1_data, _memory_manager.get());
+  Tensor input2_tensor =
+    makeInputTensor<DataType::S8>({2, 2}, scale, zero_point_2, input2_data, _memory_manager.get());
+
+  Tensor output_tensor = makeOutputTensor(DataType::S8, scale, zero_point_1);
   ConcatenationParams params{};
 
   params.axis = -1;
