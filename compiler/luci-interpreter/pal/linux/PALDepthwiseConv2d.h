@@ -71,12 +71,14 @@ inline void DepthwiseConvPerChannel<int8_t>(
 
 static inline void SetupScratchpadTensor(luci_interpreter::Tensor *scratchpad,
                                          const tflite::DepthwiseParams &params,
+                                         const luci_interpreter::DataType &input_data_type,
                                          const tflite::RuntimeShape &input_shape,
                                          const tflite::RuntimeShape &filter_shape,
                                          const tflite::RuntimeShape &output_shape)
 
 {
   (void)params;
+  (void)input_data_type;
   (void)input_shape;
   (void)filter_shape;
   (void)output_shape;

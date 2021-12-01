@@ -140,6 +140,7 @@ inline void DepthwiseConvPerChannel<int8_t>(
 
 static inline void SetupScratchpadTensor(luci_interpreter::Tensor *scratchpad,
                                          const tflite::DepthwiseParams &params,
+                                         const luci_interpreter::DataType &input_data_type,
                                          const tflite::RuntimeShape &input_shape,
                                          const tflite::RuntimeShape &filter_shape,
                                          const tflite::RuntimeShape &output_shape)
@@ -150,6 +151,7 @@ static inline void SetupScratchpadTensor(luci_interpreter::Tensor *scratchpad,
 
   if (dw_conv_params.dilation.h == 1 && dw_conv_params.dilation.w == 1)
   {
+    assert(input_data_type == loco::DataType::S8);
     const int batch_size = tflite::MatchingDim(input_shape, 0, output_shape, 0);
     const int output_depth = tflite::MatchingDim(filter_shape, 3, output_shape, 3);
 
@@ -174,7 +176,9 @@ static inline void SetupScratchpadTensor(luci_interpreter::Tensor *scratchpad,
     const int32_t buf_size = arm_depthwise_conv_wrapper_s8_get_buffer_size(
       &dw_conv_params, &input_dims, &filter_dims, &output_dims);
 
-    luci_interpreter::Shape scratchpad_shape{buf_size};
+    auto data_type_size = static_cast<int32_t>(luci_interpreter::getDataTypeSize(input_data_type));
+
+    luci_interpreter::Shape scratchpad_shape{buf_size * data_type_size};
     scratchpad->resize(scratchpad_shape);
   }
   else
