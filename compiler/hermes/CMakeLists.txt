@@ -3,7 +3,9 @@ file(GLOB_RECURSE TESTS "src/*.test.cpp")
 list(REMOVE_ITEM SOURCES ${TESTS})
 
 add_library(hermes STATIC ${SOURCES})
-set_target_properties(hermes PROPERTIES POSITION_INDEPENDENT_CODE ON)
+if (NOT NNCC_LIBRARY_NO_PIC)
+  set_target_properties(hermes PROPERTIES POSITION_INDEPENDENT_CODE ON)
+endif(NOT NNCC_LIBRARY_NO_PIC)
 target_include_directories(hermes PUBLIC include)
 # Let's apply nncc common compile options
 #
