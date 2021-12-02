@@ -54,6 +54,32 @@ TEST(Pad, Uint8)
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({1, 4, 7, 1}));
 }
 
+TEST(Pad, Int8)
+{
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<TestMemoryManager>();
+  float kQuantizedTolerance = GetTolerance(-1.0, 1.0);
+  std::pair<float, int32_t> quant_param = quantizationParams<int8_t>(-1.0f, 1.0f);
+  std::vector<float> input_data{-0.2, 0.4, 0.5, -0.7, -0.1, -0.9, 0.7, 0.1, 0.2};
+  std::vector<int32_t> paddings_data{0, 0, 1, 2, 2, 1, 0, 0};
+  Tensor input_tensor = makeInputTensor<DataType::S8>(
+    {1, 3, 3, 1}, quant_param.first, quant_param.second, input_data, memory_manager.get());
+  Tensor paddings_tensor =
+    makeInputTensor<DataType::S32>({4, 2}, paddings_data, memory_manager.get());
+  Tensor output_tensor = makeOutputTensor(DataType::S8, quant_param.first, quant_param.second);
+
+  Pad kernel(&input_tensor, &paddings_tensor, &output_tensor);
+  kernel.configure();
+  memory_manager->allocate_memory(output_tensor);
+  kernel.execute();
+
+  std::vector<float> ref_output_data{0, 0, 0,    0,    0,    0, 0, 0, -0.2, 0.4, 0.5, 0,
+                                     0, 0, -0.7, -0.1, -0.9, 0, 0, 0, 0.7,  0.1, 0.2, 0,
+                                     0, 0, 0,    0,    0,    0, 0, 0, 0,    0,   0,   0};
+  EXPECT_THAT(dequantizeTensorData(output_tensor),
+              FloatArrayNear(ref_output_data, kQuantizedTolerance));
+  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({1, 6, 6, 1}));
+}
+
 TEST(Pad, Float)
 {
   std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<TestMemoryManager>();
