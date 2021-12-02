@@ -71,7 +71,6 @@ private:
   // the order of deletion in the destructor
   std::unique_ptr<IMemoryManager> _default_memory_manager = nullptr;
   std::unique_ptr<class RuntimeModule> _runtime_module;
-  IMemoryManager *_memory_manager = nullptr;
 
   // Observer functionality support.
   std::unique_ptr<struct RuntimeToIR> _runtime_to_ir;
