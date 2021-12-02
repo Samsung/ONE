@@ -66,13 +66,13 @@ static inline void ConvPerChannel(const tflite::ConvParams &params, const int32_
 }
 
 static inline void SetupScratchpadTensor(luci_interpreter::Tensor *scratchpad,
-                                         const luci_interpreter::DataType &data_type,
+                                         const luci_interpreter::DataType &input_data_type,
                                          const tflite::ConvParams &params,
                                          const tflite::RuntimeShape &input_shape,
                                          const tflite::RuntimeShape &filter_shape,
                                          const tflite::RuntimeShape &output_shape)
 {
-  (void)data_type;
+  (void)input_data_type;
   (void)params;
   (void)input_shape;
   (void)filter_shape;

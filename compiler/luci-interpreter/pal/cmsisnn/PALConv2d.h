@@ -136,7 +136,7 @@ static inline void ConvPerChannel(const tflite::ConvParams &params, const int32_
 }
 
 static inline void SetupScratchpadTensor(luci_interpreter::Tensor *scratchpad,
-                                         const luci_interpreter::DataType &data_type,
+                                         const luci_interpreter::DataType &input_data_type,
                                          const tflite::ConvParams &params,
                                          const tflite::RuntimeShape &input_shape,
                                          const tflite::RuntimeShape &filter_shape,
@@ -148,6 +148,7 @@ static inline void SetupScratchpadTensor(luci_interpreter::Tensor *scratchpad,
 
   if (conv_params.dilation.h == 1 && conv_params.dilation.w == 1)
   {
+    assert(input_data_type == loco::DataType::S8);
     const int32_t batches = tflite::MatchingDim(input_shape, 0, output_shape, 0);
     const int32_t input_depth = tflite::MatchingDim(input_shape, 3, filter_shape, 3);
     const int32_t output_depth = tflite::MatchingDim(filter_shape, 0, output_shape, 3);

@@ -29,10 +29,20 @@ static inline void Conv(const tflite::ConvParams &params, const tflite::RuntimeS
                         float *output_data, const tflite::RuntimeShape &scratchpad_shape,
                         float *scratchpad_data)
 {
+  (void)scratchpad_shape;
   if (scratchpad_data)
   {
+    const int32_t batches = tflite::MatchingDim(input_shape, 0, output_shape, 0);
+    const int32_t input_depth = tflite::MatchingDim(input_shape, 3, filter_shape, 3);
+    const int32_t output_height = output_shape.Dims(1);
+    const int32_t output_width = output_shape.Dims(2);
+    const int32_t filter_height = filter_shape.Dims(1);
+    const int32_t filter_width = filter_shape.Dims(2);
+    tflite::RuntimeShape im2col_shape{batches, output_height, output_width,
+                                      input_depth * filter_height * filter_width};
+
     tflite::optimized_ops::Conv(params, input_shape, input_data, filter_shape, filter_data,
-                                bias_shape, bias_data, output_shape, output_data, scratchpad_shape,
+                                bias_shape, bias_data, output_shape, output_data, im2col_shape,
                                 scratchpad_data);
   }
   else
@@ -75,7 +85,7 @@ static inline void ConvPerChannel(const tflite::ConvParams &params, const int32_
 }
 
 static inline void SetupScratchpadTensor(luci_interpreter::Tensor *scratchpad,
-                                         const luci_interpreter::DataType &data_type,
+                                         const luci_interpreter::DataType &input_data_type,
                                          const tflite::ConvParams &params,
                                          const tflite::RuntimeShape &input_shape,
                                          const tflite::RuntimeShape &filter_shape,
@@ -90,7 +100,7 @@ static inline void SetupScratchpadTensor(luci_interpreter::Tensor *scratchpad,
     params.dilation_height_factor != 1 || params.dilation_width_factor != 1;
   const bool need_non_dilated_scratchpad = params.stride_height != 1 || params.stride_width != 1 ||
                                            filter_height != 1 || filter_width != 1;
-  auto _need_scratchpad = data_type != luci_interpreter::DataType::S16 &&
+  auto _need_scratchpad = input_data_type != luci_interpreter::DataType::S16 &&
                           (need_dilated_scratchpad || need_non_dilated_scratchpad);
 
   if (_need_scratchpad)
@@ -100,8 +110,10 @@ static inline void SetupScratchpadTensor(luci_interpreter::Tensor *scratchpad,
     const int32_t output_height = output_shape.Dims(1);
     const int32_t output_width = output_shape.Dims(2);
 
-    luci_interpreter::Shape scratchpad_shape{batches, output_height, output_width,
-                                             input_depth * filter_height * filter_width};
+    auto data_type_size = static_cast<int32_t>(luci_interpreter::getDataTypeSize(input_data_type));
+    int32_t scratchpad_size = batches * output_width * output_height * input_depth * filter_height *
+                              filter_width * data_type_size;
+    luci_interpreter::Shape scratchpad_shape{scratchpad_size};
     scratchpad->resize(scratchpad_shape);
   }
   else
