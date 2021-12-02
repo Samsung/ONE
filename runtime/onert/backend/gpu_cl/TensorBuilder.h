@@ -17,10 +17,11 @@
 #ifndef __ONERT_BACKEND_GPU_CL_TENSOR_BUILDER_H__
 #define __ONERT_BACKEND_GPU_CL_TENSOR_BUILDER_H__
 
-#include <backend/basic/TensorBuilder.h>
-#include "operand/ICLTensor.h"
-#include "operand/CLTensor.h"
-#include "ClTensorBuilder.h"
+#include "ClTensorManager.h"
+#include "ParentInfo.h"
+
+#include <ir/Operands.h>
+#include <ir/OperandIndexSequence.h>
 
 namespace onert
 {
@@ -29,7 +30,82 @@ namespace backend
 namespace gpu_cl
 {
 
-using TensorBuilder = ClTensorBuilder<operand::ICLTensor, operand::CLTensor>;
+enum class UsesType
+{
+  FIRST,
+  LAST
+};
+
+class TensorBuilder
+{
+public:
+  TensorBuilder(const ir::Operands &operands, TensorManager *tensor_mgr,
+                tflite::gpu::cl::InferenceContext::CreateInferenceInfo create_info,
+                const std::shared_ptr<tflite::gpu::cl::Environment> &environment);
+
+  /**
+   * @brief     Register tensor information to allocate on ACL-CL backend
+   * @param[in] ind    Operand index
+   * @param[in] info   Tensor information
+   * @param[in] layout Tensor data layout
+   */
+  void registerTensorInfo(const ir::OperandIndex &ind, const ir::OperandInfo &info,
+                          ir::Layout backend_layout, TensorType type);
+
+  void notifyFirstUse(const ir::OperandIndex &);
+  void notifyLastUse(const ir::OperandIndex &);
+
+  bool isRegistered(const ir::OperandIndex &) const;
+
+  void prepare();
+  void allocate();
+  void postFunctionPrepare();
+
+  TensorManager *cl_tensor_manager(void) { return _tensor_mgr.get(); }
+
+  void setUsesCount(const ir::OperandIndex &index, size_t num_uses)
+  {
+    assert(_uses_count_map.find(index) != _uses_count_map.end() ? _uses_count_map[index] == num_uses
+                                                                : true);
+    _uses_count_map[index] = num_uses;
+  }
+
+  void parent_map(std::unordered_map<ir::OperandIndex, ParentInfo> &&parent_map)
+  {
+    _parent_map = std::move(parent_map);
+  }
+
+  bool areSubTensorsOf(const ir::OperandIndex &parent, const ir::OperandIndexSequence &seq);
+
+  /**
+   * @brief     Check child tensor is allocated as subtensor of parent tensor
+   * @param[in] parent  Index of parent
+   * @param[in] child   Index of child
+   * @return    @c true if child is allocated as subtensor of parent, otherwise @c false
+   */
+  bool isSubTensorOf(const ir::OperandIndex &parent, const ir::OperandIndex &child);
+
+private:
+  void buildTensors(void);
+  ir::OperandIndex findRootParent(ir::OperandIndex index);
+
+private:
+  const ir::Operands &_operands;
+  ir::OperandIndexMap<ir::OperandInfo> _tensor_info_map;
+  ir::OperandIndexMap<ir::Layout> _tensor_layout_map;
+  ir::OperandIndexMap<TensorType> _tensor_type_map;
+  ir::OperandIndexMap<size_t> _uses_count_map;
+
+  std::unique_ptr<TensorManager> _tensor_mgr;
+  tflite::gpu::cl::InferenceContext::CreateInferenceInfo _create_info;
+  std::shared_ptr<tflite::gpu::cl::Environment> _environment;
+
+  // for linear executor
+  std::vector<std::pair<UsesType, ir::OperandIndex>> _lifetime_seq;
+
+  // Extra info for concat elimination
+  ir::OperandIndexMap<ParentInfo> _parent_map;
+};
 
 } // namespace gpu_cl
 } // namespace backend

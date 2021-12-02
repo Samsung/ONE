@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_CL_TENSOR_BUILDER_H__
-#define __ONERT_BACKEND_CL_TENSOR_BUILDER_H__
-
 #include <memory>
 #include <queue>
+
+#include "TensorBuilder.h"
 
 #include "ClTensorManager.h"
 #include "ClTensorRegistry.h"
@@ -34,6 +33,8 @@
 #include <ir/Operands.h>
 #include <util/Utils.h>
 
+// TODO Remove below
+#if 0
 namespace onert
 {
 namespace backend
@@ -121,6 +122,7 @@ private:
 } // namespace gpu_cl
 } // namespace backend
 } // namespace onert
+#endif
 
 #include <cassert>
 #include <stack>
@@ -134,22 +136,17 @@ namespace backend
 namespace gpu_cl
 {
 
-template <typename T_ITensor, typename T_Tensor>
-ClTensorBuilder<T_ITensor, T_Tensor>::ClTensorBuilder(
-  const ir::Operands &operands, TensorManager *tensor_mgr,
-  tflite::gpu::cl::InferenceContext::CreateInferenceInfo create_info,
-  const std::shared_ptr<tflite::gpu::cl::Environment> &environment)
+TensorBuilder::TensorBuilder(const ir::Operands &operands, TensorManager *tensor_mgr,
+                             tflite::gpu::cl::InferenceContext::CreateInferenceInfo create_info,
+                             const std::shared_ptr<tflite::gpu::cl::Environment> &environment)
   : _operands{operands}, _tensor_mgr{tensor_mgr}, _create_info{create_info}, _environment{
                                                                                environment}
 {
   assert(_tensor_mgr);
 }
 
-template <typename T_ITensor, typename T_Tensor>
-void ClTensorBuilder<T_ITensor, T_Tensor>::registerTensorInfo(const ir::OperandIndex &ind,
-                                                              const ir::OperandInfo &info,
-                                                              ir::Layout backend_layout,
-                                                              TensorType type)
+void TensorBuilder::registerTensorInfo(const ir::OperandIndex &ind, const ir::OperandInfo &info,
+                                       ir::Layout backend_layout, TensorType type)
 {
   assert(_tensor_mgr->constTensors().size() == 0);
   assert(_tensor_mgr->nonconstTensors().size() == 0);
@@ -162,32 +159,24 @@ void ClTensorBuilder<T_ITensor, T_Tensor>::registerTensorInfo(const ir::OperandI
   _tensor_layout_map.insert({ind, backend_layout});
 }
 
-template <typename T_ITensor, typename T_Tensor>
-void ClTensorBuilder<T_ITensor, T_Tensor>::notifyFirstUse(const ir::OperandIndex &ind)
+void TensorBuilder::notifyFirstUse(const ir::OperandIndex &ind)
 {
   _lifetime_seq.emplace_back(UsesType::FIRST, ind);
 }
 
-template <typename T_ITensor, typename T_Tensor>
-void ClTensorBuilder<T_ITensor, T_Tensor>::notifyLastUse(const ir::OperandIndex &ind)
+void TensorBuilder::notifyLastUse(const ir::OperandIndex &ind)
 {
   _lifetime_seq.emplace_back(UsesType::LAST, ind);
 }
 
-template <typename T_ITensor, typename T_Tensor>
-bool ClTensorBuilder<T_ITensor, T_Tensor>::isRegistered(const ir::OperandIndex &ind) const
+bool TensorBuilder::isRegistered(const ir::OperandIndex &ind) const
 {
   return _tensor_info_map.find(ind) != _tensor_info_map.end();
 }
 
-template <typename T_ITensor, typename T_Tensor>
-void ClTensorBuilder<T_ITensor, T_Tensor>::prepare(void)
-{
-  buildTensors();
-}
+void TensorBuilder::prepare(void) { buildTensors(); }
 
-template <typename T_ITensor, typename T_Tensor>
-void ClTensorBuilder<T_ITensor, T_Tensor>::allocate(void)
+void TensorBuilder::allocate(void)
 {
   // Update lifetime sequence to apply subtensor optimization
 
@@ -261,14 +250,9 @@ void ClTensorBuilder<T_ITensor, T_Tensor>::allocate(void)
   _tensor_mgr->allocateNonconsts();
 }
 
-template <typename T_ITensor, typename T_Tensor>
-void ClTensorBuilder<T_ITensor, T_Tensor>::postFunctionPrepare(void)
-{
-  _tensor_mgr->tryDeallocConstants();
-}
+void TensorBuilder::postFunctionPrepare(void) { _tensor_mgr->tryDeallocConstants(); }
 
-template <typename T_ITensor, typename T_Tensor>
-void ClTensorBuilder<T_ITensor, T_Tensor>::buildTensors(void)
+void TensorBuilder::buildTensors(void)
 {
   assert(_tensor_mgr->constTensors().size() == 0);
   assert(_tensor_mgr->nonconstTensors().size() == 0);
@@ -288,5 +272,3 @@ void ClTensorBuilder<T_ITensor, T_Tensor>::buildTensors(void)
 } // namespace gpu_cl
 } // namespace backend
 } // namespace onert
-
-#endif // __ONERT_BACKEND_ACL_COMMON_TEMPL_TENSOR_BUILDER_H__
