@@ -119,6 +119,12 @@ def _get_parser():
         help=
         "calibration algorithm for post-training quantization (supported: percentile/moving_average, default=percentile). 'percentile' mode uses the n-th percentiles as min/max values. 'moving_average' mode records the moving average of min/max."
     )
+    quantization_group.add_argument(
+        '--TF-style_maxpool',
+        action='store_true',
+        help=
+        "Force MaxPool Op to have the same input/output quantparams. NOTE: This option can degrade accuracy of some models.)"
+    )
 
     # arguments for force_quantparam option
     force_quantparam_group = parser.add_argument_group(
@@ -294,6 +300,8 @@ def _quantize(args):
             circle_quantizer_cmd.append(getattr(args, 'quantized_dtype'))
         if _utils._is_valid_attr(args, 'granularity'):
             circle_quantizer_cmd.append(getattr(args, 'granularity'))
+        if _utils._is_valid_attr(args, 'TF-style_maxpool'):
+            circle_quantizer_cmd.append('--TF-style_maxpool')
         if _utils._is_valid_attr(args, 'input_type'):
             circle_quantizer_cmd.append('--input_type')
             circle_quantizer_cmd.append(getattr(args, 'input_type'))
