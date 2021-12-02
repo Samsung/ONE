@@ -17,8 +17,6 @@
 #ifndef __ONERT_COMPILER_GPU_CL_CLCONSTANT_INITIALIZER_H__
 #define __ONERT_COMPILER_GPU_CL_CLCONSTANT_INITIALIZER_H__
 
-#include "ClTensorRegistry.h"
-
 #include <unordered_map>
 #include <functional>
 

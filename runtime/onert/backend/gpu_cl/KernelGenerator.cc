@@ -19,7 +19,6 @@
 
 #include "KernelGenerator.h"
 
-#include "ClTensorRegistry.h"
 #include "ClFunction.h"
 #include "ClTensorManager.h"
 
@@ -80,7 +79,7 @@ PoolingType convertPoolType(ir::operation::Pool2D::PoolType type_ir)
 
 KernelGenerator::KernelGenerator(const ir::Graph &graph,
                                  const std::shared_ptr<TensorBuilder> &tensor_builder,
-                                 const std::shared_ptr<ClTensorRegistry<TensorManager>> &tensor_reg,
+                                 const std::shared_ptr<TensorRegistry> &tensor_reg,
                                  const std::shared_ptr<CreationContext> &creation_context)
   : basic::KernelGeneratorBase{graph}, _ctx(graph.operands()),
     _operations_ctx(graph.operations()), _current_layout{graph.layout()},

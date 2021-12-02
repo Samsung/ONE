@@ -17,7 +17,7 @@
 #ifndef __ONERT_BACKEND_GPU_CL_KERNEL_GENERATOR_H__
 #define __ONERT_BACKEND_GPU_CL_KERNEL_GENERATOR_H__
 
-#include "ClTensorRegistry.h"
+#include "TensorRegistry.h"
 #include "backend/basic/TensorRegistry.h"
 #include "TensorBuilder.h"
 #include "ClTensorManager.h"
@@ -41,7 +41,7 @@ class KernelGenerator : public basic::KernelGeneratorBase
 {
 public:
   KernelGenerator(const ir::Graph &graph, const std::shared_ptr<TensorBuilder> &tensor_builder,
-                  const std::shared_ptr<ClTensorRegistry<TensorManager>> &tensor_reg,
+                  const std::shared_ptr<TensorRegistry> &tensor_reg,
                   const std::shared_ptr<tflite::gpu::cl::CreationContext> &creation_context);
 
   std::unique_ptr<exec::FunctionSequence> generate(ir::OperationIndex ind) override;
@@ -60,7 +60,7 @@ private:
   const ir::Operations &_operations_ctx;
   ir::Layout _current_layout;
   std::shared_ptr<TensorBuilder> _tensor_builder;
-  std::shared_ptr<ClTensorRegistry<TensorManager>> _tensor_reg;
+  std::shared_ptr<TensorRegistry> _tensor_reg;
   std::shared_ptr<tflite::gpu::cl::CreationContext> _creation_context;
   ir::OperandIndexMap<std::shared_ptr<tflite::gpu::cl::Tensor>> _new_tensors;
 };

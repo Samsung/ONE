@@ -20,7 +20,6 @@
 #include "TensorBuilder.h"
 
 #include "ClTensorManager.h"
-#include "ClTensorRegistry.h"
 #include "ParentInfo.h"
 
 #include "tensorflow/lite/delegates/gpu/cl/tensor_type.h"
