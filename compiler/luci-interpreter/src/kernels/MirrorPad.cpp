@@ -116,6 +116,15 @@ inline void MirrorPadImpl(const Tensor &input, const Tensor &paddings, MirrorPad
   auto const right_d_pad = paddings_data[2 * (input_dims - 1) + 1];
 
   const auto positive_mod = [](auto a, auto b) { return (a % b + b) % b; };
+  const auto offset_index = [input_d, input_h_offset, input_b_offset](auto d, auto w, auto h,
+                                                                      auto b) {
+    return d + w * input_d + h * input_h_offset + b * input_b_offset;
+  };
+
+  const auto symmetric_dim = [&positive_mod](auto i, auto left_pad, auto input) {
+    bool reflected = (((i < left_pad ? i + 1 - input : i) - left_pad) / input & 1) == 1;
+    return positive_mod(reflected ? input + left_pad - i - 1 : i - left_pad, input);
+  };
 
   const T *in_ptr = input_data;
   T *out_ptr = output_data;
@@ -135,18 +144,15 @@ inline void MirrorPadImpl(const Tensor &input, const Tensor &paddings, MirrorPad
           {
             if (mode == MirrorPadMode::REFLECT)
             {
-              *out_ptr++ = input_data[positive_mod(d - left_d_pad, input_d) +
-                                      positive_mod(w - left_w_pad, input_w) * input_d +
-                                      positive_mod(h - left_h_pad, input_h) * input_h_offset +
-                                      positive_mod(b - left_b_pad, input_b) * input_b_offset];
+              *out_ptr++ = input_data[offset_index(
+                positive_mod(d - left_d_pad, input_d), positive_mod(w - left_w_pad, input_w),
+                positive_mod(h - left_h_pad, input_h), positive_mod(b - left_b_pad, input_b))];
             }
             else
             {
-              *out_ptr++ =
-                input_data[positive_mod(input_d + left_d_pad - d - 1, input_d) +
-                           positive_mod(input_w + left_w_pad - w - 1, input_w) * input_d +
-                           positive_mod(input_h + left_h_pad - h - 1, input_h) * input_h_offset +
-                           positive_mod(input_b + left_b_pad - b - 1, input_b) * input_b_offset];
+              *out_ptr++ = input_data[offset_index(
+                symmetric_dim(d, left_d_pad, input_d), symmetric_dim(w, left_w_pad, input_w),
+                symmetric_dim(h, left_h_pad, input_h), symmetric_dim(b, left_b_pad, input_b))];
             }
           }
           else
