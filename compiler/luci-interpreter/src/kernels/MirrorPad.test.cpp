@@ -178,7 +178,8 @@ TEST_F(MirrorPadTest, Uint8Symmetric)
 
 TEST_F(MirrorPadTest, UnsupportedDim_NEG)
 {
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({1, 1, 1, 1, 1}, {1.0f}, _memory_manager.get());
+  Tensor input_tensor =
+    makeInputTensor<DataType::FLOAT32>({1, 1, 1, 1, 1}, {1.0f}, _memory_manager.get());
   Tensor padding_tensor =
     makeInputTensor<DataType::S32>({5, 2}, {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
@@ -189,8 +190,7 @@ TEST_F(MirrorPadTest, UnsupportedDim_NEG)
 TEST_F(MirrorPadTest, InvalidInputType_NEG)
 {
   Tensor input_tensor = makeInputTensor<DataType::S64>({1}, {1}, _memory_manager.get());
-  Tensor padding_tensor =
-    makeInputTensor<DataType::S32>({1, 2}, {0, 0}, _memory_manager.get());
+  Tensor padding_tensor = makeInputTensor<DataType::S32>({1, 2}, {0, 0}, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::S64);
 
   EXPECT_ANY_THROW(Execute(input_tensor, padding_tensor, output_tensor, MirrorPadMode::REFLECT));

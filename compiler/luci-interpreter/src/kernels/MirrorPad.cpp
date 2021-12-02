@@ -66,11 +66,13 @@ void MirrorPad::execute() const
 {
   switch (input()->element_type())
   {
-    case DataType::FLOAT32: {
+    case DataType::FLOAT32:
+    {
       MirrorPadImpl<float>(*input(), *paddings(), params().mode, *output());
       break;
     }
-    case DataType::U8: {
+    case DataType::U8:
+    {
       assert(output()->zero_point() >= std::numeric_limits<uint8_t>::min());
       assert(output()->zero_point() <= std::numeric_limits<uint8_t>::max());
 
