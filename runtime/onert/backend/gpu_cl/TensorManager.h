@@ -17,10 +17,6 @@
 #ifndef __ONERT_BACKEND_GPU_CL_TENSOR_MANAGER_H__
 #define __ONERT_BACKEND_GPU_CL_TENSOR_MANAGER_H__
 
-// TODO Change file name:
-//   TensorManager.h  -> TensorManager.h
-//   TensorManager.cc -> TensorManager.cc
-
 #include "MemoryManager.h"
 
 #include "tensorflow/lite/delegates/gpu/cl/inference_context.h"

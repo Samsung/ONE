@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "ClTensorManager.h"
+#include "TensorManager.h"
 
 #include <util/logging.h>
 
