@@ -17,7 +17,7 @@
 #ifndef __ONERT_BACKEND_GPU_CL_TENSOR_REGISTRY_H__
 #define __ONERT_BACKEND_GPU_CL_TENSOR_REGISTRY_H__
 
-#include "ClTensorManager.h"
+#include "TensorManager.h"
 
 #include "backend/ITensorRegistry.h"
 

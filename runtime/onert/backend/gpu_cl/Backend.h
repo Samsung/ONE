@@ -24,7 +24,7 @@
 #include "Config.h"
 #include "TensorRegistry.h"
 #include "KernelGenerator.h"
-#include "ClTensorManager.h"
+#include "TensorManager.h"
 #include "TensorBuilder.h"
 
 #include "tensorflow/lite/delegates/gpu/cl/environment.h"

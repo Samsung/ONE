@@ -20,7 +20,7 @@
 #include "KernelGenerator.h"
 
 #include "ClFunction.h"
-#include "ClTensorManager.h"
+#include "TensorManager.h"
 
 #include "tensorflow/lite/delegates/gpu/common/shape.h"
 #include "tensorflow/lite/delegates/gpu/cl/tensor.h"

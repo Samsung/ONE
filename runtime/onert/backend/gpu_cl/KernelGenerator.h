@@ -20,7 +20,7 @@
 #include "TensorRegistry.h"
 #include "backend/basic/TensorRegistry.h"
 #include "TensorBuilder.h"
-#include "ClTensorManager.h"
+#include "TensorManager.h"
 
 #include "tensorflow/lite/delegates/gpu/api.h"
 
