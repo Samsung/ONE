@@ -22,7 +22,7 @@
 
 #include "BackendContext.h"
 #include "Config.h"
-#include "ClTensorRegistry.h"
+#include "TensorRegistry.h"
 #include "KernelGenerator.h"
 #include "ClTensorManager.h"
 #include "TensorBuilder.h"
@@ -57,7 +57,7 @@ public:
     }
     auto tm = createTensorManager(&environment->context());
 
-    auto tr = std::make_shared<ClTensorRegistry<TensorManager>>(tm);
+    auto tr = std::make_shared<TensorRegistry>(tm);
 
     tflite::gpu::cl::InferenceContext::CreateInferenceInfo create_info;
     create_info.precision = tflite::gpu::cl::CalculationsPrecision::F32;
