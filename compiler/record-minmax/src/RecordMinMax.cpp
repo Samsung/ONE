@@ -393,20 +393,18 @@ void RecordMinMax::profileDataWithRandomInputs(const std::string &mode, float mi
              input_node->dtype() == loco::DataType::BOOL);
 
       if (input_node->dtype() == DataType::FLOAT32)
-      // clang-format off
       {
-      std::vector<float> input_data(num_elements);
+        std::vector<float> input_data(num_elements);
 
-      // Write random data
-      for (auto &iter : input_data)
-        iter = static_cast<float>(dist(gen));
+        // Write random data
+        for (auto &iter : input_data)
+          iter = static_cast<float>(dist(gen));
 
-      // TODO: Input data is copied twice (file -> buffer (input_data) -> interpreter inputs)
-      //       We can redcue the copy by directly writing data from file to interpreter inputs
-      _interpreter->writeInputTensor(input_node, input_data.data(),
-                                     input_data.size() * sizeof(float));
+        // TODO: Input data is copied twice (file -> buffer (input_data) -> interpreter inputs)
+        //       We can redcue the copy by directly writing data from file to interpreter inputs
+        _interpreter->writeInputTensor(input_node, input_data.data(),
+                                       input_data.size() * sizeof(float));
       }
-      // clang-format on
       else if (input_node->dtype() == DataType::BOOL)
       {
         auto input_data = genRandomBoolData(gen, num_elements);
