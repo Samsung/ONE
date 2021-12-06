@@ -115,8 +115,9 @@ void DepthwiseConv2D::configure()
   params.dilation_width_factor = _params.dilation_width_factor;
 
   auto scratchpad = getOutputTensors()[1];
-  luci_interpreter_pal::SetupScratchpadTensor(scratchpad, params, getTensorShape(input()),
-                                              getTensorShape(filter()), getTensorShape(output()));
+  luci_interpreter_pal::SetupScratchpadTensor(scratchpad, params, input()->element_type(),
+                                              getTensorShape(input()), getTensorShape(filter()),
+                                              getTensorShape(output()));
 }
 
 void DepthwiseConv2D::execute() const
