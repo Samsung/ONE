@@ -15,6 +15,7 @@
  */
 
 #include <tflchef/RecipeChef.h>
+#include <mio_tflite260/Helper.h>
 
 #include "Convert.h"
 #include "TFliteImport.h"
@@ -42,7 +43,7 @@ void set_inputs(TFliteImport *import, tflchef::Operation *operation, const tflit
     else
     {
       auto tensor = tensors->Get(input);
-      std::string name = tensor_name(tensor);
+      std::string name = mio::tflite::tensor_name(tensor);
       operation->add_input(name);
     }
   }
@@ -56,7 +57,7 @@ void set_outputs(TFliteImport *import, tflchef::Operation *operation, const tfli
   for (auto output : outputs)
   {
     auto tensor = tensors->Get(output);
-    std::string name = tensor_name(tensor);
+    std::string name = mio::tflite::tensor_name(tensor);
     operation->add_output(name);
   }
 }
@@ -108,7 +109,7 @@ std::unique_ptr<ModelRecipe> generate_recipe(const tflite::Model *model)
 
     ::tflchef::Operand *operand = model_recipe->add_operand();
 
-    operand->set_name(tensor_name(tensor));
+    operand->set_name(mio::tflite::tensor_name(tensor));
     operand->set_type(as_tflchef_type(tensor->type()));
     operand->set_is_variable(tensor->is_variable());
 
@@ -311,14 +312,14 @@ std::unique_ptr<ModelRecipe> generate_recipe(const tflite::Model *model)
   for (const auto input : inputs)
   {
     auto tensor = tensors->Get(input);
-    std::string name = tensor_name(tensor);
+    std::string name = mio::tflite::tensor_name(tensor);
 
     model_recipe->add_input(name);
   }
   for (const auto output : outputs)
   {
     auto tensor = tensors->Get(output);
-    std::string name = tensor_name(tensor);
+    std::string name = mio::tflite::tensor_name(tensor);
 
     model_recipe->add_output(name);
   }
