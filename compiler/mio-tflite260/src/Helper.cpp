@@ -20,32 +20,34 @@
 
 namespace mio
 {
+namespace tflite
+{
 
 // This will provide v3/v3a format neutral BuiltinOperator
-tflite::BuiltinOperator builtin_code_neutral(const tflite::OperatorCode *opcode)
+::tflite::BuiltinOperator builtin_code_neutral(const ::tflite::OperatorCode *opcode)
 {
   assert(opcode != nullptr);
   int8_t dp_code = opcode->deprecated_builtin_code();
   // 127 is max of int8_t which is upper bound of v3 builtin_code
   // NOTE TensorFlow uses 'BuiltinOperator_PLACEHOLDER_FOR_GREATER_OP_CODES' for 127
   if (dp_code < 127 && dp_code >= 0)
-    return tflite::BuiltinOperator(dp_code);
+    return ::tflite::BuiltinOperator(dp_code);
   return opcode->builtin_code();
 }
 
-bool is_valid(const tflite::OperatorCode *opcode)
+bool is_valid(const ::tflite::OperatorCode *opcode)
 {
-  tflite::BuiltinOperator code = builtin_code_neutral(opcode);
-  return (tflite::BuiltinOperator_MIN <= code && code <= tflite::BuiltinOperator_MAX);
+  ::tflite::BuiltinOperator code = builtin_code_neutral(opcode);
+  return (::tflite::BuiltinOperator_MIN <= code && code <= ::tflite::BuiltinOperator_MAX);
 }
 
-bool is_custom(const tflite::OperatorCode *opcode)
+bool is_custom(const ::tflite::OperatorCode *opcode)
 {
-  tflite::BuiltinOperator code = builtin_code_neutral(opcode);
-  return (code == tflite::BuiltinOperator_CUSTOM);
+  ::tflite::BuiltinOperator code = builtin_code_neutral(opcode);
+  return (code == ::tflite::BuiltinOperator_CUSTOM);
 }
 
-std::string opcode_name(const tflite::OperatorCode *opcode)
+std::string opcode_name(const ::tflite::OperatorCode *opcode)
 {
   assert(opcode);
 
@@ -67,16 +69,16 @@ std::string opcode_name(const tflite::OperatorCode *opcode)
     return custom_op;
   }
 
-  tflite::BuiltinOperator code = builtin_code_neutral(opcode);
-  return tflite::EnumNameBuiltinOperator(code);
+  ::tflite::BuiltinOperator code = builtin_code_neutral(opcode);
+  return ::tflite::EnumNameBuiltinOperator(code);
 }
 
-const char *tensor_type(const tflite::Tensor *tensor)
+const char *tensor_type(const ::tflite::Tensor *tensor)
 {
-  return tflite::EnumNameTensorType(tensor->type());
+  return ::tflite::EnumNameTensorType(tensor->type());
 }
 
-const char *tensor_name(const tflite::Tensor *tensor)
+const char *tensor_name(const ::tflite::Tensor *tensor)
 {
   static const char *kEmptyTensorName = "(noname)";
 
@@ -87,4 +89,5 @@ const char *tensor_name(const tflite::Tensor *tensor)
   return kEmptyTensorName;
 }
 
+} // namespace tflite
 } // namespace mio
