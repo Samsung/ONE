@@ -99,17 +99,24 @@ static inline void SetupScratchpadTensor(luci_interpreter::Tensor *scratchpad,
                                          const tflite::RuntimeShape &output_shape)
 
 {
-  assert(input_shape.DimensionsCount() == 4);
-  assert(output_shape.DimensionsCount() == 4);
+  if (input_data_type == luci_interpreter::DataType::S8)
+  {
+    assert(input_shape.DimensionsCount() == 4);
+    assert(output_shape.DimensionsCount() == 4);
 
-  const int32_t output_width = output_shape.Dims(2);
-  const int32_t depth = tflite::MatchingDim(input_shape, 3, output_shape, 3);
+    const int32_t output_width = output_shape.Dims(2);
+    const int32_t depth = tflite::MatchingDim(input_shape, 3, output_shape, 3);
 
-  const int32_t buf_size = arm_avgpool_s8_get_buffer_size(output_width, depth);
-  auto data_type_size = static_cast<int32_t>(luci_interpreter::getDataTypeSize(input_data_type));
+    const int32_t buf_size = arm_avgpool_s8_get_buffer_size(output_width, depth);
+    auto data_type_size = static_cast<int32_t>(luci_interpreter::getDataTypeSize(input_data_type));
 
-  luci_interpreter::Shape scratchpad_shape{buf_size * data_type_size};
-  scratchpad->resize(scratchpad_shape);
+    luci_interpreter::Shape scratchpad_shape{buf_size * data_type_size};
+    scratchpad->resize(scratchpad_shape);
+  }
+  else
+  {
+    scratchpad->set_allocatable(false);
+  }
 }
 
 } // namespace luci_interpreter_pal
