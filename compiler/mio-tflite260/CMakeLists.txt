@@ -47,3 +47,10 @@ endif(NOT TensorFlowGEMMLowpSource_FOUND)
 add_library(mio_tflite260_inc INTERFACE)
 target_include_directories(mio_tflite260_inc SYSTEM INTERFACE "${TensorFlowSource_DIR}")
 target_include_directories(mio_tflite260_inc SYSTEM INTERFACE "${TensorFlowGEMMLowpSource_DIR}")
+
+file(GLOB_RECURSE SOURCES "src/*.cpp")
+
+add_library(mio_tflite260_helper STATIC ${SOURCES})
+target_include_directories(mio_tflite260_helper PRIVATE src)
+target_include_directories(mio_tflite260_helper PUBLIC include)
+target_link_libraries(mio_tflite260_helper mio_tflite260)
