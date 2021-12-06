@@ -36,13 +36,6 @@ template <typename T> std::vector<T> as_index_vector(const flatbuffers::Vector<T
   return ret;
 }
 
-tflite::BuiltinOperator builtin_code_neutral(const tflite::OperatorCode *opcode);
-bool is_valid(const tflite::OperatorCode *opcode);
-bool is_custom(const tflite::OperatorCode *opcode);
-std::string opcode_name(const tflite::OperatorCode *opcode);
-const char *tensor_type(const tflite::Tensor *tensor);
-const char *tensor_name(const tflite::Tensor *tensor);
-
 /**
  * @brief Loads TF lite file and provides helpers to access attributes
  */
