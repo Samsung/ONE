@@ -15,6 +15,7 @@
  */
 
 #include <tfldump/Dump.h>
+#include <mio_tflite260/Helper.h>
 
 #include "Read.h"
 #include "OpPrinter.h"
@@ -137,7 +138,7 @@ void dump_sub_graph(std::ostream &os, tflread::Reader &reader)
     if (tensor->shape())
       dims = tflread::as_index_vector(tensor->shape());
 
-    os << "T(" << reader.subgraph_index() << ":" << i << ") " << tflread::tensor_type(tensor)
+    os << "T(" << reader.subgraph_index() << ":" << i << ") " << mio::tflite::tensor_type(tensor)
        << " ";
     os << "(" << dims << ") ";
     if (tensor->shape_signature())
@@ -146,7 +147,7 @@ void dump_sub_graph(std::ostream &os, tflread::Reader &reader)
       os << "(" << dims_sig << ") ";
     }
     os << "B(" << tensor->buffer() << ") ";
-    os << tflread::tensor_name(tensor) << std::endl;
+    os << mio::tflite::tensor_name(tensor) << std::endl;
 
     if (auto q_params = tensor->quantization())
     {
@@ -298,7 +299,7 @@ void dump_sub_graph(std::ostream &os, tflread::Reader &reader)
       if (input >= 0)
       {
         auto tensor = tensors->Get(input);
-        os << tflread::tensor_name(tensor);
+        os << mio::tflite::tensor_name(tensor);
       }
       os << std::endl;
     }
@@ -308,7 +309,7 @@ void dump_sub_graph(std::ostream &os, tflread::Reader &reader)
       if (output >= 0)
       {
         auto tensor = tensors->Get(output);
-        os << tflread::tensor_name(tensor);
+        os << mio::tflite::tensor_name(tensor);
       }
       os << std::endl;
     }
@@ -321,14 +322,14 @@ void dump_sub_graph(std::ostream &os, tflread::Reader &reader)
   for (const auto input : reader.inputs())
   {
     auto tensor = tensors->Get(input);
-    std::string name = tflread::tensor_name(tensor);
+    std::string name = mio::tflite::tensor_name(tensor);
     os << "I T(" << reader.subgraph_index() << ":" << input << ") " << name << std::endl;
   }
 
   for (const auto output : reader.outputs())
   {
     auto tensor = tensors->Get(output);
-    std::string name = tflread::tensor_name(tensor);
+    std::string name = mio::tflite::tensor_name(tensor);
     os << "O T(" << reader.subgraph_index() << ":" << output << ") " << name << std::endl;
   }
 
@@ -360,7 +361,7 @@ void dump_model(std::ostream &os, const tflite::Model *model)
     tflite::BuiltinOperator op_code = opcode->builtin_code();
     tflite::BuiltinOperator dp_code = tflite::BuiltinOperator(opcode->deprecated_builtin_code());
 
-    auto op_name = tflread::opcode_name(opcode);
+    auto op_name = mio::tflite::opcode_name(opcode);
     auto op_version = opcode->version();
 
     os << "[" << opcode_index << "] " << op_name << " (code: " << op_code
