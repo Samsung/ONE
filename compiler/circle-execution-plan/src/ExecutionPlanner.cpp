@@ -116,9 +116,75 @@ uint32_t compute_im2col_size(const luci::CircleConv2D *conv)
 
 } // namespace
 
+void ExecutionPlanner::make_default_execution_plan()
+{
+  _ordered_nodes = loco::postorder_traversal(loco::output_nodes(const_cast<loco::Graph *>(_graph)));
+  make_execution_plan();
+}
+
+void ExecutionPlanner::make_estimated_execution_plan()
+{
+  std::vector<loco::Node *> best_execution_order;
+  uint32_t best_required_size = std::numeric_limits<uint32_t>::max();
+  std::vector<NodeOrderInform> node_order_inform_vector;
+
+  ExecutionOrderEstimator execution_order_estimator(
+    loco::output_nodes(const_cast<loco::Graph *>(_graph)));
+  execution_order_estimator.get_node_order_inform_vector(node_order_inform_vector);
+
+  int32_t start_pos = node_order_inform_vector.size() - 1;
+  int32_t end_pos = 0;
+  int32_t current_pos = start_pos;
+
+  while (current_pos >= end_pos)
+  {
+    if (current_pos == start_pos)
+    {
+      while (node_order_inform_vector.at(current_pos).current_idx <
+             node_order_inform_vector.at(current_pos).all_combinations.size())
+      {
+        _ordered_nodes = execution_order_estimator.get_current_order(node_order_inform_vector);
+
+        get_usage_interval();
+        _required_size = greedy_by_size_approach();
+
+        if (_required_size < best_required_size)
+        {
+          best_required_size = _required_size;
+          best_execution_order = _ordered_nodes;
+        }
+
+        _ordered_nodes.clear();
+        _alloc_node_inform_vector.clear();
+        _alloc_node.clear();
+        _dealloc_node.clear();
+
+        node_order_inform_vector.at(current_pos).current_idx++;
+      }
+      node_order_inform_vector.at(current_pos).current_idx = 0;
+      current_pos--;
+    }
+
+    if (node_order_inform_vector.at(current_pos).current_idx ==
+        node_order_inform_vector.at(current_pos).all_combinations.size())
+    {
+      node_order_inform_vector.at(current_pos).current_idx = 0;
+      current_pos--;
+    }
+    else
+    {
+      node_order_inform_vector.at(current_pos).current_idx++;
+      if (node_order_inform_vector.at(current_pos).current_idx !=
+          node_order_inform_vector.at(current_pos).all_combinations.size())
+        current_pos = start_pos;
+    }
+  }
+  _ordered_nodes = best_execution_order;
+  make_execution_plan();
+}
+
 void ExecutionPlanner::make_execution_plan()
 {
-  get_default_execution_order_plan();
   _required_size = get_offsets_with_greedy_by_size();
   for (uint32_t i = 0; i < _ordered_nodes.size(); i++)
   {
@@ -128,12 +194,6 @@ void ExecutionPlanner::make_execution_plan()
   }
   auto settings = luci::UserSettings::settings();
   settings->set(luci::UserSettings::Key::ExecutionPlanGen, true);
-}
-
-void ExecutionPlanner::get_default_execution_order_plan()
-{
-  // Get execution order in _ordered_nodes
-  _ordered_nodes = loco::postorder_traversal(loco::output_nodes(const_cast<loco::Graph *>(_graph)));
 }
 
 void ExecutionPlanner::get_usage_interval()

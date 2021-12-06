@@ -18,6 +18,8 @@
 #define CIRCLE_EXECUTION_PLANNER_H
 
 #include <luci/IR/Module.h>
+#include "NodeOrderInform.h"
+#include "ExecutionOrderEstimator.h"
 #include <luci/Plan/CircleNodeExecutionPlan.h>
 
 namespace circle_planner
@@ -65,7 +67,10 @@ public:
   // Method provides execution plan, which contains execution order and
   // memory offsets for all nodes in _graph.
   // This plan writes in nodes annotation information with help of CircleNodeExecutionPlan class.
-  void make_execution_plan();
+
+  void make_default_execution_plan();
+
+  void make_estimated_execution_plan();
 
   // Method change planning mode:
   // is_null_consts = true - constants are no longer taken into account when planning
@@ -79,6 +84,8 @@ public:
   };
 
 private:
+  void make_execution_plan();
+
   // Method gets default execution order plan and saves it in _ordered_nodes vector.
   // There can be different variants of execution order and this method provides main one.
   void get_default_execution_order_plan();

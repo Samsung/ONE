@@ -83,7 +83,7 @@ int entry(int argc, char **argv)
 
   // Do main job
   circle_planner::ExecutionPlanner execution_planner(module->graph());
-  execution_planner.make_execution_plan();
+  execution_planner.make_default_execution_plan();
 
   // Export to output Circle file
   luci::CircleExporter exporter;
