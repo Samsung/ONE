@@ -36,12 +36,6 @@ template <typename T> std::vector<T> as_index_vector(const flatbuffers::Vector<T
   return ret;
 }
 
-bool is_valid(const circle::OperatorCode *opcode);
-bool is_custom(const circle::OperatorCode *opcode);
-std::string opcode_name(const circle::OperatorCode *opcode);
-const char *tensor_type(const circle::Tensor *tensor);
-const char *tensor_name(const circle::Tensor *tensor);
-
 /**
  * @brief Loads Circle file and provides helpers to access attributes
  */

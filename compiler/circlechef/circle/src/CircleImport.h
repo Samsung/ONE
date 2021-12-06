@@ -34,11 +34,6 @@ using CircleTensors_t = flatbuffers::Vector<flatbuffers::Offset<circle::Tensor>>
 using CircleBuffers_t = flatbuffers::Vector<flatbuffers::Offset<circle::Buffer>>;
 using CircleOperators_t = flatbuffers::Vector<flatbuffers::Offset<circle::Operator>>;
 
-const char *tensor_type(const circle::Tensor *tensor);
-const char *tensor_name(const circle::Tensor *tensor);
-bool is_valid(const circle::OperatorCode *opcode);
-bool is_custom(const circle::OperatorCode *opcode);
-
 /**
  * @brief Loads TF lite file and provides helpers to access attributes
  */

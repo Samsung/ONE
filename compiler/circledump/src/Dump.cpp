@@ -15,6 +15,7 @@
  */
 
 #include <circledump/Dump.h>
+#include <mio_circle/Helper.h>
 
 #include "Read.h"
 #include "OpPrinter.h"
@@ -151,7 +152,7 @@ void dump_sub_graph(std::ostream &os, circleread::Reader &reader)
     if (tensor->shape())
       dims = circleread::as_index_vector(tensor->shape());
 
-    os << "T(" << reader.subgraph_index() << ":" << i << ") " << circleread::tensor_type(tensor)
+    os << "T(" << reader.subgraph_index() << ":" << i << ") " << mio::circle::tensor_type(tensor)
        << " ";
     os << "(" << dims << ") ";
     if (tensor->shape_signature())
@@ -160,7 +161,7 @@ void dump_sub_graph(std::ostream &os, circleread::Reader &reader)
       os << "(" << dims_sig << ") ";
     }
     os << "B(" << tensor->buffer() << ") ";
-    os << circleread::tensor_name(tensor) << std::endl;
+    os << mio::circle::tensor_name(tensor) << std::endl;
 
     if (auto q_params = tensor->quantization())
     {
@@ -312,7 +313,7 @@ void dump_sub_graph(std::ostream &os, circleread::Reader &reader)
       if (input >= 0)
       {
         auto tensor = tensors->Get(input);
-        os << circleread::tensor_name(tensor);
+        os << mio::circle::tensor_name(tensor);
       }
       os << std::endl;
     }
@@ -322,7 +323,7 @@ void dump_sub_graph(std::ostream &os, circleread::Reader &reader)
       if (output >= 0)
       {
         auto tensor = tensors->Get(output);
-        os << circleread::tensor_name(tensor);
+        os << mio::circle::tensor_name(tensor);
       }
       os << std::endl;
     }
@@ -335,14 +336,14 @@ void dump_sub_graph(std::ostream &os, circleread::Reader &reader)
   for (const auto input : reader.inputs())
   {
     auto tensor = tensors->Get(input);
-    std::string name = circleread::tensor_name(tensor);
+    std::string name = mio::circle::tensor_name(tensor);
     os << "I T(" << reader.subgraph_index() << ":" << input << ") " << name << std::endl;
   }
 
   for (const auto output : reader.outputs())
   {
     auto tensor = tensors->Get(output);
-    std::string name = circleread::tensor_name(tensor);
+    std::string name = mio::circle::tensor_name(tensor);
     os << "O T(" << reader.subgraph_index() << ":" << output << ") " << name << std::endl;
   }
 
@@ -371,7 +372,7 @@ void dump_model(std::ostream &os, const circle::Model *model)
   for (auto opcode : opcodes)
   {
     circle::BuiltinOperator op_code = opcode->builtin_code();
-    auto op_name = circleread::opcode_name(opcode);
+    auto op_name = mio::circle::opcode_name(opcode);
     auto op_version = opcode->version();
 
     os << "[" << opcode_index << "] " << op_name << " (code: " << op_code
