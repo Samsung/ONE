@@ -17,7 +17,6 @@
 
 #include "kernels/OneHot.h"
 #include "kernels/Utils.h"
-#include "PALArgMax.h"
 
 namespace luci_interpreter
 {
