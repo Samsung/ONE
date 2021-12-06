@@ -10,13 +10,13 @@ _hidden_size = 3
 class net_RNN(nn.Module):
     def __init__(self):
         super().__init__()
-        self.op = nn.RNN(_input_size, _hidden_size, 1, bias=False)
+        self.op = nn.RNN(_input_size, _hidden_size, 1)
 
     def forward(self, inputs):
-        return self.op(inputs[0], inputs[1])
+        return self.op(inputs[0])
 
 
 _model_ = net_RNN()
 
 # dummy input for onnx generation
-_dummy_ = [torch.randn(_seq_len, _batch, _input_size), torch.randn(1, _batch, _hidden_size)]
+_dummy_ = [torch.randn(_seq_len, _batch, _input_size)]
