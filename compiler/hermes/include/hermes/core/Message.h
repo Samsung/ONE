@@ -69,7 +69,7 @@ public:
 
 private:
   std::unique_ptr<MessageText> _text;
-  SeverityCategory _severity;
+  SeverityCategory _severity = SeverityCategory::INFO;
 };
 
 } // namespace hermes

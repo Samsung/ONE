@@ -43,7 +43,7 @@ public:
 
 private:
   MessageBus *_bus;
-  SeverityCategory _severity;
+  SeverityCategory _severity = SeverityCategory::INFO;
 
   /// @brief Content buffer
   std::stringstream _ss;
