@@ -20,6 +20,7 @@ target_link_libraries(circle-tensordump PRIVATE ${HDF5_CXX_LIBRARIES})
 target_link_libraries(circle-tensordump PRIVATE arser)
 target_link_libraries(circle-tensordump PRIVATE foder)
 target_link_libraries(circle-tensordump PRIVATE mio_circle)
+target_link_libraries(circle-tensordump PRIVATE mio_circle_helper)
 target_link_libraries(circle-tensordump PRIVATE safemain)
 
 install(TARGETS circle-tensordump DESTINATION bin)
