@@ -40,6 +40,39 @@ uint32_t compute_output_size(luci::Padding padding, uint32_t image_size, uint32_
   }
 }
 
+bool isExecutableNode(const luci::CircleNode *node)
+{
+  switch (node->opcode())
+  {
+    // The following nodes denote outputs of multiple-output nodes.
+    // The list is synchronized with the same list from luci-interpreter/src/loader/GraphLoader.cpp
+    case luci::CircleOpcode::CIRCLEIFOUT:
+    case luci::CircleOpcode::CIRCLESPLITOUT:
+    case luci::CircleOpcode::CIRCLESPLITVOUT:
+    case luci::CircleOpcode::CIRCLEUNPACKOUT:
+    case luci::CircleOpcode::CIRCLEWHILEOUT:
+      return false;
+    default:
+      return true;
+  }
+}
+
+bool isTensorProducingNode(const luci::CircleNode *node)
+{
+  switch (node->opcode())
+  {
+    // The following nodes are multiple-output nodes. They do not produce tensors, the tensors
+    // are produced by the corresponding *Out nodes instead.
+    // The list is synchronized with the same list from luci-interpreter/src/loader/GraphLoader.cpp
+    case luci::CircleOpcode::IF:
+    case luci::CircleOpcode::SPLIT:
+    case luci::CircleOpcode::UNPACK:
+      return false;
+    default:
+      return true;
+  }
+}
+
 // Method finds (if necessary) size for im2col temporary tensor.
 uint32_t compute_im2col_size(const luci::CircleConv2D *conv)
 {
@@ -158,13 +191,24 @@ void ExecutionPlanner::get_usage_interval()
   for (uint32_t i = 0; i < _ordered_nodes.size(); i++)
   {
     const auto node = _ordered_nodes.at(i);
+    auto prev_nodes = preds(node);
     if (const auto *const_node = dynamic_cast<const luci::CircleConst *>(node))
     {
       allocate(0, i);
     }
-    allocate(i, i);
+    else if (!isExecutableNode(loco::must_cast<luci::CircleNode *>(node)))
+    {
+      // If current node is multi output node than begin life time for current node should start
+      // when prev node start live
+      auto it = std::find(_ordered_nodes.begin(), _ordered_nodes.end(), *prev_nodes.begin());
+      size_t index = std::distance(_ordered_nodes.begin(), it);
+      allocate(index, i);
+    }
+    else
+    {
+      allocate(i, i);
+    }
 
-    auto prev_nodes = preds(node);
     for (auto &prev_node : prev_nodes)
     {
       auto it = std::find(_ordered_nodes.begin(), _ordered_nodes.end(), prev_node);
@@ -302,6 +346,10 @@ void ExecutionPlanner::create_alloc_node_inform_vector(bool null_consts, bool nu
       _alloc_node_inform_vector[i].size = 0;
     }
     else if (const_node && null_consts)
+    {
+      _alloc_node_inform_vector[i].size = 0;
+    }
+    else if (!isTensorProducingNode(circle_node))
     {
       _alloc_node_inform_vector[i].size = 0;
     }
