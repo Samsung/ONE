@@ -26,7 +26,7 @@ std::unique_ptr<Kernel> build_kernel_CircleOneHot(const luci::CircleNode *circle
 {
   const auto *node = loco::must_cast<const luci::CircleOneHot *>(circle_node);
   assert(node->arity() == 4);
-  
+
   const Tensor *indices = helper.getInputTensor(node->indices());
   const Tensor *depth = helper.getInputTensor(node->depth());
   const Tensor *on_value = helper.getInputTensor(node->on_value());
