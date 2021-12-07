@@ -6,6 +6,7 @@ _seq_len = 2
 _batch = 3
 _hidden_size = 3
 
+
 # model
 class net_RNN(nn.Module):
     def __init__(self):
@@ -19,4 +20,7 @@ class net_RNN(nn.Module):
 _model_ = net_RNN()
 
 # dummy input for onnx generation
-_dummy_ = [torch.randn(_seq_len, _batch, _input_size), torch.randn(1, _batch, _hidden_size)]
+_dummy_ = [
+    torch.randn(_seq_len, _batch, _input_size),
+    torch.randn(1, _batch, _hidden_size)
+]

@@ -6,6 +6,7 @@ _seq_len = 2
 _batch = 3
 _hidden_size = 3
 
+
 # model
 class net_RNN(nn.Module):
     def __init__(self):
