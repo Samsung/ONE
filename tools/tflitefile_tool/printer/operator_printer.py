@@ -14,9 +14,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from operator_wrapping import Operator
-from tensor_printer import TensorPrinter
-from option_printer import OptionPrinter
+from ir.operator_wrapping import Operator
+from .tensor_printer import TensorPrinter
+from .option_printer import OptionPrinter
 
 
 def GetStrTensorIndex(tensors):

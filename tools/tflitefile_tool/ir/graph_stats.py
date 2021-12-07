@@ -39,6 +39,7 @@ class GraphStats():
         return self
 
 
+# TODO: Separate this to GraphStaatsPrinter
 def PrintGraphStats(stats, verbose):
     print("Number of all operator types: {0}".format(len(stats.op_counts)))
 
@@ -55,7 +56,7 @@ def PrintGraphStats(stats, verbose):
     print('')
 
     # Print memory stats
-    from tensor_printer import ConvertBytesToHuman
+    from printer.tensor_printer import ConvertBytesToHuman
     print("Expected TOTAL  memory: {0}".format(ConvertBytesToHuman(stats.total_memory)))
     print("Expected FILLED memory: {0}".format(ConvertBytesToHuman(stats.filled_memory)))
     print('')
@@ -68,9 +69,6 @@ def CalcGraphStats(op_parser):
         # number of occurrence of this operator type
         occur = len(oper_list)
         stats.accumulate_op_count(type_str, occur)
-
-        # this operator type can be computed?
-        can_compute = oper_list[0].operation.can_compute
 
     total_memory = 0
     filled_memory = 0  # only memory for constant

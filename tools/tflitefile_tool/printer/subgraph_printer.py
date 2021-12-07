@@ -14,9 +14,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from operator_printer import OperatorPrinter
-from tensor_printer import TensorPrinter
-import graph_stats
+from .operator_printer import OperatorPrinter
+from .tensor_printer import TensorPrinter
+from ir import graph_stats
 
 
 class SubgraphPrinter(object):

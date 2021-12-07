@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from tensor_wrapping import Tensor
+from ir.tensor_wrapping import Tensor
 
 SYMBOLS = ['B', 'K', 'M', 'G', 'T']
 
