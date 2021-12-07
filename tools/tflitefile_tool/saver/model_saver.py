@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from config_saver import ConfigSaver
+from .config_saver import ConfigSaver
 
 
 class ModelSaver(object):

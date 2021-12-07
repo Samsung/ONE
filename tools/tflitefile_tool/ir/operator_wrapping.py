@@ -18,7 +18,7 @@ import tflite.Operator
 import tflite.OperatorCode
 import tflite.BuiltinOperator
 import tflite.ActivationFunctionType
-from operation import Operation
+import tflite.BuiltinOptions
 
 
 # Match enum value integer to name string
@@ -84,8 +84,6 @@ class Operator(object):
         self.inputs = input_tensors
         self.outputs = output_tensors
         self.opcode_str = opcode_str
-        self.operation = Operation(self.tf_operator, self.opcode_str, self.inputs,
-                                   self.outputs)
         self.fused_activation = "NONE"
         self.SetupBuiltinOption()
         self.SetupFusedActivation()

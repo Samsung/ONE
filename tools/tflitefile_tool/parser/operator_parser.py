@@ -19,9 +19,8 @@ import tflite.SubGraph
 import tflite.Operator
 import tflite.OperatorCode
 import tflite.BuiltinOperator
-from operator_wrapping import Operator, EnumStrMaps
-from tensor_wrapping import Tensor, SetTensorTypeStr
-from operation import Operation
+from ir.operator_wrapping import Operator, EnumStrMaps
+from ir.tensor_wrapping import Tensor, SetTensorTypeStr
 
 
 class OperatorParser(object):
