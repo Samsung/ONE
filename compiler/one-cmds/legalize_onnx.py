@@ -361,9 +361,9 @@ def generate_one_direction_LSTM(transformer, X, W, R, B, initial_h, initial_c, P
     separate_b_tensors = transformer.make_node('Split', B, 8, axis=0, split=[hidden_size]*8)
     b_tensors = []
     for i in range(4):
-      b_tensors += transformer.make_node('Add', [separate_b_tensors[i*2], separate_b_tensors[i*2+1]], 1)
+      b_tensors += transformer.make_node('Add', [separate_b_tensors[i], separate_b_tensors[i+4]], 1)
   else:
-    b_tensors = transformer.make_constant_tensor(np.zeros((hidden_size), dtype=dtype), 'zero_b')
+    b_tensors = transformer.make_constant_tensor(np.zeros((hidden_size), dtype=dtype), 'zero_b') * 4
   B = {'i': b_tensors[0], 'o': b_tensors[1], 'f': b_tensors[2], 'c': b_tensors[3]}
 
   if initial_h is not None:
