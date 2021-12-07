@@ -23,11 +23,16 @@ for ref_spec, test_spec in zip(ref_session.get_inputs(), test_session.get_inputs
   input_data[ref_spec.name] = generator.random(ref_spec.shape, dtype=np.float32)
 
 ref_output_data = ref_session.run(None, input_data)
-test_output_data = ref_session.run(None, input_data)
+test_output_data = test_session.run(None, input_data)
 
 print("ref: ", ref_output_data)
 print("test: ", test_output_data)
 
 for ref_output, test_output in zip(ref_output_data, test_output_data):
   assert(ref_output.shape == test_output.shape)
-  print("diff: ", ref_output- test_output)
+  print("diff: ", ref_output - test_output)
+  norm_diff = np.max(abs((ref_output - test_output)/ref_output))
+  print("norm diff: ", np.max(abs((ref_output - test_output)/ref_output)))
+  if norm_diff > 1e-4:
+    exit(1)
+
