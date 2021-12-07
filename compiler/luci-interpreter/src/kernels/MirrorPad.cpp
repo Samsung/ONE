@@ -93,17 +93,17 @@ inline void MirrorPadImpl(const Tensor &input, const Tensor &paddings, MirrorPad
   auto const paddings_data = paddings.data<int32_t>();
   auto const output_data = output.data<T>();
 
-  auto const input_b = input_dims > 3 ? input.shape().dim(input_dims - 4) : 0;
-  auto const input_h = input_dims > 2 ? input.shape().dim(input_dims - 3) : 0;
-  auto const input_w = input_dims > 1 ? input.shape().dim(input_dims - 2) : 0;
+  auto const input_b = input_dims > 3 ? input.shape().dim(input_dims - 4) : 1;
+  auto const input_h = input_dims > 2 ? input.shape().dim(input_dims - 3) : 1;
+  auto const input_w = input_dims > 1 ? input.shape().dim(input_dims - 2) : 1;
   auto const input_d = input.shape().dim(input_dims - 1);
 
   auto const input_h_offset = input_d * input_w;
   auto const input_b_offset = input_h_offset * input_h;
 
-  auto const output_b = input_dims > 3 ? output.shape().dim(input_dims - 4) : 0;
-  auto const output_h = input_dims > 2 ? output.shape().dim(input_dims - 3) : 0;
-  auto const output_w = input_dims > 1 ? output.shape().dim(input_dims - 2) : 0;
+  auto const output_b = input_dims > 3 ? output.shape().dim(input_dims - 4) : 1;
+  auto const output_h = input_dims > 2 ? output.shape().dim(input_dims - 3) : 1;
+  auto const output_w = input_dims > 1 ? output.shape().dim(input_dims - 2) : 1;
   auto const output_d = output.shape().dim(input_dims - 1);
 
   auto const left_b_pad = paddings_data[2 * (input_dims - 4)];
