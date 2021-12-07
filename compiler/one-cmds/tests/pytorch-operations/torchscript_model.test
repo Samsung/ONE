@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# one-import-tf -> one-optimize
+# Test one-import-pytorch ability to import TorchScript file.
 
 filename_ext="$(basename -- $0)"
 filename="${filename_ext%.*}"

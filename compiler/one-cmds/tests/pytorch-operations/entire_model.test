@@ -14,7 +14,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# one-import-tf -> one-optimize
+# Test one-import-pytorch ability to import NN model stored in python file and serialized "entire" model.
+# "Entire" model is serialized with `torch.save(model)` method.
 
 filename_ext="$(basename -- $0)"
 filename="${filename_ext%.*}"
