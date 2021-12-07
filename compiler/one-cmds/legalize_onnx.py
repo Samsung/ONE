@@ -278,7 +278,66 @@ def legalize_RNN(transformer, tensor_infos, node):
 
 
 def legalize_LSTM(transformer, tensor_infos, node):
-  pass
+  inputs = node.input
+  outputs = node.output
+  if len(inputs) > 4 and inputs[4] != '':
+    raise NotImplementedError('Variadic length of output is not supported')
+  name = node.name
+  # attributes
+  activation_alpha = []
+  activation_beta = []
+  activations = ['Sigmoid', 'Tanh', 'Tanh']
+  clip = None
+  direction = 'forward'
+  hidden_size = 0
+  input_forget = 0
+  layout = 0
+
+  for attr in node.attribute:
+    if attr.name == 'activation_alpha':
+      activation_alpha = attr.floats
+    if attr.name == 'activation_beta':
+      activation_beta = attr.floats
+    if attr.name == 'activations':
+      activations = list(map(lambda item: item.decode('UTF-8'), list(attr.strings)))
+    if attr.name == 'clip':
+      clip = attr.f
+    if attr.name == 'direction':
+      direction = attr.s.decode('UTF-8')
+    if attr.name == 'hidden_size':
+      hidden_size = attr.i
+    if attr.name == 'input_forget':
+      input_forget = attr.i
+    if attr.name == 'layout':
+      layout = attr.i
+
+  for act in activations:
+    if act not in ['Relu', 'Tanh', 'Sigmoid']:
+      raise NotImplementedError('Unsupported activation function')
+
+  if input_forget != 0:
+    raise NotImplementedError('Unsupported input_forget attribute value')
+
+  seq_length_dim = layout
+  seq_length = tensor_infos[inputs[0]].shape[seq_length_dim]
+  if hidden_size == 0:
+    hidden_size = tensor_infos[inputs[2]].shape[2]
+
+  input_split_tensor = transformer.make_node('Split', [inputs[0]], seq_length, axis=seq_length_dim, split = [1] * seq_length)
+  x = []
+  for i in range(len(input_split_tensor)):
+    input_frame_tensor = input_split_tensor[i]
+    squeezed_frame_tensor = transformer.make_node('Squeeze', [input_frame_tensor], 1, axes=[0])
+    x += squeezed_frame_tensor
+
+  if direction in ['forward', 'reverse']:
+    transform_unidirectional_LSTM(transformer, node, x, tensor_infos, activations, clip, direction, hidden_size, layout)
+  elif direction == 'bidirectional':
+    transform_bidirectional_LSTM(transformer, node, x, tensor_infos, activations, clip, hidden_size, layout)
+  else:
+    raise RuntimeError('Unknown LSTM type')
+
+  transformer.mark_for_deletion(node)
 
 
 def legalize_model(model):
