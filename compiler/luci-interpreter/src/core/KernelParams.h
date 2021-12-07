@@ -119,6 +119,11 @@ struct MulParams
   Activation activation;
 };
 
+struct OneHotParams
+{
+  int32_t axis;
+};
+
 struct PackParams
 {
   int32_t values_count;
