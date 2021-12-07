@@ -15,6 +15,7 @@
  */
 
 #include <circlechef/RecipeChef.h>
+#include <mio_circle/Helper.h>
 
 #include "Convert.h"
 #include "CircleImport.h"
@@ -42,7 +43,7 @@ void set_inputs(CircleImport *import, circlechef::Operation *operation, const ci
     else
     {
       auto tensor = tensors->Get(input);
-      std::string name = tensor_name(tensor);
+      std::string name = mio::circle::tensor_name(tensor);
       operation->add_input(name);
     }
   }
@@ -56,7 +57,7 @@ void set_outputs(CircleImport *import, circlechef::Operation *operation, const c
   for (auto output : outputs)
   {
     auto tensor = tensors->Get(output);
-    std::string name = tensor_name(tensor);
+    std::string name = mio::circle::tensor_name(tensor);
     operation->add_output(name);
   }
 }
@@ -108,7 +109,7 @@ std::unique_ptr<ModelRecipe> generate_recipe(const circle::Model *model)
 
     ::circlechef::Operand *operand = model_recipe->add_operand();
 
-    operand->set_name(tensor_name(tensor));
+    operand->set_name(mio::circle::tensor_name(tensor));
     operand->set_type(as_circlechef_type(tensor->type()));
 
     std::vector<int32_t> dims = as_index_vector(tensor->shape());
@@ -224,14 +225,14 @@ std::unique_ptr<ModelRecipe> generate_recipe(const circle::Model *model)
   for (const auto input : inputs)
   {
     auto tensor = tensors->Get(input);
-    std::string name = tensor_name(tensor);
+    std::string name = mio::circle::tensor_name(tensor);
 
     model_recipe->add_input(name);
   }
   for (const auto output : outputs)
   {
     auto tensor = tensors->Get(output);
-    std::string name = tensor_name(tensor);
+    std::string name = mio::circle::tensor_name(tensor);
 
     model_recipe->add_output(name);
   }
