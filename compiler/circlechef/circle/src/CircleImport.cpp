@@ -18,37 +18,12 @@
 
 #include "Convert.h"
 
+#include <mio_circle/Helper.h>
+
 #include <sstream>
 
 namespace circlechef
 {
-
-const char *kEmptyTensorName = "(noname)";
-
-const char *tensor_type(const circle::Tensor *tensor)
-{
-  return circle::EnumNameTensorType(tensor->type());
-}
-
-const char *tensor_name(const circle::Tensor *tensor)
-{
-  auto name = tensor->name();
-  if (name)
-    return name->c_str();
-  return kEmptyTensorName;
-}
-
-bool is_valid(const circle::OperatorCode *opcode)
-{
-  circle::BuiltinOperator code = opcode->builtin_code();
-  return (circle::BuiltinOperator_MIN <= code && code <= circle::BuiltinOperator_MAX);
-}
-
-bool is_custom(const circle::OperatorCode *opcode)
-{
-  circle::BuiltinOperator code = opcode->builtin_code();
-  return (code == circle::BuiltinOperator_CUSTOM);
-}
 
 CircleImport::CircleImport(const circle::Model *model)
 {
@@ -101,14 +76,14 @@ std::string CircleImport::opcode_name(const circle::Operator *op) const
   assert(index < _op_codes.size());
   const circle::OperatorCode *opcode = _op_codes.at(index);
 
-  if (!is_valid(opcode))
+  if (!mio::circle::is_valid(opcode))
   {
     std::ostringstream oss;
     oss << "(invalid: " << index << ")";
     return oss.str();
   }
 
-  if (is_custom(opcode))
+  if (mio::circle::is_custom(opcode))
   {
     if (!opcode->custom_code())
       return "(invalid custom)";
