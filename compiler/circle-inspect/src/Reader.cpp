@@ -16,65 +16,13 @@
 
 #include "Reader.h"
 
+#include <mio_circle/Helper.h>
+
 #include <sstream>
 #include <string>
 
 namespace circleinspect
 {
-
-bool is_valid(const circle::OperatorCode *opcode)
-{
-  circle::BuiltinOperator code = opcode->builtin_code();
-  return (circle::BuiltinOperator_MIN <= code && code <= circle::BuiltinOperator_MAX);
-}
-
-bool is_custom(const circle::OperatorCode *opcode)
-{
-  circle::BuiltinOperator code = opcode->builtin_code();
-  return (code == circle::BuiltinOperator_CUSTOM);
-}
-
-std::string opcode_name(const circle::OperatorCode *opcode)
-{
-  assert(opcode);
-
-  if (!is_valid(opcode))
-  {
-    std::ostringstream oss;
-    oss << "(invalid)";
-    return oss.str();
-  }
-
-  if (is_custom(opcode))
-  {
-    if (!opcode->custom_code())
-      return "(invalid custom)";
-
-    std::string custom_op = "CUSTOM(";
-    custom_op += opcode->custom_code()->c_str();
-    custom_op += ")";
-    return custom_op;
-  }
-
-  circle::BuiltinOperator code = opcode->builtin_code();
-  return circle::EnumNameBuiltinOperator(code);
-}
-
-const char *tensor_type(const circle::Tensor *tensor)
-{
-  return circle::EnumNameTensorType(tensor->type());
-}
-
-const char *tensor_name(const circle::Tensor *tensor)
-{
-  static const char *kEmptyTensorName = "(noname)";
-
-  auto name = tensor->name();
-  if (name)
-    return name->c_str();
-
-  return kEmptyTensorName;
-}
 
 Reader::Reader(const circle::Model *model)
 {
@@ -131,14 +79,14 @@ std::string Reader::opcode_name(const circle::Operator *op) const
   assert(index < _op_codes.size());
   const circle::OperatorCode *opcode = _op_codes.at(index);
 
-  if (!is_valid(opcode))
+  if (!mio::circle::is_valid(opcode))
   {
     std::ostringstream oss;
     oss << "(invalid: " << index << ")";
     return oss.str();
   }
 
-  return circleinspect::opcode_name(opcode);
+  return mio::circle::opcode_name(opcode);
 }
 
 bool Reader::select_subgraph(uint32_t sgindex)
