@@ -75,3 +75,7 @@ install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/README.txt
         DESTINATION test)
 
 add_subdirectory(onnx-operations)
+
+if(ENABLE_ONE_IMPORT_PYTORCH)
+  add_subdirectory(pytorch-operations)
+endif(ENABLE_ONE_IMPORT_PYTORCH)
