@@ -150,6 +150,25 @@ TEST(OneHotTest, UnsupportedInputType_NEG)
   EXPECT_ANY_THROW(kernel.configure());
 }
 
+TEST(OneHotTest, OutputTypeMismatch_NEG)
+{
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<TestMemoryManager>();
+
+  Tensor input_tensor = makeInputTensor<DataType::S32>({1}, {0}, memory_manager.get());
+  Tensor depth_tensor = makeInputTensor<DataType::S32>({}, {1}, memory_manager.get());
+
+  // type of on_value, off_value and output_tensor should be same
+  Tensor on_value_tensor = makeInputTensor<DataType::FLOAT32>({}, {1.0}, memory_manager.get());
+  Tensor off_value_tensor = makeInputTensor<DataType::FLOAT32>({}, {0.0}, memory_manager.get());
+  Tensor output_tensor = makeOutputTensor(DataType::S16);
+
+  OneHotParams params = {-1};
+
+  OneHot kernel(&input_tensor, &depth_tensor, &on_value_tensor, &off_value_tensor, &output_tensor,
+                params);
+  EXPECT_ANY_THROW(kernel.configure());
+}
+
 TEST(OneHotTest, InvalidAxis_NEG)
 {
   std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<TestMemoryManager>();
