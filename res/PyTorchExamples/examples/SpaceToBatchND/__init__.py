@@ -20,7 +20,6 @@ class net_SpaceToBatchND(nn.Module):
         m = len(block_shape)
         # rest of dimensions
         n = len(input.shape) - m
-        print(pad)
         # output batch size
         batch_size = input_shape[0]
 
@@ -38,8 +37,6 @@ class net_SpaceToBatchND(nn.Module):
 
         # Actual model starts here
         padded_input = torch.nn.functional.pad(input, pad)
-        print(input.shape)
-        print(padded_input.shape)
         unfolded_input = padded_input.reshape(unfolded_shape)
         permuted = torch.permute(unfolded_input, permute_dims)
         output = permuted.reshape(fold_shape)
