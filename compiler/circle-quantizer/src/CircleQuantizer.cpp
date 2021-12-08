@@ -65,6 +65,7 @@ int entry(int argc, char **argv)
   const std::string qwmm = "--quantize_with_minmax";
   const std::string rq = "--requantize";
   const std::string fq = "--force_quantparam";
+  const std::string cq = "--copy_quantparam";
 
   const std::string tf_maxpool = "--TF-style_maxpool";
 
@@ -125,6 +126,15 @@ int entry(int argc, char **argv)
           "Three arguments required: tensor_name(string), "
           "scale(float) zero_point(int)");
 
+  arser.add_argument(cq)
+    .nargs(2)
+    .type(arser::DataType::STR_VEC)
+    .required(false)
+    .accumulated(true)
+    .help("Copy quantization parameter from a tensor to another tensor."
+          "Two arguments required: source_tensor_name(string), "
+          "destination_tensor_name(string)");
+
   arser.add_argument("--input_type")
     .nargs(1)
     .type(arser::DataType::STR)
@@ -155,11 +165,12 @@ int entry(int argc, char **argv)
   }
 
   {
-    // only one of qdqw, qwmm, rq, fq option can be used
+    // only one of qdqw, qwmm, rq, fq, cq option can be used
     int32_t opt_used = arser[qdqw] ? 1 : 0;
     opt_used += arser[qwmm] ? 1 : 0;
     opt_used += arser[rq] ? 1 : 0;
     opt_used += arser[fq] ? 1 : 0;
+    opt_used += arser[cq] ? 1 : 0;
     if (opt_used != 1)
     {
       print_exclusive_options();
@@ -255,6 +266,31 @@ int entry(int argc, char **argv)
     options->params(AlgorithmParameters::Quantize_tensor_names, tensors);
     options->params(AlgorithmParameters::Quantize_scales, scales);
     options->params(AlgorithmParameters::Quantize_zero_points, zero_points);
+  }
+
+  if (arser[cq])
+  {
+    auto values = arser.get<std::vector<std::vector<std::string>>>(cq);
+
+    std::vector<std::string> src;
+    std::vector<std::string> dst;
+
+    for (auto const value : values)
+    {
+      if (value.size() != 2)
+      {
+        std::cerr << arser;
+        return 255;
+      }
+
+      src.push_back(value[0]);
+      dst.push_back(value[1]);
+    }
+
+    options->enable(Algorithms::CopyQuantParam);
+
+    options->params(AlgorithmParameters::Quantize_src_tensor_names, src);
+    options->params(AlgorithmParameters::Quantize_dst_tensor_names, dst);
   }
 
   std::string input_path = arser.get<std::string>("input");

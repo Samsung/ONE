@@ -16,6 +16,7 @@
 
 #include "luci/CircleOptimizer.h"
 
+#include "luci/Pass/CopyQuantParamPass.h"
 #include "luci/Pass/ConvertNCHWToNHWCPass.h"
 #include "luci/Pass/ExpandBroadcastConstPass.h"
 #include "luci/Pass/FoldAddV2Pass.h"
@@ -574,6 +575,18 @@ void CircleOptimizer::quantize(loco::Graph *g) const
 
     ForceQuantParamPass fq(tensors, scales, zero_points);
     fq.run(g);
+  }
+
+  // Copy quantparam of a tensor to another tensor
+  if (_options->query(Options::Algorithm::CopyQuantParam))
+  {
+    CopyQuantParamPass::TensorVector src_tensors =
+      _options->params(Options::AlgorithmParameters::Quantize_src_tensor_names);
+    CopyQuantParamPass::TensorVector dst_tensors =
+      _options->params(Options::AlgorithmParameters::Quantize_dst_tensor_names);
+
+    CopyQuantParamPass cq(src_tensors, dst_tensors);
+    cq.run(g);
   }
 
   logo::Phase phase;
