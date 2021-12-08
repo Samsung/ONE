@@ -1,4 +1,19 @@
 #!/usr/bin/python3
+
+# Copyright (c) 2021 Samsung Electronics Co., Ltd. All Rights Reserved
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 import onnx
 import onnx.numpy_helper
 import sys
@@ -55,15 +70,15 @@ class ModelTransformerHelper:
 
     def make_node(self, opcode, inputs, outputs, *p_args, **k_args):
         """
-    Create node and it in graph.
- 
-    Parameters:
-        opcode (str): opcode name of desired operation
-        inputs (list of str): names of input tensors
-        outputs (list of str or int): names of output tensors or number of tensors that should be created
-        p_args: additional arguments for onnx make_node helper
-        k_args: attributes for onnx node
-    """
+        Create node and insert it in graph.
+
+        Parameters:
+            opcode (str): opcode name of desired operation
+            inputs (list of str): names of input tensors
+            outputs (list of str or int): names of output tensors or number of tensors that should be created
+            p_args: additional arguments for onnx make_node helper
+            k_args: attributes for onnx node
+        """
         if type(outputs) == int:
             outputs = [self.make_tensor_with_base_name('') for i in range(outputs)]
         assert (type(outputs) == list)
@@ -123,9 +138,9 @@ def dtype_to_np(dtype):
 
 def generate_one_direction_RNN(transformer, X, W, R, B, initial_h, clip, activation):
     """
-  This function generates subgraph that represents one direction of unrolled RNN layer
+    This function generates subgraph that represents one direction of unrolled RNN layer
 
-  Parameters:
+    Parameters:
       transformer (ModelTransformerHelper): helper for model generation
       X (list of str): names of input tensors in sequence. Tensor shapes: [batch_size, input_size].
       W (list of str): name of weight tensor
@@ -134,7 +149,7 @@ def generate_one_direction_RNN(transformer, X, W, R, B, initial_h, clip, activat
       initial_h (str or None): name of tensor containing initial hidden state. Shape [batch_size, hidden_size]
       clip (float or None): range which clips input of activations
       act (str): activation function
-  """
+    """
     # one direction RNN:
     #
     # H = f(X*(W^T) + h*(R^T) + B)
@@ -350,23 +365,23 @@ def legalize_RNN(transformer, tensor_infos, node):
 def generate_one_direction_LSTM(transformer, X, W, R, B, initial_h, initial_c, P, clip,
                                 act, dtype, hidden_size, batch_size):
     """
-  This function generates subgraph that represents one direction of unrolled LSTM layer
+    This function generates subgraph that represents one direction of unrolled LSTM layer
 
-  Parameters:
-      transformer (ModelTransformerHelper): helper for model generation
-      tensor_infos (dict of Info): shapes and dtypes of tensors
-      X (list of str): names of input tensors in sequence. Tensor shapes: [batch_size, input_size]
-      W (list of str): name of concatenated weight tensor: [input, output, forget, cell]
-      R (list of str): name of concatenated recurrence weights tensor: [input, output, forget, cell]
-      B (list of str): name of concatenated bias tensor: [input, output, forget, cell]
-      initial_h (str or None): name of tensor containing initial hidden state. Shape [batch_size, hidden_size]
-      initial_c (str or None): name of tensor containing initial cell state. Shape [batch_size, hidden_size]
-      P (list of str): name of concatenated peephole tensor: [input, output, forget]
-      clip (float or None): range which clips input of activations
-      act (dict of str):  activation functions {'f': 'Sigmoid', 'g': 'Tanh', 'h': 'Tanh'}
-      hidden_size (int): hidden dimension
-      batch_size (int): batch dimension
-  """
+    Parameters:
+        transformer (ModelTransformerHelper): helper for model generation
+        tensor_infos (dict of Info): shapes and dtypes of tensors
+        X (list of str): names of input tensors in sequence. Tensor shapes: [batch_size, input_size]
+        W (list of str): name of concatenated weight tensor: [input, output, forget, cell]
+        R (list of str): name of concatenated recurrence weights tensor: [input, output, forget, cell]
+        B (list of str): name of concatenated bias tensor: [input, output, forget, cell]
+        initial_h (str or None): name of tensor containing initial hidden state. Shape [batch_size, hidden_size]
+        initial_c (str or None): name of tensor containing initial cell state. Shape [batch_size, hidden_size]
+        P (list of str): name of concatenated peephole tensor: [input, output, forget]
+        clip (float or None): range which clips input of activations
+        act (dict of str):  activation functions {'f': 'Sigmoid', 'g': 'Tanh', 'h': 'Tanh'}
+        hidden_size (int): hidden dimension
+        batch_size (int): batch dimension
+    """
     # one direction LSTM:
     #
     # From onnx Operators.onnx
