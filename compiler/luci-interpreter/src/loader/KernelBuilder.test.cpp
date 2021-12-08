@@ -54,6 +54,7 @@
 #include <kernels/Mul.h>
 #include <kernels/Neg.h>
 #include <kernels/NotEqual.h>
+#include <kernels/OneHot.h>
 #include <kernels/Pad.h>
 #include <kernels/PadV2.h>
 #include <kernels/Pow.h>
@@ -830,6 +831,31 @@ TEST_F(KernelBuilderTest, NotEqual)
   checkTensor(kernel->x(), x_input);
   checkTensor(kernel->y(), y_input);
   checkTensor(kernel->output(), op);
+}
+
+TEST_F(KernelBuilderTest, OneHot)
+{
+  auto *indices = createInputNode();
+  auto *depth = createInputNode();
+  auto *on_value = createInputNode();
+  auto *off_value = createInputNode();
+  auto axis = 1;
+
+  auto *op = createNode<luci::CircleOneHot>();
+  op->indices(indices);
+  op->depth(depth);
+  op->on_value(on_value);
+  op->off_value(off_value);
+  op->axis(axis);
+
+  auto kernel = buildKernel<kernels::OneHot>(op);
+  ASSERT_THAT(kernel, NotNull());
+
+  checkTensor(kernel->indices(), indices);
+  checkTensor(kernel->depth(), depth);
+  checkTensor(kernel->on_value(), on_value);
+  checkTensor(kernel->off_value(), off_value);
+  EXPECT_THAT(kernel->params().axis, Eq(op->axis()));
 }
 
 TEST_F(KernelBuilderTest, Pad)
