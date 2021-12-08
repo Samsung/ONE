@@ -19,6 +19,7 @@ import tflite.SubGraph
 from ir import graph_stats
 from .operator_parser import OperatorParser
 from printer.subgraph_printer import SubgraphPrinter
+from printer.graph_stats_printer import PrintGraphStats
 from saver.model_saver import ModelSaver
 
 
@@ -108,4 +109,4 @@ class TFLiteModelFileParser(object):
 
         print('==== Model Stats ({} Subgraphs) ===='.format(tf_model.SubgraphsLength()))
         print('')
-        graph_stats.PrintGraphStats(stats, self.print_level)
+        PrintGraphStats(stats, self.print_level)

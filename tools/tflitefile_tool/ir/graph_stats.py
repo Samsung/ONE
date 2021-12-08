@@ -39,29 +39,6 @@ class GraphStats():
         return self
 
 
-# TODO: Separate this to GraphStaatsPrinter
-def PrintGraphStats(stats, verbose):
-    print("Number of all operator types: {0}".format(len(stats.op_counts)))
-
-    # Print op type stats
-    for op_name in sorted(stats.op_counts.keys()):
-        occur = stats.op_counts[op_name]
-        optype_info_str = "\t{:38}: {:4}".format(op_name, occur)
-
-        print(optype_info_str)
-
-    summary_str = "{0:46}: {1:4}".format("Number of all operators",
-                                         sum(stats.op_counts.values()))
-    print(summary_str)
-    print('')
-
-    # Print memory stats
-    from printer.tensor_printer import ConvertBytesToHuman
-    print("Expected TOTAL  memory: {0}".format(ConvertBytesToHuman(stats.total_memory)))
-    print("Expected FILLED memory: {0}".format(ConvertBytesToHuman(stats.filled_memory)))
-    print('')
-
-
 def CalcGraphStats(op_parser):
     stats = GraphStats()
 

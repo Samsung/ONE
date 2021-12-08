@@ -16,6 +16,7 @@
 
 from .operator_printer import OperatorPrinter
 from .tensor_printer import TensorPrinter
+from .graph_stats_printer import PrintGraphStats
 from ir import graph_stats
 
 
@@ -43,8 +44,7 @@ class SubgraphPrinter(object):
         if self.print_all_tensor == True and self.print_all_operator == True:
             self.PrintModelInfo()
             self.PrintAllOperatorsInList()
-            graph_stats.PrintGraphStats(
-                graph_stats.CalcGraphStats(self.op_parser), self.verbose)
+            PrintGraphStats(graph_stats.CalcGraphStats(self.op_parser), self.verbose)
 
         if self.print_all_tensor == False:
             print('')
