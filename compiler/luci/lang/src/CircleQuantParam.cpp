@@ -43,10 +43,4 @@ void copy_quantparam(const luci::CircleNode *src, luci::CircleNode *dst)
   }
 }
 
-// TODO remove this
-void copy_QuantParam(const luci::CircleNode *src, luci::CircleNode *dst)
-{
-  copy_quantparam(src, dst);
-}
-
 } // namespace luci
