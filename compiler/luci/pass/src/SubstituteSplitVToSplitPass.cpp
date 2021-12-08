@@ -24,15 +24,6 @@
 namespace
 {
 
-void copy_quantparam(luci::CircleNode *dst, const luci::CircleNode *src)
-{
-  auto q = src->quantparam();
-  if (q == nullptr)
-    dst->quantparam(nullptr);
-  else
-    dst->quantparam(std::make_unique<luci::CircleQuantParam>(*q));
-}
-
 // SplitV is substituted to Split if the contents of size_splits are all same
 // For example,
 // size_splits = [32, 32] -> substitute
@@ -67,7 +58,7 @@ bool resolve_splitv(luci::CircleSplitV *sv)
   split_node->split_dim(sv->split_dim());
   split_node->num_split(sv->num_split());
   split_node->name(sv->name());
-  copy_quantparam(split_node, sv);
+  copy_QuantParam(split_node, sv);
   luci::add_origin(split_node, luci::get_origin(sv));
 
   auto succs = loco::succs(sv);
@@ -78,7 +69,7 @@ bool resolve_splitv(luci::CircleSplitV *sv)
     so_node->input(split_node);
     so_node->index(svo->index());
     so_node->name(svo->name());
-    copy_quantparam(so_node, svo);
+    copy_QuantParam(so_node, svo);
     luci::add_origin(so_node, luci::get_origin(svo));
 
     replace(svo).with(so_node);
