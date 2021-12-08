@@ -58,7 +58,7 @@ bool resolve_splitv(luci::CircleSplitV *sv)
   split_node->split_dim(sv->split_dim());
   split_node->num_split(sv->num_split());
   split_node->name(sv->name());
-  copy_QuantParam(split_node, sv);
+  copy_quantparam(split_node, sv);
   luci::add_origin(split_node, luci::get_origin(sv));
 
   auto succs = loco::succs(sv);
@@ -69,7 +69,7 @@ bool resolve_splitv(luci::CircleSplitV *sv)
     so_node->input(split_node);
     so_node->index(svo->index());
     so_node->name(svo->name());
-    copy_QuantParam(so_node, svo);
+    copy_quantparam(so_node, svo);
     luci::add_origin(so_node, luci::get_origin(svo));
 
     replace(svo).with(so_node);
