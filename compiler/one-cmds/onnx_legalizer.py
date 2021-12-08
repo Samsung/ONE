@@ -613,7 +613,7 @@ def legalize_LSTM(transformer, tensor_infos, node):
   transformer.mark_for_deletion(node)
 
 
-def legalize_model(model):
+def legalize(model):
   tensor_infos = get_tensor_infos(model)
 
   transformer = ModelTransformerHelper(model)
@@ -644,5 +644,5 @@ if __name__ == '__main__':
     print('usage: ./legalize_onnx.py <path to input model> <path to output model>')
     exit(1)
   model=onnx.load(sys.argv[1])
-  legalize_model(model)
+  legalize(model)
   onnx.save(model, sys.argv[2])
