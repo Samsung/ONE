@@ -22,6 +22,46 @@ Why is this file named as `model_parser.py` which is same to `parser/model_parse
 - Let's change the name to the proper name like `main.py` after the task for revision is done.
 '''
 
+
+class MainOption(object):
+    def __init__(self, args):
+        self.model_file = args.input_file
+
+        # Set print level (0 ~ 1)
+        self.print_level = args.verbose
+        if (args.verbose > 1):
+            self.print_level = 1
+        if (args.verbose < 0):
+            self.print_level = 0
+
+        # Set tensor index list to print information
+        self.print_all_tensor = True
+        if (args.tensor != None):
+            if (len(args.tensor) != 0):
+                self.print_all_tensor = False
+                self.print_tensor_index = []
+                for tensor_index in args.tensor:
+                    self.print_tensor_index.append(int(tensor_index))
+
+        # Set operator index list to print information
+        self.print_all_operator = True
+        if (args.operator != None):
+            if (len(args.operator) != 0):
+                self.print_all_operator = False
+                self.print_operator_index = []
+                for operator_index in args.operator:
+                    self.print_operator_index.append(int(operator_index))
+
+        # Set config option
+        self.save = False
+        if args.config:
+            self.save = True
+            self.save_config = True
+
+        if self.save == True:
+            self.save_prefix = args.prefix
+
+
 if __name__ == '__main__':
     # Define argument and read
     arg_parser = argparse.ArgumentParser()
@@ -46,4 +86,4 @@ if __name__ == '__main__':
     args = arg_parser.parse_args()
 
     # Call main function
-    TFLiteModelFileParser(args).main()
+    TFLiteModelFileParser(MainOption(args)).main()
