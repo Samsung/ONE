@@ -37,6 +37,8 @@ struct CircleNode;
 // TODO rename to copy_quantparam
 void copy_QuantParam(const luci::CircleNode *src, luci::CircleNode *dst);
 
+void copy_quantparam(const luci::CircleNode *src, luci::CircleNode *dst);
+
 } // namespace luci
 
 #endif // __LUCI_IR_CIRCLEQUANTPARAM_H__
