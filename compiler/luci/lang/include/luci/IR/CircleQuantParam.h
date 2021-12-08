@@ -32,6 +32,10 @@ struct CircleQuantParam
   int32_t quantized_dimension{0};
 };
 
+struct CircleNode;
+
+void copy_quantparam(const luci::CircleNode *src, luci::CircleNode *dst);
+
 } // namespace luci
 
 #endif // __LUCI_IR_CIRCLEQUANTPARAM_H__

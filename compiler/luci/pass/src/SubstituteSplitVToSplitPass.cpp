@@ -24,15 +24,6 @@
 namespace
 {
 
-void copy_quantparam(luci::CircleNode *dst, const luci::CircleNode *src)
-{
-  auto q = src->quantparam();
-  if (q == nullptr)
-    dst->quantparam(nullptr);
-  else
-    dst->quantparam(std::make_unique<luci::CircleQuantParam>(*q));
-}
-
 // SplitV is substituted to Split if the contents of size_splits are all same
 // For example,
 // size_splits = [32, 32] -> substitute

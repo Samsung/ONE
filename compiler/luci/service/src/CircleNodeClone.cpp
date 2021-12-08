@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+#include "luci/IR/CircleQuantParam.h"
 #include "luci/Service/CircleNodeClone.h"
 
 #include "CircleCloneNode.h"
@@ -45,18 +46,7 @@ void copy_common_attributes(const luci::CircleNode *src, luci::CircleNode *dst)
   dst->shape_status(src->shape_status());
 
   // quantparam
-  const auto *quantparam = src->quantparam();
-  if (quantparam != nullptr)
-  {
-    auto qparam = std::make_unique<luci::CircleQuantParam>();
-    qparam->scale = quantparam->scale;
-    qparam->zerop = quantparam->zerop;
-    qparam->min = quantparam->min;
-    qparam->max = quantparam->max;
-    qparam->quantized_dimension = quantparam->quantized_dimension;
-
-    dst->quantparam(std::move(qparam));
-  }
+  copy_quantparam(src, dst);
 
   // sparsity
   const auto *sparsity = src->sparsityparam();
