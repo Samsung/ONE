@@ -19,9 +19,21 @@
 
 #include <luci/IR/Module.h>
 #include <luci/Plan/CircleNodeExecutionPlan.h>
+#include "IScratchpadHelper.h"
+#include "ScratchpadHelperLinux.h"
+#include "ScratchpadHelperMCU.h"
+#include "ScratchpadHelperCMSISNN.h"
 
 namespace circle_planner
 {
+
+enum SupportedPlatformType
+{
+  LINUX,
+  MCU,
+  CMSISNN
+};
+
 // struct for additional information for the node. it helps build allocations plan for nodes.
 struct AllocationNodeInformation
 {
@@ -60,7 +72,30 @@ class ExecutionPlanner
 {
 public:
   ExecutionPlanner() = delete;
-  explicit ExecutionPlanner(loco::Graph *graph) { _graph = graph; };
+  explicit ExecutionPlanner(loco::Graph *graph) : _graph(graph)
+  {
+    _scratchpad_helper = std::make_unique<ScratchpadHelperLinux>();
+  }
+
+  explicit ExecutionPlanner(loco::Graph *graph, SupportedPlatformType platform_type,
+                            bool use_dsp = false)
+    : _graph(graph)
+  {
+    switch (platform_type)
+    {
+      case LINUX:
+        _scratchpad_helper = std::make_unique<ScratchpadHelperLinux>();
+        break;
+      case MCU:
+        _scratchpad_helper = std::make_unique<ScratchpadHelperMCU>();
+        break;
+      case CMSISNN:
+        _scratchpad_helper = std::make_unique<ScratchpadHelperCMSISNN>(use_dsp);
+        break;
+      default:
+        assert(false && "Use unsupported platform");
+    }
+  };
 
   // Method provides execution plan, which contains execution order and
   // memory offsets for all nodes in _graph.
@@ -132,6 +167,8 @@ private:
   std::vector<uint32_t> _dealloc_node;
 
   loco::Graph *_graph;
+
+  std::unique_ptr<IScratchpadHelper> _scratchpad_helper;
 
   // Required memory size.
   uint32_t _required_size = 0;
