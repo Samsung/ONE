@@ -14,11 +14,11 @@ class net_LSTM(nn.Module):
         super().__init__()
         self.op = nn.LSTM(_input_size, _hidden_size, _number_layers)
 
-    def forward(self, inputs):
-        return self.op(inputs[0])
+    def forward(self, input):
+        return self.op(input)
 
 
 _model_ = net_LSTM()
 
 # dummy input for onnx generation
-_dummy_ = [torch.randn(_seq_length, _batch_size, _input_size)]
+_dummy_ = torch.randn(_seq_length, _batch_size, _input_size)
