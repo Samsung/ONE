@@ -31,6 +31,7 @@ import onnx_tf
 import json
 import zipfile
 
+import onnx_legalizer
 import utils as _utils
 
 # TODO Find better way to suppress trackback on error
@@ -299,6 +300,7 @@ def _convert(args):
 
         # convert onnx to tf saved mode
         onnx_model = onnx.load(onnx_output_path)
+        onnx_legalizer.legalize(onnx_model)
         tf_savedmodel = onnx_tf.backend.prepare(onnx_model)
 
         savedmodel_name = os.path.splitext(os.path.basename(
