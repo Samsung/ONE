@@ -224,9 +224,10 @@ def transform_bidirectional_RNN(transformer, original_node, x, tensor_infos, act
     for d in range(2):
       initial_h[d] = transformer.make_node('Squeeze', [initial_h[d]], 1, axes=[direction_dim])
 
-  state_tensors_f = generate_one_direction_RNN(transformer, x, [w[0]], [r[0]], [b[0]], initial_h[0], clip, activations[0])
+  state_f_tensors = generate_one_direction_RNN(transformer, x, [w[0]], [r[0]], [b[0]], initial_h[0], clip, activations[0])
   x.reverse()
-  state_tensors_b = generate_one_direction_RNN(transformer, x, [w[1]], [r[1]], [b[1]], initial_h[1], clip, activations[1])
+  state_b_tensors = generate_one_direction_RNN(transformer, x, [w[1]], [r[1]], [b[1]], initial_h[1], clip, activations[1])
+  state_b_tensors.reverse()
 
   y_direction_dim = layout + 1
   y_h_direction_dim = layout
@@ -234,13 +235,16 @@ def transform_bidirectional_RNN(transformer, original_node, x, tensor_infos, act
   seq_length_dim = layout
   seq_length = len(x)
   for t in range(seq_length):
-    state_f = state_tensors_f[t]
-    state_b = state_tensors_b[t]
+    state_f = state_f_tensors[t]
+    state_b = state_b_tensors[t]
     state_layout_tensors_f = transformer.make_node("Unsqueeze", [state_f], 1, axes=[seq_length_dim, y_direction_dim])
     state_layout_tensors_b = transformer.make_node("Unsqueeze", [state_b], 1, axes=[seq_length_dim, y_direction_dim])
     state_layout_tensors += transformer.make_node("Concat", state_layout_tensors_f + state_layout_tensors_b, 1, axis=y_direction_dim)
 
-  Y_h = transformer.make_node('Squeeze', [state_layout_tensors[-1]], [outputs[1]], axes=[seq_length_dim])
+  last_f_state_layout_tensor = transformer.make_node("Unsqueeze", [state_f_tensors[-1]], 1, axes=[y_h_direction_dim])
+  last_b_state_layout_tensor = transformer.make_node("Unsqueeze", [state_b_tensors[0]], 1, axes=[y_h_direction_dim])
+  Y_h = transformer.make_node('Concat', last_f_state_layout_tensor + last_b_state_layout_tensor, [outputs[1]], axis=y_h_direction_dim)
+
   Y = transformer.make_node('Concat', state_layout_tensors, [outputs[0]], axis=seq_length_dim)
 
 def legalize_RNN(transformer, tensor_infos, node):
@@ -475,6 +479,74 @@ def transform_unidirectional_LSTM(transformer, original_node, x, tensor_infos, a
 
   Y_h = transformer.make_node('Unsqueeze', [state_h_tensors[-1]], [outputs[1]], axes=[y_h_direction_dim])
   Y_c = transformer.make_node('Unsqueeze', [state_c_tensor], [outputs[2]], axes=[y_h_direction_dim])
+  if direction == 'reverse':
+    state_layout_tensors.reverse()
+  Y = transformer.make_node('Concat', state_layout_tensors, [outputs[0]], axis=seq_length_dim)
+
+
+def transform_bidirectional_LSTM(transformer, original_node, x, tensor_infos, activations, clip, hidden_size, layout):
+  inputs = original_node.input
+  outputs = original_node.output
+
+  w = transformer.make_node('Split', [inputs[1]], 2, axis=0, split=[1,1])
+  r = transformer.make_node('Split', [inputs[2]], 2, axis=0, split=[1,1])
+  for d in range(2):
+    w[d] = transformer.make_node('Squeeze', [w[d]], 1, axes=[0])
+    r[d] = transformer.make_node('Squeeze', [r[d]], 1, axes=[0])
+
+  b = [None, None]
+  if len(inputs) > 3 and inputs[3] != '':
+    b = transformer.make_node('Split', [inputs[3]], 2, axis=0, split=[1,1])
+    for d in range(2):
+      b[d] = transformer.make_node('Squeeze', [b[d]], 1, axes=[0])
+
+  initial_h = [None, None]
+  if len(inputs) > 5 and inputs[5] != '':
+    direction_dim = layout
+    initial_h = transformer.make_node('Split', [inputs[5]], 2, axis=direction_dim, split=[1,1])
+    for d in range(2):
+      initial_h[d] = transformer.make_node('Squeeze', [initial_h[d]], 1, axes=[direction_dim])[0]
+
+  initial_c = [None, None]
+  if len(inputs) > 6 and inputs[6] != '':
+    direction_dim = layout
+    initial_c = transformer.make_node('Split', [inputs[6]], 2, axis=direction_dim, split=[1,1])
+    for d in range(2):
+      initial_c[d] = transformer.make_node('Squeeze', [initial_c[d]], 1, axes=[direction_dim])[0]
+
+  p = [None, None]
+  if len(inputs) > 7 and inputs[7] != '':
+    p = transformer.make_node('Split', [inputs[7]], 2, axis=0, split=[1,1])
+    for d in range(2):
+      p[d] = transformer.make_node('Squeeze', [p[d]], 1, axes=[0])
+
+  dtype = dtype_to_np(tensor_infos[inputs[0]].dtype)
+  batch_size = tensor_infos[inputs[0]].shape[1-layout]
+
+  act = [{'f': activations[0], 'g': activations[1], 'h': activations[2]},{'f': activations[3], 'g': activations[4], 'h': activations[5]}]
+
+  state_f_h_tensors, state_f_c_tensor = generate_one_direction_LSTM(transformer, x, w[0], r[0], b[0], initial_h[0], initial_c[0], p[0], clip, act[0], dtype, hidden_size, batch_size)
+  x.reverse()
+  state_b_h_tensors, state_b_c_tensor = generate_one_direction_LSTM(transformer, x, w[1], r[1], b[1], initial_h[1], initial_c[1], p[1], clip, act[1], dtype, hidden_size, batch_size)
+  state_b_h_tensors.reverse()
+
+  y_direction_dim = layout + 1
+  y_c_direction_dim = layout
+  state_layout_tensors = []
+  seq_length_dim = layout
+  for f_h_state, b_h_state in zip(state_f_h_tensors, state_b_h_tensors):
+    state_f_layout_tensors = transformer.make_node("Unsqueeze", [f_h_state], 1, axes=[seq_length_dim, y_direction_dim])
+    state_b_layout_tensors = transformer.make_node("Unsqueeze", [b_h_state], 1, axes=[seq_length_dim, y_direction_dim])
+    state_layout_tensors += transformer.make_node('Concat', state_f_layout_tensors + state_b_layout_tensors, 1, axis=y_direction_dim)
+
+  last_f_state_layout_tensor = transformer.make_node("Unsqueeze", [state_f_h_tensors[-1]], 1, axes=[y_c_direction_dim])
+  last_b_state_layout_tensor = transformer.make_node("Unsqueeze", [state_b_h_tensors[0]], 1, axes=[y_c_direction_dim])
+  Y_h = transformer.make_node('Concat', last_f_state_layout_tensor+last_b_state_layout_tensor, [outputs[1]], axis=y_c_direction_dim)
+
+  Y_f_c = transformer.make_node('Unsqueeze', [state_f_c_tensor], 1, axes=[y_c_direction_dim])
+  Y_b_c = transformer.make_node('Unsqueeze', [state_b_c_tensor], 1, axes=[y_c_direction_dim])
+  Y_c = transformer.make_node('Concat', Y_f_c + Y_b_c, [outputs[2]], axis=y_c_direction_dim)
+
   Y = transformer.make_node('Concat', state_layout_tensors, [outputs[0]], axis=seq_length_dim)
 
 
