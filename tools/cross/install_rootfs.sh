@@ -1,6 +1,4 @@
 #!/usr/bin/env bash
-set -x
-
 usage()
 {
     echo "Usage: $0 [BuildArch] [LinuxCodeName] [--setproxy=IP] [--skipunmount]"
@@ -29,7 +27,7 @@ __UbuntuPackages="build-essential"
 # other development supports
 __UbuntuPackages+=" ocl-icd-opencl-dev"
 __UbuntuPackages+=" libhdf5-dev"
-__UbuntuBoostPackages=" libboost-all-dev"
+__UbuntuPackages+=" libboost-all-dev"
 
 # symlinks fixer
 __UbuntuPackages+=" symlinks"
@@ -77,7 +75,6 @@ for i in "$@" ; do
             ;;
         focal)
             __LinuxCodeName=focal
-            __UbuntuBoostPackages=" libboost1.67-all-dev"
             ;;
         --setproxy*)
             proxyip="${i#*=}"
@@ -95,8 +92,7 @@ for i in "$@" ; do
     esac
 done
 
-# Current runtime build system supports boost version under 1.70
-__UbuntuPackages+="$__UbuntuBoostPackages"
+set -x
 
 __RootfsDir="$__CrossDir/rootfs/$__BuildArch"
 
