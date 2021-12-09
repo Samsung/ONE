@@ -14,17 +14,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .tflite_parser import TFLiteParser
 from printer.subgraph_printer import SubgraphPrinter
 from printer.graph_stats_printer import PrintGraphStats
 from saver.model_saver import ModelSaver
 
 
-# TODO: Rename it as ModelParser
-class TFLiteModelFileParser(object):
+class ModelParser(object):
     def __init__(self, option):
         self.option = option
+        self.subg_list = None
+        self.stats = None
 
+    # TODO: Move to main class
     def PrintModel(self, model_name, op_parser):
         printer = SubgraphPrinter(self.option.print_level, op_parser, model_name)
 
@@ -36,17 +37,25 @@ class TFLiteModelFileParser(object):
 
         printer.PrintInfo()
 
+    # TODO: Move to main class
     def SaveModel(self, model_name, op_parser):
         saver = ModelSaver(model_name, op_parser)
 
         if self.option.save_config == True:
             saver.SaveConfigInfo(self.option.save_prefix)
 
-    def main(self):
-        parser = TFLiteParser(self.option.model_file)
-        parser.parse()
+    # to be overriden
+    def Parse(self):
+        raise NotImplementedError
 
-        for model_name, op_parser in parser.subg_list:
+    # TODO: Move to main class
+    def main(self):
+        self.Parse()
+
+        assert self.subg_list is not None
+        assert self.stats is not None
+
+        for model_name, op_parser in self.subg_list:
             if self.option.save == False:
                 # print all of operators or requested objects
                 self.PrintModel(model_name, op_parser)
@@ -54,6 +63,6 @@ class TFLiteModelFileParser(object):
                 # save all of operators in this model
                 self.SaveModel(model_name, op_parser)
 
-        print('==== Model Stats ({} Subgraphs) ===='.format(len(parser.subg_list)))
+        print('==== Model Stats ({} Subgraphs) ===='.format(len(self.subg_list)))
         print('')
-        PrintGraphStats(parser.stats, self.option.print_level)
+        PrintGraphStats(self.stats, self.option.print_level)

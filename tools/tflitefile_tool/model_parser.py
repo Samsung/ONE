@@ -15,7 +15,7 @@
 # limitations under the License.
 
 import argparse
-from parser.model_parser import TFLiteModelFileParser
+from parser.tflite_parser import TFLiteParser
 '''
 Why is this file named as `model_parser.py` which is same to `parser/model_parser.py`?
 - Until now, users have used by the path `tools/tflitefile_tool/model_parser.py`.
@@ -85,5 +85,6 @@ if __name__ == '__main__':
         '-p', '--prefix', help="file prefix to be saved (with -c/--config option)")
     args = arg_parser.parse_args()
 
+    # TODO: Call TFLiteParser if file's extension is 'tflite'
     # Call main function
-    TFLiteModelFileParser(MainOption(args)).main()
+    TFLiteParser(MainOption(args)).main()
