@@ -143,6 +143,19 @@ def _get_parser():
     force_quantparam_group.add_argument(
         '--zero_point', type=int, action='append', help='zero point (int)')
 
+    # arguments for copy_quantparam option
+    copy_quantparam_group = parser.add_argument_group(
+        'arguments for copy_quantparam option')
+
+    copy_quantparam_group.add_argument(
+        '--copy_quantparam',
+        action='store_true',
+        help='copy quantparam (scale, zero_point) of a tensor to another tensor.')
+    copy_quantparam_group.add_argument(
+        '--src_tensor_name', type=str, action='append', help='tensor name (string)')
+    copy_quantparam_group.add_argument(
+        '--dst_tensor_name', type=str, action='append', help='tensor name (string)')
+
     return parser
 
 
@@ -177,6 +190,11 @@ def _verify_arg(parser, args):
             missing.append('--scale')
         if not _utils._is_valid_attr(args, 'zero_point'):
             missing.append('--zero_point')
+    if _utils._is_valid_attr(args, 'copy_quantparam'):
+        if not _utils._is_valid_attr(args, 'src_tensor_name'):
+            missing.append('--src_tensor_name')
+        if not _utils._is_valid_attr(args, 'dst_tensor_name'):
+            missing.append('--dst_tensor_name')
     if len(missing):
         parser.error('the following arguments are required: ' + ' '.join(missing))
     if _utils._is_valid_attr(args, 'force_quantparam'):
@@ -186,6 +204,12 @@ def _verify_arg(parser, args):
         if len(tensors) != len(scales) or len(tensors) != len(zerops):
             parser.error(
                 'The same number of tensor_name, scale, and zero_point should be given.')
+    if _utils._is_valid_attr(args, 'copy_quantparam'):
+        src_tensors = getattr(args, 'src_tensor_name')
+        dst_tensors = getattr(args, 'dst_tensor_name')
+        if len(src_tensors) != len(dst_tensors):
+            parser.error(
+                'The same number of src_tensor_name and dst_tensor_name should be given.')
 
 
 def _parse_arg(parser):
@@ -201,6 +225,11 @@ def _quantize(args):
     if _utils._is_valid_attr(args, 'force_quantparam'):
         # write quantization parameters
         _write_qparam(args)
+        return
+
+    if _utils._is_valid_attr(args, 'copy_quantparam'):
+        # copy quantization parameters
+        _copy_qparam(args)
         return
 
     # get file path to log
@@ -347,6 +376,40 @@ def _write_qparam(args):
             circle_quantizer_cmd.append(t)
             circle_quantizer_cmd.append(str(s))
             circle_quantizer_cmd.append(str(zp))
+        # input and output path
+        if _utils._is_valid_attr(args, 'input_path'):
+            circle_quantizer_cmd.append(getattr(args, 'input_path'))
+        if _utils._is_valid_attr(args, 'output_path'):
+            circle_quantizer_cmd.append(getattr(args, 'output_path'))
+
+        f.write((' '.join(circle_quantizer_cmd) + '\n').encode())
+
+        # run circle-quantizer
+        _utils._run(circle_quantizer_cmd, err_prefix="circle_quantizer", logfile=f)
+
+
+def _copy_qparam(args):
+    # get file path to log
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    logfile_path = os.path.realpath(args.output_path) + '.log'
+
+    with open(logfile_path, 'wb') as f:
+        # get driver path
+        circle_quantizer_path = os.path.join(dir_path, 'circle-quantizer')
+
+        # make a command to write qparams to the tensors
+        circle_quantizer_cmd = [circle_quantizer_path]
+        # verbose
+        if _utils._is_valid_attr(args, 'verbose'):
+            circle_quantizer_cmd.append('--verbose')
+        if _utils._is_valid_attr(args, 'src_tensor_name'):
+            src_tensor_name = getattr(args, 'src_tensor_name')
+        if _utils._is_valid_attr(args, 'dst_tensor_name'):
+            dst_tensor_name = getattr(args, 'dst_tensor_name')
+        for (src, dst) in zip(src_tensor_name, dst_tensor_name):
+            circle_quantizer_cmd.append('--copy_quantparam')
+            circle_quantizer_cmd.append(src)
+            circle_quantizer_cmd.append(dst)
         # input and output path
         if _utils._is_valid_attr(args, 'input_path'):
             circle_quantizer_cmd.append(getattr(args, 'input_path'))
