@@ -54,9 +54,7 @@ if [[ ! -z "$ONE_PREPVENV_PIP_OPTION" ]]; then
   PIP_OPTIONS+=" ${ONE_PREPVENV_PIP_OPTION} "
 fi
 
-# TODO remove version number of 'pip==20.2.1 setuptools==49.3.0'
-# NOTE adding version is for temporary hotfix of setuptools 50.x.y version
-${VENV_PYTHON} -m pip ${PIP_OPTIONS} install -U pip==20.2.1 setuptools==49.3.0
+${VENV_PYTHON} -m pip ${PIP_OPTIONS} install pip setuptools
 ${VENV_PYTHON} -m pip ${PIP_OPTIONS} install tensorflow-cpu==${VER_TENSORFLOW}
 ${VENV_PYTHON} -m pip ${PIP_OPTIONS} install Pillow==6.2.2
 
