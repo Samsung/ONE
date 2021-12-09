@@ -54,7 +54,7 @@ if [[ ! -z "$ONE_PREPVENV_PIP_OPTION" ]]; then
   PIP_OPTIONS+=" ${ONE_PREPVENV_PIP_OPTION} "
 fi
 
-${VENV_PYTHON} -m pip ${PIP_OPTIONS} install pip setuptools
+${VENV_PYTHON} -m pip ${PIP_OPTIONS} install --upgrade pip setuptools
 ${VENV_PYTHON} -m pip ${PIP_OPTIONS} install tensorflow-cpu==${VER_TENSORFLOW}
 ${VENV_PYTHON} -m pip ${PIP_OPTIONS} install Pillow==6.2.2
 
