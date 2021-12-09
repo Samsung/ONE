@@ -14,15 +14,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import tflite.Model
-import tflite.SubGraph
-from ir import graph_stats
-from .operator_parser import OperatorParser
+from .tflite_parser import TFLiteParser
 from printer.subgraph_printer import SubgraphPrinter
 from printer.graph_stats_printer import PrintGraphStats
 from saver.model_saver import ModelSaver
 
 
+# TODO: Rename it as ModelParser
 class TFLiteModelFileParser(object):
     def __init__(self, option):
         self.option = option
@@ -45,26 +43,10 @@ class TFLiteModelFileParser(object):
             saver.SaveConfigInfo(self.option.save_prefix)
 
     def main(self):
-        # Generate Model: top structure of tflite model file
-        buf = self.option.model_file.read()
-        buf = bytearray(buf)
-        tf_model = tflite.Model.Model.GetRootAsModel(buf, 0)
+        parser = TFLiteParser(self.option.model_file)
+        parser.parse()
 
-        stats = graph_stats.GraphStats()
-        # Model file can have many models
-        for subgraph_index in range(tf_model.SubgraphsLength()):
-            tf_subgraph = tf_model.Subgraphs(subgraph_index)
-            model_name = "#{0} {1}".format(subgraph_index, tf_subgraph.Name())
-            # 0th subgraph is main subgraph
-            if (subgraph_index == 0):
-                model_name += " (MAIN)"
-
-            # Parse Operators
-            op_parser = OperatorParser(tf_model, tf_subgraph)
-            op_parser.Parse()
-
-            stats += graph_stats.CalcGraphStats(op_parser)
-
+        for model_name, op_parser in parser.subg_list:
             if self.option.save == False:
                 # print all of operators or requested objects
                 self.PrintModel(model_name, op_parser)
@@ -72,6 +54,6 @@ class TFLiteModelFileParser(object):
                 # save all of operators in this model
                 self.SaveModel(model_name, op_parser)
 
-        print('==== Model Stats ({} Subgraphs) ===='.format(tf_model.SubgraphsLength()))
+        print('==== Model Stats ({} Subgraphs) ===='.format(len(parser.subg_list)))
         print('')
-        PrintGraphStats(stats, self.option.print_level)
+        PrintGraphStats(parser.stats, self.option.print_level)
