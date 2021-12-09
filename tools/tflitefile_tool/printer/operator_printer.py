@@ -19,41 +19,46 @@ from .tensor_printer import TensorPrinter
 from .option_printer import OptionPrinter
 
 
-def GetStrTensorIndex(tensors):
-    return_string = "["
+def GetStringTensorIndex(tensors):
+    return_string = []
+    return_string.append("[")
     for idx in range(len(tensors)):
         if idx != 0:
-            return_string += ", "
-        return_string += str(tensors[idx].tensor_idx)
-    return_string += "]"
-    return return_string
+            return_string.append(", ")
+        return_string.append(str(tensors[idx].tensor_idx))
+    return_string.append("]")
+    return "".join(return_string)
 
 
+# TODO: Extract to a single Printer class like Printer.print(operator)
 class OperatorPrinter(object):
     def __init__(self, verbose, operator):
         self.verbose = verbose
         self.operator = operator
 
     def PrintInfo(self):
+        info = self.GetStringInfo()
+        if info is not None:
+            print(info)
+
+    def GetStringInfo(self):
         if (self.verbose < 1):
-            return
+            return None
 
-        op_str = "Operator {0}: {1}".format(self.operator.operator_idx,
-                                            self.operator.opcode_str)
-
-        print(op_str)
-        print("\tFused Activation: " + self.operator.fused_activation)
-        self.PrintTensors()
-
-    def PrintTensors(self):
-        print("\tInput Tensors" + GetStrTensorIndex(self.operator.inputs))
+        results = []
+        results.append("Operator {}: {}".format(self.operator.operator_idx,
+                                                self.operator.opcode_str))
+        results.append("\tFused Activation: {}".format(self.operator.fused_activation))
+        results.append("\tInput Tensors" + GetStringTensorIndex(self.operator.inputs))
         for tensor in self.operator.inputs:
-            TensorPrinter(self.verbose, tensor).PrintInfo("\t\t")
-        print("\tOutput Tensors" + GetStrTensorIndex(self.operator.outputs))
+            results.append(TensorPrinter(self.verbose, tensor).GetStringInfoWONL("\t\t"))
+        results.append("\tOutput Tensors" + GetStringTensorIndex(self.operator.outputs))
         for tensor in self.operator.outputs:
-            TensorPrinter(self.verbose, tensor).PrintInfo("\t\t")
-
+            results.append(TensorPrinter(self.verbose, tensor).GetStringInfoWONL("\t\t"))
         # operator option
         # Some operations does not have option. In such case no option is printed
-        OptionPrinter(self.verbose, self.operator.opcode_str,
-                      self.operator.options).PrintInfo("\t")
+        option_string = OptionPrinter(self.verbose, self.operator.opcode_str,
+                                      self.operator.options).GetStringInfoWONL("\t")
+        if option_string is not None:
+            results.append(option_string)
+        return "\n".join(results)

@@ -17,22 +17,32 @@
 from .tensor_printer import ConvertBytesToHuman
 
 
-def PrintGraphStats(stats, verbose):
-    print("Number of all operator types: {0}".format(len(stats.op_counts)))
+def GetStringGraphStats(stats):
+    results = []
 
-    # Print op type stats
+    results.append("Number of all operator types: {}".format(len(stats.op_counts)))
+
+    # op type stats
     for op_name in sorted(stats.op_counts.keys()):
         occur = stats.op_counts[op_name]
         optype_info_str = "\t{:38}: {:4}".format(op_name, occur)
-
-        print(optype_info_str)
+        results.append(optype_info_str)
 
     summary_str = "{0:46}: {1:4}".format("Number of all operators",
                                          sum(stats.op_counts.values()))
-    print(summary_str)
-    print('')
+    results.append(summary_str)
+    results.append('\n')
 
-    # Print memory stats
-    print("Expected TOTAL  memory: {0}".format(ConvertBytesToHuman(stats.total_memory)))
-    print("Expected FILLED memory: {0}".format(ConvertBytesToHuman(stats.filled_memory)))
-    print('')
+    # memory stats
+    results.append("Expected TOTAL  memory: {}".format(
+        ConvertBytesToHuman(stats.total_memory)))
+    results.append("Expected FILLED memory: {}".format(
+        ConvertBytesToHuman(stats.filled_memory)))
+    results.append('\n')
+
+    return "\n".join(results)
+
+
+# TODO: Extract to a single Printer class like Printer.print(stats)
+def PrintGraphStats(stats, verbose):
+    print(GetStringGraphStats(stats))
