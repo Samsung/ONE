@@ -24,64 +24,29 @@ from saver.model_saver import ModelSaver
 
 
 class TFLiteModelFileParser(object):
-    def __init__(self, args):
-        # Read flatbuffer file descriptor using argument
-        self.tflite_file = args.input_file
-
-        # Set print level (0 ~ 1)
-        self.print_level = args.verbose
-        if (args.verbose > 1):
-            self.print_level = 1
-        if (args.verbose < 0):
-            self.print_level = 0
-
-        # Set tensor index list to print information
-        self.print_all_tensor = True
-        if (args.tensor != None):
-            if (len(args.tensor) != 0):
-                self.print_all_tensor = False
-                self.print_tensor_index = []
-                for tensor_index in args.tensor:
-                    self.print_tensor_index.append(int(tensor_index))
-
-        # Set operator index list to print information
-        self.print_all_operator = True
-        if (args.operator != None):
-            if (len(args.operator) != 0):
-                self.print_all_operator = False
-                self.print_operator_index = []
-                for operator_index in args.operator:
-                    self.print_operator_index.append(int(operator_index))
-
-        # Set config option
-        self.save = False
-        if args.config:
-            self.save = True
-            self.save_config = True
-
-        if self.save == True:
-            self.save_prefix = args.prefix
+    def __init__(self, option):
+        self.option = option
 
     def PrintModel(self, model_name, op_parser):
-        printer = SubgraphPrinter(self.print_level, op_parser, model_name)
+        printer = SubgraphPrinter(self.option.print_level, op_parser, model_name)
 
-        if self.print_all_tensor == False:
-            printer.SetPrintSpecificTensors(self.print_tensor_index)
+        if self.option.print_all_tensor == False:
+            printer.SetPrintSpecificTensors(self.option.print_tensor_index)
 
-        if self.print_all_operator == False:
-            printer.SetPrintSpecificOperators(self.print_operator_index)
+        if self.option.print_all_operator == False:
+            printer.SetPrintSpecificOperators(self.option.print_operator_index)
 
         printer.PrintInfo()
 
     def SaveModel(self, model_name, op_parser):
         saver = ModelSaver(model_name, op_parser)
 
-        if self.save_config == True:
-            saver.SaveConfigInfo(self.save_prefix)
+        if self.option.save_config == True:
+            saver.SaveConfigInfo(self.option.save_prefix)
 
     def main(self):
         # Generate Model: top structure of tflite model file
-        buf = self.tflite_file.read()
+        buf = self.option.model_file.read()
         buf = bytearray(buf)
         tf_model = tflite.Model.Model.GetRootAsModel(buf, 0)
 
@@ -100,7 +65,7 @@ class TFLiteModelFileParser(object):
 
             stats += graph_stats.CalcGraphStats(op_parser)
 
-            if self.save == False:
+            if self.option.save == False:
                 # print all of operators or requested objects
                 self.PrintModel(model_name, op_parser)
             else:
@@ -109,4 +74,4 @@ class TFLiteModelFileParser(object):
 
         print('==== Model Stats ({} Subgraphs) ===='.format(tf_model.SubgraphsLength()))
         print('')
-        PrintGraphStats(stats, self.print_level)
+        PrintGraphStats(stats, self.option.print_level)
