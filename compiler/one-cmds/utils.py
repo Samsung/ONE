@@ -116,7 +116,10 @@ def _add_default_arg(parser):
 
 def is_accumulated_arg(arg, driver):
     if driver == "one-quantize":
-        if arg == "tensor_name" or arg == "scale" or arg == "zero_point" or arg == "src_tensor_name" or arg == "dst_tensor_name":
+        accumulables = [
+            "tensor_name", "scale", "zero_point", "src_tensor_name", "dst_tensor_name"
+        ]
+        if arg in accumulables:
             return True
 
     return False
