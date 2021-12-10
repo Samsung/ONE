@@ -77,12 +77,9 @@ void AveragePool2D::configure()
   }
   output()->resize({batches, output_height, output_width, depth});
 
-  if (input()->element_type() == DataType::S8)
-  {
-    auto scratchpad = getOutputTensors()[1];
-    luci_interpreter_pal::SetupScratchpadTensor(scratchpad, getTensorShape(input()),
-                                                getTensorShape(output()));
-  }
+  auto scratchpad = getOutputTensors()[1];
+  luci_interpreter_pal::SetupScratchpadTensor(scratchpad, input()->element_type(),
+                                              getTensorShape(input()), getTensorShape(output()));
 }
 
 void AveragePool2D::execute() const

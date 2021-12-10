@@ -56,10 +56,12 @@ inline void AveragePool<int8_t>(const tflite::PoolParams &params,
 }
 
 static inline void SetupScratchpadTensor(luci_interpreter::Tensor *scratchpad,
+                                         const luci_interpreter::DataType &input_data_type,
                                          const tflite::RuntimeShape &input_shape,
                                          const tflite::RuntimeShape &output_shape)
 
 {
+  (void)input_data_type;
   (void)input_shape;
   (void)output_shape;
 
