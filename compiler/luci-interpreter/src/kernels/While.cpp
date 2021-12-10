@@ -28,12 +28,13 @@ namespace kernels
 namespace
 {
 
-void copy(const std::vector<const Tensor *> &src, const std::vector<Tensor *> &dst)
+void copy(const std::vector<const Tensor *> &src, const std::vector<Tensor *> &dst, RuntimeGraph *graph)
 {
   for (size_t i = 0; i < src.size(); ++i)
   {
     LUCI_INTERPRETER_CHECK(dst[i]->element_type() == src[i]->element_type());
     dst[i]->resize(src[i]->shape());
+    graph->configureAllocations(dst[i]);
 
     const int32_t num_elements = src[i]->shape().num_elements();
     const std::size_t element_size = getDataTypeSize(src[i]->element_type());
@@ -41,12 +42,12 @@ void copy(const std::vector<const Tensor *> &src, const std::vector<Tensor *> &d
   }
 }
 
-void copy(const std::vector<Tensor *> &src, const std::vector<Tensor *> &dst)
+void copy(const std::vector<Tensor *> &src, const std::vector<Tensor *> &dst, RuntimeGraph *graph)
 {
   std::vector<const Tensor *> const_src;
   for (const auto &t : src)
     const_src.push_back(t);
-  copy(const_src, dst);
+  copy(const_src, dst, graph);
 }
 
 // TODO: Think about how allocate memory for output in main graph
@@ -59,8 +60,8 @@ void configureTensorsAllocations(const std::vector<Tensor *> &tensors, RuntimeGr
 } // namespace
 
 While::While(std::vector<const Tensor *> inputs, std::vector<Tensor *> outputs,
-             RuntimeGraph *cond_graph, RuntimeGraph *body_graph)
-  : Kernel(std::move(inputs), std::move(outputs)), _cond_graph(cond_graph), _body_graph(body_graph)
+             RuntimeGraph *cond_graph, RuntimeGraph *body_graph, RuntimeGraph *outer_graph)
+  : Kernel(std::move(inputs), std::move(outputs)), _cond_graph(cond_graph), _body_graph(body_graph), _outer_graph(outer_graph)
 {
 }
 
@@ -85,14 +86,10 @@ void While::execute() const
   const auto &cond_inputs = _cond_graph->getInputTensors();
   const auto &cond_outputs = _cond_graph->getOutputTensors();
 
-  configureTensorsAllocations(cond_inputs, _cond_graph);
-
-  copy(getInputTensors(), cond_inputs);
+  copy(getInputTensors(), cond_inputs, _cond_graph);
 
   const auto &body_inputs = _body_graph->getInputTensors();
   const auto &body_outputs = _body_graph->getOutputTensors();
-
-  configureTensorsAllocations(body_inputs, _body_graph);
 
   while (true)
   {
@@ -102,14 +99,14 @@ void While::execute() const
     if (!cond_value)
       break;
 
-    copy(cond_inputs, body_inputs);
+    copy(cond_inputs, body_inputs, _body_graph);
 
     _body_graph->execute();
 
-    copy(body_outputs, cond_inputs);
+    copy(body_outputs, cond_inputs, _cond_graph);
   }
 
-  copy(cond_inputs, getOutputTensors());
+  copy(cond_inputs, getOutputTensors(), _outer_graph);
 }
 
 } // namespace kernels

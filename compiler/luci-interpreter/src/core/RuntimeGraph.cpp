@@ -138,6 +138,8 @@ void RuntimeGraph::setOutputTensors(const std::vector<Tensor *> &output_tensors)
 
 void RuntimeGraph::configureAllocations(Tensor *tensor)
 {
+  if (tensor->is_data_allocated())
+    _memory_manager->release_memory(*tensor);
   _memory_manager->allocate_memory(*tensor);
 }
 
