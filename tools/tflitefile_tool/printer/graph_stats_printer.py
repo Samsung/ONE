@@ -14,35 +14,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .tensor_printer import ConvertBytesToHuman
-
-
-def GetStringGraphStats(stats):
-    results = []
-
-    results.append("Number of all operator types: {}".format(len(stats.op_counts)))
-
-    # op type stats
-    for op_name in sorted(stats.op_counts.keys()):
-        occur = stats.op_counts[op_name]
-        optype_info_str = "\t{:38}: {:4}".format(op_name, occur)
-        results.append(optype_info_str)
-
-    summary_str = "{0:46}: {1:4}".format("Number of all operators",
-                                         sum(stats.op_counts.values()))
-    results.append(summary_str)
-    results.append('\n')
-
-    # memory stats
-    results.append("Expected TOTAL  memory: {}".format(
-        ConvertBytesToHuman(stats.total_memory)))
-    results.append("Expected FILLED memory: {}".format(
-        ConvertBytesToHuman(stats.filled_memory)))
-    results.append('\n')
-
-    return "\n".join(results)
+from .string_builder import StringBuilder
 
 
 # TODO: Extract to a single Printer class like Printer.print(stats)
 def PrintGraphStats(stats, verbose):
-    print(GetStringGraphStats(stats))
+    info = StringBuilder(verbose).GraphStats(stats)
+    if info is not None:
+        print(info)
