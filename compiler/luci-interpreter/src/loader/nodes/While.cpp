@@ -41,9 +41,10 @@ std::unique_ptr<Kernel> build_kernel_CircleWhile(const luci::CircleNode *circle_
 
   RuntimeGraph *cond_graph = helper.getRuntimeGraph(node->cond_graph());
   RuntimeGraph *body_graph = helper.getRuntimeGraph(node->body_graph());
+  RuntimeGraph *outer_graph = helper.graph_to_runtime_graph().at(node->graph());
 
   return std::make_unique<kernels::While>(std::move(inputs), std::move(outputs), cond_graph,
-                                          body_graph);
+                                          body_graph, outer_graph);
 }
 
 } // namespace luci_interpreter
