@@ -31,15 +31,16 @@ namespace
 
 using namespace testing;
 
-RuntimeGraph *buildCondSubgraph(RuntimeModule *module, const std::vector<Tensor *> &input_prototypes, Tensor *input_cond,
+RuntimeGraph *buildCondSubgraph(RuntimeModule *module,
+                                const std::vector<Tensor *> &input_prototypes, Tensor *input_cond,
                                 IMemoryManager *memory_manager)
 {
   RuntimeGraph *graph = module->addGraph(memory_manager);
   std::vector<Tensor *> input_tensors;
-  for (const auto &proto: input_prototypes)
+  for (const auto &proto : input_prototypes)
   {
-    Tensor *input =
-      graph->addTensor(std::make_unique<Tensor>(proto->element_type(), proto->shape(), AffineQuantization{}, ""));
+    Tensor *input = graph->addTensor(
+      std::make_unique<Tensor>(proto->element_type(), proto->shape(), AffineQuantization{}, ""));
     memory_manager->allocate_memory(*input);
     input_tensors.push_back(input);
   }
@@ -56,18 +57,18 @@ RuntimeGraph *buildCondSubgraph(RuntimeModule *module, const std::vector<Tensor 
   return graph;
 }
 
-RuntimeGraph *buildBodySubgraph(RuntimeModule *module, const std::vector<Tensor *> &prototypes, Tensor *input_add,
-                                IMemoryManager *memory_manager)
+RuntimeGraph *buildBodySubgraph(RuntimeModule *module, const std::vector<Tensor *> &prototypes,
+                                Tensor *input_add, IMemoryManager *memory_manager)
 {
   RuntimeGraph *graph = module->addGraph(memory_manager);
   std::vector<Tensor *> input_tensors;
   std::vector<Tensor *> output_tensors;
-  for (const auto *proto: prototypes)
+  for (const auto *proto : prototypes)
   {
-    Tensor *input =
-      graph->addTensor(std::make_unique<Tensor>(proto->element_type(), Shape{}, AffineQuantization{}, ""));
-    Tensor *output =
-      graph->addTensor(std::make_unique<Tensor>(proto->element_type(), Shape{}, AffineQuantization{}, ""));
+    Tensor *input = graph->addTensor(
+      std::make_unique<Tensor>(proto->element_type(), Shape{}, AffineQuantization{}, ""));
+    Tensor *output = graph->addTensor(
+      std::make_unique<Tensor>(proto->element_type(), Shape{}, AffineQuantization{}, ""));
 
     memory_manager->allocate_memory(*input);
     memory_manager->allocate_memory(*output);
@@ -98,8 +99,7 @@ TEST(WhileTest, FloatLoop10)
   RuntimeGraph *main_graph = module.addGraph(memory_manager.get());
   RuntimeGraph *cond_graph =
     buildCondSubgraph(&module, {&input}, &input_cond, memory_manager.get());
-  RuntimeGraph *body_graph =
-    buildBodySubgraph(&module, {&input}, &input_add, memory_manager.get());
+  RuntimeGraph *body_graph = buildBodySubgraph(&module, {&input}, &input_add, memory_manager.get());
 
   While kernel({&input}, {&output}, cond_graph, body_graph, main_graph);
   kernel.configure();
@@ -129,9 +129,12 @@ TEST(WhileTest, MultipleVariables)
 
   AddParams params{};
   params.activation = Activation::NONE;
-  body_graph->addKernel(std::make_unique<Add>(body_graph->getInputTensors()[0], body_graph->getInputTensors()[1], body_graph->getOutputTensors()[1], params));
+  body_graph->addKernel(std::make_unique<Add>(body_graph->getInputTensors()[0],
+                                              body_graph->getInputTensors()[1],
+                                              body_graph->getOutputTensors()[1], params));
 
-  While kernel({&counter_begin, &sum}, {&counter_output, &sum_output}, cond_graph, body_graph, main_graph);
+  While kernel({&counter_begin, &sum}, {&counter_output, &sum_output}, cond_graph, body_graph,
+               main_graph);
   kernel.configure();
   memory_manager->allocate_memory(counter_output);
   memory_manager->allocate_memory(sum_output);
@@ -155,16 +158,19 @@ TEST(WhileTest, LargeOutput)
 
   RuntimeModule module(nullptr);
   RuntimeGraph *main_graph = module.addGraph(memory_manager.get());
-  RuntimeGraph *cond_graph =
-    buildCondSubgraph(&module, {&counter_begin, &large_tensor}, &counter_bound, memory_manager.get());
+  RuntimeGraph *cond_graph = buildCondSubgraph(&module, {&counter_begin, &large_tensor},
+                                               &counter_bound, memory_manager.get());
   RuntimeGraph *body_graph =
     buildBodySubgraph(&module, {&counter_begin, &large_tensor}, &input_add, memory_manager.get());
 
   AddParams params{};
   params.activation = Activation::NONE;
-  body_graph->addKernel(std::make_unique<Add>(body_graph->getInputTensors()[0], body_graph->getInputTensors()[1], body_graph->getOutputTensors()[1], params));
+  body_graph->addKernel(std::make_unique<Add>(body_graph->getInputTensors()[0],
+                                              body_graph->getInputTensors()[1],
+                                              body_graph->getOutputTensors()[1], params));
 
-  While kernel({&counter_begin, &large_tensor}, {&counter_output, &output}, cond_graph, body_graph, main_graph);
+  While kernel({&counter_begin, &large_tensor}, {&counter_output, &output}, cond_graph, body_graph,
+               main_graph);
   kernel.configure();
   memory_manager->allocate_memory(counter_output);
   memory_manager->allocate_memory(output);

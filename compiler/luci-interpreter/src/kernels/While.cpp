@@ -28,7 +28,8 @@ namespace kernels
 namespace
 {
 
-void copy(const std::vector<const Tensor *> &src, const std::vector<Tensor *> &dst, RuntimeGraph *graph)
+void copy(const std::vector<const Tensor *> &src, const std::vector<Tensor *> &dst,
+          RuntimeGraph *graph)
 {
   for (size_t i = 0; i < src.size(); ++i)
   {
@@ -61,7 +62,8 @@ void configureTensorsAllocations(const std::vector<Tensor *> &tensors, RuntimeGr
 
 While::While(std::vector<const Tensor *> inputs, std::vector<Tensor *> outputs,
              RuntimeGraph *cond_graph, RuntimeGraph *body_graph, RuntimeGraph *outer_graph)
-  : Kernel(std::move(inputs), std::move(outputs)), _cond_graph(cond_graph), _body_graph(body_graph), _outer_graph(outer_graph)
+  : Kernel(std::move(inputs), std::move(outputs)), _cond_graph(cond_graph), _body_graph(body_graph),
+    _outer_graph(outer_graph)
 {
 }
 
