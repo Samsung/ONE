@@ -37,25 +37,40 @@ def ConvertBytesToHuman(n):
     return format_str % dict(symb=SYMBOLS[0], val=n)
 
 
+# TODO: Extract to a single Printer class like Printer.print(tensor)
 class TensorPrinter(object):
     def __init__(self, verbose, tensor):
         self.verbose = verbose
         self.tensor = tensor
 
     def PrintInfo(self, depth_str=""):
-        if (self.verbose < 1):
-            pass
+        info = self.GetStringInfoWONL(depth_str)
+        if info is not None:
+            print(info)
 
-        print_str = ""
+    # without new line
+    def GetStringInfoWONL(self, depth_str=""):
+        if (self.verbose < 1):
+            return None
+
+        results = []
+        if depth_str != "":
+            results.append(depth_str)
+        results.append(self.GetStringTensor())
+        return "".join(results)
+
+    def GetStringTensor(self):
+        info = ""
+
         if self.tensor.tensor_idx < 0:
-            print_str = "Tensor {0:4}".format(self.tensor.tensor_idx)
+            info = "Tensor {0:4}".format(self.tensor.tensor_idx)
         else:
             buffer_idx = self.tensor.tf_tensor.Buffer()
             buffer_str = "Empty" if buffer_idx == 0 else str(buffer_idx)
             isEmpty = "Filled"
             if (self.tensor.tf_buffer.DataLength() == 0):
                 isEmpty = " Empty"
-            shape_str = self.GetShapeString()
+            shape_str = self.GetStringShape()
             type_name = self.tensor.type_name
 
             shape_name = ""
@@ -64,22 +79,24 @@ class TensorPrinter(object):
 
             memory_size = ConvertBytesToHuman(self.tensor.memory_size)
 
-            print_str = "Tensor {0:4} : buffer {1:5} | {2} | {3:7} | Memory {4:6} | Shape {5} ({6})".format(
+            info = "Tensor {:4} : buffer {:5} | {} | {:7} | Memory {:6} | Shape {} ({})".format(
                 self.tensor.tensor_idx, buffer_str, isEmpty, type_name, memory_size,
                 shape_str, shape_name)
-        print(depth_str + print_str)
 
-    def GetShapeString(self):
+        return info
+
+    def GetStringShape(self):
         if self.tensor.tf_tensor.ShapeLength() == 0:
             return "Scalar"
-        return_string = "["
+        return_string = []
+        return_string.append("[")
         for shape_idx in range(self.tensor.tf_tensor.ShapeLength()):
             if (shape_idx != 0):
-                return_string += ", "
+                return_string.append(", ")
             # when shape signature is -1, that means unknown dim
             if self.tensor.tf_tensor.ShapeSignature(shape_idx) != -1:
-                return_string += str(self.tensor.tf_tensor.Shape(shape_idx))
+                return_string.append(str(self.tensor.tf_tensor.Shape(shape_idx)))
             else:
-                return_string += "-1"
-        return_string += "]"
-        return return_string
+                return_string.append("-1")
+        return_string.append("]")
+        return "".join(return_string)

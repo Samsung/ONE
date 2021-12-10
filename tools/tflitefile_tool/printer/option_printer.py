@@ -15,46 +15,47 @@
 # limitations under the License.
 
 
+# TODO: Extract to a single Printer class like Printer.print(option)
 class OptionPrinter(object):
     def __init__(self, verbose, op_name, options):
         self.verbose = verbose
         self.op_name = op_name
         self.options = options
 
-    def GetPadding(self):
-        if self.options.Padding() == 0:
-            return "SAME"
-        elif self.options.Padding() == 1:
-            return "VALID"
-        else:
-            return "** wrong padding value **"
-
     def PrintInfo(self, tab=""):
-        if (self.verbose < 1):
-            pass
-        if (self.options == 0):
-            return
+        info = self.GetStringInfoWONL(tab)
+        if info is not None:
+            print(info)
 
-        option_str = self.GetOptionString()
-        if option_str:
-            print("{}Options".format(tab))
-            print("{}\t{}".format(tab, option_str))
+    # without new line
+    def GetStringInfoWONL(self, tab=""):
+        if self.verbose < 1 or self.options == 0:
+            return None
 
-    def GetOptionString(self):
+        option_str = self.GetStringOption()
+        if option_str is None:
+            return None
+
+        results = [option_str]
+        results.append("{}Options".format(tab))
+        results.append("{}\t{}".format(tab, option_str))
+        return "\n".join(results)
+
+    def GetStringOption(self):
         if (self.op_name == "AVERAGE_POOL_2D" or self.op_name == "MAX_POOL_2D"):
             return "{}, {}, {}".format(
                 "Filter W:H = {}:{}".format(self.options.FilterWidth(),
                                             self.options.FilterHeight()),
                 "Stride W:H = {}:{}".format(self.options.StrideW(),
                                             self.options.StrideH()),
-                "Padding = {}".format(self.GetPadding()))
+                "Padding = {}".format(self.GetStringPadding()))
         elif (self.op_name == "CONV_2D"):
             return "{}, {}, {}".format(
                 "Stride W:H = {}:{}".format(self.options.StrideW(),
                                             self.options.StrideH()),
                 "Dilation W:H = {}:{}".format(self.options.DilationWFactor(),
                                               self.options.DilationHFactor()),
-                "Padding = {}".format(self.GetPadding()))
+                "Padding = {}".format(self.GetStringPadding()))
         elif (self.op_name == "DEPTHWISE_CONV_2D"):
             # yapf: disable
             return "{}, {}, {}, {}".format(
@@ -62,7 +63,7 @@ class OptionPrinter(object):
                                                  self.options.StrideH()),
                 "Dilation W:H = {}:{}".format(self.options.DilationWFactor(),
                                               self.options.DilationHFactor()),
-                "Padding = {}".format(self.GetPadding()),
+                "Padding = {}".format(self.GetStringPadding()),
                 "DepthMultiplier = {}".format(self.options.DepthMultiplier()))
             # yapf: enable
         elif (self.op_name == "STRIDED_SLICE"):
@@ -74,3 +75,13 @@ class OptionPrinter(object):
                 "new_axis_mask({})".format(self.options.NewAxisMask()),
                 "shrink_axis_mask({})".format(self.options.ShrinkAxisMask()))
             # yapf: enable
+        else:
+            return None
+
+    def GetStringPadding(self):
+        if self.options.Padding() == 0:
+            return "SAME"
+        elif self.options.Padding() == 1:
+            return "VALID"
+        else:
+            return "** wrong padding value **"

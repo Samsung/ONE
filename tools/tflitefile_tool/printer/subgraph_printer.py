@@ -20,6 +20,7 @@ from .graph_stats_printer import PrintGraphStats
 from ir import graph_stats
 
 
+# TODO: Extract to a single Printer class like Printer.print(subg2)
 class SubgraphPrinter(object):
     def __init__(self, verbose, op_parser, model_name):
         self.verbose = verbose
