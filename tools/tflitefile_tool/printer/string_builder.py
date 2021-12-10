@@ -17,7 +17,6 @@
 from ir.operator_wrapping import Operator
 from ir.tensor_wrapping import Tensor
 
-
 SYMBOLS = ['B', 'K', 'M', 'G', 'T']
 
 
@@ -87,8 +86,8 @@ def GetStringTensor(tensor):
         memory_size = ConvertBytesToHuman(tensor.memory_size)
 
         info = "Tensor {:4} : buffer {:5} | {} | {:7} | Memory {:6} | Shape {} ({})".format(
-            tensor.tensor_idx, buffer_str, isEmpty, type_name, memory_size,
-            shape_str, shape_name)
+            tensor.tensor_idx, buffer_str, isEmpty, type_name, memory_size, shape_str,
+            shape_name)
     return info
 
 
@@ -104,17 +103,15 @@ def GetStringPadding(options):
 def GetStringOption(op_name, options):
     if (op_name == "AVERAGE_POOL_2D" or op_name == "MAX_POOL_2D"):
         return "{}, {}, {}".format(
-            "Filter W:H = {}:{}".format(options.FilterWidth(),
-                                        options.FilterHeight()),
+            "Filter W:H = {}:{}".format(options.FilterWidth(), options.FilterHeight()),
             "Stride W:H = {}:{}".format(options.StrideW(),
-                                        options.StrideH()),
-            "Padding = {}".format(GetStringPadding(options)))
+                                        options.StrideH()), "Padding = {}".format(
+                                            GetStringPadding(options)))
     elif (op_name == "CONV_2D"):
         return "{}, {}, {}".format(
-            "Stride W:H = {}:{}".format(options.StrideW(),
-                                        options.StrideH()),
+            "Stride W:H = {}:{}".format(options.StrideW(), options.StrideH()),
             "Dilation W:H = {}:{}".format(options.DilationWFactor(),
-                                            options.DilationHFactor()),
+                                          options.DilationHFactor()),
             "Padding = {}".format(GetStringPadding(options)))
     elif (op_name == "DEPTHWISE_CONV_2D"):
         # yapf: disable
@@ -155,7 +152,7 @@ class StringBuilder(object):
             results.append(optype_info_str)
 
         summary_str = "{0:46}: {1:4}".format("Number of all operators",
-                                            sum(stats.op_counts.values()))
+                                             sum(stats.op_counts.values()))
         results.append(summary_str)
         results.append('\n')
 
@@ -188,7 +185,7 @@ class StringBuilder(object):
         if option_string is not None:
             results.append(option_string)
         return "\n".join(results)
-    
+
     def Tensor(self, tensor, depth_str=""):
         if (self.verbose < 1):
             return None
