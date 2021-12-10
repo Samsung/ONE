@@ -105,6 +105,7 @@ bool isTensorProducingNode(const luci::CircleNode *node)
     case luci::CircleOpcode::IF:
     case luci::CircleOpcode::SPLIT:
     case luci::CircleOpcode::UNPACK:
+    case luci::CircleOpcode::WHILE:
       return false;
     default:
       return true;
