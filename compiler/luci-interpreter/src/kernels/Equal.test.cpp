@@ -99,6 +99,82 @@ TEST_F(EqualTest, FloatBroardcast)
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({4, 3}));
 }
 
+template <loco::DataType DType>
+void checkIntegerSimple(luci_interpreter::IMemoryManager *memory_manager)
+{
+  using dtype = typename loco::DataTypeImpl<DType>::Type;
+  dtype min_value = std::numeric_limits<dtype>::min();
+  dtype max_value = std::numeric_limits<dtype>::max();
+  std::vector<dtype> x_data{min_value, 2, max_value};
+
+  std::vector<dtype> y_data{min_value, -2, max_value};
+
+  std::vector<bool> ref_output_data{true, false, true};
+
+  Tensor x_tensor = makeInputTensor<DType>({3}, x_data, memory_manager);
+  Tensor y_tensor = makeInputTensor<DType>({3}, y_data, memory_manager);
+  Tensor output_tensor = makeOutputTensor(DataType::BOOL);
+
+  Equal kernel(&x_tensor, &y_tensor, &output_tensor);
+  kernel.configure();
+  memory_manager->allocate_memory(output_tensor);
+  kernel.execute();
+
+  EXPECT_THAT(extractTensorData<bool>(output_tensor), ::testing::ElementsAreArray(ref_output_data));
+  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({3}));
+}
+
+template <loco::DataType DType>
+void checkIntegerBroadcast(luci_interpreter::IMemoryManager *memory_manager)
+{
+  using dtype = typename loco::DataTypeImpl<DType>::Type;
+  dtype min_value = std::numeric_limits<dtype>::min();
+  dtype max_value = std::numeric_limits<dtype>::max();
+  std::vector<dtype> x_data{
+    min_value, 2,  3,         // Row 1
+    4,         5,  max_value, // Row 2
+    -1,        -2, -3,        // Row 3
+    min_value, -2, max_value, // Row 4
+  };
+
+  std::vector<dtype> y_data{
+    min_value, -2, max_value, // Row 1
+  };
+
+  std::vector<bool> ref_output_data{
+    true,  false, false, // Row 1
+    false, false, true,  // Row 2
+    false, true,  false, // Row 3
+    true,  true,  true,  // Row 4
+  };
+
+  Tensor x_tensor = makeInputTensor<DType>({4, 3}, x_data, memory_manager);
+  Tensor y_tensor = makeInputTensor<DType>({3}, y_data, memory_manager);
+  Tensor output_tensor = makeOutputTensor(DataType::BOOL);
+
+  Equal kernel(&x_tensor, &y_tensor, &output_tensor);
+  kernel.configure();
+  memory_manager->allocate_memory(output_tensor);
+  kernel.execute();
+
+  EXPECT_THAT(extractTensorData<bool>(output_tensor), ::testing::ElementsAreArray(ref_output_data));
+  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({4, 3}));
+}
+
+TEST_F(EqualTest, Int32)
+{
+  checkIntegerSimple<loco::DataType::S32>(_memory_manager.get());
+  checkIntegerBroadcast<loco::DataType::S32>(_memory_manager.get());
+  SUCCEED();
+}
+
+TEST_F(EqualTest, Int64)
+{
+  checkIntegerSimple<loco::DataType::S64>(_memory_manager.get());
+  checkIntegerBroadcast<loco::DataType::S64>(_memory_manager.get());
+  SUCCEED();
+}
+
 // Choose min / max in such a way that there are exactly 256 units to avoid rounding errors.
 const float F_MIN = -128.0 / 128.0;
 const float F_MAX = 127.0 / 128.0;
@@ -193,6 +269,36 @@ TEST_F(EqualTest, Input_Output_Type_NEG)
 
   Equal kernel(&x_tensor, &y_tensor, &output_tensor);
   EXPECT_ANY_THROW(kernel.configure());
+}
+
+TEST_F(EqualTest, Float_Broadcast_NEG)
+{
+  Tensor x_tensor = makeInputTensor<DataType::FLOAT32>({2}, {1.f, 2.f}, _memory_manager.get());
+  Tensor y_tensor = makeInputTensor<DataType::FLOAT32>({3}, {1.f, 2.f, 3.f}, _memory_manager.get());
+  Tensor output_tensor = makeOutputTensor(DataType::BOOL);
+
+  Equal kernel(&x_tensor, &y_tensor, &output_tensor);
+  ASSERT_DEATH(kernel.configure(), ".*");
+}
+
+TEST_F(EqualTest, Int32_Broadcast_NEG)
+{
+  Tensor x_tensor = makeInputTensor<DataType::S32>({2}, {1, 2}, _memory_manager.get());
+  Tensor y_tensor = makeInputTensor<DataType::S32>({3}, {1, 2, 3}, _memory_manager.get());
+  Tensor output_tensor = makeOutputTensor(DataType::BOOL);
+
+  Equal kernel(&x_tensor, &y_tensor, &output_tensor);
+  ASSERT_DEATH(kernel.configure(), ".*");
+}
+
+TEST_F(EqualTest, Int64_Broadcast_NEG)
+{
+  Tensor x_tensor = makeInputTensor<DataType::S64>({2}, {1, 2}, _memory_manager.get());
+  Tensor y_tensor = makeInputTensor<DataType::S64>({3}, {1, 2, 3}, _memory_manager.get());
+  Tensor output_tensor = makeOutputTensor(DataType::BOOL);
+
+  Equal kernel(&x_tensor, &y_tensor, &output_tensor);
+  ASSERT_DEATH(kernel.configure(), ".*");
 }
 
 } // namespace
