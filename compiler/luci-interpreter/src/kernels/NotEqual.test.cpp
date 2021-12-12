@@ -278,7 +278,7 @@ TEST_F(NotEqualTest, Float_Broadcast_NEG)
   Tensor output_tensor = makeOutputTensor(DataType::BOOL);
 
   NotEqual kernel(&x_tensor, &y_tensor, &output_tensor);
-  ASSERT_DEATH(kernel.configure(), ".*");
+  ASSERT_ANY_THROW(kernel.configure());
 }
 
 TEST_F(NotEqualTest, Int32_Broadcast_NEG)
@@ -288,7 +288,7 @@ TEST_F(NotEqualTest, Int32_Broadcast_NEG)
   Tensor output_tensor = makeOutputTensor(DataType::BOOL);
 
   NotEqual kernel(&x_tensor, &y_tensor, &output_tensor);
-  ASSERT_DEATH(kernel.configure(), ".*");
+  ASSERT_ANY_THROW(kernel.configure());
 }
 
 TEST_F(NotEqualTest, Int64_Broadcast_NEG)
@@ -298,7 +298,7 @@ TEST_F(NotEqualTest, Int64_Broadcast_NEG)
   Tensor output_tensor = makeOutputTensor(DataType::BOOL);
 
   NotEqual kernel(&x_tensor, &y_tensor, &output_tensor);
-  ASSERT_DEATH(kernel.configure(), ".*");
+  ASSERT_ANY_THROW(kernel.configure());
 }
 
 } // namespace
