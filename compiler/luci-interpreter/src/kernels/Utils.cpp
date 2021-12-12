@@ -175,7 +175,11 @@ Shape calculateShapeForBroadcast(const Shape &input1_shape, const Shape &input2_
   {
     const int32_t input1_dim = i < num_input1_dims ? input1_shape.dim(num_input1_dims - i - 1) : 1;
     const int32_t input2_dim = i < num_input2_dims ? input2_shape.dim(num_input2_dims - i - 1) : 1;
-    assert(input1_dim == input2_dim || input1_dim == 1 || input2_dim == 1);
+
+    bool need_broadcast = input1_dim != input2_dim;
+    bool can_broadcast = input1_dim == 1 || input2_dim == 1;
+    LUCI_INTERPRETER_CHECK(!need_broadcast || can_broadcast);
+
     output_shape.dim(num_out_dims - i - 1) = std::max(input1_dim, input2_dim);
   }
 
