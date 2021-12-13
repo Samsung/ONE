@@ -15,10 +15,10 @@
 # limitations under the License.
 
 from ir.operator_wrapping import Operator
-from printer.tensor_printer import TensorPrinter
-from printer.option_printer import OptionPrinter
+from printer.string_builder import GetStringShape
 
 
+# TODO: Revise it as minimized `write` methods by using `StringBuilder`
 class ConfigSaver(object):
     def __init__(self, file_name, operator):
         self.file_name = file_name
@@ -50,18 +50,15 @@ class ConfigSaver(object):
         if (len(self.operator.inputs) != 3):
             raise AssertionError('Conv2D input count should be 3')
 
-        inputs = self.operator.inputs[0]
-        weights = self.operator.inputs[1]
+        input = self.operator.inputs[0]
+        weight = self.operator.inputs[1]
         bias = self.operator.inputs[2]
 
-        self.f.write("input: {}\n".format(
-            TensorPrinter(self.verbose, inputs).GetShapeString()))
-        self.f.write("input_type: {}\n".format(inputs.type_name))
-        self.f.write("weights: {}\n".format(
-            TensorPrinter(self.verbose, weights).GetShapeString()))
-        self.f.write("weights_type: {}\n".format(weights.type_name))
-        self.f.write("bias: {}\n".format(
-            TensorPrinter(self.verbose, bias).GetShapeString()))
+        self.f.write("input: {}\n".format(GetStringShape(input)))
+        self.f.write("input_type: {}\n".format(input.type_name))
+        self.f.write("weights: {}\n".format(GetStringShape(weight)))
+        self.f.write("weights_type: {}\n".format(weight.type_name))
+        self.f.write("bias: {}\n".format(GetStringShape(bias)))
         self.f.write("bias_type: {}\n".format(bias.type_name))
 
     def SaveInputs(self):
@@ -69,7 +66,7 @@ class ConfigSaver(object):
         self.f.write("input_counts: {}\n".format(total))
         for idx in range(total):
             tensor = self.operator.inputs[idx]
-            input_shape_str = TensorPrinter(self.verbose, tensor).GetShapeString()
+            input_shape_str = GetStringShape(tensor)
             self.f.write("input{}: {}\n".format(idx, input_shape_str))
             self.f.write("input{}_type: {}\n".format(idx, tensor.type_name))
 
@@ -78,7 +75,7 @@ class ConfigSaver(object):
         self.f.write("output_counts: {}\n".format(total))
         for idx in range(total):
             tensor = self.operator.outputs[idx]
-            output_shape_str = TensorPrinter(self.verbose, tensor).GetShapeString()
+            output_shape_str = GetStringShape(tensor)
             self.f.write("output{}: {}\n".format(idx, output_shape_str))
             self.f.write("output{}_type: {}\n".format(idx, tensor.type_name))
 
@@ -105,10 +102,6 @@ class ConfigSaver(object):
             self.f.write("fused_act: {}\n".format(self.operator.fused_activation))
 
     def SaveAttributes(self):
-        # operator option
-        # Some operations does not have option. In such case no option is printed
-        option_str = OptionPrinter(self.verbose, self.op_name,
-                                   self.operator.options).GetOptionString()
         if self.op_name == 'AVERAGE_POOL_2D' or self.op_name == 'MAX_POOL_2D':
             self.SaveFilter()
             self.SaveStride()
