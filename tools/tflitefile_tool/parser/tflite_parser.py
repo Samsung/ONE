@@ -22,18 +22,18 @@ from .operator_parser import OperatorParser
 
 
 class TFLiteParser(ModelParser):
-    def __init__(self, option):
-        super(TFLiteParser, self).__init__(option)
+    def __init__(self, model_file):
+        super(TFLiteParser, self).__init__(model_file)
 
     def Parse(self):
         # Generate Model: top structure of tflite model file
-        buf = self.option.model_file.read()
+        buf = self.model_file.read()
         buf = bytearray(buf)
         tf_model = tflite.Model.Model.GetRootAsModel(buf, 0)
 
         stats = graph_stats.GraphStats()
         # Model file can have many models
-        self.subg_list = list()
+        subg_list = list()
         for subgraph_index in range(tf_model.SubgraphsLength()):
             tf_subgraph = tf_model.Subgraphs(subgraph_index)
             model_name = "#{0} {1}".format(subgraph_index, tf_subgraph.Name())
@@ -48,6 +48,11 @@ class TFLiteParser(ModelParser):
             stats += graph_stats.CalcGraphStats(op_parser)
 
             subg = (model_name, op_parser)
-            self.subg_list.append(subg)
+            subg_list.append(subg)
 
-        self.stats = stats
+        # Validate
+        assert subg_list is not None
+        assert len(subg_list) > 0
+        assert stats is not None
+
+        return (subg_list, stats)
