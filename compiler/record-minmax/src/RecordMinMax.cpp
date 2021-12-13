@@ -62,6 +62,21 @@ std::vector<uint8_t> genRandomBoolData(std::mt19937 &gen, uint32_t num_elements)
   return input_data;
 }
 
+template <typename T> std::vector<T> genRandomIntData(std::mt19937 &gen, uint32_t num_elements)
+{
+  std::uniform_int_distribution<T> dist(std::numeric_limits<T>::min(),
+                                        std::numeric_limits<T>::max());
+  std::vector<T> input_data(num_elements);
+
+  // Write random data
+  {
+    auto const generator = [&gen, &dist]() { return dist(gen); };
+    std::generate(begin(input_data), end(input_data), generator);
+  }
+
+  return input_data;
+}
+
 /**
  * @brief  getTensorSize will return size in bytes
  */
@@ -388,28 +403,45 @@ void RecordMinMax::profileDataWithRandomInputs(const std::string &mode, float mi
       if (num_elements == 0)
         throw std::runtime_error("Only support non-zero sized inputs");
 
-      // TODO Support more input data types
-      assert(input_node->dtype() == loco::DataType::FLOAT32 ||
-             input_node->dtype() == loco::DataType::BOOL);
-
-      if (input_node->dtype() == DataType::FLOAT32)
+      switch (input_node->dtype())
       {
-        std::vector<float> input_data(num_elements);
+        case DataType::FLOAT32:
+        {
+          std::vector<float> input_data(num_elements);
 
-        // Write random data
-        for (auto &iter : input_data)
-          iter = static_cast<float>(dist(gen));
+          // Write random data
+          for (auto &iter : input_data)
+            iter = static_cast<float>(dist(gen));
 
-        // TODO: Input data is copied twice (file -> buffer (input_data) -> interpreter inputs)
-        //       We can redcue the copy by directly writing data from file to interpreter inputs
-        _interpreter->writeInputTensor(input_node, input_data.data(),
-                                       input_data.size() * sizeof(float));
-      }
-      else if (input_node->dtype() == DataType::BOOL)
-      {
-        auto input_data = genRandomBoolData(gen, num_elements);
-        _interpreter->writeInputTensor(input_node, input_data.data(),
-                                       input_data.size() * sizeof(uint8_t));
+          // TODO: Input data is copied twice (file -> buffer (input_data) -> interpreter inputs)
+          //       We can redcue the copy by directly writing data from file to interpreter inputs
+          _interpreter->writeInputTensor(input_node, input_data.data(),
+                                         input_data.size() * sizeof(float));
+          break;
+        }
+        case DataType::BOOL:
+        {
+          auto input_data = genRandomBoolData(gen, num_elements);
+          _interpreter->writeInputTensor(input_node, input_data.data(),
+                                         input_data.size() * sizeof(uint8_t));
+          break;
+        }
+        case DataType::S32:
+        {
+          auto input_data = genRandomIntData<int32_t>(gen, num_elements);
+          _interpreter->writeInputTensor(input_node, input_data.data(),
+                                         input_data.size() * sizeof(int32_t));
+          break;
+        }
+        case DataType::S64:
+        {
+          auto input_data = genRandomIntData<int64_t>(gen, num_elements);
+          _interpreter->writeInputTensor(input_node, input_data.data(),
+                                         input_data.size() * sizeof(int64_t));
+          break;
+        }
+        default:
+          throw std::runtime_error("Unsupported input type, yet!");
       }
     }
 
