@@ -14,20 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from ir.operator_wrapping import Operator
-from .tensor_printer import TensorPrinter
-from .option_printer import OptionPrinter
-
-
-def GetStringTensorIndex(tensors):
-    return_string = []
-    return_string.append("[")
-    for idx in range(len(tensors)):
-        if idx != 0:
-            return_string.append(", ")
-        return_string.append(str(tensors[idx].tensor_idx))
-    return_string.append("]")
-    return "".join(return_string)
+from .string_builder import StringBuilder
 
 
 # TODO: Extract to a single Printer class like Printer.print(operator)
@@ -37,28 +24,6 @@ class OperatorPrinter(object):
         self.operator = operator
 
     def PrintInfo(self):
-        info = self.GetStringInfo()
+        info = StringBuilder(self.verbose).Operator(self.operator)
         if info is not None:
             print(info)
-
-    def GetStringInfo(self):
-        if (self.verbose < 1):
-            return None
-
-        results = []
-        results.append("Operator {}: {}".format(self.operator.operator_idx,
-                                                self.operator.opcode_str))
-        results.append("\tFused Activation: {}".format(self.operator.fused_activation))
-        results.append("\tInput Tensors" + GetStringTensorIndex(self.operator.inputs))
-        for tensor in self.operator.inputs:
-            results.append(TensorPrinter(self.verbose, tensor).GetStringInfoWONL("\t\t"))
-        results.append("\tOutput Tensors" + GetStringTensorIndex(self.operator.outputs))
-        for tensor in self.operator.outputs:
-            results.append(TensorPrinter(self.verbose, tensor).GetStringInfoWONL("\t\t"))
-        # operator option
-        # Some operations does not have option. In such case no option is printed
-        option_string = OptionPrinter(self.verbose, self.operator.opcode_str,
-                                      self.operator.options).GetStringInfoWONL("\t")
-        if option_string is not None:
-            results.append(option_string)
-        return "\n".join(results)
