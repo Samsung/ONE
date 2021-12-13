@@ -27,7 +27,14 @@ import tempfile
 import onnx
 import onnx_tf
 
-import onnx_legalizer
+# ONNX legalizer is an optional feature
+# It enables conversion of some operations, but in experimental phase for now
+try:
+    import onnx_legalizer
+    _onnx_legalizer_enabled = True
+except ImportError:
+    _onnx_legalizer_enabled = False
+
 import utils as _utils
 
 # TODO Find better way to suppress trackback on error
@@ -121,7 +128,8 @@ def _convert(args):
             tmpdir = os.path.dirname(logfile_path)
         # convert onnx to tf saved model
         onnx_model = onnx.load(getattr(args, 'input_path'))
-        onnx_legalizer.legalize(onnx_model)
+        if _onnx_legalizer_enabled:
+            onnx_legalizer.legalize(onnx_model)
         tf_savedmodel = onnx_tf.backend.prepare(onnx_model)
 
         savedmodel_name = os.path.splitext(os.path.basename(
