@@ -14,10 +14,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .operator_printer import OperatorPrinter
-from .tensor_printer import TensorPrinter
-from .graph_stats_printer import PrintGraphStats
 from ir import graph_stats
+from .string_builder import StringBuilder
 
 
 # TODO: Extract to a single Printer class like Printer.print(subg2)
@@ -45,7 +43,7 @@ class SubgraphPrinter(object):
         if self.print_all_tensor == True and self.print_all_operator == True:
             self.PrintModelInfo()
             self.PrintAllOperatorsInList()
-            PrintGraphStats(graph_stats.CalcGraphStats(self.op_parser), self.verbose)
+            self.PrintGraphStats(graph_stats.CalcGraphStats(self.op_parser))
 
         if self.print_all_tensor == False:
             print('')
@@ -73,19 +71,28 @@ class SubgraphPrinter(object):
             return
 
         for operator in self.op_parser.operators_in_list:
-            printer = OperatorPrinter(self.verbose, operator)
-            printer.PrintInfo()
-            print('')
+            info = StringBuilder(self.verbose).Operator(operator)
+            if info is not None:
+                print(info)
+                print('')
 
         print('')
 
     def PrintSpecificTensors(self, print_tensor_index_list, depth_str=""):
         for tensor in self.op_parser.GetTensors(print_tensor_index_list):
-            printer = TensorPrinter(self.verbose, tensor)
-            printer.PrintInfo(depth_str)
+            info = StringBuilder(self.verbose).Tensor(tensor, depth_str)
+            if info is not None:
+                print(info)
 
     def PrintSpecificOperators(self, print_operator_index_list):
         for operator in self.op_parser.operators_in_list:
             if operator.operator_idx in print_operator_index_list:
-                printer = OperatorPrinter(self.verbose, operator)
-                printer.PrintInfo()
+                info = StringBuilder(self.verbose).Operator(operator)
+                if info is not None:
+                    print(info)
+                    print('')
+
+    def PrintGraphStats(self, stats):
+        info = StringBuilder(self.verbose).GraphStats(stats)
+        if info is not None:
+            print(info)

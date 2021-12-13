@@ -15,7 +15,6 @@
 # limitations under the License.
 
 from printer.subgraph_printer import SubgraphPrinter
-from printer.graph_stats_printer import PrintGraphStats
 from saver.model_saver import ModelSaver
 
 
@@ -65,4 +64,5 @@ class ModelParser(object):
 
         print('==== Model Stats ({} Subgraphs) ===='.format(len(self.subg_list)))
         print('')
-        PrintGraphStats(self.stats, self.option.print_level)
+        printer = SubgraphPrinter(self.option.print_level, op_parser, model_name)
+        printer.PrintGraphStats(self.stats)
