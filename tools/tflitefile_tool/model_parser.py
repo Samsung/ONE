@@ -16,6 +16,9 @@
 
 import argparse
 from parser.tflite_parser import TFLiteParser
+from printer.subgraph_printer import SubgraphPrinter
+from printer.graph_stats_printer import PrintGraphStats
+from saver.model_saver import ModelSaver
 '''
 Why is this file named as `model_parser.py` which is same to `parser/model_parser.py`?
 - Until now, users have used by the path `tools/tflitefile_tool/model_parser.py`.
@@ -62,6 +65,25 @@ class MainOption(object):
             self.save_prefix = args.prefix
 
 
+def PrintModel(option, model_name, op_parser):
+    printer = SubgraphPrinter(option.print_level, op_parser, model_name)
+
+    if option.print_all_tensor == False:
+        printer.SetPrintSpecificTensors(option.print_tensor_index)
+
+    if option.print_all_operator == False:
+        printer.SetPrintSpecificOperators(option.print_operator_index)
+
+    printer.PrintInfo()
+
+
+def SaveModel(option, model_name, op_parser):
+    saver = ModelSaver(model_name, op_parser)
+
+    if option.save_config == True:
+        saver.SaveConfigInfo(option.save_prefix)
+
+
 if __name__ == '__main__':
     # Define argument and read
     arg_parser = argparse.ArgumentParser()
@@ -84,7 +106,19 @@ if __name__ == '__main__':
     arg_parser.add_argument(
         '-p', '--prefix', help="file prefix to be saved (with -c/--config option)")
     args = arg_parser.parse_args()
+    option = MainOption(args)
 
     # TODO: Call TFLiteParser if file's extension is 'tflite'
-    # Call main function
-    TFLiteParser(MainOption(args)).main()
+    (subg_list, stats) = TFLiteParser(option.model_file).Parse()
+
+    for model_name, op_parser in subg_list:
+        if option.save == False:
+            # print all of operators or requested objects
+            PrintModel(option, model_name, op_parser)
+        else:
+            # save all of operators in this model
+            SaveModel(option, model_name, op_parser)
+
+    print('==== Model Stats ({} Subgraphs) ===='.format(len(subg_list)))
+    print('')
+    PrintGraphStats(stats, option.print_level)
