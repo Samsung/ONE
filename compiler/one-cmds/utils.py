@@ -372,7 +372,7 @@ def _get_optimization_list(get_name=False):
 
 
 def _detect_one_import_drivers():
-    """Looks for available import drivers
+    """Looks for import drivers, located in same directory as utils module
 
     Returns:
     dict: each entry is related to single detected driver,
