@@ -51,6 +51,16 @@ void MinMaxObserver::postTensorWrite(const luci::CircleNode *node,
     // Bool type tensor is not quantized
     return;
   }
+  if (node->dtype() == DataType::S32)
+  {
+    // Integer type tensor is not quantized
+    return;
+  }
+  if (node->dtype() == DataType::S64)
+  {
+    // Integer type tensor is not quantized
+    return;
+  }
 
   // Only support recording of float32 values
   if (tensor->element_type() != DataType::FLOAT32)
