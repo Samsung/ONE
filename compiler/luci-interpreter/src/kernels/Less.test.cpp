@@ -306,7 +306,7 @@ TEST_F(LessTest, Float_Broadcast_NEG)
   Tensor output_tensor = makeOutputTensor(DataType::BOOL);
 
   Less kernel(&x_tensor, &y_tensor, &output_tensor);
-  ASSERT_DEATH(kernel.configure(), ".*");
+  ASSERT_ANY_THROW(kernel.configure());
 }
 
 TEST_F(LessTest, Int32_Broadcast_NEG)
@@ -316,7 +316,7 @@ TEST_F(LessTest, Int32_Broadcast_NEG)
   Tensor output_tensor = makeOutputTensor(DataType::BOOL);
 
   Less kernel(&x_tensor, &y_tensor, &output_tensor);
-  ASSERT_DEATH(kernel.configure(), ".*");
+  ASSERT_ANY_THROW(kernel.configure());
 }
 
 TEST_F(LessTest, Int64_Broadcast_NEG)
@@ -326,7 +326,7 @@ TEST_F(LessTest, Int64_Broadcast_NEG)
   Tensor output_tensor = makeOutputTensor(DataType::BOOL);
 
   Less kernel(&x_tensor, &y_tensor, &output_tensor);
-  ASSERT_DEATH(kernel.configure(), ".*");
+  ASSERT_ANY_THROW(kernel.configure());
 }
 
 } // namespace
