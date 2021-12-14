@@ -62,10 +62,10 @@ std::vector<uint8_t> genRandomBoolData(std::mt19937 &gen, uint32_t num_elements)
   return input_data;
 }
 
-template <typename T> std::vector<T> genRandomIntData(std::mt19937 &gen, uint32_t num_elements)
+template <typename T>
+std::vector<T> genRandomIntData(std::mt19937 &gen, uint32_t num_elements, T min, T max)
 {
-  std::uniform_int_distribution<T> dist(std::numeric_limits<T>::min(),
-                                        std::numeric_limits<T>::max());
+  std::uniform_int_distribution<T> dist(min, max);
   std::vector<T> input_data(num_elements);
 
   // Write random data
