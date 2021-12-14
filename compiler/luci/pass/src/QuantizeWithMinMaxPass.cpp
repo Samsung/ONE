@@ -1130,8 +1130,8 @@ void propagate_pack_quantparam(luci::CirclePack *pack, loco::DataType quant_type
  *
  *  AFTER
  *
- *      [CircleNode] [CircleConst] [CircleConst] [CircleNode]
- *          (S32)        (S32)     (U8 qparam2)  (U8 qparam2)
+ *      [CircleNode] [CircleConst] [CircleConst] [CircleNode]      [CircleConst] <- Dead node
+ *          (S32)        (S32)     (U8 qparam2)  (U8 qparam2)         (FP32)
  *              \          \           /           /
  *               \          \        /            /
  *                \          \     /            /
