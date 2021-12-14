@@ -802,7 +802,7 @@ public:
   {
     TestIOGraph::init({32}, {32, 10});
     {
-      // input dtype is float by default, but OneHot should have indexType (s32/s64)
+      // input dtype is float by default, but OneHot's input should have indexType (s32/s64)
       input()->dtype(indexT);
     }
 
