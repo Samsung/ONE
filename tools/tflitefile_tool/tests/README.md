@@ -2,11 +2,11 @@
 
 ## Prepare
 
-There is `convolution_test.tflite` in `ONE/tests/scripts/models/cache/convolution_test.tflite`.
+There is `add.tflite` in `ONE/nnpackage/examples/v1.0.0/add`.
 
 ```
-ONE$ find ./tests/scripts/models/ -name "convolution_test.tflite"
-./tests/scripts/models/cache/convolution_test.tflite
+ONE$ find ./nnpackage -name "add.tflite"
+./nnpackage/examples/v1.0.0/add/add.tflite
 ```
 
 ## Test

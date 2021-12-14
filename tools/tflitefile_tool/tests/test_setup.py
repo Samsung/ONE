@@ -19,11 +19,11 @@ import unittest
 
 # Python doesn't have const var but handle these as const
 # It's meaning that DO NOT MODIFY these vars
-CACHED_TEST_MODEL_DIR = "../../tests/scripts/models/cache"
-TEST_MODEL_PATH = os.path.join(CACHED_TEST_MODEL_DIR, "convolution_test.tflite")
+TEST_MODEL_DIR = "../../nnpackage/examples/v1.0.0/add"
+TEST_MODEL_PATH = os.path.join(TEST_MODEL_DIR, "add.tflite")
 
 
-def Exist_CACHED_TEST_MODEL_DIR(dir):
+def Exist_TEST_MODEL_DIR(dir):
     return os.path.exists(dir) and os.path.isdir(dir)
 
 
@@ -32,9 +32,9 @@ def Exist_TEST_MODEL_FILE(file):
 
 
 class Setup(unittest.TestCase):
-    def test_Exist_CACHED_TEST_MODEL_DIR(self):
-        model_dir = CACHED_TEST_MODEL_DIR
-        self.assertTrue(Exist_CACHED_TEST_MODEL_DIR(model_dir))
+    def test_Exist_TEST_MODEL_DIR(self):
+        model_dir = TEST_MODEL_DIR
+        self.assertTrue(Exist_TEST_MODEL_DIR(model_dir))
 
     def test_Exist_TEST_MODEL_FILE(self):
         model_file = TEST_MODEL_PATH
