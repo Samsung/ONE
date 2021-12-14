@@ -1138,7 +1138,7 @@ void propagate_pack_quantparam(luci::CirclePack *pack, loco::DataType quant_type
  *                 -------[CircleOneHot]-------
  *                         (U8 qparam2)
  *
- * NOTE Quantization parameter of CirclePack (qparam2) is propagated to on_value/off_value.
+ * NOTE Quantization parameter of CircleOneHot (qparam2) is propagated to on_value/off_value.
  */
 void propagate_one_hot_quantparam(luci::CircleOneHot *one_hot, loco::DataType quant_type)
 {
