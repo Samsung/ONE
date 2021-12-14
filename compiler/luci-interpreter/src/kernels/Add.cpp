@@ -41,7 +41,8 @@ void Add::configure()
   LUCI_INTERPRETER_CHECK(input1()->element_type() == output()->element_type());
   if (input1()->element_type() == DataType::S16)
   {
-    LUCI_INTERPRETER_CHECK(input1()->zero_points().size() == 1);
+    LUCI_INTERPRETER_CHECK(input1()->zero_points().size() == 1 &&
+                           input2()->zero_points().size() == 1);
     LUCI_INTERPRETER_CHECK(input1()->zero_point() == 0 && input2()->zero_point() == 0 &&
                            output()->zero_point() == 0);
   }
