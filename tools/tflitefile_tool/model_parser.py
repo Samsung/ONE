@@ -17,7 +17,6 @@
 import argparse
 from parser.tflite_parser import TFLiteParser
 from printer.subgraph_printer import SubgraphPrinter
-from printer.graph_stats_printer import PrintGraphStats
 from saver.model_saver import ModelSaver
 '''
 Why is this file named as `model_parser.py` which is same to `parser/model_parser.py`?
@@ -118,7 +117,3 @@ if __name__ == '__main__':
         else:
             # save all of operators in this model
             SaveModel(option, model_name, op_parser)
-
-    print('==== Model Stats ({} Subgraphs) ===='.format(len(subg_list)))
-    print('')
-    PrintGraphStats(stats, option.print_level)
