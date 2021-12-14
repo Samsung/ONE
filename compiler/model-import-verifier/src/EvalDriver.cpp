@@ -72,8 +72,8 @@ int entry(int argc, char **argv)
   // hardcoded values
   const std::string sigmoid_model_filename = "conv2d.circle";
   const uint8_t *sigmoid_model_const_pointer = conv2d_circle;
-  const std::vector<uint32_t> input_shape = {1, 5, 5, 32};
-  const std::vector<uint32_t> output_shape = {1, 5, 5, 64};
+  const std::vector<uint32_t> input_shape = {1, 5, 5, 1};
+  const std::vector<uint32_t> output_shape = {1, 5, 5, 2};
   using model_dtype = float;
 
   // size of input/output tensor in elements
