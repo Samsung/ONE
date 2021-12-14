@@ -39,6 +39,7 @@ public:
 
 private:
   void evalFloat() const;
+  template <typename T> void evalInteger() const;
   void evalQuantized() const;
   void evalQuantizedS16() const;
 };
