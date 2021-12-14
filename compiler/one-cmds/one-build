@@ -155,7 +155,7 @@ def main():
 
     # verify configuration file
     import_drivers_dict = _utils._detect_one_import_drivers()
-    other_drivers = [
+    transform_drivers = [
         'one-optimize', 'one-quantize', 'one-pack', 'one-codegen', 'one-profile'
     ]
     _verify_cfg(import_drivers_dict, config)
@@ -165,7 +165,7 @@ def main():
 
     # get sections to run
     section_to_run = []
-    for d in list(import_drivers_dict) + other_drivers:
+    for d in list(import_drivers_dict) + transform_drivers:
         if _is_available_driver(config, d):
             section_to_run.append(d)
 
