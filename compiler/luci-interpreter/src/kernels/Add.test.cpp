@@ -171,21 +171,20 @@ template <loco::DataType DType> void CheckInteger(luci_interpreter::IMemoryManag
   using dtype = typename loco::DataTypeImpl<DType>::Type;
   Shape base_shape = {2, 3, 1, 2};
   std::vector<Shape> test_shapes{{1, 1, 3, 2}, {1, 3, 1, 2}, {2, 1, 3, 1}, {2, 3, 1, 1}};
-  std::vector<std::vector<int32_t>> test_outputs = {
+  std::vector<std::vector<dtype>> test_outputs = {
     {3, 3, 0, 1, 0, 8, 5,  1, 0, 0, 2, 6, 8,  0, 1, 0, 5, 1,
      5, 4, 0, 2, 2, 9, 11, 0, 4, 0, 8, 5, 11, 2, 4, 0, 8, 7},
     {3, 3, 0, 0, 5, 1, 5, 4, 4, 0, 8, 7},
     {3, 6, 0, 3, 0, 0, 5, 4, 2, 1, 0,  0, 8, 0, 5, 0, 1,  0,
      0, 2, 2, 4, 7, 9, 6, 0, 8, 0, 13, 5, 6, 0, 8, 2, 13, 7},
     {3, 6, 2, 1, 1, 0, 0, 2, 8, 0, 13, 7}};
-  std::vector<int32_t> input1_data{-1, 2, 1, 0, 4, -5, 1, 3, 7, -1, 7, 1};
-  std::vector<int32_t> input2_data{4, 1, -3, -1, 1, 6};
+  std::vector<dtype> input1_data{-1, 2, 1, 0, 4, -5, 1, 3, 7, -1, 7, 1};
+  std::vector<dtype> input2_data{4, 1, -3, -1, 1, 6};
   for (size_t i = 0; i < test_shapes.size(); ++i)
   {
-    Tensor input1_tensor = makeInputTensor<DataType::S32>(base_shape, input1_data, memory_manager);
-    Tensor input2_tensor =
-      makeInputTensor<DataType::S32>(test_shapes[i], input2_data, memory_manager);
-    Tensor output_tensor = makeOutputTensor(DataType::S32);
+    Tensor input1_tensor = makeInputTensor<DType>(base_shape, input1_data, memory_manager);
+    Tensor input2_tensor = makeInputTensor<DType>(test_shapes[i], input2_data, memory_manager);
+    Tensor output_tensor = makeOutputTensor(DType);
 
     AddParams params{};
     params.activation = Activation::RELU;
@@ -195,16 +194,15 @@ template <loco::DataType DType> void CheckInteger(luci_interpreter::IMemoryManag
     memory_manager->allocate_memory(output_tensor);
     kernel.execute();
 
-    EXPECT_THAT(extractTensorData<int32_t>(output_tensor), test_outputs[i])
+    EXPECT_THAT(extractTensorData<dtype>(output_tensor), test_outputs[i])
       << "With shape number " << i;
   }
   // Re-run with exchanged inputs.
   for (size_t i = 0; i < test_shapes.size(); ++i)
   {
-    Tensor input1_tensor =
-      makeInputTensor<DataType::S32>(test_shapes[i], input2_data, memory_manager);
-    Tensor input2_tensor = makeInputTensor<DataType::S32>(base_shape, input1_data, memory_manager);
-    Tensor output_tensor = makeOutputTensor(DataType::S32);
+    Tensor input1_tensor = makeInputTensor<DType>(test_shapes[i], input2_data, memory_manager);
+    Tensor input2_tensor = makeInputTensor<DType>(base_shape, input1_data, memory_manager);
+    Tensor output_tensor = makeOutputTensor(DType);
 
     AddParams params{};
     params.activation = Activation::RELU;
@@ -214,7 +212,7 @@ template <loco::DataType DType> void CheckInteger(luci_interpreter::IMemoryManag
     memory_manager->allocate_memory(output_tensor);
     kernel.execute();
 
-    EXPECT_THAT(extractTensorData<int32_t>(output_tensor), test_outputs[i])
+    EXPECT_THAT(extractTensorData<dtype>(output_tensor), test_outputs[i])
       << "With shape number " << i;
   }
 };
