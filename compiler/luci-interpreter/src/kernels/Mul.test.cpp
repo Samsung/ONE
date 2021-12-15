@@ -93,6 +93,80 @@ TEST_F(MulTest, Float)
   }
 }
 
+template <loco::DataType DType> void checkInteger(luci_interpreter::IMemoryManager *memory_manager)
+{
+  using dtype = typename loco::DataTypeImpl<DType>::Type;
+  Shape base_shape = {2, 3, 1, 2};
+  std::vector<Shape> test_shapes{{1, 1, 3, 2}, {1, 3, 1, 2}, {2, 1, 3, 1}, {2, 3, 1, 1}};
+
+  dtype max_value = std::numeric_limits<dtype>::max();
+  dtype res_max = max_value - max_value % 10;
+
+  std::vector<std::vector<dtype>> test_outputs = {
+    {
+      8,  0, 20,  0, 4,  30,  //
+      16, 0, 40,  3, 8,  0,   //
+      0,  0, 0,   6, 0,  0,   //
+      4,  0, 10,  9, 2,  0,   //
+      40, 0, 100, 0, 20, 150, //
+      28, 0, 70,  0, 14,
+    },
+    {8, 0, 40, 3, 0, 0, 4, 0, 100, 0, 14, res_max},
+    {8,  12,     0, 0, 20, 30, 16, 0, 0, 0,  40, 0,   0,   0, 0, 0,  0,
+     0,  0,      9, 2, 0,  10, 0,  0, 0, 20, 30, 100, 150, 0, 0, 14, max_value / 10 * 2,
+     70, res_max},
+    {8, 12, 0, 0, 0, 0, 0, 9, 20, 30, 70, res_max}};
+  std::vector<dtype> input1_data{2, 3, 4, -1, -3, -2, 1, -3, 10, 15, 7, max_value / 10};
+  std::vector<dtype> input2_data{4, 0, 10, -3, 2, 10};
+  for (size_t i = 0; i < test_shapes.size(); ++i)
+  {
+    Tensor input1_tensor = makeInputTensor<DType>(base_shape, input1_data, memory_manager);
+    Tensor input2_tensor = makeInputTensor<DType>(test_shapes[i], input2_data, memory_manager);
+    Tensor output_tensor = makeOutputTensor(DType);
+
+    MulParams params{};
+    params.activation = Activation::RELU;
+
+    Mul kernel(&input1_tensor, &input2_tensor, &output_tensor, params);
+    kernel.configure();
+    memory_manager->allocate_memory(output_tensor);
+    kernel.execute();
+
+    EXPECT_THAT(extractTensorData<dtype>(output_tensor), test_outputs[i])
+      << "With shape number " << i;
+  }
+  // Re-run with exchanged inputs.
+  for (size_t i = 0; i < test_shapes.size(); ++i)
+  {
+    Tensor input1_tensor = makeInputTensor<DType>(test_shapes[i], input2_data, memory_manager);
+    Tensor input2_tensor = makeInputTensor<DType>(base_shape, input1_data, memory_manager);
+    Tensor output_tensor = makeOutputTensor(DType);
+
+    MulParams params{};
+    params.activation = Activation::RELU;
+
+    Mul kernel(&input1_tensor, &input2_tensor, &output_tensor, params);
+    kernel.configure();
+    memory_manager->allocate_memory(output_tensor);
+    kernel.execute();
+
+    EXPECT_THAT(extractTensorData<dtype>(output_tensor), test_outputs[i])
+      << "With shape number " << i;
+  }
+}
+
+TEST_F(MulTest, SInt64)
+{
+  checkInteger<loco::DataType::S64>(_memory_manager.get());
+  SUCCEED();
+}
+
+TEST_F(MulTest, SInt32)
+{
+  checkInteger<loco::DataType::S32>(_memory_manager.get());
+  SUCCEED();
+}
+
 TEST_F(MulTest, SInt16)
 {
   Shape base_shape = {2, 3, 1, 2};

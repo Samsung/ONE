@@ -56,6 +56,12 @@ void Mul::execute() const
     case DataType::FLOAT32:
       evalFloat();
       break;
+    case DataType::S64:
+      evalInteger<int64_t>();
+      break;
+    case DataType::S32:
+      evalInteger<int32_t>();
+      break;
     case DataType::S16:
       evalQuantizedS16();
       break;
@@ -88,6 +94,42 @@ void Mul::evalFloat() const
     luci_interpreter_pal::Mul(params, getTensorShape(input1()), getTensorData<float>(input1()),
                               getTensorShape(input2()), getTensorData<float>(input2()),
                               getTensorShape(output()), getTensorData<float>(output()));
+  }
+}
+
+template <typename T> void Mul::evalInteger() const
+{
+  T activation_min{};
+  T activation_max{};
+  calculateActivationRange(_params.activation, &activation_min, &activation_max);
+
+  tflite::ArithmeticParams params{};
+  if (std::is_same<T, int32_t>::value)
+  {
+    params.quantized_activation_min = activation_min;
+    params.quantized_activation_max = activation_max;
+  }
+  else
+  {
+    assert((std::is_same<T, int64_t>::value));
+    params.int64_activation_min = activation_min;
+    params.int64_activation_max = activation_max;
+  }
+
+  const bool need_broadcast = tflite::reference_ops::ProcessBroadcastShapes(
+    getTensorShape(input1()), getTensorShape(input2()), &params);
+
+  if (need_broadcast)
+  {
+    luci_interpreter_pal::BroadcastMul4DSlow(
+      params, getTensorShape(input1()), getTensorData<T>(input1()), getTensorShape(input2()),
+      getTensorData<T>(input2()), getTensorShape(output()), getTensorData<T>(output()));
+  }
+  else
+  {
+    luci_interpreter_pal::Mul(params, getTensorShape(input1()), getTensorData<T>(input1()),
+                              getTensorShape(input2()), getTensorData<T>(input2()),
+                              getTensorShape(output()), getTensorData<T>(output()));
   }
 }
 
