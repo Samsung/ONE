@@ -1114,6 +1114,86 @@ void propagate_pack_quantparam(luci::CirclePack *pack, loco::DataType quant_type
   }
 }
 
+/** EXAMPLE
+ *
+ *
+ *
+ * BEFORE
+ *
+ *      [CircleNode] [CircleConst] [CircleConst] [CircleNode]
+ *          (S32)        (S32)        (FP32)     (U8 qparam1)
+ *              \          \           /            /
+ *               \          \        /            /
+ *                \          \     /            /
+ *                 -------[CircleOneHot]-------
+ *                         (U8 qparam2)
+ *
+ *  AFTER
+ *
+ *      [CircleNode] [CircleConst] [CircleConst] [CircleNode]      [CircleConst] <- Dead node
+ *          (S32)        (S32)     (U8 qparam2)  (U8 qparam2)         (FP32)
+ *              \          \           /           /
+ *               \          \        /            /
+ *                \          \     /            /
+ *                 -------[CircleOneHot]-------
+ *                         (U8 qparam2)
+ *
+ * NOTE Quantization parameter of CircleOneHot (qparam2) is propagated to on_value/off_value.
+ */
+void propagate_one_hot_quantparam(luci::CircleOneHot *one_hot, loco::DataType quant_type)
+{
+  assert(one_hot->quantparam() != nullptr);
+
+  // Propagate quantization paramters from output to inputs,
+  // to fit both input and counstant_value in one quant range.
+  auto quant_input = [one_hot, quant_type](void (CircleOneHot::*arg_setter)(loco::Node *),
+                                           loco::Node *(CircleOneHot::*arg_getter)() const) {
+    auto node = loco::must_cast<luci::CircleNode *>((one_hot->*arg_getter)());
+
+    // Quantize constant values
+    if (node->opcode() == luci::CircleOpcode::CIRCLECONST)
+    {
+      luci::CircleConst *const_node = loco::must_cast<luci::CircleConst *>(node);
+      if (is_quantized(const_node))
+        return;
+
+      if (const_node->dtype() != loco::DataType::FLOAT32)
+        throw std::runtime_error("Unsupported data type for constant input of OneHot Op");
+
+      const auto qparam = one_hot->quantparam();
+      if (qparam == nullptr)
+        throw std::runtime_error("quantparam of PadV2 is not found during propagation");
+
+      assert(qparam->scale.size() == 1);
+      const auto scaling_factor = qparam->scale.at(0);
+      const auto zerop = qparam->zerop.at(0);
+
+      auto new_const = luci::clone(const_node);
+      quant_const_values(new_const, scaling_factor, zerop, quant_type);
+      overwrite_quantparam(one_hot, new_const);
+      (one_hot->*arg_setter)(new_const);
+    }
+    // Subsequent OneHot Ops quant params are not propagated
+    else if (node->opcode() == luci::CircleOpcode::ONE_HOT)
+    {
+      return;
+    }
+    else
+    {
+      const auto succs = loco::succs(node);
+      if (succs.size() > 1)
+        return;
+
+      // Non-const input must have been quantized
+      assert(node->quantparam() != nullptr);
+      overwrite_quantparam(one_hot, node);
+    }
+  };
+
+  quant_input(&CircleOneHot::on_value, &CircleOneHot::on_value);
+  quant_input(&CircleOneHot::off_value, &CircleOneHot::off_value);
+}
+
 /**
  * @brief Quantize const input tensors using min/max of const values
  */
@@ -1231,6 +1311,13 @@ void quantize_const_inputs(luci::CircleNode *node, loco::DataType output_type)
     case luci::CircleOpcode::PACK:
       // Quant param is propagated from output to inputs
       propagate_pack_quantparam(loco::must_cast<CirclePack *>(node), output_type);
+      break;
+
+    case luci::CircleOpcode::ONE_HOT:
+      // Third and forth constant inputs are quantized
+      // First and second input should not be quantized (e.g., indices, depth)
+      // Quant params are propagated from output to inputs
+      propagate_one_hot_quantparam(loco::must_cast<CircleOneHot *>(node), output_type);
       break;
 
     default:
@@ -1468,6 +1555,10 @@ void QuantizeWithMinMaxPass::set_input_type(loco::Graph *g) const
 
     // Bool type is not quantizable
     if (input->dtype() == loco::DataType::BOOL)
+      continue;
+    if (input->dtype() == loco::DataType::S32)
+      continue;
+    if (input->dtype() == loco::DataType::S64)
       continue;
 
     // Insert Quantize Op

@@ -795,6 +795,53 @@ private:
   luci::CircleConst *_param = nullptr;
 };
 
+template <Type indexT> class OneHotTestGraph final : public SimpleTestGraph
+{
+public:
+  void init(void) override
+  {
+    TestIOGraph::init({32}, {32, 10});
+    {
+      // input dtype is float by default, but OneHot's input should have indexType (s32/s64)
+      input()->dtype(indexT);
+    }
+
+    _depth = g()->nodes()->template create<luci::CircleConst>();
+    {
+      _depth->dtype(loco::DataType::S32);
+    }
+
+    _on_value = g()->nodes()->template create<luci::CircleConst>();
+    {
+      _on_value->dtype(loco::DataType::FLOAT32);
+    }
+
+    _off_value = g()->nodes()->template create<luci::CircleConst>();
+    {
+      _off_value->dtype(loco::DataType::FLOAT32);
+    }
+
+    _one_hot = g()->nodes()->template create<luci::CircleOneHot>();
+    {
+      _one_hot->indices(input());
+      _one_hot->depth(_depth);
+      _one_hot->on_value(_on_value);
+      _one_hot->off_value(_off_value);
+      _one_hot->axis(-1);
+      _one_hot->dtype(loco::DataType::FLOAT32);
+    }
+    output()->from(_one_hot);
+
+    set_minmax_to_non_const(g(), -1, 1);
+  }
+
+private:
+  luci::CircleOneHot *_one_hot = nullptr;
+  luci::CircleConst *_depth = nullptr;
+  luci::CircleConst *_on_value = nullptr;
+  luci::CircleConst *_off_value = nullptr;
+};
+
 // Test graph for comparison Ops
 // GREATER, GREATER_EQUAL, LESS, LESS_EQUAL, EQUAL, NOT_EQUAL
 template <class Op> class ComparisonOpTestGraph final : public SimpleTestGraph
@@ -1866,6 +1913,42 @@ TEST(QuantizedModelVerifierTest, NotEqual_wrong_granularity_NEG)
                                      Granularity::ChannelWise, g.y());
   TEST_WITH_WRONG_GRANULARITY_TARGET(ComparisonOpTestGraph<luci::CircleNotEqual>, Type::S16,
                                      Granularity::ChannelWise, g.y());
+  SUCCEED();
+}
+
+TEST(QuantizedModelVerifierTest, OneHot)
+{
+  TEST_WITH_GRAPH(OneHotTestGraph<Type::S32>, Type::U8, Granularity::LayerWise);
+  TEST_WITH_GRAPH(OneHotTestGraph<Type::S32>, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_GRAPH(OneHotTestGraph<Type::S32>, Type::S16, Granularity::ChannelWise);
+
+  TEST_WITH_GRAPH(OneHotTestGraph<Type::S64>, Type::U8, Granularity::LayerWise);
+  TEST_WITH_GRAPH(OneHotTestGraph<Type::S64>, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_GRAPH(OneHotTestGraph<Type::S64>, Type::S16, Granularity::ChannelWise);
+  SUCCEED();
+}
+
+TEST(QuantizedModelVerifierTest, OneHot_wrong_input_type_NEG)
+{
+  TEST_WITH_WRONG_TYPE(OneHotTestGraph<Type::S32>, Type::U8, Granularity::LayerWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(OneHotTestGraph<Type::S32>, Type::U8, Granularity::ChannelWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(OneHotTestGraph<Type::S32>, Type::S16, Granularity::ChannelWise, Type::U8);
+
+  TEST_WITH_WRONG_TYPE(OneHotTestGraph<Type::S64>, Type::U8, Granularity::LayerWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(OneHotTestGraph<Type::S64>, Type::U8, Granularity::ChannelWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(OneHotTestGraph<Type::S64>, Type::S16, Granularity::ChannelWise, Type::U8);
+  SUCCEED();
+}
+
+TEST(QuantizedModelVerifierTest, OneHot_wrong_granularity_NEG)
+{
+  TEST_WITH_WRONG_GRANULARITY(OneHotTestGraph<Type::S32>, Type::U8, Granularity::LayerWise);
+  TEST_WITH_WRONG_GRANULARITY(OneHotTestGraph<Type::S32>, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_WRONG_GRANULARITY(OneHotTestGraph<Type::S32>, Type::S16, Granularity::ChannelWise);
+
+  TEST_WITH_WRONG_GRANULARITY(OneHotTestGraph<Type::S64>, Type::U8, Granularity::LayerWise);
+  TEST_WITH_WRONG_GRANULARITY(OneHotTestGraph<Type::S64>, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_WRONG_GRANULARITY(OneHotTestGraph<Type::S64>, Type::S16, Granularity::ChannelWise);
   SUCCEED();
 }
 
