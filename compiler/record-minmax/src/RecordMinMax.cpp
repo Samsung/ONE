@@ -405,7 +405,9 @@ void RecordMinMax::profileDataWithRandomInputs(const std::string &mode, float mi
 
       // TODO Support more input data types
       assert(input_node->dtype() == loco::DataType::FLOAT32 ||
-             input_node->dtype() == loco::DataType::BOOL);
+             input_node->dtype() == loco::DataType::BOOL ||
+             input_node->dtype() == loco::DataType::S32 ||
+             input_node->dtype() == loco::DataType::S64);
 
       if (input_node->dtype() == DataType::FLOAT32)
       {
@@ -425,6 +427,18 @@ void RecordMinMax::profileDataWithRandomInputs(const std::string &mode, float mi
         auto input_data = genRandomBoolData(gen, num_elements);
         _interpreter->writeInputTensor(input_node, input_data.data(),
                                        input_data.size() * sizeof(uint8_t));
+      }
+      else if (input_node->dtype() == DataType::S32)
+      {
+        auto input_data = genRandomIntData<int32_t>(gen, num_elements, -100, 100);
+        _interpreter->writeInputTensor(input_node, input_data.data(),
+                                       input_data.size() * sizeof(int32_t));
+      }
+      else if (input_node->dtype() == DataType::S64)
+      {
+        auto input_data = genRandomIntData<int64_t>(gen, num_elements, -100, 100);
+        _interpreter->writeInputTensor(input_node, input_data.data(),
+                                       input_data.size() * sizeof(int64_t));
       }
     }
 
