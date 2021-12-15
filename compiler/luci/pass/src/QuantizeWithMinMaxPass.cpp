@@ -1144,7 +1144,7 @@ void propagate_one_hot_quantparam(luci::CircleOneHot *one_hot, loco::DataType qu
 {
   assert(one_hot->quantparam() != nullptr);
 
-  // Propagate quantization paramters from output to inputs,
+  // Propagate quantization parameters from output to inputs,
   // to fit both input and counstant_value in one quant range.
   auto quant_input = [one_hot, quant_type](void (CircleOneHot::*arg_setter)(loco::Node *),
                                            loco::Node *(CircleOneHot::*arg_getter)() const) {
@@ -1162,7 +1162,7 @@ void propagate_one_hot_quantparam(luci::CircleOneHot *one_hot, loco::DataType qu
 
       const auto qparam = one_hot->quantparam();
       if (qparam == nullptr)
-        throw std::runtime_error("quantparam of PadV2 is not found during propagation");
+        throw std::runtime_error("quantparam of OneHot is not found during propagation");
 
       assert(qparam->scale.size() == 1);
       const auto scaling_factor = qparam->scale.at(0);
