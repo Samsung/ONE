@@ -37,6 +37,7 @@ Sub::Sub(const Tensor *input1, const Tensor *input2, Tensor *output, const SubPa
 void Sub::configure()
 {
   LUCI_INTERPRETER_CHECK(!(input1()->element_type() != input2()->element_type()))
+  LUCI_INTERPRETER_CHECK(!(input1()->element_type() != output()->element_type()))
   output()->resize(calculateShapeForBroadcast(input1()->shape(), input2()->shape()));
 }
 
@@ -46,6 +47,12 @@ void Sub::execute() const
   {
     case DataType::FLOAT32:
       evalFloat();
+      break;
+    case DataType::S64:
+      evalInteger<int64_t>();
+      break;
+    case DataType::S32:
+      evalInteger<int32_t>();
       break;
     case DataType::U8:
       evalQuantized();
@@ -79,6 +86,44 @@ void Sub::evalFloat() const
     luci_interpreter_pal::Sub(params, getTensorShape(input1()), getTensorData<float>(input1()),
                               getTensorShape(input2()), getTensorData<float>(input2()),
                               getTensorShape(output()), getTensorData<float>(output()));
+  }
+}
+
+template <typename T> void Sub::evalInteger() const
+{
+  tflite::ArithmeticParams params{};
+  if (std::is_same<T, int32_t>::value)
+  {
+    int32_t activation_min{};
+    int32_t activation_max{};
+    calculateActivationRange(_params.activation, &activation_min, &activation_max);
+    params.quantized_activation_min = activation_min;
+    params.quantized_activation_max = activation_max;
+  }
+  else
+  {
+    assert((std::is_same<T, int64_t>::value));
+    int64_t activation_min{};
+    int64_t activation_max{};
+    calculateActivationRange(_params.activation, &activation_min, &activation_max);
+    params.int64_activation_min = activation_min;
+    params.int64_activation_max = activation_max;
+  }
+
+  const bool need_broadcast = tflite::reference_ops::ProcessBroadcastShapes(
+    getTensorShape(input1()), getTensorShape(input2()), &params);
+
+  if (need_broadcast)
+  {
+    tflite::reference_ops::BroadcastSubSlow(
+      params, getTensorShape(input1()), getTensorData<T>(input1()), getTensorShape(input2()),
+      getTensorData<T>(input2()), getTensorShape(output()), getTensorData<T>(output()));
+  }
+  else
+  {
+    tflite::reference_ops::Sub(params, getTensorShape(input1()), getTensorData<T>(input1()),
+                               getTensorShape(input2()), getTensorData<T>(input2()),
+                               getTensorShape(output()), getTensorData<T>(output()));
   }
 }
 
