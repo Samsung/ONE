@@ -28,6 +28,10 @@ import tempfile
 import utils as _utils
 
 
+def get_driver_cfg_section():
+    return "one-import-tf"
+
+
 def _get_parser():
     parser = argparse.ArgumentParser(
         description='command line tool to convert TensorFlow to circle')

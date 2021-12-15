@@ -17,6 +17,7 @@
 import argparse
 import configparser
 import glob
+import importlib
 import ntpath
 import os
 import subprocess
@@ -371,3 +372,32 @@ def _get_optimization_list(get_name=False):
         opt_list = [_remove_suffix(s, '.cfg') for s in opt_list]
 
     return opt_list
+
+
+def _detect_one_import_drivers():
+    """Looks for import drivers, located in same directory as utils module
+
+    Returns:
+    dict: each entry is related to single detected driver,
+          key is a config section name, value is a driver name
+
+    """
+    import_drivers_dict = {}
+    bin_dir = os.path.dirname(os.path.realpath(__file__))
+    for module_name in os.listdir(bin_dir):
+        full_path = os.path.join(bin_dir, module_name)
+        if not os.path.isfile(full_path):
+            continue
+        if module_name.find("one-import-") != 0:
+            continue
+        module_loader = importlib.machinery.SourceFileLoader(module_name, full_path)
+        module_spec = importlib.util.spec_from_loader(module_name, module_loader)
+        module = importlib.util.module_from_spec(module_spec)
+        try:
+            module_loader.exec_module(module)
+            if hasattr(module, "get_driver_cfg_section"):
+                section = module.get_driver_cfg_section()
+                import_drivers_dict[section] = module_name
+        except:
+            pass
+    return import_drivers_dict
