@@ -134,6 +134,56 @@ TEST_F(DivTest, Uint8)
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(output_shape));
 }
 
+template <loco::DataType DType> void checkInteger(luci_interpreter::IMemoryManager *memory_manager)
+{
+  using dtype = typename loco::DataTypeImpl<DType>::Type;
+  Shape base_shape = {2, 3, 1, 2};
+  std::vector<Shape> test_shapes{{1, 1, 3, 2}, {1, 3, 1, 2}, {2, 1, 3, 1}, {2, 3, 1, 1}};
+
+  std::vector<std::vector<dtype>> test_outputs = {{5,  6,  2, 0,  10, 3, //
+                                                   10, 0,  4, 5,  20, 0, //
+                                                   0,  0,  0, 2,  0,  0, //
+                                                   2,  0,  1, 10, 5,  0, //
+                                                   2,  3,  1, 0,  5,  1, //
+                                                   18, 20, 7, 0,  37, 10},
+                                                  {5, 6, 4, 5, 0, 0, 2, 0, 1, 0, 37, 10},
+                                                  {5, 7, 4, 6, 2, 3, 10, 0,  8,  0,  4, 0,
+                                                   0, 0, 0, 0, 0, 0, 0,  10, 5,  0,  1, 0,
+                                                   0, 0, 5, 9, 1, 1, 0,  0,  37, 50, 7, 10},
+                                                  {5, 7, 8, 0, 0, 0, 0, 10, 5, 9, 7, 10}};
+  std::vector<dtype> input1_data{20, 30, 40, -17, -4, -7, 11, -31, 10, 19, 75, 100};
+  std::vector<dtype> input2_data{4, 5, 10, -3, 2, 10};
+  for (size_t i = 0; i < test_shapes.size(); ++i)
+  {
+    Tensor input1_tensor = makeInputTensor<DType>(base_shape, input1_data, memory_manager);
+    Tensor input2_tensor = makeInputTensor<DType>(test_shapes[i], input2_data, memory_manager);
+    Tensor output_tensor = makeOutputTensor(DType);
+
+    DivParams params{};
+    params.activation = Activation::RELU;
+
+    Div kernel(&input1_tensor, &input2_tensor, &output_tensor, params);
+    kernel.configure();
+    memory_manager->allocate_memory(output_tensor);
+    kernel.execute();
+
+    EXPECT_THAT(extractTensorData<dtype>(output_tensor), test_outputs[i])
+      << "With shape number " << i;
+  }
+}
+
+TEST_F(DivTest, SInt64)
+{
+  checkInteger<loco::DataType::S64>(_memory_manager.get());
+  SUCCEED();
+}
+
+TEST_F(DivTest, SInt32)
+{
+  checkInteger<loco::DataType::S32>(_memory_manager.get());
+  SUCCEED();
+}
+
 TEST_F(DivTest, Input_Output_Type_NEG)
 {
   Tensor input1_tensor = makeInputTensor<DataType::FLOAT32>({1}, {1.f}, _memory_manager.get());
@@ -149,9 +199,9 @@ TEST_F(DivTest, Input_Output_Type_NEG)
 
 TEST_F(DivTest, Invalid_Input_Type_NEG)
 {
-  Tensor input1_tensor = makeInputTensor<DataType::S64>({1}, {1}, _memory_manager.get());
-  Tensor input2_tensor = makeInputTensor<DataType::S64>({1}, {2}, _memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::S64);
+  Tensor input1_tensor = makeInputTensor<DataType::U64>({1}, {1}, _memory_manager.get());
+  Tensor input2_tensor = makeInputTensor<DataType::U64>({1}, {2}, _memory_manager.get());
+  Tensor output_tensor = makeOutputTensor(DataType::U64);
 
   DivParams params{};
   params.activation = Activation::RELU;
@@ -160,6 +210,19 @@ TEST_F(DivTest, Invalid_Input_Type_NEG)
   kernel.configure();
   _memory_manager->allocate_memory(output_tensor);
   EXPECT_ANY_THROW(kernel.execute());
+}
+
+TEST_F(DivTest, Invalid_Output_Type_NEG)
+{
+  Tensor input1_tensor = makeInputTensor<DataType::S32>({1}, {1}, _memory_manager.get());
+  Tensor input2_tensor = makeInputTensor<DataType::S32>({1}, {2}, _memory_manager.get());
+  Tensor output_tensor = makeOutputTensor(DataType::S64);
+
+  DivParams params{};
+  params.activation = Activation::RELU;
+
+  Div kernel(&input1_tensor, &input2_tensor, &output_tensor, params);
+  EXPECT_ANY_THROW(kernel.configure());
 }
 
 } // namespace
