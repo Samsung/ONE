@@ -374,8 +374,11 @@ def _get_optimization_list(get_name=False):
     return opt_list
 
 
-def _detect_one_import_drivers():
-    """Looks for import drivers, located in same directory as utils module
+def _detect_one_import_drivers(search_path):
+    """Looks for import drivers in given directory
+
+    Args:
+        search_path: path to the directory where to search import drivers
 
     Returns:
     dict: each entry is related to single detected driver,
@@ -383,9 +386,8 @@ def _detect_one_import_drivers():
 
     """
     import_drivers_dict = {}
-    bin_dir = os.path.dirname(os.path.realpath(__file__))
-    for module_name in os.listdir(bin_dir):
-        full_path = os.path.join(bin_dir, module_name)
+    for module_name in os.listdir(search_path):
+        full_path = os.path.join(search_path, module_name)
         if not os.path.isfile(full_path):
             continue
         if module_name.find("one-import-") != 0:

@@ -154,7 +154,8 @@ def main():
     config = _parse_cfg(args)
 
     # verify configuration file
-    import_drivers_dict = _utils._detect_one_import_drivers()
+    bin_dir = os.path.dirname(os.path.realpath(__file__))
+    import_drivers_dict = _utils._detect_one_import_drivers(bin_dir)
     transform_drivers = [
         'one-optimize', 'one-quantize', 'one-pack', 'one-codegen', 'one-profile'
     ]
