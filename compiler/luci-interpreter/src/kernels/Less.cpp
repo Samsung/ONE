@@ -49,6 +49,12 @@ void Less::execute() const
     case DataType::FLOAT32:
       evalFloat();
       break;
+    case DataType::S64:
+      evalInteger<int64_t>();
+      break;
+    case DataType::S32:
+      evalInteger<int32_t>();
+      break;
     case DataType::U8:
       evalQuantized();
       break;
@@ -76,6 +82,29 @@ void Less::evalFloat() const
   {
     tflite::reference_ops::Less(op_params, getTensorShape(x()), x_data, getTensorShape(y()), y_data,
                                 getTensorShape(output()), output_data);
+  }
+}
+
+template <typename T> void Less::evalInteger() const
+{
+  const auto x_data = getTensorData<T>(x());
+  const auto y_data = getTensorData<T>(y());
+  auto output_data = getTensorData<bool>(output());
+
+  tflite::ComparisonParams op_params;
+  op_params.is_broadcast = x()->shape() != y()->shape();
+
+  if (op_params.is_broadcast)
+  {
+    tflite::reference_ops::Broadcast4DSlowLessNoScaling(op_params, getTensorShape(x()), x_data,
+                                                        getTensorShape(y()), y_data,
+                                                        getTensorShape(output()), output_data);
+  }
+  else
+  {
+    tflite::reference_ops::LessNoScaling(op_params, getTensorShape(x()), x_data,
+                                         getTensorShape(y()), y_data, getTensorShape(output()),
+                                         output_data);
   }
 }
 
