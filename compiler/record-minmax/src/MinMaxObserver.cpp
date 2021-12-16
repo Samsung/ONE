@@ -68,9 +68,6 @@ void MinMaxObserver::postTensorWrite(const luci::CircleNode *node,
     // Exceptions that should be processed in backends
     switch (node->opcode())
     {
-      case luci::CircleOpcode::ARG_MAX:
-        // Output of arg_max is the index of the largest value across axes of a tensor.
-        // It always has integer type.
       case luci::CircleOpcode::CAST:
         // Cast is quantized only if it converts <type> -> float.
         // Other cases should be processed in backends.
