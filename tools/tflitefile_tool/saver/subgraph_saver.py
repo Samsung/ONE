@@ -17,14 +17,14 @@
 from .config_saver import ConfigSaver
 
 
-class ModelSaver(object):
-    def __init__(self, model_name, op_parser):
-        self.model_name = model_name
-        self.op_parser = op_parser
+class SubgraphSaver(object):
+    def __init__(self, subg):
+        self.model_name = subg.model_name
+        self.subg = subg
 
     def SaveConfigInfo(self, prefix):
-        print("Save model configuration file")
-        for type_str, oper_list in self.op_parser.operators_per_type.items():
+        print("Save subgraph configuration file")
+        for type_str, oper_list in self.subg.optypes_map.items():
             if prefix:
                 file_name = "{}_{}_{}.config".format(prefix, self.model_name, type_str)
             else:

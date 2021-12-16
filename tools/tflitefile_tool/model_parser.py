@@ -13,16 +13,16 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-import argparse
-from parser.tflite_parser import TFLiteParser
-from printer.subgraph_printer import SubgraphPrinter
-from saver.model_saver import ModelSaver
 '''
 Why is this file named as `model_parser.py` which is same to `parser/model_parser.py`?
 - Until now, users have used by the path `tools/tflitefile_tool/model_parser.py`.
 - Let's change the name to the proper name like `main.py` after the task for revision is done.
 '''
+
+import argparse
+from parser.tflite.tflite_parser import TFLiteParser
+from printer.subgraph_printer import SubgraphPrinter
+from saver.subgraph_saver import SubgraphSaver
 
 
 class MainOption(object):
@@ -64,8 +64,8 @@ class MainOption(object):
             self.save_prefix = args.prefix
 
 
-def PrintModel(option, model_name, op_parser):
-    printer = SubgraphPrinter(option.print_level, op_parser, model_name)
+def PrintSubgraph(option, subg):
+    printer = SubgraphPrinter(option.print_level, subg)
 
     if option.print_all_tensor == False:
         printer.SetPrintSpecificTensors(option.print_tensor_index)
@@ -76,8 +76,8 @@ def PrintModel(option, model_name, op_parser):
     printer.PrintInfo()
 
 
-def SaveModel(option, model_name, op_parser):
-    saver = ModelSaver(model_name, op_parser)
+def SaveSubgraph(option, subg):
+    saver = SubgraphSaver(subg)
 
     if option.save_config == True:
         saver.SaveConfigInfo(option.save_prefix)
@@ -108,12 +108,12 @@ if __name__ == '__main__':
     option = MainOption(args)
 
     # TODO: Call TFLiteParser if file's extension is 'tflite'
-    (subg_list, stats) = TFLiteParser(option.model_file).Parse()
+    subg_list = TFLiteParser(option.model_file).Parse()
 
-    for model_name, op_parser in subg_list:
+    for subg in subg_list:
         if option.save == False:
             # print all of operators or requested objects
-            PrintModel(option, model_name, op_parser)
+            PrintSubgraph(option, subg)
         else:
             # save all of operators in this model
-            SaveModel(option, model_name, op_parser)
+            SaveSubgraph(option, subg)

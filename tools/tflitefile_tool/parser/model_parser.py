@@ -21,5 +21,5 @@ class ModelParser(object):
 
     # to be overriden
     def Parse(self):
-        # Should return (subg_list, stats)
+        # Should return subg_list
         raise NotImplementedError
