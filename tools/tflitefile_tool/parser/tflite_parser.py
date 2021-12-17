@@ -17,13 +17,12 @@
 import tflite.Model
 import tflite.SubGraph
 from ir import graph_stats
-from .model_parser import ModelParser
 from .operator_parser import OperatorParser
 
 
-class TFLiteParser(ModelParser):
+class TFLiteParser(object):
     def __init__(self, model_file):
-        super(TFLiteParser, self).__init__(model_file)
+        self.model_file = model_file
 
     def Parse(self):
         # Generate Model: top structure of tflite model file
