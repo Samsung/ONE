@@ -37,13 +37,18 @@ def ConvertBytesToHuman(n):
     return format_str % dict(symb=SYMBOLS[0], val=n)
 
 
+TENSOR_SYMBOL = "%"
+OPERATOR_SYMBOL = "#"
+BUFFER_SYMBOL = "&"
+
+
 def GetStringTensorIndex(tensors):
     return_string = []
     return_string.append("[")
     for idx in range(len(tensors)):
         if idx != 0:
             return_string.append(", ")
-        return_string.append(str(tensors[idx].index))
+        return_string.append(TENSOR_SYMBOL + str(tensors[idx].index))
     return_string.append("]")
     return "".join(return_string)
 
@@ -65,15 +70,16 @@ def GetStringShape(tensor):
 def GetStringTensor(tensor):
     info = ""
     if tensor.index < 0:
-        info = "Tensor {0:4}".format(tensor.index)
+        info = "{:5}".format(TENSOR_SYMBOL + str(tensor.index))
     else:
         shape_str = GetStringShape(tensor)
         type_name = tensor.type_name
         shape_name = tensor.tensor_name
         memory_size = ConvertBytesToHuman(tensor.memory_size)
 
-        buffer_str = "| "
+        buffer_str = "("
         if tensor.buffer is not None:
+            buffer_str += "{:5}: ".format(BUFFER_SYMBOL + str(tensor.buffer_index))
             # if too big, just skip it.
             if tensor.buffer.size > 4:
                 buffer_str += "".join(['[' for _ in range(tensor.buffer.ndim)])
@@ -84,55 +90,62 @@ def GetStringTensor(tensor):
                     tensor.buffer, precision=3, separator=', ', threshold=4, edgeitems=2)
         else:
             buffer_str += "Empty"
+        buffer_str += ")"
 
-        info = "Tensor {:4} : buffer {:25} | {:7} | Memory {:6} | Shape {} ({})".format(
-            tensor.index, buffer_str, type_name, memory_size, shape_str, shape_name)
+        info = "{:5} : buffer {:25} | {:7} | Memory {:6} | Shape {} ({})".format(
+            TENSOR_SYMBOL + str(tensor.index), buffer_str, type_name, memory_size,
+            shape_str, shape_name)
     return info
 
 
 class StringBuilder(object):
-    def __init__(self):
-        pass
+    def __init__(self, spacious_str="  "):
+        self.spacious_str = spacious_str
 
     def GraphStats(self, stats):
         results = []
 
-        results.append("Number of all operator types: {}".format(len(stats.op_counts)))
+        results.append("{:38}: {:4}".format("Number of all operator types",
+                                            len(stats.op_counts)))
 
         # op type stats
         for op_name in sorted(stats.op_counts.keys()):
             occur = stats.op_counts[op_name]
-            optype_info_str = "\t{:38}: {:4}".format(op_name, occur)
+            optype_info_str = "{:38}: {:4}".format(self.spacious_str + op_name, occur)
             results.append(optype_info_str)
 
-        summary_str = "{0:46}: {1:4}".format("Number of all operators",
-                                             sum(stats.op_counts.values()))
+        summary_str = "{:38}: {:4}".format("Number of all operators",
+                                           sum(stats.op_counts.values()))
         results.append(summary_str)
-        results.append('\n')
+        results.append('')
 
         # memory stats
         results.append("Expected TOTAL  memory: {}".format(
             ConvertBytesToHuman(stats.total_memory)))
         results.append("Expected FILLED memory: {}".format(
             ConvertBytesToHuman(stats.filled_memory)))
-        results.append('\n')
 
         return "\n".join(results)
 
     def Operator(self, operator):
         results = []
-        results.append("Operator {}: {}".format(operator.index, operator.op_name))
-        results.append("\tFused Activation: {}".format(operator.activation))
-        results.append("\tInput Tensors" + GetStringTensorIndex(operator.inputs))
+        results.append("{:5}: {}".format(OPERATOR_SYMBOL + str(operator.index),
+                                         operator.op_name))
+        results.append("{}Fused Activation: {}".format(self.spacious_str,
+                                                       operator.activation))
+        results.append("{}Input Tensors{}".format(self.spacious_str,
+                                                  GetStringTensorIndex(operator.inputs)))
         for tensor in operator.inputs:
-            results.append(self.Tensor(tensor, "\t\t"))
-        results.append("\tOutput Tensors" + GetStringTensorIndex(operator.outputs))
+            results.append(self.Tensor(tensor, self.spacious_str + self.spacious_str))
+        results.append("{}Output Tensors{}".format(self.spacious_str,
+                                                   GetStringTensorIndex(
+                                                       operator.outputs)))
         for tensor in operator.outputs:
-            results.append(self.Tensor(tensor, "\t\t"))
+            results.append(self.Tensor(tensor, self.spacious_str + self.spacious_str))
         # operator option
         # Some operations does not have option. In such case no option is printed
         if operator.options != None and operator.options != "":
-            results.append(self.Option(operator.options, "\t"))
+            results.append(self.Option(operator.options, self.spacious_str))
         return "\n".join(results)
 
     def Tensor(self, tensor, depth_str=""):
@@ -143,5 +156,5 @@ class StringBuilder(object):
     def Option(self, options_str, depth_str=""):
         results = []
         results.append("{}Options".format(depth_str))
-        results.append("{}\t{}".format(depth_str, options_str))
+        results.append("{}{}{}".format(depth_str, self.spacious_str, options_str))
         return "\n".join(results)

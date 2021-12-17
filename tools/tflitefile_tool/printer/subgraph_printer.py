@@ -19,9 +19,10 @@ from .string_builder import StringBuilder
 
 
 class SubgraphPrinter(object):
-    def __init__(self, verbose, subg):
+    def __init__(self, verbose, subg, spacious_str="  "):
         self.verbose = verbose
         self.subg = subg
+        self.spacious_str = spacious_str
         self.print_all_tensor = True
         self.print_tensor_index_list = None
         self.print_all_operator = True
@@ -39,9 +40,16 @@ class SubgraphPrinter(object):
 
     def PrintInfo(self):
         if self.print_all_tensor == True and self.print_all_operator == True:
-            self.PrintModelInfo()
-            self.PrintAllOperatorsInList()
+            print("[" + self.subg.model_name + "]")
+            print('')
+            if (self.verbose > 0):
+                self.PrintModelInfo()
+                print('')
+                self.PrintAllOperatorsInList()
             self.PrintGraphStats()
+
+        if (self.verbose < 1):
+            return
 
         if self.print_all_tensor == False:
             print('')
@@ -54,48 +62,36 @@ class SubgraphPrinter(object):
             print('')
 
     def PrintModelInfo(self):
-        print("[" + self.subg.model_name + "]\n")
-        if self.verbose > 0:
-            model_inputs = []
-            for t in self.subg.inputs:
-                model_inputs.append(t.index)
-            model_outputs = []
-            for t in self.subg.outputs:
-                model_outputs.append(t.index)
-            print(self.subg.model_name + " input tensors: " + str(model_inputs))
-            self.PrintSpecificTensors(model_inputs, "\t")
-            print(self.subg.model_name + " output tensors: " + str(model_outputs))
-            self.PrintSpecificTensors(model_outputs, "\t")
-        print('')
+        model_inputs = []
+        for t in self.subg.inputs:
+            model_inputs.append(t.index)
+        model_outputs = []
+        for t in self.subg.outputs:
+            model_outputs.append(t.index)
+        print(self.subg.model_name + " input tensors: " + str(model_inputs))
+        self.PrintSpecificTensors(model_inputs, "    ")
+        print(self.subg.model_name + " output tensors: " + str(model_outputs))
+        self.PrintSpecificTensors(model_outputs, "    ")
 
     def PrintAllOperatorsInList(self):
-        if (self.verbose < 1):
-            return
-
         for index, operator in self.subg.operators_map.items():
-            info = StringBuilder().Operator(operator)
+            info = StringBuilder(self.spacious_str).Operator(operator)
             print(info)
-            print('')
-
-        print('')
+            print()
 
     def PrintSpecificTensors(self, print_tensor_index_list, depth_str=""):
-        if (self.verbose < 1):
-            return
-
         for index in print_tensor_index_list:
             tensor = self.subg.tensors_map[index]
-            info = StringBuilder().Tensor(tensor, depth_str)
+            info = StringBuilder(self.spacious_str).Tensor(tensor, depth_str)
             print(info)
 
     def PrintSpecificOperators(self, print_operator_index_list):
         for index in print_operator_index_list:
             operator = self.subg.operators_map[index]
-            info = StringBuilder().Operator(operator)
+            info = StringBuilder(self.spacious_str).Operator(operator)
             print(info)
-            print('')
 
     def PrintGraphStats(self):
         stats = graph_stats.CalcGraphStats(self.subg)
-        info = StringBuilder().GraphStats(stats)
+        info = StringBuilder(self.spacious_str).GraphStats(stats)
         print(info)

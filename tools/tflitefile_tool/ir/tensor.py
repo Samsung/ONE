@@ -25,6 +25,7 @@ class Tensor(object):
         self._index = -1
         self._tensor_name = ""
         self._buffer = None
+        self._buffer_index = -1
         self._type_name = ""
         self._shape = []
         self._memory_size = -1
@@ -65,6 +66,19 @@ class Tensor(object):
     @buffer.setter
     def buffer(self, value):
         self._buffer = value
+
+    '''buffer_index'''
+
+    @property
+    def buffer_index(self):
+        '''Tensor's int type buffer index'''
+        return self._buffer_index
+
+    @buffer_index.setter
+    def buffer_index(self, value):
+        if not isinstance(value, int):
+            raise TypeError("must be set to an integer")
+        self._buffer_index = value
 
     '''type_name'''
 

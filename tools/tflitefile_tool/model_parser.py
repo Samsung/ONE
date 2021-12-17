@@ -29,10 +29,10 @@ class MainOption(object):
     def __init__(self, args):
         self.model_file = args.input_file
 
-        # Set print level (0 ~ 1)
+        # Set print level (0 ~ 2)
         self.print_level = args.verbose
-        if (args.verbose > 1):
-            self.print_level = 1
+        if (args.verbose > 2):
+            self.print_level = 2
         if (args.verbose < 0):
             self.print_level = 0
 

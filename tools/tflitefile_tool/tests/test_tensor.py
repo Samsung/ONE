@@ -42,6 +42,11 @@ class TensorTestCase(unittest.TestCase):
         t.buffer = o
         self.assertEqual(t.buffer, o)
 
+    def test_buffer_index(self):
+        t = Tensor()
+        t.buffer_index = 1000
+        self.assertEqual(t.buffer_index, 1000)
+
     def test_type_name(self):
         t = Tensor()
         t.type_name = "FLOAT32"

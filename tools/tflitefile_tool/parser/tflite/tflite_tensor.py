@@ -89,6 +89,7 @@ class TFLiteTensor(Tensor):
         else:
             self.type_name = "NONE"
 
+        self.buffer_index = tf_tensor.Buffer()
         if (tf_buffer.DataLength() > 0):
             self.buffer = ConvertProperNPArrayType(tf_buffer.DataAsNumpy(),
                                                    tf_tensor.ShapeAsNumpy(),
