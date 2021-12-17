@@ -19,7 +19,8 @@ import unittest
 
 # Python doesn't have const var but handle these as const
 # It's meaning that DO NOT MODIFY these vars
-TEST_MODEL_DIR = "../../nnpackage/examples/v1.0.0/add"
+THIS_FILE_DIR = os.path.dirname(os.path.abspath(__file__))
+TEST_MODEL_DIR = os.path.join(THIS_FILE_DIR, "../../../nnpackage/examples/v1.0.0/add")
 TEST_MODEL_PATH = os.path.join(TEST_MODEL_DIR, "add.tflite")
 
 
