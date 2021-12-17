@@ -161,6 +161,60 @@ TEST_F(MulTest, SInt16)
   }
 }
 
+TEST_F(MulTest, Input_Output_Type_NEG)
+{
+  Tensor input1_tensor = makeInputTensor<DataType::FLOAT32>({1}, {1.f}, _memory_manager.get());
+  Tensor input2_tensor = makeInputTensor<DataType::S32>({1}, {2}, _memory_manager.get());
+  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
+
+  MulParams params{};
+  params.activation = Activation::RELU;
+
+  Mul kernel(&input1_tensor, &input2_tensor, &output_tensor, params);
+  EXPECT_ANY_THROW(kernel.configure());
+}
+
+TEST_F(MulTest, Invalid_Output_Type_NEG)
+{
+  Tensor input1_tensor = makeInputTensor<DataType::S64>({1}, {1}, _memory_manager.get());
+  Tensor input2_tensor = makeInputTensor<DataType::S64>({1}, {2}, _memory_manager.get());
+  Tensor output_tensor = makeOutputTensor(DataType::S32);
+
+  MulParams params{};
+  params.activation = Activation::RELU;
+
+  Mul kernel(&input1_tensor, &input2_tensor, &output_tensor, params);
+  EXPECT_ANY_THROW(kernel.configure());
+}
+
+TEST_F(MulTest, Invalid_Input_Type_NEG)
+{
+  Tensor input1_tensor = makeInputTensor<DataType::U64>({1}, {1}, _memory_manager.get());
+  Tensor input2_tensor = makeInputTensor<DataType::U64>({1}, {2}, _memory_manager.get());
+  Tensor output_tensor = makeOutputTensor(DataType::U64);
+
+  MulParams params{};
+  params.activation = Activation::RELU;
+
+  Mul kernel(&input1_tensor, &input2_tensor, &output_tensor, params);
+  kernel.configure();
+  _memory_manager->allocate_memory(output_tensor);
+  EXPECT_ANY_THROW(kernel.execute());
+}
+
+TEST_F(MulTest, Invalid_Quantization_NEG)
+{
+  Tensor input1_tensor = makeInputTensor<DataType::S16>({1}, {1}, _memory_manager.get());
+  Tensor input2_tensor = makeInputTensor<DataType::S16>({1}, {2}, _memory_manager.get());
+  Tensor output_tensor = makeOutputTensor(DataType::S16);
+
+  MulParams params{};
+  params.activation = Activation::NONE;
+
+  Mul kernel(&input1_tensor, &input2_tensor, &output_tensor, params);
+  EXPECT_ANY_THROW(kernel.configure());
+}
+
 } // namespace
 } // namespace kernels
 } // namespace luci_interpreter
