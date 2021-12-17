@@ -14,12 +14,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from parser.tflite.tflite_parser import TFLiteParser
+
 
 class ModelParser(object):
     def __init__(self, model_file):
-        self.model_file = model_file
+        self.parser = None
+        # model_file: _io.BufferedReader
+        if model_file.name.endswith("tflite"):
+            self.parser = TFLiteParser(model_file)
+        # TODO: Add more parser
 
-    # to be overriden
     def Parse(self):
-        # Should return subg_list
-        raise NotImplementedError
+        if self.parser is None:
+            raise NotImplementedError
+        return self.parser.Parse()

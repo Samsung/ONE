@@ -14,13 +14,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import tflite.Operator
-import tflite.OperatorCode
-
 from ir.operator import Operator
 from .tflite_enum_str_maps import EnumStrMaps
 from .tflite_option import OptionLoader, GetStringOptions
-from printer.string_builder import StringBuilder
 
 
 class TFLiteOperator(Operator):

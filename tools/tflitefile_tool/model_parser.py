@@ -20,7 +20,7 @@ Why is this file named as `model_parser.py` which is same to `parser/model_parse
 '''
 
 import argparse
-from parser.tflite.tflite_parser import TFLiteParser
+from parser.model_parser import ModelParser
 from printer.subgraph_printer import SubgraphPrinter
 from saver.subgraph_saver import SubgraphSaver
 
@@ -107,9 +107,7 @@ if __name__ == '__main__':
     args = arg_parser.parse_args()
     option = MainOption(args)
 
-    # TODO: Call TFLiteParser if file's extension is 'tflite'
-    subg_list = TFLiteParser(option.model_file).Parse()
-
+    subg_list = ModelParser(option.model_file).Parse()
     for subg in subg_list:
         if option.save == False:
             # print all of operators or requested objects

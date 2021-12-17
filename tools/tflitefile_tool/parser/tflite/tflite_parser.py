@@ -15,14 +15,9 @@
 # limitations under the License.
 
 import tflite.Model
-import tflite.SubGraph
-import tflite.Operator
-import tflite.OperatorCode
-import tflite.BuiltinOperator
 from .tflite_subgraph import TFLiteSubgraph
 from .tflite_operator import TFLiteOperator, EnumStrMaps
 from .tflite_tensor import TFLiteTensor, SetTensorTypeStr
-from ..model_parser import ModelParser
 
 
 class TFLiteSubgraphParser(object):
@@ -84,10 +79,9 @@ class TFLiteSubgraphParser(object):
         return return_list
 
 
-# ModelParser parses a model with SubgraphParser
-class TFLiteParser(ModelParser):
+class TFLiteParser(object):
     def __init__(self, model_file):
-        super(TFLiteParser, self).__init__(model_file)
+        self.model_file = model_file
 
     def Parse(self):
         # Generate Model: top structure of tflite model file

@@ -14,13 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import tflite.Operator
-import tflite.OperatorCode
-import tflite.BuiltinOperator
-import tflite.ActivationFunctionType
-import tflite.BuiltinOptions
 from ir.subgraph import Subgraph
-from .tflite_tensor import TFLiteTensor
 
 
 class TFLiteSubgraph(Subgraph):
