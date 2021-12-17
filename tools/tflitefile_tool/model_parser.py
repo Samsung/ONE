@@ -15,7 +15,7 @@
 # limitations under the License.
 
 import argparse
-from parser.tflite_parser import TFLiteParser
+from parser.model_parser import ModelParser
 from printer.subgraph_printer import SubgraphPrinter
 from saver.model_saver import ModelSaver
 '''
@@ -107,8 +107,7 @@ if __name__ == '__main__':
     args = arg_parser.parse_args()
     option = MainOption(args)
 
-    # TODO: Call TFLiteParser if file's extension is 'tflite'
-    (subg_list, stats) = TFLiteParser(option.model_file).Parse()
+    (subg_list, stats) = ModelParser(option.model_file).Parse()
 
     for model_name, op_parser in subg_list:
         if option.save == False:
