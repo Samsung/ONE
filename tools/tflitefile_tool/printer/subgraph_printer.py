@@ -42,13 +42,15 @@ class SubgraphPrinter(object):
         if self.print_all_tensor == True and self.print_all_operator == True:
             print("[" + self.subg.model_name + "]")
             print('')
-            if (self.verbose > 0):
+            if self.verbose > 0:
                 self.PrintModelInfo()
                 print('')
-                self.PrintAllOperatorsInList()
+                self.PrintOperators()
+            if self.verbose == 2:
+                self.PrintBuffers()
             self.PrintGraphStats()
 
-        if (self.verbose < 1):
+        if self.verbose == 0:
             return
 
         if self.print_all_tensor == False:
@@ -73,7 +75,7 @@ class SubgraphPrinter(object):
         print(self.subg.model_name + " output tensors: " + str(model_outputs))
         self.PrintSpecificTensors(model_outputs, "    ")
 
-    def PrintAllOperatorsInList(self):
+    def PrintOperators(self):
         for index, operator in self.subg.operators_map.items():
             info = StringBuilder(self.spacious_str).Operator(operator)
             print(info)
@@ -95,3 +97,10 @@ class SubgraphPrinter(object):
         stats = graph_stats.CalcGraphStats(self.subg)
         info = StringBuilder(self.spacious_str).GraphStats(stats)
         print(info)
+
+    def PrintBuffers(self):
+        for index, tensor in self.subg.tensors_map.items():
+            if tensor.buffer is not None:
+                info = StringBuilder(self.spacious_str).Buffer(tensor)
+                print(info)
+                print()

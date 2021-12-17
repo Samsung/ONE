@@ -77,25 +77,39 @@ def GetStringTensor(tensor):
         shape_name = tensor.tensor_name
         memory_size = ConvertBytesToHuman(tensor.memory_size)
 
-        buffer_str = "("
+        buffer = ["("]
         if tensor.buffer is not None:
-            buffer_str += "{:5}: ".format(BUFFER_SYMBOL + str(tensor.buffer_index))
+            buffer.append("{:5}: ".format(BUFFER_SYMBOL + str(tensor.buffer_index)))
             # if too big, just skip it.
             if tensor.buffer.size > 4:
-                buffer_str += "".join(['[' for _ in range(tensor.buffer.ndim)])
-                buffer_str += " ... "
-                buffer_str += "".join([']' for _ in range(tensor.buffer.ndim)])
+                buffer.append("".join(['[' for _ in range(tensor.buffer.ndim)]))
+                buffer.append(" ... ")
+                buffer.append("".join([']' for _ in range(tensor.buffer.ndim)]))
             else:
-                buffer_str += np.array2string(
-                    tensor.buffer, precision=3, separator=', ', threshold=4, edgeitems=2)
+                buffer.append(
+                    np.array2string(
+                        tensor.buffer,
+                        precision=3,
+                        separator=', ',
+                        threshold=4,
+                        edgeitems=2))
         else:
-            buffer_str += "Empty"
-        buffer_str += ")"
+            buffer.append("Empty")
+        buffer.append(")")
+        buffer_str = "".join(buffer)
 
         info = "{:5} : buffer {:25} | {:7} | Memory {:6} | Shape {} ({})".format(
             TENSOR_SYMBOL + str(tensor.index), buffer_str, type_name, memory_size,
             shape_str, shape_name)
     return info
+
+
+def GetStringBuffer(tensor):
+    buffer = []
+    buffer.append("Buffer {:5}".format(BUFFER_SYMBOL + str(tensor.buffer_index)))
+    buffer.append("\n")
+    buffer.append(np.array2string(tensor.buffer, separator=', '))
+    return "".join(buffer)
 
 
 class StringBuilder(object):
@@ -158,3 +172,6 @@ class StringBuilder(object):
         results.append("{}Options".format(depth_str))
         results.append("{}{}{}".format(depth_str, self.spacious_str, options_str))
         return "\n".join(results)
+
+    def Buffer(self, tensor, depth_str=""):
+        return "{}{}".format(depth_str, GetStringBuffer(tensor))
