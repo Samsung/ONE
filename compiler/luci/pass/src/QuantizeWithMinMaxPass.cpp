@@ -1215,9 +1215,10 @@ void quantize_one_hot_indices(luci::CircleOneHot *one_hot, loco::DataType quant_
 
   // check indices can be represented by quantized values range
   assert(quant_type == loco::DataType::U8 || quant_type == loco::DataType::S16);
-  if (quant_type == loco::DataType::U8 && std::numeric_limits<uint8_t>::max() < depth_value)
+  if (quant_type == loco::DataType::U8 && std::numeric_limits<uint8_t>::max() + 1 < depth_value)
     throw std::runtime_error("Impossible to quantize input range with quantization type");
-  else if (quant_type == loco::DataType::S16 && std::numeric_limits<int16_t>::max() < depth_value)
+  else if (quant_type == loco::DataType::S16 &&
+           std::numeric_limits<int16_t>::max() + 1 < depth_value)
     throw std::runtime_error("Impossible to quantize input range with quantization type");
 
   // skip if already quantized
