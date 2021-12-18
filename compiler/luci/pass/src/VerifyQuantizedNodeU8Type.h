@@ -231,8 +231,7 @@ private:
   bool visit(const luci::CircleOneHot *node)
   {
     RETURN_FALSE_UNLESS(has_type(node, loco::DataType::U8));
-    RETURN_FALSE_UNLESS(has_type(node->indices(), loco::DataType::S32) ||
-                        has_type(node->indices(), loco::DataType::S64));
+    RETURN_FALSE_UNLESS(has_type(node->indices(), loco::DataType::U8));
     RETURN_FALSE_UNLESS(has_type(node->depth(), loco::DataType::S32));
     RETURN_FALSE_UNLESS(has_type(node->on_value(), loco::DataType::U8));
     RETURN_FALSE_UNLESS(has_type(node->off_value(), loco::DataType::U8));

@@ -246,6 +246,7 @@ private:
 
   bool visit(const luci::CircleOneHot *node)
   {
+    RETURN_FALSE_UNLESS(is_lwq(node->indices()));
     RETURN_FALSE_UNLESS(is_lwq(node->off_value()));
     RETURN_FALSE_UNLESS(is_lwq(node->on_value()));
     RETURN_FALSE_UNLESS(is_lwq(node));

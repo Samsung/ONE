@@ -1194,6 +1194,60 @@ void propagate_one_hot_quantparam(luci::CircleOneHot *one_hot, loco::DataType qu
   quant_input(&CircleOneHot::off_value, &CircleOneHot::off_value);
 }
 
+void quantize_one_hot_indices(luci::CircleOneHot *one_hot, loco::DataType quant_type)
+{
+  auto *indices = loco::must_cast<luci::CircleNode *>(one_hot->indices());
+
+  // skip if indices has not only OneHot successors
+  {
+    auto const succs = loco::succs(indices);
+    auto is_one_hot = [](auto *node) { return dynamic_cast<CircleOneHot *>(node) != nullptr; };
+    if (not std::all_of(begin(succs), end(succs), is_one_hot))
+      return;
+  }
+
+  // define depth of OneHot
+  auto const *depth_node = dynamic_cast<luci::CircleConst *>(one_hot->depth());
+  if (depth_node == nullptr)
+    throw std::runtime_error("Non const OneHot's depth is unsupported.");
+  assert(depth_node->dtype() == loco::DataType::S32);
+  auto const depth_value = depth_node->scalar<loco::DataType::S32>();
+
+  // check indices can be represented by quantized values range
+  assert(quant_type == loco::DataType::U8 || quant_type == loco::DataType::S16);
+  if (quant_type == loco::DataType::U8 && std::numeric_limits<uint8_t>::max() < depth_value)
+    throw std::runtime_error("Impossible to quantize input range with quantization type");
+  else if (quant_type == loco::DataType::S16 && std::numeric_limits<int16_t>::max() < depth_value)
+    throw std::runtime_error("Impossible to quantize input range with quantization type");
+
+  // skip if already quantized
+  if (indices->quantparam())
+    return;
+
+  // not quantized indices must be integer
+  assert(indices->dtype() == loco::DataType::S32 || indices->dtype() == loco::DataType::S64);
+
+  // define quantpara of indices
+  auto quantparam = std::make_unique<luci::CircleQuantParam>();
+  {
+    quantparam->scale = {1.f};
+    quantparam->zerop = {0};
+  }
+
+  // quantize indices
+  indices->quantparam(std::move(quantparam));
+  indices->dtype(quant_type);
+}
+
+void quantize_one_hot_inputs(luci::CircleOneHot *one_hot, loco::DataType quant_type)
+{
+  // propagate OneHot's quantparam to float inputs
+  propagate_one_hot_quantparam(one_hot, quant_type);
+
+  // quantize integer input with quantization datatype without values modification
+  quantize_one_hot_indices(one_hot, quant_type);
+}
+
 /**
  * @brief Quantize const input tensors using min/max of const values
  */
@@ -1314,10 +1368,10 @@ void quantize_const_inputs(luci::CircleNode *node, loco::DataType output_type)
       break;
 
     case luci::CircleOpcode::ONE_HOT:
-      // Third and forth constant inputs are quantized
-      // First and second input should not be quantized (e.g., indices, depth)
-      // Quant params are propagated from output to inputs
-      propagate_one_hot_quantparam(loco::must_cast<CircleOneHot *>(node), output_type);
+      // Third and forth inputs are quantized with OneHot's quantparam (e.g on_value, off_value)
+      // First input should be quantized with same integer values (e.g. indices)
+      // Second input should not be quantized (e.g. depth)
+      quantize_one_hot_inputs(loco::must_cast<luci::CircleOneHot *>(node), output_type);
       break;
 
     default:

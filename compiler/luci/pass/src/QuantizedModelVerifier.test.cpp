@@ -195,7 +195,12 @@ void set_minmax_to_non_const(loco::Graph *g, float min, float max)
     if (splitv_node != nullptr)
       continue;
 
+    // Min/Max is not recorded for integer nodes
+    // See MinMaxObserver.cpp in record_minmax module
     auto circle_node = loco::must_cast<luci::CircleNode *>(node);
+    if (circle_node->dtype() == loco::DataType::S32 || circle_node->dtype() == loco::DataType::S64)
+      continue;
+
     auto qparam = std::make_unique<luci::CircleQuantParam>();
     {
       qparam->min.emplace_back(min);
@@ -800,7 +805,9 @@ template <Type indexT> class OneHotTestGraph final : public SimpleTestGraph
 public:
   void init(void) override
   {
-    TestIOGraph::init({32}, {32, 10});
+    const int32_t depth_value = 10;
+
+    TestIOGraph::init({32}, {32, depth_value});
     {
       // input dtype is float by default, but OneHot's input should have indexType (s32/s64)
       input()->dtype(indexT);
@@ -809,6 +816,8 @@ public:
     _depth = g()->nodes()->template create<luci::CircleConst>();
     {
       _depth->dtype(loco::DataType::S32);
+      _depth->template size<loco::DataType::S32>(1);
+      _depth->template scalar<loco::DataType::S32>() = depth_value;
     }
 
     _on_value = g()->nodes()->template create<luci::CircleConst>();
