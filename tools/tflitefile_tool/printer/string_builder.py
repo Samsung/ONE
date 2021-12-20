@@ -14,7 +14,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-SYMBOLS = ['B', 'K', 'M', 'G', 'T']
+UNIT_SYMBOLS = ['B', 'K', 'M', 'G', 'T']
+CHAR_SYMBOLS = {'operator': '#', 'tensor': '%', 'buffer': '&'}
 
 
 def ConvertBytesToHuman(n):
@@ -24,15 +25,15 @@ def ConvertBytesToHuman(n):
 
     format_str = "%(val)3.1f%(symb)s"
     prefix = {}
-    for i, s in enumerate(SYMBOLS[1:]):
+    for i, s in enumerate(UNIT_SYMBOLS[1:]):
         prefix[s] = 1 << (i + 1) * 10
 
-    for symbol in reversed(SYMBOLS[1:]):
+    for symbol in reversed(UNIT_SYMBOLS[1:]):
         if n >= prefix[symbol]:
             v = float(n) / prefix[symbol]
             return format_str % dict(symb=symbol, val=v)
 
-    return format_str % dict(symb=SYMBOLS[0], val=n)
+    return format_str % dict(symb=UNIT_SYMBOLS[0], val=n)
 
 
 def GetStringTensorIndex(tensors):
@@ -41,7 +42,7 @@ def GetStringTensorIndex(tensors):
     for idx in range(len(tensors)):
         if idx != 0:
             return_string.append(", ")
-        return_string.append(str(tensors[idx].tensor_idx))
+        return_string.append(CHAR_SYMBOLS['tensor'] + str(tensors[idx].tensor_idx))
     return_string.append("]")
     return "".join(return_string)
 
@@ -66,7 +67,7 @@ def GetStringShape(tensor):
 def GetStringTensor(tensor):
     info = ""
     if tensor.tensor_idx < 0:
-        info = "Tensor {0:4}".format(tensor.tensor_idx)
+        info = "{0:5}".format(CHAR_SYMBOLS['tensor'] + str(tensor.tensor_idx))
     else:
         buffer_idx = tensor.tf_tensor.Buffer()
         buffer_str = "Empty" if buffer_idx == 0 else str(buffer_idx)
@@ -82,9 +83,10 @@ def GetStringTensor(tensor):
 
         memory_size = ConvertBytesToHuman(tensor.memory_size)
 
-        info = "Tensor {:4} : buffer {:5} | {} | {:7} | Memory {:6} | Shape {} ({})".format(
-            tensor.tensor_idx, buffer_str, isEmpty, type_name, memory_size, shape_str,
-            shape_name)
+        info = "{:5} : buffer {:5} | {} | {:7} | Memory {:6} | Shape {} ({})".format(
+            CHAR_SYMBOLS['tensor'] + str(tensor.tensor_idx),
+            CHAR_SYMBOLS['buffer'] + buffer_str, isEmpty, type_name, memory_size,
+            shape_str, shape_name)
     return info
 
 
@@ -134,8 +136,8 @@ def GetStringOption(op_name, options):
 
 
 class StringBuilder(object):
-    def __init__(self, verbose):
-        self.verbose = verbose
+    def __init__(self):
+        pass
 
     def GraphStats(self, stats):
         results = []
@@ -145,10 +147,10 @@ class StringBuilder(object):
         # op type stats
         for op_name in sorted(stats.op_counts.keys()):
             occur = stats.op_counts[op_name]
-            optype_info_str = "\t{:38}: {:4}".format(op_name, occur)
+            optype_info_str = "  {:38}: {:4}".format(op_name, occur)
             results.append(optype_info_str)
 
-        summary_str = "{0:46}: {1:4}".format("Number of all operators",
+        summary_str = "{0:40}: {1:4}".format("Number of all operators",
                                              sum(stats.op_counts.values()))
         results.append(summary_str)
         results.append('\n')
@@ -162,46 +164,34 @@ class StringBuilder(object):
 
         return "\n".join(results)
 
-    def Operator(self, operator):
-        if (self.verbose < 1):
-            return None
-
+    def Operator(self, operator, depth_str=""):
         results = []
-        results.append("Operator {}: {}".format(operator.operator_idx,
-                                                operator.opcode_str))
-        results.append("\tFused Activation: {}".format(operator.fused_activation))
-        results.append("\tInput Tensors" + GetStringTensorIndex(operator.inputs))
+        results.append("{}{} {}".format(
+            depth_str, CHAR_SYMBOLS['operator'] + str(operator.operator_idx),
+            operator.opcode_str))
+        results.append("{}  Fused Activation: {}".format(depth_str,
+                                                         operator.fused_activation))
+        results.append("{}  Input Tensors{}".format(depth_str,
+                                                    GetStringTensorIndex(
+                                                        operator.inputs)))
         for tensor in operator.inputs:
-            results.append(self.Tensor(tensor, "\t\t"))
-        results.append("\tOutput Tensors" + GetStringTensorIndex(operator.outputs))
+            results.append(self.Tensor(tensor, depth_str + "    "))
+        results.append("{}  Output Tensors{}".format(
+            depth_str, GetStringTensorIndex(operator.outputs)))
         for tensor in operator.outputs:
-            results.append(self.Tensor(tensor, "\t\t"))
+            results.append(self.Tensor(tensor, depth_str + "    "))
         # operator option
         # Some operations does not have option. In such case no option is printed
-        option_string = self.Option(operator.opcode_str, operator.options, "\t")
-        if option_string is not None:
-            results.append(option_string)
+        if operator.options != None:
+            option_str = GetStringOption(operator.opcode_str, operator.options)
+            if option_str != None:
+                results.append("{}  Options".format(depth_str))
+                results.append("{}    {}".format(depth_str, option_str))
         return "\n".join(results)
 
     def Tensor(self, tensor, depth_str=""):
-        if (self.verbose < 1):
-            return None
-
         results = []
         if depth_str != "":
             results.append(depth_str)
         results.append(GetStringTensor(tensor))
         return "".join(results)
-
-    def Option(self, op_name, options, tab=""):
-        if self.verbose < 1 or options == 0:
-            return None
-
-        option_str = GetStringOption(op_name, options)
-        if option_str is None:
-            return None
-
-        results = [option_str]
-        results.append("{}Options".format(tab))
-        results.append("{}\t{}".format(tab, option_str))
-        return "\n".join(results)
