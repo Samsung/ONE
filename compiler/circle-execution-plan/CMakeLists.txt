@@ -4,7 +4,7 @@ set(SOURCES
         src/ExecutionOrderEstimator.cpp
         src/ExecutionPlanner.h
         src/ExecutionOrderEstimator.h
-        src/NodeOrderInform.h
+        src/ExecutionPlanHelper.h
         )
 
 add_executable(circle_execution_plan "${SOURCES}")

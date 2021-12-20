@@ -24,65 +24,51 @@ namespace
 class Frame final
 {
 public:
-  Frame(loco::Node *ptr) : _ptr{ptr}, _pos{-1}
+  explicit Frame(loco::Node *ptr) : _ptr{ptr}, _pos{-1}
   {
     // DO NOTHING
   }
 
 public:
-  loco::Node *ptr(void) const { return _ptr; }
-  int64_t pos(void) const { return _pos; }
+  loco::Node *ptr() const { return _ptr; }
+  int64_t pos() const { return _pos; }
 
-  void advance(void) { _pos += 1; }
+  void advance() { _pos += 1; }
 
 private:
   loco::Node *_ptr = nullptr;
   int64_t _pos = -1;
 };
 
-bool isExecutableNode(const luci::CircleNode *node)
+// This function expects a vector of unique sorted (in increasing order) values (without
+// duplicates). It tries to find new permutation of vector's values and if it finds it returns true,
+// else returns false
+bool nextPermutation(std::vector<uint32_t> &vector)
 {
-  switch (node->opcode())
-  {
-      // These nodes denote inputs / outputs of a graph.
-    case luci::CircleOpcode::CIRCLECONST:
-    case luci::CircleOpcode::CIRCLEINPUT:
-    case luci::CircleOpcode::CIRCLEOUTPUT:
-    case luci::CircleOpcode::CIRCLEOUTPUTEXCLUDE:
-      // The following nodes denote outputs of multiple-output nodes.
-    case luci::CircleOpcode::CIRCLEIFOUT:
-    case luci::CircleOpcode::CIRCLESPLITOUT:
-    case luci::CircleOpcode::CIRCLEUNPACKOUT:
-    case luci::CircleOpcode::CIRCLEWHILEOUT:
-      return false;
-    default:
-      return true;
-  }
-}
+  auto n = static_cast<int32_t>(vector.size());
 
-bool NextSet(std::vector<uint32_t> &vector)
-{
-  int n = vector.size();
-  int j;
-  do
-  {
-    j = n - 2;
-    while (j != -1 && vector[j] >= vector[j + 1])
-      j--;
+  if (n == 0)
+    return false;
 
-    if (j == -1)
-      return false;
+  int32_t j;
 
-    int k = n - 1;
-    while (vector[j] >= vector[k])
-      k--;
+  j = n - 2;
+  while (j != -1 && vector[j] >= vector[j + 1])
+    j--;
 
-    std::iter_swap(vector.begin() + j, vector.begin() + k);
-    int l = j + 1, r = n - 1;
+  if (j == -1)
+    return false;
 
-    while (l < r)
-      std::iter_swap(vector.begin() + (l++), vector.begin() + (r--));
-  } while (j > n - 1);
+  int k = n - 1;
+  while (vector[j] >= vector[k])
+    k--;
+
+  std::swap(vector[j], vector[k]);
+  int l = j + 1, r = n - 1;
+
+  while (l < r)
+    std::swap(vector[l++], vector[r--]);
+
   return true;
 }
 
@@ -118,7 +104,7 @@ void ExecutionOrderEstimator::get_node_order_inform_vector(
       visited_nodes.insert(top_frame.ptr());
 
       auto exec_nodes_count = 0;
-      for (int i = 0; i < top_frame.ptr()->arity(); ++i)
+      for (uint32_t i = 0; i < top_frame.ptr()->arity(); ++i)
       {
         if (auto next = top_frame.ptr()->arg(i))
           if (isExecutableNode(loco::must_cast<luci::CircleNode *>(next)))
@@ -170,7 +156,7 @@ void ExecutionOrderEstimator::get_node_order_inform_vector(
           for (unsigned int &s : it->non_executable_arg_idx)
             combination.emplace_back(s);
           it->all_combinations.emplace_back(combination);
-        } while (NextSet(it->executable_arg_idx));
+        } while (nextPermutation(it->executable_arg_idx));
       }
       frames.pop();
     }

@@ -17,11 +17,10 @@
 #ifndef CIRCLE_EXECUTION_ORDER_ESTIMATOR
 #define CIRCLE_EXECUTION_ORDER_ESTIMATOR
 
-#include "NodeOrderInform.h"
+#include "ExecutionPlanHelper.h"
 #include <luci/IR/Module.h>
 #include <loco/IR/Algorithm.h>
 #include <stack>
-#include <luci/IR/CircleNode.h>
 
 namespace circle_planner
 {
@@ -30,8 +29,8 @@ class ExecutionOrderEstimator
 {
 
 public:
-  explicit ExecutionOrderEstimator(const std::vector<loco::Node *> &root_nodes)
-    : _root_nodes(root_nodes)
+  explicit ExecutionOrderEstimator(std::vector<loco::Node *> root_nodes)
+    : _root_nodes(std::move(root_nodes))
   {
     // Do nothing
   }

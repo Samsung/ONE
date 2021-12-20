@@ -15,7 +15,6 @@
  */
 
 #include "ExecutionPlanner.h"
-#include <loco/IR/Algorithm.h>
 #include <luci/UserSettings.h>
 
 namespace circle_planner
@@ -37,39 +36,6 @@ uint32_t compute_output_size(luci::Padding padding, uint32_t image_size, uint32_
       return (image_size + stride - effective_filter_size) / stride;
     default:
       assert(false);
-  }
-}
-
-bool isExecutableNode(const luci::CircleNode *node)
-{
-  switch (node->opcode())
-  {
-    // The following nodes denote outputs of multiple-output nodes.
-    // The list is synchronized with the same list from luci-interpreter/src/loader/GraphLoader.cpp
-    case luci::CircleOpcode::CIRCLEIFOUT:
-    case luci::CircleOpcode::CIRCLESPLITOUT:
-    case luci::CircleOpcode::CIRCLESPLITVOUT:
-    case luci::CircleOpcode::CIRCLEUNPACKOUT:
-    case luci::CircleOpcode::CIRCLEWHILEOUT:
-      return false;
-    default:
-      return true;
-  }
-}
-
-bool isTensorProducingNode(const luci::CircleNode *node)
-{
-  switch (node->opcode())
-  {
-    // The following nodes are multiple-output nodes. They do not produce tensors, the tensors
-    // are produced by the corresponding *Out nodes instead.
-    // The list is synchronized with the same list from luci-interpreter/src/loader/GraphLoader.cpp
-    case luci::CircleOpcode::IF:
-    case luci::CircleOpcode::SPLIT:
-    case luci::CircleOpcode::UNPACK:
-      return false;
-    default:
-      return true;
   }
 }
 
@@ -116,13 +82,13 @@ uint32_t compute_im2col_size(const luci::CircleConv2D *conv)
 
 } // namespace
 
-void ExecutionPlanner::make_default_execution_plan()
+void ExecutionPlanner::make_rpo_execution_plan()
 {
   _ordered_nodes = loco::postorder_traversal(loco::output_nodes(const_cast<loco::Graph *>(_graph)));
   make_execution_plan();
 }
 
-void ExecutionPlanner::make_estimated_execution_plan()
+void ExecutionPlanner::make_exhaustive_search_execution_plan()
 {
   std::vector<loco::Node *> best_execution_order;
   uint32_t best_required_size = std::numeric_limits<uint32_t>::max();
@@ -132,7 +98,7 @@ void ExecutionPlanner::make_estimated_execution_plan()
     loco::output_nodes(const_cast<loco::Graph *>(_graph)));
   execution_order_estimator.get_node_order_inform_vector(node_order_inform_vector);
 
-  int32_t start_pos = node_order_inform_vector.size() - 1;
+  auto start_pos = static_cast<int32_t>(node_order_inform_vector.size() - 1);
   int32_t end_pos = 0;
   int32_t current_pos = start_pos;
 
@@ -256,7 +222,7 @@ void ExecutionPlanner::get_usage_interval()
     {
       allocate(0, i);
     }
-    else if (!isExecutableNode(loco::must_cast<luci::CircleNode *>(node)))
+    else if (!isMultiOutputNode(loco::must_cast<luci::CircleNode *>(node)))
     {
       // If current node is multi output node than begin life time for current node should start
       // when prev node start live
