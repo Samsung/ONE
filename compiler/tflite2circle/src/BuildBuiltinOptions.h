@@ -102,6 +102,7 @@
 #include "BuildBuiltinOptions/SqueezeOptions.h"
 #include "BuildBuiltinOptions/StridedSliceOptions.h"
 #include "BuildBuiltinOptions/SubOptions.h"
+#include "BuildBuiltinOptions/SVDFOptions.h"
 #include "BuildBuiltinOptions/TileOptions.h"
 #include "BuildBuiltinOptions/TopKV2Options.h"
 #include "BuildBuiltinOptions/TransposeOptions.h"
