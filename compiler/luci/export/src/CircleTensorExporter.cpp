@@ -114,49 +114,49 @@ struct NoOpDetector final : public luci::CircleNodeMutableVisitor<bool>
   bool visit(luci::CircleNode *) final { return false; }
 };
 
-void allocateCircleTensorInfo(CircleNode *node, CircleTensorContext &ctx)
-{
-  LOGGER(l);
-
-  auto tensor_index = static_cast<CircleTensorIndex>(ctx.size());
-  // TODO Use Graph-level metadata for Input & Output
-  std::string tensor_name = node->name();
-  // NOTE tensor_name maybe empty. this assertion will alert when this happens.
-  //      currently we require tensor should have a name.
-  // TODO if this breaks, fix the cause or permit empty tensor_name.
-  assert(!tensor_name.empty());
-  if (ctx.exist(tensor_name))
-  {
-    // NOTE this should assign unique name for a Tensor.
-    tensor_name = tensor_name + "_" + std::to_string(tensor_index);
-    assert(!ctx.exist(tensor_name));
-  }
-  INFO(l) << "[luci] Tensor for " << tensor_name << ": " << tensor_index << std::endl;
-
-  CircleTensorInfo tensor_info;
-
-  tensor_info.name(tensor_name);
-  tensor_info.dtype(to_circle_tensortype(node->dtype()));
-  if (node->shape_status() == ShapeStatus::VALID)
-    tensor_info.shape(to_shape_description(node));
-  tensor_info.shape_status(node->shape_status());
-
-  tensor_info.content(dynamic_cast<luci::CircleConst *>(node));
-  tensor_info.quantparam(node->quantparam());
-  tensor_info.sparsityparam(node->sparsityparam());
-
-  set_tensor_index(node, tensor_index);
-
-  ctx.emplace_back(tensor_info);
-}
-
-class MultiOutputDetector final : public luci::CircleNodeMutableVisitor<bool>
+class CircleTensorInfoAllocationRule final : public luci::CircleNodeMutableVisitor<void>
 {
 public:
-  MultiOutputDetector(CircleTensorContext &ctx) : _ctx(ctx) {}
+  CircleTensorInfoAllocationRule(CircleTensorContext &ctx) : _ctx(ctx) {}
 
 private:
-  void store_outputs(luci::CircleNode *node, uint32_t count)
+  void allocateCircleTensorInfo(CircleNode *node)
+  {
+    LOGGER(l);
+
+    auto tensor_index = static_cast<CircleTensorIndex>(_ctx.size());
+    // TODO Use Graph-level metadata for Input & Output
+    std::string tensor_name = node->name();
+    // NOTE tensor_name maybe empty. this assertion will alert when this happens.
+    //      currently we require tensor should have a name.
+    // TODO if this breaks, fix the cause or permit empty tensor_name.
+    assert(!tensor_name.empty());
+    if (_ctx.exist(tensor_name))
+    {
+      // NOTE this should assign unique name for a Tensor.
+      tensor_name = tensor_name + "_" + std::to_string(tensor_index);
+      assert(!_ctx.exist(tensor_name));
+    }
+    INFO(l) << "[luci] Tensor for " << tensor_name << ": " << tensor_index << std::endl;
+
+    CircleTensorInfo tensor_info;
+
+    tensor_info.name(tensor_name);
+    tensor_info.dtype(to_circle_tensortype(node->dtype()));
+    if (node->shape_status() == ShapeStatus::VALID)
+      tensor_info.shape(to_shape_description(node));
+    tensor_info.shape_status(node->shape_status());
+
+    tensor_info.content(dynamic_cast<luci::CircleConst *>(node));
+    tensor_info.quantparam(node->quantparam());
+    tensor_info.sparsityparam(node->sparsityparam());
+
+    set_tensor_index(node, tensor_index);
+
+    _ctx.emplace_back(tensor_info);
+  }
+
+  void store_multiple_outputs(luci::CircleNode *node, uint32_t count)
   {
     auto outs = loco::succs(node);
     assert(outs.size() == count);
@@ -164,99 +164,51 @@ private:
     for (auto out : outs)
     {
       auto circle_out = loco::must_cast<luci::CircleNode *>(out);
-      allocateCircleTensorInfo(circle_out, _ctx);
+      allocateCircleTensorInfo(circle_out);
     }
     set_tensor_index(node, -1);
   }
 
 public:
-  bool visit(luci::CircleBidirectionalSequenceLSTMOut *) final { return true; }
-  bool visit(luci::CircleCustomOut *) final { return true; }
-  bool visit(luci::CircleIfOut *) final { return true; }
-  bool visit(luci::CircleNonMaxSuppressionV4Out *) final { return true; }
-  bool visit(luci::CircleNonMaxSuppressionV5Out *) final { return true; }
-  bool visit(luci::CircleSplitOut *) final { return true; }
-  bool visit(luci::CircleSplitVOut *) final { return true; }
-  bool visit(luci::CircleTopKV2Out *) final { return true; }
-  bool visit(luci::CircleUnpackOut *) final { return true; }
-  bool visit(luci::CircleUniqueOut *) final { return true; }
-  bool visit(luci::CircleWhileOut *) final { return true; }
+  // Single outputs
+  void visit(luci::CircleNode *node) final { return allocateCircleTensorInfo(node); }
 
-  bool visit(luci::CircleBidirectionalSequenceLSTM *node) final
+  // Virtual output nodes are handled in real node
+  void visit(luci::CircleBidirectionalSequenceLSTMOut *) final {}
+  void visit(luci::CircleCustomOut *) final {}
+  void visit(luci::CircleIfOut *) final {}
+  void visit(luci::CircleNonMaxSuppressionV4Out *) final {}
+  void visit(luci::CircleNonMaxSuppressionV5Out *) final {}
+  void visit(luci::CircleSplitOut *) final {}
+  void visit(luci::CircleSplitVOut *) final {}
+  void visit(luci::CircleTopKV2Out *) final {}
+  void visit(luci::CircleUnpackOut *) final {}
+  void visit(luci::CircleUniqueOut *) final {}
+  void visit(luci::CircleWhileOut *) final {}
+
+  void visit(luci::CircleBidirectionalSequenceLSTM *node) final
   {
     if (node->merge_outputs())
-    {
-      store_outputs(node, 1);
-    }
+      store_multiple_outputs(node, 1);
     else
-    {
-      store_outputs(node, 2);
-    }
-    return true;
+      store_multiple_outputs(node, 2);
   }
-
-  bool visit(luci::CircleCustom *node) final
+  void visit(luci::CircleCustom *node) final { store_multiple_outputs(node, node->numOutputs()); }
+  void visit(luci::CircleIf *node) final { store_multiple_outputs(node, node->output_count()); }
+  void visit(luci::CircleNonMaxSuppressionV4 *node) final { store_multiple_outputs(node, 2); }
+  void visit(luci::CircleNonMaxSuppressionV5 *node) final { store_multiple_outputs(node, 3); }
+  void visit(luci::CircleSplit *node) final
   {
-    store_outputs(node, node->numOutputs());
-    return true;
+    store_multiple_outputs(node, uint32_t(node->num_split()));
   }
-
-  bool visit(luci::CircleIf *node) final
+  void visit(luci::CircleSplitV *node) final
   {
-    store_outputs(node, node->output_count());
-    return true;
+    store_multiple_outputs(node, uint32_t(node->num_split()));
   }
-
-  bool visit(luci::CircleNonMaxSuppressionV4 *node) final
-  {
-    store_outputs(node, 2);
-    return true;
-  }
-
-  bool visit(luci::CircleNonMaxSuppressionV5 *node) final
-  {
-    store_outputs(node, 3);
-    return true;
-  }
-
-  bool visit(luci::CircleSplit *node) final
-  {
-    store_outputs(node, uint32_t(node->num_split()));
-    return true;
-  }
-
-  bool visit(luci::CircleSplitV *node) final
-  {
-    store_outputs(node, uint32_t(node->num_split()));
-    return true;
-  }
-
-  bool visit(luci::CircleTopKV2 *node) final
-  {
-    store_outputs(node, 2);
-    return true;
-  }
-
-  bool visit(luci::CircleUnpack *node) final
-  {
-    store_outputs(node, node->num());
-    return true;
-  }
-
-  bool visit(luci::CircleUnique *node) final
-  {
-    store_outputs(node, 2);
-    return true;
-  }
-
-  bool visit(luci::CircleWhile *node) final
-  {
-    store_outputs(node, node->output_count());
-    return true;
-  }
-
-  // Return false by default
-  bool visit(luci::CircleNode *) final { return false; }
+  void visit(luci::CircleTopKV2 *node) final { store_multiple_outputs(node, 2); }
+  void visit(luci::CircleUnpack *node) final { store_multiple_outputs(node, node->num()); }
+  void visit(luci::CircleUnique *node) final { store_multiple_outputs(node, 2); }
+  void visit(luci::CircleWhile *node) final { store_multiple_outputs(node, node->output_count()); }
 
 private:
   CircleTensorContext &_ctx;
@@ -284,14 +236,8 @@ void allocateCircleTensor(CircleNode *node, CircleTensorContext &ctx)
 
   // TODO revise this when loco supports multiple outputs
   // NOTE this will store all virtual output tensors and skip for the real node
-  if (auto circle_node = dynamic_cast<luci::CircleNode *>(node))
-  {
-    MultiOutputDetector d(ctx);
-    if (circle_node->accept(&d))
-      return;
-  }
-
-  allocateCircleTensorInfo(node, ctx);
+  CircleTensorInfoAllocationRule tensor_info_allocation_rule(ctx);
+  node->accept(&tensor_info_allocation_rule);
 }
 
 } // namespace
