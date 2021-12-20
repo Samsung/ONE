@@ -13,11 +13,11 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
+# TODO: Do not use this module
 import tflite.Model
 import tflite.SubGraph
 from ir import graph_stats
-from .operator_parser import OperatorParser
+from .subgraph_parser import SubgraphParser
 
 
 class TFLiteParser(object):
@@ -40,13 +40,13 @@ class TFLiteParser(object):
             if (subgraph_index == 0):
                 model_name += " (MAIN)"
 
-            # Parse Operators
-            op_parser = OperatorParser(tf_model, tf_subgraph)
-            op_parser.Parse()
+            # Parse Subgraphs
+            subg_parser = SubgraphParser(tf_model, tf_subgraph)
+            subg_parser.Parse()
 
-            stats += graph_stats.CalcGraphStats(op_parser)
+            stats += graph_stats.CalcGraphStats(subg_parser)
 
-            subg = (model_name, op_parser)
+            subg = (model_name, subg_parser)
             subg_list.append(subg)
 
         # Validate

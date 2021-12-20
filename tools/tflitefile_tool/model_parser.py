@@ -64,8 +64,8 @@ class MainOption(object):
             self.save_prefix = args.prefix
 
 
-def PrintModel(option, model_name, op_parser):
-    printer = SubgraphPrinter(option.print_level, op_parser, model_name)
+def PrintSubgraph(option, model_name, subg_parser):
+    printer = SubgraphPrinter(option.print_level, subg_parser, model_name)
 
     if option.print_all_tensor == False:
         printer.SetPrintSpecificTensors(option.print_tensor_index)
@@ -76,8 +76,8 @@ def PrintModel(option, model_name, op_parser):
     printer.PrintInfo()
 
 
-def SaveModel(option, model_name, op_parser):
-    saver = ModelSaver(model_name, op_parser)
+def SaveSubgraph(option, model_name, subg_parser):
+    saver = ModelSaver(model_name, subg_parser)
 
     if option.save_config == True:
         saver.SaveConfigInfo(option.save_prefix)
@@ -109,10 +109,10 @@ if __name__ == '__main__':
 
     (subg_list, stats) = ModelParser(option.model_file).Parse()
 
-    for model_name, op_parser in subg_list:
+    for model_name, subg_parser in subg_list:
         if option.save == False:
             # print all of operators or requested objects
-            PrintModel(option, model_name, op_parser)
+            PrintSubgraph(option, model_name, subg_parser)
         else:
             # save all of operators in this model
-            SaveModel(option, model_name, op_parser)
+            SaveSubgraph(option, model_name, subg_parser)

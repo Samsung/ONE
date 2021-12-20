@@ -18,13 +18,13 @@ from .config_saver import ConfigSaver
 
 
 class ModelSaver(object):
-    def __init__(self, model_name, op_parser):
+    def __init__(self, model_name, subg_parser):
         self.model_name = model_name
-        self.op_parser = op_parser
+        self.subg_parser = subg_parser
 
     def SaveConfigInfo(self, prefix):
         print("Save model configuration file")
-        for type_str, oper_list in self.op_parser.operators_per_type.items():
+        for type_str, oper_list in self.subg_parser.operators_per_type.items():
             if prefix:
                 file_name = "{}_{}_{}.config".format(prefix, self.model_name, type_str)
             else:
