@@ -13,7 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
+# TODO: Do not use this module
 import tflite.Model
 import tflite.SubGraph
 import tflite.Operator
@@ -23,7 +23,7 @@ from parser.tflite.operator_wrapping import Operator, EnumStrMaps
 from parser.tflite.tensor_wrapping import Tensor, SetTensorTypeStr
 
 
-class OperatorParser(object):
+class SubgraphParser(object):
     def __init__(self, tf_model, tf_subgraph):
         self.tf_model = tf_model
         self.tf_subgraph = tf_subgraph
