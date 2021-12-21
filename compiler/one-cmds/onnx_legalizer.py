@@ -70,7 +70,7 @@ class ModelTransformerHelper:
 
     def make_node(self, opcode, inputs, outputs, *p_args, **k_args):
         """
-        Create node and insert it in graph.
+        Create arbitrary node and insert it in graph.
 
         Parameters:
             opcode (str): opcode name of desired operation
@@ -87,11 +87,136 @@ class ModelTransformerHelper:
         self._insert_id += 1
         return outputs
 
+    def make_split(self, input, split_sizes, axis):
+        '''Create Split operation and insert it in graph.
+
+        Args:
+            input (str): name of input tensor
+            split_sizes (list): list of split sizes
+            axis (int): number of axis to split
+
+        Returns:
+            list: list of output tensor names
+
+        '''
+        return self.make_node('Split', [input], len(split_sizes), axis = axis, split = split_sizes)
+
+    def make_concat(self, inputs, axis):
+        '''Create Concat operation and insert it in graph.
+
+        Args:
+            inputs (list): list of tensors names to concat
+            axis (int): axis number to concat
+
+        Returns:
+            str:: output tensor name
+
+        '''
+        return self.make_node('Concat', inputs, 1, axis = axis)[0]
+
+    def make_squeeze(self, input, axes):
+        '''Create Squeeze operation and insert it in graph.
+
+        Args:
+            input (str): name of input tensor
+            axes (list): list of dimension containing ones to remove
+
+        Returns:
+            str: output tensor name
+
+        '''
+        return self.make_node('Squeeze', [input], 1, axes = axes)[0]
+
+    def make_unsqueeze(self, input, axes):
+        '''Create Unsqueeze operation and insert it in graph.
+
+        Args:
+            input (str): name of input tensor
+            axes (list): list of dimension to insert ones
+
+        Returns:
+            str: output tensor name
+
+        '''
+        return self.make_node('Unsqueeze', [input], 1, axes = axes)[0]
+
+    def make_gemm(self, A, B, C, trans_a = False, trans_b = False):
+        '''Create Gemm operation and insert it in graph.
+
+        Result tensor contains A*B + C
+
+        Args:
+            A (str): name of tensor A
+            B (str): name of tensor B
+            C (str): name of tensor C
+            transA (bool): if True, transpose tensor A before multiplication
+            transB (bool): if True, transpose tensor B before multiplication
+
+        Returns:
+            str: output tensor name
+
+        '''
+        return self.make_node('Gemm', [A, B, C], 1, transA = bool(trans_a), transB = bool(trans_b))[0]
+
+    def make_add(self, a, b):
+        '''Creates Add operation and insert it in graph.
+
+        Args:
+            a (str): name of left operand tensor
+            b (str): name of right operand tensor
+
+        Returns:
+            str: output tensor name
+
+        '''
+        return self.make_node('Add', [a, b], 1)[0]
+
+    def make_mul(self, a, b):
+        '''Creates Mul operation and insert it in graph.
+
+        Args:
+            a (str): name of left operand tensor
+            b (str): name of right operand tensor
+
+        Returns:
+            str: output tensor name
+
+        '''
+        return self.make_node('Mul', [a, b], 1)[0]
+
+    def make_clip(self, input, min, max):
+        '''Create Clip operation and insert it in graph.
+
+        Args:
+            input (str): input tensor name
+            min (int/float): lower clip bound
+            max (int/float ): upper clip bound
+
+        Returns:
+            str: output tensor name
+
+        '''
+        return self.make_node('Clip', [input], 1, min = min, max = max)[0]
+
+    def make_act(self, input, act_name):
+        '''Create activation function operation and insert it in graph.
+
+        Args:
+            input (str): input tensor name
+            act_name (str): name of activation function, one of ['Relu', 'Tanh', 'Sigmoid']
+
+        Returns:
+            str: output tensor name
+
+        '''
+        assert(act_name in ['Relu', 'Tanh', 'Sigmoid'])
+        return self.make_node(act_name, [input], 1)[0]
+
     def make_constant_tensor(self, tensor_data, base_name):
         tensor = onnx.numpy_helper.from_array(tensor_data)
         tensor.name = self.make_tensor_with_base_name(base_name)
         self._model.graph.initializer.append(tensor)
-        return [tensor.name]
+        return tensor.name
 
     def mark_for_deletion(self, node):
         self._nodes_to_delete += [node]
@@ -136,7 +261,7 @@ def dtype_to_np(dtype):
         raise NotImplementedError('unsupported data type')
 
 
-def generate_one_direction_RNN(transformer, X, W, R, B, initial_h, clip, activation):
+def generate_one_direction_RNN(transformer, X, W, R, B, initial_h, clip, activation_name):
     """
     This function generates subgraph that represents one direction of unrolled RNN layer
 
@@ -170,22 +295,19 @@ def generate_one_direction_RNN(transformer, X, W, R, B, initial_h, clip, activat
         previous_state_tensor = initial_h
     else:
         first_iter = 1
-        state_tensor = transformer.make_node('Gemm', [X[0]] + W + B, 1, transB=1)
+        state_tensor = transformer.make_gemm(X[0], W, B, trans_b=True)
         if clip != None:
-            state_tensor = transformer.make_node(
-                'Clip', state_tensor, 1, min=-clip, max=clip)
-        previous_state_tensor = transformer.make_node(activation, state_tensor, 1)
-        state_tensors += previous_state_tensor
+            state_tensor = transformer.make_clip(state_tensor, min=-clip, max=clip)
+        previous_state_tensor = transformer.make_act(state_tensor, activation_name)
+        state_tensors += [previous_state_tensor]
 
     for i in range(first_iter, seq_length):
-        state_tensor = transformer.make_node('Gemm', [X[i]] + W + B, 1, transB=1)
-        state_tensor = transformer.make_node(
-            'Gemm', previous_state_tensor + R + state_tensor, 1, transB=1)
+        state_tensor = transformer.make_gemm(X[i], W, B, trans_b=True)
+        state_tensor = transformer.make_gemm(previous_state_tensor, R, state_tensor, trans_b=True)
         if clip != None:
-            state_tensor = transformer.make_node(
-                'Clip', state_tensor, 1, min=-clip, max=clip)
-        previous_state_tensor = transformer.make_node(activation, state_tensor, 1)
-        state_tensors += previous_state_tensor
+            state_tensor = transformer.make_clip(state_tensor, min=-clip, max=clip)
+        previous_state_tensor = transformer.make_act(state_tensor, activation_name)
+        state_tensors += [previous_state_tensor]
     return state_tensors
 
 
@@ -195,20 +317,19 @@ def transform_unidirectional_RNN(transformer, original_node, x, tensor_infos, ac
     outputs = original_node.output
     if direction == 'reverse':
         x.reverse()
-    w = transformer.make_node('Squeeze', [inputs[1]], 1, axes=[0])
-    r = transformer.make_node('Squeeze', [inputs[2]], 1, axes=[0])
+    w = transformer.make_squeeze(inputs[1], axes=[0])
+    r = transformer.make_squeeze(inputs[2], axes=[0])
     if len(inputs) > 3 and inputs[3] != '':
-        raw_bias_tensor = transformer.make_node('Squeeze', [inputs[3]], 1, axes=[0])
-        splitted_bias_tensors = transformer.make_node(
-            'Split', raw_bias_tensor, 2, axis=0, split=[hidden_size] * 2)
-        b = transformer.make_node('Add', splitted_bias_tensors, 1)
+        raw_bias_tensor = transformer.make_squeeze(inputs[3], axes=[0])
+        splitted_bias_tensors = transformer.make_split(raw_bias_tensor, split_sizes = [hidden_size] * 2, axis=0)
+        b = transformer.make_add(splitted_bias_tensors[0], splitted_bias_tensors[1])
     else:
         data_type = dtype_to_np(tensor_infos[inputs[2]].dtype)
         b = transformer.make_constant_tensor(
             np.zeros(hidden_size, dtype=data_type), "zero_bias")
     if len(inputs) > 5 and inputs[5] != '':
         direction_dim = layout
-        initial_h = transformer.make_node('Squeeze', [inputs[5]], 1, axes=[direction_dim])
+        initial_h = transformer.make_squeeze(inputs[5], axes=[direction_dim])
     else:
         initial_h = None
     activation = activations[0]
@@ -219,9 +340,9 @@ def transform_unidirectional_RNN(transformer, original_node, x, tensor_infos, ac
     state_layout_tensors = []
     seq_length_dim = layout
     for state in state_tensors:
-        state_layout_tensors += transformer.make_node(
-            "Unsqueeze", [state], 1, axes=[seq_length_dim, y_direction_dim])
+        state_layout_tensors += [transformer.make_unsqueeze(state, axes=[seq_length_dim, y_direction_dim])]
 
+    # use low-level interface to attach to existing tensors
     Y_h = transformer.make_node(
         'Unsqueeze', [state_tensors[-1]], [outputs[1]], axes=[y_h_direction_dim])
     Y = transformer.make_node(
@@ -232,41 +353,36 @@ def transform_bidirectional_RNN(transformer, original_node, x, tensor_infos, act
                                 clip, hidden_size, layout):
     inputs = original_node.input
     outputs = original_node.output
-    w_bi = transformer.make_node('Split', [inputs[1]], 2, axis=0, split=[1, 1])
-    r_bi = transformer.make_node('Split', [inputs[2]], 2, axis=0, split=[1, 1])
+    w_bi = transformer.make_split(inputs[1], split_sizes=[1,1], axis=0)
+    r_bi = transformer.make_split(inputs[2], split_sizes = [1,1], axis=0)
     w = []
     r = []
     for d in range(2):
-        w += transformer.make_node('Squeeze', [w_bi[d]], 1, axes=[0])
-        r += transformer.make_node('Squeeze', [r_bi[d]], 1, axes=[0])
+        w += [transformer.make_squeeze(w_bi[d], axes=[0])]
+        r += [transformer.make_squeeze(r_bi[d], axes=[0])]
 
     b = []
     if len(inputs) > 3 and inputs[3] != '':
-        raw_bias_tensors = transformer.make_node(
-            'Split', [inputs[3]], 2, axis=0, split=[1, 1])
+        raw_bias_tensors = transformer.make_split(inputs[3], split_sizes=[1,1], axis=0)
         for d in range(2):
-            raw_bias_tensors_squeezed = transformer.make_node(
-                'Squeeze', [raw_bias_tensors[d]], 1, axes=[0])
-            splitted_bias_tensors = transformer.make_node(
-                'Split', raw_bias_tensors_squeezed, 2, axis=0, split=[hidden_size] * 2)
-            b += transformer.make_node('Add', splitted_bias_tensors, 1)
+            raw_bias_tensors_squeezed = transformer.make_squeeze(raw_bias_tensors[d], axes=[0])
+            splitted_bias_tensors = transformer.make_split(raw_bias_tensors_squeezed, split_sizes=[hidden_size] * 2, axis=0)
+            b += [transformer.make_add(splitted_bias_tensors[0], splitted_bias_tensors[1])]
     else:
         data_type = dtype_to_np(tensor_infos[inputs[2]].dtype)
-        b = transformer.make_constant_tensor(
-            np.zeros(hidden_size, dtype=data_type), "zero_bias") * 2
+        b = [transformer.make_constant_tensor(
+            np.zeros(hidden_size, dtype=data_type), "zero_bias")] * 2
     initial_h = [None, None]
     if len(inputs) > 5 and inputs[5] != '':
         direction_dim = layout
-        initial_h = transformer.make_node(
-            'Split', [inputs[5]], 2, axis=direction_dim, split=[1, 1])
+        initial_h = transformer.make_split(inputs[5], split_sizes=[1,1], axis=direction_dim)
         for d in range(2):
-            initial_h[d] = transformer.make_node(
-                'Squeeze', [initial_h[d]], 1, axes=[direction_dim])
+            initial_h[d] = transformer.make_squeeze(initial_h[d], axes=[direction_dim])
 
-    state_f_tensors = generate_one_direction_RNN(transformer, x, [w[0]], [r[0]], [b[0]],
+    state_f_tensors = generate_one_direction_RNN(transformer, x, w[0], r[0], b[0],
                                                  initial_h[0], clip, activations[0])
     x.reverse()
-    state_b_tensors = generate_one_direction_RNN(transformer, x, [w[1]], [r[1]], [b[1]],
+    state_b_tensors = generate_one_direction_RNN(transformer, x, w[1], r[1], b[1],
                                                  initial_h[1], clip, activations[1])
     state_b_tensors.reverse()
 
@@ -278,23 +394,17 @@ def transform_bidirectional_RNN(transformer, original_node, x, tensor_infos, act
     for t in range(seq_length):
         state_f = state_f_tensors[t]
         state_b = state_b_tensors[t]
-        state_layout_tensors_f = transformer.make_node(
-            "Unsqueeze", [state_f], 1, axes=[seq_length_dim, y_direction_dim])
-        state_layout_tensors_b = transformer.make_node(
-            "Unsqueeze", [state_b], 1, axes=[seq_length_dim, y_direction_dim])
-        state_layout_tensors += transformer.make_node(
-            "Concat",
-            state_layout_tensors_f + state_layout_tensors_b,
-            1,
-            axis=y_direction_dim)
+        state_layout_tensors_f = transformer.make_unsqueeze(state_f, axes=[seq_length_dim, y_direction_dim])
+        state_layout_tensors_b = transformer.make_unsqueeze(state_b, axes=[seq_length_dim, y_direction_dim])
+        state_layout_tensors += [transformer.make_concat([state_layout_tensors_f, state_layout_tensors_b], axis=y_direction_dim)]
 
-    last_f_state_layout_tensor = transformer.make_node(
-        "Unsqueeze", [state_f_tensors[-1]], 1, axes=[y_h_direction_dim])
-    last_b_state_layout_tensor = transformer.make_node(
-        "Unsqueeze", [state_b_tensors[0]], 1, axes=[y_h_direction_dim])
+    last_f_state_layout_tensor = transformer.make_unsqueeze(state_f_tensors[-1], axes=[y_h_direction_dim])
+    last_b_state_layout_tensor = transformer.make_unsqueeze(state_b_tensors[0], axes=[y_h_direction_dim])
+
+    # use low-level interface to attach to existing tensors
     Y_h = transformer.make_node(
         'Concat',
-        last_f_state_layout_tensor + last_b_state_layout_tensor, [outputs[1]],
+        [last_f_state_layout_tensor, last_b_state_layout_tensor], [outputs[1]],
         axis=y_h_direction_dim)
 
     Y = transformer.make_node(
@@ -341,14 +451,12 @@ def legalize_RNN(transformer, tensor_infos, node):
     if hidden_size == 0:
         hidden_size = tensor_infos[inputs[2]].shape[2]
 
-    input_split_tensor = transformer.make_node(
-        'Split', [inputs[0]], seq_length, axis=seq_length_dim, split=[1] * seq_length)
+    input_split_tensor = transformer.make_split(inputs[0], split_sizes=[1] * seq_length, axis=seq_length_dim)
     x = []
     for i in range(len(input_split_tensor)):
         input_frame_tensor = input_split_tensor[i]
-        squeezed_frame_tensor = transformer.make_node(
-            'Squeeze', [input_frame_tensor], 1, axes=[0])
-        x += squeezed_frame_tensor
+        squeezed_frame_tensor = transformer.make_squeeze(input_frame_tensor, axes=[0])
+        x += [squeezed_frame_tensor]
 
     if direction in ['forward', 'reverse']:
         transform_unidirectional_RNN(transformer, node, x, tensor_infos, activations,
@@ -414,94 +522,88 @@ def generate_one_direction_LSTM(transformer, X, W, R, B, initial_h, initial_c, P
     seq_length = len(X)
     state_h_tensors = []
 
-    w_tensors = transformer.make_node('Split', W, 4, axis=0, split=[hidden_size] * 4)
+    w_tensors = transformer.make_split(W, split_sizes=[hidden_size] * 4, axis=0)
     W = {'i': w_tensors[0], 'o': w_tensors[1], 'f': w_tensors[2], 'c': w_tensors[3]}
 
-    r_tensors = transformer.make_node('Split', R, 4, axis=0, split=[hidden_size] * 4)
+    r_tensors = transformer.make_split(R, split_sizes=[hidden_size] * 4, axis=0)
     R = {'i': r_tensors[0], 'o': r_tensors[1], 'f': r_tensors[2], 'c': r_tensors[3]}
 
     if B is not None:
-        separate_b_tensors = transformer.make_node(
-            'Split', B, 8, axis=0, split=[hidden_size] * 8)
+        separate_b_tensors = transformer.make_split(B, split_sizes=[hidden_size] * 8, axis=0)
         b_tensors = []
         for i in range(4):
-            b_tensors += transformer.make_node(
-                'Add', [separate_b_tensors[i], separate_b_tensors[i + 4]], 1)
+            b_tensors += [transformer.make_add(separate_b_tensors[i], separate_b_tensors[i + 4])]
     else:
-        b_tensors = transformer.make_constant_tensor(
-            np.zeros((hidden_size), dtype=dtype), 'zero_b') * 4
+        b_tensors = [transformer.make_constant_tensor(
+            np.zeros((hidden_size), dtype=dtype), 'zero_b')] * 4
     B = {'i': b_tensors[0], 'o': b_tensors[1], 'f': b_tensors[2], 'c': b_tensors[3]}
 
     if initial_h is not None:
         previous_h_state_tensor = initial_h
     else:
         previous_h_state_tensor = transformer.make_constant_tensor(
-            np.zeros((batch_size, hidden_size), dtype=dtype), 'initial_h')[0]
+            np.zeros((batch_size, hidden_size), dtype=dtype), 'initial_h')
 
     if initial_c is not None:
         previous_c_state_tensor = initial_c
     else:
         previous_c_state_tensor = transformer.make_constant_tensor(
-            np.zeros((batch_size, hidden_size), dtype=dtype), 'initial_c')[0]
+            np.zeros((batch_size, hidden_size), dtype=dtype), 'initial_c')
 
     if P is not None:
-        p_tensors = transformer.make_node('Split', P, 3, axis=0, split=[hidden_size] * 3)
+        p_tensors = transformer.make_split(P, split_sizes=[hidden_size] * 3, axis=0)
         P = {'i': p_tensors[0], 'o': p_tensors[1], 'f': p_tensors[2]}
     else:
         zero = transformer.make_constant_tensor(
-            np.zeros((hidden_size), dtype=dtype), 'zero_peephole')[0]
+            np.zeros((hidden_size), dtype=dtype), 'zero_peephole')
         P = {'i': zero, 'o': zero, 'f': zero}
 
     for i in range(seq_length):
         # it = f(Xt*(Wi^T) + Ht-1*(Ri^T) + Pi (.) Ct-1 + Wbi + Rbi)
-        it = transformer.make_node('Gemm', [X[i], W['i'], B['i']], 1, transB=1)
-        it = transformer.make_node(
-            'Gemm', [previous_h_state_tensor, R['i'], it[0]], 1, transB=1)
-        peephole_it = transformer.make_node('Mul', [P['i'], previous_c_state_tensor], 1)
-        it = transformer.make_node('Add', it + peephole_it, 1)
+        it = transformer.make_gemm(X[i], W['i'], B['i'], trans_b=True)
+        it = transformer.make_gemm(previous_h_state_tensor, R['i'], it, trans_b=True)
+        peephole_it = transformer.make_mul(P['i'], previous_c_state_tensor)
+        it = transformer.make_add(it, peephole_it)
         if clip is not None:
-            it = transformer.make_node('Clip', it, 1, min=-clip, max=clip)
-        it = transformer.make_node(act['f'], it, 1)
+            it = transformer.make_clip(it, min=-clip, max=clip)
+        it = transformer.make_act(it, act['f'])
 
         # ft = f(Xt*(Wf^T) + Ht-1*(Rf^T) + Pf (.) Ct-1 + Wbf + Rbf)
-        ft = transformer.make_node('Gemm', [X[i], W['f'], B['f']], 1, transB=1)
-        ft = transformer.make_node(
-            'Gemm', [previous_h_state_tensor, R['f'], ft[0]], 1, transB=1)
-        peephole_ft = transformer.make_node('Mul', [P['f'], previous_c_state_tensor], 1)
-        ft = transformer.make_node('Add', ft + peephole_ft, 1)
+        ft = transformer.make_gemm(X[i], W['f'], B['f'], trans_b=True)
+        ft = transformer.make_gemm(previous_h_state_tensor, R['f'], ft, trans_b=True)
+        peephole_ft = transformer.make_mul(P['f'], previous_c_state_tensor)
+        ft = transformer.make_add(ft, peephole_ft)
         if clip is not None:
-            ft = transformer.make_node('Clip', ft, 1, min=-clip, max=clip)
-        ft = transformer.make_node(act['f'], ft, 1)
+            ft = transformer.make_clip(ft, min=-clip, max=clip)
+        ft = transformer.make_act(ft, act['f'])
 
         # ct = g(Xt*(Wc^T) + Ht-1*(Rc^T) + Wbc + Rbc)
-        ct = transformer.make_node('Gemm', [X[i], W['c'], B['c']], 1, transB=1)
-        ct = transformer.make_node(
-            'Gemm', [previous_h_state_tensor, R['c'], ct[0]], 1, transB=1)
+        ct = transformer.make_gemm(X[i], W['c'], B['c'], trans_b=True)
+        ct = transformer.make_gemm(previous_h_state_tensor, R['c'], ct, trans_b=True)
         if clip is not None:
-            ct = transformer.make_node('Clip', ct, 1, min=-clip, max=clip)
-        ct = transformer.make_node(act['g'], ct, 1)
+            ct = transformer.make_clip(ct, min=-clip, max=clip)
+        ct = transformer.make_act(ct, act['g'])
 
         # Ct = ft (.) Ct-1 + it (.) ct
-        ft_Ct = transformer.make_node('Mul', ft + [previous_c_state_tensor], 1)
-        it_ct = transformer.make_node('Mul', it + ct, 1)
-        Ct = transformer.make_node('Add', ft_Ct + it_ct, 1)
-        previous_c_state_tensor = Ct[0]
+        ft_Ct = transformer.make_mul(ft, previous_c_state_tensor)
+        it_ct = transformer.make_mul(it, ct)
+        Ct = transformer.make_add(ft_Ct, it_ct)
+        previous_c_state_tensor = Ct
 
         # ot = f(Xt*(Wo^T) + Ht-1*(Ro^T) + Po (.) Ct + Wbo + Rbo)
-        ot = transformer.make_node('Gemm', [X[i], W['o'], B['o']], 1, transB=1)
-        ot = transformer.make_node(
-            'Gemm', [previous_h_state_tensor, R['o'], ot[0]], 1, transB=1)
-        peephole_ot = transformer.make_node('Mul', [P['o'], Ct[0]], 1)
-        ot = transformer.make_node('Add', ot + peephole_ot, 1)
+        ot = transformer.make_gemm(X[i], W['o'], B['o'], trans_b = True)
+        ot = transformer.make_gemm(previous_h_state_tensor, R['o'], ot, trans_b = True)
+        peephole_ot = transformer.make_mul(P['o'], Ct)
+        ot = transformer.make_add(ot, peephole_ot)
         if clip is not None:
-            ot = transformer.make_node('Clip', ot, 1, min=-clip, max=clip)
-        ot = transformer.make_node(act['f'], ot, 1)
+            ot = transformer.make_clip(ot, min=-clip, max=clip)
+        ot = transformer.make_act(ot, act['f'])
 
         # Ht = ot (.) h(Ct)
-        Ht = transformer.make_node(act['h'], Ct, 1)
-        Ht = transformer.make_node('Mul', ot + Ht, 1)
-        previous_h_state_tensor = Ht[0]
-        state_h_tensors += Ht
+        Ht = transformer.make_act(Ct, act['h'])
+        Ht = transformer.make_mul(ot, Ht)
+        previous_h_state_tensor = Ht
+        state_h_tensors += [Ht]
 
     return (state_h_tensors, previous_c_state_tensor)
 
@@ -512,28 +614,26 @@ def transform_unidirectional_LSTM(transformer, original_node, x, tensor_infos,
     outputs = original_node.output
     if direction == 'reverse':
         x.reverse()
-    w = transformer.make_node('Squeeze', [inputs[1]], 1, axes=[0])
-    r = transformer.make_node('Squeeze', [inputs[2]], 1, axes=[0])
+    w = transformer.make_squeeze(inputs[1], axes=[0])
+    r = transformer.make_squeeze(inputs[2], axes=[0])
 
     b = None
     if len(inputs) > 3 and inputs[3] != '':
-        b = transformer.make_node('Squeeze', [inputs[3]], 1, axes=[0])
+        b = transformer.make_squeeze(inputs[3], axes=[0])
 
     initial_h = None
     if len(inputs) > 5 and inputs[5] != '':
         direction_dim = layout
-        initial_h = transformer.make_node(
-            'Squeeze', [inputs[5]], 1, axes=[direction_dim])[0]
+        initial_h = transformer.make_squeeze(inputs[5], axes=[direction_dim])
 
     initial_c = None
     if len(inputs) > 6 and inputs[6] != '':
         direction_dim = layout
-        initial_c = transformer.make_node(
-            'Squeeze', [inputs[6]], 1, axes=[direction_dim])[0]
+        initial_c = transformer.make_squeeze(inputs[6], axes=[direction_dim])
 
     p = None
     if len(inputs) > 7 and inputs[7] != '':
-        p = transformer.make_node('Squeeze', [inputs[7]], 1, axes=[0])
+        p = transformer.make_squeeze(inputs[7], axes=[0])
 
     dtype = dtype_to_np(tensor_infos[inputs[0]].dtype)
     batch_size = tensor_infos[inputs[0]].shape[1 - layout]
@@ -549,9 +649,9 @@ def transform_unidirectional_LSTM(transformer, original_node, x, tensor_infos,
     state_layout_tensors = []
     seq_length_dim = layout
     for h_state in state_h_tensors:
-        state_layout_tensors += transformer.make_node(
-            "Unsqueeze", [h_state], 1, axes=[seq_length_dim, y_direction_dim])
+        state_layout_tensors += [transformer.make_unsqueeze(h_state, axes=[seq_length_dim, y_direction_dim])]
 
+    # use low-level interface to attach to existing tensors
     Y_h = transformer.make_node(
         'Unsqueeze', [state_h_tensors[-1]], [outputs[1]], axes=[y_h_direction_dim])
     Y_c = transformer.make_node(
@@ -567,41 +667,37 @@ def transform_bidirectional_LSTM(transformer, original_node, x, tensor_infos, ac
     inputs = original_node.input
     outputs = original_node.output
 
-    w = transformer.make_node('Split', [inputs[1]], 2, axis=0, split=[1, 1])
-    r = transformer.make_node('Split', [inputs[2]], 2, axis=0, split=[1, 1])
+    w = transformer.make_split(inputs[1], split_sizes=[1,1], axis=0)
+    r = transformer.make_split(inputs[2], split_sizes=[1,1], axis=0)
     for d in range(2):
-        w[d] = transformer.make_node('Squeeze', [w[d]], 1, axes=[0])
-        r[d] = transformer.make_node('Squeeze', [r[d]], 1, axes=[0])
+        w[d] = transformer.make_squeeze(w[d], axes=[0])
+        r[d] = transformer.make_squeeze(r[d], axes=[0])
 
     b = [None, None]
     if len(inputs) > 3 and inputs[3] != '':
-        b = transformer.make_node('Split', [inputs[3]], 2, axis=0, split=[1, 1])
+        b = transformer.make_split(inputs[3], split_sizes=[1,1], axis=0)
         for d in range(2):
-            b[d] = transformer.make_node('Squeeze', [b[d]], 1, axes=[0])
+            b[d] = transformer.make_squeeze(b[d], axes=[0])
 
     initial_h = [None, None]
     if len(inputs) > 5 and inputs[5] != '':
         direction_dim = layout
-        initial_h = transformer.make_node(
-            'Split', [inputs[5]], 2, axis=direction_dim, split=[1, 1])
+        initial_h = transformer.make_split(inputs[5], split_sizes=[1,1], axis=direction_dim)
         for d in range(2):
-            initial_h[d] = transformer.make_node(
-                'Squeeze', [initial_h[d]], 1, axes=[direction_dim])[0]
+            initial_h[d] = transformer.make_squeeze(initial_h[d], axes=[direction_dim])
 
     initial_c = [None, None]
     if len(inputs) > 6 and inputs[6] != '':
         direction_dim = layout
-        initial_c = transformer.make_node(
-            'Split', [inputs[6]], 2, axis=direction_dim, split=[1, 1])
+        initial_c = transformer.make_split(inputs[6], split_sizes=[1,1], axis=direction_dim)
         for d in range(2):
-            initial_c[d] = transformer.make_node(
-                'Squeeze', [initial_c[d]], 1, axes=[direction_dim])[0]
+            initial_c[d] = transformer.make_squeeze(initial_c[d], axes=[direction_dim])
 
     p = [None, None]
     if len(inputs) > 7 and inputs[7] != '':
-        p = transformer.make_node('Split', [inputs[7]], 2, axis=0, split=[1, 1])
+        p = transformer.make_split(inputs[7], split_sizes=[1,1], axis=0)
         for d in range(2):
-            p[d] = transformer.make_node('Squeeze', [p[d]], 1, axes=[0])
+            p[d] = transformer.make_squeeze(p[d], axes=[0])
 
     dtype = dtype_to_np(tensor_infos[inputs[0]].dtype)
     batch_size = tensor_infos[inputs[0]].shape[1 - layout]
@@ -630,31 +726,21 @@ def transform_bidirectional_LSTM(transformer, original_node, x, tensor_infos, ac
     state_layout_tensors = []
     seq_length_dim = layout
     for f_h_state, b_h_state in zip(state_f_h_tensors, state_b_h_tensors):
-        state_f_layout_tensors = transformer.make_node(
-            "Unsqueeze", [f_h_state], 1, axes=[seq_length_dim, y_direction_dim])
-        state_b_layout_tensors = transformer.make_node(
-            "Unsqueeze", [b_h_state], 1, axes=[seq_length_dim, y_direction_dim])
-        state_layout_tensors += transformer.make_node(
-            'Concat',
-            state_f_layout_tensors + state_b_layout_tensors,
-            1,
-            axis=y_direction_dim)
+        state_f_layout_tensors = transformer.make_unsqueeze(f_h_state, axes=[seq_length_dim, y_direction_dim])
+        state_b_layout_tensors = transformer.make_unsqueeze(b_h_state, axes=[seq_length_dim, y_direction_dim])
+        state_layout_tensors += [transformer.make_concat([state_f_layout_tensors, state_b_layout_tensors], axis=y_direction_dim)]
 
-    last_f_state_layout_tensor = transformer.make_node(
-        "Unsqueeze", [state_f_h_tensors[-1]], 1, axes=[y_c_direction_dim])
-    last_b_state_layout_tensor = transformer.make_node(
-        "Unsqueeze", [state_b_h_tensors[0]], 1, axes=[y_c_direction_dim])
+    last_f_state_layout_tensor = transformer.make_unsqueeze(state_f_h_tensors[-1], axes=[y_c_direction_dim])
+    last_b_state_layout_tensor = transformer.make_unsqueeze(state_b_h_tensors[0], axes=[y_c_direction_dim])
     Y_h = transformer.make_node(
         'Concat',
-        last_f_state_layout_tensor + last_b_state_layout_tensor, [outputs[1]],
+        [last_f_state_layout_tensor, last_b_state_layout_tensor], [outputs[1]],
         axis=y_c_direction_dim)
 
-    Y_f_c = transformer.make_node(
-        'Unsqueeze', [state_f_c_tensor], 1, axes=[y_c_direction_dim])
-    Y_b_c = transformer.make_node(
-        'Unsqueeze', [state_b_c_tensor], 1, axes=[y_c_direction_dim])
+    Y_f_c = transformer.make_unsqueeze(state_f_c_tensor, axes=[y_c_direction_dim])
+    Y_b_c = transformer.make_unsqueeze(state_b_c_tensor, axes=[y_c_direction_dim])
     Y_c = transformer.make_node(
-        'Concat', Y_f_c + Y_b_c, [outputs[2]], axis=y_c_direction_dim)
+        'Concat', [Y_f_c, Y_b_c], [outputs[2]], axis=y_c_direction_dim)
 
     Y = transformer.make_node(
         'Concat', state_layout_tensors, [outputs[0]], axis=seq_length_dim)
@@ -706,14 +792,12 @@ def legalize_LSTM(transformer, tensor_infos, node):
     if hidden_size == 0:
         hidden_size = tensor_infos[inputs[2]].shape[2]
 
-    input_split_tensor = transformer.make_node(
-        'Split', [inputs[0]], seq_length, axis=seq_length_dim, split=[1] * seq_length)
+    input_split_tensor = transformer.make_split(inputs[0], split_sizes=[1] * seq_length, axis=seq_length_dim)
     x = []
     for i in range(len(input_split_tensor)):
         input_frame_tensor = input_split_tensor[i]
-        squeezed_frame_tensor = transformer.make_node(
-            'Squeeze', [input_frame_tensor], 1, axes=[0])
-        x += squeezed_frame_tensor
+        squeezed_frame_tensor = transformer.make_squeeze(input_frame_tensor, axes=[0])
+        x += [squeezed_frame_tensor]
 
     if direction in ['forward', 'reverse']:
         transform_unidirectional_LSTM(transformer, node, x, tensor_infos, activations,
