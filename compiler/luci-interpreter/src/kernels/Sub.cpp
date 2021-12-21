@@ -64,13 +64,8 @@ void Sub::execute() const
 
 void Sub::evalFloat() const
 {
-  float activation_min{};
-  float activation_max{};
-  calculateActivationRange(_params.activation, &activation_min, &activation_max);
-
   tflite::ArithmeticParams params{};
-  params.float_activation_min = activation_min;
-  params.float_activation_max = activation_max;
+  fillArithmeticActivationRange<float>(params, _params.activation);
 
   const bool need_broadcast = tflite::reference_ops::ProcessBroadcastShapes(
     getTensorShape(input1()), getTensorShape(input2()), &params);
@@ -92,23 +87,7 @@ void Sub::evalFloat() const
 template <typename T> void Sub::evalInteger() const
 {
   tflite::ArithmeticParams params{};
-  if (std::is_same<T, int32_t>::value)
-  {
-    int32_t activation_min{};
-    int32_t activation_max{};
-    calculateActivationRange(_params.activation, &activation_min, &activation_max);
-    params.quantized_activation_min = activation_min;
-    params.quantized_activation_max = activation_max;
-  }
-  else
-  {
-    assert((std::is_same<T, int64_t>::value));
-    int64_t activation_min{};
-    int64_t activation_max{};
-    calculateActivationRange(_params.activation, &activation_min, &activation_max);
-    params.int64_activation_min = activation_min;
-    params.int64_activation_max = activation_max;
-  }
+  fillArithmeticActivationRange<T>(params, _params.activation);
 
   const bool need_broadcast = tflite::reference_ops::ProcessBroadcastShapes(
     getTensorShape(input1()), getTensorShape(input2()), &params);

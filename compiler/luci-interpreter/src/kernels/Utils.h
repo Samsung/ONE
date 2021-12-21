@@ -82,6 +82,36 @@ void calculateActivationRange(Activation activation, T *activation_min, T *activ
 void calculateActivationRangeQuantized(Activation activation, const Tensor *output,
                                        int32_t *activation_min, int32_t *activation_max);
 
+template <typename T> constexpr bool one_of_types() { return false; }
+
+// Checks if T is equal to one of {U,Other} types
+template <typename T, typename U, typename... Other> constexpr bool one_of_types()
+{
+  return std::is_same<T, U>::value || one_of_types<T, Other...>();
+}
+
+/**
+ * Fills activation min and max parameters depending on given data type and activation
+ *
+ * T is a template parameter, so after optimization this code left with only required if case
+ *
+ * @tparam T data type of arithmetic operation output tensor
+ * @param params tflite params to fill
+ * @param activation luci_interpreter::Activation of arithmetic operation
+ */
+template <typename T>
+void fillArithmeticActivationRange(tflite::ArithmeticParams &p, Activation act)
+{
+  static_assert(one_of_types<T, float, int32_t, int64_t>(), "Unsupported dtype");
+
+  if (std::is_same<T, float>::value)
+    calculateActivationRange(act, &p.float_activation_min, &p.float_activation_max);
+  if (std::is_same<T, int32_t>::value)
+    calculateActivationRange(act, &p.quantized_activation_min, &p.quantized_activation_max);
+  else
+    calculateActivationRange(act, &p.int64_activation_min, &p.int64_activation_max);
+}
+
 // Decompose a double multiplier into a Q0.31 int32 representation of its
 // significand, and shift representation of its exponent.
 //
