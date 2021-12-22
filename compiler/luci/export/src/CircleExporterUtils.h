@@ -38,6 +38,11 @@ circle::DimensionType to_circle_dimensiontype(luci::DimensionType type);
 flatbuffers::Offset<void> to_circle_sparse_index_vector(flatbuffers::FlatBufferBuilder &fb,
                                                         const SparseIndexVector &sparse_idx_vec);
 circle::SparseIndexVector to_circle_sparse_index_vector_type(luci::SparseIndexVectorType type);
+circle::BuiltinOperator circle_builtin_operator(const luci::CircleNode *node);
+circle::BuiltinOptions circle_builtin_options(const luci::CircleNode *node);
+std::string circle_custom_code(const luci::CircleNode *node);
+flatbuffers::Offset<flatbuffers::Vector<uint8_t>>
+circle_custom_options(flatbuffers::FlatBufferBuilder &fb, const luci::CircleNode *node);
 
 } // namespace luci
 
