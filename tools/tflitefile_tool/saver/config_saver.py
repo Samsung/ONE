@@ -24,8 +24,9 @@ class ConfigSaver(object):
         self.operator = operator
         # Set self.verbose to 1 level to print more information
         self.verbose = 1
-        self.op_idx = operator.operator_idx
-        self.op_name = operator.opcode_str
+        self.op_idx = operator.index
+        self.op_name = operator.op_name
+        self.options = operator.tf_options
 
         self.f = open(file_name, 'at')
 
@@ -79,26 +80,26 @@ class ConfigSaver(object):
             self.f.write("output{}_type: {}\n".format(idx, tensor.type_name))
 
     def SaveFilter(self):
-        self.f.write("filter_w: {}\n".format(self.operator.options.FilterWidth()))
-        self.f.write("filter_h: {}\n".format(self.operator.options.FilterHeight()))
+        self.f.write("filter_w: {}\n".format(self.options.FilterWidth()))
+        self.f.write("filter_h: {}\n".format(self.options.FilterHeight()))
 
     def SaveStride(self):
-        self.f.write("stride_w: {}\n".format(self.operator.options.StrideW()))
-        self.f.write("stride_h: {}\n".format(self.operator.options.StrideH()))
+        self.f.write("stride_w: {}\n".format(self.options.StrideW()))
+        self.f.write("stride_h: {}\n".format(self.options.StrideH()))
 
     def SaveDilation(self):
-        self.f.write("dilation_w: {}\n".format(self.operator.options.DilationWFactor()))
-        self.f.write("dilation_h: {}\n".format(self.operator.options.DilationHFactor()))
+        self.f.write("dilation_w: {}\n".format(self.options.DilationWFactor()))
+        self.f.write("dilation_h: {}\n".format(self.options.DilationHFactor()))
 
     def SavePadding(self):
-        if self.operator.options.Padding() == 0:
+        if self.options.Padding() == 0:
             self.f.write("padding: SAME\n")
-        elif self.operator.options.Padding() == 1:
+        elif self.options.Padding() == 1:
             self.f.write("padding: VALID\n")
 
     def SaveFusedAct(self):
-        if self.operator.fused_activation is not "NONE":
-            self.f.write("fused_act: {}\n".format(self.operator.fused_activation))
+        if self.operator.activation is not "NONE":
+            self.f.write("fused_act: {}\n".format(self.operator.activation))
 
     def SaveAttributes(self):
         if self.op_name == 'AVERAGE_POOL_2D' or self.op_name == 'MAX_POOL_2D':
@@ -116,7 +117,6 @@ class ConfigSaver(object):
             self.SaveStride()
             self.SaveDilation()
             self.SavePadding()
-            self.f.write("depthmultiplier: {}\n".format(
-                self.operator.options.DepthMultiplier()))
+            self.f.write("depthmultiplier: {}\n".format(self.options.DepthMultiplier()))
 
         self.SaveFusedAct()
