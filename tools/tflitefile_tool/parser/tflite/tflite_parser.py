@@ -28,7 +28,7 @@ def HasOptionalTensor(tf_subgraph):
         output_tensors = tf_operator.OutputsAsNumpy()
         if -1 in tf_operator.OutputsAsNumpy():
             return True
-    
+
     return False
 
 
