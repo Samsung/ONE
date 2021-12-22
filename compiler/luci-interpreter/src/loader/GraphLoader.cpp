@@ -73,6 +73,25 @@ const void *getNodeData(const luci::CircleConst *node, size_t *data_size)
   }
 }
 
+const void *getNodeData(const luci::CircleCustom *node, size_t *data_size)
+{
+  if (node->custom_code() != "CircleReferencingConst")
+    return nullptr;
+
+  // helper struct which describes data loaded to custom_options of CircleReferencingConst node
+  struct ConstDataReference
+  {
+    const uint8_t *data = nullptr;
+    uint32_t size = 0;
+  };
+
+  const auto &custom_options = node->custom_options();
+  const auto &const_data_ref = *reinterpret_cast<const ConstDataReference *>(custom_options.data());
+
+  *data_size = const_data_ref.size;
+  return const_data_ref.data;
+}
+
 bool isExecutableNode(const luci::CircleNode *node)
 {
   switch (node->opcode())
@@ -88,7 +107,19 @@ bool isExecutableNode(const luci::CircleNode *node)
     case luci::CircleOpcode::CIRCLESPLITVOUT:
     case luci::CircleOpcode::CIRCLEUNPACKOUT:
     case luci::CircleOpcode::CIRCLEWHILEOUT:
+    case luci::CircleOpcode::CIRCLECUSTOMOUT:
       return false;
+    // Custom nodes may be executable and non-executable
+    case luci::CircleOpcode::CUSTOM:
+    {
+      auto const custom_node = loco::must_cast<const luci::CircleCustom *>(node);
+
+      // TODO handle more custom ops here
+      if (custom_node->custom_code() == "CircleReferencingConst")
+        return false;
+
+      throw std::runtime_error("Unknown Custom Node, yet.");
+    }
     default:
       return true;
   }
@@ -132,7 +163,8 @@ void GraphLoader::loadTensors()
     if (!isTensorProducingNode(node))
       continue;
 
-    // Only Input and Const nodes have shapes. Shapes of intermediate tensors will be inferred.
+    // Only Input, Const and Custom nodes have shapes. Shapes of intermediate tensors will be
+    // inferred.
     Shape shape{};
     if (const auto *input_node = dynamic_cast<const luci::CircleInput *>(node))
     {
@@ -141,6 +173,10 @@ void GraphLoader::loadTensors()
     else if (const auto *const_node = dynamic_cast<const luci::CircleConst *>(node))
     {
       shape = getNodeShape(const_node);
+    }
+    else if (const auto *custom_out_node = dynamic_cast<const luci::CircleCustomOut *>(node))
+    {
+      shape = getNodeShape(custom_out_node);
     }
 
     AffineQuantization quantization;
@@ -169,6 +205,19 @@ void GraphLoader::loadTensors()
     {
       size_t data_size{};
       const void *const_data = getNodeData(const_node, &data_size);
+      if (const_data != nullptr)
+      {
+        _memory_manager->allocate_memory(*tensor);
+        tensor->writeData(const_data, data_size);
+      }
+    }
+    else if (const auto *custom_out_node = dynamic_cast<const luci::CircleCustomOut *>(node))
+    {
+      const auto *custom_node =
+        loco::must_cast<const luci::CircleCustom *>(custom_out_node->input());
+
+      size_t data_size{};
+      const void *const_data = getNodeData(custom_node, &data_size);
       if (const_data != nullptr)
       {
         _memory_manager->allocate_memory(*tensor);
