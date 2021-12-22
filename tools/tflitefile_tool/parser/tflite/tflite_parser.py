@@ -13,11 +13,23 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-# TODO: Use this module
+
 import tflite.Model
 from .tflite_subgraph import TFLiteSubgraph
 from .tflite_operator import TFLiteOperator, EnumStrMaps
 from .tflite_tensor import TFLiteTensor, SetTensorTypeStr
+
+
+def HasOptionalTensor(tf_subgraph):
+    for operator_idx in range(tf_subgraph.OperatorsLength()):
+        tf_operator = tf_subgraph.Operators(operator_idx)
+        if -1 in tf_operator.InputsAsNumpy():
+            return True
+        output_tensors = tf_operator.OutputsAsNumpy()
+        if -1 in tf_operator.OutputsAsNumpy():
+            return True
+    
+    return False
 
 
 class TFLiteSubgraphParser(object):
@@ -30,8 +42,9 @@ class TFLiteSubgraphParser(object):
         SetTensorTypeStr()
 
     def Parse(self):
-        # Prepare that optional input and output tensors are indicated by -1
-        self.subg.tensors_map[-1] = TFLiteTensor(-1, None, None)
+        if HasOptionalTensor(self.tf_subgraph):
+            # Prepare that optional input and output tensors are indicated by -1
+            self.subg.tensors_map[-1] = TFLiteTensor(-1, None, None)
 
         # tensors
         for tensor_idx in range(self.tf_subgraph.TensorsLength()):

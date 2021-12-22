@@ -37,6 +37,7 @@ class TFLiteSubgraphParserTestCase(unittest.TestCase):
             self.assertEqual(subg.index, subgraph_index)
             self.assertEqual(len(subg.inputs), tf_subgraph.InputsLength())
             self.assertEqual(len(subg.outputs), tf_subgraph.OutputsLength())
+            # if there is optional tensors, this assert could be wrong
             self.assertEqual(len(subg.tensors_map.keys()), tf_subgraph.TensorsLength())
             self.assertEqual(
                 len(subg.operators_map.keys()), tf_subgraph.OperatorsLength())
