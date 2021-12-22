@@ -196,6 +196,22 @@ uint32_t SerializedModelData::registerCustomOpcode(const std::string &custom_cod
   return idx;
 }
 
+uint32_t SerializedModelData::registerBuiltinOpcode(circle::BuiltinOperator builtin_code,
+                                                    const int32_t op_version,
+                                                    const std::string &custom_code)
+{
+  assert(op_version > 0);
+
+  auto it = _operator_codes.find(OpCode{builtin_code, custom_code, op_version});
+  if (it != _operator_codes.end())
+  {
+    return it->second;
+  }
+  auto idx = static_cast<uint32_t>(_operator_codes.size());
+  _operator_codes.emplace(OpCode{builtin_code, custom_code, op_version}, idx);
+  return idx;
+}
+
 circle::Padding getOpPadding(const loco::Padding2D *pad, const loco::Stride<2> *stride,
                              const ShapeDescription &ifm, const ShapeDescription &ofm)
 {

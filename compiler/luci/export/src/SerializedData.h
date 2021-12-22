@@ -26,6 +26,7 @@
 
 #include <unordered_map>
 #include <map>
+#include <string>
 
 namespace luci
 {
@@ -133,6 +134,8 @@ struct SerializedModelData final
    */
   uint32_t registerBuiltinOpcode(circle::BuiltinOperator builtin_code, const int32_t op_version);
   uint32_t registerCustomOpcode(const std::string &custom_op);
+  uint32_t registerBuiltinOpcode(circle::BuiltinOperator builtin_code, const int32_t op_version,
+                                 const std::string &custom_code);
 };
 
 // Prerequisites for circle::Model object creation
