@@ -80,28 +80,29 @@ class TFLiteTensor(Tensor):
 
         self.index = int(tensor_idx)
         self.tensor = tf_tensor
-        if tf_tensor.Name() != 0:
-            self.tensor_name = str(tf_tensor.Name())
 
         # optional input
-        if (tf_tensor != None):
-            self.type_name = TensorTypeList[tf_tensor.Type()]
-        else:
+        if self.index == -1:
             self.type_name = "NONE"
+        # general input
+        else:
+            assert tf_tensor is not None
+            assert tf_buffer is not None
+            self.tensor_name = str(tf_tensor.Name())
+            self.type_name = TensorTypeList[tf_tensor.Type()]
+            self.buffer_index = tf_tensor.Buffer()
+            if (tf_buffer.DataLength() > 0):
+                self.buffer = ConvertProperNPArrayType(tf_buffer.DataAsNumpy(),
+                                                       tf_tensor.ShapeAsNumpy(),
+                                                       self.type_name)
 
-        self.buffer_index = tf_tensor.Buffer()
-        if (tf_buffer.DataLength() > 0):
-            self.buffer = ConvertProperNPArrayType(tf_buffer.DataAsNumpy(),
-                                                   tf_tensor.ShapeAsNumpy(),
-                                                   self.type_name)
-
-        # shape: Empty list([]) will mean Scalar
-        for shape_idx in range(tf_tensor.ShapeLength()):
-            # when shape signature is -1, that means unknown dim
-            if tf_tensor.ShapeSignature(shape_idx) != -1:
-                self.shape.append(int(tf_tensor.Shape(shape_idx)))
-            else:
-                self.shape.append(-1)
+            # shape: Empty list([]) will mean Scalar
+            for shape_idx in range(tf_tensor.ShapeLength()):
+                # when shape signature is -1, that means unknown dim
+                if tf_tensor.ShapeSignature(shape_idx) != -1:
+                    self.shape.append(int(tf_tensor.Shape(shape_idx)))
+                else:
+                    self.shape.append(-1)
 
         self.memory_size = self.GetMemorySize()
 

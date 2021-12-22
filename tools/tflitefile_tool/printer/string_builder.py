@@ -66,7 +66,8 @@ def GetStringShape(tensor):
 def GetStringTensor(tensor):
     info = ""
     if tensor.index < 0:
-        info = "{:5}".format(CHAR_SYMBOLS['tensor'] + str(tensor.index))
+        info = "{:5} : {}".format(CHAR_SYMBOLS['tensor'] + str(tensor.index),
+                                  "(OPTIONAL)")
     else:
         shape_str = GetStringShape(tensor)
         type_name = tensor.type_name

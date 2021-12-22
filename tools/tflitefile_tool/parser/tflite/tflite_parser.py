@@ -30,12 +30,11 @@ class TFLiteSubgraphParser(object):
         SetTensorTypeStr()
 
     def Parse(self):
+        # Prepare that optional input and output tensors are indicated by -1
+        self.subg.tensors_map[-1] = TFLiteTensor(-1, None, None)
+
         # tensors
         for tensor_idx in range(self.tf_subgraph.TensorsLength()):
-            if (tensor_idx < 0):
-                t = TFLiteTensor(tensor_idx, None, None)
-                self.subg.tensors_map[tensor_idx] = t
-                continue
             tf_tensor = self.tf_subgraph.Tensors(tensor_idx)
             buffer_idx = tf_tensor.Buffer()
             tf_buffer = self.tf_model.Buffers(buffer_idx)
