@@ -24,7 +24,7 @@ class TFLiteSubgraph(Subgraph):
 
         self.index = subg_idx
         if tf_subgraph.Name() is not None:
-            self.subg_name = tf_subgraph.Name()
+            self.subg_name = str(tf_subgraph.Name())
         self.model_name = "#{0} {1}".format(subg_idx, self.subg_name)
         if (subg_idx == 0):  # 0th subgraph is main subgraph
             self.model_name += " (MAIN)"
