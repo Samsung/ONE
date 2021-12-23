@@ -228,6 +228,9 @@ bool check_4d_reshape(loco::Node *node, const std::vector<int32_t> indices)
   if (input->shape_status() != luci::ShapeStatus::VALID)
     return false;
 
+  if (input->rank() != 4)
+    return false;
+
   if (reshape->shape_status() != luci::ShapeStatus::VALID)
     return false;
 
