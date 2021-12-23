@@ -39,18 +39,18 @@ class GraphStats():
         return self
 
 
-def CalcGraphStats(subg_parser):
+def CalcGraphStats(subg):
     stats = GraphStats()
 
-    for type_str, oper_list in subg_parser.operators_per_type.items():
+    for type_str, oper_list in subg.optypes_map.items():
         # number of occurrence of this operator type
         occur = len(oper_list)
         stats.accumulate_op_count(type_str, occur)
 
     total_memory = 0
     filled_memory = 0  # only memory for constant
-    for tensor in subg_parser.GetAllTensors():
-        if tensor.tf_buffer.DataLength() != 0:
+    for index, tensor in subg.tensors_map.items():
+        if tensor.buffer is not None:
             filled_memory += tensor.memory_size
         total_memory += tensor.memory_size
     stats.accumulate_filled_memory(filled_memory)

@@ -13,7 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-# TODO: Use this module
+
 from ir.operator import Operator
 from .tflite_enum_str_maps import EnumStrMaps
 from .tflite_option import OptionLoader, GetStringOptions

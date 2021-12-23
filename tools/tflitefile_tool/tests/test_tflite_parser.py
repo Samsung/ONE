@@ -15,8 +15,34 @@
 # limitations under the License.
 
 import unittest
-from parser.tflite_parser import TFLiteParser
+import tflite.Model
+from parser.tflite.tflite_parser import TFLiteParser, TFLiteSubgraphParser
 from .test_setup import TEST_MODEL_PATH
+
+
+class TFLiteSubgraphParserTestCase(unittest.TestCase):
+    def setUp(self):
+        self.model_file = open(TEST_MODEL_PATH, 'rb')
+
+    def tearDown(self):
+        self.model_file.close()
+
+    def test_Parse(self):
+        buf = bytearray(self.model_file.read())
+        tf_model = tflite.Model.Model.GetRootAsModel(buf, 0)
+        for subgraph_index in range(tf_model.SubgraphsLength()):
+            tf_subgraph = tf_model.Subgraphs(subgraph_index)
+            subg_parser = TFLiteSubgraphParser(tf_model, subgraph_index)
+            subg = subg_parser.Parse()
+            self.assertEqual(subg.index, subgraph_index)
+            self.assertEqual(len(subg.inputs), tf_subgraph.InputsLength())
+            self.assertEqual(len(subg.outputs), tf_subgraph.OutputsLength())
+            # if there is optional tensors, this assert could be wrong
+            self.assertEqual(len(subg.tensors_map.keys()), tf_subgraph.TensorsLength())
+            self.assertEqual(
+                len(subg.operators_map.keys()), tf_subgraph.OperatorsLength())
+            # because TEST_MODEL_PATH has an op(ADD)
+            self.assertEqual(len(subg.optypes_map.keys()), tf_subgraph.OperatorsLength())
 
 
 class TFLiteParserTestCase(unittest.TestCase):
@@ -28,10 +54,9 @@ class TFLiteParserTestCase(unittest.TestCase):
         self.model_file.close()
 
     def test_Parse(self):
-        (subg_list, stats) = self.parser.Parse()
+        subg_list = self.parser.Parse()
         self.assertIsNotNone(subg_list)
         self.assertEqual(len(subg_list), 1)
-        self.assertIsNotNone(stats)
 
 
 if __name__ == '__main__':

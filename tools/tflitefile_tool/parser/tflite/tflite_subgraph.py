@@ -13,7 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-# TODO: Use this module
+
 from ir.subgraph import Subgraph
 
 
@@ -24,7 +24,7 @@ class TFLiteSubgraph(Subgraph):
 
         self.index = subg_idx
         if tf_subgraph.Name() is not None:
-            self.subg_name = tf_subgraph.Name()
+            self.subg_name = str(tf_subgraph.Name())
         self.model_name = "#{0} {1}".format(subg_idx, self.subg_name)
         if (subg_idx == 0):  # 0th subgraph is main subgraph
             self.model_name += " (MAIN)"

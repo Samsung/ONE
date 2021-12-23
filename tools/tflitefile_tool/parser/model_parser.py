@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from parser.tflite_parser import TFLiteParser
+from parser.tflite.tflite_parser import TFLiteParser
 
 
 class ModelParser(object):
