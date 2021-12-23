@@ -23,7 +23,7 @@
 #include <luci/IR/ExecutionPlanTable.h>
 
 #include <vector>
-
+#include <string>
 #include <unordered_map>
 #include <map>
 
@@ -133,6 +133,8 @@ struct SerializedModelData final
    */
   uint32_t registerBuiltinOpcode(circle::BuiltinOperator builtin_code, const int32_t op_version);
   uint32_t registerCustomOpcode(const std::string &custom_op);
+  uint32_t registerBuiltinOpcode(circle::BuiltinOperator builtin_code,
+                                 const std::string &custom_code, const int32_t op_version);
 };
 
 // Prerequisites for circle::Model object creation
