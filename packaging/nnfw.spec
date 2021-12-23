@@ -87,8 +87,11 @@ Summary: NNFW Test
 NNFW test rpm. It does not depends on nnfw rpm since it contains nnfw runtime.
 %endif
 
-%ifarch %{arm}
+%ifarch armv7l
 %define target_arch armv7l
+%endif
+%ifarch armv7hl
+%define target_arch armv7hl
 %endif
 %ifarch x86_64
 %define target_arch x86_64
@@ -141,7 +144,7 @@ tar -xf %{SOURCE1015} -C ./externals
 tar -xf %{SOURCE1016} -C ./externals
 
 %build
-%ifarch arm armv7l aarch64 x86_64 %ix86
+%ifarch arm armv7l armv7hl aarch64 x86_64 %ix86
 # runtime build
 %{build_env} ./nnfw configure %{build_options} %{extra_option}
 %{build_env} ./nnfw build -j4
@@ -159,10 +162,10 @@ pwd > tests/scripts/build_path.txt
 %endif # coverage_build
 tar -zcf test-suite.tar.gz infra/scripts
 %endif # test_build
-%endif # arm armv7l aarch64
+%endif # arm armv7l armv7hl aarch64
 
 %install
-%ifarch arm armv7l aarch64 x86_64 %ix86
+%ifarch arm armv7l armv7hl aarch64 x86_64 %ix86
 
 mkdir -p %{buildroot}%{_libdir}
 mkdir -p %{buildroot}%{_bindir}
@@ -206,7 +209,7 @@ install -m 0644 ./tests/scripts/build_path.txt %{buildroot}%{test_install_dir}/t
 %files
 %manifest %{name}.manifest
 %defattr(-,root,root,-)
-%ifarch arm armv7l aarch64 x86_64 %ix86
+%ifarch arm armv7l armv7hl aarch64 x86_64 %ix86
 %{_libdir}/*.so
 %exclude %{_includedir}/CL/*
 %endif
@@ -214,7 +217,7 @@ install -m 0644 ./tests/scripts/build_path.txt %{buildroot}%{test_install_dir}/t
 %files devel
 %manifest %{name}.manifest
 %defattr(-,root,root,-)
-%ifarch arm armv7l aarch64 x86_64 %ix86
+%ifarch arm armv7l armv7hl aarch64 x86_64 %ix86
 %dir %{_includedir}/nnfw
 %{_includedir}/nnfw/*
 %{_libdir}/pkgconfig/nnfw.pc
@@ -223,13 +226,13 @@ install -m 0644 ./tests/scripts/build_path.txt %{buildroot}%{test_install_dir}/t
 %files plugin-devel
 %manifest %{name}.manifest
 %defattr(-,root,root,-)
-%ifarch arm armv7l aarch64 x86_64 %ix86
+%ifarch arm armv7l armv7hl aarch64 x86_64 %ix86
 %dir %{_includedir}/onert
 %{_includedir}/onert/*
 %{_libdir}/pkgconfig/nnfw-plugin.pc
 %endif
 
-%ifarch arm armv7l aarch64 x86_64 %ix86
+%ifarch arm armv7l armv7hl aarch64 x86_64 %ix86
 %files minimal-app
 %manifest %{name}.manifest
 %defattr(-,root,root,-)
@@ -240,10 +243,10 @@ install -m 0644 ./tests/scripts/build_path.txt %{buildroot}%{test_install_dir}/t
 %files test
 %manifest %{name}.manifest
 %defattr(-,root,root,-)
-%ifarch arm armv7l aarch64 x86_64
+%ifarch arm armv7l armv7hl aarch64 x86_64
 %dir %{test_install_home}
 %{test_install_home}/*
-%endif # arm armv7l aarch64
+%endif # arm armv7l armv7hl aarch64
 %endif # test_build
 
 %changelog
