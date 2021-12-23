@@ -15,6 +15,7 @@
  */
 
 #include "CircleExporterUtils.h"
+#include "CircleBuiltinTypesMappingRule.h"
 
 #include <oops/InternalExn.h>
 
@@ -161,6 +162,45 @@ circle::SparseIndexVector to_circle_sparse_index_vector_type(luci::SparseIndexVe
       INTERNAL_EXN_V("trying to convert unsupported luci::SparseIndexVectorType",
                      oops::to_uint32(type));
   }
+}
+
+circle::BuiltinOperator circle_builtin_operator(const luci::CircleNode *node)
+{
+  return node->accept(&BuiltinOperatorMappingRule::get());
+}
+
+circle::BuiltinOptions circle_builtin_options(const luci::CircleNode *node)
+{
+  if (auto cast = dynamic_cast<const luci::CircleCast *>(node))
+  {
+    return (cast->out_data_type() == loco::DataType::Unknown) ? circle::BuiltinOptions_NONE
+                                                              : circle::BuiltinOptions_CastOptions;
+  }
+
+  return node->accept(&BuiltinOptionsMappingRule::get());
+}
+
+std::string circle_custom_code(const luci::CircleNode *node)
+{
+  if (auto custom_node = dynamic_cast<const luci::CircleCustom *>(node))
+  {
+    return custom_node->custom_code();
+  }
+
+  return "";
+}
+
+flatbuffers::Offset<flatbuffers::Vector<uint8_t>>
+circle_custom_options(flatbuffers::FlatBufferBuilder &fb, const luci::CircleNode *node)
+{
+  if (auto custom_node = dynamic_cast<const luci::CircleCustom *>(node))
+  {
+    std::vector<uint8_t> custom_options_vec{custom_node->custom_options().begin(),
+                                            custom_node->custom_options().end()};
+    return fb.CreateVector(custom_options_vec);
+  }
+
+  return 0;
 }
 
 } // namespace luci
