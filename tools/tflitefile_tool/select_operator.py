@@ -22,6 +22,19 @@ import tflite.Model
 import tflite.SubGraph
 import tflite.BuiltinOptions
 import argparse
+import pkg_resources
+
+
+# On flatbuffers 2.0, EndVector doesn't requires length argument any more.
+# But flatbuffers under 2.0 (ex. 1.12) requires length argument.
+# We need this workaround until we abandon flatbuffers 1.12.
+# Refernece: https://github.com/google/flatbuffers/issues/6858
+def EndVector(builder, len):
+    flat_version = pkg_resources.get_distribution('flatbuffers').version
+    if pkg_resources.parse_version(flat_version) < pkg_resources.parse_version("2.0"):
+        return builder.EndVector(len)
+    else:
+        return builder.EndVector()
 
 
 # Assume we use only main model in model file
@@ -135,7 +148,7 @@ def GenerateOperatorCodes(new_builder, sample_model, used_opcodes_dic,
     for operator_code_idx in reversed(range(new_operator_code_num)):
         new_builder.PrependUOffsetTRelative(new_operator_code_list[operator_code_idx])
 
-    return new_builder.EndVector(new_operator_code_num)
+    return EndVector(new_builder, new_operator_code_num)
 
 
 def GenerateQuantization(new_builder, selected_quantization):
@@ -146,7 +159,7 @@ def GenerateQuantization(new_builder, selected_quantization):
             new_builder, min_num)
         for min_idx in reversed(range(min_num)):
             new_builder.PrependFloat32(selected_quantization.Min(min_idx))
-        new_min = new_builder.EndVector(min_num)
+        new_min = EndVector(new_builder, min_num)
 
     # Create max vector
     max_num = selected_quantization.MaxLength()
@@ -155,7 +168,7 @@ def GenerateQuantization(new_builder, selected_quantization):
             new_builder, max_num)
         for max_idx in reversed(range(max_num)):
             new_builder.PrependFloat32(selected_quantization.Max(max_idx))
-        new_max = new_builder.EndVector(max_num)
+        new_max = EndVector(new_builder, max_num)
 
     # Create scale vector
     scale_num = selected_quantization.ScaleLength()
@@ -164,7 +177,7 @@ def GenerateQuantization(new_builder, selected_quantization):
             new_builder, scale_num)
         for scale_idx in reversed(range(scale_num)):
             new_builder.PrependFloat32(selected_quantization.Scale(scale_idx))
-        new_scale = new_builder.EndVector(scale_num)
+        new_scale = EndVector(new_builder, scale_num)
 
     # Create zero_point vector
     zeropoint_num = selected_quantization.ZeroPointLength()
@@ -173,7 +186,7 @@ def GenerateQuantization(new_builder, selected_quantization):
             new_builder, zeropoint_num)
         for zeropoint_idx in reversed(range(zeropoint_num)):
             new_builder.PrependInt64(selected_quantization.ZeroPoint(zeropoint_idx))
-        new_zeropoint = new_builder.EndVector(zeropoint_num)
+        new_zeropoint = EndVector(new_builder, zeropoint_num)
 
     # Create quantization
     tflite.QuantizationParameters.QuantizationParametersStart(new_builder)
@@ -204,7 +217,7 @@ def GenerateTensor(new_builder, selected_tensor, used_buffers_dic):
     if shape_num != 0:
         for shape_idx in reversed(range(shape_num)):
             new_builder.PrependInt32(selected_tensor.Shape(shape_idx))
-    new_shape = new_builder.EndVector(shape_num)
+    new_shape = EndVector(new_builder, shape_num)
 
     # Create tensor_type
     tensor_type = selected_tensor.Type()
@@ -268,7 +281,7 @@ def GenerateTensors(new_builder, selected_subgraph, used_tensors_dic, used_buffe
     for new_tensor in reversed(new_tensor_list):
         new_builder.PrependUOffsetTRelative(new_tensor)
 
-    return new_builder.EndVector(new_tensor_num)
+    return EndVector(new_builder, new_tensor_num)
 
 
 def GenerateBuiltinOption(new_builder, selected_builtin_option, builtin_option_type,
@@ -474,7 +487,7 @@ def GenerateBuiltinOption(new_builder, selected_builtin_option, builtin_option_t
             for new_shape_idx in reversed(range(shape_num)):
                 new_shape_val = reshape_option.NewShape(new_shape_idx)
                 new_builder.PrependInt32(new_shape_val)
-            new_shape = new_builder.EndVector(shape_num)
+            new_shape = EndVector(new_builder, shape_num)
 
         tflite.ReshapeOptions.ReshapeOptionsStart(new_builder)
         if shape_num != 0:
@@ -613,7 +626,7 @@ def GenerateBuiltinOption(new_builder, selected_builtin_option, builtin_option_t
             for squeeze_dims_idx in reversed(range(squeeze_dims_num)):
                 squeeze_dims_val = squeeze_option.SqueezeDims(squeeze_dims_idx)
                 new_builder.PrependInt32(squeeze_dims_val)
-            new_squeeze_dims = new_builder.EndVector(squeeze_dims_num)
+            new_squeeze_dims = EndVector(new_builder, squeeze_dims_num)
 
         tflite.SqueezeOptions.SqueezeOptionsStart(new_builder)
         if squeeze_dims_num != 0:
@@ -997,7 +1010,7 @@ def GenerateOperator(new_builder, selected_operator, used_tensors_dic, used_opco
             else:
                 new_input_tensor_idx = used_tensors_dic[input_tensor_idx]
             new_builder.PrependInt32(new_input_tensor_idx)
-        new_input = new_builder.EndVector(input_num)
+        new_input = EndVector(new_builder, input_num)
 
     # create output_vector
     output_num = selected_operator.OutputsLength()
@@ -1007,7 +1020,7 @@ def GenerateOperator(new_builder, selected_operator, used_tensors_dic, used_opco
             output_tensor_idx = selected_operator.Outputs(output_idx)
             new_output_tensor_idx = used_tensors_dic[output_tensor_idx]
             new_builder.PrependInt32(new_output_tensor_idx)
-        new_output = new_builder.EndVector(output_num)
+        new_output = EndVector(new_builder, output_num)
 
     # Create builtin_option
     builtin_option_type = selected_operator.BuiltinOptionsType()
@@ -1022,7 +1035,7 @@ def GenerateOperator(new_builder, selected_operator, used_tensors_dic, used_opco
         tflite.Operator.OperatorStartCustomOptionsVector(new_builder, custom_option_num)
         for custom_option_idx in reversed(range(custom_option_num)):
             new_builder.PrependUint8(selected_operator.CustomOptions(custom_option_idx))
-        new_custom_option = new_builder.EndVector(custom_option_num)
+        new_custom_option = EndVector(new_builder, custom_option_num)
 
     # Create custum option type
     custom_option_type = selected_operator.CustomOptionsFormat()
@@ -1067,7 +1080,7 @@ def GenerateOperators(new_builder, selected_subgraph, operator_list, used_tensor
     for new_operator in reversed(new_operator_list):
         new_builder.PrependUOffsetTRelative(new_operator)
 
-    return new_builder.EndVector(new_operator_num)
+    return EndVector(new_builder, new_operator_num)
 
 
 def GenerateSubgraph(new_builder, selected_subgraph, operator_list, new_input_tensor,
@@ -1085,7 +1098,7 @@ def GenerateSubgraph(new_builder, selected_subgraph, operator_list, new_input_te
         for input_tensor_idx in reversed(new_input_tensor):
             new_input_tensor_idx = used_tensors_dic[input_tensor_idx]
             new_builder.PrependInt32(new_input_tensor_idx)
-        new_inputs = new_builder.EndVector(new_input_tensor_num)
+        new_inputs = EndVector(new_builder, new_input_tensor_num)
 
     # Create output vector for subgraph table
     new_output_tensor_num = len(new_output_tensor)
@@ -1094,7 +1107,7 @@ def GenerateSubgraph(new_builder, selected_subgraph, operator_list, new_input_te
         for output_tensor_idx in reversed(new_output_tensor):
             new_output_tensor_idx = used_tensors_dic[output_tensor_idx]
             new_builder.PrependInt32(new_output_tensor_idx)
-        new_outputs = new_builder.EndVector(new_output_tensor_num)
+        new_outputs = EndVector(new_builder, new_output_tensor_num)
 
     # Operators
     operators = GenerateOperators(new_builder, selected_subgraph, operator_list,
@@ -1161,7 +1174,7 @@ def GenerateSubgraphs(args, new_builder, sample_model, operator_list, new_input_
     for subgraph_idx in reversed(range(new_subgraph_num)):
         new_builder.PrependUOffsetTRelative(new_subgraph_list[subgraph_idx])
 
-    return new_builder.EndVector(new_subgraph_num)
+    return EndVector(new_builder, new_subgraph_num)
 
 
 def GenerateBuffers(new_builder, sample_model, used_buffers_dic):
@@ -1181,7 +1194,7 @@ def GenerateBuffers(new_builder, sample_model, used_buffers_dic):
             tflite.Buffer.BufferStartDataVector(new_builder, buffer_length)
             for buffer_data_idx in reversed(range(buffer_length)):
                 new_builder.PrependUint8(buffer.Data(buffer_data_idx))
-            new_buffer = new_builder.EndVector(buffer_length)
+            new_buffer = EndVector(new_builder, buffer_length)
             new_buffer_data_list[buffer_idx] = new_buffer
 
     # Create tables of buffer
@@ -1205,7 +1218,7 @@ def GenerateBuffers(new_builder, sample_model, used_buffers_dic):
     for new_buffer_idx in reversed(range(new_buffer_num)):
         new_builder.PrependUOffsetTRelative(new_buffer_list[new_buffer_idx])
 
-    return new_builder.EndVector(new_buffer_num)
+    return EndVector(new_builder, new_buffer_num)
 
 
 def GenerateModel(args, new_builder, sample_model, operator_list, new_input_tensors,
