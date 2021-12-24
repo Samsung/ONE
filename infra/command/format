@@ -74,13 +74,10 @@ function exclude_symbolic_links() {
 }
 
 function check_newline() {
-  FILES_TO_CHECK_CR=()
-  for f in ${FILES_TO_CHECK[@]}; do
-    # Manually ignore style checking
-    if [[ ${f} == !(*.svg|*.pdf|*.png) ]]; then
-      FILES_TO_CHECK_CR+=("${f}")
-    fi
-  done
+  # Manually ignore style checking
+  FILES_TO_CHECK_CR=`echo "$FILES_TO_CHECK" | tr ' ' '\n' | egrep -v '((\.svg)|(\.pdf)|(\.png))$'`
+  # Transform to array
+  FILES_TO_CHECK_CR=($FILES_TO_CHECK_CR)
 
   # Check all files (CMakeLists.txt, *.cl, ... not only for C++, Python)
   if [[ ${#FILES_TO_CHECK_CR} -ne 0 ]]; then
@@ -106,14 +103,10 @@ function check_newline() {
 
 function check_permission() {
   # Check all files except script
-  FILES_TO_CHECK_PERMISSION=()
-  for f in ${FILES_TO_CHECK[@]}; do
-    # Manually ignore permission checking
-    if [[ ${f} == !(nnas|nnfw|nncc|*.sh|*.py|*/gradlew|infra/debian/compiler/rules|infra/debian/runtime/rules) ]] \
-	    || [[ ${f} == tests/nnapi/specs/**/*.py ]]; then
-      FILES_TO_CHECK_PERMISSION+=("${f}")
-    fi
-  done
+  # Manually ignore permission checking
+  FILES_TO_CHECK_PERMISSION=`echo "$FILES_TO_CHECK" | tr ' ' '\n' | egrep -v '((^nnas)|(^nnfw)|(^nncc)|(\.sh)|(\.py)|(/gradlew)|(^infra/debian/compiler/rules|infra/debian/runtime/rules))$'`
+  # Transform to array
+  FILES_TO_CHECK_PERMISSION=($FILES_TO_CHECK_PERMISSION)
 
   if [[ ${#FILES_TO_CHECK_PERMISSION} -eq 0 ]]; then
     return
@@ -147,19 +140,12 @@ function check_cpp_files() {
     exit 1
   fi
 
-  # Check c++ files
-  FILES_TO_CHECK_CPP=()
-  for f in ${FILES_TO_CHECK[@]}; do
-    # Manually ignore style checking
-    if [[ ${f} == +(*/NeuralNetworks.h|*/NeuralNetworksExtensions.h) ]]; then
-      continue
-    fi
-
-    # File extension to check
-    if [[ ${f} == +(*.h|*.hpp|*.cpp|*.cc|*.c|*.cl) ]]; then
-      FILES_TO_CHECK_CPP+=("${f}")
-    fi
-  done
+  # Check c++ files: replace ' ' with newline, check with grep
+  FILES_TO_CHECK_CPP=`echo "$FILES_TO_CHECK" | tr ' ' '\n' | egrep '((\.c[cl]?)|(\.cpp)|(\.h(pp)?))$'`
+  # Manually ignore style checking
+  FILES_TO_CHECK_CPP=`echo "$FILES_TO_CHECK_CPP" | egrep -v '((/NeuralNetworks\.h)|(/NeuralNetworksExtensions\.h))$'`
+  # Transform to array
+  FILES_TO_CHECK_CPP=($FILES_TO_CHECK_CPP)
 
   # Skip by '.FORMATDENY' file
   for s in ${DIRECTORIES_NOT_TO_BE_TESTED[@]}; do
@@ -189,21 +175,12 @@ function check_python_files() {
   fi
 
   # Check python files
-  FILES_TO_CHECK_PYTHON=()
-  for f in ${FILES_TO_CHECK[@]}; do
-    # File extension to check
-    if [[ ${f} == *.py ]]; then
-      FILES_TO_CHECK_PYTHON+=("${f}")
-    fi
-    # Exceptional case: one-cmds don't have '.py' extension
-    if [[ ${f} == compiler/one-cmds/* ]]; then
-      # Ignore non-python source (cmake, etc)
-      # Ignore shell script: one-prepare-venv
-      if [[ ${f} != compiler/one-cmds/*.* ]] && [[ ${f} != compiler/one-cmds/one-prepare-venv ]]; then
-        FILES_TO_CHECK_PYTHON+=("${f}")
-      fi
-    fi
-  done
+  FILES_TO_CHECK_PYTHON=`echo "$FILES_TO_CHECK" | tr ' ' '\n' | egrep '\.py$'`
+  # Exceptional case: one-cmds don't have '.py' extension: ignore non-python source (cmake, etc) and ignore shell script: one-prepare-venv
+  FILES_TO_CHECK_PYTHON=`echo "$FILES_TO_CHECK_PYTHON" | egrep -v '^compiler/one-cmds/.*\..*$' | egrep -v '^compiler/one-cmds/one-prepare-venv$'`
+  # Transform to array
+  FILES_TO_CHECK_PYTHON=($FILES_TO_CHECK_PYTHON)
+
   for s in ${DIRECTORIES_NOT_TO_BE_TESTED[@]}; do
     skip=${s#'.'/}/
     FILES_TO_CHECK_PYTHON=(${FILES_TO_CHECK_PYTHON[*]/$skip*/})
