@@ -146,9 +146,9 @@ static inline void SetupScratchpadTensor(luci_interpreter::Tensor *scratchpad,
   conv_params.dilation.h = params.dilation_height_factor;
   conv_params.dilation.w = params.dilation_width_factor;
 
-  if (conv_params.dilation.h == 1 && conv_params.dilation.w == 1)
+  if (input_data_type == loco::DataType::S8 && conv_params.dilation.h == 1 &&
+      conv_params.dilation.w == 1)
   {
-    assert(input_data_type == loco::DataType::S8);
     const int32_t batches = tflite::MatchingDim(input_shape, 0, output_shape, 0);
     const int32_t input_depth = tflite::MatchingDim(input_shape, 3, filter_shape, 3);
     const int32_t output_depth = tflite::MatchingDim(filter_shape, 0, output_shape, 3);
