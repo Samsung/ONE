@@ -106,6 +106,7 @@ function check_permission() {
   # Manually ignore permission checking
   FILES_TO_CHECK_PERMISSION=`echo "$FILES_TO_CHECK" | tr ' ' '\n' | egrep -v '((^nnas)|(^nnfw)|(^nncc)|(\.sh)|(\.py)|(/gradlew))$'`
   FILES_TO_CHECK_PERMISSION=`echo "$FILES_TO_CHECK_PERMISSION" | egrep -v '((^infra/debian/compiler/rules)|(^infra/debian/runtime/rules))$'`
+  FILES_TO_CHECK_PERMISSION+=`echo && echo "$FILES_TO_CHECK" | egrep '^tests/nnapi/specs/.*.py$'`
   # Transform to array
   FILES_TO_CHECK_PERMISSION=($FILES_TO_CHECK_PERMISSION)
 
