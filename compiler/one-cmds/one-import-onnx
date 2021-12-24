@@ -76,6 +76,10 @@ def _get_parser():
     tf2tfliteV2_group.add_argument('--model_format', default='saved_model')
     tf2tfliteV2_group.add_argument('--converter_version', default='v2')
 
+    parser.add_argument('--unroll_rnn', action='store_true', help='Unroll RNN operators')
+    parser.add_argument(
+        '--unroll_lstm', action='store_true', help='Unroll LSTM operators')
+
     # save intermediate file(s)
     parser.add_argument(
         '--save_intermediate',
@@ -133,7 +137,10 @@ def _convert(args):
         # convert onnx to tf saved model
         onnx_model = onnx.load(getattr(args, 'input_path'))
         if _onnx_legalizer_enabled:
-            onnx_legalizer.legalize(onnx_model)
+            options = onnx_legalizer.LegalizeOptions
+            options.unroll_rnn = _utils._is_valid_attr(args, 'unroll_rnn')
+            options.unroll_lstm = _utils._is_valid_attr(args, 'unroll_lstm')
+            onnx_legalizer.legalize(onnx_model, options)
         tf_savedmodel = onnx_tf.backend.prepare(onnx_model)
 
         savedmodel_name = os.path.splitext(os.path.basename(

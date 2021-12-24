@@ -26,6 +26,11 @@ import re
 # - Replace LSTM operation with unrolled subgraph
 
 
+class LegalizeOptions:
+    unroll_rnn = False
+    unroll_lstm = False
+
+
 def reverse_str(s):
     return ''.join(reversed(s))
 
@@ -727,7 +732,7 @@ def legalize_LSTM(transformer, tensor_infos, node):
     transformer.mark_for_deletion(node)
 
 
-def legalize(model):
+def legalize(model, options):
     tensor_infos = get_tensor_infos(model)
 
     transformer = ModelTransformerHelper(model)
@@ -735,7 +740,7 @@ def legalize(model):
     node_id = 0
     while node_id < len(model.graph.node):
         node = model.graph.node[node_id]
-        if node.op_type == 'RNN':
+        if node.op_type == 'RNN' and options.unroll_rnn:
             # opset version is required by split operation
             if model.opset_import[0].version >= 13:
                 raise NotImplementedError(
@@ -743,7 +748,7 @@ def legalize(model):
             transformer.set_insert_id(node_id)
             legalize_RNN(transformer, tensor_infos, node)
             node_id = transformer.get_insert_id()
-        elif node.op_type == 'LSTM':
+        elif node.op_type == 'LSTM' and options.unroll_lstm:
             if model.opset_import[0].version >= 13:
                 raise NotImplementedError(
                     'Can not generate code with opcode version 13 and greater')
