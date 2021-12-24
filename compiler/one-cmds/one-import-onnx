@@ -26,6 +26,8 @@ import sys
 import tempfile
 import onnx
 import onnx_tf
+import numpy as np
+import onnxruntime as rt
 
 # ONNX legalizer is an optional feature
 # It enables conversion of some operations, but in experimental phase for now
@@ -123,6 +125,16 @@ def _apply_verbosity(verbosity):
         os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 
+def _get_np_type(onnx_type):
+    # print("get_np_type = ", onnx_type)
+    if onnx_type == "tensor(float)":
+        return np.float32
+    if onnx_type == "tensor(int64)":
+        return np.int64
+    # TODO support other types
+    raise SystemExit("Unsupported onnx_type at _get_np_type()", onnx_type)
+
+
 def _convert(args):
     _apply_verbosity(args.verbose)
 
@@ -142,6 +154,17 @@ def _convert(args):
             options.unroll_lstm = _utils._is_valid_attr(args, 'unroll_lstm')
             onnx_legalizer.legalize(onnx_model, options)
         tf_savedmodel = onnx_tf.backend.prepare(onnx_model)
+
+        # run with all zero
+        session = rt.InferenceSession(onnx_model_path)
+        inputs = [input for input in session.get_inputs()]
+        input_data = dict()
+        for i in range(len(inputs)):
+            input_name = inputs[i].name
+            np_type = _get_np_type(inputs[i].type)
+            zero_data = np.zeros(inputs[i].shape, np_type)
+            input_data[input_name] = zero_data
+        tf_savedmodel.run(input_data)
 
         savedmodel_name = os.path.splitext(os.path.basename(
             args.output_path))[0] + '.savedmodel'
