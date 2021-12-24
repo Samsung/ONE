@@ -26,8 +26,6 @@
 
 #include <mio/circle/schema_generated.h>
 
-#include <flatbuffers/flexbuffers.h>
-
 namespace luci
 {
 
