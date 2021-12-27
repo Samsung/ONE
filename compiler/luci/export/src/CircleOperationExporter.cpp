@@ -32,6 +32,8 @@
 
 #include <flatbuffers/flexbuffers.h>
 
+// TODO Remove unused code
+// NOTE This is for better code diff visualization
 #if 0
 using namespace flatbuffers;
 using namespace circle;
@@ -1738,39 +1740,34 @@ void exportNodes(loco::Graph *g, flatbuffers::FlatBufferBuilder &builder, Serial
   for (auto node : loco::postorder_traversal(loco::output_nodes(g)))
   {
     // exportNode(node, builder, md, gd, node_position);
-    if (auto circle_node = dynamic_cast<luci::CircleNode *>(node))
+    ExportContext ctx{builder, md, gd};
+    OperationExporterRule exporter_rule{ctx};
+
+    auto circle_node = loco::must_cast<luci::CircleNode *>(node);
+    circle_node->accept(&exporter_rule);
+
+    const auto ops_size = gd._operators.size();
+
+    if (has_origin(circle_node) && ops_size != gd._operators.size())
     {
-      ExportContext ctx{builder, md, gd};
-      OperationExporterRule exporter_rule{ctx};
-
-      const auto ops_size = gd._operators.size();
-
-      circle_node->accept(&exporter_rule);
-      if (has_origin(circle_node) && ops_size != gd._operators.size())
+      const auto node_id = gd._operators.size() - 1;
+      for (auto source : get_origin(circle_node)->sources())
       {
-        const auto node_id = gd._operators.size() - 1;
-        for (auto source : get_origin(circle_node)->sources())
-        {
-          md._metadata.add_op_table(node_id, source->id());
-        }
-      }
-      if (has_execution_plan(circle_node))
-      {
-        // Add to node (in node_position) metadata vector with execution_plan information:
-        // order of execution, and offsets output tensors.
-        const auto execution_plan = get_execution_plan(circle_node);
-        std::vector<uint32_t> execution_plan_vector;
-        execution_plan_vector.push_back(execution_plan.order_in_plan());
-        for (auto offset : execution_plan.offsets())
-        {
-          execution_plan_vector.push_back(offset);
-        }
-        md._metadata.add_execution_plan_table(node_position, execution_plan_vector);
+        md._metadata.add_op_table(node_id, source->id());
       }
     }
-    else
+    if (has_execution_plan(circle_node))
     {
-      INTERNAL_EXN("Node with unsupported dialect found");
+      // Add to node (in node_position) metadata vector with execution_plan information:
+      // order of execution, and offsets output tensors.
+      const auto execution_plan = get_execution_plan(circle_node);
+      std::vector<uint32_t> execution_plan_vector;
+      execution_plan_vector.push_back(execution_plan.order_in_plan());
+      for (auto offset : execution_plan.offsets())
+      {
+        execution_plan_vector.push_back(offset);
+      }
+      md._metadata.add_execution_plan_table(node_position, execution_plan_vector);
     }
 
     node_position++;
