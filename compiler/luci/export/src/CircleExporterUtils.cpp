@@ -209,34 +209,6 @@ namespace luci
 {
 
 uint32_t SerializedModelData::registerBuiltinOpcode(circle::BuiltinOperator builtin_code,
-                                                    const int32_t op_version)
-{
-  assert(op_version > 0);
-
-  auto it = _operator_codes.find(OpCode{builtin_code, "", op_version});
-  if (it != _operator_codes.end())
-  {
-    return it->second;
-  }
-  auto idx = static_cast<uint32_t>(_operator_codes.size());
-  _operator_codes.emplace(OpCode{builtin_code, "", op_version}, idx);
-  return idx;
-}
-
-uint32_t SerializedModelData::registerCustomOpcode(const std::string &custom_code)
-{
-  const circle::BuiltinOperator builtin_code = circle::BuiltinOperator_CUSTOM;
-  auto it = _operator_codes.find(OpCode{builtin_code, custom_code});
-  if (it != _operator_codes.end())
-  {
-    return it->second;
-  }
-  auto idx = static_cast<uint32_t>(_operator_codes.size());
-  _operator_codes.emplace(OpCode{builtin_code, custom_code}, idx);
-  return idx;
-}
-
-uint32_t SerializedModelData::registerBuiltinOpcode(circle::BuiltinOperator builtin_code,
                                                     const std::string &custom_code,
                                                     const int32_t op_version)
 {
