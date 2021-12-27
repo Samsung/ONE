@@ -17,7 +17,7 @@
 #ifndef __CIRCLE_OPERATION_EXPORTER_H__
 #define __CIRCLE_OPERATION_EXPORTER_H__
 
-#include "CircleExporterUtils.h"
+#include "SerializedData.h"
 
 #include <loco/IR/Graph.h>
 
