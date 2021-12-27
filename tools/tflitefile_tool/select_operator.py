@@ -25,10 +25,10 @@ import argparse
 import pkg_resources
 
 
-# On flatbuffers 2.0, EndVector doesn't requires length argument any more.
+# On flatbuffers 2.0, EndVector doesn't require length argument any more.
 # But flatbuffers under 2.0 (ex. 1.12) requires length argument.
 # We need this workaround until we abandon flatbuffers 1.12.
-# Refernece: https://github.com/google/flatbuffers/issues/6858
+# Reference: https://github.com/google/flatbuffers/issues/6858
 def EndVector(builder, len):
     flat_version = pkg_resources.get_distribution('flatbuffers').version
     if pkg_resources.parse_version(flat_version) < pkg_resources.parse_version("2.0"):
