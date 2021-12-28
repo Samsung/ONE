@@ -1,2 +1,16 @@
-tests/nnapi/specs/* linguist-detectable=false
-res/* linguist-detectable=false
+# Exclude from git language statistics
+tests/nnapi/specs/** linguist-detectable=false
+res/** linguist-detectable=false
+
+# Default: text file
+# - Set End-Of-Line type
+* text eol=lf
+
+# Binary - ignore text file setting
+*.caffemodel -text
+*.png -text
+*.pdf -text
+*.h5 -text
+*.tar.gz -text
+*.tflite -text
+*.bmp -text
