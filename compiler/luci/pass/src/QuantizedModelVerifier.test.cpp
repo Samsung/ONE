@@ -928,6 +928,58 @@ private:
   luci::CircleConst *_const = nullptr;
 };
 
+class MulTestGraph final : public SimpleTestGraph
+{
+public:
+  void init(void) override
+  {
+    TestIOGraph::init({32}, {32});
+
+    _const = create_dummy_const<Type::FLOAT32>(g(), {32});
+    _mul = g()->nodes()->create<luci::CircleMul>();
+    {
+      _mul->x(input());
+      _mul->y(_const);
+    }
+    output()->from(_mul);
+
+    set_minmax_to_non_const(g(), -1, 1);
+  }
+
+  loco::Node *x() { return _mul->x(); }
+  loco::Node *y() { return _mul->y(); }
+
+private:
+  luci::CircleMul *_mul = nullptr;
+  luci::CircleConst *_const = nullptr;
+};
+
+class AddTestGraph final : public SimpleTestGraph
+{
+public:
+  void init(void) override
+  {
+    TestIOGraph::init({32}, {32});
+
+    _const = create_dummy_const<Type::FLOAT32>(g(), {32});
+    _add = g()->nodes()->create<luci::CircleAdd>();
+    {
+      _add->x(input());
+      _add->y(_const);
+    }
+    output()->from(_add);
+
+    set_minmax_to_non_const(g(), -1, 1);
+  }
+
+  loco::Node *x() { return _add->x(); }
+  loco::Node *y() { return _add->y(); }
+
+private:
+  luci::CircleAdd *_add = nullptr;
+  luci::CircleConst *_const = nullptr;
+};
+
 class FloorDivTestGraph final : public SimpleTestGraph
 {
 public:
@@ -2181,6 +2233,85 @@ TEST(QuantizedModelVerifierTest, Unpack_wrong_granularity_NEG)
   TEST_WITH_WRONG_GRANULARITY(UnpackTestGraph, Type::S16, Granularity::ChannelWise);
   SUCCEED();
 }
+
+TEST(QuantizedModelVerifierTest, Add)
+{
+  TEST_WITH_GRAPH(AddTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_GRAPH(AddTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_GRAPH(AddTestGraph, Type::S16, Granularity::ChannelWise);
+  SUCCEED();
+}
+
+TEST(QuantizedModelVerifierTest, Add_wrong_type_NEG)
+{
+  TEST_WITH_WRONG_TYPE(AddTestGraph, Type::U8, Granularity::LayerWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(AddTestGraph, Type::U8, Granularity::ChannelWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(AddTestGraph, Type::S16, Granularity::ChannelWise, Type::U8);
+  SUCCEED();
+}
+
+TEST(QuantizedModelVerifierTest, Add_wrong_granularity_NEG)
+{
+  TEST_WITH_WRONG_GRANULARITY_TARGET(AddTestGraph, Type::U8, Granularity::LayerWise, g.x());
+  TEST_WITH_WRONG_GRANULARITY_TARGET(AddTestGraph, Type::U8, Granularity::ChannelWise, g.x());
+  TEST_WITH_WRONG_GRANULARITY_TARGET(AddTestGraph, Type::S16, Granularity::ChannelWise, g.x());
+
+  TEST_WITH_WRONG_GRANULARITY_TARGET(AddTestGraph, Type::U8, Granularity::LayerWise, g.y());
+  TEST_WITH_WRONG_GRANULARITY_TARGET(AddTestGraph, Type::U8, Granularity::ChannelWise, g.y());
+  TEST_WITH_WRONG_GRANULARITY_TARGET(AddTestGraph, Type::S16, Granularity::ChannelWise, g.y());
+  SUCCEED();
+}
+
+TEST(QuantizedModelVerifierTest, Mul)
+{
+  TEST_WITH_GRAPH(MulTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_GRAPH(MulTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_GRAPH(MulTestGraph, Type::S16, Granularity::ChannelWise);
+  SUCCEED();
+}
+
+TEST(QuantizedModelVerifierTest, Mul_wrong_type_NEG)
+{
+  TEST_WITH_WRONG_TYPE(MulTestGraph, Type::U8, Granularity::LayerWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(MulTestGraph, Type::U8, Granularity::ChannelWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(MulTestGraph, Type::S16, Granularity::ChannelWise, Type::U8);
+  SUCCEED();
+}
+
+TEST(QuantizedModelVerifierTest, Mul_wrong_granularity_NEG)
+{
+  TEST_WITH_WRONG_GRANULARITY_TARGET(MulTestGraph, Type::U8, Granularity::LayerWise, g.x());
+  TEST_WITH_WRONG_GRANULARITY_TARGET(MulTestGraph, Type::U8, Granularity::ChannelWise, g.x());
+  TEST_WITH_WRONG_GRANULARITY_TARGET(MulTestGraph, Type::S16, Granularity::ChannelWise, g.x());
+
+  TEST_WITH_WRONG_GRANULARITY_TARGET(MulTestGraph, Type::U8, Granularity::LayerWise, g.y());
+  TEST_WITH_WRONG_GRANULARITY_TARGET(MulTestGraph, Type::U8, Granularity::ChannelWise, g.y());
+  TEST_WITH_WRONG_GRANULARITY_TARGET(MulTestGraph, Type::S16, Granularity::ChannelWise, g.y());
+  SUCCEED();
+}
+
+// TODO Add following testcases
+//
+// CircleConv2D
+//
+// CircleDepthwiseConv2D
+//
+// CirclePRelu
+//
+// CircleTransposeConv
+//
+// CircleFullyConnected
+//
+// CircleAveragePool2D
+//
+// CircleMaxPool2D
+//
+// CircleMean
+//
+// CircleRelu
+//
+// CircleCast
+//
 
 #undef TEST_WITH_GRAPH
 #undef TEST_WITH_WRONG_TYPE

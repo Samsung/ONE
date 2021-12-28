@@ -15,8 +15,7 @@
 
 #include "QuantizedModelVerifier.h"
 
-#include "VerifyQuantizedNodeLayerWiseGranularity.h"
-#include "VerifyQuantizedNodeChannelWiseGranularity.h"
+#include "VerifyQuantizedNodeGranularity.h"
 #include "VerifyQuantizedNodeU8Type.h"
 #include "VerifyQuantizedNodeS16Type.h"
 
@@ -60,18 +59,8 @@ void QuantizedModelVerifier::verify(loco::Graph *g)
     }
 
     // Verify Granularity
-    if (_granularity == Granularity::LayerWise)
-    {
-      VerifyQuantizedNodeLayerWiseGranularity vg;
-      if (!circle_node->accept(&vg))
-        throw std::runtime_error("Wrong granularity detected in " + node_name());
-    }
-    else if (_granularity == Granularity::ChannelWise)
-    {
-      VerifyQuantizedNodeChannelWiseGranularity vg;
-      if (!circle_node->accept(&vg))
-        throw std::runtime_error("Wrong granularity detected in " + node_name());
-    }
+    if (!circle_node->accept(VerifyQuantizedNodeGranularity::create(_granularity).get()))
+      throw std::runtime_error("Wrong granularity detected in " + node_name());
   }
 }
 
