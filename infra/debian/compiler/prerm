@@ -1,0 +1,6 @@
+#!/bin/bash
+
+set -e
+
+update-alternatives --remove onecc     /usr/share/one/bin/onecc
+update-alternatives --remove one-build /usr/share/one/bin/one-build
