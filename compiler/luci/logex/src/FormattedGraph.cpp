@@ -436,6 +436,13 @@ bool summary_node(const locop::SymbolTable *tbl, const luci::CircleCustom *node,
   return true;
 }
 
+bool summary_node(const locop::SymbolTable *, const luci::CircleDanglingNode *,
+                  locop::NodeSummary &s)
+{
+  s.state(locop::NodeSummary::State::Complete);
+  return true;
+}
+
 bool summary_node(const locop::SymbolTable *tbl, const luci::CircleDepthToSpace *node,
                   locop::NodeSummary &s)
 {
@@ -1346,6 +1353,7 @@ private:
   IMPLEMENT(luci::CircleStridedSlice)
   IMPLEMENT(luci::CircleSub)
   IMPLEMENT(luci::CircleSum)
+  IMPLEMENT(luci::CircleSVDF)
   IMPLEMENT(luci::CircleTanh)
   IMPLEMENT(luci::CircleTile)
   IMPLEMENT(luci::CircleTopKV2)
@@ -1396,6 +1404,7 @@ private:
   IMPLEMENT(luci::CircleInput)
   IMPLEMENT(luci::CircleOutput)
   IMPLEMENT(luci::CircleCustomOut)
+  IMPLEMENT(luci::CircleDanglingNode)
   IMPLEMENT(luci::CircleIfOut)
   IMPLEMENT(luci::CircleNonMaxSuppressionV4Out)
   IMPLEMENT(luci::CircleNonMaxSuppressionV5Out)
@@ -2030,6 +2039,21 @@ bool SummaryBuilderLet<SB::STUV>::summary(const luci::CircleSum *node, locop::No
   return use_reducer(tbl(), node, s);
 }
 
+bool SummaryBuilderLet<SB::STUV>::summary(const luci::CircleSVDF *node, locop::NodeSummary &s) const
+{
+  assert(node->fusedActivationFunction() != luci::FusedActFunc::UNDEFINED);
+
+  s.args().append("input", tbl()->lookup(node->input()));
+  s.args().append("weight_feature", tbl()->lookup(node->weight_feature()));
+  s.args().append("weight_time", tbl()->lookup(node->weight_time()));
+  s.args().append("bias", tbl()->lookup(node->bias()));
+  s.args().append("rank", to_str(node->svdf_rank()));
+  s.args().append("asymmetric_quantize_inputs", to_str(node->asymmetric_quantize_inputs()));
+  s.args().append("fused", to_str(node->fusedActivationFunction()));
+  s.state(locop::NodeSummary::State::Complete);
+  return true;
+}
+
 bool SummaryBuilderLet<SB::STUV>::summary(const luci::CircleTanh *node, locop::NodeSummary &s) const
 {
   return use_x(tbl(), node, s);
@@ -2128,6 +2152,12 @@ bool SummaryBuilderLet<SB::VIRT>::summary(const luci::CircleCustomOut *node,
                                           locop::NodeSummary &s) const
 {
   return use_input(tbl(), node, s);
+}
+
+bool SummaryBuilderLet<SB::VIRT>::summary(const luci::CircleDanglingNode *node,
+                                          locop::NodeSummary &s) const
+{
+  return summary_node(tbl(), node, s);
 }
 
 bool SummaryBuilderLet<SB::VIRT>::summary(const luci::CircleIfOut *node,
