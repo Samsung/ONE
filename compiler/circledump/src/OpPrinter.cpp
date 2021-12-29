@@ -619,6 +619,23 @@ public:
   }
 };
 
+class SVDFPrinter : public OpPrinter
+{
+public:
+  void options(const circle::Operator *op, std::ostream &os) const override
+  {
+    if (auto *params = op->builtin_options_as_SVDFOptions())
+    {
+      os << "    ";
+      os << "rank(" << params->rank() << ") ";
+      os << "activation(" << EnumNameActivationFunctionType(params->fused_activation_function())
+         << ") ";
+      os << "asymmetric_quantize_inputs(" << params->asymmetric_quantize_inputs() << ") ";
+      os << std::endl;
+    }
+  }
+};
+
 class TransposeConvPrinter : public OpPrinter
 {
 public:
@@ -824,6 +841,7 @@ OpPrinterRegistry::OpPrinterRegistry()
   _op_map[circle::BuiltinOperator_STRIDED_SLICE] = make_unique<StridedSlicePrinter>();
   _op_map[circle::BuiltinOperator_SUB] = make_unique<SubPrinter>();
   _op_map[circle::BuiltinOperator_SUM] = make_unique<ReducerPrinter>();
+  _op_map[circle::BuiltinOperator_SVDF] = make_unique<SVDFPrinter>();
   _op_map[circle::BuiltinOperator_TRANSPOSE_CONV] = make_unique<TransposeConvPrinter>();
   // There is no Option for TOPK_V2
   _op_map[circle::BuiltinOperator_UNIDIRECTIONAL_SEQUENCE_LSTM] =
