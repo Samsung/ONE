@@ -1,0 +1,58 @@
+/*
+ * Copyright (c) 2021 Samsung Electronics Co., Ltd. All Rights Reserved
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+#include "SVDF.h"
+
+#include "Convert.h"
+
+namespace tflchef
+{
+
+void TFliteOpSVDF::filler(const tflite::Operator *op, TFliteImport *import,
+                          tflchef::ModelRecipe *model_recipe) const
+{
+  const std::vector<int32_t> &inputs = as_index_vector(op->inputs());
+
+  bool hasBias = (inputs.size() == 5);
+  assert(inputs.size() == 4 || hasBias);
+
+  // Note: last input is variable tensor without data
+  import->set_tensor_filler(inputs.at(1)); // weight_feature
+  import->set_tensor_filler(inputs.at(2)); // weight_time
+  if (hasBias)
+    import->set_tensor_filler(inputs.at(3)); // bias
+}
+
+tflchef::Operation *TFliteOpSVDF::build(const tflite::Operator *op, TFliteImport *import,
+                                        tflchef::ModelRecipe *model_recipe) const
+{
+  auto op_params = op->builtin_options_as_SVDFOptions();
+  assert(op_params != nullptr);
+
+  auto operation = model_recipe->add_operation();
+
+  operation->set_type("SVDF");
+
+  auto op_options = operation->mutable_svdf_options();
+
+  op_options->set_activation(as_tflchef_activation(op_params->fused_activation_function()));
+  op_options->set_asymmetric_quantize_inputs(op_params->asymmetric_quantize_inputs());
+  op_options->set_rank(op_params->rank());
+
+  return operation;
+}
+
+} // namespace tflchef

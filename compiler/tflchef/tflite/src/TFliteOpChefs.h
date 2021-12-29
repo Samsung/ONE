@@ -117,6 +117,7 @@
 #include "Op/StridedSlice.h"
 #include "Op/Sub.h"
 #include "Op/Sum.h"
+#include "Op/SVDF.h"
 #include "Op/Tanh.h"
 #include "Op/Tile.h"
 #include "Op/TopKV2.h"
