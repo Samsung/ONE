@@ -168,6 +168,13 @@ struct SubParams
   Activation activation;
 };
 
+struct SVDFParams
+{
+  bool asymmetric_quantize_inputs;
+  int32_t svdf_rank;
+  Activation activation;
+};
+
 struct SpaceToDepthParams
 {
   int block_size;
