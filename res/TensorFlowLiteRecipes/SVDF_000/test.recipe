@@ -1,0 +1,61 @@
+operand {
+  name: "ifm"
+  type: FLOAT32
+  shape { dim: 1 dim: 16 }
+}
+operand {
+  name: "weight_feature"
+  type: FLOAT32
+  shape { dim: 64 dim: 16 }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "1.0"
+  }
+}
+operand {
+  name: "weight_time"
+  type: FLOAT32
+  shape { dim: 64 dim: 8 }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "1.0"
+  }
+}
+operand {
+  name: "bias"
+  type: FLOAT32
+  shape { dim: 64 }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "1.0"
+  }
+}
+operand {
+  name: "input_activation_state"
+  type: FLOAT32
+  shape { dim: 1 dim: 512 }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 1 dim: 64 }
+}
+operation {
+  type: "SVDF"
+  svdf_options {
+    rank: 1
+    activation: RELU
+    asymmetric_quantize_inputs: false
+  }
+  input: "ifm"
+  input: "weight_feature"
+  input: "weight_time"
+  input: "bias"
+  input: "input_activation_state"
+  output: "ofm"
+}
+input: "ifm"
+output: "ofm"
