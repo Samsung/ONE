@@ -49,6 +49,7 @@ public:
   void visit(luci::CircleConst *) final{/* skip, everything is done in exportOpDefinedTensors */};
 
   // Virtual
+  void visit(luci::CircleDanglingNode *) final {}
   void visit(luci::CircleInput *) final {}
   void visit(luci::CircleOutput *) final {}
   void visit(luci::CircleOutputDummy *) final {}
