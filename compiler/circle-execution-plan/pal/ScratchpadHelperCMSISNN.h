@@ -48,13 +48,13 @@ public:
     const auto dilation_height_factor = static_cast<int32_t>(conv->dilation()->h());
     const auto dilation_width_factor = static_cast<int32_t>(conv->dilation()->w());
 
-    if (dilation_width_factor != 1 and dilation_height_factor != 1)
-      return 0;
-
     auto conv_input = loco::must_cast<luci::CircleNode *>(conv->input());
     auto filter = loco::must_cast<luci::CircleNode *>(conv->filter());
 
-    assert(conv_input->dtype() == loco::DataType::S8 && "CMSISNN works with int8 models");
+    if (dilation_width_factor != 1 and dilation_height_factor != 1 or
+        conv_input->dtype() != loco::DataType::S8)
+      return 0;
+
     const auto input_depth = static_cast<int32_t>(conv_input->dim(3).value());
 
     const auto input_height = static_cast<int32_t>(conv_input->dim(1).value());

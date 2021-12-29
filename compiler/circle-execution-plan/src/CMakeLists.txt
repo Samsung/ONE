@@ -3,6 +3,7 @@ set(SOURCES
         "${CIRCLE_EXECUTION_PLAN_PAL_DIR}/ScratchpadHelperLinux.h"
         "${CIRCLE_EXECUTION_PLAN_PAL_DIR}/ScratchpadHelperMCU.h"
         "${CIRCLE_EXECUTION_PLAN_PAL_DIR}/ScratchpadHelperCMSISNN.h"
+        "${CIRCLE_EXECUTION_PLAN_PAL_DIR}/TargetPlatform.h"
         CircleExecutionPlan.cpp
         ExecutionPlanner.cpp
         ExecutionPlanner.h

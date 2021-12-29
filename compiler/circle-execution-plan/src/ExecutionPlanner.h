@@ -23,16 +23,10 @@
 #include "ScratchpadHelperLinux.h"
 #include "ScratchpadHelperMCU.h"
 #include "ScratchpadHelperCMSISNN.h"
+#include "TargetPlatform.h"
 
 namespace circle_planner
 {
-
-enum SupportedPlatformType
-{
-  LINUX,
-  MCU,
-  CMSISNN
-};
 
 // struct for additional information for the node. it helps build allocations plan for nodes.
 struct AllocationNodeInformation
@@ -77,11 +71,9 @@ public:
     _scratchpad_helper = std::make_unique<ScratchpadHelperLinux>();
   }
 
-  explicit ExecutionPlanner(loco::Graph *graph, SupportedPlatformType platform_type,
-                            bool use_dsp = false)
-    : _graph(graph)
+  explicit ExecutionPlanner(loco::Graph *graph, TargetPlatform target_platform) : _graph(graph)
   {
-    switch (platform_type)
+    switch (target_platform.platform_type)
     {
       case LINUX:
         _scratchpad_helper = std::make_unique<ScratchpadHelperLinux>();
@@ -90,7 +82,7 @@ public:
         _scratchpad_helper = std::make_unique<ScratchpadHelperMCU>();
         break;
       case CMSISNN:
-        _scratchpad_helper = std::make_unique<ScratchpadHelperCMSISNN>(use_dsp);
+        _scratchpad_helper = std::make_unique<ScratchpadHelperCMSISNN>(target_platform.use_dsp);
         break;
       default:
         assert(false && "Use unsupported platform");

@@ -46,7 +46,7 @@ int entry(int argc, char **argv)
     .type(arser::DataType::BOOL)
     .required(false)
     .default_value(false)
-    .help("Plan with or without dsp");
+    .help("Plan with or without dsp (now can be used only with cmsisnn)");
 
   try
   {
@@ -63,6 +63,12 @@ int entry(int argc, char **argv)
   std::string output_path = arser.get<std::string>("output");
   std::string platform_name = arser.get<std::string>("--platform");
   bool use_dsp = arser.get<bool>("--use_dsp");
+
+  if (platform_name != "cmsisnn" && use_dsp)
+  {
+    std::cerr << "ERROR: Now use_dsp can be used only with cmsisnn" << std::endl;
+    return EXIT_FAILURE;
+  }
 
   circle_planner::SupportedPlatformType platform_type;
   if (platform_name == "linux")
@@ -115,7 +121,7 @@ int entry(int argc, char **argv)
   auto module = importer.importModule(circle_model);
 
   // Do main job
-  circle_planner::ExecutionPlanner execution_planner(module->graph(), platform_type, use_dsp);
+  circle_planner::ExecutionPlanner execution_planner(module->graph(), {platform_type, use_dsp});
   execution_planner.make_execution_plan();
 
   // Export to output Circle file
