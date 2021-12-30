@@ -50,7 +50,7 @@ CircleNode *CircleSVDFBuilder::build(const circle::OperatorT &op,
   const std::vector<int32_t> &outputs = op.outputs;
   const auto tensors = context->reader()->tensors();
   const auto opcodes = context->reader()->opcodes();
-  int32_t scratch_index;
+  int32_t scratch_index = 0;
 
   std::vector<CircleNode *> input_nodes;
   for (const int32_t input_tensor_index : inputs)
