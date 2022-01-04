@@ -85,6 +85,12 @@ struct FullyConnectedParams
   Activation activation;
 };
 
+struct GatherParams
+{
+  int32_t axis;
+  int32_t batch_dims;
+};
+
 struct InstanceNormParams
 {
   float epsilon;

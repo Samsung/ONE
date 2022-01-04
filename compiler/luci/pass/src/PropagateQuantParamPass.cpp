@@ -63,6 +63,12 @@ struct PropagateQuantParam final : public luci::CircleNodeMutableVisitor<bool>
 
   bool visit(luci::CircleNode *) { return false; }
 
+  bool visit(luci::CircleGather *node)
+  {
+    auto input_node = loco::must_cast<luci::CircleNode *>(node->params());
+    return copy_qparam(input_node, node);
+  }
+
   bool visit(luci::CircleReshape *node)
   {
     auto input_node = loco::must_cast<luci::CircleNode *>(node->tensor());

@@ -677,6 +677,8 @@ def legalize_LSTM(transformer, tensor_infos, node):
     layout = 0
 
     for attr in node.attribute:
+        print("!!! note.addtribute", attr)
+
         if attr.name == 'activation_alpha':
             activation_alpha = attr.floats
         if attr.name == 'activation_beta':
@@ -705,6 +707,8 @@ def legalize_LSTM(transformer, tensor_infos, node):
     seq_length = tensor_infos[inputs[0]].shape[seq_length_dim]
     if hidden_size == 0:
         hidden_size = tensor_infos[inputs[2]].shape[2]
+
+    seq_length = 1
 
     input_split_tensor = transformer.make_node(
         'Split', [inputs[0]], seq_length, axis=seq_length_dim, split=[1] * seq_length)

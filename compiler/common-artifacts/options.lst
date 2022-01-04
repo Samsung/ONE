@@ -1,0 +1,6 @@
+## Additional Options for test recipe
+
+#[[ tcgenerate_option : add additional option(s) for generation ]]
+
+# make valid 'indices' input value
+tcgenerate_option(Gather_001 --input_range indices 0 3)
