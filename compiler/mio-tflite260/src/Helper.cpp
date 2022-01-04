@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2021 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright 2020 The TensorFlow Authors. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,22 +24,31 @@ namespace mio
 namespace tflite
 {
 
-// This will provide v3/v3a format neutral BuiltinOperator
+/**
+ * This will provide v3/v3a format neutral BuiltinOperator
+ *
+ * This function referenced
+ * https://github.com/tensorflow/tensorflow/blob/7d12007d7800d3714a02e05059f3ea602d1aec78/tensorflow/lite/schema/schema_utils.cc
+ */
 ::tflite::BuiltinOperator builtin_code_neutral(const ::tflite::OperatorCode *opcode)
 {
   assert(opcode != nullptr);
-  int8_t dp_code = opcode->deprecated_builtin_code();
-  // 127 is max of int8_t which is upper bound of v3 builtin_code
-  // NOTE TensorFlow uses 'BuiltinOperator_PLACEHOLDER_FOR_GREATER_OP_CODES' for 127
-  if (dp_code < 127 && dp_code >= 0)
-    return ::tflite::BuiltinOperator(dp_code);
-  return opcode->builtin_code();
+  return std::max(opcode->builtin_code(),
+                  static_cast<::tflite::BuiltinOperator>(opcode->deprecated_builtin_code()));
 }
 
 bool is_valid(const ::tflite::OperatorCode *opcode)
 {
-  ::tflite::BuiltinOperator code = builtin_code_neutral(opcode);
-  return (::tflite::BuiltinOperator_MIN <= code && code <= ::tflite::BuiltinOperator_MAX);
+  const int8_t deprecated_builtin_code = opcode->deprecated_builtin_code();
+  if (!(0 <= deprecated_builtin_code && deprecated_builtin_code <= 127))
+    return false;
+
+  const ::tflite::BuiltinOperator builtin_code = opcode->builtin_code();
+  if (!(::tflite::BuiltinOperator_MIN <= builtin_code &&
+        builtin_code <= ::tflite::BuiltinOperator_MAX))
+    return false;
+
+  return true;
 }
 
 bool is_custom(const ::tflite::OperatorCode *opcode)
