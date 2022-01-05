@@ -49,8 +49,21 @@ target_include_directories(mio_tflite260_inc SYSTEM INTERFACE "${TensorFlowSourc
 target_include_directories(mio_tflite260_inc SYSTEM INTERFACE "${TensorFlowGEMMLowpSource_DIR}")
 
 file(GLOB_RECURSE SOURCES "src/*.cpp")
+file(GLOB_RECURSE TESTS "src/*.test.cpp")
+list(REMOVE_ITEM SOURCES ${TESTS})
 
 add_library(mio_tflite260_helper STATIC ${SOURCES})
 target_include_directories(mio_tflite260_helper PRIVATE src)
 target_include_directories(mio_tflite260_helper PUBLIC include)
 target_link_libraries(mio_tflite260_helper mio_tflite260)
+
+if(NOT ENABLE_TEST)
+  return()
+endif(NOT ENABLE_TEST)
+
+nnas_find_package(GTest REQUIRED)
+
+GTest_AddTest(mio_tflite260_helper_test ${TESTS})
+target_include_directories(mio_tflite260_helper_test PRIVATE src)
+target_link_libraries(mio_tflite260_helper_test mio_tflite260)
+target_link_libraries(mio_tflite260_helper_test mio_tflite260_helper)
