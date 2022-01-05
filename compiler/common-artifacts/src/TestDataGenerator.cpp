@@ -74,6 +74,14 @@ template <> void geneate_random_data<bool>(std::mt19937 &gen, void *data, uint32
   }
 }
 
+template <typename T> void geneate_sequencial_data(void *data, uint32_t size)
+{
+  for (uint32_t i = 0; i < size; i++)
+  {
+    static_cast<T *>(data)[i] = static_cast<T>(i);
+  }
+}
+
 void fill_random_data(void *data, uint32_t size, loco::DataType dtype, uint32_t seed)
 {
   std::mt19937 gen(seed); // standard mersenne_twister_engine seeded with rd()
@@ -100,6 +108,21 @@ void fill_random_data(void *data, uint32_t size, loco::DataType dtype, uint32_t 
   }
 }
 
+void fill_sequencial_data(void *data, uint32_t size, loco::DataType dtype)
+{
+  switch (dtype)
+  {
+    case loco::DataType::S32:
+      geneate_sequencial_data<int32_t>(data, size);
+      break;
+    case loco::DataType::S64:
+      geneate_sequencial_data<int64_t>(data, size);
+      break;
+    default:
+      throw std::runtime_error("NYI data type.");
+  }
+}
+
 } // namespace
 
 int entry(int argc, char **argv)
@@ -120,6 +143,10 @@ int entry(int argc, char **argv)
     .required(false)
     .nargs(0)
     .help("Put a fixed seed into the random number generator");
+  arser.add_argument("--sequential_int")
+    .required(false)
+    .nargs(0)
+    .help("Use sequential generation for int32/int64 inputs");
 
   try
   {
@@ -217,7 +244,10 @@ int entry(int argc, char **argv)
       std::vector<int8_t> data(byte_size);
 
       // generate random data
-      if (arser["--fixed_seed"])
+      if (arser["--sequential_int"] && (input_node->dtype() == loco::DataType::S32 ||
+                                        input_node->dtype() == loco::DataType::S64))
+        fill_sequencial_data(data.data(), data_size, input_node->dtype());
+      else if (arser["--fixed_seed"])
         fill_random_data(data.data(), data_size, input_node->dtype(), 0);
       else
         fill_random_data(data.data(), data_size, input_node->dtype(), rd());
