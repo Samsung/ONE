@@ -27,6 +27,9 @@
 #include <memory>
 #include <random>
 #include <string>
+#include <vector>
+#include <cassert>
+#include <cstdlib>
 
 namespace
 {
@@ -74,6 +77,20 @@ template <> void geneate_random_data<bool>(std::mt19937 &gen, void *data, uint32
   }
 }
 
+template <typename T>
+void generate_random_range(void *data, uint32_t size, int32_t range_min, int32_t range_max)
+{
+  assert(range_min <= range_max);
+
+  for (uint32_t i = 0; i < size; i++)
+  {
+    // +1 will make value of [range_min, range_max]
+    int32_t range = range_max - range_min + 1;
+    int32_t value = (rand() % range) + range_min;
+    static_cast<T *>(data)[i] = static_cast<T>(value);
+  }
+}
+
 void fill_random_data(void *data, uint32_t size, loco::DataType dtype, uint32_t seed)
 {
   std::mt19937 gen(seed); // standard mersenne_twister_engine seeded with rd()
@@ -100,6 +117,22 @@ void fill_random_data(void *data, uint32_t size, loco::DataType dtype, uint32_t 
   }
 }
 
+void fill_random_range(void *data, uint32_t size, loco::DataType dtype, int32_t range_min,
+                       int32_t range_max)
+{
+  switch (dtype)
+  {
+    case loco::DataType::S32:
+      generate_random_range<int32_t>(data, size, range_min, range_max);
+      break;
+    case loco::DataType::S64:
+      generate_random_range<int64_t>(data, size, range_min, range_max);
+      break;
+    default:
+      throw std::runtime_error("NYI data type.");
+  }
+}
+
 } // namespace
 
 int entry(int argc, char **argv)
@@ -120,6 +153,11 @@ int entry(int argc, char **argv)
     .required(false)
     .nargs(0)
     .help("Put a fixed seed into the random number generator");
+  arser.add_argument("--input_range")
+    .required(false)
+    .nargs(3)
+    .type(arser::DataType::STR_VEC)
+    .help("Set random number range [min max] for the input as 'name min max'");
 
   try
   {
@@ -176,6 +214,24 @@ int entry(int argc, char **argv)
   std::unique_ptr<H5::Group> output_value_group =
     std::make_unique<H5::Group>(output_file.createGroup("value"));
 
+  std::string range_name;
+  int32_t range_min = 0;
+  int32_t range_max = 0;
+  bool range_check = false;
+  bool range_input_found = false;
+  if (arser["--input_range"])
+  {
+    // NOTE limitation: we can only set one input range
+    // TODO expand this for multiple inputs
+    std::vector<std::string> values = arser.get<std::vector<std::string>>("--input_range");
+    assert(values.size() == 3);
+    range_name = values.at(0);
+    // TODO add check for valid numbers
+    range_min = std::atoi(values.at(1).c_str());
+    range_max = std::atoi(values.at(2).c_str());
+    range_check = true;
+  }
+
   std::random_device rd; // used to obtain a seed for the random number engine
   uint32_t input_index = 0;
   // TODO remove indentation
@@ -217,7 +273,12 @@ int entry(int argc, char **argv)
       std::vector<int8_t> data(byte_size);
 
       // generate random data
-      if (arser["--fixed_seed"])
+      if (range_name == input_node->name())
+      {
+        fill_random_range(data.data(), data_size, input_node->dtype(), range_min, range_max);
+        range_input_found = true;
+      }
+      else if (arser["--fixed_seed"])
         fill_random_data(data.data(), data_size, input_node->dtype(), 0);
       else
         fill_random_data(data.data(), data_size, input_node->dtype(), rd());
@@ -228,6 +289,12 @@ int entry(int argc, char **argv)
 
       input_index++;
     }
+  }
+
+  if (range_check && not range_input_found)
+  {
+    std::cerr << "ERROR: input_range for input [" << range_name << "] not found." << std::endl;
+    return EXIT_FAILURE;
   }
 
   interpreter.interpret();
