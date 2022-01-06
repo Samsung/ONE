@@ -59,7 +59,7 @@ H5::PredType hdf5_dtype_cast(const loco::DataType loco_dtype)
   }
 }
 
-template <typename T> void geneate_random_data(std::mt19937 &gen, void *data, uint32_t size)
+template <typename T> void generate_random_data(std::mt19937 &gen, void *data, uint32_t size)
 {
   std::normal_distribution<float> distrib(0, 2); // mean(0), stddev(2)
   for (uint32_t i = 0; i < size; i++)
@@ -68,7 +68,7 @@ template <typename T> void geneate_random_data(std::mt19937 &gen, void *data, ui
   }
 }
 
-template <> void geneate_random_data<bool>(std::mt19937 &gen, void *data, uint32_t size)
+template <> void generate_random_data<bool>(std::mt19937 &gen, void *data, uint32_t size)
 {
   std::normal_distribution<float> distrib(0, 2); // mean(0), stddev(2)
   for (uint32_t i = 0; i < size; i++)
@@ -98,19 +98,19 @@ void fill_random_data(void *data, uint32_t size, loco::DataType dtype, uint32_t 
   switch (dtype)
   {
     case loco::DataType::U8:
-      geneate_random_data<uint8_t>(gen, data, size);
+      generate_random_data<uint8_t>(gen, data, size);
       break;
     case loco::DataType::S32:
-      geneate_random_data<int32_t>(gen, data, size);
+      generate_random_data<int32_t>(gen, data, size);
       break;
     case loco::DataType::S64:
-      geneate_random_data<int64_t>(gen, data, size);
+      generate_random_data<int64_t>(gen, data, size);
       break;
     case loco::DataType::FLOAT32:
-      geneate_random_data<float>(gen, data, size);
+      generate_random_data<float>(gen, data, size);
       break;
     case loco::DataType::BOOL:
-      geneate_random_data<bool>(gen, data, size);
+      generate_random_data<bool>(gen, data, size);
       break;
     default:
       throw std::runtime_error("NYI data type.");
