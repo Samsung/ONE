@@ -140,6 +140,13 @@ endmacro()
 
 include("exclude.lst")
 
+# TODO revise using variadic arguments
+macro(tcgenerate_option NAME OPTION ARG1 ARG2 ARG3)
+  set(TCGEN_OPT_${NAME} ${OPTION} ${ARG1} ${ARG2} ${ARG3})
+endmacro()
+
+include("options.lst")
+
 foreach(RECIPE IN ITEMS ${RECIPES})
   unset(OPT_FORMAT)
   unset(MODEL_FORMAT)
@@ -274,6 +281,12 @@ foreach(RECIPE IN ITEMS ${RECIPES})
     )
     list(APPEND TEST_DEPS ${TC_DIRECTORY})
 
+    # set ADDITIONAL_OPTIONS as empty (one space before closing is intentional)
+    set(ADDITIONAL_OPTIONS )
+    if(DEFINED TCGEN_OPT_${RECIPE})
+      set(ADDITIONAL_OPTIONS ${ADDITIONAL_OPTIONS} ${TCGEN_OPT_${RECIPE}})
+    endif()
+
     # Generate input.h5, expected.h5
     set(INPUT_HDF5_FILE "${TC_DIRECTORY}/input.h5")
     set(EXPECTED_HDF5_FILE "${TC_DIRECTORY}/expected.h5")
@@ -281,6 +294,7 @@ foreach(RECIPE IN ITEMS ${RECIPES})
       COMMAND $<TARGET_FILE:testDataGenerator>
               --input_data ${INPUT_HDF5_FILE}
               --expected_data ${EXPECTED_HDF5_FILE}
+              ${ADDITIONAL_OPTIONS}
               ${MODEL_FILE}
       DEPENDS $<TARGET_FILE:testDataGenerator> ${MODEL_FILE} ${TC_DIRECTORY}
       COMMENT "Generate input.h5 and expected.h5 in ${NNPKG_FILE}/metadata/tc"
