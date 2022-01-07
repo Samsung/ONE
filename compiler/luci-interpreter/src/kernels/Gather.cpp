@@ -17,96 +17,10 @@
 
 #include "kernels/Gather.h"
 #include "kernels/Utils.h"
-
-#include <tensorflow/lite/kernels/internal/common.h>
+#include "PALGather.h"
 
 #include <stdexcept>
 #include <cassert>
-
-// NOTE code is copied here cause "ruy::profiler::ScopeLabel label("Gather");" exist
-// but "#include "ruy/profiler/instrumentation.h"" line is absent and compile fails.
-// TensorFlow doesn't seem to use tflite::reference_ops::Gather() alone.
-// TODO include header file and remove reference_ops block after this is fixed
-
-namespace tflite
-{
-namespace reference_ops
-{
-
-template <typename T, typename CoordsT = int32>
-inline void Gather(const tflite::GatherParams &op_params, const RuntimeShape &input_shape,
-                   const T *input_data, const RuntimeShape &coords_shape,
-                   const CoordsT *coords_data, const RuntimeShape &, T *output_data)
-{
-  int axis = op_params.axis;
-  if (axis < 0)
-  {
-    axis += input_shape.DimensionsCount();
-  }
-  TFLITE_DCHECK_GE(axis, 0);
-  TFLITE_DCHECK_LT(axis, input_shape.DimensionsCount());
-
-  int batch_dims = op_params.batch_dims;
-  if (batch_dims < 0)
-  {
-    batch_dims += coords_shape.DimensionsCount();
-  }
-  TFLITE_DCHECK_GE(batch_dims, 0);
-  TFLITE_DCHECK_LT(batch_dims, input_shape.DimensionsCount());
-  TFLITE_DCHECK_LE(batch_dims, coords_shape.DimensionsCount());
-  TFLITE_DCHECK_GE(axis, batch_dims);
-  for (int i = 0; i < batch_dims; ++i)
-  {
-    TFLITE_DCHECK_EQ(input_shape.Dims(i), coords_shape.Dims(i));
-  }
-
-  const int axis_size = input_shape.Dims(axis);
-
-  int batch_size = 1;
-  for (int i = 0; i < batch_dims; ++i)
-  {
-    batch_size *= input_shape.Dims(i);
-  }
-
-  int outer_size = 1;
-  for (int i = batch_dims; i < axis; ++i)
-  {
-    outer_size *= input_shape.Dims(i);
-  }
-
-  int inner_size = 1;
-  for (int i = axis + 1; i < input_shape.DimensionsCount(); ++i)
-  {
-    inner_size *= input_shape.Dims(i);
-  }
-
-  int coord_size = 1;
-  for (int i = batch_dims; i < coords_shape.DimensionsCount(); ++i)
-  {
-    coord_size *= coords_shape.Dims(i);
-  }
-
-  for (int batch = 0; batch < batch_size; ++batch)
-  {
-    for (int outer = 0; outer < outer_size; ++outer)
-    {
-      for (int i = 0; i < coord_size; ++i)
-      {
-        TFLITE_DCHECK_GE(coords_data[i], 0);
-        TFLITE_DCHECK_LT(coords_data[i], axis_size);
-        // TODO(rsun): replace memcpy with a for loop
-        std::memcpy(output_data + (((batch * outer_size) + outer) * coord_size + i) * inner_size,
-                    input_data + (((batch * outer_size) + outer) * axis_size +
-                                  coords_data[batch * coord_size + i]) *
-                                   inner_size,
-                    sizeof(T) * inner_size);
-      }
-    }
-  }
-}
-
-} // namespace reference_ops
-} // namespace tflite
 
 namespace luci_interpreter
 {
@@ -207,17 +121,17 @@ void Gather::evalFloat() const
   {
     const auto indices_data = getTensorData<int32_t>(indices());
 
-    tflite::reference_ops::Gather<float, int32_t>(tparams, getTensorShape(params()), params_data,
-                                                  getTensorShape(indices()), indices_data,
-                                                  getTensorShape(output()), output_data);
+    luci_interpreter_pal::Gather<float, int32_t>(tparams, getTensorShape(params()), params_data,
+                                                 getTensorShape(indices()), indices_data,
+                                                 getTensorShape(output()), output_data);
   }
   else
   {
     const auto indices_data = getTensorData<int64_t>(indices());
 
-    tflite::reference_ops::Gather<float, int64_t>(tparams, getTensorShape(params()), params_data,
-                                                  getTensorShape(indices()), indices_data,
-                                                  getTensorShape(output()), output_data);
+    luci_interpreter_pal::Gather<float, int64_t>(tparams, getTensorShape(params()), params_data,
+                                                 getTensorShape(indices()), indices_data,
+                                                 getTensorShape(output()), output_data);
   }
 }
 
