@@ -76,7 +76,7 @@ public:
   {
     if (_value != -1)
     {
-      // Close on descturction
+      // Close on destructor
       close(_value);
     }
   }
