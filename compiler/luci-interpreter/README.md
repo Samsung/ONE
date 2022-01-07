@@ -111,7 +111,7 @@ Note that one memory manager could be shared between multiple interpreter instan
 
 List of predefined memory managers:
 - `SimpleMemoryManager` This is a simple wrapper around new/delete, default one.
-- `TestMemoryManager` Memorizes all allocated memory and releases it in Manager desctuctor, used in kernel unit tests.
+- `TestMemoryManager` Memorizes all allocated memory and releases it in Manager destructor, used in kernel unit tests.
 - `BuddyMemoryManager` Implements Buddy algorithm, uses external buffer for tensor data allocations, does not need new/delete.
 - `StaticMemoryManger` Uses precomputed memory allocation plan. Requires preparation with MemoryPlanner, but could reduce memory consumption in restricted environments (like MCUs).
 
