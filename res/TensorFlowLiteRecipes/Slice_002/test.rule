@@ -1,0 +1,5 @@
+# To check if MaxPoolWithArgmax is transformed to MaxPool, ArgMax and index computation network
+
+RULE    "VERIFY_FILE_FORMAT"      $(verify_file_format) '=' 1
+
+RULE    "SLICE_COUNT"             $(op_count SLICE) '=' 0

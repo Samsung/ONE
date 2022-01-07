@@ -46,6 +46,7 @@ Add(StridedSlice_003 PASS substitute_strided_slice_to_reshape)
 Add(MaxPoolWithArgmax_000 PASS resolve_customop_max_pool_with_argmax)
 Add(MaxPoolWithArgmax_001 PASS resolve_customop_max_pool_with_argmax)
 Add(MaxPoolWithArgmax_002 PASS resolve_customop_max_pool_with_argmax)
+#Add(Slice_002 PASS fold_slice)
 
 ## CIRCLE RECIPE
 

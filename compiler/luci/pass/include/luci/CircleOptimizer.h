@@ -54,6 +54,7 @@ public:
       FoldCast,
       FoldDepthwiseConv2D,
       FoldDequantize,
+      FoldSlice,
       FoldSparseToDense,
       CopyQuantParam,
       ForceQuantParam,

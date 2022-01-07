@@ -41,6 +41,7 @@ class _CONSTANT:
         ('fold_cast', 'fold Cast op with constant input'),
         ('fold_dequantize', 'fold Dequantize op'),
         ('fold_dwconv', 'fold Depthwise Convolution op with constant inputs'),
+        ('fold_slice', 'fold Slice op with constant inputs'),
         ('fold_sparse_to_dense', 'fold SparseToDense op'),
         ('forward_reshape_to_unaryop', 'Forward Reshape op'),
         ('fuse_add_with_tconv', 'fuse Add op to Transposed'),

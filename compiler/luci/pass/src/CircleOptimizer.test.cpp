@@ -35,6 +35,7 @@ TEST(CircleOptimizerTest, optimize_algorithms)
   options->enable(Algorithms::FoldCast);
   options->enable(Algorithms::FoldDepthwiseConv2D);
   options->enable(Algorithms::FoldDequantize);
+  options->enable(Algorithms::FoldSlice);
   options->enable(Algorithms::FoldSparseToDense);
   options->enable(Algorithms::FusePreActivationBatchNorm);
   options->enable(Algorithms::MakeBatchNormGammaPositive);
