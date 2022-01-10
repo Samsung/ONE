@@ -36,6 +36,7 @@ operand {
 operand {
   name: "input_activation_state"
   type: FLOAT32
+  is_variable: true
   shape { dim: 1 dim: 512 }
 }
 operand {
