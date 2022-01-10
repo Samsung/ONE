@@ -74,6 +74,7 @@ bool isTensorProducingNode(const luci::CircleNode *node)
 }
 
 // Method finds (if necessary) size for im2col temporary tensor.
+// TODO: remove it when ScratchpadHelper will be added
 uint32_t compute_im2col_size(const luci::CircleConv2D *conv)
 {
   auto conv_input = loco::must_cast<luci::CircleNode *>(conv->input());
@@ -358,34 +359,42 @@ void ExecutionPlanner::create_alloc_node_inform_vector(bool null_consts, bool nu
       _alloc_node_inform_vector[i].size = node_size;
     }
 
-    // Im2col
-    auto opcode = circle_node->opcode();
-    if (opcode == luci::CircleOpcode::CONV_2D)
+    // Scratchpad If needed
+    uint32_t scratchpad_size = 0;
+    switch (circle_node->opcode())
     {
-      auto conv = loco::must_cast<const luci::CircleConv2D *>(circle_node);
-      auto im2col_size = compute_im2col_size(conv);
-      if (im2col_size > 0)
+      case luci::CircleOpcode::CONV_2D:
       {
-        AllocationNodeInformation temp_alloc;
-
-        if (null_im2col)
-        {
-          temp_alloc.size = 0;
-        }
-        else
-        {
-          temp_alloc.size = im2col_size;
-        }
-
-        temp_alloc.first_node = i - 1;
-        temp_alloc.last_node = i + 1;
-        temp_alloc.node_num = i;
-        temp_alloc.is_temp = true;
-
-        _alloc_node_inform_vector.push_back(temp_alloc);
-        _alloc_node.push_back(i);
-        _dealloc_node.push_back(i);
+        auto conv = loco::must_cast<const luci::CircleConv2D *>(circle_node);
+        scratchpad_size = compute_im2col_size(
+          conv); // TODO: rewrite it with ScratchpadHelper method when it will be added
+        break;
       }
+      default:
+        scratchpad_size = 0;
+    }
+
+    if (scratchpad_size > 0)
+    {
+      AllocationNodeInformation temp_alloc;
+
+      if (null_im2col)
+      {
+        temp_alloc.size = 0;
+      }
+      else
+      {
+        temp_alloc.size = scratchpad_size;
+      }
+
+      temp_alloc.first_node = i - 1;
+      temp_alloc.last_node = i + 1;
+      temp_alloc.node_num = i;
+      temp_alloc.is_temp = true;
+
+      _alloc_node_inform_vector.push_back(temp_alloc);
+      _alloc_node.push_back(i);
+      _dealloc_node.push_back(i);
     }
   }
   // Sort _alloc_node_inform_vector with node_compare for the greedy by size approach.

@@ -19,6 +19,7 @@
 
 #include <luci/IR/Module.h>
 #include <luci/Plan/CircleNodeExecutionPlan.h>
+#include "TargetPlatform.h"
 
 namespace circle_planner
 {
@@ -60,7 +61,16 @@ class ExecutionPlanner
 {
 public:
   ExecutionPlanner() = delete;
-  explicit ExecutionPlanner(loco::Graph *graph) { _graph = graph; };
+  explicit ExecutionPlanner(loco::Graph *graph) : _graph(graph)
+  {
+    // Do nothing
+  }
+
+  explicit ExecutionPlanner(loco::Graph *graph, TargetPlatform target_platform) : _graph(graph)
+  {
+    // target_platform will be used when ScratchpadHelper is added
+    (void)target_platform;
+  };
 
   // Method provides execution plan, which contains execution order and
   // memory offsets for all nodes in _graph.

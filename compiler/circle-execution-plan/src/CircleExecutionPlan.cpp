@@ -35,6 +35,18 @@ int entry(int argc, char **argv)
 
   arser.add_argument("input").nargs(1).type(arser::DataType::STR).help("Input circle model");
   arser.add_argument("output").nargs(1).type(arser::DataType::STR).help("Output circle model");
+  arser.add_argument("--platform")
+    .nargs(1)
+    .type(arser::DataType::STR)
+    .required(false)
+    .default_value("linux")
+    .help("Platform name: linux mcu cmsisnn");
+  arser.add_argument("--use_dsp")
+    .nargs(1)
+    .type(arser::DataType::BOOL)
+    .required(false)
+    .default_value(false)
+    .help("Plan with or without dsp (now can be used only with cmsisnn)");
 
   try
   {
@@ -49,6 +61,33 @@ int entry(int argc, char **argv)
 
   std::string input_path = arser.get<std::string>("input");
   std::string output_path = arser.get<std::string>("output");
+  std::string platform_name = arser.get<std::string>("--platform");
+  bool use_dsp = arser.get<bool>("--use_dsp");
+
+  if (platform_name != "cmsisnn" && use_dsp)
+  {
+    std::cerr << "ERROR: Now use_dsp can be used only with cmsisnn" << std::endl;
+    return EXIT_FAILURE;
+  }
+
+  circle_planner::SupportedPlatformType platform_type;
+  if (platform_name == "linux")
+  {
+    platform_type = circle_planner::SupportedPlatformType::LINUX;
+  }
+  else if (platform_name == "mcu")
+  {
+    platform_type = circle_planner::SupportedPlatformType::MCU;
+  }
+  else if (platform_name == "cmsisnn")
+  {
+    platform_type = circle_planner::SupportedPlatformType::CMSISNN;
+  }
+  else
+  {
+    std::cerr << "ERROR: Invalid platform name '" << platform_name << "'" << std::endl;
+    return EXIT_FAILURE;
+  }
 
   foder::FileLoader file_loader{input_path};
   std::vector<char> model_data;
@@ -82,7 +121,7 @@ int entry(int argc, char **argv)
   auto module = importer.importModule(circle_model);
 
   // Do main job
-  circle_planner::ExecutionPlanner execution_planner(module->graph());
+  circle_planner::ExecutionPlanner execution_planner(module->graph(), {platform_type, use_dsp});
   execution_planner.make_execution_plan();
 
   // Export to output Circle file
