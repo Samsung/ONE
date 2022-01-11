@@ -17,6 +17,7 @@
 #ifndef CIRCLE_EXECUTION_PLANNER_H
 #define CIRCLE_EXECUTION_PLANNER_H
 
+#include "TargetPlatform.h"
 #include <luci/IR/Module.h>
 #include <luci/Plan/CircleNodeExecutionPlan.h>
 
@@ -60,7 +61,16 @@ class ExecutionPlanner
 {
 public:
   ExecutionPlanner() = delete;
-  explicit ExecutionPlanner(loco::Graph *graph) { _graph = graph; };
+  explicit ExecutionPlanner(loco::Graph *graph) : _graph(graph)
+  {
+    // Do nothing
+  }
+
+  explicit ExecutionPlanner(loco::Graph *graph, TargetPlatform target_platform) : _graph(graph)
+  {
+    // target_platform will be used when ScratchpadHelper is added
+    (void)target_platform;
+  };
 
   // Method provides execution plan, which contains execution order and
   // memory offsets for all nodes in _graph.
@@ -101,12 +111,12 @@ private:
   // Method creates and fills _alloc_node_inform_vector with usage interval inform and node's sizes.
   // null_consts = true - size of const nodes will be equal 0;
   // null_inputs = true - size of input nodes will be equal 0;
-  // null_im2col = true - size of im2col nodes will be equal 0;
-  // It using if we don't want to take input(const or im2col) nodes into account
+  // null_scratchpad = true - size of scratchpad nodes will be equal 0;
+  // It using if we don't want to take input(const or scratchpads) nodes into account
   // when determining offsets and calculating the required buffer size. This is uses for
   // experiments.
   void create_alloc_node_inform_vector(bool null_consts = false, bool null_inputs = false,
-                                       bool null_im2col = false);
+                                       bool null_scratchpad = false);
 
   // Stores allocation additional information for the all nodes from _graph.
   std::vector<AllocationNodeInformation> _alloc_node_inform_vector;

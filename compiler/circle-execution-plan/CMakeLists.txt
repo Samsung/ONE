@@ -1,4 +1,5 @@
 set(SOURCES
+        pal/TargetPlatform.h
         src/CircleExecutionPlan.cpp
         src/ExecutionPlanner.cpp
         src/ExecutionPlanner.h
@@ -13,4 +14,5 @@ target_link_libraries(circle_execution_plan luci_export)
 target_link_libraries(circle_execution_plan luci_plan)
 target_link_libraries(circle_execution_plan arser)
 
+target_include_directories(circle_execution_plan PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/pal")
 install(TARGETS circle_execution_plan DESTINATION bin)
