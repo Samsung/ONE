@@ -17,9 +17,9 @@
 #ifndef CIRCLE_EXECUTION_PLANNER_H
 #define CIRCLE_EXECUTION_PLANNER_H
 
+#include "TargetPlatform.h"
 #include <luci/IR/Module.h>
 #include <luci/Plan/CircleNodeExecutionPlan.h>
-#include "TargetPlatform.h"
 
 namespace circle_planner
 {
