@@ -59,10 +59,10 @@ int entry(int argc, char **argv)
     return 255;
   }
 
-  std::string input_path = arser.get<std::string>("input");
-  std::string output_path = arser.get<std::string>("output");
-  std::string platform_name = arser.get<std::string>("--platform");
-  bool use_dsp = arser.get<bool>("--use_dsp");
+  const std::string input_path = arser.get<std::string>("input");
+  const std::string output_path = arser.get<std::string>("output");
+  const std::string platform_name = arser.get<std::string>("--platform");
+  const bool use_dsp = arser.get<bool>("--use_dsp");
 
   if (platform_name != "cmsisnn" && use_dsp)
   {

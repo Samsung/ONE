@@ -111,12 +111,12 @@ private:
   // Method creates and fills _alloc_node_inform_vector with usage interval inform and node's sizes.
   // null_consts = true - size of const nodes will be equal 0;
   // null_inputs = true - size of input nodes will be equal 0;
-  // null_im2col = true - size of im2col nodes will be equal 0;
-  // It using if we don't want to take input(const or im2col) nodes into account
+  // null_scratchpad = true - size of scratchpad nodes will be equal 0;
+  // It using if we don't want to take input(const or scratchpads) nodes into account
   // when determining offsets and calculating the required buffer size. This is uses for
   // experiments.
   void create_alloc_node_inform_vector(bool null_consts = false, bool null_inputs = false,
-                                       bool null_im2col = false);
+                                       bool null_scratchpad = false);
 
   // Stores allocation additional information for the all nodes from _graph.
   std::vector<AllocationNodeInformation> _alloc_node_inform_vector;

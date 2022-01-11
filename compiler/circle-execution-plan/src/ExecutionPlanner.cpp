@@ -295,7 +295,7 @@ uint32_t ExecutionPlanner::greedy_by_size_approach()
 }
 
 void ExecutionPlanner::create_alloc_node_inform_vector(bool null_consts, bool null_inputs,
-                                                       bool null_im2col)
+                                                       bool null_scratchpad)
 {
   auto node_compare = [this](const AllocationNodeInformation &alloc_1,
                              const AllocationNodeInformation &alloc_2) {
@@ -366,8 +366,8 @@ void ExecutionPlanner::create_alloc_node_inform_vector(bool null_consts, bool nu
       case luci::CircleOpcode::CONV_2D:
       {
         auto conv = loco::must_cast<const luci::CircleConv2D *>(circle_node);
-        scratchpad_size = compute_im2col_size(
-          conv); // TODO: rewrite it with ScratchpadHelper method when it will be added
+        // TODO: rewrite it with ScratchpadHelper method when it will be added
+        scratchpad_size = null_scratchpad ? 0 : compute_im2col_size(conv);
         break;
       }
       default:
@@ -378,15 +378,7 @@ void ExecutionPlanner::create_alloc_node_inform_vector(bool null_consts, bool nu
     {
       AllocationNodeInformation temp_alloc;
 
-      if (null_im2col)
-      {
-        temp_alloc.size = 0;
-      }
-      else
-      {
-        temp_alloc.size = scratchpad_size;
-      }
-
+      temp_alloc.size = scratchpad_size;
       temp_alloc.first_node = i - 1;
       temp_alloc.last_node = i + 1;
       temp_alloc.node_num = i;
