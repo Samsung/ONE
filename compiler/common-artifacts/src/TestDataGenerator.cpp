@@ -243,6 +243,7 @@ int entry(int argc, char **argv)
     {
       const auto *input_node = dynamic_cast<const luci::CircleInput *>(node);
       std::string name = input_node->name();
+      assert(not name.empty());
       if (name.find(":") == std::string::npos)
         name += ":0";
 
