@@ -1,4 +1,8 @@
 set(SOURCES
+        pal/IScratchpadHelper.h
+        pal/ScratchpadHelperLinux.h
+        pal/ScratchpadHelperMCU.h
+        pal/ScratchpadHelperCMSISNN.h
         pal/TargetPlatform.h
         src/CircleExecutionPlan.cpp
         src/ExecutionPlanner.cpp

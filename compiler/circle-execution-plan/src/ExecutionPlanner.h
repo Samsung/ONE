@@ -20,6 +20,10 @@
 #include "TargetPlatform.h"
 #include <luci/IR/Module.h>
 #include <luci/Plan/CircleNodeExecutionPlan.h>
+#include "IScratchpadHelper.h"
+#include "ScratchpadHelperLinux.h"
+#include "ScratchpadHelperMCU.h"
+#include "ScratchpadHelperCMSISNN.h"
 
 namespace circle_planner
 {
@@ -63,13 +67,25 @@ public:
   ExecutionPlanner() = delete;
   explicit ExecutionPlanner(loco::Graph *graph) : _graph(graph)
   {
-    // Do nothing
+    _scratchpad_helper = std::make_unique<ScratchpadHelperLinux>();
   }
 
   explicit ExecutionPlanner(loco::Graph *graph, TargetPlatform target_platform) : _graph(graph)
   {
-    // target_platform will be used when ScratchpadHelper is added
-    (void)target_platform;
+    switch (target_platform.platform_type)
+    {
+      case LINUX:
+        _scratchpad_helper = std::make_unique<ScratchpadHelperLinux>();
+        break;
+      case MCU:
+        _scratchpad_helper = std::make_unique<ScratchpadHelperMCU>();
+        break;
+      case CMSISNN:
+        _scratchpad_helper = std::make_unique<ScratchpadHelperCMSISNN>(target_platform.use_dsp);
+        break;
+      default:
+        assert(false && "Use unsupported platform");
+    }
   };
 
   // Method provides execution plan, which contains execution order and
@@ -142,6 +158,9 @@ private:
   std::vector<uint32_t> _dealloc_node;
 
   loco::Graph *_graph;
+
+  // Calculate size of scratchpad tensors for current platform
+  std::unique_ptr<IScratchpadHelper> _scratchpad_helper;
 
   // Required memory size.
   uint32_t _required_size = 0;
