@@ -1312,8 +1312,13 @@ loco::NodeShape infer_slice(const luci::CircleSlice *node)
 
   auto input_shape = luci::shape_get(node->input()).as<loco::TensorShape>();
 
-  auto const_begin = loco::must_cast<luci::CircleConst *>(node->begin());
-  auto const_size = loco::must_cast<luci::CircleConst *>(node->size());
+  auto const_begin = dynamic_cast<luci::CircleConst *>(node->begin());
+  auto const_size = dynamic_cast<luci::CircleConst *>(node->size());
+  if (const_begin == nullptr || const_size == nullptr)
+  {
+    // NOTE shape depends on values of begin and size
+    return use_own(node);
+  }
 
   loco::TensorShape output_shape;
   std::vector<int64_t> vect_begin; // to hold both S32/S64, we use int64_t
