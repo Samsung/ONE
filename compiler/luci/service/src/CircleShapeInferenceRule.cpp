@@ -564,8 +564,19 @@ loco::NodeShape infer_concatenation(const luci::CircleConcatenation *node)
         output_shape.dim(j) = output_shape.dim(j).value() + input_shape.dim(j).value();
       }
       else
-        assert(!output_shape.dim(j).known() || !input_shape.dim(j).known() ||
-               output_shape.dim(j) == input_shape.dim(j));
+      {
+        if (output_shape.dim(j).known() && input_shape.dim(j).known() &&
+            output_shape.dim(j).value() != input_shape.dim(j).value())
+        {
+          LOGGER(l);
+          WARN(l) << "WARNING: Concat inputs have different dim values at axis " << j << ": "
+                  << output_shape.dim(j).value() << " vs " << input_shape.dim(j).value()
+                  << std::endl;
+          // NOTE if the input is determined at runtime, we cannot determine without running it
+          //      LSTM body has Slice-Concat sequence where Slice input is non-constant.
+          return use_own(node);
+        }
+      }
     }
   }
 
