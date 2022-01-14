@@ -161,6 +161,13 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   // BuiltinOperator_ARG_MAX = 56,
   // BuiltinOperator_HARD_SWISH = 117,
   // BuiltinOperator_DENSIFY = 124,
+
+  // Register builders for nodes which not handles in builders registered above.
+#define CIRCLE_NODE(CLASS) add(std::make_unique<CLASS>())
+
+  // TODO add ops
+
+#undef CIRCLE_NODE
 }
 
 } // namespace luci
